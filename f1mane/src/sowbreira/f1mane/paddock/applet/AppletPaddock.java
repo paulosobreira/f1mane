@@ -1,0 +1,61 @@
+/**
+ * 
+ */
+package sowbreira.f1mane.paddock.applet;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.swing.JApplet;
+import javax.swing.JOptionPane;
+
+import com.sun.jndi.toolkit.url.UrlUtil;
+
+/**
+ * @author paulo.sobreira
+ * 
+ */
+public class AppletPaddock extends JApplet {
+
+	private static final long serialVersionUID = -2007934906883016154L;
+	private ControlePaddockCliente controlePaddockApplet;
+
+	public void init() {
+		super.init();
+
+		try {
+			Properties properties = new Properties();
+			properties.load(this.getClass().getResourceAsStream(
+					"client.properties"));
+			controlePaddockApplet = new ControlePaddockCliente(this
+					.getCodeBase(), this);
+			controlePaddockApplet.logar();
+		} catch (Exception e) {
+			StackTraceElement[] trace = e.getStackTrace();
+			StringBuffer retorno = new StringBuffer();
+			int size = ((trace.length > 10) ? 10 : trace.length);
+
+			for (int i = 0; i < size; i++)
+				retorno.append(trace[i] + "\n");
+			JOptionPane.showMessageDialog(this, retorno.toString(),
+					"Erro enviando dados", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+
+	}
+
+	public void destroy() {
+		controlePaddockApplet.sairPaddock();
+		super.destroy();
+	}
+
+	public static void main(String[] args) {
+		FormEntrada formEntrada = new FormEntrada();
+		JOptionPane.showMessageDialog(null, formEntrada);
+		// System.out.println(JOptionPane.showInputDialog("teste"));
+	}
+
+}
