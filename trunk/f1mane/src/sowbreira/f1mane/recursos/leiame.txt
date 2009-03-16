@@ -1,0 +1,93 @@
+################### F1-Mane por Paulo Sobreira #########################
+ - F1-Mane é um jogo de gerenciamento de corrida. 
+ - Os comandos do jogador se limitam a enviar mensagens ao 
+piloto para guiar agressivamente ou normal. 
+ - Tambem é possível escolher estratégia de box.
+ - Ao escolher iniciar o jogo o jogador poderá configurar sua corrida devendo, 
+para esta se iniciar, escolher o número de voltas da prova.
+ - O item tempo de ciclo interfere nos tempos de volta rápida da pista e 
+ deverá ser regulado para simular tempos reais das pista com os carros 
+da temporada. Também é útil caso queira efetuar uma corrida extremamente rápida.
+ - Este jogo ainda está em fase de teste para uma versão online.
+ - Qualquer sugestão : sowbreira@yahoo.com.br.
+
+Historico de versoes:
+1.7
+  - Temporada 2008.
+  - Inclusão do modo Auto Agressivo(Evita que o piloto volte ao modo normal após travar rodas).
+  - O piloto do jogo se comporta de forma semelhante ao da Inteligência Artificial.
+  - O botão modo agressivo/normal não fixa em agressivo ou normal(apenas muda temporariamente)
+  - Melhorias Gráficas.
+  - Ajuste de Asas(Mais asa para pistas de baixa e Menos para Pistas de alta)
+1.6
+  - Suporte a mudaça de giro de motor.
+  - Giro do motor influencia no gasto de combustivel.
+  - Giro do motor influencia no gasto do motor.
+  - Alterado o layout das informações do piloto selecionado.
+  - Adicionado teclas de atalho.( Esc remove ou mostra a velociade com giro de motor)
+  - Adicionado circuito de A1,Imola e Hungaroring.
+1.5
+  - Suporte ao WebPaddock.
+  - Melhoria na tabela de posições (cores de seleção de piloto).
+  - Escolhe Circuito junto com outros dados de entreada.
+  - Adicionado circuito de Suzuka,Spa e Sepang.
+  - Estimativa de velocidade em km/h.
+ 1.4
+  - Melhoria no layout do editor.
+  - Possibilidade de adicionar varios tipos de nos na lista de nos do box 
+(Evite proximo do no de parada.).
+  - Qualificação Automatica leva em conta setup inicial.
+  - Para dificuldades de ultrapassaegm abaixo de 400 carros muito rapidos não
+disputam posição com os mais lentos em reta, passam logo sem dar conhecimento.
+  - Adicionado funcionalidade de abandonar corrida.
+  - Adicionado circuito de Nurburing.
+ 1.3
+  - Correção de bug da volta de vantagem do Safety Car.
+  - Timer para mudanca de clima.
+  - Mostra Diferença de tempos entre carro da frente e de traz
+  - Dificuldade do jogo influencia em Clima,Safety Car e mudança de modo qdo 
+trava pneu.
+  - Index de velocidade em reta defini se a pista é de alta ou de baixa.
+  - Adicionado Hockenhein Classico e Hockenhein.
+  - Novo Layout que deve ficar bom com pistas de alta resolução.
+ 1.2
+  - Safety Car.
+  - Corrigido erro no desgaste de pneus de chuva.
+  - Gp SilverStone,Melbourne e Montreal.
+ 1.1
+  - Desgaste de motor é levando em consideração.
+  - Ajuste nas dificuldades do jogo.
+  - Alerta qdo muda o clima.
+  - Pausa de jogo.
+  - Cores novas de seleção de piloto.
+  - Gp franca.
+  - Ajustes nas habilidade de pilotos.
+  - Ajustes nas potencias de carros.
+  
+Dicas:
+ - Para quem não conseguiu rodar o jogo como aplicativo local
+(descompactando o .jar) pode tentar colocar isso no inicio do rodar.bat
+    set CLASS_PATH = ""
+ - Pra cricar uma pista prescisa ter uma imagem(jpg) de um circuito na 
+pasta bin\sowbreira\f1mane\recursos dae é so ir no menu "Criar Arquivo
+Circuito" e escolher esta imagem. O proximo passo é adicionar o nos
+de largada, reta , curva alta ,box etc e fazer um test drive(inclusive 
+de box) e depois salvar a pista (tem q ser um arquivo .f1mane) na 
+pasta bin\sowbreira\f1mane\recursos atualizar o 
+bin\sowbreira\f1mane\recursos\carros.properties e iniciar o 
+jogo(rodar.bat) a psita nova deve esta em circuitos.		
+
+Versão online (paddock.war):
+ - Existe uma versão jogavel de F1-Mane Online mas não consegui 
+hospedar em nenhum lugar com boa velocidade... tentei na casa de uns 
+amigos mas não posso dilvugar aqui pq eles não se comprometeram de 
+manter o server online....Aqui vai o link pra quem quiser fazer seu servidor 
+caseiro ou hospedar em algum lugar(vou procurar algum servidor pra hospedar depois.)
+http://sowbreira.googlepages.com/paddock.war 
+ - Para servir pela Net é presciso ter ip valido (tb funciona sem, mas só em LAN)
+e tb o java mais novo mais o servidor de aplicação Tomcat:
+http://tomcat.apache.org/download-55.cgi que depois de baixado e 
+instalado deve-se colocar o arquivo paddock.war dentro da pasta:
+(unidade):\(dir do tomcat)\webapps então acessar o jogo pelo caminho:
+http://(seu ip):8080/paddock/
+		

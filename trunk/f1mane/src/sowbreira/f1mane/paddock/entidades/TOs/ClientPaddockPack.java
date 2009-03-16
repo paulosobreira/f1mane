@@ -1,0 +1,129 @@
+package sowbreira.f1mane.paddock.entidades.TOs;
+
+import java.io.Serializable;
+
+/**
+ * @author Paulo Sobreira Criado em 28/07/2007 as 15:51:36
+ */
+public class ClientPaddockPack implements Serializable {
+
+	private static final long serialVersionUID = 6938384085272885074L;
+	private String commando;
+	private String nomeJogador;
+	private String senhaJogador;
+	private String emailJogador;
+	private SessaoCliente sessaoCliente;
+	private String texto;
+	private String nomeJogo;
+	private String giroMotor;
+	private String tpPneuBox;
+	private String asaBox;
+	private int combustBox;
+	private DadosCriarJogo dadosJogoCriado;
+
+	public ClientPaddockPack(String commando, SessaoCliente sessaoCliente) {
+		super();
+		this.commando = commando;
+		this.sessaoCliente = sessaoCliente;
+	}
+
+	public String getTexto() {
+		return texto;
+	}
+
+	public String getNomeJogo() {
+		return nomeJogo;
+	}
+
+	public void setNomeJogo(String nomeJogo) {
+		this.nomeJogo = nomeJogo;
+	}
+
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
+	public SessaoCliente getSessaoCliente() {
+		return sessaoCliente;
+	}
+
+	public void setSessaoCliente(SessaoCliente sessaoCliente) {
+		this.sessaoCliente = sessaoCliente;
+	}
+
+	public ClientPaddockPack() {
+
+	}
+
+	public String getNomeJogador() {
+		return nomeJogador;
+	}
+
+	public void setNomeJogador(String apelido) {
+		this.nomeJogador = apelido;
+	}
+
+	public String getCommando() {
+		return commando;
+	}
+
+	public void setCommando(String commando) {
+		this.commando = commando;
+	}
+
+	public DadosCriarJogo getDadosJogoCriado() {
+		return dadosJogoCriado;
+	}
+
+	public void setDadosCriarJogo(DadosCriarJogo dadosParticiparJogo) {
+		this.dadosJogoCriado = dadosParticiparJogo;
+	}
+
+	public String getGiroMotor() {
+		return giroMotor;
+	}
+
+	public void setGiroMotor(String giroMotor) {
+		this.giroMotor = giroMotor;
+	}
+
+	public int getCombustBox() {
+		return combustBox;
+	}
+
+	public void setCombustBox(int combustBox) {
+		this.combustBox = combustBox;
+	}
+
+	public String getTpPneuBox() {
+		return tpPneuBox;
+	}
+
+	public void setTpPneuBox(String tpPneuBox) {
+		this.tpPneuBox = tpPneuBox;
+	}
+
+	public String getSenhaJogador() {
+		return senhaJogador;
+	}
+
+	public void setSenhaJogador(String senhaJogador) {
+		this.senhaJogador = senhaJogador;
+	}
+
+	public String getEmailJogador() {
+		return emailJogador;
+	}
+
+	public void setEmailJogador(String emailJogador) {
+		this.emailJogador = emailJogador;
+	}
+
+	public String getAsaBox() {
+		return asaBox;
+	}
+
+	public void setAsaBox(String asaBox) {
+		this.asaBox = asaBox;
+	}
+}

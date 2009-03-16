@@ -1,0 +1,180 @@
+package sowbreira.f1mane.controles;
+
+import java.util.List;
+import java.util.Map;
+
+import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.SafetyCar;
+import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
+import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
+
+public interface InterfaceJogo {
+	public static boolean VALENDO = true;
+	// public static boolean VALENDO = false;
+	public static String NORMAL = "Normal";
+	public static String FACIL = "Facil";
+	public static String DIFICIL = "Dificil";
+	public static double FACIL_NV = .3;
+	public static double MEDIO_NV = .5;
+	public static double DIFICIL_NV = .7;
+	public static boolean DEBUG = true;
+
+	public Integer getCombustBox(Piloto piloto);
+
+	public String getTipoPeneuBox(Piloto piloto);
+
+	public String getAsaBox(Piloto piloto);
+
+	public void setNiveljogo(double niveljogo);
+
+	public boolean isCorridaTerminada();
+
+	public void setCorridaTerminada(boolean corridaTerminada);
+
+	public List getNosDoBox();
+
+	public MainFrame getMainFrame();
+
+	public String getNivelCorrida();
+
+	public void setNivelCorrida(String nivelCorrida);
+
+	public Circuito getCircuito();
+
+	public List getNosDaPista();
+
+	public List getCarros();
+
+	public void setCircuito(Circuito circuito);
+
+	public List getPilotos();
+
+	public void matarTodasThreads();
+
+	public boolean verificaNivelJogo();
+
+	public String getClima();
+
+	public void atualizaPainel();
+
+	public void info(String info);
+
+	public void infoPrioritaria(String info);
+
+	public int porcentagemCorridaCompletada();
+
+	public int getNumVoltaAtual();
+
+	public int totalVoltasCorrida();
+
+	public boolean verificaUltimasVoltas();
+
+	public boolean verificaBoxOcupado(Carro carro);
+
+	public String calculaSegundosParaLider(Piloto pilotoSelecionado);
+
+	public boolean verificaUltima();
+
+	public void processaVoltaRapida(Piloto piloto);
+
+	public int getCicloAtual();
+
+	public void verificaVoltaMaisRapidaCorrida(Piloto piloto);
+
+	public double obterIndicativoCorridaCompleta();
+
+	public Volta obterMelhorVolta();
+
+	public int verificaUltraPassagem(Piloto piloto, int novoModificador);
+
+	public double getNiveljogo();
+
+	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
+			Object combust, String nomeJogador, Object asa);
+
+	public boolean mudarModoAgressivo();
+
+	public boolean mudarModoBox();
+
+	public void setBoxJogadorHumano(Object tpneu, Object combust, Object asa);
+
+	public void selecionaPilotoJogador();
+
+	public void apagarLuz();
+
+	public void processaNovaVolta();
+
+	public boolean isChovendo();
+
+	public void informaMudancaClima();
+
+	public void pausarJogo();
+
+	public PainelTabelaResultadoFinal obterResultadoFinal();
+
+	public boolean isSafetyCarNaPista();
+
+	public SafetyCar getSafetyCar();
+
+	public int calculaModificadorComSafetyCar(Piloto piloto, int novoModificador);
+
+	public boolean isSafetyCarVaiBox();
+
+	public Carro obterCarroNaFrente(Piloto piloto);
+
+	public Carro obterCarroAtraz(Piloto piloto);
+
+	public String calculaSegundosParaProximo(Piloto psel);
+
+	public double getIndexVelcidadeDaPista();
+
+	public Map getCircuitos();
+
+	public void iniciarJogo() throws Exception;
+
+	public void exibirResultadoFinal();
+
+	public void abandonar();
+
+	public void desenhaQualificacao();
+
+	public long getTempoCiclo();
+
+	public void zerarMelhorVolta();
+
+	public void adicionarInfoDireto(String string);
+
+	public void atulizaTabelaPosicoes();
+
+	public void selecionouPiloto(Piloto pilotoSelecionado);
+
+	public Piloto getPilotoSelecionado();
+
+	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
+			Object combust, Object asa);
+
+	public void saiuBox(Piloto piloto);
+
+	public Volta obterMelhorVolta(Piloto pilotoSelecionado);
+
+	public Piloto getPilotoJogador();
+
+	public void mudarGiroMotor(Object selectedItem);
+
+	public int calculaDiferencaParaProximo(Piloto piloto);
+
+	public double calculaSegundosParaProximoDouble(Piloto psel);
+
+	public boolean mudarModoAutoAgressivo(boolean sel);
+
+	public void setMainFrame(MainFrame mainFrame);
+
+	public int verificaRetardatario(Piloto piloto, int novoModificador);
+
+	public boolean isModoQualify();
+
+}
