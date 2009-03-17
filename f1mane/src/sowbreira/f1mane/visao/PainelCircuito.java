@@ -156,31 +156,51 @@ public class PainelCircuito extends JPanel {
 			g2d.drawString(pilotoSelecionado.getCarro().getAsa(), ptoOri, 30);
 			g2d.drawString("Paradas :" + pilotoSelecionado.getQtdeParadasBox(),
 					ptoOri, 45);
+			if (pilotoSelecionado.isBox()) {
+				g2d.setColor(red);
+			}
 			g2d.drawString("Vai Box :"
 					+ (pilotoSelecionado.isBox() ? "Sim" : "Não"), ptoOri, 60);
 			String plider = "";
 			if (pilotoSelecionado.getPosicao() == 1) {
 				plider = "Lider ";
+				g2d.setColor(gre);
 			} else {
 				controleJogo.calculaSegundosParaLider(pilotoSelecionado);
 				plider = pilotoSelecionado.getSegundosParaLider();
+				g2d.setColor(red);
 			}
-
+			g2d.setColor(Color.black);
 			g2d.drawString("P/Lider: " + plider, getWidth() - 100, 75);
 			if ((pilotoSelecionado.getNumeroVolta() > 0)) {
-				if (pilotoSelecionado.getUltimaVolta() != null) {
-					g2d.drawString("Ultima: "
-							+ pilotoSelecionado.getUltimaVolta()
-									.obterTempoVoltaFormatado(), ptoOri, 90);
-				}
-
 				Volta voltaPiloto = controleJogo
 						.obterMelhorVolta(pilotoSelecionado);
 
 				if (voltaPiloto != null) {
+					g2d.setColor(Color.BLUE);
 					g2d.drawString("Melhor: "
 							+ voltaPiloto.obterTempoVoltaFormatado(), ptoOri,
-							105);
+							90);
+				}
+				g2d.setColor(Color.black);
+				g2d.drawString("Ultimas 5 voltas: ", ptoOri, 105);
+				int contAlt = 120;
+				int contVolta = 1;
+				List voltas = pilotoSelecionado.getVoltas();
+				Color color = new Color(1, 1, 1);
+				for (int i = voltas.size() - 1; i > -1; i--) {
+					Volta volta = (Volta) voltas.get(i);
+					g2d.setColor(color);
+					g2d.drawString(volta.obterTempoVoltaFormatado(), ptoOri,
+							contAlt);
+					contAlt += 15;
+					contVolta++;
+					color = new Color(contVolta * 30, contVolta * 30,
+							contVolta * 30);
+					if (contVolta > 5) {
+						break;
+					}
+
 				}
 			}
 		}
@@ -205,7 +225,7 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		if (porcentComb <= 5) {
-			g2d.drawImage(fuel.getImage(), 5, 140, null);
+			g2d.drawImage(fuel.getImage(), 5, 240, null);
 		}
 
 		if (Carro.PERDEU_AEREOFOLIO.equals(pilotoSelecionado.getCarro()
@@ -596,13 +616,13 @@ public class PainelCircuito extends JPanel {
 			if (Carro.GIRO_MIN_VAL == ps.getCarro().getGiro()) {
 				desenBarraGiro(g2d, true, gre, 5);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString("Min", 9, 132);
+				g2d.drawString("Min", 9, 195);
 			}
 			if (Carro.GIRO_NOR_VAL == ps.getCarro().getGiro()) {
 				desenBarraGiro(g2d, false, gre, 5);
 				desenBarraGiro(g2d, true, yel, 35);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString("Nor", 39, 132);
+				g2d.drawString("Nor", 39, 195);
 
 			}
 			if (Carro.GIRO_MAX_VAL == ps.getCarro().getGiro()) {
@@ -610,20 +630,20 @@ public class PainelCircuito extends JPanel {
 				desenBarraGiro(g2d, false, yel, 35);
 				desenBarraGiro(g2d, true, red, 65);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString("Max", 69, 132);
+				g2d.drawString("Max", 69, 195);
 			}
 		}
 		if (ps.isBox()) {
 
-			g2d.drawImage(fuel.getImage(), 5, 140, null);
+			g2d.drawImage(fuel.getImage(), 5, 240, null);
 			g2d.setColor(Color.BLACK);
 			Integer percent = controleJogo.getCombustBox(ps);
 			if (percent != null)
-				g2d.drawString(percent + "%", 5, 180);
-			g2d.drawImage(tyre.getImage(), 5, 185, null);
+				g2d.drawString(percent + "%", 5, 280);
+			g2d.drawImage(tyre.getImage(), 5, 285, null);
 			String tpPneu = controleJogo.getTipoPeneuBox(ps);
 			if (tpPneu != null)
-				g2d.drawString(tpPneu, 5, 225);
+				g2d.drawString(tpPneu, 5, 325);
 		}
 		int valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
 		if (valor > 200) {
@@ -657,31 +677,61 @@ public class PainelCircuito extends JPanel {
 	private void desenBarraGiro(Graphics g2d, boolean varia, Color cor,
 			int inico) {
 		g2d.setColor(cor);
-		g2d.fillRoundRect(inico, 120, 4, 15, 15, 15);
-		g2d.fillRoundRect(inico + 5, 120, 4, 15, 15, 15);
-		g2d.fillRoundRect(inico + 10, 120, 4, 15, 15, 15);
+		int incremetAlt = 0;
+		if (gre.equals(cor)) {
+			incremetAlt = 10;
+		} else if (yel.equals(cor)) {
+			incremetAlt = 28;
+		} else if (red.equals(cor)) {
+			incremetAlt = 46;
+		}
+		int y = 200;
+		g2d.fillRoundRect(inico, y - incremetAlt, 4, incremetAlt, 15, 15);
+		incremetAlt += 3;
+		g2d.fillRoundRect(inico + 5, y - incremetAlt, 4, incremetAlt, 15, 15);
+		incremetAlt += 3;
+		g2d.fillRoundRect(inico + 10, y - incremetAlt, 4, incremetAlt, 15, 15);
+		incremetAlt += 3;
 		if (varia) {
 			int val = 1 + (int) (Math.random() * 3);
 			switch (val) {
 			case 1:
-				g2d.fillRoundRect(inico + 15, 120, 4, 15, 15, 15);
+				g2d.fillRoundRect(inico + 15, y - incremetAlt, 4, incremetAlt,
+						15, 15);
+				incremetAlt += 3;
 				break;
 			case 2:
-				g2d.fillRoundRect(inico + 15, 120, 4, 15, 15, 15);
-				g2d.fillRoundRect(inico + 20, 120, 4, 15, 15, 15);
+				g2d.fillRoundRect(inico + 15, y - incremetAlt, 4, incremetAlt,
+						15, 15);
+				incremetAlt += 3;
+				g2d.fillRoundRect(inico + 20, y - incremetAlt, 4, incremetAlt,
+						15, 15);
+				incremetAlt += 3;
 				break;
 			case 3:
-				g2d.fillRoundRect(inico + 15, 120, 4, 15, 15, 15);
-				g2d.fillRoundRect(inico + 20, 120, 4, 15, 15, 15);
-				g2d.fillRoundRect(inico + 25, 120, 4, 15, 15, 15);
+				g2d.fillRoundRect(inico + 15, y - incremetAlt, 4, incremetAlt,
+						15, 15);
+				incremetAlt += 3;
+				g2d.fillRoundRect(inico + 20, y - incremetAlt, 4, incremetAlt,
+						15, 15);
+				incremetAlt += 3;
+				g2d.fillRoundRect(inico + 25, y - incremetAlt, 4, incremetAlt,
+						15, 15);
+				incremetAlt += 3;
 				break;
 			default:
 				break;
 			}
 		} else {
-			g2d.fillRoundRect(inico + 15, 120, 4, 15, 15, 15);
-			g2d.fillRoundRect(inico + 20, 120, 4, 15, 15, 15);
-			g2d.fillRoundRect(inico + 25, 120, 4, 15, 15, 15);
+			g2d.fillRoundRect(inico + 15, y - incremetAlt, 4, incremetAlt, 15,
+					15);
+			incremetAlt += 3;
+			g2d.fillRoundRect(inico + 20, y - incremetAlt, 4, incremetAlt, 15,
+					15);
+			incremetAlt += 3;
+			g2d.fillRoundRect(inico + 25, y - incremetAlt, 4, incremetAlt, 15,
+					15);
+			incremetAlt += 3;
 		}
 
 	}

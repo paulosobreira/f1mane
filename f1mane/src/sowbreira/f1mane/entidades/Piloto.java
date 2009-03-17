@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -631,14 +632,14 @@ public class Piloto implements Serializable {
 						int val = 1 + (int) (Math.random() * 4);
 						switch (val) {
 						case 1:
-							controleJogo.info(Html.MediumPurple("Parece que "
+							controleJogo.info(Html.silver("Parece que "
 									+ Html.bold(getNome())
 									+ " decidiu partir de vez para cima de "
 									+ Html.bold(carroPilotoDaFrente.getPiloto()
 											.getNome())));
 							break;
 						case 2:
-							controleJogo.info(Html.MediumPurple(Html
+							controleJogo.info(Html.silver(Html
 									.bold(getNome())
 									+ " procura não perder contato visual com "
 									+ Html.bold(carroPilotoDaFrente.getPiloto()
@@ -647,7 +648,7 @@ public class Piloto implements Serializable {
 						case 3:
 							controleJogo
 									.info(Html
-											.MediumPurple(Html.bold(getNome())
+											.silver(Html.bold(getNome())
 													+ " tenta diminuir a diferença de tempo para "
 													+ Html
 															.bold(carroPilotoDaFrente
@@ -657,7 +658,7 @@ public class Piloto implements Serializable {
 						case 4:
 							controleJogo
 									.info(Html
-											.MediumPurple(Html.bold(getNome())
+											.silver(Html.bold(getNome())
 													+ " tenta tirar o máximo do carro para andar no ritimo de "
 													+ Html
 															.bold(carroPilotoDaFrente
@@ -907,8 +908,12 @@ public class Piloto implements Serializable {
 		if (voltas.isEmpty()) {
 			return null;
 		}
-
-		Collections.sort(voltas, new Comparator() {
+		List ordenaVoltas = new ArrayList();
+		for (Iterator iterator = voltas.iterator(); iterator.hasNext();) {
+			Volta volta = (Volta) iterator.next();
+			ordenaVoltas.add(volta);
+		}
+		Collections.sort(ordenaVoltas, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				Volta v0 = (Volta) arg0;
 				Volta v1 = (Volta) arg1;
@@ -918,7 +923,7 @@ public class Piloto implements Serializable {
 			}
 		});
 
-		return (Volta) voltas.get(0);
+		return (Volta) ordenaVoltas.get(0);
 	}
 
 	public void abandonar() {

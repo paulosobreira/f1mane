@@ -253,9 +253,9 @@ public class Html {
 		return buffer.toString();
 	}
 
-	public static String MediumPurple(String texto) {
+	public static String silver(String texto) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("<font color='#9370D8'>").append(texto).append("</font>");
+		buffer.append("<font color='#C0C0C0'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 

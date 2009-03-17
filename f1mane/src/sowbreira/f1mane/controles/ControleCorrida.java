@@ -5,14 +5,11 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.omg.CORBA.NO_IMPLEMENT;
-
-import br.nnpe.Html;
-
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
+import br.nnpe.Html;
 
 /**
  * @author Paulo Sobreira
@@ -210,8 +207,8 @@ public class ControleCorrida {
 			}
 
 			if (piloto.isJogadorHumano()) {
-				controleJogo.info(Html.bold(piloto.getNome())
-						+ Html.verde(" erra e guia com cuidado agora."));
+				controleJogo.info(Html.bold(piloto.getNome()
+						+ " erra e guia com cuidado agora."));
 			}
 			if (!piloto.isJogadorHumano()) {
 				piloto.setAgressivo(false);
