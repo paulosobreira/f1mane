@@ -169,7 +169,7 @@ public interface InterfaceJogo {
 
 	public double calculaSegundosParaProximoDouble(Piloto psel);
 
-	public boolean mudarModoAutoAgressivo(boolean sel);
+	public void mudarModoPilotagem(String modo);
 
 	public void setMainFrame(MainFrame mainFrame);
 

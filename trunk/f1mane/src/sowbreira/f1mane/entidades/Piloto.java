@@ -19,6 +19,9 @@ import br.nnpe.Html;
  */
 public class Piloto implements Serializable {
 	private static final long serialVersionUID = 698992658460848522L;
+	public static final String AGRESSIVO = "Agressivo";
+	public static final String NORMAL = "Normal";
+	public static final String LENTO = "Cauteloso";
 	private int id;
 	private int velocidade;
 	private int velocidadeLargada;
@@ -38,7 +41,6 @@ public class Piloto implements Serializable {
 	private transient boolean recebeuBanderada;
 	private boolean box;
 	private boolean agressivo = true;
-	private boolean autoAgressivo;
 	private Carro carro = new Carro();
 	private No noAtual = new No();
 	private int numeroVolta;
@@ -46,6 +48,7 @@ public class Piloto implements Serializable {
 	private transient int porcentagemCombustUltimaParadaBox;
 	private transient Map msgsQueSeRepetemMuito = new HashMap();
 	private List voltas = new ArrayList();
+	private String modoPilotagem;
 	private Volta voltaAtual;
 	private int ciclosVoltaQualificacao;
 	private Volta ultimaVolta;
@@ -639,8 +642,7 @@ public class Piloto implements Serializable {
 											.getNome())));
 							break;
 						case 2:
-							controleJogo.info(Html.silver(Html
-									.bold(getNome())
+							controleJogo.info(Html.silver(Html.bold(getNome())
 									+ " procura não perder contato visual com "
 									+ Html.bold(carroPilotoDaFrente.getPiloto()
 											.getNome())));
@@ -701,7 +703,7 @@ public class Piloto implements Serializable {
 					setAgressivo(false);
 				}
 				carro.setFritouPneuNaUltimaCurvaBaixa(false);
-				if (isAutoAgressivo()) {
+				if (AGRESSIVO.equals(modoPilotagem)) {
 					controleJogo.info(Html.txtRedBold(getNome())
 							+ Html.bold(" guia além de seu limite "
 									+ "travando pneus em curva de baixa"));
@@ -714,11 +716,12 @@ public class Piloto implements Serializable {
 
 			}
 			carro.setFritouPneuNaUltimaCurvaBaixa(false);
-			if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+			if (AGRESSIVO.equals(modoPilotagem)) {
+				setAgressivo(true);
 				return;
 			}
-			if (isAutoAgressivo()) {
-				setAgressivo(true);
+			if (LENTO.equals(modoPilotagem)) {
+				setAgressivo(false);
 				return;
 			}
 		}
@@ -853,6 +856,25 @@ public class Piloto implements Serializable {
 		return porcentagemCombustUltimaParadaBox;
 	}
 
+	public void processaVoltaNovaBox() {
+		if (getVoltaAtual() == null) {
+			Volta volta = new Volta();
+			volta.setCiclosInicio(System.currentTimeMillis());
+			setVoltaAtual(volta);
+
+			return;
+		}
+
+		Volta volta = getVoltaAtual();
+		volta.setCiclosFim(System.currentTimeMillis());
+
+		setUltimaVolta(volta);
+		voltas.add(volta);
+		volta = new Volta();
+		volta.setCiclosInicio(System.currentTimeMillis());
+		setVoltaAtual(volta);
+	}
+
 	public boolean decrementaParadoBox() {
 		if (paradoBox < 0) {
 			paradoBox = 0;
@@ -887,6 +909,8 @@ public class Piloto implements Serializable {
 		carro.setDanificado(null);
 		msgsQueSeRepetemMuito.put(Messagens.BOX_OCUPADO, null);
 		msgsQueSeRepetemMuito.put(Messagens.PILOTO_EM_CAUTELA, null);
+		if (numeroVolta > 0)
+			processaVoltaNovaBox();
 	}
 
 	public String obterTempoVoltaAtual() {
@@ -945,20 +969,20 @@ public class Piloto implements Serializable {
 
 	}
 
-	public boolean isAutoAgressivo() {
-		return autoAgressivo;
-	}
-
-	public void setAutoAgressivo(boolean autoAgressivo) {
-		this.autoAgressivo = autoAgressivo;
-	}
-
 	public String getAsaBox() {
 		return asaBox;
 	}
 
 	public void setAsaBox(String asaBox) {
 		this.asaBox = asaBox;
+	}
+
+	public String getModoPilotagem() {
+		return modoPilotagem;
+	}
+
+	public void setModoPilotagem(String modoPilotagem) {
+		this.modoPilotagem = modoPilotagem;
 	}
 
 }

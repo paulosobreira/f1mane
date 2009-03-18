@@ -723,12 +723,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	@Override
-	public boolean mudarModoAutoAgressivo(boolean sel) {
-		if (pilotoJogador == null)
-			return false;
-		pilotoJogador.setAutoAgressivo(sel);
-
-		return pilotoJogador.isAgressivo();
+	public void mudarModoPilotagem(String modo) {
+		if (pilotoJogador != null)
+			pilotoJogador.setModoPilotagem(modo);
 	}
 
 	@Override

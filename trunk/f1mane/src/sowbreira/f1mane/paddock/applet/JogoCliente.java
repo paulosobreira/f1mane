@@ -600,9 +600,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public boolean mudarModoAutoAgressivo(boolean modo) {
-		monitorJogo.mudarModoAutoAgressivo(modo);
-		return modo;
+	public void mudarModoPilotagem(String modo) {
+		monitorJogo.mudarModoPilotagem(modo);
 	}
 
 	@Override

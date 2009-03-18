@@ -85,12 +85,12 @@ public class GerenciadorVisual {
 	private JPanel infoText = new JPanel();
 	private JTextField nomeJogador;
 	private JButton agressivo;
-	private JCheckBox autoAgressivo;
 	private JButton box;
 	private PainelTabelaResultadoFinal resultadoFinal;
 	private ThreadMudancaClima clima;
 	private int tempoSleep = 30;
 	private JComboBox giro;
+	private JComboBox modoPiloto;
 	private JComboBox comboBoxTipoPneu;
 	private JSpinner spinnerPercentCombust;
 	private Color corPadraoBarra;
@@ -124,7 +124,7 @@ public class GerenciadorVisual {
 		painelPosicoes.getPosicoesTable().addKeyListener(keyListener);
 		pneuBar.addKeyListener(keyListener);
 		agressivo.addKeyListener(keyListener);
-		autoAgressivo.addKeyListener(keyListener);
+		modoPiloto.addKeyListener(keyListener);
 		panelControle.addKeyListener(keyListener);
 		box.addKeyListener(keyListener);
 		comboBoxTipoPneu.addKeyListener(keyListener);
@@ -162,9 +162,10 @@ public class GerenciadorVisual {
 			}
 		});
 
-		autoAgressivo.addActionListener(new ActionListener() {
+		modoPiloto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mudarModoAutoAgressivo(autoAgressivo.isSelected());
+				String modo = (String) modoPiloto.getSelectedItem();
+				mudarModoPilotagem(modo);
 			}
 		});
 
@@ -209,11 +210,11 @@ public class GerenciadorVisual {
 		});
 	}
 
-	protected void mudarModoAutoAgressivo(boolean sel) {
+	protected void mudarModoPilotagem(String modo) {
 		if (controleJogo == null) {
 			return;
 		}
-		boolean modo = controleJogo.mudarModoAutoAgressivo(sel);
+		controleJogo.mudarModoPilotagem(modo);
 
 	}
 
@@ -238,8 +239,16 @@ public class GerenciadorVisual {
 					mudarModoBox();
 				}
 				if (keyCoode == KeyEvent.VK_F5) {
-					autoAgressivo.setSelected(!autoAgressivo.isSelected());
-					mudarModoAutoAgressivo(autoAgressivo.isSelected());
+					modoPiloto.setSelectedItem(Piloto.LENTO);
+					mudarModoPilotagem(Piloto.LENTO);
+				}
+				if (keyCoode == KeyEvent.VK_F6) {
+					modoPiloto.setSelectedItem(Piloto.NORMAL);
+					mudarModoPilotagem(Piloto.NORMAL);
+				}
+				if (keyCoode == KeyEvent.VK_F7) {
+					modoPiloto.setSelectedItem(Piloto.AGRESSIVO);
+					mudarModoPilotagem(Piloto.AGRESSIVO);
 				}
 				if (keyCoode == KeyEvent.VK_ESCAPE) {
 					painelCircuito.setDesenhaPosVelo(!painelCircuito
@@ -553,7 +562,7 @@ public class GerenciadorVisual {
 		infoCorrida = new JLabel("Informações sobre a Corrida");
 		infoPiloto = new JLabel("Informações sobre o Piloto");
 		infoText.add(infoCorrida);
-		//infoText.add(infoPiloto);
+		// infoText.add(infoPiloto);
 		painelInfText.add(infoText, BorderLayout.NORTH);
 	}
 
@@ -621,7 +630,11 @@ public class GerenciadorVisual {
 
 		agressivo = new JButton("Agressivo F4");
 		box = new JButton("Box F12");
-		autoAgressivo = new JCheckBox("Auto Agressivo F5");
+		modoPiloto = new JComboBox();
+		modoPiloto.addItem("Modo Pilotar");
+		modoPiloto.addItem(Piloto.AGRESSIVO);
+		modoPiloto.addItem(Piloto.NORMAL);
+		modoPiloto.addItem(Piloto.LENTO);
 		giro = new JComboBox();
 		giro.addItem("Giro Motor");
 		giro.addItem(Carro.GIRO_NOR);
@@ -654,7 +667,7 @@ public class GerenciadorVisual {
 		constraints.gridheight = 1;
 		infoBoxPanel.add(comboBoxAsa, constraints);
 		panelControle.setLayout(new GridLayout(7, 1));
-		panelControle.add(autoAgressivo);
+		panelControle.add(modoPiloto);
 		panelControle.add(agressivo);
 		panelControle.add(giro);
 		panelControle.add(box);
