@@ -704,14 +704,35 @@ public class Piloto implements Serializable {
 				}
 				carro.setFritouPneuNaUltimaCurvaBaixa(false);
 				if (AGRESSIVO.equals(modoPilotagem)) {
-					controleJogo.info(Html.txtRedBold(getNome())
-							+ Html.bold(" guia além de seu limite "
-									+ "travando pneus em curva de baixa"));
-
+					if (controleJogo.isChovendo()) {
+						controleJogo.info(Html.txtRedBold(getNome())
+								+ Html.bold(" guia além de seu limite "
+										+ "deslizando muito na pista molhada"));
+					} else {
+						if (Math.random() > 0.5) {
+							controleJogo
+									.info(Html.txtRedBold(getNome())
+											+ Html
+													.bold(" guia além de seu limite "
+															+ "travando pneus em curva de baixa"));
+						} else {
+							controleJogo
+									.info(Html.txtRedBold(getNome())
+											+ Html
+													.bold(" guia além de seu limite "
+															+ "perdendo trazeira em curva de baixa"));
+						}
+					}
 				} else {
-					controleJogo.info(Html.bold(getNome())
-							+ Html.verde(" guia com cautela após "
-									+ "travar pneus em curva de baixa"));
+					if (controleJogo.isChovendo()) {
+						controleJogo.info(Html.bold(getNome())
+								+ Html.verde(" guia com cautela após "
+										+ "sair da pista molhada"));
+					} else {
+						controleJogo.info(Html.bold(getNome())
+								+ Html.verde(" guia com cautela após "
+										+ "travar pneus em curva de baixa"));
+					}
 				}
 
 			}
@@ -731,7 +752,7 @@ public class Piloto implements Serializable {
 				agressivo = false;
 				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsQueSeRepetemMuito
 						.get(Messagens.PILOTO_EM_CAUTELA))) {
-					controleJogo.info(Html.orange(getNome()
+					controleJogo.info(Html.superRed(getNome()
 							+ " Parece ter problemas e esta lento."));
 					msgsQueSeRepetemMuito.put(Messagens.PILOTO_EM_CAUTELA,
 							Messagens.PILOTO_EM_CAUTELA);
