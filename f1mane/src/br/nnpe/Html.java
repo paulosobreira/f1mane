@@ -278,6 +278,6 @@ public class Html {
 
 		buffer.append("<font size='").append(superSize).append(
 				"' color='#F53D00'>").append(texto).append("</font>");
-		return buffer.toString();
+		return Html.bold(buffer.toString());
 	}
 }

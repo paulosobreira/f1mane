@@ -490,17 +490,20 @@ public class ControleCorrida {
 					&& (Math.random() > fatorUtrapassagemTemp)) {
 				if ((Math.random() > 0.95)
 						&& (piloto.isJogadorHumano() || piloto.getPosicao() < 9)) {
-					controleJogo.info(Html.bold(retardatario.getNome())
-							+ " não abre para  " + Html.bold(piloto.getNome()));
+					controleJogo.info(Html.azul(Html.bold(retardatario
+							.getNome())
+							+ " não abre facil para  "
+							+ Html.bold(piloto.getNome())));
 				}
 				return 2;
 			} else {
 				if ((Math.random() > 0.95)
 						&& (piloto.isJogadorHumano() || piloto.getPosicao() < 9)) {
-					controleJogo.info(Html.bold(retardatario.getNome())
+					controleJogo.info(Html.azul(Html.bold(retardatario
+							.getNome())
 							+ " Atrapalha Severamente "
 							+ Html.bold(piloto.getNome())
-							+ " e recebe bandeira azul");
+							+ " e recebe bandeira azul"));
 				}
 				boolean estadoPrevio = piloto.isAgressivo();
 				if ((Math.random() > 0.95)) {
