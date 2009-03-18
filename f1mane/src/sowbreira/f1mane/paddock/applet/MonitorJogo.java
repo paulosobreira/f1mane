@@ -421,11 +421,12 @@ public class MonitorJogo implements Runnable {
 
 	}
 
-	public void mudarModoAutoAgressivo(boolean modo) {
+	public void mudarModoPilotagem(String modo) {
 		try {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.MUDAR_MODO_AUTO_AGRESSIVO, sessaoCliente);
+					Comandos.MUDAR_MODO_PILOTAGEM, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
+			clientPaddockPack.setModoPilotagem(modo);
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
 					true);
 		} catch (Exception e) {

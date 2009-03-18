@@ -37,5 +37,5 @@ public class Comandos {
 	public static final String RGISTRAR_LOGIN = "26";
 	public static final String VER_CLASSIFICACAO = "27";
 	public static final String VER_CORRIDAS = "28";
-	public static final String MUDAR_MODO_AUTO_AGRESSIVO = "29";
+	public static final String MUDAR_MODO_PILOTAGEM = "29";
 }

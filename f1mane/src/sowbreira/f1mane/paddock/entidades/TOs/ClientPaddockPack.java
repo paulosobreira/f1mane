@@ -16,6 +16,7 @@ public class ClientPaddockPack implements Serializable {
 	private String texto;
 	private String nomeJogo;
 	private String giroMotor;
+	private String modoPilotagem;
 	private String tpPneuBox;
 	private String asaBox;
 	private int combustBox;
@@ -125,5 +126,13 @@ public class ClientPaddockPack implements Serializable {
 
 	public void setAsaBox(String asaBox) {
 		this.asaBox = asaBox;
+	}
+
+	public String getModoPilotagem() {
+		return modoPilotagem;
+	}
+
+	public void setModoPilotagem(String modoPilotagem) {
+		this.modoPilotagem = modoPilotagem;
 	}
 }

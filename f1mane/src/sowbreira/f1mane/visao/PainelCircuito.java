@@ -224,7 +224,7 @@ public class PainelCircuito extends JPanel {
 		if (Math.random() > .5) {
 			return;
 		}
-		if (porcentComb <= 5) {
+		if (porcentComb <= 7) {
 			g2d.drawImage(fuel.getImage(), 5, 240, null);
 		}
 
@@ -241,7 +241,7 @@ public class PainelCircuito extends JPanel {
 			g2d.fillOval(32, 28, 15, 15);
 			// Roda trazeira
 			g2d.fillOval(128, 28, 15, 15);
-		} else if (pneus <= 5) {
+		} else if (pneus <= 7) {
 			g2d.setColor(yel);
 			// Roda diantera
 			g2d.fillOval(32, 28, 15, 15);
@@ -253,7 +253,7 @@ public class PainelCircuito extends JPanel {
 			g2d.setColor(Color.red);
 			// motor
 			g2d.fillOval(98, 12, 15, 15);
-		} else if (motor <= 5) {
+		} else if (motor <= 7) {
 			g2d.setColor(yel);
 			g2d.fillOval(98, 12, 15, 15);
 		}

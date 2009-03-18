@@ -123,7 +123,7 @@ public class ControlePaddockServidor {
 			return verificaEstadoJogo(clientPaddockPack);
 		} else if (Comandos.MUDAR_MODO_AGRESSIVO.equals(commando)) {
 			return mudarModoAgressivo(clientPaddockPack);
-		} else if (Comandos.MUDAR_MODO_AUTO_AGRESSIVO.equals(commando)) {
+		} else if (Comandos.MUDAR_MODO_PILOTAGEM.equals(commando)) {
 			return mudarModoAutoAgressivo(clientPaddockPack);
 		} else if (Comandos.MUDAR_GIRO_MOTOR.equals(commando)) {
 			return mudarGiroMotor(clientPaddockPack);

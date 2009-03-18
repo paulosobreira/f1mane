@@ -449,7 +449,7 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
 					piloto.getNomeJogador())) {
-				piloto.setAutoAgressivo(!piloto.isAutoAgressivo());
+				piloto.setModoPilotagem(clientPaddockPack.getModoPilotagem());
 				break;
 			}
 		}
