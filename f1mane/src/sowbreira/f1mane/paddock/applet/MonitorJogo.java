@@ -298,8 +298,10 @@ public class MonitorJogo implements Runnable {
 
 			Object ret = controlePaddockCliente.enviarObjeto(dataSend, true);
 			if (ret != null) {
-				//dec dadosParciais
-				DadosParciais dadosParciais = (DadosParciais) ret;
+				// dec dadosParciais
+				String enc = (String) ret;
+				DadosParciais dadosParciais = new DadosParciais();
+				dadosParciais.decode(enc);
 				estado = dadosParciais.estado;
 				jogoCliente.verificaMudancaClima(dadosParciais.clima);
 				dadosJogo.setClima(dadosParciais.clima);

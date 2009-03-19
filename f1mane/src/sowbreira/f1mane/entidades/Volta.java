@@ -19,6 +19,17 @@ public class Volta implements Serializable {
 	private long ciclosFim;
 	private int pilotoId;
 
+	public String encode() {
+		return ciclosInicio + "_" + ciclosFim + "_" + pilotoId;
+	}
+
+	public void decode(String val) {
+		String[] sp = val.split("_");
+		ciclosInicio = Long.parseLong(sp[0]);
+		ciclosFim = Long.parseLong(sp[1]);
+		pilotoId = Integer.parseInt(sp[2]);
+	}
+
 	public int getPiloto() {
 		return pilotoId;
 	}
@@ -58,6 +69,10 @@ public class Volta implements Serializable {
 		long minu = (fullnum / 60000);
 		long seg = ((fullnum - (minu * 60000)) / 1000);
 		long mili = fullnum - ((minu * 60000) + (seg * 1000));
+
+		Volta volta = new Volta();
+		volta.decode("10000_20000_23");
+		System.out.println(volta.obterTempoVoltaFormatado());
 
 		// System.out.prlongln("Min " + minu);
 		// System.out.prlongln("Segs " + seg);

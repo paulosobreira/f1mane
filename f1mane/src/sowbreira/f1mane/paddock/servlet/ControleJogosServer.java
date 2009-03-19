@@ -431,8 +431,8 @@ public class ControleJogosServer {
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();
 		}
-		//enc dadosParciais
-		return dadosParciais;
+		// enc dadosParciais
+		return dadosParciais.encode();
 	}
 
 	public void removerClienteInativo(SessaoCliente sessaoCliente) {
