@@ -1,6 +1,7 @@
 package sowbreira.f1mane.paddock.servlet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sun.corba.se.internal.Interceptors.PIORB;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
@@ -275,13 +277,18 @@ public class ControleJogosServer {
 			posisList.add(posis);
 		}
 		PosisPack pack = new PosisPack();
-		pack.posis = posisList.toArray();
+		Object[] object = posisList.toArray();
+		Posis[] posis = new Posis[object.length];
+		for (int i = 0; i < posis.length; i++) {
+			posis[i] = (Posis) object[i];
+		}
+		pack.posis = posis;
 		if (jogoServidor.isSafetyCarNaPista()) {
 			pack.safetyNoId = ((Integer) jogoServidor.getMapaNosIds().get(
 					jogoServidor.getSafetyCar().getNoAtual())).intValue();
 			pack.safetySair = jogoServidor.getSafetyCar().isVaiProBox();
 		}
-		return pack;
+		return pack.encode();
 	}
 
 	public Object mudarModoAgressivo(ClientPaddockPack clientPaddockPack) {
@@ -424,6 +431,7 @@ public class ControleJogosServer {
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();
 		}
+		//enc dadosParciais
 		return dadosParciais;
 	}
 

@@ -22,7 +22,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private static ControlePaddockServidor controlePaddock;
 	private static ControlePersistencia controlePersistencia;
-	private static boolean debug = false;
+	private static boolean debug = true;
 	private static MonitorAtividade monitorAtividade;
 
 	public void init() throws ServletException {
@@ -81,7 +81,7 @@ public class ServletPaddock extends HttpServlet {
 			// res
 			// .getOutputStream());
 
-			// dumaparDados(ziped);
+			// dumaparDados(bos);
 
 			return;
 		} else {
@@ -99,9 +99,11 @@ public class ServletPaddock extends HttpServlet {
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
 					arrayOutputStream);
 			objectOutputStream.writeObject(escrever);
-			FileOutputStream fileOutputStream = new FileOutputStream(
-					"d:\\temp\\" + escrever.getClass().getSimpleName() + "-"
-							+ System.currentTimeMillis() + ".txt");
+			String basePath = getServletContext().getRealPath("")
+					+ File.separator + "WEB-INF" + File.separator;
+			FileOutputStream fileOutputStream = new FileOutputStream(basePath
+					+ escrever.getClass().getSimpleName() + "-"
+					+ System.currentTimeMillis() + ".txt");
 			fileOutputStream.write(arrayOutputStream.toByteArray());
 			fileOutputStream.close();
 
@@ -110,13 +112,13 @@ public class ServletPaddock extends HttpServlet {
 	}
 
 	public static void main(String[] args) {
-		Enumeration e = System.getProperties().propertyNames();
-		while (e.hasMoreElements()) {
-			String element = (String) e.nextElement();
-			System.out.print(element + " - ");
-			System.out.println(System.getProperties().getProperty(element));
-
-		}
+		// Enumeration e = System.getProperties().propertyNames();
+		// while (e.hasMoreElements()) {
+		// String element = (String) e.nextElement();
+		// System.out.print(element + " - ");
+		// System.out.println(System.getProperties().getProperty(element));
+		//
+		// }
 
 	}
 }

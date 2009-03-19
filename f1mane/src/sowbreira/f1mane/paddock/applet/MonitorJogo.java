@@ -177,7 +177,9 @@ public class MonitorJogo implements Runnable {
 			Object ret = controlePaddockCliente.enviarObjeto(jogoCliente
 					.getNomeJogoCriado(), true);
 			if (ret != null) {
-				PosisPack posisPack = (PosisPack) ret;
+				String enc = (String) ret;
+				PosisPack posisPack = new PosisPack();
+				posisPack.decode(enc);
 				if (posisPack.safetyNoId != 0) {
 					jogoCliente.setSafetyCarBol(true);
 					jogoCliente.atualizaPosSafetyCar(posisPack.safetyNoId,
@@ -296,6 +298,7 @@ public class MonitorJogo implements Runnable {
 
 			Object ret = controlePaddockCliente.enviarObjeto(dataSend, true);
 			if (ret != null) {
+				//dec dadosParciais
 				DadosParciais dadosParciais = (DadosParciais) ret;
 				estado = dadosParciais.estado;
 				jogoCliente.verificaMudancaClima(dadosParciais.clima);
