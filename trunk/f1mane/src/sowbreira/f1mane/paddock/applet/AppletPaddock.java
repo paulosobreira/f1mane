@@ -3,16 +3,10 @@
  */
 package sowbreira.f1mane.paddock.applet;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JApplet;
 import javax.swing.JOptionPane;
-
-import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
  * @author paulo.sobreira

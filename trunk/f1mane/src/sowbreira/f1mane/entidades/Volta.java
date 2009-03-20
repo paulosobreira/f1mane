@@ -20,11 +20,14 @@ public class Volta implements Serializable {
 	private int pilotoId;
 
 	public String encode() {
-		return ciclosInicio + "_" + ciclosFim + "_" + pilotoId;
+		return ciclosInicio + "§" + ciclosFim + "§" + pilotoId;
 	}
 
 	public void decode(String val) {
-		String[] sp = val.split("_");
+		if (val == null || "".equals(val)) {
+			return;
+		}
+		String[] sp = val.split("§");
 		ciclosInicio = Long.parseLong(sp[0]);
 		ciclosFim = Long.parseLong(sp[1]);
 		pilotoId = Integer.parseInt(sp[2]);

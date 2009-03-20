@@ -1,15 +1,11 @@
 package sowbreira.f1mane.paddock.servlet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import com.sun.corba.se.internal.Interceptors.PIORB;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
@@ -407,7 +403,31 @@ public class ControleJogosServer {
 
 			if (args.length > 2 && piloto.getId() == Integer.parseInt(args[2])) {
 				dadosParciais.peselMelhorVolta = piloto.obterVoltaMaisRapida();
-				dadosParciais.peselUltima = piloto.getUltimaVolta();
+				int contVolta = 1;
+				List voltas = piloto.getVoltas();
+				for (int i = voltas.size() - 1; i > -1; i--) {
+					Volta volta = (Volta) voltas.get(i);
+					if (contVolta == 1) {
+						dadosParciais.peselUltima1 = volta;
+					}
+					if (contVolta == 2) {
+						dadosParciais.peselUltima2 = volta;
+					}
+					if (contVolta == 3) {
+						dadosParciais.peselUltima3 = volta;
+					}
+					if (contVolta == 4) {
+						dadosParciais.peselUltima4 = volta;
+					}
+					if (contVolta == 5) {
+						dadosParciais.peselUltima5 = volta;
+					}
+					contVolta++;
+					if (contVolta > 5) {
+						break;
+					}
+
+				}
 				dadosParciais.nomeJogador = piloto.getNomeJogador();
 				dadosParciais.dano = piloto.getCarro().getDanificado();
 				dadosParciais.pselBox = piloto.isBox();
@@ -432,6 +452,7 @@ public class ControleJogosServer {
 			dadosParciais.texto = bufferTexto.consumirTexto();
 		}
 		// enc dadosParciais
+
 		return dadosParciais.encode();
 	}
 

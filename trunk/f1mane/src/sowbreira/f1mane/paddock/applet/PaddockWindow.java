@@ -159,6 +159,8 @@ public class PaddockWindow {
 				msg += "Teste e suporte por: \n"
 						+ " Daniel Souza daniels@globo.com \n"
 						+ " Wendel wendel12345@yahoo.com.br \n"
+						+ " Marquin marcoshenriqueca@gmail.com \n"
+						+ " Luiz Carlos lcarlos.email@gmail.com \n"
 						+ " Alvaru alvaru@secrel.com.br";
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg, "Sobre",
