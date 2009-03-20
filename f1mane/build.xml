@@ -33,7 +33,6 @@
 		<mkdir dir="build" />
 		<copy todir="build" verbose="true">
 			<fileset dir="src">
-
 				<exclude name=".*" />
 				<exclude name=".*/" />
 				<exclude name="**/*.java" />

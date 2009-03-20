@@ -184,8 +184,6 @@ public class PainelTabelaPosicoes extends JPanel {
 				if (p.isJogadorHumano()) {
 					if (!isNullEmpt(p.getNomeJogador())) {
 						nome = p.getNomeJogador();
-					} else {
-						nome = "<=Você";
 					}
 				}
 
@@ -200,8 +198,6 @@ public class PainelTabelaPosicoes extends JPanel {
 				if (p2.isJogadorHumano()) {
 					if (!isNullEmpt(p2.getNomeJogador())) {
 						nome2 = p2.getNomeJogador();
-					} else {
-						nome2 = "<=Você";
 					}
 				}
 				return (rowIndex + 12) + "-" + p2.getNome() + "-"

@@ -320,7 +320,12 @@ public class MonitorJogo implements Runnable {
 					if (pilotoSelecionado != null
 							&& pilotoSelecionado.equals(piloto)) {
 						piloto.setMelhorVolta(dadosParciais.peselMelhorVolta);
-						piloto.setUltimaVolta(dadosParciais.peselUltima);
+						piloto.getVoltas().clear();
+						piloto.getVoltas().add(dadosParciais.peselUltima5);
+						piloto.getVoltas().add(dadosParciais.peselUltima4);
+						piloto.getVoltas().add(dadosParciais.peselUltima3);
+						piloto.getVoltas().add(dadosParciais.peselUltima2);
+						piloto.getVoltas().add(dadosParciais.peselUltima1);
 						piloto.setNomeJogador(dadosParciais.nomeJogador);
 						piloto.setQtdeParadasBox(dadosParciais.pselParadas);
 						if (piloto.getNomeJogador() != null) {

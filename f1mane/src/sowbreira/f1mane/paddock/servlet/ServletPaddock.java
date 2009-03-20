@@ -22,7 +22,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private static ControlePaddockServidor controlePaddock;
 	private static ControlePersistencia controlePersistencia;
-	private static boolean debug = true;
+	private static boolean debug = false;
 	private static MonitorAtividade monitorAtividade;
 
 	public void init() throws ServletException {

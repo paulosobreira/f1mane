@@ -3,14 +3,10 @@
  */
 package sowbreira.f1mane.paddock.servlet;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
-import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
@@ -266,7 +262,9 @@ public class ControlePaddockServidor {
 				|| "Ia".equals(clientPaddockPack.getNomeJogador())
 				|| "ia".equals(clientPaddockPack.getNomeJogador())
 				|| "iA".equals(clientPaddockPack.getNomeJogador())
-				|| "".equals(clientPaddockPack.getNomeJogador())) {
+				|| "".equals(clientPaddockPack.getNomeJogador())
+				|| clientPaddockPack.getNomeJogador().contains("@")
+				|| clientPaddockPack.getNomeJogador().contains("§")) {
 			return null;
 		}
 		SessaoCliente cliente = null;
