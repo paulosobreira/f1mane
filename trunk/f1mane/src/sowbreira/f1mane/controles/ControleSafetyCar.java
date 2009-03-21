@@ -58,7 +58,7 @@ public class ControleSafetyCar {
 		}
 		if (safetyCar.getNoAtual().isNoEntradaBox() && safetyCar.isVaiProBox()) {
 			controleJogo.infoPrioritaria(Html
-					.saftyCar("Safety Car no Box. Corrida re-iniciada."));
+					.saftyCar("Safety Car no Box. Corrida re iniciada."));
 			safetyCar.setNaPista(false);
 			safetyCar.setSaiuVolta(controleJogo.getNumVoltaAtual());
 		}

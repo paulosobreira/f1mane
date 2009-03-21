@@ -18,9 +18,17 @@ public class Posis implements Serializable {
 
 	public void decode(String val) {
 		String[] sp = val.split("-");
-		idPiloto = Integer.parseInt(sp[0]);
-		idNo = Integer.parseInt(sp[1]);
+		idPiloto = parseInt(sp[0]);
+		idNo = parseInt(sp[1]);
 		agressivo = "S".equals(sp[2]);
 		humano = "S".equals(sp[3]);
+	}
+
+	private int parseInt(String string) {
+		try {
+			return Integer.parseInt(string);
+		} catch (Exception e) {
+		}
+		return 0;
 	}
 }

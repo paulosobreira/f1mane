@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -21,7 +20,6 @@ import javax.swing.JPanel;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
@@ -456,6 +454,12 @@ public class PainelCircuito extends JPanel {
 	private void desenharSafetyCar(Graphics2D g2d) {
 		if (controleJogo.isSafetyCarNaPista()) {
 			SafetyCar safetyCar = controleJogo.getSafetyCar();
+			if (safetyCar == null) {
+				return;
+			}
+			if (safetyCar.getNoAtual() == null) {
+				return;
+			}
 			g2d.setColor(Color.LIGHT_GRAY);
 			g2d.fillOval(safetyCar.getNoAtual().getX() - 2, safetyCar
 					.getNoAtual().getY() - 2, 8, 8);
@@ -469,8 +473,8 @@ public class PainelCircuito extends JPanel {
 				g2d.setColor(Color.BLACK);
 			g2d.drawOval(safetyCar.getNoAtual().getX() - 2, safetyCar
 					.getNoAtual().getY() - 2, 8, 8);
-		}
 
+		}
 	}
 
 	private void desenharClima(Graphics2D g2d) {

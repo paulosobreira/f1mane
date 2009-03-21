@@ -28,9 +28,25 @@ public class Volta implements Serializable {
 			return;
 		}
 		String[] sp = val.split("§");
-		ciclosInicio = Long.parseLong(sp[0]);
-		ciclosFim = Long.parseLong(sp[1]);
-		pilotoId = Integer.parseInt(sp[2]);
+		ciclosInicio = parseLong(sp[0]);
+		ciclosFim = parseLong(sp[1]);
+		pilotoId = parseInt(sp[2]);
+	}
+
+	private long parseLong(String string) {
+		try {
+			return Long.parseLong(string);
+		} catch (Exception e) {
+		}
+		return 0;
+	}
+
+	private int parseInt(String string) {
+		try {
+			return Integer.parseInt(string);
+		} catch (Exception e) {
+		}
+		return 0;
 	}
 
 	public int getPiloto() {
