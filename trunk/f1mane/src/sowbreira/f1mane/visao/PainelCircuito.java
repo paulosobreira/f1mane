@@ -69,8 +69,8 @@ public class PainelCircuito extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Pontos Editor :" + e.getX() + " - "
-						+ e.getY());
+				// System.out.println("Pontos Editor :" + e.getX() + " - "
+				// + e.getY());
 				super.mouseClicked(e);
 
 			}
@@ -121,7 +121,8 @@ public class PainelCircuito extends JPanel {
 
 			for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
 				Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-				if (piloto.getCarro().isRecolhido()) {
+				if (piloto.getCarro().isRecolhido()
+						|| piloto.getNoAtual() == null) {
 					continue;
 				}
 
@@ -214,7 +215,8 @@ public class PainelCircuito extends JPanel {
 		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePeneus();
 		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
 		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
-		if (dano == null && motor > 5 && porcentComb > 5 && pneus > 5)
+		if ((dano == null || "".equals(dano)) && motor > 10 && porcentComb > 10
+				&& pneus > 10)
 			return;
 		BufferedImage carroimg = CarregadorRecursos
 				.carregaImgCarro(pilotoSelecionado.getCarro().getImg());
