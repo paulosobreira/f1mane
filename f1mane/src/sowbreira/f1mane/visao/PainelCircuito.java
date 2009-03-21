@@ -582,6 +582,12 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaNomePilotoSelecionado(Piloto ps, Graphics2D g2d) {
+		if (ps == null)
+			return;
+		if (ps.getNoAtual() == null)
+			return;
+		if (ps.getCarro() == null)
+			return;
 		String txt1 = ps.getNome() + "-" + ps.getCarro().getNome();
 
 		String dano = ((ps.getCarro().getDanificado() == null) ? "" : ps
