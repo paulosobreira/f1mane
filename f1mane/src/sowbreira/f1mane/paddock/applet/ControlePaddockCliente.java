@@ -96,27 +96,38 @@ public class ControlePaddockCliente {
 			String host = url.getHost();
 			int port = url.getPort();
 			URL dataUrl;
-
+			long envioT = System.currentTimeMillis();
+			Object retorno = null;
 			dataUrl = new URL(protocol, host, port, urlSufix);
 
 			URLConnection connection = dataUrl.openConnection();
-			connection.setUseCaches(false);
-			connection.setDoOutput(true);
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			ObjectOutputStream stream = new ObjectOutputStream(
-					byteArrayOutputStream);
-			long envioT = System.currentTimeMillis();
-			stream.writeObject(enviar);
-			stream.flush();
-			connection.setRequestProperty("Content-Length", String
-					.valueOf(byteArrayOutputStream.size()));
-			connection.setRequestProperty("Content-Length",
-					"application/x-www-form-urlencoded");
-			connection.getOutputStream().write(
-					byteArrayOutputStream.toByteArray());
-			ObjectInputStream ois = new ObjectInputStream(connection
-					.getInputStream());
-			Object retorno = ois.readObject();
+
+			try {
+				connection.setUseCaches(false);
+				connection.setDoOutput(true);
+
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				ObjectOutputStream stream = new ObjectOutputStream(
+						byteArrayOutputStream);
+				if (latenciaReal > 0 && timeout
+						&& latenciaReal > latenciaMinima)
+					connection.setReadTimeout(latenciaReal);
+				stream.writeObject(enviar);
+				stream.flush();
+				connection.setRequestProperty("Content-Length", String
+						.valueOf(byteArrayOutputStream.size()));
+				connection.setRequestProperty("Content-Length",
+						"application/x-www-form-urlencoded");
+				connection.getOutputStream().write(
+						byteArrayOutputStream.toByteArray());
+				ObjectInputStream ois = new ObjectInputStream(connection
+						.getInputStream());
+				retorno = ois.readObject();
+			} catch (java.net.SocketTimeoutException e) {
+				return null;
+			} catch (java.io.IOException e) {
+				return null;
+			}
 			// Object retorno = ZipUtil.descompactarObjeto(connection
 			// .getInputStream());
 			long retornoT = System.currentTimeMillis();
@@ -198,6 +209,9 @@ public class ControlePaddockCliente {
 				Comandos.ATUALIZAR_VISAO, sessaoCliente);
 
 		Object ret = enviarObjeto(clientPaddockPack);
+		if (ret == null) {
+			return;
+		}
 		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
 
 		DadosPaddock dadosPaddock = srvPaddockPack.getDadosPaddock();
@@ -221,6 +235,9 @@ public class ControlePaddockCliente {
 		clientPaddockPack.setTexto(text);
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (ret == null) {
+			JOptionPane.showMessageDialog(panel,
+					"Problemas na rede. Tente novamente", "Erro",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
@@ -247,6 +264,12 @@ public class ControlePaddockCliente {
 			}
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			Object ret = enviarObjeto(clientPaddockPack);
+			if (ret == null) {
+				JOptionPane.showMessageDialog(panel,
+						"Problemas na rede. Tente novamente", "Erro",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
 			jogoCliente = new JogoCliente(dadosCriarJogo.getTemporada());
 			jogoCliente.setMainFrame(mainFrame);
@@ -314,6 +337,9 @@ public class ControlePaddockCliente {
 		clientPaddockPack.setNomeJogo((String) object);
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (ret == null) {
+			JOptionPane.showMessageDialog(panel,
+					"Problemas na rede. Tente novamente", "Erro",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -413,6 +439,9 @@ public class ControlePaddockCliente {
 				Comandos.VER_CLASSIFICACAO, sessaoCliente);
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (ret == null) {
+			JOptionPane.showMessageDialog(panel,
+					"Problemas na rede. Tente novamente", "Erro",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;

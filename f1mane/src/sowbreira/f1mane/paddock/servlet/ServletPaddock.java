@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -70,18 +69,23 @@ public class ServletPaddock extends HttpServlet {
 			}
 
 			Object escrever = controlePaddock.processarObjetoRecebido(object);
+			try {
+				dumaparDados(escrever);
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(bos);
+				oos.writeObject(escrever);
+				oos.flush();
+				res.getOutputStream().write(bos.toByteArray());
+				// ByteArrayOutputStream ziped =
+				// ZipUtil.compactarObjeto(escrever,
+				// res
+				// .getOutputStream());
 
-			dumaparDados(escrever);
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(bos);
-			oos.writeObject(escrever);
-			oos.flush();
-			res.getOutputStream().write(bos.toByteArray());
-			// ByteArrayOutputStream ziped = ZipUtil.compactarObjeto(escrever,
-			// res
-			// .getOutputStream());
+				// dumaparDados(bos);
+			} catch (java.net.SocketTimeoutException e) {
+			} catch (java.io.IOException e) {
 
-			// dumaparDados(bos);
+			}
 
 			return;
 		} else {

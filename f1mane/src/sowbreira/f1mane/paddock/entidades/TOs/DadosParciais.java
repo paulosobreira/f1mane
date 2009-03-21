@@ -42,18 +42,18 @@ public class DadosParciais implements Serializable {
 
 	public void decode(String val) {
 		String[] sp = val.split("@");
-		voltaAtual = Integer.parseInt(sp[0]);
-		pselCombust = Integer.parseInt(sp[1]);
+		voltaAtual = parseInt(sp[0]);
+		pselCombust = parseInt(sp[1]);
 		pselTpPneus = decodeTpPneu(sp[2]);
-		pselCombustBox = Integer.parseInt(sp[3]);
+		pselCombustBox = parseInt(sp[3]);
 		pselTpPneusBox = decodeTpPneu(sp[4]);
-		pselVelocidade = Integer.parseInt(sp[5]);
-		pselPneus = Integer.parseInt(sp[6]);
-		pselMotor = Integer.parseInt(sp[7]);
-		pselParadas = Integer.parseInt(sp[8]);
-		pselGiro = Integer.parseInt(sp[9]);
+		pselVelocidade = parseInt(sp[5]);
+		pselPneus = parseInt(sp[6]);
+		pselMotor = parseInt(sp[7]);
+		pselParadas = parseInt(sp[8]);
+		pselGiro = parseInt(sp[9]);
 		pselBox = "S".equals(sp[10]);
-		pselMaxPneus = Integer.parseInt(sp[11]);
+		pselMaxPneus = parseInt(sp[11]);
 		clima = decodeClima(sp[12]);
 		estado = sp[13];
 		dano = decodeDano(sp[14]);
@@ -77,8 +77,16 @@ public class DadosParciais implements Serializable {
 		peselUltima5.decode(sp[25]);
 		String[] pts = sp[26].split("§");
 		for (int i = 0; i < pts.length; i++) {
-			pilotsPonts[i] = Integer.parseInt(pts[i]);
+			pilotsPonts[i] = parseInt(pts[i]);
 		}
+	}
+
+	private int parseInt(String string) {
+		try {
+			return Integer.parseInt(string);
+		} catch (Exception e) {
+		}
+		return 0;
 	}
 
 	private String decodeAsa(String pselAsa) {
@@ -113,7 +121,7 @@ public class DadosParciais implements Serializable {
 		if ("S".equals(dano)) {
 			return Carro.PANE_SECA;
 		}
-		return null;
+		return "";
 	}
 
 	private String decodeClima(String clima) {
@@ -129,7 +137,7 @@ public class DadosParciais implements Serializable {
 		if ("A".equals(clima)) {
 			return Clima.ALEATORIO;
 		}
-		return null;
+		return "";
 	}
 
 	private String decodeTpPneu(String val) {
@@ -142,7 +150,7 @@ public class DadosParciais implements Serializable {
 		if ("M".equals(val)) {
 			return Carro.TIPO_PNEU_MOLE;
 		}
-		return null;
+		return "";
 	}
 
 	public String encode() {

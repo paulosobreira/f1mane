@@ -561,6 +561,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public void atualizaPosSafetyCar(int safetyId, boolean safetySair) {
 		No no = (No) mapaIdsNos.get(new Integer(safetyId));
+		safetyCar = new SafetyCar();
 		safetyCar.setNoAtual(no);
 		safetyCar.setVaiProBox(safetySair);
 	}
