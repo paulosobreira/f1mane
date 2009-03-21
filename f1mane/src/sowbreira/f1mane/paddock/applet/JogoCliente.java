@@ -344,7 +344,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public boolean isSafetyCarVaiBox() {
-		// TODO Auto-generated method stub
+		if (safetyCar != null)
+			return safetyCar.isVaiProBox();
 		return false;
 	}
 

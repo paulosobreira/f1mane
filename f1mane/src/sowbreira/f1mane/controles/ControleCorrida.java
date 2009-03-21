@@ -255,10 +255,9 @@ public class ControleCorrida {
 			}
 		} else {
 			if ((Math.random() > fatorAcidente) && estadoPrevioAgressivo) {
-				if (true) {
-					// if (Math.random() > 0.6
-					// && Math.random() < controleJogo.getNiveljogo()
-					// && !controleSafetyCar.safetyCarUltimas3voltas()) {
+				if (Math.random() > 0.6
+						&& Math.random() < controleJogo.getNiveljogo()
+						&& !controleSafetyCar.safetyCarUltimas3voltas()) {
 					piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 					controleJogo.infoPrioritaria(Html.superDarkRed(piloto
 							.getNome()
