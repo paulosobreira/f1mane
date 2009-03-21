@@ -215,7 +215,7 @@ public class PainelCircuito extends JPanel {
 		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePeneus();
 		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
 		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
-		if ((dano == null || !"".equals(dano)) && motor > 10 && porcentComb > 10
+		if ((dano == null || "".equals(dano)) && motor > 10 && porcentComb > 10
 				&& pneus > 10)
 			return;
 		BufferedImage carroimg = CarregadorRecursos
