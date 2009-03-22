@@ -530,9 +530,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			if (piloto.getId() == posis.idPiloto) {
 				piloto.setAgressivo(posis.agressivo);
 				piloto.setJogadorHumano(posis.humano);
-				if (posis.idNo == -1) {
-					piloto.setDesqualificado(true);
-				} else {
+				if (posis.idNo >= -1) {
 					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
 					piloto.setNoAtual(no);
 				}

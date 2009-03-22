@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.ExplicitGroup;
+
 import br.nnpe.Html;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -483,7 +485,6 @@ public class Carro implements Serializable {
 		if (danificado != null) {
 			piloto.setBox(true);
 		}
-
 		this.danificado = danificado;
 	}
 

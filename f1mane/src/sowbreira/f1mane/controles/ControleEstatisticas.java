@@ -3,12 +3,10 @@ package sowbreira.f1mane.controles;
 import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-
-import br.nnpe.Html;
 
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
+import br.nnpe.Html;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 13:24:54
@@ -19,7 +17,7 @@ public class ControleEstatisticas {
 	private DecimalFormat milesismos = new DecimalFormat(".000");
 	private static DecimalFormat mil = new DecimalFormat("000");
 	private static DecimalFormat dez = new DecimalFormat("00");
-	private List bufferInfo = new LinkedList();
+	private LinkedList bufferInfo = new LinkedList();
 	private boolean consumidorAtivo = true;
 	private Thread infoConsumer;
 
@@ -199,7 +197,7 @@ public class ControleEstatisticas {
 				}
 
 				if (prioritaria) {
-					bufferInfo.add(0, info);
+					bufferInfo.addFirst(info);
 				} else {
 					bufferInfo.add(info);
 				}

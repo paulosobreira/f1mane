@@ -61,6 +61,9 @@ public class PainelTabelaResultadoFinal extends JPanel {
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Piloto p = pilotos[rowIndex];
+			if (p == null) {
+				return "";
+			}
 
 			switch (columnIndex) {
 			case 0:

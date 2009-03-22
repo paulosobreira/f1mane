@@ -58,6 +58,10 @@ public class PainelTabelaPosicoes extends JPanel {
 				if (splits.length < 1) {
 					return;
 				}
+				if (splits[0] == null || "".equals(splits[0])) {
+					super.setValue("");
+					return;
+				}
 				int pos = Integer.parseInt(splits[0]) - 1;
 				if ((pos < 0 || pos > 21)) {
 					return;
@@ -106,7 +110,8 @@ public class PainelTabelaPosicoes extends JPanel {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				for (int j = 0; j < model.getColumnCount(); j++) {
 					Object object = model.getValueAt(i, j);
-
+					if (object == null || "".equals(object))
+						continue;
 					if (object instanceof String) {
 						String nomePiloto = ((String) object).split("-")[1];
 
@@ -141,6 +146,9 @@ public class PainelTabelaPosicoes extends JPanel {
 
 			object = ((TableModel) posicoesTable.getModel()).getValueAt(row,
 					col);
+			if (object == null || "".equals(object)) {
+				return null;
+			}
 		}
 
 		if (!(object instanceof String)) {
@@ -179,6 +187,9 @@ public class PainelTabelaPosicoes extends JPanel {
 			case 0:
 
 				Piloto p = pilotosId[rowIndex];
+				if (p == null) {
+					return "";
+				}
 
 				String nome = "";
 				if (p.isJogadorHumano()) {
@@ -193,6 +204,9 @@ public class PainelTabelaPosicoes extends JPanel {
 			case 1:
 
 				Piloto p2 = pilotosId[rowIndex + 11];
+				if (p2 == null) {
+					return "";
+				}
 
 				String nome2 = "";
 				if (p2.isJogadorHumano()) {

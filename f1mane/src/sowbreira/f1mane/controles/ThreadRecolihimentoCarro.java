@@ -38,9 +38,10 @@ public class ThreadRecolihimentoCarro extends Thread {
 		}
 		piloto.getCarro().setRecolhido(true);
 		safetyCar.setVaiProBox(true);
-		controleJogo.infoPrioritaria(Html.orange(piloto.getNome()
-				+ " Teve seu carro recolhido da pista."));
-		controleJogo.infoPrioritaria(Html
-				.saftyCar("Safetycar vai para o Box nesta Volta."));
+		controleJogo
+				.infoPrioritaria(Html
+						.orange(piloto.getNome()
+								+ " Teve seu carro recolhido da pista. Safetycar vai para o Box nesta Volta."));
+
 	}
 }

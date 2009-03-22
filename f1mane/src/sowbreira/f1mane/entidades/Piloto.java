@@ -458,7 +458,7 @@ public class Piloto implements Serializable {
 				&& (pneus > 12)) {
 			if (!Messagens.BOX_OCUPADO.equals(msgsQueSeRepetemMuito
 					.get(Messagens.BOX_OCUPADO))) {
-				if (isJogadorHumano() || getPosicao() < 4) {
+				if (isJogadorHumano()) {
 					controleJogo.infoPrioritaria(Html.orange("Box para "
 							+ Html.bold(getNome())
 							+ " : Sua parada podera ser na proxima volta."));

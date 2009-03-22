@@ -262,13 +262,8 @@ public class ControleJogosServer {
 			Posis posis = new Posis();
 			posis.idPiloto = piloto.getId();
 			posis.agressivo = piloto.isAgressivo();
-			if (piloto.isDesqualificado()) {
-				posis.idNo = -1;
-			} else {
-				posis.idNo = ((Integer) jogoServidor.getMapaNosIds().get(
-						piloto.getNoAtual())).intValue();
-
-			}
+			posis.idNo = ((Integer) jogoServidor.getMapaNosIds().get(
+					piloto.getNoAtual())).intValue();
 			posis.humano = piloto.isJogadorHumano();
 			posisList.add(posis);
 		}
