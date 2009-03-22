@@ -292,6 +292,9 @@ public class ControleCorrida {
 	}
 
 	private void ajusteUltrapassagem(Piloto perdedor, Piloto ganhador) {
+		if (perdedor.isDesqualificado() || ganhador.isDesqualificado()) {
+			return;
+		}
 		if (!ganhador.isJogadorHumano())
 			ganhador.setAgressivo(true);
 		ganhador.setCiclosDesconcentrado(0);

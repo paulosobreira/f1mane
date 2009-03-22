@@ -30,6 +30,7 @@ public class FormEntradaSimples extends JPanel {
 		add(infoLabel, BorderLayout.SOUTH);
 		setSize(300, 300);
 		setVisible(true);
+		nomeLabel.requestFocus();
 	}
 
 	private void gerarRegistrar() {

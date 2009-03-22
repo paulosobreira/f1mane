@@ -218,16 +218,14 @@ public class ControleBox {
 		piloto.getCarro().ajusteMotorParadaBox();
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
 		piloto.setSaiuDoBoxMilis(0);
-		if (piloto.isJogadorHumano() || piloto.getPosicao() < 4) {
-			controleJogo
-					.infoPrioritaria(Html.superOrange(piloto.getNome()
-							+ " para no Box na volta "
-							+ piloto.getNumeroVolta() + "."));
+		if (piloto.isJogadorHumano()) {
+			controleJogo.infoPrioritaria(Html.superOrange(piloto.getNome()
+					+ " para no Box na volta "
+					+ controleJogo.getNumVoltaAtual() + "."));
 		} else if (piloto.getPosicao() < 9) {
-			controleJogo
-					.info(Html.superOrange(piloto.getNome()
-							+ " para no Box na volta "
-							+ piloto.getNumeroVolta() + "."));
+			controleJogo.info(Html.superOrange(piloto.getNome()
+					+ " para no Box na volta "
+					+ controleJogo.getNumVoltaAtual() + "."));
 		}
 
 	}
@@ -240,7 +238,7 @@ public class ControleBox {
 				+ ControleEstatisticas.formatarTempo(diff) + " Combustivel : "
 				+ piloto.getPorcentagemCombustUltimaParadaBox() + "% "
 				+ piloto.getCarro().getTipoPneu();
-		if (piloto.isJogadorHumano() || piloto.getPosicao() < 4) {
+		if (piloto.isJogadorHumano()) {
 			controleJogo.infoPrioritaria(Html.superOrange(info));
 		} else if (piloto.getPosicao() < 9) {
 			controleJogo.info(Html.superOrange(info));

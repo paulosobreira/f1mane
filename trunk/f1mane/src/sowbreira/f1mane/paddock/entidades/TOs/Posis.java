@@ -12,12 +12,12 @@ public class Posis implements Serializable {
 	public boolean humano;
 
 	public String encode() {
-		return idPiloto + "-" + idNo + "-" + (agressivo ? "S" : "N") + "-"
+		return idPiloto + "!" + idNo + "!" + (agressivo ? "S" : "N") + "!"
 				+ (humano ? "S" : "N");
 	}
 
 	public void decode(String val) {
-		String[] sp = val.split("-");
+		String[] sp = val.split("!");
 		idPiloto = parseInt(sp[0]);
 		idNo = parseInt(sp[1]);
 		agressivo = "S".equals(sp[2]);
