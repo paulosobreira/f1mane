@@ -156,11 +156,9 @@ public class ControleEstatisticas {
 		bufferInfo.clear();
 		infoConsumer = new Thread(new Runnable() {
 			public void run() {
-				controleJogo.adicionarInfoDireto(Html
-						.azul("<b> Distancia da corrida "
-								+ controleJogo.totalVoltasCorrida()
-								+ " Voltas. </b>"));
-
+				controleJogo.adicionarInfoDireto(Html.azul(ControleIdiomas
+						.obterMsg("000", new Object[] { controleJogo
+								.totalVoltasCorrida() })));
 				try {
 					while (consumidorAtivo) {
 						controleJogo.atulizaTabelaPosicoes();

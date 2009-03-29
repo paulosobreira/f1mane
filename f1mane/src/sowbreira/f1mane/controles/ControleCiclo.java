@@ -52,9 +52,8 @@ public class ControleCiclo extends Thread {
 		try {
 			if (ControleJogoLocal.VALENDO) {
 				controleJogo.desenhaQualificacao();
-				controleJogo
-						.infoPrioritaria(Html
-								.superGreen("A corrida inicia quando as 5 luzes apagarem"));
+				controleJogo.infoPrioritaria(Html.superGreen(ControleIdiomas
+						.obterMsg("001")));
 				Thread.sleep(5000);
 				controleJogo.apagarLuz();
 				Thread.sleep(2000);

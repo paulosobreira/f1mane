@@ -1,12 +1,13 @@
 package sowbreira.f1mane.paddock.entidades;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * @author Paulo Sobreira Criado em 18/08/2007 as 23:56:08
  */
-public class BufferTexto {
+public class BufferTexto implements Serializable {
 
 	private LinkedList bufferinfo = new LinkedList();
 

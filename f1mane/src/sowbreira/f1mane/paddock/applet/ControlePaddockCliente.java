@@ -2,11 +2,11 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
 import java.awt.Panel;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -15,10 +15,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
@@ -27,6 +27,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.servlet.ServletPaddock;
 
 /**
  * @author paulo.sobreira
@@ -120,16 +121,19 @@ public class ControlePaddockCliente {
 						"application/x-www-form-urlencoded");
 				connection.getOutputStream().write(
 						byteArrayOutputStream.toByteArray());
-				ObjectInputStream ois = new ObjectInputStream(connection
-						.getInputStream());
-				retorno = ois.readObject();
+				if (ServletPaddock.modoZip) {
+					retorno = ZipUtil.descompactarObjeto(connection
+							.getInputStream());
+				} else {
+					ObjectInputStream ois = new ObjectInputStream(connection
+							.getInputStream());
+					retorno = ois.readObject();
+				}
 			} catch (java.net.SocketTimeoutException e) {
 				return null;
 			} catch (java.io.IOException e) {
 				return null;
 			}
-			// Object retorno = ZipUtil.descompactarObjeto(connection
-			// .getInputStream());
 			long retornoT = System.currentTimeMillis();
 			if (!timeout) {
 				atualizarLantenciaMinima(envioT, retornoT);

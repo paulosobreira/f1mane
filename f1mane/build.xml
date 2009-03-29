@@ -55,10 +55,14 @@
 		<delete file="${env.TOMCAT_HOME}/webapps/paddock/f1mane.jar" />
 		<copy file="f1mane.jar" todir="${env.TOMCAT_HOME}/webapps/paddock" />
 		<copy file="f1mane.jar" todir="${env.TOMCAT_HOME}/webapps/paddock/WEB-INF/lib" />
+		<delete file="paddock/WEB-INF/lib/f1mane.jar" />
+		<delete file="webapps/paddock/f1mane.jar" />
+		<copy file="f1mane.jar" todir="paddock" />
+		<copy file="f1mane.jar" todir="paddock/WEB-INF/lib" />
 	</target>
 	<target name="criarWar" depends="">
-		<war compress="true" destfile="${env.TOMCAT_HOME}/webapps/paddock.war" webxml="${env.TOMCAT_HOME}/webapps/paddock/WEB-INF/web.xml">
-			<fileset dir="${env.TOMCAT_HOME}/webapps/paddock">
+		<war compress="true" destfile="${env.TOMCAT_HOME}/webapps/paddock.war" webxml="paddock/WEB-INF/web.xml">
+			<fileset dir="paddock">
 				<exclude name="WEB-INF/web.xml" />
 				<exclude name="WEB-INF/src/**" />
 			</fileset>
