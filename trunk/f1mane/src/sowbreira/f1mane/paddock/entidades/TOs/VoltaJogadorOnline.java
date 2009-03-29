@@ -1,9 +1,11 @@
 package sowbreira.f1mane.paddock.entidades.TOs;
 
+import java.io.Serializable;
+
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:58:57
  */
-public class VoltaJogadorOnline {
+public class VoltaJogadorOnline implements Serializable {
 
 	private String jogador;
 	private String piloto;

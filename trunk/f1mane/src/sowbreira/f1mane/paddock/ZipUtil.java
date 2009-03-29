@@ -14,6 +14,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import com.sun.net.ssl.internal.ssl.Debug;
+
 /**
  * @author paulo.sobreira
  * 
@@ -48,7 +50,8 @@ public class ZipUtil {
 		return null;
 	}
 
-	public static ByteArrayOutputStream compactarObjeto(Object aCompact, OutputStream stream) {
+	public static ByteArrayOutputStream compactarObjeto(boolean debug,
+			Object aCompact, OutputStream stream) {
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -61,8 +64,16 @@ public class ZipUtil {
 			zipOutputStream.write(bos.toByteArray());
 			zipOutputStream.closeEntry();
 			zipOutputStream.close();
-			return bos;
-
+			if (debug) {
+				ByteArrayOutputStream bosDump = new ByteArrayOutputStream();
+				zipOutputStream = new ZipOutputStream(bosDump);
+				entry = new ZipEntry("root");
+				zipOutputStream.putNextEntry(entry);
+				zipOutputStream.write(bos.toByteArray());
+				zipOutputStream.closeEntry();
+				zipOutputStream.close();
+				return bosDump;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

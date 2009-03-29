@@ -1,12 +1,13 @@
 package sowbreira.f1mane.paddock.entidades.persistencia;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 15:27:53
  */
-public class JogadorDadosSrv {
+public class JogadorDadosSrv implements Serializable {
 
 	private String nome;
 	private String senha;

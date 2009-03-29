@@ -219,13 +219,19 @@ public class ControleBox {
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
 		piloto.setSaiuDoBoxMilis(0);
 		if (piloto.isJogadorHumano()) {
-			controleJogo.infoPrioritaria(Html.superOrange(piloto.getNome()
-					+ " para no Box na volta "
-					+ controleJogo.getNumVoltaAtual() + "."));
+			controleJogo
+					.infoPrioritaria(Html.superOrange(ControleIdiomas.obterMsg(
+							"002", new String[] {
+									piloto.getNome(),
+									String.valueOf(controleJogo
+											.getNumVoltaAtual()) })));
 		} else if (piloto.getPosicao() < 9) {
-			controleJogo.info(Html.superOrange(piloto.getNome()
-					+ " para no Box na volta "
-					+ controleJogo.getNumVoltaAtual() + "."));
+			controleJogo
+					.info(Html.superOrange(ControleIdiomas.obterMsg("002",
+							new String[] {
+									piloto.getNome(),
+									String.valueOf(controleJogo
+											.getNumVoltaAtual()) })));
 		}
 
 	}
@@ -234,10 +240,11 @@ public class ControleBox {
 		piloto.setNoAtual(saidaBox);
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
-		String info = piloto.getNome() + " Sai do Box.Tempo : "
-				+ ControleEstatisticas.formatarTempo(diff) + " Combustivel : "
-				+ piloto.getPorcentagemCombustUltimaParadaBox() + "% "
-				+ piloto.getCarro().getTipoPneu();
+		String[] strings = new String[] { piloto.getNome(),
+				ControleEstatisticas.formatarTempo(diff),
+				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox()),
+				piloto.getCarro().getTipoPneu() };
+		String info = ControleIdiomas.obterMsg("003", strings);
 		if (piloto.isJogadorHumano()) {
 			controleJogo.infoPrioritaria(Html.superOrange(info));
 		} else if (piloto.getPosicao() < 9) {
