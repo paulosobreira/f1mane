@@ -19,9 +19,9 @@ import br.nnpe.Html;
  */
 public class Piloto implements Serializable {
 	private static final long serialVersionUID = 698992658460848522L;
-	public static final String AGRESSIVO = "Agressivo";
-	public static final String NORMAL = "Normal";
-	public static final String LENTO = "Cauteloso";
+	public static final String AGRESSIVO = "AGRESSIVO";
+	public static final String NORMAL = "NORMAL";
+	public static final String LENTO = "LENTO";
 	private int id;
 	private int velocidade;
 	private int velocidadeLargada;

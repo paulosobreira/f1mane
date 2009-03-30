@@ -26,7 +26,7 @@ public class ServletPaddock extends HttpServlet {
 	private static ControlePaddockServidor controlePaddock;
 	private static ControlePersistencia controlePersistencia;
 	private static boolean debug = false;
-	public static boolean modoZip = true;
+	public static boolean modoZip = false;
 	private static MonitorAtividade monitorAtividade;
 
 	public void init() throws ServletException {

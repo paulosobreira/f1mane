@@ -17,6 +17,8 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import br.nnpe.Lang;
+
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
@@ -150,9 +152,11 @@ public class PainelCircuito extends JPanel {
 			g2d.setColor(Color.black);
 			int ptoOri = getWidth() - 100;
 
-			g2d.drawString(pilotoSelecionado.getCarro().getTipoPneu(), ptoOri,
-					15);
-			g2d.drawString(pilotoSelecionado.getCarro().getAsa(), ptoOri, 30);
+			g2d.drawString(
+					Lang.msg(pilotoSelecionado.getCarro().getTipoPneu()),
+					ptoOri, 15);
+			g2d.drawString(Lang.msg(pilotoSelecionado.getCarro().getAsa()),
+					ptoOri, 30);
 			g2d.drawString("Paradas :" + pilotoSelecionado.getQtdeParadasBox(),
 					ptoOri, 45);
 			if (pilotoSelecionado.isBox()) {
@@ -590,10 +594,11 @@ public class PainelCircuito extends JPanel {
 			return;
 		String txt1 = ps.getNome() + "-" + ps.getCarro().getNome();
 
-		String dano = ((ps.getCarro().getDanificado() == null) ? "" : ps
-				.getCarro().getDanificado());
+		String dano = ((ps.getCarro().getDanificado() == null) ? "" : Lang
+				.msg(ps.getCarro().getDanificado()));
 
-		String agressivo = (ps.isAgressivo() ? "Agressivo" : "Normal");
+		String agressivo = (ps.isAgressivo() ? Lang.msg("AGRESSIVO") : Lang
+				.msg("NORMAL"));
 
 		String intel = (ps.isJogadorHumano() ? ps.getNomeJogador() : "IA");
 		String txt2 = intel + " " + agressivo + " " + dano;
@@ -655,7 +660,7 @@ public class PainelCircuito extends JPanel {
 			g2d.drawImage(tyre.getImage(), 5, 285, null);
 			String tpPneu = controleJogo.getTipoPeneuBox(ps);
 			if (tpPneu != null)
-				g2d.drawString(tpPneu, 5, 325);
+				g2d.drawString(Lang.msg(tpPneu), 5, 325);
 		}
 		int valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
 		if (valor > 200) {

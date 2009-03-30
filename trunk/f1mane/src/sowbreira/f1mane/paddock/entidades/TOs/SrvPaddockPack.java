@@ -17,6 +17,10 @@ public class SrvPaddockPack implements Serializable {
 	private List listaDadosJogador;
 	private List listaCorridasJogador;
 
+	public SrvPaddockPack() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public DadosPaddock getDadosPaddock() {
 		return dadosPaddock;
 	}

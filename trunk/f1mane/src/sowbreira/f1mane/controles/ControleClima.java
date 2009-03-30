@@ -1,6 +1,7 @@
 package sowbreira.f1mane.controles;
 
 import br.nnpe.Html;
+import br.nnpe.Lang;
 import sowbreira.f1mane.entidades.Clima;
 
 /**
@@ -103,17 +104,17 @@ public class ControleClima {
 
 	public void informaMudancaClima() {
 		if (Clima.SOL.equals(clima)) {
-			controleJogo.infoPrioritaria(Html
-					.msgClima("Mudança de Clima. O tempo Parece Bom. Volta "
-							+ controleJogo.getNumVoltaAtual()));
+			controleJogo.infoPrioritaria(Html.msgClima(Lang
+					.msg("004", new Object[] { controleJogo
+							.getNumVoltaAtual() })));
 		} else if (Clima.NUBLADO.equals(clima)) {
-			controleJogo.infoPrioritaria(Html
-					.msgClima("Mudança de Clima. O ceu esta nublado. Volta "
-							+ controleJogo.getNumVoltaAtual()));
+			controleJogo.infoPrioritaria(Html.msgClima(Lang
+					.msg("005", new Object[] { controleJogo
+							.getNumVoltaAtual() })));
 		} else if (Clima.CHUVA.equals(clima)) {
-			controleJogo.infoPrioritaria(Html
-					.msgClima("Mudança de Clima. Começa a chover.Volta "
-							+ controleJogo.getNumVoltaAtual()));
+			controleJogo.infoPrioritaria(Html.msgClima(Lang
+					.msg("006", new Object[] { controleJogo
+							.getNumVoltaAtual() })));
 		}
 		controleJogo.informaMudancaClima();
 	}
@@ -127,8 +128,9 @@ public class ControleClima {
 		intervaloMudancaClima = (quartoVoltas / 2)
 				+ ((int) (Math.random() * quartoVoltas));
 		controleJogo.infoPrioritaria(Html.msgClima(Html
-				.msgClima("Meteorologia informa: Podera chover em :"
-						+ intervaloMudancaClima + " Voltas.")));
+				.msgClima(Lang.msg("007",
+						new Object[] { intervaloMudancaClima }))));
+
 	}
 
 	public void intervaloSol() {

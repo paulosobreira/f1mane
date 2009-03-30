@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -48,6 +47,7 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Html;
+import br.nnpe.Lang;
 
 public class GerenciadorVisual {
 	private JPanel panelControle;
@@ -165,7 +165,7 @@ public class GerenciadorVisual {
 		modoPiloto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String modo = (String) modoPiloto.getSelectedItem();
-				mudarModoPilotagem(modo);
+				mudarModoPilotagem(Lang.key(modo));
 			}
 		});
 
@@ -224,13 +224,13 @@ public class GerenciadorVisual {
 				int keyCoode = e.getKeyCode();
 
 				if (keyCoode == KeyEvent.VK_F1) {
-					giro.setSelectedItem(Carro.GIRO_MIN);
+					giro.setSelectedItem(Lang.msg(Carro.GIRO_MIN));
 				}
 				if (keyCoode == KeyEvent.VK_F2) {
-					giro.setSelectedItem(Carro.GIRO_NOR);
+					giro.setSelectedItem(Lang.msg(Carro.GIRO_NOR));
 				}
 				if (keyCoode == KeyEvent.VK_F3) {
-					giro.setSelectedItem(Carro.GIRO_MAX);
+					giro.setSelectedItem(Lang.msg(Carro.GIRO_MAX));
 				}
 				if (keyCoode == KeyEvent.VK_F4) {
 					mudarModoAgressivo();
@@ -239,15 +239,15 @@ public class GerenciadorVisual {
 					mudarModoBox();
 				}
 				if (keyCoode == KeyEvent.VK_F5) {
-					modoPiloto.setSelectedItem(Piloto.LENTO);
+					modoPiloto.setSelectedItem(Lang.msg(Piloto.LENTO));
 					mudarModoPilotagem(Piloto.LENTO);
 				}
 				if (keyCoode == KeyEvent.VK_F6) {
-					modoPiloto.setSelectedItem(Piloto.NORMAL);
+					modoPiloto.setSelectedItem(Lang.msg(Piloto.NORMAL));
 					mudarModoPilotagem(Piloto.NORMAL);
 				}
 				if (keyCoode == KeyEvent.VK_F7) {
-					modoPiloto.setSelectedItem(Piloto.AGRESSIVO);
+					modoPiloto.setSelectedItem(Lang.msg(Piloto.AGRESSIVO));
 					mudarModoPilotagem(Piloto.AGRESSIVO);
 				}
 				if (keyCoode == KeyEvent.VK_ESCAPE) {
@@ -269,8 +269,9 @@ public class GerenciadorVisual {
 		if (value.intValue() > 100) {
 			value = new Integer(100);
 		}
-		controleJogo.setBoxJogadorHumano(comboBoxTipoPneu.getSelectedItem(),
-				value, comboBoxAsa.getSelectedItem());
+		controleJogo.setBoxJogadorHumano(Lang.key((String) comboBoxTipoPneu
+				.getSelectedItem()), value, Lang.key((String) comboBoxAsa
+				.getSelectedItem()));
 		boolean modo = controleJogo.mudarModoBox();
 		if (!(controleJogo instanceof JogoCliente)) {
 			if (modo && !(controleJogo instanceof JogoCliente)) {
@@ -287,7 +288,7 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-		controleJogo.mudarGiroMotor(giro.getSelectedItem());
+		controleJogo.mudarGiroMotor(Lang.key((String) giro.getSelectedItem()));
 	}
 
 	protected void mudarModoAgressivo() {
@@ -631,29 +632,29 @@ public class GerenciadorVisual {
 		agressivo = new JButton("Agressivo F4");
 		box = new JButton("Box F12");
 		modoPiloto = new JComboBox();
-		modoPiloto.addItem("Modo Pilotar");
-		modoPiloto.addItem(Piloto.AGRESSIVO);
-		modoPiloto.addItem(Piloto.NORMAL);
-		modoPiloto.addItem(Piloto.LENTO);
+		modoPiloto.addItem(Lang.msg("008"));
+		modoPiloto.addItem(Lang.msg(Piloto.AGRESSIVO));
+		modoPiloto.addItem(Lang.msg(Piloto.NORMAL));
+		modoPiloto.addItem(Lang.msg(Piloto.LENTO));
 		giro = new JComboBox();
-		giro.addItem("Giro Motor");
-		giro.addItem(Carro.GIRO_NOR);
-		giro.addItem(Carro.GIRO_MAX);
-		giro.addItem(Carro.GIRO_MIN);
+		giro.addItem(Lang.msg("012"));
+		giro.addItem(Lang.msg(Carro.GIRO_NOR));
+		giro.addItem(Lang.msg(Carro.GIRO_MAX));
+		giro.addItem(Lang.msg(Carro.GIRO_MIN));
 
 		comboBoxTipoPneu = new JComboBox();
-		comboBoxTipoPneu.addItem(Carro.TIPO_PNEU_MOLE);
-		comboBoxTipoPneu.addItem(Carro.TIPO_PNEU_DURO);
-		comboBoxTipoPneu.addItem(Carro.TIPO_PNEU_CHUVA);
+		comboBoxTipoPneu.addItem(Lang.msg(Carro.TIPO_PNEU_MOLE));
+		comboBoxTipoPneu.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
+		comboBoxTipoPneu.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
 
 		JLabel infoBox = new JLabel("Combust % / Asa");
 		spinnerPercentCombust = new JSpinner();
 		spinnerPercentCombust.setValue(new Integer(50));
 		JPanel infoBoxPanel = new JPanel(new GridBagLayout());
 		comboBoxAsa = new JComboBox();
-		comboBoxAsa.addItem(Carro.ASA_NORMAL);
-		comboBoxAsa.addItem(Carro.MAIS_ASA);
-		comboBoxAsa.addItem(Carro.MENOS_ASA);
+		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
+		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
+		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -718,9 +719,9 @@ public class GerenciadorVisual {
 		painelInicio.add(comboBoxCircuito);
 
 		comboBoxNivelCorrida = new JComboBox();
-		comboBoxNivelCorrida.addItem(ControleJogoLocal.NORMAL);
-		comboBoxNivelCorrida.addItem(ControleJogoLocal.FACIL);
-		comboBoxNivelCorrida.addItem(ControleJogoLocal.DIFICIL);
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
 		painelInicio.add(new JLabel("Nivel da corrida :"));
 		painelInicio.add(comboBoxNivelCorrida);
 
@@ -741,19 +742,19 @@ public class GerenciadorVisual {
 		painelInicio.add(new JLabel("Clima :"));
 		painelInicio.add(comboBoxClimaInicial);
 
-		JLabel tipoPneu = new JLabel("Tipo Pneu :");
+		JLabel tipoPneu = new JLabel(Lang.msg("009"));
 		boxPneuInicial = new JComboBox();
-		boxPneuInicial.addItem(Carro.TIPO_PNEU_MOLE);
-		boxPneuInicial.addItem(Carro.TIPO_PNEU_DURO);
-		boxPneuInicial.addItem(Carro.TIPO_PNEU_CHUVA);
+		boxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_MOLE));
+		boxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
+		boxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
 
-		JLabel tipoAsa = new JLabel("Ajuste da Asa :");
+		JLabel tipoAsa = new JLabel(Lang.msg("010"));
 		comboBoxAsa = new JComboBox();
-		comboBoxAsa.addItem(Carro.ASA_NORMAL);
-		comboBoxAsa.addItem(Carro.MAIS_ASA);
-		comboBoxAsa.addItem(Carro.MENOS_ASA);
+		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
+		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
+		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 
-		JLabel qtdeComustivel = new JLabel("% Combustivel :");
+		JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
 		spinnerCombustivelInicial = new JSpinner();
 		spinnerCombustivelInicial.setValue(new Integer(50));
 
@@ -821,9 +822,11 @@ public class GerenciadorVisual {
 		}
 
 		if (selec instanceof Piloto) {
-			controleJogo.efetuarSelecaoPilotoJogador(selec, boxPneuInicial
-					.getSelectedItem(), spinnerCombustivelInicial.getValue(),
-					nomeJogador.getText(), comboBoxAsa.getSelectedItem());
+			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang
+					.key((String) boxPneuInicial.getSelectedItem()),
+					spinnerCombustivelInicial.getValue(),
+					nomeJogador.getText(), Lang.key((String) comboBoxAsa
+							.getSelectedItem()));
 		}
 		return true;
 	}
@@ -868,9 +871,11 @@ public class GerenciadorVisual {
 		}
 
 		if (selec instanceof Piloto) {
-			controleJogo.efetuarSelecaoPilotoJogador(selec, boxPneuInicial
-					.getSelectedItem(), spinnerCombustivelInicial.getValue(),
-					nomeJogador.getText(), comboBoxAsa.getSelectedItem());
+			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang
+					.key((String) boxPneuInicial.getSelectedItem()),
+					spinnerCombustivelInicial.getValue(),
+					nomeJogador.getText(), Lang.key((String) comboBoxAsa
+							.getSelectedItem()));
 		}
 
 		return true;

@@ -15,6 +15,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import br.nnpe.Lang;
+
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.entidades.Carro;
@@ -96,9 +98,9 @@ public class PainelEntradaCliente {
 		painelInicio.add(comboBoxCircuito);
 
 		comboBoxNivelCorrida = new JComboBox();
-		comboBoxNivelCorrida.addItem(ControleJogoLocal.NORMAL);
-		comboBoxNivelCorrida.addItem(ControleJogoLocal.FACIL);
-		comboBoxNivelCorrida.addItem(ControleJogoLocal.DIFICIL);
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
 		painelInicio.add(new JLabel("Nivel da corrida :"));
 		painelInicio.add(comboBoxNivelCorrida);
 
@@ -111,21 +113,21 @@ public class PainelEntradaCliente {
 		painelInicio.add(new JLabel("Clima :"));
 		painelInicio.add(comboBoxClimaInicial);
 
-		JLabel tipoPneu = new JLabel("Tipo Pneu :");
+		JLabel tipoPneu = new JLabel(Lang.msg("009"));
 		comboBoxPneuInicial = new JComboBox();
-		comboBoxPneuInicial.addItem(Carro.TIPO_PNEU_MOLE);
-		comboBoxPneuInicial.addItem(Carro.TIPO_PNEU_DURO);
-		comboBoxPneuInicial.addItem(Carro.TIPO_PNEU_CHUVA);
+		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_MOLE));
+		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
+		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
 
-		JLabel qtdeComustivel = new JLabel("% Combustivel :");
+		JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
 		spinnerCombustivelInicial = new JSpinner();
 		spinnerCombustivelInicial.setValue(new Integer(50));
 
-		JLabel tipoAsa = new JLabel("Ajuste da Asa :");
+		JLabel tipoAsa = new JLabel(Lang.msg("010"));
 		comboBoxAsa = new JComboBox();
-		comboBoxAsa.addItem(Carro.ASA_NORMAL);
-		comboBoxAsa.addItem(Carro.MAIS_ASA);
-		comboBoxAsa.addItem(Carro.MENOS_ASA);
+		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
+		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
+		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 
 		painelInicio.add(tipoPneu);
 		painelInicio.add(comboBoxPneuInicial);
@@ -221,16 +223,17 @@ public class PainelEntradaCliente {
 		String circuitoSelecionado = (String) comboBoxCircuito
 				.getSelectedItem();
 		dadosCriarJogo.setCircuitoSelecionado(circuitoSelecionado);
-		dadosCriarJogo.setNivelCorrida((String) comboBoxNivelCorrida
-				.getSelectedItem());
+		dadosCriarJogo.setNivelCorrida(Lang.key((String) comboBoxNivelCorrida
+				.getSelectedItem()));
 		dadosCriarJogo.setClima((Clima) comboBoxClimaInicial.getSelectedItem());
 		preecherDadosCriarJogo(dadosCriarJogo);
 	}
 
 	private void preecherDadosCriarJogo(DadosCriarJogo dadosParticiparJogo) {
-		String tpPnueu = (String) comboBoxPneuInicial.getSelectedItem();
+		String tpPnueu = Lang.key((String) comboBoxPneuInicial
+				.getSelectedItem());
 		Piloto piloto = (Piloto) comboBoxPilotoSelecionado.getSelectedItem();
-		String asa = (String) comboBoxAsa.getSelectedItem();
+		String asa = Lang.key((String) comboBoxAsa.getSelectedItem());
 		Integer combustivel = (Integer) spinnerCombustivelInicial.getValue();
 		if (combustivel.intValue() > 100) {
 			combustivel = new Integer(100);
@@ -289,17 +292,17 @@ public class PainelEntradaCliente {
 			comboBoxCircuito.addItem(key);
 		}
 
-		JLabel tipoPneu = new JLabel("Tipo Pneu :");
+		JLabel tipoPneu = new JLabel(Lang.msg("009"));
 		comboBoxPneuInicial = new JComboBox();
-		comboBoxPneuInicial.addItem(Carro.TIPO_PNEU_MOLE);
-		comboBoxPneuInicial.addItem(Carro.TIPO_PNEU_DURO);
-		comboBoxPneuInicial.addItem(Carro.TIPO_PNEU_CHUVA);
-		JLabel tipoAsa = new JLabel("Ajuste da Asa :");
+		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_MOLE));
+		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
+		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
+		JLabel tipoAsa = new JLabel(Lang.msg("010"));
 		comboBoxAsa = new JComboBox();
-		comboBoxAsa.addItem(Carro.ASA_NORMAL);
-		comboBoxAsa.addItem(Carro.MAIS_ASA);
-		comboBoxAsa.addItem(Carro.MENOS_ASA);
-		JLabel qtdeComustivel = new JLabel("% Combustivel :");
+		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
+		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
+		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
+		JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
 		spinnerCombustivelInicial = new JSpinner();
 		spinnerCombustivelInicial.setValue(new Integer(50));
 

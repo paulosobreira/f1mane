@@ -3,6 +3,7 @@ package sowbreira.f1mane.controles;
 import java.util.Iterator;
 
 import br.nnpe.Html;
+import br.nnpe.Lang;
 
 import sowbreira.f1mane.entidades.Piloto;
 
@@ -52,8 +53,8 @@ public class ControleCiclo extends Thread {
 		try {
 			if (ControleJogoLocal.VALENDO) {
 				controleJogo.desenhaQualificacao();
-				controleJogo.infoPrioritaria(Html.superGreen(ControleIdiomas
-						.obterMsg("001")));
+				controleJogo.infoPrioritaria(Html.superGreen(Lang
+						.msg("001")));
 				Thread.sleep(5000);
 				controleJogo.apagarLuz();
 				Thread.sleep(2000);

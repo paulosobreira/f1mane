@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import br.nnpe.Html;
+import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 13:24:54
@@ -156,8 +157,8 @@ public class ControleEstatisticas {
 		bufferInfo.clear();
 		infoConsumer = new Thread(new Runnable() {
 			public void run() {
-				controleJogo.adicionarInfoDireto(Html.azul(ControleIdiomas
-						.obterMsg("000", new Object[] { controleJogo
+				controleJogo.adicionarInfoDireto(Html.azul(Lang
+						.msg("000", new Object[] { controleJogo
 								.totalVoltasCorrida() })));
 				try {
 					while (consumidorAtivo) {
