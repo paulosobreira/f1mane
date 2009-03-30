@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import br.nnpe.Lang;
+
 /**
  * @author Paulo Sobreira Criado Em 17/05/2007 10:35:33
  */
@@ -76,7 +78,7 @@ public class PainelTabelaResultadoFinal extends JPanel {
 				return p.getCarro().getNome();
 
 			case 3:
-				return p.getCarro().getTipoPneu();
+				return Lang.msg(p.getCarro().getTipoPneu());
 
 			case 4:
 				return String.valueOf(p.getNumeroVolta());
@@ -133,36 +135,26 @@ public class PainelTabelaResultadoFinal extends JPanel {
 			switch (column) {
 			case 0:
 				return "Pos";
-
 			case 1:
 				return "Piloto";
-
 			case 2:
 				return "Equipe";
-
 			case 3:
 				return "Tipo Pneu";
-
 			case 4:
 				return "Voltas";
-
 			case 5:
 				return "Melhor";
-
 			case 6:
 				return "Paradas";
-
 			case 7:
 				return "Pneus";
-
 			case 8:
 				return "Gas";
-
 			case 9:
 				return "Motor";
 			case 10:
 				return "Apelido";
-
 			case 11:
 				return "Pontos";
 			default:
