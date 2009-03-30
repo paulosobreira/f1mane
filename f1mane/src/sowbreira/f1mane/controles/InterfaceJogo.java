@@ -15,9 +15,9 @@ import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 public interface InterfaceJogo {
 	public static boolean VALENDO = true;
 	// public static boolean VALENDO = false;
-	public static String NORMAL = "Normal";
-	public static String FACIL = "Facil";
-	public static String DIFICIL = "Dificil";
+	public static String NORMAL = "NORMAL";
+	public static String FACIL = "FACIL";
+	public static String DIFICIL = "DIFICIL";
 	public static double FACIL_NV = .3;
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;

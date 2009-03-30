@@ -2,6 +2,7 @@ package sowbreira.f1mane.controles;
 
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
+import br.nnpe.Lang;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
@@ -220,18 +221,15 @@ public class ControleBox {
 		piloto.setSaiuDoBoxMilis(0);
 		if (piloto.isJogadorHumano()) {
 			controleJogo
-					.infoPrioritaria(Html.superOrange(ControleIdiomas.obterMsg(
-							"002", new String[] {
-									piloto.getNome(),
-									String.valueOf(controleJogo
-											.getNumVoltaAtual()) })));
-		} else if (piloto.getPosicao() < 9) {
-			controleJogo
-					.info(Html.superOrange(ControleIdiomas.obterMsg("002",
+					.infoPrioritaria(Html.superOrange(Lang.msg("002",
 							new String[] {
 									piloto.getNome(),
 									String.valueOf(controleJogo
 											.getNumVoltaAtual()) })));
+		} else if (piloto.getPosicao() < 9) {
+			controleJogo.info(Html.superOrange(Lang.msg("002", new String[] {
+					piloto.getNome(),
+					String.valueOf(controleJogo.getNumVoltaAtual()) })));
 		}
 
 	}
@@ -243,8 +241,8 @@ public class ControleBox {
 		String[] strings = new String[] { piloto.getNome(),
 				ControleEstatisticas.formatarTempo(diff),
 				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox()),
-				piloto.getCarro().getTipoPneu() };
-		String info = ControleIdiomas.obterMsg("003", strings);
+				Lang.msg(piloto.getCarro().getTipoPneu()) };
+		String info = Lang.msg("003", strings);
 		if (piloto.isJogadorHumano()) {
 			controleJogo.infoPrioritaria(Html.superOrange(info));
 		} else if (piloto.getPosicao() < 9) {

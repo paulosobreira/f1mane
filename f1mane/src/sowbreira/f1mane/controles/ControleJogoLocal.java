@@ -4,8 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import br.nnpe.Html;
-
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
@@ -15,6 +13,8 @@ import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
+import br.nnpe.Html;
+import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira
@@ -521,8 +521,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoSingle()) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
-			this.nivelCorrida = (String) gerenciadorVisual
-					.getComboBoxNivelCorrida().getSelectedItem();
+			this.nivelCorrida = Lang.key((String) gerenciadorVisual
+					.getComboBoxNivelCorrida().getSelectedItem());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 					diffultrapassagem.intValue(), veloMaxReta.intValue(),
 					tempoCiclo.intValue());
