@@ -2,6 +2,8 @@ package sowbreira.f1mane.entidades;
 
 import java.io.Serializable;
 
+import br.nnpe.Lang;
+
 /**
  * @author Paulo Sobreira Criado em 06/05/2007 as 12:08:07
  */
@@ -28,13 +30,13 @@ public class Clima implements Serializable {
 
 	public String toString() {
 		if (SOL.equals(clima)) {
-			return "Ensolarado";
+			return Lang.msg("Ensolarado");
 		} else if (NUBLADO.equals(clima)) {
-			return "Nublado";
+			return Lang.msg("Nublado");
 		} else if (CHUVA.equals(clima)) {
-			return "Chovendo";
+			return Lang.msg("Chovendo");
 		} else if (ALEATORIO.equals(clima)) {
-			return "Aleatorio";
+			return Lang.msg("Aleatorio");
 		}
 
 		return super.toString();

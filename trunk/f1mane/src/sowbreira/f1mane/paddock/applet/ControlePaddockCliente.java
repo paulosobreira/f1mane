@@ -17,6 +17,8 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
+import br.nnpe.Lang;
+
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.paddock.entidades.Comandos;
@@ -141,16 +143,14 @@ public class ControlePaddockCliente {
 			if (retorno instanceof ErroServ) {
 				ErroServ erroServ = (ErroServ) retorno;
 				JOptionPane.showMessageDialog(panel, erroServ
-						.obterErroFormatado(), "Erro recebendo dados",
+						.obterErroFormatado(), Lang.msg("060"),
 						JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
 			if (retorno instanceof MsgSrv) {
 				MsgSrv msgSrv = (MsgSrv) retorno;
-				JOptionPane
-						.showMessageDialog(panel, msgSrv.getMessageString(),
-								"Mensagem do servidor",
-								JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(panel, msgSrv.getMessageString(),
+						Lang.msg("061"), JOptionPane.INFORMATION_MESSAGE);
 				return null;
 			}
 			return retorno;
@@ -162,8 +162,8 @@ public class ControlePaddockCliente {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(panel, retorno.toString(),
-					"Erro enviando dados", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(panel, retorno.toString(), Lang
+					.msg("059"), JOptionPane.ERROR_MESSAGE);
 			if (jogoCliente != null) {
 				jogoCliente.matarTodasThreads();
 			}
@@ -239,8 +239,7 @@ public class ControlePaddockCliente {
 		clientPaddockPack.setTexto(text);
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (ret == null) {
-			JOptionPane.showMessageDialog(panel,
-					"Problemas na rede. Tente novamente", "Erro",
+			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -269,8 +268,7 @@ public class ControlePaddockCliente {
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			Object ret = enviarObjeto(clientPaddockPack);
 			if (ret == null) {
-				JOptionPane.showMessageDialog(panel,
-						"Problemas na rede. Tente novamente", "Erro",
+				JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -341,8 +339,7 @@ public class ControlePaddockCliente {
 		clientPaddockPack.setNomeJogo((String) object);
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (ret == null) {
-			JOptionPane.showMessageDialog(panel,
-					"Problemas na rede. Tente novamente", "Erro",
+			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -354,8 +351,8 @@ public class ControlePaddockCliente {
 
 	public void iniciarJogo() {
 		if (jogoCliente == null) {
-			JOptionPane.showMessageDialog(panel, "Voce não esta em jogo",
-					"Erro", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(panel, Lang.msg("063"), "Erro",
+					JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
@@ -420,9 +417,8 @@ public class ControlePaddockCliente {
 				|| "Ia".equals(clientPaddockPack.getNomeJogador())
 				|| "ia".equals(clientPaddockPack.getNomeJogador())
 				|| "iA".equals(clientPaddockPack.getNomeJogador())) {
-			JOptionPane.showMessageDialog(panel,
-					"Nome similar ao usado pela Ia", "Nome invalido",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(panel, Lang.msg("064"), Lang
+					.msg("064"), JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		// clientPaddockPack.setSenhaJogador(formEntrada.getSenhaRegistrar());
@@ -443,8 +439,7 @@ public class ControlePaddockCliente {
 				Comandos.VER_CLASSIFICACAO, sessaoCliente);
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (ret == null) {
-			JOptionPane.showMessageDialog(panel,
-					"Problemas na rede. Tente novamente", "Erro",
+			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -452,8 +447,7 @@ public class ControlePaddockCliente {
 		FormClassificacao formClassificacao = new FormClassificacao(
 				srvPaddockPack.getListaDadosJogador(), this);
 		JOptionPane.showMessageDialog(panel, formClassificacao,
-				"Clique duplo para ver corridas do piloto selcionado",
-				JOptionPane.PLAIN_MESSAGE);
+				Lang.msg("065"), JOptionPane.PLAIN_MESSAGE);
 
 	}
 
@@ -471,7 +465,7 @@ public class ControlePaddockCliente {
 
 	public void logar() {
 		FormEntradaSimples formEntrada = new FormEntradaSimples();
-		formEntrada.setToolTipText("Formulário de login");
+		formEntrada.setToolTipText(Lang.msg("066"));
 
 		int result = JOptionPane.showConfirmDialog(panel, formEntrada);
 
@@ -481,11 +475,6 @@ public class ControlePaddockCliente {
 				result = JOptionPane.showConfirmDialog(panel, formEntrada);
 			}
 
-			// while (!verificaLoginValido(formEntrada)
-			// && JOptionPane.OK_OPTION == result) {
-			// result = JOptionPane.showConfirmDialog(panel, formEntrada);
-			// }
-
 		}
 		if (getSessaoCliente() != null) {
 			paddockWindow = new PaddockWindow(this);
@@ -494,9 +483,7 @@ public class ControlePaddockCliente {
 			panel.add(paddockWindow.getMainPanel(), BorderLayout.CENTER);
 			getThreadAtualizadora().start();
 		} else {
-			JOptionPane.showMessageDialog(panel,
-					"Usuario sem sessão para logar."
-							+ " Recarreque a pagina(Crtl+F5).");
+			JOptionPane.showMessageDialog(panel, Lang.msg("067"));
 
 		}
 

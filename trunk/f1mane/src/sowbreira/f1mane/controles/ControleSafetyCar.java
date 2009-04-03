@@ -3,6 +3,7 @@ package sowbreira.f1mane.controles;
 import java.util.List;
 
 import br.nnpe.Html;
+import br.nnpe.Lang;
 
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
@@ -42,10 +43,8 @@ public class ControleSafetyCar {
 		safetyCar.setPtosPista(pts);
 		safetyCar.setNaPista(true);
 		safetyCar.setVaiProBox(false);
-		controleJogo
-				.infoPrioritaria(Html
-						.saftyCar("Bandeira amarela em toda pista. SafetyCar na pista.Volta "
-								+ controleCorrida.voltaAtual()));
+		controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("029",
+				new Object[] { controleCorrida.voltaAtual() })));
 		recolihimentoCarro = new ThreadRecolihimentoCarro(controleJogo, piloto,
 				safetyCar);
 		recolihimentoCarro.start();
@@ -57,8 +56,7 @@ public class ControleSafetyCar {
 			return;
 		}
 		if (safetyCar.getNoAtual().isNoEntradaBox() && safetyCar.isVaiProBox()) {
-			controleJogo.infoPrioritaria(Html
-					.saftyCar("Safety Car no Box. Corrida re iniciada."));
+			controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("030")));
 			safetyCar.setNaPista(false);
 			safetyCar.setSaiuVolta(controleJogo.getNumVoltaAtual());
 		}

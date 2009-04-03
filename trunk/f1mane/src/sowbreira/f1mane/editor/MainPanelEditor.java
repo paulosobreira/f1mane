@@ -44,6 +44,8 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import br.nnpe.Lang;
+
 /**
  * @author Paulo Sobreira Criado Em 10:51:26
  */
@@ -186,7 +188,12 @@ public class MainPanelEditor extends JPanel {
 		buttonGroup.add(pistasButton);
 		pistasButton.setSelected(true);
 		JPanel radioPistaPanel = new JPanel();
-		radioPistaPanel.add(new JLabel("Nos Pista"));
+		radioPistaPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("032");
+			}
+		});
 		radioPistaPanel.add(pistasButton);
 		JPanel pistas = new JPanel();
 		pistas.setLayout(new BorderLayout());
@@ -195,7 +202,12 @@ public class MainPanelEditor extends JPanel {
 		controlPanel.add(pistas);
 
 		JPanel radioBoxPanel = new JPanel();
-		radioBoxPanel.add(new JLabel("Nos Box"));
+		radioBoxPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("033");
+			}
+		});
 		radioBoxPanel.add(boxButton);
 		JPanel boxes = new JPanel();
 		boxes.setLayout(new BorderLayout());
@@ -206,7 +218,12 @@ public class MainPanelEditor extends JPanel {
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridLayout(1, 4));
 
-		JButton testaPistaButton = new JButton("Iniciar/Parar Teste de Pista");
+		JButton testaPistaButton = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("034");
+			}
+		};
 		testaPistaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -218,7 +235,12 @@ public class MainPanelEditor extends JPanel {
 		});
 		buttonsPanel.add(testaPistaButton);
 
-		JButton testaBoxButton = new JButton("Ligar/Desligar Box");
+		JButton testaBoxButton = new JButton("Ligar/Desligar Box") {
+			@Override
+			public String getText() {
+				return Lang.msg("035");
+			}
+		};
 		testaBoxButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				testePista.testarBox();
@@ -226,7 +248,12 @@ public class MainPanelEditor extends JPanel {
 		});
 		buttonsPanel.add(testaBoxButton);
 
-		JButton regMax = new JButton("Ligar/Desligar Agressivo");
+		JButton regMax = new JButton("Ligar/Desligar Agressivo") {
+			@Override
+			public String getText() {
+				return Lang.msg("036");
+			}
+		};
 		regMax.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				testePista.regMax();
@@ -234,7 +261,12 @@ public class MainPanelEditor extends JPanel {
 		});
 		buttonsPanel.add(regMax);
 
-		JButton desenhaTracadoBot = new JButton("Desenha Tracado");
+		JButton desenhaTracadoBot = new JButton("Desenha Tracado") {
+			@Override
+			public String getText() {
+				return Lang.msg("037");
+			}
+		};
 		desenhaTracadoBot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				desenhaTracado = !desenhaTracado;
@@ -320,9 +352,8 @@ public class MainPanelEditor extends JPanel {
 			}
 		} else {
 			if (no.isBox()) {
-				JOptionPane.showMessageDialog(this,
-						"Não pode inserir nos de box na psita",
-						"Operação ilegal", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this, Lang.msg("038"), Lang
+						.msg("039"), JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 
@@ -373,11 +404,11 @@ public class MainPanelEditor extends JPanel {
 			}
 		}
 		double total = noAlta + noMedia + noBaixa;
-		g2d.drawString("ALTA:" + noAlta + " " + (int) (100 * noAlta / total)
-				+ "%", 5, 15);
-		g2d.drawString("MEDIA:" + noMedia + " " + (int) (100 * noMedia / total)
+		g2d.drawString(Lang.msg("ALTA") + ":" + noAlta + " "
+				+ (int) (100 * noAlta / total) + "%", 5, 15);
+		g2d.drawString(Lang.msg("MEDIA") +":" + noMedia + " " + (int) (100 * noMedia / total)
 				+ "%", 5, 35);
-		g2d.drawString("BAIXA:" + noBaixa + " " + (int) (100 * noBaixa / total)
+		g2d.drawString(Lang.msg("BAIXA") +":" + noBaixa + " " + (int) (100 * noBaixa / total)
 				+ "%", 5, 55);
 		if (desenhaTracado) {
 			No oldNo = null;

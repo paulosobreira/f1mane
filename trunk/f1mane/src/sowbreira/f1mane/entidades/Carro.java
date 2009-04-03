@@ -7,6 +7,7 @@ import java.io.Serializable;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.ExplicitGroup;
 
 import br.nnpe.Html;
+import br.nnpe.Lang;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
 
@@ -337,8 +338,9 @@ public class Carro implements Serializable {
 		if (porcentagemDesgasteMotor() < 0) {
 			piloto.setDesqualificado(true);
 			setDanificado(Carro.EXPLODIU_MOTOR);
-			controleJogo.infoPrioritaria(Html.superRed(piloto.getNome()
-					+ " Explode o motor."));
+			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("042",
+					new String[] { piloto.getNome() })));
+
 		}
 	}
 
@@ -449,8 +451,10 @@ public class Carro implements Serializable {
 		if ((pneus < 0) && !verificaDano()) {
 			danificado = PNEU_FURADO;
 			pneus = -1;
-			controleJogo.infoPrioritaria(Html.superRed(getPiloto().getNome()
-					+ " Pneu furado."));
+
+			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("043",
+					new String[] { getPiloto().getNome() })));
+
 		}
 
 		return novoModificador;
@@ -515,11 +519,11 @@ public class Carro implements Serializable {
 	public String getGiroFormatado() {
 		switch (giro) {
 		case 1:
-			return "Min";
+			return Lang.msg("Min");
 		case 5:
-			return "Nor";
+			return Lang.msg("Nor");
 		case 9:
-			return "Max";
+			return Lang.msg("Max");
 		default:
 			break;
 		}
