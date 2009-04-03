@@ -255,7 +255,7 @@ public class Html {
 
 	public static String silver(String texto) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("<font color='#C2C2C2'>").append(texto).append("</font>");
+		buffer.append("<font color='#B5B5B5'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
