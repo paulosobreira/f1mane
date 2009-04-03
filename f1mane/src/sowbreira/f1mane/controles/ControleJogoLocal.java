@@ -402,10 +402,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (qtdeDesqualificados >= 14) {
 			setCorridaTerminada(true);
 			controleCorrida.terminarCorrida();
-			infoPrioritaria(Html.fontColor("fuchsia",
-					"Corrida encerrada pelo diretor de prova na volta "
-							+ getNumVoltaAtual()
-							+ " devido ao alto numero de quebras."));
+			infoPrioritaria(Html.superDarkRed(Lang.msg("024",
+					new Object[] { getNumVoltaAtual() })));
 		}
 		controleCorrida.getControleClima().processaPossivelMudancaClima();
 
@@ -430,9 +428,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#pausarJogo()
 	 */
 	public void pausarJogo() {
-		info(Html
-				.cinza(controleCorrida.isCorridaPausada() ? "Corrida Des-Pausada"
-						: "Corrida Pausada"));
+		info(Html.cinza(controleCorrida.isCorridaPausada() ? Lang.msg("025")
+				: Lang.msg("026")));
 		controleCorrida.setCorridaPausada(!controleCorrida.isCorridaPausada());
 
 	}
@@ -583,8 +580,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 				}
 			}
 		} catch (Exception e) {
-			throw new Exception("Erro na Entrada de dados."
-					+ " Preencha os tipos numericos com numeros.");
+			throw new Exception(Lang.msg("027"));
 		}
 
 	}
@@ -688,8 +684,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 						+ pilotoJogador.getCarro().getCombustivel());
 		String strAsa = (String) asa;
 		if (!strAsa.equals(pilotoJogador.getCarro().getAsa())) {
-			infoPrioritaria(Html.orange(pilotoJogador.getNome()
-					+ " altera o ajuste de asas"));
+			infoPrioritaria(Html.orange(Lang.msg("028",
+					new String[] { pilotoJogador.getNome() })));
 		}
 		pilotoJogador.getCarro().setAsa(strAsa);
 		if (undsComnustAbastecer < 0) {

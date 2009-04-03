@@ -74,9 +74,9 @@ public class ControleEstatisticas {
 
 		if (!teveMelhor && !controleJogo.isSafetyCarNaPista()) {
 			if ((piloto.getPosicao() < 9)) {
-				controleJogo.info(Html.azul((Html.bold(piloto.getNome()
-						+ " faz a sua melhor volta "
-						+ voltaAtual.obterTempoVoltaFormatado()))));
+				controleJogo.info(Html.verde(Lang.msg("022", new String[] {
+						Html.bold(piloto.getNome()),
+						voltaAtual.obterTempoVoltaFormatado() })));
 			}
 		}
 
@@ -91,10 +91,9 @@ public class ControleEstatisticas {
 		if (voltaMaisRapida.obterTempoVolta() > piloto.getVoltaAtual()
 				.obterTempoVolta()) {
 			voltaMaisRapida = piloto.getVoltaAtual();
-			controleJogo.infoPrioritaria(Html.superBlue(Html.bold(piloto
-					.getNome()
-					+ " faz a volta mais rapida da corrida "
-					+ voltaMaisRapida.obterTempoVoltaFormatado())));
+			controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("023",
+					new String[] { Html.bold(piloto.getNome()),
+							voltaMaisRapida.obterTempoVoltaFormatado() })));
 		}
 	}
 
@@ -157,9 +156,8 @@ public class ControleEstatisticas {
 		bufferInfo.clear();
 		infoConsumer = new Thread(new Runnable() {
 			public void run() {
-				controleJogo.adicionarInfoDireto(Html.azul(Lang
-						.msg("000", new Object[] { controleJogo
-								.totalVoltasCorrida() })));
+				controleJogo.adicionarInfoDireto(Html.azul(Lang.msg("000",
+						new Object[] { controleJogo.totalVoltasCorrida() })));
 				try {
 					while (consumidorAtivo) {
 						controleJogo.atulizaTabelaPosicoes();

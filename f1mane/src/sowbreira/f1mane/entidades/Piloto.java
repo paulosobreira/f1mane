@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.nnpe.Html;
+import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira
@@ -137,7 +138,8 @@ public class Piloto implements Serializable {
 	}
 
 	public String getSegundosParaLider() {
-		return ((segundosParaLider == null) ? "Lider" : segundosParaLider);
+		return ((segundosParaLider == null) ? Lang.msg("Lider")
+				: segundosParaLider);
 	}
 
 	public void setSegundosParaLider(String segundosParaLider) {
@@ -175,15 +177,13 @@ public class Piloto implements Serializable {
 		if (!this.recebeuBanderada) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(0);
 			if (this.nome.equals(piloto.getNome())) {
-				controleJogo
-						.infoPrioritaria(Html.superBlack(getNome())
-								+ Html
-										.superGreen(" recebe a bandeirada apos completar "
-												+ getNumeroVolta() + " voltas."));
+				controleJogo.infoPrioritaria(Html.superBlack(getNome())
+						+ Html.superGreen(Lang.msg("044",
+								new Object[] { getNumeroVolta() })));
 			} else {
 				controleJogo.info(Html.superBlack(getNome())
-						+ Html.verde(" recebe a bandeirada apos completar "
-								+ getNumeroVolta() + " voltas."));
+						+ Html.verde(Lang.msg("044",
+								new Object[] { getNumeroVolta() })));
 			}
 		}
 
@@ -344,7 +344,7 @@ public class Piloto implements Serializable {
 			if ((posicao == 1)
 					&& (numeroVolta == (controleJogo.totalVoltasCorrida() - 1))) {
 				controleJogo.infoPrioritaria(Html.superBlack(getNome())
-						+ Html.superGreen(" Abre a ultima volta."));
+						+ Html.superGreen(Lang.msg("045")));
 			}
 
 			if (controleJogo.isCorridaTerminada()) {
@@ -459,13 +459,11 @@ public class Piloto implements Serializable {
 			if (!Messagens.BOX_OCUPADO.equals(msgsQueSeRepetemMuito
 					.get(Messagens.BOX_OCUPADO))) {
 				if (isJogadorHumano()) {
-					controleJogo.infoPrioritaria(Html.orange("Box para "
-							+ Html.bold(getNome())
-							+ " : Sua parada podera ser na proxima volta."));
+					controleJogo.infoPrioritaria(Html.orange(Lang.msg("046",
+							new String[] { Html.bold(getNome()) })));
 				} else if (getPosicao() < 9) {
-					controleJogo.info(Html.orange("Box para "
-							+ Html.bold(getNome())
-							+ " : Sua parada podera ser na proxima volta."));
+					controleJogo.info(Html.orange(Lang.msg("046",
+							new String[] { Html.bold(getNome()) })));
 				}
 
 				msgsQueSeRepetemMuito.put(Messagens.BOX_OCUPADO,
@@ -490,8 +488,8 @@ public class Piloto implements Serializable {
 				&& (combust <= 5) && (pneus <= 12) && (pneus > 5)) {
 			if (!Messagens.IR_BOX_FINAL_CORRIDA.equals(msgsQueSeRepetemMuito
 					.get(Messagens.IR_BOX_FINAL_CORRIDA))) {
-				controleJogo.info(Html.orange(getNome()
-						+ " evita ir para box no final da corrida."));
+				controleJogo.info(Html.orange(Lang.msg("047",
+						new String[] { getNome() })));
 				msgsQueSeRepetemMuito.put(Messagens.IR_BOX_FINAL_CORRIDA,
 						Messagens.IR_BOX_FINAL_CORRIDA);
 			}
@@ -633,39 +631,36 @@ public class Piloto implements Serializable {
 							.obterIndicativoCorridaCompleta()
 							&& Math.random() > .95 && getPosicao() < 9) {
 						int val = 1 + (int) (Math.random() * 4);
+						String txt = "";
 						switch (val) {
+
 						case 1:
-							controleJogo.info(Html.silver("Parece que "
-									+ Html.bold(getNome())
-									+ " decidiu partir de vez para cima de "
-									+ Html.bold(carroPilotoDaFrente.getPiloto()
-											.getNome())));
+							txt = Lang.msg("048", new String[] {
+									Html.bold(getNome()),
+									Html.bold(carroPilotoDaFrente.getPiloto()
+											.getNome()) });
+							controleJogo.info(Html.silver(txt));
 							break;
 						case 2:
-							controleJogo.info(Html.silver(Html.bold(getNome())
-									+ " procura não perder contato visual com "
-									+ Html.bold(carroPilotoDaFrente.getPiloto()
-											.getNome())));
+							txt = Lang.msg("049", new String[] {
+									Html.bold(getNome()),
+									Html.bold(carroPilotoDaFrente.getPiloto()
+											.getNome()) });
+							controleJogo.info(Html.silver(txt));
 							break;
 						case 3:
-							controleJogo
-									.info(Html
-											.silver(Html.bold(getNome())
-													+ " tenta diminuir a diferença de tempo para "
-													+ Html
-															.bold(carroPilotoDaFrente
-																	.getPiloto()
-																	.getNome())));
+							txt = Lang.msg("050", new String[] {
+									Html.bold(getNome()),
+									Html.bold(carroPilotoDaFrente.getPiloto()
+											.getNome()) });
+							controleJogo.info(Html.silver(txt));
 							break;
 						case 4:
-							controleJogo
-									.info(Html
-											.silver(Html.bold(getNome())
-													+ " tenta tirar o máximo do carro para andar no ritimo de "
-													+ Html
-															.bold(carroPilotoDaFrente
-																	.getPiloto()
-																	.getNome())));
+							txt = Lang.msg("051", new String[] {
+									Html.bold(getNome()),
+									Html.bold(carroPilotoDaFrente.getPiloto()
+											.getNome()) });
+							controleJogo.info(Html.silver(txt));
 							break;
 
 						default:
@@ -706,32 +701,23 @@ public class Piloto implements Serializable {
 				if (AGRESSIVO.equals(modoPilotagem)) {
 					if (controleJogo.isChovendo()) {
 						controleJogo.info(Html.txtRedBold(getNome())
-								+ Html.bold(" guia além de seu limite "
-										+ "deslizando muito na pista molhada"));
+								+ Html.bold(Lang.msg("052")));
 					} else {
 						if (Math.random() > 0.5) {
-							controleJogo
-									.info(Html.txtRedBold(getNome())
-											+ Html
-													.bold(" guia além de seu limite "
-															+ "travando pneus em curva de baixa"));
+							controleJogo.info(Html.txtRedBold(getNome())
+									+ Html.bold(Lang.msg("053")));
 						} else {
-							controleJogo
-									.info(Html.txtRedBold(getNome())
-											+ Html
-													.bold(" guia além de seu limite "
-															+ "perdendo trazeira em curva de baixa"));
+							controleJogo.info(Html.txtRedBold(getNome())
+									+ Html.bold(Lang.msg("054")));
 						}
 					}
 				} else {
 					if (controleJogo.isChovendo()) {
 						controleJogo.info(Html.bold(getNome())
-								+ Html.verde(" guia com cautela após "
-										+ "sair da pista molhada"));
+								+ Html.verde(Lang.msg("055")));
 					} else {
 						controleJogo.info(Html.bold(getNome())
-								+ Html.verde(" guia com cautela após "
-										+ "travar pneus em curva de baixa"));
+								+ Html.verde(Lang.msg("056")));
 					}
 				}
 
@@ -752,8 +738,8 @@ public class Piloto implements Serializable {
 				agressivo = false;
 				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsQueSeRepetemMuito
 						.get(Messagens.PILOTO_EM_CAUTELA))) {
-					controleJogo.info(Html.superRed(getNome()
-							+ " Parece ter problemas e esta lento."));
+					controleJogo.info(Html
+							.superRed(getNome() + Lang.msg("057")));
 					msgsQueSeRepetemMuito.put(Messagens.PILOTO_EM_CAUTELA,
 							Messagens.PILOTO_EM_CAUTELA);
 				}
@@ -768,9 +754,7 @@ public class Piloto implements Serializable {
 				ciclosDesconcentrado = gerarDesconcentracao((int) (14 * controleJogo
 						.getNiveljogo()));
 				if (Math.random() > .991 && getPosicao() < 9) {
-					controleJogo.info(Html.bold(getNome())
-							+ " guia com cautela após "
-							+ "travar pneus em curva de baixa");
+					controleJogo.info(Html.bold(getNome()) + Lang.msg("058"));
 				}
 			} else if (No.CURVA_ALTA.equals(noAtual.getTipo())) {
 				ciclosDesconcentrado = gerarDesconcentracao((int) (10 * controleJogo

@@ -1,6 +1,7 @@
 package sowbreira.f1mane.controles;
 
 import br.nnpe.Html;
+import br.nnpe.Lang;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 
@@ -38,10 +39,8 @@ public class ThreadRecolihimentoCarro extends Thread {
 		}
 		piloto.getCarro().setRecolhido(true);
 		safetyCar.setVaiProBox(true);
-		controleJogo
-				.infoPrioritaria(Html
-						.orange(piloto.getNome()
-								+ " Teve seu carro recolhido da pista. Safetycar vai para o Box nesta Volta."));
+		controleJogo.infoPrioritaria(Html.orange(Lang.msg("031",
+				new String[] { piloto.getNome() })));
 
 	}
 }

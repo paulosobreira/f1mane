@@ -10,6 +10,7 @@ import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import br.nnpe.Html;
+import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira
@@ -188,9 +189,9 @@ public class ControleCorrida {
 						&& (Math.random() > fatorUtrapassagemTemp)) {
 					if (pilotoNaFrente.getPosicao() < 9) {
 
-						controleJogo.info(Html.bold(piloto.getNome())
-								+ " tenta ultrapassar "
-								+ Html.bold(pilotoNaFrente.getNome()));
+						controleJogo.info(Lang.msg("013", new Object[] {
+								Html.bold(piloto.getNome()),
+								Html.bold(pilotoNaFrente.getNome()) }));
 					}
 
 					ajusteUltrapassagem(pilotoNaFrente, piloto);
@@ -207,8 +208,8 @@ public class ControleCorrida {
 			}
 
 			if (piloto.isJogadorHumano()) {
-				controleJogo.info(Html.bold(piloto.getNome()
-						+ " erra e guia com cuidado agora."));
+				controleJogo.info(Lang.msg("014", new Object[] { Html
+						.bold(piloto.getNome()) }));
 			}
 			if (!piloto.isJogadorHumano()) {
 				piloto.setAgressivo(false);
@@ -248,10 +249,9 @@ public class ControleCorrida {
 			if (No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo())
 					&& estadoPrevioAgressivo && (Math.random() > fatorAcidente)) {
 				piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
-				controleJogo.infoPrioritaria((Html.superRed(piloto.getNome()
-						+ " Perde Aereofolio dianteiro ao tenta ultrapassar "
-						+ pilotoNaFrente.getNome()
-						+ " sem espaço sufuciente em uma curva de baixa.")));
+				controleJogo.infoPrioritaria(Lang.msg("015", new String[] {
+						Html.superRed(piloto.getNome()),
+						pilotoNaFrente.getNome() }));
 			}
 		} else {
 			if ((Math.random() > fatorAcidente) && estadoPrevioAgressivo) {
@@ -259,21 +259,17 @@ public class ControleCorrida {
 						&& Math.random() < controleJogo.getNiveljogo()
 						&& !controleSafetyCar.safetyCarUltimas3voltas()) {
 					piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
-					controleJogo.infoPrioritaria(Html.superDarkRed(piloto
-							.getNome()
-							+ " Bate forte ao tenta ultrapassar "
-							+ pilotoNaFrente.getNome()));
+					controleJogo.infoPrioritaria(Lang.msg("016", new String[] {
+							Html.superRed(piloto.getNome()),
+							pilotoNaFrente.getNome() }));
 					piloto.setDesqualificado(true);
 					atualizaClassificacao();
 					controleSafetyCar.safetyCarNaPista(piloto);
 				} else {
 					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
-					controleJogo
-							.infoPrioritaria(Html
-									.superRed(piloto.getNome()
-											+ " Perde Aereofolio dianteiro ao tenta ultrapassar "
-											+ pilotoNaFrente.getNome()));
-
+					controleJogo.infoPrioritaria(Lang.msg("017", new String[] {
+							Html.superRed(piloto.getNome()),
+							pilotoNaFrente.getNome() }));
 				}
 				return;
 			}
@@ -300,16 +296,15 @@ public class ControleCorrida {
 		ganhador.setCiclosDesconcentrado(0);
 
 		if (perdedor.isJogadorHumano()) {
-			controleJogo.info(Html.bold(perdedor.getNome())
-					+ " sai do tracado em disputa com "
-					+ Html.bold(ganhador.getNome())
-					+ " e guia com cuidado agora.");
+			controleJogo.info(Lang.msg("018", new String[] {
+					Html.bold(perdedor.getNome()),
+					Html.bold(ganhador.getNome()) }));
 		}
 
 		if (ganhador.isJogadorHumano()) {
-			controleJogo.info(Html.bold(ganhador.getNome())
-					+ " se sai bem contra " + Html.bold(perdedor.getNome())
-					+ " e pisa fundo.");
+			controleJogo.info(Lang.msg("019", new String[] {
+					Html.bold(ganhador.getNome()),
+					Html.bold(perdedor.getNome()) }));
 		}
 
 		if (perdedor.isJogadorHumano() && !ganhador.isJogadorHumano()) {
@@ -492,20 +487,17 @@ public class ControleCorrida {
 					&& (Math.random() > fatorUtrapassagemTemp)) {
 				if ((Math.random() > 0.95)
 						&& (piloto.isJogadorHumano() || piloto.getPosicao() < 9)) {
-					controleJogo.info(Html.azul(Html.bold(retardatario
-							.getNome())
-							+ " não abre facil para  "
-							+ Html.bold(piloto.getNome())));
+					controleJogo.info(Lang.msg("020", new String[] {
+							Html.azul(Html.bold(retardatario.getNome())),
+							Html.bold(piloto.getNome()) }));
 				}
 				return 2;
 			} else {
 				if ((Math.random() > 0.95)
 						&& (piloto.isJogadorHumano() || piloto.getPosicao() < 9)) {
-					controleJogo.info(Html.azul(Html.bold(retardatario
-							.getNome())
-							+ " Atrapalha Severamente "
-							+ Html.bold(piloto.getNome())
-							+ " e recebe bandeira azul"));
+					controleJogo.info(Lang.msg("021", new String[] {
+							Html.azul(Html.bold(retardatario.getNome())),
+							Html.bold(piloto.getNome()) }));
 				}
 				boolean estadoPrevio = piloto.isAgressivo();
 				if ((Math.random() > 0.95)) {

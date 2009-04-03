@@ -17,6 +17,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import br.nnpe.Lang;
+
 public class TestePista {
 	private Circuito circuito;
 	private Point testCar;
@@ -50,9 +52,8 @@ public class TestePista {
 			controleBox.calculaNosBox(pontosPista, pontosBox);
 		} catch (Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(editor,
-					"Desenhe o Box antes de testar", "Erro faltando Box",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(editor, Lang.msg("040"), Lang
+					.msg("041"), JOptionPane.ERROR_MESSAGE);
 		}
 
 		if (testTh != null) {
