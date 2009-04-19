@@ -55,14 +55,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCombustBox(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public Integer getCombustBox(Piloto piloto) {
-		return combustJogador;
+		return new Integer(piloto.getQtdeCombustBox());
 	}
 
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getTipoPeneuBox(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String getTipoPeneuBox(Piloto piloto) {
-		return tipoPeneuJogador;
+		return piloto.getTipoPneuBox();
 	}
 
 	protected void setarNivelCorrida() {
