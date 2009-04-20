@@ -654,11 +654,11 @@ public class PainelCircuito extends JPanel {
 
 			g2d.drawImage(fuel.getImage(), 5, 240, null);
 			g2d.setColor(Color.BLACK);
-			Integer percent = controleJogo.getCombustBox(ps);
+			Integer percent = ps.getQtdeCombustBox();
 			if (percent != null)
 				g2d.drawString(percent + "%", 5, 280);
 			g2d.drawImage(tyre.getImage(), 5, 285, null);
-			String tpPneu = controleJogo.getTipoPeneuBox(ps);
+			String tpPneu = ps.getTipoPneuBox();
 			if (tpPneu != null)
 				g2d.drawString(Lang.msg(tpPneu), 5, 325);
 		}

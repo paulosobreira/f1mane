@@ -55,14 +55,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCombustBox(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public Integer getCombustBox(Piloto piloto) {
-		return new Integer(piloto.getQtdeCombustBox());
+		return combustJogador;
 	}
 
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getTipoPeneuBox(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String getTipoPeneuBox(Piloto piloto) {
-		return piloto.getTipoPneuBox();
+		return tipoPeneuJogador;
 	}
 
 	protected void setarNivelCorrida() {
@@ -334,10 +334,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 		pilotoJogador = (Piloto) selec;
 		pilotoJogador.setJogadorHumano(true);
 		pilotoJogador.setNomeJogador(nomeJogador);
+
 		this.tipoPeneuJogador = (String) tpneu;
 		this.combustJogador = (Integer) combust;
 		this.asaJogador = (String) asa;
-
 	}
 
 	/**
@@ -372,6 +372,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		this.tipoPeneuJogador = (String) tpneu;
 		this.combustJogador = (Integer) combust;
 		this.asaJogador = (String) asa;
+		pilotoJogador.setTipoPneuBox(tipoPeneuJogador);
+		pilotoJogador.setQtdeCombustBox(combustJogador);
+		pilotoJogador.setAsaBox(asaJogador);
 	}
 
 	/**
