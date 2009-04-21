@@ -5,6 +5,7 @@ import sowbreira.f1mane.controles.ControleCorrida;
 
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -17,7 +18,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import br.nnpe.Lang;
 
 public class TestePista {
 	private Circuito circuito;

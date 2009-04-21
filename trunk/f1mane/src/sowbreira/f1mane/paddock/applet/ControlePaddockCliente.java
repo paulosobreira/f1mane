@@ -2,7 +2,6 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
 import java.awt.Panel;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,9 +16,8 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
-import br.nnpe.Lang;
-
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
@@ -29,7 +27,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
-import sowbreira.f1mane.paddock.servlet.ServletPaddock;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author paulo.sobreira
@@ -123,7 +121,7 @@ public class ControlePaddockCliente {
 						"application/x-www-form-urlencoded");
 				connection.getOutputStream().write(
 						byteArrayOutputStream.toByteArray());
-				if (ServletPaddock.modoZip) {
+				if (PaddockConstants.modoZip) {
 					retorno = ZipUtil.descompactarObjeto(connection
 							.getInputStream());
 				} else {

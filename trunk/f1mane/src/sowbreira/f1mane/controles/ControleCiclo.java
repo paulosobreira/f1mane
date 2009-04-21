@@ -3,9 +3,9 @@ package sowbreira.f1mane.controles;
 import java.util.Iterator;
 
 import br.nnpe.Html;
-import br.nnpe.Lang;
 
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira

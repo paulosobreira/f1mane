@@ -9,8 +9,8 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
-import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira

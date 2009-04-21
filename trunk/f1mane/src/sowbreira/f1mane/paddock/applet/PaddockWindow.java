@@ -21,7 +21,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,7 +29,6 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
-import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
 import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
@@ -55,8 +53,8 @@ public class PaddockWindow {
 	private JButton iniciarJogo = new JButton("Iniciar Jogo");
 	private JButton verDetalhes = new JButton("Ver Detalhes");
 	private JButton classificacao = new JButton("Classificação");
-	private JComboBox comboTemporada = new JComboBox(new String[] { "2008",
-			"2007" });
+	private JComboBox comboTemporada = new JComboBox(new String[] { "2009",
+			"2008", "2007" });
 	private JButton sobre = new JButton("Sobre");
 	private JLabel infoLabel1 = new JLabel();
 	private Set chatTimes = new HashSet();

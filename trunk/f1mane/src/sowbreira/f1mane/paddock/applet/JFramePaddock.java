@@ -6,13 +6,8 @@ package sowbreira.f1mane.paddock.applet;
 import java.awt.Panel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
 
-import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 

@@ -1,6 +1,7 @@
 package sowbreira.f1mane.entidades;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 import java.io.Serializable;
 
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import br.nnpe.Html;
-import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira

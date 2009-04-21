@@ -1,8 +1,6 @@
 package sowbreira.f1mane.paddock.applet;
 
-import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +11,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
-import br.nnpe.Lang;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleJogoLocal;
@@ -23,7 +18,7 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
-import sun.net.www.content.image.png;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 17:41:24

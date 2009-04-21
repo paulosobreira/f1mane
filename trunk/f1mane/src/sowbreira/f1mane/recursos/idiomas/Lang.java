@@ -1,4 +1,4 @@
-package br.nnpe;
+package sowbreira.f1mane.recursos.idiomas;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,11 +29,17 @@ public class Lang {
 
 	public static String msg(String key) {
 		iniciaBundle();
+		if (key == null || "".equals(key)) {
+			return "";
+		}
 		return bundle.getString(key);
 	}
 
 	public static String msg(String key, Object[] strings) {
 		iniciaBundle();
+		if (key == null || "".equals(key)) {
+			return "";
+		}
 		MessageFormat messageFormat = new MessageFormat(bundle.getString(key));
 		return messageFormat.format(strings);
 	}

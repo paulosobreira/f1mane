@@ -2,7 +2,8 @@ package sowbreira.f1mane.entidades;
 
 import java.io.Serializable;
 
-import br.nnpe.Lang;
+import sowbreira.f1mane.recursos.idiomas.Lang;
+
 
 /**
  * @author Paulo Sobreira Criado em 06/05/2007 as 12:08:07

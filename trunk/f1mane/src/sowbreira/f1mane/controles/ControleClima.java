@@ -1,8 +1,8 @@
 package sowbreira.f1mane.controles;
 
 import br.nnpe.Html;
-import br.nnpe.Lang;
 import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 20:14:25

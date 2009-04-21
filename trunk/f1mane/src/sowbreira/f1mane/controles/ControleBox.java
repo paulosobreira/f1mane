@@ -2,7 +2,6 @@ package sowbreira.f1mane.controles;
 
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
-import br.nnpe.Lang;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
@@ -11,6 +10,7 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Messagens;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 import java.text.DecimalFormat;
 

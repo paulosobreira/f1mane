@@ -2,6 +2,7 @@ package sowbreira.f1mane.visao;
 
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -14,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira Criado Em 17/05/2007 10:35:33
