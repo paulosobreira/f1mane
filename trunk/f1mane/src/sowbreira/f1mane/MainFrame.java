@@ -45,6 +45,8 @@ public class MainFrame extends JFrame {
 			"Temporada 2007");
 	private JRadioButtonMenuItem t2008 = new JRadioButtonMenuItem(
 			"Temporada 2008");
+	private JRadioButtonMenuItem t2009 = new JRadioButtonMenuItem(
+			"Temporada 2009");
 	private JMenuBar bar;
 	private JMenu menuJogo;
 	private JMenu menuEditor;
@@ -153,6 +155,8 @@ public class MainFrame extends JFrame {
 
 					} else if (getT2008().isSelected()) {
 						temporarada = "t2008";
+					} else if (getT2009().isSelected()) {
+						temporarada = "t2009";
 					}
 
 					controleJogo = new ControleJogoLocal(temporarada);
@@ -212,9 +216,11 @@ public class MainFrame extends JFrame {
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(t2007);
 		buttonGroup.add(t2008);
+		buttonGroup.add(t2009);
 		menu1.add(t2007);
 		menu1.add(t2008);
-		t2008.setSelected(true);
+		menu1.add(t2009);
+		t2009.setSelected(true);
 
 	}
 
@@ -481,6 +487,10 @@ public class MainFrame extends JFrame {
 
 	public JRadioButtonMenuItem getT2008() {
 		return t2008;
+	}
+
+	public JRadioButtonMenuItem getT2009() {
+		return t2009;
 	}
 
 }
