@@ -442,9 +442,10 @@ public class MainFrame extends JFrame {
 				String temporarada = null;
 				if (getT2007().isSelected()) {
 					temporarada = "t2007";
-
 				} else if (getT2008().isSelected()) {
 					temporarada = "t2008";
+				} else if (getT2009().isSelected()) {
+					temporarada = "t2009";
 				}
 				controleJogo = new ControleJogoLocal(temporarada);
 				controleJogo.setMainFrame(this);

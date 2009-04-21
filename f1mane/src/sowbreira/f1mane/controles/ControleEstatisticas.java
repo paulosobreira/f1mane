@@ -6,8 +6,8 @@ import java.util.LinkedList;
 
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
-import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 13:24:54

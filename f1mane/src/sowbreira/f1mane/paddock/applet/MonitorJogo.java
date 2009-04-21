@@ -8,7 +8,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;

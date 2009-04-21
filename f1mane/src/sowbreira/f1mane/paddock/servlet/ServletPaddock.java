@@ -1,6 +1,5 @@
 package sowbreira.f1mane.paddock.servlet;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,13 +7,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.ZipUtil;
 
 /**
@@ -25,8 +24,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private static ControlePaddockServidor controlePaddock;
 	private static ControlePersistencia controlePersistencia;
-	private static boolean debug = false;
-	public static boolean modoZip = false;
+
 	private static MonitorAtividade monitorAtividade;
 
 	public void init() throws ServletException {
@@ -75,9 +73,10 @@ public class ServletPaddock extends HttpServlet {
 
 			Object escrever = controlePaddock.processarObjetoRecebido(object);
 			try {
-				if (modoZip) {
-					dumaparDadosZip(ZipUtil.compactarObjeto(debug, escrever,
-							res.getOutputStream()));
+				if (PaddockConstants.modoZip) {
+					dumaparDadosZip(ZipUtil.compactarObjeto(
+							PaddockConstants.debug, escrever, res
+									.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					dumaparDados(escrever);
@@ -103,7 +102,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
 			throws IOException {
-		if (debug) {
+		if (PaddockConstants.debug) {
 			String basePath = getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator;
 			FileOutputStream fileOutputStream = new FileOutputStream(basePath
@@ -116,7 +115,7 @@ public class ServletPaddock extends HttpServlet {
 	}
 
 	private void dumaparDados(Object escrever) throws IOException {
-		if (debug && (escrever != null)) {
+		if (PaddockConstants.debug && (escrever != null)) {
 			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
 					arrayOutputStream);

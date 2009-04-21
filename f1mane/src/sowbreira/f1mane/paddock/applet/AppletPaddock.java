@@ -8,7 +8,8 @@ import java.util.Properties;
 import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 
-import br.nnpe.Lang;
+import sowbreira.f1mane.recursos.idiomas.Lang;
+
 
 /**
  * @author paulo.sobreira

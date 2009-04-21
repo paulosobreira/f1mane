@@ -46,8 +46,8 @@ import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
-import br.nnpe.Lang;
 
 public class GerenciadorVisual {
 	private JPanel panelControle;

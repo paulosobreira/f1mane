@@ -11,10 +11,10 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Html;
-import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira

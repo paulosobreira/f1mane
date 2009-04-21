@@ -4,6 +4,7 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -44,7 +45,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import br.nnpe.Lang;
 
 /**
  * @author Paulo Sobreira Criado Em 10:51:26
