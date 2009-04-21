@@ -151,19 +151,23 @@ public class PainelCircuito extends JPanel {
 		if (pilotoSelecionado != null) {
 			g2d.setColor(Color.black);
 			int ptoOri = getWidth() - 100;
-
+			int yBase = 0;
+			yBase+=15;
 			g2d.drawString(
 					Lang.msg(pilotoSelecionado.getCarro().getTipoPneu()),
-					ptoOri, 15);
+					ptoOri, yBase);
+			yBase+=15;
 			g2d.drawString(Lang.msg(pilotoSelecionado.getCarro().getAsa()),
-					ptoOri, 30);
+					ptoOri, yBase);
+			yBase+=15;
 			g2d.drawString("Paradas :" + pilotoSelecionado.getQtdeParadasBox(),
-					ptoOri, 45);
+					ptoOri, yBase);
 			if (pilotoSelecionado.isBox()) {
 				g2d.setColor(red);
 			}
+			yBase+=15;
 			g2d.drawString("Vai Box :"
-					+ (pilotoSelecionado.isBox() ? "Sim" : "Não"), ptoOri, 60);
+					+ (pilotoSelecionado.isBox() ? "Sim" : "Não"), ptoOri, yBase);
 			String plider = "";
 			if (pilotoSelecionado.getPosicao() == 1) {
 				plider = "Lider ";
@@ -174,20 +178,41 @@ public class PainelCircuito extends JPanel {
 				g2d.setColor(red);
 			}
 			g2d.setColor(Color.black);
-			g2d.drawString("P/Lider: " + plider, getWidth() - 100, 75);
+			yBase+=15;
+			g2d.drawString("P/Lider: " + plider, getWidth() - 100, yBase);
+			yBase+=15;
+			g2d.drawString("F1 : Motor Min", ptoOri, yBase);
+			yBase+=15;
+			g2d.drawString("F2 : Motor Nor", ptoOri, yBase);
+			yBase+=15;
+			g2d.drawString("F3 : Motor Max", ptoOri, yBase);
+			yBase+=15;
+			g2d.drawString("F4 : Alterna", ptoOri, yBase);
+			yBase+=15;
+			g2d.drawString("F5 : Calteloso", ptoOri, yBase);
+			yBase+=15;
+			g2d.drawString("F6 : Normal", ptoOri, yBase);
+			yBase+=15;
+			g2d.drawString("F7 : Agressivo", ptoOri, yBase);
+			yBase+=15;
+			g2d.drawString("F12 : Box", ptoOri, yBase);
+
 			if ((pilotoSelecionado.getNumeroVolta() > 0)) {
 				Volta voltaPiloto = controleJogo
 						.obterMelhorVolta(pilotoSelecionado);
 
 				if (voltaPiloto != null) {
 					g2d.setColor(Color.BLUE);
+					yBase+=15;
 					g2d.drawString("Melhor: "
 							+ voltaPiloto.obterTempoVoltaFormatado(), ptoOri,
-							90);
+							yBase);
 				}
 				g2d.setColor(Color.black);
-				g2d.drawString("Ultimas 5 voltas: ", ptoOri, 105);
-				int contAlt = 120;
+				yBase+=15;
+				g2d.drawString("Ultimas 5 voltas: ", ptoOri, yBase);
+				yBase+=15;
+				int contAlt = yBase;
 				int contVolta = 1;
 				List voltas = pilotoSelecionado.getVoltas();
 				Color color = new Color(1, 1, 1);
@@ -206,6 +231,7 @@ public class PainelCircuito extends JPanel {
 
 				}
 			}
+			
 		}
 
 	}
