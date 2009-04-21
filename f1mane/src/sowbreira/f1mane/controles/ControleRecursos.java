@@ -54,7 +54,7 @@ public abstract class ControleRecursos {
 		if (temporada != null) {
 			this.temporarada = temporada;
 		} else {
-			this.temporarada = "t2008";
+			this.temporarada = "t2009";
 		}
 		carros = carregarListaCarros();
 		pilotos = carregarListaPilotos();
