@@ -209,7 +209,8 @@ public class PainelCircuito extends JPanel {
 			yBase += 15;
 			g2d.drawString(Lang.msg("074"), ptoOri, yBase);
 			yBase += 15;
-			if (Piloto.LENTO.equals(pilotoSelecionado.getModoPilotagem())
+			if (Lang.msg(Piloto.LENTO).equals(
+					gerenciadorVisual.getModoPiloto().getSelectedItem())
 					&& qtdeLuzesAcesas <= 0) {
 				g2d.setColor(red);
 			} else {
@@ -217,7 +218,8 @@ public class PainelCircuito extends JPanel {
 			}
 			g2d.drawString(Lang.msg("075"), ptoOri, yBase);
 			yBase += 15;
-			if (Piloto.NORMAL.equals(pilotoSelecionado.getModoPilotagem())
+			if (Lang.msg(Piloto.NORMAL).equals(
+					gerenciadorVisual.getModoPiloto().getSelectedItem())
 					&& qtdeLuzesAcesas <= 0) {
 				g2d.setColor(Color.BLUE);
 			} else {
@@ -225,7 +227,8 @@ public class PainelCircuito extends JPanel {
 			}
 			g2d.drawString(Lang.msg("076"), ptoOri, yBase);
 			yBase += 15;
-			if (Piloto.AGRESSIVO.equals(pilotoSelecionado.getModoPilotagem())
+			if (Lang.msg(Piloto.AGRESSIVO).equals(
+					gerenciadorVisual.getModoPiloto().getSelectedItem())
 					&& qtdeLuzesAcesas <= 0) {
 				g2d.setColor(Color.BLUE);
 			} else {
@@ -257,6 +260,9 @@ public class PainelCircuito extends JPanel {
 				Color color = new Color(1, 1, 1);
 				for (int i = voltas.size() - 1; i > -1; i--) {
 					Volta volta = (Volta) voltas.get(i);
+					if (volta.obterTempoVolta() == 0) {
+						continue;
+					}
 					g2d.setColor(color);
 					g2d.drawString(volta.obterTempoVoltaFormatado(), ptoOri,
 							contAlt);

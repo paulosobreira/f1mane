@@ -2,6 +2,7 @@ package sowbreira.f1mane.visao;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -952,7 +953,7 @@ public class GerenciadorVisual {
 				+ string + "<br>");
 		StringBuffer buffer = new StringBuffer();
 		for (int i = bufferTextual.size() - 1; i >= 0; i--) {
-			buffer.append(bufferTextual.get(i));
+			buffer.append(Html.sansSerif(bufferTextual.get(i).toString()));
 		}
 		StringReader reader = new StringReader(buffer.toString());
 		try {
@@ -984,5 +985,9 @@ public class GerenciadorVisual {
 
 	public JLabel getInfoPiloto() {
 		return infoPiloto;
+	}
+
+	public JComboBox getModoPiloto() {
+		return modoPiloto;
 	}
 }

@@ -59,6 +59,7 @@
 		<delete file="webapps/paddock/f1mane.jar" />
 		<copy file="f1mane.jar" todir="paddock" />
 		<copy file="f1mane.jar" todir="paddock/WEB-INF/lib" />
+		<delete file="f1mane.jar" />
 	</target>
 	<target name="criarWar" depends="">
 		<war compress="true" destfile="${env.TOMCAT_HOME}/webapps/paddock.war" webxml="paddock/WEB-INF/web.xml">
