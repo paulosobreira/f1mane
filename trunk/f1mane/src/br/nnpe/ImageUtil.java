@@ -13,16 +13,8 @@ import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
 
 import javax.swing.ImageIcon;
-
-import sun.awt.image.JPEGImageDecoder;
-import sun.awt.image.codec.JPEGImageDecoderImpl;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.jndi.toolkit.url.UrlUtil;
 
 
 /**

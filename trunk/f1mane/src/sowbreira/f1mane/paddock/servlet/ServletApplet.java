@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 
@@ -36,10 +35,10 @@ public class ServletApplet extends HttpServlet {
 				arrayOutputStream.write(byt);
 				byt = bufferedInputStream.read();
 			}
-			FileOutputStream fileOutputStream = new FileOutputStream(
-					getServletContext().getRealPath("") + File.separator
-							+ "f1mane.jar");
-			fileOutputStream.write(arrayOutputStream.toByteArray());
+//			FileOutputStream fileOutputStream = new FileOutputStream(
+//					getServletContext().getRealPath("") + File.separator
+//							+ "f1mane.jar");
+//			fileOutputStream.write(arrayOutputStream.toByteArray());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
