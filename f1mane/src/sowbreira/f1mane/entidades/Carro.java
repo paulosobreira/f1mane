@@ -1,15 +1,11 @@
 package sowbreira.f1mane.entidades;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.ExplicitGroup;
-
-import br.nnpe.Html;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Html;
 
 /**
  * @author Paulo Sobreira Criado em 06/05/2007 as 11:09:15

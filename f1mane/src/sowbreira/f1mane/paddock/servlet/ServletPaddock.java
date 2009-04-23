@@ -103,7 +103,7 @@ public class ServletPaddock extends HttpServlet {
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
 			throws IOException {
 		if (PaddockConstants.debug) {
-			String basePath = getServletContext().getRealPath("")
+			 String basePath = getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator;
 			FileOutputStream fileOutputStream = new FileOutputStream(basePath
 					+ "Pack-" + System.currentTimeMillis() + ".zip");
@@ -116,7 +116,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private void dumaparDados(Object escrever) throws IOException {
 		if (PaddockConstants.debug && (escrever != null)) {
-			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+			 ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
 					arrayOutputStream);
 			objectOutputStream.writeObject(escrever);

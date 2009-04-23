@@ -1,25 +1,19 @@
 package sowbreira.f1mane.controles;
 
-import br.nnpe.GeoUtil;
-import br.nnpe.Html;
-
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
-
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.Messagens;
-import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.recursos.idiomas.Lang;
-
-import java.text.DecimalFormat;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.GeoUtil;
+import br.nnpe.Html;
 
 /**
  * @author Paulo Sobreira Criado em 09/06/2007 as 17:17:28
