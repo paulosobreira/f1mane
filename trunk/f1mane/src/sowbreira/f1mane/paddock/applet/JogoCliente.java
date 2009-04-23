@@ -599,17 +599,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return 0;
 	}
 
-	@Override
 	public void mudarModoPilotagem(String modo) {
 		monitorJogo.mudarModoPilotagem(modo);
 	}
 
-	@Override
 	public String getAsaBox(Piloto piloto) {
 		return piloto.getAsaBox();
 	}
 
-	@Override
 	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
 			Object combust, Object asa) {
 		return 0;
@@ -619,13 +616,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		this.mainFrame = mainFrame;
 	}
 
-	@Override
 	public int verificaRetardatario(Piloto piloto, int novoModificador) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public boolean isModoQualify() {
 		// TODO Auto-generated method stub
 		return false;
