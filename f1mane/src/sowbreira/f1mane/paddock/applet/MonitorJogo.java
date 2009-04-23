@@ -112,7 +112,6 @@ public class MonitorJogo implements Runnable {
 				if (atualizadorPainel == null) {
 					atualizadorPainel = new Thread(new Runnable() {
 
-						@Override
 						public void run() {
 							while (jogoAtivo) {
 								jogoCliente.atualizaPainel();

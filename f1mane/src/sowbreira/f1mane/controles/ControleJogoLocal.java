@@ -721,13 +721,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return controleEstatisticas.calculaDiferencaParaProximo(piloto);
 	}
 
-	@Override
 	public void mudarModoPilotagem(String modo) {
 		if (pilotoJogador != null)
 			pilotoJogador.setModoPilotagem(modo);
 	}
 
-	@Override
 	public String getAsaBox(Piloto piloto) {
 		return asaJogador;
 	}
@@ -736,12 +734,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 		this.mainFrame = mainFrame;
 	}
 
-	@Override
 	public int verificaRetardatario(Piloto piloto, int novoModificador) {
 		return controleCorrida.verificaRetardatario(piloto, novoModificador);
 	}
 
-	@Override
 	public boolean isModoQualify() {
 		return controleCorrida.getControleQualificacao().isModoQualify();
 	}
