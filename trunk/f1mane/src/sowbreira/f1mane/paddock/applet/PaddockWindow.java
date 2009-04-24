@@ -231,7 +231,7 @@ public class PaddockWindow {
 		frame.getContentPane().add(paddockWindow.getMainPanel());
 		frame.setSize(640, 480);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	}
 
 	public void atualizar(DadosPaddock dadosPaddock) {
