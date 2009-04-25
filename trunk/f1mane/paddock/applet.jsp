@@ -39,6 +39,9 @@
 	<a href="http://sowbreira.googlepages.com/F1Mane.html" >
 	Vers&atilde;o do Jogo modo 1 jogador
 	</a>
+	<a href="ServletBaseDados?tipo=" >
+	 Bkp dados
+	</a>
 	
 	</span>
 	</div>

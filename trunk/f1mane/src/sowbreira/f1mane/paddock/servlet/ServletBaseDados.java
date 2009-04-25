@@ -43,6 +43,9 @@ public class ServletBaseDados extends HttpServlet {
 		doGet(arg0, arg1);
 	}
 
+	/**
+	 * http://server:8080/paddock/ServletBaseDados?tipo=
+	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 		String tipo = req.getParameter("tipo");
