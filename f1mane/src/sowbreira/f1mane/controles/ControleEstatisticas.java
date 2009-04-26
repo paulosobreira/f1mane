@@ -236,7 +236,7 @@ public class ControleEstatisticas {
 		for (Iterator iterator = controleJogo.getPilotos().iterator(); iterator
 				.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.isJogadorHumano()) {
+			if (piloto.isJogadorHumano() && !piloto.isDesqualificado()) {
 				pilotos.add(piloto);
 			}
 
