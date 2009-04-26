@@ -366,7 +366,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void adicionarInfoDireto(String info) {
 	}
 
-	@Override
 	public void info(String info) {
 		if (Comandos.CORRIDA_INICIADA.equals(estado)) {
 			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
@@ -382,7 +381,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		}
 	}
 
-	@Override
 	public void infoPrioritaria(String info) {
 		if (Comandos.CORRIDA_INICIADA.equals(estado)) {
 			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter

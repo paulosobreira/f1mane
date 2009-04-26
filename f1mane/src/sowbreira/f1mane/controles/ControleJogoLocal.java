@@ -409,7 +409,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 					new Object[] { getNumVoltaAtual() })));
 		}
 		controleCorrida.getControleClima().processaPossivelMudancaClima();
-
+		if (!isSafetyCarNaPista())
+			controleEstatisticas.tabelaComparativa();
 	}
 
 	/**
@@ -740,6 +741,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	public boolean isModoQualify() {
 		return controleCorrida.getControleQualificacao().isModoQualify();
+	}
+
+	public void tabelaComparativa() {
+		controleEstatisticas.tabelaComparativa();
+
 	}
 
 }

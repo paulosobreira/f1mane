@@ -140,7 +140,7 @@ public class GerenciadorVisual {
 		defaultEditor.getTextField().addKeyListener(keyListener);
 		spinnerPercentCombust.getEditor().addKeyListener(keyListener);
 		telemetriaPanel.addKeyListener(keyListener);
-
+		comboBoxAsa.addKeyListener(keyListener);
 	}
 
 	public void finalize() throws Throwable {
@@ -948,9 +948,14 @@ public class GerenciadorVisual {
 	}
 
 	public void adicionarInfoDireto(String string) {
-		bufferTextual.add(Html.cinza("Volta " + controleJogo.getNumVoltaAtual()
-				+ " ")
-				+ string + "<br>");
+		if (string != null && !string.startsWith("<table>"))
+			bufferTextual.add(Html.cinza(Lang.msg("082")
+					+ controleJogo.getNumVoltaAtual() + " ")
+					+ string + "<br>");
+		else {
+			bufferTextual.add(string);
+
+		}
 		StringBuffer buffer = new StringBuffer();
 		for (int i = bufferTextual.size() - 1; i >= 0; i--) {
 			buffer.append(Html.sansSerif(bufferTextual.get(i).toString()));

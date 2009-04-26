@@ -175,8 +175,7 @@ public class Piloto implements Serializable {
 	public void setRecebeuBanderada(boolean recebueBanderada,
 			InterfaceJogo controleJogo) {
 		if (!this.recebeuBanderada) {
-			Piloto piloto = (Piloto) controleJogo.getPilotos().get(0);
-			if (this.nome.equals(piloto.getNome())) {
+			if (this.getPosicao() == 1) {
 				controleJogo.infoPrioritaria(Html.superBlack(getNome())
 						+ Html.superGreen(Lang.msg("044",
 								new Object[] { getNumeroVolta() })));
@@ -629,7 +628,7 @@ public class Piloto implements Serializable {
 						&& Math.random() > controleJogo.getNiveljogo()) {
 					if (Math.random() < controleJogo
 							.obterIndicativoCorridaCompleta()
-							&& Math.random() > .95 && getPosicao() < 9) {
+							&& Math.random() > .990 && getPosicao() < 9) {
 						int val = 1 + (int) (Math.random() * 4);
 						String txt = "";
 						switch (val) {
@@ -699,10 +698,10 @@ public class Piloto implements Serializable {
 				}
 				carro.setFritouPneuNaUltimaCurvaBaixa(false);
 				if (AGRESSIVO.equals(modoPilotagem)) {
-					if (controleJogo.isChovendo()) {
+					if (controleJogo.isChovendo() && Math.random() > 0.950) {
 						controleJogo.info(Html.txtRedBold(getNome())
 								+ Html.bold(Lang.msg("052")));
-					} else {
+					} else if (Math.random() > 0.950) {
 						if (Math.random() > 0.5) {
 							controleJogo.info(Html.txtRedBold(getNome())
 									+ Html.bold(Lang.msg("053")));
@@ -711,7 +710,7 @@ public class Piloto implements Serializable {
 									+ Html.bold(Lang.msg("054")));
 						}
 					}
-				} else {
+				} else if (Math.random() > 0.950) {
 					if (controleJogo.isChovendo()) {
 						controleJogo.info(Html.bold(getNome())
 								+ Html.verde(Lang.msg("055")));

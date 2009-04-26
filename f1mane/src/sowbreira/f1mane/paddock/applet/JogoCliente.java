@@ -626,4 +626,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
+	@Override
+	public void tabelaComparativa() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

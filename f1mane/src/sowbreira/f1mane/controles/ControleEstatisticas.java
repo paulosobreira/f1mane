@@ -1,11 +1,18 @@
 package sowbreira.f1mane.controles;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
 
@@ -223,4 +230,97 @@ public class ControleEstatisticas {
 		this.consumidorAtivo = consumidorAtivo;
 	}
 
+	public void tabelaComparativa() {
+		String tabela = carrgaTabelaComparativa();
+		List pilotos = new ArrayList();
+		for (Iterator iterator = controleJogo.getPilotos().iterator(); iterator
+				.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (piloto.isJogadorHumano()) {
+				pilotos.add(piloto);
+			}
+
+		}
+
+		if (pilotos.isEmpty()) {
+			for (Iterator iterator = controleJogo.getPilotos().iterator(); iterator
+					.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (piloto.getPosicao() < 9) {
+					pilotos.add(piloto);
+				}
+
+			}
+		}
+		Collections.shuffle(pilotos);
+		Piloto pilotoSel = (Piloto) pilotos.get(0);
+		Piloto pilotoComp = null;
+		if (pilotoSel.getPosicao() == 1) {
+			pilotoComp = controleJogo.obterCarroAtraz(pilotoSel).getPiloto();
+		} else {
+			pilotoComp = controleJogo.obterCarroNaFrente(pilotoSel).getPiloto();
+		}
+		if (pilotoComp.getVoltas().size() < 3
+				|| pilotoSel.getVoltas().size() < 3) {
+			return;
+		}
+		if (pilotoSel.getPosicao() == 1) {
+			tabela = preencherTabela(pilotoSel, pilotoComp, tabela);
+		} else {
+			tabela = preencherTabela(pilotoComp, pilotoSel, tabela);
+		}
+		controleJogo.info(tabela);
+	}
+
+	private String preencherTabela(Piloto piloto1, Piloto piloto2, String tabela) {
+		tabela = tabela.replaceAll("piloto1", Html.sansSerif(piloto1.getNome()
+				+ " " + piloto1.getPosicao()));
+		tabela = tabela.replaceAll("piloto2", Html.sansSerif(piloto2.getNome()
+				+ " " + piloto2.getPosicao()));
+		tabela = tabela.replaceAll("volta1", Html.sansSerif(Lang.msg("081")
+				+ piloto2.getNumeroVolta()));
+		tabela = tabela.replaceAll("volta2", Html.sansSerif(Lang.msg("081")
+				+ (piloto2.getNumeroVolta() - 1)));
+		tabela = tabela.replaceAll("volta3", Html.sansSerif(Lang.msg("081")
+				+ (piloto2.getNumeroVolta() - 2)));
+		for (int i = 1; i < 4; i++) {
+			int gap = piloto1.getNumeroVolta() - piloto2.getNumeroVolta();
+			Volta vp1 = (Volta) piloto1.getVoltas().get(
+					piloto1.getVoltas().size() - i - gap);
+			tabela = tabela.replaceAll("p1_v" + i, Html.sansSerif(vp1
+					.obterTempoVoltaFormatado()));
+			Volta vp2 = (Volta) piloto2.getVoltas().get(
+					piloto2.getVoltas().size() - i);
+			tabela = tabela.replaceAll("p2_v" + i, Html.sansSerif(vp2
+					.obterTempoVoltaFormatado()));
+			long diff = (long) (vp2.obterTempoVolta() - vp1.obterTempoVolta());
+			if (diff < 0)
+				tabela = tabela.replaceAll("cor" + i, "#80FF00");
+			else
+				tabela = tabela.replaceAll("cor" + i, "#FFFF00");
+			tabela = tabela.replaceAll("diff_v" + i, Html
+					.sansSerif(formatarTempo(diff)));
+		}
+		return tabela;
+	}
+
+	private String carrgaTabelaComparativa() {
+		try {
+			InputStreamReader inputStreamReader = new InputStreamReader(
+					CarregadorRecursos.recursoComoStream("tabela.html"));
+			BufferedReader bufferedReader = new BufferedReader(
+					inputStreamReader);
+			StringBuffer buffer = new StringBuffer();
+			String line;
+			line = bufferedReader.readLine();
+			while (line != null) {
+				buffer.append(line);
+				line = bufferedReader.readLine();
+			}
+			return buffer.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 }
