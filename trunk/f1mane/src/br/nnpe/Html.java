@@ -135,6 +135,10 @@ public class Html {
 		return "<div align=\"" + align + "\">" + campo + "</div>";
 	}
 
+	public static String sansSerif(int num) {
+		return sansSerif(String.valueOf(num));
+	}
+
 	public static String sansSerif(String texto) {
 		StringBuffer buffer = new StringBuffer();
 
@@ -151,16 +155,6 @@ public class Html {
 				"' color='red'>").append(texto).append("</font>");
 
 		return buffer.toString();
-	}
-
-	public static String superOrange(String texto) {
-		StringBuffer buffer = new StringBuffer();
-
-		buffer.append("<font  size='").append(superSize).append(
-				"' color='#FF8C00'>").append(texto).append("</font>");
-
-		return buffer.toString();
-
 	}
 
 	public static String orange(String texto) {

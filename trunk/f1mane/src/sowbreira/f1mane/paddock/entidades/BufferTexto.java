@@ -18,7 +18,7 @@ public class BufferTexto implements Serializable {
 		if (bufferinfo.size() > 15) {
 			bufferinfo.removeLast();
 		}
-		bufferinfo.addLast(txt);
+		bufferinfo.addFirst(txt);
 
 	}
 
@@ -29,7 +29,7 @@ public class BufferTexto implements Serializable {
 		if (bufferinfo.size() > 15) {
 			bufferinfo.removeLast();
 		}
-		bufferinfo.addFirst(txt);
+		bufferinfo.addLast(txt);
 	}
 
 	public String consumirTexto() {

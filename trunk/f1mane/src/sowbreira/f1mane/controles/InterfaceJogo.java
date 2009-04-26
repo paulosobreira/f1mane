@@ -177,4 +177,6 @@ public interface InterfaceJogo {
 
 	public boolean isModoQualify();
 
+	public void tabelaComparativa();
+
 }

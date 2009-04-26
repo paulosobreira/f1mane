@@ -215,13 +215,11 @@ public class ControleBox {
 		piloto.setSaiuDoBoxMilis(0);
 		if (piloto.isJogadorHumano()) {
 			controleJogo
-					.infoPrioritaria(Html.superOrange(Lang.msg("002",
-							new String[] {
-									piloto.getNome(),
-									String.valueOf(controleJogo
-											.getNumVoltaAtual()) })));
+					.infoPrioritaria(Html.orange(Lang.msg("002", new String[] {
+							piloto.getNome(),
+							String.valueOf(controleJogo.getNumVoltaAtual()) })));
 		} else if (piloto.getPosicao() < 9) {
-			controleJogo.info(Html.superOrange(Lang.msg("002", new String[] {
+			controleJogo.info(Html.orange(Lang.msg("002", new String[] {
 					piloto.getNome(),
 					String.valueOf(controleJogo.getNumVoltaAtual()) })));
 		}
@@ -238,9 +236,9 @@ public class ControleBox {
 				Lang.msg(piloto.getCarro().getTipoPneu()) };
 		String info = Lang.msg("003", strings);
 		if (piloto.isJogadorHumano()) {
-			controleJogo.infoPrioritaria(Html.superOrange(info));
+			controleJogo.infoPrioritaria(Html.orange(info));
 		} else if (piloto.getPosicao() < 9) {
-			controleJogo.info(Html.superOrange(info));
+			controleJogo.info(Html.orange(info));
 		}
 
 		boxEquipesOcupado.put(piloto.getCarro(), "");

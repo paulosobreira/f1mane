@@ -187,7 +187,8 @@ public class ControleCorrida {
 					return 2;
 				} else if (!pilotoNaFrente.testeHabilidadePilotoCarro()
 						&& (Math.random() > fatorUtrapassagemTemp)) {
-					if (pilotoNaFrente.getPosicao() < 9) {
+					if (pilotoNaFrente.getPosicao() < 9
+							&& Math.random() > 0.950) {
 
 						controleJogo.info(Lang.msg("013", new Object[] {
 								Html.bold(piloto.getNome()),
@@ -207,7 +208,7 @@ public class ControleCorrida {
 				}
 			}
 
-			if (piloto.isJogadorHumano()) {
+			if (piloto.isJogadorHumano() && Math.random() > 0.950) {
 				controleJogo.info(Lang.msg("014", new Object[] { Html
 						.bold(piloto.getNome()) }));
 			}
@@ -295,13 +296,13 @@ public class ControleCorrida {
 			ganhador.setAgressivo(true);
 		ganhador.setCiclosDesconcentrado(0);
 
-		if (perdedor.isJogadorHumano()) {
+		if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
 			controleJogo.info(Lang.msg("018", new String[] {
 					Html.bold(perdedor.getNome()),
 					Html.bold(ganhador.getNome()) }));
 		}
 
-		if (ganhador.isJogadorHumano()) {
+		if (ganhador.isJogadorHumano() && Math.random() > 0.950) {
 			controleJogo.info(Lang.msg("019", new String[] {
 					Html.bold(ganhador.getNome()),
 					Html.bold(perdedor.getNome()) }));
