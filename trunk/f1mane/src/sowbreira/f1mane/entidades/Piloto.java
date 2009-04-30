@@ -60,6 +60,7 @@ public class Piloto implements Serializable {
 	private int qtdeCombustBox;
 	private long parouNoBoxMilis;
 	private long saiuDoBoxMilis;
+	private int msgTentativaNumVolta;
 
 	public int getVelocidade() {
 		return velocidade;
@@ -600,30 +601,28 @@ public class Piloto implements Serializable {
 	}
 
 	private void tantarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
-		if (jogadorHumano) {
+		if (jogadorHumano || danificado()) {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);
 		int distBrigaMax = (int) (100 * controleJogo.getNiveljogo());
 		int distBrigaMin = 0;
 		if (controleJogo.getNiveljogo() == .3) {
-			distBrigaMin = 20;
+			distBrigaMin = 29;
 		} else if (controleJogo.getNiveljogo() == .5) {
-			distBrigaMin = 15;
+			distBrigaMin = 20;
 		} else if (controleJogo.getNiveljogo() == .7) {
 			distBrigaMin = 10;
 		}
 		if (controleJogo.porcentagemCorridaCompletada() > distBrigaMax) {
 			distBrigaMax = controleJogo.porcentagemCorridaCompletada();
 		}
-
 		Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		if (diff > distBrigaMin && diff < distBrigaMax
 				&& testeHabilidadePilotoCarro()) {
 			if (carroPilotoDaFrente != null) {
 				Piloto pilotoFrente = carroPilotoDaFrente.getPiloto();
-				if (pilotoFrente.isJogadorHumano()
-						&& !pilotoFrente.entrouNoBox()
+				if (!pilotoFrente.entrouNoBox()
 						&& !controleJogo.isSafetyCarNaPista()
 						&& Math.random() < controleJogo.getNiveljogo()) {
 					getCarro().setGiro(Carro.GIRO_MAX_VAL);
@@ -632,8 +631,17 @@ public class Piloto implements Serializable {
 						setAgressivo(true);
 						if (Math.random() < controleJogo
 								.obterIndicativoCorridaCompleta()
-								&& Math.random() > .990 && getPosicao() < 9) {
+								&& Math.random() > .9
+								&& getPosicao() < 9
+								&& msgTentativaNumVolta != getNumeroVolta()) {
+
 							int val = 1 + (int) (Math.random() * 4);
+							if (getNumeroVolta() - 1 == msgTentativaNumVolta
+									|| getNumeroVolta() + 1 == msgTentativaNumVolta) {
+								val = 5;
+							} else {
+								msgTentativaNumVolta = getNumeroVolta();
+							}
 							String txt = "";
 							switch (val) {
 
