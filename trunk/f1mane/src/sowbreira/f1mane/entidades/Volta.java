@@ -18,6 +18,15 @@ public class Volta implements Serializable {
 	private long ciclosInicio;
 	private long ciclosFim;
 	private int pilotoId;
+	private boolean voltaBox;
+
+	public boolean isVoltaBox() {
+		return voltaBox;
+	}
+
+	public void setVoltaBox(boolean voltaBox) {
+		this.voltaBox = voltaBox;
+	}
 
 	public String encode() {
 		return ciclosInicio + "§" + ciclosFim + "§" + pilotoId;

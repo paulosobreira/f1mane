@@ -269,7 +269,8 @@ public class ControleEstatisticas {
 		} else {
 			tabela = preencherTabela(pilotoComp, pilotoSel, tabela);
 		}
-		controleJogo.info(tabela);
+		if (tabela != null)
+			controleJogo.info(tabela);
 	}
 
 	private String preencherTabela(Piloto piloto1, Piloto piloto2, String tabela) {
@@ -287,10 +288,16 @@ public class ControleEstatisticas {
 			int gap = piloto1.getNumeroVolta() - piloto2.getNumeroVolta();
 			Volta vp1 = (Volta) piloto1.getVoltas().get(
 					piloto1.getVoltas().size() - i - gap);
+			if (vp1.isVoltaBox()) {
+				return null;
+			}
 			tabela = tabela.replaceAll("p1_v" + i, Html.sansSerif(vp1
 					.obterTempoVoltaFormatado()));
 			Volta vp2 = (Volta) piloto2.getVoltas().get(
 					piloto2.getVoltas().size() - i);
+			if (vp2.isVoltaBox()) {
+				return null;
+			}
 			tabela = tabela.replaceAll("p2_v" + i, Html.sansSerif(vp2
 					.obterTempoVoltaFormatado()));
 			long diff = (long) (vp2.obterTempoVolta() - vp1.obterTempoVolta());

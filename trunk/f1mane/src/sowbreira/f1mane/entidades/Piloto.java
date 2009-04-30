@@ -562,7 +562,7 @@ public class Piloto implements Serializable {
 		}
 
 		verificaMudancaRegime(controleJogo);
-		verificaMudancaGiro(controleJogo);
+		tantarPassaPilotoDaFrente(controleJogo);
 		int novoModificador = calcularNovoModificador(controleJogo);
 
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
@@ -599,12 +599,12 @@ public class Piloto implements Serializable {
 		return index;
 	}
 
-	private void verificaMudancaGiro(InterfaceJogo controleJogo) {
+	private void tantarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
 		if (jogadorHumano) {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);
-		int distBrigaMax = 30;
+		int distBrigaMax = (int) (100 * controleJogo.getNiveljogo());
 		int distBrigaMin = 0;
 		if (controleJogo.getNiveljogo() == .3) {
 			distBrigaMin = 20;
@@ -613,62 +613,66 @@ public class Piloto implements Serializable {
 		} else if (controleJogo.getNiveljogo() == .7) {
 			distBrigaMin = 10;
 		}
-		if (controleJogo.porcentagemCorridaCompletada() > 60) {
-			distBrigaMax = 50;
+		if (controleJogo.porcentagemCorridaCompletada() > distBrigaMax) {
+			distBrigaMax = controleJogo.porcentagemCorridaCompletada();
 		}
 
 		Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		if (diff > distBrigaMin && diff < distBrigaMax
-				&& testeHabilidadePiloto()) {
+				&& testeHabilidadePilotoCarro()) {
 			if (carroPilotoDaFrente != null) {
 				Piloto pilotoFrente = carroPilotoDaFrente.getPiloto();
 				if (pilotoFrente.isJogadorHumano()
 						&& !pilotoFrente.entrouNoBox()
 						&& !controleJogo.isSafetyCarNaPista()
-						&& Math.random() > controleJogo.getNiveljogo()) {
-					if (Math.random() < controleJogo
-							.obterIndicativoCorridaCompleta()
-							&& Math.random() > .990 && getPosicao() < 9) {
-						int val = 1 + (int) (Math.random() * 4);
-						String txt = "";
-						switch (val) {
+						&& Math.random() < controleJogo.getNiveljogo()) {
+					getCarro().setGiro(Carro.GIRO_MAX_VAL);
+					if (testeHabilidadePiloto()
+							&& Math.random() < controleJogo.getNiveljogo()) {
+						setAgressivo(true);
+						if (Math.random() < controleJogo
+								.obterIndicativoCorridaCompleta()
+								&& Math.random() > .990 && getPosicao() < 9) {
+							int val = 1 + (int) (Math.random() * 4);
+							String txt = "";
+							switch (val) {
 
-						case 1:
-							txt = Lang.msg("048", new String[] {
-									Html.bold(getNome()),
-									Html.bold(carroPilotoDaFrente.getPiloto()
-											.getNome()) });
-							controleJogo.info(Html.silver(txt));
-							break;
-						case 2:
-							txt = Lang.msg("049", new String[] {
-									Html.bold(getNome()),
-									Html.bold(carroPilotoDaFrente.getPiloto()
-											.getNome()) });
-							controleJogo.info(Html.silver(txt));
-							break;
-						case 3:
-							txt = Lang.msg("050", new String[] {
-									Html.bold(getNome()),
-									Html.bold(carroPilotoDaFrente.getPiloto()
-											.getNome()) });
-							controleJogo.info(Html.silver(txt));
-							break;
-						case 4:
-							txt = Lang.msg("051", new String[] {
-									Html.bold(getNome()),
-									Html.bold(carroPilotoDaFrente.getPiloto()
-											.getNome()) });
-							controleJogo.info(Html.silver(txt));
-							break;
+							case 1:
+								txt = Lang.msg("048", new String[] {
+										Html.bold(getNome()),
+										Html.bold(carroPilotoDaFrente
+												.getPiloto().getNome()) });
+								controleJogo.info(Html.silver(txt));
+								break;
+							case 2:
+								txt = Lang.msg("049", new String[] {
+										Html.bold(getNome()),
+										Html.bold(carroPilotoDaFrente
+												.getPiloto().getNome()) });
+								controleJogo.info(Html.silver(txt));
+								break;
+							case 3:
+								txt = Lang.msg("050", new String[] {
+										Html.bold(getNome()),
+										Html.bold(carroPilotoDaFrente
+												.getPiloto().getNome()) });
+								controleJogo.info(Html.silver(txt));
+								break;
+							case 4:
+								txt = Lang.msg("051", new String[] {
+										Html.bold(getNome()),
+										Html.bold(carroPilotoDaFrente
+												.getPiloto().getNome()) });
+								controleJogo.info(Html.silver(txt));
+								break;
 
-						default:
-							break;
+							default:
+								break;
+							}
 						}
 					}
 				}
 			}
-			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		} else {
 			getCarro().setGiro(Carro.GIRO_NOR_VAL);
 		}
@@ -868,10 +872,9 @@ public class Piloto implements Serializable {
 
 			return;
 		}
-
 		Volta volta = getVoltaAtual();
 		volta.setCiclosFim(System.currentTimeMillis());
-
+		volta.setVoltaBox(true);
 		setUltimaVolta(volta);
 		voltas.add(volta);
 		volta = new Volta();
