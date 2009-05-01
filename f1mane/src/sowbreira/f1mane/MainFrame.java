@@ -28,10 +28,11 @@ import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.editor.MainPanelEditor;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
 /**
- * @author Paulo Created on 31/12/2004
+ * @author Paulo Sobreira Created on 31/12/2004
  */
 public class MainFrame extends JFrame {
 	/**
@@ -41,12 +42,25 @@ public class MainFrame extends JFrame {
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
 	private boolean modoApplet;
-	private JRadioButtonMenuItem t2007 = new JRadioButtonMenuItem(
-			"Temporada 2007");
-	private JRadioButtonMenuItem t2008 = new JRadioButtonMenuItem(
-			"Temporada 2008");
-	private JRadioButtonMenuItem t2009 = new JRadioButtonMenuItem(
-			"Temporada 2009");
+	private JRadioButtonMenuItem t2007 = new JRadioButtonMenuItem() {
+		public String getText() {
+			return Lang.msg("085");
+		}
+
+	};
+	private JRadioButtonMenuItem t2008 = new JRadioButtonMenuItem() {
+		public String getText() {
+			return Lang.msg("086");
+		}
+
+	};
+
+	private JRadioButtonMenuItem t2009 = new JRadioButtonMenuItem() {
+		public String getText() {
+			return Lang.msg("087");
+		}
+
+	};
 	private JMenuBar bar;
 	private JMenu menuJogo;
 	private JMenu menuEditor;
@@ -57,13 +71,29 @@ public class MainFrame extends JFrame {
 		bar = new JMenuBar();
 		setJMenuBar(bar);
 
-		menuJogo = new JMenu("Jogo");
+		menuJogo = new JMenu() {
+			public String getText() {
+				return Lang.msg("088");
+			}
+
+		};
+
 		bar.add(menuJogo);
 
-		menuInfo = new JMenu("Informações");
+		menuInfo = new JMenu() {
+			public String getText() {
+				return Lang.msg("089");
+			}
+
+		};
 		bar.add(menuInfo);
 
-		menuEditor = new JMenu("Editor");
+		menuEditor = new JMenu() {
+			public String getText() {
+				return Lang.msg("090");
+			}
+
+		};
 		bar.add(menuEditor);
 		if (modoApplet) {
 			menuEditor.setEnabled(false);
@@ -79,7 +109,12 @@ public class MainFrame extends JFrame {
 	}
 
 	private void gerarMenusInfo(JMenu menuInfo2) {
-		JMenuItem leiaMe = new JMenuItem("Leia-Me");
+		JMenuItem leiaMe = new JMenuItem("Leia-Me") {
+			public String getText() {
+				return Lang.msg("091");
+			}
+
+		};
 		leiaMe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JTextArea area = new JTextArea(20, 50);
@@ -96,12 +131,19 @@ public class MainFrame extends JFrame {
 					e1.printStackTrace();
 				}
 				area.setCaretPosition(0);
-				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(
-						area), "Leia-ME", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane
+						.showMessageDialog(MainFrame.this,
+								new JScrollPane(area), Lang.msg("091"),
+								JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menuInfo2.add(leiaMe);
-		JMenuItem resFinal = new JMenuItem("Resultado Corrida");
+		JMenuItem resFinal = new JMenuItem("Resultado Corrida") {
+			public String getText() {
+				return Lang.msg("092");
+			}
+
+		};
 		resFinal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -120,21 +162,31 @@ public class MainFrame extends JFrame {
 	}
 
 	private void gerarMenusSobre(JMenu menu2) {
-		JMenuItem sobre = new JMenuItem("Sobre o autor do jogo");
+		JMenuItem sobre = new JMenuItem("Sobre o autor do jogo") {
+			public String getText() {
+				return Lang.msg("093");
+			}
+
+		};
 		sobre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String msg = "Feito por Paulo Sobreira \n sowbreira@yahoo.com.br \n"
 						+ "http://br.geocities.com/sowbreira/ \n"
 						+ "Iniciado em Maio de 2007";
-				JOptionPane.showMessageDialog(MainFrame.this, msg, "Sobre",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
+						.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
 	}
 
 	private void gerarMenusSingle(JMenu menu1) {
-		JMenuItem iniciar = new JMenuItem("Iniciar Jogo");
+		JMenuItem iniciar = new JMenuItem("Iniciar Jogo") {
+			public String getText() {
+				return Lang.msg("094");
+			}
+
+		};
 		iniciar.setEnabled(false);
 		iniciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -142,7 +194,7 @@ public class MainFrame extends JFrame {
 					removerKeyListeners();
 					if (controleJogo != null) {
 						int ret = JOptionPane.showConfirmDialog(MainFrame.this,
-								"Isto terminara o jogo atual.", "Iniciar Jogo",
+								Lang.msg("095"), Lang.msg("094"),
 								JOptionPane.YES_NO_OPTION);
 						if (ret == JOptionPane.NO_OPTION) {
 							return;
@@ -168,14 +220,20 @@ public class MainFrame extends JFrame {
 			}
 		});
 		// menu1.add(iniciar);
-		JMenuItem iniciarSimples = new JMenuItem("Iniciar Jogo");
+		JMenuItem iniciarSimples = new JMenuItem("Iniciar Jogo") {
+			public String getText() {
+				return Lang.msg("094");
+			}
+
+		};
+
 		iniciarSimples.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					removerKeyListeners();
 					if (controleJogo != null) {
 						int ret = JOptionPane.showConfirmDialog(MainFrame.this,
-								"Isto terminara o jogo atual.", "Iniciar Jogo",
+								Lang.msg("095"), Lang.msg("094"),
 								JOptionPane.YES_NO_OPTION);
 						if (ret == JOptionPane.NO_OPTION) {
 							return;
@@ -199,7 +257,12 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu1.add(iniciarSimples);
-		JMenuItem pausa = new JMenuItem("Pausa Jogo");
+		JMenuItem pausa = new JMenuItem("Pausa Jogo") {
+			public String getText() {
+				return Lang.msg("096");
+			}
+
+		};
 		pausa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -280,7 +343,12 @@ public class MainFrame extends JFrame {
 	}
 
 	private void gerarMenusEditor(Container menu4) {
-		JMenuItem abrirPista = new JMenuItem("Editar Arquivo Circuito");
+		JMenuItem abrirPista = new JMenuItem("Editar Arquivo Circuito") {
+			public String getText() {
+				return Lang.msg("097");
+			}
+
+		};
 		abrirPista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -297,7 +365,12 @@ public class MainFrame extends JFrame {
 		});
 		menu4.add(abrirPista);
 
-		JMenuItem abrirImg = new JMenuItem("Criar Arquivo Circuito");
+		JMenuItem abrirImg = new JMenuItem("Criar Arquivo Circuito") {
+			public String getText() {
+				return Lang.msg("098");
+			}
+
+		};
 		abrirImg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -326,7 +399,12 @@ public class MainFrame extends JFrame {
 		});
 		menu4.add(abrirImg);
 
-		JMenuItem inserirNoLargada = new JMenuItem("Inserir no Largada (F1)");
+		JMenuItem inserirNoLargada = new JMenuItem("Inserir no Largada (F1)") {
+			public String getText() {
+				return Lang.msg("099");
+			}
+
+		};
 		inserirNoLargada.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editor.inserirNoLargada();
@@ -334,7 +412,12 @@ public class MainFrame extends JFrame {
 		});
 		menu4.add(inserirNoLargada);
 
-		JMenuItem inserirNoReta = new JMenuItem("Inserir No Reta (F2)");
+		JMenuItem inserirNoReta = new JMenuItem("Inserir No Reta (F2)") {
+			public String getText() {
+				return Lang.msg("100");
+			}
+
+		};
 		inserirNoReta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editor.inserirNoReta();
@@ -343,7 +426,12 @@ public class MainFrame extends JFrame {
 		menu4.add(inserirNoReta);
 
 		JMenuItem inserirNoCurvaAlta = new JMenuItem(
-				"Inserir No Curva Alta (F3)");
+				"Inserir No Curva Alta (F3)") {
+			public String getText() {
+				return Lang.msg("101");
+			}
+
+		};
 		inserirNoCurvaAlta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editor.inserirNoCurvaAlta();
@@ -352,7 +440,12 @@ public class MainFrame extends JFrame {
 		menu4.add(inserirNoCurvaAlta);
 
 		JMenuItem inserirNoCurvaBaixa = new JMenuItem(
-				"Inserir No Curva Baixa (F4)");
+				"Inserir No Curva Baixa (F4)") {
+			public String getText() {
+				return Lang.msg("102");
+			}
+
+		};
 		inserirNoCurvaBaixa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editor.inserirNoCurvaBaixa();
@@ -360,7 +453,12 @@ public class MainFrame extends JFrame {
 		});
 		menu4.add(inserirNoCurvaBaixa);
 
-		JMenuItem inserirNoEntradaBox = new JMenuItem("Inserir No Box (F5)");
+		JMenuItem inserirNoEntradaBox = new JMenuItem("Inserir No Box (F5)") {
+			public String getText() {
+				return Lang.msg("103");
+			}
+
+		};
 		inserirNoEntradaBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editor.inserirNoBox();
@@ -369,7 +467,12 @@ public class MainFrame extends JFrame {
 		menu4.add(inserirNoEntradaBox);
 
 		JMenuItem inserirNoParadaBox = new JMenuItem(
-				"Inserir No Parada Box (F6)");
+				"Inserir No Parada Box (F6)") {
+			public String getText() {
+				return Lang.msg("104");
+			}
+
+		};
 		inserirNoParadaBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editor.inserirNoParadaBox();
@@ -377,7 +480,12 @@ public class MainFrame extends JFrame {
 		});
 		menu4.add(inserirNoParadaBox);
 
-		JMenuItem apagarUltimoNo = new JMenuItem("Apagar ultimo NO (DEL)");
+		JMenuItem apagarUltimoNo = new JMenuItem("Apagar ultimo NO (DEL)") {
+			public String getText() {
+				return Lang.msg("105");
+			}
+
+		};
 		apagarUltimoNo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -390,7 +498,12 @@ public class MainFrame extends JFrame {
 		menu4.add(apagarUltimoNo);
 
 		JMenuItem apagarUltimoNoPista = new JMenuItem(
-				"Apagar ultimo NO (CTRL+DEL)");
+				"Apagar ultimo NO (CTRL+DEL)") {
+			public String getText() {
+				return Lang.msg("106");
+			}
+
+		};
 		apagarUltimoNoPista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -403,7 +516,12 @@ public class MainFrame extends JFrame {
 		menu4.add(apagarUltimoNoPista);
 
 		JMenuItem apagarUltimoNoBox = new JMenuItem(
-				"Apagar ultimo NO (SHIFT+DEL)");
+				"Apagar ultimo NO (SHIFT+DEL)"){
+			public String getText() {
+				return Lang.msg("107");
+			}
+
+		};
 		apagarUltimoNoBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -415,7 +533,12 @@ public class MainFrame extends JFrame {
 		});
 		menu4.add(apagarUltimoNoBox);
 
-		JMenuItem salvarPista = new JMenuItem("Salvar Pista F8");
+		JMenuItem salvarPista = new JMenuItem("Salvar Pista F8"){
+			public String getText() {
+				return Lang.msg("108");
+			}
+
+		};
 		salvarPista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {

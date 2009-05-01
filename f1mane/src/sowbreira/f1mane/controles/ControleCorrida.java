@@ -267,10 +267,19 @@ public class ControleCorrida {
 					atualizaClassificacao();
 					controleSafetyCar.safetyCarNaPista(piloto);
 				} else {
-					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
-					controleJogo.infoPrioritaria(Lang.msg("017", new String[] {
-							Html.superRed(piloto.getNome()),
-							pilotoNaFrente.getNome() }));
+					if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
+						piloto
+								.getCarro()
+								.setDurabilidadeAereofolio(
+										piloto.getCarro()
+												.getDurabilidadeAereofolio() - 1);
+					} else {
+						piloto.getCarro()
+								.setDanificado(Carro.PERDEU_AEREOFOLIO);
+						controleJogo.infoPrioritaria(Lang.msg("017",
+								new String[] { Html.superRed(piloto.getNome()),
+										pilotoNaFrente.getNome() }));
+					}
 				}
 				return;
 			}

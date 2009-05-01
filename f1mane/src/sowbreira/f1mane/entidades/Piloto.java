@@ -60,7 +60,7 @@ public class Piloto implements Serializable {
 	private int qtdeCombustBox;
 	private long parouNoBoxMilis;
 	private long saiuDoBoxMilis;
-	private int msgTentativaNumVolta;
+	private int msgTentativaNumVolta = 2;
 
 	public int getVelocidade() {
 		return velocidade;
@@ -341,11 +341,6 @@ public class Piloto implements Serializable {
 				controleJogo.processaNovaVolta();
 			}
 
-			if ((posicao == 1)
-					&& (numeroVolta == (controleJogo.totalVoltasCorrida() - 1))) {
-				controleJogo.infoPrioritaria(Html.superBlack(getNome())
-						+ Html.superGreen(Lang.msg("045")));
-			}
 
 			if (controleJogo.isCorridaTerminada()) {
 				setRecebeuBanderada(true, controleJogo);
@@ -605,10 +600,10 @@ public class Piloto implements Serializable {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);
-		int distBrigaMax = (int) (100 * controleJogo.getNiveljogo());
+		int distBrigaMax = (int) (120 * controleJogo.getNiveljogo());
 		int distBrigaMin = 0;
 		if (controleJogo.getNiveljogo() == .3) {
-			distBrigaMin = 29;
+			distBrigaMin = 30;
 		} else if (controleJogo.getNiveljogo() == .5) {
 			distBrigaMin = 20;
 		} else if (controleJogo.getNiveljogo() == .7) {
@@ -633,15 +628,10 @@ public class Piloto implements Serializable {
 								.obterIndicativoCorridaCompleta()
 								&& Math.random() > .9
 								&& getPosicao() < 9
-								&& msgTentativaNumVolta != getNumeroVolta()) {
+								&& msgTentativaNumVolta == getNumeroVolta()) {
 
 							int val = 1 + (int) (Math.random() * 4);
-							if (getNumeroVolta() - 1 == msgTentativaNumVolta
-									|| getNumeroVolta() + 1 == msgTentativaNumVolta) {
-								val = 5;
-							} else {
-								msgTentativaNumVolta = getNumeroVolta();
-							}
+							msgTentativaNumVolta = getNumeroVolta() + val;
 							String txt = "";
 							switch (val) {
 
@@ -744,7 +734,7 @@ public class Piloto implements Serializable {
 			}
 		}
 
-		if (testeHabilidadePiloto() && controleJogo.verificaNivelJogo()) {
+		if (testeHabilidadePilotoCarro() && controleJogo.verificaNivelJogo()) {
 			if (carro.verificaCondicoesCautela()) {
 				agressivo = false;
 				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsQueSeRepetemMuito
@@ -759,7 +749,7 @@ public class Piloto implements Serializable {
 			} else {
 				agressivo = true;
 			}
-		} else if (!testeHabilidadePiloto()) {
+		} else if (!testeHabilidadePilotoCarro()) {
 			if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
 				agressivo = false;
 				ciclosDesconcentrado = gerarDesconcentracao((int) (14 * controleJogo
@@ -922,6 +912,9 @@ public class Piloto implements Serializable {
 		ptosBox = 0;
 		box = false;
 		carro.setDanificado(null);
+		if (carro.getDurabilidadeAereofolio() <= 0) {
+			carro.setDurabilidadeAereofolio(3);
+		}
 		msgsQueSeRepetemMuito.put(Messagens.BOX_OCUPADO, null);
 		msgsQueSeRepetemMuito.put(Messagens.PILOTO_EM_CAUTELA, null);
 		if (numeroVolta > 0)

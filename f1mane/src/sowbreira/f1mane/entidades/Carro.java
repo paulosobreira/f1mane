@@ -37,6 +37,7 @@ public class Carro implements Serializable {
 	private String nome;
 	private String asa = ASA_NORMAL;
 	private int potencia;
+	private int durabilidadeAereofolio = 3;
 	private int giro = GIRO_NOR_VAL;
 	private int combustivel;
 	private int tanqueCheio;
@@ -318,7 +319,7 @@ public class Carro implements Serializable {
 			if (piloto.isJogadorHumano()) {
 				valDesgaste = (int) (((controleJogo.getNiveljogo() * 10)) * novoModificador);
 			} else {
-				valDesgaste = ((piloto.testeHabilidadePiloto() ? 3 : 5) + novoModificador);
+				valDesgaste = ((piloto.testeHabilidadePilotoCarro() ? 3 : 5) + novoModificador);
 			}
 		} else if (agressivo) {
 			valDesgaste = ((testePotencia() ? 1 : 2) + novoModificador);
@@ -532,6 +533,14 @@ public class Carro implements Serializable {
 
 	public void setAsa(String asa) {
 		this.asa = asa;
+	}
+
+	public int getDurabilidadeAereofolio() {
+		return durabilidadeAereofolio;
+	}
+
+	public void setDurabilidadeAereofolio(int durabilidadeAereofolio) {
+		this.durabilidadeAereofolio = durabilidadeAereofolio;
 	}
 
 }
