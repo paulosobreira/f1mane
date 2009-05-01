@@ -86,7 +86,9 @@ public class ControleEstatisticas {
 						voltaAtual.obterTempoVoltaFormatado() })));
 			}
 		}
-
+		if (controleJogo.isSafetyCarNaPista()) {
+			voltaAtual.setVoltaSafetyCar(true);
+		}
 		piloto.getVoltas().add(voltaAtual);
 	}
 
@@ -114,9 +116,10 @@ public class ControleEstatisticas {
 		long seg = ((fullnum - (minu * 60000)) / 1000);
 		long mili = fullnum - ((minu * 60000) + (seg * 1000));
 		if (minu > 0)
-			return (minu) + ":" + dez.format(seg) + "." + mil.format(mili);
+			return (minu) + ":" + dez.format(Math.abs(seg)) + "."
+					+ mil.format(Math.abs(mili));
 		else
-			return seg + "." + mil.format(mili);
+			return seg + "." + mil.format(Math.abs(mili));
 	}
 
 	public static String formatarTempo(int ciclos, long tempoCiclo) {
@@ -288,14 +291,14 @@ public class ControleEstatisticas {
 			int gap = piloto1.getNumeroVolta() - piloto2.getNumeroVolta();
 			Volta vp1 = (Volta) piloto1.getVoltas().get(
 					piloto1.getVoltas().size() - i - gap);
-			if (vp1.isVoltaBox()) {
+			if (vp1.isVoltaBox() || vp1.isVoltaSafetyCar()) {
 				return null;
 			}
 			tabela = tabela.replaceAll("p1_v" + i, Html.sansSerif(vp1
 					.obterTempoVoltaFormatado()));
 			Volta vp2 = (Volta) piloto2.getVoltas().get(
 					piloto2.getVoltas().size() - i);
-			if (vp2.isVoltaBox()) {
+			if (vp2.isVoltaBox() || vp2.isVoltaSafetyCar()) {
 				return null;
 			}
 			tabela = tabela.replaceAll("p2_v" + i, Html.sansSerif(vp2

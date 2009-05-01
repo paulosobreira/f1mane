@@ -247,6 +247,9 @@ public class ControleBox {
 			piloto.setRecebeuBanderada(true, controleJogo);
 		}
 		controleJogo.saiuBox(piloto);
+		if (controleJogo.isSafetyCarNaPista() && piloto.getVoltaAtual() != null) {
+			piloto.getVoltaAtual().setVoltaSafetyCar(true);
+		}
 		piloto.efetuarSaidaBox();
 
 	}
