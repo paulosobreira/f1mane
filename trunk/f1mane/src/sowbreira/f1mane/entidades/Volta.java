@@ -19,6 +19,7 @@ public class Volta implements Serializable {
 	private long ciclosFim;
 	private int pilotoId;
 	private boolean voltaBox;
+	private boolean voltaSafetyCar;
 
 	public boolean isVoltaBox() {
 		return voltaBox;
@@ -105,5 +106,13 @@ public class Volta implements Serializable {
 		// System.out.prlongln("Min " + minu);
 		// System.out.prlongln("Segs " + seg);
 		// System.out.prlongln("mili " + mili);
+	}
+
+	public boolean isVoltaSafetyCar() {
+		return voltaSafetyCar;
+	}
+
+	public void setVoltaSafetyCar(boolean voltaSAfetyCar) {
+		this.voltaSafetyCar = voltaSAfetyCar;
 	}
 }
