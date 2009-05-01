@@ -166,8 +166,8 @@ public class PainelCircuito extends JPanel {
 			}
 			yBase += 15;
 			g2d.drawString(Lang.msg("069")
-					+ (pilotoSelecionado.isBox() ? "Sim" : "Não"), ptoOri,
-					yBase);
+					+ (pilotoSelecionado.isBox() ? Lang.msg("SIM") : Lang
+							.msg("NAO")), ptoOri, yBase);
 			String plider = "";
 			if (pilotoSelecionado.getPosicao() == 1) {
 				plider = Lang.msg("Lider");
@@ -184,7 +184,9 @@ public class PainelCircuito extends JPanel {
 			yBase += 15;
 			if (Carro.GIRO_MIN_VAL == pilotoSelecionado.getCarro().getGiro()
 					&& qtdeLuzesAcesas <= 0) {
-				g2d.setColor(Color.BLUE);
+				g2d.setColor(gre);
+				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
+				g2d.setColor(Color.black);
 			} else {
 				g2d.setColor(Color.black);
 			}
@@ -192,7 +194,9 @@ public class PainelCircuito extends JPanel {
 			yBase += 15;
 			if (Carro.GIRO_NOR_VAL == pilotoSelecionado.getCarro().getGiro()
 					&& qtdeLuzesAcesas <= 0) {
-				g2d.setColor(Color.BLUE);
+				g2d.setColor(yel);
+				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
+				g2d.setColor(Color.black);
 			} else {
 				g2d.setColor(Color.black);
 			}
@@ -201,6 +205,8 @@ public class PainelCircuito extends JPanel {
 			if (Carro.GIRO_MAX_VAL == pilotoSelecionado.getCarro().getGiro()
 					&& qtdeLuzesAcesas <= 0) {
 				g2d.setColor(red);
+				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
+				g2d.setColor(Color.black);
 			} else {
 				g2d.setColor(Color.black);
 			}
@@ -211,8 +217,11 @@ public class PainelCircuito extends JPanel {
 			yBase += 15;
 			if (Lang.msg(Piloto.LENTO).equals(
 					gerenciadorVisual.getModoPiloto().getSelectedItem())
-					&& qtdeLuzesAcesas <= 0) {
-				g2d.setColor(red);
+					&& qtdeLuzesAcesas <= 0
+					&& pilotoSelecionado.isJogadorHumano()) {
+				g2d.setColor(gre);
+				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
+				g2d.setColor(Color.black);
 			} else {
 				g2d.setColor(Color.black);
 			}
@@ -220,8 +229,11 @@ public class PainelCircuito extends JPanel {
 			yBase += 15;
 			if (Lang.msg(Piloto.NORMAL).equals(
 					gerenciadorVisual.getModoPiloto().getSelectedItem())
-					&& qtdeLuzesAcesas <= 0) {
-				g2d.setColor(Color.BLUE);
+					&& qtdeLuzesAcesas <= 0
+					&& pilotoSelecionado.isJogadorHumano()) {
+				g2d.setColor(yel);
+				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
+				g2d.setColor(Color.black);
 			} else {
 				g2d.setColor(Color.black);
 			}
@@ -229,8 +241,11 @@ public class PainelCircuito extends JPanel {
 			yBase += 15;
 			if (Lang.msg(Piloto.AGRESSIVO).equals(
 					gerenciadorVisual.getModoPiloto().getSelectedItem())
-					&& qtdeLuzesAcesas <= 0) {
-				g2d.setColor(Color.BLUE);
+					&& qtdeLuzesAcesas <= 0
+					&& pilotoSelecionado.isJogadorHumano()) {
+				g2d.setColor(red);
+				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
+				g2d.setColor(Color.black);
 			} else {
 				g2d.setColor(Color.black);
 			}

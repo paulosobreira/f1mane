@@ -2,6 +2,8 @@ package sowbreira.f1mane.visao;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -33,10 +35,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.JSpinner.DefaultEditor;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.controles.ControleJogoLocal;
@@ -93,7 +97,7 @@ public class GerenciadorVisual {
 	private JComboBox giro;
 	private JComboBox modoPiloto;
 	private JComboBox comboBoxTipoPneu;
-	private JSpinner spinnerPercentCombust;
+	private JSlider sliderPercentCombust;
 	private Color corPadraoBarra;
 	private int larguraFrame = 0;
 	private int alturaFrame = 0;
@@ -132,13 +136,9 @@ public class GerenciadorVisual {
 		combustivelBar.addKeyListener(keyListener);
 		giro.addKeyListener(keyListener);
 		infoText.addKeyListener(keyListener);
-		spinnerPercentCombust.addKeyListener(keyListener);
-		DefaultEditor defaultEditor = (DefaultEditor) spinnerPercentCombust
-				.getEditor();
+		sliderPercentCombust.addKeyListener(keyListener);
 		scrollPaneTextual.addKeyListener(keyListener);
 		infoTextual.addKeyListener(keyListener);
-		defaultEditor.getTextField().addKeyListener(keyListener);
-		spinnerPercentCombust.getEditor().addKeyListener(keyListener);
 		telemetriaPanel.addKeyListener(keyListener);
 		comboBoxAsa.addKeyListener(keyListener);
 	}
@@ -156,7 +156,7 @@ public class GerenciadorVisual {
 	}
 
 	private void addiconarListenerComandos(final JComboBox comboBoxTipoPneu,
-			final JSpinner spinnerPercentCombust) {
+			final JSlider sliderPercentCombust) {
 		agressivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mudarModoAgressivo();
@@ -194,9 +194,8 @@ public class GerenciadorVisual {
 					return;
 				}
 				int ret = JOptionPane.showConfirmDialog(controleJogo
-						.getMainFrame(),
-						"Isto ocasionarar um abandono de Corrida.",
-						"Abandonar Corrida", JOptionPane.YES_NO_OPTION);
+						.getMainFrame(), Lang.msg("095"), Lang.msg("094"),
+						JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.NO_OPTION) {
 					return;
 				}
@@ -263,7 +262,7 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-		Integer value = (Integer) spinnerPercentCombust.getValue();
+		Integer value = (Integer) sliderPercentCombust.getValue();
 		if (value.intValue() < 0) {
 			value = new Integer(0);
 		}
@@ -628,7 +627,6 @@ public class GerenciadorVisual {
 	}
 
 	private void gerarPainelComandosNovo() {
-		panelControle = new JPanel();
 
 		agressivo = new JButton("Agressivo F4");
 		box = new JButton("Box F12");
@@ -648,35 +646,34 @@ public class GerenciadorVisual {
 		comboBoxTipoPneu.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
 		comboBoxTipoPneu.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
 
-		JLabel infoBox = new JLabel("Combust % / Asa");
-		spinnerPercentCombust = new JSpinner();
-		spinnerPercentCombust.setValue(new Integer(50));
-		JPanel infoBoxPanel = new JPanel(new GridBagLayout());
+		sliderPercentCombust = new JSlider(0, 100);
+		sliderPercentCombust.setPaintTicks(true);
+		sliderPercentCombust.setMajorTickSpacing(10);
+		sliderPercentCombust.setValue(new Integer(50));
+
 		comboBoxAsa = new JComboBox();
 		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
 		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.gridwidth = 1;
-		constraints.gridheight = 1;
-		infoBoxPanel.add(spinnerPercentCombust, constraints);
-		constraints = new GridBagConstraints();
-		constraints.gridx = 1;
-		constraints.gridy = 0;
-		constraints.gridwidth = 2;
-		constraints.gridheight = 1;
-		infoBoxPanel.add(comboBoxAsa, constraints);
-		panelControle.setLayout(new GridLayout(7, 1));
-		panelControle.add(modoPiloto);
-		panelControle.add(agressivo);
-		panelControle.add(giro);
-		panelControle.add(box);
+		panelControle = new JPanel();
+		panelControle.setBorder(new TitledBorder("Menu Box"));
+		GridLayout gridLayout = new GridLayout(4, 1) {
+			public Dimension preferredLayoutSize(Container parent) {
+				return new Dimension(150, 140);
+			}
+		};
+
+		panelControle.setLayout(gridLayout);
 		panelControle.add(comboBoxTipoPneu);
-		panelControle.add(infoBox);
-		panelControle.add(infoBoxPanel);
-		addiconarListenerComandos(comboBoxTipoPneu, spinnerPercentCombust);
+		panelControle.add(comboBoxAsa);
+		panelControle.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("083");
+			};
+		});
+		panelControle.add(sliderPercentCombust);
+
+		addiconarListenerComandos(comboBoxTipoPneu, sliderPercentCombust);
 	}
 
 	private void gerarPainelPosicoes() throws IOException {
