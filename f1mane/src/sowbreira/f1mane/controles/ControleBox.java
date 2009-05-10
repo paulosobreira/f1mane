@@ -173,7 +173,7 @@ public class ControleBox {
 			if (piloto.getPtosBox() < boxList.size()) {
 				piloto.setNoAtual((No) boxList.get(piloto.getPtosBox()));
 			} else {
-				processarPilotoSairBox(piloto);
+				processarPilotoSairBox(piloto, controleJogo);
 			}
 		}
 
@@ -212,6 +212,8 @@ public class ControleBox {
 				.obterTempoCilco());
 		piloto.getCarro().ajusteMotorParadaBox();
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
+		if (piloto.getNumeroVolta() > 0)
+			piloto.processaVoltaNovaBox(controleJogo);
 		piloto.setSaiuDoBoxMilis(0);
 		if (piloto.isJogadorHumano()) {
 			controleJogo
@@ -226,7 +228,8 @@ public class ControleBox {
 
 	}
 
-	private void processarPilotoSairBox(Piloto piloto) {
+	private void processarPilotoSairBox(Piloto piloto,
+			InterfaceJogo interfaceJogo) {
 		piloto.setNoAtual(saidaBox);
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
@@ -250,7 +253,7 @@ public class ControleBox {
 		if (controleJogo.isSafetyCarNaPista() && piloto.getVoltaAtual() != null) {
 			piloto.getVoltaAtual().setVoltaSafetyCar(true);
 		}
-		piloto.efetuarSaidaBox();
+		piloto.efetuarSaidaBox(interfaceJogo);
 
 	}
 

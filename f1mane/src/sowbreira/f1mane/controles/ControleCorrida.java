@@ -273,6 +273,9 @@ public class ControleCorrida {
 								.setDurabilidadeAereofolio(
 										piloto.getCarro()
 												.getDurabilidadeAereofolio() - 1);
+						controleJogo.infoPrioritaria(Lang.msg("109",
+								new String[] { Html.superRed(piloto.getNome()),
+										pilotoNaFrente.getNome() }));
 					} else {
 						piloto.getCarro()
 								.setDanificado(Carro.PERDEU_AEREOFOLIO);

@@ -341,7 +341,6 @@ public class Piloto implements Serializable {
 				controleJogo.processaNovaVolta();
 			}
 
-
 			if (controleJogo.isCorridaTerminada()) {
 				setRecebeuBanderada(true, controleJogo);
 			}
@@ -862,7 +861,7 @@ public class Piloto implements Serializable {
 		return porcentagemCombustUltimaParadaBox;
 	}
 
-	public void processaVoltaNovaBox() {
+	public void processaVoltaNovaBox(InterfaceJogo interfaceJogo) {
 		if (getVoltaAtual() == null) {
 			Volta volta = new Volta();
 			volta.setCiclosInicio(System.currentTimeMillis());
@@ -876,7 +875,8 @@ public class Piloto implements Serializable {
 		setUltimaVolta(volta);
 		voltas.add(volta);
 		volta = new Volta();
-		volta.setCiclosInicio(System.currentTimeMillis());
+		volta.setCiclosInicio(System.currentTimeMillis() + getPtosBox()
+				* interfaceJogo.getTempoCiclo());
 		setVoltaAtual(volta);
 	}
 
@@ -907,7 +907,7 @@ public class Piloto implements Serializable {
 		return true;
 	}
 
-	public void efetuarSaidaBox() {
+	public void efetuarSaidaBox(InterfaceJogo interfaceJogo) {
 		qtdeParadasBox++;
 		ptosBox = 0;
 		box = false;
@@ -917,8 +917,6 @@ public class Piloto implements Serializable {
 		}
 		msgsQueSeRepetemMuito.put(Messagens.BOX_OCUPADO, null);
 		msgsQueSeRepetemMuito.put(Messagens.PILOTO_EM_CAUTELA, null);
-		if (numeroVolta > 0)
-			processaVoltaNovaBox();
 	}
 
 	public String obterTempoVoltaAtual() {
