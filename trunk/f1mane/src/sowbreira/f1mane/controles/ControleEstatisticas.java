@@ -272,7 +272,7 @@ public class ControleEstatisticas {
 		} else {
 			tabela = preencherTabela(pilotoComp, pilotoSel, tabela);
 		}
-		if (tabela != null)
+		if (tabela != null && !pilotoSel.entrouNoBox())
 			controleJogo.info(tabela);
 	}
 
