@@ -945,23 +945,26 @@ public class GerenciadorVisual {
 	}
 
 	public void adicionarInfoDireto(String string) {
-		if (string != null && !string.startsWith("<table>"))
-			bufferTextual.add(Html.cinza(Lang.msg("082")
-					+ controleJogo.getNumVoltaAtual() + " ")
-					+ string + "<br>");
-		else {
-			bufferTextual.add(string);
-
-		}
-		StringBuffer buffer = new StringBuffer();
-		for (int i = bufferTextual.size() - 1; i >= 0; i--) {
-			buffer.append(Html.sansSerif(bufferTextual.get(i).toString()));
-		}
-		StringReader reader = new StringReader(buffer.toString());
 		try {
-			infoTextual.read(reader, "");
-		} catch (IOException e) {
-			// e.printStackTrace();
+			synchronized (bufferTextual) {
+				if (string != null && !string.startsWith("<table>"))
+					bufferTextual.add(Html.cinza(Lang.msg("082")
+							+ controleJogo.getNumVoltaAtual() + " ")
+							+ string + "<br>");
+				else {
+					bufferTextual.add(string);
+
+				}
+				StringBuffer buffer = new StringBuffer();
+				for (int i = bufferTextual.size() - 1; i >= 0; i--) {
+					buffer.append(Html.sansSerif(bufferTextual.get(i)
+							.toString()));
+				}
+				StringReader reader = new StringReader(buffer.toString());
+				infoTextual.read(reader, "");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
