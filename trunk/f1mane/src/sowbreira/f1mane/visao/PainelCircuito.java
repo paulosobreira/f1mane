@@ -140,7 +140,7 @@ public class PainelCircuito extends JPanel {
 				desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
 				desenhaCarroSelecionado(pilotoSelecionado, g2d);
 				desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
-			}
+			} 
 		}
 	}
 

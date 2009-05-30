@@ -114,6 +114,8 @@ public class MonitorJogo implements Runnable {
 
 						public void run() {
 							while (jogoAtivo) {
+								if (jogoCliente.getPilotoSelecionado() == null)
+									jogoCliente.selecionaPilotoJogador();
 								jogoCliente.atualizaPainel();
 								try {
 									Thread.sleep(80);
