@@ -18,7 +18,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-
 public class TestePista {
 	private Circuito circuito;
 	private Point testCar;
@@ -127,6 +126,7 @@ public class TestePista {
 							Thread.sleep(70);
 						}
 					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}

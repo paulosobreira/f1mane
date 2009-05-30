@@ -32,7 +32,7 @@ public class MonitorAtividade implements Runnable {
 					SessaoCliente sessaoCliente = (SessaoCliente) iter.next();
 					if ((timeNow - sessaoCliente.getUlimaAtividade()) > 150000) {
 						sessaoClienteRemover = sessaoCliente;
-
+						break;
 					}
 				}
 				if (sessaoClienteRemover != null) {
@@ -47,23 +47,24 @@ public class MonitorAtividade implements Runnable {
 						jogoServidor.iniciarJogo();
 					}
 				}
-
-				for (Iterator iter = jogos.keySet().iterator(); iter.hasNext();) {
-					SessaoCliente key = (SessaoCliente) iter.next();
-					JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
-					for (Iterator iterator = jogoServidor
-							.getMapJogadoresOnline().keySet().iterator(); iterator
+				synchronized (jogos) {
+					for (Iterator iter = jogos.keySet().iterator(); iter
 							.hasNext();) {
-						String nomeJogador = (String) iterator.next();
-						SessaoCliente sessaoCliente = controlePaddock
-								.verificaUsuarioSessao(nomeJogador);
-						if (sessaoCliente == null) {
-							iterator.remove();
+						SessaoCliente key = (SessaoCliente) iter.next();
+						JogoServidor jogoServidor = (JogoServidor) jogos
+								.get(key);
+						for (Iterator iterator = jogoServidor
+								.getMapJogadoresOnline().keySet().iterator(); iterator
+								.hasNext();) {
+							String nomeJogador = (String) iterator.next();
+							SessaoCliente sessaoCliente = controlePaddock
+									.verificaUsuarioSessao(nomeJogador);
+							if (sessaoCliente == null) {
+								iterator.remove();
+							}
 						}
 					}
-
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

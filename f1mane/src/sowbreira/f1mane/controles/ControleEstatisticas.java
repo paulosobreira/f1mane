@@ -166,9 +166,10 @@ public class ControleEstatisticas {
 		bufferInfo.clear();
 		infoConsumer = new Thread(new Runnable() {
 			public void run() {
-				controleJogo.adicionarInfoDireto(Html.azul(Lang.msg("000",
-						new Object[] { controleJogo.totalVoltasCorrida() })));
 				try {
+					controleJogo.adicionarInfoDireto(Html
+							.azul(Lang.msg("000", new Object[] { controleJogo
+									.totalVoltasCorrida() })));
 					while (consumidorAtivo) {
 						controleJogo.atulizaTabelaPosicoes();
 

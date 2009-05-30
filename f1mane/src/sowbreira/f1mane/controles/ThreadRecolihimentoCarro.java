@@ -34,7 +34,7 @@ public class ThreadRecolihimentoCarro extends Thread {
 				sleep(delayRecolhimento);
 			}
 
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		piloto.getCarro().setRecolhido(true);

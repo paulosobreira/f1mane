@@ -76,11 +76,14 @@ public class PaddockWindow {
 				Thread enviarTexto = new Thread(new Runnable() {
 
 					public void run() {
-						controlePaddockCliente.enviarTexto(textoEnviar
-								.getText());
-						textoEnviar.setText("");
+						try {
+							controlePaddockCliente.enviarTexto(textoEnviar
+									.getText());
+							textoEnviar.setText("");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
-
 				});
 				enviarTexto.start();
 			}
