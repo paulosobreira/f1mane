@@ -29,7 +29,8 @@
 	<div>
 	<span class="class1">
 	<a  href="http://br.geocities.com/sowbreira/" > <img src="f1maneonline.jpg"> </a>
-	<a  href="http://www.mozilla.com/firefox/" > <img src="trust.gif"> </a><br>
+	 <!-- <a  href="http://www.mozilla.com/firefox/" > <img src="trust.gif"> </a> -->
+	 <br>
 	</span>
 	<span class="class2">
 	<!--Versao do Java no Servidor: <%= (pageContext.getServletContext().getAttribute("java.vm.version") !=null?pageContext.getServletContext().getAttribute("java.vm.version") :pageContext.getServletContext().getAttribute("java.runtime.version") ) %>-->
