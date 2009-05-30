@@ -50,124 +50,130 @@ public class MonitorJogo implements Runnable {
 
 	public void run() {
 		while (controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
-			long tempoCiclo = jogoCliente.getTempoCiclo();
-			if (tempoCiclo < controlePaddockCliente.getLatenciaMinima()) {
-				tempoCiclo = controlePaddockCliente.getLatenciaMinima();
-			}
-			while (Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)
-					&& controlePaddockCliente.isComunicacaoServer()
-					&& jogoAtivo) {
-				verificaEstadoJogo();
-				sleep(2000);
-			}
-			while (Comandos.MOSTRANDO_QUALIFY.equals(estado)
-					&& controlePaddockCliente.isComunicacaoServer()
-					&& jogoAtivo) {
-				verificaEstadoJogo();
-				iniciaJalena();
-				if (monitorQualificacao == null) {
-					monitorQualificacao = new Thread(new MonitorQualificacao(
-							jogoCliente));
-					atualizarDados();
-					jogoCliente.preparaGerenciadorVisual();
-					monitorQualificacao.start();
+			try {
+				long tempoCiclo = jogoCliente.getTempoCiclo();
+				if (tempoCiclo < controlePaddockCliente.getLatenciaMinima()) {
+					tempoCiclo = controlePaddockCliente.getLatenciaMinima();
 				}
-				sleep(2000);
-			}
-			int delayVerificaStado = 20;
-			while (Comandos.CORRIDA_INICIADA.equals(estado)
-					&& controlePaddockCliente.isComunicacaoServer()
-					&& jogoAtivo) {
-				if (!atualizouDados) {
-					atualizarDados();
-					atualizouDados = true;
+				while (Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)
+						&& controlePaddockCliente.isComunicacaoServer()
+						&& jogoAtivo) {
+					verificaEstadoJogo();
+					sleep(2000);
 				}
-				if (monitorQualificacao != null) {
-					jogoCliente.pularQualificacao();
-					monitorQualificacao = null;
+				while (Comandos.MOSTRANDO_QUALIFY.equals(estado)
+						&& controlePaddockCliente.isComunicacaoServer()
+						&& jogoAtivo) {
+					verificaEstadoJogo();
+					iniciaJalena();
+					if (monitorQualificacao == null) {
+						monitorQualificacao = new Thread(
+								new MonitorQualificacao(jogoCliente));
+						atualizarDados();
+						jogoCliente.preparaGerenciadorVisual();
+						monitorQualificacao.start();
+					}
+					sleep(2000);
 				}
-				delayVerificaStado--;
-				if (delayVerificaStado <= 0) {
-					if (((Piloto) jogoCliente.getPilotos().get(0))
-							.getPtosPista() > 0) {
-						while (luz > 0) {
-							apagarLuz();
-							luz--;
+				int delayVerificaStado = 20;
+				while (Comandos.CORRIDA_INICIADA.equals(estado)
+						&& controlePaddockCliente.isComunicacaoServer()
+						&& jogoAtivo) {
+					if (!atualizouDados) {
+						atualizarDados();
+						atualizouDados = true;
+					}
+					if (monitorQualificacao != null) {
+						jogoCliente.pularQualificacao();
+						monitorQualificacao = null;
+					}
+					delayVerificaStado--;
+					if (delayVerificaStado <= 0) {
+						if (((Piloto) jogoCliente.getPilotos().get(0))
+								.getPtosPista() > 0) {
+							while (luz > 0) {
+								apagarLuz();
+								luz--;
+							}
 						}
+						atualizarDadosParciais(jogoCliente.getDadosJogo(),
+								jogoCliente.getPilotoSelecionado());
+						if (controlePaddockCliente.getLatenciaReal() > 2000) {
+							delayVerificaStado = 2;
+						} else {
+							delayVerificaStado = 4;
+						}
+						sleep(tempoCiclo);
+						continue;
 					}
-					atualizarDadosParciais(jogoCliente.getDadosJogo(),
-							jogoCliente.getPilotoSelecionado());
-					if (controlePaddockCliente.getLatenciaReal() > 2000) {
-						delayVerificaStado = 2;
-					} else {
-						delayVerificaStado = 4;
-					}
-					sleep(tempoCiclo);
-					continue;
-				}
 
-				iniciaJalena();
-				atualizaPosicoes();
-				jogoCliente.atualizaPainel();
-				if (atualizadorPainel == null) {
-					atualizadorPainel = new Thread(new Runnable() {
+					iniciaJalena();
+					atualizaPosicoes();
+					jogoCliente.atualizaPainel();
+					if (atualizadorPainel == null) {
+						atualizadorPainel = new Thread(new Runnable() {
 
-						public void run() {
-							while (jogoAtivo) {
-								if (jogoCliente.getPilotoSelecionado() == null)
-									jogoCliente.selecionaPilotoJogador();
-								jogoCliente.atualizaPainel();
-								try {
-									Thread.sleep(80);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
+							public void run() {
+								while (jogoAtivo) {
+									try {
+										if (jogoCliente.getPilotoSelecionado() == null)
+											jogoCliente
+													.selecionaPilotoJogador();
+										jogoCliente.atualizaPainel();
+
+										Thread.sleep(80);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								}
+
 							}
 
-						}
+						});
+						atualizadorPainel.start();
+					}
+					sleep(tempoCiclo);
+				}
+				while (Comandos.MOSTRA_RESULTADO_FINAL.equals(estado)
+						&& controlePaddockCliente.isComunicacaoServer()
+						&& jogoAtivo) {
+					atualizarDados();
+					jogoCliente.exibirResultadoFinal();
+					jogoAtivo = false;
+					sleep(tempoCiclo);
 
-					});
-					atualizadorPainel.start();
 				}
-				sleep(tempoCiclo);
+				if (Comandos.LUZES5.equals(estado)) {
+					while (luz > 4) {
+						apagarLuz();
+						luz--;
+					}
+				} else if (Comandos.LUZES4.equals(estado)) {
+					while (luz > 3) {
+						apagarLuz();
+						luz--;
+					}
+				} else if (Comandos.LUZES3.equals(estado)) {
+					while (luz > 2) {
+						apagarLuz();
+						luz--;
+					}
+				} else if (Comandos.LUZES2.equals(estado)) {
+					while (luz > 1) {
+						apagarLuz();
+						luz--;
+					}
+				} else if (Comandos.LUZES1.equals(estado)) {
+					while (luz > 0) {
+						apagarLuz();
+						luz--;
+					}
+				}
+				verificaEstadoJogo();
+				sleep(controlePaddockCliente.getLatenciaMinima());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			while (Comandos.MOSTRA_RESULTADO_FINAL.equals(estado)
-					&& controlePaddockCliente.isComunicacaoServer()
-					&& jogoAtivo) {
-				atualizarDados();
-				jogoCliente.exibirResultadoFinal();
-				jogoAtivo = false;
-				sleep(tempoCiclo);
-
-			}
-			if (Comandos.LUZES5.equals(estado)) {
-				while (luz > 4) {
-					apagarLuz();
-					luz--;
-				}
-			} else if (Comandos.LUZES4.equals(estado)) {
-				while (luz > 3) {
-					apagarLuz();
-					luz--;
-				}
-			} else if (Comandos.LUZES3.equals(estado)) {
-				while (luz > 2) {
-					apagarLuz();
-					luz--;
-				}
-			} else if (Comandos.LUZES2.equals(estado)) {
-				while (luz > 1) {
-					apagarLuz();
-					luz--;
-				}
-			} else if (Comandos.LUZES1.equals(estado)) {
-				while (luz > 0) {
-					apagarLuz();
-					luz--;
-				}
-			}
-			verificaEstadoJogo();
-			sleep(controlePaddockCliente.getLatenciaMinima());
 		}
 
 	}

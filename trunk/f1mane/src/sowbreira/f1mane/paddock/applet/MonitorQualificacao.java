@@ -11,8 +11,11 @@ public class MonitorQualificacao implements Runnable {
 	}
 
 	public void run() {
-		controleJogoClenteLocal.desenhaQualificacao();
-
+		try {
+			controleJogoClenteLocal.desenhaQualificacao();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

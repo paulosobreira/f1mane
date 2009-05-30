@@ -18,20 +18,19 @@ public class ThreadMudancaClima extends Thread {
 		Toolkit toolkit = painelCircuito.getToolkit();
 		Point point = painelCircuito.getPointDesenhaClima();
 		for (int i = 0; i < 200; i++) {
-			Point p;
-			if (i % 2 == 0) {
-				p = new Point(point.x - 1, point.y - 1);
-			} else {
-				p = new Point(point.x + 1, point.y + 1);
-			}
-			painelCircuito.setPointDesenhaClima(p);
-			if (i % 20 == 0) {
-				toolkit.beep();
-			}
 			try {
+				Point p;
+				if (i % 2 == 0) {
+					p = new Point(point.x - 1, point.y - 1);
+				} else {
+					p = new Point(point.x + 1, point.y + 1);
+				}
+				painelCircuito.setPointDesenhaClima(p);
+				if (i % 20 == 0) {
+					toolkit.beep();
+				}
 				sleep(100);
-
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

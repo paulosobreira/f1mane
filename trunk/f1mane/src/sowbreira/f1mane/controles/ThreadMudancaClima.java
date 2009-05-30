@@ -1,6 +1,7 @@
 package sowbreira.f1mane.controles;
 
 import sowbreira.f1mane.entidades.Clima;
+
 /**
  * @author Paulo Sobreira
  */
@@ -36,7 +37,7 @@ public class ThreadMudancaClima extends Thread {
 
 			}
 			controleClima.informaMudancaClima();
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

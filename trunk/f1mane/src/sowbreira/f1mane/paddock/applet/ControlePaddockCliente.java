@@ -72,7 +72,7 @@ public class ControlePaddockCliente {
 							Thread.sleep((5000 + ((int) Math.random() * 1000)));
 							atualizaVisao(paddockWindow);
 						}
-					} catch (InterruptedException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 
@@ -80,8 +80,6 @@ public class ControlePaddockCliente {
 
 			});
 			threadAtualizadora.setPriority(Thread.MIN_PRIORITY);
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
