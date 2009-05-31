@@ -176,25 +176,39 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			this.nivelCorrida = dadosCriarJogo.getNivelCorrida();
 
 			qtdeVoltas = dadosCriarJogo.getQtdeVoltas();
+			if (qtdeVoltas.intValue() < 22) {
+				qtdeVoltas = new Integer(22);
+			}
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			tempoCiclo = dadosCriarJogo.getTempoCiclo();
-			// tempoCiclo = new Integer(15);
+			if (tempoCiclo.intValue() < 70) {
+				tempoCiclo = new Integer(70);
+			}
 			veloMaxReta = dadosCriarJogo.getVeloMaxReta();
 			habilidade = dadosCriarJogo.getHabilidade();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
-			if (habilidade.intValue() > 0) {
+			if (habilidade.intValue() != 0) {
+				if (habilidade.intValue() < 50) {
+					habilidade = new Integer(50);
+				}
+				if (habilidade.intValue() > 99) {
+					habilidade = new Integer(99);
+				}
+
 				definirHabilidadePadraoPilotos(habilidade.intValue());
 			}
-			if (habilidade.intValue() > 99) {
-				habilidade = new Integer(99);
-			}
+
 			potencia = dadosCriarJogo.getPotencia();
-			if (potencia.intValue() > 0) {
+			if (potencia.intValue() != 0) {
+				if (potencia.intValue() < 500) {
+					potencia = new Integer(500);
+				}
+				if (potencia.intValue() > 999) {
+					potencia = new Integer(999);
+				}
 				definirPotenciaPadraoCarros(potencia.intValue());
 			}
-			if (potencia.intValue() > 999) {
-				potencia = new Integer(999);
-			}
+
 		} catch (Exception e) {
 			throw new Exception("Erro na Entrada de dados."
 					+ " Preencha os tipos numericos com numeros.");
