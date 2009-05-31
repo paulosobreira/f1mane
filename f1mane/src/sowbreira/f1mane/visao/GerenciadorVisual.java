@@ -956,9 +956,14 @@ public class GerenciadorVisual {
 
 				}
 				StringBuffer buffer = new StringBuffer();
+				String textoAnterior = "";
 				for (int i = bufferTextual.size() - 1; i >= 0; i--) {
-					buffer.append(Html.sansSerif(bufferTextual.get(i)
-							.toString()));
+					String texto = Html.sansSerif(bufferTextual.get(i)
+							.toString());
+					if (!textoAnterior.equals(texto)) {
+						buffer.append(texto);
+						textoAnterior = texto;
+					}
 				}
 				StringReader reader = new StringReader(buffer.toString());
 				infoTextual.read(reader, "");

@@ -1,6 +1,8 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +57,11 @@ public class PainelEntradaCliente {
 
 	private void gerarPainelCriarJogo(JPanel painelInicio) {
 		painelInicio.setLayout(new GridLayout(15, 2));
-		JLabel label = new JLabel("Número de voltas da corrida (2-72):");
+		JLabel label = new JLabel() {
+			public String getText() {
+				return Lang.msg("110");
+			}
+		};
 		painelInicio.add(label);
 		spinnerQtdeVoltas = new JSpinner();
 		spinnerQtdeVoltas.setValue(new Integer(22));
@@ -65,7 +71,13 @@ public class PainelEntradaCliente {
 
 		painelInicio.add(spinnerQtdeVoltas);
 
-		painelInicio.add(new JLabel("Apelido :"));
+		painelInicio.add(new JLabel() {
+
+			public String getText() {
+				return Lang.msg("111");
+			}
+
+		});
 		nomeJogador = new JTextField(nomeCriador);
 		nomeJogador.setEditable(false);
 		painelInicio.add(nomeJogador);
@@ -85,10 +97,17 @@ public class PainelEntradaCliente {
 		painelInicio.add(comboBoxPilotoSelecionado);
 
 		comboBoxCircuito = new JComboBox();
+		List circuitosList = new ArrayList();
 		for (Iterator iter = circuitos.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();
-			comboBoxCircuito.addItem(key);
+			circuitosList.add(key);
 		}
+		Collections.shuffle(circuitosList);
+		for (Iterator iterator = circuitosList.iterator(); iterator.hasNext();) {
+			String object = (String) iterator.next();
+			comboBoxCircuito.addItem(object);
+		}
+
 		painelInicio.add(new JLabel("Selecionar Circuito :"));
 		painelInicio.add(comboBoxCircuito);
 
@@ -142,7 +161,7 @@ public class PainelEntradaCliente {
 
 		painelInicio.add(new JLabel("Tempo Ciclo (50ms-240ms):"));
 		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo.setValue(new Integer(120));
+		spinnerTempoCiclo.setValue(new Integer(90));
 		painelInicio.add(spinnerTempoCiclo);
 
 		painelInicio.add(new JLabel(
