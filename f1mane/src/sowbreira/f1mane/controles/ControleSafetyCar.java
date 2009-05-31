@@ -69,10 +69,10 @@ public class ControleSafetyCar {
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		if (pole.getPtosPista() > safetyCar.getPtosPista()
 				&& noAtual.verificaRetaOuLargada()) {
-			bonus = (Math.random() > .8) ? 2 : 1;
+			bonus = (Math.random() > .95) ? 2 : 1;
 		}
 		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 50)) {
-			bonus = (Math.random() > .7) ? 0 : 1;
+			bonus = (Math.random() > .7) ? 1 : 0;
 		}
 		index += bonus;
 		int diff = index - pista.size();
