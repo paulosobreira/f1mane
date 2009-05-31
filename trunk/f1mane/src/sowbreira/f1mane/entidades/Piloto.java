@@ -805,7 +805,7 @@ public class Piloto implements Serializable {
 		if (testeHabilidadePilotoCarro() && agressivo
 				&& noAtual.verificaRetaOuLargada()
 				&& (Math.random() < controleJogo.getIndexVelcidadeDaPista())
-				&& testeHabilidadePiloto()) {
+				&& (Math.random() < bonusSecundario) && testeHabilidadePiloto()) {
 			return 3;
 		} else if (testeHabilidadePilotoCarro()
 				&& noAtual.verificaRetaOuLargada()) {
