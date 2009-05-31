@@ -776,14 +776,20 @@ public class GerenciadorVisual {
 		spinnerTempoCiclo.setValue(new Integer(85));
 		painelInicio.add(spinnerTempoCiclo);
 
-		painelInicio.add(new JLabel(
-				"Habilidade pilotos (0 para realista (0-99)):"));
+		painelInicio.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("112");
+			}
+		});
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
 		painelInicio.add(spinnerSkillPadraoPilotos);
 
-		painelInicio.add(new JLabel(
-				"Potencia Carros (0 para realista (0-999)):"));
+		painelInicio.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("113");
+			}
+		});
 		spinnerPotenciaPadraoCarros = new JSpinner();
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
 		painelInicio.add(spinnerPotenciaPadraoCarros);

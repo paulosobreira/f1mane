@@ -163,14 +163,20 @@ public class PainelEntradaCliente {
 		spinnerTempoCiclo.setValue(new Integer(90));
 		painelInicio.add(spinnerTempoCiclo);
 
-		painelInicio.add(new JLabel(
-				"Habilidade pilotos (0 para realista (10-99)):"));
+		painelInicio.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("112");
+			}
+		});
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
 		painelInicio.add(spinnerSkillPadraoPilotos);
 
-		painelInicio.add(new JLabel(
-				"Potencia Carros (0 para realista (100-999)):"));
+		painelInicio.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("113");
+			}
+		});
 		spinnerPotenciaPadraoCarros = new JSpinner();
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
 		painelInicio.add(spinnerPotenciaPadraoCarros);
@@ -251,7 +257,9 @@ public class PainelEntradaCliente {
 		if (combustivel.intValue() > 100) {
 			combustivel = new Integer(100);
 		}
-
+		if (combustivel.intValue() < 10) {
+			combustivel = new Integer(10);
+		}
 		dadosParticiparJogo.setSenha(senhaJogo.getText());
 		dadosParticiparJogo.setTpPnueu(tpPnueu);
 		dadosParticiparJogo.setAsa(asa);
