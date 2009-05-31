@@ -565,20 +565,28 @@ public class ControleJogoLocal extends ControleRecursos implements
 					.getSpinnerSkillPadraoPilotos().getValue();
 			circuitoSelecionado = (String) gerenciadorVisual
 					.getComboBoxCircuito().getSelectedItem();
-			if (habilidade.intValue() > 0) {
+			if (habilidade.intValue() != 0) {
+				if (habilidade.intValue() < 50) {
+					habilidade = new Integer(50);
+				}
+				if (habilidade.intValue() > 99) {
+					habilidade = new Integer(99);
+				}
 				definirHabilidadePadraoPilotos(habilidade.intValue());
 			}
-			if (habilidade.intValue() > 99) {
-				habilidade = new Integer(99);
-			}
+
 			potencia = (Integer) gerenciadorVisual
 					.getSpinnerPotenciaPadraoCarros().getValue();
-			if (potencia.intValue() > 0) {
+			if (potencia.intValue() != 0) {
+				if (potencia.intValue() < 800) {
+					potencia = new Integer(800);
+				}
+				if (potencia.intValue() > 999) {
+					potencia = new Integer(999);
+				}
 				definirPotenciaPadraoCarros(potencia.intValue());
 			}
-			if (potencia.intValue() > 999) {
-				potencia = new Integer(999);
-			}
+
 			if (gerenciadorVisual.getSpinnerQtdeMinutosQualificacao() != null) {
 				tempoQualificacao = (Integer) gerenciadorVisual
 						.getSpinnerQtdeMinutosQualificacao().getValue();
