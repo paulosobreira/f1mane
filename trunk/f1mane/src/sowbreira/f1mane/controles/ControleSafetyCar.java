@@ -65,14 +65,14 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? 1
-				: (Math.random() > .8) ? 2 : 1;
+				: (Math.random() > .9) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		if (pole.getPtosPista() > safetyCar.getPtosPista()
 				&& noAtual.verificaRetaOuLargada()) {
-			bonus = (Math.random() > .7) ? 2 : 1;
+			bonus = (Math.random() > .8) ? 2 : 1;
 		}
 		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 50)) {
-			bonus = (Math.random() > .5) ? 0 : 1;
+			bonus = (Math.random() > .7) ? 0 : 1;
 		}
 		index += bonus;
 		int diff = index - pista.size();
