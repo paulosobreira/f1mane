@@ -67,6 +67,11 @@ public class DadosCriarJogo implements Serializable {
 	}
 
 	public void setHabilidade(Integer habilidade) {
+		if (habilidade != null) {
+			if (habilidade.intValue() > 90) {
+				habilidade = new Integer(90);
+			}
+		}
 		this.habilidade = habilidade;
 	}
 
@@ -99,6 +104,11 @@ public class DadosCriarJogo implements Serializable {
 	}
 
 	public void setPotencia(Integer potencia) {
+		if (potencia != null) {
+			if (potencia.intValue() > 900) {
+				potencia = new Integer(900);
+			}
+		}
 		this.potencia = potencia;
 	}
 

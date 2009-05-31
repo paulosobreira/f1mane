@@ -122,7 +122,6 @@ public class PainelEntradaCliente {
 		comboBoxClimaInicial.addItem(new Clima(Clima.SOL));
 		comboBoxClimaInicial.addItem(new Clima(Clima.NUBLADO));
 		comboBoxClimaInicial.addItem(new Clima(Clima.CHUVA));
-		comboBoxClimaInicial.addItem(new Clima(Clima.ALEATORIO));
 
 		painelInicio.add(new JLabel("Clima :"));
 		painelInicio.add(comboBoxClimaInicial);
@@ -165,13 +164,13 @@ public class PainelEntradaCliente {
 		painelInicio.add(spinnerTempoCiclo);
 
 		painelInicio.add(new JLabel(
-				"Habilidade pilotos (0 para realista (0-99)):"));
+				"Habilidade pilotos (0 para realista (10-99)):"));
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
 		painelInicio.add(spinnerSkillPadraoPilotos);
 
 		painelInicio.add(new JLabel(
-				"Potencia Carros (0 para realista (0-999)):"));
+				"Potencia Carros (0 para realista (100-999)):"));
 		spinnerPotenciaPadraoCarros = new JSpinner();
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
 		painelInicio.add(spinnerPotenciaPadraoCarros);
