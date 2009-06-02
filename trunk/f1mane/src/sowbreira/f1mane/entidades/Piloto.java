@@ -849,7 +849,7 @@ public class Piloto implements Serializable {
 	}
 
 	public void gerarCiclosPadoBox(int porcentCombust, long ciclos) {
-		paradoBox = (int) (((porcentCombust * 100) / ciclos)) + 50;
+		paradoBox = (int) (((porcentCombust * 100) / ciclos)) + 70;
 		porcentagemCombustUltimaParadaBox = porcentCombust;
 	}
 
