@@ -31,7 +31,7 @@ public class ControleJogosServer {
 	private DadosPaddock dadosPaddock;
 	private ControleClassificacao controleClassificacao;
 	private Map mapaJogosCriados = new HashMap();
-	public static int MaxJogo = 5;
+	public static int MaxJogo = 4;
 	public static int qtdeJogos = 0;
 
 	/**
