@@ -657,13 +657,14 @@ public class GerenciadorVisual {
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 		panelControle = new JPanel();
 		panelControle.setBorder(new TitledBorder("Menu Box"));
-		GridLayout gridLayout = new GridLayout(4, 1) {
+		GridLayout gridLayout = new GridLayout(5, 1) {
 			public Dimension preferredLayoutSize(Container parent) {
 				return new Dimension(150, 140);
 			}
 		};
 
 		panelControle.setLayout(gridLayout);
+		panelControle.add(box);
 		panelControle.add(comboBoxTipoPneu);
 		panelControle.add(comboBoxAsa);
 		panelControle.add(new JLabel() {

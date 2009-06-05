@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleJogoLocal;
@@ -193,10 +194,10 @@ public class PainelEntradaCliente {
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
-		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 2)
+		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 10)
 				|| (((Integer) spinnerCombustivelInicial.getValue()).intValue() == 0)) {
 			JOptionPane.showMessageDialog(mainFrame,
-					"NÚMERO DE VOLTAS DEVE SER INFORMADO!!!",
+					"SetUP Não preenchido corretamente.",
 					"SetUP Não preenchido corretamente.",
 					JOptionPane.INFORMATION_MESSAGE);
 			ret = JOptionPane.showConfirmDialog(mainFrame, painelInicio,
@@ -272,11 +273,15 @@ public class PainelEntradaCliente {
 		return dadosCriarJogo;
 	}
 
-	public boolean gerarDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo) {
+	public boolean gerarDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo,
+			JPanel panelJogoCriado) {
 		JPanel painelInicio = new JPanel();
 		gerarPainelParticiparJogo(painelInicio);
-
-		int ret = JOptionPane.showConfirmDialog(mainFrame, painelInicio,
+		JPanel panel = new JPanel(new GridLayout(2, 1));
+		panel.add(panelJogoCriado);
+		painelInicio.setBorder(new TitledBorder("Configuração do carro"));
+		panel.add(painelInicio);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, panel,
 				"Setup Inicial", JOptionPane.YES_NO_OPTION);
 		if (ret == JOptionPane.NO_OPTION) {
 			return false;
