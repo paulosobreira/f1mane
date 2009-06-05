@@ -33,6 +33,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
 import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author paulo.sobreira
@@ -158,6 +159,7 @@ public class PaddockWindow {
 						+ "http://br.geocities.com/sowbreira/ \n"
 						+ "Agosto de 2007 \n ";
 				msg += "Teste e suporte por: \n"
+						+ " Leonardo Andrade leonardofandrade@gmail.com \n"
 						+ " Daniel Souza daniels@globo.com \n"
 						+ " Wendel wendel12345@yahoo.com.br \n"
 						+ " Marquin marcoshenriqueca@gmail.com \n"
@@ -284,7 +286,7 @@ public class PaddockWindow {
 		JOptionPane.showMessageDialog(mainPanel, panel);
 	}
 
-	private JPanel gerarPainelJogo(DetalhesJogo detalhesJogo) {
+	public JPanel gerarPainelJogo(DetalhesJogo detalhesJogo) {
 		JPanel panelJogo = new JPanel();
 		panelJogo.setLayout(new GridLayout(11, 2));
 		panelJogo.add(new JLabel("Criador : "));
@@ -323,7 +325,7 @@ public class PaddockWindow {
 		return panelJogo;
 	}
 
-	private JPanel gerarPainelJogadores(DetalhesJogo detalhesJogo) {
+	public JPanel gerarPainelJogadores(DetalhesJogo detalhesJogo) {
 		JPanel panelJogadores = new JPanel();
 
 		Map detMap = detalhesJogo.getJogadoresPilotos();
@@ -352,10 +354,10 @@ public class PaddockWindow {
 	}
 
 	public void atualizaInfo() {
-		String text = "Latencia Jogo : "
+		String text = Lang.msg("114")
 				+ controlePaddockCliente.getLatenciaMinima();
-		text += " Latencia Real: " + controlePaddockCliente.getLatenciaReal();
-		text += " Max jogos: " + ControleJogosServer.MaxJogo;
+		text += Lang.msg("115") + controlePaddockCliente.getLatenciaReal();
+		text += Lang.msg("116") + (ControleJogosServer.MaxJogo - 1);
 
 		infoLabel1.setText(text);
 

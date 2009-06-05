@@ -1,6 +1,7 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.Panel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.paddock.PaddockConstants;
@@ -290,7 +293,29 @@ public class ControlePaddockCliente {
 	public void entarJogo(Object object) {
 		try {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.ENTRAR_JOGO, sessaoCliente);
+					Comandos.VER_DETALHES_JOGO, sessaoCliente);
+
+			clientPaddockPack.setNomeJogo((String) object);
+			Object ret = enviarObjeto(clientPaddockPack);
+			if (ret == null) {
+				JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
+			JPanel panelJogadores = paddockWindow
+					.gerarPainelJogadores(srvPaddockPack.getDetalhesJogo());
+			JPanel panelJogo = paddockWindow.gerarPainelJogo(srvPaddockPack
+					.getDetalhesJogo());
+			panelJogadores.setBorder(new TitledBorder("Jogadores"));
+			panelJogo.setBorder(new TitledBorder("Dados Inicio do Jogo"));
+			JPanel panelJogoCriado = new JPanel(new GridLayout(1, 2));
+			panelJogoCriado.add(panelJogo);
+			panelJogoCriado.add(panelJogadores);
+
+			clientPaddockPack = new ClientPaddockPack(Comandos.ENTRAR_JOGO,
+					sessaoCliente);
 			DadosCriarJogo dadosParticiparJogo = new DadosCriarJogo();
 			String infoJogo = (String) object;
 			String nomeJogo = infoJogo.split("-")[0];
@@ -302,17 +327,17 @@ public class ControlePaddockCliente {
 					jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
 					mainFrame, sessaoCliente.getNomeJogador());
 
-			if (!painelCriacaoCorridaSimples
-					.gerarDadosEntrarJogo(dadosParticiparJogo)) {
+			if (!painelCriacaoCorridaSimples.gerarDadosEntrarJogo(
+					dadosParticiparJogo, panelJogoCriado)) {
 				return;
 			}
 
 			clientPaddockPack.setDadosCriarJogo(dadosParticiparJogo);
-			Object ret = enviarObjeto(clientPaddockPack);
+			ret = enviarObjeto(clientPaddockPack);
 			if (ret == null) {
 				return;
 			}
-			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
+			srvPaddockPack = (SrvPaddockPack) ret;
 			jogoCliente = new JogoCliente(dadosParticiparJogo.getTemporada());
 			jogoCliente.setMainFrame(mainFrame);
 			jogoCliente.iniciarJogoOnline(srvPaddockPack.getDadosCriarJogo(),
