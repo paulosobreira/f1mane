@@ -308,8 +308,20 @@ public class ControlePaddockCliente {
 					.gerarPainelJogadores(srvPaddockPack.getDetalhesJogo());
 			JPanel panelJogo = paddockWindow.gerarPainelJogo(srvPaddockPack
 					.getDetalhesJogo());
-			panelJogadores.setBorder(new TitledBorder("Jogadores"));
-			panelJogo.setBorder(new TitledBorder("Dados Inicio do Jogo"));
+			panelJogadores.setBorder(new TitledBorder("Jogadores") {
+				@Override
+				public String getTitle() {
+					// TODO Auto-generated method stub
+					return Lang.msg("117");
+				}
+			});
+			panelJogo.setBorder(new TitledBorder("Dados Inicio do Jogo") {
+				@Override
+				public String getTitle() {
+					// TODO Auto-generated method stub
+					return Lang.msg("122");
+				}
+			});
 			JPanel panelJogoCriado = new JPanel(new GridLayout(1, 2));
 			panelJogoCriado.add(panelJogo);
 			panelJogoCriado.add(panelJogadores);

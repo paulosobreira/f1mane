@@ -284,29 +284,30 @@ public class Carro implements Serializable {
 	private int calculaModificadorAsa(int novoModificador, No no,
 			InterfaceJogo controleJogo) {
 		if (no.verificaCruvaAlta() || no.verificaRetaOuLargada()) {
-			if (Math.random() < .985) {
+			if (Math.random() < .950) {
 				return novoModificador;
 			}
 			if (MENOS_ASA.equals(getAsa())) {
-				// System.out.println("++MENOS_ASA Alta");
 				novoModificador++;
 			}
 			if (MAIS_ASA.equals(getAsa())) {
-				// System.out.println("--MAIS_ASA Alta");
 				novoModificador--;
 			}
 		}
 		if (no.verificaCruvaBaixa()) {
-			if (Math.random() < .910) {
+			if (Math.random() < .900) {
 				return novoModificador;
 			}
 			if (MENOS_ASA.equals(getAsa())) {
-				// System.out.println("--MENOS_ASA Baixa");
 				novoModificador--;
 			}
 			if (MAIS_ASA.equals(getAsa())) {
-				// System.out.println("++MAIS_ASA Baixa");
 				novoModificador++;
+			}
+		}
+		if (controleJogo.isChovendo() && !MAIS_ASA.equals(getAsa())) {
+			if (Math.random() < .500) {
+				novoModificador--;
 			}
 		}
 		return novoModificador;
@@ -447,7 +448,7 @@ public class Carro implements Serializable {
 						novoModificador += 1;
 					}
 				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
-						&& no.verificaCruvaBaixa() && (indicativo > 15)
+						&& no.verificaCruvaBaixa() && (indicativo > 10)
 						&& (indicativo < 70)) {
 					novoModificador += 1;
 
@@ -468,7 +469,7 @@ public class Carro implements Serializable {
 				double modificador = controleJogo.getNiveljogo() + 0.2;
 				if (Math.random() < modificador) {
 					if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
-						pneus -= ((20 * controleJogo.getNiveljogo()) * novoModificador);
+						pneus -= ((25 * controleJogo.getNiveljogo()) * novoModificador);
 					} else {
 						pneus -= ((30 * controleJogo.getNiveljogo()) * novoModificador);
 					}

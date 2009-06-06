@@ -158,7 +158,7 @@ public class ControleBox {
 					/**
 					 * gera limite velocidade no box
 					 */
-					ptosBox += ((Math.random() < .7) ? 1 : 0);
+					ptosBox += ((Math.random() < .5) ? 1 : 0);
 				} else if (box.verificaRetaOuLargada()) {
 					ptosBox += 2;
 				} else if (box.verificaCruvaAlta()) {
@@ -332,6 +332,12 @@ public class ControleBox {
 				break;
 			}
 		}
+
+		processarTipoAsaAutomatico(piloto);
+
+	}
+
+	private void processarTipoAsaAutomatico(Piloto piloto) {
 		int noAlta = 0;
 		int noMedia = 0;
 		int noBaixa = 0;
@@ -368,9 +374,16 @@ public class ControleBox {
 		if (controleJogo.isChovendo()) {
 			piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
+			if (piloto.testeHabilidadePiloto()) {
+				piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA,
+						controleCorrida.getDistaciaCorrida());
+
+			}
 		} else {
 			piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_MOLE,
 					controleCorrida.getDistaciaCorrida());
+			if (piloto.testeHabilidadePiloto())
+				processarTipoAsaAutomatico(piloto);
 		}
 
 		int percentagem = 0;

@@ -415,8 +415,22 @@ public class ControleJogoLocal extends ControleRecursos implements
 					new Object[] { getNumVoltaAtual() })));
 		}
 		controleCorrida.getControleClima().processaPossivelMudancaClima();
-		if (!isSafetyCarNaPista())
-			controleEstatisticas.tabelaComparativa();
+		if (!isSafetyCarNaPista()) {
+			Thread nvolta = new Thread(new Runnable() {
+				public void run() {
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					controleEstatisticas.tabelaComparativa();
+
+				}
+
+			});
+			nvolta.start();
+		}
+
 	}
 
 	/**
@@ -760,6 +774,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void tabelaComparativa() {
 		controleEstatisticas.tabelaComparativa();
 
+	}
+
+	public int getQtdeTotalVoltas() {
+		return controleCorrida.getQtdeTotalVoltas();
 	}
 
 }

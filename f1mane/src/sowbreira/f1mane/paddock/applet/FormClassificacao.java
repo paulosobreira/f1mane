@@ -18,6 +18,7 @@ import javax.swing.table.AbstractTableModel;
 
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 21/10/2007 as 18:09:46
@@ -51,9 +52,9 @@ public class FormClassificacao extends JPanel {
 					nomeJogador = (String) model.getValueAt(posicoesTable
 							.getSelectedRow(), 0);
 					int ret = JOptionPane.showConfirmDialog(
-							FormClassificacao.this,
-							"Carregar listagem de corridas de " + nomeJogador,
-							"Listagem de corridas", JOptionPane.YES_NO_OPTION);
+							FormClassificacao.this, Lang.msg("129")
+									+ nomeJogador, Lang.msg("130"),
+							JOptionPane.YES_NO_OPTION);
 					if (ret == JOptionPane.YES_OPTION) {
 						gerarListagemCorrida(controlePaddockCliente
 								.obterListaCorridas(nomeJogador));
@@ -68,7 +69,13 @@ public class FormClassificacao extends JPanel {
 		posicoesTable
 				.setPreferredScrollableViewportSize(new Dimension(600, 355));
 		JLabel label = new JLabel(
-				"Corridas no modo facil e com menos 10 voltas não geram pontuação.");
+				"Corridas no modo facil e com menos 10 voltas não geram pontuação.") {
+			@Override
+			public String getText() {
+				// TODO Auto-generated method stub
+				return Lang.msg("131");
+			}
+		};
 		add(label, BorderLayout.SOUTH);
 	}
 
@@ -80,8 +87,8 @@ public class FormClassificacao extends JPanel {
 		panel.add(new JScrollPane(corridasTable));
 		corridasTable
 				.setPreferredScrollableViewportSize(new Dimension(900, 355));
-		JOptionPane.showMessageDialog(this, panel,
-				"Corridas de " + nomeJogador, JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(this, panel, Lang.msg("132")
+				+ nomeJogador, JOptionPane.PLAIN_MESSAGE);
 	}
 
 	private class TableModelCorridas extends AbstractTableModel {
@@ -123,7 +130,8 @@ public class FormClassificacao extends JPanel {
 			case 5:
 				return corridasDadosSrv.getPorcentConcluida() + "%";
 			case 6:
-				return corridasDadosSrv.isMudouCarro() ? "Sim" : "Não";
+				return corridasDadosSrv.isMudouCarro() ? Lang.msg("SIM") : Lang
+						.msg("NAO");
 			case 7:
 				return decimalFormat.format(corridasDadosSrv.getNumVoltas());
 			case 8:
@@ -139,27 +147,25 @@ public class FormClassificacao extends JPanel {
 		public String getColumnName(int column) {
 			switch (column) {
 			case 0:
-				return "GP";
-
+				return Lang.msg("152");
 			case 1:
-				return "Piloto";
-
+				return Lang.msg("153");
 			case 2:
-				return "Carro";
+				return Lang.msg("154");
 			case 3:
-				return "inicio";
+				return Lang.msg("155");
 			case 4:
-				return "Fim";
+				return Lang.msg("156");
 			case 5:
-				return "% de voltas";
+				return Lang.msg("157");
 			case 6:
-				return "Mudou Carro/piloto";
+				return Lang.msg("158");
 			case 7:
-				return "Voltas";
+				return Lang.msg("159");
 			case 8:
-				return "Posição";
+				return Lang.msg("160");
 			case 9:
-				return "Pontos";
+				return Lang.msg("161");
 			default:
 				return "";
 			}
@@ -205,17 +211,15 @@ public class FormClassificacao extends JPanel {
 		public String getColumnName(int column) {
 			switch (column) {
 			case 0:
-				return "Jogador";
-
+				return Lang.msg("162");
 			case 1:
-				return "Ultimo Acesso";
-
+				return Lang.msg("163");
 			case 2:
-				return "Pontos";
+				return Lang.msg("164");
 			case 3:
-				return "Corridas";
+				return Lang.msg("165");
 			case 4:
-				return "Aproveitamento";
+				return Lang.msg("166");
 
 			default:
 				return "";

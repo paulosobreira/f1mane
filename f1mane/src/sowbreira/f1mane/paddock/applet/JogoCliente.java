@@ -627,10 +627,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
-	@Override
 	public void tabelaComparativa() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public int getQtdeTotalVoltas() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
