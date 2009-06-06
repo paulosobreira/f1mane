@@ -550,7 +550,7 @@ public class Piloto implements Serializable {
 			if (getCarro().isPaneSeca()) {
 				desqualificado = true;
 				controleJogo.infoPrioritaria(Html.txtRedBold(getNome()
-						+ " Sofre pane seca."));
+						+ Lang.msg("118")));
 			}
 		} else {
 			return index;
@@ -849,7 +849,7 @@ public class Piloto implements Serializable {
 	}
 
 	public void gerarCiclosPadoBox(int porcentCombust, long ciclos) {
-		paradoBox = (int) (((porcentCombust * 100) / ciclos)) + 70;
+		paradoBox = (int) (((porcentCombust * 100) / ciclos)) + 90;
 		porcentagemCombustUltimaParadaBox = porcentCombust;
 	}
 

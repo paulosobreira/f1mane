@@ -275,9 +275,9 @@ public class GerenciadorVisual {
 		boolean modo = controleJogo.mudarModoBox();
 		if (!(controleJogo instanceof JogoCliente)) {
 			if (modo && !(controleJogo instanceof JogoCliente)) {
-				box.setText("Vai p/box F12");
+				box.setText(Lang.msg("137"));
 			} else {
-				box.setText("Ir p/box F12");
+				box.setText(Lang.msg("138"));
 			}
 
 		}
@@ -298,9 +298,9 @@ public class GerenciadorVisual {
 		boolean modo = controleJogo.mudarModoAgressivo();
 		if (!(controleJogo instanceof JogoCliente)) {
 			if (modo) {
-				agressivo.setText("Agressivo F4");
+				agressivo.setText(Lang.msg("134"));
 			} else {
-				agressivo.setText("Normal F4");
+				agressivo.setText(Lang.msg("141"));
 			}
 		}
 
@@ -344,17 +344,17 @@ public class GerenciadorVisual {
 				}
 
 			}
-			String text = "Melhor Volta :"
+			String text = Lang.msg("142")
 					+ voltaCorrida.obterTempoVoltaFormatado()
-					+ " de "
+					+ Lang.msg("143")
 					+ (piloto != null ? piloto.getNome() + " - "
 							+ piloto.getCarro().getNome() : "") + " "
 					+ controleJogo.getNumVoltaAtual() + "/"
 					+ controleJogo.totalVoltasCorrida();
 
-			text += " Nivel da corrida: " + controleJogo.getNivelCorrida();
+			text += Lang.msg("144") + controleJogo.getNivelCorrida();
 			if (controleJogo.isSafetyCarNaPista()) {
-				text += " Safety Car na pista.";
+				text += Lang.msg("145");
 			}
 			infoCorrida.setText(text);
 		}
@@ -364,30 +364,30 @@ public class GerenciadorVisual {
 			String plider = "";
 
 			String infoBox = pilotoSelecionado.getCarro().getTipoPneu() + " "
-					+ pilotoSelecionado.getCarro().getAsa() + " Paradas "
+					+ pilotoSelecionado.getCarro().getAsa() + Lang.msg("146")
 					+ pilotoSelecionado.getQtdeParadasBox() + " "
-					+ (pilotoSelecionado.isBox() ? "Box" : "");
+					+ (pilotoSelecionado.isBox() ? Lang.msg("147") : "");
 
 			if (pilotoSelecionado.getPosicao() == 1) {
-				plider = "Lider ";
+				plider = Lang.msg("148");
 			} else {
 				controleJogo.calculaSegundosParaLider(pilotoSelecionado);
 				plider = pilotoSelecionado.getSegundosParaLider();
 			}
 
-			String text = "P/Lider: " + plider;
+			String text = Lang.msg("149") + plider;
 
 			if ((pilotoSelecionado.getNumeroVolta() > 0)) {
 				if (pilotoSelecionado.getUltimaVolta() != null) {
-					text += (" Ultima: " + pilotoSelecionado.getUltimaVolta()
-							.obterTempoVoltaFormatado());
+					text += (Lang.msg("150") + pilotoSelecionado
+							.getUltimaVolta().obterTempoVoltaFormatado());
 				}
 
 				Volta voltaPiloto = controleJogo
 						.obterMelhorVolta(pilotoSelecionado);
 
 				if (voltaPiloto != null) {
-					text += (" Melhor: " + voltaPiloto
+					text += (Lang.msg("151") + voltaPiloto
 							.obterTempoVoltaFormatado());
 				}
 			}
@@ -560,8 +560,20 @@ public class GerenciadorVisual {
 				- painelPosicoes.getLarguraPainel() - 30, 185);
 		painelInfText.add(panel, BorderLayout.CENTER);
 		infoText.setLayout(new GridLayout(1, 1));
-		infoCorrida = new JLabel("Informações sobre a Corrida");
-		infoPiloto = new JLabel("Informações sobre o Piloto");
+		infoCorrida = new JLabel("Informações sobre a Corrida") {
+			@Override
+			public String getText() {
+				// TODO Auto-generated method stub
+				return Lang.msg("129");
+			}
+		};
+		infoPiloto = new JLabel("Informações sobre o Piloto") {
+			@Override
+			public String getText() {
+				// TODO Auto-generated method stub
+				return Lang.msg("130");
+			}
+		};
 		infoText.add(infoCorrida);
 		// infoText.add(infoPiloto);
 		painelInfText.add(infoText, BorderLayout.NORTH);
@@ -577,20 +589,35 @@ public class GerenciadorVisual {
 		JPanel panelCol3 = new JPanel();
 		panelCol3.setLayout(new BorderLayout());
 
-		JLabel combustivel = new JLabel("Comb..");
+		JLabel combustivel = new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("131");
+			}
+		};
 		panelCol1.add(combustivel, BorderLayout.NORTH);
 		combustivelBar = new JProgressBar(JProgressBar.VERTICAL);
 		combustivelBar.setStringPainted(true);
 		panelCol1.add(combustivelBar, BorderLayout.CENTER);
 
-		JLabel pneu = new JLabel("Pneus");
+		JLabel pneu = new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("132");
+			}
+		};
 		panelCol2.add(pneu, BorderLayout.NORTH);
 		pneuBar = new JProgressBar(JProgressBar.VERTICAL);
 		pneuBar.setStringPainted(true);
 		panelCol2.add(pneuBar, BorderLayout.CENTER);
 		motorBar = new JProgressBar(JProgressBar.VERTICAL);
 		motorBar.setStringPainted(true);
-		JLabel motoLabel = new JLabel("Motor");
+		JLabel motoLabel = new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("133");
+			}
+		};
 		panelCol3.add(motoLabel, BorderLayout.NORTH);
 		panelCol3.add(motorBar, BorderLayout.CENTER);
 		painelInfGraf = new JPanel(new GridLayout(1, 3));
@@ -628,8 +655,18 @@ public class GerenciadorVisual {
 
 	private void gerarPainelComandosNovo() {
 
-		agressivo = new JButton("Agressivo F4");
-		box = new JButton("Box F12");
+		agressivo = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("134");
+			}
+		};
+		box = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("135");
+			}
+		};
 		modoPiloto = new JComboBox();
 		modoPiloto.addItem(Lang.msg("008"));
 		modoPiloto.addItem(Lang.msg(Piloto.AGRESSIVO));
@@ -656,7 +693,11 @@ public class GerenciadorVisual {
 		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 		panelControle = new JPanel();
-		panelControle.setBorder(new TitledBorder("Menu Box"));
+		panelControle.setBorder(new TitledBorder("") {
+			public String getTitle() {
+				return Lang.msg("136");
+			}
+		});
 		GridLayout gridLayout = new GridLayout(5, 1) {
 			public Dimension preferredLayoutSize(Container parent) {
 				return new Dimension(150, 140);
@@ -683,7 +724,12 @@ public class GerenciadorVisual {
 
 	private void gerarPainelJogoSingle(JPanel painelInicio) {
 		painelInicio.setLayout(new GridLayout(14, 2));
-		JLabel label = new JLabel("Número de voltas da corrida (2-72):");
+		JLabel label = new JLabel() {
+
+			public String getText() {
+				return Lang.msg("110");
+			}
+		};
 		painelInicio.add(label);
 		spinnerQtdeVoltas = new JSpinner();
 		spinnerQtdeVoltas.setValue(new Integer(22));
@@ -693,19 +739,28 @@ public class GerenciadorVisual {
 
 		painelInicio.add(spinnerQtdeVoltas);
 
-		painelInicio.add(new JLabel("Apelido :"));
+		painelInicio.add(new JLabel() {
+
+			public String getText() {
+				return Lang.msg("111");
+			}
+		});
 		nomeJogador = new JTextField();
 		painelInicio.add(nomeJogador);
 
 		boxPilotoSelecionado = new JComboBox();
-		boxPilotoSelecionado.addItem("Ver corrida");
+		boxPilotoSelecionado.addItem(Lang.msg("119"));
 		for (Iterator iter = controleJogo.getPilotos().iterator(); iter
 				.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			boxPilotoSelecionado.addItem(piloto);
 		}
 
-		painelInicio.add(new JLabel("Selecionar Piloto :"));
+		painelInicio.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("120");
+			}
+		});
 		painelInicio.add(boxPilotoSelecionado);
 
 		comboBoxCircuito = new JComboBox();
@@ -714,14 +769,22 @@ public class GerenciadorVisual {
 			String key = (String) iter.next();
 			comboBoxCircuito.addItem(key);
 		}
-		painelInicio.add(new JLabel("Selecionar Circuito :"));
+		painelInicio.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("121");
+			}
+		});
 		painelInicio.add(comboBoxCircuito);
 
 		comboBoxNivelCorrida = new JComboBox();
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
-		painelInicio.add(new JLabel("Nivel da corrida :"));
+		painelInicio.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("122");
+			}
+		});
 		painelInicio.add(comboBoxNivelCorrida);
 
 		comboBoxClimaInicial = new JComboBox();
@@ -738,7 +801,12 @@ public class GerenciadorVisual {
 			}
 		}
 
-		painelInicio.add(new JLabel("Clima :"));
+		painelInicio.add(new JLabel() {
+			public String getText() {
+
+				return Lang.msg("123");
+			}
+		});
 		painelInicio.add(comboBoxClimaInicial);
 
 		JLabel tipoPneu = new JLabel(Lang.msg("009"));
@@ -747,13 +815,22 @@ public class GerenciadorVisual {
 		boxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
 		boxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
 
-		JLabel tipoAsa = new JLabel(Lang.msg("010"));
+		JLabel tipoAsa = new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("010");
+			}
+		};
 		comboBoxAsa = new JComboBox();
 		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
 		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 
-		JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
+		JLabel qtdeComustivel = new JLabel() {
+			public String getText() {
+				return Lang.msg("011");
+			}
+		};
 		spinnerCombustivelInicial = new JSpinner();
 		spinnerCombustivelInicial.setValue(new Integer(50));
 
@@ -763,16 +840,30 @@ public class GerenciadorVisual {
 		painelInicio.add(comboBoxAsa);
 		painelInicio.add(qtdeComustivel);
 		painelInicio.add(spinnerCombustivelInicial);
-		painelInicio.add(new JLabel("Dificuldade Utrapassagem (0-999):"));
+		painelInicio.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("124");
+			}
+		});
 		spinnerDificuldadeUltrapassagem = new JSpinner();
 		spinnerDificuldadeUltrapassagem.setValue(new Integer(500));
 		painelInicio.add(spinnerDificuldadeUltrapassagem);
-		painelInicio.add(new JLabel("Index velocidade em reta (0-999):"));
+		painelInicio.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("125");
+			}
+		});
 		spinnerIndexVelcidadeEmReta = new JSpinner();
 		spinnerIndexVelcidadeEmReta.setValue(new Integer(500));
 		painelInicio.add(spinnerIndexVelcidadeEmReta);
 
-		painelInicio.add(new JLabel("Tempo Ciclo (50ms-120ms):"));
+		painelInicio.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("126");
+			}
+		});
 		spinnerTempoCiclo = new JSpinner();
 		spinnerTempoCiclo.setValue(new Integer(85));
 		painelInicio.add(spinnerTempoCiclo);
@@ -802,18 +893,17 @@ public class GerenciadorVisual {
 		gerarPainelJogoSingle(painelInicio);
 		spinnerQtdeVoltas.setValue(new Integer(22));
 		int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
-				painelInicio, "Setup Inicial", JOptionPane.YES_NO_OPTION);
+				painelInicio, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret == JOptionPane.NO_OPTION) {
 			return false;
 		}
 		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 2)
 				|| (((Integer) spinnerCombustivelInicial.getValue()).intValue() == 0)) {
-			JOptionPane.showMessageDialog(controleJogo.getMainFrame(),
-					"NÚMERO DE VOLTAS DEVE SER INFORMADO!!!",
-					"SetUP Não preenchido corretamente.",
+			JOptionPane.showMessageDialog(controleJogo.getMainFrame(), Lang
+					.msg("128"), Lang.msg("128"),
 					JOptionPane.INFORMATION_MESSAGE);
 			ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
-					painelInicio, "Setup Inicial", JOptionPane.YES_NO_OPTION);
+					painelInicio, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 			spinnerQtdeVoltas.requestFocus();
 			if (ret == JOptionPane.NO_OPTION) {
 				return false;
@@ -851,15 +941,14 @@ public class GerenciadorVisual {
 		gerarPainelJogoSingle(painelInicio);
 		gerarPainelJogo(painelInicio);
 		int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
-				painelInicio, "Setup Inicial", JOptionPane.YES_NO_OPTION);
+				painelInicio, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret == JOptionPane.NO_OPTION) {
 			return false;
 		}
 		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 21)
 				|| (((Integer) spinnerCombustivelInicial.getValue()).intValue() == 0)) {
-			JOptionPane.showMessageDialog(controleJogo.getMainFrame(),
-					"NÚMERO DE VOLTAS DEVE SER INFORMADO!!!",
-					"SetUP Não preenchido corretamente.",
+			JOptionPane.showMessageDialog(controleJogo.getMainFrame(), Lang
+					.msg("128"), Lang.msg("128"),
 					JOptionPane.INFORMATION_MESSAGE);
 			ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
 					painelInicio, "Setup Inicial", JOptionPane.YES_NO_OPTION);
@@ -887,8 +976,8 @@ public class GerenciadorVisual {
 	}
 
 	public void desenhaQualificacao() {
-		infoCorrida.setText("Informações sobre a Corrida");
-		infoPiloto.setText("Informações sobre o Piloto");
+		infoCorrida.setText(Lang.msg("129"));
+		infoPiloto.setText(Lang.msg("130"));
 		List pilotos = controleJogo.getPilotos();
 		List ptosPilotos = new ArrayList();
 

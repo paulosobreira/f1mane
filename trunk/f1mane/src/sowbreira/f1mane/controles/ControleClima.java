@@ -104,17 +104,14 @@ public class ControleClima {
 
 	public void informaMudancaClima() {
 		if (Clima.SOL.equals(clima)) {
-			controleJogo.infoPrioritaria(Html.msgClima(Lang
-					.msg("004", new Object[] { controleJogo
-							.getNumVoltaAtual() })));
+			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("004",
+					new Object[] { controleJogo.getNumVoltaAtual() })));
 		} else if (Clima.NUBLADO.equals(clima)) {
-			controleJogo.infoPrioritaria(Html.msgClima(Lang
-					.msg("005", new Object[] { controleJogo
-							.getNumVoltaAtual() })));
+			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("005",
+					new Object[] { controleJogo.getNumVoltaAtual() })));
 		} else if (Clima.CHUVA.equals(clima)) {
-			controleJogo.infoPrioritaria(Html.msgClima(Lang
-					.msg("006", new Object[] { controleJogo
-							.getNumVoltaAtual() })));
+			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("006",
+					new Object[] { controleJogo.getNumVoltaAtual() })));
 		}
 		controleJogo.informaMudancaClima();
 	}
@@ -127,9 +124,10 @@ public class ControleClima {
 		setClima(Clima.NUBLADO);
 		intervaloMudancaClima = (quartoVoltas / 2)
 				+ ((int) (Math.random() * quartoVoltas));
-		controleJogo.infoPrioritaria(Html.msgClima(Html
-				.msgClima(Lang.msg("007",
-						new Object[] { intervaloMudancaClima }))));
+		if (controleJogo.getQtdeTotalVoltas() < (controleJogo
+				.getNumVoltaAtual() + intervaloMudancaClima))
+			controleJogo.infoPrioritaria(Html.msgClima(Html.msgClima(Lang.msg(
+					"007", new Object[] { intervaloMudancaClima }))));
 
 	}
 

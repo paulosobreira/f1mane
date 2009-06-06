@@ -43,8 +43,7 @@ public class ControleSafetyCar {
 		safetyCar.setPtosPista(pts);
 		safetyCar.setNaPista(true);
 		safetyCar.setVaiProBox(false);
-		controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("029",
-				new Object[] { controleCorrida.voltaAtual() })));
+		controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("029")));
 		recolihimentoCarro = new ThreadRecolihimentoCarro(controleJogo, piloto,
 				safetyCar);
 		recolihimentoCarro.start();
@@ -64,16 +63,9 @@ public class ControleSafetyCar {
 		List pista = controleJogo.getNosDaPista();
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
-		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? 1
+		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
+				.random() > .7) ? 1 : 0)
 				: (Math.random() > .9) ? 2 : 1;
-		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
-		if (pole.getPtosPista() > safetyCar.getPtosPista()
-				&& noAtual.verificaRetaOuLargada()) {
-			bonus = (Math.random() > .95) ? 2 : 1;
-		}
-		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 50)) {
-			bonus = (Math.random() > .7) ? 1 : 0;
-		}
 		index += bonus;
 		int diff = index - pista.size();
 
