@@ -11,6 +11,8 @@ import java.net.URL;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import sowbreira.f1mane.recursos.idiomas.Lang;
+
 /**
  * @author paulo.sobreira
  * 
@@ -24,8 +26,7 @@ public class JFramePaddock extends JFrame {
 	public void init() {
 
 		try {
-			url = new URL(JOptionPane
-					.showInputDialog("Entre com a url do servidor."));
+			url = new URL(JOptionPane.showInputDialog(Lang.msg("172")));
 			Panel panel = new Panel();
 			getContentPane().add(panel);
 			controlePaddockApplet = new ControlePaddockCliente(url, panel);
@@ -48,14 +49,13 @@ public class JFramePaddock extends JFrame {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(),
-					"Erro enviando dados", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 			System.exit(0);
 		}
 
 	}
-
 
 	public static void main(String[] args) {
 		JFramePaddock framePaddock = new JFramePaddock();

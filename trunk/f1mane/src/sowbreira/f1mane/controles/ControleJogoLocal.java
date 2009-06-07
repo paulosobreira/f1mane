@@ -396,7 +396,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void processaNovaVolta() {
 		int qtdeDesqualificados = 0;
-		if (getNumVoltaAtual() == (totalVoltasCorrida() - 1)) {
+		if (getNumVoltaAtual() == (totalVoltasCorrida() - 1)
+				&& !isCorridaTerminada()) {
 			Piloto piloto = (Piloto) pilotos.get(0);
 			infoPrioritaria(Html.superBlack(piloto.getNome())
 					+ Html.superGreen(Lang.msg("045")));

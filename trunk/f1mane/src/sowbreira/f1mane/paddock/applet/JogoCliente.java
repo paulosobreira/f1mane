@@ -22,6 +22,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.Posis;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
@@ -116,7 +117,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
 			JOptionPane.showMessageDialog(getMainFrame(), retorno.toString(),
-					"Erro enviando dados", JOptionPane.ERROR_MESSAGE);
+					Lang.msg("173"), JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 
