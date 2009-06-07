@@ -42,28 +42,13 @@ public class MainFrame extends JFrame {
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
 	private boolean modoApplet;
-	private JRadioButtonMenuItem t2007 = new JRadioButtonMenuItem() {
-		public String getText() {
-			return Lang.msg("085");
-		}
-
-	};
-	private JRadioButtonMenuItem t2008 = new JRadioButtonMenuItem() {
-		public String getText() {
-			return Lang.msg("086");
-		}
-
-	};
-
-	private JRadioButtonMenuItem t2009 = new JRadioButtonMenuItem() {
-		public String getText() {
-			return Lang.msg("087");
-		}
-
-	};
+	private JRadioButtonMenuItem t2007;
+	private JRadioButtonMenuItem t2008;
+	private JRadioButtonMenuItem t2009;
 	private JMenuBar bar;
 	private JMenu menuJogo;
 	private JMenu menuEditor;
+	private JMenu menuIdiomas;
 	private JMenu menuInfo;
 
 	public MainFrame(boolean modoApplet) throws IOException {
@@ -95,6 +80,14 @@ public class MainFrame extends JFrame {
 
 		};
 		bar.add(menuEditor);
+		menuIdiomas = new JMenu() {
+			public String getText() {
+				return Lang.msg("219");
+			}
+
+		};
+		bar.add(menuIdiomas);
+
 		if (modoApplet) {
 			menuEditor.setEnabled(false);
 		}
@@ -103,9 +96,42 @@ public class MainFrame extends JFrame {
 		gerarMenusEditor(menuEditor);
 		gerarMenusInfo(menuInfo);
 		gerarMenusSobre(menuInfo);
+		gerarMenusidiomas(menuIdiomas);
 		getContentPane().setLayout(null);
 		setSize(800, 630);
 		setTitle("F1-Mane 1.8");
+	}
+
+	private void gerarMenusidiomas(JMenu menuIdiomas) {
+		JRadioButtonMenuItem pt = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("pt");
+			}
+
+		};
+		JRadioButtonMenuItem en = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("en");
+			}
+
+		};
+		pt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Lang.mudarIdioma("pt");
+			}
+		});
+		en.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Lang.mudarIdioma("en");
+			}
+		});
+
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(pt);
+		buttonGroup.add(en);
+		menuIdiomas.add(pt);
+		menuIdiomas.add(en);
+
 	}
 
 	private void gerarMenusInfo(JMenu menuInfo2) {
@@ -170,7 +196,8 @@ public class MainFrame extends JFrame {
 		};
 		sobre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String msg = "Feito por Paulo Sobreira \n sowbreira@yahoo.com.br \n"
+				String msg = Lang.msg("184")
+						+ " Paulo Sobreira \n sowbreira@yahoo.com.br \n"
 						+ "http://br.geocities.com/sowbreira/ \n"
 						+ "Iniciado em Maio de 2007";
 				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
@@ -277,6 +304,25 @@ public class MainFrame extends JFrame {
 		});
 		menu1.add(pausa);
 		ButtonGroup buttonGroup = new ButtonGroup();
+		t2007 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("085");
+			}
+
+		};
+		t2008 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("086");
+			}
+
+		};
+
+		t2009 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("087");
+			}
+
+		};
 		buttonGroup.add(t2007);
 		buttonGroup.add(t2008);
 		buttonGroup.add(t2009);
@@ -516,7 +562,7 @@ public class MainFrame extends JFrame {
 		menu4.add(apagarUltimoNoPista);
 
 		JMenuItem apagarUltimoNoBox = new JMenuItem(
-				"Apagar ultimo NO (SHIFT+DEL)"){
+				"Apagar ultimo NO (SHIFT+DEL)") {
 			public String getText() {
 				return Lang.msg("107");
 			}
@@ -533,7 +579,7 @@ public class MainFrame extends JFrame {
 		});
 		menu4.add(apagarUltimoNoBox);
 
-		JMenuItem salvarPista = new JMenuItem("Salvar Pista F8"){
+		JMenuItem salvarPista = new JMenuItem("Salvar Pista F8") {
 			public String getText() {
 				return Lang.msg("108");
 			}
