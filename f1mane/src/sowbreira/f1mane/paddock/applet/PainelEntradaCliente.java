@@ -243,15 +243,15 @@ public class PainelEntradaCliente {
 		String circuitoSelecionado = (String) comboBoxCircuito
 				.getSelectedItem();
 		dadosCriarJogo.setCircuitoSelecionado(circuitoSelecionado);
-		dadosCriarJogo.setNivelCorrida(Lang.key((String) comboBoxNivelCorrida
-				.getSelectedItem()));
+		dadosCriarJogo.setNivelCorrida(Lang.key(comboBoxNivelCorrida
+				.getSelectedItem().toString()));
 		dadosCriarJogo.setClima((Clima) comboBoxClimaInicial.getSelectedItem());
 		preecherDadosCriarJogo(dadosCriarJogo);
 	}
 
 	private void preecherDadosCriarJogo(DadosCriarJogo dadosParticiparJogo) {
-		String tpPnueu = Lang.key((String) comboBoxPneuInicial
-				.getSelectedItem());
+		String tpPnueu = Lang.key(comboBoxPneuInicial.getSelectedItem()
+				.toString());
 		Piloto piloto = (Piloto) comboBoxPilotoSelecionado.getSelectedItem();
 		String asa = Lang.key((String) comboBoxAsa.getSelectedItem());
 		Integer combustivel = (Integer) spinnerCombustivelInicial.getValue();

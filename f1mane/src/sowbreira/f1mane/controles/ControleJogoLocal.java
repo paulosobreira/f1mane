@@ -543,8 +543,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoSingle()) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
-			this.nivelCorrida = Lang.key((String) gerenciadorVisual
-					.getComboBoxNivelCorrida().getSelectedItem());
+			this.nivelCorrida = Lang.key(gerenciadorVisual
+					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 					diffultrapassagem.intValue(), veloMaxReta.intValue(),
 					tempoCiclo.intValue());

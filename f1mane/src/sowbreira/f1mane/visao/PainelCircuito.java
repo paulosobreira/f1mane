@@ -48,16 +48,16 @@ public class PainelCircuito extends JPanel {
 	private Point pointQualificacao;
 	private Map mapDesenharQualificacao = new HashMap();
 	private boolean desenhaQualificacao;
-	private boolean desenhaPosVelo = true;
+	private boolean desenhaInfo = true;
 	private ImageIcon fuel;
 	private ImageIcon tyre;
 
-	public boolean isDesenhaPosVelo() {
-		return desenhaPosVelo;
+	public boolean isDesenhaInfo() {
+		return desenhaInfo;
 	}
 
-	public void setDesenhaPosVelo(boolean desenhaPosVelo) {
-		this.desenhaPosVelo = desenhaPosVelo;
+	public void setDesenhaInfo(boolean desenhaPosVelo) {
+		this.desenhaInfo = desenhaPosVelo;
 	}
 
 	public PainelCircuito(InterfaceJogo jogo,
@@ -145,6 +145,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaInfoAdd(Graphics2D g2d) {
+		if (!desenhaInfo) {
+			return;
+		}
 		Piloto pilotoSelecionado = gerenciadorVisual
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
 		if (pilotoSelecionado != null) {
@@ -220,8 +223,8 @@ public class PainelCircuito extends JPanel {
 				yBase += 15;
 				g2d.drawString(Lang.msg("074"), ptoOri, yBase);
 				yBase += 15;
-				if (Lang.msg(Piloto.LENTO).equals(
-						gerenciadorVisual.getModoPiloto().getSelectedItem())
+				if (Piloto.LENTO.equals(Lang.key(gerenciadorVisual
+						.getModoPiloto().getSelectedItem().toString()))
 						&& qtdeLuzesAcesas <= 0
 						&& pilotoSelecionado.isJogadorHumano()) {
 					g2d.setColor(gre);
@@ -232,8 +235,8 @@ public class PainelCircuito extends JPanel {
 				}
 				g2d.drawString(Lang.msg("075"), ptoOri, yBase);
 				yBase += 15;
-				if (Lang.msg(Piloto.NORMAL).equals(
-						gerenciadorVisual.getModoPiloto().getSelectedItem())
+				if (Piloto.NORMAL.equals(Lang.key(gerenciadorVisual
+						.getModoPiloto().getSelectedItem().toString()))
 						&& qtdeLuzesAcesas <= 0
 						&& pilotoSelecionado.isJogadorHumano()) {
 					g2d.setColor(yel);
@@ -244,8 +247,8 @@ public class PainelCircuito extends JPanel {
 				}
 				g2d.drawString(Lang.msg("076"), ptoOri, yBase);
 				yBase += 15;
-				if (Lang.msg(Piloto.AGRESSIVO).equals(
-						gerenciadorVisual.getModoPiloto().getSelectedItem())
+				if (Piloto.AGRESSIVO.equals(Lang.key(gerenciadorVisual
+						.getModoPiloto().getSelectedItem().toString()))
 						&& qtdeLuzesAcesas <= 0
 						&& pilotoSelecionado.isJogadorHumano()) {
 					g2d.setColor(red);
@@ -258,6 +261,8 @@ public class PainelCircuito extends JPanel {
 				yBase += 15;
 				g2d.setColor(Color.black);
 				g2d.drawString(Lang.msg("078"), ptoOri, yBase);
+				yBase += 15;
+				g2d.drawString(Lang.msg("220"), ptoOri, yBase);
 
 				if ((pilotoSelecionado.getNumeroVolta() > 0)) {
 					Volta voltaPiloto = controleJogo
@@ -719,7 +724,7 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * moldura inferior
 		 */
-		if (desenhaPosVelo) {
+		if (desenhaInfo) {
 
 			if (Carro.GIRO_MIN_VAL == ps.getCarro().getGiro()) {
 				desenBarraGiro(g2d, true, gre, 5);
@@ -764,7 +769,7 @@ public class PainelCircuito extends JPanel {
 			g2d.drawString(txt1, xTxt + 2, pt.y - 13);
 		if (txt2 != null)
 			g2d.drawString(txt2, xTxt + 2, pt.y - 3);
-		if (desenhaPosVelo) {
+		if (desenhaInfo) {
 			g2d.setColor(c1);
 			g2d.fillRoundRect(5, 100, 70, 15, 15, 15);
 			valor = (c1.getRed() + c1.getGreen() + c1.getBlue()) / 2;

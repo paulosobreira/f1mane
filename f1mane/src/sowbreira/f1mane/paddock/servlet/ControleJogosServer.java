@@ -82,8 +82,8 @@ public class ControleJogosServer {
 			ErroServ erroServ = new ErroServ(e);
 			return erroServ;
 		}
-		jogoServidor.setNomeJogoServidor("Game " + (qtdeJogos++) + "-"
-				+ temporada.replaceAll("t", ""));
+		jogoServidor.setNomeJogoServidor(Lang.msg("088") + " " + (qtdeJogos++)
+				+ "-" + temporada.replaceAll("t", ""));
 		mapaJogosCriados
 				.put(clientPaddockPack.getSessaoCliente(), jogoServidor);
 		gerarListaJogosCriados();
@@ -123,10 +123,10 @@ public class ControleJogosServer {
 		String nomeJogo = clientPaddockPack.getDadosJogoCriado().getNomeJogo();
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 		if (jogoServidor.isCorridaTerminada()) {
-			return new MsgSrv(Lang.msg("206", new String[]{nomeJogo}));
+			return new MsgSrv(Lang.msg("206", new String[] { nomeJogo }));
 		}
 		if (jogoServidor == null) {
-			return new MsgSrv(Lang.msg("207", new String[]{nomeJogo}));
+			return new MsgSrv(Lang.msg("207", new String[] { nomeJogo }));
 		}
 		Object retorno = jogoServidor.adicionarJogador(clientPaddockPack
 				.getSessaoCliente().getNomeJogador(), clientPaddockPack
@@ -185,7 +185,7 @@ public class ControleJogosServer {
 		String nomeJogo = clientPaddockPack.getNomeJogo();
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 		if (jogoServidor == null) {
-			return new MsgSrv(Lang.msg("207", new String[]{nomeJogo}));
+			return new MsgSrv(Lang.msg("207", new String[] { nomeJogo }));
 		}
 		DetalhesJogo detalhesJogo = new DetalhesJogo();
 		jogoServidor.preencherDetalhes(detalhesJogo);
