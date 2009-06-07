@@ -93,9 +93,8 @@ public class ControleSafetyCar {
 		/**
 		 * Efeito dexar o safatycar se perder de vista
 		 */
-
 		if (piloto.getPosicao() == 1 && controleJogo.isSafetyCarVaiBox()) {
-			return 1;
+			return (Math.random() > .4) ? 1 : 0;
 		}
 		if (piloto.getPosicao() == 1
 				&& piloto.getPtosPista() >= (safetyCar.getPtosPista() - 5)) {

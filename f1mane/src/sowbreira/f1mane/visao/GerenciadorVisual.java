@@ -167,7 +167,6 @@ public class GerenciadorVisual {
 		modoPiloto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String modo = modoPiloto.getSelectedItem().toString();
-				System.out.println(modo);
 				mudarModoPilotagem(Lang.key(modo));
 			}
 		});
@@ -272,8 +271,8 @@ public class GerenciadorVisual {
 			value = new Integer(100);
 		}
 		controleJogo.setBoxJogadorHumano(Lang.key(comboBoxTipoPneu
-				.getSelectedItem().toString()), value, Lang
-				.key((String) comboBoxAsa.getSelectedItem()));
+				.getSelectedItem().toString()), value, Lang.key(comboBoxAsa
+				.getSelectedItem().toString()));
 		boolean modo = controleJogo.mudarModoBox();
 		if (!(controleJogo instanceof JogoCliente)) {
 			if (modo && !(controleJogo instanceof JogoCliente)) {
@@ -710,7 +709,7 @@ public class GerenciadorVisual {
 
 		panelControle.setLayout(gridLayout);
 		panelControle.add(box);
-		//panelControle.add(modoPiloto);
+		// panelControle.add(modoPiloto);
 		panelControle.add(comboBoxTipoPneu);
 		panelControle.add(comboBoxAsa);
 		panelControle.add(new JLabel() {
