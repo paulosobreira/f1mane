@@ -43,6 +43,9 @@ public class PainelCircuito extends JPanel {
 	public final static Color red = new Color(250, 0, 0, 150);
 	public final static Color gre = new Color(0, 255, 0, 150);
 	public final static Color yel = new Color(255, 255, 0, 150);
+	public final static BufferedImage carroimgDano = CarregadorRecursos
+			.carregaBufferedImageTranspareciaBranca("carro_dano.gif");
+
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
 	private Point pointQualificacao;
@@ -318,10 +321,8 @@ public class PainelCircuito extends JPanel {
 		if ((dano == null || "".equals(dano)) && motor > 10 && porcentComb > 10
 				&& pneus > 10)
 			return;
-		BufferedImage carroimg = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("carro_dano.gif");
 
-		g2d.drawImage(carroimg, 5, 10, null);
+		g2d.drawImage(carroimgDano, 5, 10, null);
 		if (Math.random() > .5) {
 			return;
 		}
