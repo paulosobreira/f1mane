@@ -266,6 +266,8 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_DURO,
 					controleCorrida.getDistaciaCorrida());
 		}
+		if (piloto.testeHabilidadePiloto())
+			processarTipoAsaAutomatico(piloto);
 
 		int diff = controleCorrida.getTanqueCheio()
 				- piloto.getCarro().getCombustivel();
@@ -367,6 +369,9 @@ public class ControleBox {
 		if (media >= 20 && piloto.testeHabilidadePilotoCarro()) {
 			piloto.getCarro().setAsa(Carro.ASA_NORMAL);
 		}
+		if (controleJogo.isChovendo() && piloto.testeHabilidadePiloto()) {
+			piloto.getCarro().setAsa(Carro.MAIS_ASA);
+		}
 
 	}
 
@@ -374,17 +379,12 @@ public class ControleBox {
 		if (controleJogo.isChovendo()) {
 			piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
-			if (piloto.testeHabilidadePiloto()) {
-				piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA,
-						controleCorrida.getDistaciaCorrida());
-
-			}
 		} else {
 			piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_MOLE,
 					controleCorrida.getDistaciaCorrida());
-			if (piloto.testeHabilidadePiloto())
-				processarTipoAsaAutomatico(piloto);
 		}
+		if (piloto.testeHabilidadePiloto())
+			processarTipoAsaAutomatico(piloto);
 
 		int percentagem = 0;
 
