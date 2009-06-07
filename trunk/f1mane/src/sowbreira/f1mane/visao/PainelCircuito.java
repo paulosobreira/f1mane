@@ -319,7 +319,8 @@ public class PainelCircuito extends JPanel {
 				&& pneus > 10)
 			return;
 		BufferedImage carroimg = CarregadorRecursos
-				.carregaImgCarro(pilotoSelecionado.getCarro().getImg());
+				.carregaBufferedImageTranspareciaBranca("carro_dano.gif");
+
 		g2d.drawImage(carroimg, 5, 10, null);
 		if (Math.random() > .5) {
 			return;
@@ -330,23 +331,24 @@ public class PainelCircuito extends JPanel {
 
 		if (Carro.PERDEU_AEREOFOLIO.equals(pilotoSelecionado.getCarro()
 				.getDanificado())) {
+
 			g2d.setColor(Color.red);
 			// bico
-			g2d.fillOval(10, 26, 15, 15);
+			g2d.fillOval(8, 26, 15, 15);
 		}
 		if (Carro.PNEU_FURADO.equals(pilotoSelecionado.getCarro()
 				.getDanificado())) {
 			g2d.setColor(Color.red);
 			// Roda diantera
-			g2d.fillOval(32, 28, 15, 15);
+			g2d.fillOval(28, 24, 18, 18);
 			// Roda trazeira
-			g2d.fillOval(128, 28, 15, 15);
+			g2d.fillOval(132, 24, 18, 18);
 		} else if (pneus <= 10) {
 			g2d.setColor(yel);
 			// Roda diantera
-			g2d.fillOval(32, 28, 15, 15);
+			g2d.fillOval(28, 24, 18, 18);
 			// Roda trazeira
-			g2d.fillOval(128, 28, 15, 15);
+			g2d.fillOval(132, 24, 18, 18);
 		}
 		if (Carro.EXPLODIU_MOTOR.equals(pilotoSelecionado.getCarro()
 				.getDanificado())) {
@@ -555,6 +557,12 @@ public class PainelCircuito extends JPanel {
 
 	private void desenharSafetyCar(Graphics2D g2d) {
 		if (controleJogo.isSafetyCarNaPista()) {
+			if (!controleJogo.isSafetyCarVaiBox()) {
+				BufferedImage carroimg = CarregadorRecursos
+						.carregaBufferedImageTranspareciaBranca("safetycar.gif");
+				g2d.drawImage(carroimg, pointDesenhaClima.x,
+						pointDesenhaClima.y + 35, null);
+			}
 			SafetyCar safetyCar = controleJogo.getSafetyCar();
 			if (safetyCar == null) {
 				return;
@@ -769,17 +777,18 @@ public class PainelCircuito extends JPanel {
 			g2d.drawString(txt1, xTxt + 2, pt.y - 13);
 		if (txt2 != null)
 			g2d.drawString(txt2, xTxt + 2, pt.y - 3);
-		if (desenhaInfo) {
+		if (desenhaInfo && velo != null) {
 			g2d.setColor(c1);
-			g2d.fillRoundRect(5, 100, 70, 15, 15, 15);
+			g2d.fillRoundRect(pointDesenhaClima.x, pointDesenhaClima.y + 143,
+					70, 15, 15, 15);
 			valor = (c1.getRed() + c1.getGreen() + c1.getBlue()) / 2;
 			if (valor > 200) {
 				g2d.setColor(Color.BLACK);
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			if (velo != null)
-				g2d.drawString(velo, 10, 112);
+			g2d.drawString(velo, pointDesenhaClima.x + 3,
+					pointDesenhaClima.y + 155);
 		}
 
 		g2d.setColor(Color.BLACK);
