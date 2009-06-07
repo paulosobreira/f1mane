@@ -19,7 +19,7 @@ public class Lang {
 
 	private static PropertyResourceBundle bundle;
 	private static String sufix;
-
+	
 	public Lang() throws IOException {
 	}
 
@@ -80,7 +80,7 @@ public class Lang {
 				inputStream = CarregadorRecursos.recursoComoStream(load);
 				bundle = new PropertyResourceBundle(inputStream);
 				if (bundle == null) {
-					load = "idiomas/mensagens.properties";
+					load = "idiomas/mensagens.properties_pt";
 					inputStream = CarregadorRecursos.recursoComoStream(load);
 					validaProperties(inputStream);
 					inputStream = CarregadorRecursos.recursoComoStream(load);

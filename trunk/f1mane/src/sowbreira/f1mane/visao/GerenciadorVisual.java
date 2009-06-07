@@ -52,6 +52,7 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import sowbreira.f1mane.recursos.idiomas.LangVO;
 import br.nnpe.Html;
 
 public class GerenciadorVisual {
@@ -165,7 +166,8 @@ public class GerenciadorVisual {
 
 		modoPiloto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String modo = (String) modoPiloto.getSelectedItem();
+				String modo = modoPiloto.getSelectedItem().toString();
+				System.out.println(modo);
 				mudarModoPilotagem(Lang.key(modo));
 			}
 		});
@@ -224,13 +226,13 @@ public class GerenciadorVisual {
 				int keyCoode = e.getKeyCode();
 
 				if (keyCoode == KeyEvent.VK_F1) {
-					giro.setSelectedItem(Lang.msg(Carro.GIRO_MIN));
+					giro.setSelectedItem(new LangVO(Carro.GIRO_MIN));
 				}
 				if (keyCoode == KeyEvent.VK_F2) {
-					giro.setSelectedItem(Lang.msg(Carro.GIRO_NOR));
+					giro.setSelectedItem(new LangVO(Carro.GIRO_NOR));
 				}
 				if (keyCoode == KeyEvent.VK_F3) {
-					giro.setSelectedItem(Lang.msg(Carro.GIRO_MAX));
+					giro.setSelectedItem(new LangVO(Carro.GIRO_MAX));
 				}
 				if (keyCoode == KeyEvent.VK_F4) {
 					mudarModoAgressivo();
@@ -239,20 +241,20 @@ public class GerenciadorVisual {
 					mudarModoBox();
 				}
 				if (keyCoode == KeyEvent.VK_F5) {
-					modoPiloto.setSelectedItem(Lang.msg(Piloto.LENTO));
+					modoPiloto.setSelectedItem(new LangVO(Piloto.LENTO));
 					mudarModoPilotagem(Piloto.LENTO);
 				}
 				if (keyCoode == KeyEvent.VK_F6) {
-					modoPiloto.setSelectedItem(Lang.msg(Piloto.NORMAL));
+					modoPiloto.setSelectedItem(new LangVO(Piloto.NORMAL));
 					mudarModoPilotagem(Piloto.NORMAL);
 				}
 				if (keyCoode == KeyEvent.VK_F7) {
-					modoPiloto.setSelectedItem(Lang.msg(Piloto.AGRESSIVO));
+					modoPiloto.setSelectedItem(new LangVO(Piloto.AGRESSIVO));
 					mudarModoPilotagem(Piloto.AGRESSIVO);
 				}
 				if (keyCoode == KeyEvent.VK_ESCAPE) {
-					painelCircuito.setDesenhaPosVelo(!painelCircuito
-							.isDesenhaPosVelo());
+					painelCircuito.setDesenhaInfo(!painelCircuito
+							.isDesenhaInfo());
 				}
 			}
 		};
@@ -269,9 +271,9 @@ public class GerenciadorVisual {
 		if (value.intValue() > 100) {
 			value = new Integer(100);
 		}
-		controleJogo.setBoxJogadorHumano(Lang.key((String) comboBoxTipoPneu
-				.getSelectedItem()), value, Lang.key((String) comboBoxAsa
-				.getSelectedItem()));
+		controleJogo.setBoxJogadorHumano(Lang.key(comboBoxTipoPneu
+				.getSelectedItem().toString()), value, Lang
+				.key((String) comboBoxAsa.getSelectedItem()));
 		boolean modo = controleJogo.mudarModoBox();
 		if (!(controleJogo instanceof JogoCliente)) {
 			if (modo && !(controleJogo instanceof JogoCliente)) {
@@ -288,7 +290,8 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-		controleJogo.mudarGiroMotor(Lang.key((String) giro.getSelectedItem()));
+		controleJogo
+				.mudarGiroMotor(Lang.key(giro.getSelectedItem().toString()));
 	}
 
 	protected void mudarModoAgressivo() {
@@ -669,20 +672,20 @@ public class GerenciadorVisual {
 			}
 		};
 		modoPiloto = new JComboBox();
-		modoPiloto.addItem(Lang.msg("008"));
-		modoPiloto.addItem(Lang.msg(Piloto.AGRESSIVO));
-		modoPiloto.addItem(Lang.msg(Piloto.NORMAL));
-		modoPiloto.addItem(Lang.msg(Piloto.LENTO));
+		modoPiloto.addItem(new LangVO("008"));
+		modoPiloto.addItem(new LangVO(Piloto.AGRESSIVO));
+		modoPiloto.addItem(new LangVO(Piloto.NORMAL));
+		modoPiloto.addItem(new LangVO(Piloto.LENTO));
 		giro = new JComboBox();
-		giro.addItem(Lang.msg("012"));
-		giro.addItem(Lang.msg(Carro.GIRO_NOR));
-		giro.addItem(Lang.msg(Carro.GIRO_MAX));
-		giro.addItem(Lang.msg(Carro.GIRO_MIN));
+		giro.addItem(new LangVO("012"));
+		giro.addItem(new LangVO(Carro.GIRO_NOR));
+		giro.addItem(new LangVO(Carro.GIRO_MAX));
+		giro.addItem(new LangVO(Carro.GIRO_MIN));
 
 		comboBoxTipoPneu = new JComboBox();
-		comboBoxTipoPneu.addItem(Lang.msg(Carro.TIPO_PNEU_MOLE));
-		comboBoxTipoPneu.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
-		comboBoxTipoPneu.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
+		comboBoxTipoPneu.addItem(new LangVO(Carro.TIPO_PNEU_MOLE));
+		comboBoxTipoPneu.addItem(new LangVO(Carro.TIPO_PNEU_DURO));
+		comboBoxTipoPneu.addItem(new LangVO(Carro.TIPO_PNEU_CHUVA));
 
 		sliderPercentCombust = new JSlider(0, 100);
 		sliderPercentCombust.setPaintTicks(true);
@@ -690,9 +693,9 @@ public class GerenciadorVisual {
 		sliderPercentCombust.setValue(new Integer(50));
 
 		comboBoxAsa = new JComboBox();
-		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
-		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
-		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
+		comboBoxAsa.addItem(new LangVO(Carro.ASA_NORMAL));
+		comboBoxAsa.addItem(new LangVO(Carro.MAIS_ASA));
+		comboBoxAsa.addItem(new LangVO(Carro.MENOS_ASA));
 		panelControle = new JPanel();
 		panelControle.setBorder(new TitledBorder("") {
 			public String getTitle() {
@@ -707,6 +710,7 @@ public class GerenciadorVisual {
 
 		panelControle.setLayout(gridLayout);
 		panelControle.add(box);
+		//panelControle.add(modoPiloto);
 		panelControle.add(comboBoxTipoPneu);
 		panelControle.add(comboBoxAsa);
 		panelControle.add(new JLabel() {
@@ -919,7 +923,7 @@ public class GerenciadorVisual {
 
 		if (selec instanceof Piloto) {
 			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang
-					.key((String) boxPneuInicial.getSelectedItem()),
+					.key(boxPneuInicial.getSelectedItem().toString()),
 					spinnerCombustivelInicial.getValue(),
 					nomeJogador.getText(), Lang.key((String) comboBoxAsa
 							.getSelectedItem()));
@@ -967,10 +971,10 @@ public class GerenciadorVisual {
 
 		if (selec instanceof Piloto) {
 			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang
-					.key((String) boxPneuInicial.getSelectedItem()),
+					.key(boxPneuInicial.getSelectedItem().toString()),
 					spinnerCombustivelInicial.getValue(),
-					nomeJogador.getText(), Lang.key((String) comboBoxAsa
-							.getSelectedItem()));
+					nomeJogador.getText(), Lang.key(comboBoxAsa
+							.getSelectedItem().toString()));
 		}
 
 		return true;
