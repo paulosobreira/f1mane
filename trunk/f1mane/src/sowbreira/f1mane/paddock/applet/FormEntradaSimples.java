@@ -29,7 +29,7 @@ public class FormEntradaSimples extends JPanel {
 	private JTextField email = new JTextField(20);
 	private JLabel infoLabel = new JLabel("Formulário de login") {
 		public String getText() {
-			return Lang.msg("169");
+			return Lang.msg("066");
 		}
 	};
 
@@ -50,7 +50,7 @@ public class FormEntradaSimples extends JPanel {
 			@Override
 			public String getTitle() {
 				// TODO Auto-generated method stub
-				return Lang.msg("170");
+				return Lang.msg("218");
 			}
 		});
 		panel.setLayout(gridLayout);

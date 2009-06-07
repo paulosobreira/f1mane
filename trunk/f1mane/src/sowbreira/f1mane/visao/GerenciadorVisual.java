@@ -344,12 +344,13 @@ public class GerenciadorVisual {
 				}
 
 			}
-			String text = Lang.msg("142")
-					+ voltaCorrida.obterTempoVoltaFormatado()
-					+ Lang.msg("143")
+			String text = Lang.msg("142", new Object[] { voltaCorrida
+					.obterTempoVoltaFormatado() })
 					+ (piloto != null ? piloto.getNome() + " - "
-							+ piloto.getCarro().getNome() : "") + " "
-					+ controleJogo.getNumVoltaAtual() + "/"
+							+ piloto.getCarro().getNome() : "")
+					+ " "
+					+ controleJogo.getNumVoltaAtual()
+					+ "/"
 					+ controleJogo.totalVoltasCorrida();
 
 			text += Lang.msg("144") + controleJogo.getNivelCorrida();
@@ -564,14 +565,14 @@ public class GerenciadorVisual {
 			@Override
 			public String getText() {
 				// TODO Auto-generated method stub
-				return Lang.msg("129");
+				return Lang.msg("213");
 			}
 		};
 		infoPiloto = new JLabel("Informações sobre o Piloto") {
 			@Override
 			public String getText() {
 				// TODO Auto-generated method stub
-				return Lang.msg("130");
+				return Lang.msg("214");
 			}
 		};
 		infoText.add(infoCorrida);
@@ -592,7 +593,7 @@ public class GerenciadorVisual {
 		JLabel combustivel = new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("131");
+				return Lang.msg("215");
 			}
 		};
 		panelCol1.add(combustivel, BorderLayout.NORTH);
@@ -603,7 +604,7 @@ public class GerenciadorVisual {
 		JLabel pneu = new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("132");
+				return Lang.msg("216");
 			}
 		};
 		panelCol2.add(pneu, BorderLayout.NORTH);
@@ -615,7 +616,7 @@ public class GerenciadorVisual {
 		JLabel motoLabel = new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("133");
+				return Lang.msg("216");
 			}
 		};
 		panelCol3.add(motoLabel, BorderLayout.NORTH);
@@ -782,7 +783,7 @@ public class GerenciadorVisual {
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
 		painelInicio.add(new JLabel() {
 			public String getText() {
-				return Lang.msg("122");
+				return Lang.msg("212");
 			}
 		});
 		painelInicio.add(comboBoxNivelCorrida);
