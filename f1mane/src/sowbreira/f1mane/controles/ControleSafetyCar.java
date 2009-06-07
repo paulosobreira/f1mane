@@ -64,11 +64,14 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .7) ? 1 : 0)
+				.random() > .5) ? 1 : 0)
 				: (Math.random() > .9) ? 2 : 1;
+		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
+		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 50)) {
+			bonus = (Math.random() > .7) ? 1 : 0;
+		}
 		index += bonus;
 		int diff = index - pista.size();
-
 		/**
 		 * Completou Volta
 		 */
@@ -87,14 +90,18 @@ public class ControleSafetyCar {
 		if (!isSaftyCarNaPista()) {
 			return novoModificador;
 		}
+		/**
+		 * Efeito dexar o safatycar se perder de vista
+		 */
+
 		if (piloto.getPosicao() == 1 && controleJogo.isSafetyCarVaiBox()) {
 			return 1;
 		}
 		if (piloto.getPosicao() == 1
-				&& piloto.getPtosPista() >= safetyCar.getPtosPista()) {
+				&& piloto.getPtosPista() >= (safetyCar.getPtosPista() - 5)) {
 			piloto.gerarDesconcentracao((22 - piloto.getPosicao()) * 4);
 			piloto.setAgressivo(false);
-			return Math.random() > .5 ? 1 : 0;
+			return 0;
 		}
 		Piloto pilotoFrente = controleCorrida.acharPilotoDaFrente(piloto);
 		if (pilotoFrente.equals(piloto) || pilotoFrente.entrouNoBox()

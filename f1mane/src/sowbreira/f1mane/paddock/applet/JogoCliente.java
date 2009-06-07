@@ -117,7 +117,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
 			JOptionPane.showMessageDialog(getMainFrame(), retorno.toString(),
-					Lang.msg("173"), JOptionPane.ERROR_MESSAGE);
+					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 

@@ -73,7 +73,7 @@ public class PaddockWindow {
 		@Override
 		public String getText() {
 			// TODO Auto-generated method stub
-			return Lang.msg("177");
+			return Lang.msg("094");
 		}
 	};
 	private JButton verDetalhes = new JButton("Ver Detalhes") {
@@ -348,7 +348,7 @@ public class PaddockWindow {
 			@Override
 			public String getTitle() {
 				// TODO Auto-generated method stub
-				return Lang.msg("189");
+				return Lang.msg("122");
 			}
 		});
 		JPanel panel = new JPanel();
