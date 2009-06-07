@@ -221,11 +221,11 @@ public class PainelEntradaCliente {
 				.setDiffultrapassagem((Integer) spinnerDificuldadeUltrapassagem
 						.getValue());
 		Integer integerTempoCiclo = (Integer) spinnerTempoCiclo.getValue();
-		if (integerTempoCiclo.intValue() < 85) {
-			integerTempoCiclo = new Integer(85);
+		if (integerTempoCiclo.intValue() < 65) {
+			integerTempoCiclo = new Integer(65);
 		}
-		if (integerTempoCiclo.intValue() > 240) {
-			integerTempoCiclo = new Integer(240);
+		if (integerTempoCiclo.intValue() > 120) {
+			integerTempoCiclo = new Integer(120);
 		}
 		dadosCriarJogo.setTempoCiclo(integerTempoCiclo);
 		dadosCriarJogo.setVeloMaxReta((Integer) spinnerIndexVelcidadeEmReta

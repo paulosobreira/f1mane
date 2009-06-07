@@ -23,6 +23,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:21:11
@@ -54,18 +55,17 @@ public class ControleJogosServer {
 
 	public Object criarJogo(ClientPaddockPack clientPaddockPack) {
 		if (verificaJaEmAlgumJogo(clientPaddockPack.getSessaoCliente())) {
-			return new MsgSrv("Voce ja esta em um jogo.");
+			return new MsgSrv(Lang.msg("203"));
 
 		}
 		if (mapaJogosCriados.size() > MaxJogo) {
-			return new MsgSrv("Este Servidor suporta apenas " + MaxJogo
-					+ " jogos criados.");
+			return new MsgSrv(Lang.msg("204", new Object[] { MaxJogo + 1 }));
 		}
 		for (Iterator iter = mapaJogosCriados.keySet().iterator(); iter
 				.hasNext();) {
 			SessaoCliente element = (SessaoCliente) iter.next();
 			if (element.equals(clientPaddockPack.getSessaoCliente())) {
-				return new MsgSrv("Voce ja possui um jogo criado.");
+				return new MsgSrv(Lang.msg("205"));
 			}
 		}
 		JogoServidor jogoServidor = null;
@@ -82,7 +82,7 @@ public class ControleJogosServer {
 			ErroServ erroServ = new ErroServ(e);
 			return erroServ;
 		}
-		jogoServidor.setNomeJogoServidor("Jogo " + (qtdeJogos++) + "-"
+		jogoServidor.setNomeJogoServidor("Game " + (qtdeJogos++) + "-"
 				+ temporada.replaceAll("t", ""));
 		mapaJogosCriados
 				.put(clientPaddockPack.getSessaoCliente(), jogoServidor);
@@ -117,16 +117,16 @@ public class ControleJogosServer {
 	public Object entrarJogo(ClientPaddockPack clientPaddockPack) {
 
 		if (verificaJaEmAlgumJogo(clientPaddockPack.getSessaoCliente())) {
-			return new MsgSrv("Voce ja esta em um jogo.");
+			return new MsgSrv(Lang.msg("203"));
 
 		}
 		String nomeJogo = clientPaddockPack.getDadosJogoCriado().getNomeJogo();
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 		if (jogoServidor.isCorridaTerminada()) {
-			return new MsgSrv("Jogo " + nomeJogo + " Terminou.");
+			return new MsgSrv(Lang.msg("206", new String[]{nomeJogo}));
 		}
 		if (jogoServidor == null) {
-			return new MsgSrv("Jogo " + nomeJogo + " não existe.");
+			return new MsgSrv(Lang.msg("207", new String[]{nomeJogo}));
 		}
 		Object retorno = jogoServidor.adicionarJogador(clientPaddockPack
 				.getSessaoCliente().getNomeJogador(), clientPaddockPack
@@ -185,7 +185,7 @@ public class ControleJogosServer {
 		String nomeJogo = clientPaddockPack.getNomeJogo();
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 		if (jogoServidor == null) {
-			return new MsgSrv("Jogo " + nomeJogo + " não existe.");
+			return new MsgSrv(Lang.msg("207", new String[]{nomeJogo}));
 		}
 		DetalhesJogo detalhesJogo = new DetalhesJogo();
 		jogoServidor.preencherDetalhes(detalhesJogo);
@@ -211,7 +211,7 @@ public class ControleJogosServer {
 		JogoServidor jogoServidor = obterJogoPeloNomeDono(clientPaddockPack
 				.getSessaoCliente().getNomeJogador());
 		if (jogoServidor == null) {
-			return new MsgSrv("Jogo inexistente.");
+			return new MsgSrv(Lang.msg("208"));
 		}
 		try {
 			jogoServidor.iniciarJogo();

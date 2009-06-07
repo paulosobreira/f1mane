@@ -11,13 +11,27 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import sowbreira.f1mane.recursos.idiomas.Lang;
+
 public class FormEntradaSimples extends JPanel {
 
-	private JLabel nomeLabel = new JLabel("Entre com seu Nome");
+	private JLabel nomeLabel = new JLabel("Entre com seu Nome") {
+		public String getText() {
+			return Lang.msg("167");
+		}
+	};
 	private JTextField nome = new JTextField(20);
-	private JLabel emailLabel = new JLabel("Entre com seu e-mail (Opcional)");
+	private JLabel emailLabel = new JLabel("Entre com seu e-mail (Opcional)") {
+		public String getText() {
+			return Lang.msg("168");
+		}
+	};
 	private JTextField email = new JTextField(20);
-	private JLabel infoLabel = new JLabel("Formulário de login");
+	private JLabel infoLabel = new JLabel("Formulário de login") {
+		public String getText() {
+			return Lang.msg("169");
+		}
+	};
 
 	public FormEntradaSimples() {
 		setLayout(new BorderLayout());
@@ -32,7 +46,13 @@ public class FormEntradaSimples extends JPanel {
 	private void gerarRegistrar() {
 		JPanel panel = new JPanel();
 		GridLayout gridLayout = new GridLayout(2, 2);
-		panel.setBorder(new TitledBorder("Registrar"));
+		panel.setBorder(new TitledBorder("Registrar") {
+			@Override
+			public String getTitle() {
+				// TODO Auto-generated method stub
+				return Lang.msg("170");
+			}
+		});
 		panel.setLayout(gridLayout);
 		panel.add(emailLabel);
 		panel.add(email);
@@ -42,7 +62,13 @@ public class FormEntradaSimples extends JPanel {
 	private void gerarLogin() {
 		JPanel panel = new JPanel();
 		GridLayout gridLayout = new GridLayout(2, 2);
-		panel.setBorder(new TitledBorder("Entrar"));
+		panel.setBorder(new TitledBorder("Entrar") {
+			@Override
+			public String getTitle() {
+				// TODO Auto-generated method stub
+				return Lang.msg("171");
+			}
+		});
 		panel.setLayout(gridLayout);
 		panel.add(nomeLabel);
 		panel.add(nome);

@@ -864,7 +864,8 @@ public class Piloto implements Serializable {
 	public void processaVoltaNovaBox(InterfaceJogo interfaceJogo) {
 		if (getVoltaAtual() == null) {
 			Volta volta = new Volta();
-			volta.setCiclosInicio(System.currentTimeMillis());
+			volta.setCiclosInicio(System.currentTimeMillis()
+					- (getPtosBox() * interfaceJogo.getTempoCiclo()));
 			setVoltaAtual(volta);
 
 			return;
@@ -875,8 +876,8 @@ public class Piloto implements Serializable {
 		setUltimaVolta(volta);
 		voltas.add(volta);
 		volta = new Volta();
-		volta.setCiclosInicio(System.currentTimeMillis() + getPtosBox()
-				* interfaceJogo.getTempoCiclo());
+		volta.setCiclosInicio(System.currentTimeMillis()
+				- (getPtosBox() * interfaceJogo.getTempoCiclo()));
 		setVoltaAtual(volta);
 	}
 

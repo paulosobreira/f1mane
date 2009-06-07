@@ -13,6 +13,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author paulo.sobreira
@@ -70,7 +71,7 @@ public class ControlePaddockServidor {
 			}
 			return processarComando(clientPaddockPack);
 		}
-		return new MsgSrv("Comando Invalido");
+		return new MsgSrv(Lang.msg("209"));
 	}
 
 	private Object registrarLogin(ClientPaddockPack clientPaddockPack) {
@@ -109,7 +110,7 @@ public class ControlePaddockServidor {
 	private Object processarComando(ClientPaddockPack clientPaddockPack) {
 		SessaoCliente cliente = resgatarSessao(clientPaddockPack);
 		if (cliente == null) {
-			return (new MsgSrv("Usuario não tem Sessão"));
+			return (new MsgSrv(Lang.msg("210")));
 		}
 		clientPaddockPack.setSessaoCliente(cliente);
 		String commando = clientPaddockPack.getCommando();
@@ -283,7 +284,7 @@ public class ControlePaddockServidor {
 			cliente.setUlimaAtividade(System.currentTimeMillis());
 			dadosPaddock.getClientes().add(cliente);
 		} else {
-			return (new MsgSrv("já exite uma sessão ativa para este usuario"));
+			return (new MsgSrv(Lang.msg("211")));
 		}
 		synchronized (controlePersistencia.getPaddockDados()) {
 			PaddockDadosSrv paddockDadosSrv = controlePersistencia
