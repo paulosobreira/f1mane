@@ -35,6 +35,8 @@ public class PainelCircuito extends JPanel {
 	private InterfaceJogo controleJogo;
 	private GerenciadorVisual gerenciadorVisual;
 	private Point pointDesenhaClima = new Point(10, 60);
+	private Point pointDesenhaVelo = new Point(10, 60);
+	private Point pointDesenhaSC = new Point(10, 95);
 	public final static Color luzDistProx1 = new Color(0, 255, 0, 100);
 	public final static Color luzDistProx2 = new Color(255, 255, 0, 100);
 	public final static Color luzApagada = new Color(255, 255, 255, 170);
@@ -561,8 +563,9 @@ public class PainelCircuito extends JPanel {
 			if (!controleJogo.isSafetyCarVaiBox()) {
 				BufferedImage carroimg = CarregadorRecursos
 						.carregaBufferedImageTranspareciaBranca("safetycar.gif");
-				g2d.drawImage(carroimg, pointDesenhaClima.x,
-						pointDesenhaClima.y + 35, null);
+				g2d.drawImage(carroimg, pointDesenhaSC.x
+						+ (Math.random() > 0.5 ? 1 : -1), pointDesenhaSC.y
+						+ (Math.random() > 0.5 ? -1 : 0), null);
 			}
 			SafetyCar safetyCar = controleJogo.getSafetyCar();
 			if (safetyCar == null) {
@@ -780,16 +783,16 @@ public class PainelCircuito extends JPanel {
 			g2d.drawString(txt2, xTxt + 2, pt.y - 3);
 		if (desenhaInfo && velo != null) {
 			g2d.setColor(c1);
-			g2d.fillRoundRect(pointDesenhaClima.x, pointDesenhaClima.y + 143,
-					70, 15, 15, 15);
+			g2d.fillRoundRect(pointDesenhaVelo.x, pointDesenhaVelo.y + 143, 70,
+					15, 15, 15);
 			valor = (c1.getRed() + c1.getGreen() + c1.getBlue()) / 2;
 			if (valor > 200) {
 				g2d.setColor(Color.BLACK);
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString(velo, pointDesenhaClima.x + 3,
-					pointDesenhaClima.y + 155);
+			g2d.drawString(velo, pointDesenhaVelo.x + 3,
+					pointDesenhaVelo.y + 155);
 		}
 
 		g2d.setColor(Color.BLACK);
