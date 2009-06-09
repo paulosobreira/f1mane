@@ -1,6 +1,3 @@
-/**
- * 
- */
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
@@ -92,8 +89,33 @@ public class PaddockWindow {
 			return Lang.msg("179");
 		}
 	};
+
+	private JButton carreira = new JButton("Modo Carreira") {
+		@Override
+		public String getText() {
+			// TODO Auto-generated method stub
+			return Lang.msg("221");
+		}
+	};
+	private JButton construtores = new JButton("Construtores") {
+		@Override
+		public String getText() {
+			// TODO Auto-generated method stub
+			return Lang.msg("222");
+		}
+	};
+	private JButton conta = new JButton("Conta") {
+		@Override
+		public String getText() {
+			// TODO Auto-generated method stub
+			return Lang.msg("223");
+		}
+	};
+
 	private JComboBox comboTemporada = new JComboBox(new String[] { "2009",
 			"2008", "2007" });
+	private JComboBox comboIdiomas = new JComboBox(new String[] {
+			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
 		@Override
 		public String getText() {
@@ -107,11 +129,15 @@ public class PaddockWindow {
 
 	public PaddockWindow(ControlePaddockCliente controlePaddockApplet) {
 		mainPanel = new JPanel(new BorderLayout());
-		this.controlePaddockCliente = controlePaddockApplet;
-		controlePaddockApplet.setPaddockWindow(this);
+		if (controlePaddockApplet != null) {
+			this.controlePaddockCliente = controlePaddockApplet;
+			controlePaddockApplet.setPaddockWindow(this);
+		}
 		gerarLayout();
 		gerarAcoes();
-		atualizaInfo();
+		if (controlePaddockApplet != null) {
+			atualizaInfo();
+		}
 	}
 
 	private void gerarAcoes() {
@@ -260,10 +286,8 @@ public class PaddockWindow {
 		JScrollPane jogsCriados = new JScrollPane(listaJogosCriados);
 		jogsCriados.setPreferredSize(new Dimension(150, 100));
 		jogsPanel.add(jogsCriados);
-		GridLayout gridLayout = new GridLayout(3, 1);
-		inputPanel.setLayout(gridLayout);
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new GridLayout(2, 4));
+		buttonsPanel.setLayout(new GridLayout(3, 4));
 		buttonsPanel.add(enviarTexto);
 		buttonsPanel.add(entrarJogo);
 		buttonsPanel.add(criarJogo);
@@ -271,8 +295,27 @@ public class PaddockWindow {
 		buttonsPanel.add(verDetalhes);
 		buttonsPanel.add(classificacao);
 		buttonsPanel.add(comboTemporada);
+		buttonsPanel.add(comboIdiomas);
+		comboIdiomas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(Lang.key(comboIdiomas.getSelectedItem()
+						.toString()));
+				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
+				if (i != null && !"".equals(i)) {
+					Lang.mudarIdioma(i);
+					comboIdiomas.removeAllItems();
+					comboIdiomas.addItem(Lang.msg("pt"));
+					comboIdiomas.addItem(Lang.msg("en"));
+				}
+			}
+		});
+		carreira.setEnabled(false);
+		construtores.setEnabled(false);
+		conta.setEnabled(false);
+		buttonsPanel.add(carreira);
+		buttonsPanel.add(construtores);
+		buttonsPanel.add(conta);
 		buttonsPanel.add(sobre);
-		inputPanel.add(buttonsPanel);
 		JPanel panelTextoEnviar = new JPanel();
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
 			@Override
@@ -283,8 +326,10 @@ public class PaddockWindow {
 		});
 		panelTextoEnviar.setLayout(new BorderLayout());
 		panelTextoEnviar.add(textoEnviar, BorderLayout.CENTER);
-		inputPanel.add(panelTextoEnviar);
-		inputPanel.add(infoLabel1);
+		inputPanel.setLayout(new BorderLayout());
+		inputPanel.add(panelTextoEnviar, BorderLayout.SOUTH);
+		inputPanel.add(buttonsPanel, BorderLayout.CENTER);
+		inputPanel.add(infoLabel1, BorderLayout.NORTH);
 		chatPanel.setLayout(new BorderLayout());
 		chatPanel.add(new JScrollPane(textAreaChat), BorderLayout.CENTER);
 
