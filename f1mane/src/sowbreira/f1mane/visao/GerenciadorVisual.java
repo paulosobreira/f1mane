@@ -563,20 +563,8 @@ public class GerenciadorVisual {
 				- painelPosicoes.getLarguraPainel() - 30, 185);
 		painelInfText.add(panel, BorderLayout.CENTER);
 		infoText.setLayout(new GridLayout(1, 1));
-		infoCorrida = new JLabel("Informações sobre a Corrida") {
-			@Override
-			public String getText() {
-				// TODO Auto-generated method stub
-				return Lang.msg("213");
-			}
-		};
-		infoPiloto = new JLabel("Informações sobre o Piloto") {
-			@Override
-			public String getText() {
-				// TODO Auto-generated method stub
-				return Lang.msg("214");
-			}
-		};
+		infoCorrida = new JLabel(Lang.msg("213"));
+		infoPiloto = new JLabel(Lang.msg("214"));
 		infoText.add(infoCorrida);
 		// infoText.add(infoPiloto);
 		painelInfText.add(infoText, BorderLayout.NORTH);
@@ -618,7 +606,7 @@ public class GerenciadorVisual {
 		JLabel motoLabel = new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("216");
+				return Lang.msg("217");
 			}
 		};
 		panelCol3.add(motoLabel, BorderLayout.NORTH);

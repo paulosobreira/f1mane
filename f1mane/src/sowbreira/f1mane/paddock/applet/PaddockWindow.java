@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -48,6 +49,7 @@ public class PaddockWindow {
 	private JTextArea textAreaChat = new JTextArea();
 	private JTextField textoEnviar = new JTextField(
 			"Digite o texto a enviar aqui.");
+	private HashMap mapaJogosCriados = new HashMap();
 	private JButton enviarTexto = new JButton("Enviar Texto") {
 		@Override
 		public String getText() {
@@ -150,8 +152,10 @@ public class PaddockWindow {
 				if (object != null) {
 					int result = JOptionPane.showConfirmDialog(getMainPanel(),
 							Lang.msg("181") + object);
-					if (result == JOptionPane.YES_OPTION)
-						controlePaddockCliente.entarJogo(object);
+					if (result == JOptionPane.YES_OPTION) {
+						controlePaddockCliente.entarJogo(mapaJogosCriados
+								.get(object));
+					}
 				} else {
 					JOptionPane.showMessageDialog(getMainPanel(), Lang
 							.msg("182"));
@@ -164,7 +168,8 @@ public class PaddockWindow {
 			public void actionPerformed(ActionEvent e) {
 				Object object = listaJogosCriados.getSelectedValue();
 				if (object != null) {
-					controlePaddockCliente.verDetalhesJogo(object);
+					controlePaddockCliente.verDetalhesJogo(mapaJogosCriados
+							.get(object));
 				} else {
 					object = listaClientes.getSelectedValue();
 					if (object != null) {
@@ -313,10 +318,13 @@ public class PaddockWindow {
 				.getModel());
 		if (model.size() != dadosPaddock.getJogosCriados().size()) {
 			model.clear();
+			mapaJogosCriados.clear();
 			for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
 					.hasNext();) {
 				String element = (String) iter.next();
-				model.addElement(element);
+				String key = Lang.decodeTexto(element);
+				mapaJogosCriados.put(key, element);
+				model.addElement(key);
 			}
 		}
 	}
@@ -411,8 +419,8 @@ public class PaddockWindow {
 				return Lang.msg("195");
 			}
 		});
-		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo()
-				.getQtdeVoltas().toString()));
+		panelJogo.add(new JLabel(detalhesJogo.getVoltaAtual() + "/"
+				+ detalhesJogo.getDadosCriarJogo().getQtdeVoltas().toString()));
 		panelJogo.add(new JLabel("Habilidade Todos : ") {
 			@Override
 			public String getText() {

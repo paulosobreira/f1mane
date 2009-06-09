@@ -174,7 +174,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 		if (dadosJogo != null && !"".equals(dadosJogo.getTexto())
 				&& dadosJogo.getTexto() != null) {
-			gerenciadorVisual.adicionarInfoDireto(dadosJogo.getTexto());
+			gerenciadorVisual.adicionarInfoDireto(Lang.decodeTexto(dadosJogo
+					.getTexto()));
 			dadosJogo.setTexto(null);
 		}
 		gerenciadorVisual.atulizaTabelaPosicoes();

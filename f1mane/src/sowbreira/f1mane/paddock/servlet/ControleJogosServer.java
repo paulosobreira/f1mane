@@ -192,6 +192,7 @@ public class ControleJogosServer {
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setSessaoCliente(clientPaddockPack.getSessaoCliente());
 		srvPaddockPack.setDetalhesJogo(detalhesJogo);
+		detalhesJogo.setVoltaAtual(jogoServidor.getNumVoltaAtual());
 		return srvPaddockPack;
 
 	}

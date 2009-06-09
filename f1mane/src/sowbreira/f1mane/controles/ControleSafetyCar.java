@@ -70,6 +70,9 @@ public class ControleSafetyCar {
 		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 50)) {
 			bonus = (Math.random() > .7) ? 1 : 0;
 		}
+		if (safetyCar.isVaiProBox()) {
+			bonus = (Math.random() > .5) ? 1 : 0;
+		}
 		index += bonus;
 		int diff = index - pista.size();
 		/**
