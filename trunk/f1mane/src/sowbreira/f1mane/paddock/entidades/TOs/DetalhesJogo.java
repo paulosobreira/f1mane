@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * @author Paulo Sobreira Criado em 04/08/2007 as 20:02:13
  */
@@ -14,6 +13,7 @@ public class DetalhesJogo implements Serializable {
 	private Map jogadoresPilotos = new HashMap();
 	private DadosCriarJogo dadosCriarJogo;
 	private long tempoCriacao;
+	private long voltaAtual;
 	private String nomeCriador;
 
 	public String getNomeCriador() {
@@ -46,6 +46,14 @@ public class DetalhesJogo implements Serializable {
 
 	public void setJogadoresPilotos(Map jogadoresPilotos) {
 		this.jogadoresPilotos = jogadoresPilotos;
+	}
+
+	public long getVoltaAtual() {
+		return voltaAtual;
+	}
+
+	public void setVoltaAtual(long voltaAtual) {
+		this.voltaAtual = voltaAtual;
 	}
 
 }

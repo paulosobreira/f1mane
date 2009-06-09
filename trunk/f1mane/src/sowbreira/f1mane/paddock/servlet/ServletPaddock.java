@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.ZipUtil;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author paulo.sobreira
@@ -29,6 +30,7 @@ public class ServletPaddock extends HttpServlet {
 
 	public void init() throws ServletException {
 		super.init();
+		Lang.setSrvgame(true);
 		try {
 			controlePersistencia = new ControlePersistencia(getServletContext()
 					.getRealPath("")
@@ -103,7 +105,7 @@ public class ServletPaddock extends HttpServlet {
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
 			throws IOException {
 		if (PaddockConstants.debug) {
-			 String basePath = getServletContext().getRealPath("")
+			String basePath = getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator;
 			FileOutputStream fileOutputStream = new FileOutputStream(basePath
 					+ "Pack-" + System.currentTimeMillis() + ".zip");
@@ -116,7 +118,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private void dumaparDados(Object escrever) throws IOException {
 		if (PaddockConstants.debug && (escrever != null)) {
-			 ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
 					arrayOutputStream);
 			objectOutputStream.writeObject(escrever);

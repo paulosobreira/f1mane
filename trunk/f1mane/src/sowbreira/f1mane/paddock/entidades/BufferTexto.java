@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+import sowbreira.f1mane.recursos.idiomas.Lang;
+
 /**
  * @author Paulo Sobreira Criado em 18/08/2007 as 23:56:08
  */

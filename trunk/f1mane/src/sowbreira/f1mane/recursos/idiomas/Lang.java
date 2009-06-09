@@ -19,13 +19,36 @@ public class Lang {
 
 	private static PropertyResourceBundle bundle;
 	private static String sufix;
-	
+	private static boolean srvgame;
+
 	public Lang() throws IOException {
+	}
+
+	public static boolean isSrvgame() {
+		return srvgame;
+	}
+
+	public static void setSrvgame(boolean srvgame) {
+		Lang.srvgame = srvgame;
 	}
 
 	public static void main(String[] args) throws IOException {
 		new Lang();
-		System.out.println(msg("TesteFormat", new Object[] { 123, 312 }));
+		// System.out.println(msg("TesteFormat", new Object[] { 123, 312 }));
+		// String[] array = "asd¢111¢qweqw¢22¢werwer ¢3¢¢4¢".split("¢");
+		// for (int i = 0; i < array.length; i++) {
+		// if (i % 2 == 1)
+		// System.out.println(array[i]);
+		// }
+		srvgame = true;
+		String enc = Lang.msg("003", new String[] { "S.Vettel", "8.218", "0",
+				Lang.msg("TIPO_PNEU_MOLE") });
+		System.out.println("enc : " + enc);
+		sufix = "en";
+		srvgame = false;
+		System.out.println("dec : " + decodeTexto(enc));
+		System.out
+				.println(decodeTexto("<b><font  color='#FF8C00'>¢003¬S.Vettel¬8.218¬0¬¢TIPO_PNEU_MOLE¢¢</font></b>"));
 	}
 
 	public static void mudarIdioma(String sufix_) {
@@ -37,6 +60,10 @@ public class Lang {
 	}
 
 	public static String msg(String key) {
+		if (srvgame) {
+			return "¢" + key + "¢";
+		}
+
 		iniciaBundle();
 		if (key == null || "".equals(key)) {
 			return "";
@@ -45,12 +72,57 @@ public class Lang {
 	}
 
 	public static String msg(String key, Object[] strings) {
+		if (srvgame) {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("¢" + key);
+			for (int i = 0; i < strings.length; i++) {
+				buffer.append("¬");
+				String stringIn = strings[i].toString();
+				if (stringIn.contains("¢")) {
+					buffer.append(stringIn.replace("¢", "£"));
+				} else {
+					buffer.append(stringIn);
+				}
+			}
+			buffer.append("¢");
+			return buffer.toString();
+		}
 		iniciaBundle();
 		if (key == null || "".equals(key)) {
 			return "";
 		}
 		MessageFormat messageFormat = new MessageFormat(bundle.getString(key));
 		return messageFormat.format(strings);
+	}
+
+	public static String decodeTexto(String string) {
+		String[] array = string.split("¢");
+		StringBuffer retorno = new StringBuffer();
+		for (int i = 0; i < array.length; i++) {
+			if (i % 2 == 1)
+				retorno.append(microDecode(array[i]));
+			else
+				retorno.append((array[i]));
+		}
+		return retorno.toString();
+	}
+
+	private static String microDecode(String string) {
+		if (string.contains("¬")) {
+			String[] sp = string.split("¬");
+			String key = sp[0];
+			Object[] params = new Object[sp.length - 1];
+			for (int i = 1; i < sp.length; i++) {
+				String msp = sp[i];
+				if (msp.contains("£")) {
+					msp = Lang.decodeTexto(msp.replace("£", "¢"));
+				}
+				params[i - 1] = msp;
+			}
+			return Lang.msg(key, params);
+		} else {
+			return Lang.msg(string);
+		}
 	}
 
 	public static String key(String mensagen) {
@@ -117,4 +189,5 @@ public class Lang {
 		}
 
 	}
+
 }
