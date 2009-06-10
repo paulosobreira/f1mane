@@ -248,8 +248,6 @@ public class PaddockWindow {
 	private void gerarLayout() {
 		JPanel cPanel = new JPanel(new BorderLayout());
 		JPanel sPanel = new JPanel(new BorderLayout());
-		// cPanel.setBorder(new TitledBorder("Paddock"));
-		// sPanel.setBorder(new TitledBorder("South"));
 
 		mainPanel.add(cPanel, BorderLayout.CENTER);
 		mainPanel.add(sPanel, BorderLayout.SOUTH);
@@ -258,9 +256,7 @@ public class PaddockWindow {
 				"F1-Mane Web Paddock Chat Room v 1.3"));
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
-			@Override
 			public String getTitle() {
-				// TODO Auto-generated method stub
 				return Lang.msg("186");
 			}
 		});
@@ -268,9 +264,7 @@ public class PaddockWindow {
 		cPanel.add(usersPanel, BorderLayout.EAST);
 		JPanel jogsPanel = new JPanel();
 		jogsPanel.setBorder((new TitledBorder("Lista de Jogos") {
-			@Override
 			public String getTitle() {
-				// TODO Auto-generated method stub
 				return Lang.msg("187");
 			}
 		}));
@@ -318,18 +312,16 @@ public class PaddockWindow {
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
-			@Override
 			public String getTitle() {
-				// TODO Auto-generated method stub
 				return Lang.msg("188");
 			}
 		});
 		panelTextoEnviar.setLayout(new BorderLayout());
 		panelTextoEnviar.add(textoEnviar, BorderLayout.CENTER);
 		inputPanel.setLayout(new BorderLayout());
-		inputPanel.add(panelTextoEnviar, BorderLayout.SOUTH);
+		inputPanel.add(panelTextoEnviar, BorderLayout.NORTH);
 		inputPanel.add(buttonsPanel, BorderLayout.CENTER);
-		inputPanel.add(infoLabel1, BorderLayout.NORTH);
+		inputPanel.add(infoLabel1, BorderLayout.SOUTH);
 		chatPanel.setLayout(new BorderLayout());
 		chatPanel.add(new JScrollPane(textAreaChat), BorderLayout.CENTER);
 
@@ -391,16 +383,12 @@ public class PaddockWindow {
 		JPanel panelJogadores = gerarPainelJogadores(detalhesJogo);
 		JPanel panelJogo = gerarPainelJogo(detalhesJogo);
 		panelJogadores.setBorder(new TitledBorder("Jogadores") {
-			@Override
 			public String getTitle() {
-				// TODO Auto-generated method stub
 				return Lang.msg("117");
 			}
 		});
 		panelJogo.setBorder(new TitledBorder("Dados Inicio do Jogo") {
-			@Override
 			public String getTitle() {
-				// TODO Auto-generated method stub
 				return Lang.msg("122");
 			}
 		});
@@ -414,62 +402,48 @@ public class PaddockWindow {
 		JPanel panelJogo = new JPanel();
 		panelJogo.setLayout(new GridLayout(11, 2));
 		panelJogo.add(new JLabel("Criador : ") {
-			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("190");
 			}
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getNomeCriador()));
 		panelJogo.add(new JLabel("Nivel : ") {
-			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("191");
 			}
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo()
 				.getNivelCorrida()));
 		panelJogo.add(new JLabel("Hora Criação : ") {
-			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("192");
 			}
 		});
 		panelJogo.add(new JLabel(df.format(new Timestamp(detalhesJogo
 				.getTempoCriacao()))));
 		panelJogo.add(new JLabel("Inicio Automatico : ") {
-			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("193");
 			}
 		});
 		panelJogo.add(new JLabel(df.format(new Timestamp(detalhesJogo
 				.getTempoCriacao() + 300000))));
 		panelJogo.add(new JLabel("Pista : ") {
-			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("194");
 			}
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo()
 				.getCircuitoSelecionado()));
 		panelJogo.add(new JLabel("Número Voltas : ") {
-			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("195");
 			}
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getVoltaAtual() + "/"
 				+ detalhesJogo.getDadosCriarJogo().getQtdeVoltas().toString()));
 		panelJogo.add(new JLabel("Habilidade Todos : ") {
-			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("196");
 			}
 		});
@@ -477,9 +451,7 @@ public class PaddockWindow {
 		panelJogo.add(new JLabel((ht == 0 ? Lang.msg("197") : String
 				.valueOf(ht))));
 		panelJogo.add(new JLabel("Potencia Todos: ") {
-			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("198");
 			}
 		});
@@ -487,27 +459,25 @@ public class PaddockWindow {
 		panelJogo.add(new JLabel((pt == 0 ? Lang.msg("197") : String
 				.valueOf(pt))));
 		panelJogo.add(new JLabel("Clima: ") {
-			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("199");
 			}
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().getClima()
 				.toString()));
 		panelJogo.add(new JLabel("Fator Ultrapassagem: ") {
-			@Override
+
 			public String getText() {
-				// TODO Auto-generated method stub
+
 				return Lang.msg("200");
 			}
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo()
 				.getDiffultrapassagem().toString()));
 		panelJogo.add(new JLabel("Fator Velocidade: ") {
-			@Override
+
 			public String getText() {
-				// TODO Auto-generated method stub
+
 				return Lang.msg("201");
 			}
 		});
@@ -529,16 +499,16 @@ public class PaddockWindow {
 		}
 		if (detMap.isEmpty()) {
 			panelJogadores.add(new JLabel("Nenhum ") {
-				@Override
+
 				public String getText() {
-					// TODO Auto-generated method stub
+
 					return Lang.msg("202");
 				}
 			});
 			panelJogadores.add(new JLabel("Jogador") {
-				@Override
+
 				public String getText() {
-					// TODO Auto-generated method stub
+
 					return Lang.msg("162");
 				}
 			});
@@ -552,9 +522,9 @@ public class PaddockWindow {
 		SessaoCliente cliente = (SessaoCliente) object;
 		panel.setLayout(new GridLayout(1, 2));
 		panel.add(new JLabel("Ultima Atividade : ") {
-			@Override
+
 			public String getText() {
-				// TODO Auto-generated method stub
+
 				return Lang.msg("170");
 			}
 		});

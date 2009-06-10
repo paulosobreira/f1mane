@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
-
 /**
  * @author paulo.sobreira
  * 
@@ -50,8 +49,6 @@ public class AppletPaddock extends JApplet {
 	}
 
 	public static void main(String[] args) {
-		FormEntrada formEntrada = new FormEntrada();
-		JOptionPane.showMessageDialog(null, formEntrada);
 		// System.out.println(JOptionPane.showInputDialog("teste"));
 	}
 
