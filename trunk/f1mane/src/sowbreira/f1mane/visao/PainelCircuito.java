@@ -228,8 +228,7 @@ public class PainelCircuito extends JPanel {
 				yBase += 15;
 				g2d.drawString(Lang.msg("074"), ptoOri, yBase);
 				yBase += 15;
-				if (Piloto.LENTO.equals(Lang.key(gerenciadorVisual
-						.getModoPiloto().getSelectedItem().toString()))
+				if (Piloto.LENTO.equals(pilotoSelecionado.getModoPilotagem())
 						&& qtdeLuzesAcesas <= 0
 						&& pilotoSelecionado.isJogadorHumano()) {
 					g2d.setColor(gre);
@@ -240,8 +239,7 @@ public class PainelCircuito extends JPanel {
 				}
 				g2d.drawString(Lang.msg("075"), ptoOri, yBase);
 				yBase += 15;
-				if (Piloto.NORMAL.equals(Lang.key(gerenciadorVisual
-						.getModoPiloto().getSelectedItem().toString()))
+				if (Piloto.NORMAL.equals(pilotoSelecionado.getModoPilotagem())
 						&& qtdeLuzesAcesas <= 0
 						&& pilotoSelecionado.isJogadorHumano()) {
 					g2d.setColor(yel);
@@ -252,8 +250,8 @@ public class PainelCircuito extends JPanel {
 				}
 				g2d.drawString(Lang.msg("076"), ptoOri, yBase);
 				yBase += 15;
-				if (Piloto.AGRESSIVO.equals(Lang.key(gerenciadorVisual
-						.getModoPiloto().getSelectedItem().toString()))
+				if (Piloto.AGRESSIVO.equals(pilotoSelecionado
+						.getModoPilotagem())
 						&& qtdeLuzesAcesas <= 0
 						&& pilotoSelecionado.isJogadorHumano()) {
 					g2d.setColor(red);

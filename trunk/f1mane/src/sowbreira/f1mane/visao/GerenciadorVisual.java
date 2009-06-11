@@ -4,9 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -39,8 +36,6 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
-import javax.swing.JSpinner.DefaultEditor;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.controles.ControleJogoLocal;
@@ -67,13 +62,14 @@ public class GerenciadorVisual {
 	private JProgressBar combustivelBar;
 	private JProgressBar pneuBar;
 	private JProgressBar motorBar;
+	private JProgressBar pilotoBar;
 	private JComboBox comboBoxClimaInicial;
 	private JComboBox comboBoxNivelCorrida;
 	private JComboBox comboBoxCircuito;
-	private JComboBox comboBoxAsa;
 	private JComboBox boxPilotoSelecionado;
 	private JComboBox boxPneuInicial;
-	private JSpinner spinnerCombustivelInicial;
+	private JComboBox comboBoxAsaInicial;
+	private JSpinner spinnerCombustivel;
 	private JSpinner spinnerQtdeVoltas;
 	private JSpinner spinnerTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
@@ -98,6 +94,7 @@ public class GerenciadorVisual {
 	private JComboBox giro;
 	private JComboBox modoPiloto;
 	private JComboBox comboBoxTipoPneu;
+	private JComboBox comboBoxAsa;
 	private JSlider sliderPercentCombust;
 	private Color corPadraoBarra;
 	private int larguraFrame = 0;
@@ -116,9 +113,9 @@ public class GerenciadorVisual {
 		alturaFrame = painelCircuito.getBackGround().getHeight() + 280;
 		carregarInfoClima();
 		gerarPainelPosicoes();
-		gerarPainelComandosNovo();
-		gerarPainelInfoTextNovo();
-		gerarPainetInfoGrafNovo();
+		gerarPainelComandos();
+		gerarPainelInfoText();
+		gerarPainetInfoGraf();
 		gerarLayoutNovo();
 
 		JFrame frame = controleJogo.getMainFrame();
@@ -411,6 +408,7 @@ public class GerenciadorVisual {
 		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
 		motorBar.setValue(motor);
 		mudaCorBarra(motor, motorBar);
+		pilotoBar.setValue(pilotoSelecionado.getStress());
 	}
 
 	private void mudaCorBarra(int porcent, JProgressBar bar) {
@@ -515,7 +513,7 @@ public class GerenciadorVisual {
 	}
 
 	public JSpinner getSpinnerCombustivelInicial() {
-		return spinnerCombustivelInicial;
+		return spinnerCombustivel;
 	}
 
 	public JSpinner getSpinnerQtdeVoltas() {
@@ -550,7 +548,7 @@ public class GerenciadorVisual {
 
 	}
 
-	private void gerarPainelInfoTextNovo() {
+	private void gerarPainelInfoText() {
 		painelInfText = new JPanel(new BorderLayout());
 		infoTextual = new JEditorPane("text/html", "");
 		infoTextual.setEditable(false);
@@ -570,7 +568,7 @@ public class GerenciadorVisual {
 		painelInfText.add(infoText, BorderLayout.NORTH);
 	}
 
-	private void gerarPainetInfoGrafNovo() {
+	private void gerarPainetInfoGraf() {
 		JPanel panelCol1 = new JPanel();
 		panelCol1.setLayout(new BorderLayout());
 
@@ -579,6 +577,9 @@ public class GerenciadorVisual {
 
 		JPanel panelCol3 = new JPanel();
 		panelCol3.setLayout(new BorderLayout());
+
+		JPanel panelCol4 = new JPanel();
+		panelCol4.setLayout(new BorderLayout());
 
 		JLabel combustivel = new JLabel() {
 			@Override
@@ -611,10 +612,24 @@ public class GerenciadorVisual {
 		};
 		panelCol3.add(motoLabel, BorderLayout.NORTH);
 		panelCol3.add(motorBar, BorderLayout.CENTER);
-		painelInfGraf = new JPanel(new GridLayout(1, 3));
+
+		pilotoBar = new JProgressBar(JProgressBar.VERTICAL);
+		pilotoBar.setStringPainted(true);
+		JLabel pilotoLabel = new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("153");
+			}
+		};
+
+		panelCol4.add(pilotoLabel, BorderLayout.NORTH);
+		panelCol4.add(pilotoBar, BorderLayout.CENTER);
+
+		painelInfGraf = new JPanel(new GridLayout(2, 2));
 		painelInfGraf.add(panelCol1);
 		painelInfGraf.add(panelCol2);
 		painelInfGraf.add(panelCol3);
+		painelInfGraf.add(panelCol4);
 	}
 
 	private void gerarLayoutNovo() {
@@ -644,7 +659,7 @@ public class GerenciadorVisual {
 
 	}
 
-	private void gerarPainelComandosNovo() {
+	private void gerarPainelComandos() {
 
 		agressivo = new JButton() {
 			@Override
@@ -813,25 +828,25 @@ public class GerenciadorVisual {
 				return Lang.msg("010");
 			}
 		};
-		comboBoxAsa = new JComboBox();
-		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
-		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
-		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
+		comboBoxAsaInicial = new JComboBox();
+		comboBoxAsaInicial.addItem(Lang.msg(Carro.ASA_NORMAL));
+		comboBoxAsaInicial.addItem(Lang.msg(Carro.MAIS_ASA));
+		comboBoxAsaInicial.addItem(Lang.msg(Carro.MENOS_ASA));
 
 		JLabel qtdeComustivel = new JLabel() {
 			public String getText() {
 				return Lang.msg("011");
 			}
 		};
-		spinnerCombustivelInicial = new JSpinner();
-		spinnerCombustivelInicial.setValue(new Integer(50));
+		spinnerCombustivel = new JSpinner();
+		spinnerCombustivel.setValue(new Integer(50));
 
 		painelInicio.add(tipoPneu);
 		painelInicio.add(boxPneuInicial);
 		painelInicio.add(tipoAsa);
-		painelInicio.add(comboBoxAsa);
+		painelInicio.add(comboBoxAsaInicial);
 		painelInicio.add(qtdeComustivel);
-		painelInicio.add(spinnerCombustivelInicial);
+		painelInicio.add(spinnerCombustivel);
 		painelInicio.add(new JLabel() {
 			public String getText() {
 				return Lang.msg("124");
@@ -890,7 +905,7 @@ public class GerenciadorVisual {
 			return false;
 		}
 		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 2)
-				|| (((Integer) spinnerCombustivelInicial.getValue()).intValue() == 0)) {
+				|| (((Integer) spinnerCombustivel.getValue()).intValue() == 0)) {
 			JOptionPane.showMessageDialog(controleJogo.getMainFrame(), Lang
 					.msg("128"), Lang.msg("128"),
 					JOptionPane.INFORMATION_MESSAGE);
@@ -909,11 +924,11 @@ public class GerenciadorVisual {
 		}
 
 		if (selec instanceof Piloto) {
-			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang
-					.key(boxPneuInicial.getSelectedItem().toString()),
-					spinnerCombustivelInicial.getValue(),
-					nomeJogador.getText(), Lang.key((String) comboBoxAsa
-							.getSelectedItem()));
+			controleJogo
+					.efetuarSelecaoPilotoJogador(selec, Lang.key(boxPneuInicial
+							.getSelectedItem().toString()), spinnerCombustivel
+							.getValue(), nomeJogador.getText(), Lang
+							.key((String) comboBoxAsaInicial.getSelectedItem()));
 		}
 		return true;
 	}
@@ -938,7 +953,7 @@ public class GerenciadorVisual {
 			return false;
 		}
 		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 21)
-				|| (((Integer) spinnerCombustivelInicial.getValue()).intValue() == 0)) {
+				|| (((Integer) spinnerCombustivel.getValue()).intValue() == 0)) {
 			JOptionPane.showMessageDialog(controleJogo.getMainFrame(), Lang
 					.msg("128"), Lang.msg("128"),
 					JOptionPane.INFORMATION_MESSAGE);
@@ -959,17 +974,17 @@ public class GerenciadorVisual {
 		if (selec instanceof Piloto) {
 			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang
 					.key(boxPneuInicial.getSelectedItem().toString()),
-					spinnerCombustivelInicial.getValue(),
-					nomeJogador.getText(), Lang.key(comboBoxAsa
-							.getSelectedItem().toString()));
+					spinnerCombustivel.getValue(), nomeJogador.getText(), Lang
+							.key(comboBoxAsaInicial.getSelectedItem()
+									.toString()));
 		}
 
 		return true;
 	}
 
 	public void desenhaQualificacao() {
-		infoCorrida.setText(Lang.msg("129"));
-		infoPiloto.setText(Lang.msg("130"));
+		infoCorrida.setText(Lang.msg("213"));
+		infoPiloto.setText(Lang.msg("214"));
 		List pilotos = controleJogo.getPilotos();
 		List ptosPilotos = new ArrayList();
 
@@ -1087,5 +1102,42 @@ public class GerenciadorVisual {
 
 	public JComboBox getModoPiloto() {
 		return modoPiloto;
+	}
+
+	public void sincronizarMenuInicioMenuBox(Object tipoPeneuJogador,
+			Object combustJogador, Object asaJogador) {
+		if (comboBoxTipoPneu != null) {
+			LangVO langVO = null;
+			if (tipoPeneuJogador instanceof LangVO) {
+				langVO = (LangVO) tipoPeneuJogador;
+			} else {
+				langVO = new LangVO(tipoPeneuJogador.toString());
+			}
+			comboBoxTipoPneu.setSelectedItem(langVO);
+		}
+		if (asaJogador != null) {
+			LangVO langVO = null;
+			if (asaJogador instanceof LangVO) {
+				langVO = (LangVO) asaJogador;
+			} else {
+				langVO = new LangVO(asaJogador.toString());
+			}
+			comboBoxAsa.setSelectedItem(langVO);
+		}
+		if (sliderPercentCombust != null && (combustJogador instanceof Integer)) {
+			sliderPercentCombust.setValue((Integer) combustJogador);
+		}
+	}
+
+	public JSpinner getSpinnerCombustivel() {
+		return spinnerCombustivel;
+	}
+
+	public JComboBox getComboBoxAsaInicial() {
+		return comboBoxAsaInicial;
+	}
+
+	public void setComboBoxAsaInicial(JComboBox comboBoxAsaInicial) {
+		this.comboBoxAsaInicial = comboBoxAsaInicial;
 	}
 }

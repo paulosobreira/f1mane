@@ -69,7 +69,7 @@
 				</span>
 			    <br>
                 <span class="class2"> 
-				    <a href="mailto:sowbreira@gmail.com">Duvidas, Criticas, Sugestões ...</a>
+				    <a href="mailto:sowbreira@gmail.com">Duvidas, Criticas, Sugestões, Bugs ,Colaborar ...</a>
                 </span>                
 			</div>
 			<div>

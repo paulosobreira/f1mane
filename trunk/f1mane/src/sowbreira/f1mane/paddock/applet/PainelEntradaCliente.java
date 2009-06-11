@@ -216,6 +216,9 @@ public class PainelEntradaCliente {
 		if (qtdeVoltas.intValue() > 72) {
 			qtdeVoltas = new Integer(72);
 		}
+		if (qtdeVoltas.intValue() < 22) {
+			qtdeVoltas = new Integer(22);
+		}
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
 		dadosCriarJogo
 				.setDiffultrapassagem((Integer) spinnerDificuldadeUltrapassagem

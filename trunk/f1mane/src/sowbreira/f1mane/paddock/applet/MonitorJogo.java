@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Piloto;
@@ -239,10 +240,9 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void iniciaJalena() {
-		if (!jogoCliente.getMainFrame().isVisible() && jogoAtivo) {
-			jogoCliente.getMainFrame().setVisible(true);
+		if (jogoAtivo) {
+			jogoCliente.iniciaJanela();
 		}
-
 	}
 
 	private void sleep(long l) {
@@ -341,6 +341,7 @@ public class MonitorJogo implements Runnable {
 						}
 						piloto.getCarro().setDanificado(dadosParciais.dano);
 						piloto.setBox(dadosParciais.pselBox);
+						piloto.setStress(dadosParciais.pselStress);
 						piloto.getCarro().setMotor(dadosParciais.pselMotor);
 						piloto.getCarro().setPneus(dadosParciais.pselPneus);
 						piloto.getCarro().setDurabilidadeMaxPneus(
@@ -353,6 +354,7 @@ public class MonitorJogo implements Runnable {
 						piloto.setVelocidade(dadosParciais.pselVelocidade);
 						piloto.setQtdeCombustBox(dadosParciais.pselCombustBox);
 						piloto.setTipoPneuBox(dadosParciais.pselTpPneusBox);
+						piloto.setModoPilotagem(dadosParciais.pselModoPilotar);
 						piloto.setAsaBox(dadosParciais.pselAsaBox);
 						piloto.getCarro().setAsa(dadosParciais.pselAsa);
 						piloto.getCarro().setGiro(dadosParciais.pselGiro);

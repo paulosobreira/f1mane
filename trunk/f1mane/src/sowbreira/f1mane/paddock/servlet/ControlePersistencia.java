@@ -10,10 +10,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
+import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 
 /**
@@ -43,6 +47,7 @@ public class ControlePersistencia {
 
 	public void gravarDados() throws IOException {
 		synchronized (paddockDadosSrv) {
+			processarLimpesa(paddockDadosSrv);
 			paddockDadosSrv.setLastSave(System.currentTimeMillis());
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 			XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
@@ -63,6 +68,20 @@ public class ControlePersistencia {
 			zipOutputStreamBak.closeEntry();
 			zipOutputStreamBak.close();
 		}
+	}
+
+	private void processarLimpesa(PaddockDadosSrv pds) {
+		Map map = pds.getJogadoresMap();
+
+		for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
+			String key = (String) iter.next();
+			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
+					.get(key);
+			if(jogadorDadosSrv.getCorridas().isEmpty()){
+				iter.remove();
+			}
+		}
+		
 	}
 
 	private PaddockDadosSrv lerDados() throws Exception {

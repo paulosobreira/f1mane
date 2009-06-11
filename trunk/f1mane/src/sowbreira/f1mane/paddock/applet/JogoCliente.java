@@ -1,10 +1,14 @@
 package sowbreira.f1mane.paddock.applet;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
+import com.sun.java.swing.SwingUtilities3;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleEstatisticas;
@@ -629,7 +633,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
-
 	public void tabelaComparativa() {
 		// TODO Auto-generated method stub
 
@@ -638,6 +641,16 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public int getQtdeTotalVoltas() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void iniciaJanela() {
+		if (!getMainFrame().isVisible()) {
+			getMainFrame().setVisible(true);
+		}
+		gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
+				.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
+				dadosParticiparJogo.getAsa());
 	}
 
 }

@@ -428,6 +428,7 @@ public class ControleJogosServer {
 				dadosParciais.dano = piloto.getCarro().getDanificado();
 				dadosParciais.pselBox = piloto.isBox();
 				dadosParciais.pselMotor = piloto.getCarro().getMotor();
+				dadosParciais.pselStress = piloto.getStress();
 				dadosParciais.pselCombust = piloto.getCarro().getCombustivel();
 				dadosParciais.pselPneus = piloto.getCarro().getPneus();
 				dadosParciais.pselMaxPneus = piloto.getCarro()
@@ -438,6 +439,7 @@ public class ControleJogosServer {
 				dadosParciais.pselVelocidade = piloto.getVelocidade();
 				dadosParciais.pselCombustBox = piloto.getQtdeCombustBox();
 				dadosParciais.pselTpPneusBox = piloto.getTipoPneuBox();
+				dadosParciais.pselModoPilotar = piloto.getModoPilotagem();
 				dadosParciais.pselAsaBox = piloto.getAsaBox();
 				dadosParciais.pselGiro = piloto.getCarro().getGiro();
 			}
