@@ -44,70 +44,69 @@ public class PaddockWindow {
 	private JList listaClientes = new JList();
 	private JList listaJogosCriados = new JList(new DefaultListModel());
 	private JTextArea textAreaChat = new JTextArea();
-	private JTextField textoEnviar = new JTextField(
-			"Digite o texto a enviar aqui.");
+	private JTextField textoEnviar = new JTextField();
 	private HashMap mapaJogosCriados = new HashMap();
 	private JButton enviarTexto = new JButton("Enviar Texto") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("174");
 		}
 	};
 	private JButton entrarJogo = new JButton("Entrar Jogo") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("175");
 		}
 	};
 	private JButton criarJogo = new JButton("Criar Jogo") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("176");
 		}
 	};
 	private JButton iniciarJogo = new JButton("Iniciar Jogo") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("094");
 		}
 	};
 	private JButton verDetalhes = new JButton("Ver Detalhes") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("178");
 		}
 	};
 	private JButton classificacao = new JButton("Classificação") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("179");
 		}
 	};
 
 	private JButton carreira = new JButton("Modo Carreira") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("221");
 		}
 	};
 	private JButton construtores = new JButton("Construtores") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("222");
 		}
 	};
 	private JButton conta = new JButton("Conta") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("223");
 		}
 	};
@@ -117,9 +116,9 @@ public class PaddockWindow {
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
-		@Override
+
 		public String getText() {
-			// TODO Auto-generated method stub
+
 			return Lang.msg("180");
 		}
 	};
@@ -534,10 +533,11 @@ public class PaddockWindow {
 	}
 
 	public void atualizaInfo() {
-		String text = Lang.msg("114")
-				+ controlePaddockCliente.getLatenciaMinima();
-		text += Lang.msg("115") + controlePaddockCliente.getLatenciaReal();
-		text += Lang.msg("116") + (ControleJogosServer.MaxJogo - 1);
+		String text = Lang.msg("114") + " "
+				+ +controlePaddockCliente.getLatenciaMinima();
+		text += Lang.msg("115") + " "
+				+ controlePaddockCliente.getLatenciaReal();
+		text += Lang.msg("116") + " " + (ControleJogosServer.MaxJogo + 1);
 
 		infoLabel1.setText(text);
 

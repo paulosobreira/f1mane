@@ -55,10 +55,11 @@
 		<center>
 			<div>
 				<span class="class1"> 
-					<!--
+					
 					<a href="http://br.geocities.com/sowbreira/"> 
 				        <img src="f1maneonline.jpg"> 
 					</a> 
+					<!--
 				     <a  href="http://www.mozilla.com/firefox/" > <img src="trust.gif"> </a> -->
 				</span>
 				<br> 
