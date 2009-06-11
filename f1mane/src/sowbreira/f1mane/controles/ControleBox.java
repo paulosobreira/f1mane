@@ -171,6 +171,7 @@ public class ControleBox {
 			}
 
 			if (piloto.getPtosBox() < boxList.size()) {
+				piloto.decStress(1);
 				piloto.setNoAtual((No) boxList.get(piloto.getPtosBox()));
 			} else {
 				processarPilotoSairBox(piloto, controleJogo);

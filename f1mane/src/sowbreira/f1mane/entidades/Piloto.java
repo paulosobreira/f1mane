@@ -45,6 +45,7 @@ public class Piloto implements Serializable {
 	private Carro carro = new Carro();
 	private No noAtual = new No();
 	private int numeroVolta;
+	private int stress;
 	private transient int ciclosDesconcentrado;
 	private transient int porcentagemCombustUltimaParadaBox;
 	private transient Map msgsQueSeRepetemMuito = new HashMap();
@@ -534,6 +535,14 @@ public class Piloto implements Serializable {
 
 	private int calcularNovoIndex(InterfaceJogo controleJogo) {
 		int index = noAtual.getIndex();
+		boolean fator = Math.random() > controleJogo.getNiveljogo();
+		if (fator && NORMAL.equals(modoPilotagem) && getPosicao() != 1) {
+			decStress(Math.random() > .5 ? 1 : 0);
+		} else if (fator && LENTO.equals(modoPilotagem)) {
+			decStress(1);
+		} else if (fator && !agressivo && getPosicao() != 1) {
+			decStress(1);
+		}
 
 		/**
 		 * Devagarinho qdo a corrida termina
@@ -711,6 +720,7 @@ public class Piloto implements Serializable {
 									+ Html.bold(Lang.msg("054")));
 						}
 					}
+					incStress(1);
 				} else if (Math.random() > 0.950) {
 					if (controleJogo.isChovendo()) {
 						controleJogo.info(Html.bold(getNome())
@@ -990,6 +1000,28 @@ public class Piloto implements Serializable {
 
 	public void setModoPilotagem(String modoPilotagem) {
 		this.modoPilotagem = modoPilotagem;
+	}
+
+	public int getStress() {
+		return stress;
+	}
+
+	public void decStress(int val) {
+		if (stress > 0 && (stress - val) > 0) {
+			stress -= val;
+		}
+	}
+
+	public void incStress(int val) {
+		if (stress < 100 && (stress + val) < 100) {
+			stress += val;
+		} else {
+			setModoPilotagem(NORMAL);
+		}
+	}
+
+	public void setStress(int stress) {
+		this.stress = stress;
 	}
 
 }

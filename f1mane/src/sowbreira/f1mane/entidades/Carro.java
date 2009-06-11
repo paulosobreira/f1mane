@@ -452,6 +452,11 @@ public class Carro implements Serializable {
 						&& (indicativo < 70)) {
 					novoModificador += 1;
 
+				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
+						&& no.verificaCruvaAlta() && (indicativo > 10)
+						&& (indicativo < 60) && Math.random() > .6) {
+					novoModificador += 1;
+
 				}
 			}
 		}
@@ -474,6 +479,7 @@ public class Carro implements Serializable {
 						pneus -= ((30 * controleJogo.getNiveljogo()) * novoModificador);
 					}
 					fritouPneuNaUltimaCurvaBaixa = true;
+					piloto.incStress(Math.random() > .5 ? 1 : 0);
 				} else {
 					if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
 						pneus -= (1 + novoModificador);

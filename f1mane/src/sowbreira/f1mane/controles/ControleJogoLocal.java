@@ -29,11 +29,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected double niveljogo = InterfaceJogo.MEDIO_NV;
 	protected String nivelCorrida;
 	protected boolean corridaTerminada;
-
 	protected ControleCorrida controleCorrida;
 	protected GerenciadorVisual gerenciadorVisual;
 	protected ControleEstatisticas controleEstatisticas;
-
 	protected Integer qtdeVoltas = null;
 	protected Integer diffultrapassagem = null;
 	protected Integer tempoCiclo = null;
@@ -375,6 +373,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		pilotoJogador.setTipoPneuBox(tipoPeneuJogador);
 		pilotoJogador.setQtdeCombustBox(combustJogador);
 		pilotoJogador.setAsaBox(asaJogador);
+
 	}
 
 	/**
@@ -396,20 +395,21 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void processaNovaVolta() {
 		int qtdeDesqualificados = 0;
-		if (getNumVoltaAtual() == (totalVoltasCorrida() - 1)
-				&& !isCorridaTerminada()) {
-			Piloto piloto = (Piloto) pilotos.get(0);
+		Piloto piloto = (Piloto) pilotos.get(0);
+		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
+				&& (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
+
 			infoPrioritaria(Html.superBlack(piloto.getNome())
 					+ Html.superGreen(Lang.msg("045")));
 		}
 
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
+			piloto = (Piloto) iter.next();
 			if (piloto.isDesqualificado()) {
 				qtdeDesqualificados++;
 			}
 		}
-		if (qtdeDesqualificados >= 14) {
+		if (qtdeDesqualificados >= 10) {
 			setCorridaTerminada(true);
 			controleCorrida.terminarCorrida();
 			infoPrioritaria(Html.superDarkRed(Lang.msg("024",
@@ -554,6 +554,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 							.getSelectedItem());
 			controleCorrida.gerarGridLargadaSemQualificacao();
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(gerenciadorVisual
+					.getBoxPneuInicial().getSelectedItem(), gerenciadorVisual
+					.getSpinnerCombustivel().getValue(), gerenciadorVisual
+					.getComboBoxAsaInicial().getSelectedItem());
 			controleCorrida.iniciarCorrida();
 			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
 		}
@@ -779,6 +783,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	public int getQtdeTotalVoltas() {
 		return controleCorrida.getQtdeTotalVoltas();
+	}
+
+	@Override
+	public void iniciaJanela() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
