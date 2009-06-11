@@ -20,6 +20,7 @@ public class Lang {
 	private static PropertyResourceBundle bundle;
 	private static String sufix;
 	private static boolean srvgame;
+	private static String mutex = "";
 
 	public Lang() throws IOException {
 	}
@@ -52,59 +53,68 @@ public class Lang {
 	}
 
 	public static void mudarIdioma(String sufix_) {
-		sufix = sufix_;
-		synchronized (bundle) {
-			bundle = null;
-			iniciaBundle();
+		synchronized (mutex) {
+			sufix = sufix_;
+			synchronized (mutex) {
+				bundle = null;
+				iniciaBundle();
+			}
 		}
 	}
 
 	public static String msg(String key) {
-		if (srvgame) {
-			return "¢" + key + "¢";
-		}
+		synchronized (mutex) {
+			if (srvgame) {
+				return "¢" + key + "¢";
+			}
 
-		iniciaBundle();
-		if (key == null || "".equals(key)) {
-			return "";
+			iniciaBundle();
+			if (key == null || "".equals(key)) {
+				return "";
+			}
+			return bundle.getString(key);
 		}
-		return bundle.getString(key);
 	}
 
 	public static String msg(String key, Object[] strings) {
-		if (srvgame) {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("¢" + key);
-			for (int i = 0; i < strings.length; i++) {
-				buffer.append("¬");
-				String stringIn = strings[i].toString();
-				if (stringIn.contains("¢")) {
-					buffer.append(stringIn.replace("¢", "£"));
-				} else {
-					buffer.append(stringIn);
+		synchronized (mutex) {
+			if (srvgame) {
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("¢" + key);
+				for (int i = 0; i < strings.length; i++) {
+					buffer.append("¬");
+					String stringIn = strings[i].toString();
+					if (stringIn.contains("¢")) {
+						buffer.append(stringIn.replace("¢", "£"));
+					} else {
+						buffer.append(stringIn);
+					}
 				}
+				buffer.append("¢");
+				return buffer.toString();
 			}
-			buffer.append("¢");
-			return buffer.toString();
+			iniciaBundle();
+			if (key == null || "".equals(key)) {
+				return "";
+			}
+			MessageFormat messageFormat = new MessageFormat(bundle
+					.getString(key));
+			return messageFormat.format(strings);
 		}
-		iniciaBundle();
-		if (key == null || "".equals(key)) {
-			return "";
-		}
-		MessageFormat messageFormat = new MessageFormat(bundle.getString(key));
-		return messageFormat.format(strings);
 	}
 
 	public static String decodeTexto(String string) {
-		String[] array = string.split("¢");
-		StringBuffer retorno = new StringBuffer();
-		for (int i = 0; i < array.length; i++) {
-			if (i % 2 == 1)
-				retorno.append(microDecode(array[i]));
-			else
-				retorno.append((array[i]));
+		synchronized (mutex) {
+			String[] array = string.split("¢");
+			StringBuffer retorno = new StringBuffer();
+			for (int i = 0; i < array.length; i++) {
+				if (i % 2 == 1)
+					retorno.append(microDecode(array[i]));
+				else
+					retorno.append((array[i]));
+			}
+			return retorno.toString();
 		}
-		return retorno.toString();
 	}
 
 	private static String microDecode(String string) {
@@ -126,16 +136,18 @@ public class Lang {
 	}
 
 	public static String key(String mensagen) {
-		iniciaBundle();
-		Enumeration enumeration = bundle.getKeys();
-		while (enumeration.hasMoreElements()) {
-			String key = (String) enumeration.nextElement();
-			String msg = bundle.getString(key);
-			if (msg.equals(mensagen)) {
-				return key;
+		synchronized (mutex) {
+			iniciaBundle();
+			Enumeration enumeration = bundle.getKeys();
+			while (enumeration.hasMoreElements()) {
+				String key = (String) enumeration.nextElement();
+				String msg = bundle.getString(key);
+				if (msg.equals(mensagen)) {
+					return key;
+				}
 			}
+			return "";
 		}
-		return "";
 	}
 
 	private static void iniciaBundle() {
