@@ -141,15 +141,16 @@ public class ControlePaddockCliente {
 			}
 			if (retorno instanceof ErroServ) {
 				ErroServ erroServ = (ErroServ) retorno;
-				JOptionPane.showMessageDialog(panel, erroServ
-						.obterErroFormatado(), Lang.msg("060"),
+				JOptionPane.showMessageDialog(panel, Lang.decodeTexto(erroServ
+						.obterErroFormatado()), Lang.msg("060"),
 						JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
 			if (retorno instanceof MsgSrv) {
 				MsgSrv msgSrv = (MsgSrv) retorno;
-				JOptionPane.showMessageDialog(panel, msgSrv.getMessageString(),
-						Lang.msg("061"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(panel, Lang.decodeTexto(msgSrv
+						.getMessageString()), Lang.msg("061"),
+						JOptionPane.INFORMATION_MESSAGE);
 				return null;
 			}
 			return retorno;
@@ -412,7 +413,7 @@ public class ControlePaddockCliente {
 
 	}
 
-	public boolean verificaLoginValido(FormEntradaSimples formEntrada) {
+	public boolean verificaLoginValido(FormEntrada formEntrada) {
 		String nome = formEntrada.getNome().getText();
 		if (nome == null) {
 			return false;
@@ -435,7 +436,7 @@ public class ControlePaddockCliente {
 
 	}
 
-	public boolean registrarUsuario(FormEntradaSimples formEntrada) {
+	public boolean registrarUsuario(FormEntrada formEntrada) {
 		// if (!formEntrada.getSenhaRegistrar().equals(
 		// formEntrada.getSenhaRegistrarRepetir())) {
 		// JOptionPane.showMessageDialog(panel, "As senhas não estão iguais",
@@ -497,7 +498,7 @@ public class ControlePaddockCliente {
 	}
 
 	public void logar() {
-		FormEntradaSimples formEntrada = new FormEntradaSimples();
+		FormEntrada formEntrada = new FormEntrada();
 		formEntrada.setToolTipText(Lang.msg("066"));
 
 		int result = JOptionPane.showConfirmDialog(panel, formEntrada);

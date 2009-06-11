@@ -2,10 +2,13 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.XMLEncoder;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -13,8 +16,9 @@ import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
-public class FormEntradaSimples extends JPanel {
-
+public class FormEntrada extends JPanel {
+	private JComboBox comboIdiomas = new JComboBox(new String[] {
+			Lang.msg("pt"), Lang.msg("en") });
 	private JLabel nomeLabel = new JLabel("Entre com seu Nome") {
 		public String getText() {
 			return Lang.msg("167");
@@ -33,7 +37,7 @@ public class FormEntradaSimples extends JPanel {
 		}
 	};
 
-	public FormEntradaSimples() {
+	public FormEntrada() {
 		setLayout(new BorderLayout());
 		gerarLogin();
 		gerarRegistrar();
@@ -47,16 +51,31 @@ public class FormEntradaSimples extends JPanel {
 		JPanel panel = new JPanel();
 		GridLayout gridLayout = new GridLayout(2, 2);
 		panel.setBorder(new TitledBorder("Registrar") {
-			@Override
 			public String getTitle() {
-				// TODO Auto-generated method stub
 				return Lang.msg("218");
 			}
 		});
 		panel.setLayout(gridLayout);
 		panel.add(emailLabel);
 		panel.add(email);
-		add(panel, BorderLayout.CENTER);
+		comboIdiomas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(Lang.key(comboIdiomas.getSelectedItem()
+						.toString()));
+				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
+				if (i != null && !"".equals(i)) {
+					Lang.mudarIdioma(i);
+					comboIdiomas.removeAllItems();
+					comboIdiomas.addItem(Lang.msg("pt"));
+					comboIdiomas.addItem(Lang.msg("en"));
+				}
+				FormEntrada.this.repaint();
+			}
+		});
+		JPanel newPanel = new JPanel(new BorderLayout());
+		newPanel.add(panel, BorderLayout.CENTER);
+		newPanel.add(comboIdiomas, BorderLayout.SOUTH);
+		add(newPanel, BorderLayout.CENTER);
 	}
 
 	private void gerarLogin() {
@@ -90,7 +109,6 @@ public class FormEntradaSimples extends JPanel {
 	public static void main(String[] args) throws FileNotFoundException {
 		FileOutputStream fileOutputStream = new FileOutputStream("teste.xml");
 		XMLEncoder encoder = new XMLEncoder(fileOutputStream);
-
 		String teste = "HandlerFactory";
 		encoder.writeObject(teste);
 		encoder.flush();

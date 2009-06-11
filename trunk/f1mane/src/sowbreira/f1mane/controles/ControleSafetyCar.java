@@ -107,13 +107,10 @@ public class ControleSafetyCar {
 		}
 		Piloto pilotoFrente = controleCorrida.acharPilotoDaFrente(piloto);
 		if (pilotoFrente.equals(piloto) || pilotoFrente.entrouNoBox()
-				|| pilotoFrente.getCarro().verificaDano()) {
+				|| pilotoFrente.isDesqualificado()) {
 			return novoModificador;
 		}
-		if (pilotoFrente.isDesqualificado()
-				|| pilotoFrente.getCarro().verificaDano()) {
-			return novoModificador;
-		}
+
 		if (piloto.getPtosPista() + novoModificador >= pilotoFrente
 				.getPtosPista()) {
 			piloto.gerarDesconcentracao((22 - piloto.getPosicao()) * 4);

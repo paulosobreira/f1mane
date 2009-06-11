@@ -55,7 +55,6 @@
 		<center>
 			<div>
 				<span class="class1"> 
-					
 					<a href="http://br.geocities.com/sowbreira/"> 
 				        <img src="f1maneonline.jpg"> 
 					</a> 
@@ -68,10 +67,14 @@
 					<a href="http://www.java.com/pt_BR/"> Se abaixo nao aparecer nada Clique Aqui e instale a versao mais nova do Java. </a> 
 					<a href="http://sowbreira.googlepages.com/F1Mane.html"> Vers&atilde;o do Jogo modo 1 jogador </a> <!--<a href="ServletBaseDados?tipo=" > Bkp dados</a> --> 
 				</span>
+			    <br>
+                <span class="class2"> 
+				    <a href="mailto:sowbreira@gmail.com">Duvidas, Criticas, Sugestões ...</a>
+                </span>                
 			</div>
 			<div>
-				<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="100%" height="80%">
+				<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="100%" height="80%"> 
 			</div>
-		<center>
+		</center>
 	</body>
 </html>
