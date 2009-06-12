@@ -36,7 +36,8 @@ public class PainelCircuito extends JPanel {
 	private GerenciadorVisual gerenciadorVisual;
 	private Point pointDesenhaClima = new Point(10, 60);
 	private Point pointDesenhaVelo = new Point(10, 60);
-	private Point pointDesenhaSC = new Point(10, 95);
+	private Point pointDesenhaSC = new Point(10, 85);
+	private Point pointDesenhaHelmet = new Point(10, 130);
 	public final static Color luzDistProx1 = new Color(0, 255, 0, 100);
 	public final static Color luzDistProx2 = new Color(255, 255, 0, 100);
 	public final static Color luzApagada = new Color(255, 255, 255, 170);
@@ -47,15 +48,20 @@ public class PainelCircuito extends JPanel {
 	public final static Color yel = new Color(255, 255, 0, 150);
 	public final static BufferedImage carroimgDano = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("carro_dano.gif");
-
+	public final static BufferedImage helmetPiloto = CarregadorRecursos
+			.carregaBufferedImageTranspareciaBranca("helmet.gif");
+	public final static BufferedImage scimg = CarregadorRecursos
+			.carregaBufferedImageTranspareciaBranca("safetycar.gif");
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
 	private Point pointQualificacao;
 	private Map mapDesenharQualificacao = new HashMap();
 	private boolean desenhaQualificacao;
 	private boolean desenhaInfo = true;
-	private ImageIcon fuel;
-	private ImageIcon tyre;
+	public final static ImageIcon fuel = new ImageIcon(CarregadorRecursos
+			.carregarImagem("fuel.jpg"));
+	public final static ImageIcon tyre = new ImageIcon(CarregadorRecursos
+			.carregarImagem("tyre.jpg"));
 
 	public boolean isDesenhaInfo() {
 		return desenhaInfo;
@@ -69,11 +75,8 @@ public class PainelCircuito extends JPanel {
 			GerenciadorVisual gerenciadorVisual) {
 		controleJogo = jogo;
 		this.gerenciadorVisual = gerenciadorVisual;
-		fuel = new ImageIcon(CarregadorRecursos.carregarImagem("fuel.jpg"));
-		tyre = new ImageIcon(CarregadorRecursos.carregarImagem("tyre.jpg"));
 		addMouseListener(new MouseAdapter() {
 
-			@Override
 			public void mouseClicked(MouseEvent e) {
 				// System.out.println("Pontos Editor :" + e.getX() + " - "
 				// + e.getY());
@@ -229,8 +232,7 @@ public class PainelCircuito extends JPanel {
 				g2d.drawString(Lang.msg("074"), ptoOri, yBase);
 				yBase += 15;
 				if (Piloto.LENTO.equals(pilotoSelecionado.getModoPilotagem())
-						&& qtdeLuzesAcesas <= 0
-						&& pilotoSelecionado.isJogadorHumano()) {
+						&& qtdeLuzesAcesas <= 0) {
 					g2d.setColor(gre);
 					g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
 					g2d.setColor(Color.black);
@@ -240,8 +242,7 @@ public class PainelCircuito extends JPanel {
 				g2d.drawString(Lang.msg("075"), ptoOri, yBase);
 				yBase += 15;
 				if (Piloto.NORMAL.equals(pilotoSelecionado.getModoPilotagem())
-						&& qtdeLuzesAcesas <= 0
-						&& pilotoSelecionado.isJogadorHumano()) {
+						&& qtdeLuzesAcesas <= 0) {
 					g2d.setColor(yel);
 					g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
 					g2d.setColor(Color.black);
@@ -252,8 +253,7 @@ public class PainelCircuito extends JPanel {
 				yBase += 15;
 				if (Piloto.AGRESSIVO.equals(pilotoSelecionado
 						.getModoPilotagem())
-						&& qtdeLuzesAcesas <= 0
-						&& pilotoSelecionado.isJogadorHumano()) {
+						&& qtdeLuzesAcesas <= 0) {
 					g2d.setColor(red);
 					g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
 					g2d.setColor(Color.black);
@@ -318,6 +318,11 @@ public class PainelCircuito extends JPanel {
 		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePeneus();
 		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
 		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
+		if (pilotoSelecionado.getStress() > 85) {
+			g2d.drawImage(helmetPiloto, pointDesenhaHelmet.x
+					+ (Math.random() > 0.5 ? 1 : -1), pointDesenhaHelmet.y
+					+ (Math.random() > 0.5 ? -1 : 0), null);
+		}
 		if ((dano == null || "".equals(dano)) && motor > 10 && porcentComb > 10
 				&& pneus > 10)
 			return;
@@ -545,13 +550,13 @@ public class PainelCircuito extends JPanel {
 
 	private int calculaBounce(Carro carro) {
 		if (carro.getPiloto().isAgressivo() == false) {
-			return 1;
+			return Math.random() > .5 ? 1 : 0;
 		} else if (carro.getPiloto().isAgressivo() == true
 				&& carro.getGiro() != Carro.GIRO_MAX_VAL) {
-			return 2;
+			return Math.random() > .5 ? 2 : 1;
 		} else if (carro.getPiloto().isAgressivo() == true
 				&& carro.getGiro() == Carro.GIRO_MAX_VAL) {
-			return 3;
+			return Math.random() > .5 ? 3 : 2;
 		}
 		return 0;
 	}
@@ -559,9 +564,7 @@ public class PainelCircuito extends JPanel {
 	private void desenharSafetyCar(Graphics2D g2d) {
 		if (controleJogo.isSafetyCarNaPista()) {
 			if (!controleJogo.isSafetyCarVaiBox()) {
-				BufferedImage carroimg = CarregadorRecursos
-						.carregaBufferedImageTranspareciaBranca("safetycar.gif");
-				g2d.drawImage(carroimg, pointDesenhaSC.x
+				g2d.drawImage(scimg, pointDesenhaSC.x
 						+ (Math.random() > 0.5 ? 1 : -1), pointDesenhaSC.y
 						+ (Math.random() > 0.5 ? -1 : 0), null);
 			}

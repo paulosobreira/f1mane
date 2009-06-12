@@ -50,7 +50,7 @@ public class Piloto implements Serializable {
 	private transient int porcentagemCombustUltimaParadaBox;
 	private transient Map msgsQueSeRepetemMuito = new HashMap();
 	private List voltas = new ArrayList();
-	private String modoPilotagem;
+	private String modoPilotagem = NORMAL;
 	private Volta voltaAtual;
 	private int ciclosVoltaQualificacao;
 	private Volta ultimaVolta;
