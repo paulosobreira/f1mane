@@ -12,6 +12,10 @@
  - Qualquer sugestão : sowbreira@gmail.com.
 
 Histórico de versões:
+1.9
+  - Implementado nivel de stress do piloto.
+  - Alterado comportamento do safaty car e acidades
+  - Realinhamento de itens na tela
 1.8
   - Retardatário agora podem causar lentidão aos dianteiros.
   - Novo modo de controle do piloto : Agressivo , normal e cauteloso

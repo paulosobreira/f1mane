@@ -625,7 +625,7 @@ public class GerenciadorVisual {
 		panelCol4.add(pilotoLabel, BorderLayout.NORTH);
 		panelCol4.add(pilotoBar, BorderLayout.CENTER);
 
-		painelInfGraf = new JPanel(new GridLayout(2, 2));
+		painelInfGraf = new JPanel(new GridLayout(1, 4));
 		painelInfGraf.add(panelCol1);
 		painelInfGraf.add(panelCol2);
 		painelInfGraf.add(panelCol3);
