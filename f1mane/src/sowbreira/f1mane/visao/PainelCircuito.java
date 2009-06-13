@@ -549,7 +549,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private int calculaBounce(Carro carro) {
-		if (carro.getPiloto().isAgressivo() == false) {
+		if (qtdeLuzesAcesas > 0 || carro.getPiloto().isBox()) {
+			return Math.random() > .7 ? 1 : 0;
+		} else if (carro.getPiloto().isAgressivo() == false) {
 			return Math.random() > .5 ? 1 : 0;
 		} else if (carro.getPiloto().isAgressivo() == true
 				&& carro.getGiro() != Carro.GIRO_MAX_VAL) {
