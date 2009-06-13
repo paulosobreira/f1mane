@@ -479,7 +479,7 @@ public class Carro implements Serializable {
 						pneus -= ((30 * controleJogo.getNiveljogo()) * novoModificador);
 					}
 					fritouPneuNaUltimaCurvaBaixa = true;
-					piloto.incStress(Math.random() > .5 ? 1 : 0);
+					piloto.incStress(Math.random() > .7 ? 1 : 0);
 				} else {
 					if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
 						pneus -= (1 + novoModificador);

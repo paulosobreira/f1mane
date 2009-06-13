@@ -720,7 +720,7 @@ public class Piloto implements Serializable {
 									+ Html.bold(Lang.msg("054")));
 						}
 					}
-					incStress(1);
+					incStress(Math.random() > .5 ? 1 : 0);
 				} else if (Math.random() > 0.950) {
 					if (controleJogo.isChovendo()) {
 						controleJogo.info(Html.bold(getNome())
@@ -808,7 +808,7 @@ public class Piloto implements Serializable {
 
 		double bonusSecundario = getCarro().getGiro() / 10;
 		if (controleJogo.isChovendo()) {
-			bonusSecundario -= .3;
+			bonusSecundario -= .5;
 		} else if (Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu())) {
 			bonusSecundario += .1;
 		}
