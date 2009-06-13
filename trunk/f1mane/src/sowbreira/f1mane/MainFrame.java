@@ -42,6 +42,7 @@ public class MainFrame extends JFrame {
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
 	private boolean modoApplet;
+	private JRadioButtonMenuItem t1987;
 	private JRadioButtonMenuItem t2007;
 	private JRadioButtonMenuItem t2008;
 	private JRadioButtonMenuItem t2009;
@@ -229,9 +230,10 @@ public class MainFrame extends JFrame {
 						controleJogo.matarTodasThreads();
 					}
 					String temporarada = null;
-					if (getT2007().isSelected()) {
+					if (getT1987().isSelected()) {
+						temporarada = "t1987";
+					} else if (getT2007().isSelected()) {
 						temporarada = "t2007";
-
 					} else if (getT2008().isSelected()) {
 						temporarada = "t2008";
 					} else if (getT2009().isSelected()) {
@@ -268,11 +270,14 @@ public class MainFrame extends JFrame {
 						controleJogo.matarTodasThreads();
 					}
 					String temporarada = null;
-					if (getT2007().isSelected()) {
+					if (getT1987().isSelected()) {
+						temporarada = "t1987";
+					} else if (getT2007().isSelected()) {
 						temporarada = "t2007";
-
 					} else if (getT2008().isSelected()) {
 						temporarada = "t2008";
+					} else if (getT2009().isSelected()) {
+						temporarada = "t2009";
 					}
 
 					controleJogo = new ControleJogoLocal(temporarada);
@@ -304,6 +309,12 @@ public class MainFrame extends JFrame {
 		});
 		menu1.add(pausa);
 		ButtonGroup buttonGroup = new ButtonGroup();
+		t1987 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("226");
+			}
+
+		};
 		t2007 = new JRadioButtonMenuItem() {
 			public String getText() {
 				return Lang.msg("085");
@@ -323,9 +334,11 @@ public class MainFrame extends JFrame {
 			}
 
 		};
+		buttonGroup.add(t1987);
 		buttonGroup.add(t2007);
 		buttonGroup.add(t2008);
 		buttonGroup.add(t2009);
+		menu1.add(t1987);
 		menu1.add(t2007);
 		menu1.add(t2008);
 		menu1.add(t2009);
@@ -609,7 +622,9 @@ public class MainFrame extends JFrame {
 		} else {
 			try {
 				String temporarada = null;
-				if (getT2007().isSelected()) {
+				if (getT1987().isSelected()) {
+					temporarada = "t1987";
+				} else if (getT2007().isSelected()) {
 					temporarada = "t2007";
 				} else if (getT2008().isSelected()) {
 					temporarada = "t2008";
@@ -661,6 +676,14 @@ public class MainFrame extends JFrame {
 
 	public JRadioButtonMenuItem getT2009() {
 		return t2009;
+	}
+
+	public JRadioButtonMenuItem getT1987() {
+		return t1987;
+	}
+
+	public void setT1987(JRadioButtonMenuItem t1987) {
+		this.t1987 = t1987;
 	}
 
 }
