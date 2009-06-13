@@ -99,6 +99,7 @@ public class GerenciadorVisual {
 	private Color corPadraoBarra;
 	private int larguraFrame = 0;
 	private int alturaFrame = 0;
+	private long lastPress;
 
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
@@ -219,6 +220,11 @@ public class GerenciadorVisual {
 	private KeyListener geraKeyListener() {
 		return new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
+				long now = System.currentTimeMillis();
+				if ((now - lastPress) < 250) {
+					return;
+				}
+				lastPress = now;
 				int keyCoode = e.getKeyCode();
 
 				if (keyCoode == KeyEvent.VK_F1) {

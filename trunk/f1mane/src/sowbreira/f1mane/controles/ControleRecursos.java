@@ -102,7 +102,8 @@ public abstract class ControleRecursos {
 			String prop = properties.getProperty(name);
 			piloto.setNome(name);
 			piloto.setNomeCarro(prop.split(",")[0]);
-			piloto.setHabilidade(Integer.parseInt((prop.split(",")[1])));
+			piloto.setHabilidade(Integer.parseInt((prop.split(",")[1]))
+					+ (Math.random() > .5 ? -1 : 1));
 			retorno.add(piloto);
 		}
 
@@ -176,14 +177,8 @@ public abstract class ControleRecursos {
 		carroNovo.setCor2(carro.getCor2());
 		carroNovo.setImg(carro.getImg());
 		carroNovo.setPiloto(piloto);
-
-		int variantePotencia = 2;
-
-		if (Math.random() > .5) {
-			variantePotencia = -2;
-		}
-
-		carroNovo.setPotencia(carro.getPotencia() + variantePotencia);
+		carroNovo.setPotencia(carro.getPotencia()
+				+ (Math.random() > .5 ? -5 : 5));
 
 		return carroNovo;
 	}

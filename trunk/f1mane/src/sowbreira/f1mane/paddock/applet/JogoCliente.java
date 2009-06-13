@@ -45,6 +45,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private boolean safetyCarBol;
 	private boolean modoAgressivo;
 	private boolean modoBox;
+	private boolean syncBox;
 	private String nomeJogador;
 	private Piloto pilotoSelecionado;
 	private DadosJogo dadosJogo;
@@ -647,10 +648,13 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void iniciaJanela() {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
+		} else if (!syncBox) {
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
+					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
+					dadosParticiparJogo.getAsa());
+			syncBox = true;
 		}
-		gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
-				.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
-				dadosParticiparJogo.getAsa());
+
 	}
 
 }
