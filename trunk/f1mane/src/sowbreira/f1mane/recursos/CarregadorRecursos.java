@@ -37,7 +37,7 @@ public class CarregadorRecursos {
 			System.out.println("Erro gerando transparencia para :" + file);
 		}
 
-		return ImageUtil.geraTransparencia(buffer, Color.WHITE);
+		return ImageUtil.geraTransparencia(buffer);
 	}
 
 	public static BufferedImage carregaBackGround(String backGroundStr,
