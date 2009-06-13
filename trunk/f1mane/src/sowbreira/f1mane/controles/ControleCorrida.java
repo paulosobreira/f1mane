@@ -204,7 +204,7 @@ public class ControleCorrida {
 					return 1;
 				}
 			}
-			piloto.incStress(2);
+			piloto.incStress(Math.random() > .5 ? 1 : 2);
 			if (piloto.isJogadorHumano() && Math.random() > 0.950) {
 				controleJogo.info(Lang.msg("014", new Object[] { Html
 						.bold(piloto.getNome()) }));
@@ -324,8 +324,8 @@ public class ControleCorrida {
 					Html.bold(ganhador.getNome()),
 					Html.bold(perdedor.getNome()) }));
 		}
-		perdedor.incStress(4);
-		ganhador.incStress(3);
+		perdedor.incStress(3);
+		ganhador.incStress(1);
 		if (ganhador.getPosicao() == 1) {
 			ganhador.incStress(1);
 		}
