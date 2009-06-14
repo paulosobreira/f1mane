@@ -34,7 +34,7 @@ public class ControleQualificacao {
 		List pilotos = controleJogo.getPilotos();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			piloto.setNotaQualificacaoAleatoria(piloto.getHabilidade()
+			piloto.setNotaQualificacaoAleatoria((piloto.getHabilidade()/10)
 					+ (5 * Math.random()) + piloto.getCarro().getPotencia()
 					+ (50 * Math.random()));
 		}

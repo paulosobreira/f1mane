@@ -102,8 +102,11 @@ public abstract class ControleRecursos {
 			String prop = properties.getProperty(name);
 			piloto.setNome(name);
 			piloto.setNomeCarro(prop.split(",")[0]);
-			piloto.setHabilidade(Integer.parseInt((prop.split(",")[1]))
-					+ (Math.random() > .5 ? -1 : 1));
+			int duasCasas = Integer.parseInt(prop.split(",")[1])
+					+ (Math.random() > .5 ? -1 : 1);
+			piloto.setHabilidade(Integer.parseInt(String.valueOf(duasCasas)
+					+ (int) (0 + Math.random() * 9)));
+			//System.out.println(piloto + " " + piloto.getHabilidade());
 			retorno.add(piloto);
 		}
 
@@ -118,6 +121,10 @@ public abstract class ControleRecursos {
 		});
 
 		return retorno;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(((int) (0 + Math.random() * 9)));
 	}
 
 	protected List carregarListaCarros() throws IOException {
@@ -186,7 +193,9 @@ public abstract class ControleRecursos {
 	protected void definirHabilidadePadraoPilotos(int value) {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			piloto.setHabilidade(value);
+			String strVal = String.valueOf(value)
+					+ (int) (0 + Math.random() * 9);
+			piloto.setHabilidade(Integer.parseInt(strVal));
 		}
 	}
 

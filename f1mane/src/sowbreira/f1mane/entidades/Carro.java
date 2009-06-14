@@ -474,7 +474,7 @@ public class Carro implements Serializable {
 				double modificador = controleJogo.getNiveljogo() + 0.2;
 				if (Math.random() < modificador) {
 					if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
-						pneus -= ((25 * controleJogo.getNiveljogo()) * novoModificador);
+						pneus -= ((27 * controleJogo.getNiveljogo()) * novoModificador);
 					} else {
 						pneus -= ((30 * controleJogo.getNiveljogo()) * novoModificador);
 					}
