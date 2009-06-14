@@ -211,7 +211,7 @@ public class ControleCorrida {
 			}
 			if (!piloto.isJogadorHumano()) {
 				piloto.setAgressivo(false);
-				piloto.setCiclosDesconcentrado(100 - piloto.getHabilidade());
+				piloto.setCiclosDesconcentrado(100 - (piloto.getHabilidade()/10));
 			}
 			return 1;
 		} else {
@@ -334,7 +334,7 @@ public class ControleCorrida {
 		}
 		perdedor.setAgressivo(false);
 		perdedor
-				.gerarDesconcentracao((int) (100 - (perdedor.getHabilidade() * controleJogo
+				.gerarDesconcentracao((int) (100 - ((perdedor.getHabilidade()/10) * controleJogo
 						.getNiveljogo())));
 
 	}
@@ -535,7 +535,7 @@ public class ControleCorrida {
 		}
 		if (!piloto.isJogadorHumano()) {
 			piloto.setAgressivo(false);
-			piloto.setCiclosDesconcentrado(100 - piloto.getHabilidade());
+			piloto.setCiclosDesconcentrado(100 - (piloto.getHabilidade()/10));
 		}
 		return 1;
 

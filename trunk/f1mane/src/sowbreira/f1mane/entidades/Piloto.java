@@ -843,14 +843,14 @@ public class Piloto implements Serializable {
 			return false;
 		}
 
-		return testeHabilidadePiloto() && carro.testePotencia();
+		return carro.testePotencia() && testeHabilidadePiloto();
 	}
 
 	public boolean testeHabilidadePiloto() {
 		if (danificado()) {
 			return false;
 		}
-		boolean teste = Math.random() < (habilidade / 100.0);
+		boolean teste = Math.random() < (habilidade / 1000.0);
 		return teste;
 	}
 
