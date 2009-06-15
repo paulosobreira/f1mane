@@ -104,14 +104,11 @@ public class ControleClima {
 
 	public void informaMudancaClima() {
 		if (Clima.SOL.equals(clima)) {
-			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("004",
-					new Object[] { controleJogo.getNumVoltaAtual() })));
+			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("004")));
 		} else if (Clima.NUBLADO.equals(clima)) {
-			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("005",
-					new Object[] { controleJogo.getNumVoltaAtual() })));
+			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("005")));
 		} else if (Clima.CHUVA.equals(clima)) {
-			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("006",
-					new Object[] { controleJogo.getNumVoltaAtual() })));
+			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("006")));
 		}
 		controleJogo.informaMudancaClima();
 	}
