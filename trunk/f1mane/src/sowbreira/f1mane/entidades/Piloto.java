@@ -785,7 +785,7 @@ public class Piloto implements Serializable {
 		if (Math.random() < controleJogo.getNiveljogo()) {
 			return false;
 		}
-		return testeHabilidadePiloto() && carro.testePotencia();
+		return carro.testePotencia() && testeHabilidadePiloto();
 	}
 
 	public int gerarDesconcentracao(int fator) {
@@ -815,7 +815,7 @@ public class Piloto implements Serializable {
 		if (testeHabilidadePilotoCarro() && agressivo
 				&& noAtual.verificaRetaOuLargada()
 				&& (Math.random() < controleJogo.getIndexVelcidadeDaPista())
-				&& (Math.random() < bonusSecundario) && testeHabilidadePiloto()) {
+				&& (Math.random() < bonusSecundario)) {
 			return 3;
 		} else if (testeHabilidadePilotoCarro()
 				&& noAtual.verificaRetaOuLargada()) {

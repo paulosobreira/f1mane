@@ -43,9 +43,11 @@ public class MainFrame extends JFrame {
 	private InterfaceJogo controleJogo;
 	private boolean modoApplet;
 	private JRadioButtonMenuItem t1987;
+	private JRadioButtonMenuItem t1988;
 	private JRadioButtonMenuItem t2007;
 	private JRadioButtonMenuItem t2008;
 	private JRadioButtonMenuItem t2009;
+
 	private JMenuBar bar;
 	private JMenu menuJogo;
 	private JMenu menuEditor;
@@ -215,7 +217,7 @@ public class MainFrame extends JFrame {
 			}
 
 		};
-		iniciar.setEnabled(false);
+
 		iniciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -232,6 +234,8 @@ public class MainFrame extends JFrame {
 					String temporarada = null;
 					if (getT1987().isSelected()) {
 						temporarada = "t1987";
+					} else if (getT1988().isSelected()) {
+						temporarada = "t1988";
 					} else if (getT2007().isSelected()) {
 						temporarada = "t2007";
 					} else if (getT2008().isSelected()) {
@@ -248,47 +252,7 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		// menu1.add(iniciar);
-		JMenuItem iniciarSimples = new JMenuItem("Iniciar Jogo") {
-			public String getText() {
-				return Lang.msg("094");
-			}
-
-		};
-
-		iniciarSimples.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					removerKeyListeners();
-					if (controleJogo != null) {
-						int ret = JOptionPane.showConfirmDialog(MainFrame.this,
-								Lang.msg("095"), Lang.msg("094"),
-								JOptionPane.YES_NO_OPTION);
-						if (ret == JOptionPane.NO_OPTION) {
-							return;
-						}
-						controleJogo.matarTodasThreads();
-					}
-					String temporarada = null;
-					if (getT1987().isSelected()) {
-						temporarada = "t1987";
-					} else if (getT2007().isSelected()) {
-						temporarada = "t2007";
-					} else if (getT2008().isSelected()) {
-						temporarada = "t2008";
-					} else if (getT2009().isSelected()) {
-						temporarada = "t2009";
-					}
-
-					controleJogo = new ControleJogoLocal(temporarada);
-					controleJogo.setMainFrame(MainFrame.this);
-					controleJogo.iniciarJogo();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-		menu1.add(iniciarSimples);
+		menu1.add(iniciar);
 		JMenuItem pausa = new JMenuItem("Pausa Jogo") {
 			public String getText() {
 				return Lang.msg("096");
@@ -315,6 +279,12 @@ public class MainFrame extends JFrame {
 			}
 
 		};
+		t1988 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("227");
+			}
+
+		};
 		t2007 = new JRadioButtonMenuItem() {
 			public String getText() {
 				return Lang.msg("085");
@@ -335,10 +305,12 @@ public class MainFrame extends JFrame {
 
 		};
 		buttonGroup.add(t1987);
+		buttonGroup.add(t1988);
 		buttonGroup.add(t2007);
 		buttonGroup.add(t2008);
 		buttonGroup.add(t2009);
 		menu1.add(t1987);
+		menu1.add(t1988);
 		menu1.add(t2007);
 		menu1.add(t2008);
 		menu1.add(t2009);
@@ -682,8 +654,8 @@ public class MainFrame extends JFrame {
 		return t1987;
 	}
 
-	public void setT1987(JRadioButtonMenuItem t1987) {
-		this.t1987 = t1987;
+	public JRadioButtonMenuItem getT1988() {
+		return t1988;
 	}
 
 }

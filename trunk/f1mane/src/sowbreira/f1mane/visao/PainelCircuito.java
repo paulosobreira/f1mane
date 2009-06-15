@@ -431,18 +431,11 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaCarroSelecionado(Piloto psel, Graphics2D g2d) {
-		BufferedImage carroimg = CarregadorRecursos.carregaImgCarro(psel
-				.getCarro().getImg());
-		int carSelX = getWidth() / 2 - carroimg.getWidth() / 2;
-		int carSelY = getHeight() - 35;
-		int bounce = calculaBounce(psel.getCarro());
+		BufferedImage carroimg = null;
+		int carSelX = 0;
+		int carSelY =  getHeight() - 35;
+		int bounce = 0;
 
-		if (Math.random() > 0.5) {
-			carSelX += bounce;
-		} else {
-			carSelX -= bounce;
-		}
-		g2d.drawImage(carroimg, null, carSelX, carSelY);
 		Carro carroFrente = controleJogo.obterCarroNaFrente(psel);
 		if (carroFrente != null) {
 			carroimg = CarregadorRecursos.carregaImgCarro(carroFrente.getImg());
@@ -493,6 +486,17 @@ public class PainelCircuito extends JPanel {
 			}
 
 		}
+		carroimg = CarregadorRecursos.carregaImgCarro(psel.getCarro().getImg());
+		carSelX = getWidth() / 2 - carroimg.getWidth() / 2;
+		carSelY = getHeight() - 35;
+		bounce = calculaBounce(psel.getCarro());
+
+		if (Math.random() > 0.5) {
+			carSelX += bounce;
+		} else {
+			carSelX -= bounce;
+		}
+		g2d.drawImage(carroimg, null, carSelX, carSelY);
 		Carro carroAtraz = controleJogo.obterCarroAtraz(psel);
 		if (carroAtraz != null) {
 			carroimg = CarregadorRecursos.carregaImgCarro(carroAtraz.getImg());
@@ -545,6 +549,7 @@ public class PainelCircuito extends JPanel {
 				g2d.drawString("  " + val, dstX, dstY);
 			}
 		}
+
 
 	}
 
