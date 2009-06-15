@@ -785,7 +785,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return controleCorrida.getQtdeTotalVoltas();
 	}
 
-	@Override
 	public void iniciaJanela() {
 		// TODO Auto-generated method stub
 

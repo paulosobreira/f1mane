@@ -87,9 +87,9 @@ public class ServletPaddock extends HttpServlet {
 					oos.flush();
 					res.getOutputStream().write(bos.toByteArray());
 				}
-			} catch (java.net.SocketTimeoutException e) {
-			} catch (java.io.IOException e) {
+			} catch (NullPointerException e) {
 				e.printStackTrace();
+			} catch (Exception e) {
 			}
 
 			return;
