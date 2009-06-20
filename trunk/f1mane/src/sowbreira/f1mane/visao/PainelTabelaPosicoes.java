@@ -14,6 +14,7 @@ import javax.swing.table.TableColumn;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado Em 15:27:33
@@ -46,8 +47,8 @@ public class PainelTabelaPosicoes extends JPanel {
 
 		TableModel model = new TableModel();
 		posicoesTable = new JTable(model);
-		TableColumn colorColumn1 = posicoesTable.getColumn(Coluna1);
-		TableColumn colorColumn2 = posicoesTable.getColumn(Coluna2);
+		TableColumn colorColumn1 = posicoesTable.getColumn(Lang.msg("231"));
+		TableColumn colorColumn2 = posicoesTable.getColumn(Lang.msg("232"));
 		DefaultTableCellRenderer colorRenderer = new DefaultTableCellRenderer() {
 			protected void setValue(Object value) {
 				if (!(value instanceof String)) {
@@ -224,15 +225,16 @@ public class PainelTabelaPosicoes extends JPanel {
 		public String getColumnName(int column) {
 			switch (column) {
 			case 0:
-				return Coluna1;
+				return Lang.msg("231");
 
 			case 1:
-				return Coluna2;
+				return Lang.msg("232");
 
 			default:
 				return "";
 			}
 		}
+		
 	}
 
 	public int getLarguraPainel() {

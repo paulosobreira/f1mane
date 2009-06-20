@@ -343,7 +343,7 @@ public class MainFrame extends JFrame {
 		menu1.add(t2007);
 		menu1.add(t2008);
 		menu1.add(t2009);
-		t1972.setSelected(true);
+		t2009.setSelected(true);
 
 	}
 
