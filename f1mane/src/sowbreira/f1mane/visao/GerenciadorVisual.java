@@ -564,7 +564,7 @@ public class GerenciadorVisual {
 		panel.setLayout(null);
 		panel.add(scrollPaneTextual);
 		scrollPaneTextual.setBounds(0, 0, larguraFrame
-				- painelPosicoes.getLarguraPainel() - 30, 185);
+				- painelPosicoes.getLarguraPainel() - 30, 200);
 		painelInfText.add(panel, BorderLayout.CENTER);
 		infoText.setLayout(new GridLayout(1, 1));
 		infoCorrida = new JLabel(Lang.msg("213"));

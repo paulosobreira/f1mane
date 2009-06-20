@@ -83,7 +83,12 @@ public class PainelEntradaCliente {
 		nomeJogador.setEditable(false);
 		painelInicio.add(nomeJogador);
 
-		painelInicio.add(new JLabel("Senha(Jogo Privado):"));
+		painelInicio.add(new JLabel("Senha(Jogo Privado):") {
+			@Override
+			public String getText() {
+				return Lang.msg("232");
+			}
+		});
 		senhaJogo = new JTextField();
 		senhaJogo.setEditable(false);
 		painelInicio.add(senhaJogo);
@@ -94,7 +99,12 @@ public class PainelEntradaCliente {
 			comboBoxPilotoSelecionado.addItem(piloto);
 		}
 
-		painelInicio.add(new JLabel("Selecionar Piloto :"));
+		painelInicio.add(new JLabel("Selecionar Piloto :") {
+			@Override
+			public String getText() {
+				return Lang.msg("120");
+			}
+		});
 		painelInicio.add(comboBoxPilotoSelecionado);
 
 		comboBoxCircuito = new JComboBox();
@@ -109,14 +119,24 @@ public class PainelEntradaCliente {
 			comboBoxCircuito.addItem(object);
 		}
 
-		painelInicio.add(new JLabel("Selecionar Circuito :"));
+		painelInicio.add(new JLabel("Selecionar Circuito :") {
+			@Override
+			public String getText() {
+				return Lang.msg("121");
+			}
+		});
 		painelInicio.add(comboBoxCircuito);
 
 		comboBoxNivelCorrida = new JComboBox();
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
-		painelInicio.add(new JLabel("Nivel da corrida :"));
+		painelInicio.add(new JLabel("Nivel da corrida :") {
+			@Override
+			public String getText() {
+				return Lang.msg("112");
+			}
+		});
 		painelInicio.add(comboBoxNivelCorrida);
 
 		comboBoxClimaInicial = new JComboBox();
@@ -124,7 +144,12 @@ public class PainelEntradaCliente {
 		comboBoxClimaInicial.addItem(new Clima(Clima.NUBLADO));
 		comboBoxClimaInicial.addItem(new Clima(Clima.CHUVA));
 
-		painelInicio.add(new JLabel("Clima :"));
+		painelInicio.add(new JLabel("Clima :") {
+			@Override
+			public String getText() {
+				return Lang.msg("123");
+			}
+		});
 		painelInicio.add(comboBoxClimaInicial);
 
 		JLabel tipoPneu = new JLabel(Lang.msg("009"));
@@ -133,11 +158,21 @@ public class PainelEntradaCliente {
 		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
 		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
 
-		JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
+		JLabel qtdeComustivel = new JLabel(Lang.msg("011")) {
+			@Override
+			public String getText() {
+				return Lang.msg("011");
+			}
+		};
 		spinnerCombustivelInicial = new JSpinner();
 		spinnerCombustivelInicial.setValue(new Integer(50));
 
-		JLabel tipoAsa = new JLabel(Lang.msg("010"));
+		JLabel tipoAsa = new JLabel(Lang.msg("010")) {
+			@Override
+			public String getText() {
+				return Lang.msg("010");
+			}
+		};
 		comboBoxAsa = new JComboBox();
 		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
 		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
@@ -150,16 +185,31 @@ public class PainelEntradaCliente {
 		painelInicio.add(qtdeComustivel);
 		painelInicio.add(spinnerCombustivelInicial);
 
-		painelInicio.add(new JLabel("Dificuldade Utrapassagem (0-999):"));
+		painelInicio.add(new JLabel("Dificuldade Utrapassagem (0-999):") {
+			@Override
+			public String getText() {
+				return Lang.msg("124");
+			}
+		});
 		spinnerDificuldadeUltrapassagem = new JSpinner();
 		spinnerDificuldadeUltrapassagem.setValue(new Integer(500));
 		painelInicio.add(spinnerDificuldadeUltrapassagem);
-		painelInicio.add(new JLabel("Index velocidade em reta (0-999):"));
+		painelInicio.add(new JLabel("Index velocidade em reta (0-999):") {
+			@Override
+			public String getText() {
+				return Lang.msg("125");
+			}
+		});
 		spinnerIndexVelcidadeEmReta = new JSpinner();
 		spinnerIndexVelcidadeEmReta.setValue(new Integer(500));
 		painelInicio.add(spinnerIndexVelcidadeEmReta);
 
-		painelInicio.add(new JLabel("Tempo Ciclo (50ms-240ms):"));
+		painelInicio.add(new JLabel("Tempo Ciclo (50ms-240ms):") {
+			@Override
+			public String getText() {
+				return Lang.msg("126");
+			}
+		});
 		spinnerTempoCiclo = new JSpinner();
 		spinnerTempoCiclo.setValue(new Integer(90));
 		painelInicio.add(spinnerTempoCiclo);
@@ -196,10 +246,8 @@ public class PainelEntradaCliente {
 		}
 		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 10)
 				|| (((Integer) spinnerCombustivelInicial.getValue()).intValue() == 0)) {
-			JOptionPane.showMessageDialog(mainFrame,
-					"SetUP Não preenchido corretamente.",
-					"SetUP Não preenchido corretamente.",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(mainFrame, Lang.msg("128"), Lang
+					.msg("128"), JOptionPane.INFORMATION_MESSAGE);
 			ret = JOptionPane.showConfirmDialog(mainFrame, painelInicio,
 					"Setup Inicial", JOptionPane.YES_NO_OPTION);
 			spinnerQtdeVoltas.requestFocus();
@@ -282,7 +330,12 @@ public class PainelEntradaCliente {
 		gerarPainelParticiparJogo(painelInicio);
 		JPanel panel = new JPanel(new GridLayout(2, 1));
 		panel.add(panelJogoCriado);
-		painelInicio.setBorder(new TitledBorder("Configuração do carro"));
+		painelInicio.setBorder(new TitledBorder("Configuração do carro") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("233");
+			}
+		});
 		panel.add(painelInicio);
 		int ret = JOptionPane.showConfirmDialog(mainFrame, panel,
 				"Setup Inicial", JOptionPane.YES_NO_OPTION);
@@ -301,7 +354,12 @@ public class PainelEntradaCliente {
 		nomeJogador.setEditable(false);
 		painelInicio.add(nomeJogador);
 
-		painelInicio.add(new JLabel("Senha(Jogo Privado) :"));
+		painelInicio.add(new JLabel("Senha(Jogo Privado) :") {
+			@Override
+			public String getText() {
+				return Lang.msg("232");
+			}
+		});
 		senhaJogo = new JTextField();
 		senhaJogo.setEditable(false);
 		painelInicio.add(senhaJogo);
@@ -312,7 +370,12 @@ public class PainelEntradaCliente {
 			comboBoxPilotoSelecionado.addItem(piloto);
 		}
 
-		painelInicio.add(new JLabel("Selecionar Piloto :"));
+		painelInicio.add(new JLabel("Selecionar Piloto :") {
+			@Override
+			public String getText() {
+				return Lang.msg("120");
+			}
+		});
 		painelInicio.add(comboBoxPilotoSelecionado);
 
 		comboBoxCircuito = new JComboBox();

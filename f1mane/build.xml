@@ -15,6 +15,9 @@
 		<fileset dir="${env.TOMCAT_HOME}/common/lib">
 			<include name="*.jar" />
 		</fileset>
+		<fileset dir="paddock/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
 		<pathelement location="build" />
 	</path>
 

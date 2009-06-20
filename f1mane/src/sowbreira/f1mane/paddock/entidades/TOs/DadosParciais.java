@@ -40,7 +40,7 @@ public class DadosParciais implements Serializable {
 	public Volta peselUltima5;
 	public String nomeJogador;
 	public String texto;
-	public int[] pilotsPonts = new int[22];
+	public int[] pilotsPonts = new int[24];
 
 	public void decode(String val) {
 		String[] sp = val.split("@");
