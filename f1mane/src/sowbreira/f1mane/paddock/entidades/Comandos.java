@@ -10,7 +10,6 @@ package sowbreira.f1mane.paddock.entidades;
 public class Comandos {
 
 	public static final String ATUALIZAR_VISAO = "01";
-	public static final String VALIDAR_LOGIN = "02";
 	public static final String ENVIAR_TEXTO = "03";
 	public static final String CRIAR_JOGO = "04";
 	public static final String ENTRAR_JOGO = "05";

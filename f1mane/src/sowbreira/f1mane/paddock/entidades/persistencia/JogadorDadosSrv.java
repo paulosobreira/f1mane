@@ -14,6 +14,7 @@ public class JogadorDadosSrv implements Serializable {
 	private String email;
 	private List corridas = new ArrayList();
 	private long ultimoLogon;
+	private long ultimaRecuperacao = 0;
 
 	public String getEmail() {
 		return email;
@@ -53,6 +54,14 @@ public class JogadorDadosSrv implements Serializable {
 
 	public void setCorridas(List corridas) {
 		this.corridas = corridas;
+	}
+
+	public long getUltimaRecuperacao() {
+		return ultimaRecuperacao;
+	}
+
+	public void setUltimaRecuperacao(long ultimaRecuperacao) {
+		this.ultimaRecuperacao = ultimaRecuperacao;
 	}
 
 }

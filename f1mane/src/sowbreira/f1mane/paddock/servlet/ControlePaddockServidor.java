@@ -5,6 +5,9 @@ package sowbreira.f1mane.paddock.servlet;
 
 import java.util.Iterator;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
@@ -14,6 +17,8 @@ import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.PassGenerator;
+import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
@@ -63,10 +68,10 @@ public class ControlePaddockServidor {
 		}
 		if (object instanceof ClientPaddockPack) {
 			ClientPaddockPack clientPaddockPack = (ClientPaddockPack) object;
-			if (Comandos.VALIDAR_LOGIN.equals(clientPaddockPack.getCommando())) {
-				return criarSessao(clientPaddockPack);
-			} else if (Comandos.RGISTRAR_LOGIN.equals(clientPaddockPack
-					.getCommando())) {
+			if (Comandos.RGISTRAR_LOGIN.equals(clientPaddockPack.getCommando())) {
+				if (Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
+					return new MsgSrv(Lang.msg("242"));
+				}
 				return registrarLogin(clientPaddockPack);
 			}
 			return processarComando(clientPaddockPack);
@@ -81,22 +86,44 @@ public class ControlePaddockServidor {
 					.getPaddockDados();
 			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
 					.getJogadoresMap().get(clientPaddockPack.getNomeJogador());
-
-			// if (jogadorDadosSrv != null) {
-			// return new MsgSrv("O Jogador "
-			// + clientPaddockPack.getNomeJogador()
-			// + " Já esta registrado");
-			// }
 			if (jogadorDadosSrv == null) {
 				jogadorDadosSrv = new JogadorDadosSrv();
 				jogadorDadosSrv.setNome(clientPaddockPack.getNomeJogador());
-				jogadorDadosSrv.setSenha(clientPaddockPack.getSenhaJogador());
 				jogadorDadosSrv.setEmail(clientPaddockPack.getEmailJogador());
 				paddockDadosSrv.getJogadoresMap().put(
 						jogadorDadosSrv.getNome(), jogadorDadosSrv);
+				String senha;
+				try {
+					senha = geraSenhaMandaMail(clientPaddockPack
+							.getNomeJogador(), clientPaddockPack
+							.getEmailJogador());
+				} catch (Exception e1) {
+					return new MsgSrv(Lang.msg("237"));
+				}
+				try {
+					jogadorDadosSrv.setSenha(Util.md5(senha));
+					clientPaddockPack.setSenhaJogador(jogadorDadosSrv
+							.getSenha());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			return criarSessao(clientPaddockPack);
 		}
+	}
+
+	private String geraSenhaMandaMail(String nome, String email)
+			throws AddressException, MessagingException {
+		PassGenerator generator = new PassGenerator();
+		String senha = generator.generateIt();
+
+		ServletPaddock.email.sendSimpleMail("F1-Mane Game Password",
+				new String[] { email }, "f1mane@f1manager.hostignition.com",
+				"Your game user:password is " + nome + ":" + senha, false);
+		// ServletPaddock.email.sendSimpleMail(Lang.msg("240"),
+		// new String[] { email }, "f1mane@f1manager.hostignition.com",
+		// Lang.msg("241", new String[] { nome, senha }), false);
+		return senha;
 	}
 
 	private Object obterDadosParciaisPilotos(String[] args) {
@@ -268,6 +295,43 @@ public class ControlePaddockServidor {
 				|| clientPaddockPack.getNomeJogador().contains("§")) {
 			return null;
 		}
+		synchronized (controlePersistencia.getPaddockDados()) {
+			PaddockDadosSrv paddockDadosSrv = controlePersistencia
+					.getPaddockDados();
+			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
+					.getJogadoresMap().get(clientPaddockPack.getNomeJogador());
+			if (jogadorDadosSrv == null) {
+				return new MsgSrv(Lang.msg("238"));
+			} else if (clientPaddockPack.isRecuperar()) {
+				if ((System.currentTimeMillis() - jogadorDadosSrv
+						.getUltimaRecuperacao()) < 300000) {
+					return new MsgSrv(Lang.msg("243"));
+				}
+
+				if (Util.isNullOrEmpty(jogadorDadosSrv.getEmail())) {
+					jogadorDadosSrv.setEmail(clientPaddockPack
+							.getEmailJogador());
+				}
+				try {
+					String senha = geraSenhaMandaMail(
+							jogadorDadosSrv.getNome(), jogadorDadosSrv
+									.getEmail());
+					jogadorDadosSrv.setSenha(Util.md5(senha));
+				} catch (Exception e) {
+					return new MsgSrv(Lang.msg("237"));
+				}
+				jogadorDadosSrv
+						.setUltimaRecuperacao(System.currentTimeMillis());
+				return new MsgSrv(Lang.msg("239",
+						new String[] { jogadorDadosSrv.getEmail() }));
+
+			} else if (!jogadorDadosSrv.getSenha().equals(
+					clientPaddockPack.getSenhaJogador())) {
+				return new MsgSrv(Lang.msg("236"));
+			}
+			jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());
+
+		}
 		SessaoCliente cliente = null;
 		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
 				.hasNext();) {
@@ -283,29 +347,6 @@ public class ControlePaddockServidor {
 			cliente.setNomeJogador(clientPaddockPack.getNomeJogador());
 			cliente.setUlimaAtividade(System.currentTimeMillis());
 			dadosPaddock.getClientes().add(cliente);
-		} else {
-			return (new MsgSrv(Lang.msg("211")));
-		}
-		synchronized (controlePersistencia.getPaddockDados()) {
-			PaddockDadosSrv paddockDadosSrv = controlePersistencia
-					.getPaddockDados();
-			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
-					.getJogadoresMap().get(clientPaddockPack.getNomeJogador());
-			if (jogadorDadosSrv == null) {
-				// return new MsgSrv("O Jogador "
-				// + clientPaddockPack.getNomeJogador()
-				// + " NÃO está registrado.");
-				registrarLogin(clientPaddockPack);
-				jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
-						.getJogadoresMap().get(
-								clientPaddockPack.getNomeJogador());
-			}
-			// if (!jogadorDadosSrv.getSenha().equals(
-			// clientPaddockPack.getSenhaJogador())) {
-			// return new MsgSrv("Senha incorreta.");
-			// }
-			jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());
-
 		}
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setSessaoCliente(cliente);

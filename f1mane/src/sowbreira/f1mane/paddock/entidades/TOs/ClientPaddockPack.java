@@ -20,6 +20,7 @@ public class ClientPaddockPack implements Serializable {
 	private String tpPneuBox;
 	private String asaBox;
 	private int combustBox;
+	private boolean recuperar;
 	private DadosCriarJogo dadosJogoCriado;
 
 	public ClientPaddockPack(String commando, SessaoCliente sessaoCliente) {
@@ -134,5 +135,13 @@ public class ClientPaddockPack implements Serializable {
 
 	public void setModoPilotagem(String modoPilotagem) {
 		this.modoPilotagem = modoPilotagem;
+	}
+
+	public boolean isRecuperar() {
+		return recuperar;
+	}
+
+	public void setRecuperar(boolean recuperar) {
+		this.recuperar = recuperar;
 	}
 }
