@@ -22,7 +22,7 @@ import javax.swing.table.AbstractTableModel;
 public class PainelTabelaResultadoFinal extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTable posicoesTable;
-	private Piloto[] pilotos = new Piloto[22];
+	private Piloto[] pilotos = new Piloto[24];
 
 	public PainelTabelaResultadoFinal(List pilotosList, boolean modoApplet) {
 		for (int i = 0; i < pilotosList.size(); i++) {

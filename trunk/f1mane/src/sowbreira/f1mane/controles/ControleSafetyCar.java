@@ -102,7 +102,7 @@ public class ControleSafetyCar {
 		}
 		if (piloto.getPosicao() == 1
 				&& piloto.getPtosPista() >= (safetyCar.getPtosPista() - 5)) {
-			piloto.gerarDesconcentracao((22 - piloto.getPosicao()) * 4);
+			piloto.gerarDesconcentracao((24 - piloto.getPosicao()) * 4);
 			piloto.setAgressivo(false);
 			return 0;
 		}
@@ -114,7 +114,7 @@ public class ControleSafetyCar {
 
 		if (piloto.getPtosPista() + novoModificador >= pilotoFrente
 				.getPtosPista()) {
-			piloto.gerarDesconcentracao((22 - piloto.getPosicao()) * 4);
+			piloto.gerarDesconcentracao((24 - piloto.getPosicao()) * 4);
 			piloto.setAgressivo(false);
 			return 0;
 		}

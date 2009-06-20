@@ -44,6 +44,7 @@ public class MainFrame extends JFrame {
 	private boolean modoApplet;
 	private JRadioButtonMenuItem t1972;
 	private JRadioButtonMenuItem t1974;
+	private JRadioButtonMenuItem t1986;
 	private JRadioButtonMenuItem t1987;
 	private JRadioButtonMenuItem t1988;
 	private JRadioButtonMenuItem t1990;
@@ -59,6 +60,10 @@ public class MainFrame extends JFrame {
 
 	public JRadioButtonMenuItem getT1974() {
 		return t1974;
+	}
+
+	public JRadioButtonMenuItem getT1986() {
+		return t1986;
 	}
 
 	public MainFrame(boolean modoApplet) throws IOException {
@@ -290,6 +295,12 @@ public class MainFrame extends JFrame {
 			}
 
 		};
+		t1986 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("231");
+			}
+
+		};
 		t1987 = new JRadioButtonMenuItem() {
 			public String getText() {
 				return Lang.msg("226");
@@ -329,6 +340,7 @@ public class MainFrame extends JFrame {
 		};
 		buttonGroup.add(t1972);
 		buttonGroup.add(t1974);
+		buttonGroup.add(t1986);
 		buttonGroup.add(t1987);
 		buttonGroup.add(t1988);
 		buttonGroup.add(t1990);
@@ -337,6 +349,7 @@ public class MainFrame extends JFrame {
 		buttonGroup.add(t2009);
 		menu1.add(t1972);
 		menu1.add(t1974);
+		menu1.add(t1986);
 		menu1.add(t1987);
 		menu1.add(t1988);
 		menu1.add(t1990);
@@ -352,6 +365,8 @@ public class MainFrame extends JFrame {
 			temporarada = "t1972";
 		} else if (getT1974().isSelected()) {
 			temporarada = "t1974";
+		} else if (getT1986().isSelected()) {
+			temporarada = "t1986";
 		} else if (getT1987().isSelected()) {
 			temporarada = "t1987";
 		} else if (getT1988().isSelected()) {

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.nnpe.Email;
+
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -25,11 +27,13 @@ public class ServletPaddock extends HttpServlet {
 
 	private static ControlePaddockServidor controlePaddock;
 	private static ControlePersistencia controlePersistencia;
-
 	private static MonitorAtividade monitorAtividade;
+	private Email email;
 
 	public void init() throws ServletException {
 		super.init();
+		email = new Email(getServletContext().getRealPath("") + File.separator
+				+ "WEB-INF" + File.separator);
 		Lang.setSrvgame(true);
 		try {
 			controlePersistencia = new ControlePersistencia(getServletContext()

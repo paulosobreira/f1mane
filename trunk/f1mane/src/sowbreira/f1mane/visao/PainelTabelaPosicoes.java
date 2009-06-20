@@ -1,15 +1,17 @@
 package sowbreira.f1mane.visao;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -23,11 +25,12 @@ public class PainelTabelaPosicoes extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTable posicoesTable;
 	public InterfaceJogo interfaceJogo;
-	private Piloto[] pilotosId = new Piloto[22];
+	private Piloto[] pilotosId = new Piloto[24];
 	private int larguraPainel = 320;
-	private int alturaPainel = 178;
-	public static final String Coluna1 = "Pos-Piloto-Voltas";
-	public static final String Coluna2 = "Pos-Piloto-Voltas ";
+	private int alturaPainel = 192;
+	public static final String mutex = "mutex";
+	public static final String Coluna1 = "1";
+	public static final String Coluna2 = "2";
 	public final static Color foraCorrida = new Color(250, 50, 50, 100);
 	public final static Color jogador = new Color(60, 130, 255, 100);
 	public final static Color otros = new Color(255, 188, 31, 100);
@@ -46,9 +49,20 @@ public class PainelTabelaPosicoes extends JPanel {
 		}
 
 		TableModel model = new TableModel();
-		posicoesTable = new JTable(model);
-		TableColumn colorColumn1 = posicoesTable.getColumn(Lang.msg("231"));
-		TableColumn colorColumn2 = posicoesTable.getColumn(Lang.msg("232"));
+		posicoesTable = new JTable(model) {
+			public Component prepareRenderer(TableCellRenderer renderer,
+					int row, int col) {
+				Component comp = super.prepareRenderer(renderer, row, col);
+				JComponent jcomp = (JComponent) comp;
+				if (comp == jcomp) {
+					jcomp.setToolTipText(Lang.msg("225"));
+				}
+				return comp;
+			}
+		};
+		posicoesTable.getTableHeader().setEnabled(false);
+		TableColumn colorColumn1 = posicoesTable.getColumn(Coluna1);
+		TableColumn colorColumn2 = posicoesTable.getColumn(Coluna2);
 		DefaultTableCellRenderer colorRenderer = new DefaultTableCellRenderer() {
 			protected void setValue(Object value) {
 				if (!(value instanceof String)) {
@@ -64,7 +78,7 @@ public class PainelTabelaPosicoes extends JPanel {
 					return;
 				}
 				int pos = Integer.parseInt(splits[0]) - 1;
-				if ((pos < 0 || pos > 21)) {
+				if ((pos < 0 || pos > 23)) {
 					return;
 				}
 				if (pilotosId[pos].isJogadorHumano()
@@ -95,52 +109,56 @@ public class PainelTabelaPosicoes extends JPanel {
 	}
 
 	public void atulizaTabelaPosicoes(List pilotosList, Piloto pilotoSelec) {
-		int col = posicoesTable.getSelectedColumn();
-		int row = posicoesTable.getSelectedRow();
+		synchronized (mutex) {
 
-		for (int i = 0; i < pilotosList.size(); i++) {
-			Piloto piloto = (Piloto) pilotosList.get(i);
-			pilotosId[i] = piloto;
-		}
+			int col = posicoesTable.getSelectedColumn();
+			int row = posicoesTable.getSelectedRow();
 
-		((TableModel) posicoesTable.getModel()).fireTableDataChanged();
+			for (int i = 0; i < pilotosList.size(); i++) {
+				Piloto piloto = (Piloto) pilotosList.get(i);
+				pilotosId[i] = piloto;
+			}
 
-		if (pilotoSelec != null) {
-			TableModel model = (TableModel) posicoesTable.getModel();
+			((TableModel) posicoesTable.getModel()).fireTableDataChanged();
 
-			for (int i = 0; i < model.getRowCount(); i++) {
-				for (int j = 0; j < model.getColumnCount(); j++) {
-					Object object = model.getValueAt(i, j);
-					if (object == null || "".equals(object))
-						continue;
-					if (object instanceof String) {
-						String nomePiloto = ((String) object).split("-")[1];
+			if (pilotoSelec != null) {
+				TableModel model = (TableModel) posicoesTable.getModel();
 
-						if (pilotoSelec.getNome().equals(nomePiloto)) {
-							col = j;
-							row = i;
+				for (int i = 0; i < model.getRowCount(); i++) {
+					for (int j = 0; j < model.getColumnCount(); j++) {
+						Object object = model.getValueAt(i, j);
+						if (object == null || "".equals(object))
+							continue;
+						if (object instanceof String) {
+							String nomePiloto = ((String) object).split("-")[1];
 
-							break;
+							if (pilotoSelec.getNome().equals(nomePiloto)) {
+								col = j;
+								row = i;
+
+								break;
+							}
 						}
 					}
 				}
 			}
-		}
 
-		if ((col > -1) && (row > -1) && (col < posicoesTable.getColumnCount())
-				&& (row < posicoesTable.getRowCount())) {
-			posicoesTable.setColumnSelectionInterval(col, col);
-			posicoesTable.setRowSelectionInterval(row, row);
+			if ((col > -1) && (row > -1)
+					&& (col < posicoesTable.getColumnCount())
+					&& (row < posicoesTable.getRowCount())) {
+				posicoesTable.setColumnSelectionInterval(col, col);
+				posicoesTable.setRowSelectionInterval(row, row);
+			}
 		}
 	}
 
 	public Piloto obterPilotoSecionadoTabela(
 			Piloto pilotoSelecionadoAnteriormente) {
-		int col = posicoesTable.getSelectedColumn();
-		int row = posicoesTable.getSelectedRow();
-		Object object = null;
+		synchronized (mutex) {
+			int col = posicoesTable.getSelectedColumn();
+			int row = posicoesTable.getSelectedRow();
+			Object object = null;
 
-		synchronized (pilotosId) {
 			if ((col < 0) || (row < 0)) {
 				return pilotoSelecionadoAnteriormente;
 			}
@@ -150,27 +168,27 @@ public class PainelTabelaPosicoes extends JPanel {
 			if (object == null || "".equals(object)) {
 				return null;
 			}
-		}
 
-		if (!(object instanceof String)) {
-			return pilotoSelecionadoAnteriormente;
-		}
-
-		String nomePiloto = (String) object;
-
-		if ((nomePiloto == null) || "".equals(nomePiloto)) {
-			return pilotoSelecionadoAnteriormente;
-		}
-
-		nomePiloto = nomePiloto.split("-")[1];
-
-		for (int i = 0; i < pilotosId.length; i++) {
-			if (pilotosId[i].getNome().equals(nomePiloto)) {
-				return pilotosId[i];
+			if (!(object instanceof String)) {
+				return pilotoSelecionadoAnteriormente;
 			}
-		}
 
-		return pilotoSelecionadoAnteriormente;
+			String nomePiloto = (String) object;
+
+			if ((nomePiloto == null) || "".equals(nomePiloto)) {
+				return pilotoSelecionadoAnteriormente;
+			}
+
+			nomePiloto = nomePiloto.split("-")[1];
+
+			for (int i = 0; i < pilotosId.length; i++) {
+				if (pilotosId[i].getNome().equals(nomePiloto)) {
+					return pilotosId[i];
+				}
+			}
+
+			return pilotoSelecionadoAnteriormente;
+		}
 	}
 
 	private class TableModel extends AbstractTableModel {
@@ -180,61 +198,63 @@ public class PainelTabelaPosicoes extends JPanel {
 		}
 
 		public int getRowCount() {
-			return 11;
+			return 12;
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			switch (columnIndex) {
-			case 0:
+			synchronized (mutex) {
+				switch (columnIndex) {
+				case 0:
 
-				Piloto p = pilotosId[rowIndex];
-				if (p == null) {
+					Piloto p = pilotosId[rowIndex];
+					if (p == null) {
+						return "";
+					}
+
+					String nome = "";
+					if (p.isJogadorHumano()) {
+						if (!isNullEmpt(p.getNomeJogador())) {
+							nome = p.getNomeJogador();
+						}
+					}
+
+					return (rowIndex + 1) + "-" + p.getNome() + "-"
+							+ p.getNumeroVolta() + " " + nome;
+
+				case 1:
+
+					Piloto p2 = pilotosId[rowIndex + 12];
+					if (p2 == null) {
+						return "";
+					}
+
+					String nome2 = "";
+					if (p2.isJogadorHumano()) {
+						if (!isNullEmpt(p2.getNomeJogador())) {
+							nome2 = p2.getNomeJogador();
+						}
+					}
+					return (rowIndex + 13) + "-" + p2.getNome() + "-"
+							+ p2.getNumeroVolta() + " " + nome2;
+				default:
 					return "";
 				}
-
-				String nome = "";
-				if (p.isJogadorHumano()) {
-					if (!isNullEmpt(p.getNomeJogador())) {
-						nome = p.getNomeJogador();
-					}
-				}
-
-				return (rowIndex + 1) + "-" + p.getNome() + "-"
-						+ p.getNumeroVolta() + " " + nome;
-
-			case 1:
-
-				Piloto p2 = pilotosId[rowIndex + 11];
-				if (p2 == null) {
-					return "";
-				}
-
-				String nome2 = "";
-				if (p2.isJogadorHumano()) {
-					if (!isNullEmpt(p2.getNomeJogador())) {
-						nome2 = p2.getNomeJogador();
-					}
-				}
-				return (rowIndex + 12) + "-" + p2.getNome() + "-"
-						+ p2.getNumeroVolta() + " " + nome2;
-			default:
-				return "";
 			}
 		}
 
 		public String getColumnName(int column) {
 			switch (column) {
 			case 0:
-				return Lang.msg("231");
+				return Coluna1;
 
 			case 1:
-				return Lang.msg("232");
+				return Coluna2;
 
 			default:
 				return "";
 			}
 		}
-		
+
 	}
 
 	public int getLarguraPainel() {
