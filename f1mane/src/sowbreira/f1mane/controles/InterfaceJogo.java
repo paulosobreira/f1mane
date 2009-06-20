@@ -13,8 +13,8 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-	//public static boolean VALENDO = true;
-	public static boolean VALENDO = false;
+	public static boolean VALENDO = true;
+	// public static boolean VALENDO = false;
 	public static String NORMAL = "NORMAL";
 	public static String FACIL = "FACIL";
 	public static String DIFICIL = "DIFICIL";
@@ -53,9 +53,11 @@ public interface InterfaceJogo {
 	public List getPilotos();
 
 	public void matarTodasThreads();
+
 	/**
 	 * Quanto Mais dificil o jogo mais facil de retornar true
-	 * @return boolean 
+	 * 
+	 * @return boolean
 	 */
 	public boolean verificaNivelJogo();
 
