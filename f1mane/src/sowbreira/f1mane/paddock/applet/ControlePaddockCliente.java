@@ -501,12 +501,14 @@ public class ControlePaddockCliente {
 		FormEntrada formEntrada = new FormEntrada();
 		formEntrada.setToolTipText(Lang.msg("066"));
 
-		int result = JOptionPane.showConfirmDialog(panel, formEntrada);
+		int result = JOptionPane.showConfirmDialog(panel, formEntrada, Lang
+				.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			while (!registrarUsuario(formEntrada)
 					&& JOptionPane.OK_OPTION == result) {
-				result = JOptionPane.showConfirmDialog(panel, formEntrada);
+				result = JOptionPane.showConfirmDialog(panel, formEntrada, Lang
+						.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 			}
 
 		}
