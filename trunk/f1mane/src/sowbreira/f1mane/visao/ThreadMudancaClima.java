@@ -3,6 +3,8 @@ package sowbreira.f1mane.visao;
 import java.awt.Point;
 import java.awt.Toolkit;
 
+import sowbreira.f1mane.controles.InterfaceJogo;
+
 public class ThreadMudancaClima extends Thread {
 	private PainelCircuito painelCircuito;
 
@@ -26,7 +28,7 @@ public class ThreadMudancaClima extends Thread {
 					p = new Point(point.x + 1, point.y + 1);
 				}
 				painelCircuito.setPointDesenhaClima(p);
-				if (i % 20 == 0) {
+				if (i % 20 == 0 && InterfaceJogo.VALENDO) {
 					toolkit.beep();
 				}
 				sleep(100);

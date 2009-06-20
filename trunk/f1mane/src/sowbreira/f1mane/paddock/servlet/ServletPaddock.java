@@ -62,19 +62,18 @@ public class ServletPaddock extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
-		ObjectInputStream inputStream = new ObjectInputStream(req
-				.getInputStream());
+		try {
+			ObjectInputStream inputStream = new ObjectInputStream(req
+					.getInputStream());
 
-		if (inputStream != null) {
-			Object object = null;
-			try {
+			if (inputStream != null) {
+				Object object = null;
+
 				object = inputStream.readObject();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
 
-			Object escrever = controlePaddock.processarObjetoRecebido(object);
-			try {
+				Object escrever = controlePaddock
+						.processarObjetoRecebido(object);
+
 				if (PaddockConstants.modoZip) {
 					dumaparDadosZip(ZipUtil.compactarObjeto(
 							PaddockConstants.debug, escrever, res
@@ -87,19 +86,19 @@ public class ServletPaddock extends HttpServlet {
 					oos.flush();
 					res.getOutputStream().write(bos.toByteArray());
 				}
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
+
+				return;
+			} else {
+				System.out.println("Input null");
 			}
 
-			return;
-		} else {
-			System.out.println("Input null");
+			PrintWriter printWriter = res.getWriter();
+			printWriter.write("ServletPaddock Ok");
+			res.flushBuffer();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 		}
-
-		PrintWriter printWriter = res.getWriter();
-		printWriter.write("ServletPaddock Ok");
-		res.flushBuffer();
 	}
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)

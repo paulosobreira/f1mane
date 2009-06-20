@@ -50,6 +50,9 @@ public class Lang {
 		System.out.println("dec : " + decodeTexto(enc));
 		System.out
 				.println(decodeTexto("<b><font  color='#FF8C00'>¢003¬S.Vettel¬8.218¬0¬¢TIPO_PNEU_MOLE¢¢</font></b>"));
+		Locale locale = Locale.getDefault();
+
+		System.out.println(locale.getLanguage());
 	}
 
 	public static void mudarIdioma(String sufix_) {
