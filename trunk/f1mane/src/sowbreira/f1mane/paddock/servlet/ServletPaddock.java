@@ -28,7 +28,7 @@ public class ServletPaddock extends HttpServlet {
 	private static ControlePaddockServidor controlePaddock;
 	private static ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
-	private Email email;
+	public static Email email;
 
 	public void init() throws ServletException {
 		super.init();

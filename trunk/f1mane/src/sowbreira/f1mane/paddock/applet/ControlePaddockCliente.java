@@ -7,8 +7,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -18,6 +20,8 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+
+import br.nnpe.Util;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.paddock.PaddockConstants;
@@ -413,51 +417,36 @@ public class ControlePaddockCliente {
 
 	}
 
-	public boolean verificaLoginValido(FormEntrada formEntrada) {
-		String nome = formEntrada.getNome().getText();
-		if (nome == null) {
-			return false;
-		}
-		if ("".equals(nome.trim())) {
-			return false;
-		}
-		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		clientPaddockPack.setCommando(Comandos.VALIDAR_LOGIN);
-		clientPaddockPack.setNomeJogador(nome);
-		// clientPaddockPack.setSenhaJogador(formEntrada.getSenha());
-		Object ret = enviarObjeto(clientPaddockPack);
-		if (ret == null) {
-			return false;
-		}
-		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
-		SessaoCliente cliente = srvPaddockPack.getSessaoCliente();
-		this.sessaoCliente = cliente;
-		return true;
-
-	}
-
 	public boolean registrarUsuario(FormEntrada formEntrada) {
-		// if (!formEntrada.getSenhaRegistrar().equals(
-		// formEntrada.getSenhaRegistrarRepetir())) {
-		// JOptionPane.showMessageDialog(panel, "As senhas não estão iguais",
-		// "Erro na senha", JOptionPane.ERROR_MESSAGE);
-		// return false;
-		// }
-
+		if (Util.isNullOrEmpty(formEntrada.getNome().getText())) {
+			return false;
+		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setCommando(Comandos.RGISTRAR_LOGIN);
 		clientPaddockPack.setNomeJogador(formEntrada.getNome().getText());
 		if ("IA".equals(clientPaddockPack.getNomeJogador())
 				|| "Ia".equals(clientPaddockPack.getNomeJogador())
 				|| "ia".equals(clientPaddockPack.getNomeJogador())
-				|| "iA".equals(clientPaddockPack.getNomeJogador())) {
+				|| "iA".equals(clientPaddockPack.getNomeJogador())
+				|| Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
 			JOptionPane.showMessageDialog(panel, Lang.msg("064"), Lang
 					.msg("064"), JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		// clientPaddockPack.setSenhaJogador(formEntrada.getSenhaRegistrar());
+		try {
+			clientPaddockPack.setSenhaJogador(Util.md5(new String(formEntrada
+					.getSenha().getPassword())));
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(panel, e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+		}
 		clientPaddockPack.setEmailJogador(formEntrada.getEmail().getText());
+		clientPaddockPack.setRecuperar(formEntrada.getRecuperar().isSelected());
 		Object ret = enviarObjeto(clientPaddockPack);
+		if (ret == null) {
+			return false;
+		}
 		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
 		SessaoCliente cliente = srvPaddockPack.getSessaoCliente();
 		this.sessaoCliente = cliente;
@@ -505,12 +494,7 @@ public class ControlePaddockCliente {
 				.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
-			while (!registrarUsuario(formEntrada)
-					&& JOptionPane.OK_OPTION == result) {
-				result = JOptionPane.showConfirmDialog(panel, formEntrada, Lang
-						.msg("066"), JOptionPane.OK_CANCEL_OPTION);
-			}
-
+			registrarUsuario(formEntrada);
 		}
 		if (getSessaoCliente() != null) {
 			paddockWindow = new PaddockWindow(this);
