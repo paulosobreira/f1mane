@@ -597,8 +597,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 			potencia = (Integer) gerenciadorVisual
 					.getSpinnerPotenciaPadraoCarros().getValue();
 			if (potencia.intValue() != 0) {
-				if (potencia.intValue() < 800) {
-					potencia = new Integer(800);
+				if (potencia.intValue() < 500) {
+					potencia = new Integer(500);
 				}
 				if (potencia.intValue() > 999) {
 					potencia = new Integer(999);

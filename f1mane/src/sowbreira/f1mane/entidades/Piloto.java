@@ -720,7 +720,8 @@ public class Piloto implements Serializable {
 									+ Html.bold(Lang.msg("054")));
 						}
 					}
-					incStress(Math.random() > .5 ? 1 : 0);
+					if (controleJogo.verificaNivelJogo())
+						incStress(Math.random() > .5 ? 1 : 0);
 				} else if (Math.random() > 0.950) {
 					if (controleJogo.isChovendo()) {
 						controleJogo.info(Html.bold(getNome())

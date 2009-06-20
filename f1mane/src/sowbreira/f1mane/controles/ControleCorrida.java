@@ -75,9 +75,16 @@ public class ControleCorrida {
 		int valCalc = (qtdeTotalVoltas < 22 ? 22 : qtdeTotalVoltas);
 		durabilidadeMaxMotor = (int) (distaciaCorrida * 1.85)
 				+ ((73 - valCalc) * 30);
+		int somaPontecias = 0;
+		for (int i = 0; i < controleJogo.getCarros().size(); i++) {
+			Carro carro = (Carro) controleJogo.getCarros().get(i);
+			somaPontecias += carro.getPotencia();
+		}
+		int mediaPontecia = somaPontecias / controleJogo.getCarros().size();
 		for (int i = 0; i < controleJogo.getPilotos().size(); i++) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-			piloto.getCarro().setDurabilidadeMaxMotor(durabilidadeMaxMotor);
+			piloto.getCarro().setDurabilidadeMaxMotor(durabilidadeMaxMotor,
+					mediaPontecia);
 		}
 
 	}
@@ -204,14 +211,16 @@ public class ControleCorrida {
 					return 1;
 				}
 			}
-			piloto.incStress(Math.random() > .5 ? 1 : 2);
+			if (controleJogo.verificaNivelJogo())
+				piloto.incStress(Math.random() > .5 ? 1 : 2);
 			if (piloto.isJogadorHumano() && Math.random() > 0.950) {
 				controleJogo.info(Lang.msg("014", new Object[] { Html
 						.bold(piloto.getNome()) }));
 			}
 			if (!piloto.isJogadorHumano()) {
 				piloto.setAgressivo(false);
-				piloto.setCiclosDesconcentrado(100 - (piloto.getHabilidade()/10));
+				piloto
+						.setCiclosDesconcentrado(100 - (piloto.getHabilidade() / 10));
 			}
 			return 1;
 		} else {
@@ -250,7 +259,8 @@ public class ControleCorrida {
 						&& Math.random() < controleJogo.getNiveljogo()) {
 					piloto.getCarro().setDurabilidadeAereofolio(
 							piloto.getCarro().getDurabilidadeAereofolio() - 1);
-					piloto.incStress(15);
+					if (controleJogo.verificaNivelJogo())
+						piloto.incStress(15);
 					controleJogo.infoPrioritaria(Lang.msg("109", new String[] {
 							Html.superRed(piloto.getNome()),
 							pilotoNaFrente.getNome() }));
@@ -324,17 +334,19 @@ public class ControleCorrida {
 					Html.bold(ganhador.getNome()),
 					Html.bold(perdedor.getNome()) }));
 		}
-		perdedor.incStress(3);
-		ganhador.incStress(1);
-		if (ganhador.getPosicao() == 1) {
+		if (controleJogo.verificaNivelJogo()) {
+			perdedor.incStress(3);
 			ganhador.incStress(1);
+			if (ganhador.getPosicao() == 1) {
+				ganhador.incStress(1);
+			}
 		}
 		if (perdedor.isJogadorHumano() && !ganhador.isJogadorHumano()) {
 			return;
 		}
 		perdedor.setAgressivo(false);
 		perdedor
-				.gerarDesconcentracao((int) (100 - ((perdedor.getHabilidade()/10) * controleJogo
+				.gerarDesconcentracao((int) (100 - ((perdedor.getHabilidade() / 10) * controleJogo
 						.getNiveljogo())));
 
 	}
@@ -503,7 +515,8 @@ public class ControleCorrida {
 				&& piloto.getNoAtual().verificaRetaOuLargada()) {
 			return 3;
 		}
-		piloto.incStress(1);
+		if (controleJogo.verificaNivelJogo())
+			piloto.incStress(1);
 		if (piloto.testeHabilidadePilotoCarro()) {
 			if ((Math.random() > fatorUtrapassagemTemp)) {
 				return index;
@@ -535,7 +548,7 @@ public class ControleCorrida {
 		}
 		if (!piloto.isJogadorHumano()) {
 			piloto.setAgressivo(false);
-			piloto.setCiclosDesconcentrado(100 - (piloto.getHabilidade()/10));
+			piloto.setCiclosDesconcentrado(100 - (piloto.getHabilidade() / 10));
 		}
 		return 1;
 

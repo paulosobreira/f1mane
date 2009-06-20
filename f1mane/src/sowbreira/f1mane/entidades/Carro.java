@@ -101,10 +101,15 @@ public class Carro implements Serializable {
 		this.cor2 = cor2;
 	}
 
-	public void setDurabilidadeMaxMotor(int durabilidadeMaxMotor) {
+	public void setDurabilidadeMaxMotor(int durabilidadeMaxMotor,
+			int mediaPontecia) {
 		if (this.durabilidadeMaxMotor != 0)
 			return;
-		this.durabilidadeMaxMotor = (int) (durabilidadeMaxMotor * (getPotencia() / 1000.0));
+		if (mediaPontecia < 800) {
+			mediaPontecia = 800;
+		}
+		this.durabilidadeMaxMotor = (int) (durabilidadeMaxMotor * (mediaPontecia / 1000.0))
+				+ getPotencia();
 		this.motor = this.durabilidadeMaxMotor;
 	}
 
@@ -479,7 +484,9 @@ public class Carro implements Serializable {
 						pneus -= ((30 * controleJogo.getNiveljogo()) * novoModificador);
 					}
 					fritouPneuNaUltimaCurvaBaixa = true;
-					piloto.incStress(Math.random() > .3 ? 1 : 0);
+					if (controleJogo.verificaNivelJogo()) {
+						piloto.incStress(Math.random() > .3 ? 1 : 0);
+					}
 				} else {
 					if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
 						pneus -= (1 + novoModificador);

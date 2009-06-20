@@ -42,17 +42,24 @@ public class MainFrame extends JFrame {
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
 	private boolean modoApplet;
+	private JRadioButtonMenuItem t1972;
+	private JRadioButtonMenuItem t1974;
 	private JRadioButtonMenuItem t1987;
 	private JRadioButtonMenuItem t1988;
+	private JRadioButtonMenuItem t1990;
 	private JRadioButtonMenuItem t2007;
 	private JRadioButtonMenuItem t2008;
 	private JRadioButtonMenuItem t2009;
-
+	private String temporarada = null;
 	private JMenuBar bar;
 	private JMenu menuJogo;
 	private JMenu menuEditor;
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
+
+	public JRadioButtonMenuItem getT1974() {
+		return t1974;
+	}
 
 	public MainFrame(boolean modoApplet) throws IOException {
 		this.modoApplet = modoApplet;
@@ -210,6 +217,14 @@ public class MainFrame extends JFrame {
 		menu2.add(sobre);
 	}
 
+	public JRadioButtonMenuItem getT1972() {
+		return t1972;
+	}
+
+	public void setT1972(JRadioButtonMenuItem t1972) {
+		this.t1972 = t1972;
+	}
+
 	private void gerarMenusSingle(JMenu menu1) {
 		JMenuItem iniciar = new JMenuItem("Iniciar Jogo") {
 			public String getText() {
@@ -231,18 +246,8 @@ public class MainFrame extends JFrame {
 						}
 						controleJogo.matarTodasThreads();
 					}
-					String temporarada = null;
-					if (getT1987().isSelected()) {
-						temporarada = "t1987";
-					} else if (getT1988().isSelected()) {
-						temporarada = "t1988";
-					} else if (getT2007().isSelected()) {
-						temporarada = "t2007";
-					} else if (getT2008().isSelected()) {
-						temporarada = "t2008";
-					} else if (getT2009().isSelected()) {
-						temporarada = "t2009";
-					}
+
+					selecionarTemporada();
 
 					controleJogo = new ControleJogoLocal(temporarada);
 					controleJogo.setMainFrame(MainFrame.this);
@@ -273,6 +278,18 @@ public class MainFrame extends JFrame {
 		});
 		menu1.add(pausa);
 		ButtonGroup buttonGroup = new ButtonGroup();
+		t1972 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("228");
+			}
+
+		};
+		t1974 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("230");
+			}
+
+		};
 		t1987 = new JRadioButtonMenuItem() {
 			public String getText() {
 				return Lang.msg("226");
@@ -282,6 +299,12 @@ public class MainFrame extends JFrame {
 		t1988 = new JRadioButtonMenuItem() {
 			public String getText() {
 				return Lang.msg("227");
+			}
+
+		};
+		t1990 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("229");
 			}
 
 		};
@@ -304,18 +327,49 @@ public class MainFrame extends JFrame {
 			}
 
 		};
+		buttonGroup.add(t1972);
+		buttonGroup.add(t1974);
 		buttonGroup.add(t1987);
 		buttonGroup.add(t1988);
+		buttonGroup.add(t1990);
 		buttonGroup.add(t2007);
 		buttonGroup.add(t2008);
 		buttonGroup.add(t2009);
+		menu1.add(t1972);
+		menu1.add(t1974);
 		menu1.add(t1987);
 		menu1.add(t1988);
+		menu1.add(t1990);
 		menu1.add(t2007);
 		menu1.add(t2008);
 		menu1.add(t2009);
-		t2009.setSelected(true);
+		t1972.setSelected(true);
 
+	}
+
+	protected void selecionarTemporada() {
+		if (getT1972().isSelected()) {
+			temporarada = "t1972";
+		} else if (getT1974().isSelected()) {
+			temporarada = "t1974";
+		} else if (getT1987().isSelected()) {
+			temporarada = "t1987";
+		} else if (getT1988().isSelected()) {
+			temporarada = "t1988";
+		} else if (getT1990().isSelected()) {
+			temporarada = "t1990";
+		} else if (getT2007().isSelected()) {
+			temporarada = "t2007";
+		} else if (getT2008().isSelected()) {
+			temporarada = "t2008";
+		} else if (getT2009().isSelected()) {
+			temporarada = "t2009";
+		}
+
+	}
+
+	public JRadioButtonMenuItem getT1990() {
+		return t1990;
 	}
 
 	private void ativarKeysEditor() {
@@ -593,16 +647,7 @@ public class MainFrame extends JFrame {
 			setVisible(true);
 		} else {
 			try {
-				String temporarada = null;
-				if (getT1987().isSelected()) {
-					temporarada = "t1987";
-				} else if (getT2007().isSelected()) {
-					temporarada = "t2007";
-				} else if (getT2008().isSelected()) {
-					temporarada = "t2008";
-				} else if (getT2009().isSelected()) {
-					temporarada = "t2009";
-				}
+				selecionarTemporada();
 				controleJogo = new ControleJogoLocal(temporarada);
 				controleJogo.setMainFrame(this);
 				controleJogo.iniciarJogo();
