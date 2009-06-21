@@ -481,7 +481,7 @@ public class Carro implements Serializable {
 					if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
 						pneus -= ((30 * controleJogo.getNiveljogo()) * novoModificador);
 					} else {
-						pneus -= ((25 * controleJogo.getNiveljogo()) * novoModificador);
+						pneus -= ((20 * controleJogo.getNiveljogo()) * novoModificador);
 					}
 					fritouPneuNaUltimaCurvaBaixa = true;
 					if (controleJogo.verificaNivelJogo()) {
