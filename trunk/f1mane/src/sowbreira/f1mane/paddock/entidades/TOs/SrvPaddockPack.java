@@ -16,9 +16,10 @@ public class SrvPaddockPack implements Serializable {
 	private String nomeJogoCriado;
 	private List listaDadosJogador;
 	private List listaCorridasJogador;
+	private List listaConstrutoresCarros;
+	private List listaConstrutoresPilotos;
 
 	public SrvPaddockPack() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public DadosPaddock getDadosPaddock() {
@@ -75,6 +76,22 @@ public class SrvPaddockPack implements Serializable {
 
 	public void setListaCorridasJogador(List listaCorridasJogador) {
 		this.listaCorridasJogador = listaCorridasJogador;
+	}
+
+	public List getListaConstrutoresCarros() {
+		return listaConstrutoresCarros;
+	}
+
+	public void setListaConstrutoresCarros(List listaConstrutoresCarros) {
+		this.listaConstrutoresCarros = listaConstrutoresCarros;
+	}
+
+	public List getListaConstrutoresPilotos() {
+		return listaConstrutoresPilotos;
+	}
+
+	public void setListaConstrutoresPilotos(List listaConstrutoresPilotos) {
+		this.listaConstrutoresPilotos = listaConstrutoresPilotos;
 	}
 
 }

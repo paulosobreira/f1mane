@@ -171,6 +171,8 @@ public class ControlePaddockServidor {
 			return iniciaJogo(clientPaddockPack);
 		} else if (Comandos.VER_CLASSIFICACAO.equals(commando)) {
 			return verClassificacao(clientPaddockPack);
+		} else if (Comandos.VER_CONTRUTORES.equals(commando)) {
+			return verConstrutores(clientPaddockPack);
 		} else if (Comandos.VER_CORRIDAS.equals(commando)) {
 			return verCorridas(clientPaddockPack);
 		}
@@ -192,6 +194,12 @@ public class ControlePaddockServidor {
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setListaDadosJogador(controleClassificacao
 				.obterListaClassificacao());
+		return srvPaddockPack;
+	}
+
+	private Object verConstrutores(ClientPaddockPack clientPaddockPack) {
+		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+		controleClassificacao.preencherListaContrutores(srvPaddockPack);
 		return srvPaddockPack;
 	}
 

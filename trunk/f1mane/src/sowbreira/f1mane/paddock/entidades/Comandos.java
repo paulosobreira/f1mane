@@ -37,4 +37,5 @@ public class Comandos {
 	public static final String VER_CLASSIFICACAO = "27";
 	public static final String VER_CORRIDAS = "28";
 	public static final String MUDAR_MODO_PILOTAGEM = "29";
+	public static final String VER_CONTRUTORES = "30";
 }
