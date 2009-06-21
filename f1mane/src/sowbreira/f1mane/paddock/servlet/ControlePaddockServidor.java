@@ -325,8 +325,9 @@ public class ControlePaddockServidor {
 				return new MsgSrv(Lang.msg("239",
 						new String[] { jogadorDadosSrv.getEmail() }));
 
-			} else if (!jogadorDadosSrv.getSenha().equals(
-					clientPaddockPack.getSenhaJogador())) {
+			} else if (jogadorDadosSrv.getSenha() == null
+					|| !jogadorDadosSrv.getSenha().equals(
+							clientPaddockPack.getSenhaJogador())) {
 				return new MsgSrv(Lang.msg("236"));
 			}
 			jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());

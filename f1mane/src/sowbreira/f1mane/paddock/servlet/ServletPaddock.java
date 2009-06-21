@@ -100,7 +100,7 @@ public class ServletPaddock extends HttpServlet {
 			printWriter.write("ServletPaddock Ok");
 			res.flushBuffer();
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (Exception e) {
 		}
 	}
