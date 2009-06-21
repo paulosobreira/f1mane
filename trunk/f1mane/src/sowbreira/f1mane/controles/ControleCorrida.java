@@ -255,7 +255,6 @@ public class ControleCorrida {
 			fatorAcidente -= (controleJogo.getNiveljogo() / 10);
 			if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
 				if (No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo())
-						&& (Math.random() > fatorAcidente)
 						&& Math.random() < controleJogo.getNiveljogo()) {
 					piloto.getCarro().setDurabilidadeAereofolio(
 							piloto.getCarro().getDurabilidadeAereofolio() - 1);
