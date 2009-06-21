@@ -474,6 +474,24 @@ public class ControlePaddockCliente {
 
 	}
 
+	public void verConstrutores() {
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+				Comandos.VER_CONTRUTORES, sessaoCliente);
+		Object ret = enviarObjeto(clientPaddockPack);
+		if (ret == null) {
+			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
+		FormConstrutores formConstrutores = new FormConstrutores(srvPaddockPack
+				.getListaConstrutoresCarros(), srvPaddockPack
+				.getListaConstrutoresPilotos());
+		JOptionPane.showMessageDialog(panel, formConstrutores, Lang.msg("244"),
+				JOptionPane.PLAIN_MESSAGE);
+
+	}
+
 	public List obterListaCorridas(String jogadorSel) {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.VER_CORRIDAS, sessaoCliente);

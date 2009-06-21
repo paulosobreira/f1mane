@@ -4,13 +4,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
+import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
@@ -179,5 +184,71 @@ public class ControleClassificacao {
 			return jogadorDadosSrv.getCorridas();
 
 		}
+	}
+
+	public void preencherListaContrutores(SrvPaddockPack srvPaddockPack) {
+		Map mapaCarros = new HashMap();
+		Map mapaPilotos = new HashMap();
+
+		synchronized (controlePersistencia.getPaddockDados()) {
+			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
+
+			for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
+				String key = (String) iter.next();
+				JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
+						.get(key);
+				List corridas = jogadorDadosSrv.getCorridas();
+				for (Iterator iterator = corridas.iterator(); iterator
+						.hasNext();) {
+					CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
+							.next();
+					Integer ptsCarro = (Integer) mapaCarros
+							.get(corridasDadosSrv.getCarro());
+					if (ptsCarro == null) {
+						mapaCarros.put(corridasDadosSrv.getCarro(),
+								new Integer(corridasDadosSrv.getPontos()));
+					} else {
+						mapaCarros.put(corridasDadosSrv.getCarro(),
+								new Integer(corridasDadosSrv.getPontos()
+										+ ptsCarro.intValue()));
+					}
+					Integer ptsPiloto = (Integer) mapaPilotos
+							.get(corridasDadosSrv.getPiloto());
+					if (ptsPiloto == null) {
+						mapaPilotos.put(corridasDadosSrv.getPiloto(),
+								new Integer(corridasDadosSrv.getPontos()));
+					} else {
+						mapaPilotos.put(corridasDadosSrv.getPiloto(),
+								new Integer(corridasDadosSrv.getPontos()
+										+ ptsPiloto.intValue()));
+					}
+
+				}
+			}
+		}
+
+		List listaCarros = new LinkedList();
+		List listaPilotos = new LinkedList();
+		for (Iterator iterator = mapaCarros.keySet().iterator(); iterator
+				.hasNext();) {
+			String key = (String) iterator.next();
+			DadosConstrutoresCarros dadosConstrutoresCarros = new DadosConstrutoresCarros();
+			dadosConstrutoresCarros.setNome(key);
+			dadosConstrutoresCarros.setPontos((Integer) mapaCarros.get(key));
+			if (dadosConstrutoresCarros.getPontos() > 0)
+				listaCarros.add(dadosConstrutoresCarros);
+
+		}
+		for (Iterator iterator = mapaPilotos.keySet().iterator(); iterator
+				.hasNext();) {
+			String key = (String) iterator.next();
+			DadosConstrutoresPilotos dadosConstrutoresPilotos = new DadosConstrutoresPilotos();
+			dadosConstrutoresPilotos.setNome(key);
+			dadosConstrutoresPilotos.setPontos((Integer) mapaPilotos.get(key));
+			if (dadosConstrutoresPilotos.getPontos() > 0)
+				listaPilotos.add(dadosConstrutoresPilotos);
+		}
+		srvPaddockPack.setListaConstrutoresCarros(listaCarros);
+		srvPaddockPack.setListaConstrutoresPilotos(listaPilotos);
 	}
 }

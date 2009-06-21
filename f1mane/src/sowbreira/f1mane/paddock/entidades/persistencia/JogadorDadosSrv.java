@@ -2,6 +2,7 @@ package sowbreira.f1mane.paddock.entidades.persistencia;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public class JogadorDadosSrv implements Serializable {
 	private String nome;
 	private String senha;
 	private String email;
-	private List corridas = new ArrayList();
+	private List corridas = new LinkedList();
 	private long ultimoLogon;
 	private long ultimaRecuperacao = 0;
 
