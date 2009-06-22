@@ -2,6 +2,7 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +27,7 @@ public class FormConstrutores extends JPanel {
 	private JTable piltosTable;
 	private List listaCarros;
 	private List listaPilotos;
+	private DecimalFormat decimalFormatGeral = new DecimalFormat("00000");
 
 	public static void main(String[] args) {
 		FormConstrutores formContrutores = new FormConstrutores(
@@ -90,7 +92,8 @@ public class FormConstrutores extends JPanel {
 			case 0:
 				return dadosConstrutoresCarros.getNome();
 			case 1:
-				return new Integer(dadosConstrutoresCarros.getPontos());
+				return decimalFormatGeral.format(dadosConstrutoresCarros
+						.getPontos());
 			default:
 				return "";
 			}
@@ -125,7 +128,8 @@ public class FormConstrutores extends JPanel {
 			case 0:
 				return dadosConstrutoresPilotos.getNome();
 			case 1:
-				return new Integer(dadosConstrutoresPilotos.getPontos());
+				return decimalFormatGeral.format(dadosConstrutoresPilotos
+						.getPontos());
 			default:
 				return "";
 			}
