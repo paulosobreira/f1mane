@@ -10,11 +10,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.org.apache.bcel.internal.generic.InstructionConstants.Clinit;
+
+import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
+import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
@@ -96,7 +101,9 @@ public class ControleClassificacao {
 							.getCircuitoSelecionado());
 					corridasDadosSrv.setNumVoltas(dadosCriarJogo
 							.getQtdeVoltas().intValue());
-					corridasDadosSrv.setPontos(gerarPontos(piloto));
+					corridasDadosSrv.setNivel(dadosCriarJogo.getNivelCorrida());
+					int pts = gerarPontos(piloto);
+					corridasDadosSrv.setPontos(pts);
 					corridasDadosSrv.setPosicao(piloto.getPosicao());
 					processarPontos(mapVoltasJogadoresOnline, piloto,
 							corridasDadosSrv);
@@ -107,8 +114,8 @@ public class ControleClassificacao {
 		}
 		try {
 			controlePersistencia.gravarDados();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			ServletBaseDados.topExecpts(e);
 		}
 
 	}
@@ -250,5 +257,32 @@ public class ControleClassificacao {
 		}
 		srvPaddockPack.setListaConstrutoresCarros(listaCarros);
 		srvPaddockPack.setListaConstrutoresPilotos(listaPilotos);
+	}
+
+	public Object verCarreira(ClientPaddockPack clientPaddockPack) {
+		synchronized (controlePersistencia.getPaddockDados()) {
+			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
+			return map.get(clientPaddockPack.getSessaoCliente()
+					.getNomeJogador());
+		}
+	}
+
+	public Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {
+		synchronized (controlePersistencia.getPaddockDados()) {
+			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
+			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
+					.get(clientPaddockPack.getSessaoCliente().getNomeJogador());
+			jogadorDadosSrv.setNomePiloto(clientPaddockPack
+					.getJogadorDadosSrv().getNomePiloto());
+			jogadorDadosSrv.setNomeCarro(clientPaddockPack.getJogadorDadosSrv()
+					.getNomeCarro());
+			jogadorDadosSrv.setPtsCarro(clientPaddockPack.getJogadorDadosSrv()
+					.getPtsCarro());
+			jogadorDadosSrv.setPtsPiloto(clientPaddockPack.getJogadorDadosSrv()
+					.getPtsPiloto());
+			jogadorDadosSrv.setPtsConstrutores(clientPaddockPack
+					.getJogadorDadosSrv().getPtsConstrutores());
+			return new MsgSrv("OK");
+		}
 	}
 }

@@ -418,8 +418,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				try {
 					estado = Comandos.MOSTRA_RESULTADO_FINAL;
 					tempoFim = System.currentTimeMillis();
-					if (dadosCriarJogo.getQtdeVoltas().intValue() > 9
-							&& !FACIL.equals(dadosCriarJogo.getNivelCorrida())) {
+					if (dadosCriarJogo.getQtdeVoltas().intValue() > 22) {
 						controleClassificacao.processaCorrida(tempoInicio,
 								tempoFim, mapVoltasJogadoresOnline, pilotos,
 								dadosCriarJogo);

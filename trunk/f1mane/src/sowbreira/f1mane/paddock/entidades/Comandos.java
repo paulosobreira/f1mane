@@ -38,4 +38,6 @@ public class Comandos {
 	public static final String VER_CORRIDAS = "28";
 	public static final String MUDAR_MODO_PILOTAGEM = "29";
 	public static final String VER_CONTRUTORES = "30";
+	public static final String VER_CARREIRA = "31";
+	public static final String ATUALIZA_CARREIRA = "32";
 }

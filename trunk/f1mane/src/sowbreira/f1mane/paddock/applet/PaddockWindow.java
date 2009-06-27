@@ -230,7 +230,13 @@ public class PaddockWindow {
 			}
 
 		});
+		carreira.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlePaddockCliente.modoCarreira();
 
+			}
+
+		});
 		sobre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String msg = Lang.msg("184") + "Paulo Sobreira \n "
@@ -310,7 +316,7 @@ public class PaddockWindow {
 				}
 			}
 		});
-		carreira.setEnabled(false);
+//		carreira.setEnabled(false);
 		conta.setEnabled(false);
 		buttonsPanel.add(carreira);
 		buttonsPanel.add(construtores);

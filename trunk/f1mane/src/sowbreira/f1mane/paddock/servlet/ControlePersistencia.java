@@ -16,7 +16,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 
@@ -75,13 +74,12 @@ public class ControlePersistencia {
 
 		for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();
-			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
-					.get(key);
-			if(jogadorDadosSrv.getCorridas().isEmpty()){
+			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map.get(key);
+			if (jogadorDadosSrv.getCorridas().isEmpty()) {
 				iter.remove();
 			}
 		}
-		
+
 	}
 
 	private PaddockDadosSrv lerDados() throws Exception {

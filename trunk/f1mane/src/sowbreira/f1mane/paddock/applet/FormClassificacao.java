@@ -69,10 +69,9 @@ public class FormClassificacao extends JPanel {
 		posicoesTable
 				.setPreferredScrollableViewportSize(new Dimension(600, 355));
 		JLabel label = new JLabel(
-				"Corridas no modo facil e com menos 10 voltas não geram pontuação.") {
+				"Facil = Pts/2 , Normal = Pts Normal , Dificil = Pts * 2.") {
 			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("131");
 			}
 		};
@@ -103,7 +102,7 @@ public class FormClassificacao extends JPanel {
 		}
 
 		public int getColumnCount() {
-			return 10;
+			return 11;
 		}
 
 		public int getRowCount() {
@@ -138,7 +137,8 @@ public class FormClassificacao extends JPanel {
 				return decimalFormat.format(corridasDadosSrv.getPosicao());
 			case 9:
 				return decimalFormat.format(corridasDadosSrv.getPontos());
-
+			case 10:
+				return Lang.msg(corridasDadosSrv.getNivel());
 			default:
 				return "";
 			}
@@ -166,6 +166,8 @@ public class FormClassificacao extends JPanel {
 				return Lang.msg("160");
 			case 9:
 				return Lang.msg("161");
+			case 10:
+				return Lang.msg("245");
 			default:
 				return "";
 			}
