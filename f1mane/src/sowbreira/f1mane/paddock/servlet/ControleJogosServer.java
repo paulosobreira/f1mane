@@ -115,7 +115,9 @@ public class ControleJogosServer {
 	}
 
 	public Object entrarJogo(ClientPaddockPack clientPaddockPack) {
-
+		if (clientPaddockPack.getSessaoCliente() == null) {
+			return (new MsgSrv(Lang.msg("210")));
+		}
 		if (verificaJaEmAlgumJogo(clientPaddockPack.getSessaoCliente())) {
 			return new MsgSrv(Lang.msg("203"));
 
@@ -209,6 +211,9 @@ public class ControleJogosServer {
 	}
 
 	public Object iniciaJogo(ClientPaddockPack clientPaddockPack) {
+		if (clientPaddockPack.getSessaoCliente() == null) {
+			return (new MsgSrv(Lang.msg("210")));
+		}
 		JogoServidor jogoServidor = obterJogoPeloNomeDono(clientPaddockPack
 				.getSessaoCliente().getNomeJogador());
 		if (jogoServidor == null) {
@@ -345,6 +350,9 @@ public class ControleJogosServer {
 		JogoServidor jogoServidor = obterJogoPeloNome(clientPaddockPack
 				.getNomeJogo());
 		if (jogoServidor == null) {
+			return null;
+		}
+		if (clientPaddockPack.getSessaoCliente() == null) {
 			return null;
 		}
 		Map mapJogo = jogoServidor.getMapJogadoresOnline();

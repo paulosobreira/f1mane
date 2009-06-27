@@ -61,7 +61,8 @@
 		<delete file="f1mane.jar" />
 	</target>
 	<target name="criarWar" depends="">
-		<war compress="true" destfile="${env.TOMCAT_HOME}/webapps/paddock.war" >
+		<delete dir="${env.TOMCAT_HOME}/webapps/paddock" />
+		<war compress="true" destfile="${env.TOMCAT_HOME}/webapps/paddock.war">
 			<fileset dir="paddock" />
 		</war>
 	</target>

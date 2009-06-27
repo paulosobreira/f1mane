@@ -2,6 +2,8 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
+import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
+
 /**
  * @author Paulo Sobreira Criado em 21/10/2007 as 18:07:48
  */

@@ -2,6 +2,10 @@ package sowbreira.f1mane.paddock.entidades.persistencia;
 
 import java.io.Serializable;
 
+import br.nnpe.Util;
+
+import sowbreira.f1mane.controles.InterfaceJogo;
+
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15
  */
@@ -11,6 +15,7 @@ public class CorridasDadosSrv implements Serializable {
 	private String piloto;
 	private String carro;
 	private String circuito;
+	private String nivel;
 	private boolean mudouCarro;
 	private int numVoltas;
 	private int porcentConcluida;
@@ -26,6 +31,12 @@ public class CorridasDadosSrv implements Serializable {
 	}
 
 	public int getPontos() {
+		if (InterfaceJogo.FACIL.equals(nivel)) {
+			return pontos / 2;
+		}
+		if (InterfaceJogo.DIFICIL.equals(nivel)) {
+			return pontos * 2;
+		}
 		return pontos;
 	}
 
@@ -95,6 +106,17 @@ public class CorridasDadosSrv implements Serializable {
 
 	public void setPorcentConcluida(int porcentCocluida) {
 		this.porcentConcluida = porcentCocluida;
+	}
+
+	public String getNivel() {
+		if (Util.isNullOrEmpty(nivel)) {
+			return InterfaceJogo.NORMAL;
+		}
+		return nivel;
+	}
+
+	public void setNivel(String nivel) {
+		this.nivel = nivel;
 	}
 
 }

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,6 +30,7 @@ public class ServletPaddock extends HttpServlet {
 	private static ControlePaddockServidor controlePaddock;
 	private static ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
+	
 	public static Email email;
 
 	public void init() throws ServletException {
@@ -99,12 +102,12 @@ public class ServletPaddock extends HttpServlet {
 			PrintWriter printWriter = res.getWriter();
 			printWriter.write("ServletPaddock Ok");
 			res.flushBuffer();
-		} catch (NullPointerException e) {
-			// e.printStackTrace();
 		} catch (Exception e) {
-			// e.printStackTrace();
+			ServletBaseDados.topExecpts(e);
 		}
 	}
+
+
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
 			throws IOException {

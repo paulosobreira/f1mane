@@ -459,7 +459,7 @@ public class Carro implements Serializable {
 
 				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
 						&& no.verificaCruvaAlta() && (indicativo > 10)
-						&& (indicativo < 60) && Math.random() > .6) {
+						&& Math.random() > indicativo) {
 					novoModificador += 1;
 
 				}

@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -34,6 +35,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -87,6 +89,11 @@ public class ControlePaddockCliente {
 
 			});
 			threadAtualizadora.setPriority(Thread.MIN_PRIORITY);
+			paddockWindow = new PaddockWindow(this);
+			atualizaVisao(paddockWindow);
+			panel.setLayout(new BorderLayout());
+			panel.add(paddockWindow.getMainPanel(), BorderLayout.CENTER);
+			getThreadAtualizadora().start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -210,9 +217,6 @@ public class ControlePaddockCliente {
 	}
 
 	public void atualizaVisao(PaddockWindow paddockWindow) {
-		if (sessaoCliente == null) {
-			return;
-		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.ATUALIZAR_VISAO, sessaoCliente);
 
@@ -238,6 +242,10 @@ public class ControlePaddockCliente {
 	}
 
 	public void enviarTexto(String text) {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.ENVIAR_TEXTO, sessaoCliente);
 		clientPaddockPack.setTexto(text);
@@ -255,7 +263,10 @@ public class ControlePaddockCliente {
 
 	public void criarJogo(String temporada) {
 		try {
-
+			if (sessaoCliente == null) {
+				logar();
+				return;
+			}
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 					Comandos.CRIAR_JOGO, sessaoCliente);
 			jogoCliente = new JogoCliente(temporada);
@@ -297,6 +308,10 @@ public class ControlePaddockCliente {
 
 	public void entarJogo(Object object) {
 		try {
+			if (sessaoCliente == null) {
+				logar();
+				return;
+			}
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 					Comandos.VER_DETALHES_JOGO, sessaoCliente);
 
@@ -388,6 +403,10 @@ public class ControlePaddockCliente {
 	}
 
 	public void iniciarJogo() {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		if (jogoCliente == null) {
 			JOptionPane.showMessageDialog(panel, Lang.msg("063"), "Erro",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -507,22 +526,12 @@ public class ControlePaddockCliente {
 	public void logar() {
 		FormEntrada formEntrada = new FormEntrada();
 		formEntrada.setToolTipText(Lang.msg("066"));
-
 		int result = JOptionPane.showConfirmDialog(panel, formEntrada, Lang
 				.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			registrarUsuario(formEntrada);
-		}
-		if (getSessaoCliente() != null) {
-			paddockWindow = new PaddockWindow(this);
 			atualizaVisao(paddockWindow);
-			panel.setLayout(new BorderLayout());
-			panel.add(paddockWindow.getMainPanel(), BorderLayout.CENTER);
-			getThreadAtualizadora().start();
-		} else {
-			JOptionPane.showMessageDialog(panel, Lang.msg("067"));
-
 		}
 
 	}
@@ -553,5 +562,62 @@ public class ControlePaddockCliente {
 
 	public Thread getThreadAtualizadora() {
 		return threadAtualizadora;
+	}
+
+	public void modoCarreira() {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
+		FormCarreira formCarreira = new FormCarreira();
+		formCarreira.setToolTipText(Lang.msg("246"));
+		carregaCarreira(formCarreira);
+		int result = JOptionPane.showConfirmDialog(panel, formCarreira, Lang
+				.msg("246"), JOptionPane.OK_CANCEL_OPTION);
+
+		if (JOptionPane.OK_OPTION == result) {
+			atualizaCarreira(formCarreira);
+		}
+
+	}
+
+	private void carregaCarreira(FormCarreira formCarreira) {
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+				Comandos.VER_CARREIRA, sessaoCliente);
+		Object ret = enviarObjeto(clientPaddockPack);
+		if (ret == null) {
+			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) ret;
+		formCarreira.getNomePiloto().setText(jogadorDadosSrv.getNomePiloto());
+		formCarreira.getNomeCarro().setText(jogadorDadosSrv.getNomeCarro());
+		formCarreira.getModoCarreira().setSelected(
+				jogadorDadosSrv.isModoCarreira());
+		formCarreira.getPtsPiloto().setValue(
+				new Long(jogadorDadosSrv.getPtsPiloto()));
+		formCarreira.getPtsCarro().setValue(
+				new Long(jogadorDadosSrv.getPtsCarro()));
+		formCarreira.setPtsCarreira(jogadorDadosSrv.getPtsConstrutores());
+		formCarreira.getNomePiloto().setText(jogadorDadosSrv.getNomePiloto());
+
+	}
+
+	private void atualizaCarreira(FormCarreira formCarreira) {
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+				Comandos.ATUALIZA_CARREIRA, sessaoCliente);
+		JogadorDadosSrv jogadorDadosSrv = new JogadorDadosSrv();
+		jogadorDadosSrv.setNomePiloto(formCarreira.getNomePiloto().getText());
+		jogadorDadosSrv.setNomeCarro(formCarreira.getNomeCarro().getText());
+		jogadorDadosSrv.setPtsCarro((Long) formCarreira.getPtsCarro()
+				.getValue());
+		jogadorDadosSrv.setPtsPiloto((Long) formCarreira.getPtsPiloto()
+				.getValue());
+		jogadorDadosSrv.setPtsConstrutores(formCarreira.getPtsCarreira());
+		jogadorDadosSrv.setModoCarreira(formCarreira.getModoCarreira()
+				.isSelected());
+		clientPaddockPack.setJogadorDadosSrv(jogadorDadosSrv);
+		Object ret = enviarObjeto(clientPaddockPack);
 	}
 }

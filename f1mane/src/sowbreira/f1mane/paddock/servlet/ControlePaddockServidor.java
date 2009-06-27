@@ -136,9 +136,9 @@ public class ControlePaddockServidor {
 
 	private Object processarComando(ClientPaddockPack clientPaddockPack) {
 		SessaoCliente cliente = resgatarSessao(clientPaddockPack);
-		if (cliente == null) {
-			return (new MsgSrv(Lang.msg("210")));
-		}
+		// if (cliente == null) {
+		// return (new MsgSrv(Lang.msg("210")));
+		// }
 		clientPaddockPack.setSessaoCliente(cliente);
 		String commando = clientPaddockPack.getCommando();
 		if (Comandos.OBTER_DADOS_JOGO.equals(commando)) {
@@ -173,10 +173,22 @@ public class ControlePaddockServidor {
 			return verClassificacao(clientPaddockPack);
 		} else if (Comandos.VER_CONTRUTORES.equals(commando)) {
 			return verConstrutores(clientPaddockPack);
+		} else if (Comandos.VER_CARREIRA.equals(commando)) {
+			return verCarreira(clientPaddockPack);
+		} else if (Comandos.ATUALIZA_CARREIRA.equals(commando)) {
+			return atualizaCarreira(clientPaddockPack);
 		} else if (Comandos.VER_CORRIDAS.equals(commando)) {
 			return verCorridas(clientPaddockPack);
 		}
 		return "Comando invalido";
+	}
+
+	private Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {
+		return controleClassificacao.atualizaCarreira(clientPaddockPack);
+	}
+
+	private Object verCarreira(ClientPaddockPack clientPaddockPack) {
+		return controleClassificacao.verCarreira(clientPaddockPack);
 	}
 
 	private Object mudarModoAutoAgressivo(ClientPaddockPack clientPaddockPack) {
@@ -249,7 +261,9 @@ public class ControlePaddockServidor {
 
 	private Object receberTexto(ClientPaddockPack clientPaddockPack,
 			SessaoCliente cliente) {
-
+		if (cliente == null) {
+			return (new MsgSrv(Lang.msg("210")));
+		}
 		dadosPaddock.setLinhaChat(cliente.getNomeJogador() + " : "
 				+ clientPaddockPack.getTexto());
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
