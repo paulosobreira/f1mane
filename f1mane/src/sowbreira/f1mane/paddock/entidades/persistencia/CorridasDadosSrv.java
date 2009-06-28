@@ -31,12 +31,6 @@ public class CorridasDadosSrv implements Serializable {
 	}
 
 	public int getPontos() {
-		if (InterfaceJogo.FACIL.equals(nivel)) {
-			return pontos / 2;
-		}
-		if (InterfaceJogo.DIFICIL.equals(nivel)) {
-			return pontos * 2;
-		}
 		return pontos;
 	}
 
