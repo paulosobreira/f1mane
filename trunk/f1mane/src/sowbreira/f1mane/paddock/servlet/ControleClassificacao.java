@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
@@ -109,22 +110,20 @@ public class ControleClassificacao {
 					CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 							.getCarreiraDadosSrv();
 					if (carreiraDadosSrv.isModoCarreira()) {
-						int ptsCarreira = corridasDadosSrv.getPontos();
+						int ptsCorrida = corridasDadosSrv.getPontos();
 						if (carreiraDadosSrv.getPtsCarro() > 700
 								|| carreiraDadosSrv.getPtsPiloto() > 700) {
-							ptsCarreira /= 2.0;
-						}
-						if (carreiraDadosSrv.getPtsCarro() > 800
+							ptsCorrida /= 2.0;
+						} else if (carreiraDadosSrv.getPtsCarro() > 800
 								|| carreiraDadosSrv.getPtsPiloto() > 800) {
-							ptsCarreira /= 3.0;
-						}
-						if (carreiraDadosSrv.getPtsCarro() > 900
+							ptsCorrida /= 3.0;
+						} else if (carreiraDadosSrv.getPtsCarro() > 900
 								|| carreiraDadosSrv.getPtsPiloto() > 900) {
-							ptsCarreira /= 4.0;
+							ptsCorrida /= 4.0;
 						}
 						carreiraDadosSrv.setPtsConstrutores(carreiraDadosSrv
 								.getPtsConstrutores()
-								+ ptsCarreira + 1);
+								+ ptsCorrida + 1);
 					}
 				}
 			}
@@ -157,7 +156,7 @@ public class ControleClassificacao {
 				}
 			}
 		}
-		if (voltasCompletadas > numVoltas) {
+		if (voltasCompletadas >= numVoltas) {
 			voltasCompletadas = numVoltas;
 		}
 
@@ -166,8 +165,15 @@ public class ControleClassificacao {
 		} else {
 			double porcent = voltasCompletadas / numVoltas;
 			corridasDadosSrv.setPorcentConcluida((int) (porcent * 100));
-			corridasDadosSrv.setPontos((int) (porcent * corridasDadosSrv
-					.getPontos()));
+			int pontos = (int) (porcent * corridasDadosSrv.getPontos());
+			if (InterfaceJogo.FACIL.equals(corridasDadosSrv.getNivel())) {
+				pontos /= 2;
+			}
+			if (InterfaceJogo.DIFICIL.equals(corridasDadosSrv.getNivel())) {
+				pontos *= 2;
+			}
+			corridasDadosSrv.setPontos(pontos);
+
 		}
 	}
 

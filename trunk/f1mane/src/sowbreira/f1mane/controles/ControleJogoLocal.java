@@ -585,10 +585,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 			circuitoSelecionado = (String) gerenciadorVisual
 					.getComboBoxCircuito().getSelectedItem();
 			if (habilidade.intValue() != 0) {
-				if (habilidade.intValue() < 50) {
+				if (habilidade.intValue() <= 50) {
 					habilidade = new Integer(50);
 				}
-				if (habilidade.intValue() > 99) {
+				if (habilidade.intValue() >= 99) {
 					habilidade = new Integer(99);
 				}
 				definirHabilidadePadraoPilotos(habilidade.intValue());
@@ -597,10 +597,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 			potencia = (Integer) gerenciadorVisual
 					.getSpinnerPotenciaPadraoCarros().getValue();
 			if (potencia.intValue() != 0) {
-				if (potencia.intValue() < 500) {
+				if (potencia.intValue() <= 500) {
 					potencia = new Integer(500);
 				}
-				if (potencia.intValue() > 999) {
+				if (potencia.intValue() >= 999) {
 					potencia = new Integer(999);
 				}
 				definirPotenciaPadraoCarros(potencia.intValue());

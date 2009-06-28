@@ -1,6 +1,5 @@
 package br.nnpe;
 
-
 public class Constantes {
 	public static final String CONFIG = "configuracoes";
 	public final static String CRYPTOGRAPHY = "_CRYPTOGRAPHY_";
@@ -33,6 +32,15 @@ public class Constantes {
 	public static final String BANCO = "BANCO";
 	public static final String FORM_TAB0 = "bl_formtab0";
 	public static final String RELATORIO = "R";
+//	 public static final int MAX_VOLTAS = 72;
+//	 public static final int MIN_VOLTAS = 22;
+//	 public static final int MIN_CICLO = 50;
+//	 public static final int MAX_CICLO = 120;
+
+	public static final int MAX_VOLTAS = 2;
+	public static final int MIN_VOLTAS = 2;
+	public static final int MIN_CICLO = 50;
+	public static final int MAX_CICLO = 50;
 
 	private Constantes() {
 	}

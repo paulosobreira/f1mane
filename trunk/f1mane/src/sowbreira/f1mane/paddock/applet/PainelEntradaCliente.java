@@ -15,6 +15,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import br.nnpe.Constantes;
+
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.entidades.Carro;
@@ -244,7 +246,7 @@ public class PainelEntradaCliente {
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
-		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 10)
+		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() == 10)
 				|| (((Integer) spinnerCombustivelInicial.getValue()).intValue() == 0)) {
 			JOptionPane.showMessageDialog(mainFrame, Lang.msg("128"), Lang
 					.msg("128"), JOptionPane.INFORMATION_MESSAGE);
@@ -261,11 +263,23 @@ public class PainelEntradaCliente {
 
 	private void preecherDados() {
 		Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
+		if (qtdeVoltas.intValue() >= Constantes.MAX_VOLTAS) {
+			qtdeVoltas = new Integer(Constantes.MAX_VOLTAS);
+		}
+		if (qtdeVoltas.intValue() <= Constantes.MIN_VOLTAS) {
+			qtdeVoltas = new Integer(Constantes.MIN_VOLTAS);
+		}
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
 		dadosCriarJogo
 				.setDiffultrapassagem((Integer) spinnerDificuldadeUltrapassagem
 						.getValue());
 		Integer integerTempoCiclo = (Integer) spinnerTempoCiclo.getValue();
+		if (integerTempoCiclo.intValue() <= Constantes.MIN_CICLO) {
+			integerTempoCiclo = new Integer(Constantes.MIN_CICLO);
+		}
+		if (integerTempoCiclo.intValue() >= Constantes.MAX_CICLO) {
+			integerTempoCiclo = new Integer(Constantes.MAX_CICLO);
+		}
 		dadosCriarJogo.setTempoCiclo(integerTempoCiclo);
 		dadosCriarJogo.setVeloMaxReta((Integer) spinnerIndexVelcidadeEmReta
 				.getValue());

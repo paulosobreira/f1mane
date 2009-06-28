@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleJogoLocal;
@@ -20,7 +19,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
+import br.nnpe.Constantes;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:28:27
@@ -182,19 +181,22 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			this.nivelCorrida = dadosCriarJogo.getNivelCorrida();
 
 			qtdeVoltas = dadosCriarJogo.getQtdeVoltas();
-			// if (qtdeVoltas.intValue() < 22) {
-			// qtdeVoltas = new Integer(22);
-			// }
-			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
-			tempoCiclo = dadosCriarJogo.getTempoCiclo();
-			if (tempoCiclo.intValue() < 50) {
-				tempoCiclo = new Integer(50);
+			if (qtdeVoltas.intValue() <= Constantes.MIN_VOLTAS) {
+				qtdeVoltas = new Integer(Constantes.MIN_VOLTAS);
 			}
-			if (tempoCiclo.intValue() > 120) {
-				tempoCiclo = new Integer(120);
+			if (qtdeVoltas.intValue() >= Constantes.MAX_VOLTAS) {
+				qtdeVoltas = new Integer(Constantes.MAX_VOLTAS);
+			}
+			tempoCiclo = dadosCriarJogo.getTempoCiclo();
+			if (tempoCiclo.intValue() <= Constantes.MIN_CICLO) {
+				tempoCiclo = new Integer(Constantes.MIN_CICLO);
+			}
+			if (tempoCiclo.intValue() >= Constantes.MAX_CICLO) {
+				tempoCiclo = new Integer(Constantes.MAX_CICLO);
 			}
 			veloMaxReta = dadosCriarJogo.getVeloMaxReta();
 			habilidade = dadosCriarJogo.getHabilidade();
+			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
 			if (habilidade.intValue() != 0) {
 				if (habilidade.intValue() < 50) {
@@ -219,8 +221,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 
 		} catch (Exception e) {
-			throw new Exception("Erro na Entrada de dados."
-					+ " Preencha os tipos numericos com numeros.");
+			ServletBaseDados.topExecpts(e);
 		}
 
 	}
@@ -256,7 +257,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					controleCorrida.iniciarCiclos();
 					controleEstatisticas.inicializarThreadConsumidoraInfo(2000);
 				} catch (Exception e) {
-					e.printStackTrace();
+					ServletBaseDados.topExecpts(e);
 				}
 
 			}
@@ -403,7 +404,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 						Thread.sleep(100);
 						estado = Comandos.CORRIDA_INICIADA;
 					} catch (Exception e) {
-						e.printStackTrace();
+						ServletBaseDados.topExecpts(e);
 					}
 
 				}
@@ -463,7 +464,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					controleEstatisticas.setConsumidorAtivo(false);
 					controleJogosServer.removerJogo(JogoServidor.this);
 				} catch (Exception e) {
-					e.printStackTrace();
+					ServletBaseDados.topExecpts(e);
 				}
 
 			}
