@@ -266,7 +266,7 @@ public class PaddockWindow {
 		mainPanel.add(sPanel, BorderLayout.SOUTH);
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBorder(new TitledBorder(
-				"F1-Mane Web Paddock Chat Room v 1.3"));
+				"F1-Mane Web Paddock Chat Room v 1.4"));
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
 			public String getTitle() {

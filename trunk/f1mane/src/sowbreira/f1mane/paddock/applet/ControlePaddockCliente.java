@@ -4,25 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Panel;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-
-import br.nnpe.Util;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.paddock.PaddockConstants;
@@ -35,8 +29,10 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
@@ -576,7 +572,15 @@ public class ControlePaddockCliente {
 				.msg("246"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
-			atualizaCarreira(formCarreira);
+			int carLen = formCarreira.getNomeCarro().getText().length();
+			int piloLen = formCarreira.getNomePiloto().getText().length();
+			if (carLen == 0 || carLen > 20 || piloLen == 0 || piloLen > 20) {
+				JOptionPane.showMessageDialog(panel, Lang.msg("249"), "Erro",
+						JOptionPane.ERROR_MESSAGE);
+			} else {
+				atualizaCarreira(formCarreira);
+			}
+
 		}
 
 	}
@@ -590,34 +594,35 @@ public class ControlePaddockCliente {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) ret;
-		formCarreira.getNomePiloto().setText(jogadorDadosSrv.getNomePiloto());
-		formCarreira.getNomeCarro().setText(jogadorDadosSrv.getNomeCarro());
+		CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) ret;
+		formCarreira.getNomePiloto().setText(carreiraDadosSrv.getNomePiloto());
+		formCarreira.getNomeCarro().setText(carreiraDadosSrv.getNomeCarro());
 		formCarreira.getModoCarreira().setSelected(
-				jogadorDadosSrv.isModoCarreira());
+				carreiraDadosSrv.isModoCarreira());
 		formCarreira.getPtsPiloto().setValue(
-				new Long(jogadorDadosSrv.getPtsPiloto()));
+				new Integer((int) carreiraDadosSrv.getPtsPiloto()));
 		formCarreira.getPtsCarro().setValue(
-				new Long(jogadorDadosSrv.getPtsCarro()));
-		formCarreira.setPtsCarreira(jogadorDadosSrv.getPtsConstrutores());
-		formCarreira.getNomePiloto().setText(jogadorDadosSrv.getNomePiloto());
+				new Integer((int) carreiraDadosSrv.getPtsCarro()));
+		formCarreira.setPtsCarreira(carreiraDadosSrv.getPtsConstrutores());
+		formCarreira.getNomePiloto().setText(carreiraDadosSrv.getNomePiloto());
 
 	}
 
 	private void atualizaCarreira(FormCarreira formCarreira) {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.ATUALIZA_CARREIRA, sessaoCliente);
-		JogadorDadosSrv jogadorDadosSrv = new JogadorDadosSrv();
-		jogadorDadosSrv.setNomePiloto(formCarreira.getNomePiloto().getText());
-		jogadorDadosSrv.setNomeCarro(formCarreira.getNomeCarro().getText());
-		jogadorDadosSrv.setPtsCarro((Long) formCarreira.getPtsCarro()
+		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
+		carreiraDadosSrv.setNomePiloto(formCarreira.getNomePiloto().getText());
+		carreiraDadosSrv.setNomeCarro(formCarreira.getNomeCarro().getText());
+		carreiraDadosSrv.setPtsCarro((Integer) formCarreira.getPtsCarro()
 				.getValue());
-		jogadorDadosSrv.setPtsPiloto((Long) formCarreira.getPtsPiloto()
+		carreiraDadosSrv.setPtsPiloto((Integer) formCarreira.getPtsPiloto()
 				.getValue());
-		jogadorDadosSrv.setPtsConstrutores(formCarreira.getPtsCarreira());
-		jogadorDadosSrv.setModoCarreira(formCarreira.getModoCarreira()
+		carreiraDadosSrv.setPtsConstrutores(formCarreira.getPtsCarreira());
+		carreiraDadosSrv.setModoCarreira(formCarreira.getModoCarreira()
 				.isSelected());
-		clientPaddockPack.setJogadorDadosSrv(jogadorDadosSrv);
+
+		clientPaddockPack.setJogadorDadosSrv(carreiraDadosSrv);
 		Object ret = enviarObjeto(clientPaddockPack);
 	}
 }

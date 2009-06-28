@@ -13,15 +13,21 @@ public class JogadorDadosSrv implements Serializable {
 	private String nome;
 	private String senha;
 	private String email;
-	private long ptsConstrutores;
-	private long ptsPiloto;
-	private long ptsCarro;
-	private String nomePiloto;
-	private String nomeCarro;
-	private boolean modoCarreira;
 	private List corridas = new LinkedList();
 	private long ultimoLogon;
 	private long ultimaRecuperacao = 0;
+	private CarreiraDadosSrv carreiraDadosSrv;
+
+	public CarreiraDadosSrv getCarreiraDadosSrv() {
+		if (carreiraDadosSrv == null) {
+			return new CarreiraDadosSrv();
+		}
+		return carreiraDadosSrv;
+	}
+
+	public void setCarreiraDadosSrv(CarreiraDadosSrv carreiraDadosSrv) {
+		this.carreiraDadosSrv = carreiraDadosSrv;
+	}
 
 	public String getEmail() {
 		return email;
@@ -69,54 +75,6 @@ public class JogadorDadosSrv implements Serializable {
 
 	public void setUltimaRecuperacao(long ultimaRecuperacao) {
 		this.ultimaRecuperacao = ultimaRecuperacao;
-	}
-
-	public long getPtsPiloto() {
-		return ptsPiloto;
-	}
-
-	public void setPtsPiloto(long ptsPiloto) {
-		this.ptsPiloto = ptsPiloto;
-	}
-
-	public long getPtsCarro() {
-		return ptsCarro;
-	}
-
-	public void setPtsCarro(long ptsCarro) {
-		this.ptsCarro = ptsCarro;
-	}
-
-	public String getNomePiloto() {
-		return nomePiloto;
-	}
-
-	public void setNomePiloto(String nomePiloto) {
-		this.nomePiloto = nomePiloto;
-	}
-
-	public String getNomeCarro() {
-		return nomeCarro;
-	}
-
-	public void setNomeCarro(String nomeCarro) {
-		this.nomeCarro = nomeCarro;
-	}
-
-	public long getPtsConstrutores() {
-		return ptsConstrutores;
-	}
-
-	public void setPtsConstrutores(long ptsConstrutores) {
-		this.ptsConstrutores = ptsConstrutores;
-	}
-
-	public boolean isModoCarreira() {
-		return modoCarreira;
-	}
-
-	public void setModoCarreira(boolean modoCarreira) {
-		this.modoCarreira = modoCarreira;
 	}
 
 }

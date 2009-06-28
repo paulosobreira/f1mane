@@ -27,14 +27,14 @@ public class FormCarreira extends JPanel {
 	private JLabel labelModoCarreira = new JLabel("Modo Carreira:");
 	private JCheckBox modoCarreira = new JCheckBox();
 	private JLabel labelNomePiloto = new JLabel("Nome Piloto:");
-	private JTextField nomePiloto = new JTextField(20);
-	private JLabel labelNomeCarro = new JLabel("Nome Carro:");
-	private JTextField nomeCarro = new JTextField(20);
-	private JLabel labelPtsPiloto = new JLabel("Pontos Piloto:");
+	private JTextField nomePiloto = new JTextField(10);
+	private JLabel labelNomeCarro = new JLabel("Nome Equipe:");
+	private JTextField nomeCarro = new JTextField(10);
+	private JLabel labelPtsPiloto = new JLabel("Habilidade Piloto:");
 	private JSpinner ptsPiloto = new JSpinner();
-	private JLabel labelPtsCarro = new JLabel("Pontos Carro:");
+	private JLabel labelPtsCarro = new JLabel("Pontencia Carro:");
 	private JSpinner ptsCarro = new JSpinner();
-	private long ptsCarreira = 10;
+	private int ptsCarreira = 10;
 
 	public FormCarreira() {
 		setLayout(new GridLayout(3, 4));
@@ -52,13 +52,6 @@ public class FormCarreira extends JPanel {
 		add(nomeCarro);
 		add(labelPtsCarro);
 		add(ptsCarro);
-		ptsCarro.getModel().addChangeListener(new ChangeListener() {
-
-			public void stateChanged(ChangeEvent e) {
-
-			}
-
-		});
 	}
 
 	public static void main(String[] args) {
@@ -68,11 +61,11 @@ public class FormCarreira extends JPanel {
 		frame.setVisible(true);
 	}
 
-	public long getPtsCarreira() {
+	public int getPtsCarreira() {
 		return ptsCarreira;
 	}
 
-	public void setPtsCarreira(long ptsCarreira) {
+	public void setPtsCarreira(int ptsCarreira) {
 		this.ptsCarreira = ptsCarreira;
 	}
 

@@ -23,6 +23,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -124,6 +125,14 @@ public class ControleJogosServer {
 		}
 		String nomeJogo = clientPaddockPack.getDadosJogoCriado().getNomeJogo();
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
+
+		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
+				.verCarreira(clientPaddockPack);
+
+		if (jogoServidor.isCorridaIniciada()
+				&& carreiraDadosSrv.isModoCarreira()) {
+			return new MsgSrv(Lang.msg("247"));
+		}
 		if (jogoServidor.isCorridaTerminada()) {
 			return new MsgSrv(Lang.msg("206", new String[] { nomeJogo }));
 		}
@@ -143,7 +152,7 @@ public class ControleJogosServer {
 		return srvPaddockPack;
 	}
 
-	private boolean verificaJaEmAlgumJogo(SessaoCliente sessaoCliente) {
+	public boolean verificaJaEmAlgumJogo(SessaoCliente sessaoCliente) {
 		for (Iterator iter = mapaJogosCriados.keySet().iterator(); iter
 				.hasNext();) {
 			SessaoCliente key = (SessaoCliente) iter.next();
@@ -222,7 +231,7 @@ public class ControleJogosServer {
 		try {
 			jogoServidor.iniciarJogo();
 		} catch (Exception e) {
-			e.printStackTrace();
+			ServletBaseDados.topExecpts(e);
 		}
 		return null;
 	}

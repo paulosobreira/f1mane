@@ -16,6 +16,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import br.nnpe.Dia;
+
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 
@@ -71,11 +73,12 @@ public class ControlePersistencia {
 
 	private void processarLimpesa(PaddockDadosSrv pds) {
 		Map map = pds.getJogadoresMap();
-
 		for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();
 			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map.get(key);
-			if (jogadorDadosSrv.getCorridas().isEmpty()) {
+			Dia dia = new Dia(jogadorDadosSrv.getUltimoLogon());
+			Dia hj = new Dia();
+			if (hj.daysBetween(dia) > 60) {
 				iter.remove();
 			}
 		}
@@ -103,11 +106,14 @@ public class ControlePersistencia {
 	}
 
 	public static void main(String[] args) throws Exception {
-		ControlePersistencia controlePersistencia = new ControlePersistencia(
-				"d:" + File.separator);
-		controlePersistencia.paddockDadosSrv.getJogadoresMap().put("teste3",
-				"Paulo sobreira");
-		controlePersistencia.gravarDados();
+		// ControlePersistencia controlePersistencia = new ControlePersistencia(
+		// "d:" + File.separator);
+		// controlePersistencia.paddockDadosSrv.getJogadoresMap().put("teste3",
+		// "Paulo sobreira");
+		// controlePersistencia.gravarDados();
+		Dia dia = new Dia("01/06/2009");
+		Dia hj = new Dia();
+		System.out.println(hj.daysBetween(dia));
 	}
 
 	public PaddockDadosSrv getPaddockDados() {

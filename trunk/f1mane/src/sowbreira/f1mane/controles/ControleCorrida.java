@@ -31,6 +31,7 @@ public class ControleCorrida {
 	private double indexVelcidadeDaPista;
 	private long tempoCiclo;
 	private boolean corridaPausada;
+	private boolean corridaIniciada;
 
 	public long getTempoCiclo() {
 		return tempoCiclo;
@@ -125,6 +126,7 @@ public class ControleCorrida {
 		controleJogo.selecionaPilotoJogador();
 		controleJogo.atualizaPainel();
 		controleCiclo.start();
+		corridaIniciada = true;
 	}
 
 	protected void finalize() throws Throwable {
@@ -584,5 +586,9 @@ public class ControleCorrida {
 			}
 		}
 		return null;
+	}
+
+	public boolean isCorridaIniciada() {
+		return corridaIniciada;
 	}
 }

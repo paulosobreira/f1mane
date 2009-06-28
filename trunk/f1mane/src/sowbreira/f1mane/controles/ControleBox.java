@@ -1,5 +1,6 @@
 package sowbreira.f1mane.controles;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -57,7 +58,18 @@ public class ControleBox {
 		boxEquipes = new HashMap();
 		boxEquipesOcupado = new Hashtable();
 
-		List carros = controleJogo.getCarros();
+		List pilots = controleJogo.getPilotos();
+		Map mapCarros = new HashMap();
+		List carros = new ArrayList();
+		for (Iterator iterator = pilots.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (!mapCarros.containsKey(piloto.getCarro().getNome())) {
+				mapCarros.put(piloto.getCarro().getNome(), piloto.getCarro()
+						.getNome());
+				carros.add(piloto.getCarro());
+			}
+
+		}
 		Collections.sort(carros, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				Carro carro0 = (Carro) arg0;
@@ -141,13 +153,14 @@ public class ControleBox {
 		if (!piloto.getNoAtual().isNoEntradaBox() && (piloto.getPtosBox() <= 0)) {
 			return;
 		} else {
-			if ("".equals(getBoxEquipesOcupado().get(piloto.getCarro()))) {
+			if (boxEquipesOcupado == null) {
+				boxEquipesOcupado = new Hashtable();
+			}
+			if ("".equals(boxEquipesOcupado.get(piloto.getCarro()))) {
 				boxEquipesOcupado.put(piloto.getCarro(), piloto.getCarro());
 			}
-
 			List boxList = controleJogo.getNosDoBox();
 			No box = (No) boxEquipes.get(piloto.getCarro());
-
 			if (box.equals(piloto.getNoAtual())
 					|| piloto.getNoAtual().isNoEntradaBox()) {
 				piloto.setPtosBox(piloto.getPtosBox() + 1);

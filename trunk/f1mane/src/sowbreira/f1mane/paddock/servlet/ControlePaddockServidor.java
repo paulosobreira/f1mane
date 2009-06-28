@@ -184,6 +184,10 @@ public class ControlePaddockServidor {
 	}
 
 	private Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {
+		if (controleJogosServer.verificaJaEmAlgumJogo(clientPaddockPack
+				.getSessaoCliente())) {
+			return new MsgSrv(Lang.msg("248"));
+		}
 		return controleClassificacao.atualizaCarreira(clientPaddockPack);
 	}
 

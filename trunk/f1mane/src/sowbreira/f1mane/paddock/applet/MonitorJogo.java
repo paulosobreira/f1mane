@@ -18,6 +18,8 @@ import sowbreira.f1mane.paddock.entidades.TOs.Posis;
 import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 05/08/2007 as 11:43:33
@@ -82,6 +84,7 @@ public class MonitorJogo implements Runnable {
 						&& jogoAtivo) {
 					if (!atualizouDados) {
 						atualizarDados();
+						atualizaModoCarreira();
 						atualizouDados = true;
 					}
 					if (monitorQualificacao != null) {
@@ -177,6 +180,28 @@ public class MonitorJogo implements Runnable {
 			}
 		}
 
+	}
+
+	private void atualizaModoCarreira() {
+		try {
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+					Comandos.VER_CARREIRA, sessaoCliente);
+
+			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
+			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
+			if (ret != null) {
+				CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) ret;
+				if (carreiraDadosSrv.isModoCarreira()) {
+					jogoCliente.setNomePilotoJogador(carreiraDadosSrv
+							.getNomePiloto());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			jogoAtivo = false;
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void atualizaPosicoes() {
