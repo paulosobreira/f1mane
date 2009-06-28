@@ -449,7 +449,7 @@ public class Carro implements Serializable {
 				double indicativo = porcent / 100.0;
 
 				if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
-					if ((indicativo > 10)) {
+					if ((indicativo > 15)) {
 						novoModificador += 1;
 					}
 				} else if (TIPO_PNEU_DURO.equals(tipoPneu)

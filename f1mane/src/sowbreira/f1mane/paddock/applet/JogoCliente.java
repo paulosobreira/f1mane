@@ -1,14 +1,10 @@
 package sowbreira.f1mane.paddock.applet;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
-import com.sun.java.swing.SwingUtilities3;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleEstatisticas;
@@ -580,6 +576,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return pilotoSelecionado.getMelhorVolta();
 	}
 
+	public void setNomePilotoJogador(String nomePilotoJogador) {
+		this.nomePilotoJogador = nomePilotoJogador;
+	}
+
 	public Piloto getPilotoJogador() {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
@@ -654,6 +654,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			syncBox = true;
 		}
 
+	}
+
+	@Override
+	public boolean isCorridaIniciada() {
+		return false;
 	}
 
 }

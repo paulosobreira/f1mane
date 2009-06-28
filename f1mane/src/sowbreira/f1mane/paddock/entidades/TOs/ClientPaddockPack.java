@@ -2,7 +2,7 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
-import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 
 /**
  * @author Paulo Sobreira Criado em 28/07/2007 as 15:51:36
@@ -24,14 +24,14 @@ public class ClientPaddockPack implements Serializable {
 	private int combustBox;
 	private boolean recuperar = false;
 	private DadosCriarJogo dadosJogoCriado;
-	private JogadorDadosSrv jogadorDadosSrv;
+	private CarreiraDadosSrv carreiraDadosSrv;
 
-	public JogadorDadosSrv getJogadorDadosSrv() {
-		return jogadorDadosSrv;
+	public CarreiraDadosSrv getJogadorDadosSrv() {
+		return carreiraDadosSrv;
 	}
 
-	public void setJogadorDadosSrv(JogadorDadosSrv jogadorDadosSrv) {
-		this.jogadorDadosSrv = jogadorDadosSrv;
+	public void setJogadorDadosSrv(CarreiraDadosSrv jogadorDadosSrv) {
+		this.carreiraDadosSrv = jogadorDadosSrv;
 	}
 
 	public ClientPaddockPack(String commando, SessaoCliente sessaoCliente) {

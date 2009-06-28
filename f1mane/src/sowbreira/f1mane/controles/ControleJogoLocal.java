@@ -790,4 +790,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	}
 
+	@Override
+	public boolean isCorridaIniciada() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

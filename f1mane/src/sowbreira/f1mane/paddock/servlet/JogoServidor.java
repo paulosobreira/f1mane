@@ -19,6 +19,8 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:28:27
@@ -40,6 +42,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private ControleJogosServer controleJogosServer;
 	private ControleClassificacao controleClassificacao;
 	private boolean disparouInicio;
+
+	public boolean isCorridaIniciada() {
+		return disparouInicio;
+	}
 
 	public void processaNovaVolta() {
 		super.processaNovaVolta();
@@ -176,13 +182,16 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			this.nivelCorrida = dadosCriarJogo.getNivelCorrida();
 
 			qtdeVoltas = dadosCriarJogo.getQtdeVoltas();
-			if (qtdeVoltas.intValue() < 22) {
-				qtdeVoltas = new Integer(22);
-			}
+			// if (qtdeVoltas.intValue() < 22) {
+			// qtdeVoltas = new Integer(22);
+			// }
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			tempoCiclo = dadosCriarJogo.getTempoCiclo();
-			if (tempoCiclo.intValue() < 70) {
-				tempoCiclo = new Integer(70);
+			if (tempoCiclo.intValue() < 50) {
+				tempoCiclo = new Integer(50);
+			}
+			if (tempoCiclo.intValue() > 120) {
+				tempoCiclo = new Integer(120);
 			}
 			veloMaxReta = dadosCriarJogo.getVeloMaxReta();
 			habilidade = dadosCriarJogo.getHabilidade();
@@ -227,6 +236,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		processarEntradaDados();
 
 		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
+		atualizarJogadoresOnlineCarreira();
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 				diffultrapassagem.intValue(), veloMaxReta.intValue(),
 				tempoCiclo.intValue());
@@ -235,7 +245,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				dadosCriarJogo.getClima());
 		atualizarJogadoresOnline();
 		controleCorrida.gerarGridLargadaSemQualificacao();
-
 		this.estado = Comandos.MOSTRANDO_QUALIFY;
 		Thread timer = new Thread(new Runnable() {
 
@@ -286,6 +295,35 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 						&& mapJogadoresOnline.get(piloto.getNomeJogador()) == null) {
 					piloto.setNomeJogador("IA");
 					piloto.setJogadorHumano(false);
+				}
+			}
+
+		}
+
+	}
+
+	private void atualizarJogadoresOnlineCarreira() {
+		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
+				.hasNext();) {
+			String key = (String) iter.next();
+			DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
+					.get(key);
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
+					CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
+							.obterCarreiraSrv(key);
+					if (carreiraDadosSrv.isModoCarreira()) {
+						piloto.setNome(carreiraDadosSrv.getNomePiloto());
+						dadosParticiparJogo.setPiloto(carreiraDadosSrv
+								.getNomePiloto());
+						piloto.setHabilidade((int) (carreiraDadosSrv
+								.getPtsPiloto()));
+						piloto.getCarro().setNome(
+								carreiraDadosSrv.getNomeCarro());
+						piloto.getCarro().setPotencia(
+								carreiraDadosSrv.getPtsCarro());
+					}
 				}
 			}
 
@@ -418,11 +456,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				try {
 					estado = Comandos.MOSTRA_RESULTADO_FINAL;
 					tempoFim = System.currentTimeMillis();
-					if (dadosCriarJogo.getQtdeVoltas().intValue() > 22) {
-						controleClassificacao.processaCorrida(tempoInicio,
-								tempoFim, mapVoltasJogadoresOnline, pilotos,
-								dadosCriarJogo);
-					}
+					controleClassificacao.processaCorrida(tempoInicio,
+							tempoFim, mapVoltasJogadoresOnline, pilotos,
+							dadosCriarJogo);
 					Thread.sleep(60000);
 					controleEstatisticas.setConsumidorAtivo(false);
 					controleJogosServer.removerJogo(JogoServidor.this);

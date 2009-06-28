@@ -261,23 +261,11 @@ public class PainelEntradaCliente {
 
 	private void preecherDados() {
 		Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
-		if (qtdeVoltas.intValue() > 72) {
-			qtdeVoltas = new Integer(72);
-		}
-		if (qtdeVoltas.intValue() < 22) {
-			qtdeVoltas = new Integer(22);
-		}
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
 		dadosCriarJogo
 				.setDiffultrapassagem((Integer) spinnerDificuldadeUltrapassagem
 						.getValue());
 		Integer integerTempoCiclo = (Integer) spinnerTempoCiclo.getValue();
-		if (integerTempoCiclo.intValue() < 65) {
-			integerTempoCiclo = new Integer(65);
-		}
-		if (integerTempoCiclo.intValue() > 120) {
-			integerTempoCiclo = new Integer(120);
-		}
 		dadosCriarJogo.setTempoCiclo(integerTempoCiclo);
 		dadosCriarJogo.setVeloMaxReta((Integer) spinnerIndexVelcidadeEmReta
 				.getValue());
