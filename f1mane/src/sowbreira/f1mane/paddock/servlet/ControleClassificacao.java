@@ -111,19 +111,9 @@ public class ControleClassificacao {
 							.getCarreiraDadosSrv();
 					if (carreiraDadosSrv.isModoCarreira()) {
 						int ptsCorrida = corridasDadosSrv.getPontos();
-						if (carreiraDadosSrv.getPtsCarro() > 700
-								|| carreiraDadosSrv.getPtsPiloto() > 700) {
-							ptsCorrida /= 2.0;
-						} else if (carreiraDadosSrv.getPtsCarro() > 800
-								|| carreiraDadosSrv.getPtsPiloto() > 800) {
-							ptsCorrida /= 3.0;
-						} else if (carreiraDadosSrv.getPtsCarro() > 900
-								|| carreiraDadosSrv.getPtsPiloto() > 900) {
-							ptsCorrida /= 4.0;
-						}
 						carreiraDadosSrv.setPtsConstrutores(carreiraDadosSrv
 								.getPtsConstrutores()
-								+ ptsCorrida + 1);
+								+ ptsCorrida + 5);
 					}
 				}
 			}
@@ -292,10 +282,10 @@ public class ControleClassificacao {
 					.get(clientPaddockPack.getSessaoCliente().getNomeJogador());
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
-			if (carreiraDadosSrv.getPtsCarro() < 650) {
+			if (carreiraDadosSrv.getPtsCarro() == 0) {
 				carreiraDadosSrv.setPtsCarro(650);
 			}
-			if (carreiraDadosSrv.getPtsPiloto() < 650) {
+			if (carreiraDadosSrv.getPtsPiloto() == 0) {
 				carreiraDadosSrv.setPtsPiloto(650);
 			}
 			return carreiraDadosSrv;
@@ -309,6 +299,14 @@ public class ControleClassificacao {
 					.get(clientPaddockPack.getSessaoCliente().getNomeJogador());
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
+			// Validar pts servidor.
+			// int ptConsBan = carreiraDadosSrv.getPtsConstrutores();
+			// int ptConsCli = clientPaddockPack.getJogadorDadosSrv()
+			// .getPtsConstrutores();
+			// int ptPilotoBan = carreiraDadosSrv.getPtsPiloto();
+			// int ptPilotoCli = clientPaddockPack.getJogadorDadosSrv()
+			// .getPtsPiloto();
+
 			carreiraDadosSrv.setNomePiloto(clientPaddockPack
 					.getJogadorDadosSrv().getNomePiloto());
 			carreiraDadosSrv.setNomeCarro(clientPaddockPack
