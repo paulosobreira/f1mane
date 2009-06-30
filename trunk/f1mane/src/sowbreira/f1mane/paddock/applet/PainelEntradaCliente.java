@@ -59,7 +59,7 @@ public class PainelEntradaCliente {
 	}
 
 	private void gerarPainelCriarJogo(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(15, 2));
+		painelInicio.setLayout(new GridLayout(13, 2));
 		JLabel label = new JLabel() {
 			public String getText() {
 				return Lang.msg("110");
@@ -216,23 +216,23 @@ public class PainelEntradaCliente {
 		spinnerTempoCiclo.setValue(new Integer(90));
 		painelInicio.add(spinnerTempoCiclo);
 
-		painelInicio.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("112");
-			}
-		});
-		spinnerSkillPadraoPilotos = new JSpinner();
-		spinnerSkillPadraoPilotos.setValue(new Integer(0));
-		painelInicio.add(spinnerSkillPadraoPilotos);
-
-		painelInicio.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("113");
-			}
-		});
-		spinnerPotenciaPadraoCarros = new JSpinner();
-		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
-		painelInicio.add(spinnerPotenciaPadraoCarros);
+//		painelInicio.add(new JLabel() {
+//			public String getText() {
+//				return Lang.msg("112");
+//			}
+//		});
+//		spinnerSkillPadraoPilotos = new JSpinner();
+//		spinnerSkillPadraoPilotos.setValue(new Integer(0));
+//		painelInicio.add(spinnerSkillPadraoPilotos);
+//
+//		painelInicio.add(new JLabel() {
+//			public String getText() {
+//				return Lang.msg("113");
+//			}
+//		});
+//		spinnerPotenciaPadraoCarros = new JSpinner();
+//		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
+//		painelInicio.add(spinnerPotenciaPadraoCarros);
 
 	}
 

@@ -656,7 +656,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
-	@Override
 	public boolean isCorridaIniciada() {
 		return false;
 	}

@@ -75,6 +75,7 @@ public class ServletBaseDados extends HttpServlet {
 
 	private void topExceptions(HttpServletResponse res) throws IOException {
 		PrintWriter printWriter = res.getWriter();
+		printWriter.write("<html><body>");
 		printWriter.write("<h2>F1-Mane Paddock Exceções</h2><br><hr>");
 		synchronized (topExceptions) {
 			Set top = topExceptions.keySet();
@@ -85,10 +86,9 @@ public class ServletBaseDados extends HttpServlet {
 				printWriter.write(exept);
 				printWriter.write("<br><hr>");
 			}
-
-			res.flushBuffer();
 		}
-
+		printWriter.write("</body></html>");
+		res.flushBuffer();
 	}
 
 	public static void main(String[] args) {
