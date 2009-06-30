@@ -221,18 +221,18 @@ public class PainelEntradaCliente {
 //				return Lang.msg("112");
 //			}
 //		});
-//		spinnerSkillPadraoPilotos = new JSpinner();
-//		spinnerSkillPadraoPilotos.setValue(new Integer(0));
-//		painelInicio.add(spinnerSkillPadraoPilotos);
-//
+		spinnerSkillPadraoPilotos = new JSpinner();
+		spinnerSkillPadraoPilotos.setValue(new Integer(0));
+		//painelInicio.add(spinnerSkillPadraoPilotos);
+
 //		painelInicio.add(new JLabel() {
 //			public String getText() {
 //				return Lang.msg("113");
 //			}
 //		});
-//		spinnerPotenciaPadraoCarros = new JSpinner();
-//		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
-//		painelInicio.add(spinnerPotenciaPadraoCarros);
+		spinnerPotenciaPadraoCarros = new JSpinner();
+		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
+		//painelInicio.add(spinnerPotenciaPadraoCarros);
 
 	}
 
