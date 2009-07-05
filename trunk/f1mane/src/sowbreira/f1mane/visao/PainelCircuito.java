@@ -771,7 +771,7 @@ public class PainelCircuito extends JPanel {
 				g2d.drawString(Lang.msg(tpPneu), 5, 325);
 		}
 		int valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
-		if (valor > 200) {
+		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
 		} else {
 			g2d.setColor(Color.WHITE);

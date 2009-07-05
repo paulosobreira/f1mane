@@ -16,6 +16,7 @@ public class CorridasDadosSrv implements Serializable {
 	private String carro;
 	private String circuito;
 	private String nivel;
+	private String temporada;
 	private boolean mudouCarro;
 	private int numVoltas;
 	private int porcentConcluida;
@@ -111,6 +112,14 @@ public class CorridasDadosSrv implements Serializable {
 
 	public void setNivel(String nivel) {
 		this.nivel = nivel;
+	}
+
+	public String getTemporada() {
+		return temporada;
+	}
+
+	public void setTemporada(String temporada) {
+		this.temporada = temporada;
 	}
 
 }

@@ -1,6 +1,7 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Panel;
 import java.io.ByteArrayOutputStream;
@@ -605,7 +606,8 @@ public class ControlePaddockCliente {
 				new Integer((int) carreiraDadosSrv.getPtsCarro()));
 		formCarreira.setPtsCarreira(carreiraDadosSrv.getPtsConstrutores());
 		formCarreira.getNomePiloto().setText(carreiraDadosSrv.getNomePiloto());
-
+		formCarreira.setCor1(carreiraDadosSrv.geraCor1());
+		formCarreira.setCor2(carreiraDadosSrv.geraCor2());
 	}
 
 	private void atualizaCarreira(FormCarreira formCarreira) {
@@ -621,7 +623,12 @@ public class ControlePaddockCliente {
 		carreiraDadosSrv.setPtsConstrutores(formCarreira.getPtsCarreira());
 		carreiraDadosSrv.setModoCarreira(formCarreira.getModoCarreira()
 				.isSelected());
-
+		carreiraDadosSrv.setC1B(formCarreira.getCor1().getBlue());
+		carreiraDadosSrv.setC1R(formCarreira.getCor1().getRed());
+		carreiraDadosSrv.setC1G(formCarreira.getCor1().getGreen());
+		carreiraDadosSrv.setC2R(formCarreira.getCor2().getRed());
+		carreiraDadosSrv.setC2G(formCarreira.getCor2().getGreen());
+		carreiraDadosSrv.setC2B(formCarreira.getCor2().getBlue());
 		clientPaddockPack.setJogadorDadosSrv(carreiraDadosSrv);
 		Object ret = enviarObjeto(clientPaddockPack);
 	}

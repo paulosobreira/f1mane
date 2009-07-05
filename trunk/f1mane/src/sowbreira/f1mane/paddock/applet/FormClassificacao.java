@@ -102,7 +102,7 @@ public class FormClassificacao extends JPanel {
 		}
 
 		public int getColumnCount() {
-			return 11;
+			return 12;
 		}
 
 		public int getRowCount() {
@@ -139,6 +139,8 @@ public class FormClassificacao extends JPanel {
 				return decimalFormat.format(corridasDadosSrv.getPontos());
 			case 10:
 				return Lang.msg(corridasDadosSrv.getNivel());
+			case 11:
+				return corridasDadosSrv.getTemporada();
 			default:
 				return "";
 			}
@@ -168,6 +170,8 @@ public class FormClassificacao extends JPanel {
 				return Lang.msg("161");
 			case 10:
 				return Lang.msg("245");
+			case 11:
+				return Lang.msg("251");
 			default:
 				return "";
 			}
