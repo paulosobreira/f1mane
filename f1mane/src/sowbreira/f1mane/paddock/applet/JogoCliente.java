@@ -660,4 +660,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
+	@Override
+	public int getMediaPontecia() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

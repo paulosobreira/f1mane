@@ -83,7 +83,7 @@ public class CarregadorRecursos {
 						String str = imgCar[j].getPath().split("recursos")[1];
 						str = str.substring(1, str.length());
 						carList.add(str);
-						System.out.println(str);
+
 					}
 				}
 			}
@@ -92,10 +92,18 @@ public class CarregadorRecursos {
 				"src/sowbreira/f1mane/recursos/carlist.txt");
 		for (Iterator iterator = carList.iterator(); iterator.hasNext();) {
 			String carro = (String) iterator.next();
-			fileWriter.write(carro + "\n");
+			StringBuffer nCarro = new StringBuffer();
+			for (int i = 0; i < carro.length(); i++) {
+				if (carro.charAt(i) == '\\') {
+					nCarro.append('/');
+				} else {
+					nCarro.append(carro.charAt(i));
+				}
+			}
+			System.out.println(nCarro.toString());
+			fileWriter.write(nCarro.toString() + "\n");
 		}
 		fileWriter.close();
-
 	}
 
 	public static BufferedImage carregaImgCarro(String img) {

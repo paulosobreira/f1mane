@@ -81,16 +81,13 @@ public class ControlePaddockServidor {
 
 	private Object registrarLogin(ClientPaddockPack clientPaddockPack) {
 		synchronized (controlePersistencia.getPaddockDados()) {
-
-			PaddockDadosSrv paddockDadosSrv = controlePersistencia
-					.getPaddockDados();
-			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
-					.getJogadoresMap().get(clientPaddockPack.getNomeJogador());
+			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+					.carregaDaodsJogador(clientPaddockPack.getNomeJogador());
 			if (jogadorDadosSrv == null) {
 				jogadorDadosSrv = new JogadorDadosSrv();
 				jogadorDadosSrv.setNome(clientPaddockPack.getNomeJogador());
 				jogadorDadosSrv.setEmail(clientPaddockPack.getEmailJogador());
-				paddockDadosSrv.getJogadoresMap().put(
+				controlePersistencia.adicionarJogador(
 						jogadorDadosSrv.getNome(), jogadorDadosSrv);
 				String senha;
 				try {
@@ -322,10 +319,10 @@ public class ControlePaddockServidor {
 			return null;
 		}
 		synchronized (controlePersistencia.getPaddockDados()) {
-			PaddockDadosSrv paddockDadosSrv = controlePersistencia
-					.getPaddockDados();
-			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
-					.getJogadoresMap().get(clientPaddockPack.getNomeJogador());
+
+			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+					.carregaDaodsJogador(clientPaddockPack.getNomeJogador());
+
 			if (jogadorDadosSrv == null) {
 				return new MsgSrv(Lang.msg("238"));
 			} else if (clientPaddockPack.isRecuperar()) {

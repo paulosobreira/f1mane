@@ -128,11 +128,16 @@ public class ControleJogosServer {
 
 		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 				.verCarreira(clientPaddockPack);
-
-		if (jogoServidor.isCorridaIniciada()
-				&& carreiraDadosSrv.isModoCarreira()) {
-			return new MsgSrv(Lang.msg("247"));
+		if (carreiraDadosSrv.isModoCarreira()) {
+			if (jogoServidor.isCorridaIniciada()) {
+				return new MsgSrv(Lang.msg("247"));
+			}
+			if (jogoServidor.getMediaPontecia() < carreiraDadosSrv
+					.getPtsCarro()) {
+				return new MsgSrv(Lang.msg("261"));
+			}
 		}
+
 		if (jogoServidor.isCorridaTerminada()) {
 			return new MsgSrv(Lang.msg("206", new String[] { nomeJogo }));
 		}
