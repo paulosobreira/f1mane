@@ -19,6 +19,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
 
 /**
@@ -125,28 +126,38 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public Object adicionarJogador(String apelido,
 			DadosCriarJogo dadosParticiparJogo) {
 		if (mapJogadoresOnline.containsKey(apelido)) {
-			return new MsgSrv("Você já esta neste Jogo");
+			return new MsgSrv(Lang.msg("259"));
 		}
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
 				.hasNext();) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
 			if (dadosParticiparJogo.getPiloto().equals(valor.getPiloto())) {
-				return new MsgSrv(dadosParticiparJogo.getPiloto()
-						+ " já escolhido por " + key);
-			}
-		}
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
-			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
-					&& piloto.isDesqualificado()) {
-				return new MsgSrv(dadosParticiparJogo.getPiloto()
-						+ " está Fora da Corrida");
+				return new MsgSrv(Lang.msg("257", new String[] {
+						dadosParticiparJogo.getPiloto(), key }));
 
 			}
 		}
-		mapJogadoresOnline.put(apelido, dadosParticiparJogo);
-		mapJogadoresOnlineTexto.put(apelido, new BufferTexto());
+		boolean pilotoDisponivel = false;
+		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
+			Piloto piloto = (Piloto) iter.next();
+			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
+				pilotoDisponivel = true;
+			}
+			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
+					&& piloto.isDesqualificado()) {
+				return new MsgSrv(Lang.msg("258",
+						new String[] { dadosParticiparJogo.getPiloto() }));
+			}
+		}
+		if (pilotoDisponivel) {
+			mapJogadoresOnline.put(apelido, dadosParticiparJogo);
+			mapJogadoresOnlineTexto.put(apelido, new BufferTexto());
+		} else {
+			return new MsgSrv(Lang.msg("260",
+					new String[] { dadosParticiparJogo.getPiloto() }));
+
+		}
 		return null;
 	}
 
@@ -169,7 +180,15 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				.hasNext();) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
-			detMap.put(key, valor.getPiloto());
+			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
+					.obterCarreiraSrv(key);
+			String piloto = "";
+			if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
+				piloto = carreiraDadosSrv.getNomePiloto();
+			} else {
+				piloto = valor.getPiloto();
+			}
+			detMap.put(key, piloto);
 		}
 		detalhesJogo.setDadosCriarJogo(getDadosCriarJogo());
 		detalhesJogo.setTempoCriacao(getTempoCriacao());
@@ -322,8 +341,11 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 								.getPtsPiloto()));
 						piloto.getCarro().setNome(
 								carreiraDadosSrv.getNomeCarro());
+						piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
 						piloto.getCarro().setPotencia(
 								carreiraDadosSrv.getPtsCarro());
+						piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
+						piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
 					}
 				}
 			}

@@ -92,6 +92,8 @@ public class ControleClassificacao {
 						continue;
 					}
 					CorridasDadosSrv corridasDadosSrv = new CorridasDadosSrv();
+					corridasDadosSrv
+							.setTemporada(dadosCriarJogo.getTemporada());
 					corridasDadosSrv.setPiloto(piloto.getNome());
 					corridasDadosSrv.setCarro(piloto.getNomeCarro());
 					corridasDadosSrv.setTempoInicio(tempoInicio);
@@ -319,6 +321,18 @@ public class ControleClassificacao {
 					.getJogadorDadosSrv().getPtsConstrutores());
 			carreiraDadosSrv.setModoCarreira(clientPaddockPack
 					.getJogadorDadosSrv().isModoCarreira());
+			carreiraDadosSrv.setC1R(clientPaddockPack.getJogadorDadosSrv()
+					.getC1R());
+			carreiraDadosSrv.setC1G(clientPaddockPack.getJogadorDadosSrv()
+					.getC1G());
+			carreiraDadosSrv.setC1B(clientPaddockPack.getJogadorDadosSrv()
+					.getC1B());
+			carreiraDadosSrv.setC2R(clientPaddockPack.getJogadorDadosSrv()
+					.getC2R());
+			carreiraDadosSrv.setC2G(clientPaddockPack.getJogadorDadosSrv()
+					.getC2G());
+			carreiraDadosSrv.setC2B(clientPaddockPack.getJogadorDadosSrv()
+					.getC2B());
 			jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
 			return new MsgSrv(Lang.msg("250"));
 		}

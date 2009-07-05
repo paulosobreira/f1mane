@@ -78,7 +78,7 @@ public class ControlePersistencia {
 			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map.get(key);
 			Dia dia = new Dia(jogadorDadosSrv.getUltimoLogon());
 			Dia hj = new Dia();
-			if (hj.daysBetween(dia) > 60) {
+			if (hj.daysBetween(dia) > 30) {
 				iter.remove();
 			}
 		}

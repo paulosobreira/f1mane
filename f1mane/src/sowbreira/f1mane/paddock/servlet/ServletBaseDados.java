@@ -74,6 +74,7 @@ public class ServletBaseDados extends HttpServlet {
 	}
 
 	private void topExceptions(HttpServletResponse res) throws IOException {
+		res.setContentType("text/html");
 		PrintWriter printWriter = res.getWriter();
 		printWriter.write("<html><body>");
 		printWriter.write("<h2>F1-Mane Paddock Exceções</h2><br><hr>");
