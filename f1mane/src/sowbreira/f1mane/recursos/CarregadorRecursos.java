@@ -1,10 +1,16 @@
 package sowbreira.f1mane.recursos;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -63,7 +69,32 @@ public class CarregadorRecursos {
 		return rec.getClass().getResourceAsStream(string);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws URISyntaxException,
+			IOException {
+		List carList = new LinkedList();
+		File file = new File("src/sowbreira/f1mane/recursos/carros");
+		File[] dir = file.listFiles();
+		for (int i = 0; i < dir.length; i++) {
+			if (!dir[i].getName().startsWith(".")) {
+				File[] imgCar = dir[i].listFiles();
+				for (int j = 0; j < imgCar.length; j++) {
+					if (!imgCar[j].getName().startsWith(".")
+							&& !imgCar[j].getName().equals("Thumbs.db")) {
+						String str = imgCar[j].getPath().split("recursos")[1];
+						str = str.substring(1, str.length());
+						carList.add(str);
+						System.out.println(str);
+					}
+				}
+			}
+		}
+		FileWriter fileWriter = new FileWriter(
+				"src/sowbreira/f1mane/recursos/carlist.txt");
+		for (Iterator iterator = carList.iterator(); iterator.hasNext();) {
+			String carro = (String) iterator.next();
+			fileWriter.write(carro + "\n");
+		}
+		fileWriter.close();
 
 	}
 

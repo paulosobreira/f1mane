@@ -12,6 +12,7 @@ public class CarreiraDadosSrv implements Serializable {
 	private int ptsPiloto;
 	private int ptsCarro;
 	private String nomePiloto;
+	private String imgCarro;
 	private String nomeCarro;
 	private boolean modoCarreira;
 	private int c1R;
@@ -22,13 +23,15 @@ public class CarreiraDadosSrv implements Serializable {
 	private int c2B;
 
 	public Color geraCor1() {
-		return new Color(c1R,c1G,c1B);
+		return new Color(c1R, c1G, c1B);
 
 	}
+
 	public Color geraCor2() {
-		return new Color(c2R,c2G,c2B);
+		return new Color(c2R, c2G, c2B);
 
 	}
+
 	public int getPtsConstrutores() {
 		return ptsConstrutores;
 	}
@@ -123,6 +126,14 @@ public class CarreiraDadosSrv implements Serializable {
 
 	public void setC2B(int c2b) {
 		c2B = c2b;
+	}
+
+	public String getImgCarro() {
+		return imgCarro;
+	}
+
+	public void setImgCarro(String imgCarro) {
+		this.imgCarro = imgCarro;
 	}
 
 }

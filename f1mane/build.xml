@@ -21,7 +21,15 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadrao" depends="copiaRecursos,compilarClasses,criarJar,atualizaPaddock,criarWar">
+	<target name="targetPadrao" depends="gerarListCarros,copiaRecursos,compilarClasses,criarJar,atualizaPaddock,criarWar">
+	</target>
+
+
+	<target name="gerarListCarros">
+		<java classname="sowbreira.f1mane.recursos.CarregadorRecursos" failonerror="true">
+			<classpath refid="classpath.compilacao" />
+			<arg value="br" /> 
+		</java>
 	</target>
 
 	<target name="compilarClasses">

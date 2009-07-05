@@ -313,6 +313,8 @@ public class ControleClassificacao {
 					.getJogadorDadosSrv().getNomePiloto());
 			carreiraDadosSrv.setNomeCarro(clientPaddockPack
 					.getJogadorDadosSrv().getNomeCarro());
+			carreiraDadosSrv.setImgCarro(clientPaddockPack.getJogadorDadosSrv()
+					.getImgCarro());
 			carreiraDadosSrv.setPtsCarro(clientPaddockPack.getJogadorDadosSrv()
 					.getPtsCarro());
 			carreiraDadosSrv.setPtsPiloto(clientPaddockPack

@@ -21,6 +21,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:28:27
@@ -346,6 +347,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 								carreiraDadosSrv.getPtsCarro());
 						piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
 						piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
+						if (!Util.isNullOrEmpty(carreiraDadosSrv.getImgCarro())) {
+							piloto.getCarro().setImg(
+									carreiraDadosSrv.getImgCarro());
+						}
 					}
 				}
 			}
