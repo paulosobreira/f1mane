@@ -135,7 +135,7 @@ public class ControlePersistencia {
 		return null;
 	}
 
-	public JogadorDadosSrv carregaDaodsJogador(String nomeJogador) {
+	public JogadorDadosSrv carregaDadosJogador(String nomeJogador) {
 		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
 				.getJogadoresMap().get(nomeJogador);
 		return jogadorDadosSrv;

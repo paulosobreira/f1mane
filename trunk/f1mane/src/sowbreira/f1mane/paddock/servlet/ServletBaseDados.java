@@ -16,7 +16,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
+
 import br.nnpe.Dia;
+import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
@@ -81,12 +84,27 @@ public class ServletBaseDados extends HttpServlet {
 		printWriter.write("<html><body>");
 		printWriter.write("<h2>F1-Mane Paddock Construtores</h2><br><hr>");
 		synchronized ("") {
-			Set top = topExceptions.keySet();
+			Set top = controlePersistencia.obterListaJogadores();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
-				String exept = (String) iterator.next();
-				printWriter.write("Quantidade : " + topExceptions.get(exept));
-				printWriter.write("<br>");
-				printWriter.write(exept);
+				String jog = (String) iterator.next();
+				JogadorDadosSrv dadosSrv = controlePersistencia
+						.carregaDadosJogador(jog);
+				if (dadosSrv.getCarreiraDadosSrv() == null) {
+					continue;
+				}
+				if (Util.isNullOrEmpty(dadosSrv.getCarreiraDadosSrv()
+						.getNomeCarro())
+						|| Util.isNullOrEmpty(dadosSrv.getCarreiraDadosSrv()
+								.getNomePiloto())) {
+					continue;
+				}
+				printWriter.write("Jogador : " + dadosSrv.getNome());
+				printWriter.write("<br> Pts Piloto: "
+						+ dadosSrv.getCarreiraDadosSrv().getPtsPiloto());
+				printWriter.write("<br> Pts Carro: "
+						+ dadosSrv.getCarreiraDadosSrv().getPtsCarro());
+				printWriter.write("<br> Pts Const: "
+						+ dadosSrv.getCarreiraDadosSrv().getPtsConstrutores());
 				printWriter.write("<br><hr>");
 			}
 		}

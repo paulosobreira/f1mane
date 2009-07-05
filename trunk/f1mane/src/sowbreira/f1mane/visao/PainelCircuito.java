@@ -380,6 +380,7 @@ public class PainelCircuito extends JPanel {
 				.carregaImgCarro(pilotQualificacao.getCarro().getImg());
 		g2d.drawImage(carroimg, null, pointQualificacao.x, pointQualificacao.y);
 		synchronized (mapDesenharQualificacao) {
+			int newY = 0;
 			for (Iterator iter = mapDesenharQualificacao.keySet().iterator(); iter
 					.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
@@ -387,7 +388,9 @@ public class PainelCircuito extends JPanel {
 				carroimg = CarregadorRecursos
 						.carregaBufferedImageTranspareciaBranca(piloto
 								.getCarro().getImg());
-				g2d.drawImage(carroimg, null, point.x, point.y);
+				newY = carroimg.getHeight() > 36 ? point.y
+						- (carroimg.getHeight() - 36) : point.y;
+				g2d.drawImage(carroimg, null, point.x, newY);
 				String txt = piloto.getNome()
 						+ " - "
 						+ ControleEstatisticas.formatarTempo(piloto
@@ -428,7 +431,7 @@ public class PainelCircuito extends JPanel {
 		int carSelX = 0;
 		int carSelY = getHeight() - 35;
 		int bounce = 0;
-
+		int newY = 0;
 		Carro carroFrente = controleJogo.obterCarroNaFrente(psel);
 		if (carroFrente != null) {
 			carroimg = CarregadorRecursos.carregaImgCarro(carroFrente.getImg());
@@ -463,8 +466,9 @@ public class PainelCircuito extends JPanel {
 				carSelX += 120;
 				dstX += 90;
 			}
-
-			g2d.drawImage(carroimg, null, carSelX, carSelY);
+			newY = carroimg.getHeight() > 36 ? carSelY
+					- (carroimg.getHeight() - 36) : carSelY;
+			g2d.drawImage(carroimg, null, carSelX, newY);
 			g2d.fillRoundRect(dstX - 2, dstY - 12, 60, 15, 10, 10);
 			if (diff >= 3) {
 				g2d.setColor(Color.BLACK);
@@ -489,7 +493,9 @@ public class PainelCircuito extends JPanel {
 		} else {
 			carSelX -= bounce;
 		}
-		g2d.drawImage(carroimg, null, carSelX, carSelY);
+		newY = carroimg.getHeight() > 36 ? carSelY
+				- (carroimg.getHeight() - 36) : carSelY;
+		g2d.drawImage(carroimg, null, carSelX, newY);
 		Carro carroAtraz = controleJogo.obterCarroAtraz(psel);
 		if (carroAtraz != null) {
 			carroimg = CarregadorRecursos.carregaImgCarro(carroAtraz.getImg());
@@ -527,7 +533,9 @@ public class PainelCircuito extends JPanel {
 				carSelX -= 110;
 				dstX -= 70;
 			}
-			g2d.drawImage(carroimg, null, carSelX, carSelY);
+			newY = carroimg.getHeight() > 36 ? carSelY
+					- (carroimg.getHeight() - 36) : carSelY;
+			g2d.drawImage(carroimg, null, carSelX, newY);
 			g2d.fillRoundRect(dstX - 2, dstY - 12, 60, 15, 10, 10);
 			if (diff >= 3) {
 				g2d.setColor(Color.BLACK);
