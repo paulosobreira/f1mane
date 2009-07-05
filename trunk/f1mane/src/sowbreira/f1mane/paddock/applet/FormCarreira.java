@@ -4,7 +4,14 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JFormattedTextField;
@@ -13,10 +20,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 27/06/2009 as 15:48:51
@@ -67,9 +77,17 @@ public class FormCarreira extends JPanel {
 	private JLabel labelCor1 = new JLabel("Cor da equipe 1:");
 	private JLabel labelCor2 = new JLabel("Cor da equipe 2:");
 
+	private List listaCarro = new ArrayList();
+	private JSpinner imgCarro = new JSpinner();
+	private String imgCarroStr = "";
 	private int ptsCarreira = 1;
 
 	public FormCarreira() {
+		try {
+			carregarListaCarros();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		setLayout(new GridLayout(4, 4));
 		add(labelModoCarreira);
 		add(modoCarreira);
@@ -89,7 +107,7 @@ public class FormCarreira extends JPanel {
 		add(labelCor1);
 		add(labelCor2);
 		add(new JLabel());
-		add(new JLabel());
+		add(imgCarro);
 		labelCor1.setOpaque(true);
 		labelCor1.addMouseListener(new MouseAdapter() {
 
@@ -123,6 +141,31 @@ public class FormCarreira extends JPanel {
 		JFormattedTextField tfptsPiloto = ((JSpinner.DefaultEditor) ptsPiloto
 				.getEditor()).getTextField();
 		tfptsPiloto.setEditable(false);
+		imgCarro.setValue(new Integer(-1));
+		imgCarro.setEditor(new JLabel() {
+			@Override
+			public Icon getIcon() {
+				if (Util.isNullOrEmpty(imgCarroStr)) {
+					imgCarroStr = "carro_dano.gif";
+				}
+				return new ImageIcon(CarregadorRecursos
+						.carregaImgCarro(imgCarroStr));
+			}
+		});
+		imgCarro.setModel(new ImageCarroSpinnerModel());
+	}
+
+	private void carregarListaCarros() throws IOException {
+
+		BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(CarregadorRecursos
+						.recursoComoStream("carlist.txt")));
+		String line = bufferedReader.readLine();
+		while (line != null) {
+			System.out.println(line);
+			listaCarro.add(line);
+			line = bufferedReader.readLine();
+		}
 	}
 
 	public static void main(String[] args) {
@@ -130,6 +173,7 @@ public class FormCarreira extends JPanel {
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(formCarreira);
 		formCarreira.setCor1(Color.BLUE);
+		frame.setSize(700, 200);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
@@ -160,6 +204,39 @@ public class FormCarreira extends JPanel {
 
 	public JCheckBox getModoCarreira() {
 		return modoCarreira;
+	}
+
+	private class ImageCarroSpinnerModel extends SpinnerNumberModel {
+
+		long index = 0;
+
+		public Long getValue() {
+			return index;
+		}
+
+		public void setValue(Long value) {
+			this.index = value;
+		}
+
+		@Override
+		public Object getNextValue() {
+			List list = listaCarro;
+			index = (index >= list.size() - 1) ? 0 : index + 1;
+			imgCarroStr = (String) list.get((int) index);
+			System.out.println(imgCarroStr);
+			imgCarro.getEditor().repaint();
+			return super.getNextValue();
+		}
+
+		@Override
+		public Object getPreviousValue() {
+			List list = listaCarro;
+			index = (index <= 0) ? list.size() - 1 : index - 1;
+			imgCarroStr = (String) list.get((int) index);
+			System.out.println(imgCarroStr);
+			imgCarro.getEditor().repaint();
+			return super.getPreviousValue();
+		}
 	}
 
 	private class CarreiraSpinnerModel extends SpinnerNumberModel {
@@ -245,5 +322,13 @@ public class FormCarreira extends JPanel {
 		}
 		labelCor2.repaint();
 
+	}
+
+	public String getImgCarroStr() {
+		return imgCarroStr;
+	}
+
+	public void setImgCarroStr(String imgCarroStr) {
+		this.imgCarroStr = imgCarroStr;
 	}
 }

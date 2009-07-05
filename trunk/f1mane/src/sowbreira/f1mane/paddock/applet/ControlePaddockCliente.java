@@ -598,6 +598,7 @@ public class ControlePaddockCliente {
 		CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) ret;
 		formCarreira.getNomePiloto().setText(carreiraDadosSrv.getNomePiloto());
 		formCarreira.getNomeCarro().setText(carreiraDadosSrv.getNomeCarro());
+		formCarreira.setImgCarroStr(carreiraDadosSrv.getImgCarro());
 		formCarreira.getModoCarreira().setSelected(
 				carreiraDadosSrv.isModoCarreira());
 		formCarreira.getPtsPiloto().setValue(
@@ -616,6 +617,7 @@ public class ControlePaddockCliente {
 		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
 		carreiraDadosSrv.setNomePiloto(formCarreira.getNomePiloto().getText());
 		carreiraDadosSrv.setNomeCarro(formCarreira.getNomeCarro().getText());
+		carreiraDadosSrv.setImgCarro(formCarreira.getImgCarroStr());
 		carreiraDadosSrv.setPtsCarro((Integer) formCarreira.getPtsCarro()
 				.getValue());
 		carreiraDadosSrv.setPtsPiloto((Integer) formCarreira.getPtsPiloto()
