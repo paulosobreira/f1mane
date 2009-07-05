@@ -5,21 +5,20 @@ import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import br.nnpe.Dia;
-
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
+import br.nnpe.Dia;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 14:19:54
@@ -116,11 +115,6 @@ public class ControlePersistencia {
 		System.out.println(hj.daysBetween(dia));
 	}
 
-	public PaddockDadosSrv getPaddockDados() {
-		return paddockDadosSrv;
-
-	}
-
 	public byte[] obterBytesBase(String tipo) {
 		try {
 			synchronized (paddockDadosSrv) {
@@ -139,6 +133,25 @@ public class ControlePersistencia {
 		} catch (Exception e) {
 		}
 		return null;
+	}
+
+	public JogadorDadosSrv carregaDaodsJogador(String nomeJogador) {
+		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
+				.getJogadoresMap().get(nomeJogador);
+		return jogadorDadosSrv;
+	}
+
+	public Object getPaddockDados() {
+		return nomeArquivo;
+	}
+
+	public Set obterListaJogadores() {
+		return paddockDadosSrv.getJogadoresMap().keySet();
+	}
+
+	public void adicionarJogador(String nome, JogadorDadosSrv jogadorDadosSrv) {
+		paddockDadosSrv.getJogadoresMap().put(nome, jogadorDadosSrv);
+
 	}
 
 }

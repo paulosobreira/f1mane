@@ -795,4 +795,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return false;
 	}
 
+	public int getMediaPontecia() {
+		return controleCorrida.getMediaPontecia();
+	}
+
 }

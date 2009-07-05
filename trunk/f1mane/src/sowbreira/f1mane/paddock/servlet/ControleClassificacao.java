@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
@@ -41,12 +42,11 @@ public class ControleClassificacao {
 	public List obterListaClassificacao() {
 		List returnList = new ArrayList();
 		synchronized (controlePersistencia.getPaddockDados()) {
-			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
-
-			for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
+			Set jogadores = controlePersistencia.obterListaJogadores();
+			for (Iterator iter = jogadores.iterator(); iter.hasNext();) {
 				String key = (String) iter.next();
-				JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
-						.get(key);
+				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+						.carregaDaodsJogador(key);
 				DadosJogador dadosJogador = new DadosJogador();
 				dadosJogador.setNome(jogadorDadosSrv.getNome());
 				dadosJogador.setUltimoAceso(jogadorDadosSrv.getUltimoLogon());
@@ -82,12 +82,11 @@ public class ControleClassificacao {
 			Map mapVoltasJogadoresOnline, List pilotos,
 			DadosCriarJogo dadosCriarJogo) {
 		synchronized (controlePersistencia.getPaddockDados()) {
-			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
 			for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
 				if (piloto.isJogadorHumano()) {
-					JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
-							.get(piloto.getNomeJogador());
+					JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+							.carregaDaodsJogador(piloto.getNomeJogador());
 					if (jogadorDadosSrv == null) {
 						continue;
 					}
@@ -200,9 +199,8 @@ public class ControleClassificacao {
 
 	public List obterListaCorridas(String nomeJogador) {
 		synchronized (controlePersistencia.getPaddockDados()) {
-			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
-			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
-					.get(nomeJogador);
+			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+					.carregaDaodsJogador(nomeJogador);
 			if (jogadorDadosSrv == null) {
 				return null;
 			}
@@ -216,12 +214,11 @@ public class ControleClassificacao {
 		Map mapaPilotos = new HashMap();
 
 		synchronized (controlePersistencia.getPaddockDados()) {
-			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
-
-			for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
+			Set jogadores = controlePersistencia.obterListaJogadores();
+			for (Iterator iter = jogadores.iterator(); iter.hasNext();) {
 				String key = (String) iter.next();
-				JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
-						.get(key);
+				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+						.carregaDaodsJogador(key);
 				List corridas = jogadorDadosSrv.getCorridas();
 				for (Iterator iterator = corridas.iterator(); iterator
 						.hasNext();) {
@@ -279,9 +276,9 @@ public class ControleClassificacao {
 
 	public CarreiraDadosSrv verCarreira(ClientPaddockPack clientPaddockPack) {
 		synchronized (controlePersistencia.getPaddockDados()) {
-			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
-			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
-					.get(clientPaddockPack.getSessaoCliente().getNomeJogador());
+			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+					.carregaDaodsJogador(clientPaddockPack.getSessaoCliente()
+							.getNomeJogador());
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
 			if (carreiraDadosSrv.getPtsCarro() == 0) {
@@ -296,9 +293,9 @@ public class ControleClassificacao {
 
 	public Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {
 		synchronized (controlePersistencia.getPaddockDados()) {
-			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
-			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map
-					.get(clientPaddockPack.getSessaoCliente().getNomeJogador());
+			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+					.carregaDaodsJogador(clientPaddockPack.getSessaoCliente()
+							.getNomeJogador());
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
 			// Validar pts servidor.
@@ -342,8 +339,9 @@ public class ControleClassificacao {
 
 	public CarreiraDadosSrv obterCarreiraSrv(String key) {
 		synchronized (controlePersistencia.getPaddockDados()) {
-			Map map = controlePersistencia.getPaddockDados().getJogadoresMap();
-			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map.get(key);
+
+			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+					.carregaDaodsJogador(key);
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
 			return carreiraDadosSrv;

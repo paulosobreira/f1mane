@@ -18,6 +18,7 @@ import br.nnpe.Html;
 public class ControleCorrida {
 	private int distaciaCorrida;
 	private int durabilidadeMaxMotor;
+	private int mediaPontecia;
 	private int tanqueCheio;
 	private int voltaAtual;
 	private int qtdeTotalVoltas;
@@ -81,13 +82,17 @@ public class ControleCorrida {
 			Carro carro = (Carro) controleJogo.getCarros().get(i);
 			somaPontecias += carro.getPotencia();
 		}
-		int mediaPontecia = somaPontecias / controleJogo.getCarros().size();
+		mediaPontecia = somaPontecias / controleJogo.getCarros().size();
 		for (int i = 0; i < controleJogo.getPilotos().size(); i++) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
 			piloto.getCarro().setDurabilidadeMaxMotor(durabilidadeMaxMotor,
 					mediaPontecia);
 		}
 
+	}
+
+	public int getMediaPontecia() {
+		return mediaPontecia;
 	}
 
 	public ControleClima getControleClima() {

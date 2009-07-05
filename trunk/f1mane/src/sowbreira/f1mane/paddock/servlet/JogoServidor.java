@@ -538,4 +538,5 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			ControleClassificacao controleClassificacao) {
 		this.controleClassificacao = controleClassificacao;
 	}
+
 }

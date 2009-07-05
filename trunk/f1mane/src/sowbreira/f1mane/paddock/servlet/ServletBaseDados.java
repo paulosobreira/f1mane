@@ -61,6 +61,8 @@ public class ServletBaseDados extends HttpServlet {
 			return;
 		} else if ("x".equals(tipo)) {
 			topExceptions(res);
+		} else if ("C".equals(tipo)) {
+			topConstrutors(res);
 		} else {
 			res.setHeader("Content-Disposition", "attachment;filename=\""
 					+ "paddockDadosSrv" + tipo + "_"
@@ -71,6 +73,26 @@ public class ServletBaseDados extends HttpServlet {
 			}
 			res.getOutputStream().write(ret);
 		}
+	}
+
+	private void topConstrutors(HttpServletResponse res) throws IOException {
+		res.setContentType("text/html");
+		PrintWriter printWriter = res.getWriter();
+		printWriter.write("<html><body>");
+		printWriter.write("<h2>F1-Mane Paddock Construtores</h2><br><hr>");
+		synchronized ("") {
+			Set top = topExceptions.keySet();
+			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+				String exept = (String) iterator.next();
+				printWriter.write("Quantidade : " + topExceptions.get(exept));
+				printWriter.write("<br>");
+				printWriter.write(exept);
+				printWriter.write("<br><hr>");
+			}
+		}
+		printWriter.write("</body></html>");
+		res.flushBuffer();
+
 	}
 
 	private void topExceptions(HttpServletResponse res) throws IOException {

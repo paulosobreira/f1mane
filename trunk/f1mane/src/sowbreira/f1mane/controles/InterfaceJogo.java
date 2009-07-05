@@ -40,6 +40,8 @@ public interface InterfaceJogo {
 
 	public MainFrame getMainFrame();
 
+	public int getMediaPontecia();
+
 	public String getNivelCorrida();
 
 	public void setNivelCorrida(String nivelCorrida);
