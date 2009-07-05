@@ -140,7 +140,7 @@ public class FormClassificacao extends JPanel {
 			case 10:
 				return Lang.msg(corridasDadosSrv.getNivel());
 			case 11:
-				return corridasDadosSrv.getTemporada();
+				return Lang.msg(corridasDadosSrv.getTemporada());
 			default:
 				return "";
 			}

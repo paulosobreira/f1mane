@@ -112,7 +112,8 @@ public class PaddockWindow {
 	};
 
 	private JComboBox comboTemporada = new JComboBox(new String[] { "2009",
-			"2008", "2007", "1990", "1988", "1987", "1986", "1974", "1972" });
+			"2008", "2007", "1990", "1988", "1987", "1986", "1974", "1972",
+			"1968", "super" });
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
@@ -316,7 +317,7 @@ public class PaddockWindow {
 				}
 			}
 		});
-//		carreira.setEnabled(false);
+		// carreira.setEnabled(false);
 		conta.setEnabled(false);
 		buttonsPanel.add(carreira);
 		buttonsPanel.add(construtores);

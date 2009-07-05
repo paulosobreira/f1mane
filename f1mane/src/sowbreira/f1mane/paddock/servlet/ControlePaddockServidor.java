@@ -82,7 +82,7 @@ public class ControlePaddockServidor {
 	private Object registrarLogin(ClientPaddockPack clientPaddockPack) {
 		synchronized (controlePersistencia.getPaddockDados()) {
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDaodsJogador(clientPaddockPack.getNomeJogador());
+					.carregaDadosJogador(clientPaddockPack.getNomeJogador());
 			if (jogadorDadosSrv == null) {
 				jogadorDadosSrv = new JogadorDadosSrv();
 				jogadorDadosSrv.setNome(clientPaddockPack.getNomeJogador());
@@ -321,7 +321,7 @@ public class ControlePaddockServidor {
 		synchronized (controlePersistencia.getPaddockDados()) {
 
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDaodsJogador(clientPaddockPack.getNomeJogador());
+					.carregaDadosJogador(clientPaddockPack.getNomeJogador());
 
 			if (jogadorDadosSrv == null) {
 				return new MsgSrv(Lang.msg("238"));

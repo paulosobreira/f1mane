@@ -42,6 +42,8 @@ public class MainFrame extends JFrame {
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
 	private boolean modoApplet;
+	private JRadioButtonMenuItem tsuper;
+	private JRadioButtonMenuItem t1968;
 	private JRadioButtonMenuItem t1972;
 	private JRadioButtonMenuItem t1974;
 	private JRadioButtonMenuItem t1986;
@@ -283,61 +285,75 @@ public class MainFrame extends JFrame {
 		});
 		menu1.add(pausa);
 		ButtonGroup buttonGroup = new ButtonGroup();
+		t1968 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("t1968");
+			}
+
+		};
 		t1972 = new JRadioButtonMenuItem() {
 			public String getText() {
-				return Lang.msg("228");
+				return Lang.msg("t1972");
 			}
 
 		};
 		t1974 = new JRadioButtonMenuItem() {
 			public String getText() {
-				return Lang.msg("230");
+				return Lang.msg("t1974");
 			}
 
 		};
 		t1986 = new JRadioButtonMenuItem() {
 			public String getText() {
-				return Lang.msg("231");
+				return Lang.msg("t1986");
 			}
 
 		};
 		t1987 = new JRadioButtonMenuItem() {
 			public String getText() {
-				return Lang.msg("226");
+				return Lang.msg("t1987");
 			}
 
 		};
 		t1988 = new JRadioButtonMenuItem() {
 			public String getText() {
-				return Lang.msg("227");
+				return Lang.msg("t1988");
 			}
 
 		};
 		t1990 = new JRadioButtonMenuItem() {
 			public String getText() {
-				return Lang.msg("229");
+				return Lang.msg("t1990");
 			}
 
 		};
 		t2007 = new JRadioButtonMenuItem() {
 			public String getText() {
-				return Lang.msg("085");
+				return Lang.msg("t2007");
 			}
 
 		};
 		t2008 = new JRadioButtonMenuItem() {
 			public String getText() {
-				return Lang.msg("086");
+				return Lang.msg("t2008");
 			}
 
 		};
 
 		t2009 = new JRadioButtonMenuItem() {
 			public String getText() {
-				return Lang.msg("087");
+				return Lang.msg("t2009");
 			}
 
 		};
+		tsuper = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("tsuper");
+			}
+
+		};
+		buttonGroup.add(tsuper);
+		buttonGroup.add(t1968);
 		buttonGroup.add(t1972);
 		buttonGroup.add(t1974);
 		buttonGroup.add(t1986);
@@ -347,6 +363,8 @@ public class MainFrame extends JFrame {
 		buttonGroup.add(t2007);
 		buttonGroup.add(t2008);
 		buttonGroup.add(t2009);
+		menu1.add(tsuper);
+		menu1.add(t1968);
 		menu1.add(t1972);
 		menu1.add(t1974);
 		menu1.add(t1986);
@@ -356,8 +374,17 @@ public class MainFrame extends JFrame {
 		menu1.add(t2007);
 		menu1.add(t2008);
 		menu1.add(t2009);
+
 		t2009.setSelected(true);
 
+	}
+
+	public JRadioButtonMenuItem getTsuper() {
+		return tsuper;
+	}
+
+	public JRadioButtonMenuItem getT1968() {
+		return t1968;
 	}
 
 	protected void selecionarTemporada() {
@@ -379,6 +406,10 @@ public class MainFrame extends JFrame {
 			temporarada = "t2008";
 		} else if (getT2009().isSelected()) {
 			temporarada = "t2009";
+		} else if (getT1968().isSelected()) {
+			temporarada = "t1968";
+		} else if (getTsuper().isSelected()) {
+			temporarada = "tsuper";
 		}
 
 	}

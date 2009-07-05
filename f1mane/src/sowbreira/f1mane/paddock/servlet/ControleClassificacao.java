@@ -46,7 +46,7 @@ public class ControleClassificacao {
 			for (Iterator iter = jogadores.iterator(); iter.hasNext();) {
 				String key = (String) iter.next();
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-						.carregaDaodsJogador(key);
+						.carregaDadosJogador(key);
 				DadosJogador dadosJogador = new DadosJogador();
 				dadosJogador.setNome(jogadorDadosSrv.getNome());
 				dadosJogador.setUltimoAceso(jogadorDadosSrv.getUltimoLogon());
@@ -86,7 +86,7 @@ public class ControleClassificacao {
 				Piloto piloto = (Piloto) iter.next();
 				if (piloto.isJogadorHumano()) {
 					JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-							.carregaDaodsJogador(piloto.getNomeJogador());
+							.carregaDadosJogador(piloto.getNomeJogador());
 					if (jogadorDadosSrv == null) {
 						continue;
 					}
@@ -200,7 +200,7 @@ public class ControleClassificacao {
 	public List obterListaCorridas(String nomeJogador) {
 		synchronized (controlePersistencia.getPaddockDados()) {
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDaodsJogador(nomeJogador);
+					.carregaDadosJogador(nomeJogador);
 			if (jogadorDadosSrv == null) {
 				return null;
 			}
@@ -218,7 +218,7 @@ public class ControleClassificacao {
 			for (Iterator iter = jogadores.iterator(); iter.hasNext();) {
 				String key = (String) iter.next();
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-						.carregaDaodsJogador(key);
+						.carregaDadosJogador(key);
 				List corridas = jogadorDadosSrv.getCorridas();
 				for (Iterator iterator = corridas.iterator(); iterator
 						.hasNext();) {
@@ -277,7 +277,7 @@ public class ControleClassificacao {
 	public CarreiraDadosSrv verCarreira(ClientPaddockPack clientPaddockPack) {
 		synchronized (controlePersistencia.getPaddockDados()) {
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDaodsJogador(clientPaddockPack.getSessaoCliente()
+					.carregaDadosJogador(clientPaddockPack.getSessaoCliente()
 							.getNomeJogador());
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
@@ -294,7 +294,7 @@ public class ControleClassificacao {
 	public Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {
 		synchronized (controlePersistencia.getPaddockDados()) {
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDaodsJogador(clientPaddockPack.getSessaoCliente()
+					.carregaDadosJogador(clientPaddockPack.getSessaoCliente()
 							.getNomeJogador());
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
@@ -341,7 +341,7 @@ public class ControleClassificacao {
 		synchronized (controlePersistencia.getPaddockDados()) {
 
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDaodsJogador(key);
+					.carregaDadosJogador(key);
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
 			return carreiraDadosSrv;
