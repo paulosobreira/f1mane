@@ -1,5 +1,7 @@
 package sowbreira.f1mane.paddock.applet;
 
+import br.nnpe.Logger;
+
 /**
  * @author Paulo Sobreira Criado em 15/08/2007 as 15:36:58
  */
@@ -14,7 +16,7 @@ public class MonitorQualificacao implements Runnable {
 		try {
 			controleJogoClenteLocal.desenhaQualificacao();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 	}
 

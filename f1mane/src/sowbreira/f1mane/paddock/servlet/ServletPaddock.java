@@ -7,19 +7,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.nnpe.Email;
-
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Email;
+import br.nnpe.Logger;
 
 /**
  * @author paulo.sobreira
@@ -30,7 +28,7 @@ public class ServletPaddock extends HttpServlet {
 	private static ControlePaddockServidor controlePaddock;
 	private static ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
-	
+
 	public static Email email;
 
 	public void init() throws ServletException {
@@ -43,7 +41,7 @@ public class ServletPaddock extends HttpServlet {
 					.getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		controlePaddock = new ControlePaddockServidor(controlePersistencia);
 		monitorAtividade = new MonitorAtividade(controlePaddock);
@@ -57,7 +55,7 @@ public class ServletPaddock extends HttpServlet {
 		try {
 			controlePersistencia.gravarDados();
 		} catch (IOException e) {
-			e.printStackTrace();
+			ServletBaseDados.topExecpts(e);
 		}
 		super.destroy();
 	}
@@ -96,7 +94,7 @@ public class ServletPaddock extends HttpServlet {
 
 				return;
 			} else {
-				System.out.println("Input null");
+				Logger.logar("Input null");
 			}
 
 			PrintWriter printWriter = res.getWriter();
@@ -106,8 +104,6 @@ public class ServletPaddock extends HttpServlet {
 			ServletBaseDados.topExecpts(e);
 		}
 	}
-
-
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
 			throws IOException {
@@ -146,7 +142,7 @@ public class ServletPaddock extends HttpServlet {
 		// while (e.hasMoreElements()) {
 		// String element = (String) e.nextElement();
 		// System.out.print(element + " - ");
-		// System.out.println(System.getProperties().getProperty(element));
+		// Logger.logar(System.getProperties().getProperty(element));
 		//
 		// }
 

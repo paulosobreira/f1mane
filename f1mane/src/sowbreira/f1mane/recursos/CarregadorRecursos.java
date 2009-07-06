@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import sowbreira.f1mane.entidades.Circuito;
 import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
 
 public class CarregadorRecursos {
 
@@ -35,12 +36,12 @@ public class CarregadorRecursos {
 					.getResource(file));
 			buffer = ImageUtil.toBufferedImage(icon.getImage());
 			if (buffer == null) {
-				System.out.println("img=" + buffer);
+				Logger.logar("img=" + buffer);
 				System.exit(1);
 			}
 
 		} catch (Exception e) {
-			System.out.println("Erro gerando transparencia para :" + file);
+			Logger.logar("Erro gerando transparencia para :" + file);
 		}
 
 		return ImageUtil.geraTransparencia(buffer);
@@ -54,7 +55,7 @@ public class CarregadorRecursos {
 		panel.setSize(backGround.getWidth(), backGround.getHeight());
 
 		if (backGround == null) {
-			System.out.println("backGround=" + backGround);
+			Logger.logar("backGround=" + backGround);
 			System.exit(1);
 		}
 
@@ -100,7 +101,7 @@ public class CarregadorRecursos {
 					nCarro.append(carro.charAt(i));
 				}
 			}
-			System.out.println(nCarro.toString());
+			Logger.logar(nCarro.toString());
 			fileWriter.write(nCarro.toString() + "\n");
 		}
 		fileWriter.close();

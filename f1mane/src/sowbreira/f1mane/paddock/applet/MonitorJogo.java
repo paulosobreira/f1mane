@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Piloto;
@@ -19,7 +18,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 05/08/2007 as 11:43:33
@@ -127,7 +126,7 @@ public class MonitorJogo implements Runnable {
 
 										Thread.sleep(80);
 									} catch (Exception e) {
-										e.printStackTrace();
+										Logger.logarExept(e);
 									}
 								}
 
@@ -176,7 +175,7 @@ public class MonitorJogo implements Runnable {
 				verificaEstadoJogo();
 				sleep(controlePaddockCliente.getLatenciaMinima());
 			} catch (Exception e) {
-				e.printStackTrace();
+				Logger.logarExept(e);
 			}
 		}
 
@@ -197,7 +196,7 @@ public class MonitorJogo implements Runnable {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
 					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -223,7 +222,7 @@ public class MonitorJogo implements Runnable {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
 					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -257,7 +256,7 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.setDadosJogo(dadosJogo);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
 					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -274,7 +273,7 @@ public class MonitorJogo implements Runnable {
 		try {
 			Thread.sleep(l);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 	}
@@ -290,7 +289,7 @@ public class MonitorJogo implements Runnable {
 				estado = jogoPack.getEstadoJogo();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
 					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -312,7 +311,7 @@ public class MonitorJogo implements Runnable {
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 		}
 
@@ -403,7 +402,7 @@ public class MonitorJogo implements Runnable {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
 					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -425,7 +424,7 @@ public class MonitorJogo implements Runnable {
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
 					true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 		}
 
@@ -445,7 +444,7 @@ public class MonitorJogo implements Runnable {
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
 					true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 		}
 	}
@@ -458,7 +457,7 @@ public class MonitorJogo implements Runnable {
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
 					true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 		}
 
@@ -473,7 +472,7 @@ public class MonitorJogo implements Runnable {
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
 					true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			jogoAtivo = false;
 		}
 	}

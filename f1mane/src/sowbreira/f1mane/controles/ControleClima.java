@@ -1,8 +1,9 @@
 package sowbreira.f1mane.controles;
 
-import br.nnpe.Html;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Html;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 20:14:25
@@ -114,7 +115,7 @@ public class ControleClima {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(17 * (1 - .7));
+		Logger.logar(17 * (1 - .7));
 	}
 
 	public void intervaloNublado() {

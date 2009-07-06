@@ -9,12 +9,11 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.URLConnection;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import com.sun.net.ssl.internal.ssl.Debug;
+import br.nnpe.Logger;
 
 /**
  * @author paulo.sobreira
@@ -45,7 +44,7 @@ public class ZipUtil {
 
 			return ois.readObject();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		return null;
 	}
@@ -75,7 +74,7 @@ public class ZipUtil {
 				return bosDump;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		return null;
 	}

@@ -15,8 +15,8 @@ import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.Util;
 
@@ -102,7 +102,7 @@ public class ControlePaddockServidor {
 					clientPaddockPack.setSenhaJogador(jogadorDadosSrv
 							.getSenha());
 				} catch (Exception e) {
-					e.printStackTrace();
+					Logger.logarExept(e);
 				}
 			}
 			return criarSessao(clientPaddockPack);
@@ -380,7 +380,7 @@ public class ControlePaddockServidor {
 
 	public static void main(String[] args) {
 		String test = "#brual#llllp#";
-		System.out.println(test.replaceAll("#", ""));
+		Logger.logar(test.replaceAll("#", ""));
 	}
 
 	public void removerClienteInativo(SessaoCliente sessaoCliente) {

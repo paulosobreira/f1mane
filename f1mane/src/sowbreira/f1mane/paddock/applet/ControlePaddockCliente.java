@@ -1,7 +1,6 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Panel;
 import java.io.ByteArrayOutputStream;
@@ -31,8 +30,8 @@ import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 
 /**
@@ -79,7 +78,7 @@ public class ControlePaddockCliente {
 							atualizaVisao(paddockWindow);
 						}
 					} catch (Exception e) {
-						e.printStackTrace();
+						Logger.logarExept(e);
 					}
 
 				}
@@ -92,7 +91,7 @@ public class ControlePaddockCliente {
 			panel.add(paddockWindow.getMainPanel(), BorderLayout.CENTER);
 			getThreadAtualizadora().start();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 	}
 
@@ -176,7 +175,7 @@ public class ControlePaddockCliente {
 				jogoCliente.matarTodasThreads();
 			}
 
-			e.printStackTrace();
+			Logger.logarExept(e);
 			if (getThreadAtualizadora() != null) {
 				getThreadAtualizadora().interrupt();
 			}
@@ -296,7 +295,7 @@ public class ControlePaddockCliente {
 					srvPaddockPack.getNomeJogoCriado(), this, sessaoCliente,
 					dadosCriarJogo.getPiloto());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			JOptionPane.showMessageDialog(panel, e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -375,7 +374,7 @@ public class ControlePaddockCliente {
 			DadosPaddock dadosPaddock = srvPaddockPack.getDadosPaddock();
 			paddockWindow.atualizar(dadosPaddock);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			JOptionPane.showMessageDialog(panel, e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -453,7 +452,7 @@ public class ControlePaddockCliente {
 			clientPaddockPack.setSenhaJogador(Util.md5(new String(formEntrada
 					.getSenha().getPassword())));
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			JOptionPane.showMessageDialog(panel, e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 		}

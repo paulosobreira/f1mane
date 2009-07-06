@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira
@@ -106,7 +106,7 @@ public abstract class ControleRecursos {
 					+ (Math.random() > .5 ? -1 : 1);
 			piloto.setHabilidade(Integer.parseInt(String.valueOf(duasCasas)
 					+ (int) (0 + Math.random() * 9)));
-			//System.out.println(piloto + " " + piloto.getHabilidade());
+			// Logger.logar(piloto + " " + piloto.getHabilidade());
 			retorno.add(piloto);
 		}
 
@@ -124,7 +124,7 @@ public abstract class ControleRecursos {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(((int) (0 + Math.random() * 9)));
+		Logger.logar(((int) (0 + Math.random() * 9)));
 	}
 
 	protected List carregarListaCarros() throws IOException {
@@ -220,7 +220,7 @@ public abstract class ControleRecursos {
 
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 	}
 }

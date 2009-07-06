@@ -32,6 +32,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 /**
  * @author paulo.sobreira
@@ -152,7 +153,7 @@ public class PaddockWindow {
 									.getText());
 							textoEnviar.setText("");
 						} catch (Exception e) {
-							e.printStackTrace();
+							Logger.logarExept(e);
 						}
 					}
 				});
@@ -306,8 +307,8 @@ public class PaddockWindow {
 		buttonsPanel.add(comboIdiomas);
 		comboIdiomas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println(Lang.key(comboIdiomas.getSelectedItem()
-						.toString()));
+				Logger.logar(Lang
+						.key(comboIdiomas.getSelectedItem().toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
 				if (i != null && !"".equals(i)) {
 					Lang.mudarIdioma(i);

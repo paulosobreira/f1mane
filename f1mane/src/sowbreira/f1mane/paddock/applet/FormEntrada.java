@@ -8,7 +8,6 @@ import java.beans.XMLEncoder;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import javax.swing.JApplet;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -18,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 public class FormEntrada extends JPanel {
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
@@ -79,7 +79,7 @@ public class FormEntrada extends JPanel {
 		panel.add(recupearPanel);
 		comboIdiomas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println(Lang.key(comboIdiomas.getSelectedItem()
+				Logger.logar(Lang.key(comboIdiomas.getSelectedItem()
 						.toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
 				if (i != null && !"".equals(i)) {

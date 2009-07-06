@@ -19,6 +19,7 @@ import java.util.zip.ZipOutputStream;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 import br.nnpe.Dia;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 14:19:54
@@ -112,7 +113,7 @@ public class ControlePersistencia {
 		// controlePersistencia.gravarDados();
 		Dia dia = new Dia("01/06/2009");
 		Dia hj = new Dia();
-		System.out.println(hj.daysBetween(dia));
+		Logger.logar(hj.daysBetween(dia));
 	}
 
 	public byte[] obterBytesBase(String tipo) {

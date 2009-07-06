@@ -1,10 +1,6 @@
 package sowbreira.f1mane.entidades;
 
-import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.recursos.idiomas.Lang;
-
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,7 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira
@@ -690,7 +689,7 @@ public class Piloto implements Serializable {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(1 + (int) (Math.random() * 3));
+		Logger.logar(1 + (int) (Math.random() * 3));
 	}
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {

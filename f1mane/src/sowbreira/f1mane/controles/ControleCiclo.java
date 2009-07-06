@@ -2,10 +2,10 @@ package sowbreira.f1mane.controles;
 
 import java.util.Iterator;
 
-import br.nnpe.Html;
-
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Html;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira
@@ -102,15 +102,15 @@ public class ControleCiclo extends Thread {
 					}
 					contadorCiclos++;
 				} catch (Exception e) {
-					e.printStackTrace();
+					Logger.logarExept(e);
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 	}
 
 	public static void main(String[] args) {
-		System.out.println((int) (.7 * 5));
+		Logger.logar((int) (.7 * 5));
 	}
 }

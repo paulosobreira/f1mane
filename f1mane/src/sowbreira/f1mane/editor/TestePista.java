@@ -1,22 +1,16 @@
 package sowbreira.f1mane.editor;
 
-import sowbreira.f1mane.controles.ControleBox;
-import sowbreira.f1mane.controles.ControleCorrida;
-
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.recursos.idiomas.Lang;
-
-import java.awt.Color;
 import java.awt.Point;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import sowbreira.f1mane.controles.ControleBox;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 public class TestePista {
 	private Circuito circuito;
@@ -50,7 +44,7 @@ public class TestePista {
 		try {
 			controleBox.calculaNosBox(pontosPista, pontosBox);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			JOptionPane.showMessageDialog(editor, Lang.msg("040"), Lang
 					.msg("041"), JOptionPane.ERROR_MESSAGE);
 		}
@@ -126,7 +120,7 @@ public class TestePista {
 							Thread.sleep(70);
 						}
 					} catch (Exception e) {
-						e.printStackTrace();
+						Logger.logarExept(e);
 					}
 				}
 			}

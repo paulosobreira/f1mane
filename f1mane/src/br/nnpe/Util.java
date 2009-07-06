@@ -223,7 +223,7 @@ public class Util {
 
 	public static double convercaoMonetaria(String valor) throws Exception {
 		if (isNullOrEmpty(valor)) {
-			System.out.println("Valor nulo na converção monetária");
+			Logger.logar("Valor nulo na converção monetária");
 
 			return 0;
 		}
@@ -816,14 +816,14 @@ public class Util {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		// System.out.println(gerarChavePessoa(
+		// Logger.logar(gerarChavePessoa(
 		// "Paulo Sobreira Cavalcante de Resende", "19/12/1977", "M"));
-		// System.out.println(gerarChavePessoa("Ze Sobreira", "19/12/1977",
+		// Logger.logar(gerarChavePessoa("Ze Sobreira", "19/12/1977",
 		// "M"));
-		// System.out.println(gerarChavePessoa("le lu tu", "19/12/1977", "M"));
-		// System.out.println(gerarChavePessoa("j jameson j ", "19/12/1977",
+		// Logger.logar(gerarChavePessoa("le lu tu", "19/12/1977", "M"));
+		// Logger.logar(gerarChavePessoa("j jameson j ", "19/12/1977",
 		// "M"));
-		// System.out.println(md5("raquel"));
+		// Logger.logar(md5("raquel"));
 	}
 
 	public static double double2Decimal(double dob) {
@@ -848,7 +848,7 @@ public class Util {
 			objectOutputStream.writeObject(o);
 			fileOutputStream.flush();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 	}
 

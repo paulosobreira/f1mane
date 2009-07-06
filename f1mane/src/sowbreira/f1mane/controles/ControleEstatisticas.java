@@ -15,6 +15,7 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 13:24:54
@@ -190,7 +191,7 @@ public class ControleEstatisticas {
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					Logger.logarExept(e);
 				}
 			}
 		});
@@ -211,7 +212,7 @@ public class ControleEstatisticas {
 				}
 			}
 		} else {
-			System.out.println(info);
+			Logger.logar(info);
 		}
 	}
 
@@ -330,7 +331,7 @@ public class ControleEstatisticas {
 			}
 			return buffer.toString();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		return "";
 	}

@@ -1,9 +1,10 @@
 package sowbreira.f1mane.controles;
 
-import br.nnpe.Html;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Html;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira
@@ -35,7 +36,7 @@ public class ThreadRecolihimentoCarro extends Thread {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		piloto.getCarro().setRecolhido(true);
 		safetyCar.setVaiProBox(true);

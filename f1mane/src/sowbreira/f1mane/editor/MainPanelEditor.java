@@ -1,11 +1,5 @@
 package sowbreira.f1mane.editor;
 
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.No;
-
-import sowbreira.f1mane.recursos.CarregadorRecursos;
-import sowbreira.f1mane.recursos.idiomas.Lang;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,14 +13,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -45,6 +37,11 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
+import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado Em 10:51:26
@@ -229,7 +226,7 @@ public class MainPanelEditor extends JPanel {
 				try {
 					testePista.iniciarTeste();
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					Logger.logarExept(e1);
 				}
 			}
 		});
@@ -302,8 +299,7 @@ public class MainPanelEditor extends JPanel {
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Pontos Editor :" + e.getX() + " - "
-						+ e.getY());
+				Logger.logar("Pontos Editor :" + e.getX() + " - " + e.getY());
 				if ((tipoNo == null) || (e.getButton() == 3)) {
 					srcFrame.requestFocus();
 
@@ -312,7 +308,7 @@ public class MainPanelEditor extends JPanel {
 
 				int[] cor = new int[4];
 				cor = backGround.getData().getPixel(e.getX(), e.getY(), cor);
-				System.out.println(new Color(cor[0], cor[1], cor[2], cor[3]));
+				Logger.logar(new Color(cor[0], cor[1], cor[2], cor[3]));
 
 				No no = new No();
 				no.setTipo(tipoNo);
@@ -406,10 +402,10 @@ public class MainPanelEditor extends JPanel {
 		double total = noAlta + noMedia + noBaixa;
 		g2d.drawString(Lang.msg("ALTA") + ":" + noAlta + " "
 				+ (int) (100 * noAlta / total) + "%", 5, 15);
-		g2d.drawString(Lang.msg("MEDIA") +":" + noMedia + " " + (int) (100 * noMedia / total)
-				+ "%", 5, 35);
-		g2d.drawString(Lang.msg("BAIXA") +":" + noBaixa + " " + (int) (100 * noBaixa / total)
-				+ "%", 5, 55);
+		g2d.drawString(Lang.msg("MEDIA") + ":" + noMedia + " "
+				+ (int) (100 * noMedia / total) + "%", 5, 35);
+		g2d.drawString(Lang.msg("BAIXA") + ":" + noBaixa + " "
+				+ (int) (100 * noBaixa / total) + "%", 5, 55);
 		if (desenhaTracado) {
 			No oldNo = null;
 

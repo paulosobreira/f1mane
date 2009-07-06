@@ -2,14 +2,8 @@ package sowbreira.f1mane.entidades;
 
 import java.io.Serializable;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-
 import sowbreira.f1mane.controles.ControleEstatisticas;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 16:03:49
@@ -101,7 +95,7 @@ public class Volta implements Serializable {
 
 		Volta volta = new Volta();
 		volta.decode("10000_20000_23");
-		System.out.println(volta.obterTempoVoltaFormatado());
+		Logger.logar(volta.obterTempoVoltaFormatado());
 
 		// System.out.prlongln("Min " + minu);
 		// System.out.prlongln("Segs " + seg);

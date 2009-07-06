@@ -79,7 +79,7 @@ public class PainelCircuito extends JPanel {
 		addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
-				// System.out.println("Pontos Editor :" + e.getX() + " - "
+				// Logger.logar("Pontos Editor :" + e.getX() + " - "
 				// + e.getY());
 				super.mouseClicked(e);
 

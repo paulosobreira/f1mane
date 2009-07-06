@@ -17,8 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
-
-import br.nnpe.Dia;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 
 /**
@@ -40,7 +39,7 @@ public class ServletBaseDados extends HttpServlet {
 					+ "WEB-INF" + File.separator;
 			controlePersistencia = new ControlePersistencia(basePath);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 	}
@@ -137,13 +136,16 @@ public class ServletBaseDados extends HttpServlet {
 		while (e.hasMoreElements()) {
 			String element = (String) e.nextElement();
 			System.out.print(element + " - ");
-			System.out.println(System.getProperties().getProperty(element));
+			Logger.logar(System.getProperties().getProperty(element));
 
 		}
 
 	}
 
 	public static void topExecpts(Exception e) {
+		if (topExceptions == null) {
+			topExceptions = new HashMap();
+		}
 		if (topExceptions.size() < 100) {
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuffer retorno = new StringBuffer();

@@ -9,6 +9,7 @@ import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 /**
  * @author paulo.sobreira
@@ -38,7 +39,7 @@ public class AppletPaddock extends JApplet {
 				retorno.append(trace[i] + "\n");
 			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
 					.msg("059"), JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 	}
@@ -49,7 +50,7 @@ public class AppletPaddock extends JApplet {
 	}
 
 	public static void main(String[] args) {
-		// System.out.println(JOptionPane.showInputDialog("teste"));
+		// Logger.logar(JOptionPane.showInputDialog("teste"));
 	}
 
 }

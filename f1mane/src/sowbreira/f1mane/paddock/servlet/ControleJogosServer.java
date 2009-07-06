@@ -25,6 +25,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:21:11
@@ -79,7 +80,7 @@ public class ControleJogosServer {
 					.getNomeJogador());
 			jogoServidor.setTempoCriacao(System.currentTimeMillis());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			ErroServ erroServ = new ErroServ(e);
 			return erroServ;
 		}
