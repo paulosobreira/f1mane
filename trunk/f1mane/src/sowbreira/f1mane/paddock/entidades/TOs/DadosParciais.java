@@ -7,6 +7,7 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 21/08/2007 as 21:08:26
@@ -294,7 +295,7 @@ public class DadosParciais implements Serializable {
 				+ (texto == null ? "" : texto) + "@" + codUlt1 + "@" + codUlt2
 				+ "@" + codUlt3 + "@" + codUlt4 + "@" + codUlt5 + "@"
 				+ lessLastPipe;
-		// System.out.println(enc);
+		// Logger.logar(enc);
 		return enc;
 
 	};
@@ -322,6 +323,6 @@ public class DadosParciais implements Serializable {
 		// face='sans-serif' >19.719</font> </td> <td bgcolor='#FFFF00'> <font
 		// face='sans-serif' >14.624</font> </td> </tr>
 		// </table>@1240781962625§1240782037063§2@1240781886704§1240781962625§2@1240781811157§1240781886704§2@1240781735344§1240781811157§2@@6549§7279§6547§6934§7087§7070§6859§6696§6354§6846§6929§5003§6418§6398§4770§6593§6302§6965§6372§7139§0§0");
-		System.out.println("asd§qwe§zxc§tyu".split("§")[2]);
+		Logger.logar("asd§qwe§zxc§tyu".split("§")[2]);
 	}
 }

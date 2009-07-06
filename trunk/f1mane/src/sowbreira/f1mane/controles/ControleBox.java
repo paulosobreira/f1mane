@@ -15,6 +15,7 @@ import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 09/06/2007 as 17:17:28
@@ -323,7 +324,7 @@ public class ControleBox {
 			try {
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Logger.logarExept(e);
 			}
 			int val = 1 + ((int) (Math.random() * 3));
 			switch (val) {
@@ -444,7 +445,7 @@ public class ControleBox {
 
 	public static void main(String[] args) {
 		int val = 1 + ((int) (Math.random() * 3));
-		System.out.println(val);
+		Logger.logar(val);
 	}
 
 	public No getSaidaBox() {

@@ -74,7 +74,7 @@ public class Dia implements Cloneable, Serializable {
 				month = todaysDate.get(Calendar.MONTH) + 1;
 				day = todaysDate.get(Calendar.DAY_OF_MONTH);
 			} catch (Exception e) {
-				System.out.println("Erro criando Dia para string : " + data);
+				Logger.logar("Erro criando Dia para string : " + data);
 			}
 		}
 	}
@@ -306,32 +306,32 @@ public class Dia implements Cloneable, Serializable {
 		Dia di = new Dia(1, 4, 2009);
 
 		if (di.getMonth() >= d.getMonth()) {
-			System.out.println(di.getMonth() - d.getMonth());
+			Logger.logar(di.getMonth() - d.getMonth());
 		} else {
 			int a = (12 - d.getMonth()) + di.getMonth();
-			System.out.println(a);
+			Logger.logar(a);
 		}
 
 		// ontem.advance(-1);
-		// System.out.println(hj.daysBetween(ontem));
-		// System.out.println(hj.toInt());
-		// System.out.println(ontem.toInt());
+		// Logger.logar(hj.daysBetween(ontem));
+		// Logger.logar(hj.toInt());
+		// Logger.logar(ontem.toInt());
 		//
-		// System.out.println(hj.maiorQue(ontem));
-		// System.out.println(ontem.maiorQue(hj));
-		// System.out.println(hj.maiorQue(hj));
-		// System.out.println("-------------------------------------------------");
-		// System.out.println(hj.maiorIgualA(ontem));
-		// System.out.println(ontem.maiorIgualA(hj));
-		// System.out.println(hj.maiorIgualA(hj));
-		// System.out.println("-------------------------------------------------");
-		// System.out.println(hj.menorQue(ontem));
-		// System.out.println(ontem.menorQue(hj));
-		// System.out.println(hj.menorQue(hj));
-		// System.out.println("-------------------------------------------------");
-		// System.out.println(hj.menorIgualA(ontem));
-		// System.out.println(ontem.menorIgualA(hj));
-		// System.out.println(hj.menorIgualA(hj));
+		// Logger.logar(hj.maiorQue(ontem));
+		// Logger.logar(ontem.maiorQue(hj));
+		// Logger.logar(hj.maiorQue(hj));
+		// Logger.logar("-------------------------------------------------");
+		// Logger.logar(hj.maiorIgualA(ontem));
+		// Logger.logar(ontem.maiorIgualA(hj));
+		// Logger.logar(hj.maiorIgualA(hj));
+		// Logger.logar("-------------------------------------------------");
+		// Logger.logar(hj.menorQue(ontem));
+		// Logger.logar(ontem.menorQue(hj));
+		// Logger.logar(hj.menorQue(hj));
+		// Logger.logar("-------------------------------------------------");
+		// Logger.logar(hj.menorIgualA(ontem));
+		// Logger.logar(ontem.menorIgualA(hj));
+		// Logger.logar(hj.menorIgualA(hj));
 	}
 
 	public boolean maiorQue(Dia dia) {

@@ -24,6 +24,7 @@ import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:50:08
@@ -171,8 +172,8 @@ public class ControleClassificacao {
 	public static void main(String[] args) {
 		int var = 15;
 		var /= 4;
-		System.out.println(var);
-		// System.out.println(Math.ceil(4.0 / 6.0));
+		Logger.logar(var);
+		// Logger.logar(Math.ceil(4.0 / 6.0));
 	}
 
 	private int gerarPontos(Piloto p) {

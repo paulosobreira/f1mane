@@ -25,6 +25,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 17:30:43
@@ -84,7 +85,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(getMainFrame(), e.getMessage());
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		this.dadosParticiparJogo = dadosParticiparJogo;
 		this.nomeJogoCriado = nomeJogoCriado;
@@ -119,7 +120,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				retorno.append(trace[i] + "\n");
 			JOptionPane.showMessageDialog(getMainFrame(), retorno.toString(),
 					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 	}

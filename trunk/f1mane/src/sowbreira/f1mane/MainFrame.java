@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -30,6 +29,7 @@ import sowbreira.f1mane.editor.MainPanelEditor;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Created on 31/12/2004
@@ -171,7 +171,7 @@ public class MainFrame extends JFrame {
 						linha = reader.readLine();
 					}
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
 				JOptionPane
@@ -196,7 +196,7 @@ public class MainFrame extends JFrame {
 
 					removerKeyListeners();
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					Logger.logarExept(ex);
 				}
 			}
 		});
@@ -260,7 +260,7 @@ public class MainFrame extends JFrame {
 					controleJogo.setMainFrame(MainFrame.this);
 					controleJogo.iniciarJogo();
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					Logger.logarExept(ex);
 				}
 			}
 		});
@@ -279,7 +279,7 @@ public class MainFrame extends JFrame {
 					}
 
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					Logger.logarExept(ex);
 				}
 			}
 		});
@@ -490,7 +490,7 @@ public class MainFrame extends JFrame {
 					editor = new MainPanelEditor(MainFrame.this);
 					ativarKeysEditor();
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					Logger.logarExept(e1);
 				}
 			}
 		});
@@ -524,7 +524,7 @@ public class MainFrame extends JFrame {
 					editor = new MainPanelEditor(file.getName(), MainFrame.this);
 					ativarKeysEditor();
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					Logger.logarExept(e1);
 				}
 			}
 		});
@@ -622,7 +622,7 @@ public class MainFrame extends JFrame {
 				try {
 					editor.apagarUltimoNo();
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					Logger.logarExept(e1);
 				}
 			}
 		});
@@ -640,7 +640,7 @@ public class MainFrame extends JFrame {
 				try {
 					editor.apagarUltimoNoPista();
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					Logger.logarExept(e1);
 				}
 			}
 		});
@@ -658,7 +658,7 @@ public class MainFrame extends JFrame {
 				try {
 					editor.apagarUltimoNoBox();
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					Logger.logarExept(e1);
 				}
 			}
 		});
@@ -675,7 +675,7 @@ public class MainFrame extends JFrame {
 				try {
 					editor.salvarPista();
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					Logger.logarExept(e1);
 				}
 			}
 		});
@@ -698,7 +698,7 @@ public class MainFrame extends JFrame {
 				controleJogo.setMainFrame(this);
 				controleJogo.iniciarJogo();
 			} catch (Exception e) {
-				e.printStackTrace();
+				Logger.logarExept(e);
 			}
 		}
 

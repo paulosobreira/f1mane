@@ -3,7 +3,7 @@ package br.nnpe;
 public class HandlerFactory {
 	public static void main(String[] args) {
 		HandlerFactory t = new HandlerFactory();
-		System.out.println(t.getHandler(new String[] { "/test", "TestServlet",
+		Logger.logar(t.getHandler(new String[] { "/test", "TestServlet",
 				"/test2", "TestServlet2" }, "/servlet/TestServlet"));
 	}
 

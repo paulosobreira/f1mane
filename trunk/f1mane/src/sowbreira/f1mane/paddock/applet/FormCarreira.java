@@ -20,12 +20,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 
 /**
@@ -86,7 +86,7 @@ public class FormCarreira extends JPanel {
 		try {
 			carregarListaCarros();
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			Logger.logarExept(e1);
 		}
 		setLayout(new GridLayout(4, 4));
 		add(labelModoCarreira);
@@ -162,7 +162,7 @@ public class FormCarreira extends JPanel {
 						.recursoComoStream("carlist.txt")));
 		String line = bufferedReader.readLine();
 		while (line != null) {
-			System.out.println(line);
+			Logger.logar(line);
 			listaCarro.add(line);
 			line = bufferedReader.readLine();
 		}
@@ -223,7 +223,7 @@ public class FormCarreira extends JPanel {
 			List list = listaCarro;
 			index = (index >= list.size() - 1) ? 0 : index + 1;
 			imgCarroStr = (String) list.get((int) index);
-			System.out.println(imgCarroStr);
+			Logger.logar(imgCarroStr);
 			imgCarro.getEditor().repaint();
 			return super.getNextValue();
 		}
@@ -233,7 +233,7 @@ public class FormCarreira extends JPanel {
 			List list = listaCarro;
 			index = (index <= 0) ? list.size() - 1 : index - 1;
 			imgCarroStr = (String) list.get((int) index);
-			System.out.println(imgCarroStr);
+			Logger.logar(imgCarroStr);
 			imgCarro.getEditor().repaint();
 			return super.getPreviousValue();
 		}

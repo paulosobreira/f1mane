@@ -11,6 +11,7 @@ import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira
@@ -313,12 +314,12 @@ public class ControleCorrida {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(100 * (.950));
+		Logger.logar(100 * (.950));
 		// double fatorPerdaAreofolio = .995;
 		//
 		// fatorPerdaAreofolio -= (.7 / 10);
 		//
-		// System.out.println(fatorPerdaAreofolio);
+		// Logger.logar(fatorPerdaAreofolio);
 	}
 
 	private void ajusteUltrapassagem(Piloto perdedor, Piloto ganhador) {

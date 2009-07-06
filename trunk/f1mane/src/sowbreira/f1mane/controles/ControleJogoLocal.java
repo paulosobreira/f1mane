@@ -15,6 +15,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Html;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira
@@ -172,7 +173,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 				controleEstatisticas.finalize();
 			}
 		} catch (Throwable e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 	}
 
@@ -422,7 +423,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 					try {
 						Thread.sleep(5000);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						Logger.logarExept(e);
 					}
 					controleEstatisticas.tabelaComparativa();
 
@@ -633,7 +634,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (!VALENDO) {
 			for (int i = 0; i < pilotos.size(); i++) {
 				Piloto piloto = (Piloto) pilotos.get(i);
-				System.out.println(i + 1 + "-" + piloto.getNome() + "-"
+				Logger.logar(i + 1 + "-" + piloto.getNome() + "-"
 						+ piloto.getCarro().getNome() + "-"
 						+ piloto.getNumeroVolta() + "-"
 						+ piloto.getQtdeParadasBox() + "-"

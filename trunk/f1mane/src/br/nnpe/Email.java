@@ -2,8 +2,6 @@ package br.nnpe;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.PropertyResourceBundle;
@@ -43,7 +41,7 @@ public class Email {
 			USERNAME = bundle.getString("USERNAME");
 			PASSWORD = bundle.getString("PASSWORD");
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 	}
 

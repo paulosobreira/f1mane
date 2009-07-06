@@ -1,10 +1,20 @@
 package sowbreira.f1mane.visao;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.awt.datatransfer.*;
-import java.util.*;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.StringTokenizer;
+
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+
+import br.nnpe.Logger;
 
 /**
  * ExcelAdapter enables Copy-Paste Clipboard functionality on JTables. The
@@ -92,13 +102,13 @@ public class ExcelAdapter implements ActionListener {
 			system.setContents(stsel, stsel);
 		}
 		if (e.getActionCommand().compareTo("Paste") == 0) {
-			System.out.println("Trying to Paste");
+			Logger.logar("Trying to Paste");
 			int startRow = (jTable1.getSelectedRows())[0];
 			int startCol = (jTable1.getSelectedColumns())[0];
 			try {
 				String trstring = (String) (system.getContents(this)
 						.getTransferData(DataFlavor.stringFlavor));
-				System.out.println("String is:" + trstring);
+				Logger.logar("String is:" + trstring);
 				StringTokenizer st1 = new StringTokenizer(trstring, "\n");
 				for (int i = 0; st1.hasMoreTokens(); i++) {
 					rowstring = st1.nextToken();
@@ -112,7 +122,7 @@ public class ExcelAdapter implements ActionListener {
 					}
 				}
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				Logger.logarExept(ex);
 			}
 		}
 	}

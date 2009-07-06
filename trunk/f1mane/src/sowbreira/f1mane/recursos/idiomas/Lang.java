@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import br.nnpe.Logger;
 
 public class Lang {
 
@@ -35,24 +36,24 @@ public class Lang {
 
 	public static void main(String[] args) throws IOException {
 		new Lang();
-		// System.out.println(msg("TesteFormat", new Object[] { 123, 312 }));
+		// Logger.logar(msg("TesteFormat", new Object[] { 123, 312 }));
 		// String[] array = "asd¢111¢qweqw¢22¢werwer ¢3¢¢4¢".split("¢");
 		// for (int i = 0; i < array.length; i++) {
 		// if (i % 2 == 1)
-		// System.out.println(array[i]);
+		// Logger.logar(array[i]);
 		// }
 		srvgame = true;
 		String enc = Lang.msg("003", new String[] { "S.Vettel", "8.218", "0",
 				Lang.msg("TIPO_PNEU_MOLE") });
-		System.out.println("enc : " + enc);
+		Logger.logar("enc : " + enc);
 		sufix = "en";
 		srvgame = false;
-		System.out.println("dec : " + decodeTexto(enc));
+		Logger.logar("dec : " + decodeTexto(enc));
 		System.out
 				.println(decodeTexto("<b><font  color='#FF8C00'>¢003¬S.Vettel¬8.218¬0¬¢TIPO_PNEU_MOLE¢¢</font></b>"));
 		Locale locale = Locale.getDefault();
 
-		System.out.println(locale.getLanguage());
+		Logger.logar(locale.getLanguage());
 	}
 
 	public static void mudarIdioma(String sufix_) {
@@ -175,7 +176,7 @@ public class Lang {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 			JOptionPane.showMessageDialog(null, e.getMessage(),
 					"Message Properties Error", JOptionPane.ERROR_MESSAGE);
 		}

@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
+import br.nnpe.Logger;
 
 public class ThreadMudancaClima extends Thread {
 	private PainelCircuito painelCircuito;
@@ -33,7 +34,7 @@ public class ThreadMudancaClima extends Thread {
 				}
 				sleep(100);
 			} catch (Exception e) {
-				e.printStackTrace();
+				Logger.logarExept(e);
 			}
 		}
 		painelCircuito.setPointDesenhaClima(point);

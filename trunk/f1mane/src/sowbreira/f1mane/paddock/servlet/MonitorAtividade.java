@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 25/08/2007 as 11:22:46
@@ -66,7 +67,7 @@ public class MonitorAtividade implements Runnable {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				Logger.logarExept(e);
 			}
 		}
 
@@ -76,7 +77,7 @@ public class MonitorAtividade implements Runnable {
 		try {
 			Thread.sleep(l);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 	}

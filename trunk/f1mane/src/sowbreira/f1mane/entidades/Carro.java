@@ -6,6 +6,7 @@ import java.io.Serializable;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 06/05/2007 as 11:09:15
@@ -252,8 +253,8 @@ public class Carro implements Serializable {
 	}
 
 	public static void main(String[] args) {
-		System.out.println((.7 * 30));
-		// System.out.println(Math.random() * 1000);
+		Logger.logar((.7 * 30));
+		// Logger.logar(Math.random() * 1000);
 	}
 
 	public void setPneuDuro(int distaciaCorrida) {

@@ -49,6 +49,7 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.recursos.idiomas.LangVO;
 import br.nnpe.Html;
+import br.nnpe.Logger;
 
 public class GerenciadorVisual {
 	private JPanel panelControle;
@@ -1029,7 +1030,7 @@ public class GerenciadorVisual {
 				try {
 					Thread.sleep(tempoSleep);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					Logger.logarExept(e);
 				}
 			}
 			synchronized (painelCircuito.getMapDesenharQualificacao()) {
@@ -1040,7 +1041,7 @@ public class GerenciadorVisual {
 			painelCircuito.repaint();
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 		painelCircuito.setDesenhaQualificacao(false);
@@ -1077,7 +1078,7 @@ public class GerenciadorVisual {
 				infoTextual.read(reader, "");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 	}
 

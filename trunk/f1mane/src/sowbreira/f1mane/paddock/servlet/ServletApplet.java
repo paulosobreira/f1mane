@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.nnpe.Logger;
+
 /**
  * @author paulo.sobreira
  * 
@@ -41,7 +43,7 @@ public class ServletApplet extends HttpServlet {
 							+ "f1mane.jar");
 			fileOutputStream.write(arrayOutputStream.toByteArray());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 	}
@@ -78,7 +80,7 @@ public class ServletApplet extends HttpServlet {
 		while (e.hasMoreElements()) {
 			String element = (String) e.nextElement();
 			System.out.print(element + " - ");
-			System.out.println(System.getProperties().getProperty(element));
+			Logger.logar(System.getProperties().getProperty(element));
 
 		}
 

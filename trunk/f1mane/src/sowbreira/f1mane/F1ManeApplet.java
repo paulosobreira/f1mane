@@ -1,9 +1,8 @@
 package sowbreira.f1mane;
 
-import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 
-import sowbreira.f1mane.recursos.CarregadorRecursos;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado Em 12:05:02
@@ -37,7 +36,7 @@ public class F1ManeApplet extends JApplet {
 			frame.setSize(810, 650);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 	}
 }

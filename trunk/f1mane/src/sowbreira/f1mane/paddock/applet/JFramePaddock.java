@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 /**
  * @author paulo.sobreira
@@ -51,7 +52,7 @@ public class JFramePaddock extends JFrame {
 				retorno.append(trace[i] + "\n");
 			JOptionPane.showMessageDialog(this, retorno.toString(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			Logger.logarExept(e);
 			System.exit(0);
 		}
 
