@@ -133,9 +133,6 @@ public class ControlePaddockServidor {
 
 	private Object processarComando(ClientPaddockPack clientPaddockPack) {
 		SessaoCliente cliente = resgatarSessao(clientPaddockPack);
-		// if (cliente == null) {
-		// return (new MsgSrv(Lang.msg("210")));
-		// }
 		clientPaddockPack.setSessaoCliente(cliente);
 		String commando = clientPaddockPack.getCommando();
 		if (Comandos.OBTER_DADOS_JOGO.equals(commando)) {

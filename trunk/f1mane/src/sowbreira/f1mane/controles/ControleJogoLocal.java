@@ -422,17 +422,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 				public void run() {
 					try {
 						Thread.sleep(5000);
-					} catch (InterruptedException e) {
+						controleEstatisticas.tabelaComparativa();
+					} catch (Exception e) {
 						Logger.logarExept(e);
 					}
-					controleEstatisticas.tabelaComparativa();
-
 				}
-
 			});
 			nvolta.start();
 		}
-
 	}
 
 	/**
