@@ -794,7 +794,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public int getMediaPontecia() {
-		return controleCorrida.getMediaPontecia();
+		int somaPontecias = 0;
+		for (int i = 0; i < getCarros().size(); i++) {
+			Carro carro = (Carro) getCarros().get(i);
+			somaPontecias += carro.getPotencia();
+		}
+		int mediaPontecia = somaPontecias / getCarros().size();
+		return mediaPontecia;
 	}
 
 }

@@ -76,6 +76,14 @@ public class ControleJogosServer {
 		try {
 
 			jogoServidor = new JogoServidor(temporada);
+			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
+					.verCarreira(clientPaddockPack);
+			if (carreiraDadosSrv.isModoCarreira()) {
+				if (jogoServidor.getMediaPontecia() < carreiraDadosSrv
+						.getPtsCarro()) {
+					return new MsgSrv(Lang.msg("261"));
+				}
+			}
 			jogoServidor.setNomeCriador(clientPaddockPack.getSessaoCliente()
 					.getNomeJogador());
 			jogoServidor.setTempoCriacao(System.currentTimeMillis());

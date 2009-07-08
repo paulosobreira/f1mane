@@ -91,20 +91,6 @@ public class ControleCorrida {
 
 	}
 
-	public int getMediaPontecia() {
-		int somaPontecias = 0;
-		for (int i = 0; i < controleJogo.getCarros().size(); i++) {
-			Carro carro = (Carro) controleJogo.getCarros().get(i);
-			somaPontecias += carro.getPotencia();
-		}
-		int mediaPontecia = somaPontecias / controleJogo.getCarros().size();
-		for (int i = 0; i < controleJogo.getPilotos().size(); i++) {
-			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-			piloto.getCarro().setDurabilidadeMaxMotor(durabilidadeMaxMotor,
-					mediaPontecia);
-		}
-		return mediaPontecia;
-	}
 
 	public ControleClima getControleClima() {
 		return controleClima;
