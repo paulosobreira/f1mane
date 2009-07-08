@@ -427,6 +427,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaCarroSelecionado(Piloto psel, Graphics2D g2d) {
+		if (!desenhaInfo) {
+			return;
+		}
 		BufferedImage carroimg = null;
 		int carSelX = 0;
 		int carSelY = getHeight() - 35;
