@@ -212,7 +212,7 @@ public class Carro implements Serializable {
 			return true;
 		}
 
-		if (motor < 3) {
+		if (motor < 5) {
 			return true;
 		}
 		return false;
