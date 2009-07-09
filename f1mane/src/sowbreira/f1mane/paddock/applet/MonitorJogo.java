@@ -13,11 +13,14 @@ import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosParciais;
+import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
+import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.Posis;
 import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
 
 /**
@@ -188,6 +191,9 @@ public class MonitorJogo implements Runnable {
 
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
 			if (ret != null) {
 				CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) ret;
 				if (carreiraDadosSrv.isModoCarreira()) {
@@ -207,6 +213,9 @@ public class MonitorJogo implements Runnable {
 		try {
 			Object ret = controlePaddockCliente.enviarObjeto(jogoCliente
 					.getNomeJogoCriado(), true);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
 			if (ret != null) {
 				String enc = (String) ret;
 				PosisPack posisPack = new PosisPack();
@@ -230,6 +239,13 @@ public class MonitorJogo implements Runnable {
 
 	}
 
+	private boolean retornoNaoValido(Object ret) {
+		if (ret instanceof ErroServ || ret instanceof MsgSrv) {
+			return true;
+		}
+		return false;
+	}
+
 	private void atualizarListaPilotos(Object[] posisArray) {
 		for (int i = 0; i < posisArray.length; i++) {
 			Posis posis = (Posis) posisArray[i];
@@ -251,6 +267,9 @@ public class MonitorJogo implements Runnable {
 					Comandos.OBTER_DADOS_JOGO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
 			if (ret != null) {
 				DadosJogo dadosJogo = (DadosJogo) ret;
 				jogoCliente.setDadosJogo(dadosJogo);
@@ -284,6 +303,9 @@ public class MonitorJogo implements Runnable {
 					Comandos.VERIFICA_ESTADO_JOGO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
 			if (ret != null) {
 				SrvJogoPack jogoPack = (SrvJogoPack) ret;
 				estado = jogoPack.getEstadoJogo();
@@ -327,6 +349,9 @@ public class MonitorJogo implements Runnable {
 			}
 
 			Object ret = controlePaddockCliente.enviarObjeto(dataSend, true);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
 			if (ret != null) {
 				// dec dadosParciais
 				String enc = (String) ret;

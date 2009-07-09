@@ -246,12 +246,13 @@ public class PaddockWindow {
 						+ "http://br.geocities.com/sowbreira/ \n"
 						+ "Agosto de 2007 \n ";
 				msg += Lang.msg("185") + "\n"
-						+ " Leonardo Andrade leonardofandrade@gmail.com \n"
-						+ " Daniel Souza daniels@globo.com \n"
-						+ " Wendel wendel12345@yahoo.com.br \n"
-						+ " Marquin marcoshenriqueca@gmail.com \n"
-						+ " Luiz Carlos lcarlos.email@gmail.com \n"
-						+ " Alvaru alvaru@secrel.com.br";
+						+ " Florêncio Queiroz \n"
+						+ " Jorge Botelho \n"
+						+ " Leonardo Andrade \n"
+						+ " Daniel Souza \n"
+						+ " Wendel Silva \n"
+						+ " Marcos Henrique\n"
+						+ " Alvaru";
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
 						.msg("180"), JOptionPane.INFORMATION_MESSAGE);
