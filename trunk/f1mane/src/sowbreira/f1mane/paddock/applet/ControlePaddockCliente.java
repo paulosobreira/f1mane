@@ -151,14 +151,14 @@ public class ControlePaddockCliente {
 				JOptionPane.showMessageDialog(panel, Lang.decodeTexto(erroServ
 						.obterErroFormatado()), Lang.msg("060"),
 						JOptionPane.ERROR_MESSAGE);
-				return null;
+				return erroServ;
 			}
 			if (retorno instanceof MsgSrv) {
 				MsgSrv msgSrv = (MsgSrv) retorno;
 				JOptionPane.showMessageDialog(panel, Lang.decodeTexto(msgSrv
 						.getMessageString()), Lang.msg("061"),
 						JOptionPane.INFORMATION_MESSAGE);
-				return null;
+				return msgSrv;
 			}
 			return retorno;
 		} catch (Exception e) {
@@ -246,6 +246,9 @@ public class ControlePaddockCliente {
 				Comandos.ENVIAR_TEXTO, sessaoCliente);
 		clientPaddockPack.setTexto(text);
 		Object ret = enviarObjeto(clientPaddockPack);
+		if (retornoNaoValido(ret)) {
+			return;
+		}
 		if (ret == null) {
 			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 					JOptionPane.ERROR_MESSAGE);
@@ -278,6 +281,9 @@ public class ControlePaddockCliente {
 			}
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			Object ret = enviarObjeto(clientPaddockPack);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
 			if (ret == null) {
 				JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 						JOptionPane.ERROR_MESSAGE);
@@ -313,6 +319,9 @@ public class ControlePaddockCliente {
 
 			clientPaddockPack.setNomeJogo((String) object);
 			Object ret = enviarObjeto(clientPaddockPack);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
 			if (ret == null) {
 				JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 						JOptionPane.ERROR_MESSAGE);
@@ -387,6 +396,9 @@ public class ControlePaddockCliente {
 
 		clientPaddockPack.setNomeJogo((String) object);
 		Object ret = enviarObjeto(clientPaddockPack);
+		if (retornoNaoValido(ret)) {
+			return;
+		}
 		if (ret == null) {
 			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 					JOptionPane.ERROR_MESSAGE);
@@ -476,6 +488,9 @@ public class ControlePaddockCliente {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.VER_CLASSIFICACAO, sessaoCliente);
 		Object ret = enviarObjeto(clientPaddockPack);
+		if (retornoNaoValido(ret)) {
+			return;
+		}
 		if (ret == null) {
 			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 					JOptionPane.ERROR_MESSAGE);
@@ -589,6 +604,9 @@ public class ControlePaddockCliente {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.VER_CARREIRA, sessaoCliente);
 		Object ret = enviarObjeto(clientPaddockPack);
+		if (retornoNaoValido(ret)) {
+			return;
+		}
 		if (ret == null) {
 			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
 					JOptionPane.ERROR_MESSAGE);
@@ -608,6 +626,13 @@ public class ControlePaddockCliente {
 		formCarreira.getNomePiloto().setText(carreiraDadosSrv.getNomePiloto());
 		formCarreira.setCor1(carreiraDadosSrv.geraCor1());
 		formCarreira.setCor2(carreiraDadosSrv.geraCor2());
+	}
+
+	private boolean retornoNaoValido(Object ret) {
+		if (ret instanceof ErroServ || ret instanceof MsgSrv) {
+			return true;
+		}
+		return false;
 	}
 
 	private void atualizaCarreira(FormCarreira formCarreira) {

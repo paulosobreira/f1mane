@@ -1,6 +1,7 @@
 package sowbreira.f1mane;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -117,6 +118,11 @@ public class MainFrame extends JFrame {
 		getContentPane().setLayout(null);
 		setSize(800, 630);
 		setTitle("F1-Mane 1.9");
+	}
+
+	@Override
+	public Dimension getMaximumSize() {
+		return new Dimension(800, 630);
 	}
 
 	private void gerarMenusidiomas(JMenu menuIdiomas) {
