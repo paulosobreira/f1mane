@@ -37,11 +37,29 @@ public class ControlePersistencia {
 	public ControlePersistencia(String basePath) throws Exception {
 		super();
 		this.basePath = basePath;
+
 		try {
-			paddockDadosSrv = lerDados();
+			if (paddockDadosSrv == null) {
+				Logger.logar("============ Antes ==========================");
+				Logger.logar("heapSize " + Runtime.getRuntime().totalMemory()
+						/ 1024 + " kb");
+				Logger.logar("heapMaxSize " + Runtime.getRuntime().maxMemory()
+						/ 1024 + " kb");
+				Logger.logar("heapFreeSize "
+						+ Runtime.getRuntime().freeMemory() / 1024 + " kb");
+				paddockDadosSrv = lerDados();
+				Logger.logar("============ Depois==========================");
+				Logger.logar("heapSize " + Runtime.getRuntime().totalMemory()
+						/ 1024 + " kb");
+				Logger.logar("heapMaxSize " + Runtime.getRuntime().maxMemory()
+						/ 1024 + " kb");
+				Logger.logar("heapFreeSize "
+						+ Runtime.getRuntime().freeMemory() / 1024 + " kb");
+			}
+
 		} catch (Exception e) {
+			Logger.logarExept(e);
 			paddockDadosSrv = new PaddockDadosSrv();
-			gravarDados();
 		}
 
 	}
