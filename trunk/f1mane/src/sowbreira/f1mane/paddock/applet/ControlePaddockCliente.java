@@ -6,8 +6,12 @@ import java.awt.Panel;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -97,6 +101,16 @@ public class ControlePaddockCliente {
 
 	public Object enviarObjeto(Object enviar) {
 		return enviarObjeto(enviar, false);
+	}
+
+	public static void main(String[] args) throws Exception {
+		String comando = "teste";
+
+		DatagramPacket datagramPacket = new DatagramPacket(comando.getBytes(),
+				comando.length(), InetAddress.getLocalHost(), 80);
+		DatagramSocket datagramSocket = new DatagramSocket();
+		datagramSocket.send(datagramPacket);
+
 	}
 
 	public Object enviarObjeto(Object enviar, boolean timeout) {
