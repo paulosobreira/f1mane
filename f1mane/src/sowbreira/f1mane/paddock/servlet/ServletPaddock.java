@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.SocketException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.BufferFinito;
 import br.nnpe.Email;
 import br.nnpe.Logger;
 
@@ -46,8 +48,17 @@ public class ServletPaddock extends HttpServlet {
 		controlePaddock = new ControlePaddockServidor(controlePersistencia);
 		monitorAtividade = new MonitorAtividade(controlePaddock);
 		Thread monitor = new Thread(monitorAtividade);
-
 		monitor.start();
+		UDPListener listener = null;
+		try {
+			listener = new UDPListener(new BufferFinito(), 80);
+		} catch (SocketException e) {
+			Logger.logarExept(e);
+		}
+		if (listener != null) {
+			Thread monitorUdp = new Thread(listener);
+			monitorUdp.start();
+		}
 	}
 
 	public void destroy() {
