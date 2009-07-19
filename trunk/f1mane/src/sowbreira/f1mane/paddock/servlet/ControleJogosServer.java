@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.BufferTexto;
@@ -79,8 +80,9 @@ public class ControleJogosServer {
 			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 					.verCarreira(clientPaddockPack);
 			if (carreiraDadosSrv.isModoCarreira()) {
-				if ((jogoServidor.getMediaPontecia() + 50) < (carreiraDadosSrv
-						.getPtsCarro())) {
+				if (verificaExcedePotencia(jogoServidor.getMediaPontecia(),
+						carreiraDadosSrv.getPtsCarro(), jogoServidor
+								.getNiveljogo())) {
 					return new MsgSrv(Lang.msg("261"));
 				}
 			}
@@ -108,6 +110,18 @@ public class ControleJogosServer {
 		srvPaddockPack.setSessaoCliente(clientPaddockPack.getSessaoCliente());
 		srvPaddockPack.setDadosPaddock(dadosPaddock);
 		return srvPaddockPack;
+	}
+
+	private boolean verificaExcedePotencia(int mediaPontecia, int ptsCarro,
+			double nivel) {
+		int permitidoAcimaMedia = 0;
+		if (InterfaceJogo.FACIL_NV == nivel) {
+			permitidoAcimaMedia = 100;
+		}
+		if (InterfaceJogo.MEDIO_NV == nivel) {
+			permitidoAcimaMedia = 50;
+		}
+		return (mediaPontecia + permitidoAcimaMedia) < ptsCarro;
 	}
 
 	private void gerarListaJogosCriados() {
@@ -141,8 +155,8 @@ public class ControleJogosServer {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
 			}
-			if ((jogoServidor.getMediaPontecia() + 50) < carreiraDadosSrv
-					.getPtsCarro()) {
+			if (verificaExcedePotencia(jogoServidor.getMediaPontecia(),
+					carreiraDadosSrv.getPtsCarro(), jogoServidor.getNiveljogo())) {
 				return new MsgSrv(Lang.msg("261"));
 			}
 		}

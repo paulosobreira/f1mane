@@ -15,8 +15,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import br.nnpe.Constantes;
-
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.entidades.Carro;
@@ -24,6 +22,7 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Constantes;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 17:41:24
@@ -136,7 +135,7 @@ public class PainelEntradaCliente {
 		painelInicio.add(new JLabel("Nivel da corrida :") {
 			@Override
 			public String getText() {
-				return Lang.msg("112");
+				return Lang.msg("212");
 			}
 		});
 		painelInicio.add(comboBoxNivelCorrida);

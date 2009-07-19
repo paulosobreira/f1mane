@@ -11,7 +11,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -110,6 +109,7 @@ public class ControlePaddockCliente {
 				comando.length(), InetAddress.getLocalHost(), 80);
 		DatagramSocket datagramSocket = new DatagramSocket();
 		datagramSocket.send(datagramPacket);
+		
 
 	}
 
