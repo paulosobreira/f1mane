@@ -809,8 +809,6 @@ public class Piloto implements Serializable {
 		double bonusSecundario = getCarro().getGiro() / 10;
 		if (controleJogo.isChovendo()) {
 			bonusSecundario -= .5;
-		} else if (Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu())) {
-			bonusSecundario += .1;
 		}
 		if (testeHabilidadePilotoCarro() && agressivo
 				&& noAtual.verificaRetaOuLargada()

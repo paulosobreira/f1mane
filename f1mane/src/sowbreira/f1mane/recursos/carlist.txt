@@ -74,6 +74,16 @@ carros/t1990/tn_1990voi-lotus102.gif
 carros/t1990/tn_1990voi-minardim191.gif
 carros/t1990/tn_1990voi-tyrrell019.gif
 carros/t1990/tn_1990voi-williamsfw13.gif
+carros/t2003/tn_2003voi-bar005.gif
+carros/t2003/tn_2003voi-ferrarif2003ga.gif
+carros/t2003/tn_2003voi-jaguarr4.gif
+carros/t2003/tn_2003voi-jordanej13.gif
+carros/t2003/tn_2003voi-minardips03.gif
+carros/t2003/tn_2003voi-renaultr23.gif
+carros/t2003/tn_2003voi-sauberc22.gif
+carros/t2003/tn_2003voi-toyotatf103.gif
+carros/t2003/tn_2003voi-williamsfw25.gif
+carros/t2003/tn_2003voi_mclarenmp4-17d.gif
 carros/t2007/BMW-Sauber-F1-07.gif
 carros/t2007/Ferrari-F2007.gif
 carros/t2007/Honda-RA107.gif

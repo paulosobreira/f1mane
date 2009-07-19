@@ -113,8 +113,8 @@ public class PaddockWindow {
 	};
 
 	private JComboBox comboTemporada = new JComboBox(new String[] { "2009",
-			"2008", "2007", "1990", "1988", "1987", "1986", "1974", "1972",
-			"1968", "super" });
+			"2008", "2007", "2003", "1990", "1988", "1987", "1986", "1974",
+			"1972", "1968", "super" });
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
@@ -245,14 +245,10 @@ public class PaddockWindow {
 						+ "sowbreira@yahoo.com.br \n"
 						+ "http://br.geocities.com/sowbreira/ \n"
 						+ "Agosto de 2007 \n ";
-				msg += Lang.msg("185") + "\n"
-						+ " Florêncio Queiroz \n"
-						+ " Jorge Botelho \n"
-						+ " Leonardo Andrade \n"
-						+ " Daniel Souza \n"
-						+ " Wendel Silva \n"
-						+ " Marcos Henrique\n"
-						+ " Alvaru";
+				msg += Lang.msg("185") + "\n" + " Florêncio Queiroz \n"
+						+ " Jorge Botelho \n" + " Leonardo Andrade \n"
+						+ " Daniel Souza \n" + " Wendel Silva \n"
+						+ " Marcos Henrique\n" + " Alvaru";
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
 						.msg("180"), JOptionPane.INFORMATION_MESSAGE);

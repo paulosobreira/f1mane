@@ -23,7 +23,6 @@ public class Constantes {
 	public static final String DATA_FORMATO_COMPLETO = "yyyy-MM-dd HH:mm:ss";
 	public static final String DATA_FORMATO_DDMMYYYY = "ddMMyyyy";
 	public static final String DIVISOR = "&";
-	public static final String UNIODONTO_LOGO = "Logo.gif";
 	public static final String ADICIONAR = "ADICIONAR";
 	public static final String REMOVER = "REMOVER";
 	public static final String ALTERAR = "A";
@@ -37,10 +36,10 @@ public class Constantes {
 	public static final int MIN_CICLO = 50;
 	public static final int MAX_CICLO = 120;
 
-	// public static final int MAX_VOLTAS = 2;
-	// public static final int MIN_VOLTAS = 2;
-	// public static final int MIN_CICLO = 50;
-	// public static final int MAX_CICLO = 50;
+//	 public static final int MAX_VOLTAS = 2;
+//	public static final int MIN_VOLTAS = 2;
+//	public static final int MIN_CICLO = 50;
+//	public static final int MAX_CICLO = 50;
 
 	private Constantes() {
 	}

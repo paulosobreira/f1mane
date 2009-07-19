@@ -4,7 +4,7 @@ import sowbreira.f1mane.paddock.servlet.ServletBaseDados;
 
 public class Logger {
 
-	public static boolean ativo = true;
+	public static boolean ativo = false;
 
 	public static void logar(String val) {
 		if (ativo) {

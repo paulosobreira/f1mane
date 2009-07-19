@@ -450,7 +450,7 @@ public class Carro implements Serializable {
 				double indicativo = porcent / 100.0;
 
 				if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
-					if ((indicativo > 15)) {
+					if ((indicativo > 10)) {
 						novoModificador += 1;
 					}
 				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
@@ -480,7 +480,11 @@ public class Carro implements Serializable {
 				double modificador = controleJogo.getNiveljogo() + 0.2;
 				if (Math.random() < modificador) {
 					if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
-						pneus -= ((30 * controleJogo.getNiveljogo()) * novoModificador);
+						if (Clima.SOL.equals(controleJogo.getClima())) {
+							pneus -= ((30 * controleJogo.getNiveljogo()) * novoModificador);
+						} else {
+							pneus -= ((25 * controleJogo.getNiveljogo()) * novoModificador);
+						}
 					} else {
 						pneus -= ((20 * controleJogo.getNiveljogo()) * novoModificador);
 					}

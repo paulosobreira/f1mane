@@ -3,6 +3,7 @@ package sowbreira.f1mane.paddock.servlet;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
 
@@ -43,17 +44,25 @@ public class UDPListener implements Runnable {
 		while (alive) {
 			try {
 				datagramSocket.receive(pacote);
+				String comando = new String(pacote.getData(), 0, pacote
+						.getLength());
+
+				if ((comando == null) || "".equals(comando)) {
+					continue;
+				}
+				System.out.println(comando);
+				// bufferFinito.add(comando);
+				comando += " Porcessado ";
+				DatagramPacket datagramPacket = new DatagramPacket(comando
+						.getBytes(), comando.length(), InetAddress
+						.getLocalHost(), 80);
+				DatagramSocket datagramSocket = new DatagramSocket();
+				datagramSocket.send(datagramPacket);
+				System.out.println(pacote.getSocketAddress());
 			} catch (IOException e) {
 				Logger.logarExept(e);
 			}
 
-			String comando = new String(pacote.getData(), 0, pacote.getLength());
-
-			if ((comando == null) || "".equals(comando)) {
-				continue;
-			}
-			System.out.println(comando);
-			bufferFinito.add(comando);
 		}
 	}
 }

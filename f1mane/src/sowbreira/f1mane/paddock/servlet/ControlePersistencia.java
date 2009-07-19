@@ -10,12 +10,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 import br.nnpe.Dia;
@@ -94,9 +96,18 @@ public class ControlePersistencia {
 		for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();
 			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) map.get(key);
+			List corridas = jogadorDadosSrv.getCorridas();
+			for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+				CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
+						.next();
+				if (corridasDadosSrv.getPontos() == 0) {
+					iterator.remove();
+				}
+
+			}
 			Dia dia = new Dia(jogadorDadosSrv.getUltimoLogon());
 			Dia hj = new Dia();
-			if (hj.daysBetween(dia) > 30) {
+			if (hj.daysBetween(dia) > 60) {
 				iter.remove();
 			}
 		}
