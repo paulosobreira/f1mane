@@ -49,16 +49,6 @@ public class ServletPaddock extends HttpServlet {
 		monitorAtividade = new MonitorAtividade(controlePaddock);
 		Thread monitor = new Thread(monitorAtividade);
 		monitor.start();
-		UDPListener listener = null;
-		try {
-			listener = new UDPListener(new BufferFinito(), 80);
-		} catch (SocketException e) {
-			Logger.logarExept(e);
-		}
-		if (listener != null) {
-			Thread monitorUdp = new Thread(listener);
-			monitorUdp.start();
-		}
 	}
 
 	public void destroy() {
