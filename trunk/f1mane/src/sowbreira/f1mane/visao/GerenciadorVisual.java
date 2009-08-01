@@ -111,7 +111,9 @@ public class GerenciadorVisual {
 		painelCircuito.setBackGround(CarregadorRecursos.carregaBackGround(
 				controleJogo.getCircuito().getBackGround(), painelCircuito,
 				controleJogo.getCircuito()));
-		larguraFrame = painelCircuito.getBackGround().getWidth() + 145;
+		int larg = painelCircuito.getBackGround().getWidth() < 800 ? 800
+				: painelCircuito.getBackGround().getWidth();
+		larguraFrame = larg + 145;
 		alturaFrame = painelCircuito.getBackGround().getHeight() + 280;
 		carregarInfoClima();
 		gerarPainelPosicoes();
