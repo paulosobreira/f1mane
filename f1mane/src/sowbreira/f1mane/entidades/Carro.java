@@ -322,13 +322,13 @@ public class Carro implements Serializable {
 	private void calculaDesgasteMotor(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
 		int valDesgaste = 0;
-		if (agressivo && no.verificaCruvaBaixa()) {
+		if (giro == 9 && no.verificaCruvaBaixa()) {
 			if (piloto.isJogadorHumano()) {
 				valDesgaste = (int) (((controleJogo.getNiveljogo() * 10)) * novoModificador);
 			} else {
-				valDesgaste = ((piloto.testeHabilidadePilotoCarro() ? 3 : 5) + novoModificador);
+				valDesgaste = ((piloto.getCarro().testePotencia() ? 3 : 5) + novoModificador);
 			}
-		} else if (agressivo) {
+		} else if (giro == 9) {
 			valDesgaste = ((testePotencia() ? 1 : 2) + novoModificador);
 		} else {
 			valDesgaste = ((testePotencia() ? 1 : 2));
@@ -449,20 +449,21 @@ public class Carro implements Serializable {
 				int porcent = porcentagemDesgastePeneus();
 				double indicativo = porcent / 100.0;
 
-				if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
-					if ((indicativo > 10)) {
+				if (TIPO_PNEU_MOLE.equals(tipoPneu) && no.verificaCruvaBaixa()) {
+					if ((indicativo > 5)) {
 						novoModificador += 1;
 					}
-				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
-						&& no.verificaCruvaBaixa() && (indicativo > 10)
-						&& (indicativo < 70)) {
-					novoModificador += 1;
-
-				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
+				} else if (TIPO_PNEU_MOLE.equals(tipoPneu)
 						&& no.verificaCruvaAlta() && (indicativo > 10)
-						&& Math.random() > indicativo) {
+						&& (indicativo < 90)) {
 					novoModificador += 1;
 
+				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
+						&& no.verificaCruvaBaixa() && Math.random() > .8) {
+					novoModificador -= 1;
+				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
+						&& no.verificaCruvaAlta() && Math.random() > .9) {
+					novoModificador -= 1;
 				}
 			}
 		}

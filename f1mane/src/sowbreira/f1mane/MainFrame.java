@@ -121,11 +121,6 @@ public class MainFrame extends JFrame {
 		setTitle("F1-Mane 1.9");
 	}
 
-	@Override
-	public Dimension getMaximumSize() {
-		return new Dimension(800, 630);
-	}
-
 	private void gerarMenusidiomas(JMenu menuIdiomas) {
 		JRadioButtonMenuItem pt = new JRadioButtonMenuItem() {
 			public String getText() {
