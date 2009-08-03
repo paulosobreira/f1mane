@@ -496,9 +496,12 @@ public class Carro implements Serializable {
 			}
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3
 					: 4 + novoModificador);
-		} else if (agressivo) {
+		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 2
 					: 3 + novoModificador);
+		} else if (agressivo) {
+			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 1
+					: 2 + novoModificador);
 		} else {
 			desgPneus += 1;
 		}
