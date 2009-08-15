@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.net.SocketException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.BufferFinito;
 import br.nnpe.Email;
 import br.nnpe.Logger;
 

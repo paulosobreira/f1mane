@@ -435,7 +435,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public void processaNovaVolta() {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void processaVoltaRapida(Piloto piloto) {
@@ -664,6 +663,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public int getMediaPontecia() {
 
 		return 0;
+	}
+
+	@Override
+	public void verificaProgramacaoBox() {
+		gerenciadorVisual.verificaProgramacaoBox();
+
 	}
 
 }

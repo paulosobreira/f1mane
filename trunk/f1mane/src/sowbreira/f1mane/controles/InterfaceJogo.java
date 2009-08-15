@@ -190,4 +190,6 @@ public interface InterfaceJogo {
 
 	public void iniciaJanela();
 
+	public void verificaProgramacaoBox();
+
 }

@@ -506,7 +506,8 @@ public class Carro implements Serializable {
 			desgPneus += 1;
 		}
 		if (piloto.isJogadorHumano()
-				&& InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+				&& InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()
+				&& Math.random() < .5) {
 			desgPneus += 1;
 		}
 		if (piloto.isJogadorHumano()

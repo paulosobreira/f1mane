@@ -20,7 +20,6 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
 
 /**
@@ -126,7 +125,7 @@ public class MonitorJogo implements Runnable {
 											jogoCliente
 													.selecionaPilotoJogador();
 										jogoCliente.atualizaPainel();
-
+										jogoCliente.verificaProgramacaoBox();
 										Thread.sleep(80);
 									} catch (Exception e) {
 										Logger.logarExept(e);

@@ -89,6 +89,7 @@ public class GerenciadorVisual {
 	private JTextField nomeJogador;
 	private JButton agressivo;
 	private JButton box;
+	private JButton progBox;
 	private PainelTabelaResultadoFinal resultadoFinal;
 	private ThreadMudancaClima clima;
 	private int tempoSleep = 30;
@@ -101,9 +102,11 @@ public class GerenciadorVisual {
 	private int larguraFrame = 0;
 	private int alturaFrame = 0;
 	private long lastPress;
+	private ProgamacaoBox progamacaoBox;
 
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
+		progamacaoBox = new ProgamacaoBox();
 	}
 
 	public void iniciarInterfaceGraficaJogo() throws IOException {
@@ -134,6 +137,7 @@ public class GerenciadorVisual {
 		modoPiloto.addKeyListener(keyListener);
 		panelControle.addKeyListener(keyListener);
 		box.addKeyListener(keyListener);
+		progBox.addKeyListener(keyListener);
 		comboBoxTipoPneu.addKeyListener(keyListener);
 		combustivelBar.addKeyListener(keyListener);
 		giro.addKeyListener(keyListener);
@@ -183,6 +187,12 @@ public class GerenciadorVisual {
 			}
 
 		});
+		progBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				progamacaoBox();
+			}
+
+		});
 		JFrame frame = controleJogo.getMainFrame();
 		WindowListener[] listeners = frame.getWindowListeners();
 		for (int i = 0; i < listeners.length; i++) {
@@ -210,6 +220,10 @@ public class GerenciadorVisual {
 				}
 			}
 		});
+	}
+
+	protected void progamacaoBox() {
+		JOptionPane.showMessageDialog(null, progamacaoBox.getPainel());
 	}
 
 	protected void mudarModoPilotagem(String modo) {
@@ -241,6 +255,9 @@ public class GerenciadorVisual {
 				}
 				if (keyCoode == KeyEvent.VK_F4) {
 					mudarModoAgressivo();
+				}
+				if (keyCoode == KeyEvent.VK_F11) {
+					progamacaoBox();
 				}
 				if (keyCoode == KeyEvent.VK_F12) {
 					mudarModoBox();
@@ -279,6 +296,11 @@ public class GerenciadorVisual {
 		controleJogo.setBoxJogadorHumano(Lang.key(comboBoxTipoPneu
 				.getSelectedItem().toString()), value, Lang.key(comboBoxAsa
 				.getSelectedItem().toString()));
+		modoBox();
+
+	}
+
+	private void modoBox() {
 		boolean modo = controleJogo.mudarModoBox();
 		if (!(controleJogo instanceof JogoCliente)) {
 			if (modo && !(controleJogo instanceof JogoCliente)) {
@@ -288,7 +310,6 @@ public class GerenciadorVisual {
 			}
 
 		}
-
 	}
 
 	protected void mudarGiro() {
@@ -681,6 +702,12 @@ public class GerenciadorVisual {
 				return Lang.msg("135");
 			}
 		};
+		progBox = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("262");
+			}
+		};
 		modoPiloto = new JComboBox();
 		modoPiloto.addItem(new LangVO("008"));
 		modoPiloto.addItem(new LangVO(Piloto.AGRESSIVO));
@@ -712,15 +739,15 @@ public class GerenciadorVisual {
 				return Lang.msg("136");
 			}
 		});
-		GridLayout gridLayout = new GridLayout(5, 1) {
+		GridLayout gridLayout = new GridLayout(6, 1) {
 			public Dimension preferredLayoutSize(Container parent) {
 				return new Dimension(150, 140);
 			}
 		};
 
 		panelControle.setLayout(gridLayout);
+		panelControle.add(progBox);
 		panelControle.add(box);
-		// panelControle.add(modoPiloto);
 		panelControle.add(comboBoxTipoPneu);
 		panelControle.add(comboBoxAsa);
 		panelControle.add(new JLabel() {
@@ -1147,5 +1174,51 @@ public class GerenciadorVisual {
 
 	public void setComboBoxAsaInicial(JComboBox comboBoxAsaInicial) {
 		this.comboBoxAsaInicial = comboBoxAsaInicial;
+	}
+
+	public void verificaProgramacaoBox() {
+		if (controleJogo.getPilotoJogador().isBox()) {
+			return;
+		}
+		long volta = controleJogo.getPilotoJogador().getNumeroVolta();
+		boolean ativo1 = progamacaoBox.getAtive1().isSelected();
+		long voltaParada1 = ((Integer) (progamacaoBox
+				.getSpinnerNumVoltaParada1().getValue())).intValue();
+		if (ativo1 && volta == voltaParada1) {
+			controleJogo.setBoxJogadorHumano(Lang.key(progamacaoBox
+					.getBoxPneuParada1().getSelectedItem().toString()),
+					progamacaoBox.getSliderPercentCombustParada1().getValue(),
+					Lang.key(progamacaoBox.getComboBoxAsaParada1()
+							.getSelectedItem().toString()));
+			modoBox();
+		}
+		boolean ativo2 = progamacaoBox.getAtive2().isSelected();
+		long voltaParada2 = ((Integer) (progamacaoBox
+				.getSpinnerNumVoltaParada2().getValue())).intValue();
+		if (ativo2 && volta == voltaParada2) {
+			controleJogo.setBoxJogadorHumano(Lang.key(progamacaoBox
+					.getBoxPneuParada2().getSelectedItem().toString()),
+					progamacaoBox.getSliderPercentCombustParada2().getValue(),
+					Lang.key(progamacaoBox.getComboBoxAsaParada2()
+							.getSelectedItem().toString()));
+			modoBox();
+		}
+		boolean ativo3 = progamacaoBox.getAtive3().isSelected();
+		long voltaParada3 = ((Integer) (progamacaoBox
+				.getSpinnerNumVoltaParada3().getValue())).intValue();
+		if (ativo3 && volta == voltaParada3) {
+			controleJogo.setBoxJogadorHumano(Lang.key(progamacaoBox
+					.getBoxPneuParada3().getSelectedItem().toString()),
+					progamacaoBox.getSliderPercentCombustParada3().getValue(),
+					Lang.key(progamacaoBox.getComboBoxAsaParada3()
+							.getSelectedItem().toString()));
+			modoBox();
+		}
+	}
+
+	public boolean isProgamaBox() {
+		return progamacaoBox.getAtive1().isSelected()
+				|| progamacaoBox.getAtive2().isSelected()
+				|| progamacaoBox.getAtive3().isSelected();
 	}
 }

@@ -539,4 +539,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		this.controleClassificacao = controleClassificacao;
 	}
 
+	@Override
+	public void verificaProgramacaoBox() {
+	}
 }

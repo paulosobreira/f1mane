@@ -16,7 +16,6 @@ import javax.swing.table.AbstractTableModel;
 
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
-import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**

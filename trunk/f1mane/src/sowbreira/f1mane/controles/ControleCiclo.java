@@ -94,6 +94,7 @@ public class ControleCiclo extends Thread {
 					controleCorrida.atualizaClassificacao();
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaPainel();
+					controleJogo.verificaProgramacaoBox();
 
 					if (InterfaceJogo.VALENDO) {
 						Thread.sleep(tempoCiclo);
