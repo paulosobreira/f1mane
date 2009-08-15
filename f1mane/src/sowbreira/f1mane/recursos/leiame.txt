@@ -12,14 +12,19 @@
  - Qualquer sugestão : sowbreira@gmail.com.
 
 Histórico de versões:
+2.0
+  - Modo de progamação de paradas (Auto Box).
+  - Correções nos consumo de motor e pneus.
+  - Correções nos ratios do modo carreira.
+  - Novos circuitos e temporadas todos por Necross.
 1.9
-  - Temporadas 1968,1972,1974,1987,1986 ,1988,1990 e 2003 por Necross
+  - Temporadas 1968,1972,1974,1987,1986 ,1988,1990 e 2003 por Necross.
   - Implementado nivel de stress do piloto.
-  - Alterado comportamento do safaty car e acidades
-  - Realinhamento de itens na tela
+  - Alterado comportamento do safaty car e acidades.
+  - Realinhamento de itens na tela.
 1.8
   - Retardatário agora podem causar lentidão aos dianteiros.
-  - Novo modo de controle do piloto : Agressivo , normal e cauteloso
+  - Novo modo de controle do piloto : Agressivo , normal e cauteloso.
   - É mostrada as ultimas 5 voltas para melhor acompanhamento.
   - Corrigido bug da volta do box.
   - Otimizado a versão via rede.
