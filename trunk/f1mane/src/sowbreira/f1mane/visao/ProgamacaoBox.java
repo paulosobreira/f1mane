@@ -1,5 +1,7 @@
 package sowbreira.f1mane.visao;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JCheckBox;
@@ -135,71 +137,197 @@ public class ProgamacaoBox {
 
 		spinnerNumVoltaParada3 = new JSpinner();
 
-		GridLayout gridLayout = new GridLayout(4, 5);
+		GridBagLayout bagLayout = new GridBagLayout();
+
 		GridLayout gridLayoutMini = new GridLayout(1, 2);
 		painel = new JPanel();
-		painel.setLayout(gridLayout);
-
+		painel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		c.ipadx = 5;
+		c.ipady = 5;
+		c.fill = java.awt.GridBagConstraints.BOTH;
 		painel.add(new JLabel() {
 
 			public String getText() {
 				return Lang.msg("263");
 			}
-		});
+		}, c);
+		c = new GridBagConstraints();
+		c.gridx = 2;
+		c.gridy = 0;
+		c.ipadx = 5;
+		c.ipady = 5;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+
 		painel.add(new JLabel() {
 
 			public String getText() {
 				return Lang.msg("082");
 			}
-		});
+		}, c);
+		c = new GridBagConstraints();
+		c.gridx = 3;
+		c.gridy = 0;
+		c.ipadx = 5;
+		c.ipady = 5;
+		c.fill = java.awt.GridBagConstraints.BOTH;
 		painel.add(new JLabel() {
 
 			public String getText() {
 				return Lang.msg("264");
 			}
-		});
+		}, c);
+		c = new GridBagConstraints();
+		c.gridx = 4;
+		c.gridy = 0;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.gridwidth = 3;
+		c.ipadx = 5;
+		c.ipady = 5;
 		painel.add(new JLabel() {
 
 			public String getText() {
 				return Lang.msg("083");
 			}
-		});
+		}, c);
+		c = new GridBagConstraints();
+		c.gridx = 7;
+		c.gridy = 0;
+		c.ipadx = 5;
+		c.ipady = 5;
+		c.fill = java.awt.GridBagConstraints.BOTH;
 		painel.add(new JLabel() {
 
 			public String getText() {
 				return Lang.msg("084");
 			}
-		});
+		}, c);
 
 		JPanel mini1 = new JPanel();
 		mini1.add(new JLabel("1"));
 		mini1.add(ative1);
 		mini1.setLayout(gridLayoutMini);
-		painel.add(mini1);
-		painel.add(spinnerNumVoltaParada1);
-		painel.add(boxPneuParada1);
-		painel.add(sliderPercentCombustParada1);
-		painel.add(comboBoxAsaParada1);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 2;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(mini1, c);
+		c = new GridBagConstraints();
+		c.gridx = 2;
+		c.gridy = 1;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(spinnerNumVoltaParada1, c);
+		c = new GridBagConstraints();
+		c.gridx = 3;
+		c.gridy = 1;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(boxPneuParada1, c);
+		c = new GridBagConstraints();
+		c.gridx = 4;
+		c.gridy = 1;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(sliderPercentCombustParada1, c);
+		c = new GridBagConstraints();
+		c.gridx = 7;
+		c.gridy = 1;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(comboBoxAsaParada1, c);
 
 		JPanel mini2 = new JPanel();
 		mini2.add(new JLabel("2"));
 		mini2.setLayout(gridLayoutMini);
 		mini2.add(ative2);
-		painel.add(mini2);
-		painel.add(spinnerNumVoltaParada2);
-		painel.add(boxPneuParada2);
-		painel.add(sliderPercentCombustParada2);
-		painel.add(comboBoxAsaParada2);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(mini2, c);
+		c = new GridBagConstraints();
+		c.gridx = 2;
+		c.gridy = 2;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(spinnerNumVoltaParada2, c);
+		c = new GridBagConstraints();
+		c.gridx = 3;
+		c.gridy = 2;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(boxPneuParada2, c);
+		c = new GridBagConstraints();
+		c.gridx = 4;
+		c.gridy = 2;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(sliderPercentCombustParada2, c);
+		c = new GridBagConstraints();
+		c.gridx = 7;
+		c.gridy = 2;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(comboBoxAsaParada2, c);
 
 		JPanel mini3 = new JPanel();
 		mini3.add(new JLabel("3"));
 		mini3.add(ative3);
 		mini3.setLayout(gridLayoutMini);
-		painel.add(mini3);
-		painel.add(spinnerNumVoltaParada3);
-		painel.add(boxPneuParada3);
-		painel.add(sliderPercentCombustParada3);
-		painel.add(comboBoxAsaParada3);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 2;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(mini3, c);
+		c = new GridBagConstraints();
+		c.gridx = 2;
+		c.gridy = 3;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(spinnerNumVoltaParada3, c);
+		c = new GridBagConstraints();
+		c.gridx = 3;
+		c.gridy = 3;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(boxPneuParada3, c);
+		c = new GridBagConstraints();
+		c.gridx = 4;
+		c.gridy = 3;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(sliderPercentCombustParada3, c);
+		c = new GridBagConstraints();
+		c.gridx = 7;
+		c.gridy = 3;
+		c.fill = java.awt.GridBagConstraints.BOTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		painel.add(comboBoxAsaParada3, c);
 
 	}
 
