@@ -258,6 +258,14 @@ public class PainelCircuito extends JPanel {
 			}
 			g2d.drawString(Lang.msg("077"), ptoOri, yBase);
 			yBase += 15;
+			if (gerenciadorVisual.isProgamaBox()) {
+				g2d.setColor(Color.blue);
+			} else {
+				g2d.setColor(Color.black);
+			}
+
+			g2d.drawString(Lang.msg("265"), ptoOri, yBase);
+			yBase += 15;
 			g2d.setColor(Color.black);
 			g2d.drawString(Lang.msg("078"), ptoOri, yBase);
 			yBase += 15;

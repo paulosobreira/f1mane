@@ -107,7 +107,7 @@ public class ControlePersistencia {
 			}
 			Dia dia = new Dia(jogadorDadosSrv.getUltimoLogon());
 			Dia hj = new Dia();
-			if (hj.daysBetween(dia) > 60) {
+			if (hj.daysBetween(dia) > 60 && corridas.size() < 20) {
 				iter.remove();
 			}
 		}

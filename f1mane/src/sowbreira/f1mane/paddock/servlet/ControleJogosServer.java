@@ -80,9 +80,10 @@ public class ControleJogosServer {
 			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 					.verCarreira(clientPaddockPack);
 			if (carreiraDadosSrv.isModoCarreira()) {
-				if (verificaExcedePotencia(jogoServidor.getMediaPontecia(),
-						carreiraDadosSrv.getPtsCarro(), jogoServidor
-								.getNiveljogo())) {
+				if (jogoServidor.getNiveljogo() != InterfaceJogo.FACIL_NV
+						&& verificaExcedePotencia(jogoServidor
+								.getMediaPontecia(), carreiraDadosSrv
+								.getPtsCarro(), jogoServidor.getNiveljogo())) {
 					return new MsgSrv(Lang.msg("261"));
 				}
 			}
@@ -155,8 +156,10 @@ public class ControleJogosServer {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
 			}
-			if (verificaExcedePotencia(jogoServidor.getMediaPontecia(),
-					carreiraDadosSrv.getPtsCarro(), jogoServidor.getNiveljogo())) {
+			if (jogoServidor.getNiveljogo() != InterfaceJogo.FACIL_NV
+					&& verificaExcedePotencia(jogoServidor.getMediaPontecia(),
+							carreiraDadosSrv.getPtsCarro(), jogoServidor
+									.getNiveljogo())) {
 				return new MsgSrv(Lang.msg("261"));
 			}
 		}
@@ -527,5 +530,5 @@ public class ControleJogosServer {
 		}
 		return null;
 	}
-
+	
 }
