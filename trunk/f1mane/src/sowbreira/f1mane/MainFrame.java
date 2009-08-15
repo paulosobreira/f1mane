@@ -118,7 +118,7 @@ public class MainFrame extends JFrame {
 		gerarMenusidiomas(menuIdiomas);
 		getContentPane().setLayout(null);
 		setSize(800, 630);
-		setTitle("F1-Mane 1.9");
+		setTitle("F1-Mane 2.0");
 	}
 
 	private void gerarMenusidiomas(JMenu menuIdiomas) {
