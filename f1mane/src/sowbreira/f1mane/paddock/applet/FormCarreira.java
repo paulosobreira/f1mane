@@ -33,7 +33,12 @@ import br.nnpe.Util;
  */
 public class FormCarreira extends JPanel {
 
-	private JLabel labelPtsCarreira = new JLabel("Pontos Carreira:");
+	private JLabel labelPtsCarreira = new JLabel("Pontos Carreira:") {
+		@Override
+		public String getText() {
+			return Lang.msg("266");
+		}
+	};
 	JLabel ptsCarreiraVal = new JLabel("0") {
 		public String getText() {
 			return String.valueOf(ptsCarreira);
@@ -224,7 +229,11 @@ public class FormCarreira extends JPanel {
 			index = (index >= list.size() - 1) ? 0 : index + 1;
 			imgCarroStr = (String) list.get((int) index);
 			Logger.logar(imgCarroStr);
-			imgCarro.getEditor().repaint();
+			try {
+				imgCarro.getEditor().repaint();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return super.getNextValue();
 		}
 
@@ -234,7 +243,11 @@ public class FormCarreira extends JPanel {
 			index = (index <= 0) ? list.size() - 1 : index - 1;
 			imgCarroStr = (String) list.get((int) index);
 			Logger.logar(imgCarroStr);
-			imgCarro.getEditor().repaint();
+			try {
+				imgCarro.getEditor().repaint();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return super.getPreviousValue();
 		}
 	}
@@ -277,7 +290,11 @@ public class FormCarreira extends JPanel {
 					} else {
 						ptsCarreira += inc;
 					}
-					ptsCarreiraVal.repaint();
+					try {
+						ptsCarreiraVal.repaint();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					super.setValue(value);
 				}
 			}
@@ -300,7 +317,11 @@ public class FormCarreira extends JPanel {
 		} else {
 			labelCor1.setForeground(Color.WHITE);
 		}
-		labelCor1.repaint();
+		try {
+			labelCor1.repaint();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -320,7 +341,11 @@ public class FormCarreira extends JPanel {
 		} else {
 			labelCor2.setForeground(Color.WHITE);
 		}
-		labelCor2.repaint();
+		try {
+			labelCor2.repaint();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

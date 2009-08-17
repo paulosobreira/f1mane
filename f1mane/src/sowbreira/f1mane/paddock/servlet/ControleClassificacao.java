@@ -299,13 +299,6 @@ public class ControleClassificacao {
 							.getNomeJogador());
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
-			// Validar pts servidor.
-			// int ptConsBan = carreiraDadosSrv.getPtsConstrutores();
-			// int ptConsCli = clientPaddockPack.getJogadorDadosSrv()
-			// .getPtsConstrutores();
-			// int ptPilotoBan = carreiraDadosSrv.getPtsPiloto();
-			// int ptPilotoCli = clientPaddockPack.getJogadorDadosSrv()
-			// .getPtsPiloto();
 
 			carreiraDadosSrv.setNomePiloto(clientPaddockPack
 					.getJogadorDadosSrv().getNomePiloto());

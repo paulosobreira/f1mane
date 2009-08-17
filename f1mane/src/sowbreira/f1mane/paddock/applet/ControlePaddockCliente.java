@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -660,6 +661,33 @@ public class ControlePaddockCliente {
 		carreiraDadosSrv.setC2G(formCarreira.getCor2().getGreen());
 		carreiraDadosSrv.setC2B(formCarreira.getCor2().getBlue());
 		clientPaddockPack.setJogadorDadosSrv(carreiraDadosSrv);
-		Object ret = enviarObjeto(clientPaddockPack);
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(4, 2));
+		panel.add(new JLabel("Pontos Carreira:") {
+			@Override
+			public String getText() {
+				return Lang.msg("266");
+			}
+		});
+		panel.add(new JLabel(String.valueOf(carreiraDadosSrv
+				.getPtsConstrutores())));
+		panel.add(new JLabel("Habilidade Piloto:") {
+			@Override
+			public String getText() {
+				return Lang.msg("255");
+			}
+		});
+		panel.add(new JLabel(String.valueOf(carreiraDadosSrv.getPtsPiloto())));
+		panel.add(new JLabel("Pontencia Carro:") {
+			@Override
+			public String getText() {
+				return Lang.msg("256");
+			}
+		});
+		panel.add(new JLabel(String.valueOf(carreiraDadosSrv.getPtsCarro())));
+		int result = JOptionPane.showConfirmDialog(null, panel);
+		if (JOptionPane.OK_OPTION == result) {
+			Object ret = enviarObjeto(clientPaddockPack);
+		}
 	}
 }
