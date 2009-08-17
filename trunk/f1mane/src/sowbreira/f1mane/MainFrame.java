@@ -51,6 +51,7 @@ public class MainFrame extends JFrame {
 	private JRadioButtonMenuItem t1987;
 	private JRadioButtonMenuItem t1988;
 	private JRadioButtonMenuItem t1990;
+	private JRadioButtonMenuItem t1993;
 	private JRadioButtonMenuItem t2003;
 	private JRadioButtonMenuItem t2007;
 	private JRadioButtonMenuItem t2008;
@@ -329,6 +330,12 @@ public class MainFrame extends JFrame {
 			}
 
 		};
+		t1993 = new JRadioButtonMenuItem() {
+			public String getText() {
+				return Lang.msg("t1993");
+			}
+
+		};
 		t2003 = new JRadioButtonMenuItem() {
 			public String getText() {
 				return Lang.msg("t2003");
@@ -368,6 +375,7 @@ public class MainFrame extends JFrame {
 		buttonGroup.add(t1987);
 		buttonGroup.add(t1988);
 		buttonGroup.add(t1990);
+		buttonGroup.add(t1993);
 		buttonGroup.add(t2003);
 		buttonGroup.add(t2007);
 		buttonGroup.add(t2008);
@@ -380,6 +388,7 @@ public class MainFrame extends JFrame {
 		menu1.add(t1987);
 		menu1.add(t1988);
 		menu1.add(t1990);
+		menu1.add(t1993);
 		menu1.add(t2003);
 		menu1.add(t2007);
 		menu1.add(t2008);
@@ -414,6 +423,8 @@ public class MainFrame extends JFrame {
 			temporarada = "t1988";
 		} else if (getT1990().isSelected()) {
 			temporarada = "t1990";
+		} else if (getT1993().isSelected()) {
+			temporarada = "t1993";
 		} else if (getT2003().isSelected()) {
 			temporarada = "t2003";
 		} else if (getT2007().isSelected()) {
@@ -428,6 +439,10 @@ public class MainFrame extends JFrame {
 			temporarada = "tsuper";
 		}
 
+	}
+
+	public JRadioButtonMenuItem getT1993() {
+		return t1993;
 	}
 
 	public JRadioButtonMenuItem getT1990() {
