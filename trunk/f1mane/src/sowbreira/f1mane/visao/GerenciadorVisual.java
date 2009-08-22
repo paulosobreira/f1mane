@@ -1177,7 +1177,8 @@ public class GerenciadorVisual {
 	}
 
 	public void verificaProgramacaoBox() {
-		if (controleJogo.getPilotoJogador().isBox()) {
+		if (controleJogo.getPilotoJogador() == null
+				|| controleJogo.getPilotoJogador().isBox()) {
 			return;
 		}
 		long volta = controleJogo.getPilotoJogador().getNumeroVolta();
