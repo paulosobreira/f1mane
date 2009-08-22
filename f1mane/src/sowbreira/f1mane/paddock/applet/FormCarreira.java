@@ -265,20 +265,20 @@ public class FormCarreira extends JPanel {
 					if (nexVal >= 600 && nexVal < 700) {
 						inc = 1;
 						if (val == 700) {
-							inc = 5;
+							inc = 2;
 						}
 					} else if (nexVal >= 700 && nexVal < 800) {
-						inc = 5;
+						inc = 2;
 						if (val == 800) {
-							inc = 10;
+							inc = 5;
 						}
 					} else if (nexVal >= 800 && nexVal < 900) {
-						inc = 10;
+						inc = 5;
 						if (val == 900) {
-							inc = 30;
+							inc = 15;
 						}
 					} else if (nexVal >= 900 && nexVal < 999) {
-						inc = 30;
+						inc = 15;
 					}
 					if ((nexVal - val) > 0) {
 						if ((ptsCarreira - inc) >= 0) {
