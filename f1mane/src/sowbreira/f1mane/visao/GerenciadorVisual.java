@@ -103,6 +103,7 @@ public class GerenciadorVisual {
 	private int alturaFrame = 0;
 	private long lastPress;
 	private ProgamacaoBox progamacaoBox;
+	private long ultimaChamadaBox;
 
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
@@ -1215,6 +1216,7 @@ public class GerenciadorVisual {
 							.getSelectedItem().toString()));
 			modoBox();
 		}
+		ultimaChamadaBox = System.currentTimeMillis();
 	}
 
 	public boolean isProgamaBox() {
