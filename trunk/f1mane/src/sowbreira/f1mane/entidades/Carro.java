@@ -455,27 +455,26 @@ public class Carro implements Serializable {
 
 	private int calculaModificadorPneu(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
-		if (!tipoPneu.equals(TIPO_PNEU_CHUVA)) {
-			if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
-				int porcent = porcentagemDesgastePeneus();
-				double indicativo = porcent / 100.0;
-
-				if (TIPO_PNEU_MOLE.equals(tipoPneu) && no.verificaCruvaBaixa()) {
-					if ((indicativo > 5)) {
-						novoModificador += 1;
-					}
-				} else if (TIPO_PNEU_MOLE.equals(tipoPneu)
-						&& no.verificaCruvaAlta() && (indicativo > 10)
-						&& (indicativo < 90)) {
+		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
+			int porcent = porcentagemDesgastePeneus();
+			double indicativo = porcent / 100.0;
+			if (TIPO_PNEU_MOLE.equals(tipoPneu) && no.verificaCruvaBaixa()) {
+				if ((indicativo > 5)) {
 					novoModificador += 1;
-
-				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
-						&& no.verificaCruvaBaixa() && Math.random() > .8) {
-					novoModificador -= 1;
-				} else if (TIPO_PNEU_DURO.equals(tipoPneu)
-						&& no.verificaCruvaAlta() && Math.random() > .9) {
-					novoModificador -= 1;
 				}
+			} else if (TIPO_PNEU_MOLE.equals(tipoPneu)
+					&& no.verificaCruvaAlta() && (indicativo > 10)
+					&& (indicativo < 90)) {
+				novoModificador += 1;
+
+			} else if ((TIPO_PNEU_DURO.equals(tipoPneu) || tipoPneu
+					.equals(TIPO_PNEU_CHUVA))
+					&& no.verificaCruvaBaixa() && Math.random() > .8) {
+				novoModificador -= 1;
+			} else if ((TIPO_PNEU_DURO.equals(tipoPneu) || tipoPneu
+					.equals(TIPO_PNEU_CHUVA))
+					&& no.verificaCruvaAlta() && Math.random() > .9) {
+				novoModificador -= 1;
 			}
 		}
 		if ((pneus < 0) && (novoModificador > 1)) {
@@ -486,7 +485,6 @@ public class Carro implements Serializable {
 			if (agressivo)
 				desgPneus += ((controleJogo.getNiveljogo() * 2.0) + novoModificador);
 		}
-
 		if (agressivo && no.verificaCruvaBaixa()) {
 			if (piloto.isJogadorHumano()) {
 				fritouPneuNaUltimaCurvaBaixa = true;
@@ -504,6 +502,9 @@ public class Carro implements Serializable {
 					: 2 + novoModificador);
 		} else {
 			desgPneus += 1;
+		}
+		if (!Clima.SOL.equals(controleJogo.getClima()) && Math.random() > .7) {
+			desgPneus -= 1;
 		}
 		if (piloto.isJogadorHumano()
 				&& InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()

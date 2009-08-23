@@ -80,7 +80,7 @@ public class ControleJogosServer {
 			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 					.verCarreira(clientPaddockPack);
 			if (carreiraDadosSrv.isModoCarreira()) {
-				if (!InterfaceJogo.FACIL.equals(clientPaddockPack
+				if (InterfaceJogo.DIFICIL.equals(clientPaddockPack
 						.getDadosJogoCriado().getNivelCorrida())
 						&& verificaExcedePotencia(jogoServidor
 								.getMediaPontecia(), carreiraDadosSrv
@@ -157,7 +157,7 @@ public class ControleJogosServer {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
 			}
-			if (jogoServidor.getNiveljogo() != InterfaceJogo.FACIL_NV
+			if (jogoServidor.getNiveljogo() == InterfaceJogo.DIFICIL_NV
 					&& verificaExcedePotencia(jogoServidor.getMediaPontecia(),
 							carreiraDadosSrv.getPtsCarro(), jogoServidor
 									.getNiveljogo())) {
