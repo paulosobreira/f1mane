@@ -542,18 +542,14 @@ public class Piloto implements Serializable {
 		} else if (fator && !agressivo && getPosicao() != 1) {
 			decStress(1);
 		}
-
 		/**
 		 * Devagarinho qdo a corrida termina
 		 */
 		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
-
 			index += ((Math.random() > 0.4) ? 1 : 0);
 			ptosPista += 1;
-
 			return index;
 		}
-
 		if (!desqualificado) {
 			if (getCarro().isPaneSeca()) {
 				desqualificado = true;
@@ -563,11 +559,9 @@ public class Piloto implements Serializable {
 		} else {
 			return index;
 		}
-
 		verificaMudancaRegime(controleJogo);
 		tantarPassaPilotoDaFrente(controleJogo);
 		int novoModificador = calcularNovoModificador(controleJogo);
-
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, noAtual, controleJogo);
 		if (!controleJogo.isModoQualify()) {
@@ -815,13 +809,13 @@ public class Piloto implements Serializable {
 				&& (Math.random() < controleJogo.getIndexVelcidadeDaPista())
 				&& (Math.random() < bonusSecundario)) {
 			return 3;
-		} else if (testeHabilidadePilotoCarro()
+		} else if (getCarro().testePotencia()
 				&& noAtual.verificaRetaOuLargada()) {
 			return (Math.random() < bonusSecundario ? 3 : 2);
 		} else if (testeHabilidadePilotoCarro() && agressivo
 				&& noAtual.verificaCruvaAlta()) {
 			return 2;
-		} else if (testeHabilidadePilotoCarro() && !agressivo
+		} else if (getCarro().testePotencia() && !agressivo
 				&& noAtual.verificaCruvaAlta()) {
 			return (Math.random() < bonusSecundario ? 2 : 1);
 		} else if (testeHabilidadePilotoCarro() && agressivo
