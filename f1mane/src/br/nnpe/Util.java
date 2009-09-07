@@ -823,6 +823,7 @@ public class Util {
 		// Logger.logar(gerarChavePessoa("j jameson j ", "19/12/1977",
 		// "M"));
 		// Logger.logar(md5("raquel"));
+		System.out.println(md5("whiplash"));
 	}
 
 	public static double double2Decimal(double dob) {

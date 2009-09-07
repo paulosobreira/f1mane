@@ -279,11 +279,9 @@ public class Carro implements Serializable {
 		if (novoModificador > 3) {
 			return 3;
 		}
-
 		if (novoModificador < 0) {
 			return 0;
 		}
-
 		return novoModificador;
 	}
 
@@ -301,7 +299,7 @@ public class Carro implements Serializable {
 			}
 		}
 		if (no.verificaCruvaBaixa()) {
-			if (Math.random() < .900) {
+			if (Math.random() < .700) {
 				return novoModificador;
 			}
 			if (MENOS_ASA.equals(getAsa())) {

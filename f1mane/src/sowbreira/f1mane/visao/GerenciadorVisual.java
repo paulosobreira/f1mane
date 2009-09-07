@@ -287,6 +287,9 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
+		if ((System.currentTimeMillis() - ultimaChamadaBox) < 1000) {
+			return;
+		}
 		Integer value = (Integer) sliderPercentCombust.getValue();
 		if (value.intValue() < 0) {
 			value = new Integer(0);
@@ -298,6 +301,7 @@ public class GerenciadorVisual {
 				.getSelectedItem().toString()), value, Lang.key(comboBoxAsa
 				.getSelectedItem().toString()));
 		modoBox();
+		ultimaChamadaBox = System.currentTimeMillis();
 
 	}
 
