@@ -665,7 +665,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return 0;
 	}
 
-	@Override
+	
 	public void verificaProgramacaoBox() {
 		gerenciadorVisual.verificaProgramacaoBox();
 

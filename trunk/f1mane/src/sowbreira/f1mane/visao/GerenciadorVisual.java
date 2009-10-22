@@ -287,9 +287,6 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-		if ((System.currentTimeMillis() - ultimaChamadaBox) < 1000) {
-			return;
-		}
 		Integer value = (Integer) sliderPercentCombust.getValue();
 		if (value.intValue() < 0) {
 			value = new Integer(0);
@@ -301,11 +298,13 @@ public class GerenciadorVisual {
 				.getSelectedItem().toString()), value, Lang.key(comboBoxAsa
 				.getSelectedItem().toString()));
 		modoBox();
-		ultimaChamadaBox = System.currentTimeMillis();
 
 	}
 
 	private void modoBox() {
+		if ((System.currentTimeMillis() - ultimaChamadaBox) < 1000) {
+			return;
+		}
 		boolean modo = controleJogo.mudarModoBox();
 		if (!(controleJogo instanceof JogoCliente)) {
 			if (modo && !(controleJogo instanceof JogoCliente)) {
@@ -315,6 +314,7 @@ public class GerenciadorVisual {
 			}
 
 		}
+		ultimaChamadaBox = System.currentTimeMillis();
 	}
 
 	protected void mudarGiro() {
@@ -1220,7 +1220,6 @@ public class GerenciadorVisual {
 							.getSelectedItem().toString()));
 			modoBox();
 		}
-		ultimaChamadaBox = System.currentTimeMillis();
 	}
 
 	public boolean isProgamaBox() {
