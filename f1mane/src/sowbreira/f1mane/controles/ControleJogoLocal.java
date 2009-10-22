@@ -803,7 +803,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return mediaPontecia;
 	}
 
-	@Override
 	public void verificaProgramacaoBox() {
 		gerenciadorVisual.verificaProgramacaoBox();
 
