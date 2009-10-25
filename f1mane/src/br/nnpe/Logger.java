@@ -1,7 +1,10 @@
 package br.nnpe;
 
 import sowbreira.f1mane.paddock.servlet.ServletBaseDados;
-
+/**
+ * @author Paulo Sobreira
+ * Criado em 25/10/2009 as 17:27:25
+ */
 public class Logger {
 
 	public static boolean ativo = false;
