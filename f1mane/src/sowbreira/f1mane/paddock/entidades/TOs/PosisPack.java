@@ -11,6 +11,7 @@ public class PosisPack implements Serializable {
 
 	public Posis[] posis;
 	public int safetyNoId;
+	public long time = System.currentTimeMillis();
 	public boolean safetySair;
 
 	public String encode() {

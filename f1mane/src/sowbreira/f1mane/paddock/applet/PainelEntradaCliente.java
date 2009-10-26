@@ -193,7 +193,8 @@ public class PainelEntradaCliente {
 			}
 		});
 		spinnerDificuldadeUltrapassagem = new JSpinner();
-		spinnerDificuldadeUltrapassagem.setValue(new Integer(500));
+		spinnerDificuldadeUltrapassagem.setValue(new Integer(300 + (int) (Math
+				.random() * 600)));
 		painelInicio.add(spinnerDificuldadeUltrapassagem);
 		painelInicio.add(new JLabel("Index velocidade em reta (0-999):") {
 			@Override
@@ -202,7 +203,8 @@ public class PainelEntradaCliente {
 			}
 		});
 		spinnerIndexVelcidadeEmReta = new JSpinner();
-		spinnerIndexVelcidadeEmReta.setValue(new Integer(500));
+		spinnerIndexVelcidadeEmReta.setValue(new Integer(400 + (int) (Math
+				.random() * 600)));
 		painelInicio.add(spinnerIndexVelcidadeEmReta);
 
 		painelInicio.add(new JLabel("Tempo Ciclo (50ms-240ms):") {
@@ -212,27 +214,19 @@ public class PainelEntradaCliente {
 			}
 		});
 		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo.setValue(new Integer(90));
+		spinnerTempoCiclo
+				.setValue(new Integer(50 + (int) (Math.random() * 80)));
 		painelInicio.add(spinnerTempoCiclo);
 
-//		painelInicio.add(new JLabel() {
-//			public String getText() {
-//				return Lang.msg("112");
-//			}
-//		});
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
-		//painelInicio.add(spinnerSkillPadraoPilotos);
-
-//		painelInicio.add(new JLabel() {
-//			public String getText() {
-//				return Lang.msg("113");
-//			}
-//		});
 		spinnerPotenciaPadraoCarros = new JSpinner();
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
-		//painelInicio.add(spinnerPotenciaPadraoCarros);
 
+	}
+
+	public static void main(String[] args) {
+		System.out.println();
 	}
 
 	public boolean gerarDadosCriarJogo(DadosCriarJogo dadosCriarJogo) {

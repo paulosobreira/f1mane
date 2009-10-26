@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -297,8 +298,14 @@ public class ControleJogosServer {
 		return dadosJogo;
 	}
 
-	public Object obterPosicaoPilotos(String nomeJogo) {
-		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
+	/**
+	 * Big Change
+	 * 
+	 * @param nomeJogo
+	 * @return
+	 */
+	public Object obterPosicaoPilotos(String data) {
+		JogoServidor jogoServidor = obterJogoPeloNome(data);
 		if (jogoServidor == null) {
 			return null;
 		}
@@ -327,6 +334,7 @@ public class ControleJogosServer {
 			pack.safetySair = jogoServidor.getSafetyCar().isVaiProBox();
 		}
 		return pack.encode();
+
 	}
 
 	public Object mudarModoAgressivo(ClientPaddockPack clientPaddockPack) {
