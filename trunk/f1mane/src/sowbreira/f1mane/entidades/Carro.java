@@ -347,6 +347,13 @@ public class Carro implements Serializable {
 				valDesgaste = 0;
 			}
 		}
+		if (!Clima.SOL.equals(controleJogo.getClima()) && Math.random() > .7) {
+			valDesgaste -= 1;
+		}
+
+		if (valDesgaste < 0) {
+			valDesgaste = 0;
+		}
 		motor -= valDesgaste;
 		if (porcentagemDesgasteMotor() < 0) {
 			piloto.setDesqualificado(true);
@@ -457,7 +464,8 @@ public class Carro implements Serializable {
 			int porcent = porcentagemDesgastePeneus();
 			double indicativo = porcent / 100.0;
 			if (TIPO_PNEU_MOLE.equals(tipoPneu) && no.verificaCruvaBaixa()) {
-				if ((indicativo > 5)) {
+				if ((indicativo > 5)
+						|| Clima.SOL.equals(controleJogo.getClima())) {
 					novoModificador += 1;
 				}
 			} else if (TIPO_PNEU_MOLE.equals(tipoPneu)
@@ -503,6 +511,12 @@ public class Carro implements Serializable {
 		}
 		if (!Clima.SOL.equals(controleJogo.getClima()) && Math.random() > .7) {
 			desgPneus -= 1;
+		}
+		if (Math.random() > .5) {
+			int percent = porcentagemCombustivel();
+			if (percent > 60) {
+				desgPneus += 1;
+			}
 		}
 		if (piloto.isJogadorHumano()
 				&& InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()

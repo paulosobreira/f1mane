@@ -356,7 +356,11 @@ public class GerenciadorVisual {
 
 	public void atualizaPainel() {
 		if (ControleJogoLocal.VALENDO) {
-			painelCircuito.repaint();
+			try {
+				painelCircuito.repaint();
+			} catch (Exception e) {
+				Logger.logar(e);
+			}
 		}
 		Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
 		atualizaPainelGraficoPilotoSelecionado(pilotoSelecionado);

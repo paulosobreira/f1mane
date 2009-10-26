@@ -4,6 +4,7 @@
 package sowbreira.f1mane.paddock.servlet;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -61,7 +62,7 @@ public class ControlePaddockServidor {
 			if (pedido.indexOf("#") != -1) {
 				String[] args = pedido.split("#");
 				return obterDadosParciaisPilotos(args);
-			} else {
+			} else  {
 				return obterPosicaoPilotos(object);
 			}
 
