@@ -109,6 +109,11 @@ public class MonitorJogo implements Runnable {
 		while (Comandos.MOSTRA_RESULTADO_FINAL.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			atualizarDados();
+			List pilotos = jogoCliente.getPilotos();
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				atualizarDadosParciais(jogoCliente.getDadosJogo(), piloto);
+			}
 			jogoCliente.exibirResultadoFinal();
 			jogoAtivo = false;
 			sleep(tempoCiclo);
@@ -247,7 +252,6 @@ public class MonitorJogo implements Runnable {
 					jogoCliente.setSafetyCarBol(false);
 				}
 				atualizarListaPilotos(posisPack.posis);
-				jogoCliente.atualizaPainel();
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
