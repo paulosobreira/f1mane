@@ -463,22 +463,19 @@ public class Carro implements Serializable {
 		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
 			int porcent = porcentagemDesgastePeneus();
 			double indicativo = porcent / 100.0;
-			if (TIPO_PNEU_MOLE.equals(tipoPneu) && no.verificaCruvaBaixa()) {
-				if ((indicativo > 5)
-						|| Clima.SOL.equals(controleJogo.getClima())) {
+			if (!TIPO_PNEU_CHUVA.equals(tipoPneu) && no.verificaCruvaBaixa()) {
+				if ((porcent > 15) && (Math.random() > indicativo)) {
 					novoModificador += 1;
 				}
-			} else if (TIPO_PNEU_MOLE.equals(tipoPneu)
-					&& no.verificaCruvaAlta() && (indicativo > 10)
-					&& (indicativo < 90)) {
+			} else if (!TIPO_PNEU_CHUVA.equals(tipoPneu)
+					&& no.verificaCruvaAlta() && (porcent > 10)
+					&& (Math.random() > indicativo)) {
 				novoModificador += 1;
 
-			} else if ((TIPO_PNEU_DURO.equals(tipoPneu) || tipoPneu
-					.equals(TIPO_PNEU_CHUVA))
+			} else if (tipoPneu.equals(TIPO_PNEU_CHUVA)
 					&& no.verificaCruvaBaixa() && Math.random() > .8) {
 				novoModificador -= 1;
-			} else if ((TIPO_PNEU_DURO.equals(tipoPneu) || tipoPneu
-					.equals(TIPO_PNEU_CHUVA))
+			} else if (tipoPneu.equals(TIPO_PNEU_CHUVA)
 					&& no.verificaCruvaAlta() && Math.random() > .9) {
 				novoModificador -= 1;
 			}
