@@ -34,7 +34,7 @@
 
 	<target name="compilarClasses">
 
-		<javac destdir="build" srcdir="src" nowarn="true">
+		<javac destdir="build" srcdir="src" nowarn="true" optimize="true" >
 			<classpath refid="classpath.compilacao" />
 		</javac>
 	</target>

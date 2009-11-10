@@ -137,9 +137,7 @@ public class FormCarreira extends JPanel {
 		});
 
 		ptsPiloto.setModel(new CarreiraSpinnerModel());
-		ptsPiloto.setValue(new Integer(990));
 		ptsCarro.setModel(new CarreiraSpinnerModel());
-		ptsCarro.setValue(new Integer(690));
 		JFormattedTextField tfptsCarro = ((JSpinner.DefaultEditor) ptsCarro
 				.getEditor()).getTextField();
 		tfptsCarro.setEditable(false);

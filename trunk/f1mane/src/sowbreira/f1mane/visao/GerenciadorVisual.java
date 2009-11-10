@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
@@ -1112,8 +1113,19 @@ public class GerenciadorVisual {
 						textoAnterior = texto;
 					}
 				}
-				StringReader reader = new StringReader(buffer.toString());
-				infoTextual.read(reader, "");
+				final StringReader reader = new StringReader(buffer.toString());
+
+				Runnable doInfo = new Runnable() {
+					public void run() {
+						try {
+							infoTextual.read(reader, "");
+						} catch (IOException e) {
+							Logger.logarExept(e);
+						}
+					}
+				};
+				SwingUtilities.invokeLater(doInfo);
+
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
