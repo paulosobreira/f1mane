@@ -108,12 +108,19 @@ public class MonitorJogo implements Runnable {
 	private void mostraResultadoFinal(long tempoCiclo) {
 		while (Comandos.MOSTRA_RESULTADO_FINAL.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
-			atualizarDados();
 			List pilotos = jogoCliente.getPilotos();
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
+//				jogoCliente.adicionarInfoDireto(piloto.getPosicao() + " "
+//						+ piloto.getNome() + " " + piloto.getCarro().getNome());
 				atualizarDadosParciais(jogoCliente.getDadosJogo(), piloto);
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					Logger.logarExept(e);
+				}
 			}
+			atualizarDados();
 			jogoCliente.exibirResultadoFinal();
 			jogoAtivo = false;
 			sleep(tempoCiclo);

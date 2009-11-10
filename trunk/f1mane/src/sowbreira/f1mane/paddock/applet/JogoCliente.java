@@ -152,6 +152,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void adicionarInfoDireto(String string) {
+		gerenciadorVisual.adicionarInfoDireto(string);
+
 	}
 
 	public void apagarLuz() {
@@ -665,7 +667,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return 0;
 	}
 
-	
 	public void verificaProgramacaoBox() {
 		gerenciadorVisual.verificaProgramacaoBox();
 
