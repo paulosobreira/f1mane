@@ -30,7 +30,6 @@ public class ServletBaseDados extends HttpServlet {
 	private ControlePersistencia controlePersistencia;
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"dd/MM/yyyy");
-	public static Map topExceptions = new HashMap();
 
 	public void init() throws ServletException {
 		super.init();
@@ -117,11 +116,12 @@ public class ServletBaseDados extends HttpServlet {
 		PrintWriter printWriter = res.getWriter();
 		printWriter.write("<html><body>");
 		printWriter.write("<h2>F1-Mane Paddock Exceções</h2><br><hr>");
-		synchronized (topExceptions) {
-			Set top = topExceptions.keySet();
+		synchronized (Logger.topExceptions) {
+			Set top = Logger.topExceptions.keySet();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
 				String exept = (String) iterator.next();
-				printWriter.write("Quantidade : " + topExceptions.get(exept));
+				printWriter.write("Quantidade : "
+						+ Logger.topExceptions.get(exept));
 				printWriter.write("<br>");
 				printWriter.write(exept);
 				printWriter.write("<br><hr>");
@@ -142,26 +142,4 @@ public class ServletBaseDados extends HttpServlet {
 
 	}
 
-	public static void topExecpts(Exception e) {
-		if (topExceptions == null) {
-			topExceptions = new HashMap();
-		}
-		if (topExceptions.size() < 100) {
-			StackTraceElement[] trace = e.getStackTrace();
-			StringBuffer retorno = new StringBuffer();
-			int size = ((trace.length > 5) ? 5 : trace.length);
-			retorno.append(e.getClass() + " - " + e.getLocalizedMessage()
-					+ "<br>");
-			for (int i = 0; i < size; i++)
-				retorno.append(trace[i] + "<br>");
-			String val = retorno.toString();
-			Integer numExceps = (Integer) topExceptions.get(val);
-			if (numExceps == null) {
-				topExceptions.put(val, new Integer(1));
-			} else {
-				topExceptions.put(val, new Integer(numExceps.intValue() + 1));
-			}
-		}
-
-	}
 }

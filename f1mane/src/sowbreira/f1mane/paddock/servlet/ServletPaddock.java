@@ -54,7 +54,7 @@ public class ServletPaddock extends HttpServlet {
 		try {
 			controlePersistencia.gravarDados();
 		} catch (IOException e) {
-			ServletBaseDados.topExecpts(e);
+			Logger.topExecpts(e);
 		}
 		super.destroy();
 	}
@@ -100,7 +100,7 @@ public class ServletPaddock extends HttpServlet {
 			printWriter.write("ServletPaddock Ok");
 			res.flushBuffer();
 		} catch (Exception e) {
-			ServletBaseDados.topExecpts(e);
+			Logger.topExecpts(e);
 		}
 	}
 

@@ -1,13 +1,39 @@
 package br.nnpe;
 
-import sowbreira.f1mane.paddock.servlet.ServletBaseDados;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * @author Paulo Sobreira
- * Criado em 25/10/2009 as 17:27:25
+ * @author Paulo Sobreira Criado em 25/10/2009 as 17:27:25
  */
 public class Logger {
 
+	public static Map topExceptions = new HashMap();
+
 	public static boolean ativo = false;
+
+	public static void topExecpts(Exception e) {
+		if (topExceptions == null) {
+			topExceptions = new HashMap();
+		}
+		if (topExceptions.size() < 100) {
+			StackTraceElement[] trace = e.getStackTrace();
+			StringBuffer retorno = new StringBuffer();
+			int size = ((trace.length > 5) ? 5 : trace.length);
+			retorno.append(e.getClass() + " - " + e.getLocalizedMessage()
+					+ "<br>");
+			for (int i = 0; i < size; i++)
+				retorno.append(trace[i] + "<br>");
+			String val = retorno.toString();
+			Integer numExceps = (Integer) topExceptions.get(val);
+			if (numExceps == null) {
+				topExceptions.put(val, new Integer(1));
+			} else {
+				topExceptions.put(val, new Integer(numExceps.intValue() + 1));
+			}
+		}
+
+	}
 
 	public static void logar(String val) {
 		if (ativo) {
@@ -40,7 +66,7 @@ public class Logger {
 		if (ativo) {
 			e.printStackTrace();
 		} else if (e instanceof Exception) {
-			ServletBaseDados.topExecpts((Exception) e);
+			topExecpts((Exception) e);
 		}
 	}
 }

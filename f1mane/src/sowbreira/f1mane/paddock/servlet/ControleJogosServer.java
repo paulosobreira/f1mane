@@ -264,7 +264,7 @@ public class ControleJogosServer {
 		try {
 			jogoServidor.iniciarJogo();
 		} catch (Exception e) {
-			ServletBaseDados.topExecpts(e);
+			Logger.topExecpts(e);
 		}
 		return null;
 	}

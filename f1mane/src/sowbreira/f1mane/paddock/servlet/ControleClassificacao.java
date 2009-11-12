@@ -123,7 +123,7 @@ public class ControleClassificacao {
 		try {
 			controlePersistencia.gravarDados();
 		} catch (Exception e) {
-			ServletBaseDados.topExecpts(e);
+			Logger.topExecpts(e);
 		}
 
 	}

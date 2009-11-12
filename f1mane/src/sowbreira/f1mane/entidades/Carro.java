@@ -255,6 +255,7 @@ public class Carro implements Serializable {
 	public static void main(String[] args) {
 		Logger.logar((.7 * 30));
 		// Logger.logar(Math.random() * 1000);
+		System.out.println(Math.random() < 1 / 10.0);
 	}
 
 	public void setPneuDuro(int distaciaCorrida) {
@@ -287,27 +288,33 @@ public class Carro implements Serializable {
 
 	private int calculaModificadorAsa(int novoModificador, No no,
 			InterfaceJogo controleJogo) {
-		if (no.verificaCruvaAlta() || no.verificaRetaOuLargada()) {
-			if (Math.random() < .950) {
-				return novoModificador;
-			}
-			if (MENOS_ASA.equals(getAsa())) {
+		double mod = giro / 10.0;
+		if (Math.random() > .9 && !controleJogo.verificaNivelJogo()) {
+			return novoModificador;
+		}
+		if (no.verificaRetaOuLargada()) {
+			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
+					&& testePotencia()) {
 				novoModificador++;
 			}
-			if (MAIS_ASA.equals(getAsa())) {
+			if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
+					&& !testePotencia()) {
 				novoModificador--;
 			}
 		}
-		if (no.verificaCruvaBaixa()) {
-			if (Math.random() < .700) {
-				return novoModificador;
-			}
-			if (MENOS_ASA.equals(getAsa())) {
+		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
+			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
+					&& !testePotencia()) {
 				novoModificador--;
 			}
-			if (MAIS_ASA.equals(getAsa())) {
+			if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
+					&& testePotencia()) {
 				novoModificador++;
 			}
+		}
+		if (ASA_NORMAL.equals(getAsa()) && (Math.random() < mod - .3)
+				&& testePotencia()) {
+			novoModificador++;
 		}
 		if (controleJogo.isChovendo() && !MAIS_ASA.equals(getAsa())) {
 			if (Math.random() < .500) {
