@@ -47,7 +47,7 @@ public class Piloto implements Serializable {
 	private int stress;
 	private transient int ciclosDesconcentrado;
 	private transient int porcentagemCombustUltimaParadaBox;
-	private transient Map msgsQueSeRepetemMuito = new HashMap();
+	private transient Map msgsBox = new HashMap();
 	private List voltas = new ArrayList();
 	private String modoPilotagem = NORMAL;
 	private Volta voltaAtual;
@@ -418,8 +418,8 @@ public class Piloto implements Serializable {
 		if (velocidade < 0) {
 			velocidade = 10 + ((int) (Math.random() * 10));
 		}
-		if (velocidade > 350) {
-			velocidade = 320 + ((int) (Math.random() * 30));
+		if (velocidade > 300) {
+			velocidade = 300 + ((int) (Math.random() * 30));
 		}
 
 	}
@@ -450,7 +450,7 @@ public class Piloto implements Serializable {
 
 		if (box && controleJogo.verificaBoxOcupado(getCarro()) && (combust > 5)
 				&& (pneus > 12)) {
-			if (!Messagens.BOX_OCUPADO.equals(msgsQueSeRepetemMuito
+			if (!Messagens.BOX_OCUPADO.equals(msgsBox
 					.get(Messagens.BOX_OCUPADO))) {
 				if (isJogadorHumano()) {
 					controleJogo.infoPrioritaria(Html.orange(Lang.msg("046",
@@ -460,8 +460,7 @@ public class Piloto implements Serializable {
 							new String[] { Html.bold(getNome()) })));
 				}
 
-				msgsQueSeRepetemMuito.put(Messagens.BOX_OCUPADO,
-						Messagens.BOX_OCUPADO);
+				msgsBox.put(Messagens.BOX_OCUPADO, Messagens.BOX_OCUPADO);
 			}
 
 			box = false;
@@ -480,11 +479,11 @@ public class Piloto implements Serializable {
 
 		if (controleJogo.verificaUltimasVoltas() && (combust > 3)
 				&& (combust <= 5) && (pneus <= 12) && (pneus > 5)) {
-			if (!Messagens.IR_BOX_FINAL_CORRIDA.equals(msgsQueSeRepetemMuito
+			if (!Messagens.IR_BOX_FINAL_CORRIDA.equals(msgsBox
 					.get(Messagens.IR_BOX_FINAL_CORRIDA))) {
 				controleJogo.info(Html.orange(Lang.msg("047",
 						new String[] { getNome() })));
-				msgsQueSeRepetemMuito.put(Messagens.IR_BOX_FINAL_CORRIDA,
+				msgsBox.put(Messagens.IR_BOX_FINAL_CORRIDA,
 						Messagens.IR_BOX_FINAL_CORRIDA);
 			}
 
@@ -504,10 +503,6 @@ public class Piloto implements Serializable {
 		if (controleJogo.isCorridaTerminada()) {
 			box = false;
 		}
-	}
-
-	public Map getMsgsQueSeRepetemMuito() {
-		return msgsQueSeRepetemMuito;
 	}
 
 	public int getPosicao() {
@@ -535,7 +530,7 @@ public class Piloto implements Serializable {
 	private int calcularNovoIndex(InterfaceJogo controleJogo) {
 		int index = noAtual.getIndex();
 		boolean fator = Math.random() > controleJogo.getNiveljogo();
-		if (fator && NORMAL.equals(modoPilotagem) && getPosicao() != 1) {
+		if (fator && NORMAL.equals(modoPilotagem) ) {
 			decStress(Math.random() > .5 ? 1 : 0);
 		} else if (fator && LENTO.equals(modoPilotagem)) {
 			decStress(1);
@@ -604,11 +599,11 @@ public class Piloto implements Serializable {
 		int distBrigaMax = (int) (120 * controleJogo.getNiveljogo());
 		int distBrigaMin = 0;
 		if (controleJogo.getNiveljogo() == .3) {
-			distBrigaMin = 30;
+			distBrigaMin = 15;
 		} else if (controleJogo.getNiveljogo() == .5) {
-			distBrigaMin = 20;
-		} else if (controleJogo.getNiveljogo() == .7) {
 			distBrigaMin = 10;
+		} else if (controleJogo.getNiveljogo() == .7) {
+			distBrigaMin = 5;
 		}
 		if (controleJogo.porcentagemCorridaCompletada() > distBrigaMax) {
 			distBrigaMax = controleJogo.porcentagemCorridaCompletada();
@@ -622,6 +617,19 @@ public class Piloto implements Serializable {
 						&& !controleJogo.isSafetyCarNaPista()
 						&& Math.random() < controleJogo.getNiveljogo()) {
 					getCarro().setGiro(Carro.GIRO_MAX_VAL);
+					if (controleJogo.verificaNivelJogo()
+							&& testeHabilidadePiloto()) {
+						No no = getNoAtual();
+						if ((no.verificaCruvaAlta() || no
+								.verificaRetaOuLargada())
+								&& Carro.MAIS_ASA.equals(getCarro().getAsa())) {
+							getCarro().setGiro(Carro.GIRO_NOR_VAL);
+						}
+						if (no.verificaCruvaBaixa()
+								&& (Carro.MENOS_ASA.equals(getCarro().getAsa()))) {
+							getCarro().setGiro(Carro.GIRO_NOR_VAL);
+						}
+					}
 					if (testeHabilidadePiloto()
 							&& Math.random() < controleJogo.getNiveljogo()) {
 						setAgressivo(true);
@@ -740,11 +748,11 @@ public class Piloto implements Serializable {
 		if (testeHabilidadePilotoCarro() && controleJogo.verificaNivelJogo()) {
 			if (carro.verificaCondicoesCautela()) {
 				agressivo = false;
-				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsQueSeRepetemMuito
+				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsBox
 						.get(Messagens.PILOTO_EM_CAUTELA))) {
 					controleJogo.info(Html
 							.superRed(getNome() + Lang.msg("057")));
-					msgsQueSeRepetemMuito.put(Messagens.PILOTO_EM_CAUTELA,
+					msgsBox.put(Messagens.PILOTO_EM_CAUTELA,
 							Messagens.PILOTO_EM_CAUTELA);
 				}
 			} else if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
@@ -800,7 +808,7 @@ public class Piloto implements Serializable {
 
 	private int calcularNovoModificador(InterfaceJogo controleJogo) {
 
-		double bonusSecundario = getCarro().getGiro() / 10;
+		double bonusSecundario = getCarro().getGiro() / 10.0;
 		if (controleJogo.isChovendo()) {
 			bonusSecundario -= .5;
 		}
@@ -918,8 +926,8 @@ public class Piloto implements Serializable {
 		if (carro.getDurabilidadeAereofolio() <= 0) {
 			carro.setDurabilidadeAereofolio(3);
 		}
-		msgsQueSeRepetemMuito.put(Messagens.BOX_OCUPADO, null);
-		msgsQueSeRepetemMuito.put(Messagens.PILOTO_EM_CAUTELA, null);
+		msgsBox.put(Messagens.BOX_OCUPADO, null);
+		msgsBox.put(Messagens.PILOTO_EM_CAUTELA, null);
 	}
 
 	public String obterTempoVoltaAtual() {
@@ -999,14 +1007,17 @@ public class Piloto implements Serializable {
 	}
 
 	public void decStress(int val) {
-		if (stress > 0 && (stress - val) > 0) {
+
+		if (stress > 0 && (stress - val) > 0
+				&& (Math.random() > ((900.0 - getPosicao() * 40) / 1000.0))) {
 			stress -= val;
 		}
 	}
 
 	public void incStress(int val) {
 		if (stress < 100 && (stress + val) < 100) {
-			stress += val;
+			if ((Math.random() < ((900.0 - getPosicao() * 40) / 1000.0)))
+				stress += val;
 		} else {
 			setModoPilotagem(NORMAL);
 		}

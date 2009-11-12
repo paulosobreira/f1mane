@@ -21,6 +21,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 
 /**
@@ -241,7 +242,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 
 		} catch (Exception e) {
-			ServletBaseDados.topExecpts(e);
+			Logger.topExecpts(e);
 		}
 
 	}
@@ -277,7 +278,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					controleCorrida.iniciarCiclos();
 					controleEstatisticas.inicializarThreadConsumidoraInfo(2000);
 				} catch (Exception e) {
-					ServletBaseDados.topExecpts(e);
+					Logger.topExecpts(e);
 				}
 
 			}
@@ -431,7 +432,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 						Thread.sleep(100);
 						estado = Comandos.CORRIDA_INICIADA;
 					} catch (Exception e) {
-						ServletBaseDados.topExecpts(e);
+						Logger.topExecpts(e);
 					}
 
 				}
@@ -491,7 +492,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					controleEstatisticas.setConsumidorAtivo(false);
 					controleJogosServer.removerJogo(JogoServidor.this);
 				} catch (Exception e) {
-					ServletBaseDados.topExecpts(e);
+					Logger.topExecpts(e);
 				}
 
 			}

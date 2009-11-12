@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
@@ -204,7 +206,31 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menuInfo2.add(resFinal);
+		JMenuItem logs = new JMenuItem("Ver Logs") {
+			public String getText() {
+				return Lang.msg("267");
+			}
 
+		};
+		logs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Set top = Logger.topExceptions.keySet();
+					for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+						String exept = (String) iterator.next();
+						System.out.println("Quantidade : "
+								+ Logger.topExceptions.get(exept));
+						System.out.println("<br>");
+						System.out.println(exept);
+						System.out.println("<br><hr>");
+					}
+					removerKeyListeners();
+				} catch (Exception ex) {
+					Logger.logarExept(ex);
+				}
+			}
+		});
+		menuInfo2.add(logs);
 	}
 
 	private void gerarMenusSobre(JMenu menu2) {
