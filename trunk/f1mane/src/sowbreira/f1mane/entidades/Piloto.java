@@ -555,7 +555,7 @@ public class Piloto implements Serializable {
 			return index;
 		}
 		verificaMudancaRegime(controleJogo);
-		tantarPassaPilotoDaFrente(controleJogo);
+		tentarPassaPilotoDaFrente(controleJogo);
 		int novoModificador = calcularNovoModificador(controleJogo);
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, noAtual, controleJogo);
@@ -591,7 +591,7 @@ public class Piloto implements Serializable {
 		return index;
 	}
 
-	private void tantarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
+	private void tentarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
 		if (jogadorHumano || danificado()) {
 			return;
 		}
@@ -599,11 +599,11 @@ public class Piloto implements Serializable {
 		int distBrigaMax = (int) (120 * controleJogo.getNiveljogo());
 		int distBrigaMin = 0;
 		if (controleJogo.getNiveljogo() == .3) {
-			distBrigaMin = 15;
+			distBrigaMin = 30;
 		} else if (controleJogo.getNiveljogo() == .5) {
-			distBrigaMin = 10;
+			distBrigaMin = 20;
 		} else if (controleJogo.getNiveljogo() == .7) {
-			distBrigaMin = 5;
+			distBrigaMin = 15;
 		}
 		if (controleJogo.porcentagemCorridaCompletada() > distBrigaMax) {
 			distBrigaMax = controleJogo.porcentagemCorridaCompletada();

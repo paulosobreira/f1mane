@@ -381,7 +381,10 @@ public class ControleBox {
 		if (baixa >= 15 && piloto.testeHabilidadePilotoCarro()) {
 			piloto.getCarro().setAsa(Carro.MAIS_ASA);
 		}
-		if (media >= 20 && piloto.testeHabilidadePilotoCarro()) {
+		if (media >= 25 && piloto.testeHabilidadePilotoCarro()) {
+			piloto.getCarro().setAsa(Carro.MAIS_ASA);
+		}
+		if (media >= 15 && piloto.testeHabilidadePilotoCarro()) {
 			piloto.getCarro().setAsa(Carro.ASA_NORMAL);
 		}
 		if (controleJogo.isChovendo() && piloto.testeHabilidadePiloto()) {

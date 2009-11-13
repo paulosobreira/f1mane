@@ -288,7 +288,14 @@ public class Carro implements Serializable {
 
 	private int calculaModificadorAsa(int novoModificador, No no,
 			InterfaceJogo controleJogo) {
-		double mod = giro / 10.0;
+		double mod = 0.5;
+		if (GIRO_MAX_VAL == giro) {
+			mod = 0.7;
+		}
+		if (GIRO_MIN_VAL == giro) {
+			mod = 0.3;
+		}
+
 		if (Math.random() > .9 && !controleJogo.verificaNivelJogo()) {
 			return novoModificador;
 		}
