@@ -356,7 +356,7 @@ public class Carro implements Serializable {
 				valDesgaste -= 1;
 			}
 		} else {
-			valDesgaste = ((testePotencia() ? 1 : 2));
+			valDesgaste = ((testePotencia() ? 0 : 1));
 			if (!piloto.isAgressivo()) {
 				valDesgaste = 0;
 			}

@@ -8,7 +8,7 @@
 <head>
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Expires" CONTENT="-1">
-<title>F1-Mane Online</title>
+<title>F1-Engineer Online</title>
 <style type="text/css">
 .class1 A:link {
 	text-decoration: none;
@@ -54,15 +54,9 @@
 	<body style="background-color: white">
 		<center>
 			<div>
-
-				<span class="class1"> 
-					<a href="http://br.geocities.com/sowbreira/"> 
-				        <img src="f1maneonline.jpg"> 
-					</a> 
-					
-				     <a  href="http://www.mozilla.com/firefox/" > <img src="trust.gif"> </a> 
+				<span class="class2"> 
+					<a href="http://sowbreira.appspot.com/">http://sowbreira.appspot.com/</a> 
 				</span>
-
 				<br> 
 				<span class="class2"> 
 					<!--Versao do Java no Servidor: <%= (pageContext.getServletContext().getAttribute("java.vm.version") !=null?pageContext.getServletContext().getAttribute("java.vm.version") :pageContext.getServletContext().getAttribute("java.runtime.version") ) %>-->
