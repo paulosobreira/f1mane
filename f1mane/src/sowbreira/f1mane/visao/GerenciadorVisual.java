@@ -19,6 +19,7 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -816,10 +817,16 @@ public class GerenciadorVisual {
 		painelInicio.add(boxPilotoSelecionado);
 
 		comboBoxCircuito = new JComboBox();
+		List circuitosList = new ArrayList();
 		for (Iterator iter = controleJogo.getCircuitos().keySet().iterator(); iter
 				.hasNext();) {
 			String key = (String) iter.next();
-			comboBoxCircuito.addItem(key);
+			circuitosList.add(key);
+		}
+		Collections.shuffle(circuitosList);
+		for (Iterator iterator = circuitosList.iterator(); iterator.hasNext();) {
+			String object = (String) iterator.next();
+			comboBoxCircuito.addItem(object);
 		}
 		painelInicio.add(new JLabel() {
 			public String getText() {
@@ -898,7 +905,8 @@ public class GerenciadorVisual {
 			}
 		});
 		spinnerDificuldadeUltrapassagem = new JSpinner();
-		spinnerDificuldadeUltrapassagem.setValue(new Integer(500));
+		spinnerDificuldadeUltrapassagem.setValue(new Integer(300 + (int) (Math
+				.random() * 600)));
 		painelInicio.add(spinnerDificuldadeUltrapassagem);
 		painelInicio.add(new JLabel() {
 			@Override
@@ -907,7 +915,8 @@ public class GerenciadorVisual {
 			}
 		});
 		spinnerIndexVelcidadeEmReta = new JSpinner();
-		spinnerIndexVelcidadeEmReta.setValue(new Integer(500));
+		spinnerIndexVelcidadeEmReta.setValue(new Integer(400 + (int) (Math
+				.random() * 600)));
 		painelInicio.add(spinnerIndexVelcidadeEmReta);
 
 		painelInicio.add(new JLabel() {
@@ -917,7 +926,8 @@ public class GerenciadorVisual {
 			}
 		});
 		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo.setValue(new Integer(85));
+		spinnerTempoCiclo
+				.setValue(new Integer(50 + (int) (Math.random() * 80)));
 		painelInicio.add(spinnerTempoCiclo);
 
 		painelInicio.add(new JLabel() {
