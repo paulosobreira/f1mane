@@ -142,7 +142,21 @@ public class MainFrame extends JFrame {
 			}
 
 		};
+		JMenuItem continuarCampeonato = new JMenuItem("Continuar Campeonato") {
+			public String getText() {
+				return Lang.msg("270");
+			}
+
+		};
+		JMenuItem dadosPersistencia = new JMenuItem("Criar Campeonato") {
+			public String getText() {
+				return Lang.msg("271");
+			}
+
+		};
 		menu.add(criarCampeonato);
+		menu.add(continuarCampeonato);
+		menu.add(dadosPersistencia);
 
 	}
 
