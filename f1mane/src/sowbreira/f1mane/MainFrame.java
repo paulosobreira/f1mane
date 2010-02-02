@@ -61,6 +61,7 @@ public class MainFrame extends JFrame {
 	private String temporarada = null;
 	private JMenuBar bar;
 	private JMenu menuJogo;
+	private JMenu menuCampeonato;
 	private JMenu menuEditor;
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
@@ -86,6 +87,15 @@ public class MainFrame extends JFrame {
 		};
 
 		bar.add(menuJogo);
+
+		menuCampeonato = new JMenu() {
+			public String getText() {
+				return Lang.msg("268");
+			}
+
+		};
+
+		bar.add(menuCampeonato);
 
 		menuInfo = new JMenu() {
 			public String getText() {
@@ -115,6 +125,7 @@ public class MainFrame extends JFrame {
 		}
 
 		gerarMenusSingle(menuJogo);
+		gerarMenusCampeonato(menuCampeonato);
 		gerarMenusEditor(menuEditor);
 		gerarMenusInfo(menuInfo);
 		gerarMenusSobre(menuInfo);
@@ -122,6 +133,17 @@ public class MainFrame extends JFrame {
 		getContentPane().setLayout(null);
 		setSize(800, 630);
 		setTitle("F1-Engineer 2.0");
+	}
+
+	private void gerarMenusCampeonato(JMenu menu) {
+		JMenuItem criarCampeonato = new JMenuItem("Criar Campeonato") {
+			public String getText() {
+				return Lang.msg("269");
+			}
+
+		};
+		menu.add(criarCampeonato);
+
 	}
 
 	private void gerarMenusidiomas(JMenu menuIdiomas) {
