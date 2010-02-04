@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
+import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.editor.MainPanelEditor;
@@ -44,6 +45,7 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = -284357233387917389L;
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
+	private ControleCampeonato controleCampeonato;
 	private boolean modoApplet;
 	private JRadioButtonMenuItem tsuper;
 	private JRadioButtonMenuItem t1968;
@@ -76,6 +78,7 @@ public class MainFrame extends JFrame {
 
 	public MainFrame(boolean modoApplet) throws IOException {
 		this.modoApplet = modoApplet;
+		controleCampeonato = new ControleCampeonato(this);
 		bar = new JMenuBar();
 		setJMenuBar(bar);
 
@@ -142,18 +145,33 @@ public class MainFrame extends JFrame {
 			}
 
 		};
+		criarCampeonato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controleCampeonato.criarCampeonato();
+			}
+		});
 		JMenuItem continuarCampeonato = new JMenuItem("Continuar Campeonato") {
 			public String getText() {
 				return Lang.msg("270");
 			}
 
 		};
+		continuarCampeonato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controleCampeonato.continuarCampeonato();
+			}
+		});
 		JMenuItem dadosPersistencia = new JMenuItem("Criar Campeonato") {
 			public String getText() {
 				return Lang.msg("271");
 			}
 
 		};
+		dadosPersistencia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controleCampeonato.dadosPersistencia();
+			}
+		});
 		menu.add(criarCampeonato);
 		menu.add(continuarCampeonato);
 		menu.add(dadosPersistencia);
