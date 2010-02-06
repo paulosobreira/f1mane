@@ -1,6 +1,8 @@
 package sowbreira.f1mane.controles;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		InterfaceJogo {
 	protected Piloto pilotoSelecionado;
 	protected Piloto pilotoJogador;
+	protected List pilotosJogadores = new ArrayList();
 	protected String tipoPeneuJogador;
 	protected String asaJogador;
 	protected Integer combustJogador;
@@ -331,6 +334,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
 			Object combust, String nomeJogador, Object asa) {
 		pilotoJogador = (Piloto) selec;
+		pilotosJogadores.add(selec);
 		pilotoJogador.setJogadorHumano(true);
 		pilotoJogador.setNomeJogador(nomeJogador);
 
@@ -538,7 +542,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#iniciarJogoSingle()
 	 */
 	public void iniciarJogo() throws Exception {
-		if (gerenciadorVisual.iniciarJogoSingle()) {
+		if (gerenciadorVisual.iniciarJogoMulti()) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
 			this.nivelCorrida = Lang.key(gerenciadorVisual
@@ -552,10 +556,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 							.getSelectedItem());
 			controleCorrida.gerarGridLargadaSemQualificacao();
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(gerenciadorVisual
-					.getBoxPneuInicial().getSelectedItem(), gerenciadorVisual
-					.getSpinnerCombustivel().getValue(), gerenciadorVisual
-					.getComboBoxAsaInicial().getSelectedItem());
+			// gerenciadorVisual.sincronizarMenuInicioMenuBox(gerenciadorVisual
+			// .getBoxPneuInicial().getSelectedItem(), gerenciadorVisual
+			// .getSpinnerCombustivel().getValue(), gerenciadorVisual
+			// .getComboBoxAsaInicial().getSelectedItem());
 			controleCorrida.iniciarCorrida();
 			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
 		}
@@ -572,6 +576,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 		try {
 			qtdeVoltas = (Integer) gerenciadorVisual.getSpinnerQtdeVoltas()
 					.getValue();
+			if (qtdeVoltas.intValue() != 0) {
+				if (qtdeVoltas.intValue() >= 72) {
+					qtdeVoltas = new Integer(72);
+				}
+			}
 			diffultrapassagem = (Integer) gerenciadorVisual
 					.getSpinnerDificuldadeUltrapassagem().getValue();
 			tempoCiclo = (Integer) gerenciadorVisual.getSpinnerTempoCiclo()
@@ -696,6 +705,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	public void selecionouPiloto(Piloto pilotoSelecionado) {
 		this.pilotoSelecionado = pilotoSelecionado;
+		if (pilotosJogadores.contains(pilotoSelecionado)) {
+			pilotoJogador = pilotoSelecionado;
+		}
 
 	}
 
