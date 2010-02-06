@@ -1,7 +1,6 @@
 package sowbreira.f1mane;
 
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -11,10 +10,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -47,19 +53,6 @@ public class MainFrame extends JFrame {
 	private InterfaceJogo controleJogo;
 	private ControleCampeonato controleCampeonato;
 	private boolean modoApplet;
-	private JRadioButtonMenuItem tsuper;
-	private JRadioButtonMenuItem t1968;
-	private JRadioButtonMenuItem t1972;
-	private JRadioButtonMenuItem t1974;
-	private JRadioButtonMenuItem t1986;
-	private JRadioButtonMenuItem t1987;
-	private JRadioButtonMenuItem t1988;
-	private JRadioButtonMenuItem t1990;
-	private JRadioButtonMenuItem t1993;
-	private JRadioButtonMenuItem t2003;
-	private JRadioButtonMenuItem t2007;
-	private JRadioButtonMenuItem t2008;
-	private JRadioButtonMenuItem t2009;
 	private String temporarada = null;
 	private JMenuBar bar;
 	private JMenu menuJogo;
@@ -67,14 +60,8 @@ public class MainFrame extends JFrame {
 	private JMenu menuEditor;
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
-
-	public JRadioButtonMenuItem getT1974() {
-		return t1974;
-	}
-
-	public JRadioButtonMenuItem getT1986() {
-		return t1986;
-	}
+	private HashMap temporadas;
+	private Vector vectorTemps;
 
 	public MainFrame(boolean modoApplet) throws IOException {
 		this.modoApplet = modoApplet;
@@ -307,14 +294,6 @@ public class MainFrame extends JFrame {
 		menu2.add(sobre);
 	}
 
-	public JRadioButtonMenuItem getT1972() {
-		return t1972;
-	}
-
-	public void setT1972(JRadioButtonMenuItem t1972) {
-		this.t1972 = t1972;
-	}
-
 	private void gerarMenusSingle(JMenu menu1) {
 		JMenuItem iniciar = new JMenuItem("Iniciar Jogo") {
 			public String getText() {
@@ -367,166 +346,50 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu1.add(pausa);
-		ButtonGroup buttonGroup = new ButtonGroup();
-		t1968 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t1968");
-			}
-
-		};
-		t1972 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t1972");
-			}
-
-		};
-		t1974 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t1974");
-			}
-
-		};
-		t1986 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t1986");
-			}
-
-		};
-		t1987 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t1987");
-			}
-
-		};
-		t1988 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t1988");
-			}
-
-		};
-		t1990 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t1990");
-			}
-
-		};
-		t1993 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t1993");
-			}
-
-		};
-		t2003 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t2003");
-			}
-
-		};
-		t2007 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t2007");
-			}
-
-		};
-		t2008 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t2008");
-			}
-
-		};
-
-		t2009 = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("t2009");
-			}
-
-		};
-		tsuper = new JRadioButtonMenuItem() {
-			public String getText() {
-				return Lang.msg("tsuper");
-			}
-
-		};
-		buttonGroup.add(tsuper);
-		buttonGroup.add(t1968);
-		buttonGroup.add(t1972);
-		buttonGroup.add(t1974);
-		buttonGroup.add(t1986);
-		buttonGroup.add(t1987);
-		buttonGroup.add(t1988);
-		buttonGroup.add(t1990);
-		buttonGroup.add(t1993);
-		buttonGroup.add(t2003);
-		buttonGroup.add(t2007);
-		buttonGroup.add(t2008);
-		buttonGroup.add(t2009);
-		menu1.add(tsuper);
-		menu1.add(t1968);
-		menu1.add(t1972);
-		menu1.add(t1974);
-		menu1.add(t1986);
-		menu1.add(t1987);
-		menu1.add(t1988);
-		menu1.add(t1990);
-		menu1.add(t1993);
-		menu1.add(t2003);
-		menu1.add(t2007);
-		menu1.add(t2008);
-		menu1.add(t2009);
-
-		t2009.setSelected(true);
-
 	}
 
-	public JRadioButtonMenuItem getTsuper() {
-		return tsuper;
-	}
+	protected void carregarTemporadas() {
+		if (temporadas != null) {
+			return;
+		}
+		if (temporadas == null) {
+			temporadas = new HashMap();
+			vectorTemps = new Vector();
+		}
+		final Properties properties = new Properties();
 
-	public JRadioButtonMenuItem getT1968() {
-		return t1968;
-	}
+		try {
+			properties.load(CarregadorRecursos
+					.recursoComoStream("properties/temporadas.properties"));
 
-	public JRadioButtonMenuItem getT2003() {
-		return t2003;
+			Enumeration propName = properties.propertyNames();
+			while (propName.hasMoreElements()) {
+				final String name = (String) propName.nextElement();
+				temporadas.put(properties.getProperty(name), name);
+				vectorTemps.add(properties.getProperty(name));
+			}
+			Collections.sort(vectorTemps, new Comparator() {
+
+				@Override
+				public int compare(Object o1, Object o2) {
+					String o1s = (String) o1;
+					String o2s = (String) o2;
+					return o2s.compareTo(o1s);
+				}
+
+			});
+		} catch (IOException e) {
+			Logger.logarExept(e);
+		}
 	}
 
 	protected void selecionarTemporada() {
-		if (getT1972().isSelected()) {
-			temporarada = "t1972";
-		} else if (getT1974().isSelected()) {
-			temporarada = "t1974";
-		} else if (getT1986().isSelected()) {
-			temporarada = "t1986";
-		} else if (getT1987().isSelected()) {
-			temporarada = "t1987";
-		} else if (getT1988().isSelected()) {
-			temporarada = "t1988";
-		} else if (getT1990().isSelected()) {
-			temporarada = "t1990";
-		} else if (getT1993().isSelected()) {
-			temporarada = "t1993";
-		} else if (getT2003().isSelected()) {
-			temporarada = "t2003";
-		} else if (getT2007().isSelected()) {
-			temporarada = "t2007";
-		} else if (getT2008().isSelected()) {
-			temporarada = "t2008";
-		} else if (getT2009().isSelected()) {
-			temporarada = "t2009";
-		} else if (getT1968().isSelected()) {
-			temporarada = "t1968";
-		} else if (getTsuper().isSelected()) {
-			temporarada = "tsuper";
-		}
-
-	}
-
-	public JRadioButtonMenuItem getT1993() {
-		return t1993;
-	}
-
-	public JRadioButtonMenuItem getT1990() {
-		return t1990;
+		carregarTemporadas();
+		JComboBox temporadasCombo = new JComboBox(vectorTemps);
+		JOptionPane.showMessageDialog(this, temporadasCombo, Lang.msg("272"),
+				JOptionPane.QUESTION_MESSAGE);
+		temporarada = (String) temporadas
+				.get(temporadasCombo.getSelectedItem());
 	}
 
 	private void ativarKeysEditor() {
@@ -838,26 +701,6 @@ public class MainFrame extends JFrame {
 
 	public void setControleJogo(InterfaceJogo controleJogo) {
 		this.controleJogo = controleJogo;
-	}
-
-	public JRadioButtonMenuItem getT2007() {
-		return t2007;
-	}
-
-	public JRadioButtonMenuItem getT2008() {
-		return t2008;
-	}
-
-	public JRadioButtonMenuItem getT2009() {
-		return t2009;
-	}
-
-	public JRadioButtonMenuItem getT1987() {
-		return t1987;
-	}
-
-	public JRadioButtonMenuItem getT1988() {
-		return t1988;
 	}
 
 }

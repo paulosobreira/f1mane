@@ -20,15 +20,19 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -38,7 +42,10 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -70,6 +77,7 @@ public class GerenciadorVisual {
 	private JComboBox comboBoxNivelCorrida;
 	private JComboBox comboBoxCircuito;
 	private JComboBox boxPilotoSelecionado;
+	private JList listPilotosSelecionados;
 	private JComboBox boxPneuInicial;
 	private JComboBox comboBoxAsaInicial;
 	private JSpinner spinnerCombustivel;
@@ -803,6 +811,7 @@ public class GerenciadorVisual {
 
 		boxPilotoSelecionado = new JComboBox();
 		boxPilotoSelecionado.addItem(Lang.msg("119"));
+
 		for (Iterator iter = controleJogo.getPilotos().iterator(); iter
 				.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
@@ -950,6 +959,170 @@ public class GerenciadorVisual {
 
 	}
 
+	private void gerarPainelJogoMulti(JPanel incialPanel) {
+
+		DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
+		listPilotosSelecionados = new JList(defaultListModelPilotosSelecionados);
+		List tempList = new LinkedList();
+		for (Iterator iter = controleJogo.getPilotos().iterator(); iter
+				.hasNext();) {
+			Piloto piloto = (Piloto) iter.next();
+			tempList.add(piloto);
+		}
+		Collections.sort(tempList, new Comparator() {
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				Piloto p1 = (Piloto) o1;
+				Piloto p2 = (Piloto) o2;
+				return p1.getCarro().getNome().compareTo(
+						p2.getCarro().getNome());
+			}
+
+		});
+		for (Iterator iterator = tempList.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			defaultListModelPilotosSelecionados.addElement(piloto);
+		}
+
+		final JPanel pilotoPanel = new JPanel(new BorderLayout());
+
+		pilotoPanel.setBorder(new TitledBorder(Lang.msg("274")));
+
+		pilotoPanel.add(new JScrollPane(listPilotosSelecionados) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(210, 225);
+			}
+		});
+
+		JPanel grid = new JPanel();
+		grid.setLayout(new GridLayout(9, 2));
+		JLabel label = new JLabel() {
+
+			public String getText() {
+				return Lang.msg("110");
+			}
+		};
+		grid.add(label);
+		spinnerQtdeVoltas = new JSpinner();
+		spinnerQtdeVoltas.setValue(new Integer(22));
+		if (!ControleJogoLocal.VALENDO) {
+			spinnerQtdeVoltas.setValue(new Integer(30));
+		}
+
+		grid.add(spinnerQtdeVoltas);
+
+		boxPilotoSelecionado = new JComboBox();
+		boxPilotoSelecionado.addItem(Lang.msg("119"));
+
+		comboBoxCircuito = new JComboBox();
+		List circuitosList = new ArrayList();
+		for (Iterator iter = controleJogo.getCircuitos().keySet().iterator(); iter
+				.hasNext();) {
+			String key = (String) iter.next();
+			circuitosList.add(key);
+		}
+		Collections.shuffle(circuitosList);
+		for (Iterator iterator = circuitosList.iterator(); iterator.hasNext();) {
+			String object = (String) iterator.next();
+			comboBoxCircuito.addItem(object);
+		}
+		grid.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("121");
+			}
+		});
+		grid.add(comboBoxCircuito);
+
+		comboBoxNivelCorrida = new JComboBox();
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+		grid.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("212");
+			}
+		});
+		grid.add(comboBoxNivelCorrida);
+
+		comboBoxClimaInicial = new JComboBox();
+		comboBoxClimaInicial.addItem(new Clima(Clima.SOL));
+		comboBoxClimaInicial.addItem(new Clima(Clima.NUBLADO));
+		comboBoxClimaInicial.addItem(new Clima(Clima.CHUVA));
+		comboBoxClimaInicial.addItem(new Clima(Clima.ALEATORIO));
+
+		for (int i = 0; i < comboBoxClimaInicial.getItemCount(); i++) {
+			Clima clima = (Clima) comboBoxClimaInicial.getItemAt(i);
+
+			if (clima.getClima().equals(controleJogo.getClima())) {
+				comboBoxClimaInicial.setSelectedIndex(i);
+			}
+		}
+
+		grid.add(new JLabel() {
+			public String getText() {
+
+				return Lang.msg("123");
+			}
+		});
+		grid.add(comboBoxClimaInicial);
+
+		grid.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("124");
+			}
+		});
+		spinnerDificuldadeUltrapassagem = new JSpinner();
+		spinnerDificuldadeUltrapassagem.setValue(new Integer(300 + (int) (Math
+				.random() * 600)));
+		grid.add(spinnerDificuldadeUltrapassagem);
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("125");
+			}
+		});
+		spinnerIndexVelcidadeEmReta = new JSpinner();
+		spinnerIndexVelcidadeEmReta.setValue(new Integer(400 + (int) (Math
+				.random() * 600)));
+		grid.add(spinnerIndexVelcidadeEmReta);
+
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("126");
+			}
+		});
+		spinnerTempoCiclo = new JSpinner();
+		spinnerTempoCiclo
+				.setValue(new Integer(50 + (int) (Math.random() * 80)));
+		grid.add(spinnerTempoCiclo);
+
+		grid.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("112");
+			}
+		});
+		spinnerSkillPadraoPilotos = new JSpinner();
+		spinnerSkillPadraoPilotos.setValue(new Integer(0));
+		grid.add(spinnerSkillPadraoPilotos);
+
+		grid.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("113");
+			}
+		});
+		spinnerPotenciaPadraoCarros = new JSpinner();
+		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
+		grid.add(spinnerPotenciaPadraoCarros);
+
+		grid.setBorder(new TitledBorder(Lang.msg("273")));
+		incialPanel.add(grid, BorderLayout.CENTER);
+		incialPanel.add(pilotoPanel, BorderLayout.EAST);
+
+	}
+
 	public boolean iniciarJogoSingle() {
 		JPanel painelInicio = new JPanel();
 		gerarPainelJogoSingle(painelInicio);
@@ -972,7 +1145,7 @@ public class GerenciadorVisual {
 			}
 		}
 
-		Object selec = boxPilotoSelecionado.getSelectedItem();
+		Object selec = listPilotosSelecionados.getSelectedValue();
 
 		if (!ControleJogoLocal.VALENDO) {
 			selec = "";
@@ -985,6 +1158,33 @@ public class GerenciadorVisual {
 							.getValue(), nomeJogador.getText(), Lang
 							.key((String) comboBoxAsaInicial.getSelectedItem()));
 		}
+		return true;
+	}
+
+	public boolean iniciarJogoMulti() {
+		JPanel painelInicio = new JPanel();
+		gerarPainelJogoMulti(painelInicio);
+		spinnerQtdeVoltas.setValue(new Integer(22));
+		int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
+				painelInicio, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
+		if (ret == JOptionPane.NO_OPTION) {
+			return false;
+		}
+
+		Object[] selec = listPilotosSelecionados.getSelectedValues();
+
+		for (int i = 0; i < selec.length; i++) {
+			// controleJogo
+			// .efetuarSelecaoPilotoJogador(selec, Lang.key(boxPneuInicial
+			// .getSelectedItem().toString()), spinnerCombustivel
+			// .getValue(), nomeJogador.getText(), Lang
+			// .key((String) comboBoxAsaInicial.getSelectedItem()));
+
+			controleJogo.efetuarSelecaoPilotoJogador(selec[i],
+					Carro.TIPO_PNEU_MOLE, new Integer(50), "nome" + i,
+					Carro.ASA_NORMAL);
+		}
+
 		return true;
 	}
 
