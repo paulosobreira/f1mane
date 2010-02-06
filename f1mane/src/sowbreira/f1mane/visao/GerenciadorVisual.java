@@ -1174,15 +1174,58 @@ public class GerenciadorVisual {
 		Object[] selec = listPilotosSelecionados.getSelectedValues();
 
 		for (int i = 0; i < selec.length; i++) {
-			// controleJogo
-			// .efetuarSelecaoPilotoJogador(selec, Lang.key(boxPneuInicial
-			// .getSelectedItem().toString()), spinnerCombustivel
-			// .getValue(), nomeJogador.getText(), Lang
-			// .key((String) comboBoxAsaInicial.getSelectedItem()));
+			JPanel painelJogSel = new JPanel(new GridLayout(6, 2));
+			JTextField nomeJogador = new JTextField();
+			painelJogSel.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("111");
+				}
+			});
+			painelJogSel.add(nomeJogador);
+			JLabel tipoPneu = new JLabel(Lang.msg("009"));
+			boxPneuInicial = new JComboBox();
+			boxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_MOLE));
+			boxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
+			boxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
 
-			controleJogo.efetuarSelecaoPilotoJogador(selec[i],
-					Carro.TIPO_PNEU_MOLE, new Integer(50), "nome" + i,
-					Carro.ASA_NORMAL);
+			JLabel tipoAsa = new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("010");
+				}
+			};
+			comboBoxAsaInicial = new JComboBox();
+			comboBoxAsaInicial.addItem(Lang.msg(Carro.ASA_NORMAL));
+			comboBoxAsaInicial.addItem(Lang.msg(Carro.MAIS_ASA));
+			comboBoxAsaInicial.addItem(Lang.msg(Carro.MENOS_ASA));
+
+			JLabel qtdeComustivel = new JLabel() {
+				public String getText() {
+					return Lang.msg("011");
+				}
+			};
+			spinnerCombustivel = new JSpinner();
+			spinnerCombustivel.setValue(new Integer(50));
+
+			painelJogSel.add(tipoPneu);
+			painelJogSel.add(boxPneuInicial);
+			painelJogSel.add(tipoAsa);
+			painelJogSel.add(comboBoxAsaInicial);
+			painelJogSel.add(qtdeComustivel);
+			painelJogSel.add(spinnerCombustivel);
+
+			JOptionPane.showMessageDialog(controleJogo.getMainFrame(),
+					painelJogSel, Lang.msg("275", new String[] { selec[i]
+							.toString() }), JOptionPane.QUESTION_MESSAGE);
+			controleJogo
+					.efetuarSelecaoPilotoJogador(selec[i], Lang
+							.key(boxPneuInicial.getSelectedItem().toString()),
+							spinnerCombustivel.getValue(), nomeJogador
+									.getText(), Lang
+									.key((String) comboBoxAsaInicial
+											.getSelectedItem()));
+
 		}
 
 		return true;
