@@ -579,7 +579,7 @@ public class Carro implements Serializable {
 	}
 
 	public void setDanificado(String danificado) {
-		if (danificado != null) {
+		if (piloto.isBox()) {
 			piloto.setBox(true);
 		}
 		this.danificado = danificado;
