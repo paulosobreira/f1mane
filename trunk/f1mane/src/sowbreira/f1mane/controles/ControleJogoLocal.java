@@ -27,9 +27,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected Piloto pilotoSelecionado;
 	protected Piloto pilotoJogador;
 	protected List pilotosJogadores = new ArrayList();
-	protected String tipoPeneuJogador;
-	protected String asaJogador;
-	protected Integer combustJogador;
 	protected double niveljogo = InterfaceJogo.MEDIO_NV;
 	protected String nivelCorrida;
 	protected boolean corridaTerminada;
@@ -57,14 +54,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCombustBox(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public Integer getCombustBox(Piloto piloto) {
-		return combustJogador;
+		return piloto.getCombustJogador();
 	}
 
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getTipoPeneuBox(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String getTipoPeneuBox(Piloto piloto) {
-		return tipoPeneuJogador;
+		return piloto.getTipoPeneuJogador();
 	}
 
 	protected void setarNivelCorrida() {
@@ -334,13 +331,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
 			Object combust, String nomeJogador, Object asa) {
 		pilotoJogador = (Piloto) selec;
-		pilotosJogadores.add(selec);
+
 		pilotoJogador.setJogadorHumano(true);
 		pilotoJogador.setNomeJogador(nomeJogador);
 
-		this.tipoPeneuJogador = (String) tpneu;
-		this.combustJogador = (Integer) combust;
-		this.asaJogador = (String) asa;
+		pilotoJogador.setTipoPeneuJogador((String) tpneu);
+		pilotoJogador.setCombustJogador((Integer) combust);
+		pilotoJogador.setAsaJogador((String) asa);
+		pilotosJogadores.add(pilotoJogador);
 	}
 
 	/**
@@ -372,9 +370,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 *      java.lang.Object)
 	 */
 	public void setBoxJogadorHumano(Object tpneu, Object combust, Object asa) {
-		this.tipoPeneuJogador = (String) tpneu;
-		this.combustJogador = (Integer) combust;
-		this.asaJogador = (String) asa;
+		String tipoPeneuJogador = (String) tpneu;
+		Integer combustJogador = (Integer) combust;
+		String asaJogador = (String) asa;
+		pilotoJogador.setTipoPeneuJogador(tipoPeneuJogador);
+		pilotoJogador.setCombustJogador(combustJogador);
+		pilotoJogador.setAsaJogador(asaJogador);
 		pilotoJogador.setTipoPneuBox(tipoPeneuJogador);
 		pilotoJogador.setQtdeCombustBox(combustJogador);
 		pilotoJogador.setAsaBox(asaJogador);
@@ -556,11 +557,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 							.getSelectedItem());
 			controleCorrida.gerarGridLargadaSemQualificacao();
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
-			// gerenciadorVisual.sincronizarMenuInicioMenuBox(gerenciadorVisual
-			// .getBoxPneuInicial().getSelectedItem(), gerenciadorVisual
-			// .getSpinnerCombustivel().getValue(), gerenciadorVisual
-			// .getComboBoxAsaInicial().getSelectedItem());
 			controleCorrida.iniciarCorrida();
+			mainFrame.pack();
 			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
 		}
 	}
@@ -771,7 +769,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public String getAsaBox(Piloto piloto) {
-		return asaJogador;
+		return piloto.getAsaJogador();
 	}
 
 	public void setMainFrame(MainFrame mainFrame) {

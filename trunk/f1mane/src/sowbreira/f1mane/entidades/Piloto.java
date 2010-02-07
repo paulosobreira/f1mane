@@ -22,6 +22,34 @@ public class Piloto implements Serializable {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
+	protected String tipoPeneuJogador;
+	protected String asaJogador;
+	protected Integer combustJogador;
+
+	public String getTipoPeneuJogador() {
+		return tipoPeneuJogador;
+	}
+
+	public void setTipoPeneuJogador(String tipoPeneuJogador) {
+		this.tipoPeneuJogador = tipoPeneuJogador;
+	}
+
+	public String getAsaJogador() {
+		return asaJogador;
+	}
+
+	public void setAsaJogador(String asaJogador) {
+		this.asaJogador = asaJogador;
+	}
+
+	public Integer getCombustJogador() {
+		return combustJogador;
+	}
+
+	public void setCombustJogador(Integer combustJogador) {
+		this.combustJogador = combustJogador;
+	}
+
 	private int id;
 	private int velocidade;
 	private int velocidadeLargada;
@@ -530,7 +558,7 @@ public class Piloto implements Serializable {
 	private int calcularNovoIndex(InterfaceJogo controleJogo) {
 		int index = noAtual.getIndex();
 		boolean fator = Math.random() > controleJogo.getNiveljogo();
-		if (fator && NORMAL.equals(modoPilotagem) ) {
+		if (fator && NORMAL.equals(modoPilotagem)) {
 			decStress(Math.random() > .5 ? 1 : 0);
 		} else if (fator && LENTO.equals(modoPilotagem)) {
 			decStress(1);

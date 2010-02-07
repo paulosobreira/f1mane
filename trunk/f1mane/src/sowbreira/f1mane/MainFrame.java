@@ -63,8 +63,13 @@ public class MainFrame extends JFrame {
 	private HashMap temporadas;
 	private Vector vectorTemps;
 
+	public Vector getVectorTemps() {
+		return vectorTemps;
+	}
+
 	public MainFrame(boolean modoApplet) throws IOException {
 		this.modoApplet = modoApplet;
+		carregarTemporadas();
 		controleCampeonato = new ControleCampeonato(this);
 		bar = new JMenuBar();
 		setJMenuBar(bar);
@@ -134,7 +139,11 @@ public class MainFrame extends JFrame {
 		};
 		criarCampeonato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleCampeonato.criarCampeonato();
+				try {
+					controleCampeonato.criarCampeonato();
+				} catch (Exception ex) {
+					Logger.logarExept(ex);
+				}
 			}
 		});
 		JMenuItem continuarCampeonato = new JMenuItem("Continuar Campeonato") {
@@ -306,7 +315,8 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					removerKeyListeners();
-					if (controleJogo != null) {
+					if (controleJogo != null
+							&& controleJogo.isCorridaIniciada()) {
 						int ret = JOptionPane.showConfirmDialog(MainFrame.this,
 								Lang.msg("095"), Lang.msg("094"),
 								JOptionPane.YES_NO_OPTION);
@@ -381,6 +391,10 @@ public class MainFrame extends JFrame {
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
+	}
+
+	public HashMap getTemporadas() {
+		return temporadas;
 	}
 
 	protected void selecionarTemporada() {
