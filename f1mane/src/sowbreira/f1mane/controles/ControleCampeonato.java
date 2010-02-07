@@ -2,27 +2,34 @@ package sowbreira.f1mane.controles;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
 
 public class ControleCampeonato {
@@ -54,33 +61,26 @@ public class ControleCampeonato {
 		}
 	}
 
-	public void criarCampeonato() {
+	public void criarCampeonato() throws Exception {
 		final DefaultListModel defaultListModelCircuitos = new DefaultListModel();
 		final DefaultListModel defaultListModelCircuitosSelecionados = new DefaultListModel();
 		for (Iterator iterator = circuitos.keySet().iterator(); iterator
 				.hasNext();) {
 			String key = (String) iterator.next();
 			defaultListModelCircuitos.addElement(key);
-
-			// vectorCircuitosSelecionados.add(circuitos.get(key));
 		}
 
 		final JList listCircuitos = new JList(defaultListModelCircuitos);
 
 		final JList listSelecionados = new JList(
 				defaultListModelCircuitosSelecionados);
-		JPanel panelCircuitos = new JPanel(new BorderLayout()) {
-			@Override
-			public Dimension getPreferredSize() {
-				return new Dimension(300, 500);
-			}
-		};
-		panelCircuitos.add(listCircuitos, BorderLayout.WEST);
-		panelCircuitos.add(listSelecionados, BorderLayout.EAST);
-		JPanel buttonsPanel = new JPanel(new GridLayout(4, 1));
+		JPanel panelCampeonato = new JPanel(new BorderLayout());
+		JPanel buttonsPanel = new JPanel(new GridLayout(6, 1));
 		JButton esq = new JButton("<");
 		esq.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (listSelecionados.getSelectedIndex() == -1)
+					return;
 				defaultListModelCircuitos
 						.addElement(defaultListModelCircuitosSelecionados
 								.remove(listSelecionados.getSelectedIndex()));
@@ -90,6 +90,8 @@ public class ControleCampeonato {
 		JButton dir = new JButton(">");
 		dir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (listCircuitos.getSelectedIndex() == -1)
+					return;
 				defaultListModelCircuitosSelecionados
 						.addElement(defaultListModelCircuitos
 								.remove(listCircuitos.getSelectedIndex()));
@@ -102,26 +104,89 @@ public class ControleCampeonato {
 		JButton esqAll = new JButton("<<");
 		esqAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				defaultListModelCircuitos
-						.addElement(defaultListModelCircuitosSelecionados
-								.remove(listSelecionados.getSelectedIndex()));
 			}
 
 		});
 		JButton dirAll = new JButton(">>");
 		dirAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				defaultListModelCircuitosSelecionados
-						.addElement(defaultListModelCircuitos
-								.remove(listCircuitos.getSelectedIndex()));
 			}
 
 		});
 		buttonsPanel.add(esqAll);
 		buttonsPanel.add(dirAll);
+		JButton cima = new JButton("Cima");
+		JButton baixo = new JButton("Baixo");
+		buttonsPanel.add(cima);
+		buttonsPanel.add(baixo);
 
-		panelCircuitos.add(buttonsPanel, BorderLayout.CENTER);
-		JOptionPane.showMessageDialog(mainFrame, panelCircuitos);
+		JPanel sul = new JPanel();
+		sul.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("272");
+			}
+		});
+		JComboBox temporadas = new JComboBox(mainFrame.getVectorTemps());
+		sul.add(temporadas);
+
+		panelCampeonato.add(buttonsPanel, BorderLayout.CENTER);
+		panelCampeonato.add(new JScrollPane(listCircuitos) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(150, 300);
+			}
+		}, BorderLayout.WEST);
+		panelCampeonato.add(new JScrollPane(listSelecionados) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(150, 300);
+			}
+		}, BorderLayout.EAST);
+
+		panelCampeonato.add(sul, BorderLayout.SOUTH);
+		JOptionPane.showMessageDialog(mainFrame, panelCampeonato, Lang
+				.msg("276"), JOptionPane.INFORMATION_MESSAGE);
+		ControleJogoLocal controleJogoLocal = new ControleJogoLocal(
+				(String) mainFrame.getTemporadas().get(
+						temporadas.getSelectedItem()));
+		DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
+		JList listPilotosSelecionados = new JList(defaultListModelPilotosSelecionados);
+		List tempList = new LinkedList();
+		for (Iterator iter = controleJogoLocal.getPilotos().iterator(); iter
+				.hasNext();) {
+			Piloto piloto = (Piloto) iter.next();
+			tempList.add(piloto);
+		}
+		Collections.sort(tempList, new Comparator() {
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				Piloto p1 = (Piloto) o1;
+				Piloto p2 = (Piloto) o2;
+				return p1.getCarro().getNome().compareTo(
+						p2.getCarro().getNome());
+			}
+
+		});
+		for (Iterator iterator = tempList.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			defaultListModelPilotosSelecionados.addElement(piloto);
+		}
+
+		final JPanel pilotoPanel = new JPanel(new BorderLayout());
+
+		pilotoPanel.setBorder(new TitledBorder(Lang.msg("274")));
+
+		pilotoPanel.add(new JScrollPane(listPilotosSelecionados) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(210, 225);
+			}
+		});
+		JOptionPane.showMessageDialog(mainFrame, pilotoPanel, Lang
+				.msg("276"), JOptionPane.INFORMATION_MESSAGE);
+
 	}
 
 	public void continuarCampeonato() {
