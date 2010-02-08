@@ -5,7 +5,12 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.XMLEncoder;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -15,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -224,6 +230,27 @@ public class ControleCampeonato {
 		JOptionPane.showMessageDialog(mainFrame, painel2nd, Lang.msg("276"),
 				JOptionPane.INFORMATION_MESSAGE);
 
+		campeonato = new Campeonato();
+		List corridas = new ArrayList();
+		for (int i = 0; i < defaultListModelCircuitosSelecionados.getSize(); i++) {
+			corridas.add(defaultListModelCircuitosSelecionados.get(i));
+		}
+
+		List pilotos = new ArrayList();
+		for (int i = 0; i < defaultListModelCircuitosSelecionados.getSize(); i++) {
+			pilotos.add(defaultListModelPilotosSelecionados.get(i).toString());
+		}
+
+		campeonato.setCorridas(corridas);
+
+		campeonato.setPilotos(pilotos);
+
+		campeonato.setTemporada((String) temporadas.getSelectedItem());
+
+		campeonato.setNivel((String) comboBoxNivelCorrida.getSelectedItem());
+
+		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
+
 	}
 
 	public void continuarCampeonato() {
@@ -232,7 +259,13 @@ public class ControleCampeonato {
 	}
 
 	public void dadosPersistencia() {
-		// TODO Auto-generated method stub
+		if (campeonato != null) {
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
+			encoder.writeObject(campeonato);
+			encoder.flush();
+			System.out.println(new String(byteArrayOutputStream.toByteArray()));
+		}
 
 	}
 
