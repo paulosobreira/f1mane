@@ -24,9 +24,11 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -35,6 +37,8 @@ import br.nnpe.Logger;
 public class ControleCampeonato {
 
 	private MainFrame mainFrame;
+
+	private Campeonato campeonato;
 
 	public ControleCampeonato(MainFrame mainFrame) {
 		carregarCircuitos();
@@ -74,7 +78,7 @@ public class ControleCampeonato {
 
 		final JList listSelecionados = new JList(
 				defaultListModelCircuitosSelecionados);
-		JPanel panelCampeonato = new JPanel(new BorderLayout());
+		JPanel panel1st = new JPanel(new BorderLayout());
 		JPanel buttonsPanel = new JPanel(new GridLayout(6, 1));
 		JButton esq = new JButton("<");
 		esq.addActionListener(new ActionListener() {
@@ -130,28 +134,29 @@ public class ControleCampeonato {
 		JComboBox temporadas = new JComboBox(mainFrame.getVectorTemps());
 		sul.add(temporadas);
 
-		panelCampeonato.add(buttonsPanel, BorderLayout.CENTER);
-		panelCampeonato.add(new JScrollPane(listCircuitos) {
+		panel1st.add(buttonsPanel, BorderLayout.CENTER);
+		panel1st.add(new JScrollPane(listCircuitos) {
 			@Override
 			public Dimension getPreferredSize() {
 				return new Dimension(150, 300);
 			}
 		}, BorderLayout.WEST);
-		panelCampeonato.add(new JScrollPane(listSelecionados) {
+		panel1st.add(new JScrollPane(listSelecionados) {
 			@Override
 			public Dimension getPreferredSize() {
 				return new Dimension(150, 300);
 			}
 		}, BorderLayout.EAST);
 
-		panelCampeonato.add(sul, BorderLayout.SOUTH);
-		JOptionPane.showMessageDialog(mainFrame, panelCampeonato, Lang
+		panel1st.add(sul, BorderLayout.SOUTH);
+		JOptionPane.showMessageDialog(mainFrame, panel1st, Lang
 				.msg("276"), JOptionPane.INFORMATION_MESSAGE);
 		ControleJogoLocal controleJogoLocal = new ControleJogoLocal(
 				(String) mainFrame.getTemporadas().get(
 						temporadas.getSelectedItem()));
 		DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
-		JList listPilotosSelecionados = new JList(defaultListModelPilotosSelecionados);
+		JList listPilotosSelecionados = new JList(
+				defaultListModelPilotosSelecionados);
 		List tempList = new LinkedList();
 		for (Iterator iter = controleJogoLocal.getPilotos().iterator(); iter
 				.hasNext();) {
@@ -174,19 +179,29 @@ public class ControleCampeonato {
 			defaultListModelPilotosSelecionados.addElement(piloto);
 		}
 
-		final JPanel pilotoPanel = new JPanel(new BorderLayout());
+		final JPanel painel2nd = new JPanel(new BorderLayout());
 
-		pilotoPanel.setBorder(new TitledBorder(Lang.msg("274")));
+		painel2nd.setBorder(new TitledBorder(Lang.msg("274")));
 
-		pilotoPanel.add(new JScrollPane(listPilotosSelecionados) {
+		painel2nd.add(new JScrollPane(listPilotosSelecionados) {
 			@Override
 			public Dimension getPreferredSize() {
 				return new Dimension(210, 225);
 			}
 		});
-		JOptionPane.showMessageDialog(mainFrame, pilotoPanel, Lang
-				.msg("276"), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(mainFrame, painel2nd, Lang.msg("276"),
+				JOptionPane.INFORMATION_MESSAGE);
 
+		JSpinner spinnerQtdeVoltas = new JSpinner();
+		spinnerQtdeVoltas.setValue(new Integer(22));
+		JPanel grid = new JPanel();
+		grid.setLayout(new GridLayout(3, 2));
+		JLabel label = new JLabel() {
+
+			public String getText() {
+				return Lang.msg("110");
+			}
+		};
 	}
 
 	public void continuarCampeonato() {
