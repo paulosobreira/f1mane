@@ -5,12 +5,12 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -31,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
@@ -254,8 +254,27 @@ public class ControleCampeonato {
 	}
 
 	public void continuarCampeonato() {
-		// TODO Auto-generated method stub
+		try {
+			JTextArea xmlArea = new JTextArea(30, 50);
+			JScrollPane xmlPane = new JScrollPane(xmlArea);
+			xmlPane.setBorder(new TitledBorder(Lang.msg("282")));
+			JOptionPane.showMessageDialog(mainFrame, xmlPane, Lang.msg("281"),
+					JOptionPane.INFORMATION_MESSAGE);
 
+			ByteArrayInputStream bin = new ByteArrayInputStream(xmlArea
+					.getText().getBytes());
+			XMLDecoder xmlDecoder = new XMLDecoder(bin);
+			campeonato = (Campeonato) xmlDecoder.readObject();
+		} catch (Exception e) {
+			StackTraceElement[] trace = e.getStackTrace();
+			StringBuffer retorno = new StringBuffer();
+			int size = ((trace.length > 10) ? 10 : trace.length);
+			for (int i = 0; i < size; i++)
+				retorno.append(trace[i] + "\n");
+			JOptionPane.showMessageDialog(mainFrame, retorno.toString(), Lang
+					.msg("283"), JOptionPane.ERROR_MESSAGE);
+			Logger.logarExept(e);
+		}
 	}
 
 	public void dadosPersistencia() {
@@ -264,9 +283,16 @@ public class ControleCampeonato {
 			XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
 			encoder.writeObject(campeonato);
 			encoder.flush();
-			System.out.println(new String(byteArrayOutputStream.toByteArray()));
+			JTextArea xmlArea = new JTextArea(30, 50);
+			xmlArea.setText(new String(byteArrayOutputStream.toByteArray())
+					+ "</java>");
+			xmlArea.setEditable(false);
+			xmlArea.setSelectionStart(0);
+			xmlArea.setSelectionEnd(xmlArea.getCaretPosition());
+			JScrollPane xmlPane = new JScrollPane(xmlArea);
+			xmlPane.setBorder(new TitledBorder(Lang.msg("280")));
+			JOptionPane.showMessageDialog(mainFrame, xmlPane, Lang.msg("281"),
+					JOptionPane.INFORMATION_MESSAGE);
 		}
-
 	}
-
 }
