@@ -38,6 +38,7 @@ import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import sowbreira.f1mane.visao.PainelCampeonato;
 import br.nnpe.Logger;
 
 public class ControleCampeonato {
@@ -251,6 +252,8 @@ public class ControleCampeonato {
 
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
 
+		new PainelCampeonato(campeonato, mainFrame);
+
 	}
 
 	public void continuarCampeonato() {
@@ -275,6 +278,7 @@ public class ControleCampeonato {
 					.msg("283"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
+		new PainelCampeonato(campeonato, mainFrame);
 	}
 
 	public void dadosPersistencia() {
