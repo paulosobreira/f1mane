@@ -102,8 +102,6 @@ public class ControleCampeonato {
 			}
 
 		});
-		buttonsPanel.add(esq);
-		buttonsPanel.add(dir);
 
 		JButton esqAll = new JButton("<<");
 		esqAll.addActionListener(new ActionListener() {
@@ -111,16 +109,23 @@ public class ControleCampeonato {
 			}
 
 		});
+		esqAll.setEnabled(false);
 		JButton dirAll = new JButton(">>");
 		dirAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 
 		});
-		buttonsPanel.add(esqAll);
+		dirAll.setEnabled(false);
+		buttonsPanel.add(dir);
+		buttonsPanel.add(esq);
 		buttonsPanel.add(dirAll);
+		buttonsPanel.add(esqAll);
+
 		JButton cima = new JButton("Cima");
+		cima.setEnabled(false);
 		JButton baixo = new JButton("Baixo");
+		baixo.setEnabled(false);
 		buttonsPanel.add(cima);
 		buttonsPanel.add(baixo);
 
@@ -149,8 +154,8 @@ public class ControleCampeonato {
 		}, BorderLayout.EAST);
 
 		panel1st.add(sul, BorderLayout.SOUTH);
-		JOptionPane.showMessageDialog(mainFrame, panel1st, Lang
-				.msg("276"), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(mainFrame, panel1st, Lang.msg("276"),
+				JOptionPane.INFORMATION_MESSAGE);
 		ControleJogoLocal controleJogoLocal = new ControleJogoLocal(
 				(String) mainFrame.getTemporadas().get(
 						temporadas.getSelectedItem()));
@@ -181,27 +186,44 @@ public class ControleCampeonato {
 
 		final JPanel painel2nd = new JPanel(new BorderLayout());
 
-		painel2nd.setBorder(new TitledBorder(Lang.msg("274")));
-
-		painel2nd.add(new JScrollPane(listPilotosSelecionados) {
-			@Override
-			public Dimension getPreferredSize() {
-				return new Dimension(210, 225);
-			}
-		});
-		JOptionPane.showMessageDialog(mainFrame, painel2nd, Lang.msg("276"),
-				JOptionPane.INFORMATION_MESSAGE);
-
-		JSpinner spinnerQtdeVoltas = new JSpinner();
-		spinnerQtdeVoltas.setValue(new Integer(22));
 		JPanel grid = new JPanel();
-		grid.setLayout(new GridLayout(3, 2));
-		JLabel label = new JLabel() {
+
+		grid.setLayout(new GridLayout(2, 2));
+		grid.add(new JLabel() {
 
 			public String getText() {
 				return Lang.msg("110");
 			}
+		});
+		JSpinner spinnerQtdeVoltas = new JSpinner();
+		spinnerQtdeVoltas.setValue(new Integer(22));
+		grid.add(spinnerQtdeVoltas);
+		JComboBox comboBoxNivelCorrida = new JComboBox();
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
+		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+		grid.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("212");
+			}
+		});
+		grid.add(comboBoxNivelCorrida);
+
+		JScrollPane scrolllistPilotosSelecionados = new JScrollPane(
+				listPilotosSelecionados) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(210, 225);
+			}
 		};
+		scrolllistPilotosSelecionados.setBorder(new TitledBorder(Lang
+				.msg("274")));
+		painel2nd.add(scrolllistPilotosSelecionados, BorderLayout.CENTER);
+		painel2nd.add(grid, BorderLayout.SOUTH);
+
+		JOptionPane.showMessageDialog(mainFrame, painel2nd, Lang.msg("276"),
+				JOptionPane.INFORMATION_MESSAGE);
+
 	}
 
 	public void continuarCampeonato() {
