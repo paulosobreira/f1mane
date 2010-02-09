@@ -474,31 +474,33 @@ public class Carro implements Serializable {
 
 	private int calculaModificadorPneu(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
-		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
-			int porcent = porcentagemDesgastePeneus();
-			double indicativo = porcent / 100.0;
-			if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
-				if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())
-						&& (porcent > 10) && (Math.random() > indicativo)) {
-					novoModificador += 1;
-				}
-			} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
-				if (no.verificaCruvaAlta() && (porcent > 15) && (porcent < 85)
-						&& (Math.random() > indicativo)) {
-					novoModificador += 1;
-				} else if (no.verificaCruvaBaixa() && (porcent > 25)
-						&& (porcent < 75) && (Math.random() > indicativo)) {
-					novoModificador += 1;
-				}
+		int porcent = porcentagemDesgastePeneus();
+		double indicativo = .7;
+		if (agressivo) {
+			indicativo = .5;
+		}
+		if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
+			if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())
+					&& (porcent > 10) && (Math.random() > indicativo)) {
+				novoModificador += 1;
+			}
+		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
+			if (no.verificaCruvaAlta() && (porcent > 15) && (porcent < 85)
+					&& (Math.random() > indicativo)) {
+				novoModificador += 1;
+			} else if (no.verificaCruvaBaixa() && (porcent > 25)
+					&& (porcent < 75) && (Math.random() > indicativo)) {
+				novoModificador += 1;
+			}
 
-			} else if (TIPO_PNEU_CHUVA.equals(tipoPneu)) {
-				if (no.verificaCruvaBaixa() && Math.random() > .8) {
-					novoModificador -= 1;
-				} else if (no.verificaCruvaAlta() && Math.random() > .9) {
-					novoModificador -= 1;
-				}
+		} else if (TIPO_PNEU_CHUVA.equals(tipoPneu)) {
+			if (no.verificaCruvaBaixa() && Math.random() > .8) {
+				novoModificador -= 1;
+			} else if (no.verificaCruvaAlta() && Math.random() > .9) {
+				novoModificador -= 1;
 			}
 		}
+
 		if ((pneus < 0) && (novoModificador > 1)) {
 			novoModificador -= 1;
 		}
