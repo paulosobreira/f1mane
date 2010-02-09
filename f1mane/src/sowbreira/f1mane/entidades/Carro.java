@@ -274,7 +274,7 @@ public class Carro implements Serializable {
 				no, controleJogo);
 		novoModificador = calculaModificadorCombustivel(novoModificador,
 				agressivo, no, controleJogo);
-		novoModificador = calculaModificadorAsa(novoModificador, no,
+		novoModificador = calculaModificadorAsaGiro(novoModificador, no,
 				controleJogo);
 		calculaDesgasteMotor(novoModificador, agressivo, no, controleJogo);
 		if (novoModificador > 3) {
@@ -286,7 +286,7 @@ public class Carro implements Serializable {
 		return novoModificador;
 	}
 
-	private int calculaModificadorAsa(int novoModificador, No no,
+	private int calculaModificadorAsaGiro(int novoModificador, No no,
 			InterfaceJogo controleJogo) {
 		double mod = 0.5;
 		if (GIRO_MAX_VAL == giro) {
@@ -448,7 +448,7 @@ public class Carro implements Serializable {
 		double fator = Math.random();
 		int valConsumo = 0;
 		if (agressivo) {
-			valConsumo = ((fator > .5) ? 4 : 3);
+			valConsumo = ((fator > .5) ? 3 : 2);
 		} else {
 			valConsumo = ((fator > .5) ? 2 : 1);
 		}
