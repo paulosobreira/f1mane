@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
-
 /**
  * @author Paulo Sobreira Criado em 06/05/2007 as 12:08:07
  */
@@ -27,6 +26,17 @@ public class Clima implements Serializable {
 
 	public void setClima(String clima) {
 		this.clima = clima;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Clima c = (Clima) obj;
+		return clima.equals(c.getClima());
+	}
+
+	@Override
+	public int hashCode() {
+		return clima.hashCode();
 	}
 
 	public String toString() {

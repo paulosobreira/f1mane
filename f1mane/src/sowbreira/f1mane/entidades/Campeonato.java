@@ -61,4 +61,8 @@ public class Campeonato {
 		this.dadosCorridas = dadosCorridas;
 	}
 
+	public String getCircuitoVez() {
+		return corridas.get(0).toString();
+	}
+
 }

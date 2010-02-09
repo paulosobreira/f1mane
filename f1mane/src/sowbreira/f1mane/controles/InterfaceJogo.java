@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Piloto;
@@ -144,6 +145,8 @@ public interface InterfaceJogo {
 	public Map getCircuitos();
 
 	public void iniciarJogo() throws Exception;
+
+	public void iniciarJogo(Campeonato campeonato) throws Exception;
 
 	public void exibirResultadoFinal();
 
