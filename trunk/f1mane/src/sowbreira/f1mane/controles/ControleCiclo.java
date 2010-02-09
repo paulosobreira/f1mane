@@ -2,6 +2,8 @@ package sowbreira.f1mane.controles;
 
 import java.util.Iterator;
 
+import com.sun.org.apache.bcel.internal.generic.LUSHR;
+
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
@@ -16,6 +18,7 @@ public class ControleCiclo extends Thread {
 	private int contadorCiclos;
 	private long tempoCiclo;
 	private boolean processadoCilcos = true;
+	private int contadorLuz = 60;
 
 	public long getTempoCiclo() {
 		return tempoCiclo;
@@ -54,17 +57,29 @@ public class ControleCiclo extends Thread {
 			if (ControleJogoLocal.VALENDO) {
 				controleJogo.desenhaQualificacao();
 				controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
-				Thread.sleep(5000);
-				controleJogo.apagarLuz();
-				Thread.sleep(2000);
-				controleJogo.apagarLuz();
-				Thread.sleep(2000);
-				controleJogo.apagarLuz();
-				Thread.sleep(2000);
-				controleJogo.apagarLuz();
-				Thread.sleep(2000);
-				controleJogo.apagarLuz();
-				Thread.sleep(1000);
+				while (contadorLuz >= 0) {
+					Thread.sleep(tempoCiclo);
+					contadorLuz--;
+					controleJogo.atualizaPainel();
+					if (contadorLuz == 50) {
+						controleJogo.apagarLuz();
+					}
+					if (contadorLuz == 40) {
+						controleJogo.apagarLuz();
+					}
+					if (contadorLuz == 30) {
+						controleJogo.apagarLuz();
+					}
+					if (contadorLuz == 20) {
+						controleJogo.apagarLuz();
+					}
+					if (contadorLuz == 10) {
+						controleJogo.apagarLuz();
+					}
+					if (contadorLuz == 0) {
+						controleJogo.apagarLuz();
+					}
+				}
 			}
 			while (processadoCilcos) {
 				try {
