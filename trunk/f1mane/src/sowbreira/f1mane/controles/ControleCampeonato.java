@@ -238,17 +238,18 @@ public class ControleCampeonato {
 		}
 
 		List pilotos = new ArrayList();
-		for (int i = 0; i < defaultListModelCircuitosSelecionados.getSize(); i++) {
-			pilotos.add(defaultListModelPilotosSelecionados.get(i).toString());
+		Object[] pilotosSel = listPilotosSelecionados.getSelectedValues();
+		for (int i = 0; i < pilotosSel.length; i++) {
+			pilotos.add(pilotosSel[i].toString());
 		}
-
 		campeonato.setCorridas(corridas);
 
 		campeonato.setPilotos(pilotos);
 
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
 
-		campeonato.setNivel((String) comboBoxNivelCorrida.getSelectedItem());
+		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
+				.getSelectedItem()));
 
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
@@ -540,10 +541,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	/**
+	 * @param campeonato
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#iniciarJogoSingle()
 	 */
-	public void iniciarJogo() throws Exception {
-		if (gerenciadorVisual.iniciarJogoMulti()) {
+	public void iniciarJogo(Campeonato campeonato) throws Exception {
+		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
 			this.nivelCorrida = Lang.key(gerenciadorVisual
@@ -816,6 +818,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void verificaProgramacaoBox() {
 		gerenciadorVisual.verificaProgramacaoBox();
 
+	}
+
+	@Override
+	public void iniciarJogo() throws Exception {
+		iniciarJogo(null);
 	}
 
 }

@@ -49,6 +49,7 @@ import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
@@ -1161,16 +1162,70 @@ public class GerenciadorVisual {
 		return true;
 	}
 
-	public boolean iniciarJogoMulti() {
+	public boolean iniciarJogoMulti(Campeonato campeonato) {
 		JPanel painelInicio = new JPanel();
 		gerarPainelJogoMulti(painelInicio);
 		spinnerQtdeVoltas.setValue(new Integer(22));
+		if (campeonato != null) {
+			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
+			spinnerQtdeVoltas.setEnabled(false);
+			comboBoxNivelCorrida.setSelectedItem(Lang
+					.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida.setEnabled(false);
+			List indices = new ArrayList();
+			DefaultListModel defaultListModel = (DefaultListModel) listPilotosSelecionados
+					.getModel();
+			for (int i = 0; i < defaultListModel.getSize(); i++) {
+				Piloto piloto = (Piloto) defaultListModel.get(i);
+				if (campeonato.getPilotos().contains(piloto.toString())) {
+					indices.add(new Integer(i));
+				}
+			}
+			int[] inds = new int[indices.size()];
+			for (int i = 0; i < inds.length; i++) {
+				inds[i] = ((Integer) indices.get(i)).intValue();
+			}
+			listPilotosSelecionados.setSelectedIndices(inds);
+			listPilotosSelecionados.setEnabled(false);
+
+			comboBoxCircuito.setSelectedItem(campeonato.getCircuitoVez());
+			comboBoxCircuito.setEnabled(false);
+			spinnerSkillPadraoPilotos.setEnabled(false);
+			spinnerPotenciaPadraoCarros.setEnabled(false);
+			spinnerDificuldadeUltrapassagem.setEnabled(false);
+			spinnerIndexVelcidadeEmReta.setEnabled(false);
+			int val = 1 + (int) (Math.random() * 3);
+
+			Clima climaTmp = null;
+			switch (val) {
+			case 1:
+				climaTmp = new Clima(Clima.SOL);
+
+				break;
+
+			case 2:
+				climaTmp = new Clima(Clima.NUBLADO);
+
+				break;
+
+			case 3:
+				climaTmp = new Clima(Clima.CHUVA);
+
+				break;
+
+			default:
+				break;
+			}
+			System.out.println(climaTmp);
+			comboBoxClimaInicial.setSelectedItem(climaTmp);
+			comboBoxClimaInicial.setEnabled(false);
+
+		}
 		int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
 				painelInicio, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret == JOptionPane.NO_OPTION) {
 			return false;
 		}
-
 		Object[] selec = listPilotosSelecionados.getSelectedValues();
 
 		for (int i = 0; i < selec.length; i++) {
@@ -1227,7 +1282,6 @@ public class GerenciadorVisual {
 											.getSelectedItem()));
 
 		}
-
 		return true;
 	}
 
