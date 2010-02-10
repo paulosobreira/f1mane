@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,11 +21,13 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -42,10 +46,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -78,6 +79,7 @@ public class GerenciadorVisual {
 	private JComboBox comboBoxNivelCorrida;
 	private JComboBox comboBoxCircuito;
 	private JComboBox boxPilotoSelecionado;
+	private JComboBox comboBoxTemporadas;
 	private JList listPilotosSelecionados;
 	private JComboBox boxPneuInicial;
 	private JComboBox comboBoxAsaInicial;
@@ -115,6 +117,10 @@ public class GerenciadorVisual {
 	private long lastPress;
 	private ProgamacaoBox progamacaoBox;
 	private long ultimaChamadaBox;
+
+	public JComboBox getComboBoxTemporadas() {
+		return comboBoxTemporadas;
+	}
 
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
@@ -961,41 +967,56 @@ public class GerenciadorVisual {
 	}
 
 	private void gerarPainelJogoMulti(JPanel incialPanel) {
+		final CarregadorRecursos carregadorRecursos = new CarregadorRecursos();
+		final Map circuitosPilotos = carregadorRecursos
+				.carregarTemporadasPilotos();
+		comboBoxTemporadas = new JComboBox(carregadorRecursos.getVectorTemps());
 
-		DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
+		final DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
 		listPilotosSelecionados = new JList(defaultListModelPilotosSelecionados);
-		List tempList = new LinkedList();
-		for (Iterator iter = controleJogo.getPilotos().iterator(); iter
-				.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
-			tempList.add(piloto);
-		}
-		Collections.sort(tempList, new Comparator() {
+		final List tempList = new LinkedList();
+		comboBoxTemporadas.addItemListener(new ItemListener() {
 
 			@Override
-			public int compare(Object o1, Object o2) {
-				Piloto p1 = (Piloto) o1;
-				Piloto p2 = (Piloto) o2;
-				return p1.getCarro().getNome().compareTo(
-						p2.getCarro().getNome());
-			}
+			public void itemStateChanged(ItemEvent arg0) {
+				tempList.clear();
+				String temporarada = (String) carregadorRecursos
+						.getTemporadas().get(arg0.getItem());
+				tempList.addAll((Collection) circuitosPilotos.get(temporarada));
+				Collections.sort(tempList, new Comparator() {
 
+					@Override
+					public int compare(Object o1, Object o2) {
+						Piloto p1 = (Piloto) o1;
+						Piloto p2 = (Piloto) o2;
+						return p1.getCarro().getNome().compareTo(
+								p2.getCarro().getNome());
+					}
+
+				});
+				defaultListModelPilotosSelecionados.clear();
+				for (Iterator iterator = tempList.iterator(); iterator
+						.hasNext();) {
+					Piloto piloto = (Piloto) iterator.next();
+					defaultListModelPilotosSelecionados.addElement(piloto);
+				}
+
+			}
 		});
-		for (Iterator iterator = tempList.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			defaultListModelPilotosSelecionados.addElement(piloto);
-		}
+		comboBoxTemporadas.setSelectedIndex(1);
+		comboBoxTemporadas.setSelectedIndex(0);
 
 		final JPanel pilotoPanel = new JPanel(new BorderLayout());
 
 		pilotoPanel.setBorder(new TitledBorder(Lang.msg("274")));
 
+		pilotoPanel.add(comboBoxTemporadas, BorderLayout.NORTH);
 		pilotoPanel.add(new JScrollPane(listPilotosSelecionados) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(210, 225);
+				return new Dimension(210, 200);
 			}
-		});
+		}, BorderLayout.CENTER);
 
 		JPanel grid = new JPanel();
 		grid.setLayout(new GridLayout(9, 2));

@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -29,8 +30,56 @@ import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 
 public class CarregadorRecursos {
-
+	private HashMap temporadas;
+	private Vector vectorTemps;
 	private static Map bufferCarros = new HashMap();
+
+	public CarregadorRecursos() {
+		carregarTemporadas();
+	}
+
+	public Vector getVectorTemps() {
+		return vectorTemps;
+	}
+
+	public void carregarTemporadas() {
+		if (temporadas != null) {
+			return;
+		}
+		if (temporadas == null) {
+			temporadas = new HashMap();
+			vectorTemps = new Vector();
+		}
+		final Properties properties = new Properties();
+
+		try {
+			properties
+					.load(recursoComoStreamIn("properties/temporadas.properties"));
+
+			Enumeration propName = properties.propertyNames();
+			while (propName.hasMoreElements()) {
+				final String name = (String) propName.nextElement();
+				temporadas.put(properties.getProperty(name), name);
+				vectorTemps.add(properties.getProperty(name));
+			}
+			Collections.sort(vectorTemps, new Comparator() {
+
+				@Override
+				public int compare(Object o1, Object o2) {
+					String o1s = (String) o1;
+					String o2s = (String) o2;
+					return o2s.compareTo(o1s);
+				}
+
+			});
+		} catch (IOException e) {
+			Logger.logarExept(e);
+		}
+	}
+
+	public HashMap getTemporadas() {
+		return temporadas;
+	}
 
 	public static URL carregarImagem(String imagem) {
 		return CarregadorRecursos.class.getResource(imagem);
@@ -76,6 +125,10 @@ public class CarregadorRecursos {
 		CarregadorRecursos rec = new CarregadorRecursos();
 
 		return rec.getClass().getResourceAsStream(string);
+	}
+
+	public InputStream recursoComoStreamIn(String string) {
+		return this.getClass().getResourceAsStream(string);
 	}
 
 	public static void main(String[] args) throws URISyntaxException,
@@ -129,8 +182,8 @@ public class CarregadorRecursos {
 		List retorno = new ArrayList();
 		Properties properties = new Properties();
 
-		properties.load(CarregadorRecursos.recursoComoStream("properties/"
-				+ temporarada + "/pilotos.properties"));
+		properties.load(recursoComoStreamIn("properties/" + temporarada
+				+ "/pilotos.properties"));
 
 		Enumeration propNames = properties.propertyNames();
 		int cont = 1;
@@ -166,8 +219,8 @@ public class CarregadorRecursos {
 		List retorno = new ArrayList();
 		Properties properties = new Properties();
 
-		properties.load(CarregadorRecursos.recursoComoStream("properties/"
-				+ temporarada + "/carros.properties"));
+		properties.load(recursoComoStreamIn("properties/" + temporarada
+				+ "/carros.properties"));
 
 		Enumeration propNames = properties.propertyNames();
 
@@ -229,8 +282,8 @@ public class CarregadorRecursos {
 		Map circuitosPilotos = new HashMap();
 		final Properties properties = new Properties();
 		try {
-			properties.load(CarregadorRecursos
-					.recursoComoStream("properties/temporadas.properties"));
+			properties
+					.load(recursoComoStreamIn("properties/temporadas.properties"));
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String temporada = (String) propName.nextElement();
