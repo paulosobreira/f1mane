@@ -53,23 +53,15 @@ public class MainFrame extends JFrame {
 	private InterfaceJogo controleJogo;
 	private ControleCampeonato controleCampeonato;
 	private boolean modoApplet;
-	private String temporarada = null;
 	private JMenuBar bar;
 	private JMenu menuJogo;
 	private JMenu menuCampeonato;
 	private JMenu menuEditor;
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
-	private HashMap temporadas;
-	private Vector vectorTemps;
-
-	public Vector getVectorTemps() {
-		return vectorTemps;
-	}
 
 	public MainFrame(boolean modoApplet) throws IOException {
 		this.modoApplet = modoApplet;
-		carregarTemporadas();
 		controleCampeonato = new ControleCampeonato(this);
 		bar = new JMenuBar();
 		setJMenuBar(bar);
@@ -326,9 +318,7 @@ public class MainFrame extends JFrame {
 						controleJogo.matarTodasThreads();
 					}
 
-					selecionarTemporada();
-
-					controleJogo = new ControleJogoLocal(temporarada);
+					controleJogo = new ControleJogoLocal();
 					controleJogo.setMainFrame(MainFrame.this);
 					controleJogo.iniciarJogo();
 				} catch (Exception ex) {
@@ -358,52 +348,13 @@ public class MainFrame extends JFrame {
 		menu1.add(pausa);
 	}
 
-	protected void carregarTemporadas() {
-		if (temporadas != null) {
-			return;
-		}
-		if (temporadas == null) {
-			temporadas = new HashMap();
-			vectorTemps = new Vector();
-		}
-		final Properties properties = new Properties();
-
-		try {
-			properties.load(CarregadorRecursos
-					.recursoComoStream("properties/temporadas.properties"));
-
-			Enumeration propName = properties.propertyNames();
-			while (propName.hasMoreElements()) {
-				final String name = (String) propName.nextElement();
-				temporadas.put(properties.getProperty(name), name);
-				vectorTemps.add(properties.getProperty(name));
-			}
-			Collections.sort(vectorTemps, new Comparator() {
-
-				@Override
-				public int compare(Object o1, Object o2) {
-					String o1s = (String) o1;
-					String o2s = (String) o2;
-					return o2s.compareTo(o1s);
-				}
-
-			});
-		} catch (IOException e) {
-			Logger.logarExept(e);
-		}
-	}
-
-	public HashMap getTemporadas() {
-		return temporadas;
-	}
-
 	protected void selecionarTemporada() {
-		carregarTemporadas();
-		JComboBox temporadasCombo = new JComboBox(vectorTemps);
-		JOptionPane.showMessageDialog(this, temporadasCombo, Lang.msg("272"),
-				JOptionPane.QUESTION_MESSAGE);
-		temporarada = (String) temporadas
-				.get(temporadasCombo.getSelectedItem());
+		// carregarTemporadas();
+		// JComboBox temporadasCombo = new JComboBox(vectorTemps);
+		// JOptionPane.showMessageDialog(this, temporadasCombo, Lang.msg("272"),
+		// JOptionPane.QUESTION_MESSAGE);
+		// temporarada = (String) temporadas
+		// .get(temporadasCombo.getSelectedItem());
 	}
 
 	private void ativarKeysEditor() {
@@ -681,8 +632,7 @@ public class MainFrame extends JFrame {
 			setVisible(true);
 		} else {
 			try {
-				selecionarTemporada();
-				controleJogo = new ControleJogoLocal(temporarada);
+				controleJogo = new ControleJogoLocal();
 				controleJogo.setMainFrame(this);
 				controleJogo.iniciarJogo();
 			} catch (Exception e) {
