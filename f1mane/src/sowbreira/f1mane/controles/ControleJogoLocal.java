@@ -51,6 +51,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	}
 
+	public ControleJogoLocal() throws Exception {
+		super();
+		gerenciadorVisual = new GerenciadorVisual(this);
+		controleEstatisticas = new ControleEstatisticas(this);
+	}
+
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCombustBox(sowbreira.f1mane.entidades.Piloto)
 	 */
@@ -547,7 +553,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void iniciarJogo(Campeonato campeonato) throws Exception {
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
-			carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
+			String temporada = (String) carregadorRecursos.getTemporadas()
+					.get(
+							gerenciadorVisual.getComboBoxTemporadas()
+									.getSelectedItem());
+			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
+					temporada);
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
