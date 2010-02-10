@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
@@ -161,20 +163,20 @@ public class ControleCampeonato {
 		}, BorderLayout.EAST);
 
 		panel1st.add(sul, BorderLayout.SOUTH);
-		JOptionPane.showMessageDialog(mainFrame, panel1st, Lang.msg("276"),
-				JOptionPane.INFORMATION_MESSAGE);
-		ControleJogoLocal controleJogoLocal = new ControleJogoLocal(
-				(String) mainFrame.getTemporadas().get(
-						temporadas.getSelectedItem()));
+
 		DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
 		JList listPilotosSelecionados = new JList(
 				defaultListModelPilotosSelecionados);
 		List tempList = new LinkedList();
-		for (Iterator iter = controleJogoLocal.getPilotos().iterator(); iter
-				.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
-			tempList.add(piloto);
-		}
+		temporadas.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		Collections.sort(tempList, new Comparator() {
 
 			@Override
