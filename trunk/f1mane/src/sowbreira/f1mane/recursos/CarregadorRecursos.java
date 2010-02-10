@@ -225,4 +225,24 @@ public class CarregadorRecursos {
 		return carroNovo;
 	}
 
+	protected Map carregarCircuitosPilotos() {
+		Map circuitosPilotos = new HashMap();
+		final Properties properties = new Properties();
+		try {
+			properties.load(CarregadorRecursos
+					.recursoComoStream("properties/pistas.properties"));
+			Enumeration propName = properties.propertyNames();
+			while (propName.hasMoreElements()) {
+				final String temporada = (String) propName.nextElement();
+				List pilolotos = carregarListaPilotos(temporada);
+				List carros = carregarListaCarros(temporada);
+				ligarPilotosCarros(pilolotos, carros);
+				circuitosPilotos.put(temporada, temporada);
+			}
+		} catch (IOException e) {
+			Logger.logarExept(e);
+		}
+		return circuitosPilotos;
+	}
+
 }
