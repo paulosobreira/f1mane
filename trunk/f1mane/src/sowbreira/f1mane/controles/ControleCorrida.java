@@ -91,7 +91,6 @@ public class ControleCorrida {
 
 	}
 
-
 	public ControleClima getControleClima() {
 		return controleClima;
 	}
@@ -125,6 +124,7 @@ public class ControleCorrida {
 	}
 
 	public void iniciarCorrida() {
+
 		controleJogo.selecionaPilotoJogador();
 		controleJogo.atualizaPainel();
 		controleCiclo.start();

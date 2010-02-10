@@ -50,10 +50,12 @@ public class ControleCampeonato {
 
 	private Campeonato campeonato;
 
+	private CarregadorRecursos carregadorRecursos;
+
 	public ControleCampeonato(MainFrame mainFrame) {
 		carregarCircuitos();
 		this.mainFrame = mainFrame;
-		CarregadorRecursos carregadorRecursos = new CarregadorRecursos();
+		carregadorRecursos = new CarregadorRecursos();
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
 
@@ -150,7 +152,8 @@ public class ControleCampeonato {
 				return Lang.msg("272");
 			}
 		});
-		JComboBox temporadas = new JComboBox(mainFrame.getVectorTemps());
+		JComboBox temporadas = new JComboBox(carregadorRecursos
+				.getVectorTemps());
 		sul.add(temporadas);
 
 		panel1st.add(buttonsPanel, BorderLayout.CENTER);
@@ -178,7 +181,7 @@ public class ControleCampeonato {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				tempList.clear();
-				String temporarada = (String) ControleCampeonato.this.mainFrame
+				String temporarada = (String) ControleCampeonato.this.carregadorRecursos
 						.getTemporadas().get(arg0.getItem());
 				tempList.addAll((Collection) circuitosPilotos.get(temporarada));
 				Collections.sort(tempList, new Comparator() {

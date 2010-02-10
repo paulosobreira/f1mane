@@ -29,10 +29,11 @@ public abstract class ControleRecursos {
 	protected List nosDaPista = new ArrayList();
 	protected List nosDoBox = new ArrayList();
 	protected List carros;
+	protected CarregadorRecursos carregadorRecursos;
 	protected Map circuitos = new HashMap();
 	protected Map mapaIdsNos = new HashMap();
 	protected Map mapaNosIds = new HashMap();
-	private String temporarada;
+	private String seasson;
 
 	public Map getMapaIdsNos() {
 		return mapaIdsNos;
@@ -50,24 +51,37 @@ public abstract class ControleRecursos {
 		this.mapaNosIds = mapaNosIds;
 	}
 
+	public ControleRecursos() throws Exception {
+		carregadorRecursos = new CarregadorRecursos();
+		carregarCircuitos();
+	}
+
 	public ControleRecursos(String temporada) throws Exception {
 		if (temporada != null) {
-			this.temporarada = temporada;
+			this.seasson = temporada;
 		} else {
-			this.temporarada = "t2009";
+			this.seasson = "t2009";
 		}
-		CarregadorRecursos rec = new CarregadorRecursos();
-		carros = rec.carregarListaCarros(temporada);
-		pilotos = rec.carregarListaPilotos(temporarada);
-		rec.ligarPilotosCarros(pilotos, carros);
+		carregadorRecursos = new CarregadorRecursos();
+		carros = carregadorRecursos.carregarListaCarros(seasson);
+		pilotos = carregadorRecursos.carregarListaPilotos(seasson);
+		carregadorRecursos.ligarPilotosCarros(pilotos, carros);
 		carregarCircuitos();
 	}
 
 	public void carregaRecursos(String circuitoStr) throws Exception {
+		carregaRecursos(circuitoStr, null);
+	}
 
-		CarregadorRecursos rec = new CarregadorRecursos();
-		ObjectInputStream ois = new ObjectInputStream(rec.getClass()
-				.getResourceAsStream(circuitoStr));
+	public void carregaRecursos(String circuitoStr, String temporada)
+			throws Exception {
+		if (temporada != null) {
+			carros = carregadorRecursos.carregarListaCarros(temporada);
+			pilotos = carregadorRecursos.carregarListaPilotos(temporada);
+			carregadorRecursos.ligarPilotosCarros(pilotos, carros);
+		}
+		ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
+				.getClass().getResourceAsStream(circuitoStr));
 
 		circuito = (Circuito) ois.readObject();
 		nosDaPista = circuito.geraPontosPista();
