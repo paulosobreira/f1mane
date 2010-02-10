@@ -56,9 +56,10 @@ public abstract class ControleRecursos {
 		} else {
 			this.temporarada = "t2009";
 		}
-		carros = carregarListaCarros();
-		pilotos = carregarListaPilotos();
-		ligarPilotosCarros();
+		CarregadorRecursos rec = new CarregadorRecursos();
+		carros = rec.carregarListaCarros(temporada);
+		pilotos = rec.carregarListaPilotos(temporarada);
+		rec.ligarPilotosCarros(pilotos, carros);
 		carregarCircuitos();
 	}
 
@@ -86,108 +87,8 @@ public abstract class ControleRecursos {
 		}
 	}
 
-	protected List carregarListaPilotos() throws IOException {
-		List retorno = new ArrayList();
-		Properties properties = new Properties();
-
-		properties.load(CarregadorRecursos.recursoComoStream("properties/"
-				+ temporarada + "/pilotos.properties"));
-
-		Enumeration propNames = properties.propertyNames();
-		int cont = 1;
-		while (propNames.hasMoreElements()) {
-			Piloto piloto = new Piloto();
-			piloto.setId(cont++);
-			String name = (String) propNames.nextElement();
-			String prop = properties.getProperty(name);
-			piloto.setNome(name);
-			piloto.setNomeCarro(prop.split(",")[0]);
-			int duasCasas = Integer.parseInt(prop.split(",")[1])
-					+ (Math.random() > .5 ? -1 : 1);
-			piloto.setHabilidade(Integer.parseInt(String.valueOf(duasCasas)
-					+ (int) (0 + Math.random() * 9)));
-			// Logger.logar(piloto + " " + piloto.getHabilidade());
-			retorno.add(piloto);
-		}
-
-		Collections.sort(retorno, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				Piloto piloto0 = (Piloto) arg0;
-				Piloto piloto1 = (Piloto) arg1;
-
-				return new Integer(piloto1.getHabilidade())
-						.compareTo(new Integer(piloto0.getHabilidade()));
-			}
-		});
-
-		return retorno;
-	}
-
 	public static void main(String[] args) {
 		Logger.logar(((int) (0 + Math.random() * 9)));
-	}
-
-	protected List carregarListaCarros() throws IOException {
-		List retorno = new ArrayList();
-		Properties properties = new Properties();
-
-		properties.load(CarregadorRecursos.recursoComoStream("properties/"
-				+ temporarada + "/carros.properties"));
-
-		Enumeration propNames = properties.propertyNames();
-
-		while (propNames.hasMoreElements()) {
-			Carro carro = new Carro();
-			String name = (String) propNames.nextElement();
-			String prop = properties.getProperty(name);
-			carro.setNome(name);
-			String[] values = prop.split(",");
-			carro.setPotencia(Integer.parseInt(values[0]));
-
-			String red = values[1];
-			String green = values[2];
-			String blue = values[3];
-			carro.setImg("carros/" + temporarada + "/" + values[4]);
-			carro.setCor1(new Color(Integer.parseInt(red), Integer
-					.parseInt(green), Integer.parseInt(blue)));
-
-			red = values[5];
-			green = values[6];
-			blue = values[7];
-			carro.setCor2(new Color(Integer.parseInt(red), Integer
-					.parseInt(green), Integer.parseInt(blue)));
-
-			retorno.add(carro);
-		}
-
-		return retorno;
-	}
-
-	protected void ligarPilotosCarros() {
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
-
-			for (Iterator iterator = carros.iterator(); iterator.hasNext();) {
-				Carro carro = (Carro) iterator.next();
-
-				if (piloto.getNomeCarro().equals(carro.getNome())) {
-					piloto.setCarro(criarCopiaCarro(carro, piloto));
-				}
-			}
-		}
-	}
-
-	protected Carro criarCopiaCarro(Carro carro, Piloto piloto) {
-		Carro carroNovo = new Carro();
-		carroNovo.setNome(carro.getNome());
-		carroNovo.setCor1(carro.getCor1());
-		carroNovo.setCor2(carro.getCor2());
-		carroNovo.setImg(carro.getImg());
-		carroNovo.setPiloto(piloto);
-		carroNovo.setPotencia(carro.getPotencia()
-				+ (Math.random() > .5 ? -5 : 5));
-
-		return carroNovo;
 	}
 
 	protected void definirHabilidadePadraoPilotos(int value) {
