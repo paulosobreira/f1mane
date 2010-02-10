@@ -103,6 +103,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		threadMonitoraJogoOnline.start();
 	}
 
+
+
 	public void preparaGerenciadorVisual() {
 		try {
 			gerenciadorVisual = new GerenciadorVisual(this);
