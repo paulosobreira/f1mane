@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -52,9 +53,13 @@ public class ControleCampeonato {
 	public ControleCampeonato(MainFrame mainFrame) {
 		carregarCircuitos();
 		this.mainFrame = mainFrame;
+		CarregadorRecursos carregadorRecursos = new CarregadorRecursos();
+		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
 
 	protected Map circuitos = new HashMap();
+
+	protected Map circuitosPilotos = new HashMap();
 
 	protected void carregarCircuitos() {
 		final Properties properties = new Properties();
@@ -164,36 +169,41 @@ public class ControleCampeonato {
 
 		panel1st.add(sul, BorderLayout.SOUTH);
 
-		DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
+		final DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
 		JList listPilotosSelecionados = new JList(
 				defaultListModelPilotosSelecionados);
-		List tempList = new LinkedList();
+		final List tempList = new LinkedList();
 		temporadas.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				// TODO Auto-generated method stub
+				tempList.clear();
+				String temporarada = (String) ControleCampeonato.this.mainFrame
+						.getTemporadas().get(arg0.getItem());
+				tempList.addAll((Collection) circuitosPilotos.get(temporarada));
+				Collections.sort(tempList, new Comparator() {
+
+					@Override
+					public int compare(Object o1, Object o2) {
+						Piloto p1 = (Piloto) o1;
+						Piloto p2 = (Piloto) o2;
+						return p1.getCarro().getNome().compareTo(
+								p2.getCarro().getNome());
+					}
+
+				});
+				defaultListModelPilotosSelecionados.clear();
+				for (Iterator iterator = tempList.iterator(); iterator
+						.hasNext();) {
+					Piloto piloto = (Piloto) iterator.next();
+					defaultListModelPilotosSelecionados.addElement(piloto);
+				}
 
 			}
 		});
-
-		Collections.sort(tempList, new Comparator() {
-
-			@Override
-			public int compare(Object o1, Object o2) {
-				Piloto p1 = (Piloto) o1;
-				Piloto p2 = (Piloto) o2;
-				return p1.getCarro().getNome().compareTo(
-						p2.getCarro().getNome());
-			}
-
-		});
-		for (Iterator iterator = tempList.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			defaultListModelPilotosSelecionados.addElement(piloto);
-		}
-
-		final JPanel painel2nd = new JPanel(new BorderLayout());
+		temporadas.setSelectedIndex(1);
+		temporadas.setSelectedIndex(0);
+		final JPanel panel2nd = new JPanel(new BorderLayout());
 
 		JPanel grid = new JPanel();
 
@@ -227,10 +237,15 @@ public class ControleCampeonato {
 		};
 		scrolllistPilotosSelecionados.setBorder(new TitledBorder(Lang
 				.msg("274")));
-		painel2nd.add(scrolllistPilotosSelecionados, BorderLayout.CENTER);
-		painel2nd.add(grid, BorderLayout.SOUTH);
+		panel2nd.add(scrolllistPilotosSelecionados, BorderLayout.CENTER);
+		panel2nd.add(grid, BorderLayout.SOUTH);
 
-		JOptionPane.showMessageDialog(mainFrame, painel2nd, Lang.msg("276"),
+		JPanel panel3rd = new JPanel();
+		// panel3rd.setLayout(new GridLayout(1, 2));
+		panel3rd.add(panel1st);
+		panel3rd.add(panel2nd);
+
+		JOptionPane.showMessageDialog(mainFrame, panel3rd, Lang.msg("276"),
 				JOptionPane.INFORMATION_MESSAGE);
 
 		campeonato = new Campeonato();
