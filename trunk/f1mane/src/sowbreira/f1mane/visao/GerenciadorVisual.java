@@ -1257,7 +1257,6 @@ public class GerenciadorVisual {
 			default:
 				break;
 			}
-			System.out.println(climaTmp);
 			comboBoxClimaInicial.setSelectedItem(climaTmp);
 			comboBoxClimaInicial.setEnabled(false);
 

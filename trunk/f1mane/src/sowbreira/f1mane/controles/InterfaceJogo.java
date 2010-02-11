@@ -146,7 +146,8 @@ public interface InterfaceJogo {
 
 	public void iniciarJogo() throws Exception;
 
-	public void iniciarJogo(Campeonato campeonato) throws Exception;
+	public void iniciarJogo(ControleCampeonato controleCampeonato)
+			throws Exception;
 
 	public void exibirResultadoFinal();
 
