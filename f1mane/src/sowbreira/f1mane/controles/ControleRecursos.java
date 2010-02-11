@@ -70,15 +70,16 @@ public abstract class ControleRecursos {
 	}
 
 	public void carregaRecursos(String circuitoStr) throws Exception {
-		carregaRecursos(circuitoStr, null);
+		carregaRecursos(circuitoStr, null, null);
 	}
 
-	public void carregaRecursos(String circuitoStr, String temporada)
+	public void carregaRecursos(String circuitoStr, List pilotos, List carros)
 			throws Exception {
-		if (temporada != null) {
-			carros = carregadorRecursos.carregarListaCarros(temporada);
-			pilotos = carregadorRecursos.carregarListaPilotos(temporada);
-			carregadorRecursos.ligarPilotosCarros(pilotos, carros);
+		if (pilotos != null) {
+			this.pilotos = pilotos;
+		}
+		if (carros != null) {
+			this.carros = carros;
 		}
 		ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
 				.getClass().getResourceAsStream(circuitoStr));
