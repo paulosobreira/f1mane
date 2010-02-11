@@ -558,7 +558,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 							gerenciadorVisual.getComboBoxTemporadas()
 									.getSelectedItem());
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					temporada);
+					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
+							.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),

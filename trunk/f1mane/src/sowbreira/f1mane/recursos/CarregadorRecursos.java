@@ -13,11 +13,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -216,6 +218,27 @@ public class CarregadorRecursos {
 	}
 
 	public List carregarListaCarros(String temporarada) throws IOException {
+		if (temporadas.get(temporarada) != null) {
+			List pilotos = (List) temporadas.get(temporarada);
+			Set carros = new HashSet();
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				carros.add(piloto.getCarro());
+			}
+			List carrosL = new ArrayList(carros);
+			Collections.sort(carrosL, new Comparator() {
+
+				@Override
+				public int compare(Object o1, Object o2) {
+					Carro carro1 = (Carro) o1;
+					Carro carro2 = (Carro) o2;
+					return carro1.getNome().compareTo(carro2.getNome());
+				}
+
+			});
+			return carrosL;
+		}
+
 		List retorno = new ArrayList();
 		Properties properties = new Properties();
 

@@ -117,6 +117,8 @@ public class GerenciadorVisual {
 	private long lastPress;
 	private ProgamacaoBox progamacaoBox;
 	private long ultimaChamadaBox;
+	private List listaPilotosCombo;
+	private List listaCarrosCombo;
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
@@ -966,6 +968,14 @@ public class GerenciadorVisual {
 
 	}
 
+	public List getListaPilotosCombo() {
+		return listaPilotosCombo;
+	}
+
+	public List getListaCarrosCombo() {
+		return listaCarrosCombo;
+	}
+
 	private void gerarPainelJogoMulti(JPanel incialPanel) {
 		final CarregadorRecursos carregadorRecursos = new CarregadorRecursos();
 		final Map circuitosPilotos = carregadorRecursos
@@ -974,16 +984,17 @@ public class GerenciadorVisual {
 
 		final DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
 		listPilotosSelecionados = new JList(defaultListModelPilotosSelecionados);
-		final List tempList = new LinkedList();
+		listaPilotosCombo = new ArrayList();
 		comboBoxTemporadas.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				tempList.clear();
+				listaPilotosCombo.clear();
 				String temporarada = (String) carregadorRecursos
 						.getTemporadas().get(arg0.getItem());
-				tempList.addAll((Collection) circuitosPilotos.get(temporarada));
-				Collections.sort(tempList, new Comparator() {
+				listaPilotosCombo.addAll((Collection) circuitosPilotos
+						.get(temporarada));
+				Collections.sort(listaPilotosCombo, new Comparator() {
 
 					@Override
 					public int compare(Object o1, Object o2) {
@@ -995,10 +1006,16 @@ public class GerenciadorVisual {
 
 				});
 				defaultListModelPilotosSelecionados.clear();
-				for (Iterator iterator = tempList.iterator(); iterator
+				for (Iterator iterator = listaPilotosCombo.iterator(); iterator
 						.hasNext();) {
 					Piloto piloto = (Piloto) iterator.next();
 					defaultListModelPilotosSelecionados.addElement(piloto);
+				}
+				try {
+					listaCarrosCombo = carregadorRecursos
+							.carregarListaCarros(temporarada);
+				} catch (IOException e) {
+					Logger.logarExept(e);
 				}
 
 			}
