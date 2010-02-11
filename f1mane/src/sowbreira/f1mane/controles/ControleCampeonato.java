@@ -145,17 +145,6 @@ public class ControleCampeonato {
 		buttonsPanel.add(cima);
 		buttonsPanel.add(baixo);
 
-		JPanel sul = new JPanel();
-		sul.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("272");
-			}
-		});
-		JComboBox temporadas = new JComboBox(carregadorRecursos
-				.getVectorTemps());
-		sul.add(temporadas);
-
 		panel1st.add(buttonsPanel, BorderLayout.CENTER);
 		panel1st.add(new JScrollPane(listCircuitos) {
 			@Override
@@ -170,7 +159,16 @@ public class ControleCampeonato {
 			}
 		}, BorderLayout.EAST);
 
-		panel1st.add(sul, BorderLayout.SOUTH);
+		JPanel temporadasPanel = new JPanel(new GridLayout(1, 2));
+		temporadasPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("272");
+			}
+		});
+		JComboBox temporadas = new JComboBox(carregadorRecursos
+				.getVectorTemps());
+		temporadasPanel.add(temporadas);
 
 		final DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
 		JList listPilotosSelecionados = new JList(
@@ -240,6 +238,7 @@ public class ControleCampeonato {
 		};
 		scrolllistPilotosSelecionados.setBorder(new TitledBorder(Lang
 				.msg("274")));
+		panel2nd.add(temporadasPanel, BorderLayout.NORTH);
 		panel2nd.add(scrolllistPilotosSelecionados, BorderLayout.CENTER);
 		panel2nd.add(grid, BorderLayout.SOUTH);
 
