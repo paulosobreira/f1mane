@@ -553,10 +553,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void iniciarJogo(Campeonato campeonato) throws Exception {
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
-			String temporada = (String) carregadorRecursos.getTemporadas()
-					.get(
-							gerenciadorVisual.getComboBoxTemporadas()
-									.getSelectedItem());
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
 					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
 							.getListaCarrosCombo());
