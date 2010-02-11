@@ -2,12 +2,10 @@ package sowbreira.f1mane.controles;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import sowbreira.f1mane.MainFrame;
-import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
@@ -42,6 +40,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected Integer potencia = null;
 	protected Integer tempoQualificacao = null;
 	protected String circuitoSelecionado = null;
+	protected ControleCampeonato controleCampeonato;
 	private MainFrame mainFrame;
 
 	public ControleJogoLocal(String temporada) throws Exception {
@@ -550,8 +549,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @param campeonato
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#iniciarJogoSingle()
 	 */
-	public void iniciarJogo(Campeonato campeonato) throws Exception {
-		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
+	public void iniciarJogo(ControleCampeonato controleCampeonato)
+			throws Exception {
+		this.controleCampeonato = controleCampeonato;
+		if (gerenciadorVisual.iniciarJogoMulti(controleCampeonato
+				.getCampeonato())) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
 					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
@@ -568,6 +570,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 			controleCorrida.gerarGridLargadaSemQualificacao();
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
 			controleCorrida.iniciarCorrida();
+			if (controleCampeonato != null) {
+				controleCampeonato.iniciaCorrida(circuitoSelecionado);
+			}
 			mainFrame.pack();
 			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
 		}
@@ -645,6 +650,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 				.exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
 		controleCorrida.pararThreads();
 		controleEstatisticas.setConsumidorAtivo(false);
+		if (controleCampeonato != null) {
+			controleCampeonato.processaFimCorrida(getPilotos());
+		}
 		if (!VALENDO) {
 			for (int i = 0; i < pilotos.size(); i++) {
 				Piloto piloto = (Piloto) pilotos.get(i);

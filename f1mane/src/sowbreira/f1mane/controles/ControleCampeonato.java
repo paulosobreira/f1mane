@@ -38,7 +38,10 @@ import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.CorridaCampeonato;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCampeonato;
@@ -52,6 +55,8 @@ public class ControleCampeonato {
 
 	private CarregadorRecursos carregadorRecursos;
 
+	private String circuitoJogando;
+
 	public ControleCampeonato(MainFrame mainFrame) {
 		carregarCircuitos();
 		this.mainFrame = mainFrame;
@@ -59,9 +64,15 @@ public class ControleCampeonato {
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
 
+	public Campeonato getCampeonato() {
+		return campeonato;
+	}
+
 	protected Map circuitos = new HashMap();
 
 	protected Map circuitosPilotos = new HashMap();
+
+	private long tempoInicio;
 
 	protected void carregarCircuitos() {
 		final Properties properties = new Properties();
@@ -272,7 +283,7 @@ public class ControleCampeonato {
 
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
 
-		new PainelCampeonato(campeonato, mainFrame);
+		new PainelCampeonato(this, mainFrame);
 
 	}
 
@@ -298,7 +309,7 @@ public class ControleCampeonato {
 					.msg("283"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
-		new PainelCampeonato(campeonato, mainFrame);
+		new PainelCampeonato(this, mainFrame);
 	}
 
 	public void dadosPersistencia() {
@@ -318,5 +329,61 @@ public class ControleCampeonato {
 			JOptionPane.showMessageDialog(mainFrame, xmlPane, Lang.msg("281"),
 					JOptionPane.INFORMATION_MESSAGE);
 		}
+	}
+
+	public void processaFimCorrida(List pilotos) {
+		List corridaCampeonatoDados = new ArrayList();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto p = (Piloto) iterator.next();
+			CorridaCampeonato corridaCampeonato = new CorridaCampeonato();
+			corridaCampeonato.setTempoInicio(tempoInicio);
+			corridaCampeonato.setTempoFim(System.currentTimeMillis());
+			corridaCampeonato.setPosicao(p.getPosicao());
+			corridaCampeonato.setPiloto(p.getNome());
+			corridaCampeonato.setCarro(p.getCarro().getNome());
+			corridaCampeonato.setTpPneu(p.getCarro().getTipoPneu());
+			corridaCampeonato.setNumVoltas(p.getNumeroVolta());
+			Volta volta = p.obterVoltaMaisRapida();
+			corridaCampeonato.setVoltaMaisRapida(volta
+					.obterTempoVoltaFormatado());
+			corridaCampeonato.setQtdeParadasBox(p.getQtdeParadasBox());
+			corridaCampeonato.setDesgastePneus(String.valueOf(p.getCarro()
+					.porcentagemDesgastePeneus()
+					+ "%"));
+			corridaCampeonato.setCombustivelRestante(String.valueOf(p
+					.getCarro().porcentagemCombustivel()
+					+ "%"));
+			corridaCampeonato.setDesgasteMotor(String.valueOf(p.getCarro()
+					.porcentagemDesgasteMotor()
+					+ "%"));
+
+			if (p.getPosicao() == 1) {
+				corridaCampeonato.setPontos(10);
+			} else if (p.getPosicao() == 2) {
+				corridaCampeonato.setPontos(8);
+			} else if (p.getPosicao() == 3) {
+				corridaCampeonato.setPontos(6);
+			} else if (p.getPosicao() == 4) {
+				corridaCampeonato.setPontos(5);
+			} else if (p.getPosicao() == 5) {
+				corridaCampeonato.setPontos(4);
+			} else if (p.getPosicao() == 6) {
+				corridaCampeonato.setPontos(3);
+			} else if (p.getPosicao() == 7) {
+				corridaCampeonato.setPontos(2);
+			} else if (p.getPosicao() == 8) {
+				corridaCampeonato.setPontos(1);
+			} else {
+				corridaCampeonato.setPontos(0);
+			}
+			corridaCampeonatoDados.add(corridaCampeonato);
+		}
+		campeonato.getDadosCorridas().put(circuitoJogando,
+				corridaCampeonatoDados);
+	}
+
+	public void iniciaCorrida(String circuito) {
+		circuitoJogando = circuito;
+		tempoInicio = System.currentTimeMillis();
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -676,7 +677,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void iniciarJogo(Campeonato campeonato) throws Exception {
+	public void iniciarJogo(ControleCampeonato controleCampeonato) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
