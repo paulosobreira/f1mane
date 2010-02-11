@@ -1205,6 +1205,9 @@ public class GerenciadorVisual {
 		gerarPainelJogoMulti(painelInicio);
 		spinnerQtdeVoltas.setValue(new Integer(22));
 		if (campeonato != null) {
+			comboBoxTemporadas.setSelectedItem(campeonato.getTemporada());
+			comboBoxTemporadas.setEnabled(false);
+
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
 			comboBoxNivelCorrida.setSelectedItem(Lang
