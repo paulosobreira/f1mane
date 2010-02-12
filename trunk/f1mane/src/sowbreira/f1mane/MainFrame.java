@@ -119,7 +119,7 @@ public class MainFrame extends JFrame {
 		gerarMenusidiomas(menuIdiomas);
 		getContentPane().setLayout(null);
 		setSize(800, 630);
-		setTitle("F1-Engineer 2.0");
+		setTitle("F1-MANE 2.2 MANager & Engineer");
 	}
 
 	private void gerarMenusCampeonato(JMenu menu) {
@@ -298,9 +298,8 @@ public class MainFrame extends JFrame {
 		sobre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String msg = Lang.msg("184")
-						+ " Paulo Sobreira \n sowbreira@yahoo.com.br \n"
-						+ "http://br.geocities.com/sowbreira/ \n"
-						+ "Iniciado em Maio de 2007";
+						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
+						+ "http://sowbreira.appspot.com \n" + "2007-2010";
 				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
 						.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 			}

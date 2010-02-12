@@ -2,6 +2,8 @@ package sowbreira.f1mane;
 
 import javax.swing.JApplet;
 
+import sowbreira.f1mane.recursos.idiomas.Lang;
+
 import br.nnpe.Logger;
 
 /**
@@ -17,8 +19,13 @@ public class F1ManeApplet extends JApplet {
 
 	private void initComponents() {
 		jPanel1 = new javax.swing.JPanel();
-		jButton1 = new javax.swing.JButton();
-		jButton1.setText("Iniciar Jogo");
+		jButton1 = new javax.swing.JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("297");
+			}
+		};
+		jButton1.setText("Iniciar Janela Jogo");
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
