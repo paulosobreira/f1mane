@@ -155,9 +155,19 @@ public class ControleCampeonato {
 		buttonsPanel.add(dirAll);
 		buttonsPanel.add(esqAll);
 
-		JButton cima = new JButton("Cima");
+		JButton cima = new JButton("Cima"){
+			@Override
+			public String getText() {
+				return Lang.msg("287");
+			}
+		};
 		cima.setEnabled(false);
-		JButton baixo = new JButton("Baixo");
+		JButton baixo = new JButton("Baixo"){
+			@Override
+			public String getText() {
+				return Lang.msg("288");
+			}
+		};
 		baixo.setEnabled(false);
 		buttonsPanel.add(cima);
 		buttonsPanel.add(baixo);
