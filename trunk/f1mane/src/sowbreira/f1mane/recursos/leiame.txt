@@ -1,7 +1,7 @@
-			 F1-Mane por Paulo Sobreira 
- - F1-Mane é um jogo de gerenciamento de corrida. 
- - Os comandos do jogador consistem em a enviar mensagens ao piloto de como  
- guiar ajustes telemétricos do carro na corrida. 
+			 F1-MANE por Paulo Sobreira 
+ - F1-MANE (MANager & Engineer) é um jogo de gerenciamento e engenharia de corrida . 
+ - Os comandos do jogador consistem em a enviar mensagens a 1 ou mais pilotos de 
+ como guiar e fazer ajustes telemétricos do carro na corrida. 
  - É possível escolher estratégia de box e muda-lá a qualquer momento na corrida.
  - Ao escolher iniciar o jogo o jogador poderá configurar sua corrida escolhendo 
  varias opções de como numero de voltas e tipo de clima.
@@ -12,6 +12,9 @@
  - Qualquer sugestão : sowbreira@gmail.com.
 
 Histórico de versões:
+2.2
+  - Seleção de 1 ou mais pilotos(Para poder controlar uma equipe ou mais).
+  - Modo campeonato (Sigleplayer).
 2.0
   - Modo de progamação de paradas (Auto Box).
   - Correções nos consumo de motor e pneus.
@@ -84,7 +87,20 @@ trava pneu.
   - Ajustes nas habilidade de pilotos.
   - Ajustes nas potencias de carros.
   
-Dicas:
+Controles:
+
+F1 - Giro Baixo Modo Economia de Motor e Combustivel
+F2 - Giro Normal Modo Normal de Motor e Combustivel
+F3 - Giro Alto Modo Extremo de Motor e Combustivel
+F4 - Aterna Modo de Pilotagem (Normal/Agressivo)
+F5 - Piloto em Modo Calteloso.
+F6 - Piloto Normal.
+F7 - Piloto em Modo Agressivo.
+F11 - Programação de Box Automatico.
+F12 - Alterna Modo Box.
+Esc - Remove Imforações extras da tela.
+  
+Dicas para Jogar Sem Utilizar Internet e Navegador:
  - Para quem não conseguiu rodar o jogo como aplicativo local
 (descompactando o .jar) pode tentar colocar isso no inicio do rodar.bat
     set CLASS_PATH = ""
@@ -97,7 +113,7 @@ pasta bin\sowbreira\f1mane\recursos atualizar o
 bin\sowbreira\f1mane\recursos\carros.properties e iniciar o 
 jogo(rodar.bat) a psita nova deve esta em circuitos.		
 
-Versão online (paddock.war):
+Versão online, Montar um Servidor (paddock.war):
  - Existe uma versão jogavel de F1-Mane Online mas não consegui 
 hospedar em nenhum lugar com boa velocidade... tentei na casa de uns 
 amigos mas não posso dilvugar aqui pq eles não se comprometeram de 
@@ -111,5 +127,4 @@ e tb o java mais novo mais o servidor de aplicação Tomcat:
 http://tomcat.apache.org/download-55.cgi que depois de baixado e 
 instalado deve-se colocar o arquivo paddock.war dentro da pasta:
 (unidade):\(dir do tomcat)\webapps então acessar o jogo pelo caminho:
-http://(seu ip):8080/paddock/
-		
+http://(seu ip):8080/paddock/		
