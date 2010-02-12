@@ -150,9 +150,11 @@ public class PainelCampeonato extends JPanel {
 
 				switch (columnIndex) {
 				case 0:
-					return "Equipe";
+					/* "Equipe" */
+					return Lang.msg("277");
 				case 1:
-					return "Pontos";
+					/* "Pontos" */
+					return Lang.msg("161");
 				default:
 					return "";
 				}
@@ -191,6 +193,8 @@ public class PainelCampeonato extends JPanel {
 					return pilotosPontosCampeonato.getNome();
 				case 1:
 					return new Integer(pilotosPontosCampeonato.getPontos());
+				case 2:
+					return new Integer(0);
 				default:
 					return "";
 				}
@@ -209,7 +213,7 @@ public class PainelCampeonato extends JPanel {
 
 			@Override
 			public int getColumnCount() {
-				return 2;
+				return 3;
 			}
 
 			@Override
@@ -217,9 +221,14 @@ public class PainelCampeonato extends JPanel {
 
 				switch (columnIndex) {
 				case 0:
-					return "Piloto";
+					/* Piloto */
+					return Lang.msg("153");
 				case 1:
-					return "Pontos";
+					/* "Pontos" */
+					return Lang.msg("161");
+				case 2:
+					/* "Vitorias" */
+					return Lang.msg("289");
 				default:
 					return "";
 				}
@@ -304,13 +313,17 @@ public class PainelCampeonato extends JPanel {
 
 				switch (columnIndex) {
 				case 0:
-					return "Corrida";
+					/* Corrida */
+					return Lang.msg("290");
 				case 1:
-					return "Inicio";
+					/* Inicio */
+					return Lang.msg("155");
 				case 2:
-					return "Fim";
+					/* Fim */
+					return Lang.msg("156");
 				case 3:
-					return "Vencedor";
+					/* Vencedor */
+					return Lang.msg("291");
 				default:
 					return "";
 				}
