@@ -48,6 +48,7 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCampeonato;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 public class ControleCampeonato {
 
@@ -284,7 +285,6 @@ public class ControleCampeonato {
 		JOptionPane.showMessageDialog(mainFrame, panel3rd, Lang.msg("276"),
 				JOptionPane.INFORMATION_MESSAGE);
 
-		campeonato = new Campeonato();
 		List corridas = new ArrayList();
 		for (int i = 0; i < defaultListModelCircuitosSelecionados.getSize(); i++) {
 			corridas.add(defaultListModelCircuitosSelecionados.get(i));
@@ -295,17 +295,25 @@ public class ControleCampeonato {
 		for (int i = 0; i < pilotosSel.length; i++) {
 			pilotos.add(pilotosSel[i].toString());
 		}
+
+		if (corridas.isEmpty()) {
+			JOptionPane.showMessageDialog(mainFrame, Lang.msg("296"), Lang
+					.msg("296"), JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
+		if (qtdeVolta == null || qtdeVolta.intValue() < 22) {
+			JOptionPane.showMessageDialog(mainFrame, Lang.msg("110"), Lang
+					.msg("110"), JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		campeonato = new Campeonato();
 		campeonato.setCorridas(corridas);
-
 		campeonato.setPilotos(pilotos);
-
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
-
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
 				.getSelectedItem()));
-
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
-
 		new PainelCampeonato(this, mainFrame);
 
 	}
@@ -318,6 +326,9 @@ public class ControleCampeonato {
 			JOptionPane.showMessageDialog(mainFrame, xmlPane, Lang.msg("281"),
 					JOptionPane.INFORMATION_MESSAGE);
 
+			if (Util.isNullOrEmpty(xmlArea.getText())) {
+				return;
+			}
 			ByteArrayInputStream bin = new ByteArrayInputStream(xmlArea
 					.getText().getBytes());
 			XMLDecoder xmlDecoder = new XMLDecoder(bin);
