@@ -160,9 +160,22 @@ public class MainFrame extends JFrame {
 				controleCampeonato.dadosPersistencia();
 			}
 		});
+		JMenuItem proxCorrida = new JMenuItem("Proxima Corrida") {
+			public String getText() {
+				return Lang.msg("286");
+			}
+
+		};
+		proxCorrida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controleCampeonato.proximaCorrida();
+			}
+		});
+
 		menu.add(criarCampeonato);
 		menu.add(continuarCampeonato);
 		menu.add(dadosPersistencia);
+		menu.add(proxCorrida);
 
 	}
 

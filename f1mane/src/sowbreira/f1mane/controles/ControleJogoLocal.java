@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
@@ -552,8 +553,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void iniciarJogo(ControleCampeonato controleCampeonato)
 			throws Exception {
 		this.controleCampeonato = controleCampeonato;
-		if (gerenciadorVisual.iniciarJogoMulti(controleCampeonato
-				.getCampeonato())) {
+		Campeonato campeonato = null;
+		if (controleCampeonato != null)
+			campeonato = controleCampeonato.getCampeonato();
+		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
 					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual

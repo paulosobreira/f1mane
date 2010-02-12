@@ -1269,7 +1269,18 @@ public class GerenciadorVisual {
 		Object[] selec = listPilotosSelecionados.getSelectedValues();
 
 		for (int i = 0; i < selec.length; i++) {
-			JPanel painelJogSel = new JPanel(new GridLayout(6, 2));
+			JPanel painelJogSel = new JPanel(new GridLayout(7, 2));
+			painelJogSel.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("123");
+				}
+			});
+			Clima clima = (Clima) comboBoxClimaInicial.getSelectedItem();
+			ImageIcon icon = new ImageIcon(CarregadorRecursos
+					.carregarImagem("clima/" + clima.getClima()));
+			painelJogSel.add(new JLabel(icon));
+
 			JTextField nomeJogador = new JTextField();
 			painelJogSel.add(new JLabel() {
 				@Override

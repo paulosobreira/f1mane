@@ -1,6 +1,7 @@
 package sowbreira.f1mane.entidades;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,14 @@ public class Campeonato {
 	}
 
 	public String getCircuitoVez() {
-		return corridas.get(0).toString();
+		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+			String circuito = (String) iterator.next();
+			if (dadosCorridas.get(circuito) == null) {
+				return circuito;
+			}
+		}
+		return null;
+
 	}
 
 }

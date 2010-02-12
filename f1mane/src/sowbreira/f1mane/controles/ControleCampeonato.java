@@ -260,7 +260,6 @@ public class ControleCampeonato {
 		panel2nd.add(grid, BorderLayout.SOUTH);
 
 		JPanel panel3rd = new JPanel();
-		// panel3rd.setLayout(new GridLayout(1, 2));
 		panel3rd.add(panel1st);
 		panel3rd.add(panel2nd);
 
@@ -386,6 +385,7 @@ public class ControleCampeonato {
 		}
 		campeonato.getDadosCorridas().put(circuitoJogando,
 				corridaCampeonatoDados);
+		new PainelCampeonato(this, mainFrame);
 	}
 
 	public void iniciaCorrida(String circuito) {
@@ -400,6 +400,9 @@ public class ControleCampeonato {
 		}
 		String circuito = (String) campeonato.getCorridas().get(0);
 		List dadosCorridas = (List) campeonato.getDadosCorridas().get(circuito);
+		if (dadosCorridas == null) {
+			return;
+		}
 		for (Iterator iterator = dadosCorridas.iterator(); iterator.hasNext();) {
 			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
 					.next();
@@ -428,6 +431,9 @@ public class ControleCampeonato {
 			String corrida = (String) iterator.next();
 			List dadosCorridas = (List) campeonato.getDadosCorridas().get(
 					corrida);
+			if (dadosCorridas == null) {
+				continue;
+			}
 			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
 					.hasNext();) {
 				CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator2
@@ -451,6 +457,9 @@ public class ControleCampeonato {
 		}
 		String circuito = (String) campeonato.getCorridas().get(0);
 		List dadosCorridas = (List) campeonato.getDadosCorridas().get(circuito);
+		if (dadosCorridas == null) {
+			return;
+		}
 		for (Iterator iterator = dadosCorridas.iterator(); iterator.hasNext();) {
 			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
 					.next();
@@ -481,6 +490,9 @@ public class ControleCampeonato {
 			String corrida = (String) iterator.next();
 			List dadosCorridas = (List) campeonato.getDadosCorridas().get(
 					corrida);
+			if (dadosCorridas == null) {
+				continue;
+			}
 			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
 					.hasNext();) {
 				CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator2
@@ -491,5 +503,11 @@ public class ControleCampeonato {
 			}
 		}
 		return pontos;
+	}
+
+	public void proximaCorrida() {
+		if (campeonato != null)
+			new PainelCampeonato(this, mainFrame);
+
 	}
 }
