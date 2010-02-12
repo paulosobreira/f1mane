@@ -67,9 +67,9 @@ public class PainelCampeonato extends JPanel {
 
 		JPanel dadosCampeonato = gerarPanelDadosCampeonato();
 		JPanel listJogadoresSelecionados = gerarPanelPilotosSelecionados();
-		JPanel criacao = new JPanel(new GridLayout(1, 2));
-		criacao.add(dadosCampeonato);
-		criacao.add(listJogadoresSelecionados);
+		JPanel criacao = new JPanel(new BorderLayout());
+		criacao.add(dadosCampeonato, BorderLayout.WEST);
+		criacao.add(listJogadoresSelecionados, BorderLayout.CENTER);
 
 		JPanel corridas = gerarPanelCorridas();
 
@@ -85,7 +85,12 @@ public class PainelCampeonato extends JPanel {
 		panelBorder.add(grid, BorderLayout.EAST);
 		this.add(panelBorder, BorderLayout.CENTER);
 		JPanel label = new JPanel();
-		label.add(new JLabel("Jogar a proxima corrida?"));
+		label.add(new JLabel("Jogar a proxima corrida?") {
+			@Override
+			public String getText() {
+				return Lang.msg("292");
+			}
+		});
 		this.add(label, BorderLayout.SOUTH);
 		int ret = JOptionPane.showConfirmDialog(mainFrame, this, Lang
 				.msg("286"), JOptionPane.YES_NO_OPTION,
@@ -93,8 +98,7 @@ public class PainelCampeonato extends JPanel {
 		if (ret == JOptionPane.YES_OPTION) {
 			try {
 				if (campeonato.getCircuitoVez() == null) {
-					JOptionPane.showMessageDialog(mainFrame,
-							"Campeonato Concluido");
+					JOptionPane.showMessageDialog(mainFrame, Lang.msg("293"));
 				} else {
 					controleJogo = new ControleJogoLocal("t"
 							+ PainelCampeonato.this.campeonato.getTemporada());
@@ -169,7 +173,12 @@ public class PainelCampeonato extends JPanel {
 			}
 		};
 		JPanel jPanel = new JPanel();
-		jPanel.setBorder(new TitledBorder(" "));
+		jPanel.setBorder(new TitledBorder("Construtores ") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("222");
+			}
+		});
 		jPanel.add(jScrollPane);
 		return jPanel;
 	}
@@ -243,7 +252,12 @@ public class PainelCampeonato extends JPanel {
 			}
 		};
 		JPanel jPanel = new JPanel();
-		jPanel.setBorder(new TitledBorder(" "));
+		jPanel.setBorder(new TitledBorder("Pilotos ") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("294");
+			}
+		});
 		jPanel.add(jScrollPane);
 		return jPanel;
 	}
@@ -338,7 +352,12 @@ public class PainelCampeonato extends JPanel {
 			}
 		};
 		JPanel jPanel = new JPanel();
-		jPanel.setBorder(new TitledBorder(" "));
+		jPanel.setBorder(new TitledBorder("Campeonato") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("268");
+			}
+		});
 		jPanel.add(jScrollPane);
 		return jPanel;
 	}
@@ -353,13 +372,20 @@ public class PainelCampeonato extends JPanel {
 		}
 		JList jogadores = new JList(jogListModel);
 		jogadores.setEnabled(false);
+		jogadores.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		JScrollPane jogPane = new JScrollPane(jogadores) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(200, 50);
+				return new Dimension(450, 80);
 			}
 		};
-		jogPane.setBorder(new TitledBorder(Lang.msg("")));
+		jogPane.setAlignmentX(LEFT_ALIGNMENT);
+		jogPane.setBorder(new TitledBorder("Campeonato") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("295");
+			}
+		});
 		JPanel p2 = new JPanel();
 		p2.add(jogPane, BorderLayout.CENTER);
 		return p2;
