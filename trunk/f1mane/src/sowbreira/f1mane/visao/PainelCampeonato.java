@@ -81,8 +81,8 @@ public class PainelCampeonato extends JPanel {
 
 		JPanel panelBorder = new JPanel(new BorderLayout());
 		panelBorder.add(criacao, BorderLayout.SOUTH);
-		panelBorder.add(corridas, BorderLayout.CENTER);
-		panelBorder.add(grid, BorderLayout.EAST);
+		panelBorder.add(corridas, BorderLayout.NORTH);
+		panelBorder.add(grid, BorderLayout.CENTER);
 		this.add(panelBorder, BorderLayout.CENTER);
 		JPanel label = new JPanel();
 		label.add(new JLabel("Jogar a proxima corrida?") {
@@ -169,7 +169,7 @@ public class PainelCampeonato extends JPanel {
 		JScrollPane jScrollPane = new JScrollPane(contrutoresTable) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(150, 200);
+				return new Dimension(300, 150);
 			}
 		};
 		JPanel jPanel = new JPanel();
@@ -203,7 +203,7 @@ public class PainelCampeonato extends JPanel {
 				case 1:
 					return new Integer(pilotosPontosCampeonato.getPontos());
 				case 2:
-					return new Integer(0);
+					return new Integer(pilotosPontosCampeonato.getVitorias());
 				default:
 					return "";
 				}
@@ -248,7 +248,7 @@ public class PainelCampeonato extends JPanel {
 		JScrollPane jScrollPane = new JScrollPane(pilotosTable) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(150, 200);
+				return new Dimension(300, 150);
 			}
 		};
 		JPanel jPanel = new JPanel();
@@ -299,7 +299,7 @@ public class PainelCampeonato extends JPanel {
 						return "";
 					}
 					return dateFormat.format(new Date(corridaCampeonato
-							.getTempoInicio()));
+							.getTempoFim()));
 				case 3:
 					if (corridaCampeonato == null) {
 						return "";
@@ -348,7 +348,7 @@ public class PainelCampeonato extends JPanel {
 		JScrollPane jScrollPane = new JScrollPane(corridasTable) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(300, 200);
+				return new Dimension(600, 150);
 			}
 		};
 		JPanel jPanel = new JPanel();

@@ -139,30 +139,38 @@ public class ControleCampeonato {
 		JButton esqAll = new JButton("<<");
 		esqAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				int size = defaultListModelCircuitosSelecionados.size();
+				for (int i = 0; i < size; i++) {
+					defaultListModelCircuitos
+							.addElement(defaultListModelCircuitosSelecionados
+									.remove(0));
+				}
 			}
 
 		});
-		esqAll.setEnabled(false);
 		JButton dirAll = new JButton(">>");
 		dirAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				int size = defaultListModelCircuitos.size();
+				for (int i = 0; i < size; i++) {
+					defaultListModelCircuitosSelecionados
+							.addElement(defaultListModelCircuitos.remove(0));
+				}
 			}
-
 		});
-		dirAll.setEnabled(false);
 		buttonsPanel.add(dir);
 		buttonsPanel.add(esq);
 		buttonsPanel.add(dirAll);
 		buttonsPanel.add(esqAll);
 
-		JButton cima = new JButton("Cima"){
+		JButton cima = new JButton("Cima") {
 			@Override
 			public String getText() {
 				return Lang.msg("287");
 			}
 		};
 		cima.setEnabled(false);
-		JButton baixo = new JButton("Baixo"){
+		JButton baixo = new JButton("Baixo") {
 			@Override
 			public String getText() {
 				return Lang.msg("288");
@@ -426,8 +434,24 @@ public class ControleCampeonato {
 			pilotosPontosCampeonato
 					.setPontos(calculaPontosPiloto(pilotosPontosCampeonato
 							.getNome()));
-
+			pilotosPontosCampeonato
+					.setVitorias(computaVitorias(pilotosPontosCampeonato
+							.getNome()));
 		}
+		Collections.sort(pilotosPontos, new Comparator() {
+			public int compare(Object o1, Object o2) {
+				PilotosPontosCampeonato p1 = (PilotosPontosCampeonato) o1;
+				PilotosPontosCampeonato p2 = (PilotosPontosCampeonato) o2;
+				if (p1.getPontos() != p2.getPontos()) {
+					return new Integer(p2.getPontos()).compareTo(new Integer(p1
+							.getPontos()));
+				} else {
+					return new Integer(p2.getVitorias()).compareTo(new Integer(
+							p1.getVitorias()));
+				}
+			}
+		});
+
 	}
 
 	public List getPilotosPontos() {
@@ -490,6 +514,14 @@ public class ControleCampeonato {
 							.getNomeEquipe()));
 
 		}
+		Collections.sort(contrutoresPontos, new Comparator() {
+			public int compare(Object o1, Object o2) {
+				ConstrutoresPontosCampeonato c1 = (ConstrutoresPontosCampeonato) o1;
+				ConstrutoresPontosCampeonato c2 = (ConstrutoresPontosCampeonato) o2;
+				return new Integer(c2.getPontos()).compareTo(new Integer(c1
+						.getPontos()));
+			}
+		});
 
 	}
 
@@ -519,5 +551,28 @@ public class ControleCampeonato {
 		if (campeonato != null)
 			new PainelCampeonato(this, mainFrame);
 
+	}
+
+	public Integer computaVitorias(String nome) {
+		int vitorias = 0;
+		List corridas = campeonato.getCorridas();
+		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+			String corrida = (String) iterator.next();
+			List dadosCorridas = (List) campeonato.getDadosCorridas().get(
+					corrida);
+			if (dadosCorridas == null) {
+				continue;
+			}
+			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
+					.hasNext();) {
+				CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator2
+						.next();
+				if (nome.equals(corridaCampeonato.getPiloto())
+						&& corridaCampeonato.getPosicao() == 1) {
+					vitorias += 1;
+				}
+			}
+		}
+		return vitorias;
 	}
 }

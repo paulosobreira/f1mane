@@ -5,6 +5,16 @@ public class PilotosPontosCampeonato {
 	private String nome;
 	private int pontos;
 
+	private int vitorias;
+
+	public int getVitorias() {
+		return vitorias;
+	}
+
+	public void setVitorias(int vitorias) {
+		this.vitorias = vitorias;
+	}
+
 	public String getNome() {
 		return nome;
 	}
