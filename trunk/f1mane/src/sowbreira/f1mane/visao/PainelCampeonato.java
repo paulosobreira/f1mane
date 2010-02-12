@@ -1,6 +1,7 @@
 package sowbreira.f1mane.visao;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,30 +60,47 @@ public class PainelCampeonato extends JPanel {
 		super();
 		this.controleCampeonato = controleCampeonato;
 		this.campeonato = controleCampeonato.getCampeonato();
+		controleCampeonato.geraListaPilotosPontos();
+		controleCampeonato.geraListaContrutoresPontos();
 		this.mainFrame = mainFrame;
 		this.setLayout(new BorderLayout());
 
-		JPanel p1 = gerarPanelDadosCampeonato();
-		JPanel p2 = gerarPanelPilotosSelecionados();
-		JPanel p3 = gerarPanelCorridas();
-		JPanel p4 = gerarPanelPilotos();
-		JPanel p5 = gerarPanelConstrutores();
-		this.add(p1, BorderLayout.WEST);
-		this.add(p2, BorderLayout.SOUTH);
-		this.add(p3, BorderLayout.EAST);
-		JPanel pPontos = new JPanel();
-		pPontos.add(p4);
-		pPontos.add(p5);
-		this.add(pPontos, BorderLayout.CENTER);
+		JPanel dadosCampeonato = gerarPanelDadosCampeonato();
+		JPanel listJogadoresSelecionados = gerarPanelPilotosSelecionados();
+		JPanel criacao = new JPanel(new GridLayout(1, 2));
+		criacao.add(dadosCampeonato);
+		criacao.add(listJogadoresSelecionados);
+
+		JPanel corridas = gerarPanelCorridas();
+
+		JPanel ptsPilotos = gerarPanelPilotos();
+		JPanel ptsConstrutores = gerarPanelConstrutores();
+		JPanel grid = new JPanel(new GridLayout(1, 2));
+		grid.add(ptsPilotos);
+		grid.add(ptsConstrutores);
+
+		JPanel panelBorder = new JPanel(new BorderLayout());
+		panelBorder.add(criacao, BorderLayout.SOUTH);
+		panelBorder.add(corridas, BorderLayout.CENTER);
+		panelBorder.add(grid, BorderLayout.EAST);
+		this.add(panelBorder, BorderLayout.CENTER);
+		JPanel label = new JPanel();
+		label.add(new JLabel("Jogar a proxima corrida?"));
+		this.add(label, BorderLayout.SOUTH);
 		int ret = JOptionPane.showConfirmDialog(mainFrame, this, Lang
 				.msg("286"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (ret == JOptionPane.YES_OPTION) {
 			try {
-				controleJogo = new ControleJogoLocal("t"
-						+ PainelCampeonato.this.campeonato.getTemporada());
-				controleJogo.setMainFrame(PainelCampeonato.this.mainFrame);
-				controleJogo.iniciarJogo(controleCampeonato);
+				if (campeonato.getCircuitoVez() == null) {
+					JOptionPane.showMessageDialog(mainFrame,
+							"Campeonato Concluido");
+				} else {
+					controleJogo = new ControleJogoLocal("t"
+							+ PainelCampeonato.this.campeonato.getTemporada());
+					controleJogo.setMainFrame(PainelCampeonato.this.mainFrame);
+					controleJogo.iniciarJogo(controleCampeonato);
+				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
@@ -90,12 +108,16 @@ public class PainelCampeonato extends JPanel {
 	}
 
 	private JPanel gerarPanelConstrutores() {
-		controleCampeonato.geraListaContrutoresPontos();
+
 		contrutoresTable = new JTable();
 		contrutoresTableModel = new AbstractTableModel() {
 
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
+				if (controleCampeonato.getContrutoresPontos() == null
+						|| controleCampeonato.getContrutoresPontos().isEmpty()) {
+					return "";
+				}
 				ConstrutoresPontosCampeonato construtoresPontosCampeonato = (ConstrutoresPontosCampeonato) controleCampeonato
 						.getContrutoresPontos().get(rowIndex);
 				switch (columnIndex) {
@@ -111,6 +133,10 @@ public class PainelCampeonato extends JPanel {
 
 			@Override
 			public int getRowCount() {
+				if (controleCampeonato.getContrutoresPontos() == null
+						|| controleCampeonato.getContrutoresPontos().isEmpty()) {
+					return 0;
+				}
 				return controleCampeonato.getContrutoresPontos().size();
 			}
 
@@ -134,19 +160,30 @@ public class PainelCampeonato extends JPanel {
 			}
 		};
 		contrutoresTable.setModel(contrutoresTableModel);
-		JScrollPane jScrollPane = new JScrollPane(contrutoresTable);
+		JScrollPane jScrollPane = new JScrollPane(contrutoresTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(150, 200);
+			}
+		};
 		JPanel jPanel = new JPanel();
+		jPanel.setBorder(new TitledBorder(" "));
 		jPanel.add(jScrollPane);
 		return jPanel;
 	}
 
 	private JPanel gerarPanelPilotos() {
-		controleCampeonato.geraListaPilotosPontos();
-		pilotosTable = new JTable();
+
+		pilotosTable = new JTable() {
+		};
 		pilotosTableModel = new AbstractTableModel() {
 
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
+				if (controleCampeonato.getPilotosPontos() == null
+						|| controleCampeonato.getPilotosPontos().isEmpty()) {
+					return "";
+				}
 				PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) controleCampeonato
 						.getPilotosPontos().get(rowIndex);
 				switch (columnIndex) {
@@ -162,6 +199,11 @@ public class PainelCampeonato extends JPanel {
 
 			@Override
 			public int getRowCount() {
+				if (controleCampeonato.getPilotosPontos() == null
+						|| controleCampeonato.getPilotosPontos().isEmpty()) {
+					return 0;
+				}
+
 				return controleCampeonato.getPilotosPontos().size();
 			}
 
@@ -185,14 +227,21 @@ public class PainelCampeonato extends JPanel {
 			}
 		};
 		pilotosTable.setModel(pilotosTableModel);
-		JScrollPane jScrollPane = new JScrollPane(pilotosTable);
+		JScrollPane jScrollPane = new JScrollPane(pilotosTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(150, 200);
+			}
+		};
 		JPanel jPanel = new JPanel();
+		jPanel.setBorder(new TitledBorder(" "));
 		jPanel.add(jScrollPane);
 		return jPanel;
 	}
 
 	private JPanel gerarPanelCorridas() {
-		corridasTable = new JTable();
+		corridasTable = new JTable() {
+		};
 		corridasTableModel = new AbstractTableModel() {
 
 			@Override
@@ -201,14 +250,15 @@ public class PainelCampeonato extends JPanel {
 						.getCorridas().get(rowIndex);
 				List dadosCorridas = (List) controleCampeonato.getCampeonato()
 						.getDadosCorridas().get(circuito);
-
 				CorridaCampeonato corridaCampeonato = null;
-				for (Iterator iterator = dadosCorridas.iterator(); iterator
-						.hasNext();) {
-					CorridaCampeonato ccTemp = (CorridaCampeonato) iterator
-							.next();
-					if (ccTemp.getPosicao() == 1) {
-						corridaCampeonato = ccTemp;
+				if (dadosCorridas != null) {
+					for (Iterator iterator = dadosCorridas.iterator(); iterator
+							.hasNext();) {
+						CorridaCampeonato ccTemp = (CorridaCampeonato) iterator
+								.next();
+						if (ccTemp.getPosicao() == 1) {
+							corridaCampeonato = ccTemp;
+						}
 					}
 				}
 
@@ -216,12 +266,21 @@ public class PainelCampeonato extends JPanel {
 				case 0:
 					return circuito;
 				case 1:
+					if (corridaCampeonato == null) {
+						return "";
+					}
 					return dateFormat.format(new Date(corridaCampeonato
 							.getTempoInicio()));
 				case 2:
+					if (corridaCampeonato == null) {
+						return "";
+					}
 					return dateFormat.format(new Date(corridaCampeonato
 							.getTempoInicio()));
 				case 3:
+					if (corridaCampeonato == null) {
+						return "";
+					}
 					return corridaCampeonato.getPiloto();
 
 				default:
@@ -259,8 +318,14 @@ public class PainelCampeonato extends JPanel {
 			}
 		};
 		corridasTable.setModel(corridasTableModel);
-		JScrollPane jScrollPane = new JScrollPane(corridasTable);
+		JScrollPane jScrollPane = new JScrollPane(corridasTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(300, 200);
+			}
+		};
 		JPanel jPanel = new JPanel();
+		jPanel.setBorder(new TitledBorder(" "));
 		jPanel.add(jScrollPane);
 		return jPanel;
 	}
@@ -275,7 +340,12 @@ public class PainelCampeonato extends JPanel {
 		}
 		JList jogadores = new JList(jogListModel);
 		jogadores.setEnabled(false);
-		JScrollPane jogPane = new JScrollPane(jogadores);
+		JScrollPane jogPane = new JScrollPane(jogadores) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(200, 50);
+			}
+		};
 		jogPane.setBorder(new TitledBorder(Lang.msg("")));
 		JPanel p2 = new JPanel();
 		p2.add(jogPane, BorderLayout.CENTER);
