@@ -146,10 +146,6 @@ public class ControleBox {
 		}
 	}
 
-	public Hashtable getBoxEquipesOcupado() {
-		return boxEquipesOcupado;
-	}
-
 	public void processarPilotoBox(Piloto piloto) {
 		if (!piloto.getNoAtual().isNoEntradaBox() && (piloto.getPtosBox() <= 0)) {
 			return;
@@ -164,11 +160,7 @@ public class ControleBox {
 			No box = (No) boxEquipes.get(piloto.getCarro());
 			if (box.equals(piloto.getNoAtual())
 					|| piloto.getNoAtual().isNoEntradaBox()) {
-				if (!"".equals(boxEquipesOcupado.get(piloto.getCarro()))) {
-					piloto.setPtosBox(piloto.getPtosBox() + 2);
-				} else {
-					piloto.setPtosBox(piloto.getPtosBox() + 1);
-				}
+				piloto.setPtosBox(piloto.getPtosBox() + 1);
 			} else {
 				box = piloto.getNoAtual();
 				int ptosBox = 0;
@@ -226,9 +218,24 @@ public class ControleBox {
 
 		int porcentCombust = (100 * qtdeCombust)
 				/ controleCorrida.getTanqueCheio();
-
+		long penalidade = 0;
+		Carro carro = (Carro) boxEquipesOcupado.get(piloto.getCarro());
+		if (carro != null && !carro.getPiloto().equals(piloto)) {
+			controleJogo.info(Html.orange(Lang.msg("298", new String[] { carro
+					.getNome() })));
+//			System.out.println("Box ocupado " + carro.getPiloto());
+			penalidade = 30;
+			if (piloto.isJogadorHumano()) {
+				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+					penalidade = 50;
+				}
+				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
+					penalidade = 20;
+				}
+			}
+		}
 		piloto.gerarCiclosPadoBox(porcentCombust, controleCorrida
-				.obterTempoCilco());
+				.obterTempoCilco(), penalidade);
 		piloto.getCarro().ajusteMotorParadaBox();
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
 		if (piloto.getNumeroVolta() > 0)
@@ -264,7 +271,7 @@ public class ControleBox {
 		}
 
 		boxEquipesOcupado.put(piloto.getCarro(), "");
-
+		// System.out.println("Liberou " + piloto.toString());
 		if (controleJogo.isCorridaTerminada()) {
 			piloto.setRecebeuBanderada(true, controleJogo);
 		}
@@ -443,7 +450,7 @@ public class ControleBox {
 	}
 
 	public boolean verificaBoxOcupado(Carro carro) {
-		if ((!"".equals(getBoxEquipesOcupado().get(carro)))) {
+		if ((!"".equals(boxEquipesOcupado.get(carro)))) {
 			return true;
 		}
 

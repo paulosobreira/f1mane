@@ -33,10 +33,6 @@ public class PainelTabelaResultadoFinal extends JPanel {
 		posicoesTable = new JTable(model);
 		if (!modoApplet)
 			new ExcelAdapter(posicoesTable);
-		posicoesTable.getColumn("Piloto").setMinWidth(100);
-		posicoesTable.getColumn("Equipe").setMinWidth(60);
-		posicoesTable.getColumn("Tipo Pneu").setMinWidth(80);
-		posicoesTable.getColumn("Melhor").setMinWidth(80);
 
 		add(new JScrollPane(posicoesTable));
 		posicoesTable
