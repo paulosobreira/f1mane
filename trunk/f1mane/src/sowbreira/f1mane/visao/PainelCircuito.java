@@ -46,6 +46,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color red = new Color(250, 0, 0, 150);
 	public final static Color gre = new Color(0, 255, 0, 150);
 	public final static Color yel = new Color(255, 255, 0, 150);
+	public final static Color blu = new Color(255, 0, 0, 150);
 	public final static String mutex = "mutex";
 	public final static BufferedImage carroimgDano = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("carro_dano.gif");
