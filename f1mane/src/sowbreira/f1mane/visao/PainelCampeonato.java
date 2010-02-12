@@ -100,6 +100,11 @@ public class PainelCampeonato extends JPanel {
 				if (campeonato.getCircuitoVez() == null) {
 					JOptionPane.showMessageDialog(mainFrame, Lang.msg("293"));
 				} else {
+					controleJogo = (ControleJogoLocal) mainFrame
+							.getControleJogo();
+					if (controleJogo != null) {
+						controleJogo.matarTodasThreads();
+					}
 					controleJogo = new ControleJogoLocal("t"
 							+ PainelCampeonato.this.campeonato.getTemporada());
 					controleJogo.setMainFrame(PainelCampeonato.this.mainFrame);

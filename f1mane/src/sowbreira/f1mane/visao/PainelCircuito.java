@@ -46,7 +46,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color red = new Color(250, 0, 0, 150);
 	public final static Color gre = new Color(0, 255, 0, 150);
 	public final static Color yel = new Color(255, 255, 0, 150);
-	public final static Color blu = new Color(255, 0, 0, 150);
+	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static String mutex = "mutex";
 	public final static BufferedImage carroimgDano = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("carro_dano.gif");
@@ -160,6 +160,8 @@ public class PainelCircuito extends JPanel {
 		}
 		Piloto pilotoSelecionado = gerenciadorVisual
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
+		g2d.setColor(blu);
+		g2d.fillRoundRect(getWidth() - 110, 2, 105, 240, 10, 10);
 		if (pilotoSelecionado != null) {
 
 			g2d.setColor(Color.black);

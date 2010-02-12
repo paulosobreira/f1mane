@@ -56,6 +56,11 @@ public class Carro implements Serializable {
 		return giro;
 	}
 
+	@Override
+	public String toString() {
+		return nome;
+	}
+
 	public void setGiro(int giro) {
 		this.giro = giro;
 	}
@@ -290,13 +295,13 @@ public class Carro implements Serializable {
 			InterfaceJogo controleJogo) {
 		double mod = 0.5;
 		if (GIRO_MAX_VAL == giro) {
-			mod = 0.7;
+			mod = 0.6;
 		}
 		if (GIRO_MIN_VAL == giro) {
-			mod = 0.3;
+			mod = 0.4;
 		}
 
-		if (Math.random() > .9 && !controleJogo.verificaNivelJogo()) {
+		if (Math.random() > .5 || !controleJogo.verificaNivelJogo()) {
 			return novoModificador;
 		}
 		if (no.verificaRetaOuLargada()) {
@@ -532,7 +537,8 @@ public class Carro implements Serializable {
 		}
 		if (Math.random() > .5) {
 			int percent = porcentagemCombustivel();
-			if (percent > 60) {
+			double val = porcent / 100;
+			if (Math.random() < val) {
 				desgPneus += 1;
 			}
 		}

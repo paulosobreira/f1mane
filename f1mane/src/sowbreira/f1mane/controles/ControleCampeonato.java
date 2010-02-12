@@ -38,7 +38,6 @@ import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
-import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.CorridaCampeonato;
 import sowbreira.f1mane.entidades.Piloto;

@@ -886,8 +886,8 @@ public class Piloto implements Serializable {
 		return carro.verificaDano();
 	}
 
-	public void gerarCiclosPadoBox(int porcentCombust, long ciclos) {
-		paradoBox = (int) (((porcentCombust * 100) / ciclos)) + 90;
+	public void gerarCiclosPadoBox(int porcentCombust, long ciclos, long penal) {
+		paradoBox = (int) ((((porcentCombust + penal) * 100) / ciclos)) + 90;
 		porcentagemCombustUltimaParadaBox = porcentCombust;
 	}
 

@@ -53,6 +53,10 @@ public class MainFrame extends JFrame {
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
 
+	public InterfaceJogo getControleJogo() {
+		return controleJogo;
+	}
+
 	public MainFrame(boolean modoApplet) throws IOException {
 		this.modoApplet = modoApplet;
 		controleCampeonato = new ControleCampeonato(this);
@@ -637,6 +641,9 @@ public class MainFrame extends JFrame {
 			setVisible(true);
 		} else {
 			try {
+				if (controleJogo != null) {
+					controleJogo.matarTodasThreads();
+				}
 				controleJogo = new ControleJogoLocal();
 				controleJogo.setMainFrame(this);
 				controleJogo.iniciarJogo();
