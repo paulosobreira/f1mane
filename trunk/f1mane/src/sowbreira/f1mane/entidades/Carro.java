@@ -532,16 +532,19 @@ public class Carro implements Serializable {
 		} else {
 			desgPneus += 1;
 		}
-		if (!Clima.SOL.equals(controleJogo.getClima()) && Math.random() > .7) {
-			desgPneus -= 1;
-		}
-		if (Math.random() > .5) {
-			int percent = porcentagemCombustivel();
-			double val = porcent / 100;
-			if (Math.random() < val) {
+		if (Clima.SOL.equals(controleJogo.getClima())) {
+			if (Math.random() > indicativo)
+				desgPneus += 2;
+			else
 				desgPneus += 1;
-			}
 		}
+
+		int percent = porcentagemCombustivel();
+		double val = porcent / 100;
+		if (Math.random() < val) {
+			desgPneus += 1;
+		}
+
 		if (piloto.isJogadorHumano()
 				&& InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()
 				&& Math.random() < .5) {

@@ -36,8 +36,9 @@ public class CarregadorRecursos {
 	private Vector vectorTemps;
 	private static Map bufferCarros = new HashMap();
 
-	public CarregadorRecursos() {
-		carregarTemporadas();
+	public CarregadorRecursos(boolean carregaTemp) {
+		if (carregaTemp)
+			carregarTemporadas();
 	}
 
 	public Vector getVectorTemps() {
@@ -124,8 +125,7 @@ public class CarregadorRecursos {
 	}
 
 	public static InputStream recursoComoStream(String string) {
-		CarregadorRecursos rec = new CarregadorRecursos();
-
+		CarregadorRecursos rec = new CarregadorRecursos(false);
 		return rec.getClass().getResourceAsStream(string);
 	}
 

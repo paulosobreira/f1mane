@@ -52,7 +52,7 @@ public abstract class ControleRecursos {
 	}
 
 	public ControleRecursos() throws Exception {
-		carregadorRecursos = new CarregadorRecursos();
+		carregadorRecursos = new CarregadorRecursos(true);
 		carregarCircuitos();
 	}
 
@@ -62,7 +62,7 @@ public abstract class ControleRecursos {
 		} else {
 			this.seasson = "t2009";
 		}
-		carregadorRecursos = new CarregadorRecursos();
+		carregadorRecursos = new CarregadorRecursos(true);
 		carros = carregadorRecursos.carregarListaCarros(seasson);
 		pilotos = carregadorRecursos.carregarListaPilotos(seasson);
 		carregadorRecursos.ligarPilotosCarros(pilotos, carros);

@@ -977,7 +977,7 @@ public class GerenciadorVisual {
 	}
 
 	private void gerarPainelJogoMulti(JPanel incialPanel) {
-		final CarregadorRecursos carregadorRecursos = new CarregadorRecursos();
+		final CarregadorRecursos carregadorRecursos = new CarregadorRecursos(true);
 		final Map circuitosPilotos = carregadorRecursos
 				.carregarTemporadasPilotos();
 		comboBoxTemporadas = new JComboBox(carregadorRecursos.getVectorTemps());
