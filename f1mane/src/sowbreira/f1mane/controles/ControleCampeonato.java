@@ -377,8 +377,9 @@ public class ControleCampeonato {
 			corridaCampeonato.setTpPneu(p.getCarro().getTipoPneu());
 			corridaCampeonato.setNumVoltas(p.getNumeroVolta());
 			Volta volta = p.obterVoltaMaisRapida();
-			corridaCampeonato.setVoltaMaisRapida(volta
-					.obterTempoVoltaFormatado());
+			if (volta != null)
+				corridaCampeonato.setVoltaMaisRapida(volta
+						.obterTempoVoltaFormatado());
 			corridaCampeonato.setQtdeParadasBox(p.getQtdeParadasBox());
 			corridaCampeonato.setDesgastePneus(String.valueOf(p.getCarro()
 					.porcentagemDesgastePeneus()
