@@ -341,14 +341,13 @@ public class Carro implements Serializable {
 		int valDesgaste = 0;
 		if (giro == 9) {
 			valDesgaste = ((testePotencia() ? 3 : 4) + novoModificador);
-			if (piloto.isJogadorHumano()
-					&& InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+			if (piloto.isJogadorHumano()) {
 				valDesgaste += 1;
+				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+					valDesgaste += 1;
+				}
 			}
-			if (piloto.isJogadorHumano()
-					&& InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				valDesgaste -= 1;
-			}
+
 		} else if (giro == 5) {
 			valDesgaste = ((testePotencia() ? 1 : 2) + novoModificador);
 			if (piloto.isJogadorHumano()
@@ -366,8 +365,9 @@ public class Carro implements Serializable {
 				valDesgaste = 0;
 			}
 		}
-		if (!Clima.SOL.equals(controleJogo.getClima()) && Math.random() > .7) {
-			valDesgaste -= 1;
+		if (Clima.SOL.equals(controleJogo.getClima())
+				&& Math.random() < (giro / 10.0)) {
+			valDesgaste += 1;
 		}
 
 		if (valDesgaste < 0) {
@@ -458,9 +458,14 @@ public class Carro implements Serializable {
 			valConsumo = ((fator > .5) ? 2 : 1);
 		}
 		if (giro == 1) {
-			valConsumo -= (valConsumo / 3);
+			valConsumo -= ((fator > .5) ? 2 : 1);
 		} else if (giro == 9) {
-			valConsumo += (valConsumo / 3);
+			valConsumo += ((fator > .5) ? 3 : 2);
+		}
+		if(valConsumo<=0){
+			if(Math.random()>.5){
+				valConsumo=1;
+			}
 		}
 		combustivel -= valConsumo;
 

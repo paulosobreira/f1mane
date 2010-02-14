@@ -44,7 +44,6 @@ public class PainelCampeonato extends JPanel {
 			"EEE, d MMM yyyy HH:mm:ss");
 	private MainFrame mainFrame;
 
-	protected ControleJogoLocal controleJogo;
 	private ControleCampeonato controleCampeonato;
 
 	private JTable corridasTable;
@@ -100,7 +99,7 @@ public class PainelCampeonato extends JPanel {
 				if (campeonato.getCircuitoVez() == null) {
 					JOptionPane.showMessageDialog(mainFrame, Lang.msg("293"));
 				} else {
-					controleJogo = (ControleJogoLocal) mainFrame
+					ControleJogoLocal controleJogo = (ControleJogoLocal) mainFrame
 							.getControleJogo();
 					if (controleJogo != null) {
 						controleJogo.matarTodasThreads();
@@ -108,6 +107,7 @@ public class PainelCampeonato extends JPanel {
 					controleJogo = new ControleJogoLocal("t"
 							+ PainelCampeonato.this.campeonato.getTemporada());
 					controleJogo.setMainFrame(PainelCampeonato.this.mainFrame);
+					mainFrame.setControleJogo(controleJogo);
 					controleJogo.iniciarJogo(controleCampeonato);
 				}
 			} catch (Exception e) {
