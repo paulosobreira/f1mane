@@ -350,14 +350,14 @@ public class Carro implements Serializable {
 
 		} else if (giro == 5) {
 			valDesgaste = ((testePotencia() ? 1 : 2) + novoModificador);
-			if (piloto.isJogadorHumano()
-					&& InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-				valDesgaste += 1;
-			}
-			if (piloto.isJogadorHumano()
-					&& InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()
-					&& valDesgaste > 1) {
-				valDesgaste -= 1;
+			if (piloto.isJogadorHumano()) {
+				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+					valDesgaste += 1;
+				}
+				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()
+						&& valDesgaste > 1) {
+					valDesgaste -= 1;
+				}
 			}
 		} else {
 			valDesgaste = ((testePotencia() ? 0 : 1));
@@ -462,9 +462,9 @@ public class Carro implements Serializable {
 		} else if (giro == 9) {
 			valConsumo += ((fator > .5) ? 3 : 2);
 		}
-		if(valConsumo<=0){
-			if(Math.random()>.5){
-				valConsumo=1;
+		if (valConsumo <= 0) {
+			if (Math.random() > .5) {
+				valConsumo = 1;
 			}
 		}
 		combustivel -= valConsumo;

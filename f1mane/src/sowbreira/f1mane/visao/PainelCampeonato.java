@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -32,9 +34,11 @@ import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.entidades.Campeonato;
+import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.CorridaCampeonato;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
+import sowbreira.f1mane.paddock.applet.FormClassificacao;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 public class PainelCampeonato extends JPanel {
@@ -270,6 +274,24 @@ public class PainelCampeonato extends JPanel {
 	private JPanel gerarPanelCorridas() {
 		corridasTable = new JTable() {
 		};
+		corridasTable.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if (e.getClickCount() == 2) {
+					String corrida = (String) corridasTableModel.getValueAt(
+							corridasTable.getSelectedRow(), 0);
+					int ret = JOptionPane.showConfirmDialog(corridasTable, Lang
+							.msg("300", new String[] { corrida }), Lang
+							.msg("299"), JOptionPane.YES_NO_OPTION);
+					if (ret == JOptionPane.YES_OPTION) {
+						gerarPainelDetalhesCorrida(corrida, corridasTable);
+					}
+				}
+			}
+
+		});
+
 		corridasTableModel = new AbstractTableModel() {
 
 			@Override
@@ -365,6 +387,115 @@ public class PainelCampeonato extends JPanel {
 		});
 		jPanel.add(jScrollPane);
 		return jPanel;
+	}
+
+	protected void gerarPainelDetalhesCorrida(final String corrida, JTable table) {
+		JTable detCorridaTable = new JTable();
+		AbstractTableModel detCorridaTableModel = new AbstractTableModel() {
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				List dets = (List) campeonato.getDadosCorridas().get(corrida);
+				if(dets ==null){
+					return "";
+				}
+				CorridaCampeonato cc = (CorridaCampeonato) dets.get(rowIndex);
+
+				switch (columnIndex) {
+				case 0:
+					return cc.getPosicao();
+				case 1:
+					return cc.getPiloto();
+				case 2:
+					return cc.getCarro();
+				case 3:
+					return Lang.msg(cc.getTpPneu());
+				case 4:
+					return cc.getNumVoltas();
+				case 5:
+					return cc.getVoltaMaisRapida();
+				case 6:
+					return cc.getQtdeParadasBox();
+				case 7:
+					return cc.getDesgastePneus();
+				case 8:
+					return cc.getCombustivelRestante();
+				case 9:
+					return cc.getDesgasteMotor();
+				case 10:
+					return cc.getPontos();
+				default:
+					return "";
+
+				}
+
+			}
+
+			@Override
+			public int getRowCount() {
+				List dets = (List) campeonato.getDadosCorridas().get(corrida);
+				if (dets == null)
+					return 0;
+				return dets.size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 11;
+			}
+
+			public String getColumnName(int column) {
+				switch (column) {
+				// POsição
+				case 0:
+					return Lang.msg("160");
+					// Piloto
+				case 1:
+					return Lang.msg("153");
+					// Equipe
+				case 2:
+					return Lang.msg("277");
+					// Tp Pneu
+				case 3:
+					return Lang.msg("264");
+					// Voltas
+				case 4:
+					return Lang.msg("159");
+					// MElhor
+				case 5:
+					return Lang.msg("278");
+				case 6:
+					return Lang.msg("146");
+				case 7:
+					return Lang.msg("216");
+				case 8:
+					return Lang.msg("279");
+				case 9:
+					return Lang.msg("217");
+				case 10:
+					return Lang.msg("161");
+				default:
+					return "";
+				}
+			}
+		};
+		detCorridaTable.setModel(detCorridaTableModel);
+		JScrollPane jScrollPane = new JScrollPane(detCorridaTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(650, 350);
+			}
+		};
+		JPanel jPanel = new JPanel();
+		jPanel.setBorder(new TitledBorder("Detalhes da Corrida") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("299");
+			}
+		});
+		jPanel.add(jScrollPane);
+		JOptionPane.showMessageDialog(corridasTable, jPanel, Lang.msg("300",
+				new String[] { corrida }), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private JPanel gerarPanelPilotosSelecionados() {

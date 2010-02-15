@@ -1,6 +1,8 @@
 package sowbreira.f1mane.entidades;
 
-public class ConstrutoresPontosCampeonato {
+import java.io.Serializable;
+
+public class ConstrutoresPontosCampeonato implements Serializable {
 
 	private String nomeEquipe;
 	private int pontos;

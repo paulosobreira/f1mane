@@ -43,6 +43,7 @@ import sowbreira.f1mane.entidades.CorridaCampeonato;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCampeonato;

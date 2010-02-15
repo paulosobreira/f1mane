@@ -1,12 +1,13 @@
 package sowbreira.f1mane.entidades;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Campeonato {
+public class Campeonato implements Serializable {
 	private String temporada;
 	private String nivel;
 	private Integer qtdeVoltas;
