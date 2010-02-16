@@ -682,4 +682,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		
 	}
 
+	@Override
+	public void mudaPilotoSelecionado() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

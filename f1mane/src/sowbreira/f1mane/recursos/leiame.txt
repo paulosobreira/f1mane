@@ -99,6 +99,7 @@ F7 - Piloto em Modo Agressivo.
 F11 - Programação de Box Automatico.
 F12 - Alterna Modo Box.
 Esc - Remove Imforações extras da tela.
+Espaço - Alterna entre os Pilotos selecionados 
   
 Dicas para Jogar Sem Utilizar Internet e Navegador:
  - Para quem não conseguiu rodar o jogo como aplicativo local
