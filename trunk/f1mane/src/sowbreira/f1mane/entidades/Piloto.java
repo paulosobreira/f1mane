@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,8 @@ public class Piloto implements Serializable {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
+	private List ultsConsumosCombustivel = new LinkedList();
+	private Integer ultimoConsumoCombust;
 	protected String tipoPeneuJogador;
 	protected String asaJogador;
 	protected Integer combustJogador;
@@ -371,6 +374,18 @@ public class Piloto implements Serializable {
 		 * Completou Volta
 		 */
 		if (diff >= 0) {
+			int por = getCarro().porcentagemCombustivel();
+			if (ultimoConsumoCombust == null) {
+				ultimoConsumoCombust = new Integer(por);
+			} else {
+				if (ultimoConsumoCombust.intValue() > por) {
+					ultsConsumosCombustivel.add(ultimoConsumoCombust.intValue()
+							- por);
+					ultimoConsumoCombust = new Integer(por);
+
+				}
+			}
+
 			index = diff;
 			controleJogo.processaVoltaRapida(this);
 			/**
@@ -1064,6 +1079,24 @@ public class Piloto implements Serializable {
 
 	public void setStress(int stress) {
 		this.stress = stress;
+	}
+
+	public double obterConsumoMedio() {
+		double valmed = 0;
+		for (Iterator iterator = ultsConsumosCombustivel.iterator(); iterator
+				.hasNext();) {
+			Integer longVal = (Integer) iterator.next();
+			valmed += longVal.doubleValue();
+		}
+		if (ultsConsumosCombustivel.isEmpty())
+			return 0;
+		return valmed / ultsConsumosCombustivel.size();
+	}
+
+	public void limparConsumoMedio() {
+		ultimoConsumoCombust = null;
+		ultsConsumosCombustivel.clear();
+
 	}
 
 }

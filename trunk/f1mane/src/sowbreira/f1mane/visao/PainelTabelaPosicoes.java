@@ -63,13 +63,6 @@ public class PainelTabelaPosicoes extends JPanel {
 				return comp;
 			}
 		};
-		posicoesTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Object object = e.getSource();
-				System.out.println(object);
-			}
-		});
 		posicoesTable.getTableHeader().setEnabled(false);
 		TableColumn colorColumn1 = posicoesTable.getColumn(Coluna1);
 		TableColumn colorColumn2 = posicoesTable.getColumn(Coluna2);

@@ -298,7 +298,7 @@ public class GerenciadorVisual {
 					painelCircuito.setDesenhaInfo(!painelCircuito
 							.isDesenhaInfo());
 				}
-				if (keyCoode == KeyEvent.VK_F10) {
+				if (keyCoode == KeyEvent.VK_F9) {
 					mudaPilotoSelecionado();
 				}
 			}

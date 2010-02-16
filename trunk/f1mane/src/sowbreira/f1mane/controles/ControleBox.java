@@ -223,7 +223,7 @@ public class ControleBox {
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
 			controleJogo.info(Html.orange(Lang.msg("298", new String[] { carro
 					.getNome() })));
-//			System.out.println("Box ocupado " + carro.getPiloto());
+			// System.out.println("Box ocupado " + carro.getPiloto());
 			penalidade = 30;
 			if (piloto.isJogadorHumano()) {
 				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
@@ -295,21 +295,39 @@ public class ControleBox {
 		if (piloto.testeHabilidadePiloto())
 			processarTipoAsaAutomatico(piloto);
 
-		int diff = controleCorrida.getTanqueCheio()
-				- piloto.getCarro().getCombustivel();
+		int percentagem = 0;
 
-		if (controleJogo.getNumVoltaAtual() < 1) {
-			piloto.getCarro().setCombustivel(controleCorrida.getTanqueCheio());
+		int consumoMedio = (int) piloto.obterConsumoMedio();
+		piloto.limparConsumoMedio();
+		if (consumoMedio == 0) {
+			if (piloto.getQtdeParadasBox() == 0) {
+				percentagem = 40 + ((int) (Math.random() * 50));
+			} else if (piloto.getQtdeParadasBox() == 1) {
+				percentagem = 30 + ((int) (Math.random() * 30));
+			} else {
+				percentagem = 10 + ((int) (Math.random() * 30));
+			}
+
+			if (piloto.getCarro().verificaDano()) {
+				percentagem = 70;
+			}
 		} else {
-			int porCompleta = controleCorrida.porcentagemCorridaCompletada();
-			int qtdeAbs = 120 - porCompleta;
-			int qtdeantes = piloto.getCarro().getCombustivel();
-			piloto.getCarro().setCombustivel(
-					(controleCorrida.getTanqueCheio() * qtdeAbs) / 100);
-			diff = piloto.getCarro().getCombustivel() - qtdeantes;
+			int qtdeVoltRest = controleJogo.getQtdeTotalVoltas()
+					- controleJogo.getNumVoltaAtual();
+			percentagem = (consumoMedio * (qtdeVoltRest)) + 5;
 		}
 
-		return diff;
+		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem) / 100;
+		int diffCombust = qtddeCombust - piloto.getCarro().getCombustivel();
+
+		if (diffCombust < 0) {
+			return 0;
+		}
+
+		piloto.getCarro().setCombustivel(
+				qtddeCombust + piloto.getCarro().getCombustivel());
+
+		return diffCombust;
 	}
 
 	public void setupCorridaQualificacaoAleatoria(Piloto piloto, int posicao) {
@@ -417,16 +435,24 @@ public class ControleBox {
 
 		int percentagem = 0;
 
-		if (piloto.getQtdeParadasBox() == 0) {
-			percentagem = 40 + ((int) (Math.random() * 50));
-		} else if (piloto.getQtdeParadasBox() == 1) {
-			percentagem = 30 + ((int) (Math.random() * 30));
-		} else {
-			percentagem = 10 + ((int) (Math.random() * 30));
-		}
+		int consumoMedio = (int) piloto.obterConsumoMedio();
+		piloto.limparConsumoMedio();
+		if (consumoMedio == 0) {
+			if (piloto.getQtdeParadasBox() == 0) {
+				percentagem = 40 + ((int) (Math.random() * 50));
+			} else if (piloto.getQtdeParadasBox() == 1) {
+				percentagem = 30 + ((int) (Math.random() * 30));
+			} else {
+				percentagem = 10 + ((int) (Math.random() * 30));
+			}
 
-		if (piloto.getCarro().verificaDano()) {
-			percentagem = 70;
+			if (piloto.getCarro().verificaDano()) {
+				percentagem = 70;
+			}
+		} else {
+			int qtdeVoltRest = controleJogo.getQtdeTotalVoltas()
+					- controleJogo.getNumVoltaAtual();
+			percentagem = (consumoMedio * (qtdeVoltRest / 2)) + 5;
 		}
 
 		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem) / 100;
