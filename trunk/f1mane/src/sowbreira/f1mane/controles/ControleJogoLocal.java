@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.corba.se.internal.Interceptors.PIORB;
+
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
@@ -844,4 +846,25 @@ public class ControleJogoLocal extends ControleRecursos implements
 		iniciarJogo(null);
 	}
 
+	@Override
+	public void mudaPilotoSelecionado() {
+		Piloto outro = null;
+		for (int i = 0; i < pilotosJogadores.size(); i++) {
+			Piloto pl = (Piloto) pilotosJogadores.get(i);
+			if (pl.equals(pilotoSelecionado)) {
+				if ((i + 1) < pilotosJogadores.size()) {
+					outro = (Piloto) pilotosJogadores.get(i + 1);
+				} else {
+					outro = (Piloto) pilotosJogadores.get(0);
+				}
+				break;
+			}
+		}
+		if (outro != null) {
+			System.out.println(outro);
+			gerenciadorVisual.getPainelPosicoes().atulizaTabelaPosicoes(
+					pilotos, outro);
+		}
+
+	}
 }

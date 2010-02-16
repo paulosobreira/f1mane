@@ -3,6 +3,8 @@ package sowbreira.f1mane.visao;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -25,6 +27,7 @@ public class PainelTabelaPosicoes extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTable posicoesTable;
 	public InterfaceJogo interfaceJogo;
+	private Piloto pilotoSelecionado;
 	private Piloto[] pilotosId = new Piloto[24];
 	private int larguraPainel = 320;
 	private int alturaPainel = 192;
@@ -60,6 +63,13 @@ public class PainelTabelaPosicoes extends JPanel {
 				return comp;
 			}
 		};
+		posicoesTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Object object = e.getSource();
+				System.out.println(object);
+			}
+		});
 		posicoesTable.getTableHeader().setEnabled(false);
 		TableColumn colorColumn1 = posicoesTable.getColumn(Coluna1);
 		TableColumn colorColumn2 = posicoesTable.getColumn(Coluna2);

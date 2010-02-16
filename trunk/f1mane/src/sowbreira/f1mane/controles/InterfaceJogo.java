@@ -196,4 +196,6 @@ public interface InterfaceJogo {
 
 	public void verificaProgramacaoBox();
 
+	public void mudaPilotoSelecionado();
+
 }

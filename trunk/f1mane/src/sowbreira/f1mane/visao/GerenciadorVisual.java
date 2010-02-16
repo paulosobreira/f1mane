@@ -298,8 +298,19 @@ public class GerenciadorVisual {
 					painelCircuito.setDesenhaInfo(!painelCircuito
 							.isDesenhaInfo());
 				}
+				if (keyCoode == KeyEvent.VK_SPACE) {
+					mudaPilotoSelecionado();
+				}
 			}
 		};
+	}
+
+	protected void mudaPilotoSelecionado() {
+		if (controleJogo == null) {
+			return;
+		}
+		controleJogo.mudaPilotoSelecionado();
+		
 	}
 
 	protected void mudarModoBox() {

@@ -26,6 +26,17 @@ public class Piloto implements Serializable {
 	protected String asaJogador;
 	protected Integer combustJogador;
 
+	@Override
+	public boolean equals(Object obj) {
+		Piloto outro = (Piloto) obj;
+		return getNome().equals(outro.getNome());
+	}
+
+	@Override
+	public int hashCode() {
+		return getNome().hashCode();
+	}
+
 	public String getTipoPeneuJogador() {
 		return tipoPeneuJogador;
 	}
