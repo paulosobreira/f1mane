@@ -316,17 +316,18 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					removerKeyListeners();
-					if (controleJogo != null
-							&& controleJogo.isCorridaIniciada()) {
-						int ret = JOptionPane.showConfirmDialog(MainFrame.this,
-								Lang.msg("095"), Lang.msg("094"),
-								JOptionPane.YES_NO_OPTION);
-						if (ret == JOptionPane.NO_OPTION) {
-							return;
+					if (controleJogo != null) {
+						if (controleJogo.isCorridaIniciada()) {
+							int ret = JOptionPane.showConfirmDialog(
+									MainFrame.this, Lang.msg("095"), Lang
+											.msg("094"),
+									JOptionPane.YES_NO_OPTION);
+							if (ret == JOptionPane.NO_OPTION) {
+								return;
+							}
 						}
 						controleJogo.matarTodasThreads();
 					}
-
 					controleJogo = new ControleJogoLocal();
 					controleJogo.setMainFrame(MainFrame.this);
 					controleJogo.iniciarJogo();

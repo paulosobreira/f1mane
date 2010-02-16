@@ -133,8 +133,9 @@ public class ControleCorrida {
 
 	protected void finalize() throws Throwable {
 		super.finalize();
-
+		
 		if (controleCiclo != null) {
+			controleCiclo.setProcessadoCilcos(false);
 			controleCiclo.interrupt();
 		}
 

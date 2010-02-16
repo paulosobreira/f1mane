@@ -179,6 +179,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			}
 
 			if (controleEstatisticas != null) {
+				controleEstatisticas.setConsumidorAtivo(false);
 				controleEstatisticas.finalize();
 			}
 		} catch (Throwable e) {
@@ -822,8 +823,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public boolean isCorridaIniciada() {
-		// TODO Auto-generated method stub
-		return false;
+		return controleCorrida.isCorridaIniciada();
 	}
 
 	public int getMediaPontecia() {
