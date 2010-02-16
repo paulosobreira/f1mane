@@ -123,6 +123,7 @@ public class PainelCircuito extends JPanel {
 			desenharFarois(g2d);
 			desenharClima(g2d);
 			desenhaInfoAdd(g2d);
+			desenhaChuva(g2d);
 			if (desenhaQualificacao) {
 				desenhaQualificacao(g2d);
 			} else {
@@ -154,16 +155,29 @@ public class PainelCircuito extends JPanel {
 		}
 	}
 
+	private void desenhaChuva(Graphics2D g2d) {
+		if (!controleJogo.isChovendo())
+			return;
+		for (int i = 0; i < getWidth(); i += 10) {
+			for (int j = 0; j < getHeight(); j += 10) {
+				if (Math.random() > .8) {
+					g2d.setColor(Color.LIGHT_GRAY);
+					g2d.drawLine(i + 10, j + 10, i + 15, j + 20);
+				}
+			}
+		}
+
+	}
+
 	private void desenhaInfoAdd(Graphics2D g2d) {
 		if (!desenhaInfo) {
 			return;
 		}
 		Piloto pilotoSelecionado = gerenciadorVisual
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
-		g2d.setColor(blu);
-		g2d.fillRoundRect(getWidth() - 110, 2, 105, 240, 10, 10);
 		if (pilotoSelecionado != null) {
-
+			g2d.setColor(blu);
+			g2d.fillRoundRect(getWidth() - 110, 2, 105, 240, 10, 10);
 			g2d.setColor(Color.black);
 			int ptoOri = getWidth() - 100;
 			int yBase = 0;
