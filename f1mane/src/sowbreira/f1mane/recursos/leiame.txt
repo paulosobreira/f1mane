@@ -96,7 +96,7 @@ F4 - Aterna Modo de Pilotagem (Normal/Agressivo)
 F5 - Piloto em Modo Calteloso.
 F6 - Piloto Normal.
 F7 - Piloto em Modo Agressivo.
-F10 - Alterna entre os Pilotos selecionados
+F9 - Alterna entre os Pilotos selecionados
 F11 - Programação de Box Automatico.
 F12 - Alterna Modo Box.
 Esc - Remove Imforações extras da tela.
