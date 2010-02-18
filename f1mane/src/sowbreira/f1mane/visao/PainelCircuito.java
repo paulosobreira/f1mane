@@ -280,7 +280,10 @@ public class PainelCircuito extends JPanel {
 			} else {
 				g2d.setColor(Color.black);
 			}
-
+			g2d.setColor(Color.black);
+			g2d.drawString(Lang.msg("301", new String[] { pilotoSelecionado
+					.getNome() }), ptoOri, yBase);
+			yBase += 15;
 			g2d.drawString(Lang.msg("265"), ptoOri, yBase);
 			yBase += 15;
 			g2d.setColor(Color.black);
