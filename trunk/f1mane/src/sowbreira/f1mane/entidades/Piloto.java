@@ -85,6 +85,8 @@ public class Piloto implements Serializable {
 	private boolean agressivo = true;
 	private Carro carro = new Carro();
 	private No noAtual = new No();
+	private No noAnt;
+	private No noPost;
 	private int numeroVolta;
 	private int stress;
 	private transient int ciclosDesconcentrado;
@@ -103,6 +105,22 @@ public class Piloto implements Serializable {
 	private long parouNoBoxMilis;
 	private long saiuDoBoxMilis;
 	private int msgTentativaNumVolta = 2;
+
+	public No getNoAnt() {
+		return noAnt;
+	}
+
+	public void setNoAnt(No noAnt) {
+		this.noAnt = noAnt;
+	}
+
+	public No getNoPost() {
+		return noPost;
+	}
+
+	public void setNoPost(No noPost) {
+		this.noPost = noPost;
+	}
 
 	public int getVelocidade() {
 		return velocidade;
@@ -410,6 +428,17 @@ public class Piloto implements Serializable {
 		verificaIrBox(controleJogo);
 
 		this.setNoAtual((No) pista.get(index));
+
+		if ((index - 1) < 0) {
+			this.setNoAnt(((No) pista.get(pista.size() - 1)));
+		} else {
+			this.setNoAnt(((No) pista.get(index - 1)));
+		}
+		if ((index + 1) < pista.size()) {
+			this.setNoPost(((No) pista.get(index + 1)));
+		} else {
+			this.setNoPost(((No) pista.get(0)));
+		}
 	}
 
 	public void processaVelocidade(int index, No no) {

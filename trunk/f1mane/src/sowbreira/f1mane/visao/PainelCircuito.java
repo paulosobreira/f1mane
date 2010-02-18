@@ -280,6 +280,8 @@ public class PainelCircuito extends JPanel {
 			} else {
 				g2d.setColor(Color.black);
 			}
+			g2d.setColor(PainelTabelaPosicoes.jogador);
+			g2d.fillRoundRect(ptoOri - 5, yBase - 12, 100, 16, 10, 10);
 			g2d.setColor(Color.black);
 			g2d.drawString(Lang.msg("301", new String[] { pilotoSelecionado
 					.getNome() }), ptoOri, yBase);
