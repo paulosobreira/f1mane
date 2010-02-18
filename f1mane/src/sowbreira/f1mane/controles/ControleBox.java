@@ -147,7 +147,12 @@ public class ControleBox {
 	}
 
 	public void processarPilotoBox(Piloto piloto) {
-		if (!piloto.getNoAtual().isNoEntradaBox() && (piloto.getPtosBox() <= 0)) {
+		No noAnt = piloto.getNoAnt();
+		No noPost = piloto.getNoPost();
+		if (!((noAnt != null && noAnt.isNoEntradaBox())
+				|| piloto.getNoAtual().isNoEntradaBox() || (noPost != null && noPost
+				.isNoEntradaBox()))
+				&& (piloto.getPtosBox() <= 0)) {
 			return;
 		} else {
 			if (boxEquipesOcupado == null) {

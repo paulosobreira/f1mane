@@ -861,7 +861,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 			}
 		}
 		if (outro != null) {
-			System.out.println(outro);
 			gerenciadorVisual.getPainelPosicoes().atulizaTabelaPosicoes(
 					pilotos, outro);
 		}
