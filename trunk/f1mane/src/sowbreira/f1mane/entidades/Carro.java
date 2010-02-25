@@ -545,7 +545,7 @@ public class Carro implements Serializable {
 		}
 
 		int percent = porcentagemCombustivel();
-		double val = porcent / 100;
+		double val = porcent / 100.0;
 		if (Math.random() < val) {
 			desgPneus += 1;
 		}
