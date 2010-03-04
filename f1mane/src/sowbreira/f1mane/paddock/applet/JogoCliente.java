@@ -104,8 +104,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		threadMonitoraJogoOnline.start();
 	}
 
-
-
 	public void preparaGerenciadorVisual() {
 		try {
 			gerenciadorVisual = new GerenciadorVisual(this);
@@ -677,15 +675,22 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void iniciarJogo(ControleCampeonato controleCampeonato) throws Exception {
+	public void iniciarJogo(ControleCampeonato controleCampeonato)
+			throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mudaPilotoSelecionado() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void setPilotos(List list) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

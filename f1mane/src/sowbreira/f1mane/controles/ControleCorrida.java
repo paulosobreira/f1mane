@@ -45,19 +45,20 @@ public class ControleCorrida {
 		this.tempoCiclo = (tempoCiclo < 50 ? 50 : tempoCiclo);
 		this.fatorUtrapassagem = fatorUtrapassagem / 1000;
 		this.indexVelcidadeDaPista = indexVelcidadeDaPista / 1000;
-		int valCalc = (qtdeVoltas < 22 ? 22 : qtdeVoltas);
+		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
-
 		definirDurabilidadeMotores();
 		qtdeTotalVoltas = qtdeVoltas;
-		tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
-		definirTanqueCheio();
 		controleBox = new ControleBox(controleJogo, this);
 		controleSafetyCar = new ControleSafetyCar(controleJogo, this);
 		controleClima = new ControleClima(controleJogo, qtdeTotalVoltas);
 		controleCiclo = new ControleCiclo(controleJogo, this, tempoCiclo);
 		controleQualificacao = new ControleQualificacao(controleJogo,
 				controleBox);
+		int consumoVolta = controleQualificacao
+				.obterConsumoVolta(distaciaCorrida);
+		tanqueCheio = consumoVolta * (qtdeVoltas + 2);
+		definirTanqueCheio();
 	}
 
 	public ControleQualificacao getControleQualificacao() {
@@ -115,10 +116,6 @@ public class ControleCorrida {
 		this.corridaPausada = corridaPausada;
 	}
 
-	public boolean verificaNivelCorrida() {
-		return (Math.random() < controleJogo.getNiveljogo());
-	}
-
 	public void gerarGridLargadaSemQualificacao() {
 		controleQualificacao.gerarGridLargadaSemQualificacao();
 	}
@@ -133,7 +130,7 @@ public class ControleCorrida {
 
 	protected void finalize() throws Throwable {
 		super.finalize();
-		
+
 		if (controleCiclo != null) {
 			controleCiclo.setProcessadoCilcos(false);
 			controleCiclo.interrupt();

@@ -1,8 +1,11 @@
 package br.nnpe;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
@@ -47,10 +50,10 @@ public class Util {
 	 * Verifica se um campo string é nulo ou vazio lançando um Exception caso
 	 * verdadeiro.
 	 * 
-	 * @param campo -
-	 *            campo a analizar
-	 * @param descricaoCampo -
-	 *            Complemento da messagem de erro
+	 * @param campo
+	 *            - campo a analizar
+	 * @param descricaoCampo
+	 *            - Complemento da messagem de erro
 	 * @throws Exception
 	 */
 	public static void campoMandatorio(String campo, String descricaoCampo)
@@ -58,6 +61,30 @@ public class Util {
 		if ((campo == null) || "".equals(campo)) {
 			throw new Exception("O campo " + descricaoCampo.trim()
 					+ " é mandatório");
+		}
+	}
+
+	// returns a deep copy of an object
+	static public Object deepCopy(Object oldObj) throws Exception {
+		ObjectOutputStream oos = null;
+		ObjectInputStream ois = null;
+		try {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(); // A
+			oos = new ObjectOutputStream(bos); // B
+			// serialize and pass the object
+			oos.writeObject(oldObj); // C
+			oos.flush(); // D
+			ByteArrayInputStream bin = new ByteArrayInputStream(bos
+					.toByteArray()); // E
+			ois = new ObjectInputStream(bin); // F
+			// return the new object
+			return ois.readObject(); // G
+		} catch (Exception e) {
+			System.out.println("Exception in ObjectCloner = " + e);
+			throw (e);
+		} finally {
+			oos.close();
+			ois.close();
 		}
 	}
 
@@ -83,10 +110,10 @@ public class Util {
 	/**
 	 * Verifica se o intervalo de data é válido
 	 * 
-	 * @param dataInicial -
-	 *            data inicial
-	 * @param dataFinal -
-	 *            data final
+	 * @param dataInicial
+	 *            - data inicial
+	 * @param dataFinal
+	 *            - data final
 	 * @return
 	 */
 	public static boolean validaIntervaloData(Dia dataInicial, Dia dataFinal) {
@@ -101,10 +128,10 @@ public class Util {
 	 * Retorna <b>true</b> se o período de datas for válido (data inicial deve
 	 * ser menor que a final).
 	 * 
-	 * @param dataInicial -
-	 *            Date
-	 * @param dataFinal -
-	 *            Date
+	 * @param dataInicial
+	 *            - Date
+	 * @param dataFinal
+	 *            - Date
 	 * @return
 	 */
 	public static boolean validaIntervaloData(java.sql.Date dataInicial,
@@ -124,10 +151,10 @@ public class Util {
 	 * Retorna <b>true</b> se o período de datas for válido (data inicial deve
 	 * ser menor que a final).
 	 * 
-	 * @param dataInicial -
-	 *            String
-	 * @param dataFinal -
-	 *            String
+	 * @param dataInicial
+	 *            - String
+	 * @param dataFinal
+	 *            - String
 	 * @throws Exception
 	 */
 	public static void validaIntervaloData(String dataInicial, String dataFinal)
@@ -142,12 +169,12 @@ public class Util {
 	 * Retorna <b>true</b> se o período de datas for válido (data inicial deve
 	 * ser menor que a final).
 	 * 
-	 * @param dataInicial -
-	 *            String
-	 * @param dataFinal -
-	 *            String
-	 * @param formato -
-	 *            Formato da data
+	 * @param dataInicial
+	 *            - String
+	 * @param dataFinal
+	 *            - String
+	 * @param formato
+	 *            - Formato da data
 	 * @return
 	 * @throws Exception
 	 */
@@ -163,10 +190,10 @@ public class Util {
 	 * Retorna <b>true</b> se o período de datas for válido (data inicial deve
 	 * ser menor que a final).
 	 * 
-	 * @param data_inicio -
-	 *            Timestamp
-	 * @param data_fim -
-	 *            Timestamp
+	 * @param data_inicio
+	 *            - Timestamp
+	 * @param data_fim
+	 *            - Timestamp
 	 * @return
 	 * @throws Exception
 	 */
@@ -630,12 +657,12 @@ public class Util {
 	 * xo e com as três primeiras letras do primeiro nome e as três do último
 	 * nome.
 	 * 
-	 * @param nome -
-	 *            nome completo da pessoa (conectivos serão ignorados)
-	 * @param dtnasc -
-	 *            formato dd/mm/aaaa
-	 * @param sexo -
-	 *            "M" ou "F"
+	 * @param nome
+	 *            - nome completo da pessoa (conectivos serão ignorados)
+	 * @param dtnasc
+	 *            - formato dd/mm/aaaa
+	 * @param sexo
+	 *            - "M" ou "F"
 	 * @return
 	 * @throws Exception
 	 */
@@ -685,12 +712,12 @@ public class Util {
 	/**
 	 * Lança uma Exceção caso o campo não seja numérico.
 	 * 
-	 * @param campo -
-	 *            String a ser verificada
-	 * @param msg -
-	 *            Messagem de Erro
-	 * @param nulls -
-	 *            o capo pode vir nulll
+	 * @param campo
+	 *            - String a ser verificada
+	 * @param msg
+	 *            - Messagem de Erro
+	 * @param nulls
+	 *            - o capo pode vir nulll
 	 */
 	public static void campoNumerio(String campo, String msg, boolean nulls)
 			throws Exception {
