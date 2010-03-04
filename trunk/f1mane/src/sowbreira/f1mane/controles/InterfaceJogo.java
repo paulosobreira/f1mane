@@ -14,7 +14,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-	public static boolean VALENDO = true;
+	public static boolean VALENDO = false;
 	public static String NORMAL = "NORMAL";
 	public static String FACIL = "FACIL";
 	public static String DIFICIL = "DIFICIL";
@@ -55,6 +55,8 @@ public interface InterfaceJogo {
 	public void setCircuito(Circuito circuito);
 
 	public List getPilotos();
+
+	public void setPilotos(List list);
 
 	public void matarTodasThreads();
 

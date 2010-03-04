@@ -10,6 +10,8 @@ import java.util.Set;
 
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -18,7 +20,7 @@ public class ControleQualificacao {
 
 	private InterfaceJogo controleJogo;
 	private ControleBox controleBox;
-	private boolean modoQualify = false;
+	public static boolean modoQualify = false;
 
 	/**
 	 * @param controleJogo
@@ -34,7 +36,7 @@ public class ControleQualificacao {
 		List pilotos = controleJogo.getPilotos();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			piloto.setNotaQualificacaoAleatoria((piloto.getHabilidade()/10)
+			piloto.setNotaQualificacaoAleatoria((piloto.getHabilidade() / 10)
 					+ (5 * Math.random()) + piloto.getCarro().getPotencia()
 					+ (50 * Math.random()));
 		}
@@ -58,6 +60,44 @@ public class ControleQualificacao {
 		gerarQualificacaoAleatoria();
 		gerarVoltaQualificacaoAleatoria();
 		posiscionarCarrosLargada();
+
+	}
+
+	public int obterConsumoVolta(int distaciaCorrida) {
+
+		modoQualify = true;
+		int position = controleJogo.getNosDaPista().size() - 1;
+		No noLargada = (No) controleJogo.getNosDaPista().get(position);
+		List pilotos = controleJogo.getPilotos();
+		Piloto piloto = (Piloto) pilotos.get(0);
+		Piloto pilotoTeste = null;
+		try {
+			pilotoTeste = (Piloto) Util.deepCopy(piloto);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		pilotoTeste.setCombustJogador(new Integer(
+				(distaciaCorrida + (distaciaCorrida / 2))));
+		int consumo = pilotoTeste.getCombustJogador();
+		pilotoTeste.setNoAtual(noLargada);
+		pilotoTeste.getCarro().setPneuDuro(distaciaCorrida);
+		pilotoTeste.getCarro().setTanqueCheio(consumo);
+		pilotoTeste.getCarro().setCombustivel(consumo);
+		controleBox.setupCorridaQualificacaoAleatoria(pilotoTeste, 1);
+		int contCiclosQualificacao = 0;
+		List listPiltos = new ArrayList();
+		listPiltos.add(pilotoTeste);
+		controleJogo.setPilotos(listPiltos);
+		while (pilotoTeste.getNumeroVolta() < 1) {
+			pilotoTeste.processarCiclo(controleJogo);
+			contCiclosQualificacao++;
+		}
+		pilotoTeste.setNumeroVolta(0);
+		pilotoTeste.setCiclosVoltaQualificacao(contCiclosQualificacao);
+		controleJogo.zerarMelhorVolta();
+		modoQualify = false;
+		controleJogo.setPilotos(pilotos);
+		return consumo - pilotoTeste.getCarro().getCombustivel();
 
 	}
 

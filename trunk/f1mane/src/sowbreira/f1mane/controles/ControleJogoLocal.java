@@ -191,7 +191,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaNivelJogo()
 	 */
 	public boolean verificaNivelJogo() {
-		return controleCorrida.verificaNivelCorrida();
+		return Math.random() < getNiveljogo();
 	}
 
 	/**
@@ -248,6 +248,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#totalVoltasCorrida()
 	 */
 	public int totalVoltasCorrida() {
+		if(ControleQualificacao.modoQualify){
+			return 1;
+		}
 		if (controleCorrida == null) {
 			return 0;
 		}
@@ -258,6 +261,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltimasVoltas()
 	 */
 	public boolean verificaUltimasVoltas() {
+		if (ControleQualificacao.modoQualify) {
+			return false;
+		}
 		return ((controleCorrida.getQtdeTotalVoltas() - 3) < getNumVoltaAtual());
 	}
 
@@ -265,6 +271,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaBoxOcupado(sowbreira.f1mane.entidades.Carro)
 	 */
 	public boolean verificaBoxOcupado(Carro carro) {
+		if (ControleQualificacao.modoQualify) {
+			return false;
+		}
 		return controleCorrida.verificaBoxOcupado(carro);
 	}
 
@@ -281,6 +290,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltima()
 	 */
 	public boolean verificaUltima() {
+		if (ControleQualificacao.modoQualify) {
+			return false;
+		}
 		return ((controleCorrida.getQtdeTotalVoltas() - 1) == getNumVoltaAtual());
 	}
 
@@ -501,6 +513,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 *      int)
 	 */
 	public int calculaModificadorComSafetyCar(Piloto piloto, int novoModificador) {
+		if (ControleQualificacao.modoQualify) {
+			return novoModificador;
+		}
 		return controleCorrida.calculaModificadorComSafetyCar(piloto,
 				novoModificador);
 	}
@@ -805,7 +820,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public boolean isModoQualify() {
-		return controleCorrida.getControleQualificacao().isModoQualify();
+		return ControleQualificacao.modoQualify;
 	}
 
 	public void tabelaComparativa() {
@@ -864,6 +879,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 			gerenciadorVisual.getPainelPosicoes().atulizaTabelaPosicoes(
 					pilotos, outro);
 		}
+
+	}
+
+	@Override
+	public void setPilotos(List list) {
+		this.pilotos = list;
 
 	}
 }

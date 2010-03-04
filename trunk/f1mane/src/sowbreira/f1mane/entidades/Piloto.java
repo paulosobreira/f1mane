@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
@@ -676,6 +677,9 @@ public class Piloto implements Serializable {
 
 	private void tentarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
 		if (jogadorHumano || danificado()) {
+			return;
+		}
+		if (ControleQualificacao.modoQualify) {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);

@@ -3,6 +3,7 @@ package sowbreira.f1mane.entidades;
 import java.awt.Color;
 import java.io.Serializable;
 
+import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
@@ -242,6 +243,9 @@ public class Carro implements Serializable {
 	}
 
 	public boolean verificaPneusIncompativeisClima(InterfaceJogo controleJogo) {
+		if (ControleQualificacao.modoQualify) {
+			return false;
+		}
 		if (controleJogo.isChovendo() && !tipoPneu.equals(TIPO_PNEU_CHUVA)) {
 			return true;
 		}
