@@ -813,7 +813,7 @@ public class GerenciadorVisual {
 		};
 		painelInicio.add(label);
 		spinnerQtdeVoltas = new JSpinner();
-		spinnerQtdeVoltas.setValue(new Integer(22));
+		spinnerQtdeVoltas.setValue(new Integer(12));
 		if (!ControleJogoLocal.VALENDO) {
 			spinnerQtdeVoltas.setValue(new Integer(30));
 		}
@@ -1056,7 +1056,7 @@ public class GerenciadorVisual {
 		};
 		grid.add(label);
 		spinnerQtdeVoltas = new JSpinner();
-		spinnerQtdeVoltas.setValue(new Integer(22));
+		spinnerQtdeVoltas.setValue(new Integer(12));
 		if (!ControleJogoLocal.VALENDO) {
 			spinnerQtdeVoltas.setValue(new Integer(30));
 		}
@@ -1176,7 +1176,7 @@ public class GerenciadorVisual {
 	public boolean iniciarJogoSingle() {
 		JPanel painelInicio = new JPanel();
 		gerarPainelJogoSingle(painelInicio);
-		spinnerQtdeVoltas.setValue(new Integer(22));
+		spinnerQtdeVoltas.setValue(new Integer(12));
 		int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
 				painelInicio, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret == JOptionPane.NO_OPTION) {
@@ -1214,7 +1214,7 @@ public class GerenciadorVisual {
 	public boolean iniciarJogoMulti(Campeonato campeonato) {
 		JPanel painelInicio = new JPanel();
 		gerarPainelJogoMulti(painelInicio);
-		spinnerQtdeVoltas.setValue(new Integer(22));
+		spinnerQtdeVoltas.setValue(new Integer(12));
 		if (campeonato != null) {
 			comboBoxTemporadas.setSelectedItem(campeonato.getTemporada());
 			comboBoxTemporadas.setEnabled(false);

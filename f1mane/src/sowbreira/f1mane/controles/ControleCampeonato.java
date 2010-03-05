@@ -252,7 +252,7 @@ public class ControleCampeonato {
 			}
 		});
 		JSpinner spinnerQtdeVoltas = new JSpinner();
-		spinnerQtdeVoltas.setValue(new Integer(22));
+		spinnerQtdeVoltas.setValue(new Integer(12));
 		grid.add(spinnerQtdeVoltas);
 		JComboBox comboBoxNivelCorrida = new JComboBox();
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
