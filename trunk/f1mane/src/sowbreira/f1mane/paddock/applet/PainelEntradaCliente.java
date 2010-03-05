@@ -66,7 +66,7 @@ public class PainelEntradaCliente {
 		};
 		painelInicio.add(label);
 		spinnerQtdeVoltas = new JSpinner();
-		spinnerQtdeVoltas.setValue(new Integer(22));
+		spinnerQtdeVoltas.setValue(new Integer(12));
 		if (!ControleJogoLocal.VALENDO) {
 			spinnerQtdeVoltas.setValue(new Integer(30));
 		}

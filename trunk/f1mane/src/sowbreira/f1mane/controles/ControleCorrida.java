@@ -55,9 +55,7 @@ public class ControleCorrida {
 		controleCiclo = new ControleCiclo(controleJogo, this, tempoCiclo);
 		controleQualificacao = new ControleQualificacao(controleJogo,
 				controleBox);
-		int consumoVolta = controleQualificacao
-				.obterConsumoVolta(distaciaCorrida);
-		tanqueCheio = consumoVolta * (qtdeVoltas + 2);
+		tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
 		definirTanqueCheio();
 	}
 
@@ -75,7 +73,7 @@ public class ControleCorrida {
 	}
 
 	private void definirDurabilidadeMotores() {
-		int valCalc = (qtdeTotalVoltas < 22 ? 22 : qtdeTotalVoltas);
+		int valCalc = (qtdeTotalVoltas < 12 ? 12 : qtdeTotalVoltas);
 		durabilidadeMaxMotor = (int) (distaciaCorrida * 1.85)
 				+ ((73 - valCalc) * 30);
 		int somaPontecias = 0;
