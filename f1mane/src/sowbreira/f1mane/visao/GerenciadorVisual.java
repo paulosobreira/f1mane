@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -119,6 +120,8 @@ public class GerenciadorVisual {
 	private long ultimaChamadaBox;
 	private List listaPilotosCombo;
 	private List listaCarrosCombo;
+	protected JCheckBox semTrocaPneu;
+	protected JCheckBox semReabastacimento;
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
@@ -310,7 +313,7 @@ public class GerenciadorVisual {
 			return;
 		}
 		controleJogo.mudaPilotoSelecionado();
-		
+
 	}
 
 	protected void mudarModoBox() {
@@ -988,7 +991,8 @@ public class GerenciadorVisual {
 	}
 
 	private void gerarPainelJogoMulti(JPanel incialPanel) {
-		final CarregadorRecursos carregadorRecursos = new CarregadorRecursos(true);
+		final CarregadorRecursos carregadorRecursos = new CarregadorRecursos(
+				true);
 		final Map circuitosPilotos = carregadorRecursos
 				.carregarTemporadasPilotos();
 		comboBoxTemporadas = new JComboBox(carregadorRecursos.getVectorTemps());
@@ -1047,7 +1051,7 @@ public class GerenciadorVisual {
 		}, BorderLayout.CENTER);
 
 		JPanel grid = new JPanel();
-		grid.setLayout(new GridLayout(9, 2));
+		grid.setLayout(new GridLayout(11, 2));
 		JLabel label = new JLabel() {
 
 			public String getText() {
@@ -1167,10 +1171,35 @@ public class GerenciadorVisual {
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
 		grid.add(spinnerPotenciaPadraoCarros);
 
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("302");
+			}
+		});
+		semReabastacimento = new JCheckBox();
+		grid.add(semReabastacimento);
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("303");
+			}
+		});
+		semTrocaPneu = new JCheckBox();
+		grid.add(semTrocaPneu);
+
 		grid.setBorder(new TitledBorder(Lang.msg("273")));
 		incialPanel.add(grid, BorderLayout.CENTER);
 		incialPanel.add(pilotoPanel, BorderLayout.EAST);
 
+	}
+
+	public JCheckBox getSemTrocaPneu() {
+		return semTrocaPneu;
+	}
+
+	public JCheckBox getSemReabastacimento() {
+		return semReabastacimento;
 	}
 
 	public boolean iniciarJogoSingle() {
@@ -1280,7 +1309,7 @@ public class GerenciadorVisual {
 		Object[] selec = listPilotosSelecionados.getSelectedValues();
 
 		for (int i = 0; i < selec.length; i++) {
-			JPanel painelJogSel = new JPanel(new GridLayout(7, 2));
+			JPanel painelJogSel = new JPanel(new GridLayout(5, 2));
 			painelJogSel.add(new JLabel() {
 				@Override
 				public String getText() {

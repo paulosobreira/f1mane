@@ -216,9 +216,13 @@ public class ControleBox {
 				qtdeCombust = setupParadaUnica(piloto);
 			}
 		} else {
+			Integer combust = controleJogo.getCombustBox(piloto);
+			if (controleJogo.isSemReabastacimento()) {
+				combust = new Integer(0);
+			}
 			qtdeCombust = controleJogo.setUpJogadorHumano(piloto, controleJogo
-					.getTipoPeneuBox(piloto), controleJogo
-					.getCombustBox(piloto), controleJogo.getAsaBox(piloto));
+					.getTipoPeneuBox(piloto), combust, controleJogo
+					.getAsaBox(piloto));
 		}
 
 		int porcentCombust = (100 * qtdeCombust)
@@ -323,6 +327,9 @@ public class ControleBox {
 		}
 
 		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem) / 100;
+		if (controleJogo.isSemReabastacimento()) {
+			qtddeCombust = 0;
+		}
 		int diffCombust = qtddeCombust - piloto.getCarro().getCombustivel();
 
 		if (diffCombust < 0) {
@@ -354,6 +361,10 @@ public class ControleBox {
 			setupDuasOuMaisParadas(piloto);
 
 		}
+		if (controleJogo.isSemReabastacimento()) {
+			piloto.getCarro().setCombustivel(controleCorrida.getTanqueCheio());
+		}
+
 		if (controleCorrida.getControleClima().isClimaAleatorio()) {
 			try {
 				Thread.sleep(20);
@@ -461,6 +472,9 @@ public class ControleBox {
 		}
 
 		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem) / 100;
+		if (controleJogo.isSemReabastacimento()) {
+			qtddeCombust = 0;
+		}
 		int diffCombust = qtddeCombust - piloto.getCarro().getCombustivel();
 
 		if (diffCombust < 0) {

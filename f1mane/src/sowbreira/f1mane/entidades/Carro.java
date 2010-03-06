@@ -210,15 +210,15 @@ public class Carro implements Serializable {
 		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
-		if ((pneus < 4) || (combust < 4)) {
+		if ((pneus < 10) || (combust < 7)) {
 			return true;
 		}
 
-		if ((pneus < combust) && (pneus < 4)) {
+		if ((pneus < combust) && (pneus < 10)) {
 			return true;
 		}
 
-		if (motor < 5) {
+		if (motor < 7) {
 			return true;
 		}
 		return false;

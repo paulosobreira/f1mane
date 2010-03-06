@@ -693,4 +693,28 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public boolean isSemReabastacimento() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isSemTrocaPneu() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setSemReabastacimento(boolean semReabastacimento) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setSemTrocaPneu(boolean semTrocaPneu) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

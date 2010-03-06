@@ -32,6 +32,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected double niveljogo = InterfaceJogo.MEDIO_NV;
 	protected String nivelCorrida;
 	protected boolean corridaTerminada;
+	protected boolean semTrocaPneu;
+	protected boolean semReabastacimento;
 	protected ControleCorrida controleCorrida;
 	protected GerenciadorVisual gerenciadorVisual;
 	protected ControleEstatisticas controleEstatisticas;
@@ -248,7 +250,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#totalVoltasCorrida()
 	 */
 	public int totalVoltasCorrida() {
-		if(ControleQualificacao.modoQualify){
+		if (ControleQualificacao.modoQualify) {
 			return 1;
 		}
 		if (controleCorrida == null) {
@@ -657,6 +659,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 					tempoQualificacao = new Integer(15);
 				}
 			}
+			if (gerenciadorVisual.getSemReabastacimento().isSelected()) {
+				semReabastacimento = true;
+			}
+			if (gerenciadorVisual.getSemTrocaPneu().isSelected()) {
+				semTrocaPneu = true;
+			}
 		} catch (Exception e) {
 			throw new Exception(Lang.msg("027"));
 		}
@@ -887,4 +895,21 @@ public class ControleJogoLocal extends ControleRecursos implements
 		this.pilotos = list;
 
 	}
+
+	public boolean isSemTrocaPneu() {
+		return semTrocaPneu;
+	}
+
+	public void setSemTrocaPneu(boolean semTrocaPneu) {
+		this.semTrocaPneu = semTrocaPneu;
+	}
+
+	public boolean isSemReabastacimento() {
+		return semReabastacimento;
+	}
+
+	public void setSemReabastacimento(boolean semReabastacimento) {
+		this.semReabastacimento = semReabastacimento;
+	}
+
 }
