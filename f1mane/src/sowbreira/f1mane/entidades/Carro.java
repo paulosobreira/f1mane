@@ -210,6 +210,17 @@ public class Carro implements Serializable {
 		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
+		
+		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
+		
+		if(pneus<1.5*consumoMedioPenus){
+			return true;
+		}
+		
+		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
+		if(combust<1.5*consumoMedioCombust){
+			return true;
+		}
 		if ((pneus < 10) || (combust < 7)) {
 			return true;
 		}
@@ -228,6 +239,19 @@ public class Carro implements Serializable {
 		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
+		
+		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
+		
+		if(pneus<1.5*consumoMedioPenus){
+			return true;
+		}
+		
+		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
+		if(combust<1.5*consumoMedioCombust){
+			return true;
+		}
+
+		
 		if ((pneus < 10) || (combust < 10)) {
 			return true;
 		}

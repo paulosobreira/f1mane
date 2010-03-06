@@ -1046,7 +1046,7 @@ public class GerenciadorVisual {
 		pilotoPanel.add(new JScrollPane(listPilotosSelecionados) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(210, 200);
+				return new Dimension(210, 250);
 			}
 		}, BorderLayout.CENTER);
 

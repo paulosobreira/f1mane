@@ -210,7 +210,8 @@ public class ControleBox {
 				} else {
 					qtdeCombust = setupDuasOuMaisParadas(piloto);
 				}
-			} else if (UMA_OU_MAIS_PARADAS.equals(piloto.getSetUpIncial())) {
+			} else if (UMA_OU_MAIS_PARADAS.equals(piloto.getSetUpIncial())
+					|| controleJogo.isSemReabastacimento()) {
 				qtdeCombust = setupDuasOuMaisParadas(piloto);
 			} else {
 				qtdeCombust = setupParadaUnica(piloto);
@@ -306,8 +307,8 @@ public class ControleBox {
 
 		int percentagem = 0;
 
-		int consumoMedio = (int) piloto.obterConsumoMedio();
-		piloto.limparConsumoMedio();
+		int consumoMedio = (int) piloto.calculaConsumoMedioCombust();
+		piloto.limparConsumoMedioCombust();
 		if (consumoMedio == 0) {
 			if (piloto.getQtdeParadasBox() == 0) {
 				percentagem = 40 + ((int) (Math.random() * 50));
@@ -351,15 +352,18 @@ public class ControleBox {
 
 			return;
 		}
-
-		if ((Math.random() > .5) && (posicao > 8)) {
-			piloto.setSetUpIncial(UMA_PARADA);
+		if (controleJogo.isSemReabastacimento()) {
 			setupParadaUnica(piloto);
-
 		} else {
-			piloto.setSetUpIncial(UMA_OU_MAIS_PARADAS);
-			setupDuasOuMaisParadas(piloto);
+			if ((Math.random() > .5) && (posicao > 8)) {
+				piloto.setSetUpIncial(UMA_PARADA);
+				setupParadaUnica(piloto);
 
+			} else {
+				piloto.setSetUpIncial(UMA_OU_MAIS_PARADAS);
+				setupDuasOuMaisParadas(piloto);
+
+			}
 		}
 		if (controleJogo.isSemReabastacimento()) {
 			piloto.getCarro().setCombustivel(controleCorrida.getTanqueCheio());
@@ -451,9 +455,14 @@ public class ControleBox {
 
 		int percentagem = 0;
 
-		int consumoMedio = (int) piloto.obterConsumoMedio();
-		piloto.limparConsumoMedio();
-		if (consumoMedio == 0) {
+		int consumoMedioCombustivel = (int) piloto.calculaConsumoMedioCombust();
+
+		if (!controleJogo.isSemReabastacimento())
+			piloto.limparConsumoMedioCombust();
+		if (!controleJogo.isSemTrocaPneu())
+			piloto.limparConsumoMedioPneus();
+
+		if (consumoMedioCombustivel == 0) {
 			if (piloto.getQtdeParadasBox() == 0) {
 				percentagem = 40 + ((int) (Math.random() * 50));
 			} else if (piloto.getQtdeParadasBox() == 1) {
@@ -468,7 +477,7 @@ public class ControleBox {
 		} else {
 			int qtdeVoltRest = controleJogo.getQtdeTotalVoltas()
 					- controleJogo.getNumVoltaAtual();
-			percentagem = (consumoMedio * (qtdeVoltRest / 2)) + 5;
+			percentagem = (consumoMedioCombustivel * (qtdeVoltRest / 2)) + 5;
 		}
 
 		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem) / 100;
