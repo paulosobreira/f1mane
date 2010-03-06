@@ -26,6 +26,8 @@ public class Piloto implements Serializable {
 	public static final String LENTO = "LENTO";
 	private List ultsConsumosCombustivel = new LinkedList();
 	private Integer ultimoConsumoCombust;
+	private List ultsConsumosPneu = new LinkedList();
+	private Integer ultimoConsumoPneu;
 	protected String tipoPeneuJogador;
 	protected String asaJogador;
 	protected Integer combustJogador;
@@ -393,15 +395,25 @@ public class Piloto implements Serializable {
 		 * Completou Volta
 		 */
 		if (diff >= 0) {
-			int por = getCarro().porcentagemCombustivel();
+			int pCombust = getCarro().porcentagemCombustivel();
 			if (ultimoConsumoCombust == null) {
-				ultimoConsumoCombust = new Integer(por);
+				ultimoConsumoCombust = new Integer(pCombust);
 			} else {
-				if (ultimoConsumoCombust.intValue() > por) {
+				if (ultimoConsumoCombust.intValue() > pCombust) {
 					ultsConsumosCombustivel.add(ultimoConsumoCombust.intValue()
-							- por);
-					ultimoConsumoCombust = new Integer(por);
+							- pCombust);
+					ultimoConsumoCombust = new Integer(pCombust);
 
+				}
+			}
+			int pPneu = getCarro().porcentagemDesgastePeneus();
+			if (ultimoConsumoPneu == null) {
+				ultimoConsumoPneu = new Integer(pPneu);
+			} else {
+				if (ultimoConsumoPneu.intValue() > pPneu) {
+					ultsConsumosPneu.add(ultimoConsumoCombust.intValue()
+							- pPneu);
+					ultimoConsumoPneu = new Integer(pPneu);
 				}
 			}
 
@@ -521,7 +533,12 @@ public class Piloto implements Serializable {
 		} else {
 			box = false;
 		}
-
+		
+		double consumoMedioPneus = calculaConsumoMedioPneu();
+		if(pneus<1.5*consumoMedioPneus){
+			box = true;
+		}
+		
 		if (Carro.TIPO_PNEU_DURO.equals(carro.getTipoPneu()) && (pneus < 10)) {
 			box = true;
 		}
@@ -563,14 +580,10 @@ public class Piloto implements Serializable {
 
 		if (controleJogo.verificaUltimasVoltas() && (combust > 3)
 				&& (combust <= 5) && (pneus <= 12) && (pneus > 5)) {
-			if (!Messagens.IR_BOX_FINAL_CORRIDA.equals(msgsBox
-					.get(Messagens.IR_BOX_FINAL_CORRIDA))) {
-				controleJogo.info(Html.orange(Lang.msg("047",
-						new String[] { getNome() })));
-				msgsBox.put(Messagens.IR_BOX_FINAL_CORRIDA,
-						Messagens.IR_BOX_FINAL_CORRIDA);
-			}
-
+			controleJogo.info(Html.orange(Lang.msg("047",
+					new String[] { getNome() })));
+			msgsBox.put(Messagens.IR_BOX_FINAL_CORRIDA,
+					Messagens.IR_BOX_FINAL_CORRIDA);
 			box = false;
 		}
 
@@ -1114,7 +1127,7 @@ public class Piloto implements Serializable {
 		this.stress = stress;
 	}
 
-	public double obterConsumoMedio() {
+	public double calculaConsumoMedioCombust() {
 		double valmed = 0;
 		for (Iterator iterator = ultsConsumosCombustivel.iterator(); iterator
 				.hasNext();) {
@@ -1126,10 +1139,26 @@ public class Piloto implements Serializable {
 		return valmed / ultsConsumosCombustivel.size();
 	}
 
-	public void limparConsumoMedio() {
+	public double calculaConsumoMedioPneu() {
+		double valmed = 0;
+		for (Iterator iterator = ultsConsumosPneu.iterator(); iterator
+				.hasNext();) {
+			Integer longVal = (Integer) iterator.next();
+			valmed += longVal.doubleValue();
+		}
+		if (ultsConsumosPneu.isEmpty())
+			return 0;
+		return valmed / ultsConsumosCombustivel.size();
+	}
+
+	public void limparConsumoMedioCombust() {
 		ultimoConsumoCombust = null;
 		ultsConsumosCombustivel.clear();
+	}
 
+	public void limparConsumoMedioPneus() {
+		ultimoConsumoPneu = null;
+		ultsConsumosPneu.clear();
 	}
 
 }
