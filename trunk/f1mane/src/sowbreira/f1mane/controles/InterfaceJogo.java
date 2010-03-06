@@ -14,13 +14,21 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-	public static boolean VALENDO = false;
+	public static boolean VALENDO = true;
 	public static String NORMAL = "NORMAL";
 	public static String FACIL = "FACIL";
 	public static String DIFICIL = "DIFICIL";
 	public static double FACIL_NV = .3;
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
+
+	public boolean isSemTrocaPneu();
+
+	public void setSemTrocaPneu(boolean semTrocaPneu);
+
+	public boolean isSemReabastacimento();
+
+	public void setSemReabastacimento(boolean semReabastacimento);
 
 	public Integer getCombustBox(Piloto piloto);
 

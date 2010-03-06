@@ -516,7 +516,7 @@ public class Piloto implements Serializable {
 		int pneus = getCarro().porcentagemDesgastePeneus();
 		int combust = getCarro().porcentagemCombustivel();
 
-		if ((combust < 10) && !controleJogo.isCorridaTerminada()) {
+		if ((combust < 15) && !controleJogo.isCorridaTerminada()) {
 			box = true;
 		} else {
 			box = false;
@@ -528,7 +528,7 @@ public class Piloto implements Serializable {
 
 		if ((Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu()) || Carro.TIPO_PNEU_CHUVA
 				.equals(carro.getTipoPneu()))
-				&& (pneus < 20)) {
+				&& (pneus < 25)) {
 			box = true;
 		}
 
