@@ -535,7 +535,7 @@ public class Piloto implements Serializable {
 		}
 		
 		double consumoMedioPneus = calculaConsumoMedioPneu();
-		if(pneus<1.5*consumoMedioPneus){
+		if(pneus<1.8*consumoMedioPneus){
 			box = true;
 		}
 		
