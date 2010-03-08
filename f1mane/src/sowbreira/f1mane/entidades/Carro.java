@@ -210,15 +210,15 @@ public class Carro implements Serializable {
 		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
-		
+
 		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
-		
-		if(pneus<1.5*consumoMedioPenus){
+
+		if (pneus < 1.5 * consumoMedioPenus) {
 			return true;
 		}
-		
+
 		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
-		if(combust<1.5*consumoMedioCombust){
+		if (combust < 1.5 * consumoMedioCombust) {
 			return true;
 		}
 		if ((pneus < 10) || (combust < 7)) {
@@ -239,19 +239,18 @@ public class Carro implements Serializable {
 		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
-		
+
 		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
-		
-		if(pneus<1.5*consumoMedioPenus){
-			return true;
-		}
-		
-		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
-		if(combust<1.5*consumoMedioCombust){
+
+		if (pneus < 1.5 * consumoMedioPenus) {
 			return true;
 		}
 
-		
+		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
+		if (combust < 1.5 * consumoMedioCombust) {
+			return true;
+		}
+
 		if ((pneus < 10) || (combust < 10)) {
 			return true;
 		}
@@ -329,7 +328,7 @@ public class Carro implements Serializable {
 			mod = 0.4;
 		}
 
-		if (Math.random() > .5 || !controleJogo.verificaNivelJogo()) {
+		if (Math.random() > .7 || !controleJogo.verificaNivelJogo()) {
 			return novoModificador;
 		}
 		if (no.verificaRetaOuLargada()) {
@@ -513,6 +512,9 @@ public class Carro implements Serializable {
 	private int calculaModificadorPneu(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
 		int porcent = porcentagemDesgastePeneus();
+		if (Math.random() > .855) {
+			return novoModificador;
+		}
 		double indicativo = .7;
 		if (agressivo) {
 			indicativo = .5;
@@ -523,11 +525,8 @@ public class Carro implements Serializable {
 				novoModificador += 1;
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
-			if (no.verificaCruvaAlta() && (porcent > 15) && (porcent < 85)
+			if (no.verificaCruvaBaixa() && (porcent > 30) && (porcent < 70)
 					&& (Math.random() > indicativo)) {
-				novoModificador += 1;
-			} else if (no.verificaCruvaBaixa() && (porcent > 25)
-					&& (porcent < 75) && (Math.random() > indicativo)) {
 				novoModificador += 1;
 			}
 
