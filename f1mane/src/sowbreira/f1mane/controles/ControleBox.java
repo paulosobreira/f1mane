@@ -164,7 +164,9 @@ public class ControleBox {
 			List boxList = controleJogo.getNosDoBox();
 			No box = (No) boxEquipes.get(piloto.getCarro());
 			if (box.equals(piloto.getNoAtual())
-					|| piloto.getNoAtual().isNoEntradaBox()) {
+					|| (((noAnt != null && noAnt.isNoEntradaBox())
+							|| piloto.getNoAtual().isNoEntradaBox() || (noPost != null && noPost
+							.isNoEntradaBox())))) {
 				piloto.setPtosBox(piloto.getPtosBox() + 1);
 			} else {
 				box = piloto.getNoAtual();
