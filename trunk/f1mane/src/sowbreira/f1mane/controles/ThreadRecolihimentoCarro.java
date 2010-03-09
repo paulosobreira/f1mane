@@ -27,7 +27,7 @@ public class ThreadRecolihimentoCarro extends Thread {
 		this.piloto = piloto;
 		this.safetyCar = safetyCar;
 		delayRecolhimento = controleJogo.getQtdeTotalVoltas() * 10000
-				+ ((int) (Math.random() * 150000));
+				+ ((int) (Math.random() * 100000));
 	}
 
 	public void run() {
