@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import sowbreira.f1mane.controles.ControleCampeonato;
@@ -192,11 +193,13 @@ public class MainFrame extends JFrame {
 		pt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Lang.mudarIdioma("pt");
+				SwingUtilities.updateComponentTreeUI(MainFrame.this);
 			}
 		});
 		en.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Lang.mudarIdioma("en");
+				SwingUtilities.updateComponentTreeUI(MainFrame.this);
 			}
 		});
 
