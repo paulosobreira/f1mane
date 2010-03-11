@@ -1186,6 +1186,7 @@ public class GerenciadorVisual {
 			}
 		});
 		semTrocaPneu = new JCheckBox();
+		semTrocaPneu.setEnabled(false);
 		grid.add(semTrocaPneu);
 
 		grid.setBorder(new TitledBorder(Lang.msg("273")));
