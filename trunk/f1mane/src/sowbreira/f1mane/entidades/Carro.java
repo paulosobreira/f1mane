@@ -506,6 +506,7 @@ public class Carro implements Serializable {
 		if (percent < 0) {
 			combustivel = 0;
 			setDanificado(PANE_SECA);
+			getPiloto().setDesqualificado(true);
 			paneSeca = true;
 		}
 
