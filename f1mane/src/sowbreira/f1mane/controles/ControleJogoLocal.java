@@ -765,7 +765,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		String tipoPneu = (String) tpPneu;
 		Integer qtdeCombustPorcent = (Integer) combust;
 
-		pilotoJogador.getCarro().trocarPneus(tipoPneu,
+		pilotoJogador.getCarro().trocarPneus(this,tipoPneu,
 				controleCorrida.getDistaciaCorrida());
 
 		int undsComnustAbastecer = (controleCorrida.getTanqueCheio() * qtdeCombustPorcent

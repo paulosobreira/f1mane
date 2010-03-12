@@ -12,7 +12,7 @@
 
 	<property environment="env" />
 	<path id="classpath.compilacao">
-		<fileset dir="${env.TOMCAT_HOME}/common/lib">
+		<fileset dir="${env.TOMCAT_HOME}/lib">
 			<include name="*.jar" />
 		</fileset>
 		<fileset dir="paddock/WEB-INF/lib">

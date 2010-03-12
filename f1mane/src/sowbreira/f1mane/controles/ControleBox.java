@@ -297,11 +297,11 @@ public class ControleBox {
 
 	public int setupParadaUnica(Piloto piloto) {
 		if (controleJogo.isChovendo()) {
-			piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA,
+			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 			piloto.setSetUpIncial(UMA_OU_MAIS_PARADAS);
 		} else {
-			piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_DURO,
+			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_DURO,
 					controleCorrida.getDistaciaCorrida());
 		}
 		if (piloto.testeHabilidadePiloto())
@@ -380,18 +380,21 @@ public class ControleBox {
 			int val = 1 + ((int) (Math.random() * 3));
 			switch (val) {
 			case 1:
-				piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_DURO,
+				piloto.getCarro().trocarPneus(controleJogo,
+						Carro.TIPO_PNEU_DURO,
 						controleCorrida.getDistaciaCorrida());
 
 				break;
 			case 2:
-				piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_MOLE,
+				piloto.getCarro().trocarPneus(controleJogo,
+						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
 
 				break;
 
 			case 3:
-				piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA,
+				piloto.getCarro().trocarPneus(controleJogo,
+						Carro.TIPO_PNEU_CHUVA,
 						controleCorrida.getDistaciaCorrida());
 
 				break;
@@ -446,10 +449,10 @@ public class ControleBox {
 
 	public int setupDuasOuMaisParadas(Piloto piloto) {
 		if (controleJogo.isChovendo()) {
-			piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_CHUVA,
+			piloto.getCarro().trocarPneus(controleJogo,Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			piloto.getCarro().trocarPneus(Carro.TIPO_PNEU_MOLE,
+			piloto.getCarro().trocarPneus(controleJogo,Carro.TIPO_PNEU_MOLE,
 					controleCorrida.getDistaciaCorrida());
 		}
 		if (piloto.testeHabilidadePiloto())

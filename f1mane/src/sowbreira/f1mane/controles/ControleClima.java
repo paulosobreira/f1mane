@@ -99,6 +99,8 @@ public class ControleClima {
 					+ ((int) (Math.random() * metadeVoltas));
 			return;
 		}
+		if (threadMudancaClima != null && !threadMudancaClima.isProcessada())
+			return;
 		threadMudancaClima = new ThreadMudancaClima(this);
 		threadMudancaClima.start();
 	}

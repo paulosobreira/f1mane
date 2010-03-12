@@ -421,9 +421,15 @@ public class GerenciadorVisual {
 					+ " "
 					+ controleJogo.getNumVoltaAtual()
 					+ "/"
-					+ controleJogo.totalVoltasCorrida();
+					+ controleJogo.totalVoltasCorrida() + " ";
 
-			text += Lang.msg("144") + controleJogo.getNivelCorrida();
+			text += Lang.msg("245") + " : " + controleJogo.getNivelCorrida();
+			if (controleJogo.isSemReabastacimento()) {
+				text += Lang.msg("304");
+			}
+			if (controleJogo.isSemTrocaPneu()) {
+				text += Lang.msg("305");
+			}
 			if (controleJogo.isSafetyCarNaPista()) {
 				text += Lang.msg("145");
 			}
@@ -1186,7 +1192,7 @@ public class GerenciadorVisual {
 			}
 		});
 		semTrocaPneu = new JCheckBox();
-		semTrocaPneu.setEnabled(false);
+
 		grid.add(semTrocaPneu);
 
 		grid.setBorder(new TitledBorder(Lang.msg("273")));
