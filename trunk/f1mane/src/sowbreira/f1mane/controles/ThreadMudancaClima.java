@@ -8,6 +8,15 @@ import br.nnpe.Logger;
  */
 public class ThreadMudancaClima extends Thread {
 	private ControleClima controleClima;
+	private boolean processada;
+
+	public boolean isProcessada() {
+		return processada;
+	}
+
+	public void setProcessada(boolean processada) {
+		this.processada = processada;
+	}
 
 	/**
 	 * @param controleClima
@@ -38,6 +47,7 @@ public class ThreadMudancaClima extends Thread {
 
 			}
 			controleClima.informaMudancaClima();
+			processada = true;
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}

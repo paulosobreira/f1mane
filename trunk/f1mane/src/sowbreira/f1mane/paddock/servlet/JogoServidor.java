@@ -307,7 +307,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 								.setCombustivel(
 										dadosParticiparJogo.getCombustivel()
 												.intValue());
-						piloto.getCarro().trocarPneus(
+						piloto.getCarro().trocarPneus(this,
 								dadosParticiparJogo.getTpPnueu(),
 								controleCorrida.getDistaciaCorrida());
 

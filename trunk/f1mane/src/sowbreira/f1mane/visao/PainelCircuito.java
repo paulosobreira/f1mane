@@ -17,6 +17,8 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import br.nnpe.Util;
+
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
@@ -167,6 +169,25 @@ public class PainelCircuito extends JPanel {
 			}
 		}
 
+	}
+
+	private void desenhaFaisca(Graphics2D g2d, Point p) {
+		if (p == null) {
+			return;
+		}
+		// p = new Point(150, 150);
+		// g2d.drawOval(p.x, p.y, 2, 2);
+		Color color = g2d.getColor();
+		for (int i = 0; i < 7; i++) {
+			if (Math.random() > .5) {
+				g2d.setColor(Color.YELLOW);
+				int valx = Util.intervalo(5, 15);
+				int valy = Util.intervalo(-5, 15);
+				g2d.drawLine(p.x + valx, p.y + valy, p.x + i * valx, p.y + valy
+						- Util.intervalo(10, 20));
+			}
+		}
+		g2d.setColor(color);
 	}
 
 	private void desenhaInfoAdd(Graphics2D g2d) {
@@ -469,6 +490,7 @@ public class PainelCircuito extends JPanel {
 		if (carroFrente != null) {
 			carroimg = CarregadorRecursos.carregaImgCarro(carroFrente.getImg());
 			carSelX = carroimg.getWidth() / 2;
+
 			bounce = calculaBounce(carroFrente);
 			if (Math.random() > 0.5) {
 				carSelX += bounce;
@@ -501,7 +523,14 @@ public class PainelCircuito extends JPanel {
 			}
 			newY = carroimg.getHeight() > 36 ? carSelY
 					- (carroimg.getHeight() - 36) : carSelY;
+			if (carroFrente.getPiloto().isAgressivo()
+					&& carroFrente.getGiro() == Carro.GIRO_MAX_VAL) {
+				desenhaFaisca(g2d, new Point(
+						carSelX + carroimg.getWidth() - 10, newY
+								+ carroimg.getHeight() / 2));
+			}
 			g2d.drawImage(carroimg, null, carSelX, newY);
+
 			g2d.fillRoundRect(dstX - 2, dstY - 12, 60, 15, 10, 10);
 			if (diff >= 3) {
 				g2d.setColor(Color.BLACK);
@@ -528,7 +557,13 @@ public class PainelCircuito extends JPanel {
 		}
 		newY = carroimg.getHeight() > 36 ? carSelY
 				- (carroimg.getHeight() - 36) : carSelY;
+		if (psel.getCarro().getPiloto().isAgressivo()
+				&& psel.getCarro().getGiro() == Carro.GIRO_MAX_VAL) {
+			desenhaFaisca(g2d, new Point(carSelX + carroimg.getWidth() - 10,
+					newY + carroimg.getHeight() / 2));
+		}
 		g2d.drawImage(carroimg, null, carSelX, newY);
+
 		Carro carroAtraz = controleJogo.obterCarroAtraz(psel);
 		if (carroAtraz != null) {
 			carroimg = CarregadorRecursos.carregaImgCarro(carroAtraz.getImg());
@@ -568,7 +603,14 @@ public class PainelCircuito extends JPanel {
 			}
 			newY = carroimg.getHeight() > 36 ? carSelY
 					- (carroimg.getHeight() - 36) : carSelY;
+			if (carroAtraz.getPiloto().isAgressivo()
+					&& carroAtraz.getGiro() == Carro.GIRO_MAX_VAL) {
+				desenhaFaisca(g2d, new Point(
+						carSelX + carroimg.getWidth() - 10, newY
+								+ carroimg.getHeight() / 2));
+			}
 			g2d.drawImage(carroimg, null, carSelX, newY);
+
 			g2d.fillRoundRect(dstX - 2, dstY - 12, 60, 15, 10, 10);
 			if (diff >= 3) {
 				g2d.setColor(Color.BLACK);

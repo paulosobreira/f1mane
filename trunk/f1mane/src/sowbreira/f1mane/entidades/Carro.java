@@ -172,7 +172,14 @@ public class Carro implements Serializable {
 		return tipoPneu;
 	}
 
-	public void trocarPneus(String tipoPneu, int distaciaCorrida) {
+	public void trocarPneus(InterfaceJogo interfaceJogo, String tipoPneu,
+			int distaciaCorrida) {
+		if (interfaceJogo.isSemTrocaPneu()) {
+			if (!(interfaceJogo.isChovendo()
+					|| TIPO_PNEU_CHUVA.equals(tipoPneu) || pneus <= 0)) {
+				return;
+			}
+		}
 		this.tipoPneu = tipoPneu;
 
 		if (Carro.TIPO_PNEU_DURO.equals(tipoPneu)) {
@@ -512,7 +519,10 @@ public class Carro implements Serializable {
 	private int calculaModificadorPneu(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
 		int porcent = porcentagemDesgastePeneus();
-		if (Math.random() > .855) {
+		if (Math.random() > .8) {
+			return novoModificador;
+		}
+		if (controleJogo.isSemTrocaPneu() && Math.random() > .4) {
 			return novoModificador;
 		}
 		double indicativo = .7;
