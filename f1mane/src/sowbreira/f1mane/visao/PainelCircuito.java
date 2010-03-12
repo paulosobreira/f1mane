@@ -523,7 +523,8 @@ public class PainelCircuito extends JPanel {
 			}
 			newY = carroimg.getHeight() > 36 ? carSelY
 					- (carroimg.getHeight() - 36) : carSelY;
-			if (carroFrente.getPiloto().isAgressivo()
+			if (!carroFrente.getPiloto().isDesqualificado()
+					&& carroFrente.getPiloto().isAgressivo()
 					&& carroFrente.getGiro() == Carro.GIRO_MAX_VAL) {
 				desenhaFaisca(g2d, new Point(
 						carSelX + carroimg.getWidth() - 10, newY
@@ -557,7 +558,8 @@ public class PainelCircuito extends JPanel {
 		}
 		newY = carroimg.getHeight() > 36 ? carSelY
 				- (carroimg.getHeight() - 36) : carSelY;
-		if (psel.getCarro().getPiloto().isAgressivo()
+		if (!psel.isDesqualificado()
+				&& psel.getCarro().getPiloto().isAgressivo()
 				&& psel.getCarro().getGiro() == Carro.GIRO_MAX_VAL) {
 			desenhaFaisca(g2d, new Point(carSelX + carroimg.getWidth() - 10,
 					newY + carroimg.getHeight() / 2));
@@ -603,7 +605,8 @@ public class PainelCircuito extends JPanel {
 			}
 			newY = carroimg.getHeight() > 36 ? carSelY
 					- (carroimg.getHeight() - 36) : carSelY;
-			if (carroAtraz.getPiloto().isAgressivo()
+			if (!carroAtraz.getPiloto().isDesqualificado()
+					&& carroAtraz.getPiloto().isAgressivo()
 					&& carroAtraz.getGiro() == Carro.GIRO_MAX_VAL) {
 				desenhaFaisca(g2d, new Point(
 						carSelX + carroimg.getWidth() - 10, newY
@@ -629,6 +632,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private int calculaBounce(Carro carro) {
+		if (carro.getPiloto().isDesqualificado()) {
+			return 0;
+		}
 		if (qtdeLuzesAcesas > 0 || carro.getPiloto().isBox()) {
 			return Math.random() > .7 ? 1 : 0;
 		} else if (carro.getPiloto().isAgressivo() == false) {
