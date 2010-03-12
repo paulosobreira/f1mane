@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class Html {
 
-	static int superSize = 5;
+	static int superSize = 4;
 
 	/**
 	 * Este método recebe uma String como parâmetro e retorna uma String com uma
