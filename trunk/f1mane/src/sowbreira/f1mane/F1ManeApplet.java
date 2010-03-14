@@ -5,6 +5,7 @@ import javax.swing.JApplet;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado Em 12:05:02
@@ -18,6 +19,10 @@ public class F1ManeApplet extends JApplet {
 	}
 
 	private void initComponents() {
+		String param = getParameter("lang");
+		if (!Util.isNullOrEmpty(param)) {
+			Lang.mudarIdioma(param);
+		}
 		jPanel1 = new javax.swing.JPanel();
 		jButton1 = new javax.swing.JButton() {
 			@Override
@@ -25,7 +30,6 @@ public class F1ManeApplet extends JApplet {
 				return Lang.msg("297");
 			}
 		};
-		jButton1.setText("Iniciar Janela Jogo");
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton1ActionPerformed(evt);
