@@ -326,7 +326,7 @@ public class ControleBox {
 		} else {
 			int qtdeVoltRest = controleJogo.getQtdeTotalVoltas()
 					- controleJogo.getNumVoltaAtual();
-			percentagem = (consumoMedio * (qtdeVoltRest)) + 5;
+			percentagem = (consumoMedio * (qtdeVoltRest)) + 15;
 		}
 
 		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem) / 100;
@@ -449,10 +449,10 @@ public class ControleBox {
 
 	public int setupDuasOuMaisParadas(Piloto piloto) {
 		if (controleJogo.isChovendo()) {
-			piloto.getCarro().trocarPneus(controleJogo,Carro.TIPO_PNEU_CHUVA,
+			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			piloto.getCarro().trocarPneus(controleJogo,Carro.TIPO_PNEU_MOLE,
+			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_MOLE,
 					controleCorrida.getDistaciaCorrida());
 		}
 		if (piloto.testeHabilidadePiloto())
@@ -482,7 +482,7 @@ public class ControleBox {
 		} else {
 			int qtdeVoltRest = controleJogo.getQtdeTotalVoltas()
 					- controleJogo.getNumVoltaAtual();
-			percentagem = (consumoMedioCombustivel * (qtdeVoltRest / 2)) + 5;
+			percentagem = (consumoMedioCombustivel * (qtdeVoltRest / 2)) + 10;
 		}
 
 		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem) / 100;
