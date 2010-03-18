@@ -302,7 +302,7 @@ public class ControleCampeonato {
 			return;
 		}
 		Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
-		if (qtdeVolta == null || qtdeVolta.intValue() < 22) {
+		if (qtdeVolta == null || qtdeVolta.intValue() < 12) {
 			JOptionPane.showMessageDialog(mainFrame, Lang.msg("110"), Lang
 					.msg("110"), JOptionPane.ERROR_MESSAGE);
 			return;
