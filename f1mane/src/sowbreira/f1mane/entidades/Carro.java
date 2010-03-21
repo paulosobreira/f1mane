@@ -335,7 +335,7 @@ public class Carro implements Serializable {
 			mod = 0.4;
 		}
 
-		if (Math.random() > .7 || !controleJogo.verificaNivelJogo()) {
+		if (Math.random() > .8) {
 			return novoModificador;
 		}
 		if (no.verificaRetaOuLargada()) {
@@ -520,7 +520,7 @@ public class Carro implements Serializable {
 	private int calculaModificadorPneu(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
 		int porcent = porcentagemDesgastePeneus();
-		if (Math.random() > .8) {
+		if (Math.random() > .9) {
 			return novoModificador;
 		}
 		if (controleJogo.isSemTrocaPneu() && Math.random() > .4) {
