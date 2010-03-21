@@ -507,18 +507,18 @@ public class PainelCircuito extends JPanel {
 			} else if (diff <= 1) {
 				g2d.setColor(red);
 			}
-
+			int halfCarWidth = carroimg.getWidth() / 2;
 			if (diff < 3 && diff > 2.5) {
-				carSelX += 30;
+				carSelX += 30 - halfCarWidth;
 				dstX += 25;
 			} else if (diff <= 2.5 && diff > 1) {
-				carSelX += 50;
+				carSelX += 50 - halfCarWidth;
 				dstX += 45;
 			} else if (diff <= 1 && diff > .5) {
-				carSelX += 90;
+				carSelX += 90 - halfCarWidth;
 				dstX += 75;
 			} else if (diff <= .5) {
-				carSelX += 120;
+				carSelX += 120 - halfCarWidth;
 				dstX += 90;
 			}
 			newY = carroimg.getHeight() > 36 ? carSelY
@@ -589,18 +589,18 @@ public class PainelCircuito extends JPanel {
 			} else if (diff <= 1) {
 				g2d.setColor(red);
 			}
-
+			int halfCarWidth = carroimg.getWidth() / 2;
 			if (diff < 3 && diff > 2.5) {
-				carSelX -= 30;
+				carSelX -= (30 - halfCarWidth);
 				dstX -= 20;
 			} else if (diff <= 2.5 && diff > 1) {
-				carSelX -= 50;
+				carSelX -= (50 - halfCarWidth);
 				dstX -= 40;
 			} else if (diff <= 1 && diff > .5) {
-				carSelX -= 70;
+				carSelX -= (70 - halfCarWidth);
 				dstX -= 60;
 			} else if (diff <= .5) {
-				carSelX -= 110;
+				carSelX -= (110 - halfCarWidth);
 				dstX -= 70;
 			}
 			newY = carroimg.getHeight() > 36 ? carSelY
