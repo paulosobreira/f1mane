@@ -507,18 +507,18 @@ public class PainelCircuito extends JPanel {
 			} else if (diff <= 1) {
 				g2d.setColor(red);
 			}
-			int halfCarWidth = carroimg.getWidth() / 2;
-			if (diff < 3 && diff > 2.5) {
-				carSelX += 30 - halfCarWidth;
+			int halfCarWidth = carroimg.getWidth() / 3;
+			if (diff > 3) {
+				carSelX += (30 - halfCarWidth * 2);
 				dstX += 25;
-			} else if (diff <= 2.5 && diff > 1) {
-				carSelX += 50 - halfCarWidth;
+			} else if (diff < 3 && diff > 1) {
+				carSelX += (50 - halfCarWidth);
 				dstX += 45;
 			} else if (diff <= 1 && diff > .5) {
-				carSelX += 90 - halfCarWidth;
+				carSelX += (90 - halfCarWidth);
 				dstX += 75;
 			} else if (diff <= .5) {
-				carSelX += 120 - halfCarWidth;
+				carSelX += (120 - halfCarWidth);
 				dstX += 90;
 			}
 			newY = carroimg.getHeight() > 36 ? carSelY
@@ -589,11 +589,11 @@ public class PainelCircuito extends JPanel {
 			} else if (diff <= 1) {
 				g2d.setColor(red);
 			}
-			int halfCarWidth = carroimg.getWidth() / 2;
-			if (diff < 3 && diff > 2.5) {
-				carSelX -= (30 - halfCarWidth);
+			int halfCarWidth = carroimg.getWidth() / 3;
+			if (diff >= 3) {
+				carSelX -= (30 - halfCarWidth * 2);
 				dstX -= 20;
-			} else if (diff <= 2.5 && diff > 1) {
+			} else if (diff < 3 && diff > 1) {
 				carSelX -= (50 - halfCarWidth);
 				dstX -= 40;
 			} else if (diff <= 1 && diff > .5) {
