@@ -1,17 +1,22 @@
 package sowbreira.f1mane.editor;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,6 +47,7 @@ import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado Em 10:51:26
@@ -62,6 +68,9 @@ public class MainPanelEditor extends JPanel {
 	int ultimoItemPistaSelecionado = -1;
 	private JRadioButton pistasButton = new JRadioButton();
 	private JRadioButton boxButton = new JRadioButton();
+	private JScrollPane scrollPane;
+	private double zoom = 1;
+	private boolean inflado;
 
 	public MainPanelEditor(String backGroundStr, JFrame frame) {
 		backGround = CarregadorRecursos.carregaBackGround(backGroundStr, this,
@@ -280,13 +289,13 @@ public class MainPanelEditor extends JPanel {
 	private void gerarLayout(JFrame frame, JPanel controlPanel,
 			JPanel buttonsPanel) {
 		frame.getContentPane().removeAll();
-
 		frame.setLayout(new BorderLayout());
-		this.setMinimumSize(new Dimension(backGround.getWidth(), backGround
+		this.setPreferredSize(new Dimension(backGround.getWidth(), backGround
 				.getHeight()));
 		frame.getContentPane().add(controlPanel, BorderLayout.CENTER);
 		frame.getContentPane().add(this, BorderLayout.WEST);
 		frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
+
 		frame.pack();
 	}
 
@@ -378,10 +387,81 @@ public class MainPanelEditor extends JPanel {
 		}
 	}
 
+	private void setarHints(Graphics2D g2d) {
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+				RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+	}
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
+		setarHints(g2d);
+		if (inflado) {
+			desenhaPainelInflado(g2d);
+		} else {
+			desenhaPainelClassico(g2d);
+		}
+
+	}
+
+	private void desenhaPainelInflado(Graphics2D g2d) {
+		No oldNo = null;
+		BasicStroke pista = new BasicStroke(Util.inte(45 * zoom),
+				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		BasicStroke trilho = new BasicStroke(1);
+
+		for (Iterator iter = circuito.getPistaInflada().iterator(); iter
+				.hasNext();) {
+			No no = (No) iter.next();
+			if (oldNo == null) {
+				oldNo = no;
+			} else {
+				g2d.setColor(Color.LIGHT_GRAY);
+				g2d.setStroke(pista);
+				g2d.drawLine(Util.inte(oldNo.getX() * zoom), Util.inte(oldNo
+						.getY()
+						* zoom), Util.inte(no.getX() * zoom), Util.inte(no
+						.getY()
+						* zoom));
+
+				oldNo = no;
+			}
+		}
+
+		for (Iterator iter = circuito.getPistaInflada().iterator(); iter
+				.hasNext();) {
+			No no = (No) iter.next();
+			if (oldNo == null) {
+				oldNo = no;
+			} else {
+				g2d.setColor(Color.black);
+				g2d.setStroke(trilho);
+				g2d.drawLine(Util.inte(oldNo.getX() * zoom), Util.inte(oldNo
+						.getY()
+						* zoom), Util.inte(no.getX() * zoom), Util.inte(no
+						.getY()
+						* zoom));
+				Point pin1 = (Point) circuito.getNosIn().get(oldNo);
+				Point pin2 = (Point) circuito.getNosIn().get(no);
+
+				g2d.drawLine(Util.inte(pin1.x * zoom),
+						Util.inte(pin1.y * zoom), Util.inte(pin2.x * zoom),
+						Util.inte(pin2.y * zoom));
+				oldNo = no;
+			}
+		}
+
+	}
+
+	private void desenhaPainelClassico(Graphics g2d) {
 		g2d.drawImage(backGround, 0, 0, null);
 		int noAlta = 0;
 		int noMedia = 0;
@@ -463,7 +543,6 @@ public class MainPanelEditor extends JPanel {
 			g2d.fillOval(testePista.getTestCar().x - 2,
 					testePista.getTestCar().y - 2, 8, 8);
 		}
-
 	}
 
 	public void apagarUltimoNo() {
@@ -540,9 +619,9 @@ public class MainPanelEditor extends JPanel {
 		fileOutputStream.close();
 	}
 
-	public Dimension getPreferredSize() {
-		return new Dimension(backGround.getWidth(), backGround.getHeight());
-	}
+	// public Dimension getPreferredSize() {
+	// return new Dimension(backGround.getWidth(), backGround.getHeight());
+	// }
 
 	public Dimension getMinimumSize() {
 		return super.getPreferredSize();
@@ -551,4 +630,72 @@ public class MainPanelEditor extends JPanel {
 	public Dimension getMaximumSize() {
 		return super.getPreferredSize();
 	}
+
+	public void inflarPista() {
+		srcFrame.getContentPane().removeAll();
+		scrollPane = new JScrollPane(this,
+				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		srcFrame.getContentPane().add(scrollPane, BorderLayout.WEST);
+		MainPanelEditor.this.addMouseWheelListener(new MouseWheelListener() {
+
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				zoom += e.getWheelRotation() / 100.0;
+				System.out.println(zoom);
+				MainPanelEditor.this.repaint();
+			}
+		});
+		srcFrame.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int keycode = e.getKeyCode();
+				Point p = new Point((int) (scrollPane.getViewport()
+						.getViewPosition().x), (int) (scrollPane.getViewport()
+						.getViewPosition().y));
+
+				if (keycode == KeyEvent.VK_LEFT) {
+					p.x -= 10;
+				} else if (keycode == KeyEvent.VK_RIGHT) {
+					p.x += 10;
+				} else if (keycode == KeyEvent.VK_UP) {
+					p.y -= 10;
+				} else if (keycode == KeyEvent.VK_DOWN) {
+					p.y += 10;
+				}
+				if (p.x < 0 || p.y < 0) {
+					return;
+				}
+				// if (p.x > ((getWidth() * zoom) - scrollPane.getViewport()
+				// .getWidth())
+				// || p.y > ((getHeight() * zoom) - (scrollPane
+				// .getViewport().getHeight()))) {
+				// return;
+				// }
+				scrollPane.getViewport().setViewPosition(p);
+				MainPanelEditor.this.repaint();
+				super.keyPressed(e);
+			}
+
+		});
+		circuito.geraPontosPistaInflada(10.0);
+		inflado = true;
+		List l = circuito.getPistaInflada();
+		int mx = 0;
+		int my = 0;
+		for (Iterator iterator = l.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point point = no.getPoint();
+			if (point.x > mx) {
+				mx = point.x;
+			}
+			if (point.y > my) {
+				my = point.y;
+			}
+
+		}
+		this.setPreferredSize(new Dimension(mx + 100, my + 100));
+		srcFrame.pack();
+	}
+
 }

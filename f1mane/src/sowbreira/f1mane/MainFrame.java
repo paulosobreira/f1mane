@@ -632,6 +632,23 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu4.add(salvarPista);
+		
+		JMenuItem inflarPista = new JMenuItem("InflarPista") {
+			public String getText() {
+				return Lang.msg("InflarPista");
+			}
+
+		};
+		inflarPista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					editor.inflarPista();
+				} catch (Exception e1) {
+					Logger.logarExept(e1);
+				}
+			}
+		});
+		menu4.add(inflarPista);
 	}
 
 	public static void main(String[] args) throws IOException {

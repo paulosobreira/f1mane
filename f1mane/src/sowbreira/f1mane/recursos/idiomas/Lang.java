@@ -76,7 +76,12 @@ public class Lang {
 			if (key == null || "".equals(key)) {
 				return "";
 			}
-			return bundle.getString(key);
+			try {
+				return bundle.getString(key);
+			} catch (Exception e) {
+				return key;
+			}
+
 		}
 	}
 
