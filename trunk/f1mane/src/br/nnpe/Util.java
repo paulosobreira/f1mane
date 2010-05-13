@@ -64,6 +64,10 @@ public class Util {
 		}
 	}
 
+	public static int inte(double d) {
+		return (int) d;
+	}
+
 	// returns a deep copy of an object
 	static public Object deepCopy(Object oldObj) throws Exception {
 		ObjectOutputStream oos = null;
@@ -852,14 +856,14 @@ public class Util {
 		// Logger.logar(md5("raquel"));
 		// System.out.println(md5("whiplash"));
 		for (int i = 0; i < 100; i++) {
-			System.out.println(intervalo(5, 10));	
+			System.out.println(intervalo(5, 10));
 		}
-		
+
 	}
 
 	public static int intervalo(int val1, int val2) {
 
-		return (val1 + (int) (Math.random() * (1+val2-val1)));
+		return (val1 + (int) (Math.random() * (1 + val2 - val1)));
 	}
 
 	public static double double2Decimal(double dob) {

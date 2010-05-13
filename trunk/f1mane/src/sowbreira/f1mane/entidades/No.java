@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 
 import java.io.Serializable;
 
+import br.nnpe.Util;
+
 /**
  * @author Paulo Sobreira Criado Em 11:04:20
  */
