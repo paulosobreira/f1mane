@@ -21,6 +21,7 @@ public class Circuito implements Serializable {
 	private Map nosInKeys = new HashMap();
 	private List box = new ArrayList();
 	private double multiInfla;
+	private int trk = 20;
 
 	public List geraPontosPista() {
 		List arrayList = new ArrayList();
@@ -111,7 +112,7 @@ public class Circuito implements Serializable {
 		if (nosOutKeys == null) {
 			nosOutKeys = new HashMap();
 		}
-		int trk = (int) (multiInfla * 2);
+		trk = 20;
 		for (int i = 0; i < pistaInfladaKey.size(); i++) {
 			No no = (No) pistaInfladaKey.get(i);
 			Point p = no.getPoint();

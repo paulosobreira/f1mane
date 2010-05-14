@@ -34,6 +34,7 @@ import br.nnpe.Logger;
 public class CarregadorRecursos {
 	private HashMap temporadas;
 	private Vector vectorTemps;
+	private static Map bufferImages = new HashMap();
 	private static Map bufferCarros = new HashMap();
 
 	public CarregadorRecursos(boolean carregaTemp) {
@@ -319,6 +320,18 @@ public class CarregadorRecursos {
 			Logger.logarExept(e);
 		}
 		return circuitosPilotos;
+	}
+
+	public static BufferedImage carregaImg(String img) {
+		BufferedImage bufferedImage = (BufferedImage) bufferImages.get(img);
+		if (bufferedImage != null) {
+			return bufferedImage;
+		}
+		ImageIcon icon = new ImageIcon(CarregadorRecursos.class
+				.getResource(img));
+		bufferedImage = ImageUtil.toBufferedImage(icon.getImage());
+		bufferImages.put(img, bufferedImage);
+		return bufferedImage;
 	}
 
 }
