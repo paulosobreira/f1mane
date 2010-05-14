@@ -15,10 +15,12 @@ public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
 	private String backGround;
 	private List pista = new ArrayList();
-	private List pistaInflada = new ArrayList();
-	private Map nosOut = new HashMap();
-	private Map nosIn = new HashMap();
+	private List pistaInfladaFull = new ArrayList();
+	private List pistaInfladaKey = new ArrayList();
+	private Map nosOutKeys = new HashMap();
+	private Map nosInKeys = new HashMap();
 	private List box = new ArrayList();
+	private double multiInfla;
 
 	public List geraPontosPista() {
 		List arrayList = new ArrayList();
@@ -49,8 +51,15 @@ public class Circuito implements Serializable {
 	}
 
 	public void geraPontosPistaInflada(double multi) {
+		multiInfla = multi;
 		List arrayListM = new ArrayList();
 		No noAnt = null;
+		if (pistaInfladaFull == null) {
+			pistaInfladaFull = new ArrayList();
+		}
+		if (pistaInfladaKey == null) {
+			pistaInfladaKey = new ArrayList();
+		}
 
 		for (Iterator iter = pista.iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
@@ -65,6 +74,7 @@ public class Circuito implements Serializable {
 				p1.y *= multi;
 				p2.x *= multi;
 				p2.y *= multi;
+				pistaInfladaKey.add(noAnt);
 				arrayListM.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
 						p1, p2), noAnt));
 				no.setPoint(p3);
@@ -73,81 +83,48 @@ public class Circuito implements Serializable {
 		}
 
 		if (!pista.isEmpty()) {
-
 			No no = (No) pista.get(0);
 			Point p1 = noAnt.getPoint();
 			Point p2 = no.getPoint();
 			p1.x *= multi;
 			p1.y *= multi;
+			pistaInfladaKey.add(noAnt);
 			arrayListM.addAll(converterPointNo(GeoUtil
 					.drawBresenhamLine(p1, p2), noAnt));
 
 		}
-		if (nosIn == null) {
-			nosIn = new HashMap();
-		}
-		if (nosOut == null) {
-			nosOut = new HashMap();
-		}
-		int menorX = Integer.MAX_VALUE;
-		int menorY = Integer.MAX_VALUE;
-		int maiorX = 0;
-		int maiorY = 0;
 		for (int i = 0; i < arrayListM.size(); i++) {
 			No no = (No) arrayListM.get(i);
 			no.setIndex(i);
+		}
+
+		pistaInfladaFull.clear();
+		pistaInfladaFull.addAll(arrayListM);
+		gerarPistasAlternativas();
+	}
+
+	private void gerarPistasAlternativas() {
+		No noAnt = null;
+		if (nosInKeys == null) {
+			nosInKeys = new HashMap();
+		}
+		if (nosOutKeys == null) {
+			nosOutKeys = new HashMap();
+		}
+		int trk = (int) (multiInfla * 2);
+		for (int i = 0; i < pistaInfladaKey.size(); i++) {
+			No no = (No) pistaInfladaKey.get(i);
 			Point p = no.getPoint();
-			if (p.x < menorX) {
-				menorX = p.x;
-			}
-			if (p.y < menorY) {
-				menorY = p.y;
-			}
-			if (p.x > maiorX) {
-				maiorX = p.x;
-			}
-			if (p.y > maiorY) {
-				maiorY = p.y;
-			}
-
-			// Point pOut = new Point(p.x, p.y);
-			// pOut.x *= 1.5;
-			// pOut.y *= 1.5;
-			// nosIn.put(no, pOut);
+			Point in = new Point(p.x - trk, p.y + trk);
+			Point out = new Point(p.x + trk, p.y - trk);
+			nosInKeys.put(no, in);
+			nosOutKeys.put(no, out);
+			noAnt = no;
 		}
-		List retaM = GeoUtil.drawBresenhamLine(new Point(menorX, menorY),
-				new Point(maiorX, maiorY));
-		Point midM = (Point) retaM.get((retaM.size() - 1) / 2);
-
-		for (int i = 0; i < arrayListM.size(); i++) {
-			No no = (No) arrayListM.get(i);
-			Point p = no.getPoint();
-			Point pIn = new Point(p.x, p.y);
-
-			if (p.x < midM.x) {
-				pIn.x += 15;
-			}
-			if (p.y < midM.y) {
-				pIn.y += 15;
-			}
-			if (p.x > midM.x) {
-				pIn.x -= 15;
-			}
-			if (p.y > midM.y) {
-				pIn.y -= 15;
-			}
-			nosIn.put(no, pIn);
-		}
-
-		if (pistaInflada == null) {
-			pistaInflada = new ArrayList();
-		}
-		pistaInflada.clear();
-		pistaInflada.addAll(arrayListM);
 	}
 
 	public List getPistaInflada() {
-		return pistaInflada;
+		return pistaInfladaFull;
 	}
 
 	public List geraPontosBox() {
@@ -214,12 +191,20 @@ public class Circuito implements Serializable {
 		this.pista = pista;
 	}
 
-	public Map getNosOut() {
-		return nosOut;
+	public Map getNosOutKeys() {
+		return nosOutKeys;
 	}
 
-	public Map getNosIn() {
-		return nosIn;
+	public Map getNosInKeys() {
+		return nosInKeys;
+	}
+
+	public List getPistaInfladaKey() {
+		return pistaInfladaKey;
+	}
+
+	public double getMultiInfla() {
+		return multiInfla;
 	}
 
 }

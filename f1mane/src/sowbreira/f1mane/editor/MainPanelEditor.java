@@ -281,6 +281,19 @@ public class MainPanelEditor extends JPanel {
 		});
 		buttonsPanel.add(desenhaTracadoBot);
 
+		JButton inflarPistaBot = new JButton("inflarPista") {
+			@Override
+			public String getText() {
+				return Lang.msg("inflarPista");
+			}
+		};
+		inflarPistaBot.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				inflarPista();
+			}
+		});
+		buttonsPanel.add(inflarPistaBot);
+
 		gerarLayout(frame, controlPanel, buttonsPanel);
 		testePista = new TestePista(this, circuito);
 		adicionaEventosMouse(frame);
@@ -414,11 +427,11 @@ public class MainPanelEditor extends JPanel {
 
 	private void desenhaPainelInflado(Graphics2D g2d) {
 		No oldNo = null;
-		BasicStroke pista = new BasicStroke(Util.inte(45 * zoom),
-				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		BasicStroke pista = new BasicStroke(Util.inte(circuito.getMultiInfla()
+				* 5 * zoom), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		BasicStroke trilho = new BasicStroke(1);
 
-		for (Iterator iter = circuito.getPistaInflada().iterator(); iter
+		for (Iterator iter = circuito.getPistaInfladaKey().iterator(); iter
 				.hasNext();) {
 			No no = (No) iter.next();
 			if (oldNo == null) {
@@ -435,10 +448,26 @@ public class MainPanelEditor extends JPanel {
 				oldNo = no;
 			}
 		}
+		No noFinal = (No) circuito.getPistaInfladaKey().get(0);
+		g2d.drawLine(Util.inte(oldNo.getX() * zoom), Util.inte(oldNo.getY()
+				* zoom), Util.inte(noFinal.getX() * zoom), Util.inte(noFinal
+				.getY()
+				* zoom));
 
-		for (Iterator iter = circuito.getPistaInflada().iterator(); iter
+		for (Iterator iter = circuito.getPistaInfladaKey().iterator(); iter
 				.hasNext();) {
 			No no = (No) iter.next();
+
+			Point pin = (Point) circuito.getNosInKeys().get(no);
+			g2d.setColor(no.getTipo());
+			g2d.fillOval(Util.inte(pin.x * zoom), Util.inte(pin.y * zoom), Util
+					.inte(15 * zoom), Util.inte(15 * zoom));
+			Point pout = (Point) circuito.getNosOutKeys().get(no);
+			g2d.fillOval(Util.inte(pout.x * zoom), Util.inte(pout.y * zoom),
+					Util.inte(15 * zoom), Util.inte(15 * zoom));
+			g2d.drawLine(Util.inte(pin.x * zoom), Util.inte(pin.y * zoom), Util
+					.inte(pout.x * zoom), Util.inte(pout.y * zoom));
+
 			if (oldNo == null) {
 				oldNo = no;
 			} else {
@@ -449,16 +478,22 @@ public class MainPanelEditor extends JPanel {
 						* zoom), Util.inte(no.getX() * zoom), Util.inte(no
 						.getY()
 						* zoom));
-				Point pin1 = (Point) circuito.getNosIn().get(oldNo);
-				Point pin2 = (Point) circuito.getNosIn().get(no);
-
+				Point pin1 = (Point) circuito.getNosInKeys().get(oldNo);
+				Point pin2 = (Point) circuito.getNosInKeys().get(no);
+				g2d.setColor(Color.BLUE);
 				g2d.drawLine(Util.inte(pin1.x * zoom),
 						Util.inte(pin1.y * zoom), Util.inte(pin2.x * zoom),
 						Util.inte(pin2.y * zoom));
+				Point pout1 = (Point) circuito.getNosOutKeys().get(oldNo);
+				Point pout2 = (Point) circuito.getNosOutKeys().get(no);
+				g2d.setColor(Color.RED);
+				g2d.drawLine(Util.inte(pout1.x * zoom), Util.inte(pout1.y
+						* zoom), Util.inte(pout2.x * zoom), Util.inte(pout2.y
+						* zoom));
+
 				oldNo = no;
 			}
 		}
-
 	}
 
 	private void desenhaPainelClassico(Graphics g2d) {
@@ -678,7 +713,7 @@ public class MainPanelEditor extends JPanel {
 			}
 
 		});
-		circuito.geraPontosPistaInflada(10.0);
+		circuito.geraPontosPistaInflada(15.0);
 		inflado = true;
 		List l = circuito.getPistaInflada();
 		int mx = 0;
@@ -694,7 +729,7 @@ public class MainPanelEditor extends JPanel {
 			}
 
 		}
-		this.setPreferredSize(new Dimension(mx + 100, my + 100));
+		this.setPreferredSize(new Dimension(2 * mx, 2 * my));
 		srcFrame.pack();
 	}
 
