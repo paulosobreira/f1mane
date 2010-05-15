@@ -594,7 +594,7 @@ public class MainPanelEditor extends JPanel {
 			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
 					rectangle.getCenterY());
 			g2d.setColor(new Color(255, 0, 0, 140));
-			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
+			//g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 
 			g2d.fillOval(Util.inte(testePistaInflado.frenteCar.x * zoom), Util
 					.inte(testePistaInflado.frenteCar.y * zoom), Util
