@@ -533,39 +533,42 @@ public class MainPanelEditor extends JPanel {
 			double calculaAngulo = GeoUtil.calculaAngulo(
 					testePistaInflado.frenteCar, testePistaInflado.trazCar, 0);
 			Rectangle2D rectangle = new Rectangle2D.Double((testePistaInflado
-					.getTestCar().x - 44)
-					* zoom, (testePistaInflado.getTestCar().y - 17) * zoom,
-					Util.inte(88 * zoom), Util.inte(34 * zoom));
-			Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inte(50 * zoom), new Point(Util.inte(rectangle
-							.getCenterX()), Util.inte(rectangle.getCenterY())));
+					.getTestCar().x - 44),
+					(testePistaInflado.getTestCar().y - 17), Util.inte(88),
+					Util.inte(34));
+			Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inte(50),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			g2d.setColor(Color.black);
 			g2d
 					.drawString("" + calculaAngulo, Util.inte(p1.x), Util
 							.inte(p1.y));
 
-			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte(50 * zoom), new Point(Util.inte(rectangle
-					.getCenterX()), Util.inte(rectangle.getCenterY())));
-			g2d.drawString("" + (calculaAngulo + 180), Util.inte(p2.x), Util
-					.inte(p2.y));
-			g2d.drawLine(Util.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY()), Util.inte(p1.x), Util.inte(p1.y));
-			g2d.drawLine(Util.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY()), Util.inte(p2.x), Util.inte(p2.y));
-			if (pos == 1) {
+			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util.inte(50),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
+
+			if (pos == 0) {
 				carx = testePistaInflado.getTestCar().x - w2;
 				cary = testePistaInflado.getTestCar().y - h2;
 			}
-			if (pos == 0) {
-				carx = p1.x - w2;
-				cary = p1.y - h2;
+			if (pos == 1) {
+				carx = Util.inte((p1.x - w2));
+				cary = Util.inte((p1.y - h2));
 			}
 			if (pos == 2) {
-				carx = p2.x - w2;
-				cary = p2.y - h2;
+				carx = Util.inte((p2.x - w2));
+				cary = Util.inte((p2.y - h2));
 			}
 
+			// g2d.drawString("" + (calculaAngulo + 180), Util.inte(p2.x), Util
+			// .inte(p2.y));
+			// g2d.drawLine(Util.inte(rectangle.getCenterX()),
+			// Util.inte(rectangle
+			// .getCenterY()), Util.inte(p1.x), Util.inte(p1.y));
+			// g2d.drawLine(Util.inte(rectangle.getCenterX()),
+			// Util.inte(rectangle
+			// .getCenterY()), Util.inte(p2.x), Util.inte(p2.y));
 			double rad = Math.toRadians((double) calculaAngulo);
 			afZoom.setToScale(zoom, zoom);
 			afRotate.setToRotation(rad, carImg.getWidth() / 2, carImg
@@ -795,10 +798,10 @@ public class MainPanelEditor extends JPanel {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				zoom += e.getWheelRotation() / 100.0;
+				if (zoom > 1) {
+					zoom = 1;
+				}
 				System.out.println(zoom);
-				MainPanelEditor.this.setPreferredSize(new Dimension(Util
-						.inte(mx + 100 * zoom * 2), Util.inte(my + 100 * zoom
-						* 2)));
 				MainPanelEditor.this.repaint();
 			}
 		});
@@ -813,11 +816,11 @@ public class MainPanelEditor extends JPanel {
 				if (keycode == KeyEvent.VK_LEFT) {
 					pos = 2;
 				} else if (keycode == KeyEvent.VK_RIGHT) {
-					pos = 0;
-				} else if (keycode == KeyEvent.VK_UP) {
 					pos = 1;
+				} else if (keycode == KeyEvent.VK_UP) {
+					pos = 0;
 				} else if (keycode == KeyEvent.VK_DOWN) {
-					p.y += 10;
+					pos = 0;
 				}
 				if (p.x < 0 || p.y < 0) {
 					return;
