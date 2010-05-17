@@ -30,6 +30,7 @@ import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.editor.MainPanelEditor;
+import sowbreira.f1mane.editor.MainPanelEditorInflado;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
@@ -53,6 +54,7 @@ public class MainFrame extends JFrame {
 	private JMenu menuEditor;
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
+	protected MainPanelEditorInflado editorInflado;
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;
@@ -632,7 +634,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu4.add(salvarPista);
-		
+
 		JMenuItem inflarPista = new JMenuItem("InflarPista") {
 			public String getText() {
 				return Lang.msg("InflarPista");
@@ -641,11 +643,17 @@ public class MainFrame extends JFrame {
 		};
 		inflarPista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				try {
-					editor.inflarPista();
+					if (controleJogo != null) {
+						controleJogo.matarTodasThreads();
+					}
+					editorInflado = new MainPanelEditorInflado(MainFrame.this);
+					ativarKeysEditor();
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
 				}
+
 			}
 		});
 		menu4.add(inflarPista);
