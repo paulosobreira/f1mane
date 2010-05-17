@@ -17,8 +17,6 @@ public class Circuito implements Serializable {
 	private List pista = new ArrayList();
 	private List pistaInfladaFull = new ArrayList();
 	private List pistaInfladaKey = new ArrayList();
-	private Map nosOutKeys = new HashMap();
-	private Map nosInKeys = new HashMap();
 	private List box = new ArrayList();
 	private double multiInfla;
 	private int trk = 220;
@@ -53,18 +51,26 @@ public class Circuito implements Serializable {
 
 	public void geraPontosPistaInflada(double multi) {
 		multiInfla = multi;
-		List arrayListM = new ArrayList();
 		No noAnt = null;
 		if (pistaInfladaFull == null) {
 			pistaInfladaFull = new ArrayList();
 		}
+		pistaInfladaFull.clear();
 		if (pistaInfladaKey == null) {
 			pistaInfladaKey = new ArrayList();
 		}
-
+		pistaInfladaKey.clear();
+		List pistaTemp = new ArrayList();
 		for (Iterator iter = pista.iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
+			No newNo = new No();
+			newNo.setPoint(no.getPoint());
+			newNo.setTipo(no.getTipo());
+			pistaTemp.add(newNo);
+		}
 
+		for (Iterator iter = pistaTemp.iterator(); iter.hasNext();) {
+			No no = (No) iter.next();
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
@@ -76,52 +82,29 @@ public class Circuito implements Serializable {
 				p2.x *= multi;
 				p2.y *= multi;
 				pistaInfladaKey.add(noAnt);
-				arrayListM.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
-						p1, p2), noAnt));
+				pistaInfladaFull.addAll(converterPointNo(GeoUtil
+						.drawBresenhamLine(p1, p2), noAnt));
 				no.setPoint(p3);
 				noAnt = no;
 			}
 		}
 
-		if (!pista.isEmpty()) {
-			No no = (No) pista.get(0);
+		if (!pistaTemp.isEmpty()) {
+			No no = (No) pistaTemp.get(0);
 			Point p1 = noAnt.getPoint();
 			Point p2 = no.getPoint();
 			p1.x *= multi;
 			p1.y *= multi;
 			pistaInfladaKey.add(noAnt);
-			arrayListM.addAll(converterPointNo(GeoUtil
-					.drawBresenhamLine(p1, p2), noAnt));
+			pistaInfladaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
+					p1, p2), noAnt));
 
 		}
-		for (int i = 0; i < arrayListM.size(); i++) {
-			No no = (No) arrayListM.get(i);
+		for (int i = 0; i < pistaInfladaFull.size(); i++) {
+			No no = (No) pistaInfladaFull.get(i);
 			no.setIndex(i);
 		}
 
-		pistaInfladaFull.clear();
-		pistaInfladaFull.addAll(arrayListM);
-		gerarPistasAlternativas();
-	}
-
-	private void gerarPistasAlternativas() {
-		No noAnt = null;
-		if (nosInKeys == null) {
-			nosInKeys = new HashMap();
-		}
-		if (nosOutKeys == null) {
-			nosOutKeys = new HashMap();
-		}
-		trk = 60;
-		for (int i = 0; i < pistaInfladaKey.size(); i++) {
-			No no = (No) pistaInfladaKey.get(i);
-			Point p = no.getPoint();
-			Point in = new Point(p.x - trk, p.y + trk);
-			Point out = new Point(p.x + trk, p.y - trk);
-			nosInKeys.put(no, in);
-			nosOutKeys.put(no, out);
-			noAnt = no;
-		}
 	}
 
 	public List getPistaInflada() {
@@ -190,14 +173,6 @@ public class Circuito implements Serializable {
 
 	public void setPista(List pista) {
 		this.pista = pista;
-	}
-
-	public Map getNosOutKeys() {
-		return nosOutKeys;
-	}
-
-	public Map getNosInKeys() {
-		return nosInKeys;
 	}
 
 	public List getPistaInfladaKey() {

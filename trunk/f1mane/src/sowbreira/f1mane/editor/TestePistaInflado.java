@@ -26,10 +26,10 @@ public class TestePistaInflado {
 	private boolean maxHP;
 	private List pontosPista;
 	private List pontosBox;
-	private MainPanelEditor editor;
+	private MainPanelEditorInflado editor;
 	private Thread testTh;
 
-	public TestePistaInflado(MainPanelEditor editor, Circuito circuito) {
+	public TestePistaInflado(MainPanelEditorInflado editor, Circuito circuito) {
 		this.circuito = circuito;
 		this.editor = editor;
 	}
@@ -170,20 +170,28 @@ public class TestePistaInflado {
 		if (p.x < 0) {
 			p.x = 1;
 		}
-		// double maxX = ((editor.getWidth() * editor.zoom) - scrollPane
-		// .getViewport().getWidth());
-		// if (p.x > maxX) {
-		// p.x = Util.inte(maxX) - 1;
-		// }
+		double maxX = ((editor.getWidth() * editor.zoom) - scrollPane
+				.getViewport().getWidth());
+		if (p.x > maxX) {
+			p.x = Util.inte(maxX) - 1;
+		}
 		if (p.y < 0) {
 			p.y = 1;
 		}
-		// double maxY = ((editor.getHeight() * editor.zoom) - (scrollPane
-		// .getViewport().getHeight()));
-		// if (p.y > maxY) {
-		// p.y = Util.inte(maxY) - 1;
-		// }
+		double maxY = ((editor.getHeight() * editor.zoom) - (scrollPane
+				.getViewport().getHeight()));
+		if (p.y > maxY) {
+			p.y = Util.inte(maxY) - 1;
+		}
 		scrollPane.getViewport().setViewPosition(p);
 		editor.repaint();
+	}
+
+	public void pararTeste() {
+		if (testTh != null) {
+			alive = false;
+			testTh.interrupt();
+			testTh = null;
+		}
 	}
 }
