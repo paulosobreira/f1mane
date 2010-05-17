@@ -18,6 +18,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -333,21 +334,21 @@ public class MainPanelEditorInflado extends JPanel {
 	private void desenhaZebra(Graphics2D g2d) {
 		for (int i = 0; i < circuito.getPtsCurvaBaixa().size(); i++) {
 			No n1 = (No) circuito.getPtsCurvaBaixa().get(i);
-			if ((i + 20) > circuito.getPtsCurvaBaixa().size() - 1) {
+			if ((i + 40) > circuito.getPtsCurvaBaixa().size() - 1) {
 				break;
 			}
-			No n2 = (No) circuito.getPtsCurvaBaixa().get(i + 20);
+			No n2 = (No) circuito.getPtsCurvaBaixa().get(i + 40);
 			Point p1 = new Point(Util.inte(n1.getPoint().x * zoom), Util
 					.inte(n1.getPoint().y * zoom));
 
 			Point p2 = new Point(Util.inte(n2.getPoint().x * zoom), Util
 					.inte(n2.getPoint().y * zoom));
-			int larguraZebra = Util.inte(carroCima.getWidth()
-					* (larguraPista + 0.2) * zoom) / 2;
-			Rectangle2D rectangle = new Rectangle2D.Double((p1.x),
-					(p1.y - larguraZebra), Util.inte(20 * zoom), Util
-							.inte((carroCima.getWidth() * (larguraPista + 0.2))
-									* zoom));
+			double larguraZebra = ((carroCima.getWidth() * (larguraPista + 0.2)) / 2)
+					* zoom;
+			RoundRectangle2D rectangle = new RoundRectangle2D.Double(
+					(p1.x - (20 * zoom)), (p1.y - larguraZebra), 40 * zoom,
+					(carroCima.getWidth() * (larguraPista + 0.2)) * zoom,
+					5 * zoom, 5 * zoom);
 			double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
 			double rad = Math.toRadians((double) calculaAngulo);
 			GeneralPath generalPath = new GeneralPath(rectangle);
@@ -357,10 +358,10 @@ public class MainPanelEditorInflado extends JPanel {
 					rectangle.getCenterY());
 			g2d.setColor(Color.RED);
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
-			if (i + 40 > circuito.getPtsCurvaBaixa().size() - 1) {
+			if (i + 80 > circuito.getPtsCurvaBaixa().size() - 1) {
 				break;
 			} else {
-				i = i + 40;
+				i = i + 80;
 			}
 		}
 
