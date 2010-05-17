@@ -391,16 +391,16 @@ public class MainPanelEditorInflado extends JPanel {
 
 		BasicStroke pista = new BasicStroke(larguraP, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_ROUND);
+		BasicStroke box = new BasicStroke(larguraP / 2, BasicStroke.CAP_ROUND,
+				BasicStroke.JOIN_ROUND);
 		BasicStroke trilho = new BasicStroke(1);
-
-		for (Iterator iter = circuito.getPistaInfladaKey().iterator(); iter
-				.hasNext();) {
+		g2d.setColor(Color.LIGHT_GRAY);
+		g2d.setStroke(pista);
+		for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
 			if (oldNo == null) {
 				oldNo = no;
 			} else {
-				g2d.setColor(Color.LIGHT_GRAY);
-				g2d.setStroke(pista);
 				g2d.drawLine(Util.inte(oldNo.getX() * zoom), Util.inte(oldNo
 						.getY()
 						* zoom), Util.inte(no.getX() * zoom), Util.inte(no
@@ -410,7 +410,52 @@ public class MainPanelEditorInflado extends JPanel {
 				oldNo = no;
 			}
 		}
-		No noFinal = (No) circuito.getPistaInfladaKey().get(0);
+		g2d.setColor(Color.WHITE);
+		g2d.setStroke(trilho);
+		for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext();) {
+			No no = (No) iter.next();
+			if (oldNo == null) {
+				oldNo = no;
+			} else {
+				double calculaAngulo = GeoUtil.calculaAngulo(oldNo.getPoint(),
+						no.getPoint(), 0);
+				Point p1ini = GeoUtil.calculaPonto(calculaAngulo, Util
+						.inte(larguraPista * 0.45), oldNo.getPoint());
+				Point p1fim = GeoUtil.calculaPonto(calculaAngulo, Util
+						.inte(larguraPista * 0.45), no.getPoint());
+				Point p2ini = GeoUtil.calculaPonto(calculaAngulo, Util
+						.inte(larguraPista * 0.45), oldNo.getPoint());
+				Point p2fim = GeoUtil.calculaPonto(calculaAngulo + 180, Util
+						.inte(larguraPista * 0.45), no.getPoint());
+				g2d.drawLine(Util.inte(p1ini.getX() * zoom), Util.inte(p1ini
+						.getY()
+						* zoom), Util.inte(p1fim.getX() * zoom), Util
+						.inte(p1fim.getY() * zoom));
+				g2d.drawLine(Util.inte(p2ini.getX() * zoom), Util.inte(p2ini
+						.getY()
+						* zoom), Util.inte(p2fim.getX() * zoom), Util
+						.inte(p2fim.getY() * zoom));
+
+				oldNo = no;
+			}
+		}
+		g2d.setColor(Color.LIGHT_GRAY);
+		g2d.setStroke(box);
+		for (Iterator iter = circuito.getBoxKey().iterator(); iter.hasNext();) {
+			No no = (No) iter.next();
+			if (oldNo == null) {
+				oldNo = no;
+			} else {
+				g2d.drawLine(Util.inte(oldNo.getX() * zoom), Util.inte(oldNo
+						.getY()
+						* zoom), Util.inte(no.getX() * zoom), Util.inte(no
+						.getY()
+						* zoom));
+				oldNo = no;
+			}
+		}
+
+		No noFinal = (No) circuito.getPistaKey().get(0);
 		g2d.drawLine(Util.inte(oldNo.getX() * zoom), Util.inte(oldNo.getY()
 				* zoom), Util.inte(noFinal.getX() * zoom), Util.inte(noFinal
 				.getY()
@@ -546,7 +591,7 @@ public class MainPanelEditorInflado extends JPanel {
 	public void inflarPista() {
 		testePistaInflado.pararTeste();
 		circuito.geraPontosPistaInflada(this.tamanhoPista);
-		List l = circuito.getPistaInflada();
+		List l = circuito.getPistaFull();
 
 		for (Iterator iterator = l.iterator(); iterator.hasNext();) {
 			No no = (No) iterator.next();
