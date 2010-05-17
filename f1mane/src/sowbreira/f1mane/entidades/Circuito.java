@@ -15,9 +15,12 @@ public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
 	private String backGround;
 	private List pista = new ArrayList();
-	private List pistaInfladaFull = new ArrayList();
-	private List pistaInfladaKey = new ArrayList();
+	private List pistaFull = new ArrayList();
+	private List pistaKey = new ArrayList();
 	private List box = new ArrayList();
+	private List boxFull = new ArrayList();
+	private List boxKey = new ArrayList();
+
 	private double multiplicadorPista;
 	private int trk = 220;
 	private ArrayList ptsCurvaBaixa;
@@ -50,17 +53,25 @@ public class Circuito implements Serializable {
 		return arrayList;
 	}
 
+	public List getBoxFull() {
+		return boxFull;
+	}
+
+	public List getBoxKey() {
+		return boxKey;
+	}
+
 	public void geraPontosPistaInflada(double multi) {
 		multiplicadorPista = multi;
 		No noAnt = null;
-		if (pistaInfladaFull == null) {
-			pistaInfladaFull = new ArrayList();
+		if (pistaFull == null) {
+			pistaFull = new ArrayList();
 		}
-		pistaInfladaFull.clear();
-		if (pistaInfladaKey == null) {
-			pistaInfladaKey = new ArrayList();
+		pistaFull.clear();
+		if (pistaKey == null) {
+			pistaKey = new ArrayList();
 		}
-		pistaInfladaKey.clear();
+		pistaKey.clear();
 		List pistaTemp = new ArrayList();
 		for (Iterator iter = pista.iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
@@ -82,9 +93,9 @@ public class Circuito implements Serializable {
 				p1.y *= multi;
 				p2.x *= multi;
 				p2.y *= multi;
-				pistaInfladaKey.add(noAnt);
-				pistaInfladaFull.addAll(converterPointNo(GeoUtil
-						.drawBresenhamLine(p1, p2), noAnt));
+				pistaKey.add(noAnt);
+				pistaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1,
+						p2), noAnt));
 				no.setPoint(p3);
 				noAnt = no;
 			}
@@ -96,14 +107,14 @@ public class Circuito implements Serializable {
 			Point p2 = no.getPoint();
 			p1.x *= multi;
 			p1.y *= multi;
-			pistaInfladaKey.add(noAnt);
-			pistaInfladaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
-					p1, p2), noAnt));
+			pistaKey.add(noAnt);
+			pistaFull.addAll(converterPointNo(
+					GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
 		}
 		ptsCurvaBaixa = new ArrayList();
-		for (int i = 0; i < pistaInfladaFull.size(); i++) {
-			No no = (No) pistaInfladaFull.get(i);
+		for (int i = 0; i < pistaFull.size(); i++) {
+			No no = (No) pistaFull.get(i);
 			no.setIndex(i);
 			if (No.CURVA_BAIXA.equals(no.getTipo())
 					|| No.CURVA_ALTA.equals(no.getTipo())) {
@@ -111,10 +122,61 @@ public class Circuito implements Serializable {
 			}
 		}
 
+		if (boxFull == null) {
+			boxFull = new ArrayList();
+		}
+		boxFull.clear();
+		if (boxKey == null) {
+			boxKey = new ArrayList();
+		}
+		boxKey.clear();
+		List boxTemp = new ArrayList();
+		for (Iterator iter = box.iterator(); iter.hasNext();) {
+			No no = (No) iter.next();
+			No newNo = new No();
+			newNo.setPoint(new Point(no.getPoint().x, no.getPoint().y));
+			newNo.setTipo(no.getTipo());
+			boxTemp.add(newNo);
+		}
+
+		noAnt = null;
+
+		for (Iterator iter = boxTemp.iterator(); iter.hasNext();) {
+			No no = (No) iter.next();
+			if (noAnt == null) {
+				noAnt = no;
+			} else {
+				Point p1 = noAnt.getPoint();
+				Point p2 = no.getPoint();
+				Point p3 = new Point(p2.x, p2.y);
+				p1.x *= multi;
+				p1.y *= multi;
+				p2.x *= multi;
+				p2.y *= multi;
+				boxKey.add(noAnt);
+				boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1,
+						p2), noAnt));
+				no.setPoint(p3);
+				noAnt = no;
+			}
+		}
+
+		if (!boxTemp.isEmpty()) {
+			No no = (No) boxTemp.get(0);
+			Point p1 = noAnt.getPoint();
+			Point p2 = no.getPoint();
+			p1.x *= multi;
+			p1.y *= multi;
+			boxKey.add(noAnt);
+			boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2),
+					noAnt));
+
+		}
+
 	}
 
-	public List getPistaInflada() {
-		return pistaInfladaFull;
+	public List getPistaFull() {
+		return pistaFull;
 	}
 
 	public List geraPontosBox() {
@@ -181,11 +243,11 @@ public class Circuito implements Serializable {
 		this.pista = pista;
 	}
 
-	public List getPistaInfladaKey() {
-		return pistaInfladaKey;
+	public List getPistaKey() {
+		return pistaKey;
 	}
 
-	public double getMultiInfla() {
+	public double getMultiplciador() {
 		return multiplicadorPista;
 	}
 
