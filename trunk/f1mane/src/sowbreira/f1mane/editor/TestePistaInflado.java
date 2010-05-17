@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import sowbreira.f1mane.controles.ControleBox;
 import sowbreira.f1mane.entidades.Circuito;
@@ -165,8 +166,11 @@ public class TestePistaInflado {
 
 	protected void centralizaTestCar() {
 		JScrollPane scrollPane = editor.getScrollPane();
-		Point p = new Point((int) (testCar.x * editor.zoom) - 512,
-				(int) (testCar.y * editor.zoom) - 384);
+		editor.pontoView = new Point((int) (testCar.x * editor.zoom)
+				- (scrollPane.getViewport().getWidth() / 2),
+				(int) (testCar.y * editor.zoom)
+						- (scrollPane.getViewport().getHeight() / 2));
+		Point p = editor.pontoView;
 		if (p.x < 0) {
 			p.x = 1;
 		}
@@ -183,8 +187,13 @@ public class TestePistaInflado {
 		if (p.y > maxY) {
 			p.y = Util.inte(maxY) - 1;
 		}
-		scrollPane.getViewport().setViewPosition(p);
-		editor.repaint();
+		scrollPane.getViewport().setViewPosition(editor.pontoView);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				editor.repaint();
+			}
+		});
 	}
 
 	public void pararTeste() {

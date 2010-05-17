@@ -18,8 +18,9 @@ public class Circuito implements Serializable {
 	private List pistaInfladaFull = new ArrayList();
 	private List pistaInfladaKey = new ArrayList();
 	private List box = new ArrayList();
-	private double multiInfla;
+	private double multiplicadorPista;
 	private int trk = 220;
+	private ArrayList ptsCurvaBaixa;
 
 	public List geraPontosPista() {
 		List arrayList = new ArrayList();
@@ -50,7 +51,7 @@ public class Circuito implements Serializable {
 	}
 
 	public void geraPontosPistaInflada(double multi) {
-		multiInfla = multi;
+		multiplicadorPista = multi;
 		No noAnt = null;
 		if (pistaInfladaFull == null) {
 			pistaInfladaFull = new ArrayList();
@@ -64,7 +65,7 @@ public class Circuito implements Serializable {
 		for (Iterator iter = pista.iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
 			No newNo = new No();
-			newNo.setPoint(no.getPoint());
+			newNo.setPoint(new Point(no.getPoint().x, no.getPoint().y));
 			newNo.setTipo(no.getTipo());
 			pistaTemp.add(newNo);
 		}
@@ -100,9 +101,14 @@ public class Circuito implements Serializable {
 					p1, p2), noAnt));
 
 		}
+		ptsCurvaBaixa = new ArrayList();
 		for (int i = 0; i < pistaInfladaFull.size(); i++) {
 			No no = (No) pistaInfladaFull.get(i);
 			no.setIndex(i);
+			if (No.CURVA_BAIXA.equals(no.getTipo())
+					|| No.CURVA_ALTA.equals(no.getTipo())) {
+				ptsCurvaBaixa.add(no);
+			}
 		}
 
 	}
@@ -180,7 +186,11 @@ public class Circuito implements Serializable {
 	}
 
 	public double getMultiInfla() {
-		return multiInfla;
+		return multiplicadorPista;
+	}
+
+	public ArrayList getPtsCurvaBaixa() {
+		return ptsCurvaBaixa;
 	}
 
 }
