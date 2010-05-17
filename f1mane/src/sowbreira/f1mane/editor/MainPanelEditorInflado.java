@@ -3,7 +3,6 @@ package sowbreira.f1mane.editor;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,14 +13,9 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
@@ -32,26 +26,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
@@ -82,6 +69,7 @@ public class MainPanelEditorInflado extends JPanel {
 	private double larguraPista = 1.1;
 	private JTextField larguraPistaText;
 	private JTextField tamanhoPistaText;
+	public Point pontoView = new Point(0, 0);
 
 	public JScrollPane getScrollPane() {
 		return scrollPane;
@@ -89,7 +77,14 @@ public class MainPanelEditorInflado extends JPanel {
 
 	public MainPanelEditorInflado(JFrame frame) throws IOException,
 			ClassNotFoundException {
-		frame.getContentPane().removeAll();
+		this.srcFrame = frame;
+		setBackground(Color.WHITE);
+		srcFrame.getContentPane().removeAll();
+		setSize(10000, 10000);
+		scrollPane = new JScrollPane(this,
+				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
 		JFileChooser fileChooser = new JFileChooser(CarregadorRecursos.class
 				.getResource("CarregadorRecursos.class").getFile());
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -108,8 +103,7 @@ public class MainPanelEditorInflado extends JPanel {
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 
 		circuito = (Circuito) ois.readObject();
-		this.srcFrame = frame;
-		iniciaEditor(frame);
+
 		carroCima = CarregadorRecursos.carregaImg("carrocimatrans.png");
 		carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
 		MainPanelEditorInflado.this
@@ -130,14 +124,12 @@ public class MainPanelEditorInflado extends JPanel {
 				});
 
 		srcFrame.setPreferredSize(new Dimension(800, 600));
-
-		scrollPane = new JScrollPane(this,
-				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setPreferredSize(new Dimension(800, 600));
+		srcFrame.getContentPane().setLayout(new BorderLayout());
 		srcFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		testePistaInflado = new TestePistaInflado(this, circuito);
+		iniciaEditor(srcFrame);
 		inflarPista();
+		srcFrame.pack();
 	}
 
 	private void iniciaEditor(JFrame frame) {
@@ -216,6 +208,13 @@ public class MainPanelEditorInflado extends JPanel {
 		left.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pos = 1;
+				// Point p = new Point(
+				// scrollPane.getViewport().getViewPosition().x,
+				// scrollPane.getViewport().getViewPosition().y);
+				// p.x -= 10;
+				// scrollPane.getViewport().setViewPosition(p);
+				// MainPanelEditorInflado.this.repaint();
+
 			}
 		});
 		buttonsPanel.add(left);
@@ -224,11 +223,19 @@ public class MainPanelEditorInflado extends JPanel {
 			@Override
 			public String getText() {
 				return "|";
+
 			}
 		};
 		center.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pos = 0;
+				// Point p = new Point(
+				// scrollPane.getViewport().getViewPosition().x,
+				// scrollPane.getViewport().getViewPosition().y);
+				// p.y += 10;
+				// scrollPane.getViewport().setViewPosition(p);
+				// MainPanelEditorInflado.this.repaint();
+
 			}
 		});
 		buttonsPanel.add(center);
@@ -242,6 +249,13 @@ public class MainPanelEditorInflado extends JPanel {
 		right.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pos = 2;
+				// Point p = new Point(
+				// scrollPane.getViewport().getViewPosition().x,
+				// scrollPane.getViewport().getViewPosition().y);
+				// p.x += 10;
+				// scrollPane.getViewport().setViewPosition(p);
+				// MainPanelEditorInflado.this.repaint();
+
 			}
 		});
 		buttonsPanel.add(right);
@@ -290,13 +304,8 @@ public class MainPanelEditorInflado extends JPanel {
 		larguraPistaText.setText("" + larguraPista);
 		buttonsPanel.add(larguraPistaText);
 
-		gerarLayout(frame, buttonsPanel);
-
-	}
-
-	private void gerarLayout(JFrame frame, JPanel buttonsPanel) {
-		frame.setLayout(new BorderLayout());
 		frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
+
 	}
 
 	private void setarHints(Graphics2D g2d) {
@@ -315,11 +324,49 @@ public class MainPanelEditorInflado extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
+		desenhaZebra(g2d);
 		desenhaPainelInflado(g2d);
+		desenhaInfo(g2d);
 
 	}
 
-	private void desenhaPainelInflado(Graphics2D g2d) {
+	private void desenhaZebra(Graphics2D g2d) {
+		for (int i = 0; i < circuito.getPtsCurvaBaixa().size(); i++) {
+			No n1 = (No) circuito.getPtsCurvaBaixa().get(i);
+			if ((i + 20) > circuito.getPtsCurvaBaixa().size() - 1) {
+				break;
+			}
+			No n2 = (No) circuito.getPtsCurvaBaixa().get(i + 20);
+			Point p1 = new Point(Util.inte(n1.getPoint().x * zoom), Util
+					.inte(n1.getPoint().y * zoom));
+
+			Point p2 = new Point(Util.inte(n2.getPoint().x * zoom), Util
+					.inte(n2.getPoint().y * zoom));
+			int larguraZebra = Util.inte(carroCima.getWidth()
+					* (larguraPista + 0.2) * zoom) / 2;
+			Rectangle2D rectangle = new Rectangle2D.Double((p1.x),
+					(p1.y - larguraZebra), Util.inte(20 * zoom), Util
+							.inte((carroCima.getWidth() * (larguraPista + 0.2))
+									* zoom));
+			double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
+			double rad = Math.toRadians((double) calculaAngulo);
+			GeneralPath generalPath = new GeneralPath(rectangle);
+			AffineTransform affineTransformRect = AffineTransform
+					.getScaleInstance(zoom, zoom);
+			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
+					rectangle.getCenterY());
+			g2d.setColor(Color.RED);
+			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
+			if (i + 40 > circuito.getPtsCurvaBaixa().size() - 1) {
+				break;
+			} else {
+				i = i + 40;
+			}
+		}
+
+	}
+
+	private void desenhaInfo(Graphics2D g2d) {
 		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
 		int x = limitesViewPort.getBounds().x + 30;
 		int y = limitesViewPort.getBounds().y + 20;
@@ -332,12 +379,16 @@ public class MainPanelEditorInflado extends JPanel {
 		limitesViewPort.height -= 100;
 
 		g2d.draw(limitesViewPort);
+	}
+
+	private void desenhaPainelInflado(Graphics2D g2d) {
 		BufferedImage carImg = carroCima;
 		if (carImg == null)
 			return;
 		No oldNo = null;
-		BasicStroke pista = new BasicStroke(Util.inte(carImg.getWidth()
-				* larguraPista * zoom), BasicStroke.CAP_ROUND,
+		int larguraP = Util.inte(carImg.getWidth() * larguraPista * zoom);
+
+		BasicStroke pista = new BasicStroke(larguraP, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_ROUND);
 		BasicStroke trilho = new BasicStroke(1);
 
@@ -451,12 +502,15 @@ public class MainPanelEditorInflado extends JPanel {
 					.inte(5 * zoom), Util.inte(5 * zoom));
 
 		}
+
 	}
 
 	public Shape limitesViewPort() {
-		Rectangle rectangle = scrollPane.getVisibleRect();
+		Rectangle rectangle = scrollPane.getViewport().getBounds();
 		// rectangle.width += 50;
 		// rectangle.height += 50;
+		rectangle.x = scrollPane.getViewport().getViewPosition().x;
+		rectangle.y = scrollPane.getViewport().getViewPosition().y;
 		return rectangle;
 	}
 
@@ -485,15 +539,7 @@ public class MainPanelEditorInflado extends JPanel {
 	}
 
 	public Dimension getPreferredSize() {
-		return new Dimension(Util.inte((mx + 100)), Util.inte((my + 100)));
-	}
-
-	public Dimension getMinimumSize() {
-		return super.getPreferredSize();
-	}
-
-	public Dimension getMaximumSize() {
-		return super.getPreferredSize();
+		return new Dimension(Util.inte((mx + 1000)), Util.inte((my + 1000)));
 	}
 
 	public void inflarPista() {
@@ -512,7 +558,10 @@ public class MainPanelEditorInflado extends JPanel {
 			}
 
 		}
-		srcFrame.pack();
+
+		mx += 300;
+		my += 300;
+		repaint();
 	}
 
 }
