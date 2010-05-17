@@ -44,7 +44,7 @@ public class TestePistaInflado {
 	}
 
 	public void iniciarTeste(final double multi) throws Exception {
-		pontosPista = circuito.getPistaInflada();
+		pontosPista = circuito.getPistaFull();
 		pontosBox = circuito.geraPontosBox();
 
 		// ControleBox controleBox = new ControleBox();
