@@ -31,42 +31,6 @@ public class Piloto implements Serializable {
 	protected String tipoPeneuJogador;
 	protected String asaJogador;
 	protected Integer combustJogador;
-
-	@Override
-	public boolean equals(Object obj) {
-		Piloto outro = (Piloto) obj;
-		return getNome().equals(outro.getNome());
-	}
-
-	@Override
-	public int hashCode() {
-		return getNome().hashCode();
-	}
-
-	public String getTipoPeneuJogador() {
-		return tipoPeneuJogador;
-	}
-
-	public void setTipoPeneuJogador(String tipoPeneuJogador) {
-		this.tipoPeneuJogador = tipoPeneuJogador;
-	}
-
-	public String getAsaJogador() {
-		return asaJogador;
-	}
-
-	public void setAsaJogador(String asaJogador) {
-		this.asaJogador = asaJogador;
-	}
-
-	public Integer getCombustJogador() {
-		return combustJogador;
-	}
-
-	public void setCombustJogador(Integer combustJogador) {
-		this.combustJogador = combustJogador;
-	}
-
 	private int id;
 	private int velocidade;
 	private int velocidadeLargada;
@@ -108,6 +72,41 @@ public class Piloto implements Serializable {
 	private long parouNoBoxMilis;
 	private long saiuDoBoxMilis;
 	private int msgTentativaNumVolta = 2;
+
+	@Override
+	public boolean equals(Object obj) {
+		Piloto outro = (Piloto) obj;
+		return getNome().equals(outro.getNome());
+	}
+
+	@Override
+	public int hashCode() {
+		return getNome().hashCode();
+	}
+
+	public String getTipoPeneuJogador() {
+		return tipoPeneuJogador;
+	}
+
+	public void setTipoPeneuJogador(String tipoPeneuJogador) {
+		this.tipoPeneuJogador = tipoPeneuJogador;
+	}
+
+	public String getAsaJogador() {
+		return asaJogador;
+	}
+
+	public void setAsaJogador(String asaJogador) {
+		this.asaJogador = asaJogador;
+	}
+
+	public Integer getCombustJogador() {
+		return combustJogador;
+	}
+
+	public void setCombustJogador(Integer combustJogador) {
+		this.combustJogador = combustJogador;
+	}
 
 	public No getNoAnt() {
 		return noAnt;
@@ -389,6 +388,7 @@ public class Piloto implements Serializable {
 	public void processarCiclo(InterfaceJogo controleJogo) {
 		List pista = controleJogo.getNosDaPista();
 		int index = calcularNovoIndex(controleJogo);
+		index *= controleJogo.getCircuito().getMultiplciador();
 		int diff = index - pista.size();
 
 		/**
@@ -671,8 +671,8 @@ public class Piloto implements Serializable {
 				novoModificador = ((Math.random() > 0.4) ? 1 : 0);
 			}
 		}
-		if (novoModificador > 3) {
-			novoModificador = 3;
+		if (novoModificador > 4) {
+			novoModificador = 4;
 		} else if (novoModificador < 0) {
 			novoModificador = 0;
 		}

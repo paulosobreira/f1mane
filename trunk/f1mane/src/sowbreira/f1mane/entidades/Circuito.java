@@ -20,14 +20,10 @@ public class Circuito implements Serializable {
 	private List box = new ArrayList();
 	private List boxFull = new ArrayList();
 	private List boxKey = new ArrayList();
-
-	private double multiplicadorPista;
-	private int trk = 220;
-	private ArrayList ptsCurva;
+	private double multiplicadorPista = 1;
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;
 	private int paradaBoxIndex;
-
 	private int orientacaoBox;
 
 	public List geraPontosPista() {
@@ -64,6 +60,10 @@ public class Circuito implements Serializable {
 
 	public List getBoxKey() {
 		return boxKey;
+	}
+
+	public void geraPontosPistaInflada() {
+		geraPontosPistaInflada(multiplicadorPista);
 	}
 
 	public void geraPontosPistaInflada(double multi) {
@@ -116,15 +116,6 @@ public class Circuito implements Serializable {
 			pistaFull.addAll(converterPointNo(
 					GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
-		}
-		ptsCurva = new ArrayList();
-		for (int i = 0; i < pistaFull.size(); i++) {
-			No no = (No) pistaFull.get(i);
-			no.setIndex(i);
-			if (No.CURVA_BAIXA.equals(no.getTipo())
-					|| No.CURVA_ALTA.equals(no.getTipo())) {
-				ptsCurva.add(no);
-			}
 		}
 
 		if (boxFull == null) {
@@ -284,10 +275,6 @@ public class Circuito implements Serializable {
 
 	public double getMultiplciador() {
 		return multiplicadorPista;
-	}
-
-	public ArrayList getPtsCurva() {
-		return ptsCurva;
 	}
 
 	public int getEntradaBoxIndex() {

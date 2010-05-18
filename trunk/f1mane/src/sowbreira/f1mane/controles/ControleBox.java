@@ -56,6 +56,7 @@ public class ControleBox {
 	}
 
 	private void geraBoxesEquipes() {
+		//TODO MUltiplicador
 		boxEquipes = new HashMap();
 		boxEquipesOcupado = new Hashtable();
 

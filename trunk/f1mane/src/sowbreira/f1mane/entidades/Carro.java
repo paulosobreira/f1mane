@@ -411,7 +411,7 @@ public class Carro implements Serializable {
 		if (valDesgaste < 0) {
 			valDesgaste = 0;
 		}
-		motor -= valDesgaste;
+		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador());
 		if (porcentagemDesgasteMotor() < 0) {
 			piloto.setDesqualificado(true);
 			setDanificado(Carro.EXPLODIU_MOTOR);
@@ -505,7 +505,8 @@ public class Carro implements Serializable {
 				valConsumo = 1;
 			}
 		}
-		combustivel -= valConsumo;
+		combustivel -= (valConsumo * controleJogo.getCircuito()
+				.getMultiplciador());
 
 		if (percent < 0) {
 			combustivel = 0;
@@ -602,8 +603,7 @@ public class Carro implements Serializable {
 				&& desgPneus > 1) {
 			desgPneus -= 1;
 		}
-
-		pneus -= desgPneus;
+		pneus -= (desgPneus * controleJogo.getCircuito().getMultiplciador());
 		if ((pneus < 0) && !verificaDano()) {
 			danificado = PNEU_FURADO;
 			pneus = -1;
