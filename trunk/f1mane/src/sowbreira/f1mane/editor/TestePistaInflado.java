@@ -1,5 +1,6 @@
 package sowbreira.f1mane.editor;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Iterator;
@@ -18,6 +19,7 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class TestePistaInflado {
+	protected static final long SEEP_TIME = 100;
 	private Circuito circuito;
 	private Point testCar;
 	public Point trazCar;
@@ -45,16 +47,7 @@ public class TestePistaInflado {
 
 	public void iniciarTeste(final double multi) throws Exception {
 		pontosPista = circuito.getPistaFull();
-		pontosBox = circuito.geraPontosBox();
-
-		// ControleBox controleBox = new ControleBox();
-		// try {
-		// controleBox.calculaNosBox(pontosPista, pontosBox);
-		// } catch (Exception e) {
-		// Logger.logarExept(e);
-		// JOptionPane.showMessageDialog(editor, Lang.msg("040"), Lang
-		// .msg("041"), JOptionPane.ERROR_MESSAGE);
-		// }
+		pontosBox = circuito.getBoxFull();
 
 		if (testTh != null) {
 			alive = false;
@@ -72,52 +65,58 @@ public class TestePistaInflado {
 					try {
 						while (cont < pontosPista.size()) {
 							no = (No) pontosPista.get(cont);
+							int entradaBox = circuito.getEntradaBoxIndex();
+							if (irProBox
+									&& (cont > (entradaBox - 100) && cont < (entradaBox + 100))) {
+								int contBox = 0;
+								while (contBox < pontosBox.size()) {
+									No noBox = (No) pontosBox.get(contBox);
+									posicionaCarroBox(contBox, noBox, pontosBox);
+									centralizaTestCar();
+									if (No.RETA.equals(noBox.getTipo())
+											|| No.LARGADA.equals(noBox
+													.getTipo())) {
+										if (maxHP) {
+											contBox += ((Math.random() > .5 ? 3
+													: 4) * multi);
+										} else {
+											if ((contBox % 2) == 0) {
+												contBox += (3 * multi);
+											} else {
+												contBox += (2 * multi);
+											}
+										}
+									} else if (No.CURVA_ALTA.equals(noBox
+											.getTipo())) {
+										if (maxHP) {
+											contBox += ((Math.random() > .5 ? 3
+													: 4) * multi);
+										} else {
+											if ((contBox % 2) == 0) {
+												contBox += (2 * multi);
+											} else {
+												contBox += (1 * multi);
+											}
+										}
+									} else {
+										contBox += (1 * multi);
+									}
 
-							// if (irProBox && no.isNoEntradaBox()) {
-							// for (Iterator iter = pontosBox.iterator(); iter
-							// .hasNext();) {
-							// No noBox = (No) iter.next();
-							// testCar = noBox.getPoint();
-							// Thread.sleep(70);
-							// editor.repaint();
-							// }
-							//
-							// for (int i = 0; i < pontosPista.size(); i++) {
-							// No noSaidaBox = (No) pontosPista.get(i);
-							//
-							// if (noSaidaBox.isNoSaidaBox()) {
-							// no = noSaidaBox;
-							// irProBox = false;
-							// cont = i;
-							//
-							// break;
-							// }
-							// }
-							// }
+									Thread.sleep(SEEP_TIME);
+								}
 
-							int traz = cont - 44;
-							int frente = cont + 44;
+								cont = circuito.getSaidaBoxIndex();
+								no = (No) pontosPista.get(cont);
+								irProBox = false;
 
-							if (traz < 0) {
-								traz = (pontosPista.size() - 1) + traz;
 							}
-							if (frente > pontosPista.size()) {
-								frente = frente - (pontosPista.size() - 1);
-							}
 
-							trazCar = ((No) pontosPista.get(traz)).getPoint();
-							frenteCar = ((No) pontosPista.get(frente))
-									.getPoint();
-
-							testCar = no.getPoint();
-
-							// editor.repaint();
-							// centralizaPonto(testCar);
+							posicionaCarro(cont, no, pontosPista);
 							centralizaTestCar();
 							if (No.RETA.equals(no.getTipo())
 									|| No.LARGADA.equals(no.getTipo())) {
 								if (maxHP) {
-									cont += (3 * multi);
+									cont += ((Math.random() > .5 ? 3 : 4) * multi);
 								} else {
 									if ((cont % 2) == 0) {
 										cont += (3 * multi);
@@ -127,7 +126,7 @@ public class TestePistaInflado {
 								}
 							} else if (No.CURVA_ALTA.equals(no.getTipo())) {
 								if (maxHP) {
-									cont += 2;
+									cont += ((Math.random() > .5 ? 3 : 4) * multi);
 								} else {
 									if ((cont % 2) == 0) {
 										cont += (2 * multi);
@@ -139,7 +138,7 @@ public class TestePistaInflado {
 								cont += (1 * multi);
 							}
 
-							Thread.sleep(70);
+							Thread.sleep(SEEP_TIME);
 						}
 					} catch (Exception e) {
 						Logger.logarExept(e);
@@ -149,6 +148,42 @@ public class TestePistaInflado {
 		});
 		alive = true;
 		testTh.start();
+	}
+
+	protected void posicionaCarro(int cont, No no, List lista) {
+		int traz = cont - 44;
+		int frente = cont + 44;
+
+		if (traz < 0) {
+			traz = (lista.size() - 1) + traz;
+		}
+		if (frente > lista.size()) {
+			frente = frente - (lista.size() - 1);
+		}
+
+		trazCar = ((No) lista.get(traz)).getPoint();
+		frenteCar = ((No) lista.get(frente)).getPoint();
+
+		testCar = no.getPoint();
+
+	}
+
+	protected void posicionaCarroBox(int cont, No no, List lista) {
+		int traz = cont - 44;
+		int frente = cont + 44;
+
+		if (traz < 0) {
+			traz = 0;
+		}
+		if (frente > lista.size()) {
+			frente = (lista.size() - 1);
+		}
+
+		trazCar = ((No) lista.get(traz)).getPoint();
+		frenteCar = ((No) lista.get(frente)).getPoint();
+
+		testCar = no.getPoint();
+
 	}
 
 	protected void finalize() throws Throwable {
@@ -164,36 +199,12 @@ public class TestePistaInflado {
 		maxHP = !maxHP;
 	}
 
+	public boolean isIrProBox() {
+		return irProBox;
+	}
+
 	protected void centralizaTestCar() {
-		JScrollPane scrollPane = editor.getScrollPane();
-		editor.pontoView = new Point((int) (testCar.x * editor.zoom)
-				- (scrollPane.getViewport().getWidth() / 2),
-				(int) (testCar.y * editor.zoom)
-						- (scrollPane.getViewport().getHeight() / 2));
-		Point p = editor.pontoView;
-		if (p.x < 0) {
-			p.x = 1;
-		}
-		double maxX = ((editor.getWidth() * editor.zoom) - scrollPane
-				.getViewport().getWidth());
-		if (p.x > maxX) {
-			p.x = Util.inte(maxX) - 1;
-		}
-		if (p.y < 0) {
-			p.y = 1;
-		}
-		double maxY = ((editor.getHeight() * editor.zoom) - (scrollPane
-				.getViewport().getHeight()));
-		if (p.y > maxY) {
-			p.y = Util.inte(maxY) - 1;
-		}
-		scrollPane.getViewport().setViewPosition(editor.pontoView);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				editor.repaint();
-			}
-		});
+		editor.centralizarPonto(testCar);
 	}
 
 	public void pararTeste() {

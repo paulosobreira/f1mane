@@ -23,7 +23,9 @@ public class Circuito implements Serializable {
 
 	private double multiplicadorPista;
 	private int trk = 220;
-	private ArrayList ptsCurvaBaixa;
+	private ArrayList ptsCurva;
+	private int entradaBoxIndex;
+	private int saidaBoxIndex;
 
 	public List geraPontosPista() {
 		List arrayList = new ArrayList();
@@ -112,13 +114,13 @@ public class Circuito implements Serializable {
 					GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
 		}
-		ptsCurvaBaixa = new ArrayList();
+		ptsCurva = new ArrayList();
 		for (int i = 0; i < pistaFull.size(); i++) {
 			No no = (No) pistaFull.get(i);
 			no.setIndex(i);
 			if (No.CURVA_BAIXA.equals(no.getTipo())
 					|| No.CURVA_ALTA.equals(no.getTipo())) {
-				ptsCurvaBaixa.add(no);
+				ptsCurva.add(no);
 			}
 		}
 
@@ -162,7 +164,7 @@ public class Circuito implements Serializable {
 		}
 
 		if (!boxTemp.isEmpty()) {
-			No no = (No) boxTemp.get(0);
+			No no = (No) boxTemp.get(boxTemp.size() - 1);
 			Point p1 = noAnt.getPoint();
 			Point p2 = no.getPoint();
 			p1.x *= multi;
@@ -173,6 +175,25 @@ public class Circuito implements Serializable {
 
 		}
 
+		No boxEntrada = (No) boxKey.get(0);
+		No boxSaida = (No) boxKey.get(boxKey.size() - 1);
+		int entradaBoxSize = Integer.MAX_VALUE;
+		int saidaBoxSize = Integer.MAX_VALUE;
+		for (int i = 0; i < pistaFull.size(); i++) {
+			No pistaNo = (No) pistaFull.get(i);
+			List entrada = GeoUtil.drawBresenhamLine(boxEntrada.getPoint(),
+					pistaNo.getPoint());
+			if (entrada.size() < entradaBoxSize) {
+				entradaBoxSize = entrada.size();
+				entradaBoxIndex = i;
+			}
+			List saida = GeoUtil.drawBresenhamLine(boxSaida.getPoint(), pistaNo
+					.getPoint());
+			if (saida.size() < saidaBoxSize) {
+				saidaBoxSize = saida.size();
+				saidaBoxIndex = i;
+			}
+		}
 	}
 
 	public List getPistaFull() {
@@ -251,8 +272,16 @@ public class Circuito implements Serializable {
 		return multiplicadorPista;
 	}
 
-	public ArrayList getPtsCurvaBaixa() {
-		return ptsCurvaBaixa;
+	public ArrayList getPtsCurva() {
+		return ptsCurva;
+	}
+
+	public int getEntradaBoxIndex() {
+		return entradaBoxIndex;
+	}
+
+	public int getSaidaBoxIndex() {
+		return saidaBoxIndex;
 	}
 
 }

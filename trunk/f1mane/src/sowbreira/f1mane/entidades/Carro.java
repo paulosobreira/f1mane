@@ -32,6 +32,10 @@ public class Carro implements Serializable {
 	public static final String MAIS_ASA = "MAIS_ASA";
 	public static final String ASA_NORMAL = "ASA_NORMAL";
 	public static final String MENOS_ASA = "MENOS_ASA";
+	public static final int LARGURA = 88;
+	public static final int ALTURA = 34;
+	public static final int MEIA_LARGURA = 44;
+	public static final int MEIA_ALTURA = 17;
 	private String img;
 	private Color cor1;
 	private Color cor2;
