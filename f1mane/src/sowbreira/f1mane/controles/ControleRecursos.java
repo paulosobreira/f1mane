@@ -85,8 +85,8 @@ public abstract class ControleRecursos {
 				.getClass().getResourceAsStream(circuitoStr));
 
 		circuito = (Circuito) ois.readObject();
-		nosDaPista = circuito.geraPontosPista();
-		nosDoBox = circuito.geraPontosBox();
+		nosDaPista = circuito.getPistaFull();
+		nosDoBox = circuito.getBoxFull();
 		int contId = 1;
 		for (Iterator iter = nosDaPista.iterator(); iter.hasNext();) {
 			No noPsita = (No) iter.next();
