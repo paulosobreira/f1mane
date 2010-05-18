@@ -91,30 +91,6 @@ public class PainelCircuito extends JPanel {
 		});
 	}
 
-	public void setMapDesenharQualificacao(Map desenharQualificacao) {
-		this.mapDesenharQualificacao = desenharQualificacao;
-	}
-
-	public boolean isDesenhaQualificacao() {
-		return desenhaQualificacao;
-	}
-
-	public void setDesenhaQualificacao(boolean desenhaQualificacao) {
-		this.desenhaQualificacao = desenhaQualificacao;
-	}
-
-	public Map getMapDesenharQualificacao() {
-		return mapDesenharQualificacao;
-	}
-
-	public BufferedImage getBackGround() {
-		return backGround;
-	}
-
-	public void setBackGround(BufferedImage backGround) {
-		this.backGround = backGround;
-	}
-
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		synchronized (mutex) {
@@ -129,32 +105,36 @@ public class PainelCircuito extends JPanel {
 			if (desenhaQualificacao) {
 				desenhaQualificacao(g2d);
 			} else {
-				Piloto pilotoSelecionado = gerenciadorVisual
-						.obterPilotoSecionadoTabela(controleJogo
-								.getPilotoSelecionado());
+				desenhaPiloto(g2d);
 
-				for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
-					Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-					if (piloto.getCarro().isRecolhido()
-							|| piloto.getNoAtual() == null) {
-						continue;
-					}
-					g2d.setColor(piloto.getCarro().getCor1());
-					g2d.fillOval(piloto.getNoAtual().getX() - 2, piloto
-							.getNoAtual().getY() - 2, 8, 8);
-					desenhaTipoPneu(piloto, g2d);
-					if (piloto != pilotoSelecionado) {
-						desenhaNomePilotoNaoSelecionado(piloto, g2d);
-					}
-				}
-				desenharSafetyCar(g2d);
-				if ((pilotoSelecionado != null)) {
-					desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
-					desenhaCarroSelecionado(pilotoSelecionado, g2d);
-					desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
-				}
 			}
 		}
+	}
+
+	private void desenhaPiloto(Graphics2D g2d) {
+		Piloto pilotoSelecionado = gerenciadorVisual
+				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
+
+		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
+			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
+			if (piloto.getCarro().isRecolhido() || piloto.getNoAtual() == null) {
+				continue;
+			}
+			g2d.setColor(piloto.getCarro().getCor1());
+			g2d.fillOval(piloto.getNoAtual().getX() - 2, piloto.getNoAtual()
+					.getY() - 2, 8, 8);
+			desenhaTipoPneu(piloto, g2d);
+			if (piloto != pilotoSelecionado) {
+				desenhaNomePilotoNaoSelecionado(piloto, g2d);
+			}
+		}
+		desenharSafetyCar(g2d);
+		if ((pilotoSelecionado != null)) {
+			desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
+			desenhaCarroSelecionado(pilotoSelecionado, g2d);
+			desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
+		}
+
 	}
 
 	private void desenhaChuva(Graphics2D g2d) {
@@ -992,4 +972,27 @@ public class PainelCircuito extends JPanel {
 
 	}
 
+	public void setMapDesenharQualificacao(Map desenharQualificacao) {
+		this.mapDesenharQualificacao = desenharQualificacao;
+	}
+
+	public boolean isDesenhaQualificacao() {
+		return desenhaQualificacao;
+	}
+
+	public void setDesenhaQualificacao(boolean desenhaQualificacao) {
+		this.desenhaQualificacao = desenhaQualificacao;
+	}
+
+	public Map getMapDesenharQualificacao() {
+		return mapDesenharQualificacao;
+	}
+
+	public BufferedImage getBackGround() {
+		return backGround;
+	}
+
+	public void setBackGround(BufferedImage backGround) {
+		this.backGround = backGround;
+	}
 }
