@@ -26,6 +26,7 @@ public class Piloto implements Serializable {
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
 	private transient double anguloRotacaoCarro;
+	private transient double zoom;
 	private transient BufferedImage ultimaRotacaoCarro;
 	private List ultsConsumosCombustivel = new LinkedList();
 	private Integer ultimoConsumoCombust;
@@ -43,8 +44,35 @@ public class Piloto implements Serializable {
 	private String nomeJogador;
 	private transient int habilidade;
 	private transient double notaQualificacaoAleatoria;
+	private int carX;
+	private int carY;
 	private int ptosPista;
 	private int ultimoIndice;
+
+	public int getCarX() {
+		return carX;
+	}
+
+	public void setCarX(int carX) {
+		this.carX = carX;
+	}
+
+	public int getCarY() {
+		return carY;
+	}
+
+	public void setCarY(int carY) {
+		this.carY = carY;
+	}
+
+	public double getZoom() {
+		return zoom;
+	}
+
+	public void setZoom(double zoom) {
+		this.zoom = zoom;
+	}
+
 	public int getUltimoIndice() {
 		return ultimoIndice;
 	}

@@ -55,7 +55,10 @@ public class ControleCiclo extends Thread {
 	public void run() {
 		try {
 			if (ControleJogoLocal.VALENDO) {
+				controleJogo.atualizaPainel();
+				Thread.sleep(tempoCiclo);
 				controleJogo.desenhaQualificacao();
+				Thread.sleep(tempoCiclo);
 				controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
 				while (contadorLuz >= 0) {
 					Thread.sleep(tempoCiclo);
