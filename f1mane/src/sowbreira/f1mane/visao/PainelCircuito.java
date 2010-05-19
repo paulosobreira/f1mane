@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.ScrollPane;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,10 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import br.nnpe.GeoUtil;
-import br.nnpe.ImageUtil;
-import br.nnpe.Util;
-
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
@@ -42,6 +37,9 @@ import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.GeoUtil;
+import br.nnpe.ImageUtil;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -92,7 +90,9 @@ public class PainelCircuito extends JPanel {
 	private int larguraPistaPixeis;
 	private BasicStroke zebra;
 	private BufferedImage carroCima;
+	private BufferedImage bkg;
 	private double larguraPista = 0;
+	private Rectangle limitesViewPort;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -128,7 +128,18 @@ public class PainelCircuito extends JPanel {
 		mx += 300;
 		my += 300;
 		atualizaVarZoom();
+		atualizaBkg();
 		// controleJogo.getMainFrame().pack();
+	}
+
+	private void atualizaBkg() {
+		bkg = new BufferedImage(mx, my, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics2d = (Graphics2D) bkg.getGraphics();
+		desenhaTintaPistaEZebra(graphics2d);
+		desenhaPista(graphics2d);
+		desenhaPistaBox(graphics2d);
+		desenhaLargada(graphics2d);
+		desenhaGrid(graphics2d);
 	}
 
 	protected void paintComponent(Graphics g) {
@@ -136,6 +147,7 @@ public class PainelCircuito extends JPanel {
 		synchronized (mutex) {
 			Graphics2D g2d = (Graphics2D) g;
 			setarHints(g2d);
+			limitesViewPort = (Rectangle) limitesViewPort();
 			if (carroCima == null)
 				return;
 			if (larguraPistaPixeis == 0)
@@ -155,13 +167,15 @@ public class PainelCircuito extends JPanel {
 				zebra = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
 						BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
 						new float[] { 10, 10 }, 0);
-			desenhaTintaPistaEZebra(g2d);
-			desenhaPista(g2d);
-			desenhaPistaBox(g2d);
-			desenhaLargada(g2d);
-			desenhaGrid(g2d);
-			// desenhaBoxes(g2d);
-			g2d.setStroke(trilho);
+			// desenhaTintaPistaEZebra(g2d);
+			// desenhaPista(g2d);
+			// desenhaPistaBox(g2d);
+			// desenhaLargada(g2d);
+			// desenhaGrid(g2d);
+			// // desenhaBoxes(g2d);
+			// g2d.setStroke(trilho);
+			g2d.drawImage(bkg, limitesViewPort.x, limitesViewPort.y,
+					limitesViewPort.width, limitesViewPort.height, null);
 			desenhaContadorVoltas(g2d);
 			desenharFarois(g2d);
 			desenharClima(g2d);
@@ -216,7 +230,6 @@ public class PainelCircuito extends JPanel {
 	private void desenhaCarro(Graphics2D g2d, Piloto piloto) {
 		No noAtual = piloto.getNoAtual();
 		Point p = noAtual.getPoint();
-		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
 		if (!limitesViewPort.contains(p)) {
 			return;
 		}
@@ -318,8 +331,6 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaGrid(Graphics2D g2d) {
-		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
-
 		for (int i = 0; i < 24; i++) {
 			int iP = 50 + Util.inte(Carro.LARGURA * i);
 			No n1 = (No) circuito.getPistaFull().get(
@@ -332,9 +343,6 @@ public class PainelCircuito extends JPanel {
 					.inte(n1.getPoint().y * zoom));
 			Point pm = new Point(Util.inte(nM.getPoint().x * zoom), Util
 					.inte(nM.getPoint().y * zoom));
-			if (!limitesViewPort.contains(pm)) {
-				continue;
-			}
 			Point p2 = new Point(Util.inte(n2.getPoint().x * zoom), Util
 					.inte(n2.getPoint().y * zoom));
 			double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
@@ -592,7 +600,6 @@ public class PainelCircuito extends JPanel {
 			return;
 		Point p1 = new Point(0, 0);
 		Point p2 = new Point(0, 0);
-		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
 		for (int i = 0; i < limitesViewPort.getWidth(); i += 20) {
 			for (int j = 0; j < limitesViewPort.getHeight(); j += 20) {
 				if (Math.random() > .8) {
