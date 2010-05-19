@@ -18,6 +18,7 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 13:24:54
@@ -155,7 +156,8 @@ public class ControleEstatisticas {
 		Piloto piloto = (Piloto) controleJogo.getPilotos().get(pos);
 		if (piloto != null) {
 			int diff = piloto.getPtosPista() - psel.getPtosPista();
-			return diff;
+			return Util.inte(diff
+					/ controleJogo.getCircuito().getMultiplciador());
 		}
 		return Integer.MAX_VALUE;
 	}

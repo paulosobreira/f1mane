@@ -118,7 +118,7 @@ public class MainFrame extends JFrame {
 		gerarMenusSobre(menuInfo);
 		gerarMenusidiomas(menuIdiomas);
 		getContentPane().setLayout(null);
-		setSize(800, 630);
+		setSize(1024, 768);
 		setTitle("F1-MANE 2.2 MANager & Engineer");
 	}
 

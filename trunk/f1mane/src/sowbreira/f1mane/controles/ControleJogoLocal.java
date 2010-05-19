@@ -596,7 +596,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			if (controleCampeonato != null) {
 				controleCampeonato.iniciaCorrida(circuitoSelecionado);
 			}
-			mainFrame.pack();
+			// mainFrame.pack();
 			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
 		}
 	}
@@ -765,7 +765,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		String tipoPneu = (String) tpPneu;
 		Integer qtdeCombustPorcent = (Integer) combust;
 
-		pilotoJogador.getCarro().trocarPneus(this,tipoPneu,
+		pilotoJogador.getCarro().trocarPneus(this, tipoPneu,
 				controleCorrida.getDistaciaCorrida());
 
 		int undsComnustAbastecer = (controleCorrida.getTanqueCheio() * qtdeCombustPorcent

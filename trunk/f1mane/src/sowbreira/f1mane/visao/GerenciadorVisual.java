@@ -17,6 +17,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -157,6 +159,22 @@ public class GerenciadorVisual {
 		gerarLayoutNovo();
 
 		JFrame frame = controleJogo.getMainFrame();
+
+		MouseWheelListener mw = new MouseWheelListener() {
+
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				painelCircuito.zoom += e.getWheelRotation() / 50.0;
+				if (painelCircuito.zoom > 1) {
+					painelCircuito.zoom = 1;
+				}
+				if (painelCircuito.zoom < 0.1) {
+					painelCircuito.zoom = 0.1;
+				}
+				painelCircuito.atualizaVarZoom();
+				//MainPanelEditorInflado.this.repaint();
+			}
+		};
 		KeyListener keyListener = geraKeyListener();
 		frame.addKeyListener(keyListener);
 		painelCircuito.addKeyListener(keyListener);
@@ -178,6 +196,26 @@ public class GerenciadorVisual {
 		infoTextual.addKeyListener(keyListener);
 		telemetriaPanel.addKeyListener(keyListener);
 		comboBoxAsa.addKeyListener(keyListener);
+		frame.addMouseWheelListener(mw);
+		painelCircuito.addMouseWheelListener(mw);
+		painelInfText.addMouseWheelListener(mw);
+		painelPosicoes.addMouseWheelListener(mw);
+		painelPosicoes.getPosicoesTable().addMouseWheelListener(mw);
+		pneuBar.addMouseWheelListener(mw);
+		agressivo.addMouseWheelListener(mw);
+		modoPiloto.addMouseWheelListener(mw);
+		panelControle.addMouseWheelListener(mw);
+		box.addMouseWheelListener(mw);
+		progBox.addMouseWheelListener(mw);
+		comboBoxTipoPneu.addMouseWheelListener(mw);
+		combustivelBar.addMouseWheelListener(mw);
+		giro.addMouseWheelListener(mw);
+		infoText.addMouseWheelListener(mw);
+		sliderPercentCombust.addMouseWheelListener(mw);
+		scrollPaneTextual.addMouseWheelListener(mw);
+		infoTextual.addMouseWheelListener(mw);
+		telemetriaPanel.addMouseWheelListener(mw);
+		comboBoxAsa.addMouseWheelListener(mw);
 	}
 
 	public void finalize() throws Throwable {
@@ -566,10 +604,6 @@ public class GerenciadorVisual {
 
 	public JEditorPane getInfoTextual() {
 		return infoTextual;
-	}
-
-	public PainelCircuito getPainelCircuito() {
-		return painelCircuito;
 	}
 
 	public JPanel getPainelInfGraf() {
@@ -1459,9 +1493,13 @@ public class GerenciadorVisual {
 			}
 
 		});
-		int iniY1 = 5;
-		int iniY2 = 10;
-		int midPainel = painelCircuito.getWidth() / 2;
+		No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
+		painelCircuito.centralizarPontoDireto(n.getPoint());
+		Rectangle limitesViewPort = null;
+		limitesViewPort = (Rectangle) painelCircuito.limitesViewPort();
+		int iniY1 = 30;
+		int iniY2 = 40;
+		int midPainel = (limitesViewPort.width / 2);
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			if (piloto.getPosicao() % 2 == 0) {
@@ -1472,14 +1510,20 @@ public class GerenciadorVisual {
 				iniY1 += 30;
 			}
 		}
-		painelCircuito.setDesenhaQualificacao(true);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			Logger.logarExept(e);
+		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			Point point = (Point) ptosPilotos.get(i);
-			int x = painelCircuito.getWidth();
-			while (x > point.x) {
-				painelCircuito.definirDesenhoQualificacao(piloto, new Point(x,
-						point.y));
+			limitesViewPort = (Rectangle) painelCircuito.limitesViewPort();
+			int x = limitesViewPort.x + limitesViewPort.width;
+			while (x > (point.x + limitesViewPort.x)) {
+				limitesViewPort = (Rectangle) painelCircuito.limitesViewPort();
+				Point pd = new Point(x, point.y + limitesViewPort.y);
+				painelCircuito.definirDesenhoQualificacao(piloto, pd);
 				if (tempoSleep != 0) {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
@@ -1512,8 +1556,8 @@ public class GerenciadorVisual {
 		} catch (InterruptedException e) {
 			Logger.logarExept(e);
 		}
+		painelCircuito.setDesenhouQualificacao(true);
 
-		painelCircuito.setDesenhaQualificacao(false);
 	}
 
 	public void atulizaTabelaPosicoes() {
