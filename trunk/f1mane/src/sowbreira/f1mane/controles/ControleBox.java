@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -31,6 +32,7 @@ public class ControleBox {
 	private ControleCorrida controleCorrida;
 	private Map boxEquipes;
 	private Hashtable boxEquipesOcupado;
+	private Circuito circuito;
 
 	/**
 	 * @param controleJogo
@@ -42,9 +44,14 @@ public class ControleBox {
 		super();
 		this.controleJogo = controleJogo;
 		this.controleCorrida = controleCorrida;
-		calculaNosBox(controleJogo.getNosDaPista(), controleJogo.getNosDoBox());
+		entradaBox = (No) controleJogo.getCircuito().getPistaFull().get(
+				controleJogo.getCircuito().getEntradaBoxIndex());
+		paradaBox = (No) controleJogo.getCircuito().getBoxFull().get(
+				controleJogo.getCircuito().getParadaBoxIndex());
+		saidaBox = (No) controleJogo.getCircuito().getBoxFull().get(
+				controleJogo.getCircuito().getSaidaBoxIndex());
 		calculaQtdeNosPistaRefBox();
-
+		circuito = controleJogo.getCircuito();
 		if (saidaBox == null) {
 			throw new Exception("Saida box não encontrada!");
 		}
@@ -56,7 +63,7 @@ public class ControleBox {
 	}
 
 	private void geraBoxesEquipes() {
-		//TODO MUltiplicador
+		// TODO MUltiplicador
 		boxEquipes = new HashMap();
 		boxEquipesOcupado = new Hashtable();
 
@@ -148,11 +155,9 @@ public class ControleBox {
 	}
 
 	public void processarPilotoBox(Piloto piloto) {
-		No noAnt = piloto.getNoAnt();
-		No noPost = piloto.getNoPost();
-		if (!((noAnt != null && noAnt.isNoEntradaBox())
-				|| piloto.getNoAtual().isNoEntradaBox() || (noPost != null && noPost
-				.isNoEntradaBox()))
+		int cont = piloto.getNoAtual().getIndex();
+		if (!(cont > (circuito.getEntradaBoxIndex() - 100) && cont < (circuito
+				.getEntradaBoxIndex() + 100))
 				&& (piloto.getPtosBox() <= 0)) {
 			return;
 		} else {
@@ -165,9 +170,8 @@ public class ControleBox {
 			List boxList = controleJogo.getNosDoBox();
 			No box = (No) boxEquipes.get(piloto.getCarro());
 			if (box.equals(piloto.getNoAtual())
-					|| (((noAnt != null && noAnt.isNoEntradaBox())
-							|| piloto.getNoAtual().isNoEntradaBox() || (noPost != null && noPost
-							.isNoEntradaBox())))) {
+					|| (cont > (circuito.getEntradaBoxIndex() - 100) && cont < (circuito
+							.getEntradaBoxIndex() + 100))) {
 				piloto.setPtosBox(piloto.getPtosBox() + 1);
 			} else {
 				box = piloto.getNoAtual();
@@ -184,6 +188,7 @@ public class ControleBox {
 				} else {
 					ptosBox += ((Math.random() < .5) ? 1 : 0);
 				}
+				ptosBox *= circuito.getMultiplciador();
 				piloto.processaVelocidade(ptosBox, piloto.getNoAtual());
 				piloto.setPtosBox(ptosBox + piloto.getPtosBox());
 			}

@@ -201,20 +201,17 @@ public class ControleEstatisticas {
 	}
 
 	public void info(String info, boolean prioritaria) {
-		if (InterfaceJogo.VALENDO) {
-			synchronized (bufferInfo) {
-				if (bufferInfo.contains(info)) {
-					return;
-				}
-
-				if (prioritaria) {
-					bufferInfo.addFirst(info);
-				} else {
-					bufferInfo.add(info);
-				}
+		Logger.logar(info);
+		synchronized (bufferInfo) {
+			if (bufferInfo.contains(info)) {
+				return;
 			}
-		} else {
-			Logger.logar(info);
+
+			if (prioritaria) {
+				bufferInfo.addFirst(info);
+			} else {
+				bufferInfo.add(info);
+			}
 		}
 	}
 

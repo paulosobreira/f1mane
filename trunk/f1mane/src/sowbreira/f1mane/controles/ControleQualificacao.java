@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import br.nnpe.Logger;
@@ -123,8 +124,8 @@ public class ControleQualificacao {
 			no.setIndex(position);
 			piloto.setNoAtual(no);
 			piloto.setPosicao(i + 1);
-			position -= 5;
-			piloto.setPtosPista(i * -5);
+			position -= (Carro.LARGURA * 2);
+			piloto.setPtosPista(i * -(Carro.LARGURA * 2));
 			piloto.setVelocidade(0);
 		}
 
