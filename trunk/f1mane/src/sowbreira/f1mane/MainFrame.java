@@ -30,7 +30,7 @@ import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.editor.MainPanelEditor;
-import sowbreira.f1mane.editor.MainPanelEditorInflado;
+import sowbreira.f1mane.editor.MainPanelEditorVetorizado;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
@@ -54,7 +54,7 @@ public class MainFrame extends JFrame {
 	private JMenu menuEditor;
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
-	protected MainPanelEditorInflado editorInflado;
+	protected MainPanelEditorVetorizado editorInflado;
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;
@@ -640,20 +640,21 @@ public class MainFrame extends JFrame {
 		});
 		menu4.add(salvarPista);
 
-		JMenuItem inflarPista = new JMenuItem("InflarPista") {
+		JMenuItem vetorizarPista = new JMenuItem("vetorizarPista") {
 			public String getText() {
-				return Lang.msg("InflarPista");
+				return Lang.msg("vetorizarPista");
 			}
 
 		};
-		inflarPista.addActionListener(new ActionListener() {
+		vetorizarPista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
 					if (controleJogo != null) {
 						controleJogo.matarTodasThreads();
 					}
-					editorInflado = new MainPanelEditorInflado(MainFrame.this);
+					editorInflado = new MainPanelEditorVetorizado(
+							MainFrame.this);
 					ativarKeysEditor();
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
@@ -661,7 +662,7 @@ public class MainFrame extends JFrame {
 
 			}
 		});
-		menu4.add(inflarPista);
+		menu4.add(vetorizarPista);
 	}
 
 	public static void main(String[] args) throws IOException {

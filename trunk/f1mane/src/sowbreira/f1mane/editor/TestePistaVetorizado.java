@@ -18,7 +18,7 @@ import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
-public class TestePistaInflado {
+public class TestePistaVetorizado {
 	protected static final long SEEP_TIME = 100;
 	private Circuito circuito;
 	private Point testCar;
@@ -29,10 +29,11 @@ public class TestePistaInflado {
 	private boolean maxHP;
 	private List pontosPista;
 	private List pontosBox;
-	private MainPanelEditorInflado editor;
+	private MainPanelEditorVetorizado editor;
 	private Thread testTh;
 
-	public TestePistaInflado(MainPanelEditorInflado editor, Circuito circuito) {
+	public TestePistaVetorizado(MainPanelEditorVetorizado editor,
+			Circuito circuito) {
 		this.circuito = circuito;
 		this.editor = editor;
 	}
@@ -205,6 +206,10 @@ public class TestePistaInflado {
 
 	protected void centralizaTestCar() {
 		editor.centralizarPonto(testCar);
+	}
+
+	public boolean isMaxHP() {
+		return maxHP;
 	}
 
 	public void pararTeste() {

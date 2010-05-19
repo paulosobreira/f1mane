@@ -241,6 +241,12 @@ public class PainelCircuito extends JPanel {
 		}
 
 		int cont = noAtual.getIndex();
+
+		if (piloto.getUltimoIndice() == cont) {
+			System.out.println("repete indice");
+		}
+		piloto.setUltimoIndice(cont);
+
 		int width = (int) (carroCima.getWidth());
 		int height = (int) (carroCima.getHeight());
 		int w2 = width / 2;
