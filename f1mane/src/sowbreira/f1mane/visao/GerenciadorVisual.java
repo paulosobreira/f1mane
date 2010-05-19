@@ -6,6 +6,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -54,6 +56,7 @@ import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
@@ -62,6 +65,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.recursos.idiomas.LangVO;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 public class GerenciadorVisual {
 	private JPanel panelControle;
@@ -93,6 +97,7 @@ public class GerenciadorVisual {
 	private JSpinner spinnerDificuldadeUltrapassagem;
 	private JSpinner spinnerIndexVelcidadeEmReta;
 	private PainelCircuito painelCircuito;
+	private JScrollPane scrollPane;
 	private PainelTabelaPosicoes painelPosicoes;
 	private InterfaceJogo controleJogo;
 	private JPanel southPanel = new JPanel();
@@ -127,6 +132,10 @@ public class GerenciadorVisual {
 		return comboBoxTemporadas;
 	}
 
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
 		progamacaoBox = new ProgamacaoBox();
@@ -134,13 +143,12 @@ public class GerenciadorVisual {
 
 	public void iniciarInterfaceGraficaJogo() throws IOException {
 		painelCircuito = new PainelCircuito(controleJogo, this);
-		painelCircuito.setBackGround(CarregadorRecursos.carregaBackGround(
-				controleJogo.getCircuito().getBackGround(), painelCircuito,
-				controleJogo.getCircuito()));
-		int larg = painelCircuito.getBackGround().getWidth() < 800 ? 800
-				: painelCircuito.getBackGround().getWidth();
-		larguraFrame = larg + 145;
-		alturaFrame = painelCircuito.getBackGround().getHeight() + 280;
+		scrollPane = new JScrollPane(painelCircuito,
+				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		larguraFrame = 1024;
+		alturaFrame = 768;
 		carregarInfoClima();
 		gerarPainelPosicoes();
 		gerarPainelComandos();
@@ -388,17 +396,24 @@ public class GerenciadorVisual {
 	}
 
 	public void atualizaPainel() {
-		if (ControleJogoLocal.VALENDO) {
-			try {
-				painelCircuito.repaint();
-			} catch (Exception e) {
-				Logger.logar(e);
-			}
-		}
 		Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
 		atualizaPainelGraficoPilotoSelecionado(pilotoSelecionado);
 		atualizaInfoAdicional(pilotoSelecionado);
 		atualizarImgClima(new Clima(controleJogo.getClima()));
+		if (ControleJogoLocal.VALENDO) {
+			try {
+				if (pilotoSelecionado == null) {
+					List l = controleJogo.getCircuito().getPistaFull();
+					No n = (No) l.get(0);
+					painelCircuito.centralizarPonto(n.getPoint());
+				} else {
+					painelCircuito.centralizarPonto(pilotoSelecionado
+							.getNoAtual().getPoint());
+				}
+			} catch (Exception e) {
+				Logger.logar(e);
+			}
+		}
 	}
 
 	private void atualizaInfoAdicional(Piloto pilotoSelecionado) {
@@ -713,7 +728,7 @@ public class GerenciadorVisual {
 		controleJogo.getMainFrame().getContentPane().removeAll();
 		controleJogo.getMainFrame().getContentPane().setLayout(
 				new BorderLayout());
-		controleJogo.getMainFrame().getContentPane().add(painelCircuito,
+		controleJogo.getMainFrame().getContentPane().add(scrollPane,
 				BorderLayout.CENTER);
 		controleJogo.getMainFrame().getContentPane().add(southPanel,
 				BorderLayout.SOUTH);
@@ -1466,7 +1481,12 @@ public class GerenciadorVisual {
 				painelCircuito.definirDesenhoQualificacao(piloto, new Point(x,
 						point.y));
 				if (tempoSleep != 0) {
-					painelCircuito.repaint();
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							painelCircuito.repaint();
+						}
+					});
 				} else {
 					break;
 				}
@@ -1482,7 +1502,12 @@ public class GerenciadorVisual {
 			}
 		}
 		try {
-			painelCircuito.repaint();
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					painelCircuito.repaint();
+				}
+			});
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			Logger.logarExept(e);

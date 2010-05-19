@@ -117,6 +117,10 @@ public class Circuito implements Serializable {
 					GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
 		}
+		for (int i = 0; i < pistaFull.size(); i++) {
+			No no = (No) pistaFull.get(i);
+			no.setIndex(i);
+		}
 
 		if (boxFull == null) {
 			boxFull = new ArrayList();
@@ -167,6 +171,10 @@ public class Circuito implements Serializable {
 			boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2),
 					noAnt));
 
+		}
+		for (int i = 0; i < boxFull.size(); i++) {
+			No no = (No) boxFull.get(i);
+			no.setIndex(i);
 		}
 
 		No boxEntrada = (No) boxKey.get(0);

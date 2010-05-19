@@ -627,7 +627,12 @@ public class MainFrame extends JFrame {
 		salvarPista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					editor.salvarPista();
+					if (editor == null) {
+						editorInflado.salvarPista();
+					} else {
+						editor.salvarPista();
+					}
+
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
 				}

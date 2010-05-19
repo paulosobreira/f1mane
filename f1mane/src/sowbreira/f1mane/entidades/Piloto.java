@@ -1,5 +1,6 @@
 package sowbreira.f1mane.entidades;
 
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,8 @@ public class Piloto implements Serializable {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
+	private transient double anguloRotacaoCarro;
+	private transient BufferedImage ultimaRotacaoCarro;
 	private List ultsConsumosCombustivel = new LinkedList();
 	private Integer ultimoConsumoCombust;
 	private List ultsConsumosPneu = new LinkedList();
@@ -52,8 +55,6 @@ public class Piloto implements Serializable {
 	private boolean agressivo = true;
 	private Carro carro = new Carro();
 	private No noAtual = new No();
-	private No noAnt;
-	private No noPost;
 	private int numeroVolta;
 	private int stress;
 	private transient int ciclosDesconcentrado;
@@ -72,6 +73,22 @@ public class Piloto implements Serializable {
 	private long parouNoBoxMilis;
 	private long saiuDoBoxMilis;
 	private int msgTentativaNumVolta = 2;
+
+	public double getAnguloRotacaoCarro() {
+		return anguloRotacaoCarro;
+	}
+
+	public void setAnguloRotacaoCarro(double anguloRotacaoCarro) {
+		this.anguloRotacaoCarro = anguloRotacaoCarro;
+	}
+
+	public BufferedImage getUltimaRotacaoCarro() {
+		return ultimaRotacaoCarro;
+	}
+
+	public void setUltimaRotacaoCarro(BufferedImage ultimaRotacaoCarro) {
+		this.ultimaRotacaoCarro = ultimaRotacaoCarro;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -106,22 +123,6 @@ public class Piloto implements Serializable {
 
 	public void setCombustJogador(Integer combustJogador) {
 		this.combustJogador = combustJogador;
-	}
-
-	public No getNoAnt() {
-		return noAnt;
-	}
-
-	public void setNoAnt(No noAnt) {
-		this.noAnt = noAnt;
-	}
-
-	public No getNoPost() {
-		return noPost;
-	}
-
-	public void setNoPost(No noPost) {
-		this.noPost = noPost;
 	}
 
 	public int getVelocidade() {
@@ -388,12 +389,15 @@ public class Piloto implements Serializable {
 	public void processarCiclo(InterfaceJogo controleJogo) {
 		List pista = controleJogo.getNosDaPista();
 		int index = calcularNovoIndex(controleJogo);
-		index *= controleJogo.getCircuito().getMultiplciador();
+		// index *= controleJogo.getCircuito().getMultiplciador();
 		int diff = index - pista.size();
 
 		/**
 		 * Completou Volta
 		 */
+		if (index > pista.size()) {
+			System.out.println();
+		}
 		if (diff >= 0) {
 			int pCombust = getCarro().porcentagemCombustivel();
 			if (ultimoConsumoCombust == null) {
@@ -442,16 +446,6 @@ public class Piloto implements Serializable {
 
 		this.setNoAtual((No) pista.get(index));
 
-		if ((index - 1) < 0) {
-			this.setNoAnt(((No) pista.get(pista.size() - 1)));
-		} else {
-			this.setNoAnt(((No) pista.get(index - 1)));
-		}
-		if ((index + 1) < pista.size()) {
-			this.setNoPost(((No) pista.get(index + 1)));
-		} else {
-			this.setNoPost(((No) pista.get(0)));
-		}
 	}
 
 	public void processaVelocidade(int index, No no) {
@@ -683,8 +677,10 @@ public class Piloto implements Serializable {
 		novoModificador = controleJogo.calculaModificadorComSafetyCar(this,
 				novoModificador);
 		processaVelocidade(novoModificador, noAtual);
-		index += novoModificador;
-		ptosPista += novoModificador;
+		index += (novoModificador * controleJogo.getCircuito()
+				.getMultiplciador());
+		ptosPista += (novoModificador * controleJogo.getCircuito()
+				.getMultiplciador());
 
 		return index;
 	}
