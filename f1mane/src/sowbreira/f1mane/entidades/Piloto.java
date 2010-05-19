@@ -44,6 +44,15 @@ public class Piloto implements Serializable {
 	private transient int habilidade;
 	private transient double notaQualificacaoAleatoria;
 	private int ptosPista;
+	private int ultimoIndice;
+	public int getUltimoIndice() {
+		return ultimoIndice;
+	}
+
+	public void setUltimoIndice(int ultimoIndice) {
+		this.ultimoIndice = ultimoIndice;
+	}
+
 	private transient int ptosBox;
 	private int posicao;
 	private transient int paradoBox;

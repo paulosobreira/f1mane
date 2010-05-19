@@ -21,6 +21,7 @@ public class Circuito implements Serializable {
 	private List boxFull = new ArrayList();
 	private List boxKey = new ArrayList();
 	private double multiplicadorPista = 1;
+	private double multiplicadorLarguraPista = 1.1;
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;
 	private int paradaBoxIndex;
@@ -63,10 +64,11 @@ public class Circuito implements Serializable {
 	}
 
 	public void geraPontosPistaInflada() {
-		geraPontosPistaInflada(multiplicadorPista);
+		geraPontosPistaInflada(multiplicadorPista, multiplicadorLarguraPista);
 	}
 
-	public void geraPontosPistaInflada(double multi) {
+	public void geraPontosPistaInflada(double multi, double larg) {
+		multiplicadorLarguraPista = larg;
 		multiplicadorPista = multi;
 		No noAnt = null;
 		if (pistaFull == null) {
@@ -299,6 +301,10 @@ public class Circuito implements Serializable {
 
 	public void setOrientacaoBox(int orientacaoBox) {
 		this.orientacaoBox = orientacaoBox;
+	}
+
+	public double getMultiplicadorLarguraPista() {
+		return multiplicadorLarguraPista;
 	}
 
 }
