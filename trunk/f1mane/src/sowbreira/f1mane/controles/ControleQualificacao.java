@@ -1,5 +1,7 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,8 +11,10 @@ import java.util.List;
 import java.util.Set;
 
 import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -116,16 +120,49 @@ public class ControleQualificacao {
 	}
 
 	public void posiscionarCarrosLargada() {
-		int position = controleJogo.getNosDaPista().size() - 1;
-
+		Circuito circuito = controleJogo.getCircuito();
 		for (int i = 0; i < controleJogo.getPilotos().size(); i++) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-			No no = (No) controleJogo.getNosDaPista().get(position);
-			no.setIndex(position);
-			piloto.setNoAtual(no);
+			int iP = 50 + Util.inte(Carro.LARGURA * i);
+			No n1 = (No) circuito.getPistaFull().get(
+					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
+			No nM = (No) circuito.getPistaFull().get(
+					circuito.getPistaFull().size() - iP);
+			No n2 = (No) circuito.getPistaFull().get(
+					circuito.getPistaFull().size() - iP + Carro.MEIA_LARGURA);
+			Point p1 = new Point(Util.inte(n1.getPoint().x), Util.inte(n1
+					.getPoint().y));
+			Point pm = new Point(Util.inte(nM.getPoint().x), Util.inte(nM
+					.getPoint().y));
+			Point p2 = new Point(Util.inte(n2.getPoint().x), Util.inte(n2
+					.getPoint().y));
+
+			double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
+			Rectangle2D rectangle = new Rectangle2D.Double(
+					(pm.x - (Carro.MEIA_LARGURA)),
+					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
+					(Carro.ALTURA));
+
+			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
+					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
+					.getCenterX()), Util.inte(rectangle.getCenterY())));
+			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
+					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
+					.getCenterX()), Util.inte(rectangle.getCenterY())));
+			if (i % 2 == 0) {
+				rectangle = new Rectangle2D.Double(
+						(cima.x - (Carro.MEIA_LARGURA)),
+						(cima.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
+						(Carro.ALTURA));
+			} else {
+				rectangle = new Rectangle2D.Double(
+						(baixo.x - (Carro.MEIA_LARGURA)),
+						(baixo.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
+						(Carro.ALTURA));
+			}
+			piloto.setNoAtual(nM);
 			piloto.setPosicao(i + 1);
-			position -= (Carro.LARGURA * 2);
-			piloto.setPtosPista(i * -(Carro.LARGURA * 2));
+			piloto.setPtosPista(nM.getIndex());
 			piloto.setVelocidade(0);
 		}
 

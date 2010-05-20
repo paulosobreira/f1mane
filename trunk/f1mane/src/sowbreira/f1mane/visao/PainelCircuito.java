@@ -1201,10 +1201,12 @@ public class PainelCircuito extends JPanel {
 	private void desenharSafetyCar(Graphics2D g2d) {
 		if (controleJogo.isSafetyCarNaPista()) {
 			if (!controleJogo.isSafetyCarVaiBox()) {
-				g2d.drawImage(scimg, limitesViewPort.x + pointDesenhaSC.x
-						+ (Math.random() > 0.5 ? 1 : -1), limitesViewPort.y
-						+ pointDesenhaSC.y + (Math.random() > 0.5 ? -1 : 0),
-						null);
+				g2d
+						.drawImage(scimg, limitesViewPort.x
+								+ (pointDesenhaSC.x + (Math.random() > 0.5 ? 1
+										: -1)), (limitesViewPort.y
+								+ pointDesenhaSC.y + (Math.random() > 0.5 ? -1
+								: 0)), null);
 			}
 			SafetyCar safetyCar = controleJogo.getSafetyCar();
 			if (safetyCar == null) {
@@ -1214,10 +1216,11 @@ public class PainelCircuito extends JPanel {
 				return;
 			}
 			g2d.setColor(Color.LIGHT_GRAY);
-			g2d
-					.fillOval(limitesViewPort.x + safetyCar.getNoAtual().getX()
-							- 2, limitesViewPort.y
-							+ safetyCar.getNoAtual().getY() - 2, 8, 8);
+			g2d.fillOval(Util.inte((limitesViewPort.x
+					+ safetyCar.getNoAtual().getX() - 2)
+					* zoom), Util.inte((limitesViewPort.y
+					+ safetyCar.getNoAtual().getY() - 2)
+					* zoom), 8, 8);
 			if (!safetyCar.isVaiProBox()) {
 				if (Math.random() > .5) {
 					g2d.setColor(Color.YELLOW);
@@ -1226,10 +1229,11 @@ public class PainelCircuito extends JPanel {
 				}
 			} else
 				g2d.setColor(Color.BLACK);
-			g2d
-					.drawOval(limitesViewPort.x + safetyCar.getNoAtual().getX()
-							- 2, limitesViewPort.y
-							+ safetyCar.getNoAtual().getY() - 2, 8, 8);
+			g2d.drawOval(Util.inte((limitesViewPort.x
+					+ safetyCar.getNoAtual().getX() - 2)
+					* zoom), Util.inte((limitesViewPort.y
+					+ safetyCar.getNoAtual().getY() - 2)
+					* zoom), 8, 8);
 
 		}
 	}

@@ -707,6 +707,8 @@ public class Piloto implements Serializable {
 		if (danificado()) {
 			novoModificador = 1;
 		}
+		novoModificador *= controleJogo.getIndexVelcidadeDaPista();
+
 		novoModificador = controleJogo.calculaModificadorComSafetyCar(this,
 				novoModificador);
 		processaVelocidade(novoModificador, noAtual);
