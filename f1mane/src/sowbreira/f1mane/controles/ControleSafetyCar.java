@@ -98,13 +98,13 @@ public class ControleSafetyCar {
 		 */
 		if (piloto.getPosicao() == 1 && controleJogo.isSafetyCarVaiBox()
 				&& piloto.getPtosPista() >= (safetyCar.getPtosPista() - 25)) {
-			return (Math.random() > .6) ? 1 : 0;
+			return (Math.random() > .6) ? 2 : 1;
 		}
 		if (piloto.getPosicao() == 1
 				&& piloto.getPtosPista() >= (safetyCar.getPtosPista() - 5)) {
 			piloto.gerarDesconcentracao((24 - piloto.getPosicao()) * 4);
 			piloto.setAgressivo(false);
-			return 0;
+			return 1;
 		}
 		Piloto pilotoFrente = controleCorrida.acharPilotoDaFrente(piloto);
 		if (pilotoFrente.equals(piloto) || pilotoFrente.entrouNoBox()
@@ -116,7 +116,7 @@ public class ControleSafetyCar {
 				.getPtosPista()) {
 			piloto.gerarDesconcentracao((24 - piloto.getPosicao()) * 4);
 			piloto.setAgressivo(false);
-			return 0;
+			return 1;
 		}
 		return novoModificador;
 	}
