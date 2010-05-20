@@ -631,7 +631,8 @@ public class PainelCircuito extends JPanel {
 		}
 		final Point newP = p;
 		Point oldp = scrollPane.getViewport().getViewPosition();
-		if (oldp.equals(p)) {
+		int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x, p.y);
+		if (dst < 50) {
 			repaint();
 		} else {
 			scrollPane.getViewport().setViewPosition(p);

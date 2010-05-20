@@ -126,6 +126,12 @@ public class GeoUtil {
 		return list;
 	}
 
+	public static double distaciaEntrePontos(int x1, int y1, int x2, int y2) {
+		return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
+		// return Math.sqrt(Math.sqrt(Math.abs(x1 - x2))
+		// + Math.sqrt(Math.abs(y1 - y2)));
+	}
+
 	public static Point calculaPonto(int angulo, int comprimento, Point p1) {
 		return calculaPonto((double) angulo, comprimento, p1);
 	}
@@ -316,4 +322,29 @@ public class GeoUtil {
 
 		return points;
 	}
+
+	public static void main(String[] args) {
+		// int x2 = 10;
+		// int y2 = 10;
+		// int x1 = 0;
+		// int y1 = 0;
+		// System.out.println("drawBresenhamLine "
+		// + drawBresenhamLine(x1, y1, x2, y2).size());
+		// System.out.println("distaciaEntrePontos "
+		// + distaciaEntrePontos(x1, y1, x2, y2));
+		int media = 0;
+		for (int i = 0; i < 100; i++) {
+			int x1 = Util.intervalo(10, 20000);
+			int x2 = Util.intervalo(10, 20000);
+			int y1 = Util.intervalo(10, 20000);
+			int y2 = Util.intervalo(10, 20000);
+			int drawBresenhamLine = drawBresenhamLine(x1, y1, x2, y2).size();
+			int distaciaEntrePontos = (int) distaciaEntrePontos(x1, y1, x2, y2);
+			System.out.println("drawBresenhamLine " + drawBresenhamLine);
+			System.out.println("distaciaEntrePontos " + distaciaEntrePontos);
+			media += (distaciaEntrePontos - drawBresenhamLine);
+		}
+		System.out.println("media " + (media / 100));
+	}
+
 }
