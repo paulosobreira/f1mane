@@ -42,7 +42,7 @@ public class ControleCorrida {
 			double fatorUtrapassagem, double indexVelcidadeDaPista,
 			long tempoCiclo) throws Exception {
 		controleJogo = jogo;
-		this.tempoCiclo = (tempoCiclo < 100 ? 100 : tempoCiclo);
+		this.tempoCiclo = (tempoCiclo < 50 ? 50 : tempoCiclo);
 		this.fatorUtrapassagem = fatorUtrapassagem / 1000;
 		this.indexVelcidadeDaPista = indexVelcidadeDaPista / 1000;
 		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);

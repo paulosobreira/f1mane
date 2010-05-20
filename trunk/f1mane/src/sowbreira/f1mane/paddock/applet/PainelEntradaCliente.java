@@ -208,14 +208,14 @@ public class PainelEntradaCliente {
 				.random() * 600)));
 		painelInicio.add(spinnerIndexVelcidadeEmReta);
 
-		painelInicio.add(new JLabel("Tempo Ciclo (100ms-150ms):") {
+		painelInicio.add(new JLabel("Tempo Ciclo (50ms-150ms):") {
 			@Override
 			public String getText() {
 				return Lang.msg("126");
 			}
 		});
 		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 150)));
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 150)));
 		painelInicio.add(spinnerTempoCiclo);
 
 		spinnerSkillPadraoPilotos = new JSpinner();

@@ -1013,7 +1013,7 @@ public class GerenciadorVisual {
 			}
 		});
 		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 150)));
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 150)));
 		painelInicio.add(spinnerTempoCiclo);
 
 		painelInicio.add(new JLabel() {
@@ -1203,7 +1203,7 @@ public class GerenciadorVisual {
 			}
 		});
 		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 150)));
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 150)));
 		grid.add(spinnerTempoCiclo);
 
 		grid.add(new JLabel() {

@@ -584,13 +584,12 @@ public class PainelCircuito extends JPanel {
 		if (p.y > maxY) {
 			p.y = Util.inte(maxY) - 1;
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				scrollPane.getViewport().setViewPosition(p);
-				repaint();
-			}
-		});
+		Point oldp = scrollPane.getViewport().getViewPosition();
+		if (oldp.equals(p)) {
+			repaint();
+		} else {
+			scrollPane.getViewport().setViewPosition(p);
+		}
 
 	}
 
@@ -631,13 +630,12 @@ public class PainelCircuito extends JPanel {
 			p.y = altMax - 1;
 		}
 		final Point newP = p;
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				scrollPane.getViewport().setViewPosition(newP);
-				repaint();
-			}
-		});
+		Point oldp = scrollPane.getViewport().getViewPosition();
+		if (oldp.equals(p)) {
+			repaint();
+		} else {
+			scrollPane.getViewport().setViewPosition(p);
+		}
 	}
 
 	private void desenhaPista(Graphics2D g2d) {
