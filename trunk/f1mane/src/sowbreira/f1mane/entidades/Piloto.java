@@ -707,15 +707,14 @@ public class Piloto implements Serializable {
 		if (danificado()) {
 			novoModificador = 1;
 		}
-		novoModificador *= controleJogo.getIndexVelcidadeDaPista();
 
 		novoModificador = controleJogo.calculaModificadorComSafetyCar(this,
 				novoModificador);
 		processaVelocidade(novoModificador, noAtual);
-		index += (novoModificador * controleJogo.getCircuito()
-				.getMultiplciador());
-		ptosPista += (novoModificador * controleJogo.getCircuito()
-				.getMultiplciador());
+		double ganho = ((novoModificador * controleJogo.getCircuito()
+				.getMultiplciador()) * controleJogo.getIndexVelcidadeDaPista());
+		index += ganho;
+		ptosPista += ganho;
 
 		return index;
 	}
