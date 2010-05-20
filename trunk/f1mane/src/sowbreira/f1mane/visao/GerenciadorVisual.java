@@ -172,7 +172,7 @@ public class GerenciadorVisual {
 					painelCircuito.zoom = 0.1;
 				}
 				painelCircuito.atualizaVarZoom();
-				//MainPanelEditorInflado.this.repaint();
+				// MainPanelEditorInflado.this.repaint();
 			}
 		};
 		KeyListener keyListener = geraKeyListener();
@@ -1013,8 +1013,7 @@ public class GerenciadorVisual {
 			}
 		});
 		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo
-				.setValue(new Integer(50 + (int) (Math.random() * 80)));
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 150)));
 		painelInicio.add(spinnerTempoCiclo);
 
 		painelInicio.add(new JLabel() {
@@ -1204,8 +1203,7 @@ public class GerenciadorVisual {
 			}
 		});
 		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo
-				.setValue(new Integer(50 + (int) (Math.random() * 80)));
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 150)));
 		grid.add(spinnerTempoCiclo);
 
 		grid.add(new JLabel() {

@@ -426,15 +426,11 @@ public class Piloto implements Serializable {
 	public void processarCiclo(InterfaceJogo controleJogo) {
 		List pista = controleJogo.getNosDaPista();
 		int index = calcularNovoIndex(controleJogo);
-		// index *= controleJogo.getCircuito().getMultiplciador();
 		int diff = index - pista.size();
 
 		/**
 		 * Completou Volta
 		 */
-		if (index > pista.size()) {
-			System.out.println();
-		}
 		if (diff >= 0) {
 			int pCombust = getCarro().porcentagemCombustivel();
 			if (ultimoConsumoCombust == null) {
@@ -702,8 +698,8 @@ public class Piloto implements Serializable {
 				novoModificador = ((Math.random() > 0.4) ? 1 : 0);
 			}
 		}
-		if (novoModificador > 4) {
-			novoModificador = 4;
+		if (novoModificador > 6) {
+			novoModificador = 6;
 		} else if (novoModificador < 0) {
 			novoModificador = 0;
 		}

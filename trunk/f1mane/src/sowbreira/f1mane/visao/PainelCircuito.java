@@ -605,7 +605,7 @@ public class PainelCircuito extends JPanel {
 		final List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			int cont = reta.size() / Util.inte(5 / zoom);
+			int cont = reta.size() / Util.inte(4 / zoom);
 			for (int i = cont; i < reta.size(); i += cont) {
 				p = (Point) reta.get(i);
 				if (rectangle.contains(p)) {
