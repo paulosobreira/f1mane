@@ -320,12 +320,6 @@ public class Carro implements Serializable {
 		novoModificador = calculaModificadorAsaGiro(novoModificador, no,
 				controleJogo);
 		calculaDesgasteMotor(novoModificador, agressivo, no, controleJogo);
-		if (novoModificador > 3) {
-			return 3;
-		}
-		if (novoModificador < 0) {
-			return 0;
-		}
 		return novoModificador;
 	}
 
@@ -509,7 +503,6 @@ public class Carro implements Serializable {
 		combustivel -= (valConsumo * controleJogo.getCircuito()
 				.getMultiplciador());
 
-		// combustivel -= (valConsumo);
 		if (percent < 0) {
 			combustivel = 0;
 			setDanificado(PANE_SECA);
@@ -606,7 +599,6 @@ public class Carro implements Serializable {
 			desgPneus -= 1;
 		}
 		pneus -= (desgPneus * controleJogo.getCircuito().getMultiplciador());
-		// pneus -= (desgPneus);
 		if ((pneus < 0) && !verificaDano()) {
 			danificado = PNEU_FURADO;
 			pneus = -1;

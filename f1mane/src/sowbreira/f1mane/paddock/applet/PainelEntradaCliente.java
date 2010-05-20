@@ -23,6 +23,7 @@ import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 17:41:24
@@ -207,15 +208,14 @@ public class PainelEntradaCliente {
 				.random() * 600)));
 		painelInicio.add(spinnerIndexVelcidadeEmReta);
 
-		painelInicio.add(new JLabel("Tempo Ciclo (50ms-240ms):") {
+		painelInicio.add(new JLabel("Tempo Ciclo (100ms-150ms):") {
 			@Override
 			public String getText() {
 				return Lang.msg("126");
 			}
 		});
 		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo
-				.setValue(new Integer(50 + (int) (Math.random() * 80)));
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 150)));
 		painelInicio.add(spinnerTempoCiclo);
 
 		spinnerSkillPadraoPilotos = new JSpinner();
