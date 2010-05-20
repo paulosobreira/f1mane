@@ -40,6 +40,7 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.GeoUtil;
 import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 
 /**
@@ -632,6 +633,7 @@ public class PainelCircuito extends JPanel {
 		final Point newP = p;
 		Point oldp = scrollPane.getViewport().getViewPosition();
 		int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x, p.y);
+		Logger.logar("dst " + dst);
 		if (dst < 50) {
 			repaint();
 		} else {
