@@ -48,6 +48,7 @@ public class Piloto implements Serializable {
 	private int carY;
 	private int ptosPista;
 	private int ultimoIndice;
+	private List mediaIndices;
 
 	public int getCarX() {
 		return carX;
@@ -710,13 +711,30 @@ public class Piloto implements Serializable {
 
 		novoModificador = controleJogo.calculaModificadorComSafetyCar(this,
 				novoModificador);
-		processaVelocidade(novoModificador, noAtual);
 		double ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * controleJogo.getIndexVelcidadeDaPista());
+		ganho = processaGanhoMedio(ganho);
+
+		processaVelocidade(novoModificador, noAtual);
 		index += ganho;
 		ptosPista += ganho;
 
 		return index;
+	}
+
+	private double processaGanhoMedio(double ganho) {
+		if (mediaIndices == null)
+			mediaIndices = new ArrayList();
+		if (mediaIndices.size() > 5) {
+			mediaIndices.remove(0);
+		}
+		mediaIndices.add(ganho);
+		double soma = 0;
+		for (Iterator iterator = mediaIndices.iterator(); iterator.hasNext();) {
+			Double val = (Double) iterator.next();
+			soma += val.doubleValue();
+		}
+		return soma / mediaIndices.size();
 	}
 
 	private void tentarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
