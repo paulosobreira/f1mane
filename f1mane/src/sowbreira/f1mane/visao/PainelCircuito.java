@@ -587,9 +587,19 @@ public class PainelCircuito extends JPanel {
 		}
 		Point oldp = scrollPane.getViewport().getViewPosition();
 		if (oldp.equals(p)) {
-			repaint();
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					repaint();
+				}
+			});
 		} else {
-			scrollPane.getViewport().setViewPosition(p);
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					scrollPane.getViewport().setViewPosition(p);
+				}
+			});
 		}
 
 	}
@@ -634,10 +644,20 @@ public class PainelCircuito extends JPanel {
 		Point oldp = scrollPane.getViewport().getViewPosition();
 		int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x, p.y);
 		Logger.logar("dst " + dst);
-		if (dst < 50) {
-			repaint();
+		if (dst < 40) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					repaint();
+				}
+			});
 		} else {
-			scrollPane.getViewport().setViewPosition(p);
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					scrollPane.getViewport().setViewPosition(newP);
+				}
+			});
 		}
 	}
 
