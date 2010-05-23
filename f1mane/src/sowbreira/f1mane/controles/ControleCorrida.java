@@ -12,6 +12,7 @@ import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -57,6 +58,10 @@ public class ControleCorrida {
 				controleBox);
 		tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
 		definirTanqueCheio();
+	}
+
+	public ControleBox getControleBox() {
+		return controleBox;
 	}
 
 	public ControleQualificacao getControleQualificacao() {
@@ -165,12 +170,7 @@ public class ControleCorrida {
 	public double verificaUltraPassagem(Piloto piloto, double ganho) {
 
 		No noAtualCarro = piloto.getNoAtual();
-		List listaPiloto = null;
-		if (piloto.getPtosBox() > 0) {
-			listaPiloto = controleJogo.getNosDoBox();
-		} else {
-			listaPiloto = controleJogo.getNosDaPista();
-		}
+		List listaPiloto = piloto.obterPista(controleJogo);
 
 		int indCentroCarro = noAtualCarro.getIndex();
 		double indTrazCarro = indCentroCarro + ganho + Carro.LARGURA;
@@ -212,24 +212,26 @@ public class ControleCorrida {
 
 			if (No.LARGADA.equals(noAtualCarro.getTipo())
 					|| No.RETA.equals(noAtualCarro.getTipo())) {
-				multi = 2.0;
+				multi = 1.5;
 			}
 			if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
-				multi = 1.5;
+				multi = 1.3;
 			}
 			if ((((indTrazCarroFrente) < indTrazCarro) && (indTrazCarroFrente
 					+ (multi * Carro.LARGURA) > (indTrazCarro)))
 					&& pilotoNaFrente.getTracado() == piloto.getTracado()) {
 				ajusteUltrapassagem(piloto, pilotoNaFrente);
 				piloto.setAgressivo(false);
+				if (piloto.testeHabilidadePiloto())
+					piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
-					return ganho * 0.1;
+					return ganho * 0.7;
 				}
 				if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
-					return ganho * 0.2;
+					return ganho * 0.5;
 				}
-				return 0;
+				return ganho * 0.3;
 			}
 
 		}

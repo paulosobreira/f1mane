@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
@@ -17,6 +19,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 09/06/2007 as 17:17:28
@@ -33,6 +36,11 @@ public class ControleBox {
 	private Map boxEquipes;
 	private Hashtable boxEquipesOcupado;
 	private Circuito circuito;
+	private ArrayList carrosBox;
+
+	public ArrayList getCarrosBox() {
+		return carrosBox;
+	}
 
 	/**
 	 * @param controleJogo
@@ -69,17 +77,17 @@ public class ControleBox {
 
 		List pilots = controleJogo.getPilotos();
 		Map mapCarros = new HashMap();
-		List carros = new ArrayList();
+		carrosBox = new ArrayList();
 		for (Iterator iterator = pilots.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (!mapCarros.containsKey(piloto.getCarro().getNome())) {
 				mapCarros.put(piloto.getCarro().getNome(), piloto.getCarro()
 						.getNome());
-				carros.add(piloto.getCarro());
+				carrosBox.add(piloto.getCarro());
 			}
 
 		}
-		Collections.sort(carros, new Comparator() {
+		Collections.sort(carrosBox, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				Carro carro0 = (Carro) arg0;
 				Carro carro1 = (Carro) arg1;
@@ -90,18 +98,17 @@ public class ControleBox {
 		});
 
 		List ptosBox = controleJogo.getNosDoBox();
-		int indexParada = ptosBox.indexOf(paradaBox);
 
-		for (Iterator iter = carros.iterator(); iter.hasNext();) {
+		int paradas = circuito.getParadaBoxIndex();
+
+		int cont = 0;
+		for (Iterator iter = carrosBox.iterator(); iter.hasNext();) {
 			Carro carro = (Carro) iter.next();
-
-			if (indexParada > (ptosBox.size() - 1)) {
-				indexParada = ptosBox.size() - 1;
-			}
-
+			int indexParada = paradas + Util.inte(Carro.LARGURA * 2 * cont)
+					+ Carro.LARGURA;
+			cont++;
 			boxEquipes.put(carro, ptosBox.get(indexParada));
 			boxEquipesOcupado.put(carro, "");
-			indexParada += (Carro.LARGURA * 2);
 		}
 	}
 
@@ -190,6 +197,10 @@ public class ControleBox {
 					ptosBox += 1;
 				}
 				ptosBox *= circuito.getMultiplciador();
+				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
+					ptosBox = 1;
+				}
+				piloto.mudarPos(0, controleJogo);
 				piloto.processaVelocidade(ptosBox, piloto.getNoAtual());
 				ptosBox = (int) piloto.calculaGanhoMedio(ptosBox);
 				piloto.setPtosBox(ptosBox + piloto.getPtosBox());
@@ -205,8 +216,7 @@ public class ControleBox {
 
 		No box = (No) boxEquipes.get(piloto.getCarro());
 		int contBox = piloto.getNoAtual().getIndex();
-		if ((contBox > (circuito.getParadaBoxIndex() - 10) && contBox < (circuito
-				.getParadaBoxIndex() + 10))
+		if ((contBox > (box.getIndex() - 10) && contBox < (box.getIndex() + 10))
 				&& !piloto.decrementaParadoBox()) {
 			processarPilotoPararBox(piloto);
 		}
@@ -215,6 +225,8 @@ public class ControleBox {
 	private void processarPilotoPararBox(Piloto piloto) {
 		piloto.setVelocidade(0);
 		int qtdeCombust = 0;
+		piloto.mudarPos(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1,
+				controleJogo);
 		if (!piloto.isJogadorHumano()) {
 			if (piloto.getCarro().verificaDano()) {
 				if (controleCorrida.porcentagemCorridaCompletada() < 35) {

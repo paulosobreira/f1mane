@@ -856,7 +856,7 @@ public class Util {
 		// Logger.logar(md5("raquel"));
 		// System.out.println(md5("whiplash"));
 		for (int i = 0; i < 100; i++) {
-			System.out.println(intervalo(5, 10));
+			System.out.println(intervalo(0, 2));
 		}
 
 	}

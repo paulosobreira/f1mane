@@ -119,6 +119,9 @@ public class GerenciadorVisual {
 	private JComboBox comboBoxTipoPneu;
 	private JComboBox comboBoxAsa;
 	private JSlider sliderPercentCombust;
+	private JButton pos1;
+	private JButton pos0;
+	private JButton pos2;
 	private Color corPadraoBarra;
 	private int larguraFrame = 0;
 	private int alturaFrame = 0;
@@ -256,6 +259,25 @@ public class GerenciadorVisual {
 			}
 
 		});
+		pos1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mudarPos1();
+			}
+
+		});
+		pos0.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mudarPos0();
+			}
+
+		});
+		pos2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mudarPos2();
+			}
+
+		});
+
 		progBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				progamacaoBox();
@@ -289,6 +311,27 @@ public class GerenciadorVisual {
 				}
 			}
 		});
+	}
+
+	protected void mudarPos2() {
+		if (controleJogo == null) {
+			return;
+		}
+		controleJogo.mudarPos(2);
+	}
+
+	protected void mudarPos0() {
+		if (controleJogo == null) {
+			return;
+		}
+		controleJogo.mudarPos(0);
+	}
+
+	protected void mudarPos1() {
+		if (controleJogo == null) {
+			return;
+		}
+		controleJogo.mudarPos(1);
 	}
 
 	protected void progamacaoBox() {
@@ -772,9 +815,9 @@ public class GerenciadorVisual {
 		southPanel.add(painelPosicoes, BorderLayout.WEST);
 		southPanel.add(painelInfText, BorderLayout.CENTER);
 
-		telemetriaPanel.setLayout(new BorderLayout());
-		telemetriaPanel.add(panelControle, BorderLayout.SOUTH);
-		telemetriaPanel.add(painelInfGraf, BorderLayout.CENTER);
+		telemetriaPanel.setLayout(new GridLayout(2, 1));
+		telemetriaPanel.add(painelInfGraf);
+		telemetriaPanel.add(panelControle);
 
 		southPanel.revalidate();
 		if (controleJogo.getMainFrame().isModoApplet()) {
@@ -830,13 +873,14 @@ public class GerenciadorVisual {
 		comboBoxAsa.addItem(new LangVO(Carro.ASA_NORMAL));
 		comboBoxAsa.addItem(new LangVO(Carro.MAIS_ASA));
 		comboBoxAsa.addItem(new LangVO(Carro.MENOS_ASA));
+
 		panelControle = new JPanel();
 		panelControle.setBorder(new TitledBorder("") {
 			public String getTitle() {
 				return Lang.msg("136");
 			}
 		});
-		GridLayout gridLayout = new GridLayout(6, 1) {
+		GridLayout gridLayout = new GridLayout(7, 1) {
 			public Dimension preferredLayoutSize(Container parent) {
 				return new Dimension(150, 140);
 			}
@@ -853,7 +897,14 @@ public class GerenciadorVisual {
 			};
 		});
 		panelControle.add(sliderPercentCombust);
-
+		pos1 = new JButton("(|");
+		pos0 = new JButton("||");
+		pos2 = new JButton("|)");
+		JPanel volPanel = new JPanel(new GridLayout(1, 3));
+		volPanel.add(pos1);
+		volPanel.add(pos0);
+		volPanel.add(pos2);
+		panelControle.add(volPanel);
 		addiconarListenerComandos(comboBoxTipoPneu, sliderPercentCombust);
 	}
 
