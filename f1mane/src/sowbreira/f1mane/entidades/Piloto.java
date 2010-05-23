@@ -25,6 +25,7 @@ public class Piloto implements Serializable {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
+	private static final int GANHO_MAX = 7;
 	private transient double anguloRotacaoCarro;
 	private transient double zoom;
 	private transient BufferedImage ultimaRotacaoCarro;
@@ -48,7 +49,15 @@ public class Piloto implements Serializable {
 	private int carY;
 	private int ptosPista;
 	private int ultimoIndice;
-	private List mediaIndices;
+	private int tracado;
+
+	public int getTracado() {
+		return tracado;
+	}
+
+	public void setTracado(int tracado) {
+		this.tracado = tracado;
+	}
 
 	public int getCarX() {
 		return carX;
@@ -111,6 +120,7 @@ public class Piloto implements Serializable {
 	private long parouNoBoxMilis;
 	private long saiuDoBoxMilis;
 	private int msgTentativaNumVolta = 2;
+	private ArrayList listGanho;
 
 	public double getAnguloRotacaoCarro() {
 		return anguloRotacaoCarro;
@@ -685,13 +695,6 @@ public class Piloto implements Serializable {
 		int novoModificador = calcularNovoModificador(controleJogo);
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, noAtual, controleJogo);
-		if (!controleJogo.isModoQualify()) {
-			novoModificador = controleJogo.verificaUltraPassagem(this,
-					novoModificador);
-
-			novoModificador = controleJogo.verificaRetardatario(this,
-					novoModificador);
-		}
 
 		if (noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta()) {
 			if (carro.verificaPneusIncompativeisClima(controleJogo)
@@ -711,30 +714,41 @@ public class Piloto implements Serializable {
 
 		novoModificador = controleJogo.calculaModificadorComSafetyCar(this,
 				novoModificador);
+		processaVelocidade(novoModificador, noAtual);
 		double ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * controleJogo.getIndexVelcidadeDaPista());
-		ganho = processaGanhoMedio(ganho);
-
-		processaVelocidade(novoModificador, noAtual);
+		if (!controleJogo.isModoQualify()) {
+			ganho = controleJogo.verificaUltraPassagem(this, ganho);
+		}
+		ganho = calculaGanhoMedio(ganho);
 		index += ganho;
 		ptosPista += ganho;
 
 		return index;
 	}
 
-	private double processaGanhoMedio(double ganho) {
-		if (mediaIndices == null)
-			mediaIndices = new ArrayList();
-		if (mediaIndices.size() > 5) {
-			mediaIndices.remove(0);
+	public Piloto() {
+		zerarGanho();
+	}
+
+	public void zerarGanho() {
+		listGanho = new ArrayList();
+		for (int i = 0; i < GANHO_MAX; i++) {
+			listGanho.add(0.0);
 		}
-		mediaIndices.add(ganho);
+	}
+
+	public double calculaGanhoMedio(double ganho) {
+		if (listGanho.size() > GANHO_MAX) {
+			listGanho.remove(0);
+		}
+		listGanho.add(ganho);
 		double soma = 0;
-		for (Iterator iterator = mediaIndices.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = listGanho.iterator(); iterator.hasNext();) {
 			Double val = (Double) iterator.next();
 			soma += val.doubleValue();
 		}
-		return soma / mediaIndices.size();
+		return soma / listGanho.size();
 	}
 
 	private void tentarPassaPilotoDaFrente(InterfaceJogo controleJogo) {

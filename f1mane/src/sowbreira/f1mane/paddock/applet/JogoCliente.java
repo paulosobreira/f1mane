@@ -509,7 +509,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
-	public int verificaUltraPassagem(Piloto piloto, int novoModificador) {
+	public double verificaUltraPassagem(Piloto piloto, double novoModificador) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
