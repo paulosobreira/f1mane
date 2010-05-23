@@ -1,5 +1,6 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.RenderingHints;
 import java.util.List;
 import java.util.Map;
 
@@ -205,5 +206,11 @@ public interface InterfaceJogo {
 	public void verificaProgramacaoBox();
 
 	public void mudaPilotoSelecionado();
+
+	public List getCarrosBox();
+
+	public void mudarPos(int i);
+
+	public double getFatorUtrapassagem();
 
 }

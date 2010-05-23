@@ -393,7 +393,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point cimaBoxC1 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA) * 3 * zoom), new Point(Util
+					.inte((Carro.ALTURA) * 4 * zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point baixoBoxC1 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
@@ -401,7 +401,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point cimaBoxC2 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA) * 3 * zoom), new Point(Util
+					.inte((Carro.ALTURA) * 4 * zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point baixoBoxC2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util

@@ -908,4 +908,21 @@ public class ControleJogoLocal extends ControleRecursos implements
 		this.semReabastacimento = semReabastacimento;
 	}
 
+	@Override
+	public List getCarrosBox() {
+		return controleCorrida.getControleBox().getCarrosBox();
+	}
+
+	@Override
+	public void mudarPos(int pos) {
+		if (pilotoJogador == null)
+			return;
+		pilotoJogador.mudarPos(pos, this);
+	}
+
+	@Override
+	public double getFatorUtrapassagem() {
+		return controleCorrida.getFatorUtrapassagem();
+	}
+
 }

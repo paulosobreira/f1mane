@@ -717,4 +717,22 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public List getCarrosBox() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void mudarPos(int i) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public double getFatorUtrapassagem() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
