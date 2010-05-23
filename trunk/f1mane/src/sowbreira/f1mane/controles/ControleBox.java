@@ -191,6 +191,7 @@ public class ControleBox {
 				}
 				ptosBox *= circuito.getMultiplciador();
 				piloto.processaVelocidade(ptosBox, piloto.getNoAtual());
+				ptosBox = (int) piloto.calculaGanhoMedio(ptosBox);
 				piloto.setPtosBox(ptosBox + piloto.getPtosBox());
 			}
 

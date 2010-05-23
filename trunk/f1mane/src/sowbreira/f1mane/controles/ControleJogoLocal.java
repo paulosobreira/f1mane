@@ -337,7 +337,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltraPassagem(sowbreira.f1mane.entidades.Piloto,
 	 *      int)
 	 */
-	public int verificaUltraPassagem(Piloto piloto, int novoModificador) {
+	public double verificaUltraPassagem(Piloto piloto, double novoModificador) {
 		return controleCorrida.verificaUltraPassagem(piloto, novoModificador);
 	}
 
@@ -821,10 +821,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	public void setMainFrame(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-	}
-
-	public int verificaRetardatario(Piloto piloto, int novoModificador) {
-		return controleCorrida.verificaRetardatario(piloto, novoModificador);
 	}
 
 	public boolean isModoQualify() {

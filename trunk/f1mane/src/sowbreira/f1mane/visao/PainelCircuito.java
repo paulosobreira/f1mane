@@ -278,16 +278,15 @@ public class PainelCircuito extends JPanel {
 		Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
 				.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
 				.getCenterX()), Util.inte(rectangle.getCenterY())));
-		int pos = 0;
-		if (pos == 0) {
+		if (piloto.getTracado() == 0) {
 			carx = p.x - w2;
 			cary = p.y - h2;
 		}
-		if (pos == 1) {
+		if (piloto.getTracado() == 1) {
 			carx = Util.inte((p1.x - w2));
 			cary = Util.inte((p1.y - h2));
 		}
-		if (pos == 2) {
+		if (piloto.getTracado() == 2) {
 			carx = Util.inte((p2.x - w2));
 			cary = Util.inte((p2.y - h2));
 		}
@@ -601,7 +600,6 @@ public class PainelCircuito extends JPanel {
 				}
 			});
 		}
-
 	}
 
 	public void centralizarPonto(Point pin) {
@@ -615,7 +613,7 @@ public class PainelCircuito extends JPanel {
 		final List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			int cont = reta.size() / Util.inte(4 / zoom);
+			int cont = reta.size() / Util.inte(3 / zoom);
 			for (int i = cont; i < reta.size(); i += cont) {
 				p = (Point) reta.get(i);
 				if (rectangle.contains(p)) {
@@ -643,8 +641,7 @@ public class PainelCircuito extends JPanel {
 		final Point newP = p;
 		Point oldp = scrollPane.getViewport().getViewPosition();
 		int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x, p.y);
-		Logger.logar("dst " + dst);
-		if (dst < 40) {
+		if (dst < Util.inte(30 * zoom)) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -658,6 +655,7 @@ public class PainelCircuito extends JPanel {
 					scrollPane.getViewport().setViewPosition(newP);
 				}
 			});
+
 		}
 	}
 

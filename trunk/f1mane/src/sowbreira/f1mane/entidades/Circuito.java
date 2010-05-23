@@ -22,10 +22,10 @@ public class Circuito implements Serializable {
 	private List boxKey = new ArrayList();
 	private double multiplicadorPista = 1;
 	private double multiplicadorLarguraPista = 1.1;
+	private int ladoBox = 0;
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;
 	private int paradaBoxIndex;
-	private int orientacaoBox;
 
 	public List geraPontosPista() {
 		List arrayList = new ArrayList();
@@ -53,6 +53,14 @@ public class Circuito implements Serializable {
 			no.setIndex(i);
 		}
 		return arrayList;
+	}
+
+	public int getLadoBox() {
+		return ladoBox;
+	}
+
+	public void setLadoBox(int ladoBox) {
+		this.ladoBox = ladoBox;
 	}
 
 	public List getBoxFull() {
@@ -293,14 +301,6 @@ public class Circuito implements Serializable {
 
 	public int getSaidaBoxIndex() {
 		return saidaBoxIndex;
-	}
-
-	public int getOrientacaoBox() {
-		return orientacaoBox;
-	}
-
-	public void setOrientacaoBox(int orientacaoBox) {
-		this.orientacaoBox = orientacaoBox;
 	}
 
 	public double getMultiplicadorLarguraPista() {

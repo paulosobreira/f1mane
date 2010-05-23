@@ -154,14 +154,17 @@ public class ControleQualificacao {
 						(cima.x - (Carro.MEIA_LARGURA)),
 						(cima.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 						(Carro.ALTURA));
+				piloto.setTracado(2);
 			} else {
 				rectangle = new Rectangle2D.Double(
 						(baixo.x - (Carro.MEIA_LARGURA)),
 						(baixo.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 						(Carro.ALTURA));
+				piloto.setTracado(1);
 			}
 			piloto.setNoAtual(nM);
 			piloto.setPosicao(i + 1);
+			piloto.zerarGanho();
 			piloto.setPtosPista(nM.getIndex());
 			piloto.setVelocidade(0);
 		}

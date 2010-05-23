@@ -109,7 +109,7 @@ public interface InterfaceJogo {
 
 	public Volta obterMelhorVolta();
 
-	public int verificaUltraPassagem(Piloto piloto, int novoModificador);
+	public double verificaUltraPassagem(Piloto piloto, double novoModificador);
 
 	public double getNiveljogo();
 
@@ -195,8 +195,6 @@ public interface InterfaceJogo {
 	public void mudarModoPilotagem(String modo);
 
 	public void setMainFrame(MainFrame mainFrame);
-
-	public int verificaRetardatario(Piloto piloto, int novoModificador);
 
 	public boolean isModoQualify();
 
