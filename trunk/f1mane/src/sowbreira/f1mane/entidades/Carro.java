@@ -308,7 +308,7 @@ public class Carro implements Serializable {
 	}
 
 	public void setPneuMoleOuChuva(int distaciaCorrida) {
-		pneus = Util.inte(distaciaCorrida * 0.8);
+		pneus = Util.inte(distaciaCorrida * 0.6);
 		durabilidadeMaxPneus = pneus;
 	}
 
@@ -539,7 +539,7 @@ public class Carro implements Serializable {
 				novoModificador += 2;
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
-			if (no.verificaCruvaBaixa() && (porcent > 30) && (porcent < 70)
+			if (no.verificaCruvaBaixa() && (porcent > 20) && (porcent < 80)
 					&& (Math.random() > indicativo)) {
 				novoModificador += 1;
 			}

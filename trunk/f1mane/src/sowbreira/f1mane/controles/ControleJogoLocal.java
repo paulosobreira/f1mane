@@ -685,13 +685,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (!VALENDO) {
 			for (int i = 0; i < pilotos.size(); i++) {
 				Piloto piloto = (Piloto) pilotos.get(i);
-				Logger.logar(i + 1 + "-" + piloto.getNome() + "-"
-						+ piloto.getCarro().getNome() + "-"
-						+ piloto.getNumeroVolta() + "-"
-						+ piloto.getQtdeParadasBox() + "-"
-						+ piloto.getCarro().getTipoPneu() + " ## "
-						+ piloto.getCarro().getMotor() + " # "
-						+ piloto.getCarro().porcentagemDesgasteMotor());
+				Logger.logar(" Posicao :" + (i + 1) + "-" + piloto.getNome()
+						+ " Volta :" + piloto.getNumeroVolta()
+						+ " Paradas Box :" + piloto.getQtdeParadasBox()
+						+ " Pontos Pista :" + piloto.getPtosPista());
 
 			}
 		}

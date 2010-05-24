@@ -91,7 +91,7 @@ public class GerenciadorVisual {
 	private JComboBox comboBoxAsaInicial;
 	private JSpinner spinnerCombustivel;
 	private JSpinner spinnerQtdeVoltas;
-	private JSpinner spinnerTempoCiclo;
+	private JSlider spinnerTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
 	private JSpinner spinnerQtdeMinutosQualificacao;
@@ -613,7 +613,7 @@ public class GerenciadorVisual {
 		return spinnerIndexVelcidadeEmReta;
 	}
 
-	public JSpinner getSpinnerTempoCiclo() {
+	public JSlider getSpinnerTempoCiclo() {
 		return spinnerTempoCiclo;
 	}
 
@@ -917,7 +917,7 @@ public class GerenciadorVisual {
 	}
 
 	private void gerarPainelJogoSingle(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(14, 2));
+		painelInicio.setLayout(new GridLayout(12, 2, 5, 5));
 		JLabel label = new JLabel() {
 
 			public String getText() {
@@ -1097,27 +1097,42 @@ public class GerenciadorVisual {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 150)));
+		spinnerTempoCiclo = new JSlider(50, 120);
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 120)));
+		labelTable = new Hashtable();
+		labelTable.put(new Integer(50), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("RAPIDOS");
+			}
+		});
+		labelTable.put(new Integer(999), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("LENTOS");
+			}
+		});
+		spinnerTempoCiclo.setLabelTable(labelTable);
+		spinnerTempoCiclo.setPaintLabels(true);
 		painelInicio.add(spinnerTempoCiclo);
 
-		painelInicio.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("112");
-			}
-		});
+		// painelInicio.add(new JLabel() {
+		// public String getText() {
+		// return Lang.msg("112");
+		// }
+		// });
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
-		painelInicio.add(spinnerSkillPadraoPilotos);
+		// painelInicio.add(spinnerSkillPadraoPilotos);
 
-		painelInicio.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("113");
-			}
-		});
+		// painelInicio.add(new JLabel() {
+		// public String getText() {
+		// return Lang.msg("113");
+		// }
+		// });
 		spinnerPotenciaPadraoCarros = new JSpinner();
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
-		painelInicio.add(spinnerPotenciaPadraoCarros);
+		// painelInicio.add(spinnerPotenciaPadraoCarros);
 
 	}
 
@@ -1185,12 +1200,12 @@ public class GerenciadorVisual {
 		pilotoPanel.add(new JScrollPane(listPilotosSelecionados) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(210, 250);
+				return new Dimension(210, 300);
 			}
 		}, BorderLayout.CENTER);
 
 		JPanel grid = new JPanel();
-		grid.setLayout(new GridLayout(11, 2));
+		grid.setLayout(new GridLayout(9, 2, 5, 5));
 		JLabel label = new JLabel() {
 
 			public String getText() {
@@ -1317,27 +1332,42 @@ public class GerenciadorVisual {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 150)));
+		spinnerTempoCiclo = new JSlider(50, 120);
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 120)));
+		labelTable = new Hashtable();
+		labelTable.put(new Integer(50), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("RAPIDOS");
+			}
+		});
+		labelTable.put(new Integer(120), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("LENTOS");
+			}
+		});
+		spinnerTempoCiclo.setLabelTable(labelTable);
+		spinnerTempoCiclo.setPaintLabels(true);
 		grid.add(spinnerTempoCiclo);
 
-		grid.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("112");
-			}
-		});
+		// grid.add(new JLabel() {
+		// public String getText() {
+		// return Lang.msg("112");
+		// }
+		// });
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
-		grid.add(spinnerSkillPadraoPilotos);
+		// grid.add(spinnerSkillPadraoPilotos);
 
-		grid.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("113");
-			}
-		});
+		// grid.add(new JLabel() {
+		// public String getText() {
+		// return Lang.msg("113");
+		// }
+		// });
 		spinnerPotenciaPadraoCarros = new JSpinner();
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
-		grid.add(spinnerPotenciaPadraoCarros);
+		// grid.add(spinnerPotenciaPadraoCarros);
 
 		grid.add(new JLabel() {
 			@Override
