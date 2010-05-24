@@ -1046,17 +1046,17 @@ public class GerenciadorVisual {
 				return Lang.msg("124");
 			}
 		});
-		spinnerDificuldadeUltrapassagem = new JSlider(300, 700);
+		spinnerDificuldadeUltrapassagem = new JSlider(000, 400);
 		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(
-				300, 700)));
+				000, 400)));
 		Hashtable labelTable = new Hashtable();
-		labelTable.put(new Integer(300), new JLabel("") {
+		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("FACIL");
 			}
 		});
-		labelTable.put(new Integer(700), new JLabel("") {
+		labelTable.put(new Integer(400), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("DIFICIL");
@@ -1281,17 +1281,17 @@ public class GerenciadorVisual {
 				return Lang.msg("124");
 			}
 		});
-		spinnerDificuldadeUltrapassagem = new JSlider(300, 700);
+		spinnerDificuldadeUltrapassagem = new JSlider(000, 400);
 		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(
-				300, 700)));
+				000, 400)));
 		Hashtable labelTable = new Hashtable();
-		labelTable.put(new Integer(300), new JLabel("") {
+		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("FACIL");
 			}
 		});
-		labelTable.put(new Integer(700), new JLabel("") {
+		labelTable.put(new Integer(400), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("DIFICIL");
