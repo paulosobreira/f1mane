@@ -192,15 +192,12 @@ public class ControleBox {
 					ptosBox += ((Math.random() > .8) ? 3 : 2);
 				} else if (box.verificaCruvaAlta()) {
 					ptosBox += ((Math.random() > .8) ? 2 : 1);
-					;
-				} else {
-					ptosBox += 1;
 				}
 				ptosBox *= circuito.getMultiplciador();
 				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
 					ptosBox = 1;
 				}
-				piloto.mudarPos(0, controleJogo);
+				piloto.setTracado(0);
 				piloto.processaVelocidade(ptosBox, piloto.getNoAtual());
 				ptosBox = (int) piloto.calculaGanhoMedio(ptosBox);
 				piloto.setPtosBox(ptosBox + piloto.getPtosBox());
@@ -225,8 +222,7 @@ public class ControleBox {
 	private void processarPilotoPararBox(Piloto piloto) {
 		piloto.setVelocidade(0);
 		int qtdeCombust = 0;
-		piloto.mudarPos(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1,
-				controleJogo);
+		piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1);
 		if (!piloto.isJogadorHumano()) {
 			if (piloto.getCarro().verificaDano()) {
 				if (controleCorrida.porcentagemCorridaCompletada() < 35) {
@@ -290,6 +286,7 @@ public class ControleBox {
 	private void processarPilotoSairBox(Piloto piloto,
 			InterfaceJogo interfaceJogo) {
 		piloto.setNoAtual(saidaBox);
+		//Todo Ptos Pista
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
 		String[] strings = new String[] { piloto.getNome(),
