@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
@@ -71,7 +69,6 @@ public class ControleBox {
 	}
 
 	private void geraBoxesEquipes() {
-		// TODO MUltiplicador
 		boxEquipes = new HashMap();
 		boxEquipesOcupado = new Hashtable();
 
@@ -108,7 +105,6 @@ public class ControleBox {
 					+ Carro.LARGURA;
 			cont++;
 			boxEquipes.put(carro, ptosBox.get(indexParada));
-			boxEquipesOcupado.put(carro, "");
 		}
 	}
 
@@ -171,7 +167,7 @@ public class ControleBox {
 			if (boxEquipesOcupado == null) {
 				boxEquipesOcupado = new Hashtable();
 			}
-			if ("".equals(boxEquipesOcupado.get(piloto.getCarro()))) {
+			if (boxEquipesOcupado.get(piloto.getCarro()) == null) {
 				boxEquipesOcupado.put(piloto.getCarro(), piloto.getCarro());
 			}
 			List boxList = controleJogo.getNosDoBox();
@@ -200,7 +196,9 @@ public class ControleBox {
 				piloto.setTracado(0);
 				piloto.processaVelocidade(ptosBox, piloto.getNoAtual());
 				ptosBox = (int) piloto.calculaGanhoMedio(ptosBox);
-				piloto.setPtosBox(ptosBox + piloto.getPtosBox());
+				int novosPtsBox = ptosBox + piloto.getPtosBox();
+				// TODO
+				piloto.setPtosBox(novosPtsBox);
 			}
 
 			if (piloto.getPtosBox() < boxList.size()) {
@@ -286,7 +284,7 @@ public class ControleBox {
 	private void processarPilotoSairBox(Piloto piloto,
 			InterfaceJogo interfaceJogo) {
 		piloto.setNoAtual(saidaBox);
-		//Todo Ptos Pista
+		// Todo Ptos Pista
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
 		String[] strings = new String[] { piloto.getNome(),
@@ -300,8 +298,7 @@ public class ControleBox {
 			controleJogo.info(Html.orange(info));
 		}
 
-		boxEquipesOcupado.put(piloto.getCarro(), "");
-		// System.out.println("Liberou " + piloto.toString());
+		boxEquipesOcupado.remove(piloto.getCarro());
 		if (controleJogo.isCorridaTerminada()) {
 			piloto.setRecebeuBanderada(true, controleJogo);
 		}
@@ -527,7 +524,7 @@ public class ControleBox {
 	}
 
 	public boolean verificaBoxOcupado(Carro carro) {
-		if ((!"".equals(boxEquipesOcupado.get(carro)))) {
+		if ((boxEquipesOcupado.get(carro)) != null) {
 			return true;
 		}
 
@@ -537,6 +534,8 @@ public class ControleBox {
 	public static void main(String[] args) {
 		int val = 1 + ((int) (Math.random() * 3));
 		Logger.logar(val);
+		Hashtable hashtable = new Hashtable();
+		hashtable.put("someval", null);
 	}
 
 	public No getSaidaBox() {

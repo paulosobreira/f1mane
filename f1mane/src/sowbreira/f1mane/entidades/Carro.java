@@ -8,6 +8,7 @@ import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 06/05/2007 as 11:09:15
@@ -307,7 +308,7 @@ public class Carro implements Serializable {
 	}
 
 	public void setPneuMoleOuChuva(int distaciaCorrida) {
-		pneus = (distaciaCorrida + ((distaciaCorrida * 25) / 100)) / 2;
+		pneus = Util.inte(distaciaCorrida * 0.8);
 		durabilidadeMaxPneus = pneus;
 	}
 
@@ -530,9 +531,12 @@ public class Carro implements Serializable {
 			indicativo = .5;
 		}
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
-			if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())
-					&& (porcent > 10) && (Math.random() > indicativo)) {
+			if ((no.verificaCruvaBaixa()) && (porcent > 10)) {
 				novoModificador += 1;
+			}
+			if ((no.verificaCruvaAlta()) && (porcent > 10)
+					&& (Math.random() > indicativo)) {
+				novoModificador += 2;
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
 			if (no.verificaCruvaBaixa() && (porcent > 30) && (porcent < 70)
@@ -553,11 +557,11 @@ public class Carro implements Serializable {
 		}
 		int desgPneus = 0;
 
-		// int novoModDano = novoModificador > 3 ? 3 : novoModificador;
-		int novoModDano = novoModificador;
+		int novoModDano = Util.inte(controleJogo.getNiveljogo()
+				* novoModificador);
 		if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
 			if (agressivo)
-				desgPneus += ((controleJogo.getNiveljogo() * 1.5) + novoModDano);
+				desgPneus += (novoModDano);
 		}
 		if (agressivo && no.verificaCruvaBaixa()) {
 			if (piloto.isJogadorHumano()) {
@@ -578,10 +582,7 @@ public class Carro implements Serializable {
 			desgPneus += 1;
 		}
 		if (Clima.SOL.equals(controleJogo.getClima())) {
-			if (Math.random() > indicativo)
-				desgPneus += 2;
-			else
-				desgPneus += 1;
+			desgPneus += 1;
 		}
 
 		int percent = porcentagemCombustivel();
@@ -590,16 +591,6 @@ public class Carro implements Serializable {
 			desgPneus += 1;
 		}
 
-		if (piloto.isJogadorHumano()
-				&& InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()
-				&& Math.random() < .5) {
-			desgPneus += 1;
-		}
-		if (piloto.isJogadorHumano()
-				&& InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()
-				&& desgPneus > 1) {
-			desgPneus -= 1;
-		}
 		pneus -= (desgPneus * controleJogo.getCircuito().getMultiplciador() * controleJogo
 				.getIndexVelcidadeDaPista());
 		if ((pneus < 0) && !verificaDano()) {

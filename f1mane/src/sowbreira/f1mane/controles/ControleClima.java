@@ -102,7 +102,7 @@ public class ControleClima {
 		if (threadMudancaClima != null && !threadMudancaClima.isProcessada())
 			return;
 		threadMudancaClima = new ThreadMudancaClima(this);
-		threadMudancaClima.start();
+		//threadMudancaClima.start();
 	}
 
 	public void informaMudancaClima() {
