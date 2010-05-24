@@ -203,7 +203,7 @@ public class ControleEstatisticas {
 	}
 
 	public void info(String info, boolean prioritaria) {
-		Logger.logar(info);
+		//Logger.logar(info);
 		synchronized (bufferInfo) {
 			if (bufferInfo.contains(info)) {
 				return;

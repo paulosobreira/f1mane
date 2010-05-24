@@ -54,10 +54,10 @@ public class ControleBox {
 				controleJogo.getCircuito().getEntradaBoxIndex());
 		paradaBox = (No) controleJogo.getCircuito().getBoxFull().get(
 				controleJogo.getCircuito().getParadaBoxIndex());
-		saidaBox = (No) controleJogo.getCircuito().getBoxFull().get(
+		saidaBox = (No) controleJogo.getCircuito().getPistaFull().get(
 				controleJogo.getCircuito().getSaidaBoxIndex());
-		calculaQtdeNosPistaRefBox();
 		circuito = controleJogo.getCircuito();
+		calculaQtdeNosPistaRefBox();
 		if (saidaBox == null) {
 			throw new Exception("Saida box não encontrada!");
 		}
@@ -193,11 +193,22 @@ public class ControleBox {
 				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
 					ptosBox = 1;
 				}
-				piloto.setTracado(0);
+
 				piloto.processaVelocidade(ptosBox, piloto.getNoAtual());
 				ptosBox = (int) piloto.calculaGanhoMedio(ptosBox);
 				int novosPtsBox = ptosBox + piloto.getPtosBox();
-				// TODO
+				No nobox = (No) boxEquipes.get(piloto.getCarro());
+				int indexParada = piloto.obterPista(controleJogo)
+						.indexOf(nobox);
+				if (novosPtsBox >= (indexParada - Carro.LARGURA)
+						&& novosPtsBox <= (indexParada)) {
+					piloto
+							.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2
+									: 1);
+				} else {
+					piloto.setTracado(0);
+				}
+
 				piloto.setPtosBox(novosPtsBox);
 			}
 
@@ -520,7 +531,8 @@ public class ControleBox {
 		List ptosPista = controleJogo.getNosDaPista();
 		int ateFim = ptosPista.size() - ptosPista.indexOf(entradaBox);
 		int ateSaidaBox = ptosPista.indexOf(saidaBox);
-		qtdeNosPistaRefBox = ateFim + ateSaidaBox;
+		qtdeNosPistaRefBox = Util.inte((ateFim + ateSaidaBox));
+		System.out.println("qtdeNosPistaRefBox " + qtdeNosPistaRefBox);
 	}
 
 	public boolean verificaBoxOcupado(Carro carro) {

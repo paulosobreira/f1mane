@@ -504,6 +504,8 @@ public class Piloto implements Serializable {
 	}
 
 	public void processaVelocidade(int index, No no) {
+		if (!InterfaceJogo.VALENDO)
+			return;
 		if (velocidadeLargada < 50) {
 			velocidade += ((int) (Math.random() * (20 * index)));
 			velocidadeLargada = velocidade;
@@ -731,7 +733,7 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isModoQualify()) {
 			ganho = controleJogo.verificaUltraPassagem(this, ganho);
 		}
-		if (getTracado() != 0) {
+		if (getTracado() != 0 && !controleJogo.isModoQualify()) {
 			if (testeHabilidadePiloto())
 				mudarPos(0, controleJogo);
 			ganho *= controleJogo.getFatorUtrapassagem();
