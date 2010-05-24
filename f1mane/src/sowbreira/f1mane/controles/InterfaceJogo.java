@@ -12,7 +12,7 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-	public static boolean VALENDO = false;
+	public static boolean VALENDO = true;
 	public static String NORMAL = "NORMAL";
 	public static String FACIL = "FACIL";
 	public static String DIFICIL = "DIFICIL";

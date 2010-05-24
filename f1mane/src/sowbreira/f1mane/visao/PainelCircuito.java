@@ -332,7 +332,8 @@ public class PainelCircuito extends JPanel {
 		// affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
 		// rectangle.getCenterY());
 		// g2d.setColor(new Color(255, 0, 0, 140));
-		g2d.draw(piloto.obterArea(controleJogo));
+		piloto.obterArea(controleJogo);
+		//g2d.draw(piloto.obterArea(controleJogo));
 
 		// g2d.fillOval(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
 		// * zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));

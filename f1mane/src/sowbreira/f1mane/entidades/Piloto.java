@@ -736,7 +736,9 @@ public class Piloto implements Serializable {
 		if (getTracado() != 0 && !controleJogo.isModoQualify()) {
 			if (testeHabilidadePiloto())
 				mudarPos(0, controleJogo);
-			ganho *= controleJogo.getFatorUtrapassagem();
+			if (No.CURVA_ALTA.equals(noAtual.getTipo())
+					|| No.CURVA_BAIXA.equals(noAtual.getTipo()))
+				ganho *= controleJogo.getFatorUtrapassagem();
 		}
 
 		ganho = calculaGanhoMedio(ganho);

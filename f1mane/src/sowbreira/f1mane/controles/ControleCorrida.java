@@ -48,7 +48,7 @@ public class ControleCorrida {
 		if (fatorUtrapassagem > 0.4) {
 			fatorUtrapassagem = 0.4;
 		}
-		fatorUtrapassagem = 1 - fatorUtrapassagem;
+		this.fatorUtrapassagem = 1 - fatorUtrapassagem;
 		this.indexVelcidadeDaPista = indexVelcidadeDaPista / 1000;
 		if (indexVelcidadeDaPista < 0.5) {
 			indexVelcidadeDaPista = 0.5;
