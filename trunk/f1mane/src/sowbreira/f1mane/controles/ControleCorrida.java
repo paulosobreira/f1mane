@@ -46,6 +46,9 @@ public class ControleCorrida {
 		this.tempoCiclo = (tempoCiclo < 50 ? 50 : tempoCiclo);
 		this.fatorUtrapassagem = fatorUtrapassagem / 1000;
 		this.indexVelcidadeDaPista = indexVelcidadeDaPista / 1000;
+		if (indexVelcidadeDaPista < 0.5) {
+			indexVelcidadeDaPista = 0.5;
+		}
 		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
 		definirDurabilidadeMotores();

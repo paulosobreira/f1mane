@@ -688,8 +688,9 @@ public class Piloto implements Serializable {
 		 * Devagarinho qdo a corrida termina
 		 */
 		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
-			index += ((Math.random() > 0.4) ? 1 : 0);
-			ptosPista += 1;
+			index += calculaGanhoMedio(controleJogo.getCircuito()
+					.getMultiplciador());
+			ptosPista += index;
 			return index;
 		}
 		if (!desqualificado) {
@@ -699,7 +700,7 @@ public class Piloto implements Serializable {
 						+ Lang.msg("118")));
 			}
 		} else {
-			return index;
+			return 0;
 		}
 		verificaMudancaRegime(controleJogo);
 		tentarPassaPilotoDaFrente(controleJogo);
@@ -710,11 +711,11 @@ public class Piloto implements Serializable {
 		if (noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta()) {
 			if (carro.verificaPneusIncompativeisClima(controleJogo)
 					&& novoModificador > 1) {
-				novoModificador = ((Math.random() > 0.4) ? 1 : 0);
+				novoModificador = 1;
 			}
 		}
-		if (novoModificador > 7) {
-			novoModificador = 7;
+		if (novoModificador > 5) {
+			novoModificador = 5;
 		} else if (novoModificador < 1) {
 			novoModificador = 1;
 		}
@@ -727,7 +728,7 @@ public class Piloto implements Serializable {
 				novoModificador);
 		processaVelocidade(novoModificador, noAtual);
 		double ganho = ((novoModificador * controleJogo.getCircuito()
-				.getMultiplciador()) * controleJogo.getIndexVelcidadeDaPista());
+				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
 		if (!controleJogo.isModoQualify()) {
 			ganho = controleJogo.verificaUltraPassagem(this, ganho);
 		}
@@ -1106,7 +1107,6 @@ public class Piloto implements Serializable {
 		}
 		if (testeHabilidadePilotoCarro() && agressivo
 				&& noAtual.verificaRetaOuLargada()
-				&& (Math.random() < controleJogo.getIndexVelcidadeDaPista())
 				&& (Math.random() < bonusSecundario)) {
 			return 3;
 		} else if (getCarro().testePotencia()
@@ -1383,20 +1383,29 @@ public class Piloto implements Serializable {
 	}
 
 	private boolean verificaColisaoPos(InterfaceJogo controleJogo, int pos) {
+		int indice = getNoAtual().getIndex();
 		List pilotos = controleJogo.getPilotos();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (this.equals(piloto)) {
+			if (this.equals(piloto) || piloto.getTracado() == getTracado()) {
 				continue;
 			}
-			Rectangle rect = piloto.obterArea(controleJogo, pos);
-			boolean intercecionou = obterArea(controleJogo).intersects(rect);
-			boolean msmPista = obterPista(controleJogo).size() == piloto
-					.obterPista(controleJogo).size();
-			boolean nosPorximos = Math.abs(getNoAtual().getIndex()
-					- piloto.getNoAtual().getIndex()) > Carro.LARGURA;
 
-			if (intercecionou && msmPista && nosPorximos) {
+			int indiceCarro = piloto.getNoAtual().getIndex();
+
+			int traz = indiceCarro - Carro.LARGURA;
+			int frente = indiceCarro + Carro.LARGURA;
+
+			List lista = piloto.obterPista(controleJogo);
+
+			if (traz < 0) {
+				traz = (lista.size() - 1) + traz;
+			}
+			if (frente > (lista.size() - 1)) {
+				frente = (frente - (lista.size() - 1)) - 1;
+			}
+
+			if (indice >= traz && indice <= frente) {
 				return true;
 			}
 		}
