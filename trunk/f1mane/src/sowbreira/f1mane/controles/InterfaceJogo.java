@@ -1,21 +1,18 @@
 package sowbreira.f1mane.controles;
 
-import java.awt.RenderingHints;
 import java.util.List;
 import java.util.Map;
 
 import sowbreira.f1mane.MainFrame;
-import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
-import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-	public static boolean VALENDO = true;
+	public static boolean VALENDO = false;
 	public static String NORMAL = "NORMAL";
 	public static String FACIL = "FACIL";
 	public static String DIFICIL = "DIFICIL";

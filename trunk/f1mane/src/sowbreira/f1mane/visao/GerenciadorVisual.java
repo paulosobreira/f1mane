@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -28,8 +27,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -96,8 +95,8 @@ public class GerenciadorVisual {
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
 	private JSpinner spinnerQtdeMinutosQualificacao;
-	private JSpinner spinnerDificuldadeUltrapassagem;
-	private JSpinner spinnerIndexVelcidadeEmReta;
+	private JSlider spinnerDificuldadeUltrapassagem;
+	private JSlider spinnerIndexVelcidadeEmReta;
 	private PainelCircuito painelCircuito;
 	private JScrollPane scrollPane;
 	private PainelTabelaPosicoes painelPosicoes;
@@ -167,7 +166,7 @@ public class GerenciadorVisual {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				painelCircuito.zoom += e.getWheelRotation() / 50.0;
+				painelCircuito.zoom += e.getWheelRotation() / 30.0;
 				if (painelCircuito.zoom > 1) {
 					painelCircuito.zoom = 1;
 				}
@@ -175,7 +174,6 @@ public class GerenciadorVisual {
 					painelCircuito.zoom = 0.1;
 				}
 				painelCircuito.atualizaVarZoom();
-				// MainPanelEditorInflado.this.repaint();
 			}
 		};
 		KeyListener keyListener = geraKeyListener();
@@ -199,6 +197,12 @@ public class GerenciadorVisual {
 		infoTextual.addKeyListener(keyListener);
 		telemetriaPanel.addKeyListener(keyListener);
 		comboBoxAsa.addKeyListener(keyListener);
+		pos0.addKeyListener(keyListener);
+		pos1.addKeyListener(keyListener);
+		pos2.addKeyListener(keyListener);
+		pos0.addMouseWheelListener(mw);
+		pos1.addMouseWheelListener(mw);
+		pos2.addMouseWheelListener(mw);
 		frame.addMouseWheelListener(mw);
 		painelCircuito.addMouseWheelListener(mw);
 		painelInfText.addMouseWheelListener(mw);
@@ -597,7 +601,7 @@ public class GerenciadorVisual {
 		}
 	}
 
-	public JSpinner getSpinnerDificuldadeUltrapassagem() {
+	public JSlider getSpinnerDificuldadeUltrapassagem() {
 		return spinnerDificuldadeUltrapassagem;
 	}
 
@@ -605,7 +609,7 @@ public class GerenciadorVisual {
 		return comboBoxCircuito;
 	}
 
-	public JSpinner getSpinnerIndexVelcidadeEmReta() {
+	public JSlider getSpinnerIndexVelcidadeEmReta() {
 		return spinnerIndexVelcidadeEmReta;
 	}
 
@@ -1042,9 +1046,24 @@ public class GerenciadorVisual {
 				return Lang.msg("124");
 			}
 		});
-		spinnerDificuldadeUltrapassagem = new JSpinner();
-		spinnerDificuldadeUltrapassagem.setValue(new Integer(300 + (int) (Math
-				.random() * 600)));
+		spinnerDificuldadeUltrapassagem = new JSlider(300, 700);
+		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(
+				300, 700)));
+		Hashtable labelTable = new Hashtable();
+		labelTable.put(new Integer(300), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("FACIL");
+			}
+		});
+		labelTable.put(new Integer(700), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("DIFICIL");
+			}
+		});
+		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
+		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
 		painelInicio.add(spinnerDificuldadeUltrapassagem);
 		painelInicio.add(new JLabel() {
 			@Override
@@ -1052,9 +1071,24 @@ public class GerenciadorVisual {
 				return Lang.msg("125");
 			}
 		});
-		spinnerIndexVelcidadeEmReta = new JSpinner();
-		spinnerIndexVelcidadeEmReta.setValue(new Integer(400 + (int) (Math
-				.random() * 600)));
+		spinnerIndexVelcidadeEmReta = new JSlider(500, 999);
+		spinnerIndexVelcidadeEmReta.setValue(new Integer(Util.intervalo(500,
+				999)));
+		labelTable = new Hashtable();
+		labelTable.put(new Integer(555), new JLabel("Antigos") {
+			@Override
+			public String getText() {
+				return Lang.msg("ANTIGOS");
+			}
+		});
+		labelTable.put(new Integer(999), new JLabel("Novos") {
+			@Override
+			public String getText() {
+				return Lang.msg("NOVOS");
+			}
+		});
+		spinnerIndexVelcidadeEmReta.setLabelTable(labelTable);
+		spinnerIndexVelcidadeEmReta.setPaintLabels(true);
 		painelInicio.add(spinnerIndexVelcidadeEmReta);
 
 		painelInicio.add(new JLabel() {
@@ -1232,9 +1266,24 @@ public class GerenciadorVisual {
 				return Lang.msg("124");
 			}
 		});
-		spinnerDificuldadeUltrapassagem = new JSpinner();
-		spinnerDificuldadeUltrapassagem.setValue(new Integer(300 + (int) (Math
-				.random() * 600)));
+		spinnerDificuldadeUltrapassagem = new JSlider(300, 700);
+		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(
+				300, 700)));
+		Hashtable labelTable = new Hashtable();
+		labelTable.put(new Integer(300), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("FACIL");
+			}
+		});
+		labelTable.put(new Integer(700), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("DIFICIL");
+			}
+		});
+		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
+		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
 		grid.add(spinnerDificuldadeUltrapassagem);
 		grid.add(new JLabel() {
 			@Override
@@ -1242,9 +1291,24 @@ public class GerenciadorVisual {
 				return Lang.msg("125");
 			}
 		});
-		spinnerIndexVelcidadeEmReta = new JSpinner();
-		spinnerIndexVelcidadeEmReta.setValue(new Integer(400 + (int) (Math
-				.random() * 600)));
+		spinnerIndexVelcidadeEmReta = new JSlider(500, 999);
+		spinnerIndexVelcidadeEmReta.setValue(new Integer(Util.intervalo(500,
+				999)));
+		labelTable = new Hashtable();
+		labelTable.put(new Integer(555), new JLabel("Antigos") {
+			@Override
+			public String getText() {
+				return Lang.msg("ANTIGOS");
+			}
+		});
+		labelTable.put(new Integer(999), new JLabel("Novos") {
+			@Override
+			public String getText() {
+				return Lang.msg("NOVOS");
+			}
+		});
+		spinnerIndexVelcidadeEmReta.setLabelTable(labelTable);
+		spinnerIndexVelcidadeEmReta.setPaintLabels(true);
 		grid.add(spinnerIndexVelcidadeEmReta);
 
 		grid.add(new JLabel() {

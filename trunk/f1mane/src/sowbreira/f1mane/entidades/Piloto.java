@@ -577,6 +577,22 @@ public class Piloto implements Serializable {
 		int pneus = getCarro().porcentagemDesgastePeneus();
 		int combust = getCarro().porcentagemCombustivel();
 
+		if (box && controleJogo.verificaBoxOcupado(getCarro()) && (combust > 5)
+				&& (pneus > 12)) {
+			if (!Messagens.BOX_OCUPADO.equals(msgsBox
+					.get(Messagens.BOX_OCUPADO))) {
+				if (isJogadorHumano()) {
+					controleJogo.infoPrioritaria(Html.orange(Lang.msg("046",
+							new String[] { Html.bold(getNome()) })));
+				} else if (getPosicao() < 9) {
+					controleJogo.info(Html.orange(Lang.msg("046",
+							new String[] { Html.bold(getNome()) })));
+				}
+
+				msgsBox.put(Messagens.BOX_OCUPADO, Messagens.BOX_OCUPADO);
+			}
+		}
+
 		if ((combust < 15) && !controleJogo.isCorridaTerminada()) {
 			box = true;
 		} else {
@@ -595,27 +611,10 @@ public class Piloto implements Serializable {
 
 		if ((Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu()) || Carro.TIPO_PNEU_CHUVA
 				.equals(carro.getTipoPneu()))
-				&& (pneus < 25)) {
+				&& (pneus < 20)) {
 			box = true;
 		}
 
-		if (box && controleJogo.verificaBoxOcupado(getCarro()) && (combust > 5)
-				&& (pneus > 12)) {
-			if (!Messagens.BOX_OCUPADO.equals(msgsBox
-					.get(Messagens.BOX_OCUPADO))) {
-				if (isJogadorHumano()) {
-					controleJogo.infoPrioritaria(Html.orange(Lang.msg("046",
-							new String[] { Html.bold(getNome()) })));
-				} else if (getPosicao() < 9) {
-					controleJogo.info(Html.orange(Lang.msg("046",
-							new String[] { Html.bold(getNome()) })));
-				}
-
-				msgsBox.put(Messagens.BOX_OCUPADO, Messagens.BOX_OCUPADO);
-			}
-
-			box = false;
-		}
 		if (controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isSafetyCarVaiBox()) {
 			if (combust < 20 || pneus < 50) {
@@ -732,22 +731,16 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isModoQualify()) {
 			ganho = controleJogo.verificaUltraPassagem(this, ganho);
 		}
-		if (getTracado() != 0
-				&& (No.CURVA_ALTA.equals(noAtual.getTipo()) || No.CURVA_BAIXA
-						.equals(noAtual.getTipo()))) {
+		if (getTracado() != 0) {
 			if (testeHabilidadePiloto())
 				mudarPos(0, controleJogo);
-			double fat = 1.5;
-			fat -= controleJogo.getFatorUtrapassagem();
-			if (fat > 1)
-				fat = 1;
-			ganho *= fat;
+			ganho *= controleJogo.getFatorUtrapassagem();
 		}
 
 		ganho = calculaGanhoMedio(ganho);
 		if (!controleJogo.isModoQualify()
 				&& verificaColisaoCarroFrente(controleJogo)) {
-			ganho *= 0.3;
+			ganho *= 0.1;
 		}
 		index += ganho;
 		ptosPista += ganho;
