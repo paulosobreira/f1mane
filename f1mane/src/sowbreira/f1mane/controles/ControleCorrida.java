@@ -45,11 +45,8 @@ public class ControleCorrida {
 		controleJogo = jogo;
 		this.tempoCiclo = (tempoCiclo < 50 ? 50 : tempoCiclo);
 		this.fatorUtrapassagem = fatorUtrapassagem / 1000;
-		if (fatorUtrapassagem < 0.3) {
-			fatorUtrapassagem = 0.3;
-		}
-		if (fatorUtrapassagem > 0.7) {
-			fatorUtrapassagem = 0.7;
+		if (fatorUtrapassagem > 0.4) {
+			fatorUtrapassagem = 0.4;
 		}
 		fatorUtrapassagem = 1 - fatorUtrapassagem;
 		this.indexVelcidadeDaPista = indexVelcidadeDaPista / 1000;
