@@ -1046,9 +1046,9 @@ public class GerenciadorVisual {
 				return Lang.msg("124");
 			}
 		});
-		spinnerDificuldadeUltrapassagem = new JSlider(000, 400);
+		spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
 		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(
-				000, 400)));
+				000, 500)));
 		Hashtable labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
@@ -1056,7 +1056,7 @@ public class GerenciadorVisual {
 				return Lang.msg("FACIL");
 			}
 		});
-		labelTable.put(new Integer(400), new JLabel("") {
+		labelTable.put(new Integer(500), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("DIFICIL");
@@ -1071,17 +1071,17 @@ public class GerenciadorVisual {
 				return Lang.msg("125");
 			}
 		});
-		spinnerIndexVelcidadeEmReta = new JSlider(500, 999);
+		spinnerIndexVelcidadeEmReta = new JSlider(500, 1000);
 		spinnerIndexVelcidadeEmReta.setValue(new Integer(Util.intervalo(500,
-				999)));
+				1000)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(555), new JLabel("Antigos") {
+		labelTable.put(new Integer(000), new JLabel("Antigos") {
 			@Override
 			public String getText() {
 				return Lang.msg("ANTIGOS");
 			}
 		});
-		labelTable.put(new Integer(999), new JLabel("Novos") {
+		labelTable.put(new Integer(1000), new JLabel("Novos") {
 			@Override
 			public String getText() {
 				return Lang.msg("NOVOS");
@@ -1281,9 +1281,9 @@ public class GerenciadorVisual {
 				return Lang.msg("124");
 			}
 		});
-		spinnerDificuldadeUltrapassagem = new JSlider(000, 400);
+		spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
 		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(
-				000, 400)));
+				000, 500)));
 		Hashtable labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
@@ -1291,7 +1291,7 @@ public class GerenciadorVisual {
 				return Lang.msg("FACIL");
 			}
 		});
-		labelTable.put(new Integer(400), new JLabel("") {
+		labelTable.put(new Integer(500), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("DIFICIL");
@@ -1306,17 +1306,17 @@ public class GerenciadorVisual {
 				return Lang.msg("125");
 			}
 		});
-		spinnerIndexVelcidadeEmReta = new JSlider(500, 999);
+		spinnerIndexVelcidadeEmReta = new JSlider(500, 1000);
 		spinnerIndexVelcidadeEmReta.setValue(new Integer(Util.intervalo(500,
-				999)));
+				1000)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(555), new JLabel("Antigos") {
+		labelTable.put(new Integer(500), new JLabel("Antigos") {
 			@Override
 			public String getText() {
 				return Lang.msg("ANTIGOS");
 			}
 		});
-		labelTable.put(new Integer(999), new JLabel("Novos") {
+		labelTable.put(new Integer(1000), new JLabel("Novos") {
 			@Override
 			public String getText() {
 				return Lang.msg("NOVOS");

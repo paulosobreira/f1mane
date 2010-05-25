@@ -12,10 +12,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleQualificacao;
@@ -34,7 +36,7 @@ public class Piloto implements Serializable {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
-	private static final int GANHO_MAX = 7;
+	private int aceleracao = 10;
 	private static final double FATOR_AREA_CARRO = .7;
 	private transient double anguloRotacaoCarro;
 	private transient double zoom;
@@ -58,6 +60,7 @@ public class Piloto implements Serializable {
 	private int carX;
 	private int carY;
 	private int ptosPista;
+	private int ptosPistaIncial;
 	private int ultimoIndice;
 	private int tracado;
 
@@ -689,8 +692,15 @@ public class Piloto implements Serializable {
 		 * Devagarinho qdo a corrida termina
 		 */
 		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
-			index += controleJogo.getCircuito().getMultiplciador();
-			ptosPista += (index * 0.1);
+			if (!controleJogo.getSetChegada().contains(getNome())) {
+				Logger.logar(" Pos " + getPosicao() + " Nome " + getNome()
+						+ " Volta " + getNumeroVolta() + " Pts " + ptosPista);
+				controleJogo.getSetChegada().add(getNome());
+				ptosPista -= (obterPista(controleJogo).size() - ptosPistaIncial);
+			}
+			index += (controleJogo.getCircuito().getMultiplciador() * (controleJogo
+					.getIndexVelcidadeDaPista()));
+			ptosPista += index;
 			return index;
 		}
 		if (!desqualificado) {
@@ -739,7 +749,11 @@ public class Piloto implements Serializable {
 					|| No.CURVA_BAIXA.equals(noAtual.getTipo()))
 				ganho *= controleJogo.getFatorUtrapassagem();
 		}
-
+		if (controleJogo.isChovendo()) {
+			aceleracao = 5;
+		} else {
+			aceleracao = 10;
+		}
 		ganho = calculaGanhoMedio(ganho);
 		if (!controleJogo.isModoQualify()
 				&& verificaColisaoCarroFrente(controleJogo)) {
@@ -859,13 +873,13 @@ public class Piloto implements Serializable {
 
 	public void zerarGanho() {
 		listGanho = new ArrayList();
-		for (int i = 0; i < GANHO_MAX; i++) {
+		for (int i = 0; i < aceleracao; i++) {
 			listGanho.add(0.0);
 		}
 	}
 
 	public double calculaGanhoMedio(double ganho) {
-		if (listGanho.size() > GANHO_MAX) {
+		if (listGanho.size() > aceleracao) {
 			listGanho.remove(0);
 		}
 		listGanho.add(ganho);
@@ -1350,6 +1364,11 @@ public class Piloto implements Serializable {
 	}
 
 	public void mudarPos(int pos, InterfaceJogo interfaceJogo) {
+		mudarPos(pos, interfaceJogo, false);
+	}
+
+	public void mudarPos(int pos, InterfaceJogo interfaceJogo,
+			boolean bandeiraAzul) {
 		if (getTracado() == pos) {
 			return;
 		}
@@ -1359,7 +1378,7 @@ public class Piloto implements Serializable {
 		if (getTracado() == 2 && pos == 1) {
 			return;
 		}
-		if (No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
+		if (!bandeiraAzul && No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
 			return;
 		}
 		long agora = System.currentTimeMillis();
@@ -1479,4 +1498,13 @@ public class Piloto implements Serializable {
 		// zoom),
 		// Util.inte(5 * zoom), Util.inte(5 * zoom));
 	}
+
+	public int getPtosPistaIncial() {
+		return ptosPistaIncial;
+	}
+
+	public void setPtosPistaIncial(int ptosPistaIncial) {
+		this.ptosPistaIncial = ptosPistaIncial;
+	}
+
 }

@@ -45,8 +45,8 @@ public class ControleCorrida {
 		controleJogo = jogo;
 		this.tempoCiclo = (tempoCiclo < 50 ? 50 : tempoCiclo);
 		this.fatorUtrapassagem = fatorUtrapassagem / 1000;
-		if (fatorUtrapassagem > 0.4) {
-			fatorUtrapassagem = 0.4;
+		if (fatorUtrapassagem > 0.5) {
+			fatorUtrapassagem = 0.5;
 		}
 		this.fatorUtrapassagem = 1 - fatorUtrapassagem;
 		this.indexVelcidadeDaPista = indexVelcidadeDaPista / 1000;
@@ -227,13 +227,35 @@ public class ControleCorrida {
 			if ((((indTrazCarroFrente) < indTrazCarro) && (indTrazCarroFrente
 					+ (multi * Carro.LARGURA) > (indTrazCarro)))
 					&& pilotoNaFrente.getTracado() == piloto.getTracado()) {
-				ajusteUltrapassagem(piloto, pilotoNaFrente);
 				verificaAcidenteUltrapassagem(piloto.isAgressivo(), piloto,
 						pilotoNaFrente);
-				piloto.setAgressivo(false);
-				if (piloto.testeHabilidadePiloto())
-					piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
+				ajusteUltrapassagem(piloto, pilotoNaFrente);
 
+				piloto.setAgressivo(false);
+				if (!controleJogo.isCorridaTerminada()
+						&& !piloto.isRecebeuBanderada()
+						&& !controleJogo.verificaNivelJogo()
+						&& pilotoNaFrente.testeHabilidadePiloto()
+						&& pilotoNaFrente.getPtosPista() < piloto
+								.getPtosPista()
+						&& !pilotoNaFrente.isDesqualificado()
+						&& (pilotoNaFrente.getPtosBox() == 0)) {
+					pilotoNaFrente.mudarPos(Util.intervalo(1, 2), controleJogo);
+					if (piloto.getPosicao() < 8) {
+						if (Math.random() > 0.5) {
+							controleJogo.info(Html.azul(Lang.msg("021",
+									new String[] { pilotoNaFrente.getNome(),
+											piloto.getNome() })));
+						} else {
+							controleJogo.info(Html.azul(Lang.msg("020",
+									new String[] { pilotoNaFrente.getNome(),
+											piloto.getNome() })));
+						}
+					}
+				} else {
+					if (piloto.testeHabilidadePiloto())
+						piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
+				}
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
 					return ganho * 0.7;

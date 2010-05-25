@@ -1,11 +1,11 @@
 package sowbreira.f1mane.controles;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import com.sun.corba.se.internal.Interceptors.PIORB;
+import java.util.Set;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -47,6 +47,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected String circuitoSelecionado = null;
 	protected ControleCampeonato controleCampeonato;
 	private MainFrame mainFrame;
+	public Set setChegada = new HashSet();
 
 	public ControleJogoLocal(String temporada) throws Exception {
 		super(temporada);
@@ -682,15 +683,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (controleCampeonato != null) {
 			controleCampeonato.processaFimCorrida(getPilotos());
 		}
-		if (!VALENDO) {
-			for (int i = 0; i < pilotos.size(); i++) {
-				Piloto piloto = (Piloto) pilotos.get(i);
-				Logger.logar(" Posicao :" + (i + 1) + "-" + piloto.getNome()
-						+ " Volta :" + piloto.getNumeroVolta()
-						+ " Paradas Box :" + piloto.getQtdeParadasBox()
-						+ " Pontos Pista :" + piloto.getPtosPista());
+		for (int i = 0; i < pilotos.size(); i++) {
+			Piloto piloto = (Piloto) pilotos.get(i);
+			Logger.logar(" Posicao :" + (i + 1) + "-" + piloto.getNome()
+					+ " Volta :" + piloto.getNumeroVolta() + " Paradas Box :"
+					+ piloto.getQtdeParadasBox() + " Pontos Pista :"
+					+ piloto.getPtosPista());
 
-			}
 		}
 	}
 
@@ -920,6 +919,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 	@Override
 	public double getFatorUtrapassagem() {
 		return controleCorrida.getFatorUtrapassagem();
+	}
+
+	public Set getSetChegada() {
+		return setChegada;
 	}
 
 }
