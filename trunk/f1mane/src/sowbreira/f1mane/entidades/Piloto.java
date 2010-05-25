@@ -689,9 +689,8 @@ public class Piloto implements Serializable {
 		 * Devagarinho qdo a corrida termina
 		 */
 		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
-			index += calculaGanhoMedio(controleJogo.getCircuito()
-					.getMultiplciador());
-			ptosPista += index;
+			index += controleJogo.getCircuito().getMultiplciador();
+			ptosPista += (index * 0.1);
 			return index;
 		}
 		if (!desqualificado) {

@@ -333,7 +333,7 @@ public class PainelCircuito extends JPanel {
 		// rectangle.getCenterY());
 		// g2d.setColor(new Color(255, 0, 0, 140));
 		piloto.obterArea(controleJogo);
-		//g2d.draw(piloto.obterArea(controleJogo));
+		// g2d.draw(piloto.obterArea(controleJogo));
 
 		// g2d.fillOval(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
 		// * zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
@@ -767,7 +767,7 @@ public class PainelCircuito extends JPanel {
 		final Point newP = p;
 		Point oldp = scrollPane.getViewport().getViewPosition();
 		int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x, p.y);
-		if (dst < Util.inte(30 * zoom)) {
+		if (dst == 0) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -1516,7 +1516,8 @@ public class PainelCircuito extends JPanel {
 				.msg("NORMAL"));
 
 		String intel = (ps.isJogadorHumano() ? ps.getNomeJogador() : "IA");
-		String txt2 = intel + " " + agressivo + " " + dano;
+		String txt2 = ps.isRecebeuBanderada() + " " + intel + " " + agressivo
+				+ " " + dano;
 		String velo = "~" + ps.getVelocidade() + " Km/h";
 
 		int maior = 0;

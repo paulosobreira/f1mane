@@ -228,9 +228,12 @@ public class ControleCorrida {
 					+ (multi * Carro.LARGURA) > (indTrazCarro)))
 					&& pilotoNaFrente.getTracado() == piloto.getTracado()) {
 				ajusteUltrapassagem(piloto, pilotoNaFrente);
+				verificaAcidenteUltrapassagem(piloto.isAgressivo(), piloto,
+						pilotoNaFrente);
 				piloto.setAgressivo(false);
 				if (piloto.testeHabilidadePiloto())
 					piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
+
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
 					return ganho * 0.7;
