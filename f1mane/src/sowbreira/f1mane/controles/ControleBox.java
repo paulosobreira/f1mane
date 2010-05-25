@@ -193,14 +193,11 @@ public class ControleBox {
 				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
 					ptosBox = 1;
 				}
-
-				piloto.processaVelocidade(ptosBox, piloto.getNoAtual());
-				ptosBox = (int) piloto.calculaGanhoMedio(ptosBox);
 				int novosPtsBox = ptosBox + piloto.getPtosBox();
 				No nobox = (No) boxEquipes.get(piloto.getCarro());
 				int indexParada = piloto.obterPista(controleJogo)
 						.indexOf(nobox);
-				if (novosPtsBox >= (indexParada - Carro.LARGURA)
+				if (novosPtsBox >= (indexParada - Carro.LARGURA - Carro.MEIA_LARGURA)
 						&& novosPtsBox <= (indexParada)) {
 					piloto
 							.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2
@@ -208,6 +205,8 @@ public class ControleBox {
 				} else {
 					piloto.setTracado(0);
 				}
+				piloto.processaVelocidade(ptosBox, piloto.getNoAtual());
+				ptosBox = (int) piloto.calculaGanhoMedio(ptosBox);
 
 				piloto.setPtosBox(novosPtsBox);
 			}

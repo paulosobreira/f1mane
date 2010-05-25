@@ -44,6 +44,7 @@ public class ControleEstatisticas {
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado, long tempo) {
 		Piloto lider = (Piloto) controleJogo.getPilotos().get(0);
 		int diff = lider.getPtosPista() - pilotoSelecionado.getPtosPista();
+		diff /= controleJogo.getCircuito().getMultiplciador();
 		String ret = milesismos.format((diff / Double.parseDouble(String
 				.valueOf(tempo))) * 3.0)
 				+ "s";
