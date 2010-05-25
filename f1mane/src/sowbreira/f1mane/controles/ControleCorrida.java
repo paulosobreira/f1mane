@@ -327,9 +327,10 @@ public class ControleCorrida {
 						pilotoNaFrente.getNome() }));
 			}
 		} else {
-			if ((Math.random() > fatorAcidente) && estadoPrevioAgressivo) {
-				if (Math.random() > 0.6
-						&& Math.random() < controleJogo.getNiveljogo()
+			if (!piloto.testeHabilidadePilotoCarro()
+					&& (Math.random() > fatorAcidente) && estadoPrevioAgressivo) {
+				if (Math.random() < controleJogo.getNiveljogo()
+						&& (piloto.getCarro().getDurabilidadeAereofolio() <= 1)
 						&& !controleSafetyCar.safetyCarUltimas3voltas()) {
 					piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 					controleJogo.infoPrioritaria(Lang.msg("016", new String[] {
