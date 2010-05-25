@@ -191,13 +191,13 @@ public class ControleBox {
 				}
 				ptosBox *= circuito.getMultiplciador();
 				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
-					ptosBox = 1;
+					ptosBox = 0;
 				}
 				int novosPtsBox = ptosBox + piloto.getPtosBox();
 				No nobox = (No) boxEquipes.get(piloto.getCarro());
 				int indexParada = piloto.obterPista(controleJogo)
 						.indexOf(nobox);
-				if (novosPtsBox >= (indexParada - Carro.LARGURA - Carro.MEIA_LARGURA)
+				if (novosPtsBox >= (indexParada - (2 * Carro.LARGURA))
 						&& novosPtsBox <= (indexParada)) {
 					piloto
 							.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2

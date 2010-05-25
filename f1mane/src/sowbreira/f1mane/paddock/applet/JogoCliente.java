@@ -1,8 +1,10 @@
 package sowbreira.f1mane.paddock.applet;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -11,7 +13,6 @@ import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
@@ -733,6 +734,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public double getFatorUtrapassagem() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Set getSetChegada() {
+		return new HashSet();
 	}
 
 }

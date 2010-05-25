@@ -2,6 +2,7 @@ package sowbreira.f1mane.controles;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Carro;
@@ -12,7 +13,7 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-	public static boolean VALENDO = true;
+	public static boolean VALENDO = false;
 	public static String NORMAL = "NORMAL";
 	public static String FACIL = "FACIL";
 	public static String DIFICIL = "DIFICIL";
@@ -209,5 +210,7 @@ public interface InterfaceJogo {
 	public void mudarPos(int i);
 
 	public double getFatorUtrapassagem();
+
+	public Set getSetChegada();
 
 }

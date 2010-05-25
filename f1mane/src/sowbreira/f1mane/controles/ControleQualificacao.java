@@ -166,7 +166,10 @@ public class ControleQualificacao {
 			piloto.setPosicao(i + 1);
 			piloto.zerarGanho();
 			piloto.setPtosPista(nM.getIndex());
+			piloto.setPtosPistaIncial(nM.getIndex());
 			piloto.setVelocidade(0);
+			Logger.logar(" PosLarg " + piloto.getPosicao() + " Nome "
+					+ piloto.getNome() + " pts " + piloto.getPtosPista());
 		}
 
 	}
