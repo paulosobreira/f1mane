@@ -204,7 +204,7 @@ public class ControleEstatisticas {
 	}
 
 	public void info(String info, boolean prioritaria) {
-		Logger.logar(info);
+		//Logger.logar(info);
 		if (InterfaceJogo.VALENDO) {
 			synchronized (bufferInfo) {
 				if (bufferInfo.contains(info)) {
