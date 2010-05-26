@@ -698,11 +698,12 @@ public class Piloto implements Serializable {
 				controleJogo.getSetChegada().add(getNome());
 				ptosPista -= (obterPista(controleJogo).size() - ptosPistaIncial);
 			}
-			index += (controleJogo.getCircuito().getMultiplciador() * (controleJogo
-					.getIndexVelcidadeDaPista()));
-			if (getNumeroVolta() == controleJogo.getQtdeTotalVoltas())
-				ptosPista += index;
-			return index;
+			 index += (controleJogo.getCircuito().getMultiplciador() *
+			 (controleJogo
+			 .getIndexVelcidadeDaPista()));
+			 if (getNumeroVolta() == controleJogo.getQtdeTotalVoltas())
+			 ptosPista += index;
+			 return index;
 		}
 		if (!desqualificado) {
 			if (getCarro().isPaneSeca()) {
@@ -737,9 +738,6 @@ public class Piloto implements Serializable {
 
 		novoModificador = controleJogo.calculaModificadorComSafetyCar(this,
 				novoModificador);
-		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
-			novoModificador = 1;
-		}
 		processaVelocidade(novoModificador, noAtual);
 		double ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
