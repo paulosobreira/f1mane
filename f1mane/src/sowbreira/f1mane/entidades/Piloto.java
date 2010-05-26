@@ -61,7 +61,7 @@ public class Piloto implements Serializable {
 	private int ptosPistaIncial;
 	private int ultimoIndice;
 	private int tracado;
-	private double ganhoMin = Integer.MAX_VALUE;
+	private double ganhoMax = Integer.MIN_VALUE;
 
 	public int getTracado() {
 		return tracado;
@@ -698,7 +698,7 @@ public class Piloto implements Serializable {
 				Logger.logar(" Pos " + getPosicao() + " Nome " + getNome()
 						+ " Volta " + getNumeroVolta() + " Pts " + ptosPista
 						+ " tempo " + System.currentTimeMillis() + " ganhoMin "
-						+ ganhoMin);
+						+ ganhoMax);
 				controleJogo.getSetChegada().add(getNome());
 			}
 			double novoModificador = (controleJogo.getCircuito()
@@ -779,8 +779,8 @@ public class Piloto implements Serializable {
 			ganho = 1;
 		}
 		index += ganho;
-		if (ganho > 0 && ganho < ganhoMin) {
-			ganhoMin = ganho;
+		if (ganho > ganhoMax) {
+			ganhoMax = ganho;
 		}
 		ptosPista += ganho;
 
@@ -895,7 +895,7 @@ public class Piloto implements Serializable {
 
 	public void zerarGanho() {
 		listGanho = new ArrayList();
-		for (int i = 0; i < aceleracao; i++) {
+		for (int i = 0; i < listGanho.size(); i++) {
 			listGanho.add(0.0);
 		}
 	}
