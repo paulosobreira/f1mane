@@ -2,6 +2,7 @@ package sowbreira.f1mane.recursos;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
@@ -26,6 +27,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import sowbreira.f1mane.entidades.Carro;
@@ -139,39 +141,85 @@ public class CarregadorRecursos {
 
 	public static void main(String[] args) throws URISyntaxException,
 			IOException {
-		List carList = new LinkedList();
-		File file = new File("src/sowbreira/f1mane/recursos/carros");
-		File[] dir = file.listFiles();
-		for (int i = 0; i < dir.length; i++) {
-			if (!dir[i].getName().startsWith(".")) {
-				File[] imgCar = dir[i].listFiles();
-				for (int j = 0; j < imgCar.length; j++) {
-					if (!imgCar[j].getName().startsWith(".")
-							&& !imgCar[j].getName().equals("Thumbs.db")) {
-						String str = imgCar[j].getPath().split("recursos")[1];
-						str = str.substring(1, str.length());
-						carList.add(str);
+		// List carList = new LinkedList();
+		// File file = new File("src/sowbreira/f1mane/recursos/carros");
+		// File[] dir = file.listFiles();
+		// for (int i = 0; i < dir.length; i++) {
+		// if (!dir[i].getName().startsWith(".")) {
+		// File[] imgCar = dir[i].listFiles();
+		// for (int j = 0; j < imgCar.length; j++) {
+		// if (!imgCar[j].getName().startsWith(".")
+		// && !imgCar[j].getName().equals("Thumbs.db")) {
+		// String str = imgCar[j].getPath().split("recursos")[1];
+		// str = str.substring(1, str.length());
+		// carList.add(str);
+		//
+		// }
+		// }
+		// }
+		// }
+		// FileWriter fileWriter = new FileWriter(
+		// "src/sowbreira/f1mane/recursos/carlist.txt");
+		// for (Iterator iterator = carList.iterator(); iterator.hasNext();) {
+		// String carro = (String) iterator.next();
+		// StringBuffer nCarro = new StringBuffer();
+		// for (int i = 0; i < carro.length(); i++) {
+		// if (carro.charAt(i) == '\\') {
+		// nCarro.append('/');
+		// } else {
+		// nCarro.append(carro.charAt(i));
+		// }
+		// }
+		// Logger.logar(nCarro.toString());
+		// fileWriter.write(nCarro.toString() + "\n");
+		// }
+		// fileWriter.close();
 
-					}
-				}
+		JFrame frame = new JFrame();
+		frame.setSize(200, 200);
+		frame.setVisible(true);
+		Graphics2D graphics2d = (Graphics2D) frame.getContentPane()
+				.getGraphics();
+		BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
+		graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
+	}
+
+	private static BufferedImage gerarCorresCarros(Color corPintar, int cor) {
+		ImageIcon img = new ImageIcon(CarregadorRecursos.class
+				.getResource("CarroCimaC" + cor + ".png"));
+
+		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
+				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
+		srcBufferedImage = ImageUtil.geraTransparencia(srcBufferedImage,
+				Color.BLACK);
+		BufferedImage bufferedImageRetorno = new BufferedImage(img
+				.getIconWidth(), img.getIconHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = srcBufferedImage.getData();
+		WritableRaster destRaster = bufferedImageRetorno.getRaster();
+		int[] argbArray = new int[4];
+		for (int i = 40; i < 130; i++) {
+			for (int j = 70; j < 105; j++) {
+				argbArray = new int[4];
+				argbArray = srcRaster.getPixel(i, j, argbArray);
+
+				// Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
+				// argbArray[3]);
+				// if (argbArray[0] < 50 && argbArray[1] < 50 && argbArray[2] <
+				// 50) {
+				// continue;
+				// }
+
+				argbArray[0] = (int) ((argbArray[0] + corPintar.getRed()) / 2);
+				argbArray[1] = (int) ((argbArray[1] + corPintar.getGreen()) / 2);
+				argbArray[2] = (int) ((argbArray[2] + corPintar.getBlue()) / 2);
+				// argbArray[3] = 255;
+				destRaster.setPixel(i, j, argbArray);
 			}
 		}
-		FileWriter fileWriter = new FileWriter(
-				"src/sowbreira/f1mane/recursos/carlist.txt");
-		for (Iterator iterator = carList.iterator(); iterator.hasNext();) {
-			String carro = (String) iterator.next();
-			StringBuffer nCarro = new StringBuffer();
-			for (int i = 0; i < carro.length(); i++) {
-				if (carro.charAt(i) == '\\') {
-					nCarro.append('/');
-				} else {
-					nCarro.append(carro.charAt(i));
-				}
-			}
-			Logger.logar(nCarro.toString());
-			fileWriter.write(nCarro.toString() + "\n");
-		}
-		fileWriter.close();
+
+		return bufferedImageRetorno;
 	}
 
 	public static BufferedImage carregaImgCarro(String img) {
@@ -313,45 +361,6 @@ public class CarregadorRecursos {
 				+ (Math.random() > .5 ? -5 : 5));
 		carroNovo.setCarroCima(carro.getCarroCima());
 		return carroNovo;
-	}
-
-	private BufferedImage gerarCorresCarros(Color corPintar, int cor) {
-		ImageIcon img = new ImageIcon(CarregadorRecursos.class
-				.getResource("CarroCimaC" + cor + ".png"));
-
-		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
-				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
-		srcBufferedImage = ImageUtil.geraTransparencia(srcBufferedImage,
-				Color.BLACK);
-		BufferedImage bufferedImageRetorno = new BufferedImage(img
-				.getIconWidth(), img.getIconHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-		Raster srcRaster = srcBufferedImage.getData();
-		WritableRaster destRaster = bufferedImageRetorno.getRaster();
-		int[] argbArray = new int[4];
-		for (int i = 0; i < img.getIconWidth(); i++) {
-			for (int j = 0; j < img.getIconHeight(); j++) {
-				argbArray = new int[4];
-				argbArray = srcRaster.getPixel(i, j, argbArray);
-
-				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
-						argbArray[3]);
-				if (argbArray[0] < 50 && argbArray[1] < 50 && argbArray[2] < 50) {
-					continue;
-				}
-				argbArray[0] = (int) ((argbArray[0] + corPintar.getRed()) / 2);
-				argbArray[1] = (int) ((argbArray[1] + corPintar.getGreen()) / 2);
-				argbArray[2] = (int) ((argbArray[2] + corPintar.getBlue()) / 2);
-
-				// argbArray[0] = (int) ((corPintar.getRed()));
-				// argbArray[1] = (int) ((corPintar.getGreen()));
-				// argbArray[2] = (int) ((corPintar.getBlue()));
-				destRaster.setPixel(i, j, argbArray);
-			}
-		}
-
-		return bufferedImageRetorno;
 	}
 
 	public Map carregarTemporadasPilotos() {
