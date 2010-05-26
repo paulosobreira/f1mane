@@ -149,7 +149,7 @@ public class FormCarreira extends JPanel {
 			@Override
 			public Icon getIcon() {
 				if (Util.isNullOrEmpty(imgCarroStr)) {
-					imgCarroStr = "carro_dano.gif";
+					imgCarroStr = "CarroLado.png";
 				}
 				return new ImageIcon(CarregadorRecursos
 						.carregaImgCarro(imgCarroStr));

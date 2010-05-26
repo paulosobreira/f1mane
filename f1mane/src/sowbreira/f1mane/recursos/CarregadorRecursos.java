@@ -1,7 +1,10 @@
 package sowbreira.f1mane.recursos;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -299,7 +302,57 @@ public class CarregadorRecursos {
 		carroNovo.setPotencia(carro.getPotencia()
 				+ (Math.random() > .5 ? -5 : 5));
 
+		BufferedImage carroCima = CarregadorRecursos
+				.carregaImg("CarroCima.png");
+
+		BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
+		BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
+		Graphics graphics = carroCima.getGraphics();
+		graphics.drawImage(cor1, 0, 0, null);
+		graphics.drawImage(cor2, 0, 0, null);
+		graphics.dispose();
+		carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
+		carroNovo.setCarroCima(carroCima);
 		return carroNovo;
+	}
+
+	private BufferedImage gerarCorresCarros(Color corPintar, int cor) {
+		ImageIcon img = new ImageIcon(CarregadorRecursos.class
+				.getResource("CarroCimaC" + cor + ".png"));
+
+		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
+				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
+		srcBufferedImage = ImageUtil.geraTransparencia(srcBufferedImage,
+				Color.BLACK);
+		BufferedImage bufferedImageRetorno = new BufferedImage(img
+				.getIconWidth(), img.getIconHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = srcBufferedImage.getData();
+		WritableRaster destRaster = bufferedImageRetorno.getRaster();
+		int[] argbArray = new int[4];
+		for (int i = 0; i < img.getIconWidth(); i++) {
+			for (int j = 0; j < img.getIconHeight(); j++) {
+				argbArray = new int[4];
+				argbArray = srcRaster.getPixel(i, j, argbArray);
+
+				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
+						argbArray[3]);
+				if (argbArray[0] < 50 && argbArray[1] < 50 && argbArray[2] < 50) {
+					continue;
+				}
+				argbArray[0] = (int) ((argbArray[0] + corPintar.getRed()) / 2);
+				argbArray[1] = (int) ((argbArray[1] + corPintar.getGreen()) / 2);
+				argbArray[2] = (int) ((argbArray[2] + corPintar.getBlue()) / 2);
+
+				// argbArray[0] = (int) ((corPintar.getRed()));
+				// argbArray[1] = (int) ((corPintar.getGreen()));
+				// argbArray[2] = (int) ((corPintar.getBlue()));
+				destRaster.setPixel(i, j, argbArray);
+			}
+		}
+
+		return bufferedImageRetorno;
 	}
 
 	public Map carregarTemporadasPilotos() {
