@@ -29,8 +29,8 @@ public class PainelTabelaPosicoes extends JPanel {
 	public InterfaceJogo interfaceJogo;
 	private Piloto pilotoSelecionado;
 	private Piloto[] pilotosId = new Piloto[24];
-	private int larguraPainel = 320;
-	private int alturaPainel = 192;
+	private int larguraPainel = 130;
+	private int alturaPainel = 390;
 	public static final String mutex = "mutex";
 	public static final String Coluna1 = "1";
 	public static final String Coluna2 = "2";
@@ -63,9 +63,9 @@ public class PainelTabelaPosicoes extends JPanel {
 				return comp;
 			}
 		};
-		posicoesTable.getTableHeader().setEnabled(false);
+		//posicoesTable.getTableHeader().setEnabled(false);
 		TableColumn colorColumn1 = posicoesTable.getColumn(Coluna1);
-		TableColumn colorColumn2 = posicoesTable.getColumn(Coluna2);
+		//TableColumn colorColumn2 = posicoesTable.getColumn(Coluna2);
 		DefaultTableCellRenderer colorRenderer = new DefaultTableCellRenderer() {
 			protected void setValue(Object value) {
 				if (!(value instanceof String)) {
@@ -101,7 +101,7 @@ public class PainelTabelaPosicoes extends JPanel {
 			}
 		};
 		colorColumn1.setCellRenderer(colorRenderer);
-		colorColumn2.setCellRenderer(colorRenderer);
+		//colorColumn2.setCellRenderer(colorRenderer);
 		add(new JScrollPane(posicoesTable));
 		posicoesTable.setPreferredScrollableViewportSize(new Dimension(
 				larguraPainel, alturaPainel));
@@ -197,11 +197,11 @@ public class PainelTabelaPosicoes extends JPanel {
 	private class TableModel extends AbstractTableModel {
 
 		public int getColumnCount() {
-			return 2;
+			return 1;
 		}
 
 		public int getRowCount() {
-			return 12;
+			return 24;
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
