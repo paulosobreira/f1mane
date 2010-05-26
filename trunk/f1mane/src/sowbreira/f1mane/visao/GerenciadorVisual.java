@@ -813,15 +813,15 @@ public class GerenciadorVisual {
 				BorderLayout.CENTER);
 		controleJogo.getMainFrame().getContentPane().add(southPanel,
 				BorderLayout.SOUTH);
-		controleJogo.getMainFrame().getContentPane().add(painelPosicoes,
+		controleJogo.getMainFrame().getContentPane().add(telemetriaPanel,
 				BorderLayout.EAST);
 		southPanel.setLayout(new BorderLayout());
-		southPanel.add(telemetriaPanel, BorderLayout.WEST);
+		southPanel.add(painelInfGraf, BorderLayout.WEST);
 		southPanel.add(painelInfText, BorderLayout.CENTER);
 
-		telemetriaPanel.setLayout(new GridLayout(1, 2));
-		telemetriaPanel.add(painelInfGraf);
-		telemetriaPanel.add(panelControle);
+		telemetriaPanel.setLayout(new BorderLayout());
+		telemetriaPanel.add(painelPosicoes, BorderLayout.NORTH);
+		telemetriaPanel.add(panelControle, BorderLayout.CENTER);
 
 		southPanel.revalidate();
 		if (controleJogo.getMainFrame().isModoApplet()) {
