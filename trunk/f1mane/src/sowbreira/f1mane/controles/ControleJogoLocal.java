@@ -691,6 +691,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 					+ piloto.getPtosPista());
 
 		}
+		Logger.logar("setChegada " + setChegada.size());
 	}
 
 	/**
