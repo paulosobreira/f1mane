@@ -1507,4 +1507,7 @@ public class Piloto implements Serializable {
 		this.ptosPistaIncial = ptosPistaIncial;
 	}
 
+	public BufferedImage obterCarroCima() {
+		return getCarro().obterCarroCima();
+	}
 }
