@@ -696,14 +696,14 @@ public class Piloto implements Serializable {
 				Logger.logar(" Pos " + getPosicao() + " Nome " + getNome()
 						+ " Volta " + getNumeroVolta() + " Pts " + ptosPista);
 				controleJogo.getSetChegada().add(getNome());
-				ptosPista -= (obterPista(controleJogo).size() - ptosPistaIncial);
+				// ptosPista -= (obterPista(controleJogo).size() -
+				// ptosPistaIncial);
 			}
-			 index += (controleJogo.getCircuito().getMultiplciador() *
-			 (controleJogo
-			 .getIndexVelcidadeDaPista()));
-			 if (getNumeroVolta() == controleJogo.getQtdeTotalVoltas())
-			 ptosPista += index;
-			 return index;
+			index += (controleJogo.getCircuito().getMultiplciador() * (controleJogo
+					.getIndexVelcidadeDaPista()));
+			// if (getNumeroVolta() == controleJogo.getQtdeTotalVoltas())
+//			ptosPista += index;
+			return index;
 		}
 		if (!desqualificado) {
 			if (getCarro().isPaneSeca()) {
