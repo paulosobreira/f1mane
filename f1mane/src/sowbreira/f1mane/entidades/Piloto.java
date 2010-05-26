@@ -36,7 +36,7 @@ public class Piloto implements Serializable {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
-	private int aceleracao = 10;
+	private int aceleracao = 5;
 	private static final double FATOR_AREA_CARRO = .7;
 	private transient double anguloRotacaoCarro;
 	private transient double zoom;
@@ -700,7 +700,8 @@ public class Piloto implements Serializable {
 			}
 			index += (controleJogo.getCircuito().getMultiplciador() * (controleJogo
 					.getIndexVelcidadeDaPista()));
-			ptosPista += index;
+			if (getNumeroVolta() == controleJogo.getQtdeTotalVoltas())
+				ptosPista += index;
 			return index;
 		}
 		if (!desqualificado) {
@@ -736,6 +737,9 @@ public class Piloto implements Serializable {
 
 		novoModificador = controleJogo.calculaModificadorComSafetyCar(this,
 				novoModificador);
+		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
+			novoModificador = 1;
+		}
 		processaVelocidade(novoModificador, noAtual);
 		double ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
@@ -749,10 +753,21 @@ public class Piloto implements Serializable {
 					|| No.CURVA_BAIXA.equals(noAtual.getTipo()))
 				ganho *= controleJogo.getFatorUtrapassagem();
 		}
+		if (getTracado() == 0 && !controleJogo.isModoQualify()) {
+			if (No.CURVA_ALTA.equals(noAtual.getTipo())
+					|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
+				double nGanho = (controleJogo.getFatorUtrapassagem() + 0.2);
+				if (nGanho > 1) {
+					nGanho = 1;
+				}
+				ganho *= (nGanho);
+			}
+		}
+
 		if (controleJogo.isChovendo()) {
-			aceleracao = 5;
-		} else {
 			aceleracao = 10;
+		} else {
+			aceleracao = 5;
 		}
 		ganho = calculaGanhoMedio(ganho);
 		if (!controleJogo.isModoQualify()
