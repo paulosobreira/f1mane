@@ -274,12 +274,12 @@ public class CarregadorRecursos {
 			BufferedImage carroCima = CarregadorRecursos
 					.carregaImg("CarroCima.png");
 
-//			BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
-//			BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
-//			Graphics graphics = carroCima.getGraphics();
-//			graphics.drawImage(cor2, 0, 0, null);
-//			graphics.drawImage(cor1, 0, 0, null);
-//			graphics.dispose();
+			BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
+			BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
+			Graphics graphics = carroCima.getGraphics();
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.dispose();
 			carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
 			carro.setCarroCima(carroCima);
 			retorno.add(carro);

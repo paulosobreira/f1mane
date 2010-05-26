@@ -2,8 +2,6 @@ package sowbreira.f1mane.controles;
 
 import java.util.Iterator;
 
-import com.sun.org.apache.bcel.internal.generic.LUSHR;
-
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;

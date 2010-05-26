@@ -3,8 +3,6 @@ package sowbreira.f1mane.visao;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
@@ -13,8 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JApplet;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -25,21 +21,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import br.nnpe.Logger;
-
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
-
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleCampeonato;
-import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.entidades.Campeonato;
-import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.CorridaCampeonato;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
-import sowbreira.f1mane.paddock.applet.FormClassificacao;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Logger;
 
 public class PainelCampeonato extends JPanel {
 

@@ -253,7 +253,15 @@ public class ControleCorrida {
 						}
 					}
 				} else {
-					if (piloto.testeHabilidadePiloto())
+					boolean sendoPressionado = false;
+					Carro carroAtraz = controleJogo.obterCarroAtraz(piloto);
+					if (carroAtraz != null) {
+						Piloto pilotoAtraz = carroAtraz.getPiloto();
+						if (pilotoAtraz.getPtosPista() > (piloto.getPtosPista() - (multi * Carro.LARGURA))) {
+							sendoPressionado = true;
+						}
+					}
+					if (piloto.testeHabilidadePiloto() && !sendoPressionado)
 						piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
 				}
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
