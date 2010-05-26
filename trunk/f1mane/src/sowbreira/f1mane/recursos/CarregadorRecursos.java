@@ -271,7 +271,17 @@ public class CarregadorRecursos {
 			blue = values[7];
 			carro.setCor2(new Color(Integer.parseInt(red), Integer
 					.parseInt(green), Integer.parseInt(blue)));
+			BufferedImage carroCima = CarregadorRecursos
+					.carregaImg("CarroCima.png");
 
+			BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
+			BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
+			Graphics graphics = carroCima.getGraphics();
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.dispose();
+			carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
+			carro.setCarroCima(carroCima);
 			retorno.add(carro);
 		}
 
@@ -301,18 +311,7 @@ public class CarregadorRecursos {
 		carroNovo.setPiloto(piloto);
 		carroNovo.setPotencia(carro.getPotencia()
 				+ (Math.random() > .5 ? -5 : 5));
-
-		BufferedImage carroCima = CarregadorRecursos
-				.carregaImg("CarroCima.png");
-
-		BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
-		BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
-		Graphics graphics = carroCima.getGraphics();
-		graphics.drawImage(cor1, 0, 0, null);
-		graphics.drawImage(cor2, 0, 0, null);
-		graphics.dispose();
-		carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
-		carroNovo.setCarroCima(carroCima);
+		carroNovo.setCarroCima(carro.getCarroCima());
 		return carroNovo;
 	}
 

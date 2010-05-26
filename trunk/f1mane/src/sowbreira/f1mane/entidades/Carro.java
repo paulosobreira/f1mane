@@ -58,7 +58,7 @@ public class Carro implements Serializable {
 	private boolean recolhido;
 	private Piloto piloto;
 	private boolean fritouPneuNaUltimaCurvaBaixa;
-	private BufferedImage carroCima;
+	private transient BufferedImage carroCima;
 
 	public int getGiro() {
 		return giro;
