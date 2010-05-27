@@ -6,7 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +29,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -141,47 +145,106 @@ public class CarregadorRecursos {
 
 	public static void main(String[] args) throws URISyntaxException,
 			IOException {
-		// List carList = new LinkedList();
-		// File file = new File("src/sowbreira/f1mane/recursos/carros");
-		// File[] dir = file.listFiles();
-		// for (int i = 0; i < dir.length; i++) {
-		// if (!dir[i].getName().startsWith(".")) {
-		// File[] imgCar = dir[i].listFiles();
-		// for (int j = 0; j < imgCar.length; j++) {
-		// if (!imgCar[j].getName().startsWith(".")
-		// && !imgCar[j].getName().equals("Thumbs.db")) {
-		// String str = imgCar[j].getPath().split("recursos")[1];
-		// str = str.substring(1, str.length());
-		// carList.add(str);
-		//
-		// }
-		// }
-		// }
-		// }
-		// FileWriter fileWriter = new FileWriter(
-		// "src/sowbreira/f1mane/recursos/carlist.txt");
-		// for (Iterator iterator = carList.iterator(); iterator.hasNext();) {
-		// String carro = (String) iterator.next();
-		// StringBuffer nCarro = new StringBuffer();
-		// for (int i = 0; i < carro.length(); i++) {
-		// if (carro.charAt(i) == '\\') {
-		// nCarro.append('/');
-		// } else {
-		// nCarro.append(carro.charAt(i));
-		// }
-		// }
-		// Logger.logar(nCarro.toString());
-		// fileWriter.write(nCarro.toString() + "\n");
-		// }
-		// fileWriter.close();
+		List carList = new LinkedList();
+		File file = new File("src/sowbreira/f1mane/recursos/carros");
+		File[] dir = file.listFiles();
+		for (int i = 0; i < dir.length; i++) {
+			if (!dir[i].getName().startsWith(".")) {
+				File[] imgCar = dir[i].listFiles();
+				for (int j = 0; j < imgCar.length; j++) {
+					if (!imgCar[j].getName().startsWith(".")
+							&& !imgCar[j].getName().equals("Thumbs.db")) {
+						String str = imgCar[j].getPath().split("recursos")[1];
+						str = str.substring(1, str.length());
+						carList.add(str);
 
-		JFrame frame = new JFrame();
-		frame.setSize(200, 200);
-		frame.setVisible(true);
-		Graphics2D graphics2d = (Graphics2D) frame.getContentPane()
-				.getGraphics();
-		BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
-		graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
+					}
+				}
+			}
+		}
+		FileWriter fileWriter = new FileWriter(
+				"src/sowbreira/f1mane/recursos/carlist.txt");
+		for (Iterator iterator = carList.iterator(); iterator.hasNext();) {
+			String carro = (String) iterator.next();
+			StringBuffer nCarro = new StringBuffer();
+			for (int i = 0; i < carro.length(); i++) {
+				if (carro.charAt(i) == '\\') {
+					nCarro.append('/');
+				} else {
+					nCarro.append(carro.charAt(i));
+				}
+			}
+			Logger.logar(nCarro.toString());
+			fileWriter.write(nCarro.toString() + "\n");
+		}
+		fileWriter.close();
+		File fileT = new File("src/sowbreira/f1mane/recursos/properties");
+		File[] dirT = fileT.listFiles();
+		for (int i = 0; i < dirT.length; i++) {
+			String temporarada = dirT[i].getName();
+			if (!temporarada.contains(".")) {
+
+				Properties properties = new Properties();
+
+				properties.load(CarregadorRecursos.class
+						.getResourceAsStream("properties/" + temporarada
+								+ "/carros.properties"));
+
+				Enumeration propNames = properties.propertyNames();
+
+				while (propNames.hasMoreElements()) {
+					Carro carro = new Carro();
+					String name = (String) propNames.nextElement();
+					String prop = properties.getProperty(name);
+					carro.setNome(name);
+					String[] values = prop.split(",");
+					carro.setPotencia(Integer.parseInt(values[0]));
+
+					String red = values[1];
+					String green = values[2];
+					String blue = values[3];
+					carro.setImg("carros/" + temporarada + "/" + values[4]);
+					carro.setCor1(new Color(Integer.parseInt(red), Integer
+							.parseInt(green), Integer.parseInt(blue)));
+
+					red = values[5];
+					green = values[6];
+					blue = values[7];
+					carro.setCor2(new Color(Integer.parseInt(red), Integer
+							.parseInt(green), Integer.parseInt(blue)));
+					BufferedImage carroCima = CarregadorRecursos
+							.carregaImg("CarroCima.png");
+
+					BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
+					BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
+					Graphics graphics = carroCima.getGraphics();
+					graphics.drawImage(cor2, 0, 0, null);
+					graphics.drawImage(cor1, 0, 0, null);
+					graphics.dispose();
+					File gravar = new File("src" + File.separator + "sowbreira"
+							+ File.separator + "f1mane" + File.separator
+							+ "recursos" + File.separator + "carros"
+							+ File.separator + temporarada + File.separator
+							+ carro.getNome() + ".png");
+					ImageIO.write(carroCima, "png", gravar);
+					System.out.println("src" + File.separator + "sowbreira"
+							+ File.separator + "f1mane" + File.separator
+							+ "recursos" + File.separator + "carros"
+							+ File.separator + temporarada + File.separator
+							+ carro.getNome() + ".png");
+				}
+
+			}
+
+		}
+
+		// JFrame frame = new JFrame();
+		// frame.setSize(200, 200);
+		// frame.setVisible(true);
+		// Graphics2D graphics2d = (Graphics2D) frame.getContentPane()
+		// .getGraphics();
+		// BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
+		// graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
 	}
 
 	private static BufferedImage gerarCorresCarros(Color corPintar, int cor) {
@@ -311,6 +374,7 @@ public class CarregadorRecursos {
 			String green = values[2];
 			String blue = values[3];
 			carro.setImg("carros/" + temporarada + "/" + values[4]);
+			Logger.logar("carros/" + temporarada + "/" + values[4]);
 			carro.setCor1(new Color(Integer.parseInt(red), Integer
 					.parseInt(green), Integer.parseInt(blue)));
 
@@ -319,16 +383,14 @@ public class CarregadorRecursos {
 			blue = values[7];
 			carro.setCor2(new Color(Integer.parseInt(red), Integer
 					.parseInt(green), Integer.parseInt(blue)));
-			BufferedImage carroCima = CarregadorRecursos
-					.carregaImg("CarroCima.png");
-
-			BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
-			BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
-			Graphics graphics = carroCima.getGraphics();
-			graphics.drawImage(cor2, 0, 0, null);
-			graphics.drawImage(cor1, 0, 0, null);
-			graphics.dispose();
+			Logger.logar("carros/" + temporarada + "/" + carro.getNome()
+					+ ".png");
+			BufferedImage carroCima = CarregadorRecursos.carregaImg("carros/"
+					+ temporarada + "/" + carro.getNome() + ".png");
 			carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
+			if (carroCima == null) {
+				Logger.logar("Erro carregando Carro Cima");
+			}
 			carro.setCarroCima(carroCima);
 			retorno.add(carro);
 		}
