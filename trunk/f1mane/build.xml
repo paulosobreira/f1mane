@@ -49,6 +49,8 @@
 				<exclude name=".*" />
 				<exclude name=".*/" />
 				<exclude name="**/*.java" />
+				<exclude name="**/*.jpg" />
+				<exclude name="**/*.db" />
 			</fileset>
 		</copy>
 	</target>
