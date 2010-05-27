@@ -766,9 +766,9 @@ public class Piloto implements Serializable {
 		}
 
 		if (controleJogo.isChovendo()) {
-			aceleracao = 10;
+			aceleracao = 8;
 		} else {
-			aceleracao = 5;
+			aceleracao = 4;
 		}
 		ganho = calculaGanhoMedio(ganho);
 		if (!controleJogo.isModoQualify()
