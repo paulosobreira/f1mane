@@ -111,6 +111,7 @@ public class CarregadorRecursos {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			Logger.logar("Erro gerando transparencia para :" + file);
 		}
 
@@ -262,21 +263,18 @@ public class CarregadorRecursos {
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
-		for (int i = 40; i < 130; i++) {
-			for (int j = 70; j < 105; j++) {
+		for (int i = 0; i < 176; i++) {
+			for (int j = 0; j < 176; j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
-
-				// Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
-				// argbArray[3]);
-				// if (argbArray[0] < 50 && argbArray[1] < 50 && argbArray[2] <
-				// 50) {
-				// continue;
-				// }
-
+				Color c = new Color(argbArray[0], argbArray[1], argbArray[2]);
 				argbArray[0] = (int) ((argbArray[0] + corPintar.getRed()) / 2);
 				argbArray[1] = (int) ((argbArray[1] + corPintar.getGreen()) / 2);
 				argbArray[2] = (int) ((argbArray[2] + corPintar.getBlue()) / 2);
+				if (Color.WHITE.equals(c)) {
+					argbArray[3] = 0;
+				}
+
 				// argbArray[3] = 255;
 				destRaster.setPixel(i, j, argbArray);
 			}
@@ -385,13 +383,6 @@ public class CarregadorRecursos {
 					.parseInt(green), Integer.parseInt(blue)));
 			Logger.logar("carros/" + temporarada + "/" + carro.getNome()
 					+ ".png");
-			BufferedImage carroCima = CarregadorRecursos.carregaImg("carros/"
-					+ temporarada + "/" + carro.getNome() + ".png");
-			carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
-			if (carroCima == null) {
-				Logger.logar("Erro carregando Carro Cima");
-			}
-			carro.setCarroCima(carroCima);
 			retorno.add(carro);
 		}
 

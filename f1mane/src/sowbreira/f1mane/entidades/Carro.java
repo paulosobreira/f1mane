@@ -600,9 +600,13 @@ public class Carro implements Serializable {
 		if (Math.random() < val) {
 			desgPneus += 1;
 		}
-
-		pneus -= (desgPneus * controleJogo.getCircuito().getMultiplciador() * controleJogo
+		double valDesgaste = (desgPneus
+				* controleJogo.getCircuito().getMultiplciador() * controleJogo
 				.getIndexVelcidadeDaPista());
+		if (controleJogo.isSafetyCarNaPista()) {
+			valDesgaste /= 3;
+		}
+		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
 			danificado = PNEU_FURADO;
 			pneus = -1;

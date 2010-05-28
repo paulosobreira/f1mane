@@ -512,18 +512,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#calculaModificadorComSafetyCar(sowbreira.f1mane.entidades.Piloto,
-	 *      int)
-	 */
-	public int calculaModificadorComSafetyCar(Piloto piloto, int novoModificador) {
-		if (ControleQualificacao.modoQualify) {
-			return novoModificador;
-		}
-		return controleCorrida.calculaModificadorComSafetyCar(piloto,
-				novoModificador);
-	}
-
-	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#isSafetyCarVaiBox()
 	 */
 	public boolean isSafetyCarVaiBox() {
@@ -597,7 +585,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 			if (controleCampeonato != null) {
 				controleCampeonato.iniciaCorrida(circuitoSelecionado);
 			}
-			// mainFrame.pack();
 			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
 		}
 	}
@@ -666,6 +653,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 			if (gerenciadorVisual.getSemTrocaPneu().isSelected()) {
 				semTrocaPneu = true;
 			}
+			setTemporada("t"
+					+ gerenciadorVisual.getComboBoxTemporadas()
+							.getSelectedItem());
 		} catch (Exception e) {
 			throw new Exception(Lang.msg("027"));
 		}

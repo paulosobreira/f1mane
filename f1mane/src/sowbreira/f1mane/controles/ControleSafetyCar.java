@@ -1,9 +1,11 @@
 package sowbreira.f1mane.controles;
 
+import java.util.Iterator;
 import java.util.List;
 
 import br.nnpe.Html;
 
+import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
@@ -54,7 +56,11 @@ public class ControleSafetyCar {
 		if (!safetyCar.isNaPista()) {
 			return;
 		}
-		if (safetyCar.getNoAtual().isNoEntradaBox() && safetyCar.isVaiProBox()) {
+		int cont = safetyCar.getNoAtual().getIndex();
+		Circuito circuito = controleJogo.getCircuito();
+		if ((cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
+				.getEntradaBoxIndex() + 50))
+				&& safetyCar.isVaiProBox()) {
 			controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("030")));
 			safetyCar.setNaPista(false);
 			safetyCar.setSaiuVolta(controleJogo.getNumVoltaAtual());
@@ -64,15 +70,18 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .5) ? 1 : 0)
-				: (Math.random() > .9) ? 2 : 1;
+				.random() > .5) ? 3 : 2)
+				: (Math.random() > .9) ? 3 : 2;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 50)) {
-			bonus = (Math.random() > .7) ? 1 : 0;
+			bonus = (Math.random() > .7) ? 2 : 1;
 		}
 		if (safetyCar.isVaiProBox()) {
-			bonus = (Math.random() > .5) ? 1 : 0;
+			bonus = (Math.random() > .5) ? 2 : 1;
 		}
+		bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo
+				.getIndexVelcidadeDaPista()) / 2;
+		bonus = calculaMediaSC(bonus);
 		index += bonus;
 		int diff = index - pista.size();
 		/**
@@ -85,41 +94,24 @@ public class ControleSafetyCar {
 		safetyCar.setNoAtual((No) pista.get(index));
 	}
 
+	private int calculaMediaSC(int bonus) {
+		List listGanho = safetyCar.getMediaSc();
+		if (listGanho.size() > 10) {
+			listGanho.remove(0);
+		}
+		listGanho.add(new Double(bonus));
+		double soma = 0;
+		for (Iterator iterator = listGanho.iterator(); iterator.hasNext();) {
+			Double val = (Double) iterator.next();
+			soma += val.doubleValue();
+		}
+		return (int) (soma / listGanho.size());
+	}
+
 	public SafetyCar getSafetyCar() {
 		return safetyCar;
 	}
 
-	public int calculaModificadorComSafetyCar(Piloto piloto, int novoModificador) {
-		if (!isSaftyCarNaPista()) {
-			return novoModificador;
-		}
-		/**
-		 * Efeito dexar o safatycar se perder de vista
-		 */
-		if (piloto.getPosicao() == 1 && controleJogo.isSafetyCarVaiBox()
-				&& piloto.getPtosPista() >= (safetyCar.getPtosPista() - 25)) {
-			return (Math.random() > .6) ? 2 : 1;
-		}
-		if (piloto.getPosicao() == 1
-				&& piloto.getPtosPista() >= (safetyCar.getPtosPista() - 5)) {
-			piloto.gerarDesconcentracao((24 - piloto.getPosicao()) * 4);
-			piloto.setAgressivo(false);
-			return 1;
-		}
-		Piloto pilotoFrente = controleCorrida.acharPilotoDaFrente(piloto);
-		if (pilotoFrente.equals(piloto) || pilotoFrente.entrouNoBox()
-				|| pilotoFrente.isDesqualificado()) {
-			return novoModificador;
-		}
-
-		if (piloto.getPtosPista() + novoModificador >= pilotoFrente
-				.getPtosPista()) {
-			piloto.gerarDesconcentracao((24 - piloto.getPosicao()) * 4);
-			piloto.setAgressivo(false);
-			return 1;
-		}
-		return novoModificador;
-	}
 
 	public boolean verificaPoleFrenteSafety(Piloto piloto) {
 		return piloto.getPtosPista() >= safetyCar.getPtosPista();

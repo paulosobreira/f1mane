@@ -35,6 +35,15 @@ public abstract class ControleRecursos {
 	protected Map mapaNosIds = new HashMap();
 	private String seasson;
 
+	public void setTemporada(String seasson) {
+		this.seasson = seasson;
+
+	}
+
+	public String getTemporada() {
+		return seasson;
+	}
+
 	public Map getMapaIdsNos() {
 		return mapaIdsNos;
 	}

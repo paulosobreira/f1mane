@@ -188,11 +188,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		gerenciadorVisual.atulizaTabelaPosicoes();
 	}
 
-	public int calculaModificadorComSafetyCar(Piloto piloto, int novoModificador) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {
 		long tempo = dadosParticiparJogo.getTempoCiclo().intValue();
 		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado,

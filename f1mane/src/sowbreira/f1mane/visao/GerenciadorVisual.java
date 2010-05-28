@@ -467,6 +467,9 @@ public class GerenciadorVisual {
 	}
 
 	public Piloto obterPilotoSecionadoTabela(Piloto pilotoSelecionado) {
+		if (painelPosicoes == null) {
+			return null;
+		}
 		Piloto novoSel = painelPosicoes
 				.obterPilotoSecionadoTabela(pilotoSelecionado);
 		controleJogo.selecionouPiloto(novoSel);
@@ -726,18 +729,23 @@ public class GerenciadorVisual {
 		infoTextual = new JEditorPane("text/html", "");
 		infoTextual.setEditable(false);
 		bufferTextual = new ArrayList();
-		scrollPaneTextual = new JScrollPane(infoTextual);
+		scrollPaneTextual = new JScrollPane(infoTextual) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(scrollPaneTextual.getWidth(), 150);
+			}
+		};
 		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.add(scrollPaneTextual);
-		scrollPaneTextual.setBounds(0, 0, larguraFrame
-				- painelPosicoes.getLarguraPainel() - 30, 200);
+		panel.setLayout(new BorderLayout());
+
+		panel.add(scrollPaneTextual, BorderLayout.CENTER);
+		// scrollPaneTextual.setBounds(0, 0, larguraFrame
+		// - painelPosicoes.getLarguraPainel() - 30, 200);
 		painelInfText.add(panel, BorderLayout.CENTER);
 		infoText.setLayout(new GridLayout(1, 1));
 		infoCorrida = new JLabel(Lang.msg("213"));
 		infoPiloto = new JLabel(Lang.msg("214"));
 		infoText.add(infoCorrida);
-		// infoText.add(infoPiloto);
 		painelInfText.add(infoText, BorderLayout.NORTH);
 	}
 
@@ -813,14 +821,14 @@ public class GerenciadorVisual {
 				BorderLayout.CENTER);
 		controleJogo.getMainFrame().getContentPane().add(southPanel,
 				BorderLayout.SOUTH);
-		controleJogo.getMainFrame().getContentPane().add(telemetriaPanel,
+		controleJogo.getMainFrame().getContentPane().add(painelPosicoes,
 				BorderLayout.EAST);
 		southPanel.setLayout(new BorderLayout());
-		southPanel.add(painelInfGraf, BorderLayout.WEST);
+		southPanel.add(telemetriaPanel, BorderLayout.WEST);
 		southPanel.add(painelInfText, BorderLayout.CENTER);
 
 		telemetriaPanel.setLayout(new BorderLayout());
-		telemetriaPanel.add(painelPosicoes, BorderLayout.NORTH);
+		telemetriaPanel.add(painelInfGraf, BorderLayout.EAST);
 		telemetriaPanel.add(panelControle, BorderLayout.CENTER);
 
 		southPanel.revalidate();
@@ -1424,7 +1432,7 @@ public class GerenciadorVisual {
 		}
 
 		Object selec = listPilotosSelecionados.getSelectedValue();
-
+		controleJogo.setTemporada("t" + comboBoxTemporadas.getSelectedItem());
 		if (!ControleJogoLocal.VALENDO) {
 			selec = "";
 		}

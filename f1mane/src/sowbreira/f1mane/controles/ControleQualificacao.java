@@ -1,7 +1,9 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,7 +16,9 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.GeoUtil;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -168,6 +172,17 @@ public class ControleQualificacao {
 			piloto.setPtosPista(nM.getIndex());
 			piloto.setPtosPistaIncial(nM.getIndex());
 			piloto.setVelocidade(0);
+			Carro carro = piloto.getCarro();
+			BufferedImage carroCima = CarregadorRecursos
+					.carregaBufferedImageTranspareciaBranca("carros/"
+							+ controleJogo.getTemporada() + "/"
+							+ carro.getNome() + ".png");
+			carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
+			if (carroCima == null) {
+				Logger.logar("Erro carregando Carro Cima");
+			}
+			carro.setCarroCima(carroCima);
+
 			Logger.logar(" PosLarg " + piloto.getPosicao() + " Nome "
 					+ piloto.getNome() + " pts " + piloto.getPtosPista());
 		}
