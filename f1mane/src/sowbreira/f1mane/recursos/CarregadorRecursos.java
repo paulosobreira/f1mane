@@ -179,65 +179,64 @@ public class CarregadorRecursos {
 			fileWriter.write(nCarro.toString() + "\n");
 		}
 		fileWriter.close();
-		File fileT = new File("src/sowbreira/f1mane/recursos/properties");
-		File[] dirT = fileT.listFiles();
-		for (int i = 0; i < dirT.length; i++) {
-			String temporarada = dirT[i].getName();
-			if (!temporarada.contains(".")) {
-
-				Properties properties = new Properties();
-
-				properties.load(CarregadorRecursos.class
-						.getResourceAsStream("properties/" + temporarada
-								+ "/carros.properties"));
-
-				Enumeration propNames = properties.propertyNames();
-
-				while (propNames.hasMoreElements()) {
-					Carro carro = new Carro();
-					String name = (String) propNames.nextElement();
-					String prop = properties.getProperty(name);
-					carro.setNome(name);
-					String[] values = prop.split(",");
-					carro.setPotencia(Integer.parseInt(values[0]));
-
-					String red = values[1];
-					String green = values[2];
-					String blue = values[3];
-					carro.setImg("carros/" + temporarada + "/" + values[4]);
-					carro.setCor1(new Color(Integer.parseInt(red), Integer
-							.parseInt(green), Integer.parseInt(blue)));
-
-					red = values[5];
-					green = values[6];
-					blue = values[7];
-					carro.setCor2(new Color(Integer.parseInt(red), Integer
-							.parseInt(green), Integer.parseInt(blue)));
-					BufferedImage carroCima = CarregadorRecursos
-							.carregaImg("CarroCima.png");
-
-					BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
-					BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
-					Graphics graphics = carroCima.getGraphics();
-					graphics.drawImage(cor2, 0, 0, null);
-					graphics.drawImage(cor1, 0, 0, null);
-					graphics.dispose();
-					File gravar = new File("src" + File.separator + "sowbreira"
-							+ File.separator + "f1mane" + File.separator
-							+ "recursos" + File.separator + "carros"
-							+ File.separator + temporarada + File.separator
-							+ carro.getNome() + ".png");
-					ImageIO.write(carroCima, "png", gravar);
-					System.out.println("src" + File.separator + "sowbreira"
-							+ File.separator + "f1mane" + File.separator
-							+ "recursos" + File.separator + "carros"
-							+ File.separator + temporarada + File.separator
-							+ carro.getNome() + ".png");
-				}
-
-			}
-
-		}
+		// File fileT = new File("src/sowbreira/f1mane/recursos/properties");
+		// File[] dirT = fileT.listFiles();
+		// for (int i = 0; i < dirT.length; i++) {
+		// String temporarada = dirT[i].getName();
+		// if (!temporarada.contains(".")) {
+		//
+		// Properties properties = new Properties();
+		//
+		// properties.load(CarregadorRecursos.class
+		// .getResourceAsStream("properties/" + temporarada
+		// + "/carros.properties"));
+		//
+		// Enumeration propNames = properties.propertyNames();
+		//
+		// while (propNames.hasMoreElements()) {
+		// Carro carro = new Carro();
+		// String name = (String) propNames.nextElement();
+		// String prop = properties.getProperty(name);
+		// carro.setNome(name);
+		// String[] values = prop.split(",");
+		// carro.setPotencia(Integer.parseInt(values[0]));
+		//
+		// String red = values[1];
+		// String green = values[2];
+		// String blue = values[3];
+		// carro.setImg("carros/" + temporarada + "/" + values[4]);
+		// carro.setCor1(new Color(Integer.parseInt(red), Integer
+		// .parseInt(green), Integer.parseInt(blue)));
+		//
+		// red = values[5];
+		// green = values[6];
+		// blue = values[7];
+		// carro.setCor2(new Color(Integer.parseInt(red), Integer
+		// .parseInt(green), Integer.parseInt(blue)));
+		// BufferedImage carroCima = CarregadorRecursos
+		// .carregaImg("CarroCima.png");
+		//
+		// BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
+		// BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
+		// Graphics graphics = carroCima.getGraphics();
+		// graphics.drawImage(cor2, 0, 0, null);
+		// graphics.drawImage(cor1, 0, 0, null);
+		// graphics.dispose();
+		// File gravar = new File("src" + File.separator + "sowbreira"
+		// + File.separator + "f1mane" + File.separator
+		// + "recursos" + File.separator + "carros"
+		// + File.separator + temporarada + File.separator
+		// + carro.getNome() + ".png");
+		// ImageIO.write(carroCima, "png", gravar);
+		// System.out.println("src" + File.separator + "sowbreira"
+		// + File.separator + "f1mane" + File.separator
+		// + "recursos" + File.separator + "carros"
+		// + File.separator + temporarada + File.separator
+		// + carro.getNome() + ".png");
+		// }
+		//
+		// }
+		// }
 
 		// JFrame frame = new JFrame();
 		// frame.setSize(200, 200);
