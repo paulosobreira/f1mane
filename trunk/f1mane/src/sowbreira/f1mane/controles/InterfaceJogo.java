@@ -139,8 +139,6 @@ public interface InterfaceJogo {
 
 	public SafetyCar getSafetyCar();
 
-	public int calculaModificadorComSafetyCar(Piloto piloto, int novoModificador);
-
 	public boolean isSafetyCarVaiBox();
 
 	public Carro obterCarroNaFrente(Piloto piloto);
@@ -212,5 +210,9 @@ public interface InterfaceJogo {
 	public double getFatorUtrapassagem();
 
 	public Set getSetChegada();
+
+	public String getTemporada();
+
+	public void setTemporada(String string);
 
 }

@@ -1,6 +1,7 @@
 package sowbreira.f1mane.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +14,11 @@ public class SafetyCar implements Serializable {
 	private int saiuVolta;
 	private boolean vaiProBox;
 	private boolean naPista;
+	private List mediaSc = new ArrayList();
+
+	public List getMediaSc() {
+		return mediaSc;
+	}
 
 	public boolean isNaPista() {
 		return naPista;

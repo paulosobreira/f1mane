@@ -116,8 +116,8 @@ public class MainPanelEditorVetorizado extends JPanel {
 
 		circuito = (Circuito) ois.readObject();
 
-		carroCima = CarregadorRecursos.carregaImg("CarroCima.png");
-		carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
+		carroCima = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("CarroCima.png");
 		MainPanelEditorVetorizado.this
 				.addMouseWheelListener(new MouseWheelListener() {
 

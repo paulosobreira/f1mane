@@ -715,7 +715,7 @@ public class Piloto implements Serializable {
 						+ Lang.msg("118")));
 			}
 		} else {
-			return 0;
+			return getNoAtual().getIndex();
 		}
 		verificaMudancaRegime(controleJogo);
 		tentarPassaPilotoDaFrente(controleJogo);
@@ -739,8 +739,6 @@ public class Piloto implements Serializable {
 			novoModificador = 1;
 		}
 
-		novoModificador = controleJogo.calculaModificadorComSafetyCar(this,
-				novoModificador);
 		processaVelocidade(novoModificador, noAtual);
 		double ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
@@ -1390,8 +1388,20 @@ public class Piloto implements Serializable {
 	}
 
 	public void mudarPos(int pos, InterfaceJogo interfaceJogo,
-			boolean bandeiraAzul) {
+			boolean mesmoEmCurva) {
+
 		if (getTracado() == pos) {
+			return;
+		}
+
+		long agora = System.currentTimeMillis();
+		if ((agora - ultimaMudancaPos) < 1000) {
+			return;
+		}
+		if (interfaceJogo.isSafetyCarNaPista()
+				&& !verificaColisaoPos(interfaceJogo, 0)) {
+			setTracado(0);
+			ultimaMudancaPos = System.currentTimeMillis();
 			return;
 		}
 		if (getTracado() == 1 && pos == 2) {
@@ -1400,14 +1410,9 @@ public class Piloto implements Serializable {
 		if (getTracado() == 2 && pos == 1) {
 			return;
 		}
-		if (!bandeiraAzul && No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
+		if (!mesmoEmCurva && No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
 			return;
 		}
-		long agora = System.currentTimeMillis();
-		if ((agora - ultimaMudancaPos) < 1000) {
-			return;
-		}
-
 		int tracado = getTracado();
 		if (!verificaColisaoPos(interfaceJogo, pos)) {
 			setTracado(pos);

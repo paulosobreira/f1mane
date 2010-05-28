@@ -159,8 +159,8 @@ public class ControleBox {
 
 	public void processarPilotoBox(Piloto piloto) {
 		int cont = piloto.getNoAtual().getIndex();
-		if (!(cont > (circuito.getEntradaBoxIndex() - 100) && cont < (circuito
-				.getEntradaBoxIndex() + 100))
+		if (!(cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
+				.getEntradaBoxIndex() + 50))
 				&& (piloto.getPtosBox() <= 0)) {
 			return;
 		} else {
