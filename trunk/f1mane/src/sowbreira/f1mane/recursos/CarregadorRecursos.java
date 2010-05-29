@@ -101,7 +101,6 @@ public class CarregadorRecursos {
 
 	public static BufferedImage carregaBufferedImageTranspareciaBranca(
 			String file) {
-		Logger.logar("carregaBufferedImageTranspareciaBranca " + file);
 		BufferedImage buffer = null;
 		try {
 			ImageIcon icon = new ImageIcon(CarregadorRecursos.class
