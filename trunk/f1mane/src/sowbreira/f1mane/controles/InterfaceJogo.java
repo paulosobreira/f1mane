@@ -1,5 +1,6 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -214,5 +215,7 @@ public interface InterfaceJogo {
 	public void setTemporada(String string);
 
 	public void mudarAutoPos();
+
+	public BufferedImage obterCarroCima(Piloto piloto);
 
 }

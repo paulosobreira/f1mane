@@ -276,7 +276,7 @@ public class PainelCircuito extends JPanel {
 		if (zoom < 0.2) {
 			return;
 		}
-		BufferedImage carroCima = piloto.obterCarroCima();
+		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);  
 		if (carroCima == null) {
 			return;
 		}

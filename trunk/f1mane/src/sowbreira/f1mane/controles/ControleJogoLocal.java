@@ -1,5 +1,6 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -915,6 +916,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 			return;
 		pilotoJogador.mudarAutoPos();
 
+	}
+
+	@Override
+	public BufferedImage obterCarroCima(Piloto piloto) {
+		return piloto.obterCarroCima();
 	}
 
 }
