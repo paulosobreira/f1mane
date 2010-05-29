@@ -1,5 +1,7 @@
 package sowbreira.f1mane.paddock.applet;
 
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +28,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.Posis;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
@@ -53,6 +56,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private String clima;
 	private MainFrame mainFrame;
 	private ControleBox controleBox;
+	private static Map bufferCarrosCima = new HashMap();
 
 	public JogoCliente(String temporada) throws Exception {
 		super(temporada);
@@ -232,8 +236,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public List getCarros() {
-		// TODO Auto-generated method stub
-		return null;
+		return carros;
 	}
 
 	public int getCicloAtual() {
@@ -741,4 +744,17 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public BufferedImage obterCarroCima(Piloto piloto) {
+		Carro carro = piloto.getCarro();
+		BufferedImage carroCima = (BufferedImage) bufferCarrosCima.get(carro
+				.getNome());
+		if (carroCima == null) {
+			carroCima = CarregadorRecursos
+					.carregaBufferedImageTranspareciaBranca("carros/"
+							+ getTemporada() + "/" + carro.getNome() + ".png");
+			bufferCarrosCima.put(carro.getNome(), carroCima);
+		}
+		return carroCima;
+	}
 }
