@@ -109,15 +109,6 @@ public abstract class ControleRecursos {
 			mapaIdsNos.put(boxId, noDoBox);
 			mapaNosIds.put(noDoBox, boxId);
 		}
-		Collections.sort(carros, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				Carro carro0 = (Carro) arg0;
-				Carro carro1 = (Carro) arg1;
-
-				return new Integer(carro1.getPotencia()).compareTo(new Integer(
-						carro0.getPotencia()));
-			}
-		});
 	}
 
 	public static void main(String[] args) {

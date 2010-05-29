@@ -62,6 +62,33 @@ public class Piloto implements Serializable {
 	private int ultimoIndice;
 	private int tracado;
 	private double ganhoMax = Integer.MIN_VALUE;
+	private boolean autoPos = true;
+	private Point p1;
+	private Point p2;
+
+	public Point getP0() {
+		return getNoAtual().getPoint();
+	}
+
+	public Point getP1() {
+		return p1;
+	}
+
+	public void setP1(Point p1) {
+		this.p1 = p1;
+	}
+
+	public Point getP2() {
+		return p2;
+	}
+
+	public void setP2(Point p2) {
+		this.p2 = p2;
+	}
+
+	public boolean isAutoPos() {
+		return autoPos;
+	}
 
 	public int getTracado() {
 		return tracado;
@@ -746,7 +773,7 @@ public class Piloto implements Serializable {
 			ganho = controleJogo.verificaUltraPassagem(this, ganho);
 		}
 		if (getTracado() != 0 && !controleJogo.isModoQualify()) {
-			if (testeHabilidadePiloto())
+			if (testeHabilidadePiloto() && autoPos)
 				mudarPos(0, controleJogo);
 			if (No.CURVA_ALTA.equals(noAtual.getTipo())
 					|| No.CURVA_BAIXA.equals(noAtual.getTipo()))
@@ -1395,7 +1422,7 @@ public class Piloto implements Serializable {
 		}
 
 		long agora = System.currentTimeMillis();
-		if ((agora - ultimaMudancaPos) < 1000) {
+		if ((agora - ultimaMudancaPos) < 500) {
 			return;
 		}
 		if (interfaceJogo.isSafetyCarNaPista()
@@ -1536,5 +1563,9 @@ public class Piloto implements Serializable {
 
 	public BufferedImage obterCarroCima() {
 		return getCarro().obterCarroCima();
+	}
+
+	public void mudarAutoPos() {
+		autoPos = !autoPos;
 	}
 }

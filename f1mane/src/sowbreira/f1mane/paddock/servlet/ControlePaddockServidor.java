@@ -62,7 +62,7 @@ public class ControlePaddockServidor {
 			if (pedido.indexOf("#") != -1) {
 				String[] args = pedido.split("#");
 				return obterDadosParciaisPilotos(args);
-			} else  {
+			} else {
 				return obterPosicaoPilotos(object);
 			}
 
@@ -90,13 +90,14 @@ public class ControlePaddockServidor {
 				jogadorDadosSrv.setEmail(clientPaddockPack.getEmailJogador());
 				controlePersistencia.adicionarJogador(
 						jogadorDadosSrv.getNome(), jogadorDadosSrv);
-				String senha;
+				PassGenerator generator = new PassGenerator();
+				String senha = generator.generateIt();
 				try {
-					senha = geraSenhaMandaMail(clientPaddockPack
-							.getNomeJogador(), clientPaddockPack
-							.getEmailJogador());
+					geraMandaMail(clientPaddockPack.getNomeJogador(),
+							clientPaddockPack.getEmailJogador(), senha);
 				} catch (Exception e1) {
-					return new MsgSrv(Lang.msg("237"));
+					if (ServletPaddock.email != null)
+						return new MsgSrv(Lang.msg("237"));
 				}
 				try {
 					jogadorDadosSrv.setSenha(Util.md5(senha));
@@ -110,10 +111,8 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	private String geraSenhaMandaMail(String nome, String email)
+	private void geraMandaMail(String nome, String email, String senha)
 			throws AddressException, MessagingException {
-		PassGenerator generator = new PassGenerator();
-		String senha = generator.generateIt();
 
 		ServletPaddock.email.sendSimpleMail("F1-Mane Game Password",
 				new String[] { email }, "f1mane@f1manager.hostignition.com",
@@ -121,7 +120,6 @@ public class ControlePaddockServidor {
 		// ServletPaddock.email.sendSimpleMail(Lang.msg("240"),
 		// new String[] { email }, "f1mane@f1manager.hostignition.com",
 		// Lang.msg("241", new String[] { nome, senha }), false);
-		return senha;
 	}
 
 	private Object obterDadosParciaisPilotos(String[] args) {
@@ -334,12 +332,14 @@ public class ControlePaddockServidor {
 							.getEmailJogador());
 				}
 				try {
-					String senha = geraSenhaMandaMail(
-							jogadorDadosSrv.getNome(), jogadorDadosSrv
-									.getEmail());
+					PassGenerator generator = new PassGenerator();
+					String senha = generator.generateIt();
+					geraMandaMail(jogadorDadosSrv.getNome(), jogadorDadosSrv
+							.getEmail(), senha);
 					jogadorDadosSrv.setSenha(Util.md5(senha));
 				} catch (Exception e) {
-					return new MsgSrv(Lang.msg("237"));
+					if (ServletPaddock.email != null)
+						return new MsgSrv(Lang.msg("237"));
 				}
 				jogadorDadosSrv
 						.setUltimaRecuperacao(System.currentTimeMillis());

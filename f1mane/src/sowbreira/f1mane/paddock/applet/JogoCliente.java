@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.controles.ControleBox;
 import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleRecursos;
@@ -51,6 +52,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private DadosJogo dadosJogo;
 	private String clima;
 	private MainFrame mainFrame;
+	private ControleBox controleBox;
 
 	public JogoCliente(String temporada) throws Exception {
 		super(temporada);
@@ -85,7 +87,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		try {
 			carregaRecursos((String) getCircuitos().get(
 					dadosParticiparJogo.getCircuitoSelecionado()));
-
+			controleBox = new ControleBox(this, null);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(getMainFrame(), e.getMessage());
 			Logger.logarExept(e);
@@ -98,11 +100,15 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		nomeJogador = sessaoCliente.getNomeJogador();
 		clima = dadosParticiparJogo.getClima().getClima();
 		mainFrame.setControleJogo(this);
+
 		selecionaPilotoJogador();
+		System.out.println("selecionaPilotoJogador()");
 		atualizaPainel();
+		System.out.println("atualizaPainel()");
 		threadMonitoraJogoOnline = new Thread(monitorJogo);
 		threadMonitoraJogoOnline.setPriority(Thread.MIN_PRIORITY);
 		threadMonitoraJogoOnline.start();
+		System.out.println("threadMonitoraJogoOnline.start()");
 	}
 
 	public void preparaGerenciadorVisual() {
@@ -274,8 +280,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public List getNosDoBox() {
-		// TODO Auto-generated method stub
-		return null;
+		return nosDoBox;
 	}
 
 	public int getNumVoltaAtual() {
@@ -456,11 +461,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		dadosParticiparJogo.setCombustivel((Integer) combust);
 		dadosParticiparJogo.setTpPnueu((String) tpneu);
 		dadosParticiparJogo.setAsa((String) asa);
-	}
-
-	public void setCircuito(Circuito circuito) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void setCorridaTerminada(boolean corridaTerminada) {
@@ -715,8 +715,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public List getCarrosBox() {
-		// TODO Auto-generated method stub
-		return null;
+		return controleBox.getCarrosBox();
 	}
 
 	@Override
@@ -734,6 +733,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public Set getSetChegada() {
 		return new HashSet();
+	}
+
+	@Override
+	public void mudarAutoPos() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

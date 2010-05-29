@@ -95,11 +95,13 @@ public class CarregadorRecursos {
 	}
 
 	public static URL carregarImagem(String imagem) {
+		Logger.logar("carregarImagem " + imagem);
 		return CarregadorRecursos.class.getResource(imagem);
 	}
 
 	public static BufferedImage carregaBufferedImageTranspareciaBranca(
 			String file) {
+		Logger.logar("carregaBufferedImageTranspareciaBranca " + file);
 		BufferedImage buffer = null;
 		try {
 			ImageIcon icon = new ImageIcon(CarregadorRecursos.class
@@ -111,8 +113,8 @@ public class CarregadorRecursos {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			Logger.logar("Erro gerando transparencia para :" + file);
+			e.printStackTrace();
 		}
 
 		return ImageUtil.geraTransparencia(buffer);
@@ -146,6 +148,18 @@ public class CarregadorRecursos {
 
 	public static void main(String[] args) throws URISyntaxException,
 			IOException {
+		// gerarListaCarrosLado();
+		// gerarCarrosCima();
+		// JFrame frame = new JFrame();
+		// frame.setSize(200, 200);
+		// frame.setVisible(true);
+		// Graphics2D graphics2d = (Graphics2D) frame.getContentPane()
+		// .getGraphics();
+		// BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
+		// graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
+	}
+
+	private static void gerarListaCarrosLado() throws IOException {
 		List carList = new LinkedList();
 		File file = new File("src/sowbreira/f1mane/recursos/carros");
 		File[] dir = file.listFiles();
@@ -179,75 +193,72 @@ public class CarregadorRecursos {
 			fileWriter.write(nCarro.toString() + "\n");
 		}
 		fileWriter.close();
-		// File fileT = new File("src/sowbreira/f1mane/recursos/properties");
-		// File[] dirT = fileT.listFiles();
-		// for (int i = 0; i < dirT.length; i++) {
-		// String temporarada = dirT[i].getName();
-		// if (!temporarada.contains(".")) {
-		//
-		// Properties properties = new Properties();
-		//
-		// properties.load(CarregadorRecursos.class
-		// .getResourceAsStream("properties/" + temporarada
-		// + "/carros.properties"));
-		//
-		// Enumeration propNames = properties.propertyNames();
-		//
-		// while (propNames.hasMoreElements()) {
-		// Carro carro = new Carro();
-		// String name = (String) propNames.nextElement();
-		// String prop = properties.getProperty(name);
-		// carro.setNome(name);
-		// String[] values = prop.split(",");
-		// carro.setPotencia(Integer.parseInt(values[0]));
-		//
-		// String red = values[1];
-		// String green = values[2];
-		// String blue = values[3];
-		// carro.setImg("carros/" + temporarada + "/" + values[4]);
-		// carro.setCor1(new Color(Integer.parseInt(red), Integer
-		// .parseInt(green), Integer.parseInt(blue)));
-		//
-		// red = values[5];
-		// green = values[6];
-		// blue = values[7];
-		// carro.setCor2(new Color(Integer.parseInt(red), Integer
-		// .parseInt(green), Integer.parseInt(blue)));
-		// BufferedImage carroCima = CarregadorRecursos
-		// .carregaImg("CarroCima.png");
-		//
-		// BufferedImage cor1 = gerarCorresCarros(carro.getCor1(), 1);
-		// BufferedImage cor2 = gerarCorresCarros(carro.getCor2(), 2);
-		// Graphics graphics = carroCima.getGraphics();
-		// graphics.drawImage(cor2, 0, 0, null);
-		// graphics.drawImage(cor1, 0, 0, null);
-		// graphics.dispose();
-		// File gravar = new File("src" + File.separator + "sowbreira"
-		// + File.separator + "f1mane" + File.separator
-		// + "recursos" + File.separator + "carros"
-		// + File.separator + temporarada + File.separator
-		// + carro.getNome() + ".png");
-		// ImageIO.write(carroCima, "png", gravar);
-		// System.out.println("src" + File.separator + "sowbreira"
-		// + File.separator + "f1mane" + File.separator
-		// + "recursos" + File.separator + "carros"
-		// + File.separator + temporarada + File.separator
-		// + carro.getNome() + ".png");
-		// }
-		//
-		// }
-		// }
 
-		// JFrame frame = new JFrame();
-		// frame.setSize(200, 200);
-		// frame.setVisible(true);
-		// Graphics2D graphics2d = (Graphics2D) frame.getContentPane()
-		// .getGraphics();
-		// BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
-		// graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
 	}
 
-	private static BufferedImage gerarCorresCarros(Color corPintar, int cor) {
+	private static void gerarCarrosCima() throws IOException {
+		File fileT = new File("src/sowbreira/f1mane/recursos/properties");
+		File[] dirT = fileT.listFiles();
+		for (int i = 0; i < dirT.length; i++) {
+			String temporarada = dirT[i].getName();
+			if (!temporarada.contains(".")) {
+
+				Properties properties = new Properties();
+
+				properties.load(CarregadorRecursos.class
+						.getResourceAsStream("properties/" + temporarada
+								+ "/carros.properties"));
+
+				Enumeration propNames = properties.propertyNames();
+
+				while (propNames.hasMoreElements()) {
+					Carro carro = new Carro();
+					String name = (String) propNames.nextElement();
+					String prop = properties.getProperty(name);
+					carro.setNome(name);
+					String[] values = prop.split(",");
+					carro.setPotencia(Integer.parseInt(values[0]));
+
+					String red = values[1];
+					String green = values[2];
+					String blue = values[3];
+					carro.setImg("carros/" + temporarada + "/" + values[4]);
+					carro.setCor1(new Color(Integer.parseInt(red), Integer
+							.parseInt(green), Integer.parseInt(blue)));
+
+					red = values[5];
+					green = values[6];
+					blue = values[7];
+					carro.setCor2(new Color(Integer.parseInt(red), Integer
+							.parseInt(green), Integer.parseInt(blue)));
+					BufferedImage carroCima = CarregadorRecursos
+							.carregaImg("CarroCima.png");
+
+					BufferedImage cor1 = gerarCoresCarros(carro.getCor1(), 1);
+					BufferedImage cor2 = gerarCoresCarros(carro.getCor2(), 2);
+					Graphics graphics = carroCima.getGraphics();
+					graphics.drawImage(cor2, 0, 0, null);
+					graphics.drawImage(cor1, 0, 0, null);
+					graphics.dispose();
+					File gravar = new File("src" + File.separator + "sowbreira"
+							+ File.separator + "f1mane" + File.separator
+							+ "recursos" + File.separator + "carros"
+							+ File.separator + temporarada + File.separator
+							+ carro.getNome() + ".png");
+					ImageIO.write(carroCima, "png", gravar);
+					System.out.println("src" + File.separator + "sowbreira"
+							+ File.separator + "f1mane" + File.separator
+							+ "recursos" + File.separator + "carros"
+							+ File.separator + temporarada + File.separator
+							+ carro.getNome() + ".png");
+				}
+
+			}
+		}
+
+	}
+
+	private static BufferedImage gerarCoresCarros(Color corPintar, int cor) {
 		ImageIcon img = new ImageIcon(CarregadorRecursos.class
 				.getResource("CarroCimaC" + cor + ".png"));
 

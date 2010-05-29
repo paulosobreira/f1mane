@@ -2,6 +2,8 @@ package br.nnpe;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.PropertyResourceBundle;
@@ -33,16 +35,13 @@ public class Email {
 	public Email() {
 	}
 
-	public Email(String path) {
+	public Email(String path) throws FileNotFoundException, IOException {
 		ResourceBundle bundle;
-		try {
-			bundle = new PropertyResourceBundle(new FileInputStream(path
-					+ "email.properties"));
-			USERNAME = bundle.getString("USERNAME");
-			PASSWORD = bundle.getString("PASSWORD");
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
+		bundle = new PropertyResourceBundle(new FileInputStream(path
+				+ "email.properties"));
+		USERNAME = bundle.getString("USERNAME");
+		PASSWORD = bundle.getString("PASSWORD");
+
 	}
 
 	public static void main(String[] args) throws AddressException,
@@ -189,7 +188,8 @@ public class Email {
 	 * public static void main(String[] args) { Email mail = new Email(); try {
 	 * String emails = "bruno.miranda@tbmtextil.com.br"; //Transforma num array
 	 * os emails separados por virgula. String[] to = emails.split(",");
-	 * //mail.sendAttachMail("Assunto",to,"bruno.miranda@tbmtextil.com.br","Corpo
-	 * Msg"); } catch (Exception e) { // TODO: handle exception } }
+	 * //mail.sendAttachMail
+	 * ("Assunto",to,"bruno.miranda@tbmtextil.com.br","Corpo Msg"); } catch
+	 * (Exception e) { // TODO: handle exception } }
 	 */
 }

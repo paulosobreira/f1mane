@@ -59,8 +59,6 @@ public interface InterfaceJogo {
 
 	public List getCarros();
 
-	public void setCircuito(Circuito circuito);
-
 	public List getPilotos();
 
 	public void setPilotos(List list);
@@ -214,5 +212,7 @@ public interface InterfaceJogo {
 	public String getTemporada();
 
 	public void setTemporada(String string);
+
+	public void mudarAutoPos();
 
 }

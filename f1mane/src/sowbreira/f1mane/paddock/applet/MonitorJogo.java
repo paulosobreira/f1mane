@@ -63,8 +63,11 @@ public class MonitorJogo implements Runnable {
 					tempoCiclo = controlePaddockCliente.getLatenciaMinima();
 				}
 				esperaJogoComecar();
+				System.out.println("esperaJogoComecar();");
 				mostraQualify();
+				System.out.println("mostraQualify();");
 				processaCiclosCorrida(tempoCiclo);
+				System.out.println("processaCiclosCorrida(tempoCiclo);");
 				mostraResultadoFinal(tempoCiclo);
 				apagaLuzesLargada();
 				verificaEstadoJogo();
@@ -111,8 +114,8 @@ public class MonitorJogo implements Runnable {
 			List pilotos = jogoCliente.getPilotos();
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
-//				jogoCliente.adicionarInfoDireto(piloto.getPosicao() + " "
-//						+ piloto.getNome() + " " + piloto.getCarro().getNome());
+				// jogoCliente.adicionarInfoDireto(piloto.getPosicao() + " "
+				// + piloto.getNome() + " " + piloto.getCarro().getNome());
 				atualizarDadosParciais(jogoCliente.getDadosJogo(), piloto);
 				try {
 					Thread.sleep(300);
