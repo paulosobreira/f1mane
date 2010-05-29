@@ -296,6 +296,7 @@ public class ControlePaddockCliente {
 			}
 			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
 			jogoCliente = new JogoCliente(dadosCriarJogo.getTemporada());
+			jogoCliente.setTemporada("t" + dadosCriarJogo.getTemporada());
 			jogoCliente.setMainFrame(mainFrame);
 			if (srvPaddockPack == null) {
 				return;

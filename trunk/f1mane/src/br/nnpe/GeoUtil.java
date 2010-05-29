@@ -126,6 +126,12 @@ public class GeoUtil {
 		return list;
 	}
 
+	public static double distaciaEntrePontos(Point p1, Point p2) {
+		return distaciaEntrePontos(p1.x, p1.y, p2.x, p2.y);
+		// return Math.sqrt(Math.sqrt(Math.abs(x1 - x2))
+		// + Math.sqrt(Math.abs(y1 - y2)));
+	}
+
 	public static double distaciaEntrePontos(int x1, int y1, int x2, int y2) {
 		return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
 		// return Math.sqrt(Math.sqrt(Math.abs(x1 - x2))

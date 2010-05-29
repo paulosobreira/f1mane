@@ -280,7 +280,8 @@ public class ControleCorrida {
 								sendoPressionado = true;
 							}
 						}
-						if (piloto.testeHabilidadePiloto() && !sendoPressionado)
+						if (piloto.testeHabilidadePiloto() && !sendoPressionado
+								&& piloto.isAutoPos())
 							piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
 					}
 				}

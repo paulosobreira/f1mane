@@ -33,8 +33,13 @@ public class ServletPaddock extends HttpServlet {
 
 	public void init() throws ServletException {
 		super.init();
-		email = new Email(getServletContext().getRealPath("") + File.separator
-				+ "WEB-INF" + File.separator);
+		try {
+			email = new Email(getServletContext().getRealPath("")
+					+ File.separator + "WEB-INF" + File.separator);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			email = null;
+		}
 		Lang.setSrvgame(true);
 		try {
 			controlePersistencia = new ControlePersistencia(getServletContext()

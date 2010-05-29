@@ -155,13 +155,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#setCircuito(sowbreira.f1mane.entidades.Circuito)
-	 */
-	public void setCircuito(Circuito circuito) {
-		this.circuito = circuito;
-	}
-
-	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getPilotos()
 	 */
 	public List getPilotos() {
@@ -427,7 +420,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void processaNovaVolta() {
 		int qtdeDesqualificados = 0;
 		Piloto piloto = (Piloto) pilotos.get(0);
-		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
+		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 2)
 				&& (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
 
 			infoPrioritaria(Html.superBlack(piloto.getNome())
@@ -914,6 +907,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	public Set getSetChegada() {
 		return setChegada;
+	}
+
+	@Override
+	public void mudarAutoPos() {
+		if (pilotoJogador == null)
+			return;
+		pilotoJogador.mudarAutoPos();
+
 	}
 
 }
