@@ -315,6 +315,8 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			Posis posis = new Posis();
 			posis.idPiloto = piloto.getId();
+			posis.tracado = piloto.getTracado();
+			posis.autoPos = piloto.isAutoPos();
 			posis.agressivo = piloto.isAgressivo();
 			posis.idNo = ((Integer) jogoServidor.getMapaNosIds().get(
 					piloto.getNoAtual())).intValue();
@@ -540,4 +542,33 @@ public class ControleJogosServer {
 		return null;
 	}
 
+	public Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack) {
+		JogoServidor jogoServidor = obterJogoPeloNome(clientPaddockPack
+				.getNomeJogo());
+		List piList = jogoServidor.getPilotos();
+		for (Iterator iter = piList.iterator(); iter.hasNext();) {
+			Piloto piloto = (Piloto) iter.next();
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
+					piloto.getNomeJogador())) {
+				piloto.mudarAutoPos();
+				break;
+			}
+		}
+		return null;
+	}
+
+	public Object mudarTracado(ClientPaddockPack clientPaddockPack) {
+		JogoServidor jogoServidor = obterJogoPeloNome(clientPaddockPack
+				.getNomeJogo());
+		List piList = jogoServidor.getPilotos();
+		for (Iterator iter = piList.iterator(); iter.hasNext();) {
+			Piloto piloto = (Piloto) iter.next();
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
+					piloto.getNomeJogador())) {
+				piloto.mudarPos(clientPaddockPack.getTracado(), jogoServidor);
+				break;
+			}
+		}
+		return null;
+	}
 }

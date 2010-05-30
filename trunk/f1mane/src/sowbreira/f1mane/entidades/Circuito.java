@@ -15,11 +15,11 @@ public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
 	private String backGround;
 	private List pista = new ArrayList();
-	private List pistaFull = new ArrayList();
-	private List pistaKey = new ArrayList();
+	private transient List pistaFull = new ArrayList();
+	private transient List pistaKey = new ArrayList();
 	private List box = new ArrayList();
-	private List boxFull = new ArrayList();
-	private List boxKey = new ArrayList();
+	private transient List boxFull = new ArrayList();
+	private transient List boxKey = new ArrayList();
 	private double multiplicadorPista = 1;
 	private double multiplicadorLarguraPista = 1.1;
 	private int ladoBox = 0;
@@ -71,11 +71,11 @@ public class Circuito implements Serializable {
 		return boxKey;
 	}
 
-	public void geraPontosPistaInflada() {
-		geraPontosPistaInflada(multiplicadorPista, multiplicadorLarguraPista);
+	public void vetorizarPista() {
+		vetorizarPista(multiplicadorPista, multiplicadorLarguraPista);
 	}
 
-	public void geraPontosPistaInflada(double multi, double larg) {
+	public void vetorizarPista(double multi, double larg) {
 		multiplicadorLarguraPista = larg;
 		multiplicadorPista = multi;
 		No noAnt = null;

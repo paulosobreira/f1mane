@@ -94,6 +94,7 @@ public abstract class ControleRecursos {
 				.getClass().getResourceAsStream(circuitoStr));
 
 		circuito = (Circuito) ois.readObject();
+		circuito.vetorizarPista();
 		nosDaPista = circuito.getPistaFull();
 		nosDoBox = circuito.getBoxFull();
 		int contId = 1;

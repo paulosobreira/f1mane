@@ -144,8 +144,12 @@ public class ControlePaddockServidor {
 			return mudarModoAutoAgressivo(clientPaddockPack);
 		} else if (Comandos.MUDAR_GIRO_MOTOR.equals(commando)) {
 			return mudarGiroMotor(clientPaddockPack);
+		} else if (Comandos.MUDAR_TRACADO.equals(commando)) {
+			return mudarTracado(clientPaddockPack);
 		} else if (Comandos.MUDAR_MODO_BOX.equals(commando)) {
 			return mudarModoBox(clientPaddockPack);
+		} else if (Comandos.MUDAR_MODO_AUTOPOS.equals(commando)) {
+			return mudarModoAutoPos(clientPaddockPack);
 		} else if (Comandos.ATUALIZAR_VISAO.equals(commando)) {
 			return atualizarDadosVisao(clientPaddockPack, cliente);
 		} else if (Comandos.SAIR_PADDOCK.equals(commando)) {
@@ -174,6 +178,14 @@ public class ControlePaddockServidor {
 			return verCorridas(clientPaddockPack);
 		}
 		return "Comando invalido";
+	}
+
+	private Object mudarTracado(ClientPaddockPack clientPaddockPack) {
+		return controleJogosServer.mudarTracado(clientPaddockPack);
+	}
+
+	private Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack) {
+		return controleJogosServer.mudarModoAutoPos(clientPaddockPack);
 	}
 
 	private Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {

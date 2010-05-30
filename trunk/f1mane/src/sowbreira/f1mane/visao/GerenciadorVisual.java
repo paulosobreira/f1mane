@@ -1171,7 +1171,7 @@ public class GerenciadorVisual {
 				return Lang.msg("RAPIDOS");
 			}
 		});
-		labelTable.put(new Integer(999), new JLabel("") {
+		labelTable.put(new Integer(120), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("LENTOS");

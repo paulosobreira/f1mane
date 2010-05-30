@@ -537,6 +537,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			if (piloto.getId() == posis.idPiloto) {
 				piloto.setAgressivo(posis.agressivo);
 				piloto.setJogadorHumano(posis.humano);
+				piloto.setTracado(posis.tracado);
+				piloto.setAutoPos(posis.autoPos);
 				if (posis.idNo >= -1) {
 					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
 					piloto.setNoAtual(no);
@@ -723,7 +725,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void mudarPos(int i) {
-		// TODO Auto-generated method stub
+		monitorJogo.mudarPos(i);
 
 	}
 
@@ -740,8 +742,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void mudarAutoPos() {
-		// TODO Auto-generated method stub
-
+		monitorJogo.mudarAutoPos();
 	}
 
 	@Override
