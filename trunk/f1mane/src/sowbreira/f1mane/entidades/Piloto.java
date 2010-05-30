@@ -386,6 +386,9 @@ public class Piloto implements Serializable {
 	}
 
 	public void setAgressivo(boolean regMaximo) {
+		if (regMaximo && verificaPilotoDesconcentrado()) {
+			return;
+		}
 		this.agressivo = regMaximo;
 	}
 

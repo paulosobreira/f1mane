@@ -104,15 +104,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		nomeJogador = sessaoCliente.getNomeJogador();
 		clima = dadosParticiparJogo.getClima().getClima();
 		mainFrame.setControleJogo(this);
-
 		selecionaPilotoJogador();
-		System.out.println("selecionaPilotoJogador()");
-		atualizaPainel();
-		System.out.println("atualizaPainel()");
 		threadMonitoraJogoOnline = new Thread(monitorJogo);
 		threadMonitoraJogoOnline.setPriority(Thread.MIN_PRIORITY);
 		threadMonitoraJogoOnline.start();
-		System.out.println("threadMonitoraJogoOnline.start()");
+		System.out.println("threadMonitoraJogoOnline.start();");
 	}
 
 	public void preparaGerenciadorVisual() {
