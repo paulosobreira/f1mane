@@ -182,6 +182,8 @@ public class ControleQualificacao {
 				Logger.logar("Erro carregando Carro Cima");
 			}
 			carro.setCarroCima(carroCima);
+			carro.setDurabilidadeAereofolio(Util.inte(10 - (controleJogo
+					.getNiveljogo() * 10)));
 
 			Logger.logar(" PosLarg " + piloto.getPosicao() + " Nome "
 					+ piloto.getNome() + " pts " + piloto.getPtosPista());

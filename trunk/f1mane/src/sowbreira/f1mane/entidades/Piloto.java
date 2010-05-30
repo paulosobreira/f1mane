@@ -1277,7 +1277,8 @@ public class Piloto implements Serializable {
 		box = false;
 		carro.setDanificado(null);
 		if (carro.getDurabilidadeAereofolio() <= 0) {
-			carro.setDurabilidadeAereofolio(3);
+			carro.setDurabilidadeAereofolio(Util.inte(10 - (interfaceJogo
+					.getNiveljogo() * 10)));
 		}
 		msgsBox.put(Messagens.BOX_OCUPADO, null);
 		msgsBox.put(Messagens.PILOTO_EM_CAUTELA, null);
