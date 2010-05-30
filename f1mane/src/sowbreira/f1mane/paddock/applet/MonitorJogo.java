@@ -21,6 +21,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.visao.GerenciadorVisual;
 import br.nnpe.Logger;
 
 /**
@@ -59,15 +60,14 @@ public class MonitorJogo implements Runnable {
 		while (controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
 				long tempoCiclo = jogoCliente.getTempoCiclo();
-				// if (tempoCiclo < controlePaddockCliente.getLatenciaMinima())
-				// {
-				// tempoCiclo = controlePaddockCliente.getLatenciaMinima();
-				// }
+				if (tempoCiclo < controlePaddockCliente.getLatenciaMinima()) {
+					tempoCiclo = controlePaddockCliente.getLatenciaMinima();
+				}
 				esperaJogoComecar();
 				mostraQualify();
+				apagaLuzesLargada();
 				processaCiclosCorrida(tempoCiclo);
 				mostraResultadoFinal(tempoCiclo);
-				apagaLuzesLargada();
 				verificaEstadoJogo();
 				sleep(controlePaddockCliente.getLatenciaMinima());
 			} catch (Exception e) {
@@ -145,7 +145,7 @@ public class MonitorJogo implements Runnable {
 			}
 			delayVerificaStado--;
 			if (delayVerificaStado <= 0) {
-				if (((Piloto) jogoCliente.getPilotos().get(0)).getPtosPista() > 0) {
+				if (((Piloto) jogoCliente.getPilotos().get(0)).getNumeroVolta() != 0) {
 					while (luz > 0) {
 						apagarLuz();
 						luz--;
@@ -179,7 +179,7 @@ public class MonitorJogo implements Runnable {
 								jogoCliente.selecionaPilotoJogador();
 							jogoCliente.atualizaPainel();
 							jogoCliente.verificaProgramacaoBox();
-							Thread.sleep(80);
+							Thread.sleep(100);
 						} catch (Exception e) {
 							Logger.logarExept(e);
 						}
@@ -197,6 +197,7 @@ public class MonitorJogo implements Runnable {
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			verificaEstadoJogo();
 			iniciaJalena();
+			jogoCliente.atualizaPainel();
 			if (monitorQualificacao == null) {
 				monitorQualificacao = new Thread(new MonitorQualificacao(
 						jogoCliente));
@@ -204,15 +205,17 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.preparaGerenciadorVisual();
 				monitorQualificacao.start();
 			}
-			sleep(2000);
+			sleep(100);
 		}
+		if (monitorQualificacao != null)
+			monitorQualificacao.interrupt();
 	}
 
 	private void esperaJogoComecar() {
 		while (Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			verificaEstadoJogo();
-			sleep(2000);
+			sleep(1000);
 		}
 
 	}
@@ -289,8 +292,6 @@ public class MonitorJogo implements Runnable {
 	private void apagarLuz() {
 		iniciaJalena();
 		jogoCliente.apagarLuz();
-		jogoCliente.atualizaPainel();
-
 	}
 
 	public void atualizarDados() {

@@ -233,11 +233,14 @@ public class ControleCorrida {
 			if ((Math.abs(indFrenteCarro - indTrazCarroFrente) < (multi * Carro.MEIA_LARGURA))
 					&& (pilotoNaFrente.getTracado() == piloto.getTracado() || controleJogo
 							.isSafetyCarNaPista())) {
-				verificaAcidenteUltrapassagem(piloto.isAgressivo(), piloto,
-						pilotoNaFrente);
+				if (Math.abs(indFrenteCarro - indTrazCarroFrente) < (Carro.MEIA_LARGURA)) {
+					verificaAcidenteUltrapassagem(piloto.isAgressivo(), piloto,
+							pilotoNaFrente);
+				}
 				ajusteUltrapassagem(piloto, pilotoNaFrente);
 
 				piloto.setAgressivo(false);
+				piloto.gerarDesconcentracao(10);
 				if (!controleJogo.isCorridaTerminada()
 						&& !piloto.isRecebeuBanderada()
 						&& !controleJogo.verificaNivelJogo()
