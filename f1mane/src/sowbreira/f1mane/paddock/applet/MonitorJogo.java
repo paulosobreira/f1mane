@@ -133,6 +133,7 @@ public class MonitorJogo implements Runnable {
 		int delayVerificaStado = 20;
 		while (Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
+			disparaAtualizadorPainel();
 			if (!atualizouDados) {
 				atualizarDados();
 				atualizaModoCarreira();
@@ -162,7 +163,7 @@ public class MonitorJogo implements Runnable {
 			}
 			iniciaJalena();
 			atualizaPosicoes();
-			disparaAtualizadorPainel();
+
 			sleep(tempoCiclo);
 		}
 	}

@@ -275,6 +275,9 @@ public class ControleCorrida {
 					} else {
 						if (carroAtraz != null) {
 							Piloto pilotoAtraz = carroAtraz.getPiloto();
+							if (piloto.testeHabilidadePiloto()) {
+								multi = 2;
+							}
 							if (pilotoAtraz.getPtosPista() > (piloto
 									.getPtosPista() - (multi * Carro.LARGURA))) {
 								sendoPressionado = true;
@@ -283,6 +286,9 @@ public class ControleCorrida {
 						if (piloto.testeHabilidadePiloto() && !sendoPressionado
 								&& piloto.isAutoPos())
 							piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
+						else if (sendoPressionado && piloto.isAutoPos()) {
+							piloto.mudarPos(0, controleJogo);
+						}
 					}
 				}
 

@@ -204,9 +204,11 @@ public class GerenciadorVisual {
 		pos0.addKeyListener(keyListener);
 		pos1.addKeyListener(keyListener);
 		pos2.addKeyListener(keyListener);
+		autoPos.addKeyListener(keyListener);
 		pos0.addMouseWheelListener(mw);
 		pos1.addMouseWheelListener(mw);
 		pos2.addMouseWheelListener(mw);
+		autoPos.addMouseWheelListener(mw);
 		frame.addMouseWheelListener(mw);
 		painelCircuito.addMouseWheelListener(mw);
 		painelInfText.addMouseWheelListener(mw);
@@ -417,10 +419,18 @@ public class GerenciadorVisual {
 					mudarAutoPos();
 				}
 				if (keyCoode == KeyEvent.VK_LEFT) {
-					mudarPos1();
+					if (controleJogo.getPilotoJogador().getTracado() == 2) {
+						mudarPos0();
+					} else {
+						mudarPos1();
+					}
 				}
 				if (keyCoode == KeyEvent.VK_RIGHT) {
-					mudarPos2();
+					if (controleJogo.getPilotoJogador().getTracado() == 1) {
+						mudarPos0();
+					} else {
+						mudarPos2();
+					}
 				}
 				if (keyCoode == KeyEvent.VK_F9) {
 					mudaPilotoSelecionado();

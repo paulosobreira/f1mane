@@ -45,7 +45,7 @@ public class Carro implements Serializable {
 	private String nome;
 	private String asa = ASA_NORMAL;
 	private int potencia;
-	private int durabilidadeAereofolio = 3;
+	private int durabilidadeAereofolio;
 	private int giro = GIRO_NOR_VAL;
 	private int combustivel;
 	private int tanqueCheio;
