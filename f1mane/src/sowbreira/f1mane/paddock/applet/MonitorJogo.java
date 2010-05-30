@@ -59,9 +59,10 @@ public class MonitorJogo implements Runnable {
 		while (controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
 				long tempoCiclo = jogoCliente.getTempoCiclo();
-				if (tempoCiclo < controlePaddockCliente.getLatenciaMinima()) {
-					tempoCiclo = controlePaddockCliente.getLatenciaMinima();
-				}
+				// if (tempoCiclo < controlePaddockCliente.getLatenciaMinima())
+				// {
+				// tempoCiclo = controlePaddockCliente.getLatenciaMinima();
+				// }
 				esperaJogoComecar();
 				mostraQualify();
 				processaCiclosCorrida(tempoCiclo);
@@ -524,6 +525,33 @@ public class MonitorJogo implements Runnable {
 					Comandos.MUDAR_MODO_PILOTAGEM, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 			clientPaddockPack.setModoPilotagem(modo);
+			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
+					true);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			jogoAtivo = false;
+		}
+	}
+
+	public void mudarAutoPos() {
+		try {
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+					Comandos.MUDAR_MODO_AUTOPOS, sessaoCliente);
+			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
+			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
+					true);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			jogoAtivo = false;
+		}
+	}
+
+	public void mudarPos(int tracado) {
+		try {
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+					Comandos.MUDAR_TRACADO, sessaoCliente);
+			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
+			clientPaddockPack.setTracado(tracado);
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
 					true);
 		} catch (Exception e) {

@@ -40,4 +40,7 @@ public class Comandos {
 	public static final String VER_CONTRUTORES = "30";
 	public static final String VER_CARREIRA = "31";
 	public static final String ATUALIZA_CARREIRA = "32";
+	public static final String MUDAR_MODO_AUTOPOS = "33";
+	public static final String MUDAR_TRACADO = "34";
+
 }

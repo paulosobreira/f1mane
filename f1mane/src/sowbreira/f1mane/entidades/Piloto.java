@@ -66,6 +66,10 @@ public class Piloto implements Serializable {
 	private Point p1;
 	private Point p2;
 
+	public void setAutoPos(boolean autoPos) {
+		this.autoPos = autoPos;
+	}
+
 	public Point getP0() {
 		return getNoAtual().getPoint();
 	}

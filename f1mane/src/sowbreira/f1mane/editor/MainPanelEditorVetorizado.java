@@ -860,7 +860,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		}
 		Cursor cursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 		srcFrame.setCursor(cursor);
-		circuito.geraPontosPistaInflada(this.multiplicadorPista,
+		circuito.vetorizarPista(this.multiplicadorPista,
 				this.multiplicadorLarguraPista);
 
 		cursor = Cursor.getDefaultCursor();

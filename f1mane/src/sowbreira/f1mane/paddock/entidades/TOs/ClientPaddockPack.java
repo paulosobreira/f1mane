@@ -22,6 +22,7 @@ public class ClientPaddockPack implements Serializable {
 	private String tpPneuBox;
 	private String asaBox;
 	private int combustBox;
+	private int tracado;
 	private boolean recuperar = false;
 	private DadosCriarJogo dadosJogoCriado;
 	private CarreiraDadosSrv carreiraDadosSrv;
@@ -32,6 +33,14 @@ public class ClientPaddockPack implements Serializable {
 
 	public void setJogadorDadosSrv(CarreiraDadosSrv jogadorDadosSrv) {
 		this.carreiraDadosSrv = jogadorDadosSrv;
+	}
+
+	public int getTracado() {
+		return tracado;
+	}
+
+	public void setTracado(int tracado) {
+		this.tracado = tracado;
 	}
 
 	public ClientPaddockPack(String commando, SessaoCliente sessaoCliente) {

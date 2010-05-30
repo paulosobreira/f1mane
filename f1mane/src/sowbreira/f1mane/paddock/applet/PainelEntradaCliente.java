@@ -3,6 +3,7 @@ package sowbreira.f1mane.paddock.applet;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -39,9 +41,9 @@ public class PainelEntradaCliente {
 	private JComboBox comboBoxPneuInicial;
 	private JComboBox comboBoxAsa;
 	private JSpinner spinnerCombustivelInicial;
-	private JSpinner spinnerDificuldadeUltrapassagem;
-	private JSpinner spinnerIndexVelcidadeEmReta;
-	private JSpinner spinnerTempoCiclo;
+	private JSlider spinnerDificuldadeUltrapassagem;
+	private JSlider spinnerIndexVelcidadeEmReta;
+	private JSlider spinnerTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
 	private List pilotos;
@@ -59,7 +61,7 @@ public class PainelEntradaCliente {
 	}
 
 	private void gerarPainelCriarJogo(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(13, 2));
+		painelInicio.setLayout(new GridLayout(13, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
 				return Lang.msg("110");
@@ -193,9 +195,24 @@ public class PainelEntradaCliente {
 				return Lang.msg("124");
 			}
 		});
-		spinnerDificuldadeUltrapassagem = new JSpinner();
-		spinnerDificuldadeUltrapassagem.setValue(new Integer(300 + (int) (Math
-				.random() * 600)));
+		spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
+		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(
+				000, 500)));
+		Hashtable labelTable = new Hashtable();
+		labelTable.put(new Integer(000), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("FACIL");
+			}
+		});
+		labelTable.put(new Integer(500), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("DIFICIL");
+			}
+		});
+		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
+		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
 		painelInicio.add(spinnerDificuldadeUltrapassagem);
 		painelInicio.add(new JLabel("Index velocidade em reta (0-999):") {
 			@Override
@@ -203,9 +220,24 @@ public class PainelEntradaCliente {
 				return Lang.msg("125");
 			}
 		});
-		spinnerIndexVelcidadeEmReta = new JSpinner();
-		spinnerIndexVelcidadeEmReta.setValue(new Integer(400 + (int) (Math
-				.random() * 600)));
+		spinnerIndexVelcidadeEmReta = new JSlider(500, 1000);
+		spinnerIndexVelcidadeEmReta.setValue(new Integer(Util.intervalo(500,
+				1000)));
+		labelTable = new Hashtable();
+		labelTable.put(new Integer(000), new JLabel("Antigos") {
+			@Override
+			public String getText() {
+				return Lang.msg("ANTIGOS");
+			}
+		});
+		labelTable.put(new Integer(1000), new JLabel("Novos") {
+			@Override
+			public String getText() {
+				return Lang.msg("NOVOS");
+			}
+		});
+		spinnerIndexVelcidadeEmReta.setLabelTable(labelTable);
+		spinnerIndexVelcidadeEmReta.setPaintLabels(true);
 		painelInicio.add(spinnerIndexVelcidadeEmReta);
 
 		painelInicio.add(new JLabel("Tempo Ciclo (50ms-150ms):") {
@@ -214,8 +246,23 @@ public class PainelEntradaCliente {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSpinner();
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 150)));
+		spinnerTempoCiclo = new JSlider(50, 120);
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 120)));
+		labelTable = new Hashtable();
+		labelTable.put(new Integer(50), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("RAPIDOS");
+			}
+		});
+		labelTable.put(new Integer(120), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("LENTOS");
+			}
+		});
+		spinnerTempoCiclo.setLabelTable(labelTable);
+		spinnerTempoCiclo.setPaintLabels(true);
 		painelInicio.add(spinnerTempoCiclo);
 
 		spinnerSkillPadraoPilotos = new JSpinner();

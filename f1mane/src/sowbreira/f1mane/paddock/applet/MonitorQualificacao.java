@@ -14,6 +14,7 @@ public class MonitorQualificacao implements Runnable {
 
 	public void run() {
 		try {
+			controleJogoClenteLocal.atualizaPainel();
 			controleJogoClenteLocal.desenhaQualificacao();
 		} catch (Exception e) {
 			Logger.logarExept(e);
