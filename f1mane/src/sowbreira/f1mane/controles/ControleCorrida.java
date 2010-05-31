@@ -237,7 +237,6 @@ public class ControleCorrida {
 					verificaAcidenteUltrapassagem(piloto.isAgressivo(), piloto,
 							pilotoNaFrente);
 				}
-				ajusteUltrapassagem(piloto, pilotoNaFrente);
 
 				piloto.setAgressivo(false);
 				piloto.gerarDesconcentracao(10);
@@ -416,7 +415,7 @@ public class ControleCorrida {
 		// Logger.logar(fatorPerdaAreofolio);
 	}
 
-	private void ajusteUltrapassagem(Piloto perdedor, Piloto ganhador) {
+	public void ajusteUltrapassagem(Piloto perdedor, Piloto ganhador) {
 		if (perdedor.isDesqualificado() || ganhador.isDesqualificado()) {
 			return;
 		}

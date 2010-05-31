@@ -923,4 +923,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return piloto.obterCarroCima();
 	}
 
+	@Override
+	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
+		controleCorrida.ajusteUltrapassagem(piloto, pilotoFrente);
+	}
 }
