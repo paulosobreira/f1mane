@@ -568,13 +568,17 @@ public class PainelCircuito extends JPanel {
 					(Carro.ALTURA));
 
 			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte(Carro.ALTURA * 1.2 * zoom), new Point(Util
-					.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY())));
+					.inte(Carro.ALTURA
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista() * zoom),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte(Carro.ALTURA * 1.2 * zoom), new Point(Util
-					.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY())));
+					.inte(Carro.ALTURA
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista() * zoom),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			Point cimaBoxC1 = GeoUtil.calculaPonto(calculaAngulo, Util
 					.inte((Carro.ALTURA) * 4 * zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
