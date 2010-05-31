@@ -95,6 +95,17 @@ public abstract class ControleRecursos {
 
 		circuito = (Circuito) ois.readObject();
 		circuito.vetorizarPista();
+		String nome = "";
+		for (Iterator iterator = circuitos.keySet().iterator(); iterator
+				.hasNext();) {
+			String key = (String) iterator.next();
+			if (circuitoStr.equals(circuitos.get(key))) {
+				nome = key;
+				break;
+			}
+
+		}
+		circuito.setNome(nome);
 		nosDaPista = circuito.getPistaFull();
 		nosDoBox = circuito.getBoxFull();
 		int contId = 1;

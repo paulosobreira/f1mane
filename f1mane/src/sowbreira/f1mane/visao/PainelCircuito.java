@@ -242,13 +242,18 @@ public class PainelCircuito extends JPanel {
 				continue;
 			}
 			desenhaCarro(g2d, piloto);
-			g2d.setColor(piloto.getCarro().getCor1());
-			g2d.fillOval(Util.inte((piloto.getCarX() - 2) * zoom), Util
-					.inte((piloto.getCarY() - 2) * zoom), 8, 8);
-			desenhaTipoPneu(piloto, g2d);
-			if (piloto != pilotoSelecionado) {
-				desenhaNomePilotoNaoSelecionado(piloto, g2d);
+			piloto.centralizaCarro(controleJogo);
+			Point p = new Point(Util.inte((piloto.getCarX() - 2) * zoom), Util
+					.inte((piloto.getCarY() - 2) * zoom));
+			if (limitesViewPort.contains(p)) {
+				g2d.setColor(piloto.getCarro().getCor1());
+				g2d.fillOval(p.x, p.y, 8, 8);
+				desenhaTipoPneu(piloto, g2d);
+				if (piloto != pilotoSelecionado) {
+					desenhaNomePilotoNaoSelecionado(piloto, g2d);
+				}
 			}
+
 		}
 
 		if ((pilotoSelecionado != null)) {
@@ -276,7 +281,7 @@ public class PainelCircuito extends JPanel {
 		if (zoom < 0.2) {
 			return;
 		}
-		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);  
+		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
 		if (carroCima == null) {
 			return;
 		}
@@ -319,13 +324,16 @@ public class PainelCircuito extends JPanel {
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA), (p.y - Carro.MEIA_ALTURA),
 				Carro.LARGURA, Carro.ALTURA);
-		Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util
-				.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-				.getCenterX()), Util.inte(rectangle.getCenterY())));
-		g2d.setColor(Color.black);
+		Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inte(Carro.ALTURA
+				* controleJogo.getCircuito().getMultiplicadorLarguraPista()),
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
 		Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-				.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-				.getCenterX()), Util.inte(rectangle.getCenterY())));
+				.inte(Carro.ALTURA
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()), new Point(
+				Util.inte(rectangle.getCenterX()), Util.inte(rectangle
+						.getCenterY())));
 		piloto.setP1(p1);
 		piloto.setP2(p2);
 		if (piloto.getTracado() == 0) {
@@ -379,7 +387,8 @@ public class PainelCircuito extends JPanel {
 		// affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
 		// rectangle.getCenterY());
 		// g2d.setColor(new Color(255, 0, 0, 140));
-		piloto.obterArea(controleJogo);
+		// piloto.obterArea(controleJogo);
+		// g2d.setColor(Color.BLACK);
 		// g2d.draw(piloto.obterArea(controleJogo));
 
 		// g2d.fillOval(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
@@ -1161,12 +1170,16 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaContadorVoltas(Graphics2D g2d) {
 		g2d.setColor(luzApagada);
-		g2d.fillRoundRect(limitesViewPort.x + (limitesViewPort.width / 2),
-				limitesViewPort.y + 10, 40, 20, 15, 15);
+		String txt = controleJogo.getCircuito().getNome() + " "
+				+ controleJogo.getNumVoltaAtual() + "/"
+				+ controleJogo.totalVoltasCorrida();
+		int largura = txt.length() * 7;
+		g2d.fillRoundRect(limitesViewPort.x + (limitesViewPort.width / 2)
+				- (largura / 2), limitesViewPort.y + 10, largura, 20, 15, 15);
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(controleJogo.getNumVoltaAtual() + "/"
-				+ controleJogo.totalVoltasCorrida(), limitesViewPort.x
-				+ (limitesViewPort.width / 2) + 6, limitesViewPort.y + 24);
+		g2d.drawString(txt,
+				(limitesViewPort.x + (limitesViewPort.width / 2) + 6)
+						- (largura / 2), limitesViewPort.y + 24);
 	}
 
 	private void desenhaQualificacao(Graphics2D g2d) {
@@ -1807,14 +1820,13 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaNomePilotoNaoSelecionado(Piloto ps, Graphics g2d) {
+		Point pt = new Point(ps.getCarX(), ps.getCarY());
 		Color c2 = ps.getCarro().getCor2();
 		Color c1 = ps.getCarro().getCor1();
 		if (c2 != null) {
 			g2d.setColor(new Color(c2.getRed(), c2.getGreen(), c2.getBlue(),
 					100));
 		}
-
-		Point pt = new Point(ps.getCarX(), ps.getCarY());
 
 		if (ps.getPosicao() % 2 == 0) {
 			g2d.fillRoundRect(Util.inte((pt.x * zoom) - 3), Util

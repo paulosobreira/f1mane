@@ -65,6 +65,15 @@ public class Piloto implements Serializable {
 	private boolean autoPos = true;
 	private Point p1;
 	private Point p2;
+	private double angulo;
+
+	public double getAngulo() {
+		return angulo;
+	}
+
+	public void setAngulo(double angulo) {
+		this.angulo = angulo;
+	}
 
 	public void setAutoPos(boolean autoPos) {
 		this.autoPos = autoPos;
@@ -843,6 +852,30 @@ public class Piloto implements Serializable {
 
 	public Rectangle obterArea(InterfaceJogo controleJogo) {
 
+		Rectangle2D rectangle = centralizaCarro(controleJogo);
+		rectangle = new Rectangle2D.Double((getCarX() - Carro.MEIA_LARGURA
+				* FATOR_AREA_CARRO), (getCarY() - Carro.MEIA_ALTURA
+				* FATOR_AREA_CARRO), Carro.LARGURA * FATOR_AREA_CARRO,
+				Carro.ALTURA * FATOR_AREA_CARRO);
+		double rad = Math.toRadians((double) getAngulo());
+		GeneralPath generalPath = new GeneralPath(rectangle);
+
+		AffineTransform affineTransformRect = AffineTransform.getScaleInstance(
+				zoom, zoom);
+		affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
+				rectangle.getCenterY());
+
+		return generalPath.createTransformedShape(affineTransformRect)
+				.getBounds();
+
+		// g2d.fillOval(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
+		// * zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
+		// g2d.fillOval(Util.inte(trazCar.x * zoom), Util.inte(trazCar.y *
+		// zoom),
+		// Util.inte(5 * zoom), Util.inte(5 * zoom));
+	}
+
+	public Rectangle2D centralizaCarro(InterfaceJogo controleJogo) {
 		No noAtual = getNoAtual();
 		Point p = noAtual.getPoint();
 
@@ -866,16 +899,21 @@ public class Piloto implements Serializable {
 		Point trazCar = ((No) lista.get(traz)).getPoint();
 		Point frenteCar = ((No) lista.get(frente)).getPoint();
 		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
+		setAngulo(calculaAngulo);
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA * FATOR_AREA_CARRO),
 				(p.y - Carro.MEIA_ALTURA * FATOR_AREA_CARRO), Carro.LARGURA
 						* FATOR_AREA_CARRO, Carro.ALTURA * FATOR_AREA_CARRO);
-		Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util
-				.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-				.getCenterX()), Util.inte(rectangle.getCenterY())));
+		Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inte(Carro.ALTURA
+				* controleJogo.getCircuito().getMultiplicadorLarguraPista()),
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
 		Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-				.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-				.getCenterX()), Util.inte(rectangle.getCenterY())));
+				.inte(Carro.ALTURA
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()), new Point(
+				Util.inte(rectangle.getCenterX()), Util.inte(rectangle
+						.getCenterY())));
 		if (getTracado() == 0) {
 			carx = p.x;
 			cary = p.y;
@@ -890,26 +928,7 @@ public class Piloto implements Serializable {
 		}
 		setCarX(carx);
 		setCarY(cary);
-		rectangle = new Rectangle2D.Double((carx - Carro.MEIA_LARGURA
-				* FATOR_AREA_CARRO), (cary - Carro.MEIA_ALTURA
-				* FATOR_AREA_CARRO), Carro.LARGURA * FATOR_AREA_CARRO,
-				Carro.ALTURA * FATOR_AREA_CARRO);
-		double rad = Math.toRadians((double) calculaAngulo);
-		GeneralPath generalPath = new GeneralPath(rectangle);
-
-		AffineTransform affineTransformRect = AffineTransform.getScaleInstance(
-				zoom, zoom);
-		affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
-				rectangle.getCenterY());
-
-		return generalPath.createTransformedShape(affineTransformRect)
-				.getBounds();
-
-		// g2d.fillOval(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
-		// * zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
-		// g2d.fillOval(Util.inte(trazCar.x * zoom), Util.inte(trazCar.y *
-		// zoom),
-		// Util.inte(5 * zoom), Util.inte(5 * zoom));
+		return rectangle;
 	}
 
 	public List obterPista(InterfaceJogo controleJogo) {
