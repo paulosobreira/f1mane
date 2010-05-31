@@ -754,4 +754,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 		return carroCima;
 	}
+
+	@Override
+	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
+		// TODO Auto-generated method stub
+
+	}
 }
