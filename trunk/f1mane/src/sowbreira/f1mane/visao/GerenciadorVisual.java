@@ -155,7 +155,7 @@ public class GerenciadorVisual {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		larguraFrame = 1024;
-		alturaFrame = 855;
+		alturaFrame = 768;
 		carregarInfoClima();
 		gerarPainelPosicoes();
 		gerarPainelComandos();
@@ -864,23 +864,22 @@ public class GerenciadorVisual {
 				new BorderLayout());
 
 		JPanel southPanel = new JPanel(new BorderLayout());
-		southPanel.add(painelInfGraf, BorderLayout.WEST);
+		JPanel controles = new JPanel(new GridLayout(1, 2));
+		controles.add(panelControleBox);
+		controles.add(panelControlePos);
+
+		southPanel.add(controles, BorderLayout.EAST);
 		southPanel.add(painelInfText, BorderLayout.CENTER);
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(southPanel, BorderLayout.SOUTH);
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
 
 		eastPanel.setLayout(new BorderLayout());
-		JPanel controles = new JPanel(new BorderLayout());
-		controles.add(panelControleBox, BorderLayout.CENTER);
-		controles.add(panelControlePos, BorderLayout.SOUTH);
-		eastPanel.add(controles, BorderLayout.SOUTH);
-		eastPanel.add(painelPosicoes, BorderLayout.CENTER);
+		eastPanel.add(painelInfGraf, BorderLayout.CENTER);
+		eastPanel.add(painelPosicoes, BorderLayout.NORTH);
 
 		controleJogo.getMainFrame().getContentPane().add(centerPanel,
 				BorderLayout.CENTER);
-		controleJogo.getMainFrame().getContentPane().add(southPanel,
-				BorderLayout.SOUTH);
 		controleJogo.getMainFrame().getContentPane().add(eastPanel,
 				BorderLayout.EAST);
 		centerPanel.revalidate();
@@ -962,7 +961,7 @@ public class GerenciadorVisual {
 		});
 		panelControleBox.add(sliderPercentCombust);
 
-		panelControlePos = new JPanel(new BorderLayout());
+		panelControlePos = new JPanel(new GridLayout(2, 1, 30, 5));
 		panelControlePos.setBorder(new TitledBorder("") {
 			public String getTitle() {
 				return Lang.msg("TRACADO");
@@ -977,12 +976,12 @@ public class GerenciadorVisual {
 		pos1 = new JButton("(|");
 		pos0 = new JButton("||");
 		pos2 = new JButton("|)");
-		JPanel volPanel = new JPanel(new GridLayout(1, 3));
+		JPanel volPanel = new JPanel(new GridLayout(1, 3, 5, 5));
 		volPanel.add(pos1);
 		volPanel.add(pos0);
 		volPanel.add(pos2);
-		panelControlePos.add(autoPos, BorderLayout.CENTER);
-		panelControlePos.add(volPanel, BorderLayout.SOUTH);
+		panelControlePos.add(autoPos);
+		panelControlePos.add(volPanel);
 
 		addiconarListenerComandos(comboBoxTipoPneu, sliderPercentCombust);
 	}
