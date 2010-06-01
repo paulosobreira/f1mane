@@ -101,9 +101,8 @@ public class GerenciadorVisual {
 	private JScrollPane scrollPane;
 	private PainelTabelaPosicoes painelPosicoes;
 	private InterfaceJogo controleJogo;
-	private JPanel southPanel = new JPanel();
+	private JPanel centerPanel = new JPanel();
 	private JPanel eastPanel = new JPanel();
-	private JPanel telemetriaPanel = new JPanel();
 	private JLabel infoCorrida;
 	private JLabel infoPiloto;
 	private JPanel infoText = new JPanel();
@@ -156,13 +155,13 @@ public class GerenciadorVisual {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		larguraFrame = 1024;
-		alturaFrame = 768;
+		alturaFrame = 855;
 		carregarInfoClima();
 		gerarPainelPosicoes();
 		gerarPainelComandos();
 		gerarPainelInfoText();
 		gerarPainetInfoGraf();
-		gerarLayoutNovo();
+		gerarLayout();
 
 		JFrame frame = controleJogo.getMainFrame();
 
@@ -199,7 +198,6 @@ public class GerenciadorVisual {
 		sliderPercentCombust.addKeyListener(keyListener);
 		scrollPaneTextual.addKeyListener(keyListener);
 		infoTextual.addKeyListener(keyListener);
-		telemetriaPanel.addKeyListener(keyListener);
 		comboBoxAsa.addKeyListener(keyListener);
 		pos0.addKeyListener(keyListener);
 		pos1.addKeyListener(keyListener);
@@ -227,7 +225,6 @@ public class GerenciadorVisual {
 		sliderPercentCombust.addMouseWheelListener(mw);
 		scrollPaneTextual.addMouseWheelListener(mw);
 		infoTextual.addMouseWheelListener(mw);
-		telemetriaPanel.addMouseWheelListener(mw);
 		comboBoxAsa.addMouseWheelListener(mw);
 	}
 
@@ -861,29 +858,32 @@ public class GerenciadorVisual {
 		painelInfGraf.add(panelCol4);
 	}
 
-	private void gerarLayoutNovo() {
+	private void gerarLayout() {
 		controleJogo.getMainFrame().getContentPane().removeAll();
 		controleJogo.getMainFrame().getContentPane().setLayout(
 				new BorderLayout());
-		controleJogo.getMainFrame().getContentPane().add(scrollPane,
+
+		JPanel southPanel = new JPanel(new BorderLayout());
+		southPanel.add(painelInfGraf, BorderLayout.WEST);
+		southPanel.add(painelInfText, BorderLayout.CENTER);
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.add(southPanel, BorderLayout.SOUTH);
+		centerPanel.add(scrollPane, BorderLayout.CENTER);
+
+		eastPanel.setLayout(new BorderLayout());
+		JPanel controles = new JPanel(new BorderLayout());
+		controles.add(panelControleBox, BorderLayout.CENTER);
+		controles.add(panelControlePos, BorderLayout.SOUTH);
+		eastPanel.add(controles, BorderLayout.SOUTH);
+		eastPanel.add(painelPosicoes, BorderLayout.CENTER);
+
+		controleJogo.getMainFrame().getContentPane().add(centerPanel,
 				BorderLayout.CENTER);
 		controleJogo.getMainFrame().getContentPane().add(southPanel,
 				BorderLayout.SOUTH);
 		controleJogo.getMainFrame().getContentPane().add(eastPanel,
 				BorderLayout.EAST);
-		southPanel.setLayout(new BorderLayout());
-		southPanel.add(telemetriaPanel, BorderLayout.WEST);
-		southPanel.add(painelInfText, BorderLayout.CENTER);
-
-		eastPanel.setLayout(new BorderLayout());
-		eastPanel.add(panelControlePos, BorderLayout.SOUTH);
-		eastPanel.add(painelPosicoes, BorderLayout.CENTER);
-
-		telemetriaPanel.setLayout(new BorderLayout());
-		telemetriaPanel.add(painelInfGraf, BorderLayout.EAST);
-		telemetriaPanel.add(panelControleBox, BorderLayout.CENTER);
-
-		southPanel.revalidate();
+		centerPanel.revalidate();
 		if (controleJogo.getMainFrame().isModoApplet()) {
 			controleJogo.getMainFrame().setSize(larguraFrame, alturaFrame);
 		} else {

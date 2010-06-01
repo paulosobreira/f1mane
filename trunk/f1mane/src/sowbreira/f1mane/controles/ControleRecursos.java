@@ -196,7 +196,7 @@ public abstract class ControleRecursos {
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String name = (String) propName.nextElement();
-				circuitos.put(name, properties.getProperty(name));
+				circuitos.put(properties.getProperty(name), name);
 
 			}
 		} catch (IOException e) {
