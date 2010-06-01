@@ -222,4 +222,7 @@ public interface InterfaceJogo {
 
 	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto);
 
+	public void verificaAcidenteUltrapassagem(boolean agressivo, Piloto piloto,
+			Piloto pilotoFrente);
+
 }

@@ -57,7 +57,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private MainFrame mainFrame;
 	private ControleBox controleBox;
 
-
 	public JogoCliente(String temporada) throws Exception {
 		super(temporada);
 	}
@@ -741,9 +740,15 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		monitorJogo.mudarAutoPos();
 	}
 
-
 	@Override
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void verificaAcidenteUltrapassagem(boolean agressivo, Piloto piloto,
+			Piloto pilotoFrente) {
 		// TODO Auto-generated method stub
 
 	}

@@ -847,7 +847,8 @@ public class Piloto implements Serializable {
 
 			if (intercecionou && msmPista && nosPorximos
 					&& getNoAtual().getIndex() < piloto.getNoAtual().getIndex()) {
-				controleJogo.ajusteUltrapassagem(this, piloto);
+				controleJogo.verificaAcidenteUltrapassagem(this.isAgressivo(),
+						this, piloto);
 				return true;
 			}
 		}
