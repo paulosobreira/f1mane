@@ -36,9 +36,6 @@ public class Piloto implements Serializable {
 	public static final String LENTO = "LENTO";
 	private int aceleracao = 5;
 	private static final double FATOR_AREA_CARRO = .7;
-	private transient double anguloRotacaoCarro;
-	private transient double zoom;
-	private transient BufferedImage ultimaRotacaoCarro;
 	private transient Rectangle diateira;
 	private transient Rectangle centro;
 	private transient Rectangle trazeira;
@@ -154,14 +151,6 @@ public class Piloto implements Serializable {
 		this.carY = carY;
 	}
 
-	public double getZoom() {
-		return zoom;
-	}
-
-	public void setZoom(double zoom) {
-		this.zoom = zoom;
-	}
-
 	public int getUltimoIndice() {
 		return ultimoIndice;
 	}
@@ -201,22 +190,6 @@ public class Piloto implements Serializable {
 	private int msgTentativaNumVolta = 2;
 	private ArrayList listGanho;
 	private long ultimaMudancaPos;
-
-	public double getAnguloRotacaoCarro() {
-		return anguloRotacaoCarro;
-	}
-
-	public void setAnguloRotacaoCarro(double anguloRotacaoCarro) {
-		this.anguloRotacaoCarro = anguloRotacaoCarro;
-	}
-
-	public BufferedImage getUltimaRotacaoCarro() {
-		return ultimaRotacaoCarro;
-	}
-
-	public void setUltimaRotacaoCarro(BufferedImage ultimaRotacaoCarro) {
-		this.ultimaRotacaoCarro = ultimaRotacaoCarro;
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -881,31 +854,6 @@ public class Piloto implements Serializable {
 		return false;
 	}
 
-	// public Rectangle obterAreaCentral(InterfaceJogo controleJogo) {
-	//
-	// Rectangle2D rectangle = centralizaCarro(controleJogo);
-	// rectangle = new Rectangle2D.Double((getCarX() - Carro.MEIA_LARGURA
-	// * FATOR_AREA_CARRO), (getCarY() - Carro.MEIA_ALTURA
-	// * FATOR_AREA_CARRO), Carro.LARGURA * FATOR_AREA_CARRO,
-	// Carro.ALTURA * FATOR_AREA_CARRO);
-	// double rad = Math.toRadians((double) getAngulo());
-	// GeneralPath generalPath = new GeneralPath(rectangle);
-	//
-	// AffineTransform affineTransformRect = AffineTransform.getScaleInstance(
-	// zoom, zoom);
-	// affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
-	// rectangle.getCenterY());
-	//
-	// return generalPath.createTransformedShape(affineTransformRect)
-	// .getBounds();
-	//
-	// // g2d.fillOval(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
-	// // * zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
-	// // g2d.fillOval(Util.inte(trazCar.x * zoom), Util.inte(trazCar.y *
-	// // zoom),
-	// // Util.inte(5 * zoom), Util.inte(5 * zoom));
-	// }
-
 	public Rectangle2D centralizaCarro(InterfaceJogo controleJogo) {
 		No noAtual = getNoAtual();
 		Point p = noAtual.getPoint();
@@ -931,10 +879,10 @@ public class Piloto implements Serializable {
 		Point frenteCar = ((No) lista.get(frente)).getPoint();
 		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
 		setAngulo(calculaAngulo);
-		Rectangle2D rectangle = new Rectangle2D.Double(
-				(p.x - Carro.MEIA_LARGURA * FATOR_AREA_CARRO),
-				(p.y - Carro.MEIA_ALTURA * FATOR_AREA_CARRO), Carro.LARGURA
-						* FATOR_AREA_CARRO, Carro.ALTURA * FATOR_AREA_CARRO);
+		Rectangle2D rectangle = new Rectangle2D.Double((p.x - Carro.MEIA_ALTURA
+				* FATOR_AREA_CARRO), (p.y - Carro.MEIA_ALTURA
+				* FATOR_AREA_CARRO), Carro.ALTURA * FATOR_AREA_CARRO,
+				Carro.ALTURA * FATOR_AREA_CARRO);
 		Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inte(Carro.ALTURA
 				* controleJogo.getCircuito().getMultiplicadorLarguraPista()),
 				new Point(Util.inte(rectangle.getCenterX()), Util
@@ -957,18 +905,18 @@ public class Piloto implements Serializable {
 			carx = Util.inte((p2.x));
 			cary = Util.inte((p2.y));
 		}
-		rectangle = new Rectangle2D.Double((carx - Carro.MEIA_LARGURA
+		rectangle = new Rectangle2D.Double((carx - Carro.MEIA_ALTURA
 				* FATOR_AREA_CARRO), (cary - Carro.MEIA_ALTURA
-				* FATOR_AREA_CARRO), Carro.LARGURA * FATOR_AREA_CARRO,
+				* FATOR_AREA_CARRO), Carro.ALTURA * FATOR_AREA_CARRO,
 				Carro.ALTURA * FATOR_AREA_CARRO);
 		setCarX(carx);
 		setCarY(cary);
 		setCentro(rectangle.getBounds());
 
 		Rectangle2D trazRec = new Rectangle2D.Double(
-				(trazCar.x - Carro.MEIA_LARGURA * FATOR_AREA_CARRO),
+				(trazCar.x - Carro.MEIA_ALTURA * FATOR_AREA_CARRO),
 				(trazCar.y - Carro.MEIA_ALTURA * FATOR_AREA_CARRO),
-				Carro.LARGURA * FATOR_AREA_CARRO, Carro.ALTURA
+				Carro.ALTURA * FATOR_AREA_CARRO, Carro.ALTURA
 						* FATOR_AREA_CARRO);
 		Point p1Traz = GeoUtil.calculaPonto(calculaAngulo, Util
 				.inte(Carro.ALTURA
@@ -983,46 +931,46 @@ public class Piloto implements Serializable {
 				Util.inte(trazRec.getCenterX()), Util
 						.inte(trazRec.getCenterY())));
 		if (getTracado() == 1) {
-			trazRec = new Rectangle2D.Double((p1Traz.x - Carro.MEIA_LARGURA
+			trazRec = new Rectangle2D.Double((p1Traz.x - Carro.MEIA_ALTURA
 					* FATOR_AREA_CARRO), (p1Traz.y - Carro.MEIA_ALTURA
-					* FATOR_AREA_CARRO), Carro.LARGURA * FATOR_AREA_CARRO,
+					* FATOR_AREA_CARRO), Carro.ALTURA * FATOR_AREA_CARRO,
 					Carro.ALTURA * FATOR_AREA_CARRO);
 		}
 		if (getTracado() == 2) {
-			trazRec = new Rectangle2D.Double((p2Traz.x - Carro.MEIA_LARGURA
+			trazRec = new Rectangle2D.Double((p2Traz.x - Carro.MEIA_ALTURA
 					* FATOR_AREA_CARRO), (p2Traz.y - Carro.MEIA_ALTURA
-					* FATOR_AREA_CARRO), Carro.LARGURA * FATOR_AREA_CARRO,
+					* FATOR_AREA_CARRO), Carro.ALTURA * FATOR_AREA_CARRO,
 					Carro.ALTURA * FATOR_AREA_CARRO);
 		}
 		setTrazeira(trazRec.getBounds());
 
 		Rectangle2D frenteRec = new Rectangle2D.Double(
-				(frenteCar.x - Carro.MEIA_LARGURA * FATOR_AREA_CARRO),
+				(frenteCar.x - Carro.MEIA_ALTURA * FATOR_AREA_CARRO),
 				(frenteCar.y - Carro.MEIA_ALTURA * FATOR_AREA_CARRO),
-				Carro.LARGURA * FATOR_AREA_CARRO, Carro.ALTURA
+				Carro.ALTURA * FATOR_AREA_CARRO, Carro.ALTURA
 						* FATOR_AREA_CARRO);
 		Point p1Frente = GeoUtil.calculaPonto(calculaAngulo, Util
 				.inte(Carro.ALTURA
 						* controleJogo.getCircuito()
 								.getMultiplicadorLarguraPista()), new Point(
-				Util.inte(trazRec.getCenterX()), Util
-						.inte(trazRec.getCenterY())));
+				Util.inte(frenteRec.getCenterX()), Util.inte(frenteRec
+						.getCenterY())));
 		Point p2Frente = GeoUtil.calculaPonto(calculaAngulo + 180, Util
 				.inte(Carro.ALTURA
 						* controleJogo.getCircuito()
 								.getMultiplicadorLarguraPista()), new Point(
-				Util.inte(trazRec.getCenterX()), Util
-						.inte(trazRec.getCenterY())));
+				Util.inte(frenteRec.getCenterX()), Util.inte(frenteRec
+						.getCenterY())));
 		if (getTracado() == 1) {
-			frenteRec = new Rectangle2D.Double((p1Frente.x - Carro.MEIA_LARGURA
+			frenteRec = new Rectangle2D.Double((p1Frente.x - Carro.MEIA_ALTURA
 					* FATOR_AREA_CARRO), (p1Frente.y - Carro.MEIA_ALTURA
-					* FATOR_AREA_CARRO), Carro.LARGURA * FATOR_AREA_CARRO,
+					* FATOR_AREA_CARRO), Carro.ALTURA * FATOR_AREA_CARRO,
 					Carro.ALTURA * FATOR_AREA_CARRO);
 		}
 		if (getTracado() == 2) {
-			frenteRec = new Rectangle2D.Double((p2Frente.x - Carro.MEIA_LARGURA
+			frenteRec = new Rectangle2D.Double((p2Frente.x - Carro.MEIA_ALTURA
 					* FATOR_AREA_CARRO), (p2Frente.y - Carro.MEIA_ALTURA
-					* FATOR_AREA_CARRO), Carro.LARGURA * FATOR_AREA_CARRO,
+					* FATOR_AREA_CARRO), Carro.ALTURA * FATOR_AREA_CARRO,
 					Carro.ALTURA * FATOR_AREA_CARRO);
 		}
 		setDiateira(frenteRec.getBounds());
@@ -1608,87 +1556,12 @@ public class Piloto implements Serializable {
 
 	}
 
-	private Rectangle obterArea(InterfaceJogo controleJogo, int pos) {
-
-		No noAtual = getNoAtual();
-		Point p = noAtual.getPoint();
-
-		List lista = obterPista(controleJogo);
-
-		int cont = noAtual.getIndex();
-
-		int carx = p.x;
-		int cary = p.y;
-
-		int traz = cont - 44;
-		int frente = cont + 44;
-
-		if (traz < 0) {
-			traz = (lista.size() - 1) + traz;
-		}
-		if (frente > (lista.size() - 1)) {
-			frente = (frente - (lista.size() - 1)) - 1;
-		}
-
-		Point trazCar = ((No) lista.get(traz)).getPoint();
-		Point frenteCar = ((No) lista.get(frente)).getPoint();
-		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-		Rectangle2D rectangle = new Rectangle2D.Double(
-				(p.x - Carro.MEIA_LARGURA * FATOR_AREA_CARRO),
-				(p.y - Carro.MEIA_ALTURA * FATOR_AREA_CARRO), Carro.LARGURA
-						* FATOR_AREA_CARRO, Carro.ALTURA * FATOR_AREA_CARRO);
-		Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util
-				.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-				.getCenterX()), Util.inte(rectangle.getCenterY())));
-		Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-				.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-				.getCenterX()), Util.inte(rectangle.getCenterY())));
-		if (pos == 0) {
-			carx = p.x;
-			cary = p.y;
-		}
-		if (pos == 1) {
-			carx = Util.inte((p1.x));
-			cary = Util.inte((p1.y));
-		}
-		if (pos == 2) {
-			carx = Util.inte((p2.x));
-			cary = Util.inte((p2.y));
-		}
-		setCarX(carx);
-		setCarY(cary);
-		rectangle = new Rectangle2D.Double((carx - Carro.MEIA_LARGURA
-				* FATOR_AREA_CARRO), (cary - Carro.MEIA_ALTURA
-				* FATOR_AREA_CARRO), Carro.LARGURA * FATOR_AREA_CARRO,
-				Carro.ALTURA * FATOR_AREA_CARRO);
-		double rad = Math.toRadians((double) calculaAngulo);
-		GeneralPath generalPath = new GeneralPath(rectangle);
-
-		AffineTransform affineTransformRect = AffineTransform.getScaleInstance(
-				zoom, zoom);
-		affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
-				rectangle.getCenterY());
-
-		return generalPath.createTransformedShape(affineTransformRect)
-				.getBounds();
-
-		// g2d.fillOval(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
-		// * zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
-		// g2d.fillOval(Util.inte(trazCar.x * zoom), Util.inte(trazCar.y *
-		// zoom),
-		// Util.inte(5 * zoom), Util.inte(5 * zoom));
-	}
-
 	public int getPtosPistaIncial() {
 		return ptosPistaIncial;
 	}
 
 	public void setPtosPistaIncial(int ptosPistaIncial) {
 		this.ptosPistaIncial = ptosPistaIncial;
-	}
-
-	public BufferedImage obterCarroCima() {
-		return getCarro().obterCarroCima();
 	}
 
 	public void mudarAutoPos() {

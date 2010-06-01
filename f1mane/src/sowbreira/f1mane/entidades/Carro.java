@@ -58,7 +58,6 @@ public class Carro implements Serializable {
 	private boolean recolhido;
 	private Piloto piloto;
 	private boolean fritouPneuNaUltimaCurvaBaixa;
-	private transient BufferedImage carroCima;
 
 	public int getGiro() {
 		return giro;
@@ -97,14 +96,6 @@ public class Carro implements Serializable {
 
 	public void setImg(String img) {
 		this.img = img;
-	}
-
-	public BufferedImage getCarroCima() {
-		return carroCima;
-	}
-
-	public void setCarroCima(BufferedImage carroCima) {
-		this.carroCima = carroCima;
 	}
 
 	public void setMotor(int motor) {
@@ -703,10 +694,6 @@ public class Carro implements Serializable {
 
 	public void setDurabilidadeAereofolio(int durabilidadeAereofolio) {
 		this.durabilidadeAereofolio = durabilidadeAereofolio;
-	}
-
-	public BufferedImage obterCarroCima() {
-		return carroCima;
 	}
 
 }

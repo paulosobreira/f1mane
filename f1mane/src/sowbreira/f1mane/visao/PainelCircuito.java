@@ -243,6 +243,9 @@ public class PainelCircuito extends JPanel {
 			}
 			desenhaCarro(g2d, piloto);
 			piloto.centralizaCarro(controleJogo);
+			// g2d.draw(piloto.getCentro());
+			// g2d.draw(piloto.getDiateira());
+			// g2d.draw(piloto.getTrazeira());
 			Point p = new Point(Util.inte((piloto.getCarX() - 2) * zoom), Util
 					.inte((piloto.getCarY() - 2) * zoom));
 			if (limitesViewPort.contains(p)) {
@@ -374,7 +377,6 @@ public class PainelCircuito extends JPanel {
 		AffineTransformOp op2 = new AffineTransformOp(afZoom,
 				AffineTransformOp.TYPE_BILINEAR);
 		op2.filter(zoomBuffer, rotateBuffer);
-		piloto.setUltimaRotacaoCarro(rotateBuffer);
 		g2d.drawImage(rotateBuffer, Util.inte(carx * zoom), Util.inte(cary
 				* zoom), null);
 
@@ -580,21 +582,33 @@ public class PainelCircuito extends JPanel {
 					new Point(Util.inte(rectangle.getCenterX()), Util
 							.inte(rectangle.getCenterY())));
 			Point cimaBoxC1 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA) * 4 * zoom), new Point(Util
-					.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY())));
+					.inte((Carro.ALTURA)
+							* 4
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista() * zoom),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			Point baixoBoxC1 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte((Carro.ALTURA) * 3 * zoom), new Point(Util
-					.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY())));
+					.inte((Carro.ALTURA)
+							* 3
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista() * zoom),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			Point cimaBoxC2 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA) * 4 * zoom), new Point(Util
-					.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY())));
+					.inte((Carro.ALTURA)
+							* 4
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista() * zoom),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			Point baixoBoxC2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte((Carro.ALTURA) * 3 * zoom), new Point(Util
-					.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY())));
+					.inte((Carro.ALTURA)
+							* 3
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista() * zoom),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 
 			RoundRectangle2D retC1 = null;
 			RoundRectangle2D retC2 = null;
@@ -675,13 +689,17 @@ public class PainelCircuito extends JPanel {
 					(Carro.ALTURA));
 
 			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte(Carro.ALTURA * 1.2 * zoom), new Point(Util
-					.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY())));
+					.inte(Carro.ALTURA
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista() * zoom),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte(Carro.ALTURA * 1.2 * zoom), new Point(Util
-					.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY())));
+					.inte(Carro.ALTURA
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista() * zoom),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA * zoom)),
@@ -725,12 +743,15 @@ public class PainelCircuito extends JPanel {
 					(Carro.ALTURA));
 
 			cima = GeoUtil.calculaPonto(calculaAngulo, Util.inte(Carro.ALTURA
-					* 1.2 * zoom), new Point(Util.inte(rectangle.getCenterX()),
-					Util.inte(rectangle.getCenterY())));
+					* controleJogo.getCircuito().getMultiplicadorLarguraPista()
+					* zoom), new Point(Util.inte(rectangle.getCenterX()), Util
+					.inte(rectangle.getCenterY())));
 			baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte(Carro.ALTURA * 1.2 * zoom), new Point(Util
-					.inte(rectangle.getCenterX()), Util.inte(rectangle
-					.getCenterY())));
+					.inte(Carro.ALTURA
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista() * zoom),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA * zoom)),

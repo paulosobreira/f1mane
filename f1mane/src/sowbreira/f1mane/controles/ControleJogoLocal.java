@@ -919,11 +919,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	@Override
-	public BufferedImage obterCarroCima(Piloto piloto) {
-		return piloto.obterCarroCima();
-	}
-
-	@Override
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
 		controleCorrida.ajusteUltrapassagem(piloto, pilotoFrente);
 	}

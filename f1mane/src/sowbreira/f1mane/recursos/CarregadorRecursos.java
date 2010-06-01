@@ -257,7 +257,7 @@ public class CarregadorRecursos {
 
 	}
 
-	private static BufferedImage gerarCoresCarros(Color corPintar, int cor) {
+	public static BufferedImage gerarCoresCarros(Color corPintar, int cor) {
 		ImageIcon img = new ImageIcon(CarregadorRecursos.class
 				.getResource("CarroCimaC" + cor + ".png"));
 
@@ -421,7 +421,6 @@ public class CarregadorRecursos {
 		carroNovo.setPiloto(piloto);
 		carroNovo.setPotencia(carro.getPotencia()
 				+ (Math.random() > .5 ? -5 : 5));
-		carroNovo.setCarroCima(carro.getCarroCima());
 		return carroNovo;
 	}
 

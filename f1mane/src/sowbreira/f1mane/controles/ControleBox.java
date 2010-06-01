@@ -191,7 +191,7 @@ public class ControleBox {
 				}
 				ptosBox *= circuito.getMultiplciador();
 				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
-					ptosBox = 0;
+					piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
 				}
 				int novosPtsBox = ptosBox + piloto.getPtosBox();
 				No nobox = (No) boxEquipes.get(piloto.getCarro());
@@ -221,7 +221,7 @@ public class ControleBox {
 
 		No box = (No) boxEquipes.get(piloto.getCarro());
 		int contBox = piloto.getNoAtual().getIndex();
-		if ((contBox > (box.getIndex() - 10) && contBox < (box.getIndex() + 10))
+		if ((contBox > (box.getIndex() - 20) && contBox < (box.getIndex() + 20))
 				&& !piloto.decrementaParadoBox()) {
 			processarPilotoPararBox(piloto);
 		}

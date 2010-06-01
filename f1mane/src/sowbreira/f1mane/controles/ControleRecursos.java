@@ -1,11 +1,11 @@
 package sowbreira.f1mane.controles;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,6 +18,7 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 
 /**
@@ -34,6 +35,27 @@ public abstract class ControleRecursos {
 	protected Map mapaIdsNos = new HashMap();
 	protected Map mapaNosIds = new HashMap();
 	private String seasson;
+	private static Map bufferCarrosCima = new HashMap();
+
+	public BufferedImage obterCarroCima(Piloto piloto) {
+		Carro carro = piloto.getCarro();
+		BufferedImage carroCima = (BufferedImage) bufferCarrosCima.get(carro
+				.getNome());
+		if (carroCima == null) {
+			carroCima = CarregadorRecursos.carregaImg("CarroCima.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor1(), 1);
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor2(), 2);
+			Graphics graphics = carroCima.getGraphics();
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.dispose();
+			bufferCarrosCima.put(carro.getNome(), ImageUtil.geraTransparencia(
+					carroCima, Color.WHITE));
+		}
+		return carroCima;
+	}
 
 	public void setTemporada(String seasson) {
 		this.seasson = seasson;

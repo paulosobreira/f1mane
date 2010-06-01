@@ -56,7 +56,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private String clima;
 	private MainFrame mainFrame;
 	private ControleBox controleBox;
-	private static Map bufferCarrosCima = new HashMap();
+
 
 	public JogoCliente(String temporada) throws Exception {
 		super(temporada);
@@ -741,19 +741,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		monitorJogo.mudarAutoPos();
 	}
 
-	@Override
-	public BufferedImage obterCarroCima(Piloto piloto) {
-		Carro carro = piloto.getCarro();
-		BufferedImage carroCima = (BufferedImage) bufferCarrosCima.get(carro
-				.getNome());
-		if (carroCima == null) {
-			carroCima = CarregadorRecursos
-					.carregaBufferedImageTranspareciaBranca("carros/"
-							+ getTemporada() + "/" + carro.getNome() + ".png");
-			bufferCarrosCima.put(carro.getNome(), carroCima);
-		}
-		return carroCima;
-	}
 
 	@Override
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
