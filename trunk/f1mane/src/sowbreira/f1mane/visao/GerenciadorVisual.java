@@ -1172,16 +1172,16 @@ public class GerenciadorVisual {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSlider(50, 120);
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 120)));
+		spinnerTempoCiclo = new JSlider(100, 200);
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 200)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(50), new JLabel("") {
+		labelTable.put(new Integer(100), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("RAPIDOS");
 			}
 		});
-		labelTable.put(new Integer(120), new JLabel("") {
+		labelTable.put(new Integer(200), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("LENTOS");
@@ -1407,16 +1407,16 @@ public class GerenciadorVisual {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSlider(50, 120);
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(50, 120)));
+		spinnerTempoCiclo = new JSlider(100, 200);
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 200)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(50), new JLabel("") {
+		labelTable.put(new Integer(100), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("RAPIDOS");
 			}
 		});
-		labelTable.put(new Integer(120), new JLabel("") {
+		labelTable.put(new Integer(200), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("LENTOS");

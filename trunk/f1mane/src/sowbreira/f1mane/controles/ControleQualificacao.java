@@ -173,15 +173,6 @@ public class ControleQualificacao {
 			piloto.setPtosPistaIncial(nM.getIndex());
 			piloto.setVelocidade(0);
 			Carro carro = piloto.getCarro();
-			BufferedImage carroCima = CarregadorRecursos
-					.carregaBufferedImageTranspareciaBranca("carros/"
-							+ controleJogo.getTemporada() + "/"
-							+ carro.getNome() + ".png");
-			carroCima = ImageUtil.geraTransparencia(carroCima, Color.BLACK);
-			if (carroCima == null) {
-				Logger.logar("Erro carregando Carro Cima");
-			}
-			carro.setCarroCima(carroCima);
 			carro.setDurabilidadeAereofolio(Util.inte(10 - (controleJogo
 					.getNiveljogo() * 10)));
 
