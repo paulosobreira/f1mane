@@ -98,7 +98,6 @@ public class PainelCircuito extends JPanel {
 	private Shape[] boxCor2 = new Shape[12];
 	private double larguraPista = 0;
 	private Rectangle limitesViewPort;
-	private Point mouseMove;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -142,12 +141,6 @@ public class PainelCircuito extends JPanel {
 						pos = 0;
 					}
 					controleJogo.mudarPos(pos);
-					if (pos == 0)
-						mouseMove = pilotoJogador.getP0();
-					if (pos == 1)
-						mouseMove = pilotoJogador.getP1();
-					if (pos == 2)
-						mouseMove = pilotoJogador.getP2();
 				}
 				super.mouseClicked(e);
 			}
@@ -210,11 +203,6 @@ public class PainelCircuito extends JPanel {
 		desenharClima(g2d);
 		desenhaInfoAdd(g2d);
 		desenhaChuva(g2d);
-		if (mouseMove != null) {
-			g2d.setColor(lightWhite);
-			g2d.fillOval(Util.inte(mouseMove.x * zoom), Util.inte(mouseMove.y
-					* zoom), Util.inte(5), Util.inte(5));
-		}
 
 		// if (limitesViewPort != null) {
 		// limitesViewPort.width -= 100;
@@ -285,6 +273,10 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
+		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
+			carroCima = controleJogo.obterCarroCimaSemAreofolio(piloto);
+
+		}
 		if (carroCima == null) {
 			return;
 		}
@@ -928,8 +920,9 @@ public class PainelCircuito extends JPanel {
 		if (p == null) {
 			return;
 		}
-		// p = new Point(150, 150);
-		// g2d.drawOval(p.x, p.y, 2, 2);
+		if (Math.random() > .5) {
+			return;
+		}
 		Color color = g2d.getColor();
 		for (int i = 0; i < 7; i++) {
 			if (Math.random() > .5) {

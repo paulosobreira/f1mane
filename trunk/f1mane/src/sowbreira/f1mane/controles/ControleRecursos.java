@@ -36,13 +36,34 @@ public abstract class ControleRecursos {
 	protected Map mapaNosIds = new HashMap();
 	private String seasson;
 	private static Map bufferCarrosCima = new HashMap();
+	private static Map bufferCarrosCimaSemAreofolio = new HashMap();
+
+	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto) {
+		Carro carro = piloto.getCarro();
+		BufferedImage carroCima = (BufferedImage) bufferCarrosCimaSemAreofolio
+				.get(carro.getNome());
+		if (carroCima == null) {
+			carroCima = CarregadorRecursos.carregaImgSemCache("CarroCima.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor1(), 1);
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor2(), 3);
+			Graphics graphics = carroCima.getGraphics();
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.dispose();
+			bufferCarrosCimaSemAreofolio.put(carro.getNome(), ImageUtil
+					.geraTransparencia(carroCima, Color.WHITE));
+		}
+		return carroCima;
+	}
 
 	public BufferedImage obterCarroCima(Piloto piloto) {
 		Carro carro = piloto.getCarro();
 		BufferedImage carroCima = (BufferedImage) bufferCarrosCima.get(carro
 				.getNome());
 		if (carroCima == null) {
-			carroCima = CarregadorRecursos.carregaImg("CarroCima.png");
+			carroCima = CarregadorRecursos.carregaImgSemCache("CarroCima.png");
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
 					.getCor1(), 1);
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro

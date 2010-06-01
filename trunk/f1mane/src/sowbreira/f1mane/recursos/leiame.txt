@@ -13,7 +13,7 @@
 
 Histórico de versões:
 3.0
-  - Novo modo grafico com zoom e vetorização das pistas
+  - Novo modo grafico com zoom(Scroll do Mouse) e vetorização das pistas
   - 3 traçados disponiveis podendo ser escolidos automatico manual (Auto Pos)
   - F8 desliga e liga o auto pos 
   - Setas ou mouse mudam o traçado.

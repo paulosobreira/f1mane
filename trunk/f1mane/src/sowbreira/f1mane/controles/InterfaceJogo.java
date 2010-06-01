@@ -220,4 +220,6 @@ public interface InterfaceJogo {
 
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente);
 
+	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto);
+
 }
