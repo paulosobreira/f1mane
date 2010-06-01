@@ -342,28 +342,18 @@ public class ControleCorrida {
 		if (piloto.isJogadorHumano()) {
 			fatorAcidente -= (controleJogo.getNiveljogo() / 10);
 			if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
-				if (No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo())
-						&& Math.random() < controleJogo.getNiveljogo()) {
-					if (controleJogo.verificaNivelJogo()) {
-						piloto
-								.getCarro()
-								.setDurabilidadeAereofolio(
-										piloto.getCarro()
-												.getDurabilidadeAereofolio() - 1);
-						if (InterfaceJogo.DIFICIL_NV == controleJogo
-								.getNiveljogo())
-							piloto.incStress(40);
-						if (InterfaceJogo.MEDIO_NV == controleJogo
-								.getNiveljogo())
-							piloto.incStress(30);
-						if (InterfaceJogo.FACIL_NV == controleJogo
-								.getNiveljogo())
-							piloto.incStress(20);
-					}
+				piloto.getCarro().setDurabilidadeAereofolio(
+						piloto.getCarro().getDurabilidadeAereofolio() - 1);
+				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
+					piloto.incStress(40);
+				if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
+					piloto.incStress(30);
+				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
+					piloto.incStress(20);
+				if (piloto.getPosicao() < 8)
 					controleJogo.infoPrioritaria(Lang.msg("109", new String[] {
 							Html.superRed(piloto.getNome()),
 							pilotoNaFrente.getNome() }));
-				}
 			} else if (No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo())
 					&& (Math.random() > fatorAcidente && (piloto.getStress() > 70))) {
 				piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);

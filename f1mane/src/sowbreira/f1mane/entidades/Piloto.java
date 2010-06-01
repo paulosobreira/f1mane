@@ -1496,7 +1496,7 @@ public class Piloto implements Serializable {
 		}
 
 		long agora = System.currentTimeMillis();
-		if ((agora - ultimaMudancaPos) < 500) {
+		if ((agora - ultimaMudancaPos) < (interfaceJogo.getTempoCiclo() * 10)) {
 			return;
 		}
 		if (interfaceJogo.isSafetyCarNaPista()
@@ -1519,7 +1519,8 @@ public class Piloto implements Serializable {
 			setTracado(pos);
 			ultimaMudancaPos = System.currentTimeMillis();
 		} else {
-			ultimaMudancaPos = System.currentTimeMillis() + 2000;
+			ultimaMudancaPos = System.currentTimeMillis()
+					+ (interfaceJogo.getTempoCiclo() * 20);
 			gerarDesconcentracao(Util.intervalo(30, 50));
 		}
 

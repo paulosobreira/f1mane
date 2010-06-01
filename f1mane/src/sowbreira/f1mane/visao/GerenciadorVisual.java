@@ -1172,16 +1172,16 @@ public class GerenciadorVisual {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSlider(100, 200);
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 200)));
+		spinnerTempoCiclo = new JSlider(70, 170);
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(70, 170)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(100), new JLabel("") {
+		labelTable.put(new Integer(70), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("RAPIDOS");
 			}
 		});
-		labelTable.put(new Integer(200), new JLabel("") {
+		labelTable.put(new Integer(170), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("LENTOS");
@@ -1407,16 +1407,16 @@ public class GerenciadorVisual {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSlider(100, 200);
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 200)));
+		spinnerTempoCiclo = new JSlider(70, 170);
+		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(70, 170)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(100), new JLabel("") {
+		labelTable.put(new Integer(70), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("RAPIDOS");
 			}
 		});
-		labelTable.put(new Integer(200), new JLabel("") {
+		labelTable.put(new Integer(170), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("LENTOS");
@@ -1770,7 +1770,7 @@ public class GerenciadorVisual {
 					painelCircuito.repaint();
 				}
 			});
-			Thread.sleep(100);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			Logger.logarExept(e);
 		}

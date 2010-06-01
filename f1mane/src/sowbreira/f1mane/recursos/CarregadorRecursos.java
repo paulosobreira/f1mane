@@ -444,6 +444,12 @@ public class CarregadorRecursos {
 		return circuitosPilotos;
 	}
 
+	public static BufferedImage carregaImgSemCache(String img) {
+		ImageIcon icon = new ImageIcon(CarregadorRecursos.class
+				.getResource(img));
+		return ImageUtil.toBufferedImage(icon.getImage());
+	}
+
 	public static BufferedImage carregaImg(String img) {
 		BufferedImage bufferedImage = (BufferedImage) bufferImages.get(img);
 		if (bufferedImage != null) {
