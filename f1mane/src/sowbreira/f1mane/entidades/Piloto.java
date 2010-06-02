@@ -647,7 +647,7 @@ public class Piloto implements Serializable {
 		}
 
 		double consumoMedioPneus = calculaConsumoMedioPneu();
-		if (pneus < 1.8 * consumoMedioPneus
+		if (pneus < 2 * consumoMedioPneus
 				&& Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu())) {
 			box = true;
 		}
