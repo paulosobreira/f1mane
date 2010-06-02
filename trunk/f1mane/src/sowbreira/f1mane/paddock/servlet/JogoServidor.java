@@ -512,8 +512,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void atulizaTabelaPosicoes() {
 	}
 
-	public void saiuBox(Piloto piloto) {
-	}
 
 	public void removerJogador(String apelido) {
 		if (apelido == null) {

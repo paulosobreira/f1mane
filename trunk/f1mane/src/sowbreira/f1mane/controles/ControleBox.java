@@ -222,7 +222,7 @@ public class ControleBox {
 		No box = (No) boxEquipes.get(piloto.getCarro());
 		int contBox = piloto.getNoAtual().getIndex();
 		if ((contBox > (box.getIndex() - 20) && contBox < (box.getIndex() + 20))
-				&& !piloto.decrementaParadoBox()) {
+				&& !piloto.decrementaParadoBox() && !piloto.jaParouNoBox()) {
 			processarPilotoPararBox(piloto);
 		}
 	}
@@ -275,8 +275,6 @@ public class ControleBox {
 				.obterTempoCilco(), penalidade);
 		piloto.getCarro().ajusteMotorParadaBox();
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
-		if (piloto.getNumeroVolta() > 0)
-			piloto.processaVoltaNovaBox(controleJogo);
 		piloto.setSaiuDoBoxMilis(0);
 		if (piloto.isJogadorHumano()) {
 			controleJogo
@@ -312,7 +310,6 @@ public class ControleBox {
 		if (controleJogo.isCorridaTerminada()) {
 			piloto.setRecebeuBanderada(true, controleJogo);
 		}
-		controleJogo.saiuBox(piloto);
 		if (controleJogo.isSafetyCarNaPista() && piloto.getVoltaAtual() != null) {
 			piloto.getVoltaAtual().setVoltaSafetyCar(true);
 		}

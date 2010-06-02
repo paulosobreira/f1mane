@@ -176,8 +176,6 @@ public interface InterfaceJogo {
 	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
 			Object combust, Object asa);
 
-	public void saiuBox(Piloto piloto);
-
 	public Volta obterMelhorVolta(Piloto pilotoSelecionado);
 
 	public Piloto getPilotoJogador();
