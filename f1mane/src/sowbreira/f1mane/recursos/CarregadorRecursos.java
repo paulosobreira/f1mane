@@ -39,6 +39,7 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Piloto;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 public class CarregadorRecursos {
 	private HashMap temporadas;
@@ -147,6 +148,9 @@ public class CarregadorRecursos {
 
 	public static void main(String[] args) throws URISyntaxException,
 			IOException {
+		String val = "tn_2008voi-mclaren.gif";
+		System.out.println(Util.intervalo(0, 0));
+		
 		// gerarListaCarrosLado();
 		// gerarCarrosCima();
 		// JFrame frame = new JFrame();
@@ -380,8 +384,13 @@ public class CarregadorRecursos {
 			String red = values[1];
 			String green = values[2];
 			String blue = values[3];
-			carro.setImg("carros/" + temporarada + "/" + values[4]);
-			Logger.logar("carros/" + temporarada + "/" + values[4]);
+
+			String[] tnsCarros = values[4].split(";");
+
+			carro.setImg("carros/" + temporarada + "/"
+					+ tnsCarros[Util.intervalo(0, tnsCarros.length - 1)]);
+
+			Logger.logar(carro.getImg());
 			carro.setCor1(new Color(Integer.parseInt(red), Integer
 					.parseInt(green), Integer.parseInt(blue)));
 
