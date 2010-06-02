@@ -618,7 +618,7 @@ public class Carro implements Serializable {
 		return (100 * motor) / durabilidadeMaxMotor;
 	}
 
-	public boolean isFritouPneuNaUltimaCurvaBaixa() {
+	public boolean isTravouPneuNaUltimaCurvaBaixa() {
 		return fritouPneuNaUltimaCurvaBaixa;
 	}
 

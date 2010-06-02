@@ -550,7 +550,7 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
 					piloto.getNomeJogador())) {
-				piloto.mudarAutoPos();
+				piloto.mudarAutoTracado();
 				break;
 			}
 		}
@@ -565,7 +565,7 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
 					piloto.getNomeJogador())) {
-				piloto.mudarPos(clientPaddockPack.getTracado(), jogoServidor);
+				piloto.mudarTracado(clientPaddockPack.getTracado(), jogoServidor);
 				break;
 			}
 		}
