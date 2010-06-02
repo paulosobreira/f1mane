@@ -108,6 +108,7 @@ public class GerenciadorVisual {
 	private JPanel infoText = new JPanel();
 	private JTextField nomeJogador;
 	private JButton agressivo;
+	private JButton alternaPiloto;
 	private JButton box;
 	private JButton progBox;
 	private PainelTabelaResultadoFinal resultadoFinal;
@@ -203,6 +204,8 @@ public class GerenciadorVisual {
 		pos1.addKeyListener(keyListener);
 		pos2.addKeyListener(keyListener);
 		autoPos.addKeyListener(keyListener);
+		alternaPiloto.addKeyListener(keyListener);
+		alternaPiloto.addMouseWheelListener(mw);
 		pos0.addMouseWheelListener(mw);
 		pos1.addMouseWheelListener(mw);
 		pos2.addMouseWheelListener(mw);
@@ -288,6 +291,13 @@ public class GerenciadorVisual {
 		autoPos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mudarAutoPos();
+			}
+
+		});
+
+		alternaPiloto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mudaPilotoSelecionado();
 			}
 
 		});
@@ -893,12 +903,6 @@ public class GerenciadorVisual {
 
 	private void gerarPainelComandos() {
 
-		agressivo = new JButton() {
-			@Override
-			public String getText() {
-				return Lang.msg("134");
-			}
-		};
 		box = new JButton() {
 			@Override
 			public String getText() {
@@ -961,7 +965,7 @@ public class GerenciadorVisual {
 		});
 		panelControleBox.add(sliderPercentCombust);
 
-		panelControlePos = new JPanel(new GridLayout(2, 1, 30, 5));
+		panelControlePos = new JPanel(new GridLayout(4, 1));
 		panelControlePos.setBorder(new TitledBorder("") {
 			public String getTitle() {
 				return Lang.msg("TRACADO");
@@ -973,10 +977,24 @@ public class GerenciadorVisual {
 				return Lang.msg("autoPos");
 			}
 		};
+		agressivo = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("pilotagem");
+			}
+		};
+		alternaPiloto = new JButton("") {
+			@Override
+			public String getText() {
+				return Lang.msg("alternaPiloto");
+			}
+		};
+		panelControlePos.add(agressivo);
+		panelControlePos.add(alternaPiloto);
 		pos1 = new JButton("(|");
 		pos0 = new JButton("||");
 		pos2 = new JButton("|)");
-		JPanel volPanel = new JPanel(new GridLayout(1, 3, 5, 5));
+		JPanel volPanel = new JPanel(new GridLayout(1, 3));
 		volPanel.add(pos1);
 		volPanel.add(pos0);
 		volPanel.add(pos2);

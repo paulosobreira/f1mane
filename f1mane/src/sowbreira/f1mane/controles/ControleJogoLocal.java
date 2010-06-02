@@ -767,9 +767,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return undsComnustAbastecer;
 	}
 
-	public void saiuBox(Piloto piloto) {
-
-	}
 
 	public Volta obterMelhorVolta(Piloto pilotoSelecionado) {
 		return pilotoSelecionado.obterVoltaMaisRapida();

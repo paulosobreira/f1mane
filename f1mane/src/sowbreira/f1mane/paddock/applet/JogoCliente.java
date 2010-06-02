@@ -569,8 +569,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		safetyCar.setVaiProBox(safetySair);
 	}
 
-	public void saiuBox(Piloto piloto) {
-	}
 
 	public Volta obterMelhorVolta(Piloto pilotoSelecionado) {
 		return pilotoSelecionado.getMelhorVolta();

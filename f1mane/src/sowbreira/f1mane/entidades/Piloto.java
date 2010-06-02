@@ -1314,6 +1314,10 @@ public class Piloto implements Serializable {
 		setVoltaAtual(volta);
 	}
 
+	public boolean jaParouNoBox() {
+		return (System.currentTimeMillis() - getParouNoBoxMilis()) < 50000;
+	}
+
 	public boolean decrementaParadoBox() {
 		if (paradoBox < 0) {
 			paradoBox = 0;
@@ -1352,6 +1356,8 @@ public class Piloto implements Serializable {
 		}
 		msgsBox.put(Messagens.BOX_OCUPADO, null);
 		msgsBox.put(Messagens.PILOTO_EM_CAUTELA, null);
+		if (getNumeroVolta() > 0)
+			processaVoltaNovaBox(interfaceJogo);
 	}
 
 	public String obterTempoVoltaAtual() {
