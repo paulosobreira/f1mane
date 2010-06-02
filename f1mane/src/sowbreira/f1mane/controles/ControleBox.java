@@ -191,7 +191,7 @@ public class ControleBox {
 				}
 				ptosBox *= circuito.getMultiplciador();
 				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
-					piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
+					piloto.mudarTracado(Util.intervalo(0, 2), controleJogo);
 				}
 				int novosPtsBox = ptosBox + piloto.getPtosBox();
 				No nobox = (No) boxEquipes.get(piloto.getCarro());

@@ -244,7 +244,7 @@ public class ControleCorrida {
 								.getPtosPista()
 						&& !pilotoNaFrente.isDesqualificado()
 						&& (pilotoNaFrente.getPtosBox() == 0)) {
-					pilotoNaFrente.mudarPos(Util.intervalo(1, 2), controleJogo,
+					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2), controleJogo,
 							true);
 					if (piloto.getPosicao() < 8) {
 						if (Math.random() > 0.9) {
@@ -269,7 +269,7 @@ public class ControleCorrida {
 						while (novapos == pilotoNaFrente.getPosicao()) {
 							novapos = Util.intervalo(0, 2);
 						}
-						piloto.mudarPos(novapos, controleJogo, true);
+						piloto.mudarTracado(novapos, controleJogo, true);
 					} else {
 						if (carroAtraz != null) {
 							Piloto pilotoAtraz = carroAtraz.getPiloto();
@@ -283,9 +283,9 @@ public class ControleCorrida {
 						}
 						if (piloto.testeHabilidadePiloto() && !sendoPressionado
 								&& piloto.isAutoPos())
-							piloto.mudarPos(Util.intervalo(0, 2), controleJogo);
+							piloto.mudarTracado(Util.intervalo(0, 2), controleJogo);
 						else if (sendoPressionado && piloto.isAutoPos()) {
-							piloto.mudarPos(0, controleJogo);
+							piloto.mudarTracado(0, controleJogo);
 						}
 					}
 				}
@@ -371,11 +371,11 @@ public class ControleCorrida {
 					controleSafetyCar.safetyCarNaPista(piloto);
 				} else {
 					if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
-						if (Math.random() < controleJogo.getNiveljogo()) {
-							piloto.getCarro().setDurabilidadeAereofolio(
-									piloto.getCarro()
-											.getDurabilidadeAereofolio() - 1);
-						}
+						piloto
+								.getCarro()
+								.setDurabilidadeAereofolio(
+										piloto.getCarro()
+												.getDurabilidadeAereofolio() - 1);
 					} else {
 						piloto.getCarro()
 								.setDanificado(Carro.PERDEU_AEREOFOLIO);

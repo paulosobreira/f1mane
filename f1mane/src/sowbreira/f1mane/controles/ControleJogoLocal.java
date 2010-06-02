@@ -895,7 +895,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void mudarPos(int pos) {
 		if (pilotoJogador == null)
 			return;
-		pilotoJogador.mudarPos(pos, this);
+		pilotoJogador.mudarTracado(pos, this);
 	}
 
 	@Override
@@ -911,7 +911,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void mudarAutoPos() {
 		if (pilotoJogador == null)
 			return;
-		pilotoJogador.mudarAutoPos();
+		pilotoJogador.mudarAutoTracado();
 
 	}
 
