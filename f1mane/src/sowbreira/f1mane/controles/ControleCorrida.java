@@ -244,8 +244,8 @@ public class ControleCorrida {
 								.getPtosPista()
 						&& !pilotoNaFrente.isDesqualificado()
 						&& (pilotoNaFrente.getPtosBox() == 0)) {
-					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2), controleJogo,
-							true);
+					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2),
+							controleJogo, true);
 					if (piloto.getPosicao() < 8) {
 						if (Math.random() > 0.9) {
 							if (Math.random() > 0.5) {
@@ -283,7 +283,8 @@ public class ControleCorrida {
 						}
 						if (piloto.testeHabilidadePiloto() && !sendoPressionado
 								&& piloto.isAutoPos())
-							piloto.mudarTracado(Util.intervalo(0, 2), controleJogo);
+							piloto.mudarTracado(Util.intervalo(0, 2),
+									controleJogo);
 						else if (sendoPressionado && piloto.isAutoPos()) {
 							piloto.mudarTracado(0, controleJogo);
 						}
@@ -331,13 +332,15 @@ public class ControleCorrida {
 		if (piloto.getCarro().verificaDano()) {
 			return;
 		}
-		double fatorAcidente = .8;
+		double fatorAcidente = .9;
 		if (controleJogo.isChovendo()) {
-			fatorAcidente = .5;
+			fatorAcidente = .7;
 		}
 		if (piloto.isJogadorHumano()) {
 			fatorAcidente -= (controleJogo.getNiveljogo() / 10);
-			if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
+			if (piloto.getCarro().getDurabilidadeAereofolio() > 0
+					&& (Math.random() > fatorAcidente)
+					&& Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {
 				piloto.getCarro().setDurabilidadeAereofolio(
 						piloto.getCarro().getDurabilidadeAereofolio() - 1);
 				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
@@ -351,7 +354,10 @@ public class ControleCorrida {
 						pilotoNaFrente.getNome() }));
 			} else if (No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo())
 					|| No.CURVA_ALTA.equals(piloto.getNoAtual().getTipo())
-					&& (Math.random() > fatorAcidente && (piloto.getStress() > 70))) {
+					&& Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())
+					&& (piloto.getCarro().getDurabilidadeAereofolio() <= 0)
+					&& (Math.random() > fatorAcidente)
+					&& (piloto.getStress() > 70)) {
 				piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 				controleJogo.infoPrioritaria(Lang.msg("015", new String[] {
 						Html.superRed(piloto.getNome()),
