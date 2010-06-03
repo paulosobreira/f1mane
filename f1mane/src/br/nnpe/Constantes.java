@@ -32,7 +32,7 @@ public class Constantes {
 	public static final String FORM_TAB0 = "bl_formtab0";
 	public static final String RELATORIO = "R";
 	public static final int MAX_VOLTAS = 72;
-	public static final int MIN_VOLTAS = 22;
+	public static final int MIN_VOLTAS = 12;
 	public static final int MIN_CICLO = 50;
 	public static final int MAX_CICLO = 120;
 

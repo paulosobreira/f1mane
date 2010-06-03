@@ -1151,9 +1151,8 @@ public class Piloto implements Serializable {
 			}
 		} else {
 			if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
-				if (agressivo
-						&& (getTracado() == 0)
-						&& (Math.random() > carro.porcentagemDesgastePeneus() / 100.0)) {
+				if (agressivo && (getTracado() == 0)
+						&& (carro.porcentagemDesgastePeneus() < 25)) {
 					mudarTracado(Util.intervalo(1, 2), controleJogo, true);
 				}
 				novoModoAgressivo = false;
