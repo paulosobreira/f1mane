@@ -43,7 +43,6 @@ import sowbreira.f1mane.entidades.CorridaCampeonato;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.entidades.Volta;
-import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCampeonato;
@@ -105,7 +104,7 @@ public class ControleCampeonato {
 		for (Iterator iterator = circuitos.keySet().iterator(); iterator
 				.hasNext();) {
 			String key = (String) iterator.next();
-			defaultListModelCircuitos.addElement(key);
+			defaultListModelCircuitos.addElement(circuitos.get(key));
 		}
 
 		final JList listCircuitos = new JList(defaultListModelCircuitos);

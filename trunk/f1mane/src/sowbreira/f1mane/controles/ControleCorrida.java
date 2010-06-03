@@ -352,8 +352,8 @@ public class ControleCorrida {
 				controleJogo.infoPrioritaria(Lang.msg("109", new String[] {
 						Html.superRed(piloto.getNome()),
 						pilotoNaFrente.getNome() }));
-			} else if (No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo())
-					|| No.CURVA_ALTA.equals(piloto.getNoAtual().getTipo())
+			} else if ((No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo()) || No.CURVA_ALTA
+					.equals(piloto.getNoAtual().getTipo()))
 					&& Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())
 					&& (piloto.getCarro().getDurabilidadeAereofolio() <= 0)
 					&& (Math.random() > fatorAcidente)

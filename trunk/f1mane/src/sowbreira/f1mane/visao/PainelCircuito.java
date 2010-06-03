@@ -290,10 +290,7 @@ public class PainelCircuito extends JPanel {
 
 		g2d.setColor(Color.black);
 		g2d.setStroke(trilho);
-		List lista = controleJogo.getNosDaPista();
-		if (piloto.getPtosBox() > 0) {
-			lista = controleJogo.getNosDoBox();
-		}
+		List lista = piloto.obterPista(controleJogo);
 
 		int cont = noAtual.getIndex();
 
