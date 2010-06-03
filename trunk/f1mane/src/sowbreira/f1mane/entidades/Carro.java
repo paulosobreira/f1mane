@@ -57,7 +57,6 @@ public class Carro implements Serializable {
 	private boolean paneSeca;
 	private boolean recolhido;
 	private Piloto piloto;
-	private boolean fritouPneuNaUltimaCurvaBaixa;
 
 	public int getGiro() {
 		return giro;
@@ -566,7 +565,6 @@ public class Carro implements Serializable {
 		}
 		if (agressivo && no.verificaCruvaBaixa()) {
 			if (piloto.isJogadorHumano()) {
-				fritouPneuNaUltimaCurvaBaixa = true;
 				if (controleJogo.verificaNivelJogo()) {
 					piloto.incStress(Math.random() > .3 ? 1 : 0);
 				}
@@ -616,15 +614,6 @@ public class Carro implements Serializable {
 
 	public int porcentagemDesgasteMotor() {
 		return (100 * motor) / durabilidadeMaxMotor;
-	}
-
-	public boolean isTravouPneuNaUltimaCurvaBaixa() {
-		return fritouPneuNaUltimaCurvaBaixa;
-	}
-
-	public void setFritouPneuNaUltimaCurvaBaixa(
-			boolean lascouPneuNaUltimaCurvaBaixa) {
-		this.fritouPneuNaUltimaCurvaBaixa = lascouPneuNaUltimaCurvaBaixa;
 	}
 
 	public int porcentagemCombustivel() {
