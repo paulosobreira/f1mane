@@ -871,6 +871,10 @@ public class Piloto implements Serializable {
 
 		List lista = obterPista(controleJogo);
 
+		if (lista == null) {
+			return null;
+		}
+
 		int cont = noAtual.getIndex();
 
 		int carx = p.x;
@@ -991,11 +995,7 @@ public class Piloto implements Serializable {
 
 	public List obterPista(InterfaceJogo controleJogo) {
 
-		if (getPtosBox() > 0) {
-			return controleJogo.getNosDoBox();
-		} else {
-			return controleJogo.getNosDaPista();
-		}
+		return controleJogo.obterPista(this);
 	}
 
 	public Piloto() {

@@ -150,7 +150,7 @@ public class CarregadorRecursos {
 			IOException {
 		String val = "tn_2008voi-mclaren.gif";
 		System.out.println(Util.intervalo(0, 0));
-		
+
 		// gerarListaCarrosLado();
 		// gerarCarrosCima();
 		// JFrame frame = new JFrame();
@@ -343,9 +343,9 @@ public class CarregadorRecursos {
 		return retorno;
 	}
 
-	public List carregarListaCarros(String temporarada) throws IOException {
-		if (temporadas.get(temporarada) != null) {
-			List pilotos = (List) temporadas.get(temporarada);
+	public List carregarListaCarros(String temporada) throws IOException {
+		if (temporadas.get(temporada) != null) {
+			List pilotos = (List) temporadas.get(temporada);
 			Set carros = new HashSet();
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
@@ -365,10 +365,14 @@ public class CarregadorRecursos {
 			return carrosL;
 		}
 
+		return carregarListaCarrosArquivo(temporada);
+	}
+
+	public List carregarListaCarrosArquivo(String temporada) throws IOException {
 		List retorno = new ArrayList();
 		Properties properties = new Properties();
 
-		properties.load(recursoComoStreamIn("properties/" + temporarada
+		properties.load(recursoComoStreamIn("properties/" + temporada
 				+ "/carros.properties"));
 
 		Enumeration propNames = properties.propertyNames();
@@ -387,7 +391,7 @@ public class CarregadorRecursos {
 
 			String[] tnsCarros = values[4].split(";");
 
-			carro.setImg("carros/" + temporarada + "/"
+			carro.setImg("carros/" + temporada + "/"
 					+ tnsCarros[Util.intervalo(0, tnsCarros.length - 1)]);
 
 			Logger.logar(carro.getImg());
@@ -399,11 +403,11 @@ public class CarregadorRecursos {
 			blue = values[7];
 			carro.setCor2(new Color(Integer.parseInt(red), Integer
 					.parseInt(green), Integer.parseInt(blue)));
-			Logger.logar("carros/" + temporarada + "/" + carro.getNome()
-					+ ".png");
+			Logger
+					.logar("carros/" + temporada + "/" + carro.getNome()
+							+ ".png");
 			retorno.add(carro);
 		}
-
 		return retorno;
 	}
 

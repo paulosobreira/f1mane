@@ -1,5 +1,6 @@
 package sowbreira.f1mane.controles;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,6 +14,7 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
@@ -34,9 +36,9 @@ public class ControleBox {
 	private Map boxEquipes;
 	private Hashtable boxEquipesOcupado;
 	private Circuito circuito;
-	private ArrayList carrosBox;
+	private List carrosBox;
 
-	public ArrayList getCarrosBox() {
+	public List getCarrosBox() {
 		return carrosBox;
 	}
 
@@ -71,18 +73,12 @@ public class ControleBox {
 	private void geraBoxesEquipes() {
 		boxEquipes = new HashMap();
 		boxEquipesOcupado = new Hashtable();
-
-		List pilots = controleJogo.getPilotos();
-		Map mapCarros = new HashMap();
-		carrosBox = new ArrayList();
-		for (Iterator iterator = pilots.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (!mapCarros.containsKey(piloto.getCarro().getNome())) {
-				mapCarros.put(piloto.getCarro().getNome(), piloto.getCarro()
-						.getNome());
-				carrosBox.add(piloto.getCarro());
-			}
-
+		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
+		try {
+			carrosBox = carregadorRecursos
+					.carregarListaCarrosArquivo(controleJogo.getTemporada());
+		} catch (IOException e) {
+			Logger.logarExept(e);
 		}
 		Collections.sort(carrosBox, new Comparator() {
 			public int compare(Object arg0, Object arg1) {

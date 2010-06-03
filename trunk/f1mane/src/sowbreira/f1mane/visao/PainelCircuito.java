@@ -292,6 +292,9 @@ public class PainelCircuito extends JPanel {
 		g2d.setStroke(trilho);
 		List lista = piloto.obterPista(controleJogo);
 
+		if (lista == null) {
+			return;
+		}
 		int cont = noAtual.getIndex();
 
 		int width = (int) (carroCima.getWidth());

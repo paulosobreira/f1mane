@@ -223,4 +223,7 @@ public interface InterfaceJogo {
 	public void verificaAcidenteUltrapassagem(boolean agressivo, Piloto piloto,
 			Piloto pilotoFrente);
 
+	public List obterPista(Piloto piloto);
+	
+
 }

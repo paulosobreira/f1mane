@@ -8,10 +8,12 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
@@ -35,6 +37,8 @@ public abstract class ControleRecursos {
 	protected Map mapaIdsNos = new HashMap();
 	protected Map mapaNosIds = new HashMap();
 	private String seasson;
+	private Set idsNoPista = new HashSet();
+	private Set idsNoBox = new HashSet();
 	private static Map bufferCarrosCima = new HashMap();
 	private static Map bufferCarrosCimaSemAreofolio = new HashMap();
 
@@ -157,13 +161,25 @@ public abstract class ControleRecursos {
 			Integer pistaId = new Integer(contId++);
 			mapaIdsNos.put(pistaId, noPsita);
 			mapaNosIds.put(noPsita, pistaId);
+			idsNoPista.add(pistaId);
 		}
 		for (Iterator iter = nosDoBox.iterator(); iter.hasNext();) {
 			No noDoBox = (No) iter.next();
 			Integer boxId = new Integer(contId++);
 			mapaIdsNos.put(boxId, noDoBox);
 			mapaNosIds.put(noDoBox, boxId);
+			idsNoBox.add(boxId);
 		}
+	}
+
+	public List obterPista(Piloto piloto) {
+		No noPiloto = piloto.getNoAtual();
+		if (idsNoPista.contains(mapaNosIds.get(noPiloto))) {
+			return nosDaPista;
+		} else if (idsNoBox.contains(mapaNosIds.get(noPiloto))) {
+			return nosDoBox;
+		}
+		return null;
 	}
 
 	public static void main(String[] args) {
