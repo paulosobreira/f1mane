@@ -140,7 +140,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		srcFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		testePistaVetorizado = new TestePistaVetorizado(this, circuito);
 		iniciaEditor(srcFrame);
-		vetorizarPista();
+		vetorizarPistaCarregado();
 		srcFrame.pack();
 	}
 
@@ -920,4 +920,49 @@ public class MainPanelEditorVetorizado extends JPanel {
 
 	}
 
+	private void vetorizarPistaCarregado() {
+		testePistaVetorizado.pararTeste();
+		if (circuito.getLadoBox() == 1) {
+			ladoBoxCombo.setSelectedItem(LADO_COMBO_1);
+		} else {
+			ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
+		}
+		Cursor cursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+		multiplicadorPista = circuito.getMultiplciador();
+		multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
+		if (multiplicadorPista == 0) {
+			multiplicadorPista = 20;
+		}
+		if (multiplicadorLarguraPista == 0) {
+			multiplicadorLarguraPista = 1.1;
+		}
+		srcFrame.setCursor(cursor);
+		circuito.vetorizarPista(multiplicadorPista, multiplicadorLarguraPista);
+
+		tamanhoPistaText.setText(String.valueOf(multiplicadorPista));
+		larguraPistaText.setText(String.valueOf(multiplicadorLarguraPista));
+		cursor = Cursor.getDefaultCursor();
+		srcFrame.setCursor(cursor);
+
+		List l = circuito.getPistaFull();
+
+		for (Iterator iterator = l.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point point = no.getPoint();
+			if (point.x > mx) {
+				mx = point.x;
+			}
+			if (point.y > my) {
+				my = point.y;
+			}
+
+		}
+
+		mx += 300;
+		my += 300;
+		srcFrame.pack();
+		No n1 = (No) l.get(0);
+		centralizarPonto(n1.getPoint());
+
+	}
 }

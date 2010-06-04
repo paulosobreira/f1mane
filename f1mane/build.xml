@@ -43,6 +43,7 @@
 				<exclude name="**/*.java" />
 				<exclude name="**/*.jpg" />
 				<exclude name="**/*.db" />
+				<exclude name="sowbreira/f1mane/recursos/carros/**/*.gif" />
 			</fileset>
 		</copy>
 	</target>

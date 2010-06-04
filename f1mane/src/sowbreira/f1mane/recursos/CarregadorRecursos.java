@@ -225,7 +225,7 @@ public class CarregadorRecursos {
 					String red = values[1];
 					String green = values[2];
 					String blue = values[3];
-					carro.setImg("carros/" + temporarada + "/" + values[4]);
+					// carro.setImg("carros/" + temporarada + "/" + values[4]);
 					carro.setCor1(new Color(Integer.parseInt(red), Integer
 							.parseInt(green), Integer.parseInt(blue)));
 
@@ -237,8 +237,10 @@ public class CarregadorRecursos {
 					BufferedImage carroCima = CarregadorRecursos
 							.carregaImg("CarroCima.png");
 
-					BufferedImage cor1 = gerarCoresCarros(carro.getCor1(), 1);
-					BufferedImage cor2 = gerarCoresCarros(carro.getCor2(), 2);
+					BufferedImage cor1 = gerarCoresCarros(carro.getCor1(),
+							"CarroCimaC1.png");
+					BufferedImage cor2 = gerarCoresCarros(carro.getCor2(),
+							"CarroCimaC2.png");
 					Graphics graphics = carroCima.getGraphics();
 					graphics.drawImage(cor2, 0, 0, null);
 					graphics.drawImage(cor1, 0, 0, null);
@@ -261,9 +263,9 @@ public class CarregadorRecursos {
 
 	}
 
-	public static BufferedImage gerarCoresCarros(Color corPintar, int cor) {
+	public static BufferedImage gerarCoresCarros(Color corPintar, String carro) {
 		ImageIcon img = new ImageIcon(CarregadorRecursos.class
-				.getResource("CarroCimaC" + cor + ".png"));
+				.getResource(carro));
 
 		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
 				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -276,8 +278,8 @@ public class CarregadorRecursos {
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
-		for (int i = 0; i < 176; i++) {
-			for (int j = 0; j < 176; j++) {
+		for (int i = 0; i < img.getIconWidth(); i++) {
+			for (int j = 0; j < img.getIconHeight(); j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 				Color c = new Color(argbArray[0], argbArray[1], argbArray[2]);
@@ -391,21 +393,15 @@ public class CarregadorRecursos {
 
 			String[] tnsCarros = values[4].split(";");
 
-			carro.setImg("carros/" + temporada + "/"
-					+ tnsCarros[Util.intervalo(0, tnsCarros.length - 1)]);
-
-			Logger.logar(carro.getImg());
+			// carro.setImg("carros/" + temporada + "/"
+			// + tnsCarros[Util.intervalo(0, tnsCarros.length - 1)]);
 			carro.setCor1(new Color(Integer.parseInt(red), Integer
 					.parseInt(green), Integer.parseInt(blue)));
-
 			red = values[5];
 			green = values[6];
 			blue = values[7];
 			carro.setCor2(new Color(Integer.parseInt(red), Integer
 					.parseInt(green), Integer.parseInt(blue)));
-			Logger
-					.logar("carros/" + temporada + "/" + carro.getNome()
-							+ ".png");
 			retorno.add(carro);
 		}
 		return retorno;
@@ -430,7 +426,7 @@ public class CarregadorRecursos {
 		carroNovo.setNome(carro.getNome());
 		carroNovo.setCor1(carro.getCor1());
 		carroNovo.setCor2(carro.getCor2());
-		carroNovo.setImg(carro.getImg());
+		// carroNovo.setImg(carro.getImg());
 		carroNovo.setPiloto(piloto);
 		carroNovo.setPotencia(carro.getPotencia()
 				+ (Math.random() > .5 ? -5 : 5));
