@@ -76,7 +76,8 @@ public class ControleBox {
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
 		try {
 			carrosBox = carregadorRecursos
-					.carregarListaCarrosArquivo(controleJogo.getTemporada());
+					.carregarListaCarrosArquivo(controleJogo.getTemporada()
+							.replaceAll("\\*", ""));
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
@@ -536,10 +537,11 @@ public class ControleBox {
 	}
 
 	public static void main(String[] args) {
-		int val = 1 + ((int) (Math.random() * 3));
-		Logger.logar(val);
-		Hashtable hashtable = new Hashtable();
-		hashtable.put("someval", null);
+		// int val = 1 + ((int) (Math.random() * 3));
+		// Logger.logar(val);
+		// Hashtable hashtable = new Hashtable();
+		// hashtable.put("someval", null);
+		System.out.println("asdk*hjsak".replaceAll("\\*", ""));
 	}
 
 	public No getSaidaBox() {

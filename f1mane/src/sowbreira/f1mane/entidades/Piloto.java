@@ -846,8 +846,7 @@ public class Piloto implements Serializable {
 					- piloto.getNoAtual().getIndex()) > Carro.MEIA_LARGURA;
 
 			if (intercecionou && msmPista && nosPorximos
-					&& getNoAtual().getIndex() < piloto.getNoAtual().getIndex()
-					&& piloto.getPtosBox() == 0) {
+					&& getNoAtual().getIndex() < piloto.getNoAtual().getIndex()) {
 				if (piloto.isDesqualificado()) {
 					int novoTracado = 0;
 					while (novoTracado == piloto.getTracado()) {
@@ -856,7 +855,7 @@ public class Piloto implements Serializable {
 					}
 					mudarTracado(novoTracado, controleJogo, true);
 				}
-				if (getTracado() == piloto.getTracado())
+				if (getTracado() == piloto.getTracado() && getPtosBox() == 0)
 					controleJogo.verificaAcidenteUltrapassagem(this
 							.isAgressivo(), this, piloto);
 				return true;

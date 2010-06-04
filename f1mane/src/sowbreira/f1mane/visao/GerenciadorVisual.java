@@ -1739,14 +1739,14 @@ public class GerenciadorVisual {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			if (piloto.getPosicao() % 2 == 0) {
 				ptosPilotos.add(new Point(midPainel + 30, iniY2));
-				iniY2 += 30;
+				iniY2 += 40;
 			} else {
 				ptosPilotos.add(new Point(midPainel - 120, iniY1));
-				iniY1 += 30;
+				iniY1 += 40;
 			}
 		}
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			Logger.logarExept(e);
 		}

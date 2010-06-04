@@ -371,7 +371,7 @@ public class CarregadorRecursos {
 	public List carregarListaCarrosArquivo(String temporada) throws IOException {
 		List retorno = new ArrayList();
 		Properties properties = new Properties();
-
+		Logger.logar("carregarListaCarrosArquivo temporada " + temporada);
 		properties.load(recursoComoStreamIn("properties/" + temporada
 				+ "/carros.properties"));
 
