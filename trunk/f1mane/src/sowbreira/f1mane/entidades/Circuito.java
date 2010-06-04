@@ -20,8 +20,8 @@ public class Circuito implements Serializable {
 	private List box = new ArrayList();
 	private transient List boxFull = new ArrayList();
 	private transient List boxKey = new ArrayList();
-	private double multiplicadorPista = 1;
-	private double multiplicadorLarguraPista = 1.1;
+	private double multiplicadorPista;
+	private double multiplicadorLarguraPista;
 	private int ladoBox = 0;
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;

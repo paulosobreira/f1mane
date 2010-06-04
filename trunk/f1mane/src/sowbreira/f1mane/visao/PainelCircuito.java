@@ -64,7 +64,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
 	public final static BufferedImage carroimgDano = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("CarroLado.png");
+			.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png");
 	public final static BufferedImage helmetPiloto = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("helmet.gif");
 	public final static BufferedImage scimg = CarregadorRecursos
@@ -274,10 +274,7 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
-		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
-			carroCima = controleJogo.obterCarroCimaSemAreofolio(piloto);
 
-		}
 		if (carroCima == null) {
 			return;
 		}
@@ -1208,8 +1205,7 @@ public class PainelCircuito extends JPanel {
 		if (pointQualificacao == null) {
 			return;
 		}
-		BufferedImage carroimg = CarregadorRecursos
-				.carregaImgCarro(pilotQualificacao.getCarro().getImg());
+		BufferedImage carroimg = controleJogo.obterCarroLado(pilotQualificacao);
 		g2d.drawImage(carroimg, null, pointQualificacao.x, pointQualificacao.y);
 		int newY = limitesViewPort.y;
 		synchronized (mapDesenharQualificacao) {
@@ -1218,9 +1214,7 @@ public class PainelCircuito extends JPanel {
 					.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
 				Point point = (Point) mapDesenharQualificacao.get(piloto);
-				carroimg = CarregadorRecursos
-						.carregaBufferedImageTranspareciaBranca(piloto
-								.getCarro().getImg());
+				carroimg = controleJogo.obterCarroLado(piloto);
 				newY = carroimg.getHeight() > 36 ? point.y
 						- (carroimg.getHeight() - 36) : point.y;
 				g2d.drawImage(carroimg, null, limitesViewPort.x + point.x,
@@ -1272,7 +1266,7 @@ public class PainelCircuito extends JPanel {
 		int newY = 0;
 		Carro carroFrente = controleJogo.obterCarroNaFrente(psel);
 		if (carroFrente != null) {
-			carroimg = CarregadorRecursos.carregaImgCarro(carroFrente.getImg());
+			carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
 			carSelX += carroimg.getWidth() / 2;
 
 			bounce = calculaBounce(carroFrente);
@@ -1330,7 +1324,7 @@ public class PainelCircuito extends JPanel {
 			}
 
 		}
-		carroimg = CarregadorRecursos.carregaImgCarro(psel.getCarro().getImg());
+		carroimg = controleJogo.obterCarroLado(psel);
 		carSelX = limitesViewPort.x + (limitesViewPort.width / 2)
 				- (carroimg.getWidth() / 2);
 		carSelY = limitesViewPort.y + limitesViewPort.height - 35;
@@ -1353,7 +1347,7 @@ public class PainelCircuito extends JPanel {
 
 		Carro carroAtraz = controleJogo.obterCarroAtraz(psel);
 		if (carroAtraz != null) {
-			carroimg = CarregadorRecursos.carregaImgCarro(carroAtraz.getImg());
+			carroimg = controleJogo.obterCarroLado(carroAtraz.getPiloto());
 			carSelX = limitesViewPort.x + limitesViewPort.width
 					+ -carroimg.getWidth() - carroimg.getWidth() / 2;
 			bounce = calculaBounce(carroAtraz);

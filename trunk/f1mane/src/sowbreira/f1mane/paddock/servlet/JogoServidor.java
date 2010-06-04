@@ -348,10 +348,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 								carreiraDadosSrv.getPtsCarro());
 						piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
 						piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
-						if (!Util.isNullOrEmpty(carreiraDadosSrv.getImgCarro())) {
-							piloto.getCarro().setImg(
-									carreiraDadosSrv.getImgCarro());
-						}
+//						if (!Util.isNullOrEmpty(carreiraDadosSrv.getImgCarro())) {
+//							piloto.getCarro().setImg(
+//									carreiraDadosSrv.getImgCarro());
+//						}
 					}
 				}
 			}

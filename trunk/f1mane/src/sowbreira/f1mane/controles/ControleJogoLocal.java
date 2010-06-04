@@ -767,7 +767,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return undsComnustAbastecer;
 	}
 
-
 	public Volta obterMelhorVolta(Piloto pilotoSelecionado) {
 		return pilotoSelecionado.obterVoltaMaisRapida();
 	}
@@ -927,4 +926,5 @@ public class ControleJogoLocal extends ControleRecursos implements
 				pilotoFrente);
 
 	}
+
 }

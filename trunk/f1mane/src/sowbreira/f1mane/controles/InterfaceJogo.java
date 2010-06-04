@@ -218,12 +218,11 @@ public interface InterfaceJogo {
 
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente);
 
-	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto);
-
 	public void verificaAcidenteUltrapassagem(boolean agressivo, Piloto piloto,
 			Piloto pilotoFrente);
 
 	public List obterPista(Piloto piloto);
-	
+
+	public BufferedImage obterCarroLado(Piloto piloto);
 
 }

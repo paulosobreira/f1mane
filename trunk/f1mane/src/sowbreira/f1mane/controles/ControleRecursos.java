@@ -41,17 +41,63 @@ public abstract class ControleRecursos {
 	private Set idsNoBox = new HashSet();
 	private static Map bufferCarrosCima = new HashMap();
 	private static Map bufferCarrosCimaSemAreofolio = new HashMap();
+	private static Map bufferCarrosLado = new HashMap();
+	private static Map bufferCarrosLadoSemAreofolio = new HashMap();
 
-	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto) {
+	private BufferedImage obterCarroLadoSemAreofolio(Piloto piloto) {
+		Carro carro = piloto.getCarro();
+		BufferedImage carroLado = (BufferedImage) bufferCarrosLadoSemAreofolio
+				.get(carro.getNome());
+		if (carroLado == null) {
+			carroLado = CarregadorRecursos.carregaImgSemCache("CarroLado.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor1(), "CarroLadoC1.png");
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor2(), "CarroLadoC3.png");
+			Graphics graphics = carroLado.getGraphics();
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.dispose();
+			bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
+					.geraTransparencia(carroLado, Color.WHITE));
+		}
+		return carroLado;
+	}
+
+	public BufferedImage obterCarroLado(Piloto piloto) {
+		Carro carro = piloto.getCarro();
+		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
+			return obterCarroLadoSemAreofolio(piloto);
+
+		}
+		BufferedImage carroLado = (BufferedImage) bufferCarrosLado.get(carro
+				.getNome());
+		if (carroLado == null) {
+			carroLado = CarregadorRecursos.carregaImgSemCache("CarroLado.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor1(), "CarroLadoC1.png");
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor2(), "CarroLadoC2.png");
+			Graphics graphics = carroLado.getGraphics();
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.dispose();
+			bufferCarrosLado.put(carro.getNome(), ImageUtil.geraTransparencia(
+					carroLado, Color.WHITE));
+		}
+		return carroLado;
+	}
+
+	private BufferedImage obterCarroCimaSemAreofolio(Piloto piloto) {
 		Carro carro = piloto.getCarro();
 		BufferedImage carroCima = (BufferedImage) bufferCarrosCimaSemAreofolio
 				.get(carro.getNome());
 		if (carroCima == null) {
 			carroCima = CarregadorRecursos.carregaImgSemCache("CarroCima.png");
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
-					.getCor1(), 1);
+					.getCor1(), "CarroCimaC1.png");
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
-					.getCor2(), 3);
+					.getCor2(), "CarroCimaC3.png");
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
@@ -64,14 +110,18 @@ public abstract class ControleRecursos {
 
 	public BufferedImage obterCarroCima(Piloto piloto) {
 		Carro carro = piloto.getCarro();
+		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
+			return obterCarroCimaSemAreofolio(piloto);
+
+		}
 		BufferedImage carroCima = (BufferedImage) bufferCarrosCima.get(carro
 				.getNome());
 		if (carroCima == null) {
 			carroCima = CarregadorRecursos.carregaImgSemCache("CarroCima.png");
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
-					.getCor1(), 1);
+					.getCor1(), "CarroCimaC1.png");
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
-					.getCor2(), 2);
+					.getCor2(), "CarroCimaC2.png");
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);

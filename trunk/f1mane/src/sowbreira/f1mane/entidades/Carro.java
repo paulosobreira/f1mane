@@ -38,7 +38,6 @@ public class Carro implements Serializable {
 	public static final int ALTURA = 34;
 	public static final int MEIA_LARGURA = 44;
 	public static final int MEIA_ALTURA = 17;
-	private String img;
 	private Color cor1;
 	private Color cor2;
 	private String danificado;
@@ -87,14 +86,6 @@ public class Carro implements Serializable {
 
 	public void setRecolhido(boolean recolhido) {
 		this.recolhido = recolhido;
-	}
-
-	public String getImg() {
-		return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
 	}
 
 	public void setMotor(int motor) {
