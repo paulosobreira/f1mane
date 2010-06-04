@@ -197,12 +197,14 @@ public class MonitorJogo implements Runnable {
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			verificaEstadoJogo();
 			iniciaJalena();
-			jogoCliente.atualizaPainel();
+
 			if (monitorQualificacao == null) {
 				monitorQualificacao = new Thread(new MonitorQualificacao(
 						jogoCliente));
 				atualizarDados();
 				jogoCliente.preparaGerenciadorVisual();
+				jogoCliente.atualizaPainel();
+				sleep(1000);
 				monitorQualificacao.start();
 			}
 			sleep(100);
