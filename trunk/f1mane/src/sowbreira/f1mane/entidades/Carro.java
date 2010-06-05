@@ -366,10 +366,6 @@ public class Carro implements Serializable {
 		int novoModDano = novoModificador;
 		if (giro == 9) {
 			valDesgaste = ((testePotencia() ? 3 : 4) + novoModDano);
-			if (piloto.isJogadorHumano()) {
-				valDesgaste += 1;
-			}
-
 		} else if (giro == 5) {
 			valDesgaste = ((testePotencia() ? 1 : 2) + novoModDano);
 		} else {
@@ -465,17 +461,27 @@ public class Carro implements Serializable {
 			}
 		}
 		double fator = Math.random();
+		if (controleJogo.isSemReabastacimento()) {
+			fator -= 0.4;
+		}
+		if (fator < 0) {
+			fator = 0.1;
+		}
+
 		int valConsumo = 0;
 		if (agressivo) {
 			valConsumo = ((fator > .5) ? 3 : 2);
 		} else {
 			valConsumo = ((fator > .5) ? 2 : 1);
 		}
-		if (giro == 1) {
-			valConsumo -= ((fator > .5) ? 2 : 1);
-		} else if (giro == 9) {
+		if (giro == GIRO_MIN_VAL) {
+			valConsumo += ((fator > .5) ? 2 : 1);
+		} else if (giro == GIRO_NOR_VAL) {
 			valConsumo += ((fator > .5) ? 3 : 2);
+		} else if (giro == GIRO_MAX_VAL) {
+			valConsumo += ((fator > .5) ? 4 : 3);
 		}
+
 		if (valConsumo <= 0) {
 			if (Math.random() > .5) {
 				valConsumo = 1;
