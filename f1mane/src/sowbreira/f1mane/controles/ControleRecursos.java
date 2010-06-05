@@ -55,8 +55,8 @@ public abstract class ControleRecursos {
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
 					.getCor2(), "CarroLadoC3.png");
 			Graphics graphics = carroLado.getGraphics();
-			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
+			graphics.drawImage(cor2, 0, 0, null);
 			graphics.dispose();
 			bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
 					.geraTransparencia(carroLado, Color.WHITE));
@@ -79,8 +79,8 @@ public abstract class ControleRecursos {
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
 					.getCor2(), "CarroLadoC2.png");
 			Graphics graphics = carroLado.getGraphics();
-			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
+			graphics.drawImage(cor2, 0, 0, null);
 			graphics.dispose();
 			bufferCarrosLado.put(carro.getNome(), ImageUtil.geraTransparencia(
 					carroLado, Color.WHITE));

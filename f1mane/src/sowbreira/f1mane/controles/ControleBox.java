@@ -373,18 +373,15 @@ public class ControleBox {
 
 			return;
 		}
-		if (controleJogo.isSemReabastacimento()) {
+
+		if ((Math.random() > .5) && (posicao > 8)) {
+			piloto.setSetUpIncial(UMA_PARADA);
 			setupParadaUnica(piloto);
+
 		} else {
-			if ((Math.random() > .5) && (posicao > 8)) {
-				piloto.setSetUpIncial(UMA_PARADA);
-				setupParadaUnica(piloto);
+			piloto.setSetUpIncial(UMA_OU_MAIS_PARADAS);
+			setupDuasOuMaisParadas(piloto);
 
-			} else {
-				piloto.setSetUpIncial(UMA_OU_MAIS_PARADAS);
-				setupDuasOuMaisParadas(piloto);
-
-			}
 		}
 		if (controleJogo.isSemReabastacimento()) {
 			piloto.getCarro().setCombustivel(controleCorrida.getTanqueCheio());
@@ -471,8 +468,15 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_MOLE,
-					controleCorrida.getDistaciaCorrida());
+			if (controleJogo.isSemReabastacimento()
+					&& piloto.getNumeroVolta() > 1)
+				piloto.getCarro().trocarPneus(controleJogo,
+						Carro.TIPO_PNEU_DURO,
+						controleCorrida.getDistaciaCorrida());
+			else
+				piloto.getCarro().trocarPneus(controleJogo,
+						Carro.TIPO_PNEU_MOLE,
+						controleCorrida.getDistaciaCorrida());
 		}
 		if (piloto.testeHabilidadePiloto())
 			processarTipoAsaAutomatico(piloto);
@@ -513,7 +517,6 @@ public class ControleBox {
 		if (diffCombust < 0) {
 			return 0;
 		}
-
 		piloto.getCarro().setCombustivel(
 				qtddeCombust + piloto.getCarro().getCombustivel());
 

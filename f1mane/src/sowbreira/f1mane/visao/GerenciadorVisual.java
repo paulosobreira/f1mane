@@ -1644,7 +1644,8 @@ public class GerenciadorVisual {
 			};
 			spinnerCombustivel = new JSpinner();
 			spinnerCombustivel.setValue(new Integer(50));
-
+			if (semReabastacimento.isSelected())
+				spinnerCombustivel.setValue(new Integer(100));
 			painelJogSel.add(tipoPneu);
 			painelJogSel.add(boxPneuInicial);
 			painelJogSel.add(tipoAsa);

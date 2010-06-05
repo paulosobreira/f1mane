@@ -307,11 +307,11 @@ public class Carro implements Serializable {
 			No no, InterfaceJogo controleJogo) {
 		novoModificador = calculaModificadorPneu(novoModificador, agressivo,
 				no, controleJogo);
-		novoModificador = calculaModificadorCombustivel(novoModificador,
-				agressivo, no, controleJogo);
 		novoModificador = calculaModificadorAsaGiro(novoModificador, no,
 				controleJogo);
 		calculaDesgasteMotor(novoModificador, agressivo, no, controleJogo);
+		novoModificador = calculaModificadorCombustivel(novoModificador,
+				agressivo, no, controleJogo);
 		return novoModificador;
 	}
 
@@ -368,22 +368,10 @@ public class Carro implements Serializable {
 			valDesgaste = ((testePotencia() ? 3 : 4) + novoModDano);
 			if (piloto.isJogadorHumano()) {
 				valDesgaste += 1;
-				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-					valDesgaste += 1;
-				}
 			}
 
 		} else if (giro == 5) {
 			valDesgaste = ((testePotencia() ? 1 : 2) + novoModDano);
-			if (piloto.isJogadorHumano()) {
-				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-					valDesgaste += 1;
-				}
-				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()
-						&& valDesgaste > 1) {
-					valDesgaste -= 1;
-				}
-			}
 		} else {
 			valDesgaste = ((testePotencia() ? 0 : 1));
 			if (!piloto.isAgressivo()) {
