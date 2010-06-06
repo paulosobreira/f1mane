@@ -188,10 +188,10 @@ public class ControleCorrida {
 		if (indFrenteCarro > listaPiloto.size()) {
 			indFrenteCarro = indFrenteCarro - (listaPiloto.size() - 1);
 		}
-
 		if (controleJogo.isSafetyCarNaPista()) {
-			if ((indFrenteCarro + 2 * Carro.LARGURA) > controleJogo
-					.getSafetyCar().getNoAtual().getIndex()) {
+			if ((indFrenteCarro + (3 * Carro.LARGURA)) > controleJogo
+					.getSafetyCar().getNoAtual().getIndex()
+					&& (1 == piloto.getPosicao())) {
 				return ganho * 0.3;
 			}
 		}
@@ -218,6 +218,7 @@ public class ControleCorrida {
 				indTrazCarroFrente = indFrenteCarro
 						- (listaCarroFrente.size() - 1);
 			}
+
 			double multi = 1.1;
 
 			if (No.LARGADA.equals(noAtualCarro.getTipo())
@@ -233,6 +234,12 @@ public class ControleCorrida {
 			if ((Math.abs(indFrenteCarro - indTrazCarroFrente) < (multi * Carro.MEIA_LARGURA))
 					&& (pilotoNaFrente.getTracado() == piloto.getTracado() || controleJogo
 							.isSafetyCarNaPista())) {
+				if (controleJogo.isSafetyCarNaPista()) {
+					if ((pilotoNaFrente.getPosicao() - 1) == piloto
+							.getPosicao()) {
+						return ganho * 0.1;
+					}
+				}
 				if (Math.abs(indFrenteCarro - indTrazCarroFrente) < (Carro.MEIA_LARGURA)) {
 					ajusteUltrapassagem(piloto, pilotoNaFrente);
 				}
@@ -264,7 +271,17 @@ public class ControleCorrida {
 				} else {
 					boolean sendoPressionado = false;
 					Carro carroAtraz = controleJogo.obterCarroAtraz(piloto);
-					if (pilotoNaFrente.isDesqualificado()) {
+					if (pilotoNaFrente.isDesqualificado()
+							|| Carro.EXPLODIU_MOTOR.equals(pilotoNaFrente
+									.getCarro().getDanificado())
+							|| Carro.PANE_SECA.equals(pilotoNaFrente.getCarro()
+									.getDanificado())
+							|| Carro.PERDEU_AEREOFOLIO.equals(pilotoNaFrente
+									.getCarro().getDanificado())
+							|| Carro.PNEU_FURADO.equals(pilotoNaFrente
+									.getCarro().getDanificado())
+							|| Carro.BATEU_FORTE.equals(pilotoNaFrente
+									.getCarro().getDanificado())) {
 						int novapos = Util.intervalo(0, 2);
 						while (novapos == pilotoNaFrente.getPosicao()) {
 							novapos = Util.intervalo(0, 2);
@@ -332,9 +349,14 @@ public class ControleCorrida {
 		if (piloto.getCarro().verificaDano()) {
 			return;
 		}
-		double fatorAcidente = .9;
+
+		double fatorAcidente = .5;
+		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
+			fatorAcidente += .1;
+		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
+			fatorAcidente -= .1;
 		if (controleJogo.isChovendo()) {
-			fatorAcidente = .7;
+			fatorAcidente -= .3;
 		}
 		if (piloto.isJogadorHumano()) {
 			fatorAcidente -= (controleJogo.getNiveljogo() / 10);
@@ -343,11 +365,11 @@ public class ControleCorrida {
 				piloto.getCarro().setDurabilidadeAereofolio(
 						piloto.getCarro().getDurabilidadeAereofolio() - 1);
 				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
-					piloto.incStress(40);
-				if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
 					piloto.incStress(30);
-				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
+				if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
 					piloto.incStress(20);
+				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
+					piloto.incStress(10);
 				controleJogo.infoPrioritaria(Lang.msg("109", new String[] {
 						Html.superRed(piloto.getNome()),
 						pilotoNaFrente.getNome() }));
