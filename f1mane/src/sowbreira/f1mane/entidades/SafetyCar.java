@@ -12,9 +12,20 @@ public class SafetyCar implements Serializable {
 	private No noAtual = new No();
 	private int ptosPista;
 	private int saiuVolta;
+	private int tracado;
 	private boolean vaiProBox;
 	private boolean naPista;
 	private List mediaSc = new ArrayList();
+
+	
+	
+	public int getTracado() {
+		return tracado;
+	}
+
+	public void setTracado(int tracado) {
+		this.tracado = tracado;
+	}
 
 	public List getMediaSc() {
 		return mediaSc;

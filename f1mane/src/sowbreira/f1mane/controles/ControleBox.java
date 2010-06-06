@@ -469,7 +469,9 @@ public class ControleBox {
 					controleCorrida.getDistaciaCorrida());
 		} else {
 			if (controleJogo.isSemReabastacimento()
-					&& piloto.getNumeroVolta() > 1)
+					&& piloto.getNumeroVolta() > 1
+					&& piloto.getNumeroVolta() < (controleJogo
+							.getQtdeTotalVoltas() / 2))
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
 						controleCorrida.getDistaciaCorrida());

@@ -4,7 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import br.nnpe.Html;
+import br.nnpe.Util;
 
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
@@ -71,10 +73,13 @@ public class ControleSafetyCar {
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
 				.random() > .5) ? 3 : 2)
-				: (Math.random() > .9) ? 3 : 2;
+				: (Math.random() > .5) ? 4 : 3;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 50)) {
-			bonus = (Math.random() > .7) ? 2 : 1;
+			bonus += (Math.random() > .5) ? 2 : 1;
+			safetyCar.setTracado(0);
+		}else{
+			bonus += (Math.random() > .5) ? 4 : 3;
 		}
 		if (safetyCar.isVaiProBox()) {
 			bonus = (Math.random() > .5) ? 2 : 1;
@@ -91,7 +96,41 @@ public class ControleSafetyCar {
 			index = diff;
 		}
 		safetyCar.setPtosPista(safetyCar.getPtosPista() + bonus);
+		if (verificaTracadoPilto(index)) {
+			safetyCar.setTracado(1);
+		}
 		safetyCar.setNoAtual((No) pista.get(index));
+	}
+
+	private boolean verificaTracadoPilto(int indice) {
+		List pilotos = controleJogo.getPilotos();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (this.equals(piloto)
+					|| piloto.getTracado() != safetyCar.getTracado()) {
+				continue;
+			}
+
+			int indiceCarro = piloto.getNoAtual().getIndex();
+
+			int traz = indiceCarro - Carro.LARGURA;
+			int frente = indiceCarro + Carro.LARGURA;
+
+			List lista = piloto.obterPista(controleJogo);
+
+			if (traz < 0) {
+				traz = (lista.size() - 1) + traz;
+			}
+			if (frente > (lista.size() - 1)) {
+				frente = (frente - (lista.size() - 1)) - 1;
+			}
+
+			if (indice >= traz && indice <= frente) {
+				return true;
+			}
+		}
+		return false;
+
 	}
 
 	private int calculaMediaSC(int bonus) {
@@ -111,7 +150,6 @@ public class ControleSafetyCar {
 	public SafetyCar getSafetyCar() {
 		return safetyCar;
 	}
-
 
 	public boolean verificaPoleFrenteSafety(Piloto piloto) {
 		return piloto.getPtosPista() >= safetyCar.getPtosPista();

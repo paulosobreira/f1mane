@@ -551,6 +551,9 @@ public class Piloto implements Serializable {
 	public void processaVelocidade(int index, No no) {
 		if (!InterfaceJogo.VALENDO)
 			return;
+		if (index > 3) {
+			index = 3;
+		}
 		if (velocidadeLargada < 50) {
 			velocidade += ((int) (Math.random() * (20 * index)));
 			velocidadeLargada = velocidade;
@@ -647,8 +650,9 @@ public class Piloto implements Serializable {
 		}
 
 		double consumoMedioPneus = calculaConsumoMedioPneu();
-		if (pneus < 2 * consumoMedioPneus
-				&& Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu())) {
+		if (pneus < 1.6 * consumoMedioPneus
+				&& (Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu()) || Carro.TIPO_PNEU_CHUVA
+						.equals(carro.getTipoPneu()))) {
 			box = true;
 		}
 
@@ -847,7 +851,19 @@ public class Piloto implements Serializable {
 
 			if (intercecionou && msmPista && nosPorximos
 					&& getNoAtual().getIndex() < piloto.getNoAtual().getIndex()) {
-				if (piloto.isDesqualificado()) {
+				if (piloto.getCarro().isPaneSeca()
+						|| piloto.getCarro().isRecolhido()) {
+					return false;
+				}
+				if (piloto.isDesqualificado()
+						|| Carro.BATEU_FORTE.equals(piloto.getCarro()
+								.getDanificado())
+						|| Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro()
+								.getDanificado())
+						|| Carro.PNEU_FURADO.equals(piloto.getCarro()
+								.getDanificado())
+						|| Carro.EXPLODIU_MOTOR.equals(piloto.getCarro()
+								.getDanificado())) {
 					int novoTracado = 0;
 					while (novoTracado == piloto.getTracado()) {
 						novoTracado = Util.intervalo(0, 2);
@@ -1507,12 +1523,6 @@ public class Piloto implements Serializable {
 
 		long agora = System.currentTimeMillis();
 		if ((agora - ultimaMudancaPos) < (interfaceJogo.getTempoCiclo() * 10)) {
-			return;
-		}
-		if (interfaceJogo.isSafetyCarNaPista()
-				&& !verificaColisaoPos(interfaceJogo, 0)) {
-			setTracado(0);
-			ultimaMudancaPos = System.currentTimeMillis();
 			return;
 		}
 		if (getTracado() == 1 && pos == 2) {

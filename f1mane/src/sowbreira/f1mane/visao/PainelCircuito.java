@@ -1433,9 +1433,17 @@ public class PainelCircuito extends JPanel {
 		int scx, scy;
 		if (controleJogo.isSafetyCarNaPista()) {
 			SafetyCar safetyCar = controleJogo.getSafetyCar();
-
 			No noAtual = safetyCar.getNoAtual();
 			Point p = noAtual.getPoint();
+			if (!controleJogo.isSafetyCarVaiBox()) {
+				g2d
+						.drawImage(scimg, limitesViewPort.x
+								+ (pointDesenhaSC.x + (Math.random() > 0.5 ? 1
+										: -1)), (limitesViewPort.y
+								+ pointDesenhaSC.y + (Math.random() > 0.5 ? -1
+								: 0)), null);
+			}
+
 			if (!limitesViewPort.contains(new Point2D.Double(p.x * zoom, p.y
 					* zoom))) {
 				return;
@@ -1470,8 +1478,36 @@ public class PainelCircuito extends JPanel {
 			Rectangle2D rectangle = new Rectangle2D.Double(
 					(p.x - Carro.MEIA_LARGURA), (p.y - Carro.MEIA_ALTURA),
 					Carro.LARGURA, Carro.ALTURA);
-			carx = p.x - w2;
-			cary = p.y - h2;
+			Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util
+					.inte(Carro.ALTURA
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista()),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
+			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
+					.inte(Carro.ALTURA
+							* controleJogo.getCircuito()
+									.getMultiplicadorLarguraPista()),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
+			if (safetyCar == null) {
+				return;
+			}
+			if (safetyCar.getTracado() == 0) {
+				carx = p.x - w2;
+				cary = p.y - h2;
+			}
+			if (safetyCar.getTracado() == 1) {
+				carx = Util.inte((p1.x - w2));
+				cary = Util.inte((p1.y - h2));
+			}
+			if (safetyCar.getTracado() == 2) {
+				carx = Util.inte((p2.x - w2));
+				cary = Util.inte((p2.y - h2));
+			}
+
+			// carx = p.x - w2;
+			// cary = p.y - h2;
 			scx = carx + w2;
 			scy = cary + h2;
 			if (zoom > 0.2) {
@@ -1494,18 +1530,7 @@ public class PainelCircuito extends JPanel {
 				g2d.drawImage(rotateBuffer, Util.inte(carx * zoom), Util
 						.inte(cary * zoom), null);
 			}
-			if (!controleJogo.isSafetyCarVaiBox()) {
-				g2d
-						.drawImage(scimg, limitesViewPort.x
-								+ (pointDesenhaSC.x + (Math.random() > 0.5 ? 1
-										: -1)), (limitesViewPort.y
-								+ pointDesenhaSC.y + (Math.random() > 0.5 ? -1
-								: 0)), null);
-			}
 
-			if (safetyCar == null) {
-				return;
-			}
 			if (safetyCar.getNoAtual() == null) {
 				return;
 			}
