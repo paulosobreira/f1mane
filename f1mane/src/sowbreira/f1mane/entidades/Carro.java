@@ -307,9 +307,9 @@ public class Carro implements Serializable {
 			No no, InterfaceJogo controleJogo) {
 		novoModificador = calculaModificadorPneu(novoModificador, agressivo,
 				no, controleJogo);
+		calculaDesgasteMotor(novoModificador, agressivo, no, controleJogo);
 		novoModificador = calculaModificadorAsaGiro(novoModificador, no,
 				controleJogo);
-		calculaDesgasteMotor(novoModificador, agressivo, no, controleJogo);
 		novoModificador = calculaModificadorCombustivel(novoModificador,
 				agressivo, no, controleJogo);
 		return novoModificador;
@@ -461,29 +461,27 @@ public class Carro implements Serializable {
 			}
 		}
 		double fator = Math.random();
+		double comprar = .5;
 		if (controleJogo.isSemReabastacimento()) {
-			fator -= 0.4;
-		}
-		if (fator < 0) {
-			fator = 0.1;
+			comprar = .7;
 		}
 
 		int valConsumo = 0;
 		if (agressivo) {
-			valConsumo = ((fator > .5) ? 3 : 2);
+			valConsumo = ((fator > comprar) ? 2 : 1);
 		} else {
-			valConsumo = ((fator > .5) ? 2 : 1);
+			valConsumo = ((fator > comprar) ? 1 : 0);
 		}
 		if (giro == GIRO_MIN_VAL) {
-			valConsumo += ((fator > .5) ? 2 : 1);
+			valConsumo += ((fator > comprar) ? 1 : 0);
 		} else if (giro == GIRO_NOR_VAL) {
-			valConsumo += ((fator > .5) ? 3 : 2);
+			valConsumo += ((fator > comprar) ? 2 : 1);
 		} else if (giro == GIRO_MAX_VAL) {
-			valConsumo += ((fator > .5) ? 4 : 3);
+			valConsumo += ((fator > comprar) ? 3 : 2);
 		}
 
 		if (valConsumo <= 0) {
-			if (Math.random() > .5) {
+			if (Math.random() > comprar) {
 				valConsumo = 1;
 			}
 		}
