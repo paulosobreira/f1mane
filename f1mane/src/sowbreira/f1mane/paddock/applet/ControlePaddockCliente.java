@@ -454,7 +454,7 @@ public class ControlePaddockCliente {
 			return false;
 		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		clientPaddockPack.setCommando(Comandos.RGISTRAR_LOGIN);
+		clientPaddockPack.setCommando(Comandos.REGISTRAR_LOGIN);
 		clientPaddockPack.setNomeJogador(formEntrada.getNome().getText());
 		if ("IA".equals(clientPaddockPack.getNomeJogador())
 				|| "Ia".equals(clientPaddockPack.getNomeJogador())
@@ -466,8 +466,11 @@ public class ControlePaddockCliente {
 			return false;
 		}
 		try {
-			clientPaddockPack.setSenhaJogador(Util.md5(new String(formEntrada
-					.getSenha().getPassword())));
+			if (!Util.isNullOrEmpty(new String(formEntrada.getSenha()
+					.getPassword()))) {
+				clientPaddockPack.setSenhaJogador(Util.md5(new String(
+						formEntrada.getSenha().getPassword())));
+			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			JOptionPane.showMessageDialog(panel, e.getMessage(), "Erro",

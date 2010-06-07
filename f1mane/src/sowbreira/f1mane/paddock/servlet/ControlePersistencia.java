@@ -21,8 +21,8 @@ import java.util.zip.ZipOutputStream;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
-import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
@@ -182,9 +182,15 @@ public class ControlePersistencia {
 	}
 
 	public JogadorDadosSrv carregaDadosJogador(String nomeJogador) {
-		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
-				.getJogadoresMap().get(nomeJogador);
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		List jogador = session.createCriteria(JogadorDadosSrv.class).add(
+				Restrictions.eq("nome", nomeJogador)).list();
+		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null
+				: jogador.get(0));
 		return jogadorDadosSrv;
+		// JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
+		// .getJogadoresMap().get(nomeJogador);
+		// return jogadorDadosSrv;
 	}
 
 	public Object getPaddockDados() {
@@ -201,8 +207,6 @@ public class ControlePersistencia {
 		jogadorDadosSrv.setLoginCriador(jogadorDadosSrv.getNome());
 		session.saveOrUpdate(jogadorDadosSrv);
 		transaction.commit();
-		paddockDadosSrv.getJogadoresMap().put(nome, jogadorDadosSrv);
-
 	}
 
 	public byte[] obterBytesBase() {
