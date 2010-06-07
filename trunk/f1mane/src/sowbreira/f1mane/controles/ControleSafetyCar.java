@@ -75,11 +75,9 @@ public class ControleSafetyCar {
 				.random() > .5) ? 3 : 2)
 				: (Math.random() > .5) ? 4 : 3;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
-		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 50)) {
-			bonus += (Math.random() > .5) ? 2 : 1;
+		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 200)) {
+			bonus = (Math.random() > .5) ? 1 : 0;
 			safetyCar.setTracado(0);
-		}else{
-			bonus += (Math.random() > .5) ? 4 : 3;
 		}
 		if (safetyCar.isVaiProBox()) {
 			bonus = (Math.random() > .5) ? 2 : 1;
