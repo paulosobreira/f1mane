@@ -5,10 +5,12 @@ import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
@@ -31,6 +37,16 @@ public class ControlePersistencia {
 	private String basePath;
 	private String nomeArquivo = "paddockDadosSrv.zip";
 	private static PaddockDadosSrv paddockDadosSrv;
+
+	private String webInfDir;
+
+	private String webDir;
+
+	public ControlePersistencia(String webDir, String webInfDir) {
+		super();
+		this.webInfDir = webInfDir;
+		this.webDir = webDir;
+	}
 
 	/**
 	 * @param basePath
@@ -180,8 +196,105 @@ public class ControlePersistencia {
 	}
 
 	public void adicionarJogador(String nome, JogadorDadosSrv jogadorDadosSrv) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		jogadorDadosSrv.setLoginCriador(jogadorDadosSrv.getNome());
+		session.saveOrUpdate(jogadorDadosSrv);
+		transaction.commit();
 		paddockDadosSrv.getJogadoresMap().put(nome, jogadorDadosSrv);
 
 	}
 
+	public byte[] obterBytesBase() {
+		try {
+			File file = new File(webInfDir + "hipersonic.tar.gz");
+			if (file != null) {
+				file.delete();
+			}
+			Connection connection = HibernateUtil.getSessionFactory()
+					.openSession().connection();
+			String sql = "BACKUP DATABASE TO '" + webInfDir
+					+ "hipersonic.tar.gz' BLOCKING";
+
+			connection.createStatement().executeUpdate(sql);
+			ZipOutputStream zipOutputStream = new ZipOutputStream(
+					new FileOutputStream(webInfDir + "algolbkp.zip"));
+
+			ByteArrayOutputStream hsByteArrayOutputStream = new ByteArrayOutputStream();
+			FileInputStream fileInputStream = new FileInputStream(webInfDir
+					+ "hipersonic.tar.gz");
+			int byt = fileInputStream.read();
+
+			while (-1 != byt) {
+				hsByteArrayOutputStream.write(byt);
+				byt = fileInputStream.read();
+			}
+
+			ZipEntry entry = new ZipEntry("hipersonic.tar.gz");
+			zipOutputStream.putNextEntry(entry);
+			zipOutputStream.write(hsByteArrayOutputStream.toByteArray());
+
+			zipDir(webDir + "midia", zipOutputStream);
+
+			zipOutputStream.close();
+
+			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+			BufferedInputStream bufferedInputStream = new BufferedInputStream(
+					new FileInputStream(webInfDir + "algolbkp.zip"));
+			byt = bufferedInputStream.read();
+
+			while (-1 != byt) {
+				arrayOutputStream.write(byt);
+				byt = bufferedInputStream.read();
+			}
+
+			arrayOutputStream.flush();
+
+			return arrayOutputStream.toByteArray();
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return null;
+	}
+
+	public void zipDir(String dir2zip, ZipOutputStream zos) {
+		try {
+			// create a new File object based on the directory we
+			// have to zip File
+			File zipDir = new File(dir2zip);
+			// get a listing of the directory content
+			String[] dirList = zipDir.list();
+			byte[] readBuffer = new byte[2156];
+			int bytesIn = 0;
+			// loop through dirList, and zip the files
+			for (int i = 0; i < dirList.length; i++) {
+				File f = new File(zipDir, dirList[i]);
+				if (f.isDirectory()) {
+					// if the File object is a directory, call this
+					// function again to add its content recursively
+					String filePath = f.getPath();
+					zipDir(filePath, zos);
+					// loop again
+					continue;
+				}
+				// if we reached here, the File object f was not
+				// a directory
+				// create a FileInputStream on top of f
+				FileInputStream fis = new FileInputStream(f);
+				// create a new zip entry
+				ZipEntry anEntry = new ZipEntry(f.getAbsolutePath().split(
+						"algol-rpg" + File.separator + File.separator)[1]);
+				// place the zip entry in the ZipOutputStream object
+				zos.putNextEntry(anEntry);
+				// now write the content of the file to the ZipOutputStream
+				while ((bytesIn = fis.read(readBuffer)) != -1) {
+					zos.write(readBuffer, 0, bytesIn);
+				}
+				// close the Stream
+				fis.close();
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+	}
 }

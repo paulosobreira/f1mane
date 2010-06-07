@@ -4,7 +4,6 @@
 package sowbreira.f1mane.paddock.servlet;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -12,6 +11,7 @@ import javax.mail.internet.AddressException;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
+import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
@@ -88,8 +88,7 @@ public class ControlePaddockServidor {
 				jogadorDadosSrv = new JogadorDadosSrv();
 				jogadorDadosSrv.setNome(clientPaddockPack.getNomeJogador());
 				jogadorDadosSrv.setEmail(clientPaddockPack.getEmailJogador());
-				controlePersistencia.adicionarJogador(
-						jogadorDadosSrv.getNome(), jogadorDadosSrv);
+
 				PassGenerator generator = new PassGenerator();
 				String senha = generator.generateIt();
 				try {
@@ -103,8 +102,10 @@ public class ControlePaddockServidor {
 					jogadorDadosSrv.setSenha(Util.md5(senha));
 					clientPaddockPack.setSenhaJogador(jogadorDadosSrv
 							.getSenha());
+					controlePersistencia.adicionarJogador(jogadorDadosSrv
+							.getNome(), jogadorDadosSrv);
 				} catch (Exception e) {
-					Logger.logarExept(e);
+					return new ErroServ(e);
 				}
 			}
 			return criarSessao(clientPaddockPack);
