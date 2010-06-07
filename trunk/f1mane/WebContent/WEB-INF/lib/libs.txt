@@ -1,0 +1,20 @@
+
+#hibernate
+
+log4j-1.2.15.jar - http://logging.apache.org/log4j/
+antlr-2.7.6.jar - http://www.antlr.org/
+commons-collections-3.1.jar - http://commons.apache.org/collections/
+dom4j-1.6.1.jar - http://sourceforge.net/projects/dom4j/
+hsqldb.jar - http://hsqldb.org/
+javassist-3.9.0.GA.jar - http://repository.jboss.org/maven2/javassist/javassist/3.9.0.GA/
+jta-1.1.jar - http://repository.jboss.com/maven2/javax/transaction/jta/1.1/
+slf4j-api-1.5.8.jar - http://www.slf4j.org/
+ejb3-persistence.jar - http://www.hibernate.org
+hibernate-annotations.jar - http://www.hibernate.org
+hibernate-commons-annotations.jar - http://www.hibernate.org
+hibernate-core.jar - http://www.hibernate.org
+
+#spring (basic startup)
+
+spring.jar - http://springsource.com
+commons-logging-1.1.1.jar- http://commons.apache.org/
