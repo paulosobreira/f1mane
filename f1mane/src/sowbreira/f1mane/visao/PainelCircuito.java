@@ -536,7 +536,17 @@ public class PainelCircuito extends JPanel {
 						10, 10 }, 0);
 		gerarGrid();
 		gerarBoxes();
-
+		Piloto piloto = null;
+		if (gerenciadorVisual != null) {
+			piloto = gerenciadorVisual.obterPilotoSecionadoTabela(controleJogo
+					.getPilotoSelecionado());
+		}
+		if (piloto == null) {
+			piloto = (Piloto) controleJogo.getPilotos().get(0);
+		}
+		if (piloto != null && limitesViewPort != null) {
+			centralizarPontoDireto(piloto.getNoAtual().getPoint());
+		}
 		// limitesViewPort = (Rectangle) limitesViewPort();
 	}
 
@@ -800,6 +810,7 @@ public class PainelCircuito extends JPanel {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
+					repaint();
 					scrollPane.getViewport().setViewPosition(p);
 				}
 			});

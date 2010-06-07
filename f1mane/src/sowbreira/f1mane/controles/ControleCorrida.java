@@ -188,13 +188,6 @@ public class ControleCorrida {
 		if (indFrenteCarro > listaPiloto.size()) {
 			indFrenteCarro = indFrenteCarro - (listaPiloto.size() - 1);
 		}
-		if (controleJogo.isSafetyCarNaPista()) {
-			if ((indFrenteCarro + (3 * Carro.LARGURA)) > controleJogo
-					.getSafetyCar().getNoAtual().getIndex()
-					&& (1 == piloto.getPosicao())) {
-				return ganho * 0.3;
-			}
-		}
 
 		List pilotos = controleJogo.pilotos;
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
@@ -228,18 +221,8 @@ public class ControleCorrida {
 			if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
 				multi = 1.3;
 			}
-			if (controleJogo.isSafetyCarNaPista()) {
-				multi *= 2;
-			}
 			if ((Math.abs(indFrenteCarro - indTrazCarroFrente) < (multi * Carro.MEIA_LARGURA))
-					&& (pilotoNaFrente.getTracado() == piloto.getTracado() || controleJogo
-							.isSafetyCarNaPista())) {
-				if (controleJogo.isSafetyCarNaPista()) {
-					if ((pilotoNaFrente.getPosicao() - 1) == piloto
-							.getPosicao()) {
-						return ganho * 0.1;
-					}
-				}
+					&& (pilotoNaFrente.getTracado() == piloto.getTracado())) {
 				if (Math.abs(indFrenteCarro - indTrazCarroFrente) < (Carro.MEIA_LARGURA)) {
 					ajusteUltrapassagem(piloto, pilotoNaFrente);
 				}
@@ -308,18 +291,14 @@ public class ControleCorrida {
 					}
 				}
 
-				double div = 1;
-				if (controleJogo.isSafetyCarNaPista()) {
-					div = 2;
-				}
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
-					return ganho * (0.7 / div);
+					return ganho * (0.7);
 				}
 				if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
-					return ganho * (0.5 / div);
+					return ganho * (0.5);
 				}
-				return ganho * (0.3 / div);
+				return ganho * (0.3);
 			}
 
 		}
@@ -350,7 +329,7 @@ public class ControleCorrida {
 			return;
 		}
 
-		double fatorAcidente = .5;
+		double fatorAcidente = .8;
 		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
 			fatorAcidente += .1;
 		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
