@@ -5,18 +5,27 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 15:27:53
  */
-public class JogadorDadosSrv implements Serializable {
+@Entity
+@Table(name = "Usuario")
+public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 
+	@Column(name = "login", nullable = false, unique = true)
 	private String nome;
-	private String senha;
+	@Column(nullable = false, unique = true)
 	private String email;
-	private List corridas = new LinkedList();
-	private long ultimoLogon;
-	private long ultimaRecuperacao = 0;
-	private CarreiraDadosSrv carreiraDadosSrv;
+	private String senha;
+
+	private transient List corridas = new LinkedList();
+	private transient long ultimoLogon;
+	private transient long ultimaRecuperacao = 0;
+	private transient CarreiraDadosSrv carreiraDadosSrv;
 
 	public CarreiraDadosSrv getCarreiraDadosSrv() {
 		if (carreiraDadosSrv == null) {
