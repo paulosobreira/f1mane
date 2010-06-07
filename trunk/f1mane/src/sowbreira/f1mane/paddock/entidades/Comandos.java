@@ -33,7 +33,7 @@ public class Comandos {
 	public static final String CORRIDA_TERMINADA = "23";
 	public static final String MOSTRA_RESULTADO_FINAL = "24";
 	public static final String MUDAR_GIRO_MOTOR = "25";
-	public static final String RGISTRAR_LOGIN = "26";
+	public static final String REGISTRAR_LOGIN = "26";
 	public static final String VER_CLASSIFICACAO = "27";
 	public static final String VER_CORRIDAS = "28";
 	public static final String MUDAR_MODO_PILOTAGEM = "29";
