@@ -617,6 +617,9 @@ public class Piloto implements Serializable {
 		if (velocidade > 300) {
 			velocidade = 300 + ((int) (Math.random() * 30));
 		}
+		if (isBox()) {
+			velocidade = 80;
+		}
 
 	}
 
