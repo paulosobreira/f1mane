@@ -190,7 +190,8 @@ public class ControleBox {
 				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
 					piloto.mudarTracado(Util.intervalo(0, 2), controleJogo);
 				}
-				int novosPtsBox = (ptosBox / 2) + piloto.getPtosBox();
+				int novosPtsBox = Util.inte(ptosBox * 0.7)
+						+ piloto.getPtosBox();
 				No nobox = (No) boxEquipes.get(piloto.getCarro());
 				int indexParada = piloto.obterPista(controleJogo)
 						.indexOf(nobox);
