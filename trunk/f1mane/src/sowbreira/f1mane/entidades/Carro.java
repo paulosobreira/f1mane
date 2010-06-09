@@ -516,8 +516,8 @@ public class Carro implements Serializable {
 			if (no.verificaCruvaAlta() && (porcent > 20) && (porcent < 80)
 					&& (Math.random() > indicativo)) {
 				novoModificador += 1;
-			} else if (no.verificaCruvaBaixa() && (porcent > 30)
-					&& (porcent < 70) && (Math.random() > indicativo)) {
+			} else if (no.verificaCruvaBaixa() && (porcent > 40)
+					&& (porcent < 60) && (Math.random() > indicativo)) {
 				novoModificador += 1;
 			}
 
