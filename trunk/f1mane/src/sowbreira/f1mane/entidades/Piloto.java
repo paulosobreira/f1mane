@@ -660,7 +660,7 @@ public class Piloto implements Serializable {
 			box = true;
 		}
 
-		if (Carro.TIPO_PNEU_DURO.equals(carro.getTipoPneu()) && (pneus < 10)) {
+		if (Carro.TIPO_PNEU_DURO.equals(carro.getTipoPneu()) && (pneus < 20)) {
 			box = true;
 		}
 
@@ -873,13 +873,24 @@ public class Piloto implements Serializable {
 			boolean intercecionou = getDiateira().intersects(rect);
 			boolean msmPista = obterPista(controleJogo).size() == piloto
 					.obterPista(controleJogo).size();
+			boolean msmTracado = piloto.getTracado() == getTracado();
 			boolean nosPorximos = Math.abs(getNoAtual().getIndex()
 					- piloto.getNoAtual().getIndex()) > Carro.MEIA_LARGURA;
+
+			if (isBox()) {
+				nosPorximos = Math.abs(getNoAtual().getIndex()
+						- piloto.getNoAtual().getIndex()) > (Carro.MEIA_LARGURA / 2);
+				msmPista = msmPista && msmTracado;
+			}
 
 			if (intercecionou && msmPista && nosPorximos
 					&& getNoAtual().getIndex() < piloto.getNoAtual().getIndex()) {
 				if (piloto.getCarro().isPaneSeca()
-						|| piloto.getCarro().isRecolhido()) {
+						|| piloto.getCarro().isRecolhido()
+						|| Carro.EXPLODIU_MOTOR.equals(piloto.getCarro()
+								.getDanificado())
+						|| Carro.PANE_SECA.equals(piloto.getCarro()
+								.getDanificado())) {
 					return false;
 				}
 				if (piloto.isDesqualificado()
@@ -888,19 +899,17 @@ public class Piloto implements Serializable {
 						|| Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro()
 								.getDanificado())
 						|| Carro.PNEU_FURADO.equals(piloto.getCarro()
-								.getDanificado())
-						|| Carro.EXPLODIU_MOTOR.equals(piloto.getCarro()
 								.getDanificado())) {
 					int novoTracado = 0;
 					while (novoTracado == piloto.getTracado()) {
 						novoTracado = Util.intervalo(0, 2);
-
 					}
 					mudarTracado(novoTracado, controleJogo, true);
 				}
-				if (getTracado() == piloto.getTracado() && getPtosBox() == 0)
+				if (getTracado() == piloto.getTracado() && getPtosBox() == 0) {
 					controleJogo.verificaAcidenteUltrapassagem(this
 							.isAgressivo(), this, piloto);
+				}
 				return true;
 			}
 		}

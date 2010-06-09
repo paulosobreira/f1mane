@@ -250,7 +250,8 @@ public class PainelCircuito extends JPanel {
 
 		if ((pilotoSelecionado != null)) {
 			desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
-			desenhaCarroSelecionado(pilotoSelecionado, g2d);
+			if (controleJogo.getNumVoltaAtual() > 0)
+				desenhaCarroSelecionado(pilotoSelecionado, g2d);
 			desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
 		}
 
@@ -1738,7 +1739,7 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * moldura inferior
 		 */
-		if (desenhaInfo) {
+		if (desenhaInfo && controleJogo.getNumVoltaAtual() > 0) {
 
 			if (Carro.GIRO_MIN_VAL == ps.getCarro().getGiro()) {
 				desenBarraGiro(g2d, true, gre, 5);
