@@ -44,7 +44,7 @@ public class HibernateServlet extends HttpServlet {
 		} catch (Exception e) {
 			printWriter.println(e.getMessage());
 		}
-		printWriter.println("<br/><a href='f1mane.jsp'>back</a>");
+		printWriter.println("<br/><a href='conf.jsp'>back</a>");
 		printWriter.println("</body></html>");
 		response.flushBuffer();
 	}

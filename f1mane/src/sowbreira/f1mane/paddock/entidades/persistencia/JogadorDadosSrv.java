@@ -1,12 +1,15 @@
 package sowbreira.f1mane.paddock.entidades.persistencia;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,16 +24,14 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 	@Column(nullable = false, unique = true)
 	private String email;
 	private String senha;
-
-	private transient List corridas = new LinkedList();
-	private transient long ultimoLogon;
-	private transient long ultimaRecuperacao = 0;
-	private transient CarreiraDadosSrv carreiraDadosSrv;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "jogadorDadosSrv")
+	private List<CorridasDadosSrv> corridas = new LinkedList<CorridasDadosSrv>();
+	private long ultimoLogon = 0;
+	private long ultimaRecuperacao = 0;
+	@OneToOne
+	private CarreiraDadosSrv carreiraDadosSrv;
 
 	public CarreiraDadosSrv getCarreiraDadosSrv() {
-		if (carreiraDadosSrv == null) {
-			return new CarreiraDadosSrv();
-		}
 		return carreiraDadosSrv;
 	}
 

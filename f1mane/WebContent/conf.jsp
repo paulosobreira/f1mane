@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Algol</title>
+<title>F1Mane Conf</title>
 </head>
 <body>
 <br>
@@ -18,6 +18,18 @@
 <a href="hibernate?act=update_schema"> Update Schema </a>
 <br>
 <a href="ServletBackUp"> Back Up </a>
+<br>
+<br>
+<a href="ServletBaseDados?tipo=x"> Exceptions </a>
+<br>
+<br>
+<a href="ServletBaseDados?tipo=x"> Exceptions </a>
+<br>
+<br>
+<a href="ServletBaseDados?tipo=C"> Contrutores </a>
+<br>
+<br>
+<a href="ServletBaseDados?tipo="> Data File </a>
 <br>
 </body>
 </html>

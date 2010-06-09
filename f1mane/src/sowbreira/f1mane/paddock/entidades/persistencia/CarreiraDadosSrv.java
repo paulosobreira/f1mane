@@ -3,10 +3,18 @@ package sowbreira.f1mane.paddock.entidades.persistencia;
 import java.awt.Color;
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.ForeignKey;
+
 /**
  * @author Paulo Sobreira Criado em 27/06/2009 as 23:01:35
  */
-public class CarreiraDadosSrv implements Serializable {
+@Entity
+public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 
 	private int ptsConstrutores;
 	private int ptsPiloto;
@@ -21,6 +29,9 @@ public class CarreiraDadosSrv implements Serializable {
 	private int c2R;
 	private int c2G;
 	private int c2B;
+	@OneToOne
+	@JoinColumn(nullable = false)
+	private JogadorDadosSrv jogadorDadosSrv;
 
 	public Color geraCor1() {
 		return new Color(c1R, c1G, c1B);
@@ -134,6 +145,14 @@ public class CarreiraDadosSrv implements Serializable {
 
 	public void setImgCarro(String imgCarro) {
 		this.imgCarro = imgCarro;
+	}
+
+	public JogadorDadosSrv getJogadorDadosSrv() {
+		return jogadorDadosSrv;
+	}
+
+	public void setJogadorDadosSrv(JogadorDadosSrv jogadorDadosSrv) {
+		this.jogadorDadosSrv = jogadorDadosSrv;
 	}
 
 }

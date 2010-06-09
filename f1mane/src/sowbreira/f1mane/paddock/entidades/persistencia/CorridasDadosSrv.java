@@ -2,15 +2,22 @@ package sowbreira.f1mane.paddock.entidades.persistencia;
 
 import java.io.Serializable;
 
-import br.nnpe.Util;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15
  */
-public class CorridasDadosSrv implements Serializable {
+@Entity
+public class CorridasDadosSrv extends F1ManeDados implements Serializable {
 
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private JogadorDadosSrv jogadorDadosSrv;
 	private long tempoInicio, tempoFim;
 	private String piloto;
 	private String carro;
@@ -22,6 +29,14 @@ public class CorridasDadosSrv implements Serializable {
 	private int porcentConcluida;
 	private int posicao;
 	private int pontos;
+
+	public JogadorDadosSrv getJogadorDadosSrv() {
+		return jogadorDadosSrv;
+	}
+
+	public void setJogadorDadosSrv(JogadorDadosSrv jogadorDadosSrv) {
+		this.jogadorDadosSrv = jogadorDadosSrv;
+	}
 
 	public int getNumVoltas() {
 		return numVoltas;
