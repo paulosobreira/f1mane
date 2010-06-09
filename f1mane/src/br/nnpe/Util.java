@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -28,6 +29,8 @@ import java.util.Vector;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
+
+import org.hibernate.Session;
 
 public class Util {
 	public static Locale loc_brasil = new Locale("pt", "BR");
@@ -44,6 +47,18 @@ public class Util {
 		conectivos.addElement("DO");
 		conectivos.addElement("DOS");
 		conectivos.addElement("DAS");
+	}
+
+	public static List removePersistBag(List list, Session session) {
+		List ret = new LinkedList();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Object object = (Object) iterator.next();
+			if (session != null) {
+				session.evict(object);
+			}
+			ret.add(object);
+		}
+		return ret;
 	}
 
 	/**
