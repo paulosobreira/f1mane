@@ -386,21 +386,19 @@ public class ControlePaddockServidor {
 
 	private Object criarSessao(ClientPaddockPack clientPaddockPack) {
 
-		synchronized (controlePersistencia.getPaddockDados()) {
+		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+				.carregaDadosJogador(clientPaddockPack.getNomeJogador());
 
-			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDadosJogador(clientPaddockPack.getNomeJogador());
-
-			if (jogadorDadosSrv == null) {
-				return new MsgSrv(Lang.msg("238"));
-			} else if (jogadorDadosSrv.getSenha() == null
-					|| !jogadorDadosSrv.getSenha().equals(
-							clientPaddockPack.getSenhaJogador())) {
-				return new MsgSrv(Lang.msg("236"));
-			}
-			jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());
-
+		if (jogadorDadosSrv == null) {
+			return new MsgSrv(Lang.msg("238"));
+		} else if (jogadorDadosSrv.getSenha() == null
+				|| !jogadorDadosSrv.getSenha().equals(
+						clientPaddockPack.getSenhaJogador())) {
+			return new MsgSrv(Lang.msg("236"));
 		}
+		jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());
+		controlePersistencia.gravarDados(jogadorDadosSrv);
+
 		SessaoCliente cliente = null;
 		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
 				.hasNext();) {

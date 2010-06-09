@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,13 +20,21 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import javax.swing.JFileChooser;
+
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
+import sowbreira.f1mane.editor.ExampleFileFilter;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.F1ManeDados;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
 
@@ -150,15 +159,84 @@ public class ControlePersistencia {
 		return (PaddockDadosSrv) decoder.readObject();
 	}
 
+	public static void migrar() throws Exception {
+		JFileChooser fileChooser = new JFileChooser(CarregadorRecursos.class
+				.getResource("CarregadorRecursos.class").getFile());
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		int result = fileChooser.showOpenDialog(null);
+
+		if (result == JFileChooser.CANCEL_OPTION) {
+			return;
+		}
+
+		ZipInputStream zin = new ZipInputStream(new FileInputStream(fileChooser
+				.getSelectedFile()));
+		zin.getNextEntry();
+		ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
+		int byt = zin.read();
+
+		while (-1 != byt) {
+			arrayDinamico.write(byt);
+			byt = zin.read();
+		}
+
+		arrayDinamico.flush();
+
+		ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico
+				.toByteArray());
+		XMLDecoder decoder = new XMLDecoder(bin);
+		PaddockDadosSrv paddockDadosSrv = (PaddockDadosSrv) decoder
+				.readObject();
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction beginTransaction = session.beginTransaction();
+		Map jogadores = paddockDadosSrv.getJogadoresMap();
+		Set emails = new HashSet();
+		for (Iterator iterator = jogadores.keySet().iterator(); iterator
+				.hasNext();) {
+			String nome = (String) iterator.next();
+			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) jogadores
+					.get(nome);
+			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
+					.getCarreiraDadosSrv();
+			if ("mark".equalsIgnoreCase(nome)) {
+				System.out.println();
+			}
+			if (carreiraDadosSrv != null) {
+				System.out.println();
+			}
+			List corridas = jogadorDadosSrv.getCorridas();
+			for (Iterator iterator2 = corridas.iterator(); iterator2.hasNext();) {
+				CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator2
+						.next();
+				corridasDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+			}
+			if (emails.contains(jogadorDadosSrv.getEmail()))
+				continue;
+			emails.add(jogadorDadosSrv.getEmail());
+
+			try {
+				session.saveOrUpdate(jogadorDadosSrv);
+				if (carreiraDadosSrv == null) {
+					carreiraDadosSrv = new CarreiraDadosSrv();
+				}
+				carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+				session.saveOrUpdate(carreiraDadosSrv);
+				jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
+				session.saveOrUpdate(jogadorDadosSrv);
+			} catch (Exception e) {
+				System.out.println(nome);
+				e.printStackTrace();
+			}
+
+		}
+		beginTransaction.commit();
+		System.out.println();
+	}
+
 	public static void main(String[] args) throws Exception {
-		// ControlePersistencia controlePersistencia = new ControlePersistencia(
-		// "d:" + File.separator);
-		// controlePersistencia.paddockDadosSrv.getJogadoresMap().put("teste3",
-		// "Paulo sobreira");
-		// controlePersistencia.gravarDados();
-		Dia dia = new Dia("01/06/2009");
-		Dia hj = new Dia();
-		Logger.logar(hj.daysBetween(dia));
+		migrar();
+
 	}
 
 	public byte[] obterBytesBase(String tipo) {
@@ -188,23 +266,28 @@ public class ControlePersistencia {
 		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null
 				: jogador.get(0));
 		return jogadorDadosSrv;
-		// JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) paddockDadosSrv
-		// .getJogadoresMap().get(nomeJogador);
-		// return jogadorDadosSrv;
-	}
-
-	public Object getPaddockDados() {
-		return nomeArquivo;
 	}
 
 	public Set obterListaJogadores() {
-		return paddockDadosSrv.getJogadoresMap().keySet();
+		Set nomes = new HashSet();
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		List jogador = session.createCriteria(JogadorDadosSrv.class).list();
+		for (Iterator iterator = jogador.iterator(); iterator.hasNext();) {
+			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) iterator.next();
+			nomes.add(jogadorDadosSrv.getNome());
+		}
+		return nomes;
 	}
 
 	public void adicionarJogador(String nome, JogadorDadosSrv jogadorDadosSrv) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		jogadorDadosSrv.setLoginCriador(jogadorDadosSrv.getNome());
+		session.saveOrUpdate(jogadorDadosSrv);
+		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
+		carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+		session.saveOrUpdate(carreiraDadosSrv);
+		// jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
 		session.saveOrUpdate(jogadorDadosSrv);
 		transaction.commit();
 	}
@@ -300,5 +383,20 @@ public class ControlePersistencia {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
+	}
+
+	public void gravarDados(F1ManeDados f1ManeDados) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		session.saveOrUpdate(f1ManeDados);
+		transaction.commit();
+	}
+
+	public List obterListaCorridas(String nomeJogador) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		List corridas = session.createCriteria(CorridasDadosSrv.class)
+				.setFetchMode("jogadorDadosSrv", FetchMode.JOIN).add(
+						Restrictions.eq("nome", nomeJogador)).list();
+		return corridas;
 	}
 }

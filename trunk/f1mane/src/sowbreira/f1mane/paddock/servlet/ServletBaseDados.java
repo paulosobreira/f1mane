@@ -80,7 +80,7 @@ public class ServletBaseDados extends HttpServlet {
 		res.setContentType("text/html");
 		PrintWriter printWriter = res.getWriter();
 		printWriter.write("<html><body>");
-		printWriter.write("<h2>F1-Mane Paddock Construtores</h2><br><hr>");
+		printWriter.write("<h2>F1-Mane Construtores</h2><br><hr>");
 		synchronized ("") {
 			Set top = controlePersistencia.obterListaJogadores();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
@@ -115,7 +115,7 @@ public class ServletBaseDados extends HttpServlet {
 		res.setContentType("text/html");
 		PrintWriter printWriter = res.getWriter();
 		printWriter.write("<html><body>");
-		printWriter.write("<h2>F1-Mane Paddock Exceções</h2><br><hr>");
+		printWriter.write("<h2>F1-Mane Exceções</h2><br><hr>");
 		synchronized (Logger.topExceptions) {
 			Set top = Logger.topExceptions.keySet();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {

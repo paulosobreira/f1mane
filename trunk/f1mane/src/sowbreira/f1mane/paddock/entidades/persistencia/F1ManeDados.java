@@ -20,7 +20,7 @@ public abstract class F1ManeDados implements Serializable {
 	private Date dataCriacao = new Date();
 
 	@Column(nullable = false)
-	private String loginCriador;
+	private String loginCriador = "Sistema";
 
 	public String getLoginCriador() {
 		return loginCriador;
