@@ -22,13 +22,10 @@ import java.util.zip.ZipOutputStream;
 
 import javax.swing.JFileChooser;
 
-import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import sowbreira.f1mane.editor.ExampleFileFilter;
-import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.F1ManeDados;
@@ -37,6 +34,7 @@ import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 14:19:54
@@ -50,9 +48,18 @@ public class ControlePersistencia {
 	private String webInfDir;
 
 	private String webDir;
+	private Session session;
+
+	private Session getSession() {
+		if (session == null) {
+			session = HibernateUtil.getSessionFactory().openSession();
+		}
+		return session;
+	}
 
 	public ControlePersistencia(String webDir, String webInfDir) {
 		super();
+
 		this.webInfDir = webInfDir;
 		this.webDir = webDir;
 	}
@@ -74,7 +81,7 @@ public class ControlePersistencia {
 						/ 1024 + " kb");
 				Logger.logar("heapFreeSize "
 						+ Runtime.getRuntime().freeMemory() / 1024 + " kb");
-				paddockDadosSrv = lerDados();
+				// paddockDadosSrv = lerDados();
 				Logger.logar("============ Depois==========================");
 				Logger.logar("heapSize " + Runtime.getRuntime().totalMemory()
 						/ 1024 + " kb");
@@ -260,8 +267,7 @@ public class ControlePersistencia {
 	}
 
 	public JogadorDadosSrv carregaDadosJogador(String nomeJogador) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		List jogador = session.createCriteria(JogadorDadosSrv.class).add(
+		List jogador = getSession().createCriteria(JogadorDadosSrv.class).add(
 				Restrictions.eq("nome", nomeJogador)).list();
 		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null
 				: jogador.get(0));
@@ -270,8 +276,8 @@ public class ControlePersistencia {
 
 	public Set obterListaJogadores() {
 		Set nomes = new HashSet();
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		List jogador = session.createCriteria(JogadorDadosSrv.class).list();
+		List jogador = getSession().createCriteria(JogadorDadosSrv.class)
+				.list();
 		for (Iterator iterator = jogador.iterator(); iterator.hasNext();) {
 			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) iterator.next();
 			nomes.add(jogadorDadosSrv.getNome());
@@ -280,15 +286,14 @@ public class ControlePersistencia {
 	}
 
 	public void adicionarJogador(String nome, JogadorDadosSrv jogadorDadosSrv) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
+		Transaction transaction = getSession().beginTransaction();
 		jogadorDadosSrv.setLoginCriador(jogadorDadosSrv.getNome());
-		session.saveOrUpdate(jogadorDadosSrv);
+		getSession().saveOrUpdate(jogadorDadosSrv);
 		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
 		carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-		session.saveOrUpdate(carreiraDadosSrv);
-		// jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
-		session.saveOrUpdate(jogadorDadosSrv);
+		getSession().saveOrUpdate(carreiraDadosSrv);
+		jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
+		getSession().saveOrUpdate(jogadorDadosSrv);
 		transaction.commit();
 	}
 
@@ -298,8 +303,7 @@ public class ControlePersistencia {
 			if (file != null) {
 				file.delete();
 			}
-			Connection connection = HibernateUtil.getSessionFactory()
-					.openSession().connection();
+			Connection connection = getSession().connection();
 			String sql = "BACKUP DATABASE TO '" + webInfDir
 					+ "hipersonic.tar.gz' BLOCKING";
 
@@ -386,17 +390,22 @@ public class ControlePersistencia {
 	}
 
 	public void gravarDados(F1ManeDados f1ManeDados) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction transaction = session.beginTransaction();
+
+		Transaction transaction = getSession().beginTransaction();
 		session.saveOrUpdate(f1ManeDados);
 		transaction.commit();
 	}
 
 	public List obterListaCorridas(String nomeJogador) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		List corridas = session.createCriteria(CorridasDadosSrv.class)
-				.setFetchMode("jogadorDadosSrv", FetchMode.JOIN).add(
-						Restrictions.eq("nome", nomeJogador)).list();
+		List corridas = getSession().createCriteria(CorridasDadosSrv.class)
+				.createAlias("jogadorDadosSrv", "j").add(
+						Restrictions.eq("j.nome", nomeJogador)).list();
+		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+			CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
+					.next();
+			session.evict(corridasDadosSrv);
+			corridasDadosSrv.setJogadorDadosSrv(null);
+		}
 		return corridas;
 	}
 }
