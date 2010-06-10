@@ -870,10 +870,10 @@ public class Util {
 		// "M"));
 		// Logger.logar(md5("raquel"));
 		// System.out.println(md5("whiplash"));
-		for (int i = 0; i < 100; i++) {
-			System.out.println(intervalo(0, 2));
-		}
-
+		// for (int i = 0; i < 100; i++) {
+		// System.out.println(intervalo(0, 2));
+		// }
+		System.out.println(substVogais("Mclaren M.Shumacher"));
 	}
 
 	public static int intervalo(int val1, int val2) {
@@ -927,5 +927,26 @@ public class Util {
 
 	public static String extrairSomenteNumerosInteiro(double d) {
 		return extrairSomenteNumerosInteiro(String.valueOf(d));
+	}
+
+	public static String substVogais(String name) {
+		StringBuffer retorno = new StringBuffer();
+		for (int i = 0; i < name.length(); i++) {
+			if (name.charAt(i) == 'a') {
+				retorno.append('e');
+			} else if (name.charAt(i) == 'e') {
+				retorno.append('i');
+			} else if (name.charAt(i) == 'i') {
+				retorno.append('a');
+			} else if (name.charAt(i) == 'o') {
+				retorno.append('u');
+			} else if (name.charAt(i) == 'u') {
+				retorno.append('o');
+			} else {
+				retorno.append(name.charAt(i));
+			}
+
+		}
+		return retorno.toString();
 	}
 }
