@@ -322,7 +322,7 @@ public class CarregadorRecursos {
 			piloto.setId(cont++);
 			String name = (String) propNames.nextElement();
 			String prop = properties.getProperty(name);
-			piloto.setNome(name);
+			piloto.setNome(Util.substVogais(name));
 			piloto.setNomeCarro(prop.split(",")[0]);
 			int duasCasas = Integer.parseInt(prop.split(",")[1])
 					+ (Math.random() > .5 ? -1 : 1);
@@ -383,7 +383,7 @@ public class CarregadorRecursos {
 			Carro carro = new Carro();
 			String name = (String) propNames.nextElement();
 			String prop = properties.getProperty(name);
-			carro.setNome(name);
+			carro.setNome(Util.substVogais(name));
 			String[] values = prop.split(",");
 			carro.setPotencia(Integer.parseInt(values[0]));
 
