@@ -272,7 +272,6 @@ public class ControleBox {
 		}
 		piloto.gerarCiclosPadoBox(porcentCombust, controleCorrida
 				.obterTempoCilco(), penalidade);
-		piloto.getCarro().ajusteMotorParadaBox();
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
 		piloto.setSaiuDoBoxMilis(0);
 		if (piloto.isJogadorHumano()) {

@@ -116,8 +116,8 @@ public class ControleClassificacao {
 							+ ptsCorrida + 5);
 				}
 				try {
-					controlePersistencia.gravarDados(jogadorDadosSrv);
 					controlePersistencia.gravarDados(corridasDadosSrv);
+					controlePersistencia.gravarDados(jogadorDadosSrv);
 				} catch (Exception e) {
 					Logger.topExecpts(e);
 				}
@@ -266,11 +266,9 @@ public class ControleClassificacao {
 	}
 
 	public CarreiraDadosSrv verCarreira(ClientPaddockPack clientPaddockPack) {
-		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-				.carregaDadosJogador(clientPaddockPack.getSessaoCliente()
-						.getNomeJogador());
-		CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
-				.getCarreiraDadosSrv();
+		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+				.carregaCarreiraJogador(clientPaddockPack.getSessaoCliente()
+						.getNomeJogador(), true);
 		if (carreiraDadosSrv.getPtsCarro() == 0) {
 			carreiraDadosSrv.setPtsCarro(650);
 		}
@@ -281,18 +279,15 @@ public class ControleClassificacao {
 	}
 
 	public Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {
-		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-				.carregaDadosJogador(clientPaddockPack.getSessaoCliente()
-						.getNomeJogador());
-		CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
-				.getCarreiraDadosSrv();
+
+		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+				.carregaCarreiraJogador(clientPaddockPack.getSessaoCliente()
+						.getNomeJogador(), false);
 
 		carreiraDadosSrv.setNomePiloto(clientPaddockPack.getJogadorDadosSrv()
 				.getNomePiloto());
 		carreiraDadosSrv.setNomeCarro(clientPaddockPack.getJogadorDadosSrv()
 				.getNomeCarro());
-		carreiraDadosSrv.setImgCarro(clientPaddockPack.getJogadorDadosSrv()
-				.getImgCarro());
 		carreiraDadosSrv.setPtsCarro(clientPaddockPack.getJogadorDadosSrv()
 				.getPtsCarro());
 		carreiraDadosSrv.setPtsPiloto(clientPaddockPack.getJogadorDadosSrv()

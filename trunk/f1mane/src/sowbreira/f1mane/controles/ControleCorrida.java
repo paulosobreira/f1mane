@@ -86,8 +86,7 @@ public class ControleCorrida {
 
 	private void definirDurabilidadeMotores() {
 		int valCalc = (qtdeTotalVoltas < 12 ? 12 : qtdeTotalVoltas);
-		durabilidadeMaxMotor = (int) (distaciaCorrida * 1.85)
-				+ ((73 - valCalc) * 30);
+		durabilidadeMaxMotor = (int) (distaciaCorrida * 1.4);
 		int somaPontecias = 0;
 		for (int i = 0; i < controleJogo.getCarros().size(); i++) {
 			Carro carro = (Carro) controleJogo.getCarros().get(i);
@@ -360,8 +359,7 @@ public class ControleCorrida {
 						pilotoNaFrente.getNome() }));
 			} else if ((No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo()) || No.CURVA_ALTA
 					.equals(piloto.getNoAtual().getTipo()))
-					&& (piloto.getStress() > 70)
-					&& !Piloto.LENTO.equals(piloto.getModoPilotagem())) {
+					&& (piloto.getStress() > 70) && piloto.isAgressivo()) {
 				piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 				controleJogo.infoPrioritaria(Lang.msg("015", new String[] {
 						Html.superRed(piloto.getNome()),

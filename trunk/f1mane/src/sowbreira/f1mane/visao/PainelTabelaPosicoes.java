@@ -32,8 +32,7 @@ public class PainelTabelaPosicoes extends JPanel {
 	private int larguraPainel = 130;
 	private int alturaPainel = 390;
 	public static final String mutex = "mutex";
-	public static final String Coluna1 = "1";
-	public static final String Coluna2 = "2";
+	public static final String Coluna1 = "F1-MANE";
 	public final static Color foraCorrida = new Color(250, 50, 50, 100);
 	public final static Color jogador = new Color(60, 130, 255, 100);
 	public final static Color otros = new Color(255, 188, 31, 100);
@@ -63,9 +62,7 @@ public class PainelTabelaPosicoes extends JPanel {
 				return comp;
 			}
 		};
-		//posicoesTable.getTableHeader().setEnabled(false);
 		TableColumn colorColumn1 = posicoesTable.getColumn(Coluna1);
-		//TableColumn colorColumn2 = posicoesTable.getColumn(Coluna2);
 		DefaultTableCellRenderer colorRenderer = new DefaultTableCellRenderer() {
 			protected void setValue(Object value) {
 				if (!(value instanceof String)) {
@@ -101,7 +98,6 @@ public class PainelTabelaPosicoes extends JPanel {
 			}
 		};
 		colorColumn1.setCellRenderer(colorRenderer);
-		//colorColumn2.setCellRenderer(colorRenderer);
 		add(new JScrollPane(posicoesTable));
 		posicoesTable.setPreferredScrollableViewportSize(new Dimension(
 				larguraPainel, alturaPainel));
@@ -221,8 +217,8 @@ public class PainelTabelaPosicoes extends JPanel {
 						}
 					}
 
-					return (rowIndex + 1) + "-" + p.getNome() + "-"
-							+ p.getNumeroVolta() + " " + nome;
+					return (rowIndex + 1) + "-" + nome + "-"
+							+ p.getNumeroVolta() + " " + p.getNome();
 
 				case 1:
 
@@ -249,9 +245,6 @@ public class PainelTabelaPosicoes extends JPanel {
 			switch (column) {
 			case 0:
 				return Coluna1;
-
-			case 1:
-				return Coluna2;
 
 			default:
 				return "";

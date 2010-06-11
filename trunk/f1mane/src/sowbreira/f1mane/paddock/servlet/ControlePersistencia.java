@@ -390,7 +390,6 @@ public class ControlePersistencia {
 	}
 
 	public void gravarDados(F1ManeDados f1ManeDados) {
-
 		Transaction transaction = getSession().beginTransaction();
 		session.saveOrUpdate(f1ManeDados);
 		transaction.commit();
@@ -407,5 +406,19 @@ public class ControlePersistencia {
 			corridasDadosSrv.setJogadorDadosSrv(null);
 		}
 		return corridas;
+	}
+
+	public CarreiraDadosSrv carregaCarreiraJogador(String nomeJogador,
+			boolean vaiCliente) {
+		CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) getSession()
+				.createCriteria(CarreiraDadosSrv.class).createAlias(
+						"jogadorDadosSrv", "j").add(
+						Restrictions.eq("j.nome", nomeJogador)).uniqueResult();
+		if (vaiCliente) {
+			session.evict(carreiraDadosSrv);
+			carreiraDadosSrv.setJogadorDadosSrv(null);
+		}
+
+		return carreiraDadosSrv;
 	}
 }

@@ -50,7 +50,7 @@ public class ControlePaddockCliente {
 	private JogoCliente jogoCliente;
 	private MainFrame mainFrame;
 	private boolean comunicacaoServer = true;
-	private int latenciaMinima = 120;
+	private int latenciaMinima = 50;
 	private int latenciaReal;
 	private int contadorErros = 0;
 
@@ -156,14 +156,14 @@ public class ControlePaddockCliente {
 				JOptionPane.showMessageDialog(panel, Lang.decodeTexto(erroServ
 						.obterErroFormatado()), Lang.msg("060"),
 						JOptionPane.ERROR_MESSAGE);
-				return erroServ;
+				return null;
 			}
 			if (retorno instanceof MsgSrv) {
 				MsgSrv msgSrv = (MsgSrv) retorno;
 				JOptionPane.showMessageDialog(panel, Lang.decodeTexto(msgSrv
 						.getMessageString()), Lang.msg("061"),
 						JOptionPane.INFORMATION_MESSAGE);
-				return msgSrv;
+				return null;
 			}
 			return retorno;
 		} catch (Exception e) {
@@ -273,6 +273,7 @@ public class ControlePaddockCliente {
 			}
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 					Comandos.CRIAR_JOGO, sessaoCliente);
+			Logger.logar("criarJogo cliente " + temporada);
 			jogoCliente = new JogoCliente(temporada);
 			jogoCliente.setMainFrame(mainFrame);
 			PainelEntradaCliente controleCriacaoCorridaSimples = new PainelEntradaCliente(
@@ -341,14 +342,12 @@ public class ControlePaddockCliente {
 			panelJogadores.setBorder(new TitledBorder("Jogadores") {
 				@Override
 				public String getTitle() {
-					// TODO Auto-generated method stub
 					return Lang.msg("117");
 				}
 			});
 			panelJogo.setBorder(new TitledBorder("Dados Inicio do Jogo") {
 				@Override
 				public String getTitle() {
-					// TODO Auto-generated method stub
 					return Lang.msg("122");
 				}
 			});
@@ -363,6 +362,7 @@ public class ControlePaddockCliente {
 			String nomeJogo = infoJogo.split("-")[0];
 			String temporada = infoJogo.split("-")[1];
 			dadosParticiparJogo.setNomeJogo(infoJogo);
+			Logger.logar("TEmporada cliente Entrar jogo " + "t" + temporada);
 			jogoCliente = new JogoCliente("t" + temporada);
 			jogoCliente.setMainFrame(mainFrame);
 			PainelEntradaCliente painelCriacaoCorridaSimples = new PainelEntradaCliente(
@@ -380,7 +380,7 @@ public class ControlePaddockCliente {
 				return;
 			}
 			srvPaddockPack = (SrvPaddockPack) ret;
-			jogoCliente = new JogoCliente(dadosParticiparJogo.getTemporada());
+			jogoCliente = new JogoCliente("t" + temporada);
 			jogoCliente.setMainFrame(mainFrame);
 			jogoCliente.iniciarJogoOnline(srvPaddockPack.getDadosCriarJogo(),
 					dadosParticiparJogo.getNomeJogo(), this, sessaoCliente,
@@ -623,7 +623,6 @@ public class ControlePaddockCliente {
 		CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) ret;
 		formCarreira.getNomePiloto().setText(carreiraDadosSrv.getNomePiloto());
 		formCarreira.getNomeCarro().setText(carreiraDadosSrv.getNomeCarro());
-		formCarreira.setImgCarroStr(carreiraDadosSrv.getImgCarro());
 		formCarreira.getModoCarreira().setSelected(
 				carreiraDadosSrv.isModoCarreira());
 		formCarreira.getPtsPiloto().setValue(
@@ -634,6 +633,8 @@ public class ControlePaddockCliente {
 		formCarreira.getNomePiloto().setText(carreiraDadosSrv.getNomePiloto());
 		formCarreira.setCor1(carreiraDadosSrv.geraCor1());
 		formCarreira.setCor2(carreiraDadosSrv.geraCor2());
+		formCarreira.gerarCarroCima();
+		formCarreira.gerarCarroLado();
 	}
 
 	private boolean retornoNaoValido(Object ret) {
@@ -649,7 +650,6 @@ public class ControlePaddockCliente {
 		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
 		carreiraDadosSrv.setNomePiloto(formCarreira.getNomePiloto().getText());
 		carreiraDadosSrv.setNomeCarro(formCarreira.getNomeCarro().getText());
-		carreiraDadosSrv.setImgCarro(formCarreira.getImgCarroStr());
 		carreiraDadosSrv.setPtsCarro((Integer) formCarreira.getPtsCarro()
 				.getValue());
 		carreiraDadosSrv.setPtsPiloto((Integer) formCarreira.getPtsPiloto()

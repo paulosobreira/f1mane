@@ -20,7 +20,6 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 	private int ptsPiloto;
 	private int ptsCarro;
 	private String nomePiloto;
-	private String imgCarro;
 	private String nomeCarro;
 	private boolean modoCarreira;
 	private int c1R;
@@ -137,14 +136,6 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 
 	public void setC2B(int c2b) {
 		c2B = c2b;
-	}
-
-	public String getImgCarro() {
-		return imgCarro;
-	}
-
-	public void setImgCarro(String imgCarro) {
-		this.imgCarro = imgCarro;
 	}
 
 	public JogadorDadosSrv getJogadorDadosSrv() {

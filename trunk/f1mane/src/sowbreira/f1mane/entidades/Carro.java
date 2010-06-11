@@ -111,8 +111,9 @@ public class Carro implements Serializable {
 		if (mediaPontecia < 800) {
 			mediaPontecia = 800;
 		}
-		this.durabilidadeMaxMotor = (int) (durabilidadeMaxMotor * (mediaPontecia / 1000.0))
-				+ getPotencia();
+		this.durabilidadeMaxMotor = Util
+				.inte((durabilidadeMaxMotor * (mediaPontecia / 1000.0))
+						+ (durabilidadeMaxMotor * (getPotencia() / 1000.0)));
 		this.motor = this.durabilidadeMaxMotor;
 	}
 
@@ -385,14 +386,6 @@ public class Carro implements Serializable {
 					new String[] { piloto.getNome() })));
 
 		}
-	}
-
-	public void ajusteMotorParadaBox() {
-		int mod = piloto.getQtdeParadasBox();
-		if (mod < 3) {
-			mod = 1;
-		}
-		motor += ((durabilidadeMaxMotor * (potencia / 10000.0)) / mod);
 	}
 
 	private int calculaModificadorCombustivel(int novoModificador,
