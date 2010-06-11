@@ -45,10 +45,7 @@ public class PainelTabelaPosicoes extends JPanel {
 	public PainelTabelaPosicoes(final InterfaceJogo interfaceJogo) {
 		this.interfaceJogo = interfaceJogo;
 		List pilotosList = interfaceJogo.getPilotos();
-		for (int i = 0; i < pilotosList.size(); i++) {
-			Piloto piloto = (Piloto) pilotosList.get(i);
-			pilotosId[i] = piloto;
-		}
+		setaPilotos(pilotosList);
 
 		TableModel model = new TableModel();
 		posicoesTable = new JTable(model) {
@@ -108,6 +105,13 @@ public class PainelTabelaPosicoes extends JPanel {
 				larguraPainel, alturaPainel));
 	}
 
+	public void setaPilotos(List pilotosList) {
+		for (int i = 0; i < pilotosList.size(); i++) {
+			Piloto piloto = (Piloto) pilotosList.get(i);
+			pilotosId[i] = piloto;
+		}
+	}
+
 	public JTable getPosicoesTable() {
 		return posicoesTable;
 	}
@@ -125,7 +129,7 @@ public class PainelTabelaPosicoes extends JPanel {
 
 			((TableModel) posicoesTable.getModel()).fireTableDataChanged();
 
-			if (pilotoSelec != null) {
+			if (pilotoSelec != null && pilotoSelec.getNome() != null) {
 				TableModel model = (TableModel) posicoesTable.getModel();
 
 				for (int i = 0; i < model.getRowCount(); i++) {
@@ -225,21 +229,6 @@ public class PainelTabelaPosicoes extends JPanel {
 					return (rowIndex + 1) + "-" + p.getNome() + "-"
 							+ p.getNumeroVolta() + " " + nome;
 
-				case 1:
-
-					Piloto p2 = pilotosId[rowIndex + 12];
-					if (p2 == null) {
-						return "";
-					}
-
-					String nome2 = "";
-					if (p2.isJogadorHumano()) {
-						if (!isNullEmpt(p2.getNomeJogador())) {
-							nome2 = p2.getNomeJogador();
-						}
-					}
-					return (rowIndex + 13) + "-" + p2.getNome() + "-"
-							+ p2.getNumeroVolta() + " " + nome2;
 				default:
 					return "";
 				}

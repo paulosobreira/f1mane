@@ -94,6 +94,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public DadosCriarJogo getDadosCriarJogo() {
+		dadosCriarJogo.setPilotosCarreira(pilotos);
 		return dadosCriarJogo;
 	}
 
@@ -256,7 +257,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		gerenciadorVisual = null;
 		this.estado = Comandos.MOSTRANDO_QUALIFY;
 		processarEntradaDados();
-
 		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
 		atualizarJogadoresOnlineCarreira();
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
@@ -319,7 +319,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					piloto.setJogadorHumano(false);
 				}
 			}
-
 		}
 
 	}
@@ -348,14 +347,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 								carreiraDadosSrv.getPtsCarro());
 						piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
 						piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
-//						if (!Util.isNullOrEmpty(carreiraDadosSrv.getImgCarro())) {
-//							piloto.getCarro().setImg(
-//									carreiraDadosSrv.getImgCarro());
-//						}
 					}
 				}
 			}
-
+			dadosParticiparJogo.setPilotosCarreira(pilotos);
 		}
 
 	}
@@ -511,7 +506,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public void atulizaTabelaPosicoes() {
 	}
-
 
 	public void removerJogador(String apelido) {
 		if (apelido == null) {

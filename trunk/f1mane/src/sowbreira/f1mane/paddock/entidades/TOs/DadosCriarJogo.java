@@ -1,6 +1,7 @@
 package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
+import java.util.List;
 
 import sowbreira.f1mane.entidades.Clima;
 
@@ -29,6 +30,15 @@ public class DadosCriarJogo implements Serializable {
 	private Clima clima = null;
 	private Integer qtdeVoltas = null;
 	private String nivelCorrida = null;
+	private List pilotosCarreira;
+
+	public List getPilotosCarreira() {
+		return pilotosCarreira;
+	}
+
+	public void setPilotosCarreira(List pilotosCarreira) {
+		this.pilotosCarreira = pilotosCarreira;
+	}
 
 	public String getCircuitoSelecionado() {
 		return circuitoSelecionado;

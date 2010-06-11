@@ -107,7 +107,13 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		threadMonitoraJogoOnline = new Thread(monitorJogo);
 		threadMonitoraJogoOnline.setPriority(Thread.MIN_PRIORITY);
 		threadMonitoraJogoOnline.start();
-		System.out.println("threadMonitoraJogoOnline.start();");
+		Logger.logar(" Antes dadosParticiparJogo.getPilotosCarreira()");
+		if (dadosParticiparJogo.getPilotosCarreira() != null) {
+			Logger.logar(" DEntro dadosParticiparJogo.getPilotosCarreira()");
+			this.pilotos = dadosParticiparJogo.getPilotosCarreira();
+			gerenciadorVisual.getPainelPosicoes().setaPilotos(pilotos);
+		}
+
 	}
 
 	public void preparaGerenciadorVisual() {
@@ -568,7 +574,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		safetyCar.setNoAtual(no);
 		safetyCar.setVaiProBox(safetySair);
 	}
-
 
 	public Volta obterMelhorVolta(Piloto pilotoSelecionado) {
 		return pilotoSelecionado.getMelhorVolta();
