@@ -1,6 +1,7 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -109,9 +110,16 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		threadMonitoraJogoOnline.start();
 		Logger.logar(" Antes dadosParticiparJogo.getPilotosCarreira()");
 		if (dadosParticiparJogo.getPilotosCarreira() != null) {
-			Logger.logar(" DEntro dadosParticiparJogo.getPilotosCarreira()");
+			Logger.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
 			this.pilotos = dadosParticiparJogo.getPilotosCarreira();
-			gerenciadorVisual.getPainelPosicoes().setaPilotos(pilotos);
+			List carros = new ArrayList();
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (!carros.contains(piloto.getCarro())) {
+					carros.add(piloto.getCarro());
+				}
+				controleBox.geraBoxesEquipes(carros);
+			}
 		}
 
 	}
@@ -754,5 +762,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			Piloto pilotoFrente) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void geraBoxesEquipes(List carros) {
+		controleBox.geraBoxesEquipes(carros);
 	}
 }

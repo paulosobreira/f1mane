@@ -194,6 +194,9 @@ public class Piloto implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		Piloto outro = (Piloto) obj;
+		if (getNome() == null || outro == null) {
+			return false;
+		}
 		return getNome().equals(outro.getNome());
 	}
 
@@ -1569,7 +1572,8 @@ public class Piloto implements Serializable {
 		if (getTracado() == 2 && pos == 1) {
 			return;
 		}
-		if (!mesmoEmCurva && No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
+		if (!mesmoEmCurva && No.CURVA_BAIXA.equals(getNoAtual().getTipo())
+				&& !testeHabilidadePilotoCarro()) {
 			return;
 		}
 		int tracado = getTracado();

@@ -32,6 +32,7 @@ import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
@@ -63,6 +64,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color yel = new Color(255, 255, 0, 150);
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
+	public final static Color nublado = new Color(200, 200, 200, 100);
 	public final static BufferedImage carroimgDano = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png");
 	public final static BufferedImage helmetPiloto = CarregadorRecursos
@@ -247,7 +249,12 @@ public class PainelCircuito extends JPanel {
 			}
 
 		}
-
+		if ((Clima.NUBLADO.equals(controleJogo.getClima()) || Clima.CHUVA
+				.equals(controleJogo.getClima()))
+				&& limitesViewPort() != null) {
+			g2d.setColor(nublado);
+			g2d.fill(limitesViewPort().getBounds());
+		}
 		if ((pilotoSelecionado != null)) {
 			desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
 			if (controleJogo.getNumVoltaAtual() > 0)

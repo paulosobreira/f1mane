@@ -1,5 +1,6 @@
 package sowbreira.f1mane.paddock.applet;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -236,6 +237,31 @@ public class MonitorJogo implements Runnable {
 				if (carreiraDadosSrv.isModoCarreira()) {
 					jogoCliente.setNomePilotoJogador(carreiraDadosSrv
 							.getNomePiloto());
+				}
+			}
+			clientPaddockPack = new ClientPaddockPack(
+					Comandos.DADOS_PILOTOS_JOGO, sessaoCliente);
+			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
+			ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
+			if (ret != null) {
+				clientPaddockPack = (ClientPaddockPack) ret;
+				if (clientPaddockPack.getDadosJogoCriado().getPilotosCarreira() != null) {
+					Logger
+							.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
+					jogoCliente.setPilotos(clientPaddockPack
+							.getDadosJogoCriado().getPilotosCarreira());
+					List carros = new ArrayList();
+					for (Iterator iterator = jogoCliente.getPilotos()
+							.iterator(); iterator.hasNext();) {
+						Piloto piloto = (Piloto) iterator.next();
+						if (!carros.contains(piloto.getCarro())) {
+							carros.add(piloto.getCarro());
+						}
+						jogoCliente.geraBoxesEquipes(carros);
+					}
 				}
 			}
 		} catch (Exception e) {

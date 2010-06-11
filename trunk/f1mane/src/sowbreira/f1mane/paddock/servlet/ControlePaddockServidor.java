@@ -244,8 +244,14 @@ public class ControlePaddockServidor {
 			return atualizaCarreira(clientPaddockPack);
 		} else if (Comandos.VER_CORRIDAS.equals(commando)) {
 			return verCorridas(clientPaddockPack);
+		} else if (Comandos.DADOS_PILOTOS_JOGO.equals(commando)) {
+			return dadosPilotosJogo(clientPaddockPack);
 		}
 		return "Comando invalido";
+	}
+
+	private Object dadosPilotosJogo(ClientPaddockPack clientPaddockPack) {
+		return controleJogosServer.dadosPilotosJogo(clientPaddockPack);
 	}
 
 	private Object mudarTracado(ClientPaddockPack clientPaddockPack) {

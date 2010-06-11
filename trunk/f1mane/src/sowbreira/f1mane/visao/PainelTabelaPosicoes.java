@@ -83,15 +83,18 @@ public class PainelTabelaPosicoes extends JPanel {
 				if ((pos < 0 || pos > 23)) {
 					return;
 				}
-				if (pilotosId[pos].isJogadorHumano()
+				if (pilotosId[pos] != null && pilotosId[pos].isJogadorHumano()
 						&& !pilotosId[pos].isDesqualificado()) {
-					if (pilotosId[pos].equals(interfaceJogo.getPilotoJogador())) {
+					if (pilotosId[pos] != null
+							&& pilotosId[pos].equals(interfaceJogo
+									.getPilotoJogador())) {
 						setBackground(jogador);
 					} else {
 						setBackground(otros);
 					}
 
-				} else if (pilotosId[pos].isDesqualificado()) {
+				} else if (pilotosId[pos] != null
+						&& pilotosId[pos].isDesqualificado()) {
 					setBackground(foraCorrida);
 				} else {
 					setBackground(Color.WHITE);

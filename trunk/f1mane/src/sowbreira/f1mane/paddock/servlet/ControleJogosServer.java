@@ -572,4 +572,11 @@ public class ControleJogosServer {
 		}
 		return null;
 	}
+
+	public Object dadosPilotosJogo(ClientPaddockPack clientPaddockPack) {
+		JogoServidor jogoServidor = obterJogoPeloNome(clientPaddockPack
+				.getNomeJogo());
+		clientPaddockPack.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
+		return clientPaddockPack;
+	}
 }
