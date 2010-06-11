@@ -64,20 +64,22 @@ public class ControleBox {
 			throw new Exception("Saida box não encontrada!");
 		}
 
-		geraBoxesEquipes();
+		geraBoxesEquipes(carrosBox);
 	}
 
 	public ControleBox() {
 	}
 
-	private void geraBoxesEquipes() {
+	public void geraBoxesEquipes(List cBox) {
+		this.carrosBox = cBox;
 		boxEquipes = new HashMap();
 		boxEquipesOcupado = new Hashtable();
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
 		try {
-			carrosBox = carregadorRecursos
-					.carregarListaCarrosArquivo(controleJogo.getTemporada()
-							.replaceAll("\\*", ""));
+			if (carrosBox == null)
+				carrosBox = carregadorRecursos
+						.carregarListaCarrosArquivo(controleJogo.getTemporada()
+								.replaceAll("\\*", ""));
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
