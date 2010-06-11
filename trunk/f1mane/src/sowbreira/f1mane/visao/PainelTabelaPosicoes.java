@@ -56,8 +56,13 @@ public class PainelTabelaPosicoes extends JPanel {
 					int row, int col) {
 				Component comp = super.prepareRenderer(renderer, row, col);
 				JComponent jcomp = (JComponent) comp;
+				Piloto piloto = obterPilotoSecionadoTabela(pilotoSelecionado);
 				if (comp == jcomp) {
-					jcomp.setToolTipText(Lang.msg("225"));
+					if (piloto != null && piloto.isJogadorHumano()) {
+						jcomp.setToolTipText(piloto.getNomeJogador());
+					} else {
+						jcomp.setToolTipText(Lang.msg("225"));
+					}
 				}
 				return comp;
 			}
@@ -217,8 +222,8 @@ public class PainelTabelaPosicoes extends JPanel {
 						}
 					}
 
-					return (rowIndex + 1) + "-" + nome + "-"
-							+ p.getNumeroVolta() + " " + p.getNome();
+					return (rowIndex + 1) + "-" + p.getNome() + "-"
+							+ p.getNumeroVolta() + " " + nome;
 
 				case 1:
 
