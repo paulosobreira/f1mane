@@ -1,9 +1,12 @@
 package sowbreira.f1mane.paddock.applet;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +20,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -25,6 +29,7 @@ import javax.swing.WindowConstants;
 
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -83,36 +88,40 @@ public class FormCarreira extends JPanel {
 	private JLabel labelCor2 = new JLabel("Cor da equipe 2:");
 
 	private List listaCarro = new ArrayList();
-	private JSpinner imgCarro = new JSpinner();
+	private JLabel imgCarroLado = new JLabel();
+	private JLabel imgCarroCima = new JLabel();
 	private String imgCarroStr = "";
 	private int ptsCarreira = 1;
 
 	public FormCarreira() {
-		try {
-			carregarListaCarros();
-		} catch (IOException e1) {
-			Logger.logarExept(e1);
-		}
-		setLayout(new GridLayout(4, 4));
-		add(labelModoCarreira);
-		add(modoCarreira);
-		add(labelPtsCarreira);
-		add(ptsCarreiraVal);
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(3, 4));
 
-		add(labelNomePiloto);
-		add(nomePiloto);
-		add(labelPtsPiloto);
-		add(ptsPiloto);
+		panel.add(labelModoCarreira);
+		panel.add(modoCarreira);
+		panel.add(labelPtsCarreira);
+		panel.add(ptsCarreiraVal);
 
-		add(labelNomeCarro);
-		add(nomeCarro);
-		add(labelPtsCarro);
-		add(ptsCarro);
+		panel.add(labelNomePiloto);
+		panel.add(nomePiloto);
+		panel.add(labelPtsPiloto);
+		panel.add(ptsPiloto);
 
-		add(labelCor1);
-		add(labelCor2);
-		add(new JLabel());
-		add(imgCarro);
+		panel.add(labelNomeCarro);
+		panel.add(nomeCarro);
+		panel.add(labelPtsCarro);
+		panel.add(ptsCarro);
+
+		JPanel panel2 = new JPanel();
+		panel2.setLayout(new GridLayout(1, 2));
+
+		panel2.add(labelCor1);
+		panel2.add(labelCor2);
+
+		JPanel panel3 = new JPanel();
+		panel3.setLayout(new GridLayout(1, 2));
+		panel3.add(imgCarroCima);
+		panel3.add(imgCarroLado);
 		labelCor1.setOpaque(true);
 		labelCor1.addMouseListener(new MouseAdapter() {
 
@@ -121,6 +130,8 @@ public class FormCarreira extends JPanel {
 				Color color = JColorChooser.showDialog(FormCarreira.this,
 						"Escolha uma cor", Color.WHITE);
 				setCor1(color);
+				gerarCarroLado();
+				gerarCarroCima();
 			}
 
 		});
@@ -132,6 +143,9 @@ public class FormCarreira extends JPanel {
 				Color color = JColorChooser.showDialog(FormCarreira.this,
 						"Escolha uma cor", Color.WHITE);
 				setCor2(color);
+				gerarCarroLado();
+				gerarCarroCima();
+				FormCarreira.this.repaint();
 			}
 
 		});
@@ -144,41 +158,50 @@ public class FormCarreira extends JPanel {
 		JFormattedTextField tfptsPiloto = ((JSpinner.DefaultEditor) ptsPiloto
 				.getEditor()).getTextField();
 		tfptsPiloto.setEditable(false);
-		imgCarro.setValue(new Integer(-1));
-		imgCarro.setEditor(new JLabel() {
-			@Override
-			public Icon getIcon() {
-				if (Util.isNullOrEmpty(imgCarroStr)) {
-					imgCarroStr = "CarroLado.png";
-				}
-				return new ImageIcon(CarregadorRecursos
-						.carregaImgCarro(imgCarroStr));
-			}
-		});
-		imgCarro.setModel(new ImageCarroSpinnerModel());
+		setLayout(new BorderLayout());
+		add(panel, BorderLayout.CENTER);
+		JPanel panel4 = new JPanel(new BorderLayout());
+		panel4.add(panel2,BorderLayout.CENTER);
+		panel4.add(panel3,BorderLayout.SOUTH);
+		add(panel4, BorderLayout.SOUTH);
+		gerarCarroLado();
+		gerarCarroCima();
 	}
 
-	private void carregarListaCarros() throws IOException {
+	protected void gerarCarroCima() {
+		BufferedImage carroLado = CarregadorRecursos
+				.carregaImgSemCache("CarroCima.png");
+		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(labelCor1
+				.getBackground(), "CarroCimaC1.png");
+		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(labelCor2
+				.getBackground(), "CarroCimaC2.png");
+		Graphics graphics = carroLado.getGraphics();
+		graphics.drawImage(cor1, 0, 0, null);
+		graphics.drawImage(cor2, 0, 0, null);
+		graphics.dispose();
+		imgCarroCima.setIcon(new ImageIcon(ImageUtil.geraTransparencia(
+				carroLado, Color.WHITE)));
 
-		BufferedReader bufferedReader = new BufferedReader(
-				new InputStreamReader(CarregadorRecursos
-						.recursoComoStream("carlist.txt")));
-		String line = bufferedReader.readLine();
-		while (line != null) {
-			Logger.logar(line);
-			listaCarro.add(line);
-			line = bufferedReader.readLine();
-		}
+	}
+
+	protected void gerarCarroLado() {
+		BufferedImage carroLado = CarregadorRecursos
+				.carregaImgSemCache("CarroLado.png");
+		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(labelCor1
+				.getBackground(), "CarroLadoC1.png");
+		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(labelCor2
+				.getBackground(), "CarroLadoC2.png");
+		Graphics graphics = carroLado.getGraphics();
+		graphics.drawImage(cor1, 0, 0, null);
+		graphics.drawImage(cor2, 0, 0, null);
+		graphics.dispose();
+		imgCarroLado.setIcon(new ImageIcon(ImageUtil.geraTransparencia(
+				carroLado, Color.WHITE)));
 	}
 
 	public static void main(String[] args) {
 		FormCarreira formCarreira = new FormCarreira();
-		JFrame frame = new JFrame();
-		frame.getContentPane().add(formCarreira);
-		formCarreira.setCor1(Color.BLUE);
-		frame.setSize(700, 200);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		JOptionPane.showMessageDialog(null, formCarreira);
 	}
 
 	public int getPtsCarreira() {
@@ -207,47 +230,6 @@ public class FormCarreira extends JPanel {
 
 	public JCheckBox getModoCarreira() {
 		return modoCarreira;
-	}
-
-	private class ImageCarroSpinnerModel extends SpinnerNumberModel {
-
-		long index = 0;
-
-		public Long getValue() {
-			return index;
-		}
-
-		public void setValue(Long value) {
-			this.index = value;
-		}
-
-		@Override
-		public Object getNextValue() {
-			List list = listaCarro;
-			index = (index >= list.size() - 1) ? 0 : index + 1;
-			imgCarroStr = (String) list.get((int) index);
-			Logger.logar(imgCarroStr);
-			try {
-				imgCarro.getEditor().repaint();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return super.getNextValue();
-		}
-
-		@Override
-		public Object getPreviousValue() {
-			List list = listaCarro;
-			index = (index <= 0) ? list.size() - 1 : index - 1;
-			imgCarroStr = (String) list.get((int) index);
-			Logger.logar(imgCarroStr);
-			try {
-				imgCarro.getEditor().repaint();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return super.getPreviousValue();
-		}
 	}
 
 	private class CarreiraSpinnerModel extends SpinnerNumberModel {

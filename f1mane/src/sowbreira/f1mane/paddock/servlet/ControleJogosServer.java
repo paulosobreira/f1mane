@@ -76,7 +76,7 @@ public class ControleJogosServer {
 		String temporada = clientPaddockPack.getDadosJogoCriado()
 				.getTemporada();
 		try {
-
+			Logger.logar("Temporada Serviddor " + temporada);
 			jogoServidor = new JogoServidor(temporada);
 			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 					.verCarreira(clientPaddockPack);
@@ -565,7 +565,8 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
 					piloto.getNomeJogador())) {
-				piloto.mudarTracado(clientPaddockPack.getTracado(), jogoServidor);
+				piloto.mudarTracado(clientPaddockPack.getTracado(),
+						jogoServidor);
 				break;
 			}
 		}

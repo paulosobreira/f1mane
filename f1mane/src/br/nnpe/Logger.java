@@ -13,6 +13,9 @@ public class Logger {
 	public static boolean ativo = true;
 
 	public static void topExecpts(Exception e) {
+		if (ativo) {
+			e.printStackTrace();
+		}
 		if (topExceptions == null) {
 			topExceptions = new HashMap();
 		}

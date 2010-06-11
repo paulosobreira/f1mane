@@ -72,8 +72,8 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .5) ? 3 : 2)
-				: (Math.random() > .5) ? 4 : 3;
+				.random() > .5) ? 2 : 1)
+				: (Math.random() > .5) ? 3 : 2;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 200)) {
 			bonus = (Math.random() > .5) ? 1 : 0;

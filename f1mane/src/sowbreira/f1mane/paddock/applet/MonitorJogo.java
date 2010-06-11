@@ -158,7 +158,6 @@ public class MonitorJogo implements Runnable {
 				} else {
 					delayVerificaStado = 4;
 				}
-				sleep(tempoCiclo);
 				continue;
 			}
 			iniciaJalena();
