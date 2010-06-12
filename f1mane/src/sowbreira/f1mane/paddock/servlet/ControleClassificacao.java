@@ -107,8 +107,8 @@ public class ControleClassificacao {
 						corridasDadosSrv);
 				jogadorDadosSrv.getCorridas().add(corridasDadosSrv);
 				corridasDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-				CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
-						.getCarreiraDadosSrv();
+				CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+						.carregaCarreiraJogador(piloto.getNomeJogador(), false);
 				if (carreiraDadosSrv.isModoCarreira()) {
 					int ptsCorrida = corridasDadosSrv.getPontos();
 					carreiraDadosSrv.setPtsConstrutores(carreiraDadosSrv
@@ -118,6 +118,7 @@ public class ControleClassificacao {
 				try {
 					controlePersistencia.gravarDados(corridasDadosSrv);
 					controlePersistencia.gravarDados(jogadorDadosSrv);
+					controlePersistencia.gravarDados(carreiraDadosSrv);
 				} catch (Exception e) {
 					Logger.topExecpts(e);
 				}

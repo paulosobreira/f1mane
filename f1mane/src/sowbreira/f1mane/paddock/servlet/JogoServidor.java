@@ -161,15 +161,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 		}
 		dadosCriarJogo.setPilotosCarreira(pilotos);
-		List carros = new ArrayList();
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (!carros.contains(piloto.getCarro())) {
-				carros.add(piloto.getCarro());
-			}
-		}
-		// controleCorrida.getControleBox().geraBoxesEquipes(carros);
-
 		return null;
 	}
 
@@ -271,7 +262,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 				diffultrapassagem.intValue(), veloMaxReta.intValue(),
 				tempoCiclo.intValue());
-		List carros = new ArrayList();
+		carros.clear();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (!carros.contains(piloto.getCarro())) {

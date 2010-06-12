@@ -253,15 +253,16 @@ public class MonitorJogo implements Runnable {
 							.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
 					jogoCliente.setPilotos(clientPaddockPack
 							.getDadosJogoCriado().getPilotosCarreira());
-					List carros = new ArrayList();
+					List carros = jogoCliente.getCarros();
+					carros.clear();
 					for (Iterator iterator = jogoCliente.getPilotos()
 							.iterator(); iterator.hasNext();) {
 						Piloto piloto = (Piloto) iterator.next();
 						if (!carros.contains(piloto.getCarro())) {
 							carros.add(piloto.getCarro());
 						}
-						jogoCliente.geraBoxesEquipes(carros);
 					}
+					jogoCliente.geraBoxesEquipes(carros);
 				}
 			}
 		} catch (Exception e) {

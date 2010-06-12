@@ -597,6 +597,9 @@ public class Carro implements Serializable {
 		if (piloto.isBox()) {
 			piloto.setBox(true);
 		}
+		if(Carro.PANE_SECA.equals(danificado)){
+			paneSeca = true;
+		}
 		this.danificado = danificado;
 	}
 

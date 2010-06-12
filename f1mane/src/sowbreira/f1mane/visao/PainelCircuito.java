@@ -283,7 +283,7 @@ public class PainelCircuito extends JPanel {
 		}
 		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
 
-		if (carroCima == null) {
+		if (carroCima == null || piloto.getCarro().isPaneSeca()) {
 			return;
 		}
 		No noAtual = piloto.getNoAtual();
@@ -403,7 +403,7 @@ public class PainelCircuito extends JPanel {
 		if (limitesViewPort == null) {
 			return;
 		}
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < controleJogo.getCarrosBox().size(); i++) {
 			if (boxParada[i] == null) {
 				break;
 			}

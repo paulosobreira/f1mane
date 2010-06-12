@@ -1572,9 +1572,10 @@ public class Piloto implements Serializable {
 		if (getTracado() == 2 && pos == 1) {
 			return;
 		}
-		if (!mesmoEmCurva && No.CURVA_BAIXA.equals(getNoAtual().getTipo())
-				&& !testeHabilidadePilotoCarro()) {
-			return;
+		if (!mesmoEmCurva) {
+			if ((No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && !testeHabilidadePilotoCarro())) {
+				return;
+			}
 		}
 		int tracado = getTracado();
 		if (!verificaColisaoPos(interfaceJogo, pos)) {

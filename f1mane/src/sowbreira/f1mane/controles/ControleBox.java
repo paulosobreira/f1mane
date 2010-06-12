@@ -102,7 +102,8 @@ public class ControleBox {
 			Carro carro = (Carro) iter.next();
 			int indexParada = paradas + Util.inte(Carro.LARGURA * 2 * cont)
 					+ Carro.LARGURA;
-			cont++;
+			if (cont < 12)
+				cont++;
 			boxEquipes.put(carro, ptosBox.get(indexParada));
 		}
 	}

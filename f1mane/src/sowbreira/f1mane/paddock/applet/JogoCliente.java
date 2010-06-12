@@ -108,20 +108,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		threadMonitoraJogoOnline = new Thread(monitorJogo);
 		threadMonitoraJogoOnline.setPriority(Thread.MIN_PRIORITY);
 		threadMonitoraJogoOnline.start();
-		Logger.logar(" Antes dadosParticiparJogo.getPilotosCarreira()");
-		if (dadosParticiparJogo.getPilotosCarreira() != null) {
-			Logger.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
-			this.pilotos = dadosParticiparJogo.getPilotosCarreira();
-			List carros = new ArrayList();
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				if (!carros.contains(piloto.getCarro())) {
-					carros.add(piloto.getCarro());
-				}
-				controleBox.geraBoxesEquipes(carros);
-			}
-		}
-
 	}
 
 	public void preparaGerenciadorVisual() {
