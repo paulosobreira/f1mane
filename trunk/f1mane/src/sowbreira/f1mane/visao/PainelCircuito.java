@@ -403,7 +403,7 @@ public class PainelCircuito extends JPanel {
 		if (limitesViewPort == null) {
 			return;
 		}
-		for (int i = 0; i < controleJogo.getCarrosBox().size(); i++) {
+		for (int i = 0; i < 12; i++) {
 			if (boxParada[i] == null) {
 				break;
 			}
@@ -411,11 +411,12 @@ public class PainelCircuito extends JPanel {
 			if (!limitesViewPort.intersects(boxParada[i].getBounds2D())) {
 				continue;
 			}
-			g2d.setColor(Color.LIGHT_GRAY);
-			g2d.fill(boxParada[i]);
-			if (i >= controleJogo.getCarros().size()) {
+			if (i > (controleJogo.getCarrosBox().size() - 1)) {
 				break;
 			}
+			g2d.setColor(Color.LIGHT_GRAY);
+			g2d.fill(boxParada[i]);
+
 			Carro carro = (Carro) controleJogo.getCarrosBox().get(i);
 			g2d.setColor(carro.getCor1());
 			g2d.fill(boxCor1[i]);

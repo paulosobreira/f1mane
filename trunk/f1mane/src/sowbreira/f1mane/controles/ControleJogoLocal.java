@@ -865,12 +865,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	}
 
-	@Override
-	public void setPilotos(List list) {
-		this.pilotos = list;
-
-	}
-
 	public boolean isSemTrocaPneu() {
 		return semTrocaPneu;
 	}

@@ -313,11 +313,9 @@ public class ControleClassificacao {
 		return new MsgSrv(Lang.msg("250"));
 	}
 
-	public CarreiraDadosSrv obterCarreiraSrv(String key) {
-		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-				.carregaDadosJogador(key);
-		CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
-				.getCarreiraDadosSrv();
+	public CarreiraDadosSrv obterCarreiraSrv(String nomeJogador) {
+		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+				.carregaCarreiraJogador(nomeJogador, false);
 		return carreiraDadosSrv;
 	}
 }
