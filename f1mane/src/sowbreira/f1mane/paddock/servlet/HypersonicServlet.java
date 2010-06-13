@@ -1,14 +1,7 @@
 package sowbreira.f1mane.paddock.servlet;
 
-import java.io.File;
-import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-
-import org.hsqldb.server.Server;
-
-import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira [sowbreira@gmail.com]
@@ -16,7 +9,7 @@ import br.nnpe.Logger;
  */
 public class HypersonicServlet extends HttpServlet {
 
-	private Server server = new Server();
+//	private Server server = new Server();
 
 	public void init() throws ServletException {
 

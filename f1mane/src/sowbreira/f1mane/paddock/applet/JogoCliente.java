@@ -681,12 +681,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void setPilotos(List list) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public boolean isSemReabastacimento() {
 		// TODO Auto-generated method stub
 		return false;

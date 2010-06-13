@@ -153,7 +153,7 @@ public class ControleJogosServer {
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 
 		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-				.verCarreira(clientPaddockPack);
+				.obterCarreiraSrv(clientPaddockPack.getNomeJogador());
 		if (carreiraDadosSrv.isModoCarreira()) {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));

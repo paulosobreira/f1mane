@@ -62,8 +62,6 @@ public interface InterfaceJogo {
 
 	public List getPilotos();
 
-	public void setPilotos(List list);
-
 	public void matarTodasThreads();
 
 	/**

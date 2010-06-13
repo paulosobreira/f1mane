@@ -262,19 +262,20 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 				diffultrapassagem.intValue(), veloMaxReta.intValue(),
 				tempoCiclo.intValue());
-		carros.clear();
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (!carros.contains(piloto.getCarro())) {
-				carros.add(piloto.getCarro());
-			}
-		}
-		controleCorrida.getControleBox().geraBoxesEquipes(carros);
 		setarNivelCorrida();
 		controleCorrida.getControleClima().gerarClimaInicial(
 				dadosCriarJogo.getClima());
 		atualizarJogadoresOnline();
 		controleCorrida.gerarGridLargadaSemQualificacao();
+		List carrobox = new ArrayList();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (!carrobox.contains(piloto.getCarro())) {
+				carrobox.add(piloto.getCarro());
+			}
+		}
+		Logger.logar("Tamanho carrobox servidor " + carrobox.size());
+		controleCorrida.getControleBox().geraBoxesEquipes(carrobox);
 		this.estado = Comandos.MOSTRANDO_QUALIFY;
 		Thread timer = new Thread(new Runnable() {
 
