@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -46,6 +47,8 @@ public class PainelEntradaCliente {
 	private JSlider spinnerTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
+	protected JCheckBox semTrocaPneu;
+	protected JCheckBox semReabastacimento;
 	private List pilotos;
 	private Map circuitos;
 	private MainFrame mainFrame;
@@ -61,7 +64,7 @@ public class PainelEntradaCliente {
 	}
 
 	private void gerarPainelCriarJogo(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(13, 2, 5, 5));
+		painelInicio.setLayout(new GridLayout(15, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
 				return Lang.msg("110");
@@ -265,6 +268,26 @@ public class PainelEntradaCliente {
 		spinnerTempoCiclo.setPaintLabels(true);
 		painelInicio.add(spinnerTempoCiclo);
 
+		painelInicio.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("302");
+			}
+		});
+		semReabastacimento = new JCheckBox();
+		painelInicio.add(semReabastacimento);
+		painelInicio.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("303");
+			}
+		});
+		semTrocaPneu = new JCheckBox();
+
+		painelInicio.add(semTrocaPneu);
+		
+		
+		
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
 		spinnerPotenciaPadraoCarros = new JSpinner();

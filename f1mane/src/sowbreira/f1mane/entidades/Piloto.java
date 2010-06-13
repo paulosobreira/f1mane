@@ -34,7 +34,7 @@ public class Piloto implements Serializable {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
-	private int aceleracao = 5;
+	private int aceleracao = 3;
 	private static final double FATOR_AREA_CARRO = .7;
 	private transient Rectangle diateira;
 	private transient Rectangle centro;
@@ -821,11 +821,6 @@ public class Piloto implements Serializable {
 			}
 		}
 
-		if (controleJogo.isChovendo()) {
-			aceleracao = 8;
-		} else {
-			aceleracao = 4;
-		}
 		if (!controleJogo.isModoQualify()
 				&& verificaColisaoCarroFrente(controleJogo)) {
 			ganho *= 0.1;
