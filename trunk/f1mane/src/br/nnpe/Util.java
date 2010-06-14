@@ -932,7 +932,9 @@ public class Util {
 	public static String substVogais(String name) {
 		StringBuffer retorno = new StringBuffer();
 		for (int i = 0; i < name.length(); i++) {
-			if (name.charAt(i) == 'a') {
+			if (i == (name.length() - 1)) {
+				retorno.append(name.charAt(i));
+			} else if (name.charAt(i) == 'a') {
 				retorno.append('e');
 			} else if (name.charAt(i) == 'e') {
 				retorno.append('i');

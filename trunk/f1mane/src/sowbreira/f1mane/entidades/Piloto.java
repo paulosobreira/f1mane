@@ -868,7 +868,9 @@ public class Piloto implements Serializable {
 			piloto.centralizaCarro(controleJogo);
 
 			Rectangle rect = piloto.getTrazeira();
-			boolean intercecionou = getDiateira().intersects(rect);
+			boolean intercecionou = getDiateira().intersects(rect)
+					|| getDiateira().intersects(piloto.getCentro())
+					|| getDiateira().intersects(piloto.getDiateira());
 			boolean msmPista = obterPista(controleJogo).size() == piloto
 					.obterPista(controleJogo).size();
 			boolean msmTracado = piloto.getTracado() == getTracado();
