@@ -154,7 +154,7 @@ public class ControleJogosServer {
 
 		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 				.obterCarreiraSrv(clientPaddockPack.getNomeJogador());
-		if (carreiraDadosSrv.isModoCarreira()) {
+		if (carreiraDadosSrv!=null && carreiraDadosSrv.isModoCarreira()) {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
 			}
