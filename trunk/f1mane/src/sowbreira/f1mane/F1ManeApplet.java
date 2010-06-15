@@ -1,5 +1,8 @@
 package sowbreira.f1mane;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JLabel;
@@ -44,7 +47,12 @@ public class F1ManeApplet extends JApplet {
 		jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 		CarregadorRecursos carregadorImagens = new CarregadorRecursos(false);
 
-		ImageIcon icon = new ImageIcon(getCodeBase() + "f1mane.jpg");
+		ImageIcon icon = null;
+		try {
+			icon = new ImageIcon(new URL(getCodeBase() + "f1mane.jpg"));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		jLabel2.setIcon(icon);
 		jLabel2.setSize(icon.getIconWidth(), icon.getIconHeight());
 		jPanel1.add(jLabel2, java.awt.BorderLayout.CENTER);
