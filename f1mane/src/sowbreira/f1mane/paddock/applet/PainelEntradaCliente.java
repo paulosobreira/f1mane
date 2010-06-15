@@ -285,9 +285,7 @@ public class PainelEntradaCliente {
 		semTrocaPneu = new JCheckBox();
 
 		painelInicio.add(semTrocaPneu);
-		
-		
-		
+
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
 		spinnerPotenciaPadraoCarros = new JSpinner();
@@ -362,6 +360,8 @@ public class PainelEntradaCliente {
 		dadosCriarJogo.setNivelCorrida(Lang.key(comboBoxNivelCorrida
 				.getSelectedItem().toString()));
 		dadosCriarJogo.setClima((Clima) comboBoxClimaInicial.getSelectedItem());
+		dadosCriarJogo.setSemReabastecimento(semReabastacimento.isSelected());
+		dadosCriarJogo.setSemTrocaPeneu(semTrocaPneu.isSelected());
 		preecherDadosCriarJogo(dadosCriarJogo);
 	}
 

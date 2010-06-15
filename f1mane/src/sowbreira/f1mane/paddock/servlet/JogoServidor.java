@@ -241,6 +241,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				}
 				definirPotenciaPadraoCarros(potencia.intValue());
 			}
+			semReabastacimento = dadosCriarJogo.isSemReabastecimento();
+			semTrocaPneu = dadosCriarJogo.isSemTrocaPeneu();
 
 		} catch (Exception e) {
 			Logger.topExecpts(e);

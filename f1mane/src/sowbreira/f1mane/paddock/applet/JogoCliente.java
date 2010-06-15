@@ -1,8 +1,5 @@
 package sowbreira.f1mane.paddock.applet;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -29,7 +26,6 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.Posis;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
-import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
@@ -682,14 +678,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public boolean isSemReabastacimento() {
-		// TODO Auto-generated method stub
-		return false;
+		return dadosParticiparJogo.isSemReabastecimento();
 	}
 
 	@Override
 	public boolean isSemTrocaPneu() {
-		// TODO Auto-generated method stub
-		return false;
+		return dadosParticiparJogo.isSemTrocaPeneu();
 	}
 
 	@Override
