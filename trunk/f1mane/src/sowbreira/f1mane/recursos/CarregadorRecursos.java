@@ -251,7 +251,7 @@ public class CarregadorRecursos {
 							+ File.separator + temporarada + File.separator
 							+ carro.getNome() + ".png");
 					ImageIO.write(carroCima, "png", gravar);
-					System.out.println("src" + File.separator + "sowbreira"
+					Logger.logar("src" + File.separator + "sowbreira"
 							+ File.separator + "f1mane" + File.separator
 							+ "recursos" + File.separator + "carros"
 							+ File.separator + temporarada + File.separator

@@ -275,11 +275,11 @@ public class MainFrame extends JFrame {
 					Set top = Logger.topExceptions.keySet();
 					for (Iterator iterator = top.iterator(); iterator.hasNext();) {
 						String exept = (String) iterator.next();
-						System.out.println("Quantidade : "
+						Logger.logar("Quantidade : "
 								+ Logger.topExceptions.get(exept));
-						System.out.println("<br>");
-						System.out.println(exept);
-						System.out.println("<br><hr>");
+						Logger.logar("<br>");
+						Logger.logar(exept);
+						Logger.logar("<br><hr>");
 					}
 					removerKeyListeners();
 				} catch (Exception ex) {

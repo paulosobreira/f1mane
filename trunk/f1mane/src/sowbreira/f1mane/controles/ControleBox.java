@@ -534,7 +534,7 @@ public class ControleBox {
 		int ateFim = ptosPista.size() - ptosPista.indexOf(entradaBox);
 		int ateSaidaBox = ptosPista.indexOf(saidaBox);
 		qtdeNosPistaRefBox = Util.inte((ateFim + ateSaidaBox));
-		System.out.println("qtdeNosPistaRefBox " + qtdeNosPistaRefBox);
+		Logger.logar("qtdeNosPistaRefBox " + qtdeNosPistaRefBox);
 	}
 
 	public boolean verificaBoxOcupado(Carro carro) {
