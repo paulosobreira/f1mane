@@ -821,6 +821,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public boolean isCorridaIniciada() {
+		if(controleCorrida==null){
+			return false;
+		}
 		return controleCorrida.isCorridaIniciada();
 	}
 
