@@ -297,12 +297,12 @@ public class ControleCorrida {
 
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
-					return ganho * (0.7);
+					return ganho * (0.1);
 				}
 				if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
-					return ganho * (0.5);
+					return ganho * (0.3);
 				}
-				return ganho * (0.3);
+				return ganho * (0.5);
 			}
 
 		}
