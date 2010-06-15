@@ -31,6 +31,24 @@ public class DadosCriarJogo implements Serializable {
 	private Integer qtdeVoltas = null;
 	private String nivelCorrida = null;
 	private List pilotosCarreira;
+	private boolean semReabastecimento;
+	private boolean semTrocaPeneu;
+
+	public boolean isSemReabastecimento() {
+		return semReabastecimento;
+	}
+
+	public void setSemReabastecimento(boolean semReabastecimento) {
+		this.semReabastecimento = semReabastecimento;
+	}
+
+	public boolean isSemTrocaPeneu() {
+		return semTrocaPeneu;
+	}
+
+	public void setSemTrocaPeneu(boolean semTrocaPeneu) {
+		this.semTrocaPeneu = semTrocaPeneu;
+	}
 
 	public List getPilotosCarreira() {
 		return pilotosCarreira;

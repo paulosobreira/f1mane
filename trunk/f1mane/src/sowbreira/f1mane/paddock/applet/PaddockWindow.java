@@ -476,24 +476,24 @@ public class PaddockWindow {
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().getClima()
 				.toString()));
-		panelJogo.add(new JLabel("Fator Ultrapassagem: ") {
+		panelJogo.add(new JLabel("Sem Raabaste: ") {
 
 			public String getText() {
 
-				return Lang.msg("200");
+				return Lang.msg("302");
 			}
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo()
-				.getDiffultrapassagem().toString()));
-		panelJogo.add(new JLabel("Fator Velocidade: ") {
+				.isSemReabastecimento() ? Lang.msg("SIM") : Lang.msg("NAO")));
+		panelJogo.add(new JLabel("Sem troca pneu: ") {
 
 			public String getText() {
 
-				return Lang.msg("201");
+				return Lang.msg("303");
 			}
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo()
-				.getVeloMaxReta().toString()));
+				.isSemTrocaPeneu() ? Lang.msg("SIM") : Lang.msg("NAO")));
 
 		return panelJogo;
 	}
