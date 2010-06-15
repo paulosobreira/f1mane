@@ -64,6 +64,7 @@ public class PainelTabelaPosicoes extends JPanel {
 				return comp;
 			}
 		};
+		posicoesTable.getTableHeader().setFocusable(false);
 		TableColumn colorColumn1 = posicoesTable.getColumn(Coluna1);
 		DefaultTableCellRenderer colorRenderer = new DefaultTableCellRenderer() {
 			protected void setValue(Object value) {
