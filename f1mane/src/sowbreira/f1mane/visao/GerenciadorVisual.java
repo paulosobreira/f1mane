@@ -424,6 +424,7 @@ public class GerenciadorVisual {
 				}
 				if (keyCoode == KeyEvent.VK_F8) {
 					mudarAutoPos();
+					controleJogo.selecionaPilotoJogador();
 				}
 				if (keyCoode == KeyEvent.VK_LEFT) {
 					if (controleJogo.getPilotoJogador().getTracado() == 2) {
