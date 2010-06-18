@@ -294,15 +294,15 @@ public class ControleCorrida {
 						}
 					}
 				}
-
+				double percent = 1 - fatorUtrapassagem;
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
-					return ganho * (0.1);
+					return ganho * (percent * 0.);
 				}
 				if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
-					return ganho * (0.3);
+					return ganho * (percent * 0.5);
 				}
-				return ganho * (0.5);
+				return ganho * (percent* 0.7);
 			}
 
 		}
