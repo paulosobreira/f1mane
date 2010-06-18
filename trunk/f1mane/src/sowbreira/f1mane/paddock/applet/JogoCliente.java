@@ -741,4 +741,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void geraBoxesEquipes(List carros) {
 		controleBox.geraBoxesEquipes(carros);
 	}
+
+	@Override
+	public No getNoEntradaBox() {
+		return controleBox.getEntradaBox();
+
+	}
 }

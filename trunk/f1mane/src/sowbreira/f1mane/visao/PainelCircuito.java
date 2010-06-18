@@ -311,17 +311,23 @@ public class PainelCircuito extends JPanel {
 
 		int traz = cont - 44;
 		int frente = cont + 44;
-
+		boolean ultimoAngulo = false;
 		if (traz < 0) {
 			traz = (lista.size() - 1) + traz;
+			ultimoAngulo = true;
 		}
 		if (frente > (lista.size() - 1)) {
 			frente = (frente - (lista.size() - 1)) - 1;
+			ultimoAngulo = true;
 		}
 
 		Point trazCar = ((No) lista.get(traz)).getPoint();
 		Point frenteCar = ((No) lista.get(frente)).getPoint();
 		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
+		if (piloto.getAngulo() != null && ultimoAngulo) {
+			calculaAngulo = piloto.getAngulo();
+		}
+		piloto.setAngulo(calculaAngulo);
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA), (p.y - Carro.MEIA_ALTURA),
 				Carro.LARGURA, Carro.ALTURA);
