@@ -13,6 +13,7 @@ import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
@@ -821,7 +822,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public boolean isCorridaIniciada() {
-		if(controleCorrida==null){
+		if (controleCorrida == null) {
 			return false;
 		}
 		return controleCorrida.isCorridaIniciada();
@@ -926,4 +927,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	}
 
+	@Override
+	public No getNoEntradaBox() {
+		return controleCorrida.getControleBox().getEntradaBox();
+
+	}
 }

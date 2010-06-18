@@ -65,7 +65,7 @@ public class Piloto implements Serializable {
 	private boolean autoPos = true;
 	private Point p1;
 	private Point p2;
-	private double angulo;
+	private Double angulo;
 
 	public Rectangle getDiateira() {
 		return diateira;
@@ -91,11 +91,11 @@ public class Piloto implements Serializable {
 		this.trazeira = trazeira;
 	}
 
-	public double getAngulo() {
+	public Double getAngulo() {
 		return angulo;
 	}
 
-	public void setAngulo(double angulo) {
+	public void setAngulo(Double angulo) {
 		this.angulo = angulo;
 	}
 
@@ -621,7 +621,7 @@ public class Piloto implements Serializable {
 			velocidade = 300 + ((int) (Math.random() * 30));
 		}
 		if (isBox()) {
-			velocidade = 80;
+			velocidade = 60;
 		}
 
 	}
@@ -944,7 +944,6 @@ public class Piloto implements Serializable {
 		Point trazCar = ((No) lista.get(traz)).getPoint();
 		Point frenteCar = ((No) lista.get(frente)).getPoint();
 		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-		setAngulo(calculaAngulo);
 		Rectangle2D rectangle = new Rectangle2D.Double((p.x - Carro.MEIA_ALTURA
 				* FATOR_AREA_CARRO), (p.y - Carro.MEIA_ALTURA
 				* FATOR_AREA_CARRO), Carro.ALTURA * FATOR_AREA_CARRO,

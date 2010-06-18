@@ -223,10 +223,14 @@ public class ControleBox {
 
 		No box = (No) boxEquipes.get(piloto.getCarro());
 		int contBox = piloto.getNoAtual().getIndex();
-		if ((contBox > (box.getIndex() - 5) && contBox < (box.getIndex() + 10))
+		if ((contBox > (box.getIndex() - 10) && contBox < (box.getIndex() + 10))
 				&& !piloto.decrementaParadoBox() && !piloto.jaParouNoBox()) {
 			processarPilotoPararBox(piloto);
 		}
+	}
+
+	public No getEntradaBox() {
+		return entradaBox;
 	}
 
 	private void processarPilotoPararBox(Piloto piloto) {

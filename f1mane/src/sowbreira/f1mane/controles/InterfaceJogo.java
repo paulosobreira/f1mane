@@ -8,6 +8,7 @@ import java.util.Set;
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
@@ -222,5 +223,7 @@ public interface InterfaceJogo {
 	public List obterPista(Piloto piloto);
 
 	public BufferedImage obterCarroLado(Piloto piloto);
+
+	public No getNoEntradaBox();
 
 }
