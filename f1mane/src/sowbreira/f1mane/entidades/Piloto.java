@@ -821,11 +821,13 @@ public class Piloto implements Serializable {
 			}
 		}
 
+		ganho = calculaGanhoMedio(ganho);
+
 		if (!controleJogo.isModoQualify()
 				&& verificaColisaoCarroFrente(controleJogo)) {
-			ganho *= 0.05;
+			ganho *= 0.1;
 		}
-		ganho = calculaGanhoMedio(ganho);
+
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = ganhoComSafetyCar(ganho, controleJogo);
 		}
