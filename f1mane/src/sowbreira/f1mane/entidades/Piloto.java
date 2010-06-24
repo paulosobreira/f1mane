@@ -820,14 +820,19 @@ public class Piloto implements Serializable {
 				}
 			}
 		}
-
-		ganho = calculaGanhoMedio(ganho);
-
+		boolean colisao = false;
 		if (!controleJogo.isModoQualify()
 				&& verificaColisaoCarroFrente(controleJogo)) {
-			ganho *= 0.1;
-		}
+			colisao = true;
 
+		}
+		if (colisao) {
+			ganho *= 0.5;
+		}
+		ganho = calculaGanhoMedio(ganho);
+		if (colisao) {
+			ganho *= 0.5;
+		}
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = ganhoComSafetyCar(ganho, controleJogo);
 		}
