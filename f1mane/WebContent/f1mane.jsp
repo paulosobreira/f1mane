@@ -61,7 +61,7 @@
 				<span class="class2"> 
 					<!--Versao do Java no Servidor: <%= (pageContext.getServletContext().getAttribute("java.vm.version") !=null?pageContext.getServletContext().getAttribute("java.vm.version") :pageContext.getServletContext().getAttribute("java.runtime.version") ) %>-->
 					<a href="http://www.java.com/pt_BR/"> Se abaixo nao aparecer nada Clique Aqui e instale a versao mais nova do Java. </a> 
-					<a href="http://f1manager.hostignition.com/paddock/F1Mane.html"> Vers&atilde;o do Jogo modo 1 jogador </a> <!--<a href="ServletBaseDados?tipo=" > Bkp dados</a> --> 
+					<a href="http://sowbreira.appspot.com/f1mane/F1Mane.html"> Vers&atilde;o do Jogo modo 1 jogador </a> <!--<a href="ServletBaseDados?tipo=" > Bkp dados</a> --> 
 				</span>
 			    <br>
                 <span class="class2"> 
