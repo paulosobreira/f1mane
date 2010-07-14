@@ -43,5 +43,6 @@ public class Comandos {
 	public static final String MUDAR_MODO_AUTOPOS = "33";
 	public static final String MUDAR_TRACADO = "34";
 	public static final String DADOS_PILOTOS_JOGO = "35";
+	public static final String OBTER_NOVO_CAPCHA = "36";
 
 }
