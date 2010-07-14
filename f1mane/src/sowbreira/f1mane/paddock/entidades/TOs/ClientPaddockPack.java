@@ -10,10 +10,12 @@ import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 public class ClientPaddockPack implements Serializable {
 
 	private static final long serialVersionUID = 6938384085272885074L;
-	private String commando;
+	private String comando;
 	private String nomeJogador;
 	private String senhaJogador;
 	private String emailJogador;
+	private String chaveCapcha;
+	private String textoCapcha;
 	private SessaoCliente sessaoCliente;
 	private String texto;
 	private String nomeJogo;
@@ -26,6 +28,23 @@ public class ClientPaddockPack implements Serializable {
 	private boolean recuperar = false;
 	private DadosCriarJogo dadosJogoCriado;
 	private CarreiraDadosSrv carreiraDadosSrv;
+	private byte[] dataBytes;
+
+	public String getChaveCapcha() {
+		return chaveCapcha;
+	}
+
+	public void setChaveCapcha(String chaveCapcha) {
+		this.chaveCapcha = chaveCapcha;
+	}
+
+	public String getTextoCapcha() {
+		return textoCapcha;
+	}
+
+	public void setTextoCapcha(String textoCapcha) {
+		this.textoCapcha = textoCapcha;
+	}
 
 	public CarreiraDadosSrv getJogadorDadosSrv() {
 		return carreiraDadosSrv;
@@ -45,12 +64,20 @@ public class ClientPaddockPack implements Serializable {
 
 	public ClientPaddockPack(String commando, SessaoCliente sessaoCliente) {
 		super();
-		this.commando = commando;
+		this.comando = commando;
 		this.sessaoCliente = sessaoCliente;
 	}
 
 	public String getTexto() {
 		return texto;
+	}
+
+	public byte[] getDataBytes() {
+		return dataBytes;
+	}
+
+	public void setDataBytes(byte[] dataBytes) {
+		this.dataBytes = dataBytes;
 	}
 
 	public String getNomeJogo() {
@@ -85,12 +112,12 @@ public class ClientPaddockPack implements Serializable {
 		this.nomeJogador = apelido;
 	}
 
-	public String getCommando() {
-		return commando;
+	public String getComando() {
+		return comando;
 	}
 
-	public void setCommando(String commando) {
-		this.commando = commando;
+	public void setComando(String commando) {
+		this.comando = commando;
 	}
 
 	public DadosCriarJogo getDadosJogoCriado() {

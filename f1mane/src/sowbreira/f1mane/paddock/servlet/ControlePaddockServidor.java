@@ -3,6 +3,8 @@
  */
 package sowbreira.f1mane.paddock.servlet;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 
 import javax.mail.MessagingException;
@@ -21,12 +23,16 @@ import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.Util;
 
+import com.octo.captcha.service.image.DefaultManageableImageCaptchaService;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
 /**
  * @author paulo.sobreira
  * 
  */
 public class ControlePaddockServidor {
-
+	private DefaultManageableImageCaptchaService capcha = new DefaultManageableImageCaptchaService();
 	private DadosPaddock dadosPaddock = new DadosPaddock();
 	private ControleJogosServer controleJogosServer;
 	private ControlePersistencia controlePersistencia;
@@ -69,8 +75,7 @@ public class ControlePaddockServidor {
 		}
 		if (object instanceof ClientPaddockPack) {
 			ClientPaddockPack clientPaddockPack = (ClientPaddockPack) object;
-			if (Comandos.REGISTRAR_LOGIN
-					.equals(clientPaddockPack.getCommando())) {
+			if (Comandos.REGISTRAR_LOGIN.equals(clientPaddockPack.getComando())) {
 
 				if ("IA".equals(clientPaddockPack.getNomeJogador())
 						|| "Ia".equals(clientPaddockPack.getNomeJogador())
@@ -88,14 +93,6 @@ public class ControlePaddockServidor {
 					return resetaSenha(clientPaddockPack);
 
 				}
-				if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())
-						&& Util.isNullOrEmpty(clientPaddockPack
-								.getEmailJogador())
-						&& Util.isNullOrEmpty(clientPaddockPack
-								.getSenhaJogador())) {
-					return loginVisitante(clientPaddockPack);
-				}
-
 				if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())
 						&& !Util.isNullOrEmpty(clientPaddockPack
 								.getEmailJogador())) {
@@ -115,7 +112,9 @@ public class ControlePaddockServidor {
 	}
 
 	private Object resetaSenha(ClientPaddockPack clientPaddockPack) {
-
+		if (!validaCapcha(clientPaddockPack)) {
+			return new MsgSrv(Lang.msg("capchaInvalido"));
+		}
 		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 				.carregaDadosJogador(clientPaddockPack.getNomeJogador());
 		if (jogadorDadosSrv == null) {
@@ -132,11 +131,11 @@ public class ControlePaddockServidor {
 		try {
 			PassGenerator generator = new PassGenerator();
 			String senha = generator.generateIt();
-			geraMandaMail(jogadorDadosSrv.getNome(),
-					jogadorDadosSrv.getEmail(), senha);
+			mandaMailSenha(jogadorDadosSrv.getNome(), jogadorDadosSrv
+					.getEmail(), senha);
 			jogadorDadosSrv.setSenha(Util.md5(senha));
 			jogadorDadosSrv.setUltimaRecuperacao(System.currentTimeMillis());
-			// GRAVAR
+			controlePersistencia.gravarDados(jogadorDadosSrv);
 		} catch (Exception e) {
 			if (ServletPaddock.email != null)
 				return new MsgSrv(Lang.msg("237"));
@@ -145,12 +144,22 @@ public class ControlePaddockServidor {
 				.getEmail() }));
 	}
 
-	private Object loginVisitante(ClientPaddockPack clientPaddockPack) {
-		// TODO Auto-generated method stub
-		return null;
+	private boolean validaCapcha(ClientPaddockPack clientPaddockPack) {
+		try {
+			Boolean validateResponseForID = capcha.validateResponseForID(
+					clientPaddockPack.getChaveCapcha(), clientPaddockPack
+							.getTextoCapcha());
+			return validateResponseForID;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			return false;
+		}
 	}
 
 	private Object registrarLogin(ClientPaddockPack clientPaddockPack) {
+		if (!validaCapcha(clientPaddockPack)) {
+			return new MsgSrv(Lang.msg("capchaInvalido"));
+		}
 		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 				.carregaDadosJogador(clientPaddockPack.getNomeJogador());
 		if (jogadorDadosSrv == null) {
@@ -161,7 +170,7 @@ public class ControlePaddockServidor {
 			PassGenerator generator = new PassGenerator();
 			String senha = generator.generateIt();
 			try {
-				geraMandaMail(clientPaddockPack.getNomeJogador(),
+				mandaMailSenha(clientPaddockPack.getNomeJogador(),
 						clientPaddockPack.getEmailJogador(), senha);
 			} catch (Exception e1) {
 				if (ServletPaddock.email != null)
@@ -176,10 +185,14 @@ public class ControlePaddockServidor {
 				return new ErroServ(e);
 			}
 		}
+		if (!Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
+			return new MsgSrv(Lang.msg("loginIndisponivel"));
+		}
+
 		return criarSessao(clientPaddockPack);
 	}
 
-	private void geraMandaMail(String nome, String email, String senha)
+	private void mandaMailSenha(String nome, String email, String senha)
 			throws AddressException, MessagingException {
 		Logger.logar("Senha :" + senha);
 		ServletPaddock.email.sendSimpleMail("F1-Mane Game Password",
@@ -201,7 +214,7 @@ public class ControlePaddockServidor {
 	private Object processarComando(ClientPaddockPack clientPaddockPack) {
 		SessaoCliente cliente = resgatarSessao(clientPaddockPack);
 		clientPaddockPack.setSessaoCliente(cliente);
-		String commando = clientPaddockPack.getCommando();
+		String commando = clientPaddockPack.getComando();
 		if (Comandos.OBTER_DADOS_JOGO.equals(commando)) {
 			return obterDadosJogo(clientPaddockPack);
 		} else if (Comandos.VERIFICA_ESTADO_JOGO.equals(commando)) {
@@ -246,8 +259,29 @@ public class ControlePaddockServidor {
 			return verCorridas(clientPaddockPack);
 		} else if (Comandos.DADOS_PILOTOS_JOGO.equals(commando)) {
 			return dadosPilotosJogo(clientPaddockPack);
+		} else if (Comandos.OBTER_NOVO_CAPCHA.equals(commando)) {
+			return obterNovoCapcha(clientPaddockPack);
 		}
 		return "Comando invalido";
+	}
+
+	private Object obterNovoCapcha(ClientPaddockPack clientPaddockPack) {
+		try {
+			ByteArrayOutputStream jpegstream = new ByteArrayOutputStream();
+			String chave = String.valueOf(System.currentTimeMillis());
+			BufferedImage challenge = capcha.getImageChallengeForID(chave);
+			JPEGImageEncoder jpegencoderEncoder = JPEGCodec
+					.createJPEGEncoder(jpegstream);
+			jpegencoderEncoder.encode(challenge);
+			clientPaddockPack = new ClientPaddockPack();
+			clientPaddockPack.setComando(Comandos.OBTER_NOVO_CAPCHA);
+			clientPaddockPack.setChaveCapcha(chave);
+			clientPaddockPack.setDataBytes(jpegstream.toByteArray());
+			return clientPaddockPack;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return new ErroServ(Lang.msg("erroCapcha"));
 	}
 
 	private Object dadosPilotosJogo(ClientPaddockPack clientPaddockPack) {
@@ -364,9 +398,14 @@ public class ControlePaddockServidor {
 
 	private SessaoCliente resgatarSessao(ClientPaddockPack clientPaddockPack) {
 		try {
+			if (clientPaddockPack == null
+					|| clientPaddockPack.getSessaoCliente() == null) {
+				return null;
+			}
 			return verificaUsuarioSessao(clientPaddockPack.getSessaoCliente()
 					.getNomeJogador());
 		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
 		return null;
 	}

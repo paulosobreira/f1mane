@@ -454,7 +454,9 @@ public class ControlePaddockCliente {
 			return false;
 		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		clientPaddockPack.setCommando(Comandos.REGISTRAR_LOGIN);
+		clientPaddockPack.setTextoCapcha(formEntrada.getCapchaTexto());
+		clientPaddockPack.setChaveCapcha(formEntrada.getCapchaChave());
+		clientPaddockPack.setComando(Comandos.REGISTRAR_LOGIN);
 		clientPaddockPack.setNomeJogador(formEntrada.getNome().getText());
 		if ("IA".equals(clientPaddockPack.getNomeJogador())
 				|| "Ia".equals(clientPaddockPack.getNomeJogador())
@@ -543,7 +545,7 @@ public class ControlePaddockCliente {
 	}
 
 	public void logar() {
-		FormEntrada formEntrada = new FormEntrada();
+		FormEntrada formEntrada = new FormEntrada(this);
 		formEntrada.setToolTipText(Lang.msg("066"));
 		int result = JOptionPane.showConfirmDialog(panel, formEntrada, Lang
 				.msg("066"), JOptionPane.OK_CANCEL_OPTION);
