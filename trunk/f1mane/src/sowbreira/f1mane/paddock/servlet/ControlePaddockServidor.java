@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 
+import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
@@ -24,8 +25,6 @@ import br.nnpe.PassGenerator;
 import br.nnpe.Util;
 
 import com.octo.captcha.service.image.DefaultManageableImageCaptchaService;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
  * @author paulo.sobreira
@@ -270,9 +269,7 @@ public class ControlePaddockServidor {
 			ByteArrayOutputStream jpegstream = new ByteArrayOutputStream();
 			String chave = String.valueOf(System.currentTimeMillis());
 			BufferedImage challenge = capcha.getImageChallengeForID(chave);
-			JPEGImageEncoder jpegencoderEncoder = JPEGCodec
-					.createJPEGEncoder(jpegstream);
-			jpegencoderEncoder.encode(challenge);
+			ImageIO.write(challenge, "jpg", jpegstream);
 			clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setComando(Comandos.OBTER_NOVO_CAPCHA);
 			clientPaddockPack.setChaveCapcha(chave);
