@@ -1954,4 +1954,12 @@ public class GerenciadorVisual {
 				|| progamacaoBox.getAtive2().isSelected()
 				|| progamacaoBox.getAtive3().isSelected();
 	}
+
+	public void setZoom(double d) {
+		if (painelCircuito == null) {
+			return;
+		}
+		painelCircuito.zoom = d;
+
+	}
 }

@@ -226,4 +226,6 @@ public interface InterfaceJogo {
 
 	public No getNoEntradaBox();
 
+	public void setZoom(double d);
+
 }

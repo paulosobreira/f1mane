@@ -4,11 +4,11 @@
 "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-		<property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
-		<property name="hibernate.connection.password"></property>
-		<property name="hibernate.connection.url">jdbc:hsqldb:hsql://localhost/hsqldb</property>
-		<property name="hibernate.connection.username">sa</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+		<property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sobreira</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">sobreira</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<mapping
 			class="sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv" />
 		<mapping
