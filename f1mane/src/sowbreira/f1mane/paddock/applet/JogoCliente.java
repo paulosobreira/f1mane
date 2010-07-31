@@ -747,4 +747,13 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return controleBox.getEntradaBox();
 
 	}
+
+	@Override
+	public void setZoom(double d) {
+		if (gerenciadorVisual == null) {
+			return;
+		}
+		gerenciadorVisual.setZoom(d);
+
+	}
 }

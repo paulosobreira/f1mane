@@ -932,4 +932,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return controleCorrida.getControleBox().getEntradaBox();
 
 	}
+
+	@Override
+	public void setZoom(double d) {
+		if (gerenciadorVisual == null) {
+			return;
+		}
+		gerenciadorVisual.setZoom(d);
+
+	}
 }

@@ -37,6 +37,7 @@ public class MonitorJogo implements Runnable {
 	private int luz = 5;
 	public long lastPosis = 0;
 	public boolean procPosis = false;
+	private boolean setouZoom = false;
 	private boolean atualizouDados;
 
 	public boolean isJogoAtivo() {
@@ -142,6 +143,10 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.pularQualificacao();
 				monitorQualificacao = null;
 			}
+			if (!setouZoom) {
+				jogoCliente.setZoom(0.5);
+				setouZoom = true;
+			}
 			delayVerificaStado--;
 			if (delayVerificaStado <= 0) {
 				if (((Piloto) jogoCliente.getPilotos().get(0)).getNumeroVolta() != 0) {
@@ -150,6 +155,7 @@ public class MonitorJogo implements Runnable {
 						luz--;
 					}
 				}
+
 				atualizarDadosParciais(jogoCliente.getDadosJogo(), jogoCliente
 						.getPilotoSelecionado());
 				if (controlePaddockCliente.getLatenciaReal() > 2000) {
