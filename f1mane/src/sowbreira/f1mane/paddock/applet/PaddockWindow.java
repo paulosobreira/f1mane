@@ -242,9 +242,8 @@ public class PaddockWindow {
 		sobre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String msg = Lang.msg("184") + "Paulo Sobreira \n "
-						+ "sowbreira@yahoo.com.br \n"
-						+ "http://br.geocities.com/sowbreira/ \n"
-						+ "Agosto de 2007 \n ";
+						+ "sowbreira@gmail.com \n"
+						+ "sowbreira.appspot.com/ \n" + "Agosto de 2007 \n ";
 				msg += Lang.msg("185") + "\n" + " Florêncio Queiroz \n"
 						+ " Jorge Botelho \n" + " Leonardo Andrade \n"
 						+ " Daniel Souza \n" + " Wendel Silva \n"
