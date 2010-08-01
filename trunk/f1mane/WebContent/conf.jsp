@@ -23,9 +23,6 @@
 <a href="ServletBaseDados?tipo=x"> Exceptions </a>
 <br>
 <br>
-<a href="ServletBaseDados?tipo=x"> Exceptions </a>
-<br>
-<br>
 <a href="ServletBaseDados?tipo=C"> Contrutores </a>
 <br>
 <br>
