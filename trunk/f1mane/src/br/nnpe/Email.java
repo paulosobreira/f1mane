@@ -26,11 +26,11 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class Email {
-	private static final String MAILSERVER = "mail.f1manager.hostignition.com";
+	private static final String MAILSERVER = "mail.mochahost.com";
 
-	private static String USERNAME = "";
+	private static String USERNAME = "admin";
 
-	private static String PASSWORD = "";
+	private static String PASSWORD = "sowmail49";
 
 	public Email() {
 	}

@@ -228,7 +228,7 @@ public class FormEntrada extends JPanel {
 				.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
-			System.out.println("ok");
+			Logger.logar("ok");
 		}
 	}
 

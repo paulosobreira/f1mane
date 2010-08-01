@@ -24,6 +24,7 @@ import javax.swing.SpinnerNumberModel;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 27/06/2009 as 15:48:51
@@ -265,7 +266,7 @@ public class FormCarreira extends JPanel {
 					try {
 						ptsCarreiraVal.repaint();
 					} catch (Exception e) {
-						e.printStackTrace();
+						Logger.logarExept(e);
 					}
 					super.setValue(value);
 				}
@@ -292,7 +293,7 @@ public class FormCarreira extends JPanel {
 		try {
 			labelCor1.repaint();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 	}
@@ -316,7 +317,7 @@ public class FormCarreira extends JPanel {
 		try {
 			labelCor2.repaint();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 	}

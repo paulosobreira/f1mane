@@ -206,12 +206,6 @@ public class ControlePersistencia {
 					.get(nome);
 			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
 					.getCarreiraDadosSrv();
-			if ("mark".equalsIgnoreCase(nome)) {
-				System.out.println();
-			}
-			if (carreiraDadosSrv != null) {
-				System.out.println();
-			}
 			List corridas = jogadorDadosSrv.getCorridas();
 			for (Iterator iterator2 = corridas.iterator(); iterator2.hasNext();) {
 				CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator2
@@ -232,13 +226,11 @@ public class ControlePersistencia {
 				jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
 				session.saveOrUpdate(jogadorDadosSrv);
 			} catch (Exception e) {
-				System.out.println(nome);
-				e.printStackTrace();
+				Logger.logarExept(e);
 			}
 
 		}
 		beginTransaction.commit();
-		System.out.println();
 	}
 
 	public static void main(String[] args) throws Exception {
