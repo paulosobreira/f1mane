@@ -1960,6 +1960,6 @@ public class GerenciadorVisual {
 			return;
 		}
 		painelCircuito.zoom = d;
-
+		painelCircuito.atualizaVarZoom();
 	}
 }

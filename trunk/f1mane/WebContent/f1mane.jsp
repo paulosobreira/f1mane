@@ -14,6 +14,16 @@ div {
 	cursor: pointer;
 	font-family: sans-serif;
 }
+
+
+A:link {text-decoration: none; 
+		color: #0084B4;}
+A:visited {text-decoration: none;
+		color: #0084B4;} 
+A:active {text-decoration: none;
+		color: #0084B4;}
+A:hover {text-decoration: underline overline; color: black;}
+
 #link {
 	border-style: solid;
 	border-width: 1px;
@@ -85,18 +95,19 @@ img {
 </style>
 </head>
 <body>
+ 
 <div id="adds">
-<script type="text/javascript"><!--
-google_ad_client = "pub-1471236111248665";
-/* 120x600, criado 14/06/10 */
-google_ad_slot = "5219714006";
-google_ad_width = 120;
-google_ad_height = 600;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
+	<script type="text/javascript"><!--
+	google_ad_client = "pub-1471236111248665";
+	/* 120x600, criado 14/06/10 */
+	google_ad_slot = "5219714006";
+	google_ad_width = 120;
+	google_ad_height = 600;
+	//-->
+	</script>
+	<script type="text/javascript"
+	src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+	</script>
 </div>
 
 <div id="main">
@@ -110,7 +121,9 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</div>
 	<div>
 		<br>
-		<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="800px" height="500px"> 
+		<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="800px" height="470px"> 
+			<param name="lang" value="pt">
+		</applet>
 	</div>
 	<div>
 		<a	href="http://sowbreira.appspot.com/">Viste http://sowbreira.appspot.com/</a>
