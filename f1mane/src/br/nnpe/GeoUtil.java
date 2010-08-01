@@ -346,11 +346,10 @@ public class GeoUtil {
 			int y2 = Util.intervalo(10, 20000);
 			int drawBresenhamLine = drawBresenhamLine(x1, y1, x2, y2).size();
 			int distaciaEntrePontos = (int) distaciaEntrePontos(x1, y1, x2, y2);
-			System.out.println("drawBresenhamLine " + drawBresenhamLine);
-			System.out.println("distaciaEntrePontos " + distaciaEntrePontos);
+			Logger.logar("distaciaEntrePontos " + distaciaEntrePontos);
 			media += (distaciaEntrePontos - drawBresenhamLine);
 		}
-		System.out.println("media " + (media / 100));
+		Logger.logar("media " + (media / 100));
 	}
 
 }

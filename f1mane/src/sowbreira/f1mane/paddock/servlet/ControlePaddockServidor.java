@@ -183,10 +183,9 @@ public class ControlePaddockServidor {
 			} catch (Exception e) {
 				return new ErroServ(e);
 			}
+		} else {
+			return new MsgSrv(Lang.msg("loginIndisponivel"));
 		}
-//		if (!Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
-//			return new MsgSrv(Lang.msg("loginIndisponivel"));
-//		}
 
 		return criarSessao(clientPaddockPack);
 	}

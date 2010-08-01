@@ -51,7 +51,7 @@ public class F1ManeApplet extends JApplet {
 		try {
 			icon = new ImageIcon(new URL(getCodeBase() + "f1mane.jpg"));
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		jLabel2.setIcon(icon);
 		jLabel2.setSize(icon.getIconWidth(), icon.getIconHeight());

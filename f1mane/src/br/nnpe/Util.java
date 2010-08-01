@@ -931,19 +931,25 @@ public class Util {
 
 	public static String substVogais(String name) {
 		StringBuffer retorno = new StringBuffer();
+		boolean subst = false;
 		for (int i = 0; i < name.length(); i++) {
 			if (i == (name.length() - 1)) {
 				retorno.append(name.charAt(i));
-			} else if (name.charAt(i) == 'a') {
+			} else if (name.charAt(i) == 'a' && !subst) {
 				retorno.append('e');
-			} else if (name.charAt(i) == 'e') {
+				subst = true;
+			} else if (name.charAt(i) == 'e' && !subst) {
 				retorno.append('i');
-			} else if (name.charAt(i) == 'i') {
+				subst = true;
+			} else if (name.charAt(i) == 'i' && !subst) {
 				retorno.append('a');
-			} else if (name.charAt(i) == 'o') {
+				subst = true;
+			} else if (name.charAt(i) == 'o' && !subst) {
 				retorno.append('u');
-			} else if (name.charAt(i) == 'u') {
+				subst = true;
+			} else if (name.charAt(i) == 'u' && !subst) {
 				retorno.append('o');
+				subst = true;
 			} else {
 				retorno.append(name.charAt(i));
 			}

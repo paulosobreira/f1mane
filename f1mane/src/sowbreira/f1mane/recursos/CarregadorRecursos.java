@@ -114,7 +114,7 @@ public class CarregadorRecursos {
 
 		} catch (Exception e) {
 			Logger.logar("Erro gerando transparencia para :" + file);
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 		return ImageUtil.geraTransparencia(buffer);
