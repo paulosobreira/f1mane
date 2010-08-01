@@ -414,6 +414,16 @@ public class ControlePersistencia {
 				.createCriteria(CarreiraDadosSrv.class).createAlias(
 						"jogadorDadosSrv", "j").add(
 						Restrictions.eq("j.nome", nomeJogador)).uniqueResult();
+		if (carreiraDadosSrv == null) {
+			JogadorDadosSrv jogadorDadosSrv = carregaDadosJogador(nomeJogador);
+			Transaction transaction = getSession().beginTransaction();
+			carreiraDadosSrv = new CarreiraDadosSrv();
+			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+			getSession().saveOrUpdate(carreiraDadosSrv);
+			jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
+			getSession().saveOrUpdate(jogadorDadosSrv);
+			transaction.commit();
+		}
 		if (vaiCliente) {
 			session.evict(carreiraDadosSrv);
 			carreiraDadosSrv.setJogadorDadosSrv(null);
