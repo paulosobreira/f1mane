@@ -47,7 +47,6 @@
 			</fileset>
 		</copy>
 	</target>
-
 	<target name="criarJar">
 		<jar jarfile="f1mane.jar" compress="true" manifest="MANIFEST.MF">
 			<fileset dir="build">
@@ -67,8 +66,14 @@
 	</target>
 	<target name="criarWar" depends="">
 		<delete dir="${env.TOMCAT_HOME}/webapps/f1mane" />
-		<war compress="true" destfile="${env.TOMCAT_HOME}/webapps/f1mane.war">
-			<fileset dir="WebContent" />
+		<war compress="on"  destfile="${env.TOMCAT_HOME}/webapps/f1mane.war">
+			<fileset dir="WebContent">
+				<exclude name="**/*.jar" />
+			</fileset>
+			<fileset dir="WebContent">
+				<include name="WEB-INF/lib/f1mane.jar" />
+				<include name="f1mane.jar" />
+			</fileset>
 		</war>
 	</target>
 </project>
