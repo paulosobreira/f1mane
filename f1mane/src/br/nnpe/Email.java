@@ -28,9 +28,9 @@ import javax.mail.internet.MimeMultipart;
 public class Email {
 	private static final String MAILSERVER = "mail.mochahost.com";
 
-	private static String USERNAME = "admin";
+	private static String USERNAME = "";
 
-	private static String PASSWORD = "sowmail49";
+	private static String PASSWORD = "";
 
 	public Email() {
 	}
