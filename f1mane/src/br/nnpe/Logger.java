@@ -10,7 +10,7 @@ public class Logger {
 
 	public static Map topExceptions = new HashMap();
 
-	public static boolean ativo = true;
+	public static boolean ativo = false;
 
 	public static void topExecpts(Exception e) {
 		if (ativo) {

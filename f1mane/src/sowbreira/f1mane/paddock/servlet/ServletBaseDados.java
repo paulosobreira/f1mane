@@ -65,14 +65,19 @@ public class ServletBaseDados extends HttpServlet {
 		} else if ("C".equals(tipo)) {
 			topConstrutors(res);
 		} else {
-			res.setHeader("Content-Disposition", "attachment;filename=\""
-					+ "paddockDadosSrv" + tipo + "_"
-					+ dateFormat.format(new Date()) + ".zip" + "\"");
-			byte[] ret = controlePersistencia.obterBytesBase(tipo);
-			if (ret == null) {
-				return;
-			}
-			res.getOutputStream().write(ret);
+			// res.setHeader("Content-Disposition", "attachment;filename=\""
+			// + "paddockDadosSrv" + tipo + "_"
+			// + dateFormat.format(new Date()) + ".zip" + "\"");
+			// byte[] ret = controlePersistencia.obterBytesBase(tipo);
+			// if (ret == null) {
+			// return;
+			// }
+			// res.getOutputStream().write(ret);
+//			try {
+//				controlePersistencia.migrar();
+//			} catch (Exception e) {
+//				Logger.logarExept(e);
+//			}
 		}
 	}
 

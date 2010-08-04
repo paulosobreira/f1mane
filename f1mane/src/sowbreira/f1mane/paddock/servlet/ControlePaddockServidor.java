@@ -80,11 +80,8 @@ public class ControlePaddockServidor {
 						|| "Ia".equals(clientPaddockPack.getNomeJogador())
 						|| "ia".equals(clientPaddockPack.getNomeJogador())
 						|| "iA".equals(clientPaddockPack.getNomeJogador())
-						|| "".equals(clientPaddockPack.getNomeJogador())
 						|| clientPaddockPack.getNomeJogador().contains("@")
-						|| clientPaddockPack.getNomeJogador().contains("§")
-						|| Util.isNullOrEmpty(clientPaddockPack
-								.getNomeJogador())) {
+						|| clientPaddockPack.getNomeJogador().contains("§")) {
 					return new MsgSrv(Lang.msg("242"));
 				}
 
@@ -104,6 +101,7 @@ public class ControlePaddockServidor {
 					return criarSessao(clientPaddockPack);
 				}
 
+				return new MsgSrv(Lang.msg("242"));
 			}
 			return processarComando(clientPaddockPack);
 		}
@@ -114,18 +112,19 @@ public class ControlePaddockServidor {
 		if (!validaCapcha(clientPaddockPack)) {
 			return new MsgSrv(Lang.msg("capchaInvalido"));
 		}
-		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-				.carregaDadosJogador(clientPaddockPack.getNomeJogador());
+		JogadorDadosSrv jogadorDadosSrv = null;
+		if (!Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
+			jogadorDadosSrv = controlePersistencia
+					.carregaDadosJogadorEmail(clientPaddockPack
+							.getEmailJogador());
+		}
+
 		if (jogadorDadosSrv == null) {
-			return new MsgSrv(Lang.msg("238"));
+			return new MsgSrv(Lang.msg("email404"));
 		}
 		if ((System.currentTimeMillis() - jogadorDadosSrv
 				.getUltimaRecuperacao()) < 300000) {
 			return new MsgSrv(Lang.msg("243"));
-		}
-
-		if (Util.isNullOrEmpty(jogadorDadosSrv.getEmail())) {
-			jogadorDadosSrv.setEmail(clientPaddockPack.getEmailJogador());
 		}
 		try {
 			PassGenerator generator = new PassGenerator();
@@ -136,6 +135,7 @@ public class ControlePaddockServidor {
 			jogadorDadosSrv.setUltimaRecuperacao(System.currentTimeMillis());
 			controlePersistencia.gravarDados(jogadorDadosSrv);
 		} catch (Exception e) {
+			Logger.logarExept(e);
 			if (ServletPaddock.email != null)
 				return new MsgSrv(Lang.msg("237"));
 		}
@@ -159,8 +159,17 @@ public class ControlePaddockServidor {
 		if (!validaCapcha(clientPaddockPack)) {
 			return new MsgSrv(Lang.msg("capchaInvalido"));
 		}
-		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-				.carregaDadosJogador(clientPaddockPack.getNomeJogador());
+		JogadorDadosSrv jogadorDadosSrv = null;
+		if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
+			jogadorDadosSrv = controlePersistencia
+					.carregaDadosJogador(clientPaddockPack.getNomeJogador());
+		}
+		if (jogadorDadosSrv == null
+				&& !Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
+			jogadorDadosSrv = controlePersistencia
+					.carregaDadosJogadorEmail(clientPaddockPack
+							.getEmailJogador());
+		}
 		if (jogadorDadosSrv == null) {
 			jogadorDadosSrv = new JogadorDadosSrv();
 			jogadorDadosSrv.setNome(clientPaddockPack.getNomeJogador());
@@ -172,6 +181,7 @@ public class ControlePaddockServidor {
 				mandaMailSenha(clientPaddockPack.getNomeJogador(),
 						clientPaddockPack.getEmailJogador(), senha);
 			} catch (Exception e1) {
+				Logger.logarExept(e1);
 				if (ServletPaddock.email != null)
 					return new MsgSrv(Lang.msg("237"));
 			}
@@ -194,11 +204,8 @@ public class ControlePaddockServidor {
 			throws AddressException, MessagingException {
 		Logger.logar("Senha :" + senha);
 		ServletPaddock.email.sendSimpleMail("F1-Mane Game Password",
-				new String[] { email }, "f1mane@f1manager.hostignition.com",
+				new String[] { email }, "admin@f1mane.com",
 				"Your game user:password is " + nome + ":" + senha, false);
-		// ServletPaddock.email.sendSimpleMail(Lang.msg("240"),
-		// new String[] { email }, "f1mane@f1manager.hostignition.com",
-		// Lang.msg("241", new String[] { nome, senha }), false);
 	}
 
 	private Object obterDadosParciaisPilotos(String[] args) {
