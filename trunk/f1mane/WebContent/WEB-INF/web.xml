@@ -23,15 +23,6 @@
 	<!-- Standard Action Servlet Configuration -->
 
 	<servlet>
-		<servlet-name>hypersonic</servlet-name>
-		<servlet-class>sowbreira.f1mane.paddock.servlet.HypersonicServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>hypersonic</servlet-name>
-		<url-pattern>/hypersonic</url-pattern>
-	</servlet-mapping>
-	<servlet>
 		<servlet-name>hibernate</servlet-name>
 		<servlet-class>sowbreira.f1mane.paddock.servlet.HibernateServlet</servlet-class>
 	</servlet>
@@ -39,17 +30,6 @@
 		<servlet-name>hibernate</servlet-name>
 		<url-pattern>/hibernate</url-pattern>
 	</servlet-mapping>
-	<servlet>
-		<servlet-name>ServletBackUp</servlet-name>
-		<servlet-class>sowbreira.f1mane.paddock.servlet.ServletBackUp</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ServletBackUp</servlet-name>
-		<url-pattern>/ServletBackUp</url-pattern>
-	</servlet-mapping>
-
-
-
 	<servlet>
 		<servlet-name>ServletPaddock</servlet-name>
 		<servlet-class>sowbreira.f1mane.paddock.servlet.ServletPaddock</servlet-class>
@@ -67,16 +47,6 @@
 	<servlet-mapping>
 		<servlet-name>ServletBaseDados</servlet-name>
 		<url-pattern>/ServletBaseDados</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>ServletApplet</servlet-name>
-		<servlet-class>sowbreira.f1mane.paddock.servlet.ServletApplet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ServletApplet</servlet-name>
-		<url-pattern>/ServletApplet</url-pattern>
 	</servlet-mapping>
 
 	<!-- Standard Action Servlet Mapping -->
