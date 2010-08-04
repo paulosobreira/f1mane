@@ -166,35 +166,37 @@ public class ControlePersistencia {
 		return (PaddockDadosSrv) decoder.readObject();
 	}
 
-	public static void migrar() throws Exception {
-		JFileChooser fileChooser = new JFileChooser(CarregadorRecursos.class
-				.getResource("CarregadorRecursos.class").getFile());
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-		int result = fileChooser.showOpenDialog(null);
-
-		if (result == JFileChooser.CANCEL_OPTION) {
-			return;
-		}
-
-		ZipInputStream zin = new ZipInputStream(new FileInputStream(fileChooser
-				.getSelectedFile()));
-		zin.getNextEntry();
-		ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
-		int byt = zin.read();
-
-		while (-1 != byt) {
-			arrayDinamico.write(byt);
-			byt = zin.read();
-		}
-
-		arrayDinamico.flush();
-
-		ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico
-				.toByteArray());
-		XMLDecoder decoder = new XMLDecoder(bin);
-		PaddockDadosSrv paddockDadosSrv = (PaddockDadosSrv) decoder
-				.readObject();
+	public void migrar() throws Exception {
+		// JFileChooser fileChooser = new JFileChooser(CarregadorRecursos.class
+		// .getResource("CarregadorRecursos.class").getFile());
+		// fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		//
+		// int result = fileChooser.showOpenDialog(null);
+		//
+		// if (result == JFileChooser.CANCEL_OPTION) {
+		// return;
+		// }
+		//
+		// ZipInputStream zin = new ZipInputStream(new
+		// FileInputStream(fileChooser
+		// .getSelectedFile()));
+		// zin.getNextEntry();
+		// ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
+		// int byt = zin.read();
+		//
+		// while (-1 != byt) {
+		// arrayDinamico.write(byt);
+		// byt = zin.read();
+		// }
+		//
+		// arrayDinamico.flush();
+		//
+		// ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico
+		// .toByteArray());
+		// XMLDecoder decoder = new XMLDecoder(bin);
+		// PaddockDadosSrv paddockDadosSrv = (PaddockDadosSrv) decoder
+		// .readObject();
+		PaddockDadosSrv paddockDadosSrv = lerDados();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction beginTransaction = session.beginTransaction();
 		Map jogadores = paddockDadosSrv.getJogadoresMap();
@@ -234,7 +236,7 @@ public class ControlePersistencia {
 	}
 
 	public static void main(String[] args) throws Exception {
-		migrar();
+		// migrar();
 
 	}
 
@@ -422,5 +424,13 @@ public class ControlePersistencia {
 		}
 
 		return carreiraDadosSrv;
+	}
+
+	public JogadorDadosSrv carregaDadosJogadorEmail(String emailJogador) {
+		List jogador = getSession().createCriteria(JogadorDadosSrv.class).add(
+				Restrictions.eq("email", emailJogador)).list();
+		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null
+				: jogador.get(0));
+		return jogadorDadosSrv;
 	}
 }

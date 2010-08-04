@@ -450,9 +450,6 @@ public class ControlePaddockCliente {
 	}
 
 	public boolean registrarUsuario(FormEntrada formEntrada) {
-		if (Util.isNullOrEmpty(formEntrada.getNome().getText())) {
-			return false;
-		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setTextoCapcha(formEntrada.getCapchaTexto());
 		clientPaddockPack.setChaveCapcha(formEntrada.getCapchaChave());
@@ -461,8 +458,7 @@ public class ControlePaddockCliente {
 		if ("IA".equals(clientPaddockPack.getNomeJogador())
 				|| "Ia".equals(clientPaddockPack.getNomeJogador())
 				|| "ia".equals(clientPaddockPack.getNomeJogador())
-				|| "iA".equals(clientPaddockPack.getNomeJogador())
-				|| Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
+				|| "iA".equals(clientPaddockPack.getNomeJogador())) {
 			JOptionPane.showMessageDialog(panel, Lang.msg("064"), Lang
 					.msg("064"), JOptionPane.ERROR_MESSAGE);
 			return false;

@@ -26,7 +26,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class Email {
-	private static final String MAILSERVER = "mail.mochahost.com";
+	private static final String MAILSERVER = "mail.f1mane.com";
 
 	private static String USERNAME = "";
 
@@ -48,7 +48,7 @@ public class Email {
 			MessagingException {
 		Email email = new Email();
 		email.sendSimpleMail("Teste", new String[] { "sowbreira@gmail.com" },
-				" f1mane@f1manager.hostignition.com", "Teste Corpo", false);
+				" admin@f1mane.com", "Teste Corpo", false);
 	}
 
 	public void sendSimpleMail(String subject, String[] to, String from,
@@ -59,6 +59,7 @@ public class Email {
 
 		// definição do mailserver
 		mailProps.put("mail.smtp.host", MAILSERVER);
+		mailProps.put("mail.smtp.port", 25);
 
 		Authenticator auth = new SMTPAuthenticator();
 		Session mailSession = Session.getInstance(mailProps, auth);
@@ -118,7 +119,7 @@ public class Email {
 
 		// definição do mailserver
 		mailProps.put("mail.smtp.host", MAILSERVER);
-
+		// mailProps.put("mail.smtp.port", 125);
 		Authenticator auth = new SMTPAuthenticator();
 		Session mailSession = Session.getInstance(mailProps, auth);
 
