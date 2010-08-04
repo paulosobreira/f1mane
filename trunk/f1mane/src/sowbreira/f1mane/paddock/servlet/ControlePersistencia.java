@@ -279,16 +279,22 @@ public class ControlePersistencia {
 		return nomes;
 	}
 
-	public void adicionarJogador(String nome, JogadorDadosSrv jogadorDadosSrv) {
+	public void adicionarJogador(String nome, JogadorDadosSrv jogadorDadosSrv)
+			throws Exception {
 		Transaction transaction = getSession().beginTransaction();
-		jogadorDadosSrv.setLoginCriador(jogadorDadosSrv.getNome());
-		getSession().saveOrUpdate(jogadorDadosSrv);
-		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
-		carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-		getSession().saveOrUpdate(carreiraDadosSrv);
-		jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
-		getSession().saveOrUpdate(jogadorDadosSrv);
-		transaction.commit();
+		try {
+			jogadorDadosSrv.setLoginCriador(jogadorDadosSrv.getNome());
+			getSession().saveOrUpdate(jogadorDadosSrv);
+			CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
+			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+			getSession().saveOrUpdate(carreiraDadosSrv);
+			jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
+			getSession().saveOrUpdate(jogadorDadosSrv);
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			throw e;
+		}
 	}
 
 	public byte[] obterBytesBase() {
@@ -385,8 +391,14 @@ public class ControlePersistencia {
 
 	public void gravarDados(F1ManeDados f1ManeDados) {
 		Transaction transaction = getSession().beginTransaction();
-		session.saveOrUpdate(f1ManeDados);
-		transaction.commit();
+		try {
+			session.saveOrUpdate(f1ManeDados);
+			transaction.commit();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			transaction.rollback();
+		}
+
 	}
 
 	public List obterListaCorridas(String nomeJogador) {
@@ -410,13 +422,21 @@ public class ControlePersistencia {
 						Restrictions.eq("j.nome", nomeJogador)).uniqueResult();
 		if (carreiraDadosSrv == null) {
 			JogadorDadosSrv jogadorDadosSrv = carregaDadosJogador(nomeJogador);
+			if (jogadorDadosSrv == null) {
+				return null;
+			}
 			Transaction transaction = getSession().beginTransaction();
-			carreiraDadosSrv = new CarreiraDadosSrv();
-			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-			getSession().saveOrUpdate(carreiraDadosSrv);
-			jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
-			getSession().saveOrUpdate(jogadorDadosSrv);
-			transaction.commit();
+			try {
+				carreiraDadosSrv = new CarreiraDadosSrv();
+				carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+				getSession().saveOrUpdate(carreiraDadosSrv);
+				jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
+				getSession().saveOrUpdate(jogadorDadosSrv);
+				transaction.commit();
+			} catch (Exception e) {
+				Logger.topExecpts(e);
+				transaction.rollback();
+			}
 		}
 		if (vaiCliente) {
 			session.evict(carreiraDadosSrv);
