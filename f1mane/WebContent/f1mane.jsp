@@ -128,16 +128,19 @@ img {
 	<div>
 		<a	href="http://sowbreira.appspot.com/">Viste http://sowbreira.appspot.com/</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="http://sowbreira.appspot.com/f1mane/F1Mane.html">
-				Vers&atilde;o do Jogo modo 1 jogador 
+		<a href="http://sowbreira.appspot.com/f1mane/F1Mane.html">
+			Vers&atilde;o do Jogo modo 1 jogador 
+		</a>
 		<br>
-			<a href="http://www.java.com/pt_BR/">
-				Se abaixo nao aparecer nada Clique Aqui e instale a versao mais nova do
-				Java. 
-			</a>
+		Se nao aparecer nada
+		<a href="http://www.java.com/pt_BR/">
+			 CLIQUE AQUI  
+		</a>
+		e instale a versao mais nova do Java.
 		<br>
 		<a href="mailto:sowbreira@gmail.com">
-			Duvidas, Criticas, Sugestões, Bugs ,Colaborar ...</a> 
+			Duvidas, Criticas, Sugestões, Bugs ,Colaborar ...
+		</a> 
 	</div>
 </div>
 <div id="shots" style="text-align: center;	padding: 3px; padding-left: 5px; padding-right: 5px;">
