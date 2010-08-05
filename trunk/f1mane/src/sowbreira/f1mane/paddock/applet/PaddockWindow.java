@@ -548,7 +548,7 @@ public class PaddockWindow {
 				+ controlePaddockCliente.getLatenciaMinima();
 		text += " " + Lang.msg("115") + " "
 				+ controlePaddockCliente.getLatenciaReal();
-		text += " " + Lang.msg("116") + " " + (ControleJogosServer.MaxJogo + 1);
+		text += " " + Lang.msg("116") + " " + (ControleJogosServer.MaxJogo);
 
 		infoLabel1.setText(text);
 
