@@ -36,7 +36,7 @@ public class ControleJogosServer {
 	private DadosPaddock dadosPaddock;
 	private ControleClassificacao controleClassificacao;
 	private Map mapaJogosCriados = new HashMap();
-	public static int MaxJogo = 4;
+	public static int MaxJogo = 1;
 	public static int qtdeJogos = 0;
 
 	/**
@@ -62,8 +62,8 @@ public class ControleJogosServer {
 			return new MsgSrv(Lang.msg("203"));
 
 		}
-		if (mapaJogosCriados.size() > MaxJogo) {
-			return new MsgSrv(Lang.msg("204", new Object[] { MaxJogo + 1 }));
+		if ((mapaJogosCriados.size() + 1) > MaxJogo) {
+			return new MsgSrv(Lang.msg("204", new Object[] { MaxJogo }));
 		}
 		for (Iterator iter = mapaJogosCriados.keySet().iterator(); iter
 				.hasNext();) {
@@ -154,7 +154,7 @@ public class ControleJogosServer {
 
 		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 				.obterCarreiraSrv(clientPaddockPack.getNomeJogador());
-		if (carreiraDadosSrv!=null && carreiraDadosSrv.isModoCarreira()) {
+		if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
 			}
