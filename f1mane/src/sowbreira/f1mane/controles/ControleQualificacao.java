@@ -69,7 +69,6 @@ public class ControleQualificacao {
 		gerarQualificacaoAleatoria();
 		gerarVoltaQualificacaoAleatoria();
 		posiscionarCarrosLargada();
-
 	}
 
 	private void gerarVoltaQualificacaoAleatoria() {

@@ -313,7 +313,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
 					piloto.setNomeJogador(key);
 					piloto.setJogadorHumano(true);
-					if (Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)) {
+					if (Comandos.MOSTRANDO_QUALIFY.equals(estado)) {
 						piloto.getCarro()
 								.setCombustivel(
 										dadosParticiparJogo.getCombustivel()
