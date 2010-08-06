@@ -64,10 +64,10 @@ public class FormEntrada extends JPanel {
 		JPanel panelAba1 = new JPanel(new BorderLayout(15, 15));
 		panelAba1.add(gerarLogin(), BorderLayout.CENTER);
 		panelAba1.add(gerarIdiomas(), BorderLayout.SOUTH);
-		jTabbedPane.addTab(Lang.msg("entrar"), panelAba1);
+		jTabbedPane.addTab(Lang.msg("171"), panelAba1);
 		JPanel panelAba2 = new JPanel(new BorderLayout());
 		panelAba2.add(gerarRegistrar(), BorderLayout.CENTER);
-		jTabbedPane.addTab(Lang.msg("registrar"), panelAba2);
+		jTabbedPane.addTab(Lang.msg("218"), panelAba2);
 		add(jTabbedPane, BorderLayout.CENTER);
 		if (controlePaddockCliente != null) {
 			capchaReload();

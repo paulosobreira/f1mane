@@ -172,7 +172,7 @@ public class PainelEntradaCliente {
 			}
 		};
 		spinnerCombustivelInicial = new JSpinner();
-		spinnerCombustivelInicial.setValue(new Integer(50));
+		spinnerCombustivelInicial.setValue(new Integer(100));
 
 		JLabel tipoAsa = new JLabel(Lang.msg("010")) {
 			@Override
@@ -461,7 +461,7 @@ public class PainelEntradaCliente {
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 		JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
 		spinnerCombustivelInicial = new JSpinner();
-		spinnerCombustivelInicial.setValue(new Integer(50));
+		spinnerCombustivelInicial.setValue(new Integer(100));
 
 		painelInicio.add(tipoPneu);
 		painelInicio.add(comboBoxPneuInicial);
