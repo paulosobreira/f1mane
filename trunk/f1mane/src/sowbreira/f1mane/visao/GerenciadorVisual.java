@@ -59,6 +59,7 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.TravadaRoda;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
@@ -1961,5 +1962,10 @@ public class GerenciadorVisual {
 		}
 		painelCircuito.zoom = d;
 		painelCircuito.atualizaVarZoom();
+	}
+
+	public void adicinaTravadaRoda(TravadaRoda travadaRoda) {
+		if (painelCircuito != null)
+			painelCircuito.adicionatrvadaRoda(travadaRoda);
 	}
 }

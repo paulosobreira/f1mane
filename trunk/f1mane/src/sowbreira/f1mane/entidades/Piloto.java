@@ -1225,17 +1225,20 @@ public class Piloto implements Serializable {
 						.getNiveljogo()));
 			}
 			ciclosDesconcentrado *= controleJogo.getNiveljogo();
+			if (jogadorHumano && Math.random() > 0.95) {
+				controleJogo.travouRodas(this);
+			}
 		}
-
 		if (jogadorHumano) {
 			if (!testeHabilidadePilotoHumanoCarro(controleJogo)
-					&& !getNoAtual().verificaCruvaBaixa()
 					&& Math.random() < controleJogo.getNiveljogo()) {
 				if (AGRESSIVO.equals(modoPilotagem)) {
 					if (controleJogo.isChovendo() && Math.random() > 0.950) {
 						controleJogo.info(Html.txtRedBold(getNome())
 								+ Html.bold(Lang.msg("052")));
-					} else if (Math.random() > 0.999) {
+					} else if (Math.random() > 0.9
+							&& getNoAtual().verificaCruvaBaixa()) {
+
 						if (Math.random() > 0.5) {
 							controleJogo.info(Html.txtRedBold(getNome())
 									+ Html.bold(Lang.msg("053")));
@@ -1246,13 +1249,15 @@ public class Piloto implements Serializable {
 					}
 					if (controleJogo.verificaNivelJogo())
 						incStress(Math.random() > .5 ? 1 : 0);
-				} else if (Math.random() > 0.950) {
-					if (controleJogo.isChovendo()) {
-						controleJogo.info(Html.bold(getNome())
-								+ Html.verde(Lang.msg("055")));
-					} else {
-						controleJogo.info(Html.bold(getNome())
-								+ Html.verde(Lang.msg("056")));
+				} else {
+					if (Math.random() > 0.9) {
+						if (controleJogo.isChovendo()) {
+							controleJogo.info(Html.bold(getNome())
+									+ Html.verde(Lang.msg("055")));
+						} else {
+							controleJogo.info(Html.bold(getNome())
+									+ Html.verde(Lang.msg("056")));
+						}
 					}
 				}
 

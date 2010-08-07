@@ -228,4 +228,10 @@ public interface InterfaceJogo {
 
 	public void setZoom(double d);
 
+	public void travouRodas(Piloto piloto);
+
+	public No obterNoPorId(int idNo);
+
+	public Integer obterIdPorNo(No no);
+
 }

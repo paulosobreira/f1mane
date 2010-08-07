@@ -34,8 +34,8 @@ public abstract class ControleRecursos {
 	protected List carros;
 	protected CarregadorRecursos carregadorRecursos;
 	protected Map circuitos = new HashMap();
-	protected Map mapaIdsNos = new HashMap();
-	protected Map mapaNosIds = new HashMap();
+	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
+	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
 	private String seasson;
 	private Set idsNoPista = new HashSet();
 	private Set idsNoBox = new HashSet();
@@ -62,6 +62,25 @@ public abstract class ControleRecursos {
 					.geraTransparencia(carroLado, Color.WHITE));
 		}
 		return carroLado;
+	}
+
+	public No obterNoPorId(int idNo) {
+		return mapaIdsNos.get(idNo);
+	}
+
+	public Integer obterIdPorNo(No no) {
+		return mapaNosIds.get(no);
+	}
+
+	protected void limpaBuffers() {
+		if (bufferCarrosCima != null)
+			bufferCarrosCima.clear();
+		if (bufferCarrosCimaSemAreofolio != null)
+			bufferCarrosCimaSemAreofolio.clear();
+		if (bufferCarrosLado != null)
+			bufferCarrosLado.clear();
+		if (bufferCarrosLadoSemAreofolio != null)
+			bufferCarrosLadoSemAreofolio.clear();
 	}
 
 	public BufferedImage obterCarroLado(Piloto piloto) {

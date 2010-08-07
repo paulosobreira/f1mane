@@ -279,6 +279,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		Logger.logar("Tamanho carrobox servidor " + carrobox.size());
 		controleCorrida.getControleBox().geraBoxesEquipes(carrobox);
 		this.estado = Comandos.MOSTRANDO_QUALIFY;
+		limpaBuffers();
 		Thread timer = new Thread(new Runnable() {
 
 			public void run() {
