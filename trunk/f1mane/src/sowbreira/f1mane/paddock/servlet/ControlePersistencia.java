@@ -20,10 +20,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import javax.swing.JFileChooser;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
@@ -31,10 +30,8 @@ import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.F1ManeDados;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
-import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 14:19:54
@@ -51,8 +48,12 @@ public class ControlePersistencia {
 	private Session session;
 
 	private Session getSession() {
-		if (session == null) {
+		if (session != null && Logger.novaSession) {
+			session.close();
+		}
+		if (session == null || Logger.novaSession) {
 			session = HibernateUtil.getSessionFactory().openSession();
+			Logger.novaSession = false;
 		}
 		return session;
 	}
@@ -389,14 +390,16 @@ public class ControlePersistencia {
 		}
 	}
 
-	public void gravarDados(F1ManeDados f1ManeDados) {
+	public void gravarDados(F1ManeDados... f1ManeDados) {
 		Transaction transaction = getSession().beginTransaction();
 		try {
-			session.saveOrUpdate(f1ManeDados);
+			for (int i = 0; i < f1ManeDados.length; i++) {
+				session.saveOrUpdate(f1ManeDados[i]);
+			}
 			transaction.commit();
 		} catch (Exception e) {
-			Logger.topExecpts(e);
 			transaction.rollback();
+			Logger.topExecpts(e);
 		}
 
 	}
@@ -404,7 +407,8 @@ public class ControlePersistencia {
 	public List obterListaCorridas(String nomeJogador) {
 		List corridas = getSession().createCriteria(CorridasDadosSrv.class)
 				.createAlias("jogadorDadosSrv", "j").add(
-						Restrictions.eq("j.nome", nomeJogador)).list();
+						Restrictions.eq("j.nome", nomeJogador)).addOrder(
+						Order.asc("tempoInicio")).list();
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
 			CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
 					.next();
