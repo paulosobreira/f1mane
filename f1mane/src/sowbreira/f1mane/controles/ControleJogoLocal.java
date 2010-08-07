@@ -16,12 +16,14 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
+import sowbreira.f1mane.entidades.TravadaRoda;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -942,4 +944,16 @@ public class ControleJogoLocal extends ControleRecursos implements
 		gerenciadorVisual.setZoom(d);
 
 	}
+
+	@Override
+	public void travouRodas(Piloto piloto) {
+		TravadaRoda travadaRoda = new TravadaRoda();
+		travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
+		travadaRoda.setAngulo(piloto.getAngulo());
+		travadaRoda.setTracado(piloto.getTracado());
+		if (gerenciadorVisual != null)
+			gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
+
+	}
+
 }

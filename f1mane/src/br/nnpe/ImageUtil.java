@@ -144,6 +144,10 @@ public class ImageUtil {
 	}
 
 	public static BufferedImage geraTransparencia(BufferedImage src) {
+		return geraTransparencia(src, 250);
+	}
+
+	public static BufferedImage geraTransparencia(BufferedImage src, int ingVal) {
 		ImageIcon img = new ImageIcon(src);
 		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
 				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -163,7 +167,8 @@ public class ImageUtil {
 
 				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
 						argbArray[3]);
-				if (c.getRed() > 250 && c.getGreen() > 250 && c.getBlue() > 250) {
+				if (c.getRed() > ingVal && c.getGreen() > ingVal
+						&& c.getBlue() > ingVal) {
 					argbArray[3] = 0;
 				}
 

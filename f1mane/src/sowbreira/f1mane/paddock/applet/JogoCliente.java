@@ -756,4 +756,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		gerenciadorVisual.setZoom(d);
 
 	}
+
+	@Override
+	public void travouRodas(Piloto piloto) {
+		// TODO Auto-generated method stub
+
+	}
+
+
 }

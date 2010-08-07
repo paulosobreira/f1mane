@@ -541,9 +541,11 @@ public class Carro implements Serializable {
 			}
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3
 					: 4 + novoModDano);
+			//controleJogo.travouRodas(getPiloto());
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 2
 					: 3 + novoModDano);
+			//controleJogo.travouRodas(getPiloto());
 		} else if (agressivo) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 1 : 2);
 		} else {
@@ -597,7 +599,7 @@ public class Carro implements Serializable {
 		if (piloto.isBox()) {
 			piloto.setBox(true);
 		}
-		if(Carro.PANE_SECA.equals(danificado)){
+		if (Carro.PANE_SECA.equals(danificado)) {
 			paneSeca = true;
 		}
 		this.danificado = danificado;

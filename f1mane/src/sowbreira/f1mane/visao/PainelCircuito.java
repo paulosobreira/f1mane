@@ -19,9 +19,11 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -36,6 +38,7 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
+import sowbreira.f1mane.entidades.TravadaRoda;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -73,6 +76,8 @@ public class PainelCircuito extends JPanel {
 			.carregaBufferedImageTranspareciaBranca("safetycar.gif");
 	public final static BufferedImage scima = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("sfcima.png");
+	public final static BufferedImage travadaRodaImg = CarregadorRecursos
+			.carregaBufferedImageTranspareciaBranca("travadaRoda.png", 200);
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
 	private Point pointQualificacao;
@@ -100,6 +105,7 @@ public class PainelCircuito extends JPanel {
 	private Shape[] boxCor2 = new Shape[12];
 	private double larguraPista = 0;
 	private Rectangle limitesViewPort;
+	private Set<TravadaRoda> marcasPneu = new HashSet<TravadaRoda>();
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -195,6 +201,7 @@ public class PainelCircuito extends JPanel {
 		desenhaGrid(g2d);
 		desenhaBoxes(g2d);
 		g2d.setStroke(trilho);
+		desenhaMarcasPeneuPista(g2d);
 		desenhaPiloto(g2d);
 		if (!desenhouQualificacao) {
 			desenhaQualificacao(g2d);
@@ -212,6 +219,73 @@ public class PainelCircuito extends JPanel {
 		//
 		// g2d.draw(limitesViewPort);
 		// }
+	}
+
+	private void desenhaMarcasPeneuPista(Graphics2D g2d) {
+		if (limitesViewPort == null) {
+			return;
+		}
+		synchronized (marcasPneu) {
+			for (TravadaRoda travadaRoda : marcasPneu) {
+				No noAtual = controleJogo.obterNoPorId(travadaRoda.getIdNo());
+				Point p = noAtual.getPoint();
+				if (!limitesViewPort.contains(new Point2D.Double(p.x * zoom,
+						p.y * zoom))) {
+					continue;
+				}
+				int width = (int) (travadaRodaImg.getWidth());
+				int height = (int) (travadaRodaImg.getHeight());
+				int w2 = width / 2;
+				int h2 = height / 2;
+				int carx = p.x - w2;
+				int cary = p.y - h2;
+				Rectangle2D rectangle = new Rectangle2D.Double(
+						(p.x - Carro.MEIA_LARGURA), (p.y - Carro.MEIA_ALTURA),
+						Carro.LARGURA, Carro.ALTURA);
+				Point p1 = GeoUtil.calculaPonto(travadaRoda.getAngulo(), Util
+						.inte(Carro.ALTURA
+								* controleJogo.getCircuito()
+										.getMultiplicadorLarguraPista()),
+						new Point(Util.inte(rectangle.getCenterX()), Util
+								.inte(rectangle.getCenterY())));
+				Point p2 = GeoUtil.calculaPonto(travadaRoda.getAngulo() + 180,
+						Util.inte(Carro.ALTURA
+								* controleJogo.getCircuito()
+										.getMultiplicadorLarguraPista()),
+						new Point(Util.inte(rectangle.getCenterX()), Util
+								.inte(rectangle.getCenterY())));
+				if (travadaRoda.getTracado() == 0) {
+					carx = p.x - w2;
+					cary = p.y - h2;
+				}
+				if (travadaRoda.getTracado() == 1) {
+					carx = Util.inte((p1.x - w2));
+					cary = Util.inte((p1.y - h2));
+				}
+				if (travadaRoda.getTracado() == 2) {
+					carx = Util.inte((p2.x - w2));
+					cary = Util.inte((p2.y - h2));
+				}
+				double rad = Math.toRadians((double) travadaRoda.getAngulo());
+				AffineTransform afZoom = new AffineTransform();
+				AffineTransform afRotate = new AffineTransform();
+				afZoom.setToScale(zoom, zoom);
+				afRotate.setToRotation(rad, w2, h2);
+
+				BufferedImage rotateBuffer = new BufferedImage(width, width,
+						BufferedImage.TYPE_INT_ARGB);
+				BufferedImage zoomBuffer = new BufferedImage(width, height,
+						BufferedImage.TYPE_INT_ARGB);
+				AffineTransformOp op = new AffineTransformOp(afRotate,
+						AffineTransformOp.TYPE_BILINEAR);
+				op.filter(travadaRodaImg, zoomBuffer);
+				AffineTransformOp op2 = new AffineTransformOp(afZoom,
+						AffineTransformOp.TYPE_BILINEAR);
+				op2.filter(zoomBuffer, rotateBuffer);
+				g2d.drawImage(rotateBuffer, Util.inte(carx * zoom), Util
+						.inte(cary * zoom), null);
+			}
+		}
 	}
 
 	public boolean isDesenhouQualificacao() {
@@ -1963,5 +2037,13 @@ public class PainelCircuito extends JPanel {
 
 	public void setDesenhaInfo(boolean desenhaPosVelo) {
 		this.desenhaInfo = desenhaPosVelo;
+	}
+
+	public void adicionatrvadaRoda(TravadaRoda travadaRoda) {
+		synchronized (marcasPneu) {
+			if (travadaRoda.getAngulo() != null)
+				marcasPneu.add(travadaRoda);
+		}
+		System.out.println(marcasPneu.size());
 	}
 }
