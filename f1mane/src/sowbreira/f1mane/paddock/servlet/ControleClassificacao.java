@@ -105,8 +105,8 @@ public class ControleClassificacao {
 				corridasDadosSrv.setPosicao(piloto.getPosicao());
 				processarPontos(mapVoltasJogadoresOnline, piloto,
 						corridasDadosSrv);
-				jogadorDadosSrv.getCorridas().add(corridasDadosSrv);
 				corridasDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+				jogadorDadosSrv.getCorridas().add(corridasDadosSrv);
 				CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 						.carregaCarreiraJogador(piloto.getNomeJogador(), false);
 				if (carreiraDadosSrv.isModoCarreira()) {
