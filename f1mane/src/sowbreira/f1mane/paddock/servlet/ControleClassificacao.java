@@ -116,9 +116,8 @@ public class ControleClassificacao {
 							+ ptsCorrida + 5);
 				}
 				try {
-					controlePersistencia.gravarDados(corridasDadosSrv);
-					controlePersistencia.gravarDados(jogadorDadosSrv);
-					controlePersistencia.gravarDados(carreiraDadosSrv);
+					controlePersistencia.gravarDados(corridasDadosSrv,
+							jogadorDadosSrv, carreiraDadosSrv);
 				} catch (Exception e) {
 					Logger.topExecpts(e);
 				}
