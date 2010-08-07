@@ -122,7 +122,6 @@ img {
 	<div>
 		<br>
 		<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="800px" height="470px"> 
-			<param name="lang" value="pt">
 		</applet>
 	</div>
 	<div>
