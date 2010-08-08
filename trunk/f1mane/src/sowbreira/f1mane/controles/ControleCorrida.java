@@ -40,8 +40,7 @@ public class ControleCorrida {
 	}
 
 	public ControleCorrida(ControleJogoLocal jogo, int qtdeVoltas,
-			double fatorUtrapassagem, double indexVelcidadeDaPista,
-			long tempoCiclo) throws Exception {
+			double fatorUtrapassagem, long tempoCiclo) throws Exception {
 		controleJogo = jogo;
 		this.tempoCiclo = (tempoCiclo < 50 ? 50 : tempoCiclo);
 		this.fatorUtrapassagem = fatorUtrapassagem / 1000;
@@ -49,10 +48,8 @@ public class ControleCorrida {
 			fatorUtrapassagem = 0.5;
 		}
 		this.fatorUtrapassagem = 1 - fatorUtrapassagem;
-		this.indexVelcidadeDaPista = indexVelcidadeDaPista / 1000;
-		if (indexVelcidadeDaPista < 0.5) {
-			indexVelcidadeDaPista = 0.5;
-		}
+		this.indexVelcidadeDaPista = 1.5 - jogo.getNiveljogo();
+
 		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
 		definirDurabilidadeMotores();
@@ -302,7 +299,7 @@ public class ControleCorrida {
 				if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
 					return ganho * (percent * 0.4);
 				}
-				return ganho * (percent* 0.6);
+				return ganho * (percent * 0.6);
 			}
 
 		}

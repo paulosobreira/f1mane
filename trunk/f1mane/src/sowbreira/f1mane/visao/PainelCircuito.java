@@ -38,8 +38,8 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
-import sowbreira.f1mane.entidades.TravadaRoda;
 import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.GeoUtil;
@@ -235,21 +235,45 @@ public class PainelCircuito extends JPanel {
 				}
 				int width = (int) (travadaRodaImg.getWidth());
 				int height = (int) (travadaRodaImg.getHeight());
+				List lista = controleJogo.obterNosPista();
+
+				if (lista == null) {
+					return;
+				}
+				int cont = noAtual.getIndex();
+
 				int w2 = width / 2;
 				int h2 = height / 2;
 				int carx = p.x - w2;
 				int cary = p.y - h2;
+
+				int traz = cont - 44;
+				int frente = cont + 44;
+				boolean ultimoAngulo = false;
+				if (traz < 0) {
+					traz = (lista.size() - 1) + traz;
+					ultimoAngulo = true;
+				}
+				if (frente > (lista.size() - 1)) {
+					frente = (frente - (lista.size() - 1)) - 1;
+					ultimoAngulo = true;
+				}
+
+				Point trazCar = ((No) lista.get(traz)).getPoint();
+				Point frenteCar = ((No) lista.get(frente)).getPoint();
+				double calculaAngulo = GeoUtil.calculaAngulo(frenteCar,
+						trazCar, 0);
 				Rectangle2D rectangle = new Rectangle2D.Double(
 						(p.x - Carro.MEIA_LARGURA), (p.y - Carro.MEIA_ALTURA),
 						Carro.LARGURA, Carro.ALTURA);
-				Point p1 = GeoUtil.calculaPonto(travadaRoda.getAngulo(), Util
+				Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util
 						.inte(Carro.ALTURA
 								* controleJogo.getCircuito()
 										.getMultiplicadorLarguraPista()),
 						new Point(Util.inte(rectangle.getCenterX()), Util
 								.inte(rectangle.getCenterY())));
-				Point p2 = GeoUtil.calculaPonto(travadaRoda.getAngulo() + 180,
-						Util.inte(Carro.ALTURA
+				Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
+						.inte(Carro.ALTURA
 								* controleJogo.getCircuito()
 										.getMultiplicadorLarguraPista()),
 						new Point(Util.inte(rectangle.getCenterX()), Util
@@ -266,7 +290,7 @@ public class PainelCircuito extends JPanel {
 					carx = Util.inte((p2.x - w2));
 					cary = Util.inte((p2.y - h2));
 				}
-				double rad = Math.toRadians((double) travadaRoda.getAngulo());
+				double rad = Math.toRadians((double) calculaAngulo);
 				AffineTransform afZoom = new AffineTransform();
 				AffineTransform afRotate = new AffineTransform();
 				afZoom.setToScale(zoom, zoom);
@@ -2040,10 +2064,12 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public void adicionatrvadaRoda(TravadaRoda travadaRoda) {
-		synchronized (marcasPneu) {
-			if (travadaRoda.getAngulo() != null)
-				marcasPneu.add(travadaRoda);
+		No noAtual = controleJogo.obterNoPorId(travadaRoda.getIdNo());
+		if (marcasPneu.size() > 50 || noAtual == null) {
+			return;
 		}
-		System.out.println(marcasPneu.size());
+		synchronized (marcasPneu) {
+			marcasPneu.add(travadaRoda);
+		}
 	}
 }

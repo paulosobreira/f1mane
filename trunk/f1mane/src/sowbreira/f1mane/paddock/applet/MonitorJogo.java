@@ -427,6 +427,7 @@ public class MonitorJogo implements Runnable {
 				dadosJogo.setClima(dadosParciais.clima);
 
 				dadosJogo.setMelhoVolta(dadosParciais.melhorVolta);
+				jogoCliente.travouRodas(dadosParciais.travadaRoda);
 				if (dadosParciais.texto != null
 						&& !"".equals(dadosParciais.texto))
 					dadosJogo.setTexto(dadosParciais.texto);

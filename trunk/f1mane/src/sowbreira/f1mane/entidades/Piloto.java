@@ -806,8 +806,12 @@ public class Piloto implements Serializable {
 				if (testeHabilidadePiloto() && autoPos)
 					mudarTracado(0, controleJogo);
 				if (No.CURVA_ALTA.equals(noAtual.getTipo())
-						|| No.CURVA_BAIXA.equals(noAtual.getTipo()))
-					ganho *= controleJogo.getFatorUtrapassagem();
+						|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
+					if (isAgressivo())
+						ganho *= (controleJogo.getFatorUtrapassagem() * 1.25);
+					else
+						ganho *= controleJogo.getFatorUtrapassagem();
+				}
 			}
 			if (getTracado() == 0) {
 				if (No.CURVA_ALTA.equals(noAtual.getTipo())
@@ -1180,7 +1184,8 @@ public class Piloto implements Serializable {
 	}
 
 	public static void main(String[] args) {
-		Logger.logar(1 + (int) (Math.random() * 3));
+		// Logger.logar(1 + (int) (Math.random() * 3));
+		System.out.println(0.5 * 1.5);
 	}
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {
@@ -1225,9 +1230,7 @@ public class Piloto implements Serializable {
 						.getNiveljogo()));
 			}
 			ciclosDesconcentrado *= controleJogo.getNiveljogo();
-			if (jogadorHumano && Math.random() > 0.95) {
-				controleJogo.travouRodas(this);
-			}
+
 		}
 		if (jogadorHumano) {
 			if (!testeHabilidadePilotoHumanoCarro(controleJogo)

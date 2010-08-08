@@ -39,6 +39,7 @@ public class DadosParciais implements Serializable {
 	public Volta peselUltima3;
 	public Volta peselUltima4;
 	public Volta peselUltima5;
+	public TravadaRoda travadaRoda;
 	public String nomeJogador;
 	public String texto;
 	public int[] pilotsPonts = new int[24];
@@ -86,6 +87,8 @@ public class DadosParciais implements Serializable {
 		peselUltima4.decode(sp[spcont++]);
 		peselUltima5 = new Volta();
 		peselUltima5.decode(sp[spcont++]);
+		travadaRoda = new TravadaRoda();
+		travadaRoda.decode(sp[spcont++]);
 		String[] pts = sp[spcont].split("§");
 		for (int i = 0; i < pts.length; i++) {
 			pilotsPonts[i] = parseInt(pts[i]);
@@ -283,6 +286,11 @@ public class DadosParciais implements Serializable {
 		if (peselUltima5 != null) {
 			codUlt5 = peselUltima5.encode();
 		}
+		String codTravadaRoda = "";
+		if (travadaRoda != null) {
+			codTravadaRoda = travadaRoda.encode();
+		}
+
 		String enc = voltaAtual + "@" + pselCombust + "@" + codPneu + "@"
 				+ pselCombustBox + "@" + codPneuBox + "@" + pselVelocidade
 				+ "@" + pselPneus + "@" + pselMotor + "@" + pselParadas + "@"
@@ -294,7 +302,7 @@ public class DadosParciais implements Serializable {
 				+ (nomeJogador == null ? "" : nomeJogador) + "@"
 				+ (texto == null ? "" : texto) + "@" + codUlt1 + "@" + codUlt2
 				+ "@" + codUlt3 + "@" + codUlt4 + "@" + codUlt5 + "@"
-				+ lessLastPipe;
+				+ codTravadaRoda + "@" + lessLastPipe;
 		// Logger.logar(enc);
 		return enc;
 

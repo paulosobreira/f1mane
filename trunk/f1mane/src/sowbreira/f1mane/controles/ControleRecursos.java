@@ -251,6 +251,10 @@ public abstract class ControleRecursos {
 		return null;
 	}
 
+	public List obterNosPista() {
+		return nosDaPista;
+	}
+
 	public static void main(String[] args) {
 		Logger.logar(((int) (0 + Math.random() * 9)));
 	}
