@@ -1,10 +1,9 @@
-package sowbreira.f1mane.entidades;
+package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
 public class TravadaRoda implements Serializable {
 	private int idNo;
-	private Double angulo;
 	private int tracado;
 
 	public int getTracado() {
@@ -23,14 +22,6 @@ public class TravadaRoda implements Serializable {
 		this.idNo = idNo;
 	}
 
-	public Double getAngulo() {
-		return angulo;
-	}
-
-	public void setAngulo(Double angulo) {
-		this.angulo = angulo;
-	}
-
 	@Override
 	public String toString() {
 		return (idNo + " " + tracado);
@@ -46,4 +37,24 @@ public class TravadaRoda implements Serializable {
 		return toString().equals(obj.toString());
 	}
 
+	public String encode() {
+		return idNo + "§" + tracado;
+	}
+
+	public void decode(String val) {
+		if (val == null || "".equals(val)) {
+			return;
+		}
+		String[] sp = val.split("§");
+		idNo = parseInt(sp[0]);
+		tracado = parseInt(sp[1]);
+	}
+
+	private int parseInt(String string) {
+		try {
+			return Integer.parseInt(string);
+		} catch (Exception e) {
+		}
+		return 0;
+	}
 }

@@ -234,4 +234,6 @@ public interface InterfaceJogo {
 
 	public Integer obterIdPorNo(No no);
 
+	public List obterNosPista();
+
 }

@@ -43,7 +43,6 @@ public class PainelEntradaCliente {
 	private JComboBox comboBoxAsa;
 	private JSpinner spinnerCombustivelInicial;
 	private JSlider spinnerDificuldadeUltrapassagem;
-	private JSlider spinnerIndexVelcidadeEmReta;
 	private JSlider spinnerTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
@@ -64,7 +63,7 @@ public class PainelEntradaCliente {
 	}
 
 	private void gerarPainelCriarJogo(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(15, 2, 5, 5));
+		painelInicio.setLayout(new GridLayout(14, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
 				return Lang.msg("110");
@@ -217,31 +216,6 @@ public class PainelEntradaCliente {
 		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
 		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
 		painelInicio.add(spinnerDificuldadeUltrapassagem);
-		painelInicio.add(new JLabel("Index velocidade em reta (0-999):") {
-			@Override
-			public String getText() {
-				return Lang.msg("125");
-			}
-		});
-		spinnerIndexVelcidadeEmReta = new JSlider(500, 1000);
-		spinnerIndexVelcidadeEmReta.setValue(new Integer(Util.intervalo(500,
-				1000)));
-		labelTable = new Hashtable();
-		labelTable.put(new Integer(500), new JLabel("Antigos") {
-			@Override
-			public String getText() {
-				return Lang.msg("ANTIGOS");
-			}
-		});
-		labelTable.put(new Integer(1000), new JLabel("Novos") {
-			@Override
-			public String getText() {
-				return Lang.msg("NOVOS");
-			}
-		});
-		spinnerIndexVelcidadeEmReta.setLabelTable(labelTable);
-		spinnerIndexVelcidadeEmReta.setPaintLabels(true);
-		painelInicio.add(spinnerIndexVelcidadeEmReta);
 
 		painelInicio.add(new JLabel("Tempo Ciclo (50ms-150ms):") {
 			@Override
@@ -342,8 +316,6 @@ public class PainelEntradaCliente {
 			integerTempoCiclo = new Integer(Constantes.MAX_CICLO);
 		}
 		dadosCriarJogo.setTempoCiclo(integerTempoCiclo);
-		dadosCriarJogo.setVeloMaxReta((Integer) spinnerIndexVelcidadeEmReta
-				.getValue());
 		Integer habilidade = (Integer) spinnerSkillPadraoPilotos.getValue();
 		if (habilidade.intValue() > 99) {
 			habilidade = new Integer(99);

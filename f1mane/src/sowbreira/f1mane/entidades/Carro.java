@@ -539,13 +539,15 @@ public class Carro implements Serializable {
 					piloto.incStress(Math.random() > .3 ? 1 : 0);
 				}
 			}
-			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3
-					: 4 + novoModDano);
-			//controleJogo.travouRodas(getPiloto());
+			boolean teste = piloto.testeHabilidadePilotoCarro();
+			desgPneus += (teste ? 3 : 4 + novoModDano);
+			if (!teste && Math.random() > 0.7 && !controleJogo.isChovendo()
+					&& getPiloto().getPtosBox() == 0) {
+				controleJogo.travouRodas(getPiloto());
+			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 2
 					: 3 + novoModDano);
-			//controleJogo.travouRodas(getPiloto());
 		} else if (agressivo) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 1 : 2);
 		} else {

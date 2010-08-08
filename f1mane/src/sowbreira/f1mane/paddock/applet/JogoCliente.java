@@ -26,6 +26,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.Posis;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
+import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
@@ -763,5 +764,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	public void travouRodas(TravadaRoda travadaRoda) {
+		if (gerenciadorVisual != null && travadaRoda != null)
+			gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
+
+	}
 
 }

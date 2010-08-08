@@ -14,7 +14,6 @@ public class DadosCriarJogo implements Serializable {
 
 	private Integer diffultrapassagem = null;
 
-	private Integer veloMaxReta = null;
 	private Integer habilidade = null;
 	private Integer potencia = null;
 	private Integer tempoQualificacao = null;
@@ -168,14 +167,6 @@ public class DadosCriarJogo implements Serializable {
 
 	public void setTpPnueu(String tpPnueu) {
 		this.tpPnueu = tpPnueu;
-	}
-
-	public Integer getVeloMaxReta() {
-		return veloMaxReta;
-	}
-
-	public void setVeloMaxReta(Integer veloMaxReta) {
-		this.veloMaxReta = veloMaxReta;
 	}
 
 	public String getAsa() {

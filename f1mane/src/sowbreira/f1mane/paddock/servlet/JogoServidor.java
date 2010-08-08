@@ -17,6 +17,7 @@ import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
+import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -44,6 +45,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private ControleJogosServer controleJogosServer;
 	private ControleClassificacao controleClassificacao;
 	private boolean disparouInicio;
+	private TravadaRoda travadaRoda;
 
 	public boolean isCorridaIniciada() {
 		return disparouInicio;
@@ -169,7 +171,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		qtdeVoltas = null;
 		diffultrapassagem = null;
 		tempoCiclo = null;
-		veloMaxReta = null;
 		habilidade = null;
 		potencia = null;
 		tempoQualificacao = null;
@@ -216,7 +217,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			if (tempoCiclo.intValue() >= Constantes.MAX_CICLO) {
 				tempoCiclo = new Integer(Constantes.MAX_CICLO);
 			}
-			veloMaxReta = dadosCriarJogo.getVeloMaxReta();
 			habilidade = dadosCriarJogo.getHabilidade();
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
@@ -262,8 +262,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
 		atualizarJogadoresOnlineCarreira();
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
-				diffultrapassagem.intValue(), veloMaxReta.intValue(),
-				tempoCiclo.intValue());
+				diffultrapassagem.intValue(), tempoCiclo.intValue());
 		setarNivelCorrida();
 		controleCorrida.getControleClima().gerarClimaInicial(
 				dadosCriarJogo.getClima());
@@ -547,4 +546,20 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	@Override
 	public void verificaProgramacaoBox() {
 	}
+
+	@Override
+	public void travouRodas(Piloto piloto) {
+		if (!piloto.isJogadorHumano()) {
+			return;
+		}
+		this.travadaRoda = new TravadaRoda();
+		this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
+		this.travadaRoda.setTracado(piloto.getTracado());
+
+	}
+
+	public TravadaRoda getTravadaRoda() {
+		return travadaRoda;
+	}
+
 }

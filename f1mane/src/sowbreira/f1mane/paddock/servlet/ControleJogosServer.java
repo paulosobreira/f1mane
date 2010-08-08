@@ -447,6 +447,7 @@ public class ControleJogosServer {
 		}
 		DadosParciais dadosParciais = new DadosParciais();
 		dadosParciais.melhorVolta = jogoServidor.obterMelhorVolta();
+		dadosParciais.travadaRoda = jogoServidor.getTravadaRoda();
 		dadosParciais.voltaAtual = jogoServidor.getNumVoltaAtual();
 		dadosParciais.clima = jogoServidor.getClima();
 		dadosParciais.estado = jogoServidor.getEstado();

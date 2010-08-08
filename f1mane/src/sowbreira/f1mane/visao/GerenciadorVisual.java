@@ -59,9 +59,9 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.TravadaRoda;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
+import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.recursos.idiomas.LangVO;
@@ -97,7 +97,6 @@ public class GerenciadorVisual {
 	private JSpinner spinnerPotenciaPadraoCarros;
 	private JSpinner spinnerQtdeMinutosQualificacao;
 	private JSlider spinnerDificuldadeUltrapassagem;
-	private JSlider spinnerIndexVelcidadeEmReta;
 	private PainelCircuito painelCircuito;
 	private JScrollPane scrollPane;
 	private PainelTabelaPosicoes painelPosicoes;
@@ -135,6 +134,13 @@ public class GerenciadorVisual {
 	protected JCheckBox semTrocaPneu;
 	protected JCheckBox semReabastacimento;
 	private JPanel panelControlePos;
+	private ImageIcon iconSol = new ImageIcon(CarregadorRecursos
+			.carregarImagem("clima/sol.gif"));
+	private ImageIcon iconNublado = new ImageIcon(CarregadorRecursos
+			.carregarImagem("clima/nublado.gif"));
+	private ImageIcon iconChuva = new ImageIcon(CarregadorRecursos
+			.carregarImagem("clima/chuva.gif"));
+	private long ultimaTravavadaRodas;
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
@@ -523,13 +529,6 @@ public class GerenciadorVisual {
 		return novoSel;
 	}
 
-	ImageIcon iconSol = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/sol.gif"));
-	ImageIcon iconNublado = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/nublado.gif"));
-	ImageIcon iconChuva = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/chuva.gif"));
-
 	private void atualizarImgClima(Clima clima) {
 		if (Clima.SOL.equals(clima.getClima()))
 			imgClima.setIcon(iconSol);
@@ -667,10 +666,6 @@ public class GerenciadorVisual {
 
 	public JComboBox getComboBoxCircuito() {
 		return comboBoxCircuito;
-	}
-
-	public JSlider getSpinnerIndexVelcidadeEmReta() {
-		return spinnerIndexVelcidadeEmReta;
 	}
 
 	public JSlider getSpinnerTempoCiclo() {
@@ -1011,7 +1006,7 @@ public class GerenciadorVisual {
 	}
 
 	private void gerarPainelJogoSingle(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(12, 2, 5, 5));
+		painelInicio.setLayout(new GridLayout(11, 2, 5, 5));
 		JLabel label = new JLabel() {
 
 			public String getText() {
@@ -1162,32 +1157,6 @@ public class GerenciadorVisual {
 		painelInicio.add(new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("125");
-			}
-		});
-		spinnerIndexVelcidadeEmReta = new JSlider(500, 1000);
-		spinnerIndexVelcidadeEmReta.setValue(new Integer(Util.intervalo(500,
-				1000)));
-		labelTable = new Hashtable();
-		labelTable.put(new Integer(000), new JLabel("Antigos") {
-			@Override
-			public String getText() {
-				return Lang.msg("ANTIGOS");
-			}
-		});
-		labelTable.put(new Integer(1000), new JLabel("Novos") {
-			@Override
-			public String getText() {
-				return Lang.msg("NOVOS");
-			}
-		});
-		spinnerIndexVelcidadeEmReta.setLabelTable(labelTable);
-		spinnerIndexVelcidadeEmReta.setPaintLabels(true);
-		painelInicio.add(spinnerIndexVelcidadeEmReta);
-
-		painelInicio.add(new JLabel() {
-			@Override
-			public String getText() {
 				return Lang.msg("126");
 			}
 		});
@@ -1294,12 +1263,12 @@ public class GerenciadorVisual {
 		pilotoPanel.add(new JScrollPane(listPilotosSelecionados) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(210, 300);
+				return new Dimension(210, 270);
 			}
 		}, BorderLayout.CENTER);
 
 		JPanel grid = new JPanel();
-		grid.setLayout(new GridLayout(9, 2, 5, 5));
+		grid.setLayout(new GridLayout(8, 2, 5, 5));
 		JLabel label = new JLabel() {
 
 			public String getText() {
@@ -1394,32 +1363,6 @@ public class GerenciadorVisual {
 		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
 		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
 		grid.add(spinnerDificuldadeUltrapassagem);
-		grid.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("125");
-			}
-		});
-		spinnerIndexVelcidadeEmReta = new JSlider(500, 1000);
-		spinnerIndexVelcidadeEmReta.setValue(new Integer(Util.intervalo(500,
-				1000)));
-		labelTable = new Hashtable();
-		labelTable.put(new Integer(500), new JLabel("Antigos") {
-			@Override
-			public String getText() {
-				return Lang.msg("ANTIGOS");
-			}
-		});
-		labelTable.put(new Integer(1000), new JLabel("Novos") {
-			@Override
-			public String getText() {
-				return Lang.msg("NOVOS");
-			}
-		});
-		spinnerIndexVelcidadeEmReta.setLabelTable(labelTable);
-		spinnerIndexVelcidadeEmReta.setPaintLabels(true);
-		grid.add(spinnerIndexVelcidadeEmReta);
-
 		grid.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -1567,7 +1510,6 @@ public class GerenciadorVisual {
 			spinnerSkillPadraoPilotos.setEnabled(false);
 			spinnerPotenciaPadraoCarros.setEnabled(false);
 			spinnerDificuldadeUltrapassagem.setEnabled(false);
-			spinnerIndexVelcidadeEmReta.setEnabled(false);
 			int val = 1 + (int) (Math.random() * 3);
 
 			Clima climaTmp = null;
@@ -1965,7 +1907,15 @@ public class GerenciadorVisual {
 	}
 
 	public void adicinaTravadaRoda(TravadaRoda travadaRoda) {
-		if (painelCircuito != null)
+		if (ultimaTravavadaRodas == 0) {
+			ultimaTravavadaRodas = System.currentTimeMillis();
+		}
+		if (System.currentTimeMillis() - ultimaTravavadaRodas < 4000) {
+			return;
+		}
+		if (painelCircuito != null) {
+			ultimaTravavadaRodas = System.currentTimeMillis();
 			painelCircuito.adicionatrvadaRoda(travadaRoda);
+		}
 	}
 }
