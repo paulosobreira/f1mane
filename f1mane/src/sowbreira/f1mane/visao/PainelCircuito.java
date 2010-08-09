@@ -449,26 +449,26 @@ public class PainelCircuito extends JPanel {
 		if (piloto.getTracado() == 0) {
 			carx = p.x - w2;
 			cary = p.y - h2;
-			frenteCar.x = p.x + width;
-			frenteCar.y = p.y + height;
-			// trazCar.x = p.x + width;
-			// trazCar.y = p.y + height;
+			frenteCar.x = p.x - w2;
+			frenteCar.y = p.y;
+			trazCar.x = carx;
+			trazCar.y = p.y + h2;
 		}
 		if (piloto.getTracado() == 1) {
 			carx = Util.inte((p1.x - w2));
 			cary = Util.inte((p1.y - h2));
-			frenteCar.x = p1.x + width;
-			frenteCar.y = p1.y + height;
-			// trazCar.x = p1.x + width;
-			// trazCar.y = p1.y + height;
+			frenteCar.x = carx;
+			frenteCar.y = p1.y;
+			trazCar.x = carx;
+			trazCar.y = p1.y + h2;
 		}
 		if (piloto.getTracado() == 2) {
 			carx = Util.inte((p2.x - w2));
 			cary = Util.inte((p2.y - h2));
-			frenteCar.x = p2.x + width;
-			frenteCar.y = p2.y + height;
-			// trazCar.x = p2.x + width;
-			// trazCar.y = p2.y + height;
+			frenteCar.x = carx;
+			frenteCar.y = p2.y;
+			trazCar.x = carx;
+			trazCar.y = p2.y + h2;
 
 		}
 		piloto.setCarX(carx);
@@ -497,13 +497,19 @@ public class PainelCircuito extends JPanel {
 		AffineTransformOp op2 = new AffineTransformOp(afZoom,
 				AffineTransformOp.TYPE_BILINEAR);
 		op2.filter(zoomBuffer, rotateBuffer);
-		g2d.drawImage(rotateBuffer, Util.inte(carx * zoom), Util.inte(cary
-				* zoom), null);
+//		g2d.drawImage(rotateBuffer, Util.inte(carx * zoom), Util.inte(cary
+//				* zoom), null);
 		if (controleJogo.isChovendo()) {
 			// desenhaSprayChuva(g2d, noAtual, piloto.getTracado());
 			// g2d.drawLine(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
 			// * zoom), Util.inte(trazCar.x * zoom), Util.inte(trazCar.y
 			// * zoom));
+			Point dest = GeoUtil.calculaPonto(GeoUtil.calculaAnguloRad(
+					frenteCar, trazCar), width, frenteCar);
+			g2d
+					.drawLine(Util.inte(frenteCar.x * zoom), Util
+							.inte(frenteCar.y * zoom),
+							Util.inte(dest.x * zoom), Util.inte(dest.y * zoom));
 		}
 
 		// DEbug
@@ -521,9 +527,8 @@ public class PainelCircuito extends JPanel {
 
 		g2d.fillOval(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
 				* zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
-		// g2d.fillOval(Util.inte(trazCar.x * zoom), Util.inte(trazCar.y *
-		// zoom),
-		// Util.inte(5 * zoom), Util.inte(5 * zoom));
+		g2d.fillOval(Util.inte(trazCar.x * zoom), Util.inte(trazCar.y * zoom),
+				Util.inte(5 * zoom), Util.inte(5 * zoom));
 
 	}
 
