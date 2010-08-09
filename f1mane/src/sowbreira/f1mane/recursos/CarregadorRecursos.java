@@ -140,6 +140,26 @@ public class CarregadorRecursos {
 		return ImageUtil.geraTransparencia(buffer, ingVal);
 	}
 
+	public static BufferedImage carregaBufferedImageTranspareciaPreta(
+			String file) {
+		BufferedImage buffer = null;
+		try {
+			ImageIcon icon = new ImageIcon(CarregadorRecursos.class
+					.getResource(file));
+			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			if (buffer == null) {
+				Logger.logar("img=" + buffer);
+				System.exit(1);
+			}
+
+		} catch (Exception e) {
+			Logger.logar("Erro gerando transparencia para :" + file);
+			Logger.logarExept(e);
+		}
+
+		return ImageUtil.geraTransparencia(buffer, Color.BLACK);
+	}
+
 	public static BufferedImage carregaBackGround(String backGroundStr,
 			JPanel panel, Circuito circuito) {
 		ImageIcon icon = new ImageIcon(CarregadorRecursos.class
@@ -489,6 +509,53 @@ public class CarregadorRecursos {
 		bufferedImage = ImageUtil.toBufferedImage(icon.getImage());
 		bufferImages.put(img, bufferedImage);
 		return bufferedImage;
+	}
+
+	public static BufferedImage carregaBufferedImageMeiaTransparenciaBraca(
+			String file) {
+		BufferedImage buffer = null;
+		try {
+			ImageIcon icon = new ImageIcon(CarregadorRecursos.class
+					.getResource(file));
+			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			if (buffer == null) {
+				Logger.logar("img=" + buffer);
+				System.exit(1);
+			}
+
+		} catch (Exception e) {
+			Logger.logar("Erro gerando transparencia para :" + file);
+			Logger.logarExept(e);
+		}
+		ImageIcon img = new ImageIcon(buffer);
+		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
+				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
+
+		BufferedImage bufferedImageRetorno = new BufferedImage(img
+				.getIconWidth(), img.getIconHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = srcBufferedImage.getData();
+		WritableRaster destRaster = bufferedImageRetorno.getRaster();
+		int[] argbArray = new int[4];
+
+		for (int i = 0; i < img.getIconWidth(); i++) {
+			for (int j = 0; j < img.getIconHeight(); j++) {
+				argbArray = new int[4];
+				argbArray = srcRaster.getPixel(i, j, argbArray);
+
+				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
+						argbArray[3]);
+				if (c.getRed() > 250 && c.getGreen() > 250 && c.getBlue() > 250) {
+					argbArray[3] = 0;
+				}else{
+					argbArray[3] = 100;	
+				}
+				destRaster.setPixel(i, j, argbArray);
+			}
+		}
+
+		return bufferedImageRetorno;
 	}
 
 }
