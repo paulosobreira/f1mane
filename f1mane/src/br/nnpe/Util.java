@@ -881,6 +881,11 @@ public class Util {
 		return (val1 + (int) (Math.random() * (1 + val2 - val1)));
 	}
 
+	public static int intervalo(double val1, double val2) {
+
+		return intervalo((int) val1, (int) val2);
+	}
+
 	public static double double2Decimal(double dob) {
 		String doubleValue = String.valueOf(dob);
 
