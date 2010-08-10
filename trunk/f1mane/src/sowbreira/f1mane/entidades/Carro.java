@@ -310,7 +310,7 @@ public class Carro implements Serializable {
 		return novoModificador;
 	}
 
-	private int calculaModificadorAsaGiro(int novoModificador, No no,
+	private int calculaModificadorAsaGiro(int novoModificadorOri, No no,
 			InterfaceJogo controleJogo) {
 		double mod = 0.5;
 		if (GIRO_MAX_VAL == giro) {
@@ -319,10 +319,11 @@ public class Carro implements Serializable {
 		if (GIRO_MIN_VAL == giro) {
 			mod = 0.4;
 		}
+		int novoModificador = 0;
 
-		if (Math.random() > .8) {
-			return novoModificador;
-		}
+		// if (Math.random() > .8) {
+		// return novoModificador;
+		// }
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
 					&& testePotencia()) {
@@ -352,7 +353,7 @@ public class Carro implements Serializable {
 				novoModificador--;
 			}
 		}
-		return novoModificador;
+		return novoModificadorOri + Util.inte(novoModificador * 0.6);
 	}
 
 	private void calculaDesgasteMotor(int novoModificador, boolean agressivo,

@@ -67,6 +67,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color yel = new Color(255, 255, 0, 150);
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
+	public final static Color lightWhiteRain = new Color(255, 255, 255, 160);
 	public final static Color nublado = new Color(200, 200, 200, 100);
 	public final static BufferedImage carroimgDano = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png");
@@ -78,10 +79,6 @@ public class PainelCircuito extends JPanel {
 			.carregaBufferedImageTranspareciaBranca("sfcima.png");
 	public final static BufferedImage travadaRodaImg = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("travadaRoda.png", 200);
-	// public final static BufferedImage sprayChuvaImg1 = CarregadorRecursos
-	// .carregaBufferedImageMeiaTransparenciaBraca("SprayChuva1.png");
-	// public final static BufferedImage sprayChuvaImg2 = CarregadorRecursos
-	// .carregaBufferedImageMeiaTransparenciaBraca("SprayChuva2.png");
 
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
@@ -112,6 +109,7 @@ public class PainelCircuito extends JPanel {
 	private Rectangle limitesViewPort;
 	private Set<TravadaRoda> marcasPneu = new HashSet<TravadaRoda>();
 	private boolean inverterSpray;
+	private Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -460,14 +458,13 @@ public class PainelCircuito extends JPanel {
 		}
 		piloto.setCarX(carx);
 		piloto.setCarY(cary);
-		// if (calculaAngulo == piloto.getAnguloRotacaoCarro()
-		// && zoom == piloto.getZoom()) {
-		// g2d.drawImage(piloto.getUltimaRotacaoCarro(), Util.inte(carx), Util
-		// .inte(cary), null);
-		// return;
-		// }
-		// piloto.setAnguloRotacaoCarro(calculaAngulo);
-		// piloto.setZoom(zoom);
+
+		if (piloto.isAgressivo()
+				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
+				&& piloto.getNoAtual().verificaCruvaBaixa()) {
+			calculaAngulo += Util.intervalo(-5.0, 5.0);
+		}
+
 		double rad = Math.toRadians((double) calculaAngulo);
 		AffineTransform afZoom = new AffineTransform();
 		AffineTransform afRotate = new AffineTransform();
@@ -486,24 +483,38 @@ public class PainelCircuito extends JPanel {
 		op2.filter(zoomBuffer, rotateBuffer);
 		g2d.drawImage(rotateBuffer, Util.inte(carx * zoom), Util.inte(cary
 				* zoom), null);
+
+		/**
+		 * Chuva e Faiscas
+		 */
+		Point frenteP = new Point((int) piloto.getDiateira().getCenterX(),
+				(int) piloto.getDiateira().getCenterY());
+		Point centroP = new Point((int) piloto.getCentro().getCenterX(),
+				(int) piloto.getCentro().getCenterY());
+		List centroDiantera = GeoUtil.drawBresenhamLine(centroP, frenteP);
+
+		Point eixoDianteras = (Point) centroDiantera
+				.get(centroDiantera.size() / 2);
+		double eixo = piloto.getDiateira().getWidth();
 		if (controleJogo.isChovendo()) {
-			// desenhaSprayChuva(g2d, noAtual, piloto.getTracado());
-			// g2d.drawLine(Util.inte(frenteCar.x * zoom), Util.inte(frenteCar.y
-			// * zoom), Util.inte(trazCar.x * zoom), Util.inte(trazCar.y
-			// * zoom));
-			g2d.setColor(new Color(255, 255, 255, 160));
+			g2d.setColor(lightWhiteRain);
 			for (int i = 0; i < 30; i++) {
-				Point origem = new Point(Util.intervalo(piloto.getDiateira()
-						.getX(), piloto.getDiateira().getX()
-						+ piloto.getDiateira().getWidth()), Util.intervalo(
-						piloto.getDiateira().getY(), piloto.getDiateira()
-								.getY()
-								+ piloto.getDiateira().getHeight()));
-				Point dest = new Point(Util.intervalo(piloto.getTrazeira()
+				// Point origem = new Point(Util.intervalo(piloto.getDiateira()
+				// .getX(), piloto.getDiateira().getX()
+				// + piloto.getDiateira().getWidth()), Util.intervalo(
+				// piloto.getDiateira().getY(), piloto.getDiateira()
+				// .getY()
+				// + piloto.getDiateira().getHeight()));
+				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
+						- eixo, eixoDianteras.x + eixo), (int) Util.intervalo(
+						eixoDianteras.y - eixo, eixoDianteras.y + eixo));
+
+				Point dest = new Point((int) Util.intervalo(piloto
+						.getTrazeira().getX()
+						- Util.intervalo(2.5, 15), (int) piloto.getTrazeira()
 						.getX()
-						- Util.intervalo(2.5, 15), piloto.getTrazeira().getX()
 						+ piloto.getTrazeira().getWidth()
-						+ Util.intervalo(2.5, 15)), Util.intervalo(piloto
+						+ Util.intervalo(2.5, 15)), (int) Util.intervalo(piloto
 						.getTrazeira().getY()
 						- Util.intervalo(2.5, 15), piloto.getTrazeira().getY()
 						+ piloto.getTrazeira().getHeight()
@@ -514,15 +525,51 @@ public class PainelCircuito extends JPanel {
 				if (piloto.getNoAtual().verificaCruvaBaixa())
 					max = 1;
 				Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(
-						origem, dest, 90), Util.intervalo(width * .5, width
-						* max), origem);
+						origem, dest, 90), (int) Util.intervalo(width * .5,
+						width * max), origem);
 				g2d.drawLine(Util.inte(origem.x * zoom), Util.inte(origem.y
 						* zoom), Util.inte(destN.x * zoom), Util.inte(destN.y
 						* zoom));
 			}
 		}
+		if (piloto.isAgressivo()
+				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
+				&& Math.random() > .9) {
+			mapaFaiscas.put(piloto, piloto);
+			g2d.setColor(Color.YELLOW);
+			for (int i = 0; i < 30; i++) {
+				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
+						- eixo, eixoDianteras.x + eixo), (int) Util.intervalo(
+						eixoDianteras.y - eixo, eixoDianteras.y + eixo));
 
-		// DEbug
+				Point dest = new Point((int) Util.intervalo(piloto
+						.getTrazeira().getX()
+						- Util.intervalo(2.5, 15), piloto.getTrazeira().getX()
+						+ piloto.getTrazeira().getWidth()
+						+ Util.intervalo(2.5, 15)), (int) Util.intervalo(piloto
+						.getTrazeira().getY()
+						- Util.intervalo(2.5, 15), piloto.getTrazeira().getY()
+						+ piloto.getTrazeira().getHeight()
+						+ Util.intervalo(2.5, 15)));
+				int max = 3;
+				if (piloto.getNoAtual().verificaCruvaAlta())
+					max = 2;
+				if (piloto.getNoAtual().verificaCruvaBaixa())
+					max = 1;
+				Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(
+						origem, dest, 90), (int) Util.intervalo(width * .5,
+						width * max), origem);
+				g2d.drawLine(Util.inte(dest.x * zoom),
+						Util.inte(dest.y * zoom), Util.inte(destN.x * zoom),
+						Util.inte(destN.y * zoom));
+			}
+		} else {
+			mapaFaiscas.put(piloto, null);
+		}
+
+		/**
+		 * DEBUG
+		 */
 		// GeneralPath generalPath = new GeneralPath(rectangle);
 		//
 		// AffineTransform affineTransformRect =
@@ -534,98 +581,16 @@ public class PainelCircuito extends JPanel {
 		// piloto.obterArea(controleJogo);
 		// g2d.setColor(Color.BLACK);
 		// g2d.draw(piloto.obterArea(controleJogo));
-		Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
-				.getCenterX(), piloto.getDiateira().getCenterY());
-		Point2D.Double trazCarD = new Point2D.Double(piloto.getTrazeira()
-				.getCenterX(), piloto.getTrazeira().getCenterY());
-		g2d.setColor(Color.GREEN);
-		g2d.fillOval(Util.inte(frenteCarD.x * zoom), Util.inte(frenteCarD.y
-				* zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
-		g2d.fillOval(Util.inte(trazCarD.x * zoom),
-				Util.inte(trazCarD.y * zoom), Util.inte(5 * zoom), Util
-						.inte(5 * zoom));
-	}
-
-	private void desenhaSprayChuva(Graphics2D g2d, No noAtual, int tracado) {
-		// Point p = noAtual.getPoint();
-		// if (!limitesViewPort
-		// .contains(new Point2D.Double(p.x * zoom, p.y * zoom))) {
-		// return;
-		// }
-		// int width = (int) (sprayChuvaImg1.getWidth());
-		// int height = (int) (sprayChuvaImg1.getHeight());
-		// List lista = controleJogo.obterNosPista();
-		//
-		// if (lista == null) {
-		// return;
-		// }
-		// int cont = noAtual.getIndex();
-		//
-		// int w2 = width / 2;
-		// int h2 = height / 2;
-		// int carx = p.x - w2;
-		// int cary = p.y - h2;
-		//
-		// int traz = cont - 44;
-		// int frente = cont + 44;
-		// if (traz < 0) {
-		// traz = (lista.size() - 1) + traz;
-		// }
-		// if (frente > (lista.size() - 1)) {
-		// frente = (frente - (lista.size() - 1)) - 1;
-		// }
-		// Point trazCar = ((No) lista.get(traz)).getPoint();
-		// Point frenteCar = ((No) lista.get(frente)).getPoint();
-		// double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-		// Rectangle2D rectangle = new Rectangle2D.Double(
-		// (p.x - Carro.MEIA_LARGURA), (p.y - Carro.MEIA_ALTURA),
-		// Carro.LARGURA, Carro.ALTURA);
-		// Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inte(Carro.ALTURA
-		// * controleJogo.getCircuito().getMultiplicadorLarguraPista()),
-		// new Point(Util.inte(rectangle.getCenterX()), Util
-		// .inte(rectangle.getCenterY())));
-		// Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-		// .inte(Carro.ALTURA
-		// * controleJogo.getCircuito()
-		// .getMultiplicadorLarguraPista()), new Point(
-		// Util.inte(rectangle.getCenterX()), Util.inte(rectangle
-		// .getCenterY())));
-		// if (tracado == 0) {
-		// carx = p.x - w2;
-		// cary = p.y - h2;
-		// }
-		// if (tracado == 1) {
-		// carx = Util.inte((p1.x - w2));
-		// cary = Util.inte((p1.y - h2));
-		// }
-		// if (tracado == 2) {
-		// carx = Util.inte((p2.x - w2));
-		// cary = Util.inte((p2.y - h2));
-		// }
-		// double rad = Math.toRadians((double) calculaAngulo);
-		// AffineTransform afZoom = new AffineTransform();
-		// AffineTransform afRotate = new AffineTransform();
-		// afZoom.setToScale(zoom, zoom);
-		// afRotate.setToRotation(rad, w2, h2);
-		//
-		// BufferedImage rotateBuffer = new BufferedImage(width, width,
-		// BufferedImage.TYPE_INT_ARGB);
-		// BufferedImage zoomBuffer = new BufferedImage(width, height,
-		// BufferedImage.TYPE_INT_ARGB);
-		// AffineTransformOp op = new AffineTransformOp(afRotate,
-		// AffineTransformOp.TYPE_BILINEAR);
-		// if (inverterSpray) {
-		// op.filter(sprayChuvaImg1, zoomBuffer);
-		// } else {
-		// op.filter(sprayChuvaImg2, zoomBuffer);
-		// }
-		// inverterSpray = !inverterSpray;
-		// AffineTransformOp op2 = new AffineTransformOp(afZoom,
-		// AffineTransformOp.TYPE_BILINEAR);
-		// op2.filter(zoomBuffer, rotateBuffer);
-		// g2d.drawImage(rotateBuffer, Util.inte(carx * zoom), Util.inte(cary
-		// * zoom), null);
-
+		// Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
+		// .getCenterX(), piloto.getDiateira().getCenterY());
+		// Point2D.Double trazCarD = new Point2D.Double(piloto.getTrazeira()
+		// .getCenterX(), piloto.getTrazeira().getCenterY());
+		// g2d.setColor(Color.GREEN);
+		// g2d.fillOval(Util.inte(frenteCarD.x * zoom), Util.inte(frenteCarD.y
+		// * zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
+		// g2d.fillOval(Util.inte(trazCarD.x * zoom),
+		// Util.inte(trazCarD.y * zoom), Util.inte(5 * zoom), Util
+		// .inte(5 * zoom));
 	}
 
 	private void desenhaBoxes(Graphics2D g2d) {
@@ -1145,10 +1110,11 @@ public class PainelCircuito extends JPanel {
 			return;
 		Point p1 = new Point(0, 0);
 		Point p2 = new Point(0, 0);
+		g2d.setColor(lightWhiteRain);
 		for (int i = 0; i < limitesViewPort.getWidth(); i += 20) {
 			for (int j = 0; j < limitesViewPort.getHeight(); j += 20) {
 				if (Math.random() > .8) {
-					g2d.setColor(Color.DARK_GRAY);
+
 					p1 = new Point(i + 10, j + 10);
 					p2 = new Point(i + 15, j + 20);
 					// if (!(limitesViewPort.contains(p1) && limitesViewPort
@@ -1163,7 +1129,7 @@ public class PainelCircuito extends JPanel {
 
 	}
 
-	private void desenhaFaisca(Graphics2D g2d, Point p) {
+	private void desenhaFaiscaLateral(Graphics2D g2d, Point p) {
 		if (p == null) {
 			return;
 		}
@@ -1171,9 +1137,9 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		Color color = g2d.getColor();
+		g2d.setColor(Color.YELLOW);
 		for (int i = 0; i < 7; i++) {
 			if (Math.random() > .5) {
-				g2d.setColor(Color.YELLOW);
 				int valx = Util.intervalo(5, 15);
 				int valy = Util.intervalo(-5, 15);
 				g2d.drawLine(p.x + valx, p.y + valy, p.x + i * valx, p.y + valy
@@ -1551,11 +1517,10 @@ public class PainelCircuito extends JPanel {
 			newY = carroimg.getHeight() > 36 ? carSelY
 					- (carroimg.getHeight() - 36) : carSelY;
 			if (!carroFrente.getPiloto().isDesqualificado()
-					&& carroFrente.getPiloto().isAgressivo()
-					&& carroFrente.getGiro() == Carro.GIRO_MAX_VAL) {
-				desenhaFaisca(g2d, new Point(
-						carSelX + carroimg.getWidth() - 10, newY
-								+ carroimg.getHeight() / 2));
+					&& mapaFaiscas.get(carroFrente.getPiloto()) != null) {
+				desenhaFaiscaLateral(g2d, new Point(carSelX
+						+ carroimg.getWidth() - 10, newY + carroimg.getHeight()
+						/ 2));
 			}
 			g2d.drawImage(carroimg, null, carSelX, newY);
 
@@ -1586,11 +1551,9 @@ public class PainelCircuito extends JPanel {
 		}
 		newY = carroimg.getHeight() > 36 ? carSelY
 				- (carroimg.getHeight() - 36) : carSelY;
-		if (!psel.isDesqualificado()
-				&& psel.getCarro().getPiloto().isAgressivo()
-				&& psel.getCarro().getGiro() == Carro.GIRO_MAX_VAL) {
-			desenhaFaisca(g2d, new Point(carSelX + carroimg.getWidth() - 10,
-					newY + carroimg.getHeight() / 2));
+		if (!psel.isDesqualificado() && mapaFaiscas.get(psel) != null) {
+			desenhaFaiscaLateral(g2d, new Point(carSelX + carroimg.getWidth()
+					- 10, newY + carroimg.getHeight() / 2));
 		}
 		g2d.drawImage(carroimg, null, carSelX, newY);
 
@@ -1635,11 +1598,10 @@ public class PainelCircuito extends JPanel {
 			newY = carroimg.getHeight() > 36 ? carSelY
 					- (carroimg.getHeight() - 36) : carSelY;
 			if (!carroAtraz.getPiloto().isDesqualificado()
-					&& carroAtraz.getPiloto().isAgressivo()
-					&& carroAtraz.getGiro() == Carro.GIRO_MAX_VAL) {
-				desenhaFaisca(g2d, new Point(
-						carSelX + carroimg.getWidth() - 10, newY
-								+ carroimg.getHeight() / 2));
+					&& mapaFaiscas.get(carroAtraz.getPiloto()) != null) {
+				desenhaFaiscaLateral(g2d, new Point(carSelX
+						+ carroimg.getWidth() - 10, newY + carroimg.getHeight()
+						/ 2));
 			}
 			g2d.drawImage(carroimg, null, carSelX, newY);
 

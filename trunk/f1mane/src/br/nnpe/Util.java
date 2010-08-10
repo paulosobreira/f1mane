@@ -873,7 +873,7 @@ public class Util {
 		// for (int i = 0; i < 100; i++) {
 		// System.out.println(intervalo(0, 2));
 		// }
-		System.out.println(substVogais("Mclaren M.Shumacher"));
+		System.out.println(intervalo(-5.0, 10.9));
 	}
 
 	public static int intervalo(int val1, int val2) {
@@ -881,9 +881,8 @@ public class Util {
 		return (val1 + (int) (Math.random() * (1 + val2 - val1)));
 	}
 
-	public static int intervalo(double val1, double val2) {
-
-		return intervalo((int) val1, (int) val2);
+	public static double intervalo(double val1, double val2) {
+		return (val1 + (Math.random() * (1 + val2 - val1)));
 	}
 
 	public static double double2Decimal(double dob) {
