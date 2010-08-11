@@ -18,6 +18,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
@@ -445,7 +446,14 @@ public class ControlePaddockServidor {
 			return new MsgSrv(Lang.msg("236"));
 		}
 		jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());
-		controlePersistencia.gravarDados(jogadorDadosSrv);
+		CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
+				.getCarreiraDadosSrv();
+		if (carreiraDadosSrv == null) {
+			carreiraDadosSrv = new CarreiraDadosSrv();
+			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+			jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
+		}
+		controlePersistencia.gravarDados(carreiraDadosSrv, jogadorDadosSrv);
 
 		SessaoCliente cliente = null;
 		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter

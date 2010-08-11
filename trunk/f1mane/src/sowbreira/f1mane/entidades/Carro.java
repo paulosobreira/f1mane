@@ -353,7 +353,9 @@ public class Carro implements Serializable {
 				novoModificador--;
 			}
 		}
-		return novoModificadorOri + Util.inte(novoModificador * 0.6);
+		return novoModificadorOri
+				+ Util.inte(novoModificador
+						* (1.0 - controleJogo.getNiveljogo()));
 	}
 
 	private void calculaDesgasteMotor(int novoModificador, boolean agressivo,
