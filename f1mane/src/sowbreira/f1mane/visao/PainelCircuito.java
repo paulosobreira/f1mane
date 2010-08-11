@@ -69,6 +69,10 @@ public class PainelCircuito extends JPanel {
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
 	public final static Color lightWhiteRain = new Color(255, 255, 255, 160);
 	public final static Color nublado = new Color(200, 200, 200, 100);
+	public final static BasicStroke strokeFaisca = new BasicStroke(1.0f,
+			BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] {
+					10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+					10, 10, 10, 10, 10, 10, 10, 10, 10 }, 0);
 	public final static BufferedImage carroimgDano = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png");
 	public final static BufferedImage helmetPiloto = CarregadorRecursos
@@ -461,8 +465,13 @@ public class PainelCircuito extends JPanel {
 
 		if (piloto.isAgressivo()
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
-				&& piloto.getNoAtual().verificaCruvaBaixa()) {
-			calculaAngulo += Util.intervalo(-5.0, 5.0);
+				&& (piloto.getNoAtual().verificaCruvaAlta() || piloto
+						.getNoAtual().verificaCruvaBaixa())
+				&& Math.random() > .5) {
+			if (piloto.getNoAtual().verificaCruvaAlta())
+				calculaAngulo += Util.intervalo(-7.5, 7.5);
+			if (piloto.getNoAtual().verificaCruvaBaixa())
+				calculaAngulo += Util.intervalo(-15.0, 15.0);
 		}
 
 		double rad = Math.toRadians((double) calculaAngulo);
@@ -487,46 +496,48 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * Chuva e Faiscas
 		 */
+		if (piloto.getDiateira() == null || piloto.getCentro() == null
+				|| piloto.getTrazeira() == null) {
+			piloto.centralizaCarro(controleJogo);
+		}
 		Point frenteP = new Point((int) piloto.getDiateira().getCenterX(),
 				(int) piloto.getDiateira().getCenterY());
 		Point centroP = new Point((int) piloto.getCentro().getCenterX(),
 				(int) piloto.getCentro().getCenterY());
 		List centroDiantera = GeoUtil.drawBresenhamLine(centroP, frenteP);
-
 		Point eixoDianteras = (Point) centroDiantera
 				.get(centroDiantera.size() / 2);
-		double eixo = piloto.getDiateira().getWidth();
-		if (controleJogo.isChovendo()) {
+		if (eixoDianteras == null) {
+			eixoDianteras = frenteP;
+		}
+		double eixo = piloto.getDiateira().getWidth() / 2;
+		if (controleJogo.isChovendo() && piloto.getVelocidade() != 0) {
 			g2d.setColor(lightWhiteRain);
-			for (int i = 0; i < 30; i++) {
-				// Point origem = new Point(Util.intervalo(piloto.getDiateira()
-				// .getX(), piloto.getDiateira().getX()
-				// + piloto.getDiateira().getWidth()), Util.intervalo(
-				// piloto.getDiateira().getY(), piloto.getDiateira()
-				// .getY()
-				// + piloto.getDiateira().getHeight()));
+			for (int i = 0; i < 40; i++) {
 				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
 						- eixo, eixoDianteras.x + eixo), (int) Util.intervalo(
 						eixoDianteras.y - eixo, eixoDianteras.y + eixo));
 
 				Point dest = new Point((int) Util.intervalo(piloto
 						.getTrazeira().getX()
-						- Util.intervalo(2.5, 15), (int) piloto.getTrazeira()
+						- Util.intervalo(2.5, 12), (int) piloto.getTrazeira()
 						.getX()
 						+ piloto.getTrazeira().getWidth()
-						+ Util.intervalo(2.5, 15)), (int) Util.intervalo(piloto
+						+ Util.intervalo(2.5, 12)), (int) Util.intervalo(piloto
 						.getTrazeira().getY()
-						- Util.intervalo(2.5, 15), piloto.getTrazeira().getY()
+						- Util.intervalo(2.5, 12), piloto.getTrazeira().getY()
 						+ piloto.getTrazeira().getHeight()
-						+ Util.intervalo(2.5, 15)));
+						+ Util.intervalo(2.5, 12)));
 				int max = 4;
 				if (piloto.getNoAtual().verificaCruvaAlta())
 					max = 2;
-				if (piloto.getNoAtual().verificaCruvaBaixa())
+				if (piloto.getNoAtual().verificaCruvaBaixa()
+						|| piloto.getPtosBox() != 0)
 					max = 1;
 				Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(
 						origem, dest, 90), (int) Util.intervalo(width * .5,
 						width * max), origem);
+
 				g2d.drawLine(Util.inte(origem.x * zoom), Util.inte(origem.y
 						* zoom), Util.inte(destN.x * zoom), Util.inte(destN.y
 						* zoom));
@@ -534,10 +545,12 @@ public class PainelCircuito extends JPanel {
 		}
 		if (piloto.isAgressivo()
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
-				&& Math.random() > .9) {
+				&& !controleJogo.isChovendo() && piloto.getVelocidade() != 0
+				&& Math.random() > .955) {
 			mapaFaiscas.put(piloto, piloto);
 			g2d.setColor(Color.YELLOW);
-			for (int i = 0; i < 30; i++) {
+			g2d.setStroke(strokeFaisca);
+			for (int i = 0; i < 15; i++) {
 				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
 						- eixo, eixoDianteras.x + eixo), (int) Util.intervalo(
 						eixoDianteras.y - eixo, eixoDianteras.y + eixo));
@@ -551,18 +564,19 @@ public class PainelCircuito extends JPanel {
 						- Util.intervalo(2.5, 15), piloto.getTrazeira().getY()
 						+ piloto.getTrazeira().getHeight()
 						+ Util.intervalo(2.5, 15)));
-				int max = 3;
-				if (piloto.getNoAtual().verificaCruvaAlta())
-					max = 2;
-				if (piloto.getNoAtual().verificaCruvaBaixa())
-					max = 1;
 				Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(
-						origem, dest, 90), (int) Util.intervalo(width * .5,
-						width * max), origem);
+						origem, dest, 90), (int) Util.intervalo(width * .2,
+						width), origem);
+				Point2D.Double trazCarD = new Point2D.Double(piloto
+						.getTrazeira().getCenterX(), piloto.getTrazeira()
+						.getCenterY());
+				g2d.fillOval(Util.inte(trazCarD.x * zoom), Util.inte(trazCarD.y
+						* zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
 				g2d.drawLine(Util.inte(dest.x * zoom),
 						Util.inte(dest.y * zoom), Util.inte(destN.x * zoom),
 						Util.inte(destN.y * zoom));
 			}
+			g2d.setStroke(trilho);
 		} else {
 			mapaFaiscas.put(piloto, null);
 		}
@@ -1138,6 +1152,7 @@ public class PainelCircuito extends JPanel {
 		}
 		Color color = g2d.getColor();
 		g2d.setColor(Color.YELLOW);
+		g2d.setStroke(strokeFaisca);
 		for (int i = 0; i < 7; i++) {
 			if (Math.random() > .5) {
 				int valx = Util.intervalo(5, 15);
@@ -1146,6 +1161,7 @@ public class PainelCircuito extends JPanel {
 						- Util.intervalo(10, 20));
 			}
 		}
+		g2d.setStroke(trilho);
 		g2d.setColor(color);
 	}
 

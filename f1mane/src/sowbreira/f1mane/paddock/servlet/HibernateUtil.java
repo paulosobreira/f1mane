@@ -3,6 +3,8 @@ package sowbreira.f1mane.paddock.servlet;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
+import br.nnpe.Logger;
+
 /**
  * @author Paulo Sobreira [sowbreira@gmail.com]
  * @author Rafael Carneiro [rafaelcarneirob@gmail.com]
@@ -27,6 +29,18 @@ public class HibernateUtil {
 	}
 
 	public static SessionFactory getSessionFactory() {
+		if (sessionFactory != null && Logger.novaSession) {
+			sessionFactory.close();
+		}
+		if (Logger.novaSession) {
+			try {
+				sessionFactory = new AnnotationConfiguration().configure()
+						.buildSessionFactory();
+				Logger.novaSession = false;
+			} catch (Throwable e) {
+				Logger.logarExept(e);
+			}
+		}
 		return sessionFactory;
 	}
 

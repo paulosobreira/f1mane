@@ -1401,6 +1401,8 @@ public class Piloto implements Serializable {
 		if (paradoBox == 0) {
 			if (saiuDoBoxMilis == 0) {
 				saiuDoBoxMilis = System.currentTimeMillis();
+				msgsBox.put(Messagens.BOX_OCUPADO, null);
+				msgsBox.put(Messagens.PILOTO_EM_CAUTELA, null);
 			}
 			return false;
 		}
@@ -1420,13 +1422,7 @@ public class Piloto implements Serializable {
 		qtdeParadasBox++;
 		ptosBox = 0;
 		box = false;
-		carro.setDanificado(null);
-		if (carro.getDurabilidadeAereofolio() <= 0) {
-			carro.setDurabilidadeAereofolio(Util.inte(10 - (interfaceJogo
-					.getNiveljogo() * 10)));
-		}
-		msgsBox.put(Messagens.BOX_OCUPADO, null);
-		msgsBox.put(Messagens.PILOTO_EM_CAUTELA, null);
+
 		if (getNumeroVolta() > 0)
 			processaVoltaNovaBox(interfaceJogo);
 	}

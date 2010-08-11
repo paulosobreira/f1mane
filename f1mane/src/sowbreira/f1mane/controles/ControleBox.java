@@ -12,6 +12,7 @@ import java.util.Map;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.Messagens;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
@@ -292,6 +293,11 @@ public class ControleBox {
 			controleJogo.info(Html.orange(Lang.msg("002", new String[] {
 					piloto.getNome(),
 					String.valueOf(controleJogo.getNumVoltaAtual()) })));
+		}
+		carro.setDanificado(null);
+		if (carro.getDurabilidadeAereofolio() <= 0) {
+			carro.setDurabilidadeAereofolio(Util.inte(10 - (controleJogo
+					.getNiveljogo() * 10)));
 		}
 
 	}

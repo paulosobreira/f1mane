@@ -145,6 +145,7 @@ public class MonitorJogo implements Runnable {
 			}
 			if (!setouZoom) {
 				jogoCliente.setZoom(0.5);
+
 				setouZoom = true;
 			}
 			delayVerificaStado--;
@@ -153,6 +154,11 @@ public class MonitorJogo implements Runnable {
 					while (luz > 0) {
 						apagarLuz();
 						luz--;
+					}
+					for (Iterator iterator = jogoCliente.getPilotos()
+							.iterator(); iterator.hasNext();) {
+						Piloto piloto = (Piloto) iterator.next();
+						piloto.setVelocidade(1);
 					}
 				}
 
@@ -167,7 +173,6 @@ public class MonitorJogo implements Runnable {
 			}
 			iniciaJalena();
 			atualizaPosicoes();
-
 			sleep(tempoCiclo);
 		}
 	}
@@ -425,7 +430,6 @@ public class MonitorJogo implements Runnable {
 				estado = dadosParciais.estado;
 				jogoCliente.verificaMudancaClima(dadosParciais.clima);
 				dadosJogo.setClima(dadosParciais.clima);
-
 				dadosJogo.setMelhoVolta(dadosParciais.melhorVolta);
 				jogoCliente.travouRodas(dadosParciais.travadaRoda);
 				if (dadosParciais.texto != null
