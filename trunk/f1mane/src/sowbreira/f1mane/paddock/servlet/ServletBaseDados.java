@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -73,11 +74,11 @@ public class ServletBaseDados extends HttpServlet {
 			// return;
 			// }
 			// res.getOutputStream().write(ret);
-//			try {
-//				controlePersistencia.migrar();
-//			} catch (Exception e) {
-//				Logger.logarExept(e);
-//			}
+			// try {
+			// controlePersistencia.migrar();
+			// } catch (Exception e) {
+			// Logger.logarExept(e);
+			// }
 		}
 	}
 
@@ -89,25 +90,23 @@ public class ServletBaseDados extends HttpServlet {
 		synchronized ("") {
 			Set top = controlePersistencia.obterListaJogadores();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
-				String jog = (String) iterator.next();
-				JogadorDadosSrv dadosSrv = controlePersistencia
-						.carregaDadosJogador(jog);
-				if (dadosSrv.getCarreiraDadosSrv() == null) {
+				String nomeJogador = (String) iterator.next();
+				CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+						.carregaCarreiraJogador(nomeJogador, false);
+				if (carreiraDadosSrv == null) {
 					continue;
 				}
-				if (Util.isNullOrEmpty(dadosSrv.getCarreiraDadosSrv()
-						.getNomeCarro())
-						|| Util.isNullOrEmpty(dadosSrv.getCarreiraDadosSrv()
-								.getNomePiloto())) {
+				if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
+						|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())) {
 					continue;
 				}
-				printWriter.write("Jogador : " + dadosSrv.getNome());
+				printWriter.write("Jogador : " + nomeJogador);
 				printWriter.write("<br> Pts Piloto: "
-						+ dadosSrv.getCarreiraDadosSrv().getPtsPiloto());
+						+ carreiraDadosSrv.getPtsPiloto());
 				printWriter.write("<br> Pts Carro: "
-						+ dadosSrv.getCarreiraDadosSrv().getPtsCarro());
+						+ carreiraDadosSrv.getPtsCarro());
 				printWriter.write("<br> Pts Const: "
-						+ dadosSrv.getCarreiraDadosSrv().getPtsConstrutores());
+						+ carreiraDadosSrv.getPtsConstrutores());
 				printWriter.write("<br><hr>");
 			}
 		}

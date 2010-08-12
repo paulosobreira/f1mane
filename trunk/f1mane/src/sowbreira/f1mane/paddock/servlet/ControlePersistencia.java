@@ -207,8 +207,7 @@ public class ControlePersistencia {
 			String nome = (String) iterator.next();
 			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) jogadores
 					.get(nome);
-			CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
-					.getCarreiraDadosSrv();
+			CarreiraDadosSrv carreiraDadosSrv = null;
 			List corridas = jogadorDadosSrv.getCorridas();
 			for (Iterator iterator2 = corridas.iterator(); iterator2.hasNext();) {
 				CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator2
@@ -226,7 +225,6 @@ public class ControlePersistencia {
 				}
 				carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
 				session.saveOrUpdate(carreiraDadosSrv);
-				jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
 				session.saveOrUpdate(jogadorDadosSrv);
 			} catch (Exception e) {
 				Logger.logarExept(e);
@@ -289,8 +287,6 @@ public class ControlePersistencia {
 			CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
 			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
 			getSession().saveOrUpdate(carreiraDadosSrv);
-			jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
-			getSession().saveOrUpdate(jogadorDadosSrv);
 			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
@@ -429,24 +425,14 @@ public class ControlePersistencia {
 			if (jogadorDadosSrv == null) {
 				return null;
 			}
-			Transaction transaction = getSession().beginTransaction();
-			try {
-				carreiraDadosSrv = new CarreiraDadosSrv();
-				carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-				getSession().saveOrUpdate(carreiraDadosSrv);
-				jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
-				getSession().saveOrUpdate(jogadorDadosSrv);
-				transaction.commit();
-			} catch (Exception e) {
-				Logger.topExecpts(e);
-				transaction.rollback();
-			}
+			carreiraDadosSrv = new CarreiraDadosSrv();
+			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+			gravarDados(carreiraDadosSrv);
 		}
 		if (vaiCliente) {
 			session.evict(carreiraDadosSrv);
 			carreiraDadosSrv.setJogadorDadosSrv(null);
 		}
-
 		return carreiraDadosSrv;
 	}
 

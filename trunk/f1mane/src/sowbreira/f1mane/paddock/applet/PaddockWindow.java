@@ -112,6 +112,23 @@ public class PaddockWindow {
 		}
 	};
 
+	private JButton campeonato = new JButton("campeonato") {
+
+		public String getText() {
+
+			return Lang.msg("campeonato");
+		}
+	};
+	
+	private JButton verCampeonato = new JButton("verCampeonato") {
+
+		public String getText() {
+
+			return Lang.msg("verCampeonato");
+		}
+	};
+	
+	
 	private JComboBox comboTemporada = new JComboBox(new String[] { "2010",
 			"2009", "2008", "2007", "2003", "1990", "1993", "1988", "1987",
 			"1986", "1974", "1972", "1968", "super" });
@@ -314,8 +331,8 @@ public class PaddockWindow {
 				}
 			}
 		});
-		// carreira.setEnabled(false);
 		conta.setEnabled(false);
+		campeonato.setEnabled(false);
 		buttonsPanel.add(carreira);
 		buttonsPanel.add(construtores);
 		buttonsPanel.add(conta);

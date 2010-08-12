@@ -446,14 +446,7 @@ public class ControlePaddockServidor {
 			return new MsgSrv(Lang.msg("236"));
 		}
 		jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());
-		CarreiraDadosSrv carreiraDadosSrv = jogadorDadosSrv
-				.getCarreiraDadosSrv();
-		if (carreiraDadosSrv == null) {
-			carreiraDadosSrv = new CarreiraDadosSrv();
-			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-			jogadorDadosSrv.setCarreiraDadosSrv(carreiraDadosSrv);
-		}
-		controlePersistencia.gravarDados(carreiraDadosSrv, jogadorDadosSrv);
+		controlePersistencia.gravarDados(jogadorDadosSrv);
 
 		SessaoCliente cliente = null;
 		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
