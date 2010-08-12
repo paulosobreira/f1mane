@@ -28,16 +28,6 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 	private List<CorridasDadosSrv> corridas = new LinkedList<CorridasDadosSrv>();
 	private long ultimoLogon = 0;
 	private long ultimaRecuperacao = 0;
-	@OneToOne
-	private CarreiraDadosSrv carreiraDadosSrv;
-
-	public CarreiraDadosSrv getCarreiraDadosSrv() {
-		return carreiraDadosSrv;
-	}
-
-	public void setCarreiraDadosSrv(CarreiraDadosSrv carreiraDadosSrv) {
-		this.carreiraDadosSrv = carreiraDadosSrv;
-	}
 
 	public String getEmail() {
 		return email;

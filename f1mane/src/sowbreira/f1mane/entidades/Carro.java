@@ -321,9 +321,9 @@ public class Carro implements Serializable {
 		}
 		int novoModificador = 0;
 
-		// if (Math.random() > .8) {
-		// return novoModificador;
-		// }
+		if (Math.random() < controleJogo.getNiveljogo()) {
+			return novoModificador;
+		}
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
 					&& testePotencia()) {
