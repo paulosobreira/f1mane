@@ -415,6 +415,21 @@ public class MainFrame extends JFrame {
 				if (keyCoode == KeyEvent.VK_F6) {
 					editor.inserirNoParadaBox();
 				}
+				if (editorInflado != null) {
+					if (keyCoode == KeyEvent.VK_LEFT) {
+						editorInflado.esquerda();
+					}
+					if (keyCoode == KeyEvent.VK_RIGHT) {
+						editorInflado.direita();
+					}
+					if (keyCoode == KeyEvent.VK_UP) {
+						editorInflado.cima();
+					}
+					if (keyCoode == KeyEvent.VK_DOWN) {
+						editorInflado.baixo();
+					}
+
+				}
 			}
 		});
 	}

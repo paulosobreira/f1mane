@@ -17,6 +17,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
+import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
@@ -308,7 +309,12 @@ public class ControleClassificacao {
 				.setC2G(clientPaddockPack.getJogadorDadosSrv().getC2G());
 		carreiraDadosSrv
 				.setC2B(clientPaddockPack.getJogadorDadosSrv().getC2B());
-		controlePersistencia.gravarDados(carreiraDadosSrv);
+		try {
+			controlePersistencia.gravarDados(carreiraDadosSrv);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			return new ErroServ(e);
+		}
 		return new MsgSrv(Lang.msg("250"));
 	}
 

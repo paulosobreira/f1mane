@@ -49,6 +49,9 @@ public class ControleCorrida {
 		}
 		this.fatorUtrapassagem = 1 - fatorUtrapassagem;
 		this.indexVelcidadeDaPista = 0.3 + ((1.0 - jogo.getNiveljogo()));
+		if (jogo.isSemReabastacimento() || jogo.isSemTrocaPneu()) {
+			this.indexVelcidadeDaPista = 1;
+		}
 
 		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;

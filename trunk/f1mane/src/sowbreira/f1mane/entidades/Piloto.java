@@ -633,6 +633,9 @@ public class Piloto implements Serializable {
 
 		int pneus = getCarro().porcentagemDesgastePeneus();
 		int combust = getCarro().porcentagemCombustivel();
+		if (controleJogo.isSemReabastacimento()) {
+			combust = 100;
+		}
 
 		if (box && controleJogo.verificaBoxOcupado(getCarro()) && (combust > 5)
 				&& (pneus > 12)) {
@@ -1195,7 +1198,7 @@ public class Piloto implements Serializable {
 		boolean novoModoAgressivo = agressivo;
 
 		if (testeHabilidadePilotoCarro()) {
-			if (carro.verificaCondicoesCautela()) {
+			if (carro.verificaCondicoesCautela(controleJogo)) {
 				novoModoAgressivo = false;
 				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsBox
 						.get(Messagens.PILOTO_EM_CAUTELA))) {
