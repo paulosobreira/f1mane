@@ -344,6 +344,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		criarObjeto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					FormularioObjetos formularioObjetos = new FormularioObjetos();
 					// circuito.setCorFundo(corFundo)
 				} catch (Exception e2) {
 					e2.printStackTrace();
