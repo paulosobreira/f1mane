@@ -25,6 +25,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.F1ManeDados;
@@ -386,7 +387,7 @@ public class ControlePersistencia {
 		}
 	}
 
-	public void gravarDados(F1ManeDados... f1ManeDados) {
+	public void gravarDados(F1ManeDados... f1ManeDados) throws Exception {
 		Transaction transaction = getSession().beginTransaction();
 		try {
 			for (int i = 0; i < f1ManeDados.length; i++) {
@@ -395,7 +396,7 @@ public class ControlePersistencia {
 			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
-			Logger.topExecpts(e);
+			throw e;
 		}
 
 	}
@@ -427,7 +428,12 @@ public class ControlePersistencia {
 			}
 			carreiraDadosSrv = new CarreiraDadosSrv();
 			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-			gravarDados(carreiraDadosSrv);
+			try {
+				gravarDados(carreiraDadosSrv);
+			} catch (Exception e) {
+				Logger.logarExept(e);
+				return null;
+			}
 		}
 		if (vaiCliente) {
 			session.evict(carreiraDadosSrv);

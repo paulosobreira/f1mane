@@ -33,6 +33,7 @@ import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -49,7 +50,6 @@ import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.GeoUtil;
-import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -90,7 +90,6 @@ public class MainPanelEditorVetorizado extends JPanel {
 	public MainPanelEditorVetorizado(JFrame frame) throws IOException,
 			ClassNotFoundException {
 		this.srcFrame = frame;
-		setBackground(new Color(255, 250, 240));
 		srcFrame.getContentPane().removeAll();
 		setSize(10000, 10000);
 		scrollPane = new JScrollPane(this,
@@ -115,7 +114,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 
 		circuito = (Circuito) ois.readObject();
-
+		setBackground(new Color(circuito.getCorFundo()));
 		carroCima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("CarroCima.png");
 		MainPanelEditorVetorizado.this
@@ -181,7 +180,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		});
 		radioBoxPanel.add(boxButton);
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new GridLayout(2, 6));
+		buttonsPanel.setLayout(new GridLayout(3, 6));
 
 		JButton testaPistaButton = new JButton() {
 			@Override
@@ -314,6 +313,92 @@ public class MainPanelEditorVetorizado extends JPanel {
 		larguraPistaText.setText("" + multiplicadorLarguraPista);
 		buttonsPanel.add(larguraPistaText);
 
+		JButton corFundo = new JButton("") {
+			@Override
+			public String getText() {
+				return Lang.msg("corFundo");
+			}
+		};
+		corFundo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Color color = JColorChooser.showDialog(
+							MainPanelEditorVetorizado.this, Lang
+									.msg("escolhaCor"), Color.WHITE);
+					circuito.setCorFundo(color.getRGB());
+					MainPanelEditorVetorizado.this.setBackground(color);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+
+			}
+		});
+		buttonsPanel.add(corFundo);
+
+		JButton criarObjeto = new JButton("") {
+			@Override
+			public String getText() {
+				return Lang.msg("criarObjeto");
+			}
+		};
+		criarObjeto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					// circuito.setCorFundo(corFundo)
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+
+			}
+		});
+		buttonsPanel.add(criarObjeto);
+		JButton listaObjetos = new JButton("") {
+			@Override
+			public String getText() {
+				return Lang.msg("listaObjetos");
+			}
+		};
+		listaObjetos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					// circuito.setCorFundo(corFundo)
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+
+			}
+		});
+		buttonsPanel.add(listaObjetos);
+
+		buttonsPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("");
+			}
+		});
+		buttonsPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("");
+			}
+		});
+		JButton moverPelaTela = new JButton("") {
+			@Override
+			public String getText() {
+				return Lang.msg("moverPelaTela");
+			}
+		};
+		moverPelaTela.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					srcFrame.requestFocus();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+
+			}
+		});
+		buttonsPanel.add(moverPelaTela);
 		frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 
 	}
@@ -964,5 +1049,55 @@ public class MainPanelEditorVetorizado extends JPanel {
 		No n1 = (No) l.get(0);
 		centralizarPonto(n1.getPoint());
 
+	}
+
+	public void esquerda() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Point p = scrollPane.getViewport().getViewPosition();
+				p.x -= 20;
+				scrollPane.getViewport().setViewPosition(p);
+				repaint();
+			}
+		});
+
+	}
+
+	public void direita() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Point p = scrollPane.getViewport().getViewPosition();
+				p.x += 20;
+				scrollPane.getViewport().setViewPosition(p);
+				repaint();
+			}
+		});
+
+	}
+
+	public void cima() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Point p = scrollPane.getViewport().getViewPosition();
+				p.y -= 20;
+				scrollPane.getViewport().setViewPosition(p);
+				repaint();
+			}
+		});
+	}
+
+	public void baixo() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Point p = scrollPane.getViewport().getViewPosition();
+				p.y += 20;
+				scrollPane.getViewport().setViewPosition(p);
+				repaint();
+			}
+		});
 	}
 }

@@ -210,7 +210,7 @@ public class Carro implements Serializable {
 		this.potencia = potencia;
 	}
 
-	public boolean verificaCondicoesCautela() {
+	public boolean verificaCondicoesCautela(InterfaceJogo controleJogo) {
 		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
@@ -218,6 +218,10 @@ public class Carro implements Serializable {
 		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
 
 		if (pneus < (consumoMedioPenus)) {
+			return true;
+		}
+
+		if (controleJogo.isSemReabastacimento() && combust < 5) {
 			return true;
 		}
 
@@ -451,27 +455,33 @@ public class Carro implements Serializable {
 			}
 		}
 		double fator = Math.random();
-		double comprar = .4;
+		double comparar = .5;
 		if (controleJogo.isSemReabastacimento()) {
-			comprar = .6;
+			if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
+				comparar = .7;
+			else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
+				comparar = .8;
+			if (InterfaceJogo.FACIL == controleJogo.getNivelCorrida())
+				comparar = .9;
 		}
 
 		int valConsumo = 0;
 		if (agressivo) {
-			valConsumo = ((fator > comprar) ? 2 : 1);
+			valConsumo = ((fator > comparar) ? 2 : 1);
 		} else {
-			valConsumo = ((fator > comprar) ? 1 : 0);
+			valConsumo = ((fator > comparar) ? 1 : 0);
 		}
+		fator = Math.random();
 		if (giro == GIRO_MIN_VAL) {
-			valConsumo += ((fator > comprar) ? 1 : 0);
+			valConsumo += ((fator > comparar) ? 1 : 0);
 		} else if (giro == GIRO_NOR_VAL) {
-			valConsumo += ((fator > comprar) ? 2 : 1);
+			valConsumo += ((fator > comparar) ? 2 : 1);
 		} else if (giro == GIRO_MAX_VAL) {
-			valConsumo += ((fator > comprar) ? 3 : 2);
+			valConsumo += ((fator > comparar) ? 3 : 2);
 		}
-
+		fator = Math.random();
 		if (valConsumo <= 0) {
-			if (Math.random() > comprar) {
+			if (fator > comparar) {
 				valConsumo = 1;
 			}
 		}

@@ -446,7 +446,12 @@ public class ControlePaddockServidor {
 			return new MsgSrv(Lang.msg("236"));
 		}
 		jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());
-		controlePersistencia.gravarDados(jogadorDadosSrv);
+		try {
+			controlePersistencia.gravarDados(jogadorDadosSrv);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			return new ErroServ(e);
+		}
 
 		SessaoCliente cliente = null;
 		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
