@@ -27,6 +27,7 @@ public class Circuito implements Serializable {
 	private int saidaBoxIndex;
 	private int paradaBoxIndex;
 	private int corFundo;
+	private List<ObjetoPista> objetos;
 	private String nome;
 
 	public String getNome() {
@@ -323,6 +324,14 @@ public class Circuito implements Serializable {
 
 	public void setCorFundo(int corFundo) {
 		this.corFundo = corFundo;
+	}
+
+	public List<ObjetoPista> getObjetos() {
+		return objetos;
+	}
+
+	public void setObjetos(List<ObjetoPista> objetos) {
+		this.objetos = objetos;
 	}
 
 }
