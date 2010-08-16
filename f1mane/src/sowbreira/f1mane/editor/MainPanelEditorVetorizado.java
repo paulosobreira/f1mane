@@ -44,14 +44,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.ObjetoArquibancada;
+import sowbreira.f1mane.entidades.ObjetoCirculo;
+import sowbreira.f1mane.entidades.ObjetoConstrucao;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
+import sowbreira.f1mane.entidades.ObjetoPneus;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.GeoUtil;
@@ -87,11 +94,44 @@ public class MainPanelEditorVetorizado extends JPanel {
 	private int larguraPistaPixeis;
 	private BasicStroke zebra;
 	private JComboBox ladoBoxCombo;
-	private ObjetoLivre objetoLivre;
+	private ObjetoPista objetoPista;
 	private boolean desenhandoObjetoLivre;
+	private boolean posicionaObjetoPista;
+	private boolean moverObjetoPista;
+	private Point ultimoClicado;
+	private JSpinner transparencia = new JSpinner();
+	private FormularioListaObjetos formularioListaObjetos;
+
+	public boolean isMoverObjetoPista() {
+		return moverObjetoPista;
+	}
+
+	public Point getUltimoClicado() {
+		return ultimoClicado;
+	}
+
+	public void setUltimoClicado(Point ultimoClicado) {
+		this.ultimoClicado = ultimoClicado;
+	}
+
+	public ObjetoPista getObjetoPista() {
+		return objetoPista;
+	}
+
+	public void setObjetoPista(ObjetoPista objetoPista) {
+		this.objetoPista = objetoPista;
+	}
+
+	public void setMoverObjetoPista(boolean moverObjetoPista) {
+		this.moverObjetoPista = moverObjetoPista;
+	}
 
 	public JScrollPane getScrollPane() {
 		return scrollPane;
+	}
+
+	public JFrame getSrcFrame() {
+		return srcFrame;
 	}
 
 	public MainPanelEditorVetorizado(JFrame frame) throws IOException,
@@ -121,9 +161,9 @@ public class MainPanelEditorVetorizado extends JPanel {
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 
 		circuito = (Circuito) ois.readObject();
-		setBackground(new Color(circuito.getCorFundo()));
 		carroCima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("CarroCima.png");
+		formularioListaObjetos = new FormularioListaObjetos(this);
 		MainPanelEditorVetorizado.this
 				.addMouseWheelListener(new MouseWheelListener() {
 
@@ -137,24 +177,59 @@ public class MainPanelEditorVetorizado extends JPanel {
 							zoom = 0.1;
 						}
 						atualizaVarZoom();
-						// MainPanelEditorInflado.this.repaint();
+						if (ultimoClicado != null) {
+							centralizarPonto(ultimoClicado);
+							MainPanelEditorVetorizado.this.repaint();
+						}
 					}
 				});
 		MainPanelEditorVetorizado.this.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (desenhandoObjetoLivre) {
+				srcFrame.requestFocus();
+				ultimoClicado = new Point(Util.inte(e.getPoint().x / zoom),
+						Util.inte(e.getPoint().y / zoom));
+				if (e.getClickCount() > 1) {
+					editaObjetoPista(ultimoClicado);
+					return;
+				}
+				if (objetoPista == null) {
+					return;
+				}
+				if (e.getButton() != MouseEvent.BUTTON1) {
+					moverObjetoPista = false;
+				}
+				if (desenhandoObjetoLivre
+						&& (objetoPista instanceof ObjetoLivre)) {
+					ObjetoLivre objetoLivre = (ObjetoLivre) objetoPista;
 					if (e.getButton() == MouseEvent.BUTTON1) {
-						objetoLivre.getPontos().add(e.getPoint());
+						objetoLivre.getPontos().add(ultimoClicado);
 					} else {
 						desenhandoObjetoLivre = false;
 						if (circuito.getObjetos() == null)
 							circuito.setObjetos(new ArrayList<ObjetoPista>());
 						circuito.getObjetos().add(objetoLivre);
-						objetoLivre.setAngulo(Util.intervalo(10, 80));
-						System.out.println(objetoLivre.getAngulo());
+						objetoLivre.setNome("Objeto "
+								+ circuito.getObjetos().size());
+						objetoLivre.gerar();
 					}
+					repaint();
+				} else if (posicionaObjetoPista) {
+					if (circuito.getObjetos() == null)
+						circuito.setObjetos(new ArrayList<ObjetoPista>());
+					objetoPista.setPosicaoQuina(ultimoClicado);
+					circuito.getObjetos().add(objetoPista);
+					objetoPista.setNome("Objeto "
+							+ circuito.getObjetos().size());
+					repaint();
+					posicionaObjetoPista = false;
+				} else if (moverObjetoPista) {
+					if (objetoPista != null)
+						objetoPista.setPosicaoQuina(new Point(Util.inte(e
+								.getPoint().x
+								/ zoom), Util.inte(e.getPoint().y / zoom)));
+					;
 					repaint();
 				}
 				super.mouseClicked(e);
@@ -167,6 +242,20 @@ public class MainPanelEditorVetorizado extends JPanel {
 		iniciaEditor(srcFrame);
 		vetorizarPistaCarregado();
 		srcFrame.pack();
+	}
+
+	protected void editaObjetoPista(Point point) {
+		if (circuito.getObjetos() == null) {
+			return;
+		}
+		for (ObjetoPista objetoPista : circuito.getObjetos()) {
+			if (objetoPista.obterArea().contains(point)) {
+				FormularioObjetos formularioObjetos = new FormularioObjetos(
+						MainPanelEditorVetorizado.this);
+				formularioObjetos.objetoLivreFormulario(objetoPista);
+				break;
+			}
+		}
 	}
 
 	protected void atualizaVarZoom() {
@@ -339,20 +428,15 @@ public class MainPanelEditorVetorizado extends JPanel {
 		larguraPistaText.setText("" + multiplicadorLarguraPista);
 		buttonsPanel.add(larguraPistaText);
 
-		JButton corFundo = new JButton("") {
-			@Override
-			public String getText() {
-				return Lang.msg("corFundo");
-			}
-		};
+		JButton corFundo = new JButton("Cor de Fundo");
 		corFundo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Color color = JColorChooser.showDialog(
-							MainPanelEditorVetorizado.this, Lang
+							MainPanelEditorVetorizado.this.srcFrame, Lang
 									.msg("escolhaCor"), Color.WHITE);
-					circuito.setCorFundo(color.getRGB());
-					MainPanelEditorVetorizado.this.setBackground(color);
+					circuito.setCorFundo(color);
+					repaint();
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -360,22 +444,63 @@ public class MainPanelEditorVetorizado extends JPanel {
 			}
 		});
 		buttonsPanel.add(corFundo);
-
-		JButton criarObjeto = new JButton("") {
+		transparencia.setValue(255);
+		buttonsPanel.add(new JLabel("Transparencia Fundo"));
+		buttonsPanel.add(transparencia);
+		transparencia.addChangeListener(new ChangeListener() {
 			@Override
-			public String getText() {
-				return Lang.msg("criarObjeto");
+			public void stateChanged(ChangeEvent e) {
+				int transp = (Integer) transparencia.getValue();
+				if (transp > 255) {
+					transp = 255;
+				}
+				if (transp < 0) {
+					transp = 0;
+				}
+				if (circuito.getCorFundo() == null) {
+					return;
+				}
+				Color color = new Color(circuito.getCorFundo().getRed(),
+						circuito.getCorFundo().getGreen(), circuito
+								.getCorFundo().getBlue(), transp);
+				circuito.setCorFundo(color);
+				repaint();
 			}
-		};
+		});
+
+		JButton criarObjeto = new JButton("Criar Objeto");
 		criarObjeto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					FormularioObjetos formularioObjetos = new FormularioObjetos();
-					objetoLivre = new ObjetoLivre();
-					objetoLivre.setCorPimaria(300);
-					desenhandoObjetoLivre = true;
-					// circuito.setCorFundo(corFundo)
-
+					FormularioObjetos formularioObjetos = new FormularioObjetos(
+							MainPanelEditorVetorizado.this);
+					formularioObjetos.mostrarPainelModal();
+					if (FormularioObjetos.OBJETO_LIVRE.equals(formularioObjetos
+							.getTipoComboBox().getSelectedItem())) {
+						objetoPista = new ObjetoLivre();
+						desenhandoObjetoLivre = true;
+					} else if (FormularioObjetos.OBJETO_CONSTRUCAO
+							.equals(formularioObjetos.getTipoComboBox()
+									.getSelectedItem())) {
+						objetoPista = new ObjetoConstrucao();
+						posicionaObjetoPista = true;
+					} else if (FormularioObjetos.OBJETO_ARQUIBANCADA
+							.equals(formularioObjetos.getTipoComboBox()
+									.getSelectedItem())) {
+						objetoPista = new ObjetoArquibancada();
+						posicionaObjetoPista = true;
+					} else if (FormularioObjetos.OBJETO_PNEUS
+							.equals(formularioObjetos.getTipoComboBox()
+									.getSelectedItem())) {
+						objetoPista = new ObjetoPneus();
+						posicionaObjetoPista = true;
+					} else if (FormularioObjetos.OBJETO_CIRCULO
+							.equals(formularioObjetos.getTipoComboBox()
+									.getSelectedItem())) {
+						objetoPista = new ObjetoCirculo();
+						posicionaObjetoPista = true;
+					}
+					formularioObjetos.formularioObjetoPista(objetoPista);
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -383,16 +508,11 @@ public class MainPanelEditorVetorizado extends JPanel {
 			}
 		});
 		buttonsPanel.add(criarObjeto);
-		JButton listaObjetos = new JButton("") {
-			@Override
-			public String getText() {
-				return Lang.msg("listaObjetos");
-			}
-		};
+		JButton listaObjetos = new JButton("Listar Objetos");
 		listaObjetos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					// circuito.setCorFundo(corFundo)
+					formularioListaObjetos.mostrarPainel();
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -400,25 +520,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 			}
 		});
 		buttonsPanel.add(listaObjetos);
-
-		buttonsPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("");
-			}
-		});
-		buttonsPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("");
-			}
-		});
-		JButton moverPelaTela = new JButton("") {
-			@Override
-			public String getText() {
-				return Lang.msg("moverPelaTela");
-			}
-		};
+		JButton moverPelaTela = new JButton("Mover Pela Tela");
 		moverPelaTela.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -448,9 +550,12 @@ public class MainPanelEditorVetorizado extends JPanel {
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
-
+		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
+		g2d.setColor(circuito.getCorFundo());
+		g2d.fill(limitesViewPort);
 		if (carroCima == null)
 			return;
 		if (larguraPistaPixeis == 0)
@@ -474,13 +579,13 @@ public class MainPanelEditorVetorizado extends JPanel {
 		desenhaPista(g2d);
 		desenhaPistaBox(g2d);
 		desenhaCarroTeste(g2d);
-		desenhaInfo(g2d);
 		desenhaEntradaParadaSaidaBox(g2d);
 		desenhaLargada(g2d);
 		desenhaGrid(g2d);
 		desenhaBoxes(g2d);
 		desenhaPreObjetoLivre(g2d);
-
+		desenhaObjetosCima(g2d);
+		desenhaInfo(g2d);
 	}
 
 	private void desenhaObjetosBaixo(Graphics2D g2d) {
@@ -491,22 +596,67 @@ public class MainPanelEditorVetorizado extends JPanel {
 			return;
 		}
 		for (ObjetoPista objetoPista : circuito.getObjetos()) {
+			if (objetoPista.isPintaEmcima())
+				continue;
 			objetoPista.desenha(g2d, zoom);
+			AffineTransform affineTransform = AffineTransform.getScaleInstance(
+					1, 1);
+			double rad = Math.toRadians((double) objetoPista.getAngulo());
+
+			GeneralPath generalPath = new GeneralPath(objetoPista.obterArea());
+			affineTransform.setToRotation(rad, generalPath.getBounds()
+					.getCenterX(), generalPath.getBounds().getCenterY());
+			generalPath.transform(affineTransform);
+			affineTransform.setToScale(zoom, zoom);
+			g2d.draw(generalPath.createTransformedShape(affineTransform));
+		}
+
+	}
+
+	public Circuito getCircuito() {
+		return circuito;
+	}
+
+	private void desenhaObjetosCima(Graphics2D g2d) {
+		if (circuito == null) {
+			return;
+		}
+		if (circuito.getObjetos() == null) {
+			return;
+		}
+		for (ObjetoPista objetoPista : circuito.getObjetos()) {
+			if (!objetoPista.isPintaEmcima())
+				continue;
+			objetoPista.desenha(g2d, zoom);
+			AffineTransform affineTransform = AffineTransform.getScaleInstance(
+					1, 1);
+			double rad = Math.toRadians((double) objetoPista.getAngulo());
+
+			GeneralPath generalPath = new GeneralPath(objetoPista.obterArea());
+			affineTransform.setToRotation(rad, generalPath.getBounds()
+					.getCenterX(), generalPath.getBounds().getCenterY());
+			generalPath.transform(affineTransform);
+			affineTransform.setToScale(zoom, zoom);
+			g2d.draw(generalPath.createTransformedShape(affineTransform));
+
 		}
 
 	}
 
 	private void desenhaPreObjetoLivre(Graphics2D g2d) {
 		g2d.setColor(Color.BLACK);
-		if (objetoLivre == null || !desenhandoObjetoLivre)
+		if (objetoPista == null || !desenhandoObjetoLivre
+				|| !(objetoPista instanceof ObjetoLivre))
 			return;
+		ObjetoLivre objetoLivre = (ObjetoLivre) objetoPista;
 		if (objetoLivre.getPontos().size() == 1) {
 			return;
 		}
 		Point ant = null;
 		for (Point p : objetoLivre.getPontos()) {
 			if (ant != null) {
-				g2d.drawLine(ant.x, ant.y, p.x, p.y);
+				g2d.drawLine(Util.inte(ant.x * zoom), Util.inte(ant.y * zoom),
+						Util.inte(p.x * zoom), Util.inte(p.y * zoom));
 			}
 			ant = p;
 		}
@@ -780,7 +930,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		limitesViewPort.width -= 100;
 		limitesViewPort.height -= 100;
 
-		g2d.draw(limitesViewPort);
+		// g2d.draw(limitesViewPort);
 	}
 
 	private void desenhaTintaPistaEZebra(Graphics2D g2d) {
@@ -1115,6 +1265,13 @@ public class MainPanelEditorVetorizado extends JPanel {
 	}
 
 	public void esquerda() {
+		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+			Point p = objetoPista.getPosicaoQuina();
+			p.x -= 10;
+			repaint();
+			return;
+		}
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -1128,6 +1285,12 @@ public class MainPanelEditorVetorizado extends JPanel {
 	}
 
 	public void direita() {
+		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+			Point p = objetoPista.getPosicaoQuina();
+			p.x += 10;
+			repaint();
+			return;
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -1141,6 +1304,12 @@ public class MainPanelEditorVetorizado extends JPanel {
 	}
 
 	public void cima() {
+		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+			Point p = objetoPista.getPosicaoQuina();
+			p.y -= 10;
+			repaint();
+			return;
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -1153,6 +1322,12 @@ public class MainPanelEditorVetorizado extends JPanel {
 	}
 
 	public void baixo() {
+		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+			Point p = objetoPista.getPosicaoQuina();
+			p.y += 10;
+			repaint();
+			return;
+		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -1162,5 +1337,97 @@ public class MainPanelEditorVetorizado extends JPanel {
 				repaint();
 			}
 		});
+	}
+
+	public void menosAngulo() {
+		if (moverObjetoPista) {
+			objetoPista.setAngulo(objetoPista.getAngulo() - 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void maisAngulo() {
+		if (moverObjetoPista) {
+			objetoPista.setAngulo(objetoPista.getAngulo() + 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void maisLargura() {
+		if (moverObjetoPista) {
+			objetoPista.setLargura(objetoPista.getLargura() + 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void menosLargura() {
+		if (moverObjetoPista) {
+			objetoPista.setLargura(objetoPista.getLargura() - 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void maisAltura() {
+		if (moverObjetoPista) {
+			objetoPista.setAltura(objetoPista.getAltura() + 1);
+			repaint();
+			return;
+		}
+
+	}
+
+	public void menosAltura() {
+		if (moverObjetoPista) {
+			objetoPista.setAltura(objetoPista.getAltura() - 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void copiarObjeto() {
+		if (moverObjetoPista) {
+			try {
+				ObjetoPista objetoPistaNovo = objetoPista.getClass()
+						.newInstance();
+				objetoPistaNovo.setAltura(objetoPista.getAltura());
+				objetoPistaNovo.setAngulo(objetoPista.getAngulo());
+				objetoPistaNovo.setCorPimaria(objetoPista.getCorPimaria());
+				objetoPistaNovo
+						.setCorSecundaria(objetoPista.getCorSecundaria());
+				objetoPistaNovo.setLargura(objetoPista.getLargura());
+				objetoPistaNovo.setPintaEmcima(objetoPista.isPintaEmcima());
+				objetoPistaNovo
+						.setTransparencia(objetoPista.getTransparencia());
+				objetoPistaNovo.setPosicaoQuina(new Point(objetoPista
+						.getPosicaoQuina().x, objetoPista.getPosicaoQuina().y));
+
+				if (objetoPista instanceof ObjetoLivre) {
+					ObjetoLivre src = (ObjetoLivre) objetoPista;
+					ObjetoLivre dst = (ObjetoLivre) objetoPistaNovo;
+					dst.setPontos(new ArrayList<Point>());
+					List<Point> pontos = src.getPontos();
+					for (Point point : pontos) {
+						dst.getPontos().add(new Point(point.x, point.y));
+					}
+					dst.gerar();
+				}
+				circuito.getObjetos().add(objetoPistaNovo);
+				objetoPistaNovo.setNome("Objeto "
+						+ circuito.getObjetos().size());
+
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			repaint();
+			return;
+		}
 	}
 }

@@ -429,6 +429,26 @@ public class MainFrame extends JFrame {
 						editorInflado.baixo();
 					}
 
+					if (keyCoode == KeyEvent.VK_PAGE_UP) {
+						editorInflado.menosAngulo();
+					} else if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
+						editorInflado.maisAngulo();
+					} else if (e.isShiftDown()
+							&& keyCoode == KeyEvent.VK_PAGE_UP) {
+						editorInflado.maisLargura();
+					} else if (e.isShiftDown()
+							&& keyCoode == KeyEvent.VK_PAGE_DOWN) {
+						editorInflado.menosLargura();
+					} else if (e.isControlDown()
+							&& keyCoode == KeyEvent.VK_PAGE_UP) {
+						editorInflado.maisAltura();
+					} else if (e.isControlDown()
+							&& keyCoode == KeyEvent.VK_PAGE_DOWN) {
+						editorInflado.menosAltura();
+					} else if (e.isControlDown() && keyCoode == KeyEvent.VK_C) {
+						editorInflado.copiarObjeto();
+					}
+
 				}
 			}
 		});

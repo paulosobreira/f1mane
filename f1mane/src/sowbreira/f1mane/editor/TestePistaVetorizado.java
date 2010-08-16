@@ -65,6 +65,7 @@ public class TestePistaVetorizado {
 					No no = null;
 					try {
 						while (cont < pontosPista.size()) {
+							editor.setUltimoClicado(null);
 							no = (No) pontosPista.get(cont);
 							int entradaBox = circuito.getEntradaBoxIndex();
 							if (irProBox
