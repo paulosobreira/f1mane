@@ -1,17 +1,63 @@
 package sowbreira.f1mane.entidades;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.Serializable;
 
 public abstract class ObjetoPista implements Serializable {
 
 	boolean pintaEmcima;
-	int corPimaria;
-	int corSecundaria;
+	Color corPimaria;
+	Color corSecundaria;
 	int transparencia;
+	int altura;
+	int largura;
 	double angulo;
+	Point posicaoQuina;
+	private String nome;
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	@Override
+	public String toString() {
+		return getNome() + " " + getClass().getSimpleName();
+	}
+
+	public int getAltura() {
+		return altura;
+	}
+
+	public void setAltura(int altura) {
+		this.altura = altura;
+	}
+
+	public int getLargura() {
+		return largura;
+	}
+
+	public void setLargura(int largura) {
+		this.largura = largura;
+	}
+
+	public Point getPosicaoQuina() {
+		return posicaoQuina;
+	}
+
+	public void setPosicaoQuina(Point posicaoQuina) {
+		this.posicaoQuina = posicaoQuina;
+	}
 
 	public abstract void desenha(Graphics2D g2d, double zoom);
+
+	public abstract Rectangle obterArea();
 
 	public double getAngulo() {
 		return angulo;
@@ -29,19 +75,19 @@ public abstract class ObjetoPista implements Serializable {
 		this.pintaEmcima = pintaEmcima;
 	}
 
-	public int getCorPimaria() {
+	public Color getCorPimaria() {
 		return corPimaria;
 	}
 
-	public void setCorPimaria(int corPimaria) {
+	public void setCorPimaria(Color corPimaria) {
 		this.corPimaria = corPimaria;
 	}
 
-	public int getCorSecundaria() {
+	public Color getCorSecundaria() {
 		return corSecundaria;
 	}
 
-	public void setCorSecundaria(int corSecundaria) {
+	public void setCorSecundaria(Color corSecundaria) {
 		this.corSecundaria = corSecundaria;
 	}
 
@@ -50,6 +96,12 @@ public abstract class ObjetoPista implements Serializable {
 	}
 
 	public void setTransparencia(int transparencia) {
+		if (transparencia < 0) {
+			transparencia = 0;
+		}
+		if (transparencia > 255) {
+			transparencia = 255;
+		}
 		this.transparencia = transparencia;
 	}
 

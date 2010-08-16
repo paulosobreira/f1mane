@@ -1,5 +1,6 @@
 package sowbreira.f1mane.entidades;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class Circuito implements Serializable {
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;
 	private int paradaBoxIndex;
-	private int corFundo;
+	private Color corFundo;
 	private List<ObjetoPista> objetos;
 	private String nome;
 
@@ -318,20 +319,20 @@ public class Circuito implements Serializable {
 		return multiplicadorLarguraPista;
 	}
 
-	public int getCorFundo() {
-		return corFundo;
-	}
-
-	public void setCorFundo(int corFundo) {
-		this.corFundo = corFundo;
-	}
-
 	public List<ObjetoPista> getObjetos() {
 		return objetos;
 	}
 
 	public void setObjetos(List<ObjetoPista> objetos) {
 		this.objetos = objetos;
+	}
+
+	public Color getCorFundo() {
+		return corFundo;
+	}
+
+	public void setCorFundo(Color corFundo) {
+		this.corFundo = corFundo;
 	}
 
 }
