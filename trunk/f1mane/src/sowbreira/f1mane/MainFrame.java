@@ -416,23 +416,24 @@ public class MainFrame extends JFrame {
 					editor.inserirNoParadaBox();
 				}
 				if (editorInflado != null) {
-					if (keyCoode == KeyEvent.VK_LEFT) {
+					if (e.isControlDown() && keyCoode == KeyEvent.VK_LEFT) {
+						editorInflado.esquerdaObj();
+					} else if (e.isControlDown()
+							&& keyCoode == KeyEvent.VK_RIGHT) {
+						editorInflado.direitaObj();
+					} else if (e.isControlDown() && keyCoode == KeyEvent.VK_UP) {
+						editorInflado.cimaObj();
+					} else if (e.isControlDown()
+							&& keyCoode == KeyEvent.VK_DOWN) {
+						editorInflado.baixoObj();
+					} else if (keyCoode == KeyEvent.VK_LEFT) {
 						editorInflado.esquerda();
-					}
-					if (keyCoode == KeyEvent.VK_RIGHT) {
+					} else if (keyCoode == KeyEvent.VK_RIGHT) {
 						editorInflado.direita();
-					}
-					if (keyCoode == KeyEvent.VK_UP) {
+					} else if (keyCoode == KeyEvent.VK_UP) {
 						editorInflado.cima();
-					}
-					if (keyCoode == KeyEvent.VK_DOWN) {
+					} else if (keyCoode == KeyEvent.VK_DOWN) {
 						editorInflado.baixo();
-					}
-
-					if (keyCoode == KeyEvent.VK_PAGE_UP) {
-						editorInflado.menosAngulo();
-					} else if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
-						editorInflado.maisAngulo();
 					} else if (e.isShiftDown()
 							&& keyCoode == KeyEvent.VK_PAGE_UP) {
 						editorInflado.maisLargura();
@@ -447,6 +448,10 @@ public class MainFrame extends JFrame {
 						editorInflado.menosAltura();
 					} else if (e.isControlDown() && keyCoode == KeyEvent.VK_C) {
 						editorInflado.copiarObjeto();
+					} else if (keyCoode == KeyEvent.VK_PAGE_UP) {
+						editorInflado.menosAngulo();
+					} else if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
+						editorInflado.maisAngulo();
 					}
 
 				}

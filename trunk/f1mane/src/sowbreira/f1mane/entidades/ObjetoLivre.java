@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ObjetoLivre extends ObjetoPista {
 	private List<Point> pontos = new ArrayList<Point>();
-	GeneralPath generalPath = new GeneralPath();
+	Polygon polygon = new Polygon();
 
 	public List<Point> getPontos() {
 		return pontos;
@@ -23,34 +23,34 @@ public class ObjetoLivre extends ObjetoPista {
 	}
 
 	public void gerar() {
-		Polygon polygon = new Polygon();
-
+		polygon = new Polygon();
 		for (Point ponto : pontos) {
 			polygon.addPoint((int) (ponto.x), (int) (ponto.y));
 		}
-		generalPath.append(polygon, true);
-		posicaoQuina = generalPath.getBounds().getLocation();
 	}
 
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {
-		//generalPath.getBounds().setLocation(getPosicaoQuina());
+		if (posicaoQuina != null) {
+			polygon.translate(posicaoQuina.x - polygon.getBounds().x,
+					posicaoQuina.y - polygon.getBounds().y);
+		}
+
 		g2d.setColor(new Color(getCorPimaria().getRed(), getCorPimaria()
 				.getGreen(), getCorPimaria().getBlue(), getTransparencia()));
 		double rad = Math.toRadians((double) getAngulo());
 		AffineTransform affineTransform = AffineTransform
 				.getScaleInstance(1, 1);
-		affineTransform.setToRotation(rad,
-				generalPath.getBounds().getCenterX(), generalPath.getBounds()
-						.getCenterY());
-		GeneralPath gp = new GeneralPath(generalPath);
-		gp.transform(affineTransform);
+		affineTransform.setToRotation(rad, polygon.getBounds().getCenterX(),
+				polygon.getBounds().getCenterY());
+		GeneralPath generalPath = new GeneralPath(polygon);
+		generalPath.transform(affineTransform);
 		affineTransform.setToScale(zoom, zoom);
-		g2d.fill(gp.createTransformedShape(affineTransform));
+		g2d.fill(generalPath.createTransformedShape(affineTransform));
 	}
 
 	@Override
 	public Rectangle obterArea() {
-		return generalPath.getBounds();
+		return polygon.getBounds();
 	}
 }
