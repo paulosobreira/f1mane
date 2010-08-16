@@ -229,7 +229,6 @@ public class MainPanelEditorVetorizado extends JPanel {
 						objetoPista.setPosicaoQuina(new Point(Util.inte(e
 								.getPoint().x
 								/ zoom), Util.inte(e.getPoint().y / zoom)));
-					;
 					repaint();
 				}
 				super.mouseClicked(e);
@@ -1308,6 +1307,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 			Point p = objetoPista.getPosicaoQuina();
 			p.y -= 10;
 			repaint();
+			System.out.println("Cima");
 			return;
 		}
 		SwingUtilities.invokeLater(new Runnable() {

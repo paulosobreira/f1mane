@@ -14,6 +14,7 @@ public class Logger {
 	public static boolean novaSession = false;
 
 	public static void topExecpts(Exception e) {
+		novaSession = true;
 		if (ativo) {
 			e.printStackTrace();
 		}

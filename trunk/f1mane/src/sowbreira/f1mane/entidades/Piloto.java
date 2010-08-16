@@ -1180,7 +1180,8 @@ public class Piloto implements Serializable {
 		} else {
 			getCarro().setGiro(Carro.GIRO_NOR_VAL);
 		}
-		if (getCarro().verificaCondicoesCautelaGiro() || entrouNoBox()) {
+		if (getCarro().verificaCondicoesCautelaGiro(controleJogo)
+				|| entrouNoBox()) {
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 		}
 
