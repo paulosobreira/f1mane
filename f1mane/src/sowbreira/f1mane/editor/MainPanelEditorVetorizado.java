@@ -1263,13 +1263,16 @@ public class MainPanelEditorVetorizado extends JPanel {
 
 	}
 
-	public void esquerda() {
+	public void esquerdaObj() {
 		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
 			Point p = objetoPista.getPosicaoQuina();
 			p.x -= 10;
 			repaint();
 			return;
 		}
+	}
+
+	public void esquerda() {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -1280,16 +1283,18 @@ public class MainPanelEditorVetorizado extends JPanel {
 				repaint();
 			}
 		});
-
 	}
 
-	public void direita() {
+	public void direitaObj() {
 		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
 			Point p = objetoPista.getPosicaoQuina();
 			p.x += 10;
 			repaint();
 			return;
 		}
+	}
+
+	public void direita() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -1299,17 +1304,18 @@ public class MainPanelEditorVetorizado extends JPanel {
 				repaint();
 			}
 		});
-
 	}
 
-	public void cima() {
+	public void cimaObj() {
 		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
 			Point p = objetoPista.getPosicaoQuina();
 			p.y -= 10;
 			repaint();
-			System.out.println("Cima");
 			return;
 		}
+	}
+
+	public void cima() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -1321,13 +1327,17 @@ public class MainPanelEditorVetorizado extends JPanel {
 		});
 	}
 
-	public void baixo() {
+	public void baixoObj() {
 		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
 			Point p = objetoPista.getPosicaoQuina();
 			p.y += 10;
 			repaint();
 			return;
 		}
+	}
+
+	public void baixo() {
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
