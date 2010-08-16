@@ -1,14 +1,12 @@
 package sowbreira.f1mane.entidades;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
-import br.nnpe.Logger;
 import br.nnpe.Util;
 
 /**
@@ -221,7 +219,7 @@ public class Carro implements Serializable {
 			return true;
 		}
 
-		if (controleJogo.isSemReabastacimento() && combust < 5) {
+		if (controleJogo.isSemReabastacimento() && combust < 10) {
 			return true;
 		}
 
@@ -243,13 +241,17 @@ public class Carro implements Serializable {
 		return false;
 	}
 
-	public boolean verificaCondicoesCautelaGiro() {
+	public boolean verificaCondicoesCautelaGiro(InterfaceJogo controleJogo) {
 		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
 
 		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
 		if (combust < consumoMedioCombust) {
+			return true;
+		}
+
+		if (controleJogo.isSemReabastacimento() && combust < 15) {
 			return true;
 		}
 
@@ -264,6 +266,7 @@ public class Carro implements Serializable {
 		if (motor < 10) {
 			return true;
 		}
+
 		return false;
 	}
 
