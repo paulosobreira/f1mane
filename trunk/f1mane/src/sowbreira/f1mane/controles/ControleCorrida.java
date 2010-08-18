@@ -65,7 +65,10 @@ public class ControleCorrida {
 		controleCiclo = new ControleCiclo(controleJogo, this, tempoCiclo);
 		controleQualificacao = new ControleQualificacao(controleJogo,
 				controleBox);
-		tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
+		if (controleJogo.isSemReabastacimento()) {
+			tanqueCheio = (distaciaCorrida + Util.inte(distaciaCorrida / 1.4));
+		} else
+			tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
 		definirTanqueCheio();
 	}
 

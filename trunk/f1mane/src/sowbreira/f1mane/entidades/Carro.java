@@ -219,7 +219,7 @@ public class Carro implements Serializable {
 			return true;
 		}
 
-		if (controleJogo.isSemReabastacimento() && combust < 10) {
+		if (controleJogo.isSemReabastacimento() && combust < 15) {
 			return true;
 		}
 
@@ -251,7 +251,7 @@ public class Carro implements Serializable {
 			return true;
 		}
 
-		if (controleJogo.isSemReabastacimento() && combust < 15) {
+		if (controleJogo.isSemReabastacimento() && combust < 20) {
 			return true;
 		}
 
@@ -458,14 +458,14 @@ public class Carro implements Serializable {
 			}
 		}
 		double fator = Math.random();
-		double comparar = .5;
+		double comparar = .7;
 		if (controleJogo.isSemReabastacimento()) {
 			if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
-				comparar = .7;
+				comparar = .85;
 			else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
-				comparar = .8;
-			if (InterfaceJogo.FACIL == controleJogo.getNivelCorrida())
 				comparar = .9;
+			if (InterfaceJogo.FACIL == controleJogo.getNivelCorrida())
+				comparar = .95;
 		}
 
 		int valConsumo = 0;
