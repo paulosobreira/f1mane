@@ -13,7 +13,7 @@ public class Campeonato implements Serializable {
 	private Integer qtdeVoltas;
 	private List pilotos = new LinkedList();
 	private List corridas = new LinkedList();
-	private Map dadosCorridas = new HashMap();
+	private Map<String, List> dadosCorridas = new HashMap<String, List>();
 
 	public String getTemporada() {
 		return temporada;
@@ -57,10 +57,6 @@ public class Campeonato implements Serializable {
 
 	public Map getDadosCorridas() {
 		return dadosCorridas;
-	}
-
-	public void setDadosCorridas(Map dadosCorridas) {
-		this.dadosCorridas = dadosCorridas;
 	}
 
 	public String getCircuitoVez() {
