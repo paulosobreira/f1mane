@@ -364,8 +364,8 @@ public class ControleCampeonato {
 		}
 	}
 
-	public void processaFimCorrida(List pilotos) {
-		List corridaCampeonatoDados = new ArrayList();
+	public void processaFimCorrida(List<Piloto> pilotos) {
+		List<CorridaCampeonato> corridaCampeonatoDados = new ArrayList<CorridaCampeonato>();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto p = (Piloto) iterator.next();
 			CorridaCampeonato corridaCampeonato = new CorridaCampeonato();
