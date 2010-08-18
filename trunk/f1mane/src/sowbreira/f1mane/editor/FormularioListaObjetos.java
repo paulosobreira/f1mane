@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.ObjetoPista;
@@ -29,7 +30,7 @@ public class FormularioListaObjetos {
 		final JList list = new JList(defaultListModelOP);
 		JPanel main = new JPanel(new BorderLayout());
 		JPanel botoes = new JPanel(new GridLayout(3, 1));
-		main.add(list, BorderLayout.CENTER);
+		main.add(new JScrollPane(list), BorderLayout.CENTER);
 		main.add(botoes, BorderLayout.SOUTH);
 		JButton cima = new JButton("Cima");
 		cima.addActionListener(new ActionListener() {

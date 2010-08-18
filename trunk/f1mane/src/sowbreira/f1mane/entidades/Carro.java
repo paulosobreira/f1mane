@@ -557,7 +557,7 @@ public class Carro implements Serializable {
 			}
 			boolean teste = piloto.testeHabilidadePilotoCarro();
 			desgPneus += (teste ? 3 : 4 + novoModDano);
-			if (!teste && Math.random() > 0.7 && !controleJogo.isChovendo()
+			if (!teste && Math.random() > 0.6 && !controleJogo.isChovendo()
 					&& getPiloto().getPtosBox() == 0) {
 				controleJogo.travouRodas(getPiloto());
 			}

@@ -61,6 +61,7 @@ import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoPneus;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import sowbreira.f1mane.visao.PainelCircuito;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -190,7 +191,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 				srcFrame.requestFocus();
 				ultimoClicado = new Point(Util.inte(e.getPoint().x / zoom),
 						Util.inte(e.getPoint().y / zoom));
-				if (e.getClickCount() > 1) {
+				if (!moverObjetoPista && e.getClickCount() > 1) {
 					editaObjetoPista(ultimoClicado);
 					return;
 				}
@@ -912,10 +913,13 @@ public class MainPanelEditorVetorizado extends JPanel {
 	}
 
 	private void desenhaInfo(Graphics2D g2d) {
-		g2d.setColor(Color.black);
+
 		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
 		int x = limitesViewPort.getBounds().x + 30;
 		int y = limitesViewPort.getBounds().y + 20;
+		g2d.setColor(PainelCircuito.lightWhiteRain);
+		g2d.fillRoundRect(x - 15, y - 15, 200, 130, 15, 15);
+		g2d.setColor(Color.black);
 		g2d.drawString("Zoom : " + zoom, x, y);
 		y += 20;
 		g2d.drawString("Multiplicador Pista : " + multiplicadorPista, x, y);
@@ -926,6 +930,11 @@ public class MainPanelEditorVetorizado extends JPanel {
 		g2d.drawString("Box : " + testePistaVetorizado.isIrProBox(), x, y);
 		y += 20;
 		g2d.drawString("MaxHP : " + testePistaVetorizado.isMaxHP(), x, y);
+		if (circuito.getObjetos() != null) {
+			y += 20;
+			g2d.drawString("Num Objetos : " + circuito.getObjetos().size(), x,
+					y);
+		}
 		limitesViewPort.width -= 100;
 		limitesViewPort.height -= 100;
 
@@ -1210,8 +1219,8 @@ public class MainPanelEditorVetorizado extends JPanel {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				scrollPane.getViewport().setViewPosition(p);
 				repaint();
+				scrollPane.getViewport().setViewPosition(p);
 			}
 		});
 
@@ -1238,6 +1247,8 @@ public class MainPanelEditorVetorizado extends JPanel {
 
 		tamanhoPistaText.setText(String.valueOf(multiplicadorPista));
 		larguraPistaText.setText(String.valueOf(multiplicadorLarguraPista));
+		if (circuito.getCorFundo() != null)
+			transparencia.setValue(circuito.getCorFundo().getAlpha());
 		cursor = Cursor.getDefaultCursor();
 		srcFrame.setCursor(cursor);
 
@@ -1279,8 +1290,8 @@ public class MainPanelEditorVetorizado extends JPanel {
 			public void run() {
 				Point p = scrollPane.getViewport().getViewPosition();
 				p.x -= 20;
-				scrollPane.getViewport().setViewPosition(p);
 				repaint();
+				scrollPane.getViewport().setViewPosition(p);
 			}
 		});
 	}
@@ -1300,8 +1311,9 @@ public class MainPanelEditorVetorizado extends JPanel {
 			public void run() {
 				Point p = scrollPane.getViewport().getViewPosition();
 				p.x += 20;
-				scrollPane.getViewport().setViewPosition(p);
 				repaint();
+				scrollPane.getViewport().setViewPosition(p);
+
 			}
 		});
 	}
@@ -1321,8 +1333,9 @@ public class MainPanelEditorVetorizado extends JPanel {
 			public void run() {
 				Point p = scrollPane.getViewport().getViewPosition();
 				p.y -= 20;
-				scrollPane.getViewport().setViewPosition(p);
 				repaint();
+				scrollPane.getViewport().setViewPosition(p);
+
 			}
 		});
 	}
@@ -1343,8 +1356,9 @@ public class MainPanelEditorVetorizado extends JPanel {
 			public void run() {
 				Point p = scrollPane.getViewport().getViewPosition();
 				p.y += 20;
-				scrollPane.getViewport().setViewPosition(p);
 				repaint();
+				scrollPane.getViewport().setViewPosition(p);
+
 			}
 		});
 	}

@@ -48,11 +48,13 @@ public class ControleCorrida {
 			fatorUtrapassagem = 0.5;
 		}
 		this.fatorUtrapassagem = 1 - fatorUtrapassagem;
-		this.indexVelcidadeDaPista = 0.3 + ((1.0 - jogo.getNiveljogo()));
-		if (jogo.isSemReabastacimento() || jogo.isSemTrocaPneu()) {
-			this.indexVelcidadeDaPista = 1;
+		this.indexVelcidadeDaPista = 1.4;
+		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
+			this.indexVelcidadeDaPista = 1.5;
 		}
-
+		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+			this.indexVelcidadeDaPista = 1.3;
+		}
 		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
 		definirDurabilidadeMotores();
