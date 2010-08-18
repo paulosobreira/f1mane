@@ -36,6 +36,7 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
@@ -186,6 +187,10 @@ public class PainelCircuito extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
 		limitesViewPort = (Rectangle) limitesViewPort();
+		if (circuito.getCorFundo() != null) {
+			g2d.setColor(circuito.getCorFundo());
+			g2d.fill(limitesViewPort);
+		}
 		if (larguraPistaPixeis == 0)
 			larguraPistaPixeis = Util.inte(176 * larguraPista * zoom);
 		if (pista == null)
@@ -202,6 +207,7 @@ public class PainelCircuito extends JPanel {
 					BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
 					new float[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
 							10 }, 0);
+		desenhaObjetosBaixo(g2d);
 		desenhaTintaPistaEZebra(g2d);
 		desenhaPista(g2d);
 		desenhaPistaBox(g2d);
@@ -218,15 +224,70 @@ public class PainelCircuito extends JPanel {
 		desenhaContadorVoltas(g2d);
 		desenharFarois(g2d);
 		desenharClima(g2d);
-		desenhaInfoAdd(g2d);
+		desenhaObjetosCima(g2d);
 		desenhaChuva(g2d);
-
+		desenhaInfoAdd(g2d);
 		// if (limitesViewPort != null) {
 		// limitesViewPort.width -= 100;
 		// limitesViewPort.height -= 100;
 		//
 		// g2d.draw(limitesViewPort);
 		// }
+	}
+
+	private void desenhaObjetosBaixo(Graphics2D g2d) {
+		if (circuito == null) {
+			return;
+		}
+		if (circuito.getObjetos() == null) {
+			return;
+		}
+		for (ObjetoPista objetoPista : circuito.getObjetos()) {
+			if (objetoPista.isPintaEmcima())
+				continue;
+			AffineTransform affineTransform = AffineTransform.getScaleInstance(
+					1, 1);
+			double rad = Math.toRadians((double) objetoPista.getAngulo());
+
+			GeneralPath generalPath = new GeneralPath(objetoPista.obterArea());
+			affineTransform.setToRotation(rad, generalPath.getBounds()
+					.getCenterX(), generalPath.getBounds().getCenterY());
+			generalPath.transform(affineTransform);
+			affineTransform.setToScale(zoom, zoom);
+			if (limitesViewPort.intersects(generalPath.createTransformedShape(
+					affineTransform).getBounds())) {
+				objetoPista.desenha(g2d, zoom);
+			}
+		}
+
+	}
+
+	private void desenhaObjetosCima(Graphics2D g2d) {
+		if (circuito == null) {
+			return;
+		}
+		if (circuito.getObjetos() == null) {
+			return;
+		}
+		for (ObjetoPista objetoPista : circuito.getObjetos()) {
+			if (!objetoPista.isPintaEmcima())
+				continue;
+			AffineTransform affineTransform = AffineTransform.getScaleInstance(
+					1, 1);
+			double rad = Math.toRadians((double) objetoPista.getAngulo());
+
+			GeneralPath generalPath = new GeneralPath(objetoPista.obterArea());
+			affineTransform.setToRotation(rad, generalPath.getBounds()
+					.getCenterX(), generalPath.getBounds().getCenterY());
+			generalPath.transform(affineTransform);
+			affineTransform.setToScale(zoom, zoom);
+			if (limitesViewPort.intersects(generalPath.createTransformedShape(
+					affineTransform).getBounds())) {
+				objetoPista.desenha(g2d, zoom);
+			}
+
+		}
+
 	}
 
 	private void desenhaMarcasPeneuPista(Graphics2D g2d) {
@@ -511,9 +572,10 @@ public class PainelCircuito extends JPanel {
 			eixoDianteras = frenteP;
 		}
 		double eixo = piloto.getDiateira().getWidth() / 2;
-		if (controleJogo.isChovendo() && piloto.getVelocidade() != 0) {
+		if (controleJogo.isChovendo() && piloto.getVelocidade() != 0
+				&& !piloto.isDesqualificado()) {
 			g2d.setColor(lightWhiteRain);
-			for (int i = 0; i < 40; i++) {
+			for (int i = 0; i < 30; i++) {
 				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
 						- eixo, eixoDianteras.x + eixo), (int) Util.intervalo(
 						eixoDianteras.y - eixo, eixoDianteras.y + eixo));
@@ -1152,7 +1214,6 @@ public class PainelCircuito extends JPanel {
 		}
 		Color color = g2d.getColor();
 		g2d.setColor(Color.YELLOW);
-		g2d.setStroke(strokeFaisca);
 		for (int i = 0; i < 7; i++) {
 			if (Math.random() > .5) {
 				int valx = Util.intervalo(5, 15);
@@ -1161,7 +1222,6 @@ public class PainelCircuito extends JPanel {
 						- Util.intervalo(10, 20));
 			}
 		}
-		g2d.setStroke(trilho);
 		g2d.setColor(color);
 	}
 
