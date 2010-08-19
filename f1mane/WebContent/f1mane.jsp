@@ -44,6 +44,9 @@ img {
 	border-width: 0px;
 	border-color: #5C5E5D;
 	padding: 10px;
+	padding-left: 0px;
+	padding-right: 0px;
+	
 }
 
 #title {
@@ -62,8 +65,6 @@ img {
 	font-size: 24px;
 	font-weight: bold;
 	line-height: 24px;
-	position: relative;
-	left: 0px;
 }
 
 #main{
@@ -75,16 +76,17 @@ img {
 	padding-left: 20px;
 	padding-right: 20px;
 	border-style: none;
-	left: 150px;
+	left: 120px;
 	top : 0px;
 	position: absolute;
+	height: 300px;
 }
 
 #shots{
-	padding: 3px;
-	left: 910px;
-	top : 10px;
-	position: absolute;
+	text-align: left;
+	padding: 0px;
+	width: 1000px;
+	height: 200px;
 }
 
 #description {
@@ -95,7 +97,6 @@ img {
 </style>
 </head>
 <body>
- 
 <div id="adds">
 	<script type="text/javascript"><!--
 	google_ad_client = "pub-1471236111248665";
@@ -112,43 +113,38 @@ img {
 
 <div id="main">
 	<div id="title">	
-		<span >Paulo Sobreira F1 Mane
+		<span >F1-Mane
 			<h1 id="description">MANager & Engineer</h1>
 		</span>
-		<a id="link" style="position: absolute; left: 343px; top: 5%;font-size: 16px;"
-			href="http://twitter.com/PauloSobreira" style="text-align: right;"
-			target="_BLANK">Paulo Sobreira no Twitter</a>
+		<a id="link" style="position: absolute; left: 150px; top: 10px;font-size: 16px;"
+			href="http://twitter.com/f1mane" style="text-align: right;"
+			target="_BLANK">Twitter</a>
+		<a id="link" style="position: absolute; left: 250px; top: 10px;font-size: 16px;"
+			href="http://sowbreira.appspot.com/" style="text-align: right;"
+			target="_BLANK">Site Autor</a>
+		<a id="link" style="position: absolute; left: 370px; top: 10px;font-size: 16px;"
+			href="mailto:sowbreira@gmail.com" style="text-align: right;"
+			target="_BLANK">Sugestões, Bugs ,Colaborar ...</a>		
+		<a id="link" style="position: absolute; left: 220px; top: 50px;font-size: 16px;"
+			href="http://www.java.com/" style="text-align: right;"
+			target="_BLANK">Instale o Java</a>
+		<a id="link" style="position: absolute; left: 370px; top: 50px;font-size: 16px;"
+			href="http://sowbreira.appspot.com/f1mane/F1Mane.html" style="text-align: right;"
+			target="_BLANK">Versao 1 Jogador</a>	
+		<br>					
 	</div>
-	<div>
-		<br>
-		<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="800px" height="470px"> 
+	<div style="text-align: left;">
+		<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="800px" height="380px"> 
 		</applet>
 	</div>
-	<div>
-		<a	href="http://sowbreira.appspot.com/">Viste http://sowbreira.appspot.com/</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="http://sowbreira.appspot.com/f1mane/F1Mane.html">
-			Vers&atilde;o do Jogo modo 1 jogador 
-		</a>
-		<br>
-		Se nao aparecer nada
-		<a href="http://www.java.com/pt_BR/">
-			 CLIQUE AQUI  
-		</a>
-		e instale a versao mais nova do Java.
-		<br>
-		<a href="mailto:sowbreira@gmail.com">
-			Duvidas, Criticas, Sugestões, Bugs ,Colaborar ...
-		</a> 
+	<div id="shots" >
+		<a href="fm1.jpg" target="_BLANK"> <img src="fm1.jpg" width="130" height="120" /></a>
+		<a href="fm2.jpg" target="_BLANK"> <img src="fm2.jpg" width="130" height="120" /></a>
+		<a href="fm3.jpg" target="_BLANK"> <img src="fm3.jpg" width="130" height="120" /></a>
+		<a href="fm4.jpg" target="_BLANK"> <img src="fm4.jpg" width="130" height="120" /></a>
+		<a href="fm5.jpg" target="_BLANK"> <img src="fm5.jpg" width="130" height="120" /></a>
+		<a href="fm6.jpg" target="_BLANK"> <img src="fm6.jpg" width="130" height="120" /></a>
 	</div>
-</div>
-<div id="shots" style="text-align: center;	padding: 3px; padding-left: 5px; padding-right: 5px;">
-	<a href="fm1.jpg" target="_BLANK"> <img src="fm1.jpg" width="160" height="120" />
-	<a href="fm2.jpg" target="_BLANK"> <img src="fm2.jpg" width="160" height="120" /><br>
-	<a href="fm3.jpg" target="_BLANK"> <img src="fm3.jpg" width="160" height="120" />
-	<a href="fm4.jpg" target="_BLANK"> <img src="fm4.jpg" width="160" height="120" /><br>
-	<a href="fm5.jpg" target="_BLANK"> <img src="fm5.jpg" width="160" height="120" />
-	<a href="fm6.jpg" target="_BLANK"> <img src="fm6.jpg" width="160" height="120" /><br>
 </div>
 </body>
 </html>
