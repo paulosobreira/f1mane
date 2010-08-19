@@ -82,6 +82,8 @@ img {
 	height: 300px;
 	background-image: url("logo.jpg");
 	background-repeat: no-repeat;
+	background-position: 20px 0px; 
+	
 	
 }
 
