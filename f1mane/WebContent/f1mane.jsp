@@ -80,6 +80,9 @@ img {
 	top : 0px;
 	position: absolute;
 	height: 300px;
+	background-image: url("logo.jpg");
+	background-repeat: no-repeat;
+	
 }
 
 #shots{
