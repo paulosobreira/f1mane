@@ -12,22 +12,25 @@
  - Qualquer sugestão : sowbreira@gmail.com.
 
 Histórico de versões:
+3.2
+  - Editor de objetos de Pista
+  - Novos Efeitos de chuva e marcas de pneu
 3.0
-  - Novo modo grafico com zoom(Scroll do Mouse) e vetorização das pistas
-  - 3 traçados disponiveis podendo ser escolidos automatico manual (Auto Pos)
-  - F8 desliga e liga o auto pos 
+  - Novo modo gráfico com zoom(Scroll do Mouse) e vetorização das pistas
+  - 3 traçados disponíveis podendo ser escolhidos automático e manual (Auto Pos)
+  - F8 desliga e liga a seleção de traçado automatica
   - Setas ou mouse mudam o traçado.
 2.2
   - Seleção de 1 ou mais pilotos(Para poder controlar uma equipe ou mais).
   - Modo campeonato (Sigleplayer).
 2.0
-  - Modo de progamação de paradas (Auto Box).
+  - Modo de programação de paradas (Auto Box).
   - Correções nos consumo de motor e pneus.
   - Correções nos ratios do modo carreira.
   - Novos circuitos e temporadas todos por Necross.
 1.9
   - Temporadas 1968,1972,1974,1987,1986 ,1988,1990 e 2003 por Necross.
-  - Implementado nivel de stress do piloto.
+  - Implementado nível de stress do piloto.
   - Alterado comportamento do safaty car e acidades.
   - Realinhamento de itens na tela.
 1.8
@@ -62,7 +65,7 @@ Histórico de versões:
   - Estimativa de velocidade em km/h.
  1.4
   - Melhoria no layout do editor.
-  - Possibilidade de adicionar varios tipos de nos na lista de nos do box 
+  - Possibilidade de adicionar vários tipos de nos na lista de nos do box 
 (Evite próximo do no de parada.).
   - Qualificação Automática leva em conta setup inicial.
   - Para dificuldades de ultrapassagem abaixo de 400 carros muito rápidos não
@@ -94,44 +97,52 @@ trava pneu.
   
 Controles:
 
-F1 - Giro Baixo Modo Economia de Motor e Combustivel
-F2 - Giro Normal Modo Normal de Motor e Combustivel
-F3 - Giro Alto Modo Extremo de Motor e Combustivel
-F4 - Aterna Modo de Pilotagem (Normal/Agressivo)
-F5 - Piloto em Modo Calteloso.
+F1 - Giro Baixo Modo Economia de Motor e Combustível
+F2 - Giro Normal Modo Normal de Motor e Combustível
+F3 - Giro Alto Modo Extremo de Motor e Combustível
+F4 - Alterna Modo de Pilotagem (Normal/Agressivo)
+F5 - Piloto em Modo Cauteloso.
 F6 - Piloto Normal.
 F7 - Piloto em Modo Agressivo.
 F9 - Alterna entre os Pilotos selecionados
-F11 - Programação de Box Automatico.
+F11 - Programação de Box Automático.
 F12 - Alterna Modo Box.
-Esc - Remove Imforações extras da tela.
+Esc - Remove Informações extras da tela.
  
-  
+Editor de objetos de Pista:
+Opção Vetorizar Pista no menu editor.
+Ao se criar objetos na pista um clique duplo ativa o menu de edição de objetos.
+(A tela do editor não deve esta maximizada).
+Controle sobre os objetos ao se clicar no botão "Mover/Parar".
+Setas : mover pela tela.
+Ctrl +Setas :  move objeto selecionado pela tela.
+Shift + Page up e down : altera a  largura do objeto .
+Ctrl + Page up e down : altera a  altura do objeto.
+Page up e down : Gira objeto.
+Ctrl + C :  cria uma copia do objeto.
+
+
 Dicas para Jogar Sem Utilizar Internet e Navegador:
  - Para quem não conseguiu rodar o jogo como aplicativo local
 (descompactando o .jar) pode tentar colocar isso no inicio do rodar.bat
     set CLASS_PATH = ""
- - Pra cricar uma pista precisa-se ter uma imagem(jpg) de um circuito na 
+Pra criar uma pista precisa-se ter uma imagem(jpg) de um circuito na 
 pasta bin\sowbreira\f1mane\recursos então deve-se ir no menu "Criar Arquivo
-Circuito" e escolher esta imagem. O proximo passo é adicionar o nos
-de largada, reta , curva alta ,box etc e fazer um test drive(inclusive 
-de box) e depois salvar a pista (tem q ser um arquivo .f1mane) na 
-pasta bin\sowbreira\f1mane\recursos atualizar o 
-bin\sowbreira\f1mane\recursos\carros.properties e iniciar o 
-jogo(rodar.bat) a psita nova deve esta em circuitos.		
+Circuito" e escolher esta imagem. 
+-Adicionar os nós de largada, reta , curva alta ,box etc 
+e fazer um test drive(inclusive de box) e depois salvar a pista 
+(tem que ser um arquivo .f1mane) na pasta bin\sowbreira\f1mane\recursos 
+-Vetorizar a pista com o multiplicador de tamanho de pista e largura de pista,
+selecionar cor e transparência de fundo e adicionar os objetos.
+-Atualizar o bin\sowbreira\f1mane\recursos\pistas.properties 
+-Iniciar o jogo(rodar.bat) a pista nova deve esta em circuitos.		
 
 Versão online, Montar um Servidor (paddock.war):
- - Existe uma versão jogavel de F1-Mane Online mas não consegui 
-hospedar em nenhum lugar com boa velocidade... tentei na casa de uns 
-amigos mas não posso dilvugar aqui pq eles não se comprometeram de 
-manter o server online....Aqui vai o link pra quem quiser fazer seu servidor 
-caseiro ou hospedar em algum lugar(vou procurar algum servidor pra hospedar
- depois.)
-http://sowbreira.googlepages.com/paddock.war 
- - Para servir pela Net é presciso ter ip valido (também funciona sem, mas
+ - Existe uma versão de F1-Mane Online 
+ - Para servir pela Net é preciso ter ip valido (também funciona sem, mas
   só em LAN)
-e tb o java mais novo mais o servidor de aplicação Tomcat:
-http://tomcat.apache.org/download-55.cgi que depois de baixado e 
-instalado deve-se colocar o arquivo paddock.war dentro da pasta:
+ - O java mais novo mais o servidor de aplicação Tomcat:
+   http://tomcat.apache.org que depois de baixado e instalado 
+deve-se colocar o arquivo paddock.war dentro da pasta:
 (unidade):\(dir do tomcat)\webapps então acessar o jogo pelo caminho:
-http://(seu ip):8080/paddock/		
+http://(seu ip):8080/f1mane/		
