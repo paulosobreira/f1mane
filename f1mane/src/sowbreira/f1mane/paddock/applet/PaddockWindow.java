@@ -1,6 +1,7 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -119,7 +120,7 @@ public class PaddockWindow {
 			return Lang.msg("campeonato");
 		}
 	};
-	
+
 	private JButton verCampeonato = new JButton("verCampeonato") {
 
 		public String getText() {
@@ -127,8 +128,7 @@ public class PaddockWindow {
 			return Lang.msg("verCampeonato");
 		}
 	};
-	
-	
+
 	private JComboBox comboTemporada = new JComboBox(new String[] { "2010",
 			"2009", "2008", "2007", "2003", "1990", "1993", "1988", "1987",
 			"1986", "1974", "1972", "1968", "super" });
@@ -276,13 +276,14 @@ public class PaddockWindow {
 	private void gerarLayout() {
 		JPanel cPanel = new JPanel(new BorderLayout());
 		JPanel sPanel = new JPanel(new BorderLayout());
-
 		mainPanel.add(cPanel, BorderLayout.CENTER);
 		mainPanel.add(sPanel, BorderLayout.SOUTH);
 		JPanel chatPanel = new JPanel();
+		chatPanel.setBackground(Color.WHITE);
 		chatPanel.setBorder(new TitledBorder(
 				"F1-Engineer Web Paddock Chat Room v 1.4"));
 		JPanel usersPanel = new JPanel();
+		usersPanel.setBackground(Color.WHITE);
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
 			public String getTitle() {
 				return Lang.msg("186");
@@ -291,6 +292,7 @@ public class PaddockWindow {
 		cPanel.add(chatPanel, BorderLayout.CENTER);
 		cPanel.add(usersPanel, BorderLayout.EAST);
 		JPanel jogsPanel = new JPanel();
+		jogsPanel.setBackground(Color.WHITE);
 		jogsPanel.setBorder((new TitledBorder("Lista de Jogos") {
 			public String getTitle() {
 				return Lang.msg("187");
@@ -298,17 +300,19 @@ public class PaddockWindow {
 		}));
 		sPanel.add(jogsPanel, BorderLayout.EAST);
 		JPanel inputPanel = new JPanel();
+		inputPanel.setBackground(Color.WHITE);
 		sPanel.add(inputPanel, BorderLayout.CENTER);
 		/**
 		 * adicionar componentes.
 		 */
 		JScrollPane jogsPane = new JScrollPane(listaClientes);
-		jogsPane.setPreferredSize(new Dimension(150, 400));
+		jogsPane.setPreferredSize(new Dimension(150, 200));
 		usersPanel.add(jogsPane);
 		JScrollPane jogsCriados = new JScrollPane(listaJogosCriados);
 		jogsCriados.setPreferredSize(new Dimension(150, 100));
 		jogsPanel.add(jogsCriados);
 		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setBackground(Color.WHITE);
 		buttonsPanel.setLayout(new GridLayout(3, 4));
 		buttonsPanel.add(enviarTexto);
 		buttonsPanel.add(entrarJogo);
@@ -338,6 +342,7 @@ public class PaddockWindow {
 		buttonsPanel.add(conta);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
+		panelTextoEnviar.setBackground(Color.WHITE);
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
 			public String getTitle() {
 				return Lang.msg("188");

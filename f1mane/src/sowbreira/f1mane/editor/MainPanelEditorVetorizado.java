@@ -759,6 +759,11 @@ public class MainPanelEditorVetorizado extends JPanel {
 					.getCenterY());
 			g2d.setColor(Color.MAGENTA);
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
+			g2d.setColor(Color.ORANGE);
+//			g2d.fillOval((int) rectangle.getCenterX(), (int) rectangle
+//					.getCenterY(), 10, 10);
+
+			g2d.fillOval((int) cima.x, (int) cima.y, 10, 10);
 
 		}
 
