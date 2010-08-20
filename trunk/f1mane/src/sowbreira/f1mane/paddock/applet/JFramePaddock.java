@@ -3,6 +3,7 @@
  */
 package sowbreira.f1mane.paddock.applet;
 
+import java.awt.Color;
 import java.awt.Panel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -29,6 +30,7 @@ public class JFramePaddock extends JFrame {
 		try {
 			url = new URL(JOptionPane.showInputDialog(Lang.msg("172")));
 			Panel panel = new Panel();
+			panel.setBackground(Color.WHITE);
 			getContentPane().add(panel);
 			controlePaddockApplet = new ControlePaddockCliente(url, panel);
 			controlePaddockApplet.logar();
