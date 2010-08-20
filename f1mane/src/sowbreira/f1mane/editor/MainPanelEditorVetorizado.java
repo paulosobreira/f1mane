@@ -586,6 +586,21 @@ public class MainPanelEditorVetorizado extends JPanel {
 		desenhaPreObjetoLivre(g2d);
 		desenhaObjetosCima(g2d);
 		desenhaInfo(g2d);
+		if (formularioListaObjetos != null) {
+			if (formularioListaObjetos.getList().getSelectedIndex() != -1) {
+				ObjetoPista objetoPista = (ObjetoPista) formularioListaObjetos
+						.getDefaultListModelOP().get(
+								formularioListaObjetos.getList()
+										.getSelectedIndex());
+				g2d.setColor(PainelCircuito.lightWhiteRain);
+				Point loc = objetoPista.obterArea().getLocation();
+				loc = new Point((int) (loc.x * zoom), (int) (loc.y * zoom));
+				g2d.fillRect(loc.x, loc.y, 22, 12);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString(objetoPista.getNome().split(" ")[1], loc.x,
+						loc.y + 10);
+			}
+		}
 	}
 
 	private void desenhaObjetosBaixo(Graphics2D g2d) {
@@ -695,23 +710,19 @@ public class MainPanelEditorVetorizado extends JPanel {
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point cimaBoxC1 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA) * 3.5
-							* zoom), new Point(Util
+					.inte((Carro.ALTURA) * 3.5 * zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point baixoBoxC1 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte((Carro.ALTURA) * 3.5
-							* zoom), new Point(Util
+					.inte((Carro.ALTURA) * 3.2 * zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point cimaBoxC2 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA) * 3.5
-							* zoom), new Point(Util
+					.inte((Carro.ALTURA) * 3.5 * zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point baixoBoxC2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte((Carro.ALTURA) * 3.5
-							* zoom), new Point(Util
+					.inte((Carro.ALTURA) * 3.2 * zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 

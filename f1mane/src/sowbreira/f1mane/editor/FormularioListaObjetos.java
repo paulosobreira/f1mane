@@ -14,6 +14,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.ObjetoPista;
@@ -22,12 +24,37 @@ public class FormularioListaObjetos {
 
 	private MainPanelEditorVetorizado editorVetorizado;
 	private DefaultListModel defaultListModelOP;
+	private JList list;
 	private JFrame frame = new JFrame();
+
+	public DefaultListModel getDefaultListModelOP() {
+		return defaultListModelOP;
+	}
+
+	public void setDefaultListModelOP(DefaultListModel defaultListModelOP) {
+		this.defaultListModelOP = defaultListModelOP;
+	}
+
+	public JList getList() {
+		return list;
+	}
+
+	public void setList(JList list) {
+		this.list = list;
+	}
 
 	public FormularioListaObjetos(MainPanelEditorVetorizado editorVetorizado) {
 		this.editorVetorizado = editorVetorizado;
 		defaultListModelOP = new DefaultListModel();
-		final JList list = new JList(defaultListModelOP);
+		list = new JList(defaultListModelOP);
+		list.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				FormularioListaObjetos.this.editorVetorizado.repaint();
+
+			}
+		});
 		JPanel main = new JPanel(new BorderLayout());
 		JPanel botoes = new JPanel(new GridLayout(3, 1));
 		main.add(new JScrollPane(list), BorderLayout.CENTER);
@@ -51,12 +78,41 @@ public class FormularioListaObjetos {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int sel = list.getSelectedIndex();
-				if (sel == -1 || sel == defaultListModelOP.getSize() - 1)
+				if (sel == -1 || sel >= defaultListModelOP.getSize() - 1)
 					return;
 				ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP
 						.remove(sel);
 				defaultListModelOP.add(sel + 1, objetoPista);
 				list.setSelectedIndex(sel + 1);
+				atualizarCircuito();
+			}
+		});
+		JButton primeiro = new JButton("Primeiro");
+		primeiro.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int sel = list.getSelectedIndex();
+				if (sel == -1 || sel == 0)
+					return;
+				ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP
+						.remove(sel);
+				defaultListModelOP.add(0, objetoPista);
+				list.setSelectedIndex(0);
+				atualizarCircuito();
+			}
+		});
+		JButton ultimo = new JButton("Ultimo");
+		ultimo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int sel = list.getSelectedIndex();
+				if (sel == -1 || sel >= defaultListModelOP.getSize() - 1)
+					return;
+				ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP
+						.remove(sel);
+				defaultListModelOP.add(defaultListModelOP.getSize(),
+						objetoPista);
+				list.setSelectedIndex(defaultListModelOP.getSize() - 1);
 				atualizarCircuito();
 			}
 		});
@@ -74,6 +130,8 @@ public class FormularioListaObjetos {
 
 		botoes.add(cima);
 		botoes.add(baixo);
+		botoes.add(primeiro);
+		botoes.add(ultimo);
 		botoes.add(remover);
 		frame.add(main);
 	}
