@@ -683,27 +683,35 @@ public class MainPanelEditorVetorizado extends JPanel {
 					(Carro.ALTURA));
 
 			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte(Carro.ALTURA * 1.2 * zoom), new Point(Util
+					.inte(Carro.ALTURA
+							* getCircuito().getMultiplicadorLarguraPista()
+							* zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte(Carro.ALTURA * 1.2 * zoom), new Point(Util
+					.inte(Carro.ALTURA
+							* getCircuito().getMultiplicadorLarguraPista()
+							* zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point cimaBoxC1 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA) * 4 * zoom), new Point(Util
+					.inte((Carro.ALTURA) * 3.5
+							* zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point baixoBoxC1 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte((Carro.ALTURA) * 3 * zoom), new Point(Util
+					.inte((Carro.ALTURA) * 3.5
+							* zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point cimaBoxC2 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA) * 4 * zoom), new Point(Util
+					.inte((Carro.ALTURA) * 3.5
+							* zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 			Point baixoBoxC2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte((Carro.ALTURA) * 3 * zoom), new Point(Util
+					.inte((Carro.ALTURA) * 3.5
+							* zoom), new Point(Util
 					.inte(rectangle.getCenterX()), Util.inte(rectangle
 					.getCenterY())));
 
@@ -759,11 +767,14 @@ public class MainPanelEditorVetorizado extends JPanel {
 					.getCenterY());
 			g2d.setColor(Color.MAGENTA);
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
+			// g2d.fillOval((int) rectangle.getCenterX(), (int) rectangle
+			// .getCenterY(), 10, 10);
 			g2d.setColor(Color.ORANGE);
-//			g2d.fillOval((int) rectangle.getCenterX(), (int) rectangle
-//					.getCenterY(), 10, 10);
 
-			g2d.fillOval((int) cima.x, (int) cima.y, 10, 10);
+			g2d.fillOval((int) cimaBoxC1.x, (int) cimaBoxC1.y, 10, 10);
+			g2d.setColor(Color.RED);
+
+			g2d.fillOval((int) baixoBoxC1.x, (int) baixoBoxC1.y, 10, 10);
 
 		}
 

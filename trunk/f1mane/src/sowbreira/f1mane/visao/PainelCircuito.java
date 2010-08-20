@@ -861,33 +861,21 @@ public class PainelCircuito extends JPanel {
 					new Point(Util.inte(rectangle.getCenterX()), Util
 							.inte(rectangle.getCenterY())));
 			Point cimaBoxC1 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA)
-							* 4
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista() * zoom),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
+					.inte((Carro.ALTURA) * 3.5 * zoom), new Point(Util
+					.inte(rectangle.getCenterX()), Util.inte(rectangle
+					.getCenterY())));
 			Point baixoBoxC1 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte((Carro.ALTURA)
-							* 3
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista() * zoom),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
+					.inte((Carro.ALTURA) * 3.5 * zoom), new Point(Util
+					.inte(rectangle.getCenterX()), Util.inte(rectangle
+					.getCenterY())));
 			Point cimaBoxC2 = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte((Carro.ALTURA)
-							* 4
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista() * zoom),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
+					.inte((Carro.ALTURA) * 3.5 * zoom), new Point(Util
+					.inte(rectangle.getCenterX()), Util.inte(rectangle
+					.getCenterY())));
 			Point baixoBoxC2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte((Carro.ALTURA)
-							* 3
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista() * zoom),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
+					.inte((Carro.ALTURA) * 3.5 * zoom), new Point(Util
+					.inte(rectangle.getCenterX()), Util.inte(rectangle
+					.getCenterY())));
 
 			RoundRectangle2D retC1 = null;
 			RoundRectangle2D retC2 = null;
@@ -941,7 +929,6 @@ public class PainelCircuito extends JPanel {
 					.getCenterY());
 			boxCor2[i] = generalPath
 					.createTransformedShape(affineTransformRect);
-
 		}
 
 	}
