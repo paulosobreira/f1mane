@@ -56,6 +56,10 @@ img {
 	font-size: 24px;
 	font-weight: bold;
 	line-height: 24px;
+	height: 100px;
+	background-image: url("logo.png");
+	background-repeat: no-repeat;
+	background-position: 0px 0px; 	
 }
 
 #adds {
@@ -79,12 +83,6 @@ img {
 	left: 120px;
 	top : 0px;
 	position: absolute;
-	height: 300px;
-	background-image: url("logo.jpg");
-	background-repeat: no-repeat;
-	background-position: 20px 0px; 
-	
-	
 }
 
 #shots{
