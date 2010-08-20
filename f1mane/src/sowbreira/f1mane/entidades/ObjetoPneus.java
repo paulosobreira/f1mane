@@ -21,7 +21,13 @@ public class ObjetoPneus extends ObjetoPista {
 				.getScaleInstance(1, 1);
 		GeneralPath generalPath = new GeneralPath();
 		for (int i = 0; i < largura; i++) {
+			if (i > 100) {
+				continue;
+			}
 			for (int j = 0; j < altura; j++) {
+				if (j > 50) {
+					continue;
+				}
 				Ellipse2D ellipse2d = new Ellipse2D.Double(
 						(getPosicaoQuina().x + (10 * i)),
 						(getPosicaoQuina().y + (10 * j)), 10, 10);
@@ -41,7 +47,13 @@ public class ObjetoPneus extends ObjetoPista {
 		generalPath = new GeneralPath();
 
 		for (int i = 0; i < largura; i++) {
+			if (i > 100) {
+				continue;
+			}
 			for (int j = 0; j < altura; j++) {
+				if (j > 50) {
+					continue;
+				}
 				Ellipse2D ellipse2d = new Ellipse2D.Double((getPosicaoQuina().x
 						+ (10 * i) + 2), (getPosicaoQuina().y + (10 * j) + 2),
 						6, 6);
