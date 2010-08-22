@@ -134,6 +134,8 @@ public class GerenciadorVisual {
 	protected JCheckBox semTrocaPneu;
 	protected JCheckBox semReabastacimento;
 	private JPanel panelControlePos;
+	private ImageIcon iconLua = new ImageIcon(CarregadorRecursos
+			.carregarImagem("clima/lua.gif"));
 	private ImageIcon iconSol = new ImageIcon(CarregadorRecursos
 			.carregarImagem("clima/sol.gif"));
 	private ImageIcon iconNublado = new ImageIcon(CarregadorRecursos
@@ -530,8 +532,13 @@ public class GerenciadorVisual {
 	}
 
 	private void atualizarImgClima(Clima clima) {
-		if (Clima.SOL.equals(clima.getClima()))
+		if (Clima.SOL.equals(clima.getClima())) {
 			imgClima.setIcon(iconSol);
+			if (controleJogo.getCircuito() != null
+					&& controleJogo.getCircuito().isNoite()) {
+				imgClima.setIcon(iconLua);
+			}
+		}
 		if (Clima.CHUVA.equals(clima.getClima()))
 			imgClima.setIcon(iconChuva);
 		if (Clima.NUBLADO.equals(clima.getClima()))
