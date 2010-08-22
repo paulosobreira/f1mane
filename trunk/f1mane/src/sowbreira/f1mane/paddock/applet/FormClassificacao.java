@@ -2,10 +2,13 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -32,14 +37,21 @@ public class FormClassificacao extends JPanel {
 	private DecimalFormat decimalFormatGeral = new DecimalFormat("0000");
 	private String nomeJogador;
 
+	private JTable carrosTable;
+	private JTable piltosTable;
+	private List listaCarros;
+	private List listaPilotos;
+
 	/**
 	 * @param listaDadosJogador
 	 * @param cliente
 	 */
 	public FormClassificacao(List listaDadosJogador,
-			final ControlePaddockCliente controlePaddockCliente) {
+			final ControlePaddockCliente controlePaddockCliente,
+			List listaCarros, List listaPilotos) {
 		super();
 		this.listaDadosJogador = listaDadosJogador;
+		JPanel classificacao = new JPanel();
 		TableModel model = new TableModel();
 		posicoesTable = new JTable(model);
 		posicoesTable.setAutoCreateRowSorter(true);
@@ -64,10 +76,10 @@ public class FormClassificacao extends JPanel {
 
 		});
 		// posicoesTable.getColumn("Piloto").setMinWidth(100);
-		setLayout(new BorderLayout());
-		add(new JScrollPane(posicoesTable), BorderLayout.CENTER);
+		classificacao.setLayout(new BorderLayout());
+		classificacao.add(new JScrollPane(posicoesTable), BorderLayout.CENTER);
 		posicoesTable
-				.setPreferredScrollableViewportSize(new Dimension(600, 355));
+				.setPreferredScrollableViewportSize(new Dimension(600, 155));
 		JLabel label = new JLabel(
 				"Facil = Pts/2 , Normal = Pts Normal , Dificil = Pts * 2.") {
 			@Override
@@ -75,7 +87,47 @@ public class FormClassificacao extends JPanel {
 				return Lang.msg("131");
 			}
 		};
-		add(label, BorderLayout.SOUTH);
+		classificacao.add(label, BorderLayout.SOUTH);
+
+		Collections.sort(listaCarros, new Comparator() {
+
+			public int compare(Object arg0, Object arg1) {
+				DadosConstrutoresCarros d0 = (DadosConstrutoresCarros) arg0;
+				DadosConstrutoresCarros d1 = (DadosConstrutoresCarros) arg1;
+				return new Long(d1.getPontos()).compareTo(new Long(d0
+						.getPontos()));
+			}
+
+		});
+		Collections.sort(listaPilotos, new Comparator() {
+
+			public int compare(Object arg0, Object arg1) {
+				DadosConstrutoresPilotos d0 = (DadosConstrutoresPilotos) arg0;
+				DadosConstrutoresPilotos d1 = (DadosConstrutoresPilotos) arg1;
+				return new Long(d1.getPontos()).compareTo(new Long(d0
+						.getPontos()));
+			}
+
+		});
+		this.listaCarros = listaCarros;
+		this.listaPilotos = listaPilotos;
+
+		TableModelCarros tableModelCarros = new TableModelCarros();
+		carrosTable = new JTable(tableModelCarros);
+		carrosTable.setAutoCreateRowSorter(true);
+		carrosTable.setPreferredScrollableViewportSize(new Dimension(300, 155));
+		TableModelPilotos tableModelPilotos = new TableModelPilotos();
+		piltosTable = new JTable(tableModelPilotos);
+		piltosTable.setAutoCreateRowSorter(true);
+		piltosTable.setPreferredScrollableViewportSize(new Dimension(300, 155));
+		JPanel construtores = new JPanel();
+		construtores.setLayout(new GridLayout(1, 2));
+		construtores.add(new JScrollPane(carrosTable));
+		construtores.add(new JScrollPane(piltosTable));
+		setLayout(new BorderLayout());
+		add(classificacao, BorderLayout.CENTER);
+		add(construtores, BorderLayout.SOUTH);
+
 	}
 
 	private void gerarListagemCorrida(List corridas) {
@@ -227,6 +279,78 @@ public class FormClassificacao extends JPanel {
 			case 4:
 				return Lang.msg("166");
 
+			default:
+				return "";
+			}
+		}
+	}
+
+	private class TableModelCarros extends AbstractTableModel {
+		public int getColumnCount() {
+			return 2;
+		}
+
+		public int getRowCount() {
+			return listaCarros.size();
+		}
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			DadosConstrutoresCarros dadosConstrutoresCarros = (DadosConstrutoresCarros) listaCarros
+					.get(rowIndex);
+
+			switch (columnIndex) {
+			case 0:
+				return dadosConstrutoresCarros.getNome();
+			case 1:
+				return decimalFormatGeral.format(dadosConstrutoresCarros
+						.getPontos());
+			default:
+				return "";
+			}
+		}
+
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return Lang.msg("154");
+			case 1:
+				return Lang.msg("161");
+			default:
+				return "";
+			}
+		}
+	}
+
+	private class TableModelPilotos extends AbstractTableModel {
+		public int getColumnCount() {
+			return 2;
+		}
+
+		public int getRowCount() {
+			return listaPilotos.size();
+		}
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			DadosConstrutoresPilotos dadosConstrutoresPilotos = (DadosConstrutoresPilotos) listaPilotos
+					.get(rowIndex);
+
+			switch (columnIndex) {
+			case 0:
+				return dadosConstrutoresPilotos.getNome();
+			case 1:
+				return decimalFormatGeral.format(dadosConstrutoresPilotos
+						.getPontos());
+			default:
+				return "";
+			}
+		}
+
+		public String getColumnName(int column) {
+			switch (column) {
+			case 0:
+				return Lang.msg("153");
+			case 1:
+				return Lang.msg("161");
 			default:
 				return "";
 			}

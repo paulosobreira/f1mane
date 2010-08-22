@@ -20,17 +20,19 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import javax.swing.JFileChooser;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.F1ManeDados;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
 
@@ -169,36 +171,35 @@ public class ControlePersistencia {
 	}
 
 	public void migrar() throws Exception {
-		// JFileChooser fileChooser = new JFileChooser(CarregadorRecursos.class
-		// .getResource("CarregadorRecursos.class").getFile());
-		// fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		//
-		// int result = fileChooser.showOpenDialog(null);
-		//
-		// if (result == JFileChooser.CANCEL_OPTION) {
-		// return;
-		// }
-		//
-		// ZipInputStream zin = new ZipInputStream(new
-		// FileInputStream(fileChooser
-		// .getSelectedFile()));
-		// zin.getNextEntry();
-		// ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
-		// int byt = zin.read();
-		//
-		// while (-1 != byt) {
-		// arrayDinamico.write(byt);
-		// byt = zin.read();
-		// }
-		//
-		// arrayDinamico.flush();
-		//
-		// ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico
-		// .toByteArray());
-		// XMLDecoder decoder = new XMLDecoder(bin);
-		// PaddockDadosSrv paddockDadosSrv = (PaddockDadosSrv) decoder
-		// .readObject();
-		PaddockDadosSrv paddockDadosSrv = lerDados();
+		JFileChooser fileChooser = new JFileChooser(CarregadorRecursos.class
+				.getResource("CarregadorRecursos.class").getFile());
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		int result = fileChooser.showOpenDialog(null);
+
+		if (result == JFileChooser.CANCEL_OPTION) {
+			return;
+		}
+
+		ZipInputStream zin = new ZipInputStream(new FileInputStream(fileChooser
+				.getSelectedFile()));
+		zin.getNextEntry();
+		ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
+		int byt = zin.read();
+
+		while (-1 != byt) {
+			arrayDinamico.write(byt);
+			byt = zin.read();
+		}
+
+		arrayDinamico.flush();
+
+		ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico
+				.toByteArray());
+		XMLDecoder decoder = new XMLDecoder(bin);
+		PaddockDadosSrv paddockDadosSrv = (PaddockDadosSrv) decoder
+				.readObject();
+		// PaddockDadosSrv paddockDadosSrv = lerDados();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction beginTransaction = session.beginTransaction();
 		Map jogadores = paddockDadosSrv.getJogadoresMap();
@@ -236,7 +237,9 @@ public class ControlePersistencia {
 	}
 
 	public static void main(String[] args) throws Exception {
-		// migrar();
+		ControlePersistencia controlePersistencia = new ControlePersistencia(
+				null);
+		controlePersistencia.migrar();
 
 	}
 

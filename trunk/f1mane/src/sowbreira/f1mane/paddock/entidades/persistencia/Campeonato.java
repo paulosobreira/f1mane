@@ -18,6 +18,9 @@ public class Campeonato extends F1ManeDados {
 	private String temporada;
 	private String nivel;
 	private Integer qtdeVoltas;
+	private boolean semReabasteciemnto;
+	private boolean semTrocaPneus;
+
 	@JoinColumn(nullable = false)
 	private JogadorDadosSrv jogadorDadosSrv;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonato")
@@ -25,6 +28,30 @@ public class Campeonato extends F1ManeDados {
 
 	public String getTemporada() {
 		return temporada;
+	}
+
+	public JogadorDadosSrv getJogadorDadosSrv() {
+		return jogadorDadosSrv;
+	}
+
+	public void setJogadorDadosSrv(JogadorDadosSrv jogadorDadosSrv) {
+		this.jogadorDadosSrv = jogadorDadosSrv;
+	}
+
+	public boolean isSemReabasteciemnto() {
+		return semReabasteciemnto;
+	}
+
+	public void setSemReabasteciemnto(boolean semReabasteciemnto) {
+		this.semReabasteciemnto = semReabasteciemnto;
+	}
+
+	public boolean isSemTrocaPneus() {
+		return semTrocaPneus;
+	}
+
+	public void setSemTrocaPneus(boolean semTrocaPneus) {
+		this.semTrocaPneus = semTrocaPneus;
 	}
 
 	public void setTemporada(String temporada) {

@@ -1,6 +1,7 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -34,7 +35,7 @@ public class PainelCampeonato extends JPanel {
 	private Campeonato campeonato;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"EEE, d MMM yyyy HH:mm:ss");
-	private AppletPaddock appletPaddock;
+	private Component compPai;
 
 	private ControleCampeonato controleCampeonato;
 
@@ -47,13 +48,13 @@ public class PainelCampeonato extends JPanel {
 	private AbstractTableModel contrutoresTableModel;
 
 	public PainelCampeonato(ControleCampeonato controleCampeonato,
-			AppletPaddock appletPaddock) {
+			Component compPai) {
 		super();
 		this.controleCampeonato = controleCampeonato;
 		// this.campeonato = controleCampeonato.getCampeonato();
 		controleCampeonato.geraListaPilotosPontos();
 		controleCampeonato.geraListaContrutoresPontos();
-		this.appletPaddock = appletPaddock;
+		this.compPai = compPai;
 		this.setLayout(new BorderLayout());
 
 		JPanel dadosCampeonato = gerarPanelDadosCampeonato();
@@ -83,17 +84,17 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		this.add(label, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(appletPaddock, this, Lang
+		int ret = JOptionPane.showConfirmDialog(compPai, this, Lang
 				.msg("286"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (ret == JOptionPane.YES_OPTION) {
 			try {
 				if (campeonato.getCircuitoVez() == null) {
-					JOptionPane.showMessageDialog(appletPaddock, Lang
+					JOptionPane.showMessageDialog(compPai, Lang
 							.msg("293"));
 				} else {
 					// ControleJogoLocal controleJogo = (ControleJogoLocal)
-					// appletPaddock
+					// compPai
 					// .getControleJogo();
 					// if (controleJogo != null) {
 					// controleJogo.matarTodasThreads();
