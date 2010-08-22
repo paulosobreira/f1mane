@@ -503,8 +503,23 @@ public class ControlePaddockCliente {
 			return;
 		}
 		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
+		List listaDadosJogador = srvPaddockPack.getListaDadosJogador();
+		clientPaddockPack = new ClientPaddockPack(Comandos.VER_CONTRUTORES,
+				sessaoCliente);
+		ret = enviarObjeto(clientPaddockPack);
+		if (ret == null) {
+			JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		srvPaddockPack = (SrvPaddockPack) ret;
+		List listaConstrutoresCarros = srvPaddockPack
+				.getListaConstrutoresCarros();
+		List listaConstrutoresPilotos = srvPaddockPack
+				.getListaConstrutoresPilotos();
 		FormClassificacao formClassificacao = new FormClassificacao(
-				srvPaddockPack.getListaDadosJogador(), this);
+				listaDadosJogador, this, listaConstrutoresCarros,
+				listaConstrutoresPilotos);
 		JOptionPane.showMessageDialog(panel, formClassificacao,
 				Lang.msg("065"), JOptionPane.PLAIN_MESSAGE);
 
@@ -691,4 +706,5 @@ public class ControlePaddockCliente {
 			Object ret = enviarObjeto(clientPaddockPack);
 		}
 	}
+
 }

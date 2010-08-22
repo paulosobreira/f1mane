@@ -270,7 +270,20 @@ public class PaddockWindow {
 						.msg("180"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
+		campeonato.addActionListener(new ActionListener() {
 
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ControleCampeonato controleCampeonato = new ControleCampeonato(
+							PaddockWindow.this.mainPanel);
+					controleCampeonato.criarCampeonato();
+				} catch (Exception ex) {
+					Logger.logarExept(ex);
+				}
+
+			}
+
+		});
 	}
 
 	private void gerarLayout() {
@@ -336,10 +349,9 @@ public class PaddockWindow {
 			}
 		});
 		conta.setEnabled(false);
-		campeonato.setEnabled(false);
 		buttonsPanel.add(carreira);
-		buttonsPanel.add(construtores);
-		buttonsPanel.add(conta);
+		buttonsPanel.add(campeonato);
+		buttonsPanel.add(verCampeonato);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
 		panelTextoEnviar.setBackground(Color.WHITE);
