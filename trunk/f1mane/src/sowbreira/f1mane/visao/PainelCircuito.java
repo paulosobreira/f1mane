@@ -66,6 +66,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color red = new Color(250, 0, 0, 150);
 	public final static Color gre = new Color(0, 255, 0, 150);
 	public final static Color yel = new Color(255, 255, 0, 150);
+	public final static Color bluNoite = new Color(255, 255, 255, 170);
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
 	public final static Color lightWhiteRain = new Color(255, 255, 255, 160);
@@ -1219,10 +1220,18 @@ public class PainelCircuito extends JPanel {
 		Piloto pilotoSelecionado = gerenciadorVisual
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
 		if (pilotoSelecionado != null) {
-			g2d.setColor(blu);
-			g2d.fillRoundRect(
-					limitesViewPort.x + (limitesViewPort.width - 110),
-					limitesViewPort.y + 2, 105, 240, 10, 10);
+			if (controleJogo.getCircuito() != null
+					&& controleJogo.getCircuito().isNoite()) {
+				g2d.setColor(bluNoite);
+				g2d.fillRoundRect(limitesViewPort.x
+						+ (limitesViewPort.width - 110), limitesViewPort.y + 2,
+						105, 280, 10, 10);
+			} else {
+				g2d.setColor(blu);
+				g2d.fillRoundRect(limitesViewPort.x
+						+ (limitesViewPort.width - 110), limitesViewPort.y + 2,
+						105, 240, 10, 10);
+			}
 			g2d.setColor(Color.black);
 			int ptoOri = limitesViewPort.x + limitesViewPort.width - 100;
 			int yBase = limitesViewPort.y;
@@ -2027,7 +2036,13 @@ public class PainelCircuito extends JPanel {
 			}
 		}
 		if (ps.isBox()) {
-
+			if (controleJogo.getCircuito() != null
+					&& controleJogo.getCircuito().isNoite()) {
+				g2d.setColor(bluNoite);
+				g2d.fillRoundRect(limitesViewPort.x
+						+3, limitesViewPort.y + 238,
+						70, 90, 10, 10);
+			}
 			g2d.drawImage(fuel.getImage(), limitesViewPort.x + 5,
 					limitesViewPort.y + 240, null);
 			g2d.setColor(Color.BLACK);

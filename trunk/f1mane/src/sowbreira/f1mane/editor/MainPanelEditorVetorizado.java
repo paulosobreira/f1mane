@@ -36,6 +36,7 @@ import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -445,8 +446,10 @@ public class MainPanelEditorVetorizado extends JPanel {
 		});
 		buttonsPanel.add(corFundo);
 		transparencia.setValue(255);
-		buttonsPanel.add(new JLabel("Transparencia Fundo"));
-		buttonsPanel.add(transparencia);
+		JPanel panelTransparencia = new JPanel(new GridLayout(1, 2));
+		panelTransparencia.add(new JLabel("Transparencia Fundo"));
+		panelTransparencia.add(transparencia);
+		buttonsPanel.add(panelTransparencia);
 		transparencia.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -464,6 +467,19 @@ public class MainPanelEditorVetorizado extends JPanel {
 						circuito.getCorFundo().getGreen(), circuito
 								.getCorFundo().getBlue(), transp);
 				circuito.setCorFundo(color);
+				repaint();
+			}
+		});
+
+		JPanel panelNoite = new JPanel(new GridLayout(1, 2));
+		panelNoite.add(new JLabel("Noite"));
+		final JCheckBox noite = new JCheckBox();
+		panelNoite.add(noite);
+		buttonsPanel.add(panelNoite);
+		noite.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				circuito.setNoite(noite.isSelected());
 				repaint();
 			}
 		});
@@ -525,6 +541,15 @@ public class MainPanelEditorVetorizado extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					srcFrame.requestFocus();
+					List<ObjetoPista> objetos = circuito.getObjetos();
+					for (Iterator iterator = objetos.iterator(); iterator
+							.hasNext();) {
+						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+						if (objetoPista instanceof ObjetoCirculo) {
+							objetoPista.setTransparencia(35);
+						}
+					}
+
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -585,7 +610,9 @@ public class MainPanelEditorVetorizado extends JPanel {
 		desenhaBoxes(g2d);
 		desenhaPreObjetoLivre(g2d);
 		desenhaObjetosCima(g2d);
+
 		desenhaInfo(g2d);
+
 		if (formularioListaObjetos != null) {
 			if (formularioListaObjetos.getList().getSelectedIndex() != -1) {
 				ObjetoPista objetoPista = (ObjetoPista) formularioListaObjetos

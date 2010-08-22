@@ -30,6 +30,7 @@ public class Circuito implements Serializable {
 	private Color corFundo;
 	private List<ObjetoPista> objetos;
 	private String nome;
+	private boolean noite;
 
 	public String getNome() {
 		return nome;
@@ -333,6 +334,14 @@ public class Circuito implements Serializable {
 
 	public void setCorFundo(Color corFundo) {
 		this.corFundo = corFundo;
+	}
+
+	public boolean isNoite() {
+		return noite;
+	}
+
+	public void setNoite(boolean noite) {
+		this.noite = noite;
 	}
 
 }

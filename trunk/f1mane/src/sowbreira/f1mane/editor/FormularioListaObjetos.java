@@ -128,10 +128,25 @@ public class FormularioListaObjetos {
 			}
 		});
 
+		JButton editar = new JButton("Editar");
+		editar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int sel = list.getSelectedIndex();
+				if (sel == -1)
+					return;
+				ObjetoPista objetoPista = (ObjetoPista) list.getSelectedValue();
+				FormularioObjetos formularioObjetos = new FormularioObjetos(
+						FormularioListaObjetos.this.editorVetorizado);
+				formularioObjetos.objetoLivreFormulario(objetoPista);
+			}
+		});
+
 		botoes.add(cima);
 		botoes.add(baixo);
 		botoes.add(primeiro);
 		botoes.add(ultimo);
+		botoes.add(editar);
 		botoes.add(remover);
 		frame.add(main);
 	}
