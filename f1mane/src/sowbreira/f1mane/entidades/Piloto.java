@@ -349,7 +349,7 @@ public class Piloto implements Serializable {
 								new Object[] { getNumeroVolta() })));
 			} else {
 				controleJogo.info(Html.superBlack(getNome())
-						+ Html.verde(Lang.msg("044",
+						+ Html.green(Lang.msg("044",
 								new Object[] { getNumeroVolta() })));
 			}
 		}
@@ -1260,10 +1260,10 @@ public class Piloto implements Serializable {
 					if (Math.random() > 0.9) {
 						if (controleJogo.isChovendo()) {
 							controleJogo.info(Html.bold(getNome())
-									+ Html.verde(Lang.msg("055")));
+									+ Html.red(Lang.msg("055")));
 						} else {
 							controleJogo.info(Html.bold(getNome())
-									+ Html.verde(Lang.msg("056")));
+									+ Html.red(Lang.msg("056")));
 						}
 					}
 				}

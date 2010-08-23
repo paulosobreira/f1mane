@@ -275,7 +275,8 @@ public class PaddockWindow {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					ControleCampeonato controleCampeonato = new ControleCampeonato(
-							PaddockWindow.this.mainPanel);
+							PaddockWindow.this.mainPanel,
+							controlePaddockCliente);
 					controleCampeonato.criarCampeonato();
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
@@ -420,6 +421,7 @@ public class PaddockWindow {
 			textAreaChat.append(dadosPaddock.getLinhaChat() + "\n");
 			textAreaChat.setCaretPosition(textAreaChat.getText().length());
 			chatTimes.add(dadosPaddock.getDataTime());
+			controlePaddockCliente.adicionaTextoJogo(dadosPaddock.getLinhaChat());
 		}
 	}
 

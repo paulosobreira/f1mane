@@ -62,9 +62,13 @@ public class ControleCampeonato {
 
 	private String circuitoJogando;
 
-	public ControleCampeonato(Component c) {
+	private ControlePaddockCliente controlePaddockCliente;
+
+	public ControleCampeonato(Component c,
+			ControlePaddockCliente controlePaddockCliente) {
 		carregarCircuitos();
 		this.compPai = c;
+		this.controlePaddockCliente = controlePaddockCliente;
 		carregadorRecursos = new CarregadorRecursos(true);
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
@@ -569,7 +573,8 @@ public class ControleCampeonato {
 	}
 
 	public static void main(String[] args) throws Exception {
-		ControleCampeonato controleCampeonato = new ControleCampeonato(null);
+		ControleCampeonato controleCampeonato = new ControleCampeonato(null,
+				null);
 		controleCampeonato.criarCampeonato();
 	}
 }

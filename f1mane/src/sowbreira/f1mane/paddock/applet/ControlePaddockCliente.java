@@ -707,4 +707,11 @@ public class ControlePaddockCliente {
 		}
 	}
 
+	public void adicionaTextoJogo(String linhaChat) {
+		if (jogoCliente != null) {
+			jogoCliente.adicionarInfoDireto(linhaChat);
+		}
+
+	}
+
 }
