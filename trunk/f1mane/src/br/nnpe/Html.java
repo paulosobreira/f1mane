@@ -101,7 +101,7 @@ public class Html {
 		return fontColor("BLUE", texto);
 	}
 
-	public static String verde(String texto) {
+	public static String green(String texto) {
 		return fontColor("GREEN", texto);
 	}
 

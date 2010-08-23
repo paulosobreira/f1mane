@@ -86,7 +86,7 @@ public class ControleEstatisticas {
 
 		if (!teveMelhor && !controleJogo.isSafetyCarNaPista()) {
 			if ((piloto.getPosicao() < 9)) {
-				controleJogo.info(Html.verde(Lang.msg("022", new String[] {
+				controleJogo.info(Html.green(Lang.msg("022", new String[] {
 						Html.bold(piloto.getNome()),
 						voltaAtual.obterTempoVoltaFormatado() })));
 			}

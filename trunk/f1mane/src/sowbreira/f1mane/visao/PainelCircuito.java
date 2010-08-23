@@ -222,12 +222,12 @@ public class PainelCircuito extends JPanel {
 			desenhaQualificacao(g2d);
 		}
 		desenharSafetyCar(g2d);
-		desenhaContadorVoltas(g2d);
 		desenharFarois(g2d);
 		desenharClima(g2d);
 		desenhaObjetosCima(g2d);
 		desenhaChuva(g2d);
 		desenhaInfoAdd(g2d);
+		desenhaContadorVoltas(g2d);
 		// if (limitesViewPort != null) {
 		// limitesViewPort.width -= 100;
 		// limitesViewPort.height -= 100;
@@ -414,12 +414,7 @@ public class PainelCircuito extends JPanel {
 			}
 
 		}
-		if ((Clima.NUBLADO.equals(controleJogo.getClima()) || Clima.CHUVA
-				.equals(controleJogo.getClima()))
-				&& limitesViewPort() != null) {
-			g2d.setColor(nublado);
-			g2d.fill(limitesViewPort().getBounds());
-		}
+
 		if ((pilotoSelecionado != null)) {
 			desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
 			if (controleJogo.getNumVoltaAtual() > 0)
@@ -1170,6 +1165,12 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaChuva(Graphics2D g2d) {
+		if ((Clima.NUBLADO.equals(controleJogo.getClima()) || Clima.CHUVA
+				.equals(controleJogo.getClima()))
+				&& limitesViewPort() != null) {
+			g2d.setColor(nublado);
+			g2d.fill(limitesViewPort().getBounds());
+		}
 		if (!controleJogo.isChovendo())
 			return;
 		Point p1 = new Point(0, 0);
@@ -1225,7 +1226,7 @@ public class PainelCircuito extends JPanel {
 				g2d.setColor(bluNoite);
 				g2d.fillRoundRect(limitesViewPort.x
 						+ (limitesViewPort.width - 110), limitesViewPort.y + 2,
-						105, 280, 10, 10);
+						105, 230, 10, 10);
 			} else {
 				g2d.setColor(blu);
 				g2d.fillRoundRect(limitesViewPort.x
@@ -2039,9 +2040,8 @@ public class PainelCircuito extends JPanel {
 			if (controleJogo.getCircuito() != null
 					&& controleJogo.getCircuito().isNoite()) {
 				g2d.setColor(bluNoite);
-				g2d.fillRoundRect(limitesViewPort.x
-						+3, limitesViewPort.y + 238,
-						70, 90, 10, 10);
+				g2d.fillRoundRect(limitesViewPort.x + 3,
+						limitesViewPort.y + 238, 70, 90, 10, 10);
 			}
 			g2d.drawImage(fuel.getImage(), limitesViewPort.x + 5,
 					limitesViewPort.y + 240, null);
