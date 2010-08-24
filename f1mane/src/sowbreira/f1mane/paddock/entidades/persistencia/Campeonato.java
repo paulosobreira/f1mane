@@ -8,19 +8,23 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Campeonato extends F1ManeDados {
 	private String temporada;
+	@Column(unique = true, nullable = false)
+	private String nome;
 	private String nivel;
 	private Integer qtdeVoltas;
 	private boolean semReabasteciemnto;
 	private boolean semTrocaPneus;
-
+	@OneToOne
 	@JoinColumn(nullable = false)
 	private JogadorDadosSrv jogadorDadosSrv;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonato")
@@ -28,6 +32,14 @@ public class Campeonato extends F1ManeDados {
 
 	public String getTemporada() {
 		return temporada;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public JogadorDadosSrv getJogadorDadosSrv() {

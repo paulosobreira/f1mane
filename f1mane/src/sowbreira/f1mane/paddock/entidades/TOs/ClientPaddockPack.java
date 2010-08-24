@@ -28,7 +28,16 @@ public class ClientPaddockPack implements Serializable {
 	private boolean recuperar = false;
 	private DadosCriarJogo dadosJogoCriado;
 	private CarreiraDadosSrv carreiraDadosSrv;
+	private Object dataObject;
 	private byte[] dataBytes;
+
+	public Object getDataObject() {
+		return dataObject;
+	}
+
+	public void setDataObject(Object dataObject) {
+		this.dataObject = dataObject;
+	}
 
 	public String getChaveCapcha() {
 		return chaveCapcha;

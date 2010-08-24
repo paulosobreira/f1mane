@@ -44,5 +44,8 @@ public class Comandos {
 	public static final String MUDAR_TRACADO = "34";
 	public static final String DADOS_PILOTOS_JOGO = "35";
 	public static final String OBTER_NOVO_CAPCHA = "36";
+	public static final String CRIAR_CAMPEONATO = "37";
+	public static final String OK = "OK";
+	public static final String LISTAR_CAMPEONATOS = "38";
 
 }

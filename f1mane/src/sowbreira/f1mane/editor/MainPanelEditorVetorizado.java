@@ -545,9 +545,9 @@ public class MainPanelEditorVetorizado extends JPanel {
 					for (Iterator iterator = objetos.iterator(); iterator
 							.hasNext();) {
 						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-						if (objetoPista instanceof ObjetoCirculo) {
-							objetoPista.setTransparencia(35);
-						}
+//						if (objetoPista instanceof ObjetoCirculo) {
+//							objetoPista.setTransparencia(35);
+//						}
 					}
 
 				} catch (Exception e2) {

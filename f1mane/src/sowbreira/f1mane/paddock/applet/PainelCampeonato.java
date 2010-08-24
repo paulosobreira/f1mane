@@ -37,7 +37,7 @@ public class PainelCampeonato extends JPanel {
 			"EEE, d MMM yyyy HH:mm:ss");
 	private Component compPai;
 
-	private ControleCampeonato controleCampeonato;
+	private ControleCampeonatoCliente controleCampeonato;
 
 	private JTable corridasTable;
 
@@ -47,13 +47,12 @@ public class PainelCampeonato extends JPanel {
 	private JTable contrutoresTable;
 	private AbstractTableModel contrutoresTableModel;
 
-	public PainelCampeonato(ControleCampeonato controleCampeonato,
+	public PainelCampeonato(ControleCampeonatoCliente controleCampeonato,
 			Component compPai) {
 		super();
 		this.controleCampeonato = controleCampeonato;
-		// this.campeonato = controleCampeonato.getCampeonato();
-		controleCampeonato.geraListaPilotosPontos();
-		controleCampeonato.geraListaContrutoresPontos();
+//		controleCampeonato.geraListaPilotosPontos();
+//		controleCampeonato.geraListaContrutoresPontos();
 		this.compPai = compPai;
 		this.setLayout(new BorderLayout());
 

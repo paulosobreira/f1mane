@@ -27,6 +27,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.F1ManeDados;
@@ -451,5 +452,9 @@ public class ControlePersistencia {
 		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null
 				: jogador.get(0));
 		return jogadorDadosSrv;
+	}
+
+	public List<Campeonato> obterListaCampeonatos() {
+		return getSession().createCriteria(Campeonato.class).list();
 	}
 }

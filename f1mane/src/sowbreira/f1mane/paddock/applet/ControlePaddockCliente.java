@@ -650,7 +650,7 @@ public class ControlePaddockCliente {
 		formCarreira.gerarCarroLado();
 	}
 
-	private boolean retornoNaoValido(Object ret) {
+	public boolean retornoNaoValido(Object ret) {
 		if (ret instanceof ErroServ || ret instanceof MsgSrv) {
 			return true;
 		}
@@ -710,6 +710,32 @@ public class ControlePaddockCliente {
 	public void adicionaTextoJogo(String linhaChat) {
 		if (jogoCliente != null) {
 			jogoCliente.adicionarInfoDireto(linhaChat);
+		}
+
+	}
+
+	public void criarCampeonato() {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
+		ControleCampeonatoCliente controleCampeonato = new ControleCampeonatoCliente(
+				paddockWindow.getMainPanel(), this);
+		try {
+			controleCampeonato.criarCampeonato();
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+
+	}
+
+	public void verCampeonato() {
+		ControleCampeonatoCliente controleCampeonato = new ControleCampeonatoCliente(
+				paddockWindow.getMainPanel(), this);
+		try {
+			controleCampeonato.verCampeonato();
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
 
 	}
