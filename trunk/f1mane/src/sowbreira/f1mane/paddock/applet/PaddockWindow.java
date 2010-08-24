@@ -273,18 +273,18 @@ public class PaddockWindow {
 		campeonato.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				try {
-					ControleCampeonato controleCampeonato = new ControleCampeonato(
-							PaddockWindow.this.mainPanel,
-							controlePaddockCliente);
-					controleCampeonato.criarCampeonato();
-				} catch (Exception ex) {
-					Logger.logarExept(ex);
-				}
-
+				controlePaddockCliente.criarCampeonato();
 			}
 
 		});
+		verCampeonato.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				controlePaddockCliente.verCampeonato();
+			}
+
+		});
+
 	}
 
 	private void gerarLayout() {
@@ -421,7 +421,8 @@ public class PaddockWindow {
 			textAreaChat.append(dadosPaddock.getLinhaChat() + "\n");
 			textAreaChat.setCaretPosition(textAreaChat.getText().length());
 			chatTimes.add(dadosPaddock.getDataTime());
-			controlePaddockCliente.adicionaTextoJogo(dadosPaddock.getLinhaChat());
+			controlePaddockCliente.adicionaTextoJogo(dadosPaddock
+					.getLinhaChat());
 		}
 	}
 

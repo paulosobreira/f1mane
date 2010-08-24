@@ -37,6 +37,7 @@ public class ControlePaddockServidor {
 	private ControleJogosServer controleJogosServer;
 	private ControlePersistencia controlePersistencia;
 	private ControleClassificacao controleClassificacao;
+	private ControleCampeonatoServidor controleCampeonatoServidor;
 
 	public DadosPaddock getDadosPaddock() {
 		return dadosPaddock;
@@ -49,6 +50,8 @@ public class ControlePaddockServidor {
 	public ControlePaddockServidor(ControlePersistencia controlePersistencia) {
 		this.controlePersistencia = controlePersistencia;
 		controleClassificacao = new ControleClassificacao(controlePersistencia);
+		controleCampeonatoServidor = new ControleCampeonatoServidor(
+				controlePersistencia);
 		controleJogosServer = new ControleJogosServer(dadosPaddock,
 				controleClassificacao);
 
@@ -267,8 +270,20 @@ public class ControlePaddockServidor {
 			return dadosPilotosJogo(clientPaddockPack);
 		} else if (Comandos.OBTER_NOVO_CAPCHA.equals(commando)) {
 			return obterNovoCapcha(clientPaddockPack);
+		} else if (Comandos.CRIAR_CAMPEONATO.equals(commando)) {
+			return criarCampeonato(clientPaddockPack);
+		} else if (Comandos.LISTAR_CAMPEONATOS.equals(commando)) {
+			return listarCampeonatos(clientPaddockPack);
 		}
 		return "Comando invalido";
+	}
+
+	private Object listarCampeonatos(ClientPaddockPack clientPaddockPack) {
+		return controleCampeonatoServidor.listarCampeonatos();
+	}
+
+	private Object criarCampeonato(ClientPaddockPack clientPaddockPack) {
+		return controleCampeonatoServidor.criarCampeonato(clientPaddockPack);
 	}
 
 	private Object obterNovoCapcha(ClientPaddockPack clientPaddockPack) {
