@@ -48,12 +48,12 @@ public class ControleCorrida {
 			fatorUtrapassagem = 0.5;
 		}
 		this.fatorUtrapassagem = 1 - fatorUtrapassagem;
-		this.indexVelcidadeDaPista = 1.4;
+		this.indexVelcidadeDaPista = 1.5;
 		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-			this.indexVelcidadeDaPista = 1.5;
+			this.indexVelcidadeDaPista = 1.6;
 		}
 		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-			this.indexVelcidadeDaPista = 1.3;
+			this.indexVelcidadeDaPista = 1.4;
 		}
 		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
