@@ -60,11 +60,9 @@ img {
 }
 
 #adds {
-	border-style: none;
 	font-family: Arial, sans-serif;
 	font-size: 24px;
 	font-weight: bold;
-	line-height: 24px;
 	position: relative;
 	float :left;
 }
@@ -93,6 +91,43 @@ img {
 	font-style: italic;
 }
 </style>
+<script type="text/javascript" src="highslide/highslide-full.js"></script>
+<link rel="stylesheet" type="text/css" href="highslide/highslide.css" />
+
+<!--
+	2) Optionally override the settings defined at the top
+	of the highslide.js file. The parameter hs.graphicsDir is important!
+-->
+
+<script type="text/javascript">
+	hs.graphicsDir = 'highslide/graphics/';
+	hs.align = 'center';
+	hs.transitions = ['expand', 'crossfade'];
+	hs.outlineType = 'rounded-white';
+	hs.fadeInOut = true;
+	hs.dimmingOpacity = 0.75;
+
+	// define the restraining box
+	hs.useBox = true;
+	hs.width = 800;
+	hs.height = 600;
+
+	// Add the controlbar
+	hs.addSlideshow({
+		//slideshowGroup: 'group1',
+		interval: 5000,
+		repeat: false,
+		useControls: true,
+		fixedControls: 'fit',
+		overlayOptions: {
+			opacity: 1,
+			position: 'bottom center',
+			hideOnMouseOut: true
+		}
+	});
+
+</script>
+
 </head>
 <body>
 <center>
@@ -137,16 +172,16 @@ img {
 			<br>					
 		</div>
 		<div style="text-align: left;">
-			<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="800px" height="380px"> 
+			<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="820px" height="380px"> 
 			</applet>
 		</div>
-		<div id="shots" >
-			<a href="fm1.jpg" target="_BLANK"> <img src="fm1.jpg" width="130" height="120" /></a>
-			<a href="fm2.jpg" target="_BLANK"> <img src="fm2.jpg" width="130" height="120" /></a>
-			<a href="fm3.jpg" target="_BLANK"> <img src="fm3.jpg" width="130" height="120" /></a>
-			<a href="fm4.jpg" target="_BLANK"> <img src="fm4.jpg" width="130" height="120" /></a>
-			<a href="fm5.jpg" target="_BLANK"> <img src="fm5.jpg" width="130" height="120" /></a>
-			<a href="fm6.jpg" target="_BLANK"> <img src="fm6.jpg" width="130" height="120" /></a>
+		<div id="shots" class="highslide-gallery">
+			<a href="fm1.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm1.jpg" width="130" height="120" /></a>
+			<a href="fm2.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm2.jpg" width="130" height="120" /></a>
+			<a href="fm3.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm3.jpg" width="130" height="120" /></a>
+			<a href="fm4.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm4.jpg" width="130" height="120" /></a>
+			<a href="fm5.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm5.jpg" width="130" height="120" /></a>
+			<a href="fm6.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm6.jpg" width="130" height="120" /></a>
 		</div>
 	</div>
 	</td>
