@@ -404,4 +404,21 @@ public class ControleCampeonatoCliente {
 				.msg("listaCampeonatos"), JOptionPane.INFORMATION_MESSAGE);
 
 	}
+
+	public void proximaCorrida() {
+		CorridaCampeonato corridaCampeonatoProx = null;
+		for (CorridaCampeonato corridaCampeonato : campeonato
+				.getCorridaCampeonatos()) {
+			if (corridaCampeonato.getTempoInicio() == null) {
+				corridaCampeonatoProx = corridaCampeonato;
+				break;
+			}
+
+		}
+		if (corridaCampeonatoProx == null) {
+			Logger.logar("campeonato acabado");
+		}
+		controlePaddockCliente.criarJogo(campeonato, corridaCampeonatoProx
+				.getNomeCircuito());
+	}
 }

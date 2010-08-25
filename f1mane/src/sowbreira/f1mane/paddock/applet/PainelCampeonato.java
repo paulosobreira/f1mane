@@ -84,17 +84,7 @@ public class PainelCampeonato extends JPanel {
 					/**
 					 * Criar Corrida;
 					 */
-					// ControleJogoLocal controleJogo = (ControleJogoLocal)
-					// compPai
-					// .getControleJogo();
-					// if (controleJogo != null) {
-					// controleJogo.matarTodasThreads();
-					// }
-					// controleJogo = new ControleJogoLocal("t"
-					// + PainelCampeonato.this.campeonato.getTemporada());
-					// controleJogo.setMainFrame(PainelCampeonato.this.mainFrame);
-					// mainFrame.setControleJogo(controleJogo);
-					// controleJogo.iniciarJogo(controleCampeonato);
+					controleCampeonato.proximaCorrida();
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
