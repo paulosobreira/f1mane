@@ -57,9 +57,6 @@ img {
 	font-weight: bold;
 	line-height: 24px;
 	height: 100px;
-	background-image: url("logo.png");
-	background-repeat: no-repeat;
-	background-position: 0px 0px; 	
 }
 
 #adds {
@@ -132,7 +129,7 @@ img {
 			href="http://www.java.com/" style="text-align: right;"
 			target="_BLANK">Instale o Java</a>
 		<a id="link" style="position: absolute; left: 370px; top: 50px;font-size: 16px;"
-			href="http://sowbreira.appspot.com/f1mane/F1Mane.html" style="text-align: right;"
+			href="F1Mane.html" style="text-align: right;"
 			target="_BLANK">Versao 1 Jogador</a>	
 		<br>					
 	</div>
