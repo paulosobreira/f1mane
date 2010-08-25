@@ -76,6 +76,10 @@ public class ControleCampeonatoCliente {
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
 
+	public Component getCompPai() {
+		return compPai;
+	}
+
 	public Campeonato getCampeonato() {
 		return campeonato;
 	}
@@ -341,21 +345,27 @@ public class ControleCampeonatoCliente {
 				.getSelectedItem()));
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
 		campeonato.setNome(nomeCampeonato.getText());
-		campeonato.setLoginCriador(controlePaddockCliente.getSessaoCliente()
-				.getNomeJogador());
 		for (int i = 0; i < corridas.size(); i++) {
 			CorridaCampeonato corridaCampeonato = new CorridaCampeonato();
 			corridaCampeonato.setCampeonato(campeonato);
 			corridaCampeonato.setNomeCircuito((String) corridas.get(i));
-			corridaCampeonato.setLoginCriador(controlePaddockCliente
-					.getSessaoCliente().getNomeJogador());
+			if (controlePaddockCliente != null) {
+				corridaCampeonato.setLoginCriador(controlePaddockCliente
+						.getSessaoCliente().getNomeJogador());
+			}
 			campeonato.getCorridaCampeonatos().add(corridaCampeonato);
 		}
-		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-				Comandos.CRIAR_CAMPEONATO, controlePaddockCliente
-						.getSessaoCliente());
-		clientPaddockPack.setDataObject(campeonato);
-		controlePaddockCliente.enviarObjeto(clientPaddockPack);
+		if (controlePaddockCliente != null) {
+			campeonato.setLoginCriador(controlePaddockCliente
+					.getSessaoCliente().getNomeJogador());
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+					Comandos.CRIAR_CAMPEONATO, controlePaddockCliente
+							.getSessaoCliente());
+			clientPaddockPack.setDataObject(campeonato);
+			controlePaddockCliente.enviarObjeto(clientPaddockPack);
+		}
+		this.campeonato = campeonato;
+		new PainelCampeonato(this);
 	}
 
 	public void iniciaCorrida(String circuito) {

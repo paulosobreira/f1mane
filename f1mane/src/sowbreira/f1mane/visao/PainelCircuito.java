@@ -255,19 +255,7 @@ public class PainelCircuito extends JPanel {
 					&& (objetoPista.getAltura() < 2 || objetoPista.getLargura() < 2)) {
 				continue;
 			}
-			AffineTransform affineTransform = AffineTransform.getScaleInstance(
-					1, 1);
-			double rad = Math.toRadians((double) objetoPista.getAngulo());
-
-			GeneralPath generalPath = new GeneralPath(objetoPista.obterArea());
-			affineTransform.setToRotation(rad, generalPath.getBounds()
-					.getCenterX(), generalPath.getBounds().getCenterY());
-			generalPath.transform(affineTransform);
-			affineTransform.setToScale(zoom, zoom);
-			if (limitesViewPort.intersects(generalPath.createTransformedShape(
-					affineTransform).getBounds())) {
-				objetoPista.desenha(g2d, zoom);
-			}
+			objetoPista.desenha(g2d, zoom);
 		}
 
 	}
@@ -287,20 +275,7 @@ public class PainelCircuito extends JPanel {
 					&& (objetoPista.getAltura() < 2 || objetoPista.getLargura() < 2)) {
 				continue;
 			}
-			AffineTransform affineTransform = AffineTransform.getScaleInstance(
-					1, 1);
-			double rad = Math.toRadians((double) objetoPista.getAngulo());
-
-			GeneralPath generalPath = new GeneralPath(objetoPista.obterArea());
-			affineTransform.setToRotation(rad, generalPath.getBounds()
-					.getCenterX(), generalPath.getBounds().getCenterY());
-			generalPath.transform(affineTransform);
-			affineTransform.setToScale(zoom, zoom);
-			if (limitesViewPort.intersects(generalPath.createTransformedShape(
-					affineTransform).getBounds())) {
-				objetoPista.desenha(g2d, zoom);
-			}
-
+			objetoPista.desenha(g2d, zoom);
 		}
 
 	}

@@ -159,6 +159,9 @@ public class PaddockWindow {
 	}
 
 	private void gerarAcoes() {
+//		campeonato.setEnabled(false);
+//		verCampeonato.setEnabled(false);
+
 		ActionListener actionListener = new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -341,11 +344,16 @@ public class PaddockWindow {
 				Logger.logar(Lang
 						.key(comboIdiomas.getSelectedItem().toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
+				int selectedIndex = comboIdiomas.getSelectedIndex();
 				if (i != null && !"".equals(i)) {
 					Lang.mudarIdioma(i);
 					comboIdiomas.removeAllItems();
 					comboIdiomas.addItem(Lang.msg("pt"));
 					comboIdiomas.addItem(Lang.msg("en"));
+					comboIdiomas.setSelectedIndex(selectedIndex);
+					for (int j = 0; j < mainPanel.getComponentCount(); j++) {
+						mainPanel.getComponent(j).repaint();
+					}
 				}
 			}
 		});
