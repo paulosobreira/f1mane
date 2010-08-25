@@ -30,6 +30,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
@@ -738,6 +739,11 @@ public class ControlePaddockCliente {
 			Logger.logarExept(e);
 		}
 
+	}
+
+	public void criarJogo(Campeonato campeonato, String nomeCircuito) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
