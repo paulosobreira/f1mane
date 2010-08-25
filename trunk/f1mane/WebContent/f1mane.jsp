@@ -100,6 +100,7 @@ img {
 -->
 
 <script type="text/javascript">
+	
 	hs.graphicsDir = 'highslide/graphics/';
 	hs.align = 'center';
 	hs.transitions = ['expand', 'crossfade'];
@@ -125,7 +126,7 @@ img {
 			hideOnMouseOut: true
 		}
 	});
-
+	
 </script>
 
 </head>
@@ -176,12 +177,12 @@ img {
 			</applet>
 		</div>
 		<div id="shots" class="highslide-gallery">
-			<a href="fm1.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm1.jpg" width="130" height="120" /></a>
-			<a href="fm2.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm2.jpg" width="130" height="120" /></a>
-			<a href="fm3.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm3.jpg" width="130" height="120" /></a>
-			<a href="fm4.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm4.jpg" width="130" height="120" /></a>
-			<a href="fm5.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm5.jpg" width="130" height="120" /></a>
-			<a href="fm6.jpg" class="highslide" onclick="return hs.expand(this)"> <img src="fm6.jpg" width="130" height="120" /></a>
+			<a href="fm1.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm1.jpg" width="130" height="120" /></a>
+			<a href="fm2.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm2.jpg" width="130" height="120" /></a>
+			<a href="fm3.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm3.jpg" width="130" height="120" /></a>
+			<a href="fm4.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm4.jpg" width="130" height="120" /></a>
+			<a href="fm5.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm5.jpg" width="130" height="120" /></a>
+			<a href="fm6.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm6.jpg" width="130" height="120" /></a>
 		</div>
 	</div>
 	</td>
