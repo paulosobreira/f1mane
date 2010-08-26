@@ -742,8 +742,52 @@ public class ControlePaddockCliente {
 	}
 
 	public void criarJogo(Campeonato campeonato, String nomeCircuito) {
-		// TODO Auto-generated method stub
-		
+		try {
+			if (sessaoCliente == null) {
+				logar();
+				return;
+			}
+			String temporada = campeonato.getTemporada();
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+					Comandos.CRIAR_JOGO, sessaoCliente);
+			Logger.logar("criarJogo cliente " + temporada);
+			jogoCliente = new JogoCliente(temporada);
+			jogoCliente.setMainFrame(mainFrame);
+			PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
+					jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
+					mainFrame, sessaoCliente.getNomeJogador());
+			painelEntradaCliente.setCampeonato(campeonato);
+			DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
+			dadosCriarJogo.setNomeCampeonato(campeonato.getNome());
+			dadosCriarJogo.setTemporada(temporada);
+			if (!painelEntradaCliente.gerarDadosCriarJogo(dadosCriarJogo)) {
+				return;
+			}
+			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
+			Object ret = enviarObjeto(clientPaddockPack);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
+			if (ret == null) {
+				JOptionPane.showMessageDialog(panel, Lang.msg("062"), "Erro",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
+			jogoCliente = new JogoCliente(dadosCriarJogo.getTemporada());
+			jogoCliente.setMainFrame(mainFrame);
+			if (srvPaddockPack == null) {
+				return;
+			}
+			DadosPaddock dadosPaddock = srvPaddockPack.getDadosPaddock();
+			paddockWindow.atualizar(dadosPaddock);
+			jogoCliente.iniciarJogoOnline(srvPaddockPack.getDadosCriarJogo(),
+					srvPaddockPack.getNomeJogoCriado(), this, sessaoCliente,
+					dadosCriarJogo.getPiloto());
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			JOptionPane.showMessageDialog(panel, e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
-
 }
