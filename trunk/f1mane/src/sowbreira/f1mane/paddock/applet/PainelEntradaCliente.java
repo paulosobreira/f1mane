@@ -24,6 +24,7 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
+import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
 import br.nnpe.Util;
@@ -53,6 +54,11 @@ public class PainelEntradaCliente {
 	private MainFrame mainFrame;
 	private DadosCriarJogo dadosCriarJogo;
 	private String nomeCriador;
+	private Campeonato campeonato;
+
+	public void setCampeonato(Campeonato campeonato) {
+		this.campeonato = campeonato;
+	}
 
 	public PainelEntradaCliente(List pilotos, Map circuitos,
 			MainFrame mainFrame, String nomeCriador) {
@@ -75,7 +81,9 @@ public class PainelEntradaCliente {
 		if (!ControleJogoLocal.VALENDO) {
 			spinnerQtdeVoltas.setValue(new Integer(30));
 		}
-
+		if(campeonato!=null){
+			//TODO
+		}
 		painelInicio.add(spinnerQtdeVoltas);
 
 		painelInicio.add(new JLabel() {

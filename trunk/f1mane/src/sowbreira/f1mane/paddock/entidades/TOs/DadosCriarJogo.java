@@ -13,7 +13,7 @@ public class DadosCriarJogo implements Serializable {
 	private static final long serialVersionUID = 8923188552953563909L;
 
 	private Integer diffultrapassagem = null;
-
+	private String nomeCampeonato;
 	private Integer habilidade = null;
 	private Integer potencia = null;
 	private Integer tempoQualificacao = null;
@@ -32,6 +32,14 @@ public class DadosCriarJogo implements Serializable {
 	private List pilotosCarreira;
 	private boolean semReabastecimento;
 	private boolean semTrocaPeneu;
+
+	public String getNomeCampeonato() {
+		return nomeCampeonato;
+	}
+
+	public void setNomeCampeonato(String nomeCampeonato) {
+		this.nomeCampeonato = nomeCampeonato;
+	}
 
 	public boolean isSemReabastecimento() {
 		return semReabastecimento;
