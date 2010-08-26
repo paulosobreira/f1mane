@@ -159,8 +159,8 @@ public class PaddockWindow {
 	}
 
 	private void gerarAcoes() {
-//		campeonato.setEnabled(false);
-//		verCampeonato.setEnabled(false);
+		campeonato.setEnabled(false);
+		verCampeonato.setEnabled(false);
 
 		ActionListener actionListener = new ActionListener() {
 
