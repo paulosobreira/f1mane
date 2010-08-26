@@ -15,6 +15,11 @@ div {
 	font-family: sans-serif;
 }
 
+table{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8CFE5;
+}
 
 A:link {text-decoration: none; 
 		color: #0084B4;}
@@ -46,7 +51,6 @@ img {
 	padding: 10px;
 	padding-left: 0px;
 	padding-right: 0px;
-	
 }
 
 #title {
@@ -82,7 +86,6 @@ img {
 #shots{
 	text-align: left;
 	padding: 0px;
-	height: 200px;
 }
 
 #description {
@@ -126,6 +129,8 @@ img {
 			hideOnMouseOut: true
 		}
 	});
+
+
 	
 </script>
 
@@ -177,12 +182,12 @@ img {
 			</applet>
 		</div>
 		<div id="shots" class="highslide-gallery">
-			<a href="fm1.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm1.jpg" width="130" height="120" /></a>
-			<a href="fm2.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm2.jpg" width="130" height="120" /></a>
-			<a href="fm3.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm3.jpg" width="130" height="120" /></a>
-			<a href="fm4.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm4.jpg" width="130" height="120" /></a>
-			<a href="fm5.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm5.jpg" width="130" height="120" /></a>
-			<a href="fm6.jpg" class="highslide" onclick="if(!(navigator.userAgent.indexOf('Firefox')==-1)){ return hs.expand(this) }"> <img src="fm6.jpg" width="130" height="120" /></a>
+			<a href="fm1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm1.jpg" width="130" height="120" /></a>
+			<a href="fm2.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm2.jpg" width="130" height="120" /></a>
+			<a href="fm3.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm3.jpg" width="130" height="120" /></a>
+			<a href="fm4.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm4.jpg" width="130" height="120" /></a>
+			<a href="fm5.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm5.jpg" width="130" height="120" /></a>
+			<a href="fm6.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm6.jpg" width="130" height="120" /></a>
 		</div>
 	</div>
 	</td>
