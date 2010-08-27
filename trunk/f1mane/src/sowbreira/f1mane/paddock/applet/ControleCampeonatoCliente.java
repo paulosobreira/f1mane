@@ -6,21 +6,13 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -35,26 +27,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
-import sowbreira.f1mane.entidades.ObjetoPista;
-import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
-import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
-import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonato;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 
 public class ControleCampeonatoCliente {
 
@@ -454,5 +440,169 @@ public class ControleCampeonatoCliente {
 		}
 		controlePaddockCliente.criarJogo(campeonato, corridaCampeonatoProx
 				.getNomeCircuito());
+	}
+
+	public void geraListaPilotosPontos() {
+		pilotosPontos = new ArrayList();
+		if (campeonato.getCorridaCampeonatos().isEmpty()) {
+			return;
+		}
+		for (CorridaCampeonato corridaCampeonato : campeonato
+				.getCorridaCampeonatos()) {
+
+			List dadosCorridas = (List) corridaCampeonato
+					.getDadosCorridaCampeonatos();
+			if (dadosCorridas == null) {
+				return;
+			}
+			for (Iterator iterator = dadosCorridas.iterator(); iterator
+					.hasNext();) {
+				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator
+						.next();
+				PilotosPontosCampeonato pilotosPontosCampeonato = new PilotosPontosCampeonato();
+				pilotosPontosCampeonato.setNome(dadosCorridaCampeonato
+						.getPiloto());
+				pilotosPontos.add(pilotosPontosCampeonato);
+			}
+			for (Iterator iterator = pilotosPontos.iterator(); iterator
+					.hasNext();) {
+				PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) iterator
+						.next();
+				pilotosPontosCampeonato
+						.setPontos(calculaPontosPiloto(pilotosPontosCampeonato
+								.getNome()));
+				pilotosPontosCampeonato
+						.setVitorias(computaVitorias(pilotosPontosCampeonato
+								.getNome()));
+			}
+			Collections.sort(pilotosPontos, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					PilotosPontosCampeonato p1 = (PilotosPontosCampeonato) o1;
+					PilotosPontosCampeonato p2 = (PilotosPontosCampeonato) o2;
+					if (p1.getPontos() != p2.getPontos()) {
+						return new Integer(p2.getPontos())
+								.compareTo(new Integer(p1.getPontos()));
+					} else {
+						return new Integer(p2.getVitorias())
+								.compareTo(new Integer(p1.getVitorias()));
+					}
+				}
+			});
+		}
+	}
+
+	private int calculaPontosConstrutores(String nome) {
+		int pontos = 0;
+		List corridas = campeonato.getCorridaCampeonatos();
+		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+					.next();
+			List dadosCorridas = (List) corridaCampeonato
+					.getDadosCorridaCampeonatos();
+			if (dadosCorridas == null) {
+				continue;
+			}
+			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
+					.hasNext();) {
+				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+						.next();
+				if (nome.equals(dadosCorridaCampeonato.getCarro())) {
+					pontos += dadosCorridaCampeonato.getPontos();
+				}
+			}
+		}
+		return pontos;
+	}
+
+	public Integer computaVitorias(String nome) {
+		int vitorias = 0;
+		List corridas = campeonato.getCorridaCampeonatos();
+		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+					.next();
+			List dadosCorridas = (List) corridaCampeonato
+					.getDadosCorridaCampeonatos();
+			if (dadosCorridas == null) {
+				continue;
+			}
+			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
+					.hasNext();) {
+				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+						.next();
+				if (nome.equals(dadosCorridaCampeonato.getPiloto())
+						&& dadosCorridaCampeonato.getPosicao() == 1) {
+					vitorias += 1;
+				}
+			}
+		}
+		return vitorias;
+	}
+
+	public void geraListaContrutoresPontos() {
+		contrutoresPontos = new ArrayList();
+		if (campeonato.getCorridaCampeonatos().isEmpty()) {
+			return;
+		}
+		for (CorridaCampeonato corridaCampeonato : campeonato
+				.getCorridaCampeonatos()) {
+
+			List dadosCorridas = (List) corridaCampeonato
+					.getDadosCorridaCampeonatos();
+			if (dadosCorridas == null) {
+				return;
+			}
+			for (Iterator iterator = dadosCorridas.iterator(); iterator
+					.hasNext();) {
+				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator
+						.next();
+				ConstrutoresPontosCampeonato construtoresPontosCampeonato = new ConstrutoresPontosCampeonato();
+
+				construtoresPontosCampeonato
+						.setNomeEquipe(dadosCorridaCampeonato.getCarro());
+				if (!contrutoresPontos.contains(construtoresPontosCampeonato)) {
+					contrutoresPontos.add(construtoresPontosCampeonato);
+				}
+			}
+			for (Iterator iterator = contrutoresPontos.iterator(); iterator
+					.hasNext();) {
+				ConstrutoresPontosCampeonato construtoresPontosCampeonato = (ConstrutoresPontosCampeonato) iterator
+						.next();
+				construtoresPontosCampeonato
+						.setPontos(calculaPontosConstrutores(construtoresPontosCampeonato
+								.getNomeEquipe()));
+
+			}
+			Collections.sort(contrutoresPontos, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					ConstrutoresPontosCampeonato c1 = (ConstrutoresPontosCampeonato) o1;
+					ConstrutoresPontosCampeonato c2 = (ConstrutoresPontosCampeonato) o2;
+					return new Integer(c2.getPontos()).compareTo(new Integer(c1
+							.getPontos()));
+				}
+			});
+		}
+	}
+
+	private int calculaPontosPiloto(String nome) {
+		int pontos = 0;
+		List corridas = campeonato.getCorridaCampeonatos();
+		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+					.next();
+			List dadosCorridas = (List) corridaCampeonato
+					.getDadosCorridaCampeonatos();
+			if (dadosCorridas == null) {
+				continue;
+			}
+			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
+					.hasNext();) {
+				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+						.next();
+				if (nome.equals(dadosCorridaCampeonato.getPiloto())) {
+					pontos += dadosCorridaCampeonato.getPontos();
+				}
+			}
+		}
+		return pontos;
 	}
 }
