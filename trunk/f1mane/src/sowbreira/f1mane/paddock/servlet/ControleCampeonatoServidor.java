@@ -126,13 +126,14 @@ public class ControleCampeonatoServidor {
 			dadosCorridaCampeonato.setDesgasteMotor(String.valueOf(piloto
 					.getCarro().porcentagemDesgasteMotor()
 					+ "%"));
+			corridaCampeonatoCorrente.getDadosCorridaCampeonatos().add(
+					dadosCorridaCampeonato);
 			try {
 				controlePersistencia.gravarDados(dadosCorridaCampeonato,
 						corridaCampeonatoCorrente);
 			} catch (Exception e) {
 				Logger.topExecpts(e);
 			}
-
 		}
 		try {
 			controlePersistencia.gravarDados(campeonato);

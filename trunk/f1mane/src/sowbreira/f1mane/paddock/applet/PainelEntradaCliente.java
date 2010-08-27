@@ -72,7 +72,9 @@ public class PainelEntradaCliente {
 		painelInicio.setLayout(new GridLayout(14, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
-				return Lang.msg("110");
+				return Lang.msg("110", new String[] {
+						String.valueOf(Constantes.MIN_VOLTAS),
+						String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 		painelInicio.add(label);
@@ -282,6 +284,8 @@ public class PainelEntradaCliente {
 			semTrocaPneu.setSelected(campeonato.isSemTrocaPneus());
 			semTrocaPneu.setEnabled(false);
 			nomeCampeonato.setText(campeonato.getNome());
+			comboBoxCircuito.setSelectedItem(campeonato.getCircuitoAtual());
+			comboBoxCircuito.setEnabled(false);
 		}
 
 	}
