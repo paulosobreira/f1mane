@@ -292,11 +292,15 @@ public class PainelCampeonato extends JPanel {
 					return dateFormat.format(new Date(corridaCampeonato
 							.getTempoFim()));
 				case 3:
-					if (corridaCampeonato == null) {
+					if (corridaCampeonato == null)
 						return "";
+					for (DadosCorridaCampeonato dadosCorridaCampeonato : corridaCampeonato
+							.getDadosCorridaCampeonatos()) {
+						if (dadosCorridaCampeonato.getPosicao() == 1) {
+							return dadosCorridaCampeonato.getPiloto();
+						}
 					}
 					return "";
-
 				default:
 					return "";
 				}

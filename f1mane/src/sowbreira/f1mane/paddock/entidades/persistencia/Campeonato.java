@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Campeonato extends F1ManeDados {
+	private transient String circuitoAtual;
 	private String temporada;
 	@Column(unique = true, nullable = false)
 	private String nome;
@@ -32,6 +33,14 @@ public class Campeonato extends F1ManeDados {
 
 	public String getTemporada() {
 		return temporada;
+	}
+
+	public String getCircuitoAtual() {
+		return circuitoAtual;
+	}
+
+	public void setCircuitoAtual(String circuitoAtual) {
+		this.circuitoAtual = circuitoAtual;
 	}
 
 	public String getNome() {

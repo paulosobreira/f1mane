@@ -52,6 +52,7 @@ import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -282,7 +283,9 @@ public class ControleCampeonatoCliente {
 
 		grid.add(new JLabel() {
 			public String getText() {
-				return Lang.msg("110");
+				return Lang.msg("110", new String[] {
+						String.valueOf(Constantes.MIN_VOLTAS),
+						String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		});
 		spinnerQtdeVoltas = new JSpinner();
@@ -334,9 +337,14 @@ public class ControleCampeonatoCliente {
 			return;
 		}
 		Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
-		if (qtdeVolta == null || qtdeVolta.intValue() < 12) {
-			JOptionPane.showMessageDialog(compPai, Lang.msg("110"), Lang
-					.msg("110"), JOptionPane.ERROR_MESSAGE);
+		if (qtdeVolta == null || qtdeVolta.intValue() < Constantes.MIN_VOLTAS) {
+			JOptionPane.showMessageDialog(compPai, Lang.msg("110",
+					new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+							String.valueOf(Constantes.MAX_VOLTAS) }), Lang.msg(
+					"110", new String[] {
+							String.valueOf(Constantes.MIN_VOLTAS),
+							String.valueOf(Constantes.MAX_VOLTAS) }),
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		campeonato = new Campeonato();

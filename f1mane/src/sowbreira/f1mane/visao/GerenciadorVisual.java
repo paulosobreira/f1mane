@@ -65,6 +65,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.recursos.idiomas.LangVO;
+import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -1017,7 +1018,9 @@ public class GerenciadorVisual {
 		JLabel label = new JLabel() {
 
 			public String getText() {
-				return Lang.msg("110");
+				return Lang.msg("110", new String[] {
+						String.valueOf(Constantes.MIN_VOLTAS),
+						String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 		painelInicio.add(label);
@@ -1279,7 +1282,9 @@ public class GerenciadorVisual {
 		JLabel label = new JLabel() {
 
 			public String getText() {
-				return Lang.msg("110");
+				return Lang.msg("110", new String[] {
+						String.valueOf(Constantes.MIN_VOLTAS),
+						String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 		grid.add(label);
