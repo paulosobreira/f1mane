@@ -41,6 +41,8 @@ public class PainelCampeonato extends JPanel {
 	private TableModel corridasTableModel;
 	private JTable pilotosTable;
 	private AbstractTableModel pilotosTableModel;
+	private JTable jogadoresTable;
+	private AbstractTableModel jogadoresTableModel;
 	private JTable contrutoresTable;
 	private AbstractTableModel contrutoresTableModel;
 
@@ -48,16 +50,19 @@ public class PainelCampeonato extends JPanel {
 		super();
 		this.controleCampeonato = controleCampeonato;
 		controleCampeonato.geraListaPilotosPontos();
+		controleCampeonato.geraListaJogadoresPontos();
 		controleCampeonato.geraListaContrutoresPontos();
 		this.compPai = controleCampeonato.getCompPai();
 		this.campeonato = controleCampeonato.getCampeonato();
 		this.setLayout(new BorderLayout());
 		JPanel dadosCampeonato = gerarPanelDadosCampeonato();
 		JPanel corridas = gerarPanelCorridas();
+		JPanel ptsJogador = gerarPanelJogadores();
 		JPanel ptsPilotos = gerarPanelPilotos();
 		JPanel ptsConstrutores = gerarPanelConstrutores();
-		JPanel grid = new JPanel(new GridLayout(1, 2));
+		JPanel grid = new JPanel(new GridLayout(1, 3));
 		grid.add(ptsPilotos);
+		grid.add(ptsJogador);
 		grid.add(ptsConstrutores);
 
 		JPanel panelBorder = new JPanel(new BorderLayout());
@@ -152,7 +157,7 @@ public class PainelCampeonato extends JPanel {
 		JScrollPane jScrollPane = new JScrollPane(contrutoresTable) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(300, 150);
+				return new Dimension(200, 150);
 			}
 		};
 		JPanel jPanel = new JPanel();
@@ -231,7 +236,7 @@ public class PainelCampeonato extends JPanel {
 		JScrollPane jScrollPane = new JScrollPane(pilotosTable) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(300, 150);
+				return new Dimension(200, 150);
 			}
 		};
 		JPanel jPanel = new JPanel();
@@ -239,6 +244,85 @@ public class PainelCampeonato extends JPanel {
 			@Override
 			public String getTitle() {
 				return Lang.msg("294");
+			}
+		});
+		jPanel.add(jScrollPane);
+		return jPanel;
+	}
+
+	private JPanel gerarPanelJogadores() {
+
+		jogadoresTable = new JTable() {
+		};
+		jogadoresTableModel = new AbstractTableModel() {
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				if (controleCampeonato.getJogadoresPontos() == null
+						|| controleCampeonato.getJogadoresPontos().isEmpty()) {
+					return "";
+				}
+				PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) controleCampeonato
+						.getJogadoresPontos().get(rowIndex);
+				switch (columnIndex) {
+				case 0:
+					return pilotosPontosCampeonato.getNome();
+				case 1:
+					return new Integer(pilotosPontosCampeonato.getPontos());
+				case 2:
+					return new Integer(pilotosPontosCampeonato.getVitorias());
+				default:
+					return "";
+				}
+
+			}
+
+			@Override
+			public int getRowCount() {
+				if (controleCampeonato.getJogadoresPontos() == null
+						|| controleCampeonato.getJogadoresPontos().isEmpty()) {
+					return 0;
+				}
+
+				return controleCampeonato.getJogadoresPontos().size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 3;
+			}
+
+			@Override
+			public String getColumnName(int columnIndex) {
+
+				switch (columnIndex) {
+				case 0:
+					/* jogador */
+					return Lang.msg("162");
+				case 1:
+					/* "Pontos" */
+					return Lang.msg("161");
+				case 2:
+					/* "Vitorias" */
+					return Lang.msg("289");
+				default:
+					return "";
+				}
+
+			}
+		};
+		jogadoresTable.setModel(jogadoresTableModel);
+		JScrollPane jScrollPane = new JScrollPane(jogadoresTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(200, 150);
+			}
+		};
+		JPanel jPanel = new JPanel();
+		jPanel.setBorder(new TitledBorder("jogadores ") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("117");
 			}
 		});
 		jPanel.add(jScrollPane);
@@ -487,7 +571,15 @@ public class PainelCampeonato extends JPanel {
 
 	private JPanel gerarPanelDadosCampeonato() {
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridLayout(1, 6));
+		p1.setLayout(new GridLayout(1, 8));
+
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("dono");
+			}
+		});
+		p1.add(new JLabel(campeonato.getJogadorDadosSrv().getNome()));
 
 		p1.add(new JLabel() {
 			@Override
