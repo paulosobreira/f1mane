@@ -47,5 +47,6 @@ public class Comandos {
 	public static final String CRIAR_CAMPEONATO = "37";
 	public static final String OK = "OK";
 	public static final String LISTAR_CAMPEONATOS = "38";
+	public static final String OBTER_CAMPEONATO = "39";
 
 }

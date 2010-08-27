@@ -18,6 +18,7 @@ public class DadosCorridaCampeonato extends F1ManeDados {
 
 	private int posicao;
 	private String piloto;
+	private String jogador;
 	private String carro;
 	private String tpPneu;
 	private String voltaMaisRapida;
@@ -33,6 +34,14 @@ public class DadosCorridaCampeonato extends F1ManeDados {
 
 	public CorridaCampeonato getCorridaCampeonato() {
 		return corridaCampeonato;
+	}
+
+	public String getJogador() {
+		return jogador;
+	}
+
+	public void setJogador(String jogador) {
+		this.jogador = jogador;
 	}
 
 	public void setCorridaCampeonato(CorridaCampeonato corridaCampeonato) {

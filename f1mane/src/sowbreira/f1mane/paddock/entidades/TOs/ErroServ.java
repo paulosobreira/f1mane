@@ -4,26 +4,31 @@ import java.io.Serializable;
 
 public class ErroServ implements Serializable {
 
-	private Exception exception;
+	private String erroInfo;
 
 	public ErroServ(String desc) {
-		exception = new Exception(desc);
+		erroInfo = desc;
 	}
 
-	public ErroServ(Exception exception) {
-		super();
-		this.exception = exception;
-	}
-
-	public String obterErroFormatado() {
+	private String formataErro(Throwable exception) {
 		StackTraceElement[] trace = exception.getStackTrace();
 		StringBuffer retorno = new StringBuffer();
-		retorno.append("ERRO NO SERVIDOR :" + exception.getMessage() + "\n");
+		retorno.append("ERRO :" + exception.getMessage() + "\n");
+		retorno.append("ERRO :" + exception.getClass() + "\n");
 		int size = ((trace.length > 10) ? 10 : trace.length);
 
 		for (int i = 0; i < size; i++)
 			retorno.append(trace[i] + "\n");
 		return retorno.toString();
+
+	}
+
+	public ErroServ(Exception exception) {
+		erroInfo = formataErro(exception);
+	}
+
+	public String obterErroFormatado() {
+		return erroInfo;
 	}
 
 }

@@ -33,6 +33,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Html;
 import br.nnpe.Logger;
 
 /**
@@ -159,8 +160,8 @@ public class PaddockWindow {
 	}
 
 	private void gerarAcoes() {
-		campeonato.setEnabled(false);
-		verCampeonato.setEnabled(false);
+		// campeonato.setEnabled(false);
+		// verCampeonato.setEnabled(false);
 
 		ActionListener actionListener = new ActionListener() {
 
@@ -429,8 +430,8 @@ public class PaddockWindow {
 			textAreaChat.append(dadosPaddock.getLinhaChat() + "\n");
 			textAreaChat.setCaretPosition(textAreaChat.getText().length());
 			chatTimes.add(dadosPaddock.getDataTime());
-			controlePaddockCliente.adicionaTextoJogo(dadosPaddock
-					.getLinhaChat());
+			controlePaddockCliente.adicionaTextoJogo(Html.bold(dadosPaddock
+					.getLinhaChat()));
 		}
 	}
 
@@ -455,7 +456,7 @@ public class PaddockWindow {
 
 	public JPanel gerarPainelJogo(DetalhesJogo detalhesJogo) {
 		JPanel panelJogo = new JPanel();
-		panelJogo.setLayout(new GridLayout(11, 2));
+		panelJogo.setLayout(new GridLayout(12, 2));
 		panelJogo.add(new JLabel("Criador : ") {
 			public String getText() {
 				return Lang.msg("190");
@@ -538,6 +539,16 @@ public class PaddockWindow {
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo()
 				.isSemTrocaPeneu() ? Lang.msg("SIM") : Lang.msg("NAO")));
+
+		panelJogo.add(new JLabel("nomeCampeonato") {
+
+			public String getText() {
+
+				return Lang.msg("nomeCampeonato");
+			}
+		});
+		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo()
+				.getNomeCampeonato()));
 
 		return panelJogo;
 	}
