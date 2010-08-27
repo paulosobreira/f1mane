@@ -128,7 +128,7 @@ public class ControleClassificacao {
 
 	}
 
-	private void processarPontos(Map mapVoltasJogadoresOnline, Piloto piloto,
+	public void processarPontos(Map mapVoltasJogadoresOnline, Piloto piloto,
 			CorridasDadosSrv corridasDadosSrv) {
 		double numVoltas = corridasDadosSrv.getNumVoltas();
 		double voltasCompletadas = 0;
@@ -176,7 +176,7 @@ public class ControleClassificacao {
 		// Logger.logar(Math.ceil(4.0 / 6.0));
 	}
 
-	private int gerarPontos(Piloto p) {
+	public int gerarPontos(Piloto p) {
 		if (p.getPosicao() == 1) {
 			return 10;
 		} else if (p.getPosicao() == 2) {

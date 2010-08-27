@@ -53,7 +53,7 @@ public class ControlePaddockServidor {
 		controleCampeonatoServidor = new ControleCampeonatoServidor(
 				controlePersistencia);
 		controleJogosServer = new ControleJogosServer(dadosPaddock,
-				controleClassificacao);
+				controleClassificacao, controleCampeonatoServidor);
 
 	}
 
@@ -274,8 +274,14 @@ public class ControlePaddockServidor {
 			return criarCampeonato(clientPaddockPack);
 		} else if (Comandos.LISTAR_CAMPEONATOS.equals(commando)) {
 			return listarCampeonatos(clientPaddockPack);
+		} else if (Comandos.OBTER_CAMPEONATO.equals(commando)) {
+			return obterCampeonato(clientPaddockPack);
 		}
 		return "Comando invalido";
+	}
+
+	private Object obterCampeonato(ClientPaddockPack clientPaddockPack) {
+		return controleCampeonatoServidor.obterCampeonato(clientPaddockPack);
 	}
 
 	private Object listarCampeonatos(ClientPaddockPack clientPaddockPack) {

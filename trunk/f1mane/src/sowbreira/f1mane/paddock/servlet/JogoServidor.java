@@ -44,11 +44,17 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private int luzes = 5;
 	private ControleJogosServer controleJogosServer;
 	private ControleClassificacao controleClassificacao;
+	private ControleCampeonatoServidor controleCampeonatoServidor;
 	private boolean disparouInicio;
 	private TravadaRoda travadaRoda;
 
 	public boolean isCorridaIniciada() {
 		return disparouInicio;
+	}
+
+	public void setControleCampeonatoServidor(
+			ControleCampeonatoServidor controleCampeonatoServidor) {
+		this.controleCampeonatoServidor = controleCampeonatoServidor;
 	}
 
 	public void processaNovaVolta() {
@@ -494,6 +500,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					controleClassificacao.processaCorrida(tempoInicio,
 							tempoFim, mapVoltasJogadoresOnline, pilotos,
 							dadosCriarJogo);
+					if (!Util.isNullOrEmpty(dadosCriarJogo.getNomeCampeonato())) {
+						controleCampeonatoServidor.processaCorrida(tempoInicio,
+								tempoFim, mapVoltasJogadoresOnline, pilotos,
+								dadosCriarJogo, controleClassificacao);
+					}
+
 					Thread.sleep(60000);
 					controleEstatisticas.setConsumidorAtivo(false);
 					controleJogosServer.removerJogo(JogoServidor.this);

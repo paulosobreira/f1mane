@@ -366,11 +366,11 @@ public class ControlePaddockCliente {
 			Logger.logar("TEmporada cliente Entrar jogo " + "t" + temporada);
 			jogoCliente = new JogoCliente("t" + temporada);
 			jogoCliente.setMainFrame(mainFrame);
-			PainelEntradaCliente painelCriacaoCorridaSimples = new PainelEntradaCliente(
+			PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
 					jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
 					mainFrame, sessaoCliente.getNomeJogador());
 
-			if (!painelCriacaoCorridaSimples.gerarDadosEntrarJogo(
+			if (!painelEntradaCliente.gerarDadosEntrarJogo(
 					dadosParticiparJogo, panelJogoCriado)) {
 				return;
 			}
@@ -747,7 +747,7 @@ public class ControlePaddockCliente {
 				logar();
 				return;
 			}
-			String temporada = campeonato.getTemporada();
+			String temporada = "t" + campeonato.getTemporada();
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 					Comandos.CRIAR_JOGO, sessaoCliente);
 			Logger.logar("criarJogo cliente " + temporada);

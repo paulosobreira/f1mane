@@ -29,6 +29,7 @@ import org.hibernate.criterion.Restrictions;
 
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.F1ManeDados;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
@@ -36,6 +37,7 @@ import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 14:19:54
@@ -456,5 +458,27 @@ public class ControlePersistencia {
 
 	public List<Campeonato> obterListaCampeonatos() {
 		return getSession().createCriteria(Campeonato.class).list();
+	}
+
+	public Campeonato pesquisaCampeonato(String campString, boolean cliente) {
+		List campeonatos = getSession().createCriteria(Campeonato.class).add(
+				Restrictions.eq("nome", campString)).list();
+		Campeonato campeonato = (Campeonato) (campeonatos.isEmpty() ? null
+				: campeonatos.get(0));
+		if (cliente) {
+			for (CorridaCampeonato corridaCampeonato : campeonato
+					.getCorridaCampeonatos()) {
+				corridaCampeonato.setDadosCorridaCampeonatos(Util
+						.removePersistBag(corridaCampeonato
+								.getDadosCorridaCampeonatos(), session));
+			}
+			campeonato.setCorridaCampeonatos(Util.removePersistBag(campeonato
+					.getCorridaCampeonatos(), session));
+			campeonato.getJogadorDadosSrv().setCorridas(
+					Util.removePersistBag(campeonato.getJogadorDadosSrv()
+							.getCorridas(), session));
+			session.evict(campeonato);
+		}
+		return campeonato;
 	}
 }

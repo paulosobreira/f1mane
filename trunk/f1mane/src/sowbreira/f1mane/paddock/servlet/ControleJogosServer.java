@@ -36,6 +36,7 @@ public class ControleJogosServer {
 	private DadosPaddock dadosPaddock;
 	private ControleClassificacao controleClassificacao;
 	private Map mapaJogosCriados = new HashMap();
+	private ControleCampeonatoServidor controleCampeonatoServidor;
 	public static int MaxJogo = 1;
 	public static int qtdeJogos = 0;
 
@@ -43,10 +44,12 @@ public class ControleJogosServer {
 	 * @param dadosPaddock
 	 */
 	public ControleJogosServer(DadosPaddock dadosPaddock,
-			ControleClassificacao controleClassificacao) {
+			ControleClassificacao controleClassificacao,
+			ControleCampeonatoServidor controleCampeonatoServidor) {
 		super();
 		this.dadosPaddock = dadosPaddock;
 		this.controleClassificacao = controleClassificacao;
+		this.controleCampeonatoServidor = controleCampeonatoServidor;
 	}
 
 	public Map getMapaJogosCriados() {
@@ -107,6 +110,7 @@ public class ControleJogosServer {
 				.getNomeJogador(), clientPaddockPack.getDadosJogoCriado());
 		jogoServidor.setControleJogosServer(this);
 		jogoServidor.setControleClassificacao(controleClassificacao);
+		jogoServidor.setControleCampeonatoServidor(controleCampeonatoServidor);
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
 		srvPaddockPack.setNomeJogoCriado(jogoServidor.getNomeJogoServidor());

@@ -35,7 +35,7 @@ import br.nnpe.Util;
 public class PainelEntradaCliente {
 	private JSpinner spinnerQtdeVoltas;
 	private JTextField nomeJogador;
-	private JTextField senhaJogo;
+	private JTextField nomeCampeonato;
 	private JComboBox comboBoxPilotoSelecionado;
 	private JComboBox comboBoxCircuito;
 	private JComboBox comboBoxNivelCorrida;
@@ -81,9 +81,7 @@ public class PainelEntradaCliente {
 		if (!ControleJogoLocal.VALENDO) {
 			spinnerQtdeVoltas.setValue(new Integer(30));
 		}
-		if(campeonato!=null){
-			//TODO
-		}
+
 		painelInicio.add(spinnerQtdeVoltas);
 
 		painelInicio.add(new JLabel() {
@@ -97,15 +95,15 @@ public class PainelEntradaCliente {
 		nomeJogador.setEditable(false);
 		painelInicio.add(nomeJogador);
 
-		painelInicio.add(new JLabel("Senha(Jogo Privado):") {
+		painelInicio.add(new JLabel("Campeonato:") {
 			@Override
 			public String getText() {
-				return Lang.msg("232");
+				return Lang.msg("nomeCampeonato");
 			}
 		});
-		senhaJogo = new JTextField();
-		senhaJogo.setEditable(false);
-		painelInicio.add(senhaJogo);
+		nomeCampeonato = new JTextField();
+		nomeCampeonato.setEditable(false);
+		painelInicio.add(nomeCampeonato);
 
 		comboBoxPilotoSelecionado = new JComboBox();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
@@ -273,10 +271,25 @@ public class PainelEntradaCliente {
 		spinnerPotenciaPadraoCarros = new JSpinner();
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
 
+		if (campeonato != null) {
+			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
+			spinnerQtdeVoltas.setEnabled(false);
+			comboBoxNivelCorrida.setSelectedItem(Lang
+					.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida.setEnabled(false);
+			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
+			semReabastacimento.setEnabled(false);
+			semTrocaPneu.setSelected(campeonato.isSemTrocaPneus());
+			semTrocaPneu.setEnabled(false);
+			nomeCampeonato.setText(campeonato.getNome());
+		}
+
 	}
 
 	public static void main(String[] args) {
-		System.out.println();
+		PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
+				new ArrayList(), new Hashtable(), null, "teste");
+		painelEntradaCliente.gerarDadosCriarJogo(new DadosCriarJogo());
 	}
 
 	public boolean gerarDadosCriarJogo(DadosCriarJogo dadosCriarJogo) {
@@ -357,7 +370,7 @@ public class PainelEntradaCliente {
 		if (combustivel.intValue() < 10) {
 			combustivel = new Integer(10);
 		}
-		dadosParticiparJogo.setSenha(senhaJogo.getText());
+		dadosParticiparJogo.setSenha(nomeCampeonato.getText());
 		dadosParticiparJogo.setTpPnueu(tpPnueu);
 		dadosParticiparJogo.setAsa(asa);
 		dadosParticiparJogo.setCombustivel(combustivel);
@@ -392,22 +405,7 @@ public class PainelEntradaCliente {
 	}
 
 	private void gerarPainelParticiparJogo(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(6, 2));
-
-		painelInicio.add(new JLabel("Apelido :"));
-		nomeJogador = new JTextField(nomeCriador);
-		nomeJogador.setEditable(false);
-		painelInicio.add(nomeJogador);
-
-		painelInicio.add(new JLabel("Senha(Jogo Privado) :") {
-			@Override
-			public String getText() {
-				return Lang.msg("232");
-			}
-		});
-		senhaJogo = new JTextField();
-		senhaJogo.setEditable(false);
-		painelInicio.add(senhaJogo);
+		painelInicio.setLayout(new GridLayout(4, 2));
 
 		comboBoxPilotoSelecionado = new JComboBox();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {

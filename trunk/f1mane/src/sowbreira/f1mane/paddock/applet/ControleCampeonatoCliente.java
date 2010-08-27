@@ -363,8 +363,20 @@ public class ControleCampeonatoCliente {
 							.getSessaoCliente());
 			clientPaddockPack.setDataObject(campeonato);
 			controlePaddockCliente.enviarObjeto(clientPaddockPack);
+			clientPaddockPack = new ClientPaddockPack();
+			clientPaddockPack.setComando(Comandos.OBTER_CAMPEONATO);
+			clientPaddockPack.setDataObject(campeonato.getNome());
+			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
+			if (controlePaddockCliente.retornoNaoValido(ret)) {
+				return;
+			}
+			if (ret == null) {
+				JOptionPane.showMessageDialog(this.compPai, Lang.msg("062"),
+						"Erro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			this.campeonato = (Campeonato) ret;
 		}
-		this.campeonato = campeonato;
 		new PainelCampeonato(this);
 	}
 
@@ -402,7 +414,21 @@ public class ControleCampeonatoCliente {
 		JComboBox comboBox = new JComboBox((String[]) ret);
 		JOptionPane.showMessageDialog(this.compPai, comboBox, Lang
 				.msg("listaCampeonatos"), JOptionPane.INFORMATION_MESSAGE);
-
+		String campeonatoStr = (String) comboBox.getSelectedItem();
+		clientPaddockPack = new ClientPaddockPack();
+		clientPaddockPack.setComando(Comandos.OBTER_CAMPEONATO);
+		clientPaddockPack.setDataObject(campeonatoStr);
+		ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
+		if (controlePaddockCliente.retornoNaoValido(ret)) {
+			return;
+		}
+		if (ret == null) {
+			JOptionPane.showMessageDialog(this.compPai, Lang.msg("062"),
+					"Erro", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		this.campeonato = (Campeonato) ret;
+		new PainelCampeonato(this);
 	}
 
 	public void proximaCorrida() {
