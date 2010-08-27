@@ -31,4 +31,21 @@ public class PilotosPontosCampeonato {
 		this.pontos = pontos;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof PilotosPontosCampeonato) {
+			PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) obj;
+			if (nome != null)
+				return nome.equals(pilotosPontosCampeonato.getNome());
+		}
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		if (nome != null) {
+			return nome.hashCode();
+		}
+		return super.hashCode();
+	}
 }
