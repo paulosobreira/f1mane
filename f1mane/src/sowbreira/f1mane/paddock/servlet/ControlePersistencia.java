@@ -465,6 +465,9 @@ public class ControlePersistencia {
 				Restrictions.eq("nome", campString)).list();
 		Campeonato campeonato = (Campeonato) (campeonatos.isEmpty() ? null
 				: campeonatos.get(0));
+		if (campeonato == null) {
+			return null;
+		}
 		if (cliente) {
 			for (CorridaCampeonato corridaCampeonato : campeonato
 					.getCorridaCampeonatos()) {

@@ -47,6 +47,8 @@ public class PainelCampeonato extends JPanel {
 	public PainelCampeonato(ControleCampeonatoCliente controleCampeonato) {
 		super();
 		this.controleCampeonato = controleCampeonato;
+		controleCampeonato.geraListaPilotosPontos();
+		controleCampeonato.geraListaContrutoresPontos();
 		this.compPai = controleCampeonato.getCompPai();
 		this.campeonato = controleCampeonato.getCampeonato();
 		this.setLayout(new BorderLayout());
