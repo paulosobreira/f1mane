@@ -65,7 +65,8 @@ public class ControleCampeonatoServidor {
 			List<CorridaCampeonato> corridaCampeonatos = campeonato
 					.getCorridaCampeonatos();
 			for (CorridaCampeonato corridaCampeonato : corridaCampeonatos) {
-				if (corridaCampeonato.getTempoFim() == null) {
+				if (corridaCampeonato.getTempoFim() == null
+						|| corridaCampeonato.getTempoFim() == 0) {
 					return true;
 				}
 			}
@@ -92,10 +93,21 @@ public class ControleCampeonatoServidor {
 			Object[] row = new Object[3];
 			row[0] = campeonato.getNome();
 			row[1] = campeonato.getJogadorDadosSrv().getNome();
-			row[2] = verificaCampeonatoEmAberto(campeonato.getJogadorDadosSrv());
+			row[2] = verificaCampeonatoConcluido(campeonato);
 			retorno.add(row);
 		}
 		return retorno;
+	}
+
+	public boolean verificaCampeonatoConcluido(Campeonato campeonato) {
+		List<CorridaCampeonato> corridaCampeonatos = campeonato
+				.getCorridaCampeonatos();
+		for (CorridaCampeonato corridaCampeonato : corridaCampeonatos) {
+			if (corridaCampeonato.getTempoFim() == null) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public Object obterCampeonato(ClientPaddockPack clientPaddockPack) {
