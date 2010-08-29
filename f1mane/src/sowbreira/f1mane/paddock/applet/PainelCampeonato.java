@@ -339,15 +339,14 @@ public class PainelCampeonato extends JPanel {
 				if (e.getClickCount() == 2) {
 					String corrida = (String) corridasTableModel.getValueAt(
 							corridasTable.getSelectedRow(), 0);
-					int ret = JOptionPane.showConfirmDialog(corridasTable, Lang
-							.msg("300", new String[] { corrida }), Lang
-							.msg("299"), JOptionPane.YES_NO_OPTION);
+					int ret = JOptionPane.showConfirmDialog(corridasTable,
+							Lang.msg("300", new String[] { corrida }),
+							Lang.msg("299"), JOptionPane.YES_NO_OPTION);
 					if (ret == JOptionPane.YES_OPTION) {
 						gerarPainelDetalhesCorrida(corrida, corridasTable);
 					}
 				}
 			}
-
 		});
 
 		corridasTableModel = new AbstractTableModel() {
@@ -432,7 +431,7 @@ public class PainelCampeonato extends JPanel {
 		JScrollPane jScrollPane = new JScrollPane(corridasTable) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(600, 150);
+				return new Dimension(640, 150);
 			}
 		};
 		JPanel jPanel = new JPanel();
@@ -565,12 +564,19 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		jPanel.add(jScrollPane);
-		JOptionPane.showMessageDialog(corridasTable, jPanel, Lang.msg("300",
-				new String[] { corrida }), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(corridasTable, jPanel,
+				Lang.msg("300", new String[] { corrida }),
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private JPanel gerarPanelDadosCampeonato() {
 		JPanel p1 = new JPanel();
+		p1.setBorder(new TitledBorder("Dados Campeonato") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("dadosCampeonato");
+			}
+		});
 		p1.setLayout(new GridLayout(1, 8));
 
 		p1.add(new JLabel() {

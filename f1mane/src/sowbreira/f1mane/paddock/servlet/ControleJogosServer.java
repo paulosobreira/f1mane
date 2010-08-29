@@ -25,9 +25,11 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:21:11
@@ -37,6 +39,7 @@ public class ControleJogosServer {
 	private ControleClassificacao controleClassificacao;
 	private Map mapaJogosCriados = new HashMap();
 	private ControleCampeonatoServidor controleCampeonatoServidor;
+	private ControlePersistencia controlePersistencia;
 	public static int MaxJogo = 1;
 	public static int qtdeJogos = 0;
 
@@ -45,11 +48,13 @@ public class ControleJogosServer {
 	 */
 	public ControleJogosServer(DadosPaddock dadosPaddock,
 			ControleClassificacao controleClassificacao,
-			ControleCampeonatoServidor controleCampeonatoServidor) {
+			ControleCampeonatoServidor controleCampeonatoServidor,
+			ControlePersistencia controlePersistencia) {
 		super();
 		this.dadosPaddock = dadosPaddock;
 		this.controleClassificacao = controleClassificacao;
 		this.controleCampeonatoServidor = controleCampeonatoServidor;
+		this.controlePersistencia = controlePersistencia;
 	}
 
 	public Map getMapaJogosCriados() {
@@ -63,6 +68,18 @@ public class ControleJogosServer {
 	public Object criarJogo(ClientPaddockPack clientPaddockPack) {
 		if (verificaJaEmAlgumJogo(clientPaddockPack.getSessaoCliente())) {
 			return new MsgSrv(Lang.msg("203"));
+
+		}
+		if (!Util.isNullOrEmpty(clientPaddockPack.getDadosJogoCriado()
+				.getNomeCampeonato())) {
+			Campeonato campeonato = controlePersistencia.pesquisaCampeonato(
+					clientPaddockPack.getDadosJogoCriado().getNomeCampeonato(),
+					false);
+			if (campeonato != null
+					&& !clientPaddockPack.getSessaoCliente().getNomeJogador()
+							.equals(campeonato.getJogadorDadosSrv().getNome())) {
+				return new MsgSrv(Lang.msg("somenteDonoPodeCriar"));
+			}
 
 		}
 		if ((mapaJogosCriados.size() + 1) > MaxJogo) {
@@ -86,10 +103,16 @@ public class ControleJogosServer {
 			if (carreiraDadosSrv.isModoCarreira()) {
 				if (InterfaceJogo.DIFICIL.equals(clientPaddockPack
 						.getDadosJogoCriado().getNivelCorrida())
-						&& verificaExcedePotencia(jogoServidor
-								.getMediaPontecia(), carreiraDadosSrv
-								.getPtsCarro(), jogoServidor.getNiveljogo())) {
+						&& verificaExcedePotencia(
+								jogoServidor.getMediaPontecia(),
+								carreiraDadosSrv.getPtsCarro(),
+								jogoServidor.getNiveljogo())) {
 					return new MsgSrv(Lang.msg("261"));
+				}
+				if (!Util.isNullOrEmpty(clientPaddockPack.getDadosJogoCriado()
+						.getNomeCampeonato())) {
+					return new MsgSrv(
+							Lang.msg("modoCarreiraNaoPermitidoCampeonato"));
 				}
 			}
 			jogoServidor.setNomeCriador(clientPaddockPack.getSessaoCliente()
@@ -164,8 +187,8 @@ public class ControleJogosServer {
 			}
 			if (jogoServidor.getNiveljogo() == InterfaceJogo.DIFICIL_NV
 					&& verificaExcedePotencia(jogoServidor.getMediaPontecia(),
-							carreiraDadosSrv.getPtsCarro(), jogoServidor
-									.getNiveljogo())) {
+							carreiraDadosSrv.getPtsCarro(),
+							jogoServidor.getNiveljogo())) {
 				return new MsgSrv(Lang.msg("261"));
 			}
 		}
@@ -349,8 +372,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.setAgressivo(!piloto.isAgressivo());
 				break;
 			}
@@ -364,8 +387,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.getCarro().mudarGiroMotor(
 						clientPaddockPack.getGiroMotor());
 				break;
@@ -380,8 +403,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				if (!piloto.entrouNoBox()) {
 					piloto.setBox(!piloto.isBox());
 					piloto.setTipoPneuBox(clientPaddockPack.getTpPneuBox());
@@ -538,8 +561,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.setModoPilotagem(clientPaddockPack.getModoPilotagem());
 				break;
 			}
@@ -553,8 +576,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.mudarAutoTracado();
 				break;
 			}
@@ -568,8 +591,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.mudarTracado(clientPaddockPack.getTracado(),
 						jogoServidor);
 				break;

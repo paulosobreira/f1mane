@@ -1,10 +1,12 @@
 package sowbreira.f1mane.paddock.servlet;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
@@ -40,6 +42,12 @@ public class ControleCampeonatoServidor {
 			return (new MsgSrv(Lang.msg("238")));
 		}
 		Campeonato campeonato = (Campeonato) clientPaddockPack.getDataObject();
+		if (verifircaNomeCampeonato(campeonato)) {
+			return (new MsgSrv(Lang.msg("nomeCampeonatoNaoDisponivel")));
+		}
+		if (verificaCampeonatoEmAberto(jogadorDadosSrv)) {
+			return (new MsgSrv(Lang.msg("jogadorTemCampeonatoEmAberto")));
+		}
 		campeonato.setJogadorDadosSrv(jogadorDadosSrv);
 		try {
 			controlePersistencia.gravarDados(campeonato);
@@ -49,14 +57,45 @@ public class ControleCampeonatoServidor {
 		return (new MsgSrv(Lang.msg("campeonatoCriado")));
 	}
 
+	private boolean verificaCampeonatoEmAberto(JogadorDadosSrv jogadorDadosSrv) {
+		List campeonatos = controlePersistencia
+				.pesquisaCampeonatos(jogadorDadosSrv);
+		for (Iterator iterator = campeonatos.iterator(); iterator.hasNext();) {
+			Campeonato campeonato = (Campeonato) iterator.next();
+			List<CorridaCampeonato> corridaCampeonatos = campeonato
+					.getCorridaCampeonatos();
+			for (CorridaCampeonato corridaCampeonato : corridaCampeonatos) {
+				if (corridaCampeonato.getTempoFim() == null) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean verifircaNomeCampeonato(Campeonato campeonato) {
+		String nome = campeonato.getNome();
+		if (Util.isNullOrEmpty(nome)) {
+			return true;
+		}
+		Campeonato campeonatoBanco = controlePersistencia.pesquisaCampeonato(
+				nome, false);
+		return campeonatoBanco != null;
+	}
+
 	public Object listarCampeonatos() {
 		List<Campeonato> campeonatos = controlePersistencia
 				.obterListaCampeonatos();
-		String[] ret = new String[campeonatos.size()];
-		for (int i = 0; i < ret.length; i++) {
-			ret[i] = campeonatos.get(i).getNome();
+		List retorno = new ArrayList();
+		for (Iterator iterator = campeonatos.iterator(); iterator.hasNext();) {
+			Campeonato campeonato = (Campeonato) iterator.next();
+			Object[] row = new Object[3];
+			row[0] = campeonato.getNome();
+			row[1] = campeonato.getJogadorDadosSrv().getNome();
+			row[2] = verificaCampeonatoEmAberto(campeonato.getJogadorDadosSrv());
+			retorno.add(row);
 		}
-		return ret;
+		return retorno;
 	}
 
 	public Object obterCampeonato(ClientPaddockPack clientPaddockPack) {
@@ -118,14 +157,11 @@ public class ControleCampeonatoServidor {
 			dadosCorridaCampeonato
 					.setQtdeParadasBox(piloto.getQtdeParadasBox());
 			dadosCorridaCampeonato.setDesgastePneus(String.valueOf(piloto
-					.getCarro().porcentagemDesgastePeneus()
-					+ "%"));
+					.getCarro().porcentagemDesgastePeneus() + "%"));
 			dadosCorridaCampeonato.setCombustivelRestante(String.valueOf(piloto
-					.getCarro().porcentagemCombustivel()
-					+ "%"));
+					.getCarro().porcentagemCombustivel() + "%"));
 			dadosCorridaCampeonato.setDesgasteMotor(String.valueOf(piloto
-					.getCarro().porcentagemDesgasteMotor()
-					+ "%"));
+					.getCarro().porcentagemDesgasteMotor() + "%"));
 			corridaCampeonatoCorrente.getDadosCorridaCampeonatos().add(
 					dadosCorridaCampeonato);
 			try {
