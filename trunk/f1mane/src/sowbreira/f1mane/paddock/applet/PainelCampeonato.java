@@ -82,10 +82,7 @@ public class PainelCampeonato extends JPanel {
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (ret == JOptionPane.YES_OPTION) {
 			try {
-				if (false) {
-					/**
-					 * Concluido;
-					 */
+				if (controleCampeonato.verificaCampeonatoConcluido()) {
 					JOptionPane.showMessageDialog(compPai, Lang.msg("293"));
 				} else {
 					/**

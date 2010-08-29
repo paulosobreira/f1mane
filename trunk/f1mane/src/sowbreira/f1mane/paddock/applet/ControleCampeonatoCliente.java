@@ -386,8 +386,8 @@ public class ControleCampeonatoCliente {
 				return;
 			}
 			this.campeonato = (Campeonato) ret;
+			new PainelCampeonato(this);
 		}
-		new PainelCampeonato(this);
 	}
 
 	public void iniciaCorrida(String circuito) {
@@ -826,6 +826,17 @@ public class ControleCampeonatoCliente {
 
 	public ArrayList getJogadoresPontos() {
 		return jogadoresPontos;
+	}
+
+	public boolean verificaCampeonatoConcluido() {
+		List<CorridaCampeonato> corridaCampeonatos = campeonato
+				.getCorridaCampeonatos();
+		for (CorridaCampeonato corridaCampeonato : corridaCampeonatos) {
+			if (corridaCampeonato.getTempoFim() == null) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
