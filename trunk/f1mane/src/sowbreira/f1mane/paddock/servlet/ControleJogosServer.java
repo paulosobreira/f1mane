@@ -180,7 +180,8 @@ public class ControleJogosServer {
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 
 		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-				.obterCarreiraSrv(clientPaddockPack.getNomeJogador());
+				.obterCarreiraSrv(clientPaddockPack.getSessaoCliente()
+						.getNomeJogador());
 		if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
@@ -190,6 +191,11 @@ public class ControleJogosServer {
 							carreiraDadosSrv.getPtsCarro(),
 							jogoServidor.getNiveljogo())) {
 				return new MsgSrv(Lang.msg("261"));
+			}
+			if (!Util.isNullOrEmpty(jogoServidor.getDadosCriarJogo()
+					.getNomeCampeonato())) {
+				return new MsgSrv(
+						Lang.msg("modoCarreiraNaoPermitidoCampeonato"));
 			}
 		}
 

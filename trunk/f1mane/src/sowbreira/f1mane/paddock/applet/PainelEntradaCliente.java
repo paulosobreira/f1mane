@@ -374,12 +374,10 @@ public class PainelEntradaCliente {
 		if (combustivel.intValue() < 10) {
 			combustivel = new Integer(10);
 		}
-		dadosParticiparJogo.setSenha(nomeCampeonato.getText());
 		dadosParticiparJogo.setTpPnueu(tpPnueu);
 		dadosParticiparJogo.setAsa(asa);
 		dadosParticiparJogo.setCombustivel(combustivel);
 		dadosParticiparJogo.setPiloto(piloto.getNome());
-
 	}
 
 	public DadosCriarJogo getDadosCriarJogo() {
