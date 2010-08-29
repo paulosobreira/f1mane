@@ -118,7 +118,7 @@ public class PaddockWindow {
 
 		public String getText() {
 
-			return Lang.msg("campeonato");
+			return Lang.msg("268");
 		}
 	};
 

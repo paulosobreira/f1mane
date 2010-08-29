@@ -53,7 +53,8 @@ public class ControlePaddockServidor {
 		controleCampeonatoServidor = new ControleCampeonatoServidor(
 				controlePersistencia);
 		controleJogosServer = new ControleJogosServer(dadosPaddock,
-				controleClassificacao, controleCampeonatoServidor);
+				controleClassificacao, controleCampeonatoServidor,
+				controlePersistencia);
 
 	}
 
@@ -133,8 +134,8 @@ public class ControlePaddockServidor {
 		try {
 			PassGenerator generator = new PassGenerator();
 			String senha = generator.generateIt();
-			mandaMailSenha(jogadorDadosSrv.getNome(), jogadorDadosSrv
-					.getEmail(), senha);
+			mandaMailSenha(jogadorDadosSrv.getNome(),
+					jogadorDadosSrv.getEmail(), senha);
 			jogadorDadosSrv.setSenha(Util.md5(senha));
 			jogadorDadosSrv.setUltimaRecuperacao(System.currentTimeMillis());
 			controlePersistencia.gravarDados(jogadorDadosSrv);
@@ -143,15 +144,15 @@ public class ControlePaddockServidor {
 			if (ServletPaddock.email != null)
 				return new MsgSrv(Lang.msg("237"));
 		}
-		return new MsgSrv(Lang.msg("239", new String[] { jogadorDadosSrv
-				.getEmail() }));
+		return new MsgSrv(Lang.msg("239",
+				new String[] { jogadorDadosSrv.getEmail() }));
 	}
 
 	private boolean validaCapcha(ClientPaddockPack clientPaddockPack) {
 		try {
 			Boolean validateResponseForID = capcha.validateResponseForID(
-					clientPaddockPack.getChaveCapcha(), clientPaddockPack
-							.getTextoCapcha());
+					clientPaddockPack.getChaveCapcha(),
+					clientPaddockPack.getTextoCapcha());
 			return validateResponseForID;
 		} catch (Exception e) {
 			Logger.logarExept(e);
