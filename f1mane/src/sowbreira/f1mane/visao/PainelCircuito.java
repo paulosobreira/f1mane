@@ -558,22 +558,22 @@ public class PainelCircuito extends JPanel {
 
 				Point dest = new Point((int) Util.intervalo(piloto
 						.getTrazeira().getX()
-						- Util.intervalo(2.5, 10), (int) piloto.getTrazeira()
+						- Util.intervalo(2.5, 6), (int) piloto.getTrazeira()
 						.getX()
 						+ piloto.getTrazeira().getWidth()
-						+ Util.intervalo(2.5, 10)), (int) Util.intervalo(piloto
+						+ Util.intervalo(2.5, 6)), (int) Util.intervalo(piloto
 						.getTrazeira().getY()
-						- Util.intervalo(2.5, 10), piloto.getTrazeira().getY()
+						- Util.intervalo(2.5, 6), piloto.getTrazeira().getY()
 						+ piloto.getTrazeira().getHeight()
-						+ Util.intervalo(2.5, 10)));
-				int max = 4;
+						+ Util.intervalo(2.5, 6)));
+				double max = 2.4;
 				if (piloto.getNoAtual().verificaCruvaAlta())
-					max = 2;
+					max = 1.4;
 				if (piloto.getNoAtual().verificaCruvaBaixa()
 						|| piloto.getPtosBox() != 0)
-					max = 1;
+					max = 0.85;
 				Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(
-						origem, dest, 90), (int) Util.intervalo(width * .5,
+						origem, dest, 90), (int) Util.intervalo(width * .25,
 						width * max), origem);
 
 				g2d.drawLine(Util.inte(origem.x * zoom), Util.inte(origem.y
