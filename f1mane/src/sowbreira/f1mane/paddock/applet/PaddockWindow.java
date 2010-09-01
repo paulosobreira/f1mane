@@ -430,8 +430,8 @@ public class PaddockWindow {
 			textAreaChat.append(dadosPaddock.getLinhaChat() + "\n");
 			textAreaChat.setCaretPosition(textAreaChat.getText().length());
 			chatTimes.add(dadosPaddock.getDataTime());
-			controlePaddockCliente.adicionaTextoJogo(Html.bold(dadosPaddock
-					.getLinhaChat()));
+			controlePaddockCliente.adicionaTextoJogo(dadosPaddock
+					.getLinhaChat());
 		}
 	}
 
