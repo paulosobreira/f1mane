@@ -6,6 +6,7 @@
 
 <html>
 <head>
+<title>F1-Mane</title>
 <META NAME="description"
 	CONTENT="Formula 1,FIA,F1,Esportes,Sport,Ferrari,Mercedes,Renault,RedBull">
 
