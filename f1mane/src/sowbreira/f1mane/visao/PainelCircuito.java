@@ -566,12 +566,12 @@ public class PainelCircuito extends JPanel {
 						- Util.intervalo(2.5, 6), piloto.getTrazeira().getY()
 						+ piloto.getTrazeira().getHeight()
 						+ Util.intervalo(2.5, 6)));
-				double max = 2.4;
+				double max = 4;
 				if (piloto.getNoAtual().verificaCruvaAlta())
-					max = 1.4;
+					max = 2;
 				if (piloto.getNoAtual().verificaCruvaBaixa()
 						|| piloto.getPtosBox() != 0)
-					max = 0.85;
+					max = 1;
 				Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(
 						origem, dest, 90), (int) Util.intervalo(width * .25,
 						width * max), origem);
