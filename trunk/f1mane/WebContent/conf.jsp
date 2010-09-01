@@ -23,6 +23,7 @@ A:active {text-decoration: none;
 		color: #0084B4;}
 A:hover {text-decoration: underline overline; color: black;}
 </style>
+<title>F1-Mane</title>
 </head>
 <body>
 <table>
