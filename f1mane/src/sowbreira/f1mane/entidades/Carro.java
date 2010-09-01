@@ -392,7 +392,8 @@ public class Carro implements Serializable {
 			valDesgaste = 0;
 		}
 		double indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
-				* (porcentagemCombustivel() / 100.0);
+				* (porcentagemCombustivel() / (controleJogo
+						.isSemReabastacimento() ? 100.0 : 50.0));
 		if (!controleJogo.isModoQualify()
 				&& piloto.verificaColisaoCarroFrente(controleJogo)) {
 			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 3;
