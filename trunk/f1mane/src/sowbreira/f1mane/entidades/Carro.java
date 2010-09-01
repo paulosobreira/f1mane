@@ -369,26 +369,35 @@ public class Carro implements Serializable {
 			No no, InterfaceJogo controleJogo) {
 		int valDesgaste = 0;
 		int novoModDano = novoModificador;
-		if (giro == 9) {
-			valDesgaste = ((testePotencia() ? 3 : 4) + novoModDano);
-		} else if (giro == 5) {
-			valDesgaste = ((testePotencia() ? 1 : 2) + novoModDano);
+		if (giro == GIRO_MAX_VAL) {
+			if (agressivo)
+				valDesgaste = ((testePotencia() ? 3 : 4) + novoModDano);
+			else
+				valDesgaste = ((testePotencia() ? 2 : 3) + novoModDano);
+		} else if (giro == GIRO_NOR_VAL) {
+			if (agressivo)
+				valDesgaste = ((testePotencia() ? 1 : 2) + novoModDano);
+			else
+				valDesgaste = ((testePotencia() ? 0 : 1) + novoModDano);
 		} else {
-			valDesgaste = ((testePotencia() ? 0 : 1));
-			if (!piloto.isAgressivo()) {
-				valDesgaste = 0;
-			}
+			if (agressivo)
+				valDesgaste = ((testePotencia() ? 0 : 1) + novoModDano);
 		}
 		if (Clima.SOL.equals(controleJogo.getClima())
-				&& Math.random() < (giro / 10.0)) {
+				&& Math.random() < (giro / 10.0) && agressivo) {
 			valDesgaste += 1;
 		}
 
 		if (valDesgaste < 0) {
 			valDesgaste = 0;
 		}
-		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador() * controleJogo
-				.getIndexVelcidadeDaPista());
+		double indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
+				* (porcentagemCombustivel() / 100.0);
+		if (!controleJogo.isModoQualify()
+				&& piloto.verificaColisaoCarroFrente(controleJogo)) {
+			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 3;
+		}
+		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador() * indexVelcidadeDaPista);
 		if (porcentagemDesgasteMotor() < 0) {
 			piloto.setDesqualificado(true);
 			setDanificado(Carro.EXPLODIU_MOTOR);
