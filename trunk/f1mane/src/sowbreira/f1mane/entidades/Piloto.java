@@ -66,6 +66,37 @@ public class Piloto implements Serializable {
 	private Point p1;
 	private Point p2;
 	private Double angulo;
+	private transient int ptosBox;
+	private int posicao;
+	private transient int paradoBox;
+	private int qtdeParadasBox;
+	private boolean desqualificado;
+	private boolean jogadorHumano;
+	private transient boolean recebeuBanderada;
+	private boolean box;
+	private boolean agressivo = true;
+	private Carro carro = new Carro();
+	private No noAtual = new No();
+	private int numeroVolta;
+	private int stress;
+	private transient int ciclosDesconcentrado;
+	private transient int porcentagemCombustUltimaParadaBox;
+	private transient Map msgsBox = new HashMap();
+	private List voltas = new ArrayList();
+	private String modoPilotagem = NORMAL;
+	private Volta voltaAtual;
+	private int ciclosVoltaQualificacao;
+	private Volta ultimaVolta;
+	private Volta melhorVolta;
+	private String segundosParaLider;
+	private String tipoPneuBox;
+	private String asaBox;
+	private int qtdeCombustBox;
+	private long parouNoBoxMilis;
+	private long saiuDoBoxMilis;
+	private int msgTentativaNumVolta = 2;
+	private ArrayList listGanho;
+	private long ultimaMudancaPos;
 
 	public Rectangle getDiateira() {
 		return diateira;
@@ -158,38 +189,6 @@ public class Piloto implements Serializable {
 	public void setUltimoIndice(int ultimoIndice) {
 		this.ultimoIndice = ultimoIndice;
 	}
-
-	private transient int ptosBox;
-	private int posicao;
-	private transient int paradoBox;
-	private int qtdeParadasBox;
-	private boolean desqualificado;
-	private boolean jogadorHumano;
-	private transient boolean recebeuBanderada;
-	private boolean box;
-	private boolean agressivo = true;
-	private Carro carro = new Carro();
-	private No noAtual = new No();
-	private int numeroVolta;
-	private int stress;
-	private transient int ciclosDesconcentrado;
-	private transient int porcentagemCombustUltimaParadaBox;
-	private transient Map msgsBox = new HashMap();
-	private List voltas = new ArrayList();
-	private String modoPilotagem = NORMAL;
-	private Volta voltaAtual;
-	private int ciclosVoltaQualificacao;
-	private Volta ultimaVolta;
-	private Volta melhorVolta;
-	private String segundosParaLider;
-	private String tipoPneuBox;
-	private String asaBox;
-	private int qtdeCombustBox;
-	private long parouNoBoxMilis;
-	private long saiuDoBoxMilis;
-	private int msgTentativaNumVolta = 2;
-	private ArrayList listGanho;
-	private long ultimaMudancaPos;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -554,8 +553,8 @@ public class Piloto implements Serializable {
 	public void processaVelocidade(int index, No no) {
 		if (!InterfaceJogo.VALENDO)
 			return;
-		if (index > 3) {
-			index = 3;
+		if (index > 4) {
+			index = 4;
 		}
 
 		if (velocidadeLargada < 50) {
@@ -563,9 +562,9 @@ public class Piloto implements Serializable {
 			velocidadeLargada = velocidade;
 			return;
 		}
-		int fatorAcel = 10;
+		int fatorAcel = 15;
 		if (getCarro().testePotencia()) {
-			fatorAcel = 20;
+			fatorAcel = 30;
 		}
 		switch (index) {
 		case 0:
@@ -620,7 +619,7 @@ public class Piloto implements Serializable {
 		if (velocidade > 300) {
 			velocidade = 300 + ((int) (Math.random() * 30));
 		}
-		if (isBox()) {
+		if (getPtosBox() != 0) {
 			velocidade = 60;
 		}
 

@@ -391,9 +391,20 @@ public class Carro implements Serializable {
 		if (valDesgaste < 0) {
 			valDesgaste = 0;
 		}
-		double indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
-				* (porcentagemCombustivel() / (controleJogo
-						.isSemReabastacimento() ? 120.0 : 70.0));
+		double indexVelcidadeDaPista = 0;
+		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
+			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
+					* (porcentagemCombustivel() / (controleJogo
+							.isSemReabastacimento() ? 120.0 : 70.0));
+		} else if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
+			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
+					* (porcentagemCombustivel() / (controleJogo
+							.isSemReabastacimento() ? 110.0 : 60.0));
+		} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
+					* (porcentagemCombustivel() / (controleJogo
+							.isSemReabastacimento() ? 100.0 : 50.0));
+		}
 		if (!controleJogo.isModoQualify()
 				&& piloto.verificaColisaoCarroFrente(controleJogo)) {
 			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 3;
@@ -588,9 +599,23 @@ public class Carro implements Serializable {
 		if (Math.random() < val) {
 			desgPneus += 1;
 		}
+		double indexVelcidadeDaPista = 0;
+		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
+			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
+					* (porcentagemCombustivel() / (controleJogo
+							.isSemReabastacimento() ? 120.0 : 70.0));
+		} else if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
+			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
+					* (porcentagemCombustivel() / (controleJogo
+							.isSemReabastacimento() ? 110.0 : 60.0));
+		} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
+					* (porcentagemCombustivel() / (controleJogo
+							.isSemReabastacimento() ? 100.0 : 50.0));
+		}
+
 		double valDesgaste = (desgPneus
-				* controleJogo.getCircuito().getMultiplciador() * controleJogo
-				.getIndexVelcidadeDaPista());
+				* controleJogo.getCircuito().getMultiplciador() * indexVelcidadeDaPista);
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 3;
 		}
@@ -631,6 +656,12 @@ public class Carro implements Serializable {
 			paneSeca = true;
 		}
 		this.danificado = danificado;
+		if (ABANDONOU.equals(danificado) || BATEU_FORTE.equals(danificado)
+				|| PANE_SECA.equals(danificado)
+				|| EXPLODIU_MOTOR.equals(danificado)) {
+			getPiloto().setDesqualificado(true);
+		}
+
 	}
 
 	public boolean verificaDano() {

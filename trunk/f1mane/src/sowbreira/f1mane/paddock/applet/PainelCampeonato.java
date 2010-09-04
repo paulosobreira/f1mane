@@ -66,9 +66,9 @@ public class PainelCampeonato extends JPanel {
 		grid.add(ptsConstrutores);
 
 		JPanel panelBorder = new JPanel(new BorderLayout());
-		panelBorder.add(dadosCampeonato, BorderLayout.SOUTH);
-		panelBorder.add(corridas, BorderLayout.NORTH);
-		panelBorder.add(grid, BorderLayout.CENTER);
+		panelBorder.add(dadosCampeonato, BorderLayout.NORTH);
+		panelBorder.add(corridas, BorderLayout.CENTER);
+		panelBorder.add(grid, BorderLayout.SOUTH);
 		this.add(panelBorder, BorderLayout.CENTER);
 		JPanel label = new JPanel();
 		label.add(new JLabel("Jogar a proxima corrida?") {
@@ -336,9 +336,9 @@ public class PainelCampeonato extends JPanel {
 				if (e.getClickCount() == 2) {
 					String corrida = (String) corridasTableModel.getValueAt(
 							corridasTable.getSelectedRow(), 0);
-					int ret = JOptionPane.showConfirmDialog(corridasTable,
-							Lang.msg("300", new String[] { corrida }),
-							Lang.msg("299"), JOptionPane.YES_NO_OPTION);
+					int ret = JOptionPane.showConfirmDialog(corridasTable, Lang
+							.msg("300", new String[] { corrida }), Lang
+							.msg("299"), JOptionPane.YES_NO_OPTION);
 					if (ret == JOptionPane.YES_OPTION) {
 						gerarPainelDetalhesCorrida(corrida, corridasTable);
 					}
@@ -561,9 +561,8 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		jPanel.add(jScrollPane);
-		JOptionPane.showMessageDialog(corridasTable, jPanel,
-				Lang.msg("300", new String[] { corrida }),
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(corridasTable, jPanel, Lang.msg("300",
+				new String[] { corrida }), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private JPanel gerarPanelDadosCampeonato() {
@@ -574,7 +573,15 @@ public class PainelCampeonato extends JPanel {
 				return Lang.msg("dadosCampeonato");
 			}
 		});
-		p1.setLayout(new GridLayout(1, 8));
+		p1.setLayout(new GridLayout(4, 4));
+
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("nomeCampeonato");
+			}
+		});
+		p1.add(new JLabel(campeonato.getNome()));
 
 		p1.add(new JLabel() {
 			@Override
@@ -606,6 +613,25 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		p1.add(new JLabel(campeonato.getQtdeVoltas().toString()));
+
+		p1.add(new JLabel() {
+
+			public String getText() {
+				return Lang.msg("302");
+			}
+		});
+		p1.add(new JLabel(campeonato.isSemReabasteciemnto() ? Lang.msg("SIM")
+				: Lang.msg("NAO")));
+
+		p1.add(new JLabel() {
+
+			public String getText() {
+				return Lang.msg("303");
+			}
+		});
+		p1.add(new JLabel(campeonato.isSemTrocaPneus() ? Lang.msg("SIM") : Lang
+				.msg("NAO")));
+
 		return p1;
 	}
 }

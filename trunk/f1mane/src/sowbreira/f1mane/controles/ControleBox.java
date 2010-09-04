@@ -211,7 +211,6 @@ public class ControleBox {
 					piloto.setTracado(0);
 				}
 				piloto.processaVelocidade(novosPtsBox, piloto.getNoAtual());
-				// ptosBox = (int) piloto.calculaGanhoMedio(ptosBox);
 
 				piloto.setPtosBox(novosPtsBox);
 			}
