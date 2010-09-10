@@ -758,8 +758,7 @@ public class Piloto implements Serializable {
 				controleJogo.getSetChegada().add(getNome());
 			}
 			double novoModificador = (controleJogo.getCircuito()
-					.getMultiplciador())
-					* (controleJogo.getIndexVelcidadeDaPista());
+					.getMultiplciador());
 			index += novoModificador;
 			ptosPista += novoModificador;
 			return index;
