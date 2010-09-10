@@ -176,7 +176,8 @@ public class ControleBox {
 			if (box.equals(piloto.getNoAtual())
 					|| (cont > (circuito.getEntradaBoxIndex() - 100) && cont < (circuito
 							.getEntradaBoxIndex() + 100))) {
-				piloto.setPtosBox(piloto.getPtosBox() + 1);
+				piloto.setPtosBox(Util.inte((piloto.getPtosBox() + 1)
+						* circuito.getMultiplciador()));
 			} else {
 				box = piloto.getNoAtual();
 				int ptosBox = 0;
