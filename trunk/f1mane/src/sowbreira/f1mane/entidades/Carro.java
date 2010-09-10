@@ -227,15 +227,15 @@ public class Carro implements Serializable {
 		if (combust < (consumoMedioCombust)) {
 			return true;
 		}
-		if ((pneus < 10) || (combust < 7)) {
+		if ((pneus < 10) || (combust < 15)) {
 			return true;
 		}
 
-		if ((pneus < combust) && (pneus < 10)) {
+		if ((pneus < combust) && (pneus < 15)) {
 			return true;
 		}
 
-		if (motor < 7) {
+		if (motor < 14) {
 			return true;
 		}
 		return false;
@@ -255,15 +255,15 @@ public class Carro implements Serializable {
 			return true;
 		}
 
-		if ((pneus < 10) || (combust < 10)) {
+		if ((pneus < 20) || (combust < 20)) {
 			return true;
 		}
 
-		if ((pneus < combust) && (pneus < 5)) {
+		if ((pneus < combust) && (pneus < 15)) {
 			return true;
 		}
 
-		if (motor < 10) {
+		if (motor < 15) {
 			return true;
 		}
 
