@@ -174,8 +174,8 @@ public class ControleBox {
 			List boxList = controleJogo.getNosDoBox();
 			No box = (No) boxEquipes.get(piloto.getCarro());
 			if (box.equals(piloto.getNoAtual())
-					|| (cont > (circuito.getEntradaBoxIndex() - 100) && cont < (circuito
-							.getEntradaBoxIndex() + 100))) {
+					|| (cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
+							.getEntradaBoxIndex() + 50))) {
 				piloto.setPtosBox(Util.inte((piloto.getPtosBox() + 1)
 						* circuito.getMultiplciador()));
 			} else {
