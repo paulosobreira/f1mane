@@ -763,17 +763,16 @@ public class Piloto implements Serializable {
 			ptosPista += novoModificador;
 			return index;
 		}
-		if (!desqualificado) {
-			if (getCarro().isPaneSeca()) {
-				desqualificado = true;
-				controleJogo.infoPrioritaria(Html.txtRedBold(getNome()
-						+ Lang.msg("118")));
-			}
-		} else {
+		if (desqualificado) {
 			return getNoAtual().getIndex();
 		}
+		if (getCarro().isPaneSeca()) {
+			desqualificado = true;
+			controleJogo.infoPrioritaria(Html.txtRedBold(getNome()
+					+ Lang.msg("118")));
+		}
 		verificaMudancaRegime(controleJogo);
-		if (!controleJogo.isModoQualify() || !controleJogo.isSafetyCarNaPista()) {
+		if (!controleJogo.isModoQualify() && !controleJogo.isSafetyCarNaPista()) {
 			tentarPassaPilotoDaFrente(controleJogo);
 		}
 		int novoModificador = calcularNovoModificador(controleJogo);
