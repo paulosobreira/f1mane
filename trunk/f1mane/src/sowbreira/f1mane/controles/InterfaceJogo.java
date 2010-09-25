@@ -236,4 +236,6 @@ public interface InterfaceJogo {
 
 	public List obterNosPista();
 
+	public boolean verificaNoPitLane(Piloto piloto);
+
 }

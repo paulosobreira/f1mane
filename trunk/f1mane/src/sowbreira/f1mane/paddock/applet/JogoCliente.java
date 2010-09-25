@@ -770,4 +770,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public boolean verificaNoPitLane(Piloto piloto) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

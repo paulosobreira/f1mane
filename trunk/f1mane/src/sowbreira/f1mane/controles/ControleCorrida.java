@@ -199,7 +199,9 @@ public class ControleCorrida {
 			if (pilotoNaFrente.equals(piloto)) {
 				continue;
 			}
-			if (((piloto.getPtosBox() > 0)) != (pilotoNaFrente.getPtosBox() > 0)) {
+			if (piloto.getPtosBox() > controleBox.getParadaBox().getIndex()
+					&& ((piloto.getPtosBox() > 0)) != (pilotoNaFrente
+							.getPtosBox() > 0)) {
 				continue;
 			}
 			if ((Carro.BATEU_FORTE.equals(pilotoNaFrente.getCarro()
@@ -246,7 +248,8 @@ public class ControleCorrida {
 						&& pilotoNaFrente.getPtosPista() < piloto
 								.getPtosPista()
 						&& !pilotoNaFrente.isDesqualificado()
-						&& (pilotoNaFrente.getPtosBox() == 0)) {
+						&& (pilotoNaFrente.getPtosBox() > controleBox
+								.getParadaBox().getIndex())) {
 					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2),
 							controleJogo, true);
 					if (piloto.getPosicao() < 8) {

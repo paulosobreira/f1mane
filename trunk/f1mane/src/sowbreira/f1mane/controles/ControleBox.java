@@ -592,4 +592,9 @@ public class ControleBox {
 		}
 		return diferenca;
 	}
+
+	public No getParadaBox() {
+		return paradaBox;
+	}
+	
 }

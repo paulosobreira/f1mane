@@ -1,6 +1,5 @@
 package sowbreira.f1mane.controles;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,7 +22,6 @@ import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Html;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -949,6 +947,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual != null)
 			gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
 
+	}
+
+	@Override
+	public boolean verificaNoPitLane(Piloto piloto) {
+		return piloto.getPtosBox() > controleCorrida.getControleBox()
+				.getParadaBox().getIndex();
 	}
 
 }

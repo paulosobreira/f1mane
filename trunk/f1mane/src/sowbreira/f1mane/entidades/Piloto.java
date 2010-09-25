@@ -796,6 +796,7 @@ public class Piloto implements Serializable {
 		}
 
 		processaVelocidade(novoModificador, noAtual);
+		// System.out.println("novoModificador " + novoModificador);
 		double ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
 		if (!controleJogo.isModoQualify()) {
@@ -856,6 +857,9 @@ public class Piloto implements Serializable {
 		if (getPosicao() != 1) {
 			Piloto pilotoFrente = controleJogo.obterCarroNaFrente(this)
 					.getPiloto();
+			if ((getPtosBox() > 0) != (pilotoFrente.getPtosBox() > 0)) {
+				return ganho;
+			}
 			if ((getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 90)) {
 				return ganho * 0.1;
 			}
@@ -888,7 +892,7 @@ public class Piloto implements Serializable {
 			boolean nosPorximos = Math.abs(getNoAtual().getIndex()
 					- piloto.getNoAtual().getIndex()) > Carro.MEIA_LARGURA;
 
-			if (isBox()) {
+			if (controleJogo.verificaNoPitLane(this)) {
 				nosPorximos = Math.abs(getNoAtual().getIndex()
 						- piloto.getNoAtual().getIndex()) > (Carro.MEIA_LARGURA / 2);
 				msmPista = msmPista && msmTracado;
@@ -1311,7 +1315,7 @@ public class Piloto implements Serializable {
 		if (testeHabilidadePilotoCarro() && agressivo
 				&& noAtual.verificaRetaOuLargada()
 				&& (Math.random() < bonusSecundario)) {
-			return 3;
+			return (Math.random() < bonusSecundario ? 4 : 3);
 		} else if (getCarro().testePotencia()
 				&& noAtual.verificaRetaOuLargada()) {
 			return (Math.random() < bonusSecundario ? 3 : 2);
