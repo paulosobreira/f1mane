@@ -545,7 +545,6 @@ public class Carro implements Serializable {
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
 			if ((no.verificaCruvaBaixa() || no.verificaCruvaAlta())
 					&& (porcent > 10) && (Math.random() > indicativo)) {
-				System.out.println(" Bonus Mole ");
 				novoModificador += 1;
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
