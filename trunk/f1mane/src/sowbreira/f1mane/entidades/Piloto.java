@@ -1239,6 +1239,7 @@ public class Piloto implements Serializable {
 		}
 		if (jogadorHumano) {
 			if (!testeHabilidadePilotoHumanoCarro(controleJogo)
+					&& !controleJogo.isSafetyCarNaPista()
 					&& Math.random() < controleJogo.getNiveljogo()) {
 				if (AGRESSIVO.equals(modoPilotagem)) {
 					if (controleJogo.isChovendo() && Math.random() > 0.950) {
@@ -1258,7 +1259,9 @@ public class Piloto implements Serializable {
 					if (controleJogo.verificaNivelJogo())
 						incStress(Math.random() > .5 ? 1 : 0);
 				} else {
+
 					if (Math.random() > 0.9) {
+
 						if (controleJogo.isChovendo()) {
 							controleJogo.info(Html.bold(getNome())
 									+ Html.red(Lang.msg("055")));
