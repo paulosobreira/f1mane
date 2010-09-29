@@ -254,16 +254,18 @@ public class ControleCorrida {
 							controleJogo, true);
 					if (piloto.getPosicao() < 8) {
 						if (Math.random() > 0.9) {
-							if (Math.random() > 0.5) {
-								controleJogo.info(Html.azul(Lang.msg("021",
-										new String[] {
-												pilotoNaFrente.getNome(),
-												piloto.getNome() })));
-							} else {
-								controleJogo.info(Html.azul(Lang.msg("020",
-										new String[] {
-												pilotoNaFrente.getNome(),
-												piloto.getNome() })));
+							if (!controleJogo.isSafetyCarNaPista()) {
+								if (Math.random() > 0.5) {
+									controleJogo.info(Html.azul(Lang.msg("021",
+											new String[] {
+													pilotoNaFrente.getNome(),
+													piloto.getNome() })));
+								} else {
+									controleJogo.info(Html.azul(Lang.msg("020",
+											new String[] {
+													pilotoNaFrente.getNome(),
+													piloto.getNome() })));
+								}
 							}
 						}
 					}
@@ -431,17 +433,18 @@ public class ControleCorrida {
 		if (!ganhador.isJogadorHumano())
 			ganhador.setAgressivo(true);
 		ganhador.setCiclosDesconcentrado(0);
+		if (controleJogo.isSafetyCarNaPista()) {
+			if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
+				controleJogo.info(Lang.msg("018", new String[] {
+						Html.bold(perdedor.getNome()),
+						Html.bold(ganhador.getNome()) }));
+			}
 
-		if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
-			controleJogo.info(Lang.msg("018", new String[] {
-					Html.bold(perdedor.getNome()),
-					Html.bold(ganhador.getNome()) }));
-		}
-
-		if (ganhador.isJogadorHumano() && Math.random() > 0.950) {
-			controleJogo.info(Lang.msg("019", new String[] {
-					Html.bold(ganhador.getNome()),
-					Html.bold(perdedor.getNome()) }));
+			if (ganhador.isJogadorHumano() && Math.random() > 0.950) {
+				controleJogo.info(Lang.msg("019", new String[] {
+						Html.bold(ganhador.getNome()),
+						Html.bold(perdedor.getNome()) }));
+			}
 		}
 		if (controleJogo.verificaNivelJogo()) {
 			perdedor.incStress(1);
