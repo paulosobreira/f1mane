@@ -796,7 +796,6 @@ public class Piloto implements Serializable {
 		}
 
 		processaVelocidade(novoModificador, noAtual);
-		// System.out.println("novoModificador " + novoModificador);
 		double ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
 		if (!controleJogo.isModoQualify()) {
@@ -921,7 +920,8 @@ public class Piloto implements Serializable {
 					}
 					mudarTracado(novoTracado, controleJogo, true);
 				}
-				if (getTracado() == piloto.getTracado() && getPtosBox() == 0) {
+				if (getTracado() == piloto.getTracado() && getPtosBox() == 0
+						&& piloto.getPtosBox() == 0) {
 					controleJogo.verificaAcidenteUltrapassagem(this
 							.isAgressivo(), this, piloto);
 				}
