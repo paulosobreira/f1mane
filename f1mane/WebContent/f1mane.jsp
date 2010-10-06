@@ -16,12 +16,6 @@ div {
 	font-family: sans-serif;
 }
 
-table{
-	border-style: solid;
-	border-width: 1px;
-	border-color: #B8CFE5;
-}
-
 A:link {text-decoration: none; 
 		color: #0084B4;}
 A:visited {text-decoration: none;
@@ -73,9 +67,6 @@ img {
 }
 
 #main{
-	border-style: solid;
-	border-width: 1px;
-	border-color: #B8CFE5;
 	padding: 3px;
 	padding-left: 20px;
 	padding-right: 20px;
@@ -86,7 +77,15 @@ img {
 
 #shots{
 	text-align: left;
-	padding: 0px;
+	padding-top: 10px;
+}
+
+#shotsPromo{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8CFE5;
+	text-align: center;
+	padding: 15px;
 }
 
 #description {
@@ -192,6 +191,18 @@ img {
 		</div>
 	</div>
 	</td>
+	<td>
+		<div id="shotsPromo" class="highslide-gallery">
+			Veja Tambem <br><br>
+			<a id="link" 
+				href="http://www.f1mane.com/mesa11" style="text-align: center;"
+				target="_BLANK">  Mesa-11 </a><br><br>
+			<a href="m11-1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="m11-1.jpg" width="130" height="120" /></a><br>
+			<a href="m11-2.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="m11-2.jpg" width="130" height="120" /></a><br>
+			<a href="m11-3.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="m11-3.jpg" width="130" height="120" /></a><br>
+			<a href="m11-4.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="m11-4.jpg" width="130" height="120" /></a><br>
+		</div>	
+	</td>	
 	</tr>
 </table>
 </center>
