@@ -199,9 +199,12 @@ public class ControleCorrida {
 			if (pilotoNaFrente.equals(piloto)) {
 				continue;
 			}
-			if (piloto.getPtosBox() > controleBox.getParadaBox().getIndex()
-					&& ((piloto.getPtosBox() > 0)) != (pilotoNaFrente
-							.getPtosBox() > 0)) {
+			// if (piloto.getPtosBox() > controleBox.getParadaBox().getIndex()
+			// && ((piloto.getPtosBox() > 0) != (pilotoNaFrente
+			// .getPtosBox() > 0))) {
+			// continue;
+			// }
+			if (((piloto.getPtosBox() > 0)) != (pilotoNaFrente.getPtosBox() > 0)) {
 				continue;
 			}
 			if ((Carro.BATEU_FORTE.equals(pilotoNaFrente.getCarro()
@@ -248,8 +251,9 @@ public class ControleCorrida {
 						&& pilotoNaFrente.getPtosPista() < piloto
 								.getPtosPista()
 						&& !pilotoNaFrente.isDesqualificado()
-						&& (pilotoNaFrente.getPtosBox() > controleBox
-								.getParadaBox().getIndex())) {
+						&& (pilotoNaFrente.getPtosBox() == 0)) {
+					// && (pilotoNaFrente.getPtosBox() > controleBox
+					// .getParadaBox().getIndex())) {
 					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2),
 							controleJogo, true);
 					if (piloto.getPosicao() < 8) {
@@ -433,7 +437,7 @@ public class ControleCorrida {
 		if (!ganhador.isJogadorHumano())
 			ganhador.setAgressivo(true);
 		ganhador.setCiclosDesconcentrado(0);
-		if (controleJogo.isSafetyCarNaPista()) {
+		if (!controleJogo.isSafetyCarNaPista()) {
 			if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
 				controleJogo.info(Lang.msg("018", new String[] {
 						Html.bold(perdedor.getNome()),
