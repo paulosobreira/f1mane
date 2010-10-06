@@ -542,12 +542,14 @@ public class Carro implements Serializable {
 		if (agressivo) {
 			indicativo = .4;
 		}
-		if (TIPO_PNEU_MOLE.equals(tipoPneu)) {
+		if (TIPO_PNEU_MOLE.equals(tipoPneu)
+				&& getPiloto().testeHabilidadePilotoCarro()) {
 			if ((no.verificaCruvaBaixa() || no.verificaCruvaAlta())
 					&& (porcent > 10) && (Math.random() > indicativo)) {
 				novoModificador += 1;
 			}
-		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
+		} else if (TIPO_PNEU_DURO.equals(tipoPneu)
+				&& getPiloto().testeHabilidadePilotoCarro()) {
 			if (no.verificaCruvaAlta() && (porcent > 30) && (porcent < 80)
 					&& (Math.random() > indicativo)) {
 				novoModificador += 1;
