@@ -197,10 +197,10 @@ img {
 			<a id="link" 
 				href="http://www.f1mane.com/mesa11" style="text-align: center;"
 				target="_BLANK">  Mesa-11 </a><br><br>
-			<a href="m11-1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="m11-1.jpg" width="130" height="120" /></a><br>
-			<a href="m11-2.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="m11-2.jpg" width="130" height="120" /></a><br>
-			<a href="m11-3.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="m11-3.jpg" width="130" height="120" /></a><br>
-			<a href="m11-4.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="m11-4.jpg" width="130" height="120" /></a><br>
+			<a href="http://www.f1mane.com/mesa11/m11-1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-1.jpg" width="130" height="120" /></a><br>
+			<a href="http://www.f1mane.com/mesa11/m11-2.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-2.jpg" width="130" height="120" /></a><br>
+			<a href="http://www.f1mane.com/mesa11/m11-4.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-4.jpg" width="130" height="120" /></a><br>
+			<a href="http://www.f1mane.com/mesa11/m11-6.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-6.jpg" width="130" height="120" /></a><br>
 		</div>	
 	</td>	
 	</tr>
