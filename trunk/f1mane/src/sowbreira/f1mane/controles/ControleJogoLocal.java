@@ -951,8 +951,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	@Override
 	public boolean verificaNoPitLane(Piloto piloto) {
-		return piloto.getPtosBox() > controleCorrida.getControleBox()
-				.getParadaBox().getIndex();
+		return piloto.getPtosBox() > 0;
+		// return piloto.getPtosBox() > controleCorrida.getControleBox()
+		// .getParadaBox().getIndex();
 	}
 
 }
