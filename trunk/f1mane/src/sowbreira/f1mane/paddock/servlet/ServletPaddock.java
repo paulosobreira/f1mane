@@ -7,17 +7,29 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
+
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.ZipUtil;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Email;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
@@ -72,8 +84,13 @@ public class ServletPaddock extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 		try {
-			ObjectInputStream inputStream = new ObjectInputStream(req
-					.getInputStream());
+
+			ObjectInputStream inputStream = null;
+			try {
+				inputStream = new ObjectInputStream(req.getInputStream());
+			} catch (Exception e) {
+				Logger.logar("inputStream null - > doGetHtml");
+			}
 
 			if (inputStream != null) {
 				Object object = null;
@@ -98,15 +115,135 @@ public class ServletPaddock extends HttpServlet {
 
 				return;
 			} else {
-				Logger.logar("Input null");
+				doGetHtml(req, res);
+				return;
 			}
 
-			PrintWriter printWriter = res.getWriter();
-			printWriter.write("ServletPaddock Ok");
-			res.flushBuffer();
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 		}
+	}
+
+	public void doGetHtml(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		PrintWriter printWriter = res.getWriter();
+		res.setContentType("text/html");
+		try {
+			printWriter.println("<html><body>");
+			String tipo = req.getParameter("tipo");
+			AnnotationConfiguration cfg = new AnnotationConfiguration();
+			cfg.configure("hibernate.cfg.xml");
+
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if (tipo == null) {
+				return;
+			} else if ("x".equals(tipo)) {
+				topExceptions(res);
+			} else if ("C".equals(tipo)) {
+				topConstrutors(res);
+			} else if ("create_schema".equals(tipo)) {
+				createSchema(cfg, sessionFactory, printWriter);
+			} else if ("update_schema".equals(tipo)) {
+				updateSchema(cfg, sessionFactory, printWriter);
+			}
+			printWriter.println("<br/> " + tipo + " done");
+		} catch (Exception e) {
+			printWriter.println(e.getMessage());
+		}
+		printWriter.println("<br/><a href='conf.jsp'>back</a>");
+		printWriter.println("</body></html>");
+		res.flushBuffer();
+	}
+
+	private void updateSchema(AnnotationConfiguration cfg,
+			SessionFactory sessionFactory, PrintWriter printWriter)
+			throws SQLException {
+		Dialect dialect = Dialect.getDialect(cfg.getProperties());
+		Session session = sessionFactory.openSession();
+		DatabaseMetadata meta = new DatabaseMetadata(session.connection(),
+				dialect);
+		String[] strings = cfg.generateSchemaUpdateScript(dialect, meta);
+		executeStatement(sessionFactory, strings, printWriter);
+
+	}
+
+	private void executeStatement(SessionFactory sessionFactory,
+			String[] strings, PrintWriter printWriter) throws SQLException {
+
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		for (int i = 0; i < strings.length; i++) {
+			String string = strings[i];
+			java.sql.Statement statement = session.connection()
+					.createStatement();
+			statement.execute(string);
+			printWriter.println("<br/> " + string);
+		}
+
+		session.flush();
+
+	}
+
+	private void createSchema(AnnotationConfiguration cfg,
+			SessionFactory sessionFactory, PrintWriter printWriter)
+			throws HibernateException, SQLException {
+		Dialect dialect = Dialect.getDialect(cfg.getProperties());
+		String[] strings = cfg.generateSchemaCreationScript(dialect);
+		executeStatement(sessionFactory, strings, printWriter);
+	}
+
+	private void topExceptions(HttpServletResponse res) throws IOException {
+		res.setContentType("text/html");
+		PrintWriter printWriter = res.getWriter();
+		printWriter.write("<html><body>");
+		printWriter.write("<h2>F1-Mane Exceções</h2><br><hr>");
+		synchronized (Logger.topExceptions) {
+			Set top = Logger.topExceptions.keySet();
+			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+				String exept = (String) iterator.next();
+				printWriter.write("Quantidade : "
+						+ Logger.topExceptions.get(exept));
+				printWriter.write("<br>");
+				printWriter.write(exept);
+				printWriter.write("<br><hr>");
+			}
+		}
+		printWriter.write("</body></html>");
+		res.flushBuffer();
+	}
+
+	private void topConstrutors(HttpServletResponse res) throws IOException {
+		res.setContentType("text/html");
+		PrintWriter printWriter = res.getWriter();
+		printWriter.write("<html><body>");
+		printWriter.write("<h2>F1-Mane Construtores</h2><br><hr>");
+		synchronized ("") {
+			Set top = controlePersistencia.obterListaJogadores();
+			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+				String nomeJogador = (String) iterator.next();
+				CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+						.carregaCarreiraJogador(nomeJogador, false);
+				if (carreiraDadosSrv == null) {
+					continue;
+				}
+				if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
+						|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())) {
+					continue;
+				}
+				printWriter.write("Jogador : " + nomeJogador);
+				printWriter.write("<br> Pts Piloto: "
+						+ carreiraDadosSrv.getPtsPiloto());
+				printWriter.write("<br> Pts Carro: "
+						+ carreiraDadosSrv.getPtsCarro());
+				printWriter.write("<br> Pts Const: "
+						+ carreiraDadosSrv.getPtsConstrutores());
+				printWriter.write("<br><hr>");
+			}
+		}
+		printWriter.write("</body></html>");
+		res.flushBuffer();
+
 	}
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
