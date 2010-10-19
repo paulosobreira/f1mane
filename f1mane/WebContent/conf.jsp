@@ -143,15 +143,15 @@ A:hover {text-decoration: underline overline; color: black;}
 			</td>
 		</tr>
 		<tr>
-			<td class="c1"><a href="hibernate?act=create_schema"> Create
+			<td class="c1"><a href="ServletPaddock?tipo=create_schema"> Create
 			Schema </a></td>
-			<td class="c2"><a href="hibernate?act=update_schema"> Update
+			<td class="c2"><a href="ServletPaddock?tipo=update_schema"> Update
 			Schema </a></td>
 		</tr>
 		<tr>
-			<td class="c1"><a href="ServletBaseDados?tipo=x"> Exceptions
+			<td class="c1"><a href="ServletPaddock?tipo=x"> Exceptions
 			</a></td>
-			<td class="c2"><a href="ServletBaseDados?tipo=C">
+			<td class="c2"><a href="ServletPaddock?tipo=C">
 			Contrutores </a></td>
 		</tr>
 	</tbody>
