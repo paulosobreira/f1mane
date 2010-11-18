@@ -421,6 +421,9 @@ public class PaddockWindow {
 	}
 
 	private void atualizarChat(DadosPaddock dadosPaddock) {
+		if (dadosPaddock == null) {
+			return;
+		}
 		if ("".equals(dadosPaddock.getLinhaChat())
 				|| dadosPaddock.getLinhaChat() == null
 				|| dadosPaddock.getDataTime() == null) {

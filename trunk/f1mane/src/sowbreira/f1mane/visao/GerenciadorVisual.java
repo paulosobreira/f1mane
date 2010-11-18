@@ -1759,6 +1759,9 @@ public class GerenciadorVisual {
 	}
 
 	public void adicionarInfoDireto(String string) {
+		if(string == null){
+			return;
+		}
 		try {
 			synchronized (bufferTextual) {
 				if (string != null && !string.startsWith("<table>"))
