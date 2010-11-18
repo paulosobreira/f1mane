@@ -807,10 +807,14 @@ public class Piloto implements Serializable {
 					mudarTracado(0, controleJogo);
 				if (No.CURVA_ALTA.equals(noAtual.getTipo())
 						|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
-					if (isAgressivo())
-						ganho *= (controleJogo.getFatorUtrapassagem() * 1.25);
-					else
+					if (isAgressivo()) {
+						double bonus = (controleJogo.getFatorUtrapassagem() * 1.3);
+						ganho *= bonus > 1 ? 1 : bonus;
+					} else
 						ganho *= controleJogo.getFatorUtrapassagem();
+				} else {
+					double bonus = (controleJogo.getFatorUtrapassagem() * 1.3);
+					ganho *= bonus > 1 ? 1 : bonus;
 				}
 			}
 			if (getTracado() == 0) {
