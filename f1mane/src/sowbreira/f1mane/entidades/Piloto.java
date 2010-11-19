@@ -831,6 +831,9 @@ public class Piloto implements Serializable {
 				if (No.CURVA_ALTA.equals(noAtual.getTipo())
 						|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
 					double nGanho = (controleJogo.getFatorUtrapassagem() + 0.2);
+					if (isAgressivo()) {
+						nGanho = (controleJogo.getFatorUtrapassagem() + 0.3);
+					}
 					if (nGanho > 1) {
 						nGanho = 1;
 					}
