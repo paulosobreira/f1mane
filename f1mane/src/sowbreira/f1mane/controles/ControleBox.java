@@ -270,13 +270,13 @@ public class ControleBox {
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
 			controleJogo.info(Html.orange(Lang.msg("298", new String[] { carro
 					.getNome() })));
-			penalidade = 30;
+			penalidade = 20;
 			if (piloto.isJogadorHumano()) {
 				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-					penalidade = 50;
+					penalidade = 30;
 				}
 				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-					penalidade = 20;
+					penalidade = 10;
 				}
 			}
 		}
