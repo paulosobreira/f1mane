@@ -279,6 +279,8 @@ public class ControleBox {
 					penalidade = 10;
 				}
 			}
+			penalidade = Util.inte(penalidade
+					* (2 - (carro.getPotencia() / 1000)));
 		}
 		piloto.gerarCiclosPadoBox(porcentCombust, controleCorrida
 				.obterTempoCilco(), penalidade);
@@ -596,5 +598,5 @@ public class ControleBox {
 	public No getParadaBox() {
 		return paradaBox;
 	}
-	
+
 }
