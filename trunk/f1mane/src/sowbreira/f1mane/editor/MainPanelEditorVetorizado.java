@@ -57,6 +57,7 @@ import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.ObjetoArquibancada;
 import sowbreira.f1mane.entidades.ObjetoCirculo;
 import sowbreira.f1mane.entidades.ObjetoConstrucao;
+import sowbreira.f1mane.entidades.ObjetoGuadRails;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoPneus;
@@ -515,6 +516,11 @@ public class MainPanelEditorVetorizado extends JPanel {
 									.getSelectedItem())) {
 						objetoPista = new ObjetoCirculo();
 						posicionaObjetoPista = true;
+					} else if (FormularioObjetos.OBJETO_GUAD_RAILS
+							.equals(formularioObjetos.getTipoComboBox()
+									.getSelectedItem())) {
+						objetoPista = new ObjetoGuadRails();
+						posicionaObjetoPista = true;
 					}
 					formularioObjetos.formularioObjetoPista(objetoPista);
 				} catch (Exception e2) {
@@ -541,15 +547,35 @@ public class MainPanelEditorVetorizado extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					srcFrame.requestFocus();
+
+					List remover = new ArrayList();
+					List add = new ArrayList();
 					List<ObjetoPista> objetos = circuito.getObjetos();
+					int size = objetos.size();
 					for (Iterator iterator = objetos.iterator(); iterator
 							.hasNext();) {
 						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-//						if (objetoPista instanceof ObjetoCirculo) {
-//							objetoPista.setTransparencia(35);
-//						}
+						if (objetoPista instanceof ObjetoPneus) {
+							ObjetoGuadRails objetoGuadRails = new ObjetoGuadRails();
+							objetoGuadRails
+									.setAltura(objetoPista.getAltura() * 10);
+							objetoGuadRails.setAngulo(objetoPista.getAngulo());
+							objetoGuadRails.setCorPimaria(objetoPista
+									.getCorSecundaria());
+							objetoGuadRails.setCorSecundaria(objetoPista
+									.getCorSecundaria());
+							objetoGuadRails.setPosicaoQuina(objetoPista
+									.getPosicaoQuina());
+							objetoGuadRails.setPintaEmcima(objetoPista
+									.isPintaEmcima());
+							objetoGuadRails.setTransparencia(255);
+							objetoGuadRails.setNome("Objeto " + (size++));
+							add.add(objetoGuadRails);
+							remover.add(objetoPista);
+						}
 					}
-
+					objetos.removeAll(remover);
+					objetos.addAll(add);
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}

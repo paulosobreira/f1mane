@@ -47,6 +47,7 @@ public class FormularioObjetos {
 	public final static String OBJETO_CONSTRUCAO = "Objeto Construção";
 	public final static String OBJETO_CIRCULO = "Objeto Circulo";
 	public final static String OBJETO_ARQUIBANCADA = "Objeto Arquibancada";
+	public final static String OBJETO_GUAD_RAILS = "Objeto GuadRails";
 
 	public FormularioObjetos(MainPanelEditorVetorizado panelPai) {
 		this.mainPanelEditorVetorizado = panelPai;
@@ -55,6 +56,7 @@ public class FormularioObjetos {
 		tipoComboBox.addItem(OBJETO_CONSTRUCAO);
 		tipoComboBox.addItem(OBJETO_ARQUIBANCADA);
 		tipoComboBox.addItem(OBJETO_LIVRE);
+		tipoComboBox.addItem(OBJETO_GUAD_RAILS);
 		panel.add(new JLabel("Tipo"));
 		panel.add(tipoComboBox);
 
