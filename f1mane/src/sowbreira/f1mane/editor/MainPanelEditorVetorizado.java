@@ -555,27 +555,27 @@ public class MainPanelEditorVetorizado extends JPanel {
 					for (Iterator iterator = objetos.iterator(); iterator
 							.hasNext();) {
 						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-						if (objetoPista instanceof ObjetoPneus) {
-							ObjetoGuadRails objetoGuadRails = new ObjetoGuadRails();
-							objetoGuadRails
-									.setAltura(objetoPista.getAltura() * 10);
-							objetoGuadRails.setAngulo(objetoPista.getAngulo());
-							objetoGuadRails.setCorPimaria(objetoPista
-									.getCorSecundaria());
-							objetoGuadRails.setCorSecundaria(objetoPista
-									.getCorSecundaria());
-							objetoGuadRails.setPosicaoQuina(objetoPista
-									.getPosicaoQuina());
-							objetoGuadRails.setPintaEmcima(objetoPista
-									.isPintaEmcima());
-							objetoGuadRails.setTransparencia(255);
-							objetoGuadRails.setNome("Objeto " + (size++));
-							add.add(objetoGuadRails);
+						if (objetoPista instanceof ObjetoGuadRails) {
+//							ObjetoGuadRails objetoGuadRails = new ObjetoGuadRails();
+//							objetoGuadRails
+//									.setAltura(objetoPista.getAltura() * 10);
+//							objetoGuadRails.setAngulo(objetoPista.getAngulo());
+//							objetoGuadRails.setCorPimaria(objetoPista
+//									.getCorSecundaria());
+//							objetoGuadRails.setCorSecundaria(objetoPista
+//									.getCorSecundaria());
+//							objetoGuadRails.setPosicaoQuina(objetoPista
+//									.getPosicaoQuina());
+//							objetoGuadRails.setPintaEmcima(objetoPista
+//									.isPintaEmcima());
+//							objetoGuadRails.setTransparencia(255);
+//							objetoGuadRails.setNome("Objeto " + (size++));
+//							add.add(objetoGuadRails);
 							remover.add(objetoPista);
 						}
 					}
 					objetos.removeAll(remover);
-					objetos.addAll(add);
+					//objetos.addAll(add);
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
