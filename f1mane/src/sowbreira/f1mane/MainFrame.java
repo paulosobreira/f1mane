@@ -119,7 +119,7 @@ public class MainFrame extends JFrame {
 		gerarMenusidiomas(menuIdiomas);
 		getContentPane().setLayout(null);
 		setSize(1024, 768);
-		setTitle("F1-MANE 3.2 MANager & Engineer");
+		setTitle("F1-MANE "+InterfaceJogo.VERSAO+" MANager & Engineer");
 	}
 
 	private void gerarMenusCampeonato(JMenu menu) {

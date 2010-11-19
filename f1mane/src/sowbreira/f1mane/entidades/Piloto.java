@@ -808,12 +808,22 @@ public class Piloto implements Serializable {
 				if (No.CURVA_ALTA.equals(noAtual.getTipo())
 						|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
 					if (isAgressivo()) {
-						double bonus = (controleJogo.getFatorUtrapassagem() * 1.3);
+						double multi = 1.3;
+						if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV)
+							multi = 1.2;
+						if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV)
+							multi = 1.1;
+						double bonus = (controleJogo.getFatorUtrapassagem() * multi);
 						ganho *= bonus > 1 ? 1 : bonus;
 					} else
 						ganho *= controleJogo.getFatorUtrapassagem();
 				} else {
-					double bonus = (controleJogo.getFatorUtrapassagem() * 1.3);
+					double multi = 1.3;
+					if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV)
+						multi = 1.2;
+					if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV)
+						multi = 1.1;
+					double bonus = (controleJogo.getFatorUtrapassagem() * multi);
 					ganho *= bonus > 1 ? 1 : bonus;
 				}
 			}
@@ -1252,7 +1262,7 @@ public class Piloto implements Serializable {
 					} else if (Math.random() > 0.9
 							&& getNoAtual().verificaCruvaBaixa()) {
 
-						if (Math.random() > 0.5) {
+						if (Math.random() > 0.9) {
 							controleJogo.info(Html.txtRedBold(getNome())
 									+ Html.bold(Lang.msg("053")));
 						} else {
@@ -1264,7 +1274,7 @@ public class Piloto implements Serializable {
 						incStress(Math.random() > .5 ? 1 : 0);
 				} else {
 
-					if (Math.random() > 0.9) {
+					if (Math.random() > 0.999) {
 
 						if (controleJogo.isChovendo()) {
 							controleJogo.info(Html.bold(getNome())

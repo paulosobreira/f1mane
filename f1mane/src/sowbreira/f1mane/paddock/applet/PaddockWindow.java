@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
+import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
 import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
@@ -298,8 +299,10 @@ public class PaddockWindow {
 		mainPanel.add(sPanel, BorderLayout.SOUTH);
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBackground(Color.WHITE);
-		chatPanel.setBorder(new TitledBorder(
-				"F1-Engineer Web Paddock Chat Room v 1.4"));
+		chatPanel
+				.setBorder(new TitledBorder(
+						"F1-Engineer Web Paddock Chat Room Ver"
+								+ InterfaceJogo.VERSAO));
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBackground(Color.WHITE);
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
