@@ -714,6 +714,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#adicionarInfoDireto(java.lang.String)
 	 */
 	public void adicionarInfoDireto(String string) {
+		if(gerenciadorVisual==null){
+			return;
+		}
 		gerenciadorVisual.adicionarInfoDireto(string);
 
 	}
