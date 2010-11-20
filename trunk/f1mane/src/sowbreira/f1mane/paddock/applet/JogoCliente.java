@@ -157,6 +157,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void adicionarInfoDireto(String string) {
+		if(gerenciadorVisual==null){
+			return;
+		}
 		gerenciadorVisual.adicionarInfoDireto(string);
 
 	}
