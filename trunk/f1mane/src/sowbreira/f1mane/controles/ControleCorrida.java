@@ -298,10 +298,27 @@ public class ControleCorrida {
 							piloto.mudarTracado(Util.intervalo(0, 2),
 									controleJogo);
 						else if (sendoPressionado && piloto.isAutoPos()) {
+							Logger.logar(piloto.getNome() + " pressionado por "
+									+ carroAtraz.getPiloto().getNome());
 							piloto.mudarTracado(0, controleJogo);
 						}
 					}
 				}
+				Carro carroAtraz = controleJogo.obterCarroAtraz(piloto);
+				if (carroAtraz != null) {
+					Piloto pilotoAtraz = carroAtraz.getPiloto();
+					if (piloto.testeHabilidadePiloto()) {
+						multi = 2;
+					}
+					if (pilotoAtraz != null
+							&& pilotoAtraz.getPtosPista() > (piloto
+									.getPtosPista() - (multi * Carro.LARGURA))) {
+						Logger.logar(piloto.getNome() + " pressionado por "
+								+ carroAtraz.getPiloto().getNome());
+						piloto.mudarTracado(0, controleJogo);
+					}
+				}
+
 				double percent = 1 - fatorUtrapassagem;
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {

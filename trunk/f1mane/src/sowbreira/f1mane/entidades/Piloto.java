@@ -803,7 +803,9 @@ public class Piloto implements Serializable {
 		}
 		if (!controleJogo.isModoQualify() || !controleJogo.isSafetyCarNaPista()) {
 			if (getTracado() != 0) {
-				if (testeHabilidadePiloto() && autoPos)
+				if ((testeHabilidadePiloto() && autoPos && controleJogo
+						.getNiveljogo() == InterfaceJogo.FACIL_NV)
+						|| (!isJogadorHumano() && testeHabilidadePiloto()))
 					mudarTracado(0, controleJogo);
 				if (No.CURVA_ALTA.equals(noAtual.getTipo())
 						|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
@@ -817,12 +819,12 @@ public class Piloto implements Serializable {
 						ganho *= bonus > 1 ? 1 : bonus;
 					} else
 						ganho *= controleJogo.getFatorUtrapassagem();
-				} else {
-					double multi = 1.3;
+				} else if (!getCarro().testePotencia()) {
+					double multi = 1.6;
 					if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV)
-						multi = 1.2;
+						multi = 1.4;
 					if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV)
-						multi = 1.1;
+						multi = 1.2;
 					double bonus = (controleJogo.getFatorUtrapassagem() * multi);
 					ganho *= bonus > 1 ? 1 : bonus;
 				}
