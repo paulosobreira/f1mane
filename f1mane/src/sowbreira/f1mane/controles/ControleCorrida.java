@@ -319,8 +319,8 @@ public class ControleCorrida {
 				}
 				if (pilotoAtraz != null
 						&& pilotoAtraz.getPtosPista() > (piloto.getPtosPista() - (multi * Carro.LARGURA))) {
-					Logger.logar(piloto.getNome() + " pressionado por "
-							+ carroAtraz.getPiloto().getNome());
+//					Logger.logar(piloto.getNome() + " pressionado por "
+//							+ carroAtraz.getPiloto().getNome());
 					piloto.mudarTracado(0, controleJogo);
 				}
 			}
