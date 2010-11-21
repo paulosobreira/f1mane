@@ -819,12 +819,20 @@ public class Piloto implements Serializable {
 						ganho *= bonus > 1 ? 1 : bonus;
 					} else
 						ganho *= controleJogo.getFatorUtrapassagem();
-				} else if (!getCarro().testePotencia()) {
+				} else if (getCarro().testePotencia()) {
 					double multi = 1.6;
 					if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV)
 						multi = 1.4;
 					if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV)
 						multi = 1.2;
+					double bonus = (controleJogo.getFatorUtrapassagem() * multi);
+					ganho *= bonus > 1 ? 1 : bonus;
+				} else {
+					double multi = 1.3;
+					if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV)
+						multi = 1.2;
+					if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV)
+						multi = 1.1;
 					double bonus = (controleJogo.getFatorUtrapassagem() * multi);
 					ganho *= bonus > 1 ? 1 : bonus;
 				}
