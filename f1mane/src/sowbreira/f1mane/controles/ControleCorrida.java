@@ -297,25 +297,6 @@ public class ControleCorrida {
 								&& piloto.isAutoPos())
 							piloto.mudarTracado(Util.intervalo(0, 2),
 									controleJogo);
-						else if (sendoPressionado && piloto.isAutoPos()) {
-							Logger.logar(piloto.getNome() + " pressionado por "
-									+ carroAtraz.getPiloto().getNome());
-							piloto.mudarTracado(0, controleJogo);
-						}
-					}
-				}
-				Carro carroAtraz = controleJogo.obterCarroAtraz(piloto);
-				if (carroAtraz != null) {
-					Piloto pilotoAtraz = carroAtraz.getPiloto();
-					if (piloto.testeHabilidadePiloto()) {
-						multi = 2;
-					}
-					if (pilotoAtraz != null
-							&& pilotoAtraz.getPtosPista() > (piloto
-									.getPtosPista() - (multi * Carro.LARGURA))) {
-						Logger.logar(piloto.getNome() + " pressionado por "
-								+ carroAtraz.getPiloto().getNome());
-						piloto.mudarTracado(0, controleJogo);
 					}
 				}
 
@@ -329,7 +310,20 @@ public class ControleCorrida {
 				}
 				return ganho * (percent * 0.6);
 			}
-
+			Carro carroAtraz = controleJogo.obterCarroAtraz(piloto);
+			if (carroAtraz != null) {
+				Piloto pilotoAtraz = carroAtraz.getPiloto();
+				multi = 2;
+				if (piloto.testeHabilidadePiloto()) {
+					multi = 3;
+				}
+				if (pilotoAtraz != null
+						&& pilotoAtraz.getPtosPista() > (piloto.getPtosPista() - (multi * Carro.LARGURA))) {
+					Logger.logar(piloto.getNome() + " pressionado por "
+							+ carroAtraz.getPiloto().getNome());
+					piloto.mudarTracado(0, controleJogo);
+				}
+			}
 		}
 
 		return ganho;
