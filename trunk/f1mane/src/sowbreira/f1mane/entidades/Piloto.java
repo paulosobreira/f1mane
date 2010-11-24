@@ -820,21 +820,23 @@ public class Piloto implements Serializable {
 					} else
 						ganho *= controleJogo.getFatorUtrapassagem();
 				} else if (getCarro().testePotencia()) {
-					double multi = 1.6;
-					if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV)
-						multi = 1.4;
-					if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV)
-						multi = 1.2;
-					double bonus = (controleJogo.getFatorUtrapassagem() * multi);
-					ganho *= bonus > 1 ? 1 : bonus;
+					double nGanho = (controleJogo.getFatorUtrapassagem() + 0.3);
+					if (isAgressivo()) {
+						nGanho = (controleJogo.getFatorUtrapassagem() + 0.4);
+					}
+					if (nGanho > 1) {
+						nGanho = 1;
+					}
+					ganho *= (nGanho);
 				} else {
-					double multi = 1.3;
-					if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV)
-						multi = 1.2;
-					if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV)
-						multi = 1.1;
-					double bonus = (controleJogo.getFatorUtrapassagem() * multi);
-					ganho *= bonus > 1 ? 1 : bonus;
+					double nGanho = (controleJogo.getFatorUtrapassagem() + 0.2);
+					if (isAgressivo()) {
+						nGanho = (controleJogo.getFatorUtrapassagem() + 0.3);
+					}
+					if (nGanho > 1) {
+						nGanho = 1;
+					}
+					ganho *= (nGanho);
 				}
 			}
 			if (getTracado() == 0) {

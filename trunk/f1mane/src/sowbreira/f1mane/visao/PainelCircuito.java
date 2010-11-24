@@ -121,6 +121,7 @@ public class PainelCircuito extends JPanel {
 	private BufferedImage backGround;
 	private double currentZoom;
 	private BufferedImage drawBuffer;
+	private Thread threadBkgGen;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -214,8 +215,11 @@ public class PainelCircuito extends JPanel {
 						drawBuffer = zoomBuffer;
 					}
 				};
-				Thread thread = new Thread(runnable);
-				thread.start();
+				if (threadBkgGen != null) {
+					threadBkgGen.interrupt();
+				}
+				threadBkgGen = new Thread(runnable);
+				threadBkgGen.start();
 			}
 			if (drawBuffer == null) {
 				drawBuffer = backGround;
