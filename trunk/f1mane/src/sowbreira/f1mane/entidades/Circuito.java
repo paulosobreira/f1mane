@@ -31,9 +31,18 @@ public class Circuito implements Serializable {
 	private List<ObjetoPista> objetos;
 	private String nome;
 	private boolean noite;
+	private boolean usaBkg;
 
 	public String getNome() {
 		return nome;
+	}
+
+	public boolean isUsaBkg() {
+		return usaBkg;
+	}
+
+	public void setUsaBkg(boolean usaBkg) {
+		this.usaBkg = usaBkg;
 	}
 
 	public void setNome(String nome) {
@@ -91,6 +100,9 @@ public class Circuito implements Serializable {
 	public void vetorizarPista(double multi, double larg) {
 		multiplicadorLarguraPista = larg;
 		multiplicadorPista = multi;
+		if(usaBkg){
+			multi = 1;
+		}
 		No noAnt = null;
 		if (pistaFull == null) {
 			pistaFull = new ArrayList();
