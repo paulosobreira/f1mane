@@ -108,6 +108,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 	private BufferedImage backGround;
 	private double currentZoom;
 	private BufferedImage drawBuffer;
+	private Thread threadBkgGen;
 
 	public boolean isMoverObjetoPista() {
 		return moverObjetoPista;
@@ -640,22 +641,25 @@ public class MainPanelEditorVetorizado extends JPanel {
 						AffineTransformOp affineTransformOp = new AffineTransformOp(
 								affineTransform,
 								AffineTransformOp.TYPE_BILINEAR);
-						BufferedImage zoomBuffer = new BufferedImage((int) (backGround
-								.getWidth() * zoom), (int) (backGround
-								.getHeight() * zoom),
+						BufferedImage zoomBuffer = new BufferedImage(
+								(int) (backGround.getWidth() * zoom),
+								(int) (backGround.getHeight() * zoom),
 								BufferedImage.TYPE_INT_ARGB);
 
 						affineTransformOp.filter(backGround, zoomBuffer);
 						drawBuffer = zoomBuffer;
 					}
 				};
-				Thread thread = new Thread(runnable);
-				thread.start();
+				if (threadBkgGen != null) {
+					threadBkgGen.interrupt();
+				}
+				threadBkgGen = new Thread(runnable);
+				threadBkgGen.start();
 			}
-			if(drawBuffer==null){
+			if (drawBuffer == null) {
 				drawBuffer = backGround;
 			}
-	
+
 			g2d.drawImage(drawBuffer, 0, 0, null);
 
 			currentZoom = zoom;
