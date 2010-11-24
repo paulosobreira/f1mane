@@ -195,6 +195,9 @@ public class PainelCircuito extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
+		limitesViewPort = (Rectangle) limitesViewPort();
+		pilotoSelecionado = gerenciadorVisual
+				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
 		if (circuito.isUsaBkg()) {
 			if (currentZoom != zoom) {
 				Runnable runnable = new Runnable() {
@@ -230,27 +233,24 @@ public class PainelCircuito extends JPanel {
 			currentZoom = zoom;
 		}
 
-		limitesViewPort = (Rectangle) limitesViewPort();
-		pilotoSelecionado = gerenciadorVisual
-				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
-
-		if (larguraPistaPixeis == 0)
-			larguraPistaPixeis = Util.inte(176 * larguraPista * zoom);
-		if (pista == null)
-			pista = new BasicStroke(larguraPistaPixeis, BasicStroke.CAP_ROUND,
-					BasicStroke.JOIN_ROUND);
-		if (pistaTinta == null)
-			pistaTinta = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
-					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-		if (box == null)
-			box = new BasicStroke(Util.inte(larguraPistaPixeis * .4),
-					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-		if (zebra == null)
-			zebra = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
-					BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
-					new float[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-							10 }, 0);
 		if (!circuito.isUsaBkg()) {
+			if (larguraPistaPixeis == 0)
+				larguraPistaPixeis = Util.inte(176 * larguraPista * zoom);
+			if (pista == null)
+				pista = new BasicStroke(larguraPistaPixeis,
+						BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+			if (pistaTinta == null)
+				pistaTinta = new BasicStroke(Util
+						.inte(larguraPistaPixeis * 1.05),
+						BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+			if (box == null)
+				box = new BasicStroke(Util.inte(larguraPistaPixeis * .4),
+						BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+			if (zebra == null)
+				zebra = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
+						BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
+						new float[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+								10, 10 }, 0);
 			if (circuito.getCorFundo() != null) {
 				g2d.setColor(circuito.getCorFundo());
 				g2d.fill(limitesViewPort);
@@ -824,18 +824,20 @@ public class PainelCircuito extends JPanel {
 
 	protected void atualizaVarZoom() {
 		Logger.logar("atualizaVarZoom()");
-		larguraPistaPixeis = Util.inte(176 * larguraPista * zoom);
-		pista = new BasicStroke(larguraPistaPixeis, BasicStroke.CAP_ROUND,
-				BasicStroke.JOIN_ROUND);
-		pistaTinta = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
-				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-		box = new BasicStroke(Util.inte(larguraPistaPixeis * .4),
-				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-		zebra = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
-				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {
-						10, 10 }, 0);
-		gerarGrid();
-		gerarBoxes();
+		if (!circuito.isUsaBkg()) {
+			larguraPistaPixeis = Util.inte(176 * larguraPista * zoom);
+			pista = new BasicStroke(larguraPistaPixeis, BasicStroke.CAP_ROUND,
+					BasicStroke.JOIN_ROUND);
+			pistaTinta = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
+					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+			box = new BasicStroke(Util.inte(larguraPistaPixeis * .4),
+					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+			zebra = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
+					BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
+					new float[] { 10, 10 }, 0);
+			gerarGrid();
+			gerarBoxes();
+		}
 		Piloto piloto = null;
 		if (gerenciadorVisual != null) {
 			piloto = gerenciadorVisual.obterPilotoSecionadoTabela(controleJogo
