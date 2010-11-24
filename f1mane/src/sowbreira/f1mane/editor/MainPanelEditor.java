@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -61,7 +63,8 @@ public class MainPanelEditor extends JPanel {
 	int ultimoItemPistaSelecionado = -1;
 	private JRadioButton pistasButton = new JRadioButton();
 	private JRadioButton boxButton = new JRadioButton();
-
+	private JScrollPane scrollPane;
+	
 	public MainPanelEditor(String backGroundStr, JFrame frame) {
 		backGround = CarregadorRecursos.carregaBackGround(backGroundStr, this,
 				circuito);
@@ -282,13 +285,64 @@ public class MainPanelEditor extends JPanel {
 		frame.setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(backGround.getWidth(), backGround
 				.getHeight()));
-		frame.getContentPane().add(controlPanel, BorderLayout.CENTER);
-		frame.getContentPane().add(this, BorderLayout.WEST);
+		frame.getContentPane().add(controlPanel, BorderLayout.WEST);
+		scrollPane = new JScrollPane(this,
+				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
-
 		frame.pack();
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);   
 	}
+	public void esquerda() {
 
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Point p = scrollPane.getViewport().getViewPosition();
+				p.x -= 40;
+				repaint();
+				scrollPane.getViewport().setViewPosition(p);
+			}
+		});
+	}
+	public void direita() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Point p = scrollPane.getViewport().getViewPosition();
+				p.x += 40;
+				repaint();
+				scrollPane.getViewport().setViewPosition(p);
+
+			}
+		});
+	}
+	public void cima() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Point p = scrollPane.getViewport().getViewPosition();
+				p.y -= 40;
+				repaint();
+				scrollPane.getViewport().setViewPosition(p);
+
+			}
+		});
+	}
+	public void baixo() {
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Point p = scrollPane.getViewport().getViewPosition();
+				p.y += 40;
+				repaint();
+				scrollPane.getViewport().setViewPosition(p);
+
+			}
+		});
+	}
 	private void adicionaEventosMouse(final JFrame frame) {
 		this.addMouseListener(new MouseAdapter() {
 

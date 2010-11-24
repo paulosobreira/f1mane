@@ -119,7 +119,7 @@ public class MainFrame extends JFrame {
 		gerarMenusidiomas(menuIdiomas);
 		getContentPane().setLayout(null);
 		setSize(1024, 768);
-		setTitle("F1-MANE "+InterfaceJogo.VERSAO+" MANager & Engineer");
+		setTitle("F1-MANE " + InterfaceJogo.VERSAO + " MANager & Engineer");
 	}
 
 	private void gerarMenusCampeonato(JMenu menu) {
@@ -377,43 +377,53 @@ public class MainFrame extends JFrame {
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				int keyCoode = e.getKeyCode();
+				if (editor != null) {
+					if (keyCoode == KeyEvent.VK_DELETE) {
+						editor.apagarUltimoNo();
+					}
 
-				if (keyCoode == KeyEvent.VK_DELETE) {
-					editor.apagarUltimoNo();
-				}
+					if ((keyCoode == KeyEvent.VK_DELETE)
+							&& (e.getModifiers() == KeyEvent.SHIFT_MASK)) {
+						editor.apagarUltimoNoPista();
+					}
 
-				if ((keyCoode == KeyEvent.VK_DELETE)
-						&& (e.getModifiers() == KeyEvent.SHIFT_MASK)) {
-					editor.apagarUltimoNoPista();
-				}
+					if ((keyCoode == KeyEvent.VK_DELETE)
+							&& (e.getModifiers() == KeyEvent.CTRL_MASK)) {
+						editor.apagarUltimoNoBox();
+					}
 
-				if ((keyCoode == KeyEvent.VK_DELETE)
-						&& (e.getModifiers() == KeyEvent.CTRL_MASK)) {
-					editor.apagarUltimoNoBox();
-				}
+					if (keyCoode == KeyEvent.VK_F1) {
+						editor.inserirNoLargada();
+					}
 
-				if (keyCoode == KeyEvent.VK_F1) {
-					editor.inserirNoLargada();
-				}
+					if (keyCoode == KeyEvent.VK_F2) {
+						editor.inserirNoReta();
+					}
 
-				if (keyCoode == KeyEvent.VK_F2) {
-					editor.inserirNoReta();
-				}
+					if (keyCoode == KeyEvent.VK_F3) {
+						editor.inserirNoCurvaAlta();
+					}
 
-				if (keyCoode == KeyEvent.VK_F3) {
-					editor.inserirNoCurvaAlta();
-				}
+					if (keyCoode == KeyEvent.VK_F4) {
+						editor.inserirNoCurvaBaixa();
+					}
 
-				if (keyCoode == KeyEvent.VK_F4) {
-					editor.inserirNoCurvaBaixa();
-				}
+					if (keyCoode == KeyEvent.VK_F5) {
+						editor.inserirNoBox();
+					}
 
-				if (keyCoode == KeyEvent.VK_F5) {
-					editor.inserirNoBox();
-				}
-
-				if (keyCoode == KeyEvent.VK_F6) {
-					editor.inserirNoParadaBox();
+					if (keyCoode == KeyEvent.VK_F6) {
+						editor.inserirNoParadaBox();
+					}
+					if (keyCoode == KeyEvent.VK_LEFT) {
+						editor.esquerda();
+					} else if (keyCoode == KeyEvent.VK_RIGHT) {
+						editor.direita();
+					} else if (keyCoode == KeyEvent.VK_UP) {
+						editor.cima();
+					} else if (keyCoode == KeyEvent.VK_DOWN) {
+						editor.baixo();
+					}
 				}
 				if (editorInflado != null) {
 					if (e.isControlDown() && keyCoode == KeyEvent.VK_LEFT) {
