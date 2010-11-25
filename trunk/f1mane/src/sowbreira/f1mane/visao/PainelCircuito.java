@@ -209,13 +209,11 @@ public class PainelCircuito extends JPanel {
 						AffineTransformOp affineTransformOp = new AffineTransformOp(
 								affineTransform,
 								AffineTransformOp.TYPE_BILINEAR);
-						BufferedImage zoomBuffer = new BufferedImage(
+						drawBuffer = new BufferedImage(
 								(int) (backGround.getWidth() * zoom),
 								(int) (backGround.getHeight() * zoom),
 								BufferedImage.TYPE_INT_ARGB);
-
-						affineTransformOp.filter(backGround, zoomBuffer);
-						drawBuffer = zoomBuffer;
+						affineTransformOp.filter(backGround, drawBuffer);
 					}
 				};
 				if (threadBkgGen != null) {
