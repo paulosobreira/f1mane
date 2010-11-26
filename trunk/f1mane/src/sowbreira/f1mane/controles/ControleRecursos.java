@@ -92,7 +92,8 @@ public abstract class ControleRecursos {
 		BufferedImage carroLado = (BufferedImage) bufferCarrosLado.get(carro
 				.getNome());
 		if (carroLado == null) {
-			carroLado = CarregadorRecursos.carregaImgSemCache("CarroLado.png");
+			carroLado = ImageUtil.geraTransparencia(CarregadorRecursos
+					.carregaImgSemCache("CarroLado.png"), 190);
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
 					.getCor1(), "CarroLadoC1.png");
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
@@ -112,7 +113,8 @@ public abstract class ControleRecursos {
 		BufferedImage carroCima = (BufferedImage) bufferCarrosCimaSemAreofolio
 				.get(carro.getNome());
 		if (carroCima == null) {
-			carroCima = CarregadorRecursos.carregaImgSemCache("CarroCima.png");
+			carroCima = ImageUtil.geraTransparencia(CarregadorRecursos
+					.carregaImgSemCache("CarroCima.png"), 190);
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
 					.getCor1(), "CarroCimaC1.png");
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
@@ -136,7 +138,8 @@ public abstract class ControleRecursos {
 		BufferedImage carroCima = (BufferedImage) bufferCarrosCima.get(carro
 				.getNome());
 		if (carroCima == null) {
-			carroCima = CarregadorRecursos.carregaImgSemCache("CarroCima.png");
+			carroCima = ImageUtil.geraTransparencia(CarregadorRecursos
+					.carregaImgSemCache("CarroCima.png"), 190);
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
 					.getCor1(), "CarroCimaC1.png");
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro

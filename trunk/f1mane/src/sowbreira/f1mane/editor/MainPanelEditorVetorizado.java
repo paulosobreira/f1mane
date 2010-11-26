@@ -932,7 +932,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 	private void desenhaGrid(Graphics2D g2d) {
 
 		for (int i = 0; i < 24; i++) {
-			int iP = 50 + Util.inte(Carro.LARGURA * i);
+			int iP = 50 + Util.inte(((Carro.LARGURA)*0.8) * i);
 			No n1 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
 			No nM = (No) circuito.getPistaFull().get(
