@@ -164,6 +164,7 @@ public class CarregadorRecursos {
 			JPanel panel, Circuito circuito) {
 		ImageIcon icon = new ImageIcon(CarregadorRecursos.class
 				.getResource(backGroundStr));
+		System.gc();
 		BufferedImage backGround = ImageUtil.toBufferedImage(icon.getImage());
 		panel.setSize(backGround.getWidth(), backGround.getHeight());
 

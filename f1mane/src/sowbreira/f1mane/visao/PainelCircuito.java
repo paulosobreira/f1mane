@@ -85,7 +85,7 @@ public class PainelCircuito extends JPanel {
 	public final static BufferedImage scima = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("sfcima.png");
 	public final static BufferedImage travadaRodaImg = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("travadaRoda.png", 200);
+			.carregaBufferedImageTranspareciaBranca("travadaRoda.png", 150);
 
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
@@ -956,7 +956,7 @@ public class PainelCircuito extends JPanel {
 
 	private void gerarGrid() {
 		for (int i = 0; i < 24; i++) {
-			int iP = 50 + Util.inte(Carro.LARGURA * i);
+			int iP = 50 + Util.inte((Carro.LARGURA*0.8) * i);
 			No n1 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
 			No nM = (No) circuito.getPistaFull().get(

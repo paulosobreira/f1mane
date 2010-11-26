@@ -126,7 +126,7 @@ public class ControleQualificacao {
 		Circuito circuito = controleJogo.getCircuito();
 		for (int i = 0; i < controleJogo.getPilotos().size(); i++) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-			int iP = 50 + Util.inte(Carro.LARGURA * i);
+			int iP = 50 + Util.inte((Carro.LARGURA*.8) * i);
 			No n1 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
 			No nM = (No) circuito.getPistaFull().get(
