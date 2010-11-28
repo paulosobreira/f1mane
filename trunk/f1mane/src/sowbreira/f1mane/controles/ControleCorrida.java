@@ -40,14 +40,14 @@ public class ControleCorrida {
 	}
 
 	public ControleCorrida(ControleJogoLocal jogo, int qtdeVoltas,
-			double fatorUtrapassagem, long tempoCiclo) throws Exception {
+			double fatorUtr, long tempoCiclo) throws Exception {
 		controleJogo = jogo;
 		this.tempoCiclo = (tempoCiclo < 50 ? 50 : tempoCiclo);
-		this.fatorUtrapassagem = fatorUtrapassagem / 1000;
-		if (fatorUtrapassagem > 0.5) {
-			fatorUtrapassagem = 0.5;
+		this.fatorUtrapassagem = fatorUtr / 1000;
+		if (this.fatorUtrapassagem > 0.5) {
+			this.fatorUtrapassagem = 0.5;
 		}
-		this.fatorUtrapassagem = 1 - fatorUtrapassagem;
+		this.fatorUtrapassagem = 1.0 - this.fatorUtrapassagem;
 		this.indexVelcidadeDaPista = 1.5;
 		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
 			this.indexVelcidadeDaPista = 1.6;
@@ -319,8 +319,8 @@ public class ControleCorrida {
 				}
 				if (pilotoAtraz != null
 						&& pilotoAtraz.getPtosPista() > (piloto.getPtosPista() - (multi * Carro.LARGURA))) {
-//					Logger.logar(piloto.getNome() + " pressionado por "
-//							+ carroAtraz.getPiloto().getNome());
+					// Logger.logar(piloto.getNome() + " pressionado por "
+					// + carroAtraz.getPiloto().getNome());
 					piloto.mudarTracado(0, controleJogo);
 				}
 			}
