@@ -6,6 +6,8 @@
      description Build file padrão
 
      Paulo Sobreira
+     
+     java -Xmx512M -Xms512M  -cp .f1maneRecursos.jar; -jar f1mane.jar
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
@@ -24,7 +26,7 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadrao" depends="copiaRecursos,compilarClasses,criarJar,atualizaPaddock,criarWar">
+	<target name="targetPadrao" depends="copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,criarWar">
 	</target>
 
 	<target name="compilarClasses">
@@ -54,6 +56,17 @@
 				<exclude name=".*/" />
 				<exclude name="**/*.java" />
 				<exclude name="build.xml" />
+				<exclude name="sowbreira/f1mane/recursos/CarregadorRecursos.class" />
+			</fileset>
+		</jar>
+	</target>
+	<target name="criarJarRecursos">
+		<jar jarfile="f1maneRecursos.jar" compress="true" manifest="MANIFEST.MF">
+			<fileset dir="src">
+				<include name="sowbreira/f1mane/recursos/**/*.jpg" />
+			</fileset>
+			<fileset dir="build">
+				<include name="sowbreira/f1mane/recursos/CarregadorRecursos.class" />
 			</fileset>
 		</jar>
 	</target>
@@ -61,18 +74,21 @@
 		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
 		<delete file="WebContent/f1mane.jar" />
 		<copy file="f1mane.jar" todir="WebContent" />
+		<copy file="f1maneRecursos.jar" todir="WebContent" />
 		<copy file="f1mane.jar" todir="WebContent/WEB-INF/lib" />
 		<delete file="f1mane.jar" />
+		<delete file="f1maneRecursos.jar" />
 	</target>
 	<target name="criarWar" depends="">
 		<delete dir="${env.TOMCAT_HOME}/webapps/f1mane" />
-		<war compress="on"  destfile="${env.TOMCAT_HOME}/webapps/f1mane.war">
+		<war compress="on" destfile="${env.TOMCAT_HOME}/webapps/f1mane.war">
 			<fileset dir="WebContent">
 				<exclude name="**/*.jar" />
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="WEB-INF/lib/f1mane.jar" />
 				<include name="f1mane.jar" />
+				<include name="f1maneRecursos.jar" />
 			</fileset>
 		</war>
 	</target>
