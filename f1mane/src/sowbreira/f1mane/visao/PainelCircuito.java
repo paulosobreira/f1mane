@@ -1,5 +1,6 @@
 package sowbreira.f1mane.visao;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,6 +39,7 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
+import sowbreira.f1mane.entidades.ObjetoTransparencia;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
@@ -590,8 +592,18 @@ public class PainelCircuito extends JPanel {
 		AffineTransformOp op2 = new AffineTransformOp(afZoom,
 				AffineTransformOp.TYPE_BILINEAR);
 		op2.filter(zoomBuffer, rotateBuffer);
-		g2d.drawImage(rotateBuffer, Util.inte(carx * zoom), Util.inte(cary
-				* zoom), null);
+		int carroX = Util.inte(carx * zoom);
+		int carroY = Util.inte(cary * zoom);
+		if (circuito.isUsaBkg() && circuito.getObjetos() != null) {
+			for (ObjetoPista objetoPista : circuito.getObjetos()) {
+				if (!(objetoPista instanceof ObjetoTransparencia))
+					continue;
+				ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+				Graphics2D gImage = rotateBuffer.createGraphics();
+				objetoTransparencia.desenhaCarro(gImage, zoom, carx, cary);
+			}
+		}
+		g2d.drawImage(rotateBuffer, carroX, carroY, null);
 
 		/**
 		 * Chuva e Faiscas
@@ -873,7 +885,8 @@ public class PainelCircuito extends JPanel {
 	private void gerarBoxes() {
 		int paradas = circuito.getParadaBoxIndex();
 		for (int i = 0; i < 12; i++) {
-			int iP = paradas + Util.inte(Carro.LARGURA * 2 * i) + Carro.LARGURA;
+			int iP = paradas + Util.inte(Carro.LARGURA * 1.5 * i)
+					+ Carro.LARGURA;
 			No n1 = (No) circuito.getBoxFull().get(iP - Carro.MEIA_LARGURA);
 			No nM = (No) circuito.getBoxFull().get(iP);
 			No n2 = (No) circuito.getBoxFull().get(iP + Carro.MEIA_LARGURA);
@@ -1771,7 +1784,7 @@ public class PainelCircuito extends JPanel {
 			SafetyCar safetyCar = controleJogo.getSafetyCar();
 			No noAtual = safetyCar.getNoAtual();
 			Point p = noAtual.getPoint();
-			if (!controleJogo.isSafetyCarVaiBox()) {
+			if (controleJogo.isSafetyCarNaPista()) {
 				g2d
 						.drawImage(scimg, limitesViewPort.x
 								+ (pointDesenhaSC.x + (Math.random() > 0.5 ? 1
@@ -2022,6 +2035,7 @@ public class PainelCircuito extends JPanel {
 		String intel = (ps.isJogadorHumano() ? ps.getNomeJogador() : "IA");
 		String txt2 = intel + " " + agressivo + " " + dano;
 		String velo = "~" + ps.getVelocidade() + " Km/h";
+		// String velo = "~" + ps.getGanho() + " Km/h";
 
 		int maior = 0;
 		if (txt1.length() > maior) {

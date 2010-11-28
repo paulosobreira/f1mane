@@ -101,7 +101,7 @@ public class ControleBox {
 		int cont = 0;
 		for (Iterator iter = carrosBox.iterator(); iter.hasNext();) {
 			Carro carro = (Carro) iter.next();
-			int indexParada = paradas + Util.inte(Carro.LARGURA * 2 * cont)
+			int indexParada = paradas + Util.inte(Carro.LARGURA * 1.5 * cont)
 					+ Carro.LARGURA;
 			if (cont < 12)
 				cont++;

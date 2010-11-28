@@ -97,6 +97,7 @@ public class Piloto implements Serializable {
 	private int msgTentativaNumVolta = 2;
 	private ArrayList listGanho;
 	private long ultimaMudancaPos;
+	private double ganho;
 
 	public Rectangle getDiateira() {
 		return diateira;
@@ -796,7 +797,7 @@ public class Piloto implements Serializable {
 		}
 
 		processaVelocidade(novoModificador, noAtual);
-		double ganho = ((novoModificador * controleJogo.getCircuito()
+		ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
 		if (!controleJogo.isModoQualify()) {
 			ganho = controleJogo.verificaUltraPassagem(this, ganho);
@@ -809,42 +810,26 @@ public class Piloto implements Serializable {
 					mudarTracado(0, controleJogo);
 				if (No.CURVA_ALTA.equals(noAtual.getTipo())
 						|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
-					if (isAgressivo()) {
-						double multi = 1.3;
-						if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV)
-							multi = 1.2;
-						if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV)
-							multi = 1.1;
-						double bonus = (controleJogo.getFatorUtrapassagem() * multi);
-						ganho *= bonus > 1 ? 1 : bonus;
-					} else
-						ganho *= controleJogo.getFatorUtrapassagem();
+					ganho *= controleJogo.getFatorUtrapassagem();
 				} else if (getCarro().testePotencia()) {
-					double nGanho = (controleJogo.getFatorUtrapassagem() + 0.3);
+					double nGanho = (controleJogo.getFatorUtrapassagem() + 0.025);
 					if (isAgressivo()) {
-						nGanho = (controleJogo.getFatorUtrapassagem() + 0.4);
+						nGanho = (controleJogo.getFatorUtrapassagem() + 0.05);
 					}
 					if (nGanho > 1) {
 						nGanho = 1;
 					}
 					ganho *= (nGanho);
 				} else {
-					double nGanho = (controleJogo.getFatorUtrapassagem() + 0.2);
-					if (isAgressivo()) {
-						nGanho = (controleJogo.getFatorUtrapassagem() + 0.3);
-					}
-					if (nGanho > 1) {
-						nGanho = 1;
-					}
-					ganho *= (nGanho);
+					ganho *= (controleJogo.getFatorUtrapassagem());
 				}
 			}
 			if (getTracado() == 0) {
 				if (No.CURVA_ALTA.equals(noAtual.getTipo())
 						|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
-					double nGanho = (controleJogo.getFatorUtrapassagem() + 0.2);
+					double nGanho = (controleJogo.getFatorUtrapassagem() + 0.025);
 					if (isAgressivo()) {
-						nGanho = (controleJogo.getFatorUtrapassagem() + 0.3);
+						nGanho = (controleJogo.getFatorUtrapassagem() + 0.05);
 					}
 					if (nGanho > 1) {
 						nGanho = 1;
@@ -879,6 +864,10 @@ public class Piloto implements Serializable {
 		ptosPista += ganho;
 
 		return index;
+	}
+
+	public double getGanho() {
+		return ganho;
 	}
 
 	private double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo) {

@@ -61,6 +61,7 @@ import sowbreira.f1mane.entidades.ObjetoGuadRails;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoPneus;
+import sowbreira.f1mane.entidades.ObjetoTransparencia;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCircuito;
@@ -170,6 +171,9 @@ public class MainPanelEditorVetorizado extends JPanel {
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 
 		circuito = (Circuito) ois.readObject();
+		if (circuito.isUsaBkg()) {
+
+		}
 		backGround = CarregadorRecursos.carregaBackGround(circuito
 				.getBackGround(), this, circuito);
 		carroCima = CarregadorRecursos
@@ -230,6 +234,21 @@ public class MainPanelEditorVetorizado extends JPanel {
 						objetoLivre.gerar();
 					}
 					repaint();
+				} else if (desenhandoObjetoLivre
+						&& (objetoPista instanceof ObjetoTransparencia)) {
+					ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+					if (e.getButton() == MouseEvent.BUTTON1) {
+						objetoTransparencia.getPontos().add(ultimoClicado);
+					} else {
+						desenhandoObjetoLivre = false;
+						if (circuito.getObjetos() == null)
+							circuito.setObjetos(new ArrayList<ObjetoPista>());
+						circuito.getObjetos().add(objetoTransparencia);
+						objetoTransparencia.setNome("Objeto "
+								+ circuito.getObjetos().size());
+						objetoTransparencia.gerar();
+					}
+					repaint();
 				} else if (posicionaObjetoPista) {
 					if (circuito.getObjetos() == null)
 						circuito.setObjetos(new ArrayList<ObjetoPista>());
@@ -255,6 +274,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		testePistaVetorizado = new TestePistaVetorizado(this, circuito);
 		iniciaEditor(srcFrame);
 		vetorizarPistaCarregado();
+		repaint();
 		srcFrame.pack();
 	}
 
@@ -420,27 +440,30 @@ public class MainPanelEditorVetorizado extends JPanel {
 		});
 		buttonsPanel.add(inflarPistaBot);
 
-		buttonsPanel.add(new JLabel() {
+		tamanhoPistaText = new JTextField();
+		tamanhoPistaText.setText("" + multiplicadorPista);
+		JPanel tamanhoPistaPanel = new JPanel(new GridLayout(1, 2));
+		tamanhoPistaPanel.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("tamanhoPista");
 			}
 		});
+		tamanhoPistaPanel.add(tamanhoPistaText);
+		buttonsPanel.add(tamanhoPistaPanel);
 
-		tamanhoPistaText = new JTextField();
-		tamanhoPistaText.setText("" + multiplicadorPista);
-		buttonsPanel.add(tamanhoPistaText);
+		larguraPistaText = new JTextField();
+		larguraPistaText.setText("" + multiplicadorLarguraPista);
 
-		buttonsPanel.add(new JLabel() {
+		JPanel larguraPistaPanel = new JPanel(new GridLayout(1, 2));
+		larguraPistaPanel.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("larguraPista");
 			}
 		});
-
-		larguraPistaText = new JTextField();
-		larguraPistaText.setText("" + multiplicadorLarguraPista);
-		buttonsPanel.add(larguraPistaText);
+		larguraPistaPanel.add(larguraPistaText);
+		buttonsPanel.add(larguraPistaPanel);
 
 		JButton corFundo = new JButton("Cor de Fundo");
 		corFundo.addActionListener(new ActionListener() {
@@ -498,8 +521,11 @@ public class MainPanelEditorVetorizado extends JPanel {
 		});
 
 		JPanel panelUsaBkg = new JPanel(new GridLayout(1, 2));
-		panelNoite.add(new JLabel("UsaBkg"));
+		panelUsaBkg.add(new JLabel("UsaBkg"));
 		final JCheckBox usaBkg = new JCheckBox();
+		if (circuito != null && circuito.isUsaBkg()) {
+			usaBkg.setSelected(true);
+		}
 		panelUsaBkg.add(usaBkg);
 		buttonsPanel.add(panelUsaBkg);
 		usaBkg.addChangeListener(new ChangeListener() {
@@ -546,6 +572,12 @@ public class MainPanelEditorVetorizado extends JPanel {
 									.getSelectedItem())) {
 						objetoPista = new ObjetoGuadRails();
 						posicionaObjetoPista = true;
+					} else if (FormularioObjetos.OBJETO_TRANSPARENCIA
+							.equals(formularioObjetos.getTipoComboBox()
+									.getSelectedItem())) {
+						objetoPista = new ObjetoTransparencia();
+						posicionaObjetoPista = true;
+						desenhandoObjetoLivre = true;
 					}
 					formularioObjetos.formularioObjetoPista(objetoPista);
 				} catch (Exception e2) {
@@ -640,9 +672,9 @@ public class MainPanelEditorVetorizado extends JPanel {
 						AffineTransformOp affineTransformOp = new AffineTransformOp(
 								affineTransform,
 								AffineTransformOp.TYPE_BILINEAR);
-						drawBuffer = new BufferedImage(
-								(int) (backGround.getWidth() * zoom),
-								(int) (backGround.getHeight() * zoom),
+						drawBuffer = new BufferedImage((int) (backGround
+								.getWidth() * zoom), (int) (backGround
+								.getHeight() * zoom),
 								BufferedImage.TYPE_INT_ARGB);
 						affineTransformOp.filter(backGround, drawBuffer);
 					}
@@ -667,21 +699,22 @@ public class MainPanelEditorVetorizado extends JPanel {
 		if (larguraPistaPixeis == 0)
 			larguraPistaPixeis = Util.inte(carroCima.getWidth()
 					* multiplicadorLarguraPista * zoom);
-		if (pista == null)
-			pista = new BasicStroke(larguraPistaPixeis, BasicStroke.CAP_ROUND,
-					BasicStroke.JOIN_ROUND);
-		if (pistaTinta == null)
-			pistaTinta = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
-					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-		if (box == null)
-			box = new BasicStroke(Util.inte(larguraPistaPixeis * .4),
-					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-		if (zebra == null)
-			zebra = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
-					BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
-					new float[] { 10, 10 }, 0);
-		desenhaObjetosBaixo(g2d);
+
 		if (!circuito.isUsaBkg()) {
+			if (pista == null)
+				pista = new BasicStroke(larguraPistaPixeis,
+						BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+			if (pistaTinta == null)
+				pistaTinta = new BasicStroke(Util
+						.inte(larguraPistaPixeis * 1.05),
+						BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+			if (box == null)
+				box = new BasicStroke(Util.inte(larguraPistaPixeis * .4),
+						BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+			if (zebra == null)
+				zebra = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
+						BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
+						new float[] { 10, 10 }, 0);
 			Rectangle limitesViewPort = (Rectangle) limitesViewPort();
 			g2d.setColor(circuito.getCorFundo());
 			g2d.fill(limitesViewPort);
@@ -689,12 +722,14 @@ public class MainPanelEditorVetorizado extends JPanel {
 			desenhaPista(g2d);
 			desenhaPistaBox(g2d);
 		}
+		desenhaObjetosBaixo(g2d);
 		desenhaCarroTeste(g2d);
 		desenhaEntradaParadaSaidaBox(g2d);
 		desenhaLargada(g2d);
 		desenhaGrid(g2d);
 		desenhaBoxes(g2d);
 		desenhaPreObjetoLivre(g2d);
+		desenhaPreObjetoTransparencia(g2d);
 		desenhaObjetosCima(g2d);
 
 		desenhaInfo(g2d);
@@ -791,10 +826,31 @@ public class MainPanelEditorVetorizado extends JPanel {
 
 	}
 
+	private void desenhaPreObjetoTransparencia(Graphics2D g2d) {
+		g2d.setColor(Color.BLACK);
+		if (objetoPista == null || !desenhandoObjetoLivre
+				|| !(objetoPista instanceof ObjetoTransparencia))
+			return;
+		ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+		if (objetoTransparencia.getPontos().size() == 1) {
+			return;
+		}
+		Point ant = null;
+		for (Point p : objetoTransparencia.getPontos()) {
+			if (ant != null) {
+				g2d.drawLine(Util.inte(ant.x * zoom), Util.inte(ant.y * zoom),
+						Util.inte(p.x * zoom), Util.inte(p.y * zoom));
+			}
+			ant = p;
+		}
+
+	}
+
 	private void desenhaBoxes(Graphics2D g2d) {
 		int paradas = circuito.getParadaBoxIndex();
 		for (int i = 0; i < 12; i++) {
-			int iP = paradas + Util.inte(Carro.LARGURA * 2 * i) + Carro.LARGURA;
+			int iP = paradas + Util.inte(Carro.LARGURA * 1.5 * i)
+					+ Carro.LARGURA;
 			No n1 = (No) circuito.getBoxFull().get(iP - Carro.MEIA_LARGURA);
 			No nM = (No) circuito.getBoxFull().get(iP);
 			No n2 = (No) circuito.getBoxFull().get(iP + Carro.MEIA_LARGURA);
@@ -872,7 +928,6 @@ public class MainPanelEditorVetorizado extends JPanel {
 			}
 
 			GeneralPath generalPath = new GeneralPath(rectangle);
-
 			AffineTransform affineTransformRect = AffineTransform
 					.getScaleInstance(zoom, zoom);
 			double rad = Math.toRadians((double) calculaAngulo);
@@ -932,7 +987,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 	private void desenhaGrid(Graphics2D g2d) {
 
 		for (int i = 0; i < 24; i++) {
-			int iP = 50 + Util.inte(((Carro.LARGURA)*0.8) * i);
+			int iP = 50 + Util.inte(((Carro.LARGURA) * 0.8) * i);
 			No n1 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
 			No nM = (No) circuito.getPistaFull().get(
