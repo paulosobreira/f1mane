@@ -123,6 +123,26 @@ public class PainelCircuito extends JPanel {
 	private BufferedImage drawBuffer;
 	private Thread threadBkgGen;
 
+	public Thread getThreadBkgGen() {
+		return threadBkgGen;
+	}
+
+	public BufferedImage getBackGround() {
+		return backGround;
+	}
+
+	public void setBackGround(BufferedImage backGround) {
+		this.backGround = backGround;
+	}
+
+	public BufferedImage getDrawBuffer() {
+		return drawBuffer;
+	}
+
+	public void setDrawBuffer(BufferedImage drawBuffer) {
+		this.drawBuffer = drawBuffer;
+	}
+
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
 		controleJogo = jogo;
@@ -209,9 +229,9 @@ public class PainelCircuito extends JPanel {
 						AffineTransformOp affineTransformOp = new AffineTransformOp(
 								affineTransform,
 								AffineTransformOp.TYPE_BILINEAR);
-						drawBuffer = new BufferedImage(
-								(int) (backGround.getWidth() * zoom),
-								(int) (backGround.getHeight() * zoom),
+						drawBuffer = new BufferedImage((int) (backGround
+								.getWidth() * zoom), (int) (backGround
+								.getHeight() * zoom),
 								BufferedImage.TYPE_INT_ARGB);
 						affineTransformOp.filter(backGround, drawBuffer);
 					}
@@ -956,7 +976,7 @@ public class PainelCircuito extends JPanel {
 
 	private void gerarGrid() {
 		for (int i = 0; i < 24; i++) {
-			int iP = 50 + Util.inte((Carro.LARGURA*0.8) * i);
+			int iP = 50 + Util.inte((Carro.LARGURA * 0.8) * i);
 			No n1 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
 			No nM = (No) circuito.getPistaFull().get(
@@ -1130,6 +1150,14 @@ public class PainelCircuito extends JPanel {
 		}
 		if (p.y < 0) {
 			p.y = 1;
+		}
+		if (circuito.isUsaBkg() && drawBuffer != null) {
+			if ((p.x + limitesViewPort.width) > drawBuffer.getWidth()) {
+				p.x = drawBuffer.getWidth() - limitesViewPort.width;
+			}
+			if ((p.y + limitesViewPort.height) > drawBuffer.getHeight()) {
+				p.y = drawBuffer.getHeight() - limitesViewPort.height;
+			}
 		}
 		int largMax = (int) ((getWidth()) - scrollPane.getViewport().getWidth());
 		if (p.x > largMax) {
