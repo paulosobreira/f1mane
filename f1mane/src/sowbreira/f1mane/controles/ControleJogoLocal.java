@@ -170,11 +170,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 			if (controleCorrida != null) {
 				controleCorrida.finalize();
 			}
-
 			if (gerenciadorVisual != null) {
 				gerenciadorVisual.finalize();
 			}
-
 			if (controleEstatisticas != null) {
 				controleEstatisticas.setConsumidorAtivo(false);
 				controleEstatisticas.finalize();
