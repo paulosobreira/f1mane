@@ -62,10 +62,10 @@ public class FormularioObjetos {
 		panel.add(new JLabel("Tipo"));
 		panel.add(tipoComboBox);
 
-		panel.add(new JLabel("Altura"));
+		panel.add(new JLabel("Altura/De No"));
 		panel.add(altura);
 
-		panel.add(new JLabel("Largura"));
+		panel.add(new JLabel("Largura/Ate No"));
 		panel.add(largura);
 
 		panel.add(new JLabel("Angulo"));
@@ -74,7 +74,7 @@ public class FormularioObjetos {
 		panel.add(new JLabel("Transparencia"));
 		panel.add(transparencia);
 
-		panel.add(new JLabel("Desenha Frente"));
+		panel.add(new JLabel("Desenha Frente/Nos Box"));
 		panel.add(frente);
 
 		panel.add(new JLabel("Cor Primaria"));
