@@ -73,7 +73,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
 	public final static Color lightWhiteRain = new Color(255, 255, 255, 160);
-	public final static Color nublado = new Color(200, 200, 200, 100);
+	public final static Color nublado = new Color(200, 200, 200, 90);
 	public final static BasicStroke strokeFaisca = new BasicStroke(1.0f,
 			BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] {
 					10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
@@ -598,6 +598,17 @@ public class PainelCircuito extends JPanel {
 			for (ObjetoPista objetoPista : circuito.getObjetos()) {
 				if (!(objetoPista instanceof ObjetoTransparencia))
 					continue;
+				if (objetoPista.isPintaEmcima() && !noAtual.isBox()) {
+					continue;
+				}
+				if (objetoPista.getAltura() != 0
+						&& objetoPista.getLargura() != 0) {
+					int indexNoAtual = noAtual.getIndex();
+					if (objetoPista.getAltura() < indexNoAtual
+							|| objetoPista.getLargura() > indexNoAtual) {
+						continue;
+					}
+				}
 				ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
 				Graphics2D gImage = rotateBuffer.createGraphics();
 				objetoTransparencia.desenhaCarro(gImage, zoom, carx, cary);

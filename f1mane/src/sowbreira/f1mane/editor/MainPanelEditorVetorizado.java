@@ -110,6 +110,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 	private double currentZoom;
 	private BufferedImage drawBuffer;
 	private Thread threadBkgGen;
+	private JCheckBox nosChave;
 
 	public boolean isMoverObjetoPista() {
 		return moverObjetoPista;
@@ -605,34 +606,34 @@ public class MainPanelEditorVetorizado extends JPanel {
 				try {
 					srcFrame.requestFocus();
 
-					List remover = new ArrayList();
-					List add = new ArrayList();
-					List<ObjetoPista> objetos = circuito.getObjetos();
-					int size = objetos.size();
-					for (Iterator iterator = objetos.iterator(); iterator
-							.hasNext();) {
-						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-						if (objetoPista instanceof ObjetoGuadRails) {
-							// ObjetoGuadRails objetoGuadRails = new
-							// ObjetoGuadRails();
-							// objetoGuadRails
-							// .setAltura(objetoPista.getAltura() * 10);
-							// objetoGuadRails.setAngulo(objetoPista.getAngulo());
-							// objetoGuadRails.setCorPimaria(objetoPista
-							// .getCorSecundaria());
-							// objetoGuadRails.setCorSecundaria(objetoPista
-							// .getCorSecundaria());
-							// objetoGuadRails.setPosicaoQuina(objetoPista
-							// .getPosicaoQuina());
-							// objetoGuadRails.setPintaEmcima(objetoPista
-							// .isPintaEmcima());
-							// objetoGuadRails.setTransparencia(255);
-							// objetoGuadRails.setNome("Objeto " + (size++));
-							// add.add(objetoGuadRails);
-							remover.add(objetoPista);
-						}
-					}
-					objetos.removeAll(remover);
+					// List remover = new ArrayList();
+					// List add = new ArrayList();
+					// List<ObjetoPista> objetos = circuito.getObjetos();
+					// int size = objetos.size();
+					// for (Iterator iterator = objetos.iterator(); iterator
+					// .hasNext();) {
+					// ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+					// if (objetoPista instanceof ObjetoGuadRails) {
+					// // ObjetoGuadRails objetoGuadRails = new
+					// // ObjetoGuadRails();
+					// // objetoGuadRails
+					// // .setAltura(objetoPista.getAltura() * 10);
+					// // objetoGuadRails.setAngulo(objetoPista.getAngulo());
+					// // objetoGuadRails.setCorPimaria(objetoPista
+					// // .getCorSecundaria());
+					// // objetoGuadRails.setCorSecundaria(objetoPista
+					// // .getCorSecundaria());
+					// // objetoGuadRails.setPosicaoQuina(objetoPista
+					// // .getPosicaoQuina());
+					// // objetoGuadRails.setPintaEmcima(objetoPista
+					// // .isPintaEmcima());
+					// // objetoGuadRails.setTransparencia(255);
+					// // objetoGuadRails.setNome("Objeto " + (size++));
+					// // add.add(objetoGuadRails);
+					// remover.add(objetoPista);
+					// }
+					// }
+					// objetos.removeAll(remover);
 					// objetos.addAll(add);
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -641,6 +642,18 @@ public class MainPanelEditorVetorizado extends JPanel {
 			}
 		});
 		buttonsPanel.add(moverPelaTela);
+
+		JPanel nosChavePanel = new JPanel(new GridLayout(1, 2));
+		nosChavePanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("desnhaNosChave");
+			}
+		});
+		nosChavePanel.add(larguraPistaText);
+		nosChave = new JCheckBox();
+		nosChavePanel.add(nosChave);
+		buttonsPanel.add(nosChavePanel);
 		frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 
 	}
@@ -749,6 +762,61 @@ public class MainPanelEditorVetorizado extends JPanel {
 						loc.y + 10);
 			}
 		}
+
+		if (nosChave != null && nosChave.isSelected()) {
+			No oldNo = null;
+			int count = 0;
+			for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
+				No no = (No) iter.next();
+				count++;
+				g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no
+						.getDrawY(), null);
+
+				if (oldNo == null) {
+					oldNo = no;
+				} else {
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
+							.getY());
+					oldNo = no;
+				}
+
+				if (count % 3 == 0) {
+					g2d.setColor(Color.WHITE);
+					g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6,
+							6, 2, 2);
+					g2d.setColor(Color.black);
+					g2d.drawString("Index " + no.getIndex(), no.getDrawX(), no.getDrawY());
+				}
+			}
+
+			oldNo = null;
+			count = 0;
+			for (Iterator iter = circuito.getBox().iterator(); iter.hasNext();) {
+				No no = (No) iter.next();
+				count++;
+				g2d.setColor(no.getTipo());
+				g2d.fillRoundRect(no.getDrawX(), no.getDrawY(), 10, 10, 15, 15);
+				g2d.setColor(Color.BLACK);
+
+				if (oldNo == null) {
+					oldNo = no;
+				} else {
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
+							.getY());
+					oldNo = no;
+				}
+
+				if (count % 3 == 0) {
+					g2d.setColor(Color.WHITE);
+					g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6,
+							6, 2, 2);
+					g2d.setColor(Color.black);
+					g2d.drawString("Index " + no.getIndex(), no.getDrawX(), no.getDrawY());
+				}
+			}
+
+		}
+
 	}
 
 	private void desenhaObjetosBaixo(Graphics2D g2d) {
@@ -1124,7 +1192,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		y += 20;
 		g2d.drawString("Box : " + testePistaVetorizado.isIrProBox(), x, y);
 		y += 20;
-		g2d.drawString("MaxHP : " + testePistaVetorizado.isMaxHP(), x, y);
+		g2d.drawString("Simula Max : " + testePistaVetorizado.isMaxHP(), x, y);
 		if (circuito.getObjetos() != null) {
 			y += 20;
 			g2d.drawString("Num Objetos : " + circuito.getObjetos().size(), x,
