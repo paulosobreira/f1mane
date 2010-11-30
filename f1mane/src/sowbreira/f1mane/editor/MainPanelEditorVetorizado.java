@@ -650,7 +650,6 @@ public class MainPanelEditorVetorizado extends JPanel {
 				return Lang.msg("desnhaNosChave");
 			}
 		});
-		nosChavePanel.add(larguraPistaText);
 		nosChave = new JCheckBox();
 		nosChavePanel.add(nosChave);
 		buttonsPanel.add(nosChavePanel);
@@ -768,50 +767,42 @@ public class MainPanelEditorVetorizado extends JPanel {
 			int count = 0;
 			for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
 				No no = (No) iter.next();
-				count++;
 				g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no
 						.getDrawY(), null);
-
+				g2d.setColor(Color.BLACK);
 				if (oldNo == null) {
 					oldNo = no;
+					g2d.setColor(Color.WHITE);
+					g2d.drawString("Index " + count, no.getDrawX(), no.getDrawY());
 				} else {
 					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
 							.getY());
+					count += GeoUtil.drawBresenhamLine(oldNo.getX(),
+							oldNo.getY(), no.getX(), no.getY()).size();
+					g2d.setColor(Color.WHITE);
+					g2d.drawString("Index " + count, no.getDrawX(), no.getDrawY());
 					oldNo = no;
 				}
-
-				if (count % 3 == 0) {
-					g2d.setColor(Color.WHITE);
-					g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6,
-							6, 2, 2);
-					g2d.setColor(Color.black);
-					g2d.drawString("Index " + no.getIndex(), no.getDrawX(), no.getDrawY());
-				}
 			}
-
 			oldNo = null;
 			count = 0;
 			for (Iterator iter = circuito.getBox().iterator(); iter.hasNext();) {
 				No no = (No) iter.next();
-				count++;
 				g2d.setColor(no.getTipo());
 				g2d.fillRoundRect(no.getDrawX(), no.getDrawY(), 10, 10, 15, 15);
 				g2d.setColor(Color.BLACK);
-
 				if (oldNo == null) {
 					oldNo = no;
+					g2d.setColor(Color.WHITE);
+					g2d.drawString("Index " + count, no.getDrawX(), no.getDrawY());
 				} else {
 					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
 							.getY());
-					oldNo = no;
-				}
-
-				if (count % 3 == 0) {
+					count += GeoUtil.drawBresenhamLine(oldNo.getX(),
+							oldNo.getY(), no.getX(), no.getY()).size();
 					g2d.setColor(Color.WHITE);
-					g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6,
-							6, 2, 2);
-					g2d.setColor(Color.black);
-					g2d.drawString("Index " + no.getIndex(), no.getDrawX(), no.getDrawY());
+					g2d.drawString("Index " + count, no.getDrawX(), no.getDrawY());
+					oldNo = no;
 				}
 			}
 
