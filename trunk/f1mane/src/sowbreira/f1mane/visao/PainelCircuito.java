@@ -192,8 +192,15 @@ public class PainelCircuito extends JPanel {
 			}
 		});
 		circuito = controleJogo.getCircuito();
-		backGround = CarregadorRecursos.carregaBackGround(circuito
-				.getBackGround(), this, circuito);
+		while (backGround == null) {
+			try {
+				backGround = CarregadorRecursos.carregaBackGround(circuito
+						.getBackGround(), this, circuito);
+			} catch (Error e) {
+				System.gc();
+				e.printStackTrace();
+			}
+		}
 		larguraPista = circuito.getMultiplicadorLarguraPista();
 		List l = circuito.getPistaFull();
 		for (Iterator iterator = l.iterator(); iterator.hasNext();) {
@@ -286,12 +293,16 @@ public class PainelCircuito extends JPanel {
 		}
 		desenhaMarcasPeneuPista(g2d);
 		desenhaPiloto(g2d);
+		if (!circuito.isUsaBkg()) {
+			desenhaObjetosCima(g2d);
+		}
+
 		if (!desenhouQualificacao) {
 			desenhaQualificacao(g2d);
 		}
 		desenharSafetyCar(g2d);
 		desenharFarois(g2d);
-		desenhaObjetosCima(g2d);
+
 		desenhaChuva(g2d);
 		desenharClima(g2d);
 		desenhaInfoAdd(g2d);
@@ -604,8 +615,8 @@ public class PainelCircuito extends JPanel {
 				if (objetoPista.getAltura() != 0
 						&& objetoPista.getLargura() != 0) {
 					int indexNoAtual = noAtual.getIndex();
-					if (objetoPista.getAltura() < indexNoAtual
-							|| objetoPista.getLargura() > indexNoAtual) {
+					if (objetoPista.getAltura() > indexNoAtual
+							|| objetoPista.getLargura() < indexNoAtual) {
 						continue;
 					}
 				}
@@ -2045,8 +2056,8 @@ public class PainelCircuito extends JPanel {
 
 		String intel = (ps.isJogadorHumano() ? ps.getNomeJogador() : "IA");
 		String txt2 = intel + " " + agressivo + " " + dano;
-		String velo = "~" + ps.getVelocidade() + " Km/h";
-		// String velo = "~" + ps.getGanho() + " Km/h";
+		// String velo = "~" + ps.getVelocidade() + " Km/h";
+		String velo = "~" + ps.getNoAtual().getIndex() + " ind";
 
 		int maior = 0;
 		if (txt1.length() > maior) {
