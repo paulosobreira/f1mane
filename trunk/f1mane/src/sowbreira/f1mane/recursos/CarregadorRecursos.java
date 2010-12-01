@@ -265,7 +265,7 @@ public class CarregadorRecursos {
 					String red = values[1];
 					String green = values[2];
 					String blue = values[3];
-					// carro.setImg("carros/" + temporarada + "/" + values[4]);
+					carro.setImg("carros/" + temporarada + "/" + values[4]);
 					carro.setCor1(new Color(Integer.parseInt(red), Integer
 							.parseInt(green), Integer.parseInt(blue)));
 
@@ -433,8 +433,8 @@ public class CarregadorRecursos {
 
 			String[] tnsCarros = values[4].split(";");
 
-			// carro.setImg("carros/" + temporada + "/"
-			// + tnsCarros[Util.intervalo(0, tnsCarros.length - 1)]);
+			carro.setImg("carros/" + temporada + "/"
+					+ tnsCarros[Util.intervalo(0, tnsCarros.length - 1)]);
 			carro.setCor1(new Color(Integer.parseInt(red), Integer
 					.parseInt(green), Integer.parseInt(blue)));
 			red = values[5];
@@ -466,7 +466,7 @@ public class CarregadorRecursos {
 		carroNovo.setNome(carro.getNome());
 		carroNovo.setCor1(carro.getCor1());
 		carroNovo.setCor2(carro.getCor2());
-		// carroNovo.setImg(carro.getImg());
+		carroNovo.setImg(carro.getImg());
 		carroNovo.setPiloto(piloto);
 		carroNovo.setPotencia(carro.getPotencia()
 				+ (Math.random() > .5 ? -5 : 5));

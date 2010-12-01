@@ -1312,7 +1312,8 @@ public class PainelCircuito extends JPanel {
 				desenhaCarroSelecionado(pilotoSelecionado, g2d);
 			desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
 			if (controleJogo.getCircuito() != null
-					&& controleJogo.getCircuito().isNoite()) {
+					&& (controleJogo.getCircuito().isNoite() || controleJogo
+							.getCircuito().isUsaBkg())) {
 				g2d.setColor(bluNoite);
 				g2d.fillRoundRect(limitesViewPort.x
 						+ (limitesViewPort.width - 110), limitesViewPort.y + 2,
@@ -1644,22 +1645,13 @@ public class PainelCircuito extends JPanel {
 			carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
 			carSelX += carroimg.getWidth() / 2;
 
+
 			bounce = calculaBounce(carroFrente);
-			if (Math.random() > 0.5) {
-				carSelX += bounce;
-			} else {
-				carSelX -= bounce;
-			}
+
 			double diff = controleJogo.calculaSegundosParaProximoDouble(psel);
 			int dstX = limitesViewPort.x + (limitesViewPort.width / 4);
 			int dstY = carSelY + 20;
-			if (diff >= 3) {
-				g2d.setColor(gre);
-			} else if (diff < 3 && diff > 1) {
-				g2d.setColor(yel);
-			} else if (diff <= 1) {
-				g2d.setColor(red);
-			}
+
 			int halfCarWidth = carroimg.getWidth() / 3;
 			if (diff > 3) {
 				carSelX += (30 - halfCarWidth * 2);
@@ -1673,6 +1665,22 @@ public class PainelCircuito extends JPanel {
 			} else if (diff <= .5) {
 				carSelX += (120 - halfCarWidth);
 				dstX += 90;
+			}
+			g2d.setColor(this.bluNoite);
+			g2d.fillRoundRect(carSelX - 5, carSelY - 5, carroimg.getWidth() + 5,
+					carroimg.getHeight() + 5, 15, 15);
+			
+			if (diff >= 3) {
+				g2d.setColor(gre);
+			} else if (diff < 3 && diff > 1) {
+				g2d.setColor(yel);
+			} else if (diff <= 1) {
+				g2d.setColor(red);
+			}
+			if (Math.random() > 0.5) {
+				carSelX += bounce;
+			} else {
+				carSelX -= bounce;
 			}
 			newY = carroimg.getHeight() > 36 ? carSelY
 					- (carroimg.getHeight() - 36) : carSelY;
@@ -1703,7 +1711,9 @@ public class PainelCircuito extends JPanel {
 				- (carroimg.getWidth() / 2);
 		carSelY = limitesViewPort.y + limitesViewPort.height - 35;
 		bounce = calculaBounce(psel.getCarro());
-
+		g2d.setColor(this.bluNoite);
+		g2d.fillRoundRect(carSelX - 5, carSelY - 5, carroimg.getWidth() + 5,
+				carroimg.getHeight() + 5, 15, 15);
 		if (Math.random() > 0.5) {
 			carSelX += bounce;
 		} else {
@@ -1715,6 +1725,7 @@ public class PainelCircuito extends JPanel {
 			desenhaFaiscaLateral(g2d, new Point(carSelX + carroimg.getWidth()
 					- 10, newY + carroimg.getHeight() / 2));
 		}
+
 		g2d.drawImage(carroimg, null, carSelX, newY);
 
 		Carro carroAtraz = controleJogo.obterCarroAtraz(psel);
@@ -1722,25 +1733,16 @@ public class PainelCircuito extends JPanel {
 			carroimg = controleJogo.obterCarroLado(carroAtraz.getPiloto());
 			carSelX = limitesViewPort.x + limitesViewPort.width
 					+ -carroimg.getWidth() - carroimg.getWidth() / 2;
+
 			bounce = calculaBounce(carroAtraz);
-			if (Math.random() > 0.5) {
-				carSelX += bounce;
-			} else {
-				carSelX -= bounce;
-			}
+
 			int dstX = limitesViewPort.x + limitesViewPort.width
 					+ -(limitesViewPort.width / 3);
 			int dstY = carSelY + 20;
 			double diff = controleJogo
 					.calculaSegundosParaProximoDouble(carroAtraz.getPiloto());
 
-			if (diff >= 3) {
-				g2d.setColor(gre);
-			} else if (diff < 3 && diff > 1) {
-				g2d.setColor(yel);
-			} else if (diff <= 1) {
-				g2d.setColor(red);
-			}
+
 			int halfCarWidth = carroimg.getWidth() / 3;
 			if (diff >= 3) {
 				carSelX -= (30 - halfCarWidth * 2);
@@ -1754,6 +1756,21 @@ public class PainelCircuito extends JPanel {
 			} else if (diff <= .5) {
 				carSelX -= (110 - halfCarWidth);
 				dstX -= 70;
+			}
+			g2d.setColor(this.bluNoite);
+			g2d.fillRoundRect(carSelX - 5, carSelY - 5, carroimg.getWidth() + 5,
+					carroimg.getHeight() + 5, 15, 15);			
+			if (diff >= 3) {
+				g2d.setColor(gre);
+			} else if (diff < 3 && diff > 1) {
+				g2d.setColor(yel);
+			} else if (diff <= 1) {
+				g2d.setColor(red);
+			}
+			if (Math.random() > 0.5) {
+				carSelX += bounce;
+			} else {
+				carSelX -= bounce;
 			}
 			newY = carroimg.getHeight() > 36 ? carSelY
 					- (carroimg.getHeight() - 36) : carSelY;

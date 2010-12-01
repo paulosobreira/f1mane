@@ -58,8 +58,25 @@ public abstract class ControleRecursos {
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.dispose();
-			bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
-					.geraTransparencia(carroLado, Color.WHITE));
+			if (carro.getImg() != null) {
+				try {
+					BufferedImage carroLadoPng = CarregadorRecursos
+							.carregaImgSemCache(carro.getImg());
+					if (carroLadoPng != null) {
+						carroLado = carroLadoPng;
+						bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
+								.geraTransparencia(carroLado, 240));
+					}
+				} catch (Exception e) {
+					carro.setImg(null);
+					bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
+							.geraTransparencia(carroLado, Color.WHITE));
+				}
+
+			} else {
+				bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
+						.geraTransparencia(carroLado, Color.WHITE));
+			}
 		}
 		return carroLado;
 	}
@@ -102,8 +119,25 @@ public abstract class ControleRecursos {
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.dispose();
-			bufferCarrosLado.put(carro.getNome(), ImageUtil.geraTransparencia(
-					carroLado, Color.WHITE));
+			if (carro.getImg() != null) {
+				try {
+					BufferedImage carroLadoPng = CarregadorRecursos
+							.carregaImgSemCache(carro.getImg());
+					if (carroLadoPng != null) {
+						carroLado = carroLadoPng;
+						bufferCarrosLado.put(carro.getNome(), ImageUtil
+								.geraTransparencia(carroLado, 240));
+					}
+				} catch (Exception e) {
+					carro.setImg(null);
+					bufferCarrosLado.put(carro.getNome(), ImageUtil
+							.geraTransparencia(carroLado, Color.WHITE));
+				}
+			} else {
+				bufferCarrosLado.put(carro.getNome(), ImageUtil
+						.geraTransparencia(carroLado, Color.WHITE));
+			}
+
 		}
 		return carroLado;
 	}

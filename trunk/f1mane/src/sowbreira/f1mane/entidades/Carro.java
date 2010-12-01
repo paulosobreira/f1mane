@@ -40,6 +40,7 @@ public class Carro implements Serializable {
 	private Color cor2;
 	private String danificado;
 	private String nome;
+	private String img;
 	private String asa = ASA_NORMAL;
 	private int potencia;
 	private int durabilidadeAereofolio;
@@ -198,6 +199,14 @@ public class Carro implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	public int getPotencia() {
