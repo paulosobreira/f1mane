@@ -36,6 +36,7 @@ public abstract class ControleRecursos {
 	protected Map circuitos = new HashMap();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
+	private final static int TRANPS = 250;
 	private String seasson;
 	private Set idsNoPista = new HashSet();
 	private Set idsNoBox = new HashSet();
@@ -65,7 +66,7 @@ public abstract class ControleRecursos {
 					if (carroLadoPng != null) {
 						carroLado = carroLadoPng;
 						bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
-								.geraTransparencia(carroLado, 240));
+								.geraTransparencia(carroLado, TRANPS));
 					}
 				} catch (Exception e) {
 					carro.setImg(null);
@@ -126,7 +127,7 @@ public abstract class ControleRecursos {
 					if (carroLadoPng != null) {
 						carroLado = carroLadoPng;
 						bufferCarrosLado.put(carro.getNome(), ImageUtil
-								.geraTransparencia(carroLado, 240));
+								.geraTransparencia(carroLado, TRANPS));
 					}
 				} catch (Exception e) {
 					carro.setImg(null);

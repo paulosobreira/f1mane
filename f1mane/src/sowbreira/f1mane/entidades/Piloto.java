@@ -98,6 +98,7 @@ public class Piloto implements Serializable {
 	private ArrayList listGanho;
 	private long ultimaMudancaPos;
 	private double ganho;
+	private int novoModificador;
 
 	public Rectangle getDiateira() {
 		return diateira;
@@ -737,6 +738,10 @@ public class Piloto implements Serializable {
 	protected static final SimpleDateFormat formatter = new SimpleDateFormat(
 			"dd/MM/yyyy hh:mm:ss");
 
+	public int getNovoModificador() {
+		return novoModificador;
+	}
+
 	private int calcularNovoIndex(InterfaceJogo controleJogo) {
 		int index = noAtual.getIndex();
 		boolean fator = Math.random() > controleJogo.getNiveljogo();
@@ -776,7 +781,7 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isModoQualify() && !controleJogo.isSafetyCarNaPista()) {
 			tentarPassaPilotoDaFrente(controleJogo);
 		}
-		int novoModificador = calcularNovoModificador(controleJogo);
+		novoModificador = calcularNovoModificador(controleJogo);
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, noAtual, controleJogo);
 

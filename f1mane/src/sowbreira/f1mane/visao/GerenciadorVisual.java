@@ -185,8 +185,8 @@ public class GerenciadorVisual {
 				if (painelCircuito.zoom > 1) {
 					painelCircuito.zoom = 1;
 				}
-				if (painelCircuito.zoom < 0.1) {
-					painelCircuito.zoom = 0.1;
+				if (painelCircuito.zoom < 0.2) {
+					painelCircuito.zoom = 0.2;
 				}
 				painelCircuito.atualizaVarZoom();
 			}
@@ -1702,6 +1702,11 @@ public class GerenciadorVisual {
 				});
 				No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
 				painelCircuito.centralizarPontoDireto(n.getPoint());
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					Logger.logarExept(e);
+				}
 				Rectangle limitesViewPort = null;
 				limitesViewPort = (Rectangle) painelCircuito.limitesViewPort();
 				int iniY1 = 30;
@@ -1735,12 +1740,7 @@ public class GerenciadorVisual {
 						Point pd = new Point(x, point.y + limitesViewPort.y);
 						painelCircuito.definirDesenhoQualificacao(piloto, pd);
 						if (tempoSleep != 0) {
-							// SwingUtilities.invokeLater(new Runnable() {
-							// @Override
-							// public void run() {
 							painelCircuito.repaint();
-							// }
-							// });
 						} else {
 							break;
 						}
@@ -1757,12 +1757,7 @@ public class GerenciadorVisual {
 					}
 				}
 				try {
-					// SwingUtilities.invokeLater(new Runnable() {
-					// @Override
-					// public void run() {
 					painelCircuito.repaint();
-					// }
-					// });
 					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					Logger.logarExept(e);

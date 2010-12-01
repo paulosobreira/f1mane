@@ -352,13 +352,9 @@ public class ControleCorrida {
 			return;
 		}
 
-		double fatorAcidente = .8;
-		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
-			fatorAcidente += .1;
-		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
-			fatorAcidente -= .1;
+		double fatorAcidente = .9;
 		if (controleJogo.isChovendo()) {
-			fatorAcidente -= .3;
+			fatorAcidente -= .1;
 		}
 		if (piloto.isJogadorHumano() && piloto.isAgressivo()
 				&& !piloto.testeHabilidadePilotoCarro()) {
@@ -396,7 +392,8 @@ public class ControleCorrida {
 					&& (Math.random() > fatorAcidente)) {
 				if ((piloto.getCarro().getDurabilidadeAereofolio() <= 1)
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
-						&& (Math.random() > fatorAcidente)) {
+						&& (controleJogo.getNumVoltaAtual() > 1)
+						&& Math.random() > fatorAcidente) {
 					piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 					controleJogo.infoPrioritaria(Lang.msg("016", new String[] {
 							Html.superRed(piloto.getNome()),
