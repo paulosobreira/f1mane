@@ -45,7 +45,6 @@
 				<exclude name="**/*.java" />
 				<exclude name="**/*.jpg" />
 				<exclude name="**/*.db" />
-				<exclude name="sowbreira/f1mane/recursos/carros/**/*.gif" />
 			</fileset>
 		</copy>
 	</target>
@@ -56,7 +55,8 @@
 				<exclude name=".*/" />
 				<exclude name="**/*.java" />
 				<exclude name="build.xml" />
-				<exclude name="sowbreira/f1mane/recursos/CarregadorRecursos.class" />
+				<exclude name="sowbreira/f1mane/recursos/**/*.gif" />
+				<exclude name="sowbreira/f1mane/recursos/**/*.png" />				
 			</fileset>
 		</jar>
 	</target>
@@ -64,9 +64,9 @@
 		<jar jarfile="f1maneRecursos.jar" compress="true" manifest="MANIFEST.MF">
 			<fileset dir="src">
 				<include name="sowbreira/f1mane/recursos/**/*.jpg" />
-			</fileset>
-			<fileset dir="build">
-				<include name="sowbreira/f1mane/recursos/CarregadorRecursos.class" />
+				<include name="sowbreira/f1mane/recursos/carros/**/*.gif" />
+				<include name="sowbreira/f1mane/recursos/**/*.gif" />
+				<include name="sowbreira/f1mane/recursos/**/*.png" />				
 			</fileset>
 		</jar>
 	</target>
