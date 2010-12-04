@@ -17,7 +17,7 @@
 	</security>
 
 	<resources>
-		<j2se version="1.6" />
+		<j2se version="1.6"  java-vm-args="-Xmx512M -Xms512M" />
 		<jar href="f1mane.jar" />
 		<jar href="f1maneRecursos.jar" />
     </resources>
