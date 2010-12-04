@@ -57,7 +57,7 @@ public class PainelCircuito extends JPanel {
 	private static final long serialVersionUID = -5268795362549996148L;
 	private InterfaceJogo controleJogo;
 	private GerenciadorVisual gerenciadorVisual;
-	private Point pointDesenhaClima = new Point(10, 60);
+	private Point pointDesenhaClima = new Point(10, 10);
 	private Point pointDesenhaVelo = new Point(10, 60);
 	private Point pointDesenhaSC = new Point(10, 85);
 	private Point pointDesenhaHelmet = new Point(10, 130);
@@ -648,10 +648,11 @@ public class PainelCircuito extends JPanel {
 		if (controleJogo.isChovendo() && piloto.getVelocidade() != 0
 				&& !piloto.isDesqualificado()) {
 			g2d.setColor(lightWhiteRain);
-			for (int i = 0; i < 30; i++) {
+			for (int i = 0; i < 24; i++) {
+				int eixoDiatero = (int)(eixo*0.7);
 				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
-						- eixo, eixoDianteras.x + eixo), (int) Util.intervalo(
-						eixoDianteras.y - eixo, eixoDianteras.y + eixo));
+						- eixoDiatero, eixoDianteras.x +eixoDiatero), (int) Util.intervalo(
+						eixoDianteras.y - eixoDiatero, eixoDianteras.y + eixoDiatero));
 
 				Point dest = new Point((int) Util.intervalo(piloto
 						.getTrazeira().getX()
@@ -1503,13 +1504,13 @@ public class PainelCircuito extends JPanel {
 				&& pneus > 10)
 			return;
 
-		g2d.drawImage(carroimgDano, limitesViewPort.x + 5,
+		g2d.drawImage(carroimgDano, limitesViewPort.x + 55,
 				limitesViewPort.y + 10, null);
 		if (Math.random() > .5) {
 			return;
 		}
 		if (porcentComb <= 10) {
-			g2d.drawImage(fuel.getImage(), limitesViewPort.x + 5,
+			g2d.drawImage(fuel.getImage(), limitesViewPort.x + 10,
 					limitesViewPort.y + 240, null);
 		}
 
@@ -1518,26 +1519,26 @@ public class PainelCircuito extends JPanel {
 
 			g2d.setColor(Color.red);
 			// bico
-			g2d.fillOval(limitesViewPort.x + 8, limitesViewPort.y + 26, 15, 15);
+			g2d.fillOval(limitesViewPort.x + 58, limitesViewPort.y + 26, 15, 15);
 		}
 		if (Carro.PNEU_FURADO.equals(pilotoSelecionado.getCarro()
 				.getDanificado())) {
 			g2d.setColor(Color.red);
 			// Roda diantera
 			g2d
-					.fillOval(limitesViewPort.x + 28, limitesViewPort.y + 24,
+					.fillOval(limitesViewPort.x + 78, limitesViewPort.y + 24,
 							18, 18);
 			// Roda trazeira
-			g2d.fillOval(limitesViewPort.x + 132, limitesViewPort.y + 24, 18,
+			g2d.fillOval(limitesViewPort.x + 182, limitesViewPort.y + 24, 18,
 					18);
 		} else if (pneus <= 10) {
 			g2d.setColor(yel);
 			// Roda diantera
 			g2d
-					.fillOval(limitesViewPort.x + 28, limitesViewPort.y + 24,
+					.fillOval(limitesViewPort.x + 78, limitesViewPort.y + 24,
 							18, 18);
 			// Roda trazeira
-			g2d.fillOval(limitesViewPort.x + 132, limitesViewPort.y + 24, 18,
+			g2d.fillOval(limitesViewPort.x + 182, limitesViewPort.y + 24, 18,
 					18);
 		}
 		if (Carro.EXPLODIU_MOTOR.equals(pilotoSelecionado.getCarro()
@@ -1545,19 +1546,19 @@ public class PainelCircuito extends JPanel {
 			g2d.setColor(Color.red);
 			// motor
 			g2d
-					.fillOval(limitesViewPort.x + 98, limitesViewPort.y + 12,
+					.fillOval(limitesViewPort.x + 148, limitesViewPort.y + 12,
 							15, 15);
 		} else if (motor <= 10) {
 			g2d.setColor(yel);
 			g2d
-					.fillOval(limitesViewPort.x + 98, limitesViewPort.y + 12,
+					.fillOval(limitesViewPort.x + 148, limitesViewPort.y + 12,
 							15, 15);
 		}
 		if (Carro.BATEU_FORTE.equals(pilotoSelecionado.getCarro()
 				.getDanificado())) {
 			g2d.setColor(Color.red);
 			// motor
-			g2d.fillRoundRect(limitesViewPort.x + 15, limitesViewPort.y + 18,
+			g2d.fillRoundRect(limitesViewPort.x + 65, limitesViewPort.y + 18,
 					135, 20, 15, 15);
 		}
 
@@ -1955,6 +1956,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenharClima(Graphics2D g2d) {
+		if(qtdeLuzesAcesas>0){
+			return;
+		}
 		ImageIcon icon = (ImageIcon) gerenciadorVisual.getImgClima().getIcon();
 		if (icon != null && pointDesenhaClima != null) {
 			g2d.setColor(transpMenus);
