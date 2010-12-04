@@ -1,0 +1,1 @@
+java -Xmx512M -Xms512M  -cp .f1maneRecursos.jar; -jar f1mane.jar
