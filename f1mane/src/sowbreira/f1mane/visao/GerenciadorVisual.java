@@ -351,6 +351,7 @@ public class GerenciadorVisual {
 				super.windowClosing(e);
 				if (controleJogo.getMainFrame().isModoApplet()) {
 					controleJogo.getMainFrame().setVisible(false);
+					controleJogo.matarTodasThreads();
 				} else {
 					System.exit(0);
 				}

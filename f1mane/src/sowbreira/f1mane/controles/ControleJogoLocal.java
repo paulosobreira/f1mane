@@ -17,6 +17,7 @@ import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
+import sowbreira.f1mane.paddock.servlet.JogoServidor;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
@@ -52,7 +53,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	public ControleJogoLocal(String temporada) throws Exception {
 		super(temporada);
-		gerenciadorVisual = new GerenciadorVisual(this);
+		if (!(this instanceof JogoServidor))
+			gerenciadorVisual = new GerenciadorVisual(this);
 		controleEstatisticas = new ControleEstatisticas(this);
 
 	}
@@ -712,7 +714,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#adicionarInfoDireto(java.lang.String)
 	 */
 	public void adicionarInfoDireto(String string) {
-		if(gerenciadorVisual==null){
+		if (gerenciadorVisual == null) {
 			return;
 		}
 		gerenciadorVisual.adicionarInfoDireto(string);
