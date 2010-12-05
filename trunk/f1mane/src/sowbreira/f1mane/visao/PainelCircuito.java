@@ -1594,7 +1594,6 @@ public class PainelCircuito extends JPanel {
 		g2d.drawImage(carroimg, null, pointQualificacao.x, pointQualificacao.y);
 		int newY = limitesViewPort.y;
 		synchronized (mapDesenharQualificacao) {
-
 			for (Iterator iter = mapDesenharQualificacao.keySet().iterator(); iter
 					.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();

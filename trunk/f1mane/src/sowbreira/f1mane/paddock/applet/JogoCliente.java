@@ -157,7 +157,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void adicionarInfoDireto(String string) {
-		if(gerenciadorVisual==null){
+		if (gerenciadorVisual == null) {
 			return;
 		}
 		gerenciadorVisual.adicionarInfoDireto(string);
@@ -358,16 +358,22 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void matarTodasThreads() {
-		if (monitorJogo != null) {
-			monitorJogo.setJogoAtivo(false);
+		try {
+			if (monitorJogo != null) {
+				monitorJogo.setJogoAtivo(false);
+			}
+			if (controleEstatisticas != null) {
+				controleEstatisticas.setConsumidorAtivo(false);
+			}
+			if (threadMonitoraJogoOnline != null) {
+				threadMonitoraJogoOnline.interrupt();
+			}
+			if (gerenciadorVisual != null) {
+				gerenciadorVisual.finalize();
+			}
+		} catch (Throwable e) {
+			Logger.logarExept(e);
 		}
-		if (controleEstatisticas != null) {
-			controleEstatisticas.setConsumidorAtivo(false);
-		}
-		if (threadMonitoraJogoOnline != null) {
-			threadMonitoraJogoOnline.interrupt();
-		}
-
 	}
 
 	public boolean mudarModoAgressivo() {

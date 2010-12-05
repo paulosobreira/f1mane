@@ -143,7 +143,7 @@ public class PaddockWindow {
 			return Lang.msg("180");
 		}
 	};
-	private JLabel infoLabel1 = new JLabel();
+	private JLabel infoLabel1 = new JLabel("  ");
 	private Set chatTimes = new HashSet();
 	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
@@ -390,11 +390,17 @@ public class PaddockWindow {
 
 	public static void main(String[] args) {
 		PaddockWindow paddockWindow = new PaddockWindow(null);
+		DefaultListModel clientesModel = new DefaultListModel();
+		for (int i = 0; i < 10; i++) {
+			clientesModel.addElement("Teste"+i);
+		}
+		paddockWindow.listaClientes.setModel(clientesModel);
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(paddockWindow.getMainPanel());
-		frame.setSize(640, 480);
+		frame.setSize(800, 400);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	
 	}
 
 	public void atualizar(DadosPaddock dadosPaddock) {

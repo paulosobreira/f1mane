@@ -41,7 +41,7 @@ public class AppletPaddock extends JApplet {
 					.msg("059"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
-
+		
 	}
 
 	public void destroy() {

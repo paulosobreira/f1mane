@@ -330,11 +330,15 @@ public class Carro implements Serializable {
 	private int calculaModificadorAsaGiro(int novoModificadorOri, No no,
 			InterfaceJogo controleJogo) {
 		double mod = 0.5;
+
 		if (GIRO_MAX_VAL == giro) {
 			mod = 0.6;
 		}
 		if (GIRO_MIN_VAL == giro) {
 			mod = 0.4;
+		}
+		if (Math.random() > mod) {
+			return novoModificadorOri;
 		}
 		int novoModificador = 0;
 		if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
@@ -344,9 +348,6 @@ public class Carro implements Serializable {
 			mod -= 0.2;
 		}
 		if (no.verificaRetaOuLargada()) {
-			if (Math.random() < 0.6) {
-				return novoModificadorOri;
-			}
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
 					&& testePotencia()) {
 				novoModificador++;
