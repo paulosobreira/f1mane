@@ -178,8 +178,19 @@ img {
 			<br>					
 		</div>
 		<div style="text-align: left;">
+		<!--  
 			<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="820px" height="380px"> 
 			</applet>
+		-->	
+		Para Jogar Offline Clique =>
+		<a href="f1mane.jnlp"> 
+		<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+		</a> 
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		Para Jogar Online Clique =>
+		<a href="webpaddock.jnlp"> 
+		<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+		</a>
 		</div>
 		<div id="shots" class="highslide-gallery">
 			<a href="fm1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm1.jpg" width="130" height="120" /></a>
