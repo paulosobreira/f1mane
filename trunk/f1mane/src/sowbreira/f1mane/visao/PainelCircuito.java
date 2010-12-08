@@ -253,6 +253,7 @@ public class PainelCircuito extends JPanel {
 					threadBkgGen.interrupt();
 				}
 				threadBkgGen = new Thread(runnable);
+				threadBkgGen.setPriority(Thread.MIN_PRIORITY);
 				threadBkgGen.start();
 			}
 			if (drawBuffer == null) {
