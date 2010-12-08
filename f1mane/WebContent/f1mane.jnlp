@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+	codebase="http://192.168.0.139:8080/f1mane" href="f1mane.jnlp">
+	<information>
+		<title>F1-Mane</title>
+		<vendor>Paulo Sobreira</vendor>
+		<homepage href="http://sowbreira.appspot.com/" />
+		<description>
+			F1-MANE (MANager & Engineer)
+		</description>
+		<offline-allowed />
+	</information>
+
+	<resources>
+		<j2se version="1.6"  initial-heap-size="64m" max-heap-size="512m" />
+		<jar href="f1mane.jar" />
+		<jar href="f1maneRecursos.jar" />
+    </resources>
+
+	<application-desc
+		main-class="sowbreira.f1mane.MainFrame" />
+</jnlp>
