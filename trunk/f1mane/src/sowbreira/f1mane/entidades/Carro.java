@@ -423,6 +423,9 @@ public class Carro implements Serializable {
 				&& piloto.verificaColisaoCarroFrente(controleJogo)) {
 			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 3;
 		}
+		if (controleJogo.getCircuito().isUsaBkg()) {
+			indexVelcidadeDaPista *= 2;
+		}
 		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador() * indexVelcidadeDaPista);
 		if (porcentagemDesgasteMotor() < 0) {
 			piloto.setDesqualificado(true);

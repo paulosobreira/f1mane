@@ -242,6 +242,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 						objetoTransparencia.getPontos().add(ultimoClicado);
 					} else {
 						desenhandoObjetoLivre = false;
+						objetoTransparencia.setTransparencia(125);
 						if (circuito.getObjetos() == null)
 							circuito.setObjetos(new ArrayList<ObjetoPista>());
 						circuito.getObjetos().add(objetoTransparencia);
@@ -577,6 +578,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
 						objetoPista = new ObjetoTransparencia();
+						objetoPista.setTransparencia(125);
 						posicionaObjetoPista = true;
 						desenhandoObjetoLivre = true;
 					}
@@ -773,14 +775,16 @@ public class MainPanelEditorVetorizado extends JPanel {
 				if (oldNo == null) {
 					oldNo = no;
 					g2d.setColor(Color.WHITE);
-					g2d.drawString("Index " + count, no.getDrawX(), no.getDrawY());
+					g2d.drawString("Index " + count, no.getDrawX(), no
+							.getDrawY());
 				} else {
 					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
 							.getY());
 					count += GeoUtil.drawBresenhamLine(oldNo.getX(),
 							oldNo.getY(), no.getX(), no.getY()).size();
 					g2d.setColor(Color.WHITE);
-					g2d.drawString("Index " + count, no.getDrawX(), no.getDrawY());
+					g2d.drawString("Index " + count, no.getDrawX(), no
+							.getDrawY());
 					oldNo = no;
 				}
 			}
@@ -794,14 +798,16 @@ public class MainPanelEditorVetorizado extends JPanel {
 				if (oldNo == null) {
 					oldNo = no;
 					g2d.setColor(Color.WHITE);
-					g2d.drawString("Index " + count, no.getDrawX(), no.getDrawY());
+					g2d.drawString("Index " + count, no.getDrawX(), no
+							.getDrawY());
 				} else {
 					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
 							.getY());
 					count += GeoUtil.drawBresenhamLine(oldNo.getX(),
 							oldNo.getY(), no.getX(), no.getY()).size();
 					g2d.setColor(Color.WHITE);
-					g2d.drawString("Index " + count, no.getDrawX(), no.getDrawY());
+					g2d.drawString("Index " + count, no.getDrawX(), no
+							.getDrawY());
 					oldNo = no;
 				}
 			}

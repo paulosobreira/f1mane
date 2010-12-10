@@ -807,52 +807,74 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isModoQualify()) {
 			ganho = controleJogo.verificaUltraPassagem(this, ganho);
 		}
+		/**
+		 * Controla Efeito vacuo e ultrapassagenbs usando tracado
+		 */
 		if (!controleJogo.isModoQualify() || !controleJogo.isSafetyCarNaPista()) {
-			if (getTracado() != 0) {
-				if ((testeHabilidadePiloto() && autoPos && controleJogo
-						.getNiveljogo() == InterfaceJogo.FACIL_NV)
-						|| (!isJogadorHumano() && testeHabilidadePiloto()))
-					mudarTracado(0, controleJogo);
-				if (No.CURVA_ALTA.equals(noAtual.getTipo())
-						|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
-					double nGanho = (controleJogo.getFatorUtrapassagem());
-					if (isAgressivo()) {
-						nGanho = (controleJogo.getFatorUtrapassagem() + 0.1);
-					}
-					if (nGanho > 1) {
-						nGanho = 1;
-					} else if (nGanho < 0.1) {
-						nGanho = 0.1;
-					}
-					ganho *= (nGanho);
-				} else if (!getCarro().testePotencia()) {
-					double nGanho = (controleJogo.getFatorUtrapassagem());
-					if (isAgressivo()) {
-						nGanho = (controleJogo.getFatorUtrapassagem() + 0.1);
-					}
-					if (nGanho > 1) {
-						nGanho = 1;
-					} else if (nGanho < 0.1) {
-						nGanho = 0.1;
-					}
-					ganho *= (nGanho);
-				} else {
-					ganho *= (controleJogo.getFatorUtrapassagem());
+			Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
+			if (carroPilotoDaFrente != null) {
+				int diff = calculaDiffParaProximo(controleJogo);
+				int distBrigaMin = 0;
+				if (controleJogo.getNiveljogo() == .7) {
+					distBrigaMin = 30;
+				} else if (controleJogo.getNiveljogo() == .5) {
+					distBrigaMin = 20;
+				} else if (controleJogo.getNiveljogo() == .3) {
+					distBrigaMin = 10;
 				}
-			} else if (getTracado() == 0) {
-				if (No.CURVA_ALTA.equals(noAtual.getTipo())) {
-					ganho *= (controleJogo.getFatorUtrapassagem());
-				} else if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
-					double nGanho = (controleJogo.getFatorUtrapassagem());
-					if (isAgressivo()) {
-						nGanho = (controleJogo.getFatorUtrapassagem() + 0.1);
+				if (diff < distBrigaMin) {
+					if (getTracado() != carroPilotoDaFrente.getPiloto()
+							.getTracado()) {
+						if ((testeHabilidadePiloto() && autoPos && controleJogo
+								.getNiveljogo() == InterfaceJogo.FACIL_NV)
+								|| (!isJogadorHumano() && testeHabilidadePiloto()))
+							mudarTracado(0, controleJogo);
+						if (No.CURVA_ALTA.equals(noAtual.getTipo())
+								|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
+							double nGanho = (controleJogo
+									.getFatorUtrapassagem() - 0.1);
+							if (isAgressivo()) {
+								nGanho = (controleJogo.getFatorUtrapassagem());
+							}
+							if (nGanho > 1) {
+								nGanho = 1;
+							} else if (nGanho < 0.1) {
+								nGanho = 0.1;
+							}
+							ganho *= (nGanho);
+						} else if (!getCarro().testePotencia()) {
+							double nGanho = (controleJogo
+									.getFatorUtrapassagem() - 0.1);
+							if (isAgressivo()) {
+								nGanho = (controleJogo.getFatorUtrapassagem());
+							}
+							if (nGanho > 1) {
+								nGanho = 1;
+							} else if (nGanho < 0.1) {
+								nGanho = 0.1;
+							}
+							ganho *= (nGanho);
+						} else {
+							ganho *= (controleJogo.getFatorUtrapassagem());
+						}
+					} else if (getTracado() == carroPilotoDaFrente.getPiloto()
+							.getTracado()) {
+						if (No.CURVA_ALTA.equals(noAtual.getTipo())) {
+							ganho *= (controleJogo.getFatorUtrapassagem());
+						} else if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
+							double nGanho = (controleJogo
+									.getFatorUtrapassagem() - 0.1);
+							if (isAgressivo()) {
+								nGanho = (controleJogo.getFatorUtrapassagem());
+							}
+							if (nGanho > 1) {
+								nGanho = 1;
+							} else if (nGanho < 0.1) {
+								nGanho = 0.1;
+							}
+							ganho *= (nGanho);
+						}
 					}
-					if (nGanho > 1) {
-						nGanho = 1;
-					} else if (nGanho < 0.1) {
-						nGanho = 0.1;
-					}
-					ganho *= (nGanho);
 				}
 			}
 		}
@@ -1139,9 +1161,6 @@ public class Piloto implements Serializable {
 			distBrigaMin = 20;
 		} else if (controleJogo.getNiveljogo() == .7) {
 			distBrigaMin = 15;
-		}
-		if (controleJogo.porcentagemCorridaCompletada() > distBrigaMax) {
-			distBrigaMax = controleJogo.porcentagemCorridaCompletada();
 		}
 		Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		if (diff > distBrigaMin && diff < distBrigaMax

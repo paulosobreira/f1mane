@@ -648,9 +648,9 @@ public class PainelCircuito extends JPanel {
 					}
 				}
 				ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+				Graphics2D gImage = rotateBuffer.createGraphics();
+				objetoTransparencia.desenhaCarro(gImage, zoom, carx, cary);
 				if (objetoTransparencia.obterArea().contains(p)) {
-					Graphics2D gImage = rotateBuffer.createGraphics();
-					objetoTransparencia.desenhaCarro(gImage, zoom, carx, cary);
 					naoDesenhaEfeitos = true;
 				}
 			}
@@ -816,13 +816,23 @@ public class PainelCircuito extends JPanel {
 				BufferedImage buffer = (BufferedImage) gridImg.get(i);
 				// g2d.setColor(Color.white);
 				// g2d.draw(grid[i].getBounds());
-				//
+
 				// g2d.setColor(Color.blue);
 				// g2d.draw(new Rectangle(
-				// (int) grid[i].getBounds().getCenterX() - 62,
-				// (int) grid[i].getBounds().getCenterY() - 62, 123, 123));
-				double meix = (buffer.getWidth() / 2) * zoom;
-				double meiy = (buffer.getHeight() / 2) * zoom;
+				// (int) (grid[i].getBounds().getCenterX() - (62 * zoom)),
+				// (int) (grid[i].getBounds().getCenterY() - (62 * zoom)),
+				// 123, 123));
+				// g2d.fillOval(
+				// (int) (grid[i].getBounds().getCenterX() - (62 * zoom)),
+				// (int) (grid[i].getBounds().getCenterY() - (62 * zoom)),
+				// 8, 8);
+				double meix = (gridCarro.getWidth() / 2) * zoom;
+				double meiy = (gridCarro.getHeight() / 2) * zoom;
+				// g2d.setColor(Color.yellow);
+				// g2d.draw(new Rectangle(
+				// (int) (grid[i].getBounds().getCenterX() - meix),
+				// (int) (grid[i].getBounds().getCenterY() - meiy),
+				// buffer.getWidth(), buffer.getWidth()));
 				g2d.drawImage(buffer,
 						(int) (grid[i].getBounds().getCenterX() - meix),
 						(int) (grid[i].getBounds().getCenterY() - meiy), null);
@@ -1120,14 +1130,12 @@ public class PainelCircuito extends JPanel {
 				AffineTransform afRotate = new AffineTransform();
 				afZoom.setToScale(zoom, zoom);
 				rad = Math.toRadians((double) calculaAngulo + 180);
-				afRotate.setToRotation(rad, gridCarro.getWidth() / 2, gridCarro
-						.getHeight() / 2);
-
-				BufferedImage rotateBuffer = new BufferedImage(gridCarro
-						.getWidth(), gridCarro.getHeight(),
+				int width = Util.inte(gridCarro.getWidth() * zoom);
+				int height = Util.inte(gridCarro.getHeight() * zoom);
+				afRotate.setToRotation(rad, width / 2, height / 2);
+				BufferedImage rotateBuffer = new BufferedImage(width, height,
 						BufferedImage.TYPE_INT_ARGB);
-				BufferedImage zoomBuffer = new BufferedImage(gridCarro
-						.getWidth(), gridCarro.getHeight(),
+				BufferedImage zoomBuffer = new BufferedImage(width, height,
 						BufferedImage.TYPE_INT_ARGB);
 				AffineTransformOp op = new AffineTransformOp(afZoom,
 						AffineTransformOp.TYPE_BILINEAR);
@@ -2173,7 +2181,8 @@ public class PainelCircuito extends JPanel {
 		if (Logger.ativo) {
 			velo = "M " + ps.getNovoModificador() + " I "
 					+ ps.getNoAtual().getIndex() + " G "
-					+ (int) (ps.getGanho()) + " V " + ps.getVelocidade();
+					+ (int) (ps.getGanho()) + " V " + ps.getVelocidade()
+					+ " D " + ps.calculaDiffParaProximo(controleJogo);
 		}
 
 		int maior = 0;

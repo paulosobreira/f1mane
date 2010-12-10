@@ -187,7 +187,7 @@ public class ControleBox {
 					 */
 					ptosBox += 1;
 				} else if (box.verificaRetaOuLargada()) {
-					ptosBox += ((Math.random() > .8) ? 2 : 1);
+					ptosBox += ((Math.random() > .7) ? 2 : 1);
 				} else if (box.verificaCruvaAlta()) {
 					ptosBox += ((Math.random() > .5) ? 2 : 1);
 				} else if (box.verificaCruvaBaixa()) {
@@ -198,8 +198,7 @@ public class ControleBox {
 					piloto.mudarTracado(Util.intervalo(0, 2), controleJogo);
 					ptosBox = 0;
 				}
-				int novosPtsBox = Util.inte(ptosBox * 0.7)
-						+ piloto.getPtosBox();
+				int novosPtsBox = Util.inte(ptosBox) + piloto.getPtosBox();
 				No nobox = (No) boxEquipes.get(piloto.getCarro());
 				int indexParada = piloto.obterPista(controleJogo)
 						.indexOf(nobox);
