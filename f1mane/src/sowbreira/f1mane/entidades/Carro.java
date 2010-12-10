@@ -337,16 +337,17 @@ public class Carro implements Serializable {
 		if (GIRO_MIN_VAL == giro) {
 			mod = 0.4;
 		}
-		if (Math.random() > mod) {
-			return novoModificadorOri;
-		}
-		int novoModificador = 0;
 		if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
 			mod -= 0.1;
 		}
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
 			mod -= 0.2;
 		}
+		if (Math.random() > mod) {
+			return novoModificadorOri;
+		}
+		int novoModificador = 0;
+
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
 					&& testePotencia()) {
@@ -424,7 +425,7 @@ public class Carro implements Serializable {
 			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 3;
 		}
 		if (controleJogo.getCircuito().isUsaBkg()) {
-			indexVelcidadeDaPista *= 2;
+			indexVelcidadeDaPista *= 1.5;
 		}
 		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador() * indexVelcidadeDaPista);
 		if (porcentagemDesgasteMotor() < 0) {
@@ -637,6 +638,9 @@ public class Carro implements Serializable {
 				* controleJogo.getCircuito().getMultiplciador() * indexVelcidadeDaPista);
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 3;
+		}
+		if (controleJogo.getCircuito().isUsaBkg()) {
+			valDesgaste *= 1.5;
 		}
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {

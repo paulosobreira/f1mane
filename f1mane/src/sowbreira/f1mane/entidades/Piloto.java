@@ -1366,9 +1366,16 @@ public class Piloto implements Serializable {
 
 	private int calcularNovoModificador(InterfaceJogo controleJogo) {
 
-		double bonusSecundario = getCarro().getGiro() / 10.0;
+		double bonusSecundario = 0.5;
+
+		if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
+			bonusSecundario = 0.6;
+		}
+		if (Carro.GIRO_MIN_VAL == getCarro().getGiro()) {
+			bonusSecundario = 0.4;
+		}
 		if (controleJogo.isChovendo()) {
-			bonusSecundario -= .5;
+			bonusSecundario = 0;
 		}
 		if (testeHabilidadePilotoCarro() && agressivo
 				&& noAtual.verificaRetaOuLargada()) {
