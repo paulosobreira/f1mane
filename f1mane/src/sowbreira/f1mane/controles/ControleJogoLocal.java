@@ -573,12 +573,15 @@ public class ControleJogoLocal extends ControleRecursos implements
 					(Clima) gerenciadorVisual.getComboBoxClimaInicial()
 							.getSelectedItem());
 			controleCorrida.gerarGridLargadaSemQualificacao();
+			Logger.logar("gerarGridLargadaSemQualificacao() FEITO");
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
+			Logger.logar("iniciarInterfaceGraficaJogo() FEITO");
 			controleCorrida.iniciarCorrida();
 			if (controleCampeonato != null) {
 				controleCampeonato.iniciaCorrida(circuitoSelecionado);
 			}
 			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
+			Logger.logar("inicializarThreadConsumidoraInfo() FEITO");
 		}
 	}
 

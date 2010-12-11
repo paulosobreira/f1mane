@@ -56,7 +56,7 @@ public class ControleCiclo extends Thread {
 				controleJogo.atualizaPainel();
 				Thread.sleep(tempoCiclo);
 				controleJogo.desenhaQualificacao();
-				Thread.sleep(1000);
+				//Thread.sleep(5000);
 				controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
 				while (contadorLuz >= 0) {
 					Thread.sleep(tempoCiclo);
@@ -82,6 +82,7 @@ public class ControleCiclo extends Thread {
 					}
 				}
 			}
+			Logger.logar("Luzes apagadas iniciar processadoCilcos");
 			while (processadoCilcos) {
 				try {
 					if (InterfaceJogo.VALENDO

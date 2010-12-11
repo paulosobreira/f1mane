@@ -34,9 +34,10 @@ public abstract class ControleRecursos {
 	protected List carros;
 	protected CarregadorRecursos carregadorRecursos;
 	protected Map circuitos = new HashMap();
+	protected Map temporadasTransp = new HashMap();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
-	private final static int TRANPS = 254;
+	private final static int TRANPS = 250;
 	private String seasson;
 	private Set idsNoPista = new HashSet();
 	private Set idsNoBox = new HashSet();
@@ -65,8 +66,10 @@ public abstract class ControleRecursos {
 							.carregaImgSemCache(carro.getImg());
 					if (carroLadoPng != null) {
 						carroLado = carroLadoPng;
-						bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
-								.geraTransparencia(carroLado, TRANPS));
+						Integer transp = new Integer((String) temporadasTransp
+								.get(getTemporada()));
+						bufferCarrosLadoSemAreofolio.put(carro.getNome(),
+								ImageUtil.geraTransparencia(carroLado, transp));
 					}
 				} catch (Exception e) {
 					carro.setImg(null);
@@ -126,8 +129,10 @@ public abstract class ControleRecursos {
 							.carregaImgSemCache(carro.getImg());
 					if (carroLadoPng != null) {
 						carroLado = carroLadoPng;
+						Integer transp = new Integer((String) temporadasTransp
+								.get(getTemporada()));
 						bufferCarrosLado.put(carro.getNome(), ImageUtil
-								.geraTransparencia(carroLado, TRANPS));
+								.geraTransparencia(carroLado, transp));
 					}
 				} catch (Exception e) {
 					carro.setImg(null);
@@ -216,6 +221,7 @@ public abstract class ControleRecursos {
 
 	public ControleRecursos() throws Exception {
 		carregadorRecursos = new CarregadorRecursos(true);
+		carregarTemporadasTransp();
 		carregarCircuitos();
 	}
 
@@ -229,6 +235,7 @@ public abstract class ControleRecursos {
 		carros = carregadorRecursos.carregarListaCarros(seasson);
 		pilotos = carregadorRecursos.carregarListaPilotos(seasson);
 		carregadorRecursos.ligarPilotosCarros(pilotos, carros);
+		carregarTemporadasTransp();
 		carregarCircuitos();
 	}
 
@@ -324,6 +331,25 @@ public abstract class ControleRecursos {
 			while (propName.hasMoreElements()) {
 				final String name = (String) propName.nextElement();
 				circuitos.put(properties.getProperty(name), name);
+
+			}
+		} catch (IOException e) {
+			Logger.logarExept(e);
+		}
+	}
+
+	protected void carregarTemporadasTransp() {
+		final Properties properties = new Properties();
+
+		try {
+			properties
+					.load(CarregadorRecursos
+							.recursoComoStream("properties/temporadasTransp.properties"));
+
+			Enumeration propName = properties.propertyNames();
+			while (propName.hasMoreElements()) {
+				final String name = (String) propName.nextElement();
+				temporadasTransp.put(name, properties.getProperty(name));
 
 			}
 		} catch (IOException e) {

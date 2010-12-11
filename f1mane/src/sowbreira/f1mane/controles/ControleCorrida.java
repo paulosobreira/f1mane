@@ -135,11 +135,15 @@ public class ControleCorrida {
 	}
 
 	public void iniciarCorrida() {
-
+		Logger.logar("iniciarCorrida()");
 		controleJogo.selecionaPilotoJogador();
+		Logger.logar("selecionaPilotoJogador()");
 		controleJogo.atualizaPainel();
+		Logger.logar("atualizaPainel()");
 		controleCiclo.start();
+		Logger.logar("controleCiclo.start()");
 		corridaIniciada = true;
+		Logger.logar("corridaIniciada = true");
 	}
 
 	protected void finalize() throws Throwable {
@@ -356,40 +360,49 @@ public class ControleCorrida {
 		if (controleJogo.isChovendo()) {
 			fatorAcidente -= .1;
 		}
-		if (piloto.isJogadorHumano() && piloto.isAgressivo()
-				&& !piloto.testeHabilidadePilotoCarro()) {
-			fatorAcidente -= (controleJogo.getNiveljogo() / 10);
-			if (piloto.getCarro().getDurabilidadeAereofolio() > 0
-					&& (Math.random() > fatorAcidente)) {
-				piloto.getCarro().setDurabilidadeAereofolio(
-						piloto.getCarro().getDurabilidadeAereofolio() - 1);
-				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
-					piloto.incStress(30);
-				if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
-					piloto.incStress(20);
-				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
-					piloto.incStress(10);
-				controleJogo.infoPrioritaria(Lang.msg("109", new String[] {
-						Html.superRed(piloto.getNome()),
-						pilotoNaFrente.getNome() }));
-			} else if ((No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo()) || No.CURVA_ALTA
-					.equals(piloto.getNoAtual().getTipo()))
-					&& (piloto.getStress() > 70) && piloto.isAgressivo()) {
-				piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
-				controleJogo.infoPrioritaria(Lang.msg("015", new String[] {
-						Html.superRed(piloto.getNome()),
-						pilotoNaFrente.getNome() }));
-			} else if ((No.CURVA_BAIXA.equals(piloto.getNoAtual().getTipo()) || No.CURVA_ALTA
-					.equals(piloto.getNoAtual().getTipo()))
-					&& (piloto.getStress() > 90)) {
-				piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
-				controleJogo.infoPrioritaria(Lang.msg("015", new String[] {
-						Html.superRed(piloto.getNome()),
-						pilotoNaFrente.getNome() }));
+		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
+			fatorAcidente += .05;
+		}
+		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+			fatorAcidente -= .1;
+		}
+		if ((Math.random() < fatorAcidente)) {
+			return;
+		}
+		if (piloto.isJogadorHumano()) {
+			if (piloto.isAgressivo()) {
+				No noAtual = piloto.getNoAtual();
+				if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
+					piloto.getCarro().setDurabilidadeAereofolio(
+							piloto.getCarro().getDurabilidadeAereofolio() - 1);
+					if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
+						piloto.incStress(30);
+					if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
+						piloto.incStress(20);
+					if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
+						piloto.incStress(10);
+					controleJogo.infoPrioritaria(Lang.msg("109", new String[] {
+							Html.superRed(piloto.getNome()),
+							pilotoNaFrente.getNome() }));
+				} else if ((noAtual.verificaCruvaBaixa() || noAtual
+						.verificaCruvaAlta())
+						&& (piloto.getStress() > 70)
+						&& piloto.isAgressivo()
+						&& !piloto.testeHabilidadePilotoCarro()) {
+					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
+					controleJogo.infoPrioritaria(Lang.msg("015", new String[] {
+							Html.superRed(piloto.getNome()),
+							pilotoNaFrente.getNome() }));
+				} else if ((noAtual.verificaCruvaBaixa())
+						&& (piloto.getStress() > 90)) {
+					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
+					controleJogo.infoPrioritaria(Lang.msg("015", new String[] {
+							Html.superRed(piloto.getNome()),
+							pilotoNaFrente.getNome() }));
+				}
 			}
 		} else {
-			if (!piloto.testeHabilidadePilotoCarro()
-					&& (Math.random() > fatorAcidente)) {
+			if (!piloto.testeHabilidadePilotoCarro()) {
 				if ((piloto.getCarro().getDurabilidadeAereofolio() == 1)
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& (controleJogo.getNumVoltaAtual() > 1)
