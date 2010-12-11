@@ -67,8 +67,11 @@ public class ControleQualificacao {
 
 	public void gerarGridLargadaSemQualificacao() {
 		gerarQualificacaoAleatoria();
+		Logger.logar("gerarQualificacaoAleatoria() FEITO");
 		gerarVoltaQualificacaoAleatoria();
+		Logger.logar("gerarVoltaQualificacaoAleatoria() FEITO");
 		posiscionarCarrosLargada();
+		Logger.logar("posiscionarCarrosLargada() FEITO");
 	}
 
 	private void gerarVoltaQualificacaoAleatoria() {
@@ -126,7 +129,7 @@ public class ControleQualificacao {
 		Circuito circuito = controleJogo.getCircuito();
 		for (int i = 0; i < controleJogo.getPilotos().size(); i++) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-			int iP = 50 + Util.inte((Carro.LARGURA*.8) * i);
+			int iP = 50 + Util.inte((Carro.LARGURA * .8) * i);
 			No n1 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
 			No nM = (No) circuito.getPistaFull().get(
@@ -172,8 +175,14 @@ public class ControleQualificacao {
 			piloto.setPtosPistaIncial(nM.getIndex());
 			piloto.setVelocidade(0);
 			Carro carro = piloto.getCarro();
-			carro.setDurabilidadeAereofolio(Util.inte(10 - (controleJogo
-					.getNiveljogo() * 10)));
+			int durabilidade = 5;
+			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
+				durabilidade = 6;
+			}
+			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+				durabilidade = 4;
+			}
+			carro.setDurabilidadeAereofolio(durabilidade);
 
 			Logger.logar(" PosLarg " + piloto.getPosicao() + " Nome "
 					+ piloto.getNome() + " pts " + piloto.getPtosPista());

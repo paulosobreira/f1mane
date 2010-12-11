@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -1686,25 +1687,23 @@ public class GerenciadorVisual {
 	}
 
 	public void desenhaQualificacao() {
+		No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
+		painelCircuito.centralizarPontoDireto(n.getPoint());
 		Runnable runnable = new Runnable() {
-
 			@Override
 			public void run() {
 				infoCorrida.setText(Lang.msg("213"));
 				infoPiloto.setText(Lang.msg("214"));
 				List pilotos = controleJogo.getPilotos();
 				List ptosPilotos = new ArrayList();
-
 				painelCircuito.addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
 						tempoSleep = 0;
 					}
 
 				});
-				No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
-				painelCircuito.centralizarPontoDireto(n.getPoint());
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(5000);
 				} catch (InterruptedException e) {
 					Logger.logarExept(e);
 				}
@@ -1724,11 +1723,7 @@ public class GerenciadorVisual {
 						iniY1 += 40;
 					}
 				}
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					Logger.logarExept(e);
-				}
+				Logger.logar("Iniciar Loop desenha Qualy");
 				for (int i = 0; i < pilotos.size(); i++) {
 					Piloto piloto = (Piloto) pilotos.get(i);
 					Point point = (Point) ptosPilotos.get(i);
@@ -1752,18 +1747,18 @@ public class GerenciadorVisual {
 							Logger.logarExept(e);
 						}
 					}
-					synchronized (painelCircuito.getMapDesenharQualificacao()) {
-						painelCircuito.getMapDesenharQualificacao().put(piloto,
-								point);
-					}
+					painelCircuito.getMapDesenharQualificacao().put(piloto,
+							point);
 				}
+				painelCircuito.repaint();
 				try {
-					painelCircuito.repaint();
 					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					Logger.logarExept(e);
 				}
+				
 				painelCircuito.setDesenhouQualificacao(true);
+				Logger.logar("DesenhouQualificacao");
 			}
 		};
 		if (thDesenhaQualificacao != null) {

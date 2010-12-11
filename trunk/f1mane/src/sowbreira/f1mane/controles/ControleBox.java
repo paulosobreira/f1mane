@@ -281,6 +281,10 @@ public class ControleBox {
 			penalidade = Util.inte(penalidade
 					* (2 - (carro.getPotencia() / 1000)));
 		}
+		if (carro.getDurabilidadeAereofolio() <= 0) {
+			penalidade = Util.inte(penalidade
+					* (2 - (carro.getPotencia() / 1000)));
+		}
 		piloto.gerarCiclosPadoBox(porcentCombust, controleCorrida
 				.obterTempoCilco(), penalidade);
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
@@ -296,9 +300,18 @@ public class ControleBox {
 					String.valueOf(controleJogo.getNumVoltaAtual()) })));
 		}
 		carro.setDanificado(null);
-		if (carro.getDurabilidadeAereofolio() <= 0) {
-			carro.setDurabilidadeAereofolio(Util.inte(10 - (controleJogo
-					.getNiveljogo() * 10)));
+		if (carro.getDurabilidadeAereofolio() <= 0
+				|| InterfaceJogo.DIFICIL_NV != controleJogo.getNiveljogo()) {
+			int durabilidade = 5;
+			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
+				durabilidade = 6;
+			}
+			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+				durabilidade = 4;
+			}
+			carro.setDurabilidadeAereofolio(durabilidade);
+			penalidade = Util.inte(penalidade
+					* (2 - (carro.getPotencia() / 1000)));
 		}
 
 	}

@@ -1440,7 +1440,7 @@ public class Piloto implements Serializable {
 	}
 
 	public void gerarCiclosPadoBox(int porcentCombust, long ciclos, long penal) {
-		paradoBox = (int) ((((porcentCombust + penal) * 100) / ciclos)) + 90;
+		paradoBox = (int) ((((porcentCombust + penal) * 100) / ciclos)) + 50;
 		porcentagemCombustUltimaParadaBox = porcentCombust;
 	}
 
@@ -1653,18 +1653,18 @@ public class Piloto implements Serializable {
 			boolean mesmoEmCurva) {
 		if (getSetaBaixo() <= 0) {
 			if (getTracado() == 0 && pos == 1) {
-				setSetaCima(20);
+				setSetaCima(11);
 			}
 			if (getTracado() == 2 && pos == 0) {
-				setSetaCima(20);
+				setSetaCima(11);
 			}
 		}
 		if (getSetaCima() <= 0) {
 			if (getTracado() == 0 && pos == 2) {
-				setSetaBaixo(20);
+				setSetaBaixo(11);
 			}
 			if (getTracado() == 1 && pos == 0) {
-				setSetaBaixo(20);
+				setSetaBaixo(11);
 			}
 		}
 
