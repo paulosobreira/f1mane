@@ -36,7 +36,7 @@ public abstract class ControleRecursos {
 	protected Map circuitos = new HashMap();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
-	private final static int TRANPS = 240;
+	private final static int TRANPS = 254;
 	private String seasson;
 	private Set idsNoPista = new HashSet();
 	private Set idsNoBox = new HashSet();

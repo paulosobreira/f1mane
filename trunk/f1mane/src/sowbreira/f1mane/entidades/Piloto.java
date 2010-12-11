@@ -34,6 +34,8 @@ public class Piloto implements Serializable {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
+	private int setaCima;
+	private int setaBaixo;
 	private int aceleracao = 5;
 	private static final double FATOR_AREA_CARRO = .7;
 	private transient Rectangle diateira;
@@ -166,6 +168,22 @@ public class Piloto implements Serializable {
 
 	public void setTracado(int tracado) {
 		this.tracado = tracado;
+	}
+
+	public int getSetaCima() {
+		return setaCima;
+	}
+
+	public void setSetaCima(int setaCima) {
+		this.setaCima = setaCima;
+	}
+
+	public int getSetaBaixo() {
+		return setaBaixo;
+	}
+
+	public void setSetaBaixo(int setaBaixo) {
+		this.setaBaixo = setaBaixo;
 	}
 
 	public int getCarX() {
@@ -1633,6 +1651,22 @@ public class Piloto implements Serializable {
 
 	public void mudarTracado(int pos, InterfaceJogo interfaceJogo,
 			boolean mesmoEmCurva) {
+		if (getSetaBaixo() <= 0) {
+			if (getTracado() == 0 && pos == 1) {
+				setSetaCima(20);
+			}
+			if (getTracado() == 2 && pos == 0) {
+				setSetaCima(20);
+			}
+		}
+		if (getSetaCima() <= 0) {
+			if (getTracado() == 0 && pos == 2) {
+				setSetaBaixo(20);
+			}
+			if (getTracado() == 1 && pos == 0) {
+				setSetaBaixo(20);
+			}
+		}
 
 		if (getTracado() == pos) {
 			return;
