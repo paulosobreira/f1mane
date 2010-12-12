@@ -2231,6 +2231,9 @@ public class PainelCircuito extends JPanel {
 		String intel = (ps.isJogadorHumano() ? ps.getNomeJogador() : "IA");
 		String txt2 = intel + " " + agressivo + " " + dano;
 		String velo = "~" + ps.getVelocidade() + " Km/h";
+		if (ps.getVelocidade() == 1) {
+			velo = null;
+		}
 		if (Logger.ativo) {
 
 			int dist = ps.calculaDiffParaProximo(controleJogo);

@@ -129,10 +129,10 @@ public class ControleJogosServer {
 				.put(clientPaddockPack.getSessaoCliente(), jogoServidor);
 		gerarListaJogosCriados();
 		jogoServidor.prepararJogoOnline(clientPaddockPack.getDadosJogoCriado());
+		jogoServidor.setControleClassificacao(controleClassificacao);
 		jogoServidor.adicionarJogador(clientPaddockPack.getSessaoCliente()
 				.getNomeJogador(), clientPaddockPack.getDadosJogoCriado());
 		jogoServidor.setControleJogosServer(this);
-		jogoServidor.setControleClassificacao(controleClassificacao);
 		jogoServidor.setControleCampeonatoServidor(controleCampeonatoServidor);
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
@@ -205,6 +205,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return new MsgSrv(Lang.msg("207", new String[] { nomeJogo }));
 		}
+		jogoServidor.setControleClassificacao(controleClassificacao);
 		Object retorno = jogoServidor.adicionarJogador(clientPaddockPack
 				.getSessaoCliente().getNomeJogador(), clientPaddockPack
 				.getDadosJogoCriado());
