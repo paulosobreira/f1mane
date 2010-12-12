@@ -272,15 +272,20 @@ public class MainFrame extends JFrame {
 		logs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					JTextArea area = new JTextArea(20, 50);
 					Set top = Logger.topExceptions.keySet();
 					for (Iterator iterator = top.iterator(); iterator.hasNext();) {
 						String exept = (String) iterator.next();
-						Logger.logar("Quantidade : "
+						area.append("Quantidade : "
 								+ Logger.topExceptions.get(exept));
-						Logger.logar("<br>");
-						Logger.logar(exept);
-						Logger.logar("<br><hr>");
+						area.append("\n");
+						area.append(exept);
+						area.append("\n");
 					}
+					area.setCaretPosition(0);
+					JOptionPane.showMessageDialog(MainFrame.this,
+							new JScrollPane(area), Lang.msg("listaDeErros"),
+							JOptionPane.INFORMATION_MESSAGE);
 					removerKeyListeners();
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
