@@ -12,6 +12,10 @@
  - Qualquer sugestão : sowbreira@gmail.com.
 
 Histórico de versões:
+4.0
+  - Novas pistas (Feitas originalmente para o jogo Mini Race Online http://www.miniracingonline.com/)
+  - Corrigidos varios bugs com ultrapagens e traçados
+  - Varias Melhorias Visuais
 3.2
   - Editor de objetos de Pista
   - Novos Efeitos de chuva e marcas de pneu
