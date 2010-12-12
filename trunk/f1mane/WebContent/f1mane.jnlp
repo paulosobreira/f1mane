@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://192.168.0.139:8080/f1mane" href="f1mane.jnlp">
+	codebase="http://www.f1mane.com/f1mane/" href="f1mane.jnlp">
 	<information>
 		<title>F1-Mane</title>
 		<vendor>Paulo Sobreira</vendor>

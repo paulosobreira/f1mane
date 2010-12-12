@@ -28,10 +28,10 @@ A:hover {text-decoration: underline overline; color: black;}
 	border-style: solid;
 	border-width: 1px;
 	border-color: #B8CFE5;
-	text-align: center;
+	text-align: left;
 	padding: 3px;
-	padding-left: 20px;
-	padding-right: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
 	cursor: pointer;
 	font-family: sans-serif;
 	color: #0084B4;
@@ -76,8 +76,15 @@ img {
 }
 
 #shots{
-	text-align: left;
-	padding-top: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8CFE5;
+	text-align: center;
+	padding: 3px;
+	padding-left: 20px;
+	padding-right: 20px;
+	cursor: pointer;
+	font-family: sans-serif;
 }
 
 #shotsPromo{
@@ -161,59 +168,56 @@ img {
 				<h1 id="description">MANager & Engineer</h1>
 			</span>
 			<a id="link" style="position: absolute; left: 150px; top: 10px;font-size: 16px;"
-				href="http://twitter.com/f1mane" style="text-align: right;"
+				href="http://twitter.com/f1mane" 
 				target="_BLANK">Twitter</a>
 			<a id="link" style="position: absolute; left: 250px; top: 10px;font-size: 16px;"
-				href="http://sowbreira.appspot.com/" style="text-align: right;"
+				href="http://sowbreira.appspot.com/" 
 				target="_BLANK">Site Autor</a>
 			<a id="link" style="position: absolute; left: 370px; top: 10px;font-size: 16px;"
-				href="mailto:sowbreira@gmail.com" style="text-align: right;"
-				target="_BLANK">Sugestões, Bugs ,Colaborar ...</a>		
+				href="mailto:sowbreira@gmail.com" 
+				target="_BLANK">Reportar Bugs</a>		
 			<a id="link" style="position: absolute; left: 220px; top: 50px;font-size: 16px;"
-				href="http://www.java.com/" style="text-align: right;"
+				href="http://www.java.com/" 
 				target="_BLANK">Instale o Java</a>
 			<a id="link" style="position: absolute; left: 370px; top: 50px;font-size: 16px;"
-				href="F1Mane.html" style="text-align: right;"
+				href="F1Mane.html" 
 				target="_BLANK">Versao 1 Jogador</a>	
 			<br>					
 		</div>
-		<div style="text-align: left;">
-		<!--  
-			<applet code="sowbreira.f1mane.paddock.applet.AppletPaddock.class"	archive="f1mane.jar" width="820px" height="380px"> 
-			</applet>
-		-->	
-		Para Jogar Offline Clique =>
-		<a href="f1mane.jnlp"> 
-		<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+
+		<div id="shots" class="highslide-gallery">
+			<a href="fm1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm1.jpg" width="130" height="120" /></a>
+			<a href="fm2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm2.jpg" width="130" height="120" /></a>
+			<a href="fm3.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm3.jpg" width="130" height="120" /></a><br>
+			<a href="fm4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm4.jpg" width="130" height="120" /></a>
+			<a href="fm5.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm5.jpg" width="130" height="120" /></a>
+			<a href="fm6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm6.jpg" width="130" height="120" /></a><br>
+		</div>
+		<div style="text-align: center;">
+		<a id="link" href="f1mane.jnlp" style="text-align: left;">
+			Jogar Offline
+			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 		</a> 
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		Para Jogar Online Clique =>
-		<a href="webpaddock.jnlp"> 
-		<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<a id="link"  href="webpaddock.jnlp" style="text-align: left;">
+			Jogar Online  
+			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 		</a>
 		</div>
-		<div id="shots" class="highslide-gallery">
-			<a href="fm1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm1.jpg" width="130" height="120" /></a>
-			<a href="fm2.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm2.jpg" width="130" height="120" /></a>
-			<a href="fm3.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm3.jpg" width="130" height="120" /></a>
-			<a href="fm4.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm4.jpg" width="130" height="120" /></a>
-			<a href="fm5.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm5.jpg" width="130" height="120" /></a>
-			<a href="fm6.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm6.jpg" width="130" height="120" /></a>
-		</div>
-	</div>
-	</td>
-	<td>
+		<br>
 		<div id="shotsPromo" class="highslide-gallery">
-			Veja Tambem <br><br>
+			Veja Tambem 
 			<a id="link" 
 				href="http://www.f1mane.com/mesa11" style="text-align: center;"
 				target="_BLANK">  Mesa-11 </a><br><br>
-			<a href="http://www.f1mane.com/mesa11/m11-1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-1.jpg" width="130" height="120" /></a><br>
-			<a href="http://www.f1mane.com/mesa11/m11-2.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-2.jpg" width="130" height="120" /></a><br>
-			<a href="http://www.f1mane.com/mesa11/m11-4.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-4.jpg" width="130" height="120" /></a><br>
-			<a href="http://www.f1mane.com/mesa11/m11-6.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-6.jpg" width="130" height="120" /></a><br>
+			<a href="http://www.f1mane.com/mesa11/m11-1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-1.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/mesa11/m11-2.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-2.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/mesa11/m11-4.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-4.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/mesa11/m11-6.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-6.jpg" width="130" height="120" /></a>
 		</div>	
-	</td>	
+		
+	</div>
+	</td>
 	</tr>
 </table>
 </center>
