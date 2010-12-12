@@ -56,7 +56,7 @@
 				<exclude name="**/*.java" />
 				<exclude name="build.xml" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.gif" />
-				<exclude name="sowbreira/f1mane/recursos/**/*.png" />				
+				<exclude name="sowbreira/f1mane/recursos/**/*.png" />
 			</fileset>
 		</jar>
 	</target>
@@ -66,18 +66,20 @@
 				<include name="sowbreira/f1mane/recursos/**/*.jpg" />
 				<include name="sowbreira/f1mane/recursos/carros/**/*.gif" />
 				<include name="sowbreira/f1mane/recursos/**/*.gif" />
-				<include name="sowbreira/f1mane/recursos/**/*.png" />				
+				<include name="sowbreira/f1mane/recursos/**/*.png" />
 			</fileset>
 		</jar>
 	</target>
 	<target name="atualizaPaddock">
 		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
 		<delete file="WebContent/f1mane.jar" />
-		<copy file="f1mane.jar" todir="WebContent" />
-		<copy file="f1maneRecursos.jar" todir="WebContent" />
 		<copy file="f1mane.jar" todir="WebContent/WEB-INF/lib" />
-		<delete file="f1mane.jar" />
-		<delete file="f1maneRecursos.jar" />
+		<move todir="WebContent">
+			<fileset dir=".">
+				<include name="*.jar" />
+			</fileset>
+		</move>
+
 	</target>
 	<target name="criarWar" depends="">
 		<delete dir="${env.TOMCAT_HOME}/webapps/f1mane" />
