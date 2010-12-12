@@ -133,9 +133,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		this.tempoCriacao = tempoCriacao;
 	}
 
-	public Object adicionarJogador(String apelido,
+	public Object adicionarJogador(String nomeJogador,
 			DadosCriarJogo dadosParticiparJogo) {
-		if (mapJogadoresOnline.containsKey(apelido)) {
+		if (mapJogadoresOnline.containsKey(nomeJogador)) {
 			return new MsgSrv(Lang.msg("259"));
 		}
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
@@ -149,10 +149,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 		}
 		boolean pilotoDisponivel = false;
+		Piloto pilotoSelecionado = null;
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
 				pilotoDisponivel = true;
+				pilotoSelecionado = piloto;
 			}
 			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
 					&& piloto.isDesqualificado()) {
@@ -161,14 +163,21 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 		}
 		if (pilotoDisponivel) {
-			mapJogadoresOnline.put(apelido, dadosParticiparJogo);
-			mapJogadoresOnlineTexto.put(apelido, new BufferTexto());
+			mapJogadoresOnline.put(nomeJogador, dadosParticiparJogo);
+			mapJogadoresOnlineTexto.put(nomeJogador, new BufferTexto());
 		} else {
 			return new MsgSrv(Lang.msg("260",
 					new String[] { dadosParticiparJogo.getPiloto() }));
 
 		}
 		dadosCriarJogo.setPilotosCarreira(pilotos);
+		if (pilotoSelecionado != null) {
+			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
+					.obterCarreiraSrv(nomeJogador);
+			if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
+				pilotoSelecionado.getCarro().setImg(null);
+			}
+		}
 		return null;
 	}
 
