@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://192.168.0.139:8080/f1mane" href="webpaddock.jnlp">
+	codebase="http://www.f1mane.com/f1mane/" href="webpaddock.jnlp">
 	<information>
 		<title>F1-Mane</title>
 		<vendor>Paulo Sobreira</vendor>
@@ -18,7 +18,7 @@
     </resources>
 
 	  <applet-desc 
-	      documentBase="http://192.168.0.139:8080/f1mane" 
+	      documentBase="http://www.f1mane.com/f1mane" 
 	      name="F1-Mane WebPaddock" 
 	      main-class="sowbreira.f1mane.paddock.applet.AppletPaddock" 
 	      width="800" 
