@@ -2,7 +2,7 @@
 <jnlp spec="1.0+"
 	codebase="http://www.f1mane.com/f1mane/" href="webpaddock.jnlp">
 	<information>
-		<title>F1-Mane</title>
+		<title>F1-Mane WebPaddock</title>
 		<vendor>Paulo Sobreira</vendor>
 		<homepage href="http://sowbreira.appspot.com/" />
 		<description>
