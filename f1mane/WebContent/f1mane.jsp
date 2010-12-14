@@ -8,7 +8,7 @@
 <head>
 <title>F1-Mane</title>
 <META NAME="description"
-	CONTENT="Formula 1,FIA,F1,Esportes,Sport,Ferrari,Mercedes,Renault,RedBull">
+	CONTENT="Formula 1,FIA,F1,Esportes,Sport,Jogo,Game,Manager,Gerenciamento">
 
 <style type="text/css">
 div {
@@ -199,7 +199,7 @@ img {
 			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 		</a> 
 		&nbsp;&nbsp;&nbsp;&nbsp;
-		<a id="link"  href="webpaddock.jnlp" style="text-align: left;">
+		<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
 			Jogar Online  
 			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 		</a>
