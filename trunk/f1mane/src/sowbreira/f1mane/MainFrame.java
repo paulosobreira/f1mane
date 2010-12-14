@@ -1,11 +1,16 @@
 package sowbreira.f1mane;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -55,6 +61,8 @@ public class MainFrame extends JFrame {
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
 	protected MainPanelEditorVetorizado editorInflado;
+	public final static BufferedImage bg = CarregadorRecursos
+			.carregaBufferedImageTranspareciaBranca("f1bg.png");
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;
@@ -109,6 +117,7 @@ public class MainFrame extends JFrame {
 
 		if (modoApplet) {
 			menuEditor.setEnabled(false);
+
 		}
 
 		gerarMenusSingle(menuJogo);
@@ -117,9 +126,9 @@ public class MainFrame extends JFrame {
 		gerarMenusInfo(menuInfo);
 		gerarMenusSobre(menuInfo);
 		gerarMenusidiomas(menuIdiomas);
-		getContentPane().setLayout(null);
-		setSize(1024, 768);
+		setSize(1030, 720);
 		setTitle("F1-MANE " + InterfaceJogo.VERSAO + " MANager & Engineer");
+
 	}
 
 	private void gerarMenusCampeonato(JMenu menu) {
@@ -729,6 +738,17 @@ public class MainFrame extends JFrame {
 	public void iniciar() {
 		if (ControleJogoLocal.VALENDO) {
 			setVisible(true);
+			JPanel bgPanel = new JPanel() {
+				protected void paintComponent(Graphics g) {
+					g.drawImage(bg, 0, 0, null);
+				};
+				@Override
+				public Dimension getPreferredSize() {
+					return new Dimension(1020,699);
+				}
+			};
+			getContentPane().add(bgPanel, BorderLayout.CENTER);
+
 		} else {
 			try {
 				if (controleJogo != null) {

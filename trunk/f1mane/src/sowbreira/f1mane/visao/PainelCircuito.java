@@ -79,6 +79,14 @@ public class PainelCircuito extends JPanel {
 			BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] {
 					10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
 					10, 10, 10, 10, 10, 10, 10, 10, 10 }, 0);
+	public final static BasicStroke chuva1 = new BasicStroke(1.0f,
+			BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] {
+					10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10,
+					10, 5, 10, 5, 10, 5, 10, 5, 10 }, 0);
+	public final static BasicStroke chuva2 = new BasicStroke(1.0f,
+			BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] {
+					5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5,
+					10, 5, 10, 5, 10, 5, 10, 5, 10 }, 0);
 	public final static BufferedImage carroimgDano = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png");
 	public final static BufferedImage setaCarroCima = CarregadorRecursos
@@ -306,7 +314,6 @@ public class PainelCircuito extends JPanel {
 		if (!circuito.isUsaBkg()) {
 			desenhaObjetosCima(g2d);
 		}
-
 		if (!desenhouQualificacao) {
 			desenhaQualificacao(g2d);
 		}
@@ -692,7 +699,7 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * Chuva e Faiscas
 		 */
-		g2d.setStroke(strokeFaisca);
+		g2d.setStroke(chuva1);
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
 			piloto.centralizaCarro(controleJogo);
@@ -711,7 +718,15 @@ public class PainelCircuito extends JPanel {
 		if (controleJogo.isChovendo() && piloto.getVelocidade() != 0
 				&& !piloto.isDesqualificado()) {
 			g2d.setColor(lightWhiteRain);
-			for (int i = 0; i < 24; i++) {
+			for (int i = 0; i < 30; i++) {
+				if (i % (Math.random() > 0.5 ? 3 : 2) == 0) {
+					continue;
+				}
+				if(i%2==0){
+					g2d.setStroke(chuva2);
+				}else{
+					g2d.setStroke(chuva1);
+				}
 				int eixoDiatero = (int) (eixo * 0.7);
 				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
 						- eixoDiatero, eixoDianteras.x + eixoDiatero),
