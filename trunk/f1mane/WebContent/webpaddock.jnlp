@@ -9,6 +9,11 @@
 			F1-MANE (MANager & Engineer)
 		</description>
 		<offline-allowed />
+		<icon href="icon.png"/>  
+      <shortcut online="true">
+         <desktop/>
+         <menu submenu="F1Mane Online"/>
+      </shortcut>			
 	</information>
 
 	<resources>
