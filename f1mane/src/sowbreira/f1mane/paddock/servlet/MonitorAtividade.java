@@ -25,13 +25,13 @@ public class MonitorAtividade implements Runnable {
 	public void run() {
 		while (alive) {
 			try {
-				sleep((5000 + ((int) Math.random() * 1000)));
+				sleep(5000);
 				long timeNow = System.currentTimeMillis();
 				List clientes = controlePaddock.getDadosPaddock().getClientes();
 				SessaoCliente sessaoClienteRemover = null;
 				for (Iterator iter = clientes.iterator(); iter.hasNext();) {
 					SessaoCliente sessaoCliente = (SessaoCliente) iter.next();
-					if ((timeNow - sessaoCliente.getUlimaAtividade()) > 150000) {
+					if ((timeNow - sessaoCliente.getUlimaAtividade()) > 100000) {
 						sessaoClienteRemover = sessaoCliente;
 						break;
 					}
