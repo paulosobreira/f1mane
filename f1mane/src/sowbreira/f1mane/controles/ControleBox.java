@@ -187,11 +187,11 @@ public class ControleBox {
 					 */
 					ptosBox += 1;
 				} else if (box.verificaRetaOuLargada()) {
-					ptosBox += ((Math.random() > .7) ? 2 : 1);
+					ptosBox += ((Math.random() > .3) ? 2 : 1);
 				} else if (box.verificaCruvaAlta()) {
 					ptosBox += ((Math.random() > .5) ? 2 : 1);
 				} else if (box.verificaCruvaBaixa()) {
-					ptosBox += ((Math.random() > .3) ? 2 : 1);
+					ptosBox += ((Math.random() > .7) ? 2 : 1);
 				}
 				ptosBox *= circuito.getMultiplciador();
 				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
