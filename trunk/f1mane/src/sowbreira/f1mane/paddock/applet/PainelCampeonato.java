@@ -7,6 +7,10 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -444,6 +448,23 @@ public class PainelCampeonato extends JPanel {
 
 	protected void gerarPainelDetalhesCorrida(final String corrida, JTable table) {
 		JTable detCorridaTable = new JTable();
+		List dets = new ArrayList();
+		for (CorridaCampeonato corridaCampeonato : campeonato
+				.getCorridaCampeonatos()) {
+			if (corrida.equals(corridaCampeonato.getNomeCircuito())) {
+				dets = corridaCampeonato.getDadosCorridaCampeonatos();
+			}
+		}
+		Collections.sort(dets, new Comparator() {
+			@Override
+			public int compare(Object o1, Object o2) {
+				DadosCorridaCampeonato c1 = (DadosCorridaCampeonato) o1;
+				DadosCorridaCampeonato c2 = (DadosCorridaCampeonato) o2;
+				return new Integer(c1.getPosicao()).compareTo(new Integer(c2
+						.getPosicao()));
+			}
+		});
+
 		AbstractTableModel detCorridaTableModel = new AbstractTableModel() {
 
 			@Override
