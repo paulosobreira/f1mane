@@ -65,14 +65,14 @@ public class ControleEstatisticas {
 		volta.setCiclosFim(System.currentTimeMillis());
 
 		controleJogo.verificaVoltaMaisRapidaCorrida(piloto);
-		verificaVoltaMaisrapidaPiloto(piloto);
+		verificaVoltaMaisRapidaPiloto(piloto);
 		piloto.setUltimaVolta(volta);
 		volta = new Volta();
 		volta.setCiclosInicio(System.currentTimeMillis());
 		piloto.setVoltaAtual(volta);
 	}
 
-	private void verificaVoltaMaisrapidaPiloto(Piloto piloto) {
+	private void verificaVoltaMaisRapidaPiloto(Piloto piloto) {
 		Volta voltaAtual = piloto.getVoltaAtual();
 		boolean teveMelhor = false;
 
