@@ -825,8 +825,9 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isModoQualify()) {
 			ganho = controleJogo.verificaUltraPassagem(this, ganho);
 		}
+
 		/**
-		 * Controla Efeito vacuo e ultrapassagenbs usando tracado
+		 * Controla Efeito vacuo e ultrapassagens usando tracado
 		 */
 		if (!controleJogo.isModoQualify() || !controleJogo.isSafetyCarNaPista()) {
 			Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
@@ -935,12 +936,12 @@ public class Piloto implements Serializable {
 			if ((getPtosBox() > 0) != (pilotoFrente.getPtosBox() > 0)) {
 				return ganho;
 			}
-			if ((getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 90)) {
+			if ((getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 180)) {
 				return ganho * 0.1;
 			}
 		} else {
 			if ((getPtosPista() + ganho) > controleJogo.getSafetyCar()
-					.getPtosPista() - 90) {
+					.getPtosPista() - 180) {
 				return ganho * 0.1;
 			}
 		}

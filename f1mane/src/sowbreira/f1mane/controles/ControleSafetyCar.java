@@ -80,7 +80,7 @@ public class ControleSafetyCar {
 			safetyCar.setTracado(0);
 		}
 		if (safetyCar.isVaiProBox()) {
-			bonus = (Math.random() > .5) ? 2 : 1;
+			bonus = (Math.random() > .4) ? 2 : 1;
 		}
 		bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo
 				.getIndexVelcidadeDaPista()) / 2;
