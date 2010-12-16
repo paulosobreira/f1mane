@@ -120,6 +120,25 @@ public class CarregadorRecursos {
 		return ImageUtil.geraTransparencia(buffer);
 	}
 
+	public static BufferedImage carregaBufferedImage(String file) {
+		BufferedImage buffer = null;
+		try {
+			ImageIcon icon = new ImageIcon(CarregadorRecursos.class
+					.getResource(file));
+			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			if (buffer == null) {
+				Logger.logar("img=" + buffer);
+				System.exit(1);
+			}
+
+		} catch (Exception e) {
+			Logger.logar("Erro gerando transparencia para :" + file);
+			Logger.logarExept(e);
+		}
+
+		return buffer;
+	}
+
 	public static BufferedImage carregaBufferedImageTranspareciaBranca(
 			String file, int ingVal) {
 		BufferedImage buffer = null;
@@ -548,8 +567,8 @@ public class CarregadorRecursos {
 						argbArray[3]);
 				if (c.getRed() > 250 && c.getGreen() > 250 && c.getBlue() > 250) {
 					argbArray[3] = 0;
-				}else{
-					argbArray[3] = 100;	
+				} else {
+					argbArray[3] = 100;
 				}
 				destRaster.setPixel(i, j, argbArray);
 			}

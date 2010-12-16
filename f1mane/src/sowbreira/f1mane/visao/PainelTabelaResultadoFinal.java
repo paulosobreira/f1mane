@@ -1,19 +1,16 @@
 package sowbreira.f1mane.visao;
 
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.Volta;
-import sowbreira.f1mane.recursos.idiomas.Lang;
-
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado Em 17/05/2007 10:35:33
@@ -31,9 +28,6 @@ public class PainelTabelaResultadoFinal extends JPanel {
 
 		TableModel model = new TableModel();
 		posicoesTable = new JTable(model);
-		if (!modoApplet)
-			new ExcelAdapter(posicoesTable);
-
 		add(new JScrollPane(posicoesTable));
 		posicoesTable
 				.setPreferredScrollableViewportSize(new Dimension(800, 355));
