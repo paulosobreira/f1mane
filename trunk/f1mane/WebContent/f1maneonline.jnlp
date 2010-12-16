@@ -5,9 +5,7 @@
 		<title>F1-Mane Online</title>
 		<vendor>Paulo Sobreira</vendor>
 		<homepage href="http://sowbreira.appspot.com/" />
-		<description>
-			F1-MANE (MANager & Engineer)
-		</description>
+		<description>F1-MANE (MANager & Engineer)</description>
 		<offline-allowed />
 		<icon href="icon.png"/>  
       <shortcut online="true">
