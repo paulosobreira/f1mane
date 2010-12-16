@@ -1,6 +1,5 @@
 package sowbreira.f1mane.visao;
 
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -81,12 +80,12 @@ public class PainelCircuito extends JPanel {
 					10, 10, 10, 10, 10, 10, 10, 10, 10 }, 0);
 	public final static BasicStroke chuva1 = new BasicStroke(1.0f,
 			BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] {
-					10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10,
-					10, 5, 10, 5, 10, 5, 10, 5, 10 }, 0);
+					10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 10, 5,
+					10, 5, 10, 5, 10, 5, 10 }, 0);
 	public final static BasicStroke chuva2 = new BasicStroke(1.0f,
 			BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] {
-					5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5,
-					10, 5, 10, 5, 10, 5, 10, 5, 10 }, 0);
+					5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5,
+					10, 5, 10, 5, 10, 5, 10 }, 0);
 	public final static BufferedImage carroimgDano = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png");
 	public final static BufferedImage setaCarroCima = CarregadorRecursos
@@ -722,9 +721,9 @@ public class PainelCircuito extends JPanel {
 				if (i % (Math.random() > 0.5 ? 3 : 2) == 0) {
 					continue;
 				}
-				if(i%2==0){
+				if (i % 2 == 0) {
 					g2d.setStroke(chuva2);
-				}else{
+				} else {
 					g2d.setStroke(chuva1);
 				}
 				int eixoDiatero = (int) (eixo * 0.7);

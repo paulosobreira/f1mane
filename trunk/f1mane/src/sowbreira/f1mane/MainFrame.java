@@ -62,7 +62,7 @@ public class MainFrame extends JFrame {
 	private JMenu menuInfo;
 	protected MainPanelEditorVetorizado editorInflado;
 	public final static BufferedImage bg = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("f1bg.png");
+			.carregaBufferedImage("f1bg.png");
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;
@@ -742,9 +742,10 @@ public class MainFrame extends JFrame {
 				protected void paintComponent(Graphics g) {
 					g.drawImage(bg, 0, 0, null);
 				};
+
 				@Override
 				public Dimension getPreferredSize() {
-					return new Dimension(1020,699);
+					return new Dimension(1020, 699);
 				}
 			};
 			getContentPane().add(bgPanel, BorderLayout.CENTER);
