@@ -9,6 +9,8 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Logger;
 
@@ -17,10 +19,12 @@ public class ControleSom {
 	private static AudioInputStream veloMax = null;
 	private static AudioInputStream veloBaixa = null;
 	private static Clip clipVeloMax;
-	private static Clip clipVeloBaixa;
+	private static Clip clipVelo1;
 	private static long lastCall;
-	private static Clip clipVeloMed;
+	private static Clip clipVelo2;
+	private static Clip clipVelo0;
 	private static AudioInputStream veloMed;
+	private static Clip clipRedo;
 
 	public static void main(String[] args) throws InterruptedException {
 		for (int i = 0; i < 100; i++) {
@@ -37,28 +41,42 @@ public class ControleSom {
 	public static void somVelocidade(int velocidade) {
 		if (lastCall == 0) {
 			lastCall = System.currentTimeMillis();
-		} else if (lastCall + 100 > System.currentTimeMillis()) {
+		} else if (lastCall + 1000 > System.currentTimeMillis()) {
 			return;
 		}
-
+		if (velocidade == 0) {
+			if (lastCall + 2000 > System.currentTimeMillis()) {
+				return;
+			}
+			clipVelo0.setFramePosition(0);
+			clipVelo0.start();
+		}
 		try {
-			iniciaVars();
-			if (velocidade < 60) {
-				if (clipVeloBaixa.isRunning())
-					clipVeloBaixa.stop(); // Stop the player if it is still
-				clipVeloBaixa.setFramePosition(0); // rewind to the beginning
-				clipVeloBaixa.start();
-			} else if (velocidade > 61 && velocidade < 200) {
-				if (clipVeloMed.isRunning())
-					clipVeloMed.stop(); // Stop the player if it is still
-				clipVeloMed.setFramePosition(0); // rewind to the beginning
-				clipVeloMed.start();
-			} else {
-				if (clipVeloMax.isRunning())
-					clipVeloMax.stop(); // Stop the player if it is still
-				clipVeloMax.setFramePosition(0); // rewind to the beginning
-				clipVeloMax.start();
 
+			if (velocidade > 1 && velocidade < 50) {
+				clipVelo0.stop();
+				clipVelo1.setFramePosition(0);
+				clipVelo1.start();
+			} else if (velocidade > 51 && velocidade < 100) {
+				clipRedo.setFramePosition(0);
+				clipRedo.start();
+				clipVelo2.loop(Clip.LOOP_CONTINUOUSLY);
+				clipVelo2.start();
+			} else if (velocidade > 101 && velocidade < 150) {
+				clipRedo.setFramePosition(0);
+				clipRedo.start();
+				clipVelo2.loop(Clip.LOOP_CONTINUOUSLY);
+				clipVelo2.start();
+			} else if (velocidade > 151 && velocidade < 200) {
+				clipRedo.setFramePosition(0);
+				clipRedo.start();
+				clipVelo2.loop(Clip.LOOP_CONTINUOUSLY);
+				clipVelo2.start();
+			} else if (velocidade > 200) {
+				clipRedo.setFramePosition(0);
+				clipRedo.start();
+				clipVelo2.loop(Clip.LOOP_CONTINUOUSLY);
+				clipVelo2.start();
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -82,16 +100,34 @@ public class ControleSom {
 					.recursoComoStream("med.wav"));
 			DataLine.Info info = new DataLine.Info(Clip.class, veloMed
 					.getFormat());
-			clipVeloMed = (Clip) AudioSystem.getLine(info);
-			clipVeloMed.open(veloMed);
+			clipVelo2 = (Clip) AudioSystem.getLine(info);
+			clipVelo2.open(veloMed);
 		}
 		if (veloBaixa == null) {
 			veloBaixa = AudioSystem.getAudioInputStream(CarregadorRecursos
 					.recursoComoStream("low.wav"));
 			DataLine.Info info = new DataLine.Info(Clip.class, veloBaixa
 					.getFormat());
-			clipVeloBaixa = (Clip) AudioSystem.getLine(info);
-			clipVeloBaixa.open(veloBaixa);
+			clipVelo1 = (Clip) AudioSystem.getLine(info);
+			clipVelo1.open(veloBaixa);
+		}
+		if (clipVelo0 == null) {
+			AudioInputStream ronco = AudioSystem
+					.getAudioInputStream(CarregadorRecursos
+							.recursoComoStream("ronco.wav"));
+			DataLine.Info info = new DataLine.Info(Clip.class, ronco
+					.getFormat());
+			clipVelo0 = (Clip) AudioSystem.getLine(info);
+			clipVelo0.open(ronco);
+		}
+		if (clipRedo == null) {
+			AudioInputStream redo = AudioSystem
+					.getAudioInputStream(CarregadorRecursos
+							.recursoComoStream("redo.wav"));
+			DataLine.Info info = new DataLine.Info(Clip.class, redo
+					.getFormat());
+			clipRedo = (Clip) AudioSystem.getLine(info);
+			clipRedo.open(redo);
 		}
 	}
 
@@ -105,5 +141,19 @@ public class ControleSom {
 			throws LineUnavailableException, IOException {
 
 	} // playAudioStream
+
+	public static void processaSom(Piloto pilotoSelecionado,
+			InterfaceJogo controleJogo) {
+		try {
+			iniciaVars();
+			int velocidade = pilotoSelecionado.getVelocidade();
+			somVelocidade(velocidade);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+
+		// TODO Auto-generated method stub
+
+	}
 
 }
