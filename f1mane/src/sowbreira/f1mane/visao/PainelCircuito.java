@@ -242,6 +242,7 @@ public class PainelCircuito extends JPanel {
 		limitesViewPort = (Rectangle) limitesViewPort();
 		pilotoSelecionado = gerenciadorVisual
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
+		ControleSom.processaSom(pilotoSelecionado, controleJogo);
 		if (circuito.isUsaBkg()) {
 			if (currentZoom != zoom) {
 				Runnable runnable = new Runnable() {
