@@ -50,6 +50,7 @@ public class Piloto implements Serializable {
 	protected Integer combustJogador;
 	private int id;
 	private int velocidade;
+	private int velocidadeAnterior;
 	private int velocidadeLargada;
 	private transient String setUpIncial;
 	private String nome;
@@ -506,7 +507,12 @@ public class Piloto implements Serializable {
 	}
 
 	public void setVelocidade(int velocidade) {
+		this.velocidadeAnterior = this.velocidade;
 		this.velocidade = velocidade;
+	}
+
+	public int getVelocidadeAnterior() {
+		return velocidadeAnterior;
 	}
 
 	/**

@@ -235,6 +235,10 @@ public class PainelCircuito extends JPanel {
 		atualizaVarZoom();
 	}
 
+	public int getQtdeLuzesAcesas() {
+		return qtdeLuzesAcesas;
+	}
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
@@ -242,7 +246,7 @@ public class PainelCircuito extends JPanel {
 		limitesViewPort = (Rectangle) limitesViewPort();
 		pilotoSelecionado = gerenciadorVisual
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
-		ControleSom.processaSom(pilotoSelecionado, controleJogo);
+		ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
 		if (circuito.isUsaBkg()) {
 			if (currentZoom != zoom) {
 				Runnable runnable = new Runnable() {
@@ -1571,6 +1575,15 @@ public class PainelCircuito extends JPanel {
 			g2d.setColor(Color.black);
 			g2d.drawString(Lang.msg("301", new String[] { pilotoSelecionado
 					.getNome() }), ptoOri, yBase);
+
+			yBase += 15;
+			g2d.setColor(Color.black);
+			msg = "F10 : "
+					+ Lang.msg("som")
+					+ (ControleSom.somLigado ? Lang.msg("SIM") : Lang
+							.msg("NAO"));
+			g2d.drawString(msg, ptoOri, yBase);
+
 			yBase += 15;
 			g2d.drawString(Lang.msg("265"), ptoOri, yBase);
 			yBase += 15;

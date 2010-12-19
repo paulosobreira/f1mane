@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -258,6 +257,7 @@ public class GerenciadorVisual {
 				painelCircuito.getThreadBkgGen().interrupt();
 			}
 		}
+		ControleSom.paraTudo();
 		super.finalize();
 	}
 
@@ -466,8 +466,15 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_F9) {
 					mudaPilotoSelecionado();
 				}
+				if (keyCoode == KeyEvent.VK_F10) {
+					ligaDesligaSom();
+				}
 			}
 		};
+	}
+
+	protected void ligaDesligaSom() {
+		ControleSom.ligaDesligaSom();
 	}
 
 	protected void mudaPilotoSelecionado() {
@@ -1756,7 +1763,7 @@ public class GerenciadorVisual {
 				} catch (InterruptedException e) {
 					Logger.logarExept(e);
 				}
-				
+
 				painelCircuito.setDesenhouQualificacao(true);
 				Logger.logar("DesenhouQualificacao");
 			}
