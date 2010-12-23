@@ -288,7 +288,7 @@ public class MainFrame extends JFrame {
 						area.append("Quantidade : "
 								+ Logger.topExceptions.get(exept));
 						area.append("\n");
-						area.append(exept);
+						area.append(exept.replaceAll("<br>", "\n"));
 						area.append("\n");
 					}
 					area.setCaretPosition(0);
