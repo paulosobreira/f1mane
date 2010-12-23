@@ -6,6 +6,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -26,6 +27,7 @@ public class ControleSom {
 	public static boolean somLigado = false;
 	private static Clip clipVeloMaxFinal;
 	private static Clip clipBox;
+	private static float volume = -15f;
 
 	public static void main(String[] args) throws InterruptedException {
 	}
@@ -47,7 +49,7 @@ public class ControleSom {
 		}
 		if (!roncoClip.isRunning() && velocidade == 0
 				&& painelCircuito.getQtdeLuzesAcesas() < 5) {
-			roncoClip.loop(3);
+			roncoClip.loop(2);
 			roncoClip.start();
 		}
 		try {
@@ -90,13 +92,15 @@ public class ControleSom {
 				clipVeloMaxFinal.loop(Clip.LOOP_CONTINUOUSLY);
 				clipVeloMaxFinal.start();
 			}
-			if (!clipAcel.isRunning()
-					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > 5) {
+			if (!clipAcel.isRunning() && ps.getPtosBox() == 0
+					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > 25) {
+				roncoClip.stop();
 				clipAcel.setFramePosition(0);
 				clipAcel.start();
 			}
-			if (!clipRedo.isRunning()
-					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > -5) {
+			if (!clipRedo.isRunning() && ps.getPtosBox() == 0
+					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > -25) {
+				roncoClip.stop();
 				clipRedo.setFramePosition(0);
 				clipRedo.start();
 			}
@@ -115,6 +119,9 @@ public class ControleSom {
 			DataLine.Info info = new DataLine.Info(Clip.class, box.getFormat());
 			clipBox = (Clip) AudioSystem.getLine(info);
 			clipBox.open(box);
+			FloatControl gainControl = (FloatControl) clipBox
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume);
 
 		}
 
@@ -126,6 +133,9 @@ public class ControleSom {
 					.getFormat());
 			clipVeloMaxFinal = (Clip) AudioSystem.getLine(info);
 			clipVeloMaxFinal.open(veloMaxFinal);
+			FloatControl gainControl = (FloatControl) clipVeloMaxFinal
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume);
 
 		}
 		if (clipVeloMax == null) {
@@ -136,6 +146,9 @@ public class ControleSom {
 					.getFormat());
 			clipVeloMax = (Clip) AudioSystem.getLine(info);
 			clipVeloMax.open(veloMax);
+			FloatControl gainControl = (FloatControl) clipVeloMax
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume);
 
 		}
 		if (clipVeloMed == null) {
@@ -146,6 +159,9 @@ public class ControleSom {
 					.getFormat());
 			clipVeloMed = (Clip) AudioSystem.getLine(info);
 			clipVeloMed.open(veloMed);
+			FloatControl gainControl = (FloatControl) clipVeloMed
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume);
 		}
 		if (clipLargada == null) {
 			AudioInputStream veloBaixa = AudioSystem
@@ -155,6 +171,9 @@ public class ControleSom {
 					.getFormat());
 			clipLargada = (Clip) AudioSystem.getLine(info);
 			clipLargada.open(veloBaixa);
+			FloatControl gainControl = (FloatControl) clipLargada
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume);
 		}
 		if (roncoClip == null) {
 			AudioInputStream ronco = AudioSystem
@@ -164,6 +183,9 @@ public class ControleSom {
 					.getFormat());
 			roncoClip = (Clip) AudioSystem.getLine(info);
 			roncoClip.open(ronco);
+			FloatControl gainControl = (FloatControl) roncoClip
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume);
 		}
 		if (clipRedo == null) {
 			AudioInputStream redo = AudioSystem
@@ -172,6 +194,9 @@ public class ControleSom {
 			DataLine.Info info = new DataLine.Info(Clip.class, redo.getFormat());
 			clipRedo = (Clip) AudioSystem.getLine(info);
 			clipRedo.open(redo);
+			FloatControl gainControl = (FloatControl) clipRedo
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(-10f);
 		}
 		if (clipAcel == null) {
 			AudioInputStream acel = AudioSystem
@@ -180,6 +205,9 @@ public class ControleSom {
 			DataLine.Info info = new DataLine.Info(Clip.class, acel.getFormat());
 			clipAcel = (Clip) AudioSystem.getLine(info);
 			clipAcel.open(acel);
+			FloatControl gainControl = (FloatControl) clipAcel
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume);
 		}
 	}
 

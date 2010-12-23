@@ -92,10 +92,10 @@ public class ControlePaddockCliente {
 			atualizaVisao(paddockWindow);
 			panel.setLayout(new BorderLayout());
 			panel.add(paddockWindow.getMainPanel(),BorderLayout.CENTER);
-			JPanel consertaBugJnlp = new JPanel(new GridLayout(2,1));
-			consertaBugJnlp.add(new JLabel("           "));
-			consertaBugJnlp.add(new JLabel("           "));
-			panel.add(consertaBugJnlp,BorderLayout.SOUTH);
+//			JPanel consertaBugJnlp = new JPanel(new GridLayout(2,1));
+//			consertaBugJnlp.add(new JLabel("           "));
+//			consertaBugJnlp.add(new JLabel("           "));
+//			panel.add(consertaBugJnlp,BorderLayout.SOUTH);
 			
 			getThreadAtualizadora().start();
 		} catch (Exception e) {

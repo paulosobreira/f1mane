@@ -507,7 +507,8 @@ public class Piloto implements Serializable {
 	}
 
 	public void setVelocidade(int velocidade) {
-		this.velocidadeAnterior = this.velocidade;
+		if (this.velocidade != 1)
+			this.velocidadeAnterior = this.velocidade;
 		this.velocidade = velocidade;
 	}
 
