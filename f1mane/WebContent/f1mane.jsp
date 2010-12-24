@@ -186,12 +186,12 @@ img {
 		</div>
 
 		<div id="shots" class="highslide-gallery">
-			<a href="fm1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm1.jpg" width="130" height="120" /></a>
-			<a href="fm2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm2.jpg" width="130" height="120" /></a>
-			<a href="fm3.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm3.jpg" width="130" height="120" /></a><br>
-			<a href="fm4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm4.jpg" width="130" height="120" /></a>
-			<a href="fm5.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm5.jpg" width="130" height="120" /></a>
-			<a href="fm6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm6.jpg" width="130" height="120" /></a><br>
+			<a href="fm1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm1.jpg" width="130" height="120" /></a>
+			<a href="fm2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm2.jpg" width="130" height="120" /></a>
+			<a href="fm3.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm3.jpg" width="130" height="120" /></a><br>
+			<a href="fm4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm4.jpg" width="130" height="120" /></a>
+			<a href="fm5.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm5.jpg" width="130" height="120" /></a>
+			<a href="fm6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm6.jpg" width="130" height="120" /></a><br>
 		</div>
 		<div style="text-align: center;">
 		<a id="link" href="f1mane.jnlp" style="text-align: left;">
@@ -210,10 +210,10 @@ img {
 			<a id="link" 
 				href="http://www.f1mane.com/mesa11" style="text-align: center;"
 				target="_BLANK">  Mesa-11 </a><br><br>
-			<a href="http://www.f1mane.com/mesa11/m11-1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-1.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/mesa11/m11-2.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-2.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/mesa11/m11-4.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-4.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/mesa11/m11-6.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="http://www.f1mane.com/mesa11/m11-6.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/mesa11/m11-1.jpg" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-1.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/mesa11/m11-2.jpg" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-2.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/mesa11/m11-4.jpg" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-4.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/mesa11/m11-6.jpg" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-6.jpg" width="130" height="120" /></a>
 		</div>	
 		
 	</div>
