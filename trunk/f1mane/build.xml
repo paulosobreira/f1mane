@@ -68,6 +68,7 @@
 				<include name="sowbreira/f1mane/recursos/carros/**/*.gif" />
 				<include name="sowbreira/f1mane/recursos/**/*.gif" />
 				<include name="sowbreira/f1mane/recursos/**/*.png" />
+				<include name="sowbreira/f1mane/recursos/**/*.wav" />				
 			</fileset>
 		</jar>
 	</target>
