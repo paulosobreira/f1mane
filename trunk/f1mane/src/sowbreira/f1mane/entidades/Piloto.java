@@ -512,6 +512,10 @@ public class Piloto implements Serializable {
 		this.velocidade = velocidade;
 	}
 
+	public void setVelocidadeAnterior(int velocidadeAnterior) {
+		this.velocidadeAnterior = velocidadeAnterior;
+	}
+
 	public int getVelocidadeAnterior() {
 		return velocidadeAnterior;
 	}

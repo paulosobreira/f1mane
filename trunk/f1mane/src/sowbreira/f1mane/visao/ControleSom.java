@@ -43,7 +43,7 @@ public class ControleSom {
 		int velocidade = ps.getVelocidade();
 		if (lastCall == 0) {
 			lastCall = System.currentTimeMillis();
-		} else if (lastCall + (500 + controleJogo.getTempoCiclo()) > System
+		} else if (lastCall + (250 + controleJogo.getTempoCiclo()) > System
 				.currentTimeMillis()) {
 			return;
 		}
@@ -51,6 +51,9 @@ public class ControleSom {
 				&& painelCircuito.getQtdeLuzesAcesas() < 5) {
 			roncoClip.loop(2);
 			roncoClip.start();
+		}
+		if (painelCircuito.getQtdeLuzesAcesas() <= 0) {
+			roncoClip.stop();
 		}
 		try {
 
@@ -61,53 +64,47 @@ public class ControleSom {
 				clipVeloMaxFinal.stop();
 				clipBox.loop(Clip.LOOP_CONTINUOUSLY);
 				clipBox.start();
-			} else if (painelCircuito.getQtdeLuzesAcesas() <= 0
+			} else {
+				clipBox.stop();
+			}
+			if (!tocandoClip() && painelCircuito.getQtdeLuzesAcesas() <= 0
 					&& velocidade > 0 && velocidade < 60) {
-				roncoClip.stop();
-				clipVeloMed.stop();
-				clipVeloMax.stop();
-				clipVeloMaxFinal.stop();
-				clipLargada.loop(Clip.LOOP_CONTINUOUSLY);
+				clipLargada.setFramePosition(0);
 				clipLargada.start();
-			} else if (!clipVeloMed.isRunning() && velocidade > 60
-					&& velocidade < 200) {
-				clipVeloMax.stop();
-				clipVeloMaxFinal.stop();
-				clipBox.stop();
-				clipVeloMed.loop(Clip.LOOP_CONTINUOUSLY);
+			} else if (!tocandoClip() && velocidade > 60 && velocidade < 200) {
+				clipVeloMed.setFramePosition(0);
 				clipVeloMed.start();
-			} else if (!clipVeloMax.isRunning() && velocidade >= 200
-					&& velocidade < 300) {
-				clipLargada.stop();
-				clipVeloMed.stop();
-				clipBox.stop();
-				clipVeloMaxFinal.stop();
-				clipVeloMax.loop(Clip.LOOP_CONTINUOUSLY);
+			} else if (!tocandoClip() && velocidade >= 200 && velocidade < 300) {
+				clipVeloMax.setFramePosition(0);
 				clipVeloMax.start();
-			} else if (!clipVeloMaxFinal.isRunning() && velocidade >= 300) {
-				clipLargada.stop();
-				clipVeloMed.stop();
-				clipVeloMax.stop();
-				clipBox.stop();
-				clipVeloMaxFinal.loop(Clip.LOOP_CONTINUOUSLY);
+			} else if (!tocandoClip() && velocidade >= 300) {
+				clipVeloMaxFinal.setFramePosition(0);
 				clipVeloMaxFinal.start();
 			}
-			if (!clipAcel.isRunning() && ps.getPtosBox() == 0
-					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > 25) {
-				roncoClip.stop();
-				clipAcel.setFramePosition(0);
-				clipAcel.start();
-			}
-			if (!clipRedo.isRunning() && ps.getPtosBox() == 0
-					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > -25) {
-				roncoClip.stop();
-				clipRedo.setFramePosition(0);
-				clipRedo.start();
-			}
+//			if (!clipAcel.isRunning() && ps.getPtosBox() == 0
+//					&& painelCircuito.getQtdeLuzesAcesas() <= 0
+//					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > 35) {
+//				clipAcel.setFramePosition(0);
+//				clipAcel.start();
+//			}
+//			if (!clipRedo.isRunning() && ps.getPtosBox() == 0
+//					&& painelCircuito.getQtdeLuzesAcesas() <= 0
+//					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > -35) {
+//				clipRedo.setFramePosition(0);
+//				clipRedo.start();
+//			}
+//			if (ps.getVelocidade() != 1)
+//				ps.setVelocidadeAnterior(ps.getVelocidade());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
 		lastCall = System.currentTimeMillis();
+	}
+
+	private static boolean tocandoClip() {
+		return clipBox.isRunning() || clipLargada.isRunning()
+				|| clipVeloMax.isRunning() || clipVeloMaxFinal.isRunning()
+				|| clipVeloMed.isRunning();
 	}
 
 	private static void iniciaVars() throws UnsupportedAudioFileException,
