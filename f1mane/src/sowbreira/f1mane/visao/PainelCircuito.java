@@ -2273,7 +2273,8 @@ public class PainelCircuito extends JPanel {
 					+ (int) (ps.getGanho()) + " V " + ps.getVelocidade()
 					+ " D " + dist + " S " + pilotoSelecionado.getStress()
 					+ " A "
-					+ pilotoSelecionado.getCarro().getDurabilidadeAereofolio();
+					+ pilotoSelecionado.getCarro().getDurabilidadeAereofolio()
+					+ " PBOX " + pilotoSelecionado.getPtosBox();
 		}
 
 		int maior = 0;

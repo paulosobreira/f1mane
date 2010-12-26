@@ -173,9 +173,14 @@ public class ControleBox {
 			}
 			List boxList = controleJogo.getNosDoBox();
 			No box = (No) boxEquipes.get(piloto.getCarro());
-			if (box.equals(piloto.getNoAtual())
-					|| (cont > (circuito.getEntradaBoxIndex() - 75) && cont < (circuito
-							.getEntradaBoxIndex() + 75))) {
+			if (piloto.getPtosBox() == 0
+					&& (box.equals(piloto.getNoAtual()) || (cont > (circuito
+							.getEntradaBoxIndex() - 75) && cont < (circuito
+							.getEntradaBoxIndex() + 75)))) {
+				if (piloto.getPosicao() < 8)
+					controleJogo.info(Html.orange(Lang.msg("entraBox",
+							new String[] { piloto.getNome() })));
+				Logger.logar(piloto.getNome() + " Entrou no Box " + cont);
 				piloto.setPtosBox(Util.inte((piloto.getPtosBox() + 1)
 						* circuito.getMultiplciador()));
 			} else {
