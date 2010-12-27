@@ -279,9 +279,9 @@ public class ControleCampeonatoCliente {
 
 		grid.add(new JLabel() {
 			public String getText() {
-				return Lang.msg("110",
-						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
-								String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110", new String[] {
+						String.valueOf(Constantes.MIN_VOLTAS),
+						String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		});
 		spinnerQtdeVoltas = new JSpinner();
@@ -328,24 +328,18 @@ public class ControleCampeonatoCliente {
 		}
 
 		if (corridas.isEmpty()) {
-			JOptionPane.showMessageDialog(compPai, Lang.msg("296"),
-					Lang.msg("296"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(compPai, Lang.msg("296"), Lang
+					.msg("296"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
 		if (qtdeVolta == null || qtdeVolta.intValue() < Constantes.MIN_VOLTAS) {
-			JOptionPane.showMessageDialog(
-					compPai,
-					Lang.msg(
-							"110",
-							new String[] {
-									String.valueOf(Constantes.MIN_VOLTAS),
-									String.valueOf(Constantes.MAX_VOLTAS) }),
-					Lang.msg(
-							"110",
-							new String[] {
-									String.valueOf(Constantes.MIN_VOLTAS),
-									String.valueOf(Constantes.MAX_VOLTAS) }),
+			JOptionPane.showMessageDialog(compPai, Lang.msg("110",
+					new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+							String.valueOf(Constantes.MAX_VOLTAS) }), Lang.msg(
+					"110", new String[] {
+							String.valueOf(Constantes.MIN_VOLTAS),
+							String.valueOf(Constantes.MAX_VOLTAS) }),
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -353,6 +347,8 @@ public class ControleCampeonatoCliente {
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
 				.getSelectedItem()));
+		campeonato.setSemReabasteciemnto(this.semReabastacimento.isSelected());
+		campeonato.setSemTrocaPneus(this.semTrocaPneu.isSelected());
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
 		campeonato.setNome(nomeCampeonato.getText());
 		for (int i = 0; i < corridas.size(); i++) {
@@ -369,8 +365,8 @@ public class ControleCampeonatoCliente {
 			campeonato.setLoginCriador(controlePaddockCliente
 					.getSessaoCliente().getNomeJogador());
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.CRIAR_CAMPEONATO,
-					controlePaddockCliente.getSessaoCliente());
+					Comandos.CRIAR_CAMPEONATO, controlePaddockCliente
+							.getSessaoCliente());
 			clientPaddockPack.setDataObject(campeonato);
 			controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			clientPaddockPack = new ClientPaddockPack();
@@ -422,8 +418,8 @@ public class ControleCampeonatoCliente {
 			return;
 		}
 		JPanel campeonastosPanel = gerarPanelCampeonatos((List) ret);
-		JOptionPane.showMessageDialog(this.compPai, campeonastosPanel,
-				Lang.msg("listaCampeonatos"), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this.compPai, campeonastosPanel, Lang
+				.msg("listaCampeonatos"), JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
@@ -550,8 +546,8 @@ public class ControleCampeonatoCliente {
 		if (corridaCampeonatoProx == null) {
 			Logger.logar("campeonato acabado");
 		}
-		controlePaddockCliente.criarJogo(campeonato,
-				corridaCampeonatoProx.getNomeCircuito());
+		controlePaddockCliente.criarJogo(campeonato, corridaCampeonatoProx
+				.getNomeCircuito());
 	}
 
 	public void geraListaPilotosPontos() {
