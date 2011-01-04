@@ -403,7 +403,7 @@ public class ControleCorrida {
 			}
 		} else {
 			if (!piloto.testeHabilidadePilotoCarro()) {
-				if ((piloto.getCarro().getDurabilidadeAereofolio() == 1)
+				if ((piloto.getCarro().getDurabilidadeAereofolio() <= 1)
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& (controleJogo.getNumVoltaAtual() > 1)
 						&& Math.random() > fatorAcidente
@@ -417,6 +417,10 @@ public class ControleCorrida {
 					controleSafetyCar.safetyCarNaPista(piloto);
 				} else {
 					if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
+						if (controleJogo.getNumVoltaAtual() == 1
+								&& Math.random() < 0.5) {
+							return;
+						}
 						piloto
 								.getCarro()
 								.setDurabilidadeAereofolio(

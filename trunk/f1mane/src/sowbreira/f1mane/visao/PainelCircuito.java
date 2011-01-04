@@ -677,7 +677,9 @@ public class PainelCircuito extends JPanel {
 			for (ObjetoPista objetoPista : circuito.getObjetos()) {
 				if (!(objetoPista instanceof ObjetoTransparencia))
 					continue;
-				if (objetoPista.isPintaEmcima() && !noAtual.isBox()) {
+				if (objetoPista.isPintaEmcima()
+						&& controleJogo.obterPista(piloto) != controleJogo
+								.getNosDoBox()) {
 					continue;
 				}
 				if (objetoPista.getAltura() != 0
@@ -703,7 +705,7 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * Chuva e Faiscas
 		 */
-		g2d.setStroke(chuva1);
+		//g2d.setStroke(chuva1);
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
 			piloto.centralizaCarro(controleJogo);
@@ -726,11 +728,11 @@ public class PainelCircuito extends JPanel {
 				if (i % (Math.random() > 0.5 ? 3 : 2) == 0) {
 					continue;
 				}
-				if (i % 2 == 0) {
-					g2d.setStroke(chuva2);
-				} else {
-					g2d.setStroke(chuva1);
-				}
+//				if (i % 2 == 0) {
+//					g2d.setStroke(chuva2);
+//				} else {
+//					g2d.setStroke(chuva1);
+//				}
 				int eixoDiatero = (int) (eixo * 0.7);
 				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
 						- eixoDiatero, eixoDianteras.x + eixoDiatero),
