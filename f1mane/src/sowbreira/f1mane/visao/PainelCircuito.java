@@ -18,6 +18,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -136,6 +138,7 @@ public class PainelCircuito extends JPanel {
 	private Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
 	private Piloto pilotoSelecionado;
 	private BufferedImage backGround;
+	private TileMap tileMap[][];
 	private double currentZoom;
 	private BufferedImage drawBuffer;
 	private Thread threadBkgGen;
@@ -207,10 +210,38 @@ public class PainelCircuito extends JPanel {
 			}
 		});
 		circuito = controleJogo.getCircuito();
-		while (backGround == null) {
+		if (backGround == null) {
 			try {
 				backGround = CarregadorRecursos.carregaBackGround(circuito
 						.getBackGround(), this, circuito);
+				int largura = backGround.getWidth() / 10;
+				int altura = backGround.getHeight() / 10;
+
+				for (int i = 0; i < 10; i++) {
+					for (int j = 0; j < 10; j++) {
+
+						BufferedImage bufferedImage = new BufferedImage(
+								largura, altura, BufferedImage.TYPE_INT_ARGB);
+						Raster srcRaster = backGround.getData(new Rectangle(i
+								* largura, j * altura, largura, altura));
+
+						WritableRaster destRaster = bufferedImage.getRaster();
+						int[] argbArray = new int[4];
+						for (int x = 0; i < largura; x++) {
+							for (int y = 0; j < altura; y++) {
+								argbArray = new int[4];
+								argbArray = srcRaster.getPixel(i, j, argbArray);
+
+								Color c = new Color(argbArray[0], argbArray[1],
+										argbArray[2], argbArray[3]);
+
+								destRaster.setPixel(i, j, argbArray);
+							}
+						}
+						tileMap[i][j] = new TileMap();
+						tileMap[i][j].setBackGround(bufferedImage);
+					}
+				}
 			} catch (Error e) {
 				System.gc();
 				e.printStackTrace();
@@ -705,7 +736,7 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * Chuva e Faiscas
 		 */
-		//g2d.setStroke(chuva1);
+		// g2d.setStroke(chuva1);
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
 			piloto.centralizaCarro(controleJogo);
@@ -728,11 +759,11 @@ public class PainelCircuito extends JPanel {
 				if (i % (Math.random() > 0.5 ? 3 : 2) == 0) {
 					continue;
 				}
-//				if (i % 2 == 0) {
-//					g2d.setStroke(chuva2);
-//				} else {
-//					g2d.setStroke(chuva1);
-//				}
+				// if (i % 2 == 0) {
+				// g2d.setStroke(chuva2);
+				// } else {
+				// g2d.setStroke(chuva1);
+				// }
 				int eixoDiatero = (int) (eixo * 0.7);
 				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
 						- eixoDiatero, eixoDianteras.x + eixoDiatero),
