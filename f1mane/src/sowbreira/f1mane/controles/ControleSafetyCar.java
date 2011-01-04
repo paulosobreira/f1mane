@@ -80,7 +80,7 @@ public class ControleSafetyCar {
 			safetyCar.setTracado(0);
 		}
 		bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo
-				.getIndexVelcidadeDaPista()) / 2;
+				.getIndexVelcidadeDaPista()) * 0.7;
 		bonus = calculaMediaSC(bonus);
 		index += bonus;
 		int diff = index - pista.size();

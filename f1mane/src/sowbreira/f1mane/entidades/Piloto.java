@@ -860,23 +860,15 @@ public class Piloto implements Serializable {
 								|| (!isJogadorHumano() && testeHabilidadePiloto()))
 							mudarTracado(0, controleJogo);
 						if (No.CURVA_ALTA.equals(noAtual.getTipo())
-								|| No.CURVA_BAIXA.equals(noAtual.getTipo())) {
+								|| No.CURVA_BAIXA.equals(noAtual.getTipo())
+								|| !getCarro().testePotencia()) {
 							double nGanho = (controleJogo
-									.getFatorUtrapassagem() - 0.1);
+									.getFatorUtrapassagem());
 							if (isAgressivo()) {
-								nGanho = (controleJogo.getFatorUtrapassagem());
+								nGanho = (controleJogo.getFatorUtrapassagem() + 0.1);
 							}
-							if (nGanho > 1) {
-								nGanho = 1;
-							} else if (nGanho < 0.1) {
-								nGanho = 0.1;
-							}
-							ganho *= (nGanho);
-						} else if (!getCarro().testePotencia()) {
-							double nGanho = (controleJogo
-									.getFatorUtrapassagem() - 0.1);
-							if (isAgressivo()) {
-								nGanho = (controleJogo.getFatorUtrapassagem());
+							if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+								nGanho -= 0.1;
 							}
 							if (nGanho > 1) {
 								nGanho = 1;
@@ -893,9 +885,12 @@ public class Piloto implements Serializable {
 							ganho *= (controleJogo.getFatorUtrapassagem());
 						} else if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
 							double nGanho = (controleJogo
-									.getFatorUtrapassagem() - 0.1);
-							if (isAgressivo()) {
-								nGanho = (controleJogo.getFatorUtrapassagem());
+									.getFatorUtrapassagem());
+							if (isAgressivo() && getCarro().testePotencia()) {
+								nGanho = (controleJogo.getFatorUtrapassagem() + 0.1);
+							}
+							if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+								nGanho -= 0.1;
 							}
 							if (nGanho > 1) {
 								nGanho = 1;
