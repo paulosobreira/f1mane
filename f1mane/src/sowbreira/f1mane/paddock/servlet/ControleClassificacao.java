@@ -26,6 +26,7 @@ import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:50:08
@@ -84,7 +85,8 @@ public class ControleClassificacao {
 			DadosCriarJogo dadosCriarJogo) {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (piloto.isJogadorHumano()) {
+			if (piloto.isJogadorHumano()
+					&& !Util.isNullOrEmpty(piloto.getNomeJogador())) {
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 						.carregaDadosJogador(piloto.getNomeJogador());
 				if (jogadorDadosSrv == null) {
