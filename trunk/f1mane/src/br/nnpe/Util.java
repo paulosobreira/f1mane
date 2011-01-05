@@ -80,7 +80,7 @@ public class Util {
 	}
 
 	public static int inte(double d) {
-		return (int) d;
+		return (int) Math.round(d);
 	}
 
 	// returns a deep copy of an object
