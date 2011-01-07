@@ -213,38 +213,9 @@ public class PainelCircuito extends JPanel {
 		circuito = controleJogo.getCircuito();
 		if (backGround == null) {
 			try {
-				backGround = CarregadorRecursos.carregaBackGround(circuito
-						.getBackGround(), this, circuito);
-				backGround.setAccelerationPriority(1);
-				if (true) {
-					int largura = backGround.getWidth() / TileMap.LADO;
-					int altura = backGround.getHeight() / TileMap.LADO;
-					tileMap = new TileMap[TileMap.LADO][TileMap.LADO];
-					for (int i = 0; i < TileMap.LADO; i++) {
-						for (int j = 0; j < TileMap.LADO; j++) {
-							BufferedImage bufferedImage = new BufferedImage(
-									largura, altura, backGround.getType());
-							Raster srcRaster = backGround
-									.getData(new Rectangle(i * largura, j
-											* altura, largura, altura));
-							WritableRaster destRaster = bufferedImage
-									.getRaster();
-							int[] argbArray = new int[4];
-							for (int x = (i * largura); x < (largura + (i * largura)); x++) {
-								for (int y = (j * altura); y < (altura + (j * altura)); y++) {
-									argbArray = new int[4];
-									argbArray = srcRaster.getPixel(x, y,
-											argbArray);
-									destRaster.setPixel((x - (i * largura)),
-											(y - (j * altura)), argbArray);
-								}
-							}
-							tileMap[i][j] = new TileMap();
-							tileMap[i][j].setBackGround(bufferedImage);
-							bufferedImage.setAccelerationPriority(1);
-						}
-					}
-					backGround = null;
+				carregaBackGround();
+				if (gerenciadorVisual.getVdp() == GerenciadorVisual.VDP2) {
+					carregaTileMap();
 				}
 			} catch (Error e) {
 				System.gc();
@@ -270,6 +241,40 @@ public class PainelCircuito extends JPanel {
 		atualizaVarZoom();
 	}
 
+	private void carregaTileMap() {
+		int largura = backGround.getWidth() / TileMap.LADO;
+		int altura = backGround.getHeight() / TileMap.LADO;
+		tileMap = new TileMap[TileMap.LADO][TileMap.LADO];
+		for (int i = 0; i < TileMap.LADO; i++) {
+			for (int j = 0; j < TileMap.LADO; j++) {
+				BufferedImage bufferedImage = new BufferedImage(largura,
+						altura, backGround.getType());
+				Raster srcRaster = backGround.getData(new Rectangle(
+						i * largura, j * altura, largura, altura));
+				WritableRaster destRaster = bufferedImage.getRaster();
+				int[] argbArray = new int[4];
+				for (int x = (i * largura); x < (largura + (i * largura)); x++) {
+					for (int y = (j * altura); y < (altura + (j * altura)); y++) {
+						argbArray = new int[4];
+						argbArray = srcRaster.getPixel(x, y, argbArray);
+						destRaster.setPixel((x - (i * largura)),
+								(y - (j * altura)), argbArray);
+					}
+				}
+				tileMap[i][j] = new TileMap();
+				tileMap[i][j].setBackGround(bufferedImage);
+				bufferedImage.setAccelerationPriority(1);
+			}
+		}
+		backGround = null;
+	}
+
+	private void carregaBackGround() {
+		backGround = CarregadorRecursos.carregaBackGround(circuito
+				.getBackGround(), this, circuito);
+		backGround.setAccelerationPriority(1);
+	}
+
 	public int getQtdeLuzesAcesas() {
 		return qtdeLuzesAcesas;
 	}
@@ -283,40 +288,46 @@ public class PainelCircuito extends JPanel {
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
 		ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
 		if (circuito.isUsaBkg()) {
-			if (false) {
+			if (gerenciadorVisual.getVdp() == GerenciadorVisual.VDP1) {
+				if (backGround == null) {
+					carregaBackGround();
+				}
 				if (currentZoom != zoom) {
-					Runnable runnable = new Runnable() {
-						@Override
-						public void run() {
-							synchronized (zoom) {
-								AffineTransform affineTransform = AffineTransform
-										.getScaleInstance(zoom, zoom);
-								AffineTransformOp affineTransformOp = new AffineTransformOp(
-										affineTransform,
-										AffineTransformOp.TYPE_BILINEAR);
-								drawBuffer = new BufferedImage(
-										(int) (backGround.getWidth() * zoom),
-										(int) (backGround.getHeight() * zoom),
-										BufferedImage.TYPE_INT_ARGB);
-								drawBuffer.setAccelerationPriority(1);
-								affineTransformOp
-										.filter(backGround, drawBuffer);
-							}
-						}
-					};
-					if (threadBkgGen != null) {
-						threadBkgGen.interrupt();
+					// Runnable runnable = new Runnable() {
+					// @Override
+					// public void run() {
+					// }
+					// };
+					// if (threadBkgGen != null) {
+					// threadBkgGen.interrupt();
+					// }
+					// threadBkgGen = new Thread(runnable);
+					// threadBkgGen.setPriority(Thread.MIN_PRIORITY);
+					// threadBkgGen.start();
+					synchronized (zoom) {
+						AffineTransform affineTransform = AffineTransform
+								.getScaleInstance(zoom, zoom);
+						AffineTransformOp affineTransformOp = new AffineTransformOp(
+								affineTransform,
+								AffineTransformOp.TYPE_BILINEAR);
+						Raster data = backGround.getData(limitesViewPort);
+						drawBuffer = new BufferedImage((int) (backGround
+								.getWidth() * zoom), (int) (backGround
+								.getHeight() * zoom),
+								BufferedImage.TYPE_INT_ARGB);
+						drawBuffer.setAccelerationPriority(1);
+						affineTransformOp.filter(data, drawBuffer.getRaster());
 					}
-					threadBkgGen = new Thread(runnable);
-					threadBkgGen.setPriority(Thread.MIN_PRIORITY);
-					threadBkgGen.start();
 				}
 				if (drawBuffer == null) {
 					drawBuffer = backGround;
 				}
 				g2d.drawImage(drawBuffer, 0, 0, null);
 			}
-			if (true) {
+			if (gerenciadorVisual.getVdp() == GerenciadorVisual.VDP2) {
+				if (tileMap == null) {
+					carregaTileMap();
+				}
 				for (int i = 0; i < TileMap.LADO; i++) {
 					for (int j = 0; j < TileMap.LADO; j++) {
 						if (tileMap[i][j] != null) {
@@ -640,7 +651,7 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaCarro(Graphics2D g2d, Piloto piloto) {
-		if (zoom < 0.2) {
+		if (zoom < 0.3) {
 			return;
 		}
 		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
