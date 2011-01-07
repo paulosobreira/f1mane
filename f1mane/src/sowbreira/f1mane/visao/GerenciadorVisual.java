@@ -181,12 +181,14 @@ public class GerenciadorVisual {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				painelCircuito.zoom += e.getWheelRotation() / 10.0;
-				if (painelCircuito.zoom > 1) {
-					painelCircuito.zoom = 1;
-				}
-				if (painelCircuito.zoom < 0.2) {
+				double val = painelCircuito.zoom;
+				val += e.getWheelRotation() / 40.0;
+				if (val > 1.0) {
+					painelCircuito.zoom = 1.0;
+				} else if (val < 0.2) {
 					painelCircuito.zoom = 0.2;
+				} else {
+					painelCircuito.zoom = Util.double2Decimal(val);
 				}
 				painelCircuito.atualizaVarZoom();
 			}
@@ -222,7 +224,6 @@ public class GerenciadorVisual {
 		pos2.addMouseWheelListener(mw);
 		autoPos.addMouseWheelListener(mw);
 		frame.addMouseWheelListener(mw);
-		painelCircuito.addMouseWheelListener(mw);
 		painelInfText.addMouseWheelListener(mw);
 		painelPosicoes.addMouseWheelListener(mw);
 		painelPosicoes.getPosicoesTable().addMouseWheelListener(mw);
@@ -253,6 +254,7 @@ public class GerenciadorVisual {
 		if (painelCircuito != null) {
 			painelCircuito.setBackGround(null);
 			painelCircuito.setDrawBuffer(null);
+			painelCircuito.setTileMap(null);
 			if (painelCircuito.getThreadBkgGen() != null) {
 				painelCircuito.getThreadBkgGen().interrupt();
 			}
