@@ -71,6 +71,8 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class GerenciadorVisual {
+	public static final int VDP1 = 1;
+	public static final int VDP2 = 2;
 	private JPanel panelControleBox;
 	private JPanel painelInfText;
 	private JPanel painelInfGraf;
@@ -145,6 +147,15 @@ public class GerenciadorVisual {
 			.carregarImagem("clima/chuva.gif"));
 	private long ultimaTravavadaRodas;
 	private Thread thDesenhaQualificacao;
+	private int vdp = VDP1;
+
+	public int getVdp() {
+		return vdp;
+	}
+
+	public void setVdp(int vdp) {
+		this.vdp = vdp;
+	}
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
