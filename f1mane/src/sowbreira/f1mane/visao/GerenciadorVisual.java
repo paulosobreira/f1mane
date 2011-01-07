@@ -181,7 +181,7 @@ public class GerenciadorVisual {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				painelCircuito.zoom += e.getWheelRotation() / 30.0;
+				painelCircuito.zoom += e.getWheelRotation() / 10.0;
 				if (painelCircuito.zoom > 1) {
 					painelCircuito.zoom = 1;
 				}

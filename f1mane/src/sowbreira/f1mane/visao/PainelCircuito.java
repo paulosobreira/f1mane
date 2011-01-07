@@ -157,10 +157,6 @@ public class PainelCircuito extends JPanel {
 		this.backGround = backGround;
 	}
 
-	public BufferedImage getDrawBuffer() {
-		return drawBuffer;
-	}
-
 	public void setDrawBuffer(BufferedImage drawBuffer) {
 		this.drawBuffer = drawBuffer;
 	}
@@ -216,12 +212,12 @@ public class PainelCircuito extends JPanel {
 				backGround = CarregadorRecursos.carregaBackGround(circuito
 						.getBackGround(), this, circuito);
 				backGround.setAccelerationPriority(1);
-				if (false) {
+				if (true) {
 					int largura = backGround.getWidth() / 32;
 					int altura = backGround.getHeight() / 32;
-					tileMap = new TileMap[32][32];
-					for (int i = 0; i < 32; i++) {
-						for (int j = 0; j < 32; j++) {
+					tileMap = new TileMap[TileMap.LADO][TileMap.LADO];
+					for (int i = 0; i < TileMap.LADO; i++) {
+						for (int j = 0; j < TileMap.LADO; j++) {
 							BufferedImage bufferedImage = new BufferedImage(
 									largura, altura, backGround.getType());
 							Raster srcRaster = backGround
@@ -241,8 +237,10 @@ public class PainelCircuito extends JPanel {
 							}
 							tileMap[i][j] = new TileMap();
 							tileMap[i][j].setBackGround(bufferedImage);
+							bufferedImage.setAccelerationPriority(1);
 						}
 					}
+					backGround = null;
 				}
 			} catch (Error e) {
 				System.gc();
@@ -281,79 +279,79 @@ public class PainelCircuito extends JPanel {
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
 		ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
 		if (circuito.isUsaBkg()) {
-
-			if (currentZoom != zoom) {
-				Runnable runnable = new Runnable() {
-					@Override
-					public void run() {
-						AffineTransform affineTransform = AffineTransform
-								.getScaleInstance(zoom, zoom);
-						AffineTransformOp affineTransformOp = new AffineTransformOp(
-								affineTransform,
-								AffineTransformOp.TYPE_BILINEAR);
-						drawBuffer = new BufferedImage((int) (backGround
-								.getWidth() * zoom), (int) (backGround
-								.getHeight() * zoom),
-								BufferedImage.TYPE_INT_ARGB);
-						drawBuffer.setAccelerationPriority(1);
-						affineTransformOp.filter(backGround, drawBuffer);
-					}
-				};
-				if (threadBkgGen != null) {
-					threadBkgGen.interrupt();
-				}
-				threadBkgGen = new Thread(runnable);
-				threadBkgGen.setPriority(Thread.MIN_PRIORITY);
-				threadBkgGen.start();
-			}
-			if (drawBuffer == null) {
-				drawBuffer = backGround;
-			}
-
-			g2d.drawImage(drawBuffer, 0, 0, null);
 			if (false) {
-				for (int i = 0; i < 32; i++) {
-					for (int j = 0; j < 32; j++) {
-						if (tileMap[i][j] != null) {
-							BufferedImage bd = tileMap[i][j].getBackGround();
-							Point2D point = new Point2D.Double(i
-									* bd.getWidth() * zoom, j * bd.getHeight()
-									* zoom);
-							Rectangle2D rectangle = new Rectangle2D.Double(
-									point.getX(), point.getY(), bd.getWidth()
-											* zoom, bd.getHeight() * zoom);
+				if (currentZoom != zoom) {
+					Runnable runnable = new Runnable() {
+						@Override
+						public void run() {
+							AffineTransform affineTransform = AffineTransform
+									.getScaleInstance(zoom, zoom);
+							AffineTransformOp affineTransformOp = new AffineTransformOp(
+									affineTransform,
+									AffineTransformOp.TYPE_BILINEAR);
+							drawBuffer = new BufferedImage((int) (backGround
+									.getWidth() * zoom), (int) (backGround
+									.getHeight() * zoom),
+									BufferedImage.TYPE_INT_ARGB);
+							drawBuffer.setAccelerationPriority(1);
+							affineTransformOp.filter(backGround, drawBuffer);
+						}
+					};
+					if (threadBkgGen != null) {
+						threadBkgGen.interrupt();
+					}
+					threadBkgGen = new Thread(runnable);
+					threadBkgGen.setPriority(Thread.MIN_PRIORITY);
+					threadBkgGen.start();
+				}
+				if (drawBuffer == null) {
+					drawBuffer = backGround;
+				}
+				g2d.drawImage(drawBuffer, 0, 0, null);
+			}
 
-							if (limitesViewPort.intersects(rectangle)) {
-								if (currentZoom != zoom
-										|| zoom != tileMap[i][j].getZoom()) {
-									AffineTransform affineTransform = AffineTransform
-											.getScaleInstance(zoom, zoom);
-									AffineTransformOp affineTransformOp = new AffineTransformOp(
-											affineTransform,
-											AffineTransformOp.TYPE_BILINEAR);
-									BufferedImage drawBuffer = new BufferedImage(
-											Util.inte(bd.getWidth() * zoom),
-											Util.inte(bd.getHeight() * zoom),
-											bd.getType());
-									affineTransformOp.filter(bd, drawBuffer);
-									tileMap[i][j]
-											.setBackGroundZoomed(drawBuffer);
-									tileMap[i][j].setZoom(zoom);
-									g2d.drawImage(drawBuffer, Util.inte(point
-											.getX()), Util.inte(point.getY()),
-											null);
+			for (int i = 0; i < TileMap.LADO; i++) {
+				for (int j = 0; j < TileMap.LADO; j++) {
+					if (tileMap[i][j] != null) {
+						BufferedImage bd = tileMap[i][j].getBackGround();
+						Point2D point = new Point2D.Double(i * bd.getWidth()
+								* zoom, j * bd.getHeight() * zoom);
+						Rectangle2D rectangle = new Rectangle2D.Double(point
+								.getX(), point.getY(), bd.getWidth() * zoom, bd
+								.getHeight()
+								* zoom);
+						if (limitesViewPort.intersects(rectangle)) {
+							if (currentZoom != zoom
+									|| zoom != tileMap[i][j].getZoom()) {
+								AffineTransform affineTransform = AffineTransform
+										.getScaleInstance(zoom, zoom);
+								AffineTransformOp affineTransformOp = new AffineTransformOp(
+										affineTransform,
+										AffineTransformOp.TYPE_BILINEAR);
+								BufferedImage drawBuffer = new BufferedImage(
+										Util.inte(bd.getWidth() * zoom), Util
+												.inte(bd.getHeight() * zoom),
+										bd.getType());
+								drawBuffer.setAccelerationPriority(1);
+								affineTransformOp.filter(bd, drawBuffer);
+								tileMap[i][j].setBackGroundZoomed(drawBuffer);
+								tileMap[i][j].setZoom(zoom);
+								g2d
+										.drawImage(drawBuffer, Util.inte(point
+												.getX()), Util.inte(point
+												.getY()), null);
 
-								} else {
-									BufferedImage b = tileMap[i][j]
-											.getBackGroundZoomed();
-									g2d.drawImage(tileMap[i][j]
-											.getBackGroundZoomed(), Util
-											.inte(point.getX()), Util
-											.inte(point.getY()), null);
-								}
-								g2d.setColor(this.yel);
-								g2d.fill(rectangle);
+							} else {
+								BufferedImage b = tileMap[i][j]
+										.getBackGroundZoomed();
+								g2d
+										.drawImage(tileMap[i][j]
+												.getBackGroundZoomed(), Util
+												.inte(point.getX()), Util
+												.inte(point.getY()), null);
 							}
+							// g2d.setColor(this.yel);
+							// g2d.fill(rectangle);
 						}
 					}
 				}
