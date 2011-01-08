@@ -592,7 +592,7 @@ public class GerenciadorVisual {
 							.getNoAtual().getPoint());
 				}
 			} catch (Exception e) {
-				Logger.logar(e);
+				Logger.logarExept(e);
 			}
 		}
 	}

@@ -578,12 +578,10 @@ public class Carro implements Serializable {
 				novoModificador -= 1;
 			}
 		}
-
 		if ((pneus < 0) && (novoModificador > 1)) {
 			novoModificador -= 1;
 		}
 		int desgPneus = 0;
-
 		int novoModDano = Util.inte(controleJogo.getNiveljogo()
 				* (novoModificador > 5 ? 5 : novoModificador));
 		if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
@@ -613,8 +611,6 @@ public class Carro implements Serializable {
 		if (Clima.SOL.equals(controleJogo.getClima())) {
 			desgPneus += 1;
 		}
-
-		int percent = porcentagemCombustivel();
 		double val = porcent / 100.0;
 		if (Math.random() < val) {
 			desgPneus += 1;
