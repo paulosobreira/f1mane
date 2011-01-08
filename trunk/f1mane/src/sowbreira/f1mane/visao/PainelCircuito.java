@@ -141,13 +141,6 @@ public class PainelCircuito extends JPanel {
 	private Piloto pilotoSelecionado;
 	private BufferedImage backGround;
 	private TileMap tileMap[][];
-	private double currentZoom;
-	private BufferedImage drawBuffer;
-	private Thread threadBkgGen;
-
-	public Thread getThreadBkgGen() {
-		return threadBkgGen;
-	}
 
 	public BufferedImage getBackGround() {
 		return backGround;
@@ -155,10 +148,6 @@ public class PainelCircuito extends JPanel {
 
 	public void setBackGround(BufferedImage backGround) {
 		this.backGround = backGround;
-	}
-
-	public void setDrawBuffer(BufferedImage drawBuffer) {
-		this.drawBuffer = drawBuffer;
 	}
 
 	public void setTileMap(TileMap[][] tileMap) {
@@ -284,6 +273,12 @@ public class PainelCircuito extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
 		limitesViewPort = (Rectangle) limitesViewPort();
+//		if (limitesViewPort != null) {
+//			limitesViewPort.width -= 100;
+//			limitesViewPort.height -= 100;
+//
+//			g2d.draw(limitesViewPort);
+//		}
 		pilotoSelecionado = gerenciadorVisual
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
 		ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
@@ -292,37 +287,72 @@ public class PainelCircuito extends JPanel {
 				if (backGround == null) {
 					carregaBackGround();
 				}
-				if (currentZoom != zoom) {
-					// Runnable runnable = new Runnable() {
-					// @Override
-					// public void run() {
-					// }
-					// };
-					// if (threadBkgGen != null) {
-					// threadBkgGen.interrupt();
-					// }
-					// threadBkgGen = new Thread(runnable);
-					// threadBkgGen.setPriority(Thread.MIN_PRIORITY);
-					// threadBkgGen.start();
-					synchronized (zoom) {
-						AffineTransform affineTransform = AffineTransform
-								.getScaleInstance(zoom, zoom);
-						AffineTransformOp affineTransformOp = new AffineTransformOp(
-								affineTransform,
-								AffineTransformOp.TYPE_BILINEAR);
-						Raster data = backGround.getData(limitesViewPort);
-						drawBuffer = new BufferedImage((int) (backGround
-								.getWidth() * zoom), (int) (backGround
-								.getHeight() * zoom),
-								BufferedImage.TYPE_INT_ARGB);
-						drawBuffer.setAccelerationPriority(1);
-						affineTransformOp.filter(data, drawBuffer.getRaster());
+				synchronized (zoom) {
+					AffineTransform affineTransform = AffineTransform
+							.getScaleInstance(zoom, zoom);
+					AffineTransformOp affineTransformOp = new AffineTransformOp(
+							affineTransform, AffineTransformOp.TYPE_BILINEAR);
+					BufferedImage subimage = null;
+					int diffX = 0;
+					int diffY = 0;
+					try {
+						if (limitesViewPort != null) {
+							Rectangle rectangle = new Rectangle(Util
+									.inte(limitesViewPort.getX() / zoom), Util
+									.inte(limitesViewPort.getY() / zoom), Util
+									.inte(limitesViewPort.getWidth() / zoom),
+									Util.inte(limitesViewPort.getHeight()
+											/ zoom));
+							if ((rectangle.x + rectangle.getWidth()) > backGround
+									.getWidth()) {
+								diffX = Util.inte((rectangle.x + rectangle
+										.getWidth())
+										- backGround.getWidth());
+								rectangle.x -= diffX;
+							}
+							if ((rectangle.y + rectangle.getHeight()) > backGround
+									.getHeight()) {
+								diffY = Util.inte((rectangle.y + rectangle
+										.getHeight())
+										- backGround.getHeight());
+								rectangle.y -= diffY;
+							}
+							subimage = backGround.getSubimage(rectangle.x,
+									rectangle.y, rectangle.width,
+									rectangle.height);
+						}
+					} catch (Exception e) {
+						System.out.println(e.getLocalizedMessage());
+						subimage = backGround;
 					}
+					BufferedImage drawBuffer = null;
+					if (zoom == 1) {
+						drawBuffer = subimage;
+					} else {
+						drawBuffer = new BufferedImage((int) (limitesViewPort
+								.getWidth()), (int) (limitesViewPort
+								.getHeight()), backGround.getType());
+						affineTransformOp.filter(subimage, drawBuffer);
+					}
+
+					if (drawBuffer == null) {
+						drawBuffer = backGround;
+					}
+					drawBuffer.setAccelerationPriority(1);
+					int newX = Util.inte(limitesViewPort.getX()
+							- (diffX * zoom));
+					int newY = Util.inte(limitesViewPort.getY()
+							- (diffY * zoom));
+
+					// if (diffX != 0) {
+					// newX = drawBuffer.getWidth() - limitesViewPort.width;
+					// }
+					// if (diffY != 0) {
+					// newY = drawBuffer.getHeight() - limitesViewPort.height;
+					// }
+					g2d.drawImage(drawBuffer, newX, newY, null);
 				}
-				if (drawBuffer == null) {
-					drawBuffer = backGround;
-				}
-				g2d.drawImage(drawBuffer, 0, 0, null);
+
 			}
 			if (gerenciadorVisual.getVdp() == GerenciadorVisual.VDP2) {
 				if (tileMap == null) {
@@ -343,8 +373,7 @@ public class PainelCircuito extends JPanel {
 											.double2Decimal(bd.getHeight()
 													* zoom));
 							if (limitesViewPort.intersects(rectangle)) {
-								if (currentZoom != zoom
-										|| zoom != tileMap[i][j].getZoom()) {
+								if (zoom != tileMap[i][j].getZoom()) {
 									synchronized (zoom) {
 										AffineTransform affineTransform = AffineTransform
 												.getScaleInstance(zoom, zoom);
@@ -361,12 +390,6 @@ public class PainelCircuito extends JPanel {
 																.getHeight()
 																* zoom)), bd
 														.getType());
-										if (drawBuffer.getHeight() != rectangle
-												.getHeight()
-												|| drawBuffer.getWidth() != rectangle
-														.getWidth()) {
-											Logger.logar("REct diff");
-										}
 										drawBuffer.setAccelerationPriority(1);
 										affineTransformOp
 												.filter(bd, drawBuffer);
@@ -390,7 +413,6 @@ public class PainelCircuito extends JPanel {
 					}
 				}
 			}
-			currentZoom = zoom;
 		}
 
 		if (!circuito.isUsaBkg()) {
@@ -440,12 +462,7 @@ public class PainelCircuito extends JPanel {
 		desenharClima(g2d);
 		desenhaInfoAdd(g2d);
 		desenhaContadorVoltas(g2d);
-		// if (limitesViewPort != null) {
-		// limitesViewPort.width -= 100;
-		// limitesViewPort.height -= 100;
-		//
-		// g2d.draw(limitesViewPort);
-		// }
+
 	}
 
 	public static void main(String[] args) {
@@ -1130,7 +1147,6 @@ public class PainelCircuito extends JPanel {
 		if (piloto != null && limitesViewPort != null) {
 			centralizarPontoDireto(piloto.getNoAtual().getPoint());
 		}
-		// limitesViewPort = (Rectangle) limitesViewPort();
 	}
 
 	private void gerarBoxes() {
@@ -1390,18 +1406,10 @@ public class PainelCircuito extends JPanel {
 			p.y = Util.inte(maxY) - 1;
 		}
 		Point oldp = scrollPane.getViewport().getViewPosition();
-		if (oldp.equals(p)) {
+		if (!oldp.equals(p)) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					repaint();
-				}
-			});
-		} else {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					repaint();
 					scrollPane.getViewport().setViewPosition(p);
 				}
 			});
@@ -1435,14 +1443,7 @@ public class PainelCircuito extends JPanel {
 		if (p.y < 0) {
 			p.y = 1;
 		}
-		if (circuito.isUsaBkg() && drawBuffer != null) {
-			if ((p.x + limitesViewPort.width) > drawBuffer.getWidth()) {
-				p.x = drawBuffer.getWidth() - limitesViewPort.width;
-			}
-			if ((p.y + limitesViewPort.height) > drawBuffer.getHeight()) {
-				p.y = drawBuffer.getHeight() - limitesViewPort.height;
-			}
-		}
+
 		int largMax = (int) ((getWidth()) - scrollPane.getViewport().getWidth());
 		if (p.x > largMax) {
 			p.x = largMax - 1;
@@ -1454,6 +1455,16 @@ public class PainelCircuito extends JPanel {
 		}
 		final Point newP = p;
 		Point oldp = scrollPane.getViewport().getViewPosition();
+		if (circuito.isUsaBkg() && backGround != null) {
+			if ((p.x + limitesViewPort.width) > (backGround.getWidth() * zoom)) {
+				p.x = Util.inte((backGround.getWidth() * zoom)
+						- limitesViewPort.width);
+			}
+			if ((p.y + limitesViewPort.height) > (backGround.getHeight() * zoom)) {
+				p.y = Util.inte((backGround.getHeight() * zoom)
+						- limitesViewPort.height);
+			}
+		}
 		int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x, p.y);
 		if (dst == 0) {
 			SwingUtilities.invokeLater(new Runnable() {

@@ -193,7 +193,7 @@ public class GerenciadorVisual {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				double val = painelCircuito.zoom;
-				val += e.getWheelRotation() / 40.0;
+				val += e.getWheelRotation() / 60.0;
 				if (val > 1.0) {
 					painelCircuito.zoom = 1.0;
 				} else if (val < 0.2) {
@@ -264,11 +264,7 @@ public class GerenciadorVisual {
 		}
 		if (painelCircuito != null) {
 			painelCircuito.setBackGround(null);
-			painelCircuito.setDrawBuffer(null);
 			painelCircuito.setTileMap(null);
-			if (painelCircuito.getThreadBkgGen() != null) {
-				painelCircuito.getThreadBkgGen().interrupt();
-			}
 		}
 		ControleSom.paraTudo();
 		super.finalize();
