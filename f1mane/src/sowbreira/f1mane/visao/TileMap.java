@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class TileMap {
 
-	public static final int LADO = 8;
+	public static final int LADO = 32;
 	private BufferedImage backGround;
 	private BufferedImage backGroundZoomed;
 	private double zoom;
