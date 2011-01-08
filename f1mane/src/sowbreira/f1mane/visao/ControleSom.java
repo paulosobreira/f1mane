@@ -81,20 +81,21 @@ public class ControleSom {
 				clipVeloMaxFinal.setFramePosition(0);
 				clipVeloMaxFinal.start();
 			}
-//			if (!clipAcel.isRunning() && ps.getPtosBox() == 0
-//					&& painelCircuito.getQtdeLuzesAcesas() <= 0
-//					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > 35) {
-//				clipAcel.setFramePosition(0);
-//				clipAcel.start();
-//			}
-//			if (!clipRedo.isRunning() && ps.getPtosBox() == 0
-//					&& painelCircuito.getQtdeLuzesAcesas() <= 0
-//					&& (ps.getVelocidade() - ps.getVelocidadeAnterior()) > -35) {
-//				clipRedo.setFramePosition(0);
-//				clipRedo.start();
-//			}
-//			if (ps.getVelocidade() != 1)
-//				ps.setVelocidadeAnterior(ps.getVelocidade());
+			int diffVelo = (ps.getVelocidade() - ps.getVelocidadeAnterior());
+			if (!clipAcel.isRunning() && ps.getPtosBox() == 0
+					&& painelCircuito.getQtdeLuzesAcesas() <= 0
+					&& diffVelo > 40) {
+				clipAcel.setFramePosition(0);
+				clipAcel.start();
+			}
+			if (!clipRedo.isRunning() && ps.getPtosBox() == 0
+					&& painelCircuito.getQtdeLuzesAcesas() <= 0
+					&& diffVelo < -40) {
+				clipRedo.setFramePosition(0);
+				clipRedo.start();
+			}
+			if (ps.getVelocidade() != 1)
+				ps.setVelocidadeAnterior(ps.getVelocidade());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}

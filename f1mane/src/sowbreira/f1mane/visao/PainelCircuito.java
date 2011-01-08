@@ -273,12 +273,12 @@ public class PainelCircuito extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
 		limitesViewPort = (Rectangle) limitesViewPort();
-//		if (limitesViewPort != null) {
-//			limitesViewPort.width -= 100;
-//			limitesViewPort.height -= 100;
-//
-//			g2d.draw(limitesViewPort);
-//		}
+		// if (limitesViewPort != null) {
+		// limitesViewPort.width -= 100;
+		// limitesViewPort.height -= 100;
+		//
+		// g2d.draw(limitesViewPort);
+		// }
 		pilotoSelecionado = gerenciadorVisual
 				.obterPilotoSecionadoTabela(controleJogo.getPilotoSelecionado());
 		ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
@@ -296,7 +296,7 @@ public class PainelCircuito extends JPanel {
 					int diffX = 0;
 					int diffY = 0;
 					try {
-						if (limitesViewPort != null) {
+						if (limitesViewPort != null && backGround != null) {
 							Rectangle rectangle = new Rectangle(Util
 									.inte(limitesViewPort.getX() / zoom), Util
 									.inte(limitesViewPort.getY() / zoom), Util
@@ -322,7 +322,7 @@ public class PainelCircuito extends JPanel {
 									rectangle.height);
 						}
 					} catch (Exception e) {
-						System.out.println(e.getLocalizedMessage());
+						Logger.logarExept(e);
 						subimage = backGround;
 					}
 					BufferedImage drawBuffer = null;
@@ -339,17 +339,8 @@ public class PainelCircuito extends JPanel {
 						drawBuffer = backGround;
 					}
 					drawBuffer.setAccelerationPriority(1);
-					int newX = Util.inte(limitesViewPort.getX()
-							- (diffX * zoom));
-					int newY = Util.inte(limitesViewPort.getY()
-							- (diffY * zoom));
-
-					// if (diffX != 0) {
-					// newX = drawBuffer.getWidth() - limitesViewPort.width;
-					// }
-					// if (diffY != 0) {
-					// newY = drawBuffer.getHeight() - limitesViewPort.height;
-					// }
+					int newX = Util.inte(limitesViewPort.getX());
+					int newY = Util.inte(limitesViewPort.getY());
 					g2d.drawImage(drawBuffer, newX, newY, null);
 				}
 
@@ -1455,7 +1446,8 @@ public class PainelCircuito extends JPanel {
 		}
 		final Point newP = p;
 		Point oldp = scrollPane.getViewport().getViewPosition();
-		if (circuito.isUsaBkg() && backGround != null) {
+		if (circuito.isUsaBkg() && backGround != null
+				&& limitesViewPort != null) {
 			if ((p.x + limitesViewPort.width) > (backGround.getWidth() * zoom)) {
 				p.x = Util.inte((backGround.getWidth() * zoom)
 						- limitesViewPort.width);
