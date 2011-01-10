@@ -192,16 +192,18 @@ public class GerenciadorVisual {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				double val = painelCircuito.zoom;
-				val += e.getWheelRotation() / 60.0;
-				if (val > 1.0) {
-					painelCircuito.zoom = 1.0;
-				} else if (val < 0.2) {
-					painelCircuito.zoom = 0.2;
-				} else {
-					painelCircuito.zoom = Util.double2Decimal(val);
+				synchronized (PainelCircuito.zoomMutex) {
+					double val = painelCircuito.zoom;
+					val += e.getWheelRotation() / 60.0;
+					if (val > 1.0) {
+						painelCircuito.zoom = 1.0;
+					} else if (val < 0.2) {
+						painelCircuito.zoom = 0.2;
+					} else {
+						painelCircuito.zoom = Util.double2Decimal(val);
+					}
+					painelCircuito.atualizaVarZoom();
 				}
-				painelCircuito.atualizaVarZoom();
 			}
 		};
 		KeyListener keyListener = geraKeyListener();
