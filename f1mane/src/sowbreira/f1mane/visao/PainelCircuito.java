@@ -273,12 +273,6 @@ public class PainelCircuito extends JPanel {
 			Graphics2D g2d = (Graphics2D) g;
 			setarHints(g2d);
 			limitesViewPort = (Rectangle) limitesViewPort();
-			// if (limitesViewPort != null) {
-			// limitesViewPort.width -= 100;
-			// limitesViewPort.height -= 100;
-			//
-			// g2d.draw(limitesViewPort);
-			// }
 			pilotoSelecionado = gerenciadorVisual
 					.obterPilotoSecionadoTabela(controleJogo
 							.getPilotoSelecionado());
@@ -453,7 +447,9 @@ public class PainelCircuito extends JPanel {
 			desenharClima(g2d);
 			desenhaInfoAdd(g2d);
 			desenhaContadorVoltas(g2d);
+
 		}
+
 	}
 
 	public static void main(String[] args) {
@@ -627,9 +623,11 @@ public class PainelCircuito extends JPanel {
 			}
 			desenhaCarro(g2d, piloto);
 			piloto.centralizaCarro(controleJogo);
-			// g2d.draw(piloto.getCentro());
-			// g2d.draw(piloto.getDiateira());
-			// g2d.draw(piloto.getTrazeira());
+			if (Logger.ativo) {
+				g2d.draw(piloto.getCentro());
+				g2d.draw(piloto.getDiateira());
+				g2d.draw(piloto.getTrazeira());
+			}
 			Point p = new Point(Util.inte((piloto.getCarX() - 2) * zoom), Util
 					.inte((piloto.getCarY() - 2) * zoom));
 			if (limitesViewPort.contains(p)) {
@@ -651,10 +649,13 @@ public class PainelCircuito extends JPanel {
 			return null;
 		}
 		Rectangle rectangle = scrollPane.getViewport().getBounds();
-		// rectangle.width -= 100;
-		// rectangle.height -= 100;
 		rectangle.x = scrollPane.getViewport().getViewPosition().x;
 		rectangle.y = scrollPane.getViewport().getViewPosition().y;
+		if (Logger.ativo && limitesViewPort != null) {
+			rectangle = new Rectangle(limitesViewPort.x + 100,
+					limitesViewPort.y + 100, limitesViewPort.width - 100,
+					limitesViewPort.height - 100);
+		}
 		return rectangle;
 	}
 
@@ -829,7 +830,6 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * Chuva e Faiscas
 		 */
-		// g2d.setStroke(chuva1);
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
 			piloto.centralizaCarro(controleJogo);
@@ -852,11 +852,6 @@ public class PainelCircuito extends JPanel {
 				if (i % (Math.random() > 0.5 ? 3 : 2) == 0) {
 					continue;
 				}
-				// if (i % 2 == 0) {
-				// g2d.setStroke(chuva2);
-				// } else {
-				// g2d.setStroke(chuva1);
-				// }
 				int eixoDiatero = (int) (eixo * 0.7);
 				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
 						- eixoDiatero, eixoDianteras.x + eixoDiatero),
@@ -930,27 +925,25 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * DEBUG
 		 */
-		// GeneralPath generalPath = new GeneralPath(rectangle);
-		//
-		// AffineTransform affineTransformRect =
-		// AffineTransform.getScaleInstance(
-		// zoom, zoom);
-		// affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
-		// rectangle.getCenterY());
-		// g2d.setColor(new Color(255, 0, 0, 140));
-		// piloto.obterArea(controleJogo);
-		// g2d.setColor(Color.BLACK);
-		// g2d.draw(piloto.obterArea(controleJogo));
-		// Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
-		// .getCenterX(), piloto.getDiateira().getCenterY());
-		// Point2D.Double trazCarD = new Point2D.Double(piloto.getTrazeira()
-		// .getCenterX(), piloto.getTrazeira().getCenterY());
-		// g2d.setColor(Color.GREEN);
-		// g2d.fillOval(Util.inte(frenteCarD.x * zoom), Util.inte(frenteCarD.y
-		// * zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
-		// g2d.fillOval(Util.inte(trazCarD.x * zoom),
-		// Util.inte(trazCarD.y * zoom), Util.inte(5 * zoom), Util
-		// .inte(5 * zoom));
+		if (Logger.ativo) {
+			GeneralPath generalPath = new GeneralPath(rectangle);
+
+			AffineTransform affineTransformRect = AffineTransform
+					.getScaleInstance(zoom, zoom);
+			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
+					rectangle.getCenterY());
+			g2d.setColor(new Color(255, 0, 0, 140));
+			g2d.setColor(Color.BLACK);
+			Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
+					.getCenterX(), piloto.getDiateira().getCenterY());
+			Point2D.Double trazCarD = new Point2D.Double(piloto.getTrazeira()
+					.getCenterX(), piloto.getTrazeira().getCenterY());
+			g2d.setColor(Color.GREEN);
+			g2d.fillOval(Util.inte(frenteCarD.x * zoom), Util.inte(frenteCarD.y
+					* zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
+			g2d.fillOval(Util.inte(trazCarD.x * zoom), Util.inte(trazCarD.y
+					* zoom), Util.inte(5 * zoom), Util.inte(5 * zoom));
+		}
 	}
 
 	private void desenhaBoxes(Graphics2D g2d) {
@@ -989,25 +982,8 @@ public class PainelCircuito extends JPanel {
 			}
 			if (circuito != null && circuito.isUsaBkg()) {
 				BufferedImage buffer = (BufferedImage) gridImg.get(i);
-				// g2d.setColor(Color.white);
-				// g2d.draw(grid[i].getBounds());
-
-				// g2d.setColor(Color.blue);
-				// g2d.draw(new Rectangle(
-				// (int) (grid[i].getBounds().getCenterX() - (62 * zoom)),
-				// (int) (grid[i].getBounds().getCenterY() - (62 * zoom)),
-				// 123, 123));
-				// g2d.fillOval(
-				// (int) (grid[i].getBounds().getCenterX() - (62 * zoom)),
-				// (int) (grid[i].getBounds().getCenterY() - (62 * zoom)),
-				// 8, 8);
 				double meix = (gridCarro.getWidth() / 2) * zoom;
 				double meiy = (gridCarro.getHeight() / 2) * zoom;
-				// g2d.setColor(Color.yellow);
-				// g2d.draw(new Rectangle(
-				// (int) (grid[i].getBounds().getCenterX() - meix),
-				// (int) (grid[i].getBounds().getCenterY() - meiy),
-				// buffer.getWidth(), buffer.getWidth()));
 				g2d.drawImage(buffer,
 						(int) (grid[i].getBounds().getCenterX() - meix),
 						(int) (grid[i].getBounds().getCenterY() - meiy), null);

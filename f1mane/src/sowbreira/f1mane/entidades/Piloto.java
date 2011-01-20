@@ -964,23 +964,20 @@ public class Piloto implements Serializable {
 			centralizaCarro(controleJogo);
 			piloto.centralizaCarro(controleJogo);
 
-			Rectangle rect = piloto.getTrazeira();
-			boolean intercecionou = getDiateira().intersects(rect)
+			boolean intercecionou = getDiateira().intersects(
+					piloto.getTrazeira())
 					|| getDiateira().intersects(piloto.getCentro())
 					|| getDiateira().intersects(piloto.getDiateira());
 			boolean msmPista = obterPista(controleJogo).size() == piloto
 					.obterPista(controleJogo).size();
 			boolean msmTracado = piloto.getTracado() == getTracado();
-			boolean nosPorximos = Math.abs(getNoAtual().getIndex()
-					- piloto.getNoAtual().getIndex()) > Carro.MEIA_LARGURA;
-
 			if (controleJogo.verificaNoPitLane(this)) {
-				nosPorximos = Math.abs(getNoAtual().getIndex()
-						- piloto.getNoAtual().getIndex()) > (Carro.MEIA_LARGURA / 4);
 				msmPista = msmPista && msmTracado;
+				intercecionou = getDiateira().intersects(piloto.getCentro())
+						|| getDiateira().intersects(piloto.getDiateira());
 			}
 
-			if (intercecionou && msmPista && nosPorximos
+			if (intercecionou && msmPista
 					&& getNoAtual().getIndex() < piloto.getNoAtual().getIndex()) {
 				if (piloto.getCarro().isPaneSeca()
 						|| piloto.getCarro().isRecolhido()
