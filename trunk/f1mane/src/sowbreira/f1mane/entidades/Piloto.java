@@ -976,7 +976,7 @@ public class Piloto implements Serializable {
 
 			if (controleJogo.verificaNoPitLane(this)) {
 				nosPorximos = Math.abs(getNoAtual().getIndex()
-						- piloto.getNoAtual().getIndex()) > (Carro.MEIA_LARGURA / 2);
+						- piloto.getNoAtual().getIndex()) > (Carro.MEIA_LARGURA / 4);
 				msmPista = msmPista && msmTracado;
 			}
 
