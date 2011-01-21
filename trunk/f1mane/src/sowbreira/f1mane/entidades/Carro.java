@@ -236,7 +236,7 @@ public class Carro implements Serializable {
 		if (combust < (consumoMedioCombust)) {
 			return true;
 		}
-		if ((pneus < 10) || (combust < 15)) {
+		if ((pneus < 10) || (!getPiloto().isJogadorHumano() && combust < 15)) {
 			return true;
 		}
 
