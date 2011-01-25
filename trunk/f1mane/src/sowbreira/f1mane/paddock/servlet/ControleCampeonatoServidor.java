@@ -90,10 +90,11 @@ public class ControleCampeonatoServidor {
 		List retorno = new ArrayList();
 		for (Iterator iterator = campeonatos.iterator(); iterator.hasNext();) {
 			Campeonato campeonato = (Campeonato) iterator.next();
-			Object[] row = new Object[3];
+			Object[] row = new Object[4];
 			row[0] = campeonato.getNome();
 			row[1] = campeonato.getJogadorDadosSrv().getNome();
 			row[2] = verificaCampeonatoConcluido(campeonato);
+			row[3] = campeonato.getDataCriacao();
 			retorno.add(row);
 		}
 		return retorno;
@@ -169,11 +170,14 @@ public class ControleCampeonatoServidor {
 			dadosCorridaCampeonato
 					.setQtdeParadasBox(piloto.getQtdeParadasBox());
 			dadosCorridaCampeonato.setDesgastePneus(String.valueOf(piloto
-					.getCarro().porcentagemDesgastePeneus() + "%"));
+					.getCarro().porcentagemDesgastePeneus()
+					+ "%"));
 			dadosCorridaCampeonato.setCombustivelRestante(String.valueOf(piloto
-					.getCarro().porcentagemCombustivel() + "%"));
+					.getCarro().porcentagemCombustivel()
+					+ "%"));
 			dadosCorridaCampeonato.setDesgasteMotor(String.valueOf(piloto
-					.getCarro().porcentagemDesgasteMotor() + "%"));
+					.getCarro().porcentagemDesgasteMotor()
+					+ "%"));
 			corridaCampeonatoCorrente.getDadosCorridaCampeonatos().add(
 					dadosCorridaCampeonato);
 			try {

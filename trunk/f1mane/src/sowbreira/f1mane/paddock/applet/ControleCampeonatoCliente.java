@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -441,6 +442,8 @@ public class ControleCampeonatoCliente {
 				case 2:
 					boolean val = (Boolean) value[2];
 					return val ? Lang.msg("sim") : Lang.msg("nao");
+				case 3:
+				    return new SimpleDateFormat("dd/MM/yyyy").format(value[3]);
 				default:
 					return "";
 				}
@@ -456,7 +459,7 @@ public class ControleCampeonatoCliente {
 
 			@Override
 			public int getColumnCount() {
-				return 3;
+				return 4;
 			}
 
 			@Override
@@ -464,14 +467,14 @@ public class ControleCampeonatoCliente {
 
 				switch (columnIndex) {
 				case 0:
-					/* Corrida */
 					return Lang.msg("nomeCampeonato");
 				case 1:
-					/* Inicio */
 					return Lang.msg("donoCampeonato");
 				case 2:
-					/* Fim */
 					return Lang.msg("campeonatoConcluido");
+				case 3:
+					return Lang.msg("criadoEm");
+					
 				default:
 					return "";
 				}
