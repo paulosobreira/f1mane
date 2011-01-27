@@ -38,6 +38,21 @@ A:hover {text-decoration: underline overline; color: black;}
 	text-decoration: none;
 }
 
+#pop{
+     display:none;
+     position:absolute;
+	 top:30%;
+	 left:30%;
+	 margin-left:-150px;
+	 margin-top:-100px;
+	 padding-left: 20px;
+	 padding-right: 20px;
+	 padding:10px;
+	 width:500px;
+	 height:400px;
+	 border:1px solid #B8CFE5;
+	 Opacity : 0.8;
+    }
 
 img {
 	border-style: none;
@@ -180,10 +195,41 @@ img {
 				href="http://www.java.com/" 
 				target="_BLANK">Instale o Java</a>
 			<a id="link" style="position: absolute; left: 370px; top: 50px;font-size: 16px;"
-				href="F1Mane.html" 
-				target="_BLANK">Versao 1 Jogador</a>	
+				style="text-align: right;" onclick="document.getElementById('pop').style.display='block';">
+				Como Jogar</a>		
 			<br>					
 		</div>
+		<div id="pop" style="background-color: #F0F0F0;">
+	    	F1 Mane Jogo de estrategia de corrida de F1
+	    	<a href="#" style="position:absolute; left:92%" onclick="document.getElementById('pop').style.display='none';">[X]</a>
+			<p style="color: #0084B4;">
+				Dentro do jogo:	
+			</p>
+			<UL>
+			   <LI >Seu piloto esta na celula azul na tabela a direita</LI>
+			   <LI >Pode-se acompanhar a estrategia dos outros pilotos na tabela</LI>			   
+			   <LI >Use F1,F2,F3 para controlar o Giro do motor</LI>
+			   <LI >Use F4 para alternar rapidamente entre agressivo e normal</LI>
+			   <LI >Use F5,F6,F7 para controlar a agressividade do piloto</LI>
+			   <LI >Use F8 para desligar o modo de traçado automatico </LI>
+			   <LI >Use F9 para alternar entre os pilotos caso tenha escolhido varios</LI>
+			   <LI >Use F12 para marcar ou cancelar ida aos box </LI>
+			   <LI >Use a rolagem do mouse para controlar o zoom </LI>
+			   <LI >Use as setas do teclado para escolher o traçado </LI>			   
+			</UL>
+			<p style="color: #0084B4;">
+				No jogo online:	
+			</p>
+			<UL>
+			   <LI >Jogadores podem criar e editar Equipes e pilotos</LI>
+			   <LI >Um jogo pode ter ate 24 jogadores simultaneos</LI>
+			   <LI >O jogador pode evoluir seu piloto e equipe com pontos ganhos </LI>
+			   <LI >Pode-se ver ranking de pilotos, equipes e jogadores</LI>			   
+			   <LI >Pode-se criar campeonatos </LI>
+			   <LI >26 Circuitos disponievis para jogar </LI>
+			</UL>				
+		</div>		
+		
 
 		<div id="shots" class="highslide-gallery">
 			<a href="fm1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm1.jpg" width="130" height="120" /></a>
