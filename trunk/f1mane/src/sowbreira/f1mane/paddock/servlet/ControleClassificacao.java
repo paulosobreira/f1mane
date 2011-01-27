@@ -122,7 +122,7 @@ public class ControleClassificacao {
 				}
 				try {
 					controlePersistencia.gravarDados(corridasDadosSrv,
-							jogadorDadosSrv, carreiraDadosSrv);
+							carreiraDadosSrv,jogadorDadosSrv);
 				} catch (Exception e) {
 					Logger.topExecpts(e);
 				}
