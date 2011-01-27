@@ -51,7 +51,7 @@ A:hover {text-decoration: underline overline; color: black;}
 	 width:550px;
 	 height:450px;
 	 border:1px solid #B8CFE5;
-	 Opacity : 0.8;
+	 Opacity : 0.95;
     }
 
 img {
