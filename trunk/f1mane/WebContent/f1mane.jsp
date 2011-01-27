@@ -41,15 +41,15 @@ A:hover {text-decoration: underline overline; color: black;}
 #pop{
      display:none;
      position:absolute;
-	 top:30%;
+	 top:28%;
 	 left:30%;
 	 margin-left:-150px;
 	 margin-top:-100px;
 	 padding-left: 20px;
 	 padding-right: 20px;
 	 padding:10px;
-	 width:500px;
-	 height:400px;
+	 width:550px;
+	 height:450px;
 	 border:1px solid #B8CFE5;
 	 Opacity : 0.8;
     }
@@ -221,7 +221,7 @@ img {
 				No jogo online:	
 			</p>
 			<UL>
-			   <LI >Jogadores podem criar e editar Equipes e pilotos</LI>
+			   <LI >Jogadores podem criar e editar equipes e pilotos</LI>
 			   <LI >Um jogo pode ter ate 24 jogadores simultaneos</LI>
 			   <LI >O jogador pode evoluir seu piloto e equipe com pontos ganhos </LI>
 			   <LI >Pode-se ver ranking de pilotos, equipes e jogadores</LI>			   
