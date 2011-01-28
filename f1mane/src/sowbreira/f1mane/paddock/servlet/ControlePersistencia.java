@@ -466,7 +466,7 @@ public class ControlePersistencia {
 
 	public List<Campeonato> obterListaCampeonatos() {
 		return getSession().createCriteria(Campeonato.class).addOrder(
-				Order.asc("dataCriacao")).list();
+				Order.desc("dataCriacao")).list();
 	}
 
 	public Campeonato pesquisaCampeonato(String nomeCampeonato, boolean cliente) {
