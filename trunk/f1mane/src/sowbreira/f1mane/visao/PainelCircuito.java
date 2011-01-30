@@ -651,11 +651,11 @@ public class PainelCircuito extends JPanel {
 		Rectangle rectangle = scrollPane.getViewport().getBounds();
 		rectangle.x = scrollPane.getViewport().getViewPosition().x;
 		rectangle.y = scrollPane.getViewport().getViewPosition().y;
-		if (Logger.ativo && limitesViewPort != null) {
-			rectangle = new Rectangle(limitesViewPort.x + 100,
-					limitesViewPort.y + 100, limitesViewPort.width - 100,
-					limitesViewPort.height - 100);
-		}
+//		if (Logger.ativo && limitesViewPort != null) {
+//			rectangle = new Rectangle(limitesViewPort.x + 100,
+//					limitesViewPort.y + 100, limitesViewPort.width - 100,
+//					limitesViewPort.height - 100);
+//		}
 		return rectangle;
 	}
 

@@ -67,7 +67,6 @@ public class ControlePersistencia {
 				Logger.novaSession = true;
 			}
 			session = HibernateUtil.getSessionFactory().openSession();
-			Logger.novaSession = false;
 		}
 		return session;
 	}
