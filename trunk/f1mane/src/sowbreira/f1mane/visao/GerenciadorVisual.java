@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -195,6 +196,22 @@ public class GerenciadorVisual {
 				synchronized (PainelCircuito.zoomMutex) {
 					double val = painelCircuito.zoom;
 					val += e.getWheelRotation() / 60.0;
+					if (controleJogo != null
+							&& painelCircuito.getBackGround() != null
+							&& controleJogo.getCircuito() != null
+							&& controleJogo.getCircuito().isUsaBkg()) {
+						Rectangle limitesViewPort = (Rectangle) painelCircuito
+								.limitesViewPort();
+						if ((painelCircuito.getBackGround().getWidth() * val) < limitesViewPort
+								.getWidth()) {
+							return;
+						}
+						if ((painelCircuito.getBackGround().getHeight() * val) < limitesViewPort
+								.getHeight()) {
+							return;
+						}
+
+					}
 					if (val > 1.0) {
 						painelCircuito.zoom = 1.0;
 					} else if (val < 0.2) {
