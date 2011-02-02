@@ -58,14 +58,13 @@ public class ControlePersistencia {
 		if (session != null && Logger.novaSession) {
 			session.close();
 		}
-		if (session == null || Logger.novaSession) {
+		if (session == null)
 			session = HibernateUtil.getSessionFactory().openSession();
-			try {
-				List jogador = session.createCriteria(JogadorDadosSrv.class)
-						.add(Restrictions.eq("id", 0)).list();
-			} catch (Exception e) {
-				Logger.novaSession = true;
-			}
+		try {
+			List jogador = session.createCriteria(JogadorDadosSrv.class).add(
+					Restrictions.eq("id", 0)).list();
+		} catch (Exception e) {
+			Logger.novaSession = true;
 			session = HibernateUtil.getSessionFactory().openSession();
 		}
 		return session;
