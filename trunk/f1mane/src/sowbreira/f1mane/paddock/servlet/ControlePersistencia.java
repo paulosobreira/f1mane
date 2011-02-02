@@ -55,9 +55,6 @@ public class ControlePersistencia {
 	private Session session;
 
 	private Session getSession() {
-		if (session != null && Logger.novaSession) {
-			session.close();
-		}
 		if (session == null)
 			session = HibernateUtil.getSessionFactory().openSession();
 		try {
