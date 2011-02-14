@@ -400,20 +400,24 @@ public class ControleCampeonato {
 					+ "%"));
 
 			if (p.getPosicao() == 1) {
-				corridaCampeonato.setPontos(10);
+				corridaCampeonato.setPontos(25);
 			} else if (p.getPosicao() == 2) {
-				corridaCampeonato.setPontos(8);
+				corridaCampeonato.setPontos(18);
 			} else if (p.getPosicao() == 3) {
-				corridaCampeonato.setPontos(6);
+				corridaCampeonato.setPontos(15);
 			} else if (p.getPosicao() == 4) {
-				corridaCampeonato.setPontos(5);
+				corridaCampeonato.setPontos(12);
 			} else if (p.getPosicao() == 5) {
-				corridaCampeonato.setPontos(4);
+				corridaCampeonato.setPontos(10);
 			} else if (p.getPosicao() == 6) {
-				corridaCampeonato.setPontos(3);
+				corridaCampeonato.setPontos(8);
 			} else if (p.getPosicao() == 7) {
-				corridaCampeonato.setPontos(2);
+				corridaCampeonato.setPontos(6);
 			} else if (p.getPosicao() == 8) {
+				corridaCampeonato.setPontos(4);
+			} else if (p.getPosicao() == 9) {
+				corridaCampeonato.setPontos(2);
+			} else if (p.getPosicao() == 10) {
 				corridaCampeonato.setPontos(1);
 			} else {
 				corridaCampeonato.setPontos(0);
