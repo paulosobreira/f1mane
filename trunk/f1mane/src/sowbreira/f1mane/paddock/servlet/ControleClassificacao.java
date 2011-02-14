@@ -182,21 +182,25 @@ public class ControleClassificacao {
 
 	public int gerarPontos(Piloto p) {
 		if (p.getPosicao() == 1) {
-			return 10;
+			return 25;
 		} else if (p.getPosicao() == 2) {
-			return 8;
+			return 18;
 		} else if (p.getPosicao() == 3) {
-			return 6;
+			return 15;
 		} else if (p.getPosicao() == 4) {
-			return 5;
+			return 12;
 		} else if (p.getPosicao() == 5) {
-			return 4;
+			return 10;
 		} else if (p.getPosicao() == 6) {
-			return 3;
+			return 8;
 		} else if (p.getPosicao() == 7) {
-			return 2;
+			return 6;
 		} else if (p.getPosicao() == 8) {
-			return 1;
+			return 4;
+		} else if (p.getPosicao() == 9) {
+			return 2;
+		} else if (p.getPosicao() == 10) {
+			return 1;			
 		} else {
 			return 0;
 		}
