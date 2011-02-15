@@ -68,7 +68,13 @@
 				<include name="sowbreira/f1mane/recursos/carros/**/*.gif" />
 				<include name="sowbreira/f1mane/recursos/**/*.gif" />
 				<include name="sowbreira/f1mane/recursos/**/*.png" />
-				<include name="sowbreira/f1mane/recursos/**/*.wav" />				
+				<include name="sowbreira/f1mane/recursos/**/*.wav" />
+				<exclude name="sowbreira/f1mane/recursos/**/*_mro.jpg" />
+			</fileset>
+		</jar>
+		<jar jarfile="f1manePistas.jar" compress="true" manifest="MANIFEST.MF">
+			<fileset dir="src">
+				<include name="sowbreira/f1mane/recursos/**/*_mro.jpg" />
 			</fileset>
 		</jar>
 	</target>
@@ -81,7 +87,11 @@
 				<include name="*.jar" />
 			</fileset>
 		</move>
-
+		<copy todir="WebContent">
+			<fileset dir="src">
+				<include name="**/*_mro.jpg" />
+			</fileset>
+		</copy>
 	</target>
 	<target name="criarWar" depends="">
 		<delete dir="${env.TOMCAT_HOME}/webapps/f1mane" />
@@ -93,7 +103,9 @@
 				<include name="WEB-INF/lib/f1mane.jar" />
 				<include name="f1mane.jar" />
 				<include name="f1maneRecursos.jar" />
+				<include name="f1manePistas.jar" />
 			</fileset>
 		</war>
+		<delete dir="WebContent/sowbreira" />
 	</target>
 </project>
