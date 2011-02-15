@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://www.f1mane.com/f1mane/" href="f1maneonline.jnlp">
+	codebase="http://www.f1mane.com/f1mane/" href="f1maneonlineLite.jnlp">
 	<information>
-		<title>F1-Mane Online</title>
+		<title>F1-Mane Online Lite</title>
 		<vendor>Paulo Sobreira</vendor>
 		<homepage href="http://sowbreira.appspot.com/" />
-		<description>F1-MANE (MANager & Engineer)</description>
+		<description>F1-MANE (MANager & Engineer) Lite</description>
 		<offline-allowed />
 		<icon href="icon.png"/>  
       <shortcut online="true">
          <desktop/>
-         <menu submenu="F1Mane Online"/>
+         <menu submenu="F1Mane Online Lite"/>
       </shortcut>			
 	</information>
 
@@ -18,7 +18,6 @@
 		<j2se version="1.6"  initial-heap-size="64m" max-heap-size="512m" />
 		<jar href="f1mane.jar" />
 		<jar href="f1maneRecursos.jar" />
-		<jar href="f1manePistas.jar" />
     </resources>
 
 	  <applet-desc 

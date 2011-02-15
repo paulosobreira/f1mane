@@ -243,14 +243,24 @@ img {
 		</div>
 		<div style="text-align: center;">
 		<a id="link" href="f1mane.jnlp" style="text-align: left;">
-			Jogar Offline
-			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
-		</a> 
-		&nbsp;&nbsp;&nbsp;&nbsp;
-		<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
-			Jogar Online  
+			Jogar Offline Full
 			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 		</a>
+		&nbsp;&nbsp; 
+		<a id="link" href="f1maneLite.jnlp" style="text-align: left;">
+			Jogar Offline Lite
+			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+		</a>		
+		<br>
+		<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
+			Jogar Online Full 
+			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+		</a>
+		&nbsp;&nbsp;
+		<a id="link"  href="f1maneonlineLite.jnlp" style="text-align: left;">
+			Jogar Online Lite  
+			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+		</a>		
 		</div>
 		<br>
 		<div id="shotsPromo" class="highslide-gallery">
