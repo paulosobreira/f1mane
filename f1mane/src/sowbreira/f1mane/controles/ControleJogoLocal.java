@@ -1,11 +1,16 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.MediaTracker;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -22,6 +27,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Html;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 
 /**
@@ -562,8 +568,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
-							.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(),
+					gerenciadorVisual.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
@@ -960,6 +966,31 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return piloto.getPtosBox() > 0;
 		// return piloto.getPtosBox() > controleCorrida.getControleBox()
 		// .getParadaBox().getIndex();
+	}
+
+	public BufferedImage carregaBackGround(String backGround) {
+		if (mainFrame.getApplet() == null) {
+			Logger.logar("mainFrame.getApplet()==null ");
+			return null;
+		}
+		URL url = null;
+		try {
+			url = new URL(mainFrame.getApplet().getCodeBase() + "midia/"
+					+ backGround);
+			Logger.logar(url);
+			ImageIcon icon = new ImageIcon(url);
+			BufferedImage buff = ImageUtil.toBufferedImage(icon.getImage());
+			if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+				Logger.logar("Status " + icon.getImageLoadStatus()
+						+ " Nao Carregado " + url);
+				return null;
+			} else {
+				return buff;
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return null;
 	}
 
 }

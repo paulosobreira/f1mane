@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JApplet;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -53,7 +54,7 @@ public class MainFrame extends JFrame {
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
 	private ControleCampeonato controleCampeonato;
-	private boolean modoApplet;
+	private JApplet applet;
 	private JMenuBar bar;
 	private JMenu menuJogo;
 	private JMenu menuCampeonato;
@@ -68,8 +69,12 @@ public class MainFrame extends JFrame {
 		return controleJogo;
 	}
 
-	public MainFrame(boolean modoApplet) throws IOException {
-		this.modoApplet = modoApplet;
+	public JApplet getApplet() {
+		return applet;
+	}
+
+	public MainFrame(JApplet modoApplet) throws IOException {
+		this.applet = modoApplet;
 		controleCampeonato = new ControleCampeonato(this);
 		bar = new JMenuBar();
 		setJMenuBar(bar);
@@ -115,7 +120,7 @@ public class MainFrame extends JFrame {
 		};
 		bar.add(menuIdiomas);
 
-		if (modoApplet) {
+		if (modoApplet!=null) {
 			menuEditor.setEnabled(false);
 
 		}
@@ -730,7 +735,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public static void main(String[] args) throws IOException {
-		MainFrame frame = new MainFrame(false);
+		MainFrame frame = new MainFrame(null);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.iniciar();
 	}
@@ -773,12 +778,9 @@ public class MainFrame extends JFrame {
 	}
 
 	public boolean isModoApplet() {
-		return modoApplet;
+		return applet!=null;
 	}
 
-	public void setModoApplet(boolean modoApplet) {
-		this.modoApplet = modoApplet;
-	}
 
 	public void desbilitarMenusModoOnline() {
 		menuJogo.setEnabled(false);

@@ -239,4 +239,6 @@ public interface InterfaceJogo {
 
 	public boolean verificaNoPitLane(Piloto piloto);
 
+	public BufferedImage carregaBackGround(String backGround);
+
 }

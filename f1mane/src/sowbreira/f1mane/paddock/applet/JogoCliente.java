@@ -1,11 +1,15 @@
 package sowbreira.f1mane.paddock.applet;
 
+import java.awt.MediaTracker;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.MainFrame;
@@ -30,6 +34,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 
 /**
@@ -651,8 +656,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
 		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
-					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(
+					dadosParticiparJogo.getTpPnueu(),
+					dadosParticiparJogo.getCombustivel(),
 					dadosParticiparJogo.getAsa());
 			syncBox = true;
 		}
@@ -802,4 +808,28 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
+	public BufferedImage carregaBackGround(String backGround) {
+		if (mainFrame.getApplet() == null) {
+			Logger.logar("mainFrame.getApplet()==null ");
+			return null;
+		}
+		URL url = null;
+		try {
+			url = new URL(mainFrame.getApplet().getCodeBase() + "midia/"
+					+ backGround);
+			Logger.logar(url);
+			ImageIcon icon = new ImageIcon(url);
+			BufferedImage buff = ImageUtil.toBufferedImage(icon.getImage());
+			if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+				Logger.logar("Status " + icon.getImageLoadStatus()
+						+ " Nao Carregado " + url);
+				return null;
+			} else {
+				return buff;
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return null;
+	}
 }
