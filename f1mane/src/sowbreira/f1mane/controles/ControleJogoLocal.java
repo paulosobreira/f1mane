@@ -975,9 +975,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 		URL url = null;
 		try {
-			url = new URL(mainFrame.getApplet().getCodeBase() + "midia/"
-					+ backGround);
-			Logger.logar(url);
+			String caminho = mainFrame.getApplet().getCodeBase()
+					+ "sowbreira/f1mane/recursos/" + backGround;
+			Logger.logar("Caminho Carregar Bkg " + caminho);
+			url = new URL(caminho);
 			ImageIcon icon = new ImageIcon(url);
 			BufferedImage buff = ImageUtil.toBufferedImage(icon.getImage());
 			if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
