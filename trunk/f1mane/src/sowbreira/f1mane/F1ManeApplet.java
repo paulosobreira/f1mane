@@ -72,7 +72,7 @@ public class F1ManeApplet extends JApplet {
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 
 		try {
-			final MainFrame frame = new MainFrame(true);
+			final MainFrame frame = new MainFrame(this);
 			frame.setVisible(true);
 			frame.setSize(810, 650);
 
