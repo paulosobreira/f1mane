@@ -202,6 +202,7 @@ public class PainelCircuito extends JPanel {
 		circuito = controleJogo.getCircuito();
 		if (backGround == null) {
 			try {
+
 				carregaBackGround();
 				if (gerenciadorVisual.getVdp() == GerenciadorVisual.VDP2) {
 					carregaTileMap();
@@ -259,21 +260,29 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void carregaBackGround() {
-		backGround = CarregadorRecursos.carregaBackGround(
-				circuito.getBackGround(), this, circuito);
+		Logger.logar("carregaBackGround()");
+		try {
+			if (!(threadCarregarBkg != null && threadCarregarBkg.isAlive()))
+				backGround = CarregadorRecursos.carregaBackGround(
+						circuito.getBackGround(), this, circuito);
+		} catch (Exception e) {
+			backGround = null;
+		}
 		if (backGround == null) {
-			if (threadCarregarBkg == null && !threadCarregarBkg.isAlive()) {
+			Logger.logar("Download Imagem");
+			if (threadCarregarBkg == null || !threadCarregarBkg.isAlive()) {
 				Runnable runnable = new Runnable() {
-
 					@Override
 					public void run() {
 						backGround = controleJogo.carregaBackGround(circuito
 								.getBackGround());
 						if (backGround != null)
 							backGround.setAccelerationPriority(1);
+						threadCarregarBkg = null;
 					}
 				};
 				threadCarregarBkg = new Thread(runnable);
+				threadCarregarBkg.setPriority(Thread.MIN_PRIORITY);
 				threadCarregarBkg.start();
 			}
 		} else {
@@ -302,9 +311,7 @@ public class PainelCircuito extends JPanel {
 						carregaBackGround();
 					}
 
-					if (backGround == null) {
-						g2d.drawString("Carregando Imagem de Fundo", 10, 10);
-					} else {
+					if (backGround != null) {
 						AffineTransform affineTransform = AffineTransform
 								.getScaleInstance(zoom, zoom);
 						AffineTransformOp affineTransformOp = new AffineTransformOp(
@@ -1867,6 +1874,10 @@ public class PainelCircuito extends JPanel {
 		String txt = controleJogo.getCircuito().getNome() + " "
 				+ controleJogo.getNumVoltaAtual() + "/"
 				+ controleJogo.totalVoltasCorrida();
+		if(circuito.isUsaBkg() && backGround==null){
+			txt = Lang.msg("carregandoBackground");
+		}
+		
 		int largura = 0;
 		for (int i = 0; i < txt.length(); i++) {
 			largura += g2d.getFontMetrics().charWidth(txt.charAt(i));
