@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
@@ -24,6 +25,10 @@ public class AppletPaddock extends JApplet {
 		super.init();
 
 		try {
+			String lang = getParameter("lang");
+			if(!Util.isNullOrEmpty(lang)){
+				Lang.mudarIdioma(lang);
+			}
 			Properties properties = new Properties();
 			properties.load(this.getClass().getResourceAsStream(
 					"client.properties"));
@@ -41,7 +46,7 @@ public class AppletPaddock extends JApplet {
 					.msg("059"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
-		
+
 	}
 
 	public void destroy() {
