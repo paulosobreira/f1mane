@@ -736,6 +736,9 @@ public class MainFrame extends JFrame {
 
 	public static void main(String[] args) throws IOException {
 		MainFrame frame = new MainFrame(null);
+		if(args!=null && args.length>0){
+			Lang.mudarIdioma(args[0]);
+		}
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.iniciar();
 	}
