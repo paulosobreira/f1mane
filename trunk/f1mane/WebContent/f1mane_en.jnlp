@@ -25,5 +25,6 @@
 
 	<application-desc
 		main-class="sowbreira.f1mane.MainFrame" >
+		<argument>en</argument> 
 	</application-desc>	
 </jnlp>

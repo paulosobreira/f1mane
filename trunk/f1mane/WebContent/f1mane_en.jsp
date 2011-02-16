@@ -183,50 +183,50 @@ img {
 				<h1 id="description">MANager & Engineer</h1>
 			</span>
 			<a id="link" style="position: absolute; left: 150px; top: 10px;font-size: 16px;"
-				href="f1mane_en.jsp" 
-				target="_BLANK">English</a>
+				href="f1mane.jsp" 
+				target="_BLANK">Portugues</a>
 			<a id="link" style="position: absolute; left: 250px; top: 10px;font-size: 16px;"
 				href="http://sowbreira.appspot.com/" 
-				target="_BLANK">Site Autor</a>
+				target="_BLANK">Author's site</a>
 			<a id="link" style="position: absolute; left: 370px; top: 10px;font-size: 16px;"
 				href="mailto:sowbreira@gmail.com" 
-				target="_BLANK">Reportar Bugs</a>		
+				target="_BLANK">Bugs Report</a>		
 			<a id="link" style="position: absolute; left: 220px; top: 50px;font-size: 16px;"
 				href="http://www.java.com/" 
-				target="_BLANK">Instale o Java</a>
+				target="_BLANK">Install Java</a>
 			<a id="link" style="position: absolute; left: 370px; top: 50px;font-size: 16px;"
 				style="text-align: right;" onclick="document.getElementById('pop').style.display='block';">
-				Como Jogar</a>		
+				How to Play</a>		
 			<br>					
 		</div>
 		<div id="pop" style="background-color: #F0F0F0;">
-	    	F1 Mane Jogo de estrategia de corrida de F1
+	    	F1 Mane is a strategy game of F1 racing
 	    	<a href="#" style="position:absolute; left:92%" onclick="document.getElementById('pop').style.display='none';">[X]</a>
 			<p style="color: #0084B4;">
-				Dentro do jogo:	
+				Inside the game:	
 			</p>
 			<UL>
-			   <LI >Seu piloto esta na celula azul na tabela a direita</LI>
-			   <LI >Pode-se acompanhar a estrategia dos outros pilotos na tabela</LI>			   
-			   <LI >Use F1,F2,F3 para controlar o Giro do motor</LI>
-			   <LI >Use F4 para alternar rapidamente entre condução agressiva e normal</LI>
-			   <LI >Use F5,F6,F7 para controlar a agressividade do piloto</LI>
-			   <LI >Use F8 para desligar o modo de traçado automatico </LI>
-			   <LI >Use F9 para alternar entre os pilotos caso tenha escolhido varios</LI>
-			   <LI >Use F12 para marcar ou cancelar ida aos box </LI>
-			   <LI >Use a rolagem do mouse para controlar o zoom </LI>
-			   <LI >Use as setas do teclado para escolher o traçado </LI>			   
+			   <LI >Your pilot is in the blue cell in the table on right side of screen</LI>
+			   <LI >You can follow the strategy of the other riders in the table</LI>			   
+			   <LI >Use F1, F2, F3 to control the rotation of the engine</LI>
+			   <LI >Use F4 to quickly switch between driving aggressive and normal</LI>
+			   <LI >Use F5, F6, F7 to control the aggressiveness of the pilot</LI>
+			   <LI >Use F8 to turn off the automatic trackside choose </LI>
+			   <LI >Use F9 to toggle between the pilots if you have chosen several</LI>
+			   <LI >Use F12 to select or cancel pit stop </LI>
+			   <LI >Use the mouse scroll wheel for zooming </LI>
+			   <LI >Use the arrow keys to choose the path </LI>			   
 			</UL>
 			<p style="color: #0084B4;">
-				No jogo online:	
+				Online game:	
 			</p>
 			<UL>
-			   <LI >Jogadores podem criar e editar equipes e pilotos</LI>
-			   <LI >Um jogo pode ter ate 24 jogadores simultaneos</LI>
-			   <LI >O jogador pode evoluir seu piloto e equipe com pontos ganhos </LI>
-			   <LI >Pode-se ver ranking de pilotos, equipes e jogadores</LI>			   
-			   <LI >Pode-se criar campeonatos </LI>
-			   <LI >26 Circuitos disponiveis para jogar </LI>
+			   <LI >Players can create and edit teams and drivers</LI>
+			   <LI >A game can have up to 24 simultaneous players</LI>
+			   <LI >The player can evolve with your driver and team points earned </LI>
+			   <LI >You can see ranking of drivers, teams and players</LI>			   
+			   <LI >You can create Championships </LI>
+			   <LI >26 circuits available to play </LI>
 			</UL>				
 		</div>		
 		
@@ -242,29 +242,29 @@ img {
 			<a href="fm8.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm8.jpg" width="130" height="120" /></a><br>
 		</div>
 		<div style="text-align: center;">
-		<a id="link" href="f1mane.jnlp" style="text-align: left;">
+		<a id="link" href="f1mane_en.jnlp" style="text-align: left;">
 			Jogar Offline Full
 			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 		</a>
 		&nbsp;&nbsp; 
-		<a id="link" href="f1maneLite.jnlp" style="text-align: left;">
+		<a id="link" href="f1maneLite_en.jnlp" style="text-align: left;">
 			Jogar Offline Lite
 			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 		</a>		
 		<br>
-		<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
+		<a id="link"  href="f1maneonline_en.jnlp" style="text-align: left;">
 			Jogar Online Full 
 			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 		</a>
 		&nbsp;&nbsp;
-		<a id="link"  href="f1maneonlineLite.jnlp" style="text-align: left;">
+		<a id="link"  href="f1maneonlineLite_en.jnlp" style="text-align: left;">
 			Jogar Online Lite  
 			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 		</a>		
 		</div>
 		<br>
 		<div id="shotsPromo" class="highslide-gallery">
-			Veja Tambem 
+			See Also
 			<a id="link" 
 				href="http://www.f1mane.com/mesa11" style="text-align: center;"
 				target="_BLANK">  Mesa-11 </a><br><br>
