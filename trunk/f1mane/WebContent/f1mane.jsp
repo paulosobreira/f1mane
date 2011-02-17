@@ -51,7 +51,6 @@ A:hover {text-decoration: underline overline; color: black;}
 	 width:550px;
 	 height:450px;
 	 border:1px solid #B8CFE5;
-	 Opacity : 0.95;
     }
 
 img {
@@ -183,8 +182,7 @@ img {
 				<h1 id="description">MANager & Engineer</h1>
 			</span>
 			<a id="link" style="position: absolute; left: 150px; top: 10px;font-size: 16px;"
-				href="f1mane_en.jsp" 
-				target="_BLANK">English</a>
+				href="f1mane_en.jsp">English</a>
 			<a id="link" style="position: absolute; left: 250px; top: 10px;font-size: 16px;"
 				href="http://sowbreira.appspot.com/" 
 				target="_BLANK">Site Autor</a>
