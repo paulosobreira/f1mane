@@ -3,6 +3,7 @@ package sowbreira.f1mane;
 import java.io.IOException;
 
 import javax.swing.JApplet;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import br.nnpe.Util;
@@ -23,8 +24,8 @@ public class F1ManeApplet extends JApplet {
 			}
 			frame = new MainFrame(this);
 			frame.setSize(810, 650);
-			frame.setAlwaysOnTop(true);
 			frame.setVisible(true);
+			frame.toFront();
 		} catch (IOException e) {
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuffer retorno = new StringBuffer();
@@ -35,6 +36,16 @@ public class F1ManeApplet extends JApplet {
 					.msg("059"), JOptionPane.ERROR_MESSAGE);
 		}
 
+	}
+
+	public static void main(String[] args) {
+		JFrame frame1 = new JFrame("Frame 1");
+		frame1.setSize(400, 500);
+		JFrame frame2 = new JFrame("Frame 2");
+		frame2.setSize(500, 400);
+		frame1.setVisible(true);
+		frame2.setVisible(true);
+		frame1.toFront();
 	}
 
 }
