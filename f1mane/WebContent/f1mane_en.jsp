@@ -51,7 +51,6 @@ A:hover {text-decoration: underline overline; color: black;}
 	 width:550px;
 	 height:450px;
 	 border:1px solid #B8CFE5;
-	 Opacity : 0.95;
     }
 
 img {
@@ -183,17 +182,16 @@ img {
 				<h1 id="description">MANager & Engineer</h1>
 			</span>
 			<a id="link" style="position: absolute; left: 150px; top: 10px;font-size: 16px;"
-				href="f1mane.jsp" 
-				target="_BLANK">Portugues</a>
+				href="f1mane.jsp">Portugues</a>
 			<a id="link" style="position: absolute; left: 250px; top: 10px;font-size: 16px;"
-				href="http://sowbreira.appspot.com/" 
-				target="_BLANK">Author's site</a>
-			<a id="link" style="position: absolute; left: 370px; top: 10px;font-size: 16px;"
-				href="mailto:sowbreira@gmail.com" 
-				target="_BLANK">Bugs Report</a>		
-			<a id="link" style="position: absolute; left: 220px; top: 50px;font-size: 16px;"
 				href="http://www.java.com/" 
 				target="_BLANK">Install Java</a>
+			<a id="link" style="position: absolute; left: 370px; top: 10px;font-size: 16px;"
+				href="mailto:sowbreira@gmail.com" 
+				target="_BLANK">Bug Report</a>		
+			<a id="link" style="position: absolute; left: 220px; top: 50px;font-size: 16px;"
+				href="http://sowbreira.appspot.com/" 
+				target="_BLANK">Author's site</a>
 			<a id="link" style="position: absolute; left: 370px; top: 50px;font-size: 16px;"
 				style="text-align: right;" onclick="document.getElementById('pop').style.display='block';">
 				How to Play</a>		
