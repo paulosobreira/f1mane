@@ -51,6 +51,7 @@ A:hover {text-decoration: underline overline; color: black;}
 	 width:550px;
 	 height:450px;
 	 border:1px solid #B8CFE5;
+	 Opacity : 0.8;
     }
 
 img {
@@ -183,10 +184,10 @@ img {
 			</span>
 			<a id="link" style="position: absolute; left: 150px; top: 10px;font-size: 16px;"
 				href="f1mane.jsp">Portugues</a>
-			<a id="link" style="position: absolute; left: 250px; top: 10px;font-size: 16px;"
+			<a id="link" style="position: absolute; left: 260px; top: 10px;font-size: 16px;"
 				href="http://www.java.com/" 
 				target="_BLANK">Install Java</a>
-			<a id="link" style="position: absolute; left: 370px; top: 10px;font-size: 16px;"
+			<a id="link" style="position: absolute; left: 380px; top: 10px;font-size: 16px;"
 				href="mailto:sowbreira@gmail.com" 
 				target="_BLANK">Bug Report</a>		
 			<a id="link" style="position: absolute; left: 220px; top: 50px;font-size: 16px;"
@@ -197,7 +198,7 @@ img {
 				How to Play</a>		
 			<br>					
 		</div>
-		<div id="pop" style="background-color: #F0F0F0;">
+		<div id="pop" style="background-color: white;">
 	    	F1 Mane is a strategy game of F1 racing
 	    	<a href="#" style="position:absolute; left:92%" onclick="document.getElementById('pop').style.display='none';">[X]</a>
 			<p style="color: #0084B4;">
@@ -239,6 +240,7 @@ img {
 			<a href="fm7.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm7.jpg" width="130" height="120" /></a>
 			<a href="fm8.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm8.jpg" width="130" height="120" /></a><br>
 		</div>
+		<br>
 		<div style="text-align: center;">
 		<a id="link" href="f1mane_en.jnlp" style="text-align: left;">
 			Jogar Offline Full
