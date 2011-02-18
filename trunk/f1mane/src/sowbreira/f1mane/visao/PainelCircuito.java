@@ -1031,6 +1031,25 @@ public class PainelCircuito extends JPanel {
 				BufferedImage buffer = (BufferedImage) gridImg.get(i);
 				double meix = (gridCarro.getWidth() / 2) * zoom;
 				double meiy = (gridCarro.getHeight() / 2) * zoom;
+				boolean naoDesenha = false;
+				if (circuito.getObjetos() != null) {
+					for (Iterator iterator = circuito.getObjetos().iterator(); iterator
+							.hasNext();) {
+						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+						if (objetoPista instanceof ObjetoTransparencia) {
+							ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+							if (objetoTransparencia.obterArea().intersects(
+									grid[i].getBounds())) {
+								naoDesenha = true;
+							}
+						} else {
+							continue;
+						}
+					}
+				}
+				if (naoDesenha) {
+					continue;
+				}
 				g2d.drawImage(buffer,
 						(int) (grid[i].getBounds().getCenterX() - meix),
 						(int) (grid[i].getBounds().getCenterY() - meiy), null);
@@ -1874,10 +1893,10 @@ public class PainelCircuito extends JPanel {
 		String txt = controleJogo.getCircuito().getNome() + " "
 				+ controleJogo.getNumVoltaAtual() + "/"
 				+ controleJogo.totalVoltasCorrida();
-		if(circuito.isUsaBkg() && backGround==null){
+		if (circuito.isUsaBkg() && backGround == null) {
 			txt = Lang.msg("carregandoBackground");
 		}
-		
+
 		int largura = 0;
 		for (int i = 0; i < txt.length(); i++) {
 			largura += g2d.getFontMetrics().charWidth(txt.charAt(i));
