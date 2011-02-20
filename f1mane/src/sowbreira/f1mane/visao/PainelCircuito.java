@@ -310,65 +310,72 @@ public class PainelCircuito extends JPanel {
 					if (backGround == null) {
 						carregaBackGround();
 					}
-
-					if (backGround != null) {
-						AffineTransform affineTransform = AffineTransform
-								.getScaleInstance(zoom, zoom);
-						AffineTransformOp affineTransformOp = new AffineTransformOp(
-								affineTransform,
-								AffineTransformOp.TYPE_BILINEAR);
-						BufferedImage subimage = null;
-						int diffX = 0;
-						int diffY = 0;
-						try {
-							if (limitesViewPort != null && backGround != null) {
-								Rectangle rectangle = new Rectangle(
-										Util.inte(limitesViewPort.getX() / zoom),
-										Util.inte(limitesViewPort.getY() / zoom),
-										Util.inte(limitesViewPort.getWidth()
-												/ zoom), Util
-												.inte(limitesViewPort
-														.getHeight() / zoom));
-								if ((rectangle.x + rectangle.getWidth()) > backGround
-										.getWidth()) {
-									diffX = Util.inte((rectangle.x + rectangle
-											.getWidth())
-											- backGround.getWidth());
-									rectangle.x -= diffX;
+					synchronized (backGround) {
+						if (backGround != null) {
+							AffineTransform affineTransform = AffineTransform
+									.getScaleInstance(zoom, zoom);
+							AffineTransformOp affineTransformOp = new AffineTransformOp(
+									affineTransform,
+									AffineTransformOp.TYPE_BILINEAR);
+							BufferedImage subimage = null;
+							int diffX = 0;
+							int diffY = 0;
+							try {
+								if (limitesViewPort != null
+										&& backGround != null) {
+									Rectangle rectangle = new Rectangle(
+											Util.inte(limitesViewPort.getX()
+													/ zoom),
+											Util.inte(limitesViewPort.getY()
+													/ zoom),
+											Util.inte(limitesViewPort
+													.getWidth() / zoom),
+											Util.inte(limitesViewPort
+													.getHeight() / zoom));
+									if ((rectangle.x + rectangle.getWidth()) > backGround
+											.getWidth()) {
+										diffX = Util
+												.inte((rectangle.x + rectangle
+														.getWidth())
+														- backGround.getWidth());
+										rectangle.x -= diffX;
+									}
+									if ((rectangle.y + rectangle.getHeight()) > backGround
+											.getHeight()) {
+										diffY = Util
+												.inte((rectangle.y + rectangle
+														.getHeight())
+														- backGround
+																.getHeight());
+										rectangle.y -= diffY;
+									}
+									subimage = backGround.getSubimage(
+											rectangle.x, rectangle.y,
+											rectangle.width, rectangle.height);
 								}
-								if ((rectangle.y + rectangle.getHeight()) > backGround
-										.getHeight()) {
-									diffY = Util.inte((rectangle.y + rectangle
-											.getHeight())
-											- backGround.getHeight());
-									rectangle.y -= diffY;
-								}
-								subimage = backGround.getSubimage(rectangle.x,
-										rectangle.y, rectangle.width,
-										rectangle.height);
+							} catch (Exception e) {
+								Logger.logarExept(e);
+								subimage = backGround;
 							}
-						} catch (Exception e) {
-							Logger.logarExept(e);
-							subimage = backGround;
-						}
-						BufferedImage drawBuffer = null;
-						if (zoom == 1) {
-							drawBuffer = subimage;
-						} else {
-							drawBuffer = new BufferedImage(
-									(int) (limitesViewPort.getWidth()),
-									(int) (limitesViewPort.getHeight()),
-									backGround.getType());
-							affineTransformOp.filter(subimage, drawBuffer);
-						}
+							BufferedImage drawBuffer = null;
+							if (zoom == 1) {
+								drawBuffer = subimage;
+							} else {
+								drawBuffer = new BufferedImage(
+										(int) (limitesViewPort.getWidth()),
+										(int) (limitesViewPort.getHeight()),
+										backGround.getType());
+								affineTransformOp.filter(subimage, drawBuffer);
+							}
 
-						if (drawBuffer == null) {
-							drawBuffer = backGround;
+							if (drawBuffer == null) {
+								drawBuffer = backGround;
+							}
+							drawBuffer.setAccelerationPriority(1);
+							int newX = Util.inte(limitesViewPort.getX());
+							int newY = Util.inte(limitesViewPort.getY());
+							g2d.drawImage(drawBuffer, newX, newY, null);
 						}
-						drawBuffer.setAccelerationPriority(1);
-						int newX = Util.inte(limitesViewPort.getX());
-						int newY = Util.inte(limitesViewPort.getY());
-						g2d.drawImage(drawBuffer, newX, newY, null);
 					}
 				}
 
@@ -1024,32 +1031,14 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		for (int i = 0; i < 24; i++) {
-			if (!limitesViewPort.intersects(grid[i].getBounds2D())) {
+			if (grid[i] == null
+					|| !limitesViewPort.intersects(grid[i].getBounds2D())) {
 				continue;
 			}
 			if (circuito != null && circuito.isUsaBkg()) {
 				BufferedImage buffer = (BufferedImage) gridImg.get(i);
 				double meix = (gridCarro.getWidth() / 2) * zoom;
 				double meiy = (gridCarro.getHeight() / 2) * zoom;
-				boolean naoDesenha = false;
-				if (circuito.getObjetos() != null) {
-					for (Iterator iterator = circuito.getObjetos().iterator(); iterator
-							.hasNext();) {
-						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-						if (objetoPista instanceof ObjetoTransparencia) {
-							ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
-							if (objetoTransparencia.obterArea().intersects(
-									grid[i].getBounds())) {
-								naoDesenha = true;
-							}
-						} else {
-							continue;
-						}
-					}
-				}
-				if (naoDesenha) {
-					continue;
-				}
 				g2d.drawImage(buffer,
 						(int) (grid[i].getBounds().getCenterX() - meix),
 						(int) (grid[i].getBounds().getCenterY() - meiy), null);
@@ -1345,7 +1334,27 @@ public class PainelCircuito extends JPanel {
 			double rad = Math.toRadians((double) calculaAngulo);
 			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
 					rectangle.getCenterY());
-			grid[i] = generalPath.createTransformedShape(affineTransformRect);
+			boolean naoDesenha = false;
+			if (circuito.getObjetos() != null) {
+				for (Iterator iterator = circuito.getObjetos().iterator(); iterator
+						.hasNext();) {
+					ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+					if (objetoPista instanceof ObjetoTransparencia) {
+						ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+						if (objetoTransparencia.obterArea().intersects(
+								generalPath.getBounds())) {
+							naoDesenha = true;
+						}
+					} else {
+						continue;
+					}
+				}
+			}
+			if (naoDesenha) {
+				grid[i] = null;
+			} else
+				grid[i] = generalPath
+						.createTransformedShape(affineTransformRect);
 			if (circuito != null && circuito.isUsaBkg()) {
 				AffineTransform afZoom = new AffineTransform();
 				AffineTransform afRotate = new AffineTransform();
@@ -1496,13 +1505,17 @@ public class PainelCircuito extends JPanel {
 		Point oldp = scrollPane.getViewport().getViewPosition();
 		if (circuito.isUsaBkg() && backGround != null
 				&& limitesViewPort != null) {
-			if ((p.x + limitesViewPort.width) > (backGround.getWidth() * zoom)) {
-				p.x = Util.inte((backGround.getWidth() * zoom)
-						- limitesViewPort.width);
-			}
-			if ((p.y + limitesViewPort.height) > (backGround.getHeight() * zoom)) {
-				p.y = Util.inte((backGround.getHeight() * zoom)
-						- limitesViewPort.height);
+			synchronized (backGround) {
+
+				if ((p.x + limitesViewPort.width) > (backGround.getWidth() * zoom)) {
+					p.x = Util.inte((backGround.getWidth() * zoom)
+							- limitesViewPort.width);
+				}
+				if ((p.y + limitesViewPort.height) > (backGround.getHeight() * zoom)) {
+					p.y = Util.inte((backGround.getHeight() * zoom)
+							- limitesViewPort.height);
+				}
+
 			}
 		}
 		int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x, p.y);
