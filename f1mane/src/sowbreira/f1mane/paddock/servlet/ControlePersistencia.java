@@ -64,6 +64,7 @@ public class ControlePersistencia {
 			if (session != null) {
 				session.close();
 			}
+			Logger.logarExept(e);
 			Logger.novaSession = true;
 			session = HibernateUtil.getSessionFactory().openSession();
 		}
@@ -403,9 +404,7 @@ public class ControlePersistencia {
 		Transaction transaction = getSession().beginTransaction();
 		try {
 			for (int i = 0; i < f1ManeDados.length; i++) {
-				F1ManeDados gravar = (F1ManeDados) session.load(
-						f1ManeDados[i].getClass(), f1ManeDados[i].getId());
-				session.saveOrUpdate(gravar);
+				session.saveOrUpdate(f1ManeDados[i]);
 			}
 			transaction.commit();
 		} catch (Exception e) {
