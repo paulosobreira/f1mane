@@ -3,7 +3,6 @@ package br.nnpe;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
-
 /**
  * @author Paulo Sobreira [sowbreira@gmail.com]
  * @author Rafael Carneiro [rafaelcarneirob@gmail.com]
@@ -34,7 +33,9 @@ public class HibernateUtil {
 		if (Logger.novaSession) {
 			try {
 				sessionFactory = new AnnotationConfiguration().configure()
-						.buildSessionFactory();
+						.setProperty(
+								"hibernate.transaction.auto_close_session",
+								"false").buildSessionFactory();
 				Logger.novaSession = false;
 			} catch (Throwable e) {
 				Logger.logarExept(e);
