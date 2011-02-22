@@ -242,25 +242,31 @@ img {
 		</div>
 		<br>
 		<div style="text-align: center;">
-		<a id="link" href="f1mane_en.jnlp" style="text-align: left;">
-			Jogar Offline Full
-			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
-		</a>
-		&nbsp;&nbsp; 
-		<a id="link" href="f1maneLite_en.jnlp" style="text-align: left;">
-			Jogar Offline Lite
-			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
-		</a>		
+			<div style="text-align: center;">
+				Play Offline
+				<a id="link" href="f1mane_en.jnlp" style="text-align: left;">
+					Full 100MB
+					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+				</a>
+				&nbsp;&nbsp; 
+				<a id="link" href="f1maneLite_en.jnlp" style="text-align: left;">
+					Lite  5MB
+					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+				</a>
+			<div>		
 		<br>
-		<a id="link"  href="f1maneonline_en.jnlp" style="text-align: left;">
-			Jogar Online Full 
-			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
-		</a>
-		&nbsp;&nbsp;
-		<a id="link"  href="f1maneonlineLite_en.jnlp" style="text-align: left;">
-			Jogar Online Lite  
-			<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
-		</a>		
+			<div style="text-align: center;	">
+				PLay Online		
+				<a id="link"  href="f1maneonline_en.jnlp" style="text-align: left;">
+					Full 100MB
+					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+				</a>
+				&nbsp;&nbsp;
+				<a id="link"  href="f1maneonlineLite_en.jnlp" style="text-align: left;">
+					Lite  5MB
+					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+				</a>	
+			<div>						
 		</div>
 		<br>
 		<div id="shotsPromo" class="highslide-gallery">
