@@ -69,11 +69,11 @@ public class ServletPaddock extends HttpServlet {
 
 	public void destroy() {
 		monitorAtividade.setAlive(false);
-//		try {
-//			controlePersistencia.gravarDados();
-//		} catch (IOException e) {
-//			Logger.topExecpts(e);
-//		}
+		// try {
+		// controlePersistencia.gravarDados();
+		// } catch (IOException e) {
+		// Logger.topExecpts(e);
+		// }
 		super.destroy();
 	}
 
@@ -220,27 +220,36 @@ public class ServletPaddock extends HttpServlet {
 		printWriter.write("<html><body>");
 		printWriter.write("<h2>F1-Mane Construtores</h2><br><hr>");
 		synchronized ("") {
-			Set top = controlePersistencia.obterListaJogadores();
-			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
-				String nomeJogador = (String) iterator.next();
-				CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-						.carregaCarreiraJogador(nomeJogador, false,
-								controlePersistencia.getSession());
-				if (carreiraDadosSrv == null) {
-					continue;
+			Session session = controlePersistencia.getSession();
+			try {
+				Set top = controlePersistencia.obterListaJogadores(session);
+				for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+					String nomeJogador = (String) iterator.next();
+					CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+							.carregaCarreiraJogador(nomeJogador, false,
+									controlePersistencia.getSession());
+					if (carreiraDadosSrv == null) {
+						continue;
+					}
+					if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
+							|| Util.isNullOrEmpty(carreiraDadosSrv
+									.getNomePiloto())) {
+						continue;
+					}
+					printWriter.write("Jogador : " + nomeJogador);
+					printWriter.write("<br> Pts Piloto: "
+							+ carreiraDadosSrv.getPtsPiloto());
+					printWriter.write("<br> Pts Carro: "
+							+ carreiraDadosSrv.getPtsCarro());
+					printWriter.write("<br> Pts Const: "
+							+ carreiraDadosSrv.getPtsConstrutores());
+					printWriter.write("<br><hr>");
 				}
-				if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
-						|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())) {
-					continue;
+
+			} finally {
+				if (session.isOpen()) {
+					session.close();
 				}
-				printWriter.write("Jogador : " + nomeJogador);
-				printWriter.write("<br> Pts Piloto: "
-						+ carreiraDadosSrv.getPtsPiloto());
-				printWriter.write("<br> Pts Carro: "
-						+ carreiraDadosSrv.getPtsCarro());
-				printWriter.write("<br> Pts Const: "
-						+ carreiraDadosSrv.getPtsConstrutores());
-				printWriter.write("<br><hr>");
 			}
 		}
 		printWriter.write("</body></html>");

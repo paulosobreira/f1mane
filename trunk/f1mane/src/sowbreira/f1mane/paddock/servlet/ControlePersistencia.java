@@ -274,10 +274,9 @@ public class ControlePersistencia {
 		return jogadorDadosSrv;
 	}
 
-	public Set obterListaJogadores() {
+	public Set obterListaJogadores(Session session) {
 		Set nomes = new HashSet();
-		List jogador = getSession().createCriteria(JogadorDadosSrv.class)
-				.list();
+		List jogador = session.createCriteria(JogadorDadosSrv.class).list();
 		for (Iterator iterator = jogador.iterator(); iterator.hasNext();) {
 			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) iterator.next();
 			nomes.add(jogadorDadosSrv.getNome());
@@ -290,10 +289,10 @@ public class ControlePersistencia {
 		Transaction transaction = session.beginTransaction();
 		try {
 			jogadorDadosSrv.setLoginCriador(jogadorDadosSrv.getNome());
-			getSession().saveOrUpdate(jogadorDadosSrv);
+			session.saveOrUpdate(jogadorDadosSrv);
 			CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
 			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-			getSession().saveOrUpdate(carreiraDadosSrv);
+			session.saveOrUpdate(carreiraDadosSrv);
 			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
@@ -411,7 +410,7 @@ public class ControlePersistencia {
 	}
 
 	public List obterListaCorridas(String nomeJogador, Session session) {
-		List corridas = getSession().createCriteria(CorridasDadosSrv.class)
+		List corridas = session.createCriteria(CorridasDadosSrv.class)
 				.createAlias("jogadorDadosSrv", "j").add(
 						Restrictions.eq("j.nome", nomeJogador)).addOrder(
 						Order.asc("tempoInicio")).list();
@@ -456,17 +455,19 @@ public class ControlePersistencia {
 
 	}
 
-	public JogadorDadosSrv carregaDadosJogadorEmail(String emailJogador) {
-		List jogador = getSession().createCriteria(JogadorDadosSrv.class).add(
+	public JogadorDadosSrv carregaDadosJogadorEmail(String emailJogador,
+			Session session) {
+		List jogador = session.createCriteria(JogadorDadosSrv.class).add(
 				Restrictions.eq("email", emailJogador)).list();
 		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null
 				: jogador.get(0));
 		return jogadorDadosSrv;
 	}
 
-	public List<Campeonato> obterListaCampeonatos() {
-		return getSession().createCriteria(Campeonato.class).addOrder(
+	public List<Campeonato> obterListaCampeonatos(Session session) {
+		return session.createCriteria(Campeonato.class).addOrder(
 				Order.desc("dataCriacao")).list();
+
 	}
 
 	public Campeonato pesquisaCampeonato(Session session,
@@ -496,8 +497,9 @@ public class ControlePersistencia {
 
 	}
 
-	public List pesquisaCampeonatos(JogadorDadosSrv jogadorDadosSrv) {
-		List campeonatos = getSession().createCriteria(Campeonato.class).add(
+	public List pesquisaCampeonatos(JogadorDadosSrv jogadorDadosSrv,
+			Session session) {
+		List campeonatos = session.createCriteria(Campeonato.class).add(
 				Restrictions.eq("jogadorDadosSrv", jogadorDadosSrv)).list();
 		return campeonatos;
 	}
