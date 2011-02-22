@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Session;
+
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -35,26 +37,33 @@ public class ControleCampeonatoServidor {
 		if (clientPaddockPack.getSessaoCliente() == null) {
 			return (new MsgSrv(Lang.msg("210")));
 		}
-		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-				.carregaDadosJogador(clientPaddockPack.getSessaoCliente()
-						.getNomeJogador());
-		if (jogadorDadosSrv == null) {
-			return (new MsgSrv(Lang.msg("238")));
-		}
-		Campeonato campeonato = (Campeonato) clientPaddockPack.getDataObject();
-		if (verifircaNomeCampeonato(campeonato)) {
-			return (new MsgSrv(Lang.msg("nomeCampeonatoNaoDisponivel")));
-		}
-		if (verificaCampeonatoEmAberto(jogadorDadosSrv)) {
-			return (new MsgSrv(Lang.msg("jogadorTemCampeonatoEmAberto")));
-		}
-		campeonato.setJogadorDadosSrv(jogadorDadosSrv);
+		Session session = controlePersistencia.getSession();
 		try {
-			controlePersistencia.gravarDados(campeonato);
-		} catch (Exception e) {
-			return new ErroServ(e);
+
+			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+					.carregaDadosJogador(clientPaddockPack.getSessaoCliente()
+							.getNomeJogador(), session);
+			if (jogadorDadosSrv == null) {
+				return (new MsgSrv(Lang.msg("238")));
+			}
+			Campeonato campeonato = (Campeonato) clientPaddockPack
+					.getDataObject();
+			if (verifircaNomeCampeonato(campeonato)) {
+				return (new MsgSrv(Lang.msg("nomeCampeonatoNaoDisponivel")));
+			}
+			if (verificaCampeonatoEmAberto(jogadorDadosSrv)) {
+				return (new MsgSrv(Lang.msg("jogadorTemCampeonatoEmAberto")));
+			}
+			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
+			try {
+				controlePersistencia.gravarDados(session, campeonato);
+			} catch (Exception e) {
+				return new ErroServ(e);
+			}
+			return (new MsgSrv(Lang.msg("campeonatoCriado")));
+		} finally {
+			session.close();
 		}
-		return (new MsgSrv(Lang.msg("campeonatoCriado")));
 	}
 
 	private boolean verificaCampeonatoEmAberto(JogadorDadosSrv jogadorDadosSrv) {
@@ -80,7 +89,7 @@ public class ControleCampeonatoServidor {
 			return true;
 		}
 		Campeonato campeonatoBanco = controlePersistencia.pesquisaCampeonato(
-				nome, false);
+				controlePersistencia.getSession(), nome, false);
 		return campeonatoBanco != null;
 	}
 
@@ -115,7 +124,7 @@ public class ControleCampeonatoServidor {
 		String campString = (String) clientPaddockPack.getDataObject();
 
 		Campeonato campeonato = controlePersistencia.pesquisaCampeonato(
-				campString, true);
+				controlePersistencia.getSession(), campString, true);
 
 		return campeonato;
 	}
@@ -125,8 +134,9 @@ public class ControleCampeonatoServidor {
 			DadosCriarJogo dadosCriarJogo,
 			ControleClassificacao controleClassificacao) {
 		String campString = dadosCriarJogo.getNomeCampeonato();
+		Session session = controlePersistencia.getSession();
 		Campeonato campeonato = controlePersistencia.pesquisaCampeonato(
-				campString, false);
+				session, campString, false);
 		if (campeonato == null) {
 			Logger.logar("campeonato nulo");
 			return;
@@ -152,7 +162,7 @@ public class ControleCampeonatoServidor {
 			dadosCorridaCampeonato
 					.setCorridaCampeonato(corridaCampeonatoCorrente);
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDadosJogador(piloto.getNomeJogador());
+					.carregaDadosJogador(piloto.getNomeJogador(), session);
 			if (jogadorDadosSrv != null) {
 				dadosCorridaCampeonato.setJogador(jogadorDadosSrv.getNome());
 			}
@@ -180,15 +190,15 @@ public class ControleCampeonatoServidor {
 					+ "%"));
 			corridaCampeonatoCorrente.getDadosCorridaCampeonatos().add(
 					dadosCorridaCampeonato);
-			try {
-				controlePersistencia.gravarDados(dadosCorridaCampeonato,
-						corridaCampeonatoCorrente);
-			} catch (Exception e) {
-				Logger.topExecpts(e);
-			}
+//			try {
+//				controlePersistencia.gravarDados(session,
+//						dadosCorridaCampeonato, corridaCampeonatoCorrente);
+//			} catch (Exception e) {
+//				Logger.topExecpts(e);
+//			}
 		}
 		try {
-			controlePersistencia.gravarDados(campeonato);
+			controlePersistencia.gravarDados(session, campeonato);
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 		}
