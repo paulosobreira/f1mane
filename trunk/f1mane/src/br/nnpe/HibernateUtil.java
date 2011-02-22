@@ -32,10 +32,12 @@ public class HibernateUtil {
 		}
 		if (Logger.novaSession) {
 			try {
+				// sessionFactory = new AnnotationConfiguration().configure()
+				// .setProperty(
+				// "hibernate.transaction.auto_close_session",
+				// "false").buildSessionFactory();
 				sessionFactory = new AnnotationConfiguration().configure()
-						.setProperty(
-								"hibernate.transaction.auto_close_session",
-								"false").buildSessionFactory();
+						.buildSessionFactory();
 				Logger.novaSession = false;
 			} catch (Throwable e) {
 				Logger.logarExept(e);

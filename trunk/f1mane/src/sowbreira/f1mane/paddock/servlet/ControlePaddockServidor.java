@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.hibernate.Session;
+
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
@@ -123,11 +125,11 @@ public class ControlePaddockServidor {
 					.carregaDadosJogadorEmail(clientPaddockPack
 							.getEmailJogador());
 		}
-
+		Session session = controlePersistencia.getSession();
 		if (jogadorDadosSrv == null
 				&& !Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
-			jogadorDadosSrv = controlePersistencia
-					.carregaDadosJogador(clientPaddockPack.getNomeJogador());
+			jogadorDadosSrv = controlePersistencia.carregaDadosJogador(
+					clientPaddockPack.getNomeJogador(), session);
 		}
 
 		if (jogadorDadosSrv == null) {
@@ -144,7 +146,7 @@ public class ControlePaddockServidor {
 					.getEmail(), senha);
 			jogadorDadosSrv.setSenha(Util.md5(senha));
 			jogadorDadosSrv.setUltimaRecuperacao(System.currentTimeMillis());
-			controlePersistencia.gravarDados(jogadorDadosSrv);
+			controlePersistencia.gravarDados(session, jogadorDadosSrv);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			if (ServletPaddock.email != null)
@@ -171,9 +173,10 @@ public class ControlePaddockServidor {
 			return new MsgSrv(Lang.msg("capchaInvalido"));
 		}
 		JogadorDadosSrv jogadorDadosSrv = null;
+		Session session = controlePersistencia.getSession();
 		if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
-			jogadorDadosSrv = controlePersistencia
-					.carregaDadosJogador(clientPaddockPack.getNomeJogador());
+			jogadorDadosSrv = controlePersistencia.carregaDadosJogador(
+					clientPaddockPack.getNomeJogador(), session);
 		}
 		if (jogadorDadosSrv == null
 				&& !Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
@@ -200,7 +203,7 @@ public class ControlePaddockServidor {
 				jogadorDadosSrv.setSenha(Util.md5(senha));
 				clientPaddockPack.setSenhaJogador(jogadorDadosSrv.getSenha());
 				controlePersistencia.adicionarJogador(
-						jogadorDadosSrv.getNome(), jogadorDadosSrv);
+						jogadorDadosSrv.getNome(), jogadorDadosSrv, session);
 			} catch (Exception e) {
 				return new ErroServ(e);
 			}
@@ -462,9 +465,10 @@ public class ControlePaddockServidor {
 	}
 
 	private Object criarSessao(ClientPaddockPack clientPaddockPack) {
-
+		Session session = controlePersistencia.getSession();
 		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-				.carregaDadosJogador(clientPaddockPack.getNomeJogador());
+				.carregaDadosJogador(clientPaddockPack.getNomeJogador(),
+						session);
 
 		if (jogadorDadosSrv == null) {
 			return new MsgSrv(Lang.msg("238"));
@@ -475,7 +479,7 @@ public class ControlePaddockServidor {
 		}
 		jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());
 		try {
-			controlePersistencia.gravarDados(jogadorDadosSrv);
+			controlePersistencia.gravarDados(session, jogadorDadosSrv);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			return new ErroServ(e);

@@ -69,11 +69,11 @@ public class ServletPaddock extends HttpServlet {
 
 	public void destroy() {
 		monitorAtividade.setAlive(false);
-		try {
-			controlePersistencia.gravarDados();
-		} catch (IOException e) {
-			Logger.topExecpts(e);
-		}
+//		try {
+//			controlePersistencia.gravarDados();
+//		} catch (IOException e) {
+//			Logger.topExecpts(e);
+//		}
 		super.destroy();
 	}
 
@@ -224,7 +224,8 @@ public class ServletPaddock extends HttpServlet {
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
 				String nomeJogador = (String) iterator.next();
 				CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-						.carregaCarreiraJogador(nomeJogador, false);
+						.carregaCarreiraJogador(nomeJogador, false,
+								controlePersistencia.getSession());
 				if (carreiraDadosSrv == null) {
 					continue;
 				}
