@@ -55,6 +55,7 @@
 				<exclude name=".*/" />
 				<exclude name="**/*.java" />
 				<exclude name="build.xml" />
+				<exclude name="log4j.properties" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.gif" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.png" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.wav" />
