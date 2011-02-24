@@ -367,6 +367,7 @@ public class ControleJogosServer {
 			Posis posis = new Posis();
 			posis.idPiloto = piloto.getId();
 			posis.tracado = piloto.getTracado();
+			posis.volta = piloto.getNumeroVolta();
 			posis.autoPos = piloto.isAutoPos();
 			posis.agressivo = piloto.isAgressivo();
 			posis.idNo = ((Integer) jogoServidor.getMapaNosIds().get(
