@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -537,7 +538,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	private Vector posisBuffer = new Vector();
+	private Thread consumidorPosis = null;
+	private Posis posisBuff;
+
 	public void atualizaPosicaoPiloto(Posis posis) {
+		posisBuffer.add(posis);
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.getId() == posis.idPiloto) {
@@ -545,14 +551,77 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				piloto.setJogadorHumano(posis.humano);
 				piloto.setTracado(posis.tracado);
 				piloto.setAutoPos(posis.autoPos);
-				if (posis.idNo >= -1) {
-					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
-					piloto.setNoAtual(no);
-				}
 				break;
 			}
 
 		}
+		iniciaConsumidorPosis();
+	}
+
+	private void iniciaConsumidorPosis() {
+		if (consumidorPosis != null) {
+			return;
+		}
+		consumidorPosis = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while (!isCorridaTerminada()) {
+					if (!posisBuffer.isEmpty()) {
+						posisBuff = (Posis) posisBuffer.remove(0);
+					}
+					if (posisBuff == null) {
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e) {
+						}
+					}
+					for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
+						Piloto piloto = (Piloto) iter.next();
+						if (piloto.getId() == posisBuff.idPiloto) {
+							if (posisBuff.idNo >= -1) {
+								No no = (No) mapaIdsNos.get(new Integer(
+										posisBuff.idNo));
+								int index = no.getIndex();
+								int diff = index - getNosDaPista().size();
+								if (diff >= 0) {
+									index = diff;
+								}
+								if (piloto.getNoAtual() != null) {
+									int indexPiloto = piloto.getNoAtual()
+											.getIndex();
+									if (indexPiloto < index
+											|| piloto.getNumeroVolta() < posisBuff.volta) {
+										indexPiloto++;
+										int diffPiloto = indexPiloto
+												- getNosDaPista().size();
+										if (diffPiloto >= 0) {
+											indexPiloto = diffPiloto;
+										}
+										No newNo = (No) mapaIdsNos
+												.get(new Integer(indexPiloto));
+										piloto.setNoAtual(newNo);
+									}
+								} else {
+									piloto.setNoAtual(no);
+								}
+								try {
+									Thread.sleep(50);
+								} catch (InterruptedException e) {
+								}
+							}
+							break;
+						}
+
+					}
+				}
+
+			}
+		});
+		consumidorPosis.start();
+	}
+
+	public void atualizaPosicaoPilotoOld(Posis posis) {
 
 	}
 
@@ -656,9 +725,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
 		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(
-					dadosParticiparJogo.getTpPnueu(),
-					dadosParticiparJogo.getCombustivel(),
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
+					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
 					dadosParticiparJogo.getAsa());
 			syncBox = true;
 		}
