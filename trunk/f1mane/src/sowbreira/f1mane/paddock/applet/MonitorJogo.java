@@ -331,7 +331,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void iniciaConsumidorPosis() {
-		if (consumidorPosis != null) {
+		if (consumidorPosis != null || consumidorPosis.isAlive()) {
 			return;
 		}
 		consumidorPosis = new Thread(new Runnable() {
@@ -375,7 +375,7 @@ public class MonitorJogo implements Runnable {
 						int indexPiloto = piloto.getNoAtual().getIndex();
 						No noNovo = null;
 						if (indexPiloto < no.getIndex()) {
-							indexPiloto += piloto.getGanho() / 3;
+							indexPiloto += piloto.getGanho();
 							if (jogoCliente.getNosDaPista().contains(no)) {
 								int diff = indexPiloto
 										- jogoCliente.getNosDaPista().size();
@@ -398,7 +398,7 @@ public class MonitorJogo implements Runnable {
 							if (noNovo != null)
 								piloto.setNoAtual(noNovo);
 							if (piloto.verificaColisaoCarroFrente(jogoCliente)) {
-								piloto.setNoAtual(noAtual);
+								piloto.setNoAtual(no);
 							}
 						} else {
 							piloto.setNoAtual(no);
