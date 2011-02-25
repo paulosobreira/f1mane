@@ -331,7 +331,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void iniciaConsumidorPosis() {
-		if (consumidorPosis != null || consumidorPosis.isAlive()) {
+		if (consumidorPosis != null && consumidorPosis.isAlive()) {
 			return;
 		}
 		consumidorPosis = new Thread(new Runnable() {
