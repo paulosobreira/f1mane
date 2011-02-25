@@ -7,15 +7,15 @@ import java.io.Serializable;
  */
 public class Posis implements Serializable {
 
-	public int idPiloto, idNo, tracado, volta;
+	public int idPiloto, idNo, tracado;
 	public boolean agressivo;
 	public boolean humano;
 	public boolean autoPos;
 
 	public String encode() {
 		return idPiloto + "!" + idNo + "!" + (agressivo ? "S" : "N") + "!"
-				+ (humano ? "S" : "N") + "!" + tracado + "!" + "!" + volta
-				+ "!" + (autoPos ? "S" : "N");
+				+ (humano ? "S" : "N") + "!" + tracado + "!"
+				+ (autoPos ? "S" : "N");
 	}
 
 	public void decode(String val) {
@@ -25,8 +25,7 @@ public class Posis implements Serializable {
 		agressivo = "S".equals(sp[2]);
 		humano = "S".equals(sp[3]);
 		tracado = parseInt(sp[4]);
-		volta = parseInt(sp[5]);
-		autoPos = "S".equals(sp[6]);
+		autoPos = "S".equals(sp[5]);
 	}
 
 	private int parseInt(String string) {
