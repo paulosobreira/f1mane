@@ -327,19 +327,23 @@ public class MonitorJogo implements Runnable {
 	public void atualizarListaPilotos(Object[] posisArray) {
 		posisBuffer.add(posisArray);
 		iniciaConsumidorPosis();
-
 	}
 
 	private void iniciaConsumidorPosis() {
 		if (consumidorPosis != null && consumidorPosis.isAlive()) {
 			return;
 		}
-		posisArrayBuff = null;
-		posisBuffer.clear();
+		posisArrayBuff = (Object[]) posisBuffer.remove(0);
+		if (posisArrayBuff != null) {
+			for (int i = 0; i < posisArrayBuff.length; i++) {
+				Posis posis = (Posis) posisArrayBuff[i];
+				jogoCliente.atualizaPosicaoPiloto(posis);
+			}
+		}
 		consumidorPosis = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (!jogoCliente.isCorridaTerminada()) {
+				while (jogoAtivo) {
 					if (!posisBuffer.isEmpty()) {
 						posisArrayBuff = (Object[]) posisBuffer.remove(0);
 					}
@@ -349,10 +353,15 @@ public class MonitorJogo implements Runnable {
 							atualizaPosicaoPiloto(posis);
 						}
 					}
-					if (posisBuffer.size() > 3) {
-						sleep(20);
-					} else
+					if (posisBuffer.size() == 3) {
+						sleep(50);
+					} else if (posisBuffer.size() == 2) {
 						sleep(40);
+					} else if (posisBuffer.size() == 1) {
+						sleep(20);
+					} else {
+						sleep(10);
+					}
 				}
 			}
 		});
@@ -376,11 +385,12 @@ public class MonitorJogo implements Runnable {
 					if (piloto.getNoAtual() == null) {
 						piloto.setNoAtual(no);
 					} else {
-						No noAtual = piloto.getNoAtual();
 						int indexPiloto = piloto.getNoAtual().getIndex();
 						No noNovo = null;
-						if (indexPiloto < no.getIndex()) {
-							indexPiloto += piloto.getGanho() / 2;
+						if (Math.abs((indexPiloto - no.getIndex())) > 1000) {
+							piloto.setNoAtual(no);
+						} else if (indexPiloto < no.getIndex()) {
+							indexPiloto += piloto.getGanho() / 3;
 							if (jogoCliente.getNosDaPista().contains(no)) {
 								int diff = indexPiloto
 										- jogoCliente.getNosDaPista().size();
