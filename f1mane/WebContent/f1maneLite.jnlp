@@ -10,10 +10,6 @@
 			F1-MANE (MANager & Engineer) Lite
 		</description>
 		<offline-allowed />
-      <shortcut online="false">
-         <desktop/>
-         <menu submenu="F1Mane"/>
-      </shortcut>		
 	</information>
 
 	<resources>

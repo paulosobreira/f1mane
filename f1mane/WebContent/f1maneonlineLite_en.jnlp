@@ -8,10 +8,6 @@
 		<description>F1-MANE (MANager & Engineer) Lite</description>
 		<offline-allowed />
 		<icon href="icon.png"/>  
-      <shortcut online="true">
-         <desktop/>
-         <menu submenu="F1Mane Online Lite"/>
-      </shortcut>			
 	</information>
 
 	<resources>
