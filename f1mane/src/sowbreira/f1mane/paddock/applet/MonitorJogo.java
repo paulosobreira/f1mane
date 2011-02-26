@@ -323,6 +323,7 @@ public class MonitorJogo implements Runnable {
 	private Vector posisBuffer = new Vector();
 	private Thread consumidorPosis = null;
 	private Object[] posisArrayBuff;
+	private double divPosis = 1;
 
 	public void atualizarListaPilotos(Object[] posisArray) {
 		posisBuffer.add(posisArray);
@@ -353,14 +354,15 @@ public class MonitorJogo implements Runnable {
 							atualizaPosicaoPiloto(posis);
 						}
 					}
+					sleep(10);
 					if (posisBuffer.size() == 1) {
-						sleep(50);
+						divPosis = 4;
 					} else if (posisBuffer.size() == 2) {
-						sleep(40);
+						divPosis = 3;
 					} else if (posisBuffer.size() == 3) {
-						sleep(20);
+						divPosis = 2;
 					} else {
-						sleep(10);
+						divPosis = 1;
 					}
 				}
 			}
@@ -390,7 +392,7 @@ public class MonitorJogo implements Runnable {
 						if (Math.abs((indexPiloto - no.getIndex())) > 1000) {
 							piloto.setNoAtual(no);
 						} else if (indexPiloto < no.getIndex()) {
-							indexPiloto += piloto.getGanho() / 3;
+							indexPiloto += (piloto.getGanho() / divPosis);
 							if (jogoCliente.getNosDaPista().contains(no)) {
 								int diff = indexPiloto
 										- jogoCliente.getNosDaPista().size();
