@@ -353,11 +353,11 @@ public class MonitorJogo implements Runnable {
 							atualizaPosicaoPiloto(posis);
 						}
 					}
-					if (posisBuffer.size() == 3) {
+					if (posisBuffer.size() == 1) {
 						sleep(50);
 					} else if (posisBuffer.size() == 2) {
 						sleep(40);
-					} else if (posisBuffer.size() == 1) {
+					} else if (posisBuffer.size() == 3) {
 						sleep(20);
 					} else {
 						sleep(10);
