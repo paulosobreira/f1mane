@@ -322,12 +322,24 @@ public class MonitorJogo implements Runnable {
 
 	private Vector posisBuffer = new Vector();
 	private Thread consumidorPosis = null;
+	private boolean consumidorAtivo = false;
 	private Object[] posisArrayBuff;
 	private double divPosis = 1;
 
 	public void atualizarListaPilotos(Object[] posisArray) {
-		posisBuffer.add(posisArray);
-		iniciaConsumidorPosis();
+		if (jogoCliente.getMainFrame().isAtualizacaoSuave()) {
+			posisBuffer.add(posisArray);
+			iniciaConsumidorPosis();
+		} else {
+			consumidorAtivo = false;
+			if (posisArray != null) {
+				for (int i = 0; i < posisArray.length; i++) {
+					Posis posis = (Posis) posisArray[i];
+					jogoCliente.atualizaPosicaoPiloto(posis);
+				}
+			}
+
+		}
 	}
 
 	private void iniciaConsumidorPosis() {
@@ -341,12 +353,34 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.atualizaPosicaoPiloto(posis);
 			}
 		}
+		consumidorAtivo = true;
 		consumidorPosis = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (jogoAtivo) {
+				while (jogoAtivo && consumidorAtivo) {
 					if (!posisBuffer.isEmpty()) {
 						posisArrayBuff = (Object[]) posisBuffer.remove(0);
+					}
+					if (posisBuffer.size() == 0) {
+						divPosis = 18;
+					} else if (posisBuffer.size() == 1) {
+						divPosis = 16;
+					} else if (posisBuffer.size() == 2) {
+						divPosis = 14;
+					} else if (posisBuffer.size() == 3) {
+						divPosis = 12;
+					} else if (posisBuffer.size() == 4) {
+						divPosis = 10;
+					} else if (posisBuffer.size() == 5) {
+						divPosis = 8;
+					} else if (posisBuffer.size() == 6) {
+						divPosis = 6;
+					} else if (posisBuffer.size() == 7) {
+						divPosis = 4;
+					} else if (posisBuffer.size() == 8) {
+						divPosis = 2;
+					} else {
+						divPosis = 1;
 					}
 					if (posisArrayBuff != null) {
 						for (int i = 0; i < posisArrayBuff.length; i++) {
@@ -354,16 +388,7 @@ public class MonitorJogo implements Runnable {
 							atualizaPosicaoPiloto(posis);
 						}
 					}
-					sleep(10);
-					if (posisBuffer.size() == 1) {
-						divPosis = 4;
-					} else if (posisBuffer.size() == 2) {
-						divPosis = 3;
-					} else if (posisBuffer.size() == 3) {
-						divPosis = 2;
-					} else {
-						divPosis = 1;
-					}
+					sleep(5);
 				}
 			}
 		});
