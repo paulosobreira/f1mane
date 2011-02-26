@@ -552,7 +552,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				}
 				break;
 			}
-
 		}
 	}
 
