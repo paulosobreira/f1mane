@@ -298,188 +298,203 @@ public class PainelCircuito extends JPanel {
 	protected void paintComponent(Graphics g) {
 		synchronized (zoomMutex) {
 			super.paintComponent(g);
-			Graphics2D g2d = (Graphics2D) g;
-			setarHints(g2d);
-			limitesViewPort = (Rectangle) limitesViewPort();
-			pilotoSelecionado = gerenciadorVisual
-					.obterPilotoSecionadoTabela(controleJogo
-							.getPilotoSelecionado());
-			ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
-			if (circuito.isUsaBkg()) {
-				if (gerenciadorVisual.getVdp() == GerenciadorVisual.VDP1) {
-					if (backGround == null) {
-						carregaBackGround();
-					}
-					if (backGround != null) {
-						AffineTransform affineTransform = AffineTransform
-								.getScaleInstance(zoom, zoom);
-						AffineTransformOp affineTransformOp = new AffineTransformOp(
-								affineTransform,
-								AffineTransformOp.TYPE_BILINEAR);
-						BufferedImage subimage = null;
-						int diffX = 0;
-						int diffY = 0;
-						try {
-							if (limitesViewPort != null && backGround != null) {
-								Rectangle rectangle = new Rectangle(
-										Util.inte(limitesViewPort.getX() / zoom),
-										Util.inte(limitesViewPort.getY() / zoom),
-										Util.inte(limitesViewPort.getWidth()
-												/ zoom), Util
-												.inte(limitesViewPort
-														.getHeight() / zoom));
-								if ((rectangle.x + rectangle.getWidth()) > backGround
-										.getWidth()) {
-									diffX = Util.inte((rectangle.x + rectangle
-											.getWidth())
-											- backGround.getWidth());
-									rectangle.x -= diffX;
-								}
-								if ((rectangle.y + rectangle.getHeight()) > backGround
-										.getHeight()) {
-									diffY = Util.inte((rectangle.y + rectangle
-											.getHeight())
-											- backGround.getHeight());
-									rectangle.y -= diffY;
-								}
-								subimage = backGround.getSubimage(rectangle.x,
-										rectangle.y, rectangle.width,
-										rectangle.height);
-							}
-						} catch (Exception e) {
-							Logger.logarExept(e);
-							subimage = backGround;
+			try {
+				Graphics2D g2d = (Graphics2D) g;
+				setarHints(g2d);
+				limitesViewPort = (Rectangle) limitesViewPort();
+				pilotoSelecionado = gerenciadorVisual
+						.obterPilotoSecionadoTabela(controleJogo
+								.getPilotoSelecionado());
+				ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
+				if (circuito.isUsaBkg()) {
+					if (gerenciadorVisual.getVdp() == GerenciadorVisual.VDP1) {
+						if (backGround == null) {
+							carregaBackGround();
 						}
-						BufferedImage drawBuffer = null;
-						if (zoom == 1) {
-							drawBuffer = subimage;
-						} else {
-							drawBuffer = new BufferedImage(
-									(int) (limitesViewPort.getWidth()),
-									(int) (limitesViewPort.getHeight()),
-									backGround.getType());
-							affineTransformOp.filter(subimage, drawBuffer);
-						}
-
-						if (drawBuffer == null) {
-							drawBuffer = backGround;
-						}
-						drawBuffer.setAccelerationPriority(1);
-						int newX = Util.inte(limitesViewPort.getX());
-						int newY = Util.inte(limitesViewPort.getY());
-						g2d.drawImage(drawBuffer, newX, newY, null);
-
-					}
-				}
-
-				if (gerenciadorVisual.getVdp() == GerenciadorVisual.VDP2) {
-					if (tileMap == null) {
-						carregaTileMap();
-					}
-					for (int i = 0; i < TileMap.LADO; i++) {
-						for (int j = 0; j < TileMap.LADO; j++) {
-							if (tileMap[i][j] != null) {
-								BufferedImage bd = tileMap[i][j]
-										.getBackGround();
-								Point2D point = new Point2D.Double(
-										Util.double2Decimal(i * bd.getWidth()
-												* zoom), Util.double2Decimal(j
-												* bd.getHeight() * zoom));
-								Rectangle2D rectangle = new Rectangle2D.Double(
-										point.getX(), point.getY(),
-										Util.double2Decimal(bd.getWidth()
-												* zoom), Util.double2Decimal(bd
-												.getHeight() * zoom));
-								if (limitesViewPort.intersects(rectangle)) {
-									if (zoom != tileMap[i][j].getZoom()) {
-										AffineTransform affineTransform = AffineTransform
-												.getScaleInstance(zoom, zoom);
-										AffineTransformOp affineTransformOp = new AffineTransformOp(
-												affineTransform,
-												AffineTransformOp.TYPE_BILINEAR);
-										BufferedImage drawBuffer = new BufferedImage(
-												Util.inte(Util
-														.double2Decimal(bd
-																.getWidth()
-																* zoom)),
-												Util.inte(Util
-														.double2Decimal(bd
-																.getHeight()
-																* zoom)),
-												bd.getType());
-										drawBuffer.setAccelerationPriority(1);
-										affineTransformOp
-												.filter(bd, drawBuffer);
-										tileMap[i][j]
-												.setBackGroundZoomed(drawBuffer);
-										tileMap[i][j].setZoom(zoom);
-										g2d.drawImage(drawBuffer,
-												Util.inte(point.getX()),
-												Util.inte(point.getY()), null);
-									} else {
-										g2d.drawImage(tileMap[i][j]
-												.getBackGroundZoomed(), Util
-												.inte(point.getX()), Util
-												.inte(point.getY()), null);
+						if (backGround != null) {
+							AffineTransform affineTransform = AffineTransform
+									.getScaleInstance(zoom, zoom);
+							AffineTransformOp affineTransformOp = new AffineTransformOp(
+									affineTransform,
+									AffineTransformOp.TYPE_BILINEAR);
+							BufferedImage subimage = null;
+							int diffX = 0;
+							int diffY = 0;
+							try {
+								if (limitesViewPort != null
+										&& backGround != null) {
+									Rectangle rectangle = new Rectangle(
+											Util.inte(limitesViewPort.getX()
+													/ zoom),
+											Util.inte(limitesViewPort.getY()
+													/ zoom),
+											Util.inte(limitesViewPort
+													.getWidth() / zoom),
+											Util.inte(limitesViewPort
+													.getHeight() / zoom));
+									if ((rectangle.x + rectangle.getWidth()) > backGround
+											.getWidth()) {
+										diffX = Util
+												.inte((rectangle.x + rectangle
+														.getWidth())
+														- backGround.getWidth());
+										rectangle.x -= diffX;
 									}
-									// g2d.setColor(this.yel);
-									// g2d.fill(rectangle);
+									if ((rectangle.y + rectangle.getHeight()) > backGround
+											.getHeight()) {
+										diffY = Util
+												.inte((rectangle.y + rectangle
+														.getHeight())
+														- backGround
+																.getHeight());
+										rectangle.y -= diffY;
+									}
+									subimage = backGround.getSubimage(
+											rectangle.x, rectangle.y,
+											rectangle.width, rectangle.height);
+								}
+							} catch (Exception e) {
+								Logger.logarExept(e);
+								subimage = backGround;
+							}
+							BufferedImage drawBuffer = null;
+							if (zoom == 1) {
+								drawBuffer = subimage;
+							} else {
+								drawBuffer = new BufferedImage(
+										(int) (limitesViewPort.getWidth()),
+										(int) (limitesViewPort.getHeight()),
+										backGround.getType());
+								affineTransformOp.filter(subimage, drawBuffer);
+							}
+
+							if (drawBuffer == null) {
+								drawBuffer = backGround;
+							}
+							drawBuffer.setAccelerationPriority(1);
+							int newX = Util.inte(limitesViewPort.getX());
+							int newY = Util.inte(limitesViewPort.getY());
+							g2d.drawImage(drawBuffer, newX, newY, null);
+
+						}
+					}
+
+					if (gerenciadorVisual.getVdp() == GerenciadorVisual.VDP2) {
+						if (tileMap == null) {
+							carregaTileMap();
+						}
+						for (int i = 0; i < TileMap.LADO; i++) {
+							for (int j = 0; j < TileMap.LADO; j++) {
+								if (tileMap[i][j] != null) {
+									BufferedImage bd = tileMap[i][j]
+											.getBackGround();
+									Point2D point = new Point2D.Double(
+											Util.double2Decimal(i
+													* bd.getWidth() * zoom),
+											Util.double2Decimal(j
+													* bd.getHeight() * zoom));
+									Rectangle2D rectangle = new Rectangle2D.Double(
+											point.getX(), point.getY(),
+											Util.double2Decimal(bd.getWidth()
+													* zoom),
+											Util.double2Decimal(bd.getHeight()
+													* zoom));
+									if (limitesViewPort.intersects(rectangle)) {
+										if (zoom != tileMap[i][j].getZoom()) {
+											AffineTransform affineTransform = AffineTransform
+													.getScaleInstance(zoom,
+															zoom);
+											AffineTransformOp affineTransformOp = new AffineTransformOp(
+													affineTransform,
+													AffineTransformOp.TYPE_BILINEAR);
+											BufferedImage drawBuffer = new BufferedImage(
+													Util.inte(Util
+															.double2Decimal(bd
+																	.getWidth()
+																	* zoom)),
+													Util.inte(Util.double2Decimal(bd
+															.getHeight() * zoom)),
+													bd.getType());
+											drawBuffer
+													.setAccelerationPriority(1);
+											affineTransformOp.filter(bd,
+													drawBuffer);
+											tileMap[i][j]
+													.setBackGroundZoomed(drawBuffer);
+											tileMap[i][j].setZoom(zoom);
+											g2d.drawImage(drawBuffer,
+													Util.inte(point.getX()),
+													Util.inte(point.getY()),
+													null);
+										} else {
+											g2d.drawImage(tileMap[i][j]
+													.getBackGroundZoomed(),
+													Util.inte(point.getX()),
+													Util.inte(point.getY()),
+													null);
+										}
+										// g2d.setColor(this.yel);
+										// g2d.fill(rectangle);
+									}
 								}
 							}
 						}
 					}
 				}
-			}
 
-			if (!circuito.isUsaBkg()) {
-				if (larguraPistaPixeis == 0)
-					larguraPistaPixeis = Util.inte(176 * larguraPista * zoom);
-				if (pista == null)
-					pista = new BasicStroke(larguraPistaPixeis,
-							BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-				if (pistaTinta == null)
-					pistaTinta = new BasicStroke(
-							Util.inte(larguraPistaPixeis * 1.05),
-							BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-				if (box == null)
-					box = new BasicStroke(Util.inte(larguraPistaPixeis * .4),
-							BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-				if (zebra == null)
-					zebra = new BasicStroke(
-							Util.inte(larguraPistaPixeis * 1.05),
-							BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
-							new float[] { 10, 10, 10, 10, 10, 10, 10, 10, 10,
-									10, 10, 10 }, 0);
-				if (circuito.getCorFundo() != null) {
-					g2d.setColor(circuito.getCorFundo());
-					g2d.fill(limitesViewPort);
+				if (!circuito.isUsaBkg()) {
+					if (larguraPistaPixeis == 0)
+						larguraPistaPixeis = Util.inte(176 * larguraPista
+								* zoom);
+					if (pista == null)
+						pista = new BasicStroke(larguraPistaPixeis,
+								BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+					if (pistaTinta == null)
+						pistaTinta = new BasicStroke(
+								Util.inte(larguraPistaPixeis * 1.05),
+								BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+					if (box == null)
+						box = new BasicStroke(
+								Util.inte(larguraPistaPixeis * .4),
+								BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+					if (zebra == null)
+						zebra = new BasicStroke(
+								Util.inte(larguraPistaPixeis * 1.05),
+								BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+								10f, new float[] { 10, 10, 10, 10, 10, 10, 10,
+										10, 10, 10, 10, 10 }, 0);
+					if (circuito.getCorFundo() != null) {
+						g2d.setColor(circuito.getCorFundo());
+						g2d.fill(limitesViewPort);
+					}
+
+					desenhaObjetosBaixo(g2d);
+					desenhaTintaPistaEZebra(g2d);
+					desenhaPista(g2d);
+					desenhaPistaBox(g2d);
+					desenhaLargada(g2d);
+					desenhaBoxes(g2d);
+					g2d.setStroke(trilho);
 				}
+				desenhaGrid(g2d);
+				desenhaMarcasPeneuPista(g2d);
+				desenhaPiloto(g2d);
+				if (!circuito.isUsaBkg()) {
+					desenhaObjetosCima(g2d);
+				}
+				if (!desenhouQualificacao) {
+					desenhaQualificacao(g2d);
+				}
+				desenharSafetyCar(g2d);
+				desenharFarois(g2d);
 
-				desenhaObjetosBaixo(g2d);
-				desenhaTintaPistaEZebra(g2d);
-				desenhaPista(g2d);
-				desenhaPistaBox(g2d);
-				desenhaLargada(g2d);
-				desenhaBoxes(g2d);
-				g2d.setStroke(trilho);
+				desenhaChuva(g2d);
+				desenharClima(g2d);
+				desenhaInfoAdd(g2d);
+				desenhaContadorVoltas(g2d);
+			} catch (Exception e) {
+				Logger.logarExept(e);
 			}
-			desenhaGrid(g2d);
-			desenhaMarcasPeneuPista(g2d);
-			desenhaPiloto(g2d);
-			if (!circuito.isUsaBkg()) {
-				desenhaObjetosCima(g2d);
-			}
-			if (!desenhouQualificacao) {
-				desenhaQualificacao(g2d);
-			}
-			desenharSafetyCar(g2d);
-			desenharFarois(g2d);
-
-			desenhaChuva(g2d);
-			desenharClima(g2d);
-			desenhaInfoAdd(g2d);
-			desenhaContadorVoltas(g2d);
-
 		}
 
 	}

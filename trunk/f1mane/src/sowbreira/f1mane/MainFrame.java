@@ -323,6 +323,7 @@ public class MainFrame extends JFrame {
 			}
 
 		};
+		atualizacaoSuave.setSelected(true);
 		menuInfo2.add(atualizacaoSuave);
 
 	}
