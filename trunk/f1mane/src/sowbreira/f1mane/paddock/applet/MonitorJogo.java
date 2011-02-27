@@ -396,29 +396,29 @@ public class MonitorJogo implements Runnable {
 						No noNovo = null;
 						int diffINdex = Math.abs((indexPiloto - no.getIndex()));
 						if (diffINdex <= 100) {
-							divPosis = 18;
-							sleepConsumidorPosis = 15;
-						} else if (diffINdex > 100) {
 							divPosis = 14;
-							sleepConsumidorPosis = 14;
-						} else if (diffINdex > 200) {
+							sleepConsumidorPosis = 3;
+						} else if (diffINdex > 100) {
 							divPosis = 12;
-							sleepConsumidorPosis = 13;
+							sleepConsumidorPosis = 4;
+						} else if (diffINdex > 200) {
+							divPosis = 10;
+							sleepConsumidorPosis = 5;
 						} else if (diffINdex > 400) {
-							divPosis = 8;
-							sleepConsumidorPosis = 12;
+							divPosis = 6;
+							sleepConsumidorPosis = 6;
 						} else if (diffINdex > 600) {
 							divPosis = 4;
-							sleepConsumidorPosis = 11;
+							sleepConsumidorPosis = 7;
 						} else if (diffINdex > 800) {
 							divPosis = 2;
-							sleepConsumidorPosis = 10;
+							sleepConsumidorPosis = 8;
 						} else if (diffINdex > 1000) {
 							divPosis = 1.5;
 							sleepConsumidorPosis = 9;
 						} else if (diffINdex > 1200) {
 							divPosis = 1;
-							sleepConsumidorPosis = 8;
+							sleepConsumidorPosis = 10;
 						} else if (diffINdex > 1400) {
 							divPosis = 0.75;
 							sleepConsumidorPosis = 7;
