@@ -325,6 +325,7 @@ public class MonitorJogo implements Runnable {
 	private boolean consumidorAtivo = false;
 	private Object[] posisArrayBuff;
 	private double divPosis = 1;
+	private int sleepConsumidorPosis = 10;
 
 	public void atualizarListaPilotos(Object[] posisArray) {
 		if (jogoCliente.getMainFrame().isAtualizacaoSuave()) {
@@ -362,22 +363,16 @@ public class MonitorJogo implements Runnable {
 						posisArrayBuff = (Object[]) posisBuffer.remove(0);
 					}
 					if (posisBuffer.size() == 0) {
-						divPosis = 18;
-					} else if (posisBuffer.size() == 1) {
-						divPosis = 16;
-					} else if (posisBuffer.size() == 2) {
-						divPosis = 14;
-					} else if (posisBuffer.size() == 3) {
 						divPosis = 12;
-					} else if (posisBuffer.size() == 4) {
+					} else if (posisBuffer.size() == 1) {
 						divPosis = 10;
-					} else if (posisBuffer.size() == 5) {
+					} else if (posisBuffer.size() == 2) {
 						divPosis = 8;
-					} else if (posisBuffer.size() == 6) {
+					} else if (posisBuffer.size() == 3) {
 						divPosis = 6;
-					} else if (posisBuffer.size() == 7) {
+					} else if (posisBuffer.size() == 4) {
 						divPosis = 4;
-					} else if (posisBuffer.size() == 8) {
+					} else if (posisBuffer.size() == 5) {
 						divPosis = 2;
 					} else {
 						divPosis = 1;
@@ -388,7 +383,7 @@ public class MonitorJogo implements Runnable {
 							atualizaPosicaoPiloto(posis);
 						}
 					}
-					sleep(5);
+					sleep(sleepConsumidorPosis);
 				}
 			}
 		});
@@ -414,10 +409,35 @@ public class MonitorJogo implements Runnable {
 					} else {
 						int indexPiloto = piloto.getNoAtual().getIndex();
 						No noNovo = null;
-						if (Math.abs((indexPiloto - no.getIndex())) > 1000) {
+						int diffINdex = Math.abs((indexPiloto - no.getIndex()));
+						if (diffINdex > 200) {
+							sleepConsumidorPosis = 9;
+						} else if (diffINdex > 400) {
+							sleepConsumidorPosis = 8;
+						} else if (diffINdex > 600) {
+							sleepConsumidorPosis = 7;
+						} else if (diffINdex > 800) {
+							sleepConsumidorPosis = 6;
+						} else if (diffINdex > 1000) {
+							sleepConsumidorPosis = 5;
+						} else if (diffINdex > 1200) {
+							sleepConsumidorPosis = 4;
+						} else if (diffINdex > 1400) {
+							sleepConsumidorPosis = 3;
+						} else if (diffINdex > 1600) {
+							sleepConsumidorPosis = 2;
+						} else if (diffINdex > 1800) {
+							sleepConsumidorPosis = 1;
+						}
+						if (diffINdex > 2000) {
+							sleepConsumidorPosis = 10;
 							piloto.setNoAtual(no);
 						} else if (indexPiloto < no.getIndex()) {
-							indexPiloto += (piloto.getGanho() / divPosis);
+							double divGanho = (piloto.getGanho() / divPosis);
+							if (divGanho < 1) {
+								divGanho = 1;
+							}
+							indexPiloto += divGanho;
 							if (jogoCliente.getNosDaPista().contains(no)) {
 								int diff = indexPiloto
 										- jogoCliente.getNosDaPista().size();
