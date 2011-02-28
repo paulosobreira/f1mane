@@ -394,42 +394,60 @@ public class MonitorJogo implements Runnable {
 					} else {
 						int indexPiloto = piloto.getNoAtual().getIndex();
 						No noNovo = null;
-						int diffINdex = Math.abs((indexPiloto - no.getIndex()));
-						if (diffINdex <= 100) {
-							divPosis = 14;
-							sleepConsumidorPosis = 3;
-						} else if (diffINdex > 100) {
+						int diffINdex = (no.getIndex() - indexPiloto);
+						if (piloto.getPosicao() == 1) {
+							Logger.logar("diffINdex " + diffINdex);
+						}
+						if (diffINdex <= 50) {
+							divPosis = 16;
+							sleepConsumidorPosis = 20;
+						} else if (diffINdex > 50 && diffINdex <= 100) {
 							divPosis = 12;
-							sleepConsumidorPosis = 4;
-						} else if (diffINdex > 200) {
+							sleepConsumidorPosis = 19;
+						} else if (diffINdex > 100 && diffINdex <= 150) {
+							divPosis = 14;
+							sleepConsumidorPosis = 18;
+						} else if (diffINdex > 150 && diffINdex <= 200) {
+							divPosis = 12;
+							sleepConsumidorPosis = 17;
+						} else if (diffINdex > 200 && diffINdex <= 250) {
 							divPosis = 10;
-							sleepConsumidorPosis = 5;
-						} else if (diffINdex > 400) {
+							sleepConsumidorPosis = 16;
+						} else if (diffINdex > 250 && diffINdex <= 300) {
+							divPosis = 8;
+							sleepConsumidorPosis = 15;
+						} else if (diffINdex > 300 && diffINdex <= 350) {
 							divPosis = 6;
-							sleepConsumidorPosis = 6;
-						} else if (diffINdex > 600) {
+							sleepConsumidorPosis = 14;
+						} else if (diffINdex > 350 && diffINdex <= 400) {
 							divPosis = 4;
-							sleepConsumidorPosis = 7;
-						} else if (diffINdex > 800) {
+							sleepConsumidorPosis = 13;
+						} else if (diffINdex > 400 && diffINdex <= 450) {
 							divPosis = 2;
-							sleepConsumidorPosis = 8;
-						} else if (diffINdex > 1000) {
-							divPosis = 1.5;
-							sleepConsumidorPosis = 9;
-						} else if (diffINdex > 1200) {
+							sleepConsumidorPosis = 12;
+						} else if (diffINdex > 450 && diffINdex <= 500) {
+							divPosis = 1;
+							sleepConsumidorPosis = 11;
+						} else if (diffINdex > 500 && diffINdex <= 1000) {
 							divPosis = 1;
 							sleepConsumidorPosis = 10;
-						} else if (diffINdex > 1400) {
-							divPosis = 0.75;
+						} else if (diffINdex > 1000 && diffINdex <= 1200) {
+							divPosis = 1;
+							sleepConsumidorPosis = 9;
+						} else if (diffINdex > 1200 && diffINdex <= 1400) {
+							divPosis = 1;
+							sleepConsumidorPosis = 8;
+						} else if (diffINdex > 1400 && diffINdex <= 1500) {
+							divPosis = 1;
 							sleepConsumidorPosis = 7;
-						} else if (diffINdex > 1600) {
-							divPosis = 0.50;
+						} else if (diffINdex > 1500 && diffINdex <= 1600) {
+							divPosis = 1;
 							sleepConsumidorPosis = 6;
-						} else if (diffINdex > 1800) {
-							divPosis = 0.25;
+						} else {
+							divPosis = 1;
 							sleepConsumidorPosis = 5;
 						}
-						if (diffINdex > 2000 && diffINdex < 6000 ) {
+						if (diffINdex > 3000) {
 							piloto.setNoAtual(no);
 						} else if (indexPiloto < no.getIndex()) {
 							double divGanho = (piloto.getGanho() / divPosis);
@@ -456,10 +474,11 @@ public class MonitorJogo implements Runnable {
 								noNovo = (No) jogoCliente.getNosDoBox().get(
 										indexPiloto);
 							}
+							No noAtual = piloto.getNoAtual();
 							if (noNovo != null)
 								piloto.setNoAtual(noNovo);
 							if (piloto.verificaColisaoCarroFrente(jogoCliente)) {
-								piloto.setNoAtual(no);
+								piloto.setNoAtual(noAtual);
 							}
 						} else {
 							piloto.setNoAtual(no);
