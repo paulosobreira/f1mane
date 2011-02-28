@@ -298,9 +298,14 @@ public class ControleCorrida {
 							}
 						}
 						if (piloto.testeHabilidadePiloto() && !sendoPressionado
-								&& piloto.isAutoPos())
-							piloto.mudarTracado(Util.intervalo(0, 2),
-									controleJogo);
+								&& piloto.isAutoPos()) {
+							int novoTracado = Util.intervalo(0, 2);
+							while (novoTracado == piloto.getTracado()) {
+								novoTracado = Util.intervalo(0, 2);
+							}
+							piloto.mudarTracado(novoTracado, controleJogo);
+						}
+
 					}
 				}
 
