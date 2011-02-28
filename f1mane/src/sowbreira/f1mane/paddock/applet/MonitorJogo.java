@@ -491,6 +491,11 @@ public class MonitorJogo implements Runnable {
 		}
 	}
 
+	public static void main(String[] args) {
+		int valor = 2000;
+		System.out.println(valor > 1500 && valor <= 2000);
+	}
+
 	private void apagarLuz() {
 		iniciaJalena();
 		jogoCliente.apagarLuz();
