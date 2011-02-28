@@ -1749,13 +1749,13 @@ public class GerenciadorVisual {
 				int cont = 0;
 				while (limitesViewPort == null) {
 					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
+						Thread.sleep(1000);
+						limitesViewPort = (Rectangle) painelCircuito
+								.limitesViewPort();
+					} catch (Exception e) {
 						Logger.logarExept(e);
 					}
 					cont++;
-					limitesViewPort = (Rectangle) painelCircuito
-							.limitesViewPort();
 					if (cont > 30) {
 						break;
 					}
@@ -1763,8 +1763,11 @@ public class GerenciadorVisual {
 
 				int iniY1 = 30;
 				int iniY2 = 40;
-				int midPainel = (limitesViewPort.width / 2);
-
+				int midPainel = 0;
+				if (limitesViewPort != null)
+					midPainel = (limitesViewPort.width / 2);
+				else
+					midPainel = (controleJogo.getMainFrame().getWidth() / 2);
 				for (int i = 0; i < pilotos.size(); i++) {
 					Piloto piloto = (Piloto) pilotos.get(i);
 					if (piloto.getPosicao() % 2 == 0) {
@@ -1781,6 +1784,9 @@ public class GerenciadorVisual {
 					Point point = (Point) ptosPilotos.get(i);
 					limitesViewPort = (Rectangle) painelCircuito
 							.limitesViewPort();
+					if (limitesViewPort == null) {
+						Logger.logarExept(new Exception("limitesViewPort nullo"));
+					}
 					int x = limitesViewPort.x + limitesViewPort.width;
 					while (x > (point.x + limitesViewPort.x)) {
 						limitesViewPort = (Rectangle) painelCircuito
