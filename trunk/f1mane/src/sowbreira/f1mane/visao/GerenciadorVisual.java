@@ -2017,4 +2017,18 @@ public class GerenciadorVisual {
 			painelCircuito.adicionatrvadaRoda(travadaRoda);
 		}
 	}
+
+	public void setPosisRec(Point point) {
+		if (painelCircuito == null)
+			return;
+		painelCircuito.setPosisRec(point);
+
+	}
+
+	public void setPosisAtual(Point point) {
+		if (painelCircuito == null)
+			return;
+		painelCircuito.setPosisAtual(point);
+
+	}
 }

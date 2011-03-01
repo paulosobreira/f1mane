@@ -1,6 +1,7 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.MediaTracker;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.HashSet;
@@ -831,5 +832,21 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			Logger.logarExept(e);
 		}
 		return null;
+	}
+
+	public void setPosisRec(Point point) {
+		if (gerenciadorVisual == null) {
+			return;
+		}
+		gerenciadorVisual.setPosisRec(point);
+
+	}
+
+	public void setPosisAtual(Point point) {
+		if (gerenciadorVisual == null) {
+			return;
+		}
+		gerenciadorVisual.setPosisAtual(point);
+
 	}
 }
