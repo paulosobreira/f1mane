@@ -63,6 +63,8 @@ public class PainelCircuito extends JPanel {
 	private Point pointDesenhaVelo = new Point(10, 60);
 	private Point pointDesenhaSC = new Point(10, 85);
 	private Point pointDesenhaHelmet = new Point(10, 130);
+	private Point posisRec;
+	private Point posisAtual;
 	public final static Color luzDistProx1 = new Color(0, 255, 0, 100);
 	public final static Color luzDistProx2 = new Color(255, 255, 0, 100);
 	public final static Color luzApagada = new Color(255, 255, 255, 170);
@@ -141,6 +143,22 @@ public class PainelCircuito extends JPanel {
 	private BufferedImage backGround;
 	private TileMap tileMap[][];
 	private Thread threadCarregarBkg;
+
+	public Point getPosisRec() {
+		return posisRec;
+	}
+
+	public void setPosisRec(Point posisRec) {
+		this.posisRec = posisRec;
+	}
+
+	public Point getPosisAtual() {
+		return posisAtual;
+	}
+
+	public void setPosisAtual(Point posisAtual) {
+		this.posisAtual = posisAtual;
+	}
 
 	public BufferedImage getBackGround() {
 		return backGround;
@@ -371,10 +389,12 @@ public class PainelCircuito extends JPanel {
 							if (drawBuffer == null) {
 								drawBuffer = backGround;
 							}
-							drawBuffer.setAccelerationPriority(1);
-							int newX = Util.inte(limitesViewPort.getX());
-							int newY = Util.inte(limitesViewPort.getY());
-							g2d.drawImage(drawBuffer, newX, newY, null);
+							if (drawBuffer != null) {
+								drawBuffer.setAccelerationPriority(1);
+								int newX = Util.inte(limitesViewPort.getX());
+								int newY = Util.inte(limitesViewPort.getY());
+								g2d.drawImage(drawBuffer, newX, newY, null);
+							}
 
 						}
 					}
@@ -684,6 +704,7 @@ public class PainelCircuito extends JPanel {
 					g2d.draw(piloto.getDiateira());
 				if (piloto.getTrazeira() != null)
 					g2d.draw(piloto.getTrazeira());
+
 			}
 			Point p = new Point(Util.inte((piloto.getCarX() - 2) * zoom),
 					Util.inte((piloto.getCarY() - 2) * zoom));
@@ -1008,6 +1029,18 @@ public class PainelCircuito extends JPanel {
 			g2d.fillOval(Util.inte(trazCarD.x * zoom),
 					Util.inte(trazCarD.y * zoom), Util.inte(5 * zoom),
 					Util.inte(5 * zoom));
+			if (posisAtual != null) {
+				g2d.setColor(Color.MAGENTA);
+				g2d.fillOval(Util.inte(posisAtual.x * zoom),
+						Util.inte(posisAtual.y * zoom), Util.inte(5 * zoom),
+						Util.inte(5 * zoom));
+			}
+			if (posisRec != null) {
+				g2d.setColor(Color.CYAN);
+				g2d.fillOval(Util.inte(posisRec.x * zoom),
+						Util.inte(posisRec.y * zoom), Util.inte(5 * zoom),
+						Util.inte(5 * zoom));
+			}
 		}
 	}
 
