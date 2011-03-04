@@ -590,7 +590,7 @@ public class MonitorJogo implements Runnable {
 			ganhoList.add(ganho);
 		} else {
 			ganhoList.add(ganho);
-			if (ganhoList.size() > 10) {
+			if (ganhoList.size() > 15) {
 				ganhoList.remove(0);
 			}
 		}
