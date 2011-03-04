@@ -26,15 +26,28 @@ public class AppletPaddock extends JApplet {
 
 		try {
 			String lang = getParameter("lang");
-			if(!Util.isNullOrEmpty(lang)){
+			if (!Util.isNullOrEmpty(lang)) {
 				Lang.mudarIdioma(lang);
 			}
 			Properties properties = new Properties();
 			properties.load(this.getClass().getResourceAsStream(
 					"client.properties"));
-			controlePaddockApplet = new ControlePaddockCliente(this
-					.getCodeBase(), this);
-			controlePaddockApplet.logar();
+			controlePaddockApplet = new ControlePaddockCliente(
+					this.getCodeBase(), this);
+			Runnable runnable = new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						Logger.logarExept(e);
+					}
+					controlePaddockApplet.logar();
+				}
+			};
+			Thread thread = new Thread(runnable);
+			thread.start();
 		} catch (Exception e) {
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuffer retorno = new StringBuffer();
@@ -42,8 +55,8 @@ public class AppletPaddock extends JApplet {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
-					.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(),
+					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 
