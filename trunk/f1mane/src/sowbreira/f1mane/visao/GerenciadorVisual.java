@@ -840,7 +840,7 @@ public class GerenciadorVisual {
 		scrollPaneTextual = new JScrollPane(infoTextual) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(scrollPaneTextual.getWidth(), 150);
+				return new Dimension(scrollPaneTextual.getWidth(), 110);
 			}
 		};
 		JPanel panel = new JPanel();

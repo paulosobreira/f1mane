@@ -523,12 +523,16 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaMiniPista(Graphics2D g2d) {
+		if (!desenhaInfo) {
+			return;
+		}
 		if (limitesViewPort == null) {
 			return;
 		}
 		g2d.setColor(Color.LIGHT_GRAY);
-		Point o = new Point(limitesViewPort.x + 5, limitesViewPort.y + 330);
-		//g2d.fillOval(limitesViewPort.x + 5, limitesViewPort.y + 330, 10, 10);
+		Point o = new Point(limitesViewPort.x + 5, limitesViewPort.y
+				+ limitesViewPort.height - 200);
+		// g2d.fillOval(limitesViewPort.x + 5, limitesViewPort.y + 330, 10, 10);
 		double doubleMulti = circuito.getMultiplciador() * 3;
 		if (pistaMinimizada == null) {
 			pistaMinimizada = new ArrayList();
@@ -754,12 +758,18 @@ public class PainelCircuito extends JPanel {
 			desenhaCarro(g2d, piloto);
 			piloto.centralizaCarro(controleJogo);
 			if (Logger.ativo) {
-				if (piloto.getCentro() != null)
-					g2d.draw(piloto.getCentro());
-				if (piloto.getDiateira() != null)
-					g2d.draw(piloto.getDiateira());
-				if (piloto.getTrazeira() != null)
-					g2d.draw(piloto.getTrazeira());
+				AffineTransform afZoom = new AffineTransform();
+				afZoom.setToScale(zoom, zoom);
+				if (piloto.getCentro() != null) {
+					Rectangle centro = piloto.getCentro();
+					g2d.draw(afZoom.createTransformedShape(centro));
+				}
+				if (piloto.getDiateira() != null) {
+					g2d.draw(afZoom.createTransformedShape(piloto.getDiateira()));
+				}
+				if (piloto.getTrazeira() != null) {
+					g2d.draw(afZoom.createTransformedShape(piloto.getTrazeira()));
+				}
 
 			}
 			Point p = new Point(Util.inte((piloto.getCarX() - 2) * zoom),

@@ -428,7 +428,7 @@ public class ControlePersistencia {
 		List list = session.createCriteria(CarreiraDadosSrv.class)
 				.createAlias("jogadorDadosSrv", "j")
 				.add(Restrictions.eq("j.nome", nomeJogador)).list();
-		CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) list.get(0);
+		CarreiraDadosSrv carreiraDadosSrv = null;
 		if (!list.isEmpty()) {
 			carreiraDadosSrv = (CarreiraDadosSrv) list.get(0);
 		}
