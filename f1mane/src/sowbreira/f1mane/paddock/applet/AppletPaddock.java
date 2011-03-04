@@ -35,11 +35,10 @@ public class AppletPaddock extends JApplet {
 			controlePaddockApplet = new ControlePaddockCliente(
 					this.getCodeBase(), this);
 			Runnable runnable = new Runnable() {
-
 				@Override
 				public void run() {
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						Logger.logarExept(e);
 					}

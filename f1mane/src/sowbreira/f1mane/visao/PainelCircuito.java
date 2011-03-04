@@ -1728,7 +1728,7 @@ public class PainelCircuito extends JPanel {
 				g2d.setColor(transpMenus);
 				g2d.fillRoundRect(limitesViewPort.x
 						+ (limitesViewPort.width - 130), limitesViewPort.y + 2,
-						128, 364, 10, 10);
+						128, 384, 10, 10);
 			} else {
 				g2d.setColor(blu);
 				g2d.fillRoundRect(limitesViewPort.x
@@ -1905,8 +1905,8 @@ public class PainelCircuito extends JPanel {
 							contAlt);
 					contAlt += 15;
 					contVolta++;
-					color = new Color(contVolta * 30, contVolta * 30,
-							contVolta * 30);
+					color = new Color(contVolta * 20, contVolta * 20,
+							contVolta * 20);
 					if (contVolta > 5) {
 						break;
 					}
