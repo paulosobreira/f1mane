@@ -506,13 +506,19 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				try {
 					estado = Comandos.MOSTRA_RESULTADO_FINAL;
 					tempoFim = System.currentTimeMillis();
-					controleClassificacao.processaCorrida(tempoInicio,
-							tempoFim, mapVoltasJogadoresOnline, pilotos,
-							dadosCriarJogo);
-					if (!Util.isNullOrEmpty(dadosCriarJogo.getNomeCampeonato())) {
-						controleCampeonatoServidor.processaCorrida(tempoInicio,
+					try {
+						controleClassificacao.processaCorrida(tempoInicio,
 								tempoFim, mapVoltasJogadoresOnline, pilotos,
-								dadosCriarJogo, controleClassificacao);
+								dadosCriarJogo);
+						if (!Util.isNullOrEmpty(dadosCriarJogo
+								.getNomeCampeonato())) {
+							controleCampeonatoServidor.processaCorrida(
+									tempoInicio, tempoFim,
+									mapVoltasJogadoresOnline, pilotos,
+									dadosCriarJogo, controleClassificacao);
+						}
+					} catch (Exception e) {
+						Logger.topExecpts(e);
 					}
 
 					Thread.sleep(60000);
