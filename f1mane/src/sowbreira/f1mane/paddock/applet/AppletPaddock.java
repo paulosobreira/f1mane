@@ -37,11 +37,6 @@ public class AppletPaddock extends JApplet {
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						Logger.logarExept(e);
-					}
 					controlePaddockApplet.logar();
 				}
 			};
