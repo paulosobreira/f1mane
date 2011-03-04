@@ -123,6 +123,7 @@ public class PainelCircuito extends JPanel {
 	public final static String zoomMutex = "zoomMutex";
 	private Circuito circuito;
 	private BasicStroke trilho = new BasicStroke(1.0f);
+	private BasicStroke trilhoMiniPista = new BasicStroke(2.5f);
 	private BasicStroke pista;
 	private BasicStroke pistaTinta;
 	private BasicStroke box;
@@ -143,6 +144,7 @@ public class PainelCircuito extends JPanel {
 	private BufferedImage backGround;
 	private TileMap tileMap[][];
 	private Thread threadCarregarBkg;
+	private List pistaMinimizada;
 
 	public Point getPosisRec() {
 		return posisRec;
@@ -512,9 +514,63 @@ public class PainelCircuito extends JPanel {
 				desenharClima(g2d);
 				desenhaInfoAdd(g2d);
 				desenhaContadorVoltas(g2d);
+				desenhaMiniPista(g2d);
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
+		}
+
+	}
+
+	private void desenhaMiniPista(Graphics2D g2d) {
+		if (limitesViewPort == null) {
+			return;
+		}
+		g2d.setColor(Color.LIGHT_GRAY);
+		Point o = new Point(limitesViewPort.x + 5, limitesViewPort.y + 330);
+		//g2d.fillOval(limitesViewPort.x + 5, limitesViewPort.y + 330, 10, 10);
+		double doubleMulti = circuito.getMultiplciador() * 3;
+		if (pistaMinimizada == null) {
+			pistaMinimizada = new ArrayList();
+			List pista = circuito.getPista();
+
+			for (Iterator iterator = pista.iterator(); iterator.hasNext();) {
+				No no = (No) iterator.next();
+				Point p = new Point(no.getX(), no.getY());
+				p.x /= doubleMulti;
+				p.y /= doubleMulti;
+				if (!pistaMinimizada.contains(p))
+					pistaMinimizada.add(p);
+			}
+
+		}
+		Point oldP = null;
+		g2d.setStroke(trilhoMiniPista);
+		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			if (oldP != null) {
+				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
+			}
+			oldP = p;
+		}
+		Point p0 = (Point) pistaMinimizada.get(0);
+		g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p0.x, o.y + p0.y);
+		if (pilotoSelecionado != null && pilotoSelecionado.getNoAtual() != null) {
+			g2d.setColor(PainelTabelaPosicoes.jogador);
+			Point point = pilotoSelecionado.getNoAtual().getPoint();
+			Point p = new Point(point.x, point.y);
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
+		}
+		Piloto lider = (Piloto) controleJogo.getPilotos().get(0);
+		if (lider != null && lider.getNoAtual() != null) {
+			g2d.setColor(PainelTabelaPosicoes.otros);
+			Point point = lider.getNoAtual().getPoint();
+			Point p = new Point(point.x, point.y);
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
 		}
 
 	}

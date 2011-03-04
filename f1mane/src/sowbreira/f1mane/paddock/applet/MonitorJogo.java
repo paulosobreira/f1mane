@@ -171,8 +171,8 @@ public class MonitorJogo implements Runnable {
 					}
 				}
 
-				atualizarDadosParciais(jogoCliente.getDadosJogo(), jogoCliente
-						.getPilotoSelecionado());
+				atualizarDadosParciais(jogoCliente.getDadosJogo(),
+						jogoCliente.getPilotoSelecionado());
 				if (controlePaddockCliente.getLatenciaReal() > 2000) {
 					delayVerificaStado = 2;
 				} else {
@@ -267,8 +267,7 @@ public class MonitorJogo implements Runnable {
 			if (ret != null) {
 				clientPaddockPack = (ClientPaddockPack) ret;
 				if (clientPaddockPack.getDadosJogoCriado().getPilotosCarreira() != null) {
-					Logger
-							.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
+					Logger.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
 					List pilots = clientPaddockPack.getDadosJogoCriado()
 							.getPilotosCarreira();
 					List carros = new ArrayList();
@@ -286,15 +285,15 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void atualizaPosicoes() {
 		try {
-			Object ret = controlePaddockCliente.enviarObjeto(jogoCliente
-					.getNomeJogoCriado(), true);
+			Object ret = controlePaddockCliente.enviarObjeto(
+					jogoCliente.getNomeJogoCriado(), true);
 			if (retornoNaoValido(ret)) {
 				return;
 			}
@@ -314,8 +313,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -432,8 +431,7 @@ public class MonitorJogo implements Runnable {
 						// }
 						if (diffINdex < 0) {
 							diffINdex = (no.getIndex() + jogoCliente
-									.getNosDaPista().size())
-									- indexPiloto;
+									.getNosDaPista().size()) - indexPiloto;
 						}
 						if (diffINdex <= 25) {
 							divPosis = 20;
@@ -517,16 +515,13 @@ public class MonitorJogo implements Runnable {
 										.contains(noAtual)) {
 							Logger.logar("noserver box piloto na pista");
 							if (piloto.isJogadorHumano()) {
-								Logger
-										.logar("(Math.abs(jogoCliente.getCircuito().getEntradaBoxIndex() - noAtual.getIndex()) "
-												+ (Math.abs(jogoCliente
-														.getCircuito()
-														.getEntradaBoxIndex()
-														- noAtual.getIndex())));
+								Logger.logar("(Math.abs(jogoCliente.getCircuito().getEntradaBoxIndex() - noAtual.getIndex()) "
+										+ (Math.abs(jogoCliente.getCircuito()
+												.getEntradaBoxIndex()
+												- noAtual.getIndex())));
 							}
 							if ((Math.abs(jogoCliente.getCircuito()
-									.getEntradaBoxIndex()
-									- noAtual.getIndex())) < 50) {
+									.getEntradaBoxIndex() - noAtual.getIndex())) < 50) {
 								if (piloto.isJogadorHumano()) {
 									Logger.logar("Entrou No Box "
 											+ (Math.abs(jogoCliente
@@ -595,7 +590,7 @@ public class MonitorJogo implements Runnable {
 			ganhoList.add(ganho);
 		} else {
 			ganhoList.add(ganho);
-			if (ganhoList.size() > 5) {
+			if (ganhoList.size() > 10) {
 				ganhoList.remove(0);
 			}
 		}
@@ -633,8 +628,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -669,8 +664,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -785,47 +780,68 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
 
-	public void mudarGiroMotor(Object selectedItem) {
-		try {
-			String giro = (String) selectedItem;
-			if (!Carro.GIRO_MAX.equals(giro) && !Carro.GIRO_MIN.equals(giro)
-					&& !Carro.GIRO_NOR.equals(giro)) {
-				return;
+	public void mudarGiroMotor(final Object selectedItem) {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					String giro = (String) selectedItem;
+					if (!Carro.GIRO_MAX.equals(giro)
+							&& !Carro.GIRO_MIN.equals(giro)
+							&& !Carro.GIRO_NOR.equals(giro)) {
+						return;
+					}
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_GIRO_MOTOR, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente
+							.getNomeJogoCriado());
+					clientPaddockPack.setGiroMotor(giro);
+					Object ret = controlePaddockCliente.enviarObjeto(
+							clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
 			}
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.MUDAR_GIRO_MOTOR, sessaoCliente);
-			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-			clientPaddockPack.setGiroMotor(giro);
-			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
-					true);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
 
 	}
 
 	public void mudarModoBox(boolean modoBox) {
-		try {
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.MUDAR_MODO_BOX, sessaoCliente);
-			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-			clientPaddockPack.setTpPneuBox(jogoCliente.getDadosCriarJogo()
-					.getTpPnueu());
-			clientPaddockPack.setCombustBox(jogoCliente.getDadosCriarJogo()
-					.getCombustivel().intValue());
-			clientPaddockPack.setAsaBox(jogoCliente.getDadosCriarJogo()
-					.getAsa());
-			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
-					true);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_MODO_BOX, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente
+							.getNomeJogoCriado());
+					clientPaddockPack.setTpPneuBox(jogoCliente
+							.getDadosCriarJogo().getTpPnueu());
+					clientPaddockPack.setCombustBox(jogoCliente
+							.getDadosCriarJogo().getCombustivel().intValue());
+					clientPaddockPack.setAsaBox(jogoCliente.getDadosCriarJogo()
+							.getAsa());
+					Object ret = controlePaddockCliente.enviarObjeto(
+							clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+
+			}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
+
 	}
 
 	public void mudarModoAgressivo(boolean modoAgressivo) {
@@ -841,41 +857,74 @@ public class MonitorJogo implements Runnable {
 
 	}
 
-	public void mudarModoPilotagem(String modo) {
-		try {
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.MUDAR_MODO_PILOTAGEM, sessaoCliente);
-			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-			clientPaddockPack.setModoPilotagem(modo);
-			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
-					true);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
+	public void mudarModoPilotagem(final String modo) {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_MODO_PILOTAGEM, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente
+							.getNomeJogoCriado());
+					clientPaddockPack.setModoPilotagem(modo);
+					Object ret = controlePaddockCliente.enviarObjeto(
+							clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+
+			}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
+
 	}
 
 	public void mudarAutoPos() {
-		try {
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.MUDAR_MODO_AUTOPOS, sessaoCliente);
-			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
-					true);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
+
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_MODO_AUTOPOS, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente
+							.getNomeJogoCriado());
+					Object ret = controlePaddockCliente.enviarObjeto(
+							clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+
+			}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
+
 	}
 
-	public void mudarPos(int tracado) {
-		try {
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.MUDAR_TRACADO, sessaoCliente);
-			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-			clientPaddockPack.setTracado(tracado);
-			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
-					true);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
+	public void mudarPos(final int tracado) {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_TRACADO, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente
+							.getNomeJogoCriado());
+					clientPaddockPack.setTracado(tracado);
+					Object ret = controlePaddockCliente.enviarObjeto(
+							clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+			}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
+
 	}
 }

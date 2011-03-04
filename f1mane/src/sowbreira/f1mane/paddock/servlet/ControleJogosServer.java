@@ -116,12 +116,6 @@ public class ControleJogosServer {
 									.getPtsCarro(), jogoServidor.getNiveljogo())) {
 						return new MsgSrv(Lang.msg("261"));
 					}
-					// if
-					// (!Util.isNullOrEmpty(clientPaddockPack.getDadosJogoCriado()
-					// .getNomeCampeonato())) {
-					// return new MsgSrv(
-					// Lang.msg("modoCarreiraNaoPermitidoCampeonato"));
-					// }
 				}
 				jogoServidor.setNomeCriador(clientPaddockPack
 						.getSessaoCliente().getNomeJogador());
