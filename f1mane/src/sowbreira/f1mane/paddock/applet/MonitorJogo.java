@@ -402,7 +402,6 @@ public class MonitorJogo implements Runnable {
 			if (piloto.getId() == posis.idPiloto) {
 				piloto.setAgressivo(posis.agressivo);
 				piloto.setJogadorHumano(posis.humano);
-				piloto.setTracado(posis.tracado);
 				piloto.setAutoPos(posis.autoPos);
 				if (posis.idNo >= -1) {
 					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
@@ -423,17 +422,21 @@ public class MonitorJogo implements Runnable {
 						int indexPiloto = piloto.getNoAtual().getIndex();
 						No noNovo = null;
 						int diffINdex = no.getIndex() - indexPiloto;
-						//
-						// if (piloto.getPosicao() == 1) {
-						// Logger.logar("no.getIndex() " + no.getIndex());
-						// Logger.logar("indexPiloto " + indexPiloto);
-						// Logger.logar("diffINdex " + diffINdex);
-						// }
+
 						if (diffINdex < 0) {
 							diffINdex = (no.getIndex() + jogoCliente
 									.getNosDaPista().size()) - indexPiloto;
+							if (piloto.isJogadorHumano()) {
+								Logger.logar("no.getIndex() " + no.getIndex());
+								Logger.logar("indexPiloto " + indexPiloto);
+								Logger.logar("diffINdex " + diffINdex);
+							}
 						}
-						if (diffINdex <= 25) {
+
+						if (diffINdex <= 10) {
+							divPosis = 30;
+							sleepConsumidorPosis = 20;
+						} else if (diffINdex > 10 && diffINdex <= 20) {
 							divPosis = 25;
 							sleepConsumidorPosis = 20;
 						} else if (diffINdex > 20 && diffINdex <= 50) {
@@ -497,6 +500,9 @@ public class MonitorJogo implements Runnable {
 						if (diffINdex > 5000
 								&& !(jogoCliente.getNosDoBox().contains(no) && jogoCliente
 										.getNosDaPista().contains(
+												piloto.getNoAtual()))
+								&& !(jogoCliente.getNosDaPista().contains(no) && jogoCliente
+										.getNosDoBox().contains(
 												piloto.getNoAtual()))) {
 							if (piloto.isJogadorHumano()) {
 								Logger.logar("(diffINdex > 3000)"
@@ -506,35 +512,38 @@ public class MonitorJogo implements Runnable {
 							return;
 						}
 						No noAtual = piloto.getNoAtual();
-						/**
-						 * noserver box piloto na pista
-						 */
+
 						boolean entrouNoBox = false;
 						if (jogoCliente.getNosDoBox().contains(no)
 								&& jogoCliente.getNosDaPista()
 										.contains(noAtual)) {
-							Logger.logar("noserver box piloto na pista");
-							if (piloto.isJogadorHumano()) {
-								Logger.logar("(Math.abs(jogoCliente.getCircuito().getEntradaBoxIndex() - noAtual.getIndex()) "
-										+ (Math.abs(jogoCliente.getCircuito()
-												.getEntradaBoxIndex()
-												- noAtual.getIndex())));
-							}
 							if ((Math.abs(jogoCliente.getCircuito()
 									.getEntradaBoxIndex() - noAtual.getIndex())) < 50) {
-								if (piloto.isJogadorHumano()) {
-									Logger.logar("Entrou No Box "
-											+ (Math.abs(jogoCliente
-													.getCircuito()
-													.getEntradaBoxIndex()
-													- noAtual.getIndex())));
-								}
 								entrouNoBox = true;
-
 							} else {
-								divPosis = 15;
-								sleepConsumidorPosis = 20;
+								divPosis = 10;
+								sleepConsumidorPosis = 10;
 							}
+						}
+
+						boolean saiuNoBox = false;
+						if (jogoCliente.getNosDaPista().contains(no)
+								&& jogoCliente.getNosDoBox().contains(noAtual)) {
+							if (piloto.isJogadorHumano()) {
+								Logger.logar("SAIU DO BOX "
+										+ ((Math.abs(jogoCliente.getNosDoBox()
+												.size() - noAtual.getIndex()))));
+							}
+
+							if ((Math.abs(jogoCliente.getNosDoBox().size()
+									- noAtual.getIndex())) < 50) {
+								saiuNoBox = true;
+								if (piloto.isJogadorHumano()) {
+									Logger.logar("SAIU DO BOX");
+								}
+							} else {
+								divPosis = 20;
+								sleepConsumidorPosis = 20;							}
 						}
 
 						double ganho = (piloto.getGanho() / divPosis);
@@ -564,16 +573,24 @@ public class MonitorJogo implements Runnable {
 						if (entrouNoBox) {
 							noNovo = (No) jogoCliente.getNosDoBox().get(0);
 						}
+						if (saiuNoBox) {
+							noNovo = (No) jogoCliente.getNosDaPista().get(
+									jogoCliente.getCircuito()
+											.getSaidaBoxIndex());
+						}
 						if (noNovo != null)
 							piloto.setNoAtual(noNovo);
 						if (piloto.verificaColisaoCarroFrente(jogoCliente)) {
-							if (diffINdex < 2000)
+							if (diffINdex < 1500) {
 								piloto.setNoAtual(noAtual);
+							}
 							int novoTracado = Util.intervalo(0, 2);
 							while (novoTracado == piloto.getTracado()) {
 								novoTracado = Util.intervalo(0, 2);
 							}
 							piloto.mudarTracado(novoTracado, jogoCliente, true);
+						} else {
+							piloto.setTracado(posis.tracado);
 						}
 					}
 				}
