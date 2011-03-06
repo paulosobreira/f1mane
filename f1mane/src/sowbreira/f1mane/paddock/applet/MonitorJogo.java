@@ -759,6 +759,10 @@ public class MonitorJogo implements Runnable {
 							piloto.setJogadorHumano(false);
 						}
 						piloto.getCarro().setDanificado(dadosParciais.dano);
+						if (!jogoCliente.isSafetyCarNaPista()
+								&& piloto.isDesqualificado()) {
+							piloto.getCarro().setRecolhido(true);
+						}
 						piloto.setBox(dadosParciais.pselBox);
 						piloto.setStress(dadosParciais.pselStress);
 						piloto.getCarro().setMotor(dadosParciais.pselMotor);
