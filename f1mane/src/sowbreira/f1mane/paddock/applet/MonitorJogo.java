@@ -543,7 +543,8 @@ public class MonitorJogo implements Runnable {
 								}
 							} else {
 								divPosis = 20;
-								sleepConsumidorPosis = 20;							}
+								sleepConsumidorPosis = 20;
+							}
 						}
 
 						double ganho = (piloto.getGanho() / divPosis);
@@ -580,7 +581,8 @@ public class MonitorJogo implements Runnable {
 						}
 						if (noNovo != null)
 							piloto.setNoAtual(noNovo);
-						if (piloto.verificaColisaoCarroFrente(jogoCliente)) {
+						if (piloto
+								.verificaColisaoCarroFrente(jogoCliente, true)) {
 							if (diffINdex < 1500) {
 								piloto.setNoAtual(noAtual);
 							}
