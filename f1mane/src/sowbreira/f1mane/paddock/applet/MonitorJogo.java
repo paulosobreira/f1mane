@@ -542,8 +542,8 @@ public class MonitorJogo implements Runnable {
 									Logger.logar("SAIU DO BOX");
 								}
 							} else {
-								divPosis = 20;
-								sleepConsumidorPosis = 20;
+								divPosis = 15;
+								sleepConsumidorPosis = 15;
 							}
 						}
 
