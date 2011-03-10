@@ -243,29 +243,29 @@ img {
 		<br>
 		<div style="text-align: center;">
 			<div style="text-align: center;">
-				Jogar Offline
-				<a id="link" href="f1mane.jnlp" style="text-align: left;">
-					Completo 100MB
+				<b>Jogar Offline</b>
+				<a id="link" href="f1maneLite.jnlp" style="text-align: left;">
+					Normal  5MB
 					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 				</a>
 				&nbsp;&nbsp; 
-				<a id="link" href="f1maneLite.jnlp" style="text-align: left;">
-					Por Circuito  5MB
+				<a id="link" href="f1mane.jnlp" style="text-align: left;">
+					Baixar Completo 130MB
 					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 				</a>
 			<div>		
 		<br>
 			<div style="text-align: center;	">
-				Jogar Online		
-				<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
-					Completo 100MB
-					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
-				</a>
-				&nbsp;&nbsp;
+				<b>Jogar Online</b>		
 				<a id="link"  href="f1maneonlineLite.jnlp" style="text-align: left;">
-					Por Circuito  5MB
+					Normal  5MB
 					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 				</a>	
+				&nbsp;&nbsp;
+				<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
+					Baixar Completo 130MB
+					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+				</a>
 			<div>						
 		</div>
 		<br>
