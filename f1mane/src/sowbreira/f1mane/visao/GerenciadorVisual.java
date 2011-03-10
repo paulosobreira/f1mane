@@ -1760,6 +1760,21 @@ public class GerenciadorVisual {
 						break;
 					}
 				}
+				cont = 0;
+				while (controleJogo.getCircuito().isUsaBkg()
+						&& painelCircuito.getBackGround() == null) {
+					try {
+						Thread.sleep(1000);
+						limitesViewPort = (Rectangle) painelCircuito
+								.limitesViewPort();
+					} catch (Exception e) {
+						Logger.logarExept(e);
+					}
+					cont++;
+					if (cont > 50) {
+						break;
+					}
+				}
 
 				int iniY1 = 30;
 				int iniY2 = 40;
