@@ -1750,20 +1750,6 @@ public class GerenciadorVisual {
 
 				limitesViewPort = (Rectangle) painelCircuito.limitesViewPort();
 				int cont = 0;
-				while (limitesViewPort == null) {
-					try {
-						Thread.sleep(1000);
-						limitesViewPort = (Rectangle) painelCircuito
-								.limitesViewPort();
-					} catch (Exception e) {
-						Logger.logarExept(e);
-					}
-					cont++;
-					if (cont > 30) {
-						break;
-					}
-				}
-				cont = 0;
 				while (controleJogo.getCircuito().isUsaBkg()
 						&& painelCircuito.getBackGround() == null) {
 					try {
@@ -1775,6 +1761,21 @@ public class GerenciadorVisual {
 					}
 					cont++;
 					if (cont > 50) {
+						break;
+					}
+				}
+				cont = 0;
+				while (limitesViewPort == null
+						|| limitesViewPort.getWidth() == 0) {
+					try {
+						Thread.sleep(1000);
+						limitesViewPort = (Rectangle) painelCircuito
+								.limitesViewPort();
+					} catch (Exception e) {
+						Logger.logarExept(e);
+					}
+					cont++;
+					if (cont > 30) {
 						break;
 					}
 				}
@@ -1806,19 +1807,9 @@ public class GerenciadorVisual {
 				for (int i = 0; i < pilotos.size(); i++) {
 					Piloto piloto = (Piloto) pilotos.get(i);
 					Point point = (Point) ptosPilotos.get(i);
-					limitesViewPort = (Rectangle) painelCircuito
-							.limitesViewPort();
-					if (limitesViewPort == null) {
-						Logger
-								.logarExept(new Exception(
-										"limitesViewPort nullo"));
-					}
 					int x = limitesViewPort.x + limitesViewPort.width;
 					while (x > (point.x + limitesViewPort.x)) {
-						limitesViewPort = (Rectangle) painelCircuito
-								.limitesViewPort();
 						Point pd = new Point(x, point.y + limitesViewPort.y);
-
 						painelCircuito.definirDesenhoQualificacao(piloto, pd);
 						if (tempoSleep != 0) {
 							try {
