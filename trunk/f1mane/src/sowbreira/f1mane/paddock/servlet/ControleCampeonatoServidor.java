@@ -62,7 +62,8 @@ public class ControleCampeonatoServidor {
 			}
 			return (new MsgSrv(Lang.msg("campeonatoCriado")));
 		} finally {
-			session.close();
+			if (session.isOpen())
+				session.close();
 		}
 	}
 
@@ -199,22 +200,14 @@ public class ControleCampeonatoServidor {
 				dadosCorridaCampeonato.setQtdeParadasBox(piloto
 						.getQtdeParadasBox());
 				dadosCorridaCampeonato.setDesgastePneus(String.valueOf(piloto
-						.getCarro().porcentagemDesgastePeneus()
-						+ "%"));
+						.getCarro().porcentagemDesgastePeneus() + "%"));
 				dadosCorridaCampeonato.setCombustivelRestante(String
 						.valueOf(piloto.getCarro().porcentagemCombustivel()
 								+ "%"));
 				dadosCorridaCampeonato.setDesgasteMotor(String.valueOf(piloto
-						.getCarro().porcentagemDesgasteMotor()
-						+ "%"));
+						.getCarro().porcentagemDesgasteMotor() + "%"));
 				corridaCampeonatoCorrente.getDadosCorridaCampeonatos().add(
 						dadosCorridaCampeonato);
-				// try {
-				// controlePersistencia.gravarDados(session,
-				// dadosCorridaCampeonato, corridaCampeonatoCorrente);
-				// } catch (Exception e) {
-				// Logger.topExecpts(e);
-				// }
 			}
 			try {
 				controlePersistencia.gravarDados(session, campeonato);
