@@ -404,7 +404,8 @@ public class ControlePersistencia {
 			transaction.rollback();
 			throw e;
 		} finally {
-			session.close();
+			if (session.isOpen())
+				session.close();
 		}
 
 	}

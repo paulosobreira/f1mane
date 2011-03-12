@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
@@ -93,6 +94,7 @@ public class ControleClassificacao {
 			Map mapVoltasJogadoresOnline, List pilotos,
 			DadosCriarJogo dadosCriarJogo) {
 		Session session = controlePersistencia.getSession();
+		Transaction transaction = session.beginTransaction();
 		try {
 			for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
@@ -131,18 +133,17 @@ public class ControleClassificacao {
 					if (carreiraDadosSrv.isModoCarreira()) {
 						int ptsCorrida = corridasDadosSrv.getPontos();
 						carreiraDadosSrv.setPtsConstrutores(carreiraDadosSrv
-								.getPtsConstrutores()
-								+ ptsCorrida + 5);
+								.getPtsConstrutores() + ptsCorrida + 5);
 					}
-					try {
-						controlePersistencia.gravarDados(session,
-								corridasDadosSrv, carreiraDadosSrv,
-								jogadorDadosSrv);
-					} catch (Exception e) {
-						Logger.topExecpts(e);
-					}
+					session.saveOrUpdate(corridasDadosSrv);
+					session.saveOrUpdate(carreiraDadosSrv);
+					session.saveOrUpdate(jogadorDadosSrv);
 				}
 			}
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			Logger.logarExept(e);
 		} finally {
 			if (session.isOpen()) {
 				session.close();
