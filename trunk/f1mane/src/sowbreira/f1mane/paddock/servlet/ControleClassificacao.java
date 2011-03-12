@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
@@ -28,6 +29,7 @@ import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -45,32 +47,40 @@ public class ControleClassificacao {
 		this.controlePersistencia = controlePersistencia;
 	}
 
-	public List obterListaClassificacao() {
+	public List obterListaClassificacao(Integer ano) {
 		Session session = controlePersistencia.getSession();
 		try {
 			List returnList = new ArrayList();
 			Set jogadores = controlePersistencia.obterListaJogadores(session);
+			Dia ini = new Dia(1, 1, ano);
+			Dia fim = new Dia(1, 1, ano + 1);
 			for (Iterator iter = jogadores.iterator(); iter.hasNext();) {
 				String key = (String) iter.next();
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 						.carregaDadosJogador(key, session);
+				List corridas = session
+						.createCriteria(CorridasDadosSrv.class)
+						.add(Restrictions
+								.eq("jogadorDadosSrv", jogadorDadosSrv))
+						.add(Restrictions.ge("tempoFim", ini.toTimestamp()
+								.getTime()))
+						.add(Restrictions.le("tempoFim", fim.toTimestamp()
+								.getTime())).list();
 				DadosJogador dadosJogador = new DadosJogador();
 				dadosJogador.setNome(jogadorDadosSrv.getNome());
 				dadosJogador.setUltimoAceso(jogadorDadosSrv.getUltimoLogon());
-				dadosJogador.setPontos(somarPontos(jogadorDadosSrv));
-				dadosJogador.setCorridas(jogadorDadosSrv.getCorridas().size());
+				dadosJogador.setPontos(somarPontos(jogadorDadosSrv, ano,
+						corridas));
+				dadosJogador.setCorridas(corridas.size());
 				returnList.add(dadosJogador);
 			}
-
 			Collections.sort(returnList, new Comparator() {
-
 				public int compare(Object arg0, Object arg1) {
 					DadosJogador d0 = (DadosJogador) arg0;
 					DadosJogador d1 = (DadosJogador) arg1;
 					return new Long(d1.getPontos()).compareTo(new Long(d0
 							.getPontos()));
 				}
-
 			});
 			return returnList;
 		} finally {
@@ -80,8 +90,9 @@ public class ControleClassificacao {
 		}
 	}
 
-	private long somarPontos(JogadorDadosSrv jogadorDadosSrv) {
-		List corridas = jogadorDadosSrv.getCorridas();
+	private long somarPontos(JogadorDadosSrv jogadorDadosSrv, Integer ano,
+			List corridas) {
+
 		int pts = 0;
 		for (Iterator iter = corridas.iterator(); iter.hasNext();) {
 			CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iter.next();
@@ -225,11 +236,11 @@ public class ControleClassificacao {
 		}
 	}
 
-	public List obterListaCorridas(String nomeJogador) {
+	public List obterListaCorridas(String nomeJogador, Integer ano) {
 		Session session = controlePersistencia.getSession();
 		try {
-			return controlePersistencia
-					.obterListaCorridas(nomeJogador, session);
+			return controlePersistencia.obterListaCorridas(nomeJogador,
+					session, ano);
 		} finally {
 			if (session.isOpen()) {
 				session.close();
@@ -238,7 +249,8 @@ public class ControleClassificacao {
 
 	}
 
-	public void preencherListaContrutores(SrvPaddockPack srvPaddockPack) {
+	public void preencherListaContrutores(SrvPaddockPack srvPaddockPack,
+			Integer ano) {
 		Map mapaCarros = new HashMap();
 		Map mapaPilotos = new HashMap();
 		Session session = controlePersistencia.getSession();
@@ -249,7 +261,7 @@ public class ControleClassificacao {
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 						.carregaDadosJogador(key, session);
 				List corridas = controlePersistencia.obterListaCorridas(
-						jogadorDadosSrv.getNome(), session);
+						jogadorDadosSrv.getNome(), session, ano);
 				for (Iterator iterator = corridas.iterator(); iterator
 						.hasNext();) {
 					CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator

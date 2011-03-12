@@ -36,7 +36,7 @@ public class FormClassificacao extends JPanel {
 	private DecimalFormat decimalFormat = new DecimalFormat("00");
 	private DecimalFormat decimalFormatGeral = new DecimalFormat("0000");
 	private String nomeJogador;
-
+	private Integer anoClassificacao;
 	private JTable carrosTable;
 	private JTable piltosTable;
 	private List listaCarros;
@@ -61,15 +61,16 @@ public class FormClassificacao extends JPanel {
 				super.mouseClicked(e);
 				if (e.getClickCount() == 2) {
 					TableModel model = (TableModel) posicoesTable.getModel();
-					nomeJogador = (String) model.getValueAt(posicoesTable
-							.getSelectedRow(), 0);
+					nomeJogador = (String) model.getValueAt(
+							posicoesTable.getSelectedRow(), 0);
 					int ret = JOptionPane.showConfirmDialog(
 							FormClassificacao.this, Lang.msg("129")
 									+ nomeJogador, Lang.msg("130"),
 							JOptionPane.YES_NO_OPTION);
 					if (ret == JOptionPane.YES_OPTION) {
 						gerarListagemCorrida(controlePaddockCliente
-								.obterListaCorridas(nomeJogador));
+								.obterListaCorridas(nomeJogador,
+										anoClassificacao));
 					}
 				}
 			}
@@ -128,6 +129,14 @@ public class FormClassificacao extends JPanel {
 		add(classificacao, BorderLayout.CENTER);
 		add(construtores, BorderLayout.SOUTH);
 
+	}
+
+	public Integer getAnoClassificacao() {
+		return anoClassificacao;
+	}
+
+	public void setAnoClassificacao(Integer anoClassificacao) {
+		this.anoClassificacao = anoClassificacao;
 	}
 
 	private void gerarListagemCorrida(List corridas) {

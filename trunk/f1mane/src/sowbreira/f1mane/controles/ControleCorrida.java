@@ -258,12 +258,14 @@ public class ControleCorrida {
 						if (Math.random() > 0.9) {
 							if (!controleJogo.isSafetyCarNaPista()) {
 								if (Math.random() > 0.5) {
-									controleJogo.info(Html.azul(Lang.msg("021",
+									controleJogo.info(Html.azul(Lang.msg(
+											"021",
 											new String[] {
 													pilotoNaFrente.getNome(),
 													piloto.getNome() })));
 								} else {
-									controleJogo.info(Html.azul(Lang.msg("020",
+									controleJogo.info(Html.azul(Lang.msg(
+											"020",
 											new String[] {
 													pilotoNaFrente.getNome(),
 													piloto.getNome() })));
@@ -365,11 +367,13 @@ public class ControleCorrida {
 		if (controleJogo.isChovendo()) {
 			fatorAcidente -= .1;
 		}
-		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-			fatorAcidente += .05;
-		}
-		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-			fatorAcidente -= .1;
+		if (piloto.isJogadorHumano()) {
+			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
+				fatorAcidente += .05;
+			}
+			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+				fatorAcidente -= .1;
+			}
 		}
 		if ((Math.random() < fatorAcidente)) {
 			return;
@@ -386,24 +390,26 @@ public class ControleCorrida {
 						piloto.incStress(20);
 					if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
 						piloto.incStress(10);
-					controleJogo.infoPrioritaria(Lang.msg("109", new String[] {
-							Html.superRed(piloto.getNome()),
-							pilotoNaFrente.getNome() }));
+					controleJogo.infoPrioritaria(Lang.msg("109",
+							new String[] { Html.superRed(piloto.getNome()),
+									pilotoNaFrente.getNome() }));
 				} else if ((noAtual.verificaCruvaBaixa() || noAtual
 						.verificaCruvaAlta())
 						&& (piloto.getStress() > 70)
 						&& piloto.isAgressivo()
 						&& !piloto.testeHabilidadePilotoCarro()) {
 					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
-					controleJogo.infoPrioritaria(Lang.msg("015", new String[] {
-							Html.superRed(piloto.getNome()),
-							pilotoNaFrente.getNome() }));
+					if (piloto.getPosicao() <= 10)
+						controleJogo.infoPrioritaria(Lang.msg("015",
+								new String[] { Html.superRed(piloto.getNome()),
+										pilotoNaFrente.getNome() }));
 				} else if ((noAtual.verificaCruvaBaixa())
 						&& (piloto.getStress() > 90)) {
 					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
-					controleJogo.infoPrioritaria(Lang.msg("015", new String[] {
-							Html.superRed(piloto.getNome()),
-							pilotoNaFrente.getNome() }));
+					if (piloto.getPosicao() <= 10)
+						controleJogo.infoPrioritaria(Lang.msg("015",
+								new String[] { Html.superRed(piloto.getNome()),
+										pilotoNaFrente.getNome() }));
 				}
 			}
 		} else {
@@ -414,9 +420,9 @@ public class ControleCorrida {
 						&& Math.random() > fatorAcidente
 						&& !piloto.testeHabilidadePiloto()) {
 					piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
-					controleJogo.infoPrioritaria(Lang.msg("016", new String[] {
-							Html.superRed(piloto.getNome()),
-							pilotoNaFrente.getNome() }));
+					controleJogo.infoPrioritaria(Lang.msg("016",
+							new String[] { Html.superRed(piloto.getNome()),
+									pilotoNaFrente.getNome() }));
 					piloto.setDesqualificado(true);
 					atualizaClassificacao();
 					controleSafetyCar.safetyCarNaPista(piloto);
@@ -426,8 +432,7 @@ public class ControleCorrida {
 								&& Math.random() < 0.5) {
 							return;
 						}
-						piloto
-								.getCarro()
+						piloto.getCarro()
 								.setDurabilidadeAereofolio(
 										piloto.getCarro()
 												.getDurabilidadeAereofolio() - 1);
@@ -464,15 +469,17 @@ public class ControleCorrida {
 		ganhador.setCiclosDesconcentrado(0);
 		if (!controleJogo.isSafetyCarNaPista()) {
 			if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
-				controleJogo.info(Lang.msg("018", new String[] {
-						Html.bold(perdedor.getNome()),
-						Html.bold(ganhador.getNome()) }));
+				controleJogo.info(Lang.msg(
+						"018",
+						new String[] { Html.bold(perdedor.getNome()),
+								Html.bold(ganhador.getNome()) }));
 			}
 
 			if (ganhador.isJogadorHumano() && Math.random() > 0.950) {
-				controleJogo.info(Lang.msg("019", new String[] {
-						Html.bold(ganhador.getNome()),
-						Html.bold(perdedor.getNome()) }));
+				controleJogo.info(Lang.msg(
+						"019",
+						new String[] { Html.bold(ganhador.getNome()),
+								Html.bold(perdedor.getNome()) }));
 			}
 		}
 		if (controleJogo.verificaNivelJogo()) {
@@ -482,9 +489,8 @@ public class ControleCorrida {
 			return;
 		}
 		perdedor.setAgressivo(false);
-		perdedor
-				.gerarDesconcentracao((int) (100 - ((perdedor.getHabilidade() / 10) * controleJogo
-						.getNiveljogo())));
+		perdedor.gerarDesconcentracao((int) (100 - ((perdedor.getHabilidade() / 10) * controleJogo
+				.getNiveljogo())));
 
 	}
 
