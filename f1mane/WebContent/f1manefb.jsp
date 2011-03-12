@@ -158,7 +158,7 @@ img {
 
 </head>
 <body>
-<center>
+<iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fapps%2Fapplication.php%3Fid%3D196453917042292&amp;width=292&amp;colorscheme=light&amp;show_faces=false&amp;stream=false&amp;header=false&amp;height=62" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:62px;" allowTransparency="true"></iframe>
 <table >
 	<tr> 
 	<td>
@@ -233,12 +233,10 @@ img {
 		<div id="shots" class="highslide-gallery">
 			<a href="fm1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm1.jpg" width="130" height="120" /></a>
 			<a href="fm2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm2.jpg" width="130" height="120" /></a>
-			<a href="fm3.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm3.jpg" width="130" height="120" /></a>
-			<a href="fm4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm4.jpg" width="130" height="120" /></a><br>
+			<a href="fm3.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm3.jpg" width="130" height="120" /></a><br>
+			<a href="fm4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm4.jpg" width="130" height="120" /></a>
 			<a href="fm5.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm5.jpg" width="130" height="120" /></a>
-			<a href="fm6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm6.jpg" width="130" height="120" /></a>
-			<a href="fm7.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm7.jpg" width="130" height="120" /></a>
-			<a href="fm8.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm8.jpg" width="130" height="120" /></a><br>
+			<a href="fm6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm6.jpg" width="130" height="120" /></a><br>
 		</div>
 		<br>
 		<div style="text-align: center;">
@@ -248,7 +246,7 @@ img {
 					Normal  5MB
 					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 				</a>	
-				&nbsp;&nbsp;
+				<br>
 				<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
 					Baixar Completo 130MB
 					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
@@ -261,7 +259,7 @@ img {
 					Normal  5MB
 					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 				</a>
-				&nbsp;&nbsp; 
+				<br>
 				<a id="link" href="f1mane.jnlp" style="text-align: left;">
 					Baixar Completo 130MB
 					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
@@ -277,13 +275,11 @@ img {
 			<a href="http://www.f1mane.com/mesa11/m11-1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-1.jpg" width="130" height="120" /></a>
 			<a href="http://www.f1mane.com/mesa11/m11-2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-2.jpg" width="130" height="120" /></a>
 			<a href="http://www.f1mane.com/mesa11/m11-4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-4.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/mesa11/m11-6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-6.jpg" width="130" height="120" /></a>
 		</div>	
 		
 	</div>
 	</td>
 	</tr>
 </table>
-</center>
 </body>
 </html>
