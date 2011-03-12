@@ -22,6 +22,7 @@ import java.util.zip.ZipOutputStream;
 
 import javax.swing.JFileChooser;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
@@ -411,10 +412,25 @@ public class ControlePersistencia {
 	}
 
 	public List obterListaCorridas(String nomeJogador, Session session) {
-		List corridas = session.createCriteria(CorridasDadosSrv.class)
+		return obterListaCorridas(nomeJogador, session, null);
+	}
+
+	public List obterListaCorridas(String nomeJogador, Session session,
+			Integer ano) {
+		Criteria criteria = session.createCriteria(CorridasDadosSrv.class)
 				.createAlias("jogadorDadosSrv", "j")
 				.add(Restrictions.eq("j.nome", nomeJogador))
-				.addOrder(Order.asc("tempoInicio")).list();
+				.addOrder(Order.asc("tempoInicio"));
+		if (ano != null) {
+			Dia ini = new Dia(1, 1, ano);
+			Dia fim = new Dia(1, 1, ano + 1);
+			criteria.add(Restrictions.ge("tempoFim", ini.toTimestamp()
+					.getTime()));
+			criteria.add(Restrictions.le("tempoFim", fim.toTimestamp()
+					.getTime()));
+		}
+
+		List corridas = criteria.list();
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
 			CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
 					.next();

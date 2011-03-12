@@ -813,12 +813,15 @@ public class Piloto implements Serializable {
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, noAtual, controleJogo);
 
-		if (noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta()) {
-			if (carro.verificaPneusIncompativeisClima(controleJogo)
-					&& novoModificador > 1) {
+		if (carro.verificaPneusIncompativeisClima(controleJogo)
+				&& novoModificador > 1) {
+			if (noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta()) {
 				novoModificador = 1;
+			} else {
+				novoModificador--;
 			}
 		}
+
 		if (novoModificador > 5) {
 			novoModificador = 5;
 		} else if (novoModificador < 1) {
@@ -980,11 +983,13 @@ public class Piloto implements Serializable {
 				intercecionou = getDiateira().intersects(piloto.getCentro())
 						|| getDiateira().intersects(piloto.getDiateira());
 			}
-
+			msmPista = true;
 			if (intercecionou && msmPista
 					&& getNoAtual().getIndex() < piloto.getNoAtual().getIndex()) {
 				if (piloto.getCarro().isPaneSeca()
 						|| piloto.getCarro().isRecolhido()
+						|| Carro.BATEU_FORTE.equals(piloto.getCarro()
+								.getDanificado())
 						|| Carro.EXPLODIU_MOTOR.equals(piloto.getCarro()
 								.getDanificado())
 						|| Carro.PANE_SECA.equals(piloto.getCarro()
@@ -1306,7 +1311,7 @@ public class Piloto implements Serializable {
 			if (carro.verificaCondicoesCautela(controleJogo)) {
 				novoModoAgressivo = false;
 				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsBox
-						.get(Messagens.PILOTO_EM_CAUTELA))) {
+						.get(Messagens.PILOTO_EM_CAUTELA)) && getPosicao() <= 3) {
 					controleJogo
 							.info(Html.superRed(getNome() + Lang.msg("057")));
 					msgsBox.put(Messagens.PILOTO_EM_CAUTELA,

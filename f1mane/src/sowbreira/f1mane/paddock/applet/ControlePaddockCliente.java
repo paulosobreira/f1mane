@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JApplet;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -35,6 +36,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -499,8 +501,18 @@ public class ControlePaddockCliente {
 	}
 
 	public void verClassificacao() {
+		JComboBox anos = new JComboBox();
+		Dia dia = new Dia();
+		int anoAutual = dia.getYear();
+		while (anoAutual >= 2009) {
+			anos.addItem(new Integer(anoAutual));
+			anoAutual--;
+		}
+		JOptionPane.showMessageDialog(this.mainFrame, anos,
+				Lang.msg("anoRanking"), JOptionPane.QUESTION_MESSAGE);
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.VER_CLASSIFICACAO, sessaoCliente);
+		clientPaddockPack.setDataObject(anos.getSelectedItem());
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (retornoNaoValido(ret)) {
 			return;
@@ -514,6 +526,7 @@ public class ControlePaddockCliente {
 		List listaDadosJogador = srvPaddockPack.getListaDadosJogador();
 		clientPaddockPack = new ClientPaddockPack(Comandos.VER_CONTRUTORES,
 				sessaoCliente);
+		clientPaddockPack.setDataObject(anos.getSelectedItem());
 		ret = enviarObjeto(clientPaddockPack);
 		if (ret == null) {
 			JOptionPane.showMessageDialog(applet, Lang.msg("062"), "Erro",
@@ -528,6 +541,7 @@ public class ControlePaddockCliente {
 		FormClassificacao formClassificacao = new FormClassificacao(
 				listaDadosJogador, this, listaConstrutoresCarros,
 				listaConstrutoresPilotos);
+		formClassificacao.setAnoClassificacao((Integer) anos.getSelectedItem());
 		JOptionPane.showMessageDialog(applet, formClassificacao,
 				Lang.msg("065"), JOptionPane.PLAIN_MESSAGE);
 
@@ -546,15 +560,16 @@ public class ControlePaddockCliente {
 		FormConstrutores formConstrutores = new FormConstrutores(
 				srvPaddockPack.getListaConstrutoresCarros(),
 				srvPaddockPack.getListaConstrutoresPilotos());
-		JOptionPane.showMessageDialog(applet, formConstrutores, Lang.msg("244"),
-				JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(applet, formConstrutores,
+				Lang.msg("244"), JOptionPane.PLAIN_MESSAGE);
 
 	}
 
-	public List obterListaCorridas(String jogadorSel) {
+	public List obterListaCorridas(String jogadorSel, Integer anoClassificacao) {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.VER_CORRIDAS, sessaoCliente);
 		clientPaddockPack.setNomeJogador(jogadorSel);
+		clientPaddockPack.setDataObject(anoClassificacao);
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (ret == null) {
 			return new ArrayList();

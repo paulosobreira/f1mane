@@ -43,6 +43,7 @@ import sowbreira.f1mane.editor.MainPanelEditor;
 import sowbreira.f1mane.editor.MainPanelEditorVetorizado;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import sowbreira.f1mane.visao.ControleSom;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Logger;
 
@@ -65,7 +66,10 @@ public class MainFrame extends JFrame {
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
 	private JCheckBoxMenuItem atualizacaoSuave;
+	private JCheckBoxMenuItem som;
 	protected MainPanelEditorVetorizado editorInflado;
+	private JMenuItem iniciar;
+	private JMenuItem pausa;
 	public final static BufferedImage bg = CarregadorRecursos
 			.carregaBufferedImage("f1bg.png");
 
@@ -317,15 +321,6 @@ public class MainFrame extends JFrame {
 		});
 		menuInfo2.add(logs);
 
-		atualizacaoSuave = new JCheckBoxMenuItem("Atualizacao Suave") {
-			public String getText() {
-				return Lang.msg("atualizacaoSuave");
-			}
-
-		};
-		atualizacaoSuave.setSelected(true);
-		menuInfo2.add(atualizacaoSuave);
-
 	}
 
 	private void gerarMenusSobre(JMenu menu2) {
@@ -348,7 +343,7 @@ public class MainFrame extends JFrame {
 	}
 
 	private void gerarMenusSingle(JMenu menu1) {
-		JMenuItem iniciar = new JMenuItem("Iniciar Jogo") {
+		iniciar = new JMenuItem("Iniciar Jogo") {
 			public String getText() {
 				return Lang.msg("094");
 			}
@@ -379,7 +374,8 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu1.add(iniciar);
-		JMenuItem pausa = new JMenuItem("Pausa Jogo") {
+
+		pausa = new JMenuItem("Pausa Jogo") {
 			public String getText() {
 				return Lang.msg("096");
 			}
@@ -398,6 +394,34 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu1.add(pausa);
+
+		atualizacaoSuave = new JCheckBoxMenuItem("Atualizacao Suave") {
+			public String getText() {
+				return Lang.msg("atualizacaoSuave");
+			}
+
+		};
+		atualizacaoSuave.setSelected(true);
+		atualizacaoSuave.setEnabled(false);
+		menu1.add(atualizacaoSuave);
+		som = new JCheckBoxMenuItem("Som") {
+			public String getText() {
+				return Lang.msg("som");
+			}
+
+		};
+		som.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (som.isSelected()) {
+					ControleSom.somLigado = true;
+				} else {
+					ControleSom.somLigado = false;
+				}
+			}
+		});
+		menu1.add(som);
 	}
 
 	protected void selecionarTemporada() {
@@ -803,7 +827,15 @@ public class MainFrame extends JFrame {
 	}
 
 	public void desbilitarMenusModoOnline() {
-		menuJogo.setEnabled(false);
+		if (iniciar != null) {
+			iniciar.setEnabled(false);
+		}
+		if (pausa != null) {
+			pausa.setEnabled(false);
+		}
+		if (atualizacaoSuave != null) {
+			atualizacaoSuave.setEnabled(true);
+		}
 		menuEditor.setEnabled(false);
 
 	}
