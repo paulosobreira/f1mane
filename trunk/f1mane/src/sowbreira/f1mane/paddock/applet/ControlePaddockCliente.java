@@ -1,20 +1,23 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Panel;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
+import javax.jnlp.FileContents;
+import javax.jnlp.PersistenceService;
+import javax.jnlp.ServiceManager;
 import javax.swing.JApplet;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -579,13 +582,70 @@ public class ControlePaddockCliente {
 	}
 
 	public void logar() {
+
 		FormEntrada formEntrada = new FormEntrada(this);
+		try {
+			PersistenceService persistenceService = (PersistenceService) ServiceManager
+					.lookup("javax.jnlp.PersistenceService");
+			FileContents fileContents = persistenceService.get(applet
+					.getCodeBase());
+			if (fileContents == null) {
+				Logger.logar(" fileContents == null  ");
+			}
+			ObjectInputStream ois = new ObjectInputStream(
+					fileContents.getInputStream());
+			Map map = (Map) ois.readObject();
+			String login = (String) map.get("login");
+			String pass = (String) map.get("pass");
+			if (!Util.isNullOrEmpty(pass) && !Util.isNullOrEmpty(login)) {
+				System.out
+						.println("!Util.isNullOrEmpty(pass) && !Util.isNullOrEmpty(login)");
+				formEntrada.getNome().setText(login);
+				formEntrada.getSenha().setText(pass);
+				formEntrada.getLembrar().setSelected(true);
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+
 		formEntrada.setToolTipText(Lang.msg("066"));
 		int result = JOptionPane.showConfirmDialog(applet, formEntrada,
 				Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			registrarUsuario(formEntrada);
+			if (formEntrada.getLembrar().isSelected()) {
+				try {
+					PersistenceService persistenceService = (PersistenceService) ServiceManager
+							.lookup("javax.jnlp.PersistenceService");
+					FileContents fileContents = null;
+					try {
+						fileContents = persistenceService.get(applet
+								.getCodeBase());
+					} catch (Exception e) {
+						persistenceService.create(applet.getCodeBase(), 1024);
+						fileContents = persistenceService.get(applet
+								.getCodeBase());
+					}
+
+					if (fileContents == null) {
+						Logger.logar(" fileContents == null  ");
+
+					}
+
+					Map map = new HashMap();
+					map.put("login", formEntrada.getNome().getText());
+					map.put("pass", String.valueOf((formEntrada.getSenha()
+							.getPassword())));
+					ObjectOutputStream stream = new ObjectOutputStream(
+							fileContents.getOutputStream(true));
+					stream.writeObject(map);
+					stream.flush();
+
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+			}
 			atualizaVisao(paddockWindow);
 		}
 

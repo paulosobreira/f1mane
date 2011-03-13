@@ -222,7 +222,10 @@ public class MonitorJogo implements Runnable {
 				atualizarDados();
 				jogoCliente.preparaGerenciadorVisual();
 				jogoCliente.atualizaPainel();
-				sleep(1000);
+				sleep(500);
+				atualizarDados();
+				sleep(500);
+				atualizarDados();
 				monitorQualificacao.start();
 			}
 			sleep(100);
