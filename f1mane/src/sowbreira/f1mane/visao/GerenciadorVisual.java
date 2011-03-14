@@ -2031,4 +2031,11 @@ public class GerenciadorVisual {
 		painelCircuito.setPosisAtual(point);
 
 	}
+
+	public void carregaBackGroundCliente() {
+		if (painelCircuito != null) {
+			painelCircuito.carregaBackGround();
+		}
+
+	}
 }
