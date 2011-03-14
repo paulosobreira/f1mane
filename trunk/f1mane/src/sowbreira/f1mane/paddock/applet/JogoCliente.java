@@ -656,9 +656,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
 		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(
-					dadosParticiparJogo.getTpPnueu(),
-					dadosParticiparJogo.getCombustivel(),
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
+					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
 					dadosParticiparJogo.getAsa());
 			syncBox = true;
 		}
@@ -847,6 +846,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			return;
 		}
 		gerenciadorVisual.setPosisAtual(point);
+
+	}
+
+	public void carregaBackGroundCliente() {
+		if (gerenciadorVisual == null) {
+			return;
+		}
+		gerenciadorVisual.carregaBackGroundCliente();
 
 	}
 }

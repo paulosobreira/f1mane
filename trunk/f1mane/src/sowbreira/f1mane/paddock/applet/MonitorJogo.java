@@ -72,6 +72,10 @@ public class MonitorJogo implements Runnable {
 				if (tempoCiclo < controlePaddockCliente.getLatenciaMinima()) {
 					tempoCiclo = controlePaddockCliente.getLatenciaMinima();
 				}
+				jogoCliente.preparaGerenciadorVisual();
+				Logger.logar("jogoCliente.preparaGerenciadorVisual();");
+				jogoCliente.carregaBackGroundCliente();
+				Logger.logar(" run() jogoCliente.carregaBackGroundCliente();");
 				esperaJogoComecar();
 				mostraQualify();
 				apagaLuzesLargada();
@@ -221,7 +225,7 @@ public class MonitorJogo implements Runnable {
 						jogoCliente));
 				sleep(1000);
 				atualizarDados();
-				jogoCliente.preparaGerenciadorVisual();
+				// jogoCliente.preparaGerenciadorVisual();
 				jogoCliente.atualizaPainel();
 				if (jogoCliente.getPilotos() != null) {
 					Piloto p = (Piloto) jogoCliente.getPilotos().get(
@@ -250,6 +254,8 @@ public class MonitorJogo implements Runnable {
 		while (Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			verificaEstadoJogo();
+			jogoCliente.carregaBackGroundCliente();
+			Logger.logar(" esperaJogoComecar() jogoCliente.carregaBackGroundCliente();");
 			sleep(1000);
 		}
 
