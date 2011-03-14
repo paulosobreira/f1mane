@@ -598,8 +598,6 @@ public class ControlePaddockCliente {
 			String login = (String) map.get("login");
 			String pass = (String) map.get("pass");
 			if (!Util.isNullOrEmpty(pass) && !Util.isNullOrEmpty(login)) {
-				System.out
-						.println("!Util.isNullOrEmpty(pass) && !Util.isNullOrEmpty(login)");
 				formEntrada.getNome().setText(login);
 				formEntrada.getSenha().setText(pass);
 				formEntrada.getLembrar().setSelected(true);

@@ -301,7 +301,7 @@ public class PaddockWindow {
 		chatPanel.setBackground(Color.WHITE);
 		chatPanel
 				.setBorder(new TitledBorder(
-						"F1-Engineer Web Paddock Chat Room Ver "
+						"F1-MANager Engineer Chat Room Ver "
 								+ InterfaceJogo.VERSAO));
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBackground(Color.WHITE);
