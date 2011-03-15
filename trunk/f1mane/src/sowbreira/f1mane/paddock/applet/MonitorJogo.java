@@ -608,7 +608,7 @@ public class MonitorJogo implements Runnable {
 							piloto.setNoAtual(noNovo);
 						if (piloto
 								.verificaColisaoCarroFrente(jogoCliente, true)) {
-							if (diffINdex < 500) {
+							if (diffINdex < 750) {
 								piloto.setNoAtual(noAtual);
 							}
 							int novoTracado = Util.intervalo(0, 2);

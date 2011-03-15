@@ -115,6 +115,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void preparaGerenciadorVisual() {
+		if(gerenciadorVisual!=null){
+			return;
+		}
 		try {
 			gerenciadorVisual = new GerenciadorVisual(this);
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();

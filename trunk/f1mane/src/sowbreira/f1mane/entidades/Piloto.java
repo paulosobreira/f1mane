@@ -1194,14 +1194,14 @@ public class Piloto implements Serializable {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);
-		int distBrigaMax = (int) (120 * controleJogo.getNiveljogo());
+		int distBrigaMax = (int) (200 * controleJogo.getNiveljogo());
 		int distBrigaMin = 0;
-		if (controleJogo.getNiveljogo() == .3) {
-			distBrigaMin = 30;
-		} else if (controleJogo.getNiveljogo() == .5) {
-			distBrigaMin = 20;
-		} else if (controleJogo.getNiveljogo() == .7) {
+		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
 			distBrigaMin = 15;
+		} else if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+			distBrigaMin = 10;
+		} else if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+			distBrigaMin = 5;
 		}
 		Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		if (diff > distBrigaMin && diff < distBrigaMax
@@ -1227,6 +1227,7 @@ public class Piloto implements Serializable {
 					if (testeHabilidadePiloto()
 							&& Math.random() < controleJogo.getNiveljogo()) {
 						setAgressivo(true);
+						setModoPilotagem(AGRESSIVO);
 						if (Math.random() < controleJogo
 								.obterIndicativoCorridaCompleta()
 								&& Math.random() > .9
@@ -1283,6 +1284,8 @@ public class Piloto implements Serializable {
 								break;
 							}
 						}
+					}else{
+						setModoPilotagem(NORMAL);
 					}
 				}
 			}
