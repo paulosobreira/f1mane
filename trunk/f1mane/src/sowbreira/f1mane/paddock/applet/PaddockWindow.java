@@ -198,6 +198,9 @@ public class PaddockWindow {
 
 			public void actionPerformed(ActionEvent e) {
 				Object object = listaJogosCriados.getSelectedValue();
+				if (listaJogosCriados.getModel().getSize() == 1) {
+					object = listaJogosCriados.getModel().getElementAt(0);
+				}
 				if (object != null) {
 					int result = JOptionPane.showConfirmDialog(getMainPanel(),
 							Lang.msg("181") + object);
@@ -299,10 +302,8 @@ public class PaddockWindow {
 		mainPanel.add(sPanel, BorderLayout.SOUTH);
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBackground(Color.WHITE);
-		chatPanel
-				.setBorder(new TitledBorder(
-						"F1-MANager Engineer Chat Room Ver "
-								+ InterfaceJogo.VERSAO));
+		chatPanel.setBorder(new TitledBorder(
+				"F1-MANager Engineer Chat Room Ver " + InterfaceJogo.VERSAO));
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBackground(Color.WHITE);
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
@@ -392,7 +393,7 @@ public class PaddockWindow {
 		PaddockWindow paddockWindow = new PaddockWindow(null);
 		DefaultListModel clientesModel = new DefaultListModel();
 		for (int i = 0; i < 10; i++) {
-			clientesModel.addElement("Teste"+i);
+			clientesModel.addElement("Teste" + i);
 		}
 		paddockWindow.listaClientes.setModel(clientesModel);
 		JFrame frame = new JFrame();
@@ -400,7 +401,7 @@ public class PaddockWindow {
 		frame.setSize(800, 400);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-	
+
 	}
 
 	public void atualizar(DadosPaddock dadosPaddock) {
