@@ -333,10 +333,12 @@ public class ControlePaddockCliente {
 				logar();
 				return;
 			}
+
 			if (jogoCliente.getMonitorJogo() != null
 					&& jogoCliente.getMonitorJogo().isJogoAtivo()) {
-				int result = JOptionPane.showConfirmDialog(applet, Lang.msg("sairJogo"),
-						Lang.msg("095"), JOptionPane.OK_CANCEL_OPTION);
+				int result = JOptionPane.showConfirmDialog(applet,
+						Lang.msg("sairJogo"), Lang.msg("095"),
+						JOptionPane.OK_CANCEL_OPTION);
 				if (JOptionPane.OK_OPTION == result) {
 					jogoCliente.getMonitorJogo().abandonar();
 				}
@@ -348,6 +350,23 @@ public class ControlePaddockCliente {
 
 			clientPaddockPack.setNomeJogo((String) object);
 			Object ret = enviarObjeto(clientPaddockPack);
+
+			if (Comandos.ABANDONAR.equals(ret)) {
+				int result = JOptionPane.showConfirmDialog(applet,
+						Lang.msg("sairJogo"), Lang.msg("095"),
+						JOptionPane.OK_CANCEL_OPTION);
+				if (JOptionPane.OK_OPTION == result) {
+					clientPaddockPack = new ClientPaddockPack(
+							Comandos.ABANDONAR, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente
+							.getNomeJogoCriado());
+					if (jogoCliente != null) {
+						jogoCliente.matarTodasThreads();
+					}
+					ret = enviarObjeto(clientPaddockPack);
+				}
+				return;
+			}
 			if (retornoNaoValido(ret)) {
 				return;
 			}
