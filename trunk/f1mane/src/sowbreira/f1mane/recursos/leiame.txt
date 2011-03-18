@@ -8,13 +8,13 @@
  - As  opções Dificuldade de ultrapassagens , índice de velocidade em reta e 
  tempo de ciclo são ajustes as realidades da pista escolhida que devem ser 
  informadas pelo jogador.
- - Este jogo ainda está em fase de teste porem já possui uma versão online.
- - Qualquer sugestão : sowbreira@gmail.com.
+  - Qualquer sugestão : sowbreira@gmail.com.
 
 Histórico de versões:
 4.0
-  - Novas pistas (Feitas originalmente para o jogo Mini Race Online http://www.miniracingonline.com/)
-  - Corrigidos varios bugs com ultrapagens e traçados
+  - 26 Novas pistas (Feitas originalmente para o jogo Mini Race Online http://www.miniracingonline.com/)
+  - Modo Campeonato
+  - Corrigidos varios bugs com ultrapagens e traçados e consumos
   - Varias Melhorias Visuais
 3.2
   - Editor de objetos de Pista
