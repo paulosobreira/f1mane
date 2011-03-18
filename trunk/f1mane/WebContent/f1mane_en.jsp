@@ -246,6 +246,7 @@ img {
 					PLay Online		
 					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
 				</a>	
+				&nbsp;&nbsp;&nbsp;&nbsp;
 				<a id="link" href="f1maneLite_en.jnlp" style="text-align: left;">
 					Play Offline
 					<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
