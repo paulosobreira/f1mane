@@ -55,13 +55,16 @@ public class ControlePersistencia {
 	private String webDir;
 
 	public Session getSession() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
-			return HibernateUtil.getSessionFactory().openSession();
+			List jogador = session.createCriteria(JogadorDadosSrv.class).add(
+					Restrictions.eq("id", new Long(0))).list();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			Logger.novaSession = true;
 			return HibernateUtil.getSessionFactory().openSession();
 		}
+		return session;
 	}
 
 	public ControlePersistencia(String webDir, String webInfDir) {
@@ -167,8 +170,8 @@ public class ControlePersistencia {
 
 		arrayDinamico.flush();
 
-		ByteArrayInputStream bin = new ByteArrayInputStream(
-				arrayDinamico.toByteArray());
+		ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico
+				.toByteArray());
 		XMLDecoder decoder = new XMLDecoder(bin);
 		return (PaddockDadosSrv) decoder.readObject();
 	}
@@ -184,8 +187,8 @@ public class ControlePersistencia {
 			return;
 		}
 
-		ZipInputStream zin = new ZipInputStream(new FileInputStream(
-				fileChooser.getSelectedFile()));
+		ZipInputStream zin = new ZipInputStream(new FileInputStream(fileChooser
+				.getSelectedFile()));
 		zin.getNextEntry();
 		ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
 		int byt = zin.read();
@@ -197,8 +200,8 @@ public class ControlePersistencia {
 
 		arrayDinamico.flush();
 
-		ByteArrayInputStream bin = new ByteArrayInputStream(
-				arrayDinamico.toByteArray());
+		ByteArrayInputStream bin = new ByteArrayInputStream(arrayDinamico
+				.toByteArray());
 		XMLDecoder decoder = new XMLDecoder(bin);
 		PaddockDadosSrv paddockDadosSrv = (PaddockDadosSrv) decoder
 				.readObject();
@@ -268,8 +271,8 @@ public class ControlePersistencia {
 
 	public JogadorDadosSrv carregaDadosJogador(String nomeJogador,
 			Session session) {
-		List jogador = session.createCriteria(JogadorDadosSrv.class)
-				.add(Restrictions.eq("nome", nomeJogador)).list();
+		List jogador = session.createCriteria(JogadorDadosSrv.class).add(
+				Restrictions.eq("nome", nomeJogador)).list();
 		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null
 				: jogador.get(0));
 		return jogadorDadosSrv;
@@ -418,9 +421,9 @@ public class ControlePersistencia {
 	public List obterListaCorridas(String nomeJogador, Session session,
 			Integer ano) {
 		Criteria criteria = session.createCriteria(CorridasDadosSrv.class)
-				.createAlias("jogadorDadosSrv", "j")
-				.add(Restrictions.eq("j.nome", nomeJogador))
-				.addOrder(Order.asc("tempoInicio"));
+				.createAlias("jogadorDadosSrv", "j").add(
+						Restrictions.eq("j.nome", nomeJogador)).addOrder(
+						Order.asc("tempoInicio"));
 		if (ano != null) {
 			Dia ini = new Dia(1, 1, ano);
 			Dia fim = new Dia(1, 1, ano + 1);
@@ -442,9 +445,9 @@ public class ControlePersistencia {
 
 	public CarreiraDadosSrv carregaCarreiraJogador(String nomeJogador,
 			boolean vaiCliente, Session session) {
-		List list = session.createCriteria(CarreiraDadosSrv.class)
-				.createAlias("jogadorDadosSrv", "j")
-				.add(Restrictions.eq("j.nome", nomeJogador)).list();
+		List list = session.createCriteria(CarreiraDadosSrv.class).createAlias(
+				"jogadorDadosSrv", "j").add(
+				Restrictions.eq("j.nome", nomeJogador)).list();
 		CarreiraDadosSrv carreiraDadosSrv = null;
 		if (!list.isEmpty()) {
 			carreiraDadosSrv = (CarreiraDadosSrv) list.get(0);
@@ -475,23 +478,23 @@ public class ControlePersistencia {
 
 	public JogadorDadosSrv carregaDadosJogadorEmail(String emailJogador,
 			Session session) {
-		List jogador = session.createCriteria(JogadorDadosSrv.class)
-				.add(Restrictions.eq("email", emailJogador)).list();
+		List jogador = session.createCriteria(JogadorDadosSrv.class).add(
+				Restrictions.eq("email", emailJogador)).list();
 		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty() ? null
 				: jogador.get(0));
 		return jogadorDadosSrv;
 	}
 
 	public List<Campeonato> obterListaCampeonatos(Session session) {
-		return session.createCriteria(Campeonato.class)
-				.addOrder(Order.desc("dataCriacao")).list();
+		return session.createCriteria(Campeonato.class).addOrder(
+				Order.desc("dataCriacao")).list();
 
 	}
 
 	public Campeonato pesquisaCampeonato(Session session,
 			String nomeCampeonato, boolean cliente) {
-		List campeonatos = session.createCriteria(Campeonato.class)
-				.add(Restrictions.eq("nome", nomeCampeonato)).list();
+		List campeonatos = session.createCriteria(Campeonato.class).add(
+				Restrictions.eq("nome", nomeCampeonato)).list();
 		Campeonato campeonato = (Campeonato) (campeonatos.isEmpty() ? null
 				: campeonatos.get(0));
 		if (campeonato == null) {
@@ -501,12 +504,11 @@ public class ControlePersistencia {
 			for (CorridaCampeonato corridaCampeonato : campeonato
 					.getCorridaCampeonatos()) {
 				corridaCampeonato.setDadosCorridaCampeonatos(Util
-						.removePersistBag(
-								corridaCampeonato.getDadosCorridaCampeonatos(),
-								session));
+						.removePersistBag(corridaCampeonato
+								.getDadosCorridaCampeonatos(), session));
 			}
-			campeonato.setCorridaCampeonatos(Util.removePersistBag(
-					campeonato.getCorridaCampeonatos(), session));
+			campeonato.setCorridaCampeonatos(Util.removePersistBag(campeonato
+					.getCorridaCampeonatos(), session));
 			campeonato.getJogadorDadosSrv().setCorridas(
 					Util.removePersistBag(campeonato.getJogadorDadosSrv()
 							.getCorridas(), session));
@@ -518,9 +520,8 @@ public class ControlePersistencia {
 
 	public List pesquisaCampeonatos(JogadorDadosSrv jogadorDadosSrv,
 			Session session) {
-		List campeonatos = session.createCriteria(Campeonato.class)
-				.add(Restrictions.eq("jogadorDadosSrv", jogadorDadosSrv))
-				.list();
+		List campeonatos = session.createCriteria(Campeonato.class).add(
+				Restrictions.eq("jogadorDadosSrv", jogadorDadosSrv)).list();
 		return campeonatos;
 	}
 }

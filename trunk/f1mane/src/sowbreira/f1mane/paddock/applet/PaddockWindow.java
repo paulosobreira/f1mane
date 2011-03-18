@@ -50,11 +50,11 @@ public class PaddockWindow {
 	private JTextArea textAreaChat = new JTextArea();
 	private JTextField textoEnviar = new JTextField();
 	private HashMap mapaJogosCriados = new HashMap();
-	private JButton enviarTexto = new JButton("Enviar Texto") {
+	private JButton sairJogo = new JButton("Enviar Texto") {
 
 		public String getText() {
 
-			return Lang.msg("174");
+			return Lang.msg("sairJogo");
 		}
 	};
 	private JButton entrarJogo = new JButton("Entrar Jogo") {
@@ -183,7 +183,14 @@ public class PaddockWindow {
 			}
 
 		};
-		enviarTexto.addActionListener(actionListener);
+		sairJogo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controlePaddockCliente.sairJogo();
+
+			}
+		});
 		textoEnviar.addActionListener(actionListener);
 		criarJogo.addActionListener(new ActionListener() {
 
@@ -336,8 +343,8 @@ public class PaddockWindow {
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setBackground(Color.WHITE);
 		buttonsPanel.setLayout(new GridLayout(3, 4));
-		buttonsPanel.add(enviarTexto);
 		buttonsPanel.add(entrarJogo);
+		buttonsPanel.add(sairJogo);
 		buttonsPanel.add(criarJogo);
 		buttonsPanel.add(iniciarJogo);
 		buttonsPanel.add(verDetalhes);
