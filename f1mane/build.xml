@@ -73,11 +73,13 @@
 				<exclude name="sowbreira/f1mane/recursos/**/*_mro.jpg" />
 			</fileset>
 		</jar>
+		<!--
 		<jar jarfile="f1manePistas.jar" compress="true" manifest="MANIFEST.MF">
 			<fileset dir="src">
 				<include name="sowbreira/f1mane/recursos/**/*_mro.jpg" />
 			</fileset>
 		</jar>
+		-->
 	</target>
 	<target name="atualizaPaddock">
 		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
@@ -103,8 +105,11 @@
 			<fileset dir="WebContent">
 				<include name="WEB-INF/lib/f1mane.jar" />
 				<include name="f1mane.jar" />
+				
 				<include name="f1maneRecursos.jar" />
+				<!--
 				<include name="f1manePistas.jar" />
+				-->
 			</fileset>
 		</war>
 		<delete dir="WebContent/sowbreira" />
