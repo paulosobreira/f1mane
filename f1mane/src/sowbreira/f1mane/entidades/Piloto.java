@@ -1194,7 +1194,7 @@ public class Piloto implements Serializable {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);
-		int distBrigaMax = (int) (200 * controleJogo.getNiveljogo());
+		int distBrigaMax = (int) (400 * controleJogo.getNiveljogo());
 		int distBrigaMin = 0;
 		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
 			distBrigaMin = 15;

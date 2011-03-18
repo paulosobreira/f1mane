@@ -510,24 +510,25 @@ public class ControlePaddockServidor {
 			return new ErroServ(e);
 		}
 
-		SessaoCliente cliente = null;
+		SessaoCliente sessaoCliente = null;
 		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
 				.hasNext();) {
 			SessaoCliente element = (SessaoCliente) iter.next();
 			if (element.getNomeJogador().equals(
 					clientPaddockPack.getNomeJogador())) {
-				cliente = element;
+				sessaoCliente = element;
 				break;
 			}
 		}
-		if (cliente == null) {
-			cliente = new SessaoCliente();
-			cliente.setNomeJogador(clientPaddockPack.getNomeJogador());
-			cliente.setUlimaAtividade(System.currentTimeMillis());
-			dadosPaddock.getClientes().add(cliente);
+		if (sessaoCliente == null) {
+			sessaoCliente = new SessaoCliente();
+			sessaoCliente.setNomeJogador(clientPaddockPack.getNomeJogador());
+			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+			dadosPaddock.getClientes().add(sessaoCliente);
 		}
+		controleJogosServer.removerClienteInativo(sessaoCliente);
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
-		srvPaddockPack.setSessaoCliente(cliente);
+		srvPaddockPack.setSessaoCliente(sessaoCliente);
 
 		return srvPaddockPack;
 	}

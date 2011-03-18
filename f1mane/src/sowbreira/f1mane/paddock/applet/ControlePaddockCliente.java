@@ -333,6 +333,16 @@ public class ControlePaddockCliente {
 				logar();
 				return;
 			}
+			if (jogoCliente.getMonitorJogo() != null
+					&& jogoCliente.getMonitorJogo().isJogoAtivo()) {
+				int result = JOptionPane.showConfirmDialog(applet, Lang.msg("sairJogo"),
+						Lang.msg("095"), JOptionPane.OK_CANCEL_OPTION);
+				if (JOptionPane.OK_OPTION == result) {
+					jogoCliente.getMonitorJogo().abandonar();
+				}
+				return;
+
+			}
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 					Comandos.VER_DETALHES_JOGO, sessaoCliente);
 
