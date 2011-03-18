@@ -64,11 +64,11 @@ public class FormEntrada extends JPanel {
 		setLayout(new BorderLayout());
 		JTabbedPane jTabbedPane = new JTabbedPane();
 		JPanel panelAba1 = new JPanel(new BorderLayout(15, 15));
-		panelAba1.add(gerarLogin(), BorderLayout.CENTER);
-		JPanel sulaba1 = new JPanel(new GridLayout(2, 1));
-		sulaba1.add(gerarIdiomas());
-		sulaba1.add(gerarLembrar());
-		panelAba1.add(sulaba1, BorderLayout.SOUTH);
+		JPanel sulaba1 = new JPanel(new BorderLayout());
+		sulaba1.add(gerarLogin(), BorderLayout.CENTER);
+		sulaba1.add(gerarLembrar(), BorderLayout.SOUTH);
+		panelAba1.add(sulaba1, BorderLayout.CENTER);
+		panelAba1.add(gerarIdiomas(), BorderLayout.SOUTH);
 		jTabbedPane.addTab(Lang.msg("171"), panelAba1);
 		JPanel panelAba2 = new JPanel(new BorderLayout());
 		panelAba2.add(gerarRegistrar(), BorderLayout.CENTER);
@@ -251,8 +251,8 @@ public class FormEntrada extends JPanel {
 		// encoder.close();
 		FormEntrada formEntrada = new FormEntrada(null);
 		formEntrada.setToolTipText(Lang.msg("066"));
-		int result = JOptionPane.showConfirmDialog(null, formEntrada,
-				Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog(null, formEntrada, Lang
+				.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			Logger.logar("ok");
