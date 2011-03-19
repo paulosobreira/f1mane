@@ -216,8 +216,8 @@ public class PaddockWindow {
 								.get(object));
 					}
 				} else {
-					JOptionPane.showMessageDialog(getMainPanel(), Lang
-							.msg("182"));
+					JOptionPane.showMessageDialog(getMainPanel(),
+							Lang.msg("182"));
 				}
 
 			}
@@ -226,6 +226,9 @@ public class PaddockWindow {
 		verDetalhes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Object object = listaJogosCriados.getSelectedValue();
+				if (listaJogosCriados.getModel().getSize() == 1) {
+					object = listaJogosCriados.getModel().getElementAt(0);
+				}
 				if (object != null) {
 					controlePaddockCliente.verDetalhesJogo(mapaJogosCriados
 							.get(object));
@@ -234,8 +237,8 @@ public class PaddockWindow {
 					if (object != null) {
 						controlePaddockCliente.verDetalhesJogador(object);
 					} else {
-						JOptionPane.showMessageDialog(getMainPanel(), Lang
-								.msg("183"));
+						JOptionPane.showMessageDialog(getMainPanel(),
+								Lang.msg("183"));
 					}
 				}
 
@@ -281,8 +284,8 @@ public class PaddockWindow {
 						+ " Daniel Souza \n" + " Wendel Silva \n"
 						+ " Marcos Henrique\n" + " Alvaru";
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
-						.msg("180"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getMainPanel(), msg,
+						Lang.msg("180"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		campeonato.addActionListener(new ActionListener() {
