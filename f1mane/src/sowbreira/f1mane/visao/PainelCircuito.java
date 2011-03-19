@@ -1966,7 +1966,8 @@ public class PainelCircuito extends JPanel {
 		}
 		piscaDanos = !piscaDanos;
 		if (porcentComb <= 25) {
-			g2d.drawImage(fuel.getImage(), limitesViewPort.x + carroimgDano.getWidth() + 15,
+			g2d.drawImage(fuel.getImage(),
+					limitesViewPort.x + carroimgDano.getWidth() + 15,
 					limitesViewPort.y + 10, null);
 		}
 
@@ -2639,23 +2640,23 @@ public class PainelCircuito extends JPanel {
 					&& (controleJogo.getCircuito().isNoite() || controleJogo
 							.getCircuito().isUsaBkg())) {
 				g2d.setColor(transpMenus);
-				if (contBox2) {
-					g2d.fillRoundRect(limitesViewPort.x + 3,
-							limitesViewPort.y + 238, 70, 90, 10, 10);
-					g2d.setColor(Color.BLACK);
-				} else {
-					g2d.setColor(Color.white);
-				}
-				contBox2 = !contBox2;
+				g2d.fillRoundRect(limitesViewPort.x + 3,
+						limitesViewPort.y + 238, 70, 90, 10, 10);
 			}
-			g2d.drawImage(fuel.getImage(), limitesViewPort.x + 5,
-					limitesViewPort.y + 240, null);
+			g2d.setColor(Color.BLACK);
+			if (contBox2) {
+				g2d.drawImage(fuel.getImage(), limitesViewPort.x + 5,
+						limitesViewPort.y + 240, null);
+			}
 			Integer percent = ps.getQtdeCombustBox();
 			if (percent != null && ps.isJogadorHumano())
 				g2d.drawString(percent + "%", limitesViewPort.x + 5,
 						limitesViewPort.y + 280);
-			g2d.drawImage(tyre.getImage(), limitesViewPort.x + 5,
-					limitesViewPort.y + 285, null);
+			if (contBox2) {
+				g2d.drawImage(tyre.getImage(), limitesViewPort.x + 5,
+						limitesViewPort.y + 285, null);
+			}
+			contBox2 = !contBox2;
 			String tpPneu = ps.getTipoPneuBox();
 			if (tpPneu != null && ps.isJogadorHumano())
 				g2d.drawString(Lang.msg(tpPneu), limitesViewPort.x + 5,

@@ -1759,8 +1759,6 @@ public class GerenciadorVisual {
 				int iniY1 = 30;
 				int iniY2 = 40;
 				int midPainel = 0;
-				Logger.logarExept(new Exception("limitesViewPort.width "
-						+ limitesViewPort.width));
 				if (limitesViewPort != null)
 					midPainel = (limitesViewPort.width / 2);
 				else {

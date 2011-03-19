@@ -56,7 +56,7 @@ public class ControleCiclo extends Thread {
 				controleJogo.atualizaPainel();
 				Thread.sleep(tempoCiclo);
 				controleJogo.desenhaQualificacao();
-				//Thread.sleep(5000);
+				// Thread.sleep(5000);
 				controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
 				while (contadorLuz >= 0) {
 					Thread.sleep(tempoCiclo);
@@ -103,7 +103,8 @@ public class ControleCiclo extends Thread {
 							piloto.processarCiclo(controleJogo);
 						}
 
-						if (piloto.isBox()) {
+						if (piloto.isBox()
+								|| controleJogo.verificaNoPitLane(piloto)) {
 							controleCorrida.processarPilotoBox(piloto);
 						}
 					}
