@@ -982,6 +982,7 @@ public class Piloto implements Serializable {
 				msmPista = msmPista && msmTracado;
 				intercecionou = getDiateira().intersects(piloto.getCentro())
 						|| getDiateira().intersects(piloto.getDiateira());
+
 			}
 			msmPista = true;
 			if (intercecionou && msmPista
@@ -1284,7 +1285,7 @@ public class Piloto implements Serializable {
 								break;
 							}
 						}
-					}else{
+					} else {
 						setModoPilotagem(NORMAL);
 					}
 				}
@@ -1508,10 +1509,6 @@ public class Piloto implements Serializable {
 		volta.setCiclosInicio(System.currentTimeMillis()
 				- (getPtosBox() * interfaceJogo.getTempoCiclo()));
 		setVoltaAtual(volta);
-	}
-
-	public boolean jaParouNoBox() {
-		return (System.currentTimeMillis() - getParouNoBoxMilis()) < 50000;
 	}
 
 	public boolean decrementaParadoBox() {
