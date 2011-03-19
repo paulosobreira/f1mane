@@ -219,7 +219,13 @@ public class ControleBox {
 			}
 
 			if (piloto.getPtosBox() < boxList.size()) {
-				piloto.decStress(1);
+				if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+					piloto.decStress(1);
+				} else if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+					piloto.decStress(2);
+				} else if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+					piloto.decStress(3);
+				}
 				piloto.setNoAtual((No) boxList.get(piloto.getPtosBox()));
 			} else {
 				processarPilotoSairBox(piloto, controleJogo);
@@ -229,8 +235,7 @@ public class ControleBox {
 		No box = (No) boxEquipes.get(piloto.getCarro());
 		int contBox = piloto.getNoAtual().getIndex();
 		if ((contBox > (box.getIndex() - 15) && contBox < (box.getIndex() + 15))
-				&& !piloto.decrementaParadoBox()
-				&& piloto.isBox()) {
+				&& !piloto.decrementaParadoBox() && piloto.isBox()) {
 			processarPilotoPararBox(piloto);
 		}
 	}
