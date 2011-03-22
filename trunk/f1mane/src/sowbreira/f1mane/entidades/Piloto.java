@@ -1466,6 +1466,14 @@ public class Piloto implements Serializable {
 		return carro.testePotencia() && testeHabilidadePiloto();
 	}
 
+	public boolean testeHabilidadePilotoOuCarro() {
+		if (danificado()) {
+			return false;
+		}
+
+		return carro.testePotencia() || testeHabilidadePiloto();
+	}
+
 	public boolean testeHabilidadePiloto() {
 		if (danificado() || verificaPilotoDesconcentrado()) {
 			return false;

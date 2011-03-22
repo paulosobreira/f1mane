@@ -332,10 +332,10 @@ public class Carro implements Serializable {
 		double mod = 0.5;
 
 		if (GIRO_MAX_VAL == giro) {
-			mod = 0.6;
+			mod = 0.65;
 		}
 		if (GIRO_MIN_VAL == giro) {
-			mod = 0.4;
+			mod = 0.35;
 		}
 		if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
 			mod -= 0.1;
@@ -353,7 +353,7 @@ public class Carro implements Serializable {
 					&& testePotencia()) {
 				novoModificador++;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
-					&& !testePotencia()) {
+					&& !getPiloto().testeHabilidadePilotoOuCarro()) {
 				novoModificador--;
 			}
 		}
@@ -362,7 +362,7 @@ public class Carro implements Serializable {
 					&& !testePotencia()) {
 				novoModificador--;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
-					&& testePotencia()) {
+					&& getPiloto().testeHabilidadePilotoOuCarro()) {
 				novoModificador++;
 			}
 		}
@@ -422,10 +422,10 @@ public class Carro implements Serializable {
 		}
 		if (!controleJogo.isModoQualify()
 				&& piloto.verificaColisaoCarroFrente(controleJogo)) {
-			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 3;
+			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 4;
 		}
 		if (controleJogo.getCircuito().isUsaBkg()) {
-			indexVelcidadeDaPista *= 1.5;
+			indexVelcidadeDaPista *= 1.7;
 		}
 		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador() * indexVelcidadeDaPista);
 		if (porcentagemDesgasteMotor() < 0) {

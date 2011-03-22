@@ -285,6 +285,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public void carregaBackGround() {
+//		if (true) {
+//			return;
+//		}
 		Logger.logar("carregaBackGround()");
 		try {
 			if (!(threadCarregarBkg != null && threadCarregarBkg.isAlive()))
@@ -335,7 +338,6 @@ public class PainelCircuito extends JPanel {
 
 				if (!circuito.isUsaBkg()) {
 					setStrokeCoresLegado(g2d);
-
 					desenhaObjetosBaixoLegado(g2d);
 					desenhaTintaPistaEZebraLegado(g2d);
 					desenhaPistaLegado(g2d);
@@ -343,6 +345,14 @@ public class PainelCircuito extends JPanel {
 					desenhaLargadaLegado(g2d);
 					desenhaBoxesLegado(g2d);
 					g2d.setStroke(trilho);
+				} else if (backGround == null) {
+//					setStrokeCoresLegado(g2d);
+//					desenhaTintaPistaEZebraLegado(g2d);
+//					desenhaPistaLegado(g2d);
+//					desenhaPistaBoxLegado(g2d);
+//					desenhaLargadaLegado(g2d);
+//					desenhaBoxesLegado(g2d);
+//					g2d.setStroke(trilho);
 				}
 				desenhaGrid(g2d);
 				desenhaMarcasPeneuPista(g2d);
