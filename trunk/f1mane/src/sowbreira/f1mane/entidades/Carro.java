@@ -359,7 +359,7 @@ public class Carro implements Serializable {
 		}
 		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
-					&& !testePotencia()) {
+					&& !getPiloto().testeHabilidadePilotoCarro()) {
 				novoModificador--;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
 					&& getPiloto().testeHabilidadePilotoOuCarro()) {
@@ -421,11 +421,11 @@ public class Carro implements Serializable {
 							.isSemReabastacimento() ? 100.0 : 50.0));
 		}
 		if (!controleJogo.isModoQualify()
-				&& piloto.verificaColisaoCarroFrente(controleJogo)) {
-			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 4;
+				&& piloto.calculaDiffParaProximo(controleJogo) < 100) {
+			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 3;
 		}
 		if (controleJogo.getCircuito().isUsaBkg()) {
-			indexVelcidadeDaPista *= 1.7;
+			indexVelcidadeDaPista *= 2;
 		}
 		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador() * indexVelcidadeDaPista);
 		if (porcentagemDesgasteMotor() < 0) {
