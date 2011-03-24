@@ -1188,10 +1188,12 @@ public class Piloto implements Serializable {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);
-		int distBrigaMax = (int) (controleJogo.getCircuito().getPistaFull()
-				.size()
-				/ controleJogo.getCircuito().getMultiplciador() * controleJogo
-				.getNiveljogo());
+		int size = controleJogo.getCircuito().getPistaFull().size();
+		double multiplciador = controleJogo.getCircuito().getMultiplciador();
+		if (!controleJogo.getCircuito().isUsaBkg()) {
+			diff /= multiplciador;
+		}
+		int distBrigaMax = (int) (diff * controleJogo.getNiveljogo());
 		int distBrigaMin = 0;
 		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
 			distBrigaMin = 15;
