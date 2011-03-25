@@ -398,8 +398,8 @@ public class Carro implements Serializable {
 			if (agressivo)
 				valDesgaste = ((testePotencia() ? 0 : 1) + novoModDano);
 		}
-		if (Clima.SOL.equals(controleJogo.getClima())
-				&& Math.random() < (giro / 10.0) && agressivo) {
+		if (Clima.SOL.equals(controleJogo.getClima()) && agressivo
+				&& Math.random() < (giro / 10.0)) {
 			valDesgaste += 1;
 		}
 
@@ -420,9 +420,17 @@ public class Carro implements Serializable {
 					* (porcentagemCombustivel() / (controleJogo
 							.isSemReabastacimento() ? 100.0 : 50.0));
 		}
+		int dist = 20;
+		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+			dist = 30;
+		}
+		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+			dist = 10;
+		}
 		if (!controleJogo.isModoQualify()
-				&& piloto.calculaDiffParaProximo(controleJogo) < 100) {
-			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista() * 3;
+				&& controleJogo.getNumVoltaAtual() != 1
+				&& piloto.calculaDiffParaProximo(controleJogo) < dist) {
+			valDesgaste += 1;
 		}
 		if (controleJogo.getCircuito().isUsaBkg()) {
 			indexVelcidadeDaPista *= 2;
