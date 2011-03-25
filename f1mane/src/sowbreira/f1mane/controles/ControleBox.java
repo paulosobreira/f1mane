@@ -567,7 +567,7 @@ public class ControleBox {
 		} else {
 			int qtdeVoltRest = controleJogo.getQtdeTotalVoltas()
 					- controleJogo.getNumVoltaAtual();
-			percentagem = (consumoMedioCombustivel * (qtdeVoltRest / 2)) + 10;
+			percentagem = (consumoMedioCombustivel * (qtdeVoltRest / 2)) + 15;
 		}
 
 		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem) / 100;

@@ -696,7 +696,7 @@ public class Piloto implements Serializable {
 			box = true;
 		}
 
-		if (Carro.TIPO_PNEU_DURO.equals(carro.getTipoPneu()) && (pneus < 20)) {
+		if (Carro.TIPO_PNEU_DURO.equals(carro.getTipoPneu()) && (pneus < 10)) {
 			box = true;
 		}
 

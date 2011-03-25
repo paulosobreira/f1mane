@@ -236,15 +236,17 @@ public class Carro implements Serializable {
 		if (combust < (consumoMedioCombust)) {
 			return true;
 		}
-		if ((pneus < 10) || (!getPiloto().isJogadorHumano() && combust < 15)) {
-			return true;
+		if (Carro.TIPO_PNEU_MOLE.equals(getTipoPneu())) {
+			if (pneus < 15) {
+				return true;
+			}
+		} else {
+			if (pneus < 10) {
+				return true;
+			}
 		}
 
-		if ((pneus < combust) && (pneus < 15)) {
-			return true;
-		}
-
-		if (motor < 14) {
+		if (motor < 5) {
 			return true;
 		}
 		return false;
@@ -254,28 +256,16 @@ public class Carro implements Serializable {
 		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
-
 		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
 		if (combust < consumoMedioCombust) {
 			return true;
 		}
-
 		if (controleJogo.isSemReabastacimento() && combust < 20) {
 			return true;
 		}
-
-		if ((pneus < 20) || (combust < 20)) {
+		if ((motor < 10) || (combust < 10)) {
 			return true;
 		}
-
-		if ((pneus < combust) && (pneus < 15)) {
-			return true;
-		}
-
-		if (motor < 15) {
-			return true;
-		}
-
 		return false;
 	}
 
@@ -527,7 +517,7 @@ public class Carro implements Serializable {
 		} else if (giro == GIRO_NOR_VAL) {
 			valConsumo += ((fator > comparar) ? 2 : 1);
 		} else if (giro == GIRO_MAX_VAL) {
-			valConsumo += ((fator > comparar) ? 3 : 2);
+			valConsumo += ((fator > comparar) ? 4 : 2);
 		}
 		fator = Math.random();
 		if (valConsumo <= 0) {
@@ -567,16 +557,20 @@ public class Carro implements Serializable {
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)
 				&& getPiloto().testeHabilidadePilotoCarro()) {
 			if ((no.verificaCruvaBaixa() || no.verificaCruvaAlta())
-					&& (porcent > 10) && (Math.random() > indicativo)) {
+					&& (porcent > Util.intervalo(10, 25))
+					&& (Math.random() > indicativo) && (porcent < 90)) {
 				novoModificador += 1;
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)
 				&& getPiloto().testeHabilidadePilotoCarro()) {
-			if (no.verificaCruvaAlta() && (porcent > 30) && (porcent < 80)
+			if (no.verificaCruvaAlta() && (porcent > Util.intervalo(10, 25))
+					&& (porcent < Util.intervalo(80, 90))
 					&& (Math.random() > indicativo)) {
 				novoModificador += 1;
-			} else if (no.verificaCruvaBaixa() && (porcent > 40)
-					&& (porcent < 60) && (Math.random() > indicativo)) {
+			} else if (no.verificaCruvaBaixa()
+					&& (porcent > Util.intervalo(25, 35))
+					&& (porcent < Util.intervalo(60, 70))
+					&& (Math.random() > indicativo)) {
 				novoModificador += 1;
 			}
 		} else if (TIPO_PNEU_CHUVA.equals(tipoPneu)) {
