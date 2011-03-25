@@ -285,9 +285,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public void carregaBackGround() {
-//		if (true) {
-//			return;
-//		}
+		// if (true) {
+		// return;
+		// }
 		Logger.logar("carregaBackGround()");
 		try {
 			if (!(threadCarregarBkg != null && threadCarregarBkg.isAlive()))
@@ -346,13 +346,13 @@ public class PainelCircuito extends JPanel {
 					desenhaBoxesLegado(g2d);
 					g2d.setStroke(trilho);
 				} else if (backGround == null) {
-//					setStrokeCoresLegado(g2d);
-//					desenhaTintaPistaEZebraLegado(g2d);
-//					desenhaPistaLegado(g2d);
-//					desenhaPistaBoxLegado(g2d);
-//					desenhaLargadaLegado(g2d);
-//					desenhaBoxesLegado(g2d);
-//					g2d.setStroke(trilho);
+					// setStrokeCoresLegado(g2d);
+					// desenhaTintaPistaEZebraLegado(g2d);
+					// desenhaPistaLegado(g2d);
+					// desenhaPistaBoxLegado(g2d);
+					// desenhaLargadaLegado(g2d);
+					// desenhaBoxesLegado(g2d);
+					// g2d.setStroke(trilho);
 				}
 				desenhaGrid(g2d);
 				desenhaMarcasPeneuPista(g2d);
@@ -2587,7 +2587,8 @@ public class PainelCircuito extends JPanel {
 					+ " D " + dist + " S " + pilotoSelecionado.getStress()
 					+ " A "
 					+ pilotoSelecionado.getCarro().getDurabilidadeAereofolio()
-					+ " PBOX " + pilotoSelecionado.getPtosBox();
+					+ " PBOX " + pilotoSelecionado.getPtosBox() + " DP "
+					+ pilotoSelecionado.calculaDiffParaProximo(controleJogo);
 		}
 
 		int maior = 0;

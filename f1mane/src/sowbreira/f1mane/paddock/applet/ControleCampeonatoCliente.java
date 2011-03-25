@@ -61,6 +61,8 @@ public class ControleCampeonatoCliente {
 
 	private String circuitoJogando;
 
+	private String campeonatoSelecionado;
+
 	private ControlePaddockCliente controlePaddockCliente;
 
 	public ControleCampeonatoCliente(Component c,
@@ -280,9 +282,9 @@ public class ControleCampeonatoCliente {
 
 		grid.add(new JLabel() {
 			public String getText() {
-				return Lang.msg("110", new String[] {
-						String.valueOf(Constantes.MIN_VOLTAS),
-						String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110",
+						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+								String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		});
 		spinnerQtdeVoltas = new JSpinner();
@@ -329,18 +331,24 @@ public class ControleCampeonatoCliente {
 		}
 
 		if (corridas.isEmpty()) {
-			JOptionPane.showMessageDialog(compPai, Lang.msg("296"), Lang
-					.msg("296"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(compPai, Lang.msg("296"),
+					Lang.msg("296"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
 		if (qtdeVolta == null || qtdeVolta.intValue() < Constantes.MIN_VOLTAS) {
-			JOptionPane.showMessageDialog(compPai, Lang.msg("110",
-					new String[] { String.valueOf(Constantes.MIN_VOLTAS),
-							String.valueOf(Constantes.MAX_VOLTAS) }), Lang.msg(
-					"110", new String[] {
-							String.valueOf(Constantes.MIN_VOLTAS),
-							String.valueOf(Constantes.MAX_VOLTAS) }),
+			JOptionPane.showMessageDialog(
+					compPai,
+					Lang.msg(
+							"110",
+							new String[] {
+									String.valueOf(Constantes.MIN_VOLTAS),
+									String.valueOf(Constantes.MAX_VOLTAS) }),
+					Lang.msg(
+							"110",
+							new String[] {
+									String.valueOf(Constantes.MIN_VOLTAS),
+									String.valueOf(Constantes.MAX_VOLTAS) }),
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -366,8 +374,8 @@ public class ControleCampeonatoCliente {
 			campeonato.setLoginCriador(controlePaddockCliente
 					.getSessaoCliente().getNomeJogador());
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.CRIAR_CAMPEONATO, controlePaddockCliente
-							.getSessaoCliente());
+					Comandos.CRIAR_CAMPEONATO,
+					controlePaddockCliente.getSessaoCliente());
 			clientPaddockPack.setDataObject(campeonato);
 			controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			clientPaddockPack = new ClientPaddockPack();
@@ -419,14 +427,13 @@ public class ControleCampeonatoCliente {
 			return;
 		}
 		JPanel campeonastosPanel = gerarPanelCampeonatos((List) ret);
-		JOptionPane.showMessageDialog(this.compPai, campeonastosPanel, Lang
-				.msg("listaCampeonatos"), JOptionPane.INFORMATION_MESSAGE);
-
+		JOptionPane.showMessageDialog(this.compPai, campeonastosPanel,
+				Lang.msg("listaCampeonatos"), JOptionPane.INFORMATION_MESSAGE);
+		carregaCampeonatoSelecionado(this.compPai);
 	}
 
 	private JPanel gerarPanelCampeonatos(final List campeonatos) {
-		final JTable corridasTable = new JTable() {
-		};
+		final JTable corridasTable = new JTable();
 
 		final TableModel corridasTableModel = new AbstractTableModel() {
 
@@ -443,7 +450,7 @@ public class ControleCampeonatoCliente {
 					boolean val = (Boolean) value[2];
 					return val ? Lang.msg("sim") : Lang.msg("nao");
 				case 3:
-				    return new SimpleDateFormat("dd/MM/yyyy").format(value[3]);
+					return new SimpleDateFormat("dd/MM/yyyy").format(value[3]);
 				default:
 					return "";
 				}
@@ -474,7 +481,7 @@ public class ControleCampeonatoCliente {
 					return Lang.msg("campeonatoConcluido");
 				case 3:
 					return Lang.msg("criadoEm");
-					
+
 				default:
 					return "";
 				}
@@ -485,34 +492,10 @@ public class ControleCampeonatoCliente {
 
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
+				campeonatoSelecionado = (String) corridasTableModel.getValueAt(
+						corridasTable.getSelectedRow(), 0);
 				if (e.getClickCount() == 2) {
-					String campeonato = (String) corridasTableModel.getValueAt(
-							corridasTable.getSelectedRow(), 0);
-					int ret = JOptionPane.showConfirmDialog(corridasTable, Lang
-							.msg("carregarCampeonato",
-									new String[] { campeonato }), Lang
-							.msg("detelhesCampeonato"),
-							JOptionPane.YES_NO_OPTION);
-					if (ret == JOptionPane.YES_OPTION) {
-						ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-						clientPaddockPack.setComando(Comandos.OBTER_CAMPEONATO);
-						clientPaddockPack.setDataObject(campeonato);
-						Object retorno = controlePaddockCliente
-								.enviarObjeto(clientPaddockPack);
-						if (controlePaddockCliente.retornoNaoValido(ret)) {
-							return;
-						}
-						if (retorno == null) {
-							JOptionPane.showMessageDialog(
-									ControleCampeonatoCliente.this.compPai,
-									Lang.msg("062"), "Erro",
-									JOptionPane.ERROR_MESSAGE);
-							return;
-						}
-						ControleCampeonatoCliente.this.campeonato = (Campeonato) retorno;
-						new PainelCampeonato(ControleCampeonatoCliente.this);
-
-					}
+					carregaCampeonatoSelecionado(corridasTable);
 				}
 			}
 
@@ -536,6 +519,34 @@ public class ControleCampeonatoCliente {
 		return jPanel;
 	}
 
+	protected void carregaCampeonatoSelecionado(Component comp) {
+		if (Util.isNullOrEmpty(campeonatoSelecionado)) {
+			return;
+		}
+		int ret = JOptionPane.showConfirmDialog(comp, Lang.msg(
+				"carregarCampeonato", new String[] { campeonatoSelecionado }),
+				Lang.msg("detelhesCampeonato"), JOptionPane.YES_NO_OPTION);
+		if (ret == JOptionPane.YES_OPTION) {
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+			clientPaddockPack.setComando(Comandos.OBTER_CAMPEONATO);
+			clientPaddockPack.setDataObject(campeonatoSelecionado);
+			Object retorno = controlePaddockCliente
+					.enviarObjeto(clientPaddockPack);
+			if (controlePaddockCliente.retornoNaoValido(ret)) {
+				return;
+			}
+			if (retorno == null) {
+				JOptionPane.showMessageDialog(
+						ControleCampeonatoCliente.this.compPai,
+						Lang.msg("062"), "Erro", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			ControleCampeonatoCliente.this.campeonato = (Campeonato) retorno;
+			new PainelCampeonato(ControleCampeonatoCliente.this);
+
+		}
+	}
+
 	public void proximaCorrida() {
 		CorridaCampeonato corridaCampeonatoProx = null;
 		for (CorridaCampeonato corridaCampeonato : campeonato
@@ -549,8 +560,8 @@ public class ControleCampeonatoCliente {
 		if (corridaCampeonatoProx == null) {
 			Logger.logar("campeonato acabado");
 		}
-		controlePaddockCliente.criarJogo(campeonato, corridaCampeonatoProx
-				.getNomeCircuito());
+		controlePaddockCliente.criarJogo(campeonato,
+				corridaCampeonatoProx.getNomeCircuito());
 	}
 
 	public void geraListaPilotosPontos() {
