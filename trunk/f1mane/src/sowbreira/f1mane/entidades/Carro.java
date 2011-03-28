@@ -376,14 +376,14 @@ public class Carro implements Serializable {
 		int novoModDano = novoModificador;
 		if (giro == GIRO_MAX_VAL) {
 			if (agressivo)
-				valDesgaste = ((testePotencia() ? 3 : 4) + novoModDano);
+				valDesgaste = ((testePotencia() ? 4 : 5) + novoModDano);
 			else
-				valDesgaste = ((testePotencia() ? 2 : 3) + novoModDano);
+				valDesgaste = ((testePotencia() ? 3 : 4) + novoModDano);
 		} else if (giro == GIRO_NOR_VAL) {
 			if (agressivo)
-				valDesgaste = ((testePotencia() ? 1 : 2) + novoModDano);
+				valDesgaste = ((testePotencia() ? 2 : 3) + novoModDano);
 			else
-				valDesgaste = ((testePotencia() ? 0 : 1) + novoModDano);
+				valDesgaste = ((testePotencia() ? 1 : 2) + novoModDano);
 		} else {
 			if (agressivo)
 				valDesgaste = ((testePotencia() ? 0 : 1) + novoModDano);
@@ -396,19 +396,19 @@ public class Carro implements Serializable {
 		if (valDesgaste < 0) {
 			valDesgaste = 0;
 		}
-		double indexVelcidadeDaPista = 0;
-		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
-					* (porcentagemCombustivel() / (controleJogo
-							.isSemReabastacimento() ? 120.0 : 70.0));
-		} else if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
-					* (porcentagemCombustivel() / (controleJogo
-							.isSemReabastacimento() ? 110.0 : 60.0));
-		} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-			indexVelcidadeDaPista = controleJogo.getIndexVelcidadeDaPista()
-					* (porcentagemCombustivel() / (controleJogo
-							.isSemReabastacimento() ? 100.0 : 50.0));
+		if (!controleJogo.isSemReabastacimento()) {
+			int valor = Util.intervalo(1, 100);
+			int perCombust = porcentagemCombustivel();
+			if (valor < perCombust)
+				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
+					valDesgaste += (testePotencia() ? 0 : 1);
+				} else if (InterfaceJogo.MEDIO_NV == controleJogo
+						.getNiveljogo()) {
+					valDesgaste += (testePotencia() ? 1 : 2);
+				} else if (InterfaceJogo.DIFICIL_NV == controleJogo
+						.getNiveljogo()) {
+					valDesgaste += (testePotencia() ? 2 : 3);
+				}
 		}
 		int dist = 20;
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
@@ -422,10 +422,7 @@ public class Carro implements Serializable {
 				&& piloto.calculaDiffParaProximo(controleJogo) < dist) {
 			valDesgaste += 1;
 		}
-		if (controleJogo.getCircuito().isUsaBkg()) {
-			indexVelcidadeDaPista *= 2;
-		}
-		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador() * indexVelcidadeDaPista);
+		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador());
 		if (porcentagemDesgasteMotor() < 0) {
 			piloto.setDesqualificado(true);
 			setDanificado(Carro.EXPLODIU_MOTOR);
