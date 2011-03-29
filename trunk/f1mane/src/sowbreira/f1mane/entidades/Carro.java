@@ -376,21 +376,21 @@ public class Carro implements Serializable {
 		int novoModDano = novoModificador;
 		if (giro == GIRO_MAX_VAL) {
 			if (agressivo)
-				valDesgaste = ((testePotencia() ? 4 : 5) + novoModDano);
+				valDesgaste = ((testePotencia() ? 6 : 7) + novoModDano);
 			else
-				valDesgaste = ((testePotencia() ? 3 : 4) + novoModDano);
+				valDesgaste = ((testePotencia() ? 5 : 6) + novoModDano);
 		} else if (giro == GIRO_NOR_VAL) {
 			if (agressivo)
-				valDesgaste = ((testePotencia() ? 2 : 3) + novoModDano);
+				valDesgaste = ((testePotencia() ? 4 : 5) + novoModDano);
 			else
-				valDesgaste = ((testePotencia() ? 1 : 2) + novoModDano);
+				valDesgaste = ((testePotencia() ? 2 : 3) + novoModDano);
 		} else {
 			if (agressivo)
-				valDesgaste = ((testePotencia() ? 0 : 1) + novoModDano);
+				valDesgaste = ((testePotencia() ? 1 : 2) + novoModDano);
 		}
-		if (Clima.SOL.equals(controleJogo.getClima()) && agressivo
+		if (Clima.SOL.equals(controleJogo.getClima())
 				&& Math.random() < (giro / 10.0)) {
-			valDesgaste += 1;
+			valDesgaste += agressivo ? 2 : 1;
 		}
 
 		if (valDesgaste < 0) {
@@ -420,7 +420,7 @@ public class Carro implements Serializable {
 		if (!controleJogo.isModoQualify()
 				&& controleJogo.getNumVoltaAtual() != 1
 				&& piloto.calculaDiffParaProximo(controleJogo) < dist) {
-			valDesgaste += 1;
+			valDesgaste += testePotencia() ? 1 : 2;
 		}
 		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador());
 		if (porcentagemDesgasteMotor() < 0) {
@@ -491,40 +491,29 @@ public class Carro implements Serializable {
 				}
 			}
 		}
-		double fator = Math.random();
-		double comparar = .7;
-		if (controleJogo.isSemReabastacimento()) {
-			if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
-				comparar = .85;
-			else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
-				comparar = .9;
-			if (InterfaceJogo.FACIL == controleJogo.getNivelCorrida())
-				comparar = .95;
-		}
+		int dificudade = 2;
+		if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
+			dificudade = 3;
+		else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
+			dificudade = 2;
+		if (InterfaceJogo.FACIL == controleJogo.getNivelCorrida())
+			dificudade = 1;
 
 		int valConsumo = 0;
 		if (agressivo) {
-			valConsumo = ((fator > comparar) ? 2 : 1);
+			valConsumo = (getPiloto().testeHabilidadePilotoCarro() ? 1 : 2);
 		} else {
-			valConsumo = ((fator > comparar) ? 1 : 0);
+			valConsumo = (testePotencia() ? 0 : 1);
 		}
-		fator = Math.random();
 		if (giro == GIRO_MIN_VAL) {
-			valConsumo += ((fator > comparar) ? 1 : 0);
+			valConsumo += ((testePotencia()) ? 0 : 1);
 		} else if (giro == GIRO_NOR_VAL) {
-			valConsumo += ((fator > comparar) ? 2 : 1);
+			valConsumo += ((getPiloto().testeHabilidadePilotoOuCarro()) ? 1 : 2);
 		} else if (giro == GIRO_MAX_VAL) {
-			valConsumo += ((fator > comparar) ? 4 : 2);
-		}
-		fator = Math.random();
-		if (valConsumo <= 0) {
-			if (fator > comparar) {
-				valConsumo = 1;
-			}
+			valConsumo += ((getPiloto().testeHabilidadePilotoCarro()) ? 3 : 4);
 		}
 		combustivel -= (valConsumo
-				* controleJogo.getCircuito().getMultiplciador() * controleJogo
-				.getIndexVelcidadeDaPista());
+				* controleJogo.getCircuito().getMultiplciador() * dificudade);
 
 		if (percent < 0) {
 			combustivel = 0;
@@ -532,7 +521,6 @@ public class Carro implements Serializable {
 			getPiloto().setDesqualificado(true);
 			paneSeca = true;
 		}
-
 		return novoModificador;
 	}
 
@@ -565,7 +553,7 @@ public class Carro implements Serializable {
 					&& (Math.random() > indicativo)) {
 				novoModificador += 1;
 			} else if (no.verificaCruvaBaixa()
-					&& (porcent > Util.intervalo(25, 35))
+					&& (porcent > Util.intervalo(20, 30))
 					&& (porcent < Util.intervalo(60, 70))
 					&& (Math.random() > indicativo)) {
 				novoModificador += 1;
