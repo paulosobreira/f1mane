@@ -553,14 +553,17 @@ public class ControleBox {
 			piloto.limparConsumoMedioPneus();
 
 		if (consumoMedioCombustivel == 0) {
-			if (piloto.getQtdeParadasBox() == 0) {
-				percentagem = 40 + ((int) (Math.random() * 50));
-			} else if (piloto.getQtdeParadasBox() == 1) {
-				percentagem = 30 + ((int) (Math.random() * 30));
+			if (controleJogo.getNumVoltaAtual() == 0) {
+				percentagem = Util.intervalo(40, 60);
 			} else {
-				percentagem = 10 + ((int) (Math.random() * 30));
+				if (piloto.getQtdeParadasBox() == 0) {
+					percentagem = 50 + ((int) (Math.random() * 50));
+				} else if (piloto.getQtdeParadasBox() == 1) {
+					percentagem = 40 + ((int) (Math.random() * 40));
+				} else {
+					percentagem = 20 + ((int) (Math.random() * 30));
+				}
 			}
-
 			if (piloto.getCarro().verificaDano()) {
 				percentagem = 70;
 			}

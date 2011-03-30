@@ -1201,14 +1201,17 @@ public class Piloto implements Serializable {
 		int distBrigaMax = (int) (size * controleJogo.getNiveljogo());
 		Logger.logar("distBrigaMax" + distBrigaMax);
 		int distBrigaMin = 0;
-		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
-			distBrigaMin = 15;
-		} else if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
-			distBrigaMin = 10;
-		} else if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-			distBrigaMin = 5;
-		}
 		Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
+		if (carroPilotoDaFrente != null) {
+			Piloto pilotoFrente = carroPilotoDaFrente.getPiloto();
+			if (pilotoFrente.isJogadorHumano()) {
+				if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+					distBrigaMin = 10;
+				} else if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+					distBrigaMin = 5;
+				}
+			}
+		}
 		if (diff > distBrigaMin && diff < distBrigaMax
 				&& testeHabilidadePilotoCarro()) {
 			if (carroPilotoDaFrente != null) {

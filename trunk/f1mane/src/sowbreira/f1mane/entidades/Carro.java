@@ -570,8 +570,8 @@ public class Carro implements Serializable {
 			novoModificador -= 1;
 		}
 		int desgPneus = 0;
-		int novoModDano = Util.inte(controleJogo.getNiveljogo()
-				* (novoModificador > 5 ? 5 : novoModificador));
+		int novoModDano = Util
+				.inte((novoModificador > 5 ? 5 : novoModificador));
 		if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
 			if (agressivo)
 				desgPneus += (novoModDano);
@@ -582,18 +582,18 @@ public class Carro implements Serializable {
 						: 1);
 			}
 			boolean teste = piloto.testeHabilidadePilotoCarro();
-			desgPneus += (teste ? 3 : 4 + novoModDano);
+			desgPneus += (teste ? 5 : 6 + novoModDano);
 			if (!teste && Math.random() > 0.6 && !controleJogo.isChovendo()
 					&& getPiloto().getPtosBox() == 0) {
 				controleJogo.travouRodas(getPiloto());
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
-			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 2
-					: 3 + novoModDano);
+			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3
+					: 4 + novoModDano);
 		} else if (agressivo) {
-			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 1 : 2);
+			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3 : 4);
 		} else {
-			desgPneus += (piloto.testeHabilidadePilotoOuCarro() ? 0 : 1);
+			desgPneus += (piloto.testeHabilidadePilotoOuCarro() ? 1 : 2);
 		}
 		if (Clima.SOL.equals(controleJogo.getClima())) {
 			if (TIPO_PNEU_MOLE.equals(tipoPneu)
@@ -606,13 +606,13 @@ public class Carro implements Serializable {
 		double dificuldade = 0;
 
 		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-			dificuldade = (piloto.testeHabilidadePiloto() ? 3 : 4)
+			dificuldade = (piloto.testeHabilidadePiloto() ? 1 : 2)
 					* porcentComb;
 		} else if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-			dificuldade = (piloto.testeHabilidadePiloto() ? 7 : 8)
+			dificuldade = (piloto.testeHabilidadePiloto() ? 3 : 4)
 					* porcentComb;
 		} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-			dificuldade = (piloto.testeHabilidadePiloto() ? 11 : 12)
+			dificuldade = (piloto.testeHabilidadePiloto() ? 5 : 6)
 					* porcentComb;
 		}
 
@@ -620,6 +620,12 @@ public class Carro implements Serializable {
 				* controleJogo.getCircuito().getMultiplciador() * dificuldade);
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 3;
+		}
+		if (controleJogo.isSemReabastacimento()) {
+			valDesgaste *= 0.7;
+		}
+		if (controleJogo.isSemTrocaPneu()) {
+			valDesgaste *= 0.8;
 		}
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
