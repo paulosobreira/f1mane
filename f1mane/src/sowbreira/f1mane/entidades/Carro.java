@@ -582,14 +582,14 @@ public class Carro implements Serializable {
 						: 1);
 			}
 			boolean teste = piloto.testeHabilidadePilotoCarro();
-			desgPneus += (teste ? 5 : 6 + novoModDano);
+			desgPneus += (teste ? 4 : 6) + novoModDano;
 			if (!teste && Math.random() > 0.6 && !controleJogo.isChovendo()
 					&& getPiloto().getPtosBox() == 0) {
 				controleJogo.travouRodas(getPiloto());
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
-			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3
-					: 4 + novoModDano);
+			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3 : 4)
+					+ novoModDano;
 		} else if (agressivo) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3 : 4);
 		} else {
@@ -602,30 +602,30 @@ public class Carro implements Serializable {
 			else
 				desgPneus += 1;
 		}
-		double porcentComb = porcentagemCombustivel() / 100.0;
-		double dificuldade = 0;
-
-		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-			dificuldade = (piloto.testeHabilidadePiloto() ? 1 : 2)
-					* porcentComb;
-		} else if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-			dificuldade = (piloto.testeHabilidadePiloto() ? 3 : 4)
-					* porcentComb;
-		} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-			dificuldade = (piloto.testeHabilidadePiloto() ? 5 : 6)
-					* porcentComb;
-		}
+		double porcentComb = porcentagemCombustivel() / 1000.0;
+		double combustivel = 1;
+		if (Math.random() < porcentComb)
+			combustivel = (piloto.testeHabilidadePiloto() ? Util
+					.intervalo(1, 3) : Util.intervalo(2, 4));
 
 		double valDesgaste = (desgPneus
-				* controleJogo.getCircuito().getMultiplciador() * dificuldade);
+				* controleJogo.getCircuito().getMultiplciador() * combustivel);
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 3;
 		}
-		if (controleJogo.isSemReabastacimento()) {
+
+		if (controleJogo.isSemTrocaPneu()) {
 			valDesgaste *= 0.7;
 		}
-		if (controleJogo.isSemTrocaPneu()) {
-			valDesgaste *= 0.8;
+
+		if (!controleJogo.isSemTrocaPneu() && getPiloto().isJogadorHumano()) {
+			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
+				valDesgaste *= 1.1;
+			} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+				valDesgaste *= 1.2;
+			}
+		} else {
+			valDesgaste *= 1.0;
 		}
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
