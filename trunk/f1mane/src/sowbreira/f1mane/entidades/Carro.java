@@ -540,7 +540,7 @@ public class Carro implements Serializable {
 			indicativo = .4;
 		}
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)
-				&& getPiloto().testeHabilidadePilotoCarro()) {
+				&& getPiloto().testeHabilidadePilotoOuCarro()) {
 			if ((no.verificaCruvaBaixa() || no.verificaCruvaAlta())
 					&& (porcent > Util.intervalo(10, 25))
 					&& (Math.random() > indicativo)
