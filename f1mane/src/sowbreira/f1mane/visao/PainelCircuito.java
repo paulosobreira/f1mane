@@ -3,6 +3,7 @@ package sowbreira.f1mane.visao;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -558,24 +559,32 @@ public class PainelCircuito extends JPanel {
 		}
 		Point p0 = (Point) pistaMinimizada.get(0);
 		g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p0.x, o.y + p0.y);
-		if (pilotoSelecionado != null && pilotoSelecionado.getNoAtual() != null) {
-			g2d.setColor(PainelTabelaPosicoes.jogador);
-			Point point = pilotoSelecionado.getNoAtual().getPoint();
-			Point p = new Point(point.x, point.y);
-			p.x /= doubleMulti;
-			p.y /= doubleMulti;
-			g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
-		}
-		Piloto lider = (Piloto) controleJogo.getPilotos().get(0);
-		if (lider != null && lider.getNoAtual() != null) {
-			g2d.setColor(PainelTabelaPosicoes.otros);
-			Point point = lider.getNoAtual().getPoint();
-			Point p = new Point(point.x, point.y);
-			p.x /= doubleMulti;
-			p.y /= doubleMulti;
-			g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
-		}
 
+		Piloto lider = (Piloto) controleJogo.getPilotos().get(0);
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 8));
+
+		List pilotos = controleJogo.getPilotos();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			Point point = piloto.getNoAtual().getPoint();
+			Point p = new Point(point.x, point.y);
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			if (piloto.equals(pilotoSelecionado)) {
+				g2d.setColor(PainelTabelaPosicoes.jogador);
+			} else if (piloto.equals(lider)) {
+				g2d.setColor(PainelTabelaPosicoes.otros);
+			} else {
+				g2d.setColor(Color.LIGHT_GRAY);
+			}
+			g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString("" + piloto.getPosicao(),
+					o.x + p.x - ((piloto.getPosicao() < 10) ? 3 : 5), o.y + p.y
+							+ 3);
+		}
+		g2d.setFont(fontOri);
 	}
 
 	public static void main(String[] args) {
