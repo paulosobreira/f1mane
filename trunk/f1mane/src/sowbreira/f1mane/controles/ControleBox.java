@@ -206,7 +206,7 @@ public class ControleBox {
 				No nobox = (No) boxEquipes.get(piloto.getCarro());
 				int indexParada = piloto.obterPista(controleJogo)
 						.indexOf(nobox);
-				if (novosPtsBox >= (indexParada - (Carro.LARGURA))
+				if (novosPtsBox >= (indexParada - (Carro.MEIA_LARGURA))
 						&& novosPtsBox <= (indexParada)) {
 					piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2
 							: 1);

@@ -251,7 +251,8 @@ public class ControleCorrida {
 						&& pilotoNaFrente.getPtosPista() < piloto
 								.getPtosPista()
 						&& !pilotoNaFrente.isDesqualificado()
-						&& (pilotoNaFrente.getPtosBox() == 0)) {
+						&& (pilotoNaFrente.getPtosBox() == 0)
+						&& pilotoNaFrente.isAutoPos()) {
 					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2),
 							controleJogo, true);
 					if (piloto.getPosicao() < 8) {
@@ -282,7 +283,8 @@ public class ControleCorrida {
 							|| Carro.PERDEU_AEREOFOLIO.equals(pilotoNaFrente
 									.getCarro().getDanificado())
 							|| Carro.PNEU_FURADO.equals(pilotoNaFrente
-									.getCarro().getDanificado())) {
+									.getCarro().getDanificado())
+							|| pilotoNaFrente.isDesqualificado()) {
 						int novapos = Util.intervalo(0, 2);
 						while (novapos == pilotoNaFrente.getPosicao()) {
 							novapos = Util.intervalo(0, 2);
@@ -329,6 +331,7 @@ public class ControleCorrida {
 					multi = 3;
 				}
 				if (pilotoAtraz != null
+						&& piloto.isAutoPos()
 						&& pilotoAtraz.getPtosPista() > (piloto.getPtosPista() - (multi * Carro.LARGURA))) {
 					// Logger.logar(piloto.getNome() + " pressionado por "
 					// + carroAtraz.getPiloto().getNome());
@@ -363,7 +366,7 @@ public class ControleCorrida {
 			return;
 		}
 
-		double fatorAcidente = .9;
+		double fatorAcidente = .85;
 		if (controleJogo.isChovendo()) {
 			fatorAcidente -= .1;
 		}
@@ -372,7 +375,7 @@ public class ControleCorrida {
 				fatorAcidente += .05;
 			}
 			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-				fatorAcidente -= .1;
+				fatorAcidente -= .05;
 			}
 		}
 		if ((Math.random() < fatorAcidente)) {

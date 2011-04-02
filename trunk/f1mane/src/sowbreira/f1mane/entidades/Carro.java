@@ -620,9 +620,9 @@ public class Carro implements Serializable {
 
 		if (!controleJogo.isSemTrocaPneu() && getPiloto().isJogadorHumano()) {
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				valDesgaste *= 1.1;
+				valDesgaste *= Math.random() < .7 ? 1.1 : 1.2;
 			} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-				valDesgaste *= 1.2;
+				valDesgaste *= Math.random() < .5 ? 1.1 : 1.2;
 			}
 		} else {
 			valDesgaste *= 1.0;
