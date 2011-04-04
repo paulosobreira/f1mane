@@ -7,7 +7,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -114,6 +116,10 @@ public class ControlePaddockCliente {
 	}
 
 	public static void main(String[] args) throws Exception {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(
+				"EEE, d MMM yyyy HH:mm:ss");
+		Date parse = dateFormat.parse("Sex, 18 Mar 2011 14:52:33");
+		System.out.println(parse);
 
 	}
 

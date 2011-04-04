@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,6 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
+
+import br.nnpe.Logger;
 
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
@@ -41,6 +45,7 @@ public class FormClassificacao extends JPanel {
 	private JTable piltosTable;
 	private List listaCarros;
 	private List listaPilotos;
+	private TableRowSorter sorter;
 
 	/**
 	 * @param listaDadosJogador
@@ -54,15 +59,30 @@ public class FormClassificacao extends JPanel {
 		JPanel classificacao = new JPanel();
 		TableModel model = new TableModel();
 		posicoesTable = new JTable(model);
-		posicoesTable.setAutoCreateRowSorter(true);
+		sorter = new TableRowSorter(model);
+		posicoesTable.setRowSorter(sorter);
+		sorter.setComparator(1, new Comparator() {
+			public int compare(Object o1, Object o2) {
+				String d1 = (String) o1;
+				String d2 = (String) o2;
+				try {
+					return dateFormat.parse(d1).compareTo(dateFormat.parse(d2));
+				} catch (ParseException e) {
+					Logger.logarExept(e);
+					return 0;
+				}
+			}
+		});
 		posicoesTable.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 				if (e.getClickCount() == 2) {
 					TableModel model = (TableModel) posicoesTable.getModel();
-					nomeJogador = (String) model.getValueAt(
-							posicoesTable.getSelectedRow(), 0);
+
+					nomeJogador = (String) model.getValueAt(sorter
+							.convertRowIndexToModel(posicoesTable
+									.getSelectedRow()), 0);
 					int ret = JOptionPane.showConfirmDialog(
 							FormClassificacao.this, Lang.msg("129")
 									+ nomeJogador, Lang.msg("130"),
