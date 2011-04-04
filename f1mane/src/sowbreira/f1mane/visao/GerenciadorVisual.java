@@ -478,6 +478,9 @@ public class GerenciadorVisual {
 					controleJogo.selecionaPilotoJogador();
 				}
 				if (keyCoode == KeyEvent.VK_LEFT) {
+					if(controleJogo.getPilotoJogador()==null){
+						return;
+					}
 					if (controleJogo.getPilotoJogador().getTracado() == 2) {
 						mudarPos0();
 					} else {
@@ -485,6 +488,9 @@ public class GerenciadorVisual {
 					}
 				}
 				if (keyCoode == KeyEvent.VK_RIGHT) {
+					if(controleJogo.getPilotoJogador()==null){
+						return;
+					}
 					if (controleJogo.getPilotoJogador().getTracado() == 1) {
 						mudarPos0();
 					} else {

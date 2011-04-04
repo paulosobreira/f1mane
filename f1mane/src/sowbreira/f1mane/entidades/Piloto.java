@@ -1199,7 +1199,6 @@ public class Piloto implements Serializable {
 		double multiplciador = controleJogo.getCircuito().getMultiplciador();
 		size /= multiplciador;
 		int distBrigaMax = (int) (size * controleJogo.getNiveljogo());
-		Logger.logar("distBrigaMax" + distBrigaMax);
 		int distBrigaMin = 0;
 		Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		if (carroPilotoDaFrente != null) {
