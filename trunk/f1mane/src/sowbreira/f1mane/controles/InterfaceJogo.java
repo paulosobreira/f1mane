@@ -22,7 +22,7 @@ public interface InterfaceJogo {
 	public static double FACIL_NV = .3;
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
-	public static String VERSAO = "4.44";
+	public static String VERSAO = "4.45";
 
 	public boolean isSemTrocaPneu();
 

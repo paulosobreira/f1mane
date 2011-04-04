@@ -368,7 +368,7 @@ public class ControleCorrida {
 
 		double fatorAcidente = .85;
 		if (controleJogo.isChovendo()) {
-			fatorAcidente -= .1;
+			fatorAcidente -= .2;
 		}
 		if (piloto.isJogadorHumano()) {
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
@@ -385,8 +385,12 @@ public class ControleCorrida {
 			if (piloto.isAgressivo()) {
 				No noAtual = piloto.getNoAtual();
 				if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
-					piloto.getCarro().setDurabilidadeAereofolio(
-							piloto.getCarro().getDurabilidadeAereofolio() - 1);
+					if ((piloto.getStress() > 30)) {
+						piloto.getCarro()
+								.setDurabilidadeAereofolio(
+										piloto.getCarro()
+												.getDurabilidadeAereofolio() - 1);
+					}
 					if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
 						piloto.incStress(30);
 					if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
@@ -417,7 +421,9 @@ public class ControleCorrida {
 			}
 		} else {
 			if (!piloto.testeHabilidadePilotoCarro()) {
-				if ((piloto.getCarro().getDurabilidadeAereofolio() <= 1)
+				if (((piloto.getCarro().getDurabilidadeAereofolio() <= 1 || (piloto
+						.getCarro().getDurabilidadeAereofolio() <= 2)
+						&& Math.random() > fatorAcidente))
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& (controleJogo.getNumVoltaAtual() > 1)
 						&& Math.random() > fatorAcidente
