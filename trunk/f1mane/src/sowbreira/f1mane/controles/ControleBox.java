@@ -372,7 +372,7 @@ public class ControleBox {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
-				System.out.println("TEsTe " + piloto.getNome());
+				Logger.logar("TEsTe " + piloto.getNome());
 			} else {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
