@@ -549,15 +549,25 @@ public class Carro implements Serializable {
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)
 				&& getPiloto().testeHabilidadePilotoCarro()) {
-			if (no.verificaCruvaAlta() && (porcent > Util.intervalo(20, 30))
-					&& (porcent < Util.intervalo(70, 80))
-					&& (Math.random() > indicativo)) {
-				novoModificador += 1;
-			} else if (no.verificaCruvaBaixa()
-					&& (porcent > Util.intervalo(30, 40))
-					&& (porcent < Util.intervalo(60, 70))
-					&& (Math.random() > indicativo)) {
-				novoModificador += 1;
+			if (no.verificaCruvaAlta()) {
+				if ((porcent > Util.intervalo(25, 35))
+						&& (porcent < Util.intervalo(70, 80))
+						&& (Math.random() > indicativo)) {
+					novoModificador += 1;
+				} else if (porcent < Util.intervalo(10, 20)
+						|| (porcent > Util.intervalo(80, 90))) {
+					novoModificador -= 1;
+				}
+			}
+			if (no.verificaCruvaBaixa()) {
+				if ((porcent > Util.intervalo(35, 45))
+						&& (porcent < Util.intervalo(60, 70))
+						&& (Math.random() > indicativo)) {
+					novoModificador += 1;
+				} else if (porcent < Util.intervalo(20, 30)
+						|| (porcent > Util.intervalo(70, 80))) {
+					novoModificador -= 1;
+				}
 			}
 		} else if (TIPO_PNEU_CHUVA.equals(tipoPneu)) {
 			if (no.verificaCruvaBaixa() && Math.random() > .8) {
