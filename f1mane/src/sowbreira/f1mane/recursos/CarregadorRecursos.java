@@ -384,13 +384,16 @@ public class CarregadorRecursos {
 			piloto.setNome(Util.substVogais(name));
 			piloto.setNomeCarro(Util.substVogais(prop.split(",")[0]));
 			int duasCasas = Integer.parseInt(prop.split(",")[1])
-					+ (Math.random() > .5 ? -1 : 1);
+					+ (Math.random() > .5 ? (-1 * Util.intervalo(0, 1)) : Util
+							.intervalo(0, 1));
 			piloto.setHabilidade(Integer.parseInt(String.valueOf(duasCasas)
-					+ (int) (0 + Math.random() * 9)));
+					+ Util.intervalo(0, 9)));
+			if ("t2010".equals(temporarada))
+				System.out.println(piloto + " " + piloto.getHabilidade());
 			// Logger.logar(piloto + " " + piloto.getHabilidade());
 			retorno.add(piloto);
 		}
-
+		System.out.println("==========================");
 		Collections.sort(retorno, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
