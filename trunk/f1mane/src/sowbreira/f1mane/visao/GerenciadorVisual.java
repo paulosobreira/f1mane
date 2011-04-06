@@ -478,7 +478,7 @@ public class GerenciadorVisual {
 					controleJogo.selecionaPilotoJogador();
 				}
 				if (keyCoode == KeyEvent.VK_LEFT) {
-					if(controleJogo.getPilotoJogador()==null){
+					if (controleJogo.getPilotoJogador() == null) {
 						return;
 					}
 					if (controleJogo.getPilotoJogador().getTracado() == 2) {
@@ -488,7 +488,7 @@ public class GerenciadorVisual {
 					}
 				}
 				if (keyCoode == KeyEvent.VK_RIGHT) {
-					if(controleJogo.getPilotoJogador()==null){
+					if (controleJogo.getPilotoJogador() == null) {
 						return;
 					}
 					if (controleJogo.getPilotoJogador().getTracado() == 1) {
@@ -1606,7 +1606,7 @@ public class GerenciadorVisual {
 		}
 		int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
 				painelInicio, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
-		if (ret == JOptionPane.NO_OPTION) {
+		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
 		Object[] selec = listPilotosSelecionados.getSelectedValues();
