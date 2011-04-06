@@ -207,10 +207,10 @@ public class CarregadorRecursos {
 
 	public static void main(String[] args) throws URISyntaxException,
 			IOException {
-		String val = "tn_2008voi-mclaren.gif";
-		System.out.println(Util.intervalo(0, 0));
+//		String val = "tn_2008voi-mclaren.gif";
+//		System.out.println(Util.intervalo(0, 0));
 
-		// gerarListaCarrosLado();
+		 gerarListaCarrosLado();
 		// gerarCarrosCima();
 		// JFrame frame = new JFrame();
 		// frame.setSize(200, 200);
@@ -388,12 +388,9 @@ public class CarregadorRecursos {
 							.intervalo(0, 1));
 			piloto.setHabilidade(Integer.parseInt(String.valueOf(duasCasas)
 					+ Util.intervalo(0, 9)));
-			if ("t2010".equals(temporarada))
-				System.out.println(piloto + " " + piloto.getHabilidade());
-			// Logger.logar(piloto + " " + piloto.getHabilidade());
+			Logger.logar(piloto + " " + piloto.getHabilidade());
 			retorno.add(piloto);
 		}
-		System.out.println("==========================");
 		Collections.sort(retorno, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;

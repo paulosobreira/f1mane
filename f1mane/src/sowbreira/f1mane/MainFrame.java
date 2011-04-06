@@ -334,7 +334,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String msg = Lang.msg("184")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
-						+ "http://sowbreira.appspot.com \n" + "2007-2010";
+						+ "http://sowbreira.appspot.com \n" + "2007-2011";
 				JOptionPane.showMessageDialog(MainFrame.this, msg,
 						Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 			}
