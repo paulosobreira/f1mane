@@ -571,6 +571,15 @@ public class Carro implements Serializable {
 						novoModificador -= 1;
 				}
 			}
+
+			if (no.verificaRetaOuLargada()) {
+				if (porcent < Util.intervalo(10, 20)
+						|| (porcent > Util.intervalo(80, 90))) {
+					if (!getPiloto().testeHabilidadePilotoOuCarro())
+						novoModificador -= 1;
+				}
+			}
+
 		} else if (TIPO_PNEU_CHUVA.equals(tipoPneu)) {
 			if (no.verificaCruvaBaixa() && Math.random() > .8) {
 				novoModificador -= 1;
@@ -632,9 +641,11 @@ public class Carro implements Serializable {
 
 		if (!controleJogo.isSemTrocaPneu() && getPiloto().isJogadorHumano()) {
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				valDesgaste *= Math.random() < .7 ? 1.1 : 1.2;
+				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
+						.getModoPilotagem()) ? 1.2 : 1.1;
 			} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-				valDesgaste *= Math.random() < .5 ? 1.1 : 1.2;
+				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
+						.getModoPilotagem()) ? Util.intervalo(1.2, 1.3) : 1.1;
 			}
 		} else {
 			valDesgaste *= 1.0;
