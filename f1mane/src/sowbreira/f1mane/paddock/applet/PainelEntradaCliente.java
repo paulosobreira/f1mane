@@ -49,6 +49,8 @@ public class PainelEntradaCliente {
 	private JSpinner spinnerPotenciaPadraoCarros;
 	protected JCheckBox semTrocaPneu;
 	protected JCheckBox semReabastacimento;
+	protected JCheckBox kers;
+	protected JCheckBox drs;
 	private List pilotos;
 	private Map circuitos;
 	private MainFrame mainFrame;
@@ -250,23 +252,51 @@ public class PainelEntradaCliente {
 		spinnerTempoCiclo.setPaintLabels(true);
 		painelInicio.add(spinnerTempoCiclo);
 
-		painelInicio.add(new JLabel() {
+		JPanel p1 = new JPanel(new GridLayout(1, 2));
+
+		p1.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("302");
 			}
 		});
 		semReabastacimento = new JCheckBox();
-		painelInicio.add(semReabastacimento);
-		painelInicio.add(new JLabel() {
+		p1.add(semReabastacimento);
+		painelInicio.add(p1);
+
+		JPanel p2 = new JPanel(new GridLayout(1, 2));
+
+		p2.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("303");
 			}
 		});
 		semTrocaPneu = new JCheckBox();
+		p2.add(semTrocaPneu);
+		painelInicio.add(p2);
 
-		painelInicio.add(semTrocaPneu);
+		JPanel p3 = new JPanel(new GridLayout(1, 2));
+		p3.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("kers");
+			}
+		});
+		kers = new JCheckBox();
+		p3.add(kers);
+		painelInicio.add(p3);
+
+		JPanel p4 = new JPanel(new GridLayout(1, 2));
+		p4.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("drs");
+			}
+		});
+		drs = new JCheckBox();
+		p4.add(drs);
+		painelInicio.add(p4);
 
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));

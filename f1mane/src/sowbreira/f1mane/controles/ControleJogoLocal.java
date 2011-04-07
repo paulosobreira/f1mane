@@ -43,6 +43,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected boolean corridaTerminada;
 	protected boolean semTrocaPneu;
 	protected boolean semReabastacimento;
+	protected boolean kers;
+	protected boolean drs;
 	protected ControleCorrida controleCorrida;
 	protected GerenciadorVisual gerenciadorVisual;
 	protected ControleEstatisticas controleEstatisticas;
@@ -568,8 +570,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(),
-					gerenciadorVisual.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
+							.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
@@ -652,6 +654,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 			}
 			if (gerenciadorVisual.getSemTrocaPneu().isSelected()) {
 				semTrocaPneu = true;
+			}
+			if (gerenciadorVisual.getKers().isSelected()) {
+				kers = true;
+			}
+			if (gerenciadorVisual.getDrs().isSelected()) {
+				drs = true;
 			}
 			setTemporada("t"
 					+ gerenciadorVisual.getComboBoxTemporadas()
