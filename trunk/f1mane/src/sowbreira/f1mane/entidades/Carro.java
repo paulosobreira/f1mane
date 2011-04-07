@@ -556,17 +556,19 @@ public class Carro implements Serializable {
 					novoModificador += 1;
 				} else if (porcent < Util.intervalo(10, 20)
 						|| (porcent > Util.intervalo(80, 90))) {
-					novoModificador -= 1;
+					if (!getPiloto().testeHabilidadePiloto())
+						novoModificador -= 1;
 				}
 			}
 			if (no.verificaCruvaBaixa()) {
-				if ((porcent > Util.intervalo(35, 45))
+				if ((porcent > Util.intervalo(25, 35))
 						&& (porcent < Util.intervalo(60, 70))
 						&& (Math.random() > indicativo)) {
 					novoModificador += 1;
 				} else if (porcent < Util.intervalo(20, 30)
 						|| (porcent > Util.intervalo(70, 80))) {
-					novoModificador -= 1;
+					if (!getPiloto().testeHabilidadePiloto())
+						novoModificador -= 1;
 				}
 			}
 		} else if (TIPO_PNEU_CHUVA.equals(tipoPneu)) {
