@@ -582,8 +582,8 @@ public class Carro implements Serializable {
 			}
 
 			if (no.verificaRetaOuLargada()) {
-				if (porcent < Util.intervalo(10, 20)
-						|| (porcent > Util.intervalo(80, 90))) {
+				if (porcent < Util.intervalo(10, 25)
+						|| (porcent > Util.intervalo(85, 90))) {
 					if (!getPiloto().testeHabilidadePilotoOuCarro())
 						novoModificador -= 1;
 				}
