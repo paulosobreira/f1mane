@@ -22,7 +22,8 @@ public interface InterfaceJogo {
 	public static double FACIL_NV = .3;
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
-	public static String VERSAO = "4.47";
+	public static String VERSAO = "4.48";
+	public static int CARGA_KERS = 100;
 
 	public boolean isSemTrocaPneu();
 
@@ -240,5 +241,17 @@ public interface InterfaceJogo {
 	public boolean verificaNoPitLane(Piloto piloto);
 
 	public BufferedImage carregaBackGround(String backGround);
+
+	public boolean isKers();
+
+	public void setKers(boolean kers);
+
+	public boolean isDrs();
+
+	public void setDrs(boolean drs);
+
+	public boolean mudarModoDRS();
+
+	public boolean mudarModoKers();
 
 }
