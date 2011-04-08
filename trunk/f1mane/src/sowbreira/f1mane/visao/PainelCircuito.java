@@ -387,13 +387,13 @@ public class PainelCircuito extends JPanel {
 		int y = 150;
 		g2d.setColor(red);
 		g2d.fillRoundRect(limitesViewPort.x + 100, limitesViewPort.y + y, 20,
-				50, 15, 15);
+				50, 5, 5);
 		g2d.setColor(gre);
 		g2d.fillRoundRect(limitesViewPort.x + 100, limitesViewPort.y + y
-				+ (50 - cargaKers), 20, cargaKers, 15, 15);
+				+ (50 - cargaKers), 20, cargaKers, 5, 5);
 		g2d.setColor(Color.WHITE);
 		g2d.drawString("+", limitesViewPort.x + 107, limitesViewPort.y + y + 10);
-		g2d.drawString("-", limitesViewPort.x + 109, limitesViewPort.y + y + 45);
+		g2d.drawString("-", limitesViewPort.x + 108, limitesViewPort.y + y + 45);
 
 	}
 
