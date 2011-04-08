@@ -379,6 +379,24 @@ public class PainelCircuito extends JPanel {
 
 	}
 
+	private void desenhaKers(Graphics2D g2d) {
+		if (pilotoSelecionado == null) {
+			return;
+		}
+		int cargaKers = pilotoSelecionado.getCarro().getCargaKers() / 2;
+		int y = 150;
+		g2d.setColor(red);
+		g2d.fillRoundRect(limitesViewPort.x + 100, limitesViewPort.y + y, 20,
+				50, 15, 15);
+		g2d.setColor(gre);
+		g2d.fillRoundRect(limitesViewPort.x + 100, limitesViewPort.y + y
+				+ (50 - cargaKers), 20, cargaKers, 15, 15);
+		g2d.setColor(Color.WHITE);
+		g2d.drawString("+", limitesViewPort.x + 107, limitesViewPort.y + y + 10);
+		g2d.drawString("-", limitesViewPort.x + 109, limitesViewPort.y + y + 45);
+
+	}
+
 	private void setStrokeCoresLegado(Graphics2D g2d) {
 		if (larguraPistaPixeis == 0)
 			larguraPistaPixeis = Util.inte(176 * larguraPista * zoom);
@@ -1746,7 +1764,7 @@ public class PainelCircuito extends JPanel {
 				g2d.setColor(transpMenus);
 				g2d.fillRoundRect(limitesViewPort.x
 						+ (limitesViewPort.width - 130), limitesViewPort.y + 2,
-						128, 384, 10, 10);
+						128, 400, 10, 10);
 			} else {
 				g2d.setColor(blu);
 				g2d.fillRoundRect(limitesViewPort.x
@@ -1901,6 +1919,24 @@ public class PainelCircuito extends JPanel {
 			yBase += 15;
 			g2d.setColor(Color.black);
 			g2d.drawString(Lang.msg("078"), ptoOri, yBase);
+
+			yBase += 15;
+			g2d.setColor(Color.black);
+			msg = "K : "
+					+ Lang.msg("kers")
+					+ " "
+					+ (pilotoSelecionado.getCarro().getCargaKers() > 0
+							&& pilotoSelecionado.isAtivarKers()
+							&& pilotoSelecionado.getCarro().getCargaKers() > 0 ? Lang
+							.msg("SIM") : Lang.msg("NAO"));
+			g2d.drawString(msg, ptoOri, yBase);
+
+			yBase += 15;
+			g2d.setColor(Color.black);
+			msg = "D : " + Lang.msg("drs") + " "
+					+ (false ? Lang.msg("SIM") : Lang.msg("NAO"));
+			g2d.drawString(msg, ptoOri, yBase);
+
 			yBase += 15;
 			g2d.drawString(Lang.msg("220"), ptoOri, yBase);
 
@@ -2596,8 +2632,9 @@ public class PainelCircuito extends JPanel {
 					+ " D " + dist + " S " + pilotoSelecionado.getStress()
 					+ " A "
 					+ pilotoSelecionado.getCarro().getDurabilidadeAereofolio()
-					+ " PBOX " + pilotoSelecionado.getPtosBox() + " DP "
-					+ pilotoSelecionado.calculaDiffParaProximo(controleJogo);
+					+ " BX " + pilotoSelecionado.getPtosBox() + " DP "
+					+ pilotoSelecionado.calculaDiffParaProximo(controleJogo)
+					+ " K " + pilotoSelecionado.getCarro().getCargaKers();
 		}
 
 		int maior = 0;
@@ -2655,6 +2692,9 @@ public class PainelCircuito extends JPanel {
 				desenBarraGiro(g2d, true, red, 65);
 			}
 		}
+		if (controleJogo.isKers() && desenhaInfo
+				&& controleJogo.getNumVoltaAtual() > 0)
+			desenhaKers(g2d);
 		if (ps.isBox()) {
 			if (controleJogo.getCircuito() != null
 					&& (controleJogo.getCircuito().isNoite() || controleJogo

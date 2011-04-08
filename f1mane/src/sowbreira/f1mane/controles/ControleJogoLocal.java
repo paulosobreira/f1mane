@@ -80,6 +80,22 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return piloto.getCombustJogador();
 	}
 
+	public boolean isKers() {
+		return kers;
+	}
+
+	public void setKers(boolean kers) {
+		this.kers = kers;
+	}
+
+	public boolean isDrs() {
+		return drs;
+	}
+
+	public void setDrs(boolean drs) {
+		this.drs = drs;
+	}
+
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getTipoPeneuBox(sowbreira.f1mane.entidades.Piloto)
 	 */
@@ -570,8 +586,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
-							.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(),
+					gerenciadorVisual.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
@@ -1000,6 +1016,21 @@ public class ControleJogoLocal extends ControleRecursos implements
 			Logger.logarExept(e);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean mudarModoDRS() {
+		if (pilotoJogador == null)
+			return false;
+		return false;
+	}
+
+	@Override
+	public boolean mudarModoKers() {
+		if (pilotoJogador == null)
+			return false;
+		pilotoJogador.setAtivarKers(!pilotoJogador.isAtivarKers());
+		return pilotoJogador.isAtivarKers();
 	}
 
 }

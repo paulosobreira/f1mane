@@ -50,11 +50,20 @@ public class Carro implements Serializable {
 	private int pneus;
 	private int durabilidadeMaxPneus;
 	private int motor;
+	private int cargaKers;
 	private int durabilidadeMaxMotor;
 	private String tipoPneu;
 	private boolean paneSeca;
 	private boolean recolhido;
 	private Piloto piloto;
+
+	public int getCargaKers() {
+		return cargaKers;
+	}
+
+	public void setCargaKers(int cargaKers) {
+		this.cargaKers = cargaKers;
+	}
 
 	public int getGiro() {
 		return giro;
@@ -747,6 +756,13 @@ public class Carro implements Serializable {
 
 	public void setDurabilidadeAereofolio(int durabilidadeAereofolio) {
 		this.durabilidadeAereofolio = durabilidadeAereofolio;
+	}
+
+	public void usaKers() {
+		if (cargaKers > 0) {
+			cargaKers--;
+		}
+
 	}
 
 }

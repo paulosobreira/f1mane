@@ -101,10 +101,19 @@ public class Piloto implements Serializable {
 	private ArrayList listGanho;
 	private long ultimaMudancaPos;
 	private double ganho;
+	private boolean ativarKers;
 	private int novoModificador;
 
 	public Rectangle getDiateira() {
 		return diateira;
+	}
+
+	public boolean isAtivarKers() {
+		return ativarKers;
+	}
+
+	public void setAtivarKers(boolean ativarKers) {
+		this.ativarKers = ativarKers;
 	}
 
 	public void setDiateira(Rectangle diateira) {
@@ -555,6 +564,7 @@ public class Piloto implements Serializable {
 			}
 
 			index = diff;
+			getCarro().setCargaKers(InterfaceJogo.CARGA_KERS);
 			controleJogo.processaVoltaRapida(this);
 			/**
 			 * calback de nova volta para corrida Toda
@@ -837,6 +847,14 @@ public class Piloto implements Serializable {
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
 		if (!controleJogo.isModoQualify()) {
 			ganho = controleJogo.verificaUltraPassagem(this, ganho);
+		}
+		if (controleJogo.isKers() && ativarKers && getPtosBox() == 0
+				&& getNumeroVolta() > 0) {
+			ganho *= 1.2;
+			getCarro().usaKers();
+			if (getCarro().getCargaKers() == 0) {
+				ativarKers = false;
+			}
 		}
 
 		/**
@@ -1446,7 +1464,7 @@ public class Piloto implements Serializable {
 		} else if (getCarro().testePotencia()
 				&& noAtual.verificaRetaOuLargada()) {
 			return (Math.random() < bonusSecundario ? 3 : 2);
-		} else if (testeHabilidadePilotoCarro() && agressivo
+		} else if (testeHabilidadePilotoOuCarro() && agressivo
 				&& noAtual.verificaCruvaAlta()) {
 			return (Math.random() < bonusSecundario ? 3 : 2);
 		} else if (getCarro().testePotencia() && !agressivo

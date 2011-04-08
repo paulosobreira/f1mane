@@ -115,7 +115,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void preparaGerenciadorVisual() {
-		if(gerenciadorVisual!=null){
+		if (gerenciadorVisual != null) {
 			return;
 		}
 		try {
@@ -659,8 +659,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
 		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
-					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(
+					dadosParticiparJogo.getTpPnueu(),
+					dadosParticiparJogo.getCombustivel(),
 					dadosParticiparJogo.getAsa());
 			syncBox = true;
 		}
@@ -858,5 +859,41 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 		gerenciadorVisual.carregaBackGroundCliente();
 
+	}
+
+	@Override
+	public boolean isKers() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setKers(boolean kers) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isDrs() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setDrs(boolean drs) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean mudarModoDRS() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mudarModoKers() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
