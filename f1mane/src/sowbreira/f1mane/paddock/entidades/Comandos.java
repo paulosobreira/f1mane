@@ -48,5 +48,7 @@ public class Comandos {
 	public static final String OK = "OK";
 	public static final String LISTAR_CAMPEONATOS = "38";
 	public static final String OBTER_CAMPEONATO = "39";
+	public static final String MUDAR_DRS = "40";
+	public static final String MUDAR_KERS = "41";
 
 }

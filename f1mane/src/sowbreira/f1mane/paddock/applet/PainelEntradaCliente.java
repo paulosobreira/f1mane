@@ -74,9 +74,9 @@ public class PainelEntradaCliente {
 		painelInicio.setLayout(new GridLayout(14, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
-				return Lang.msg("110", new String[] {
-						String.valueOf(Constantes.MIN_VOLTAS),
-						String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110",
+						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+								String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 		painelInicio.add(label);
@@ -306,8 +306,8 @@ public class PainelEntradaCliente {
 		if (campeonato != null) {
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
-			comboBoxNivelCorrida.setSelectedItem(Lang
-					.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida
+					.setSelectedItem(Lang.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
 			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
 			semReabastacimento.setEnabled(false);
@@ -338,8 +338,8 @@ public class PainelEntradaCliente {
 		}
 		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() == 10)
 				|| (((Integer) spinnerCombustivelInicial.getValue()).intValue() == 0)) {
-			JOptionPane.showMessageDialog(mainFrame, Lang.msg("128"), Lang
-					.msg("128"), JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(mainFrame, Lang.msg("128"),
+					Lang.msg("128"), JOptionPane.INFORMATION_MESSAGE);
 			ret = JOptionPane.showConfirmDialog(mainFrame, painelInicio,
 					"Setup Inicial", JOptionPane.YES_NO_OPTION);
 			spinnerQtdeVoltas.requestFocus();
@@ -389,6 +389,8 @@ public class PainelEntradaCliente {
 		dadosCriarJogo.setClima((Clima) comboBoxClimaInicial.getSelectedItem());
 		dadosCriarJogo.setSemReabastecimento(semReabastacimento.isSelected());
 		dadosCriarJogo.setSemTrocaPeneu(semTrocaPneu.isSelected());
+		dadosCriarJogo.setKers(kers.isSelected());
+		dadosCriarJogo.setDrs(drs.isSelected());
 		preecherDadosCriarJogo(dadosCriarJogo);
 	}
 

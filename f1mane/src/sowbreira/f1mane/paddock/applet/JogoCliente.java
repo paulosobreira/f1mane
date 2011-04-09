@@ -614,7 +614,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public int calculaDiferencaParaProximo(Piloto piloto) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -863,8 +862,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public boolean isKers() {
-		// TODO Auto-generated method stub
-		return false;
+		return dadosParticiparJogo.isKers();
 	}
 
 	@Override
@@ -875,8 +873,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public boolean isDrs() {
-		// TODO Auto-generated method stub
-		return false;
+		return dadosParticiparJogo.isDrs();
 	}
 
 	@Override
@@ -887,13 +884,31 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public boolean mudarModoDRS() {
-		// TODO Auto-generated method stub
-		return false;
+		if (pilotoSelecionado == null) {
+			return false;
+		}
+		monitorJogo.mudarModoDRS(!pilotoSelecionado.isAtivarDRS());
+		return pilotoSelecionado.isAtivarDRS();
 	}
 
 	@Override
 	public boolean mudarModoKers() {
+		if (pilotoSelecionado == null) {
+			return false;
+		}
+		monitorJogo.mudarModoKers(!pilotoSelecionado.isAtivarKers());
+		return pilotoSelecionado.isAtivarKers();
+	}
+
+	@Override
+	public int calculaDiferencaParaAnterior(Piloto piloto) {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
+	}
+
+	@Override
+	public int percetagemDeVoltaCompletada(Piloto pilotoSelecionado) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -258,6 +258,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 			semReabastacimento = dadosCriarJogo.isSemReabastecimento();
 			semTrocaPneu = dadosCriarJogo.isSemTrocaPeneu();
+			kers = dadosCriarJogo.isKers();
+			drs = dadosCriarJogo.isDrs();
 
 		} catch (Exception e) {
 			Logger.topExecpts(e);

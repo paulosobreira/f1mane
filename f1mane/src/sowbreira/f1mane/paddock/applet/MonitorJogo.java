@@ -465,58 +465,58 @@ public class MonitorJogo implements Runnable {
 							sleepConsumidorPosis = 20;
 						} else if (diffINdex > 10 && diffINdex <= 20) {
 							divPosis = 25;
-							sleepConsumidorPosis = 20;
+							sleepConsumidorPosis = 19;
 						} else if (diffINdex > 20 && diffINdex <= 50) {
 							divPosis = 20;
-							sleepConsumidorPosis = 20;
-						} else if (diffINdex > 50 && diffINdex <= 100) {
-							divPosis = 18;
-							sleepConsumidorPosis = 19;
-						} else if (diffINdex > 100 && diffINdex <= 150) {
-							divPosis = 16;
 							sleepConsumidorPosis = 18;
-						} else if (diffINdex > 150 && diffINdex <= 200) {
-							divPosis = 14;
+						} else if (diffINdex > 50 && diffINdex <= 100) {
+							divPosis = 15;
 							sleepConsumidorPosis = 17;
-						} else if (diffINdex > 200 && diffINdex <= 250) {
-							divPosis = 13;
+						} else if (diffINdex > 100 && diffINdex <= 150) {
+							divPosis = 14;
 							sleepConsumidorPosis = 16;
-						} else if (diffINdex > 250 && diffINdex <= 300) {
-							divPosis = 12;
+						} else if (diffINdex > 150 && diffINdex <= 200) {
+							divPosis = 13;
 							sleepConsumidorPosis = 15;
-						} else if (diffINdex > 300 && diffINdex <= 350) {
-							divPosis = 11;
+						} else if (diffINdex > 200 && diffINdex <= 250) {
+							divPosis = 12;
 							sleepConsumidorPosis = 14;
-						} else if (diffINdex > 350 && diffINdex <= 400) {
-							divPosis = 10;
+						} else if (diffINdex > 250 && diffINdex <= 300) {
+							divPosis = 11;
 							sleepConsumidorPosis = 13;
-						} else if (diffINdex > 400 && diffINdex <= 450) {
-							divPosis = 9;
+						} else if (diffINdex > 300 && diffINdex <= 350) {
+							divPosis = 10;
 							sleepConsumidorPosis = 12;
-						} else if (diffINdex > 450 && diffINdex <= 500) {
-							divPosis = 8;
+						} else if (diffINdex > 350 && diffINdex <= 400) {
+							divPosis = 9;
 							sleepConsumidorPosis = 11;
-						} else if (diffINdex > 500 && diffINdex <= 600) {
+						} else if (diffINdex > 400 && diffINdex <= 450) {
+							divPosis = 8;
+							sleepConsumidorPosis = 10;
+						} else if (diffINdex > 450 && diffINdex <= 500) {
 							divPosis = 7;
-							sleepConsumidorPosis = 10;
-						} else if (diffINdex > 600 && diffINdex <= 700) {
-							divPosis = 6;
-							sleepConsumidorPosis = 10;
-						} else if (diffINdex > 700 && diffINdex <= 800) {
-							divPosis = 5;
-							sleepConsumidorPosis = 10;
-						} else if (diffINdex > 800 && diffINdex <= 900) {
-							divPosis = 4;
-							sleepConsumidorPosis = 10;
-						} else if (diffINdex > 1000 && diffINdex <= 1200) {
-							divPosis = 3;
 							sleepConsumidorPosis = 9;
-						} else if (diffINdex > 1200 && diffINdex <= 1400) {
-							divPosis = 2;
+						} else if (diffINdex > 500 && diffINdex <= 600) {
+							divPosis = 6;
 							sleepConsumidorPosis = 8;
+						} else if (diffINdex > 600 && diffINdex <= 700) {
+							divPosis = 5;
+							sleepConsumidorPosis = 7;
+						} else if (diffINdex > 700 && diffINdex <= 800) {
+							divPosis = 4;
+							sleepConsumidorPosis = 6;
+						} else if (diffINdex > 800 && diffINdex <= 900) {
+							divPosis = 3;
+							sleepConsumidorPosis = 6;
+						} else if (diffINdex > 1000 && diffINdex <= 1200) {
+							divPosis = 2;
+							sleepConsumidorPosis = 6;
+						} else if (diffINdex > 1200 && diffINdex <= 1400) {
+							divPosis = 1;
+							sleepConsumidorPosis = 6;
 						} else if (diffINdex > 1400 && diffINdex <= 1500) {
 							divPosis = 1;
-							sleepConsumidorPosis = 7;
+							sleepConsumidorPosis = 6;
 						} else if (diffINdex > 1500 && diffINdex <= 1600) {
 							divPosis = 1;
 							sleepConsumidorPosis = 6;
@@ -792,6 +792,13 @@ public class MonitorJogo implements Runnable {
 						}
 						piloto.setBox(dadosParciais.pselBox);
 						piloto.setStress(dadosParciais.pselStress);
+						piloto.getCarro().setCargaKers(dadosParciais.cargaKers);
+						if (piloto.getCargaKersOnline() != dadosParciais.cargaKers) {
+							piloto.setAtivarKers(true);
+							piloto.setCargaKersOnline(dadosParciais.cargaKers);
+						} else {
+							piloto.setAtivarKers(false);
+						}
 						piloto.getCarro().setMotor(dadosParciais.pselMotor);
 						piloto.getCarro().setPneus(dadosParciais.pselPneus);
 						piloto.getCarro().setDurabilidadeMaxPneus(
@@ -966,6 +973,52 @@ public class MonitorJogo implements Runnable {
 					clientPaddockPack.setNomeJogo(jogoCliente
 							.getNomeJogoCriado());
 					clientPaddockPack.setTracado(tracado);
+					Object ret = controlePaddockCliente.enviarObjeto(
+							clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+			}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
+
+	}
+
+	public void mudarModoDRS(final boolean modo) {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_DRS, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente
+							.getNomeJogoCriado());
+					clientPaddockPack.setDataObject(new Boolean(modo));
+					Object ret = controlePaddockCliente.enviarObjeto(
+							clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+			}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
+
+	}
+
+	public void mudarModoKers(final boolean modo) {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_KERS, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente
+							.getNomeJogoCriado());
+					clientPaddockPack.setDataObject(modo);
 					Object ret = controlePaddockCliente.enviarObjeto(
 							clientPaddockPack, true);
 				} catch (Exception e) {

@@ -1022,7 +1022,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public boolean mudarModoDRS() {
 		if (pilotoJogador == null)
 			return false;
-		return false;
+		pilotoJogador.setAtivarDRS(!pilotoJogador.isAtivarDRS());
+		return pilotoJogador.isAtivarDRS();
 	}
 
 	@Override
@@ -1031,6 +1032,24 @@ public class ControleJogoLocal extends ControleRecursos implements
 			return false;
 		pilotoJogador.setAtivarKers(!pilotoJogador.isAtivarKers());
 		return pilotoJogador.isAtivarKers();
+	}
+
+	@Override
+	public int calculaDiferencaParaAnterior(Piloto piloto) {
+		return controleEstatisticas.calculaDiferencaParaAnterior(piloto);
+	}
+
+	@Override
+	public int percetagemDeVoltaCompletada(Piloto pilotoSelecionado) {
+		if (circuito == null) {
+			return 0;
+		}
+		if (pilotoSelecionado.getPtosBox() != 0) {
+			return 0;
+		}
+		double pista = circuito.getPistaFull().size();
+		double indexPiloto = pilotoSelecionado.getNoAtual().getIndex();
+		return (int) ((indexPiloto / pista) * 100.0);
 	}
 
 }

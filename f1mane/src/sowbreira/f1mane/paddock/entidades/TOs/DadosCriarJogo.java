@@ -32,6 +32,8 @@ public class DadosCriarJogo implements Serializable {
 	private List pilotosCarreira;
 	private boolean semReabastecimento;
 	private boolean semTrocaPeneu;
+	private boolean kers;
+	private boolean drs;
 
 	public String getNomeCampeonato() {
 		return nomeCampeonato;
@@ -39,6 +41,22 @@ public class DadosCriarJogo implements Serializable {
 
 	public void setNomeCampeonato(String nomeCampeonato) {
 		this.nomeCampeonato = nomeCampeonato;
+	}
+
+	public boolean isKers() {
+		return kers;
+	}
+
+	public void setKers(boolean kers) {
+		this.kers = kers;
+	}
+
+	public boolean isDrs() {
+		return drs;
+	}
+
+	public void setDrs(boolean drs) {
+		this.drs = drs;
 	}
 
 	public boolean isSemReabastecimento() {

@@ -22,7 +22,7 @@ public interface InterfaceJogo {
 	public static double FACIL_NV = .3;
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
-	public static String VERSAO = "4.48";
+	public static String VERSAO = "4.50";
 	public static int CARGA_KERS = 100;
 
 	public boolean isSemTrocaPneu();
@@ -253,5 +253,9 @@ public interface InterfaceJogo {
 	public boolean mudarModoDRS();
 
 	public boolean mudarModoKers();
+
+	public int calculaDiferencaParaAnterior(Piloto piloto);
+
+	public int percetagemDeVoltaCompletada(Piloto pilotoSelecionado);
 
 }
