@@ -102,6 +102,9 @@ public class Piloto implements Serializable {
 	private long ultimaMudancaPos;
 	private double ganho;
 	private boolean ativarKers;
+	private int cargaKersVisual;
+	private int cargaKersOnline;
+	private boolean ativarDRS;
 	private int novoModificador;
 
 	public Rectangle getDiateira() {
@@ -112,8 +115,32 @@ public class Piloto implements Serializable {
 		return ativarKers;
 	}
 
+	public int getCargaKersOnline() {
+		return cargaKersOnline;
+	}
+
+	public void setCargaKersOnline(int cargaKersOnline) {
+		this.cargaKersOnline = cargaKersOnline;
+	}
+
+	public int getCargaKersVisual() {
+		return cargaKersVisual;
+	}
+
+	public void setCargaKersVisual(int cargaKersVisual) {
+		this.cargaKersVisual = cargaKersVisual;
+	}
+
 	public void setAtivarKers(boolean ativarKers) {
 		this.ativarKers = ativarKers;
+	}
+
+	public boolean isAtivarDRS() {
+		return ativarDRS;
+	}
+
+	public void setAtivarDRS(boolean ativarDRS) {
+		this.ativarDRS = ativarDRS;
 	}
 
 	public void setDiateira(Rectangle diateira) {
@@ -565,6 +592,7 @@ public class Piloto implements Serializable {
 
 			index = diff;
 			getCarro().setCargaKers(InterfaceJogo.CARGA_KERS);
+			ativarKers = false;
 			controleJogo.processaVoltaRapida(this);
 			/**
 			 * calback de nova volta para corrida Toda
@@ -819,6 +847,18 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isModoQualify() && !controleJogo.isSafetyCarNaPista()) {
 			tentarPassaPilotoDaFrente(controleJogo);
 		}
+		if ((!isJogadorHumano() || controleJogo.isModoQualify())
+				&& controleJogo.isKers() && !controleJogo.isSafetyCarNaPista()
+				&& getPtosBox() == 0) {
+			tentaUsarKers(controleJogo);
+		}
+
+		if ((!isJogadorHumano() || controleJogo.isModoQualify())
+				&& controleJogo.isDrs() && !controleJogo.isSafetyCarNaPista()
+				&& getPtosBox() == 0) {
+			tentaUsarDRS(controleJogo);
+		}
+
 		novoModificador = calcularNovoModificador(controleJogo);
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, noAtual, controleJogo);
@@ -848,13 +888,32 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isModoQualify()) {
 			ganho = controleJogo.verificaUltraPassagem(this, ganho);
 		}
+
 		if (controleJogo.isKers() && ativarKers && getPtosBox() == 0
 				&& getNumeroVolta() > 0) {
-			ganho *= 1.2;
-			getCarro().usaKers();
-			if (getCarro().getCargaKers() == 0) {
+			if (getCarro().getCargaKers() <= 0) {
 				ativarKers = false;
+			} else {
+				ganho *= 1.2;
+				getCarro().usaKers();
 			}
+		}
+
+		if (controleJogo.isDrs() && ativarDRS && getPtosBox() == 0
+				&& getNumeroVolta() > 0) {
+			if (controleJogo.calculaSegundosParaProximoDouble(this) < 1) {
+				getCarro().setAsa(Carro.MENOS_ASA);
+			} else {
+				ativarDRS = false;
+				getCarro().setAsa(Carro.MAIS_ASA);
+			}
+			if (!getNoAtual().verificaRetaOuLargada()
+					&& testeHabilidadePiloto()) {
+				ativarDRS = false;
+			}
+		} else if (controleJogo.isDrs()) {
+			ativarDRS = false;
+			getCarro().setAsa(Carro.MAIS_ASA);
 		}
 
 		/**
@@ -949,6 +1008,29 @@ public class Piloto implements Serializable {
 		ptosPista += ganho;
 
 		return index;
+	}
+
+	private void tentaUsarDRS(InterfaceJogo controleJogo) {
+		if (getNoAtual().verificaRetaOuLargada() && testeHabilidadePiloto()) {
+			ativarDRS = true;
+		} else {
+			ativarDRS = false;
+		}
+	}
+
+	private void tentaUsarKers(InterfaceJogo controleJogo) {
+		int calculaDiferencaParaAnterior = controleJogo
+				.calculaDiferencaParaAnterior(this);
+		if (calculaDiferencaParaAnterior < Util.intervalo(20, 30)
+				&& testeHabilidadePiloto()) {
+			ativarKers = true;
+		} else {
+			ativarKers = false;
+		}
+		if (controleJogo.percetagemDeVoltaCompletada(this) > 75) {
+			ativarKers = true;
+		}
+
 	}
 
 	public double getGanho() {
@@ -1807,5 +1889,9 @@ public class Piloto implements Serializable {
 
 	public void mudarAutoTracado() {
 		autoPos = !autoPos;
+	}
+
+	public int calculaDiffParaAnterior(InterfaceJogo controleJogo) {
+		return controleJogo.calculaDiferencaParaAnterior(this);
 	}
 }

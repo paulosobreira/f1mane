@@ -338,7 +338,7 @@ public class PaddockWindow {
 		 * adicionar componentes.
 		 */
 		JScrollPane jogsPane = new JScrollPane(listaClientes);
-		jogsPane.setPreferredSize(new Dimension(150, 200));
+		jogsPane.setPreferredSize(new Dimension(150, 230));
 		usersPanel.add(jogsPane);
 		JScrollPane jogsCriados = new JScrollPane(listaJogosCriados);
 		jogsCriados.setPreferredSize(new Dimension(150, 100));

@@ -260,6 +260,10 @@ public class ControlePaddockServidor {
 			return mudarGiroMotor(clientPaddockPack);
 		} else if (Comandos.MUDAR_TRACADO.equals(commando)) {
 			return mudarTracado(clientPaddockPack);
+		} else if (Comandos.MUDAR_KERS.equals(commando)) {
+			return mudarKers(clientPaddockPack);
+		} else if (Comandos.MUDAR_DRS.equals(commando)) {
+			return mudarDrs(clientPaddockPack);
 		} else if (Comandos.MUDAR_MODO_BOX.equals(commando)) {
 			return mudarModoBox(clientPaddockPack);
 		} else if (Comandos.MUDAR_MODO_AUTOPOS.equals(commando)) {
@@ -302,6 +306,14 @@ public class ControlePaddockServidor {
 			return obterCampeonato(clientPaddockPack);
 		}
 		return "Comando invalido";
+	}
+
+	private Object mudarDrs(ClientPaddockPack clientPaddockPack) {
+		return controleJogosServer.mudarDrs(clientPaddockPack);
+	}
+
+	private Object mudarKers(ClientPaddockPack clientPaddockPack) {
+		return controleJogosServer.mudarKers(clientPaddockPack);
 	}
 
 	private Object obterCampeonato(ClientPaddockPack clientPaddockPack) {

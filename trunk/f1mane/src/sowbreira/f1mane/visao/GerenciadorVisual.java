@@ -679,6 +679,12 @@ public class GerenciadorVisual {
 			if (controleJogo.isSafetyCarNaPista()) {
 				text += Lang.msg("145");
 			}
+			if (controleJogo.isKers()) {
+				text += " Kers ";
+			}
+			if (controleJogo.isDrs()) {
+				text += " DRS ";
+			}
 			infoCorrida.setText(text);
 		}
 

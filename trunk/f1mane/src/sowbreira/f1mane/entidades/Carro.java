@@ -553,7 +553,8 @@ public class Carro implements Serializable {
 			if ((no.verificaCruvaBaixa() || no.verificaCruvaAlta())
 					&& (porcent > Util.intervalo(10, 25))
 					&& (Math.random() > indicativo)
-					&& (porcent < Util.intervalo(80, 90))) {
+					&& (controleJogo.isModoQualify() || porcent < Util
+							.intervalo(80, 90))) {
 				novoModificador += 1;
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)
@@ -582,8 +583,8 @@ public class Carro implements Serializable {
 			}
 
 			if (no.verificaRetaOuLargada()) {
-				if (porcent < Util.intervalo(10, 25)
-						|| (porcent > Util.intervalo(85, 90))) {
+				if (porcent < Util.intervalo(10, 20)
+						|| (porcent > Util.intervalo(85, 95))) {
 					if (!getPiloto().testeHabilidadePilotoOuCarro())
 						novoModificador -= 1;
 				}

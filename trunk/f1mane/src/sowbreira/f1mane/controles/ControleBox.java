@@ -336,6 +336,7 @@ public class ControleBox {
 		}
 		if (controleJogo.isKers()) {
 			piloto.getCarro().setCargaKers(InterfaceJogo.CARGA_KERS);
+			piloto.setAtivarKers(false);
 		}
 		piloto.setBox(false);
 	}
