@@ -151,6 +151,7 @@ public class PainelCircuito extends JPanel {
 	private boolean piscaBico;
 	private boolean piscaDanos;
 	private boolean contBox2;
+	private ArrayList boxMinimizado;
 
 	public Point getPosisRec() {
 		return posisRec;
@@ -576,6 +577,21 @@ public class PainelCircuito extends JPanel {
 			}
 
 		}
+
+		if (boxMinimizado == null) {
+			boxMinimizado = new ArrayList();
+			List box = circuito.getBox();
+			for (Iterator iterator = box.iterator(); iterator.hasNext();) {
+				No no = (No) iterator.next();
+				Point p = new Point(no.getX(), no.getY());
+				p.x /= doubleMulti;
+				p.y /= doubleMulti;
+				if (!boxMinimizado.contains(p))
+					boxMinimizado.add(p);
+			}
+
+		}
+
 		Point oldP = null;
 		g2d.setStroke(trilhoMiniPista);
 		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
@@ -587,6 +603,17 @@ public class PainelCircuito extends JPanel {
 		}
 		Point p0 = (Point) pistaMinimizada.get(0);
 		g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p0.x, o.y + p0.y);
+
+		oldP = null;
+		g2d.setStroke(trilhoMiniPista);
+		g2d.setColor(Color.gray);
+		for (Iterator iterator = boxMinimizado.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			if (oldP != null) {
+				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
+			}
+			oldP = p;
+		}
 
 		Piloto lider = (Piloto) controleJogo.getPilotos().get(0);
 		Font fontOri = g2d.getFont();
@@ -1144,8 +1171,9 @@ public class PainelCircuito extends JPanel {
 						Util.inte(5 * zoom));
 			}
 		}
-		if (pilotoSelecionado != null && pilotoSelecionado.isJogadorHumano()) {
-			g2d.setColor(blu);
+		if (pilotoSelecionado != null && pilotoSelecionado.isJogadorHumano()
+				&& posisRec != null) {
+			g2d.setColor(red);
 			g2d.fillOval(Util.inte(posisRec.x * zoom),
 					Util.inte(posisRec.y * zoom), Util.inte(5 * zoom),
 					Util.inte(5 * zoom));

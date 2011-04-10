@@ -2,12 +2,15 @@ package sowbreira.f1mane.visao;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -22,7 +25,9 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -57,6 +63,7 @@ import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
@@ -1099,7 +1106,7 @@ public class GerenciadorVisual {
 	}
 
 	private void gerarPainelJogoSingle(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(11, 2, 5, 5));
+		painelInicio.setLayout(new GridLayout(10, 2, 5, 5));
 		JLabel label = new JLabel() {
 
 			public String getText() {
@@ -1141,26 +1148,6 @@ public class GerenciadorVisual {
 			}
 		});
 		painelInicio.add(boxPilotoSelecionado);
-
-		comboBoxCircuito = new JComboBox();
-		List circuitosList = new ArrayList();
-		for (Iterator iter = controleJogo.getCircuitos().keySet().iterator(); iter
-				.hasNext();) {
-			String key = (String) iter.next();
-			circuitosList.add(key);
-		}
-		Collections.shuffle(circuitosList);
-		for (Iterator iterator = circuitosList.iterator(); iterator.hasNext();) {
-			String object = (String) iterator.next();
-			comboBoxCircuito.addItem(object);
-		}
-		painelInicio.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("121");
-			}
-		});
-		painelInicio.add(comboBoxCircuito);
-
 		comboBoxNivelCorrida = new JComboBox();
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
@@ -1363,7 +1350,7 @@ public class GerenciadorVisual {
 		}, BorderLayout.CENTER);
 
 		JPanel grid = new JPanel();
-		grid.setLayout(new GridLayout(8, 2, 5, 5));
+		grid.setLayout(new GridLayout(7, 2, 5, 5));
 		JLabel label = new JLabel() {
 
 			public String getText() {
@@ -1383,25 +1370,6 @@ public class GerenciadorVisual {
 
 		boxPilotoSelecionado = new JComboBox();
 		boxPilotoSelecionado.addItem(Lang.msg("119"));
-
-		comboBoxCircuito = new JComboBox();
-		List circuitosList = new ArrayList();
-		for (Iterator iter = controleJogo.getCircuitos().keySet().iterator(); iter
-				.hasNext();) {
-			String key = (String) iter.next();
-			circuitosList.add(key);
-		}
-		Collections.shuffle(circuitosList);
-		for (Iterator iterator = circuitosList.iterator(); iterator.hasNext();) {
-			String object = (String) iterator.next();
-			comboBoxCircuito.addItem(object);
-		}
-		grid.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("121");
-			}
-		});
-		grid.add(comboBoxCircuito);
 
 		comboBoxNivelCorrida = new JComboBox();
 		comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
@@ -1485,23 +1453,10 @@ public class GerenciadorVisual {
 		spinnerTempoCiclo.setPaintLabels(true);
 		grid.add(spinnerTempoCiclo);
 
-		// grid.add(new JLabel() {
-		// public String getText() {
-		// return Lang.msg("112");
-		// }
-		// });
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
-		// grid.add(spinnerSkillPadraoPilotos);
-
-		// grid.add(new JLabel() {
-		// public String getText() {
-		// return Lang.msg("113");
-		// }
-		// });
 		spinnerPotenciaPadraoCarros = new JSpinner();
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
-		// grid.add(spinnerPotenciaPadraoCarros);
 
 		JPanel p1 = new JPanel(new GridLayout(1, 2));
 
@@ -1550,9 +1505,109 @@ public class GerenciadorVisual {
 		grid.add(p4);
 
 		grid.setBorder(new TitledBorder(Lang.msg("273")));
+
 		incialPanel.add(grid, BorderLayout.CENTER);
+		incialPanel.add(gerarSeletorCircuito(), BorderLayout.NORTH);
 		incialPanel.add(pilotoPanel, BorderLayout.EAST);
 
+	}
+
+	private Component gerarSeletorCircuito() {
+		JPanel grid = new JPanel();
+		comboBoxCircuito = new JComboBox();
+		List circuitosList = new ArrayList();
+		for (Iterator iter = controleJogo.getCircuitos().keySet().iterator(); iter
+				.hasNext();) {
+			String key = (String) iter.next();
+			circuitosList.add(key);
+		}
+		Collections.shuffle(circuitosList);
+		for (Iterator iterator = circuitosList.iterator(); iterator.hasNext();) {
+			String object = (String) iterator.next();
+			comboBoxCircuito.addItem(object);
+		}
+		grid.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("121");
+			}
+		});
+		grid.add(comboBoxCircuito);
+		final JLabel circuitosLabel = new JLabel() {
+			public Dimension getPreferredSize() {
+				return new Dimension(400, 200);
+			}
+		};
+		comboBoxCircuito.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+					desenhaMiniCircuito(circuitosLabel);
+				}
+			}
+		});
+
+		JPanel retPanel = new JPanel(new BorderLayout());
+		retPanel.add(grid, BorderLayout.WEST);
+		retPanel.add(circuitosLabel, BorderLayout.CENTER);
+		desenhaMiniCircuito(circuitosLabel);
+		return retPanel;
+	}
+
+	protected void desenhaMiniCircuito(JLabel circuitosLabel) {
+		BufferedImage bufferedImage = new BufferedImage(400, 200,
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics g2d = bufferedImage.getGraphics();
+		g2d.setColor(Color.BLACK);
+		setarHints((Graphics2D) g2d);
+		String circuitoStr = (String) controleJogo.getCircuitos().get(
+				comboBoxCircuito.getSelectedItem());
+		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
+		ObjectInputStream ois;
+		Circuito circuito = null;
+		try {
+			ois = new ObjectInputStream(carregadorRecursos.getClass()
+					.getResourceAsStream(circuitoStr));
+			circuito = (Circuito) ois.readObject();
+			circuito.vetorizarPista();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		List pista = circuito.getPista();
+		ArrayList pistaMinimizada = new ArrayList();
+		double doubleMulti = circuito.getMultiplciador() * 3;
+		for (Iterator iterator = pista.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point p = new Point(no.getX(), no.getY());
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			if (!pistaMinimizada.contains(p))
+				pistaMinimizada.add(p);
+		}
+		Point o = new Point(10, 10);
+		Point oldP = null;
+		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			if (oldP != null) {
+				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
+			}
+			oldP = p;
+		}
+		Point p0 = (Point) pistaMinimizada.get(0);
+		g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p0.x, o.y + p0.y);
+		circuitosLabel.setIcon(new ImageIcon(bufferedImage));
+
+	}
+
+	private void setarHints(Graphics2D g2d) {
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+				RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	}
 
 	public JCheckBox getSemTrocaPneu() {
@@ -1609,7 +1664,7 @@ public class GerenciadorVisual {
 	}
 
 	public boolean iniciarJogoMulti(Campeonato campeonato) {
-		JPanel painelInicio = new JPanel();
+		JPanel painelInicio = new JPanel(new BorderLayout());
 		gerarPainelJogoMulti(painelInicio);
 		spinnerQtdeVoltas.setValue(new Integer(12));
 		if (campeonato != null) {
