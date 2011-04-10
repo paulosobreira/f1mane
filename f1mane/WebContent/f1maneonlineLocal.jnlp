@@ -14,7 +14,6 @@
 		<j2se version="1.6"  initial-heap-size="64m" max-heap-size="512m" />
 		<jar href="f1mane.jar" />
 		<jar href="f1maneRecursos.jar" />
-		<jar href="f1manePistas.jar" />
     </resources>
 
 	  <applet-desc 
