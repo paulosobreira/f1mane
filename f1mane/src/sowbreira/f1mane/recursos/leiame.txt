@@ -11,6 +11,12 @@
   - Qualquer sugestão : sowbreira@gmail.com.
 
 Histórico de versões:
+4.5
+  - Temporada 2011
+  - Sistema de kers (K para usar) Recarga a cada nova volta
+  - Sistema DRS (D para usar) Reduz a asa e melhora a velidade em retas tem que 
+  estar a menos de 1s do proximo para usar
+
 4.0
   - 26 Novas pistas (Feitas originalmente para o jogo Mini Race Online http://www.miniracingonline.com/)
   - Modo Campeonato
