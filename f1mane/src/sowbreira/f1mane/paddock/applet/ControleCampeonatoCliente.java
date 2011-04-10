@@ -108,6 +108,10 @@ public class ControleCampeonatoCliente {
 
 	private JCheckBox semTrocaPneu;
 
+	private JCheckBox kers;
+
+	private JCheckBox drs;
+
 	private JTextField nomeCampeonato;
 
 	private ArrayList jogadoresPontos;
@@ -262,7 +266,7 @@ public class ControleCampeonatoCliente {
 		}, BorderLayout.EAST);
 
 		JPanel grid = new JPanel();
-		grid.setLayout(new GridLayout(12, 1, 2, 2));
+		grid.setLayout(new GridLayout(8, 1, 2, 2));
 		grid.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -318,6 +322,26 @@ public class ControleCampeonatoCliente {
 
 		grid.add(semTrocaPneu);
 
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("kers");
+			}
+		});
+		kers = new JCheckBox();
+
+		grid.add(kers);
+
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("drs");
+			}
+		});
+		drs = new JCheckBox();
+
+		grid.add(drs);
+
 		JPanel panelTela = new JPanel(new BorderLayout());
 		panelTela.add(panelCircuitos, BorderLayout.CENTER);
 		panelTela.add(grid, BorderLayout.EAST);
@@ -358,6 +382,9 @@ public class ControleCampeonatoCliente {
 				.getSelectedItem()));
 		campeonato.setSemReabasteciemnto(this.semReabastacimento.isSelected());
 		campeonato.setSemTrocaPneus(this.semTrocaPneu.isSelected());
+		campeonato.setKers(this.kers.isSelected());
+		campeonato.setDrs(this.drs.isSelected());
+
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
 		campeonato.setNome(nomeCampeonato.getText());
 		for (int i = 0; i < corridas.size(); i++) {

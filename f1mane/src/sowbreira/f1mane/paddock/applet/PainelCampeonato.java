@@ -340,9 +340,9 @@ public class PainelCampeonato extends JPanel {
 				if (e.getClickCount() == 2) {
 					String corrida = (String) corridasTableModel.getValueAt(
 							corridasTable.getSelectedRow(), 0);
-					int ret = JOptionPane.showConfirmDialog(corridasTable, Lang
-							.msg("300", new String[] { corrida }), Lang
-							.msg("299"), JOptionPane.YES_NO_OPTION);
+					int ret = JOptionPane.showConfirmDialog(corridasTable,
+							Lang.msg("300", new String[] { corrida }),
+							Lang.msg("299"), JOptionPane.YES_NO_OPTION);
 					if (ret == JOptionPane.YES_OPTION) {
 						gerarPainelDetalhesCorrida(corrida, corridasTable);
 					}
@@ -582,20 +582,20 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		jPanel.add(jScrollPane);
-		JOptionPane.showMessageDialog(corridasTable, jPanel, Lang.msg("300",
-				new String[] { corrida }), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(corridasTable, jPanel,
+				Lang.msg("300", new String[] { corrida }),
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private JPanel gerarPanelDadosCampeonato() {
-		JPanel p1 = new JPanel();
+		JPanel p1 = new JPanel(new GridLayout(5, 4));
 		p1.setBorder(new TitledBorder("Dados Campeonato") {
 			@Override
 			public String getTitle() {
 				return Lang.msg("dadosCampeonato");
 			}
 		});
-		p1.setLayout(new GridLayout(4, 4));
-
+		
 		p1.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -653,6 +653,25 @@ public class PainelCampeonato extends JPanel {
 		p1.add(new JLabel(campeonato.isSemTrocaPneus() ? Lang.msg("SIM") : Lang
 				.msg("NAO")));
 
+		p1.add(new JLabel() {
+
+			public String getText() {
+				return Lang.msg("kers");
+			}
+		});
+		p1.add(new JLabel(campeonato.isKers() ? Lang.msg("SIM") : Lang
+				.msg("NAO")));
+
+		
+		p1.add(new JLabel() {
+
+			public String getText() {
+				return Lang.msg("drs");
+			}
+		});
+		p1.add(new JLabel(campeonato.isDrs() ? Lang.msg("SIM") : Lang
+				.msg("NAO")));
+		
 		return p1;
 	}
 }

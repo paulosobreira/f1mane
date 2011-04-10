@@ -1575,7 +1575,7 @@ public class GerenciadorVisual {
 
 		List pista = circuito.getPista();
 		ArrayList pistaMinimizada = new ArrayList();
-		double doubleMulti = circuito.getMultiplciador() * 3;
+		double doubleMulti = 25;
 		for (Iterator iterator = pista.iterator(); iterator.hasNext();) {
 			No no = (No) iterator.next();
 			Point p = new Point(no.getX(), no.getY());
@@ -2158,5 +2158,12 @@ public class GerenciadorVisual {
 			painelCircuito.carregaBackGround();
 		}
 
+	}
+
+	public static void main(String[] args) {
+		int parseInt = Integer.parseInt("123");
+		System.out.println(parseInt);
+		
+		
 	}
 }

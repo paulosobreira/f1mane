@@ -131,9 +131,9 @@ public class PaddockWindow {
 		}
 	};
 
-	private JComboBox comboTemporada = new JComboBox(new String[] { "2011","2010",
-			"2009", "2008", "2007", "2003", "1990", "1993", "1988", "1987",
-			"1986", "1974", "1972", "1968", "super" });
+	private JComboBox comboTemporada = new JComboBox(new String[] { "2011",
+			"2010", "2009", "2008", "2007", "2003", "1990", "1993", "1988",
+			"1987", "1986", "1974", "1972", "1968", "super" });
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
@@ -479,7 +479,7 @@ public class PaddockWindow {
 
 	public JPanel gerarPainelJogo(DetalhesJogo detalhesJogo) {
 		JPanel panelJogo = new JPanel();
-		panelJogo.setLayout(new GridLayout(12, 2));
+		panelJogo.setLayout(new GridLayout(14, 2));
 		panelJogo.add(new JLabel("Criador : ") {
 			public String getText() {
 				return Lang.msg("190");
@@ -562,6 +562,28 @@ public class PaddockWindow {
 		});
 		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo()
 				.isSemTrocaPeneu() ? Lang.msg("SIM") : Lang.msg("NAO")));
+
+		panelJogo.add(new JLabel("Kers: ") {
+
+			public String getText() {
+
+				return Lang.msg("kers");
+			}
+		});
+		panelJogo.add(new JLabel(
+				detalhesJogo.getDadosCriarJogo().isKers() ? Lang.msg("SIM")
+						: Lang.msg("NAO")));
+
+		panelJogo.add(new JLabel("DRS: ") {
+
+			public String getText() {
+
+				return Lang.msg("drs");
+			}
+		});
+		panelJogo.add(new JLabel(
+				detalhesJogo.getDadosCriarJogo().isDrs() ? Lang.msg("SIM")
+						: Lang.msg("NAO")));
 
 		panelJogo.add(new JLabel("nomeCampeonato") {
 
