@@ -21,6 +21,9 @@ public class Campeonato extends F1ManeDados {
 	private Integer qtdeVoltas;
 	private boolean semReabasteciemnto;
 	private boolean semTrocaPneus;
+	private boolean kers;
+	private boolean drs;
+
 	@OneToOne
 	@JoinColumn(nullable = false)
 	private JogadorDadosSrv jogadorDadosSrv;
@@ -41,6 +44,22 @@ public class Campeonato extends F1ManeDados {
 
 	public String getNome() {
 		return nome;
+	}
+
+	public boolean isKers() {
+		return kers;
+	}
+
+	public void setKers(boolean kers) {
+		this.kers = kers;
+	}
+
+	public boolean isDrs() {
+		return drs;
+	}
+
+	public void setDrs(boolean drs) {
+		this.drs = drs;
 	}
 
 	public void setNome(String nome) {
