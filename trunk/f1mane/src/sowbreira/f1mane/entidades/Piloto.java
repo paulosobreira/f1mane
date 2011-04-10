@@ -1012,7 +1012,7 @@ public class Piloto implements Serializable {
 
 	private void tentaUsarDRS(InterfaceJogo controleJogo) {
 		if (getNoAtual().verificaRetaOuLargada()
-				&& Math.random() < controleJogo.getNiveljogo()
+				&& Math.random() < controleJogo.getNiveljogo() + 0.1
 				&& testeHabilidadePiloto()) {
 			ativarDRS = true;
 		} else {
@@ -1024,7 +1024,7 @@ public class Piloto implements Serializable {
 		int calculaDiferencaParaAnterior = controleJogo
 				.calculaDiferencaParaAnterior(this);
 		if (calculaDiferencaParaAnterior < Util.intervalo(20, 30)
-				&& Math.random() < controleJogo.getNiveljogo()
+				&& Math.random() < controleJogo.getNiveljogo() + 0.1
 				&& testeHabilidadePiloto()) {
 			ativarKers = true;
 		} else {
