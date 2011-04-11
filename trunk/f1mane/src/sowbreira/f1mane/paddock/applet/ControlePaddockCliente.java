@@ -431,7 +431,12 @@ public class ControlePaddockCliente {
 		}
 
 		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
-		paddockWindow.mostrarDetalhes(srvPaddockPack.getDetalhesJogo());
+		PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
+				jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
+				mainFrame, sessaoCliente.getNomeJogador(), jogoCliente);
+
+		paddockWindow.mostrarDetalhes(srvPaddockPack.getDetalhesJogo(),
+				painelEntradaCliente);
 
 	}
 

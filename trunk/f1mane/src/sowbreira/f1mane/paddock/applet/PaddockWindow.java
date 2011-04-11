@@ -458,7 +458,8 @@ public class PaddockWindow {
 		}
 	}
 
-	public void mostrarDetalhes(DetalhesJogo detalhesJogo) {
+	public void mostrarDetalhes(DetalhesJogo detalhesJogo,
+			PainelEntradaCliente painelEntradaCliente) {
 		JPanel panelJogadores = gerarPainelJogadores(detalhesJogo);
 		JPanel panelJogo = gerarPainelJogo(detalhesJogo);
 		panelJogadores.setBorder(new TitledBorder("Jogadores") {
@@ -471,9 +472,17 @@ public class PaddockWindow {
 				return Lang.msg("122");
 			}
 		});
-		JPanel panel = new JPanel();
-		panel.add(panelJogo);
-		panel.add(panelJogadores);
+		JPanel panel = new JPanel(new BorderLayout());
+
+		panel.add(painelEntradaCliente.gerarSeletorCircuito(),
+				BorderLayout.NORTH);
+		painelEntradaCliente.getComboBoxCircuito().setEnabled(false);
+
+		JPanel p2 = new JPanel(new GridLayout(1, 2));
+		p2.add(panelJogo);
+		p2.add(panelJogadores);
+		panel.add(p2, BorderLayout.CENTER);
+
 		JOptionPane.showMessageDialog(mainPanel, panel);
 	}
 

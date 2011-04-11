@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -1557,8 +1558,11 @@ public class GerenciadorVisual {
 		BufferedImage bufferedImage = new BufferedImage(400, 200,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics g2d = bufferedImage.getGraphics();
-		g2d.setColor(Color.BLACK);
+
+		
 		setarHints((Graphics2D) g2d);
+
+		g2d.setColor(Color.BLACK);
 		String circuitoStr = (String) controleJogo.getCircuitos().get(
 				comboBoxCircuito.getSelectedItem());
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
@@ -1576,19 +1580,31 @@ public class GerenciadorVisual {
 		List pista = circuito.getPista();
 		ArrayList pistaMinimizada = new ArrayList();
 		double doubleMulti = 25;
+		Map map = new HashMap();
 		for (Iterator iterator = pista.iterator(); iterator.hasNext();) {
 			No no = (No) iterator.next();
 			Point p = new Point(no.getX(), no.getY());
 			p.x /= doubleMulti;
 			p.y /= doubleMulti;
-			if (!pistaMinimizada.contains(p))
+			if (!pistaMinimizada.contains(p)){
+				map.put(p, no);
 				pistaMinimizada.add(p);
+			}
+				
 		}
 		Point o = new Point(10, 10);
 		Point oldP = null;
 		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
+				No no = (No) map.get(oldP);
+				if (no.verificaCruvaBaixa()) {
+					g2d.setColor(Color.red);
+				} else if (no.verificaCruvaAlta()) {
+					g2d.setColor(Color.orange);
+				} else if (no.verificaRetaOuLargada()) {
+					g2d.setColor(new Color(0, 200, 0));
+				}
 				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
 			}
 			oldP = p;
@@ -2163,7 +2179,6 @@ public class GerenciadorVisual {
 	public static void main(String[] args) {
 		int parseInt = Integer.parseInt("123");
 		System.out.println(parseInt);
-		
-		
+
 	}
 }
