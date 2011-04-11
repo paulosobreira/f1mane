@@ -652,10 +652,10 @@ public class Carro implements Serializable {
 		if (!controleJogo.isSemTrocaPneu() && getPiloto().isJogadorHumano()) {
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
 				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
-						.getModoPilotagem()) ? Util.intervalo(1.1, 1.3) : 1.05;
+						.getModoPilotagem()) ? Util.intervalo(1.1, 1.25) : 1.05;
 			} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
 				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
-						.getModoPilotagem()) ? Util.intervalo(1.2, 1.3) : 1.1;
+						.getModoPilotagem()) ? Util.intervalo(1.1, 1.3) : 1.07;
 			}
 		} else {
 			valDesgaste *= 1.0;

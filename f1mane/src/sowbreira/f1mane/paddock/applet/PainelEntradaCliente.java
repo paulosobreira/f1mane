@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -387,7 +388,11 @@ public class PainelEntradaCliente {
 		}
 	}
 
-	private Component gerarSeletorCircuito() {
+	public JComboBox getComboBoxCircuito() {
+		return comboBoxCircuito;
+	}
+
+	public Component gerarSeletorCircuito() {
 		JPanel grid = new JPanel() {
 			@Override
 			public Dimension getPreferredSize() {
@@ -459,19 +464,30 @@ public class PainelEntradaCliente {
 		List pista = circuito.getPista();
 		ArrayList pistaMinimizada = new ArrayList();
 		double doubleMulti = 25;
+		Map map = new HashMap();
 		for (Iterator iterator = pista.iterator(); iterator.hasNext();) {
 			No no = (No) iterator.next();
 			Point p = new Point(no.getX(), no.getY());
 			p.x /= doubleMulti;
 			p.y /= doubleMulti;
-			if (!pistaMinimizada.contains(p))
+			if (!pistaMinimizada.contains(p)) {
+				map.put(p, no);
 				pistaMinimizada.add(p);
+			}
 		}
 		Point o = new Point(10, 10);
 		Point oldP = null;
 		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
+				No no = (No) map.get(oldP);
+				if (no.verificaCruvaBaixa()) {
+					g2d.setColor(Color.red);
+				} else if (no.verificaCruvaAlta()) {
+					g2d.setColor(Color.orange);
+				} else if (no.verificaRetaOuLargada()) {
+					g2d.setColor(new Color(0, 200, 0));
+				}
 				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
 			}
 			oldP = p;
@@ -562,15 +578,17 @@ public class PainelEntradaCliente {
 			JPanel panelJogoCriado) {
 		JPanel painelInicio = new JPanel();
 		gerarPainelParticiparJogo(painelInicio);
-		JPanel panel = new JPanel(new GridLayout(2, 1));
-		panel.add(panelJogoCriado);
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(panelJogoCriado, BorderLayout.NORTH);
+		panel.add(gerarSeletorCircuito());
+		comboBoxCircuito.setEnabled(false);
 		painelInicio.setBorder(new TitledBorder("Configuração do carro") {
 			@Override
 			public String getTitle() {
 				return Lang.msg("233");
 			}
 		});
-		panel.add(painelInicio);
+		panel.add(painelInicio, BorderLayout.SOUTH);
 		int ret = JOptionPane.showConfirmDialog(mainFrame, panel,
 				"Setup Inicial", JOptionPane.YES_NO_OPTION);
 		if (ret == JOptionPane.NO_OPTION) {
@@ -596,12 +614,6 @@ public class PainelEntradaCliente {
 			}
 		});
 		painelInicio.add(comboBoxPilotoSelecionado);
-
-		comboBoxCircuito = new JComboBox();
-		for (Iterator iter = circuitos.keySet().iterator(); iter.hasNext();) {
-			String key = (String) iter.next();
-			comboBoxCircuito.addItem(key);
-		}
 
 		JLabel tipoPneu = new JLabel(Lang.msg("009"));
 		comboBoxPneuInicial = new JComboBox();
