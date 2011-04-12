@@ -1,14 +1,11 @@
 package sowbreira.f1mane;
 
 import java.awt.BorderLayout;
-import java.awt.CheckboxMenuItem;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -26,7 +23,6 @@ import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JApplet;
-import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -77,8 +73,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
 	private boolean appletStand;
-	public final static BufferedImage bg = CarregadorRecursos
-			.carregaBufferedImage("f1bg.png");
+	public static BufferedImage bg;
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;
@@ -191,6 +186,23 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
+
+		JMenuItem criarCampeonatoPiloto = new JMenuItem("campeonatoPiloto") {
+			public String getText() {
+				return Lang.msg("campeonatoPiloto");
+			}
+
+		};
+		criarCampeonatoPiloto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					controleCampeonato.criarCampeonatoPiloto();
+				} catch (Exception ex) {
+					Logger.logarExept(ex);
+				}
+			}
+		});
+
 		JMenuItem continuarCampeonato = new JMenuItem("Continuar Campeonato") {
 			public String getText() {
 				return Lang.msg("270");
@@ -226,6 +238,7 @@ public class MainFrame extends JFrame {
 		});
 
 		menu.add(criarCampeonato);
+		menu.add(criarCampeonatoPiloto);
 		menu.add(continuarCampeonato);
 		menu.add(dadosPersistencia);
 		menu.add(proxCorrida);
@@ -289,10 +302,8 @@ public class MainFrame extends JFrame {
 					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
-				JOptionPane
-						.showMessageDialog(MainFrame.this,
-								new JScrollPane(area), Lang.msg("091"),
-								JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(
+						area), Lang.msg("091"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menuInfo2.add(leiaMe);
@@ -361,8 +372,8 @@ public class MainFrame extends JFrame {
 				String msg = Lang.msg("184")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2007-2011";
-				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
-						.msg("093"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, msg,
+						Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
@@ -442,9 +453,8 @@ public class MainFrame extends JFrame {
 					if (controleJogo != null) {
 						if (controleJogo.isCorridaIniciada()) {
 							int ret = JOptionPane.showConfirmDialog(
-									MainFrame.this, Lang.msg("095"), Lang
-											.msg("094"),
-									JOptionPane.YES_NO_OPTION);
+									MainFrame.this, Lang.msg("095"),
+									Lang.msg("094"), JOptionPane.YES_NO_OPTION);
 							if (ret == JOptionPane.NO_OPTION) {
 								return;
 							}
@@ -887,7 +897,9 @@ public class MainFrame extends JFrame {
 
 	public void iniciar() {
 		if (ControleJogoLocal.VALENDO) {
-			setVisible(true);
+			if (!appletStand)
+				setVisible(true);
+			bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
 			JPanel bgPanel = new JPanel() {
 				protected void paintComponent(Graphics g) {
 					g.drawImage(bg, 0, 0, null);
@@ -899,6 +911,7 @@ public class MainFrame extends JFrame {
 				}
 			};
 			getContentPane().add(bgPanel, BorderLayout.CENTER);
+			bgPanel.updateUI();
 
 		} else {
 			try {

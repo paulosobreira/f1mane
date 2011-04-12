@@ -598,4 +598,9 @@ public class ControleCampeonato {
 		}
 		return vitorias;
 	}
+
+	public void criarCampeonatoPiloto() {
+		// TODO Auto-generated method stub
+		
+	}
 }
