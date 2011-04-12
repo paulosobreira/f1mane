@@ -3,9 +3,12 @@ package sowbreira.f1mane;
 import java.awt.BorderLayout;
 import java.awt.CheckboxMenuItem;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -70,6 +73,7 @@ public class MainFrame extends JFrame {
 	protected MainPanelEditorVetorizado editorInflado;
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
+	private boolean appletStand;
 	public final static BufferedImage bg = CarregadorRecursos
 			.carregaBufferedImage("f1bg.png");
 
@@ -88,11 +92,17 @@ public class MainFrame extends JFrame {
 		return atualizacaoSuave.isSelected();
 	}
 
-	public MainFrame(JApplet modoApplet) throws IOException {
+	public MainFrame(JApplet modoApplet, boolean appletStand)
+			throws IOException {
 		this.applet = modoApplet;
+		this.appletStand = appletStand;
 		controleCampeonato = new ControleCampeonato(this);
 		bar = new JMenuBar();
-		setJMenuBar(bar);
+		if (appletStand) {
+			applet.getRootPane().setMenuBar(bar);
+		} else {
+			setJMenuBar(bar);
+		}
 
 		menuJogo = new JMenu() {
 			public String getText() {
@@ -147,7 +157,18 @@ public class MainFrame extends JFrame {
 		gerarMenusSobre(menuInfo);
 		gerarMenusidiomas(menuIdiomas);
 		setSize(1030, 720);
-		setTitle("F1-MANE " + InterfaceJogo.VERSAO + " MANager & Engineer");
+		String title = "F1-MANE " + InterfaceJogo.VERSAO
+				+ " MANager & Engineer";
+		if (this.appletStand) {
+			Component parent = applet;
+			while (parent.getParent() != null)
+				parent = parent.getParent();
+			if (parent instanceof Frame) {
+				((Frame) parent).setTitle(title);
+			}
+		} else {
+			setTitle(title);
+		}
 
 	}
 
@@ -265,8 +286,10 @@ public class MainFrame extends JFrame {
 					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
-				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(
-						area), Lang.msg("091"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane
+						.showMessageDialog(MainFrame.this,
+								new JScrollPane(area), Lang.msg("091"),
+								JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menuInfo2.add(leiaMe);
@@ -335,8 +358,8 @@ public class MainFrame extends JFrame {
 				String msg = Lang.msg("184")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2007-2011";
-				JOptionPane.showMessageDialog(MainFrame.this, msg,
-						Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
+						.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
@@ -357,8 +380,9 @@ public class MainFrame extends JFrame {
 					if (controleJogo != null) {
 						if (controleJogo.isCorridaIniciada()) {
 							int ret = JOptionPane.showConfirmDialog(
-									MainFrame.this, Lang.msg("095"),
-									Lang.msg("094"), JOptionPane.YES_NO_OPTION);
+									MainFrame.this, Lang.msg("095"), Lang
+											.msg("094"),
+									JOptionPane.YES_NO_OPTION);
 							if (ret == JOptionPane.NO_OPTION) {
 								return;
 							}
@@ -777,7 +801,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public static void main(String[] args) throws IOException {
-		MainFrame frame = new MainFrame(null);
+		MainFrame frame = new MainFrame(null, false);
 		if (args != null && args.length > 0) {
 			Lang.mudarIdioma(args[0]);
 		}

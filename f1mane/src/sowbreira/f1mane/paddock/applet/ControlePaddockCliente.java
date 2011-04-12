@@ -73,7 +73,7 @@ public class ControlePaddockCliente {
 	public void init() {
 		Properties properties = new Properties();
 		try {
-			mainFrame = new MainFrame(applet);
+			mainFrame = new MainFrame(applet, false);
 			mainFrame.setVisible(false);
 			mainFrame.desbilitarMenusModoOnline();
 
@@ -147,8 +147,8 @@ public class ControlePaddockCliente {
 					connection.setReadTimeout(latenciaReal);
 				stream.writeObject(enviar);
 				stream.flush();
-				connection.setRequestProperty("Content-Length",
-						String.valueOf(byteArrayOutputStream.size()));
+				connection.setRequestProperty("Content-Length", String
+						.valueOf(byteArrayOutputStream.size()));
 				connection.setRequestProperty("Content-Length",
 						"application/x-www-form-urlencoded");
 				connection.getOutputStream().write(
@@ -157,8 +157,8 @@ public class ControlePaddockCliente {
 					retorno = ZipUtil.descompactarObjeto(connection
 							.getInputStream());
 				} else {
-					ObjectInputStream ois = new ObjectInputStream(
-							connection.getInputStream());
+					ObjectInputStream ois = new ObjectInputStream(connection
+							.getInputStream());
 					retorno = ois.readObject();
 				}
 			} catch (java.net.SocketTimeoutException e) {
@@ -172,16 +172,16 @@ public class ControlePaddockCliente {
 			}
 			if (retorno instanceof ErroServ) {
 				ErroServ erroServ = (ErroServ) retorno;
-				JOptionPane.showMessageDialog(applet,
-						Lang.decodeTexto(erroServ.obterErroFormatado()),
-						Lang.msg("060"), JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(applet, Lang.decodeTexto(erroServ
+						.obterErroFormatado()), Lang.msg("060"),
+						JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
 			if (retorno instanceof MsgSrv) {
 				MsgSrv msgSrv = (MsgSrv) retorno;
-				JOptionPane.showMessageDialog(applet,
-						Lang.decodeTexto(msgSrv.getMessageString()),
-						Lang.msg("061"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(applet, Lang.decodeTexto(msgSrv
+						.getMessageString()), Lang.msg("061"),
+						JOptionPane.INFORMATION_MESSAGE);
 				return null;
 			}
 			return retorno;
@@ -193,8 +193,8 @@ public class ControlePaddockCliente {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(applet, retorno.toString(),
-					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(applet, retorno.toString(), Lang
+					.msg("059"), JOptionPane.ERROR_MESSAGE);
 			if (jogoCliente != null) {
 				jogoCliente.matarTodasThreads();
 			}
@@ -392,7 +392,7 @@ public class ControlePaddockCliente {
 					mainFrame, sessaoCliente.getNomeJogador(), jogoCliente);
 
 			if (!painelEntradaCliente.gerarDadosEntrarJogo(dadosParticiparJogo,
-					panelJogoCriado,circuito)) {
+					panelJogoCriado, circuito)) {
 				return;
 			}
 
@@ -486,8 +486,8 @@ public class ControlePaddockCliente {
 				|| "Ia".equals(clientPaddockPack.getNomeJogador())
 				|| "ia".equals(clientPaddockPack.getNomeJogador())
 				|| "iA".equals(clientPaddockPack.getNomeJogador())) {
-			JOptionPane.showMessageDialog(applet, Lang.msg("064"),
-					Lang.msg("064"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(applet, Lang.msg("064"), Lang
+					.msg("064"), JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		try {
@@ -525,8 +525,8 @@ public class ControlePaddockCliente {
 			anos.addItem(new Integer(anoAutual));
 			anoAutual--;
 		}
-		JOptionPane.showMessageDialog(this.mainFrame, anos,
-				Lang.msg("anoRanking"), JOptionPane.QUESTION_MESSAGE);
+		JOptionPane.showMessageDialog(this.mainFrame, anos, Lang
+				.msg("anoRanking"), JOptionPane.QUESTION_MESSAGE);
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.VER_CLASSIFICACAO, sessaoCliente);
 		clientPaddockPack.setDataObject(anos.getSelectedItem());
@@ -559,8 +559,8 @@ public class ControlePaddockCliente {
 				listaDadosJogador, this, listaConstrutoresCarros,
 				listaConstrutoresPilotos);
 		formClassificacao.setAnoClassificacao((Integer) anos.getSelectedItem());
-		JOptionPane.showMessageDialog(applet, formClassificacao,
-				Lang.msg("065"), JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(applet, formClassificacao, Lang
+				.msg("065"), JOptionPane.PLAIN_MESSAGE);
 
 	}
 
@@ -574,9 +574,9 @@ public class ControlePaddockCliente {
 			return;
 		}
 		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
-		FormConstrutores formConstrutores = new FormConstrutores(
-				srvPaddockPack.getListaConstrutoresCarros(),
-				srvPaddockPack.getListaConstrutoresPilotos());
+		FormConstrutores formConstrutores = new FormConstrutores(srvPaddockPack
+				.getListaConstrutoresCarros(), srvPaddockPack
+				.getListaConstrutoresPilotos());
 		JOptionPane.showMessageDialog(applet, formConstrutores,
 				Lang.msg("244"), JOptionPane.PLAIN_MESSAGE);
 
@@ -606,8 +606,8 @@ public class ControlePaddockCliente {
 			if (fileContents == null) {
 				Logger.logar(" fileContents == null  ");
 			}
-			ObjectInputStream ois = new ObjectInputStream(
-					fileContents.getInputStream());
+			ObjectInputStream ois = new ObjectInputStream(fileContents
+					.getInputStream());
 			Map map = (Map) ois.readObject();
 			String login = (String) map.get("login");
 			String pass = (String) map.get("pass");
@@ -621,8 +621,8 @@ public class ControlePaddockCliente {
 		}
 
 		formEntrada.setToolTipText(Lang.msg("066"));
-		int result = JOptionPane.showConfirmDialog(applet, formEntrada,
-				Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog(applet, formEntrada, Lang
+				.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			registrarUsuario(formEntrada);
@@ -699,8 +699,8 @@ public class ControlePaddockCliente {
 		FormCarreira formCarreira = new FormCarreira();
 		formCarreira.setToolTipText(Lang.msg("246"));
 		carregaCarreira(formCarreira);
-		int result = JOptionPane.showConfirmDialog(applet, formCarreira,
-				Lang.msg("246"), JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog(applet, formCarreira, Lang
+				.msg("246"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			int carLen = formCarreira.getNomeCarro().getText().length();
