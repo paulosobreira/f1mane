@@ -476,6 +476,8 @@ public class PaddockWindow {
 
 		panel.add(painelEntradaCliente.gerarSeletorCircuito(),
 				BorderLayout.NORTH);
+		painelEntradaCliente.getComboBoxCircuito().setSelectedItem(
+				detalhesJogo.getDadosCriarJogo().getCircuitoSelecionado());
 		painelEntradaCliente.getComboBoxCircuito().setEnabled(false);
 
 		JPanel p2 = new JPanel(new GridLayout(1, 2));
