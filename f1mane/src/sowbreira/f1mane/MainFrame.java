@@ -34,6 +34,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -363,6 +364,26 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu2.add(sobre);
+	}
+
+	@Override
+	public Container getContentPane() {
+		if (appletStand) {
+			return applet.getContentPane();
+		}
+		return super.getContentPane();
+	}
+
+	@Override
+	public JRootPane getRootPane() {
+		if (appletStand) {
+			return applet.getRootPane();
+		}
+		return super.getRootPane();
+	}
+
+	public boolean isAppletStand() {
+		return appletStand;
 	}
 
 	private void gerarMenusSingle(JMenu menu1) {
