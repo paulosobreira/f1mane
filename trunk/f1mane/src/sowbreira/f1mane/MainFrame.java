@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -411,6 +412,15 @@ public class MainFrame extends JFrame {
 			return applet.getParent();
 		}
 		return super.getParent();
+	}
+
+	@Override
+	public synchronized void addMouseWheelListener(MouseWheelListener l) {
+		if (appletStand) {
+			applet.addMouseWheelListener(l);
+		} else {
+			super.addMouseWheelListener(l);
+		}
 	}
 
 	public boolean isAppletStand() {
@@ -892,6 +902,7 @@ public class MainFrame extends JFrame {
 
 		} else {
 			try {
+				Logger.ativo = true;
 				if (controleJogo != null) {
 					controleJogo.matarTodasThreads();
 				}
