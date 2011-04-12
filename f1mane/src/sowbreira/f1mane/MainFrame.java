@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -382,6 +383,36 @@ public class MainFrame extends JFrame {
 		return super.getRootPane();
 	}
 
+	@Override
+	public synchronized void addWindowListener(WindowListener l) {
+		if (appletStand) {
+			Component parent = applet;
+			while (parent.getParent() != null)
+				parent = parent.getParent();
+			if (parent instanceof Frame) {
+				((Frame) parent).addWindowListener(l);
+			}
+		}
+		super.addWindowListener(l);
+	}
+
+	@Override
+	public synchronized void addKeyListener(KeyListener l) {
+		if (appletStand) {
+			applet.addKeyListener(l);
+		} else {
+			super.addKeyListener(l);
+		}
+	}
+
+	@Override
+	public Container getParent() {
+		if (appletStand) {
+			return applet.getParent();
+		}
+		return super.getParent();
+	}
+
 	public boolean isAppletStand() {
 		return appletStand;
 	}
@@ -575,9 +606,23 @@ public class MainFrame extends JFrame {
 		});
 	}
 
+	@Override
+	public synchronized KeyListener[] getKeyListeners() {
+		if (appletStand)
+			return applet.getKeyListeners();
+		return super.getKeyListeners();
+	}
+
+	@Override
+	public synchronized void removeKeyListener(KeyListener l) {
+		if (appletStand)
+			applet.removeKeyListener(l);
+		else
+			super.removeKeyListener(l);
+	}
+
 	private void removerKeyListeners() {
 		KeyListener[] listeners = getKeyListeners();
-
 		for (int i = 0; i < listeners.length; i++) {
 			removeKeyListener(listeners[i]);
 		}
