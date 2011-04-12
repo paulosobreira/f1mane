@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://localhost:8080/f1mane" href="f1maneLite.jnlp">
+	codebase="http://www.f1mane.com/f1mane/" href="f1maneLite.jnlp">
 	<information>
 		<title>F1Mane Lite</title>
 		<vendor>Paulo Sobreira</vendor>
@@ -19,7 +19,7 @@
     </resources>
 
     <applet-desc 
-	      documentBase="http://localhost:8080/f1mane" 
+	      documentBase="http://www.f1mane.com/f1mane" 
 	      name="F1-Mane Online" 
 	      main-class="sowbreira.f1mane.F1ManeApplet" 
 	      width="1030" 
