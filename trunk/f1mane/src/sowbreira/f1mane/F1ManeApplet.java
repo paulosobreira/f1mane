@@ -1,14 +1,16 @@
 package sowbreira.f1mane;
 
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.GridLayout;
 import java.io.IOException;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import br.nnpe.Util;
-
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado Em 12:05:02
@@ -22,10 +24,16 @@ public class F1ManeApplet extends JApplet {
 			if (!Util.isNullOrEmpty(lang)) {
 				Lang.mudarIdioma(lang);
 			}
-			frame = new MainFrame(this);
-			frame.setSize(810, 650);
-			frame.setVisible(true);
-			frame.toFront();
+			frame = new MainFrame(this, true);
+			Component parent = this;
+			while (parent.getParent() != null)
+				parent = parent.getParent();
+			if (parent instanceof Frame) {
+				if (!((Frame) parent).isResizable()) {
+					((Frame) parent).setResizable(true);
+					((Frame) parent).setLayout(new GridLayout());
+				}
+			}
 		} catch (IOException e) {
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuffer retorno = new StringBuffer();
