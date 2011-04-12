@@ -34,14 +34,15 @@ public class F1ManeApplet extends JApplet {
 					((Frame) parent).setLayout(new GridLayout());
 				}
 			}
+			frame.iniciar();
 		} catch (IOException e) {
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuffer retorno = new StringBuffer();
 			int size = ((trace.length > 10) ? 10 : trace.length);
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
-					.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(),
+					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
