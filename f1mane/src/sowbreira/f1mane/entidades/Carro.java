@@ -50,6 +50,7 @@ public class Carro implements Serializable {
 	private int pneus;
 	private int durabilidadeMaxPneus;
 	private int motor;
+	private int temperaturaMotor;
 	private int cargaKers;
 	private int durabilidadeMaxMotor;
 	private String tipoPneu;
@@ -431,7 +432,42 @@ public class Carro implements Serializable {
 				&& piloto.calculaDiffParaProximo(controleJogo) < dist) {
 			valDesgaste += testePotencia() ? 1 : 2;
 		}
-		motor -= (valDesgaste * controleJogo.getCircuito().getMultiplciador());
+		int tempMax = getPotencia() / 2;
+		if (giro == GIRO_MAX_VAL && temperaturaMotor < tempMax) {
+			temperaturaMotor++;
+			if (getPiloto().isJogadorHumano()
+					&& temperaturaMotor == tempMax - 1)
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
+		}
+		if (giro != GIRO_MAX_VAL) {
+			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
+				temperaturaMotor -= 3;
+			}
+			if (getPiloto().getNoAtual().verificaCruvaAlta()) {
+				temperaturaMotor -= 2;
+			}
+			if (getPiloto().getNoAtual().verificaCruvaBaixa()) {
+				temperaturaMotor -= 1;
+			}
+		}
+		if (giro == GIRO_MIN_VAL) {
+			temperaturaMotor -= 1;
+		}
+		if (temperaturaMotor > tempMax) {
+			temperaturaMotor = tempMax;
+		}
+		if (temperaturaMotor < 0) {
+			temperaturaMotor = 0;
+		}
+		double desg = (valDesgaste * controleJogo.getCircuito()
+				.getMultiplciador());
+		if (temperaturaMotor == tempMax - 1) {
+			desg *= Util.intervalo(1.1, 1.2);
+		}
+		motor -= desg;
 		if (porcentagemDesgasteMotor() < 0) {
 			piloto.setDesqualificado(true);
 			setDanificado(Carro.EXPLODIU_MOTOR);
@@ -439,6 +475,14 @@ public class Carro implements Serializable {
 					new String[] { piloto.getNome() })));
 
 		}
+	}
+
+	public int getTemperaturaMotor() {
+		return temperaturaMotor;
+	}
+
+	public void setTemperaturaMotor(int temperaturaMotor) {
+		this.temperaturaMotor = temperaturaMotor;
 	}
 
 	private int calculaModificadorCombustivel(int novoModificador,
@@ -652,10 +696,11 @@ public class Carro implements Serializable {
 		if (!controleJogo.isSemTrocaPneu() && getPiloto().isJogadorHumano()) {
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
 				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
-						.getModoPilotagem()) ? Util.intervalo(1.1, 1.25) : 1.05;
+						.getModoPilotagem()) ? Util.intervalo(1.05, 1.25)
+						: 1.025;
 			} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
 				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
-						.getModoPilotagem()) ? Util.intervalo(1.1, 1.3) : 1.07;
+						.getModoPilotagem()) ? Util.intervalo(1.1, 1.3) : 1.05;
 			}
 		} else {
 			valDesgaste *= 1.0;

@@ -1,5 +1,6 @@
 package sowbreira.f1mane.paddock.applet;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -59,7 +60,7 @@ public class PainelEntradaCliente {
 	private JComboBox comboBoxClimaInicial;
 	private JComboBox comboBoxPneuInicial;
 	private JComboBox comboBoxAsa;
-	private JSpinner spinnerCombustivelInicial;
+	private JSlider spinnerCombustivelInicial;
 	private JSlider spinnerDificuldadeUltrapassagem;
 	private JSlider spinnerTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
@@ -195,9 +196,25 @@ public class PainelEntradaCliente {
 				return Lang.msg("011");
 			}
 		};
-		spinnerCombustivelInicial = new JSpinner();
-		spinnerCombustivelInicial.setValue(new Integer(100));
+		spinnerCombustivelInicial = new JSlider(0, 100);
+		Hashtable labelTable = new Hashtable();
+		labelTable.put(new Integer(000), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("MENOS");
+			}
+		});
+		labelTable.put(new Integer(100), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("MAIS");
+			}
+		});
+		spinnerCombustivelInicial.setLabelTable(labelTable);
+		spinnerCombustivelInicial.setPaintLabels(true);
 
+		spinnerCombustivelInicial.setValue(new Integer(100));
+		spinnerCombustivelInicial.setMaximum(new Integer(100));
 		JLabel tipoAsa = new JLabel(Lang.msg("010")) {
 			@Override
 			public String getText() {
@@ -209,7 +226,7 @@ public class PainelEntradaCliente {
 		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 
-		JPanel pC = new JPanel(new GridLayout(1, 2));
+		JPanel pC = new JPanel();
 		pC.add(qtdeComustivel);
 		pC.add(spinnerCombustivelInicial);
 		painelInicio.add(pC);
@@ -235,7 +252,7 @@ public class PainelEntradaCliente {
 		spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
 		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(
 				000, 500)));
-		Hashtable labelTable = new Hashtable();
+		labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
 			public String getText() {
@@ -444,9 +461,11 @@ public class PainelEntradaCliente {
 	protected void desenhaMiniCircuito(JLabel circuitosLabel) {
 		BufferedImage bufferedImage = new BufferedImage(400, 200,
 				BufferedImage.TYPE_INT_ARGB);
-		Graphics g2d = bufferedImage.getGraphics();
+		Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
+
+		setarHints(g2d);
+		g2d.setStroke(new BasicStroke(3.0f));
 		g2d.setColor(Color.BLACK);
-		setarHints((Graphics2D) g2d);
 		String circuitoStr = (String) controleJogo.getCircuitos().get(
 				comboBoxCircuito.getSelectedItem());
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
@@ -474,6 +493,7 @@ public class PainelEntradaCliente {
 				map.put(p, no);
 				pistaMinimizada.add(p);
 			}
+
 		}
 		Point o = new Point(10, 10);
 		Point oldP = null;
@@ -494,6 +514,28 @@ public class PainelEntradaCliente {
 		}
 		Point p0 = (Point) pistaMinimizada.get(0);
 		g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p0.x, o.y + p0.y);
+
+		ArrayList boxMinimizado = new ArrayList();
+		List box = circuito.getBox();
+		for (Iterator iterator = box.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point p = new Point(no.getX(), no.getY());
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			if (!boxMinimizado.contains(p))
+				boxMinimizado.add(p);
+		}
+		g2d.setStroke(new BasicStroke(2.0f));
+		oldP = null;
+		g2d.setColor(Color.lightGray);
+		for (Iterator iterator = boxMinimizado.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			if (oldP != null) {
+				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
+			}
+			oldP = p;
+		}
+
 		circuitosLabel.setIcon(new ImageIcon(bufferedImage));
 
 	}
@@ -575,12 +617,13 @@ public class PainelEntradaCliente {
 	}
 
 	public boolean gerarDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo,
-			JPanel panelJogoCriado) {
+			JPanel panelJogoCriado, String circuito) {
 		JPanel painelInicio = new JPanel();
 		gerarPainelParticiparJogo(painelInicio);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(panelJogoCriado, BorderLayout.NORTH);
 		panel.add(gerarSeletorCircuito());
+		comboBoxCircuito.setSelectedItem(circuito);
 		comboBoxCircuito.setEnabled(false);
 		painelInicio.setBorder(new TitledBorder("Configuração do carro") {
 			@Override
@@ -626,7 +669,23 @@ public class PainelEntradaCliente {
 		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 		JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
-		spinnerCombustivelInicial = new JSpinner();
+		spinnerCombustivelInicial = new JSlider(0, 100);
+		Hashtable labelTable = new Hashtable();
+		labelTable.put(new Integer(000), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("MENOS");
+			}
+		});
+		labelTable.put(new Integer(100), new JLabel("") {
+			@Override
+			public String getText() {
+				return Lang.msg("MAIS");
+			}
+		});
+		spinnerCombustivelInicial.setLabelTable(labelTable);
+		spinnerCombustivelInicial.setPaintLabels(true);
+
 		spinnerCombustivelInicial.setValue(new Integer(100));
 
 		painelInicio.add(tipoPneu);

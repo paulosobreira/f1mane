@@ -359,6 +359,8 @@ public class ControlePaddockCliente {
 					.gerarPainelJogadores(srvPaddockPack.getDetalhesJogo());
 			JPanel panelJogo = paddockWindow.gerarPainelJogo(srvPaddockPack
 					.getDetalhesJogo());
+			String circuito = srvPaddockPack.getDetalhesJogo()
+					.getDadosCriarJogo().getCircuitoSelecionado();
 			panelJogadores.setBorder(new TitledBorder("Jogadores") {
 				@Override
 				public String getTitle() {
@@ -390,7 +392,7 @@ public class ControlePaddockCliente {
 					mainFrame, sessaoCliente.getNomeJogador(), jogoCliente);
 
 			if (!painelEntradaCliente.gerarDadosEntrarJogo(dadosParticiparJogo,
-					panelJogoCriado)) {
+					panelJogoCriado,circuito)) {
 				return;
 			}
 

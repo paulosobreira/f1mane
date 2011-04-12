@@ -338,6 +338,7 @@ public class ControleBox {
 			piloto.getCarro().setCargaKers(InterfaceJogo.CARGA_KERS);
 			piloto.setAtivarKers(false);
 		}
+		piloto.getCarro().setTemperaturaMotor(0);
 		piloto.setBox(false);
 	}
 

@@ -1,5 +1,6 @@
 package sowbreira.f1mane.visao;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -102,7 +103,7 @@ public class GerenciadorVisual {
 	private JList listPilotosSelecionados;
 	private JComboBox boxPneuInicial;
 	private JComboBox comboBoxAsaInicial;
-	private JSpinner spinnerCombustivel;
+	private JSlider spinnerCombustivel;
 	private JSpinner spinnerQtdeVoltas;
 	private JSlider spinnerTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
@@ -841,7 +842,7 @@ public class GerenciadorVisual {
 		return pneuBar;
 	}
 
-	public JSpinner getSpinnerCombustivelInicial() {
+	public JSlider getSpinnerCombustivelInicial() {
 		return spinnerCombustivel;
 	}
 
@@ -1204,7 +1205,7 @@ public class GerenciadorVisual {
 				return Lang.msg("011");
 			}
 		};
-		spinnerCombustivel = new JSpinner();
+		spinnerCombustivel = new JSlider(0, 100);
 		spinnerCombustivel.setValue(new Integer(50));
 
 		painelInicio.add(tipoPneu);
@@ -1557,11 +1558,10 @@ public class GerenciadorVisual {
 	protected void desenhaMiniCircuito(JLabel circuitosLabel) {
 		BufferedImage bufferedImage = new BufferedImage(400, 200,
 				BufferedImage.TYPE_INT_ARGB);
-		Graphics g2d = bufferedImage.getGraphics();
+		Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
 
-		
-		setarHints((Graphics2D) g2d);
-
+		setarHints(g2d);
+		g2d.setStroke(new BasicStroke(3.0f));
 		g2d.setColor(Color.BLACK);
 		String circuitoStr = (String) controleJogo.getCircuitos().get(
 				comboBoxCircuito.getSelectedItem());
@@ -1586,11 +1586,11 @@ public class GerenciadorVisual {
 			Point p = new Point(no.getX(), no.getY());
 			p.x /= doubleMulti;
 			p.y /= doubleMulti;
-			if (!pistaMinimizada.contains(p)){
+			if (!pistaMinimizada.contains(p)) {
 				map.put(p, no);
 				pistaMinimizada.add(p);
 			}
-				
+
 		}
 		Point o = new Point(10, 10);
 		Point oldP = null;
@@ -1611,6 +1611,28 @@ public class GerenciadorVisual {
 		}
 		Point p0 = (Point) pistaMinimizada.get(0);
 		g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p0.x, o.y + p0.y);
+
+		ArrayList boxMinimizado = new ArrayList();
+		List box = circuito.getBox();
+		for (Iterator iterator = box.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point p = new Point(no.getX(), no.getY());
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			if (!boxMinimizado.contains(p))
+				boxMinimizado.add(p);
+		}
+		g2d.setStroke(new BasicStroke(2.0f));
+		oldP = null;
+		g2d.setColor(Color.lightGray);
+		for (Iterator iterator = boxMinimizado.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			if (oldP != null) {
+				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
+			}
+			oldP = p;
+		}
+
 		circuitosLabel.setIcon(new ImageIcon(bufferedImage));
 
 	}
@@ -1790,7 +1812,23 @@ public class GerenciadorVisual {
 					return Lang.msg("011");
 				}
 			};
-			spinnerCombustivel = new JSpinner();
+			spinnerCombustivel = new JSlider(0, 100);
+			Hashtable labelTable = new Hashtable();
+			labelTable.put(new Integer(000), new JLabel("") {
+				@Override
+				public String getText() {
+					return Lang.msg("MENOS");
+				}
+			});
+			labelTable.put(new Integer(100), new JLabel("") {
+				@Override
+				public String getText() {
+					return Lang.msg("MAIS");
+				}
+			});
+			spinnerCombustivel.setLabelTable(labelTable);
+			spinnerCombustivel.setPaintLabels(true);
+
 			spinnerCombustivel.setValue(new Integer(50));
 			if (semReabastacimento.isSelected())
 				spinnerCombustivel.setValue(new Integer(100));
@@ -2075,7 +2113,7 @@ public class GerenciadorVisual {
 		}
 	}
 
-	public JSpinner getSpinnerCombustivel() {
+	public JSlider getSpinnerCombustivel() {
 		return spinnerCombustivel;
 	}
 

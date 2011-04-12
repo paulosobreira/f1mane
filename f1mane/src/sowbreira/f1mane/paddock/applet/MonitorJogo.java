@@ -793,6 +793,8 @@ public class MonitorJogo implements Runnable {
 						piloto.setBox(dadosParciais.pselBox);
 						piloto.setStress(dadosParciais.pselStress);
 						piloto.getCarro().setCargaKers(dadosParciais.cargaKers);
+						piloto.getCarro().setTemperaturaMotor(
+								dadosParciais.temperaturaMotor);
 						if (piloto.getCargaKersOnline() != dadosParciais.cargaKers) {
 							piloto.setAtivarKers(true);
 							piloto.setCargaKersOnline(dadosParciais.cargaKers);
