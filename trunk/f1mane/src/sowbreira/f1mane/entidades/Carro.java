@@ -43,6 +43,7 @@ public class Carro implements Serializable {
 	private String img;
 	private String asa = ASA_NORMAL;
 	private int potencia;
+	private int potenciaReal;
 	private int durabilidadeAereofolio;
 	private int giro = GIRO_NOR_VAL;
 	private int combustivel;
@@ -148,6 +149,14 @@ public class Carro implements Serializable {
 
 	public int getTanqueCheio() {
 		return tanqueCheio;
+	}
+
+	public int getPotenciaReal() {
+		return potenciaReal;
+	}
+
+	public void setPotenciaReal(int potenciaReal) {
+		this.potenciaReal = potenciaReal;
 	}
 
 	public void setTanqueCheio(int tanqueCheio) {
