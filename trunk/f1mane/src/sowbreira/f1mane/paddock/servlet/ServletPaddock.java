@@ -57,7 +57,9 @@ public class ServletPaddock extends HttpServlet {
 		try {
 			controlePersistencia = new ControlePersistencia(getServletContext()
 					.getRealPath("")
-					+ File.separator + "WEB-INF" + File.separator);
+					+ File.separator
+					+ "WEB-INF"
+					+ File.separator);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -79,6 +81,9 @@ public class ServletPaddock extends HttpServlet {
 
 	public void doPost(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
+		System.out.println(arg0.getParameter("assunto"));
+		System.out.println(arg0.getParameter("texto"));
+		System.out.println(arg0.getParameter("passe"));
 		doGet(arg0, arg1);
 	}
 
@@ -103,8 +108,8 @@ public class ServletPaddock extends HttpServlet {
 
 				if (PaddockConstants.modoZip) {
 					dumaparDadosZip(ZipUtil.compactarObjeto(
-							PaddockConstants.debug, escrever, res
-									.getOutputStream()));
+							PaddockConstants.debug, escrever,
+							res.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					dumaparDados(escrever);
@@ -146,6 +151,10 @@ public class ServletPaddock extends HttpServlet {
 				createSchema(cfg, sessionFactory, printWriter);
 			} else if ("update_schema".equals(tipo)) {
 				updateSchema(cfg, sessionFactory, printWriter);
+			} else if ("admail".equals(tipo)) {
+				System.out.println(req.getParameter("assunto"));
+				System.out.println(req.getParameter("texto"));
+				System.out.println(req.getParameter("passe"));
 			}
 			printWriter.println("<br/> " + tipo + " done");
 		} catch (Exception e) {
