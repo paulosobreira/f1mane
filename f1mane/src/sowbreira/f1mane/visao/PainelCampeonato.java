@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -386,7 +387,7 @@ public class PainelCampeonato extends JPanel {
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
 				List dets = (List) campeonato.getDadosCorridas().get(corrida);
-				if(dets ==null){
+				if (dets == null) {
 					return "";
 				}
 				CorridaCampeonato cc = (CorridaCampeonato) dets.get(rowIndex);
@@ -502,7 +503,7 @@ public class PainelCampeonato extends JPanel {
 		JScrollPane jogPane = new JScrollPane(jogadores) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(450, 80);
+				return new Dimension(360, 140);
 			}
 		};
 		jogPane.setAlignmentX(LEFT_ALIGNMENT);
@@ -519,7 +520,13 @@ public class PainelCampeonato extends JPanel {
 
 	private JPanel gerarPanelDadosCampeonato() {
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridLayout(3, 2));
+		p1.setLayout(new GridLayout(8, 2));
+		p1.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("dadosCampeonato");
+			}
+		});
 
 		p1.add(new JLabel() {
 			@Override
@@ -543,6 +550,74 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		p1.add(new JLabel(campeonato.getQtdeVoltas().toString()));
+
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("302");
+			}
+		});
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return campeonato.isSemReabasteciemnto() ? Lang.msg("SIM")
+						: Lang.msg("NAO");
+			}
+		});
+
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("303");
+			}
+		});
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return campeonato.isSemTrocaPneus() ? Lang.msg("SIM") : Lang
+						.msg("NAO");
+			}
+		});
+
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("kers");
+			}
+		});
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return campeonato.isKers() ? Lang.msg("SIM") : Lang.msg("NAO");
+			}
+		});
+
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("drs");
+			}
+		});
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return campeonato.isDrs() ? Lang.msg("SIM") : Lang.msg("NAO");
+			}
+		});
+
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("266");
+			}
+		});
+		p1.add(new JLabel() {
+			@Override
+			public String getText() {
+				return "" + campeonato.getPtsPiloto();
+			}
+		});
+
 		return p1;
 	}
 }
