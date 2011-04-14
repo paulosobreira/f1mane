@@ -701,7 +701,8 @@ public class Carro implements Serializable {
 			valDesgaste *= 0.7;
 		}
 
-		if (!controleJogo.isSemTrocaPneu() && getPiloto().isJogadorHumano()) {
+		if (!controleJogo.isSemTrocaPneu() && getPiloto().isJogadorHumano()
+				&& porcent > 25) {
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
 				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
 						.getModoPilotagem()) ? Util.intervalo(1.05, 1.15) : 1.0;
@@ -712,6 +713,18 @@ public class Carro implements Serializable {
 		} else {
 			valDesgaste *= 1.0;
 		}
+		if (controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
+			valDesgaste *= 0.8;
+		}
+
+		if (porcent < 10) {
+			valDesgaste *= 0.7;
+		}
+
+		if (porcent < 5) {
+			valDesgaste *= 0.5;
+		}
+
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
 			danificado = PNEU_FURADO;

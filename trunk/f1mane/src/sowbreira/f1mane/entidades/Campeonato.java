@@ -10,6 +10,9 @@ import java.util.Map;
 public class Campeonato implements Serializable {
 	private String temporada;
 	private String nivel;
+	private String nomePiloto;
+	private int ptsPiloto;
+	private Map<String, String> pilotosEquipesCampeonato = new HashMap<String, String>();
 	private Integer qtdeVoltas;
 	private boolean semReabasteciemnto;
 	private boolean semTrocaPneus;
@@ -18,6 +21,31 @@ public class Campeonato implements Serializable {
 	private List pilotos = new LinkedList();
 	private List corridas = new LinkedList();
 	private Map<String, List> dadosCorridas = new HashMap<String, List>();
+
+	public String getNomePiloto() {
+		return nomePiloto;
+	}
+
+	public int getPtsPiloto() {
+		return ptsPiloto;
+	}
+
+	public void setPtsPiloto(int ptsPiloto) {
+		this.ptsPiloto = ptsPiloto;
+	}
+
+	public Map<String, String> getPilotosEquipesCampeonato() {
+		return pilotosEquipesCampeonato;
+	}
+
+	public void setPilotosEquipesCampeonato(
+			Map<String, String> pilotosEquipesCampeonato) {
+		this.pilotosEquipesCampeonato = pilotosEquipesCampeonato;
+	}
+
+	public void setNomePiloto(String nomePiloto) {
+		this.nomePiloto = nomePiloto;
+	}
 
 	public String getTemporada() {
 		return temporada;

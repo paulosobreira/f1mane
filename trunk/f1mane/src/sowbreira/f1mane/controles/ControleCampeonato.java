@@ -668,6 +668,7 @@ public class ControleCampeonato {
 
 		final JList listSelecionados = new JList(
 				defaultListModelCircuitosSelecionados);
+
 		JPanel panel1st = new JPanel(new BorderLayout());
 		JPanel buttonsPanel = new JPanel(new GridLayout(6, 1));
 		JButton esq = new JButton("<");
@@ -829,6 +830,12 @@ public class ControleCampeonato {
 		String temporarada = (String) ControleCampeonato.this.carregadorRecursos
 				.getTemporadas().get(temporadas.getSelectedItem());
 		tempList.addAll((Collection) circuitosPilotos.get(temporarada));
+		Map<String, String> pilotosEquipesCampeonato = new HashMap<String, String>();
+		for (Iterator iterator = tempList.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			pilotosEquipesCampeonato.put(piloto.getNome(), piloto.getCarro()
+					.getNome());
+		}
 
 		Collections.sort(tempList, new Comparator() {
 
@@ -859,6 +866,7 @@ public class ControleCampeonato {
 					iterator.remove();
 				}
 			}
+
 		} else if (ControleJogoLocal.NORMAL.equals(Lang
 				.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
 			Carro penu = ((Carro) listCarros.get(listCarros.size() - 2));
@@ -875,7 +883,6 @@ public class ControleCampeonato {
 			Carro antP = ((Carro) listCarros.get(listCarros.size() - 3));
 			Carro penu = ((Carro) listCarros.get(listCarros.size() - 2));
 			Carro ult = ((Carro) listCarros.get(listCarros.size() - 1));
-			System.out.println("" + antP + penu + ult);
 			for (Iterator iterator = tempList.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (!(piloto.getCarro().equals(penu)
@@ -884,6 +891,21 @@ public class ControleCampeonato {
 					iterator.remove();
 				}
 			}
+		}
+		Piloto prim;
+		Piloto last;
+		prim = (Piloto) tempList.get(0);
+		last = (Piloto) tempList.get(tempList.size() - 1);
+		int ptsPiloto = 0;
+		if (ControleJogoLocal.DIFICIL.equals(Lang
+				.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
+			ptsPiloto = last.getHabilidade();
+		} else if (ControleJogoLocal.NORMAL.equals(Lang
+				.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
+			ptsPiloto = (last.getHabilidade() + prim.getHabilidade()) / 2;
+		} else if (ControleJogoLocal.FACIL.equals(Lang
+				.key((String) comboBoxNivelCorrida.getSelectedItem()))) {
+			ptsPiloto = prim.getHabilidade();
 		}
 
 		defaultListModelPilotosSelecionados.clear();
@@ -898,12 +920,6 @@ public class ControleCampeonato {
 		List corridas = new ArrayList();
 		for (int i = 0; i < defaultListModelCircuitosSelecionados.getSize(); i++) {
 			corridas.add(defaultListModelCircuitosSelecionados.get(i));
-		}
-
-		List pilotos = new ArrayList();
-		Object[] pilotosSel = listPilotosSelecionados.getSelectedValues();
-		for (int i = 0; i < pilotosSel.length; i++) {
-			pilotos.add(pilotosSel[i].toString());
 		}
 
 		if (corridas.isEmpty()) {
@@ -922,9 +938,21 @@ public class ControleCampeonato {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		Piloto pilotoSelecionado = (Piloto) listPilotosSelecionados
+				.getSelectedValue();
+		pilotosEquipesCampeonato.remove(pilotoSelecionado.getNome());
+		pilotosEquipesCampeonato.put(nomePiloto.getText(), pilotoSelecionado
+				.getCarro().getNome());
 		campeonato = new Campeonato();
 		campeonato.setCorridas(corridas);
-		campeonato.setPilotos(pilotos);
+		campeonato.setNomePiloto(nomePiloto.getText());
+		campeonato.setPtsPiloto(ptsPiloto);
+		campeonato.setPilotosEquipesCampeonato(pilotosEquipesCampeonato);
+		campeonato.setDrs(drs.isSelected());
+		campeonato.setKers(kers.isSelected());
+		campeonato.setSemReabasteciemnto(semReabastacimento.isSelected());
+		campeonato.setSemTrocaPneus(semTrocaPneu.isSelected());
+
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
 				.getSelectedItem()));
