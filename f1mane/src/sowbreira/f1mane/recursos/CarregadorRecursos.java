@@ -207,10 +207,10 @@ public class CarregadorRecursos {
 
 	public static void main(String[] args) throws URISyntaxException,
 			IOException {
-//		String val = "tn_2008voi-mclaren.gif";
-//		System.out.println(Util.intervalo(0, 0));
+		// String val = "tn_2008voi-mclaren.gif";
+		// System.out.println(Util.intervalo(0, 0));
 
-		 gerarListaCarrosLado();
+		gerarListaCarrosLado();
 		// gerarCarrosCima();
 		// JFrame frame = new JFrame();
 		// frame.setSize(200, 200);
@@ -445,6 +445,7 @@ public class CarregadorRecursos {
 			carro.setNome(Util.substVogais(name));
 			String[] values = prop.split(",");
 			carro.setPotencia(Integer.parseInt(values[0]));
+			carro.setPotenciaReal(Integer.parseInt(values[0]));
 
 			String red = values[1];
 			String green = values[2];
@@ -487,6 +488,7 @@ public class CarregadorRecursos {
 		carroNovo.setCor2(carro.getCor2());
 		carroNovo.setImg(carro.getImg());
 		carroNovo.setPiloto(piloto);
+		carroNovo.setPotenciaReal(carro.getPotencia());
 		carroNovo.setPotencia(carro.getPotencia()
 				+ (Math.random() > .5 ? -5 : 5));
 		return carroNovo;
