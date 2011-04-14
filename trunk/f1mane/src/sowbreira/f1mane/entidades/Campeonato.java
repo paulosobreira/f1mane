@@ -11,12 +11,48 @@ public class Campeonato implements Serializable {
 	private String temporada;
 	private String nivel;
 	private Integer qtdeVoltas;
+	private boolean semReabasteciemnto;
+	private boolean semTrocaPneus;
+	private boolean kers;
+	private boolean drs;
 	private List pilotos = new LinkedList();
 	private List corridas = new LinkedList();
 	private Map<String, List> dadosCorridas = new HashMap<String, List>();
 
 	public String getTemporada() {
 		return temporada;
+	}
+
+	public boolean isSemReabasteciemnto() {
+		return semReabasteciemnto;
+	}
+
+	public void setSemReabasteciemnto(boolean semReabasteciemnto) {
+		this.semReabasteciemnto = semReabasteciemnto;
+	}
+
+	public boolean isSemTrocaPneus() {
+		return semTrocaPneus;
+	}
+
+	public void setSemTrocaPneus(boolean semTrocaPneus) {
+		this.semTrocaPneus = semTrocaPneus;
+	}
+
+	public boolean isKers() {
+		return kers;
+	}
+
+	public void setKers(boolean kers) {
+		this.kers = kers;
+	}
+
+	public boolean isDrs() {
+		return drs;
+	}
+
+	public void setDrs(boolean drs) {
+		this.drs = drs;
 	}
 
 	public void setTemporada(String temporada) {

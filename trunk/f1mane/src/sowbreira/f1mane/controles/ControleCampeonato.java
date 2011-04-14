@@ -26,6 +26,7 @@ import java.util.Properties;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -34,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
@@ -59,6 +61,14 @@ public class ControleCampeonato {
 	private CarregadorRecursos carregadorRecursos;
 
 	private String circuitoJogando;
+
+	private JCheckBox semReabastacimento;
+
+	private JCheckBox semTrocaPneu;
+
+	private JCheckBox kers;
+
+	private JCheckBox drs;
 
 	public ControleCampeonato(MainFrame mainFrame) {
 		carregarCircuitos();
@@ -600,7 +610,287 @@ public class ControleCampeonato {
 	}
 
 	public void criarCampeonatoPiloto() {
-		// TODO Auto-generated method stub
-		
+
+		JPanel panelPiloto = new JPanel();
+		JLabel labelPiloto = new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("153");
+			}
+		};
+		JTextField nomePiloto = new JTextField(20);
+		panelPiloto.add(labelPiloto);
+		panelPiloto.add(nomePiloto);
+
+		JOptionPane.showMessageDialog(mainFrame, panelPiloto, Lang
+				.msg("pilotoCampeonato"), JOptionPane.INFORMATION_MESSAGE);
+
+		// JPanel temporadasPanel = new JPanel(new GridLayout(1, 2));
+		// temporadasPanel.add(new JLabel() {
+		// @Override
+		// public String getText() {
+		// return Lang.msg("272");
+		// }
+		// });
+		// JComboBox temporadas = new JComboBox(carregadorRecursos
+		// .getVectorTemps());
+		// temporadasPanel.add(temporadas);
+		// final List tempList = new LinkedList();
+		// temporadas.addItemListener(new ItemListener() {
+		//
+		// @Override
+		// public void itemStateChanged(ItemEvent arg0) {
+		// tempList.clear();
+		// String temporarada = (String)
+		// ControleCampeonato.this.carregadorRecursos
+		// .getTemporadas().get(arg0.getItem());
+		// tempList.addAll((Collection) circuitosPilotos.get(temporarada));
+		// Collections.sort(tempList, new Comparator() {
+		//
+		// @Override
+		// public int compare(Object o1, Object o2) {
+		// Piloto p1 = (Piloto) o1;
+		// Piloto p2 = (Piloto) o2;
+		// return p1.getCarro().getNome().compareTo(
+		// p2.getCarro().getNome());
+		// }
+		//
+		// });
+		// defaultListModelPilotosSelecionados.clear();
+		// for (Iterator iterator = tempList.iterator(); iterator
+		// .hasNext();) {
+		// Piloto piloto = (Piloto) iterator.next();
+		// defaultListModelPilotosSelecionados.addElement(piloto);
+		// }
+		//
+		// }
+		// });
+		// temporadas.setSelectedIndex(1);
+		// temporadas.setSelectedIndex(0);
+		// panel2nd.add(temporadasPanel, BorderLayout.NORTH);
+		// JComboBox comboBoxNivelCorrida = new JComboBox();
+		// comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.NORMAL));
+		// comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.FACIL));
+		// comboBoxNivelCorrida.addItem(Lang.msg(ControleJogoLocal.DIFICIL));
+		// grid.add(new JLabel() {
+		// public String getText() {
+		// return Lang.msg("212");
+		// }
+		// });
+		// grid.add(comboBoxNivelCorrida);
+
+		final DefaultListModel defaultListModelCircuitos = new DefaultListModel();
+		final DefaultListModel defaultListModelCircuitosSelecionados = new DefaultListModel();
+		for (Iterator iterator = circuitos.keySet().iterator(); iterator
+				.hasNext();) {
+			String key = (String) iterator.next();
+			defaultListModelCircuitos.addElement(circuitos.get(key));
+		}
+
+		final JList listCircuitos = new JList(defaultListModelCircuitos);
+
+		final JList listSelecionados = new JList(
+				defaultListModelCircuitosSelecionados);
+		JPanel panel1st = new JPanel(new BorderLayout());
+		JPanel buttonsPanel = new JPanel(new GridLayout(6, 1));
+		JButton esq = new JButton("<");
+		esq.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (listSelecionados.getSelectedIndex() == -1)
+					return;
+				defaultListModelCircuitos
+						.addElement(defaultListModelCircuitosSelecionados
+								.remove(listSelecionados.getSelectedIndex()));
+			}
+
+		});
+		JButton dir = new JButton(">");
+		dir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (listCircuitos.getSelectedIndex() == -1)
+					return;
+				defaultListModelCircuitosSelecionados
+						.addElement(defaultListModelCircuitos
+								.remove(listCircuitos.getSelectedIndex()));
+			}
+
+		});
+
+		JButton esqAll = new JButton("<<");
+		esqAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int size = defaultListModelCircuitosSelecionados.size();
+				for (int i = 0; i < size; i++) {
+					defaultListModelCircuitos
+							.addElement(defaultListModelCircuitosSelecionados
+									.remove(0));
+				}
+			}
+
+		});
+		JButton dirAll = new JButton(">>");
+		dirAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int size = defaultListModelCircuitos.size();
+				for (int i = 0; i < size; i++) {
+					defaultListModelCircuitosSelecionados
+							.addElement(defaultListModelCircuitos.remove(0));
+				}
+			}
+		});
+		buttonsPanel.add(dir);
+		buttonsPanel.add(esq);
+		buttonsPanel.add(dirAll);
+		buttonsPanel.add(esqAll);
+
+		JButton cima = new JButton("Cima") {
+			@Override
+			public String getText() {
+				return Lang.msg("287");
+			}
+		};
+		cima.setEnabled(false);
+		JButton baixo = new JButton("Baixo") {
+			@Override
+			public String getText() {
+				return Lang.msg("288");
+			}
+		};
+		baixo.setEnabled(false);
+		buttonsPanel.add(cima);
+		buttonsPanel.add(baixo);
+
+		panel1st.add(buttonsPanel, BorderLayout.CENTER);
+		panel1st.add(new JScrollPane(listCircuitos) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(150, 300);
+			}
+		}, BorderLayout.WEST);
+		panel1st.add(new JScrollPane(listSelecionados) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(150, 300);
+			}
+		}, BorderLayout.EAST);
+
+		final DefaultListModel defaultListModelPilotosSelecionados = new DefaultListModel();
+		JList listPilotosSelecionados = new JList(
+				defaultListModelPilotosSelecionados);
+		final JPanel panel2nd = new JPanel(new BorderLayout());
+
+		JPanel grid = new JPanel();
+
+		grid.setLayout(new GridLayout(5, 2));
+		grid.add(new JLabel() {
+
+			public String getText() {
+				return Lang.msg("110", new String[] {
+						String.valueOf(Constantes.MIN_VOLTAS),
+						String.valueOf(Constantes.MAX_VOLTAS) });
+			}
+		});
+		JSpinner spinnerQtdeVoltas = new JSpinner();
+		spinnerQtdeVoltas.setValue(new Integer(12));
+		grid.add(spinnerQtdeVoltas);
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("302");
+			}
+		});
+		semReabastacimento = new JCheckBox();
+		grid.add(semReabastacimento);
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("303");
+			}
+		});
+		semTrocaPneu = new JCheckBox();
+
+		grid.add(semTrocaPneu);
+
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("kers");
+			}
+		});
+		kers = new JCheckBox();
+
+		grid.add(kers);
+
+		grid.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("drs");
+			}
+		});
+		drs = new JCheckBox();
+
+		grid.add(drs);
+
+		JScrollPane scrolllistPilotosSelecionados = new JScrollPane(
+				listPilotosSelecionados) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(210, 200);
+			}
+		};
+		scrolllistPilotosSelecionados.setBorder(new TitledBorder(Lang
+				.msg("274")));
+
+		panel2nd.add(scrolllistPilotosSelecionados, BorderLayout.CENTER);
+		panel2nd.add(grid, BorderLayout.SOUTH);
+
+		JPanel panel3rd = new JPanel();
+		panel3rd.add(panel1st);
+		panel3rd.add(panel2nd);
+
+		JOptionPane.showMessageDialog(mainFrame, panel3rd, Lang.msg("276"),
+				JOptionPane.INFORMATION_MESSAGE);
+
+		List corridas = new ArrayList();
+		for (int i = 0; i < defaultListModelCircuitosSelecionados.getSize(); i++) {
+			corridas.add(defaultListModelCircuitosSelecionados.get(i));
+		}
+
+		List pilotos = new ArrayList();
+		Object[] pilotosSel = listPilotosSelecionados.getSelectedValues();
+		for (int i = 0; i < pilotosSel.length; i++) {
+			pilotos.add(pilotosSel[i].toString());
+		}
+
+		if (corridas.isEmpty()) {
+			JOptionPane.showMessageDialog(mainFrame, Lang.msg("296"), Lang
+					.msg("296"), JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
+		if (qtdeVolta == null || qtdeVolta.intValue() < Constantes.MIN_VOLTAS) {
+			JOptionPane.showMessageDialog(mainFrame, Lang.msg("110",
+					new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+							String.valueOf(Constantes.MAX_VOLTAS) }), Lang.msg(
+					"110", new String[] {
+							String.valueOf(Constantes.MIN_VOLTAS),
+							String.valueOf(Constantes.MAX_VOLTAS) }),
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		campeonato = new Campeonato();
+		campeonato.setCorridas(corridas);
+		campeonato.setPilotos(pilotos);
+		// campeonato.setTemporada((String) temporadas.getSelectedItem());
+		// campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
+		// .getSelectedItem()));
+		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
+		new PainelCampeonato(this, mainFrame);
+
+	}
+
+	public static void main(String[] args) {
+		ControleCampeonato controleCampeonato = new ControleCampeonato(null);
+		controleCampeonato.criarCampeonatoPiloto();
 	}
 }
