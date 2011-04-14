@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -57,9 +59,7 @@ public class ServletPaddock extends HttpServlet {
 		try {
 			controlePersistencia = new ControlePersistencia(getServletContext()
 					.getRealPath("")
-					+ File.separator
-					+ "WEB-INF"
-					+ File.separator);
+					+ File.separator + "WEB-INF" + File.separator);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -81,10 +81,31 @@ public class ServletPaddock extends HttpServlet {
 
 	public void doPost(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
-		System.out.println(arg0.getParameter("assunto"));
-		System.out.println(arg0.getParameter("texto"));
-		System.out.println(arg0.getParameter("passe"));
+		String tipo = arg0.getParameter("tipo");
+		if ("admail".equals(tipo)) {
+			adMail(arg0.getParameter("assunto"), arg0.getParameter("texto"),
+					arg0.getParameter("passe"), arg1);
+		}
+
 		doGet(arg0, arg1);
+	}
+
+	private void adMail(String assunto, String texto, String passe,
+			HttpServletResponse res) {
+		try {
+			email.sendSimpleMail(assunto,
+					new String[] { "sowbreira@gmail.com" }, "admin@f1mane.com",
+					texto, false);
+		} catch (Exception e) {
+			PrintWriter printWriter = null;
+			try {
+				printWriter = res.getWriter();
+			} catch (IOException e1) {
+				Logger.logarExept(e1);
+			}
+			e.printStackTrace(printWriter);
+		}
+
 	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -108,8 +129,8 @@ public class ServletPaddock extends HttpServlet {
 
 				if (PaddockConstants.modoZip) {
 					dumaparDadosZip(ZipUtil.compactarObjeto(
-							PaddockConstants.debug, escrever,
-							res.getOutputStream()));
+							PaddockConstants.debug, escrever, res
+									.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					dumaparDados(escrever);
@@ -151,10 +172,6 @@ public class ServletPaddock extends HttpServlet {
 				createSchema(cfg, sessionFactory, printWriter);
 			} else if ("update_schema".equals(tipo)) {
 				updateSchema(cfg, sessionFactory, printWriter);
-			} else if ("admail".equals(tipo)) {
-				System.out.println(req.getParameter("assunto"));
-				System.out.println(req.getParameter("texto"));
-				System.out.println(req.getParameter("passe"));
 			}
 			printWriter.println("<br/> " + tipo + " done");
 		} catch (Exception e) {
