@@ -91,6 +91,9 @@ public class PainelCampeonato extends JPanel {
 				Lang.msg("286"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (ret == JOptionPane.YES_OPTION) {
+			if (!Util.isNullOrEmpty(campeonato.getNomePiloto())) {
+				desefiar();
+			}
 			try {
 				if (campeonato.getCircuitoVez() == null) {
 					JOptionPane.showMessageDialog(mainFrame, Lang.msg("293"));
@@ -110,6 +113,13 @@ public class PainelCampeonato extends JPanel {
 				Logger.logarExept(e);
 			}
 		}
+	}
+
+	private void desefiar() {
+		if (campeonato.isUltimaCorridaSemDesafiar()) {
+
+		}
+
 	}
 
 	private JPanel gerarPanelConstrutores() {
