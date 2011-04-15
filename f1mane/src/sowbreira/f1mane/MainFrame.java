@@ -173,7 +173,7 @@ public class MainFrame extends JFrame {
 	private void gerarMenusCampeonato(JMenu menu) {
 		JMenuItem criarCampeonato = new JMenuItem("Criar Campeonato") {
 			public String getText() {
-				return Lang.msg("269");
+				return Lang.msg("campeonatoEquipes");
 			}
 
 		};
