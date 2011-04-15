@@ -19,6 +19,7 @@ public class Campeonato implements Serializable {
 	private boolean semTrocaPneus;
 	private boolean kers;
 	private boolean drs;
+	private boolean ultimaCorridaSemDesafiar;
 	private List pilotos = new LinkedList();
 	private List corridas = new LinkedList();
 	private Map<String, List> dadosCorridas = new HashMap<String, List>();
@@ -29,6 +30,14 @@ public class Campeonato implements Serializable {
 
 	public int getPtsPiloto() {
 		return ptsPiloto;
+	}
+
+	public boolean isUltimaCorridaSemDesafiar() {
+		return ultimaCorridaSemDesafiar;
+	}
+
+	public void setUltimaCorridaSemDesafiar(boolean ultimaCorridaSemDesafiar) {
+		this.ultimaCorridaSemDesafiar = ultimaCorridaSemDesafiar;
 	}
 
 	public void setPtsPiloto(int ptsPiloto) {
