@@ -13,6 +13,7 @@ public class Campeonato implements Serializable {
 	private String nomePiloto;
 	private int ptsPiloto;
 	private Map<String, String> pilotosEquipesCampeonato = new HashMap<String, String>();
+	private Map<String, Integer> pilotosHabilidadeCampeonato = new HashMap<String, Integer>();
 	private Integer qtdeVoltas;
 	private boolean semReabasteciemnto;
 	private boolean semTrocaPneus;
@@ -32,6 +33,15 @@ public class Campeonato implements Serializable {
 
 	public void setPtsPiloto(int ptsPiloto) {
 		this.ptsPiloto = ptsPiloto;
+	}
+
+	public Map<String, Integer> getPilotosHabilidadeCampeonato() {
+		return pilotosHabilidadeCampeonato;
+	}
+
+	public void setPilotosHabilidadeCampeonato(
+			Map<String, Integer> pilotosHabilidadeCampeonato) {
+		this.pilotosHabilidadeCampeonato = pilotosHabilidadeCampeonato;
 	}
 
 	public Map<String, String> getPilotosEquipesCampeonato() {

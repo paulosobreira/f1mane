@@ -1706,6 +1706,19 @@ public class GerenciadorVisual {
 		gerarPainelJogoMulti(painelInicio);
 		spinnerQtdeVoltas.setValue(new Integer(12));
 		if (campeonato != null) {
+
+			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
+			semReabastacimento.setEnabled(false);
+
+			semTrocaPneu.setSelected(campeonato.isSemTrocaPneus());
+			semTrocaPneu.setEnabled(false);
+
+			kers.setSelected(campeonato.isKers());
+			kers.setEnabled(false);
+
+			drs.setSelected(campeonato.isDrs());
+			drs.setEnabled(false);
+
 			comboBoxTemporadas.setSelectedItem(campeonato.getTemporada());
 			comboBoxTemporadas.setEnabled(false);
 
@@ -1717,10 +1730,51 @@ public class GerenciadorVisual {
 			List indices = new ArrayList();
 			DefaultListModel defaultListModel = (DefaultListModel) listPilotosSelecionados
 					.getModel();
+
+			ArrayList mudouCarro = new ArrayList();
 			for (int i = 0; i < defaultListModel.getSize(); i++) {
 				Piloto piloto = (Piloto) defaultListModel.get(i);
-				if (campeonato.getPilotos().contains(piloto.toString())) {
-					indices.add(new Integer(i));
+				if (Util.isNullOrEmpty(campeonato.getNomePiloto())) {
+					if (campeonato.getPilotos().contains(piloto.toString())) {
+						indices.add(new Integer(i));
+					}
+				} else {
+					String carro = campeonato.getPilotosEquipesCampeonato()
+							.get(piloto.getNome());
+					if (Util.isNullOrEmpty(carro)) {
+						mudouCarro.add(piloto);
+					} else if (carro.equals(piloto.getCarro().getNome())) {
+						mudouCarro.add(piloto);
+					}
+				}
+			}
+			if (!Util.isNullOrEmpty(campeonato.getNomePiloto())) {
+				for (Iterator iterator = mudouCarro.iterator(); iterator
+						.hasNext();) {
+					Piloto piloto = (Piloto) iterator.next();
+					String carro = campeonato.getPilotosEquipesCampeonato()
+							.get(piloto.getNome());
+					if (Util.isNullOrEmpty(carro)) {
+						piloto.setNome(campeonato.getNomePiloto());
+						piloto.setHabilidade(campeonato.getPtsPiloto());
+						piloto.setJogadorHumano(true);
+						continue;
+					}
+					for (Iterator iterator2 = mudouCarro.iterator(); iterator2
+							.hasNext();) {
+						Piloto piloto2 = (Piloto) iterator2.next();
+						if (!piloto2.getNome().equals(piloto.getNome())
+								&& carro.equals(piloto2.getCarro())) {
+							piloto.setCarro(CarregadorRecursos.criarCopiaCarro(
+									piloto2.getCarro(), piloto));
+						}
+					}
+				}
+				for (int i = 0; i < defaultListModel.getSize(); i++) {
+					Piloto piloto = (Piloto) defaultListModel.get(i);
+					if (piloto.isJogadorHumano()) {
+						indices.add(new Integer(i));
+					}
 				}
 			}
 			int[] inds = new int[indices.size()];
