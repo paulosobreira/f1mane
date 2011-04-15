@@ -3,14 +3,21 @@ package sowbreira.f1mane.visao;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -21,6 +28,8 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleCampeonato;
@@ -49,6 +58,9 @@ public class PainelCampeonato extends JPanel {
 	private AbstractTableModel pilotosTableModel;
 	private JTable contrutoresTable;
 	private AbstractTableModel contrutoresTableModel;
+	private JButton desafiarButton;
+	private JTable desafiarTable;
+	private AbstractTableModel desafiarTableModel;
 
 	public PainelCampeonato(ControleCampeonato controleCampeonato,
 			MainFrame mainFrame) {
@@ -64,7 +76,74 @@ public class PainelCampeonato extends JPanel {
 		JPanel listJogadoresSelecionados = gerarPanelPilotosSelecionados();
 		JPanel criacao = new JPanel(new BorderLayout());
 		criacao.add(dadosCampeonato, BorderLayout.WEST);
-		criacao.add(listJogadoresSelecionados, BorderLayout.CENTER);
+
+		if (!Util.isNullOrEmpty(campeonato.getNomePiloto())) {
+			desafiarButton = new JButton() {
+				@Override
+				public String getText() {
+					return Lang.msg("desafiar");
+				}
+			};
+			desafiarButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					desefiar();
+				}
+			});
+			JPanel grid = new JPanel(new GridLayout(5, 2));
+			grid.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("nomePiloto");
+				}
+			});
+			grid.add(new JLabel(campeonato.getNomePiloto()));
+			grid.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("carro");
+				}
+			});
+			grid.add(new JLabel(campeonato.getPilotosEquipesCampeonato().get(
+					campeonato.getNomePiloto())));
+
+			grid.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("desafiando");
+				}
+			});
+			grid.add(new JLabel(campeonato.getDesafiando()));
+
+			grid.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("vitorias");
+				}
+			});
+			grid.add(new JLabel("" + campeonato.getVitorias()));
+
+			grid.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("derrotas");
+				}
+			});
+			grid.add(new JLabel("" + campeonato.getDerrotas()));
+
+			JPanel campeonatoPiloto = new JPanel(new BorderLayout());
+			campeonatoPiloto.setBorder(new TitledBorder("") {
+				@Override
+				public String getTitle() {
+					return Lang.msg("campeonatoPiloto");
+				}
+			});
+			campeonatoPiloto.add(grid, BorderLayout.CENTER);
+			campeonatoPiloto.add(desafiarButton, BorderLayout.SOUTH);
+			criacao.add(campeonatoPiloto, BorderLayout.CENTER);
+		} else {
+			criacao.add(listJogadoresSelecionados, BorderLayout.CENTER);
+		}
 
 		JPanel corridas = gerarPanelCorridas();
 
@@ -87,13 +166,11 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		this.add(label, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(mainFrame, this,
-				Lang.msg("286"), JOptionPane.YES_NO_OPTION,
+		int ret = JOptionPane.showConfirmDialog(mainFrame, this, Lang
+				.msg("286"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (ret == JOptionPane.YES_OPTION) {
-			if (!Util.isNullOrEmpty(campeonato.getNomePiloto())) {
-				desefiar();
-			}
+
 			try {
 				if (campeonato.getCircuitoVez() == null) {
 					JOptionPane.showMessageDialog(mainFrame, Lang.msg("293"));
@@ -116,8 +193,86 @@ public class PainelCampeonato extends JPanel {
 	}
 
 	private void desefiar() {
-		if (campeonato.isUltimaCorridaSemDesafiar()) {
+		final ArrayList<Object[]> list = new ArrayList<Object[]>();
+		Map<String, String> pilotosEquipesCampeonato = campeonato
+				.getPilotosEquipesCampeonato();
+		Map<String, Integer> pilotosHabilidadeCampeonato = campeonato
+				.getPilotosHabilidadeCampeonato();
+		for (Iterator iterator = pilotosEquipesCampeonato.keySet().iterator(); iterator
+				.hasNext();) {
+			String nmPiloto = (String) iterator.next();
+			if (campeonato.getNomePiloto().equals(nmPiloto)) {
+				continue;
+			}
+			String carro = pilotosEquipesCampeonato.get(nmPiloto);
+			Integer habilidade = pilotosHabilidadeCampeonato.get(nmPiloto);
+			list.add(new Object[] { nmPiloto, carro, habilidade });
+		}
+		Collections.sort(list, new Comparator() {
+			@Override
+			public int compare(Object o1, Object o2) {
+				Object[] ob1 = (Object[]) o1;
+				Object[] ob2 = (Object[]) o2;
+				Integer i1 = (Integer) ob1[2];
+				Integer i2 = (Integer) ob2[2];
+				return i2.compareTo(i1);
+			}
+		});
 
+		desafiarTable = new JTable();
+		desafiarTableModel = new AbstractTableModel() {
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				Object[] objects = list.get(rowIndex);
+				return objects[columnIndex];
+			}
+
+			@Override
+			public int getRowCount() {
+				return list.size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 3;
+			}
+
+			@Override
+			public String getColumnName(int columnIndex) {
+				switch (columnIndex) {
+				case 0:
+					return Lang.msg("nomePiloto");
+				case 1:
+					return Lang.msg("carro");
+				case 2:
+					return Lang.msg("habilidade");
+				default:
+					return "";
+				}
+
+			}
+		};
+		desafiarTable.setModel(desafiarTableModel);
+		JScrollPane jScrollPane = new JScrollPane(desafiarTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(300, 400);
+			}
+		};
+		JPanel jPanel = new JPanel();
+		jPanel.setBorder(new TitledBorder("desafiar") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("desafiar");
+			}
+		});
+		jPanel.add(jScrollPane);
+		int ret = JOptionPane.showConfirmDialog(this, jPanel, Lang.msg(
+				"desafiar", new String[] { "fulano" }),
+				JOptionPane.YES_NO_OPTION);
+		if (ret == JOptionPane.YES_OPTION) {
+			// gerarPainelDetalhesCorrida(corrida, corridasTable);
 		}
 
 	}
@@ -283,9 +438,9 @@ public class PainelCampeonato extends JPanel {
 				if (e.getClickCount() == 2) {
 					String corrida = (String) corridasTableModel.getValueAt(
 							corridasTable.getSelectedRow(), 0);
-					int ret = JOptionPane.showConfirmDialog(corridasTable,
-							Lang.msg("300", new String[] { corrida }),
-							Lang.msg("299"), JOptionPane.YES_NO_OPTION);
+					int ret = JOptionPane.showConfirmDialog(corridasTable, Lang
+							.msg("300", new String[] { corrida }), Lang
+							.msg("299"), JOptionPane.YES_NO_OPTION);
 					if (ret == JOptionPane.YES_OPTION) {
 						gerarPainelDetalhesCorrida(corrida, corridasTable);
 					}
@@ -496,9 +651,8 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		jPanel.add(jScrollPane);
-		JOptionPane.showMessageDialog(corridasTable, jPanel,
-				Lang.msg("300", new String[] { corrida }),
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(corridasTable, jPanel, Lang.msg("300",
+				new String[] { corrida }), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private JPanel gerarPanelPilotosSelecionados() {
@@ -509,9 +663,9 @@ public class PainelCampeonato extends JPanel {
 			jogListModel.addElement(jogador);
 
 		}
-		if (!Util.isNullOrEmpty(campeonato.getNomePiloto())) {
-			jogListModel.addElement(campeonato.getNomePiloto());
-		}
+		// if (!Util.isNullOrEmpty(campeonato.getNomePiloto())) {
+		// jogListModel.addElement(campeonato.getNomePiloto());
+		// }
 		JList jogadores = new JList(jogListModel);
 		jogadores.setEnabled(false);
 		jogadores.setLayoutOrientation(JList.HORIZONTAL_WRAP);

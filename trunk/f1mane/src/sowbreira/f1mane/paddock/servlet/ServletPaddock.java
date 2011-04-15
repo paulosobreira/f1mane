@@ -81,11 +81,11 @@ public class ServletPaddock extends HttpServlet {
 
 	public void doPost(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
-		String tipo = arg0.getParameter("tipo");
-		if ("admail".equals(tipo)) {
-			adMail(arg0.getParameter("assunto"), arg0.getParameter("texto"),
-					arg0.getParameter("passe"), arg1);
-		}
+//		String tipo = arg0.getParameter("tipo");
+//		if ("admail".equals(tipo)) {
+//			adMail(arg0.getParameter("assunto"), arg0.getParameter("texto"),
+//					arg0.getParameter("passe"), arg1);
+//		}
 
 		doGet(arg0, arg1);
 	}
