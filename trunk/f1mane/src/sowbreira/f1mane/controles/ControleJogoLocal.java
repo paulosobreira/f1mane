@@ -604,6 +604,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 			controleCorrida.getControleClima().gerarClimaInicial(
 					(Clima) gerenciadorVisual.getComboBoxClimaInicial()
 							.getSelectedItem());
+			if (isKers()) {
+				getCircuito().setMultiplicador(
+						getCircuito().getMultiplciador() - 1);
+			}
+			if (isDrs()) {
+				getCircuito().setMultiplicador(
+						getCircuito().getMultiplciador() - 1);
+			}
 			controleCorrida.gerarGridLargadaSemQualificacao();
 			Logger.logar("gerarGridLargadaSemQualificacao() FEITO");
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
