@@ -636,23 +636,18 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
+
 		Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
 		atualizaPainelGraficoPilotoSelecionado(pilotoSelecionado);
 		atualizaInfoAdicional(pilotoSelecionado);
 		atualizarImgClima(new Clima(controleJogo.getClima()));
-		if (ControleJogoLocal.VALENDO) {
-			try {
-				if (pilotoSelecionado == null) {
-					List l = controleJogo.getCircuito().getPistaFull();
-					No n = (No) l.get(0);
-					painelCircuito.centralizarPonto(n.getPoint());
-				} else {
-					painelCircuito.centralizarPonto(pilotoSelecionado
-							.getNoAtual().getPoint());
-				}
-			} catch (Exception e) {
-				Logger.logarExept(e);
-			}
+		if (pilotoSelecionado == null) {
+			List l = controleJogo.getCircuito().getPistaFull();
+			No n = (No) l.get(0);
+			painelCircuito.centralizarPonto(n.getPoint());
+		} else {
+			painelCircuito.centralizarPonto(pilotoSelecionado.getNoAtual()
+					.getPoint());
 		}
 	}
 
@@ -1090,9 +1085,9 @@ public class GerenciadorVisual {
 		};
 		panelControlePos.add(agressivo);
 		panelControlePos.add(alternaPiloto);
-		pos1 = new JButton("(|");
-		pos0 = new JButton("||");
-		pos2 = new JButton("|)");
+		pos1 = new JButton(Logger.ativo ? "1" : "(|");
+		pos0 = new JButton(Logger.ativo ? "0" : "||");
+		pos2 = new JButton(Logger.ativo ? "2" : "|)");
 		JPanel volPanel = new JPanel(new GridLayout(1, 3));
 		volPanel.add(pos1);
 		volPanel.add(pos0);
