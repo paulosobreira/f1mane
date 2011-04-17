@@ -539,6 +539,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public void atualizaPainel() {
 		atualizarJogadoresOnline();
+		decrementaTracado();
 	}
 
 	public void informaMudancaClima() {

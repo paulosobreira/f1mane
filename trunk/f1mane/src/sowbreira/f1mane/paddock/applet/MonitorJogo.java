@@ -206,6 +206,12 @@ public class MonitorJogo implements Runnable {
 							if (jogoCliente.getPilotoSelecionado() == null)
 								jogoCliente.selecionaPilotoJogador();
 							jogoCliente.atualizaPainel();
+							List pilotos = jogoCliente.getPilotos();
+							for (Iterator iterator = pilotos.iterator(); iterator
+									.hasNext();) {
+								Piloto piloto = (Piloto) iterator.next();
+								piloto.decIndiceTracado();
+							}
 							jogoCliente.verificaProgramacaoBox();
 							Thread.sleep(100);
 						} catch (Exception e) {
@@ -617,9 +623,22 @@ public class MonitorJogo implements Runnable {
 							while (novoTracado == piloto.getTracado()) {
 								novoTracado = Util.intervalo(0, 2);
 							}
-							piloto.mudarTracado(novoTracado, jogoCliente, true);
+							if (piloto.getIndiceTracado() == 0)
+								piloto.mudarTracado(novoTracado, jogoCliente,
+										true);
 						} else {
+							if (piloto.getIndiceTracado() <= 0) {
+								piloto.setTracadoAntigo(piloto.getTracado());
+							}
 							piloto.setTracado(posis.tracado);
+							if (piloto.getIndiceTracado() <= 0
+									&& piloto.getTracado() != piloto
+											.getTracadoAntigo()) {
+								piloto.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
+										.getCircuito()
+										.getMultiplicadorLarguraPista()));
+							}
+
 						}
 					}
 				}

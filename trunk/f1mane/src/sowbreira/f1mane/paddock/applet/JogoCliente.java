@@ -548,7 +548,15 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			if (piloto.getId() == posis.idPiloto) {
 				piloto.setAgressivo(posis.agressivo);
 				piloto.setJogadorHumano(posis.humano);
+				if (piloto.getIndiceTracado() <= 0) {
+					piloto.setTracadoAntigo(piloto.getTracado());
+				}
 				piloto.setTracado(posis.tracado);
+				if (piloto.getIndiceTracado() <= 0
+						&& piloto.getTracado() != piloto.getTracadoAntigo()) {
+					piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+							.getMultiplicadorLarguraPista()));
+				}
 				piloto.setAutoPos(posis.autoPos);
 				if (posis.idNo >= -1) {
 					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));

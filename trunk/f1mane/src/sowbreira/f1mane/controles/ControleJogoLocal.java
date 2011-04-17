@@ -229,6 +229,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void atualizaPainel() {
 		gerenciadorVisual.atualizaPainel();
+		decrementaTracado();
+	}
+
+	protected void decrementaTracado() {
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			piloto.decIndiceTracado();
+		}
 	}
 
 	/**

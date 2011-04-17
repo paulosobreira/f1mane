@@ -152,6 +152,8 @@ public class PainelCircuito extends JPanel {
 	private boolean piscaDanos;
 	private boolean contBox2;
 	private ArrayList boxMinimizado;
+	protected Point newP;
+	private Point oldP;
 
 	public Point getPosisRec() {
 		return posisRec;
@@ -941,14 +943,86 @@ public class PainelCircuito extends JPanel {
 		if (piloto.getTracado() == 0) {
 			carx = p.x - w2;
 			cary = p.y - h2;
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado != 0 && piloto.getTracadoAntigo() != 0) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 1) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+							p.x, p.y);
+				}
+				if (piloto.getTracadoAntigo() == 2) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+							p.x, p.y);
+				}
+
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x - w2;
+				cary = pReta.y - h2;
+			}
 		}
 		if (piloto.getTracado() == 1) {
 			carx = Util.inte((p1.x - w2));
 			cary = Util.inte((p1.y - h2));
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado != 1 && piloto.getTracadoAntigo() != 1) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 0) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+							p1.x, p1.y);
+				}
+				if (piloto.getTracadoAntigo() == 2) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+							p1.x, p1.y);
+				}
+
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x - w2;
+				cary = pReta.y - h2;
+			}
 		}
 		if (piloto.getTracado() == 2) {
 			carx = Util.inte((p2.x - w2));
 			cary = Util.inte((p2.y - h2));
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado != 0 && piloto.getTracadoAntigo() != 2) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 0) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+							p2.x, p2.y);
+				}
+				if (piloto.getTracadoAntigo() == 1) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+							p2.x, p2.y);
+				}
+
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x - w2;
+				cary = pReta.y - h2;
+			}
 		}
 		piloto.setCarX(carx);
 		piloto.setCarY(cary);
@@ -1683,11 +1757,12 @@ public class PainelCircuito extends JPanel {
 			p.y = altMax - 1;
 		}
 		final Point newP = p;
+		PainelCircuito.this.newP = newP;
 		Point oldp = scrollPane.getViewport().getViewPosition();
+		PainelCircuito.this.oldP = oldp;
 		if (circuito.isUsaBkg() && backGround != null
 				&& limitesViewPort != null) {
 			synchronized (backGround) {
-
 				if ((p.x + limitesViewPort.width) > (backGround.getWidth() * zoom)) {
 					p.x = Util.inte((backGround.getWidth() * zoom)
 							- limitesViewPort.width);
@@ -1696,7 +1771,6 @@ public class PainelCircuito extends JPanel {
 					p.y = Util.inte((backGround.getHeight() * zoom)
 							- limitesViewPort.height);
 				}
-
 			}
 		}
 		int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x, p.y);
@@ -1713,7 +1787,6 @@ public class PainelCircuito extends JPanel {
 				public void run() {
 					repaint();
 					scrollPane.getViewport().setViewPosition(newP);
-
 				}
 			});
 
@@ -2148,7 +2221,7 @@ public class PainelCircuito extends JPanel {
 		String txt = controleJogo.getCircuito().getNome() + " "
 				+ controleJogo.getNumVoltaAtual() + "/"
 				+ controleJogo.totalVoltasCorrida();
-		
+
 		int largura = 0;
 		for (int i = 0; i < txt.length(); i++) {
 			largura += g2d.getFontMetrics().charWidth(txt.charAt(i));
@@ -2702,42 +2775,30 @@ public class PainelCircuito extends JPanel {
 		String intel = (ps.isJogadorHumano() ? ps.getNomeJogador() : "IA");
 		String txt2 = intel + " " + agressivo + " " + dano;
 		String velo = "~" + ps.getVelocidade() + " Km/h";
+		String velo2 = null;
 		if (ps.getVelocidade() == 1) {
 			velo = null;
 		}
 		if (Logger.ativo) {
 
 			int dist = ps.calculaDiffParaProximo(controleJogo);
-			if (pilotoSelecionado.getPosicao() == 1) {
+			if (ps.getPosicao() == 1) {
 				dist = 0;
 			}
-			velo = "M "
-					+ ps.getNovoModificador()
-					+ " I "
-					+ ps.getNoAtual().getIndex()
-					+ " G "
-					+ (int) (ps.getGanho())
-					+ " V "
-					+ ps.getVelocidade()
-					+ " D "
-					+ dist
-					+ " S "
-					+ pilotoSelecionado.getStress()
-					+ " A "
-					+ pilotoSelecionado.getCarro().getDurabilidadeAereofolio()
-					+ " BX "
-					+ pilotoSelecionado.getPtosBox()
-					+ " DP "
-					+ pilotoSelecionado.calculaDiffParaProximo(controleJogo)
-					+ " DA "
-					+ pilotoSelecionado.calculaDiffParaAnterior(controleJogo)
-					+ " K "
-					+ pilotoSelecionado.getCarro().getCargaKers()
-					+ " P "
-					+ controleJogo
-							.percetagemDeVoltaCompletada(pilotoSelecionado)
-					+ " T "
-					+ pilotoSelecionado.getCarro().getTemperaturaMotor();
+			velo = "M " + ps.getNovoModificador() + " I "
+					+ ps.getNoAtual().getIndex() + " G "
+					+ (int) (ps.getGanho()) + " V " + ps.getVelocidade()
+					+ " D " + dist + " S " + ps.getStress() + " A "
+					+ ps.getCarro().getDurabilidadeAereofolio() + " BX "
+					+ ps.getPtosBox();
+			velo2 = " DP " + ps.calculaDiffParaProximo(controleJogo) + " DA "
+					+ ps.calculaDiffParaAnterior(controleJogo) + " K "
+					+ ps.getCarro().getCargaKers() + " P "
+					+ controleJogo.percetagemDeVoltaCompletada(ps) + " T "
+					+ ps.getCarro().getTemperaturaMotor() + " IT "
+					+ ps.getIndiceTracado() + " TR " + ps.getTracado() + " VT "
+					+ ps.getTracadoAntigo();
+
 		}
 
 		int maior = 0;
@@ -2837,6 +2898,17 @@ public class PainelCircuito extends JPanel {
 				largura += g2d.getFontMetrics().charWidth(velo.charAt(i));
 			}
 			if (Logger.ativo) {
+				if (velo2 != null) {
+					int largura2 = 0;
+					for (int i = 0; i < velo2.length(); i++) {
+						largura2 += g2d.getFontMetrics().charWidth(
+								velo2.charAt(i));
+					}
+					g2d.fillRoundRect(limitesViewPort.x + pointDesenhaVelo.x,
+							limitesViewPort.y + pointDesenhaVelo.y + 163,
+							largura2 + 10, 15, 15, 15);
+				}
+
 				g2d.fillRoundRect(limitesViewPort.x + pointDesenhaVelo.x,
 						limitesViewPort.y + pointDesenhaVelo.y + 143,
 						largura + 10, 15, 15, 15);
@@ -2853,6 +2925,10 @@ public class PainelCircuito extends JPanel {
 			}
 			g2d.drawString(velo, limitesViewPort.x + pointDesenhaVelo.x + 3,
 					limitesViewPort.y + pointDesenhaVelo.y + 155);
+			if (velo2 != null) {
+				g2d.drawString(velo2, limitesViewPort.x + pointDesenhaVelo.x
+						+ 3, limitesViewPort.y + pointDesenhaVelo.y + 175);
+			}
 		}
 
 	}
@@ -3038,4 +3114,5 @@ public class PainelCircuito extends JPanel {
 			marcasPneu.add(travadaRoda);
 		}
 	}
+
 }
