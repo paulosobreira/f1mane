@@ -686,7 +686,7 @@ public class PainelEntradaCliente {
 		spinnerCombustivelInicial.setLabelTable(labelTable);
 		spinnerCombustivelInicial.setPaintLabels(true);
 
-		spinnerCombustivelInicial.setValue(new Integer(100));
+		spinnerCombustivelInicial.setValue(new Integer(50));
 
 		painelInicio.add(tipoPneu);
 		painelInicio.add(comboBoxPneuInicial);
