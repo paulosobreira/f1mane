@@ -385,6 +385,8 @@ public class ControleCampeonato {
 
 	public void processaFimCorrida(List<Piloto> pilotos) {
 		List<CorridaCampeonato> corridaCampeonatoDados = new ArrayList<CorridaCampeonato>();
+		int posicaoJogador = 0;
+		int posicaoDesafiando = 0;
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto p = (Piloto) iterator.next();
 			CorridaCampeonato corridaCampeonato = new CorridaCampeonato();
@@ -434,6 +436,22 @@ public class ControleCampeonato {
 				corridaCampeonato.setPontos(0);
 			}
 			corridaCampeonatoDados.add(corridaCampeonato);
+			if (!Util.isNullOrEmpty(campeonato.getNomePiloto())
+					&& campeonato.getNomePiloto().equals(p.getNome())) {
+				posicaoJogador = p.getPosicao();
+			}
+			if (!Util.isNullOrEmpty(campeonato.getDesafiando())
+					&& campeonato.getDesafiando().equals(p.getNome())) {
+				posicaoDesafiando = p.getPosicao();
+			}
+
+		}
+		if (!Util.isNullOrEmpty(campeonato.getDesafiando())) {
+			if (posicaoJogador < posicaoDesafiando) {
+				campeonato.setVitorias(campeonato.getVitorias() + 1);
+			} else {
+				campeonato.setDerrotas(campeonato.getDerrotas() + 1);
+			}
 		}
 		campeonato.getDadosCorridas().put(circuitoJogando,
 				corridaCampeonatoDados);
@@ -967,7 +985,6 @@ public class ControleCampeonato {
 		campeonato.setKers(kers.isSelected());
 		campeonato.setSemReabasteciemnto(semReabastacimento.isSelected());
 		campeonato.setSemTrocaPneus(semTrocaPneu.isSelected());
-
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
 				.getSelectedItem()));
