@@ -2,17 +2,16 @@ package sowbreira.f1mane.recursos;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import sowbreira.f1mane.entidades.Carro;
@@ -206,11 +204,11 @@ public class CarregadorRecursos {
 	}
 
 	public static void main(String[] args) throws URISyntaxException,
-			IOException {
+			IOException, ClassNotFoundException {
 		// String val = "tn_2008voi-mclaren.gif";
 		// System.out.println(Util.intervalo(0, 0));
 
-		gerarListaCarrosLado();
+		// gerarListaCarrosLado();
 		// gerarCarrosCima();
 		// JFrame frame = new JFrame();
 		// frame.setSize(200, 200);
@@ -219,6 +217,30 @@ public class CarregadorRecursos {
 		// .getGraphics();
 		// BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
 		// graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
+		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
+		Properties properties = new Properties();
+
+		properties.load(CarregadorRecursos
+				.recursoComoStream("properties/pistas.properties"));
+
+		Enumeration propName = properties.propertyNames();
+		while (propName.hasMoreElements()) {
+			final String name = (String) propName.nextElement();
+			// System.out.println(name);
+			ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
+					.getClass().getResourceAsStream(name));
+
+			Circuito circuito = (Circuito) ois.readObject();
+			// System.out.println(properties.getProperty(name));
+			// System.out.println(circuito.getNome());
+			circuito.setMultiplicador(circuito.getMultiplciador() - 1);
+			FileOutputStream fileOutputStream = new FileOutputStream(new File(
+					name));
+			ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
+			oos.writeObject(circuito);
+			oos.flush();
+			fileOutputStream.close();
+		}
 	}
 
 	private static void gerarListaCarrosLado() throws IOException {

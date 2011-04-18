@@ -29,6 +29,7 @@ import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Html;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -604,14 +605,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 			controleCorrida.getControleClima().gerarClimaInicial(
 					(Clima) gerenciadorVisual.getComboBoxClimaInicial()
 							.getSelectedItem());
-			if (isKers()) {
-				getCircuito().setMultiplicador(
-						getCircuito().getMultiplciador() - 1);
-			}
-			if (isDrs()) {
-				getCircuito().setMultiplicador(
-						getCircuito().getMultiplciador() - 1);
-			}
 			controleCorrida.gerarGridLargadaSemQualificacao();
 			Logger.logar("gerarGridLargadaSemQualificacao() FEITO");
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
@@ -794,6 +787,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 			Object combust, Object asa) {
 		String tipoPneu = (String) tpPneu;
 		Integer qtdeCombustPorcent = (Integer) combust;
+		if (isSemReabastacimento()) {
+			qtdeCombustPorcent = Util
+					.inte(85 + (15 * qtdeCombustPorcent / 100.0));
+		}
 
 		pilotoJogador.getCarro().trocarPneus(this, tipoPneu,
 				controleCorrida.getDistaciaCorrida());

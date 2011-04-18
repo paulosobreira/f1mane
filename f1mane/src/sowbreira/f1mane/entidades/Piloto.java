@@ -1889,10 +1889,14 @@ public class Piloto implements Serializable {
 	}
 
 	public int decIndiceTracado() {
-		if (indiceTracado == 0) {
+		if (indiceTracado <= 0) {
 			return 0;
 		}
-		return indiceTracado--;
+		indiceTracado -= 2;
+		if (indiceTracado <= 0) {
+			indiceTracado = 0;
+		}
+		return indiceTracado;
 	}
 
 	public int getIndiceTracado() {
