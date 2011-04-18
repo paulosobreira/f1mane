@@ -58,6 +58,7 @@ public class PainelCampeonato extends JPanel {
 	private JButton desafiarButton;
 	private JTable desafiarTable;
 	private AbstractTableModel desafiarTableModel;
+	private JLabel jLabelDesafiando;
 
 	public PainelCampeonato(ControleCampeonato controleCampeonato,
 			MainFrame mainFrame) {
@@ -110,7 +111,13 @@ public class PainelCampeonato extends JPanel {
 					return Lang.msg("desafiando");
 				}
 			});
-			grid.add(new JLabel(campeonato.getDesafiando()));
+			jLabelDesafiando = new JLabel(campeonato.getDesafiando()) {
+				@Override
+				public String getText() {
+					return campeonato.getDesafiando();
+				}
+			};
+			grid.add(jLabelDesafiando);
 
 			grid.add(new JLabel() {
 				@Override
@@ -221,6 +228,9 @@ public class PainelCampeonato extends JPanel {
 
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
+				if (rowIndex < 0) {
+					return null;
+				}
 				Object[] objects = list.get(rowIndex);
 				return objects[columnIndex];
 			}
@@ -269,7 +279,22 @@ public class PainelCampeonato extends JPanel {
 				"desafiar", new String[] { "fulano" }),
 				JOptionPane.YES_NO_OPTION);
 		if (ret == JOptionPane.YES_OPTION) {
-			// gerarPainelDetalhesCorrida(corrida, corridasTable);
+			String desafiar = (String) desafiarTableModel.getValueAt(
+					desafiarTable.getSelectedRow(), 0);
+			if (Util.isNullOrEmpty(desafiar)) {
+				JOptionPane.showMessageDialog(this, Lang.msg("nenhumDesafio",
+						new String[] { campeonato.getDesafiando() }), "Erro",
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			if (!Util.isNullOrEmpty(campeonato.getDesafiando())) {
+				JOptionPane.showMessageDialog(this, Lang.msg("jaDesafiando",
+						new String[] { campeonato.getDesafiando() }), "Erro",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			campeonato.setDesafiando(desafiar);
+			jLabelDesafiando.updateUI();
 		}
 
 	}
