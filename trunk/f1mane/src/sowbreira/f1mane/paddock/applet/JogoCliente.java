@@ -666,9 +666,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
 		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(
-					dadosParticiparJogo.getTpPnueu(),
-					dadosParticiparJogo.getCombustivel(),
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
+					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
 					dadosParticiparJogo.getAsa());
 			syncBox = true;
 		}
@@ -936,5 +935,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public String calculaSegundosParaRival(Piloto pilotoSelecionado) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void verificaDesafioCampeonatoPiloto() {
+		// TODO Auto-generated method stub
+
 	}
 }

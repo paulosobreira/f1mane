@@ -111,10 +111,10 @@ public class PainelCampeonato extends JPanel {
 					return Lang.msg("desafiando");
 				}
 			});
-			jLabelDesafiando = new JLabel(campeonato.getDesafiando()) {
+			jLabelDesafiando = new JLabel(campeonato.getRival()) {
 				@Override
 				public String getText() {
-					return campeonato.getDesafiando();
+					return campeonato.getRival();
 				}
 			};
 			grid.add(jLabelDesafiando);
@@ -283,17 +283,17 @@ public class PainelCampeonato extends JPanel {
 					desafiarTable.getSelectedRow(), 0);
 			if (Util.isNullOrEmpty(desafiar)) {
 				JOptionPane.showMessageDialog(this, Lang.msg("nenhumDesafio",
-						new String[] { campeonato.getDesafiando() }), "Erro",
+						new String[] { campeonato.getRival() }), "Erro",
 						JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			if (!Util.isNullOrEmpty(campeonato.getDesafiando())) {
+			if (!Util.isNullOrEmpty(campeonato.getRival())) {
 				JOptionPane.showMessageDialog(this, Lang.msg("jaDesafiando",
-						new String[] { campeonato.getDesafiando() }), "Erro",
+						new String[] { campeonato.getRival() }), "Erro",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			campeonato.setDesafiando(desafiar);
+			campeonato.setRival(desafiar);
 			jLabelDesafiando.updateUI();
 		}
 
