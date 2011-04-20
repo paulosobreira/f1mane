@@ -1065,4 +1065,52 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return (int) ((indexPiloto / pista) * 100.0);
 	}
 
+	@Override
+	public boolean verirficaDesafiandoCampeonato(Piloto piloto) {
+		if (controleCampeonato != null) {
+			Campeonato campeonato = controleCampeonato.getCampeonato();
+			if (campeonato != null) {
+				if (piloto.getNome().equals(campeonato.getDesafiando())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean verificaCampeonatoComRival() {
+		if (controleCampeonato != null) {
+			Campeonato campeonato = controleCampeonato.getCampeonato();
+			if (campeonato != null) {
+				return !Util.isNullOrEmpty(campeonato.getDesafiando());
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public String calculaSegundosParaRival(Piloto pilotoSelecionado) {
+		String rival = null;
+		if (controleCampeonato != null) {
+			Campeonato campeonato = controleCampeonato.getCampeonato();
+			if (campeonato != null) {
+				rival = campeonato.getDesafiando();
+			}
+		}
+		if (Util.isNullOrEmpty(rival)) {
+			return null;
+		}
+		Piloto pRival = null;
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (piloto.getNome().equals(rival)) {
+				pRival = piloto;
+			}
+		}
+
+		long tempo = controleCorrida.obterTempoCilco();
+		return controleEstatisticas.calculaSegundosParaRival(pilotoSelecionado,
+				pRival, tempo);
+	}
 }

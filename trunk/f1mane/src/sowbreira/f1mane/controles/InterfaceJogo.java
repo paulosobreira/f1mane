@@ -258,4 +258,10 @@ public interface InterfaceJogo {
 
 	public int percetagemDeVoltaCompletada(Piloto pilotoSelecionado);
 
+	public boolean verirficaDesafiandoCampeonato(Piloto piloto);
+
+	public boolean verificaCampeonatoComRival();
+
+	public String calculaSegundosParaRival(Piloto pilotoSelecionado);
+
 }

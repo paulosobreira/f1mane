@@ -919,4 +919,22 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public boolean verirficaDesafiandoCampeonato(Piloto piloto) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean verificaCampeonatoComRival() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String calculaSegundosParaRival(Piloto pilotoSelecionado) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
