@@ -595,8 +595,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(),
-					gerenciadorVisual.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
+							.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
@@ -1070,7 +1070,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (controleCampeonato != null) {
 			Campeonato campeonato = controleCampeonato.getCampeonato();
 			if (campeonato != null) {
-				if (piloto.getNome().equals(campeonato.getDesafiando())) {
+				if (piloto.getNome().equals(campeonato.getRival())) {
 					return true;
 				}
 			}
@@ -1083,7 +1083,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (controleCampeonato != null) {
 			Campeonato campeonato = controleCampeonato.getCampeonato();
 			if (campeonato != null) {
-				return !Util.isNullOrEmpty(campeonato.getDesafiando());
+				return !Util.isNullOrEmpty(campeonato.getRival());
 			}
 		}
 		return false;
@@ -1095,7 +1095,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (controleCampeonato != null) {
 			Campeonato campeonato = controleCampeonato.getCampeonato();
 			if (campeonato != null) {
-				rival = campeonato.getDesafiando();
+				rival = campeonato.getRival();
 			}
 		}
 		if (Util.isNullOrEmpty(rival)) {
@@ -1112,5 +1112,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 		long tempo = controleCorrida.obterTempoCilco();
 		return controleEstatisticas.calculaSegundosParaRival(pilotoSelecionado,
 				pRival, tempo);
+	}
+
+	@Override
+	public void verificaDesafioCampeonatoPiloto() {
+		if (controleCampeonato == null) {
+			return;
+		}
+		controleCampeonato.verificaDesafioCampeonatoPiloto();
+
 	}
 }

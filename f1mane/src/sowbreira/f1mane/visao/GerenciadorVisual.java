@@ -1766,6 +1766,7 @@ public class GerenciadorVisual {
 						indices.add(new Integer(i));
 					}
 				}
+				controleJogo.verificaDesafioCampeonatoPiloto();
 			}
 			int[] inds = new int[indices.size()];
 			for (int i = 0; i < inds.length; i++) {
