@@ -1737,8 +1737,11 @@ public class GerenciadorVisual {
 					String carro = campeonato.getPilotosEquipesCampeonato()
 							.get(piloto.getNome());
 					if (Util.isNullOrEmpty(carro)) {
+						piloto.setNome(campeonato.getNomePiloto());
+						piloto.setHabilidade(campeonato.getPtsPiloto());
+						piloto.setJogadorHumano(true);
 						mudouCarro.add(piloto);
-					} else if (carro.equals(piloto.getCarro().getNome())) {
+					} else if (!carro.equals(piloto.getCarro().getNome())) {
 						mudouCarro.add(piloto);
 					}
 				}
@@ -1749,19 +1752,11 @@ public class GerenciadorVisual {
 					Piloto piloto = (Piloto) iterator.next();
 					String carro = campeonato.getPilotosEquipesCampeonato()
 							.get(piloto.getNome());
-					if (Util.isNullOrEmpty(carro)) {
-						piloto.setNome(campeonato.getNomePiloto());
-						piloto.setHabilidade(campeonato.getPtsPiloto());
-						piloto.setJogadorHumano(true);
-						continue;
-					}
-					for (Iterator iterator2 = mudouCarro.iterator(); iterator2
-							.hasNext();) {
-						Piloto piloto2 = (Piloto) iterator2.next();
-						if (!piloto2.getNome().equals(piloto.getNome())
-								&& carro.equals(piloto2.getCarro())) {
+					for (int i = 0; i < defaultListModel.getSize(); i++) {
+						Piloto p = (Piloto) defaultListModel.get(i);
+						if (p.getCarro().getNome().equals(carro)) {
 							piloto.setCarro(CarregadorRecursos.criarCopiaCarro(
-									piloto2.getCarro(), piloto));
+									p.getCarro(), piloto));
 						}
 					}
 				}

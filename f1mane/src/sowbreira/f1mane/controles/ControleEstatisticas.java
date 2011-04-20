@@ -51,6 +51,15 @@ public class ControleEstatisticas {
 		return ret;
 	}
 
+	public String calculaSegundosParaRival(Piloto pilotoSelecionado,
+			Piloto rival, long tempo) {
+		int diff = rival.getPtosPista() - pilotoSelecionado.getPtosPista();
+		diff /= controleJogo.getCircuito().getMultiplciador();
+		String ret = milesismos.format((diff / Double.parseDouble(String
+				.valueOf(tempo))) * 3.0) + "s";
+		return ret;
+	}
+
 	public void processaVoltaRapida(Piloto piloto) {
 		if (piloto.getVoltaAtual() == null) {
 			Volta volta = new Volta();

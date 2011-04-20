@@ -72,6 +72,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color luzAcesa = new Color(255, 0, 0, 255);
 	public final static Color farol = new Color(0, 0, 0);
 	public final static Color red = new Color(250, 0, 0, 150);
+	public final static Color lightRed = new Color(250, 0, 0, 100);
 	public final static Color gre = new Color(0, 255, 0, 150);
 	public final static Color yel = new Color(255, 255, 0, 150);
 	public final static Color transpMenus = new Color(255, 255, 255, 140);
@@ -632,6 +633,8 @@ public class PainelCircuito extends JPanel {
 				g2d.setColor(PainelTabelaPosicoes.jogador);
 			} else if (piloto.equals(lider)) {
 				g2d.setColor(PainelTabelaPosicoes.otros);
+			} else if (controleJogo.verirficaDesafiandoCampeonato(piloto)) {
+				g2d.setColor(lightRed);
 			} else {
 				g2d.setColor(Color.LIGHT_GRAY);
 			}
@@ -1921,6 +1924,14 @@ public class PainelCircuito extends JPanel {
 			if (pilotoSelecionado.getPosicao() == 1) {
 				plider = Lang.msg("Lider");
 				g2d.setColor(Color.BLUE);
+			} else if (controleJogo.verificaCampeonatoComRival()) {
+				plider = controleJogo
+						.calculaSegundosParaRival(pilotoSelecionado);
+				if (plider.startsWith("-")) {
+					g2d.setColor(Color.BLUE);
+				} else {
+					g2d.setColor(Color.RED);
+				}
 			} else {
 				controleJogo.calculaSegundosParaLider(pilotoSelecionado);
 				plider = pilotoSelecionado.getSegundosParaLider();
@@ -1928,7 +1939,10 @@ public class PainelCircuito extends JPanel {
 
 			yBase += 15;
 
-			g2d.drawString(Lang.msg("070") + plider, ptoOri, yBase);
+			g2d.drawString(
+					(controleJogo.verificaCampeonatoComRival() ? Lang
+							.msg("rival") : Lang.msg("070")) + plider, ptoOri,
+					yBase);
 			yBase += 15;
 			if (Carro.GIRO_MIN_VAL == pilotoSelecionado.getCarro().getGiro()
 					&& qtdeLuzesAcesas <= 0) {

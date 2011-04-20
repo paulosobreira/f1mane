@@ -1904,6 +1904,9 @@ public class Piloto implements Serializable {
 	}
 
 	public void setIndiceTracado(int indiceTracado) {
+		if (indiceTracado > 0) {
+			return;
+		}
 		this.indiceTracado = indiceTracado;
 	}
 

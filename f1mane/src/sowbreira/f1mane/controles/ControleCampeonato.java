@@ -470,9 +470,9 @@ public class ControleCampeonato {
 		if (campeonato.getVitorias() > 0) {
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					campeonato.getDesafiando());
-			int returno = JOptionPane.showInternalConfirmDialog(this.mainFrame,
+			int returno = JOptionPane.showConfirmDialog(this.mainFrame,
 					Lang.msg("irEquipe", new String[] { equipeRival }),
-					Lang.msg("mudarEquipe"), JOptionPane.QUESTION_MESSAGE);
+					Lang.msg("mudarEquipe"), JOptionPane.YES_NO_OPTION);
 			if (JOptionPane.YES_OPTION == returno) {
 				String equipeJogador = campeonato.getPilotosEquipesCampeonato()
 						.get(campeonato.getNomePiloto());
@@ -1057,6 +1057,15 @@ public class ControleCampeonato {
 
 	public static void main(String[] args) {
 		ControleCampeonato controleCampeonato = new ControleCampeonato(null);
-		controleCampeonato.criarCampeonatoPiloto();
+		Campeonato campeonato = new Campeonato();
+		campeonato.setVitorias(2);
+		controleCampeonato.campeonato = campeonato;
+		Map pilotosEquipesCampeonato = new HashMap();
+		pilotosEquipesCampeonato.put("Jogador", "Equipe Jogador");
+		pilotosEquipesCampeonato.put("Desafio", "Equipe Desafio");
+		campeonato.setPilotosEquipesCampeonato(pilotosEquipesCampeonato);
+		campeonato.setNomePiloto("Jogador");
+		campeonato.setDesafiando("Desafio");
+		controleCampeonato.processaMudancaEquipe();
 	}
 }
