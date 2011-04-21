@@ -477,10 +477,10 @@ public class ControleCampeonato {
 						campeonato.getNomePiloto(), equipeRival);
 				campeonato.getPilotosEquipesCampeonato().put(
 						campeonato.getRival(), equipeJogador);
-				campeonato.setRival(null);
-				campeonato.setVitorias(0);
-				campeonato.setDerrotas(0);
 			}
+			campeonato.setRival(null);
+			campeonato.setVitorias(0);
+			campeonato.setDerrotas(0);
 		} else if (campeonato.getDerrotas() > 0) {
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					campeonato.getRival());
@@ -498,10 +498,10 @@ public class ControleCampeonato {
 						campeonato.getNomePiloto(), equipeRival);
 				campeonato.getPilotosEquipesCampeonato().put(
 						campeonato.getRival(), equipeJogador);
-				campeonato.setRival(null);
-				campeonato.setVitorias(0);
-				campeonato.setDerrotas(0);
 			}
+			campeonato.setRival(null);
+			campeonato.setVitorias(0);
+			campeonato.setDerrotas(0);
 		}
 
 	}
