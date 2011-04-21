@@ -233,7 +233,7 @@ public class CarregadorRecursos {
 			Circuito circuito = (Circuito) ois.readObject();
 			// System.out.println(properties.getProperty(name));
 			// System.out.println(circuito.getNome());
-			circuito.setMultiplicador(circuito.getMultiplciador() - 1);
+			circuito.setMultiplicador(circuito.getMultiplciador() + 1);
 			FileOutputStream fileOutputStream = new FileOutputStream(new File(
 					name));
 			ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);

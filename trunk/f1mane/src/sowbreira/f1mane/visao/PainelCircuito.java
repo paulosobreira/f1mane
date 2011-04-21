@@ -155,6 +155,7 @@ public class PainelCircuito extends JPanel {
 	private ArrayList boxMinimizado;
 	protected Point newP;
 	private Point oldP;
+	protected double mouseZoom = 1;
 
 	public Point getPosisRec() {
 		return posisRec;
@@ -332,6 +333,16 @@ public class PainelCircuito extends JPanel {
 		synchronized (zoomMutex) {
 			super.paintComponent(g);
 			try {
+				if (mouseZoom > zoom) {
+					zoom += 0.01;
+					atualizaVarZoom();
+				}
+				if (mouseZoom < zoom) {
+					zoom -= 0.01;
+					atualizaVarZoom();
+				}
+				
+
 				Graphics2D g2d = (Graphics2D) g;
 				setarHints(g2d);
 				limitesViewPort = (Rectangle) limitesViewPort();
@@ -1413,17 +1424,6 @@ public class PainelCircuito extends JPanel {
 			gerarBoxes();
 		}
 		gerarGrid();
-		Piloto piloto = null;
-		if (gerenciadorVisual != null) {
-			piloto = gerenciadorVisual.obterPilotoSecionadoTabela(controleJogo
-					.getPilotoSelecionado());
-		}
-		if (piloto == null) {
-			piloto = (Piloto) controleJogo.getPilotos().get(0);
-		}
-		if (piloto != null && limitesViewPort != null) {
-			centralizarPontoDireto(piloto.getNoAtual().getPoint());
-		}
 	}
 
 	private void gerarBoxes() {

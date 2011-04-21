@@ -205,7 +205,7 @@ public class GerenciadorVisual {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				synchronized (PainelCircuito.zoomMutex) {
-					double val = painelCircuito.zoom;
+					double val = painelCircuito.mouseZoom;
 					val += e.getWheelRotation() / 60.0;
 					if (controleJogo != null
 							&& painelCircuito.getBackGround() != null
@@ -224,13 +224,12 @@ public class GerenciadorVisual {
 
 					}
 					if (val > 1.0) {
-						painelCircuito.zoom = 1.0;
+						painelCircuito.mouseZoom = 1.0;
 					} else if (val < 0.2) {
-						painelCircuito.zoom = 0.2;
+						painelCircuito.mouseZoom = 0.2;
 					} else {
-						painelCircuito.zoom = Util.double2Decimal(val);
+						painelCircuito.mouseZoom = Util.double2Decimal(val);
 					}
-					painelCircuito.atualizaVarZoom();
 				}
 			}
 		};
