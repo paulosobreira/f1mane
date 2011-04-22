@@ -15,6 +15,7 @@ public class Campeonato implements Serializable {
 	private int vitorias;
 	private int derrotas;
 	private int ptsPiloto;
+	private int ptsGanho;
 	private Map<String, String> pilotosEquipesCampeonato = new HashMap<String, String>();
 	private Map<String, Integer> pilotosHabilidadeCampeonato = new HashMap<String, Integer>();
 	private Map<String, Integer> equipesPotenciaCampeonato = new HashMap<String, Integer>();
@@ -30,6 +31,14 @@ public class Campeonato implements Serializable {
 
 	public String getNomePiloto() {
 		return nomePiloto;
+	}
+
+	public int getPtsGanho() {
+		return ptsGanho;
+	}
+
+	public void setPtsGanho(int ptsGanho) {
+		this.ptsGanho = ptsGanho;
 	}
 
 	public String getRival() {

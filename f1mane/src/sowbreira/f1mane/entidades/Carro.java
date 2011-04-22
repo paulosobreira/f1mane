@@ -446,9 +446,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& temperaturaMotor == tempMax - 1)
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -692,7 +693,8 @@ public class Carro implements Serializable {
 					.intervalo(1, 3) : Util.intervalo(2, 4));
 
 		double valDesgaste = (desgPneus
-				* controleJogo.getCircuito().getMultiplciador() * combustivel);
+				* controleJogo.getCircuito().getMultiplciador() * (combustivel * (1 + controleJogo
+				.getNiveljogo())));
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 3;
 		}
