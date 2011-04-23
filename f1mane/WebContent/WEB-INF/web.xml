@@ -17,6 +17,16 @@
 		<servlet-name>ServletPaddock</servlet-name>
 		<url-pattern>/ServletPaddock</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ServletMail</servlet-name>
+		<servlet-class>sowbreira.f1mane.paddock.servlet.ServletMail</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletMail</servlet-name>
+		<url-pattern>/ServletMail</url-pattern>
+	</servlet-mapping>	
 
 	<!-- Standard Action Servlet Mapping -->
 

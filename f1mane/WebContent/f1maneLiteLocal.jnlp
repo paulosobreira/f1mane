@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+	codebase="http://localhost:8080/f1mane/" href="f1maneLiteLocal.jnlp">
+	<information>
+		<title>F1Mane Lite</title>
+		<vendor>Paulo Sobreira</vendor>
+		<homepage href="http://sowbreira.appspot.com/" />
+		<icon href="icon.png"/>  
+		<description>
+			F1-MANE (MANager & Engineer) Lite
+		</description>
+		<offline-allowed />
+	</information>
+
+	<resources>
+		<j2se version="1.6"  initial-heap-size="64m" max-heap-size="512m" />
+		<jar href="f1mane.jar" />
+		<jar href="f1maneRecursos.jar" />
+    </resources>
+
+    <applet-desc 
+	      documentBase="http://localhost:8080/f1mane" 
+	      name="F1-Mane Online" 
+	      main-class="sowbreira.f1mane.F1ManeApplet" 
+	      width="1030" 
+	      height="720"> 
+	  </applet-desc>	
+</jnlp>
