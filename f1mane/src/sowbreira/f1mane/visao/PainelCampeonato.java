@@ -170,8 +170,8 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		this.add(label, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(mainFrame, this, Lang
-				.msg("286"), JOptionPane.YES_NO_OPTION,
+		int ret = JOptionPane.showConfirmDialog(mainFrame, this,
+				Lang.msg("286"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (ret == JOptionPane.YES_OPTION) {
 
@@ -275,22 +275,28 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		jPanel.add(jScrollPane);
-		int ret = JOptionPane.showConfirmDialog(this, jPanel, Lang.msg(
-				"desafiar", new String[] { "fulano" }),
+		int ret = JOptionPane.showConfirmDialog(this, jPanel,
+				Lang.msg("desafiar", new String[] { "fulano" }),
 				JOptionPane.YES_NO_OPTION);
 		if (ret == JOptionPane.YES_OPTION) {
 			String desafiar = (String) desafiarTableModel.getValueAt(
 					desafiarTable.getSelectedRow(), 0);
 			if (Util.isNullOrEmpty(desafiar)) {
-				JOptionPane.showMessageDialog(this, Lang.msg("nenhumDesafio",
-						new String[] { campeonato.getRival() }), "Erro",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(
+						this,
+						Lang.msg("nenhumDesafio",
+								new String[] { campeonato.getRival() }),
+						"Erro", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			if (!Util.isNullOrEmpty(campeonato.getRival())) {
-				JOptionPane.showMessageDialog(this, Lang.msg("jaDesafiando",
-						new String[] { campeonato.getRival() }), "Erro",
-						JOptionPane.ERROR_MESSAGE);
+			if (!Util.isNullOrEmpty(campeonato.getRival())
+					&& campeonato.getVitorias() != 0
+					&& campeonato.getDerrotas() != 0) {
+				JOptionPane.showMessageDialog(
+						this,
+						Lang.msg("jaDesafiando",
+								new String[] { campeonato.getRival() }),
+						"Erro", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			campeonato.setRival(desafiar);
@@ -460,9 +466,9 @@ public class PainelCampeonato extends JPanel {
 				if (e.getClickCount() == 2) {
 					String corrida = (String) corridasTableModel.getValueAt(
 							corridasTable.getSelectedRow(), 0);
-					int ret = JOptionPane.showConfirmDialog(corridasTable, Lang
-							.msg("300", new String[] { corrida }), Lang
-							.msg("299"), JOptionPane.YES_NO_OPTION);
+					int ret = JOptionPane.showConfirmDialog(corridasTable,
+							Lang.msg("300", new String[] { corrida }),
+							Lang.msg("299"), JOptionPane.YES_NO_OPTION);
 					if (ret == JOptionPane.YES_OPTION) {
 						gerarPainelDetalhesCorrida(corrida, corridasTable);
 					}
@@ -673,8 +679,9 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		jPanel.add(jScrollPane);
-		JOptionPane.showMessageDialog(corridasTable, jPanel, Lang.msg("300",
-				new String[] { corrida }), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(corridasTable, jPanel,
+				Lang.msg("300", new String[] { corrida }),
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private JPanel gerarPanelPilotosSelecionados() {
