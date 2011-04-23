@@ -12,6 +12,9 @@ import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,7 +27,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.jnlp.FileContents;
+import javax.jnlp.PersistenceService;
+import javax.jnlp.ServiceManager;
 import javax.swing.DefaultListModel;
+import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -111,6 +118,16 @@ public class ControleCampeonato {
 	}
 
 	public void criarCampeonato() throws Exception {
+		continuarCampeonatoCache();
+		if (campeonato != null) {
+			int showConfirmDialog = JOptionPane.showConfirmDialog(mainFrame,
+					Lang.msg("existeCampeonato"), Lang.msg("campeonatoSalvo"),
+					JOptionPane.YES_NO_OPTION);
+			if (JOptionPane.YES_OPTION != showConfirmDialog) {
+				campeonato = null;
+				return;
+			}
+		}
 		final DefaultListModel defaultListModelCircuitos = new DefaultListModel();
 		final DefaultListModel defaultListModelCircuitosSelecionados = new DefaultListModel();
 		for (Iterator iterator = circuitos.keySet().iterator(); iterator
@@ -338,36 +355,90 @@ public class ControleCampeonato {
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
 				.getSelectedItem()));
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
+		persistirEmCache();
 		new PainelCampeonato(this, mainFrame);
+	}
+
+	private void persistirEmCache() {
+		JApplet applet = mainFrame.getApplet();
+		try {
+			PersistenceService persistenceService = (PersistenceService) ServiceManager
+					.lookup("javax.jnlp.PersistenceService");
+			FileContents fileContents = null;
+			try {
+				fileContents = persistenceService.get(new URL(applet
+						.getCodeBase() + "campeonato"));
+			} catch (Exception e) {
+				persistenceService.create(new URL(applet.getCodeBase()
+						+ "campeonato"), 1048576);
+				fileContents = persistenceService.get(new URL(applet
+						.getCodeBase() + "campeonato"));
+			}
+
+			if (fileContents == null) {
+				Logger.logar(" fileContents == null  ");
+
+			}
+
+			ObjectOutputStream stream = new ObjectOutputStream(
+					fileContents.getOutputStream(true));
+			stream.writeObject(campeonato);
+			stream.flush();
+
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 
 	}
 
 	public void continuarCampeonato() {
-		try {
-			JTextArea xmlArea = new JTextArea(30, 50);
-			JScrollPane xmlPane = new JScrollPane(xmlArea);
-			xmlPane.setBorder(new TitledBorder(Lang.msg("282")));
-			JOptionPane.showMessageDialog(mainFrame, xmlPane, Lang.msg("281"),
-					JOptionPane.INFORMATION_MESSAGE);
+		continuarCampeonatoCache();
+		if (campeonato == null) {
+			try {
+				JTextArea xmlArea = new JTextArea(30, 50);
+				JScrollPane xmlPane = new JScrollPane(xmlArea);
+				xmlPane.setBorder(new TitledBorder(Lang.msg("282")));
+				JOptionPane.showMessageDialog(mainFrame, xmlPane,
+						Lang.msg("281"), JOptionPane.INFORMATION_MESSAGE);
 
-			if (Util.isNullOrEmpty(xmlArea.getText())) {
-				return;
+				if (Util.isNullOrEmpty(xmlArea.getText())) {
+					return;
+				}
+				ByteArrayInputStream bin = new ByteArrayInputStream(xmlArea
+						.getText().getBytes());
+				XMLDecoder xmlDecoder = new XMLDecoder(bin);
+				campeonato = (Campeonato) xmlDecoder.readObject();
+			} catch (Exception e) {
+				StackTraceElement[] trace = e.getStackTrace();
+				StringBuffer retorno = new StringBuffer();
+				int size = ((trace.length > 10) ? 10 : trace.length);
+				for (int i = 0; i < size; i++)
+					retorno.append(trace[i] + "\n");
+				JOptionPane.showMessageDialog(mainFrame, retorno.toString(),
+						Lang.msg("283"), JOptionPane.ERROR_MESSAGE);
+				Logger.logarExept(e);
 			}
-			ByteArrayInputStream bin = new ByteArrayInputStream(xmlArea
-					.getText().getBytes());
-			XMLDecoder xmlDecoder = new XMLDecoder(bin);
-			campeonato = (Campeonato) xmlDecoder.readObject();
-		} catch (Exception e) {
-			StackTraceElement[] trace = e.getStackTrace();
-			StringBuffer retorno = new StringBuffer();
-			int size = ((trace.length > 10) ? 10 : trace.length);
-			for (int i = 0; i < size; i++)
-				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(mainFrame, retorno.toString(),
-					Lang.msg("283"), JOptionPane.ERROR_MESSAGE);
-			Logger.logarExept(e);
 		}
 		new PainelCampeonato(this, mainFrame);
+	}
+
+	private void continuarCampeonatoCache() {
+		JApplet applet = mainFrame.getApplet();
+		try {
+			PersistenceService persistenceService = (PersistenceService) ServiceManager
+					.lookup("javax.jnlp.PersistenceService");
+			FileContents fileContents = persistenceService.get(new URL(applet
+					.getCodeBase() + "campeonato"));
+			if (fileContents == null) {
+				Logger.logar(" fileContents == null  ");
+			}
+			ObjectInputStream ois = new ObjectInputStream(
+					fileContents.getInputStream());
+			campeonato = (Campeonato) ois.readObject();
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+
 	}
 
 	public void dadosPersistencia() {
@@ -679,7 +750,16 @@ public class ControleCampeonato {
 	}
 
 	public void criarCampeonatoPiloto() {
-
+		continuarCampeonatoCache();
+		if (campeonato != null) {
+			int showConfirmDialog = JOptionPane.showConfirmDialog(mainFrame,
+					Lang.msg("existeCampeonato"), Lang.msg("campeonatoSalvo"),
+					JOptionPane.YES_NO_OPTION);
+			if (JOptionPane.YES_OPTION != showConfirmDialog) {
+				campeonato = null;
+				return;
+			}
+		}
 		JPanel panelPiloto = new JPanel(new GridLayout(3, 1));
 
 		JPanel panelPilotoNome = new JPanel(new GridLayout(1, 2));
@@ -1060,6 +1140,7 @@ public class ControleCampeonato {
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
 				.getSelectedItem()));
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
+		persistirEmCache();
 		new PainelCampeonato(this, mainFrame);
 
 	}

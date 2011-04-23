@@ -333,6 +333,10 @@ public class PainelCircuito extends JPanel {
 		synchronized (zoomMutex) {
 			super.paintComponent(g);
 			try {
+				//System.out.println("mouseZoom " + mouseZoom + " zoom " + zoom);
+				if (Math.abs(mouseZoom - zoom) < 0.01) {
+					zoom = mouseZoom;
+				}
 				if (mouseZoom > zoom) {
 					zoom += 0.01;
 					atualizaVarZoom();
@@ -341,8 +345,6 @@ public class PainelCircuito extends JPanel {
 					zoom -= 0.01;
 					atualizaVarZoom();
 				}
-				
-
 				Graphics2D g2d = (Graphics2D) g;
 				setarHints(g2d);
 				limitesViewPort = (Rectangle) limitesViewPort();
