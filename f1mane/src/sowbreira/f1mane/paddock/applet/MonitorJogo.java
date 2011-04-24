@@ -634,9 +634,14 @@ public class MonitorJogo implements Runnable {
 							if (piloto.getIndiceTracado() <= 0
 									&& piloto.getTracado() != piloto
 											.getTracadoAntigo()) {
-								piloto.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
-										.getCircuito()
-										.getMultiplicadorLarguraPista()));
+								if (piloto
+										.verificaColisaoCarroFrente(jogoCliente)) {
+									piloto.setIndiceTracado(0);
+								} else {
+									piloto.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
+											.getCircuito()
+											.getMultiplicadorLarguraPista()));
+								}
 							}
 
 						}

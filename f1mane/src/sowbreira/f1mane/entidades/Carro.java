@@ -474,7 +474,20 @@ public class Carro implements Serializable {
 		double desg = (valDesgaste * controleJogo.getCircuito()
 				.getMultiplciador());
 		if (temperaturaMotor == tempMax - 1) {
-			desg *= Util.intervalo(1.1, 1.2);
+
+			double desgasteTemp = 1;
+
+			if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+				desgasteTemp = Util.intervalo(1.1, 1.5);
+			}
+			if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+				desgasteTemp = Util.intervalo(1.2, 1.5);
+			}
+			if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+				desgasteTemp = Util.intervalo(1.3, 1.6);
+			}
+
+			desg *= desgasteTemp;
 		}
 		motor -= desg;
 		if (porcentagemDesgasteMotor() < 0) {

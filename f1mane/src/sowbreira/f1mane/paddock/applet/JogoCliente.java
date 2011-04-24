@@ -554,8 +554,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				piloto.setTracado(posis.tracado);
 				if (piloto.getIndiceTracado() <= 0
 						&& piloto.getTracado() != piloto.getTracadoAntigo()) {
-					piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-							.getMultiplicadorLarguraPista()));
+					if (piloto.verificaColisaoCarroFrente(this)) {
+						piloto.setIndiceTracado(0);
+					}else{
+						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+								.getMultiplicadorLarguraPista()));
+					}
 				}
 				piloto.setAutoPos(posis.autoPos);
 				if (posis.idNo >= -1) {
