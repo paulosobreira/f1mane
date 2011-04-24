@@ -41,7 +41,7 @@ import br.nnpe.Util;
 public class ServletPaddock extends HttpServlet {
 
 	private static ControlePaddockServidor controlePaddock;
-	private static ControlePersistencia controlePersistencia;
+	protected static ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
 
 	public static Email email;

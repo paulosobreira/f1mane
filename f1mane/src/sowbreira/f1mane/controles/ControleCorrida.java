@@ -366,16 +366,16 @@ public class ControleCorrida {
 			return;
 		}
 
-		double fatorAcidente = .85;
+		double fatorAcidente = .75;
 		if (controleJogo.isChovendo()) {
-			fatorAcidente -= .2;
+			fatorAcidente -= .5;
 		}
 		if (piloto.isJogadorHumano()) {
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				fatorAcidente += .05;
+				fatorAcidente += .15;
 			}
 			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-				fatorAcidente -= .05;
+				fatorAcidente -= .15;
 			}
 		}
 		if ((Math.random() < fatorAcidente)) {
@@ -491,8 +491,14 @@ public class ControleCorrida {
 								Html.bold(perdedor.getNome()) }));
 			}
 		}
-		if (controleJogo.verificaNivelJogo()) {
-			perdedor.incStress(1);
+		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+			perdedor.incStress(Util.intervalo(0, 1));
+		}
+		if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+			perdedor.incStress(Util.intervalo(0, 2));
+		}
+		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+			perdedor.incStress(Util.intervalo(1, 2));
 		}
 		if (perdedor.isJogadorHumano() && !ganhador.isJogadorHumano()) {
 			return;

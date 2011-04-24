@@ -532,6 +532,7 @@ public class ControleCampeonato {
 		campeonato.getDadosCorridas().put(circuitoJogando,
 				corridaCampeonatoDados);
 		processaMudancaEquipe();
+		persistirEmCache();
 		new PainelCampeonato(this, mainFrame);
 	}
 
