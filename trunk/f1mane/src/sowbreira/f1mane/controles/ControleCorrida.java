@@ -366,7 +366,7 @@ public class ControleCorrida {
 			return;
 		}
 
-		double fatorAcidente = .75;
+		double fatorAcidente = .80;
 		if (controleJogo.isChovendo()) {
 			fatorAcidente -= .5;
 		}
