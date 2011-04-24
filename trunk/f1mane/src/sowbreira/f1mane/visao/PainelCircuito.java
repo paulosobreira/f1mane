@@ -155,7 +155,7 @@ public class PainelCircuito extends JPanel {
 	private ArrayList boxMinimizado;
 	protected Point newP;
 	private Point oldP;
-	protected double mouseZoom = 1;
+	protected double mouseZoom = 0.5;
 
 	public Point getPosisRec() {
 		return posisRec;

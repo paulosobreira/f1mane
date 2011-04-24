@@ -821,13 +821,20 @@ public class Piloto implements Serializable {
 
 	private int calcularNovoIndex(InterfaceJogo controleJogo) {
 		int index = noAtual.getIndex();
-		boolean fator = Math.random() > controleJogo.getNiveljogo();
-		if (fator && NORMAL.equals(modoPilotagem)) {
-			decStress(Math.random() > .5 ? 1 : 0);
-		} else if (fator && LENTO.equals(modoPilotagem)) {
-			decStress(1);
-		} else if (fator && !agressivo) {
-			decStress(1);
+		int fator = 0;
+		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+			fator = (Util.intervalo(1, 2));
+		}
+		if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+			fator = (Util.intervalo(0, 2));
+		}
+		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+			fator = (Util.intervalo(0, 1));
+		}
+		if (NORMAL.equals(modoPilotagem) || !agressivo) {
+			decStress(fator);
+		} else if (LENTO.equals(modoPilotagem)) {
+			decStress(fator * 2);
 		}
 		/**
 		 * Devagarinho qdo a corrida termina
@@ -1508,8 +1515,15 @@ public class Piloto implements Serializable {
 									+ Html.bold(Lang.msg("054")));
 						}
 					}
-					if (controleJogo.verificaNivelJogo())
-						incStress(Math.random() > .5 ? 1 : 0);
+					if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+						incStress(Util.intervalo(0, 1));
+					}
+					if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+						incStress(Util.intervalo(0, 2));
+					}
+					if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+						incStress(Util.intervalo(1, 2));
+					}
 				} else {
 
 					if (Math.random() > 0.999) {

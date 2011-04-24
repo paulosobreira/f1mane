@@ -662,8 +662,18 @@ public class Carro implements Serializable {
 		}
 		if (agressivo && no.verificaCruvaBaixa()) {
 			if (controleJogo.verificaNivelJogo()) {
-				piloto.incStress(getPiloto().testeHabilidadePilotoOuCarro() ? 0
-						: 1);
+				int perda = 0;
+				if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+					perda = (Util.intervalo(0, 1));
+				}
+				if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+					perda = (Util.intervalo(0, 2));
+				}
+				if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+					perda = (Util.intervalo(1, 2));
+				}
+				piloto.incStress(getPiloto().testeHabilidadePilotoCarro() ? 0
+						: perda);
 			}
 			boolean teste = piloto.testeHabilidadePilotoCarro();
 			desgPneus += (teste ? 4 : 6) + novoModDano;
