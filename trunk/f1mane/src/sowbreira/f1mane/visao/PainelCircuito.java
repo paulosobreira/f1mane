@@ -155,7 +155,7 @@ public class PainelCircuito extends JPanel {
 	private ArrayList boxMinimizado;
 	protected Point newP;
 	private Point oldP;
-	protected double mouseZoom = 0.5;
+	protected double mouseZoom = 1;
 
 	public Point getPosisRec() {
 		return posisRec;
@@ -333,7 +333,8 @@ public class PainelCircuito extends JPanel {
 		synchronized (zoomMutex) {
 			super.paintComponent(g);
 			try {
-				//System.out.println("mouseZoom " + mouseZoom + " zoom " + zoom);
+				// System.out.println("mouseZoom " + mouseZoom + " zoom " +
+				// zoom);
 				if (Math.abs(mouseZoom - zoom) < 0.01) {
 					zoom = mouseZoom;
 				}
@@ -959,7 +960,11 @@ public class PainelCircuito extends JPanel {
 		if (piloto.getTracado() == 0) {
 			carx = p.x - w2;
 			cary = p.y - h2;
+			if (piloto.verificaColisaoCarroFrente(controleJogo)) {
+				piloto.setIndiceTracado(0);
+			}
 			int indTracado = piloto.getIndiceTracado();
+
 			if (indTracado != 0 && piloto.getTracadoAntigo() != 0) {
 				List drawBresenhamLine = null;
 				if (piloto.getTracadoAntigo() == 1) {

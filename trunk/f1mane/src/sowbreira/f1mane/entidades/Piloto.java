@@ -1891,8 +1891,12 @@ public class Piloto implements Serializable {
 		if (!verificaColisaoPos(interfaceJogo, pos)) {
 			setTracadoAntigo(getTracado());
 			setTracado(pos);
-			setIndiceTracado((int) (Carro.ALTURA * interfaceJogo.getCircuito()
-					.getMultiplicadorLarguraPista()));
+			if (verificaColisaoCarroFrente(interfaceJogo)) {
+				setIndiceTracado(0);
+			}else{
+				setIndiceTracado((int) (Carro.ALTURA * interfaceJogo.getCircuito()
+						.getMultiplicadorLarguraPista()));
+			}
 			ultimaMudancaPos = System.currentTimeMillis();
 		} else {
 			ultimaMudancaPos = System.currentTimeMillis()

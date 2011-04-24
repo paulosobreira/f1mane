@@ -859,6 +859,7 @@ public class GerenciadorVisual {
 
 	public void apagarLuz() {
 		painelCircuito.apagarLuz();
+		painelCircuito.mouseZoom = 0.5;
 		atualizaPainel();
 	}
 
