@@ -311,7 +311,9 @@ public class Carro implements Serializable {
 		// Logger.logar((.7 * 30));
 		// Logger.logar(Math.random() * 1000);
 		// System.out.println(Math.random() < 1 / 10.0);
-		System.out.println(Math.round(0.5));
+		double val = 100;
+		val *= 0.1;
+		System.out.println(val);
 	}
 
 	public void setPneuDuro(int distaciaCorrida) {
@@ -446,10 +448,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& temperaturaMotor == tempMax - 1)
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -610,48 +611,65 @@ public class Carro implements Serializable {
 		if (controleJogo.isSemTrocaPneu() && Math.random() > .4) {
 			return novoModificador;
 		}
-		double indicativo = .6;
+		double indicativo = .65;
 		if (agressivo) {
-			indicativo = .4;
+			indicativo = .35;
 		}
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)
 				&& getPiloto().testeHabilidadePilotoOuCarro()) {
+			int intervaloMin = Util.intervalo(10, 15);
+			int intervaloMax = Util.intervalo(80, 90);
+			if (controleJogo.isKers() || controleJogo.isDrs()) {
+				intervaloMin = Util.intervalo(15, 20);
+			}
 			if ((no.verificaCruvaBaixa() || no.verificaCruvaAlta())
-					&& (porcent > Util.intervalo(10, 15))
-					&& (Math.random() > indicativo)
-					&& (controleJogo.isModoQualify() || porcent < Util
-							.intervalo(80, 90))) {
+					&& (porcent > intervaloMin) && (Math.random() > indicativo)
+					&& (controleJogo.isModoQualify() || porcent < intervaloMax)) {
 				novoModificador += 1;
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)
 				&& getPiloto().testeHabilidadePilotoCarro()) {
 			if (no.verificaCruvaAlta()) {
-				if ((porcent > Util.intervalo(15, 25))
-						&& (porcent < Util.intervalo(80, 90))
+				int intervaloMin = Util.intervalo(15, 25);
+				int intervaloMax = Util.intervalo(80, 90);
+				if (controleJogo.isKers() || controleJogo.isDrs()) {
+					intervaloMin = Util.intervalo(20, 30);
+					intervaloMax = Util.intervalo(70, 80);
+				}
+
+				if ((porcent > intervaloMin) && (porcent < intervaloMax)
 						&& (Math.random() > indicativo)) {
 					novoModificador += 1;
-				} else if (porcent < Util.intervalo(10, 15)
-						|| (porcent > Util.intervalo(80, 90))) {
+				} else if (porcent < intervaloMin || (porcent > intervaloMax)) {
 					if (!getPiloto().testeHabilidadePiloto())
 						novoModificador -= 1;
 				}
 			}
 			if (no.verificaCruvaBaixa()) {
-				if ((porcent > Util.intervalo(25, 35))
-						&& (porcent < Util.intervalo(60, 70))
+				int intervaloMin = Util.intervalo(25, 35);
+				int intervaloMax = Util.intervalo(60, 70);
+				if (controleJogo.isKers() || controleJogo.isDrs()) {
+					intervaloMin = Util.intervalo(40, 50);
+					intervaloMax = Util.intervalo(50, 60);
+				}
+				if ((porcent > intervaloMin) && (porcent < intervaloMax)
 						&& (Math.random() > indicativo)) {
 					novoModificador += 1;
-				} else if (porcent < Util.intervalo(20, 30)
-						|| (porcent > Util.intervalo(70, 80))) {
+				} else if (porcent < intervaloMin || (porcent > intervaloMax)) {
 					if (!getPiloto().testeHabilidadePiloto())
 						novoModificador -= 1;
 				}
 			}
 
 			if (no.verificaRetaOuLargada() && Math.random() < indicativo) {
-				if (porcent < Util.intervalo(5, 10)
-						|| (porcent > Util.intervalo(90, 95))) {
-					if (!getPiloto().testeHabilidadePilotoOuCarro())
+				int intervaloMin = Util.intervalo(5, 10);
+				int intervaloMax = Util.intervalo(90, 95);
+				if (controleJogo.isKers() || controleJogo.isDrs()) {
+					intervaloMin = Util.intervalo(15, 20);
+					intervaloMax = Util.intervalo(85, 90);
+				}
+				if (porcent < intervaloMin || (porcent > intervaloMax)) {
+					if (!getPiloto().testeHabilidadePilotoCarro())
 						novoModificador -= 1;
 				}
 			}
@@ -742,12 +760,16 @@ public class Carro implements Serializable {
 			valDesgaste *= 0.8;
 		}
 
-		if (porcent < 10) {
+		if (porcent < 15) {
 			valDesgaste *= 0.7;
 		}
 
-		if (porcent < 5) {
+		if (porcent < 10) {
 			valDesgaste *= 0.5;
+		}
+
+		if (porcent < 5) {
+			valDesgaste *= 0.1;
 		}
 
 		pneus -= valDesgaste;
