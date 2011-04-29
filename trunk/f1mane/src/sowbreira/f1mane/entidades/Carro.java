@@ -448,9 +448,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& temperaturaMotor == tempMax - 1)
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -623,12 +624,12 @@ public class Carro implements Serializable {
 				intervaloMin = Util.intervalo(15, 20);
 			}
 			if ((no.verificaCruvaBaixa() || no.verificaCruvaAlta())
-					&& (porcent > intervaloMin) && (Math.random() > indicativo)
+					&& (porcent > intervaloMin)
+					&& (Math.random() > indicativo - 0.05)
 					&& (controleJogo.isModoQualify() || porcent < intervaloMax)) {
 				novoModificador += 1;
 			}
-		} else if (TIPO_PNEU_DURO.equals(tipoPneu)
-				&& getPiloto().testeHabilidadePilotoCarro()) {
+		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
 			if (no.verificaCruvaAlta()) {
 				int intervaloMin = Util.intervalo(15, 25);
 				int intervaloMax = Util.intervalo(80, 90);
@@ -640,9 +641,9 @@ public class Carro implements Serializable {
 				if ((porcent > intervaloMin) && (porcent < intervaloMax)
 						&& (Math.random() > indicativo)) {
 					novoModificador += 1;
-				} else if (porcent < intervaloMin || (porcent > intervaloMax)) {
-					if (!getPiloto().testeHabilidadePiloto())
-						novoModificador -= 1;
+				} else if (!getPiloto().testeHabilidadePiloto()
+						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
+					novoModificador -= 1;
 				}
 			}
 			if (no.verificaCruvaBaixa()) {
@@ -655,22 +656,9 @@ public class Carro implements Serializable {
 				if ((porcent > intervaloMin) && (porcent < intervaloMax)
 						&& (Math.random() > indicativo)) {
 					novoModificador += 1;
-				} else if (porcent < intervaloMin || (porcent > intervaloMax)) {
-					if (!getPiloto().testeHabilidadePiloto())
-						novoModificador -= 1;
-				}
-			}
-
-			if (no.verificaRetaOuLargada() && Math.random() < indicativo) {
-				int intervaloMin = Util.intervalo(5, 10);
-				int intervaloMax = Util.intervalo(90, 95);
-				if (controleJogo.isKers() || controleJogo.isDrs()) {
-					intervaloMin = Util.intervalo(15, 20);
-					intervaloMax = Util.intervalo(85, 90);
-				}
-				if (porcent < intervaloMin || (porcent > intervaloMax)) {
-					if (!getPiloto().testeHabilidadePilotoCarro())
-						novoModificador -= 1;
+				} else if ((!getPiloto().testeHabilidadePiloto())
+						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
+					novoModificador -= 1;
 				}
 			}
 
@@ -731,7 +719,7 @@ public class Carro implements Serializable {
 		double combustivel = 1;
 		if (Math.random() < porcentComb)
 			combustivel = (piloto.testeHabilidadePiloto() ? Util
-					.intervalo(1, 3) : Util.intervalo(2, 4));
+					.intervalo(1, 2) : Util.intervalo(1, 3));
 
 		double valDesgaste = (desgPneus
 				* controleJogo.getCircuito().getMultiplciador() * (combustivel * (1 + controleJogo
@@ -744,8 +732,11 @@ public class Carro implements Serializable {
 			valDesgaste *= 0.7;
 		}
 
-		if (!controleJogo.isSemTrocaPneu() && getPiloto().isJogadorHumano()
-				&& porcent > 25) {
+		if (!controleJogo.isSemTrocaPneu()
+				&& getPiloto().isJogadorHumano()
+				&& porcent > 25
+				&& (piloto.getNoAtual().verificaCruvaBaixa() || piloto
+						.getNoAtual().verificaCruvaAlta())) {
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
 				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
 						.getModoPilotagem()) ? Util.intervalo(1.05, 1.15) : 1.0;
