@@ -634,7 +634,7 @@ public class Carro implements Serializable {
 				int intervaloMin = Util.intervalo(15, 25);
 				int intervaloMax = Util.intervalo(80, 90);
 				if (controleJogo.isKers() || controleJogo.isDrs()) {
-					intervaloMin = Util.intervalo(20, 30);
+					intervaloMin = Util.intervalo(25, 35);
 					intervaloMax = Util.intervalo(70, 80);
 				}
 
@@ -650,7 +650,7 @@ public class Carro implements Serializable {
 				int intervaloMin = Util.intervalo(25, 35);
 				int intervaloMax = Util.intervalo(60, 70);
 				if (controleJogo.isKers() || controleJogo.isDrs()) {
-					intervaloMin = Util.intervalo(40, 50);
+					intervaloMin = Util.intervalo(35, 45);
 					intervaloMax = Util.intervalo(50, 60);
 				}
 				if ((porcent > intervaloMin) && (porcent < intervaloMax)

@@ -756,12 +756,12 @@ public class Piloto implements Serializable {
 
 		if (controleJogo.isKers() || controleJogo.isDrs()) {
 			if (Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu())
-					&& (pneus < 25)) {
+					&& (pneus < 20)) {
 				box = true;
 			}
 
 			if ((Carro.TIPO_PNEU_DURO.equals(carro.getTipoPneu()) || Carro.TIPO_PNEU_CHUVA
-					.equals(carro.getTipoPneu())) && (pneus < 20)) {
+					.equals(carro.getTipoPneu())) && (pneus < 25)) {
 				box = true;
 			}
 		}
