@@ -378,7 +378,8 @@ public class ControleBox {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
-				Logger.logar("setupParadaUnica com Pneu Mole " + piloto.getNome());
+				Logger.logar("setupParadaUnica com Pneu Mole "
+						+ piloto.getNome());
 			} else {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
@@ -540,6 +541,8 @@ public class ControleBox {
 					controleCorrida.getDistaciaCorrida());
 		} else {
 			if (controleJogo.isSemReabastacimento()
+					&& !controleJogo.isKers()
+					&& !controleJogo.isDrs()
 					&& piloto.getNumeroVolta() > 1
 					&& piloto.getNumeroVolta() < (controleJogo
 							.getQtdeTotalVoltas() / 2))
