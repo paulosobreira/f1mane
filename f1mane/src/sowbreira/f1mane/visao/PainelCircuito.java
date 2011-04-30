@@ -659,6 +659,13 @@ public class PainelCircuito extends JPanel {
 							+ 3);
 		}
 		g2d.setFont(fontOri);
+		if (pilotoSelecionado != null && pilotoSelecionado.isJogadorHumano()
+				&& posisRec != null) {
+			g2d.setColor(red);
+			g2d.fillOval(o.x + Util.inte(posisRec.x / doubleMulti),
+					o.y + Util.inte(posisRec.y / doubleMulti),
+					Util.inte(5 * zoom), Util.inte(5 * zoom));
+		}
 	}
 
 	public static void main(String[] args) {
@@ -1265,13 +1272,6 @@ public class PainelCircuito extends JPanel {
 						Util.inte(posisRec.y * zoom), Util.inte(5 * zoom),
 						Util.inte(5 * zoom));
 			}
-		}
-		if (pilotoSelecionado != null && pilotoSelecionado.isJogadorHumano()
-				&& posisRec != null) {
-			g2d.setColor(red);
-			g2d.fillOval(Util.inte(posisRec.x * zoom),
-					Util.inte(posisRec.y * zoom), Util.inte(5 * zoom),
-					Util.inte(5 * zoom));
 		}
 
 	}
