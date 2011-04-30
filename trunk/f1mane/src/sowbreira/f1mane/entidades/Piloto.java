@@ -1471,7 +1471,8 @@ public class Piloto implements Serializable {
 		boolean novoModoAgressivo = agressivo;
 
 		if (testeHabilidadePilotoCarro()) {
-			if (carro.verificaCondicoesCautela(controleJogo)) {
+			if (carro.verificaCondicoesCautela(controleJogo)
+					&& !isJogadorHumano()) {
 				novoModoAgressivo = false;
 				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsBox
 						.get(Messagens.PILOTO_EM_CAUTELA)) && getPosicao() <= 3) {
@@ -1600,8 +1601,7 @@ public class Piloto implements Serializable {
 		if (controleJogo.isChovendo()) {
 			bonusSecundario = 0;
 		}
-		if (testeHabilidadePilotoCarro() && agressivo
-				&& noAtual.verificaRetaOuLargada()) {
+		if (testeHabilidadePilotoCarro() && noAtual.verificaRetaOuLargada()) {
 			return (Math.random() < bonusSecundario ? 4 : 3);
 		} else if (getCarro().testePotencia()
 				&& noAtual.verificaRetaOuLargada()) {

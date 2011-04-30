@@ -277,6 +277,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		this.estado = Comandos.MOSTRANDO_QUALIFY;
 		processarEntradaDados();
 		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
+		getCircuito().setMultiplicador(getCircuito().getMultiplciador() - 1);
 		atualizarJogadoresOnlineCarreira();
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 				diffultrapassagem.intValue(), tempoCiclo.intValue());
