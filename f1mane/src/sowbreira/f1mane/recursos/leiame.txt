@@ -10,12 +10,31 @@
  informadas pelo jogador.
   - Qualquer sugestão : sowbreira@gmail.com.
 
+Controles:
+
+F1 - Giro Baixo Modo Economia de Motor e Combustível
+F2 - Giro Normal Modo Normal de Motor e Combustível
+F3 - Giro Alto Modo Extremo de Motor e Combustível
+F4 - Alterna rapidamente Modo de Pilotagem (Normal/Agressivo)
+F5 - Piloto em Modo Cauteloso.
+F6 - Piloto Normal.
+F7 - Piloto em Modo Agressivo.
+F9 - Alterna entre os Pilotos selecionados
+F11 - Programação de Box Automático.
+F12 - Alterna Modo Box.
+Esc - Remove Informações extras da tela.
+K - Ativa o kers
+D - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas) 
+
+
 Histórico de versões:
 4.5
   - Temporada 2011
   - Sistema de kers (K para usar) Recarga a cada nova volta
   - Sistema DRS (D para usar) Reduz a asa e melhora a velidade em retas tem que 
   estar a menos de 1s do proximo para usar
+  - Campeonato de pilotos (modo e jogo offline) com evolução de pilotos nas equipes 
+  similar ao classico super monaco gp do mega drive
 
 4.0
   - 26 Novas pistas (Feitas originalmente para o jogo Mini Race Online http://www.miniracingonline.com/)
@@ -105,21 +124,9 @@ trava pneu.
   - Ajustes nas habilidade de pilotos.
   - Ajustes nas potencias de carros.
   
-Controles:
+Infrmação Adicional (Consulte Autor do jogo para maiores detalhes)
 
-F1 - Giro Baixo Modo Economia de Motor e Combustível
-F2 - Giro Normal Modo Normal de Motor e Combustível
-F3 - Giro Alto Modo Extremo de Motor e Combustível
-F4 - Alterna Modo de Pilotagem (Normal/Agressivo)
-F5 - Piloto em Modo Cauteloso.
-F6 - Piloto Normal.
-F7 - Piloto em Modo Agressivo.
-F9 - Alterna entre os Pilotos selecionados
-F11 - Programação de Box Automático.
-F12 - Alterna Modo Box.
-Esc - Remove Informações extras da tela.
- 
-Editor de objetos de Pista:
+Editor de objetos de Pista: 
 Opção Vetorizar Pista no menu editor.
 Ao se criar objetos na pista um clique duplo ativa o menu de edição de objetos.
 (A tela do editor não deve esta maximizada).
