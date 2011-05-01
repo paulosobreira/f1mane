@@ -449,7 +449,9 @@ public class MonitorJogo implements Runnable {
 					if (piloto.getNoAtual() == null) {
 						piloto.setNoAtual(no);
 					} else {
-						if (piloto.isJogadorHumano()) {
+						if (piloto.isJogadorHumano()
+								&& jogoCliente.getPilotoJogador()
+										.equals(piloto)) {
 							jogoCliente.setPosisRec(no.getPoint());
 							jogoCliente.setPosisAtual(piloto.getNoAtual()
 									.getPoint());

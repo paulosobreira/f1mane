@@ -31,6 +31,8 @@ import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.paddock.entidades.Comandos;
+import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
 import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
@@ -456,8 +458,19 @@ public class PaddockWindow {
 				String key = Lang.decodeTexto(element);
 				mapaJogosCriados.put(key, element);
 				model.addElement(key);
+				// TODO
+				// ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+				// Comandos.VER_INFO_JOGO);
+				//
+				// clientPaddockPack.setNomeJogo((String) key);
+				// Object ret = controlePaddockCliente
+				// .enviarObjeto(clientPaddockPack);
+				// if (controlePaddockCliente.retornoNaoValido(ret)) {
+				// continue;
+				// }
 			}
 		}
+
 	}
 
 	private void atualizarChat(DadosPaddock dadosPaddock) {
