@@ -657,4 +657,19 @@ public class ControleJogosServer {
 		}
 		return null;
 	}
+
+	public Object detalhesVoltasJogo(ClientPaddockPack clientPaddockPack) {
+		String nomeJogo = clientPaddockPack.getNomeJogo();
+		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
+		if (jogoServidor == null) {
+			return null;
+		}
+		DetalhesJogo detalhesJogo = new DetalhesJogo();
+		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+		detalhesJogo.setVoltaAtual(jogoServidor.getNumVoltaAtual());
+		detalhesJogo.setNumVoltas(jogoServidor.getDadosCriarJogo()
+				.getQtdeVoltas());
+		srvPaddockPack.setDetalhesJogo(detalhesJogo);
+		return srvPaddockPack;
+	}
 }

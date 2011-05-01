@@ -14,10 +14,19 @@ public class DetalhesJogo implements Serializable {
 	private DadosCriarJogo dadosCriarJogo;
 	private long tempoCriacao;
 	private long voltaAtual;
+	private long numVoltas;
 	private String nomeCriador;
 
 	public String getNomeCriador() {
 		return nomeCriador;
+	}
+
+	public long getNumVoltas() {
+		return numVoltas;
+	}
+
+	public void setNumVoltas(long numVoltas) {
+		this.numVoltas = numVoltas;
 	}
 
 	public void setNomeCriador(String nomeCriador) {

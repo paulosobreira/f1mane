@@ -1062,7 +1062,7 @@ public class Piloto implements Serializable {
 
 	private void tentaUsarDRS(InterfaceJogo controleJogo) {
 		if (getNoAtual().verificaRetaOuLargada()
-				&& Math.random() < controleJogo.getNiveljogo()
+				&& Math.random() < (controleJogo.getNiveljogo() - 0.1)
 				&& testeHabilidadePilotoCarro()) {
 			ativarDRS = true;
 		} else {

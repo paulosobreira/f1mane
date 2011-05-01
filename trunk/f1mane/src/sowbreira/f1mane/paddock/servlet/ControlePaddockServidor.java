@@ -286,6 +286,8 @@ public class ControlePaddockServidor {
 			return entrarJogo(clientPaddockPack);
 		} else if (Comandos.VER_DETALHES_JOGO.equals(commando)) {
 			return detalhesJogo(clientPaddockPack);
+		} else if (Comandos.VER_INFO_VOLTAS_JOGO.equals(commando)) {
+			return detalhesVoltasJogo(clientPaddockPack);
 		} else if (Comandos.INICIAR_JOGO.equals(commando)) {
 			return iniciaJogo(clientPaddockPack);
 		} else if (Comandos.VER_CLASSIFICACAO.equals(commando)) {
@@ -310,6 +312,10 @@ public class ControlePaddockServidor {
 			return obterCampeonato(clientPaddockPack);
 		}
 		return "Comando invalido";
+	}
+
+	private Object detalhesVoltasJogo(ClientPaddockPack clientPaddockPack) {
+		return controleJogosServer.detalhesVoltasJogo(clientPaddockPack);
 	}
 
 	private Object mudarDrs(ClientPaddockPack clientPaddockPack) {
