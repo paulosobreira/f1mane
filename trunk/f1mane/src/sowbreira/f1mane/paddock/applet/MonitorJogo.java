@@ -399,7 +399,11 @@ public class MonitorJogo implements Runnable {
 		if (posisArrayBuff != null) {
 			for (int i = 0; i < posisArrayBuff.length; i++) {
 				Posis posis = (Posis) posisArrayBuff[i];
-				jogoCliente.atualizaPosicaoPiloto(posis);
+				try {
+					jogoCliente.atualizaPosicaoPiloto(posis);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
 			}
 		}
 		ultPoisis = 0;
