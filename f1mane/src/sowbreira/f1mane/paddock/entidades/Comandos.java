@@ -50,5 +50,6 @@ public class Comandos {
 	public static final String OBTER_CAMPEONATO = "39";
 	public static final String MUDAR_DRS = "40";
 	public static final String MUDAR_KERS = "41";
+	public static final String VER_INFO_VOLTAS_JOGO = "42";
 
 }

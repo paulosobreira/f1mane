@@ -36,6 +36,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
 import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
+import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
@@ -55,6 +56,7 @@ public class PaddockWindow {
 	private JTextArea textAreaChat = new JTextArea();
 	private JTextField textoEnviar = new JTextField();
 	private HashMap mapaJogosCriados = new HashMap();
+	private HashMap mapaJogosVoltas = new HashMap();
 	private JButton sairJogo = new JButton("Enviar Texto") {
 
 		public String getText() {
@@ -284,10 +286,10 @@ public class PaddockWindow {
 				String msg = Lang.msg("184") + "Paulo Sobreira \n "
 						+ "sowbreira@gmail.com \n"
 						+ "sowbreira.appspot.com/ \n" + "Agosto de 2007 \n ";
-				msg += Lang.msg("185") + "\n" + " Florêncio Queiroz \n"
-						+ " Jorge Botelho \n" + " Leonardo Andrade \n"
-						+ " Daniel Souza \n" + " Wendel Silva \n"
-						+ " Marcos Henrique\n" + " Alvaru";
+				msg += Lang.msg("185") + "\n" + " Gizele Hidaka \n"
+						+ " Florêncio Queiroz \n" + " Jorge Botelho \n"
+						+ " Danilo Pacheco \n" + " Acilon Souza \n"
+						+ " Marcos Henrique";
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg,
 						Lang.msg("180"), JOptionPane.INFORMATION_MESSAGE);
@@ -430,7 +432,6 @@ public class PaddockWindow {
 		}
 		listaClientes.setModel(clientesModel);
 		listaClientes.setCellRenderer(new ListCellRenderer() {
-
 			@Override
 			public Component getListCellRendererComponent(JList list,
 					Object value, int index, boolean isSelected,
@@ -444,7 +445,6 @@ public class PaddockWindow {
 				jPanel.add(new JLabel(" " + element.getPilotoAtual() + " "
 						+ Lang.decodeTexto(element.getJogoAtual())));
 				return jPanel;
-
 			}
 		});
 		DefaultListModel model = ((DefaultListModel) listaJogosCriados
@@ -458,18 +458,39 @@ public class PaddockWindow {
 				String key = Lang.decodeTexto(element);
 				mapaJogosCriados.put(key, element);
 				model.addElement(key);
-				// TODO
-				// ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-				// Comandos.VER_INFO_JOGO);
-				//
-				// clientPaddockPack.setNomeJogo((String) key);
-				// Object ret = controlePaddockCliente
-				// .enviarObjeto(clientPaddockPack);
-				// if (controlePaddockCliente.retornoNaoValido(ret)) {
-				// continue;
-				// }
 			}
 		}
+		for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
+				.hasNext();) {
+			String element = (String) iter.next();
+			String key = Lang.decodeTexto(element);
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+					Comandos.VER_INFO_VOLTAS_JOGO,
+					controlePaddockCliente.getSessaoCliente());
+			clientPaddockPack.setNomeJogo(element);
+			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
+			if (ret == null) {
+				continue;
+			}
+			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
+			mapaJogosVoltas.put(key, srvPaddockPack.getDetalhesJogo()
+					.getVoltaAtual()
+					+ "/"
+					+ srvPaddockPack.getDetalhesJogo().getNumVoltas());
+		}
+
+		listaJogosCriados.setCellRenderer(new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				Object object = mapaJogosVoltas.get(value);
+				if (object == null) {
+					return new JLabel(value.toString());
+				}
+				return new JLabel(value.toString() + " " + object.toString());
+			}
+		});
 
 	}
 
