@@ -2,6 +2,7 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
@@ -36,6 +38,7 @@ import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
@@ -424,7 +427,24 @@ public class PaddockWindow {
 			clientesModel.addElement(element);
 		}
 		listaClientes.setModel(clientesModel);
+		listaClientes.setCellRenderer(new ListCellRenderer() {
 
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				SessaoCliente element = (SessaoCliente) value;
+				if (Util.isNullOrEmpty(element.getPilotoAtual())) {
+					return new JLabel(element.getNomeJogador());
+				}
+				JPanel jPanel = new JPanel(new GridLayout(2, 1));
+				jPanel.add(new JLabel(element.getNomeJogador()));
+				jPanel.add(new JLabel(" " + element.getPilotoAtual() + " "
+						+ Lang.decodeTexto(element.getJogoAtual())));
+				return jPanel;
+
+			}
+		});
 		DefaultListModel model = ((DefaultListModel) listaJogosCriados
 				.getModel());
 		if (model.size() != dadosPaddock.getJogosCriados().size()) {
