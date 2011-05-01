@@ -658,8 +658,7 @@ public class Carro implements Serializable {
 				} else if ((!getPiloto().testeHabilidadePiloto())
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
 					novoModificador -= 1;
-				}
-				if ((controleJogo.isDrs() || controleJogo.isKers())
+				} else if ((controleJogo.isDrs() || controleJogo.isKers())
 						&& porcent < 20) {
 					novoModificador -= 1;
 				}
