@@ -16,8 +16,28 @@ public class SessaoCliente implements Serializable {
 
 	private String nomeJogador;
 
+	private String jogoAtual;
+
+	private String pilotoAtual;
+
 	public long getUlimaAtividade() {
 		return ulimaAtividade;
+	}
+
+	public String getJogoAtual() {
+		return jogoAtual;
+	}
+
+	public void setJogoAtual(String jogoAtual) {
+		this.jogoAtual = jogoAtual;
+	}
+
+	public String getPilotoAtual() {
+		return pilotoAtual;
+	}
+
+	public void setPilotoAtual(String pilotoAtual) {
+		this.pilotoAtual = pilotoAtual;
 	}
 
 	public void setUlimaAtividade(long ulimaAtividade) {

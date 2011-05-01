@@ -34,7 +34,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private String nomeCriador;
 	private long tempoCriacao, tempoInicio, tempoFim;
 	/* mapJogadoresOnline.put(apelido, dadosParticiparJogo) */
-	private Map mapJogadoresOnline = new HashMap();
+	private Map<String, DadosCriarJogo> mapJogadoresOnline = new HashMap<String, DadosCriarJogo>();
 	private Map mapJogadoresOnlineTexto = new HashMap();
 	/* Chave numVolta , valor lista de VoltaJogadorOnline */
 	private Map mapVoltasJogadoresOnline = new HashMap();
@@ -47,6 +47,11 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private ControleCampeonatoServidor controleCampeonatoServidor;
 	private boolean disparouInicio;
 	private TravadaRoda travadaRoda;
+
+	@Override
+	public int hashCode() {
+		return nomeJogoServidor.hashCode();
+	}
 
 	public boolean isCorridaIniciada() {
 		return disparouInicio;
@@ -109,7 +114,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		this.dadosCriarJogo = dadosCriarJogo;
 	}
 
-	public Map getMapJogadoresOnline() {
+	public Map<String, DadosCriarJogo> getMapJogadoresOnline() {
 		return mapJogadoresOnline;
 	}
 

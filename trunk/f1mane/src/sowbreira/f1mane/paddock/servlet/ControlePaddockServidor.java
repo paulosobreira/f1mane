@@ -6,6 +6,8 @@ package sowbreira.f1mane.paddock.servlet;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
@@ -13,8 +15,10 @@ import javax.mail.internet.AddressException;
 
 import org.hibernate.Session;
 
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
@@ -463,9 +467,43 @@ public class ControlePaddockServidor {
 
 	private Object atualizarDadosVisao(ClientPaddockPack clientPaddockPack,
 			SessaoCliente cliente) {
+		try {
+			atualizaPilotoJogoSessaoCliente();
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setDadosPaddock(dadosPaddock);
 		return srvPaddockPack;
+	}
+
+	private void atualizaPilotoJogoSessaoCliente() throws Exception {
+		List clientes = getDadosPaddock().getClientes();
+		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+			Map mapaJogosCriados = controleJogosServer.getMapaJogosCriados();
+			boolean achouJogo = false;
+			for (Iterator iterator2 = mapaJogosCriados.keySet().iterator(); iterator2
+					.hasNext();) {
+				Object key = (Object) iterator2.next();
+				JogoServidor jogoServidor = (JogoServidor) controleJogosServer
+						.getMapaJogosCriados().get(key);
+				Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
+						.getMapJogadoresOnline();
+				DadosCriarJogo participarJogo = mapJogadoresOnline
+						.get(sessaoCliente.getNomeJogador());
+				if (participarJogo != null) {
+					sessaoCliente.setJogoAtual(jogoServidor
+							.getNomeJogoServidor());
+					sessaoCliente.setPilotoAtual(participarJogo.getPiloto());
+					achouJogo = true;
+				}
+			}
+			if (!achouJogo) {
+				sessaoCliente.setJogoAtual(null);
+				sessaoCliente.setPilotoAtual(null);
+			}
+		}
 	}
 
 	private SessaoCliente resgatarSessao(ClientPaddockPack clientPaddockPack) {
@@ -546,8 +584,10 @@ public class ControlePaddockServidor {
 	}
 
 	public static void main(String[] args) {
-		String test = "#brual#llllp#";
-		Logger.logar(test.replaceAll("#", ""));
+		// String test = "#brual#llllp#";
+		// Logger.logar(test.replaceAll("#", ""));
+
+		System.out.println(Lang.decodeTexto("¢088¢ 0 2011"));
 	}
 
 	public void removerClienteInativo(SessaoCliente sessaoCliente) {

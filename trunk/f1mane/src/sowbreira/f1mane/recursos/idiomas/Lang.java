@@ -107,8 +107,8 @@ public class Lang {
 				return "";
 			}
 			try {
-				MessageFormat messageFormat = new MessageFormat(bundle
-						.getString(key));
+				MessageFormat messageFormat = new MessageFormat(
+						bundle.getString(key));
 				return messageFormat.format(strings);
 			} catch (Exception e) {
 				return key;
