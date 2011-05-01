@@ -208,7 +208,7 @@ public class ControleCorrida {
 				continue;
 			}
 			if ((Carro.BATEU_FORTE.equals(pilotoNaFrente.getCarro()
-					.getDanificado()) && pilotoNaFrente.getCarro()
+					.getDanificado()) || pilotoNaFrente.getCarro()
 					.isRecolhido())
 					|| Carro.EXPLODIU_MOTOR.equals(pilotoNaFrente.getCarro()
 							.getDanificado())
