@@ -28,6 +28,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.WindowConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -39,7 +40,6 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -437,13 +437,26 @@ public class PaddockWindow {
 					Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 				SessaoCliente element = (SessaoCliente) value;
+
+				JPanel jPanel = new JPanel(new GridLayout(1, 1));
 				if (Util.isNullOrEmpty(element.getPilotoAtual())) {
-					return new JLabel(element.getNomeJogador());
+					jPanel.add(new JLabel(element.getNomeJogador()));
+				} else {
+					jPanel.setLayout(new GridLayout(2, 1));
+					jPanel.add(new JLabel(element.getNomeJogador()));
+					jPanel.add(new JLabel(" " + element.getPilotoAtual() + " "
+							+ Lang.decodeTexto(element.getJogoAtual())));
 				}
-				JPanel jPanel = new JPanel(new GridLayout(2, 1));
-				jPanel.add(new JLabel(element.getNomeJogador()));
-				jPanel.add(new JLabel(" " + element.getPilotoAtual() + " "
-						+ Lang.decodeTexto(element.getJogoAtual())));
+
+				if (isSelected) {
+					jPanel.setBorder(new LineBorder(new Color(184, 207, 229)));
+				} else {
+					for (int i = 0; i < jPanel.getComponentCount(); i++) {
+						Component component = jPanel.getComponent(i);
+						component.setBackground(Color.WHITE);
+					}
+					jPanel.setBackground(Color.WHITE);
+				}
 				return jPanel;
 			}
 		});
@@ -485,10 +498,25 @@ public class PaddockWindow {
 					Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 				Object object = mapaJogosVoltas.get(value);
+				JPanel jPanel = new JPanel(new GridLayout(1, 1));
 				if (object == null) {
-					return new JLabel(value.toString());
+					jPanel.add(new JLabel(value.toString()));
+				} else {
+					jPanel.add(new JLabel(value.toString() + " "
+							+ object.toString()));
 				}
-				return new JLabel(value.toString() + " " + object.toString());
+
+				if (isSelected) {
+					jPanel.setBorder(new LineBorder(new Color(184, 207, 229)));
+				} else {
+					for (int i = 0; i < jPanel.getComponentCount(); i++) {
+						Component component = jPanel.getComponent(i);
+						component.setBackground(Color.WHITE);
+					}
+					jPanel.setBackground(Color.WHITE);
+				}
+
+				return jPanel;
 			}
 		});
 
