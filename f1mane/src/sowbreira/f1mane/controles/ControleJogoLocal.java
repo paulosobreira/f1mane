@@ -82,7 +82,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 		gerenciadorVisual = new GerenciadorVisual(this);
 		controleEstatisticas = new ControleEstatisticas(this);
 	}
-	
 
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCombustBox(sowbreira.f1mane.entidades.Piloto)
@@ -617,7 +616,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
 					gerenciadorVisual.getListaPilotosCombo(),
 					gerenciadorVisual.getListaCarrosCombo());
-			getCircuito().setMultiplicador(getCircuito().getMultiplciador() - 1);
+			getCircuito()
+					.setMultiplicador(getCircuito().getMultiplciador() - 1);
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
@@ -637,7 +637,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
 			Logger.logar("inicializarThreadConsumidoraInfo() FEITO");
 		}
-		
+
 	}
 
 	/**
@@ -1143,5 +1143,20 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 		controleCampeonato.verificaDesafioCampeonatoPiloto();
 
+	}
+
+	@Override
+	public void aumentaFatorAcidade() {
+		if (controleCorrida != null) {
+			controleCorrida.aumentaFatorAcidade();
+		}
+
+	}
+
+	@Override
+	public void diminueFatorAcidade() {
+		if (controleCorrida != null) {
+			controleCorrida.diminueFatorAcidade();
+		}
 	}
 }

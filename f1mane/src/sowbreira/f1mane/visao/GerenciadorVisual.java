@@ -519,6 +519,22 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_D) {
 					drs();
 				}
+				if (Logger.ativo) {
+					if (keyCoode == KeyEvent.VK_EQUALS) {
+						if (controleJogo.getPilotoJogador() != null
+								&& controleJogo.getPilotoJogador()
+										.isJogadorHumano())
+							Logger.logar("aumentaFatorAcidade");
+						controleJogo.aumentaFatorAcidade();
+					}
+					if (keyCoode == KeyEvent.VK_MINUS) {
+						if (controleJogo.getPilotoJogador() != null
+								&& controleJogo.getPilotoJogador()
+										.isJogadorHumano())
+							Logger.logar("diminueFatorAcidade");
+						controleJogo.diminueFatorAcidade();
+					}
+				}
 			}
 		};
 	}
