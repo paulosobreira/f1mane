@@ -22,7 +22,7 @@ public interface InterfaceJogo {
 	public static double FACIL_NV = .3;
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
-	public static String VERSAO = "4.61";
+	public static String VERSAO = "4.62";
 	public static int CARGA_KERS = 100;
 
 	public boolean isSemTrocaPneu();
@@ -265,5 +265,9 @@ public interface InterfaceJogo {
 	public String calculaSegundosParaRival(Piloto pilotoSelecionado);
 
 	public void verificaDesafioCampeonatoPiloto();
+
+	public void aumentaFatorAcidade();
+
+	public void diminueFatorAcidade();
 
 }

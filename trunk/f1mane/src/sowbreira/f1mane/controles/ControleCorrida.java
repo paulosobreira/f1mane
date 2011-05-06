@@ -34,6 +34,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
+	private double fatorAcidente = .80;
 
 	public long getTempoCiclo() {
 		return tempoCiclo;
@@ -316,12 +317,22 @@ public class ControleCorrida {
 				double percent = 1 - fatorUtrapassagem;
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
-					return ganho * (percent * 0.2);
+					double val = ganho * (percent * 0.2);
+					if (piloto.isJogadorHumano())
+						Logger.logar("ganho * (percent * 0.2) " + val);
+					return val;
 				}
 				if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
-					return ganho * (percent * 0.4);
+					double val = ganho * (percent * 0.4);
+					if (piloto.isJogadorHumano())
+						Logger.logar("ganho * (percent * 0.4) " + val);
+					return val;
+
 				}
-				return ganho * (percent * 0.6);
+				double val = ganho * (percent * 0.6);
+				if (piloto.isJogadorHumano())
+					Logger.logar("ganho * (percent * 0.6); " + val);
+				return val;
 			}
 			Carro carroAtraz = controleJogo.obterCarroAtraz(piloto);
 			if (carroAtraz != null) {
@@ -365,20 +376,19 @@ public class ControleCorrida {
 		if (piloto.getCarro().verificaDano()) {
 			return;
 		}
-
-		double fatorAcidente = .80;
+		double fatorAcidenteLocal = fatorAcidente;
 		if (controleJogo.isChovendo()) {
-			fatorAcidente -= .5;
+			fatorAcidenteLocal -= .5;
 		}
 		if (piloto.isJogadorHumano()) {
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				fatorAcidente += .15;
+				fatorAcidenteLocal += .15;
 			}
 			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-				fatorAcidente -= .15;
+				fatorAcidenteLocal -= .15;
 			}
 		}
-		if ((Math.random() < fatorAcidente)) {
+		if ((Math.random() < fatorAcidenteLocal)) {
 			return;
 		}
 		if (piloto.isJogadorHumano()) {
@@ -423,10 +433,10 @@ public class ControleCorrida {
 			if (!piloto.testeHabilidadePilotoCarro()) {
 				if (((piloto.getCarro().getDurabilidadeAereofolio() <= 1 || (piloto
 						.getCarro().getDurabilidadeAereofolio() <= 2)
-						&& Math.random() > fatorAcidente))
+						&& Math.random() > fatorAcidenteLocal))
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& (controleJogo.getNumVoltaAtual() > 1)
-						&& Math.random() > fatorAcidente
+						&& Math.random() > fatorAcidenteLocal
 						&& !piloto.testeHabilidadePiloto()) {
 					piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 					controleJogo.infoPrioritaria(Lang.msg("016",
@@ -650,5 +660,14 @@ public class ControleCorrida {
 
 	public boolean isCorridaIniciada() {
 		return corridaIniciada;
+	}
+
+	public void aumentaFatorAcidade() {
+		fatorAcidente += 0.1;
+
+	}
+
+	public void diminueFatorAcidade() {
+		fatorAcidente -= 0.1;
 	}
 }
