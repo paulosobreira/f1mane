@@ -202,22 +202,24 @@ public class ControleEstatisticas {
 					controleJogo.adicionarInfoDireto(Html.azul(Lang.msg("000",
 							new Object[] { controleJogo.totalVoltasCorrida() })));
 					while (consumidorAtivo) {
-						controleJogo.atulizaTabelaPosicoes();
-
-						synchronized (bufferInfo) {
-							if (!bufferInfo.isEmpty()) {
-								Object object = bufferInfo.iterator().next();
-								controleJogo
-										.adicionarInfoDireto((String) object);
-								bufferInfo.remove(object);
-
+						try {
+							controleJogo.atulizaTabelaPosicoes();
+							synchronized (bufferInfo) {
+								if (!bufferInfo.isEmpty()) {
+									Object object = bufferInfo.iterator()
+											.next();
+									controleJogo
+											.adicionarInfoDireto((String) object);
+									bufferInfo.remove(object);
+								}
 							}
-						}
-
-						if (ControleJogoLocal.VALENDO) {
-							Thread.sleep(delay);
-						} else {
-							infoConsumer.setPriority(Thread.MIN_PRIORITY);
+							if (ControleJogoLocal.VALENDO) {
+								Thread.sleep(delay);
+							} else {
+								infoConsumer.setPriority(Thread.MIN_PRIORITY);
+							}
+						} catch (Exception e) {
+							Logger.logarExept(e);
 						}
 					}
 				} catch (Exception e) {
