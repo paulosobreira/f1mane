@@ -9,6 +9,7 @@ import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import sowbreira.f1mane.paddock.applet.AppletPaddock;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Util;
 
@@ -17,9 +18,13 @@ import br.nnpe.Util;
  */
 public class F1ManeApplet extends JApplet {
 
+	private AppletPaddock appletPaddock;
+
 	public void init() {
 		MainFrame frame;
 		try {
+			appletPaddock = new AppletPaddock();
+			appletPaddock.init();
 			String lang = getParameter("lang");
 			if (!Util.isNullOrEmpty(lang)) {
 				Lang.mudarIdioma(lang);
@@ -41,8 +46,8 @@ public class F1ManeApplet extends JApplet {
 			int size = ((trace.length > 10) ? 10 : trace.length);
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(),
-					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
+					.msg("059"), JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -57,4 +62,7 @@ public class F1ManeApplet extends JApplet {
 		frame1.toFront();
 	}
 
+	public String getVersao() {
+		return appletPaddock.getVersao();
+	}
 }

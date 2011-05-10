@@ -3,6 +3,7 @@
  */
 package sowbreira.f1mane.paddock.applet;
 
+import java.text.DecimalFormat;
 import java.util.Properties;
 
 import javax.swing.JApplet;
@@ -20,6 +21,12 @@ public class AppletPaddock extends JApplet {
 
 	private static final long serialVersionUID = -2007934906883016154L;
 	private ControlePaddockCliente controlePaddockApplet;
+	private String versao;
+	DecimalFormat decimalFormat = new DecimalFormat("#,##");
+
+	public String getVersao() {
+		return " " + decimalFormat.format(new Integer(versao));
+	}
 
 	public void init() {
 		super.init();
@@ -32,8 +39,9 @@ public class AppletPaddock extends JApplet {
 			Properties properties = new Properties();
 			properties.load(this.getClass().getResourceAsStream(
 					"client.properties"));
-			controlePaddockApplet = new ControlePaddockCliente(
-					this.getCodeBase(), this);
+			this.versao = properties.getProperty("versao");
+			controlePaddockApplet = new ControlePaddockCliente(this
+					.getCodeBase(), this);
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
@@ -49,8 +57,8 @@ public class AppletPaddock extends JApplet {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(),
-					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
+					.msg("059"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 

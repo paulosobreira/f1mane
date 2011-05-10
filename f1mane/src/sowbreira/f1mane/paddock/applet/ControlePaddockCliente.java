@@ -905,4 +905,9 @@ public class ControlePaddockCliente {
 		return;
 
 	}
+
+	public String getVersao() {
+		AppletPaddock appletPaddock = (AppletPaddock) applet;
+		return appletPaddock.getVersao();
+	}
 }
