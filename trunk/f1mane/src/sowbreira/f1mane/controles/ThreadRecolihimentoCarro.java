@@ -41,7 +41,7 @@ public class ThreadRecolihimentoCarro extends Thread {
 		}
 		piloto.getCarro().setRecolhido(true);
 		safetyCar.setVaiProBox(true);
-		controleJogo.infoPrioritaria(Html.orange(Lang.msg("031",
+		controleJogo.infoPrioritaria(Html.green(Lang.msg("031",
 				new String[] { piloto.getNome() })));
 
 	}

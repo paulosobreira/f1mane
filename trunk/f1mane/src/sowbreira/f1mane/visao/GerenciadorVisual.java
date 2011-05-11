@@ -1684,17 +1684,19 @@ public class GerenciadorVisual {
 		if (ret == JOptionPane.NO_OPTION) {
 			return false;
 		}
-		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 2)
-				|| (((Integer) spinnerCombustivel.getValue()).intValue() == 0)) {
-			JOptionPane.showMessageDialog(controleJogo.getMainFrame(),
-					Lang.msg("128"), Lang.msg("128"),
-					JOptionPane.INFORMATION_MESSAGE);
-			ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
-					painelInicio, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
-			spinnerQtdeVoltas.requestFocus();
-			if (ret == JOptionPane.NO_OPTION) {
-				return false;
+
+		Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
+		if (qtdeVoltas < 12) {
+			spinnerQtdeVoltas.setValue(new Integer(12));
+		}
+		Integer combustivelInicial = (Integer) spinnerCombustivel.getValue();
+		if (combustivelInicial <= 0) {
+			if (semReabastacimento.isSelected()) {
+				spinnerCombustivel.setValue(new Integer(1));
+			} else {
+				spinnerCombustivel.setValue(new Integer(20));
 			}
+
 		}
 
 		Object selec = listPilotosSelecionados.getSelectedValue();
@@ -1930,17 +1932,19 @@ public class GerenciadorVisual {
 		if (ret == JOptionPane.NO_OPTION) {
 			return false;
 		}
-		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() < 21)
-				|| (((Integer) spinnerCombustivel.getValue()).intValue() == 0)) {
-			JOptionPane.showMessageDialog(controleJogo.getMainFrame(),
-					Lang.msg("128"), Lang.msg("128"),
-					JOptionPane.INFORMATION_MESSAGE);
-			ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
-					painelInicio, "Setup Inicial", JOptionPane.YES_NO_OPTION);
-			spinnerQtdeVoltas.requestFocus();
-			if (ret == JOptionPane.NO_OPTION) {
-				return false;
+
+		Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
+		if (qtdeVoltas < 12) {
+			spinnerQtdeVoltas.setValue(new Integer(12));
+		}
+		Integer combustivelInicial = (Integer) spinnerCombustivel.getValue();
+		if (combustivelInicial <= 0) {
+			if (semReabastacimento.isSelected()) {
+				spinnerCombustivel.setValue(new Integer(1));
+			} else {
+				spinnerCombustivel.setValue(new Integer(20));
 			}
+
 		}
 
 		Object selec = boxPilotoSelecionado.getSelectedItem();
