@@ -537,7 +537,14 @@ public class ControleCampeonato {
 	}
 
 	private void processaMudancaEquipe() {
-		if (campeonato.getVitorias() > 0) {
+		int qtdeRaces = 0;
+		if (ControleJogoLocal.NORMAL.equals(campeonato.getNivel())) {
+			qtdeRaces = Util.intervalo(1, 2);
+		}
+		if (ControleJogoLocal.DIFICIL.equals(campeonato.getNivel())) {
+			qtdeRaces = Util.intervalo(2, 3);
+		}
+		if (campeonato.getVitorias() > qtdeRaces) {
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					campeonato.getRival());
 			int returno = JOptionPane.showConfirmDialog(this.mainFrame,
@@ -554,7 +561,7 @@ public class ControleCampeonato {
 			campeonato.setRival(null);
 			campeonato.setVitorias(0);
 			campeonato.setDerrotas(0);
-		} else if (campeonato.getDerrotas() > 0) {
+		} else if (campeonato.getDerrotas() > qtdeRaces) {
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					campeonato.getRival());
 			String equipeJogador = campeonato.getPilotosEquipesCampeonato()

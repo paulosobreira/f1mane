@@ -43,6 +43,7 @@ import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.editor.MainPanelEditor;
 import sowbreira.f1mane.editor.MainPanelEditorVetorizado;
+import sowbreira.f1mane.paddock.applet.AppletPaddock;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.ControleSom;
@@ -170,14 +171,15 @@ public class MainFrame extends JFrame {
 	}
 
 	private String getVersao() {
-		if (this.appletStand) {
+		if (this.appletStand || applet != null) {
 			if (applet instanceof F1ManeApplet) {
 				F1ManeApplet f1ManeApplet = (F1ManeApplet) applet;
 				return f1ManeApplet.getVersao();
 			}
-
-			Component parent = applet;
-
+			if (applet instanceof AppletPaddock) {
+				AppletPaddock appletPaddock = (AppletPaddock) applet;
+				return appletPaddock.getVersao();
+			}
 			return "";
 		} else {
 			return " Debug ";
@@ -317,10 +319,8 @@ public class MainFrame extends JFrame {
 					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
-				JOptionPane
-						.showMessageDialog(MainFrame.this,
-								new JScrollPane(area), Lang.msg("091"),
-								JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(
+						area), Lang.msg("091"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menuInfo2.add(leiaMe);
@@ -389,8 +389,8 @@ public class MainFrame extends JFrame {
 				String msg = Lang.msg("184")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2007-2011";
-				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
-						.msg("093"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, msg,
+						Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
@@ -470,9 +470,8 @@ public class MainFrame extends JFrame {
 					if (controleJogo != null) {
 						if (controleJogo.isCorridaIniciada()) {
 							int ret = JOptionPane.showConfirmDialog(
-									MainFrame.this, Lang.msg("095"), Lang
-											.msg("094"),
-									JOptionPane.YES_NO_OPTION);
+									MainFrame.this, Lang.msg("095"),
+									Lang.msg("094"), JOptionPane.YES_NO_OPTION);
 							if (ret == JOptionPane.NO_OPTION) {
 								return;
 							}

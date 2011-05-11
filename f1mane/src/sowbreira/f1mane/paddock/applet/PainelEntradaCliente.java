@@ -35,6 +35,7 @@ import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleJogoLocal;
+import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
@@ -369,17 +370,22 @@ public class PainelEntradaCliente {
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
-		while ((((Integer) spinnerQtdeVoltas.getValue()).intValue() == 10)
-				|| (((Integer) spinnerCombustivelInicial.getValue()).intValue() == 0)) {
-			JOptionPane.showMessageDialog(mainFrame, Lang.msg("128"),
-					Lang.msg("128"), JOptionPane.INFORMATION_MESSAGE);
-			ret = JOptionPane.showConfirmDialog(mainFrame, painelInicio,
-					"Setup Inicial", JOptionPane.YES_NO_OPTION);
-			spinnerQtdeVoltas.requestFocus();
-			if (ret == JOptionPane.NO_OPTION) {
-				return false;
-			}
+
+		Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
+		if (qtdeVoltas < 12) {
+			spinnerQtdeVoltas.setValue(new Integer(12));
 		}
+		Integer combustivelInicial = (Integer) spinnerCombustivelInicial
+				.getValue();
+		if (combustivelInicial <= 0) {
+			if (semReabastacimento.isSelected()) {
+				spinnerCombustivelInicial.setValue(new Integer(1));
+			} else {
+				spinnerCombustivelInicial.setValue(new Integer(20));
+			}
+
+		}
+
 		preecherDados();
 		return true;
 	}
