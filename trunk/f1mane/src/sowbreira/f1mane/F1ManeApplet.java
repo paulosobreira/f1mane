@@ -24,7 +24,7 @@ public class F1ManeApplet extends JApplet {
 		MainFrame frame;
 		try {
 			appletPaddock = new AppletPaddock();
-			appletPaddock.init();
+			appletPaddock.initProperties();
 			String lang = getParameter("lang");
 			if (!Util.isNullOrEmpty(lang)) {
 				Lang.mudarIdioma(lang);
@@ -46,8 +46,8 @@ public class F1ManeApplet extends JApplet {
 			int size = ((trace.length > 10) ? 10 : trace.length);
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
-					.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(),
+					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
 		}
 
 	}

@@ -3,6 +3,7 @@
  */
 package sowbreira.f1mane.paddock.applet;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Properties;
 
@@ -36,12 +37,9 @@ public class AppletPaddock extends JApplet {
 			if (!Util.isNullOrEmpty(lang)) {
 				Lang.mudarIdioma(lang);
 			}
-			Properties properties = new Properties();
-			properties.load(this.getClass().getResourceAsStream(
-					"client.properties"));
-			this.versao = properties.getProperty("versao");
-			controlePaddockApplet = new ControlePaddockCliente(this
-					.getCodeBase(), this);
+			initProperties();
+			controlePaddockApplet = new ControlePaddockCliente(
+					this.getCodeBase(), this);
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
@@ -57,10 +55,18 @@ public class AppletPaddock extends JApplet {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
-					.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(),
+					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
+
+	}
+
+	public void initProperties() throws IOException {
+		Properties properties = new Properties();
+		properties.load(this.getClass()
+				.getResourceAsStream("client.properties"));
+		this.versao = properties.getProperty("versao");
 
 	}
 
