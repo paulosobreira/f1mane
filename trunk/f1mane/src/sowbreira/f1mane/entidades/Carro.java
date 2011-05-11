@@ -647,7 +647,10 @@ public class Carro implements Serializable {
 				} else if (!getPiloto().testeHabilidadePilotoOuCarro()
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
 					novoModificador -= 1;
-					if (getPiloto().isJogadorHumano() && Math.random() > .9) {
+					if (getPiloto().isJogadorHumano()
+							&& !controleJogo.isSafetyCarNaPista()
+							&& !controleJogo.isChovendo()
+							&& (porcent > intervaloMax) && Math.random() > .95) {
 						controleJogo.info(Html.superBlue(Lang.msg("pneusFrios",
 								new String[] { Html.txtRedBold(getPiloto()
 										.getNome()) })));
@@ -666,7 +669,10 @@ public class Carro implements Serializable {
 				} else if ((controleJogo.isDrs() || controleJogo.isKers())
 						&& porcent < 20) {
 					novoModificador -= 1;
-					if (getPiloto().isJogadorHumano() && Math.random() > .9) {
+					if (getPiloto().isJogadorHumano()
+							&& !controleJogo.isSafetyCarNaPista()
+							&& !controleJogo.isChovendo()
+							&& (porcent > intervaloMax) && Math.random() > .95) {
 						controleJogo.info(Html.superBlue(Lang.msg("pneusFrios",
 								new String[] { Html.txtRedBold(getPiloto()
 										.getNome()) })));
