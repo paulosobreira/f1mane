@@ -26,7 +26,13 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadrao" depends="copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,criarWar">
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,criarWar">
+	</target>
+
+	<target name="atualizaVersao">
+		<propertyfile file="src/sowbreira/f1mane/paddock/applet/client.properties">
+			<entry operation="+" key="versao" type="int" value="1" />
+		</propertyfile>
 	</target>
 
 	<target name="compilarClasses">
@@ -105,7 +111,7 @@
 			<fileset dir="WebContent">
 				<include name="WEB-INF/lib/f1mane.jar" />
 				<include name="f1mane.jar" />
-				
+
 				<include name="f1maneRecursos.jar" />
 				<!--
 				<include name="f1manePistas.jar" />
