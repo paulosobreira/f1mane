@@ -450,6 +450,7 @@ public class ControleCampeonato {
 			JTextArea xmlArea = new JTextArea(30, 50);
 			xmlArea.setText(new String(byteArrayOutputStream.toByteArray())
 					+ "</java>");
+			this.mainFrame.getApplet();
 			xmlArea.setEditable(false);
 			xmlArea.setSelectionStart(0);
 			xmlArea.setSelectionEnd(xmlArea.getCaretPosition());
