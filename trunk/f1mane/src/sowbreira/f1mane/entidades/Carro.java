@@ -720,6 +720,11 @@ public class Carro implements Serializable {
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3 : 4)
 					+ novoModDano;
+			boolean teste = piloto.testeHabilidadePilotoCarro();
+			if (!teste && Math.random() > 0.95 && !controleJogo.isChovendo()
+					&& getPiloto().getPtosBox() == 0) {
+				controleJogo.travouRodas(getPiloto());
+			}
 		} else if (agressivo) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro() ? 3 : 4);
 		} else {
