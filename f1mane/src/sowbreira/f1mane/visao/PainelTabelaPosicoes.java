@@ -121,7 +121,7 @@ public class PainelTabelaPosicoes extends JPanel {
 	}
 
 	public void atulizaTabelaPosicoes(List pilotosList, Piloto pilotoSelec) {
-		synchronized (mutex) {
+		//synchronized (mutex) {
 
 			int col = posicoesTable.getSelectedColumn();
 			int row = posicoesTable.getSelectedRow();
@@ -161,7 +161,7 @@ public class PainelTabelaPosicoes extends JPanel {
 				posicoesTable.setColumnSelectionInterval(col, col);
 				posicoesTable.setRowSelectionInterval(row, row);
 			}
-		}
+		//}
 	}
 
 	public Piloto obterPilotoSecionadoTabela(
