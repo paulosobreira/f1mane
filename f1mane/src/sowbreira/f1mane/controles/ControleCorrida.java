@@ -34,7 +34,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .80;
+	private double fatorAcidente = .85;
 
 	public long getTempoCiclo() {
 		return tempoCiclo;
@@ -152,7 +152,6 @@ public class ControleCorrida {
 
 		if (controleCiclo != null) {
 			controleCiclo.setProcessadoCilcos(false);
-			controleCiclo.interrupt();
 		}
 
 		if (controleClima != null) {
