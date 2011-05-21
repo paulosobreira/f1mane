@@ -840,8 +840,7 @@ public class PainelCircuito extends JPanel {
 		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
 			if (piloto.getCarro().isRecolhido() || piloto.getNoAtual() == null
-					|| piloto.getCarro().isPaneSeca()
-					|| piloto.isDesqualificado()) {
+					|| piloto.getCarro().isPaneSeca()) {
 				continue;
 			}
 			desenhaCarro(g2d, piloto);
