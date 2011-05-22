@@ -289,9 +289,7 @@ public class PainelCampeonato extends JPanel {
 						"Erro", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			if (!Util.isNullOrEmpty(campeonato.getRival())
-					&& campeonato.getVitorias() != 0
-					&& campeonato.getDerrotas() != 0) {
+			if (campeonato.getVitorias() != 0 || campeonato.getDerrotas() != 0) {
 				JOptionPane.showMessageDialog(
 						this,
 						Lang.msg("jaDesafiando",
