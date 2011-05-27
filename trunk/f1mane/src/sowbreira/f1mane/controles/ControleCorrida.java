@@ -34,7 +34,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .85;
+	private double fatorAcidente = .90;
 
 	public long getTempoCiclo() {
 		return tempoCiclo;
@@ -377,15 +377,7 @@ public class ControleCorrida {
 		}
 		double fatorAcidenteLocal = fatorAcidente;
 		if (controleJogo.isChovendo()) {
-			fatorAcidenteLocal -= .5;
-		}
-		if (piloto.isJogadorHumano()) {
-			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				fatorAcidenteLocal += .15;
-			}
-			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-				fatorAcidenteLocal -= .15;
-			}
+			fatorAcidenteLocal -= .10;
 		}
 		if ((Math.random() < fatorAcidenteLocal)) {
 			return;
