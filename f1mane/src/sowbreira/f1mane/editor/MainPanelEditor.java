@@ -64,7 +64,7 @@ public class MainPanelEditor extends JPanel {
 	private JRadioButton pistasButton = new JRadioButton();
 	private JRadioButton boxButton = new JRadioButton();
 	private JScrollPane scrollPane;
-	
+
 	public MainPanelEditor(String backGroundStr, JFrame frame) {
 		backGround = CarregadorRecursos.carregaBackGround(backGroundStr, this,
 				circuito);
@@ -87,14 +87,14 @@ public class MainPanelEditor extends JPanel {
 			return;
 		}
 
-		FileInputStream inputStream = new FileInputStream(fileChooser
-				.getSelectedFile());
+		FileInputStream inputStream = new FileInputStream(
+				fileChooser.getSelectedFile());
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 
 		circuito = (Circuito) ois.readObject();
 
-		backGround = CarregadorRecursos.carregaBackGround(circuito
-				.getBackGround(), this, circuito);
+		backGround = CarregadorRecursos.carregaBackGround(
+				circuito.getBackGround(), this, circuito);
 		this.srcFrame = frame;
 		iniciaEditor(frame);
 		atualizaListas();
@@ -292,8 +292,9 @@ public class MainPanelEditor extends JPanel {
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
 		frame.pack();
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);   
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
+
 	public void esquerda() {
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -306,6 +307,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 	}
+
 	public void direita() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -318,6 +320,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 	}
+
 	public void cima() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -330,6 +333,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 	}
+
 	public void baixo() {
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -343,6 +347,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 	}
+
 	private void adicionaEventosMouse(final JFrame frame) {
 		this.addMouseListener(new MouseAdapter() {
 
@@ -401,8 +406,8 @@ public class MainPanelEditor extends JPanel {
 			}
 		} else {
 			if (no.isBox()) {
-				JOptionPane.showMessageDialog(this, Lang.msg("038"), Lang
-						.msg("039"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this, Lang.msg("038"),
+						Lang.msg("039"), JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 
@@ -481,14 +486,14 @@ public class MainPanelEditor extends JPanel {
 
 			for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
 				No no = (No) iter.next();
-				g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no
-						.getDrawY(), null);
+				g2d.drawImage(no.getBufferedImage(), no.getDrawX(),
+						no.getDrawY(), null);
 
 				if (oldNo == null) {
 					oldNo = no;
 				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
-							.getY());
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
+							no.getY());
 					oldNo = no;
 				}
 
@@ -511,8 +516,8 @@ public class MainPanelEditor extends JPanel {
 				if (oldNo == null) {
 					oldNo = no;
 				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
-							.getY());
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
+							no.getY());
 					oldNo = no;
 				}
 
@@ -600,7 +605,11 @@ public class MainPanelEditor extends JPanel {
 		}
 
 		File file = fileChooser.getSelectedFile();
-		file = new File(file.getCanonicalFile() + ".f1mane");
+		String fileName = file.getCanonicalFile().toString();
+		if (!fileName.endsWith(".f1mane")) {
+			fileName += ".f1mane";
+		}
+		file = new File(fileName);
 
 		FileOutputStream fileOutputStream = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
