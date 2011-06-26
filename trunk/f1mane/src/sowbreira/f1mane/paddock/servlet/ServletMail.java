@@ -57,12 +57,11 @@ public class ServletMail extends HttpServlet {
 					JogadorDadosSrv carregaDadosJogador = ServletPaddock.controlePersistencia
 							.carregaDadosJogador(nomeJogador, session);
 					try {
-						// ServletPaddock.email.sendSimpleMail(assunto, new
-						// String[]
-						// {
-						// "sowbreira@gmail.com", "gizelehidaka@gmail.com" },
-						// "admin@f1mane.com", texto, false);F
-
+						ServletPaddock.email
+								.sendSimpleMail(assunto,
+										new String[] { carregaDadosJogador
+												.getEmail() },
+										"admin@f1mane.com", texto, false);
 						printWriter.write("Jogador : " + nomeJogador
 								+ " E-mail " + carregaDadosJogador.getEmail());
 						printWriter.write("<br>");
@@ -72,6 +71,7 @@ public class ServletMail extends HttpServlet {
 								+ nomeJogador + " E-mail "
 								+ carregaDadosJogador.getEmail());
 						printWriter.write("<br>");
+						cont++;
 						continue;
 					}
 				}
