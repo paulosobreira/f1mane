@@ -30,11 +30,11 @@ D - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas)
 Histórico de versões:
 4.5
   - Temporada 2011
-  - Sistema de kers (K para usar) Recarga a cada nova volta
-  - Sistema DRS (D para usar) Reduz a asa e melhora a velidade em retas tem que 
-  estar a menos de 1s do proximo para usar
-  - Campeonato de pilotos (modo e jogo offline) com evolução de pilotos nas equipes 
-  similar ao classico super monaco gp do mega drive
+  - Sistema de kers (tecla K para usar) Recarga a cada nova volta
+  - Sistema DRS (tecla D para usar) Reduz a asa e melhora a velocidade em retas, 
+  tem que estar a menos de 1s do proximo piloto para usar.
+  - Campeonato de pilotos (jogo offline) com evolução de pilotos nas equipes similar
+   ao classico super monaco gp do mega drive
 
 4.0
   - 26 Novas pistas (Feitas originalmente para o jogo Mini Race Online http://www.miniracingonline.com/)
