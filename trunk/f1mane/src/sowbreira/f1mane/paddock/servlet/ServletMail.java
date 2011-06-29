@@ -39,7 +39,7 @@ public class ServletMail extends HttpServlet {
 			HttpServletResponse res) throws NoSuchAlgorithmException,
 			UnsupportedEncodingException {
 		if (Util.isNullOrEmpty(passe)
-				|| !Util.md5(passe).equals("34714c67d065f455ccad650a1d26d4f3")) {
+				|| !Util.md5(passe).equals("f02c7b3c384412e5755883da397a28fd")) {
 			return;
 		}
 		try {
@@ -84,9 +84,9 @@ public class ServletMail extends HttpServlet {
 					+ "<br><hr>");
 			printWriter.write("</body></html>");
 			res.flushBuffer();
-			ServletPaddock.email.sendSimpleMail(assunto, new String[] {
-					"sowbreira@gmail.com", "gizelehidaka@gmail.com" },
-					"admin@f1mane.com", texto, false);
+//			ServletPaddock.email.sendSimpleMail(assunto, new String[] {
+//					"sowbreira@gmail.com"},
+//					"admin@f1mane.com", texto, false);
 		} catch (Exception e) {
 			PrintWriter printWriter = null;
 			try {
@@ -102,5 +102,6 @@ public class ServletMail extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 	}
+
 
 }
