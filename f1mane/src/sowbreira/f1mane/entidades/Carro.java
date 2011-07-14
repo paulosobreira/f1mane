@@ -625,8 +625,8 @@ public class Carro implements Serializable {
 		}
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)
 				&& getPiloto().testeHabilidadePilotoOuCarro()) {
-			int intervaloMin = Util.intervalo(5, 10);
-			int intervaloMax = Util.intervalo(90, 95);
+			int intervaloMin = Util.intervalo(5, 15);
+			int intervaloMax = Util.intervalo(85, 95);
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				if ((porcent > intervaloMin)
 						&& (Math.random() > indicativo - 0.05)
@@ -634,7 +634,19 @@ public class Carro implements Serializable {
 					novoModificador += 1;
 				} else if (!getPiloto().testeHabilidadePiloto()
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
-					novoModificador -= 1;
+					if (getPiloto().isAgressivo()) {
+						novoModificador -= 1;
+						if (getPiloto().isJogadorHumano()
+								&& !controleJogo.isSafetyCarNaPista()
+								&& !controleJogo.isChovendo()
+								&& (porcent > intervaloMax)
+								&& Math.random() > .99) {
+							controleJogo.info(Html.superBlue(Lang.msg(
+									"pneusFrios",
+									new String[] { Html.txtRedBold(getPiloto()
+											.getNome()) })));
+						}
+					}
 				}
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
@@ -669,9 +681,21 @@ public class Carro implements Serializable {
 					novoModificador += 1;
 				} else if ((!getPiloto().testeHabilidadePiloto())
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
-					novoModificador -= 1;
+					if (getPiloto().isAgressivo() || !testePotencia()) {
+						novoModificador -= 1;
+						if (getPiloto().isJogadorHumano()
+								&& !controleJogo.isSafetyCarNaPista()
+								&& !controleJogo.isChovendo()
+								&& (porcent > intervaloMax)
+								&& Math.random() > .99) {
+							controleJogo.info(Html.superBlue(Lang.msg(
+									"pneusFrios",
+									new String[] { Html.txtRedBold(getPiloto()
+											.getNome()) })));
+						}
+					}
 				} else if ((controleJogo.isDrs() || controleJogo.isKers())
-						&& porcent < 20 && Math.random() < .5) {
+						&& porcent < 10 && Math.random() < .5) {
 					if (getPiloto().isAgressivo() || !testePotencia()) {
 						novoModificador -= 1;
 						if (getPiloto().isJogadorHumano()
