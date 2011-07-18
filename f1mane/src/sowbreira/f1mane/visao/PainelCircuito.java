@@ -963,12 +963,12 @@ public class PainelCircuito extends JPanel {
 						.inte(rectangle.getCenterY())));
 		piloto.setP1(p1);
 		piloto.setP2(p2);
+		if (piloto.verificaColisaoCarroFrente(controleJogo, true)) {
+			piloto.setIndiceTracado(0);
+		}
 		if (piloto.getTracado() == 0) {
 			carx = p.x - w2;
 			cary = p.y - h2;
-			if (piloto.verificaColisaoCarroFrente(controleJogo)) {
-				piloto.setIndiceTracado(0);
-			}
 			int indTracado = piloto.getIndiceTracado();
 
 			if (indTracado != 0 && piloto.getTracadoAntigo() != 0) {
