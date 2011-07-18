@@ -1123,9 +1123,10 @@ public class Piloto implements Serializable {
 			if (this.equals(piloto)) {
 				continue;
 			}
-			centralizaCarro(controleJogo);
-			piloto.centralizaCarro(controleJogo);
-
+			if (!somenteVerifica) {
+				centralizaCarro(controleJogo);
+				piloto.centralizaCarro(controleJogo);
+			}
 			boolean intercecionou = getDiateira().intersects(
 					piloto.getTrazeira())
 					|| getDiateira().intersects(piloto.getCentro())
