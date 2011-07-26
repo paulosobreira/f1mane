@@ -763,11 +763,17 @@ public class Carro implements Serializable {
 			desgPneus += (piloto.testeHabilidadePilotoOuCarro() ? 1 : 2);
 		}
 		if (Clima.SOL.equals(controleJogo.getClima())) {
-			if (TIPO_PNEU_MOLE.equals(tipoPneu)
-					&& !piloto.testeHabilidadePilotoCarro())
+			if (!piloto.testeHabilidadePilotoCarro())
 				desgPneus += 2;
 			else
 				desgPneus += 1;
+			if (no.verificaCruvaBaixa()) {
+				desgPneus++;
+			} else if (no.verificaCruvaAlta()) {
+				if (Math.random() > .5) {
+					desgPneus++;
+				}
+			}
 		}
 		double porcentComb = porcentagemCombustivel() / 1000.0;
 		double combustivel = 1;
