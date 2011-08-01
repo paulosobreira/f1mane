@@ -622,9 +622,9 @@ public class Carro implements Serializable {
 		double indicativo = .85;
 		if (!controleJogo.isChovendo()) {
 			double emborrachamento = controleJogo
-					.porcentagemCorridaCompletada() / 100.0;
-			if (emborrachamento > .45) {
-				emborrachamento = .45;
+					.porcentagemCorridaCompletada() / 200.0;
+			if (emborrachamento > .4) {
+				emborrachamento = .4;
 			}
 			indicativo -= emborrachamento;
 		}
