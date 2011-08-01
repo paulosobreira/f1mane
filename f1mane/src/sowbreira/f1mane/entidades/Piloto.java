@@ -1117,60 +1117,69 @@ public class Piloto implements Serializable {
 
 	public boolean verificaColisaoCarroFrente(InterfaceJogo controleJogo,
 			boolean somenteVerifica) {
-		List pilotos = controleJogo.getPilotos();
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (this.equals(piloto)) {
-				continue;
-			}
-			if (!somenteVerifica) {
-				centralizaCarro(controleJogo);
-				piloto.centralizaCarro(controleJogo);
-			}
-			boolean intercecionou = getDiateira().intersects(
-					piloto.getTrazeira())
-					|| getDiateira().intersects(piloto.getCentro())
-					|| getDiateira().intersects(piloto.getDiateira());
-			boolean msmPista = obterPista(controleJogo).size() == piloto
-					.obterPista(controleJogo).size();
-			boolean msmTracado = piloto.getTracado() == getTracado();
-			if (controleJogo.verificaNoPitLane(this)) {
-				msmPista = msmPista && msmTracado;
-				intercecionou = getDiateira().intersects(piloto.getCentro())
-						|| getDiateira().intersects(piloto.getDiateira());
-
-			}
-			msmPista = true;
-			if (intercecionou && msmPista
-					&& getNoAtual().getIndex() < piloto.getNoAtual().getIndex()) {
-				if (piloto.getCarro().isPaneSeca()
-						|| piloto.getCarro().isRecolhido()) {
-					return false;
+		try {
+			List pilotos = controleJogo.getPilotos();
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (this.equals(piloto)) {
+					continue;
 				}
 				if (!somenteVerifica) {
-					if (piloto.isDesqualificado()
-							|| Carro.BATEU_FORTE.equals(piloto.getCarro()
-									.getDanificado())
-							|| Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro()
-									.getDanificado())
-							|| Carro.PNEU_FURADO.equals(piloto.getCarro()
-									.getDanificado())) {
-						int novoTracado = 0;
-						while (novoTracado == piloto.getTracado()) {
-							novoTracado = Util.intervalo(0, 2);
-						}
-						mudarTracado(novoTracado, controleJogo, true);
-					}
-					if (getTracado() == piloto.getTracado()
-							&& getPtosBox() == 0 && piloto.getPtosBox() == 0) {
-						controleJogo.verificaAcidenteUltrapassagem(
-								this.isAgressivo(), this, piloto);
-					}
+					centralizaCarro(controleJogo);
+					piloto.centralizaCarro(controleJogo);
 				}
-				return true;
+				boolean intercecionou = getDiateira().intersects(
+						piloto.getTrazeira())
+						|| getDiateira().intersects(piloto.getCentro())
+						|| getDiateira().intersects(piloto.getDiateira());
+				boolean msmPista = obterPista(controleJogo).size() == piloto
+						.obterPista(controleJogo).size();
+				boolean msmTracado = piloto.getTracado() == getTracado();
+				if (controleJogo.verificaNoPitLane(this)) {
+					msmPista = msmPista && msmTracado;
+					intercecionou = getDiateira()
+							.intersects(piloto.getCentro())
+							|| getDiateira().intersects(piloto.getDiateira());
+
+				}
+				msmPista = true;
+				if (intercecionou
+						&& msmPista
+						&& getNoAtual().getIndex() < piloto.getNoAtual()
+								.getIndex()) {
+					if (piloto.getCarro().isPaneSeca()
+							|| piloto.getCarro().isRecolhido()) {
+						return false;
+					}
+					if (!somenteVerifica) {
+						if (piloto.isDesqualificado()
+								|| Carro.BATEU_FORTE.equals(piloto.getCarro()
+										.getDanificado())
+								|| Carro.PERDEU_AEREOFOLIO.equals(piloto
+										.getCarro().getDanificado())
+								|| Carro.PNEU_FURADO.equals(piloto.getCarro()
+										.getDanificado())) {
+							int novoTracado = 0;
+							while (novoTracado == piloto.getTracado()) {
+								novoTracado = Util.intervalo(0, 2);
+							}
+							mudarTracado(novoTracado, controleJogo, true);
+						}
+						if (getTracado() == piloto.getTracado()
+								&& getPtosBox() == 0
+								&& piloto.getPtosBox() == 0) {
+							controleJogo.verificaAcidenteUltrapassagem(
+									this.isAgressivo(), this, piloto);
+						}
+					}
+					return true;
+				}
 			}
+			return false;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			return false;
 		}
-		return false;
 	}
 
 	public Rectangle2D centralizaCarro(InterfaceJogo controleJogo) {
