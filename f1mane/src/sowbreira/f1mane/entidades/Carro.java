@@ -619,7 +619,15 @@ public class Carro implements Serializable {
 		if (controleJogo.isSemTrocaPneu() && Math.random() > .4) {
 			return novoModificador;
 		}
-		double indicativo = .65;
+		double indicativo = .85;
+		if (!controleJogo.isChovendo()) {
+			double emborrachamento = controleJogo
+					.porcentagemCorridaCompletada() / 100.0;
+			if (emborrachamento > .45) {
+				emborrachamento = .45;
+			}
+			indicativo -= emborrachamento;
+		}
 		if (agressivo) {
 			indicativo = .35;
 		}
