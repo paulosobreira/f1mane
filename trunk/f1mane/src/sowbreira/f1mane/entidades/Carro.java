@@ -629,7 +629,7 @@ public class Carro implements Serializable {
 			indicativo -= emborrachamento;
 		}
 		if (agressivo) {
-			indicativo = .35;
+			indicativo -= .2;
 		}
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)
 				&& getPiloto().testeHabilidadePilotoOuCarro()) {
