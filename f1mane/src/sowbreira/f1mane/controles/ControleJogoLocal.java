@@ -59,7 +59,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected ControleCampeonato controleCampeonato;
 	private MainFrame mainFrame;
 	public Set setChegada = new HashSet();
-	private HashSet porcentagens;
 
 	public ControleJogoLocal(String temporada) throws Exception {
 		super(temporada);
@@ -497,15 +496,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 			nvolta.start();
 		}
 		Integer porcentagemCorridaCompletada = porcentagemCorridaCompletada();
-		if (porcentagens == null)
-			porcentagens = new HashSet();
-		if (!porcentagens.contains(porcentagemCorridaCompletada)) {
-			if (porcentagemCorridaCompletada % 10 == 0) {
-				getCircuito().setMultiplicador(
-						getCircuito().getMultiplciador() + 0.2);
-			}
-			porcentagens.add(porcentagemCorridaCompletada);
-		}
 	}
 
 	/**
@@ -616,8 +606,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
 					gerenciadorVisual.getListaPilotosCombo(),
 					gerenciadorVisual.getListaCarrosCombo());
-			getCircuito()
-					.setMultiplicador(getCircuito().getMultiplciador() - 1);
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
