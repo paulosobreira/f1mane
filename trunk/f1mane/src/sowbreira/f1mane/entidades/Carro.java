@@ -659,7 +659,7 @@ public class Carro implements Serializable {
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
 			if (no.verificaCruvaAlta()) {
-				int intervaloMin = Util.intervalo(15, 25);
+				int intervaloMin = Util.intervalo(15, 20);
 				int intervaloMax = Util.intervalo(80, 90);
 				if ((porcent > intervaloMin) && (porcent < intervaloMax)
 						&& (Math.random() > indicativo)) {
@@ -720,9 +720,9 @@ public class Carro implements Serializable {
 				}
 			}
 		} else if (TIPO_PNEU_CHUVA.equals(tipoPneu)) {
-			if (no.verificaCruvaBaixa() && Math.random() > .8) {
+			if (no.verificaCruvaBaixa() && Math.random() > .85) {
 				novoModificador -= 1;
-			} else if (no.verificaCruvaAlta() && Math.random() > .9) {
+			} else if (no.verificaCruvaAlta() && Math.random() > .95) {
 				novoModificador -= 1;
 			}
 		}
