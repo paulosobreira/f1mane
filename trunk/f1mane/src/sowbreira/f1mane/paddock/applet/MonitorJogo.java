@@ -481,67 +481,67 @@ public class MonitorJogo implements Runnable {
 
 						if (diffINdex <= 10) {
 							divPosis = 20;
-							sleepConsumidorPosis = 25;
+							sleepConsumidorPosis = 30;
 						} else if (diffINdex > 10 && diffINdex <= 20) {
 							divPosis = 19;
-							sleepConsumidorPosis = 24;
+							sleepConsumidorPosis = 29;
 						} else if (diffINdex > 20 && diffINdex <= 30) {
 							divPosis = 18;
-							sleepConsumidorPosis = 23;
+							sleepConsumidorPosis = 28;
 						} else if (diffINdex > 30 && diffINdex <= 40) {
 							divPosis = 17;
-							sleepConsumidorPosis = 22;
+							sleepConsumidorPosis = 27;
 						} else if (diffINdex > 40 && diffINdex <= 50) {
 							divPosis = 16;
-							sleepConsumidorPosis = 21;
+							sleepConsumidorPosis = 26;
 						} else if (diffINdex > 50 && diffINdex <= 60) {
 							divPosis = 15;
-							sleepConsumidorPosis = 20;
+							sleepConsumidorPosis = 25;
 						} else if (diffINdex > 60 && diffINdex <= 70) {
 							divPosis = 14;
-							sleepConsumidorPosis = 19;
+							sleepConsumidorPosis = 24;
 						} else if (diffINdex > 70 && diffINdex <= 80) {
 							divPosis = 13;
-							sleepConsumidorPosis = 18;
+							sleepConsumidorPosis = 23;
 						} else if (diffINdex > 80 && diffINdex <= 90) {
 							divPosis = 12;
-							sleepConsumidorPosis = 17;
+							sleepConsumidorPosis = 22;
 						} else if (diffINdex > 90 && diffINdex <= 100) {
 							divPosis = 11;
-							sleepConsumidorPosis = 16;
+							sleepConsumidorPosis = 21;
 						} else if (diffINdex > 100 && diffINdex <= 110) {
 							divPosis = 10;
-							sleepConsumidorPosis = 15;
+							sleepConsumidorPosis = 20;
 						} else if (diffINdex > 110 && diffINdex <= 120) {
 							divPosis = 9;
-							sleepConsumidorPosis = 14;
+							sleepConsumidorPosis = 19;
 						} else if (diffINdex > 120 && diffINdex <= 130) {
 							divPosis = 8;
-							sleepConsumidorPosis = 13;
+							sleepConsumidorPosis = 18;
 						} else if (diffINdex > 130 && diffINdex <= 140) {
 							divPosis = 7;
-							sleepConsumidorPosis = 12;
+							sleepConsumidorPosis = 17;
 						} else if (diffINdex > 140 && diffINdex <= 150) {
 							divPosis = 6;
-							sleepConsumidorPosis = 11;
+							sleepConsumidorPosis = 16;
 						} else if (diffINdex > 150 && diffINdex <= 160) {
 							divPosis = 5;
-							sleepConsumidorPosis = 10;
+							sleepConsumidorPosis = 15;
 						} else if (diffINdex > 160 && diffINdex <= 170) {
 							divPosis = 4;
-							sleepConsumidorPosis = 9;
+							sleepConsumidorPosis = 14;
 						} else if (diffINdex > 170 && diffINdex <= 180) {
 							divPosis = 3;
-							sleepConsumidorPosis = 8;
+							sleepConsumidorPosis = 13;
 						} else if (diffINdex > 180 && diffINdex <= 190) {
 							divPosis = 2;
-							sleepConsumidorPosis = 7;
+							sleepConsumidorPosis = 12;
 						} else if (diffINdex > 190 && diffINdex <= 200) {
 							divPosis = 1;
-							sleepConsumidorPosis = 6;
+							sleepConsumidorPosis = 11;
 						} else {
 							divPosis = 1;
-							sleepConsumidorPosis = 5;
+							sleepConsumidorPosis = 10;
 						}
 						if (diffINdex > 6000
 								&& !(jogoCliente.getNosDoBox().contains(no) && jogoCliente
@@ -588,7 +588,7 @@ public class MonitorJogo implements Runnable {
 								}
 							} else {
 								divPosis = 1;
-								sleepConsumidorPosis = 5;
+								sleepConsumidorPosis = 10;
 							}
 						}
 
@@ -628,7 +628,7 @@ public class MonitorJogo implements Runnable {
 							piloto.setNoAtual(noNovo);
 						if (piloto
 								.verificaColisaoCarroFrente(jogoCliente, true)) {
-							if (diffINdex < 750) {
+							if (diffINdex < 400) {
 								piloto.setNoAtual(noAtual);
 							}
 							int novoTracado = Util.intervalo(0, 2);
