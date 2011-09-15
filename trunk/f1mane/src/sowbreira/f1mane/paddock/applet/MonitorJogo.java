@@ -181,8 +181,8 @@ public class MonitorJogo implements Runnable {
 					}
 				}
 
-				atualizarDadosParciais(jogoCliente.getDadosJogo(),
-						jogoCliente.getPilotoSelecionado());
+				atualizarDadosParciais(jogoCliente.getDadosJogo(), jogoCliente
+						.getPilotoSelecionado());
 				if (controlePaddockCliente.getLatenciaReal() > 2000) {
 					delayVerificaStado = 2;
 				} else {
@@ -267,7 +267,8 @@ public class MonitorJogo implements Runnable {
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			verificaEstadoJogo();
 			jogoCliente.carregaBackGroundCliente();
-			Logger.logar(" esperaJogoComecar() jogoCliente.carregaBackGroundCliente();");
+			Logger
+					.logar(" esperaJogoComecar() jogoCliente.carregaBackGroundCliente();");
 			sleep(1000);
 		}
 
@@ -300,7 +301,8 @@ public class MonitorJogo implements Runnable {
 			if (ret != null) {
 				clientPaddockPack = (ClientPaddockPack) ret;
 				if (clientPaddockPack.getDadosJogoCriado().getPilotosCarreira() != null) {
-					Logger.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
+					Logger
+							.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
 					List pilots = clientPaddockPack.getDadosJogoCriado()
 							.getPilotosCarreira();
 					List carros = new ArrayList();
@@ -318,15 +320,15 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void atualizaPosicoes() {
 		try {
-			Object ret = controlePaddockCliente.enviarObjeto(
-					jogoCliente.getNomeJogoCriado(), true);
+			Object ret = controlePaddockCliente.enviarObjeto(jogoCliente
+					.getNomeJogoCriado(), true);
 			if (retornoNaoValido(ret)) {
 				return;
 			}
@@ -346,8 +348,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -468,7 +470,8 @@ public class MonitorJogo implements Runnable {
 
 						if (diffINdex < 0) {
 							diffINdex = (no.getIndex() + jogoCliente
-									.getNosDaPista().size()) - indexPiloto;
+									.getNosDaPista().size())
+									- indexPiloto;
 							if (piloto.isJogadorHumano()) {
 								Logger.logar("no.getIndex() " + no.getIndex());
 								Logger.logar("indexPiloto " + indexPiloto);
@@ -478,62 +481,62 @@ public class MonitorJogo implements Runnable {
 
 						if (diffINdex <= 10) {
 							divPosis = 20;
-							sleepConsumidorPosis = 15;
+							sleepConsumidorPosis = 25;
 						} else if (diffINdex > 10 && diffINdex <= 20) {
 							divPosis = 16;
-							sleepConsumidorPosis = 15;
-						} else if (diffINdex > 20 && diffINdex <= 50) {
+							sleepConsumidorPosis = 24;
+						} else if (diffINdex > 20 && diffINdex <= 30) {
 							divPosis = 15;
-							sleepConsumidorPosis = 15;
-						} else if (diffINdex > 50 && diffINdex <= 100) {
+							sleepConsumidorPosis = 23;
+						} else if (diffINdex > 30 && diffINdex <= 40) {
 							divPosis = 14;
-							sleepConsumidorPosis = 15;
-						} else if (diffINdex > 100 && diffINdex <= 150) {
+							sleepConsumidorPosis = 22;
+						} else if (diffINdex > 40 && diffINdex <= 50) {
 							divPosis = 13;
-							sleepConsumidorPosis = 15;
-						} else if (diffINdex > 150 && diffINdex <= 200) {
+							sleepConsumidorPosis = 21;
+						} else if (diffINdex > 50 && diffINdex <= 60) {
 							divPosis = 12;
-							sleepConsumidorPosis = 15;
-						} else if (diffINdex > 200 && diffINdex <= 250) {
+							sleepConsumidorPosis = 20;
+						} else if (diffINdex > 60 && diffINdex <= 70) {
 							divPosis = 11;
-							sleepConsumidorPosis = 15;
-						} else if (diffINdex > 250 && diffINdex <= 300) {
+							sleepConsumidorPosis = 19;
+						} else if (diffINdex > 70 && diffINdex <= 80) {
 							divPosis = 10;
-							sleepConsumidorPosis = 15;
-						} else if (diffINdex > 300 && diffINdex <= 350) {
+							sleepConsumidorPosis = 18;
+						} else if (diffINdex > 80 && diffINdex <= 90) {
 							divPosis = 9;
-							sleepConsumidorPosis = 14;
-						} else if (diffINdex > 350 && diffINdex <= 400) {
+							sleepConsumidorPosis = 17;
+						} else if (diffINdex > 90 && diffINdex <= 100) {
 							divPosis = 8;
-							sleepConsumidorPosis = 13;
-						} else if (diffINdex > 400 && diffINdex <= 450) {
+							sleepConsumidorPosis = 16;
+						} else if (diffINdex > 100 && diffINdex <= 110) {
 							divPosis = 7;
-							sleepConsumidorPosis = 12;
-						} else if (diffINdex > 450 && diffINdex <= 500) {
+							sleepConsumidorPosis = 15;
+						} else if (diffINdex > 110 && diffINdex <= 120) {
 							divPosis = 6;
-							sleepConsumidorPosis = 11;
-						} else if (diffINdex > 500 && diffINdex <= 600) {
+							sleepConsumidorPosis = 14;
+						} else if (diffINdex > 120 && diffINdex <= 130) {
 							divPosis = 5;
-							sleepConsumidorPosis = 10;
-						} else if (diffINdex > 600 && diffINdex <= 700) {
+							sleepConsumidorPosis = 13;
+						} else if (diffINdex > 130 && diffINdex <= 140) {
 							divPosis = 4;
-							sleepConsumidorPosis = 10;
-						} else if (diffINdex > 700 && diffINdex <= 800) {
+							sleepConsumidorPosis = 12;
+						} else if (diffINdex > 140 && diffINdex <= 150) {
 							divPosis = 3;
-							sleepConsumidorPosis = 10;
-						} else if (diffINdex > 800 && diffINdex <= 900) {
+							sleepConsumidorPosis = 11;
+						} else if (diffINdex > 150 && diffINdex <= 160) {
 							divPosis = 2;
 							sleepConsumidorPosis = 10;
-						} else if (diffINdex > 1000 && diffINdex <= 1200) {
+						} else if (diffINdex > 160 && diffINdex <= 170) {
 							divPosis = 1;
 							sleepConsumidorPosis = 9;
-						} else if (diffINdex > 1200 && diffINdex <= 1400) {
+						} else if (diffINdex > 170 && diffINdex <= 180) {
 							divPosis = 1;
 							sleepConsumidorPosis = 8;
-						} else if (diffINdex > 1400 && diffINdex <= 1500) {
+						} else if (diffINdex > 180 && diffINdex <= 190) {
 							divPosis = 1;
 							sleepConsumidorPosis = 7;
-						} else if (diffINdex > 1500 && diffINdex <= 1600) {
+						} else if (diffINdex > 190 && diffINdex <= 200) {
 							divPosis = 1;
 							sleepConsumidorPosis = 6;
 						} else {
@@ -551,8 +554,8 @@ public class MonitorJogo implements Runnable {
 								Logger.logar("(diffINdex > 6000)"
 										+ piloto.getNome() + " " + diffINdex);
 							}
-							 piloto.setNoAtual(no);
-							 return;
+							piloto.setNoAtual(no);
+							return;
 						}
 						No noAtual = piloto.getNoAtual();
 
@@ -561,7 +564,8 @@ public class MonitorJogo implements Runnable {
 								&& jogoCliente.getNosDaPista()
 										.contains(noAtual)) {
 							if ((Math.abs(jogoCliente.getCircuito()
-									.getEntradaBoxIndex() - noAtual.getIndex())) < 50) {
+									.getEntradaBoxIndex()
+									- noAtual.getIndex())) < 50) {
 								entrouNoBox = true;
 							}
 						}
@@ -572,7 +576,8 @@ public class MonitorJogo implements Runnable {
 							if (piloto.isJogadorHumano()) {
 								Logger.logar("SAIU DO BOX "
 										+ ((Math.abs(jogoCliente.getNosDoBox()
-												.size() - noAtual.getIndex()))));
+												.size()
+												- noAtual.getIndex()))));
 							}
 
 							if ((Math.abs(jogoCliente.getNosDoBox().size()
@@ -582,8 +587,8 @@ public class MonitorJogo implements Runnable {
 									Logger.logar("SAIU DO BOX");
 								}
 							} else {
-								divPosis = 15;
-								sleepConsumidorPosis = 15;
+								divPosis = 1;
+								sleepConsumidorPosis = 5;
 							}
 						}
 
@@ -645,9 +650,10 @@ public class MonitorJogo implements Runnable {
 										jogoCliente, true)) {
 									piloto.setIndiceTracado(0);
 								} else {
-									piloto.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
-											.getCircuito()
-											.getMultiplicadorLarguraPista()));
+									piloto
+											.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
+													.getCircuito()
+													.getMultiplicadorLarguraPista()));
 								}
 							}
 
@@ -705,8 +711,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -741,8 +747,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -870,8 +876,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
