@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://sowbreira.appspot.com/f1mane/" href="f1maneLite.jnlp">
+	codebase="http://{host}/f1mane/" href="f1maneLite.jnlp">
 	<information>
 		<title>F1Mane Lite</title>
 		<vendor>Paulo Sobreira</vendor>
-		<homepage href="http://sowbreira.appspot.com/" />
+		<homepage href="http://{host}/" />
 		<icon href="icon.png"/>  
 		<description>
 			F1-MANE (MANager & Engineer) Lite
@@ -19,7 +19,7 @@
     </resources>
 
     <applet-desc 
-	      documentBase="http://sowbreira.appspot.com/f1mane" 
+	      documentBase="http://{host}/f1mane" 
 	      name="F1-Mane Online" 
 	      main-class="sowbreira.f1mane.F1ManeApplet" 
 	      width="1030" 
