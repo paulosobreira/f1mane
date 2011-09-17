@@ -1,12 +1,18 @@
 package sowbreira.f1mane.paddock.servlet;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.Inet4Address;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Set;
@@ -14,10 +20,13 @@ import java.util.Set;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.ServerFactory;
+import org.apache.catalina.connector.Connector;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -43,11 +52,23 @@ public class ServletPaddock extends HttpServlet {
 	private static ControlePaddockServidor controlePaddock;
 	protected static ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
-
+	private String webDir;
+	private static String replaceHost = "{host}";
 	public static Email email;
 
 	public void init() throws ServletException {
 		super.init();
+		webDir = getServletContext().getRealPath("") + File.separator;
+		try {
+			atualizarJnlp("f1maneLite.jnlp");
+			atualizarJnlp("f1maneLite_en.jnlp");
+			atualizarJnlp("f1maneonline_en.jnlp");
+			atualizarJnlp("f1maneonline.jnlp");
+			atualizarJnlp("f1maneonlineLite_en.jnlp");
+			atualizarJnlp("f1maneonlineLite.jnlp");
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 		try {
 			email = new Email(getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator);
@@ -59,7 +80,9 @@ public class ServletPaddock extends HttpServlet {
 		try {
 			controlePersistencia = new ControlePersistencia(getServletContext()
 					.getRealPath("")
-					+ File.separator + "WEB-INF" + File.separator);
+					+ File.separator
+					+ "WEB-INF"
+					+ File.separator);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -67,6 +90,40 @@ public class ServletPaddock extends HttpServlet {
 		monitorAtividade = new MonitorAtividade(controlePaddock);
 		Thread monitor = new Thread(monitorAtividade);
 		monitor.start();
+	}
+
+	private void atualizarJnlp(String jnlp) throws IOException {
+		String file = webDir + File.separator + jnlp;
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String ip = Inet4Address.getLocalHost().getHostAddress();
+		int port = 80;
+		try {
+			Connector[] connectors = ServerFactory.getServer()
+					.findService("Catalina").findConnectors();
+			for (int i = 0; i < connectors.length; i++) {
+				if ("HTTP/1.1".equals(connectors[i].getProtocol())) {
+					port = connectors[i].getPort();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String host = ip + ":" + port;
+		String readLine = reader.readLine();
+		StringBuffer buffer = new StringBuffer();
+		while (readLine != null) {
+			if (readLine.contains("{host}")) {
+				buffer.append(readLine.replace(replaceHost, host));
+			} else {
+				buffer.append(readLine);
+			}
+			readLine = reader.readLine();
+		}
+		reader.close();
+		FileWriter fileWriter = new FileWriter(file);
+		fileWriter.write(buffer.toString());
+		fileWriter.close();
+
 	}
 
 	public void destroy() {
@@ -81,11 +138,11 @@ public class ServletPaddock extends HttpServlet {
 
 	public void doPost(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
-//		String tipo = arg0.getParameter("tipo");
-//		if ("admail".equals(tipo)) {
-//			adMail(arg0.getParameter("assunto"), arg0.getParameter("texto"),
-//					arg0.getParameter("passe"), arg1);
-//		}
+		// String tipo = arg0.getParameter("tipo");
+		// if ("admail".equals(tipo)) {
+		// adMail(arg0.getParameter("assunto"), arg0.getParameter("texto"),
+		// arg0.getParameter("passe"), arg1);
+		// }
 
 		doGet(arg0, arg1);
 	}
@@ -111,7 +168,6 @@ public class ServletPaddock extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 		try {
-
 			ObjectInputStream inputStream = null;
 			try {
 				inputStream = new ObjectInputStream(req.getInputStream());
@@ -129,8 +185,8 @@ public class ServletPaddock extends HttpServlet {
 
 				if (PaddockConstants.modoZip) {
 					dumaparDadosZip(ZipUtil.compactarObjeto(
-							PaddockConstants.debug, escrever, res
-									.getOutputStream()));
+							PaddockConstants.debug, escrever,
+							res.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					dumaparDados(escrever);
@@ -316,6 +372,8 @@ public class ServletPaddock extends HttpServlet {
 	}
 
 	public static void main(String[] args) {
+		String teste = "hasjdhasjkd {asd} dsajdhauid";
+		System.out.println(teste.replace("{asd}", "paulo"));
 		// Enumeration e = System.getProperties().propertyNames();
 		// while (e.hasMoreElements()) {
 		// String element = (String) e.nextElement();
