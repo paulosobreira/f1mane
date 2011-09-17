@@ -364,7 +364,7 @@ public class MonitorJogo implements Runnable {
 	private boolean consumidorAtivo = false;
 	private Object[] posisArrayBuff;
 	private double divPosis = 1;
-	private final int sleepConsumidorPosis = 20;
+	private int sleepConsumidorPosis = 20;
 	private Map mapPosis = null;
 	private boolean lagLongo = false;
 	private long ultPoisis;
@@ -474,14 +474,20 @@ public class MonitorJogo implements Runnable {
 							}
 						}
 						int contDiv = 50;
+						int contSleep = 20;
 						for (int i = 0; i < 2000; i += 5) {
 							if (diffINdex >= i && diffINdex < i + 5) {
 								divPosis = contDiv;
+								sleepConsumidorPosis = contSleep;
 								break;
 							}
 							if (contDiv > 1) {
 								contDiv--;
 							}
+							if (contSleep > 5) {
+								contSleep--;
+							}
+
 						}
 						if (diffINdex > 6000
 								&& !(jogoCliente.getNosDoBox().contains(no) && jogoCliente
@@ -595,9 +601,6 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private double calculaNovoGanhoPosis(Piloto piloto, double ganho) {
-		if (ganho > 10) {
-			ganho = 10;
-		}
 		if (mapPosis == null) {
 			mapPosis = new HashMap();
 		}
@@ -606,18 +609,18 @@ public class MonitorJogo implements Runnable {
 			ganhoList = new ArrayList();
 			mapPosis.put(piloto, ganhoList);
 		} else {
-			if (ganhoList.size() > 10) {
+			if (ganhoList.size() > 9) {
 				ganhoList.remove(0);
 			}
 		}
 		if (ganhoList.size() > 1) {
 			double ultGanho = (Double) ganhoList.get(ganhoList.size() - 1);
 			if (ganho > ultGanho) {
-				ganhoList.add(ultGanho + 1);
+				ganhoList.add(ultGanho + 0.5);
 			} else if (ganho < ultGanho) {
-				ganhoList.add(ultGanho - 1);
+				ganhoList.add(ultGanho - 0.5);
 			} else {
-				ganhoList.remove(0);
+				ganhoList.add(ganho);
 			}
 		} else {
 			ganhoList.add(ganho);
@@ -628,10 +631,6 @@ public class MonitorJogo implements Runnable {
 			sum += g;
 		}
 		ganho = sum / ganhoList.size();
-		if (piloto.isJogadorHumano()) {
-			System.out.println("ganho " + ganho);
-			System.out.println("ganhoList.size() " + ganhoList.size());
-		}
 		return ganho;
 	}
 
