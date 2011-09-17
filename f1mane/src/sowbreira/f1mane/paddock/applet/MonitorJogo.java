@@ -364,7 +364,7 @@ public class MonitorJogo implements Runnable {
 	private boolean consumidorAtivo = false;
 	private Object[] posisArrayBuff;
 	private double divPosis = 1;
-	private final int sleepConsumidorPosis = 10;
+	private final int sleepConsumidorPosis = 20;
 	private Map mapPosis = null;
 	private boolean lagLongo = false;
 	private long ultPoisis;
@@ -407,7 +407,6 @@ public class MonitorJogo implements Runnable {
 			}
 		}
 		ultPoisis = 0;
-		mapPosis = new HashMap();
 		consumidorAtivo = true;
 		consumidorPosis = new Thread(new Runnable() {
 			@Override
@@ -596,31 +595,44 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private double calculaNovoGanhoPosis(Piloto piloto, double ganho) {
+		if (ganho > 10) {
+			ganho = 10;
+		}
+		if (mapPosis == null) {
+			mapPosis = new HashMap();
+		}
 		List ganhoList = (List) mapPosis.get(piloto);
 		if (ganhoList == null) {
 			ganhoList = new ArrayList();
-			ganhoList.add(ganho);
+			mapPosis.put(piloto, ganhoList);
 		} else {
-			if (ganhoList.size() > 1) {
-				Double ultGanho = (Double) ganhoList.get(ganhoList.size() - 1);
-				if (ganho > ultGanho) {
-					ganhoList.add(ultGanho + 1);
-				} else if (ganho < ultGanho) {
-					ganhoList.add(ultGanho - 1);
-				}
-			} else {
-				ganhoList.add(ganho);
-			}
-			if (ganhoList.size() > 25) {
+			if (ganhoList.size() > 10) {
 				ganhoList.remove(0);
 			}
+		}
+		if (ganhoList.size() > 1) {
+			double ultGanho = (Double) ganhoList.get(ganhoList.size() - 1);
+			if (ganho > ultGanho) {
+				ganhoList.add(ultGanho + 1);
+			} else if (ganho < ultGanho) {
+				ganhoList.add(ultGanho - 1);
+			} else {
+				ganhoList.remove(0);
+			}
+		} else {
+			ganhoList.add(ganho);
 		}
 		double sum = 0;
 		for (Iterator iterator = ganhoList.iterator(); iterator.hasNext();) {
 			Double g = (Double) iterator.next();
 			sum += g;
 		}
-		return sum / ganhoList.size();
+		ganho = sum / ganhoList.size();
+		if (piloto.isJogadorHumano()) {
+			System.out.println("ganho " + ganho);
+			System.out.println("ganhoList.size() " + ganhoList.size());
+		}
+		return ganho;
 	}
 
 	public static void main(String[] args) {
