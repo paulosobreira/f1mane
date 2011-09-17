@@ -181,8 +181,8 @@ public class MonitorJogo implements Runnable {
 					}
 				}
 
-				atualizarDadosParciais(jogoCliente.getDadosJogo(), jogoCliente
-						.getPilotoSelecionado());
+				atualizarDadosParciais(jogoCliente.getDadosJogo(),
+						jogoCliente.getPilotoSelecionado());
 				if (controlePaddockCliente.getLatenciaReal() > 2000) {
 					delayVerificaStado = 2;
 				} else {
@@ -267,8 +267,7 @@ public class MonitorJogo implements Runnable {
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			verificaEstadoJogo();
 			jogoCliente.carregaBackGroundCliente();
-			Logger
-					.logar(" esperaJogoComecar() jogoCliente.carregaBackGroundCliente();");
+			Logger.logar(" esperaJogoComecar() jogoCliente.carregaBackGroundCliente();");
 			sleep(1000);
 		}
 
@@ -301,8 +300,7 @@ public class MonitorJogo implements Runnable {
 			if (ret != null) {
 				clientPaddockPack = (ClientPaddockPack) ret;
 				if (clientPaddockPack.getDadosJogoCriado().getPilotosCarreira() != null) {
-					Logger
-							.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
+					Logger.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
 					List pilots = clientPaddockPack.getDadosJogoCriado()
 							.getPilotosCarreira();
 					List carros = new ArrayList();
@@ -320,15 +318,15 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void atualizaPosicoes() {
 		try {
-			Object ret = controlePaddockCliente.enviarObjeto(jogoCliente
-					.getNomeJogoCriado(), true);
+			Object ret = controlePaddockCliente.enviarObjeto(
+					jogoCliente.getNomeJogoCriado(), true);
 			if (retornoNaoValido(ret)) {
 				return;
 			}
@@ -348,8 +346,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -366,7 +364,7 @@ public class MonitorJogo implements Runnable {
 	private boolean consumidorAtivo = false;
 	private Object[] posisArrayBuff;
 	private double divPosis = 1;
-	private int sleepConsumidorPosis = 10;
+	private final int sleepConsumidorPosis = 10;
 	private Map mapPosis = null;
 	private boolean lagLongo = false;
 	private long ultPoisis;
@@ -467,81 +465,24 @@ public class MonitorJogo implements Runnable {
 						int indexPiloto = piloto.getNoAtual().getIndex();
 						No noNovo = null;
 						int diffINdex = no.getIndex() - indexPiloto;
-
 						if (diffINdex < 0) {
 							diffINdex = (no.getIndex() + jogoCliente
-									.getNosDaPista().size())
-									- indexPiloto;
+									.getNosDaPista().size()) - indexPiloto;
 							if (piloto.isJogadorHumano()) {
 								Logger.logar("no.getIndex() " + no.getIndex());
 								Logger.logar("indexPiloto " + indexPiloto);
 								Logger.logar("diffINdex " + diffINdex);
 							}
 						}
-
-						if (diffINdex <= 10) {
-							divPosis = 15;
-							sleepConsumidorPosis = 40;
-						} else if (diffINdex > 10 && diffINdex <= 20) {
-							divPosis = 14;
-							sleepConsumidorPosis = 39;
-						} else if (diffINdex > 20 && diffINdex <= 30) {
-							divPosis = 13;
-							sleepConsumidorPosis = 38;
-						} else if (diffINdex > 30 && diffINdex <= 40) {
-							divPosis = 12;
-							sleepConsumidorPosis = 37;
-						} else if (diffINdex > 40 && diffINdex <= 50) {
-							divPosis = 11;
-							sleepConsumidorPosis = 36;
-						} else if (diffINdex > 50 && diffINdex <= 60) {
-							divPosis = 10;
-							sleepConsumidorPosis = 35;
-						} else if (diffINdex > 60 && diffINdex <= 70) {
-							divPosis = 9;
-							sleepConsumidorPosis = 34;
-						} else if (diffINdex > 70 && diffINdex <= 80) {
-							divPosis = 8;
-							sleepConsumidorPosis = 33;
-						} else if (diffINdex > 80 && diffINdex <= 90) {
-							divPosis = 7;
-							sleepConsumidorPosis = 32;
-						} else if (diffINdex > 90 && diffINdex <= 100) {
-							divPosis = 6;
-							sleepConsumidorPosis = 31;
-						} else if (diffINdex > 100 && diffINdex <= 110) {
-							divPosis = 5;
-							sleepConsumidorPosis = 30;
-						} else if (diffINdex > 110 && diffINdex <= 120) {
-							divPosis = 4;
-							sleepConsumidorPosis = 29;
-						} else if (diffINdex > 120 && diffINdex <= 130) {
-							divPosis = 3;
-							sleepConsumidorPosis = 28;
-						} else if (diffINdex > 130 && diffINdex <= 140) {
-							divPosis = 2;
-							sleepConsumidorPosis = 27;
-						} else if (diffINdex > 140 && diffINdex <= 150) {
-							divPosis = 1;
-							sleepConsumidorPosis = 26;
-						} else if (diffINdex > 150 && diffINdex <= 160) {
-							divPosis = 1;
-							sleepConsumidorPosis = 25;
-						} else if (diffINdex > 160 && diffINdex <= 170) {
-							divPosis = 1;
-							sleepConsumidorPosis = 24;
-						} else if (diffINdex > 170 && diffINdex <= 180) {
-							divPosis = 1;
-							sleepConsumidorPosis = 23;
-						} else if (diffINdex > 180 && diffINdex <= 190) {
-							divPosis = 1;
-							sleepConsumidorPosis = 22;
-						} else if (diffINdex > 190 && diffINdex <= 200) {
-							divPosis = 1;
-							sleepConsumidorPosis = 21;
-						} else {
-							divPosis = 1;
-							sleepConsumidorPosis = 20;
+						int contDiv = 50;
+						for (int i = 0; i < 2000; i += 5) {
+							if (diffINdex >= i && diffINdex < i + 5) {
+								divPosis = contDiv;
+								break;
+							}
+							if (contDiv > 1) {
+								contDiv--;
+							}
 						}
 						if (diffINdex > 6000
 								&& !(jogoCliente.getNosDoBox().contains(no) && jogoCliente
@@ -558,28 +499,23 @@ public class MonitorJogo implements Runnable {
 							return;
 						}
 						No noAtual = piloto.getNoAtual();
-
 						boolean entrouNoBox = false;
 						if (jogoCliente.getNosDoBox().contains(no)
 								&& jogoCliente.getNosDaPista()
 										.contains(noAtual)) {
 							if ((Math.abs(jogoCliente.getCircuito()
-									.getEntradaBoxIndex()
-									- noAtual.getIndex())) < 50) {
+									.getEntradaBoxIndex() - noAtual.getIndex())) < 50) {
 								entrouNoBox = true;
 							}
 						}
-
 						boolean saiuNoBox = false;
 						if (jogoCliente.getNosDaPista().contains(no)
 								&& jogoCliente.getNosDoBox().contains(noAtual)) {
 							if (piloto.isJogadorHumano()) {
 								Logger.logar("SAIU DO BOX "
 										+ ((Math.abs(jogoCliente.getNosDoBox()
-												.size()
-												- noAtual.getIndex()))));
+												.size() - noAtual.getIndex()))));
 							}
-
 							if ((Math.abs(jogoCliente.getNosDoBox().size()
 									- noAtual.getIndex())) < 50) {
 								saiuNoBox = true;
@@ -588,16 +524,14 @@ public class MonitorJogo implements Runnable {
 								}
 							} else {
 								divPosis = 1;
-								sleepConsumidorPosis = 15;
 							}
 						}
-
 						double ganho = (piloto.getGanho() / divPosis);
 						if (ganho < 1) {
 							ganho = 1;
 						}
-						indexPiloto += calculaNovoGanhoPosis(piloto, ganho);
-
+						double mediaGanho = calculaNovoGanhoPosis(piloto, ganho);
+						indexPiloto += mediaGanho;
 						if (jogoCliente.getNosDaPista().contains(noAtual)) {
 							int diff = indexPiloto
 									- jogoCliente.getNosDaPista().size();
@@ -628,9 +562,6 @@ public class MonitorJogo implements Runnable {
 							piloto.setNoAtual(noNovo);
 						if (piloto
 								.verificaColisaoCarroFrente(jogoCliente, true)) {
-							if (diffINdex < 400) {
-								piloto.setNoAtual(noAtual);
-							}
 							int novoTracado = Util.intervalo(0, 2);
 							while (novoTracado == piloto.getTracado()) {
 								novoTracado = Util.intervalo(0, 2);
@@ -650,13 +581,11 @@ public class MonitorJogo implements Runnable {
 										jogoCliente, true)) {
 									piloto.setIndiceTracado(0);
 								} else {
-									piloto
-											.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
-													.getCircuito()
-													.getMultiplicadorLarguraPista()));
+									piloto.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
+											.getCircuito()
+											.getMultiplicadorLarguraPista()));
 								}
 							}
-
 						}
 					}
 				}
@@ -672,8 +601,17 @@ public class MonitorJogo implements Runnable {
 			ganhoList = new ArrayList();
 			ganhoList.add(ganho);
 		} else {
-			ganhoList.add(ganho);
-			if (ganhoList.size() > 12) {
+			if (ganhoList.size() > 1) {
+				Double ultGanho = (Double) ganhoList.get(ganhoList.size() - 1);
+				if (ganho > ultGanho) {
+					ganhoList.add(ultGanho + 1);
+				} else if (ganho < ultGanho) {
+					ganhoList.add(ultGanho - 1);
+				}
+			} else {
+				ganhoList.add(ganho);
+			}
+			if (ganhoList.size() > 25) {
 				ganhoList.remove(0);
 			}
 		}
@@ -686,8 +624,32 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		int valor = 2000;
-		System.out.println(valor > 1500 && valor <= 2000);
+		// int valor = 2000;
+		// System.out.println(valor > 1500 && valor <= 2000);
+		int divPosis = 0;
+		int sleepConsumidorPosis = 0;
+		int contDiv = 100;
+		int contSleep = 50;
+		int diffINdex = Util.intervalo(0, 2000);
+		for (int i = 0; i < 2000; i += 10) {
+			if (contDiv > 1) {
+				contDiv--;
+			} else {
+				if (contSleep > 5) {
+					contSleep--;
+				}
+			}
+			if (diffINdex >= i && diffINdex < i + 10) {
+				System.out.println("if (diffINdex >=" + i + " && diffINdex <"
+						+ (i + 10) + ")");
+				divPosis = contDiv;
+				sleepConsumidorPosis = contSleep;
+				break;
+			}
+		}
+		System.out.println("diffINdex = " + diffINdex);
+		System.out.println("divPosis = " + divPosis);
+		System.out.println("sleepConsumidorPosis = " + sleepConsumidorPosis);
 	}
 
 	private void apagarLuz() {
@@ -711,8 +673,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -747,8 +709,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -876,8 +838,8 @@ public class MonitorJogo implements Runnable {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
