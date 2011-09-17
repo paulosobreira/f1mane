@@ -187,8 +187,8 @@ public class PainelEntradaCliente {
 
 		JLabel tipoPneu = new JLabel(Lang.msg("009"));
 		comboBoxPneuInicial = new JComboBox();
-		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
 		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_MOLE));
+		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
 		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
 
 		JLabel qtdeComustivel = new JLabel(Lang.msg("011")) {
