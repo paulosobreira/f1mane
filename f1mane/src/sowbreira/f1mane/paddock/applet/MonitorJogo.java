@@ -365,7 +365,6 @@ public class MonitorJogo implements Runnable {
 	private Object[] posisArrayBuff;
 	private double divPosis = 1;
 	private int sleepConsumidorPosis = 20;
-	private Map mapPosis = null;
 	private boolean lagLongo = false;
 	private long ultPoisis;
 
@@ -475,10 +474,13 @@ public class MonitorJogo implements Runnable {
 						}
 						int contDiv = 50;
 						int contSleep = 20;
+						double ganhoCorrecao = 0;
+						boolean intervalo = false;
 						for (int i = 0; i < 2000; i += 5) {
 							if (diffINdex >= i && diffINdex < i + 5) {
 								divPosis = contDiv;
 								sleepConsumidorPosis = contSleep;
+								intervalo = true;
 								break;
 							}
 							if (contDiv > 1) {
@@ -487,9 +489,19 @@ public class MonitorJogo implements Runnable {
 							if (contSleep > 5) {
 								contSleep--;
 							}
-
+							if (contDiv < 2 && diffINdex > 1000) {
+								ganhoCorrecao += 0.1;
+							}
 						}
-						if (diffINdex > 6000
+						if (!intervalo) {
+							contDiv = 1;
+							contSleep = 5;
+							ganhoCorrecao = 20;
+						}
+						if (ganhoCorrecao > 15) {
+							ganhoCorrecao = 15;
+						}
+						if (diffINdex >= 6000
 								&& !(jogoCliente.getNosDoBox().contains(no) && jogoCliente
 										.getNosDaPista().contains(
 												piloto.getNoAtual()))
@@ -535,8 +547,14 @@ public class MonitorJogo implements Runnable {
 						if (ganho < 1) {
 							ganho = 1;
 						}
-						double mediaGanho = calculaNovoGanhoPosis(piloto, ganho);
-						indexPiloto += mediaGanho;
+						if (ganho > 5) {
+							ganho = 5;
+						}
+						if (ganhoCorrecao != 0) {
+							ganho = ganhoCorrecao;
+						}
+
+						indexPiloto += ganho;
 						if (jogoCliente.getNosDaPista().contains(noAtual)) {
 							int diff = indexPiloto
 									- jogoCliente.getNosDaPista().size();
@@ -600,67 +618,18 @@ public class MonitorJogo implements Runnable {
 		}
 	}
 
-	private double calculaNovoGanhoPosis(Piloto piloto, double ganho) {
-		if (mapPosis == null) {
-			mapPosis = new HashMap();
-		}
-		List ganhoList = (List) mapPosis.get(piloto);
-		if (ganhoList == null) {
-			ganhoList = new ArrayList();
-			mapPosis.put(piloto, ganhoList);
-		} else {
-			if (ganhoList.size() > 9) {
-				ganhoList.remove(0);
-			}
-		}
-		if (ganhoList.size() > 1) {
-			double ultGanho = (Double) ganhoList.get(ganhoList.size() - 1);
-			if (ganho > ultGanho) {
-				ganhoList.add(ultGanho + 0.5);
-			} else if (ganho < ultGanho) {
-				ganhoList.add(ultGanho - 0.5);
-			} else {
-				ganhoList.add(ganho);
-			}
-		} else {
-			ganhoList.add(ganho);
-		}
-		double sum = 0;
-		for (Iterator iterator = ganhoList.iterator(); iterator.hasNext();) {
-			Double g = (Double) iterator.next();
-			sum += g;
-		}
-		ganho = sum / ganhoList.size();
-		return ganho;
-	}
-
 	public static void main(String[] args) {
 		// int valor = 2000;
 		// System.out.println(valor > 1500 && valor <= 2000);
-		int divPosis = 0;
-		int sleepConsumidorPosis = 0;
-		int contDiv = 100;
-		int contSleep = 50;
-		int diffINdex = Util.intervalo(0, 2000);
-		for (int i = 0; i < 2000; i += 10) {
-			if (contDiv > 1) {
-				contDiv--;
-			} else {
-				if (contSleep > 5) {
-					contSleep--;
-				}
-			}
-			if (diffINdex >= i && diffINdex < i + 10) {
-				System.out.println("if (diffINdex >=" + i + " && diffINdex <"
-						+ (i + 10) + ")");
-				divPosis = contDiv;
-				sleepConsumidorPosis = contSleep;
-				break;
-			}
+		// for (int i = 0; i < 2000; i += 50) {
+		// System.out.println("if (diffINdex >=" + i + "&& diffINdex <"
+		// + (i + 50));
+		// }
+		int cont = 0;
+		for (int i = 0; i < 2000; i += 20) {
+			cont++;
 		}
-		System.out.println("diffINdex = " + diffINdex);
-		System.out.println("divPosis = " + divPosis);
-		System.out.println("sleepConsumidorPosis = " + sleepConsumidorPosis);
+		System.out.println(cont);
 	}
 
 	private void apagarLuz() {
