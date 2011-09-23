@@ -217,8 +217,9 @@ public class PaddockWindow {
 				}
 				if (object != null) {
 					int result = JOptionPane.showConfirmDialog(getMainPanel(),
-							Lang.msg("181") + object);
-					if (result == JOptionPane.YES_OPTION) {
+							Lang.msg("181") + object, Lang.msg("175"),
+							JOptionPane.OK_CANCEL_OPTION);
+					if (result == JOptionPane.OK_OPTION) {
 						controlePaddockCliente.entarJogo(mapaJogosCriados
 								.get(object));
 					}
