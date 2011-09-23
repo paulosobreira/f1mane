@@ -267,7 +267,6 @@ public class MonitorJogo implements Runnable {
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			verificaEstadoJogo();
 			jogoCliente.carregaBackGroundCliente();
-			Logger.logar(" esperaJogoComecar() jogoCliente.carregaBackGroundCliente();");
 			sleep(1000);
 		}
 

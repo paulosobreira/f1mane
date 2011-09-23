@@ -95,9 +95,9 @@ public class PainelEntradaCliente {
 		painelInicio.setLayout(new GridLayout(8, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
-				return Lang.msg("110",
-						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
-								String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110", new String[] {
+						String.valueOf(Constantes.MIN_VOLTAS),
+						String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 
@@ -365,8 +365,8 @@ public class PainelEntradaCliente {
 		painelMostrar.add(painelInicio, BorderLayout.CENTER);
 		setaCampeonato();
 
-		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar,
-				"Setup Inicial", JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar, Lang
+				.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
@@ -387,6 +387,15 @@ public class PainelEntradaCliente {
 		}
 
 		preecherDados();
+		if (Clima.CHUVA.equals(dadosCriarJogo.getClima().getClima())
+				&& !Carro.TIPO_PNEU_CHUVA.equals(dadosCriarJogo.getTpPnueu())) {
+			int showConfirmDialog = JOptionPane.showConfirmDialog(mainFrame,
+					Lang.msg("pneuIncompativel"), Lang.msg("alerta"),
+					JOptionPane.YES_NO_OPTION);
+			if (JOptionPane.YES_OPTION != showConfirmDialog) {
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -394,8 +403,8 @@ public class PainelEntradaCliente {
 		if (campeonato != null) {
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
-			comboBoxNivelCorrida
-					.setSelectedItem(Lang.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida.setSelectedItem(Lang
+					.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
 			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
 			semReabastacimento.setEnabled(false);
@@ -638,9 +647,9 @@ public class PainelEntradaCliente {
 			}
 		});
 		panel.add(painelInicio, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(mainFrame, panel,
-				"Setup Inicial", JOptionPane.YES_NO_OPTION);
-		if (ret == JOptionPane.NO_OPTION) {
+		int ret = JOptionPane.showConfirmDialog(mainFrame, panel, Lang
+				.msg("127"), JOptionPane.YES_NO_OPTION);
+		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
 		preecherDadosCriarJogo(dadosParticiparJogo);
