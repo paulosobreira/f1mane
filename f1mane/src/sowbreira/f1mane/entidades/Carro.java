@@ -638,7 +638,8 @@ public class Carro implements Serializable {
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				if ((porcent > intervaloMin)
 						&& (Math.random() > indicativo - 0.05)
-						&& (controleJogo.isModoQualify() || porcent < intervaloMax)) {
+						&& ((controleJogo.isModoQualify() && !controleJogo
+								.isChovendo()) || porcent < intervaloMax)) {
 					novoModificador += 1;
 				} else if (!getPiloto().testeHabilidadePiloto()
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {

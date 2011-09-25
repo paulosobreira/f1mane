@@ -1142,7 +1142,13 @@ public class Piloto implements Serializable {
 				boolean intercecionou = getDiateira().intersects(
 						piloto.getTrazeira())
 						|| getDiateira().intersects(piloto.getCentro())
-						|| getDiateira().intersects(piloto.getDiateira());
+						|| getDiateira().intersects(piloto.getDiateira())
+						|| getCentro().intersects(piloto.getTrazeira())
+						|| getCentro().intersects(piloto.getCentro())
+						|| getCentro().intersects(piloto.getDiateira())
+						|| getTrazeira().intersects(piloto.getTrazeira())
+						|| getTrazeira().intersects(piloto.getCentro())
+						|| getTrazeira().intersects(piloto.getDiateira());
 				boolean msmPista = obterPista(controleJogo).size() == piloto
 						.obterPista(controleJogo).size();
 				boolean msmTracado = piloto.getTracado() == getTracado();
@@ -1150,7 +1156,9 @@ public class Piloto implements Serializable {
 					msmPista = msmPista && msmTracado;
 					intercecionou = getDiateira()
 							.intersects(piloto.getCentro())
-							|| getDiateira().intersects(piloto.getDiateira());
+							|| getDiateira().intersects(piloto.getDiateira())
+							|| getCentro().intersects(piloto.getCentro())
+							|| getCentro().intersects(piloto.getDiateira());
 
 				}
 				msmPista = true;
