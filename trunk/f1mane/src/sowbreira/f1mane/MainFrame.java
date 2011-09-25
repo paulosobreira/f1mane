@@ -904,6 +904,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public static void main(String[] args) throws IOException {
+		Logger.ativo = true;
 		MainFrame frame = new MainFrame(null, false);
 		if (args != null && args.length > 0) {
 			Lang.mudarIdioma(args[0]);
