@@ -43,7 +43,7 @@ public class ControleCorrida {
 	public ControleCorrida(ControleJogoLocal jogo, int qtdeVoltas,
 			double fatorUtr, long tempoCiclo) throws Exception {
 		controleJogo = jogo;
-		this.tempoCiclo = (tempoCiclo < 50 ? 50 : tempoCiclo);
+		this.tempoCiclo = (tempoCiclo < 70 ? 70 : tempoCiclo);
 		this.fatorUtrapassagem = fatorUtr / 1000;
 		if (this.fatorUtrapassagem > 0.5) {
 			this.fatorUtrapassagem = 0.5;
