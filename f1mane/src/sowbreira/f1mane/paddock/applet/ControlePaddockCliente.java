@@ -397,10 +397,13 @@ public class ControlePaddockCliente {
 					panelJogoCriado, circuito)) {
 				return;
 			}
-			if (Clima.CHUVA.equals(srvPaddockPack.getDetalhesJogo()
-					.getDadosCriarJogo().getClima().getClima())
-					&& !Carro.TIPO_PNEU_CHUVA.equals(dadosParticiparJogo
-							.getTpPnueu())) {
+			if ((Carro.TIPO_PNEU_CHUVA.equals(dadosParticiparJogo.getTpPnueu()) && !Clima.CHUVA
+					.equals(srvPaddockPack.getDetalhesJogo()
+							.getDadosCriarJogo().getClima().getClima()))
+					|| (!Carro.TIPO_PNEU_CHUVA.equals(dadosParticiparJogo
+							.getTpPnueu()) && Clima.CHUVA.equals(srvPaddockPack
+							.getDetalhesJogo().getDadosCriarJogo().getClima()
+							.getClima()))) {
 				int showConfirmDialog = JOptionPane.showConfirmDialog(applet,
 						Lang.msg("pneuIncompativel"), Lang.msg("alerta"),
 						JOptionPane.YES_NO_OPTION);
