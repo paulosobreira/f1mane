@@ -387,8 +387,12 @@ public class PainelEntradaCliente {
 		}
 
 		preecherDados();
-		if (Clima.CHUVA.equals(dadosCriarJogo.getClima().getClima())
-				&& !Carro.TIPO_PNEU_CHUVA.equals(dadosCriarJogo.getTpPnueu())) {
+		if ((!Clima.CHUVA.equals(dadosCriarJogo.getClima().getClima()) && Carro.TIPO_PNEU_CHUVA
+				.equals(dadosCriarJogo.getTpPnueu()))
+				|| (Clima.CHUVA.equals(dadosCriarJogo.getClima().getClima()) && !Carro.TIPO_PNEU_CHUVA
+						.equals(dadosCriarJogo.getTpPnueu()))
+
+		) {
 			int showConfirmDialog = JOptionPane.showConfirmDialog(mainFrame,
 					Lang.msg("pneuIncompativel"), Lang.msg("alerta"),
 					JOptionPane.YES_NO_OPTION);
