@@ -105,7 +105,7 @@ public class GerenciadorVisual {
 	private JComboBox comboBoxAsaInicial;
 	private JSlider spinnerCombustivel;
 	private JSpinner spinnerQtdeVoltas;
-	private JSlider spinnerTempoCiclo;
+	private JSlider sliderTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
 	private JSpinner spinnerQtdeMinutosQualificacao;
@@ -781,7 +781,7 @@ public class GerenciadorVisual {
 	}
 
 	public JSlider getSpinnerTempoCiclo() {
-		return spinnerTempoCiclo;
+		return sliderTempoCiclo;
 	}
 
 	public JComboBox getBoxPilotoSelecionado() {
@@ -1255,24 +1255,26 @@ public class GerenciadorVisual {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSlider(70, 170);
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(70, 170)));
+		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO,
+				Constantes.MAX_CICLO);
+		sliderTempoCiclo.setValue(new Integer(Util.intervalo(
+				Constantes.MIN_CICLO, Constantes.MAX_CICLO)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(70), new JLabel("") {
+		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("RAPIDOS");
 			}
 		});
-		labelTable.put(new Integer(170), new JLabel("") {
+		labelTable.put(new Integer(Constantes.MAX_CICLO), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("LENTOS");
 			}
 		});
-		spinnerTempoCiclo.setLabelTable(labelTable);
-		spinnerTempoCiclo.setPaintLabels(true);
-		painelInicio.add(spinnerTempoCiclo);
+		sliderTempoCiclo.setLabelTable(labelTable);
+		sliderTempoCiclo.setPaintLabels(true);
+		painelInicio.add(sliderTempoCiclo);
 
 		// painelInicio.add(new JLabel() {
 		// public String getText() {
@@ -1447,24 +1449,26 @@ public class GerenciadorVisual {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSlider(70, 170);
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(70, 170)));
+		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO,
+				Constantes.MAX_CICLO);
+		sliderTempoCiclo.setValue(new Integer(Util.intervalo(
+				Constantes.MIN_CICLO, Constantes.MAX_CICLO)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(70), new JLabel("") {
+		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("RAPIDOS");
 			}
 		});
-		labelTable.put(new Integer(170), new JLabel("") {
+		labelTable.put(new Integer(Constantes.MAX_CICLO), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("LENTOS");
 			}
 		});
-		spinnerTempoCiclo.setLabelTable(labelTable);
-		spinnerTempoCiclo.setPaintLabels(true);
-		grid.add(spinnerTempoCiclo);
+		sliderTempoCiclo.setLabelTable(labelTable);
+		sliderTempoCiclo.setPaintLabels(true);
+		grid.add(sliderTempoCiclo);
 
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));

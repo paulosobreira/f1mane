@@ -61,9 +61,9 @@ public class PainelEntradaCliente {
 	private JComboBox comboBoxClimaInicial;
 	private JComboBox comboBoxPneuInicial;
 	private JComboBox comboBoxAsa;
-	private JSlider spinnerCombustivelInicial;
-	private JSlider spinnerDificuldadeUltrapassagem;
-	private JSlider spinnerTempoCiclo;
+	private JSlider sliderCombustivelInicial;
+	private JSlider sliderDificuldadeUltrapassagem;
+	private JSlider sliderTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
 	protected JCheckBox semTrocaPneu;
@@ -197,7 +197,7 @@ public class PainelEntradaCliente {
 				return Lang.msg("011");
 			}
 		};
-		spinnerCombustivelInicial = new JSlider(0, 100);
+		sliderCombustivelInicial = new JSlider(0, 100);
 		Hashtable labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
@@ -211,11 +211,11 @@ public class PainelEntradaCliente {
 				return Lang.msg("MAIS");
 			}
 		});
-		spinnerCombustivelInicial.setLabelTable(labelTable);
-		spinnerCombustivelInicial.setPaintLabels(true);
+		sliderCombustivelInicial.setLabelTable(labelTable);
+		sliderCombustivelInicial.setPaintLabels(true);
 
-		spinnerCombustivelInicial.setValue(new Integer(100));
-		spinnerCombustivelInicial.setMaximum(new Integer(100));
+		sliderCombustivelInicial.setValue(new Integer(100));
+		sliderCombustivelInicial.setMaximum(new Integer(100));
 		JLabel tipoAsa = new JLabel(Lang.msg("010")) {
 			@Override
 			public String getText() {
@@ -229,7 +229,7 @@ public class PainelEntradaCliente {
 
 		JPanel pC = new JPanel();
 		pC.add(qtdeComustivel);
-		pC.add(spinnerCombustivelInicial);
+		pC.add(sliderCombustivelInicial);
 		painelInicio.add(pC);
 
 		JPanel pA = new JPanel(new GridLayout(1, 2));
@@ -250,9 +250,9 @@ public class PainelEntradaCliente {
 				return Lang.msg("124");
 			}
 		});
-		spinnerDificuldadeUltrapassagem = new JSlider(000, 500);
-		spinnerDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(
-				000, 500)));
+		sliderDificuldadeUltrapassagem = new JSlider(000, 500);
+		sliderDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(000,
+				500)));
 		labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
@@ -266,9 +266,9 @@ public class PainelEntradaCliente {
 				return Lang.msg("DIFICIL");
 			}
 		});
-		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
-		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
-		jDiff.add(spinnerDificuldadeUltrapassagem);
+		sliderDificuldadeUltrapassagem.setLabelTable(labelTable);
+		sliderDificuldadeUltrapassagem.setPaintLabels(true);
+		jDiff.add(sliderDificuldadeUltrapassagem);
 		painelInicio.add(jDiff);
 		JPanel pCiclo = new JPanel();
 		pCiclo.add(new JLabel("Tempo Ciclo :") {
@@ -277,24 +277,26 @@ public class PainelEntradaCliente {
 				return Lang.msg("126");
 			}
 		});
-		spinnerTempoCiclo = new JSlider(100, 200);
-		spinnerTempoCiclo.setValue(new Integer(Util.intervalo(100, 200)));
+		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO,
+				Constantes.MAX_CICLO);
+		sliderTempoCiclo.setValue(new Integer(Util.intervalo(
+				Constantes.MIN_CICLO, Constantes.MAX_CICLO)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(100), new JLabel("") {
+		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("RAPIDOS");
 			}
 		});
-		labelTable.put(new Integer(200), new JLabel("") {
+		labelTable.put(new Integer(Constantes.MAX_CICLO), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("LENTOS");
 			}
 		});
-		spinnerTempoCiclo.setLabelTable(labelTable);
-		spinnerTempoCiclo.setPaintLabels(true);
-		pCiclo.add(spinnerTempoCiclo);
+		sliderTempoCiclo.setLabelTable(labelTable);
+		sliderTempoCiclo.setPaintLabels(true);
+		pCiclo.add(sliderTempoCiclo);
 		painelInicio.add(pCiclo);
 
 		JPanel p1 = new JPanel(new GridLayout(1, 2));
@@ -375,13 +377,13 @@ public class PainelEntradaCliente {
 		if (qtdeVoltas < 12) {
 			spinnerQtdeVoltas.setValue(new Integer(12));
 		}
-		Integer combustivelInicial = (Integer) spinnerCombustivelInicial
+		Integer combustivelInicial = (Integer) sliderCombustivelInicial
 				.getValue();
 		if (combustivelInicial <= 0) {
 			if (semReabastacimento.isSelected()) {
-				spinnerCombustivelInicial.setValue(new Integer(1));
+				sliderCombustivelInicial.setValue(new Integer(1));
 			} else {
-				spinnerCombustivelInicial.setValue(new Integer(20));
+				sliderCombustivelInicial.setValue(new Integer(20));
 			}
 
 		}
@@ -580,9 +582,9 @@ public class PainelEntradaCliente {
 		}
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
 		dadosCriarJogo
-				.setDiffultrapassagem((Integer) spinnerDificuldadeUltrapassagem
+				.setDiffultrapassagem((Integer) sliderDificuldadeUltrapassagem
 						.getValue());
-		Integer integerTempoCiclo = (Integer) spinnerTempoCiclo.getValue();
+		Integer integerTempoCiclo = (Integer) sliderTempoCiclo.getValue();
 		if (integerTempoCiclo.intValue() <= Constantes.MIN_CICLO) {
 			integerTempoCiclo = new Integer(Constantes.MIN_CICLO);
 		}
@@ -618,7 +620,7 @@ public class PainelEntradaCliente {
 				.toString());
 		Piloto piloto = (Piloto) comboBoxPilotoSelecionado.getSelectedItem();
 		String asa = Lang.key((String) comboBoxAsa.getSelectedItem());
-		Integer combustivel = (Integer) spinnerCombustivelInicial.getValue();
+		Integer combustivel = (Integer) sliderCombustivelInicial.getValue();
 		if (combustivel.intValue() > 100) {
 			combustivel = new Integer(100);
 		}
@@ -688,7 +690,7 @@ public class PainelEntradaCliente {
 		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 		JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
-		spinnerCombustivelInicial = new JSlider(0, 100);
+		sliderCombustivelInicial = new JSlider(0, 100);
 		Hashtable labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
@@ -702,17 +704,17 @@ public class PainelEntradaCliente {
 				return Lang.msg("MAIS");
 			}
 		});
-		spinnerCombustivelInicial.setLabelTable(labelTable);
-		spinnerCombustivelInicial.setPaintLabels(true);
+		sliderCombustivelInicial.setLabelTable(labelTable);
+		sliderCombustivelInicial.setPaintLabels(true);
 
-		spinnerCombustivelInicial.setValue(new Integer(50));
+		sliderCombustivelInicial.setValue(new Integer(50));
 
 		painelInicio.add(tipoPneu);
 		painelInicio.add(comboBoxPneuInicial);
 		painelInicio.add(tipoAsa);
 		painelInicio.add(comboBoxAsa);
 		painelInicio.add(qtdeComustivel);
-		painelInicio.add(spinnerCombustivelInicial);
+		painelInicio.add(sliderCombustivelInicial);
 
 	}
 }
