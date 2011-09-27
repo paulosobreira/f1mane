@@ -237,6 +237,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			if (tempoCiclo.intValue() >= Constantes.MAX_CICLO) {
 				tempoCiclo = new Integer(Constantes.MAX_CICLO);
 			}
+			/**
+			 * Almenta a latencia para jogos no server.
+			 */
+			tempoCiclo += 50;
 			habilidade = dadosCriarJogo.getHabilidade();
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
