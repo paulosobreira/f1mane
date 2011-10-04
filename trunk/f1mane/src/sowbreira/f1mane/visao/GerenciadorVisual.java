@@ -524,14 +524,12 @@ public class GerenciadorVisual {
 						if (controleJogo.getPilotoJogador() != null
 								&& controleJogo.getPilotoJogador()
 										.isJogadorHumano())
-							Logger.logar("aumentaFatorAcidade");
-						controleJogo.aumentaFatorAcidade();
+							controleJogo.aumentaFatorAcidade();
 					}
 					if (keyCoode == KeyEvent.VK_MINUS) {
 						if (controleJogo.getPilotoJogador() != null
 								&& controleJogo.getPilotoJogador()
 										.isJogadorHumano())
-							Logger.logar("diminueFatorAcidade");
 						controleJogo.diminueFatorAcidade();
 					}
 				}

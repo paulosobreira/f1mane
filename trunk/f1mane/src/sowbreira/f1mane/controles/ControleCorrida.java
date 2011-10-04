@@ -35,7 +35,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .80;
+	private double fatorAcidente = .70;
 
 	public long getTempoCiclo() {
 		return tempoCiclo;
@@ -655,10 +655,12 @@ public class ControleCorrida {
 
 	public void aumentaFatorAcidade() {
 		fatorAcidente += 0.1;
+		Logger.logar("diminueFatorAcidade " + fatorAcidente);
 
 	}
 
 	public void diminueFatorAcidade() {
 		fatorAcidente -= 0.1;
+		Logger.logar("aumentaFatorAcidade " + fatorAcidente);
 	}
 }
