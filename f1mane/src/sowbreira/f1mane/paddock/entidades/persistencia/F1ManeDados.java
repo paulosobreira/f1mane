@@ -55,8 +55,8 @@ public abstract class F1ManeDados implements Serializable {
 		if (!(obj instanceof F1ManeDados)) {
 			return false;
 		}
-		F1ManeDados mesa11Dados = (F1ManeDados) obj;
-		return id.equals(mesa11Dados.getId());
+		F1ManeDados f1ManeDados = (F1ManeDados) obj;
+		return id.equals(f1ManeDados.getId());
 	}
 
 	@Override
