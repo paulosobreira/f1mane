@@ -31,7 +31,7 @@ public class ControleBox {
 	private No entradaBox;
 	private No saidaBox;
 	private No paradaBox;
-	private int qtdeNosPistaRefBox;
+	private long qtdeNosPistaRefBox;
 	private InterfaceJogo controleJogo;
 	private ControleCorrida controleCorrida;
 	private Map boxEquipes;
@@ -630,9 +630,9 @@ public class ControleBox {
 		return saidaBox;
 	}
 
-	public int calculaQtdePtsPistaPoleParaSaidaBox(Piloto pole) {
+	public long calculaQtdePtsPistaPoleParaSaidaBox(Piloto pole) {
 		List ptsPista = controleJogo.getNosDaPista();
-		int diferenca = 0;
+		long diferenca = 0;
 		int indexPole = 0;
 		int indexSaidaBox = 0;
 		for (int i = 0; i < ptsPista.size(); i++) {

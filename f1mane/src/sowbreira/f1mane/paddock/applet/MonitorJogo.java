@@ -806,8 +806,8 @@ public class MonitorJogo implements Runnable {
 					public int compare(Object arg0, Object arg1) {
 						Piloto piloto0 = (Piloto) arg0;
 						Piloto piloto1 = (Piloto) arg1;
-						int thisVal = piloto1.getPtosPista();
-						int anotherVal = piloto0.getPtosPista();
+						long thisVal = piloto1.getPtosPista();
+						long anotherVal = piloto0.getPtosPista();
 
 						return ((thisVal < anotherVal) ? (-1)
 								: ((thisVal == anotherVal) ? 0 : 1));

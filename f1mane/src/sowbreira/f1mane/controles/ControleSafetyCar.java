@@ -42,9 +42,9 @@ public class ControleSafetyCar {
 		if (safetyCar.isNaPista()) {
 			return;
 		}
-//		System.out.println("======SC PISTA======"
-//				+ controleJogo.getNumVoltaAtual());
-		int pts = controleCorrida.calculaQtdePtsPistaPoleParaSaidaBox();
+		// System.out.println("======SC PISTA======"
+		// + controleJogo.getNumVoltaAtual());
+		long pts = controleCorrida.calculaQtdePtsPistaPoleParaSaidaBox();
 		safetyCar.setNoAtual(controleCorrida.getNoSaidaBox());
 		safetyCar.setPtosPista(pts);
 		safetyCar.setNaPista(true);
@@ -63,7 +63,8 @@ public class ControleSafetyCar {
 		int cont = safetyCar.getNoAtual().getIndex();
 		Circuito circuito = controleJogo.getCircuito();
 		if ((cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
-				.getEntradaBoxIndex() + 50)) && safetyCar.isVaiProBox()) {
+				.getEntradaBoxIndex() + 50))
+				&& safetyCar.isVaiProBox()) {
 			controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("030")));
 			safetyCar.setNaPista(false);
 			safetyCar.setSaiuVolta(controleJogo.getNumVoltaAtual());
@@ -73,7 +74,8 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .5) ? 2 : 1) : (Math.random() > .3) ? 2 : 1;
+				.random() > .5) ? 2 : 1)
+				: (Math.random() > .3) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 200)) {
 			bonus = (Math.random() > .5) ? 1 : 0;

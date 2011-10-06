@@ -172,8 +172,8 @@ public class ControleCorrida {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-				int thisVal = piloto1.getPtosPista();
-				int anotherVal = piloto0.getPtosPista();
+				long thisVal = piloto1.getPtosPista();
+				long anotherVal = piloto0.getPtosPista();
 
 				return ((thisVal < anotherVal) ? (-1)
 						: ((thisVal == anotherVal) ? 0 : 1));
@@ -511,10 +511,10 @@ public class ControleCorrida {
 	}
 
 	public int porcentagemCorridaCompletada() {
-		int maxAteAgora = ((Piloto) controleJogo.getPilotos().get(0))
+		long maxAteAgora = ((Piloto) controleJogo.getPilotos().get(0))
 				.getPtosPista();
 
-		return (maxAteAgora * 100) / distaciaCorrida;
+		return (int) (maxAteAgora * 100) / distaciaCorrida;
 	}
 
 	public int voltaAtual() {
@@ -581,7 +581,7 @@ public class ControleCorrida {
 		return controleCiclo.getTempoCiclo();
 	}
 
-	public int calculaQtdePtsPistaPoleParaSaidaBox() {
+	public long calculaQtdePtsPistaPoleParaSaidaBox() {
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		return controleBox.calculaQtdePtsPistaPoleParaSaidaBox(pole);
 	}

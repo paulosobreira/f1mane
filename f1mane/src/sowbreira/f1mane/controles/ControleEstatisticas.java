@@ -43,20 +43,22 @@ public class ControleEstatisticas {
 
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado, long tempo) {
 		Piloto lider = (Piloto) controleJogo.getPilotos().get(0);
-		int diff = lider.getPtosPista() - pilotoSelecionado.getPtosPista();
+		long diff = lider.getPtosPista() - pilotoSelecionado.getPtosPista();
 		diff /= controleJogo.getCircuito().getMultiplciador();
 		String ret = milesismos.format((diff / Double.parseDouble(String
-				.valueOf(tempo))) * 3.0) + "s";
+				.valueOf(tempo))) * 3.0)
+				+ "s";
 		pilotoSelecionado.setSegundosParaLider(ret);
 		return ret;
 	}
 
 	public String calculaSegundosParaRival(Piloto pilotoSelecionado,
 			Piloto rival, long tempo) {
-		int diff = rival.getPtosPista() - pilotoSelecionado.getPtosPista();
+		long diff = rival.getPtosPista() - pilotoSelecionado.getPtosPista();
 		diff /= controleJogo.getCircuito().getMultiplciador();
 		String ret = milesismos.format((diff / Double.parseDouble(String
-				.valueOf(tempo))) * 3.0) + "s";
+				.valueOf(tempo))) * 3.0)
+				+ "s";
 		return ret;
 	}
 
@@ -94,10 +96,9 @@ public class ControleEstatisticas {
 
 		if (!teveMelhor && !controleJogo.isSafetyCarNaPista()) {
 			if ((piloto.getPosicao() < 9)) {
-				controleJogo.info(Html.green(Lang.msg(
-						"022",
-						new String[] { Html.bold(piloto.getNome()),
-								voltaAtual.obterTempoVoltaFormatado() })));
+				controleJogo.info(Html.green(Lang.msg("022", new String[] {
+						Html.bold(piloto.getNome()),
+						voltaAtual.obterTempoVoltaFormatado() })));
 			}
 		}
 		if (controleJogo.isSafetyCarNaPista()) {
@@ -114,8 +115,7 @@ public class ControleEstatisticas {
 		if (voltaMaisRapida.obterTempoVolta() > piloto.getVoltaAtual()
 				.obterTempoVolta()) {
 			voltaMaisRapida = piloto.getVoltaAtual();
-			controleJogo.infoPrioritaria(Html.superGreen(Lang.msg(
-					"023",
+			controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("023",
 					new String[] { Html.bold(piloto.getNome()),
 							voltaMaisRapida.obterTempoVoltaFormatado() })));
 		}
@@ -144,7 +144,8 @@ public class ControleEstatisticas {
 	public String calculaSegundosParaProximo(Piloto psel, long tempo) {
 		int diff = calculaDiferencaParaProximo(psel);
 		String ret = milesismos.format((diff / Double.parseDouble(String
-				.valueOf(tempo))) * 3.0) + "s";
+				.valueOf(tempo))) * 3.0)
+				+ "s";
 
 		return ret;
 	}
@@ -165,7 +166,7 @@ public class ControleEstatisticas {
 		}
 		Piloto piloto = (Piloto) controleJogo.getPilotos().get(pos);
 		if (piloto != null) {
-			int diff = piloto.getPtosPista() - psel.getPtosPista();
+			long diff = piloto.getPtosPista() - psel.getPtosPista();
 			return Util.inte(diff
 					/ controleJogo.getCircuito().getMultiplciador());
 		}
@@ -182,7 +183,7 @@ public class ControleEstatisticas {
 		}
 		Piloto piloto = (Piloto) controleJogo.getPilotos().get(pos);
 		if (piloto != null) {
-			int diff = psel.getPtosPista() - piloto.getPtosPista();
+			long diff = psel.getPtosPista() - piloto.getPtosPista();
 			return Util.inte(diff
 					/ controleJogo.getCircuito().getMultiplciador());
 		}
@@ -199,8 +200,9 @@ public class ControleEstatisticas {
 		infoConsumer = new Thread(new Runnable() {
 			public void run() {
 				try {
-					controleJogo.adicionarInfoDireto(Html.azul(Lang.msg("000",
-							new Object[] { controleJogo.totalVoltasCorrida() })));
+					controleJogo.adicionarInfoDireto(Html
+							.azul(Lang.msg("000", new Object[] { controleJogo
+									.totalVoltasCorrida() })));
 					while (consumidorAtivo) {
 						try {
 							controleJogo.atulizaTabelaPosicoes();
@@ -310,12 +312,12 @@ public class ControleEstatisticas {
 	}
 
 	private String preencherTabela(Piloto piloto1, Piloto piloto2, String tabela) {
-		tabela = tabela.replaceAll("piloto1",
-				Html.sansSerif(piloto1.getNome() + " " + piloto1.getPosicao()));
-		tabela = tabela.replaceAll("piloto2",
-				Html.sansSerif(piloto2.getNome() + " " + piloto2.getPosicao()));
-		tabela = tabela.replaceAll("volta1",
-				Html.sansSerif(Lang.msg("081") + piloto2.getNumeroVolta()));
+		tabela = tabela.replaceAll("piloto1", Html.sansSerif(piloto1.getNome()
+				+ " " + piloto1.getPosicao()));
+		tabela = tabela.replaceAll("piloto2", Html.sansSerif(piloto2.getNome()
+				+ " " + piloto2.getPosicao()));
+		tabela = tabela.replaceAll("volta1", Html.sansSerif(Lang.msg("081")
+				+ piloto2.getNumeroVolta()));
 		tabela = tabela.replaceAll("volta2", Html.sansSerif(Lang.msg("081")
 				+ (piloto2.getNumeroVolta() - 1)));
 		tabela = tabela.replaceAll("volta3", Html.sansSerif(Lang.msg("081")
@@ -327,22 +329,22 @@ public class ControleEstatisticas {
 			if (vp1.isVoltaBox() || vp1.isVoltaSafetyCar()) {
 				return null;
 			}
-			tabela = tabela.replaceAll("p1_v" + i,
-					Html.sansSerif(vp1.obterTempoVoltaFormatado()));
+			tabela = tabela.replaceAll("p1_v" + i, Html.sansSerif(vp1
+					.obterTempoVoltaFormatado()));
 			Volta vp2 = (Volta) piloto2.getVoltas().get(
 					piloto2.getVoltas().size() - i);
 			if (vp2.isVoltaBox() || vp2.isVoltaSafetyCar()) {
 				return null;
 			}
-			tabela = tabela.replaceAll("p2_v" + i,
-					Html.sansSerif(vp2.obterTempoVoltaFormatado()));
+			tabela = tabela.replaceAll("p2_v" + i, Html.sansSerif(vp2
+					.obterTempoVoltaFormatado()));
 			long diff = (long) (vp2.obterTempoVolta() - vp1.obterTempoVolta());
 			if (diff < 0)
 				tabela = tabela.replaceAll("cor" + i, "#80FF00");
 			else
 				tabela = tabela.replaceAll("cor" + i, "#FFFF00");
-			tabela = tabela.replaceAll("diff_v" + i,
-					Html.sansSerif(formatarTempo(diff)));
+			tabela = tabela.replaceAll("diff_v" + i, Html
+					.sansSerif(formatarTempo(diff)));
 		}
 		return tabela;
 	}
