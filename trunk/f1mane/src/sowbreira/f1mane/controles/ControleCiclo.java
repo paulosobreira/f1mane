@@ -16,7 +16,7 @@ public class ControleCiclo extends Thread {
 	private int contadorCiclos;
 	private long tempoCiclo;
 	private boolean processadoCilcos = true;
-	private int contadorLuz = 60;
+	private int contadorLuz = 70;
 
 	public long getTempoCiclo() {
 		return tempoCiclo;
@@ -62,22 +62,22 @@ public class ControleCiclo extends Thread {
 					Thread.sleep(tempoCiclo);
 					contadorLuz--;
 					controleJogo.atualizaPainel();
-					if (contadorLuz == 50) {
+					if (contadorLuz == 55) {
 						controleJogo.apagarLuz();
 					}
-					if (contadorLuz == 40) {
+					if (contadorLuz == 45) {
 						controleJogo.apagarLuz();
 					}
-					if (contadorLuz == 30) {
+					if (contadorLuz == 35) {
 						controleJogo.apagarLuz();
 					}
-					if (contadorLuz == 20) {
+					if (contadorLuz == 25) {
 						controleJogo.apagarLuz();
 					}
-					if (contadorLuz == 10) {
+					if (contadorLuz == 15) {
 						controleJogo.apagarLuz();
 					}
-					if (contadorLuz == 0) {
+					if (contadorLuz == 5) {
 						controleJogo.apagarLuz();
 					}
 				}
