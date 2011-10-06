@@ -44,7 +44,7 @@ public class DadosParciais implements Serializable {
 	public TravadaRoda travadaRoda;
 	public String nomeJogador;
 	public String texto;
-	public int[] pilotsPonts = new int[24];
+	public long[] pilotsPonts = new long[24];
 
 	public void decode(String val) {
 		String[] sp = val.split("@");

@@ -10,15 +10,13 @@ import java.util.Map;
 public class SafetyCar implements Serializable {
 
 	private No noAtual = new No();
-	private int ptosPista;
+	private long ptosPista;
 	private int saiuVolta;
 	private int tracado;
 	private boolean vaiProBox;
 	private boolean naPista;
 	private List mediaSc = new ArrayList();
 
-	
-	
 	public int getTracado() {
 		return tracado;
 	}
@@ -58,11 +56,11 @@ public class SafetyCar implements Serializable {
 		this.noAtual = noAtual;
 	}
 
-	public int getPtosPista() {
+	public long getPtosPista() {
 		return ptosPista;
 	}
 
-	public void setPtosPista(int ptosPista) {
+	public void setPtosPista(long ptosPista) {
 		this.ptosPista = ptosPista;
 	}
 

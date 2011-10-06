@@ -2798,7 +2798,8 @@ public class PainelCircuito extends JPanel {
 			if (ps.getPosicao() == 1) {
 				dist = 0;
 			}
-			velo = "M " + ps.getNovoModificador() + " I "
+			velo = "M " + ps.getNovoModificador() + " I " + " PP "
+					+ pilotoSelecionado.getPtosPista()
 					+ ps.getNoAtual().getIndex() + " G "
 					+ (int) (ps.getGanho()) + " V " + ps.getVelocidade()
 					+ " D " + dist + " S " + ps.getStress() + " A "
