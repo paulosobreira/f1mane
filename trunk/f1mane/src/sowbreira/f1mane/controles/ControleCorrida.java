@@ -35,7 +35,17 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .70;
+	private double fatorAcidente = .60;
+	private long pontosPilotoLargada;
+	
+	
+	public long getPontosPilotoLargada() {
+		return pontosPilotoLargada;
+	}
+
+	public void setPontosPilotoLargada(long pontosPilotoLargada) {
+		this.pontosPilotoLargada = pontosPilotoLargada;
+	}
 
 	public long getTempoCiclo() {
 		return tempoCiclo;
