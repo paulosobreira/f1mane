@@ -62,22 +62,23 @@ public class ControleCiclo extends Thread {
 					Thread.sleep(tempoCiclo);
 					contadorLuz--;
 					controleJogo.atualizaPainel();
-					if (contadorLuz == 55) {
+					if (contadorLuz == 60) {
+						controleJogo.apagarLuz();
+						Thread.sleep(tempoCiclo);
+					}
+					if (contadorLuz == 50) {
 						controleJogo.apagarLuz();
 					}
-					if (contadorLuz == 45) {
+					if (contadorLuz == 40) {
 						controleJogo.apagarLuz();
 					}
-					if (contadorLuz == 35) {
+					if (contadorLuz == 30) {
 						controleJogo.apagarLuz();
 					}
-					if (contadorLuz == 25) {
+					if (contadorLuz == 20) {
 						controleJogo.apagarLuz();
 					}
-					if (contadorLuz == 15) {
-						controleJogo.apagarLuz();
-					}
-					if (contadorLuz == 5) {
+					if (contadorLuz == 10) {
 						controleJogo.apagarLuz();
 					}
 				}

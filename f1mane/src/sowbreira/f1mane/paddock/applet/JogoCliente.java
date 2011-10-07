@@ -959,4 +959,16 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public long getPontosPilotoLargada() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setPontosPilotoLargada(long ptosPista) {
+		// TODO Auto-generated method stub
+
+	}
 }

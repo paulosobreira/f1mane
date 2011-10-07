@@ -1147,4 +1147,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 			controleCorrida.diminueFatorAcidade();
 		}
 	}
+
+	@Override
+	public long getPontosPilotoLargada() {
+		return controleCorrida.getPontosPilotoLargada();
+	}
+
+	@Override
+	public void setPontosPilotoLargada(long ptosPista) {
+		controleCorrida.setPontosPilotoLargada(ptosPista);
+	}
 }
