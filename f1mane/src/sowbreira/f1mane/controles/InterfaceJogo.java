@@ -95,7 +95,7 @@ public interface InterfaceJogo {
 
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado);
 
-	public boolean verificaUltima();
+	public boolean verificaUltimaVolta();
 
 	public void processaVoltaRapida(Piloto piloto);
 

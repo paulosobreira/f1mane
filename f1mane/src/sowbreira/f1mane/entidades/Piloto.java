@@ -812,7 +812,7 @@ public class Piloto implements Serializable {
 			box = true;
 		}
 
-		if (controleJogo.verificaUltima()) {
+		if (controleJogo.verificaUltimasVoltas()) {
 			box = false;
 		}
 		if (controleJogo.getNumVoltaAtual() < 1) {
