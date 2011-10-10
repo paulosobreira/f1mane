@@ -325,9 +325,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltima()
+	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltimaVolta()
 	 */
-	public boolean verificaUltima() {
+	public boolean verificaUltimaVolta() {
 		if (ControleQualificacao.modoQualify) {
 			return false;
 		}

@@ -509,7 +509,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
-	public boolean verificaUltima() {
+	public boolean verificaUltimaVolta() {
 		// TODO Auto-generated method stub
 		return false;
 	}
