@@ -1114,6 +1114,16 @@ public class Piloto implements Serializable {
 
 	private double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo) {
 		if (getPosicao() != 1) {
+			No saidaBox = (No) controleJogo.getCircuito().getPistaFull().get(
+					controleJogo.getCircuito().getSaidaBoxIndex());
+			No noAtual = getNoAtual();
+			/**
+			 * Saida Box Zona de Guerra
+			 */
+			if (saidaBox.getIndex() + 100 < noAtual.getIndex()
+					|| saidaBox.getIndex() - 100 > noAtual.getIndex()) {
+				return ganho;
+			}
 			Piloto pilotoFrente = controleJogo.obterCarroNaFrente(this)
 					.getPiloto();
 			if (pilotoFrente.getPtosBox() > 0
