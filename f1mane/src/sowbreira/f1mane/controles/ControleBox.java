@@ -53,12 +53,12 @@ public class ControleBox {
 		super();
 		this.controleJogo = controleJogo;
 		this.controleCorrida = controleCorrida;
-		entradaBox = (No) controleJogo.getCircuito().getPistaFull().get(
-				controleJogo.getCircuito().getEntradaBoxIndex());
-		paradaBox = (No) controleJogo.getCircuito().getBoxFull().get(
-				controleJogo.getCircuito().getParadaBoxIndex());
-		saidaBox = (No) controleJogo.getCircuito().getPistaFull().get(
-				controleJogo.getCircuito().getSaidaBoxIndex());
+		entradaBox = (No) controleJogo.getCircuito().getPistaFull()
+				.get(controleJogo.getCircuito().getEntradaBoxIndex());
+		paradaBox = (No) controleJogo.getCircuito().getBoxFull()
+				.get(controleJogo.getCircuito().getParadaBoxIndex());
+		saidaBox = (No) controleJogo.getCircuito().getPistaFull()
+				.get(controleJogo.getCircuito().getSaidaBoxIndex());
 		circuito = controleJogo.getCircuito();
 		calculaQtdeNosPistaRefBox();
 		if (saidaBox == null) {
@@ -161,8 +161,7 @@ public class ControleBox {
 	public void processarPilotoBox(Piloto piloto) {
 		int cont = piloto.getNoAtual().getIndex();
 		if (!(cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
-				.getEntradaBoxIndex() + 50))
-				&& (piloto.getPtosBox() <= 0)) {
+				.getEntradaBoxIndex() + 50)) && (piloto.getPtosBox() <= 0)) {
 			return;
 		} else {
 			if (boxEquipesOcupado == null) {
@@ -198,20 +197,26 @@ public class ControleBox {
 				} else if (box.verificaCruvaBaixa()) {
 					ptosBox += ((Math.random() > .5) ? 2 : 1);
 				}
+				No nobox = (No) boxEquipes.get(piloto.getCarro());
+				int indexParada = piloto.obterPista(controleJogo)
+						.indexOf(nobox);
+				if (piloto.getNoAtual().getIndex() > (indexParada + Carro.MEIA_LARGURA)
+						&& verificaTemCarroPassandoSaida()) {
+					Logger.logar("Entra if verificaTemCarroPassandoSaida");
+					ptosBox = ((Math.random() > .7) ? 0 : 1);
+				}
+
 				ptosBox *= circuito.getMultiplciador();
 				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
 					piloto.mudarTracado(Util.intervalo(0, 2), controleJogo);
 					ptosBox = 0;
 				}
 				int novosPtsBox = Util.inte(ptosBox) + piloto.getPtosBox();
-				No nobox = (No) boxEquipes.get(piloto.getCarro());
-				int indexParada = piloto.obterPista(controleJogo)
-						.indexOf(nobox);
+
 				if (novosPtsBox >= (indexParada - (Carro.MEIA_LARGURA))
 						&& novosPtsBox <= (indexParada)) {
-					piloto
-							.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2
-									: 1);
+					piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2
+							: 1);
 				} else {
 					piloto.setTracado(0);
 				}
@@ -242,6 +247,24 @@ public class ControleBox {
 		}
 	}
 
+	private boolean verificaTemCarroPassandoSaida() {
+		List pilotos = controleJogo.getPilotos();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (piloto.getPtosBox() > 0 || piloto.isDesqualificado()
+					|| piloto.getCarro().verificaDano()) {
+				continue;
+			}
+			No noAtual = piloto.getNoAtual();
+			if (saidaBox.getIndex() + 50 > noAtual.getIndex()
+					&& noAtual.getIndex() > saidaBox.getIndex() - 200) {
+				Logger.logar(" Piloto PassandoSaida " + piloto.getNome());
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public No getEntradaBox() {
 		return entradaBox;
 	}
@@ -268,9 +291,9 @@ public class ControleBox {
 			if (controleJogo.isSemReabastacimento()) {
 				combust = new Integer(0);
 			}
-			qtdeCombust = controleJogo.setUpJogadorHumano(piloto, controleJogo
-					.getTipoPeneuBox(piloto), combust, controleJogo
-					.getAsaBox(piloto));
+			qtdeCombust = controleJogo.setUpJogadorHumano(piloto,
+					controleJogo.getTipoPeneuBox(piloto), combust,
+					controleJogo.getAsaBox(piloto));
 		}
 
 		int porcentCombust = (100 * qtdeCombust)
@@ -278,8 +301,8 @@ public class ControleBox {
 		long penalidade = 0;
 		Carro carro = (Carro) boxEquipesOcupado.get(piloto.getCarro());
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
-			controleJogo.info(Html.orange(Lang.msg("298", new String[] { carro
-					.getNome() })));
+			controleJogo.info(Html.orange(Lang.msg("298",
+					new String[] { carro.getNome() })));
 			penalidade = 15;
 			if (piloto.isJogadorHumano()) {
 				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
@@ -302,19 +325,26 @@ public class ControleBox {
 			penalidade = Util.inte(penalidade
 					* (2 - (carro.getPotencia() / 1000)));
 		}
-		piloto.gerarCiclosPadoBox(porcentCombust, controleCorrida
-				.obterTempoCilco(), penalidade);
+		piloto.gerarCiclosPadoBox(porcentCombust,
+				controleCorrida.obterTempoCilco(), penalidade);
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
 		piloto.setSaiuDoBoxMilis(0);
 		if (piloto.isJogadorHumano()) {
 			controleJogo
-					.infoPrioritaria(Html.orange(Lang.msg("002", new String[] {
-							piloto.getNome(),
-							String.valueOf(controleJogo.getNumVoltaAtual()) })));
+					.infoPrioritaria(Html.orange(Lang.msg(
+							"002",
+							new String[] {
+									piloto.getNome(),
+									String.valueOf(controleJogo
+											.getNumVoltaAtual()) })));
 		} else if (piloto.getPosicao() < 9) {
-			controleJogo.info(Html.orange(Lang.msg("002", new String[] {
-					piloto.getNome(),
-					String.valueOf(controleJogo.getNumVoltaAtual()) })));
+			controleJogo
+					.info(Html.orange(Lang.msg(
+							"002",
+							new String[] {
+									piloto.getNome(),
+									String.valueOf(controleJogo
+											.getNumVoltaAtual()) })));
 		}
 		carro.setDanificado(null);
 		if (carro.getDurabilidadeAereofolio() <= 0
@@ -431,9 +461,10 @@ public class ControleBox {
 	public void setupCorridaQualificacaoAleatoria(Piloto piloto, int posicao) {
 
 		if (piloto.isJogadorHumano()) {
-			controleJogo.setUpJogadorHumano(piloto, controleJogo
-					.getTipoPeneuBox(piloto), controleJogo
-					.getCombustBox(piloto), controleJogo.getAsaBox(piloto));
+			controleJogo.setUpJogadorHumano(piloto,
+					controleJogo.getTipoPeneuBox(piloto),
+					controleJogo.getCombustBox(piloto),
+					controleJogo.getAsaBox(piloto));
 
 			return;
 		}
@@ -652,10 +683,6 @@ public class ControleBox {
 					+ ((ptsPista.size() - indexPole) + indexSaidaBox);
 		}
 		return diferenca;
-	}
-
-	public No getParadaBox() {
-		return paradaBox;
 	}
 
 }
