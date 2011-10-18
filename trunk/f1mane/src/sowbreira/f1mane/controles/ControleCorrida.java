@@ -35,10 +35,9 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .65;
+	private double fatorAcidente = .7;
 	private long pontosPilotoLargada;
-	
-	
+
 	public long getPontosPilotoLargada() {
 		return pontosPilotoLargada;
 	}
@@ -418,7 +417,7 @@ public class ControleCorrida {
 						.verificaCruvaAlta())
 						&& (piloto.getStress() > 70)
 						&& piloto.isAgressivo()
-						&& !piloto.testeHabilidadePilotoCarro()) {
+						&& !piloto.testeHabilidadePiloto()) {
 					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 					if (piloto.getPosicao() <= 10)
 						controleJogo.infoPrioritaria(Lang.msg("015",
