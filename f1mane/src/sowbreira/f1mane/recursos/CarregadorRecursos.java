@@ -30,6 +30,8 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import sowbreira.f1mane.entidades.Carro;
@@ -139,6 +141,11 @@ public class CarregadorRecursos {
 
 	public static BufferedImage carregaBufferedImageTranspareciaBranca(
 			String file, int ingVal) {
+		return carregaBufferedImageTranspareciaBranca(file, ingVal, 255);
+	}
+
+	public static BufferedImage carregaBufferedImageTranspareciaBranca(
+			String file, int ingVal, int translucidez) {
 		BufferedImage buffer = null;
 		try {
 			ImageIcon icon = new ImageIcon(
@@ -154,7 +161,7 @@ public class CarregadorRecursos {
 			Logger.logarExept(e);
 		}
 
-		return ImageUtil.geraTransparencia(buffer, ingVal);
+		return ImageUtil.geraTransparencia(buffer, ingVal, translucidez);
 	}
 
 	public static BufferedImage carregaBufferedImageTranspareciaPreta(
@@ -217,30 +224,37 @@ public class CarregadorRecursos {
 		// .getGraphics();
 		// BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
 		// graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
-		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
-		Properties properties = new Properties();
+		// CarregadorRecursos carregadorRecursos = new
+		// CarregadorRecursos(false);
+		// Properties properties = new Properties();
+		//
+		// properties.load(CarregadorRecursos
+		// .recursoComoStream("properties/pistas.properties"));
+		//
+		// Enumeration propName = properties.propertyNames();
+		// while (propName.hasMoreElements()) {
+		// final String name = (String) propName.nextElement();
+		// // System.out.println(name);
+		// ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
+		// .getClass().getResourceAsStream(name));
+		//
+		// Circuito circuito = (Circuito) ois.readObject();
+		// // System.out.println(properties.getProperty(name));
+		// // System.out.println(circuito.getNome());
+		// circuito.setMultiplicador(circuito.getMultiplciador() + 1);
+		// FileOutputStream fileOutputStream = new FileOutputStream(new File(
+		// name));
+		// ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
+		// oos.writeObject(circuito);
+		// oos.flush();
+		// fileOutputStream.close();
+		// }
 
-		properties.load(CarregadorRecursos
-				.recursoComoStream("properties/pistas.properties"));
-
-		Enumeration propName = properties.propertyNames();
-		while (propName.hasMoreElements()) {
-			final String name = (String) propName.nextElement();
-			// System.out.println(name);
-			ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
-					.getClass().getResourceAsStream(name));
-
-			Circuito circuito = (Circuito) ois.readObject();
-			// System.out.println(properties.getProperty(name));
-			// System.out.println(circuito.getNome());
-			circuito.setMultiplicador(circuito.getMultiplciador() + 1);
-			FileOutputStream fileOutputStream = new FileOutputStream(new File(
-					name));
-			ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
-			oos.writeObject(circuito);
-			oos.flush();
-			fileOutputStream.close();
-		}
+		BufferedImage travadaRodaImg = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("travadaRoda.png", 200,
+						50);
+		JOptionPane.showConfirmDialog(null, new JLabel(new ImageIcon(
+				travadaRodaImg)));
 	}
 
 	private static void gerarListaCarrosLado() throws IOException {

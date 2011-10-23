@@ -107,7 +107,7 @@ public class PainelCircuito extends JPanel {
 	public final static BufferedImage scima = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("sfcima.png");
 	public final static BufferedImage travadaRodaImg = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("travadaRoda.png", 150);
+			.carregaBufferedImageTranspareciaBranca("travadaRoda.png", 150, 100);
 
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
@@ -1313,9 +1313,29 @@ public class PainelCircuito extends JPanel {
 				BufferedImage buffer = (BufferedImage) gridImg.get(i);
 				double meix = (gridCarro.getWidth() / 2) * zoom;
 				double meiy = (gridCarro.getHeight() / 2) * zoom;
-				g2d.drawImage(buffer,
-						(int) (grid[i].getBounds().getCenterX() - meix),
-						(int) (grid[i].getBounds().getCenterY() - meiy), null);
+				/*
+				 * Grid
+				 */
+				boolean naoDesenha = false;
+				if (circuito.getObjetos() != null) {
+					for (Iterator iterator = circuito.getObjetos().iterator(); iterator
+							.hasNext();) {
+						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+						if (objetoPista instanceof ObjetoTransparencia) {
+							ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+							if (objetoTransparencia.obterArea().intersects(
+									grid[i].getBounds())) {
+								naoDesenha = true;
+							}
+						} else {
+							continue;
+						}
+					}
+				}
+				if (!naoDesenha)
+					g2d.drawImage(buffer, (int) (grid[i].getBounds()
+							.getCenterX() - meix), (int) (grid[i].getBounds()
+							.getCenterY() - meiy), null);
 			} else {
 				g2d.setColor(Color.white);
 				g2d.fill(grid[i]);
