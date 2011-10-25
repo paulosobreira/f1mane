@@ -3143,7 +3143,7 @@ public class PainelCircuito extends JPanel {
 
 	public void adicionatrvadaRoda(TravadaRoda travadaRoda) {
 		No noAtual = controleJogo.obterNoPorId(travadaRoda.getIdNo());
-		if (marcasPneu.size() > 100 || noAtual == null) {
+		if (marcasPneu.size() > 200 || noAtual == null) {
 			return;
 		}
 		synchronized (marcasPneu) {

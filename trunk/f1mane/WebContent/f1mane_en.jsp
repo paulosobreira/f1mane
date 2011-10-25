@@ -255,12 +255,12 @@ img {
 		<div id="shotsPromo" class="highslide-gallery">
 			See Also
 			<a id="link" 
-				href="http://www.f1mane.com/mesa11" style="text-align: center;"
+				href="../../mesa11" style="text-align: center;"
 				target="_BLANK">  Mesa-11 </a><br><br>
-			<a href="http://www.f1mane.com/mesa11/m11-1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-1.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/mesa11/m11-2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-2.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/mesa11/m11-4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-4.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/mesa11/m11-6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/mesa11/m11-6.jpg" width="130" height="120" /></a>
+			<a href="../../mesa11/m11-1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="../../mesa11/m11-1.jpg" width="130" height="120" /></a>
+			<a href="../../mesa11/m11-2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="../../mesa11/m11-2.jpg" width="130" height="120" /></a>
+			<a href="../../mesa11/m11-4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="../../mesa11/m11-4.jpg" width="130" height="120" /></a>
+			<a href="../../mesa11/m11-6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="../../mesa11/m11-6.jpg" width="130" height="120" /></a>
 		</div>	
 		
 	</div>
