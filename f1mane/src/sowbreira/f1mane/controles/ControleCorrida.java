@@ -35,7 +35,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .7;
+	private double fatorAcidente = .65;
 	private long pontosPilotoLargada;
 
 	public long getPontosPilotoLargada() {
@@ -397,26 +397,29 @@ public class ControleCorrida {
 			if (piloto.isAgressivo()) {
 				No noAtual = piloto.getNoAtual();
 				if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
-					if ((piloto.getStress() > 30)) {
+					if ((piloto.getStress() > (5 * piloto.getCarro()
+							.getDurabilidadeAereofolio()))) {
 						piloto
 								.getCarro()
 								.setDurabilidadeAereofolio(
 										piloto.getCarro()
 												.getDurabilidadeAereofolio() - 1);
+						if (InterfaceJogo.DIFICIL_NV == controleJogo
+								.getNiveljogo())
+							piloto.incStress(60);
+						if (InterfaceJogo.MEDIO_NV == controleJogo
+								.getNiveljogo())
+							piloto.incStress(40);
+						if (InterfaceJogo.FACIL_NV == controleJogo
+								.getNiveljogo())
+							piloto.incStress(20);
+						controleJogo.infoPrioritaria(Lang.msg("109",
+								new String[] { Html.superRed(piloto.getNome()),
+										pilotoNaFrente.getNome() }));
 					}
-					if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
-						piloto.incStress(30);
-					if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
-						piloto.incStress(20);
-					if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
-						piloto.incStress(10);
-					controleJogo.infoPrioritaria(Lang.msg("109", new String[] {
-							Html.superRed(piloto.getNome()),
-							pilotoNaFrente.getNome() }));
-				} else if ((noAtual.verificaCruvaBaixa() || noAtual
-						.verificaCruvaAlta())
-						&& (piloto.getStress() > 70)
-						&& piloto.isAgressivo()
+				} else if ((noAtual.verificaCruvaAlta())
+						&& Math.random() > fatorAcidenteLocal
+						&& (piloto.getStress() > 50) && piloto.isAgressivo()
 						&& !piloto.testeHabilidadePiloto()) {
 					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 					if (piloto.getPosicao() <= 10)
@@ -424,7 +427,8 @@ public class ControleCorrida {
 								new String[] { Html.superRed(piloto.getNome()),
 										pilotoNaFrente.getNome() }));
 				} else if ((noAtual.verificaCruvaBaixa())
-						&& (piloto.getStress() > 90)) {
+						&& Math.random() > fatorAcidenteLocal
+						&& (piloto.getStress() > 70)) {
 					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 					if (piloto.getPosicao() <= 10)
 						controleJogo.infoPrioritaria(Lang.msg("015",
