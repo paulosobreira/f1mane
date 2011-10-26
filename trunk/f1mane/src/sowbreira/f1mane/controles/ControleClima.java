@@ -56,6 +56,11 @@ public class ControleClima {
 	}
 
 	public void gerarClimaInicial(Clima climaSel) {
+		if (!InterfaceJogo.VALENDO && InterfaceJogo.DEBUG_SEM_CHUVA) {
+			clima = Clima.SOL;
+			return;
+		}
+
 		if (!Clima.ALEATORIO.equals(climaSel.getClima())) {
 			clima = climaSel.getClima();
 			return;
@@ -85,7 +90,12 @@ public class ControleClima {
 	}
 
 	public void processaPossivelMudancaClima() {
-		if (Math.random() < controleJogo.getNiveljogo()) {
+		if (!InterfaceJogo.VALENDO && InterfaceJogo.DEBUG_SEM_CHUVA) {
+			clima = Clima.SOL;
+			return;
+		}
+		
+		if (Math.random() > controleJogo.getNiveljogo()) {
 			return;
 		}
 		if ((voltaMudancaClima + intervaloMudancaClima) > controleJogo

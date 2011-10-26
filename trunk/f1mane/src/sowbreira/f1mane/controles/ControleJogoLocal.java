@@ -407,7 +407,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public boolean mudarModoAgressivo() {
 		if (pilotoJogador == null)
 			return false;
-		pilotoJogador.setAgressivo(!pilotoJogador.isAgressivo());
+		pilotoJogador.setAgressivo(!pilotoJogador.isAgressivo(), this);
 		pilotoJogador.setCiclosDesconcentrado(40);
 		return pilotoJogador.isAgressivo();
 	}
@@ -604,8 +604,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(),
-					gerenciadorVisual.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
+							.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),

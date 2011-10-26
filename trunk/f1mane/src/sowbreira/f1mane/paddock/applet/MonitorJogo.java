@@ -439,7 +439,7 @@ public class MonitorJogo implements Runnable {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.getId() == posis.idPiloto) {
-				piloto.setAgressivo(posis.agressivo);
+				piloto.setAgressivo(posis.agressivo, jogoCliente);
 				piloto.setJogadorHumano(posis.humano);
 				piloto.setAutoPos(posis.autoPos);
 				if (posis.idNo >= -1) {

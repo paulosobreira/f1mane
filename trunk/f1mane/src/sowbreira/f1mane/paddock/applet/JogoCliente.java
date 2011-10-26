@@ -546,7 +546,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.getId() == posis.idPiloto) {
-				piloto.setAgressivo(posis.agressivo);
+				piloto.setAgressivo(posis.agressivo, this);
 				piloto.setJogadorHumano(posis.humano);
 				if (piloto.getIndiceTracado() <= 0) {
 					piloto.setTracadoAntigo(piloto.getTracado());
@@ -557,8 +557,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-								.getMultiplicadorLarguraPista()));
+						piloto
+								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+										.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -670,9 +671,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
 		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(
-					dadosParticiparJogo.getTpPnueu(),
-					dadosParticiparJogo.getCombustivel(),
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
+					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
 					dadosParticiparJogo.getAsa());
 			syncBox = true;
 		}
