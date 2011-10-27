@@ -106,8 +106,15 @@ public class PainelCircuito extends JPanel {
 			.carregaBufferedImageTranspareciaBranca("safetycar.gif");
 	public final static BufferedImage scima = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("sfcima.png");
-	public final static BufferedImage travadaRodaImg = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("travadaRoda.png", 150, 100);
+	public final static BufferedImage travadaRodaImg0 = CarregadorRecursos
+			.carregaBufferedImageTranspareciaBranca("travadaRoda0.png", 150,
+					100);
+	public final static BufferedImage travadaRodaImg1 = CarregadorRecursos
+			.carregaBufferedImageTranspareciaBranca("travadaRoda1.png", 150,
+					100);
+	public final static BufferedImage travadaRodaImg2 = CarregadorRecursos
+			.carregaBufferedImageTranspareciaBranca("travadaRoda2.png", 150,
+					100);
 
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
@@ -748,8 +755,8 @@ public class PainelCircuito extends JPanel {
 						continue;
 					}
 				}
-				int width = (int) (travadaRodaImg.getWidth());
-				int height = (int) (travadaRodaImg.getHeight());
+				int width = (int) (travadaRodaImg0.getWidth());
+				int height = (int) (travadaRodaImg0.getHeight());
 				List lista = controleJogo.obterNosPista();
 
 				if (lista == null) {
@@ -816,7 +823,20 @@ public class PainelCircuito extends JPanel {
 						BufferedImage.TYPE_INT_ARGB);
 				AffineTransformOp op = new AffineTransformOp(afRotate,
 						AffineTransformOp.TYPE_BILINEAR);
-				op.filter(travadaRodaImg, zoomBuffer);
+				switch (travadaRoda.getTipo()) {
+				case 0:
+					op.filter(travadaRodaImg0, zoomBuffer);
+					break;
+				case 1:
+					op.filter(travadaRodaImg1, zoomBuffer);
+					break;
+				case 2:
+					op.filter(travadaRodaImg2, zoomBuffer);
+					break;
+				default:
+					break;
+				}
+
 				AffineTransformOp op2 = new AffineTransformOp(afZoom,
 						AffineTransformOp.TYPE_BILINEAR);
 				op2.filter(zoomBuffer, rotateBuffer);

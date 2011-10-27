@@ -2,9 +2,24 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
+import br.nnpe.Util;
+
 public class TravadaRoda implements Serializable {
 	private int idNo;
 	private int tracado;
+	private int tipo;
+
+	public TravadaRoda() {
+		tipo = Util.intervalo(0, 2);
+	}
+
+	public int getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
+	}
 
 	public int getTracado() {
 		return tracado;
