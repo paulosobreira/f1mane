@@ -519,28 +519,12 @@ public class MonitorJogo implements Runnable {
 						if (jogoCliente.getNosDoBox().contains(no)
 								&& jogoCliente.getNosDaPista()
 										.contains(noAtual)) {
-							if ((Math.abs(jogoCliente.getCircuito()
-									.getEntradaBoxIndex() - noAtual.getIndex())) < 50) {
-								entrouNoBox = true;
-							}
+							entrouNoBox = true;
 						}
 						boolean saiuNoBox = false;
 						if (jogoCliente.getNosDaPista().contains(no)
 								&& jogoCliente.getNosDoBox().contains(noAtual)) {
-							if (piloto.isJogadorHumano()) {
-								Logger.logar("SAIU DO BOX "
-										+ ((Math.abs(jogoCliente.getNosDoBox()
-												.size() - noAtual.getIndex()))));
-							}
-							if ((Math.abs(jogoCliente.getNosDoBox().size()
-									- noAtual.getIndex())) < 50) {
-								saiuNoBox = true;
-								if (piloto.isJogadorHumano()) {
-									Logger.logar("SAIU DO BOX");
-								}
-							} else {
-								divPosis = 1;
-							}
+							saiuNoBox = true;
 						}
 						double ganho = (piloto.getGanho() / divPosis);
 						if (ganho < 1) {
@@ -575,7 +559,7 @@ public class MonitorJogo implements Runnable {
 									indexPiloto);
 						}
 						if (entrouNoBox) {
-							if ((jogoCliente.getNoEntradaBox().getIndex() - noAtual
+							if ((jogoCliente.getNoEntradaBox().getIndex() - noNovo
 									.getIndex()) < 5)
 								noNovo = (No) jogoCliente.getNosDoBox().get(0);
 
@@ -583,7 +567,7 @@ public class MonitorJogo implements Runnable {
 						if (saiuNoBox) {
 							No ultNoBox = (No) jogoCliente.getNosDoBox().get(
 									jogoCliente.getNosDoBox().size() - 1);
-							if ((ultNoBox.getIndex() - noAtual.getIndex()) < 5)
+							if ((ultNoBox.getIndex() - noNovo.getIndex()) < 5)
 								noNovo = (No) jogoCliente.getNosDaPista().get(
 										jogoCliente.getCircuito()
 												.getSaidaBoxIndex());
@@ -592,13 +576,11 @@ public class MonitorJogo implements Runnable {
 							piloto.setNoAtual(noNovo);
 						if (piloto
 								.verificaColisaoCarroFrente(jogoCliente, true)) {
-							int novoTracado = Util.intervalo(0, 2);
-							while (novoTracado == piloto.getTracado()) {
+							int novoTracado = piloto.getTracado();
+							while (piloto.mudarTracado(novoTracado,
+									jogoCliente, true)) {
 								novoTracado = Util.intervalo(0, 2);
 							}
-							if (piloto.getIndiceTracado() == 0)
-								piloto.mudarTracado(novoTracado, jogoCliente,
-										true);
 						} else {
 							if (piloto.getIndiceTracado() <= 0) {
 								piloto.setTracadoAntigo(piloto.getTracado());

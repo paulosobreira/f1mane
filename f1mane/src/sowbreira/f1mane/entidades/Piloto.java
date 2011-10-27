@@ -1909,10 +1909,10 @@ public class Piloto implements Serializable {
 		mudarTracado(pos, interfaceJogo, false);
 	}
 
-	public void mudarTracado(int pos, InterfaceJogo interfaceJogo,
+	public boolean mudarTracado(int pos, InterfaceJogo interfaceJogo,
 			boolean mesmoEmCurva) {
 		if (indiceTracado != 0) {
-			return;
+			return false;
 		}
 		if (getSetaBaixo() <= 0) {
 			if (getTracado() == 0 && pos == 1) {
@@ -1932,22 +1932,22 @@ public class Piloto implements Serializable {
 		}
 
 		if (getTracado() == pos) {
-			return;
+			return false;
 		}
 
 		long agora = System.currentTimeMillis();
 		if ((agora - ultimaMudancaPos) < (interfaceJogo.getTempoCiclo() * 10)) {
-			return;
+			return false;
 		}
 		if (getTracado() == 1 && pos == 2) {
-			return;
+			return false;
 		}
 		if (getTracado() == 2 && pos == 1) {
-			return;
+			return false;
 		}
 		if (!mesmoEmCurva) {
 			if ((No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && !testeHabilidadePilotoCarro(interfaceJogo))) {
-				return;
+				return false;
 			}
 		}
 		int tracado = getTracado();
@@ -1961,11 +1961,13 @@ public class Piloto implements Serializable {
 						.getCircuito().getMultiplicadorLarguraPista()));
 			}
 			ultimaMudancaPos = System.currentTimeMillis();
+			return true;
 		} else {
 			ultimaMudancaPos = System.currentTimeMillis()
 					+ (interfaceJogo.getTempoCiclo() * 20);
 			gerarDesconcentracao(Util.intervalo(30, 50));
 		}
+		return false;
 
 	}
 
