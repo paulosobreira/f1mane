@@ -106,6 +106,12 @@ public class ControleQualificacao {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			if (jogandoresHumanos.contains(piloto)) {
 				piloto.setJogadorHumano(true);
+			} else if (controleJogo.verificaNivelJogo()) {
+				piloto.setHabilidade(piloto.getHabilidade()
+						+ Util.intervalo(0, 5));
+			} else {
+				piloto.setHabilidade(piloto.getHabilidade()
+						- Util.intervalo(0, 5));
 			}
 		}
 		Collections.sort(pilotos, new Comparator() {
@@ -149,16 +155,12 @@ public class ControleQualificacao {
 					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 					(Carro.ALTURA));
 
-			Point cima = GeoUtil.calculaPonto(
-					calculaAngulo,
-					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			Point baixo = GeoUtil.calculaPonto(
-					calculaAngulo + 180,
-					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
+			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
+					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
+					.getCenterX()), Util.inte(rectangle.getCenterY())));
+			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
+					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
+					.getCenterX()), Util.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA)),
