@@ -1838,6 +1838,15 @@ public class Piloto implements Serializable {
 	}
 
 	public void incStress(int val) {
+		if (stress > 90) {
+			val = 1;
+		}
+		if (stress > 80 && val > 2) {
+			val = 2;
+		}
+		if (stress > 70 && val > 3) {
+			val = 3;
+		}
 		if (stress < 100 && (stress + val) < 100) {
 			if ((Math.random() < ((900.0 - getPosicao() * 40) / 1000.0)))
 				stress += val;
