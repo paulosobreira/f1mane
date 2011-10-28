@@ -1208,10 +1208,6 @@ public class Piloto implements Serializable {
 										.getCarro().getDanificado())
 								|| Carro.PNEU_FURADO.equals(piloto.getCarro()
 										.getDanificado())) {
-							int novoTracado = 0;
-							// while (novoTracado == piloto.getTracado()) {
-							// novoTracado = Util.intervalo(0, 2);
-							// }
 							mudarTracado(obterNovoTracadoPossivel(),
 									controleJogo, true);
 						}
