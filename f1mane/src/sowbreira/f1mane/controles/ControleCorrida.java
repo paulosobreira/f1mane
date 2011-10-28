@@ -406,13 +406,13 @@ public class ControleCorrida {
 												.getDurabilidadeAereofolio() - 1);
 						if (InterfaceJogo.DIFICIL_NV == controleJogo
 								.getNiveljogo())
-							piloto.incStress(60);
+							piloto.incStress(50);
 						if (InterfaceJogo.MEDIO_NV == controleJogo
 								.getNiveljogo())
-							piloto.incStress(40);
+							piloto.incStress(30);
 						if (InterfaceJogo.FACIL_NV == controleJogo
 								.getNiveljogo())
-							piloto.incStress(20);
+							piloto.incStress(10);
 						controleJogo.infoPrioritaria(Lang.msg("109",
 								new String[] { Html.superRed(piloto.getNome()),
 										pilotoNaFrente.getNome() }));
