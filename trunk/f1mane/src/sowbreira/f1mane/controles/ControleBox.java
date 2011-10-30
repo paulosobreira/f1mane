@@ -38,6 +38,7 @@ public class ControleBox {
 	private Hashtable boxEquipesOcupado;
 	private Circuito circuito;
 	private List carrosBox;
+	private int boxRapido = 0;
 
 	public List getCarrosBox() {
 		return carrosBox;
@@ -64,7 +65,9 @@ public class ControleBox {
 		if (saidaBox == null) {
 			throw new Exception("Saida box não encontrada!");
 		}
-
+		if (controleJogo.verificaNivelJogo()) {
+			boxRapido = 1;
+		}
 		geraBoxesEquipes(carrosBox);
 	}
 
@@ -184,7 +187,7 @@ public class ControleBox {
 						* circuito.getMultiplciador()));
 			} else {
 				box = piloto.getNoAtual();
-				int ptosBox = 0;
+				int ptosBox = boxRapido;
 				if (box.isBox()) {
 					/**
 					 * gera limite velocidade no box
