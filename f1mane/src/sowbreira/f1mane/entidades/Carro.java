@@ -449,9 +449,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& temperaturaMotor == tempMax - 1)
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -764,8 +765,7 @@ public class Carro implements Serializable {
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4)
-					+ novoModDano;
+					: 4) + novoModDano;
 			boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 			if (!teste && Math.random() > 0.95 && !controleJogo.isChovendo()
 					&& getPiloto().getPtosBox() == 0) {
@@ -789,6 +789,9 @@ public class Carro implements Serializable {
 				if (Math.random() > .5) {
 					desgPneus++;
 				}
+			}
+			if (controleJogo.verificaNivelJogo()) {
+				desgPneus += Util.intervalo(0, 1);
 			}
 		}
 		double porcentComb = porcentagemCombustivel() / 1000.0;
