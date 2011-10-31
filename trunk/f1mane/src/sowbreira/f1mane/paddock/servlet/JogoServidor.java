@@ -284,7 +284,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
 		atualizarJogadoresOnlineCarreira();
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
-				diffultrapassagem.intValue(), tempoCiclo.intValue());
+				diffultrapassagem.intValue(), tempoCiclo.intValue() + 30);
 		setarNivelCorrida();
 		controleCorrida.getControleClima().gerarClimaInicial(
 				dadosCriarJogo.getClima());

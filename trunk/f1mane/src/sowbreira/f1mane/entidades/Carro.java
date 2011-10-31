@@ -363,7 +363,7 @@ public class Carro implements Serializable {
 
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
-					&& testePotencia()) {
+					&& getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
 				novoModificador++;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
 					&& !getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
