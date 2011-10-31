@@ -35,7 +35,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .65;
+	private double fatorAcidente = .7;
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 
