@@ -449,10 +449,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& temperaturaMotor == tempMax - 1)
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -765,7 +764,8 @@ public class Carro implements Serializable {
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4) + novoModDano;
+					: 4)
+					+ novoModDano;
 			boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 			if (!teste && Math.random() > 0.95 && !controleJogo.isChovendo()
 					&& getPiloto().getPtosBox() == 0) {
@@ -790,7 +790,7 @@ public class Carro implements Serializable {
 					desgPneus++;
 				}
 			}
-			if (controleJogo.verificaNivelJogo()) {
+			if (controleJogo.asfaltoAbrasivo()) {
 				desgPneus += Util.intervalo(0, 1);
 			}
 		}
