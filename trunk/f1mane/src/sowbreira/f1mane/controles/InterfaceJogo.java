@@ -274,4 +274,6 @@ public interface InterfaceJogo {
 
 	public void setPontosPilotoLargada(long ptosPista);
 
+	public boolean asfaltoAbrasivo();
+
 }

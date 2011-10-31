@@ -971,4 +971,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public boolean asfaltoAbrasivo() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

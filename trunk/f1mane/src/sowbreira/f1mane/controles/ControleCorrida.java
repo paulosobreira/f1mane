@@ -37,6 +37,7 @@ public class ControleCorrida {
 	private boolean corridaIniciada;
 	private double fatorAcidente = .65;
 	private long pontosPilotoLargada;
+	private boolean asfaltoAbrasivo;
 
 	public long getPontosPilotoLargada() {
 		return pontosPilotoLargada;
@@ -63,12 +64,6 @@ public class ControleCorrida {
 		}
 		this.fatorUtrapassagem = 1.0 - this.fatorUtrapassagem;
 		this.indexVelcidadeDaPista = 1.5;
-		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-			this.indexVelcidadeDaPista = 1.6;
-		}
-		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-			this.indexVelcidadeDaPista = 1.4;
-		}
 		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
 		definirDurabilidadeMotores();
@@ -84,6 +79,9 @@ public class ControleCorrida {
 		} else
 			tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
 		definirTanqueCheio();
+		if (controleJogo.verificaNivelJogo()) {
+			asfaltoAbrasivo = true;
+		}
 	}
 
 	public ControleBox getControleBox() {
@@ -675,5 +673,9 @@ public class ControleCorrida {
 	public void diminueFatorAcidade() {
 		fatorAcidente -= 0.1;
 		Logger.logar("aumentaFatorAcidade " + fatorAcidente);
+	}
+
+	public boolean asfaltoAbrasivo() {
+		return asfaltoAbrasivo;
 	}
 }

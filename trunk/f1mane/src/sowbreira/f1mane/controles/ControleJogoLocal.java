@@ -1157,4 +1157,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void setPontosPilotoLargada(long ptosPista) {
 		controleCorrida.setPontosPilotoLargada(ptosPista);
 	}
+
+	@Override
+	public boolean asfaltoAbrasivo() {
+		return controleCorrida.asfaltoAbrasivo();
+	}
 }
