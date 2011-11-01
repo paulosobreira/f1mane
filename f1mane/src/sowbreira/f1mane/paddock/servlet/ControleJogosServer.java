@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.hibernate.Session;
 
+import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
@@ -107,15 +108,28 @@ public class ControleJogosServer {
 			try {
 				Logger.logar("Temporada Serviddor " + temporada);
 				jogoServidor = new JogoServidor(temporada);
+				jogoServidor.prepararJogoOnline(clientPaddockPack
+						.getDadosJogoCriado());
 				CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 						.verCarreira(clientPaddockPack, session);
 				if (carreiraDadosSrv.isModoCarreira()) {
-					if (InterfaceJogo.DIFICIL.equals(clientPaddockPack
-							.getDadosJogoCriado().getNivelCorrida())
-							&& verificaExcedePotencia(jogoServidor
-									.getMediaPontecia(), carreiraDadosSrv
-									.getPtsCarro(), jogoServidor.getNiveljogo())) {
-						return new MsgSrv(Lang.msg("261"));
+					if (verificaExcedePotencia(jogoServidor.getMediaPontecia(),
+							carreiraDadosSrv.getPtsCarro(), jogoServidor
+									.getNiveljogo())) {
+						int permitidoAcimaMedia = 0;
+						if (InterfaceJogo.FACIL_NV == jogoServidor
+								.getNiveljogo()) {
+							permitidoAcimaMedia = 100;
+						}
+						if (InterfaceJogo.MEDIO_NV == jogoServidor
+								.getNiveljogo()) {
+							permitidoAcimaMedia = 50;
+						}
+						String media = (jogoServidor.getMediaPontecia() + permitidoAcimaMedia)
+								+ "";
+						return new MsgSrv(Lang.msg("261",
+								new String[] { media }));
+
 					}
 				}
 				jogoServidor.setNomeCriador(clientPaddockPack
@@ -131,8 +145,7 @@ public class ControleJogosServer {
 			mapaJogosCriados.put(clientPaddockPack.getSessaoCliente(),
 					jogoServidor);
 			gerarListaJogosCriados();
-			jogoServidor.prepararJogoOnline(clientPaddockPack
-					.getDadosJogoCriado());
+
 			jogoServidor.setControleClassificacao(controleClassificacao);
 			jogoServidor.adicionarJogador(clientPaddockPack.getSessaoCliente()
 					.getNomeJogador(), clientPaddockPack.getDadosJogoCriado());
@@ -197,11 +210,19 @@ public class ControleJogosServer {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
 			}
-			if (jogoServidor.getNiveljogo() == InterfaceJogo.DIFICIL_NV
-					&& verificaExcedePotencia(jogoServidor.getMediaPontecia(),
-							carreiraDadosSrv.getPtsCarro(), jogoServidor
-									.getNiveljogo())) {
-				return new MsgSrv(Lang.msg("261"));
+			if (verificaExcedePotencia(jogoServidor.getMediaPontecia(),
+					carreiraDadosSrv.getPtsCarro(), jogoServidor.getNiveljogo())) {
+				int permitidoAcimaMedia = 0;
+				if (InterfaceJogo.FACIL_NV == jogoServidor.getNiveljogo()) {
+					permitidoAcimaMedia = 100;
+				}
+				if (InterfaceJogo.MEDIO_NV == jogoServidor.getNiveljogo()) {
+					permitidoAcimaMedia = 50;
+				}
+				String media = (jogoServidor.getMediaPontecia() + permitidoAcimaMedia)
+						+ "";
+				return new MsgSrv(Lang.msg("261", new String[] { media }));
+
 			}
 		}
 

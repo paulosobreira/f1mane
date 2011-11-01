@@ -86,6 +86,14 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		this.nomeCriador = nomeCriador;
 	}
 
+	public void setarNivelCorrida() {
+		if (ControleJogoLocal.FACIL.equals(getNivelCorrida())) {
+			niveljogo = FACIL_NV;
+		} else if (ControleJogoLocal.DIFICIL.equals(getNivelCorrida())) {
+			niveljogo = DIFICIL_NV;
+		}
+	}
+
 	public JogoServidor(String temporada) throws Exception {
 		super(temporada);
 	}
@@ -322,6 +330,19 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public String getNivelCorrida() {
 		return dadosCriarJogo.getNivelCorrida();
+	}
+
+	public double getNiveljogo() {
+		if (InterfaceJogo.DIFICIL.equals(dadosCriarJogo.getNivelCorrida())) {
+			return InterfaceJogo.DIFICIL_NV;
+		}
+		if (InterfaceJogo.FACIL.equals(dadosCriarJogo.getNivelCorrida())) {
+			return InterfaceJogo.DIFICIL_NV;
+		}
+		if (InterfaceJogo.NORMAL.equals(dadosCriarJogo.getNivelCorrida())) {
+			return InterfaceJogo.MEDIO_NV;
+		}
+		return InterfaceJogo.MEDIO_NV;
 	}
 
 	private void atualizarJogadoresOnline() {
