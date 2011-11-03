@@ -977,4 +977,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
+			Piloto p) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

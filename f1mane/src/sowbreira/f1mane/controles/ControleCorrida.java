@@ -678,4 +678,9 @@ public class ControleCorrida {
 	public boolean asfaltoAbrasivo() {
 		return asfaltoAbrasivo;
 	}
+
+	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
+			Piloto p) {
+		return controleSafetyCar.ganhoComSafetyCar(ganho, controleJogo, p);
+	}
 }

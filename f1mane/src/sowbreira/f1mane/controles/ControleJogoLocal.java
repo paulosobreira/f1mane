@@ -1162,4 +1162,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public boolean asfaltoAbrasivo() {
 		return controleCorrida.asfaltoAbrasivo();
 	}
+
+	@Override
+	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
+			Piloto p) {
+		return controleCorrida.ganhoComSafetyCar(ganho, controleJogo, p);
+	}
 }

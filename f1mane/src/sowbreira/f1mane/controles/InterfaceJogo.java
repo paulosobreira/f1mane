@@ -276,4 +276,7 @@ public interface InterfaceJogo {
 
 	public boolean asfaltoAbrasivo();
 
+	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
+			Piloto p);
+
 }
