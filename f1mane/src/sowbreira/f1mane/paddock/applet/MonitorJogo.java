@@ -530,8 +530,8 @@ public class MonitorJogo implements Runnable {
 						if (ganho < 1) {
 							ganho = 1;
 						}
-						if (ganho > 5) {
-							ganho = 5;
+						if (ganho > 7) {
+							ganho = 7;
 						}
 						if (ganhoCorrecao != 0) {
 							ganho = ganhoCorrecao;
