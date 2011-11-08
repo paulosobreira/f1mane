@@ -472,7 +472,7 @@ public class MonitorJogo implements Runnable {
 							}
 						}
 						int contDiv = 50;
-						int contSleep = 20;
+						int contSleep = 30;
 						double ganhoCorrecao = 0;
 						boolean intervalo = false;
 						for (int i = 0; i < 2000; i += 5) {
