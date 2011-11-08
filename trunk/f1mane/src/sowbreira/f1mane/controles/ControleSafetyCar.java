@@ -38,35 +38,17 @@ public class ControleSafetyCar {
 	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
 			Piloto piloto) {
 		if (piloto.getPosicao() != 1) {
-			No saidaBox = (No) controleJogo.getCircuito().getPistaFull().get(
-					controleJogo.getCircuito().getSaidaBoxIndex());
-			No noAtual = piloto.getNoAtual();
-			/**
-			 * Saida Box Zona de Guerra
-			 */
-			if (saidaBox.getIndex() + 50 > noAtual.getIndex()
-					&& noAtual.getIndex() > saidaBox.getIndex() - 150) {
-				if (piloto.isJogadorHumano()) {
-					Logger.logar("Ganho Normal Saida Box");
-				}
-				return ganho;
-			}
 			Piloto pilotoFrente = controleJogo.obterCarroNaFrente(piloto)
 					.getPiloto();
-			if (pilotoFrente.getPtosBox() > 0
-					|| pilotoFrente.isDesqualificado()
-					|| pilotoFrente.danificado()) {
-				return ganho;
-			}
-			if ((piloto.getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 180)) {
+			if ((piloto.getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 100)) {
 				return ganho * 0.1;
 			}
 		} else {
 			if ((piloto.getPtosPista() + ganho) > (controleJogo.getSafetyCar()
-					.getPtosPista() - 90)) {
+					.getPtosPista() - 100)) {
 				return ganho * 0.1;
 			} else if ((piloto.getPtosPista() + ganho) < (controleJogo
-					.getSafetyCar().getPtosPista() - 180)) {
+					.getSafetyCar().getPtosPista() - 200)) {
 				return ganho * 1.5;
 			}
 		}
