@@ -345,16 +345,16 @@ public class Carro implements Serializable {
 		double mod = 0.5;
 
 		if (GIRO_MAX_VAL == giro) {
-			mod = 0.65;
+			mod = 0.7;
 		}
 		if (GIRO_MIN_VAL == giro) {
-			mod = 0.35;
+			mod = 0.3;
 		}
 		if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
-			mod -= 0.1;
+			mod += 0.1;
 		}
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-			mod -= 0.2;
+			mod += 0.2;
 		}
 		if (Math.random() > mod) {
 			return novoModificadorOri;
@@ -363,7 +363,7 @@ public class Carro implements Serializable {
 
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
-					&& getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
+					&& getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
 				novoModificador++;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
 					&& !getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
@@ -372,7 +372,7 @@ public class Carro implements Serializable {
 		}
 		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
-					&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
+					&& !getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
 				novoModificador--;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
 					&& getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
@@ -389,7 +389,7 @@ public class Carro implements Serializable {
 		// * (1.0 - controleJogo.getNiveljogo())))) + " Velho "
 		// + novoModificadorOri + " Calc " + novoModificador);
 		return novoModificadorOri
-				+ Util.inte(+Math.round(novoModificador
+				+ Util.inte(Math.round(novoModificador
 						* (controleJogo.getNiveljogo())));
 	}
 
@@ -449,9 +449,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& temperaturaMotor == tempMax - 1)
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -767,8 +768,7 @@ public class Carro implements Serializable {
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4)
-					+ novoModDano;
+					: 4) + novoModDano;
 			boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 			if (!teste && Math.random() > 0.95 && !controleJogo.isChovendo()
 					&& getPiloto().getPtosBox() == 0) {
