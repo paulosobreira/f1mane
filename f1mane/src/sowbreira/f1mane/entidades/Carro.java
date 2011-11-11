@@ -390,7 +390,7 @@ public class Carro implements Serializable {
 		// + novoModificadorOri + " Calc " + novoModificador);
 		return novoModificadorOri
 				+ Util.inte(+Math.round(novoModificador
-						* (1.0 - controleJogo.getNiveljogo())));
+						* (controleJogo.getNiveljogo())));
 	}
 
 	private void calculaDesgasteMotor(int novoModificador, boolean agressivo,
@@ -490,6 +490,9 @@ public class Carro implements Serializable {
 			}
 
 			desg *= desgasteTemp;
+		}
+		if (verificaDano()) {
+			desg /= 2;
 		}
 		motor -= desg;
 		if (porcentagemDesgasteMotor() < 0) {
@@ -841,7 +844,9 @@ public class Carro implements Serializable {
 		if (porcent < 5) {
 			valDesgaste *= 0.1;
 		}
-
+		if (verificaDano()) {
+			valDesgaste /= 3;
+		}
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
 			danificado = PNEU_FURADO;
