@@ -933,7 +933,7 @@ public class Piloto implements Serializable {
 		}
 
 		if (danificado()) {
-			novoModificador = 1;
+			novoModificador = Util.intervalo(1, 2);
 		}
 
 		processaVelocidade(novoModificador, noAtual);
@@ -1499,7 +1499,7 @@ public class Piloto implements Serializable {
 				ciclosDesconcentrado = gerarDesconcentracao((int) (5 * controleJogo
 						.getNiveljogo()));
 			}
-			ciclosDesconcentrado *= (controleJogo.getNiveljogo());
+			ciclosDesconcentrado *= (1 - controleJogo.getNiveljogo());
 
 		}
 		if (jogadorHumano) {
