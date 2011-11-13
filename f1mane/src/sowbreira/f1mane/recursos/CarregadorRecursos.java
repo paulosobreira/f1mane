@@ -157,6 +157,7 @@ public class CarregadorRecursos {
 			}
 
 		} catch (Exception e) {
+			System.out.println("Erro gerando transparencia para :" + file);
 			Logger.logar("Erro gerando transparencia para :" + file);
 			Logger.logarExept(e);
 		}
@@ -525,7 +526,7 @@ public class CarregadorRecursos {
 		carroNovo.setImg(carro.getImg());
 		carroNovo.setPiloto(piloto);
 		carroNovo.setPotenciaReal(carro.getPotencia());
-		
+
 		carroNovo.setPotencia(carro.getPotencia()
 				+ (Math.random() > .5 ? -5 : 5));
 		return carroNovo;
