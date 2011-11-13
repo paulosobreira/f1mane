@@ -356,7 +356,7 @@ public class Carro implements Serializable {
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
 			mod += 0.2;
 		}
-		if (Math.random() > mod) {
+		if (Math.random() > mod && testePotencia()) {
 			return novoModificadorOri;
 		}
 		int novoModificador = 0;
@@ -379,10 +379,9 @@ public class Carro implements Serializable {
 				novoModificador++;
 			}
 		}
-		if (controleJogo.isChovendo() && !MAIS_ASA.equals(getAsa())) {
-			if (Math.random() < .500) {
-				novoModificador--;
-			}
+		if (controleJogo.isChovendo() && !MAIS_ASA.equals(getAsa())
+				&& controleJogo.verificaNivelJogo()) {
+			novoModificador--;
 		}
 		// System.out.println("Novo "
 		// + (novoModificadorOri + Util.inte(+Math.round(novoModificador
