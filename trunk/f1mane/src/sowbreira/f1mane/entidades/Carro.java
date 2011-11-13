@@ -356,6 +356,10 @@ public class Carro implements Serializable {
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
 			mod += 0.2;
 		}
+		if (controleJogo.isChovendo() && !MAIS_ASA.equals(getAsa())
+				&& controleJogo.verificaNivelJogo()) {
+			novoModificadorOri--;
+		}
 		if (Math.random() > mod && testePotencia()) {
 			return novoModificadorOri;
 		}
@@ -363,26 +367,23 @@ public class Carro implements Serializable {
 
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
-					&& getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
+					&& testePotencia()) {
 				novoModificador++;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
-					&& !getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
+					&& !testePotencia()) {
 				novoModificador--;
 			}
 		}
 		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
-					&& !getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
+					&& !testePotencia()) {
 				novoModificador--;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
-					&& getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
+					&& testePotencia()) {
 				novoModificador++;
 			}
 		}
-		if (controleJogo.isChovendo() && !MAIS_ASA.equals(getAsa())
-				&& controleJogo.verificaNivelJogo()) {
-			novoModificador--;
-		}
+
 		// System.out.println("Novo "
 		// + (novoModificadorOri + Util.inte(+Math.round(novoModificador
 		// * (1.0 - controleJogo.getNiveljogo())))) + " Velho "
