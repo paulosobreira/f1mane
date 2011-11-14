@@ -356,9 +356,9 @@ public class Carro implements Serializable {
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
 			mod += 0.2;
 		}
-		if (controleJogo.isChovendo() && !MAIS_ASA.equals(getAsa())
-				&& controleJogo.verificaNivelJogo()) {
-			novoModificadorOri--;
+		if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa())
+				&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
+			novoModificadorOri++;
 		}
 		if (Math.random() > mod && testePotencia()) {
 			return novoModificadorOri;
@@ -491,6 +491,11 @@ public class Carro implements Serializable {
 
 			desg *= desgasteTemp;
 		}
+		if (giro == GIRO_MAX_VAL && !testePotencia()
+				&& MENOS_ASA.equals(getAsa())) {
+			desg++;
+		}
+
 		if (verificaDano()) {
 			desg /= 2;
 		}
@@ -770,9 +775,6 @@ public class Carro implements Serializable {
 					&& getPiloto().getPtosBox() == 0) {
 				controleJogo.travouRodas(getPiloto());
 			}
-			if (!testePotencia() && MAIS_ASA.equals(getAsa())) {
-				desgPneus++;
-			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
 					: 4)
@@ -854,6 +856,10 @@ public class Carro implements Serializable {
 		}
 		if (verificaDano()) {
 			valDesgaste /= 3;
+		}
+		if (!getPiloto().testeHabilidadePilotoCarro(controleJogo)
+				&& MAIS_ASA.equals(getAsa())) {
+			desgPneus++;
 		}
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
