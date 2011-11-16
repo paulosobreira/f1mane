@@ -189,6 +189,9 @@ public class ControleBox {
 			} else {
 				box = piloto.getNoAtual();
 				int ptosBox = boxRapido;
+				if (controleJogo.isSafetyCarNaPista()) {
+					ptosBox = 0;
+				}
 				if (box.isBox()) {
 					/**
 					 * gera limite velocidade no box
