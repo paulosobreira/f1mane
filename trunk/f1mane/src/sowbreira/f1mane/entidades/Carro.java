@@ -350,12 +350,6 @@ public class Carro implements Serializable {
 		if (GIRO_MIN_VAL == giro) {
 			mod = 0.3;
 		}
-		if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
-			mod += 0.1;
-		}
-		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-			mod += 0.2;
-		}
 		if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa())
 				&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
 			novoModificadorOri++;
@@ -388,9 +382,7 @@ public class Carro implements Serializable {
 		// + (novoModificadorOri + Util.inte(+Math.round(novoModificador
 		// * (1.0 - controleJogo.getNiveljogo())))) + " Velho "
 		// + novoModificadorOri + " Calc " + novoModificador);
-		return novoModificadorOri
-				+ Util.inte(Math.round(novoModificador
-						* (controleJogo.getNiveljogo())));
+		return novoModificadorOri + novoModificador;
 	}
 
 	private void calculaDesgasteMotor(int novoModificador, boolean agressivo,
@@ -492,7 +484,7 @@ public class Carro implements Serializable {
 			desg *= desgasteTemp;
 		}
 		if (giro == GIRO_MAX_VAL && !testePotencia()
-				&& MENOS_ASA.equals(getAsa())) {
+				&& MENOS_ASA.equals(getAsa()) && no.verificaRetaOuLargada()) {
 			desg++;
 		}
 
@@ -608,7 +600,7 @@ public class Carro implements Serializable {
 					.testeHabilidadePilotoCarro(controleJogo)) ? 3 : 4);
 		}
 		if (giro == GIRO_MAX_VAL && !testePotencia()
-				&& MENOS_ASA.equals(getAsa())) {
+				&& MENOS_ASA.equals(getAsa()) && no.verificaRetaOuLargada()) {
 			valConsumo++;
 		}
 
@@ -858,7 +850,8 @@ public class Carro implements Serializable {
 			valDesgaste /= 3;
 		}
 		if (!getPiloto().testeHabilidadePilotoCarro(controleJogo)
-				&& MAIS_ASA.equals(getAsa())) {
+				&& MAIS_ASA.equals(getAsa())
+				&& (no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
 			desgPneus++;
 		}
 		pneus -= valDesgaste;
