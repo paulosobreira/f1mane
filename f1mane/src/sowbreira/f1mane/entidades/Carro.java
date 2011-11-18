@@ -483,9 +483,10 @@ public class Carro implements Serializable {
 
 			desg *= desgasteTemp;
 		}
-		if (giro == GIRO_MAX_VAL && !testePotencia()
-				&& MENOS_ASA.equals(getAsa()) && no.verificaRetaOuLargada()) {
-			desg++;
+		if (getPiloto().isJogadorHumano() && giro == GIRO_MAX_VAL
+				&& !testePotencia() && MENOS_ASA.equals(getAsa())
+				&& no.verificaRetaOuLargada()) {
+			desg += Util.intervalo(1, controleJogo.verificaNivelJogo() ? 2 : 1);
 		}
 
 		if (verificaDano()) {
@@ -599,9 +600,11 @@ public class Carro implements Serializable {
 			valConsumo += ((getPiloto()
 					.testeHabilidadePilotoCarro(controleJogo)) ? 3 : 4);
 		}
-		if (giro == GIRO_MAX_VAL && !testePotencia()
-				&& MENOS_ASA.equals(getAsa()) && no.verificaRetaOuLargada()) {
-			valConsumo++;
+		if (getPiloto().isJogadorHumano() && giro == GIRO_MAX_VAL
+				&& !testePotencia() && MENOS_ASA.equals(getAsa())
+				&& no.verificaRetaOuLargada()) {
+			valConsumo += Util.intervalo(1,
+					controleJogo.verificaNivelJogo() ? 2 : 1);
 		}
 
 		combustivel -= (valConsumo
@@ -849,10 +852,12 @@ public class Carro implements Serializable {
 		if (verificaDano()) {
 			valDesgaste /= 3;
 		}
-		if (!getPiloto().testeHabilidadePilotoCarro(controleJogo)
+		if (getPiloto().isJogadorHumano()
+				&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)
 				&& MAIS_ASA.equals(getAsa())
 				&& (no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
-			desgPneus++;
+			desgPneus += Util.intervalo(1, controleJogo.verificaNivelJogo() ? 2
+					: 1);
 		}
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
