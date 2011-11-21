@@ -38,7 +38,8 @@ public class ControleBox {
 	private Hashtable boxEquipesOcupado;
 	private Circuito circuito;
 	private List carrosBox;
-	private int boxRapido = 0;
+	private boolean boxRapido = false;
+	private int ultIndiceParada = 0;
 
 	public List getCarrosBox() {
 		return carrosBox;
@@ -66,7 +67,7 @@ public class ControleBox {
 			throw new Exception("Saida box não encontrada!");
 		}
 		if (controleJogo.verificaNivelJogo()) {
-			boxRapido = 1;
+			boxRapido = true;
 		}
 		geraBoxesEquipes(carrosBox);
 	}
@@ -109,6 +110,9 @@ public class ControleBox {
 			if (cont < 12)
 				cont++;
 			boxEquipes.put(carro, ptosBox.get(indexParada));
+			if (indexParada > ultIndiceParada) {
+				ultIndiceParada = indexParada;
+			}
 		}
 	}
 
@@ -188,21 +192,23 @@ public class ControleBox {
 						* circuito.getMultiplciador()));
 			} else {
 				box = piloto.getNoAtual();
-				int ptosBox = boxRapido;
-				if (controleJogo.isSafetyCarNaPista()) {
-					ptosBox = 0;
-				}
+				int ptosBox = 0;
 				if (box.isBox()) {
 					/**
 					 * gera limite velocidade no box
 					 */
 					ptosBox += 1;
-				} else if (box.verificaRetaOuLargada()) {
-					ptosBox += ((Math.random() > .3) ? 3 : 2);
-				} else if (box.verificaCruvaAlta()) {
-					ptosBox += ((Math.random() > .4) ? 2 : 1);
-				} else if (box.verificaCruvaBaixa()) {
-					ptosBox += ((Math.random() > .5) ? 2 : 1);
+				} else if (box.verificaRetaOuLargada()
+						&& box.getIndex() > ultIndiceParada) {
+					ptosBox += ((Math.random() > .3 && boxRapido) ? 3 : 2);
+				} else if (box.verificaCruvaAlta()
+						&& box.getIndex() > ultIndiceParada) {
+					ptosBox += ((Math.random() > .4 && boxRapido) ? 2 : 1);
+				} else if (box.verificaCruvaBaixa()
+						&& box.getIndex() > ultIndiceParada) {
+					ptosBox += ((Math.random() > .5 && boxRapido) ? 2 : 1);
+				} else {
+					ptosBox += 1;
 				}
 				No nobox = (No) boxEquipes.get(piloto.getCarro());
 				int indexParada = piloto.obterPista(controleJogo)
