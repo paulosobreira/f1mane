@@ -213,7 +213,7 @@ public class ControleBox {
 				No nobox = (No) boxEquipes.get(piloto.getCarro());
 				int indexParada = piloto.obterPista(controleJogo)
 						.indexOf(nobox);
-				if (piloto.getNoAtual().getIndex() > (indexParada + Carro.MEIA_LARGURA)
+				if (piloto.getNoAtual().getIndex() > (ultIndiceParada + Carro.MEIA_LARGURA)
 						&& verificaTemCarroPassandoSaida()) {
 					ptosBox = ((Math.random() > .7) ? 0 : 1);
 					if (controleJogo.isSafetyCarNaPista()) {
@@ -257,7 +257,7 @@ public class ControleBox {
 
 		No box = (No) boxEquipes.get(piloto.getCarro());
 		int contBox = piloto.getNoAtual().getIndex();
-		if ((contBox > (box.getIndex() - 15) && contBox < (box.getIndex() + 15))
+		if ((contBox > (box.getIndex() - 16) && contBox < (box.getIndex() + 16))
 				&& !piloto.decrementaParadoBox() && piloto.isBox()) {
 			processarPilotoPararBox(piloto);
 		}
