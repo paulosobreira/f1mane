@@ -354,7 +354,7 @@ public class Carro implements Serializable {
 				&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
 			novoModificadorOri++;
 		}
-		if (Math.random() > mod && testePotencia()) {
+		if (Math.random() > mod || !testePotencia()) {
 			return novoModificadorOri;
 		}
 		int novoModificador = 0;
@@ -363,18 +363,17 @@ public class Carro implements Serializable {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
 					&& testePotencia()) {
 				novoModificador++;
-			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
-					&& !testePotencia()) {
-				novoModificador--;
+			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod) {
+				novoModificador -= Util.intervalo(1, testePotencia() ? 1 : 2);
 			}
 		}
 		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
-			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
-					&& !testePotencia()) {
-				novoModificador--;
+			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod) {
+				novoModificador -= Util.intervalo(testePotencia() ? 0 : 1,
+						piloto.isAgressivo() ? 3 : 2);
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
 					&& testePotencia()) {
-				novoModificador++;
+				novoModificador += Util.intervalo(0, 1);
 			}
 		}
 
@@ -644,8 +643,8 @@ public class Carro implements Serializable {
 		}
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)
 				&& getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
-			int intervaloMin = Util.intervalo(5, 15);
-			int intervaloMax = Util.intervalo(85, 95);
+			int intervaloMin = Util.intervalo(5, 10);
+			int intervaloMax = Util.intervalo(90, 95);
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				if ((porcent > intervaloMin)
 						&& (Math.random() > indicativo - 0.05)
@@ -695,7 +694,7 @@ public class Carro implements Serializable {
 				}
 			}
 			if (no.verificaCruvaBaixa()) {
-				int intervaloMin = Util.intervalo(15, 35);
+				int intervaloMin = Util.intervalo(15, 30);
 				int intervaloMax = Util.intervalo(70, 80);
 				if ((porcent > intervaloMin) && (porcent < intervaloMax)
 						&& (Math.random() > indicativo)) {
@@ -786,20 +785,21 @@ public class Carro implements Serializable {
 			desgPneus += (piloto.testeHabilidadePilotoOuCarro(controleJogo) ? 1
 					: 2);
 		}
-		if (Clima.SOL.equals(controleJogo.getClima())) {
-			if (!piloto.testeHabilidadePilotoCarro(controleJogo))
-				desgPneus += 2;
-			else
-				desgPneus += 1;
+		if (Clima.SOL.equals(controleJogo.getClima()) && piloto.isAgressivo()) {
 			if (no.verificaCruvaBaixa()) {
-				desgPneus++;
+				if (!piloto.testeHabilidadePilotoCarro(controleJogo))
+					desgPneus += Util.intervalo(1, 2);
+				else
+					desgPneus += 1;
 			} else if (no.verificaCruvaAlta()) {
-				if (Math.random() > .5) {
-					desgPneus++;
-				}
+				if (!piloto.testeHabilidadePilotoCarro(controleJogo))
+					desgPneus += Util.intervalo(0, 2);
+				else
+					desgPneus += 1;
 			}
-			if (controleJogo.asfaltoAbrasivo()) {
-				desgPneus += Util.intervalo(1, 2);
+			if (controleJogo.asfaltoAbrasivo()
+					&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())) {
+				desgPneus += Util.intervalo(0, 2);
 			}
 		}
 		double porcentComb = porcentagemCombustivel() / 1000.0;
