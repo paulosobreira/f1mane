@@ -297,10 +297,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public void carregaBackGround() {
-		// if (true) {
-		// return;
-		// }
-		Logger.logar("carregaBackGround()");
+		if (Logger.ativo) {
+			return;
+		}
 		try {
 			if (!(threadCarregarBkg != null && threadCarregarBkg.isAlive()))
 				backGround = CarregadorRecursos.carregaBackGround(circuito

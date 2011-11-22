@@ -530,7 +530,7 @@ public class GerenciadorVisual {
 						if (controleJogo.getPilotoJogador() != null
 								&& controleJogo.getPilotoJogador()
 										.isJogadorHumano())
-						controleJogo.diminueFatorAcidade();
+							controleJogo.diminueFatorAcidade();
 					}
 				}
 			}
