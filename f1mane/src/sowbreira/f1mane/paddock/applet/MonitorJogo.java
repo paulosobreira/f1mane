@@ -475,7 +475,7 @@ public class MonitorJogo implements Runnable {
 						}
 
 						int contDiv = 50;
-						int contSleep = 30;
+						int contSleep = 25;
 						double ganhoCorrecao = 0;
 						boolean intervalo = false;
 						for (int i = 0; i < 300; i += 5) {
@@ -484,16 +484,17 @@ public class MonitorJogo implements Runnable {
 								sleepConsumidorPosis = contSleep;
 								intervalo = true;
 								if (piloto.isJogadorHumano()) {
-									Logger.logar("diffINdex " + diffINdex);
-									Logger.logar("contDiv " + contDiv);
-									Logger.logar("contSleep " + contSleep);
+									System.out.println();
+									System.out.println("diffINdex " + diffINdex);
+									System.out.println("contDiv " + contDiv);
+									System.out.println("contSleep " + contSleep);
 								}
 								break;
 							}
 							if (contDiv > 1) {
 								contDiv--;
 							}
-							if (contSleep > 3) {
+							if (contSleep > 1) {
 								contSleep--;
 							}
 							if (contDiv == 1 && diffINdex > 150) {
@@ -542,14 +543,14 @@ public class MonitorJogo implements Runnable {
 						if (ganho < 1) {
 							ganho = 1;
 						}
-						if (ganho > 7) {
-							ganho = 7;
+						if (ganho > 5) {
+							ganho = 5;
 						}
 						if (ganhoCorrecao != 0) {
 							ganho += ganhoCorrecao;
 						}
-						if (ganho > 20) {
-							ganho = 20;
+						if (ganho > 15) {
+							ganho = 15;
 						}
 
 						if (entrouNoBox || saiuNoBox) {
