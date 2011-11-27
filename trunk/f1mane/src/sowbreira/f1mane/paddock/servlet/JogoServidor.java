@@ -184,13 +184,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 		}
 		dadosCriarJogo.setPilotosCarreira(pilotos);
-		if (pilotoSelecionado != null) {
-			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-					.obterCarreiraSrv(nomeJogador);
-			if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
-				pilotoSelecionado.getCarro().setImg(null);
-			}
-		}
 		return null;
 	}
 
@@ -303,6 +296,14 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			Piloto piloto = (Piloto) iterator.next();
 			if (!carrobox.contains(piloto.getCarro())) {
 				carrobox.add(piloto.getCarro());
+			}
+			if (piloto.isJogadorHumano()) {
+				CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
+						.obterCarreiraSrv(piloto.getNomeJogador());
+				if (carreiraDadosSrv != null
+						&& carreiraDadosSrv.isModoCarreira()) {
+					piloto.getCarro().setImg(null);
+				}
 			}
 		}
 		Logger.logar("Tamanho carrobox servidor " + carrobox.size());

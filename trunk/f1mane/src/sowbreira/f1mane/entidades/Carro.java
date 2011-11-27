@@ -234,7 +234,6 @@ public class Carro implements Serializable {
 	}
 
 	public void setPotencia(int potencia) {
-		tempMax = potencia / 2;
 		this.potencia = potencia;
 	}
 
@@ -384,6 +383,14 @@ public class Carro implements Serializable {
 		return novoModificadorOri + novoModificador;
 	}
 
+	public int getTempMax() {
+		return tempMax;
+	}
+
+	public void setTempMax(int tempMax) {
+		this.tempMax = tempMax;
+	}
+
 	private void calculaDesgasteMotor(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
 		int valDesgaste = 0;
@@ -439,10 +446,11 @@ public class Carro implements Serializable {
 		if (giro == GIRO_MAX_VAL && temperaturaMotor < tempMax) {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
-					&& temperaturaMotor == tempMax - 1)
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -771,8 +779,7 @@ public class Carro implements Serializable {
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4)
-					+ novoModDano;
+					: 4) + novoModDano;
 			boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 			if (!teste && Math.random() > 0.95 && !controleJogo.isChovendo()
 					&& getPiloto().getPtosBox() == 0) {
