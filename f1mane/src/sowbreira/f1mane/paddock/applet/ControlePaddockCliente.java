@@ -915,7 +915,7 @@ public class ControlePaddockCliente {
 				JOptionPane.OK_CANCEL_OPTION);
 		if (JOptionPane.OK_OPTION == result) {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.ABANDONAR, sessaoCliente);
+					Comandos.SAIR_JOGO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 			if (jogoCliente != null) {
 				jogoCliente.matarTodasThreads();

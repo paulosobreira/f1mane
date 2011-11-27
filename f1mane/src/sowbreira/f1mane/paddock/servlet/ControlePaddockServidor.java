@@ -280,8 +280,8 @@ public class ControlePaddockServidor {
 			return receberTexto(clientPaddockPack, cliente);
 		} else if (Comandos.CRIAR_JOGO.equals(commando)) {
 			return criarJogo(clientPaddockPack);
-		} else if (Comandos.ABANDONAR.equals(commando)) {
-			return abandonarJogo(clientPaddockPack);
+		} else if (Comandos.SAIR_JOGO.equals(commando)) {
+			return sairDoJogo(clientPaddockPack);
 		} else if (Comandos.ENTRAR_JOGO.equals(commando)) {
 			return entrarJogo(clientPaddockPack);
 		} else if (Comandos.VER_DETALHES_JOGO.equals(commando)) {
@@ -418,8 +418,8 @@ public class ControlePaddockServidor {
 		return controleJogosServer.mudarGiroMotor(clientPaddockPack);
 	}
 
-	private Object abandonarJogo(ClientPaddockPack clientPaddockPack) {
-		return controleJogosServer.abandonarJogo(clientPaddockPack);
+	private Object sairDoJogo(ClientPaddockPack clientPaddockPack) {
+		return controleJogosServer.sairDoJogo(clientPaddockPack);
 	}
 
 	private Object mudarModoBox(ClientPaddockPack clientPaddockPack) {

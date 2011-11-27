@@ -458,7 +458,7 @@ public class ControleJogosServer {
 		return null;
 	}
 
-	public Object abandonarJogo(ClientPaddockPack clientPaddockPack) {
+	public Object sairDoJogo(ClientPaddockPack clientPaddockPack) {
 		JogoServidor jogoServidor = obterJogoPeloNome(clientPaddockPack
 				.getNomeJogo());
 		if (jogoServidor == null) {

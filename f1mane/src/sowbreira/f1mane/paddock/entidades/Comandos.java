@@ -28,7 +28,7 @@ public class Comandos {
 	public static final String OBTER_POSICAO_PILOTOS = "18";
 	public static final String MUDAR_MODO_AGRESSIVO = "19";
 	public static final String MUDAR_MODO_BOX = "20";
-	public static final String ABANDONAR = "21";
+	public static final String SAIR_JOGO = "21";
 	public static final String SAIR_PADDOCK = "22";
 	public static final String CORRIDA_TERMINADA = "23";
 	public static final String MOSTRA_RESULTADO_FINAL = "24";
