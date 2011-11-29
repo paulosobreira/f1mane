@@ -184,14 +184,14 @@ public class ControleQualificacao {
 			piloto.setVelocidade(0);
 			Carro carro = piloto.getCarro();
 			int durabilidade = 5;
-			carro.setTempMax(carro.getPotencia() / 3);
+			carro.setTempMax(carro.getPotencia() / 4);
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
 				durabilidade = 6;
 				carro.setTempMax(carro.getPotencia() / 2);
 			}
 			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
 				durabilidade = 4;
-				carro.setTempMax(carro.getPotencia() / 4);
+				carro.setTempMax(carro.getPotencia() / 6);
 			}
 			carro.setDurabilidadeAereofolio(durabilidade);
 
