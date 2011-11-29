@@ -213,7 +213,7 @@ public class MonitorJogo implements Runnable {
 								piloto.decIndiceTracado();
 							}
 							jogoCliente.verificaProgramacaoBox();
-							Thread.sleep(100);
+							Thread.sleep(75);
 						} catch (Exception e) {
 							Logger.logarExept(e);
 						}
