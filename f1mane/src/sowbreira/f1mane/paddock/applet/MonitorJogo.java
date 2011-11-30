@@ -213,7 +213,7 @@ public class MonitorJogo implements Runnable {
 								piloto.decIndiceTracado();
 							}
 							jogoCliente.verificaProgramacaoBox();
-							Thread.sleep(40);
+							Thread.sleep(70);
 						} catch (Exception e) {
 							Logger.logarExept(e);
 						}
@@ -473,9 +473,8 @@ public class MonitorJogo implements Runnable {
 								Logger.logar("diffINdex " + diffINdex);
 							}
 						}
-
 						int contDiv = 50;
-						int contSleep = 25;
+						int contSleep = 30;
 						double ganhoCorrecao = 0;
 						boolean intervalo = false;
 						for (int i = 0; i < 300; i += 5) {
@@ -495,7 +494,7 @@ public class MonitorJogo implements Runnable {
 							if (contDiv > 1) {
 								contDiv--;
 							}
-							if (contSleep > 5) {
+							if (contSleep > 15) {
 								contSleep--;
 							}
 							if (contDiv == 1 && diffINdex > 150) {
