@@ -99,7 +99,7 @@ public class PainelCircuito extends JPanel {
 	public final static BufferedImage setaCarroBaixo = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png", 200);
 	public final static BufferedImage gridCarro = CarregadorRecursos
-			.carregaBufferedImageTranspareciaPreta("GridCarro.png");
+			.carregaBufferedImageTranspareciaPreta("GridCarro.png", 100);
 	public final static BufferedImage helmetPiloto = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("helmet.gif");
 	public final static BufferedImage scimg = CarregadorRecursos
@@ -1182,7 +1182,7 @@ public class PainelCircuito extends JPanel {
 				if (i % (Math.random() > 0.5 ? 3 : 2) == 0) {
 					continue;
 				}
-				int eixoDiatero = (int) (eixo * 0.7);
+				int eixoDiatero = (int) (eixo * 0.3);
 				Point origem = new Point((int) Util.intervalo(eixoDianteras.x
 						- eixoDiatero, eixoDianteras.x + eixoDiatero),
 						(int) Util.intervalo(eixoDianteras.y - eixoDiatero,
@@ -1582,154 +1582,166 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void gerarGrid() {
-		gridImg.clear();
-		for (int i = 0; i < 24; i++) {
-			int iP = 50 + Util.inte((Carro.LARGURA * 0.8) * i);
-			No n1 = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
-			No nM = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP);
-			No n2 = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP + Carro.MEIA_LARGURA);
-			Point p1 = new Point(Util.inte(n1.getPoint().x * zoom),
-					Util.inte(n1.getPoint().y * zoom));
-			Point pm = new Point(Util.inte(nM.getPoint().x * zoom),
-					Util.inte(nM.getPoint().y * zoom));
-			Point p2 = new Point(Util.inte(n2.getPoint().x * zoom),
-					Util.inte(n2.getPoint().y * zoom));
-			double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
-			Rectangle2D rectangle = new Rectangle2D.Double(
-					(pm.x - (Carro.MEIA_LARGURA)),
-					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
-					(Carro.ALTURA));
+		synchronized (gridImg) {
+			gridImg.clear();
+			for (int i = 0; i < 24; i++) {
+				int iP = 50 + Util.inte((Carro.LARGURA * 0.8) * i);
+				No n1 = (No) circuito.getPistaFull().get(
+						circuito.getPistaFull().size() - iP
+								- Carro.MEIA_LARGURA);
+				No nM = (No) circuito.getPistaFull().get(
+						circuito.getPistaFull().size() - iP);
+				No n2 = (No) circuito.getPistaFull().get(
+						circuito.getPistaFull().size() - iP
+								+ Carro.MEIA_LARGURA);
+				Point p1 = new Point(Util.inte(n1.getPoint().x * zoom),
+						Util.inte(n1.getPoint().y * zoom));
+				Point pm = new Point(Util.inte(nM.getPoint().x * zoom),
+						Util.inte(nM.getPoint().y * zoom));
+				Point p2 = new Point(Util.inte(n2.getPoint().x * zoom),
+						Util.inte(n2.getPoint().y * zoom));
+				double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
+				Rectangle2D rectangle = new Rectangle2D.Double(
+						(pm.x - (Carro.MEIA_LARGURA)),
+						(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
+						(Carro.ALTURA));
 
-			Point cima = GeoUtil.calculaPonto(
-					calculaAngulo,
-					Util.inte(Carro.ALTURA
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista() * zoom),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			Point baixo = GeoUtil.calculaPonto(
-					calculaAngulo + 180,
-					Util.inte(Carro.ALTURA
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista() * zoom),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			if (i % 2 == 0) {
-				rectangle = new Rectangle2D.Double(
-						(cima.x - (Carro.MEIA_LARGURA * zoom)),
-						(cima.y - (Carro.MEIA_ALTURA * zoom)),
-						(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
-			} else {
-				rectangle = new Rectangle2D.Double(
-						(baixo.x - (Carro.MEIA_LARGURA * zoom)),
-						(baixo.y - (Carro.MEIA_ALTURA * zoom)),
-						(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
-			}
+				Point cima = GeoUtil
+						.calculaPonto(calculaAngulo,
+								Util.inte(Carro.ALTURA
+										* controleJogo.getCircuito()
+												.getMultiplicadorLarguraPista()
+										* zoom),
+								new Point(Util.inte(rectangle.getCenterX()),
+										Util.inte(rectangle.getCenterY())));
+				Point baixo = GeoUtil
+						.calculaPonto(calculaAngulo + 180, Util
+								.inte(Carro.ALTURA
+										* controleJogo.getCircuito()
+												.getMultiplicadorLarguraPista()
+										* zoom),
+								new Point(Util.inte(rectangle.getCenterX()),
+										Util.inte(rectangle.getCenterY())));
+				if (i % 2 == 0) {
+					rectangle = new Rectangle2D.Double(
+							(cima.x - (Carro.MEIA_LARGURA * zoom)),
+							(cima.y - (Carro.MEIA_ALTURA * zoom)),
+							(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
+				} else {
+					rectangle = new Rectangle2D.Double(
+							(baixo.x - (Carro.MEIA_LARGURA * zoom)),
+							(baixo.y - (Carro.MEIA_ALTURA * zoom)),
+							(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
+				}
 
-			GeneralPath generalPath = new GeneralPath(rectangle);
+				GeneralPath generalPath = new GeneralPath(rectangle);
 
-			AffineTransform affineTransformRect = AffineTransform
-					.getScaleInstance(zoom, zoom);
-			double rad = Math.toRadians((double) calculaAngulo);
-			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
-					rectangle.getCenterY());
-			boolean naoDesenha = false;
-			if (circuito.getObjetos() != null) {
-				for (Iterator iterator = circuito.getObjetos().iterator(); iterator
-						.hasNext();) {
-					ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-					if (objetoPista instanceof ObjetoTransparencia) {
-						ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
-						if (objetoTransparencia.obterArea().intersects(
-								generalPath.getBounds())) {
-							naoDesenha = true;
+				AffineTransform affineTransformRect = AffineTransform
+						.getScaleInstance(zoom, zoom);
+				double rad = Math.toRadians((double) calculaAngulo);
+				affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
+						rectangle.getCenterY());
+				boolean naoDesenha = false;
+				if (circuito.getObjetos() != null) {
+					for (Iterator iterator = circuito.getObjetos().iterator(); iterator
+							.hasNext();) {
+						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+						if (objetoPista instanceof ObjetoTransparencia) {
+							ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+							if (objetoTransparencia.obterArea().intersects(
+									generalPath.getBounds())) {
+								naoDesenha = true;
+							}
+						} else {
+							continue;
 						}
-					} else {
-						continue;
 					}
 				}
-			}
-			if (naoDesenha) {
-				grid[i] = null;
-			} else
-				grid[i] = generalPath
+				if (naoDesenha) {
+					grid[i] = null;
+				} else
+					grid[i] = generalPath
+							.createTransformedShape(affineTransformRect);
+				if (circuito != null && circuito.isUsaBkg()) {
+					AffineTransform afZoom = new AffineTransform();
+					AffineTransform afRotate = new AffineTransform();
+					afZoom.setToScale(zoom, zoom);
+					rad = Math.toRadians((double) calculaAngulo + 180);
+					int width = Util.inte(gridCarro.getWidth() * zoom);
+					int height = Util.inte(gridCarro.getHeight() * zoom);
+					afRotate.setToRotation(rad, width / 2, height / 2);
+					BufferedImage rotateBuffer = new BufferedImage(width,
+							height, BufferedImage.TYPE_INT_ARGB);
+					BufferedImage zoomBuffer = new BufferedImage(width, height,
+							BufferedImage.TYPE_INT_ARGB);
+					AffineTransformOp op = new AffineTransformOp(afZoom,
+							AffineTransformOp.TYPE_BILINEAR);
+					op.filter(gridCarro, zoomBuffer);
+					AffineTransformOp op2 = new AffineTransformOp(afRotate,
+							AffineTransformOp.TYPE_BILINEAR);
+					op2.filter(zoomBuffer, rotateBuffer);
+					gridImg.add(rotateBuffer);
+				}
+
+				iP += 5;
+				n1 = (No) circuito.getPistaFull().get(
+						circuito.getPistaFull().size() - iP
+								- Carro.MEIA_LARGURA);
+				nM = (No) circuito.getPistaFull().get(
+						circuito.getPistaFull().size() - iP);
+				n2 = (No) circuito.getPistaFull().get(
+						circuito.getPistaFull().size() - iP
+								+ Carro.MEIA_LARGURA);
+				p1 = new Point(Util.inte(n1.getPoint().x * zoom), Util.inte(n1
+						.getPoint().y * zoom));
+				pm = new Point(Util.inte(nM.getPoint().x * zoom), Util.inte(nM
+						.getPoint().y * zoom));
+				p2 = new Point(Util.inte(n2.getPoint().x * zoom), Util.inte(n2
+						.getPoint().y * zoom));
+				calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
+				rectangle = new Rectangle2D.Double(
+						(pm.x - (Carro.MEIA_LARGURA)),
+						(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
+						(Carro.ALTURA));
+
+				cima = GeoUtil
+						.calculaPonto(calculaAngulo,
+								Util.inte(Carro.ALTURA
+										* controleJogo.getCircuito()
+												.getMultiplicadorLarguraPista()
+										* zoom),
+								new Point(Util.inte(rectangle.getCenterX()),
+										Util.inte(rectangle.getCenterY())));
+				baixo = GeoUtil
+						.calculaPonto(calculaAngulo + 180, Util
+								.inte(Carro.ALTURA
+										* controleJogo.getCircuito()
+												.getMultiplicadorLarguraPista()
+										* zoom),
+								new Point(Util.inte(rectangle.getCenterX()),
+										Util.inte(rectangle.getCenterY())));
+				if (i % 2 == 0) {
+					rectangle = new Rectangle2D.Double(
+							(cima.x - (Carro.MEIA_LARGURA * zoom)),
+							(cima.y - (Carro.MEIA_ALTURA * zoom)),
+							(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
+				} else {
+					rectangle = new Rectangle2D.Double(
+							(baixo.x - (Carro.MEIA_LARGURA * zoom)),
+							(baixo.y - (Carro.MEIA_ALTURA * zoom)),
+							(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
+				}
+
+				generalPath = new GeneralPath(rectangle);
+
+				affineTransformRect = AffineTransform.getScaleInstance(zoom,
+						zoom);
+				rad = Math.toRadians((double) calculaAngulo);
+				affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
+						rectangle.getCenterY());
+				asfaltoGrid[i] = generalPath
 						.createTransformedShape(affineTransformRect);
-			if (circuito != null && circuito.isUsaBkg()) {
-				AffineTransform afZoom = new AffineTransform();
-				AffineTransform afRotate = new AffineTransform();
-				afZoom.setToScale(zoom, zoom);
-				rad = Math.toRadians((double) calculaAngulo + 180);
-				int width = Util.inte(gridCarro.getWidth() * zoom);
-				int height = Util.inte(gridCarro.getHeight() * zoom);
-				afRotate.setToRotation(rad, width / 2, height / 2);
-				BufferedImage rotateBuffer = new BufferedImage(width, height,
-						BufferedImage.TYPE_INT_ARGB);
-				BufferedImage zoomBuffer = new BufferedImage(width, height,
-						BufferedImage.TYPE_INT_ARGB);
-				AffineTransformOp op = new AffineTransformOp(afZoom,
-						AffineTransformOp.TYPE_BILINEAR);
-				op.filter(gridCarro, zoomBuffer);
-				AffineTransformOp op2 = new AffineTransformOp(afRotate,
-						AffineTransformOp.TYPE_BILINEAR);
-				op2.filter(zoomBuffer, rotateBuffer);
-				gridImg.add(rotateBuffer);
 			}
-
-			iP += 5;
-			n1 = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
-			nM = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP);
-			n2 = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP + Carro.MEIA_LARGURA);
-			p1 = new Point(Util.inte(n1.getPoint().x * zoom), Util.inte(n1
-					.getPoint().y * zoom));
-			pm = new Point(Util.inte(nM.getPoint().x * zoom), Util.inte(nM
-					.getPoint().y * zoom));
-			p2 = new Point(Util.inte(n2.getPoint().x * zoom), Util.inte(n2
-					.getPoint().y * zoom));
-			calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
-			rectangle = new Rectangle2D.Double((pm.x - (Carro.MEIA_LARGURA)),
-					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
-					(Carro.ALTURA));
-
-			cima = GeoUtil.calculaPonto(
-					calculaAngulo,
-					Util.inte(Carro.ALTURA
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista() * zoom),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			baixo = GeoUtil.calculaPonto(
-					calculaAngulo + 180,
-					Util.inte(Carro.ALTURA
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista() * zoom),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			if (i % 2 == 0) {
-				rectangle = new Rectangle2D.Double(
-						(cima.x - (Carro.MEIA_LARGURA * zoom)),
-						(cima.y - (Carro.MEIA_ALTURA * zoom)),
-						(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
-			} else {
-				rectangle = new Rectangle2D.Double(
-						(baixo.x - (Carro.MEIA_LARGURA * zoom)),
-						(baixo.y - (Carro.MEIA_ALTURA * zoom)),
-						(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
-			}
-
-			generalPath = new GeneralPath(rectangle);
-
-			affineTransformRect = AffineTransform.getScaleInstance(zoom, zoom);
-			rad = Math.toRadians((double) calculaAngulo);
-			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
-					rectangle.getCenterY());
-			asfaltoGrid[i] = generalPath
-					.createTransformedShape(affineTransformRect);
 		}
 	}
 

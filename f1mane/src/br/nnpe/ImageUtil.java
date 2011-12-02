@@ -53,6 +53,41 @@ public class ImageUtil {
 		return bufferedImageRetorno;
 	}
 
+	public static BufferedImage geraTransparencia(BufferedImage src,
+			Color color, int translucidez) {
+		ImageIcon img = new ImageIcon(src);
+		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
+				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
+
+		BufferedImage bufferedImageRetorno = new BufferedImage(
+				img.getIconWidth(), img.getIconHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = srcBufferedImage.getData();
+		WritableRaster destRaster = bufferedImageRetorno.getRaster();
+		int[] argbArray = new int[4];
+
+		for (int i = 0; i < img.getIconWidth(); i++) {
+			for (int j = 0; j < img.getIconHeight(); j++) {
+				argbArray = new int[4];
+				argbArray = srcRaster.getPixel(i, j, argbArray);
+
+				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
+						argbArray[3]);
+
+				if (color.equals(c)) {
+					argbArray[3] = 0;
+				} else {
+					argbArray[3] = translucidez;
+				}
+
+				destRaster.setPixel(i, j, argbArray);
+			}
+		}
+
+		return bufferedImageRetorno;
+	}
+
 	// This method returns a buffered image with the contents of an image
 	public static BufferedImage toBufferedImage(Image image) {
 		if (image instanceof BufferedImage) {

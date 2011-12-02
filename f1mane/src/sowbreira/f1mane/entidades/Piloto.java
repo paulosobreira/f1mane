@@ -1151,7 +1151,6 @@ public class Piloto implements Serializable {
 							|| getDiateira().intersects(piloto.getDiateira())
 							|| getCentro().intersects(piloto.getCentro())
 							|| getCentro().intersects(piloto.getDiateira());
-
 				}
 				msmPista = true;
 				if (intercecionou
@@ -1179,7 +1178,6 @@ public class Piloto implements Serializable {
 							mudarTracado(obterNovoTracadoPossivel(),
 									controleJogo, true);
 						}
-
 					}
 					return true;
 				}

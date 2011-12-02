@@ -166,7 +166,7 @@ public class CarregadorRecursos {
 	}
 
 	public static BufferedImage carregaBufferedImageTranspareciaPreta(
-			String file) {
+			String file, int translucidez) {
 		BufferedImage buffer = null;
 		try {
 			ImageIcon icon = new ImageIcon(
@@ -182,7 +182,7 @@ public class CarregadorRecursos {
 			Logger.logarExept(e);
 		}
 
-		return ImageUtil.geraTransparencia(buffer, Color.BLACK);
+		return ImageUtil.geraTransparencia(buffer, Color.BLACK, translucidez);
 	}
 
 	public static BufferedImage carregaBackGround(String backGroundStr,
