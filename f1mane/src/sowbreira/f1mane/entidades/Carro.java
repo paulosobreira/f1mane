@@ -651,7 +651,7 @@ public class Carro implements Serializable {
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)
 				&& getPiloto().testeHabilidadePilotoOuCarro(controleJogo)) {
 			int intervaloMin = Util.intervalo(5, 10);
-			int intervaloMax = Util.intervalo(95, 99);
+			int intervaloMax = Util.intervalo(90, 95);
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				if ((porcent > intervaloMin)
 						&& (Math.random() > indicativo - 0.05)
@@ -677,7 +677,7 @@ public class Carro implements Serializable {
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
 			if (no.verificaCruvaAlta()) {
-				int intervaloMin = Util.intervalo(15, 20);
+				int intervaloMin = Util.intervalo(10, 25);
 				int intervaloMax = Util.intervalo(80, 90);
 				if ((porcent > intervaloMin) && (porcent < intervaloMax)
 						&& (Math.random() > indicativo)) {
