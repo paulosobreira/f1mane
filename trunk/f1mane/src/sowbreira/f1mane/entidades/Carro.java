@@ -745,6 +745,16 @@ public class Carro implements Serializable {
 				novoModificador -= 1;
 			}
 		}
+
+		if (verificaPneusIncompativeisClima(controleJogo)
+				&& novoModificador > 1) {
+			if (no.verificaCruvaBaixa()) {
+				novoModificador = 1;
+			} else if (no.verificaCruvaAlta()) {
+				novoModificador--;
+			}
+		}
+
 		if ((pneus < 0) && (novoModificador > 1)) {
 			novoModificador -= 1;
 		}

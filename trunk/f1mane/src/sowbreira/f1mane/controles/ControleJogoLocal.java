@@ -98,6 +98,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public boolean isDrs() {
+		if (isChovendo()) {
+			return false;
+		}
 		return drs;
 	}
 

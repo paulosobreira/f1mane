@@ -494,7 +494,7 @@ public class MonitorJogo implements Runnable {
 							if (contDiv > 1) {
 								contDiv--;
 							}
-							if (contSleep > 10) {
+							if (contSleep > 5) {
 								contSleep--;
 							}
 							if (contDiv == 1 && diffINdex > 150) {
