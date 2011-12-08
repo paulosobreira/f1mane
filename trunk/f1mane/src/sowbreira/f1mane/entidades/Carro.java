@@ -662,23 +662,18 @@ public class Carro implements Serializable {
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
 					if (getPiloto().isAgressivo()) {
 						novoModificador -= 1;
-						if (getPiloto().isJogadorHumano()
-								&& !controleJogo.isSafetyCarNaPista()
-								&& !controleJogo.isChovendo()
-								&& (porcent > intervaloMax)
-								&& Math.random() > .99) {
-							controleJogo.info(Html.superBlue(Lang.msg(
-									"pneusFrios",
-									new String[] { Html.txtRedBold(getPiloto()
-											.getNome()) })));
-						}
+						msgPneusFrios(controleJogo, porcent, intervaloMax);
 					}
 				}
 			}
 		} else if (TIPO_PNEU_DURO.equals(tipoPneu)) {
 			if (no.verificaCruvaAlta()) {
-				int intervaloMin = Util.intervalo(10, 25);
-				int intervaloMax = Util.intervalo(80, 90);
+				int mod = 0;
+				if (!controleJogo.asfaltoAbrasivo()) {
+					mod = 5;
+				}
+				int intervaloMin = Util.intervalo(10 + mod, 15 + mod);
+				int intervaloMax = Util.intervalo(80 - mod, 90 - mod);
 				if ((porcent > intervaloMin) && (porcent < intervaloMax)
 						&& (Math.random() > indicativo)) {
 					novoModificador += 1;
@@ -687,22 +682,17 @@ public class Carro implements Serializable {
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
 					if (getPiloto().isAgressivo()) {
 						novoModificador -= 1;
-						if (getPiloto().isJogadorHumano()
-								&& !controleJogo.isSafetyCarNaPista()
-								&& !controleJogo.isChovendo()
-								&& (porcent > intervaloMax)
-								&& Math.random() > .99) {
-							controleJogo.info(Html.superBlue(Lang.msg(
-									"pneusFrios",
-									new String[] { Html.txtRedBold(getPiloto()
-											.getNome()) })));
-						}
+						msgPneusFrios(controleJogo, porcent, intervaloMax);
 					}
 				}
 			}
 			if (no.verificaCruvaBaixa()) {
-				int intervaloMin = Util.intervalo(15, 30);
-				int intervaloMax = Util.intervalo(70, 80);
+				int mod = 0;
+				if (!controleJogo.asfaltoAbrasivo()) {
+					mod = 10;
+				}
+				int intervaloMin = Util.intervalo(20 + mod, 30 + mod);
+				int intervaloMax = Util.intervalo(70 - mod, 80 - mod);
 				if ((porcent > intervaloMin) && (porcent < intervaloMax)
 						&& (Math.random() > indicativo)) {
 					novoModificador += 1;
@@ -710,31 +700,13 @@ public class Carro implements Serializable {
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
 					if (getPiloto().isAgressivo() || !testePotencia()) {
 						novoModificador -= 1;
-						if (getPiloto().isJogadorHumano()
-								&& !controleJogo.isSafetyCarNaPista()
-								&& !controleJogo.isChovendo()
-								&& (porcent > intervaloMax)
-								&& Math.random() > .99) {
-							controleJogo.info(Html.superBlue(Lang.msg(
-									"pneusFrios",
-									new String[] { Html.txtRedBold(getPiloto()
-											.getNome()) })));
-						}
+						msgPneusFrios(controleJogo, porcent, intervaloMax);
 					}
 				} else if ((controleJogo.isDrs() || controleJogo.isKers())
-						&& porcent < 10 && Math.random() < .5) {
+						&& porcent < 20 && Math.random() < .5) {
 					if (getPiloto().isAgressivo() || !testePotencia()) {
 						novoModificador -= 1;
-						if (getPiloto().isJogadorHumano()
-								&& !controleJogo.isSafetyCarNaPista()
-								&& !controleJogo.isChovendo()
-								&& (porcent > intervaloMax)
-								&& Math.random() > .99) {
-							controleJogo.info(Html.superBlue(Lang.msg(
-									"pneusFrios",
-									new String[] { Html.txtRedBold(getPiloto()
-											.getNome()) })));
-						}
+						msgPneusFrios(controleJogo, porcent, intervaloMax);
 					}
 				}
 			}
@@ -748,10 +720,8 @@ public class Carro implements Serializable {
 
 		if (verificaPneusIncompativeisClima(controleJogo)
 				&& novoModificador > 1) {
-			if (no.verificaCruvaBaixa()) {
+			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				novoModificador = 1;
-			} else if (no.verificaCruvaAlta()) {
-				novoModificador--;
 			}
 		}
 
@@ -887,6 +857,16 @@ public class Carro implements Serializable {
 		}
 		// System.out.println(" Depois " + novoModificador);
 		return novoModificador;
+	}
+
+	private void msgPneusFrios(InterfaceJogo controleJogo, int porcent,
+			int intervaloMax) {
+		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista()
+				&& !controleJogo.isChovendo() && (porcent > intervaloMax)
+				&& Math.random() > .99) {
+			controleJogo.info(Html.superBlue(Lang.msg("pneusFrios",
+					new String[] { Html.txtRedBold(getPiloto().getNome()) })));
+		}
 	}
 
 	public int porcentagemDesgastePeneus() {
