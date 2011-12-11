@@ -59,7 +59,7 @@ public class ControleCiclo extends Thread {
 				// Thread.sleep(5000);
 				controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
 				if (controleJogo.asfaltoAbrasivo()) {
-					controleJogo.infoPrioritaria(Html.superGreen(Lang
+					controleJogo.infoPrioritaria(Html.red(Lang
 							.msg("asfaltoAbrasivo")));
 				}
 				while (contadorLuz >= 0) {
