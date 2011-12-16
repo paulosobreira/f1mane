@@ -482,13 +482,13 @@ public class MonitorJogo implements Runnable {
 								divPosis = contDiv;
 								sleepConsumidorPosis = contSleep;
 								intervalo = true;
-								if (piloto.isJogadorHumano()) {
-									System.out.println();
-									System.out
-											.println("diffINdex " + diffINdex);
-									System.out.print(" contDiv " + contDiv);
-									System.out.print(" contSleep " + contSleep);
-								}
+//								if (piloto.isJogadorHumano()) {
+//									System.out.println();
+//									System.out
+//											.println("diffINdex " + diffINdex);
+//									System.out.print(" contDiv " + contDiv);
+//									System.out.print(" contSleep " + contSleep);
+//								}
 								break;
 							}
 							if (contDiv > 1) {
