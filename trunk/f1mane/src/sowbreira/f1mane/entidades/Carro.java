@@ -725,7 +725,7 @@ public class Carro implements Serializable {
 		}
 
 		if (verificaPneusIncompativeisClima(controleJogo)
-				&& novoModificador > 1) {
+				&& novoModificador >= 1) {
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				novoModificador = 0;
 			}
@@ -828,7 +828,7 @@ public class Carro implements Serializable {
 			valDesgaste *= 1.0;
 		}
 		if (controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
-			valDesgaste *= 0.8;
+			valDesgaste *= 0.5;
 		}
 
 		if (porcent < 15) {
