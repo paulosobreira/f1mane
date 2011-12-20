@@ -482,13 +482,13 @@ public class MonitorJogo implements Runnable {
 								divPosis = contDiv;
 								sleepConsumidorPosis = contSleep;
 								intervalo = true;
-//								if (piloto.isJogadorHumano()) {
-//									System.out.println();
-//									System.out
-//											.println("diffINdex " + diffINdex);
-//									System.out.print(" contDiv " + contDiv);
-//									System.out.print(" contSleep " + contSleep);
-//								}
+								// if (piloto.isJogadorHumano()) {
+								// System.out.println();
+								// System.out
+								// .println("diffINdex " + diffINdex);
+								// System.out.print(" contDiv " + contDiv);
+								// System.out.print(" contSleep " + contSleep);
+								// }
 								break;
 							}
 							if (contDiv > 1) {
@@ -549,12 +549,12 @@ public class MonitorJogo implements Runnable {
 						if (ganhoCorrecao != 0) {
 							ganho += ganhoCorrecao;
 						}
-						if (ganho > 15) {
-							ganho = 15;
+						if (ganho > 20) {
+							ganho = 20;
 						}
 
 						if (entrouNoBox || saiuNoBox) {
-							ganho = 2;
+							ganho = Math.random() > 0.95 ? 3 : 2;
 						}
 						if (piloto
 								.verificaColisaoCarroFrente(jogoCliente, true)) {

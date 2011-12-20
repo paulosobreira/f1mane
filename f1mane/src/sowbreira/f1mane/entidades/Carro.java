@@ -312,9 +312,9 @@ public class Carro implements Serializable {
 		// Logger.logar((.7 * 30));
 		// Logger.logar(Math.random() * 1000);
 		// System.out.println(Math.random() < 1 / 10.0);
-		double val = 100;
-		val *= 0.1;
-		System.out.println(val);
+		// double val = 100;
+		// val *= 0.1;
+		System.out.println(Util.intervalo(-5, 5) / 100.0);
 	}
 
 	public void setPneuDuro(int distaciaCorrida) {
@@ -711,9 +711,15 @@ public class Carro implements Serializable {
 				}
 			}
 		} else if (TIPO_PNEU_CHUVA.equals(tipoPneu)) {
-			if (no.verificaCruvaBaixa() && Math.random() > .85) {
+			double mod = 0;
+			if (agressivo && getPiloto().testeHabilidadePiloto(controleJogo)) {
+				mod = Util.intervalo(1, 9) / 100.0;
+			} else if (agressivo) {
+				mod = Util.intervalo(-5, 5) / 100.0;
+			}
+			if (no.verificaCruvaBaixa() && Math.random() > (.80 + mod)) {
 				novoModificador -= 1;
-			} else if (no.verificaCruvaAlta() && Math.random() > .95) {
+			} else if (no.verificaCruvaAlta() && Math.random() > (.90 + mod)) {
 				novoModificador -= 1;
 			}
 		}
