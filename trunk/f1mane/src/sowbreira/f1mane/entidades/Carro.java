@@ -526,7 +526,7 @@ public class Carro implements Serializable {
 		double indicativo = percent / 100.0;
 		if (!controleJogo.isChovendo()) {
 			if (No.CURVA_BAIXA.equals(no)) {
-				if (.1 <= indicativo && indicativo < .2) {
+				if (0 <= indicativo && indicativo < .2) {
 					if ((Math.random() > .1))
 						novoModificador += 1;
 				} else if (.2 <= indicativo && indicativo < .3) {
@@ -552,12 +552,12 @@ public class Carro implements Serializable {
 						novoModificador -= 1;
 				}
 			} else if (No.CURVA_ALTA.equals(no)) {
-				if (.1 <= indicativo && indicativo < .2) {
+				if (0 <= indicativo && indicativo < .2) {
 					if ((Math.random() > .2))
-						novoModificador += 1;
+						novoModificador += Util.intervalo(1, 2);
 				} else if (.2 <= indicativo && indicativo < .3) {
 					if ((Math.random() > .3))
-						novoModificador += 1;
+						novoModificador += Util.intervalo(1, 2);
 				} else if (.3 <= indicativo && indicativo < .4) {
 					if ((Math.random() > .4))
 						novoModificador += 1;
@@ -572,10 +572,10 @@ public class Carro implements Serializable {
 						novoModificador -= 1;
 				} else if (.8 <= indicativo && indicativo < .9) {
 					if ((Math.random() < .8))
-						novoModificador -= 1;
+						novoModificador -= Util.intervalo(1, 2);
 				} else if (.9 <= indicativo) {
 					if ((Math.random() < .9))
-						novoModificador -= 1;
+						novoModificador -= Util.intervalo(1, 2);
 				}
 			}
 		}
