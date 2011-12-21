@@ -473,8 +473,8 @@ public class MonitorJogo implements Runnable {
 								Logger.logar("diffINdex " + diffINdex);
 							}
 						}
-						int contDiv = 50;
-						int contSleep = 30;
+						int contDiv = 40;
+						int contSleep = 35;
 						double ganhoCorrecao = 0;
 						boolean intervalo = false;
 						for (int i = 0; i < 300; i += 5) {
@@ -560,7 +560,8 @@ public class MonitorJogo implements Runnable {
 								.verificaColisaoCarroFrente(jogoCliente, true)) {
 							int tracado = piloto.obterNovoTracadoPossivel();
 							ganho /= 2.0;
-							piloto.mudarTracado(tracado, jogoCliente, true);
+							if (!piloto.isAutoPos())
+								piloto.mudarTracado(tracado, jogoCliente, true);
 						} else {
 							if (piloto.getIndiceTracado() <= 0) {
 								piloto.setTracadoAntigo(piloto.getTracado());
