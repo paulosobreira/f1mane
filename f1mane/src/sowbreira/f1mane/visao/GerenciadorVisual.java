@@ -58,6 +58,7 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
@@ -132,9 +133,14 @@ public class GerenciadorVisual {
 	private JComboBox comboBoxTipoPneu;
 	private JComboBox comboBoxAsa;
 	private JSlider sliderPercentCombust;
-	private JButton pos1;
-	private JButton pos0;
-	private JButton pos2;
+	private JButton f1;
+	private JButton f2;
+	private JButton f3;
+	private JButton f5;
+	private JButton f6;
+	private JButton f7;
+	private JButton drsBtn;
+	private JButton kersBtn;
 	private JButton autoPos;
 	private Color corPadraoBarra;
 	private int larguraFrame = 0;
@@ -149,14 +155,14 @@ public class GerenciadorVisual {
 	protected JCheckBox kers;
 	protected JCheckBox drs;
 	private JPanel panelControlePos;
-	private ImageIcon iconLua = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/lua.gif"));
-	private ImageIcon iconSol = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/sol.gif"));
-	private ImageIcon iconNublado = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/nublado.gif"));
-	private ImageIcon iconChuva = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/chuva.gif"));
+	private ImageIcon iconLua = new ImageIcon(
+			CarregadorRecursos.carregarImagem("clima/lua.gif"));
+	private ImageIcon iconSol = new ImageIcon(
+			CarregadorRecursos.carregarImagem("clima/sol.gif"));
+	private ImageIcon iconNublado = new ImageIcon(
+			CarregadorRecursos.carregarImagem("clima/nublado.gif"));
+	private ImageIcon iconChuva = new ImageIcon(
+			CarregadorRecursos.carregarImagem("clima/chuva.gif"));
 	private long ultimaTravavadaRodas;
 	private Thread thDesenhaQualificacao;
 	private int vdp = VDP1;
@@ -253,15 +259,26 @@ public class GerenciadorVisual {
 		scrollPaneTextual.addKeyListener(keyListener);
 		infoTextual.addKeyListener(keyListener);
 		comboBoxAsa.addKeyListener(keyListener);
-		pos0.addKeyListener(keyListener);
-		pos1.addKeyListener(keyListener);
-		pos2.addKeyListener(keyListener);
+		f1.addKeyListener(keyListener);
+		f2.addKeyListener(keyListener);
+		f3.addKeyListener(keyListener);
+		f1.addMouseWheelListener(mw);
+		f2.addMouseWheelListener(mw);
+		f3.addMouseWheelListener(mw);
+		f5.addKeyListener(keyListener);
+		f6.addKeyListener(keyListener);
+		f7.addKeyListener(keyListener);
+		drsBtn.addKeyListener(keyListener);
+		kersBtn.addKeyListener(keyListener);
+		f5.addMouseWheelListener(mw);
+		f6.addMouseWheelListener(mw);
+		f7.addMouseWheelListener(mw);
+		drsBtn.addMouseWheelListener(mw);
+		kersBtn.addMouseWheelListener(mw);
+
 		autoPos.addKeyListener(keyListener);
 		alternaPiloto.addKeyListener(keyListener);
 		alternaPiloto.addMouseWheelListener(mw);
-		pos0.addMouseWheelListener(mw);
-		pos1.addMouseWheelListener(mw);
-		pos2.addMouseWheelListener(mw);
 		autoPos.addMouseWheelListener(mw);
 		frame.addMouseWheelListener(mw);
 		painelInfText.addMouseWheelListener(mw);
@@ -329,21 +346,57 @@ public class GerenciadorVisual {
 			}
 
 		});
-		pos1.addActionListener(new ActionListener() {
+
+		f1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mudarPos1();
+				giro.setSelectedItem(new LangVO(Carro.GIRO_MIN));
 			}
 
 		});
-		pos0.addActionListener(new ActionListener() {
+		f2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mudarPos0();
+				giro.setSelectedItem(new LangVO(Carro.GIRO_NOR));
 			}
 
 		});
-		pos2.addActionListener(new ActionListener() {
+		f3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mudarPos2();
+				giro.setSelectedItem(new LangVO(Carro.GIRO_MAX));
+			}
+
+		});
+
+		f5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modoPiloto.setSelectedItem(new LangVO(Piloto.LENTO));
+				mudarModoPilotagem(Piloto.LENTO);
+			}
+
+		});
+		f6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modoPiloto.setSelectedItem(new LangVO(Piloto.NORMAL));
+				mudarModoPilotagem(Piloto.NORMAL);
+			}
+
+		});
+		f7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modoPiloto.setSelectedItem(new LangVO(Piloto.AGRESSIVO));
+				mudarModoPilotagem(Piloto.AGRESSIVO);
+			}
+
+		});
+		drsBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				drs();
+			}
+
+		});
+
+		kersBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				kers();
 			}
 
 		});
@@ -380,9 +433,9 @@ public class GerenciadorVisual {
 				if (controleJogo == null) {
 					return;
 				}
-				int ret = JOptionPane.showConfirmDialog(controleJogo
-						.getMainFrame(), Lang.msg("095"), Lang.msg("094"),
-						JOptionPane.YES_NO_OPTION);
+				int ret = JOptionPane.showConfirmDialog(
+						controleJogo.getMainFrame(), Lang.msg("095"),
+						Lang.msg("094"), JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.NO_OPTION) {
 					return;
 				}
@@ -574,9 +627,9 @@ public class GerenciadorVisual {
 		if (value.intValue() > 100) {
 			value = new Integer(100);
 		}
-		controleJogo.setBoxJogadorHumano(Lang.key(comboBoxTipoPneu
-				.getSelectedItem().toString()), value, Lang.key(comboBoxAsa
-				.getSelectedItem().toString()));
+		controleJogo.setBoxJogadorHumano(
+				Lang.key(comboBoxTipoPneu.getSelectedItem().toString()), value,
+				Lang.key(comboBoxAsa.getSelectedItem().toString()));
 		modoBox();
 
 	}
@@ -677,8 +730,8 @@ public class GerenciadorVisual {
 				}
 
 			}
-			String text = Lang.msg("142", new Object[] { voltaCorrida
-					.obterTempoVoltaFormatado() })
+			String text = Lang.msg("142",
+					new Object[] { voltaCorrida.obterTempoVoltaFormatado() })
 					+ (piloto != null ? piloto.getNome() + " - "
 							+ piloto.getCarro().getNome() : "")
 					+ " "
@@ -978,8 +1031,8 @@ public class GerenciadorVisual {
 
 	private void gerarLayout() {
 		controleJogo.getMainFrame().getContentPane().removeAll();
-		controleJogo.getMainFrame().getContentPane().setLayout(
-				new BorderLayout());
+		controleJogo.getMainFrame().getContentPane()
+				.setLayout(new BorderLayout());
 
 		JPanel southPanel = new JPanel(new BorderLayout());
 		JPanel controles = new JPanel(new GridLayout(1, 2));
@@ -996,10 +1049,10 @@ public class GerenciadorVisual {
 		eastPanel.add(painelInfGraf, BorderLayout.CENTER);
 		eastPanel.add(painelPosicoes, BorderLayout.NORTH);
 
-		controleJogo.getMainFrame().getContentPane().add(centerPanel,
-				BorderLayout.CENTER);
-		controleJogo.getMainFrame().getContentPane().add(eastPanel,
-				BorderLayout.EAST);
+		controleJogo.getMainFrame().getContentPane()
+				.add(centerPanel, BorderLayout.CENTER);
+		controleJogo.getMainFrame().getContentPane()
+				.add(eastPanel, BorderLayout.EAST);
 		centerPanel.revalidate();
 		if (controleJogo.getMainFrame().isModoApplet()) {
 			controleJogo.getMainFrame().setSize(larguraFrame, alturaFrame);
@@ -1055,14 +1108,13 @@ public class GerenciadorVisual {
 				return Lang.msg("136");
 			}
 		});
-		GridLayout gridLayout = new GridLayout(6, 1) {
+		GridLayout gridLayout = new GridLayout(5, 1) {
 			public Dimension preferredLayoutSize(Container parent) {
 				return new Dimension(150, 140);
 			}
 		};
 
 		panelControleBox.setLayout(gridLayout);
-		panelControleBox.add(progBox);
 		panelControleBox.add(box);
 		panelControleBox.add(comboBoxTipoPneu);
 		panelControleBox.add(comboBoxAsa);
@@ -1076,7 +1128,7 @@ public class GerenciadorVisual {
 		panelControlePos = new JPanel(new GridLayout(4, 1));
 		panelControlePos.setBorder(new TitledBorder("") {
 			public String getTitle() {
-				return Lang.msg("TRACADO");
+				return Lang.msg("menuCorrida");
 			}
 		});
 		autoPos = new JButton("") {
@@ -1097,17 +1149,72 @@ public class GerenciadorVisual {
 				return Lang.msg("alternaPiloto");
 			}
 		};
-		panelControlePos.add(agressivo);
-		panelControlePos.add(alternaPiloto);
-		pos1 = new JButton(Logger.ativo ? "1" : "(|");
-		pos0 = new JButton(Logger.ativo ? "0" : "||");
-		pos2 = new JButton(Logger.ativo ? "2" : "|)");
-		JPanel volPanel = new JPanel(new GridLayout(1, 3));
-		volPanel.add(pos1);
-		volPanel.add(pos0);
-		volPanel.add(pos2);
+		ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+		f1 = new JButton("F1") {
+			public String getToolTipText() {
+				return Lang.msg("F1hlp");
+			};
+			
+		};
+		toolTipManager.registerComponent(f1);
+		f2 = new JButton("F2") {
+			public String getToolTipText() {
+				return Lang.msg("F2hlp");
+			};
+		};
+		toolTipManager.registerComponent(f2);
+		f3 = new JButton("F3") {
+			public String getToolTipText() {
+				return Lang.msg("F3hlp");
+			};
+		};
+		toolTipManager.registerComponent(f3);
+		f5 = new JButton("F5") {
+			public String getToolTipText() {
+				return Lang.msg("F5hlp");
+			};
+		};
+		toolTipManager.registerComponent(f5);
+		f6 = new JButton("F6") {
+			public String getToolTipText() {
+				return Lang.msg("F6hlp");
+			};
+		};
+		toolTipManager.registerComponent(f6);
+		f7 = new JButton("F7") {
+			public String getToolTipText() {
+				return Lang.msg("F7hlp");
+			};
+		};
+		toolTipManager.registerComponent(f7);
+		drsBtn = new JButton("DRS (D)") {
+			public String getToolTipText() {
+				return Lang.msg("F1");
+			};
+		};
+		kersBtn = new JButton("KERS (K)") {
+			public String getToolTipText() {
+				return Lang.msg("F1");
+			};
+		};
+
+		JPanel motorPanel = new JPanel(new GridLayout(1, 3));
+		motorPanel.add(f1);
+		motorPanel.add(f2);
+		motorPanel.add(f3);
+		JPanel pilotoPanel = new JPanel(new GridLayout(1, 3));
+		pilotoPanel.add(f5);
+		pilotoPanel.add(f6);
+		pilotoPanel.add(f7);
+
+		JPanel optsPanel = new JPanel(new GridLayout(1, 2));
+		optsPanel.add(drsBtn);
+		optsPanel.add(kersBtn);
+
+		panelControlePos.add(motorPanel);
+		panelControlePos.add(pilotoPanel);
+		panelControlePos.add(optsPanel);
 		panelControlePos.add(autoPos);
-		panelControlePos.add(volPanel);
 
 		addiconarListenerComandos(comboBoxTipoPneu, sliderPercentCombust);
 	}
@@ -1121,9 +1228,9 @@ public class GerenciadorVisual {
 		JLabel label = new JLabel() {
 
 			public String getText() {
-				return Lang.msg("110", new String[] {
-						String.valueOf(Constantes.MIN_VOLTAS),
-						String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110",
+						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+								String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 		painelInicio.add(label);
@@ -1327,8 +1434,8 @@ public class GerenciadorVisual {
 					public int compare(Object o1, Object o2) {
 						Piloto p1 = (Piloto) o1;
 						Piloto p2 = (Piloto) o2;
-						return p1.getCarro().getNome().compareTo(
-								p2.getCarro().getNome());
+						return p1.getCarro().getNome()
+								.compareTo(p2.getCarro().getNome());
 					}
 
 				});
@@ -1367,9 +1474,9 @@ public class GerenciadorVisual {
 		JLabel label = new JLabel() {
 
 			public String getText() {
-				return Lang.msg("110", new String[] {
-						String.valueOf(Constantes.MIN_VOLTAS),
-						String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110",
+						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+								String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 		grid.add(label);
@@ -1708,11 +1815,10 @@ public class GerenciadorVisual {
 		}
 
 		if (selec instanceof Piloto) {
-			controleJogo
-					.efetuarSelecaoPilotoJogador(selec, Lang.key(boxPneuInicial
-							.getSelectedItem().toString()), spinnerCombustivel
-							.getValue(), nomeJogador.getText(), Lang
-							.key((String) comboBoxAsaInicial.getSelectedItem()));
+			controleJogo.efetuarSelecaoPilotoJogador(selec,
+					Lang.key(boxPneuInicial.getSelectedItem().toString()),
+					spinnerCombustivel.getValue(), nomeJogador.getText(),
+					Lang.key((String) comboBoxAsaInicial.getSelectedItem()));
 		}
 		return true;
 	}
@@ -1740,8 +1846,8 @@ public class GerenciadorVisual {
 
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
-			comboBoxNivelCorrida.setSelectedItem(Lang
-					.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida
+					.setSelectedItem(Lang.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
 			List indices = new ArrayList();
 			DefaultListModel defaultListModel = (DefaultListModel) listPilotosSelecionados
@@ -1843,8 +1949,9 @@ public class GerenciadorVisual {
 				}
 			});
 			Clima clima = (Clima) comboBoxClimaInicial.getSelectedItem();
-			ImageIcon icon = new ImageIcon(CarregadorRecursos
-					.carregarImagem("clima/" + clima.getClima()));
+			ImageIcon icon = new ImageIcon(
+					CarregadorRecursos.carregarImagem("clima/"
+							+ clima.getClima()));
 			painelJogSel.add(new JLabel(icon));
 
 			JTextField nomeJogador = new JTextField();
@@ -1903,15 +2010,13 @@ public class GerenciadorVisual {
 			painelJogSel.add(spinnerCombustivel);
 
 			JOptionPane.showMessageDialog(controleJogo.getMainFrame(),
-					painelJogSel, Lang.msg("275", new String[] { selec[i]
-							.toString() }), JOptionPane.QUESTION_MESSAGE);
-			controleJogo
-					.efetuarSelecaoPilotoJogador(selec[i], Lang
-							.key(boxPneuInicial.getSelectedItem().toString()),
-							spinnerCombustivel.getValue(), nomeJogador
-									.getText(), Lang
-									.key((String) comboBoxAsaInicial
-											.getSelectedItem()));
+					painelJogSel,
+					Lang.msg("275", new String[] { selec[i].toString() }),
+					JOptionPane.QUESTION_MESSAGE);
+			controleJogo.efetuarSelecaoPilotoJogador(selec[i],
+					Lang.key(boxPneuInicial.getSelectedItem().toString()),
+					spinnerCombustivel.getValue(), nomeJogador.getText(),
+					Lang.key((String) comboBoxAsaInicial.getSelectedItem()));
 
 		}
 		return true;
@@ -1958,11 +2063,10 @@ public class GerenciadorVisual {
 		}
 
 		if (selec instanceof Piloto) {
-			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang
-					.key(boxPneuInicial.getSelectedItem().toString()),
-					spinnerCombustivel.getValue(), nomeJogador.getText(), Lang
-							.key(comboBoxAsaInicial.getSelectedItem()
-									.toString()));
+			controleJogo.efetuarSelecaoPilotoJogador(selec,
+					Lang.key(boxPneuInicial.getSelectedItem().toString()),
+					spinnerCombustivel.getValue(), nomeJogador.getText(),
+					Lang.key(comboBoxAsaInicial.getSelectedItem().toString()));
 		}
 
 		return true;
@@ -2010,9 +2114,7 @@ public class GerenciadorVisual {
 					midPainel = (limitesViewPort.width / 2);
 				else {
 					midPainel = 500;
-					Logger
-							.logarExept(new Exception(
-									"limitesViewPort == null "));
+					Logger.logarExept(new Exception("limitesViewPort == null "));
 				}
 				for (int i = 0; i < pilotos.size(); i++) {
 					Piloto piloto = (Piloto) pilotos.get(i);
