@@ -861,7 +861,7 @@ public class PainelCircuito extends JPanel {
 					|| piloto.getCarro().isPaneSeca()) {
 				continue;
 			}
-			desenhaCarro(g2d, piloto);
+			desenhaCarroCima(g2d, piloto);
 			piloto.centralizaCarro(controleJogo);
 			if (Logger.ativo) {
 				AffineTransform afZoom = new AffineTransform();
@@ -909,7 +909,7 @@ public class PainelCircuito extends JPanel {
 		return rectangle;
 	}
 
-	private void desenhaCarro(Graphics2D g2d, Piloto piloto) {
+	private void desenhaCarroCima(Graphics2D g2d, Piloto piloto) {
 		if (zoom < 0.3) {
 			return;
 		}
