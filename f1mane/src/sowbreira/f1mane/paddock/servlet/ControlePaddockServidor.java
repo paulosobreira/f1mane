@@ -173,7 +173,7 @@ public class ControlePaddockServidor {
 		}
 		if (erroMail) {
 			return new MsgSrv(Lang.msg("senhaGerada", new String[] {
-					jogadorDadosSrv.getEmail(), senha }));
+					jogadorDadosSrv.getNome(), senha }));
 		}
 		return new MsgSrv(Lang.msg("239",
 				new String[] { jogadorDadosSrv.getEmail() }));
