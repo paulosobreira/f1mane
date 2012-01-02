@@ -124,6 +124,8 @@ public class ControlePaddockServidor {
 		}
 		JogadorDadosSrv jogadorDadosSrv = null;
 		Session session = controlePersistencia.getSession();
+		boolean erroMail = false;
+		String senha = null;
 		try {
 			if (!Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
 				jogadorDadosSrv = controlePersistencia
@@ -145,22 +147,33 @@ public class ControlePaddockServidor {
 			}
 			try {
 				PassGenerator generator = new PassGenerator();
-				String senha = generator.generateIt();
-				mandaMailSenha(jogadorDadosSrv.getNome(),
-						jogadorDadosSrv.getEmail(), senha);
+				senha = generator.generateIt();
+				try {
+					mandaMailSenha(jogadorDadosSrv.getNome(),
+							jogadorDadosSrv.getEmail(), senha);
+				} catch (Exception e) {
+					erroMail = true;
+				}
 				jogadorDadosSrv.setSenha(Util.md5(senha));
 				jogadorDadosSrv
 						.setUltimaRecuperacao(System.currentTimeMillis());
 				controlePersistencia.gravarDados(session, jogadorDadosSrv);
 			} catch (Exception e) {
 				Logger.logarExept(e);
-				if (ServletPaddock.email != null)
-					return new MsgSrv(Lang.msg("237"));
+				if (ServletPaddock.email != null) {
+					Logger.logarExept(new Exception(Lang.msg("237")));
+					System.out.println("Senha Gerada para "
+							+ jogadorDadosSrv.getNome() + ":" + senha);
+				}
 			}
 		} finally {
 			if (session.isOpen()) {
 				session.close();
 			}
+		}
+		if (erroMail) {
+			return new MsgSrv(Lang.msg("senhaGerada", new String[] {
+					jogadorDadosSrv.getEmail(), senha }));
 		}
 		return new MsgSrv(Lang.msg("239",
 				new String[] { jogadorDadosSrv.getEmail() }));
@@ -209,7 +222,7 @@ public class ControlePaddockServidor {
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
 					if (ServletPaddock.email != null)
-						return new MsgSrv(Lang.msg("237"));
+						Logger.logarExept(new Exception(Lang.msg("237")));
 				}
 				try {
 					jogadorDadosSrv.setSenha(Util.md5(senha));
