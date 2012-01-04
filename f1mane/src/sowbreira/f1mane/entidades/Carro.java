@@ -369,7 +369,7 @@ public class Carro implements Serializable {
 		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod) {
 				novoModificador -= Util.intervalo(testePotencia() ? 0 : 1,
-						piloto.isAgressivo() ? 3 : 2);
+						testePotencia() ? 1 : 2);
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
 					&& testePotencia()) {
 				novoModificador += Util.intervalo(0, 1);
