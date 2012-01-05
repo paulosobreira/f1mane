@@ -1473,7 +1473,7 @@ public class Piloto implements Serializable {
 					msgsBox.put(Messagens.PILOTO_EM_CAUTELA,
 							Messagens.PILOTO_EM_CAUTELA);
 				}
-			} else if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
+			} else if (!noAtual.verificaRetaOuLargada()) {
 				if (!jogadorHumano && !testeHabilidadePiloto(controleJogo))
 					novoModoAgressivo = false;
 			} else {
@@ -1594,7 +1594,7 @@ public class Piloto implements Serializable {
 			bonusSecundario = 0.4;
 		}
 		if (controleJogo.isChovendo()) {
-			bonusSecundario = 0;
+			bonusSecundario = 0.2;
 		}
 		if (testeHabilidadePilotoCarro(controleJogo)
 				&& noAtual.verificaRetaOuLargada()) {
