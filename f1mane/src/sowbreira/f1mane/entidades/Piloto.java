@@ -1364,23 +1364,31 @@ public class Piloto implements Serializable {
 				&& testeHabilidadePilotoCarro(controleJogo)) {
 			if (carroPilotoDaFrente != null) {
 				Piloto pilotoFrente = carroPilotoDaFrente.getPiloto();
-				if (!pilotoFrente.entrouNoBox()
-						&& controleJogo.verificaNivelJogo()) {
+				if (!pilotoFrente.entrouNoBox()) {
 					getCarro().setGiro(Carro.GIRO_MAX_VAL);
 					if (testeHabilidadePiloto(controleJogo)) {
 						No no = getNoAtual();
-						if ((no.verificaCruvaAlta() || no
-								.verificaRetaOuLargada())
-								&& Carro.MAIS_ASA.equals(getCarro().getAsa())) {
-							getCarro().setGiro(Carro.GIRO_NOR_VAL);
+						if (Carro.MAIS_ASA.equals(getCarro().getAsa())) {
+							if ((no.verificaCruvaAlta() || no
+									.verificaCruvaBaixa())) {
+								getCarro().setGiro(Carro.GIRO_MAX_VAL);
+							}
+							if (no.verificaRetaOuLargada()) {
+								getCarro().setGiro(Carro.GIRO_NOR_VAL);
+							}
+
 						}
-						if (no.verificaCruvaBaixa()
-								&& (Carro.MENOS_ASA.equals(getCarro().getAsa()))) {
-							getCarro().setGiro(Carro.GIRO_NOR_VAL);
+						if (Carro.MENOS_ASA.equals(getCarro().getAsa())) {
+							if ((no.verificaCruvaAlta() || no
+									.verificaCruvaBaixa())) {
+								getCarro().setGiro(Carro.GIRO_NOR_VAL);
+							}
+							if (no.verificaRetaOuLargada()) {
+								getCarro().setGiro(Carro.GIRO_MAX_VAL);
+							}
 						}
 					}
-					if (testeHabilidadePiloto(controleJogo)
-							&& controleJogo.verificaNivelJogo()) {
+					if (testeHabilidadePiloto(controleJogo)) {
 						setAgressivo(true, controleJogo);
 						setModoPilotagem(AGRESSIVO);
 						if (Math.random() < controleJogo
@@ -1466,7 +1474,8 @@ public class Piloto implements Serializable {
 							Messagens.PILOTO_EM_CAUTELA);
 				}
 			} else if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
-				novoModoAgressivo = false;
+				if (!jogadorHumano && !testeHabilidadePiloto(controleJogo))
+					novoModoAgressivo = false;
 			} else {
 				novoModoAgressivo = true;
 			}

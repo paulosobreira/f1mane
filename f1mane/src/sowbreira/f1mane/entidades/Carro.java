@@ -728,6 +728,9 @@ public class Carro implements Serializable {
 				&& novoModificador >= 1) {
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				novoModificador = 0;
+			} else if (!getPiloto().testeHabilidadePiloto(controleJogo)
+					&& Math.random() > .95) {
+				novoModificador--;
 			}
 		}
 
