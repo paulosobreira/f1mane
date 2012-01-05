@@ -524,59 +524,57 @@ public class Carro implements Serializable {
 			boolean agressivo, No no, InterfaceJogo controleJogo) {
 		int percent = porcentagemCombustivel();
 		double indicativo = percent / 100.0;
-		if (!controleJogo.isChovendo()) {
-			if (No.CURVA_BAIXA.equals(no)) {
-				if (0 <= indicativo && indicativo < .2) {
-					if ((Math.random() > .1))
-						novoModificador += 1;
-				} else if (.2 <= indicativo && indicativo < .3) {
-					if ((Math.random() > .2))
-						novoModificador += 1;
-				} else if (.3 <= indicativo && indicativo < .4) {
-					if ((Math.random() > .3))
-						novoModificador += 1;
-				} else if (.4 <= indicativo && indicativo < .5) {
-					if ((Math.random() > .4))
-						novoModificador += 1;
-				} else if (.5 <= indicativo && indicativo < .6) {
-					if ((Math.random() < .6))
-						novoModificador -= 1;
-				} else if (.7 <= indicativo && indicativo < .8) {
-					if ((Math.random() < .7))
-						novoModificador -= 1;
-				} else if (.8 <= indicativo && indicativo < .9) {
-					if ((Math.random() < .8))
-						novoModificador -= 1;
-				} else if (.9 <= indicativo) {
-					if ((Math.random() < .9))
-						novoModificador -= 1;
-				}
-			} else if (No.CURVA_ALTA.equals(no)) {
-				if (0 <= indicativo && indicativo < .2) {
-					if ((Math.random() > .2))
-						novoModificador += Util.intervalo(1, 2);
-				} else if (.2 <= indicativo && indicativo < .3) {
-					if ((Math.random() > .3))
-						novoModificador += Util.intervalo(1, 2);
-				} else if (.3 <= indicativo && indicativo < .4) {
-					if ((Math.random() > .4))
-						novoModificador += 1;
-				} else if (.4 <= indicativo && indicativo < .5) {
-					if ((Math.random() > .5))
-						novoModificador += 1;
-				} else if (.5 <= indicativo && indicativo < .6) {
-					if ((Math.random() < .6))
-						novoModificador -= 1;
-				} else if (.7 <= indicativo && indicativo < .8) {
-					if ((Math.random() < .7))
-						novoModificador -= 1;
-				} else if (.8 <= indicativo && indicativo < .9) {
-					if ((Math.random() < .8))
-						novoModificador -= Util.intervalo(1, 2);
-				} else if (.9 <= indicativo) {
-					if ((Math.random() < .9))
-						novoModificador -= Util.intervalo(1, 2);
-				}
+		if (No.CURVA_BAIXA.equals(no)) {
+			if (0 <= indicativo && indicativo < .2) {
+				if ((Math.random() > .1))
+					novoModificador += 1;
+			} else if (.2 <= indicativo && indicativo < .3) {
+				if ((Math.random() > .2))
+					novoModificador += 1;
+			} else if (.3 <= indicativo && indicativo < .4) {
+				if ((Math.random() > .3))
+					novoModificador += 1;
+			} else if (.4 <= indicativo && indicativo < .5) {
+				if ((Math.random() > .4))
+					novoModificador += 1;
+			} else if (.5 <= indicativo && indicativo < .6) {
+				if ((Math.random() < .6))
+					novoModificador -= 1;
+			} else if (.7 <= indicativo && indicativo < .8) {
+				if ((Math.random() < .7))
+					novoModificador -= 1;
+			} else if (.8 <= indicativo && indicativo < .9) {
+				if ((Math.random() < .8))
+					novoModificador -= 1;
+			} else if (.9 <= indicativo) {
+				if ((Math.random() < .9))
+					novoModificador -= 1;
+			}
+		} else if (No.CURVA_ALTA.equals(no)) {
+			if (0 <= indicativo && indicativo < .2) {
+				if ((Math.random() > .2))
+					novoModificador += Util.intervalo(1, 2);
+			} else if (.2 <= indicativo && indicativo < .3) {
+				if ((Math.random() > .3))
+					novoModificador += Util.intervalo(1, 2);
+			} else if (.3 <= indicativo && indicativo < .4) {
+				if ((Math.random() > .4))
+					novoModificador += 1;
+			} else if (.4 <= indicativo && indicativo < .5) {
+				if ((Math.random() > .5))
+					novoModificador += 1;
+			} else if (.5 <= indicativo && indicativo < .6) {
+				if ((Math.random() < .6))
+					novoModificador -= 1;
+			} else if (.7 <= indicativo && indicativo < .8) {
+				if ((Math.random() < .7))
+					novoModificador -= 1;
+			} else if (.8 <= indicativo && indicativo < .9) {
+				if ((Math.random() < .8))
+					novoModificador -= Util.intervalo(1, 2);
+			} else if (.9 <= indicativo) {
+				if ((Math.random() < .9))
+					novoModificador -= Util.intervalo(1, 2);
 			}
 		}
 		int dificudade = 2;

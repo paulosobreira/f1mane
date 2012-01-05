@@ -464,17 +464,24 @@ public class PaddockWindow {
 		});
 		DefaultListModel model = ((DefaultListModel) listaJogosCriados
 				.getModel());
+
 		if (model.size() != dadosPaddock.getJogosCriados().size()) {
-			model.clear();
-			mapaJogosCriados.clear();
+			atualizaListaJogos(dadosPaddock, model);
+		} else if (model.size() == dadosPaddock.getJogosCriados().size()) {
+			boolean diferente = false;
 			for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
 					.hasNext();) {
 				String element = (String) iter.next();
-				String key = Lang.decodeTexto(element);
-				mapaJogosCriados.put(key, element);
-				model.addElement(key);
+				if (mapaJogosCriados.get(Lang.decodeTexto(element)) == null) {
+					diferente = true;
+					break;
+				}
+			}
+			if (diferente) {
+				atualizaListaJogos(dadosPaddock, model);
 			}
 		}
+
 		for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
 				.hasNext();) {
 			String element = (String) iter.next();
@@ -521,6 +528,19 @@ public class PaddockWindow {
 			}
 		});
 
+	}
+
+	private void atualizaListaJogos(DadosPaddock dadosPaddock,
+			DefaultListModel model) {
+		model.clear();
+		mapaJogosCriados.clear();
+		for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
+				.hasNext();) {
+			String element = (String) iter.next();
+			String key = Lang.decodeTexto(element);
+			mapaJogosCriados.put(key, element);
+			model.addElement(key);
+		}
 	}
 
 	private void atualizarChat(DadosPaddock dadosPaddock) {
