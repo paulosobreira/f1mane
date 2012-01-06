@@ -35,7 +35,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .7;
+	private double fatorAcidente = .6;
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 
@@ -179,11 +179,15 @@ public class ControleCorrida {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-				long thisVal = piloto1.getPtosPista();
-				long anotherVal = piloto0.getPtosPista();
 
-				return ((thisVal < anotherVal) ? (-1)
-						: ((thisVal == anotherVal) ? 0 : 1));
+				return new Long(piloto0.getPtosPista()).compareTo(new Long(
+						piloto1.getPtosPista()));
+
+				// long thisVal = piloto1.getPtosPista();
+				// long anotherVal = piloto0.getPtosPista();
+
+				// return ((thisVal < anotherVal) ? (-1)
+				// : ((thisVal == anotherVal) ? 0 : 1));
 			}
 		});
 
@@ -445,7 +449,6 @@ public class ControleCorrida {
 							Html.superRed(piloto.getNome()),
 							pilotoNaFrente.getNome() }));
 					piloto.setDesqualificado(true);
-					atualizaClassificacao();
 					controleSafetyCar.safetyCarNaPista(piloto);
 				} else {
 					if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
