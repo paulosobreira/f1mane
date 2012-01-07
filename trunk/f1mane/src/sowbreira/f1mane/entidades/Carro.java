@@ -241,31 +241,26 @@ public class Carro implements Serializable {
 		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
-
 		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
-
 		if (pneus < (consumoMedioPenus)) {
 			return true;
 		}
-
 		if (controleJogo.isSemReabastacimento() && combust < 15) {
 			return true;
 		}
-
 		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
 		if (combust < (consumoMedioCombust)) {
 			return true;
 		}
 		if (Carro.TIPO_PNEU_MOLE.equals(getTipoPneu())) {
-			if (pneus < 15) {
-				return true;
-			}
-		} else {
 			if (pneus < 10) {
 				return true;
 			}
+		} else {
+			if (pneus < 5) {
+				return true;
+			}
 		}
-
 		if (motor < 5) {
 			return true;
 		}
@@ -447,9 +442,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -765,8 +761,7 @@ public class Carro implements Serializable {
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4)
-					+ novoModDano;
+					: 4) + novoModDano;
 			boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 			if (!teste && Math.random() > 0.95 && !controleJogo.isChovendo()
 					&& getPiloto().getPtosBox() == 0) {
@@ -829,7 +824,11 @@ public class Carro implements Serializable {
 			valDesgaste *= 1.0;
 		}
 		if (controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
-			valDesgaste *= 0.5;
+			if (controleJogo.asfaltoAbrasivo()) {
+				valDesgaste *= 0.75;
+			} else {
+				valDesgaste *= 0.5;
+			}
 		}
 
 		if (porcent < 15) {
