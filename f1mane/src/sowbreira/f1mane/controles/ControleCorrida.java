@@ -35,7 +35,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .6;
+	private double fatorAcidente = .7;
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 
@@ -179,15 +179,8 @@ public class ControleCorrida {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-
-				return new Long(piloto0.getPtosPista()).compareTo(new Long(
-						piloto1.getPtosPista()));
-
-				// long thisVal = piloto1.getPtosPista();
-				// long anotherVal = piloto0.getPtosPista();
-
-				// return ((thisVal < anotherVal) ? (-1)
-				// : ((thisVal == anotherVal) ? 0 : 1));
+				return new Long(piloto1.getPtosPista()).compareTo(new Long(
+						piloto0.getPtosPista()));
 			}
 		});
 
@@ -274,12 +267,14 @@ public class ControleCorrida {
 						if (Math.random() > 0.9) {
 							if (!controleJogo.isSafetyCarNaPista()) {
 								if (Math.random() > 0.5) {
-									controleJogo.info(Html.azul(Lang.msg("021",
+									controleJogo.info(Html.azul(Lang.msg(
+											"021",
 											new String[] {
 													pilotoNaFrente.getNome(),
 													piloto.getNome() })));
 								} else {
-									controleJogo.info(Html.azul(Lang.msg("020",
+									controleJogo.info(Html.azul(Lang.msg(
+											"020",
 											new String[] {
 													pilotoNaFrente.getNome(),
 													piloto.getNome() })));
@@ -390,7 +385,7 @@ public class ControleCorrida {
 		}
 		double fatorAcidenteLocal = fatorAcidente;
 		if (controleJogo.isChovendo()) {
-			fatorAcidenteLocal -= .15;
+			fatorAcidenteLocal -= .2;
 		}
 		if ((Math.random() < fatorAcidenteLocal)) {
 			return;
@@ -401,8 +396,7 @@ public class ControleCorrida {
 				if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
 					if ((piloto.getStress() > (5 * piloto.getCarro()
 							.getDurabilidadeAereofolio()))) {
-						piloto
-								.getCarro()
+						piloto.getCarro()
 								.setDurabilidadeAereofolio(
 										piloto.getCarro()
 												.getDurabilidadeAereofolio() - 1);
@@ -445,9 +439,9 @@ public class ControleCorrida {
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& !piloto.testeHabilidadePiloto(controleJogo)) {
 					piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
-					controleJogo.infoPrioritaria(Lang.msg("016", new String[] {
-							Html.superRed(piloto.getNome()),
-							pilotoNaFrente.getNome() }));
+					controleJogo.infoPrioritaria(Lang.msg("016",
+							new String[] { Html.superRed(piloto.getNome()),
+									pilotoNaFrente.getNome() }));
 					piloto.setDesqualificado(true);
 					controleSafetyCar.safetyCarNaPista(piloto);
 				} else {
@@ -456,8 +450,7 @@ public class ControleCorrida {
 								&& Math.random() < fatorAcidenteLocal) {
 							return;
 						}
-						piloto
-								.getCarro()
+						piloto.getCarro()
 								.setDurabilidadeAereofolio(
 										piloto.getCarro()
 												.getDurabilidadeAereofolio() - 1);
@@ -494,15 +487,17 @@ public class ControleCorrida {
 		ganhador.setCiclosDesconcentrado(0);
 		if (!controleJogo.isSafetyCarNaPista()) {
 			if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
-				controleJogo.info(Lang.msg("018", new String[] {
-						Html.bold(perdedor.getNome()),
-						Html.bold(ganhador.getNome()) }));
+				controleJogo.info(Lang.msg(
+						"018",
+						new String[] { Html.bold(perdedor.getNome()),
+								Html.bold(ganhador.getNome()) }));
 			}
 
 			if (ganhador.isJogadorHumano() && Math.random() > 0.950) {
-				controleJogo.info(Lang.msg("019", new String[] {
-						Html.bold(ganhador.getNome()),
-						Html.bold(perdedor.getNome()) }));
+				controleJogo.info(Lang.msg(
+						"019",
+						new String[] { Html.bold(ganhador.getNome()),
+								Html.bold(perdedor.getNome()) }));
 			}
 		}
 		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
@@ -518,9 +513,8 @@ public class ControleCorrida {
 			return;
 		}
 		perdedor.setAgressivo(false, controleJogo);
-		perdedor
-				.gerarDesconcentracao((int) (100 - ((perdedor.getHabilidade() / 10) * controleJogo
-						.getNiveljogo())));
+		perdedor.gerarDesconcentracao((int) (100 - ((perdedor.getHabilidade() / 10) * controleJogo
+				.getNiveljogo())));
 
 	}
 

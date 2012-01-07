@@ -1455,7 +1455,6 @@ public class PainelCircuito extends JPanel {
 	}
 
 	protected void atualizaVarZoom() {
-		Logger.logar("atualizaVarZoom() " + zoom);
 		if (!circuito.isUsaBkg()) {
 			larguraPistaPixeis = Util.inte(176 * larguraPista * zoom);
 			pista = new BasicStroke(larguraPistaPixeis, BasicStroke.CAP_ROUND,
@@ -2203,12 +2202,12 @@ public class PainelCircuito extends JPanel {
 							+ (Math.random() > 0.5 ? -1 : 0), null);
 		}
 
-		int durabilidade = 3;
+		int durabilidade = InterfaceJogo.DUR_AREO_NORMAL;
 		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-			durabilidade = 4;
+			durabilidade = InterfaceJogo.DUR_AREO_FACIL;
 		}
 		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-			durabilidade = 2;
+			durabilidade = InterfaceJogo.DUR_AREO_DIFICIL;
 		}
 
 		if ((dano == null || "".equals(dano))

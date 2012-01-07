@@ -611,9 +611,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 							.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
+			setarNivelCorrida();
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 					diffultrapassagem.intValue(), tempoCiclo.intValue());
-			setarNivelCorrida();
 			controleCorrida.getControleClima().gerarClimaInicial(
 					(Clima) gerenciadorVisual.getComboBoxClimaInicial()
 							.getSelectedItem());
