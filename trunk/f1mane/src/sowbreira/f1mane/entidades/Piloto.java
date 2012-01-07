@@ -1493,10 +1493,17 @@ public class Piloto implements Serializable {
 					msgsBox.put(Messagens.PILOTO_EM_CAUTELA,
 							Messagens.PILOTO_EM_CAUTELA);
 				}
-			} else if (!noAtual.verificaRetaOuLargada()) {
-				if (controleJogo.verificaNivelJogo() && !jogadorHumano
-						&& !testeHabilidadePiloto(controleJogo))
+			} else if (!noAtual.verificaRetaOuLargada() && !noAtual.isBox()) {
+				if (controleJogo.verificaNivelJogo()) {
+					if (!jogadorHumano && testeHabilidadePiloto(controleJogo)) {
+						novoModoAgressivo = true;
+					} else {
+						novoModoAgressivo = false;
+						setCiclosDesconcentrado(Util.intervalo(5, 10));
+					}
+				} else {
 					novoModoAgressivo = false;
+				}
 			} else {
 				novoModoAgressivo = true;
 			}
@@ -1511,14 +1518,11 @@ public class Piloto implements Serializable {
 					mudarTracado(Util.intervalo(1, 2), controleJogo, true);
 				}
 				novoModoAgressivo = false;
-				ciclosDesconcentrado = gerarDesconcentracao((int) (15 * controleJogo
-						.getNiveljogo()));
+				ciclosDesconcentrado = (int) (15 * controleJogo.getNiveljogo());
 			} else if (No.CURVA_ALTA.equals(noAtual.getTipo())) {
-				ciclosDesconcentrado = gerarDesconcentracao((int) (10 * controleJogo
-						.getNiveljogo()));
+				ciclosDesconcentrado = (int) (10 * controleJogo.getNiveljogo());
 			} else {
-				ciclosDesconcentrado = gerarDesconcentracao((int) (5 * controleJogo
-						.getNiveljogo()));
+				ciclosDesconcentrado = (int) (5 * controleJogo.getNiveljogo());
 			}
 			ciclosDesconcentrado *= (1 - controleJogo.getNiveljogo());
 
@@ -1584,10 +1588,6 @@ public class Piloto implements Serializable {
 			return false;
 		}
 		return carro.testePotencia() && testeHabilidadePiloto(controleJogo);
-	}
-
-	public int gerarDesconcentracao(int fator) {
-		return (fator + (int) (Math.random() * 5));
 	}
 
 	public boolean verificaPilotoDesconcentrado(InterfaceJogo interfaceJogo) {
@@ -1940,7 +1940,8 @@ public class Piloto implements Serializable {
 		} else {
 			ultimaMudancaPos = System.currentTimeMillis()
 					+ (interfaceJogo.getTempoCiclo() * 20);
-			gerarDesconcentracao(Util.intervalo(30, 50));
+			int gerarDesconcentracao = Util.intervalo(5, 10);
+			setCiclosDesconcentrado(gerarDesconcentracao);
 		}
 		return false;
 
