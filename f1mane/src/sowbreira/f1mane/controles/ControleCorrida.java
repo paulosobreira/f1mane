@@ -35,7 +35,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = .7;
+	private double fatorAcidente = .9;
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 
@@ -513,8 +513,9 @@ public class ControleCorrida {
 			return;
 		}
 		perdedor.setAgressivo(false, controleJogo);
-		perdedor.gerarDesconcentracao((int) (100 - ((perdedor.getHabilidade() / 10) * controleJogo
-				.getNiveljogo())));
+		int gerarDesconcentracao = (int) (100 - ((perdedor.getHabilidade() / 10) * controleJogo
+				.getNiveljogo()));
+		perdedor.setCiclosDesconcentrado(gerarDesconcentracao);
 
 	}
 
