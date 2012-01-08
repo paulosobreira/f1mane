@@ -108,8 +108,9 @@ public class ControleCiclo extends Thread {
 							piloto.processarCiclo(controleJogo);
 						}
 
-						if (piloto.isBox()
-								|| controleJogo.verificaNoPitLane(piloto)) {
+						if (!piloto.isDesqualificado()
+								&& (piloto.isBox() || controleJogo
+										.verificaNoPitLane(piloto))) {
 							controleCorrida.processarPilotoBox(piloto);
 						}
 					}
