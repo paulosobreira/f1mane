@@ -1478,6 +1478,7 @@ public class Piloto implements Serializable {
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {
 		if (verificaPilotoDesconcentrado(controleJogo)) {
+			agressivo = false;
 			return;
 		}
 		boolean novoModoAgressivo = agressivo;
@@ -1495,11 +1496,12 @@ public class Piloto implements Serializable {
 				}
 			} else if (!noAtual.verificaRetaOuLargada() && !noAtual.isBox()) {
 				if (controleJogo.verificaNivelJogo()) {
-					if (!jogadorHumano && testeHabilidadePiloto(controleJogo)) {
+					if (!jogadorHumano
+							&& testeHabilidadePilotoCarro(controleJogo)) {
 						novoModoAgressivo = true;
 					} else {
 						novoModoAgressivo = false;
-						setCiclosDesconcentrado(Util.intervalo(5, 10));
+						setCiclosDesconcentrado(Util.intervalo(15, 20));
 					}
 				} else {
 					novoModoAgressivo = false;
@@ -1609,10 +1611,10 @@ public class Piloto implements Serializable {
 		double bonusSecundario = 0.5;
 
 		if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
-			bonusSecundario = 0.6;
+			bonusSecundario = 0.7;
 		}
 		if (Carro.GIRO_MIN_VAL == getCarro().getGiro()) {
-			bonusSecundario = 0.4;
+			bonusSecundario = 0.3;
 		}
 		if (controleJogo.isChovendo()) {
 			bonusSecundario = 0.2;
