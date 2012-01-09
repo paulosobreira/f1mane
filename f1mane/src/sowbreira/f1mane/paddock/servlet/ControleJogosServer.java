@@ -553,6 +553,8 @@ public class ControleJogosServer {
 				dadosParciais.cargaKers = piloto.getCarro().getCargaKers();
 				dadosParciais.temperaturaMotor = piloto.getCarro()
 						.getTemperaturaMotor();
+				dadosParciais.pselDurAereofolio = piloto.getCarro()
+						.getDurabilidadeAereofolio();
 				dadosParciais.pselCombust = piloto.getCarro().getCombustivel();
 				dadosParciais.pselPneus = piloto.getCarro().getPneus();
 				dadosParciais.pselMaxPneus = piloto.getCarro()
