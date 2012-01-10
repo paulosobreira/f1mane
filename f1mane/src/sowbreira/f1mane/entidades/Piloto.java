@@ -1495,13 +1495,12 @@ public class Piloto implements Serializable {
 							Messagens.PILOTO_EM_CAUTELA);
 				}
 			} else if (!noAtual.verificaRetaOuLargada() && !noAtual.isBox()) {
-				if (controleJogo.verificaNivelJogo()) {
-					if (!jogadorHumano
-							&& testeHabilidadePilotoCarro(controleJogo)) {
+				if (!jogadorHumano && controleJogo.verificaNivelJogo()) {
+					if (testeHabilidadePilotoCarro(controleJogo)) {
 						novoModoAgressivo = true;
 					} else {
 						novoModoAgressivo = false;
-						setCiclosDesconcentrado(Util.intervalo(15, 20));
+						setCiclosDesconcentrado(Util.intervalo(15, 60));
 					}
 				} else {
 					novoModoAgressivo = false;

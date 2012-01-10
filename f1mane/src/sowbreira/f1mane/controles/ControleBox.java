@@ -383,6 +383,8 @@ public class ControleBox {
 
 	private void processarPilotoSairBox(Piloto piloto,
 			InterfaceJogo interfaceJogo) {
+		if (interfaceJogo.isCorridaTerminada())
+			return;
 		piloto.setNoAtual(saidaBox);
 		// Todo Ptos Pista
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);

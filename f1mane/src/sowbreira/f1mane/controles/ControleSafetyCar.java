@@ -52,7 +52,7 @@ public class ControleSafetyCar {
 				return ganho * 0.1;
 			} else if ((piloto.getPtosPista() + ganho) < (controleJogo
 					.getSafetyCar().getPtosPista() - 200)) {
-				return ganho * 1.5;
+				return ganho * 2;
 			}
 		}
 		return ganho;
