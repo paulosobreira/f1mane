@@ -442,10 +442,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -571,6 +570,20 @@ public class Carro implements Serializable {
 			} else if (.9 <= indicativo) {
 				if ((Math.random() < .9))
 					novoModificador -= Util.intervalo(1, 3);
+			}
+		} else if (no.verificaRetaOuLargada()) {
+			if (0 <= indicativo && indicativo < .2) {
+				if ((Math.random() > .2))
+					novoModificador += Util.intervalo(1, 2);
+			} else if (.2 <= indicativo && indicativo < .3) {
+				if ((Math.random() > .3))
+					novoModificador += Util.intervalo(0, 1);
+			} else if (.8 <= indicativo && indicativo < .9) {
+				if ((Math.random() < .8))
+					novoModificador -= Util.intervalo(0, 1);
+			} else if (.9 <= indicativo) {
+				if ((Math.random() < .9))
+					novoModificador -= Util.intervalo(1, 2);
 			}
 		}
 		int dificudade = 2;
@@ -748,7 +761,8 @@ public class Carro implements Serializable {
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4) + novoModDano;
+					: 4)
+					+ novoModDano;
 			boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 			if (!teste && Math.random() > 0.95 && !controleJogo.isChovendo()
 					&& getPiloto().getPtosBox() == 0) {
