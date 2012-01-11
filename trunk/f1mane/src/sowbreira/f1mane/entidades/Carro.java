@@ -573,16 +573,16 @@ public class Carro implements Serializable {
 			}
 		} else if (no.verificaRetaOuLargada()) {
 			if (0 <= indicativo && indicativo < .2) {
-				if ((Math.random() > .2))
+				if ((Math.random() > .7))
 					novoModificador += Util.intervalo(1, 2);
 			} else if (.2 <= indicativo && indicativo < .3) {
-				if ((Math.random() > .3))
+				if ((Math.random() > .5))
 					novoModificador += Util.intervalo(0, 1);
 			} else if (.8 <= indicativo && indicativo < .9) {
-				if ((Math.random() < .8))
+				if ((Math.random() < .5))
 					novoModificador -= Util.intervalo(0, 1);
 			} else if (.9 <= indicativo) {
-				if ((Math.random() < .9))
+				if ((Math.random() < .7))
 					novoModificador -= Util.intervalo(1, 2);
 			}
 		}
