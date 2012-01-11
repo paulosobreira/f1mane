@@ -572,10 +572,10 @@ public class Carro implements Serializable {
 					novoModificador -= Util.intervalo(1, 3);
 			}
 		} else if (no.verificaRetaOuLargada()) {
-			if (0 <= indicativo && indicativo < .2) {
+			if (0 <= indicativo && indicativo < .1) {
 				if ((Math.random() > .7))
 					novoModificador += Util.intervalo(1, 2);
-			} else if (.2 <= indicativo && indicativo < .3) {
+			} else if (.1 <= indicativo && indicativo < .2) {
 				if ((Math.random() > .5))
 					novoModificador += Util.intervalo(0, 1);
 			} else if (.8 <= indicativo && indicativo < .9) {
