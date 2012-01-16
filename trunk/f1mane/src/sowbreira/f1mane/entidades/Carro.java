@@ -6,6 +6,7 @@ import java.io.Serializable;
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Util;
 
@@ -720,10 +721,11 @@ public class Carro implements Serializable {
 
 		if (verificaPneusIncompativeisClima(controleJogo)
 				&& novoModificador >= 1) {
+
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				novoModificador = 0;
-			} else if (!getPiloto().testeHabilidadePiloto(controleJogo)
-					&& Math.random() > .9) {
+			} else if (Math.random() > ((controleJogo.getQtdeTotalVoltas() * 100 / (Constantes.MAX_VOLTAS - 1)) / 100.0)
+					&& !getPiloto().testeHabilidadePiloto(controleJogo)) {
 				novoModificador--;
 			}
 		}
