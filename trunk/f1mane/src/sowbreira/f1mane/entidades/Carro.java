@@ -750,8 +750,13 @@ public class Carro implements Serializable {
 				if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
 					perda = (Util.intervalo(1, 2));
 				}
-				piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
-						controleJogo) ? 0 : perda);
+				if (verificaPneusIncompativeisClima(controleJogo)) {
+					piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
+							controleJogo) ? 1 : 1 + perda);
+				} else {
+					piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
+							controleJogo) ? 0 : perda);
+				}
 			}
 			boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 			desgPneus += (teste ? 4 : 6) + novoModDano;
