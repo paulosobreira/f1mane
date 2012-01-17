@@ -58,7 +58,8 @@ public class ControleCiclo extends Thread {
 				controleJogo.desenhaQualificacao();
 				// Thread.sleep(5000);
 				controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
-				if (controleJogo.asfaltoAbrasivo()) {
+				if (!controleJogo.verificaNivelJogo()
+						&& controleJogo.asfaltoAbrasivo()) {
 					controleJogo.infoPrioritaria(Html.red(Lang
 							.msg("asfaltoAbrasivo")));
 				}
