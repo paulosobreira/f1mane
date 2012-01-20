@@ -796,7 +796,7 @@ public class Carro implements Serializable {
 			}
 			if (controleJogo.asfaltoAbrasivo()
 					&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())) {
-				desgPneus += Util.intervalo(1, 3);
+				desgPneus += Util.intervalo(1, 5);
 			}
 		}
 		double porcentComb = porcentagemCombustivel() / 1000.0;
