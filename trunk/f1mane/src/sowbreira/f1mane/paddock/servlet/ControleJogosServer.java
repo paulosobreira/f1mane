@@ -119,11 +119,11 @@ public class ControleJogosServer {
 						int permitidoAcimaMedia = 0;
 						if (InterfaceJogo.FACIL_NV == jogoServidor
 								.getNiveljogo()) {
-							permitidoAcimaMedia = 100;
+							permitidoAcimaMedia = 50;
 						}
 						if (InterfaceJogo.MEDIO_NV == jogoServidor
 								.getNiveljogo()) {
-							permitidoAcimaMedia = 50;
+							permitidoAcimaMedia = 25;
 						}
 						String media = (jogoServidor.getMediaPontecia() + permitidoAcimaMedia)
 								+ "";
