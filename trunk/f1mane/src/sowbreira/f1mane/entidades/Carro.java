@@ -719,6 +719,13 @@ public class Carro implements Serializable {
 			}
 		}
 
+		if (piloto.getTracado() != 0
+				&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())
+				&& !piloto.testeHabilidadePiloto(controleJogo)
+				&& Math.random() > controleJogo.getIndexVelcidadeDaPista()) {
+			novoModificador--;
+		}
+
 		if (verificaPneusIncompativeisClima(controleJogo)
 				&& novoModificador >= 1) {
 
@@ -799,6 +806,7 @@ public class Carro implements Serializable {
 				desgPneus += Util.intervalo(1, 7);
 			}
 		}
+
 		double porcentComb = porcentagemCombustivel() / 1000.0;
 		double combustivel = 1;
 		if (Math.random() < porcentComb)
