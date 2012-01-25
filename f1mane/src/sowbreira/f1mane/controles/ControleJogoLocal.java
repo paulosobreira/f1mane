@@ -1171,4 +1171,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 			Piloto p) {
 		return controleCorrida.ganhoComSafetyCar(ganho, controleJogo, p);
 	}
+
+	@Override
+	public void driveTru() {
+		// TODO Auto-generated method stub
+
+	}
 }
