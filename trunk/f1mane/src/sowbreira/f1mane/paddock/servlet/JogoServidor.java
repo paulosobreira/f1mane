@@ -619,4 +619,16 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		return travadaRoda;
 	}
 
+	public int getNumJogadores() {
+		int cont = 0;
+		List piList = getPilotos();
+		for (Iterator iter = piList.iterator(); iter.hasNext();) {
+			Piloto piloto = (Piloto) iter.next();
+			if (piloto.isJogadorHumano()) {
+				cont++;
+			}
+		}
+		return cont;
+	}
+
 }

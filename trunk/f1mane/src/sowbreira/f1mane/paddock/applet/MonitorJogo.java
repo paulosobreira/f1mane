@@ -29,6 +29,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -1020,5 +1021,35 @@ public class MonitorJogo implements Runnable {
 		Thread thread = new Thread(runnable);
 		thread.start();
 
+	}
+
+	public void driveThru(Piloto pilotoSelecionado) {
+		if (pilotoSelecionado == null
+				|| !pilotoSelecionado.isJogadorHumano()
+				|| sessaoCliente.getNomeJogador().equals(
+						pilotoSelecionado.getNomeJogador())) {
+			jogoCliente
+					.adicionarInfoDireto(Lang.msg("selecionePilotoDriveThru"));
+			return;
+		}
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.DRIVE_THRU, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente
+							.getNomeJogoCriado());
+					clientPaddockPack.setDataObject(sessaoCliente
+							.getNomeJogador());
+					Object ret = controlePaddockCliente.enviarObjeto(
+							clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+			}
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
 	}
 }

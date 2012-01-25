@@ -378,11 +378,15 @@ public class ControleBox {
 
 	private void processarPilotoSairBox(Piloto piloto,
 			InterfaceJogo interfaceJogo) {
-//		if (interfaceJogo.isCorridaTerminada()) {
-//			if (!piloto.isRecebeuBanderada())
-//				piloto.setRecebeuBanderada(true, interfaceJogo);
-//			return;
-//		}
+		if (piloto.isDriveThrough()) {
+			piloto.limparDriveThrough();
+		}
+
+		// if (interfaceJogo.isCorridaTerminada()) {
+		// if (!piloto.isRecebeuBanderada())
+		// piloto.setRecebeuBanderada(true, interfaceJogo);
+		// return;
+		// }
 		piloto.setNoAtual(saidaBox);
 		// Todo Ptos Pista
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);

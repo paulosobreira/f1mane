@@ -693,4 +693,59 @@ public class ControleJogosServer {
 		srvPaddockPack.setDetalhesJogo(detalhesJogo);
 		return srvPaddockPack;
 	}
+
+	public Object driveThru(ClientPaddockPack clientPaddockPack) {
+		JogoServidor jogoServidor = obterJogoPeloNome(clientPaddockPack
+				.getNomeJogo());
+		String requisitorDriveThru = clientPaddockPack.getSessaoCliente()
+				.getNomeJogador();
+		String jogadorDriveTru = (String) clientPaddockPack.getDataObject();
+		if (Util.isNullOrEmpty(jogadorDriveTru)) {
+			Logger.logar("jogadorDriveTru null");
+			return null;
+		}
+		List piList = jogoServidor.getPilotos();
+		for (Iterator iter = piList.iterator(); iter.hasNext();) {
+			Piloto piloto = (Piloto) iter.next();
+			if (jogadorDriveTru.equals(piloto.getNomeJogador())) {
+				if (piloto.adicionaVotoDriveThru(requisitorDriveThru, piList)) {
+					if (piloto.getVotosDriveThru() > (jogoServidor
+							.getNumJogadores() / 2)) {
+						piloto.setDriveThrough(true);
+						jogoServidor
+								.adicionarInfoDireto(Lang
+										.msg(
+												"penalidadePilotoDriveThru",
+												new String[] {
+														jogadorDriveTru,
+														requisitorDriveThru,
+														""
+																+ piloto
+																		.getVotosDriveThru(),
+														""
+																+ jogoServidor
+																		.getNumJogadores()
+																/ 2 }));
+					} else {
+						jogoServidor
+								.adicionarInfoDireto(Lang
+										.msg(
+												"votoPilotoDriveThru",
+												new String[] {
+														jogadorDriveTru,
+														requisitorDriveThru,
+														""
+																+ piloto
+																		.getVotosDriveThru(),
+														""
+																+ jogoServidor
+																		.getNumJogadores()
+																/ 2 }));
+					}
+				}
+				break;
+			}
+		}
+		return null;
+	}
 }

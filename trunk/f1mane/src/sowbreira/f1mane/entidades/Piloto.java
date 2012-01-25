@@ -2,21 +2,19 @@ package sowbreira.f1mane.entidades;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -108,6 +106,8 @@ public class Piloto implements Serializable {
 	private int cargaKersOnline;
 	private boolean ativarDRS;
 	private int novoModificador;
+	private Set votosDriveThru = new HashSet();
+	private boolean driveThrough;
 
 	public Rectangle getDiateira() {
 		return diateira;
@@ -119,6 +119,14 @@ public class Piloto implements Serializable {
 
 	public void setTracadoAntigo(int tracadoAntigo) {
 		this.tracadoAntigo = tracadoAntigo;
+	}
+
+	public boolean isDriveThrough() {
+		return driveThrough;
+	}
+
+	public void setDriveThrough(boolean driveThrough) {
+		this.driveThrough = driveThrough;
 	}
 
 	public boolean isAtivarKers() {
@@ -1054,15 +1062,15 @@ public class Piloto implements Serializable {
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
 		}
-//		Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
-//		if (carroNaFrente != null
-//				&& carroNaFrente.getPiloto().isRecebeuBanderada()
-//				&& (ganho + ptosPista) >= carroNaFrente.getPiloto()
-//						.getPtosPista()) {
-//			ganho -= ((ganho + ptosPista) - carroNaFrente.getPiloto()
-//					.getPtosPista());
-//			ganho--;
-//		}
+		// Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
+		// if (carroNaFrente != null
+		// && carroNaFrente.getPiloto().isRecebeuBanderada()
+		// && (ganho + ptosPista) >= carroNaFrente.getPiloto()
+		// .getPtosPista()) {
+		// ganho -= ((ganho + ptosPista) - carroNaFrente.getPiloto()
+		// .getPtosPista());
+		// ganho--;
+		// }
 		ptosPista += ganho;
 		return index;
 	}
@@ -2015,5 +2023,37 @@ public class Piloto implements Serializable {
 			return Util.intervalo(1, 2);
 		}
 		return 0;
+	}
+
+	public boolean adicionaVotoDriveThru(String nomeJogador, List piList) {
+		for (Iterator iterator = votosDriveThru.iterator(); iterator.hasNext();) {
+			boolean jogadorAindaJogo = false;
+			String votoJogador = (String) iterator.next();
+			for (Iterator iterator2 = piList.iterator(); iterator2.hasNext();) {
+				Piloto piloto = (Piloto) iterator2.next();
+				if (piloto.getNomeJogador().equals(votoJogador)) {
+					jogadorAindaJogo = true;
+					break;
+				}
+			}
+			if (!jogadorAindaJogo) {
+				iterator.remove();
+			}
+		}
+
+		if (votosDriveThru.contains(nomeJogador)) {
+			return false;
+		}
+		votosDriveThru.add(nomeJogador);
+		return true;
+	}
+
+	public int getVotosDriveThru() {
+		return votosDriveThru.size();
+	}
+
+	public void limparDriveThrough() {
+		votosDriveThru.clear();
+
 	}
 }
