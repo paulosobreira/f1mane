@@ -986,7 +986,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void driveTru() {
+	public void driveThru() {
 		monitorJogo.driveThru(pilotoSelecionado);
 	}
 
