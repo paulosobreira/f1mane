@@ -722,7 +722,7 @@ public class Carro implements Serializable {
 		if (piloto.getTracado() != 0
 				&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())
 				&& !piloto.testeHabilidadePiloto(controleJogo)
-				&& Math.random() > controleJogo.getIndexVelcidadeDaPista()) {
+				&& Math.random() > controleJogo.getFatorUtrapassagem()) {
 			novoModificador--;
 		}
 
@@ -803,7 +803,7 @@ public class Carro implements Serializable {
 			}
 			if (controleJogo.asfaltoAbrasivo()
 					&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())) {
-				desgPneus += Util.intervalo(1, 7);
+				desgPneus += Util.intervalo(1, 5);
 			}
 		}
 
