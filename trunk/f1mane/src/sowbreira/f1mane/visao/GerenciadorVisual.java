@@ -124,7 +124,7 @@ public class GerenciadorVisual {
 	private JButton agressivo;
 	private JButton alternaPiloto;
 	private JButton box;
-	private JButton driverTru;
+	private JButton driverThru;
 	private JButton progBox;
 	private PainelTabelaResultadoFinal resultadoFinal;
 	private ThreadMudancaClima clima;
@@ -260,11 +260,11 @@ public class GerenciadorVisual {
 		scrollPaneTextual.addKeyListener(keyListener);
 		infoTextual.addKeyListener(keyListener);
 		comboBoxAsa.addKeyListener(keyListener);
-		driverTru.addKeyListener(keyListener);
+		driverThru.addKeyListener(keyListener);
 		f1.addKeyListener(keyListener);
 		f2.addKeyListener(keyListener);
 		f3.addKeyListener(keyListener);
-		driverTru.addMouseWheelListener(mw);
+		driverThru.addMouseWheelListener(mw);
 		f1.addMouseWheelListener(mw);
 		f2.addMouseWheelListener(mw);
 		f3.addMouseWheelListener(mw);
@@ -349,9 +349,9 @@ public class GerenciadorVisual {
 			}
 
 		});
-		driverTru.addActionListener(new ActionListener() {
+		driverThru.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleJogo.driveTru();
+				controleJogo.driveThru();
 			}
 
 		});
@@ -1056,7 +1056,7 @@ public class GerenciadorVisual {
 		eastPanel.setLayout(new BorderLayout());
 		eastPanel.add(painelInfGraf, BorderLayout.CENTER);
 		if (controleJogo instanceof JogoCliente) {
-			eastPanel.add(driverTru, BorderLayout.CENTER);
+			eastPanel.add(driverThru, BorderLayout.CENTER);
 		}
 		eastPanel.add(painelPosicoes, BorderLayout.NORTH);
 
@@ -1161,9 +1161,9 @@ public class GerenciadorVisual {
 			}
 		};
 		ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
-		driverTru = new JButton("driverTru") {
+		driverThru = new JButton("driverThru") {
 			public String getToolTipText() {
-				return Lang.msg("driverTru");
+				return Lang.msg("driverThru");
 			};
 
 		};

@@ -282,6 +282,6 @@ public interface InterfaceJogo {
 	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
 			Piloto p);
 
-	public void driveTru();
+	public void driveThru();
 
 }

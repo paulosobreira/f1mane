@@ -1173,7 +1173,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	@Override
-	public void driveTru() {
+	public void driveThru() {
 		// TODO Auto-generated method stub
 
 	}
