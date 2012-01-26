@@ -30,7 +30,7 @@ public class PainelTabelaPosicoes extends JPanel {
 	private Piloto pilotoSelecionado;
 	private Piloto[] pilotosId = new Piloto[24];
 	private int larguraPainel = 160;
-	private int alturaPainel = 390;
+	private int alturaPainel = 385;
 	public static final String mutex = "mutex";
 	public static final String Coluna1 = "F1-MANE";
 	public final static Color foraCorrida = new Color(250, 50, 50, 100);
