@@ -269,7 +269,6 @@ public class Carro implements Serializable {
 	}
 
 	public boolean verificaCondicoesCautelaGiro(InterfaceJogo controleJogo) {
-		int pneus = porcentagemDesgastePeneus();
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
 		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
