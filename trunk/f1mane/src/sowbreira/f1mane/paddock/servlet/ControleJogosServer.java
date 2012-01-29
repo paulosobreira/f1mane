@@ -86,10 +86,11 @@ public class ControleJogosServer {
 								.getDadosJogoCriado().getNomeCampeonato(),
 								false);
 				if (campeonato != null
-						&& !clientPaddockPack.getSessaoCliente()
-								.getNomeJogador().equals(
-										campeonato.getJogadorDadosSrv()
-												.getNome())) {
+						&& !clientPaddockPack
+								.getSessaoCliente()
+								.getNomeJogador()
+								.equals(campeonato.getJogadorDadosSrv()
+										.getNome())) {
 					return new MsgSrv(Lang.msg("somenteDonoPodeCriar"));
 				}
 
@@ -116,8 +117,8 @@ public class ControleJogosServer {
 						.verCarreira(clientPaddockPack, session);
 				if (carreiraDadosSrv.isModoCarreira()) {
 					if (verificaExcedePotencia(jogoServidor.getMediaPontecia(),
-							carreiraDadosSrv.getPtsCarro(), jogoServidor
-									.getNiveljogo())) {
+							carreiraDadosSrv.getPtsCarro(),
+							jogoServidor.getNiveljogo())) {
 						int permitidoAcimaMedia = 0;
 						if (InterfaceJogo.FACIL_NV == jogoServidor
 								.getNiveljogo()) {
@@ -408,8 +409,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.setAgressivo(!piloto.isAgressivo(), jogoServidor);
 				break;
 			}
@@ -423,8 +424,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.getCarro().mudarGiroMotor(
 						clientPaddockPack.getGiroMotor());
 				break;
@@ -439,8 +440,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				if (!piloto.entrouNoBox()) {
 					piloto.setBox(!piloto.isBox());
 					piloto.setTipoPneuBox(clientPaddockPack.getTpPneuBox());
@@ -602,8 +603,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.setModoPilotagem(clientPaddockPack.getModoPilotagem());
 				break;
 			}
@@ -617,8 +618,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.mudarAutoTracado();
 				break;
 			}
@@ -632,8 +633,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.mudarTracado(clientPaddockPack.getTracado(),
 						jogoServidor);
 				break;
@@ -655,8 +656,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.setAtivarDRS(((Boolean) (clientPaddockPack
 						.getDataObject())).booleanValue());
 				break;
@@ -671,8 +672,8 @@ public class ControleJogosServer {
 		List piList = jogoServidor.getPilotos();
 		for (Iterator iter = piList.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
-					piloto.getNomeJogador())) {
+			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
+					.equals(piloto.getNomeJogador())) {
 				piloto.setAtivarKers(((Boolean) (clientPaddockPack
 						.getDataObject())).booleanValue());
 				break;
@@ -714,19 +715,19 @@ public class ControleJogosServer {
 				if (piloto.adicionaVotoDriveThru(requisitorDriveThru, piList)) {
 					if (piloto.getVotosDriveThru() > (metadeJogadores)) {
 						piloto.setDriveThrough(true);
-						jogoServidor.infoPrioritaria(Lang.msg(
-								"penalidadePilotoDriveThru", new String[] {
-										Html.superRed(jogadorDriveTru),
+						jogoServidor.infoPrioritaria(Html.driveThru(Lang.msg(
+								"penalidadePilotoDriveThru",
+								new String[] { Html.superRed(jogadorDriveTru),
 										Html.bold(requisitorDriveThru),
 										"" + piloto.getVotosDriveThru(),
-										"" + (metadeJogadores + 1) }));
+										"" + (metadeJogadores + 1) })));
 					} else {
-						jogoServidor.infoPrioritaria(Lang.msg(
-								"votoPilotoDriveThru", new String[] {
-										Html.superRed(jogadorDriveTru),
+						jogoServidor.infoPrioritaria(Html.driveThru(Lang.msg(
+								"votoPilotoDriveThru",
+								new String[] { Html.superRed(jogadorDriveTru),
 										Html.bold(requisitorDriveThru),
 										"" + piloto.getVotosDriveThru(),
-										"" + (metadeJogadores + 1) }));
+										"" + (metadeJogadores + 1) })));
 					}
 				}
 				break;

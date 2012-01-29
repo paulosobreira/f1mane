@@ -67,7 +67,9 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void run() {
-		while (controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
+		boolean interrupt = false;
+		while (!interrupt && controlePaddockCliente.isComunicacaoServer()
+				&& jogoAtivo) {
 			try {
 				long tempoCiclo = jogoCliente.getTempoCiclo();
 				if (tempoCiclo < controlePaddockCliente.getLatenciaMinima()) {
@@ -83,8 +85,9 @@ public class MonitorJogo implements Runnable {
 				processaCiclosCorrida(tempoCiclo);
 				mostraResultadoFinal(tempoCiclo);
 				verificaEstadoJogo();
-				sleep(controlePaddockCliente.getLatenciaMinima());
-			} catch (Exception e) {
+				Thread.sleep(controlePaddockCliente.getLatenciaMinima());
+			} catch (InterruptedException e) {
+				interrupt = true;
 				if (jogoCliente != null) {
 					jogoCliente.matarTodasThreads();
 				}
@@ -127,73 +130,86 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void mostraResultadoFinal(long tempoCiclo) {
-		while (Comandos.MOSTRA_RESULTADO_FINAL.equals(estado)
+		boolean interrupt = false;
+		while (!interrupt && Comandos.MOSTRA_RESULTADO_FINAL.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
-			List pilotos = jogoCliente.getPilotos();
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				// jogoCliente.adicionarInfoDireto(piloto.getPosicao() + " "
-				// + piloto.getNome() + " " + piloto.getCarro().getNome());
-				atualizarDadosParciais(jogoCliente.getDadosJogo(), piloto);
-				try {
-					Thread.sleep(300);
-				} catch (InterruptedException e) {
-					Logger.logarExept(e);
-				}
-			}
-			atualizarDados();
-			jogoCliente.exibirResultadoFinal();
-			jogoAtivo = false;
-			sleep(tempoCiclo);
+			try {
 
+				List pilotos = jogoCliente.getPilotos();
+				for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+					Piloto piloto = (Piloto) iterator.next();
+					// jogoCliente.adicionarInfoDireto(piloto.getPosicao() + " "
+					// + piloto.getNome() + " " + piloto.getCarro().getNome());
+					atualizarDadosParciais(jogoCliente.getDadosJogo(), piloto);
+					try {
+						Thread.sleep(300);
+					} catch (InterruptedException e) {
+						Logger.logarExept(e);
+					}
+				}
+				atualizarDados();
+				jogoCliente.exibirResultadoFinal();
+				jogoAtivo = false;
+				Thread.sleep(tempoCiclo);
+			} catch (InterruptedException e) {
+				interrupt = true;
+				Logger.logarExept(e);
+			}
 		}
 	}
 
 	private void processaCiclosCorrida(long tempoCiclo) {
 		int delayVerificaStado = 20;
-		while (Comandos.CORRIDA_INICIADA.equals(estado)
+		boolean interrupt = false;
+		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
-			disparaAtualizadorPainel();
-			if (!atualizouDados) {
-				atualizarDados();
-				atualizaModoCarreira();
-				atualizouDados = true;
-			}
-			if (monitorQualificacao != null) {
-				jogoCliente.pularQualificacao();
-				monitorQualificacao = null;
-			}
-			if (!setouZoom) {
-				jogoCliente.setZoom(0.5);
-
-				setouZoom = true;
-			}
-			delayVerificaStado--;
-			if (delayVerificaStado <= 0) {
-				if (((Piloto) jogoCliente.getPilotos().get(0)).getNumeroVolta() != 0) {
-					while (luz > 0) {
-						apagarLuz();
-						luz--;
-					}
-					for (Iterator iterator = jogoCliente.getPilotos()
-							.iterator(); iterator.hasNext();) {
-						Piloto piloto = (Piloto) iterator.next();
-						piloto.setVelocidade(1);
-					}
+			try {
+				disparaAtualizadorPainel();
+				if (!atualizouDados) {
+					atualizarDados();
+					atualizaModoCarreira();
+					atualizouDados = true;
 				}
-
-				atualizarDadosParciais(jogoCliente.getDadosJogo(),
-						jogoCliente.getPilotoSelecionado());
-				if (controlePaddockCliente.getLatenciaReal() > 2000) {
-					delayVerificaStado = 2;
-				} else {
-					delayVerificaStado = 4;
+				if (monitorQualificacao != null) {
+					jogoCliente.pularQualificacao();
+					monitorQualificacao = null;
 				}
-				continue;
+				if (!setouZoom) {
+					jogoCliente.setZoom(0.5);
+
+					setouZoom = true;
+				}
+				delayVerificaStado--;
+				if (delayVerificaStado <= 0) {
+					if (((Piloto) jogoCliente.getPilotos().get(0))
+							.getNumeroVolta() != 0) {
+						while (luz > 0) {
+							apagarLuz();
+							luz--;
+						}
+						for (Iterator iterator = jogoCliente.getPilotos()
+								.iterator(); iterator.hasNext();) {
+							Piloto piloto = (Piloto) iterator.next();
+							piloto.setVelocidade(1);
+						}
+					}
+
+					atualizarDadosParciais(jogoCliente.getDadosJogo(),
+							jogoCliente.getPilotoSelecionado());
+					if (controlePaddockCliente.getLatenciaReal() > 2000) {
+						delayVerificaStado = 2;
+					} else {
+						delayVerificaStado = 4;
+					}
+					continue;
+				}
+				iniciaJalena();
+				atualizaPosicoes();
+				Thread.sleep(tempoCiclo);
+			} catch (InterruptedException e) {
+				interrupt = true;
+				Logger.logarExept(e);
 			}
-			iniciaJalena();
-			atualizaPosicoes();
-			sleep(tempoCiclo);
 		}
 	}
 
@@ -228,49 +244,59 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void mostraQualify() {
-		while (Comandos.MOSTRANDO_QUALIFY.equals(estado)
+		boolean interrupt = false;
+		while (!interrupt && Comandos.MOSTRANDO_QUALIFY.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			verificaEstadoJogo();
 			iniciaJalena();
-
-			if (monitorQualificacao == null) {
-				monitorQualificacao = new Thread(new MonitorQualificacao(
-						jogoCliente));
-				sleep(1000);
-				atualizarDados();
-				// jogoCliente.preparaGerenciadorVisual();
-				jogoCliente.atualizaPainel();
-				if (jogoCliente.getPilotos() != null) {
-					Piloto p = (Piloto) jogoCliente.getPilotos().get(
-							Util.intervalo(0,
-									jogoCliente.getPilotos().size() - 1));
-					int cont = 0;
-					while (p.getPosicao() == 0
-							|| p.getCiclosVoltaQualificacao() == 0) {
-						if (cont > 5) {
-							break;
+			try {
+				if (monitorQualificacao == null) {
+					monitorQualificacao = new Thread(new MonitorQualificacao(
+							jogoCliente));
+					Thread.sleep(1000);
+					atualizarDados();
+					// jogoCliente.preparaGerenciadorVisual();
+					jogoCliente.atualizaPainel();
+					if (jogoCliente.getPilotos() != null) {
+						Piloto p = (Piloto) jogoCliente.getPilotos().get(
+								Util.intervalo(0, jogoCliente.getPilotos()
+										.size() - 1));
+						int cont = 0;
+						while (p.getPosicao() == 0
+								|| p.getCiclosVoltaQualificacao() == 0) {
+							if (cont > 5) {
+								break;
+							}
+							Thread.sleep(500);
+							atualizarDados();
+							cont++;
 						}
-						sleep(500);
-						atualizarDados();
-						cont++;
 					}
+					monitorQualificacao.start();
 				}
-				monitorQualificacao.start();
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				interrupt = true;
+				Logger.logarExept(e);
 			}
-			sleep(100);
 		}
 		if (monitorQualificacao != null)
 			monitorQualificacao.interrupt();
 	}
 
 	private void esperaJogoComecar() {
-		while (Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)
+		boolean interupt = false;
+		while (!interupt && Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			verificaEstadoJogo();
 			jogoCliente.carregaBackGroundCliente();
-			sleep(1000);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				interupt = true;
+				Logger.logarExept(e);
+			}
 		}
-
 	}
 
 	private void atualizaModoCarreira() {
@@ -410,7 +436,8 @@ public class MonitorJogo implements Runnable {
 		consumidorPosis = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (jogoAtivo && consumidorAtivo) {
+				boolean interrupt = false;
+				while (!interrupt && jogoAtivo && consumidorAtivo) {
 					if (!posisBuffer.isEmpty()) {
 						posisArrayBuff = (Object[]) posisBuffer.remove(0);
 					}
@@ -424,7 +451,12 @@ public class MonitorJogo implements Runnable {
 							}
 						}
 					}
-					sleep(sleepConsumidorPosis);
+					try {
+						Thread.sleep(sleepConsumidorPosis);
+					} catch (InterruptedException e) {
+						interrupt = true;
+						Logger.logarExept(e);
+					}
 				}
 			}
 		});
@@ -668,15 +700,6 @@ public class MonitorJogo implements Runnable {
 		if (jogoAtivo) {
 			jogoCliente.iniciaJanela();
 		}
-	}
-
-	public void sleep(long l) {
-		try {
-			Thread.sleep(l);
-		} catch (InterruptedException e) {
-			Logger.logarExept(e);
-		}
-
 	}
 
 	private void verificaEstadoJogo() {

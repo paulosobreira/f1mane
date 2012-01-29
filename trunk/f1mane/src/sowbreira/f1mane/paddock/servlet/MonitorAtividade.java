@@ -25,7 +25,7 @@ public class MonitorAtividade implements Runnable {
 	public void run() {
 		while (alive) {
 			try {
-				sleep(5000);
+				Thread.sleep(5000);
 				long timeNow = System.currentTimeMillis();
 				List clientes = controlePaddock.getDadosPaddock().getClientes();
 				SessaoCliente sessaoClienteRemover = null;
@@ -66,18 +66,12 @@ public class MonitorAtividade implements Runnable {
 						}
 					}
 				}
+			} catch (InterruptedException e) {
+				alive = false;
+				Logger.logarExept(e);
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
-		}
-
-	}
-
-	private void sleep(long l) {
-		try {
-			Thread.sleep(l);
-		} catch (InterruptedException e) {
-			Logger.logarExept(e);
 		}
 
 	}

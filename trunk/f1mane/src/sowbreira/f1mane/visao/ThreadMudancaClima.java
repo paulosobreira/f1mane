@@ -33,8 +33,9 @@ public class ThreadMudancaClima extends Thread {
 					toolkit.beep();
 				}
 				sleep(100);
-			} catch (Exception e) {
+			} catch (InterruptedException e) {
 				Logger.logarExept(e);
+				return;
 			}
 		}
 		painelCircuito.setPointDesenhaClima(point);

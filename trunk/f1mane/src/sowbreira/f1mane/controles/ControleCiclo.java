@@ -89,7 +89,8 @@ public class ControleCiclo extends Thread {
 				}
 			}
 			Logger.logar("Luzes apagadas iniciar processadoCilcos");
-			while (processadoCilcos) {
+			boolean interrupt = false;
+			while (!interrupt && processadoCilcos) {
 				try {
 					if (InterfaceJogo.VALENDO
 							&& controleCorrida.isCorridaPausada()) {
@@ -127,6 +128,7 @@ public class ControleCiclo extends Thread {
 					}
 					contadorCiclos++;
 				} catch (Exception e) {
+					interrupt = true;
 					Logger.logarExept(e);
 				}
 			}
