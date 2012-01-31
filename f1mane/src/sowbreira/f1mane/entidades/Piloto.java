@@ -671,7 +671,7 @@ public class Piloto implements Serializable {
 			velocidadeLargada = velocidade;
 			return;
 		}
-		int fatorAcel = 10;
+		int fatorAcel = 15;
 		if (getCarro().testePotencia()) {
 			fatorAcel = 20;
 		}
