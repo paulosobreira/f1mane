@@ -667,13 +667,13 @@ public class Piloto implements Serializable {
 		}
 
 		if (velocidadeLargada < 50) {
-			velocidade += ((int) (Math.random() * (20 * index)));
+			velocidade += Util.intervalo(15, 30);
 			velocidadeLargada = velocidade;
 			return;
 		}
-		int fatorAcel = 15;
+		int fatorAcel = 10;
 		if (getCarro().testePotencia()) {
-			fatorAcel = 30;
+			fatorAcel = 20;
 		}
 		switch (index) {
 		case 0:
