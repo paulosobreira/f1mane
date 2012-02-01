@@ -679,6 +679,17 @@ public class PainelCircuito extends JPanel {
 					+ Util.inte(posisRec.y / doubleMulti), Util.inte(5 * zoom),
 					Util.inte(5 * zoom));
 		}
+		if (controleJogo.isSafetyCarNaPista()) {
+			SafetyCar safetyCar = controleJogo.getSafetyCar();
+			Point point = safetyCar.getNoAtual().getPoint();
+			Point p = new Point(point.x, point.y);
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			g2d.setColor(lightRed);
+			g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString("sc", o.x + p.x, o.y + p.y + 3);
+		}
 	}
 
 	public static void main(String[] args) {
