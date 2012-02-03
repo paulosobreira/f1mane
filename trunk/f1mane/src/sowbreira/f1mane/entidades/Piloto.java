@@ -1065,11 +1065,13 @@ public class Piloto implements Serializable {
 		long ptsPsitaPrevisto = ptosPista;
 		ptsPsitaPrevisto += ganho;
 		Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
-		if (carroNaFrente != null
+		if (!controleJogo.isModoQualify()
+				&& carroNaFrente != null
 				&& carroNaFrente.getPiloto().isRecebeuBanderada()
 				&& (ptsPsitaPrevisto > carroNaFrente.getPiloto().getPtosPista())) {
 			ptosPista = carroNaFrente.getPiloto().getPtosPista() - 1;
 		}
+		ptosPista += ganho;
 		return index;
 	}
 
@@ -1496,7 +1498,7 @@ public class Piloto implements Serializable {
 						novoModoAgressivo = true;
 					} else {
 						novoModoAgressivo = false;
-						setCiclosDesconcentrado(Util.intervalo(10, 30));
+						setCiclosDesconcentrado(Util.intervalo(5, 15));
 					}
 				} else {
 					novoModoAgressivo = false;
