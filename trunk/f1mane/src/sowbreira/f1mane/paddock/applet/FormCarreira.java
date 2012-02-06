@@ -154,8 +154,8 @@ public class FormCarreira extends JPanel {
 		setLayout(new BorderLayout());
 		add(panel, BorderLayout.CENTER);
 		JPanel panel4 = new JPanel(new BorderLayout());
-		panel4.add(panel2,BorderLayout.CENTER);
-		panel4.add(panel3,BorderLayout.SOUTH);
+		panel4.add(panel2, BorderLayout.CENTER);
+		panel4.add(panel3, BorderLayout.SOUTH);
 		add(panel4, BorderLayout.SOUTH);
 		gerarCarroLado();
 		gerarCarroCima();
@@ -236,22 +236,22 @@ public class FormCarreira extends JPanel {
 				if (val != nexVal && nexVal >= 600 && nexVal <= 999) {
 					int inc = 0;
 					if (nexVal >= 600 && nexVal < 700) {
-						inc = 1;
+						inc = 2;
 						if (val == 700) {
-							inc = 2;
+							inc = 4;
 						}
 					} else if (nexVal >= 700 && nexVal < 800) {
-						inc = 2;
+						inc = 4;
 						if (val == 800) {
-							inc = 5;
+							inc = 10;
 						}
 					} else if (nexVal >= 800 && nexVal < 900) {
-						inc = 5;
+						inc = 10;
 						if (val == 900) {
-							inc = 15;
+							inc = 30;
 						}
 					} else if (nexVal >= 900 && nexVal < 999) {
-						inc = 15;
+						inc = 30;
 					}
 					if ((nexVal - val) > 0) {
 						if ((ptsCarreira - inc) >= 0) {

@@ -1062,15 +1062,15 @@ public class Piloto implements Serializable {
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
 		}
-		long ptsPsitaPrevisto = ptosPista;
-		ptsPsitaPrevisto += ganho;
-		Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
-		if (!controleJogo.isModoQualify()
-				&& carroNaFrente != null
-				&& carroNaFrente.getPiloto().isRecebeuBanderada()
-				&& (ptsPsitaPrevisto > carroNaFrente.getPiloto().getPtosPista())) {
-			ptosPista = carroNaFrente.getPiloto().getPtosPista() - 1;
-		}
+//		long ptsPsitaPrevisto = ptosPista;
+//		ptsPsitaPrevisto += ganho;
+//		Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
+//		if (!controleJogo.isModoQualify()
+//				&& carroNaFrente != null
+//				&& carroNaFrente.getPiloto().isRecebeuBanderada()
+//				&& (ptsPsitaPrevisto > carroNaFrente.getPiloto().getPtosPista())) {
+//			ptosPista = carroNaFrente.getPiloto().getPtosPista() - 1;
+//		}
 		ptosPista += ganho;
 		return index;
 	}
