@@ -246,7 +246,7 @@ public class Carro implements Serializable {
 		if (pneus < (consumoMedioPenus)) {
 			return true;
 		}
-		if (controleJogo.isSemReabastacimento() && combust < 15) {
+		if (controleJogo.isSemReabastacimento() && combust < 10) {
 			return true;
 		}
 		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
