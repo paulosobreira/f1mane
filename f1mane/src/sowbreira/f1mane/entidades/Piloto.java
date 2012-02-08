@@ -813,8 +813,8 @@ public class Piloto implements Serializable {
 			box = true;
 		}
 
-		if (controleJogo.verificaUltimasVoltas() && (combust > 3)
-				&& (combust <= 5) && (pneus <= 12) && (pneus > 5)) {
+		if (controleJogo.verificaUltimasVoltas() && (combust <= 5)
+				&& (pneus <= 5)) {
 			controleJogo.info(Html.orange(Lang.msg("047",
 					new String[] { getNome() })));
 			msgsBox.put(Messagens.IR_BOX_FINAL_CORRIDA,
