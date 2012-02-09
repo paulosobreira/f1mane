@@ -199,8 +199,7 @@ public class ControleBox {
 					/**
 					 * gera limite velocidade no box
 					 */
-					ptosBox += ((boxRapido && Math.random() > propNumVoltas) ? 2
-							: 1);
+					ptosBox += 1;
 				} else if (box.verificaRetaOuLargada()
 						&& box.getIndex() > ultIndiceParada) {
 					ptosBox += ((boxRapido && Math.random() > (.4 * propNumVoltas)) ? 3

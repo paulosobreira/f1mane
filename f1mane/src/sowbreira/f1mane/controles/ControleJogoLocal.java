@@ -305,7 +305,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (ControleQualificacao.modoQualify) {
 			return false;
 		}
-		return ((controleCorrida.getQtdeTotalVoltas() - 2) < getNumVoltaAtual());
+		return ((controleCorrida.getQtdeTotalVoltas() - 3) < getNumVoltaAtual());
 	}
 
 	/**

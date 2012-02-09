@@ -30,7 +30,7 @@ public class PainelTabelaResultadoFinal extends JPanel {
 		posicoesTable = new JTable(model);
 		add(new JScrollPane(posicoesTable));
 		posicoesTable
-				.setPreferredScrollableViewportSize(new Dimension(800, 355));
+				.setPreferredScrollableViewportSize(new Dimension(800, 385));
 	}
 
 	public JTable getPosicoesTable() {
@@ -47,7 +47,7 @@ public class PainelTabelaResultadoFinal extends JPanel {
 		}
 
 		public int getRowCount() {
-			return 22;
+			return 24;
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
