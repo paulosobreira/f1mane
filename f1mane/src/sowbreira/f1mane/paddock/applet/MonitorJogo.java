@@ -504,8 +504,8 @@ public class MonitorJogo implements Runnable {
 								Logger.logar("diffINdex " + diffINdex);
 							}
 						}
-						int contDiv = 40;
-						int contSleep = 35;
+						int contDiv = 35;
+						int contSleep = 30;
 						double ganhoCorrecao = 0;
 						boolean intervalo = false;
 						for (int i = 0; i < 300; i += 5) {

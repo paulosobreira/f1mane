@@ -100,15 +100,15 @@ public class ControleQualificacao {
 			controleJogo.zerarMelhorVolta();
 		}
 		double bonusNivel = 0;
-		if (controleJogo.verificaNivelJogo()) {
-			bonusNivel = Util.intervalo(0, 5)
-					* (controleJogo.getNiveljogo() + .3);
-		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			if (jogandoresHumanos.contains(piloto)) {
 				piloto.setJogadorHumano(true);
 			} else {
+				if (controleJogo.verificaNivelJogo()) {
+					bonusNivel = Util.intervalo(0, 10)
+							* (controleJogo.getNiveljogo() + .3);
+				}
 				piloto.setHabilidade(piloto.getHabilidade() + (int) bonusNivel);
 			}
 		}
@@ -153,16 +153,12 @@ public class ControleQualificacao {
 					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 					(Carro.ALTURA));
 
-			Point cima = GeoUtil.calculaPonto(
-					calculaAngulo,
-					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			Point baixo = GeoUtil.calculaPonto(
-					calculaAngulo + 180,
-					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
+			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
+					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
+					.getCenterX()), Util.inte(rectangle.getCenterY())));
+			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
+					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
+					.getCenterX()), Util.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA)),

@@ -26,6 +26,7 @@ import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -58,10 +59,10 @@ public abstract class ControleRecursos {
 			if (carroLado == null) {
 				carroLado = CarregadorRecursos
 						.carregaImgSemCache("CarroLado.png");
-				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor1(), "CarroLadoC1.png");
-				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor2(), "CarroLadoC3.png");
+				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor1(), "CarroLadoC1.png");
+				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor2(), "CarroLadoC3.png");
 				Graphics graphics = carroLado.getGraphics();
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.drawImage(cor2, 0, 0, null);
@@ -87,9 +88,8 @@ public abstract class ControleRecursos {
 					}
 
 				} else {
-					bufferCarrosLadoSemAreofolio
-							.put(carro.getNome(), ImageUtil.geraTransparencia(
-									carroLado, Color.WHITE));
+					bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
+							.geraTransparencia(carroLado, Color.WHITE));
 				}
 			}
 			return carroLado;
@@ -125,13 +125,12 @@ public abstract class ControleRecursos {
 			BufferedImage carroLado = (BufferedImage) bufferCarrosLado
 					.get(carro.getNome());
 			if (carroLado == null) {
-				carroLado = ImageUtil.geraTransparencia(
-						CarregadorRecursos.carregaImgSemCache("CarroLado.png"),
-						190);
-				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor1(), "CarroLadoC1.png");
-				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor2(), "CarroLadoC2.png");
+				carroLado = ImageUtil.geraTransparencia(CarregadorRecursos
+						.carregaImgSemCache("CarroLado.png"), 190);
+				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor1(), "CarroLadoC1.png");
+				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor2(), "CarroLadoC2.png");
 				Graphics graphics = carroLado.getGraphics();
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.drawImage(cor2, 0, 0, null);
@@ -154,9 +153,8 @@ public abstract class ControleRecursos {
 								.geraTransparencia(carroLado, Color.WHITE));
 					}
 				} else {
-					bufferCarrosLado
-							.put(carro.getNome(), ImageUtil.geraTransparencia(
-									carroLado, Color.WHITE));
+					bufferCarrosLado.put(carro.getNome(), ImageUtil
+							.geraTransparencia(carroLado, Color.WHITE));
 				}
 
 			}
@@ -170,19 +168,18 @@ public abstract class ControleRecursos {
 			BufferedImage carroCima = (BufferedImage) bufferCarrosCimaSemAreofolio
 					.get(carro.getNome());
 			if (carroCima == null) {
-				carroCima = ImageUtil.geraTransparencia(
-						CarregadorRecursos.carregaImgSemCache("CarroCima.png"),
-						190);
-				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor1(), "CarroCimaC1.png");
-				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor2(), "CarroCimaC3.png");
+				carroCima = ImageUtil.geraTransparencia(CarregadorRecursos
+						.carregaImgSemCache("CarroCima.png"), 190);
+				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor1(), "CarroCimaC1.png");
+				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor2(), "CarroCimaC3.png");
 				Graphics graphics = carroCima.getGraphics();
 				graphics.drawImage(cor2, 0, 0, null);
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.dispose();
-				bufferCarrosCimaSemAreofolio.put(carro.getNome(),
-						ImageUtil.geraTransparencia(carroCima, Color.WHITE));
+				bufferCarrosCimaSemAreofolio.put(carro.getNome(), ImageUtil
+						.geraTransparencia(carroCima, Color.WHITE));
 			}
 			return carroCima;
 		}
@@ -198,19 +195,18 @@ public abstract class ControleRecursos {
 			BufferedImage carroCima = (BufferedImage) bufferCarrosCima
 					.get(carro.getNome());
 			if (carroCima == null) {
-				carroCima = ImageUtil.geraTransparencia(
-						CarregadorRecursos.carregaImgSemCache("CarroCima.png"),
-						190);
-				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor1(), "CarroCimaC1.png");
-				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor2(), "CarroCimaC2.png");
+				carroCima = ImageUtil.geraTransparencia(CarregadorRecursos
+						.carregaImgSemCache("CarroCima.png"), 190);
+				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor1(), "CarroCimaC1.png");
+				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor2(), "CarroCimaC2.png");
 				Graphics graphics = carroCima.getGraphics();
 				graphics.drawImage(cor2, 0, 0, null);
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.dispose();
-				bufferCarrosCima.put(carro.getNome(),
-						ImageUtil.geraTransparencia(carroCima, Color.WHITE));
+				bufferCarrosCima.put(carro.getNome(), ImageUtil
+						.geraTransparencia(carroCima, Color.WHITE));
 			}
 			return carroCima;
 		}
@@ -323,14 +319,16 @@ public abstract class ControleRecursos {
 	}
 
 	public static void main(String[] args) {
-		Logger.logar(((int) (0 + Math.random() * 9)));
+		String strVal = String.valueOf(Util.intervalo(50, 99))
+				+ Util.intervalo(0, 9);
+		System.out.println(strVal);
+		// Logger.logar(((int) (0 + Math.random() * 9)));
 	}
 
 	protected void definirHabilidadePadraoPilotos(int value) {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			String strVal = String.valueOf(value)
-					+ (int) (0 + Math.random() * 9);
+			String strVal = String.valueOf(value) + Util.intervalo(0, 9);
 			piloto.setHabilidade(Integer.parseInt(strVal));
 		}
 	}
