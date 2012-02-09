@@ -441,7 +441,7 @@ public class ControleCorrida {
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& !piloto.testeHabilidadePiloto(controleJogo)) {
 					if (piloto.testeHabilidadePilotoCarro(controleJogo)) {
-						piloto.setCiclosDesconcentrado(Util.intervalo(50, 100));
+						piloto.setCiclosDesconcentrado(Util.intervalo(10, 20));
 					} else {
 						piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 						controleJogo.infoPrioritaria(Lang.msg("016",
