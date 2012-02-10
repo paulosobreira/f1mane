@@ -435,12 +435,12 @@ public class ControleCorrida {
 				}
 			}
 		} else {
-			if (!piloto.testeHabilidadePilotoCarro(controleJogo)) {
+			if (!piloto.testeHabilidadePiloto(controleJogo)) {
 				if (piloto.getCarro().getDurabilidadeAereofolio() <= 0
 						&& Math.random() > fatorAcidenteLocal
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& !piloto.testeHabilidadePiloto(controleJogo)) {
-					if (piloto.testeHabilidadePilotoCarro(controleJogo)) {
+					if (piloto.testeHabilidadePiloto(controleJogo)) {
 						piloto.setCiclosDesconcentrado(Util.intervalo(10, 20));
 					} else {
 						piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
