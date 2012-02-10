@@ -594,12 +594,12 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			if (controleJogo.isSemReabastacimento()
-					&& !controleJogo.isKers()
-					&& !controleJogo.isDrs()
-					&& piloto.getNumeroVolta() > 1
-					&& piloto.getNumeroVolta() < (controleJogo
-							.getQtdeTotalVoltas() / 2))
+			if (controleCorrida.asfaltoAbrasivo()
+					|| (controleJogo.isSemReabastacimento()
+							&& !controleJogo.isKers() && !controleJogo.isDrs()
+							&& piloto.getNumeroVolta() > 1 && piloto
+							.getNumeroVolta() < (controleJogo
+							.getQtdeTotalVoltas() / 2)))
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
 						controleCorrida.getDistaciaCorrida());
