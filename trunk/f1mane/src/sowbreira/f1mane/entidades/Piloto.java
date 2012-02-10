@@ -1087,7 +1087,7 @@ public class Piloto implements Serializable {
 		if (calculaDiferencaParaAnterior < Util.intervalo(50 * controleJogo
 				.getNiveljogo(), 75 * controleJogo.getNiveljogo())
 				&& Math.random() < controleJogo.getNiveljogo()
-				&& testeHabilidadePilotoCarro(controleJogo)) {
+				&& testeHabilidadePiloto(controleJogo)) {
 			agressivo = true;
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
@@ -1096,7 +1096,7 @@ public class Piloto implements Serializable {
 	private void tentaUsarDRS(InterfaceJogo controleJogo) {
 		if (getNoAtual().verificaRetaOuLargada()
 				&& Math.random() < (controleJogo.getNiveljogo() - 0.1)
-				&& testeHabilidadePilotoCarro(controleJogo)) {
+				&& testeHabilidadePiloto(controleJogo)) {
 			ativarDRS = true;
 		} else {
 			ativarDRS = false;
@@ -1379,7 +1379,7 @@ public class Piloto implements Serializable {
 			}
 		}
 		if (diff > distBrigaMin && diff < distBrigaMax
-				&& testeHabilidadePilotoCarro(controleJogo)) {
+				&& testeHabilidadePiloto(controleJogo)) {
 			if (carroPilotoDaFrente != null) {
 				Piloto pilotoFrente = carroPilotoDaFrente.getPiloto();
 				if (!pilotoFrente.entrouNoBox()) {
@@ -1480,7 +1480,7 @@ public class Piloto implements Serializable {
 		}
 		boolean novoModoAgressivo = agressivo;
 
-		if (testeHabilidadePilotoCarro(controleJogo)) {
+		if (testeHabilidadePiloto(controleJogo)) {
 			if (carro.verificaCondicoesCautela(controleJogo)
 					&& !isJogadorHumano()) {
 				novoModoAgressivo = false;
@@ -1616,13 +1616,13 @@ public class Piloto implements Serializable {
 		double bonusSecundario = 0.5;
 
 		if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
-			bonusSecundario = 0.7;
+			bonusSecundario += 0.2;
 		}
 		if (Carro.GIRO_MIN_VAL == getCarro().getGiro()) {
-			bonusSecundario = 0.3;
+			bonusSecundario -= 0.2;
 		}
 		if (controleJogo.isChovendo()) {
-			bonusSecundario = 0.2;
+			bonusSecundario -= 0.1;
 		}
 		if (testeHabilidadePilotoCarro(controleJogo)
 				&& noAtual.verificaRetaOuLargada()) {
