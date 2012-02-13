@@ -575,6 +575,8 @@ public class ControleCorrida {
 
 			if (todosReceberamBaderada) {
 				controleCiclo.setProcessadoCilcos(false);
+				controleJogo.infoPrioritaria(Html.red(Lang
+						.msg("asfaltoAbrasivo")));
 				controleJogo.exibirResultadoFinal();
 			}
 		}

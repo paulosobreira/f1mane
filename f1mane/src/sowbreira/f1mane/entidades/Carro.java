@@ -495,7 +495,14 @@ public class Carro implements Serializable {
 			desg /= 2;
 		}
 		motor -= desg;
-		if (porcentagemDesgasteMotor() < 0) {
+
+		int porcent = porcentagemDesgasteMotor();
+
+		if (porcent < 0 && GIRO_MIN_VAL == giro) {
+			porcent = 1;
+		}
+
+		if (porcent < 0) {
 			piloto.setDesqualificado(true);
 			setDanificado(Carro.EXPLODIU_MOTOR);
 			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("042",
@@ -616,6 +623,10 @@ public class Carro implements Serializable {
 		}
 		combustivel -= (valConsumo
 				* controleJogo.getCircuito().getMultiplciador() * dificudade);
+
+		if (percent < 0 && GIRO_MIN_VAL == giro) {
+			percent = 1;
+		}
 
 		if (percent < 0) {
 			combustivel = 0;
