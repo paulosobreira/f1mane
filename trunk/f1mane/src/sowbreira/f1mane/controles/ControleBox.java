@@ -570,20 +570,19 @@ public class ControleBox {
 		int alta = (int) (100 * noAlta / total);
 		int media = (int) (100 * noMedia / total);
 		int baixa = (int) (100 * noBaixa / total);
-		if (alta >= 78 && piloto.testeHabilidadePilotoCarro(controleJogo)) {
+		if (alta >= 78) {
 			piloto.getCarro().setAsa(Carro.MENOS_ASA);
 		}
-		if (baixa >= 15 && piloto.testeHabilidadePilotoCarro(controleJogo)) {
+		if (baixa >= 15) {
 			piloto.getCarro().setAsa(Carro.MAIS_ASA);
 		}
-		if (media >= 25 && piloto.testeHabilidadePilotoCarro(controleJogo)) {
+		if (media >= 25 && piloto.testeHabilidadePiloto(controleJogo)) {
 			piloto.getCarro().setAsa(Carro.MAIS_ASA);
 		}
-		if (media >= 15 && piloto.testeHabilidadePilotoCarro(controleJogo)) {
+		if (media >= 15 && piloto.testeHabilidadePiloto(controleJogo)) {
 			piloto.getCarro().setAsa(Carro.ASA_NORMAL);
 		}
-		if (controleJogo.isChovendo()
-				&& piloto.testeHabilidadePiloto(controleJogo)) {
+		if (controleJogo.isChovendo()) {
 			piloto.getCarro().setAsa(Carro.MAIS_ASA);
 		}
 
