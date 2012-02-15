@@ -488,10 +488,9 @@ public class ControleBox {
 					.getCombustBox(piloto), controleJogo.getAsaBox(piloto));
 			return;
 		}
-		if ((Math.random() > .5)
+		if (piloto.testeHabilidadePiloto(controleJogo)
 				&& (posicao > (controleJogo.asfaltoAbrasivo() ? 5 : 8))) {
-			if (controleJogo.asfaltoAbrasivo()
-					&& piloto.testeHabilidadePiloto(controleJogo)) {
+			if (controleJogo.asfaltoAbrasivo() && (Math.random() > .5)) {
 				piloto.setSetUpIncial(UMA_PARADA);
 				setupParadaUnica(piloto);
 			} else {
@@ -595,7 +594,6 @@ public class ControleBox {
 		} else {
 			if (controleCorrida.asfaltoAbrasivo()
 					|| (controleJogo.isSemReabastacimento()
-							&& !controleJogo.isKers() && !controleJogo.isDrs()
 							&& piloto.getNumeroVolta() > 1 && piloto
 							.getNumeroVolta() < (controleJogo
 							.getQtdeTotalVoltas() / 2)))

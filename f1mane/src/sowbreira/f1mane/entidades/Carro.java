@@ -498,7 +498,8 @@ public class Carro implements Serializable {
 
 		int porcent = porcentagemDesgasteMotor();
 
-		if (porcent < 0 && GIRO_MIN_VAL == giro) {
+		if (porcent < 0
+				&& (GIRO_MIN_VAL == giro || !getPiloto().isJogadorHumano())) {
 			porcent = 1;
 		}
 
@@ -861,13 +862,6 @@ public class Carro implements Serializable {
 			valDesgaste *= 0.7;
 		}
 
-		if (porcent < 10) {
-			valDesgaste *= 0.5;
-		}
-
-		if (porcent < 5) {
-			valDesgaste *= 0.1;
-		}
 		if (verificaDano()) {
 			valDesgaste /= 3;
 		}
