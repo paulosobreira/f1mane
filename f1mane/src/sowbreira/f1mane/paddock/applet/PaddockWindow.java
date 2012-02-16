@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -238,8 +239,12 @@ public class PaddockWindow {
 					object = listaJogosCriados.getModel().getElementAt(0);
 				}
 				if (object != null) {
-					controlePaddockCliente.verDetalhesJogo(mapaJogosCriados
-							.get(object));
+					try {
+						controlePaddockCliente.verDetalhesJogo(mapaJogosCriados
+								.get(object));
+					} catch (Exception ex) {
+						Logger.logarExept(ex);
+					}
 				} else {
 					object = listaClientes.getSelectedValue();
 					if (object != null) {
