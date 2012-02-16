@@ -218,6 +218,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		detalhesJogo.setDadosCriarJogo(getDadosCriarJogo());
 		detalhesJogo.setTempoCriacao(getTempoCriacao());
 		detalhesJogo.setNomeCriador(getNomeCriador());
+		detalhesJogo.setDadosCriarJogo(dadosCriarJogo);
 	}
 
 	protected void processarEntradaDados() throws Exception {

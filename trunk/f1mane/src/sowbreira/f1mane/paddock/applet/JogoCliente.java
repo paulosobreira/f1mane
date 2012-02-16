@@ -848,11 +848,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
-	public void setPosisRec(Point point) {
+	public void setPosisRec(No no) {
 		if (gerenciadorVisual == null) {
 			return;
 		}
-		gerenciadorVisual.setPosisRec(point);
+		gerenciadorVisual.setPosisRec(no);
 
 	}
 
