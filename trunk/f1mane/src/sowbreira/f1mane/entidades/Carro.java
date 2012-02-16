@@ -501,6 +501,9 @@ public class Carro implements Serializable {
 		if (porcent < 0
 				&& (GIRO_MIN_VAL == giro || !getPiloto().isJogadorHumano())) {
 			porcent = 1;
+			if (!getPiloto().isJogadorHumano()) {
+				motor = 0;
+			}
 		}
 
 		if (porcent < 0) {
@@ -613,8 +616,7 @@ public class Carro implements Serializable {
 		if (giro == GIRO_MIN_VAL) {
 			valConsumo += ((testePotencia()) ? 0 : 1);
 		} else if (giro == GIRO_NOR_VAL) {
-			valConsumo += ((getPiloto()
-					.testeHabilidadePilotoOuCarro(controleJogo)) ? 1 : 2);
+			valConsumo += ((testePotencia()) ? 1 : 2);
 		} else if (giro == GIRO_MAX_VAL) {
 			valConsumo += ((getPiloto()
 					.testeHabilidadePilotoCarro(controleJogo)) ? 2 : 4);
@@ -858,8 +860,16 @@ public class Carro implements Serializable {
 			}
 		}
 
-		if (porcent < 15) {
+		if (porcent < 25) {
 			valDesgaste *= 0.7;
+		}
+
+		if (porcent < 15) {
+			valDesgaste *= 0.5;
+		}
+
+		if (!getPiloto().isJogadorHumano() && porcent < 10) {
+			valDesgaste *= 0.25;
 		}
 
 		if (verificaDano()) {
