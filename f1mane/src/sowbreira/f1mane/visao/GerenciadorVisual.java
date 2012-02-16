@@ -2399,10 +2399,10 @@ public class GerenciadorVisual {
 		}
 	}
 
-	public void setPosisRec(Point point) {
+	public void setPosisRec(No no) {
 		if (painelCircuito == null)
 			return;
-		painelCircuito.setPosisRec(point);
+		painelCircuito.setPosisRec(no);
 
 	}
 
