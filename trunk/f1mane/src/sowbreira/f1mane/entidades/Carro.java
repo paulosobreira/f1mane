@@ -597,9 +597,9 @@ public class Carro implements Serializable {
 		}
 		int dificudade = 3;
 		if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
-			dificudade = ((testePotencia()) ? 3 : 4);
+			dificudade = ((testePotencia()) ? 2 : 4);
 		else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
-			dificudade = ((testePotencia()) ? 2 : 3);
+			dificudade = ((testePotencia()) ? 1 : 3);
 		else if (InterfaceJogo.FACIL == controleJogo.getNivelCorrida())
 			dificudade = ((testePotencia()) ? 1 : 2);
 
