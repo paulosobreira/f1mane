@@ -107,8 +107,8 @@ public class Lang {
 				return "";
 			}
 			try {
-				MessageFormat messageFormat = new MessageFormat(
-						bundle.getString(key));
+				MessageFormat messageFormat = new MessageFormat(bundle
+						.getString(key));
 				return messageFormat.format(strings);
 			} catch (Exception e) {
 				return key;
@@ -202,7 +202,7 @@ public class Lang {
 		Set keys = new HashSet();
 		Set values = new HashSet();
 		String line = bufferedReader.readLine();
-		while (line != null) {
+		while (line != null && line.contains("=")) {
 			String[] splits = line.split("=");
 			if (keys.contains(splits[0])) {
 				throw new Exception("Repeated Key : " + splits[0]);
