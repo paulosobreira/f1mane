@@ -309,7 +309,9 @@ public class Carro implements Serializable {
 		// System.out.println(Math.random() < 1 / 10.0);
 		// double val = 100;
 		// val *= 0.1;
-		System.out.println(Util.intervalo(-5, 5) / 100.0);
+		int vcar = 50;
+		vcar *= .3;
+		System.out.println(vcar);
 	}
 
 	public void setPneuDuro(int distaciaCorrida) {
@@ -344,6 +346,11 @@ public class Carro implements Serializable {
 		if (GIRO_MIN_VAL == giro) {
 			mod = 0.3;
 		}
+
+		if (controleJogo.isDrs()) {
+			mod += 0.2;
+		}
+
 		if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa())
 				&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
 			novoModificadorOri++;
@@ -610,6 +617,7 @@ public class Carro implements Serializable {
 		} else {
 			valConsumo = (testePotencia() ? 0 : 1);
 		}
+
 		if (giro == GIRO_MIN_VAL) {
 			valConsumo += ((testePotencia()) ? 0 : 1);
 		} else if (giro == GIRO_NOR_VAL) {
@@ -621,15 +629,18 @@ public class Carro implements Serializable {
 			valConsumo += ((getPiloto()
 					.testeHabilidadePilotoCarro(controleJogo)) ? 3 : 4);
 		}
-		combustivel -= (valConsumo
+
+		double consumoTotal = (valConsumo
 				* controleJogo.getCircuito().getMultiplciador() * dificudade);
 
-		if (percent < 0
-				&& (GIRO_MIN_VAL == giro || !getPiloto().isJogadorHumano())) {
-			percent = 1;
+		if (percent < 5) {
+			setGiro(GIRO_MIN_VAL);
+			consumoTotal *= .1;
 		}
 
-		if (percent < 0) {
+		combustivel -= consumoTotal;
+
+		if (percent < 0 && getPiloto().isJogadorHumano()) {
 			combustivel = 0;
 			setDanificado(PANE_SECA);
 			getPiloto().setDesqualificado(true);
