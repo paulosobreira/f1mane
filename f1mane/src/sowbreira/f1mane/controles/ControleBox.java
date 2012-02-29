@@ -488,10 +488,10 @@ public class ControleBox {
 					.getCombustBox(piloto), controleJogo.getAsaBox(piloto));
 			return;
 		}
-		if (piloto.testeHabilidadePiloto(controleJogo)
+		if (piloto.testeHabilidadePilotoCarro(controleJogo)
 				&& (posicao > (controleJogo.asfaltoAbrasivo() ? 5 : 8))) {
 			if (controleJogo.asfaltoAbrasivo()
-					&& piloto.testeHabilidadePiloto(controleJogo)) {
+					&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 				piloto.setSetUpIncial(UMA_PARADA);
 				setupParadaUnica(piloto);
 			} else {
@@ -505,10 +505,10 @@ public class ControleBox {
 		if (controleJogo.isSemReabastacimento()) {
 			double mod = 0.9;
 			if (piloto.testeHabilidadePiloto(controleJogo)) {
-				mod = 0.8;
+				mod = 0.85;
 			}
 			if (piloto.testeHabilidadePilotoCarro(controleJogo)) {
-				mod = 0.7;
+				mod = 0.75;
 			}
 			piloto.getCarro().setCombustivel(
 					(int) (controleCorrida.getTanqueCheio() * mod));
