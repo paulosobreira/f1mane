@@ -284,4 +284,5 @@ public interface InterfaceJogo {
 
 	public void driveThru();
 
+	public int porcentagemChuvaCircuito();
 }

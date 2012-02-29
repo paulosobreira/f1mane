@@ -39,6 +39,7 @@ public abstract class ControleRecursos {
 	protected List carros;
 	protected CarregadorRecursos carregadorRecursos;
 	protected Map circuitos = new HashMap();
+	protected Map circuitosClima = new HashMap();
 	protected Map temporadasTransp = new HashMap();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
@@ -353,9 +354,28 @@ public abstract class ControleRecursos {
 				circuitos.put(properties.getProperty(name), name);
 
 			}
+
+			properties.load(CarregadorRecursos
+					.recursoComoStream("properties/chuvaPistas.properties"));
+
+			propName = properties.propertyNames();
+			while (propName.hasMoreElements()) {
+				final String name = (String) propName.nextElement();
+				circuitosClima.put(name,properties.getProperty(name));
+			}
+
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
+	}
+
+	public int porcentagemChuvaCircuito(String circuito) {
+		return Integer.valueOf((String) circuitosClima.get(circuitos
+				.get(circuito)));
+	}
+
+	public Map getCircuitosClima() {
+		return circuitosClima;
 	}
 
 	protected void carregarTemporadasTransp() {

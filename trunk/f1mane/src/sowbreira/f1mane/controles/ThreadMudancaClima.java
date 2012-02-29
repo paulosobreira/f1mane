@@ -42,7 +42,12 @@ public class ThreadMudancaClima extends Thread {
 						.getNiveljogo()) {
 					controleClima.intervaloSol();
 				} else {
-					controleClima.intervaloChuva();
+
+					if (controleClima.verificaPossibilidadeChoverNaPista()) {
+						controleClima.intervaloChuva();
+					} else {
+						controleClima.intervaloSol();
+					}
 				}
 
 			}
