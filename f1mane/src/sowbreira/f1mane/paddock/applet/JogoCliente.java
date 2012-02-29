@@ -990,4 +990,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		monitorJogo.driveThru(pilotoSelecionado);
 	}
 
+	@Override
+	public int porcentagemChuvaCircuito() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

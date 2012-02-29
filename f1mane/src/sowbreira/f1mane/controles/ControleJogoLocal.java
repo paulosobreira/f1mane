@@ -618,17 +618,19 @@ public class ControleJogoLocal extends ControleRecursos implements
 					(Clima) gerenciadorVisual.getComboBoxClimaInicial()
 							.getSelectedItem());
 			controleCorrida.gerarGridLargadaSemQualificacao();
-			Logger.logar("gerarGridLargadaSemQualificacao() FEITO");
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
-			Logger.logar("iniciarInterfaceGraficaJogo() FEITO");
 			controleCorrida.iniciarCorrida();
 			if (controleCampeonato != null) {
 				controleCampeonato.iniciaCorrida(circuitoSelecionado);
 			}
 			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
-			Logger.logar("inicializarThreadConsumidoraInfo() FEITO");
 		}
-
+		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
+		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
+				+ porcentagemChuvaCircuito(circuitoSelecionado));
+		Logger
+				.logar("porcentagemChuvaCircuito() "
+						+ porcentagemChuvaCircuito());
 	}
 
 	/**
@@ -1176,5 +1178,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void driveThru() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public int porcentagemChuvaCircuito() {
+		return porcentagemChuvaCircuito(circuitoSelecionado);
 	}
 }

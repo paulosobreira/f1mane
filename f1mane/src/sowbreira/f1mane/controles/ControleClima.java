@@ -94,7 +94,7 @@ public class ControleClima {
 			clima = Clima.SOL;
 			return;
 		}
-		
+
 		if (Math.random() > controleJogo.getNiveljogo()) {
 			return;
 		}
@@ -163,6 +163,11 @@ public class ControleClima {
 			threadMudancaClima.interrupt();
 		}
 
+	}
+
+	public boolean verificaPossibilidadeChoverNaPista() {
+		int porc = controleJogo.porcentagemChuvaCircuito();
+		return Math.random() < (porc / 100.0);
 	}
 
 }
