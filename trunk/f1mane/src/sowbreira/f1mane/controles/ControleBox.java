@@ -490,7 +490,7 @@ public class ControleBox {
 		}
 		if (piloto.testeHabilidadePilotoCarro(controleJogo)
 				&& (posicao > (controleJogo.asfaltoAbrasivo() ? 5 : 8))) {
-			if (controleJogo.asfaltoAbrasivo()
+			if ((controleJogo.asfaltoAbrasivo() && Math.random() > .5)
 					&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 				piloto.setSetUpIncial(UMA_PARADA);
 				setupParadaUnica(piloto);
@@ -593,9 +593,7 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			if ((controleCorrida.asfaltoAbrasivo() || (controleJogo
-					.isSemReabastacimento()
-					&& piloto.getNumeroVolta() > 1 && piloto.getNumeroVolta() < (controleJogo
+			if (((piloto.getNumeroVolta() > 1 && piloto.getNumeroVolta() < (controleJogo
 					.getQtdeTotalVoltas() / 2)))
 					&& piloto.testeHabilidadePiloto(controleJogo))
 				piloto.getCarro().trocarPneus(controleJogo,
