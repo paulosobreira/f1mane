@@ -54,7 +54,6 @@ public class ControleQualificacao {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-
 				return Double.compare(piloto1.getNotaQualificacaoAleatoria(),
 						piloto0.getNotaQualificacaoAleatoria());
 			}
@@ -116,7 +115,6 @@ public class ControleQualificacao {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-
 				return new Integer(piloto0.getCiclosVoltaQualificacao())
 						.compareTo(new Integer(piloto1
 								.getCiclosVoltaQualificacao()));

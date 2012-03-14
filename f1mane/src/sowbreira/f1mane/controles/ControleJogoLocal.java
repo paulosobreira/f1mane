@@ -727,6 +727,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 					+ " Volta :" + piloto.getNumeroVolta() + " Paradas Box :"
 					+ piloto.getQtdeParadasBox() + " Pontos Pista :"
 					+ piloto.getPtosPista());
+			System.out.println(circuitoSelecionado + " Posicao :" + (i + 1)
+					+ "-" + piloto.getNome() + " Volta :"
+					+ piloto.getNumeroVolta() + " Paradas Box :"
+					+ piloto.getQtdeParadasBox() + " Pontos Pista :"
+					+ piloto.getPtosPista() + " PFinal "
+					+ piloto.getPosicaoFinal());
 
 		}
 		Logger.logar("setChegada " + setChegada.size());

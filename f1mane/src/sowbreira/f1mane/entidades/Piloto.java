@@ -71,6 +71,7 @@ public class Piloto implements Serializable {
 	private Double angulo;
 	private transient int ptosBox;
 	private int posicao;
+	private int posicaoFinal;
 	private transient int paradoBox;
 	private int qtdeParadasBox;
 	private boolean desqualificado;
@@ -438,9 +439,18 @@ public class Piloto implements Serializable {
 						+ Html.green(Lang.msg("044",
 								new Object[] { getNumeroVolta() })));
 			}
+			posicaoFinal = posicao;
 		}
 
 		this.recebeuBanderada = recebueBanderada;
+	}
+
+	public int getPosicaoFinal() {
+		return posicaoFinal;
+	}
+
+	public void setPosicaoFinal(int posicaoFinal) {
+		this.posicaoFinal = posicaoFinal;
 	}
 
 	public void setQtdeParadasBox(int qtdeParadasBox) {
@@ -913,7 +923,7 @@ public class Piloto implements Serializable {
 			tentarPassaPilotoDaFrente(controleJogo);
 			tentarEscaparPilotoDaTraz(controleJogo);
 		}
-		if ((!isJogadorHumano() || controleJogo.isModoQualify())
+		if (!isJogadorHumano() && !controleJogo.isModoQualify()
 				&& controleJogo.isKers() && !controleJogo.isSafetyCarNaPista()
 				&& getPtosBox() == 0) {
 			tentaUsarKers(controleJogo);
