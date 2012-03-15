@@ -2,6 +2,7 @@ package sowbreira.f1mane.controles;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -179,8 +180,15 @@ public class ControleCorrida {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-				return new Long(piloto1.getPtosPista()).compareTo(new Long(
-						piloto0.getPtosPista()));
+				long ptosPista0 = piloto0.getPtosPista();
+				long ptosPista1 = piloto1.getPtosPista();
+				if (piloto0.isRecebeuBanderada()) {
+					ptosPista0 *= 25 - piloto0.getPosicaoFinal();
+				}
+				if (piloto1.isRecebeuBanderada()) {
+					ptosPista1 *= 25 - piloto1.getPosicaoFinal();
+				}
+				return new Long(ptosPista1).compareTo(new Long(ptosPista0));
 			}
 		});
 
@@ -483,6 +491,7 @@ public class ControleCorrida {
 		// fatorPerdaAreofolio -= (.7 / 10);
 		//
 		// Logger.logar(fatorPerdaAreofolio);
+		new Date(1);
 		System.out.println(Util.intervalo(85, 95) / 100.0);
 	}
 
@@ -556,7 +565,6 @@ public class ControleCorrida {
 	public void verificaFinalCorrida() {
 		if (getQtdeTotalVoltas() == voltaAtual()) {
 			controleJogo.setCorridaTerminada(true);
-
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(0);
 			piloto.setRecebeuBanderada(true, controleJogo);
 		}

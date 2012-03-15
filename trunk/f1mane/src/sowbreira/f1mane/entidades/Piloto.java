@@ -439,7 +439,7 @@ public class Piloto implements Serializable {
 						+ Html.green(Lang.msg("044",
 								new Object[] { getNumeroVolta() })));
 			}
-			posicaoFinal = posicao;
+			setPosicaoFinal(getPosicao());
 		}
 
 		this.recebeuBanderada = recebueBanderada;
@@ -852,6 +852,9 @@ public class Piloto implements Serializable {
 	}
 
 	public void setPosicao(int posicao) {
+		if (recebeuBanderada) {
+			return;
+		}
 		this.posicao = posicao;
 	}
 
@@ -897,13 +900,6 @@ public class Piloto implements Serializable {
 		 * Devagarinho qdo a corrida termina
 		 */
 		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
-			if (!controleJogo.getSetChegada().contains(getNome())) {
-				Logger.logar(" Pos " + getPosicao() + " Nome " + getNome()
-						+ " Volta " + getNumeroVolta() + " Pts " + ptosPista
-						+ " tempo " + System.currentTimeMillis() + " ganhoMin "
-						+ ganhoMax);
-				controleJogo.getSetChegada().add(getNome());
-			}
 			double novoModificador = (controleJogo.getCircuito()
 					.getMultiplciador());
 			index += novoModificador;

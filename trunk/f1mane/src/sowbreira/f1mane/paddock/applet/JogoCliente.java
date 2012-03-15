@@ -763,11 +763,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public Set getSetChegada() {
-		return new HashSet();
-	}
-
-	@Override
 	public void mudarAutoPos() {
 		monitorJogo.mudarAutoPos();
 	}

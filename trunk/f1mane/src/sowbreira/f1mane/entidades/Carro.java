@@ -501,9 +501,13 @@ public class Carro implements Serializable {
 		if (verificaDano()) {
 			desg /= 2;
 		}
-		motor -= desg;
-
 		int porcent = porcentagemDesgasteMotor();
+
+		if (porcent < 5 && (GIRO_MIN_VAL == giro)) {
+			desg *= 0.1;
+		}
+
+		motor -= desg;
 
 		if (porcent < 0
 				&& (GIRO_MIN_VAL == giro || !getPiloto().isJogadorHumano())) {

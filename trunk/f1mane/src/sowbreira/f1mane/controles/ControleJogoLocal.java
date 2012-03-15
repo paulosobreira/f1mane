@@ -58,7 +58,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected String circuitoSelecionado = null;
 	protected ControleCampeonato controleCampeonato;
 	private MainFrame mainFrame;
-	public Set setChegada = new HashSet();
 
 	public ControleJogoLocal(String temporada) throws Exception {
 		super(temporada);
@@ -723,19 +722,20 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
-			Logger.logar(" Posicao :" + (i + 1) + "-" + piloto.getNome()
-					+ " Volta :" + piloto.getNumeroVolta() + " Paradas Box :"
-					+ piloto.getQtdeParadasBox() + " Pontos Pista :"
-					+ piloto.getPtosPista());
-			System.out.println(circuitoSelecionado + " Posicao :" + (i + 1)
-					+ "-" + piloto.getNome() + " Volta :"
+
+			Logger.logar(circuitoSelecionado + " PLista :" + (i + 1)
+					+ " PFinal " + piloto.getPosicaoFinal() + " Posicao "
+					+ piloto.getPosicao() + "-" + piloto.getNome() + " Volta :"
 					+ piloto.getNumeroVolta() + " Paradas Box :"
 					+ piloto.getQtdeParadasBox() + " Pontos Pista :"
-					+ piloto.getPtosPista() + " PFinal "
-					+ piloto.getPosicaoFinal());
+					+ piloto.getPtosPista());
+			if (!(((i + 1) == piloto.getPosicaoFinal()) && piloto
+					.getPosicaoFinal() == piloto.getPosicao())) {
+				Logger
+						.logar("=================================================");
+			}
 
 		}
-		Logger.logar("setChegada " + setChegada.size());
 	}
 
 	/**
@@ -969,10 +969,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return controleCorrida.getFatorUtrapassagem();
 	}
 
-	public Set getSetChegada() {
-		return setChegada;
-	}
-
 	@Override
 	public void mudarAutoPos() {
 		if (pilotoJogador == null)
@@ -1190,4 +1186,5 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public int porcentagemChuvaCircuito() {
 		return porcentagemChuvaCircuito(circuitoSelecionado);
 	}
+
 }
