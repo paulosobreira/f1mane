@@ -833,11 +833,11 @@ public class MonitorJogo implements Runnable {
 					public int compare(Object arg0, Object arg1) {
 						Piloto piloto0 = (Piloto) arg0;
 						Piloto piloto1 = (Piloto) arg1;
-						long thisVal = piloto1.getPtosPista();
-						long anotherVal = piloto0.getPtosPista();
+						long p1Val = piloto1.getPtosPista();
+						long p0Val = piloto0.getPtosPista();
 
-						return ((thisVal < anotherVal) ? (-1)
-								: ((thisVal == anotherVal) ? 0 : 1));
+						return ((p1Val < p0Val) ? (-1)
+								: ((p1Val == p0Val) ? 0 : 1));
 					}
 				});
 

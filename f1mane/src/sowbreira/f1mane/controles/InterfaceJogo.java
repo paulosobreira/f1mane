@@ -15,7 +15,7 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-	public static boolean VALENDO = true;
+	public static boolean VALENDO = false;
 	public static boolean DEBUG_SEM_CHUVA = true;
 	public static String NORMAL = "NORMAL";
 	public static String FACIL = "FACIL";
@@ -210,8 +210,6 @@ public interface InterfaceJogo {
 
 	public double getFatorUtrapassagem();
 
-	public Set getSetChegada();
-
 	public String getTemporada();
 
 	public void setTemporada(String string);
@@ -285,4 +283,5 @@ public interface InterfaceJogo {
 	public void driveThru();
 
 	public int porcentagemChuvaCircuito();
+
 }
