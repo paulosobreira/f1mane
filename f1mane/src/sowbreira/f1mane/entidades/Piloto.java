@@ -440,6 +440,9 @@ public class Piloto implements Serializable {
 								new Object[] { getNumeroVolta() })));
 			}
 			setPosicaoFinal(getPosicao());
+			if (getPtosBox() != 0) {
+				Logger.logar(getNome() + " bandeirada no box " + getPtosBox());
+			}
 		}
 
 		this.recebeuBanderada = recebueBanderada;
