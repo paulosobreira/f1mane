@@ -601,10 +601,14 @@ public class Piloto implements Serializable {
 		 * Completou Volta
 		 */
 		if (diff >= 0) {
-			Logger.logar(getNome() + " Numero Volta " + getNumeroVolta());
 			if (!controleJogo.isModoQualify() && getNumeroVolta() == 0) {
 				long pontosPilotoLargada = controleJogo
 						.getPontosPilotoLargada();
+				/**
+				 * Pt Analise 1
+				 */
+				Logger.logar(getNome() + " Numero Volta "
+						+ getNumeroVolta() + "Pts Pista " + getPtosPista());
 				if (pontosPilotoLargada == 0) {
 					controleJogo.setPontosPilotoLargada(getPtosPista());
 				} else {
@@ -738,7 +742,7 @@ public class Piloto implements Serializable {
 	}
 
 	private void verificaIrBox(InterfaceJogo controleJogo) {
-		if (jogadorHumano || recebeuBanderada || ptosPista < 0) {
+		if (jogadorHumano || recebeuBanderada || getPtosPista() < 0) {
 			return;
 		}
 		int pneus = getCarro().porcentagemDesgastePeneus();
@@ -854,11 +858,11 @@ public class Piloto implements Serializable {
 	public void calcularVolta(InterfaceJogo controleJogo) {
 		int tamanhoCircuito = controleJogo.getNosDaPista().size();
 
-		if ((ptosPista == 0) || (tamanhoCircuito == 0)) {
+		if ((getPtosPista() == 0) || (tamanhoCircuito == 0)) {
 			numeroVolta = 0;
 		}
 
-		numeroVolta = (int) (ptosPista / tamanhoCircuito);
+		numeroVolta = (int) (getPtosPista() / tamanhoCircuito);
 
 		if (numeroVolta > controleJogo.totalVoltasCorrida()) {
 			numeroVolta = controleJogo.totalVoltasCorrida();
@@ -896,7 +900,7 @@ public class Piloto implements Serializable {
 			double novoModificador = (controleJogo.getCircuito()
 					.getMultiplciador());
 			index += novoModificador;
-			ptosPista += novoModificador;
+			setPtosPista(Util.inte(novoModificador + getPtosPista()));
 			return index;
 		}
 		if (desqualificado) {
@@ -1061,6 +1065,9 @@ public class Piloto implements Serializable {
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
 		}
+		/**
+		 * Pt Analise 2
+		 */
 		// long ptsPsitaPrevisto = ptosPista;
 		// ptsPsitaPrevisto += ganho;
 		// Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
@@ -1070,7 +1077,7 @@ public class Piloto implements Serializable {
 		// && (ptsPsitaPrevisto > carroNaFrente.getPiloto().getPtosPista())) {
 		// ptosPista = carroNaFrente.getPiloto().getPtosPista() - 1;
 		// }
-		ptosPista += ganho;
+		setPtosPista(Util.inte(getPtosPista() + ganho));
 		return index;
 	}
 
