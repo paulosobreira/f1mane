@@ -4,11 +4,9 @@ import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 
@@ -724,16 +722,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 			Piloto piloto = (Piloto) pilotos.get(i);
 
 			Logger.logar(circuitoSelecionado + " PLista :" + (i + 1)
-					+ " PFinal " + piloto.getPosicaoFinal() + " Posicao "
-					+ piloto.getPosicao() + "-" + piloto.getNome() + " Volta :"
-					+ piloto.getNumeroVolta() + " Paradas Box :"
-					+ piloto.getQtdeParadasBox() + " Pontos Pista :"
-					+ piloto.getPtosPista());
-			if (!(((i + 1) == piloto.getPosicaoFinal()) && piloto
-					.getPosicaoFinal() == piloto.getPosicao())) {
-				Logger
-						.logar("=================================================");
-			}
+					+ " Posicao " + piloto.getPosicao() + "-"
+					+ piloto.getNome() + " Volta :" + piloto.getNumeroVolta()
+					+ " Paradas Box :" + piloto.getQtdeParadasBox()
+					+ " Pontos Pista :" + piloto.getPtosPista());
 
 		}
 	}
