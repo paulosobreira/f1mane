@@ -67,7 +67,7 @@ public class ControleBox {
 		if (saidaBox == null) {
 			throw new Exception("Saida box não encontrada!");
 		}
-		if (controleJogo.verificaNivelJogo()) {
+		if (Math.random() < .8) {
 			boxRapido = true;
 		}
 		geraBoxesEquipes(carrosBox);
@@ -202,15 +202,15 @@ public class ControleBox {
 					ptosBox += 1;
 				} else if (box.verificaRetaOuLargada()
 						&& box.getIndex() > ultIndiceParada) {
-					ptosBox += ((boxRapido && Math.random() > (.4 * propNumVoltas)) ? 3
+					ptosBox += ((boxRapido && Math.random() > (.3 * propNumVoltas)) ? 3
 							: 2);
 				} else if (box.verificaCruvaAlta()
 						&& box.getIndex() > ultIndiceParada) {
-					ptosBox += ((boxRapido && Math.random() > (.5 * propNumVoltas)) ? 2
+					ptosBox += ((boxRapido && Math.random() > (.4 * propNumVoltas)) ? 2
 							: 1);
 				} else if (box.verificaCruvaBaixa()
 						&& box.getIndex() > ultIndiceParada) {
-					ptosBox += ((boxRapido && Math.random() > (.6 * propNumVoltas)) ? 2
+					ptosBox += ((boxRapido && Math.random() > (.5 * propNumVoltas)) ? 2
 							: 1);
 				} else {
 					ptosBox += 1;
