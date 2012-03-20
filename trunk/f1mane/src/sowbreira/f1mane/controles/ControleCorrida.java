@@ -182,12 +182,12 @@ public class ControleCorrida {
 				Piloto piloto1 = (Piloto) arg1;
 				long ptosPista0 = piloto0.getPtosPista();
 				long ptosPista1 = piloto1.getPtosPista();
-				if (piloto0.isRecebeuBanderada()) {
-					ptosPista0 *= 25 - piloto0.getPosicaoFinal();
-				}
-				if (piloto1.isRecebeuBanderada()) {
-					ptosPista1 *= 25 - piloto1.getPosicaoFinal();
-				}
+//				if (piloto0.isRecebeuBanderada()) {
+//					ptosPista0 *= 25 - piloto0.getPosicaoFinal();
+//				}
+//				if (piloto1.isRecebeuBanderada()) {
+//					ptosPista1 *= 25 - piloto1.getPosicaoFinal();
+//				}
 				return new Long(ptosPista1).compareTo(new Long(ptosPista0));
 			}
 		});
