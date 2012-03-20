@@ -607,8 +607,8 @@ public class Piloto implements Serializable {
 				/**
 				 * Pt Analise 1
 				 */
-				Logger.logar(getNome() + " Numero Volta "
-						+ getNumeroVolta() + "Pts Pista " + getPtosPista());
+				Logger.logar(getNome() + " Numero Volta " + getNumeroVolta()
+						+ "Pts Pista " + getPtosPista());
 				if (pontosPilotoLargada == 0) {
 					controleJogo.setPontosPilotoLargada(getPtosPista());
 				} else {
@@ -1068,16 +1068,23 @@ public class Piloto implements Serializable {
 		/**
 		 * Pt Analise 2
 		 */
-		// long ptsPsitaPrevisto = ptosPista;
-		// ptsPsitaPrevisto += ganho;
-		// Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
-		// if (!controleJogo.isModoQualify()
-		// && carroNaFrente != null
-		// && carroNaFrente.getPiloto().isRecebeuBanderada()
-		// && (ptsPsitaPrevisto > carroNaFrente.getPiloto().getPtosPista())) {
-		// ptosPista = carroNaFrente.getPiloto().getPtosPista() - 1;
-		// }
-		setPtosPista(Util.inte(getPtosPista() + ganho));
+		long ptsPsitaPrevisto = getPtosPista();
+		ptsPsitaPrevisto += ganho;
+		Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
+		if (!controleJogo.isModoQualify()
+				&& carroNaFrente != null
+				&& carroNaFrente.getPiloto().isRecebeuBanderada()
+				&& (ptsPsitaPrevisto > carroNaFrente.getPiloto().getPtosPista())) {
+			Logger
+					.logar("Na frente " + carroNaFrente.getPiloto()
+							+ " pts pista "
+							+ carroNaFrente.getPiloto().getPtosPista()
+							+ " Piloto " + this + " pts pista prev "
+							+ ptsPsitaPrevisto);
+			setPtosPista(carroNaFrente.getPiloto().getPtosPista() - 5);
+		} else {
+			setPtosPista(Util.inte(getPtosPista() + ganho));
+		}
 		return index;
 	}
 
