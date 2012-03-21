@@ -441,8 +441,8 @@ public class Piloto implements Serializable {
 			if (getPtosBox() != 0) {
 				Logger.logar(getNome() + " bandeirada no box " + getPtosBox());
 			}
-			System.out.println("Recebeu bandeirada " + this + " Pts pista "
-					+ this.getPtosPista());
+//			System.out.println("Recebeu bandeirada " + this + " Pts pista "
+//					+ this.getPtosPista());
 //			controleJogo.pausarJogo();
 		}
 

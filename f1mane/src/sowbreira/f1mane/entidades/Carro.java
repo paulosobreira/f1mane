@@ -753,14 +753,16 @@ public class Carro implements Serializable {
 				&& Math.random() > controleJogo.getFatorUtrapassagem()) {
 			novoModificador--;
 		}
-
+		double divVoltas = (controleJogo.getQtdeTotalVoltas() / Constantes.MAX_VOLTAS);
+		if (divVoltas >= 1) {
+			divVoltas = 0.999;
+		}
 		if (verificaPneusIncompativeisClima(controleJogo)
 				&& novoModificador >= 1) {
-
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				novoModificador = 0;
-			} else if (Math.random() > ((controleJogo.getQtdeTotalVoltas() * 100 / (Constantes.MAX_VOLTAS - 1)) / 100.0)
-					&& !getPiloto().testeHabilidadePiloto(controleJogo)) {
+			} else if ((Math.random() > divVoltas)
+					&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
 				novoModificador--;
 			}
 		}
