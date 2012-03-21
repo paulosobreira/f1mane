@@ -43,8 +43,11 @@ public class ControleSafetyCar {
 			if (pilotoFrente.getPtosBox() != 0 || pilotoFrente.danificado()) {
 				return ganho;
 			}
-			if ((piloto.getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 100)) {
+			if ((piloto.getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 150)) {
 				return ganho * 0.1;
+			} else if ((piloto.getPtosPista() + ganho) < (pilotoFrente
+					.getPtosPista() - 200)) {
+				return ganho * 1.2;
 			}
 		} else {
 			if ((piloto.getPtosPista() + ganho) > (controleJogo.getSafetyCar()
@@ -52,7 +55,7 @@ public class ControleSafetyCar {
 				return ganho * 0.1;
 			} else if ((piloto.getPtosPista() + ganho) < (controleJogo
 					.getSafetyCar().getPtosPista() - 200)) {
-				return ganho * 1.4;
+				return ganho * 1.2;
 			}
 		}
 		return ganho;
