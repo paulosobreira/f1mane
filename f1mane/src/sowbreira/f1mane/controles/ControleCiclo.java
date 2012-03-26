@@ -116,7 +116,6 @@ public class ControleCiclo extends Thread {
 							controleCorrida.processarPilotoBox(piloto);
 						}
 					}
-
 					controleCorrida.atualizaClassificacao();
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaPainel();
