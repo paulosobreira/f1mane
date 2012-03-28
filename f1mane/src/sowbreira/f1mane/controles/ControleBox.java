@@ -395,6 +395,7 @@ public class ControleBox {
 			controleJogo.infoPrioritaria(Html.driveThru(Lang.msg(
 					"cumpriuDriveThru", new String[] { piloto.getNome() })));
 		}
+
 		piloto.setNoAtual(saidaBox);
 		// Todo Ptos Pista
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
@@ -418,7 +419,9 @@ public class ControleBox {
 			piloto.getVoltaAtual().setVoltaSafetyCar(true);
 		}
 		piloto.efetuarSaidaBox(interfaceJogo);
-
+		if (interfaceJogo.isCorridaTerminada()) {
+			piloto.setRecebeuBanderada(true, interfaceJogo);
+		}
 	}
 
 	public int setupParadaUnica(Piloto piloto) {
