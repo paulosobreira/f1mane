@@ -1078,7 +1078,6 @@ public class Piloto implements Serializable {
 		Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
 		if (!controleJogo.isModoQualify()
 				&& carroNaFrente != null
-				&& !isRecebeuBanderada()
 				&& carroNaFrente.getPiloto().isRecebeuBanderada()
 				&& (ptsPsitaPrevisto > carroNaFrente.getPiloto().getPtosPista())) {
 			System.out.println("Na frente " + carroNaFrente.getPiloto()
