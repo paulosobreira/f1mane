@@ -866,7 +866,7 @@ public class Piloto implements Serializable {
 			numeroVolta = 0;
 		}
 
-		numeroVolta = Math.round((getPtosPista() / tamanhoCircuito));
+		numeroVolta = (int) Math.abs((getPtosPista() / tamanhoCircuito));
 
 		if (numeroVolta > controleJogo.totalVoltasCorrida()) {
 			numeroVolta = controleJogo.totalVoltasCorrida();
