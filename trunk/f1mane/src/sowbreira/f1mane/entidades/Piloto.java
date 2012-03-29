@@ -866,7 +866,7 @@ public class Piloto implements Serializable {
 			numeroVolta = 0;
 		}
 
-		numeroVolta = (int) Math.abs((getPtosPista() / tamanhoCircuito));
+		numeroVolta = (int) Math.floor((getPtosPista() / tamanhoCircuito));
 
 		if (numeroVolta > controleJogo.totalVoltasCorrida()) {
 			numeroVolta = controleJogo.totalVoltasCorrida();
@@ -1488,7 +1488,7 @@ public class Piloto implements Serializable {
 	public static void main(String[] args) {
 		// Logger.logar(1 + (int) (Math.random() * 3));
 		// System.out.println(0.5 * 1.5);
-		System.out.println(new Date());
+		System.out.println(Math.floor(4.9));
 	}
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {
