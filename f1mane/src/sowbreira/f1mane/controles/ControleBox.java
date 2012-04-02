@@ -351,6 +351,9 @@ public class ControleBox {
 			penalidade = Util.inte(penalidade
 					* (2 - (carro.getPotencia() / 1000)));
 		}
+		if (boxRapido) {
+			penalidade *= 0.5;
+		}
 		piloto.gerarCiclosPadoBox(porcentCombust, controleCorrida
 				.obterTempoCilco(), penalidade);
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
