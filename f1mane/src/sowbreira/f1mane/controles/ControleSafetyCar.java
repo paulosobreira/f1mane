@@ -40,24 +40,23 @@ public class ControleSafetyCar {
 		if (piloto.getPosicao() != 1) {
 			Piloto pilotoFrente = controleJogo.obterCarroNaFrente(piloto)
 					.getPiloto();
-			if (pilotoFrente.getPtosBox() != 0 || pilotoFrente.danificado()) {
+			if (pilotoFrente.getPtosBox() != 0 || pilotoFrente.danificado()
+					|| piloto.getNumeroVolta() != pilotoFrente.getNumeroVolta()) {
 				return ganho;
 			}
-			if ((piloto.getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 120)) {
+			if ((piloto.getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 150)) {
 				return ganho * 0.1;
 			} else {
-				return ganho * 1.1;
+				return ganho;
 			}
 		} else {
 			if ((piloto.getPtosPista() + ganho) >= (controleJogo.getSafetyCar()
-					.getPtosPista() - 50)) {
+					.getPtosPista() - 100)) {
 				return ganho * 0.2;
-			} else if ((piloto.getPtosPista() + ganho) < (controleJogo
-					.getSafetyCar().getPtosPista() - 50)) {
-				return ganho * 1.1;
+			} else {
+				return ganho * 1.2;
 			}
 		}
-		return ganho;
 	}
 
 	public boolean isSaftyCarNaPista() {
