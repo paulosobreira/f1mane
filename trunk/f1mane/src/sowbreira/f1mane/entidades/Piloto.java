@@ -1084,7 +1084,7 @@ public class Piloto implements Serializable {
 					+ " pts pista " + carroNaFrente.getPiloto().getPtosPista()
 					+ " Piloto " + this + " pts pista prev " + ptsPsitaPrevisto
 					+ " Hora " + new Date());
-			setPtosPista(carroNaFrente.getPiloto().getPtosPista() - 10);
+			setPtosPista(carroNaFrente.getPiloto().getPtosPista() - 5);
 		} else {
 			setPtosPista(Util.inte(getPtosPista() + ganho));
 		}
