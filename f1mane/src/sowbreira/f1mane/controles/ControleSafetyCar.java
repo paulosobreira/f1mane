@@ -44,15 +44,19 @@ public class ControleSafetyCar {
 					|| piloto.getNumeroVolta() != pilotoFrente.getNumeroVolta()) {
 				return ganho;
 			}
-			if ((piloto.getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 150)) {
+
+			if ((piloto.getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 100)) {
+				return 0;
+			} else if ((piloto.getPtosPista() + ganho) > (pilotoFrente
+					.getPtosPista() - 150)) {
 				return ganho * 0.1;
 			} else {
 				return ganho;
 			}
 		} else {
 			if ((piloto.getPtosPista() + ganho) >= (controleJogo.getSafetyCar()
-					.getPtosPista() - 100)) {
-				return ganho * 0.2;
+					.getPtosPista() - 50)) {
+				return ganho * 0.1;
 			} else {
 				return ganho * 1.2;
 			}
