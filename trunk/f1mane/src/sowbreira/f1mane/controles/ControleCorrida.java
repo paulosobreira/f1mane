@@ -390,6 +390,9 @@ public class ControleCorrida {
 		if (controleJogo.isChovendo()) {
 			fatorAcidenteLocal -= .2;
 		}
+		if (piloto.getCarro().verificaPneusIncompativeisClima(controleJogo)) {
+			fatorAcidenteLocal -= .2;
+		}
 		if ((Math.random() < fatorAcidenteLocal)) {
 			return;
 		}

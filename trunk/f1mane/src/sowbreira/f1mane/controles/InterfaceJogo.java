@@ -24,8 +24,8 @@ public interface InterfaceJogo {
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
 	public static int CARGA_KERS = 100;
-	public static int DUR_AREO_NORMAL = 5;
-	public static int DUR_AREO_FACIL = 7;
+	public static int DUR_AREO_NORMAL = 4;
+	public static int DUR_AREO_FACIL = 6;
 	public static int DUR_AREO_DIFICIL = 3;
 
 	public boolean isSemTrocaPneu();
