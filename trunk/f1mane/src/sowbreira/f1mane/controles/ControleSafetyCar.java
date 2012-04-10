@@ -51,7 +51,7 @@ public class ControleSafetyCar {
 				return ganho * 0.1;
 			} else if ((piloto.getPtosPista() + ganho) > (pilotoFrente
 					.getPtosPista() - 250)) {
-				return ganho * 0.5;
+				return ganho * 0.3;
 			} else {
 				return ganho;
 			}
@@ -63,7 +63,7 @@ public class ControleSafetyCar {
 					.getSafetyCar().getPtosPista() - 50)) {
 				return ganho * 0.7;
 			} else {
-				return ganho * 1.5;
+				return ganho * 1.3;
 			}
 		}
 	}
