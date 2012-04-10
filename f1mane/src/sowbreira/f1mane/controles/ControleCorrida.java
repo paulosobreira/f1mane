@@ -568,7 +568,7 @@ public class ControleCorrida {
 		int indexPole = pole.getNoAtual().getIndex();
 		int tamPista = controleJogo.getNosDaPista().size();
 		if (!pole.isRecebeuBanderada() && getQtdeTotalVoltas() == voltaAtual()
-				&& (indexPole > (tamPista - 25) || indexPole < 25)) {
+				&& (indexPole > (tamPista - 25) || indexPole < 30)) {
 			controleJogo.setCorridaTerminada(true);
 			pole.setRecebeuBanderada(true, controleJogo);
 		}
