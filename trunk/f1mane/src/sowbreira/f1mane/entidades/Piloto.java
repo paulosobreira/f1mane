@@ -661,7 +661,7 @@ public class Piloto implements Serializable {
 		if (controleJogo.isCorridaTerminada()) {
 			int indexPiloto = getNoAtual().getIndex();
 			int tamPista = controleJogo.getNosDaPista().size();
-			if ((indexPiloto > (tamPista - 25) || indexPiloto < 25)) {
+			if ((indexPiloto > (tamPista - 25) || indexPiloto < 30)) {
 				setRecebeuBanderada(true, controleJogo);
 			}
 		}
