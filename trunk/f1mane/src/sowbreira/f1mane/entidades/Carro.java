@@ -637,11 +637,14 @@ public class Carro implements Serializable {
 		double consumoTotal = (valConsumo
 				* controleJogo.getCircuito().getMultiplciador() * dificudade);
 
-		if (percent < 5) {
+		if (!getPiloto().isJogadorHumano() && percent < 5) {
 			setGiro(GIRO_MIN_VAL);
-			consumoTotal *= .1;
 		}
 
+		if(GIRO_MIN_VAL == getGiro() && percent < 5){
+			consumoTotal *= .1;
+		}
+		
 		combustivel -= consumoTotal;
 
 		if (percent < 0 && getPiloto().isJogadorHumano()) {
