@@ -3,6 +3,7 @@ package sowbreira.f1mane.controles;
 import java.util.Iterator;
 import java.util.List;
 
+import br.nnpe.GeoUtil;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -42,29 +43,39 @@ public class ControleSafetyCar {
 					.getPiloto();
 			if (pilotoFrente.getPtosBox() != 0 || pilotoFrente.danificado()
 					|| piloto.getNumeroVolta() != pilotoFrente.getNumeroVolta()) {
-				return ganho * 0.7;
-			}
-			if ((piloto.getPtosPista() + ganho) > (pilotoFrente.getPtosPista() - 150)) {
-				return 0;
-			} else if ((piloto.getPtosPista() + ganho) > (pilotoFrente
-					.getPtosPista() - 200)) {
-				return ganho * 0.1;
-			} else if ((piloto.getPtosPista() + ganho) > (pilotoFrente
-					.getPtosPista() - 250)) {
-				return ganho * 0.3;
-			} else {
 				return ganho;
 			}
-		} else {
-			if ((piloto.getPtosPista() + ganho) >= (controleJogo.getSafetyCar()
-					.getPtosPista() - 25)) {
-				return ganho * 0.1;
-			} else if ((piloto.getPtosPista() + ganho) >= (controleJogo
-					.getSafetyCar().getPtosPista() - 50)) {
-				return ganho * 0.7;
-			} else {
-				return ganho * 1.3;
+			long diff = pilotoFrente.getPtosPista() - piloto.getPtosPista();
+			if (piloto.isJogadorHumano()) {
+//				System.out.println("pilotoFrente.getPtosPista()"
+//						+ pilotoFrente.getPtosPista()
+//						+ " piloto.getPtosPista() " + piloto.getPtosPista()
+//						+ " REal Diff " + diff);
 			}
+
+			if (diff < 50) {
+				return 0;
+			}
+			for (int i = 1; i < 100; i++) {
+				int decimal = i * 10;
+				if (diff < decimal) {
+					return ganho * decimal / 1000.0;
+				}
+			}
+			return ganho;
+		} else {
+			long diff = (long) GeoUtil.distaciaEntrePontos(controleJogo
+					.getSafetyCar().getNoAtual().getPoint(), piloto
+					.getNoAtual().getPoint());
+
+			for (int i = 1; i < 20; i++) {
+				int decimal = i * 10;
+				if (diff < (decimal * 4)) {
+					return ganho * decimal / 100.0;
+
+				}
+			}
+			return ganho * 1.1;
 		}
 	}
 
@@ -97,8 +108,7 @@ public class ControleSafetyCar {
 		int cont = safetyCar.getNoAtual().getIndex();
 		Circuito circuito = controleJogo.getCircuito();
 		if ((cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
-				.getEntradaBoxIndex() + 50))
-				&& safetyCar.isVaiProBox()) {
+				.getEntradaBoxIndex() + 50)) && safetyCar.isVaiProBox()) {
 			controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("030")));
 			safetyCar.setNaPista(false);
 			safetyCar.setSaiuVolta(controleJogo.getNumVoltaAtual());
@@ -108,10 +118,9 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .5) ? 2 : 1)
-				: (Math.random() > .3) ? 2 : 1;
+				.random() > .5) ? 2 : 1) : (Math.random() > .3) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
-		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 200)) {
+		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 25)) {
 			bonus = (Math.random() > .5) ? 1 : 0;
 			safetyCar.setTracado(0);
 		}
