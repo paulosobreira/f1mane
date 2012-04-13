@@ -448,7 +448,7 @@ public class ControleCorrida {
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& !piloto.testeHabilidadePiloto(controleJogo)) {
 					if (piloto.testeHabilidadePiloto(controleJogo)
-							&& Math.random() > 0.5) {
+							&& Math.random() > 0.7) {
 						piloto.incStress(30);
 						piloto.setCiclosDesconcentrado(Util.intervalo(10, 20));
 					} else {

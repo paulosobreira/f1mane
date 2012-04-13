@@ -375,7 +375,7 @@ public class Carro implements Serializable {
 						testePotencia() ? 1 : 2);
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
 					&& testePotencia()) {
-				novoModificador += Util.intervalo(0, 1);
+				novoModificador += Math.random() < 0.7 ? 1 : 0;
 			}
 		}
 
@@ -641,10 +641,10 @@ public class Carro implements Serializable {
 			setGiro(GIRO_MIN_VAL);
 		}
 
-		if(GIRO_MIN_VAL == getGiro() && percent < 5){
+		if (GIRO_MIN_VAL == getGiro() && percent < 5) {
 			consumoTotal *= .1;
 		}
-		
+
 		combustivel -= consumoTotal;
 
 		if (percent < 0 && getPiloto().isJogadorHumano()) {
