@@ -36,38 +36,49 @@ public class ControleSafetyCar {
 		safetyCar = new SafetyCar();
 	}
 
+	public static void main(String[] args) {
+		for (int i = 20; i < 300; i += 10) {
+			System.out.println(i / 300.0);
+		}
+	}
+
 	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
 			Piloto piloto) {
 		if (piloto.getPosicao() != 1) {
 			Piloto pilotoFrente = controleJogo.obterCarroNaFrente(piloto)
 					.getPiloto();
 			if (pilotoFrente.getPtosBox() != 0 || pilotoFrente.danificado()
+					|| piloto.danificado()
 					|| piloto.getNumeroVolta() != pilotoFrente.getNumeroVolta()) {
-				return ganho;
-			}
-			long diff = pilotoFrente.getPtosPista() - piloto.getPtosPista();
-			if (piloto.isJogadorHumano()) {
-//				System.out.println("pilotoFrente.getPtosPista()"
-//						+ pilotoFrente.getPtosPista()
-//						+ " piloto.getPtosPista() " + piloto.getPtosPista()
-//						+ " REal Diff " + diff);
+				return ganho * 0.5;
 			}
 
-			if (diff < 50) {
+			long diff = pilotoFrente.getPtosPista() - piloto.getPtosPista();
+			if (piloto.isJogadorHumano()) {
+				System.out.println("pilotoFrente.getPtosPista()"
+						+ pilotoFrente.getPtosPista()
+						+ " piloto.getPtosPista() " + piloto.getPtosPista()
+						+ " REal Diff " + diff);
+			}
+
+			if (diff < 30) {
 				return 0;
 			}
-			for (int i = 1; i < 100; i++) {
-				int decimal = i * 10;
-				if (diff < decimal) {
-					return ganho * decimal / 1000.0;
+			for (int i = 30; i < 200; i++) {
+				if (diff < i) {
+					ganho *= i / 200.0;
 				}
 			}
+			if ((piloto.getPtosPista() + ganho) > pilotoFrente.getPtosPista()) {
+				return 0;
+			}
+
 			return ganho;
 		} else {
+
 			long diff = (long) GeoUtil.distaciaEntrePontos(controleJogo
 					.getSafetyCar().getNoAtual().getPoint(), piloto
 					.getNoAtual().getPoint());
-
 			for (int i = 1; i < 20; i++) {
 				int decimal = i * 10;
 				if (diff < (decimal * 4)) {
@@ -75,6 +86,12 @@ public class ControleSafetyCar {
 
 				}
 			}
+
+			if (piloto.getPtosPista() > controleJogo.getSafetyCar()
+					.getPtosPista()) {
+				return ganho * 0.1;
+			}
+
 			return ganho * 1.1;
 		}
 	}
