@@ -679,14 +679,13 @@ public class PainelCircuito extends JPanel {
 			p.x /= doubleMulti;
 			p.y /= doubleMulti;
 			g2d.setColor(lightRed);
-			if (controleJogo.isSafetyCarVaiBox()) {
+			if (!controleJogo.isSafetyCarVaiBox()) {
 				if (alternaPiscaSCSair) {
-					g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
+					g2d.setColor(yel);
 				}
 				alternaPiscaSCSair = !alternaPiscaSCSair;
-			} else {
-				g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
 			}
+			g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("sc", (o.x + p.x) - 6, o.y + p.y + 3);
 		}
@@ -2723,6 +2722,29 @@ public class PainelCircuito extends JPanel {
 				AffineTransformOp op2 = new AffineTransformOp(afZoom,
 						AffineTransformOp.TYPE_BILINEAR);
 				op2.filter(zoomBuffer, rotateBuffer);
+
+				if (circuito.isUsaBkg() && circuito.getObjetos() != null) {
+					for (ObjetoPista objetoPista : circuito.getObjetos()) {
+						if (!(objetoPista instanceof ObjetoTransparencia))
+							continue;
+						if (objetoPista.isPintaEmcima()) {
+							continue;
+						}
+						if (objetoPista.getAltura() != 0
+								&& objetoPista.getLargura() != 0) {
+							int indexNoAtual = noAtual.getIndex();
+							if (objetoPista.getAltura() > indexNoAtual
+									|| objetoPista.getLargura() < indexNoAtual) {
+								continue;
+							}
+						}
+						ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+						Graphics2D gImage = rotateBuffer.createGraphics();
+						objetoTransparencia.desenhaCarro(gImage, zoom, carx,
+								cary);
+
+					}
+				}
 				g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
 						Util.inte(cary * zoom), null);
 			}

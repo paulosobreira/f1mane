@@ -557,9 +557,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto
-								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-										.getMultiplicadorLarguraPista()));
+						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+								.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -594,6 +593,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		safetyCar = new SafetyCar();
 		safetyCar.setNoAtual(no);
 		safetyCar.setVaiProBox(safetySair);
+		if (safetySair) {
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (piloto.isDesqualificado()) {
+					piloto.getCarro().setRecolhido(true);
+				}
+			}
+		}
 	}
 
 	public Volta obterMelhorVolta(Piloto pilotoSelecionado) {
@@ -671,8 +678,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
 		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
-					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(
+					dadosParticiparJogo.getTpPnueu(),
+					dadosParticiparJogo.getCombustivel(),
 					dadosParticiparJogo.getAsa());
 			syncBox = true;
 		}

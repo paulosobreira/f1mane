@@ -357,15 +357,22 @@ public class ControleBox {
 			penalidade = Util.inte(penalidade
 					* (2 - (carro.getPotencia() / 1000)));
 		}
+
+		double paradoBox = ((((porcentCombust + penalidade) * 100) / controleCorrida
+				.obterTempoCilco())) + 50;
 		if (boxRapido) {
 			double propNumVoltas = (controleJogo.getQtdeTotalVoltas() / Constantes.MAX_VOLTAS);
 			if (propNumVoltas >= 1) {
 				propNumVoltas = 0.999;
 			}
-			penalidade *= propNumVoltas;
+			if (propNumVoltas <= 0.2) {
+				propNumVoltas = 0.2;
+			}
+			paradoBox *= propNumVoltas;
 		}
-		piloto.gerarCiclosPadoBox(porcentCombust,
-				controleCorrida.obterTempoCilco(), penalidade);
+		piloto.setParadoBox((int) paradoBox);
+		piloto.setPorcentagemCombustUltimaParadaBox(porcentCombust);
+
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
 		piloto.setSaiuDoBoxMilis(0);
 		if (piloto.isJogadorHumano()) {
