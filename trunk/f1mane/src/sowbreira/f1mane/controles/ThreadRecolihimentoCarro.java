@@ -26,8 +26,8 @@ public class ThreadRecolihimentoCarro extends Thread {
 		this.controleJogo = controleJogo;
 		this.piloto = piloto;
 		this.safetyCar = safetyCar;
-		delayRecolhimento = controleJogo.getQtdeTotalVoltas() * 10000
-				+ ((int) (Math.random() * 100000));
+		delayRecolhimento = controleJogo.getQtdeTotalVoltas() * 7000
+				+ ((int) (Math.random() * 70000));
 	}
 
 	public void run() {
@@ -39,6 +39,21 @@ public class ThreadRecolihimentoCarro extends Thread {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
+		int index = safetyCar.getNoAtual().getIndex();
+		int size = controleJogo.getNosDaPista().size();
+		double div = ((double) index) / ((double) size);
+		System.out.println("Div Sc " + div);
+		while (div < 0.3 || div > 0.7) {
+			try {
+				sleep(500);
+			} catch (InterruptedException e) {
+			}
+			index = safetyCar.getNoAtual().getIndex();
+			size = controleJogo.getNosDaPista().size();
+			div = ((double) index) / ((double) size);
+			System.out.println("Div Sc " + div);
+		}
+
 		piloto.getCarro().setRecolhido(true);
 		safetyCar.setVaiProBox(true);
 		controleJogo.infoPrioritaria(Html.green(Lang.msg("031",
