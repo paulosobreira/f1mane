@@ -53,15 +53,18 @@ public class ControleSafetyCar {
 				return ganho;
 			}
 
+			int indexNafrente = pilotoFrente.getNoAtual().getIndex();
+			int index = piloto.getNoAtual().getIndex();
+			int diffIndex = (indexNafrente - index);
+			if (Math.abs(diffIndex) < 300 && diffIndex <= 0) {
+				piloto.mudarTracado(0, controleJogo);
+				return ganho * 0.1;
+			}
+
 			long diff = pilotoFrente.getPtosPista() - piloto.getPtosPista();
-			// if (piloto.isJogadorHumano()) {
-			// System.out.println("pilotoFrente.getPtosPista()"
-			// + pilotoFrente.getPtosPista()
-			// + " piloto.getPtosPista() " + piloto.getPtosPista()
-			// + " REal Diff " + diff);
-			// }
 
 			if (diff < 30) {
+				piloto.mudarTracado(0, controleJogo);
 				return 0;
 			}
 			for (int i = 30; i < 200; i++) {
@@ -70,28 +73,27 @@ public class ControleSafetyCar {
 				}
 			}
 			if ((piloto.getPtosPista() + ganho) > pilotoFrente.getPtosPista()) {
+				piloto.mudarTracado(0, controleJogo);
 				return 0;
 			}
-
 			return ganho;
 		} else {
-
 			long diff = (long) GeoUtil.distaciaEntrePontos(controleJogo
 					.getSafetyCar().getNoAtual().getPoint(), piloto
 					.getNoAtual().getPoint());
 			for (int i = 1; i < 20; i++) {
 				int decimal = i * 10;
 				if (diff < (decimal * 4)) {
+					piloto.mudarTracado(0, controleJogo);
 					return ganho * decimal / 100.0;
 
 				}
 			}
-
 			if (piloto.getPtosPista() > controleJogo.getSafetyCar()
 					.getPtosPista()) {
+				piloto.mudarTracado(0, controleJogo);
 				return ganho * 0.1;
 			}
-
 			return ganho * 1.1;
 		}
 	}

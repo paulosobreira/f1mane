@@ -193,10 +193,6 @@ public class ControleBox {
 			} else {
 				box = piloto.getNoAtual();
 				int ptosBox = 0;
-				double propNumVoltas = (controleJogo.getQtdeTotalVoltas() / Constantes.MAX_VOLTAS);
-				if (propNumVoltas >= 1) {
-					propNumVoltas = 0.999;
-				}
 				if (box.isBox()) {
 					/**
 					 * gera limite velocidade no box
@@ -204,16 +200,13 @@ public class ControleBox {
 					ptosBox += 1;
 				} else if (box.verificaRetaOuLargada()
 						&& box.getIndex() > ultIndiceParada) {
-					ptosBox += ((boxRapido && Math.random() > (propNumVoltas)) ? 4
-							: 3);
+					ptosBox += ((boxRapido) ? 4 : 3);
 				} else if (box.verificaCruvaAlta()
 						&& box.getIndex() > ultIndiceParada) {
-					ptosBox += ((boxRapido && Math.random() > (propNumVoltas)) ? 3
-							: 2);
+					ptosBox += ((boxRapido) ? 3 : 2);
 				} else if (box.verificaCruvaBaixa()
 						&& box.getIndex() > ultIndiceParada) {
-					ptosBox += ((boxRapido && Math.random() > (propNumVoltas)) ? 2
-							: 1);
+					ptosBox += ((boxRapido) ? 2 : 1);
 				} else {
 					ptosBox += 1;
 				}
@@ -249,9 +242,8 @@ public class ControleBox {
 				} else {
 					piloto.setTracado(0);
 				}
-				piloto.processaVelocidade(novosPtsBox, piloto.getNoAtual());
-
 				piloto.setPtosBox(novosPtsBox);
+				piloto.setVelocidade(Util.intervalo(55, 60));
 			}
 
 			if (piloto.getPtosBox() < boxList.size()) {
@@ -365,8 +357,8 @@ public class ControleBox {
 			if (propNumVoltas >= 1) {
 				propNumVoltas = 0.999;
 			}
-			if (propNumVoltas <= 0.2) {
-				propNumVoltas = 0.2;
+			if (propNumVoltas <= 0.3) {
+				propNumVoltas = 0.3;
 			}
 			paradoBox *= propNumVoltas;
 		}
