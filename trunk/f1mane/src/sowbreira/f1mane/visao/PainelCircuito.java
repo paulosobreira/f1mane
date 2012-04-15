@@ -1387,6 +1387,14 @@ public class PainelCircuito extends JPanel {
 							if (objetoTransparencia.obterArea().intersects(
 									grid[i].getBounds())) {
 								naoDesenha = true;
+								break;
+							}
+							Point borda = new Point((int) (grid[i].getBounds()
+									.getCenterX() - meix), (int) (grid[i]
+									.getBounds().getCenterY() - meiy));
+							if (objetoTransparencia.obterArea().contains(borda)) {
+								naoDesenha = true;
+								break;
 							}
 						} else {
 							continue;

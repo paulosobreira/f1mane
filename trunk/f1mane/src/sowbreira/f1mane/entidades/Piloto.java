@@ -674,81 +674,6 @@ public class Piloto implements Serializable {
 
 	}
 
-	public void processaVelocidade(int index, No no) {
-		if (!InterfaceJogo.VALENDO)
-			return;
-		if (index > 4) {
-			index = 4;
-		}
-
-		if (velocidadeLargada < 50) {
-			velocidade += Util.intervalo(15, 30);
-			velocidadeLargada = velocidade;
-			return;
-		}
-		int fatorAcel = 15;
-		if (getCarro().testePotencia()) {
-			fatorAcel = 20;
-		}
-		switch (index) {
-		case 0:
-			velocidade -= 10 + ((int) (Math.random() * (fatorAcel + 5)));
-			break;
-
-		case 1:
-			if (no.verificaRetaOuLargada()) {
-				velocidade--;
-			} else {
-				if (velocidade > 200)
-					velocidade -= 10 + ((int) (Math.random() * (fatorAcel + 25)));
-				else if (velocidade > 150)
-					velocidade -= 10 + ((int) (Math.random() * (fatorAcel + 15)));
-				else if (velocidade > 80) {
-					velocidade -= ((int) (Math.random() * (fatorAcel + 10)));
-				} else {
-					velocidade += ((int) (Math.random() * fatorAcel + 5));
-				}
-			}
-			if (velocidade < 50) {
-				velocidade = 40 + ((int) (Math.random() * 20));
-			}
-
-			break;
-		case 2:
-			if (no.verificaRetaOuLargada()) {
-				velocidade += ((int) (Math.random() * fatorAcel / 2));
-			} else {
-				if (velocidade > 200 && no.verificaCruvaBaixa())
-					velocidade -= ((int) (Math.random() * (fatorAcel + 30)));
-				else if (velocidade > 150 && no.verificaCruvaBaixa())
-					velocidade -= ((int) (Math.random() * (fatorAcel + 10)));
-				else if (velocidade > 270)
-					velocidade -= ((int) (Math.random() * (fatorAcel)));
-				else {
-					velocidade += ((int) (Math.random() * fatorAcel));
-				}
-			}
-			break;
-		case 3:
-			velocidade += ((int) (Math.random() * (fatorAcel / 2)));
-			break;
-
-		default:
-			break;
-		}
-
-		if (velocidade < 0) {
-			velocidade = 10 + ((int) (Math.random() * 10));
-		}
-		if (velocidade > 300) {
-			velocidade = 300 + ((int) (Math.random() * 30));
-		}
-		if (getPtosBox() != 0) {
-			velocidade = 60;
-		}
-
-	}
-
 	private void verificaIrBox(InterfaceJogo controleJogo) {
 		if (jogadorHumano || recebeuBanderada || getPtosPista() < 0) {
 			return;
@@ -904,6 +829,7 @@ public class Piloto implements Serializable {
 					.getMultiplciador());
 			index += novoModificador;
 			setPtosPista(Util.inte(novoModificador + getPtosPista()));
+			setVelocidade(Util.intervalo(50, 65));
 			return index;
 		}
 		if (desqualificado) {
@@ -949,7 +875,6 @@ public class Piloto implements Serializable {
 				novoModificador = Util.intervalo(1, 2);
 		}
 
-		processaVelocidade(novoModificador, noAtual);
 		ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
 		if (!controleJogo.isModoQualify()) {
@@ -1069,6 +994,7 @@ public class Piloto implements Serializable {
 			ganho = 1;
 		}
 		index += ganho;
+		setVelocidade(Util.inte(ganho * 5));
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
 		}
@@ -1716,8 +1642,6 @@ public class Piloto implements Serializable {
 	public boolean danificado() {
 		return carro.verificaDano();
 	}
-
-
 
 	public int getPorcentagemCombustUltimaParadaBox() {
 		if (porcentagemCombustUltimaParadaBox < 0) {
