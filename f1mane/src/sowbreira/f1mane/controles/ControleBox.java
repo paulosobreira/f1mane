@@ -67,7 +67,7 @@ public class ControleBox {
 		if (saidaBox == null) {
 			throw new Exception("Saida box não encontrada!");
 		}
-		if (Math.random() < .8) {
+		if (Math.random() < .7) {
 			boxRapido = true;
 		}
 		geraBoxesEquipes(carrosBox);

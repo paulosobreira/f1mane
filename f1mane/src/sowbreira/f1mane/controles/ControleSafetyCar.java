@@ -57,14 +57,16 @@ public class ControleSafetyCar {
 			int index = piloto.getNoAtual().getIndex();
 			int diffIndex = (indexNafrente - index);
 			if (Math.abs(diffIndex) < 300 && diffIndex <= 0) {
-				piloto.mudarTracado(0, controleJogo);
+				if (Math.random() > 0.5)
+					piloto.mudarTracado(0, controleJogo);
 				return ganho * 0.1;
 			}
 
 			long diff = pilotoFrente.getPtosPista() - piloto.getPtosPista();
 
 			if (diff < 30) {
-				piloto.mudarTracado(0, controleJogo);
+				if (Math.random() > 0.5)
+					piloto.mudarTracado(0, controleJogo);
 				return 0;
 			}
 			for (int i = 30; i < 200; i++) {
@@ -73,7 +75,8 @@ public class ControleSafetyCar {
 				}
 			}
 			if ((piloto.getPtosPista() + ganho) > pilotoFrente.getPtosPista()) {
-				piloto.mudarTracado(0, controleJogo);
+				if (Math.random() > 0.5)
+					piloto.mudarTracado(0, controleJogo);
 				return 0;
 			}
 			return ganho;
@@ -91,6 +94,8 @@ public class ControleSafetyCar {
 			}
 			if (piloto.getPtosPista() > controleJogo.getSafetyCar()
 					.getPtosPista()) {
+				if (Math.random() > 0.5)
+					piloto.mudarTracado(0, controleJogo);
 				piloto.mudarTracado(0, controleJogo);
 				return ganho * 0.1;
 			}
@@ -127,7 +132,8 @@ public class ControleSafetyCar {
 		int cont = safetyCar.getNoAtual().getIndex();
 		Circuito circuito = controleJogo.getCircuito();
 		if ((cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
-				.getEntradaBoxIndex() + 50)) && safetyCar.isVaiProBox()) {
+				.getEntradaBoxIndex() + 50))
+				&& safetyCar.isVaiProBox()) {
 			controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("030")));
 			safetyCar.setNaPista(false);
 			safetyCar.setSaiuVolta(controleJogo.getNumVoltaAtual());
@@ -137,7 +143,8 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .7) ? 2 : 1) : (Math.random() > .5) ? 2 : 1;
+				.random() > .7) ? 2 : 1)
+				: (Math.random() > .5) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 25)) {
 			bonus = (Math.random() > .7) ? 1 : 0;
