@@ -38,6 +38,7 @@ import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 17:30:43
@@ -122,9 +123,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			gerenciadorVisual = new GerenciadorVisual(this);
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
 			controleEstatisticas = new ControleEstatisticas(this);
-			controleEstatisticas
-					.inicializarThreadConsumidoraInfo(2000 + ((int) Math
-							.random() * 500));
+			controleEstatisticas.inicializarThreadConsumidoraInfo(500);
 
 		} catch (Exception e) {
 			StackTraceElement[] trace = e.getStackTrace();
@@ -557,8 +556,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-								.getMultiplicadorLarguraPista()));
+						piloto
+								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+										.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -678,9 +678,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
 		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(
-					dadosParticiparJogo.getTpPnueu(),
-					dadosParticiparJogo.getCombustivel(),
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
+					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
 					dadosParticiparJogo.getAsa());
 			syncBox = true;
 		}

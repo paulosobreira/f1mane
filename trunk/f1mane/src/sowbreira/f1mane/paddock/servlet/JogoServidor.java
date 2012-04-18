@@ -319,7 +319,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					estado = Comandos.CORRIDA_INICIADA;
 					tempoInicio = System.currentTimeMillis();
 					controleCorrida.iniciarCiclos();
-					controleEstatisticas.inicializarThreadConsumidoraInfo(2000);
+					controleEstatisticas.inicializarThreadConsumidoraInfo(500);
 				} catch (Exception e) {
 					Logger.topExecpts(e);
 				}

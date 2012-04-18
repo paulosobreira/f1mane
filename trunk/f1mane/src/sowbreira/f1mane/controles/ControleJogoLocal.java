@@ -620,7 +620,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			if (controleCampeonato != null) {
 				controleCampeonato.iniciaCorrida(circuitoSelecionado);
 			}
-			controleEstatisticas.inicializarThreadConsumidoraInfo(1500);
+			controleEstatisticas.inicializarThreadConsumidoraInfo(500);
 		}
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
 		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
