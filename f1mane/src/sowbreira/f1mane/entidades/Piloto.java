@@ -442,8 +442,10 @@ public class Piloto implements Serializable {
 			if (getPtosBox() != 0) {
 				Logger.logar(getNome() + " bandeirada no box " + getPtosBox());
 			}
+			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss mmm");
 			System.out.println("Recebeu bandeirada " + this + " Pts pista "
-					+ this.getPtosPista() + " tempo " + new Date());
+					+ this.getPtosPista() + " Pos " + getPosicao() + " T "
+					+ df.format(new Date()));
 			// controleJogo.pausarJogo();
 		}
 
@@ -829,6 +831,22 @@ public class Piloto implements Serializable {
 		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
 			double novoModificador = (controleJogo.getCircuito()
 					.getMultiplciador());
+			double ptsPsitaPrevisto = getPtosPista() + novoModificador;
+			Carro carroNaFrente = controleJogo.obterCarroNaFrente(this);
+			if (!controleJogo.isModoQualify()
+					&& carroNaFrente != null
+					&& carroNaFrente.getPiloto().isRecebeuBanderada()
+					&& (ptsPsitaPrevisto > carroNaFrente.getPiloto()
+							.getPtosPista())) {
+				Piloto frente = carroNaFrente.getPiloto();
+				System.out.println("Devagar Piloto " + this.getNome() + " Pts "
+						+ getPtosPista() + " Pos " + getPosicao()
+						+ " Pts Prev " + ptsPsitaPrevisto + " => Piloto "
+						+ frente.getNome() + " Pts " + frente.getPtosPista()
+						+ " Pos " + frente.getPosicao());
+				novoModificador *= 0.1;
+			}
+
 			index += novoModificador;
 			setPtosPista(Util.inte(novoModificador + getPtosPista()));
 			setVelocidade(Util.intervalo(50, 65));
@@ -1009,10 +1027,12 @@ public class Piloto implements Serializable {
 				&& carroNaFrente != null
 				&& carroNaFrente.getPiloto().isRecebeuBanderada()
 				&& (ptsPsitaPrevisto > carroNaFrente.getPiloto().getPtosPista())) {
-			System.out.println("Na frente " + carroNaFrente.getPiloto()
-					+ " pts pista " + carroNaFrente.getPiloto().getPtosPista()
-					+ " Piloto " + this + " pts pista prev " + ptsPsitaPrevisto
-					+ " Hora " + new Date());
+			Piloto frente = carroNaFrente.getPiloto();
+			System.out.println(" Piloto " + this.getNome() + " Pts "
+					+ getPtosPista() + " Pos " + getPosicao() + " Pts Prev "
+					+ ptsPsitaPrevisto + " => Piloto " + frente.getNome()
+					+ " Pts " + frente.getPtosPista() + " Pos "
+					+ frente.getPosicao());
 			ganho *= 0.1;
 		}
 		setPtosPista(Util.inte(getPtosPista() + ganho));
