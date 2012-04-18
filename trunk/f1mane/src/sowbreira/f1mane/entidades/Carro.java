@@ -365,8 +365,8 @@ public class Carro implements Serializable {
 					&& testePotencia()) {
 				novoModificador++;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod) {
-				novoModificador -= Util.intervalo(testePotencia() ? 0 : 1,
-						testePotencia() ? 1 : 2);
+				novoModificador -= Math.random() < 0.6 ? (testePotencia() ? 0
+						: 1) : (testePotencia() ? 1 : 2);
 			}
 		}
 		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
