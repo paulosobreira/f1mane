@@ -995,6 +995,9 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isSafetyCarNaPista() && ganho > 0 && ganho < 1) {
 			ganho = 1;
 		}
+		if (ganho > 60) {
+			ganho = 60;
+		}
 
 		/**
 		 * Evita Pilotos chegando depois com mais pts pista
@@ -1012,6 +1015,7 @@ public class Piloto implements Serializable {
 					+ " Hora " + new Date());
 			ganho *= 0.1;
 		}
+		setPtosPista(Util.inte(getPtosPista() + ganho));
 		index += ganho;
 		setVelocidade(Util.inte(ganho * 5.5));
 		if (ganho > ganhoMax) {
