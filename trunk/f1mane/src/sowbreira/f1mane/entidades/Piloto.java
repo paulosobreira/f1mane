@@ -1447,10 +1447,22 @@ public class Piloto implements Serializable {
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		// Logger.logar(1 + (int) (Math.random() * 3));
 		// System.out.println(0.5 * 1.5);
-		System.out.println(Math.floor(4.9));
+		// System.out.println(Math.floor(4.9));
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
+		System.out.println(df.format(new Date()));
+		System.out.println(Long.MAX_VALUE - System.currentTimeMillis());
+		// 9223370701999444661
+		// 9223370701999432605
+		int p1 = (int) (Long.MAX_VALUE - System.currentTimeMillis());
+		Thread.sleep(1);
+		int p2 = (int) (Long.MAX_VALUE - System.currentTimeMillis());
+		System.out.println(p1);
+		System.out.println(p2);
+		System.out.println(p1 > p2);
+
 	}
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {
