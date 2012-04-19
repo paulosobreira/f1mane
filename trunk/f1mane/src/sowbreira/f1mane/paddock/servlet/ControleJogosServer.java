@@ -520,9 +520,12 @@ public class ControleJogosServer {
 			dadosParciais.pilotsPonts[piloto.getId() - 1] = piloto
 					.getPtosPista();
 			if (piloto.getTimeStampChegeda() != 0) {
-				dadosParciais.pilotsPonts[piloto.getId() - 1] = ((int) (Long.MAX_VALUE - piloto
-						.getTimeStampChegeda()))
-						* piloto.getNumeroVolta();
+				Long val = new Long(Long.MAX_VALUE
+						- piloto.getTimeStampChegeda());
+				val = new Long(val.toString().substring(
+						val.toString().length() / 2, val.toString().length()));
+				dadosParciais.pilotsPonts[piloto.getId() - 1] = (val * piloto
+						.getNumeroVolta());
 			}
 			if (args.length > 2 && piloto.getId() == Integer.parseInt(args[2])) {
 				dadosParciais.peselMelhorVolta = piloto.obterVoltaMaisRapida();
