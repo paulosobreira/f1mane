@@ -109,6 +109,7 @@ public class Piloto implements Serializable {
 	private int novoModificador;
 	private Set votosDriveThru = new HashSet();
 	private boolean driveThrough;
+	private long timeStampChegeda;
 
 	public Rectangle getDiateira() {
 		return diateira;
@@ -427,6 +428,14 @@ public class Piloto implements Serializable {
 		return recebeuBanderada;
 	}
 
+	public long getTimeStampChegeda() {
+		return timeStampChegeda;
+	}
+
+	public void setTimeStampChegeda(long timeStampChegeda) {
+		this.timeStampChegeda = timeStampChegeda;
+	}
+
 	public void setRecebeuBanderada(boolean recebueBanderada,
 			InterfaceJogo controleJogo) {
 		if (!this.recebeuBanderada) {
@@ -442,6 +451,7 @@ public class Piloto implements Serializable {
 			if (getPtosBox() != 0) {
 				Logger.logar(getNome() + " bandeirada no box " + getPtosBox());
 			}
+			setTimeStampChegeda(System.currentTimeMillis());
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss mmm");
 			System.out.println("Recebeu bandeirada " + this + " Pts pista "
 					+ this.getPtosPista() + " Pos " + getPosicao() + " T "
