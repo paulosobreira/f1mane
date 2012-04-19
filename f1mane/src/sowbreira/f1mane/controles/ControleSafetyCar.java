@@ -56,29 +56,35 @@ public class ControleSafetyCar {
 			int indexNafrente = pilotoFrente.getNoAtual().getIndex();
 			int index = piloto.getNoAtual().getIndex();
 			int diffIndex = (indexNafrente - index);
-			if (Math.abs(diffIndex) < 300 && diffIndex <= 0) {
-				if (Math.random() > 0.5)
+			if (diffIndex < 0) {
+				diffIndex = (indexNafrente + controleJogo.getNosDaPista()
+						.size())
+						- index;
+			}
+
+			if (diffIndex < 150) {
+				if (Math.random() > 0.7)
 					piloto.mudarTracado(0, controleJogo);
 				return ganho * 0.1;
 			}
 
-			long diff = pilotoFrente.getPtosPista() - piloto.getPtosPista();
-
-			if (diff < 30) {
-				if (Math.random() > 0.5)
-					piloto.mudarTracado(0, controleJogo);
-				return 0;
-			}
-			for (int i = 30; i < 200; i++) {
-				if (diff < i) {
-					ganho *= i / 200.0;
-				}
-			}
-			if ((piloto.getPtosPista() + ganho) > pilotoFrente.getPtosPista()) {
-				if (Math.random() > 0.5)
-					piloto.mudarTracado(0, controleJogo);
-				return 0;
-			}
+//			long diff = pilotoFrente.getPtosPista() - piloto.getPtosPista();
+//
+//			if (diff < 30) {
+//				if (Math.random() > 0.7)
+//					piloto.mudarTracado(0, controleJogo);
+//				return 0;
+//			}
+//			for (int i = 30; i < 200; i++) {
+//				if (diff < i) {
+//					ganho *= i / 200.0;
+//				}
+//			}
+//			if ((piloto.getPtosPista() + ganho) > pilotoFrente.getPtosPista()) {
+//				if (Math.random() > 0.7)
+//					piloto.mudarTracado(0, controleJogo);
+//				return 0;
+//			}
 			return ganho;
 		} else {
 			long diff = (long) GeoUtil.distaciaEntrePontos(controleJogo
