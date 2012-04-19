@@ -183,14 +183,18 @@ public class ControleCorrida {
 				long ptosPista0 = piloto0.getPtosPista();
 				long ptosPista1 = piloto1.getPtosPista();
 				if (piloto0.getTimeStampChegeda() != 0) {
-					ptosPista0 = ((int) (Long.MAX_VALUE - piloto0
-							.getTimeStampChegeda()))
-							* piloto0.getNumeroVolta();
+					Long val = new Long(Long.MAX_VALUE
+							- piloto0.getTimeStampChegeda());
+					val = new Long(val.toString().substring(
+							val.toString().length() / 2, val.toString().length()));
+					ptosPista0 = (val * piloto0.getNumeroVolta());
 				}
 				if (piloto1.getTimeStampChegeda() != 0) {
-					ptosPista1 = ((int) (Long.MAX_VALUE - piloto1
-							.getTimeStampChegeda()))
-							* piloto1.getNumeroVolta();
+					Long val = new Long(Long.MAX_VALUE
+							- piloto1.getTimeStampChegeda());
+					val = new Long(val.toString().substring(
+							val.toString().length() / 2, val.toString().length()));
+					ptosPista1 = (val * piloto1.getNumeroVolta());
 				}
 				return new Long(ptosPista1).compareTo(new Long(ptosPista0));
 			}
