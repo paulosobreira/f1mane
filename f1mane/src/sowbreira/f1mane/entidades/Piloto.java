@@ -798,13 +798,13 @@ public class Piloto implements Serializable {
 	}
 
 	public void calcularVolta(InterfaceJogo controleJogo) {
-		int tamanhoCircuito = controleJogo.getNosDaPista().size();
+		double tamanhoCircuito = controleJogo.getNosDaPista().size();
 
 		if ((getPtosPista() == 0) || (tamanhoCircuito == 0)) {
 			numeroVolta = 0;
 		}
-
-		numeroVolta = (int) Math.floor((getPtosPista() / tamanhoCircuito));
+			
+		numeroVolta = (int) Math.round((getPtosPista() / tamanhoCircuito));
 
 		if (numeroVolta > controleJogo.totalVoltasCorrida()) {
 			numeroVolta = controleJogo.totalVoltasCorrida();
@@ -1417,16 +1417,20 @@ public class Piloto implements Serializable {
 		// Logger.logar(1 + (int) (Math.random() * 3));
 		// System.out.println(0.5 * 1.5);
 		// System.out.println(Math.floor(4.9));
-		Long time = System.currentTimeMillis();
-		System.out.println(time.toString().length());
-		System.out.println(time);
-		time = new Long(time.toString().substring(
-				time.toString().length() / 10, time.toString().length()));
-		System.out.println(time);
+		// Long time = System.currentTimeMillis();
+		// System.out.println(time.toString().length());
+		// System.out.println(time);
+		// time = new Long(time.toString().substring(
+		// time.toString().length() / 10, time.toString().length()));
+		// System.out.println(time);
+		//
+		// time *= 72;
+		//
+		// System.out.println(time);
 
-		time *= 72;
-
-		System.out.println(time);
+		double d = 12;
+		double s = 72;
+		System.out.println(Math.round(d / s));
 	}
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {

@@ -1,9 +1,11 @@
 package sowbreira.f1mane.controles;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -417,6 +419,9 @@ public class ControleBox {
 		piloto.setNoAtual(saidaBox);
 		// Todo Ptos Pista
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
+		System.out.println("Sai do Box " + piloto.getNome() + " As "
+				+ df.format(new Date()));
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
 		String[] strings = new String[] { piloto.getNome(),
 				ControleEstatisticas.formatarTempo(diff),
