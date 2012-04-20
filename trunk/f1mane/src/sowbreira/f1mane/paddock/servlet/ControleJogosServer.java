@@ -520,6 +520,9 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			dadosParciais.pilotsPonts[piloto.getId() - 1] = piloto
 					.getPtosPista();
+			dadosParciais.pilotsTs[piloto.getId() - 1] = piloto
+					.getTimeStampChegeda();
+
 			if (args.length > 2 && piloto.getId() == Integer.parseInt(args[2])) {
 				dadosParciais.peselMelhorVolta = piloto.obterVoltaMaisRapida();
 				int contVolta = 1;

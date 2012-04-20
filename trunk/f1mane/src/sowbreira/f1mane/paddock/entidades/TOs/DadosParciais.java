@@ -46,6 +46,7 @@ public class DadosParciais implements Serializable {
 	public String nomeJogador;
 	public String texto;
 	public long[] pilotsPonts = new long[24];
+	public long[] pilotsTs = new long[24];
 
 	public void decode(String val) {
 		String[] sp = val.split("@");
@@ -95,9 +96,13 @@ public class DadosParciais implements Serializable {
 		peselUltima5.decode(sp[spcont++]);
 		travadaRoda = new TravadaRoda();
 		travadaRoda.decode(sp[spcont++]);
-		String[] pts = sp[spcont].split("§");
+		String[] pts = sp[spcont++].split("§");
 		for (int i = 0; i < pts.length; i++) {
 			pilotsPonts[i] = parseInt(pts[i]);
+		}
+		pts = sp[spcont].split("§");
+		for (int i = 0; i < pts.length; i++) {
+			pilotsTs[i] = parseLong(pts[i]);
 		}
 	}
 
@@ -116,6 +121,14 @@ public class DadosParciais implements Serializable {
 	private int parseInt(String string) {
 		try {
 			return Integer.parseInt(string);
+		} catch (Exception e) {
+		}
+		return 0;
+	}
+
+	private long parseLong(String string) {
+		try {
+			return Long.parseLong(string);
 		} catch (Exception e) {
 		}
 		return 0;
@@ -259,6 +272,14 @@ public class DadosParciais implements Serializable {
 		String lessLastPipe = stringBuffer.toString().substring(0,
 				stringBuffer.toString().length() - 1);
 
+		stringBuffer = new StringBuffer();
+		for (int i = 0; i < pilotsTs.length; i++) {
+			stringBuffer.append(pilotsTs[i]);
+			stringBuffer.append("§");
+		}
+		String lessLastPipe2 = stringBuffer.toString().substring(0,
+				stringBuffer.toString().length() - 1);
+
 		if (texto != null && !"".equals(texto)) {
 			texto = texto.replaceAll("@", "");
 			texto = texto.replaceAll("§", "");
@@ -309,7 +330,7 @@ public class DadosParciais implements Serializable {
 				+ (nomeJogador == null ? "" : nomeJogador) + "@"
 				+ (texto == null ? "" : texto) + "@" + codUlt1 + "@" + codUlt2
 				+ "@" + codUlt3 + "@" + codUlt4 + "@" + codUlt5 + "@"
-				+ codTravadaRoda + "@" + lessLastPipe;
+				+ codTravadaRoda + "@" + lessLastPipe + "@" + lessLastPipe2;
 		// Logger.logar(enc);
 		return enc;
 
