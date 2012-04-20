@@ -774,6 +774,8 @@ public class MonitorJogo implements Runnable {
 					Piloto piloto = (Piloto) iter.next();
 					piloto.setPtosPista(dadosParciais.pilotsPonts[piloto
 							.getId() - 1]);
+					piloto.setTimeStampChegeda(dadosParciais.pilotsTs[piloto
+							.getId() - 1]);
 					piloto.calcularVolta(jogoCliente);
 					if (pilotoSelecionado != null
 							&& pilotoSelecionado.equals(piloto)) {
@@ -833,9 +835,23 @@ public class MonitorJogo implements Runnable {
 						Piloto piloto1 = (Piloto) arg1;
 						long p1Val = piloto1.getPtosPista();
 						long p0Val = piloto0.getPtosPista();
-
-						return ((p1Val < p0Val) ? (-1)
-								: ((p1Val == p0Val) ? 0 : 1));
+						if (piloto0.getTimeStampChegeda() != 0
+								&& piloto1.getTimeStampChegeda() != 0) {
+							Long val = new Long(Long.MAX_VALUE
+									- piloto0.getTimeStampChegeda());
+							val = new Long(val.toString().substring(
+									val.toString().length() / 4,
+									val.toString().length()));
+							p0Val = (val * piloto0.getNumeroVolta());
+							val = new Long(Long.MAX_VALUE
+									- piloto1.getTimeStampChegeda());
+							val = new Long(val.toString().substring(
+									val.toString().length() / 4,
+									val.toString().length()));
+							p1Val = (val * piloto1.getNumeroVolta());
+						}
+						return ((p1Val < p0Val) ? (-1) : ((p1Val == p0Val) ? 0
+								: 1));
 					}
 				});
 
