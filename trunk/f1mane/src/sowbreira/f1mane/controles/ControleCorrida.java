@@ -577,12 +577,8 @@ public class ControleCorrida {
 	public void verificaFinalCorrida() {
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		int indexPole = pole.getNoAtual().getIndex();
-		int tamPista = controleJogo.getNosDaPista().size();
-		// if (!pole.isRecebeuBanderada() && getQtdeTotalVoltas() ==
-		// voltaAtual()
-		// && (indexPole > (tamPista - 25) || indexPole < 35)) {
-		if (!pole.isRecebeuBanderada() && getQtdeTotalVoltas() == voltaAtual()
-				&& (indexPole < 65)) {
+		if (!pole.isRecebeuBanderada()
+				&& voltaAtual() == (getQtdeTotalVoltas())) {
 			controleJogo.setCorridaTerminada(true);
 			pole.setRecebeuBanderada(true, controleJogo);
 		}
@@ -593,7 +589,6 @@ public class ControleCorrida {
 
 			for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
-
 				if (!piloto.isRecebeuBanderada() && !piloto.isDesqualificado()) {
 					todosReceberamBaderada = false;
 				}

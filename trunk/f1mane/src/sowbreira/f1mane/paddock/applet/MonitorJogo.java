@@ -195,9 +195,9 @@ public class MonitorJogo implements Runnable {
 					atualizarDadosParciais(jogoCliente.getDadosJogo(),
 							jogoCliente.getPilotoSelecionado());
 					if (controlePaddockCliente.getLatenciaReal() > 2000) {
-						delayVerificaStado = 2;
+						delayVerificaStado = 5;
 					} else {
-						delayVerificaStado = 4;
+						delayVerificaStado = 7;
 					}
 					continue;
 				}
