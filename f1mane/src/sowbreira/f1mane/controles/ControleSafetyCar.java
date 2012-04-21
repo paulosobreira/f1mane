@@ -65,9 +65,9 @@ public class ControleSafetyCar {
 			long indexNafrente = safetyCar.getPtosPista();
 			long index = piloto.getPtosPista();
 			long diffIndex = (indexNafrente - index);
-			for (int i = 1; i < 100; i++) {
+			for (int i = 1; i < 200; i++) {
 				if (diffIndex < (50 + i)) {
-					return ganho * i / 100.0;
+					return ganho * i / 200.0;
 				}
 			}
 

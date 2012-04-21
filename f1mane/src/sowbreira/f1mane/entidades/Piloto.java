@@ -667,12 +667,10 @@ public class Piloto implements Serializable {
 		if (controleJogo.isCorridaTerminada()) {
 			int indexPiloto = getNoAtual().getIndex();
 			int tamPista = controleJogo.getNosDaPista().size();
-			// if ((indexPiloto > (tamPista - 25) || indexPiloto < 35)) {
-			if (indexPiloto < 65) {
+			if (indexPiloto < 100) {
 				setRecebeuBanderada(true, controleJogo);
 			}
 		}
-
 		calcularVolta(controleJogo);
 		verificaIrBox(controleJogo);
 
@@ -1589,10 +1587,10 @@ public class Piloto implements Serializable {
 		double bonusSecundario = 0.5;
 
 		if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
-			bonusSecundario += getCarro().testePotencia() ? 0.2 : 0.3;
+			bonusSecundario += getCarro().testePotencia() ? 0.3 : 0.2;
 		}
 		if (Carro.GIRO_MIN_VAL == getCarro().getGiro()) {
-			bonusSecundario -= getCarro().testePotencia() ? 0.1 : 0.2;
+			bonusSecundario -= getCarro().testePotencia() ? 0.2 : 0.3;
 		}
 		if (controleJogo.isChovendo()) {
 			bonusSecundario -= 0.1;
