@@ -556,9 +556,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto
-								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-										.getMultiplicadorLarguraPista()));
+						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+								.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -678,8 +677,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
 		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
-					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
+			gerenciadorVisual.sincronizarMenuInicioMenuBox(
+					dadosParticiparJogo.getTpPnueu(),
+					dadosParticiparJogo.getCombustivel(),
 					dadosParticiparJogo.getAsa());
 			syncBox = true;
 		}
@@ -960,12 +960,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void diminueFatorAcidade() {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public long getPontosPilotoLargada() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

@@ -342,20 +342,14 @@ public class ControleCorrida {
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
 					double val = ganho * (percent * 0.2);
-					if (piloto.isJogadorHumano())
-						Logger.logar("ganho * (percent * 0.2) " + val);
 					return val;
 				}
 				if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
 					double val = ganho * (percent * 0.4);
-					if (piloto.isJogadorHumano())
-						Logger.logar("ganho * (percent * 0.4) " + val);
 					return val;
 
 				}
 				double val = ganho * (percent * 0.6);
-				if (piloto.isJogadorHumano())
-					Logger.logar("ganho * (percent * 0.6); " + val);
 				return val;
 			}
 			Carro carroAtraz = controleJogo.obterCarroAtraz(piloto);
@@ -368,8 +362,6 @@ public class ControleCorrida {
 				if (pilotoAtraz != null
 						&& piloto.isAutoPos()
 						&& pilotoAtraz.getPtosPista() > (piloto.getPtosPista() - (multi * Carro.LARGURA))) {
-					// Logger.logar(piloto.getNome() + " pressionado por "
-					// + carroAtraz.getPiloto().getNome());
 					piloto.mudarTracado(0, controleJogo);
 				}
 			}
@@ -463,7 +455,7 @@ public class ControleCorrida {
 						&& Math.random() > fatorAcidenteLocal
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& !piloto.testeHabilidadePiloto(controleJogo)) {
-					if (true || piloto.testeHabilidadePiloto(controleJogo)
+					if (piloto.testeHabilidadePiloto(controleJogo)
 							|| Math.random() > 0.7
 							|| controleJogo.verificaUltimasVoltas()) {
 						piloto.incStress(Util.intervalo(30, 40));

@@ -48,32 +48,29 @@ public class ControleSafetyCar {
 			Piloto pilotoFrente = controleJogo.obterCarroNaFrente(piloto)
 					.getPiloto();
 			if (pilotoFrente.getPtosBox() != 0 || pilotoFrente.danificado()
-					|| piloto.danificado()
 					|| piloto.getNumeroVolta() != pilotoFrente.getNumeroVolta()) {
 				return ganho;
 			}
-			int indexNafrente = pilotoFrente.getNoAtual().getIndex();
-			int index = piloto.getNoAtual().getIndex();
-			int diffIndex = (indexNafrente - index);
-			if (diffIndex < 0) {
-				diffIndex = (indexNafrente + controleJogo.getNosDaPista()
-						.size()) - index;
-			}
-			if (diffIndex < 150) {
-				return ganho * 0.1;
+			long indexNafrente = pilotoFrente.getPtosPista();
+			long index = piloto.getPtosPista();
+			long diffIndex = (indexNafrente - index);
+			for (double i = 1; i < 1000; i++) {
+				if (diffIndex < i) {
+					ganho *= i / 1000;
+					break;
+				}
 			}
 			return ganho;
 		} else {
-			int indexNafrente = safetyCar.getNoAtual().getIndex();
-			int index = piloto.getNoAtual().getIndex();
-			int diffIndex = (indexNafrente - index);
-			if (diffIndex < 0) {
-				diffIndex = (indexNafrente + controleJogo.getNosDaPista()
-						.size()) - index;
+			long indexNafrente = safetyCar.getPtosPista();
+			long index = piloto.getPtosPista();
+			long diffIndex = (indexNafrente - index);
+			for (int i = 1; i < 100; i++) {
+				if (diffIndex < (50 + i)) {
+					return ganho * i / 100.0;
+				}
 			}
-			if (diffIndex < 150) {
-				return ganho * 0.1;
-			}
+
 			return ganho;
 		}
 	}
@@ -119,12 +116,25 @@ public class ControleSafetyCar {
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
 				.random() > .7) ? 2 : 1) : (Math.random() > .5) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
-		if (safetyCar.getPtosPista() > (pole.getPtosPista() + 25)) {
-			bonus = (Math.random() > .7) ? 1 : 0;
-			safetyCar.setTracado(0);
-		}
+
+		long ptsSc = safetyCar.getPtosPista();
+		long polePts = pole.getPtosPista();
+		long diffPts = ptsSc - polePts;
 		bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo
 				.getIndexVelcidadeDaPista()) * 0.7;
+		for (double i = 1000; i > 100; i--) {
+			if (diffPts >= i) {
+				bonus *= (100 / i);
+				safetyCar.setTracado(0);
+				break;
+			}
+		}
+		for (int i = 100; i > 1; i--) {
+			if (diffPts > i) {
+
+			}
+		}
+
 		bonus = calculaMediaSC(bonus);
 		index += bonus;
 		int diff = index - pista.size();
