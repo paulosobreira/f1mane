@@ -663,7 +663,7 @@ public class Piloto implements Serializable {
 				return;
 			}
 		}
-
+		calcularVolta(controleJogo);
 		if (controleJogo.isCorridaTerminada()) {
 			int indexPiloto = getNoAtual().getIndex();
 			int tamPista = controleJogo.getNosDaPista().size();
@@ -671,7 +671,6 @@ public class Piloto implements Serializable {
 				setRecebeuBanderada(true, controleJogo);
 			}
 		}
-		calcularVolta(controleJogo);
 		verificaIrBox(controleJogo);
 
 		this.setNoAtual((No) pista.get(index));
