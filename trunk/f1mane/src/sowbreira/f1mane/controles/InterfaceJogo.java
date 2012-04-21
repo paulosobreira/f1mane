@@ -271,8 +271,6 @@ public interface InterfaceJogo {
 
 	public void diminueFatorAcidade();
 
-	public long getPontosPilotoLargada();
-
 	public void setPontosPilotoLargada(long ptosPista);
 
 	public boolean asfaltoAbrasivo();

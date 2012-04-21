@@ -2937,13 +2937,19 @@ public class PainelCircuito extends JPanel {
 			if (ps.getPosicao() == 1) {
 				dist = 0;
 			}
-			velo = "M " + ps.getNovoModificador() + " I "
-					+ +ps.getNoAtual().getIndex() + " G "
+
+			String sc = "";
+
+			if (controleJogo.isSafetyCarNaPista()) {
+				sc = " SC " + controleJogo.getSafetyCar().getPtosPista();
+			}
+			velo = "PP " + ps.getPtosPista() + "M " + ps.getNovoModificador()
+					+ " I " + +ps.getNoAtual().getIndex() + " G "
 					+ (int) (ps.getGanho()) + " V " + ps.getVelocidade()
-					+ " D " + dist + " S " + ps.getStress() + " A "
+					+ " S " + ps.getStress() + " A "
 					+ ps.getCarro().getDurabilidadeAereofolio() + " BX "
-					+ ps.getPtosBox();
-			velo2 = " DP " + ps.calculaDiffParaProximo(controleJogo) + " DA "
+					+ ps.getPtosBox() + sc;
+			velo2 = " DP " + dist + " DA "
 					+ ps.calculaDiffParaAnterior(controleJogo) + " K "
 					+ ps.getCarro().getCargaKers() + " P "
 					+ controleJogo.percetagemDeVoltaCompletada(ps) + " T "

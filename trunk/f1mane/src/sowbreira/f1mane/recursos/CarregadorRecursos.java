@@ -424,7 +424,6 @@ public class CarregadorRecursos {
 							.intervalo(0, 1));
 			piloto.setHabilidade(Integer.parseInt(String.valueOf(duasCasas)
 					+ Util.intervalo(0, 9)));
-			Logger.logar(piloto + " " + piloto.getHabilidade());
 			retorno.add(piloto);
 		}
 		Collections.sort(retorno, new Comparator() {
@@ -468,12 +467,9 @@ public class CarregadorRecursos {
 	public List carregarListaCarrosArquivo(String temporada) throws IOException {
 		List retorno = new ArrayList();
 		Properties properties = new Properties();
-		Logger.logar("carregarListaCarrosArquivo temporada " + temporada);
 		properties.load(recursoComoStreamIn("properties/" + temporada
 				+ "/carros.properties"));
-
 		Enumeration propNames = properties.propertyNames();
-
 		while (propNames.hasMoreElements()) {
 			Carro carro = new Carro();
 			String name = (String) propNames.nextElement();
