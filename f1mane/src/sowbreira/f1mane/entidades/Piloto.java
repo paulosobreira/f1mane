@@ -440,20 +440,17 @@ public class Piloto implements Serializable {
 	public void setRecebeuBanderada(boolean recebueBanderada,
 			InterfaceJogo controleJogo) {
 		if (!this.recebeuBanderada) {
-			if (this.getPosicao() == 1) {
-				controleJogo.infoPrioritaria(Html.superBlack(getNome())
-						+ Html.superGreen(Lang.msg("044",
-								new Object[] { getNumeroVolta() })));
-			} else {
-				controleJogo.info(Html.superBlack(getNome())
-						+ Html.green(Lang.msg("044",
-								new Object[] { getNumeroVolta() })));
-			}
-			if (getPtosBox() != 0) {
-				Logger.logar(getNome() + " bandeirada no box " + getPtosBox());
-			}
 			setTimeStampChegeda(System.currentTimeMillis());
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
+			if (this.getPosicao() == 1) {
+				controleJogo.infoPrioritaria(Html.superBlack(getNome())
+						+ Html.superGreen(Lang.msg("044", new Object[] { df
+								.format(new Date(getTimeStampChegeda())) })));
+			} else {
+				controleJogo.info(Html.superBlack(getNome())
+						+ Html.green(Lang.msg("044", new Object[] { df
+								.format(new Date(getTimeStampChegeda())) })));
+			}
 			System.out.println("Recebeu bandeirada " + this + " Pts pista "
 					+ this.getPtosPista() + " Pos " + getPosicao() + " T "
 					+ df.format(new Date()));

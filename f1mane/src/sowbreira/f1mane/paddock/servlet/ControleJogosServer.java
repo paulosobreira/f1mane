@@ -522,6 +522,9 @@ public class ControleJogosServer {
 					.getPtosPista();
 			dadosParciais.pilotsTs[piloto.getId() - 1] = piloto
 					.getTimeStampChegeda();
+			if (piloto.getCarro().isRecolhido()) {
+				dadosParciais.pilotsTs[piloto.getId() - 1] = -1;
+			}
 
 			if (args.length > 2 && piloto.getId() == Integer.parseInt(args[2])) {
 				dadosParciais.peselMelhorVolta = piloto.obterVoltaMaisRapida();
