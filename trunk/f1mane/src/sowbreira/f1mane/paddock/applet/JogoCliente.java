@@ -386,7 +386,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public boolean mudarModoAgressivo() {
-
 		modoAgressivo = !modoAgressivo;
 		monitorJogo.mudarModoAgressivo(modoAgressivo);
 		return modoAgressivo;

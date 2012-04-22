@@ -456,8 +456,9 @@ public class ControleCorrida {
 						&& !controleSafetyCar.safetyCarUltimas3voltas()
 						&& !piloto.testeHabilidadePiloto(controleJogo)) {
 					if (piloto.testeHabilidadePiloto(controleJogo)
-							|| Math.random() > 0.7
-							|| controleJogo.verificaUltimasVoltas()) {
+							|| Math.random() < fatorAcidenteLocal
+							|| controleJogo.verificaUltimasVoltas()
+							|| piloto.getStress() == 0) {
 						piloto.incStress(Util.intervalo(30, 40));
 						piloto.setCiclosDesconcentrado(Util.intervalo(10, 20));
 					} else {

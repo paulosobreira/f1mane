@@ -460,13 +460,11 @@ public class ControleBox {
 		} else {
 			int voltaAtual = piloto.getNumeroVolta();
 			int metade = controleJogo.getQtdeTotalVoltas() / 2;
-			if (voltaAtual > metade
+			if (voltaAtual > metade && !controleJogo.asfaltoAbrasivo()
 					&& piloto.testeHabilidadePiloto(controleJogo)) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
-				Logger.logar("setupParadaUnica com Pneu Mole "
-						+ piloto.getNome());
 			} else {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
@@ -628,8 +626,7 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			if (((piloto.getNumeroVolta() > 1 && piloto.getNumeroVolta() < (controleJogo
-					.getQtdeTotalVoltas() / 2)))
+			if (controleJogo.asfaltoAbrasivo()
 					&& piloto.testeHabilidadePiloto(controleJogo))
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
