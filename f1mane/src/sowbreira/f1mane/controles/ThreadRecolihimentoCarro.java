@@ -42,7 +42,6 @@ public class ThreadRecolihimentoCarro extends Thread {
 		int index = safetyCar.getNoAtual().getIndex();
 		int size = controleJogo.getNosDaPista().size();
 		double div = ((double) index) / ((double) size);
-		System.out.println("Div Sc " + div);
 		while (div < 0.3 || div > 0.7) {
 			try {
 				sleep(500);
@@ -51,7 +50,6 @@ public class ThreadRecolihimentoCarro extends Thread {
 			index = safetyCar.getNoAtual().getIndex();
 			size = controleJogo.getNosDaPista().size();
 			div = ((double) index) / ((double) size);
-			System.out.println("Div Sc " + div);
 		}
 
 		piloto.getCarro().setRecolhido(true);
