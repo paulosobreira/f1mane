@@ -458,7 +458,7 @@ public class ControleCorrida {
 					if (piloto.testeHabilidadePiloto(controleJogo)
 							|| Math.random() < fatorAcidenteLocal
 							|| controleJogo.verificaUltimasVoltas()
-							|| piloto.getStress() <= 50) {
+							|| piloto.getStress() <= 70) {
 						piloto.incStress(Util.intervalo(30, 40));
 						piloto.setCiclosDesconcentrado(Util.intervalo(100, 200));
 					} else {
