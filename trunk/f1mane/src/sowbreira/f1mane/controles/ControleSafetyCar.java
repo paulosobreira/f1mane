@@ -83,8 +83,6 @@ public class ControleSafetyCar {
 		if (safetyCar.isNaPista()) {
 			return;
 		}
-		// System.out.println("======SC PISTA======"
-		// + controleJogo.getNumVoltaAtual());
 		long pts = controleCorrida.calculaQtdePtsPistaPoleParaSaidaBox();
 		safetyCar.setNoAtual(controleCorrida.getNoSaidaBox());
 		safetyCar.setPtosPista(pts);

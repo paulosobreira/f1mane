@@ -411,7 +411,8 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			if (clientPaddockPack.getSessaoCliente().getNomeJogador()
 					.equals(piloto.getNomeJogador())) {
-				piloto.setAgressivo(!piloto.isAgressivo(), jogoServidor);
+				piloto.setAgressivoF4(true);
+				piloto.setCiclosDesconcentrado(Util.intervalo(2000, 4000));
 				break;
 			}
 		}

@@ -422,11 +422,7 @@ public class ControleBox {
 		}
 
 		piloto.setNoAtual(saidaBox);
-		// Todo Ptos Pista
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
-		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
-		System.out.println("Sai do Box " + piloto.getNome() + " As "
-				+ df.format(new Date()));
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
 		String[] strings = new String[] { piloto.getNome(),
 				ControleEstatisticas.formatarTempo(diff),

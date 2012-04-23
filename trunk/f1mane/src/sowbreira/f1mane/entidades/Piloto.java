@@ -500,6 +500,10 @@ public class Piloto implements Serializable {
 		return agressivo;
 	}
 
+	public void setAgressivoF4(boolean regMaximo) {
+		this.agressivo = regMaximo;
+	}
+
 	public void setAgressivo(boolean regMaximo, InterfaceJogo interfaceJogo) {
 		if (regMaximo && verificaPilotoDesconcentrado(interfaceJogo)) {
 			return;
@@ -1021,7 +1025,7 @@ public class Piloto implements Serializable {
 				75 * controleJogo.getNiveljogo())
 				&& Math.random() < controleJogo.getNiveljogo()
 				&& testeHabilidadePiloto(controleJogo)) {
-			agressivo = true;
+			setAgressivo(true, controleJogo);
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
 	}
@@ -1443,11 +1447,12 @@ public class Piloto implements Serializable {
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {
 		if (verificaPilotoDesconcentrado(controleJogo)) {
-			agressivo = false;
+			if (!isJogadorHumano()) {
+				agressivo = false;
+			}
 			return;
 		}
 		boolean novoModoAgressivo = agressivo;
-
 		if (testeHabilidadePiloto(controleJogo)) {
 			if (carro.verificaCondicoesCautela(controleJogo)
 					&& !isJogadorHumano()) {
@@ -1465,7 +1470,7 @@ public class Piloto implements Serializable {
 						novoModoAgressivo = true;
 					} else {
 						novoModoAgressivo = false;
-						setCiclosDesconcentrado(Util.intervalo(0, 5));
+						setCiclosDesconcentrado(Util.intervalo(10, 50));
 					}
 				} else {
 					novoModoAgressivo = false;
@@ -1499,7 +1504,6 @@ public class Piloto implements Serializable {
 				ciclosDesconcentrado = (int) (5 * controleJogo.getNiveljogo());
 			}
 			ciclosDesconcentrado *= (1 - controleJogo.getNiveljogo());
-
 		}
 		if (jogadorHumano) {
 			if (!testeHabilidadePilotoHumanoCarro(controleJogo)
@@ -1542,7 +1546,6 @@ public class Piloto implements Serializable {
 						}
 					}
 				}
-
 			}
 			if (AGRESSIVO.equals(modoPilotagem)) {
 				novoModoAgressivo = true;
@@ -1567,7 +1570,6 @@ public class Piloto implements Serializable {
 	public boolean verificaPilotoDesconcentrado(InterfaceJogo interfaceJogo) {
 		if (ciclosDesconcentrado <= 0) {
 			ciclosDesconcentrado = 0;
-
 			return false;
 		}
 		if (!jogadorHumano && interfaceJogo.verificaNivelJogo()) {

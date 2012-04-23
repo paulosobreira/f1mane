@@ -407,8 +407,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public boolean mudarModoAgressivo() {
 		if (pilotoJogador == null)
 			return false;
-		pilotoJogador.setAgressivo(!pilotoJogador.isAgressivo(), this);
-		pilotoJogador.setCiclosDesconcentrado(40);
+		pilotoJogador.setAgressivoF4(true);
+		pilotoJogador.setCiclosDesconcentrado(Util.intervalo(2000, 4000));
 		return pilotoJogador.isAgressivo();
 	}
 
@@ -604,8 +604,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
-							.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(),
+					gerenciadorVisual.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			setarNivelCorrida();
@@ -625,9 +625,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
 		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
 				+ porcentagemChuvaCircuito(circuitoSelecionado));
-		Logger
-				.logar("porcentagemChuvaCircuito() "
-						+ porcentagemChuvaCircuito());
+		Logger.logar("porcentagemChuvaCircuito() " + porcentagemChuvaCircuito());
 	}
 
 	/**
