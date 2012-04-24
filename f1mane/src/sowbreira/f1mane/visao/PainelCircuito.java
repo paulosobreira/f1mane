@@ -115,6 +115,8 @@ public class PainelCircuito extends JPanel {
 	public final static BufferedImage travadaRodaImg2 = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("travadaRoda2.png", 150,
 					100);
+	public final static BufferedImage carroCimaFreios1 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreios1.png", null);
 
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
@@ -859,6 +861,7 @@ public class PainelCircuito extends JPanel {
 				op2.filter(zoomBuffer, rotateBuffer);
 				g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
 						Util.inte(cary * zoom), null);
+
 			}
 		}
 	}
@@ -1179,6 +1182,24 @@ public class PainelCircuito extends JPanel {
 		g2d.drawImage(rotateBuffer, carroX, carroY, null);
 		if (naoDesenhaEfeitos) {
 			return;
+		}
+		/**
+		 * Travada Roda
+		 */
+		if (Math.random() > .5) {
+//			rotateBuffer = new BufferedImage(width, width,
+//					BufferedImage.TYPE_INT_ARGB);
+//			zoomBuffer = new BufferedImage(width, height,
+//					BufferedImage.TYPE_INT_ARGB);
+//			AffineTransformOp op = new AffineTransformOp(afRotate,
+//					AffineTransformOp.TYPE_BILINEAR);
+//			op.filter(carroCimaFreios1, zoomBuffer);
+//
+//			AffineTransformOp op2 = new AffineTransformOp(afZoom,
+//					AffineTransformOp.TYPE_BILINEAR);
+//			op2.filter(zoomBuffer, rotateBuffer);
+//			g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
+//					Util.inte(cary * zoom), null);
 		}
 		/**
 		 * Chuva e Faiscas
