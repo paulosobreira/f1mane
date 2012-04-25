@@ -1186,7 +1186,7 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * Travada Roda
 		 */
-		if (Math.random() > .5) {
+//		if (Math.random() > .5) {
 //			rotateBuffer = new BufferedImage(width, width,
 //					BufferedImage.TYPE_INT_ARGB);
 //			zoomBuffer = new BufferedImage(width, height,
@@ -1200,7 +1200,7 @@ public class PainelCircuito extends JPanel {
 //			op2.filter(zoomBuffer, rotateBuffer);
 //			g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
 //					Util.inte(cary * zoom), null);
-		}
+//		}
 		/**
 		 * Chuva e Faiscas
 		 */
