@@ -1,5 +1,9 @@
 package br.nnpe;
 
+import java.awt.Color;
+
+import javax.swing.JFrame;
+
 public class Constantes {
 
 	public static final String DATA_FORMATO = "dd/MM/yyyy";
@@ -20,5 +24,12 @@ public class Constantes {
 	// public static final int MAX_CICLO = 50;
 
 	private Constantes() {
+	}
+
+	public static void main(String[] args) {
+		JFrame frame = new JFrame();
+		frame.setSize(200, 200);
+		frame.getContentPane().setBackground(new Color(200, 200, 200, 500/100));
+		frame.setVisible(true);
 	}
 }
