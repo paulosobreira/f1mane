@@ -604,7 +604,7 @@ public class ControleCorrida {
 						.msg("asfaltoAbrasivo")));
 				atualizaClassificacao();
 				controleJogo.exibirResultadoFinal();
-				System.out.println("========final corrida============");
+				Logger.logar("========final corrida============");
 			}
 		}
 	}
