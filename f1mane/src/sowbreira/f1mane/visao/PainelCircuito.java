@@ -80,7 +80,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
 	public final static Color lightWhiteRain = new Color(255, 255, 255, 160);
 	public final static Color nublado = new Color(200, 200, 200, 100);
-	public int indiceNublado;
+	public int indiceNublado = 0;
 	public final static BasicStroke strokeFaisca = new BasicStroke(1.0f,
 			BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] {
 					10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
@@ -1953,39 +1953,60 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaChuva(Graphics2D g2d) {
-		if (Clima.NUBLADO.equals(controleJogo.getClima())
-				&& Math.random() > 0.9) {
-			indiceNublado++;
-			if (indiceNublado > 1000) {
-				indiceNublado = 1000;
+		if (Clima.NUBLADO.equals(controleJogo.getClima())) {
+			if (Math.random() > 0.7) {
+				indiceNublado++;
+				if (indiceNublado > 1000) {
+					indiceNublado = 1000;
+				}
 			}
+			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
-					nublado.getBlue(), indiceNublado / 100));
+					nublado.getBlue(), alfaNub));
 			g2d.fill(limitesViewPort().getBounds());
 		}
-		if (Clima.SOL.equals(controleJogo.getClima()) && indiceNublado == 1000
-				&& Math.random() > 0.9) {
-			indiceNublado--;
-			if (indiceNublado < 0) {
-				indiceNublado = 0;
+		if (Clima.SOL.equals(controleJogo.getClima())) {
+			if (Math.random() > 0.7) {
+				indiceNublado--;
+				if (indiceNublado < 0) {
+					indiceNublado = 0;
+				}
 			}
+			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
-					nublado.getBlue(), indiceNublado / 100));
+					nublado.getBlue(), alfaNub));
 			g2d.fill(limitesViewPort().getBounds());
 		}
 
 		if ((Clima.CHUVA.equals(controleJogo.getClima()))
 				&& limitesViewPort() != null) {
+			indiceNublado += 10;
+			if (indiceNublado > 2000) {
+				indiceNublado = 2000;
+			}
 			g2d.setColor(nublado);
 			g2d.fill(limitesViewPort().getBounds());
 		}
-		if (!controleJogo.isChovendo())
+		if (Clima.SOL.equals(controleJogo.getClima()))
 			return;
 		Point p1 = new Point(0, 0);
 		Point p2 = new Point(0, 0);
 		g2d.setColor(lightWhiteRain);
+		double qtdeGotas = indiceNublado / 2000.0;
+		// if (controleJogo.isChovendo()) {
+		// qtdeGotas = 0;
+		// }
+		if (Math.random() > qtdeGotas) {
+			return;
+		}
 		for (int i = 0; i < limitesViewPort.getWidth(); i += 20) {
+			if (Math.random() > qtdeGotas) {
+				continue;
+			}
 			for (int j = 0; j < limitesViewPort.getHeight(); j += 20) {
+				if (Math.random() > qtdeGotas) {
+					continue;
+				}
 				if (Math.random() > .8) {
 
 					p1 = new Point(i + 10, j + 10);
