@@ -475,7 +475,7 @@ public class Piloto implements Serializable {
 			System.out.println("Bandeirada " + this + " Pts pista "
 					+ this.getPtosPista() + " Pos " + getPosicao() + " T "
 					+ df.format(new Date()));
-			Logger.logar(" SomaBaixa " + somaBaixa + " SomaAlta " + somaAlta
+			System.out.println(" SomaBaixa " + somaBaixa + " SomaAlta " + somaAlta
 					+ " SomaReta " + somaReta);
 			// controleJogo.pausarJogo();
 		}
@@ -1615,8 +1615,7 @@ public class Piloto implements Serializable {
 		if (controleJogo.isChovendo()) {
 			bonusSecundario -= 0.1;
 		}
-		if (noAtual.verificaRetaOuLargada()
-				&& testeHabilidadePilotoCarro(controleJogo)) {
+		if (noAtual.verificaRetaOuLargada() && getCarro().testePotencia()) {
 			return (Math.random() < bonusSecundario ? 4 : 3);
 		} else if (noAtual.verificaRetaOuLargada()
 				&& getCarro().testePotencia()) {
@@ -1625,13 +1624,14 @@ public class Piloto implements Serializable {
 				&& testeHabilidadePilotoOuCarro(controleJogo) && agressivo) {
 			return (Math.random() < bonusSecundario ? 3 : 2);
 		} else if (noAtual.verificaCruvaAlta() && !agressivo
-				&& getCarro().testePotencia()) {
+				&& testeHabilidadePilotoCarro(controleJogo)) {
 			return (Math.random() < bonusSecundario ? 2 : 1);
 		} else if (agressivo && noAtual.verificaCruvaBaixa()
 				&& testeHabilidadePilotoCarro(controleJogo)) {
-			return (testeHabilidadePiloto(controleJogo) ? 2 : 1);
+			return (Math.random() < bonusSecundario ? 2 : 1);
 		} else {
-			if (!carro.testePotencia() && (Math.random() > bonusSecundario)) {
+			if (!testeHabilidadePiloto(controleJogo)
+					&& (Math.random() > bonusSecundario)) {
 				return 0;
 			} else {
 				return 1;
