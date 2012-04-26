@@ -330,6 +330,9 @@ public class ControleEstatisticas {
 			if (index < 0) {
 				index = 0;
 			}
+			if (index > (piloto1.getVoltas().size() - 1)) {
+				return null;
+			}
 			Volta vp1 = (Volta) piloto1.getVoltas().get(index);
 			if (vp1.isVoltaBox() || vp1.isVoltaSafetyCar()) {
 				return null;

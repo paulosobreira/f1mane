@@ -477,9 +477,9 @@ public class Piloto implements Serializable {
 			System.out.println("Bandeirada " + this + " Pts pista "
 					+ this.getPtosPista() + " Pos " + getPosicao() + " T "
 					+ df.format(new Date()));
-//			 System.out.println(" SomaBaixa " + somaBaixa + " SomaAlta " +
-//			 somaAlta
-//			 + " SomaReta " + somaReta);
+			// System.out.println(" SomaBaixa " + somaBaixa + " SomaAlta " +
+			// somaAlta
+			// + " SomaReta " + somaReta);
 			// controleJogo.pausarJogo();
 		}
 
@@ -640,6 +640,7 @@ public class Piloto implements Serializable {
 		List pista = controleJogo.getNosDaPista();
 		int index = calcularNovoIndex(controleJogo);
 		int diff = index - pista.size();
+		// calcularVolta(controleJogo);
 
 		/**
 		 * Completou Volta
@@ -649,8 +650,12 @@ public class Piloto implements Serializable {
 				setPtosPista(controleJogo.getNosDaPista().size());
 				cruzouLargada = true;
 			}
-			Logger.logar("Completou Volta " + getNome() + " Numero Volta "
-					+ getNumeroVolta() + " Pts " + getPtosPista());
+			setNumeroVolta(getNumeroVolta() + 1);
+			if (!controleJogo.isModoQualify()) {
+				Logger.logar(" Numero Volta " + getNumeroVolta() + " "
+						+ getNome() + " Pos " + getPosicao() + " Pts "
+						+ getPtosPista());
+			}
 
 			int pCombust = getCarro().porcentagemCombustivel();
 			if (ultimoConsumoCombust == null) {
@@ -690,7 +695,7 @@ public class Piloto implements Serializable {
 				return;
 			}
 		}
-		calcularVolta(controleJogo);
+
 		if (controleJogo.isCorridaTerminada()) {
 			int indexPiloto = getNoAtual().getIndex();
 			int tamPista = controleJogo.getNosDaPista().size();
@@ -698,10 +703,9 @@ public class Piloto implements Serializable {
 				setRecebeuBanderada(true, controleJogo);
 			}
 		}
+
 		verificaIrBox(controleJogo);
-
 		this.setNoAtual((No) pista.get(index));
-
 	}
 
 	private void verificaIrBox(InterfaceJogo controleJogo) {
@@ -820,21 +824,6 @@ public class Piloto implements Serializable {
 
 	public void setPosicao(int posicao) {
 		this.posicao = posicao;
-	}
-
-	public void calcularVolta(InterfaceJogo controleJogo) {
-		double tamanhoCircuito = controleJogo.getNosDaPista().size();
-
-		if ((getPtosPista() == 0) || (tamanhoCircuito == 0)) {
-			numeroVolta = 0;
-		}
-
-		double pontos = getPtosPista();
-
-		numeroVolta = (int) Math.floor(pontos / tamanhoCircuito);
-		if (numeroVolta > controleJogo.totalVoltasCorrida()) {
-			numeroVolta = controleJogo.totalVoltasCorrida();
-		}
 	}
 
 	protected static final SimpleDateFormat formatter = new SimpleDateFormat(
@@ -1472,7 +1461,7 @@ public class Piloto implements Serializable {
 
 		double d = 100;
 		double s = 199;
-		System.out.println(Math.floor(s / d));
+		System.out.println("11,99".contains("."));
 	}
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {
