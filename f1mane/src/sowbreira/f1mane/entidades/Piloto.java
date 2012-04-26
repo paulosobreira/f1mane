@@ -477,9 +477,9 @@ public class Piloto implements Serializable {
 			System.out.println("Bandeirada " + this + " Pts pista "
 					+ this.getPtosPista() + " Pos " + getPosicao() + " T "
 					+ df.format(new Date()));
-			// System.out.println(" SomaBaixa " + somaBaixa + " SomaAlta " +
-			// somaAlta
-			// + " SomaReta " + somaReta);
+//			 System.out.println(" SomaBaixa " + somaBaixa + " SomaAlta " +
+//			 somaAlta
+//			 + " SomaReta " + somaReta);
 			// controleJogo.pausarJogo();
 		}
 
@@ -1323,7 +1323,13 @@ public class Piloto implements Serializable {
 	}
 
 	public double calculaGanhoMedio(double ganho) {
-		if (listGanho.size() > aceleracao) {
+		int acel = aceleracao;
+		if (noAtual.verificaRetaOuLargada()) {
+			acel++;
+		} else {
+			acel--;
+		}
+		if (listGanho.size() > acel) {
 			listGanho.remove(0);
 		}
 		listGanho.add(ganho);
