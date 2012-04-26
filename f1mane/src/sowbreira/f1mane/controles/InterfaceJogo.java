@@ -282,4 +282,6 @@ public interface InterfaceJogo {
 
 	public int porcentagemChuvaCircuito();
 
+	public boolean isBoxRapido();
+
 }

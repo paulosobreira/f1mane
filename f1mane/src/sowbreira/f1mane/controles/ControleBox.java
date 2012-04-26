@@ -44,6 +44,10 @@ public class ControleBox {
 	private boolean boxRapido = false;
 	private int ultIndiceParada = 0;
 
+	public boolean isBoxRapido() {
+		return boxRapido;
+	}
+
 	public List getCarrosBox() {
 		return carrosBox;
 	}

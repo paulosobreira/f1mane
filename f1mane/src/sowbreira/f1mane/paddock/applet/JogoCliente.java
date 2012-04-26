@@ -991,4 +991,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return 0;
 	}
 
+	@Override
+	public boolean isBoxRapido() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
