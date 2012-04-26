@@ -2,6 +2,7 @@ package sowbreira.f1mane.controles;
 
 import sowbreira.f1mane.entidades.Clima;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -29,7 +30,7 @@ public class ThreadMudancaClima extends Thread {
 	public void run() {
 		try {
 			if (ControleJogoLocal.VALENDO) {
-				sleep(5000 + ((int) (Math.random() * 25000)));
+				sleep(Util.intervalo(2500, 25000));
 			}
 
 			if (Clima.SOL.equals(controleClima.getClima())

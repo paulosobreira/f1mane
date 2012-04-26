@@ -1172,4 +1172,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return porcentagemChuvaCircuito(circuitoSelecionado);
 	}
 
+	@Override
+	public boolean isBoxRapido() {
+		if (controleCorrida == null) {
+			return false;
+		}
+		return controleCorrida.getControleBox().isBoxRapido();
+	}
+
 }
