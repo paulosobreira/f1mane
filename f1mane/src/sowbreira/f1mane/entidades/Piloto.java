@@ -447,12 +447,14 @@ public class Piloto implements Serializable {
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
 			if (this.getPosicao() == 1) {
 				controleJogo.infoPrioritaria(Html.superBlack(getNome())
-						+ Html.superGreen(Lang.msg("044", new Object[] { df
-								.format(new Date(getTimeStampChegeda())) })));
+						+ Html.superGreen(Lang.msg("044", new Object[] {
+								getPosicao(),
+								df.format(new Date(getTimeStampChegeda())) })));
 			} else {
 				controleJogo.info(Html.superBlack(getNome())
-						+ Html.green(Lang.msg("044", new Object[] { df
-								.format(new Date(getTimeStampChegeda())) })));
+						+ Html.green(Lang.msg("044", new Object[] {
+								getPosicao(),
+								df.format(new Date(getTimeStampChegeda())) })));
 			}
 			double somaBaixa = 0;
 			for (Iterator iterator = ganhosBaixa.iterator(); iterator.hasNext();) {
@@ -475,8 +477,9 @@ public class Piloto implements Serializable {
 			System.out.println("Bandeirada " + this + " Pts pista "
 					+ this.getPtosPista() + " Pos " + getPosicao() + " T "
 					+ df.format(new Date()));
-			System.out.println(" SomaBaixa " + somaBaixa + " SomaAlta " + somaAlta
-					+ " SomaReta " + somaReta);
+			// System.out.println(" SomaBaixa " + somaBaixa + " SomaAlta " +
+			// somaAlta
+			// + " SomaReta " + somaReta);
 			// controleJogo.pausarJogo();
 		}
 
@@ -1630,11 +1633,11 @@ public class Piloto implements Serializable {
 				&& testeHabilidadePilotoCarro(controleJogo)) {
 			return (Math.random() < bonusSecundario ? 2 : 1);
 		} else {
-			if (!testeHabilidadePiloto(controleJogo)
-					&& (Math.random() > bonusSecundario)) {
-				return 0;
-			} else {
+			if (testeHabilidadePiloto(controleJogo)
+					&& (Math.random() < bonusSecundario)) {
 				return 1;
+			} else {
+				return 0;
 			}
 		}
 	}
