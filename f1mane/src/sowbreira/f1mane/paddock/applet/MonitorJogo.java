@@ -780,7 +780,6 @@ public class MonitorJogo implements Runnable {
 					} else {
 						piloto.setTimeStampChegeda(valTsFinal);
 					}
-					piloto.calcularVolta(jogoCliente);
 					if (pilotoSelecionado != null
 							&& pilotoSelecionado.equals(piloto)) {
 						piloto.setMelhorVolta(dadosParciais.peselMelhorVolta);
