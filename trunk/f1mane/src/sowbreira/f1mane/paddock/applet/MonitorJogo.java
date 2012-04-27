@@ -28,6 +28,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.Posis;
 import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
+import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
@@ -764,7 +765,6 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.verificaMudancaClima(dadosParciais.clima);
 				dadosJogo.setClima(dadosParciais.clima);
 				dadosJogo.setMelhoVolta(dadosParciais.melhorVolta);
-				jogoCliente.travouRodas(dadosParciais.travadaRoda);
 				if (dadosParciais.texto != null
 						&& !"".equals(dadosParciais.texto))
 					dadosJogo.setTexto(dadosParciais.texto);
@@ -778,8 +778,16 @@ public class MonitorJogo implements Runnable {
 					if (valTsFinal == -1) {
 						piloto.getCarro().setRecolhido(true);
 					} else if (valTsFinal == -2) {
-						if (!piloto.decContTravouRodas())
+						if (!piloto.decContTravouRodas()) {
 							piloto.setContTravouRodas(5);
+							TravadaRoda travadaRoda = new TravadaRoda();
+							travadaRoda.setIdNo(this.jogoCliente
+									.obterIdPorNo(piloto.getNoAtual()));
+							travadaRoda.setTipo(Util.intervalo(0, 2));
+							travadaRoda.setTracado(piloto.getTracado());
+							jogoCliente.travouRodas(travadaRoda);
+						}
+
 					} else {
 						piloto.setTimeStampChegeda(valTsFinal);
 					}

@@ -668,8 +668,6 @@ public class Piloto implements Serializable {
 		List pista = controleJogo.getNosDaPista();
 		int index = calcularNovoIndex(controleJogo);
 		int diff = index - pista.size();
-		// calcularVolta(controleJogo);
-
 		/**
 		 * Completou Volta
 		 */
