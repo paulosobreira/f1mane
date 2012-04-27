@@ -525,16 +525,14 @@ public class ControleJogosServer {
 			if (piloto.isRecebeuBanderada()) {
 				dadosParciais.pilotsTs[piloto.getId() - 1] = piloto
 						.getTimeStampChegeda();
-			}
-			if (piloto.getCarro().isRecolhido()
+			} else if (piloto.decContTravouRodas()) {
+				dadosParciais.pilotsTs[piloto.getId() - 1] = -2;
+			} else if (piloto.getCarro().isRecolhido()
 					|| Carro.PANE_SECA
 							.equals(piloto.getCarro().getDanificado())
 					|| Carro.EXPLODIU_MOTOR.equals(piloto.getCarro()
 							.getDanificado())) {
 				dadosParciais.pilotsTs[piloto.getId() - 1] = -1;
-			}
-			if (piloto.decContTravouRodas()) {
-				dadosParciais.pilotsTs[piloto.getId() - 1] = -2;
 			}
 
 			if (args.length > 2 && piloto.getId() == Integer.parseInt(args[2])) {
