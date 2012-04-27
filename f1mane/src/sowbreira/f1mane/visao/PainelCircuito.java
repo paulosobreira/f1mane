@@ -116,8 +116,27 @@ public class PainelCircuito extends JPanel {
 	public final static BufferedImage travadaRodaImg2 = CarregadorRecursos
 			.carregaBufferedImageTranspareciaBranca("travadaRoda2.png", 150,
 					100);
-	public final static BufferedImage carroCimaFreios1 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreios1.png", null);
+	public final static BufferedImage carroCimaFreiosD1 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosD1.png", null);
+	public final static BufferedImage carroCimaFreiosD2 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosD2.png", null);
+	public final static BufferedImage carroCimaFreiosD3 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosD3.png", null);
+	public final static BufferedImage carroCimaFreiosD4 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosD4.png", null);
+	public final static BufferedImage carroCimaFreiosD5 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosD5.png", null);
+
+	public final static BufferedImage carroCimaFreiosE1 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosE1.png", null);
+	public final static BufferedImage carroCimaFreiosE2 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosE2.png", null);
+	public final static BufferedImage carroCimaFreiosE3 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosE3.png", null);
+	public final static BufferedImage carroCimaFreiosE4 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosE4.png", null);
+	public final static BufferedImage carroCimaFreiosE5 = CarregadorRecursos
+			.carregaBufferedImageTransparecia("CarroCimaFreiosE5.png", null);
 
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
@@ -1190,21 +1209,45 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * Travada Roda
 		 */
-		// if (Math.random() > .5) {
-		// rotateBuffer = new BufferedImage(width, width,
-		// BufferedImage.TYPE_INT_ARGB);
-		// zoomBuffer = new BufferedImage(width, height,
-		// BufferedImage.TYPE_INT_ARGB);
-		// AffineTransformOp op = new AffineTransformOp(afRotate,
-		// AffineTransformOp.TYPE_BILINEAR);
-		// op.filter(carroCimaFreios1, zoomBuffer);
-		//
-		// AffineTransformOp op2 = new AffineTransformOp(afZoom,
-		// AffineTransformOp.TYPE_BILINEAR);
-		// op2.filter(zoomBuffer, rotateBuffer);
-		// g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
-		// Util.inte(cary * zoom), null);
-		// }
+		if (piloto.decContTravouRodas()) {
+
+			if (Math.random() > 0.5) {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosD1);
+			} else {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosE1);
+			}
+			if (Math.random() > 0.5) {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosD2);
+			} else {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosE2);
+			}
+			if (Math.random() > 0.5) {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosD3);
+			} else {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosE3);
+			}
+			if (Math.random() > 0.5) {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosD4);
+			} else {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosE4);
+			}
+			if (Math.random() > 0.5) {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosD5);
+			} else {
+				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+						cary, g2d, carroCimaFreiosE5);
+			}
+		}
+
 		/**
 		 * Chuva e Faiscas
 		 */
@@ -1233,7 +1276,7 @@ public class PainelCircuito extends JPanel {
 				if (i % (Math.random() > 0.5 ? 3 : 2) == 0) {
 					continue;
 				}
-				if(Math.random()>qtdeGotas){
+				if (Math.random() > qtdeGotas) {
 					continue;
 				}
 				int eixoDiatero = (int) (eixo * 0.3);
@@ -1366,6 +1409,24 @@ public class PainelCircuito extends JPanel {
 						Util.inte(5 * zoom), Util.inte(5 * zoom));
 			}
 		}
+
+	}
+
+	private void desenhaFumacaTravarRodas(int width, int height,
+			AffineTransform afRotate, AffineTransform afZoom, double carx,
+			double cary, Graphics g2d, BufferedImage img) {
+		BufferedImage rotateBuffer = new BufferedImage(width, width,
+				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage zoomBuffer = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_ARGB);
+		AffineTransformOp op = new AffineTransformOp(afRotate,
+				AffineTransformOp.TYPE_BILINEAR);
+		op.filter(img, zoomBuffer);
+		AffineTransformOp op2 = new AffineTransformOp(afZoom,
+				AffineTransformOp.TYPE_BILINEAR);
+		op2.filter(zoomBuffer, rotateBuffer);
+		g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
+				Util.inte(cary * zoom), null);
 
 	}
 

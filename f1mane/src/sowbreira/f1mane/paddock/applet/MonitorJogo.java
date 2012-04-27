@@ -775,8 +775,11 @@ public class MonitorJogo implements Runnable {
 					piloto.setPtosPista(dadosParciais.pilotsPonts[piloto
 							.getId() - 1]);
 					long valTsFinal = dadosParciais.pilotsTs[piloto.getId() - 1];
-					if (valTsFinal < 0) {
+					if (valTsFinal == -1) {
 						piloto.getCarro().setRecolhido(true);
+					} else if (valTsFinal == -2) {
+						if (!piloto.decContTravouRodas())
+							piloto.setContTravouRodas(5);
 					} else {
 						piloto.setTimeStampChegeda(valTsFinal);
 					}
