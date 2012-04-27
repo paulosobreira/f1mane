@@ -12,6 +12,7 @@ import org.hibernate.Session;
 
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.BufferTexto;
@@ -521,10 +522,19 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			dadosParciais.pilotsPonts[piloto.getId() - 1] = piloto
 					.getPtosPista();
-			dadosParciais.pilotsTs[piloto.getId() - 1] = piloto
-					.getTimeStampChegeda();
-			if (piloto.getCarro().isRecolhido()) {
+			if (piloto.isRecebeuBanderada()) {
+				dadosParciais.pilotsTs[piloto.getId() - 1] = piloto
+						.getTimeStampChegeda();
+			}
+			if (piloto.getCarro().isRecolhido()
+					|| Carro.PANE_SECA
+							.equals(piloto.getCarro().getDanificado())
+					|| Carro.EXPLODIU_MOTOR.equals(piloto.getCarro()
+							.getDanificado())) {
 				dadosParciais.pilotsTs[piloto.getId() - 1] = -1;
+			}
+			if (piloto.decContTravouRodas()) {
+				dadosParciais.pilotsTs[piloto.getId() - 1] = -2;
 			}
 
 			if (args.length > 2 && piloto.getId() == Integer.parseInt(args[2])) {
