@@ -39,7 +39,7 @@ public class TravadaRoda implements Serializable {
 
 	@Override
 	public String toString() {
-		return (idNo + " " + tracado);
+		return (idNo + " " + tracado + " " + tipo);
 	}
 
 	@Override
