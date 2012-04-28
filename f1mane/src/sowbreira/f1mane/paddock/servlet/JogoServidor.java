@@ -610,7 +610,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		if (piloto.getContTravouRodas() != 0) {
 			return;
 		}
-		piloto.setContTravouRodas(5);
+		piloto.setContTravouRodas(2);
 		if (!piloto.isJogadorHumano()) {
 			return;
 		}

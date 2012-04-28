@@ -749,7 +749,7 @@ public class Piloto implements Serializable {
 			}
 		}
 
-		if ((combust < 15) && !controleJogo.isCorridaTerminada()) {
+		if ((combust < 5) && !controleJogo.isCorridaTerminada()) {
 			box = true;
 		} else {
 			box = false;
@@ -974,8 +974,8 @@ public class Piloto implements Serializable {
 				if (diff < distBrigaMin) {
 					if (getTracado() != carroPilotoDaFrente.getPiloto()
 							.getTracado()) {
-						if ((testeHabilidadePiloto(controleJogo) && autoPos)
-								|| (!isJogadorHumano() && testeHabilidadePiloto(controleJogo)))
+						if (carroPilotoDaFrente.getPiloto().getTracado() != 0
+								&& ((testeHabilidadePiloto(controleJogo) && autoPos) || (!isJogadorHumano() && testeHabilidadePiloto(controleJogo))))
 							mudarTracado(0, controleJogo);
 						if (No.CURVA_ALTA.equals(noAtual.getTipo())
 								|| No.CURVA_BAIXA.equals(noAtual.getTipo())
@@ -1019,10 +1019,19 @@ public class Piloto implements Serializable {
 			colisao = true;
 		}
 		if (colisao) {
-			ganho *= Util.intervalo(0.5, 0.7);
+			ganho *= testeHabilidadePiloto(controleJogo) ? 0.5 : 0.7;
 			setAgressivoF4(false);
 			setCiclosDesconcentrado(200);
 		}
+
+		int indexAtual = noAtual.getIndex();
+		if (indexAtual + 70 < (controleJogo.getNosDaPista().size() - 1)) {
+			No no = controleJogo.getNosDaPista().get(indexAtual + 70);
+			if (no.verificaCruvaBaixa() && noAtual.verificaRetaOuLargada()) {
+				ganho *= testeHabilidadePiloto(controleJogo) ? 0.6 : 0.8;
+			}
+		}
+
 		ganho = calculaGanhoMedio(ganho);
 
 		if (controleJogo.isSafetyCarNaPista()) {
@@ -1047,7 +1056,7 @@ public class Piloto implements Serializable {
 			ganhosReta.add(ganho);
 		}
 		index += Math.round(ganho);
-		setVelocidade(Util.inte(ganho * 5.5));
+		setVelocidade(Util.inte(ganho * 5));
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
 		}
@@ -1364,7 +1373,7 @@ public class Piloto implements Serializable {
 		if (ControleQualificacao.modoQualify) {
 			return;
 		}
-		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 60 : 50)) {
+		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 80 : 60)) {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);

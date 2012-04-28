@@ -1408,6 +1408,15 @@ public class PainelCircuito extends JPanel {
 						Util.inte(posisRec.getPoint().y * zoom),
 						Util.inte(5 * zoom), Util.inte(5 * zoom));
 			}
+			int indexAtual = noAtual.getIndex();
+			if (indexAtual + 100 < (controleJogo.getNosDaPista().size() - 1)) {
+				g2d.setColor(Color.YELLOW);
+				No no = controleJogo.getNosDaPista().get(indexAtual + 100);
+				g2d.fillOval(Util.inte(no.getX() * zoom),
+						Util.inte(no.getY() * zoom), Util.inte(5 * zoom),
+						Util.inte(5 * zoom));
+			}
+
 		}
 
 	}

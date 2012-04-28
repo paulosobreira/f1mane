@@ -76,7 +76,9 @@ public class ControleQualificacao {
 					.valueOf(controleJogo.getNosDaPista().size())) <= 1) {
 				piloto.processarCiclo(controleJogo);
 				contCiclosQualificacao++;
-				if (piloto.testeHabilidadePilotoCarro(controleJogo)) {
+				if (Carro.TIPO_PNEU_MOLE
+						.equals(piloto.getCarro().getTipoPneu())
+						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao--;
 				}
 			}
