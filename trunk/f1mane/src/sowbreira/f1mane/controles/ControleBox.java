@@ -492,11 +492,11 @@ public class ControleBox {
 		piloto.limparConsumoMedioCombust();
 		if (consumoMedio == 0) {
 			if (piloto.getQtdeParadasBox() == 0) {
-				percentagem = 40 + ((int) (Math.random() * 50));
+				percentagem = 50 + ((int) (Math.random() * 60));
 			} else if (piloto.getQtdeParadasBox() == 1) {
-				percentagem = 30 + ((int) (Math.random() * 30));
+				percentagem = 40 + ((int) (Math.random() * 50));
 			} else {
-				percentagem = 10 + ((int) (Math.random() * 30));
+				percentagem = 30 + ((int) (Math.random() * 40));
 			}
 
 			if (piloto.getCarro().verificaDano()) {
@@ -533,7 +533,7 @@ public class ControleBox {
 			return;
 		}
 		if (controleJogo.asfaltoAbrasivo()
-				&& Math.random() < controleJogo.getNiveljogo()
+				&& Math.random() < (controleJogo.getNiveljogo() - 0.2)
 				&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 			piloto.setSetUpIncial(UMA_PARADA);
 			setupParadaUnica(piloto);
