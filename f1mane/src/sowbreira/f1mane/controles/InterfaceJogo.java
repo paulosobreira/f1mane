@@ -62,7 +62,7 @@ public interface InterfaceJogo {
 
 	public Circuito getCircuito();
 
-	public List getNosDaPista();
+	public List<No> getNosDaPista();
 
 	public List getCarros();
 

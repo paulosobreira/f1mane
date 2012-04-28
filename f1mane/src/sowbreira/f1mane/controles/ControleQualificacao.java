@@ -43,24 +43,9 @@ public class ControleQualificacao {
 
 	private void gerarQualificacaoAleatoria() {
 		List pilotos = controleJogo.getPilotos();
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
-			piloto.setNotaQualificacaoAleatoria((piloto.getHabilidade() / 10)
-					+ (5 * Math.random()) + piloto.getCarro().getPotencia()
-					+ (50 * Math.random()));
-		}
-
-		Collections.sort(pilotos, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				Piloto piloto0 = (Piloto) arg0;
-				Piloto piloto1 = (Piloto) arg1;
-				return Double.compare(piloto1.getNotaQualificacaoAleatoria(),
-						piloto0.getNotaQualificacaoAleatoria());
-			}
-		});
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
-			controleBox.setupCorridaQualificacaoAleatoria(piloto, i + 1);
+			controleBox.setupCorridaQualificacaoAleatoria(piloto);
 		}
 	}
 
@@ -91,6 +76,9 @@ public class ControleQualificacao {
 					.valueOf(controleJogo.getNosDaPista().size())) <= 1) {
 				piloto.processarCiclo(controleJogo);
 				contCiclosQualificacao++;
+				if (piloto.testeHabilidadePilotoCarro(controleJogo)) {
+					contCiclosQualificacao--;
+				}
 			}
 			piloto.setNumeroVolta(0);
 			piloto.setCiclosVoltaQualificacao(contCiclosQualificacao);

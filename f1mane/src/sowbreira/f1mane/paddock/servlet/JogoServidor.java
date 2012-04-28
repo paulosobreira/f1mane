@@ -607,7 +607,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	@Override
 	public void travouRodas(Piloto piloto) {
-		piloto.setContTravouRodas(3);
+		if (piloto.getContTravouRodas() != 0) {
+			return;
+		}
+		piloto.setContTravouRodas(5);
 		if (!piloto.isJogadorHumano()) {
 			return;
 		}

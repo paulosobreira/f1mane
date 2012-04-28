@@ -56,7 +56,6 @@ public class Piloto implements Serializable {
 	private String nomeCarro;
 	private String nomeJogador;
 	private transient int habilidade;
-	private transient double notaQualificacaoAleatoria;
 	private int carX;
 	private int carY;
 	private long ptosPista;
@@ -127,6 +126,10 @@ public class Piloto implements Serializable {
 
 	public void setContTravouRodas(int contTravouRodas) {
 		this.contTravouRodas = contTravouRodas;
+	}
+
+	public int getContTravouRodas() {
+		return contTravouRodas;
 	}
 
 	public boolean isTravouRodas() {
@@ -581,14 +584,6 @@ public class Piloto implements Serializable {
 		this.numeroVolta = numeroVolta;
 	}
 
-	public double getNotaQualificacaoAleatoria() {
-		return notaQualificacaoAleatoria;
-	}
-
-	public void setNotaQualificacaoAleatoria(double notaQualificacao) {
-		this.notaQualificacaoAleatoria = notaQualificacao;
-	}
-
 	public Carro getCarro() {
 		return carro;
 	}
@@ -972,15 +967,14 @@ public class Piloto implements Serializable {
 				if (controleJogo.getNiveljogo() == .7) {
 					distBrigaMin = 30;
 				} else if (controleJogo.getNiveljogo() == .5) {
-					distBrigaMin = 20;
+					distBrigaMin = 15;
 				} else if (controleJogo.getNiveljogo() == .3) {
 					distBrigaMin = 10;
 				}
 				if (diff < distBrigaMin) {
 					if (getTracado() != carroPilotoDaFrente.getPiloto()
 							.getTracado()) {
-						if ((testeHabilidadePiloto(controleJogo) && autoPos && controleJogo
-								.getNiveljogo() == InterfaceJogo.FACIL_NV)
+						if ((testeHabilidadePiloto(controleJogo) && autoPos)
 								|| (!isJogadorHumano() && testeHabilidadePiloto(controleJogo)))
 							mudarTracado(0, controleJogo);
 						if (No.CURVA_ALTA.equals(noAtual.getTipo())
@@ -990,9 +984,6 @@ public class Piloto implements Serializable {
 									.getFatorUtrapassagem());
 							if (isAgressivo()) {
 								nGanho = (controleJogo.getFatorUtrapassagem() + 0.1);
-							}
-							if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-								nGanho -= 0.1;
 							}
 							if (nGanho > 1) {
 								nGanho = 1;
@@ -1006,22 +997,17 @@ public class Piloto implements Serializable {
 					} else if (getTracado() == carroPilotoDaFrente.getPiloto()
 							.getTracado()) {
 						if (No.CURVA_ALTA.equals(noAtual.getTipo())) {
-							ganho *= (controleJogo.getFatorUtrapassagem());
+							ganho *= controleJogo.getFatorUtrapassagem();
+							ganho *= 0.9;
+							mudarTracadoDiferenteDe(getTracado(), controleJogo);
+							incStress(testeHabilidadePiloto(controleJogo) ? 1
+									: 2);
 						} else if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
-							double nGanho = (controleJogo
-									.getFatorUtrapassagem());
-							if (isAgressivo() && getCarro().testePotencia()) {
-								nGanho = (controleJogo.getFatorUtrapassagem() + 0.1);
-							}
-							if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-								nGanho -= 0.1;
-							}
-							if (nGanho > 1) {
-								nGanho = 1;
-							} else if (nGanho < 0.1) {
-								nGanho = 0.1;
-							}
-							ganho *= (nGanho);
+							ganho *= controleJogo.getFatorUtrapassagem();
+							ganho *= 0.8;
+							mudarTracadoDiferenteDe(getTracado(), controleJogo);
+							incStress(testeHabilidadePiloto(controleJogo) ? 2
+									: 3);
 						}
 					}
 				}
@@ -1031,15 +1017,14 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isModoQualify()
 				&& verificaColisaoCarroFrente(controleJogo)) {
 			colisao = true;
-
 		}
 		if (colisao) {
 			ganho *= Util.intervalo(0.5, 0.7);
+			setAgressivoF4(false);
+			setCiclosDesconcentrado(200);
 		}
 		ganho = calculaGanhoMedio(ganho);
-		if (colisao) {
-			ganho *= Util.intervalo(0.5, 0.7);
-		}
+
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
 		}
@@ -1067,6 +1052,15 @@ public class Piloto implements Serializable {
 			ganhoMax = ganho;
 		}
 		return index;
+	}
+
+	private void mudarTracadoDiferenteDe(int trac, InterfaceJogo controleJogo) {
+		if (trac == 0) {
+			mudarTracado(Util.intervalo(1, 2), controleJogo);
+		} else {
+			mudarTracado(0, controleJogo);
+		}
+
 	}
 
 	private void tentarEscaparPilotoDaTraz(InterfaceJogo controleJogo) {
@@ -1368,6 +1362,9 @@ public class Piloto implements Serializable {
 			return;
 		}
 		if (ControleQualificacao.modoQualify) {
+			return;
+		}
+		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 60 : 50)) {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);
