@@ -450,10 +450,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -809,20 +808,23 @@ public class Carro implements Serializable {
 						&& Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {
 					teste = false;
 					controleJogo.travouRodas(getPiloto());
-					piloto.decStress(5 + perda);
+					piloto.decStress(getPiloto().testeHabilidadePiloto(
+							controleJogo) ? 4 : 2 + perda);
 				}
 				desgPneus += (teste ? 3 : 10) + novoModDano;
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4) + novoModDano;
+					: 4)
+					+ novoModDano;
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 70
 						&& Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {
 					teste = false;
 					controleJogo.travouRodas(getPiloto());
-					piloto.decStress(5);
+					piloto.decStress(getPiloto().testeHabilidadePiloto(
+							controleJogo) ? 6 : 3);
 				}
 				desgPneus += (teste ? 3 : 9) + novoModDano;
 			}
@@ -837,7 +839,8 @@ public class Carro implements Serializable {
 							.testeHabilidadePilotoCarro(controleJogo);
 					desgPneus += (teste ? 3 : 7) + novoModDano;
 					controleJogo.travouRodas(getPiloto());
-					piloto.incStress(10);
+					piloto.incStress(getPiloto().testeHabilidadePiloto(
+							controleJogo) ? 5 : 10);
 				}
 			}
 		} else if (agressivo) {
