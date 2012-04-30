@@ -2062,7 +2062,9 @@ public class PainelCircuito extends JPanel {
 			if (indiceNublado > 2000) {
 				indiceNublado = 2000;
 			}
-			g2d.setColor(nublado);
+			int alfaNub = indiceNublado / 20;
+			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
+					nublado.getBlue(), alfaNub));
 			g2d.fill(limitesViewPort().getBounds());
 		}
 		if (Clima.SOL.equals(controleJogo.getClima()))
