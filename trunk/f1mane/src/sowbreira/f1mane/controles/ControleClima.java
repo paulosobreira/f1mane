@@ -123,7 +123,8 @@ public class ControleClima {
 		} else if (Clima.CHUVA.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("006")));
 		}
-		controleJogo.informaMudancaClima();
+		if (controleJogo.getNiveljogo() != InterfaceJogo.DIFICIL_NV)
+			controleJogo.informaMudancaClima();
 	}
 
 	public static void main(String[] args) {
