@@ -611,9 +611,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			return;
 		}
 		piloto.setContTravouRodas(2);
-		if (!piloto.isJogadorHumano()) {
-			return;
-		}
 		this.travadaRoda = new TravadaRoda();
 		this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
 		this.travadaRoda.setTracado(piloto.getTracado());

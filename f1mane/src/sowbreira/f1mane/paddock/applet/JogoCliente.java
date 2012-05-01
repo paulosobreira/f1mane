@@ -620,7 +620,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void verificaMudancaClima(String climaNovo) {
-		if (clima != null && !clima.equals(climaNovo)) {
+		if (clima != null && !clima.equals(climaNovo)
+				&& getNiveljogo() != InterfaceJogo.DIFICIL_NV) {
 			gerenciadorVisual.informaMudancaClima();
 			clima = climaNovo;
 		}
