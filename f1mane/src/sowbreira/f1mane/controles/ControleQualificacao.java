@@ -76,10 +76,13 @@ public class ControleQualificacao {
 					.valueOf(controleJogo.getNosDaPista().size())) <= 1) {
 				piloto.processarCiclo(controleJogo);
 				contCiclosQualificacao++;
-				if (Carro.TIPO_PNEU_MOLE
-						.equals(piloto.getCarro().getTipoPneu())
+				if (Math.random() < 0.3
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao--;
+					if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro()
+							.getTipoPneu()) && Math.random() < 0.05) {
+						contCiclosQualificacao--;
+					}
 				}
 			}
 			piloto.setNumeroVolta(0);

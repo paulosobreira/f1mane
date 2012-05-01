@@ -23,7 +23,7 @@ public class AppletPaddock extends JApplet {
 	private static final long serialVersionUID = -2007934906883016154L;
 	private ControlePaddockCliente controlePaddockApplet;
 	private String versao;
-	DecimalFormat decimalFormat = new DecimalFormat("#,##");
+	DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
 	public String getVersao() {
 		return " " + decimalFormat.format(new Integer(versao));
@@ -67,6 +67,9 @@ public class AppletPaddock extends JApplet {
 		properties.load(this.getClass()
 				.getResourceAsStream("client.properties"));
 		this.versao = properties.getProperty("versao");
+		if (versao.contains(".")) {
+			this.versao = versao.replaceAll("\\.", "");
+		}
 
 	}
 
@@ -76,6 +79,7 @@ public class AppletPaddock extends JApplet {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("127.234".replaceAll("\\.", ""));
 		// Logger.logar(JOptionPane.showInputDialog("teste"));
 	}
 
