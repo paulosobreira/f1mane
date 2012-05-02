@@ -1033,7 +1033,7 @@ public class MonitorJogo implements Runnable {
 
 	private void deleyAtualizacaoNaoSuave() throws InterruptedException {
 		if (!jogoCliente.getMainFrame().isAtualizacaoSuave()) {
-			Thread.sleep(Util.intervalo(40, 80));
+			Thread.sleep(Util.intervalo(40, 90));
 		}
 	}
 
