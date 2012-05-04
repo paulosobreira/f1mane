@@ -1052,7 +1052,7 @@ public class Piloto implements Serializable {
 			ganhosReta.add(ganho);
 		}
 		index += Math.round(ganho);
-		setVelocidade(Util.inte(ganho * 5));
+		setVelocidade(Util.inte(ganho * 5.25));
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
 		}
@@ -1375,7 +1375,7 @@ public class Piloto implements Serializable {
 		if (ControleQualificacao.modoQualify) {
 			return;
 		}
-		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 80 : 60)) {
+		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 90 : 70)) {
 			return;
 		}
 		int diff = calculaDiffParaProximo(controleJogo);
