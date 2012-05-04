@@ -1182,4 +1182,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return controleCorrida.getControleBox().isBoxRapido();
 	}
 
+	@Override
+	public void destravaBox() {
+		if (gerenciadorVisual != null) {
+			gerenciadorVisual.destravaBox();
+		}
+	}
+
 }

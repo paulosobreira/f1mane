@@ -998,4 +998,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
+	public void destravaBox() {
+		if (gerenciadorVisual != null)
+			gerenciadorVisual.destravaBox();
+	}
+
+	public void travaBox() {
+		if (gerenciadorVisual != null)
+			gerenciadorVisual.travaBox();
+	}
+
 }
