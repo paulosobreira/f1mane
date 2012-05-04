@@ -647,6 +647,12 @@ public class GerenciadorVisual {
 			return;
 		}
 		boolean modo = controleJogo.mudarModoBox();
+		if (modo) {
+			travaBox();
+		} else {
+			destravaBox();
+		}
+
 		if (!(controleJogo instanceof JogoCliente)) {
 			if (modo && !(controleJogo instanceof JogoCliente)) {
 				box.setText(Lang.msg("137"));
@@ -656,6 +662,18 @@ public class GerenciadorVisual {
 
 		}
 		ultimaChamadaBox = System.currentTimeMillis();
+	}
+
+	public void destravaBox() {
+		comboBoxTipoPneu.setEnabled(true);
+		comboBoxAsa.setEnabled(true);
+		sliderPercentCombust.setEnabled(true);
+	}
+
+	public void travaBox() {
+		comboBoxTipoPneu.setEnabled(false);
+		comboBoxAsa.setEnabled(false);
+		sliderPercentCombust.setEnabled(false);
 	}
 
 	protected void mudarGiro() {
