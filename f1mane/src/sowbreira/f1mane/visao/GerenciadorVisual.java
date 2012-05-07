@@ -667,17 +667,22 @@ public class GerenciadorVisual {
 	}
 
 	public void destravaBox() {
+		if (!comboBoxTipoPneu.isEnabled()) {
+			box.requestFocus();
+		}
 		comboBoxTipoPneu.setEnabled(true);
 		comboBoxAsa.setEnabled(true);
 		sliderPercentCombust.setEnabled(true);
-		box.requestFocus();
+
 	}
 
 	public void travaBox() {
+		if (comboBoxTipoPneu.isEnabled()) {
+			box.requestFocus();
+		}
 		comboBoxTipoPneu.setEnabled(false);
 		comboBoxAsa.setEnabled(false);
 		sliderPercentCombust.setEnabled(false);
-		box.requestFocus();
 	}
 
 	protected void mudarGiro() {

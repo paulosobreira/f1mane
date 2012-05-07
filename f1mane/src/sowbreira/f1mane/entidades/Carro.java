@@ -811,7 +811,7 @@ public class Carro implements Serializable {
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 4 : 2 + perda);
 				}
-				desgPneus += (teste ? 10 : 20) + novoModDano;
+				desgPneus += (teste ? 8 : 24) + novoModDano;
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
@@ -826,7 +826,7 @@ public class Carro implements Serializable {
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 6 : 3);
 				}
-				desgPneus += (teste ? 6 : 16) + novoModDano;
+				desgPneus += (teste ? 4 : 12) + novoModDano;
 			}
 		} else if (agressivo && no.verificaRetaOuLargada()) {
 			int indexFrete = no.getIndex() + 50;
