@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -40,7 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -133,8 +131,6 @@ public class GerenciadorVisual {
 	private int tempoSleep = 30;
 	private JComboBox giro;
 	private JComboBox modoPiloto;
-	private JComboBox comboBoxTipoPneu;
-	private JComboBox comboBoxAsa;
 	private JSlider sliderPercentCombust;
 	private JButton f1;
 	private JButton f2;
@@ -169,6 +165,12 @@ public class GerenciadorVisual {
 	private long ultimaTravavadaRodas;
 	private Thread thDesenhaQualificacao;
 	private int vdp = VDP1;
+	private JRadioButton pneuMole;
+	private JRadioButton pneuDuro;
+	private JRadioButton pneuChuva;
+	private JRadioButton maisAsa;
+	private JRadioButton asaNormal;
+	private JRadioButton menosAsa;
 
 	public int getVdp() {
 		return vdp;
@@ -254,14 +256,12 @@ public class GerenciadorVisual {
 		panelControleBox.addKeyListener(keyListener);
 		box.addKeyListener(keyListener);
 		progBox.addKeyListener(keyListener);
-		comboBoxTipoPneu.addKeyListener(keyListener);
 		combustivelBar.addKeyListener(keyListener);
 		giro.addKeyListener(keyListener);
 		infoText.addKeyListener(keyListener);
 		sliderPercentCombust.addKeyListener(keyListener);
 		scrollPaneTextual.addKeyListener(keyListener);
 		infoTextual.addKeyListener(keyListener);
-		comboBoxAsa.addKeyListener(keyListener);
 		driverThru.addKeyListener(keyListener);
 		f1.addKeyListener(keyListener);
 		f2.addKeyListener(keyListener);
@@ -281,6 +281,22 @@ public class GerenciadorVisual {
 		drsBtn.addMouseWheelListener(mw);
 		kersBtn.addMouseWheelListener(mw);
 
+		maisAsa.addKeyListener(keyListener);
+		menosAsa.addKeyListener(keyListener);
+		asaNormal.addKeyListener(keyListener);
+
+		maisAsa.addMouseWheelListener(mw);
+		menosAsa.addMouseWheelListener(mw);
+		asaNormal.addMouseWheelListener(mw);
+
+		pneuMole.addKeyListener(keyListener);
+		pneuDuro.addKeyListener(keyListener);
+		asaNormal.addKeyListener(keyListener);
+
+		maisAsa.addKeyListener(keyListener);
+		menosAsa.addKeyListener(keyListener);
+		asaNormal.addKeyListener(keyListener);
+
 		autoPos.addKeyListener(keyListener);
 		alternaPiloto.addKeyListener(keyListener);
 		alternaPiloto.addMouseWheelListener(mw);
@@ -295,14 +311,12 @@ public class GerenciadorVisual {
 		panelControleBox.addMouseWheelListener(mw);
 		box.addMouseWheelListener(mw);
 		progBox.addMouseWheelListener(mw);
-		comboBoxTipoPneu.addMouseWheelListener(mw);
 		combustivelBar.addMouseWheelListener(mw);
 		giro.addMouseWheelListener(mw);
 		infoText.addMouseWheelListener(mw);
 		sliderPercentCombust.addMouseWheelListener(mw);
 		scrollPaneTextual.addMouseWheelListener(mw);
 		infoTextual.addMouseWheelListener(mw);
-		comboBoxAsa.addMouseWheelListener(mw);
 	}
 
 	public void finalize() throws Throwable {
@@ -325,8 +339,7 @@ public class GerenciadorVisual {
 		imgClima = new JLabel();
 	}
 
-	private void addiconarListenerComandos(final JComboBox comboBoxTipoPneu,
-			final JSlider sliderPercentCombust) {
+	private void addiconarListenerComandos() {
 		agressivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mudarModoAgressivo();
@@ -637,9 +650,26 @@ public class GerenciadorVisual {
 		if (value.intValue() > 100) {
 			value = new Integer(100);
 		}
-		controleJogo.setBoxJogadorHumano(Lang.key(comboBoxTipoPneu
-				.getSelectedItem().toString()), value, Lang.key(comboBoxAsa
-				.getSelectedItem().toString()));
+		String tpPneu = Carro.TIPO_PNEU_MOLE;
+
+		if (pneuDuro.isSelected()) {
+			tpPneu = Carro.TIPO_PNEU_DURO;
+		}
+
+		if (pneuChuva.isSelected()) {
+			tpPneu = Carro.TIPO_PNEU_CHUVA;
+		}
+
+		String tpAsa = Carro.ASA_NORMAL;
+		if (maisAsa.isSelected()) {
+			tpAsa = Carro.MAIS_ASA;
+		}
+
+		if (menosAsa.isSelected()) {
+			tpAsa = Carro.MENOS_ASA;
+		}
+
+		controleJogo.setBoxJogadorHumano(tpPneu, value, tpAsa);
 		modoBox();
 
 	}
@@ -667,21 +697,17 @@ public class GerenciadorVisual {
 	}
 
 	public void destravaBox() {
-		if (!comboBoxTipoPneu.isEnabled()) {
+		if (!sliderPercentCombust.isEnabled()) {
 			box.requestFocus();
 		}
-		comboBoxTipoPneu.setEnabled(true);
-		comboBoxAsa.setEnabled(true);
 		sliderPercentCombust.setEnabled(true);
 
 	}
 
 	public void travaBox() {
-		if (comboBoxTipoPneu.isEnabled()) {
+		if (sliderPercentCombust.isEnabled()) {
 			box.requestFocus();
 		}
-		comboBoxTipoPneu.setEnabled(false);
-		comboBoxAsa.setEnabled(false);
 		sliderPercentCombust.setEnabled(false);
 	}
 
@@ -983,15 +1009,12 @@ public class GerenciadorVisual {
 		scrollPaneTextual = new JScrollPane(infoTextual) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(scrollPaneTextual.getWidth(), 110);
+				return new Dimension(scrollPaneTextual.getWidth(), 165);
 			}
 		};
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
-
 		panel.add(scrollPaneTextual, BorderLayout.CENTER);
-		// scrollPaneTextual.setBounds(0, 0, larguraFrame
-		// - painelPosicoes.getLarguraPainel() - 30, 200);
 		painelInfText.add(panel, BorderLayout.CENTER);
 		infoText.setLayout(new GridLayout(1, 1));
 		infoCorrida = new JLabel(Lang.msg("213"));
@@ -1069,13 +1092,13 @@ public class GerenciadorVisual {
 		controleJogo.getMainFrame().getContentPane().setLayout(
 				new BorderLayout());
 
-		JPanel southPanel = new JPanel(new BorderLayout());
+		JPanel southPanel = new JPanel(new GridLayout(1, 2));
 		JPanel controles = new JPanel(new GridLayout(1, 2));
 		controles.add(panelControleBox);
 		controles.add(panelControlePos);
 
-		southPanel.add(controles, BorderLayout.EAST);
-		southPanel.add(painelInfText, BorderLayout.CENTER);
+		southPanel.add(painelInfText);
+		southPanel.add(controles);
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(southPanel, BorderLayout.SOUTH);
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
@@ -1130,20 +1153,81 @@ public class GerenciadorVisual {
 		giro.addItem(new LangVO(Carro.GIRO_MAX));
 		giro.addItem(new LangVO(Carro.GIRO_MIN));
 
-		comboBoxTipoPneu = new JComboBox();
-		comboBoxTipoPneu.addItem(new LangVO(Carro.TIPO_PNEU_MOLE));
-		comboBoxTipoPneu.addItem(new LangVO(Carro.TIPO_PNEU_DURO));
-		comboBoxTipoPneu.addItem(new LangVO(Carro.TIPO_PNEU_CHUVA));
+		pneuMole = new JRadioButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("pneuMole");
+			}
+		};
+
+		pneuDuro = new JRadioButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("pneuDuro");
+			}
+		};
+
+		pneuChuva = new JRadioButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("pneuChuva");
+			}
+		};
+		ButtonGroup groupPneu = new ButtonGroup();
+		groupPneu.add(pneuMole);
+		groupPneu.add(pneuDuro);
+		groupPneu.add(pneuChuva);
+		JPanel panelPneu = new JPanel(new GridLayout(1, 3));
+		panelPneu.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("009");
+			}
+		});
+		panelPneu.add(pneuMole);
+		panelPneu.add(pneuDuro);
+		panelPneu.add(pneuChuva);
 
 		sliderPercentCombust = new JSlider(0, 100);
 		sliderPercentCombust.setPaintTicks(true);
 		sliderPercentCombust.setMajorTickSpacing(10);
 		sliderPercentCombust.setValue(new Integer(50));
 
-		comboBoxAsa = new JComboBox();
-		comboBoxAsa.addItem(new LangVO(Carro.ASA_NORMAL));
-		comboBoxAsa.addItem(new LangVO(Carro.MAIS_ASA));
-		comboBoxAsa.addItem(new LangVO(Carro.MENOS_ASA));
+		maisAsa = new JRadioButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("MAIS");
+			}
+		};
+
+		asaNormal = new JRadioButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("asaNormal");
+			}
+		};
+
+		menosAsa = new JRadioButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("MENOS");
+			}
+		};
+		ButtonGroup groupAsa = new ButtonGroup();
+		groupAsa.add(maisAsa);
+		groupAsa.add(asaNormal);
+		groupAsa.add(menosAsa);
+		JPanel panelAsa = new JPanel(new GridLayout(1, 3));
+		panelAsa.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("tpAsaBox");
+			}
+		});
+
+		panelAsa.add(maisAsa);
+		panelAsa.add(asaNormal);
+		panelAsa.add(menosAsa);
 
 		panelControleBox = new JPanel();
 		panelControleBox.setBorder(new TitledBorder("") {
@@ -1151,22 +1235,24 @@ public class GerenciadorVisual {
 				return Lang.msg("136");
 			}
 		});
-		GridLayout gridLayout = new GridLayout(5, 1) {
+		GridLayout gridLayout = new GridLayout(3, 1) {
 			public Dimension preferredLayoutSize(Container parent) {
 				return new Dimension(150, 140);
 			}
 		};
 
 		panelControleBox.setLayout(gridLayout);
-		panelControleBox.add(box);
-		panelControleBox.add(comboBoxTipoPneu);
-		panelControleBox.add(comboBoxAsa);
-		panelControleBox.add(new JLabel() {
-			public String getText() {
+		panelControleBox.add(panelPneu);
+		panelControleBox.add(panelAsa);
+		JPanel panelSlider = new JPanel(new GridLayout(1, 1));
+		panelSlider.setBorder(new TitledBorder("") {
+			public String getTitle() {
 				return Lang.msg("083");
-			};
+			}
 		});
-		panelControleBox.add(sliderPercentCombust);
+		panelSlider.add(sliderPercentCombust);
+
+		panelControleBox.add(panelSlider);
 
 		panelControlePos = new JPanel(new GridLayout(4, 1));
 		panelControlePos.setBorder(new TitledBorder("") {
@@ -1263,9 +1349,12 @@ public class GerenciadorVisual {
 		panelControlePos.add(motorPanel);
 		panelControlePos.add(pilotoPanel);
 		panelControlePos.add(optsPanel);
-		panelControlePos.add(autoPos);
+		JPanel ultPanel = new JPanel(new GridLayout(1, 2));
+		ultPanel.add(autoPos);
+		ultPanel.add(box);
+		panelControlePos.add(ultPanel);
 
-		addiconarListenerComandos(comboBoxTipoPneu, sliderPercentCombust);
+		addiconarListenerComandos();
 	}
 
 	private void gerarPainelPosicoes() throws IOException {
@@ -1429,24 +1518,10 @@ public class GerenciadorVisual {
 		sliderTempoCiclo.setLabelTable(labelTable);
 		sliderTempoCiclo.setPaintLabels(true);
 		painelInicio.add(sliderTempoCiclo);
-
-		// painelInicio.add(new JLabel() {
-		// public String getText() {
-		// return Lang.msg("112");
-		// }
-		// });
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
-		// painelInicio.add(spinnerSkillPadraoPilotos);
-
-		// painelInicio.add(new JLabel() {
-		// public String getText() {
-		// return Lang.msg("113");
-		// }
-		// });
 		spinnerPotenciaPadraoCarros = new JSpinner();
 		spinnerPotenciaPadraoCarros.setValue(new Integer(0));
-		// painelInicio.add(spinnerPotenciaPadraoCarros);
 
 	}
 
@@ -2295,14 +2370,6 @@ public class GerenciadorVisual {
 		this.tempoSleep = tempoSleep;
 	}
 
-	public JComboBox getComboBoxAsa() {
-		return comboBoxAsa;
-	}
-
-	public void setComboBoxAsa(JComboBox comboBoxAsa) {
-		this.comboBoxAsa = comboBoxAsa;
-	}
-
 	public JLabel getInfoCorrida() {
 		return infoCorrida;
 	}
@@ -2317,24 +2384,6 @@ public class GerenciadorVisual {
 
 	public void sincronizarMenuInicioMenuBox(Object tipoPeneuJogador,
 			Object combustJogador, Object asaJogador) {
-		if (comboBoxTipoPneu != null) {
-			LangVO langVO = null;
-			if (tipoPeneuJogador instanceof LangVO) {
-				langVO = (LangVO) tipoPeneuJogador;
-			} else {
-				langVO = new LangVO(tipoPeneuJogador.toString());
-			}
-			comboBoxTipoPneu.setSelectedItem(langVO);
-		}
-		if (asaJogador != null) {
-			LangVO langVO = null;
-			if (asaJogador instanceof LangVO) {
-				langVO = (LangVO) asaJogador;
-			} else {
-				langVO = new LangVO(asaJogador.toString());
-			}
-			comboBoxAsa.setSelectedItem(langVO);
-		}
 		if (sliderPercentCombust != null && (combustJogador instanceof Integer)) {
 			sliderPercentCombust.setValue((Integer) combustJogador);
 		}
