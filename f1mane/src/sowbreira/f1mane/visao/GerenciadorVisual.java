@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -53,6 +54,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
@@ -2446,14 +2448,20 @@ public class GerenciadorVisual {
 	}
 
 	public static void main(String[] args) {
-		int parseInt = Integer.parseInt("123");
-		System.out.println(parseInt);
 		JFrame jFrame = new JFrame();
-		JSlider spinner = new JSlider(0, 100);
-		spinner.setPaintTrack(true);
-		spinner.setPaintLabels(true);
-		spinner.setPaintTicks(true);
-		jFrame.getContentPane().add(spinner);
+		JRadioButton mole = new JRadioButton("Mole");
+		JRadioButton nomrmal = new JRadioButton("Norm");
+		JRadioButton duro = new JRadioButton("Duro");
+		ButtonGroup group = new ButtonGroup();
+		group.add(mole);
+		group.add(nomrmal);
+		group.add(duro);
+		JPanel jPanel = new JPanel();
+		jPanel.setBorder(new TitledBorder("Pneus"));
+		jPanel.add(mole);
+		jPanel.add(nomrmal);
+		jPanel.add(duro);
+		jFrame.getContentPane().add(jPanel);
 		jFrame.pack();
 		jFrame.setVisible(true);
 	}
