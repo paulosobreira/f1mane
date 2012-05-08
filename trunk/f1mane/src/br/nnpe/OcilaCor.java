@@ -35,13 +35,13 @@ public class OcilaCor {
 	private Color ocila() {
 		if (sobe) {
 			if (alpha < max) {
-				alpha+=10;
+				alpha+=20;
 			} else {
 				sobe = false;
 			}
 		} else {
 			if (alpha > min) {
-				alpha-=10;
+				alpha-=20;
 			} else {
 				sobe = true;
 			}

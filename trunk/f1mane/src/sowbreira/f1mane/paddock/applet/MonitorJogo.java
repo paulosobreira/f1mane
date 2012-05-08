@@ -393,6 +393,7 @@ public class MonitorJogo implements Runnable {
 	private int sleepConsumidorPosis = 20;
 	private boolean lagLongo = false;
 	private long ultPoisis;
+	private Thread threadCmd;
 
 	public void atualizarListaPilotos(Object[] posisArray) {
 		if (jogoCliente.getMainFrame().isAtualizacaoSuave()) {
@@ -813,11 +814,14 @@ public class MonitorJogo implements Runnable {
 							piloto.getCarro().setRecolhido(true);
 						}
 						piloto.setBox(dadosParciais.pselBox);
-						if (dadosParciais.pselBox) {
-							jogoCliente.travaBox();
-						} else {
-							jogoCliente.destravaBox();
-						}
+//						if (piloto.getNoAtual() != null
+//								&& !piloto.getNoAtual().isBox()) {
+//							if (dadosParciais.pselBox) {
+//								jogoCliente.travaBox();
+//							} else {
+//								jogoCliente.destravaBox();
+//							}
+//						}
 						piloto.setStress(dadosParciais.pselStress);
 						piloto.getCarro().setCargaKers(dadosParciais.cargaKers);
 						piloto.getCarro().setTemperaturaMotor(
@@ -889,6 +893,9 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarGiroMotor(final Object selectedItem) {
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
 		Runnable runnable = new Runnable() {
 
 			@Override
@@ -913,12 +920,15 @@ public class MonitorJogo implements Runnable {
 				}
 			}
 		};
-		Thread thread = new Thread(runnable);
-		thread.start();
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
 
 	}
 
 	public void mudarModoBox(boolean modoBox) {
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
 		Runnable runnable = new Runnable() {
 
 			@Override
@@ -943,8 +953,8 @@ public class MonitorJogo implements Runnable {
 
 			}
 		};
-		Thread thread = new Thread(runnable);
-		thread.start();
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
 
 	}
 
@@ -963,6 +973,9 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarModoPilotagem(final String modo) {
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
 		Runnable runnable = new Runnable() {
 
 			@Override
@@ -982,13 +995,15 @@ public class MonitorJogo implements Runnable {
 
 			}
 		};
-		Thread thread = new Thread(runnable);
-		thread.start();
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
 
 	}
 
 	public void mudarAutoPos() {
-
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
 		Runnable runnable = new Runnable() {
 
 			@Override
@@ -1007,12 +1022,15 @@ public class MonitorJogo implements Runnable {
 
 			}
 		};
-		Thread thread = new Thread(runnable);
-		thread.start();
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
 
 	}
 
 	public void mudarPos(final int tracado) {
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
 		Runnable runnable = new Runnable() {
 
 			@Override
@@ -1032,18 +1050,21 @@ public class MonitorJogo implements Runnable {
 			}
 
 		};
-		Thread thread = new Thread(runnable);
-		thread.start();
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
 
 	}
 
 	private void deleyAtualizacaoNaoSuave() throws InterruptedException {
 		if (!jogoCliente.getMainFrame().isAtualizacaoSuave()) {
-			Thread.sleep(Util.intervalo(40, 100));
+			Thread.sleep(Util.intervalo(50, 120));
 		}
 	}
 
 	public void mudarModoDRS(final boolean modo) {
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
 		Runnable runnable = new Runnable() {
 
 			@Override
@@ -1062,12 +1083,15 @@ public class MonitorJogo implements Runnable {
 				}
 			}
 		};
-		Thread thread = new Thread(runnable);
-		thread.start();
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
 
 	}
 
 	public void mudarModoKers(final boolean modo) {
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
 		Runnable runnable = new Runnable() {
 
 			@Override
@@ -1086,8 +1110,8 @@ public class MonitorJogo implements Runnable {
 				}
 			}
 		};
-		Thread thread = new Thread(runnable);
-		thread.start();
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
 
 	}
 
