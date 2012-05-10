@@ -776,11 +776,11 @@ public class Carro implements Serializable {
 			novoModificador -= 1;
 		}
 		int desgPneus = 0;
-		int novoModDano = Util
+		int novoModDesgaste = Util
 				.inte((novoModificador > 5 ? 5 : novoModificador));
 		if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
 			if (agressivo)
-				desgPneus += (novoModDano);
+				desgPneus += (novoModDesgaste);
 		}
 		if (agressivo && no.verificaCruvaBaixa()) {
 			int perda = 0;
@@ -811,12 +811,12 @@ public class Carro implements Serializable {
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 4 : 2 + perda);
 				}
-				desgPneus += (teste ? 8 : 24) + novoModDano;
+				desgPneus += (teste ? 6 : 24) + novoModDesgaste;
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
 					: 4)
-					+ novoModDano;
+					+ novoModDesgaste;
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 70
@@ -826,7 +826,7 @@ public class Carro implements Serializable {
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 6 : 3);
 				}
-				desgPneus += (teste ? 4 : 12) + novoModDano;
+				desgPneus += (teste ? 2 : 12) + novoModDesgaste;
 			}
 		} else if (agressivo && no.verificaRetaOuLargada()) {
 			int indexFrete = no.getIndex() + 50;
@@ -837,7 +837,7 @@ public class Carro implements Serializable {
 						&& noFrente.verificaCruvaBaixa()) {
 					boolean teste = piloto
 							.testeHabilidadePilotoCarro(controleJogo);
-					desgPneus += (teste ? 3 : 7) + novoModDano;
+					desgPneus += (teste ? 3 : 7) + novoModDesgaste;
 					controleJogo.travouRodas(getPiloto());
 					piloto.incStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 5 : 10);
