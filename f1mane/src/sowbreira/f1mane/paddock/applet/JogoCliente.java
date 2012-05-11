@@ -1008,4 +1008,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			gerenciadorVisual.travaBox();
 	}
 
+	@Override
+	public void mostraCompsSwing() {
+		if (gerenciadorVisual != null) {
+			gerenciadorVisual.getSwingComps().setVisible(true);
+		}
+	}
+
 }

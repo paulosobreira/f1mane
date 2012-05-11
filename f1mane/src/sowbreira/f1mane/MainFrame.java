@@ -74,6 +74,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
 	private boolean appletStand;
+	private JMenuItem compsSwing;
 	public static BufferedImage bg;
 
 	public InterfaceJogo getControleJogo() {
@@ -535,6 +536,20 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu1.add(som);
+		compsSwing = new JMenuItem("compsSwing") {
+			public String getText() {
+				return Lang.msg("CompsSwing");
+			}
+
+		};
+		compsSwing.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controleJogo.mostraCompsSwing();
+			}
+		});
+		menu1.add(compsSwing);
+
 	}
 
 	protected void selecionarTemporada() {
@@ -904,7 +919,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public static void main(String[] args) throws IOException {
-//		Logger.ativo = true;
+		// Logger.ativo = true;
 		MainFrame frame = new MainFrame(null, false);
 		if (args != null && args.length > 0) {
 			Lang.mudarIdioma(args[0]);

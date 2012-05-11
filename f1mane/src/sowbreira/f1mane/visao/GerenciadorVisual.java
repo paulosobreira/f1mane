@@ -171,6 +171,7 @@ public class GerenciadorVisual {
 	private JRadioButton maisAsa;
 	private JRadioButton asaNormal;
 	private JRadioButton menosAsa;
+	private JFrame swingComps;
 
 	public int getVdp() {
 		return vdp;
@@ -191,6 +192,11 @@ public class GerenciadorVisual {
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
 		progamacaoBox = new ProgamacaoBox();
+		swingComps = new JFrame();
+	}
+
+	public JFrame getSwingComps() {
+		return swingComps;
 	}
 
 	public void iniciarInterfaceGraficaJogo() throws IOException {
@@ -207,7 +213,11 @@ public class GerenciadorVisual {
 		gerarPainelComandos();
 		gerarPainelInfoText();
 		gerarPainetInfoGraf();
-		gerarLayout();
+		if (InterfaceJogo.NOVO_LAYOUT) {
+			gerarLayout();
+		} else {
+			gerarLayoutSwing();
+		}
 
 		JFrame frame = controleJogo.getMainFrame();
 
@@ -319,6 +329,29 @@ public class GerenciadorVisual {
 		infoTextual.addMouseWheelListener(mw);
 	}
 
+	private void gerarLayout() {
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.add(scrollPane, BorderLayout.CENTER);
+		controleJogo.getMainFrame().getContentPane().removeAll();
+		controleJogo.getMainFrame().getContentPane()
+				.setLayout(new BorderLayout());
+		controleJogo.getMainFrame().getContentPane()
+				.add(centerPanel, BorderLayout.CENTER);
+		centerPanel.revalidate();
+
+		swingComps.getContentPane().setLayout(new BorderLayout());
+
+		JPanel north = new JPanel(new GridLayout(1, 3));
+		north.add(panelControleBox);
+		north.add(panelControlePos);
+		north.add(painelInfGraf);
+		JPanel center = new JPanel(new GridLayout(2, 1));
+		center.add(north);
+		center.add(painelInfText);
+		swingComps.getContentPane().add(center, BorderLayout.CENTER);
+		swingComps.getContentPane().add(painelPosicoes, BorderLayout.EAST);
+	}
+
 	public void finalize() throws Throwable {
 		tempoSleep = 0;
 		if (clima != null) {
@@ -329,7 +362,6 @@ public class GerenciadorVisual {
 		}
 		if (painelCircuito != null) {
 			painelCircuito.setBackGround(null);
-			painelCircuito.setTileMap(null);
 		}
 		ControleSom.paraTudo();
 		super.finalize();
@@ -1100,7 +1132,7 @@ public class GerenciadorVisual {
 		painelInfGraf.add(panelCol4);
 	}
 
-	private void gerarLayout() {
+	private void gerarLayoutSwing() {
 		controleJogo.getMainFrame().getContentPane().removeAll();
 		controleJogo.getMainFrame().getContentPane()
 				.setLayout(new BorderLayout());
