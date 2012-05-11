@@ -1189,4 +1189,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 	}
 
+	@Override
+	public void mostraCompsSwing() {
+		if (gerenciadorVisual != null) {
+			gerenciadorVisual.getSwingComps().setVisible(true);
+			gerenciadorVisual.getSwingComps().setTitle(Lang.msg("f1maneSwing"));
+			gerenciadorVisual.getSwingComps().pack();
+		}
+	}
+
 }

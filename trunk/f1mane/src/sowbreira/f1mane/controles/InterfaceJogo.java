@@ -27,6 +27,7 @@ public interface InterfaceJogo {
 	public static int DUR_AREO_NORMAL = 3;
 	public static int DUR_AREO_FACIL = 5;
 	public static int DUR_AREO_DIFICIL = 2;
+	public static boolean NOVO_LAYOUT = true;
 
 	public boolean isSemTrocaPneu();
 
@@ -285,5 +286,7 @@ public interface InterfaceJogo {
 	public boolean isBoxRapido();
 
 	public void destravaBox();
+
+	public void mostraCompsSwing();
 
 }
