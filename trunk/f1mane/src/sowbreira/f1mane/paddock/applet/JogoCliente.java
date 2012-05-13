@@ -296,7 +296,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return 0;
 	}
 
-	public List getPilotos() {
+	public List<Piloto> getPilotos() {
 		return pilotos;
 	}
 

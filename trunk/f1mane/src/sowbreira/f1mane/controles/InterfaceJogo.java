@@ -67,7 +67,7 @@ public interface InterfaceJogo {
 
 	public List getCarros();
 
-	public List getPilotos();
+	public List<Piloto> getPilotos();
 
 	public void matarTodasThreads();
 
