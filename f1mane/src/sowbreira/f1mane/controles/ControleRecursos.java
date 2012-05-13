@@ -33,7 +33,7 @@ import br.nnpe.Util;
  */
 public abstract class ControleRecursos {
 	protected Circuito circuito;
-	protected List pilotos = new ArrayList();
+	protected List<Piloto> pilotos = new ArrayList<Piloto>();
 	protected List nosDaPista = new ArrayList();
 	protected List nosDoBox = new ArrayList();
 	protected List carros;

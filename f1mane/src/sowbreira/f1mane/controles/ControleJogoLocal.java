@@ -193,7 +193,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getPilotos()
 	 */
-	public List getPilotos() {
+	public List<Piloto> getPilotos() {
 		return pilotos;
 	}
 

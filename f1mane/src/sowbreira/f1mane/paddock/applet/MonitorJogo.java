@@ -175,7 +175,7 @@ public class MonitorJogo implements Runnable {
 					monitorQualificacao = null;
 				}
 				if (!setouZoom) {
-					jogoCliente.setZoom(0.5);
+					jogoCliente.setZoom(0.7);
 
 					setouZoom = true;
 				}
