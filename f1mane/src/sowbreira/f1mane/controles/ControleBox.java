@@ -354,6 +354,10 @@ public class ControleBox {
 		carro.setMotor(carro.getMotor()
 				+ (Util.inte(carro.getDurabilidadeMaxMotor()
 						* Util.intervalo(1, 15) / 100.0)));
+		if (carro.getMotor() > carro.getDurabilidadeMaxMotor()) {
+			carro.setMotor(carro.getDurabilidadeMaxMotor());
+		}
+
 		carro.setPotencia(carro.getPotencia() + Util.intervalo(-5, +5));
 		if (carro.getDurabilidadeAereofolio() <= 0) {
 			penalidade = Util.inte(penalidade

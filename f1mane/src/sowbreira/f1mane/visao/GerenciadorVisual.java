@@ -204,7 +204,11 @@ public class GerenciadorVisual {
 		painelCircuito = new PainelCircuito(controleJogo, this);
 		scrollPane = new JScrollPane(painelCircuito,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
+			public boolean isFocusable() {
+				return false;
+			};
+		};
 
 		larguraFrame = 1024;
 		alturaFrame = 768;
@@ -270,7 +274,6 @@ public class GerenciadorVisual {
 		giro.addKeyListener(keyListener);
 		infoText.addKeyListener(keyListener);
 		sliderPercentCombust.addKeyListener(keyListener);
-		scrollPaneTextual.addKeyListener(keyListener);
 		infoTextual.addKeyListener(keyListener);
 		driverThru.addKeyListener(keyListener);
 		f1.addKeyListener(keyListener);
@@ -325,7 +328,6 @@ public class GerenciadorVisual {
 		giro.addMouseWheelListener(mw);
 		infoText.addMouseWheelListener(mw);
 		sliderPercentCombust.addMouseWheelListener(mw);
-		scrollPaneTextual.addMouseWheelListener(mw);
 		infoTextual.addMouseWheelListener(mw);
 	}
 
@@ -573,7 +575,11 @@ public class GerenciadorVisual {
 					progamacaoBox();
 				}
 				if (keyCoode == KeyEvent.VK_F12) {
-					mudarModoBox();
+					if (painelCircuito != null) {
+						painelCircuito.mudarModoBox();
+					} else {
+						mudarModoBox();
+					}
 				}
 				if (keyCoode == KeyEvent.VK_F5) {
 					modoPiloto.setSelectedItem(new LangVO(Piloto.LENTO));
@@ -1032,7 +1038,7 @@ public class GerenciadorVisual {
 
 	public void apagarLuz() {
 		painelCircuito.apagarLuz();
-		painelCircuito.mouseZoom = 0.7;
+		painelCircuito.mouseZoom = 0.8;
 		atualizaPainel();
 	}
 
