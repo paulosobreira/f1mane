@@ -70,7 +70,6 @@ public class PainelCircuito extends JPanel {
 	public final static Color luzApagada = new Color(255, 255, 255, 170);
 	public final static Color luzAcesa = new Color(255, 0, 0, 255);
 	public final static Color farol = new Color(0, 0, 0);
-	public final static Color transpSel = new Color(255, 255, 60, 180);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public final static Color lightRed = new Color(250, 0, 0, 100);
 	public final static Color gre = new Color(0, 255, 0, 150);
@@ -78,7 +77,8 @@ public class PainelCircuito extends JPanel {
 	public final static Color yelListaJogadores = new Color(255, 255, 0, 180);
 	public final static Color transpMenus = new Color(255, 255, 255, 150);
 	public final static Color jogador = new Color(70, 140, 255, 180);
-	public final static Color outro = new Color(50, 255, 50, 180);
+	public final static Color outro = new Color(255, 255, 60, 180);
+	public final static Color transpSel = new Color(70, 140, 255, 180);
 
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
