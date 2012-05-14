@@ -19,8 +19,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,20 +32,18 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import com.sun.org.apache.regexp.internal.recompile;
-
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.paddock.applet.JogoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -74,6 +70,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color luzApagada = new Color(255, 255, 255, 170);
 	public final static Color luzAcesa = new Color(255, 0, 0, 255);
 	public final static Color farol = new Color(0, 0, 0);
+	public final static Color transpSel = new Color(255, 255, 60, 180);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public final static Color lightRed = new Color(250, 0, 0, 100);
 	public final static Color gre = new Color(0, 255, 0, 150);
@@ -81,6 +78,8 @@ public class PainelCircuito extends JPanel {
 	public final static Color yelListaJogadores = new Color(255, 255, 0, 180);
 	public final static Color transpMenus = new Color(255, 255, 255, 150);
 	public final static Color jogador = new Color(70, 140, 255, 180);
+	public final static Color outro = new Color(50, 255, 50, 180);
+
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
 	public final static Color lightWhiteRain = new Color(255, 255, 255, 160);
@@ -208,13 +207,30 @@ public class PainelCircuito extends JPanel {
 			1, 1, 10, 10);
 	private RoundRectangle2D menosCombust = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
-
 	private RoundRectangle2D maisCombust = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
+	private RoundRectangle2D menosAsa = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
 
-	private List<Piloto> pilotos;
+	private RoundRectangle2D maisAsa = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
+	private RoundRectangle2D normalAsa = new RoundRectangle2D.Double(0, 0, 1,
+			1, 10, 10);
+
+	private RoundRectangle2D pneuMole = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
+
+	private RoundRectangle2D pneuDuro = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
+	private RoundRectangle2D pneuChuva = new RoundRectangle2D.Double(0, 0, 1,
+			1, 10, 10);
+
+	private RoundRectangle2D vaiBox = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
 
 	private int porcentCombust = 50;
+	private String tpPneu;
+	private String tpAsa;
 
 	public No getPosisRec() {
 		return posisRec;
@@ -244,8 +260,8 @@ public class PainelCircuito extends JPanel {
 			GerenciadorVisual gerenciadorVisual) {
 		controleJogo = jogo;
 		this.gerenciadorVisual = gerenciadorVisual;
-		pilotos = controleJogo.getPilotos();
-		pilotosRect = new RoundRectangle2D.Double[pilotos.size()];
+		pilotosRect = new RoundRectangle2D.Double[controleJogo.getPilotos()
+				.size()];
 
 		for (int i = 0; i < pilotosRect.length; i++) {
 			pilotosRect[i] = new RoundRectangle2D.Double(0, 0, 1, 1, 10, 10);
@@ -355,24 +371,92 @@ public class PainelCircuito extends JPanel {
 			return true;
 		}
 		if (menosCombust.contains(e.getPoint()) && porcentCombust > 0) {
+			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
+				controleJogo.mudarModoBox();
+			}
 			porcentCombust -= 10;
 			return true;
 		}
 
 		if (maisCombust.contains(e.getPoint()) && porcentCombust < 100) {
+			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
+				controleJogo.mudarModoBox();
+			}
 			porcentCombust += 10;
 			return true;
 		}
 
+		if (maisAsa.contains(e.getPoint())) {
+			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
+				controleJogo.mudarModoBox();
+			}
+			tpAsa = Carro.MAIS_ASA;
+			return true;
+		}
+		if (normalAsa.contains(e.getPoint())) {
+			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
+				controleJogo.mudarModoBox();
+			}
+			tpAsa = Carro.ASA_NORMAL;
+			return true;
+		}
+		if (menosAsa.contains(e.getPoint())) {
+			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
+				controleJogo.mudarModoBox();
+			}
+			tpAsa = Carro.MENOS_ASA;
+			return true;
+		}
+
+		if (pneuMole.contains(e.getPoint())) {
+			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
+				controleJogo.mudarModoBox();
+			}
+			tpPneu = Carro.TIPO_PNEU_MOLE;
+			return true;
+		}
+		if (pneuDuro.contains(e.getPoint())) {
+			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
+				controleJogo.mudarModoBox();
+			}
+			tpPneu = Carro.TIPO_PNEU_DURO;
+			return true;
+		}
+		if (pneuChuva.contains(e.getPoint())) {
+			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
+				controleJogo.mudarModoBox();
+			}
+			tpPneu = Carro.TIPO_PNEU_CHUVA;
+			return true;
+		}
+		if (vaiBox.contains(e.getPoint())) {
+			mudarModoBox();
+		}
+
 		for (int i = 0; i < pilotosRect.length; i++) {
 			if (pilotosRect[i].contains(e.getPoint())) {
-				pilotoSelecionado = pilotos.get(i);
+				pilotoSelecionado = controleJogo.getPilotos().get(i);
 				controleJogo.selecionouPiloto(pilotoSelecionado);
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	public void mudarModoBox() {
+		if (Util.isNullOrEmpty(tpAsa)) {
+			tpAsa = Carro.ASA_NORMAL;
+		}
+		if (Util.isNullOrEmpty(tpPneu)) {
+			tpPneu = Carro.TIPO_PNEU_DURO;
+		}
+		if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
+			controleJogo.mudarModoBox();
+		} else {
+			controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
+			controleJogo.mudarModoBox();
+		}
 	}
 
 	public void carregaBackGround() {
@@ -434,26 +518,25 @@ public class PainelCircuito extends JPanel {
 				Graphics2D g2d = (Graphics2D) g;
 				setarHints(g2d);
 				limitesViewPort = (Rectangle) limitesViewPort();
-				if (pilotoSelecionado == null) {
-					gerenciadorVisual
-							.obterPilotoSecionadoTabela(pilotoSelecionado);
+				desenhaBackGround(g2d);
+				desenhaContadorVoltas(g2d);
+				if (controleJogo.getNumVoltaAtual() == 0
+						&& !desenhouQualificacao) {
+					desenhaQualificacao(g2d);
+					return;
 				}
 				ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
-				desenhaBackGround(g2d);
+				iniciaPilotoSelecionado();
 				desenhaGrid(g2d);
 				desenhaMarcasPeneuPista(g2d);
 				desenhaPiloto(g2d);
 				desenhaBarrasPilotoCarro(g2d);
-				if (!desenhouQualificacao) {
-					desenhaQualificacao(g2d);
-				}
 				desenharSafetyCar(g2d);
 				desenharFarois(g2d);
 				desenhaChuva(g2d);
 				desenharClima(g2d);
 				desenhaListaPilotos(g2d);
 				desenhaInfoPilotoSelecionado(g2d);
-				desenhaContadorVoltas(g2d);
 				desenhaMiniPista(g2d);
 				desenhaControles(g2d);
 				desenhaControlesBox(g2d);
@@ -473,19 +556,47 @@ public class PainelCircuito extends JPanel {
 
 	}
 
+	private void iniciaPilotoSelecionado() {
+		if (controleJogo instanceof JogoCliente) {
+			Piloto ps = controleJogo.getPilotoSelecionado();
+			if (ps == null) {
+				controleJogo.selecionaPilotoJogador();
+				ps = controleJogo.getPilotoSelecionado();
+				controleJogo.selecionouPiloto(ps);
+			}
+			if (pilotoSelecionado == null) {
+				controleJogo.selecionouPiloto(ps);
+				pilotoSelecionado = ps;
+				controleJogo.getMainFrame().requestFocus();
+
+			}
+			if (!ps.equals(pilotoSelecionado)) {
+				pilotoSelecionado = ps;
+				controleJogo.getMainFrame().requestFocus();
+			}
+		} else if (pilotoSelecionado == null) {
+			gerenciadorVisual.obterPilotoSecionadoTabela(pilotoSelecionado);
+		}
+	}
+
 	private void desenhaControlesBox(Graphics2D g2d) {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 32));
 
 		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 20;
 		int y = limitesViewPort.y + limitesViewPort.height - 25;
-		g2d.setColor(transpMenus);
+		if (pilotoSelecionado.isBox()) {
+			g2d.setColor(OcilaCor.geraOcila("selCombBox", transpSel));
+		} else {
+			g2d.setColor(transpMenus);
+		}
 		String combst = "" + porcentCombust + "%";
 		int tamCombust = Util.calculaLarguraText(combst, g2d);
 		porcetCombust.setFrame(x - 15, y - 12, tamCombust + 5, 32);
-		g2d.fill(porcetCombust);
+		g2d.draw(porcetCombust);
 		g2d.drawString(combst, x - 10, y + 15);
 
+		g2d.setColor(transpMenus);
 		x -= 20;
 
 		String menos = "-";
@@ -499,11 +610,153 @@ public class PainelCircuito extends JPanel {
 
 		String mais = "+";
 		int tamMais = Util.calculaLarguraText(mais, g2d);
-		maisCombust.setFrame(x - 17, y - 7, tamMais + 5, 22);
+		maisCombust.setFrame(x - 17, y - 6, tamMais + 5, 22);
 		g2d.draw(maisCombust);
-		g2d.drawString(mais, x - 14, y + 15);
+		g2d.drawString(mais, x - 13, y + 16);
 
 		g2d.setFont(fontOri);
+
+		desenhaControleAsaBox(g2d);
+		desenhaControlePneuBox(g2d);
+		desenhaComandoIrBox(g2d);
+	}
+
+	private void desenhaComandoIrBox(Graphics2D g2d) {
+		int x = limitesViewPort.x + (limitesViewPort.width / 2) + 100;
+		int y = limitesViewPort.y + 10;
+
+		String txtBox = Lang.msg("078");
+		Color bg = transpMenus;
+		if (pilotoSelecionado.isBox()) {
+			bg = OcilaCor.geraOcila("vaiBoxSim", transpSel);
+			txtBox = Lang.msg("boxConfimado");
+		}
+		g2d.setColor(bg);
+		int tam = Util.calculaLarguraText(txtBox, g2d);
+		vaiBox.setFrame(x, y, tam + 10, 20);
+		g2d.fill(vaiBox);
+		g2d.setColor(Color.black);
+		g2d.drawString(txtBox, x + 5, y + 16);
+	}
+
+	private void desenhaControlePneuBox(Graphics2D g2d) {
+		int x = limitesViewPort.x + (limitesViewPort.width / 2) + 80;
+		int y = limitesViewPort.y + limitesViewPort.height - 25;
+
+		if (pilotoSelecionado != null && qtdeLuzesAcesas <= 0
+				&& Carro.TIPO_PNEU_MOLE.equals(tpPneu)) {
+			if (pilotoSelecionado.isBox()) {
+				g2d.setColor(OcilaCor.geraOcila("selPneuBox", transpSel));
+			} else {
+				g2d.setColor(transpSel);
+			}
+		} else {
+			g2d.setColor(transpMenus);
+		}
+		String strMole = Lang.msg("pneuMole");
+		int tamMole = Util.calculaLarguraText(strMole, g2d);
+		pneuMole.setFrame(x, y, tamMole + 10, 20);
+		g2d.fill(pneuMole);
+		g2d.setColor(Color.black);
+		g2d.drawString(strMole, x + 5, y + 16);
+
+		x += (tamMole + 15);
+
+		if (pilotoSelecionado != null && qtdeLuzesAcesas <= 0
+				&& Carro.TIPO_PNEU_DURO.equals(tpPneu)) {
+			if (pilotoSelecionado.isBox()) {
+				g2d.setColor(OcilaCor.geraOcila("selPneuBox", transpSel));
+			} else {
+				g2d.setColor(transpSel);
+			}
+		} else {
+			g2d.setColor(transpMenus);
+		}
+		String strDuro = Lang.msg("pneuDuro");
+		int tamDuro = Util.calculaLarguraText(strDuro, g2d);
+		pneuDuro.setFrame(x, y, tamDuro + 10, 20);
+		g2d.fill(pneuDuro);
+		g2d.setColor(Color.black);
+		g2d.drawString(strDuro, x + 5, y + 16);
+		x += (tamDuro + 15);
+
+		if (pilotoSelecionado != null && qtdeLuzesAcesas <= 0
+				&& Carro.TIPO_PNEU_CHUVA.equals(tpPneu)) {
+			if (pilotoSelecionado.isBox()) {
+				g2d.setColor(OcilaCor.geraOcila("selPneuBox", transpSel));
+			} else {
+				g2d.setColor(transpSel);
+			}
+		} else {
+			g2d.setColor(transpMenus);
+		}
+		String strChuva = Lang.msg("pneuChuva");
+		int tamChuva = Util.calculaLarguraText(strChuva, g2d);
+		pneuChuva.setFrame(x, y, tamChuva + 10, 20);
+		g2d.fill(pneuChuva);
+		g2d.setColor(Color.black);
+		g2d.drawString(strChuva, x + 5, y + 16);
+
+	}
+
+	private void desenhaControleAsaBox(Graphics2D g2d) {
+		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 110;
+		int y = limitesViewPort.y + limitesViewPort.height - 25;
+
+		if (pilotoSelecionado != null && qtdeLuzesAcesas <= 0
+				&& Carro.MENOS_ASA.equals(tpAsa)) {
+			if (pilotoSelecionado.isBox()) {
+				g2d.setColor(OcilaCor.geraOcila("selAsaBox", transpSel));
+			} else {
+				g2d.setColor(transpSel);
+			}
+		} else {
+			g2d.setColor(transpMenus);
+		}
+		String strMenos = Lang.msg("MENOS");
+		int tamMenos = Util.calculaLarguraText(strMenos, g2d);
+		menosAsa.setFrame(x, y, tamMenos + 10, 20);
+		g2d.fill(menosAsa);
+		g2d.setColor(Color.black);
+		g2d.drawString(strMenos, x + 5, y + 16);
+
+		x -= (tamMenos + 20);
+
+		if (pilotoSelecionado != null && qtdeLuzesAcesas <= 0
+				&& Carro.ASA_NORMAL.equals(tpAsa)) {
+			if (pilotoSelecionado.isBox()) {
+				g2d.setColor(OcilaCor.geraOcila("selAsaBox", transpSel));
+			} else {
+				g2d.setColor(transpSel);
+			}
+		} else {
+			g2d.setColor(transpMenus);
+		}
+		String strNormal = Lang.msg("NORMAL");
+		int tamNormal = Util.calculaLarguraText(strNormal, g2d);
+		normalAsa.setFrame(x, y, tamNormal + 10, 20);
+		g2d.fill(normalAsa);
+		g2d.setColor(Color.black);
+		g2d.drawString(strNormal, x + 5, y + 16);
+
+		x -= (tamNormal);
+
+		if (pilotoSelecionado != null && qtdeLuzesAcesas <= 0
+				&& Carro.MAIS_ASA.equals(tpAsa)) {
+			if (pilotoSelecionado.isBox()) {
+				g2d.setColor(OcilaCor.geraOcila("selAsaBox", transpSel));
+			} else {
+				g2d.setColor(transpSel);
+			}
+		} else {
+			g2d.setColor(transpMenus);
+		}
+		String strMais = Lang.msg("MAIS");
+		int tamMais = Util.calculaLarguraText(strMais, g2d);
+		maisAsa.setFrame(x, y, tamMais + 10, 20);
+		g2d.fill(maisAsa);
+		g2d.setColor(Color.black);
+		g2d.drawString(strMais, x + 5, y + 16);
 
 	}
 
@@ -849,9 +1102,9 @@ public class PainelCircuito extends JPanel {
 			p.x /= doubleMulti;
 			p.y /= doubleMulti;
 			if (piloto.equals(pilotoSelecionado)) {
-				g2d.setColor(PainelTabelaPosicoes.jogador);
+				g2d.setColor(jogador);
 			} else if (piloto.equals(lider)) {
-				g2d.setColor(PainelTabelaPosicoes.otros);
+				g2d.setColor(outro);
 			} else if (controleJogo.verirficaDesafiandoCampeonato(piloto)) {
 				g2d.setColor(lightRed);
 			} else {
@@ -1158,9 +1411,6 @@ public class PainelCircuito extends JPanel {
 						.inte(rectangle.getCenterY())));
 		piloto.setP1(p1);
 		piloto.setP2(p2);
-		if (piloto.verificaColisaoCarroFrente(controleJogo, true)) {
-			piloto.setIndiceTracado(0);
-		}
 		if (piloto.getTracado() == 0) {
 			carx = p.x - w2;
 			cary = p.y - h2;
@@ -2123,16 +2373,16 @@ public class PainelCircuito extends JPanel {
 		if (!desenhaInfo) {
 			return;
 		}
-		int x = limitesViewPort.x + limitesViewPort.width - 150;
+		int x = limitesViewPort.x + limitesViewPort.width - 135;
 		int y = limitesViewPort.y + 5;
 
 		List<Piloto> pilotos = controleJogo.getPilotos();
-		int tamNome = 100;
+		int tamNome = 90;
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = pilotos.get(i);
 			Color bkg = transpMenus;
 			if (piloto.equals(pilotoSelecionado)) {
-				bkg = yelListaJogadores;
+				bkg = transpSel;
 			} else if (controleJogo.getPilotoJogador() != null
 					&& controleJogo.getPilotoJogador().equals(piloto)) {
 				bkg = jogador;
@@ -2141,7 +2391,7 @@ public class PainelCircuito extends JPanel {
 				}
 			} else if (piloto.isJogadorHumano()
 					&& !controleJogo.getPilotoJogador().equals(piloto)) {
-				bkg = PainelTabelaPosicoes.otros;
+				bkg = outro;
 			} else if (piloto.isDesqualificado()) {
 				bkg = PainelTabelaPosicoes.foraCorrida;
 			}
@@ -2189,17 +2439,6 @@ public class PainelCircuito extends JPanel {
 		yBase += 15;
 		g2d.drawString(Lang.msg("068") + pilotoSelecionado.getQtdeParadasBox(),
 				ptoOri, yBase);
-		yBase += 15;
-		if (pilotoSelecionado.isBox()) {
-			g2d.setColor(OcilaCor.geraOcila("vaiBoxSim"));
-			g2d.fillRoundRect(ptoOri - 5, yBase - 12, 90, 16, 10, 10);
-			g2d.setColor(Color.black);
-		}
-		g2d.drawString(
-				Lang.msg("069")
-						+ (pilotoSelecionado.isBox() ? Lang.msg("SIM") : Lang
-								.msg("NAO")), ptoOri, yBase);
-
 		String plider = "";
 		if (pilotoSelecionado.getPosicao() == 1) {
 			plider = Lang.msg("Lider");
@@ -2224,28 +2463,31 @@ public class PainelCircuito extends JPanel {
 		yBase += 15;
 		g2d.setColor(Color.black);
 		g2d.drawString(Lang.msg("074"), ptoOri, yBase);
-
-		ptoOri = limitesViewPort.x + limitesViewPort.width - 255;
-		yBase = limitesViewPort.y + 7;
-		g2d.setColor(transpMenus);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 2, 105, 90, 10, 10);
-		yBase += 10;
-		if (gerenciadorVisual.isProgamaBox()) {
-			g2d.setColor(Color.blue);
-		} else {
-			g2d.setColor(Color.black);
-		}
-		g2d.setColor(Color.black);
+		yBase += 15;
 		if (!pilotoSelecionado.isAutoPos()) {
-			g2d.setColor(OcilaCor.geraOcila("tracadoManual", yel));
+			g2d.setColor(OcilaCor.geraOcila("tracadoManual", transpSel));
 			g2d.fillRoundRect(ptoOri - 5, yBase - 12, 105, 16, 10, 10);
 			g2d.setColor(Color.black);
 			g2d.drawString(Lang.msg("tracadoManual"), ptoOri, yBase);
 		} else {
 			g2d.drawString(Lang.msg("tracadoAutomatico"), ptoOri, yBase);
 		}
+		yBase += 17;
+		String nm = pilotoSelecionado.getNomeJogador();
+		if (!Util.isNullOrEmpty(nm)) {
+			g2d.setColor(jogador);
+			int tam = Util.calculaLarguraText(nm, g2d);
+			g2d.fillRoundRect(ptoOri - 5, yBase - 12, tam + 10, 16, 10, 10);
+			g2d.setColor(Color.black);
+			g2d.drawString(nm, ptoOri, yBase);
+		}
 
-		yBase += 15;
+		ptoOri = limitesViewPort.x + limitesViewPort.width - 255;
+		yBase = limitesViewPort.y + 7;
+
+		g2d.setColor(transpMenus);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 2, 105, 60, 10, 10);
+		yBase += 10;
 		g2d.setColor(Color.black);
 		String msg = "F10 : " + Lang.msg("som")
 				+ (ControleSom.somLigado ? Lang.msg("SIM") : Lang.msg("NAO"));
@@ -2253,10 +2495,6 @@ public class PainelCircuito extends JPanel {
 
 		yBase += 15;
 		g2d.drawString(Lang.msg("265"), ptoOri, yBase);
-		yBase += 15;
-		g2d.setColor(Color.black);
-		g2d.drawString(Lang.msg("078"), ptoOri, yBase);
-
 		yBase += 15;
 		g2d.drawString(
 				Lang.msg("081") + ": " + pilotoSelecionado.getNumeroVolta(),
@@ -2523,6 +2761,10 @@ public class PainelCircuito extends JPanel {
 		if (pilotoSelecionado == null) {
 			return;
 		}
+		if (controleJogo.getNumVoltaAtual() < 1) {
+			return;
+		}
+
 		BufferedImage carroimg = null;
 		int carSelX = limitesViewPort.x;
 		int carSelY = limitesViewPort.y + limitesViewPort.height - 90;
@@ -2993,7 +3235,8 @@ public class PainelCircuito extends JPanel {
 		String txt1 = ps.getNome() + "-" + ps.getCarro().getNome();
 		String agressivo = (ps.isAgressivo() ? Lang.msg("AGRESSIVO") : Lang
 				.msg("NORMAL"));
-		String intel = (ps.isJogadorHumano() ? ps.getNomeJogador() : "IA");
+		String intel = (ps.isJogadorHumano() ? ps.isAutoPos() ? "A " : "M "
+				: "IA ");
 		String txt2 = intel + " " + agressivo;
 
 		Color c2 = ps.getCarro().getCor2();
@@ -3089,6 +3332,9 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		if (!desenhaInfo) {
+			return;
+		}
+		if (controleJogo.getNumVoltaAtual() < 1) {
 			return;
 		}
 		Piloto ps = pilotoSelecionado;
@@ -3201,6 +3447,10 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		if (pilotoSelecionado == null) {
+			return;
+		}
+
+		if (controleJogo.getNumVoltaAtual() < 1) {
 			return;
 		}
 

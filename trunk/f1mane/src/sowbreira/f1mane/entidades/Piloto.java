@@ -1126,7 +1126,6 @@ public class Piloto implements Serializable {
 		try {
 			List pilotos = controleJogo.getPilotos();
 			if (pilotos == null)
-				Logger.logar("List pilotos = controleJogo.getPilotos(); NULL");
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (this.equals(piloto)) {

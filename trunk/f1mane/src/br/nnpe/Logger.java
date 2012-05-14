@@ -69,8 +69,8 @@ public class Logger {
 	}
 
 	public static void logarExept(Throwable e) {
+		e.printStackTrace();
 		if (ativo) {
-			e.printStackTrace();
 			novaSession = true;
 		} else if (e instanceof Exception) {
 			topExecpts((Exception) e);

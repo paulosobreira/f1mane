@@ -565,6 +565,9 @@ public class MainFrame extends JFrame {
 		removerKeyListeners();
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
+				if (appletStand) {
+					return;
+				}
 				int keyCoode = e.getKeyCode();
 				if (editor != null) {
 					if (keyCoode == KeyEvent.VK_DELETE) {
