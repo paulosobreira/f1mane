@@ -34,12 +34,6 @@ public class ControleSom {
 
 	public static void somVelocidade(Piloto ps, InterfaceJogo controleJogo,
 			PainelCircuito painelCircuito) {
-		if (!somLigado) {
-			return;
-		}
-		if (ps == null) {
-			return;
-		}
 		int velocidade = ps.getVelocidade();
 		if (lastCall == 0) {
 			lastCall = System.currentTimeMillis();
@@ -127,8 +121,8 @@ public class ControleSom {
 			AudioInputStream veloMaxFinal = AudioSystem
 					.getAudioInputStream(CarregadorRecursos
 							.recursoComoStream("highMax.wav"));
-			DataLine.Info info = new DataLine.Info(Clip.class, veloMaxFinal
-					.getFormat());
+			DataLine.Info info = new DataLine.Info(Clip.class,
+					veloMaxFinal.getFormat());
 			clipVeloMaxFinal = (Clip) AudioSystem.getLine(info);
 			clipVeloMaxFinal.open(veloMaxFinal);
 			FloatControl gainControl = (FloatControl) clipVeloMaxFinal
@@ -140,8 +134,8 @@ public class ControleSom {
 			AudioInputStream veloMax = AudioSystem
 					.getAudioInputStream(CarregadorRecursos
 							.recursoComoStream("high.wav"));
-			DataLine.Info info = new DataLine.Info(Clip.class, veloMax
-					.getFormat());
+			DataLine.Info info = new DataLine.Info(Clip.class,
+					veloMax.getFormat());
 			clipVeloMax = (Clip) AudioSystem.getLine(info);
 			clipVeloMax.open(veloMax);
 			FloatControl gainControl = (FloatControl) clipVeloMax
@@ -153,8 +147,8 @@ public class ControleSom {
 			AudioInputStream veloMed = AudioSystem
 					.getAudioInputStream(CarregadorRecursos
 							.recursoComoStream("med.wav"));
-			DataLine.Info info = new DataLine.Info(Clip.class, veloMed
-					.getFormat());
+			DataLine.Info info = new DataLine.Info(Clip.class,
+					veloMed.getFormat());
 			clipVeloMed = (Clip) AudioSystem.getLine(info);
 			clipVeloMed.open(veloMed);
 			FloatControl gainControl = (FloatControl) clipVeloMed
@@ -165,8 +159,8 @@ public class ControleSom {
 			AudioInputStream veloBaixa = AudioSystem
 					.getAudioInputStream(CarregadorRecursos
 							.recursoComoStream("largada.wav"));
-			DataLine.Info info = new DataLine.Info(Clip.class, veloBaixa
-					.getFormat());
+			DataLine.Info info = new DataLine.Info(Clip.class,
+					veloBaixa.getFormat());
 			clipLargada = (Clip) AudioSystem.getLine(info);
 			clipLargada.open(veloBaixa);
 			FloatControl gainControl = (FloatControl) clipLargada
@@ -177,8 +171,8 @@ public class ControleSom {
 			AudioInputStream ronco = AudioSystem
 					.getAudioInputStream(CarregadorRecursos
 							.recursoComoStream("ronco.wav"));
-			DataLine.Info info = new DataLine.Info(Clip.class, ronco
-					.getFormat());
+			DataLine.Info info = new DataLine.Info(Clip.class,
+					ronco.getFormat());
 			roncoClip = (Clip) AudioSystem.getLine(info);
 			roncoClip.open(ronco);
 			FloatControl gainControl = (FloatControl) roncoClip
@@ -223,6 +217,12 @@ public class ControleSom {
 	public static void processaSom(Piloto pilotoSelecionado,
 			InterfaceJogo controleJogo, PainelCircuito painelCircuito) {
 		try {
+			if (!somLigado) {
+				return;
+			}
+			if (pilotoSelecionado == null) {
+				return;
+			}
 			iniciaVars();
 			somVelocidade(pilotoSelecionado, controleJogo, painelCircuito);
 		} catch (Exception e) {

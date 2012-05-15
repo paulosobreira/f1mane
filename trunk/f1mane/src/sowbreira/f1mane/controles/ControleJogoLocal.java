@@ -815,12 +815,16 @@ public class ControleJogoLocal extends ControleRecursos implements
 		pilotoJogador.getCarro().setCombustivel(
 				undsComnustAbastecer
 						+ pilotoJogador.getCarro().getCombustivel());
-		String strAsa = (String) asa;
-		if (!strAsa.equals(pilotoJogador.getCarro().getAsa())) {
-			infoPrioritaria(Html.orange(Lang.msg("028",
-					new String[] { pilotoJogador.getNome() })));
+		if (isDrs()) {
+			pilotoJogador.getCarro().setAsa(Carro.MAIS_ASA);
+		} else {
+			String strAsa = (String) asa;
+			if (!strAsa.equals(pilotoJogador.getCarro().getAsa())) {
+				infoPrioritaria(Html.orange(Lang.msg("028",
+						new String[] { pilotoJogador.getNome() })));
+			}
+			pilotoJogador.getCarro().setAsa(strAsa);
 		}
-		pilotoJogador.getCarro().setAsa(strAsa);
 		if (undsComnustAbastecer < 0) {
 			undsComnustAbastecer = 0;
 		}
