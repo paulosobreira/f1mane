@@ -78,7 +78,7 @@ public class PainelCircuito extends JPanel {
 	public final static Color transpMenus = new Color(255, 255, 255, 150);
 	public final static Color jogador = new Color(70, 140, 255, 180);
 	public final static Color outro = new Color(255, 188, 40, 180);
-	public final static Color transpSel = new Color(20, 255, 20, 180);
+	public final static Color transpSel = new Color(165, 165, 165, 165);
 
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
@@ -522,8 +522,8 @@ public class PainelCircuito extends JPanel {
 					return;
 				}
 				ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
-				iniciaPilotoSelecionado();
 				desenhaGrid(g2d);
+				iniciaPilotoSelecionado();
 				desenhaMarcasPeneuPista(g2d);
 				desenhaPiloto(g2d);
 				desenhaBarrasPilotoCarro(g2d);
