@@ -285,8 +285,6 @@ public interface InterfaceJogo {
 
 	public boolean isBoxRapido();
 
-	public void destravaBox();
-
 	public void mostraCompsSwing();
 
 }

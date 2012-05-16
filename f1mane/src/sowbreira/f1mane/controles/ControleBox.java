@@ -428,7 +428,6 @@ public class ControleBox {
 			controleJogo.infoPrioritaria(Html.driveThru(Lang.msg(
 					"cumpriuDriveThru", new String[] { piloto.getNome() })));
 		}
-		controleJogo.destravaBox();
 		piloto.setNoAtual(saidaBox);
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		piloto.setNumeroVolta(piloto.getNumeroVolta() + 1);
