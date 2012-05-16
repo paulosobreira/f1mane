@@ -810,14 +810,6 @@ public class MonitorJogo implements Runnable {
 							piloto.getCarro().setRecolhido(true);
 						}
 						piloto.setBox(dadosParciais.pselBox);
-						if (piloto.getNoAtual() != null
-								&& !piloto.getNoAtual().isBox()) {
-							if (dadosParciais.pselBox) {
-								jogoCliente.travaBox();
-							} else {
-								jogoCliente.destravaBox();
-							}
-						}
 						piloto.setStress(dadosParciais.pselStress);
 						piloto.getCarro().setCargaKers(dadosParciais.cargaKers);
 						piloto.getCarro().setTemperaturaMotor(
