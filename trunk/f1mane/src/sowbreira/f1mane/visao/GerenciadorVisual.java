@@ -84,9 +84,7 @@ import br.nnpe.Util;
 public class GerenciadorVisual {
 	public static final int VDP1 = 1;
 	public static final int VDP2 = 2;
-	private JPanel panelControleBox;
 	private JPanel painelInfText;
-	private JPanel painelInfGraf;
 	private JEditorPane infoTextual;
 	private ArrayList bufferTextual;
 	private JScrollPane scrollPaneTextual;
@@ -109,7 +107,6 @@ public class GerenciadorVisual {
 	private JSlider spinnerDificuldadeUltrapassagem;
 	private PainelCircuito painelCircuito;
 	private JScrollPane scrollPane;
-	private PainelTabelaPosicoes painelPosicoes;
 	private InterfaceJogo controleJogo;
 	private JPanel centerPanel = new JPanel();
 	private JPanel eastPanel = new JPanel();
@@ -120,7 +117,6 @@ public class GerenciadorVisual {
 	private PainelTabelaResultadoFinal resultadoFinal;
 	private ThreadMudancaClima clima;
 	private int tempoSleep = 30;
-	private JSlider sliderPercentCombust;
 	private Color corPadraoBarra;
 	private int larguraFrame = 0;
 	private int alturaFrame = 0;
@@ -133,19 +129,17 @@ public class GerenciadorVisual {
 	protected JCheckBox semReabastacimento;
 	protected JCheckBox kers;
 	protected JCheckBox drs;
-	private JPanel panelControlePos;
-	private ImageIcon iconLua = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/lua.gif"));
-	private ImageIcon iconSol = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/sol.gif"));
-	private ImageIcon iconNublado = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/nublado.gif"));
-	private ImageIcon iconChuva = new ImageIcon(CarregadorRecursos
-			.carregarImagem("clima/chuva.gif"));
+	private ImageIcon iconLua = new ImageIcon(
+			CarregadorRecursos.carregarImagem("clima/lua.gif"));
+	private ImageIcon iconSol = new ImageIcon(
+			CarregadorRecursos.carregarImagem("clima/sol.gif"));
+	private ImageIcon iconNublado = new ImageIcon(
+			CarregadorRecursos.carregarImagem("clima/nublado.gif"));
+	private ImageIcon iconChuva = new ImageIcon(
+			CarregadorRecursos.carregarImagem("clima/chuva.gif"));
 	private long ultimaTravavadaRodas;
 	private Thread thDesenhaQualificacao;
-	private JFrame swingComps;
-	protected String giro;
+	private JFrame radioPadock;
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
@@ -158,11 +152,11 @@ public class GerenciadorVisual {
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
 		progamacaoBox = new ProgamacaoBox();
-		swingComps = new JFrame();
+		radioPadock = new JFrame();
 	}
 
-	public JFrame getSwingComps() {
-		return swingComps;
+	public JFrame getRadioPadock() {
+		return radioPadock;
 	}
 
 	public void iniciarInterfaceGraficaJogo() throws IOException {
@@ -179,7 +173,6 @@ public class GerenciadorVisual {
 		larguraFrame = 1024;
 		alturaFrame = 768;
 		carregarInfoClima();
-		gerarPainelPosicoes();
 		addiconarListenerComandos();
 		gerarPainelInfoText();
 		gerarLayout();
@@ -187,7 +180,6 @@ public class GerenciadorVisual {
 		JFrame frame = controleJogo.getMainFrame();
 
 		MouseWheelListener mw = new MouseWheelListener() {
-
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				synchronized (PainelCircuito.zoomMutex) {
@@ -222,45 +214,23 @@ public class GerenciadorVisual {
 		KeyListener keyListener = geraKeyListener();
 		frame.addKeyListener(keyListener);
 		painelCircuito.addKeyListener(keyListener);
-		painelInfText.addKeyListener(keyListener);
-		painelPosicoes.addKeyListener(keyListener);
-		painelPosicoes.getPosicoesTable().addKeyListener(keyListener);
-		panelControleBox.addKeyListener(keyListener);
-		infoText.addKeyListener(keyListener);
-		sliderPercentCombust.addKeyListener(keyListener);
-		infoTextual.addKeyListener(keyListener);
-
 		frame.addMouseWheelListener(mw);
-		painelInfText.addMouseWheelListener(mw);
-		painelPosicoes.addMouseWheelListener(mw);
-		painelPosicoes.getPosicoesTable().addMouseWheelListener(mw);
-		panelControleBox.addMouseWheelListener(mw);
-		infoText.addMouseWheelListener(mw);
-		sliderPercentCombust.addMouseWheelListener(mw);
-		infoTextual.addMouseWheelListener(mw);
+		painelCircuito.addMouseWheelListener(mw);
+		frame.requestFocus();
 	}
 
 	private void gerarLayout() {
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
 		controleJogo.getMainFrame().getContentPane().removeAll();
-		controleJogo.getMainFrame().getContentPane().setLayout(
-				new BorderLayout());
-		controleJogo.getMainFrame().getContentPane().add(centerPanel,
-				BorderLayout.CENTER);
+		controleJogo.getMainFrame().getContentPane()
+				.setLayout(new BorderLayout());
+		controleJogo.getMainFrame().getContentPane()
+				.add(centerPanel, BorderLayout.CENTER);
 		centerPanel.revalidate();
 
-		swingComps.getContentPane().setLayout(new BorderLayout());
-
-		JPanel north = new JPanel(new GridLayout(1, 3));
-		north.add(panelControleBox);
-		north.add(panelControlePos);
-		north.add(painelInfGraf);
-		JPanel center = new JPanel(new GridLayout(2, 1));
-		center.add(north);
-		center.add(painelInfText);
-		swingComps.getContentPane().add(center, BorderLayout.CENTER);
-		swingComps.getContentPane().add(painelPosicoes, BorderLayout.EAST);
+		radioPadock.getContentPane().setLayout(new BorderLayout());
+		radioPadock.getContentPane().add(painelInfText, BorderLayout.CENTER);
 	}
 
 	public void finalize() throws Throwable {
@@ -295,9 +265,9 @@ public class GerenciadorVisual {
 				if (controleJogo == null) {
 					return;
 				}
-				int ret = JOptionPane.showConfirmDialog(controleJogo
-						.getMainFrame(), Lang.msg("095"), Lang.msg("094"),
-						JOptionPane.YES_NO_OPTION);
+				int ret = JOptionPane.showConfirmDialog(
+						controleJogo.getMainFrame(), Lang.msg("095"),
+						Lang.msg("094"), JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.NO_OPTION) {
 					return;
 				}
@@ -365,13 +335,13 @@ public class GerenciadorVisual {
 				int keyCoode = e.getKeyCode();
 
 				if (keyCoode == KeyEvent.VK_F1) {
-					giro = Carro.GIRO_MIN;
+					controleJogo.mudarGiroMotor(Carro.GIRO_MIN);
 				}
 				if (keyCoode == KeyEvent.VK_F2) {
-					giro = Carro.GIRO_NOR;
+					controleJogo.mudarGiroMotor(Carro.GIRO_NOR);
 				}
 				if (keyCoode == KeyEvent.VK_F3) {
-					giro = Carro.GIRO_MAX;
+					controleJogo.mudarGiroMotor(Carro.GIRO_MAX);
 				}
 				if (keyCoode == KeyEvent.VK_F4) {
 					mudarModoAgressivo();
@@ -483,18 +453,9 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-		Integer value = (Integer) sliderPercentCombust.getValue();
-		if (value.intValue() < 0) {
-			value = new Integer(0);
-		}
-		if (value.intValue() > 100) {
-			value = new Integer(100);
-		}
-
-		controleJogo.setBoxJogadorHumano(painelCircuito.getTpPneu(), value,
-				painelCircuito.getTpAsa());
+		controleJogo.setBoxJogadorHumano(painelCircuito.getTpPneu(),
+				painelCircuito.getPorcentCombust(), painelCircuito.getTpAsa());
 		modoBox();
-
 	}
 
 	private void modoBox() {
@@ -509,16 +470,6 @@ public class GerenciadorVisual {
 			return;
 		}
 		boolean modo = controleJogo.mudarModoAgressivo();
-	}
-
-	public Piloto obterPilotoSecionadoTabela(Piloto pilotoSelecionado) {
-		if (painelPosicoes == null) {
-			return null;
-		}
-		Piloto novoSel = painelPosicoes
-				.obterPilotoSecionadoTabela(pilotoSelecionado);
-		controleJogo.selecionouPiloto(novoSel);
-		return novoSel;
 	}
 
 	private void atualizarImgClima(Clima clima) {
@@ -567,8 +518,8 @@ public class GerenciadorVisual {
 				}
 
 			}
-			String text = Lang.msg("142", new Object[] { voltaCorrida
-					.obterTempoVoltaFormatado() })
+			String text = Lang.msg("142",
+					new Object[] { voltaCorrida.obterTempoVoltaFormatado() })
 					+ (piloto != null ? piloto.getNome() + " - "
 							+ piloto.getCarro().getNome() : "")
 					+ " "
@@ -675,20 +626,8 @@ public class GerenciadorVisual {
 		return infoTextual;
 	}
 
-	public JPanel getPainelInfGraf() {
-		return painelInfGraf;
-	}
-
 	public JPanel getPainelInfText() {
 		return painelInfText;
-	}
-
-	public PainelTabelaPosicoes getPainelPosicoes() {
-		return painelPosicoes;
-	}
-
-	public JPanel getPanelControle() {
-		return panelControleBox;
 	}
 
 	public JSpinner getSpinnerSkillPadraoPilotos() {
@@ -762,18 +701,14 @@ public class GerenciadorVisual {
 		painelInfText.add(infoText, BorderLayout.NORTH);
 	}
 
-	private void gerarPainelPosicoes() throws IOException {
-		painelPosicoes = new PainelTabelaPosicoes(controleJogo);
-	}
-
 	private void gerarPainelJogoSingle(JPanel painelInicio) {
 		painelInicio.setLayout(new GridLayout(10, 2, 5, 5));
 		JLabel label = new JLabel() {
 
 			public String getText() {
-				return Lang.msg("110", new String[] {
-						String.valueOf(Constantes.MIN_VOLTAS),
-						String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110",
+						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+								String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 		painelInicio.add(label);
@@ -963,8 +898,8 @@ public class GerenciadorVisual {
 					public int compare(Object o1, Object o2) {
 						Piloto p1 = (Piloto) o1;
 						Piloto p2 = (Piloto) o2;
-						return p1.getCarro().getNome().compareTo(
-								p2.getCarro().getNome());
+						return p1.getCarro().getNome()
+								.compareTo(p2.getCarro().getNome());
 					}
 
 				});
@@ -1003,9 +938,9 @@ public class GerenciadorVisual {
 		JLabel label = new JLabel() {
 
 			public String getText() {
-				return Lang.msg("110", new String[] {
-						String.valueOf(Constantes.MIN_VOLTAS),
-						String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110",
+						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+								String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 		grid.add(label);
@@ -1344,11 +1279,10 @@ public class GerenciadorVisual {
 		}
 
 		if (selec instanceof Piloto) {
-			controleJogo
-					.efetuarSelecaoPilotoJogador(selec, Lang.key(boxPneuInicial
-							.getSelectedItem().toString()), spinnerCombustivel
-							.getValue(), nomeJogador.getText(), Lang
-							.key((String) comboBoxAsaInicial.getSelectedItem()));
+			controleJogo.efetuarSelecaoPilotoJogador(selec,
+					Lang.key(boxPneuInicial.getSelectedItem().toString()),
+					spinnerCombustivel.getValue(), nomeJogador.getText(),
+					Lang.key((String) comboBoxAsaInicial.getSelectedItem()));
 		}
 		return true;
 	}
@@ -1376,8 +1310,8 @@ public class GerenciadorVisual {
 
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
-			comboBoxNivelCorrida.setSelectedItem(Lang
-					.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida
+					.setSelectedItem(Lang.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
 			List indices = new ArrayList();
 			DefaultListModel defaultListModel = (DefaultListModel) listPilotosSelecionados
@@ -1479,8 +1413,9 @@ public class GerenciadorVisual {
 				}
 			});
 			Clima clima = (Clima) comboBoxClimaInicial.getSelectedItem();
-			ImageIcon icon = new ImageIcon(CarregadorRecursos
-					.carregarImagem("clima/" + clima.getClima()));
+			ImageIcon icon = new ImageIcon(
+					CarregadorRecursos.carregarImagem("clima/"
+							+ clima.getClima()));
 			painelJogSel.add(new JLabel(icon));
 
 			JTextField nomeJogador = new JTextField();
@@ -1540,15 +1475,13 @@ public class GerenciadorVisual {
 			painelJogSel.add(spinnerCombustivel);
 
 			JOptionPane.showMessageDialog(controleJogo.getMainFrame(),
-					painelJogSel, Lang.msg("275", new String[] { selec[i]
-							.toString() }), JOptionPane.QUESTION_MESSAGE);
-			controleJogo
-					.efetuarSelecaoPilotoJogador(selec[i], Lang
-							.key(boxPneuInicial.getSelectedItem().toString()),
-							spinnerCombustivel.getValue(), nomeJogador
-									.getText(), Lang
-									.key((String) comboBoxAsaInicial
-											.getSelectedItem()));
+					painelJogSel,
+					Lang.msg("275", new String[] { selec[i].toString() }),
+					JOptionPane.QUESTION_MESSAGE);
+			controleJogo.efetuarSelecaoPilotoJogador(selec[i],
+					Lang.key(boxPneuInicial.getSelectedItem().toString()),
+					spinnerCombustivel.getValue(), nomeJogador.getText(),
+					Lang.key((String) comboBoxAsaInicial.getSelectedItem()));
 
 		}
 		return true;
@@ -1595,11 +1528,10 @@ public class GerenciadorVisual {
 		}
 
 		if (selec instanceof Piloto) {
-			controleJogo.efetuarSelecaoPilotoJogador(selec, Lang
-					.key(boxPneuInicial.getSelectedItem().toString()),
-					spinnerCombustivel.getValue(), nomeJogador.getText(), Lang
-							.key(comboBoxAsaInicial.getSelectedItem()
-									.toString()));
+			controleJogo.efetuarSelecaoPilotoJogador(selec,
+					Lang.key(boxPneuInicial.getSelectedItem().toString()),
+					spinnerCombustivel.getValue(), nomeJogador.getText(),
+					Lang.key(comboBoxAsaInicial.getSelectedItem().toString()));
 		}
 
 		return true;
@@ -1647,9 +1579,7 @@ public class GerenciadorVisual {
 					midPainel = (limitesViewPort.width / 2);
 				else {
 					midPainel = 500;
-					Logger
-							.logarExept(new Exception(
-									"limitesViewPort == null "));
+					Logger.logarExept(new Exception("limitesViewPort == null "));
 				}
 				for (int i = 0; i < pilotos.size(); i++) {
 					Piloto piloto = (Piloto) pilotos.get(i);
@@ -1709,12 +1639,6 @@ public class GerenciadorVisual {
 		}
 		thDesenhaQualificacao = new Thread(runnable);
 		thDesenhaQualificacao.run();
-	}
-
-	public void atulizaTabelaPosicoes() {
-		painelPosicoes.atulizaTabelaPosicoes(controleJogo.getPilotos(),
-				controleJogo.getPilotoSelecionado());
-
 	}
 
 	public void adicionarInfoDireto(String string) {
@@ -1781,13 +1705,6 @@ public class GerenciadorVisual {
 
 	public JLabel getInfoPiloto() {
 		return infoPiloto;
-	}
-
-	public void sincronizarMenuInicioMenuBox(Object tipoPeneuJogador,
-			Object combustJogador, Object asaJogador) {
-		if (sliderPercentCombust != null && (combustJogador instanceof Integer)) {
-			sliderPercentCombust.setValue((Integer) combustJogador);
-		}
 	}
 
 	public JSlider getSpinnerCombustivel() {

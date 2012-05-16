@@ -604,8 +604,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
-							.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(),
+					gerenciadorVisual.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			setarNivelCorrida();
@@ -625,9 +625,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
 		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
 				+ porcentagemChuvaCircuito(circuitoSelecionado));
-		Logger
-				.logar("porcentagemChuvaCircuito() "
-						+ porcentagemChuvaCircuito());
+		Logger.logar("porcentagemChuvaCircuito() " + porcentagemChuvaCircuito());
 	}
 
 	/**
@@ -780,7 +778,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#atulizaTabelaPosicoes()
 	 */
 	public void atulizaTabelaPosicoes() {
-		gerenciadorVisual.atulizaTabelaPosicoes();
 
 	}
 
@@ -924,10 +921,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 				}
 				break;
 			}
-		}
-		if (outro != null) {
-			gerenciadorVisual.getPainelPosicoes().atulizaTabelaPosicoes(
-					pilotos, outro);
 		}
 
 	}
@@ -1191,9 +1184,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 	@Override
 	public void mostraCompsSwing() {
 		if (gerenciadorVisual != null) {
-			gerenciadorVisual.getSwingComps().setVisible(true);
-			gerenciadorVisual.getSwingComps().setTitle(Lang.msg("f1maneSwing"));
-			gerenciadorVisual.getSwingComps().pack();
+			gerenciadorVisual.getRadioPadock().setVisible(true);
+			gerenciadorVisual.getRadioPadock()
+					.setTitle(Lang.msg("f1maneSwing"));
+			gerenciadorVisual.getRadioPadock().setSize(500, 300);
 		}
 	}
 

@@ -55,7 +55,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private boolean safetyCarBol;
 	private boolean modoAgressivo;
 	private boolean modoBox;
-	private boolean syncBox;
 	private String nomeJogador;
 	private Piloto pilotoSelecionado;
 	private DadosJogo dadosJogo;
@@ -199,7 +198,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					.getTexto()));
 			dadosJogo.setTexto(null);
 		}
-		gerenciadorVisual.atulizaTabelaPosicoes();
 	}
 
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {
@@ -555,9 +553,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto
-								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-										.getMultiplicadorLarguraPista()));
+						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+								.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -677,13 +674,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void iniciaJanela() {
 		if (!getMainFrame().isVisible()) {
 			getMainFrame().setVisible(true);
-		} else if (!syncBox) {
-			gerenciadorVisual.sincronizarMenuInicioMenuBox(dadosParticiparJogo
-					.getTpPnueu(), dadosParticiparJogo.getCombustivel(),
-					dadosParticiparJogo.getAsa());
-			syncBox = true;
 		}
-
 	}
 
 	public boolean isCorridaIniciada() {
@@ -1001,7 +992,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void mostraCompsSwing() {
 		if (gerenciadorVisual != null) {
-			gerenciadorVisual.getSwingComps().setVisible(true);
+			gerenciadorVisual.getRadioPadock().setVisible(true);
 		}
 	}
 
