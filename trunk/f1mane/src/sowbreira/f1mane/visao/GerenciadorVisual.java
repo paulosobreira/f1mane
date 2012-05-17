@@ -109,7 +109,6 @@ public class GerenciadorVisual {
 	private JScrollPane scrollPane;
 	private InterfaceJogo controleJogo;
 	private JPanel centerPanel = new JPanel();
-	private JPanel eastPanel = new JPanel();
 	private JLabel infoCorrida;
 	private JLabel infoPiloto;
 	private JPanel infoText = new JPanel();
@@ -118,8 +117,6 @@ public class GerenciadorVisual {
 	private ThreadMudancaClima clima;
 	private int tempoSleep = 30;
 	private Color corPadraoBarra;
-	private int larguraFrame = 0;
-	private int alturaFrame = 0;
 	private long lastPress;
 	private ProgamacaoBox progamacaoBox;
 	private long ultimaChamadaBox;
@@ -170,13 +167,10 @@ public class GerenciadorVisual {
 			};
 		};
 
-		larguraFrame = 1024;
-		alturaFrame = 768;
 		carregarInfoClima();
 		addiconarListenerComandos();
 		gerarPainelInfoText();
 		gerarLayout();
-
 		JFrame frame = controleJogo.getMainFrame();
 
 		MouseWheelListener mw = new MouseWheelListener() {
