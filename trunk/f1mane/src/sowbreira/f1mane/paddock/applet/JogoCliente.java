@@ -553,8 +553,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-								.getMultiplicadorLarguraPista()));
+						piloto
+								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+										.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -992,7 +993,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void mostraCompsSwing() {
 		if (gerenciadorVisual != null) {
-			gerenciadorVisual.getRadioPadock().setVisible(true);
+			gerenciadorVisual.mostraRadioPadock();
 		}
 	}
 

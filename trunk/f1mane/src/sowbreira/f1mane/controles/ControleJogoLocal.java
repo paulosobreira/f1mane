@@ -1184,10 +1184,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	@Override
 	public void mostraCompsSwing() {
 		if (gerenciadorVisual != null) {
-			gerenciadorVisual.getRadioPadock().setVisible(true);
-			gerenciadorVisual.getRadioPadock()
-					.setTitle(Lang.msg("f1maneSwing"));
-			gerenciadorVisual.getRadioPadock().setSize(500, 300);
+			gerenciadorVisual.mostraRadioPadock();
 		}
 	}
 
