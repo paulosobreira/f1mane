@@ -277,6 +277,7 @@ public class PainelCircuito extends JPanel {
 
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				controleJogo.getMainFrame().requestFocus();
 				if (!verificaComando(e)) {
 					Piloto pilotoJogador = controleJogo.getPilotoJogador();
 					if (pilotoJogador != null && pilotoJogador.getP1() != null
