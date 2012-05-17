@@ -277,10 +277,10 @@ public class PainelEntradaCliente {
 				return Lang.msg("126");
 			}
 		});
-		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO + 70,
-				Constantes.MAX_CICLO - 40);
+		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO + 80,
+				Constantes.MAX_CICLO - 30);
 		sliderTempoCiclo.setValue(new Integer(Util.intervalo(
-				Constantes.MIN_CICLO + 70, Constantes.MAX_CICLO - 40)));
+				Constantes.MIN_CICLO + 80, Constantes.MAX_CICLO - 30)));
 		labelTable = new Hashtable();
 		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
 			@Override
