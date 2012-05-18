@@ -322,7 +322,7 @@ public class GerenciadorVisual {
 		return new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				long now = System.currentTimeMillis();
-				if ((now - lastPress) < 250) {
+				if ((now - lastPress) < 50) {
 					return;
 				}
 				lastPress = now;
