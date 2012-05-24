@@ -450,10 +450,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -812,11 +811,15 @@ public class Carro implements Serializable {
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 4 : 2 + perda);
 				}
+				if (controleJogo.asfaltoAbrasivo() && Math.random() > 0.5) {
+					controleJogo.travouRodas(getPiloto());
+				}
 				desgPneus += (teste ? 6 : 24) + novoModDesgaste;
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4) + novoModDesgaste;
+					: 4)
+					+ novoModDesgaste;
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 70
@@ -825,6 +828,9 @@ public class Carro implements Serializable {
 					controleJogo.travouRodas(getPiloto());
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 6 : 3);
+				}
+				if (controleJogo.asfaltoAbrasivo() && Math.random() > 0.5) {
+					controleJogo.travouRodas(getPiloto());
 				}
 				desgPneus += (teste ? 2 : 12) + novoModDesgaste;
 			}
@@ -841,6 +847,9 @@ public class Carro implements Serializable {
 					controleJogo.travouRodas(getPiloto());
 					piloto.incStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 5 : 10);
+				}
+				if (controleJogo.asfaltoAbrasivo() && Math.random() > 0.5) {
+					controleJogo.travouRodas(getPiloto());
 				}
 			}
 		} else if (agressivo) {
