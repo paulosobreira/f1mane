@@ -811,9 +811,9 @@ public class Carro implements Serializable {
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 4 : 2 + perda);
 				}
-				if (!controleJogo.isChovendo() && getPiloto().getStress() > 40
-						&& controleJogo.asfaltoAbrasivo()
-						&& Math.random() > 0.3) {
+				if (controleJogo.asfaltoAbrasivo()
+						&& !controleJogo.isChovendo()
+						&& getPiloto().getStress() > 40 && Math.random() > 0.3) {
 					controleJogo.travouRodas(getPiloto());
 				}
 				desgPneus += (teste ? 6 : 24) + novoModDesgaste;
@@ -831,9 +831,9 @@ public class Carro implements Serializable {
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 6 : 3);
 				}
-				if (!controleJogo.isChovendo() && getPiloto().getStress() > 35
-						&& controleJogo.asfaltoAbrasivo()
-						&& Math.random() > 0.5) {
+				if (controleJogo.asfaltoAbrasivo()
+						&& !controleJogo.isChovendo()
+						&& getPiloto().getStress() > 35 && Math.random() > 0.5) {
 					controleJogo.travouRodas(getPiloto());
 				}
 				desgPneus += (teste ? 2 : 12) + novoModDesgaste;
@@ -851,9 +851,9 @@ public class Carro implements Serializable {
 					controleJogo.travouRodas(getPiloto());
 					piloto.incStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 5 : 10);
-					if (getPiloto().getStress() > 60
+					if (controleJogo.asfaltoAbrasivo()
+							&& getPiloto().getStress() > 60
 							&& !controleJogo.isChovendo()
-							&& controleJogo.asfaltoAbrasivo()
 							&& Math.random() > 0.7) {
 						controleJogo.travouRodas(getPiloto());
 					}
