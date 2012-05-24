@@ -80,7 +80,8 @@ public class ControleQualificacao {
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao--;
 					if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro()
-							.getTipoPneu()) && Math.random() < 0.05) {
+							.getTipoPneu())
+							&& Math.random() < 0.05) {
 						contCiclosQualificacao--;
 					}
 				}
@@ -99,11 +100,17 @@ public class ControleQualificacao {
 			if (jogandoresHumanos.contains(piloto)) {
 				piloto.setJogadorHumano(true);
 			} else {
-				if (controleJogo.verificaNivelJogo()) {
-					bonusNivel = Util.intervalo(0, 10)
-							* (controleJogo.getNiveljogo() + .3);
+				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
+					bonusNivel = Util.intervalo(0, 10);
+				if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
+					bonusNivel = Util.intervalo(5, 15);
+				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
+					bonusNivel = Util.intervalo(10, 20);
+				int novaHab = piloto.getHabilidade() + (int) bonusNivel;
+				if (novaHab > 999) {
+					novaHab = 999;
 				}
-				piloto.setHabilidade(piloto.getHabilidade() + (int) bonusNivel);
+				piloto.setHabilidade(novaHab);
 			}
 		}
 		Collections.sort(pilotos, new Comparator() {
@@ -146,16 +153,12 @@ public class ControleQualificacao {
 					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 					(Carro.ALTURA));
 
-			Point cima = GeoUtil.calculaPonto(
-					calculaAngulo,
-					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			Point baixo = GeoUtil.calculaPonto(
-					calculaAngulo + 180,
-					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
+			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
+					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
+					.getCenterX()), Util.inte(rectangle.getCenterY())));
+			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
+					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
+					.getCenterX()), Util.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA)),
