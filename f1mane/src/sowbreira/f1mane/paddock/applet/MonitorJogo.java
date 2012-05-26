@@ -507,11 +507,11 @@ public class MonitorJogo implements Runnable {
 								Logger.logar("diffINdex " + diffINdex);
 							}
 						}
-						int contDiv = 40;
-						int contSleep = 50;
+						int contDiv = 20;
+						int contSleep = 70;
 						double ganhoCorrecao = 0;
 						boolean intervalo = false;
-						for (int i = 0; i < 500; i += 5) {
+						for (int i = 0; i < 400; i += 5) {
 							if (diffINdex >= i && diffINdex < i + 5) {
 								divPosis = contDiv;
 								sleepConsumidorPosis = contSleep;
@@ -524,8 +524,8 @@ public class MonitorJogo implements Runnable {
 							if (contSleep > 5) {
 								contSleep--;
 							}
-							if (contDiv == 1 && diffINdex > 150) {
-								ganhoCorrecao += 1;
+							if (contDiv == 1 && diffINdex > 50) {
+								ganhoCorrecao += 0.5;
 							}
 						}
 						if (!intervalo) {
@@ -536,7 +536,7 @@ public class MonitorJogo implements Runnable {
 						if (ganhoCorrecao > 20) {
 							ganhoCorrecao = 20;
 						}
-						if (diffINdex >= 6000
+						if (diffINdex >= 1000
 								&& !(jogoCliente.getNosDoBox().contains(no) && jogoCliente
 										.getNosDaPista().contains(
 												piloto.getNoAtual()))
@@ -544,7 +544,7 @@ public class MonitorJogo implements Runnable {
 										.getNosDoBox().contains(
 												piloto.getNoAtual()))) {
 							if (piloto.isJogadorHumano()) {
-								Logger.logar("(diffINdex > 6000)"
+								Logger.logar("(diffINdex > 1000)"
 										+ piloto.getNome() + " " + diffINdex);
 							}
 							piloto.setNoAtual(no);
