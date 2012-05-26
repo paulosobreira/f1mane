@@ -80,8 +80,7 @@ public class ControleQualificacao {
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao--;
 					if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro()
-							.getTipoPneu())
-							&& Math.random() < 0.05) {
+							.getTipoPneu()) && Math.random() < 0.05) {
 						contCiclosQualificacao--;
 					}
 				}
@@ -95,17 +94,17 @@ public class ControleQualificacao {
 			controleJogo.zerarMelhorVolta();
 		}
 		double bonusNivel = 0;
+		if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
+			bonusNivel = Util.intervalo(0, 5);
+		if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
+			bonusNivel = Util.intervalo(5, 10);
+		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
+			bonusNivel = Util.intervalo(10, 15);
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			if (jogandoresHumanos.contains(piloto)) {
 				piloto.setJogadorHumano(true);
 			} else {
-				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
-					bonusNivel = Util.intervalo(0, 10);
-				if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo())
-					bonusNivel = Util.intervalo(5, 15);
-				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo())
-					bonusNivel = Util.intervalo(10, 20);
 				int novaHab = piloto.getHabilidade() + (int) bonusNivel;
 				if (novaHab > 999) {
 					novaHab = 999;
@@ -153,12 +152,16 @@ public class ControleQualificacao {
 					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 					(Carro.ALTURA));
 
-			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-					.getCenterX()), Util.inte(rectangle.getCenterY())));
-			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-					.getCenterX()), Util.inte(rectangle.getCenterY())));
+			Point cima = GeoUtil.calculaPonto(
+					calculaAngulo,
+					Util.inte(Carro.ALTURA * 1.2),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
+			Point baixo = GeoUtil.calculaPonto(
+					calculaAngulo + 180,
+					Util.inte(Carro.ALTURA * 1.2),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA)),
