@@ -390,7 +390,6 @@ public class MonitorJogo implements Runnable {
 	private Thread consumidorPosis = null;
 	private boolean consumidorAtivo = false;
 	private Object[] posisArrayBuff;
-	private double divPosis = 1;
 	private int sleepConsumidorPosis = 20;
 	private boolean lagLongo = false;
 	private long ultPoisis;
@@ -507,34 +506,25 @@ public class MonitorJogo implements Runnable {
 								Logger.logar("diffINdex " + diffINdex);
 							}
 						}
+
+						double ganhoSuave = 0;
 						int contDiv = 20;
-						int contSleep = 70;
-						double ganhoCorrecao = 0;
+						int contSleep = 100;
 						boolean intervalo = false;
 						for (int i = 0; i < 400; i += 5) {
 							if (diffINdex >= i && diffINdex < i + 5) {
-								divPosis = contDiv;
 								sleepConsumidorPosis = contSleep;
 								intervalo = true;
 								break;
 							}
-							if (contDiv > 1) {
-								contDiv--;
-							}
+							ganhoSuave += .5;
 							if (contSleep > 5) {
 								contSleep--;
-							}
-							if (contDiv == 1 && diffINdex > 50) {
-								ganhoCorrecao += 0.5;
 							}
 						}
 						if (!intervalo) {
 							contDiv = 1;
 							contSleep = 5;
-							ganhoCorrecao = 20;
-						}
-						if (ganhoCorrecao > 20) {
-							ganhoCorrecao = 20;
 						}
 						if (diffINdex >= 1000
 								&& !(jogoCliente.getNosDoBox().contains(no) && jogoCliente
@@ -562,19 +552,7 @@ public class MonitorJogo implements Runnable {
 								&& jogoCliente.getNosDoBox().contains(noAtual)) {
 							saiuNoBox = true;
 						}
-						double ganho = (piloto.getGanho() / divPosis);
-						if (ganho < 1) {
-							ganho = 1;
-						}
-						if (ganho > 10) {
-							ganho = 10;
-						}
-						if (ganhoCorrecao != 0) {
-							ganho += ganhoCorrecao;
-						}
-						if (ganho > 20) {
-							ganho = 20;
-						}
+						double ganho = ganhoSuave;
 
 						if (entrouNoBox || saiuNoBox) {
 							ganho = Math.random() > 0.95 ? 3 : 2;
