@@ -450,9 +450,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -813,15 +814,15 @@ public class Carro implements Serializable {
 				}
 				if (controleJogo.asfaltoAbrasivo()
 						&& !controleJogo.isChovendo()
-						&& getPiloto().getStress() > 40 && Math.random() > 0.3) {
+						&& !getPiloto().isJogadorHumano()
+						&& Math.random() > 0.5) {
 					controleJogo.travouRodas(getPiloto());
 				}
 				desgPneus += (teste ? 6 : 24) + novoModDesgaste;
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4)
-					+ novoModDesgaste;
+					: 4) + novoModDesgaste;
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 70
@@ -833,7 +834,8 @@ public class Carro implements Serializable {
 				}
 				if (controleJogo.asfaltoAbrasivo()
 						&& !controleJogo.isChovendo()
-						&& getPiloto().getStress() > 35 && Math.random() > 0.5) {
+						&& !getPiloto().isJogadorHumano()
+						&& Math.random() > 0.7) {
 					controleJogo.travouRodas(getPiloto());
 				}
 				desgPneus += (teste ? 2 : 12) + novoModDesgaste;
@@ -852,9 +854,9 @@ public class Carro implements Serializable {
 					piloto.incStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 5 : 10);
 					if (controleJogo.asfaltoAbrasivo()
-							&& getPiloto().getStress() > 60
+							&& !getPiloto().isJogadorHumano()
 							&& !controleJogo.isChovendo()
-							&& Math.random() > 0.7) {
+							&& Math.random() > 0.9) {
 						controleJogo.travouRodas(getPiloto());
 					}
 				}
