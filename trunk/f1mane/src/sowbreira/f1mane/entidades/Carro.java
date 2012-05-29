@@ -450,10 +450,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -822,7 +821,8 @@ public class Carro implements Serializable {
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4) + novoModDesgaste;
+					: 4)
+					+ novoModDesgaste;
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 70
@@ -886,23 +886,17 @@ public class Carro implements Serializable {
 			}
 		}
 
-		double porcentComb = porcentagemCombustivel() / 1000.0;
-		double combustivel = 1;
-		if (Math.random() < porcentComb)
-			combustivel = (piloto.testeHabilidadePiloto(controleJogo) ? Util
-					.intervalo(1, 2) : Util.intervalo(1, 3));
-
-		double valDesgaste = (desgPneus
-				* controleJogo.getCircuito().getMultiplciador() * (combustivel * (1 + controleJogo
-				.getNiveljogo())));
+		double modComb = porcentagemCombustivel() / 1000.0;
+		double valDesgaste = (desgPneus * controleJogo.getCircuito()
+				.getMultiplciador());
+		double meioDesgaste = valDesgaste / 2;
+		valDesgaste = meioDesgaste + (meioDesgaste * modComb);
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 3;
 		}
-
 		if (controleJogo.isSemTrocaPneu()) {
 			valDesgaste *= 0.7;
 		}
-
 		if (!controleJogo.isSemTrocaPneu()
 				&& porcent > 25
 				&& (piloto.getNoAtual().verificaCruvaBaixa() || piloto
@@ -940,21 +934,12 @@ public class Carro implements Serializable {
 		if (verificaDano()) {
 			valDesgaste /= 3;
 		}
-		if (getPiloto().isJogadorHumano()
-				&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)
-				&& MAIS_ASA.equals(getAsa())
-				&& (no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
-			desgPneus += Util.intervalo(1, controleJogo.verificaNivelJogo() ? 2
-					: 1);
-		}
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
 			danificado = PNEU_FURADO;
 			pneus = -1;
-
 			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("043",
 					new String[] { getPiloto().getNome() })));
-
 		}
 		// System.out.println(" Depois " + novoModificador);
 		return novoModificador;
