@@ -340,15 +340,20 @@ public class Carro implements Serializable {
 			InterfaceJogo controleJogo) {
 		double mod = 0.5;
 
-		if (GIRO_MAX_VAL == giro) {
-			mod = 0.7;
-		}
-		if (GIRO_MIN_VAL == giro) {
-			mod = 0.3;
-		}
-
-		if (controleJogo.isDrs()) {
-			mod += 0.2;
+		if (controleJogo.isSemReabastacimento() || controleJogo.isDrs()) {
+			if (GIRO_MAX_VAL == giro) {
+				mod = 0.8;
+			}
+			if (GIRO_MIN_VAL == giro) {
+				mod = 0.2;
+			}
+		} else {
+			if (GIRO_MAX_VAL == giro) {
+				mod = 0.7;
+			}
+			if (GIRO_MIN_VAL == giro) {
+				mod = 0.3;
+			}
 		}
 
 		if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa())
