@@ -886,11 +886,11 @@ public class Carro implements Serializable {
 			}
 		}
 
-		double modComb = porcentagemCombustivel() / 1000.0;
+		double modComb = porcentagemCombustivel() / 100.0;
 		double valDesgaste = (desgPneus * controleJogo.getCircuito()
 				.getMultiplciador());
-		double meioDesgaste = valDesgaste / 2;
-		valDesgaste = meioDesgaste + (meioDesgaste * modComb);
+		double quartoDesgaste = valDesgaste / 4;
+		valDesgaste = (3 * quartoDesgaste) + (quartoDesgaste * modComb);
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 3;
 		}

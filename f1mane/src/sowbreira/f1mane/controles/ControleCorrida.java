@@ -36,7 +36,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = (Util.intervalo(70, 90) / 100.0);
+	private double fatorAcidente = (Util.intervalo(60, 90) / 100.0);
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 
