@@ -65,12 +65,20 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public static void main(String[] args) {
-		for (int i = 0; i < 100; i++) {
-			if (i % 10 == 0) {
-				System.out.println(i);
-			}
+		// for (int i = 0; i < 100; i++) {
+		// if (i % 10 == 0) {
+		// System.out.println(i);
+		// }
+		//
+		// }
 
+		for (int i = 0; i < 100; i+=6) {
+			System.out.println(i);
 		}
+
+		int teste = 5;
+		System.out.println(++teste);
+		System.out.println(teste);
 	}
 
 	public ControleJogoLocal() throws Exception {

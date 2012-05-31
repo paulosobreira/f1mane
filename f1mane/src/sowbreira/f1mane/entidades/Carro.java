@@ -340,22 +340,12 @@ public class Carro implements Serializable {
 			InterfaceJogo controleJogo) {
 		double mod = 0.5;
 
-		if (controleJogo.isSemReabastacimento() || controleJogo.isDrs()) {
-			if (GIRO_MAX_VAL == giro) {
-				mod = 0.8;
-			}
-			if (GIRO_MIN_VAL == giro) {
-				mod = 0.2;
-			}
-		} else {
-			if (GIRO_MAX_VAL == giro) {
-				mod = 0.7;
-			}
-			if (GIRO_MIN_VAL == giro) {
-				mod = 0.3;
-			}
+		if (GIRO_MAX_VAL == giro) {
+			mod = 0.7;
 		}
-
+		if (GIRO_MIN_VAL == giro) {
+			mod = 0.3;
+		}
 		if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa())
 				&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
 			novoModificadorOri++;
@@ -455,9 +445,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -759,7 +750,6 @@ public class Carro implements Serializable {
 
 		if (piloto.getTracado() != 0
 				&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())
-				&& !piloto.testeHabilidadePiloto(controleJogo)
 				&& Math.random() > controleJogo.getFatorUtrapassagem()) {
 			novoModificador--;
 		}
@@ -826,8 +816,7 @@ public class Carro implements Serializable {
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4)
-					+ novoModDesgaste;
+					: 4) + novoModDesgaste;
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 70

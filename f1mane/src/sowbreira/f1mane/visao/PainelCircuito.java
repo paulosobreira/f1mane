@@ -632,7 +632,7 @@ public class PainelCircuito extends JPanel {
 			int tamCombust = Util.calculaLarguraText(combst, g2d);
 			porcentCombustivelTela.setFrame(x - 15, y - 12, tamCombust + 5, 32);
 			g2d.draw(porcentCombustivelTela);
-			if (pilotoSelecionado.isBox()) {
+			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
 				g2d.setColor(OcilaCor.geraOcila("selCombBox", yel));
 			}
 			g2d.drawString(combst, x - 10, y + 15);
@@ -674,7 +674,7 @@ public class PainelCircuito extends JPanel {
 
 		String txtBox = Lang.msg("078");
 		Color bg = transpMenus;
-		if (pilotoSelecionado.isBox()) {
+		if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
 			bg = OcilaCor.geraOcila("vaiBox", transpSel);
 			txtBox = Lang.msg("boxConfimado");
 		}
@@ -682,7 +682,7 @@ public class PainelCircuito extends JPanel {
 		int tam = Util.calculaLarguraText(txtBox, g2d);
 		vaiBox.setFrame(x, y, tam + 10, 30);
 		g2d.fill(vaiBox);
-		if (pilotoSelecionado.isBox()) {
+		if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
 			g2d.setColor(yel);
 			g2d.setStroke(trilhoMiniPista);
 			g2d.draw(vaiBox);
@@ -2549,7 +2549,10 @@ public class PainelCircuito extends JPanel {
 		if (!desenhaInfo) {
 			return;
 		}
-		String dano = pilotoSelecionado.getCarro().getDanificado();
+		if (pilotoSelecionado == null) {
+			return;
+		}
+
 		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePeneus();
 		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
 		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
@@ -2566,6 +2569,10 @@ public class PainelCircuito extends JPanel {
 		}
 		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
 			durabilidade = InterfaceJogo.DUR_AREO_DIFICIL;
+		}
+		String dano = null;
+		if (pilotoSelecionado != null) {
+			dano = pilotoSelecionado.getCarro().getDanificado();
 		}
 
 		if ((dano == null || "".equals(dano))

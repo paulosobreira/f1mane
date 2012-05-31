@@ -112,9 +112,9 @@ public interface InterfaceJogo {
 
 	public Volta obterMelhorVolta();
 
-	public double verificaUltraPassagem(Piloto piloto, double novoModificador);
-
 	public double getNiveljogo();
+
+	public double verificaUltraPassagem(Piloto piloto, double novoModificador);
 
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
 			Object combust, String nomeJogador, Object asa);
