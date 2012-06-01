@@ -13,7 +13,7 @@ public class Constantes {
 
 	public static final int MAX_VOLTAS = 72;
 	public static final int MIN_VOLTAS = 12;
-	public static final int MIN_CICLO = 50;
+	public static final int MIN_CICLO = 70;
 	public static final int MAX_CICLO = 200;
 	public static final int ACIMA_MEDIA_NORMAL = 5;
 	public static final int ACIMA_MEDIA_FACIL = 10;
@@ -29,7 +29,8 @@ public class Constantes {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		frame.setSize(200, 200);
-		frame.getContentPane().setBackground(new Color(200, 200, 200, 500/100));
+		frame.getContentPane().setBackground(
+				new Color(200, 200, 200, 500 / 100));
 		frame.setVisible(true);
 	}
 }
