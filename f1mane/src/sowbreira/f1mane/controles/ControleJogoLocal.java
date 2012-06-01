@@ -72,7 +72,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		//
 		// }
 
-		for (int i = 0; i < 100; i+=6) {
+		for (int i = 0; i < 100; i += 6) {
 			System.out.println(i);
 		}
 
@@ -441,12 +441,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 		String tipoPeneuJogador = (String) tpneu;
 		Integer combustJogador = (Integer) combust;
 		String asaJogador = (String) asa;
-		pilotoJogador.setTipoPeneuJogador(tipoPeneuJogador);
-		pilotoJogador.setCombustJogador(combustJogador);
-		pilotoJogador.setAsaJogador(asaJogador);
-		pilotoJogador.setTipoPneuBox(tipoPeneuJogador);
-		pilotoJogador.setQtdeCombustBox(combustJogador);
-		pilotoJogador.setAsaBox(asaJogador);
+		if (pilotoJogador != null) {
+			pilotoJogador.setTipoPeneuJogador(tipoPeneuJogador);
+			pilotoJogador.setCombustJogador(combustJogador);
+			pilotoJogador.setAsaJogador(asaJogador);
+			pilotoJogador.setTipoPneuBox(tipoPeneuJogador);
+			pilotoJogador.setQtdeCombustBox(combustJogador);
+			pilotoJogador.setAsaBox(asaJogador);
+		}
 
 	}
 
@@ -612,8 +614,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(),
-					gerenciadorVisual.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
+							.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			setarNivelCorrida();
@@ -633,7 +635,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
 		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
 				+ porcentagemChuvaCircuito(circuitoSelecionado));
-		Logger.logar("porcentagemChuvaCircuito() " + porcentagemChuvaCircuito());
+		Logger
+				.logar("porcentagemChuvaCircuito() "
+						+ porcentagemChuvaCircuito());
 	}
 
 	/**
