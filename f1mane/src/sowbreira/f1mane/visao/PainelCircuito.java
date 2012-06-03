@@ -2397,7 +2397,12 @@ public class PainelCircuito extends JPanel {
 			g2d.setColor(bkg);
 			g2d.fill(rectanglePos);
 			g2d.setColor(fonte);
-			g2d.drawString("" + (i + 1), x + 5, y + 16);
+			if (piloto.getNoAtual() != null && piloto.getNoAtual().isBox()) {
+				g2d.drawString("P", x + 5, y + 16);
+			} else {
+				g2d.drawString("" + (i + 1), x + 5, y + 16);
+			}
+
 			String nmPiloto = piloto.getNome();
 			pilotosRect[i].setFrame(x + 30, y, tamNome + 10, 20);
 			g2d.setColor(bkg);
@@ -2405,23 +2410,21 @@ public class PainelCircuito extends JPanel {
 			g2d.setColor(fonte);
 			g2d.drawString(nmPiloto, x + 35, y + 16);
 
-			if (piloto.getNoAtual() != null && piloto.getNoAtual().isBox()) {
-				g2d.drawString("P", x + 120, y + 16);
-			}
+			RoundRectangle2D rectangleVol = new RoundRectangle2D.Double(x + 35
+					+ pilotosRect[i].getWidth(), y, 25, 20, 15, 15);
+			g2d.setColor(bkg);
+			g2d.fill(rectangleVol);
+			g2d.setColor(fonte);
+			g2d.drawString("" + piloto.getNumeroVolta(),
+					Util.inte(x + 40 + pilotosRect[i].getWidth()), y + 16);
 
 			if (piloto.equals(pilotoSelecionado)) {
 				g2d.setColor(yel);
 				g2d.setStroke(trilhoMiniPista);
 				g2d.draw(rectanglePos);
 				g2d.draw(pilotosRect[i]);
+				g2d.draw(rectangleVol);
 			}
-			rectanglePos = new RoundRectangle2D.Double(x + 35
-					+ pilotosRect[i].getWidth(), y, 25, 20, 15, 15);
-			g2d.setColor(bkg);
-			g2d.fill(rectanglePos);
-			g2d.setColor(fonte);
-			g2d.drawString("" + piloto.getNumeroVolta(),
-					Util.inte(x + 40 + pilotosRect[i].getWidth()), y + 16);
 
 			y += 23;
 		}
@@ -2792,7 +2795,7 @@ public class PainelCircuito extends JPanel {
 
 		BufferedImage carroimg = null;
 		int carSelX = limitesViewPort.x;
-		int carSelY = limitesViewPort.y + limitesViewPort.height - 90;
+		int carSelY = limitesViewPort.y + limitesViewPort.height - 75;
 		int bounce = 0;
 		int newY = 0;
 		Carro carroFrente = controleJogo.obterCarroNaFrente(psel);
@@ -2804,19 +2807,8 @@ public class PainelCircuito extends JPanel {
 			int dstX = limitesViewPort.x + (limitesViewPort.width / 4);
 			int dstY = carSelY + 20;
 			int halfCarWidth = carroimg.getWidth() / 3;
-			if (diff > 3) {
-				carSelX += (30 - halfCarWidth * 2);
-				dstX += 25;
-			} else if (diff < 3 && diff > 1) {
-				carSelX += (50 - halfCarWidth);
-				dstX += 45;
-			} else if (diff <= 1 && diff > .5) {
-				carSelX += (90 - halfCarWidth);
-				dstX += 75;
-			} else if (diff <= .5) {
-				carSelX += (120 - halfCarWidth);
-				dstX += 90;
-			}
+			carSelX += (120 - halfCarWidth);
+			dstX += 90;
 			g2d.setColor(this.transpMenus);
 			g2d.fillRoundRect(carSelX - 5, carSelY - 5,
 					carroimg.getWidth() + 5, carroimg.getHeight() + 5, 15, 15);
@@ -2861,7 +2853,7 @@ public class PainelCircuito extends JPanel {
 		carroimg = controleJogo.obterCarroLado(psel);
 		carSelX = limitesViewPort.x + (limitesViewPort.width / 2)
 				- (carroimg.getWidth() / 2);
-		carSelY = limitesViewPort.y + limitesViewPort.height - 90;
+		carSelY = limitesViewPort.y + limitesViewPort.height - 75;
 		bounce = calculaBounce(psel.getCarro());
 		g2d.setColor(this.transpMenus);
 		g2d.fillRoundRect(carSelX - 5, carSelY - 5, carroimg.getWidth() + 5,
@@ -2895,19 +2887,8 @@ public class PainelCircuito extends JPanel {
 					.calculaSegundosParaProximoDouble(carroAtraz.getPiloto());
 
 			int halfCarWidth = carroimg.getWidth() / 3;
-			if (diff >= 3) {
-				carSelX -= (30 - halfCarWidth * 2);
-				dstX -= 20;
-			} else if (diff < 3 && diff > 1) {
-				carSelX -= (50 - halfCarWidth);
-				dstX -= 40;
-			} else if (diff <= 1 && diff > .5) {
-				carSelX -= (70 - halfCarWidth);
-				dstX -= 60;
-			} else if (diff <= .5) {
-				carSelX -= (110 - halfCarWidth);
-				dstX -= 70;
-			}
+			carSelX -= (110 - halfCarWidth);
+			dstX -= 70;
 			g2d.setColor(this.transpMenus);
 			g2d.fillRoundRect(carSelX - 5, carSelY - 5,
 					carroimg.getWidth() + 5, carroimg.getHeight() + 5, 15, 15);

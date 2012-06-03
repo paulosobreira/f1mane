@@ -945,14 +945,7 @@ public class Piloto implements Serializable {
 			Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 			if (carroPilotoDaFrente != null) {
 				double diff = calculaDiffParaProximo(controleJogo);
-				double distBrigaMin = 0;
-				if (controleJogo.getNiveljogo() == .7) {
-					distBrigaMin = 50;
-				} else if (controleJogo.getNiveljogo() == .5) {
-					distBrigaMin = 30;
-				} else if (controleJogo.getNiveljogo() == .3) {
-					distBrigaMin = 20;
-				}
+				double distBrigaMin = 30;
 				double nGanho = (controleJogo.getFatorUtrapassagem());
 				if (diff < distBrigaMin) {
 					if (getTracado() != carroPilotoDaFrente.getPiloto()
@@ -974,17 +967,18 @@ public class Piloto implements Serializable {
 								.getNoAtual();
 						if (No.CURVA_ALTA.equals(noDafrente)
 								|| No.CURVA_BAIXA.equals(noDafrente)) {
-							nGanho = distBrigaMin / diff;
 							if (controleJogo.isChovendo()
 									&& Math.random() > 0.5) {
 								nGanho = 1;
+							} else {
+								nGanho = distBrigaMin / (diff * 1.5);
 							}
 						}
 					}
 					if (nGanho > 1) {
 						nGanho = 1;
-					} else if (nGanho < 0.1) {
-						nGanho = 0.1;
+					} else if (nGanho < 0.01) {
+						nGanho = 0.01;
 					}
 					ganho *= (nGanho);
 				}
@@ -1126,10 +1120,19 @@ public class Piloto implements Serializable {
 	public boolean verificaColisaoCarroFrente(InterfaceJogo controleJogo,
 			boolean somenteVerifica) {
 		try {
+			boolean verificaNoPitLane = controleJogo.verificaNoPitLane(this);
+			if (verificaNoPitLane) {
+				return false;
+			}
 			List pilotos = controleJogo.getPilotos();
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
+				boolean verificaNoPitLaneOutro = controleJogo
+						.verificaNoPitLane(piloto);
 				if (this.equals(piloto)) {
+					continue;
+				}
+				if (verificaNoPitLaneOutro) {
 					continue;
 				}
 				if (!somenteVerifica) {
@@ -1146,13 +1149,6 @@ public class Piloto implements Serializable {
 						|| getTrazeira().intersects(piloto.getTrazeira())
 						|| getTrazeira().intersects(piloto.getCentro())
 						|| getTrazeira().intersects(piloto.getDiateira());
-				if (controleJogo.verificaNoPitLane(this)) {
-					intercecionou = getDiateira()
-							.intersects(piloto.getCentro())
-							|| getDiateira().intersects(piloto.getDiateira())
-							|| getCentro().intersects(piloto.getCentro())
-							|| getCentro().intersects(piloto.getDiateira());
-				}
 				boolean msmPista = obterPista(controleJogo).size() == piloto
 						.obterPista(controleJogo).size();
 				boolean msmTracado = piloto.getTracado() == getTracado();
