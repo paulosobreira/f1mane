@@ -1074,7 +1074,12 @@ public class Piloto implements Serializable {
 				&& Math.random() < controleJogo.getNiveljogo()
 				&& testeHabilidadePiloto(controleJogo)) {
 			setAgressivo(true, controleJogo);
-			getCarro().setGiro(Carro.GIRO_MAX_VAL);
+			int porcentagemCombustivel = getCarro().porcentagemCombustivel();
+			int porcentagemDesgastePeneus = getCarro()
+					.porcentagemDesgastePeneus();
+			if (Math.abs((porcentagemCombustivel - porcentagemDesgastePeneus)) < 20) {
+				getCarro().setGiro(Carro.GIRO_MAX_VAL);
+			}
 		}
 	}
 
@@ -1379,7 +1384,14 @@ public class Piloto implements Serializable {
 						if (Carro.MAIS_ASA.equals(getCarro().getAsa())) {
 							if ((no.verificaCruvaAlta() || no
 									.verificaCruvaBaixa())) {
-								getCarro().setGiro(Carro.GIRO_MAX_VAL);
+								int porcentagemCombustivel = getCarro()
+										.porcentagemCombustivel();
+								int porcentagemDesgastePeneus = getCarro()
+										.porcentagemDesgastePeneus();
+								if (Math
+										.abs((porcentagemCombustivel - porcentagemDesgastePeneus)) < 20) {
+									getCarro().setGiro(Carro.GIRO_MAX_VAL);
+								}
 							}
 							if (no.verificaRetaOuLargada()) {
 								getCarro().setGiro(Carro.GIRO_NOR_VAL);
@@ -1392,13 +1404,27 @@ public class Piloto implements Serializable {
 								getCarro().setGiro(Carro.GIRO_NOR_VAL);
 							}
 							if (no.verificaRetaOuLargada()) {
-								getCarro().setGiro(Carro.GIRO_MAX_VAL);
+								int porcentagemCombustivel = getCarro()
+										.porcentagemCombustivel();
+								int porcentagemDesgastePeneus = getCarro()
+										.porcentagemDesgastePeneus();
+								if (Math
+										.abs((porcentagemCombustivel - porcentagemDesgastePeneus)) < 20) {
+									getCarro().setGiro(Carro.GIRO_MAX_VAL);
+								}
 							}
 						}
 					}
 					if (testeHabilidadePiloto(controleJogo)) {
 						setAgressivo(true, controleJogo);
-						setModoPilotagem(AGRESSIVO);
+						int porcentagemCombustivel = getCarro()
+								.porcentagemCombustivel();
+						int porcentagemDesgastePeneus = getCarro()
+								.porcentagemDesgastePeneus();
+						if (Math
+								.abs((porcentagemCombustivel - porcentagemDesgastePeneus)) < 20) {
+							setModoPilotagem(AGRESSIVO);
+						}
 						if (Math.random() < controleJogo
 								.obterIndicativoCorridaCompleta()
 								&& Math.random() > .9
