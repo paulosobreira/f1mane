@@ -445,10 +445,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -750,6 +749,7 @@ public class Carro implements Serializable {
 
 		if (piloto.getTracado() != 0
 				&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())
+				&& !piloto.testeHabilidadePiloto(controleJogo)
 				&& Math.random() > controleJogo.getFatorUtrapassagem()) {
 			novoModificador--;
 		}
@@ -808,15 +808,15 @@ public class Carro implements Serializable {
 				}
 				if (controleJogo.asfaltoAbrasivo()
 						&& !controleJogo.isChovendo()
-						&& !getPiloto().isJogadorHumano()
-						&& Math.random() > 0.5) {
+						&& getPiloto().getStress() > 40 && Math.random() > 0.3) {
 					controleJogo.travouRodas(getPiloto());
 				}
 				desgPneus += (teste ? 6 : 24) + novoModDesgaste;
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4) + novoModDesgaste;
+					: 4)
+					+ novoModDesgaste;
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 70
@@ -828,8 +828,7 @@ public class Carro implements Serializable {
 				}
 				if (controleJogo.asfaltoAbrasivo()
 						&& !controleJogo.isChovendo()
-						&& !getPiloto().isJogadorHumano()
-						&& Math.random() > 0.7) {
+						&& getPiloto().getStress() > 35 && Math.random() > 0.5) {
 					controleJogo.travouRodas(getPiloto());
 				}
 				desgPneus += (teste ? 2 : 12) + novoModDesgaste;
@@ -848,9 +847,9 @@ public class Carro implements Serializable {
 					piloto.incStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 5 : 10);
 					if (controleJogo.asfaltoAbrasivo()
-							&& !getPiloto().isJogadorHumano()
+							&& getPiloto().getStress() > 60
 							&& !controleJogo.isChovendo()
-							&& Math.random() > 0.9) {
+							&& Math.random() > 0.7) {
 						controleJogo.travouRodas(getPiloto());
 					}
 				}
@@ -880,17 +879,23 @@ public class Carro implements Serializable {
 			}
 		}
 
-		double modComb = porcentagemCombustivel() / 100.0;
-		double valDesgaste = (desgPneus * controleJogo.getCircuito()
-				.getMultiplciador());
-		double quartoDesgaste = valDesgaste / 4;
-		valDesgaste = (3 * quartoDesgaste) + (quartoDesgaste * modComb);
+		double porcentComb = porcentagemCombustivel() / 100.0;
+		double combustivel = 1;
+		if (Math.random() < porcentComb)
+			combustivel = (piloto.testeHabilidadePiloto(controleJogo) ? Util
+					.intervalo(.7, .8) : Util.intervalo(.8, .9));
+
+		double valDesgaste = (desgPneus
+				* controleJogo.getCircuito().getMultiplciador() * combustivel * (1 + controleJogo
+				.getNiveljogo()));
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 3;
 		}
+
 		if (controleJogo.isSemTrocaPneu()) {
 			valDesgaste *= 0.7;
 		}
+
 		if (!controleJogo.isSemTrocaPneu()
 				&& porcent > 25
 				&& (piloto.getNoAtual().verificaCruvaBaixa() || piloto
@@ -928,12 +933,21 @@ public class Carro implements Serializable {
 		if (verificaDano()) {
 			valDesgaste /= 3;
 		}
+		if (getPiloto().isJogadorHumano()
+				&& !getPiloto().testeHabilidadePilotoCarro(controleJogo)
+				&& MAIS_ASA.equals(getAsa())
+				&& (no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
+			desgPneus += Util.intervalo(1, controleJogo.verificaNivelJogo() ? 2
+					: 1);
+		}
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
 			danificado = PNEU_FURADO;
 			pneus = -1;
+
 			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("043",
 					new String[] { getPiloto().getNome() })));
+
 		}
 		// System.out.println(" Depois " + novoModificador);
 		return novoModificador;
