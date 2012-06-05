@@ -339,7 +339,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			return InterfaceJogo.DIFICIL_NV;
 		}
 		if (InterfaceJogo.FACIL.equals(dadosCriarJogo.getNivelCorrida())) {
-			return InterfaceJogo.DIFICIL_NV;
+			return InterfaceJogo.FACIL_NV;
 		}
 		if (InterfaceJogo.NORMAL.equals(dadosCriarJogo.getNivelCorrida())) {
 			return InterfaceJogo.MEDIO_NV;

@@ -778,23 +778,23 @@ public class Carro implements Serializable {
 				desgPneus += (novoModDesgaste);
 		}
 		if (agressivo && no.verificaCruvaBaixa()) {
-			int perda = 0;
+			int stress = 0;
 			if (controleJogo.verificaNivelJogo()) {
 				if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
-					perda = (Util.intervalo(0, 1));
+					stress = (Util.intervalo(0, 1));
 				}
 				if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
-					perda = (Util.intervalo(0, 2));
+					stress = (Util.intervalo(0, 2));
 				}
 				if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-					perda = (Util.intervalo(1, 2));
+					stress = (Util.intervalo(1, 2));
 				}
 				if (verificaPneusIncompativeisClima(controleJogo)) {
 					piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
-							controleJogo) ? 1 : 1 + perda);
+							controleJogo) ? 1 : 1 + stress);
 				} else {
 					piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
-							controleJogo) ? 0 : perda);
+							controleJogo) ? 0 : stress);
 				}
 			}
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
@@ -804,14 +804,14 @@ public class Carro implements Serializable {
 					teste = false;
 					controleJogo.travouRodas(getPiloto());
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
-							controleJogo) ? 4 : 2 + perda);
+							controleJogo) ? 4 : 2 + stress);
 				}
 				if (controleJogo.asfaltoAbrasivo()
 						&& !controleJogo.isChovendo()
 						&& getPiloto().getStress() > 40 && Math.random() > 0.3) {
 					controleJogo.travouRodas(getPiloto());
 				}
-				desgPneus += (teste ? 6 : 24) + novoModDesgaste;
+				desgPneus += (teste ? 8 : 16) + novoModDesgaste;
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
@@ -831,7 +831,7 @@ public class Carro implements Serializable {
 						&& getPiloto().getStress() > 35 && Math.random() > 0.5) {
 					controleJogo.travouRodas(getPiloto());
 				}
-				desgPneus += (teste ? 2 : 12) + novoModDesgaste;
+				desgPneus += (teste ? 6 : 12) + novoModDesgaste;
 			}
 		} else if (agressivo && no.verificaRetaOuLargada()) {
 			int indexFrete = no.getIndex() + 50;
@@ -842,7 +842,7 @@ public class Carro implements Serializable {
 						&& noFrente.verificaCruvaBaixa()) {
 					boolean teste = piloto
 							.testeHabilidadePilotoCarro(controleJogo);
-					desgPneus += (teste ? 3 : 7) + novoModDesgaste;
+					desgPneus += (teste ? 4 : 8) + novoModDesgaste;
 					controleJogo.travouRodas(getPiloto());
 					piloto.incStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 5 : 10);
@@ -886,7 +886,7 @@ public class Carro implements Serializable {
 					.intervalo(.7, .8) : Util.intervalo(.8, .9));
 
 		double valDesgaste = (desgPneus
-				* controleJogo.getCircuito().getMultiplciador() * combustivel * (1 + controleJogo
+				* controleJogo.getCircuito().getMultiplciador() * combustivel * (0.5 + controleJogo
 				.getNiveljogo()));
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 3;
