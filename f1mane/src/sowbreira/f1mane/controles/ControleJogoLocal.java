@@ -1200,4 +1200,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 	}
 
+	@Override
+	public List listaInfo() {
+		if (gerenciadorVisual != null) {
+			return gerenciadorVisual.getBufferTextual();
+		}
+		return new ArrayList();
+	}
+
 }

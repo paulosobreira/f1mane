@@ -3,7 +3,6 @@ package sowbreira.f1mane.controles;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Carro;
@@ -28,6 +27,8 @@ public interface InterfaceJogo {
 	public static int DUR_AREO_FACIL = 5;
 	public static int DUR_AREO_DIFICIL = 2;
 	public static boolean NOVO_LAYOUT = true;
+
+	public List listaInfo();
 
 	public boolean isSemTrocaPneu();
 

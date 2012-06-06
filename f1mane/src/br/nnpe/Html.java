@@ -193,4 +193,23 @@ public class Html {
 				"' color='white'>").append(msg).append("</font>");
 		return Html.bold(buffer.toString());
 	}
+
+	public static String tagsJava2d(String info) {
+		StringBuffer ret = new StringBuffer();
+		boolean ingnora = false;
+		for (int i = 0; i < info.length(); i++) {
+			if (info.charAt(i) == '<') {
+				ingnora = true;
+				continue;
+			}
+			if (info.charAt(i) == '>') {
+				ingnora = false;
+				continue;
+			}
+			if (!ingnora) {
+				ret.append(info.charAt(i));
+			}
+		}
+		return ret.toString();
+	}
 }

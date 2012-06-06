@@ -1,6 +1,7 @@
 package sowbreira.f1mane;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -538,7 +539,7 @@ public class MainFrame extends JFrame {
 		menu1.add(som);
 		compsSwing = new JMenuItem("compsSwing") {
 			public String getText() {
-				return Lang.msg("CompsSwing");
+				return Lang.msg("f1maneSwing");
 			}
 
 		};
@@ -935,10 +936,13 @@ public class MainFrame extends JFrame {
 		if (ControleJogoLocal.VALENDO) {
 			if (!appletStand)
 				setVisible(true);
-			bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
+			if (Logger.carregaBkg)
+				bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
 			JPanel bgPanel = new JPanel() {
 				protected void paintComponent(Graphics g) {
-					g.drawImage(bg, 0, 0, null);
+					super.paintComponent(g);
+					if (bg != null)
+						g.drawImage(bg, 0, 0, null);
 				};
 
 				@Override
