@@ -62,6 +62,10 @@ public class ControleEstatisticas {
 		return ret;
 	}
 
+	public LinkedList getBufferInfo() {
+		return bufferInfo;
+	}
+
 	public void processaVoltaRapida(Piloto piloto) {
 		if (piloto.getVoltaAtual() == null) {
 			Volta volta = new Volta();
