@@ -445,10 +445,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -803,7 +802,8 @@ public class Carro implements Serializable {
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4) + novoModDesgaste;
+					: 4)
+					+ novoModDesgaste;
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 70
@@ -824,12 +824,10 @@ public class Carro implements Serializable {
 			int indexFrete = no.getIndex() + 50;
 			if (indexFrete < (controleJogo.getNosDaPista().size() - 1)) {
 				No noFrente = controleJogo.getNosDaPista().get(indexFrete);
+				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 60 && !controleJogo.isChovendo()
 						&& getPiloto().getPtosBox() == 0
 						&& noFrente.verificaCruvaBaixa()) {
-					boolean teste = piloto
-							.testeHabilidadePilotoCarro(controleJogo);
-					desgPneus += (teste ? 4 : 5) + novoModDesgaste;
 					controleJogo.travouRodas(getPiloto());
 					piloto.incStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 5 : 10);
@@ -839,7 +837,9 @@ public class Carro implements Serializable {
 							&& Math.random() > 0.7) {
 						controleJogo.travouRodas(getPiloto());
 					}
+					teste = false;
 				}
+				desgPneus += (teste ? 2 : 5);
 			}
 		} else if (agressivo) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
