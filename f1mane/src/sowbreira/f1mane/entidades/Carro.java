@@ -3,6 +3,8 @@ package sowbreira.f1mane.entidades;
 import java.awt.Color;
 import java.io.Serializable;
 
+import com.sun.corba.se.internal.Interceptors.PIORB;
+
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -445,9 +447,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -744,6 +747,7 @@ public class Carro implements Serializable {
 
 		if (piloto.getTracado() != 0
 				&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())
+				&& !Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())
 				&& !piloto.testeHabilidadePiloto(controleJogo)
 				&& Math.random() > controleJogo.getFatorUtrapassagem()) {
 			novoModificador--;
@@ -798,12 +802,11 @@ public class Carro implements Serializable {
 						&& getPiloto().getStress() > 40 && Math.random() > 0.3) {
 					controleJogo.travouRodas(getPiloto());
 				}
-				desgPneus += (teste ? 8 : 12) + novoModDesgaste;
+				desgPneus += (teste ? 8 : 10) + novoModDesgaste;
 			}
 		} else if (agressivo && no.verificaCruvaAlta()) {
 			desgPneus += (piloto.testeHabilidadePilotoCarro(controleJogo) ? 3
-					: 4)
-					+ novoModDesgaste;
+					: 4) + novoModDesgaste;
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
 				if (getPiloto().getStress() > 70
@@ -818,7 +821,7 @@ public class Carro implements Serializable {
 						&& getPiloto().getStress() > 35 && Math.random() > 0.5) {
 					controleJogo.travouRodas(getPiloto());
 				}
-				desgPneus += (teste ? 6 : 10) + novoModDesgaste;
+				desgPneus += (teste ? 6 : 8) + novoModDesgaste;
 			}
 		} else if (agressivo && no.verificaRetaOuLargada()) {
 			int indexFrete = no.getIndex() + 50;
