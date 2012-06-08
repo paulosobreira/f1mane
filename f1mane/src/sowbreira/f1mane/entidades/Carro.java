@@ -3,8 +3,6 @@ package sowbreira.f1mane.entidades;
 import java.awt.Color;
 import java.io.Serializable;
 
-import com.sun.corba.se.internal.Interceptors.PIORB;
-
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;

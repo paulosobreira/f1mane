@@ -590,7 +590,7 @@ public class PainelCircuito extends JPanel {
 			while (indemax > -1) {
 				String info = (String) controleJogo.listaInfo().get(indemax);
 				if (info.contains("<table>")) {
-					System.out.println(info);
+//					System.out.println(info);
 				} else {
 					info = Html.tagsJava2d(info);
 					g2d.drawString("" + info, o.x + 4, o.y + (20 * (cont++)));
