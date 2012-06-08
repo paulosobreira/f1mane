@@ -229,6 +229,8 @@ public class PainelCircuito extends JPanel {
 	private String tpAsa;
 	private double multiminiPista;
 	private Point maiorP;
+	private String infoComp;
+	private int infoCompCont;
 
 	public int getPorcentCombust() {
 		return porcentCombust;
@@ -550,6 +552,7 @@ public class PainelCircuito extends JPanel {
 				desenhaInfoPilotoSelecionado(g2d);
 				desenhaMiniPista(g2d);
 				desenhaNarracao(g2d);
+				desenhaTabelaComparativa(g2d);
 				desenhaControles(g2d);
 				desenhaControlesBox(g2d);
 				desenhaBarrasDeGiro(pilotoSelecionado, g2d);
@@ -590,7 +593,10 @@ public class PainelCircuito extends JPanel {
 			while (indemax > -1) {
 				String info = (String) controleJogo.listaInfo().get(indemax);
 				if (info.contains("<table>")) {
-//					System.out.println(info);
+					if (!info.equals(infoComp)) {
+						infoComp = info;
+						infoCompCont = 5000;
+					}
 				} else {
 					info = Html.tagsJava2d(info);
 					g2d.drawString("" + info, o.x + 4, o.y + (20 * (cont++)));
@@ -601,6 +607,227 @@ public class PainelCircuito extends JPanel {
 				}
 			}
 		}
+	}
+
+	public static void main(String[] args) {
+		String info = "<table>    <tr>        <td>        </td>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Número 11</font>        </td >                <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Número 10</font>        </td>           <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Número 9</font>        </td>               </tr>    <tr>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >N.Hiidfeld 8</font>        </td>        <td>        <font face='sans-serif' >1:00.445</font>        </td>                <td>        <font face='sans-serif' >1:04.908</font>        </td>           <td>        <font face='sans-serif' >1:02.674</font>        </td>               </tr>    <tr>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >J.Botton 9</font>        </td>        <td>        <font face='sans-serif' >56.648</font>        </td>                <td>        <font face='sans-serif' >55.758</font>        </td>           <td>        <font face='sans-serif' >55.556</font>        </td>               </tr>        <tr>        <td>        </td>        <td bgcolor='#80FF00'>        <font face='sans-serif' >-3.797</font>        </td>                <td bgcolor='#80FF00'>        <font face='sans-serif' >-9.150</font>        </td>           <td bgcolor='#80FF00'>        <font face='sans-serif' >1.118</font>        </td>               </tr>     </table>";
+		String parte[] = info.split("<font face='sans-serif' >");
+		String volta1 = "";
+		volta1 = geraLabelVoltaTabelaComparativa(parte[1], volta1);
+		System.out.println(volta1);
+		String volta2 = "";
+		volta2 = geraLabelVoltaTabelaComparativa(parte[2], volta2);
+		System.out.println(volta2);
+		String volta3 = "";
+		volta3 = geraLabelVoltaTabelaComparativa(parte[3], volta3);
+		System.out.println(volta3);
+		String nmPilotoFrente = "";
+		nmPilotoFrente = geraLabelVoltaTabelaComparativa(parte[4],
+				nmPilotoFrente);
+		System.out.println(nmPilotoFrente);
+		String t1PilotoFrente = "";
+		t1PilotoFrente = geraLabelVoltaTabelaComparativa(parte[5],
+				t1PilotoFrente);
+		System.out.println(t1PilotoFrente);
+		String t2PilotoFrente = "";
+		t2PilotoFrente = geraLabelVoltaTabelaComparativa(parte[6],
+				t2PilotoFrente);
+		System.out.println(t2PilotoFrente);
+		String t3PilotoFrente = "";
+		t3PilotoFrente = geraLabelVoltaTabelaComparativa(parte[7],
+				t3PilotoFrente);
+		System.out.println(t3PilotoFrente);
+
+		String nmPilotoTraz = "";
+		nmPilotoTraz = geraLabelVoltaTabelaComparativa(parte[8], nmPilotoTraz);
+		System.out.println(nmPilotoTraz);
+		String t1PilotoTraz = "";
+		t1PilotoTraz = geraLabelVoltaTabelaComparativa(parte[9], t1PilotoTraz);
+		System.out.println(t1PilotoTraz);
+		String t2PilotoTraz = "";
+		t2PilotoTraz = geraLabelVoltaTabelaComparativa(parte[10], t2PilotoTraz);
+		System.out.println(t2PilotoTraz);
+		String t3PilotoTraz = "";
+		t3PilotoTraz = geraLabelVoltaTabelaComparativa(parte[11], t3PilotoTraz);
+		System.out.println(t3PilotoTraz);
+		String t1Diff = "";
+		t1Diff = geraLabelVoltaTabelaComparativa(parte[12], t1Diff);
+		System.out.println(t1Diff);
+		String t2Diff = "";
+		t2Diff = geraLabelVoltaTabelaComparativa(parte[13], t2Diff);
+		System.out.println(t2Diff);
+		String t3Diff = "";
+		t3Diff = geraLabelVoltaTabelaComparativa(parte[14], t3Diff);
+		System.out.println(t3Diff);
+
+	}
+
+	private static String geraLabelVoltaTabelaComparativa(String parte,
+			String volta1) {
+		for (int i = 0; i < parte.length(); i++) {
+			if (parte.charAt(i) == '<') {
+				break;
+			}
+			volta1 += parte.charAt(i);
+		}
+		return volta1;
+	}
+
+	private void desenhaTabelaComparativa(Graphics2D g2d) {
+		if (infoCompCont < 0 || Util.isNullOrEmpty(infoComp)) {
+			return;
+		}
+		String parte[] = infoComp.split("<font face='sans-serif' >");
+		String volta1 = "";
+		volta1 = geraLabelVoltaTabelaComparativa(parte[1], volta1);
+		String volta2 = "";
+		volta2 = geraLabelVoltaTabelaComparativa(parte[2], volta2);
+		String volta3 = "";
+		volta3 = geraLabelVoltaTabelaComparativa(parte[3], volta3);
+		String nmPilotoFrente = "";
+		nmPilotoFrente = geraLabelVoltaTabelaComparativa(parte[4],
+				nmPilotoFrente);
+		String t1PilotoFrente = "";
+		t1PilotoFrente = geraLabelVoltaTabelaComparativa(parte[5],
+				t1PilotoFrente);
+		String t2PilotoFrente = "";
+		t2PilotoFrente = geraLabelVoltaTabelaComparativa(parte[6],
+				t2PilotoFrente);
+		String t3PilotoFrente = "";
+		t3PilotoFrente = geraLabelVoltaTabelaComparativa(parte[7],
+				t3PilotoFrente);
+
+		String nmPilotoTraz = "";
+		nmPilotoTraz = geraLabelVoltaTabelaComparativa(parte[8], nmPilotoTraz);
+		String t1PilotoTraz = "";
+		t1PilotoTraz = geraLabelVoltaTabelaComparativa(parte[9], t1PilotoTraz);
+		String t2PilotoTraz = "";
+		t2PilotoTraz = geraLabelVoltaTabelaComparativa(parte[10], t2PilotoTraz);
+		String t3PilotoTraz = "";
+		t3PilotoTraz = geraLabelVoltaTabelaComparativa(parte[11], t3PilotoTraz);
+		String t1Diff = "";
+		t1Diff = geraLabelVoltaTabelaComparativa(parte[12], t1Diff);
+		String t2Diff = "";
+		t2Diff = geraLabelVoltaTabelaComparativa(parte[13], t2Diff);
+		String t3Diff = "";
+		t3Diff = geraLabelVoltaTabelaComparativa(parte[14], t3Diff);
+
+		Point o = new Point(limitesViewPort.x + limitesViewPort.width - 580,
+				limitesViewPort.y + limitesViewPort.height - 150);
+
+		Color bkg = transpMenus;
+		Color fonte = Color.black;
+
+		RoundRectangle2D rectanglePos = new RoundRectangle2D.Double(o.x, o.y,
+				100, 20, 15, 15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(nmPilotoFrente, o.x + 5, o.y + 16);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x, o.y + 22, 100, 20, 15,
+				15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(nmPilotoTraz, o.x + 5, o.y + 38);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 102, o.y - 22, 100,
+				20, 15, 15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(volta1, o.x + 107, o.y - 8);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 102, o.y, 100, 20, 15,
+				15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(t1PilotoFrente, o.x + 117, o.y + 16);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 102, o.y + 22, 100,
+				20, 15, 15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(t1PilotoTraz, o.x + 117, o.y + 38);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 102, o.y + 44, 100,
+				20, 15, 15);
+		if (t1Diff.startsWith("-")) {
+			g2d.setColor(gre);
+		} else {
+			g2d.setColor(yel);
+		}
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(t1Diff, o.x + 117, o.y + 60);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 204, o.y - 22, 100,
+				20, 15, 15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(volta2, o.x + 209, o.y - 8);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 204, o.y, 100, 20, 15,
+				15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(t2PilotoFrente, o.x + 219, o.y + 16);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 204, o.y + 22, 100,
+				20, 15, 15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(t2PilotoTraz, o.x + 219, o.y + 38);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 204, o.y + 44, 100,
+				20, 15, 15);
+		if (t2Diff.startsWith("-")) {
+			g2d.setColor(gre);
+		} else {
+			g2d.setColor(yel);
+		}
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(t2Diff, o.x + 219, o.y + 60);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 306, o.y - 22, 100,
+				20, 15, 15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(volta3, o.x + 311, o.y - 8);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 306, o.y, 100, 20, 15,
+				15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(t3PilotoFrente, o.x + 321, o.y + 16);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 306, o.y + 22, 100,
+				20, 15, 15);
+		g2d.setColor(bkg);
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(t3PilotoTraz, o.x + 321, o.y + 38);
+
+		rectanglePos = new RoundRectangle2D.Double(o.x + 306, o.y + 44, 100,
+				20, 15, 15);
+		if (t3Diff.startsWith("-")) {
+			g2d.setColor(gre);
+		} else {
+			g2d.setColor(yel);
+		}
+		g2d.fill(rectanglePos);
+		g2d.setColor(fonte);
+		g2d.drawString(t3Diff, o.x + 321, o.y + 60);
+		infoCompCont--;
 	}
 
 	private void desenhaDebugIinfo(Graphics2D g2d) {
@@ -1295,10 +1522,6 @@ public class PainelCircuito extends JPanel {
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("sc", (o.x + p.x) - 6, o.y + p.y + 3);
 		}
-	}
-
-	public static void main(String[] args) {
-		System.out.println(4341 / 21);
 	}
 
 	private void desenhaMarcasPeneuPista(Graphics2D g2d) {
