@@ -526,13 +526,6 @@ public class ControleCorrida {
 						new String[] { Html.bold(perdedor.getNome()),
 								Html.bold(ganhador.getNome()) }));
 			}
-
-			if (ganhador.isJogadorHumano() && Math.random() > 0.950) {
-				controleJogo.info(Lang.msg(
-						"019",
-						new String[] { Html.bold(ganhador.getNome()),
-								Html.bold(perdedor.getNome()) }));
-			}
 		}
 		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
 			perdedor.incStress(Util.intervalo(0, 1));
