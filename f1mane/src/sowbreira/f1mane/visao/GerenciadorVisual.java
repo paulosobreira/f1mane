@@ -212,12 +212,15 @@ public class GerenciadorVisual {
 		};
 		KeyListener keyListener = geraKeyListener();
 		frame.addKeyListener(keyListener);
+		if(frame.getParent()!=null){
+			frame.getParent().addKeyListener(keyListener);
+		}
 		painelCircuito.addKeyListener(keyListener);
 		scrollPane.addKeyListener(keyListener);
 		frame.addMouseWheelListener(mw);
 		painelCircuito.addMouseWheelListener(mw);
 		scrollPane.addMouseWheelListener(mw);
-		frame.requestFocus();
+		scrollPane.requestFocus();
 	}
 
 	private void gerarLayout() {
