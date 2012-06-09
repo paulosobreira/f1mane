@@ -238,19 +238,10 @@ public class Carro implements Serializable {
 		this.potencia = potencia;
 	}
 
-	public boolean verificaCondicoesCautela(InterfaceJogo controleJogo) {
+	public boolean verificaPilotoNormal(InterfaceJogo controleJogo) {
 		int pneus = porcentagemDesgastePeneus();
-		int combust = porcentagemCombustivel();
-		int motor = porcentagemDesgasteMotor();
 		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
 		if (pneus < (consumoMedioPenus)) {
-			return true;
-		}
-		if (controleJogo.isSemReabastacimento() && combust < 10) {
-			return true;
-		}
-		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
-		if (combust < (consumoMedioCombust)) {
 			return true;
 		}
 		if (Carro.TIPO_PNEU_MOLE.equals(getTipoPneu())) {
@@ -261,9 +252,6 @@ public class Carro implements Serializable {
 			if (pneus < 5) {
 				return true;
 			}
-		}
-		if (motor < 5) {
-			return true;
 		}
 		return false;
 	}
@@ -780,7 +768,7 @@ public class Carro implements Serializable {
 				stress = Util.intervalo(1, 20);
 				if (verificaPneusIncompativeisClima(controleJogo)) {
 					piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
-							controleJogo) ? 1 : 1 + stress);
+							controleJogo) ? 0 : 1 + stress);
 				} else {
 					piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
 							controleJogo) ? 0 : stress);

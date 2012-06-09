@@ -459,7 +459,7 @@ public class ControleCorrida {
 							|| Math.random() < fatorAcidenteLocal
 							|| controleJogo.verificaUltimasVoltas()
 							|| piloto.getStress() <= Util.intervalo(60, 80)) {
-						piloto.incStress(Util.intervalo(20, 30));
+						piloto.incStress(Util.intervalo(30, 50));
 						piloto.setCiclosDesconcentrado(Util.intervalo(100, 200));
 					} else {
 						piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
@@ -475,7 +475,7 @@ public class ControleCorrida {
 								&& Math.random() < fatorAcidenteLocal) {
 							return;
 						}
-						piloto.incStress(Util.intervalo(30, 40));
+						piloto.incStress(Util.intervalo(40, 60));
 						piloto.getCarro()
 								.setDurabilidadeAereofolio(
 										piloto.getCarro()
