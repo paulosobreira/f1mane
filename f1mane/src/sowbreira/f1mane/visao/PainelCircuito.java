@@ -595,7 +595,7 @@ public class PainelCircuito extends JPanel {
 				if (info.contains("<table>")) {
 					if (!info.equals(infoComp)) {
 						infoComp = info;
-						infoCompCont = 5000;
+						infoCompCont = 1000;
 					}
 				} else {
 					info = Html.tagsJava2d(info);
