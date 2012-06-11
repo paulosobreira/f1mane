@@ -92,12 +92,12 @@ public class PainelEntradaCliente {
 	}
 
 	private void gerarPainelCriarJogo(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(8, 2, 5, 5));
+		painelInicio.setLayout(new GridLayout(6, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
-				return Lang.msg("110",
-						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
-								String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110", new String[] {
+						String.valueOf(Constantes.MIN_VOLTAS),
+						String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 
@@ -106,21 +106,7 @@ public class PainelEntradaCliente {
 		if (!ControleJogoLocal.VALENDO) {
 			spinnerQtdeVoltas.setValue(new Integer(30));
 		}
-		comboBoxPilotoSelecionado = new JComboBox();
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
-			comboBoxPilotoSelecionado.addItem(piloto);
-		}
-		painelInicio.add(new JLabel("Selecionar Piloto :") {
-			@Override
-			public String getText() {
-				return Lang.msg("120");
-			}
-		});
-		painelInicio.add(comboBoxPilotoSelecionado);
-
 		JPanel pNome = new JPanel(new GridLayout(1, 2));
-
 		pNome.add(new JLabel() {
 
 			public String getText() {
@@ -185,63 +171,8 @@ public class PainelEntradaCliente {
 		pVolt.add(spinnerQtdeVoltas);
 		painelInicio.add(pVolt);
 
-		JLabel tipoPneu = new JLabel(Lang.msg("009"));
-		comboBoxPneuInicial = new JComboBox();
-		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_MOLE));
-		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_DURO));
-		comboBoxPneuInicial.addItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
+		painelInicio.add(new JLabel());
 
-		JLabel qtdeComustivel = new JLabel(Lang.msg("011")) {
-			@Override
-			public String getText() {
-				return Lang.msg("011");
-			}
-		};
-		sliderCombustivelInicial = new JSlider(0, 100);
-		Hashtable labelTable = new Hashtable();
-		labelTable.put(new Integer(000), new JLabel("") {
-			@Override
-			public String getText() {
-				return Lang.msg("MENOS");
-			}
-		});
-		labelTable.put(new Integer(100), new JLabel("") {
-			@Override
-			public String getText() {
-				return Lang.msg("MAIS");
-			}
-		});
-		sliderCombustivelInicial.setLabelTable(labelTable);
-		sliderCombustivelInicial.setPaintLabels(true);
-
-		sliderCombustivelInicial.setValue(new Integer(100));
-		sliderCombustivelInicial.setMaximum(new Integer(100));
-		JLabel tipoAsa = new JLabel(Lang.msg("010")) {
-			@Override
-			public String getText() {
-				return Lang.msg("010");
-			}
-		};
-		comboBoxAsa = new JComboBox();
-		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
-		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
-		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
-
-		JPanel pC = new JPanel();
-		pC.add(qtdeComustivel);
-		pC.add(sliderCombustivelInicial);
-		painelInicio.add(pC);
-
-		JPanel pA = new JPanel(new GridLayout(1, 2));
-
-		pA.add(tipoAsa);
-		pA.add(comboBoxAsa);
-		painelInicio.add(pA);
-
-		JPanel pPa = new JPanel(new GridLayout(1, 2));
-		pPa.add(tipoPneu);
-		pPa.add(comboBoxPneuInicial);
-		painelInicio.add(pPa);
 		JPanel jDiff = new JPanel();
 
 		jDiff.add(new JLabel("Dificuldade Utrapassagem :") {
@@ -253,7 +184,7 @@ public class PainelEntradaCliente {
 		sliderDificuldadeUltrapassagem = new JSlider(000, 500);
 		sliderDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(000,
 				500)));
-		labelTable = new Hashtable();
+		Hashtable labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
 			public String getText() {
@@ -282,13 +213,13 @@ public class PainelEntradaCliente {
 		sliderTempoCiclo.setValue(new Integer(Util.intervalo(
 				Constantes.MIN_CICLO + 80, Constantes.MAX_CICLO - 30)));
 		labelTable = new Hashtable();
-		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
+		labelTable.put(new Integer(Constantes.MIN_CICLO + 40), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("RAPIDOS");
 			}
 		});
-		labelTable.put(new Integer(Constantes.MAX_CICLO), new JLabel("") {
+		labelTable.put(new Integer(Constantes.MAX_CICLO - 30), new JLabel("") {
 			@Override
 			public String getText() {
 				return Lang.msg("LENTOS");
@@ -356,6 +287,7 @@ public class PainelEntradaCliente {
 		PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
 				new ArrayList(), new Hashtable(), null, "teste", null);
 		painelEntradaCliente.gerarDadosCriarJogo(new DadosCriarJogo());
+		//painelEntradaCliente.gerarDadosEntrarJogo(dadosParticiparJogo, panelJogoCriado, circuito)
 	}
 
 	public boolean gerarDadosCriarJogo(DadosCriarJogo dadosCriarJogo) {
@@ -367,8 +299,8 @@ public class PainelEntradaCliente {
 		painelMostrar.add(painelInicio, BorderLayout.CENTER);
 		setaCampeonato();
 
-		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar,
-				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar, Lang
+				.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
@@ -377,17 +309,6 @@ public class PainelEntradaCliente {
 		if (qtdeVoltas < 12) {
 			spinnerQtdeVoltas.setValue(new Integer(12));
 		}
-		Integer combustivelInicial = (Integer) sliderCombustivelInicial
-				.getValue();
-		if (combustivelInicial <= 0) {
-			if (semReabastacimento.isSelected()) {
-				sliderCombustivelInicial.setValue(new Integer(1));
-			} else {
-				sliderCombustivelInicial.setValue(new Integer(20));
-			}
-
-		}
-
 		preecherDados();
 		if ((!Clima.CHUVA.equals(dadosCriarJogo.getClima().getClima()) && Carro.TIPO_PNEU_CHUVA
 				.equals(dadosCriarJogo.getTpPnueu()))
@@ -409,8 +330,8 @@ public class PainelEntradaCliente {
 		if (campeonato != null) {
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
-			comboBoxNivelCorrida
-					.setSelectedItem(Lang.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida.setSelectedItem(Lang
+					.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
 			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
 			semReabastacimento.setEnabled(false);
@@ -653,8 +574,8 @@ public class PainelEntradaCliente {
 			}
 		});
 		panel.add(painelInicio, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(mainFrame, panel,
-				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, panel, Lang
+				.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
