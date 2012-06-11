@@ -104,58 +104,12 @@ public class PainelCircuito extends JPanel {
 	private BasicStroke pistaTinta;
 	private BasicStroke box;
 	private BasicStroke zebra;
-
-	public final static BufferedImage carroimgDano = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png");
-	public final static BufferedImage setaCarroCima = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png", 200);
-	public final static BufferedImage setaCarroBaixo = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png", 200);
-	public final static BufferedImage gridCarro = CarregadorRecursos
-			.carregaBufferedImageTranspareciaPreta("GridCarro.png", 100);
-	public final static BufferedImage scimg = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("safetycar.gif");
-	public final static BufferedImage scima = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("sfcima.png");
-	public final static BufferedImage travadaRodaImg0 = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("travadaRoda0.png", 150,
-					100);
-	public final static BufferedImage travadaRodaImg1 = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("travadaRoda1.png", 150,
-					100);
-	public final static BufferedImage travadaRodaImg2 = CarregadorRecursos
-			.carregaBufferedImageTranspareciaBranca("travadaRoda2.png", 150,
-					100);
-	public final static BufferedImage carroCimaFreiosD1 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosD1.png", null);
-	public final static BufferedImage carroCimaFreiosD2 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosD2.png", null);
-	public final static BufferedImage carroCimaFreiosD3 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosD3.png", null);
-	public final static BufferedImage carroCimaFreiosD4 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosD4.png", null);
-	public final static BufferedImage carroCimaFreiosD5 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosD5.png", null);
-	public final static BufferedImage carroCimaFreiosE1 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosE1.png", null);
-	public final static BufferedImage carroCimaFreiosE2 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosE2.png", null);
-	public final static BufferedImage carroCimaFreiosE3 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosE3.png", null);
-	public final static BufferedImage carroCimaFreiosE4 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosE4.png", null);
-	public final static BufferedImage carroCimaFreiosE5 = CarregadorRecursos
-			.carregaBufferedImageTransparecia("CarroCimaFreiosE5.png", null);
 	private int qtdeLuzesAcesas = 5;
 	private Piloto pilotQualificacao;
 	private Point pointQualificacao;
 	private Map mapDesenharQualificacao = new HashMap();
 	private boolean desenhouQualificacao;
 	private boolean desenhaInfo = true;
-	public final ImageIcon fuel = new ImageIcon(CarregadorRecursos
-			.carregarImagem("fuel.gif"));
-	public final ImageIcon tyre = new ImageIcon(CarregadorRecursos
-			.carregarImagem("tyre.gif"));
 	private int mx;
 	private int my;
 	public double zoom = 1.0;
@@ -235,44 +189,31 @@ public class PainelCircuito extends JPanel {
 	private String infoComp;
 	private int infoCompCont;
 
-	public int getPorcentCombust() {
-		return porcentCombust;
-	}
-
-	public String getTpPneu() {
-		return tpPneu;
-	}
-
-	public String getTpAsa() {
-		return tpAsa;
-	}
-
-	public No getPosisRec() {
-		return posisRec;
-	}
-
-	public void setPosisRec(No posisRec) {
-		this.posisRec = posisRec;
-	}
-
-	public Point getPosisAtual() {
-		return posisAtual;
-	}
-
-	public void setPosisAtual(Point posisAtual) {
-		this.posisAtual = posisAtual;
-	}
-
-	public BufferedImage getBackGround() {
-		return backGround;
-	}
-
-	public void setBackGround(BufferedImage backGround) {
-		this.backGround = backGround;
-	}
+	private BufferedImage carroimgDano;
+	private BufferedImage setaCarroCima;
+	private BufferedImage setaCarroBaixo;
+	private BufferedImage gridCarro;
+	private BufferedImage scimg;
+	private BufferedImage scima;
+	private BufferedImage travadaRodaImg0;
+	private BufferedImage travadaRodaImg1;
+	private BufferedImage travadaRodaImg2;
+	private BufferedImage carroCimaFreiosD1;
+	private BufferedImage carroCimaFreiosD2;
+	private BufferedImage carroCimaFreiosD3;
+	private BufferedImage carroCimaFreiosD4;
+	private BufferedImage carroCimaFreiosD5;
+	private BufferedImage carroCimaFreiosE1;
+	private BufferedImage carroCimaFreiosE2;
+	private BufferedImage carroCimaFreiosE3;
+	private BufferedImage carroCimaFreiosE4;
+	private BufferedImage carroCimaFreiosE5;
+	private ImageIcon fuel;
+	private ImageIcon tyre;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
+		carregaRecursos();
 		controleJogo = jogo;
 		this.gerenciadorVisual = gerenciadorVisual;
 		pilotosRect = new RoundRectangle2D.Double[controleJogo.getPilotos()
@@ -347,6 +288,55 @@ public class PainelCircuito extends JPanel {
 		my += 300;
 		Logger.logar("Antes atualizaVarZoom");
 		gerarGrid();
+
+	}
+
+	private void carregaRecursos() {
+		carroimgDano = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png");
+		setaCarroCima = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
+						200);
+		setaCarroBaixo = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
+						200);
+		gridCarro = CarregadorRecursos.carregaBufferedImageTranspareciaPreta(
+				"GridCarro.png", 100);
+		scimg = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("safetycar.gif");
+		scima = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("sfcima.png");
+		travadaRodaImg0 = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("travadaRoda0.png",
+						150, 100);
+		travadaRodaImg1 = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("travadaRoda1.png",
+						150, 100);
+		travadaRodaImg2 = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("travadaRoda2.png",
+						150, 100);
+		carroCimaFreiosD1 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosD1.png", null);
+		carroCimaFreiosD2 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosD2.png", null);
+		carroCimaFreiosD3 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosD3.png", null);
+		carroCimaFreiosD4 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosD4.png", null);
+		carroCimaFreiosD5 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosD5.png", null);
+		carroCimaFreiosE1 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosE1.png", null);
+		carroCimaFreiosE2 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosE2.png", null);
+		carroCimaFreiosE3 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosE3.png", null);
+		carroCimaFreiosE4 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosE4.png", null);
+		carroCimaFreiosE5 = CarregadorRecursos
+				.carregaBufferedImageTransparecia("CarroCimaFreiosE5.png", null);
+		fuel = new ImageIcon(CarregadorRecursos.carregarImagem("fuel.gif"));
+		tyre = new ImageIcon(CarregadorRecursos.carregarImagem("tyre.gif"));
 
 	}
 
@@ -612,55 +602,6 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public static void main(String[] args) {
-		String info = "<table>    <tr>        <td>        </td>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Número 11</font>        </td >                <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Número 10</font>        </td>           <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Número 9</font>        </td>               </tr>    <tr>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >N.Hiidfeld 8</font>        </td>        <td>        <font face='sans-serif' >1:00.445</font>        </td>                <td>        <font face='sans-serif' >1:04.908</font>        </td>           <td>        <font face='sans-serif' >1:02.674</font>        </td>               </tr>    <tr>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >J.Botton 9</font>        </td>        <td>        <font face='sans-serif' >56.648</font>        </td>                <td>        <font face='sans-serif' >55.758</font>        </td>           <td>        <font face='sans-serif' >55.556</font>        </td>               </tr>        <tr>        <td>        </td>        <td bgcolor='#80FF00'>        <font face='sans-serif' >-3.797</font>        </td>                <td bgcolor='#80FF00'>        <font face='sans-serif' >-9.150</font>        </td>           <td bgcolor='#80FF00'>        <font face='sans-serif' >1.118</font>        </td>               </tr>     </table>";
-		String parte[] = info.split("<font face='sans-serif' >");
-		String volta1 = "";
-		volta1 = geraLabelVoltaTabelaComparativa(parte[1], volta1);
-		System.out.println(volta1);
-		String volta2 = "";
-		volta2 = geraLabelVoltaTabelaComparativa(parte[2], volta2);
-		System.out.println(volta2);
-		String volta3 = "";
-		volta3 = geraLabelVoltaTabelaComparativa(parte[3], volta3);
-		System.out.println(volta3);
-		String nmPilotoFrente = "";
-		nmPilotoFrente = geraLabelVoltaTabelaComparativa(parte[4],
-				nmPilotoFrente);
-		System.out.println(nmPilotoFrente);
-		String t1PilotoFrente = "";
-		t1PilotoFrente = geraLabelVoltaTabelaComparativa(parte[5],
-				t1PilotoFrente);
-		System.out.println(t1PilotoFrente);
-		String t2PilotoFrente = "";
-		t2PilotoFrente = geraLabelVoltaTabelaComparativa(parte[6],
-				t2PilotoFrente);
-		System.out.println(t2PilotoFrente);
-		String t3PilotoFrente = "";
-		t3PilotoFrente = geraLabelVoltaTabelaComparativa(parte[7],
-				t3PilotoFrente);
-		System.out.println(t3PilotoFrente);
-
-		String nmPilotoTraz = "";
-		nmPilotoTraz = geraLabelVoltaTabelaComparativa(parte[8], nmPilotoTraz);
-		System.out.println(nmPilotoTraz);
-		String t1PilotoTraz = "";
-		t1PilotoTraz = geraLabelVoltaTabelaComparativa(parte[9], t1PilotoTraz);
-		System.out.println(t1PilotoTraz);
-		String t2PilotoTraz = "";
-		t2PilotoTraz = geraLabelVoltaTabelaComparativa(parte[10], t2PilotoTraz);
-		System.out.println(t2PilotoTraz);
-		String t3PilotoTraz = "";
-		t3PilotoTraz = geraLabelVoltaTabelaComparativa(parte[11], t3PilotoTraz);
-		System.out.println(t3PilotoTraz);
-		String t1Diff = "";
-		t1Diff = geraLabelVoltaTabelaComparativa(parte[12], t1Diff);
-		System.out.println(t1Diff);
-		String t2Diff = "";
-		t2Diff = geraLabelVoltaTabelaComparativa(parte[13], t2Diff);
-		System.out.println(t2Diff);
-		String t3Diff = "";
-		t3Diff = geraLabelVoltaTabelaComparativa(parte[14], t3Diff);
-		System.out.println(t3Diff);
 
 	}
 
@@ -3667,7 +3608,7 @@ public class PainelCircuito extends JPanel {
 		if (!Util.isNullOrEmpty(txt2)) {
 			g2d.drawString(txt2, xTxt + 28, Util.inte((pt.y * zoom - 24)));
 		}
-		g2d.setColor(Color.BLACK);
+		g2d.setColor(transpMenus);
 		g2d.drawLine(Util.inte((pt.x * zoom + 4)), Util.inte(pt.y * zoom), Util
 				.inte((pt.x * zoom) + 13), Util.inte((pt.y * zoom) - 40));
 	}
@@ -4190,4 +4131,39 @@ public class PainelCircuito extends JPanel {
 
 	}
 
+	public int getPorcentCombust() {
+		return porcentCombust;
+	}
+
+	public String getTpPneu() {
+		return tpPneu;
+	}
+
+	public String getTpAsa() {
+		return tpAsa;
+	}
+
+	public No getPosisRec() {
+		return posisRec;
+	}
+
+	public void setPosisRec(No posisRec) {
+		this.posisRec = posisRec;
+	}
+
+	public Point getPosisAtual() {
+		return posisAtual;
+	}
+
+	public void setPosisAtual(Point posisAtual) {
+		this.posisAtual = posisAtual;
+	}
+
+	public BufferedImage getBackGround() {
+		return backGround;
+	}
+
+	public void setBackGround(BufferedImage backGround) {
+		this.backGround = backGround;
+	}
 }
