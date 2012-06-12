@@ -1029,7 +1029,7 @@ public class Piloto implements Serializable {
 			ganhosReta.add(ganho);
 		}
 		index += Math.round(ganho);
-		setVelocidade(Util.inte(ganho * 5.27));
+		setVelocidade(Util.inte((Util.intervalo(320, 330) * ganho) / ganhoMax));
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
 		}

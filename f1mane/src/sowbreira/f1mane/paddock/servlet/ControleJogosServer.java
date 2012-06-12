@@ -90,8 +90,9 @@ public class ControleJogosServer {
 						&& !clientPaddockPack
 								.getSessaoCliente()
 								.getNomeJogador()
-								.equals(campeonato.getJogadorDadosSrv()
-										.getNome())) {
+								.equalsIgnoreCase(
+										campeonato.getJogadorDadosSrv()
+												.getNome())) {
 					return new MsgSrv(Lang.msg("somenteDonoPodeCriar"));
 				}
 
@@ -114,28 +115,6 @@ public class ControleJogosServer {
 				jogoServidor = new JogoServidor(temporada);
 				jogoServidor.prepararJogoOnline(clientPaddockPack
 						.getDadosJogoCriado());
-				CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-						.verCarreira(clientPaddockPack, session);
-				if (carreiraDadosSrv.isModoCarreira()) {
-					if (verificaExcedePotencia(jogoServidor.getMediaPontecia(),
-							carreiraDadosSrv.getPtsCarro(),
-							jogoServidor.getNiveljogo())) {
-						int permitidoAcimaMedia = 0;
-						if (InterfaceJogo.FACIL_NV == jogoServidor
-								.getNiveljogo()) {
-							permitidoAcimaMedia = Constantes.ACIMA_MEDIA_FACIL;
-						}
-						if (InterfaceJogo.MEDIO_NV == jogoServidor
-								.getNiveljogo()) {
-							permitidoAcimaMedia = Constantes.ACIMA_MEDIA_NORMAL;
-						}
-						String media = (jogoServidor.getMediaPontecia() + permitidoAcimaMedia)
-								+ "";
-						return new MsgSrv(Lang.msg("261",
-								new String[] { media }));
-
-					}
-				}
 				jogoServidor.setNomeCriador(clientPaddockPack
 						.getSessaoCliente().getNomeJogador());
 				jogoServidor.setTempoCriacao(System.currentTimeMillis());
@@ -151,8 +130,6 @@ public class ControleJogosServer {
 			gerarListaJogosCriados();
 
 			jogoServidor.setControleClassificacao(controleClassificacao);
-			jogoServidor.adicionarJogador(clientPaddockPack.getSessaoCliente()
-					.getNomeJogador(), clientPaddockPack.getDadosJogoCriado());
 			jogoServidor.setControleJogosServer(this);
 			jogoServidor
 					.setControleCampeonatoServidor(controleCampeonatoServidor);

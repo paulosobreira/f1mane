@@ -250,7 +250,7 @@ public class ControleBox {
 					piloto.setTracado(0);
 				}
 				piloto.setPtosBox(novosPtsBox);
-				piloto.setVelocidade(Util.intervalo(55, 60));
+				piloto.setVelocidade(Util.intervalo(95, 100));
 			}
 
 			if (piloto.getPtosBox() < boxList.size()) {
