@@ -297,7 +297,7 @@ public class ControlePaddockCliente {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 					Comandos.CRIAR_JOGO, sessaoCliente);
 			Logger.logar("criarJogo cliente " + temporada);
-			jogoCliente = new JogoCliente(temporada);
+			JogoCliente jogoCliente = new JogoCliente(temporada);
 			jogoCliente.setMainFrame(mainFrame);
 			PainelEntradaCliente controleCriacaoCorridaSimples = new PainelEntradaCliente(
 					jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
@@ -319,16 +319,13 @@ public class ControlePaddockCliente {
 				return;
 			}
 			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
-			jogoCliente = new JogoCliente(dadosCriarJogo.getTemporada());
-			jogoCliente.setMainFrame(mainFrame);
 			if (srvPaddockPack == null) {
 				return;
 			}
 			DadosPaddock dadosPaddock = srvPaddockPack.getDadosPaddock();
 			paddockWindow.atualizar(dadosPaddock);
-			jogoCliente.iniciarJogoOnline(srvPaddockPack.getDadosCriarJogo(),
-					srvPaddockPack.getNomeJogoCriado(), this, sessaoCliente,
-					dadosCriarJogo.getPiloto());
+			Thread.sleep(500);
+			entarJogo(srvPaddockPack.getNomeJogoCriado());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			JOptionPane.showMessageDialog(applet, e.getMessage(), "Erro",
@@ -413,15 +410,12 @@ public class ControlePaddockCliente {
 					return;
 				}
 			}
-
 			clientPaddockPack.setDadosCriarJogo(dadosParticiparJogo);
 			ret = enviarObjeto(clientPaddockPack);
 			if (ret == null) {
 				return;
 			}
 			srvPaddockPack = (SrvPaddockPack) ret;
-			jogoCliente = new JogoCliente("t" + temporada);
-			jogoCliente.setMainFrame(mainFrame);
 			DadosCriarJogo dadosCriarJogo = srvPaddockPack.getDadosCriarJogo();
 			dadosCriarJogo.setAsa(dadosParticiparJogo.getAsa());
 			dadosCriarJogo.setCombustivel(dadosParticiparJogo.getCombustivel());
@@ -869,7 +863,7 @@ public class ControlePaddockCliente {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 					Comandos.CRIAR_JOGO, sessaoCliente);
 			Logger.logar("criarJogo cliente " + temporada);
-			jogoCliente = new JogoCliente(temporada);
+			JogoCliente jogoCliente = new JogoCliente(temporada);
 			jogoCliente.setMainFrame(mainFrame);
 			PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
 					jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
@@ -893,16 +887,13 @@ public class ControlePaddockCliente {
 				return;
 			}
 			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
-			jogoCliente = new JogoCliente(dadosCriarJogo.getTemporada());
-			jogoCliente.setMainFrame(mainFrame);
 			if (srvPaddockPack == null) {
 				return;
 			}
 			DadosPaddock dadosPaddock = srvPaddockPack.getDadosPaddock();
 			paddockWindow.atualizar(dadosPaddock);
-			jogoCliente.iniciarJogoOnline(srvPaddockPack.getDadosCriarJogo(),
-					srvPaddockPack.getNomeJogoCriado(), this, sessaoCliente,
-					dadosCriarJogo.getPiloto());
+			Thread.sleep(500);
+			entarJogo(srvPaddockPack.getNomeJogoCriado());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			JOptionPane.showMessageDialog(applet, e.getMessage(), "Erro",

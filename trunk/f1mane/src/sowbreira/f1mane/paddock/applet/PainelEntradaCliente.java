@@ -309,7 +309,7 @@ public class PainelEntradaCliente {
 		if (qtdeVoltas < 12) {
 			spinnerQtdeVoltas.setValue(new Integer(12));
 		}
-		preecherDados();
+		preecherDadosCriarJogo();
 		if ((!Clima.CHUVA.equals(dadosCriarJogo.getClima().getClima()) && Carro.TIPO_PNEU_CHUVA
 				.equals(dadosCriarJogo.getTpPnueu()))
 				|| (Clima.CHUVA.equals(dadosCriarJogo.getClima().getClima()) && !Carro.TIPO_PNEU_CHUVA
@@ -493,7 +493,7 @@ public class PainelEntradaCliente {
 				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	}
 
-	private void preecherDados() {
+	private void preecherDadosCriarJogo() {
 		Integer qtdeVoltas = (Integer) spinnerQtdeVoltas.getValue();
 		if (qtdeVoltas.intValue() >= Constantes.MAX_VOLTAS) {
 			qtdeVoltas = new Integer(Constantes.MAX_VOLTAS);
@@ -533,10 +533,9 @@ public class PainelEntradaCliente {
 		dadosCriarJogo.setSemTrocaPeneu(semTrocaPneu.isSelected());
 		dadosCriarJogo.setKers(kers.isSelected());
 		dadosCriarJogo.setDrs(drs.isSelected());
-		preecherDadosCriarJogo(dadosCriarJogo);
 	}
 
-	private void preecherDadosCriarJogo(DadosCriarJogo dadosParticiparJogo) {
+	private void preecherDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo) {
 		String tpPnueu = Lang.key(comboBoxPneuInicial.getSelectedItem()
 				.toString());
 		Piloto piloto = (Piloto) comboBoxPilotoSelecionado.getSelectedItem();
@@ -579,7 +578,7 @@ public class PainelEntradaCliente {
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
-		preecherDadosCriarJogo(dadosParticiparJogo);
+		preecherDadosEntrarJogo(dadosParticiparJogo);
 		return true;
 	}
 
