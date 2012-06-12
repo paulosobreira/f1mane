@@ -348,7 +348,7 @@ public class Carro implements Serializable {
 					&& testePotencia()) {
 				novoModificador++;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod) {
-				novoModificador -= Math.random() < 0.6 ? (testePotencia() ? 0
+				novoModificador -= Math.random() < 0.5 ? (testePotencia() ? 0
 						: 1) : (testePotencia() ? 1 : 2);
 			}
 		}
