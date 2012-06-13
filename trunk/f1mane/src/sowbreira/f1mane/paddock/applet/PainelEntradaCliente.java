@@ -92,7 +92,7 @@ public class PainelEntradaCliente {
 	}
 
 	private void gerarPainelCriarJogo(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(6, 2, 5, 5));
+		painelInicio.setLayout(new GridLayout(5, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
 				return Lang.msg("110", new String[] {
@@ -171,7 +171,6 @@ public class PainelEntradaCliente {
 		pVolt.add(spinnerQtdeVoltas);
 		painelInicio.add(pVolt);
 
-		painelInicio.add(new JLabel());
 
 		JPanel jDiff = new JPanel();
 
@@ -200,7 +199,7 @@ public class PainelEntradaCliente {
 		sliderDificuldadeUltrapassagem.setLabelTable(labelTable);
 		sliderDificuldadeUltrapassagem.setPaintLabels(true);
 		jDiff.add(sliderDificuldadeUltrapassagem);
-		painelInicio.add(jDiff);
+//		painelInicio.add(jDiff);
 		JPanel pCiclo = new JPanel();
 		pCiclo.add(new JLabel("Tempo Ciclo :") {
 			@Override
