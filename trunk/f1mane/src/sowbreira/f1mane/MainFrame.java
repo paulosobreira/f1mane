@@ -920,6 +920,27 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu4.add(vetorizarPista);
+		
+		JMenuItem creditos = new JMenuItem("creditos") {
+			public String getText() {
+				return Lang.msg("creditos");
+			}
+
+		};
+		
+		creditos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					editor.creditos();
+				} catch (Exception e1) {
+					Logger.logarExept(e1);
+				}
+
+			}
+		});
+		menu4.add(creditos);
+		
 	}
 
 	public static void main(String[] args) throws IOException {

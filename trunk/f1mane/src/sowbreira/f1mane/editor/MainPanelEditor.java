@@ -58,6 +58,9 @@ public class MainPanelEditor extends JPanel {
 	private JList boxJList;
 	private JFrame srcFrame;
 	private boolean desenhaTracado = true;
+	private boolean creditos = false;
+	public final static Color oran = new Color(255, 188, 40, 180);
+
 	private BufferedImage backGround;
 	int ultimoItemBoxSelecionado = -1;
 	int ultimoItemPistaSelecionado = -1;
@@ -357,6 +360,12 @@ public class MainPanelEditor extends JPanel {
 			}
 
 			public void mouseClicked(MouseEvent e) {
+				if (creditos) {
+					circuito.setCreditos(e.getPoint());
+					creditos = false;
+					return;
+				}
+
 				Logger.logar("Pontos Editor :" + e.getX() + " - " + e.getY());
 				if ((tipoNo == null) || (e.getButton() == 3)) {
 					srcFrame.requestFocus();
@@ -481,6 +490,12 @@ public class MainPanelEditor extends JPanel {
 				+ (int) (100 * noMedia / total) + "%", 5, 35);
 		g2d.drawString(Lang.msg("BAIXA") + ":" + noBaixa + " "
 				+ (int) (100 * noBaixa / total) + "%", 5, 55);
+		if(circuito!=null && circuito.getCreditos()!=null){
+			g2d.setColor(oran);
+			g2d.fillOval(circuito.getCreditos().x - 2,
+					circuito.getCreditos().y - 2, 8, 8);
+		}
+		
 		if (desenhaTracado) {
 			No oldNo = null;
 
@@ -628,6 +643,11 @@ public class MainPanelEditor extends JPanel {
 
 	public Dimension getMaximumSize() {
 		return super.getPreferredSize();
+	}
+
+	public void creditos() {
+		creditos = true;
+
 	}
 
 }
