@@ -32,6 +32,15 @@ public class Circuito implements Serializable {
 	private String nome;
 	private boolean noite;
 	private boolean usaBkg;
+	private Point creditos;
+
+	public Point getCreditos() {
+		return creditos;
+	}
+
+	public void setCreditos(Point creditos) {
+		this.creditos = creditos;
+	}
 
 	public String getNome() {
 		return nome;

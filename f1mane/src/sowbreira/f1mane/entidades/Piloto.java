@@ -945,7 +945,7 @@ public class Piloto implements Serializable {
 			Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 			if (carroPilotoDaFrente != null) {
 				double diff = calculaDiffParaProximo(controleJogo);
-				double distBrigaMin = 30;
+				double distBrigaMin = 50;
 				double nGanho = (controleJogo.getFatorUtrapassagem());
 				if (diff < distBrigaMin) {
 					if (getTracado() != carroPilotoDaFrente.getPiloto()

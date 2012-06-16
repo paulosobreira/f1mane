@@ -70,8 +70,15 @@ public abstract class ControleRecursos {
 				graphics.dispose();
 				if (carro.getImg() != null) {
 					try {
-						BufferedImage carroLadoPng = CarregadorRecursos
-								.carregaImgSemCache(carro.getImg());
+						BufferedImage carroLadoPng = null;
+						if (carro.getImg().endsWith(".png")) {
+							carroLadoPng = CarregadorRecursos
+									.carregaBufferedImageTransparecia(
+											carro.getImg(), null);
+						} else {
+							carroLadoPng = CarregadorRecursos
+									.carregaImgSemCache(carro.getImg());
+						}
 						if (carroLadoPng != null) {
 							carroLado = carroLadoPng;
 							Integer transp = new Integer(
@@ -140,15 +147,24 @@ public abstract class ControleRecursos {
 				graphics.dispose();
 				if (carro.getImg() != null) {
 					try {
-						BufferedImage carroLadoPng = CarregadorRecursos
-								.carregaImgSemCache(carro.getImg());
-						if (carroLadoPng != null) {
+						BufferedImage carroLadoPng = null;
+						if (carro.getImg().endsWith(".png")) {
+							carroLadoPng = CarregadorRecursos
+									.carregaImagem(carro.getImg());
+							bufferCarrosLado.put(carro.getNome(), carroLadoPng);
 							carroLado = carroLadoPng;
-							Integer transp = new Integer(
-									(String) temporadasTransp
-											.get(getTemporada()));
-							bufferCarrosLado.put(carro.getNome(), ImageUtil
-									.geraTransparencia(carroLado, transp));
+						} else {
+							carroLadoPng = CarregadorRecursos
+									.carregaImgSemCache(carro.getImg());
+
+							if (carroLadoPng != null) {
+								carroLado = carroLadoPng;
+								Integer transp = new Integer(
+										(String) temporadasTransp
+												.get(getTemporada()));
+								bufferCarrosLado.put(carro.getNome(), ImageUtil
+										.geraTransparencia(carroLado, transp));
+							}
 						}
 					} catch (Exception e) {
 						carro.setImg(null);
