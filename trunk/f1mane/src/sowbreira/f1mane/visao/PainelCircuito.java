@@ -293,7 +293,7 @@ public class PainelCircuito extends JPanel {
 
 	private void carregaRecursos() {
 		carroimgDano = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png");
+				.carregaBufferedImageTranspareciaBranca("CarroLadoDef.png", 225);
 		setaCarroCima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
 						200);
@@ -591,6 +591,12 @@ public class PainelCircuito extends JPanel {
 					}
 				} else {
 					info = Html.tagsJava2d(info);
+					if (info.contains("4682B4")) {
+						g2d.setColor(blu);
+					}
+					if (info.contains("FE0000")) {
+						g2d.setColor(red);
+					}
 					g2d.drawString("" + info, o.x + 4, o.y + (20 * (cont++)));
 				}
 				indemax--;
@@ -2855,6 +2861,10 @@ public class PainelCircuito extends JPanel {
 						.getCarro().getTempMax())
 			return;
 
+		g2d.setColor(this.transpMenus);
+		g2d.fillRoundRect(limitesViewPort.x + 180, limitesViewPort.y + 5,
+				carroimgDano.getWidth() + 5, carroimgDano.getHeight() + 5, 15,
+				15);
 		g2d.drawImage(carroimgDano, limitesViewPort.x + 185,
 				limitesViewPort.y + 10, null);
 
@@ -3651,13 +3661,13 @@ public class PainelCircuito extends JPanel {
 				limitesViewPort.y + pointDesenhaVelo.y + 40, 160, 35, 15, 15);
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-//		if (velocidade < 250) {
-//			g2d.setColor(transpMenus);
-//		} else if (velocidade < 300) {
-//			g2d.setColor(oran);
-//		} else if (velocidade < 350) {
-//			g2d.setColor(red);
-//		}
+		// if (velocidade < 250) {
+		// g2d.setColor(transpMenus);
+		// } else if (velocidade < 300) {
+		// g2d.setColor(oran);
+		// } else if (velocidade < 350) {
+		// g2d.setColor(red);
+		// }
 		g2d.setColor(transpMenus);
 		g2d.drawString(velo, limitesViewPort.x + pointDesenhaVelo.x + 2,
 				limitesViewPort.y + pointDesenhaVelo.y + 67);

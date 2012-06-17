@@ -123,7 +123,7 @@ public class Html {
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("<font  size='").append(superSize)
-				.append("' color='red'>").append(texto).append("</font>");
+				.append("' color='#FE0000'>").append(texto).append("</font>");
 
 		return buffer.toString();
 	}
@@ -182,7 +182,7 @@ public class Html {
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("<font  size='").append(superSize)
-				.append("' color='green'>").append(texto).append("</font>");
+				.append("' color='4682B4'>").append(texto).append("</font>");
 		return Html.bold(buffer.toString());
 	}
 

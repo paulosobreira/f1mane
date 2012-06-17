@@ -1607,7 +1607,7 @@ public class Piloto implements Serializable {
 					&& Math.random() < controleJogo.getNiveljogo()) {
 				if (AGRESSIVO.equals(modoPilotagem)) {
 					if (controleJogo.isChovendo() && Math.random() > 0.970) {
-						controleJogo.info(Html.txtRedBold(getNome())
+						controleJogo.info(Html.bold(getNome())
 								+ Html.bold(Lang.msg("052")));
 					} else if (Math.random() > 0.97
 							&& getNoAtual().verificaCruvaBaixa()) {
