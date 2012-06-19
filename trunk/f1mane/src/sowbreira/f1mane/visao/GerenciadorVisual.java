@@ -1555,6 +1555,8 @@ public class GerenciadorVisual {
 				Point pQualy = n.getPoint();
 				if (controleJogo.getCircuito().getCreditos() != null) {
 					pQualy = controleJogo.getCircuito().getCreditos();
+					painelCircuito.zoom = 0.5;
+					painelCircuito.mouseZoom = 0.5;
 				}
 				try {
 					painelCircuito.centralizarPontoDireto(pQualy);

@@ -590,14 +590,18 @@ public class PainelCircuito extends JPanel {
 						infoCompCont = 1000;
 					}
 				} else {
-					info = Html.tagsJava2d(info);
 					if (info.contains("4682B4")) {
-						g2d.setColor(blu);
+						g2d.setColor(new Color(0, 0, 111));
 					}
 					if (info.contains("FE0000")) {
-						g2d.setColor(red);
+						g2d.setColor(new Color(111, 0, 0));
 					}
+					if (info.contains("008D25")) {
+						g2d.setColor(new Color(0, 111, 0));
+					}
+					info = Html.tagsJava2d(info);
 					g2d.drawString("" + info, o.x + 4, o.y + (20 * (cont++)));
+					g2d.setColor(Color.black);
 				}
 				indemax--;
 				if (cont > 5) {
@@ -2729,14 +2733,14 @@ public class PainelCircuito extends JPanel {
 		String plider = "";
 		if (pilotoSelecionado.getPosicao() == 1) {
 			plider = Lang.msg("Lider");
-			g2d.setColor(Color.BLUE);
+			g2d.setColor(new Color(0, 0, 111));
 		} else if (controleJogo.verificaCampeonatoComRival()) {
 			plider = controleJogo.calculaSegundosParaRival(pilotoSelecionado);
 			g2d.setColor(Color.black);
 			if (plider.startsWith("-")) {
-				g2d.setColor(Color.BLUE);
+				g2d.setColor(new Color(0, 0, 111));
 			} else {
-				g2d.setColor(Color.RED);
+				g2d.setColor(new Color(111, 0, 0));
 			}
 		} else {
 			g2d.setColor(Color.black);
@@ -2787,7 +2791,7 @@ public class PainelCircuito extends JPanel {
 				yBase += 17;
 				g2d.setColor(transpMenus);
 				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 105, 16, 10, 10);
-				g2d.setColor(Color.BLUE);
+				g2d.setColor(new Color(0, 0, 111));
 				g2d.drawString(
 						Lang.msg("079")
 								+ voltaPiloto.obterTempoVoltaFormatado(),

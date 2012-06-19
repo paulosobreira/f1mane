@@ -205,7 +205,7 @@ public class ControleEstatisticas {
 			public void run() {
 				try {
 					controleJogo.adicionarInfoDireto(Html
-							.azul(Lang.msg("000", new Object[] { controleJogo
+							.superGreen(Lang.msg("000", new Object[] { controleJogo
 									.totalVoltasCorrida() })));
 					boolean interruput = false;
 					while (!interruput && consumidorAtivo) {
