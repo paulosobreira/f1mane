@@ -1121,7 +1121,7 @@ public class Piloto implements Serializable {
 		} else {
 			ativarKers = false;
 		}
-		if (controleJogo.percetagemDeVoltaCompletada(this) > 70) {
+		if (controleJogo.percetagemDeVoltaCompletada(this) > 60) {
 			ativarKers = true;
 		}
 

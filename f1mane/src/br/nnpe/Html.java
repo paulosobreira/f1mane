@@ -142,7 +142,7 @@ public class Html {
 	public static String superGreen(String texto) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<font  size='").append(superSize)
-				.append("' color='green'>").append(texto).append("</font>");
+				.append("' color='#008D25'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
