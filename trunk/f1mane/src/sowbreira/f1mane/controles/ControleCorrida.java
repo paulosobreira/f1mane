@@ -710,4 +710,8 @@ public class ControleCorrida {
 			Piloto p) {
 		return controleSafetyCar.ganhoComSafetyCar(ganho, controleJogo, p);
 	}
+
+	public void safetyCarNaPista(Piloto piloto) {
+		controleSafetyCar.safetyCarNaPista(piloto);
+	}
 }
