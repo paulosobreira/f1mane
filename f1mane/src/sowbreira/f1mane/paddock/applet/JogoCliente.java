@@ -1005,4 +1005,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 		return new ArrayList();
 	}
+
+	@Override
+	public void forcaSafatyCar() {
+		// TODO Auto-generated method stub
+		
+	}
 }

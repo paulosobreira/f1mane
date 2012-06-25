@@ -1010,7 +1010,7 @@ public class Piloto implements Serializable {
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
 		}
-		if (!controleJogo.isSafetyCarNaPista() && ganho > 0 && ganho < 1) {
+		if (ganho > 0 && ganho < 1) {
 			ganho = 1;
 		}
 		if (ganho > 60) {

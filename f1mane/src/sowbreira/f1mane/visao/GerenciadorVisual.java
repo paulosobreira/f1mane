@@ -422,6 +422,12 @@ public class GerenciadorVisual {
 										.isJogadorHumano())
 							controleJogo.diminueFatorAcidade();
 					}
+					if (keyCoode == KeyEvent.VK_S) {
+						if (controleJogo.getPilotoJogador() != null
+								&& controleJogo.getPilotoJogador()
+										.isJogadorHumano())
+							controleJogo.forcaSafatyCar();
+					}
 				}
 			}
 		};

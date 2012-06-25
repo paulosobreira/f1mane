@@ -288,4 +288,6 @@ public interface InterfaceJogo {
 
 	public void mostraCompsSwing();
 
+	public void forcaSafatyCar();
+
 }
