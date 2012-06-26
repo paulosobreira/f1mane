@@ -864,7 +864,7 @@ public class Piloto implements Serializable {
 		if (NORMAL.equals(modoPilotagem) || !agressivo) {
 			decStress(fator);
 		} else if (LENTO.equals(modoPilotagem)) {
-			decStress(fator * 2);
+			decStress(fator + 1);
 		}
 		/**
 		 * Devagarinho qdo a corrida termina
