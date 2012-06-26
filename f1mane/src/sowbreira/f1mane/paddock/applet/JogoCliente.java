@@ -277,7 +277,15 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public double getNiveljogo() {
-		// TODO Auto-generated method stub
+		if (InterfaceJogo.DIFICIL.equals(dadosParticiparJogo.getNivelCorrida())) {
+			return InterfaceJogo.DIFICIL_NV;
+		}
+		if (InterfaceJogo.NORMAL.equals(dadosParticiparJogo.getNivelCorrida())) {
+			return InterfaceJogo.MEDIO_NV;
+		}
+		if (InterfaceJogo.FACIL.equals(dadosParticiparJogo.getNivelCorrida())) {
+			return InterfaceJogo.FACIL_NV;
+		}
 		return 0;
 	}
 
@@ -1009,6 +1017,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void forcaSafatyCar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
