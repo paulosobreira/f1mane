@@ -597,7 +597,7 @@ public class PainelCircuito extends JPanel {
 						g2d.setColor(new Color(121, 0, 0));
 					}
 					if (info.contains("008D25")) {
-						g2d.setColor(new Color(0, 91, 0));
+						g2d.setColor(new Color(0, 80, 0));
 					}
 					info = Html.tagsJava2d(info);
 					g2d.drawString("" + info, o.x + 4, o.y + (20 * (cont++)));
