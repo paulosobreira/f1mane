@@ -404,6 +404,9 @@ public class ControleCorrida {
 						controleJogo)) {
 			fatorAcidenteLocal -= .2;
 		}
+		if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
+			fatorAcidenteLocal -= .1;
+		}
 		if ((Math.random() < fatorAcidenteLocal)) {
 			return;
 		}
