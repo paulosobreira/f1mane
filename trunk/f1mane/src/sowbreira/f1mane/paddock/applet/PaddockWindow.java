@@ -32,6 +32,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
@@ -145,9 +146,7 @@ public class PaddockWindow {
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
-
 		public String getText() {
-
 			return Lang.msg("180");
 		}
 	};
@@ -300,6 +299,7 @@ public class PaddockWindow {
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
 						.msg("180"), JOptionPane.INFORMATION_MESSAGE);
+				verLogs();
 			}
 		});
 		campeonato.addActionListener(new ActionListener() {
@@ -319,6 +319,22 @@ public class PaddockWindow {
 
 	}
 
+	protected void verLogs() {
+		JTextArea area = new JTextArea(20, 50);
+		Set top = Logger.topExceptions.keySet();
+		for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+			String exept = (String) iterator.next();
+			area.append("Quantidade : " + Logger.topExceptions.get(exept));
+			area.append("\n");
+			area.append(exept.replaceAll("<br>", "\n"));
+			area.append("\n");
+		}
+		area.setCaretPosition(0);
+		JOptionPane.showMessageDialog(getMainPanel(), new JScrollPane(area),
+				Lang.msg("listaDeErros"), JOptionPane.INFORMATION_MESSAGE);
+
+	}
+
 	private void gerarLayout() {
 		JPanel cPanel = new JPanel(new BorderLayout());
 		JPanel sPanel = new JPanel(new BorderLayout());
@@ -326,9 +342,10 @@ public class PaddockWindow {
 		mainPanel.add(sPanel, BorderLayout.SOUTH);
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBackground(Color.WHITE);
-		chatPanel.setBorder(new TitledBorder(
-				"F1-MANager Engineer Chat Room Ver "
-						+ controlePaddockCliente.getVersao()));
+		if (controlePaddockCliente != null)
+			chatPanel.setBorder(new TitledBorder(
+					"F1-MANager Engineer Chat Room Ver "
+							+ controlePaddockCliente.getVersao()));
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBackground(Color.WHITE);
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
