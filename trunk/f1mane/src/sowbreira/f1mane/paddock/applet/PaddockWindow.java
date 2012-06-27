@@ -225,8 +225,8 @@ public class PaddockWindow {
 								.get(object));
 					}
 				} else {
-					JOptionPane.showMessageDialog(getMainPanel(),
-							Lang.msg("182"));
+					JOptionPane.showMessageDialog(getMainPanel(), Lang
+							.msg("182"));
 				}
 
 			}
@@ -250,8 +250,8 @@ public class PaddockWindow {
 					if (object != null) {
 						controlePaddockCliente.verDetalhesJogador(object);
 					} else {
-						JOptionPane.showMessageDialog(getMainPanel(),
-								Lang.msg("183"));
+						JOptionPane.showMessageDialog(getMainPanel(), Lang
+								.msg("183"));
 					}
 				}
 
@@ -293,12 +293,13 @@ public class PaddockWindow {
 						+ "sowbreira@gmail.com \n"
 						+ "sowbreira.appspot.com/ \n" + "Agosto de 2007 \n ";
 				msg += Lang.msg("185") + "\n" + " Gizele Hidaka \n"
+						+ " Albercio Lopes \n" + " Edmar Filho \n"
 						+ " Florêncio Queiroz \n" + " Jorge Botelho \n"
 						+ " Danilo Pacheco \n" + " Acilon Souza \n"
-						+ " Marcos Henrique";
+						+ " Luciano Homem \n" + " Marcos Henrique";
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg,
-						Lang.msg("180"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
+						.msg("180"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		campeonato.addActionListener(new ActionListener() {
@@ -492,8 +493,8 @@ public class PaddockWindow {
 			String element = (String) iter.next();
 			String key = Lang.decodeTexto(element);
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.VER_INFO_VOLTAS_JOGO,
-					controlePaddockCliente.getSessaoCliente());
+					Comandos.VER_INFO_VOLTAS_JOGO, controlePaddockCliente
+							.getSessaoCliente());
 			clientPaddockPack.setNomeJogo(element);
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			if (ret == null) {
@@ -502,8 +503,7 @@ public class PaddockWindow {
 			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
 			mapaJogosVoltas.put(key, srvPaddockPack.getDetalhesJogo()
 					.getVoltaAtual()
-					+ "/"
-					+ srvPaddockPack.getDetalhesJogo().getNumVoltas());
+					+ "/" + srvPaddockPack.getDetalhesJogo().getNumVoltas());
 		}
 
 		listaJogosCriados.setCellRenderer(new ListCellRenderer() {
