@@ -383,9 +383,9 @@ public class Carro implements Serializable {
 		int novoModDano = novoModificador;
 		if (giro == GIRO_MAX_VAL) {
 			if (agressivo)
-				valDesgaste = ((testePotencia() ? 6 : 7) + novoModDano);
+				valDesgaste = ((testePotencia() ? 8 : 9) + novoModDano);
 			else
-				valDesgaste = ((testePotencia() ? 5 : 6) + novoModDano);
+				valDesgaste = ((testePotencia() ? 6 : 7) + novoModDano);
 		} else if (giro == GIRO_NOR_VAL) {
 			if (agressivo)
 				valDesgaste = ((testePotencia() ? 4 : 5) + novoModDano);
@@ -408,13 +408,13 @@ public class Carro implements Serializable {
 			int perCombust = porcentagemCombustivel();
 			if (valor < perCombust)
 				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-					valDesgaste += (testePotencia() ? 0 : 1);
+					valDesgaste += (testePotencia() ? 1 : 2);
 				} else if (InterfaceJogo.MEDIO_NV == controleJogo
 						.getNiveljogo()) {
-					valDesgaste += (testePotencia() ? 1 : 2);
+					valDesgaste += (testePotencia() ? 2 : 3);
 				} else if (InterfaceJogo.DIFICIL_NV == controleJogo
 						.getNiveljogo()) {
-					valDesgaste += (testePotencia() ? 2 : 3);
+					valDesgaste += (testePotencia() ? 4 : 5);
 				}
 		}
 		int dist = 20;
