@@ -233,11 +233,13 @@ public class PaddockWindow {
 		});
 		verDetalhes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object object = listaJogosCriados.getSelectedValue();
-				if (listaJogosCriados.getModel().getSize() == 1) {
-					object = listaJogosCriados.getModel().getElementAt(0);
-				}
-				if (object != null) {
+				Object object = listaClientes.getSelectedValue();
+				if (object == null) {
+					object = listaJogosCriados.getSelectedValue();
+					if (object == null
+							&& listaJogosCriados.getModel().getSize() == 1) {
+						object = listaJogosCriados.getModel().getElementAt(0);
+					}
 					try {
 						controlePaddockCliente.verDetalhesJogo(mapaJogosCriados
 								.get(object));
@@ -245,7 +247,6 @@ public class PaddockWindow {
 						Logger.logarExept(ex);
 					}
 				} else {
-					object = listaClientes.getSelectedValue();
 					if (object != null) {
 						controlePaddockCliente.verDetalhesJogador(object);
 					} else {
@@ -768,7 +769,36 @@ public class PaddockWindow {
 	public void mostrarDetalhesJogador(Object object) {
 		JPanel panel = new JPanel();
 		SessaoCliente cliente = (SessaoCliente) object;
-		panel.setLayout(new GridLayout(1, 2));
+
+		panel.setLayout(new GridLayout(6, 2));
+
+		panel.add(new JLabel("Jogador : ") {
+
+			public String getText() {
+
+				return Lang.msg("111");
+			}
+		});
+		panel.add(new JLabel(cliente.getNomeJogador()));
+
+		panel.add(new JLabel("Piloto : ") {
+
+			public String getText() {
+
+				return Lang.msg("253");
+			}
+		});
+		panel.add(new JLabel(cliente.getPilotoAtual()));
+
+		panel.add(new JLabel("Jogo : ") {
+
+			public String getText() {
+
+				return Lang.msg("088") + " : ";
+			}
+		});
+		panel.add(new JLabel(Lang.decodeTexto(cliente.getJogoAtual())));
+
 		panel.add(new JLabel("Ultima Atividade : ") {
 
 			public String getText() {

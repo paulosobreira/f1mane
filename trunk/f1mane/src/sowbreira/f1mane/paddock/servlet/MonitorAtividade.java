@@ -36,6 +36,9 @@ public class MonitorAtividade implements Runnable {
 						break;
 					}
 				}
+				Logger
+						.logar("Remover "
+								+ sessaoClienteRemover.getNomeJogador());
 				if (sessaoClienteRemover != null) {
 					controlePaddock.removerClienteInativo(sessaoClienteRemover);
 				}
