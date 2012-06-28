@@ -224,8 +224,8 @@ public class PaddockWindow {
 								.get(object));
 					}
 				} else {
-					JOptionPane.showMessageDialog(getMainPanel(), Lang
-							.msg("182"));
+					JOptionPane.showMessageDialog(getMainPanel(),
+							Lang.msg("182"));
 				}
 
 			}
@@ -250,8 +250,8 @@ public class PaddockWindow {
 					if (object != null) {
 						controlePaddockCliente.verDetalhesJogador(object);
 					} else {
-						JOptionPane.showMessageDialog(getMainPanel(), Lang
-								.msg("183"));
+						JOptionPane.showMessageDialog(getMainPanel(),
+								Lang.msg("183"));
 					}
 				}
 
@@ -298,8 +298,8 @@ public class PaddockWindow {
 						+ " Danilo Pacheco \n" + " Acilon Souza \n"
 						+ " Luciano Homem \n" + " Marcos Henrique";
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
-						.msg("180"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getMainPanel(), msg,
+						Lang.msg("180"), JOptionPane.INFORMATION_MESSAGE);
 				verLogs();
 			}
 		});
@@ -511,8 +511,8 @@ public class PaddockWindow {
 			String element = (String) iter.next();
 			String key = Lang.decodeTexto(element);
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.VER_INFO_VOLTAS_JOGO, controlePaddockCliente
-							.getSessaoCliente());
+					Comandos.VER_INFO_VOLTAS_JOGO,
+					controlePaddockCliente.getSessaoCliente());
 			clientPaddockPack.setNomeJogo(element);
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			if (ret == null) {
@@ -521,7 +521,8 @@ public class PaddockWindow {
 			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
 			mapaJogosVoltas.put(key, srvPaddockPack.getDetalhesJogo()
 					.getVoltaAtual()
-					+ "/" + srvPaddockPack.getDetalhesJogo().getNumVoltas());
+					+ "/"
+					+ srvPaddockPack.getDetalhesJogo().getNumVoltas());
 		}
 
 		listaJogosCriados.setCellRenderer(new ListCellRenderer() {
@@ -788,7 +789,13 @@ public class PaddockWindow {
 				return Lang.msg("253");
 			}
 		});
-		panel.add(new JLabel(cliente.getPilotoAtual()));
+		
+		String pilotoAtual = cliente.getPilotoAtual();
+		if (Util.isNullOrEmpty(pilotoAtual)) {
+			pilotoAtual = "";
+		}
+		
+		panel.add(new JLabel(pilotoAtual));
 
 		panel.add(new JLabel("Jogo : ") {
 
@@ -797,7 +804,13 @@ public class PaddockWindow {
 				return Lang.msg("088") + " : ";
 			}
 		});
-		panel.add(new JLabel(Lang.decodeTexto(cliente.getJogoAtual())));
+		String jogoAtual = cliente.getJogoAtual();
+		if (Util.isNullOrEmpty(jogoAtual)) {
+			jogoAtual = "";
+		} else {
+			jogoAtual = Lang.decodeTexto(jogoAtual);
+		}
+		panel.add(new JLabel(jogoAtual));
 
 		panel.add(new JLabel("Ultima Atividade : ") {
 
