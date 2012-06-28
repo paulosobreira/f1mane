@@ -594,8 +594,7 @@ public class Carro implements Serializable {
 
 		int valConsumo = 0;
 		if (agressivo) {
-			valConsumo = (getPiloto().testeHabilidadePilotoCarro(controleJogo) ? 1
-					: 2);
+			valConsumo = (testePotencia() ? 1 : 2);
 		} else {
 			valConsumo = (testePotencia() ? 0 : 1);
 		}
@@ -605,11 +604,9 @@ public class Carro implements Serializable {
 		} else if (giro == GIRO_NOR_VAL) {
 			valConsumo += ((testePotencia()) ? 1 : 2);
 		} else if (giro == GIRO_MAX_VAL) {
-			valConsumo += ((getPiloto()
-					.testeHabilidadePilotoCarro(controleJogo)) ? 2 : 4);
+			valConsumo += (testePotencia() ? 2 : 4);
 		} else if (giro == GIRO_MAX_VAL && verificaMotorSuperAquecido()) {
-			valConsumo += ((getPiloto()
-					.testeHabilidadePilotoCarro(controleJogo)) ? 3 : 4);
+			valConsumo += (testePotencia() ? 3 : 4);
 		}
 
 		double consumoTotal = (valConsumo

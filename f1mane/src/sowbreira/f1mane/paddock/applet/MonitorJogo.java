@@ -86,7 +86,6 @@ public class MonitorJogo implements Runnable {
 					tempoCiclo = controlePaddockCliente.getLatenciaMinima();
 				}
 				jogoCliente.preparaGerenciadorVisual();
-				jogoCliente.carregaBackGroundCliente();
 				esperaJogoComecar();
 				mostraQualify();
 				apagaLuzesLargada();
