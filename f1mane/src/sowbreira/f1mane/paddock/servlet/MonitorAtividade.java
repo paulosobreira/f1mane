@@ -36,10 +36,9 @@ public class MonitorAtividade implements Runnable {
 						break;
 					}
 				}
-				Logger
-						.logar("Remover "
-								+ sessaoClienteRemover.getNomeJogador());
 				if (sessaoClienteRemover != null) {
+					Logger.logar("Remover "
+							+ sessaoClienteRemover.getNomeJogador());
 					controlePaddock.removerClienteInativo(sessaoClienteRemover);
 				}
 				Map jogos = controlePaddock.getControleJogosServer()
@@ -70,7 +69,6 @@ public class MonitorAtividade implements Runnable {
 					}
 				}
 			} catch (InterruptedException e) {
-				alive = false;
 				Logger.logarExept(e);
 			} catch (Exception e) {
 				Logger.logarExept(e);

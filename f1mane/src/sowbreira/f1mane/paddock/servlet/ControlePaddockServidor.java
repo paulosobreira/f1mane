@@ -129,8 +129,8 @@ public class ControlePaddockServidor {
 		try {
 			if (!Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
 				jogadorDadosSrv = controlePersistencia
-						.carregaDadosJogadorEmail(clientPaddockPack
-								.getEmailJogador(), session);
+						.carregaDadosJogadorEmail(
+								clientPaddockPack.getEmailJogador(), session);
 			}
 			if (jogadorDadosSrv == null
 					&& !Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
@@ -149,8 +149,8 @@ public class ControlePaddockServidor {
 				PassGenerator generator = new PassGenerator();
 				senha = generator.generateIt();
 				try {
-					mandaMailSenha(jogadorDadosSrv.getNome(), jogadorDadosSrv
-							.getEmail(), senha);
+					mandaMailSenha(jogadorDadosSrv.getNome(),
+							jogadorDadosSrv.getEmail(), senha);
 				} catch (Exception e) {
 					erroMail = true;
 				}
@@ -175,15 +175,15 @@ public class ControlePaddockServidor {
 			return new MsgSrv(Lang.msg("senhaGerada", new String[] {
 					jogadorDadosSrv.getNome(), senha }));
 		}
-		return new MsgSrv(Lang.msg("239", new String[] { jogadorDadosSrv
-				.getEmail() }));
+		return new MsgSrv(Lang.msg("239",
+				new String[] { jogadorDadosSrv.getEmail() }));
 	}
 
 	private boolean validaCapcha(ClientPaddockPack clientPaddockPack) {
 		try {
 			Boolean validateResponseForID = capcha.validateResponseForID(
-					clientPaddockPack.getChaveCapcha(), clientPaddockPack
-							.getTextoCapcha());
+					clientPaddockPack.getChaveCapcha(),
+					clientPaddockPack.getTextoCapcha());
 			return validateResponseForID;
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -206,8 +206,8 @@ public class ControlePaddockServidor {
 			if (jogadorDadosSrv == null
 					&& !Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
 				jogadorDadosSrv = controlePersistencia
-						.carregaDadosJogadorEmail(clientPaddockPack
-								.getEmailJogador(), session);
+						.carregaDadosJogadorEmail(
+								clientPaddockPack.getEmailJogador(), session);
 			}
 			if (jogadorDadosSrv == null) {
 				jogadorDadosSrv = new JogadorDadosSrv();
@@ -228,8 +228,9 @@ public class ControlePaddockServidor {
 					jogadorDadosSrv.setSenha(Util.md5(senha));
 					clientPaddockPack.setSenhaJogador(jogadorDadosSrv
 							.getSenha());
-					controlePersistencia.adicionarJogador(jogadorDadosSrv
-							.getNome(), jogadorDadosSrv, session);
+					controlePersistencia
+							.adicionarJogador(jogadorDadosSrv.getNome(),
+									jogadorDadosSrv, session);
 				} catch (Exception e) {
 					return new ErroServ(e);
 				}
@@ -262,6 +263,9 @@ public class ControlePaddockServidor {
 
 	private Object processarComando(ClientPaddockPack clientPaddockPack) {
 		SessaoCliente cliente = resgatarSessao(clientPaddockPack);
+		if (cliente != null) {
+			cliente.setUlimaAtividade(System.currentTimeMillis());
+		}
 		clientPaddockPack.setSessaoCliente(cliente);
 		String commando = clientPaddockPack.getComando();
 		if (Comandos.OBTER_DADOS_JOGO.equals(commando)) {
@@ -549,7 +553,6 @@ public class ControlePaddockServidor {
 				.hasNext();) {
 			SessaoCliente element = (SessaoCliente) iter.next();
 			if (element.getNomeJogador().equals(apelido)) {
-				element.setUlimaAtividade(System.currentTimeMillis());
 				return element;
 			}
 		}
