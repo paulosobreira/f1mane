@@ -53,6 +53,7 @@ public class ServletPaddock extends HttpServlet {
 	protected static ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
 	private String webDir;
+	private String mutex = "mutex";
 	private static String replaceHost = "{host}";
 	public static Email email;
 
@@ -128,22 +129,11 @@ public class ServletPaddock extends HttpServlet {
 
 	public void destroy() {
 		monitorAtividade.setAlive(false);
-		// try {
-		// controlePersistencia.gravarDados();
-		// } catch (IOException e) {
-		// Logger.topExecpts(e);
-		// }
 		super.destroy();
 	}
 
 	public void doPost(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
-		// String tipo = arg0.getParameter("tipo");
-		// if ("admail".equals(tipo)) {
-		// adMail(arg0.getParameter("assunto"), arg0.getParameter("texto"),
-		// arg0.getParameter("passe"), arg1);
-		// }
-
 		doGet(arg0, arg1);
 	}
 
@@ -167,43 +157,43 @@ public class ServletPaddock extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
-		try {
-			ObjectInputStream inputStream = null;
+		synchronized (mutex) {
 			try {
-				inputStream = new ObjectInputStream(req.getInputStream());
-			} catch (Exception e) {
-				Logger.logar("inputStream null - > doGetHtml");
-			}
-
-			if (inputStream != null) {
-				Object object = null;
-
-				object = inputStream.readObject();
-
-				Object escrever = controlePaddock
-						.processarObjetoRecebido(object);
-
-				if (PaddockConstants.modoZip) {
-					dumaparDadosZip(ZipUtil.compactarObjeto(
-							PaddockConstants.debug, escrever,
-							res.getOutputStream()));
-				} else {
-					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-					dumaparDados(escrever);
-					ObjectOutputStream oos = new ObjectOutputStream(bos);
-					oos.writeObject(escrever);
-					oos.flush();
-					res.getOutputStream().write(bos.toByteArray());
+				ObjectInputStream inputStream = null;
+				try {
+					inputStream = new ObjectInputStream(req.getInputStream());
+				} catch (Exception e) {
+					Logger.logar("inputStream null - > doGetHtml");
 				}
+				if (inputStream != null) {
+					Object object = null;
 
-				return;
-			} else {
-				doGetHtml(req, res);
-				return;
+					object = inputStream.readObject();
+
+					Object escrever = controlePaddock
+							.processarObjetoRecebido(object);
+
+					if (PaddockConstants.modoZip) {
+						dumaparDadosZip(ZipUtil.compactarObjeto(
+								PaddockConstants.debug, escrever,
+								res.getOutputStream()));
+					} else {
+						ByteArrayOutputStream bos = new ByteArrayOutputStream();
+						dumaparDados(escrever);
+						ObjectOutputStream oos = new ObjectOutputStream(bos);
+						oos.writeObject(escrever);
+						oos.flush();
+						res.getOutputStream().write(bos.toByteArray());
+					}
+
+					return;
+				} else {
+					doGetHtml(req, res);
+					return;
+				}
+			} catch (Exception e) {
+				Logger.topExecpts(e);
 			}
-
-		} catch (Exception e) {
-			Logger.topExecpts(e);
 		}
 	}
 
