@@ -864,7 +864,7 @@ public class Piloto implements Serializable {
 		if (NORMAL.equals(modoPilotagem) || !agressivo) {
 			decStress(fatorStresse);
 		} else if (LENTO.equals(modoPilotagem)) {
-			decStress(fatorStresse + Util.intervalo(1, 2));
+			decStress(fatorStresse + Util.intervalo(1, 3));
 		}
 		/**
 		 * Devagarinho qdo a corrida termina
@@ -1893,9 +1893,8 @@ public class Piloto implements Serializable {
 	}
 
 	public void decStress(int val) {
-
 		if (stress > 0 && (stress - val) > 0
-				&& (Math.random() > ((900.0 - getPosicao() * 40) / 1000.0))) {
+				&& (Math.random() > ((960.0 - getPosicao() * 40) / 1000.0))) {
 			stress -= val;
 		}
 	}
@@ -1911,7 +1910,7 @@ public class Piloto implements Serializable {
 			val = 3;
 		}
 		if (stress < 100 && (stress + val) < 100) {
-			if ((Math.random() < ((937.5 - getPosicao() * 37.5) / 1000.0)))
+			if ((Math.random() < ((960 - getPosicao() * 40) / 1000.0)))
 				stress += val;
 		} else {
 			setModoPilotagem(NORMAL);
