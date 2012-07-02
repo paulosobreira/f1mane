@@ -10,7 +10,11 @@ public class TravadaRoda implements Serializable {
 	private int tipo;
 
 	public TravadaRoda() {
-		tipo = Util.intervalo(0, 2);
+		if (Math.random() > .9) {
+			setTipo(0);
+		} else {
+			setTipo(Util.intervalo(1, 2));
+		}
 	}
 
 	public int getTipo() {
