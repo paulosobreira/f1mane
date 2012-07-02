@@ -75,6 +75,7 @@ public abstract class ControleRecursos {
 							carroLadoPng = CarregadorRecursos
 									.carregaBufferedImageTransparecia(
 											carro.getImg(), null);
+							carroLado = carroLadoPng;
 						} else {
 							carroLadoPng = CarregadorRecursos
 									.carregaImgSemCache(carro.getImg());

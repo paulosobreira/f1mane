@@ -336,7 +336,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public void informaMudancaClima() {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void iniciarJogo() throws Exception {
