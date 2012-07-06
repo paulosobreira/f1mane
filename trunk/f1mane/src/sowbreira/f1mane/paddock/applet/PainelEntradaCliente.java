@@ -171,7 +171,6 @@ public class PainelEntradaCliente {
 		pVolt.add(spinnerQtdeVoltas);
 		painelInicio.add(pVolt);
 
-
 		JPanel jDiff = new JPanel();
 
 		jDiff.add(new JLabel("Dificuldade Utrapassagem :") {
@@ -199,7 +198,7 @@ public class PainelEntradaCliente {
 		sliderDificuldadeUltrapassagem.setLabelTable(labelTable);
 		sliderDificuldadeUltrapassagem.setPaintLabels(true);
 		jDiff.add(sliderDificuldadeUltrapassagem);
-//		painelInicio.add(jDiff);
+		// painelInicio.add(jDiff);
 		JPanel pCiclo = new JPanel();
 		pCiclo.add(new JLabel("Tempo Ciclo :") {
 			@Override
@@ -286,7 +285,8 @@ public class PainelEntradaCliente {
 		PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
 				new ArrayList(), new Hashtable(), null, "teste", null);
 		painelEntradaCliente.gerarDadosCriarJogo(new DadosCriarJogo());
-		//painelEntradaCliente.gerarDadosEntrarJogo(dadosParticiparJogo, panelJogoCriado, circuito)
+		// painelEntradaCliente.gerarDadosEntrarJogo(dadosParticiparJogo,
+		// panelJogoCriado, circuito)
 	}
 
 	public boolean gerarDadosCriarJogo(DadosCriarJogo dadosCriarJogo) {
@@ -501,9 +501,12 @@ public class PainelEntradaCliente {
 			qtdeVoltas = new Integer(Constantes.MIN_VOLTAS);
 		}
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
-		dadosCriarJogo
-				.setDiffultrapassagem((Integer) sliderDificuldadeUltrapassagem
-						.getValue());
+		// dadosCriarJogo
+		// .setDiffultrapassagem((Integer) sliderDificuldadeUltrapassagem
+		// .getValue());
+		dadosCriarJogo.setDiffultrapassagem(new Integer(Util
+				.intervalo(000, 500)));
+
 		Integer integerTempoCiclo = (Integer) sliderTempoCiclo.getValue();
 		if (integerTempoCiclo.intValue() <= Constantes.MIN_CICLO) {
 			integerTempoCiclo = new Integer(Constantes.MIN_CICLO);
