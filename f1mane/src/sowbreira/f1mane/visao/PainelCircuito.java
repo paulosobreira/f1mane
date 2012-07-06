@@ -1664,7 +1664,7 @@ public class PainelCircuito extends JPanel {
 				continue;
 			}
 			desenhaCarroCima(g2d, piloto);
-			piloto.centralizaCarro(controleJogo);
+			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
 			if (Logger.ativo || !Logger.carregaBkg) {
 				AffineTransform afZoom = new AffineTransform();
 				afZoom.setToScale(zoom, zoom);
@@ -2025,7 +2025,7 @@ public class PainelCircuito extends JPanel {
 		 */
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
-			piloto.centralizaCarro(controleJogo);
+			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
 		}
 		Point frenteP = new Point((int) piloto.getDiateira().getCenterX(),
 				(int) piloto.getDiateira().getCenterY());
