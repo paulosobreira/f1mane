@@ -994,6 +994,9 @@ public class Piloto implements Serializable {
 		if (!controleJogo.isModoQualify()
 				&& verificaColisaoCarroFrente(controleJogo)) {
 			colisao = true;
+			if (isAutoPos()) {
+				mudarTracado(obterNovoTracadoPossivel(), controleJogo, true);
+			}
 		}
 		if (colisao) {
 			setAgressivoF4(false);
@@ -1013,7 +1016,7 @@ public class Piloto implements Serializable {
 				double multi = (val / 500.0);
 				double min = 0.7;
 				if (calculaDiffParaProximo(controleJogo) < 50)
-					min = testeHabilidadePiloto(controleJogo) ? 0.6 : 0.5;
+					min = testeHabilidadePilotoCarro(controleJogo) ? 0.6 : 0.5;
 				if (multi < min) {
 					multi = min;
 				}
@@ -1101,8 +1104,8 @@ public class Piloto implements Serializable {
 			int porcentagemCombustivel = getCarro().porcentagemCombustivel();
 			int porcentagemDesgastePeneus = getCarro()
 					.porcentagemDesgastePeneus();
-			if (!getNoAtual().verificaRetaOuLargada()
-					&& porcentagemCombustivel < porcentagemDesgastePeneus) {
+			if (controleJogo.verificaUltimasVoltas()
+					|| (!getNoAtual().verificaRetaOuLargada() && porcentagemCombustivel < porcentagemDesgastePeneus)) {
 				setModoPilotagem(AGRESSIVO);
 			}
 			if (!controleJogo.verificaNivelJogo()
@@ -1110,8 +1113,9 @@ public class Piloto implements Serializable {
 				porcentagemCombustivel = 0;
 				porcentagemDesgastePeneus = 0;
 			}
-			if (getCarro().getTemperaturaMotor() < getCarro().getTempMax()
-					&& porcentagemCombustivel > porcentagemDesgastePeneus) {
+			if (controleJogo.verificaUltimasVoltas()
+					|| (getCarro().getTemperaturaMotor() < getCarro()
+							.getTempMax() && porcentagemCombustivel > porcentagemDesgastePeneus)) {
 				getCarro().setGiro(Carro.GIRO_MAX_VAL);
 			}
 		} else if (!tentaPassarFrete) {
@@ -1195,19 +1199,6 @@ public class Piloto implements Serializable {
 						if (getPtosBox() == 0 && piloto.getPtosBox() == 0) {
 							controleJogo.verificaAcidenteUltrapassagem(
 									this.isAgressivo(), this, piloto);
-						}
-						if (piloto.isDesqualificado()
-								|| (!Util.isNullOrEmpty(piloto.getCarro()
-										.getDanificado()) && (Carro.BATEU_FORTE
-										.equals(piloto.getCarro()
-												.getDanificado())
-										|| Carro.PERDEU_AEREOFOLIO
-												.equals(piloto.getCarro()
-														.getDanificado()) || Carro.PNEU_FURADO
-										.equals(piloto.getCarro()
-												.getDanificado())))) {
-							mudarTracado(obterNovoTracadoPossivel(),
-									controleJogo, true);
 						}
 					}
 					return true;
@@ -1434,8 +1425,8 @@ public class Piloto implements Serializable {
 				}
 				boolean superAquecido = getCarro().getTemperaturaMotor() >= getCarro()
 						.getTempMax();
-				if (!superAquecido
-						&& porcentagemCombustivel > porcentagemDesgastePeneus) {
+				if (controleJogo.verificaUltimasVoltas()
+						|| (!superAquecido && porcentagemCombustivel > porcentagemDesgastePeneus)) {
 					getCarro().setGiro(Carro.GIRO_MAX_VAL);
 					ret = true;
 				}
@@ -1444,8 +1435,8 @@ public class Piloto implements Serializable {
 					No no = getNoAtual();
 					if (Carro.MAIS_ASA.equals(getCarro().getAsa())) {
 						if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
-							if (!superAquecido
-									&& porcentagemCombustivel > porcentagemDesgastePeneus) {
+							if (controleJogo.verificaUltimasVoltas()
+									|| (!superAquecido && porcentagemCombustivel > porcentagemDesgastePeneus)) {
 								getCarro().setGiro(Carro.GIRO_MAX_VAL);
 								ret = true;
 							}
@@ -1460,8 +1451,8 @@ public class Piloto implements Serializable {
 							getCarro().setGiro(Carro.GIRO_NOR_VAL);
 						}
 						if (no.verificaRetaOuLargada()) {
-							if (!superAquecido
-									&& porcentagemCombustivel > porcentagemDesgastePeneus) {
+							if (controleJogo.verificaUltimasVoltas()
+									|| (!superAquecido && porcentagemCombustivel > porcentagemDesgastePeneus)) {
 								getCarro().setGiro(Carro.GIRO_MAX_VAL);
 								ret = true;
 							}
@@ -1470,8 +1461,8 @@ public class Piloto implements Serializable {
 				}
 				if (!controleJogo.verificaNivelJogo()
 						&& testeHabilidadePiloto(controleJogo)) {
-					if ((!noAtual.verificaRetaOuLargada())
-							&& porcentagemCombustivel < porcentagemDesgastePeneus) {
+					if (controleJogo.verificaUltimasVoltas()
+							|| ((!noAtual.verificaRetaOuLargada()) && porcentagemCombustivel < porcentagemDesgastePeneus)) {
 						setModoPilotagem(AGRESSIVO);
 						ret = true;
 					}
