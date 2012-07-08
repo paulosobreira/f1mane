@@ -784,35 +784,170 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaDebugIinfo(Graphics2D g2d) {
-		/**
-		 * MODO DEBUG
-		 */
-		if (Logger.ativo) {
+
+		if (!Logger.ativo) {
 			return;
 		}
-		// int dist = ps.calculaDiffParaProximo(controleJogo);
-		// if (ps.getPosicao() == 1) {
-		// dist = 0;
-		// }
-		//
-		// String sc = "";
-		//
-		// if (controleJogo.isSafetyCarNaPista()) {
-		// sc = " SC " + controleJogo.getSafetyCar().getPtosPista();
-		// }
-		// velo = "PP " + ps.getPtosPista() + "M " + ps.getNovoModificador()
-		// + " I " + +ps.getNoAtual().getIndex() + " G "
-		// + (int) (ps.getGanho()) + " V " + ps.getVelocidade() + " S "
-		// + ps.getStress() + " A "
-		// + ps.getCarro().getDurabilidadeAereofolio() + " BX "
-		// + ps.getPtosBox() + sc;
-		// velo2 = " DP " + dist + " DA "
-		// + ps.calculaDiffParaAnterior(controleJogo) + " K "
-		// + ps.getCarro().getCargaKers() + " P "
-		// + controleJogo.percetagemDeVoltaCompletada(ps) + " T "
-		// + ps.getCarro().getTemperaturaMotor() + " de "
-		// + ps.getCarro().getTempMax() + " IT " + ps.getIndiceTracado()
-		// + " TR " + ps.getTracado() + " VT " + ps.getTracadoAntigo();
+		if (pilotoSelecionado == null) {
+			return;
+		}
+		int ptoOri = limitesViewPort.x + 250;
+		int yBase = limitesViewPort.y + 100;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString("PtosPista() " + pilotoSelecionado.getPtosPista(),
+				ptoOri, yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				"NovoModificador() " + pilotoSelecionado.getNovoModificador(),
+				ptoOri, yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString("Index() " + pilotoSelecionado.getNoAtual().getIndex(),
+				ptoOri, yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				"Ganho() "
+						+ Util.formatNumber("#,##0.00",
+								pilotoSelecionado.getGanho()), ptoOri, yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString("Stress() " + pilotoSelecionado.getStress(), ptoOri,
+				yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString("DurabilidadeAereofolio() "
+				+ pilotoSelecionado.getCarro().getDurabilidadeAereofolio(),
+				ptoOri, yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString("getPtosBox() " + pilotoSelecionado.getPtosBox(),
+				ptoOri, yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				"DiffParaProximo() "
+						+ pilotoSelecionado
+								.calculaDiffParaProximo(controleJogo), ptoOri,
+				yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				"DiffParaAnterior() "
+						+ pilotoSelecionado
+								.calculaDiffParaAnterior(controleJogo), ptoOri,
+				yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString("CargaKers() "
+				+ pilotoSelecionado.getCarro().getCargaKers(), ptoOri, yBase);
+
+		yBase += 20;
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				"%DeVoltaCompletada() "
+						+ controleJogo
+								.percetagemDeVoltaCompletada(pilotoSelecionado),
+				ptoOri, yBase);
+
+		yBase += 20;
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString("TemperaturaMotor() "
+				+ pilotoSelecionado.getCarro().getTemperaturaMotor(), ptoOri,
+				yBase);
+
+		yBase += 20;
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				"TempMax() " + pilotoSelecionado.getCarro().getTempMax(),
+				ptoOri, yBase);
+
+		yBase += 20;
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				"IndiceTracado() " + pilotoSelecionado.getIndiceTracado(),
+				ptoOri, yBase);
+
+		yBase += 20;
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString("Tracado() " + pilotoSelecionado.getTracado(), ptoOri,
+				yBase);
+
+		yBase += 20;
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				"TracadoAntigo() " + pilotoSelecionado.getTracadoAntigo(),
+				ptoOri, yBase);
+
+		yBase += 20;
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString("FreiandoReta() " + pilotoSelecionado.isFreiandoReta(),
+				ptoOri, yBase);
+
+		if (controleJogo.isSafetyCarNaPista()) {
+
+			yBase += 20;
+			g2d.setColor(yel);
+			g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+			g2d.setColor(Color.black);
+			g2d.drawString("Ptos SC  "
+					+ controleJogo.getSafetyCar().getPtosPista(), ptoOri, yBase);
+
+		}
 
 	}
 
@@ -2768,8 +2903,6 @@ public class PainelCircuito extends JPanel {
 
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 2, 105, 75, 10, 10);
-
-
 
 		yBase += 10;
 		g2d.setColor(Color.black);

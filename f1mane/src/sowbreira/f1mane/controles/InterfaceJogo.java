@@ -290,4 +290,6 @@ public interface InterfaceJogo {
 
 	public void forcaSafatyCar();
 
+	public No obterProxCurva(No noAtual);
+
 }
