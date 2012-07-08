@@ -14,6 +14,7 @@ import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 public class ControleSom {
 
@@ -29,7 +30,28 @@ public class ControleSom {
 	private static Clip clipBox;
 	private static float volume = -15f;
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException,
+			UnsupportedAudioFileException, IOException,
+			LineUnavailableException {
+		iniciaVars();
+		final double frameLength = (double) clipVeloMax.getFrameLength();
+		System.out.println("frameLength" + frameLength);
+		Thread thread = new Thread() {
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out
+							.println((clipVeloMax.getFramePosition() / frameLength));
+				}
+			};
+		};
+		thread.start();
+		clipVeloMax.start();
 	}
 
 	public static void somVelocidade(Piloto ps, InterfaceJogo controleJogo,
@@ -37,7 +59,7 @@ public class ControleSom {
 		int velocidade = ps.getVelocidade();
 		if (lastCall == 0) {
 			lastCall = System.currentTimeMillis();
-		} else if (lastCall + (250 + controleJogo.getTempoCiclo()) > System
+		} else if (lastCall + (20 + controleJogo.getTempoCiclo()) > System
 				.currentTimeMillis()) {
 			return;
 		}
@@ -50,12 +72,7 @@ public class ControleSom {
 			roncoClip.stop();
 		}
 		try {
-
 			if (ps.getPtosBox() != 0) {
-				clipLargada.stop();
-				clipVeloMed.stop();
-				clipVeloMax.stop();
-				clipVeloMaxFinal.stop();
 				clipBox.loop(Clip.LOOP_CONTINUOUSLY);
 				clipBox.start();
 			} else {
@@ -97,9 +114,33 @@ public class ControleSom {
 	}
 
 	private static boolean tocandoClip() {
-		return clipBox.isRunning() || clipLargada.isRunning()
-				|| clipVeloMax.isRunning() || clipVeloMaxFinal.isRunning()
-				|| clipVeloMed.isRunning();
+
+		boolean tocando = false;
+
+		double frameLength = (double) clipLargada.getFrameLength();
+		double val = (clipLargada.getFramePosition() / frameLength);
+		if (val > 0 && val < Util.intervalo(0.5, 0.7)) {
+			tocando = true;
+		}
+
+		frameLength = (double) clipVeloMax.getFrameLength();
+		val = (clipVeloMax.getFramePosition() / frameLength);
+		if (val > 0 && val < Util.intervalo(0.5, 0.7)) {
+			tocando = true;
+		}
+
+		frameLength = (double) clipVeloMaxFinal.getFrameLength();
+		val = (clipVeloMaxFinal.getFramePosition() / frameLength);
+		if (val > 0 && val < Util.intervalo(0.5, 0.7)) {
+			tocando = true;
+		}
+
+		frameLength = (double) clipVeloMed.getFrameLength();
+		val = (clipVeloMed.getFramePosition() / frameLength);
+		if (val > 0 && val < Util.intervalo(0.5, 0.7)) {
+			tocando = true;
+		}
+		return tocando;
 	}
 
 	private static void iniciaVars() throws UnsupportedAudioFileException,
