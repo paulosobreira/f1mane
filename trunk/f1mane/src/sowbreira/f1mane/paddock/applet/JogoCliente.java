@@ -561,9 +561,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto
-								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-										.getMultiplicadorLarguraPista()));
+						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+								.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -1017,5 +1016,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void forcaSafatyCar() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public No obterProxCurva(No noAtual) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

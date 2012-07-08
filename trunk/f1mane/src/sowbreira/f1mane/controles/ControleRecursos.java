@@ -41,6 +41,7 @@ public abstract class ControleRecursos {
 	protected Map circuitos = new HashMap();
 	protected Map circuitosClima = new HashMap();
 	protected Map temporadasTransp = new HashMap();
+	protected Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
 	private final static int TRANPS = 250;
@@ -317,6 +318,8 @@ public abstract class ControleRecursos {
 			mapaIdsNos.put(pistaId, noPsita);
 			mapaNosIds.put(noPsita, pistaId);
 			idsNoPista.add(pistaId);
+			if (noPsita.verificaRetaOuLargada())
+				mapaNoProxCurva.put(noPsita, null);
 		}
 		for (Iterator iter = nosDoBox.iterator(); iter.hasNext();) {
 			No noDoBox = (No) iter.next();
@@ -325,6 +328,19 @@ public abstract class ControleRecursos {
 			mapaNosIds.put(noDoBox, boxId);
 			idsNoBox.add(boxId);
 		}
+		for (Iterator iterator = mapaNoProxCurva.keySet().iterator(); iterator
+				.hasNext();) {
+			No no = (No) iterator.next();
+			int index = no.getIndex();
+			for (int i = index; i < nosDaPista.size(); i++) {
+				No noCurva = (No) nosDaPista.get(i);
+				if (noCurva.verificaCruvaBaixa()) {
+					mapaNoProxCurva.put(no, noCurva);
+					break;
+				}
+			}
+		}
+
 	}
 
 	public List obterPista(Piloto piloto) {

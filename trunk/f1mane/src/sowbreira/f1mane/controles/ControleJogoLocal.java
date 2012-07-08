@@ -1218,4 +1218,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		controleCorrida.safetyCarNaPista(piloto);
 	}
 
+	@Override
+	public No obterProxCurva(No noAtual) {
+		return mapaNoProxCurva.get(noAtual);
+	}
+
 }
