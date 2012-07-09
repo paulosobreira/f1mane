@@ -668,7 +668,7 @@ public class Carro implements Serializable {
 						novoModificador += 1;
 				} else if (!getPiloto().testeHabilidadePiloto(controleJogo)
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
-					if (getPiloto().isAgressivo()) {
+					if (!testePotencia()) {
 						novoModificador -= 1;
 						msgPneusFrios(controleJogo, porcent, intervaloMax);
 					}
@@ -689,7 +689,7 @@ public class Carro implements Serializable {
 				} else if (!getPiloto().testeHabilidadePilotoOuCarro(
 						controleJogo)
 						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
-					if (getPiloto().isAgressivo()) {
+					if (!testePotencia()) {
 						novoModificador -= 1;
 						msgPneusFrios(controleJogo, porcent, intervaloMax);
 					}
