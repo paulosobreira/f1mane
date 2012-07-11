@@ -157,43 +157,41 @@ public class ServletPaddock extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
-		synchronized (mutex) {
+		try {
+			ObjectInputStream inputStream = null;
 			try {
-				ObjectInputStream inputStream = null;
-				try {
-					inputStream = new ObjectInputStream(req.getInputStream());
-				} catch (Exception e) {
-					Logger.logar("inputStream null - > doGetHtml");
-				}
-				if (inputStream != null) {
-					Object object = null;
-
-					object = inputStream.readObject();
-
-					Object escrever = controlePaddock
-							.processarObjetoRecebido(object);
-
-					if (PaddockConstants.modoZip) {
-						dumaparDadosZip(ZipUtil.compactarObjeto(
-								PaddockConstants.debug, escrever,
-								res.getOutputStream()));
-					} else {
-						ByteArrayOutputStream bos = new ByteArrayOutputStream();
-						dumaparDados(escrever);
-						ObjectOutputStream oos = new ObjectOutputStream(bos);
-						oos.writeObject(escrever);
-						oos.flush();
-						res.getOutputStream().write(bos.toByteArray());
-					}
-
-					return;
-				} else {
-					doGetHtml(req, res);
-					return;
-				}
+				inputStream = new ObjectInputStream(req.getInputStream());
 			} catch (Exception e) {
-				Logger.topExecpts(e);
+				Logger.logar("inputStream null - > doGetHtml");
 			}
+			if (inputStream != null) {
+				Object object = null;
+
+				object = inputStream.readObject();
+
+				Object escrever = controlePaddock
+						.processarObjetoRecebido(object);
+
+				if (PaddockConstants.modoZip) {
+					dumaparDadosZip(ZipUtil.compactarObjeto(
+							PaddockConstants.debug, escrever,
+							res.getOutputStream()));
+				} else {
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					dumaparDados(escrever);
+					ObjectOutputStream oos = new ObjectOutputStream(bos);
+					oos.writeObject(escrever);
+					oos.flush();
+					res.getOutputStream().write(bos.toByteArray());
+				}
+
+				return;
+			} else {
+				doGetHtml(req, res);
+				return;
+			}
+		} catch (Exception e) {
+			Logger.topExecpts(e);
 		}
 	}
 
