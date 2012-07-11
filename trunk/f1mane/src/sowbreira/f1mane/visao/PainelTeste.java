@@ -23,6 +23,7 @@ public class PainelTeste {
 	static int x, y;
 	static double shx, shy;
 	static BufferedImage desenha = null;
+	static private double theta;
 
 	public static void main(String[] args) {
 		shx = 0;
@@ -40,6 +41,7 @@ public class PainelTeste {
 		frame.setSize(new Dimension(500, 500));
 		frame.setVisible(true);
 		frame.addKeyListener(new KeyAdapter() {
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 
@@ -92,6 +94,8 @@ public class PainelTeste {
 				BufferedImage sub = bg.getSubimage(x, y, width, height);
 				BufferedImage dst = new BufferedImage(width, height,
 						BufferedImage.TYPE_INT_ARGB);
+				BufferedImage dst2 = new BufferedImage(width, height,
+						BufferedImage.TYPE_INT_ARGB);
 				AffineTransform affineTransform = AffineTransform
 						.getScaleInstance(zoom, zoom);
 				if (e.getKeyCode() == KeyEvent.VK_A) {
@@ -106,11 +110,28 @@ public class PainelTeste {
 				if (e.getKeyCode() == KeyEvent.VK_X) {
 					shy -= 0.01;
 				}
-				affineTransform.setToShear(shx, shy);
+
+				if (e.getKeyCode() == KeyEvent.VK_Q) {
+					theta += 0.01;
+				}
+				if (e.getKeyCode() == KeyEvent.VK_W) {
+					theta -= 0.01;
+				}
+				affineTransform.setToScale(shx, shy);
+
 				AffineTransformOp affineTransformOp = new AffineTransformOp(
 						affineTransform, AffineTransformOp.TYPE_BILINEAR);
 				affineTransformOp.filter(sub, dst);
-				desenha = dst;
+
+				AffineTransform affineTransform2 = AffineTransform
+						.getScaleInstance(zoom, zoom);
+
+				affineTransform2.setToRotation(theta);
+				AffineTransformOp affineTransformOp2 = new AffineTransformOp(
+						affineTransform2, AffineTransformOp.TYPE_BILINEAR);
+				affineTransformOp2.filter(dst, dst2);
+
+				desenha = dst2;
 				jPanel.repaint();
 				super.keyPressed(e);
 			}

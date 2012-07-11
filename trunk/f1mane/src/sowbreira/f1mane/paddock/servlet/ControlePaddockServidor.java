@@ -72,6 +72,9 @@ public class ControlePaddockServidor {
 	}
 
 	public Object processarObjetoRecebido(Object object) {
+		if (object == null) {
+			return null;
+		}
 		if (object instanceof String) {
 			String pedido = (String) object;
 			if (pedido.indexOf("#") != -1) {
