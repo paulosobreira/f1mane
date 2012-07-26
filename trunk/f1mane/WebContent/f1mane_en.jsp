@@ -241,12 +241,12 @@ img {
 		</div>
 		<br>
 		<div style="text-align: center;">
-				<a id="link"  href="f1maneonlineLite_en.jnlp" style="text-align: left;">
+				<a id="link"  href="f1maneonline_en.jnlp" style="text-align: left;">
 					PLay Online		
 					<img src="webstart.png" border="0">
 				</a>	
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<a id="link" href="f1maneLite_en.jnlp" style="text-align: left;">
+				<a id="link" href="f1mane_en.jnlp" style="text-align: left;">
 					Play Offline
 					<img src="webstart.png" border="0">
 				</a>
