@@ -242,12 +242,12 @@ img {
 		<br>
 		<div style="text-align: center;">
 			<div style="text-align: center;	">
-				<a id="link"  href="f1maneonlineLite.jnlp" style="text-align: left;">
+				<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
 					Jogar Online
 					<img src="webstart.png" border="0">
 				</a>	
 			&nbsp;&nbsp;&nbsp;&nbsp;
-				<a id="link" href="f1maneLite.jnlp" style="text-align: left;">
+				<a id="link" href="f1mane.jnlp" style="text-align: left;">
 					Jogar Offline
 					<img src="webstart.png" border="0">
 				</a>				
