@@ -61,12 +61,10 @@ public class ServletPaddock extends HttpServlet {
 		super.init();
 		webDir = getServletContext().getRealPath("") + File.separator;
 		try {
-			atualizarJnlp("f1maneLite.jnlp");
-			atualizarJnlp("f1maneLite_en.jnlp");
+			atualizarJnlp("f1mane.jnlp");
+			atualizarJnlp("f1mane_en.jnlp");
 			atualizarJnlp("f1maneonline_en.jnlp");
 			atualizarJnlp("f1maneonline.jnlp");
-			atualizarJnlp("f1maneonlineLite_en.jnlp");
-			atualizarJnlp("f1maneonlineLite.jnlp");
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -81,9 +79,7 @@ public class ServletPaddock extends HttpServlet {
 		try {
 			controlePersistencia = new ControlePersistencia(getServletContext()
 					.getRealPath("")
-					+ File.separator
-					+ "WEB-INF"
-					+ File.separator);
+					+ File.separator + "WEB-INF" + File.separator);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -99,8 +95,8 @@ public class ServletPaddock extends HttpServlet {
 		String ip = Inet4Address.getLocalHost().getHostAddress();
 		int port = 80;
 		try {
-			Connector[] connectors = ServerFactory.getServer()
-					.findService("Catalina").findConnectors();
+			Connector[] connectors = ServerFactory.getServer().findService(
+					"Catalina").findConnectors();
 			for (int i = 0; i < connectors.length; i++) {
 				if ("HTTP/1.1".equals(connectors[i].getProtocol())) {
 					port = connectors[i].getPort();
@@ -174,8 +170,8 @@ public class ServletPaddock extends HttpServlet {
 
 				if (PaddockConstants.modoZip) {
 					dumaparDadosZip(ZipUtil.compactarObjeto(
-							PaddockConstants.debug, escrever,
-							res.getOutputStream()));
+							PaddockConstants.debug, escrever, res
+									.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					dumaparDados(escrever);
