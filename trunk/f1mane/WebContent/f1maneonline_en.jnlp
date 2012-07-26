@@ -21,6 +21,6 @@
 	      main-class="sowbreira.f1mane.paddock.applet.AppletPaddock" 
 	      width="800" 
 	      height="410"> 
- 		<param name="lang" value="en"/> 	      
+ 		<param name="lang" value="en" /> 	      
 	  </applet-desc>
 </jnlp>
