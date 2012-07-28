@@ -983,11 +983,20 @@ public class PainelCircuito extends JPanel {
 			String combst = "" + porcentCombust + "%";
 			int tamCombust = Util.calculaLarguraText(combst, g2d);
 			porcentCombustivelTela.setFrame(x - 15, y - 12, tamCombust + 5, 32);
-			g2d.draw(porcentCombustivelTela);
 			if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
-				g2d.setColor(OcilaCor.geraOcila("selCombBox", yel));
+				g2d.setColor(OcilaCor.geraOcila("selCombBox", transpSel));
+				g2d.fill(porcentCombustivelTela);
+				Stroke stroke = g2d.getStroke();
+				g2d.setStroke(trilhoMiniPista);
+				g2d.setColor(yel);
+				g2d.draw(porcentCombustivelTela);
+				g2d.setStroke(stroke);
+				g2d.setColor(transpMenus);
+				g2d.drawString(combst, x - 10, y + 15);
+			} else {
+				g2d.draw(porcentCombustivelTela);
+				g2d.drawString(combst, x - 10, y + 15);
 			}
-			g2d.drawString(combst, x - 10, y + 15);
 
 			g2d.setColor(transpMenus);
 			x -= 20;
@@ -1240,17 +1249,24 @@ public class PainelCircuito extends JPanel {
 		int x = o.x;
 		int y = o.y;
 
-		if (pilotoSelecionado != null
-				&& Piloto.LENTO.equals(pilotoSelecionado.getModoPilotagem())
-				&& qtdeLuzesAcesas <= 0) {
-			g2d.setColor(gre);
-		} else {
-			g2d.setColor(transpMenus);
-		}
 		String strF5 = Lang.msg("075");
 		int tamF5 = Util.calculaLarguraText(strF5, g2d);
 		f5.setFrame(x, y, tamF5 + 10, 20);
-		g2d.fill(f5);
+		if (pilotoSelecionado != null
+				&& Piloto.LENTO.equals(pilotoSelecionado.getModoPilotagem())
+				&& qtdeLuzesAcesas <= 0) {
+			g2d.setColor(transpSel);
+			g2d.fill(f5);
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(gre);
+			g2d.draw(f5);
+			g2d.setStroke(stroke);
+		} else {
+			g2d.setColor(transpMenus);
+			g2d.fill(f5);
+		}
+
 		g2d.setColor(Color.black);
 		g2d.drawString(strF5, x + 5, y + 16);
 
@@ -1258,44 +1274,48 @@ public class PainelCircuito extends JPanel {
 
 		x -= (tamF5);
 
-		if (pilotoSelecionado != null
-				&& Piloto.NORMAL.equals(pilotoSelecionado.getModoPilotagem())
-				&& qtdeLuzesAcesas <= 0) {
-			g2d.setColor(yel);
-		} else {
-			g2d.setColor(transpMenus);
-		}
 		String strF6 = Lang.msg("076");
 		int tamF6 = Util.calculaLarguraText(strF6, g2d);
 		f6.setFrame(x, y, tamF6 + 10, 20);
-		g2d.fill(f6);
+		if (pilotoSelecionado != null
+				&& Piloto.NORMAL.equals(pilotoSelecionado.getModoPilotagem())
+				&& qtdeLuzesAcesas <= 0) {
+			g2d.setColor(transpSel);
+			g2d.fill(f6);
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(yel);
+			g2d.draw(f6);
+			g2d.setStroke(stroke);
+		} else {
+			g2d.setColor(transpMenus);
+			g2d.fill(f6);
+		}
+
 		g2d.setColor(Color.black);
 		g2d.drawString(strF6, x + 5, y + 16);
 
 		x -= (tamF6 + 30);
 
-		if (pilotoSelecionado != null
-				&& Piloto.AGRESSIVO
-						.equals(pilotoSelecionado.getModoPilotagem())
-				&& qtdeLuzesAcesas <= 0) {
-			g2d.setColor(red);
-		} else {
-			g2d.setColor(transpMenus);
-		}
 		String strF7 = Lang.msg("077");
 		int tamF7 = Util.calculaLarguraText(strF7, g2d);
 		f7.setFrame(x, y, tamF7 + 10, 20);
-		g2d.fill(f7);
-
 		if (pilotoSelecionado != null
 				&& Piloto.AGRESSIVO
 						.equals(pilotoSelecionado.getModoPilotagem())
 				&& qtdeLuzesAcesas <= 0) {
-			g2d.setColor(Color.white);
+			g2d.setColor(transpSel);
+			g2d.fill(f7);
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(red);
+			g2d.draw(f7);
+			g2d.setStroke(stroke);
 		} else {
-			g2d.setColor(Color.black);
+			g2d.setColor(transpMenus);
+			g2d.fill(f7);
 		}
-
+		g2d.setColor(Color.black);
 		g2d.drawString(strF7, x + 5, y + 16);
 	}
 
@@ -1331,56 +1351,71 @@ public class PainelCircuito extends JPanel {
 
 		desenhaControleDrs(g2d, x, y);
 
-		if (pilotoSelecionado != null
-				&& Carro.GIRO_MIN_VAL == pilotoSelecionado.getCarro().getGiro()
-				&& qtdeLuzesAcesas <= 0) {
-			g2d.setColor(gre);
-		} else {
-			g2d.setColor(transpMenus);
-		}
 		String strF1 = Lang.msg("071");
 		int tamF1 = Util.calculaLarguraText(strF1, g2d);
 		f1.setFrame(x, y, tamF1 + 10, 20);
-		g2d.fill(f1);
+
+		if (pilotoSelecionado != null
+				&& Carro.GIRO_MIN_VAL == pilotoSelecionado.getCarro().getGiro()
+				&& qtdeLuzesAcesas <= 0) {
+			g2d.setColor(transpSel);
+			g2d.fill(f1);
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(gre);
+			g2d.draw(f1);
+			g2d.setStroke(stroke);
+		} else {
+			g2d.setColor(transpMenus);
+			g2d.fill(f1);
+		}
+
 		g2d.setColor(Color.black);
 		g2d.drawString(strF1, x + 5, y + 16);
 
 		x += (tamF1 + 15);
 
-		if (pilotoSelecionado != null
-				&& Carro.GIRO_NOR_VAL == pilotoSelecionado.getCarro().getGiro()
-				&& qtdeLuzesAcesas <= 0) {
-			g2d.setColor(yel);
-		} else {
-			g2d.setColor(transpMenus);
-		}
 		String strF2 = Lang.msg("072");
 		int tamF2 = Util.calculaLarguraText(strF2, g2d);
 		f2.setFrame(x, y, tamF2 + 10, 20);
-		g2d.fill(f2);
+		if (pilotoSelecionado != null
+				&& Carro.GIRO_NOR_VAL == pilotoSelecionado.getCarro().getGiro()
+				&& qtdeLuzesAcesas <= 0) {
+			g2d.setColor(transpSel);
+			g2d.fill(f2);
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(yel);
+			g2d.draw(f2);
+			g2d.setStroke(stroke);
+		} else {
+			g2d.setColor(transpMenus);
+			g2d.fill(f2);
+		}
+
 		g2d.setColor(Color.black);
 		g2d.drawString(strF2, x + 5, y + 16);
 
 		x += (tamF2 + 15);
 
-		if (pilotoSelecionado != null
-				&& Carro.GIRO_MAX_VAL == pilotoSelecionado.getCarro().getGiro()
-				&& qtdeLuzesAcesas <= 0) {
-			g2d.setColor(red);
-		} else {
-			g2d.setColor(transpMenus);
-		}
 		String strF3 = Lang.msg("073");
 		int tamF3 = Util.calculaLarguraText(strF3, g2d);
 		f3.setFrame(x, y, tamF3 + 10, 20);
-		g2d.fill(f3);
 		if (pilotoSelecionado != null
 				&& Carro.GIRO_MAX_VAL == pilotoSelecionado.getCarro().getGiro()
 				&& qtdeLuzesAcesas <= 0) {
-			g2d.setColor(Color.white);
+			g2d.setColor(transpSel);
+			g2d.fill(f3);
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(red);
+			g2d.draw(f3);
+			g2d.setStroke(stroke);
 		} else {
-			g2d.setColor(Color.black);
+			g2d.setColor(transpMenus);
+			g2d.fill(f3);
 		}
+		g2d.setColor(Color.black);
 		g2d.drawString(strF3, x + 5, y + 16);
 	}
 
