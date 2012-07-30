@@ -1323,14 +1323,7 @@ public class PainelCircuito extends JPanel {
 		if (!controleJogo.isKers()) {
 			return;
 		}
-		if (pilotoSelecionado != null
-				&& pilotoSelecionado.getCarro().getCargaKers() > 0
-				&& pilotoSelecionado.isAtivarKers()
-				&& pilotoSelecionado.getCarro().getCargaKers() > 0) {
-			g2d.setColor(gre);
-		} else {
-			g2d.setColor(transpMenus);
-		}
+
 		String msgKers = "K : " + Lang.msg("kers");
 
 		int tamKers = Util.calculaLarguraText(msgKers, g2d);
@@ -1338,7 +1331,21 @@ public class PainelCircuito extends JPanel {
 		int xkers = x - (tamKers - tamF5);
 
 		kers.setFrame(xkers, y - 25, tamKers + 10, 20);
-		g2d.fill(kers);
+		if (pilotoSelecionado != null
+				&& pilotoSelecionado.getCarro().getCargaKers() > 0
+				&& pilotoSelecionado.isAtivarKers()
+				&& pilotoSelecionado.getCarro().getCargaKers() > 0) {
+			g2d.setColor(transpSel);
+			g2d.fill(kers);
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(gre);
+			g2d.draw(kers);
+			g2d.setStroke(stroke);
+		} else {
+			g2d.setColor(transpMenus);
+			g2d.fill(kers);
+		}
 		g2d.setColor(Color.black);
 		g2d.drawString(msgKers, xkers + 5, y - 10);
 	}
@@ -1423,18 +1430,25 @@ public class PainelCircuito extends JPanel {
 		if (!controleJogo.isDrs()) {
 			return;
 		}
-		if (pilotoSelecionado != null
-				&& Carro.MENOS_ASA
-						.equals(pilotoSelecionado.getCarro().getAsa())) {
-			g2d.setColor(gre);
-		} else {
-			g2d.setColor(transpMenus);
-		}
+
 		String msgDrs = "D : " + Lang.msg("drs");
 
 		int tamDrs = Util.calculaLarguraText(msgDrs, g2d);
 		drs.setFrame(x, y - 25, tamDrs + 10, 20);
-		g2d.fill(drs);
+		if (pilotoSelecionado != null
+				&& Carro.MENOS_ASA
+						.equals(pilotoSelecionado.getCarro().getAsa())) {
+			g2d.setColor(transpSel);
+			g2d.fill(drs);
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(gre);
+			g2d.draw(drs);
+			g2d.setStroke(stroke);
+		} else {
+			g2d.setColor(transpMenus);
+			g2d.fill(drs);
+		}
 		g2d.setColor(Color.black);
 		g2d.drawString(msgDrs, x + 5, y - 10);
 	}
