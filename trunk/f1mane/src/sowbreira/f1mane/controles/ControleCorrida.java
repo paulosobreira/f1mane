@@ -424,10 +424,10 @@ public class ControleCorrida {
 												.getDurabilidadeAereofolio() - 1);
 						if (InterfaceJogo.DIFICIL_NV == controleJogo
 								.getNiveljogo())
-							piloto.incStress(30);
+							piloto.incStress(15);
 						if (InterfaceJogo.MEDIO_NV == controleJogo
 								.getNiveljogo())
-							piloto.incStress(15);
+							piloto.incStress(10);
 						if (InterfaceJogo.FACIL_NV == controleJogo
 								.getNiveljogo())
 							piloto.incStress(5);
