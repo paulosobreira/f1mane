@@ -212,16 +212,16 @@ public class ControleCorrida {
 	public double verificaUltraPassagem(Piloto piloto, double ganho) {
 
 		No noAtualCarro = piloto.getNoAtual();
-		List listaPiloto = piloto.obterPista(controleJogo);
+		List pistaPiloto = piloto.obterPista(controleJogo);
 
 		int indCentroCarro = noAtualCarro.getIndex();
 		double indFrenteCarro = indCentroCarro + ganho + Carro.MEIA_ALTURA;
 
 		if (indFrenteCarro < 0) {
-			indFrenteCarro = (listaPiloto.size() - 1) + indFrenteCarro;
+			indFrenteCarro = (pistaPiloto.size() - 1) + indFrenteCarro;
 		}
-		if (indFrenteCarro > listaPiloto.size()) {
-			indFrenteCarro = indFrenteCarro - (listaPiloto.size() - 1);
+		if (indFrenteCarro > pistaPiloto.size()) {
+			indFrenteCarro = indFrenteCarro - (pistaPiloto.size() - 1);
 		}
 
 		List pilotos = controleJogo.pilotos;
