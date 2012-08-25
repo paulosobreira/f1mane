@@ -763,7 +763,7 @@ public class Carro implements Serializable {
 		if (agressivo && no.verificaCruvaBaixa()) {
 			int stress = 0;
 			if (controleJogo.verificaNivelJogo()) {
-				stress = Util.intervalo(1, 10);
+				stress = Util.intervalo(1, 5);
 				if (verificaPneusIncompativeisClima(controleJogo)) {
 					piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
 							controleJogo) ? 0 : 1 + stress);

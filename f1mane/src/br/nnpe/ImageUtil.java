@@ -8,6 +8,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Transparency;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
@@ -20,6 +22,22 @@ import javax.swing.ImageIcon;
  * @author Paulo Sobreira Criado Em 21/08/2005
  */
 public class ImageUtil {
+	public static BufferedImage geraResize(BufferedImage src, double fator) {
+		return geraResize(src, fator, fator);
+	}
+
+	public static BufferedImage geraResize(BufferedImage src, double fatorx,
+			double fatory) {
+		AffineTransform afZoom = new AffineTransform();
+		afZoom.setToScale(fatorx, fatory);
+		BufferedImage dst = new BufferedImage((int) Math.round(src.getWidth()
+				* fatorx), (int) Math.round(src.getHeight() * fatory),
+				BufferedImage.TYPE_INT_ARGB);
+		AffineTransformOp op = new AffineTransformOp(afZoom,
+				AffineTransformOp.TYPE_BILINEAR);
+		op.filter(src, dst);
+		return dst;
+	}
 
 	public static BufferedImage geraTransparencia(BufferedImage src, Color color) {
 		ImageIcon img = new ImageIcon(src);

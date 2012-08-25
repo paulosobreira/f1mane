@@ -95,9 +95,9 @@ public class PainelEntradaCliente {
 		painelInicio.setLayout(new GridLayout(5, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
-				return Lang.msg("110", new String[] {
-						String.valueOf(Constantes.MIN_VOLTAS),
-						String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110",
+						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+								String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 
@@ -298,8 +298,8 @@ public class PainelEntradaCliente {
 		painelMostrar.add(painelInicio, BorderLayout.CENTER);
 		setaCampeonato();
 
-		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar, Lang
-				.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar,
+				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
@@ -309,19 +309,6 @@ public class PainelEntradaCliente {
 			spinnerQtdeVoltas.setValue(new Integer(12));
 		}
 		preecherDadosCriarJogo();
-		if ((!Clima.CHUVA.equals(dadosCriarJogo.getClima().getClima()) && Carro.TIPO_PNEU_CHUVA
-				.equals(dadosCriarJogo.getTpPnueu()))
-				|| (Clima.CHUVA.equals(dadosCriarJogo.getClima().getClima()) && !Carro.TIPO_PNEU_CHUVA
-						.equals(dadosCriarJogo.getTpPnueu()))
-
-		) {
-			int showConfirmDialog = JOptionPane.showConfirmDialog(mainFrame,
-					Lang.msg("pneuIncompativel"), Lang.msg("alerta"),
-					JOptionPane.YES_NO_OPTION);
-			if (JOptionPane.YES_OPTION != showConfirmDialog) {
-				return false;
-			}
-		}
 		return true;
 	}
 
@@ -329,8 +316,8 @@ public class PainelEntradaCliente {
 		if (campeonato != null) {
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
-			comboBoxNivelCorrida.setSelectedItem(Lang
-					.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida
+					.setSelectedItem(Lang.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
 			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
 			semReabastacimento.setEnabled(false);
@@ -560,9 +547,9 @@ public class PainelEntradaCliente {
 	}
 
 	public boolean gerarDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo,
-			JPanel panelJogoCriado, String circuito) {
+			JPanel panelJogoCriado, String circuito, Clima clima) {
 		JPanel painelInicio = new JPanel();
-		gerarPainelParticiparJogo(painelInicio);
+		gerarPainelParticiparJogo(painelInicio, clima);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(panelJogoCriado, BorderLayout.NORTH);
 		panel.add(gerarSeletorCircuito());
@@ -575,8 +562,8 @@ public class PainelEntradaCliente {
 			}
 		});
 		panel.add(painelInicio, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(mainFrame, panel, Lang
-				.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, panel,
+				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
@@ -584,7 +571,7 @@ public class PainelEntradaCliente {
 		return true;
 	}
 
-	private void gerarPainelParticiparJogo(JPanel painelInicio) {
+	private void gerarPainelParticiparJogo(JPanel painelInicio, Clima clima) {
 		painelInicio.setLayout(new GridLayout(4, 2));
 
 		comboBoxPilotoSelecionado = new JComboBox();
@@ -611,6 +598,13 @@ public class PainelEntradaCliente {
 		comboBoxAsa.addItem(Lang.msg(Carro.ASA_NORMAL));
 		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
+
+		if (Clima.CHUVA.equals(clima.getClima())) {
+			comboBoxPneuInicial
+					.setSelectedItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
+			comboBoxAsa.setSelectedItem(Lang.msg(Carro.MAIS_ASA));
+		}
+
 		JLabel qtdeComustivel = new JLabel(Lang.msg("011"));
 		sliderCombustivelInicial = new JSlider(0, 100);
 		Hashtable labelTable = new Hashtable();
