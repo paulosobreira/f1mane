@@ -64,8 +64,6 @@ public class ControleCorrida {
 			this.fatorUtrapassagem = 0.5;
 		}
 		this.fatorUtrapassagem = 1.0 - this.fatorUtrapassagem;
-		System.out.println("fatorUtr " + fatorUtr);
-		System.out.println("fatorUtrapassagem " + fatorUtrapassagem);
 		this.indexVelcidadeDaPista = 1.5;
 		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
@@ -397,9 +395,9 @@ public class ControleCorrida {
 		if (piloto.getCarro().verificaDano()) {
 			return;
 		}
-//		if (piloto.isJogadorHumano()) {
-//			System.out.println("verificaAcidenteUltrapassagem");
-//		}
+		// if (piloto.isJogadorHumano()) {
+		// System.out.println("verificaAcidenteUltrapassagem");
+		// }
 
 		double fatorAcidenteLocal = fatorAcidente;
 		if (controleJogo.isChovendo()) {

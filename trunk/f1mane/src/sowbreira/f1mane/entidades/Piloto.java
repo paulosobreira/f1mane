@@ -1012,7 +1012,11 @@ public class Piloto implements Serializable {
 		No obterProxCurva = controleJogo.obterProxCurva(noAtual);
 		if (obterProxCurva != null) {
 			double val = obterProxCurva.getIndex() - noAtual.getIndex();
-			if (val < 500) {
+			int distAfrente = 500;
+			if (isJogadorHumano()) {
+				distAfrente = (int) (1.0 - controleJogo.getNiveljogo() * 1000);
+			}
+			if (val < distAfrente) {
 				freiandoReta = true;
 				double multi = (val / 500.0);
 				double min = 0.7;
