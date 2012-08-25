@@ -1453,6 +1453,11 @@ public class GerenciadorVisual {
 			comboBoxAsaInicial.addItem(Lang.msg(Carro.MAIS_ASA));
 			comboBoxAsaInicial.addItem(Lang.msg(Carro.MENOS_ASA));
 
+			if (Clima.CHUVA.equals(clima.getClima())) {
+				boxPneuInicial.setSelectedItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
+				comboBoxAsaInicial.setSelectedItem(Lang.msg(Carro.MAIS_ASA));
+			}
+
 			JLabel qtdeComustivel = new JLabel() {
 				public String getText() {
 					return Lang.msg("011");

@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -32,8 +35,6 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import sowbreira.f1mane.MainFrame;
-import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
@@ -41,7 +42,9 @@ import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -59,6 +62,8 @@ public class PaddockWindow {
 	private JTextField textoEnviar = new JTextField();
 	private HashMap mapaJogosCriados = new HashMap();
 	private HashMap mapaJogosVoltas = new HashMap();
+	protected BufferedImage img;
+
 	private JButton sairJogo = new JButton("Enviar Texto") {
 
 		public String getText() {
@@ -155,7 +160,19 @@ public class PaddockWindow {
 	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 	public PaddockWindow(ControlePaddockCliente controlePaddockApplet) {
-		mainPanel = new JPanel(new BorderLayout());
+		img = ImageUtil
+				.geraResize(
+						CarregadorRecursos.carregaBufferedImage("f1bg.png"),
+						0.85, 0.66);
+		mainPanel = new JPanel(new BorderLayout()) {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D graphics2d = (Graphics2D) g;
+				if (img != null)
+					graphics2d.drawImage(img, null, 0, 0);
+			}
+		};
 		if (controlePaddockApplet != null) {
 			this.controlePaddockCliente = controlePaddockApplet;
 			controlePaddockApplet.setPaddockWindow(this);
@@ -338,17 +355,20 @@ public class PaddockWindow {
 
 	private void gerarLayout() {
 		JPanel cPanel = new JPanel(new BorderLayout());
+		compTransp(cPanel);
 		JPanel sPanel = new JPanel(new BorderLayout());
+		compTransp(sPanel);
 		mainPanel.add(cPanel, BorderLayout.CENTER);
 		mainPanel.add(sPanel, BorderLayout.SOUTH);
+		compTransp(mainPanel);
 		JPanel chatPanel = new JPanel();
-		chatPanel.setBackground(Color.WHITE);
+		compTransp(chatPanel);
 		if (controlePaddockCliente != null)
 			chatPanel.setBorder(new TitledBorder(
 					"F1-MANager Engineer Chat Room Ver "
 							+ controlePaddockCliente.getVersao()));
 		JPanel usersPanel = new JPanel();
-		usersPanel.setBackground(Color.WHITE);
+		compTransp(usersPanel);
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
 			public String getTitle() {
 				return Lang.msg("186");
@@ -357,7 +377,7 @@ public class PaddockWindow {
 		cPanel.add(chatPanel, BorderLayout.CENTER);
 		cPanel.add(usersPanel, BorderLayout.EAST);
 		JPanel jogsPanel = new JPanel();
-		jogsPanel.setBackground(Color.WHITE);
+		compTransp(jogsPanel);
 		jogsPanel.setBorder((new TitledBorder("Lista de Jogos") {
 			public String getTitle() {
 				return Lang.msg("187");
@@ -365,19 +385,22 @@ public class PaddockWindow {
 		}));
 		sPanel.add(jogsPanel, BorderLayout.EAST);
 		JPanel inputPanel = new JPanel();
-		inputPanel.setBackground(Color.WHITE);
 		sPanel.add(inputPanel, BorderLayout.CENTER);
 		/**
 		 * adicionar componentes.
 		 */
 		JScrollPane jogsPane = new JScrollPane(listaClientes);
+		compTransp(jogsPane);
+		compTransp(listaClientes);
 		jogsPane.setPreferredSize(new Dimension(150, 235));
 		usersPanel.add(jogsPane);
 		JScrollPane jogsCriados = new JScrollPane(listaJogosCriados);
+		compTransp(listaJogosCriados);
+		compTransp(jogsCriados);
 		jogsCriados.setPreferredSize(new Dimension(150, 100));
 		jogsPanel.add(jogsCriados);
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setBackground(Color.WHITE);
+		compTransp(buttonsPanel);
 		buttonsPanel.setLayout(new GridLayout(3, 4));
 		buttonsPanel.add(entrarJogo);
 		buttonsPanel.add(sairJogo);
@@ -411,7 +434,7 @@ public class PaddockWindow {
 		buttonsPanel.add(verCampeonato);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
-		panelTextoEnviar.setBackground(Color.WHITE);
+		compTransp(panelTextoEnviar);
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
 			public String getTitle() {
 				return Lang.msg("188");
@@ -424,8 +447,10 @@ public class PaddockWindow {
 		inputPanel.add(buttonsPanel, BorderLayout.CENTER);
 		inputPanel.add(infoLabel1, BorderLayout.SOUTH);
 		chatPanel.setLayout(new BorderLayout());
-		chatPanel.add(new JScrollPane(textAreaChat), BorderLayout.CENTER);
-
+		JScrollPane jScrollPane = new JScrollPane(textAreaChat);
+		chatPanel.add(jScrollPane, BorderLayout.CENTER);
+		compTransp(textAreaChat);
+		compTransp(jScrollPane);
 	}
 
 	public JPanel getMainPanel() {
@@ -449,7 +474,6 @@ public class PaddockWindow {
 
 	public void atualizar(DadosPaddock dadosPaddock) {
 		atualizarChat(dadosPaddock);
-
 		DefaultListModel clientesModel = new DefaultListModel();
 		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
 				.hasNext();) {
@@ -552,7 +576,8 @@ public class PaddockWindow {
 				return jPanel;
 			}
 		});
-
+		if (mainPanel != null)
+			mainPanel.repaint();
 	}
 
 	private void atualizaListaJogos(DadosPaddock dadosPaddock,
@@ -789,12 +814,12 @@ public class PaddockWindow {
 				return Lang.msg("253");
 			}
 		});
-		
+
 		String pilotoAtual = cliente.getPilotoAtual();
 		if (Util.isNullOrEmpty(pilotoAtual)) {
 			pilotoAtual = "";
 		}
-		
+
 		panel.add(new JLabel(pilotoAtual));
 
 		panel.add(new JLabel("Jogo : ") {
@@ -833,5 +858,9 @@ public class PaddockWindow {
 
 		infoLabel1.setText(text);
 
+	}
+
+	private void compTransp(JComponent c) {
+		c.setBackground(new Color(255, 255, 255, 0));
 	}
 }
