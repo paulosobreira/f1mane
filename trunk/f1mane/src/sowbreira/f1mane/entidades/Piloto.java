@@ -1092,7 +1092,7 @@ public class Piloto implements Serializable {
 					+ noAtual.verificaRetaOuLargada() + " ultGanhoReta "
 					+ ultGanhoReta + " acelerando " + acelerando);
 		}
-		setVelocidade(Util.inte(((240 * ganho) / ganhoMax) + ganho
+		setVelocidade(Util.inte(((260 * ganho) / ganhoMax) + ganho
 				+ Util.intervalo(0, 1)));
 		return index;
 	}
