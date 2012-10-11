@@ -1059,7 +1059,7 @@ public class Piloto implements Serializable {
 		if (noAtual.verificaCruvaAlta()) {
 			double limite = 35;
 			if (Math.random() < emborrachamento) {
-				limite = 40;
+				limite = 45;
 			}
 			if (ganho > limite) {
 				ganho = limite;
