@@ -248,10 +248,10 @@ public class FormCarreira extends JPanel {
 					} else if (nexVal >= 800 && nexVal < 900) {
 						inc = 10;
 						if (val == 900) {
-							inc = 30;
+							inc = 50;
 						}
 					} else if (nexVal >= 900 && nexVal < 999) {
-						inc = 30;
+						inc = 50;
 					}
 					if ((nexVal - val) > 0) {
 						if ((ptsCarreira - inc) >= 0) {
