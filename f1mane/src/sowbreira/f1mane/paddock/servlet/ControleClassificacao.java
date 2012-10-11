@@ -58,14 +58,14 @@ public class ControleClassificacao {
 				String key = (String) iter.next();
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 						.carregaDadosJogador(key, session);
-				List corridas = session
-						.createCriteria(CorridasDadosSrv.class)
-						.add(Restrictions
-								.eq("jogadorDadosSrv", jogadorDadosSrv))
-						.add(Restrictions.ge("tempoFim", ini.toTimestamp()
-								.getTime()))
-						.add(Restrictions.le("tempoFim", fim.toTimestamp()
-								.getTime())).list();
+				List corridas = session.createCriteria(CorridasDadosSrv.class)
+						.add(
+								Restrictions.eq("jogadorDadosSrv",
+										jogadorDadosSrv)).add(
+								Restrictions.ge("tempoFim", ini.toTimestamp()
+										.getTime())).add(
+								Restrictions.le("tempoFim", fim.toTimestamp()
+										.getTime())).list();
 				DadosJogador dadosJogador = new DadosJogador();
 				dadosJogador.setNome(jogadorDadosSrv.getNome());
 				dadosJogador.setUltimoAceso(jogadorDadosSrv.getUltimoLogon());
@@ -143,8 +143,12 @@ public class ControleClassificacao {
 									false, session);
 					if (carreiraDadosSrv.isModoCarreira()) {
 						int ptsCorrida = corridasDadosSrv.getPontos();
+						if (ptsCorrida == 0) {
+							ptsCorrida = 1;
+						}
 						carreiraDadosSrv.setPtsConstrutores(carreiraDadosSrv
-								.getPtsConstrutores() + ptsCorrida + 5);
+								.getPtsConstrutores()
+								+ ptsCorrida);
 					}
 					session.saveOrUpdate(corridasDadosSrv);
 					session.saveOrUpdate(carreiraDadosSrv);
