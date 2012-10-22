@@ -502,9 +502,9 @@ public class Piloto implements Serializable {
 			somaBaixa /= ganhosBaixa.size();
 			somaAlta /= ganhosAlta.size();
 			somaReta /= ganhosReta.size();
-			System.out.println("Bandeirada " + this + " Pts pista "
-					+ this.getPtosPista() + " Pos " + getPosicao() + " T "
-					+ df.format(new Date()));
+			// System.out.println("Bandeirada " + this + " Pts pista "
+			// + this.getPtosPista() + " Pos " + getPosicao() + " T "
+			// + df.format(new Date()));
 			// System.out.println(" SomaBaixa " + somaBaixa + " SomaAlta " +
 			// somaAlta
 			// + " SomaReta " + somaReta);
@@ -1087,11 +1087,6 @@ public class Piloto implements Serializable {
 			ultGanhoReta = 0;
 		}
 
-		if (isJogadorHumano()) {
-			System.out.println("noAtual.verificaRetaOuLargada() "
-					+ noAtual.verificaRetaOuLargada() + " ultGanhoReta "
-					+ ultGanhoReta + " acelerando " + acelerando);
-		}
 		setVelocidade(Util.inte(((260 * ganho) / ganhoMax) + ganho
 				+ Util.intervalo(0, 1)));
 		return index;
