@@ -78,12 +78,12 @@ public class ControleQualificacao {
 		Piloto ant = null;
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = 1;
+			limite = 3;
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = 5;
+				limite = 7;
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = 10;
+				limite = 15;
 			}
 			maiorDiff = 0;
 			ant = null;
@@ -116,12 +116,12 @@ public class ControleQualificacao {
 		ant = null;
 		maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = 1;
+			limite = 5;
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = 5;
+				limite = 10;
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = 10;
+				limite = 15;
 			}
 			maiorDiff = 0;
 			ant = null;
