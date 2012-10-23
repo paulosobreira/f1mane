@@ -634,8 +634,14 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_MOLE,
-					controleCorrida.getDistaciaCorrida());
+			if (controleJogo.asfaltoAbrasivo())
+				piloto.getCarro().trocarPneus(controleJogo,
+						Carro.TIPO_PNEU_DURO,
+						controleCorrida.getDistaciaCorrida());
+			else
+				piloto.getCarro().trocarPneus(controleJogo,
+						Carro.TIPO_PNEU_MOLE,
+						controleCorrida.getDistaciaCorrida());
 		}
 		if (piloto.testeHabilidadePiloto(controleJogo))
 			processarTipoAsaAutomatico(piloto);
