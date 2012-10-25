@@ -78,9 +78,9 @@ public class ControleQualificacao {
 		Piloto ant = null;
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = 3;
+			limite = 5;
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = 7;
+				limite = 10;
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
 				limite = 15;
