@@ -685,11 +685,6 @@ public class ControleCorrida {
 		return indexVelcidadeDaPista;
 	}
 
-	public void iniciarQualificacao(int tempoQualificacao) {
-		controleQualificacao.iniciarQualificacao(tempoQualificacao);
-
-	}
-
 	public void iniciarCiclos() {
 		controleCiclo.start();
 	}
