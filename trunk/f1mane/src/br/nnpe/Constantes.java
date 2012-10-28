@@ -18,11 +18,6 @@ public class Constantes {
 	public static final int ACIMA_MEDIA_NORMAL = 5;
 	public static final int ACIMA_MEDIA_FACIL = 10;
 
-	// public static final int MAX_VOLTAS = 2;
-	// public static final int MIN_VOLTAS = 2;
-	// public static final int MIN_CICLO = 50;
-	// public static final int MAX_CICLO = 50;
-
 	private Constantes() {
 	}
 

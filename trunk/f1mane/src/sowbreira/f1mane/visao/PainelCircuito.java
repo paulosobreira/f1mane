@@ -832,6 +832,17 @@ public class PainelCircuito extends JPanel {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
+		g2d.drawString(
+				"Aceleracao() "
+						+ Util.formatNumber("#,##0.00",
+								pilotoSelecionado.getAceleracao()), ptoOri,
+				yBase);
+
+		yBase += 20;
+
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
 		g2d.drawString("Stress() " + pilotoSelecionado.getStress(), ptoOri,
 				yBase);
 

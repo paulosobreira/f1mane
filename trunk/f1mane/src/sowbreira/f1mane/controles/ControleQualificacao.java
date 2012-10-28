@@ -78,12 +78,12 @@ public class ControleQualificacao {
 		Piloto ant = null;
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = 5;
+			limite = 3;
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = 10;
+				limite = 5;
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = 15;
+				limite = 7;
 			}
 			maiorDiff = 0;
 			ant = null;
@@ -116,12 +116,12 @@ public class ControleQualificacao {
 		ant = null;
 		maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = 5;
+			limite = 1;
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = 10;
+				limite = 3;
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = 15;
+				limite = 5;
 			}
 			maiorDiff = 0;
 			ant = null;
@@ -159,18 +159,17 @@ public class ControleQualificacao {
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao--;
 					if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro()
-							.getTipoPneu())
-							&& Math.random() < 0.05) {
+							.getTipoPneu()) && Math.random() < 0.05) {
 						contCiclosQualificacao--;
 					}
 				}
 			}
-			piloto.setNumeroVolta(0);
 			piloto.setCiclosVoltaQualificacao(contCiclosQualificacao);
+			piloto.setNumeroVolta(0);
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);
-			piloto.setVoltas(new ArrayList());
 			piloto.setContTravouRodas(0);
+			piloto.setVoltas(new ArrayList());
 			controleJogo.zerarMelhorVolta();
 		}
 		Collections.sort(pilotos, new Comparator() {
@@ -213,12 +212,16 @@ public class ControleQualificacao {
 					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 					(Carro.ALTURA));
 
-			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-					.getCenterX()), Util.inte(rectangle.getCenterY())));
-			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-					.getCenterX()), Util.inte(rectangle.getCenterY())));
+			Point cima = GeoUtil.calculaPonto(
+					calculaAngulo,
+					Util.inte(Carro.ALTURA * 1.2),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
+			Point baixo = GeoUtil.calculaPonto(
+					calculaAngulo + 180,
+					Util.inte(Carro.ALTURA * 1.2),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA)),
@@ -234,10 +237,9 @@ public class ControleQualificacao {
 			}
 			piloto.setNoAtual(nM);
 			piloto.setPosicao(i + 1);
-			piloto.zerarGanho();
+			piloto.zerarGanhoEVariaveisUlt();
 			piloto.setPtosPista(nM.getIndex());
 			piloto.setPtosPistaIncial(nM.getIndex());
-			piloto.setVelocidade(0);
 			Carro carro = piloto.getCarro();
 			int durabilidade = InterfaceJogo.DUR_AREO_NORMAL;
 			carro.setTempMax(carro.getPotencia() / 4);
@@ -250,15 +252,9 @@ public class ControleQualificacao {
 				carro.setTempMax(carro.getPotencia() / 6);
 			}
 			carro.setDurabilidadeAereofolio(durabilidade);
-
 			Logger.logar(" PosLarg " + piloto.getPosicao() + " Nome "
 					+ piloto.getNome() + " pts " + piloto.getPtosPista());
 		}
-
-	}
-
-	public void iniciarQualificacao(int tempoQualificacao) {
-		// TODO Auto-generated method stub
 
 	}
 }
