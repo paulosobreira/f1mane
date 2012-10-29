@@ -555,7 +555,7 @@ public class ControleBox {
 			} catch (InterruptedException e) {
 				Logger.logarExept(e);
 			}
-			int val = 1 + ((int) (Math.random() * 3));
+			int val = Util.intervalo(1, 3);
 			switch (val) {
 			case 1:
 				piloto.getCarro().trocarPneus(controleJogo,
@@ -655,7 +655,7 @@ public class ControleBox {
 
 		if (consumoMedioCombustivel == 0) {
 			if (controleJogo.getNumVoltaAtual() == 0) {
-				percentagem = Util.intervalo(40, 60);
+				percentagem = Util.intervalo(40, 50);
 			} else {
 				if (piloto.getQtdeParadasBox() == 0) {
 					percentagem = 50 + ((int) (Math.random() * 50));
