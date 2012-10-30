@@ -3983,7 +3983,11 @@ public class PainelCircuito extends JPanel {
 		if (Carro.MENOS_ASA.equals(pilotoSelecionado.getCarro().getAsa())) {
 			g2d.setColor(gre);
 		} else {
-			g2d.setColor(lightWhite);
+			if (controleJogo.calculaSegundosParaProximoDouble(pilotoSelecionado) < 1) {
+				g2d.setColor(OcilaCor.geraOcila("podeUsarDRS", yel));
+			}else{
+				g2d.setColor(lightWhite);				
+			}
 		}
 		g2d.fillRoundRect(limitesViewPort.x + 165, limitesViewPort.y + 155, 34,
 				15, 15, 15);
