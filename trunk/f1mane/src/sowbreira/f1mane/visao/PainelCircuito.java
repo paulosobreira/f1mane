@@ -3967,6 +3967,7 @@ public class PainelCircuito extends JPanel {
 			if (pilotoSelecionado.getNoAtual() != null
 					&& pilotoSelecionado.getNoAtual().verificaRetaOuLargada()
 					&& pilotoSelecionado.getNumeroVolta() > 0
+					&& pilotoSelecionado.getPtosBox() == 0
 					&& controleJogo
 							.calculaSegundosParaProximoDouble(pilotoSelecionado) < 1) {
 				g2d.setColor(OcilaCor.geraOcila("podeUsarDRS", yel));
