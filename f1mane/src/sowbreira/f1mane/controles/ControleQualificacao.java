@@ -62,7 +62,7 @@ public class ControleQualificacao {
 		List pilotos = controleJogo.getPilotos();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			System.out.println(piloto + " Piloto " + piloto.getHabilidade()
+			Logger.logar(piloto + " Piloto " + piloto.getHabilidade()
 					+ " Motor" + piloto.getCarro().getPotencia());
 
 		}
@@ -139,10 +139,10 @@ public class ControleQualificacao {
 				ant = piloto;
 			}
 		}
-		System.out.println("==============");
+		Logger.logar("==============");
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			System.out.println(piloto + " Piloto " + piloto.getHabilidade()
+			Logger.logar(piloto + " Piloto " + piloto.getHabilidade()
 					+ " Motor" + piloto.getCarro().getPotencia());
 
 		}
