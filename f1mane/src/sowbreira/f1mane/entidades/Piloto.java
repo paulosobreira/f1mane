@@ -997,7 +997,7 @@ public class Piloto implements Serializable {
 		if (colisao) {
 			acelerando = false;
 			setAgressivoF4(false);
-			setCiclosDesconcentrado(200);
+			setCiclosDesconcentrado(100);
 		}
 		return colisao;
 	}
@@ -1192,7 +1192,8 @@ public class Piloto implements Serializable {
 				porcentagemCombustivel = 0;
 				porcentagemDesgastePeneus = 0;
 			}
-			if (controleJogo.verificaUltimasVoltas()
+			if ((porcentagemCombustivel > 0 && controleJogo
+					.verificaUltimasVoltas())
 					|| (getCarro().getTemperaturaMotor() < getCarro()
 							.getTempMax() && porcentagemCombustivel > porcentagemDesgastePeneus)) {
 				getCarro().setGiro(Carro.GIRO_MAX_VAL);
@@ -1517,7 +1518,8 @@ public class Piloto implements Serializable {
 				}
 				boolean superAquecido = getCarro().getTemperaturaMotor() >= getCarro()
 						.getTempMax();
-				if (controleJogo.verificaUltimasVoltas()
+				if ((porcentagemCombustivel > 0 && controleJogo
+						.verificaUltimasVoltas())
 						|| (!superAquecido && porcentagemCombustivel > porcentagemDesgastePeneus)) {
 					getCarro().setGiro(Carro.GIRO_MAX_VAL);
 					ret = true;
@@ -1527,7 +1529,8 @@ public class Piloto implements Serializable {
 					No no = getNoAtual();
 					if (Carro.MAIS_ASA.equals(getCarro().getAsa())) {
 						if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
-							if (controleJogo.verificaUltimasVoltas()
+							if ((porcentagemCombustivel > 0 && controleJogo
+									.verificaUltimasVoltas())
 									|| (!superAquecido && porcentagemCombustivel > porcentagemDesgastePeneus)) {
 								getCarro().setGiro(Carro.GIRO_MAX_VAL);
 								ret = true;
