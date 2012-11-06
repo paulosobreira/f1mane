@@ -877,10 +877,8 @@ public class Piloto implements Serializable {
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, noAtual, controleJogo);
 		processaNovoModificadorDanificado();
-
 		processaLimitadorModificador();
 		processaGanho(controleJogo);
-
 		processaUsoKERS(controleJogo);
 		processaUsoDRS(controleJogo);
 		processaGanhoAerodinamico(controleJogo);
@@ -997,7 +995,7 @@ public class Piloto implements Serializable {
 		if (colisao) {
 			acelerando = false;
 			setAgressivoF4(false);
-			setCiclosDesconcentrado(100);
+			setCiclosDesconcentrado(50);
 		}
 		return colisao;
 	}
@@ -1557,7 +1555,8 @@ public class Piloto implements Serializable {
 				if (!controleJogo.verificaNivelJogo()
 						&& testeHabilidadePiloto(controleJogo)) {
 					if (controleJogo.verificaUltimasVoltas()
-							|| ((!noAtual.verificaRetaOuLargada()) && porcentagemCombustivel < porcentagemDesgastePeneus)) {
+							|| ((!noAtual.verificaRetaOuLargada()) && porcentagemCombustivel < porcentagemDesgastePeneus)
+							&& porcentagemDesgastePeneus > 10) {
 						setModoPilotagem(AGRESSIVO);
 						ret = true;
 					}
@@ -1566,7 +1565,6 @@ public class Piloto implements Serializable {
 							&& Math.random() > .9
 							&& getPosicao() < 9
 							&& msgTentativaNumVolta == getNumeroVolta()) {
-
 						int val = 1 + (int) (Math.random() * 4);
 						msgTentativaNumVolta = getNumeroVolta() + val;
 						String txt = "";

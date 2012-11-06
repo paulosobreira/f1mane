@@ -349,11 +349,11 @@ public class ControleCorrida {
 				double percent = 1 - fatorUtrapassagem;
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
-					double val = ganho * (percent * 0.2);
+					double val = ganho * (percent * 0.4);
 					return val;
 				}
 				if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
-					double val = ganho * (percent * 0.4);
+					double val = ganho * (percent * 0.5);
 					return val;
 
 				}
