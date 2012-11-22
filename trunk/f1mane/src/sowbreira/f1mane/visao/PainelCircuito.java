@@ -1484,7 +1484,7 @@ public class PainelCircuito extends JPanel {
 
 		if (pilotoSelecionado.getCargaKersVisual() != pilotoSelecionado
 				.getCarro().getCargaKers()) {
-			acionaDesenhaKers = 50;
+			acionaDesenhaKers = 35;
 		} else {
 			g2d.setColor(Color.WHITE);
 		}
