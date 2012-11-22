@@ -155,6 +155,7 @@ public class ControlePaddockServidor {
 					mandaMailSenha(jogadorDadosSrv.getNome(),
 							jogadorDadosSrv.getEmail(), senha);
 				} catch (Exception e) {
+					Logger.logarExept(e);
 					erroMail = true;
 				}
 				jogadorDadosSrv.setSenha(Util.md5(senha));
@@ -252,8 +253,8 @@ public class ControlePaddockServidor {
 			throws AddressException, MessagingException {
 		Logger.logar("Senha :" + senha);
 		ServletPaddock.email.sendSimpleMail("F1-Mane Game Password",
-				new String[] { email }, "admin@f1mane.com",
-				"Your game user:password is " + nome + ":" + senha, false);
+				new String[] { email }, "Your game user:password is " + nome
+						+ ":" + senha, false);
 	}
 
 	private Object obterDadosParciaisPilotos(String[] args) {

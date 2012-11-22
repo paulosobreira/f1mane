@@ -506,9 +506,9 @@ public class MonitorJogo implements Runnable {
 
 						double ganhoSuave = 0;
 						int maxLoop = 500;
-						if (controlePaddockCliente.getLatenciaReal() > Constantes.LATENCIA_MAX) {
-							maxLoop += (controlePaddockCliente
-									.getLatenciaReal() - Constantes.LATENCIA_MAX);
+						if (controlePaddockCliente.getLatenciaReal() > Constantes.LATENCIA_MIN) {
+							maxLoop += (2 * (controlePaddockCliente
+									.getLatenciaReal() - Constantes.LATENCIA_MIN));
 						}
 
 						for (int i = 0; i < maxLoop; i += 20) {

@@ -60,8 +60,7 @@ public class ServletMail extends HttpServlet {
 						ServletPaddock.email
 								.sendSimpleMail(assunto,
 										new String[] { carregaDadosJogador
-												.getEmail() },
-										"admin@f1mane.com", texto, false);
+												.getEmail() }, texto, false);
 						printWriter.write("Jogador : " + nomeJogador
 								+ " E-mail " + carregaDadosJogador.getEmail());
 						printWriter.write("<br>");
@@ -84,9 +83,9 @@ public class ServletMail extends HttpServlet {
 					+ "<br><hr>");
 			printWriter.write("</body></html>");
 			res.flushBuffer();
-//			ServletPaddock.email.sendSimpleMail(assunto, new String[] {
-//					"sowbreira@gmail.com"},
-//					"admin@f1mane.com", texto, false);
+			// ServletPaddock.email.sendSimpleMail(assunto, new String[] {
+			// "sowbreira@gmail.com"},
+			// "f1mane@sowbra.com.br", texto, false);
 		} catch (Exception e) {
 			PrintWriter printWriter = null;
 			try {
@@ -102,6 +101,5 @@ public class ServletMail extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 	}
-
 
 }
