@@ -26,7 +26,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class Email {
-	private static final String MAILSERVER = "mail.f1mane.com";
+	private static String MAILSERVER = "";
 
 	private static String USERNAME = "";
 
@@ -41,14 +41,21 @@ public class Email {
 				+ "email.properties"));
 		USERNAME = bundle.getString("USERNAME");
 		PASSWORD = bundle.getString("PASSWORD");
-
+		MAILSERVER = bundle.getString("MAILSERVER");
+//		Logger.logarExept(new Exception("Email Carregado USERNAME :" + USERNAME
+//				+ " PASSWORD: " + PASSWORD + " MAILSERVER: " + MAILSERVER));
 	}
 
 	public static void main(String[] args) throws AddressException,
 			MessagingException {
 		Email email = new Email();
 		email.sendSimpleMail("Teste", new String[] { "sowbreira@gmail.com" },
-				" admin@f1mane.com", "Teste Corpo", false);
+				" f1mane@sowbra.com.br", "Teste Corpo", false);
+	}
+
+	public void sendSimpleMail(String subject, String[] to, String mensagem,
+			boolean html) throws AddressException, MessagingException {
+		sendSimpleMail(subject, to, USERNAME, mensagem, html);
 	}
 
 	public void sendSimpleMail(String subject, String[] to, String from,

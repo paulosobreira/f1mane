@@ -759,6 +759,13 @@ public class Carro implements Serializable {
 			novoModificador -= 1;
 		}
 
+		if ((novoModificador > 0) && no.verificaCruvaAlta()
+				&& !piloto.isAgressivo()
+				&& !piloto.testeHabilidadePilotoOuCarro(controleJogo)
+				&& controleJogo.verificaNivelJogo()) {
+			novoModificador -= 1;
+		}
+
 		int desgPneus = 1;
 		if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
 			if (agressivo && !no.verificaRetaOuLargada())

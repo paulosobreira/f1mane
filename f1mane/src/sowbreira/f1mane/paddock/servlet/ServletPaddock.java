@@ -3,8 +3,6 @@ package sowbreira.f1mane.paddock.servlet;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -19,10 +17,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -159,8 +154,7 @@ public class ServletPaddock extends HttpServlet {
 			HttpServletResponse res) {
 		try {
 			email.sendSimpleMail(assunto,
-					new String[] { "sowbreira@gmail.com" }, "admin@f1mane.com",
-					texto, false);
+					new String[] { "sowbreira@gmail.com" }, texto, false);
 		} catch (Exception e) {
 			PrintWriter printWriter = null;
 			try {
