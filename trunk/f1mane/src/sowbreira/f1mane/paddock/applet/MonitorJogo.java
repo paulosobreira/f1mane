@@ -32,6 +32,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -504,7 +505,13 @@ public class MonitorJogo implements Runnable {
 						}
 
 						double ganhoSuave = 0;
-						for (int i = 0; i < 500; i += 20) {
+						int maxLoop = 500;
+						if (controlePaddockCliente.getLatenciaReal() > Constantes.LATENCIA_MAX) {
+							maxLoop += (controlePaddockCliente
+									.getLatenciaReal() - Constantes.LATENCIA_MAX);
+						}
+
+						for (int i = 0; i < maxLoop; i += 20) {
 							if (diffINdex >= i && diffINdex < i + 20) {
 								break;
 							}

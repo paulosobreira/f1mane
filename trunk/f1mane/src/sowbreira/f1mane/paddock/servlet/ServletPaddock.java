@@ -13,8 +13,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.mail.MessagingException;
@@ -79,7 +81,9 @@ public class ServletPaddock extends HttpServlet {
 		try {
 			controlePersistencia = new ControlePersistencia(getServletContext()
 					.getRealPath("")
-					+ File.separator + "WEB-INF" + File.separator);
+					+ File.separator
+					+ "WEB-INF"
+					+ File.separator);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -92,20 +96,7 @@ public class ServletPaddock extends HttpServlet {
 	private void atualizarJnlp(String jnlp) throws IOException {
 		String file = webDir + File.separator + jnlp;
 		BufferedReader reader = new BufferedReader(new FileReader(file));
-		String ip = Inet4Address.getLocalHost().getHostAddress();
-		int port = 80;
-		try {
-			Connector[] connectors = ServerFactory.getServer().findService(
-					"Catalina").findConnectors();
-			for (int i = 0; i < connectors.length; i++) {
-				if ("HTTP/1.1".equals(connectors[i].getProtocol())) {
-					port = connectors[i].getPort();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		String host = ip + ":" + port;
+		String host = obterHost();
 		String readLine = reader.readLine();
 		StringBuffer buffer = new StringBuffer();
 		while (readLine != null) {
@@ -121,6 +112,37 @@ public class ServletPaddock extends HttpServlet {
 		fileWriter.write(buffer.toString());
 		fileWriter.close();
 
+	}
+
+	private String obterHost() throws UnknownHostException {
+		String host = "";
+		try {
+			Properties properties = new Properties();
+			properties.load(this.getClass().getResourceAsStream(
+					"server.properties"));
+			host = properties.getProperty("host");
+			if (!Util.isNullOrEmpty(host)) {
+				return host;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String ip = Inet4Address.getLocalHost().getHostAddress();
+		int port = 80;
+		try {
+			Connector[] connectors = ServerFactory.getServer()
+					.findService("Catalina").findConnectors();
+			for (int i = 0; i < connectors.length; i++) {
+				if ("HTTP/1.1".equals(connectors[i].getProtocol())) {
+					port = connectors[i].getPort();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		host = ip + ":" + port;
+		return host;
 	}
 
 	public void destroy() {
@@ -170,8 +192,8 @@ public class ServletPaddock extends HttpServlet {
 
 				if (PaddockConstants.modoZip) {
 					dumaparDadosZip(ZipUtil.compactarObjeto(
-							PaddockConstants.debug, escrever, res
-									.getOutputStream()));
+							PaddockConstants.debug, escrever,
+							res.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					dumaparDados(escrever);

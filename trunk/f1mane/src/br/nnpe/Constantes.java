@@ -17,6 +17,8 @@ public class Constantes {
 	public static final int MAX_CICLO = 200;
 	public static final int ACIMA_MEDIA_NORMAL = 5;
 	public static final int ACIMA_MEDIA_FACIL = 10;
+	public static final int LATENCIA_MAX = 240;
+	public static final int LATENCIA_MIN = 120;
 
 	private Constantes() {
 	}

@@ -43,6 +43,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Constantes;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -223,14 +224,14 @@ public class ControlePaddockCliente {
 				somatorio += longElement.longValue();
 			}
 			int media = (int) (somatorio / 10);
-			if (media > 240) {
-				setLatenciaMinima(240);
+			if (media > Constantes.LATENCIA_MAX) {
+				setLatenciaMinima(Constantes.LATENCIA_MAX);
 			} else {
 				setLatenciaMinima(media);
 			}
-			if (media < 120)
-				setLatenciaMinima(120);
-			else if (media < 240) {
+			if (media < Constantes.LATENCIA_MIN)
+				setLatenciaMinima(Constantes.LATENCIA_MIN);
+			else if (media < Constantes.LATENCIA_MAX) {
 				setLatenciaMinima(media);
 			}
 			setLatenciaReal(media);
