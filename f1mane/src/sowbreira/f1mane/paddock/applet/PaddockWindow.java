@@ -503,9 +503,9 @@ public class PaddockWindow {
 				} else {
 					for (int i = 0; i < jPanel.getComponentCount(); i++) {
 						Component component = jPanel.getComponent(i);
-						component.setBackground(Color.WHITE);
+						compTransp(component);
 					}
-					jPanel.setBackground(Color.WHITE);
+					compTransp(jPanel);
 				}
 				return jPanel;
 			}
@@ -860,7 +860,7 @@ public class PaddockWindow {
 
 	}
 
-	private void compTransp(JComponent c) {
+	private void compTransp(Component c) {
 		c.setBackground(new Color(255, 255, 255, 0));
 	}
 }

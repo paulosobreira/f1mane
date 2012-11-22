@@ -511,8 +511,8 @@ public class MonitorJogo implements Runnable {
 									.getLatenciaReal() - Constantes.LATENCIA_MIN));
 						}
 
-						for (int i = 0; i < maxLoop; i += 20) {
-							if (diffINdex >= i && diffINdex < i + 20) {
+						for (int i = 0; i < maxLoop; i += 10) {
+							if (diffINdex >= i && diffINdex < i + 10) {
 								break;
 							}
 							ganhoSuave += 1;
