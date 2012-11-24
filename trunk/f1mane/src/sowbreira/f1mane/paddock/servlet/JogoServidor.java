@@ -455,26 +455,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void apagarLuz() {
-		switch (luzes) {
-		case 5:
-			estado = Comandos.LUZES5;
-			break;
-		case 4:
-			estado = Comandos.LUZES4;
-			break;
-		case 3:
-			estado = Comandos.LUZES3;
-			break;
-		case 2:
-			estado = Comandos.LUZES2;
-			break;
-		case 1:
-			estado = Comandos.LUZES1;
-			break;
-
-		default:
-			break;
-		}
+		estado = Comandos.LUZES;
 		if (luzes == 1) {
 			Thread thread = new Thread(new Runnable() {
 

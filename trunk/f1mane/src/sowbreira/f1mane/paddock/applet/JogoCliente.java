@@ -376,6 +376,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		try {
 			if (monitorJogo != null) {
 				monitorJogo.setJogoAtivo(false);
+				monitorJogo.matarTodasThreads();
 			}
 			if (controleEstatisticas != null) {
 				controleEstatisticas.setConsumidorAtivo(false);

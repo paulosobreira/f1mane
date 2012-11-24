@@ -20,11 +20,7 @@ public class Comandos {
 	public static final String MOSTRANDO_QUALIFY = "10";
 	public static final String OBTER_DADOS_JOGO = "11";
 	public static final String CORRIDA_INICIADA = "12";
-	public static final String LUZES5 = "13";
-	public static final String LUZES4 = "14";
-	public static final String LUZES3 = "15";
-	public static final String LUZES2 = "16";
-	public static final String LUZES1 = "17";
+	public static final String LUZES = "13";
 	public static final String OBTER_POSICAO_PILOTOS = "18";
 	public static final String MUDAR_MODO_AGRESSIVO = "19";
 	public static final String MUDAR_MODO_BOX = "20";

@@ -46,6 +46,8 @@ public class MonitorJogo implements Runnable {
 	private SessaoCliente sessaoCliente;
 	private Thread monitorQualificacao;
 	private Thread atualizadorPainel;
+	private Thread consumidorPosis = null;
+	private Thread threadCmd;
 	private boolean jogoAtivo = true;
 	private int luz = 5;
 	public long lastPosis = 0;
@@ -53,13 +55,13 @@ public class MonitorJogo implements Runnable {
 	private boolean setouZoom = false;
 	private boolean atualizouDados;
 	private Vector posisBuffer = new Vector();
-	private Thread consumidorPosis = null;
 	private boolean consumidorAtivo = false;
 	private Object[] posisArrayBuff;
 	private int sleepConsumidorPosis = 15;
 	private boolean lagLongo = false;
 	private long ultPoisis;
-	private Thread threadCmd;
+	private boolean apagarLuzes;
+	private long ultLuzApagada;
 
 	public boolean isJogoAtivo() {
 		return jogoAtivo;
@@ -109,31 +111,22 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void apagaLuzesLargada() {
-		if (Comandos.LUZES5.equals(estado)) {
-			while (luz > 4) {
-				apagarLuz();
-				luz--;
+		if (luz < 0) {
+			return;
+		}
+		if (Comandos.LUZES.equals(estado)
+				|| Comandos.CORRIDA_INICIADA.equals(estado)) {
+			apagarLuzes = true;
+		}
+		if (apagarLuzes) {
+			int intervalo = 1250;
+			intervalo += controlePaddockCliente.getLatenciaReal();
+			if ((System.currentTimeMillis() - ultLuzApagada) < intervalo) {
+				return;
 			}
-		} else if (Comandos.LUZES4.equals(estado)) {
-			while (luz > 3) {
-				apagarLuz();
-				luz--;
-			}
-		} else if (Comandos.LUZES3.equals(estado)) {
-			while (luz > 2) {
-				apagarLuz();
-				luz--;
-			}
-		} else if (Comandos.LUZES2.equals(estado)) {
-			while (luz > 1) {
-				apagarLuz();
-				luz--;
-			}
-		} else if (Comandos.LUZES1.equals(estado)) {
-			while (luz > 0) {
-				apagarLuz();
-				luz--;
-			}
+			apagarLuz();
+			luz--;
+			ultLuzApagada = System.currentTimeMillis();
 		}
 	}
 
@@ -173,6 +166,7 @@ public class MonitorJogo implements Runnable {
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
 				disparaAtualizadorPainel();
+				apagaLuzesLargada();
 				if (!atualizouDados) {
 					atualizarDados();
 					atualizaModoCarreira();
@@ -191,10 +185,6 @@ public class MonitorJogo implements Runnable {
 				if (delayVerificaStado <= 0) {
 					if (((Piloto) jogoCliente.getPilotos().get(0))
 							.getNumeroVolta() != 0) {
-						while (luz > 0) {
-							apagarLuz();
-							luz--;
-						}
 						for (Iterator iterator = jogoCliente.getPilotos()
 								.iterator(); iterator.hasNext();) {
 							Piloto piloto = (Piloto) iterator.next();
@@ -224,7 +214,6 @@ public class MonitorJogo implements Runnable {
 	private void disparaAtualizadorPainel() {
 		if (atualizadorPainel == null) {
 			atualizadorPainel = new Thread(new Runnable() {
-
 				public void run() {
 					while (jogoAtivo) {
 						try {
@@ -275,7 +264,7 @@ public class MonitorJogo implements Runnable {
 							if (cont > 5) {
 								break;
 							}
-							Thread.sleep(500);
+							Thread.sleep(250);
 							atualizarDados();
 							cont++;
 						}
@@ -287,6 +276,7 @@ public class MonitorJogo implements Runnable {
 				interrupt = true;
 				Logger.logarExept(e);
 			}
+
 		}
 		if (monitorQualificacao != null)
 			monitorQualificacao.interrupt();
@@ -506,13 +496,21 @@ public class MonitorJogo implements Runnable {
 
 						double ganhoSuave = 0;
 						int maxLoop = 500;
+						int incremento = 20;
+
 						if (controlePaddockCliente.getLatenciaReal() > Constantes.LATENCIA_MIN) {
-							maxLoop += (2 * (controlePaddockCliente
+							incremento = 30;
+							maxLoop += ((controlePaddockCliente
+									.getLatenciaReal() - Constantes.LATENCIA_MIN));
+						}
+						if (controlePaddockCliente.getLatenciaReal() > Constantes.LATENCIA_MAX) {
+							incremento = 40;
+							maxLoop += ((controlePaddockCliente
 									.getLatenciaReal() - Constantes.LATENCIA_MIN));
 						}
 
-						for (int i = 0; i < maxLoop; i += 10) {
-							if (diffINdex >= i && diffINdex < i + 10) {
+						for (int i = 0; i < maxLoop; i += incremento) {
+							if (diffINdex >= i && diffINdex < i + incremento) {
 								break;
 							}
 							ganhoSuave += 1;
@@ -1098,5 +1096,28 @@ public class MonitorJogo implements Runnable {
 		};
 		Thread thread = new Thread(runnable);
 		thread.start();
+	}
+
+	public void fechaJanela() {
+		if (jogoCliente != null && jogoCliente.getMainFrame() != null)
+			jogoCliente.getMainFrame().setVisible(false);
+
+	}
+
+	public void matarTodasThreads() {
+		if (monitorQualificacao != null) {
+			monitorQualificacao.interrupt();
+		}
+		if (atualizadorPainel != null) {
+			atualizadorPainel.interrupt();
+		}
+		if (consumidorPosis != null) {
+			consumidorPosis.interrupt();
+		}
+		if (threadCmd != null) {
+			threadCmd.interrupt();
+		}
+		fechaJanela();
+
 	}
 }
