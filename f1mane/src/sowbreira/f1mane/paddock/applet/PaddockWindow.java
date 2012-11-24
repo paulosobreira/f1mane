@@ -487,26 +487,25 @@ public class PaddockWindow {
 					Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 				SessaoCliente element = (SessaoCliente) value;
-
 				JPanel jPanel = new JPanel(new GridLayout(1, 1));
 				if (Util.isNullOrEmpty(element.getPilotoAtual())) {
-					jPanel.add(new JLabel(element.getNomeJogador()));
+					jPanel.add(compTransp(new JLabel(element.getNomeJogador())));
 				} else {
 					jPanel.setLayout(new GridLayout(2, 1));
-					jPanel.add(new JLabel(element.getNomeJogador()));
-					jPanel.add(new JLabel(" " + element.getPilotoAtual() + " "
-							+ Lang.decodeTexto(element.getJogoAtual())));
+					jPanel.add(compTransp(new JLabel(element.getNomeJogador())));
+					jPanel.add(compTransp(new JLabel(" "
+							+ element.getPilotoAtual() + " "
+							+ Lang.decodeTexto(element.getJogoAtual()))));
 				}
-
 				if (isSelected) {
 					jPanel.setBorder(new LineBorder(new Color(184, 207, 229)));
-				} else {
-					for (int i = 0; i < jPanel.getComponentCount(); i++) {
-						Component component = jPanel.getComponent(i);
-						compTransp(component);
-					}
-					compTransp(jPanel);
 				}
+				for (int i = 0; i < jPanel.getComponentCount(); i++) {
+					Component component = jPanel.getComponent(i);
+					compTransp(component);
+				}
+				compTransp(jPanel);
+				mainPanel.repaint();
 				return jPanel;
 			}
 		});
@@ -860,7 +859,8 @@ public class PaddockWindow {
 
 	}
 
-	private void compTransp(Component c) {
+	private Component compTransp(Component c) {
 		c.setBackground(new Color(255, 255, 255, 0));
+		return c;
 	}
 }

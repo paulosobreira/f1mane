@@ -858,9 +858,9 @@ public class Carro implements Serializable {
 		}
 		if ((no.verificaCruvaBaixa() || no.verificaCruvaAlta())) {
 			if (controleJogo.asfaltoAbrasivo()) {
-				desgPneus += Util.intervalo(5, 10);
+				desgPneus += Util.intervalo(7, 14);
 			} else {
-				desgPneus += Util.intervalo(1, 4);
+				desgPneus += Util.intervalo(3, 7);
 			}
 		}
 
