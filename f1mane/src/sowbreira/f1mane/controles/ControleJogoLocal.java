@@ -996,15 +996,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	@Override
-	public void setZoom(double d) {
-		if (gerenciadorVisual == null) {
-			return;
-		}
-		gerenciadorVisual.setZoom(d);
-
-	}
-
-	@Override
 	public void travouRodas(Piloto piloto) {
 		TravadaRoda travadaRoda = new TravadaRoda();
 		travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
