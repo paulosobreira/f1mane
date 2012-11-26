@@ -231,8 +231,6 @@ public interface InterfaceJogo {
 
 	public No getNoEntradaBox();
 
-	public void setZoom(double d);
-
 	public void travouRodas(Piloto piloto);
 
 	public No obterNoPorId(int idNo);

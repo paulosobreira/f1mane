@@ -118,6 +118,7 @@ public class Piloto implements Serializable {
 	private int contTravouRodas;
 	private boolean freiandoReta;
 	private int ultModificador;
+	private long ultimaColisao;
 
 	public boolean decContTravouRodas() {
 		if (contTravouRodas > 0) {
@@ -996,12 +997,13 @@ public class Piloto implements Serializable {
 				&& verificaColisaoCarroFrente(controleJogo)) {
 			colisao = true;
 		}
-		if (colisao) {
+		if (colisao && (System.currentTimeMillis() - ultimaColisao > 500)) {
 			acelerando = false;
 			setAgressivoF4(false);
 			setCiclosDesconcentrado(50);
 			incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(20,
 					30) : Util.intervalo(30, 40));
+			ultimaColisao = System.currentTimeMillis();
 		}
 		return colisao;
 	}
@@ -1042,6 +1044,9 @@ public class Piloto implements Serializable {
 		}
 		if (ganho > 60) {
 			ganho = 60;
+		}
+		if (getCarro().isPneuFurado()) {
+			ganho /= 2;
 		}
 		double emborrachamento = controleJogo.porcentagemCorridaCompletada() / 100.0;
 		if (noAtual.verificaCruvaBaixa()) {

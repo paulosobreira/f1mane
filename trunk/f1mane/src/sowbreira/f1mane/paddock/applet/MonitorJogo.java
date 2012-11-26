@@ -52,7 +52,6 @@ public class MonitorJogo implements Runnable {
 	private int luz = 5;
 	public long lastPosis = 0;
 	public boolean procPosis = false;
-	private boolean setouZoom = false;
 	private boolean atualizouDados;
 	private Vector posisBuffer = new Vector();
 	private boolean consumidorAtivo = false;
@@ -119,8 +118,8 @@ public class MonitorJogo implements Runnable {
 			apagarLuzes = true;
 		}
 		if (apagarLuzes) {
-			int intervalo = 1250;
-			intervalo += controlePaddockCliente.getLatenciaReal();
+			int intervalo = 2000;
+			intervalo += (luz * controlePaddockCliente.getLatenciaReal());
 			if ((System.currentTimeMillis() - ultLuzApagada) < intervalo) {
 				return;
 			}
@@ -176,11 +175,7 @@ public class MonitorJogo implements Runnable {
 					jogoCliente.pularQualificacao();
 					monitorQualificacao = null;
 				}
-				if (!setouZoom) {
-					jogoCliente.setZoom(0.7);
 
-					setouZoom = true;
-				}
 				delayVerificaStado--;
 				if (delayVerificaStado <= 0) {
 					if (((Piloto) jogoCliente.getPilotos().get(0))
@@ -252,7 +247,6 @@ public class MonitorJogo implements Runnable {
 							jogoCliente));
 					Thread.sleep(1000);
 					atualizarDados();
-					// jogoCliente.preparaGerenciadorVisual();
 					jogoCliente.atualizaPainel();
 					if (jogoCliente.getPilotos() != null) {
 						Piloto p = (Piloto) jogoCliente.getPilotos().get(
@@ -278,8 +272,10 @@ public class MonitorJogo implements Runnable {
 			}
 
 		}
-		if (monitorQualificacao != null)
+		if (monitorQualificacao != null) {
+			jogoCliente.interruptDesenhaQualificao();
 			monitorQualificacao.interrupt();
+		}
 	}
 
 	private void esperaJogoComecar() {
@@ -496,17 +492,17 @@ public class MonitorJogo implements Runnable {
 
 						double ganhoSuave = 0;
 						int maxLoop = 500;
-						int incremento = 20;
+						int incremento = 30;
 
 						if (controlePaddockCliente.getLatenciaReal() > Constantes.LATENCIA_MIN) {
-							incremento = 30;
-							maxLoop += ((controlePaddockCliente
-									.getLatenciaReal() - Constantes.LATENCIA_MIN));
+							incremento = 40;
+							maxLoop += (2 * (controlePaddockCliente
+									.getLatenciaReal()));
 						}
 						if (controlePaddockCliente.getLatenciaReal() > Constantes.LATENCIA_MAX) {
-							incremento = 40;
-							maxLoop += ((controlePaddockCliente
-									.getLatenciaReal() - Constantes.LATENCIA_MIN));
+							incremento = 50;
+							maxLoop += (3 * (controlePaddockCliente
+									.getLatenciaReal()));
 						}
 
 						for (int i = 0; i < maxLoop; i += incremento) {
@@ -515,17 +511,13 @@ public class MonitorJogo implements Runnable {
 							}
 							ganhoSuave += 1;
 						}
-						if (diffINdex >= 1000
+						if (diffINdex >= 2000
 								&& !(jogoCliente.getNosDoBox().contains(no) && jogoCliente
 										.getNosDaPista().contains(
 												piloto.getNoAtual()))
 								&& !(jogoCliente.getNosDaPista().contains(no) && jogoCliente
 										.getNosDoBox().contains(
 												piloto.getNoAtual()))) {
-							if (piloto.isJogadorHumano()) {
-								Logger.logar("(diffINdex > 1000)"
-										+ piloto.getNome() + " " + diffINdex);
-							}
 							piloto.setNoAtual(no);
 							return;
 						}

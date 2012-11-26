@@ -112,7 +112,8 @@ public class PainelCircuito extends JPanel {
 	private boolean desenhaInfo = true;
 	private int mx;
 	private int my;
-	public double zoom = 1.0;
+	private double zoom = 1.0;
+	private double mouseZoom = 1;
 	public final static String zoomMutex = "zoomMutex";
 	private Circuito circuito;
 	private BasicStroke trilho = new BasicStroke(1.0f);
@@ -134,7 +135,6 @@ public class PainelCircuito extends JPanel {
 	private ArrayList boxMinimizado;
 	protected Point newP;
 	private Point oldP;
-	protected double mouseZoom = 1;
 	private boolean alternaPiscaSCSair;
 
 	private RoundRectangle2D f1 = new RoundRectangle2D.Double(0, 0, 1, 1, 10,
@@ -1848,6 +1848,14 @@ public class PainelCircuito extends JPanel {
 
 			}
 		}
+	}
+
+	public double getMouseZoom() {
+		return mouseZoom;
+	}
+
+	public void setMouseZoom(double mouseZoom) {
+		this.mouseZoom = mouseZoom;
 	}
 
 	public boolean isDesenhouQualificacao() {

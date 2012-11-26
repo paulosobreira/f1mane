@@ -182,7 +182,7 @@ public class GerenciadorVisual {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				synchronized (PainelCircuito.zoomMutex) {
-					double val = painelCircuito.mouseZoom;
+					double val = painelCircuito.getMouseZoom();
 					val += e.getWheelRotation() / 60.0;
 					if (controleJogo != null
 							&& painelCircuito.getBackGround() != null
@@ -201,11 +201,11 @@ public class GerenciadorVisual {
 
 					}
 					if (val > 1.0) {
-						painelCircuito.mouseZoom = 1.0;
+						painelCircuito.setMouseZoom(1.0);
 					} else if (val < 0.2) {
-						painelCircuito.mouseZoom = 0.2;
+						painelCircuito.setMouseZoom(0.2);
 					} else {
-						painelCircuito.mouseZoom = Util.double2Decimal(val);
+						painelCircuito.setMouseZoom(Util.double2Decimal(val));
 					}
 				}
 			}
@@ -501,7 +501,6 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-
 		Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
 		atualizaInfoAdicional(pilotoSelecionado);
 		atualizarImgClima(new Clima(controleJogo.getClima()));
@@ -675,7 +674,6 @@ public class GerenciadorVisual {
 
 	public void apagarLuz() {
 		painelCircuito.apagarLuz();
-		painelCircuito.mouseZoom = 0.8;
 		atualizaPainel();
 	}
 
@@ -1553,6 +1551,7 @@ public class GerenciadorVisual {
 	}
 
 	public void desenhaQualificacao() {
+
 		No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
 		try {
 			painelCircuito.centralizarPontoDireto(n.getPoint());
@@ -1562,97 +1561,104 @@ public class GerenciadorVisual {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
-				Point pQualy = n.getPoint();
-				if (controleJogo.getCircuito().getCreditos() != null) {
-					pQualy = controleJogo.getCircuito().getCreditos();
-					painelCircuito.zoom = 0.5;
-					painelCircuito.mouseZoom = 0.5;
-				}
 				try {
-					painelCircuito.centralizarPontoDireto(pQualy);
-				} catch (Exception e) {
-					Logger.logarExept(e);
-				}
-				infoCorrida.setText(Lang.msg("213"));
-				infoPiloto.setText(Lang.msg("214"));
-				List pilotos = controleJogo.getPilotos();
-				List ptosPilotos = new ArrayList();
-				painelCircuito.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						tempoSleep = 0;
+					No n = (No) controleJogo.getCircuito().getPistaFull()
+							.get(0);
+					Point pQualy = n.getPoint();
+					if (controleJogo.getCircuito().getCreditos() != null) {
+						pQualy = controleJogo.getCircuito().getCreditos();
+						setMouseZoom(0.5);
 					}
-
-				});
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					Logger.logarExept(e);
-				}
-				Rectangle limitesViewPort = null;
-
-				limitesViewPort = (Rectangle) painelCircuito.limitesViewPort();
-
-				int iniY1 = 30;
-				int iniY2 = 40;
-				int midPainel = 0;
-				if (limitesViewPort != null)
-					midPainel = (limitesViewPort.width / 2);
-				else {
-					midPainel = 500;
-					Logger.logarExept(new Exception("limitesViewPort == null "));
-				}
-				for (int i = 0; i < pilotos.size(); i++) {
-					Piloto piloto = (Piloto) pilotos.get(i);
-					if (piloto.getPosicao() % 2 == 0) {
-						ptosPilotos.add(new Point(midPainel + 30, iniY2));
-						iniY2 += 40;
-					} else {
-						ptosPilotos.add(new Point(midPainel - 120, iniY1));
-						iniY1 += 40;
+					try {
+						painelCircuito.centralizarPontoDireto(pQualy);
+					} catch (Exception e) {
+						Logger.logarExept(e);
 					}
-				}
-				Logger.logar("Iniciar Loop desenha Qualy");
-				for (int i = 0; i < pilotos.size(); i++) {
-					Piloto piloto = (Piloto) pilotos.get(i);
-					Point point = (Point) ptosPilotos.get(i);
-					int x = limitesViewPort.x + limitesViewPort.width;
-					while (x > (point.x + limitesViewPort.x)) {
-						Point pd = new Point(x, point.y + limitesViewPort.y);
-						painelCircuito.definirDesenhoQualificacao(piloto, pd);
-						if (tempoSleep != 0) {
+					infoCorrida.setText(Lang.msg("213"));
+					infoPiloto.setText(Lang.msg("214"));
+					List pilotos = controleJogo.getPilotos();
+					List ptosPilotos = new ArrayList();
+					painelCircuito.addMouseListener(new MouseAdapter() {
+						public void mouseClicked(MouseEvent e) {
+							tempoSleep = 0;
+						}
+
+					});
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						Logger.logarExept(e);
+					}
+					Rectangle limitesViewPort = null;
+
+					limitesViewPort = (Rectangle) painelCircuito
+							.limitesViewPort();
+
+					int iniY1 = 30;
+					int iniY2 = 40;
+					int midPainel = 0;
+					if (limitesViewPort != null)
+						midPainel = (limitesViewPort.width / 2);
+					else {
+						midPainel = 500;
+						Logger.logarExept(new Exception(
+								"limitesViewPort == null "));
+					}
+					for (int i = 0; i < pilotos.size(); i++) {
+						Piloto piloto = (Piloto) pilotos.get(i);
+						if (piloto.getPosicao() % 2 == 0) {
+							ptosPilotos.add(new Point(midPainel + 30, iniY2));
+							iniY2 += 40;
+						} else {
+							ptosPilotos.add(new Point(midPainel - 120, iniY1));
+							iniY1 += 40;
+						}
+					}
+					Logger.logar("Iniciar Loop desenha Qualy");
+					for (int i = 0; i < pilotos.size(); i++) {
+						Piloto piloto = (Piloto) pilotos.get(i);
+						Point point = (Point) ptosPilotos.get(i);
+						int x = limitesViewPort.x + limitesViewPort.width;
+						while (x > (point.x + limitesViewPort.x)) {
+							Point pd = new Point(x, point.y + limitesViewPort.y);
+							painelCircuito.definirDesenhoQualificacao(piloto,
+									pd);
+							if (tempoSleep != 0) {
+								try {
+									painelCircuito.repaint();
+								} catch (Exception e) {
+									Logger.logarExept(e);
+								}
+							} else {
+								break;
+							}
+							x -= 3;
 							try {
-								painelCircuito.repaint();
-							} catch (Exception e) {
+								Thread.sleep(tempoSleep);
+							} catch (InterruptedException e) {
 								Logger.logarExept(e);
 							}
-						} else {
-							break;
 						}
-						x -= 3;
-						try {
-							Thread.sleep(tempoSleep);
-						} catch (InterruptedException e) {
-							Logger.logarExept(e);
-						}
+						painelCircuito.getMapDesenharQualificacao().put(piloto,
+								point);
 					}
-					painelCircuito.getMapDesenharQualificacao().put(piloto,
-							point);
-				}
-				try {
-					painelCircuito.repaint();
-				} catch (Exception e) {
-					Logger.logarExept(e);
-				}
+					try {
+						painelCircuito.repaint();
+					} catch (Exception e) {
+						Logger.logarExept(e);
+					}
 
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					Logger.logarExept(e);
-				}
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						Logger.logarExept(e);
+					}
 
-				painelCircuito.setDesenhouQualificacao(true);
-				Logger.logar("DesenhouQualificacao");
+					painelCircuito.setDesenhouQualificacao(true);
+					Logger.logar("DesenhouQualificacao");
+				} finally {
+					setMouseZoom(0.7);
+				}
 			}
 		};
 		if (thDesenhaQualificacao != null) {
@@ -1660,6 +1666,7 @@ public class GerenciadorVisual {
 		}
 		thDesenhaQualificacao = new Thread(runnable);
 		thDesenhaQualificacao.run();
+
 	}
 
 	public void adicionarInfoDireto(String string) {
@@ -1798,14 +1805,6 @@ public class GerenciadorVisual {
 				|| progamacaoBox.getAtive3().isSelected();
 	}
 
-	public void setZoom(double d) {
-		if (painelCircuito == null) {
-			return;
-		}
-		painelCircuito.zoom = d;
-		painelCircuito.gerarGrid();
-	}
-
 	public void adicinaTravadaRoda(TravadaRoda travadaRoda) {
 		if (ultimaTravavadaRodas == 0) {
 			ultimaTravavadaRodas = System.currentTimeMillis();
@@ -1863,5 +1862,18 @@ public class GerenciadorVisual {
 		getRadioPadock().setVisible(true);
 		getRadioPadock().setTitle(Lang.msg("f1maneSwing"));
 		getRadioPadock().setSize(500, 300);
+	}
+
+	public void setMouseZoom(double d) {
+		if (painelCircuito == null)
+			return;
+		painelCircuito.setMouseZoom(d);
+	}
+
+	public void interruptDesenhaQualificao() {
+		if (thDesenhaQualificacao != null) {
+			thDesenhaQualificacao.interrupt();
+		}
+
 	}
 }

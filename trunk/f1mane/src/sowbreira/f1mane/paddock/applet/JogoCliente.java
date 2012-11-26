@@ -798,15 +798,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void setZoom(double d) {
-		if (gerenciadorVisual == null) {
-			return;
-		}
-		gerenciadorVisual.setZoom(d);
-
-	}
-
-	@Override
 	public void travouRodas(Piloto piloto) {
 		// TODO Auto-generated method stub
 
@@ -1023,5 +1014,17 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public No obterProxCurva(No noAtual) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setMouseZoom(double d) {
+		if (gerenciadorVisual != null)
+			gerenciadorVisual.setMouseZoom(d);
+
+	}
+
+	public void interruptDesenhaQualificao() {
+		if (gerenciadorVisual != null)
+			gerenciadorVisual.interruptDesenhaQualificao();
+
 	}
 }

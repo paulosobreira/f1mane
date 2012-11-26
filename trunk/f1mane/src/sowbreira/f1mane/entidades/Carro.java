@@ -639,7 +639,6 @@ public class Carro implements Serializable {
 	private int calculaModificadorPneu(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
 		int porcent = porcentagemDesgastePeneus();
-		// System.out.print("porcent " + porcent + " Antes " + novoModificador);
 		if (controleJogo.isSemTrocaPneu() && Math.random() > .4) {
 			return novoModificador;
 		}
@@ -860,7 +859,7 @@ public class Carro implements Serializable {
 			if (controleJogo.asfaltoAbrasivo()) {
 				desgPneus += Util.intervalo(7, 14);
 			} else {
-				desgPneus += Util.intervalo(3, 7);
+				desgPneus += Util.intervalo(1, 7);
 			}
 		}
 
@@ -921,7 +920,7 @@ public class Carro implements Serializable {
 
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
-			danificado = PNEU_FURADO;
+			setDanificado(PNEU_FURADO);
 			pneus = -1;
 
 			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("043",
@@ -1043,6 +1042,10 @@ public class Carro implements Serializable {
 			cargaKers--;
 		}
 
+	}
+
+	public boolean isPneuFurado() {
+		return PNEU_FURADO.equals(danificado);
 	}
 
 }
