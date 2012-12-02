@@ -15,7 +15,6 @@ import javax.mail.internet.AddressException;
 
 import org.hibernate.Session;
 
-import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;

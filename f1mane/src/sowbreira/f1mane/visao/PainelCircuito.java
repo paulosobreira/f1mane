@@ -3943,7 +3943,7 @@ public class PainelCircuito extends JPanel {
 		if (controleJogo.getNumVoltaAtual() < 1) {
 			return;
 		}
-
+		Stroke stroke = g2d.getStroke();
 		int x = limitesViewPort.x;
 		int y = limitesViewPort.y + 200;
 		Font fontOri = g2d.getFont();
@@ -3952,7 +3952,10 @@ public class PainelCircuito extends JPanel {
 		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
 		g2d.setColor(transpMenus);
 		g2d.drawString(Lang.msg("215") + " " + porcentComb + "%", x + 5, y);
+		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(porcentComb));
+		g2d.setStroke(trilhoMiniPista);
 		g2d.drawRoundRect(limitesViewPort.x + 3, y - 26, 200, 30, 10, 10);
+		g2d.setStroke(stroke);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 3, y - 26, 2 * porcentComb, 30,
 				10, 10);
@@ -3961,8 +3964,10 @@ public class PainelCircuito extends JPanel {
 		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePeneus();
 		g2d.setColor(transpMenus);
 		g2d.drawString(Lang.msg("216") + " " + pneus + "%", x + 5, y);
+		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(pneus));
+		g2d.setStroke(trilhoMiniPista);
 		g2d.drawRoundRect(limitesViewPort.x + 3, y - 26, 200, 30, 10, 10);
-
+		g2d.setStroke(stroke);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 3, y - 26, 2 * pneus, 30, 10, 10);
 
@@ -3971,7 +3976,10 @@ public class PainelCircuito extends JPanel {
 		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
 		g2d.setColor(transpMenus);
 		g2d.drawString(Lang.msg("217") + " " + motor + "%", x + 5, y);
+		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(motor));
+		g2d.setStroke(trilhoMiniPista);
 		g2d.drawRoundRect(limitesViewPort.x + 3, y - 26, 200, 30, 10, 10);
+		g2d.setStroke(stroke);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 3, y - 26, 2 * motor, 30, 10, 10);
 
@@ -3980,7 +3988,10 @@ public class PainelCircuito extends JPanel {
 		int stress = pilotoSelecionado.getStress();
 		g2d.setColor(transpMenus);
 		g2d.drawString(Lang.msg("153") + " " + stress + "%", x + 5, y);
+		g2d.setColor(OcilaCor.porcentVermelho100Verde0(stress));
+		g2d.setStroke(trilhoMiniPista);
 		g2d.drawRoundRect(limitesViewPort.x + 3, y - 26, 200, 30, 10, 10);
+		g2d.setStroke(stroke);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 3, y - 26, 2 * stress, 30, 10, 10);
 

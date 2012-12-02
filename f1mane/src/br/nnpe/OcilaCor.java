@@ -35,13 +35,13 @@ public class OcilaCor {
 	private Color ocila() {
 		if (sobe) {
 			if (alpha < max) {
-				alpha+=20;
+				alpha += 20;
 			} else {
 				sobe = false;
 			}
 		} else {
 			if (alpha > min) {
-				alpha-=20;
+				alpha -= 20;
 			} else {
 				sobe = true;
 			}
@@ -97,4 +97,32 @@ public class OcilaCor {
 		this.alpha = alpha;
 	}
 
+	public static Color porcentVerde100Vermelho0(int porcent) {
+		int r, g;
+		r = 510 * (100 - porcent) / 100;
+		if (r < 255) {
+			g = 255;
+		} else {
+			g = 255 * (porcent + 25) / 100;
+			r = 255;
+		}
+		return new Color(r, g, 0, 150);
+	}
+
+	public static void main(String[] args) {
+		for (int i = 100; i > 0; i--) {
+			System.out.println(i + " " + porcentVerde100Vermelho0(i));
+		}
+	}
+
+	public static Color porcentVermelho100Verde0(int porcent) {
+		int r, g;
+		g = 510 * (100 - porcent) / 100;
+		if (g < 255) {
+			r = 255;
+		} else {
+			r = 255 * (porcent + 25) / 100;
+			g = 255;
+		}
+		return new Color(r, g, 0, 150);	}
 }
