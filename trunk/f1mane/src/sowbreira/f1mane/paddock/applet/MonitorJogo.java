@@ -1109,7 +1109,5 @@ public class MonitorJogo implements Runnable {
 		if (threadCmd != null) {
 			threadCmd.interrupt();
 		}
-		fechaJanela();
-
 	}
 }
