@@ -562,8 +562,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-								.getMultiplicadorLarguraPista()));
+						piloto
+								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+										.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -811,8 +812,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public boolean verificaNoPitLane(Piloto piloto) {
-		// TODO Auto-generated method stub
-		return false;
+		return piloto.getPtosBox() > 0;
 	}
 
 	public BufferedImage carregaBackGround(String backGround) {
