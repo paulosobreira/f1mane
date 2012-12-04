@@ -892,7 +892,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (pilotoSelecionado == null) {
 			return false;
 		}
-		monitorJogo.mudarModoDRS(!pilotoSelecionado.isAtivarDRS());
+		monitorJogo.mudarModoDRS(true);
 		return pilotoSelecionado.isAtivarDRS();
 	}
 
@@ -1026,5 +1026,28 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (gerenciadorVisual != null)
 			gerenciadorVisual.interruptDesenhaQualificao();
 
+	}
+
+	public void autoDrs() {
+		if (pilotoSelecionado == null) {
+			return;
+		}
+		if (nomeJogador == null) {
+			return;
+		}
+		if (!nomeJogador.equals(pilotoSelecionado.getNomeJogador())) {
+			return;
+		}
+		if (pilotoSelecionado.getNoAtual() != null
+				&& pilotoSelecionado.getNoAtual().verificaRetaOuLargada()
+				&& pilotoSelecionado.getNumeroVolta() > 0
+				&& pilotoSelecionado.getPtosBox() == 0
+				&& !Carro.MENOS_ASA.equals(pilotoSelecionado.getCarro()
+						.getAsa())
+				&& obterCarroNaFrente(pilotoSelecionado).getPiloto()
+						.getPtosBox() == 0
+				&& calculaSegundosParaProximoDouble(pilotoSelecionado) < 1) {
+			monitorJogo.mudarModoDRS(true);
+		}
 	}
 }
