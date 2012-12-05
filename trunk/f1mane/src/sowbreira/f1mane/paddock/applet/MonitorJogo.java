@@ -164,6 +164,7 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
+				iniciaJalena();
 				disparaAtualizadorPainel();
 				apagaLuzesLargada();
 				if (!atualizouDados) {
@@ -200,7 +201,6 @@ public class MonitorJogo implements Runnable {
 					}
 					continue;
 				}
-				iniciaJalena();
 				atualizaPosicoes();
 				Thread.sleep(tempoCiclo);
 			} catch (InterruptedException e) {
