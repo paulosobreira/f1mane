@@ -63,7 +63,6 @@ public class PainelCircuito extends JPanel {
 	private GerenciadorVisual gerenciadorVisual;
 	private Point pointDesenhaClima = new Point(10, 10);
 	private Point pointDesenhaVelo = new Point(5, 60);
-	private Point pointDesenhaLag = new Point(380, 5);
 	private Point pointDesenhaSC = new Point(350, 15);
 	private No posisRec;
 	private Point posisAtual;
@@ -570,14 +569,22 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaLag(Graphics2D g2d) {
 		if (controleJogo.verificaLag()) {
+			int largura = 0;
+			for (int i = 0; i < "LAG".length(); i++) {
+				largura += g2d.getFontMetrics().charWidth("LAG".charAt(i));
+			}
+			Point pointDesenhaLag = new Point(limitesViewPort.x
+					+ (limitesViewPort.width / 2) - (largura),
+					limitesViewPort.y + 50);
 			g2d.setColor(transpMenus);
-			g2d.fillRoundRect(limitesViewPort.x + pointDesenhaLag.x,
-					limitesViewPort.y + pointDesenhaLag.y, 65, 35, 15, 15);
+			g2d.fillRoundRect(pointDesenhaLag.x, pointDesenhaLag.y, 65, 35, 15,
+					15);
 			Font fontOri = g2d.getFont();
 			g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 			g2d.setColor(OcilaCor.geraOcila("lag", red));
-			g2d.drawString("LAG", limitesViewPort.x + pointDesenhaLag.x + 2,
-					limitesViewPort.y + pointDesenhaLag.y);
+			g2d
+					.drawString("LAG", pointDesenhaLag.x + 2,
+							pointDesenhaLag.y + 26);
 			g2d.setFont(fontOri);
 		}
 
