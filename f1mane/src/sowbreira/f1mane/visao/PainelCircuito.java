@@ -3984,11 +3984,12 @@ public class PainelCircuito extends JPanel {
 			if (pilotoSelecionado.getNoAtual() != null
 					&& pilotoSelecionado.getNoAtual().verificaRetaOuLargada()
 					&& pilotoSelecionado.getNumeroVolta() > 0
-					&& controleJogo.obterCarroNaFrente(pilotoSelecionado)
-							.getPiloto().getPtosBox() == 0
+					&& (controleJogo.obterCarroNaFrente(pilotoSelecionado) != null && controleJogo
+							.obterCarroNaFrente(pilotoSelecionado).getPiloto()
+							.getPtosBox() == 0)
 					&& pilotoSelecionado.getPtosBox() == 0
 					&& controleJogo
-							.calculaSegundosParaProximoDouble(pilotoSelecionado) < 1) {
+							.calculaSegundosParaProximoDouble(pilotoSelecionado) < 0.7) {
 				g2d.setColor(OcilaCor.geraOcila("podeUsarDRS", yel));
 			} else {
 				g2d.setColor(lightWhite);
