@@ -1044,8 +1044,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				&& pilotoSelecionado.getPtosBox() == 0
 				&& !Carro.MENOS_ASA.equals(pilotoSelecionado.getCarro()
 						.getAsa())
-				&& obterCarroNaFrente(pilotoSelecionado).getPiloto()
-						.getPtosBox() == 0
+				&& (obterCarroNaFrente(pilotoSelecionado) != null && obterCarroNaFrente(
+						pilotoSelecionado).getPiloto().getPtosBox() == 0)
 				&& calculaSegundosParaProximoDouble(pilotoSelecionado) < 1) {
 			monitorJogo.mudarModoDRS(true);
 		}
