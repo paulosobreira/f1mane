@@ -37,6 +37,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
+import br.nnpe.Constantes;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -820,6 +821,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			Logger.logar("mainFrame.getApplet()==null ");
 			return null;
 		}
+		while (monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MAX) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
+		}
 		URL url = null;
 		try {
 			String caminho = mainFrame.getApplet().getCodeBase()
@@ -1049,5 +1056,13 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				&& calculaSegundosParaProximoDouble(pilotoSelecionado) < 1) {
 			monitorJogo.mudarModoDRS(true);
 		}
+	}
+
+	@Override
+	public boolean verificaLag() {
+		if (monitorJogo == null) {
+			return false;
+		}
+		return monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MAX;
 	}
 }

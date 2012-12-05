@@ -63,6 +63,7 @@ public class PainelCircuito extends JPanel {
 	private GerenciadorVisual gerenciadorVisual;
 	private Point pointDesenhaClima = new Point(10, 10);
 	private Point pointDesenhaVelo = new Point(5, 60);
+	private Point pointDesenhaLag = new Point(380, 5);
 	private Point pointDesenhaSC = new Point(350, 15);
 	private No posisRec;
 	private Point posisAtual;
@@ -542,6 +543,7 @@ public class PainelCircuito extends JPanel {
 				desenhaChuva(g2d);
 				desenharClima(g2d);
 				desenhaListaPilotos(g2d);
+				desenhaLag(g2d);
 				desenhaInfoPilotoSelecionado(g2d);
 				desenhaMiniPista(g2d);
 				desenhaNarracao(g2d);
@@ -551,6 +553,7 @@ public class PainelCircuito extends JPanel {
 				desenhaKers(g2d);
 				desenhaDRS(g2d);
 				desenhaVelocidade(g2d);
+
 				desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
 				desenhaNomePilotoSelecionadoCarroCima(pilotoSelecionado, g2d);
 				desenhaCarrosLado(pilotoSelecionado, g2d);
@@ -561,6 +564,21 @@ public class PainelCircuito extends JPanel {
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
+		}
+
+	}
+
+	private void desenhaLag(Graphics2D g2d) {
+		if (controleJogo.verificaLag()) {
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(limitesViewPort.x + pointDesenhaLag.x,
+					limitesViewPort.y + pointDesenhaLag.y, 65, 35, 15, 15);
+			Font fontOri = g2d.getFont();
+			g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+			g2d.setColor(OcilaCor.geraOcila("lag", red));
+			g2d.drawString("LAG", limitesViewPort.x + pointDesenhaLag.x + 2,
+					limitesViewPort.y + pointDesenhaLag.y);
+			g2d.setFont(fontOri);
 		}
 
 	}

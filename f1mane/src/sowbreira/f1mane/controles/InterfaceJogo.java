@@ -290,4 +290,6 @@ public interface InterfaceJogo {
 
 	public No obterProxCurva(No noAtual);
 
+	public boolean verificaLag();
+
 }
