@@ -433,10 +433,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -638,7 +637,7 @@ public class Carro implements Serializable {
 
 	private int calculaModificadorPneu(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
-		int porcent = porcentagemDesgastePeneus();
+		int porcentPneus = porcentagemDesgastePeneus();
 		if (controleJogo.isSemTrocaPneu() && Math.random() > .4) {
 			return novoModificador;
 		}
@@ -658,17 +657,17 @@ public class Carro implements Serializable {
 			int intervaloMin = Util.intervalo(5, 10);
 			int intervaloMax = Util.intervalo(95, 100);
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
-				if ((porcent > intervaloMin)
+				if ((porcentPneus > intervaloMin)
 						&& (Math.random() > indicativoEmborrachamentoPista - 0.05)
 						&& ((controleJogo.isModoQualify() && !controleJogo
-								.isChovendo()) || porcent < intervaloMax)) {
-					if (porcent > (intervaloMin + 10))
+								.isChovendo()) || porcentPneus < intervaloMax)) {
+					if (porcentPneus > (intervaloMin + 10))
 						novoModificador += 1;
 				} else if (!getPiloto().testeHabilidadePiloto(controleJogo)
-						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
+						|| (porcentPneus < intervaloMin || (porcentPneus > intervaloMax))) {
 					if (!testePotencia()) {
 						novoModificador -= 1;
-						msgPneusFrios(controleJogo, porcent, intervaloMax);
+						msgPneusFrios(controleJogo, porcentPneus, intervaloMax);
 					}
 				}
 			}
@@ -680,16 +679,17 @@ public class Carro implements Serializable {
 				}
 				int intervaloMin = Util.intervalo(5 + mod, 10 + mod);
 				int intervaloMax = Util.intervalo(90 - mod, 95 - mod);
-				if ((porcent > intervaloMin) && (porcent < intervaloMax)
+				if ((porcentPneus > intervaloMin)
+						&& (porcentPneus < intervaloMax)
 						&& (Math.random() > indicativoEmborrachamentoPista)) {
-					if (porcent > (intervaloMin + 10))
+					if (porcentPneus > (intervaloMin + 10))
 						novoModificador += 1;
 				} else if (!getPiloto().testeHabilidadePilotoOuCarro(
 						controleJogo)
-						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
+						|| (porcentPneus < intervaloMin || (porcentPneus > intervaloMax))) {
 					if (!testePotencia()) {
 						novoModificador -= 1;
-						msgPneusFrios(controleJogo, porcent, intervaloMax);
+						msgPneusFrios(controleJogo, porcentPneus, intervaloMax);
 					}
 				}
 			}
@@ -700,16 +700,17 @@ public class Carro implements Serializable {
 				}
 				int intervaloMin = Util.intervalo(10 + mod, 15 + mod);
 				int intervaloMax = Util.intervalo(85 - mod, 90 - mod);
-				if ((porcent > intervaloMin) && (porcent < intervaloMax)
+				if ((porcentPneus > intervaloMin)
+						&& (porcentPneus < intervaloMax)
 						&& (Math.random() > indicativoEmborrachamentoPista)) {
-					if (porcent > (intervaloMin + 10))
+					if (porcentPneus > (intervaloMin + 10))
 						novoModificador += 1;
 				} else if ((!getPiloto().testeHabilidadePilotoCarro(
 						controleJogo))
-						|| (porcent < intervaloMin || (porcent > intervaloMax))) {
+						|| (porcentPneus < intervaloMin || (porcentPneus > intervaloMax))) {
 					if (getPiloto().isAgressivo() || !testePotencia()) {
 						novoModificador -= 1;
-						msgPneusFrios(controleJogo, porcent, intervaloMax);
+						msgPneusFrios(controleJogo, porcentPneus, intervaloMax);
 					}
 				}
 			}
@@ -765,6 +766,24 @@ public class Carro implements Serializable {
 			novoModificador -= 1;
 		}
 
+		double valDesgaste = calculaDesgastePneus(novoModificador, agressivo,
+				no, controleJogo, porcentPneus);
+
+		pneus -= valDesgaste;
+		if ((pneus < 0) && !verificaDano()) {
+			setDanificado(PNEU_FURADO);
+			pneus = -1;
+
+			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("043",
+					new String[] { getPiloto().getNome() })));
+
+		}
+		// System.out.println(" Depois " + novoModificador);
+		return novoModificador;
+	}
+
+	private double calculaDesgastePneus(int novoModificador, boolean agressivo,
+			No no, InterfaceJogo controleJogo, int porcentPneus) {
 		int desgPneus = 1;
 		if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
 			if (agressivo && !no.verificaRetaOuLargada())
@@ -885,7 +904,7 @@ public class Carro implements Serializable {
 		}
 
 		if (!controleJogo.isSemTrocaPneu()
-				&& porcent > 25
+				&& porcentPneus > 25
 				&& (piloto.getNoAtual().verificaCruvaBaixa() || piloto
 						.getNoAtual().verificaCruvaAlta())) {
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
@@ -906,29 +925,22 @@ public class Carro implements Serializable {
 			}
 		}
 
-		if (porcent < 25) {
+		if (controleJogo.isChovendo() && !TIPO_PNEU_CHUVA.equals(tipoPneu)) {
+			valDesgaste *= 0.9;
+		}
+
+		if (porcentPneus < 25) {
 			valDesgaste *= 0.7;
 		}
 
-		if (porcent < 15) {
+		if (porcentPneus < 15) {
 			valDesgaste *= 0.5;
 		}
 
 		if (verificaDano()) {
 			valDesgaste /= 3;
 		}
-
-		pneus -= valDesgaste;
-		if ((pneus < 0) && !verificaDano()) {
-			setDanificado(PNEU_FURADO);
-			pneus = -1;
-
-			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("043",
-					new String[] { getPiloto().getNome() })));
-
-		}
-		// System.out.println(" Depois " + novoModificador);
-		return novoModificador;
+		return valDesgaste;
 	}
 
 	private void msgPneusFrios(InterfaceJogo controleJogo, int porcent,
