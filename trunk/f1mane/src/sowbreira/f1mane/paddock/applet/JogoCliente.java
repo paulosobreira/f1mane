@@ -563,9 +563,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto
-								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-										.getMultiplicadorLarguraPista()));
+						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+								.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -821,9 +820,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			Logger.logar("mainFrame.getApplet()==null ");
 			return null;
 		}
-		while (monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MAX) {
+		if (isCorridaIniciada()
+				&& monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 			}
 		}

@@ -289,8 +289,8 @@ public class MonitorJogo implements Runnable {
 		boolean interupt = false;
 		while (!interupt && Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
-			verificaEstadoJogo();
 			jogoCliente.carregaBackGroundCliente();
+			verificaEstadoJogo();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
