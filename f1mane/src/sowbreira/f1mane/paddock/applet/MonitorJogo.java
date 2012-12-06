@@ -61,6 +61,7 @@ public class MonitorJogo implements Runnable {
 	private long ultPoisis;
 	private boolean apagarLuzes;
 	private long ultLuzApagada;
+	private boolean setZoom;
 
 	public boolean isJogoAtivo() {
 		return jogoAtivo;
@@ -167,6 +168,10 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
+				if (!setZoom) {
+					jogoCliente.setMouseZoom(0.5);
+					setZoom = true;
+				}
 				iniciaJalena();
 				disparaAtualizadorPainel();
 				apagaLuzesLargada();
