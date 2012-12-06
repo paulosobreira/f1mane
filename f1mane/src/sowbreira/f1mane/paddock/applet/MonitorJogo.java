@@ -217,7 +217,8 @@ public class MonitorJogo implements Runnable {
 		if (atualizadorPainel == null) {
 			atualizadorPainel = new Thread(new Runnable() {
 				public void run() {
-					while (jogoAtivo) {
+					boolean interrupt = false;
+					while (!interrupt && jogoAtivo) {
 						try {
 							if (jogoCliente.getPilotoSelecionado() == null)
 								jogoCliente.selecionaPilotoJogador();
@@ -231,6 +232,7 @@ public class MonitorJogo implements Runnable {
 							jogoCliente.verificaProgramacaoBox();
 							Thread.sleep(70);
 						} catch (Exception e) {
+							interrupt = true;
 							Logger.logarExept(e);
 						}
 					}
@@ -573,6 +575,11 @@ public class MonitorJogo implements Runnable {
 							}
 						}
 
+						if (ganho > 10) {
+							sleepConsumidorPosis = 10;
+						} else {
+							sleepConsumidorPosis = 15;
+						}
 						indexPiloto += ganho;
 						if (jogoCliente.getNosDaPista().contains(noAtual)) {
 							int diff = indexPiloto
