@@ -1218,7 +1218,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	@Override
 	public boolean verificaLag() {
-		return false;
+		return true;
 	}
 
 	@Override

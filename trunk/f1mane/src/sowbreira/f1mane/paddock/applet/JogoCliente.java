@@ -2,6 +2,7 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.MediaTracker;
 import java.awt.Point;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
@@ -161,6 +162,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void abandonar() {
+		if (mainFrame != null) {
+			WindowListener[] windowListeners = mainFrame.getWindowListeners();
+			for (int i = 0; i < windowListeners.length; i++) {
+				mainFrame.removeWindowListener(windowListeners[i]);
+			}
+		}
 		if (monitorJogo != null) {
 			monitorJogo.abandonar();
 		}
@@ -563,9 +570,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this, true)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto
-								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-										.getMultiplicadorLarguraPista()));
+						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+								.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
