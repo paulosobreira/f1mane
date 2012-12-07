@@ -709,7 +709,6 @@ public class MonitorJogo implements Runnable {
 					Comandos.SAIR_JOGO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
-
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			jogoAtivo = false;
