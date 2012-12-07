@@ -292,4 +292,6 @@ public interface InterfaceJogo {
 
 	public boolean verificaLag();
 
+	public int getLag();
+
 }

@@ -1221,4 +1221,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return false;
 	}
 
+	@Override
+	public int getLag() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

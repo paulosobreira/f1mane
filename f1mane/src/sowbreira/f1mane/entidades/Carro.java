@@ -43,6 +43,7 @@ public class Carro implements Serializable {
 	private String nome;
 	private String img;
 	private String asa = ASA_NORMAL;
+	private int potenciaAntesQualify;
 	private int potencia;
 	private int potenciaReal;
 	private int durabilidadeAereofolio;
@@ -60,6 +61,14 @@ public class Carro implements Serializable {
 	private boolean recolhido;
 	private Piloto piloto;
 	private int tempMax;
+
+	public int getPotenciaAntesQualify() {
+		return potenciaAntesQualify;
+	}
+
+	public void setPotenciaAntesQualify(int potenciaAntesQualify) {
+		this.potenciaAntesQualify = potenciaAntesQualify;
+	}
 
 	public int getCargaKers() {
 		return cargaKers;
