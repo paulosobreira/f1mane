@@ -98,9 +98,7 @@ public class MonitorJogo implements Runnable {
 				Thread.sleep(controlePaddockCliente.getLatenciaMinima());
 			} catch (InterruptedException e) {
 				interrupt = true;
-				if (jogoCliente != null) {
-					jogoCliente.matarTodasThreads();
-				}
+				matarTodasThreads();
 				Logger.logarExept(e);
 			}
 		}
