@@ -490,6 +490,7 @@ public class ControlePaddockCliente {
 		if (jogoCliente != null) {
 			jogoCliente.abandonar();
 		}
+		
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.SAIR_PADDOCK, sessaoCliente);
 		Object ret = enviarObjeto(clientPaddockPack);

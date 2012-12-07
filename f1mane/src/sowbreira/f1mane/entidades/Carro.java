@@ -887,7 +887,7 @@ public class Carro implements Serializable {
 			if (controleJogo.asfaltoAbrasivo()) {
 				desgPneus += Util.intervalo(7, 14);
 			} else {
-				desgPneus += Util.intervalo(1, 7);
+				desgPneus += Util.intervalo(1, 5);
 			}
 		}
 
