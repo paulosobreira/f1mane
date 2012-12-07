@@ -2,6 +2,7 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.WindowListener;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -477,13 +478,21 @@ public class ControlePaddockCliente {
 	}
 
 	public void sairPaddock() {
+		if (threadAtualizadora != null) {
+			threadAtualizadora.interrupt();
+		}
+		if (mainFrame != null) {
+			WindowListener[] windowListeners = mainFrame.getWindowListeners();
+			for (int i = 0; i < windowListeners.length; i++) {
+				mainFrame.removeWindowListener(windowListeners[i]);
+			}
+		}
 		if (jogoCliente != null) {
 			jogoCliente.abandonar();
 		}
 		jogoCliente.matarTodasThreads();
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.SAIR_PADDOCK, sessaoCliente);
-		getThreadAtualizadora().interrupt();
 		Object ret = enviarObjeto(clientPaddockPack);
 
 	}

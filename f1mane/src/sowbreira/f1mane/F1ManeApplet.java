@@ -3,6 +3,7 @@ package sowbreira.f1mane;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import javax.swing.JApplet;
@@ -19,9 +20,10 @@ import br.nnpe.Util;
 public class F1ManeApplet extends JApplet {
 
 	private AppletPaddock appletPaddock;
+	private MainFrame frame;
 
 	public void init() {
-		MainFrame frame;
+
 		try {
 			appletPaddock = new AppletPaddock();
 			appletPaddock.initProperties();
@@ -64,5 +66,16 @@ public class F1ManeApplet extends JApplet {
 
 	public String getVersao() {
 		return appletPaddock.getVersao();
+	}
+
+	@Override
+	public void destroy() {
+		if (frame != null) {
+			WindowListener[] windowListeners = frame.getWindowListeners();
+			for (int i = 0; i < windowListeners.length; i++) {
+				frame.removeWindowListener(windowListeners[i]);
+			}
+		}
+		super.destroy();
 	}
 }
