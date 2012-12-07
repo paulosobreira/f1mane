@@ -560,7 +560,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				piloto.setTracado(posis.tracado);
 				if (piloto.getIndiceTracado() <= 0
 						&& piloto.getTracado() != piloto.getTracadoAntigo()) {
-					if (piloto.verificaColisaoCarroFrente(this)) {
+					if (piloto.verificaColisaoCarroFrente(this, true)) {
 						piloto.setIndiceTracado(0);
 					} else {
 						piloto
@@ -824,7 +824,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (isCorridaIniciada()
 				&& monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(Util.intervalo(5000, 10000));
 			} catch (InterruptedException e) {
 			}
 		}
@@ -1065,5 +1065,13 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			return false;
 		}
 		return monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MAX;
+	}
+
+	@Override
+	public int getLag() {
+		if (monitorJogo == null) {
+			return 0;
+		}
+		return monitorJogo.getLatenciaReal();
 	}
 }
