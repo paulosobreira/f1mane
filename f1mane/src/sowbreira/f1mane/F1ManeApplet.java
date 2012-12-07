@@ -70,6 +70,7 @@ public class F1ManeApplet extends JApplet {
 
 	@Override
 	public void destroy() {
+		appletPaddock.destroy();
 		if (frame != null) {
 			WindowListener[] windowListeners = frame.getWindowListeners();
 			for (int i = 0; i < windowListeners.length; i++) {

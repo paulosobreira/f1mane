@@ -379,11 +379,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				monitorJogo.setJogoAtivo(false);
 				monitorJogo.matarTodasThreads();
 			}
-			if (controleEstatisticas != null) {
-				controleEstatisticas.setConsumidorAtivo(false);
-			}
 			if (threadMonitoraJogoOnline != null) {
 				threadMonitoraJogoOnline.interrupt();
+			}
+			if (controleEstatisticas != null) {
+				controleEstatisticas.setConsumidorAtivo(false);
 			}
 			if (gerenciadorVisual != null) {
 				gerenciadorVisual.finalize();
@@ -563,8 +563,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-								.getMultiplicadorLarguraPista()));
+						piloto
+								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+										.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
