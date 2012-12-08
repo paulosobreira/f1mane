@@ -425,6 +425,7 @@ public class PainelEntradaCliente {
 		}
 		Point o = new Point(10, 10);
 		Point oldP = null;
+		No ultNo = null;
 		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
@@ -439,8 +440,16 @@ public class PainelEntradaCliente {
 				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
 			}
 			oldP = p;
+			ultNo = (No) map.get(oldP);
 		}
 		Point p0 = (Point) pistaMinimizada.get(0);
+		if (ultNo.verificaCruvaBaixa()) {
+			g2d.setColor(Color.red);
+		} else if (ultNo.verificaCruvaAlta()) {
+			g2d.setColor(Color.orange);
+		} else if (ultNo.verificaRetaOuLargada()) {
+			g2d.setColor(new Color(0, 200, 0));
+		}
 		g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p0.x, o.y + p0.y);
 
 		ArrayList boxMinimizado = new ArrayList();

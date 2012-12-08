@@ -3,12 +3,14 @@
  */
 package sowbreira.f1mane.paddock.applet;
 
+import java.awt.Component;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Properties;
 
 import javax.swing.JApplet;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
 
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
@@ -73,6 +75,12 @@ public class AppletPaddock extends JApplet {
 
 	}
 
+	@Override
+	public void stop() {
+		super.stop();
+	}
+
+	@Override
 	public void destroy() {
 		controlePaddockApplet.sairPaddock();
 		super.destroy();

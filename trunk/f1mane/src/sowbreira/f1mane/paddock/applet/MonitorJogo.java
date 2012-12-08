@@ -167,7 +167,7 @@ public class MonitorJogo implements Runnable {
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
 				if (!setZoom) {
-					jogoCliente.setMouseZoom(0.5);
+					jogoCliente.setMouseZoom(0.7);
 					setZoom = true;
 				}
 				iniciaJalena();

@@ -573,12 +573,12 @@ public class PainelCircuito extends JPanel {
 		if (controleJogo.verificaLag()) {
 			int largura = 0;
 			String msg = "LAG";
+			int lag = controleJogo.getLag();
 			if (contMostraLag >= 0 && contMostraLag < 20) {
-				int lag = controleJogo.getLag();
-				if (lag > 9999) {
-					lag = 9999;
+				if (lag > 999) {
+					lag = 999;
 				}
-				msg = mil.format(controleJogo.getLag());
+				msg = " " + mil.format(lag);
 			} else if (contMostraLag > 20) {
 				contMostraLag = -20;
 			}
@@ -596,7 +596,7 @@ public class PainelCircuito extends JPanel {
 					15);
 			Font fontOri = g2d.getFont();
 			g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-			g2d.setColor(OcilaCor.geraOcila("lag", red));
+			g2d.setColor(OcilaCor.porcentVermelho100Verde0(lag / 10));
 			g2d.drawString(msg, pointDesenhaLag.x + 2, pointDesenhaLag.y + 26);
 			g2d.setFont(fontOri);
 		}
@@ -608,6 +608,10 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		if (limitesViewPort == null) {
+			return;
+		}
+		if (!(backGround != null && ((limitesViewPort.y + limitesViewPort.height)) < (backGround
+				.getHeight() * 0.95) * zoom)) {
 			return;
 		}
 		g2d.setColor(Color.LIGHT_GRAY);
