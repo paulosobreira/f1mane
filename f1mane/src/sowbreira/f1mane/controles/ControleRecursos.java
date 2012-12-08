@@ -411,7 +411,11 @@ public abstract class ControleRecursos {
 		if (circuitosClima == null) {
 			return 0;
 		}
-		String val = (String) circuitosClima.get(circuitos.get(circuito));
+		Object object = circuitos.get(circuito);
+		if (object == null) {
+			return 0;
+		}
+		String val = (String) circuitosClima.get(object);
 		if (Util.isNullOrEmpty(val)) {
 			return 0;
 		}
