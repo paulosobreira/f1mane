@@ -703,7 +703,6 @@ public class ControleCorrida {
 	public void aumentaFatorAcidade() {
 		fatorAcidente += 0.1;
 		Logger.logar("diminueFatorAcidade " + fatorAcidente);
-
 	}
 
 	public void diminueFatorAcidade() {
