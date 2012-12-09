@@ -99,6 +99,12 @@ public class OcilaCor {
 
 	public static Color porcentVerde100Vermelho0(int porcent) {
 		int r, g;
+		if (porcent < 1) {
+			porcent = 1;
+		}
+		if (porcent > 99) {
+			porcent = 99;
+		}
 		r = 510 * (100 - porcent) / 100;
 		if (r < 255) {
 			g = 255;
@@ -118,11 +124,18 @@ public class OcilaCor {
 	public static Color porcentVermelho100Verde0(int porcent) {
 		int r, g;
 		g = 510 * (100 - porcent) / 100;
+		if (porcent < 1) {
+			porcent = 1;
+		}
+		if (porcent > 99) {
+			porcent = 99;
+		}
 		if (g < 255) {
 			r = 255;
 		} else {
 			r = 255 * (porcent + 25) / 100;
 			g = 255;
 		}
-		return new Color(r, g, 0, 150);	}
+		return new Color(r, g, 0, 150);
+	}
 }
