@@ -102,8 +102,8 @@ public class Util {
 			// serialize and pass the object
 			oos.writeObject(oldObj); // C
 			oos.flush(); // D
-			ByteArrayInputStream bin = new ByteArrayInputStream(
-					bos.toByteArray()); // E
+			ByteArrayInputStream bin = new ByteArrayInputStream(bos
+					.toByteArray()); // E
 			ois = new ObjectInputStream(bin); // F
 			// return the new object
 			return ois.readObject(); // G
@@ -452,8 +452,8 @@ public class Util {
 			}
 
 			// Digito verificador do CPF que está sendo validado.
-			String nDigVerific = strCpf.substring(strCpf.length() - 2,
-					strCpf.length());
+			String nDigVerific = strCpf.substring(strCpf.length() - 2, strCpf
+					.length());
 
 			// Concatenando o primeiro resto com o segundo.
 			nDigResult = String.valueOf(digito1) + String.valueOf(digito2);
@@ -969,5 +969,17 @@ public class Util {
 
 		}
 		return retorno.toString();
+	}
+
+	public static int larguraTexto(String msg, Graphics2D g2d) {
+		int largura = 0;
+		for (int i = 0; i < msg.length(); i++) {
+			if (g2d == null) {
+				largura += 7;
+			} else {
+				largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
+			}
+		}
+		return largura;
 	}
 }
