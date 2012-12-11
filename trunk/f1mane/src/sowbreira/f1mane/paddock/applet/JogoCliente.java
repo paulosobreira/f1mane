@@ -118,6 +118,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void preparaGerenciadorVisual() {
+		try {
+			preparaGerenciadorVisual(false);
+		} catch (Exception e) {
+		}
+	}
+
+	public void preparaGerenciadorVisual(boolean monitor)
+			throws InterruptedException {
 		if (gerenciadorVisual != null) {
 			return;
 		}
@@ -126,8 +134,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
 			controleEstatisticas = new ControleEstatisticas(this);
 			controleEstatisticas.inicializarThreadConsumidoraInfo(500);
-
 		} catch (Exception e) {
+			if (monitor && e instanceof InterruptedException) {
+				throw (InterruptedException) e;
+			}
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuffer retorno = new StringBuffer();
 			int size = ((trace.length > 10) ? 10 : trace.length);
@@ -236,7 +246,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
 			Object combust, String nomeJogador, Object asa) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -570,8 +579,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					if (piloto.verificaColisaoCarroFrente(this, true)) {
 						piloto.setIndiceTracado(0);
 					} else {
-						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-								.getMultiplicadorLarguraPista()));
+						piloto
+								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+										.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
