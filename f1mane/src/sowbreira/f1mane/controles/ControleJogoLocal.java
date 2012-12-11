@@ -56,6 +56,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected String circuitoSelecionado = null;
 	protected ControleCampeonato controleCampeonato;
 	private MainFrame mainFrame;
+	private boolean setouZoom;
 
 	public ControleJogoLocal(String temporada) throws Exception {
 		super(temporada);
@@ -245,7 +246,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#atualizaPainel()
 	 */
 	public void atualizaPainel() {
-		gerenciadorVisual.atualizaPainel();
+		if (gerenciadorVisual != null) {
+			gerenciadorVisual.atualizaPainel();
+			if (gerenciadorVisual.isDesenhouQualificacao() && !setouZoom) {
+				gerenciadorVisual.setMouseZoom(0.7);
+				setouZoom = true;
+			}
+		}
 		decrementaTracado();
 	}
 
@@ -614,8 +621,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(),
-					gerenciadorVisual.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
+							.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			setarNivelCorrida();
@@ -635,7 +642,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
 		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
 				+ porcentagemChuvaCircuito(circuitoSelecionado));
-		Logger.logar("porcentagemChuvaCircuito() " + porcentagemChuvaCircuito());
+		Logger
+				.logar("porcentagemChuvaCircuito() "
+						+ porcentagemChuvaCircuito());
 	}
 
 	/**

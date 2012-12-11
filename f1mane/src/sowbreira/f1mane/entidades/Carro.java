@@ -529,16 +529,16 @@ public class Carro implements Serializable {
 		if (No.CURVA_BAIXA.equals(no)) {
 			if (0 <= indicativo && indicativo < .2) {
 				if ((Math.random() > .1))
-					novoModificador += Util.intervalo(1, 3);
+					novoModificador += Util.intervalo(1, 2);
 			} else if (.2 <= indicativo && indicativo < .3) {
 				if ((Math.random() > .2))
-					novoModificador += Util.intervalo(1, 2);
+					novoModificador += Util.intervalo(0, 2);
 			} else if (.3 <= indicativo && indicativo < .4) {
 				if ((Math.random() > .3))
-					novoModificador += 1;
+					novoModificador += Util.intervalo(0, 1);
 			} else if (.4 <= indicativo && indicativo < .5) {
 				if ((Math.random() > .4))
-					novoModificador += 1;
+					novoModificador += Util.intervalo(0, 1);
 			} else if (.5 <= indicativo && indicativo < .6) {
 				if ((Math.random() < .6))
 					novoModificador -= 1;
@@ -555,16 +555,16 @@ public class Carro implements Serializable {
 		} else if (No.CURVA_ALTA.equals(no)) {
 			if (0 <= indicativo && indicativo < .2) {
 				if ((Math.random() > .2))
-					novoModificador += Util.intervalo(1, 3);
+					novoModificador += Util.intervalo(1, 2);
 			} else if (.2 <= indicativo && indicativo < .3) {
 				if ((Math.random() > .3))
-					novoModificador += Util.intervalo(1, 2);
+					novoModificador += Util.intervalo(0, 2);
 			} else if (.3 <= indicativo && indicativo < .4) {
 				if ((Math.random() > .4))
-					novoModificador += Util.intervalo(1, 2);
+					novoModificador += Util.intervalo(0, 1);
 			} else if (.4 <= indicativo && indicativo < .5) {
 				if ((Math.random() > .5))
-					novoModificador += 1;
+					novoModificador += Util.intervalo(0, 1);
 			} else if (.5 <= indicativo && indicativo < .6) {
 				if ((Math.random() < .6))
 					novoModificador -= 1;
