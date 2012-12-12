@@ -645,9 +645,8 @@ public class ControleBox {
 		} else {
 			if ((piloto.getQtdeParadasBox() == 0 ? controleJogo
 					.asfaltoAbrasivo()
-					&& controleJogo.verificaNivelJogo()
-					&& piloto.testeHabilidadePiloto(controleJogo)
-					: controleJogo.asfaltoAbrasivo()))
+					&& controleJogo.verificaNivelJogo() : controleJogo
+					.asfaltoAbrasivo()))
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
 						controleCorrida.getDistaciaCorrida());
