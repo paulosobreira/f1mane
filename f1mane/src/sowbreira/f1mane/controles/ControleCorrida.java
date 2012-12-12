@@ -80,7 +80,7 @@ public class ControleCorrida {
 		} else
 			tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
 		definirTanqueCheio();
-		if (controleJogo.verificaNivelJogo()) {
+		if (Math.random() > 0.5) {
 			asfaltoAbrasivo = true;
 		}
 	}
