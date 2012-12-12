@@ -39,6 +39,8 @@ public class FormClassificacao extends JPanel {
 			"EEE, d MMM yyyy HH:mm:ss");
 	private DecimalFormat decimalFormat = new DecimalFormat("00");
 	private DecimalFormat decimalFormatGeral = new DecimalFormat("0000");
+	private DecimalFormat decimalFormatGeralBig = new DecimalFormat(
+			"0000000000");
 	private String nomeJogador;
 	private Integer anoClassificacao;
 	private JTable carrosTable;
@@ -261,7 +263,7 @@ public class FormClassificacao extends JPanel {
 
 	private class TableModel extends AbstractTableModel {
 		public int getColumnCount() {
-			return 5;
+			return 6;
 		}
 
 		public int getRowCount() {
@@ -289,6 +291,9 @@ public class FormClassificacao extends JPanel {
 						.getCorridas() : 1;
 				return decimalFormatGeral
 						.format(dadosJogador.getPontos() / div);
+			case 5:
+				return decimalFormatGeralBig.format(dadosJogador.getPontos()
+						* dadosJogador.getCorridas());
 
 			default:
 				return "";
@@ -307,7 +312,8 @@ public class FormClassificacao extends JPanel {
 				return Lang.msg("165");
 			case 4:
 				return Lang.msg("166");
-
+			case 5:
+				return Lang.msg("ranking");
 			default:
 				return "";
 			}

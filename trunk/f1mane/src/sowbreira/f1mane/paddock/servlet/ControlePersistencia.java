@@ -288,6 +288,21 @@ public class ControlePersistencia {
 		return nomes;
 	}
 
+	public Set obterListaJogadoresCorridasPeriodo(Session session, Dia ini,
+			Dia fim) {
+		Set nomes = new HashSet();
+		List corridas = session.createCriteria(CorridasDadosSrv.class).add(
+				Restrictions.ge("tempoFim", ini.toTimestamp().getTime())).add(
+				Restrictions.le("tempoFim", fim.toTimestamp().getTime()))
+				.list();
+		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+			CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
+					.next();
+			nomes.add(corridasDadosSrv.getJogadorDadosSrv().getNome());
+		}
+		return nomes;
+	}
+
 	public void adicionarJogador(String nome, JogadorDadosSrv jogadorDadosSrv,
 			Session session) throws Exception {
 		Transaction transaction = session.beginTransaction();
@@ -524,4 +539,5 @@ public class ControlePersistencia {
 				Restrictions.eq("jogadorDadosSrv", jogadorDadosSrv)).list();
 		return campeonatos;
 	}
+
 }
