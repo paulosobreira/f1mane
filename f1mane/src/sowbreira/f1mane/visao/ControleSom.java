@@ -119,25 +119,25 @@ public class ControleSom {
 
 		double frameLength = (double) clipLargada.getFrameLength();
 		double val = (clipLargada.getFramePosition() / frameLength);
-		if (val > 0 && val < Util.intervalo(0.5, 0.7)) {
+		if (val > 0 && val < 1) {
 			tocando = true;
 		}
 
 		frameLength = (double) clipVeloMax.getFrameLength();
 		val = (clipVeloMax.getFramePosition() / frameLength);
-		if (val > 0 && val < Util.intervalo(0.5, 0.7)) {
+		if (val > 0 && val < Util.intervalo(0.3, 0.5)) {
 			tocando = true;
 		}
 
 		frameLength = (double) clipVeloMaxFinal.getFrameLength();
 		val = (clipVeloMaxFinal.getFramePosition() / frameLength);
-		if (val > 0 && val < Util.intervalo(0.5, 0.7)) {
+		if (val > 0 && val < Util.intervalo(0.3, 0.5)) {
 			tocando = true;
 		}
 
 		frameLength = (double) clipVeloMed.getFrameLength();
 		val = (clipVeloMed.getFramePosition() / frameLength);
-		if (val > 0 && val < Util.intervalo(0.5, 0.7)) {
+		if (val > 0 && val < Util.intervalo(0.3, 0.5)) {
 			tocando = true;
 		}
 		return tocando;
