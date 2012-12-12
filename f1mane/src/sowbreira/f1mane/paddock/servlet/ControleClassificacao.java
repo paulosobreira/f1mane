@@ -51,9 +51,10 @@ public class ControleClassificacao {
 		Session session = controlePersistencia.getSession();
 		try {
 			List returnList = new ArrayList();
-			Set jogadores = controlePersistencia.obterListaJogadores(session);
 			Dia ini = new Dia(1, 1, ano);
 			Dia fim = new Dia(1, 1, ano + 1);
+			Set jogadores = controlePersistencia
+					.obterListaJogadoresCorridasPeriodo(session, ini, fim);
 			for (Iterator iter = jogadores.iterator(); iter.hasNext();) {
 				String key = (String) iter.next();
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
@@ -78,8 +79,9 @@ public class ControleClassificacao {
 				public int compare(Object arg0, Object arg1) {
 					DadosJogador d0 = (DadosJogador) arg0;
 					DadosJogador d1 = (DadosJogador) arg1;
-					return new Long(d1.getPontos()).compareTo(new Long(d0
-							.getPontos()));
+					return new Long(d1.getPontos() * d1.getCorridas())
+							.compareTo(new Long(d0.getPontos()
+									* d0.getCorridas()));
 				}
 			});
 			return returnList;
