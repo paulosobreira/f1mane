@@ -2789,14 +2789,14 @@ public class PainelCircuito extends JPanel {
 
 		if (Clima.NUBLADO.equals(controleJogo.getClima())) {
 			if (Clima.CHUVA.equals(climaAnt)) {
-				if (Math.random() > 0.5) {
+				if (Math.random() > 0.7) {
 					indiceNublado--;
 					if (indiceNublado < 500) {
 						indiceNublado = 500;
 					}
 				}
 			} else {
-				if (Math.random() > 0.5) {
+				if (Math.random() > 0.7) {
 					indiceNublado++;
 					if (indiceNublado > 1000) {
 						indiceNublado = 1000;
