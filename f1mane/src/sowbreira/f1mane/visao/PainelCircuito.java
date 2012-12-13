@@ -213,6 +213,7 @@ public class PainelCircuito extends JPanel {
 	private ImageIcon tyre;
 	private int acionaDesenhaKers;
 	private int contMostraLag;
+	private List<String> climaAnterior = new ArrayList<String>();
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -2778,11 +2779,28 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaChuva(Graphics2D g2d) {
+
+		if (!climaAnterior.contains(controleJogo.getClima())) {
+			climaAnterior.add(controleJogo.getClima());
+		}
+
+		String climaAnt = climaAnterior.size() > 1 ? climaAnterior
+				.get(climaAnterior.size() - 1) : climaAnterior.get(0);
+
 		if (Clima.NUBLADO.equals(controleJogo.getClima())) {
-			if (Math.random() > 0.7) {
-				indiceNublado++;
-				if (indiceNublado > 1000) {
-					indiceNublado = 1000;
+			if (Clima.CHUVA.equals(climaAnt)) {
+				if (Math.random() > 0.5) {
+					indiceNublado--;
+					if (indiceNublado < 500) {
+						indiceNublado = 500;
+					}
+				}
+			} else {
+				if (Math.random() > 0.5) {
+					indiceNublado++;
+					if (indiceNublado > 1000) {
+						indiceNublado = 1000;
+					}
 				}
 			}
 			int alfaNub = indiceNublado / 10;
@@ -4025,6 +4043,7 @@ public class PainelCircuito extends JPanel {
 			g2d.setColor(gre);
 		} else {
 			if (pilotoSelecionado.getNoAtual() != null
+					&& !controleJogo.isChovendo()
 					&& pilotoSelecionado.getNoAtual().verificaRetaOuLargada()
 					&& pilotoSelecionado.getNumeroVolta() > 0
 					&& (controleJogo.obterCarroNaFrente(pilotoSelecionado) != null && controleJogo
