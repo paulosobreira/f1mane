@@ -1538,12 +1538,12 @@ public class Piloto implements Serializable {
 					getCarro().setGiro(Carro.GIRO_MAX_VAL);
 					ret = true;
 				}
-				if (!controleJogo.verificaNivelJogo()
+				if (controleJogo.verificaNivelJogo()
 						&& testeHabilidadePiloto(controleJogo)) {
 					No no = getNoAtual();
 					if (Carro.MAIS_ASA.equals(getCarro().getAsa())) {
 						if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
-							if ((porcentagemCombustivel > 0 && controleJogo
+							if ((porcentagemCombustivel > 5 && controleJogo
 									.verificaUltimasVoltas())
 									|| (!superAquecido && porcentagemCombustivel > porcentagemDesgastePeneus)) {
 								getCarro().setGiro(Carro.GIRO_MAX_VAL);
@@ -1568,7 +1568,7 @@ public class Piloto implements Serializable {
 						}
 					}
 				}
-				if (!controleJogo.verificaNivelJogo()
+				if (controleJogo.verificaNivelJogo()
 						&& testeHabilidadePiloto(controleJogo)) {
 					if (controleJogo.verificaUltimasVoltas()
 							|| ((!noAtual.verificaRetaOuLargada()) && porcentagemCombustivel < porcentagemDesgastePeneus)
