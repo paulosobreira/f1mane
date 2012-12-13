@@ -1063,6 +1063,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			return;
 		}
 		if (pilotoSelecionado.getNoAtual() != null
+				&& !isChovendo()
 				&& pilotoSelecionado.getNoAtual().verificaRetaOuLargada()
 				&& pilotoSelecionado.getNumeroVolta() > 0
 				&& pilotoSelecionado.getPtosBox() == 0
