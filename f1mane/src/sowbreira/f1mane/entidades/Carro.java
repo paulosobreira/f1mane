@@ -442,9 +442,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -526,6 +527,11 @@ public class Carro implements Serializable {
 			boolean agressivo, No no, InterfaceJogo controleJogo) {
 		int percent = porcentagemCombustivel();
 		double indicativo = percent / 100.0;
+		if (!getPiloto().isJogadorHumano()
+				&& percent < (20 * controleJogo.getNiveljogo())) {
+			setGiro(GIRO_MIN_VAL);
+		}
+
 		if (No.CURVA_BAIXA.equals(no)) {
 			if (0 <= indicativo && indicativo < .2) {
 				if ((Math.random() > .1))
@@ -620,10 +626,6 @@ public class Carro implements Serializable {
 
 		double consumoTotal = (valConsumo
 				* controleJogo.getCircuito().getMultiplciador() * dificudade);
-
-		if (!getPiloto().isJogadorHumano() && percent < 10) {
-			setGiro(GIRO_MIN_VAL);
-		}
 
 		if (GIRO_MIN_VAL == getGiro() && percent < 5) {
 			consumoTotal *= (controleJogo.getNiveljogo() / 2);
