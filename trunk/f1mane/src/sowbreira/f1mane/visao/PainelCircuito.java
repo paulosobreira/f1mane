@@ -1614,13 +1614,13 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaBackGroundComStrokes(Graphics2D g2d) {
-		int larguraPistaPixeisLoc = Util.inte(176
-				* circuito.getMultiplicadorLarguraPista() * zoom);
+		int larguraPistaPixeisLoc = Util.inte(100*circuito
+				.getMultiplicadorLarguraPista() * zoom);
 		if (larguraPistaPixeisLoc != larguraPistaPixeis) {
 			larguraPistaPixeis = larguraPistaPixeisLoc;
 			pista = new BasicStroke(larguraPistaPixeis, BasicStroke.CAP_ROUND,
 					BasicStroke.JOIN_ROUND);
-			pistaTinta = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
+			pistaTinta = new BasicStroke(Util.inte(larguraPistaPixeis),
 					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 			box = new BasicStroke(Util.inte(larguraPistaPixeis * .4),
 					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
