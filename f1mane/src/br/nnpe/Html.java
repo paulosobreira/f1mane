@@ -3,11 +3,6 @@
  */
 package br.nnpe;
 
-import java.sql.Timestamp;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Rafael Carneiro (<a href="mailto:rafael@portaljava.com">e-mail</a>)
@@ -69,19 +64,19 @@ public class Html {
 	}
 
 	public static String azul(String texto) {
-		return fontColor("BLUE", texto);
+		return fontColor("#2D62A8", texto);
 	}
 
 	public static String green(String texto) {
-		return fontColor("GREEN", texto);
+		return fontColor("#008D25", texto);
 	}
 
 	public static String red(String texto) {
-		return fontColor("RED", texto);
+		return fontColor("#FE0000", texto);
 	}
 
 	public static String txtRedBold(String texto) {
-		return bold(fontColor("RED", texto));
+		return bold(fontColor("#FE0000", texto));
 	}
 
 	/**
@@ -174,7 +169,7 @@ public class Html {
 	public static String superBlue(String texto) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<font  size='").append(superSize)
-				.append("' color='blue'>").append(texto).append("</font>");
+				.append("' color='#2D62A8'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
@@ -188,7 +183,6 @@ public class Html {
 
 	public static String driveThru(String msg) {
 		StringBuffer buffer = new StringBuffer();
-
 		buffer.append("<font bgcolor='black' size='").append(superSize)
 				.append("' color='white'>").append(msg).append("</font>");
 		return Html.bold(buffer.toString());
