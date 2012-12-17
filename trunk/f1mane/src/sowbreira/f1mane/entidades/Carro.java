@@ -442,10 +442,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -761,16 +760,19 @@ public class Carro implements Serializable {
 			novoModificador -= 1;
 		}
 
-		if ((novoModificador > 0) && no.verificaCruvaBaixa()
+		if ((novoModificador > 0)
+				&& no.verificaCruvaBaixa()
 				&& !piloto.isAgressivo()
-				&& !piloto.testeHabilidadePilotoOuCarro(controleJogo)) {
+				&& (!piloto.testeHabilidadePilotoOuCarro(controleJogo) || (TIPO_PNEU_DURO
+						.equals(tipoPneu) && !controleJogo.asfaltoAbrasivo()))) {
 			novoModificador -= 1;
 		}
 
-		if ((novoModificador > 0) && no.verificaCruvaAlta()
+		if ((novoModificador > 0)
+				&& no.verificaCruvaAlta()
 				&& !piloto.isAgressivo()
-				&& !piloto.testeHabilidadePilotoOuCarro(controleJogo)
-				&& controleJogo.verificaNivelJogo()) {
+				&& (!piloto.testeHabilidadePilotoCarro(controleJogo) || (TIPO_PNEU_DURO
+						.equals(tipoPneu) && !controleJogo.asfaltoAbrasivo()))) {
 			novoModificador -= 1;
 		}
 
