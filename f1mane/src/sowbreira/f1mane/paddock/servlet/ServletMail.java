@@ -39,7 +39,7 @@ public class ServletMail extends HttpServlet {
 			HttpServletResponse res) throws NoSuchAlgorithmException,
 			UnsupportedEncodingException {
 		if (Util.isNullOrEmpty(passe)
-				|| !Util.md5(passe).equals("f02c7b3c384412e5755883da397a28fd")) {
+				|| !Util.md5(passe).equals("04ef1824d6caa4e83f385e9cc033c8b8")) {
 			return;
 		}
 		try {

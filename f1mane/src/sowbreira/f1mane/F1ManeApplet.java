@@ -23,7 +23,6 @@ public class F1ManeApplet extends JApplet {
 	private MainFrame frame;
 
 	public void init() {
-
 		try {
 			appletPaddock = new AppletPaddock();
 			appletPaddock.initProperties();
