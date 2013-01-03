@@ -882,7 +882,7 @@ public class Util {
 		// for (int i = 0; i < 100; i++) {
 		// System.out.println(intervalo(0, 2));
 		// }
-		System.out.println(md5("123"));
+		System.out.println(md5("f1maneback"));
 	}
 
 	public static int intervalo(int val1, int val2) {
