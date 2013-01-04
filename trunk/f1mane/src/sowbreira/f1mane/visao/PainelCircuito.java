@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -563,6 +564,7 @@ public class PainelCircuito extends JPanel {
 					desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
 				}
 				desenhaDebugIinfo(g2d);
+				Toolkit.getDefaultToolkit().sync();
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
