@@ -865,11 +865,11 @@ public class Carro implements Serializable {
 					}
 					teste = false;
 				}
-				desgPneus += (teste ? 1 : 2);
+				desgPneus += (teste ? 0 : 1);
 			}
 		} else {
-			desgPneus += (piloto.testeHabilidadePilotoOuCarro(controleJogo) ? 1
-					: 2);
+			desgPneus += (piloto.testeHabilidadePilotoOuCarro(controleJogo) ? 0
+					: 1);
 		}
 		if (Clima.SOL.equals(controleJogo.getClima())) {
 			if (no.verificaCruvaBaixa()) {
@@ -888,7 +888,7 @@ public class Carro implements Serializable {
 			if (controleJogo.asfaltoAbrasivo()) {
 				desgPneus += Util.intervalo(7, 14);
 			} else {
-				desgPneus += Util.intervalo(1, 5);
+				desgPneus += Util.intervalo(1, 7);
 			}
 		}
 
