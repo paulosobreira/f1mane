@@ -349,7 +349,7 @@ public class ControleCorrida {
 				double percent = 1 - fatorUtrapassagem;
 				if (No.LARGADA.equals(noAtualCarro.getTipo())
 						|| No.RETA.equals(noAtualCarro.getTipo())) {
-					double val = ganho * (percent * 0.4);
+					double val = ganho * (percent * 0.3);
 					return val;
 				}
 				if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
@@ -357,7 +357,7 @@ public class ControleCorrida {
 					return val;
 
 				}
-				double val = ganho * (percent * 0.6);
+				double val = ganho * (percent * 0.7);
 				return val;
 			}
 			Carro carroAtraz = controleJogo.obterCarroAtraz(piloto);

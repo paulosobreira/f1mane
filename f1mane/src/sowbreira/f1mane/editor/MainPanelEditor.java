@@ -59,7 +59,9 @@ public class MainPanelEditor extends JPanel {
 	private JFrame srcFrame;
 	private boolean desenhaTracado = true;
 	private boolean creditos = false;
+	private boolean pontosEscape = false;
 	public final static Color oran = new Color(255, 188, 40, 180);
+	public final static Color ver = new Color(255, 10, 10, 150);
 
 	private BufferedImage backGround;
 	int ultimoItemBoxSelecionado = -1;
@@ -90,14 +92,14 @@ public class MainPanelEditor extends JPanel {
 			return;
 		}
 
-		FileInputStream inputStream = new FileInputStream(
-				fileChooser.getSelectedFile());
+		FileInputStream inputStream = new FileInputStream(fileChooser
+				.getSelectedFile());
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 
 		circuito = (Circuito) ois.readObject();
 
-		backGround = CarregadorRecursos.carregaBackGround(
-				circuito.getBackGround(), this, circuito);
+		backGround = CarregadorRecursos.carregaBackGround(circuito
+				.getBackGround(), this, circuito);
 		this.srcFrame = frame;
 		iniciaEditor(frame);
 		atualizaListas();
@@ -366,6 +368,12 @@ public class MainPanelEditor extends JPanel {
 					return;
 				}
 
+				if (pontosEscape) {
+					circuito.getEscapeList().add(e.getPoint());
+					pontosEscape = false;
+					return;
+				}
+
 				Logger.logar("Pontos Editor :" + e.getX() + " - " + e.getY());
 				if ((tipoNo == null) || (e.getButton() == 3)) {
 					srcFrame.requestFocus();
@@ -415,8 +423,8 @@ public class MainPanelEditor extends JPanel {
 			}
 		} else {
 			if (no.isBox()) {
-				JOptionPane.showMessageDialog(this, Lang.msg("038"),
-						Lang.msg("039"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this, Lang.msg("038"), Lang
+						.msg("039"), JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 
@@ -490,25 +498,35 @@ public class MainPanelEditor extends JPanel {
 				+ (int) (100 * noMedia / total) + "%", 5, 35);
 		g2d.drawString(Lang.msg("BAIXA") + ":" + noBaixa + " "
 				+ (int) (100 * noBaixa / total) + "%", 5, 55);
-		if(circuito!=null && circuito.getCreditos()!=null){
+		if (circuito != null && circuito.getCreditos() != null) {
 			g2d.setColor(oran);
 			g2d.fillOval(circuito.getCreditos().x - 2,
 					circuito.getCreditos().y - 2, 8, 8);
 		}
-		
+
+		if (circuito != null) {
+			List<Point> escapeList = circuito.getEscapeList();
+			for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
+				Point point = (Point) iterator.next();
+				g2d.setColor(ver);
+				g2d.fillOval(point.x - 2, point.y - 2, 8, 8);
+
+			}
+		}
+
 		if (desenhaTracado) {
 			No oldNo = null;
 
 			for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
 				No no = (No) iter.next();
-				g2d.drawImage(no.getBufferedImage(), no.getDrawX(),
-						no.getDrawY(), null);
+				g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no
+						.getDrawY(), null);
 
 				if (oldNo == null) {
 					oldNo = no;
 				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
-							no.getY());
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
+							.getY());
 					oldNo = no;
 				}
 
@@ -531,8 +549,8 @@ public class MainPanelEditor extends JPanel {
 				if (oldNo == null) {
 					oldNo = no;
 				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
-							no.getY());
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
+							.getY());
 					oldNo = no;
 				}
 
@@ -647,7 +665,17 @@ public class MainPanelEditor extends JPanel {
 
 	public void creditos() {
 		creditos = true;
+	}
 
+	public void escape() {
+		pontosEscape = true;
+	}
+
+	public void removeUltEscape() {
+		if (circuito != null && !circuito.getEscapeList().isEmpty()) {
+			circuito.getEscapeList()
+					.remove(circuito.getEscapeList().size() - 1);
+		}
 	}
 
 }
