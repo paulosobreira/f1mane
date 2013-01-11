@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -92,14 +93,14 @@ public class MainPanelEditor extends JPanel {
 			return;
 		}
 
-		FileInputStream inputStream = new FileInputStream(fileChooser
-				.getSelectedFile());
+		FileInputStream inputStream = new FileInputStream(
+				fileChooser.getSelectedFile());
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 
 		circuito = (Circuito) ois.readObject();
 
-		backGround = CarregadorRecursos.carregaBackGround(circuito
-				.getBackGround(), this, circuito);
+		backGround = CarregadorRecursos.carregaBackGround(
+				circuito.getBackGround(), this, circuito);
 		this.srcFrame = frame;
 		iniciaEditor(frame);
 		atualizaListas();
@@ -369,6 +370,9 @@ public class MainPanelEditor extends JPanel {
 				}
 
 				if (pontosEscape) {
+					if (circuito.getEscapeList() == null) {
+						circuito.setEscapeList(new ArrayList<Point>());
+					}
 					circuito.getEscapeList().add(e.getPoint());
 					pontosEscape = false;
 					return;
@@ -423,8 +427,8 @@ public class MainPanelEditor extends JPanel {
 			}
 		} else {
 			if (no.isBox()) {
-				JOptionPane.showMessageDialog(this, Lang.msg("038"), Lang
-						.msg("039"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this, Lang.msg("038"),
+						Lang.msg("039"), JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 
@@ -506,11 +510,14 @@ public class MainPanelEditor extends JPanel {
 
 		if (circuito != null) {
 			List<Point> escapeList = circuito.getEscapeList();
-			for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
-				Point point = (Point) iterator.next();
-				g2d.setColor(ver);
-				g2d.fillOval(point.x - 2, point.y - 2, 8, 8);
+			if (escapeList != null) {
+				for (Iterator iterator = escapeList.iterator(); iterator
+						.hasNext();) {
+					Point point = (Point) iterator.next();
+					g2d.setColor(ver);
+					g2d.fillOval(point.x - 2, point.y - 2, 8, 8);
 
+				}
 			}
 		}
 
@@ -519,14 +526,14 @@ public class MainPanelEditor extends JPanel {
 
 			for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
 				No no = (No) iter.next();
-				g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no
-						.getDrawY(), null);
+				g2d.drawImage(no.getBufferedImage(), no.getDrawX(),
+						no.getDrawY(), null);
 
 				if (oldNo == null) {
 					oldNo = no;
 				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
-							.getY());
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
+							no.getY());
 					oldNo = no;
 				}
 
@@ -549,8 +556,8 @@ public class MainPanelEditor extends JPanel {
 				if (oldNo == null) {
 					oldNo = no;
 				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
-							.getY());
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
+							no.getY());
 					oldNo = no;
 				}
 
