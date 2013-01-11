@@ -574,6 +574,10 @@ public class ControleCorrida {
 		return voltaAtual;
 	}
 
+	/**
+	 *  Minimo 0.5 = Mais dificil de passar
+	 *  Maximo 1.0 = Mais facil de passar
+	 */
 	public double getFatorUtrapassagem() {
 		return fatorUtrapassagem;
 	}
