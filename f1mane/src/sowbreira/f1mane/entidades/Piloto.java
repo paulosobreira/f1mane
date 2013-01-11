@@ -1015,6 +1015,9 @@ public class Piloto implements Serializable {
 
 	private boolean processaVerificaColisao(InterfaceJogo controleJogo) {
 		boolean colisao = false;
+		if (controleJogo.isSafetyCarNaPista()) {
+			return false;
+		}
 		if (!controleJogo.isModoQualify()
 				&& verificaColisaoCarroFrente(controleJogo)) {
 			colisao = true;
