@@ -739,7 +739,8 @@ public class Carro implements Serializable {
 				&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())
 				&& !controleJogo.isChovendo()
 				&& !piloto.testeHabilidadePiloto(controleJogo)
-				&& Math.random() > controleJogo.getFatorUtrapassagem()) {
+				&& Math.random() > controleJogo.getFatorUtrapassagem()
+						- (controleJogo.getNiveljogo() / 2)) {
 			novoModificador--;
 		}
 		double divVoltas = (controleJogo.getQtdeTotalVoltas() / Constantes.MAX_VOLTAS);

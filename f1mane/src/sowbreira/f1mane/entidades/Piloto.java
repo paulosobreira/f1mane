@@ -1019,7 +1019,7 @@ public class Piloto implements Serializable {
 				&& verificaColisaoCarroFrente(controleJogo)) {
 			colisao = true;
 		}
-		if (colisao && (System.currentTimeMillis() - ultimaColisao > 500)) {
+		if (colisao && (System.currentTimeMillis() - ultimaColisao > 1000)) {
 			acelerando = false;
 			setAgressivoF4(false);
 			setCiclosDesconcentrado(50);
@@ -1324,20 +1324,23 @@ public class Piloto implements Serializable {
 	}
 
 	public boolean derrapa(InterfaceJogo controleJogo) {
+		/**
+		 * Verificar na entrada da curva e nao na area de escape
+		 */
 		System.out.println("getTracadoAntigo()" + getTracadoAntigo());
 		System.out.println("getTracado()" + getTracado());
-		if (getTracado() == 4 || getTracado() == 5 || getTracadoAntigo() == 4
-				|| getTracadoAntigo() == 5) {
+		if (getTracado() == 4 || getTracado() == 5) {
 			return false;
 		}
 		No noAtual = getNoAtual();
+		No proxCurva = controleJogo.obterProxCurva(noAtual);
 		Circuito circuito = controleJogo.getCircuito();
 		Point pontoDerrapada = null;
 		List<Point> escapeList = circuito.getEscapeList();
 		if (escapeList == null) {
 			return false;
 		}
-		Point p = noAtual.getPoint();
+		Point p = proxCurva.getPoint();
 		double distancia = Double.MAX_VALUE;
 		for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
 			Point point = (Point) iterator.next();
@@ -1348,6 +1351,10 @@ public class Piloto implements Serializable {
 			}
 		}
 		if (pontoDerrapada == null) {
+			return false;
+		}
+		if (distancia > Carro.LARGURA * 5) {
+			System.out.println("Menor Distancia " + distancia);
 			return false;
 		}
 
@@ -1382,11 +1389,11 @@ public class Piloto implements Serializable {
 		double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2,
 				pontoDerrapada);
 		if (distaciaEntrePontos1 > distaciaEntrePontos2) {
-			mudarTracado(5, controleJogo);
+			mudarTracado(5, controleJogo, true);
 			System.out.println("Derrapa 5");
 		}
 		if (distaciaEntrePontos2 > distaciaEntrePontos1) {
-			mudarTracado(4, controleJogo);
+			mudarTracado(4, controleJogo, true);
 			System.out.println("Derrapa 4");
 		}
 		return true;
@@ -2209,7 +2216,7 @@ public class Piloto implements Serializable {
 			setTracado(pos);
 			int mod = Carro.ALTURA;
 			if (pos == 4 || pos == 5) {
-				mod *= 5;
+				mod *= 3;
 			}
 			setIndiceTracado((int) (mod * interfaceJogo.getCircuito()
 					.getMultiplicadorLarguraPista()));
