@@ -2041,13 +2041,31 @@ public class PainelCircuito extends JPanel {
 								.getMultiplicadorLarguraPista()),
 				new Point(Util.inte(rectangle.getCenterX()), Util
 						.inte(rectangle.getCenterY())));
+		Point p5 = GeoUtil.calculaPonto(
+				calculaAngulo,
+				Util.inte(Carro.ALTURA
+						* 3
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()),
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
+		Point p4 = GeoUtil.calculaPonto(
+				calculaAngulo + 180,
+				Util.inte(Carro.ALTURA
+						* 3
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()),
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
+
 		piloto.setP1(p1);
 		piloto.setP2(p2);
+		piloto.setP5(p5);
+		piloto.setP4(p4);
 		if (piloto.getTracado() == 0) {
 			carx = p.x - w2;
 			cary = p.y - h2;
 			int indTracado = piloto.getIndiceTracado();
-
 			if (indTracado != 0 && piloto.getTracadoAntigo() != 0) {
 				List drawBresenhamLine = null;
 				if (piloto.getTracadoAntigo() == 1) {
@@ -2058,7 +2076,14 @@ public class PainelCircuito extends JPanel {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p.x, p.y);
 				}
-
+				if (piloto.getTracadoAntigo() == 5) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
+							p.x, p.y);
+				}
+				if (piloto.getTracadoAntigo() == 4) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
+							p.x, p.y);
+				}
 				int indice = drawBresenhamLine.size() - indTracado;
 				if (indice <= 0) {
 					indice = 0;
@@ -2086,6 +2111,14 @@ public class PainelCircuito extends JPanel {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p1.x, p1.y);
 				}
+				if (piloto.getTracadoAntigo() == 4) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
+							p1.x, p1.y);
+				}
+				if (piloto.getTracadoAntigo() == 5) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
+							p1.x, p1.y);
+				}
 
 				int indice = drawBresenhamLine.size() - indTracado;
 				if (indice <= 0) {
@@ -2100,6 +2133,39 @@ public class PainelCircuito extends JPanel {
 				cary = pReta.y - h2;
 			}
 		}
+
+		if (piloto.getTracado() == 5) {
+			carx = Util.inte((p5.x - w2));
+			cary = Util.inte((p5.y - h2));
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado != 5 && piloto.getTracadoAntigo() != 5) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 0) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+							p5.x, p5.y);
+				}
+				if (piloto.getTracadoAntigo() == 1) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+							p5.x, p5.y);
+				}
+				if (piloto.getTracadoAntigo() == 2) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+							p5.x, p5.y);
+				}
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x - w2;
+				cary = pReta.y - h2;
+			}
+		}
+
 		if (piloto.getTracado() == 2) {
 			carx = Util.inte((p2.x - w2));
 			cary = Util.inte((p2.y - h2));
@@ -2115,6 +2181,14 @@ public class PainelCircuito extends JPanel {
 							p2.x, p2.y);
 				}
 
+				if (piloto.getTracadoAntigo() == 4) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
+							p2.x, p2.y);
+				}
+				if (piloto.getTracadoAntigo() == 5) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
+							p2.x, p2.y);
+				}
 				int indice = drawBresenhamLine.size() - indTracado;
 				if (indice <= 0) {
 					indice = 0;
@@ -2128,6 +2202,39 @@ public class PainelCircuito extends JPanel {
 				cary = pReta.y - h2;
 			}
 		}
+
+		if (piloto.getTracado() == 4) {
+			carx = Util.inte((p4.x - w2));
+			cary = Util.inte((p4.y - h2));
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado != 0 && piloto.getTracadoAntigo() != 2) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 0) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+							p4.x, p4.y);
+				}
+				if (piloto.getTracadoAntigo() == 1) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+							p4.x, p4.y);
+				}
+				if (piloto.getTracadoAntigo() == 2) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+							p4.x, p4.y);
+				}
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x - w2;
+				cary = pReta.y - h2;
+			}
+		}
+
 		piloto.setCarX(carx);
 		piloto.setCarY(cary);
 
