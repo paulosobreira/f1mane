@@ -1362,18 +1362,18 @@ public class Piloto implements Serializable {
 		 * Verificar na entrada da curva e nao na area de escape
 		 */
 		if (getTracado() == 4 || getTracado() == 5) {
-			System.out.println("ja derrapando");
+			Logger.logar("ja derrapando");
 			return false;
 		}
 		No noAtual = getNoAtual();
 		int index = noAtual.getIndex() + 200;
 		if (index > controleJogo.getNosDaPista().size()) {
-			System.out.println("Index Fora");
+			Logger.logar("Index Fora");
 			return false;
 		}
 		No proxPt = controleJogo.getNosDaPista().get(index);
 		if (proxPt == null) {
-			System.out.println("proxPt == null");
+			Logger.logar("proxPt == null");
 			return false;
 		}
 		Circuito circuito = controleJogo.getCircuito();
@@ -1396,7 +1396,7 @@ public class Piloto implements Serializable {
 			return false;
 		}
 		if (distancia > Carro.LARGURA * 5) {
-			System.out.println("Menor Distancia " + distancia);
+			Logger.logar("Menor Distancia " + distancia);
 			return false;
 		}
 
@@ -1436,11 +1436,11 @@ public class Piloto implements Serializable {
 				pontoDerrapada);
 		if (distaciaEntrePontos1 > distaciaEntrePontos2) {
 			mudarTracado(5, controleJogo, true);
-			System.out.println("Derrapa 5");
+			Logger.logar("Derrapa 5");
 		}
 		if (distaciaEntrePontos2 > distaciaEntrePontos1) {
 			mudarTracado(4, controleJogo, true);
-			System.out.println("Derrapa 4");
+			Logger.logar("Derrapa 4");
 		}
 		return true;
 	}
@@ -2291,7 +2291,7 @@ public class Piloto implements Serializable {
 				mod *= 3;
 			}
 			if (getTracado() == 4 || getTracado() == 5) {
-				mod *= 1.5;
+				mod *= 2;
 			}
 			setIndiceTracado((int) (mod * interfaceJogo.getCircuito()
 					.getMultiplicadorLarguraPista()));
