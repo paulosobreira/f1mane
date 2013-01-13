@@ -54,9 +54,9 @@ public class ControleSafetyCar {
 			long indexNafrente = pilotoFrente.getPtosPista();
 			long index = piloto.getPtosPista();
 			long diffIndex = (indexNafrente - index);
-			for (double i = 1; i < 500; i++) {
+			for (double i = 1; i < 400; i++) {
 				if (diffIndex < i) {
-					ganho *= i / 500;
+					ganho *= i / 400;
 					break;
 				}
 			}
@@ -65,9 +65,9 @@ public class ControleSafetyCar {
 			long indexNafrente = safetyCar.getPtosPista();
 			long index = piloto.getPtosPista();
 			long diffIndex = (indexNafrente - index);
-			for (int i = 1; i < 200; i++) {
+			for (int i = 1; i < 300; i++) {
 				if (diffIndex < (50 + i)) {
-					return ganho * i / 200.0;
+					return ganho * i / 300.0;
 				}
 			}
 
@@ -127,12 +127,6 @@ public class ControleSafetyCar {
 				break;
 			}
 		}
-		for (int i = 100; i > 1; i--) {
-			if (diffPts > i) {
-
-			}
-		}
-
 		bonus = calculaMediaSC(bonus);
 		index += bonus;
 		int diff = index - pista.size();
@@ -143,17 +137,17 @@ public class ControleSafetyCar {
 			index = diff;
 		}
 		safetyCar.setPtosPista(safetyCar.getPtosPista() + bonus);
-		if (verificaTracadoPilto(index)) {
+		if (deixaRetardatarioPassar(index)) {
 			safetyCar.setTracado(1);
 		}
 		safetyCar.setNoAtual((No) pista.get(index));
 	}
 
-	private boolean verificaTracadoPilto(int indice) {
+	private boolean deixaRetardatarioPassar(int indice) {
 		List pilotos = controleJogo.getPilotos();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (this.equals(piloto)
+			if (this.equals(piloto) || piloto.getPosicao() == 1
 					|| piloto.getTracado() != safetyCar.getTracado()) {
 				continue;
 			}

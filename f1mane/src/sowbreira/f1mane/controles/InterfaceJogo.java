@@ -1,5 +1,6 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
@@ -293,5 +294,7 @@ public interface InterfaceJogo {
 	public boolean verificaLag();
 
 	public int getLag();
+
+	public int obterLadoDerrapa(Point pontoDerrapada);
 
 }

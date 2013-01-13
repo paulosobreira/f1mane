@@ -37,6 +37,7 @@ public class Carro implements Serializable {
 	public static final int ALTURA = 24;
 	public static final int MEIA_LARGURA = 31;
 	public static final int MEIA_ALTURA = 12;
+	public static final double FATOR_AREA_CARRO = .7;
 	private Color cor1;
 	private Color cor2;
 	private String danificado;
@@ -442,9 +443,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -802,15 +804,13 @@ public class Carro implements Serializable {
 		}
 		if (agressivo && no.verificaCruvaBaixa()) {
 			int stress = 0;
-			if (controleJogo.verificaNivelJogo()) {
-				stress = Util.intervalo(1, 5);
-				if (verificaPneusIncompativeisClima(controleJogo)) {
-					piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
-							controleJogo) ? 0 : 1 + stress);
-				} else {
-					piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
-							controleJogo) ? 0 : stress);
-				}
+			stress = Util.intervalo(1, (int) controleJogo.getNiveljogo() * 10);
+			if (verificaPneusIncompativeisClima(controleJogo)) {
+				piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
+						controleJogo) ? 1 : 1 + stress);
+			} else {
+				piloto.incStress(getPiloto().testeHabilidadePilotoCarro(
+						controleJogo) ? 1 : stress);
 			}
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto.testeHabilidadePilotoCarro(controleJogo);
@@ -819,7 +819,7 @@ public class Carro implements Serializable {
 					teste = false;
 					controleJogo.travouRodas(getPiloto());
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
-							controleJogo) ? 4 : 2 + stress);
+							controleJogo) ? 2 + stress : stress);
 				}
 				if (controleJogo.asfaltoAbrasivo()
 						&& !controleJogo.isChovendo()

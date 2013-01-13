@@ -2,11 +2,11 @@ package sowbreira.f1mane.controles;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.MediaTracker;
+import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -17,13 +17,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.swing.ImageIcon;
-
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import br.nnpe.GeoUtil;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -42,6 +41,7 @@ public abstract class ControleRecursos {
 	protected Map circuitosClima = new HashMap();
 	protected Map temporadasTransp = new HashMap();
 	protected Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
+	protected Map<Point, Integer> mapaLadosDerrapaCurva = new HashMap<Point, Integer>();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
 	private final static int TRANPS = 250;
@@ -340,7 +340,67 @@ public abstract class ControleRecursos {
 				}
 			}
 		}
+		List<Point> escapeList = circuito.getEscapeList();
+		if (escapeList != null && !escapeList.isEmpty()) {
+			for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
+				Point pointDerrapagem = (Point) iterator.next();
+				No noPerto = null;
+				double menorDistancia = Double.MAX_VALUE;
+				for (Iterator iterator2 = nosDaPista.iterator(); iterator2
+						.hasNext();) {
+					No no = (No) iterator2.next();
+					Point pointPista = (Point) no.getPoint();
+					double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(
+							pointPista, pointDerrapagem);
+					if (distaciaEntrePontos < menorDistancia) {
+						menorDistancia = distaciaEntrePontos;
+						noPerto = no;
+					}
+				}
+				if (noPerto == null) {
+					continue;
+				}
+				Point p = noPerto.getPoint();
+				Rectangle2D rectangle = new Rectangle2D.Double(
+						(p.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+						(p.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+						Carro.ALTURA * Carro.FATOR_AREA_CARRO, Carro.ALTURA
+								* Carro.FATOR_AREA_CARRO);
+				int cont = noPerto.getIndex();
+				int traz = cont - 44;
+				int frente = cont + 44;
+				Point trazCar = ((No) nosDaPista.get(traz)).getPoint();
+				Point frenteCar = ((No) nosDaPista.get(frente)).getPoint();
+				double calculaAngulo = GeoUtil.calculaAngulo(frenteCar,
+						trazCar, 0);
+				Point p1 = GeoUtil.calculaPonto(
+						calculaAngulo,
+						Util.inte(Carro.ALTURA
+								* circuito.getMultiplicadorLarguraPista()),
+						new Point(Util.inte(rectangle.getCenterX()), Util
+								.inte(rectangle.getCenterY())));
+				Point p2 = GeoUtil.calculaPonto(
+						calculaAngulo + 180,
+						Util.inte(Carro.ALTURA
+								* circuito.getMultiplicadorLarguraPista()),
+						new Point(Util.inte(rectangle.getCenterX()), Util
+								.inte(rectangle.getCenterY())));
+				double distaciaEntrePontos1 = GeoUtil.distaciaEntrePontos(p1,
+						pointDerrapagem);
+				double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2,
+						pointDerrapagem);
+				if (distaciaEntrePontos1 < distaciaEntrePontos2) {
+					mapaLadosDerrapaCurva.put(pointDerrapagem, 5);
+				}
+				if (distaciaEntrePontos2 < distaciaEntrePontos1) {
+					mapaLadosDerrapaCurva.put(pointDerrapagem, 4);
+				}
+			}
+		}
+	}
 
+	public int obterLadoDerrapa(Point pontoDerrapada) {
+		return mapaLadosDerrapaCurva.get(pontoDerrapada);
 	}
 
 	public List obterPista(Piloto piloto) {
