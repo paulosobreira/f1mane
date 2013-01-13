@@ -40,6 +40,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
@@ -509,14 +510,16 @@ public class MainPanelEditor extends JPanel {
 		}
 
 		if (circuito != null) {
+			int altura = Carro.ALTURA * 3;
+			int mAltura = altura / 2;
 			List<Point> escapeList = circuito.getEscapeList();
 			if (escapeList != null) {
 				for (Iterator iterator = escapeList.iterator(); iterator
 						.hasNext();) {
 					Point point = (Point) iterator.next();
 					g2d.setColor(ver);
-					g2d.fillOval(point.x - 2, point.y - 2, 8, 8);
-
+					g2d.fillOval(point.x - mAltura, point.y - mAltura, altura,
+							altura);
 				}
 			}
 		}
