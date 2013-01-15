@@ -34,9 +34,13 @@ public class Carro implements Serializable {
 	public static final String ASA_NORMAL = "ASA_NORMAL";
 	public static final String MENOS_ASA = "MENOS_ASA";
 	public static final int LARGURA = 62;
+	public static final int LARGURA_CIMA = 86;
 	public static final int ALTURA = 24;
+	public static final int ALTURA_CIMA = 86;
 	public static final int MEIA_LARGURA = 31;
+	public static final int MEIA_LARGURA_CIMA = 43;
 	public static final int MEIA_ALTURA = 12;
+	public static final int MEIA_ALTURA_CIMA = 43;
 	public static final double FATOR_AREA_CARRO = .7;
 	private Color cor1;
 	private Color cor2;
@@ -443,10 +447,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
