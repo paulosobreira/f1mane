@@ -1413,11 +1413,9 @@ public class Piloto implements Serializable {
 			return null;
 		}
 
-		int w2 = Carro.MEIA_LARGURA_CIMA;
-		int h2 = Carro.MEIA_ALTURA_CIMA;
 		Point p = noAtual.getPoint();
-		int carx = p.x - w2;
-		int cary = p.y - h2;
+		int carx = p.x;
+		int cary = p.y;
 
 		int traz = cont - 44;
 		int frente = cont + 44;
@@ -1474,8 +1472,8 @@ public class Piloto implements Serializable {
 		setP5(p5);
 		setP4(p4);
 		if (getTracado() == 0) {
-			carx = p.x - w2;
-			cary = p.y - h2;
+			carx = p.x;
+			cary = p.y;
 			int indTracado = getIndiceTracado();
 			if (indTracado != 0 && getTracadoAntigo() != 0) {
 				List drawBresenhamLine = null;
@@ -1504,13 +1502,13 @@ public class Piloto implements Serializable {
 				}
 
 				Point pReta = (Point) drawBresenhamLine.get(indice);
-				carx = pReta.x - w2;
-				cary = pReta.y - h2;
+				carx = pReta.x;
+				cary = pReta.y;
 			}
 		}
 		if (getTracado() == 1) {
-			carx = Util.inte((p1.x - w2));
-			cary = Util.inte((p1.y - h2));
+			carx = Util.inte((p1.x));
+			cary = Util.inte((p1.y));
 			int indTracado = getIndiceTracado();
 			if (indTracado != 1 && getTracadoAntigo() != 1) {
 				List drawBresenhamLine = null;
@@ -1540,14 +1538,14 @@ public class Piloto implements Serializable {
 				}
 
 				Point pReta = (Point) drawBresenhamLine.get(indice);
-				carx = pReta.x - w2;
-				cary = pReta.y - h2;
+				carx = pReta.x;
+				cary = pReta.y;
 			}
 		}
 
 		if (getTracado() == 5) {
-			carx = Util.inte((p5.x - w2));
-			cary = Util.inte((p5.y - h2));
+			carx = Util.inte((p5.x));
+			cary = Util.inte((p5.y));
 			int indTracado = getIndiceTracado();
 			if (indTracado != 5 && getTracadoAntigo() != 5) {
 				List drawBresenhamLine = null;
@@ -1572,14 +1570,14 @@ public class Piloto implements Serializable {
 				}
 
 				Point pReta = (Point) drawBresenhamLine.get(indice);
-				carx = pReta.x - w2;
-				cary = pReta.y - h2;
+				carx = pReta.x;
+				cary = pReta.y;
 			}
 		}
 
 		if (getTracado() == 2) {
-			carx = Util.inte((p2.x - w2));
-			cary = Util.inte((p2.y - h2));
+			carx = Util.inte((p2.x));
+			cary = Util.inte((p2.y));
 			int indTracado = getIndiceTracado();
 			if (indTracado != 0 && getTracadoAntigo() != 2) {
 				List drawBresenhamLine = null;
@@ -1609,14 +1607,14 @@ public class Piloto implements Serializable {
 				}
 
 				Point pReta = (Point) drawBresenhamLine.get(indice);
-				carx = pReta.x - w2;
-				cary = pReta.y - h2;
+				carx = pReta.x;
+				cary = pReta.y;
 			}
 		}
 
 		if (getTracado() == 4) {
-			carx = Util.inte((p4.x - w2));
-			cary = Util.inte((p4.y - h2));
+			carx = Util.inte((p4.x));
+			cary = Util.inte((p4.y));
 			int indTracado = getIndiceTracado();
 			if (indTracado != 0 && getTracadoAntigo() != 2) {
 				List drawBresenhamLine = null;
@@ -1641,18 +1639,13 @@ public class Piloto implements Serializable {
 				}
 
 				Point pReta = (Point) drawBresenhamLine.get(indice);
-				carx = pReta.x - w2;
-				cary = pReta.y - h2;
+				carx = pReta.x;
+				cary = pReta.y;
 			}
 		}
 
 		setCarX(carx);
 		setCarY(cary);
-
-		// rectangle = new Rectangle2D.Double((carx - Carro.MEIA_ALTURA
-		// * Carro.FATOR_AREA_CARRO), (cary - Carro.MEIA_ALTURA
-		// * Carro.FATOR_AREA_CARRO), Carro.ALTURA
-		// * Carro.FATOR_AREA_CARRO, Carro.ALTURA * Carro.FATOR_AREA_CARRO);
 
 		rectangle = new Rectangle2D.Double((carx - Carro.MEIA_ALTURA
 				* Carro.FATOR_AREA_CARRO), (cary - Carro.MEIA_ALTURA
@@ -1661,72 +1654,25 @@ public class Piloto implements Serializable {
 
 		setCentro(rectangle.getBounds());
 
+		trazCar = GeoUtil.calculaPonto(calculaAngulo + 90, Util.inte(44),
+				new Point(carx, cary));
+
 		Rectangle2D trazRec = new Rectangle2D.Double(
 				(trazCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
 				(trazCar.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
 				Carro.ALTURA * Carro.FATOR_AREA_CARRO, Carro.ALTURA
 						* Carro.FATOR_AREA_CARRO);
-		Point p1Traz = GeoUtil.calculaPonto(calculaAngulo, Util
-				.inte(Carro.ALTURA
-						* controleJogo.getCircuito()
-								.getMultiplicadorLarguraPista()), new Point(
-				Util.inte(trazRec.getCenterX()), Util
-						.inte(trazRec.getCenterY())));
-		Point p2Traz = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-				.inte(Carro.ALTURA
-						* controleJogo.getCircuito()
-								.getMultiplicadorLarguraPista()), new Point(
-				Util.inte(trazRec.getCenterX()), Util
-						.inte(trazRec.getCenterY())));
-		if (getTracado() == 1) {
-			trazRec = new Rectangle2D.Double((p1Traz.x - Carro.MEIA_ALTURA
-					* Carro.FATOR_AREA_CARRO), (p1Traz.y - Carro.MEIA_ALTURA
-					* Carro.FATOR_AREA_CARRO), Carro.ALTURA
-					* Carro.FATOR_AREA_CARRO, Carro.ALTURA
-					* Carro.FATOR_AREA_CARRO);
-		}
-		if (getTracado() == 2) {
-			trazRec = new Rectangle2D.Double((p2Traz.x - Carro.MEIA_ALTURA
-					* Carro.FATOR_AREA_CARRO), (p2Traz.y - Carro.MEIA_ALTURA
-					* Carro.FATOR_AREA_CARRO), Carro.ALTURA
-					* Carro.FATOR_AREA_CARRO, Carro.ALTURA
-					* Carro.FATOR_AREA_CARRO);
-		}
 		setTrazeira(trazRec.getBounds());
+
+		frenteCar = GeoUtil.calculaPonto(calculaAngulo + 270, Util.inte(44),
+				new Point(carx, cary));
 
 		Rectangle2D frenteRec = new Rectangle2D.Double(
 				(frenteCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
 				(frenteCar.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
 				Carro.ALTURA * Carro.FATOR_AREA_CARRO, Carro.ALTURA
 						* Carro.FATOR_AREA_CARRO);
-		Point p1Frente = GeoUtil.calculaPonto(calculaAngulo, Util
-				.inte(Carro.ALTURA
-						* controleJogo.getCircuito()
-								.getMultiplicadorLarguraPista()), new Point(
-				Util.inte(frenteRec.getCenterX()), Util.inte(frenteRec
-						.getCenterY())));
-		Point p2Frente = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-				.inte(Carro.ALTURA
-						* controleJogo.getCircuito()
-								.getMultiplicadorLarguraPista()), new Point(
-				Util.inte(frenteRec.getCenterX()), Util.inte(frenteRec
-						.getCenterY())));
-		if (getTracado() == 1) {
-			frenteRec = new Rectangle2D.Double((p1Frente.x - Carro.MEIA_ALTURA
-					* Carro.FATOR_AREA_CARRO), (p1Frente.y - Carro.MEIA_ALTURA
-					* Carro.FATOR_AREA_CARRO), Carro.ALTURA
-					* Carro.FATOR_AREA_CARRO, Carro.ALTURA
-					* Carro.FATOR_AREA_CARRO);
-		}
-		if (getTracado() == 2) {
-			frenteRec = new Rectangle2D.Double((p2Frente.x - Carro.MEIA_ALTURA
-					* Carro.FATOR_AREA_CARRO), (p2Frente.y - Carro.MEIA_ALTURA
-					* Carro.FATOR_AREA_CARRO), Carro.ALTURA
-					* Carro.FATOR_AREA_CARRO, Carro.ALTURA
-					* Carro.FATOR_AREA_CARRO);
-		}
 		setDiateira(frenteRec.getBounds());
-
 		return rectangle;
 	}
 
