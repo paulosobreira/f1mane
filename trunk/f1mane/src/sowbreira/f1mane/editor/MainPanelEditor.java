@@ -94,14 +94,14 @@ public class MainPanelEditor extends JPanel {
 			return;
 		}
 
-		FileInputStream inputStream = new FileInputStream(
-				fileChooser.getSelectedFile());
+		FileInputStream inputStream = new FileInputStream(fileChooser
+				.getSelectedFile());
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 
 		circuito = (Circuito) ois.readObject();
 
-		backGround = CarregadorRecursos.carregaBackGround(
-				circuito.getBackGround(), this, circuito);
+		backGround = CarregadorRecursos.carregaBackGround(circuito
+				.getBackGround(), this, circuito);
 		this.srcFrame = frame;
 		iniciaEditor(frame);
 		atualizaListas();
@@ -428,8 +428,8 @@ public class MainPanelEditor extends JPanel {
 			}
 		} else {
 			if (no.isBox()) {
-				JOptionPane.showMessageDialog(this, Lang.msg("038"),
-						Lang.msg("039"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this, Lang.msg("038"), Lang
+						.msg("039"), JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 
@@ -510,7 +510,7 @@ public class MainPanelEditor extends JPanel {
 		}
 
 		if (circuito != null) {
-			int altura = Carro.ALTURA * 3;
+			int altura = Carro.LARGURA * 5;
 			int mAltura = altura / 2;
 			List<Point> escapeList = circuito.getEscapeList();
 			if (escapeList != null) {
@@ -529,14 +529,14 @@ public class MainPanelEditor extends JPanel {
 
 			for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
 				No no = (No) iter.next();
-				g2d.drawImage(no.getBufferedImage(), no.getDrawX(),
-						no.getDrawY(), null);
+				g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no
+						.getDrawY(), null);
 
 				if (oldNo == null) {
 					oldNo = no;
 				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
-							no.getY());
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
+							.getY());
 					oldNo = no;
 				}
 
@@ -559,8 +559,8 @@ public class MainPanelEditor extends JPanel {
 				if (oldNo == null) {
 					oldNo = no;
 				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
-							no.getY());
+					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no
+							.getY());
 					oldNo = no;
 				}
 
