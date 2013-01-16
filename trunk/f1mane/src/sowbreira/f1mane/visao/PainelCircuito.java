@@ -35,8 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import com.sun.corba.se.internal.Interceptors.PIORB;
-
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
@@ -54,7 +52,6 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
-import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.OcilaCor;
 import br.nnpe.Util;
