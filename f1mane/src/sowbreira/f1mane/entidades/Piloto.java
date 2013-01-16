@@ -955,7 +955,7 @@ public class Piloto implements Serializable {
 							pontoDerrapada, new Point(getCarX(), getCarY()));
 					for (int i = 1; i < 11; i++) {
 						if (distancia < 100 * i) {
-							ganho *= 1.0 / i;
+							ganho *= 0.9 / i;
 							if (isJogadorHumano()) {
 								System.out.println(ganho);
 							}
