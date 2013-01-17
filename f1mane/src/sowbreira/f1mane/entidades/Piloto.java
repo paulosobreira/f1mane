@@ -914,8 +914,8 @@ public class Piloto implements Serializable {
 		boolean colisao = processaVerificaColisao(controleJogo);
 		if (!colisao)
 			processaIAnovoIndex(controleJogo);
-		processaLimitadorGanho(controleJogo);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
+		processaLimitadorGanho(controleJogo);
 
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
@@ -948,8 +948,8 @@ public class Piloto implements Serializable {
 			if (!verificaDesconcentrado()) {
 				setCiclosDesconcentrado(1000);
 			}
-			setModoPilotagem(LENTO);
 			if (getIndiceTracado() <= 0) {
+				setModoPilotagem(LENTO);
 				if (pontoDerrapada != null) {
 					double distancia = GeoUtil.distaciaEntrePontos(
 							pontoDerrapada, new Point(getCarX(), getCarY()));
