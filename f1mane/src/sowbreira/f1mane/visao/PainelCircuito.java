@@ -835,6 +835,11 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaDebugIinfo(Graphics2D g2d) {
+
+		if (!Logger.ativo) {
+			return;
+		}
+
 		int altura = (int) (Carro.LARGURA * 5 * zoom);
 		int mAltura = (int) (altura / 2 * zoom);
 		List<Point> escapeList = circuito.getEscapeList();
@@ -845,9 +850,6 @@ public class PainelCircuito extends JPanel {
 				g2d.fillOval((int) (point.x * zoom) - mAltura,
 						(int) (point.y * zoom) - mAltura, altura, altura);
 			}
-		}
-		if (!Logger.ativo) {
-			return;
 		}
 
 		if (pilotoSelecionado == null) {
@@ -2278,29 +2280,30 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaDebugCarroCima(Graphics2D g2d, Piloto piloto, double rad) {
-		No noAtual = piloto.getNoAtual();
-
-		double multi = 2;
-		if (piloto.getTracado() == 0) {
-			multi = 3;
-		}
-
-		int indexAtual = noAtual.getIndex();
-		if (indexAtual + (controleJogo.getTempoCiclo() * multi) < (controleJogo
-				.getNosDaPista().size() - 1)) {
-			g2d.setColor(Color.YELLOW);
-			No no = controleJogo
-					.getNosDaPista()
-					.get((int) (indexAtual + (controleJogo.getTempoCiclo() * multi)));
-			g2d.fillOval(Util.inte(no.getX() * zoom),
-					Util.inte(no.getY() * zoom), Util.inte(5 * zoom),
-					Util.inte(5 * zoom));
-		}
 
 		/**
 		 * DEBUG
 		 */
 		if (Logger.ativo) {
+
+			No noAtual = piloto.getNoAtual();
+
+			double multi = 2;
+			if (piloto.getTracado() == 0) {
+				multi = 3;
+			}
+
+			int indexAtual = noAtual.getIndex();
+			if (indexAtual + (controleJogo.getTempoCiclo() * multi) < (controleJogo
+					.getNosDaPista().size() - 1)) {
+				g2d.setColor(Color.YELLOW);
+				No no = controleJogo
+						.getNosDaPista()
+						.get((int) (indexAtual + (controleJogo.getTempoCiclo() * multi)));
+				g2d.fillOval(Util.inte(no.getX() * zoom),
+						Util.inte(no.getY() * zoom), Util.inte(5 * zoom),
+						Util.inte(5 * zoom));
+			}
 
 			g2d.setColor(new Color(255, 0, 0, 140));
 			g2d.setColor(Color.BLACK);
