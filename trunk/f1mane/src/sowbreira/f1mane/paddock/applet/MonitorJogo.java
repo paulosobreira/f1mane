@@ -617,41 +617,21 @@ public class MonitorJogo implements Runnable {
 							piloto.setTracadoDelay(0);
 							piloto.setIndexTracadoDelay(0);
 						} else {
-							if (piloto.verificaColisaoCarroFrente(jogoCliente,
-									true)) {
-								int tracado = piloto.obterNovoTracadoPossivel();
-								if (!piloto.isAutoPos())
-									piloto.mudarTracado(tracado, jogoCliente,
-											true);
-							} else {
-								if (piloto.getIndiceTracado() <= 0) {
-									piloto
-											.setTracadoAntigo(piloto
-													.getTracado());
-								}
-								piloto.mudarTracado(posis.tracado, jogoCliente,
-										true);
-								if (piloto.getIndiceTracado() <= 0
-										&& piloto.getTracado() != piloto
-												.getTracadoAntigo()) {
-									if (piloto.verificaColisaoCarroFrente(
+							if (!piloto.isAutoPos()
+									&& piloto.verificaColisaoCarroFrente(
 											jogoCliente, true)) {
-										piloto.setIndiceTracado(0);
-									} else {
-										piloto
-												.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
-														.getCircuito()
-														.getMultiplicadorLarguraPista()));
-									}
-								}
+								int tracado = piloto.obterNovoTracadoPossivel();
+								piloto.mudarTracado(tracado, jogoCliente, true);
+							} else {
+								if (piloto.getTracado() != posis.tracado)
+									piloto.mudarTracado(posis.tracado,
+											jogoCliente, true);
 							}
 						}
-
 					}
 				}
 				break;
 			}
-
 		}
 	}
 
