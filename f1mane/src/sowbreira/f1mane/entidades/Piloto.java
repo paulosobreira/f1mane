@@ -941,7 +941,7 @@ public class Piloto implements Serializable {
 			valComp = 100 * controleJogo.getNiveljogo();
 		}
 		if (getStress() > valComp && !controleJogo.isSafetyCarNaPista()
-				&& (!(getTracado() == 4 || getTracado() == 5))
+				&& (!(getTracado() == 4 || getTracado() == 5)) && isAgressivo()
 				&& !testeHabilidadePilotoCarro(controleJogo)
 				&& getPtosBox() == 0) {
 			derrapa(controleJogo);
@@ -2264,7 +2264,7 @@ public class Piloto implements Serializable {
 
 	public void decStress(int val) {
 		if (stress > 0 && (stress - val) > 0
-				&& (Math.random() > ((600.0 - getPosicao() * 20) / 1000.0))) {
+				&& (Math.random() > ((700.0 - getPosicao() * 20) / 1000.0))) {
 			stress -= val;
 		}
 	}
