@@ -406,19 +406,19 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_D) {
 					drs();
 				}
-				if (keyCoode == KeyEvent.VK_S) {
-					if (controleJogo.getPilotoJogador() != null
-							&& controleJogo.getPilotoJogador()
-									.isJogadorHumano())
-						controleJogo.forcaSafatyCar();
-				}
-				if (keyCoode == KeyEvent.VK_L) {
-					Piloto pilotoSelecionado = controleJogo
-							.getPilotoSelecionado();
-					pilotoSelecionado.derrapa(controleJogo);
-				}
 
 				if (Logger.ativo) {
+					if (keyCoode == KeyEvent.VK_S) {
+						if (controleJogo.getPilotoJogador() != null
+								&& controleJogo.getPilotoJogador()
+										.isJogadorHumano())
+							controleJogo.forcaSafatyCar();
+					}
+					if (keyCoode == KeyEvent.VK_L) {
+						Piloto pilotoSelecionado = controleJogo
+								.getPilotoSelecionado();
+						pilotoSelecionado.derrapa(controleJogo);
+					}
 					if (keyCoode == KeyEvent.VK_EQUALS) {
 						if (controleJogo.getPilotoJogador() != null
 								&& controleJogo.getPilotoJogador()

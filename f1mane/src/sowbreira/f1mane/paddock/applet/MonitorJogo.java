@@ -3,7 +3,6 @@ package sowbreira.f1mane.paddock.applet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +10,6 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.hibernate.property.MapAccessor;
-
-import com.jhlabs.image.OilFilter;
-
-import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
@@ -339,8 +333,7 @@ public class MonitorJogo implements Runnable {
 			if (ret != null) {
 				clientPaddockPack = (ClientPaddockPack) ret;
 				if (clientPaddockPack.getDadosJogoCriado().getPilotosCarreira() != null) {
-					Logger
-							.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
+					Logger.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
 					List pilots = clientPaddockPack.getDadosJogoCriado()
 							.getPilotosCarreira();
 					List carros = new ArrayList();
@@ -357,14 +350,14 @@ public class MonitorJogo implements Runnable {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void atualizaPosicoes() {
-		Object ret = controlePaddockCliente.enviarObjeto(jogoCliente
-				.getNomeJogoCriado(), true);
+		Object ret = controlePaddockCliente.enviarObjeto(
+				jogoCliente.getNomeJogoCriado(), true);
 		if (retornoNaoValido(ret)) {
 			return;
 		}
@@ -494,8 +487,7 @@ public class MonitorJogo implements Runnable {
 						int diffINdex = no.getIndex() - indexPiloto;
 						if (diffINdex < 0) {
 							diffINdex = (no.getIndex() + jogoCliente
-									.getNosDaPista().size())
-									- indexPiloto;
+									.getNosDaPista().size()) - indexPiloto;
 							if (piloto.isJogadorHumano()) {
 								Logger.logar("no.getIndex() " + no.getIndex());
 								Logger.logar("indexPiloto " + indexPiloto);
@@ -552,30 +544,6 @@ public class MonitorJogo implements Runnable {
 						if (entrouNoBox || saiuNoBox) {
 							ganho = Math.random() > 0.95 ? 5 : 4;
 						}
-						if (piloto
-								.verificaColisaoCarroFrente(jogoCliente, true)) {
-							int tracado = piloto.obterNovoTracadoPossivel();
-							if (!piloto.isAutoPos())
-								piloto.mudarTracado(tracado, jogoCliente, true);
-						} else {
-							if (piloto.getIndiceTracado() <= 0) {
-								piloto.setTracadoAntigo(piloto.getTracado());
-							}
-							piloto.setTracado(posis.tracado);
-							if (piloto.getIndiceTracado() <= 0
-									&& piloto.getTracado() != piloto
-											.getTracadoAntigo()) {
-								if (piloto.verificaColisaoCarroFrente(
-										jogoCliente, true)) {
-									piloto.setIndiceTracado(0);
-								} else {
-									piloto
-											.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
-													.getCircuito()
-													.getMultiplicadorLarguraPista()));
-								}
-							}
-						}
 
 						if (ganho > 10) {
 							sleepConsumidorPosis = 10;
@@ -583,6 +551,7 @@ public class MonitorJogo implements Runnable {
 							sleepConsumidorPosis = 15;
 						}
 						indexPiloto += ganho;
+
 						if (jogoCliente.getNosDaPista().contains(noAtual)) {
 							int diff = indexPiloto
 									- jogoCliente.getNosDaPista().size();
@@ -617,6 +586,57 @@ public class MonitorJogo implements Runnable {
 						}
 						if (noNovo != null)
 							piloto.setNoAtual(noNovo);
+
+						if (posis.tracado == 4 || posis.tracado == 5) {
+							if (piloto.getTracadoDelay() != posis.tracado
+									&& piloto.getIndexTracadoDelay() == 0) {
+								piloto.setTracadoDelay(posis.tracado);
+								piloto.setIndexTracadoDelay(no.getIndex());
+							}
+						}
+
+						if ((indexPiloto + diffINdex) >= piloto
+								.getIndexTracadoDelay()
+								&& piloto.getTracadoDelay() != 0) {
+							if (piloto.getTracadoDelay() == 4
+									&& (piloto.getTracado() == 2 || piloto
+											.getTracado() == 0)) {
+								piloto.setTracado(piloto.getTracadoDelay());
+							}
+							if (piloto.getTracadoDelay() == 5
+									&& (piloto.getTracado() == 1 || piloto
+											.getTracado() == 0)) {
+								piloto.setTracado(piloto.getTracadoDelay());
+							}
+							piloto.setTracadoDelay(0);
+							piloto.setIndexTracadoDelay(0);
+						} else {
+							if (piloto.verificaColisaoCarroFrente(jogoCliente,
+									true)) {
+								int tracado = piloto.obterNovoTracadoPossivel();
+								if (!piloto.isAutoPos())
+									piloto.mudarTracado(tracado, jogoCliente,
+											true);
+							} else {
+								if (piloto.getIndiceTracado() <= 0) {
+									piloto.setTracadoAntigo(piloto.getTracado());
+								}
+								piloto.setTracado(posis.tracado);
+								if (piloto.getIndiceTracado() <= 0
+										&& piloto.getTracado() != piloto
+												.getTracadoAntigo()) {
+									if (piloto.verificaColisaoCarroFrente(
+											jogoCliente, true)) {
+										piloto.setIndiceTracado(0);
+									} else {
+										piloto.setIndiceTracado((int) (Carro.ALTURA * jogoCliente
+												.getCircuito()
+												.getMultiplicadorLarguraPista()));
+									}
+								}
+							}
+						}
+
 					}
 				}
 				break;
@@ -660,8 +680,8 @@ public class MonitorJogo implements Runnable {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -838,8 +858,8 @@ public class MonitorJogo implements Runnable {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
