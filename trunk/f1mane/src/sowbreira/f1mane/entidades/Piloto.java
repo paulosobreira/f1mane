@@ -121,6 +121,8 @@ public class Piloto implements Serializable {
 	private boolean freiandoReta;
 	private int ultModificador;
 	private long ultimaColisao;
+	private int tracadoDelay;
+	private long indexTracadoDelay;
 
 	public int getHabilidadeAntesQualify() {
 		return habilidadeAntesQualify;
@@ -2526,6 +2528,22 @@ public class Piloto implements Serializable {
 
 	public boolean isFreiandoReta() {
 		return freiandoReta;
+	}
+
+	public int getTracadoDelay() {
+		return tracadoDelay;
+	}
+
+	public void setTracadoDelay(int tracadoDelay) {
+		this.tracadoDelay = tracadoDelay;
+	}
+
+	public long getIndexTracadoDelay() {
+		return indexTracadoDelay;
+	}
+
+	public void setIndexTracadoDelay(long indexTracadoDelay) {
+		this.indexTracadoDelay = indexTracadoDelay;
 	}
 
 }
