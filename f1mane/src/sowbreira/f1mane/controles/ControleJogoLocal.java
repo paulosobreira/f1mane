@@ -256,7 +256,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		decrementaTracado();
 	}
 
-	protected void decrementaTracado() {
+	public void decrementaTracado() {
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			piloto.decIndiceTracado();

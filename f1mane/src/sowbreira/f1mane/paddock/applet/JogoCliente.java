@@ -333,7 +333,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public long getTempoCiclo() {
-
 		return dadosParticiparJogo.getTempoCiclo().longValue();
 	}
 
@@ -1091,4 +1090,13 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 		return monitorJogo.getLatenciaReal();
 	}
+
+	@Override
+	public void decrementaTracado() {
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			piloto.decIndiceTracado(0);
+		}
+	}
+
 }

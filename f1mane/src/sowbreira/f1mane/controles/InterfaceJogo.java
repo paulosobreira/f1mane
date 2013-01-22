@@ -297,4 +297,6 @@ public interface InterfaceJogo {
 
 	public int obterLadoDerrapa(Point pontoDerrapada);
 
+	public void decrementaTracado();
+
 }
