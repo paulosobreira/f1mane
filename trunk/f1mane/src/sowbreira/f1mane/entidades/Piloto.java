@@ -941,7 +941,7 @@ public class Piloto implements Serializable {
 			valComp = 100 * controleJogo.getNiveljogo();
 		}
 		if (getStress() > valComp && !controleJogo.isSafetyCarNaPista()
-				&& (!(getTracado() == 4 || getTracado() == 5)) && isAgressivo()
+				&& (!(getTracado() == 4 || getTracado() == 5))
 				&& !testeHabilidadePilotoCarro(controleJogo)
 				&& getPtosBox() == 0) {
 			derrapa(controleJogo);
