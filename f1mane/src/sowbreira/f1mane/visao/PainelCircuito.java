@@ -2012,6 +2012,9 @@ public class PainelCircuito extends JPanel {
 			if (piloto.getNoAtual().verificaCruvaBaixa())
 				calculaAngulo += Util.intervalo(-15.0, 15.0);
 		}
+		if (piloto.getTracado() == 4 || piloto.getTracado() == 5) {
+			calculaAngulo += Util.intervalo(-12, 12);
+		}
 		int width = Carro.LARGURA_CIMA;
 		int height = Carro.ALTURA_CIMA;
 		int w2 = Carro.MEIA_LARGURA_CIMA;
