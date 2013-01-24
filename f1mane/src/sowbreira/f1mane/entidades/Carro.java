@@ -741,14 +741,6 @@ public class Carro implements Serializable {
 			}
 		}
 
-		if (piloto.getTracado() != 0
-				&& (no.verificaCruvaBaixa() || no.verificaCruvaAlta())
-				&& !controleJogo.isChovendo()
-				&& !piloto.testeHabilidadePiloto(controleJogo)
-				&& Math.random() > controleJogo.getFatorUtrapassagem()
-						- (controleJogo.getNiveljogo() / 2)) {
-			novoModificador--;
-		}
 		double divVoltas = (controleJogo.getQtdeTotalVoltas() / Constantes.MAX_VOLTAS);
 		if (divVoltas >= 1) {
 			divVoltas = 0.999;
@@ -1082,6 +1074,12 @@ public class Carro implements Serializable {
 
 	public boolean isPneuFurado() {
 		return PNEU_FURADO.equals(danificado);
+	}
+
+	public boolean verificaParado() {
+		return (!isRecolhido() && BATEU_FORTE.equals(danificado))
+				|| EXPLODIU_MOTOR.equals(danificado)
+				|| PANE_SECA.equals(danificado) || ABANDONOU.equals(danificado);
 	}
 
 }
