@@ -20,6 +20,7 @@ import java.util.Set;
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
 import br.nnpe.Logger;
@@ -914,15 +915,16 @@ public class Piloto implements Serializable {
 		processaFreioNaReta(controleJogo);
 		boolean colisao = processaVerificaColisao(controleJogo);
 		if (colisao) {
-			double calculaDiffParaProximo = calculaDiffParaProximo(controleJogo);
-			if (calculaDiffParaProximo < 15) {
-				ganho *= (calculaDiffParaProximo / 15.0);
+			int calculaDiffParaProximo = controleJogo
+					.calculaDiffParaProximoRetardatario(this, true);
+			if (calculaDiffParaProximo < 100) {
+				ganho *= (calculaDiffParaProximo / 100.0);
 			}
 		} else {
 			processaIAnovoIndex(controleJogo);
 		}
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
-		ganho = calculaGanhoMedio(ganho, controleJogo);
+		ganho = calculaGanhoMedio(ganho, controleJogo, colisao);
 		processaLimitadorGanho(controleJogo);
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
@@ -1209,7 +1211,8 @@ public class Piloto implements Serializable {
 		if (controleJogo.isDrs() && ativarDRS && getPtosBox() == 0
 				&& getNumeroVolta() > 0) {
 			if (getNoAtual().verificaRetaOuLargada()
-					&& controleJogo.calculaSegundosParaProximoDouble(this) < 1) {
+					&& controleJogo.calculaDiffParaProximoRetardatario(this,
+							false) < Constantes.LIMITE_DRS) {
 				getCarro().setAsa(Carro.MENOS_ASA);
 			} else {
 				ativarDRS = false;
@@ -1754,13 +1757,17 @@ public class Piloto implements Serializable {
 		ultModificador = 0;
 	}
 
-	public double calculaGanhoMedio(double ganho, InterfaceJogo controleJogo) {
+	public double calculaGanhoMedio(double ganho, InterfaceJogo controleJogo,
+			boolean colisao) {
 		if (controleJogo.isModoQualify()) {
 			return ganho;
 		}
 		double size = 10;
 		if (acelerando) {
 			size = 5;
+		}
+		if (colisao) {
+			size = 3;
 		}
 		if (numeroVolta < 0) {
 			size = 15;

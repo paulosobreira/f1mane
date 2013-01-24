@@ -971,6 +971,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			return;
 		pilotoJogador.mudarTracado(pos, this);
 	}
+
 	/**
 	 * Minimo 0.5 = Mais dificil de passar Maximo 1.0 = Mais facil de passar
 	 */
@@ -1233,6 +1234,40 @@ public class ControleJogoLocal extends ControleRecursos implements
 	@Override
 	public int getLag() {
 		return 0;
+	}
+
+	@Override
+	public int calculaDiffParaProximoRetardatario(Piloto piloto,
+			boolean analisaTracado) {
+		int menorDistancia = Integer.MAX_VALUE;
+		if (piloto.getPtosBox() != 0) {
+			return menorDistancia;
+		}
+		int indexAtual = piloto.getNoAtual().getIndex();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto pilotoFrente = (Piloto) iterator.next();
+			if (pilotoFrente.getPtosBox() != 0) {
+				continue;
+			}
+			if (analisaTracado
+					&& pilotoFrente.getTracado() != piloto.getTracado()) {
+				continue;
+			}
+			int indexFrente = pilotoFrente.getNoAtual().getIndex();
+			if (indexFrente > indexAtual
+					&& (indexFrente - indexAtual) < menorDistancia) {
+				menorDistancia = (indexFrente - indexAtual);
+			}
+
+			indexFrente += obterPista(piloto).size();
+
+			if (indexFrente > indexAtual
+					&& (indexFrente - indexAtual) < menorDistancia) {
+				menorDistancia = (indexFrente - indexAtual);
+			}
+		}
+
+		return menorDistancia;
 	}
 
 }
