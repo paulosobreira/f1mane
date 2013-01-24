@@ -211,6 +211,9 @@ public interface InterfaceJogo {
 
 	public void mudarPos(int i);
 
+	/**
+	 * Minimo 0.5 = Mais dificil de passar; Maximo 1.0 = Mais facil de passar;
+	 */
 	public double getFatorUtrapassagem();
 
 	public String getTemporada();

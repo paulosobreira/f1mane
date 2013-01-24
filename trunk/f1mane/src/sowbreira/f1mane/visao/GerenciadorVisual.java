@@ -407,6 +407,13 @@ public class GerenciadorVisual {
 					drs();
 				}
 
+				if (keyCoode == KeyEvent.VK_EQUALS) {
+					controleJogo.aumentaFatorAcidade();
+				}
+				if (keyCoode == KeyEvent.VK_MINUS) {
+					controleJogo.diminueFatorAcidade();
+				}
+
 				if (Logger.ativo) {
 					if (keyCoode == KeyEvent.VK_S) {
 						if (controleJogo.getPilotoJogador() != null
@@ -418,18 +425,6 @@ public class GerenciadorVisual {
 						Piloto pilotoSelecionado = controleJogo
 								.getPilotoSelecionado();
 						pilotoSelecionado.derrapa(controleJogo);
-					}
-					if (keyCoode == KeyEvent.VK_EQUALS) {
-						if (controleJogo.getPilotoJogador() != null
-								&& controleJogo.getPilotoJogador()
-										.isJogadorHumano())
-							controleJogo.aumentaFatorAcidade();
-					}
-					if (keyCoode == KeyEvent.VK_MINUS) {
-						if (controleJogo.getPilotoJogador() != null
-								&& controleJogo.getPilotoJogador()
-										.isJogadorHumano())
-							controleJogo.diminueFatorAcidade();
 					}
 
 					if (keyCoode == KeyEvent.VK_L) {

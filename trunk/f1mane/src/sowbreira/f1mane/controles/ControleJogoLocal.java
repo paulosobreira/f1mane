@@ -971,7 +971,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 			return;
 		pilotoJogador.mudarTracado(pos, this);
 	}
-
+	/**
+	 * Minimo 0.5 = Mais dificil de passar Maximo 1.0 = Mais facil de passar
+	 */
 	@Override
 	public double getFatorUtrapassagem() {
 		return controleCorrida.getFatorUtrapassagem();

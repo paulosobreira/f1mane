@@ -47,7 +47,8 @@ public class ControleSafetyCar {
 		if (piloto.getPosicao() != 1) {
 			Piloto pilotoFrente = controleJogo.obterCarroNaFrente(piloto)
 					.getPiloto();
-			if (pilotoFrente.getPtosBox() != 0 || pilotoFrente.danificado()
+			if (pilotoFrente.getPtosBox() != 0
+					|| pilotoFrente.getCarro().verificaParado()
 					|| piloto.getNumeroVolta() != pilotoFrente.getNumeroVolta()) {
 				return ganho;
 			}
