@@ -302,4 +302,7 @@ public interface InterfaceJogo {
 
 	public void decrementaTracado();
 
+	public int calculaDiffParaProximoRetardatario(Piloto piloto,
+			boolean analisaTracado);
+
 }

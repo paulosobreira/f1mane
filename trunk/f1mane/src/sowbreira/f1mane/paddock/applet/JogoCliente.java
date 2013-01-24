@@ -1097,4 +1097,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 	}
 
+	@Override
+	public int calculaDiffParaProximoRetardatario(Piloto piloto,
+			boolean analisaTracado) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
