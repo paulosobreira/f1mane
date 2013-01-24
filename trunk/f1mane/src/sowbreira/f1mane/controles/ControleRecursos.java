@@ -63,13 +63,12 @@ public abstract class ControleRecursos {
 			BufferedImage carroLado = (BufferedImage) bufferCarrosLado
 					.get(carro.getNome());
 			if (carroLado == null) {
-				carroLado = ImageUtil.geraTransparencia(
-						CarregadorRecursos.carregaImgSemCache("CarroLado.png"),
-						190);
-				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor1(), "CarroLadoC1.png");
-				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor2(), "CarroLadoC2.png");
+				carroLado = ImageUtil.geraTransparencia(CarregadorRecursos
+						.carregaImgSemCache("CarroLado.png"), 190);
+				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor1(), "CarroLadoC1.png");
+				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor2(), "CarroLadoC2.png");
 				Graphics graphics = carroLado.getGraphics();
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.drawImage(cor2, 0, 0, null);
@@ -101,9 +100,8 @@ public abstract class ControleRecursos {
 								.geraTransparencia(carroLado, Color.WHITE));
 					}
 				} else {
-					bufferCarrosLado
-							.put(carro.getNome(), ImageUtil.geraTransparencia(
-									carroLado, Color.WHITE));
+					bufferCarrosLado.put(carro.getNome(), ImageUtil
+							.geraTransparencia(carroLado, Color.WHITE));
 				}
 
 			}
@@ -119,10 +117,10 @@ public abstract class ControleRecursos {
 			if (carroLado == null) {
 				carroLado = CarregadorRecursos
 						.carregaImgSemCache("CarroLado.png");
-				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor1(), "CarroLadoC1.png");
-				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor2(), "CarroLadoC3.png");
+				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor1(), "CarroLadoC1.png");
+				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor2(), "CarroLadoC3.png");
 				Graphics graphics = carroLado.getGraphics();
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.drawImage(cor2, 0, 0, null);
@@ -139,15 +137,15 @@ public abstract class ControleRecursos {
 						} else {
 							carroLadoPng = CarregadorRecursos
 									.carregaImgSemCache(carro.getImg());
-						}
-						if (carroLadoPng != null) {
-							carroLado = carroLadoPng;
-							Integer transp = new Integer(
-									(String) temporadasTransp
-											.get(getTemporada()));
-							bufferCarrosLadoSemAreofolio.put(carro.getNome(),
-									ImageUtil.geraTransparencia(carroLado,
-											transp));
+							if (carroLadoPng != null) {
+								carroLado = carroLadoPng;
+								Integer transp = new Integer(
+										(String) temporadasTransp
+												.get(getTemporada()));
+								bufferCarrosLadoSemAreofolio.put(carro
+										.getNome(), ImageUtil
+										.geraTransparencia(carroLado, transp));
+							}
 						}
 					} catch (Exception e) {
 						carro.setImg(null);
@@ -155,11 +153,9 @@ public abstract class ControleRecursos {
 								ImageUtil.geraTransparencia(carroLado,
 										Color.WHITE));
 					}
-
 				} else {
-					bufferCarrosLadoSemAreofolio
-							.put(carro.getNome(), ImageUtil.geraTransparencia(
-									carroLado, Color.WHITE));
+					bufferCarrosLadoSemAreofolio.put(carro.getNome(), ImageUtil
+							.geraTransparencia(carroLado, Color.WHITE));
 				}
 			}
 			return carroLado;
@@ -191,19 +187,18 @@ public abstract class ControleRecursos {
 			BufferedImage carroCima = (BufferedImage) bufferCarrosCimaSemAreofolio
 					.get(carro.getNome());
 			if (carroCima == null) {
-				carroCima = ImageUtil.geraTransparencia(
-						CarregadorRecursos.carregaImgSemCache("CarroCima.png"),
-						190);
-				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor1(), "CarroCimaC1.png");
-				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor2(), "CarroCimaC3.png");
+				carroCima = ImageUtil.geraTransparencia(CarregadorRecursos
+						.carregaImgSemCache("CarroCima.png"), 190);
+				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor1(), "CarroCimaC1.png");
+				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor2(), "CarroCimaC3.png");
 				Graphics graphics = carroCima.getGraphics();
 				graphics.drawImage(cor2, 0, 0, null);
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.dispose();
-				bufferCarrosCimaSemAreofolio.put(carro.getNome(),
-						ImageUtil.geraTransparencia(carroCima, Color.WHITE));
+				bufferCarrosCimaSemAreofolio.put(carro.getNome(), ImageUtil
+						.geraTransparencia(carroCima, Color.WHITE));
 			}
 			return carroCima;
 		}
@@ -219,19 +214,18 @@ public abstract class ControleRecursos {
 			BufferedImage carroCima = (BufferedImage) bufferCarrosCima
 					.get(carro.getNome());
 			if (carroCima == null) {
-				carroCima = ImageUtil.geraTransparencia(
-						CarregadorRecursos.carregaImgSemCache("CarroCima.png"),
-						190);
-				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor1(), "CarroCimaC1.png");
-				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-						carro.getCor2(), "CarroCimaC2.png");
+				carroCima = ImageUtil.geraTransparencia(CarregadorRecursos
+						.carregaImgSemCache("CarroCima.png"), 190);
+				BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor1(), "CarroCimaC1.png");
+				BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+						.getCor2(), "CarroCimaC2.png");
 				Graphics graphics = carroCima.getGraphics();
 				graphics.drawImage(cor2, 0, 0, null);
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.dispose();
-				bufferCarrosCima.put(carro.getNome(),
-						ImageUtil.geraTransparencia(carroCima, Color.WHITE));
+				bufferCarrosCima.put(carro.getNome(), ImageUtil
+						.geraTransparencia(carroCima, Color.WHITE));
 			}
 			return carroCima;
 		}
@@ -374,15 +368,13 @@ public abstract class ControleRecursos {
 				Point frenteCar = ((No) nosDaPista.get(frente)).getPoint();
 				double calculaAngulo = GeoUtil.calculaAngulo(frenteCar,
 						trazCar, 0);
-				Point p1 = GeoUtil.calculaPonto(
-						calculaAngulo,
-						Util.inte(Carro.ALTURA
+				Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util
+						.inte(Carro.ALTURA
 								* circuito.getMultiplicadorLarguraPista()),
 						new Point(Util.inte(rectangle.getCenterX()), Util
 								.inte(rectangle.getCenterY())));
-				Point p2 = GeoUtil.calculaPonto(
-						calculaAngulo + 180,
-						Util.inte(Carro.ALTURA
+				Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
+						.inte(Carro.ALTURA
 								* circuito.getMultiplicadorLarguraPista()),
 						new Point(Util.inte(rectangle.getCenterX()), Util
 								.inte(rectangle.getCenterY())));
