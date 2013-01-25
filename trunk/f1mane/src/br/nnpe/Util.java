@@ -102,8 +102,8 @@ public class Util {
 			// serialize and pass the object
 			oos.writeObject(oldObj); // C
 			oos.flush(); // D
-			ByteArrayInputStream bin = new ByteArrayInputStream(bos
-					.toByteArray()); // E
+			ByteArrayInputStream bin = new ByteArrayInputStream(
+					bos.toByteArray()); // E
 			ois = new ObjectInputStream(bin); // F
 			// return the new object
 			return ois.readObject(); // G
@@ -452,8 +452,8 @@ public class Util {
 			}
 
 			// Digito verificador do CPF que está sendo validado.
-			String nDigVerific = strCpf.substring(strCpf.length() - 2, strCpf
-					.length());
+			String nDigVerific = strCpf.substring(strCpf.length() - 2,
+					strCpf.length());
 
 			// Concatenando o primeiro resto com o segundo.
 			nDigResult = String.valueOf(digito1) + String.valueOf(digito2);
@@ -891,7 +891,7 @@ public class Util {
 	}
 
 	public static double intervalo(double val1, double val2) {
-		return (val1 + (Math.random() * (1.0 + val2 - val1)));
+		return (val1 + (Math.random() * (0.1 + val2 - val1)));
 	}
 
 	public static double double2Decimal(double dob) {
