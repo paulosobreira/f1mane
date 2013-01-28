@@ -909,17 +909,16 @@ public class Piloto implements Serializable {
 		novoModificador = calcularNovoModificador(controleJogo);
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, noAtual, controleJogo);
-		int calculaDiffParaProximo = controleJogo
-				.calculaDiffParaProximoRetardatario(this, true);
+
 		processaNovoModificadorDanificado();
 		processaLimitadorModificador();
-		processaGanho(controleJogo, calculaDiffParaProximo);
+		processaGanho(controleJogo);
 		ganho = controleJogo.verificaUltraPassagem(this, ganho);
 		processaUsoKERS(controleJogo);
 		processaUsoDRS(controleJogo);
 		processaGanhoAerodinamico(controleJogo);
 		processaFreioNaReta(controleJogo);
-		boolean colisao = peocessaColisao(controleJogo, calculaDiffParaProximo);
+		boolean colisao = peocessaColisao(controleJogo);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 		ganho = calculaGanhoMedio(ganho, controleJogo, colisao);
@@ -939,8 +938,9 @@ public class Piloto implements Serializable {
 		return index;
 	}
 
-	public boolean peocessaColisao(InterfaceJogo controleJogo,
-			int calculaDiffParaProximo) {
+	public boolean peocessaColisao(InterfaceJogo controleJogo) {
+		int calculaDiffParaProximo = controleJogo
+				.calculaDiffParaProximoRetardatario(this, true);
 		boolean colisao = processaVerificaColisao(controleJogo);
 		if (colisao) {
 			if (calculaDiffParaProximo < 100) {
@@ -1016,21 +1016,24 @@ public class Piloto implements Serializable {
 		return ganho;
 	}
 
-	private void processaGanho(InterfaceJogo controleJogo,
-			int calculaDiffParaProximo) {
+	private void processaGanho(InterfaceJogo controleJogo) {
 		ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
-		if (!testeHabilidadePilotoCarro(controleJogo)
-				&& calculaDiffParaProximo < 200
-				&& (No.CURVA_ALTA.equals(noAtual.getTipo()) || No.CURVA_BAIXA
-						.equals(noAtual.getTipo()))) {
-			double meioGanho = ganho / 2.0;
-			ganho = meioGanho;
-			meioGanho *= controleJogo.getFatorUtrapassagem();
-			ganho += meioGanho;
-		}
-		if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
-			ganho *= controleJogo.getFatorUtrapassagem();
+		if (!testeHabilidadePilotoCarro(controleJogo)) {
+			int calculaDiffParaProximo = controleJogo
+					.calculaDiffParaProximoRetardatario(this, false);
+			if (calculaDiffParaProximo > 100
+					&& calculaDiffParaProximo < 200
+					&& (No.CURVA_ALTA.equals(noAtual.getTipo()) || No.CURVA_BAIXA
+							.equals(noAtual.getTipo()))) {
+				double meioGanho = ganho / 2.0;
+				ganho = meioGanho;
+				meioGanho *= controleJogo.getFatorUtrapassagem();
+				ganho += meioGanho;
+			}
+			if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
+				ganho *= controleJogo.getFatorUtrapassagem();
+			}
 		}
 	}
 
@@ -1134,6 +1137,8 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaFreioNaReta(InterfaceJogo controleJogo) {
+		if (!noAtual.verificaRetaOuLargada())
+			return;
 		/**
 		 * efeito freiar na reta
 		 */
@@ -1145,7 +1150,8 @@ public class Piloto implements Serializable {
 				freiandoReta = true;
 				acelerando = false;
 				double multi = (val / 300.0);
-				ganho *= multi;
+				if (multi > 0.5)
+					ganho *= multi;
 			} else {
 				freiandoReta = false;
 			}
