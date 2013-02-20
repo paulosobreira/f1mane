@@ -320,8 +320,10 @@ public class MainFrame extends JFrame {
 					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
-				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(
-						area), Lang.msg("091"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane
+						.showMessageDialog(MainFrame.this,
+								new JScrollPane(area), Lang.msg("091"),
+								JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menuInfo2.add(leiaMe);
@@ -400,8 +402,8 @@ public class MainFrame extends JFrame {
 				String msg = Lang.msg("184")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2007-2012";
-				JOptionPane.showMessageDialog(MainFrame.this, msg,
-						Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
+						.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
@@ -481,8 +483,9 @@ public class MainFrame extends JFrame {
 					if (controleJogo != null) {
 						if (controleJogo.isCorridaIniciada()) {
 							int ret = JOptionPane.showConfirmDialog(
-									MainFrame.this, Lang.msg("095"),
-									Lang.msg("094"), JOptionPane.YES_NO_OPTION);
+									MainFrame.this, Lang.msg("095"), Lang
+											.msg("094"),
+									JOptionPane.YES_NO_OPTION);
 							if (ret == JOptionPane.NO_OPTION) {
 								return;
 							}
@@ -1024,7 +1027,13 @@ public class MainFrame extends JFrame {
 			};
 			getContentPane().add(bgPanel, BorderLayout.CENTER);
 			bgPanel.updateUI();
-
+			try {
+				controleJogo = new ControleJogoLocal();
+				controleJogo.setMainFrame(this);
+				controleJogo.iniciarJogo();
+			} catch (Exception e) {
+				Logger.logarExept(e);
+			}
 		} else {
 			try {
 				Logger.ativo = true;
