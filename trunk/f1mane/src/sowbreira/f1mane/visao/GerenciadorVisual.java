@@ -227,7 +227,6 @@ public class GerenciadorVisual {
 		scrollPane.requestFocus();
 		if (!(controleJogo instanceof JogoCliente)) {
 			thAtualizaPainelSuave = new Thread(new Runnable() {
-
 				@Override
 				public void run() {
 					while (true) {
@@ -272,10 +271,7 @@ public class GerenciadorVisual {
 							}
 
 							if (noAtual.getIndex() != noAtualSuave.getIndex()) {
-
-								int diff = (noAtual.getIndex() < 100 ? ((100 - noAtual
-										.getIndex() + nos.size()))
-										: noAtual.getIndex())
+								int diff = noAtual.getIndex()
 										- noAtualSuave.getIndex();
 								int inc = 1;
 								if (diff > 10) {
@@ -307,7 +303,7 @@ public class GerenciadorVisual {
 								}
 								int index = noAtualSuave.getIndex() + inc;
 								if (index >= nos.size()) {
-									index = 0;
+									index = index - nos.size();
 								}
 								noAtualSuave = nos.get(index);
 								if (diff < 0 || diff > 90) {
