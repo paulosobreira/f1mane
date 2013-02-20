@@ -247,7 +247,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void atualizaPainel() {
 		if (gerenciadorVisual != null) {
-			gerenciadorVisual.atualizaPainel();
+			//gerenciadorVisual.atualizaPainel();
 			if (gerenciadorVisual.isDesenhouQualificacao() && !setouZoom) {
 				gerenciadorVisual.setMouseZoom(0.7);
 				setouZoom = true;
