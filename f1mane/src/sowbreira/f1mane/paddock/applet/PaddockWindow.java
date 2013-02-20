@@ -159,10 +159,8 @@ public class PaddockWindow {
 	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 	public PaddockWindow(ControlePaddockCliente controlePaddockApplet) {
-		img = ImageUtil
-				.geraResize(
-						CarregadorRecursos.carregaBufferedImage("f1bg.png"),
-						0.85, 0.66);
+		img = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImage("f1bg.png"), 0.85, 0.66);
 		mainPanel = new JPanel(new BorderLayout()) {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -240,8 +238,8 @@ public class PaddockWindow {
 								.get(object));
 					}
 				} else {
-					JOptionPane.showMessageDialog(getMainPanel(),
-							Lang.msg("182"));
+					JOptionPane.showMessageDialog(getMainPanel(), Lang
+							.msg("182"));
 				}
 
 			}
@@ -249,9 +247,14 @@ public class PaddockWindow {
 		});
 		verDetalhes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object object = listaClientes.getSelectedValue();
+				Object object = null;
+				if (listaClientes != null) {
+					object = listaClientes.getSelectedValue();
+				}
 				if (object == null) {
-					object = listaJogosCriados.getSelectedValue();
+					if (listaJogosCriados != null) {
+						object = listaJogosCriados.getSelectedValue();
+					}
 					if (object == null
 							&& listaJogosCriados.getModel().getSize() == 1) {
 						object = listaJogosCriados.getModel().getElementAt(0);
@@ -266,8 +269,8 @@ public class PaddockWindow {
 					if (object != null) {
 						controlePaddockCliente.verDetalhesJogador(object);
 					} else {
-						JOptionPane.showMessageDialog(getMainPanel(),
-								Lang.msg("183"));
+						JOptionPane.showMessageDialog(getMainPanel(), Lang
+								.msg("183"));
 					}
 				}
 
@@ -314,8 +317,8 @@ public class PaddockWindow {
 						+ " Danilo Pacheco \n" + " Acilon Souza \n"
 						+ " Luciano Homem \n" + " Marcos Henrique";
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg,
-						Lang.msg("180"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
+						.msg("180"), JOptionPane.INFORMATION_MESSAGE);
 				verLogs();
 			}
 		});
@@ -488,10 +491,12 @@ public class PaddockWindow {
 				SessaoCliente element = (SessaoCliente) value;
 				JPanel jPanel = new JPanel(new GridLayout(1, 1));
 				if (Util.isNullOrEmpty(element.getPilotoAtual())) {
-					jPanel.add(compTransp(new JLabel(element.getNomeJogador())));
+					jPanel
+							.add(compTransp(new JLabel(element.getNomeJogador())));
 				} else {
 					jPanel.setLayout(new GridLayout(2, 1));
-					jPanel.add(compTransp(new JLabel(element.getNomeJogador())));
+					jPanel
+							.add(compTransp(new JLabel(element.getNomeJogador())));
 					jPanel.add(compTransp(new JLabel(" "
 							+ element.getPilotoAtual() + " "
 							+ Lang.decodeTexto(element.getJogoAtual()))));
@@ -533,8 +538,8 @@ public class PaddockWindow {
 			String element = (String) iter.next();
 			String key = Lang.decodeTexto(element);
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.VER_INFO_VOLTAS_JOGO,
-					controlePaddockCliente.getSessaoCliente());
+					Comandos.VER_INFO_VOLTAS_JOGO, controlePaddockCliente
+							.getSessaoCliente());
 			clientPaddockPack.setNomeJogo(element);
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			if (ret == null) {
@@ -543,8 +548,7 @@ public class PaddockWindow {
 			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
 			mapaJogosVoltas.put(key, srvPaddockPack.getDetalhesJogo()
 					.getVoltaAtual()
-					+ "/"
-					+ srvPaddockPack.getDetalhesJogo().getNumVoltas());
+					+ "/" + srvPaddockPack.getDetalhesJogo().getNumVoltas());
 		}
 
 		listaJogosCriados.setCellRenderer(new ListCellRenderer() {
