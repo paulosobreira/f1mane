@@ -252,7 +252,6 @@ public class GerenciadorVisual {
 				@Override
 				public void run() {
 					while (true) {
-						int sleep = 10;
 						InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
 						List<Piloto> pilotos = controleJogo.getPilotos();
 						for (Iterator iterator = pilotos.iterator(); iterator
@@ -260,8 +259,15 @@ public class GerenciadorVisual {
 							Piloto piloto = (Piloto) iterator.next();
 							No noAtual = piloto.getNoAtual();
 							No noAtualSuave = piloto.getNoAtualSuave();
+							List pistaFull = controleJogo.getCircuito()
+									.getPistaFull();
+							List boxFull = controleJogo.getCircuito()
+									.getBoxFull();
 							if (noAtualSuave == null
-									|| (noAtual.isBox() != noAtualSuave.isBox())) {
+									|| (pistaFull.contains(noAtual) && boxFull
+											.contains(noAtualSuave))
+									|| (pistaFull.contains(noAtualSuave) && boxFull
+											.contains(noAtual))) {
 								noAtualSuave = noAtual;
 							}
 							List<No> nos = null;
@@ -274,59 +280,38 @@ public class GerenciadorVisual {
 							if (noAtual.getIndex() != noAtualSuave.getIndex()) {
 								int diff = noAtual.getIndex()
 										- noAtualSuave.getIndex();
+								if (diff < 0) {
+									diff = (noAtual.getIndex() + nos.size())
+											- noAtualSuave.getIndex();
+								}
+								int ganhoSuave = 0;
+								int maxLoop = 500;
+								int inc = 30;
+								for (int i = 0; i < maxLoop; i += inc) {
+									if (diff >= i && diff < i + inc) {
+										break;
+									}
+									ganhoSuave += 1;
+								}
+
 								if (piloto.isJogadorHumano()) {
-									System.out.println("Diff " + diff);
+//									System.out.println("Diff " + diff + " Inc "
+//											+ ganhoSuave);
 								}
-								int inc = 1;
-								sleep = 9;
-								if (diff > 10) {
-									inc++;
-									sleep--;
-								}
-								if (diff > 20) {
-									inc++;
-									sleep--;
-								}
-								if (diff > 30) {
-									inc++;
-									sleep--;
-								}
-								if (diff > 40) {
-									inc++;
-									sleep--;
-								}
-								if (diff > 50) {
-									sleep--;
-								}
-								if (diff > 60) {
-									sleep--;
-								}
-								if (diff > 70) {
-									sleep--;
-								}
-								if (diff > 80) {
-									sleep--;
-								}
-								if (diff > 90) {
-									sleep--;
-								}
-								if (piloto.isJogadorHumano()) {
-									System.out.println("Diff " + diff + " Inc "
-											+ inc + " Sleep " + sleep);
-								}
-								int index = noAtualSuave.getIndex() + inc;
+								int index = noAtualSuave.getIndex()
+										+ ganhoSuave;
 								if (index >= nos.size()) {
 									index = index - nos.size();
 								}
 								noAtualSuave = nos.get(index);
-								if (diff < 0 || diff > 90) {
+								if (diff < 0 || diff > 500) {
 									noAtualSuave = noAtual;
 								}
 							}
 							piloto.setNoAtualSuave(noAtualSuave);
 						}
 						try {
-							Thread.sleep(sleep);
+							Thread.sleep(5);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -396,9 +381,9 @@ public class GerenciadorVisual {
 				}
 				controleJogo.abandonar();
 				super.windowClosing(e);
+				controleJogo.matarTodasThreads();
 				if (controleJogo.getMainFrame().isModoApplet()) {
 					controleJogo.getMainFrame().setVisible(false);
-					controleJogo.matarTodasThreads();
 				} else {
 					System.exit(0);
 				}
