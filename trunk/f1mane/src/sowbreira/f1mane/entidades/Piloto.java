@@ -106,6 +106,7 @@ public class Piloto implements Serializable {
 	private ArrayList listGanho;
 	private long ultimaMudancaPos;
 	private double ganho;
+	private int ganhoSuave;
 	private boolean ativarKers;
 	private int cargaKersVisual;
 	private int cargaKersOnline;
@@ -125,6 +126,14 @@ public class Piloto implements Serializable {
 	private long ultimaColisao;
 	private int tracadoDelay;
 	private long indexTracadoDelay;
+
+	public int getGanhoSuave() {
+		return ganhoSuave;
+	}
+
+	public void setGanhoSuave(int ganhoSuave) {
+		this.ganhoSuave = ganhoSuave;
+	}
 
 	public No getNoAtualSuave() {
 		return noAtualSuave;
@@ -1790,9 +1799,9 @@ public class Piloto implements Serializable {
 		if (controleJogo.isModoQualify()) {
 			return ganho;
 		}
-		double size = 7;
+		double size = 15;
 		if (acelerando) {
-			size = 5;
+			size = 7;
 		}
 		if (colisao) {
 			size = 3;
