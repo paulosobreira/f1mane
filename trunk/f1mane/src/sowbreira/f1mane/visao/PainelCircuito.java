@@ -1940,7 +1940,7 @@ public class PainelCircuito extends JPanel {
 			}
 			if (Logger.ativo && piloto.isJogadorHumano()
 					&& piloto.getNoAtualSuave() != null) {
-				g2d.setColor(Color.ORANGE);
+				g2d.setColor(Color.BLACK);
 				No noAtualSuave = piloto.getNoAtual();
 				g2d.drawOval((int) (noAtualSuave.getX() * zoom),
 						(int) (noAtualSuave.getY() * zoom), 10, 10);
@@ -4264,9 +4264,21 @@ public class PainelCircuito extends JPanel {
 		int paradas = circuito.getParadaBoxIndex();
 		for (int i = 0; i < 12; i++) {
 			int iP = paradas + Util.inte(Carro.LARGURA * 2 * i) + Carro.LARGURA;
-			No n1 = (No) circuito.getBoxFull().get(iP - Carro.MEIA_LARGURA);
-			No nM = (No) circuito.getBoxFull().get(iP);
-			No n2 = (No) circuito.getBoxFull().get(iP + Carro.MEIA_LARGURA);
+			int ip1 = iP - Carro.MEIA_LARGURA;
+			if (ip1 >= circuito.getBoxFull().size()) {
+				continue;
+			}
+			No n1 = (No) circuito.getBoxFull().get(ip1);
+			int ip0 = iP;
+			if (ip0 >= circuito.getBoxFull().size()) {
+				continue;
+			}
+			No nM = (No) circuito.getBoxFull().get(ip0);
+			int ip2 = iP + Carro.MEIA_LARGURA;
+			if (ip2 >= circuito.getBoxFull().size()) {
+				continue;
+			}
+			No n2 = (No) circuito.getBoxFull().get(ip2);
 			Point p1 = new Point(Util.inte(n1.getPoint().x * zoom), Util
 					.inte(n1.getPoint().y * zoom));
 			Point pm = new Point(Util.inte(nM.getPoint().x * zoom), Util
