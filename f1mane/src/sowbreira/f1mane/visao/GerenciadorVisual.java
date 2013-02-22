@@ -240,7 +240,7 @@ public class GerenciadorVisual {
 						}
 						atualizaPainel();
 						try {
-							Thread.sleep(70);
+							Thread.sleep(60);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -286,7 +286,7 @@ public class GerenciadorVisual {
 								}
 								int ganhoSuave = 0;
 								int maxLoop = 500;
-								int inc = 40;
+								int inc = 30;
 								for (int i = 0; i < maxLoop; i += inc) {
 									if (diff >= i && diff < i + inc) {
 										break;
@@ -306,11 +306,12 @@ public class GerenciadorVisual {
 								}
 
 								piloto.setGanhoSuave(ganhoSuave);
-
 								if (piloto.isJogadorHumano()) {
-									// System.out.println("Diff " + diff +
-									// " Inc "
+									// System.out.println("=========Inc "
 									// + ganhoSuave);
+								}
+								if (ganhoSuave > 5) {
+									ganhoSuave = 5;
 								}
 								int index = noAtualSuave.getIndex()
 										+ ganhoSuave;
