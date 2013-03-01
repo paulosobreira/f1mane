@@ -229,7 +229,7 @@ public interface InterfaceJogo {
 	public void verificaAcidenteUltrapassagem(boolean agressivo, Piloto piloto,
 			Piloto pilotoFrente);
 
-	public List obterPista(Piloto piloto);
+	public List obterPista(No noPiloto);
 
 	public BufferedImage obterCarroLado(Piloto piloto);
 

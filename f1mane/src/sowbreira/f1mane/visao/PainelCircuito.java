@@ -2088,7 +2088,7 @@ public class PainelCircuito extends JPanel {
 				if (!(objetoPista instanceof ObjetoTransparencia))
 					continue;
 				if (objetoPista.isPintaEmcima()
-						&& controleJogo.obterPista(piloto) != controleJogo
+						&& controleJogo.obterPista(piloto.getNoAtual()) != controleJogo
 								.getNosDoBox()) {
 					continue;
 				}
