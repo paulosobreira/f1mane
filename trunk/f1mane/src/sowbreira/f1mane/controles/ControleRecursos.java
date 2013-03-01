@@ -398,6 +398,10 @@ public abstract class ControleRecursos {
 
 	public List obterPista(Piloto piloto) {
 		No noPiloto = piloto.getNoAtual();
+		return obterPista(noPiloto);
+	}
+
+	public List obterPista(No noPiloto) {
 		if (idsNoPista.contains(mapaNosIds.get(noPiloto))) {
 			return nosDaPista;
 		} else if (idsNoBox.contains(mapaNosIds.get(noPiloto))) {
