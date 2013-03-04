@@ -28,7 +28,7 @@ public class ControleSom {
 	public static boolean somLigado = false;
 	private static Clip clipVeloMaxFinal;
 	private static Clip clipBox;
-	private static float volume = -15f;
+	private static float volume = -20f;
 
 	public static void main(String[] args) throws InterruptedException,
 			UnsupportedAudioFileException, IOException,
@@ -79,27 +79,44 @@ public class ControleSom {
 				clipBox.stop();
 			}
 			if (!tocandoClip() && painelCircuito.getQtdeLuzesAcesas() <= 0
-					&& velocidade > 0 && velocidade < 60) {
+					&& velocidade > 0 && velocidade <= 60) {
 				clipLargada.setFramePosition(0);
 				clipLargada.start();
-			} else if (!tocandoClip() && velocidade > 60 && velocidade < 200) {
-				clipVeloMed.setFramePosition(0);
-				clipVeloMed.start();
-			} else if (!tocandoClip() && velocidade >= 200 && velocidade < 300) {
-				clipVeloMax.setFramePosition(0);
-				clipVeloMax.start();
-			} else if (!tocandoClip() && velocidade >= 300) {
-				clipVeloMaxFinal.setFramePosition(0);
-				clipVeloMaxFinal.start();
+			} else if (!tocandoClip() && velocidade > 60) {
+				int inter = Util.intervalo(0, 2);
+				if (inter == 0 && Math.random() > 0.5) {
+					inter = Util.intervalo(1, 2);
+				}
+				switch (inter) {
+				case 0:
+					clipVeloMed.setFramePosition(0);
+					clipVeloMed.start();
+					break;
+				case 1:
+					clipVeloMax.setFramePosition(0);
+					clipVeloMax.start();
+					break;
+				case 2:
+					clipVeloMaxFinal.setFramePosition(0);
+					clipVeloMaxFinal.start();
+					break;
+
+				default:
+					break;
+				}
+
 			}
+
 			int diffVelo = (ps.getVelocidade() - ps.getVelocidadeAnterior());
-			if (!clipAcel.isRunning() && ps.getPtosBox() == 0
+			if (Math.random() > 0.5 && !tocandoClip() && !clipAcel.isRunning()
+					&& ps.getPtosBox() == 0
 					&& painelCircuito.getQtdeLuzesAcesas() <= 0
 					&& diffVelo > 40) {
 				clipAcel.setFramePosition(0);
 				clipAcel.start();
 			}
-			if (!clipRedo.isRunning() && ps.getPtosBox() == 0
+			if (Math.random() > 0.5 && !tocandoClip() && !clipRedo.isRunning()
+					&& ps.getPtosBox() == 0
 					&& painelCircuito.getQtdeLuzesAcesas() <= 0
 					&& diffVelo < -40) {
 				clipRedo.setFramePosition(0);
@@ -125,19 +142,19 @@ public class ControleSom {
 
 		frameLength = (double) clipVeloMax.getFrameLength();
 		val = (clipVeloMax.getFramePosition() / frameLength);
-		if (val > 0 && val < Util.intervalo(0.3, 0.5)) {
+		if (val > 0.1 && val < Util.intervalo(0.7, 0.9)) {
 			tocando = true;
 		}
 
 		frameLength = (double) clipVeloMaxFinal.getFrameLength();
 		val = (clipVeloMaxFinal.getFramePosition() / frameLength);
-		if (val > 0 && val < Util.intervalo(0.3, 0.5)) {
+		if (val > 0.1 && val < Util.intervalo(0.7, 0.9)) {
 			tocando = true;
 		}
 
 		frameLength = (double) clipVeloMed.getFrameLength();
 		val = (clipVeloMed.getFramePosition() / frameLength);
-		if (val > 0 && val < Util.intervalo(0.3, 0.5)) {
+		if (val > 0.1 && val < Util.intervalo(0.7, 0.9)) {
 			tocando = true;
 		}
 		return tocando;
