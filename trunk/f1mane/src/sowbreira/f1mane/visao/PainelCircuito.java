@@ -1746,15 +1746,20 @@ public class PainelCircuito extends JPanel {
 			Point p = new Point(point.x, point.y);
 			p.x /= multiminiPista;
 			p.y /= multiminiPista;
+
+			g2d.setColor(Color.LIGHT_GRAY);
+
 			if (piloto.equals(pilotoSelecionado)) {
 				g2d.setColor(jogador);
-			} else if (piloto.equals(lider)) {
-				g2d.setColor(oran);
-			} else if (controleJogo.verirficaDesafiandoCampeonato(piloto)) {
-				g2d.setColor(lightRed);
-			} else {
-				g2d.setColor(Color.LIGHT_GRAY);
 			}
+
+			if (piloto.equals(lider)) {
+				g2d.setColor(gre);
+			} else if (controleJogo.verirficaDesafiandoCampeonato(piloto)
+					|| (piloto.isJogadorHumano() && !piloto.equals(pilotoSelecionado))) {
+				g2d.setColor(oran);
+			}
+
 			g2d.fillOval(o.x + p.x - 5, o.y + p.y - 5, 10, 10);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("" + piloto.getPosicao(), o.x + p.x
@@ -2845,6 +2850,9 @@ public class PainelCircuito extends JPanel {
 				fonte = Color.white;
 			} else if (piloto.isDesqualificado()) {
 				bkg = red;
+				fonte = Color.white;
+			} else if (controleJogo.verirficaDesafiandoCampeonato(piloto)) {
+				bkg = oran;
 				fonte = Color.white;
 			}
 			RoundRectangle2D rectanglePos = new RoundRectangle2D.Double(x, y,
