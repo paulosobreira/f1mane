@@ -85,6 +85,7 @@ public class Piloto implements Serializable {
 	private boolean acelerando;
 	private Carro carro = new Carro();
 	private No noAtual = new No();
+	private No noAtualAnterior = new No();
 	private No noAtualSuave;
 	private int numeroVolta;
 	private int stress;
@@ -1520,31 +1521,46 @@ public class Piloto implements Serializable {
 		int cary = p.y;
 		int traz = cont - 44;
 		int frente = cont + 44;
-		boolean ultimoAngulo = false;
 		if (traz < 0) {
 			traz = (lista.size() - 1) + traz;
-			ultimoAngulo = true;
 		}
 		if (frente > (lista.size() - 1)) {
 			frente = (frente - (lista.size() - 1)) - 1;
-			ultimoAngulo = true;
 		}
 
 		Point trazCar = ((No) lista.get(traz)).getPoint();
 		trazCar = new Point(trazCar.x, trazCar.y);
 		Point frenteCar = ((No) lista.get(frente)).getPoint();
-		frenteCar = new Point(frenteCar.x, frenteCar.y);
-		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-		if (getAngulo() != null && ultimoAngulo) {
-			calculaAngulo = getAngulo();
+		if (noAtualAnterior != null
+				&& controleJogo.getNosDaPista().contains(noAtualAnterior)
+				&& controleJogo.getNosDoBox().contains(noAtual)) {
+			System.out.println("Teste");
+			frenteCar = ((No) controleJogo.getNosDoBox().get(50)).getPoint();
 		}
+		// if (noAtualAnterior != null
+		// && controleJogo.getNosDaPista().contains(noAtual)
+		// && controleJogo.getNosDoBox().contains(noAtualAnterior)) {
+		// frenteCar = ((No) controleJogo.getN
+		// getNosDoBox().get(50)).getPoint();
+		// }
+		frenteCar = new Point(frenteCar.x, frenteCar.y);
+		noAtualAnterior = noAtual;
+		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
+
 		if (getAnguloAnterior() != null
-				&& (Math.abs(calculaAngulo - anguloAnterior) > 50)) {
-			if ((calculaAngulo - anguloAnterior) < 0) {
-				calculaAngulo--;
+				&& Math.abs(Math.abs(calculaAngulo) - Math.abs(anguloAnterior)) > 30) {
+			if ((calculaAngulo) < 0) {
+				anguloAnterior += 10;
 			} else {
-				calculaAngulo++;
+				anguloAnterior -= 10;
 			}
+			if (isJogadorHumano() && anguloAnterior != null
+					&& calculaAngulo != anguloAnterior) {
+				System.out.println(" anguloAnterior " + anguloAnterior + " "
+						+ calculaAngulo);
+			}
+			calculaAngulo = anguloAnterior;
+
 		}
 		setAngulo(calculaAngulo);
 		setAnguloAnterior(calculaAngulo);

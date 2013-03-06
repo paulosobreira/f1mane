@@ -2113,7 +2113,7 @@ public class PainelCircuito extends JPanel {
 				if (objetoTransparencia.obterArea().contains(p)) {
 					piloto
 							.setNaoDesenhaEfeitos(piloto.getNaoDesenhaEfeitos() + 1);
-					if (piloto.getNaoDesenhaEfeitos() > 20) {
+					if (piloto.getNaoDesenhaEfeitos() > 10) {
 						naoDesenhaEfeitos = true;
 					}
 					temTransparencia = true;

@@ -385,9 +385,7 @@ public class GerenciadorVisual {
 		for (int i = 0; i < listeners.length; i++) {
 			frame.removeWindowListener(listeners[i]);
 		}
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
-
 			public void windowClosing(WindowEvent e) {
 				if (controleJogo == null) {
 					return;
@@ -408,6 +406,7 @@ public class GerenciadorVisual {
 				}
 			}
 		});
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 
 	protected void mudarAutoPos() {
