@@ -71,6 +71,7 @@ public class Piloto implements Serializable {
 	private Point p5;
 	private Point p4;
 	private Point pontoDerrapada;
+	private Double anguloAnterior;
 	private Double angulo;
 	private transient int ptosBox;
 	private int posicao;
@@ -125,6 +126,7 @@ public class Piloto implements Serializable {
 	private int ultModificador;
 	private long ultimaColisao;
 	private int tracadoDelay;
+	private int naoDesenhaEfeitos;
 	private long indexTracadoDelay;
 
 	public int getGanhoSuave() {
@@ -1536,7 +1538,16 @@ public class Piloto implements Serializable {
 		if (getAngulo() != null && ultimoAngulo) {
 			calculaAngulo = getAngulo();
 		}
+		if (getAnguloAnterior() != null
+				&& (Math.abs(calculaAngulo - anguloAnterior) > 50)) {
+			if ((calculaAngulo - anguloAnterior) < 0) {
+				calculaAngulo--;
+			} else {
+				calculaAngulo++;
+			}
+		}
 		setAngulo(calculaAngulo);
+		setAnguloAnterior(calculaAngulo);
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA_CIMA),
 				(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA,
@@ -2592,6 +2603,22 @@ public class Piloto implements Serializable {
 
 	public void setIndexTracadoDelay(long indexTracadoDelay) {
 		this.indexTracadoDelay = indexTracadoDelay;
+	}
+
+	public Double getAnguloAnterior() {
+		return anguloAnterior;
+	}
+
+	public void setAnguloAnterior(Double anguloAnterior) {
+		this.anguloAnterior = anguloAnterior;
+	}
+
+	public int getNaoDesenhaEfeitos() {
+		return naoDesenhaEfeitos;
+	}
+
+	public void setNaoDesenhaEfeitos(int naoDesenhaEfeitos) {
+		this.naoDesenhaEfeitos = naoDesenhaEfeitos;
 	}
 
 }

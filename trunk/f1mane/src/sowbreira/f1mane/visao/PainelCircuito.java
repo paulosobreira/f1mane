@@ -1756,7 +1756,8 @@ public class PainelCircuito extends JPanel {
 			if (piloto.equals(lider)) {
 				g2d.setColor(gre);
 			} else if (controleJogo.verirficaDesafiandoCampeonato(piloto)
-					|| (piloto.isJogadorHumano() && !piloto.equals(pilotoSelecionado))) {
+					|| (piloto.isJogadorHumano() && !piloto
+							.equals(pilotoSelecionado))) {
 				g2d.setColor(oran);
 			}
 
@@ -2088,6 +2089,7 @@ public class PainelCircuito extends JPanel {
 			piloto.setSetaBaixo(piloto.getSetaBaixo() - 1);
 		}
 		boolean naoDesenhaEfeitos = false;
+		boolean temTransparencia = false;
 		if (circuito.getObjetos() != null) {
 			for (ObjetoPista objetoPista : circuito.getObjetos()) {
 				if (!(objetoPista instanceof ObjetoTransparencia))
@@ -2109,19 +2111,30 @@ public class PainelCircuito extends JPanel {
 				Graphics2D gImage = rotateBuffer.createGraphics();
 				objetoTransparencia.desenhaCarro(gImage, zoom, carX, carY);
 				if (objetoTransparencia.obterArea().contains(p)) {
-					naoDesenhaEfeitos = true;
+					piloto
+							.setNaoDesenhaEfeitos(piloto.getNaoDesenhaEfeitos() + 1);
+					if (piloto.getNaoDesenhaEfeitos() > 20) {
+						naoDesenhaEfeitos = true;
+					}
+					temTransparencia = true;
 				}
+			}
+			if (!temTransparencia) {
+				piloto.setNaoDesenhaEfeitos(0);
 			}
 		}
 		if (Logger.desenhaCarroCima)
 			g2d.drawImage(rotateBuffer, imagemCarroX, imagemCarroY, null);
 		if (naoDesenhaEfeitos) {
+			g2d.setStroke(stroke);
 			return;
 		}
-		desenhaTravaRodaCarroCima(g2d, piloto, width, height, carX, carY,
-				afZoom, afRotate);
+		if (!temTransparencia) {
+			desenhaTravaRodaCarroCima(g2d, piloto, width, height, carX, carY,
+					afZoom, afRotate);
+			desenhaAjudaPistaCarroCima(g2d, piloto);
+		}
 		desenhaChuvaFaiscasCarroCima(g2d, piloto, width);
-		desenhaAjudaPistaCarroCima(g2d, piloto);
 		desenhaDebugCarroCima(g2d, piloto, rad);
 		g2d.setStroke(stroke);
 
