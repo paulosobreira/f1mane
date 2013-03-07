@@ -1015,6 +1015,18 @@ public class PainelCircuito extends JPanel {
 				+ controleJogo.calculaDiffParaProximoRetardatario(
 						pilotoSelecionado, false), ptoOri, yBase);
 
+		yBase += 20;
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d
+				.drawString(
+						"DiffSuaveReal "
+								+ (pilotoSelecionado.getNoAtual().getIndex() - (pilotoSelecionado
+										.getNoAtualSuave() != null ? pilotoSelecionado
+										.getNoAtualSuave().getIndex()
+										: 0)), ptoOri, yBase);
+
 		if (controleJogo.isSafetyCarNaPista()) {
 
 			yBase += 20;
@@ -1940,8 +1952,10 @@ public class PainelCircuito extends JPanel {
 	private void desenhaPiloto(Graphics2D g2d) {
 		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-			if (piloto.getCarro().isRecolhido() || piloto.getNoAtual() == null
-					|| piloto.getCarro().isPaneSeca()) {
+			if (!piloto.equals(pilotoSelecionado)
+					&& (piloto.getCarro().isRecolhido()
+							|| piloto.getNoAtual() == null || piloto.getCarro()
+							.isPaneSeca())) {
 				continue;
 			}
 			if (Logger.ativo && piloto.isJogadorHumano()
@@ -2234,12 +2248,7 @@ public class PainelCircuito extends JPanel {
 						- Util.intervalo(2.5, 6), piloto.getTrazeira().getY()
 						+ piloto.getTrazeira().getHeight()
 						+ Util.intervalo(2.5, 6)));
-				double max = 4;
-				if (piloto.getNoAtual().verificaCruvaAlta())
-					max = 2;
-				if (piloto.getNoAtual().verificaCruvaBaixa()
-						|| piloto.getPtosBox() != 0)
-					max = 1;
+				double max = 6.0 * (piloto.getVelocidade() / 320.0);
 
 				Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(
 						origem, dest, 90), (int) (Util.intervalo(width * .25,
