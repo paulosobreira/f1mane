@@ -940,6 +940,9 @@ public class Piloto implements Serializable {
 		processaLimitadorGanho(controleJogo);
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
+			if (ganho > 30) {
+				ganho = 30;
+			}
 			if (getTracado() == 4) {
 				mudarTracado(2, controleJogo, true);
 			}
