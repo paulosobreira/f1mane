@@ -229,7 +229,8 @@ public class GerenciadorVisual {
 			thAtualizaPainelSuave = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					while (true) {
+					boolean alive = true;
+					while (alive) {
 						if (!painelCircuito.isDesenhouQualificacao()) {
 							try {
 								Thread.sleep(50);
@@ -242,6 +243,7 @@ public class GerenciadorVisual {
 						try {
 							Thread.sleep(60);
 						} catch (InterruptedException e) {
+							alive = false;
 							e.printStackTrace();
 						}
 					}
@@ -251,9 +253,13 @@ public class GerenciadorVisual {
 			thAtualizaPilotosSuave = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					while (true) {
+					int sleep = 15;
+					boolean alive = true;
+					while (alive) {
 						InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
 						List<Piloto> pilotos = controleJogo.getPilotos();
+						boolean decSleep = false;
+						boolean incSleep = false;
 						for (Iterator iterator = pilotos.iterator(); iterator
 								.hasNext();) {
 							Piloto piloto = (Piloto) iterator.next();
@@ -306,10 +312,6 @@ public class GerenciadorVisual {
 								}
 
 								piloto.setGanhoSuave(ganhoSuave);
-								if (piloto.isJogadorHumano()) {
-									// System.out.println("=========Inc "
-									// + ganhoSuave);
-								}
 								if (ganhoSuave > 5) {
 									ganhoSuave = 5;
 								}
@@ -326,12 +328,32 @@ public class GerenciadorVisual {
 								if (diff < 0 || diff > 500) {
 									noAtualSuave = noAtual;
 								}
+								if (diff > 230) {
+									decSleep = true;
+								}
+								if (diff < 70) {
+									incSleep = true;
+								}
 							}
 							piloto.setNoAtualSuave(noAtualSuave);
 						}
+						if (decSleep) {
+							sleep--;
+						}
+						if (!decSleep && incSleep) {
+							sleep++;
+						}
 						try {
-							Thread.sleep(5);
+							if (sleep < 1) {
+								sleep = 1;
+							}
+							if (sleep > 15) {
+								sleep = 15;
+							}
+							//System.out.println("sleep " + sleep);
+							Thread.sleep(sleep);
 						} catch (InterruptedException e) {
+							alive = false;
 							e.printStackTrace();
 						}
 					}
