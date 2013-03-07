@@ -72,7 +72,7 @@ public class ControleQualificacao {
 					.valueOf(controleJogo.getNosDaPista().size())) <= 1) {
 				piloto.processarCiclo(controleJogo);
 				contCiclosQualificacao++;
-				if (Math.random() < 0.3
+				if (Math.random() < (piloto.getCarro().porcentagemCombustivel() / 100.0)
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao--;
 					if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro()

@@ -71,7 +71,6 @@ public class Piloto implements Serializable {
 	private Point p5;
 	private Point p4;
 	private Point pontoDerrapada;
-	private Double anguloAnterior;
 	private Double angulo;
 	private transient int ptosBox;
 	private int posicao;
@@ -85,7 +84,6 @@ public class Piloto implements Serializable {
 	private boolean acelerando;
 	private Carro carro = new Carro();
 	private No noAtual = new No();
-	private No noAtualAnterior = new No();
 	private No noAtualSuave;
 	private int numeroVolta;
 	private int stress;
@@ -1522,48 +1520,26 @@ public class Piloto implements Serializable {
 		int traz = cont - 44;
 		int frente = cont + 44;
 		if (traz < 0) {
-			traz = (lista.size() - 1) + traz;
+			if (controleJogo.getNosDoBox().size() == lista.size()) {
+				traz = 0;
+			} else {
+				traz = (lista.size() - 1) + traz;
+			}
 		}
 		if (frente > (lista.size() - 1)) {
-			frente = (frente - (lista.size() - 1)) - 1;
+			if (controleJogo.getNosDoBox().size() == lista.size()) {
+				frente = lista.size() - 1;
+			} else {
+				frente = (frente - (lista.size() - 1)) - 1;
+			}
 		}
 
 		Point trazCar = ((No) lista.get(traz)).getPoint();
 		trazCar = new Point(trazCar.x, trazCar.y);
 		Point frenteCar = ((No) lista.get(frente)).getPoint();
-		if (noAtualAnterior != null
-				&& controleJogo.getNosDaPista().contains(noAtualAnterior)
-				&& controleJogo.getNosDoBox().contains(noAtual)) {
-			System.out.println("Teste");
-			frenteCar = ((No) controleJogo.getNosDoBox().get(50)).getPoint();
-		}
-		// if (noAtualAnterior != null
-		// && controleJogo.getNosDaPista().contains(noAtual)
-		// && controleJogo.getNosDoBox().contains(noAtualAnterior)) {
-		// frenteCar = ((No) controleJogo.getN
-		// getNosDoBox().get(50)).getPoint();
-		// }
 		frenteCar = new Point(frenteCar.x, frenteCar.y);
-		noAtualAnterior = noAtual;
 		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-
-		if (getAnguloAnterior() != null
-				&& Math.abs(Math.abs(calculaAngulo) - Math.abs(anguloAnterior)) > 30) {
-			if ((calculaAngulo) < 0) {
-				anguloAnterior += 10;
-			} else {
-				anguloAnterior -= 10;
-			}
-			if (isJogadorHumano() && anguloAnterior != null
-					&& calculaAngulo != anguloAnterior) {
-				System.out.println(" anguloAnterior " + anguloAnterior + " "
-						+ calculaAngulo);
-			}
-			calculaAngulo = anguloAnterior;
-
-		}
 		setAngulo(calculaAngulo);
-		setAnguloAnterior(calculaAngulo);
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA_CIMA),
 				(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA,
@@ -2619,14 +2595,6 @@ public class Piloto implements Serializable {
 
 	public void setIndexTracadoDelay(long indexTracadoDelay) {
 		this.indexTracadoDelay = indexTracadoDelay;
-	}
-
-	public Double getAnguloAnterior() {
-		return anguloAnterior;
-	}
-
-	public void setAnguloAnterior(Double anguloAnterior) {
-		this.anguloAnterior = anguloAnterior;
 	}
 
 	public int getNaoDesenhaEfeitos() {

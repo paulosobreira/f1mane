@@ -305,4 +305,6 @@ public interface InterfaceJogo {
 	public int calculaDiffParaProximoRetardatario(Piloto piloto,
 			boolean analisaTracado);
 
+	public No getNoSaidaBox();
+
 }
