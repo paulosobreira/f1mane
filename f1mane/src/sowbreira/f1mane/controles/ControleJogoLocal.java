@@ -1273,4 +1273,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return menorDistancia;
 	}
 
+	@Override
+	public No getNoSaidaBox() {
+		return controleCorrida.getNoSaidaBox();
+	}
+
 }
