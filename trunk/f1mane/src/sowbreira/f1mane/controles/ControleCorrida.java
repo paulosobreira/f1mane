@@ -233,7 +233,8 @@ public class ControleCorrida {
 			if (((piloto.getPtosBox() > 0)) != (pilotoNaFrente.getPtosBox() > 0)) {
 				continue;
 			}
-			if (pilotoNaFrente.getCarro().isRecolhido()) {
+			if (pilotoNaFrente.getCarro().isRecolhido()
+					|| pilotoNaFrente.getCarro().isPaneSeca()) {
 				continue;
 			}
 			int indCentroCarroFrente = pilotoNaFrente.getNoAtual().getIndex();

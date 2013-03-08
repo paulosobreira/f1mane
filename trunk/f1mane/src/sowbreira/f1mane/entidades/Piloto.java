@@ -775,6 +775,10 @@ public class Piloto implements Serializable {
 	}
 
 	private void verificaIrBox(InterfaceJogo controleJogo) {
+		if (controleJogo.isModoQualify()) {
+			return;
+		}
+
 		if (jogadorHumano || recebeuBanderada || getPtosPista() < 0) {
 			return;
 		}
@@ -1412,6 +1416,9 @@ public class Piloto implements Serializable {
 				boolean verificaNoPitLaneOutro = controleJogo
 						.verificaNoPitLane(piloto);
 				if (this.equals(piloto)) {
+					continue;
+				}
+				if (piloto.getCarro().isPaneSeca() || piloto.isDesqualificado()) {
 					continue;
 				}
 				if (verificaNoPitLaneOutro) {

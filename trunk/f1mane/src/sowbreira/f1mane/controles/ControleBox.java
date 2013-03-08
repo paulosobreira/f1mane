@@ -539,9 +539,13 @@ public class ControleBox {
 
 	public void setupCorridaQualificacaoAleatoria(Piloto piloto) {
 		if (piloto.isJogadorHumano()) {
+			Integer combustBox = controleJogo.getCombustBox(piloto);
+			if (combustBox.intValue() == 0) {
+				combustBox = new Integer(10);
+			}
 			controleJogo.setUpJogadorHumano(piloto, controleJogo
-					.getTipoPeneuBox(piloto), controleJogo
-					.getCombustBox(piloto), controleJogo.getAsaBox(piloto));
+					.getTipoPeneuBox(piloto), combustBox, controleJogo
+					.getAsaBox(piloto));
 			return;
 		}
 		if (!piloto.testeHabilidadePilotoCarro(controleJogo)
