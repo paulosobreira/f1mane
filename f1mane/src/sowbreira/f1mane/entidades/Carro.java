@@ -253,6 +253,9 @@ public class Carro implements Serializable {
 	}
 
 	public boolean verificaPilotoNormal(InterfaceJogo controleJogo) {
+		if (controleJogo.isModoQualify()) {
+			return false;
+		}
 		int pneus = porcentagemDesgastePeneus();
 		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
 		if (pneus < (consumoMedioPenus)) {
@@ -271,6 +274,9 @@ public class Carro implements Serializable {
 	}
 
 	public boolean verificaCondicoesCautelaGiro(InterfaceJogo controleJogo) {
+		if (controleJogo.isModoQualify()) {
+			return false;
+		}
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
 		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
@@ -447,10 +453,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
