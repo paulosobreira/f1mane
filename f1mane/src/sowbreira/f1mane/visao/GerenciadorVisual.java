@@ -110,8 +110,7 @@ public class GerenciadorVisual {
 	private JPanel infoText = new JPanel();
 	private JTextField nomeJogador;
 	private PainelTabelaResultadoFinal resultadoFinal;
-	private int tempoSleep = 30;
-	private Color corPadraoBarra;
+	private int tempoSleepQualy = 30;
 	private long lastPress;
 	private ProgamacaoBox progamacaoBox;
 	private long ultimaChamadaBox;
@@ -292,7 +291,7 @@ public class GerenciadorVisual {
 								}
 								int ganhoSuave = 0;
 								int maxLoop = 500;
-								int inc = 30;
+								int inc = 50;
 								for (int i = 0; i < maxLoop; i += inc) {
 									if (diff >= i && diff < i + inc) {
 										break;
@@ -312,8 +311,8 @@ public class GerenciadorVisual {
 								}
 
 								piloto.setGanhoSuave(ganhoSuave);
-								if (ganhoSuave > 5) {
-									ganhoSuave = 5;
+								if (ganhoSuave > 7) {
+									ganhoSuave = 7;
 								}
 								int index = noAtualSuave.getIndex()
 										+ ganhoSuave;
@@ -345,12 +344,12 @@ public class GerenciadorVisual {
 						}
 						try {
 							if (sleep < 1) {
-								sleep = 1;
+								sleep = 5;
 							}
-							if (sleep > 15) {
-								sleep = 15;
+							if (sleep > 20) {
+								sleep = 20;
 							}
-							//System.out.println("sleep " + sleep);
+							// System.out.println("sleep " + sleep);
 							Thread.sleep(sleep);
 						} catch (InterruptedException e) {
 							alive = false;
@@ -380,7 +379,7 @@ public class GerenciadorVisual {
 	}
 
 	public void finalize() throws Throwable {
-		tempoSleep = 0;
+		tempoSleepQualy = 0;
 		if (clima != null) {
 			clima.interrupt();
 		}
@@ -1739,7 +1738,7 @@ public class GerenciadorVisual {
 				List ptosPilotos = new ArrayList();
 				painelCircuito.addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
-						tempoSleep = 0;
+						tempoSleepQualy = 0;
 					}
 
 				});
@@ -1781,7 +1780,7 @@ public class GerenciadorVisual {
 					while (x > (point.x + limitesViewPort.x)) {
 						Point pd = new Point(x, point.y + limitesViewPort.y);
 						painelCircuito.definirDesenhoQualificacao(piloto, pd);
-						if (tempoSleep != 0) {
+						if (tempoSleepQualy != 0) {
 							try {
 								painelCircuito.repaint();
 							} catch (Exception e) {
@@ -1792,7 +1791,7 @@ public class GerenciadorVisual {
 						}
 						x -= 3;
 						try {
-							Thread.sleep(tempoSleep);
+							Thread.sleep(tempoSleepQualy);
 						} catch (InterruptedException e) {
 							Logger.logarExept(e);
 						}
@@ -1875,11 +1874,11 @@ public class GerenciadorVisual {
 	}
 
 	public int getTempoSleep() {
-		return tempoSleep;
+		return tempoSleepQualy;
 	}
 
 	public void setTempoSleep(int tempoSleep) {
-		this.tempoSleep = tempoSleep;
+		this.tempoSleepQualy = tempoSleep;
 	}
 
 	public JLabel getInfoCorrida() {

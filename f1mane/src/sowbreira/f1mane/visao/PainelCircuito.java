@@ -1952,12 +1952,6 @@ public class PainelCircuito extends JPanel {
 	private void desenhaPiloto(Graphics2D g2d) {
 		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-			if (!piloto.equals(pilotoSelecionado)
-					&& (piloto.getCarro().isRecolhido()
-							|| piloto.getNoAtual() == null || piloto.getCarro()
-							.isPaneSeca())) {
-				continue;
-			}
 			if (Logger.ativo && piloto.isJogadorHumano()
 					&& piloto.getNoAtualSuave() != null) {
 				g2d.setColor(Color.BLACK);
@@ -1966,34 +1960,37 @@ public class PainelCircuito extends JPanel {
 						(int) (noAtualSuave.getY() * zoom), 10, 10);
 			}
 			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
+			desenhaNomePilotoSelecionado(g2d, piloto);
+			if (piloto.getNoAtual() == null || piloto.getCarro().isPaneSeca()) {
+				continue;
+			}
 			desenhaCarroCima(g2d, piloto);
 			BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
-			if (carroCima == null || piloto.getCarro().isPaneSeca()) {
-				return;
-			}
-			Point p = new Point(Util.inte((piloto.getCarX() - 2) * zoom), Util
-					.inte((piloto.getCarY() - 2) * zoom));
-			if (limitesViewPort.contains(p)) {
-				g2d.setColor(piloto.getCarro().getCor1());
-				g2d.fillOval(p.x, p.y, 8, 8);
-				g2d.setColor(new Color(piloto.getCarro().getCor2().getRed(),
-						piloto.getCarro().getCor2().getGreen(), piloto
-								.getCarro().getCor2().getBlue(), 175));
-				Stroke stroke = g2d.getStroke();
-				g2d.setStroke(trilho);
-				Point p2 = new Point(Util.inte((piloto.getCarX() - 3) * zoom),
-						Util.inte((piloto.getCarY() - 3) * zoom));
-				g2d.drawOval(Util.inte((p2.x)), Util.inte((p2.y)), 8, 8);
-				g2d.setStroke(stroke);
-				if (piloto != pilotoSelecionado) {
-					desenhaNomePilotoNaoSelecionado(piloto, g2d, p);
-				} else {
-					desenhaNomePilotoSelecionadoCarroCima(piloto, g2d, p);
-				}
-			}
-
 		}
 
+	}
+
+	private void desenhaNomePilotoSelecionado(Graphics2D g2d, Piloto piloto) {
+		Point p = new Point(Util.inte((piloto.getCarX() - 2) * zoom), Util
+				.inte((piloto.getCarY() - 2) * zoom));
+		if (limitesViewPort.contains(p)) {
+			g2d.setColor(piloto.getCarro().getCor1());
+			g2d.fillOval(p.x, p.y, 8, 8);
+			g2d.setColor(new Color(piloto.getCarro().getCor2().getRed(), piloto
+					.getCarro().getCor2().getGreen(), piloto.getCarro()
+					.getCor2().getBlue(), 175));
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilho);
+			Point p2 = new Point(Util.inte((piloto.getCarX() - 3) * zoom), Util
+					.inte((piloto.getCarY() - 3) * zoom));
+			g2d.drawOval(Util.inte((p2.x)), Util.inte((p2.y)), 8, 8);
+			g2d.setStroke(stroke);
+			if (piloto != pilotoSelecionado) {
+				desenhaNomePilotoNaoSelecionado(piloto, g2d, p);
+			} else {
+				desenhaNomePilotoSelecionadoCarroCima(piloto, g2d, p);
+			}
+		}
 	}
 
 	public Shape limitesViewPort() {
