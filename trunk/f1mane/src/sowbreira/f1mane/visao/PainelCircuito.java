@@ -1970,7 +1970,9 @@ public class PainelCircuito extends JPanel {
 		}
 		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
-			if (piloto.equals(pilotoSelecionado)) {
+			if (piloto.equals(pilotoSelecionado)
+					|| piloto.getCarro().isPaneSeca()
+					|| piloto.getCarro().isRecolhido()) {
 				continue;
 			}
 			desenhaNomePilotoNaoSelecionado(piloto, g2d);
@@ -2022,7 +2024,8 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
-		if (carroCima == null || piloto.getCarro().isPaneSeca()) {
+		if (carroCima == null || piloto.getCarro().isPaneSeca()
+				|| piloto.getCarro().isRecolhido()) {
 			return;
 		}
 		No noAtual = piloto.getNoAtual();
