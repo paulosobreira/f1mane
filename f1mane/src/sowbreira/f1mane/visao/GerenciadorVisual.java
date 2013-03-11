@@ -256,8 +256,6 @@ public class GerenciadorVisual {
 					while (alive) {
 						InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
 						List<Piloto> pilotos = controleJogo.getPilotos();
-						boolean decSleep = false;
-						boolean incSleep = false;
 						for (Iterator iterator = pilotos.iterator(); iterator
 								.hasNext();) {
 							Piloto piloto = (Piloto) iterator.next();
@@ -290,7 +288,7 @@ public class GerenciadorVisual {
 								}
 								int ganhoSuave = 0;
 								int maxLoop = 500;
-								int inc = 40;
+								int inc = 30;
 								for (int i = 0; i < maxLoop; i += inc) {
 									if (diff >= i && diff < i + inc) {
 										break;
@@ -325,12 +323,6 @@ public class GerenciadorVisual {
 								}
 								if (diff < 0 || diff > 500) {
 									noAtualSuave = noAtual;
-								}
-								if (diff > 230) {
-									decSleep = true;
-								}
-								if (diff < 70) {
-									incSleep = true;
 								}
 							}
 							piloto.setNoAtualSuave(noAtualSuave);

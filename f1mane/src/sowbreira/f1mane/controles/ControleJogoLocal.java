@@ -620,8 +620,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
-							.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(),
+					gerenciadorVisual.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			setarNivelCorrida();
@@ -641,9 +641,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
 		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
 				+ porcentagemChuvaCircuito(circuitoSelecionado));
-		Logger
-				.logar("porcentagemChuvaCircuito() "
-						+ porcentagemChuvaCircuito());
+		Logger.logar("porcentagemChuvaCircuito() " + porcentagemChuvaCircuito());
 	}
 
 	/**
@@ -815,9 +813,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 			Object combust, Object asa) {
 		String tipoPneu = (String) tpPneu;
 		Integer qtdeCombustPorcent = (Integer) combust;
-		if (isSemReabastacimento()) {
-			qtdeCombustPorcent = Util
-					.inte(85 + (15 * qtdeCombustPorcent / 100.0));
+		if (isSemReabastacimento() && qtdeCombustPorcent.intValue() < 75) {
+			qtdeCombustPorcent = new Integer(75);
 		}
 
 		pilotoJogador.getCarro().trocarPneus(this, tipoPneu,
