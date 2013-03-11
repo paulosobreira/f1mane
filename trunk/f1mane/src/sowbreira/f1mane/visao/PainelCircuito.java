@@ -1966,17 +1966,23 @@ public class PainelCircuito extends JPanel {
 						(int) (noAtualSuave.getY() * zoom), 10, 10);
 			}
 			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
-			desenhaNomePilotoSelecionado(g2d, piloto);
-			if (piloto.getNoAtual() == null || piloto.getCarro().isPaneSeca()) {
+			desenhaCarroCima(g2d, piloto);
+		}
+		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
+			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
+			if (piloto.equals(pilotoSelecionado)) {
 				continue;
 			}
-			desenhaCarroCima(g2d, piloto);
-			BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
+			desenhaNomePilotoNaoSelecionado(piloto, g2d);
 		}
+		desenhaNomePilotoSelecionado(g2d, pilotoSelecionado);
 
 	}
 
 	private void desenhaNomePilotoSelecionado(Graphics2D g2d, Piloto piloto) {
+		if (pilotoSelecionado == null) {
+			return;
+		}
 		Point p = new Point(Util.inte((piloto.getCarX() - 2) * zoom),
 				Util.inte((piloto.getCarY() - 2) * zoom));
 		if (limitesViewPort.contains(p)) {
@@ -1991,11 +1997,7 @@ public class PainelCircuito extends JPanel {
 					Util.inte((piloto.getCarY() - 3) * zoom));
 			g2d.drawOval(Util.inte((p2.x)), Util.inte((p2.y)), 8, 8);
 			g2d.setStroke(stroke);
-			if (piloto != pilotoSelecionado) {
-				desenhaNomePilotoNaoSelecionado(piloto, g2d, p);
-			} else {
-				desenhaNomePilotoSelecionadoCarroCima(piloto, g2d, p);
-			}
+			desenhaNomePilotoSelecionadoCarroCima(piloto, g2d, p);
 		}
 	}
 
@@ -2024,7 +2026,7 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		No noAtual = piloto.getNoAtual();
-		if(piloto.getNoAtualSuave()!=null){
+		if (piloto.getNoAtualSuave() != null) {
 			noAtual = piloto.getNoAtualSuave();
 		}
 		Point p = noAtual.getPoint();
@@ -2131,8 +2133,7 @@ public class PainelCircuito extends JPanel {
 				Graphics2D gImage = rotateBuffer.createGraphics();
 				objetoTransparencia.desenhaCarro(gImage, zoom, carX, carY);
 				if (objetoTransparencia.obterArea().contains(p)) {
-					piloto
-							.setNaoDesenhaEfeitos(piloto.getNaoDesenhaEfeitos() + 1);
+					piloto.setNaoDesenhaEfeitos(piloto.getNaoDesenhaEfeitos() + 1);
 					if (piloto.getNaoDesenhaEfeitos() > 10) {
 						naoDesenhaEfeitos = true;
 					}
@@ -4090,15 +4091,28 @@ public class PainelCircuito extends JPanel {
 
 	}
 
-	private void desenhaNomePilotoNaoSelecionado(Piloto ps, Graphics g2d,
-			Point pt) {
-		Color c2 = ps.getCarro().getCor2();
-		if (c2 != null) {
-			g2d.setColor(new Color(c2.getRed(), c2.getGreen(), c2.getBlue(),
-					100));
-		}
+	private void desenhaNomePilotoNaoSelecionado(Piloto ps, Graphics2D g2d) {
+		Point pt = new Point(Util.inte((ps.getCarX() - 2) * zoom),
+				Util.inte((ps.getCarY() - 2) * zoom));
+		if (limitesViewPort.contains(pt)) {
+			g2d.setColor(ps.getCarro().getCor1());
+			g2d.fillOval(pt.x, pt.y, 8, 8);
+			g2d.setColor(new Color(ps.getCarro().getCor2().getRed(), ps
+					.getCarro().getCor2().getGreen(), ps.getCarro().getCor2()
+					.getBlue(), 175));
+			Stroke stroke = g2d.getStroke();
+			g2d.setStroke(trilho);
+			Point p2 = new Point(Util.inte((ps.getCarX() - 3) * zoom),
+					Util.inte((ps.getCarY() - 3) * zoom));
+			g2d.drawOval(Util.inte((p2.x)), Util.inte((p2.y)), 8, 8);
+			g2d.setStroke(stroke);
 
-		if (ps.getPosicao() % 2 == 0) {
+			Color c2 = ps.getCarro().getCor2();
+			if (c2 != null) {
+				g2d.setColor(new Color(c2.getRed(), c2.getGreen(),
+						c2.getBlue(), 100));
+			}
+
 			g2d.fillRoundRect(Util.inte((pt.x) - 3), Util.inte((pt.y) - 16), ps
 					.getNome().length() * 7, 18, 15, 15);
 			int valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
@@ -4109,19 +4123,7 @@ public class PainelCircuito extends JPanel {
 			}
 			g2d.drawString(ps.getNome(), Util.inte((pt.x) - 2),
 					Util.inte((pt.y) - 3));
-		} else {
-			g2d.fillRoundRect(Util.inte((pt.x) - 3), Util.inte((pt.y) + 4), ps
-					.getNome().length() * 7, 18, 15, 15);
-			int valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
-			if (valor > 250) {
-				g2d.setColor(Color.BLACK);
-			} else {
-				g2d.setColor(Color.WHITE);
-			}
-			g2d.drawString(ps.getNome(), Util.inte((pt.x) - 2),
-					Util.inte((pt.y) + 17));
 		}
-
 	}
 
 	private void setarHints(Graphics2D g2d) {
