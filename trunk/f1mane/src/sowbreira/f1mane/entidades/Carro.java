@@ -870,7 +870,7 @@ public class Carro implements Serializable {
 				if (controleJogo.asfaltoAbrasivo()) {
 					desgPneus += (teste ? 1 : 2);
 				} else {
-					if (Math.random() > 0.7)
+					if (Math.random() > 0.5)
 						desgPneus += (teste ? 1 : 2);
 				}
 			}
