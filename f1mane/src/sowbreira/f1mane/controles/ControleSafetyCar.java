@@ -72,7 +72,6 @@ public class ControleSafetyCar {
 					return ganho * i / 300.0;
 				}
 			}
-
 			return ganho;
 		}
 	}
