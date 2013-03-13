@@ -124,10 +124,14 @@ public class ControleSafetyCar {
 		long diffPts = ptsSc - polePts;
 		bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo
 				.getIndexVelcidadeDaPista()) * 0.7;
-		if (diffPts >= 200) {
-			double multi = (diffPts - 200 / 200.0);
-			if (multi > 0.7) {
-				multi = 0.7;
+		System.out.println("diffPts" + diffPts);
+		if (diffPts >= 300) {
+			double multi = (diffPts - 300 / 300.0);
+			if (multi > 0.9) {
+				multi = 0.9;
+			}
+			if (diffPts >= 1000) {
+				multi = 0.3;
 			}
 			bonus *= multi;
 			safetyCar.setTracado(0);
