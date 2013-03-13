@@ -115,8 +115,8 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .7) ? 2 : 1)
-				: (Math.random() > .5) ? 2 : 1;
+				.random() > .5) ? 2 : 1)
+				: (Math.random() > .3) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 
 		long ptsSc = safetyCar.getPtosPista();
@@ -124,12 +124,13 @@ public class ControleSafetyCar {
 		long diffPts = ptsSc - polePts;
 		bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo
 				.getIndexVelcidadeDaPista()) * 0.7;
-		for (double i = 1000; i > 100; i--) {
-			if (diffPts >= i) {
-				bonus *= (100 / i);
-				safetyCar.setTracado(0);
-				break;
+		if (diffPts >= 200) {
+			double multi = (diffPts - 200 / 200.0);
+			if (multi > 0.7) {
+				multi = 0.7;
 			}
+			bonus *= multi;
+			safetyCar.setTracado(0);
 		}
 		bonus = calculaMediaSC(bonus);
 		index += bonus;
