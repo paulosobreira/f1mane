@@ -802,7 +802,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (pilotosJogadores.contains(pilotoSelecionado)) {
 			pilotoJogador = pilotoSelecionado;
 		}
-
+		gerenciadorVisual.atualizaPilotoSelecionado();
 	}
 
 	public Piloto getPilotoSelecionado() {
@@ -1273,6 +1273,18 @@ public class ControleJogoLocal extends ControleRecursos implements
 	@Override
 	public No getNoSaidaBox() {
 		return controleCorrida.getNoSaidaBox();
+	}
+
+	@Override
+	public void selecionaPilotoCima() {
+		gerenciadorVisual.selecionaPilotoCima();
+
+	}
+
+	@Override
+	public void selecionaPilotoBaixo() {
+		gerenciadorVisual.selecionaPilotoBaixo();
+
 	}
 
 }
