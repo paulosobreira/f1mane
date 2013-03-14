@@ -1168,8 +1168,10 @@ public class Piloto implements Serializable {
 				freiandoReta = true;
 				acelerando = false;
 				double multi = (val / 300.0);
-				if (multi < 0.7)
+				if (!controleJogo.isChovendo() && multi < 0.7)
 					multi = 0.7;
+				if (controleJogo.isChovendo() && multi < 0.5)
+					multi = 0.5;
 				ganho *= multi;
 			} else {
 				freiandoReta = false;
