@@ -307,4 +307,8 @@ public interface InterfaceJogo {
 
 	public No getNoSaidaBox();
 
+	public void selecionaPilotoCima();
+
+	public void selecionaPilotoBaixo();
+
 }

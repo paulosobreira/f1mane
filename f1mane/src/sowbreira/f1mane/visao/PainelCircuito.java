@@ -4463,4 +4463,14 @@ public class PainelCircuito extends JPanel {
 	public void setBackGround(BufferedImage backGround) {
 		this.backGround = backGround;
 	}
+
+	public Piloto getPilotoSelecionado() {
+		return pilotoSelecionado;
+	}
+
+	public void setPilotoSelecionado(Piloto pilotoSelecionado) {
+		this.pilotoSelecionado = pilotoSelecionado;
+	}
+	
+
 }

@@ -1109,4 +1109,16 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return controleBox.getSaidaBox();
 	}
 
+	@Override
+	public void selecionaPilotoCima() {
+		gerenciadorVisual.selecionaPilotoCima();
+
+	}
+
+	@Override
+	public void selecionaPilotoBaixo() {
+		gerenciadorVisual.selecionaPilotoBaixo();
+
+	}
+
 }
