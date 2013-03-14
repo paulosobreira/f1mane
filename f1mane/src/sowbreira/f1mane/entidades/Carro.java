@@ -368,7 +368,7 @@ public class Carro implements Serializable {
 					&& testePotencia()) {
 				novoModificador++;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod) {
-				novoModificador -= Math.random() < 0.3 ? (testePotencia() ? 0
+				novoModificador -= Math.random() < 0.2 ? (testePotencia() ? 0
 						: 1) : (testePotencia() ? 1 : 2);
 			}
 		}
@@ -733,15 +733,9 @@ public class Carro implements Serializable {
 				}
 			}
 		} else if (TIPO_PNEU_CHUVA.equals(tipoPneu)) {
-			double mod = 0;
-			if (agressivo && getPiloto().testeHabilidadePiloto(controleJogo)) {
-				mod = Util.intervalo(1, 9) / 100.0;
-			} else if (agressivo) {
-				mod = Util.intervalo(-5, 5) / 100.0;
-			}
-			if (no.verificaCruvaBaixa() && Math.random() > (.80 + mod)) {
+			if (no.verificaCruvaBaixa() && Math.random() > (.80)) {
 				novoModificador -= 1;
-			} else if (no.verificaCruvaAlta() && Math.random() > (.90 + mod)) {
+			} else if (no.verificaCruvaAlta() && Math.random() > (.90)) {
 				novoModificador -= 1;
 			}
 		}
