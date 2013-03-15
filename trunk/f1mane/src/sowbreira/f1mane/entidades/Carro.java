@@ -355,6 +355,7 @@ public class Carro implements Serializable {
 			mod = 0.3;
 		}
 		if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa())
+				&& !no.verificaRetaOuLargada()
 				&& getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
 			novoModificadorOri++;
 		}
@@ -381,11 +382,6 @@ public class Carro implements Serializable {
 				novoModificador += Math.random() < 0.7 ? 1 : 0;
 			}
 		}
-
-		// System.out.println("Novo "
-		// + (novoModificadorOri + Util.inte(+Math.round(novoModificador
-		// * (1.0 - controleJogo.getNiveljogo())))) + " Velho "
-		// + novoModificadorOri + " Calc " + novoModificador);
 		return novoModificadorOri + novoModificador;
 	}
 
@@ -453,9 +449,10 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
-						"temperatura", new String[] { Html
-								.txtRedBold(getPiloto().getNome()) })));
+				controleJogo
+						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+								new String[] { Html.txtRedBold(getPiloto()
+										.getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -737,6 +734,8 @@ public class Carro implements Serializable {
 				novoModificador -= 1;
 			} else if (no.verificaCruvaAlta() && Math.random() > (.90)) {
 				novoModificador -= 1;
+			} else if (no.verificaRetaOuLargada() && Math.random() > (.99)) {
+				novoModificador -= 1;
 			}
 		}
 
@@ -781,7 +780,6 @@ public class Carro implements Serializable {
 		if ((pneus < 0) && !verificaDano()) {
 			setDanificado(PNEU_FURADO);
 			pneus = -1;
-
 			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("043",
 					new String[] { getPiloto().getNome() })));
 
