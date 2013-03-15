@@ -278,7 +278,7 @@ public class ControleCorrida {
 				if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
 					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2),
 							controleJogo, true);
-					pilotoNaFrente.setCiclosDesconcentrado(500);
+					pilotoNaFrente.setCiclosDesconcentrado(30);
 					mensagemRetardatario(piloto, pilotoNaFrente);
 				}
 				return ganho;
@@ -405,8 +405,8 @@ public class ControleCorrida {
 							|| piloto.getStress() <= Util.intervalo(60, 80)) {
 						piloto.incStress(Util.intervalo(30, 50));
 						piloto
-								.setCiclosDesconcentrado(Util.intervalo(100,
-										200));
+								.setCiclosDesconcentrado(Util.intervalo(20,
+										30));
 					} else {
 						piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 						controleJogo.infoPrioritaria(Lang.msg("016",
