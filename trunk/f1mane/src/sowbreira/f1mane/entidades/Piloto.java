@@ -958,6 +958,7 @@ public class Piloto implements Serializable {
 				mudarTracado(1, controleJogo, true);
 			}
 		}
+		decremetaPilotoDesconcentrado(controleJogo);
 		setPtosPista(Util.inte(getPtosPista() + ganho));
 		index += Math.round(ganho);
 		setVelocidade(Util.inte(((260 * ganho) / ganhoMax) + ganho
@@ -1014,7 +1015,7 @@ public class Piloto implements Serializable {
 		}
 		if (getTracado() == 4 || getTracado() == 5) {
 			if (!verificaDesconcentrado()) {
-				setCiclosDesconcentrado(5000);
+				setCiclosDesconcentrado(50);
 			}
 			setModoPilotagem(LENTO);
 			if (getIndiceTracado() <= 0) {
@@ -1152,7 +1153,7 @@ public class Piloto implements Serializable {
 			acelerando = false;
 			setAgressivoF4(false);
 			if (!verificaDesconcentrado())
-				setCiclosDesconcentrado(100);
+				setCiclosDesconcentrado(30);
 			incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(10,
 					20) : Util.intervalo(20, 30));
 			ultimaColisao = System.currentTimeMillis();
@@ -1192,11 +1193,12 @@ public class Piloto implements Serializable {
 			freiandoReta = false;
 		}
 
-		if (noAtual.verificaCruvaBaixa() && retardaFreiandoReta
-				&& !testeHabilidadePilotoCarro(controleJogo)) {
-			setCiclosDesconcentrado(2000);
-			agressivo = false;
-			modoPilotagem = LENTO;
+		if (noAtual.verificaCruvaBaixa() && retardaFreiandoReta) {
+			if (!testeHabilidadePilotoCarro(controleJogo)) {
+				setCiclosDesconcentrado(20);
+				agressivo = false;
+				modoPilotagem = LENTO;
+			}
 			retardaFreiandoReta = false;
 		}
 	}
@@ -2027,7 +2029,7 @@ public class Piloto implements Serializable {
 	}
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {
-		if (decremetaPilotoDesconcentrado(controleJogo)) {
+		if (verificaDesconcentrado()) {
 			if (!isJogadorHumano()) {
 				agressivo = false;
 			}
@@ -2051,7 +2053,7 @@ public class Piloto implements Serializable {
 						novoModoAgressivo = true;
 					} else {
 						novoModoAgressivo = false;
-						setCiclosDesconcentrado(Util.intervalo(10, 50));
+						setCiclosDesconcentrado(Util.intervalo(10, 20));
 					}
 				} else {
 					novoModoAgressivo = false;
@@ -2196,7 +2198,7 @@ public class Piloto implements Serializable {
 	}
 
 	public boolean testeHabilidadePiloto(InterfaceJogo interfaceJogo) {
-		if (danificado() || decremetaPilotoDesconcentrado(interfaceJogo)) {
+		if (danificado() || verificaDesconcentrado()) {
 			return false;
 		}
 		boolean teste = Math.random() < (habilidade / 1000.0);
