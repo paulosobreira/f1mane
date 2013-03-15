@@ -122,6 +122,7 @@ public class Piloto implements Serializable {
 	private boolean travouRodas;
 	private int contTravouRodas;
 	private boolean freiandoReta;
+	private boolean retardaFreiandoReta;
 	private int ultModificador;
 	private long ultimaColisao;
 	private int tracadoDelay;
@@ -603,11 +604,14 @@ public class Piloto implements Serializable {
 	}
 
 	public void setAgressivoF4(boolean regMaximo) {
+		if (regMaximo && verificaDesconcentrado()) {
+			return;
+		}
 		this.agressivo = regMaximo;
 	}
 
 	public void setAgressivo(boolean regMaximo, InterfaceJogo interfaceJogo) {
-		if (regMaximo && decremetaPilotoDesconcentrado(interfaceJogo)) {
+		if (regMaximo && verificaDesconcentrado()) {
 			return;
 		}
 		this.agressivo = regMaximo;
@@ -1010,7 +1014,7 @@ public class Piloto implements Serializable {
 		}
 		if (getTracado() == 4 || getTracado() == 5) {
 			if (!verificaDesconcentrado()) {
-				setCiclosDesconcentrado(1000);
+				setCiclosDesconcentrado(5000);
 			}
 			setModoPilotagem(LENTO);
 			if (getIndiceTracado() <= 0) {
@@ -1019,7 +1023,7 @@ public class Piloto implements Serializable {
 							pontoDerrapada, new Point(getCarX(), getCarY()));
 					for (int i = 1; i < 10; i++) {
 						if (distancia < 100 * i) {
-							ganho *= 0.9 / i;
+							ganho *= 0.8 / i;
 							break;
 						}
 					}
@@ -1168,16 +1172,32 @@ public class Piloto implements Serializable {
 				freiandoReta = true;
 				acelerando = false;
 				double multi = (val / 300.0);
-				if (!controleJogo.isChovendo() && multi < 0.7)
-					multi = 0.7;
-				if (controleJogo.isChovendo() && multi < 0.5)
-					multi = 0.5;
+				if (Piloto.AGRESSIVO.equals(getModoPilotagem())) {
+					retardaFreiandoReta = true;
+				}
+				double minMulti = 0.7;
+				if (controleJogo.isChovendo()) {
+					minMulti -= 0.2;
+				}
+				if (retardaFreiandoReta) {
+					minMulti += 0.1;
+				}
+				if (multi < minMulti)
+					multi = minMulti;
 				ganho *= multi;
 			} else {
 				freiandoReta = false;
 			}
 		} else {
 			freiandoReta = false;
+		}
+
+		if (noAtual.verificaCruvaBaixa() && retardaFreiandoReta
+				&& !testeHabilidadePilotoCarro(controleJogo)) {
+			setCiclosDesconcentrado(2000);
+			agressivo = false;
+			modoPilotagem = LENTO;
+			retardaFreiandoReta = false;
 		}
 	}
 
@@ -1815,7 +1835,7 @@ public class Piloto implements Serializable {
 			return ganho;
 		}
 		double size = 15;
-		if (acelerando) {
+		if (!controleJogo.isChovendo() && acelerando) {
 			size = 7;
 		}
 		if (colisao) {
@@ -2118,7 +2138,6 @@ public class Piloto implements Serializable {
 			ciclosDesconcentrado--;
 		}
 		ciclosDesconcentrado--;
-
 		return true;
 	}
 
@@ -2332,6 +2351,9 @@ public class Piloto implements Serializable {
 	}
 
 	public void setModoPilotagem(String modoPilotagem) {
+		if (verificaDesconcentrado() && !LENTO.equals(modoPilotagem)) {
+			return;
+		}
 		this.modoPilotagem = modoPilotagem;
 	}
 
