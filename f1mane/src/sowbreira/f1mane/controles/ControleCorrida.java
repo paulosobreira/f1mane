@@ -406,7 +406,7 @@ public class ControleCorrida {
 						piloto.incStress(Util.intervalo(30, 50));
 						piloto
 								.setCiclosDesconcentrado(Util.intervalo(20,
-										30));
+										60));
 					} else {
 						piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 						controleJogo.infoPrioritaria(Lang.msg("016",

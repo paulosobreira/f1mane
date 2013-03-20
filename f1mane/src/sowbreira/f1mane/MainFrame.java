@@ -1042,7 +1042,22 @@ public class MainFrame extends JFrame {
 				}
 				controleJogo = new ControleJogoLocal();
 				controleJogo.setMainFrame(this);
-				controleJogo.iniciarJogo();
+				Thread autoIni = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+						}
+						try {
+							controleJogo.iniciarJogo();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				autoIni.start();
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
