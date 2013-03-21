@@ -1777,7 +1777,7 @@ public class GerenciadorVisual {
 						} else {
 							break;
 						}
-						x -= 3;
+						x -= 5;
 						try {
 							Thread.sleep(tempoSleepQualy);
 						} catch (InterruptedException e) {
