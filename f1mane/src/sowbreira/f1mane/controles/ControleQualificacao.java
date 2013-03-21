@@ -87,6 +87,7 @@ public class ControleQualificacao {
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);
 			piloto.setContTravouRodas(0);
+			piloto.setCiclosDesconcentrado(0);
 			piloto.setVoltas(new ArrayList());
 			controleJogo.zerarMelhorVolta();
 		}
