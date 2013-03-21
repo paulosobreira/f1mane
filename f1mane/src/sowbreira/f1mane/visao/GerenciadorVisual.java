@@ -1739,8 +1739,8 @@ public class GerenciadorVisual {
 
 				limitesViewPort = (Rectangle) painelCircuito.limitesViewPort();
 
-				int iniY1 = 30;
-				int iniY2 = 40;
+				int iniY1 = 50;
+				int iniY2 = 60;
 				int midPainel = 0;
 				if (limitesViewPort != null)
 					midPainel = (limitesViewPort.width / 2);
