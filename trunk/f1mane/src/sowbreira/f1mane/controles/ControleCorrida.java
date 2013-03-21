@@ -278,7 +278,8 @@ public class ControleCorrida {
 				if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
 					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2),
 							controleJogo, true);
-					pilotoNaFrente.setCiclosDesconcentrado(30);
+					pilotoNaFrente.setCiclosDesconcentrado(Util.intervalo(10,
+							20));
 					mensagemRetardatario(piloto, pilotoNaFrente);
 				}
 				return ganho;
@@ -404,9 +405,6 @@ public class ControleCorrida {
 							|| controleJogo.verificaUltimasVoltas()
 							|| piloto.getStress() <= Util.intervalo(60, 80)) {
 						piloto.incStress(Util.intervalo(30, 50));
-						piloto
-								.setCiclosDesconcentrado(Util.intervalo(20,
-										60));
 					} else {
 						piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 						controleJogo.infoPrioritaria(Lang.msg("016",
@@ -464,7 +462,6 @@ public class ControleCorrida {
 		}
 		if (!ganhador.isJogadorHumano())
 			ganhador.setAgressivo(true, controleJogo);
-		ganhador.setCiclosDesconcentrado(0);
 		if (!controleJogo.isSafetyCarNaPista()) {
 			if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
 				controleJogo.info(Lang.msg("018", new String[] {
@@ -477,10 +474,6 @@ public class ControleCorrida {
 		if (perdedor.isJogadorHumano() && !ganhador.isJogadorHumano()) {
 			return;
 		}
-		perdedor.setAgressivo(false, controleJogo);
-		if (!perdedor.verificaDesconcentrado())
-			perdedor.setCiclosDesconcentrado(Util.intervalo(200, 400));
-
 	}
 
 	public int porcentagemCorridaCompletada() {

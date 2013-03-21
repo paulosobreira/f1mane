@@ -1036,7 +1036,7 @@ public class PainelCircuito extends JPanel {
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
 		g2d.drawString(
-				"getCiclosDesconcentrado()"
+				"CiclosDesconcentrado()"
 						+ (pilotoSelecionado.getCiclosDesconcentrado()),
 				ptoOri, yBase);
 
@@ -3283,7 +3283,7 @@ public class PainelCircuito extends JPanel {
 			}
 			Point pt = null;
 			if (piloto.getPosicao() % 2 == 0) {
-				pt = new Point(point.x + 120, point.y + 20);
+				pt = new Point(point.x + 200, point.y + 20);
 
 			} else {
 				pt = new Point(point.x - 120, point.y + 20);
