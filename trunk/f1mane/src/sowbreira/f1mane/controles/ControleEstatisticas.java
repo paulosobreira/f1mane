@@ -30,6 +30,7 @@ public class ControleEstatisticas {
 	private static DecimalFormat mil = new DecimalFormat("000");
 	private static DecimalFormat dez = new DecimalFormat("00");
 	private LinkedList bufferInfo = new LinkedList();
+	private LinkedList<String> allInfo = new LinkedList<String>();
 	private boolean consumidorAtivo = true;
 	private Thread infoConsumer;
 
@@ -204,8 +205,8 @@ public class ControleEstatisticas {
 		infoConsumer = new Thread(new Runnable() {
 			public void run() {
 				try {
-					controleJogo.adicionarInfoDireto(Html
-							.superGreen(Lang.msg("000", new Object[] { controleJogo
+					controleJogo.adicionarInfoDireto(Html.superGreen(Lang.msg(
+							"000", new Object[] { controleJogo
 									.totalVoltasCorrida() })));
 					boolean interruput = false;
 					while (!interruput && consumidorAtivo) {
@@ -245,12 +246,16 @@ public class ControleEstatisticas {
 				if (bufferInfo.contains(info)) {
 					return;
 				}
-
+				if (allInfo.size() > 0
+						&& allInfo.get(allInfo.size() - 1).equals(info)) {
+					return;
+				}
 				if (prioritaria) {
 					bufferInfo.addFirst(info);
 				} else {
 					bufferInfo.add(info);
 				}
+				allInfo.add(info);
 			}
 		}
 	}
