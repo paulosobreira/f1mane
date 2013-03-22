@@ -245,6 +245,7 @@ public class ControleQualificacao {
 						(Carro.ALTURA));
 				piloto.setTracado(1);
 			}
+			piloto.setIndiceTracado(0);
 			piloto.setNoAtual(nM);
 			piloto.setPosicao(i + 1);
 			piloto.zerarGanhoEVariaveisUlt();
