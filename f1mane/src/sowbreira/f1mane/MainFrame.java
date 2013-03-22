@@ -1032,7 +1032,7 @@ public class MainFrame extends JFrame {
 					@Override
 					public void run() {
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(500);
 							controleJogo.iniciarJogo();
 						} catch (Exception e) {
 							Logger.logarExept(e);
