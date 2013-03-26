@@ -215,7 +215,7 @@ public class PainelCircuito extends JPanel {
 	private ImageIcon tyre;
 	private int acionaDesenhaKers;
 	private int contMostraLag;
-	private List<String> climaAnterior = new ArrayList<String>();
+	private String climaAnterior;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -2753,15 +2753,12 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaChuva(Graphics2D g2d) {
 
-		if (!climaAnterior.contains(controleJogo.getClima())) {
-			climaAnterior.add(controleJogo.getClima());
+		if (!controleJogo.getClima().equals(climaAnterior)) {
+			climaAnterior = controleJogo.getClima();
 		}
 
-		String climaAnt = climaAnterior.size() > 1 ? climaAnterior
-				.get(climaAnterior.size() - 1) : climaAnterior.get(0);
-
 		if (Clima.NUBLADO.equals(controleJogo.getClima())) {
-			if (Clima.CHUVA.equals(climaAnt)) {
+			if (Clima.CHUVA.equals(climaAnterior)) {
 				if (Math.random() > 0.7) {
 					indiceNublado--;
 					if (indiceNublado < 500) {
@@ -2811,9 +2808,6 @@ public class PainelCircuito extends JPanel {
 		Point p2 = new Point(0, 0);
 		g2d.setColor(lightWhiteRain);
 		double qtdeGotas = indiceNublado / 2000.0;
-		// if (controleJogo.isChovendo()) {
-		// qtdeGotas = 0;
-		// }
 		if (Math.random() > qtdeGotas) {
 			return;
 		}
