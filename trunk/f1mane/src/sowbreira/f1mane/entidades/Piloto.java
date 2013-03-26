@@ -1455,7 +1455,14 @@ public class Piloto implements Serializable {
 				boolean msmPista = obterPista(controleJogo).size() == piloto
 						.obterPista(controleJogo).size();
 				boolean msmTracado = piloto.getTracado() == getTracado();
+				if ((piloto.getTracadoAntigo() == 5 || piloto
+						.getTracadoAntigo() == 4)
+						&& !intercecionou) {
+					msmTracado = false;
+				}
+
 				msmPista = msmPista && msmTracado;
+
 				if (intercecionou && msmPista) {
 					if (piloto.getCarro().isPaneSeca()
 							|| piloto.getCarro().isRecolhido()) {
