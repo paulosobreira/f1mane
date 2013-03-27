@@ -4168,8 +4168,21 @@ public class PainelCircuito extends JPanel {
 
 	public void adicionatrvadaRoda(TravadaRoda travadaRoda) {
 		No noAtual = controleJogo.obterNoPorId(travadaRoda.getIdNo());
-		if (marcasPneu.size() > 500 || noAtual == null) {
+		if (marcasPneu.size() > 1000 || noAtual == null) {
 			return;
+		}
+		Collection<TravadaRoda> travadaRodaCopia = getTravadaRodaCopia();
+		for (Iterator iterator = travadaRodaCopia.iterator(); iterator
+				.hasNext();) {
+			TravadaRoda travadaRodaTela = (TravadaRoda) iterator.next();
+			Point pTela = controleJogo.obterNoPorId(travadaRodaTela.getIdNo())
+					.getPoint();
+			Point p = controleJogo.obterNoPorId(travadaRoda.getIdNo())
+					.getPoint();
+			if (travadaRodaTela.getTracado() == travadaRoda.getTracado()
+					&& GeoUtil.distaciaEntrePontos(pTela, p) < Carro.MEIA_LARGURA) {
+				return;
+			}
 		}
 		marcasPneu.add(travadaRoda);
 	}
