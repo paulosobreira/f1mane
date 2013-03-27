@@ -1951,7 +1951,7 @@ public class GerenciadorVisual {
 		if (ultimaTravavadaRodas == 0) {
 			ultimaTravavadaRodas = System.currentTimeMillis();
 		}
-		if (System.currentTimeMillis() - ultimaTravavadaRodas < 2000) {
+		if (System.currentTimeMillis() - ultimaTravavadaRodas < 1000) {
 			return;
 		}
 		if (painelCircuito != null) {
