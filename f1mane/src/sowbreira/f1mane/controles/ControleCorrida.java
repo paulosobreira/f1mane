@@ -284,6 +284,12 @@ public class ControleCorrida {
 				}
 				return ganho;
 			}
+			if ((Math.abs(indFrenteCarro - indTrazCarroFrente) < (multi * Carro.MEIA_LARGURA))
+					&& pilotoNaFrente.getTracado() == 0
+					&& piloto.getTracado() != 0
+					&& !piloto.getNoAtual().verificaRetaOuLargada()) {
+				return ganho * getFatorUtrapassagem();
+			}
 		}
 		return ganho;
 	}
