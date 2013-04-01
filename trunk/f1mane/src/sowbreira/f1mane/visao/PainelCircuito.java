@@ -112,6 +112,7 @@ public class PainelCircuito extends JPanel {
 	private Piloto pilotQualificacao;
 	private Point pointQualificacao;
 	private Map mapDesenharQualificacao = new HashMap();
+	private Map mapaZoomTravadasPneus = new HashMap();
 	private boolean desenhouQualificacao;
 	private boolean desenhaInfo = true;
 	private int mx;
@@ -1910,36 +1911,44 @@ public class PainelCircuito extends JPanel {
 				carx = Util.inte((p2.x - w2));
 				cary = Util.inte((p2.y - h2));
 			}
-			double rad = Math.toRadians((double) calculaAngulo);
-			AffineTransform afZoom = new AffineTransform();
-			AffineTransform afRotate = new AffineTransform();
-			afZoom.setToScale(zoom, zoom);
-			afRotate.setToRotation(rad, w2, h2);
 
-			BufferedImage rotateBuffer = new BufferedImage(width, width,
-					BufferedImage.TYPE_INT_ARGB);
-			BufferedImage zoomBuffer = new BufferedImage(width, height,
-					BufferedImage.TYPE_INT_ARGB);
-			AffineTransformOp op = new AffineTransformOp(afRotate,
-					AffineTransformOp.TYPE_BILINEAR);
-			switch (travadaRoda.getTipo()) {
-			case 0:
-				op.filter(travadaRodaImg0, zoomBuffer);
-				break;
-			case 1:
-				op.filter(travadaRodaImg1, zoomBuffer);
-				break;
-			case 2:
-				op.filter(travadaRodaImg2, zoomBuffer);
-				break;
-			default:
-				break;
+			BufferedImage travada = (BufferedImage) mapaZoomTravadasPneus
+					.get(carx + "-" + cary + "-" + zoom);
+			if (travada == null) {
+				double rad = Math.toRadians((double) calculaAngulo);
+				AffineTransform afZoom = new AffineTransform();
+				AffineTransform afRotate = new AffineTransform();
+				afZoom.setToScale(zoom, zoom);
+				afRotate.setToRotation(rad, w2, h2);
+
+				BufferedImage rotateBuffer = new BufferedImage(width, width,
+						BufferedImage.TYPE_INT_ARGB);
+				BufferedImage zoomBuffer = new BufferedImage(width, height,
+						BufferedImage.TYPE_INT_ARGB);
+				AffineTransformOp op = new AffineTransformOp(afRotate,
+						AffineTransformOp.TYPE_BILINEAR);
+				switch (travadaRoda.getTipo()) {
+				case 0:
+					op.filter(travadaRodaImg0, zoomBuffer);
+					break;
+				case 1:
+					op.filter(travadaRodaImg1, zoomBuffer);
+					break;
+				case 2:
+					op.filter(travadaRodaImg2, zoomBuffer);
+					break;
+				default:
+					break;
+				}
+
+				AffineTransformOp op2 = new AffineTransformOp(afZoom,
+						AffineTransformOp.TYPE_BILINEAR);
+				op2.filter(zoomBuffer, rotateBuffer);
+				travada = rotateBuffer;
+				mapaZoomTravadasPneus.put(carx + "-" + cary + "-" + zoom,
+						travada);
 			}
-
-			AffineTransformOp op2 = new AffineTransformOp(afZoom,
-					AffineTransformOp.TYPE_BILINEAR);
-			op2.filter(zoomBuffer, rotateBuffer);
-			g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
+			g2d.drawImage(travada, Util.inte(carx * zoom),
 					Util.inte(cary * zoom), null);
 
 		}

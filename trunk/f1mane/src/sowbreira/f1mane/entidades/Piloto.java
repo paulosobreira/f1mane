@@ -2135,7 +2135,7 @@ public class Piloto implements Serializable {
 			ciclosDesconcentrado = 0;
 			return false;
 		}
-		double val = (interfaceJogo.getTempoCiclo() / 100);
+		double val = (interfaceJogo.getTempoCiclo() / 80);
 		if (val < 1.0) {
 			if (Math.random() > val) {
 				val = 1;
