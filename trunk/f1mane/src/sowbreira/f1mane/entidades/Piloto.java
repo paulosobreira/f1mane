@@ -1197,8 +1197,11 @@ public class Piloto implements Serializable {
 
 		if (noAtual.verificaCruvaBaixa() && retardaFreiandoReta) {
 			if (!testeHabilidadePilotoCarro(controleJogo)) {
-				setCiclosDesconcentrado(Util.intervalo(30, 50));
+				setCiclosDesconcentrado(Util.intervalo(30, 40));
 				agressivo = false;
+				if (getPosicao() <= 10 || isJogadorHumano())
+					controleJogo.infoPrioritaria(Lang.msg("014",
+							new String[] { Html.superRed(getNome()) }));
 			}
 			retardaFreiandoReta = false;
 		}

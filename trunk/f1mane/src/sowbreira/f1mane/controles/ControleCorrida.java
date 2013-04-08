@@ -389,7 +389,7 @@ public class ControleCorrida {
 						&& (piloto.getStress() > 70) && piloto.isAgressivo()
 						&& !piloto.testeHabilidadePiloto(controleJogo)) {
 					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
-					if (piloto.getPosicao() <= 10)
+					if (piloto.getPosicao() <= 10 || piloto.isJogadorHumano())
 						controleJogo.infoPrioritaria(Lang.msg("015",
 								new String[] { Html.superRed(piloto.getNome()),
 										pilotoNaFrente.getNome() }));
@@ -397,7 +397,7 @@ public class ControleCorrida {
 						&& Math.random() > fatorAcidenteLocal
 						&& (piloto.getStress() > 90)) {
 					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
-					if (piloto.getPosicao() <= 10)
+					if (piloto.getPosicao() <= 10 || piloto.isJogadorHumano())
 						controleJogo.infoPrioritaria(Lang.msg("015",
 								new String[] { Html.superRed(piloto.getNome()),
 										pilotoNaFrente.getNome() }));
