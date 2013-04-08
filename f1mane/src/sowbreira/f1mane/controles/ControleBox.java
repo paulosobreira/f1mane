@@ -206,9 +206,10 @@ public class ControleBox {
 					 */
 					ptosBox += 1;
 				} else if (box.verificaRetaOuLargada()) {
-					ptosBox += ((boxRapido) ? 3 : 2);
+					ptosBox += ((boxRapido) ? Util.intervalo(2, 3) : Util
+							.intervalo(1, 2));
 				} else if (box.verificaCruvaAlta()) {
-					ptosBox += ((boxRapido) ? 2 : 1);
+					ptosBox += ((boxRapido) ? Util.intervalo(1, 2) : 1);
 				} else {
 					ptosBox += 1;
 				}
