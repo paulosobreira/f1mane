@@ -211,6 +211,9 @@ public class ControleCorrida {
 		if (controleJogo.isModoQualify()) {
 			return ganho;
 		}
+		if (controleJogo.isSafetyCarNaPista()) {
+			return ganho;
+		}
 		No noAtualCarro = piloto.getNoAtual();
 		List pistaPiloto = piloto.obterPista(controleJogo);
 
@@ -468,13 +471,13 @@ public class ControleCorrida {
 		}
 		if (!ganhador.isJogadorHumano())
 			ganhador.setAgressivo(true, controleJogo);
-		if (!controleJogo.isSafetyCarNaPista()) {
-			if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
-				controleJogo.info(Lang.msg("018", new String[] {
-						Html.bold(perdedor.getNome()),
-						Html.bold(ganhador.getNome()) }));
-			}
+
+		if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
+			controleJogo.info(Lang.msg("018", new String[] {
+					Html.bold(perdedor.getNome()),
+					Html.bold(ganhador.getNome()) }));
 		}
+
 		perdedor.incStress(Util.intervalo(1,
 				(int) controleJogo.getNiveljogo() * 10));
 		if (perdedor.isJogadorHumano() && !ganhador.isJogadorHumano()) {
