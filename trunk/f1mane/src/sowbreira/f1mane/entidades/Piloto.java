@@ -1098,7 +1098,7 @@ public class Piloto implements Serializable {
 		/**
 		 * Controla Efeito turbulencia e ultrapassagens usando tracado
 		 */
-		if (!controleJogo.isModoQualify() || !controleJogo.isSafetyCarNaPista()) {
+		if (!controleJogo.isModoQualify()) {
 			Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 			if (carroPilotoDaFrente != null) {
 				double diff = calculaDiffParaProximo(controleJogo);
@@ -2063,10 +2063,7 @@ public class Piloto implements Serializable {
 			} else {
 				novoModoAgressivo = true;
 			}
-			if (!jogadorHumano && controleJogo.isSafetyCarNaPista()) {
-				novoModoAgressivo = false;
-				getCarro().setGiro(Carro.GIRO_MIN_VAL);
-			}
+
 		} else {
 			if (No.CURVA_BAIXA.equals(noAtual.getTipo())) {
 				novoModoAgressivo = false;
@@ -2074,6 +2071,10 @@ public class Piloto implements Serializable {
 			} else if (No.CURVA_ALTA.equals(noAtual.getTipo())) {
 				incStress(3);
 			}
+		}
+		if (!jogadorHumano && controleJogo.isSafetyCarNaPista()) {
+			novoModoAgressivo = false;
+			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 		}
 		if (jogadorHumano) {
 			if (!testeHabilidadePilotoHumanoCarro(controleJogo)

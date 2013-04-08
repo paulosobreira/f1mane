@@ -62,12 +62,12 @@ public class ControleBox {
 		super();
 		this.controleJogo = controleJogo;
 		this.controleCorrida = controleCorrida;
-		entradaBox = (No) controleJogo.getCircuito().getPistaFull()
-				.get(controleJogo.getCircuito().getEntradaBoxIndex());
-		paradaBox = (No) controleJogo.getCircuito().getBoxFull()
-				.get(controleJogo.getCircuito().getParadaBoxIndex());
-		saidaBox = (No) controleJogo.getCircuito().getPistaFull()
-				.get(controleJogo.getCircuito().getSaidaBoxIndex());
+		entradaBox = (No) controleJogo.getCircuito().getPistaFull().get(
+				controleJogo.getCircuito().getEntradaBoxIndex());
+		paradaBox = (No) controleJogo.getCircuito().getBoxFull().get(
+				controleJogo.getCircuito().getParadaBoxIndex());
+		saidaBox = (No) controleJogo.getCircuito().getPistaFull().get(
+				controleJogo.getCircuito().getSaidaBoxIndex());
 		circuito = controleJogo.getCircuito();
 		calculaQtdeNosPistaRefBox();
 		if (saidaBox == null) {
@@ -175,7 +175,8 @@ public class ControleBox {
 	public void processarPilotoBox(Piloto piloto) {
 		int cont = piloto.getNoAtual().getIndex();
 		if (!(cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
-				.getEntradaBoxIndex() + 50)) && (piloto.getPtosBox() <= 0)) {
+				.getEntradaBoxIndex() + 50))
+				&& (piloto.getPtosBox() <= 0)) {
 			return;
 		} else {
 			if (boxEquipesOcupado == null) {
@@ -204,14 +205,9 @@ public class ControleBox {
 					 * gera limite velocidade no box
 					 */
 					ptosBox += 1;
-				} else if (box.verificaRetaOuLargada()
-						&& box.getIndex() > ultIndiceParada) {
-					ptosBox += ((boxRapido) ? 4 : 3);
-				} else if (box.verificaCruvaAlta()
-						&& box.getIndex() > ultIndiceParada) {
+				} else if (box.verificaRetaOuLargada()) {
 					ptosBox += ((boxRapido) ? 3 : 2);
-				} else if (box.verificaCruvaBaixa()
-						&& box.getIndex() > ultIndiceParada) {
+				} else if (box.verificaCruvaAlta()) {
 					ptosBox += ((boxRapido) ? 2 : 1);
 				} else {
 					ptosBox += 1;
@@ -244,8 +240,9 @@ public class ControleBox {
 
 				if (novosPtsBox >= (indexParada - (Carro.MEIA_LARGURA))
 						&& novosPtsBox <= (indexParada)) {
-					piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2
-							: 1);
+					piloto
+							.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2
+									: 1);
 				} else {
 					piloto.setTracado(0);
 				}
@@ -325,9 +322,9 @@ public class ControleBox {
 			if (controleJogo.isSemReabastacimento()) {
 				combust = new Integer(0);
 			}
-			qtdeCombust = controleJogo.setUpJogadorHumano(piloto,
-					controleJogo.getTipoPeneuBox(piloto), combust,
-					controleJogo.getAsaBox(piloto));
+			qtdeCombust = controleJogo.setUpJogadorHumano(piloto, controleJogo
+					.getTipoPeneuBox(piloto), combust, controleJogo
+					.getAsaBox(piloto));
 		}
 
 		int porcentCombust = (100 * qtdeCombust)
@@ -335,8 +332,8 @@ public class ControleBox {
 		long penalidade = 0;
 		Carro carro = (Carro) boxEquipesOcupado.get(piloto.getCarro());
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
-			controleJogo.info(Html.orange(Lang.msg("298",
-					new String[] { carro.getNome() })));
+			controleJogo.info(Html.orange(Lang.msg("298", new String[] { carro
+					.getNome() })));
 			penalidade = 15;
 			if (piloto.isJogadorHumano()) {
 				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
@@ -361,7 +358,8 @@ public class ControleBox {
 		carro.setPotencia(carro.getPotencia() + Util.intervalo(-5, +5));
 
 		if ((piloto.getPosicao() / controleJogo.getPilotos().size() < Math
-				.random()) && !controleJogo.verificaNivelJogo()) {
+				.random())
+				&& !controleJogo.verificaNivelJogo()) {
 			if (piloto.getHabilidadeAntesQualify() > piloto.getHabilidade()) {
 				piloto.setHabilidade(piloto.getHabilidadeAntesQualify());
 			}
@@ -396,20 +394,13 @@ public class ControleBox {
 		piloto.setSaiuDoBoxMilis(0);
 		if (piloto.isJogadorHumano()) {
 			controleJogo
-					.infoPrioritaria(Html.orange(Lang.msg(
-							"002",
-							new String[] {
-									piloto.getNome(),
-									String.valueOf(controleJogo
-											.getNumVoltaAtual()) })));
+					.infoPrioritaria(Html.orange(Lang.msg("002", new String[] {
+							piloto.getNome(),
+							String.valueOf(controleJogo.getNumVoltaAtual()) })));
 		} else if (piloto.getPosicao() < 9) {
-			controleJogo
-					.info(Html.orange(Lang.msg(
-							"002",
-							new String[] {
-									piloto.getNome(),
-									String.valueOf(controleJogo
-											.getNumVoltaAtual()) })));
+			controleJogo.info(Html.orange(Lang.msg("002", new String[] {
+					piloto.getNome(),
+					String.valueOf(controleJogo.getNumVoltaAtual()) })));
 		}
 		carro.setDanificado(null);
 		if (carro.getDurabilidadeAereofolio() <= 0
@@ -547,9 +538,9 @@ public class ControleBox {
 			if (combustBox.intValue() <= 10) {
 				combustBox = new Integer(10);
 			}
-			controleJogo.setUpJogadorHumano(piloto,
-					controleJogo.getTipoPeneuBox(piloto), combustBox,
-					controleJogo.getAsaBox(piloto));
+			controleJogo.setUpJogadorHumano(piloto, controleJogo
+					.getTipoPeneuBox(piloto), combustBox, controleJogo
+					.getAsaBox(piloto));
 			return;
 		}
 		if (!piloto.testeHabilidadePilotoCarro(controleJogo)
@@ -652,8 +643,9 @@ public class ControleBox {
 					controleCorrida.getDistaciaCorrida());
 		} else {
 			if ((piloto.getQtdeParadasBox() == 0 ? controleJogo
-					.asfaltoAbrasivo() && controleJogo.verificaNivelJogo()
-					: controleJogo.asfaltoAbrasivo()))
+					.asfaltoAbrasivo()
+					&& controleJogo.verificaNivelJogo() : controleJogo
+					.asfaltoAbrasivo()))
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
 						controleCorrida.getDistaciaCorrida());

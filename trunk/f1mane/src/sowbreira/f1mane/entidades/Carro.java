@@ -357,7 +357,11 @@ public class Carro implements Serializable {
 		if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa())
 				&& !no.verificaRetaOuLargada()
 				&& getPiloto().testeHabilidadePilotoCarro(controleJogo)) {
-			novoModificadorOri++;
+			if (no.verificaCruvaBaixa()) {
+				novoModificadorOri += Util.intervalo(0, 1);
+			} else {
+				novoModificadorOri++;
+			}
 		}
 		if (Math.random() > mod || !testePotencia()) {
 			return novoModificadorOri;
@@ -449,10 +453,9 @@ public class Carro implements Serializable {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6 && temperaturaMotor <= tempMax - 5))
-				controleJogo
-						.infoPrioritaria(Html.orange(Lang.msg("temperatura",
-								new String[] { Html.txtRedBold(getPiloto()
-										.getNome()) })));
+				controleJogo.infoPrioritaria(Html.orange(Lang.msg(
+						"temperatura", new String[] { Html
+								.txtRedBold(getPiloto().getNome()) })));
 		}
 		if (giro != GIRO_MAX_VAL) {
 			if (getPiloto().getNoAtual().verificaRetaOuLargada()) {
@@ -615,7 +618,7 @@ public class Carro implements Serializable {
 			dificudade = ((testePotencia()) ? 0 : 1);
 
 		int valConsumo = 0;
-		if (agressivo) {
+		if (agressivo && !controleJogo.isSemReabastacimento()) {
 			valConsumo = (testePotencia() ? 1 : 2);
 		} else {
 			valConsumo = (testePotencia() ? 0 : 1);
