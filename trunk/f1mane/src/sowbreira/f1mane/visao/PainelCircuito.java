@@ -217,6 +217,7 @@ public class PainelCircuito extends JPanel {
 	private int acionaDesenhaKers;
 	private int contMostraLag;
 	private String climaAnterior;
+	private double zoomGrid;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -293,7 +294,6 @@ public class PainelCircuito extends JPanel {
 		}
 		mx += 300;
 		my += 300;
-		Logger.logar("Antes atualizaVarZoom");
 		gerarGrid();
 
 	}
@@ -520,11 +520,13 @@ public class PainelCircuito extends JPanel {
 			}
 			if (mouseZoom > zoom) {
 				zoom += 0.01;
-				gerarGrid();
 			}
 			if (mouseZoom < zoom) {
 				zoom -= 0.01;
+			}
+			if (mouseZoom == zoom && zoomGrid != zoom) {
 				gerarGrid();
+				zoomGrid = zoom;
 			}
 			Graphics2D g2d = (Graphics2D) g;
 			setarHints(g2d);
@@ -2449,6 +2451,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaGrid(Graphics2D g2d) {
+		if (mouseZoom != zoomGrid) {
+			return;
+		}
 		if (limitesViewPort == null) {
 			return;
 		}
@@ -2462,40 +2467,15 @@ public class PainelCircuito extends JPanel {
 				continue;
 			}
 			if (circuito != null && circuito.isUsaBkg()) {
+				if (i >= gridCopy.size()) {
+					continue;
+				}
 				BufferedImage buffer = (BufferedImage) gridCopy.get(i);
 				double meix = (gridCarro.getWidth() / 2) * zoom;
 				double meiy = (gridCarro.getHeight() / 2) * zoom;
-				/*
-				 * Grid
-				 */
-				boolean naoDesenha = false;
-				if (circuito.getObjetos() != null) {
-					for (Iterator iterator = circuito.getObjetos().iterator(); iterator
-							.hasNext();) {
-						ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-						if (objetoPista instanceof ObjetoTransparencia) {
-							ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
-							if (objetoTransparencia.obterArea().intersects(
-									grid[i].getBounds())) {
-								naoDesenha = true;
-								break;
-							}
-							Point borda = new Point((int) (grid[i].getBounds()
-									.getCenterX() - meix), (int) (grid[i]
-									.getBounds().getCenterY() - meiy));
-							if (objetoTransparencia.obterArea().contains(borda)) {
-								naoDesenha = true;
-								break;
-							}
-						} else {
-							continue;
-						}
-					}
-				}
-				if (!naoDesenha)
-					g2d.drawImage(buffer, (int) (grid[i].getBounds()
-							.getCenterX() - meix), (int) (grid[i].getBounds()
-							.getCenterY() - meiy), null);
+				g2d.drawImage(buffer,
+						(int) (grid[i].getBounds().getCenterX() - meix),
+						(int) (grid[i].getBounds().getCenterY() - meiy), null);
 			} else {
 				g2d.setColor(Color.white);
 				g2d.fill(grid[i]);
@@ -2528,7 +2508,6 @@ public class PainelCircuito extends JPanel {
 					(pm.x - (Carro.MEIA_LARGURA)),
 					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 					(Carro.ALTURA));
-
 			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
 					.inte(Carro.ALTURA
 							* controleJogo.getCircuito()
@@ -2571,6 +2550,14 @@ public class PainelCircuito extends JPanel {
 								generalPath.getBounds())) {
 							naoDesenha = true;
 						}
+						if (objetoTransparencia.obterArea().contains(
+								n1.getPoint())
+								|| objetoTransparencia.obterArea().contains(
+										nM.getPoint())
+								|| objetoTransparencia.obterArea().contains(
+										n2.getPoint())) {
+							naoDesenha = true;
+						}
 					} else {
 						continue;
 					}
@@ -2600,59 +2587,70 @@ public class PainelCircuito extends JPanel {
 						AffineTransformOp.TYPE_BILINEAR);
 				op2.filter(zoomBuffer, rotateBuffer);
 				gridImg.add(rotateBuffer);
-			}
-
-			iP += 5;
-			n1 = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
-			nM = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP);
-			n2 = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP + Carro.MEIA_LARGURA);
-			p1 = new Point(Util.inte(n1.getPoint().x * zoom), Util.inte(n1
-					.getPoint().y
-					* zoom));
-			pm = new Point(Util.inte(nM.getPoint().x * zoom), Util.inte(nM
-					.getPoint().y
-					* zoom));
-			p2 = new Point(Util.inte(n2.getPoint().x * zoom), Util.inte(n2
-					.getPoint().y
-					* zoom));
-			calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
-			rectangle = new Rectangle2D.Double((pm.x - (Carro.MEIA_LARGURA)),
-					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
-					(Carro.ALTURA));
-
-			cima = GeoUtil.calculaPonto(calculaAngulo, Util.inte(Carro.ALTURA
-					* controleJogo.getCircuito().getMultiplicadorLarguraPista()
-					* zoom), new Point(Util.inte(rectangle.getCenterX()), Util
-					.inte(rectangle.getCenterY())));
-			baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte(Carro.ALTURA
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista() * zoom),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			if (i % 2 == 0) {
-				rectangle = new Rectangle2D.Double(
-						(cima.x - (Carro.MEIA_LARGURA * zoom)),
-						(cima.y - (Carro.MEIA_ALTURA * zoom)),
-						(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
 			} else {
+
+				iP += 5;
+				n1 = (No) circuito.getPistaFull().get(
+						circuito.getPistaFull().size() - iP
+								- Carro.MEIA_LARGURA);
+				nM = (No) circuito.getPistaFull().get(
+						circuito.getPistaFull().size() - iP);
+				n2 = (No) circuito.getPistaFull().get(
+						circuito.getPistaFull().size() - iP
+								+ Carro.MEIA_LARGURA);
+				p1 = new Point(Util.inte(n1.getPoint().x * zoom), Util.inte(n1
+						.getPoint().y
+						* zoom));
+				pm = new Point(Util.inte(nM.getPoint().x * zoom), Util.inte(nM
+						.getPoint().y
+						* zoom));
+				p2 = new Point(Util.inte(n2.getPoint().x * zoom), Util.inte(n2
+						.getPoint().y
+						* zoom));
+				calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
 				rectangle = new Rectangle2D.Double(
-						(baixo.x - (Carro.MEIA_LARGURA * zoom)),
-						(baixo.y - (Carro.MEIA_ALTURA * zoom)),
-						(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
+						(pm.x - (Carro.MEIA_LARGURA)),
+						(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
+						(Carro.ALTURA));
+
+				cima = GeoUtil
+						.calculaPonto(calculaAngulo,
+								Util.inte(Carro.ALTURA
+										* controleJogo.getCircuito()
+												.getMultiplicadorLarguraPista()
+										* zoom), new Point(Util.inte(rectangle
+										.getCenterX()), Util.inte(rectangle
+										.getCenterY())));
+				baixo = GeoUtil
+						.calculaPonto(calculaAngulo + 180, Util
+								.inte(Carro.ALTURA
+										* controleJogo.getCircuito()
+												.getMultiplicadorLarguraPista()
+										* zoom), new Point(Util.inte(rectangle
+								.getCenterX()), Util.inte(rectangle
+								.getCenterY())));
+				if (i % 2 == 0) {
+					rectangle = new Rectangle2D.Double(
+							(cima.x - (Carro.MEIA_LARGURA * zoom)),
+							(cima.y - (Carro.MEIA_ALTURA * zoom)),
+							(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
+				} else {
+					rectangle = new Rectangle2D.Double(
+							(baixo.x - (Carro.MEIA_LARGURA * zoom)),
+							(baixo.y - (Carro.MEIA_ALTURA * zoom)),
+							(Carro.LARGURA * zoom), (Carro.ALTURA * zoom));
+				}
+
+				generalPath = new GeneralPath(rectangle);
+
+				affineTransformRect = AffineTransform.getScaleInstance(zoom,
+						zoom);
+				rad = Math.toRadians((double) calculaAngulo);
+				affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
+						rectangle.getCenterY());
+				asfaltoGrid[i] = generalPath
+						.createTransformedShape(affineTransformRect);
 			}
-
-			generalPath = new GeneralPath(rectangle);
-
-			affineTransformRect = AffineTransform.getScaleInstance(zoom, zoom);
-			rad = Math.toRadians((double) calculaAngulo);
-			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
-					rectangle.getCenterY());
-			asfaltoGrid[i] = generalPath
-					.createTransformedShape(affineTransformRect);
 		}
 	}
 
@@ -2759,7 +2757,6 @@ public class PainelCircuito extends JPanel {
 					scrollPane.getViewport().setViewPosition(newP);
 				}
 			});
-
 		}
 	}
 
