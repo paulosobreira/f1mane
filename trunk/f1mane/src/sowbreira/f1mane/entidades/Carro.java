@@ -964,7 +964,7 @@ public class Carro implements Serializable {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isChovendo() && (porcent > intervaloMax)
 				&& Math.random() > .99) {
-			controleJogo.info(Html.superBlue(Lang.msg("pneusFrios",
+			controleJogo.info(Html.orange(Lang.msg("pneusFrios",
 					new String[] { Html.txtRedBold(getPiloto().getNome()) })));
 		}
 	}

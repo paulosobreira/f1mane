@@ -1792,7 +1792,6 @@ public class GerenciadorVisual {
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}
-
 				try {
 					Thread.sleep(3000);
 				} catch (InterruptedException e) {
@@ -1808,7 +1807,6 @@ public class GerenciadorVisual {
 		}
 		thDesenhaQualificacao = new Thread(runnable);
 		thDesenhaQualificacao.run();
-
 	}
 
 	public void adicionarInfoDireto(String string) {

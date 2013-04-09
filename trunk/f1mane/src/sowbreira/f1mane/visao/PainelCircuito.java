@@ -616,11 +616,9 @@ public class PainelCircuito extends JPanel {
 				* zoom)) {
 			return;
 		}
-		Font fontOri = g2d.getFont();
-		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
-		g2d.setColor(Color.LIGHT_GRAY);
 		Point o = new Point(limitesViewPort.x + 5, limitesViewPort.y
 				+ limitesViewPort.height - 195);
+		Font fontOri = g2d.getFont();
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(o.x, o.y, 420, 110, 20, 20);
 		g2d.setColor(Color.BLACK);
@@ -637,8 +635,11 @@ public class PainelCircuito extends JPanel {
 						infoCompCont = 1000;
 					}
 				} else {
+					if (info.contains("FF8C00")) {
+						g2d.setColor(new Color(230, 120, 0));
+					}
 					if (info.contains("F2F200")) {
-						g2d.setColor(new Color(242, 242, 0));
+						g2d.setColor(new Color(210, 210, 0));
 					}
 					if (info.contains("4682B4")) {
 						g2d.setColor(new Color(0, 0, 121));
@@ -653,16 +654,19 @@ public class PainelCircuito extends JPanel {
 						g2d.setColor(new Color(45, 98, 168));
 					}
 					info = Html.tagsJava2d(info);
-					g2d.drawString("" + info, o.x + 4, o.y + (20 * (cont++)));
-					g2d.setColor(Color.black);
+					g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri
+							.getSize()));
+					int c = (cont++);
+					g2d.drawString("" + info, o.x + 4, o.y + (20 * c));
 				}
 				indemax--;
 				if (cont > 5) {
 					break;
 				}
 			}
+			g2d.setFont(fontOri);
 		}
-		g2d.setFont(fontOri);
+
 	}
 
 	public static void main(String[] args) {
