@@ -609,7 +609,7 @@ public class Carro implements Serializable {
 					novoModificador -= Util.intervalo(1, 2);
 			}
 		}
-		int dificudade = 3;
+		int dificudade = 2;
 		if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
 			dificudade = ((testePotencia()) ? 1 : 2);
 		else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
@@ -619,7 +619,7 @@ public class Carro implements Serializable {
 
 		int valConsumo = 0;
 		if (agressivo && !controleJogo.isSemReabastacimento()) {
-			valConsumo = (testePotencia() ? 1 : 2);
+			valConsumo = (testePotencia() ? 0 : 2);
 		} else {
 			valConsumo = (testePotencia() ? 0 : 1);
 		}

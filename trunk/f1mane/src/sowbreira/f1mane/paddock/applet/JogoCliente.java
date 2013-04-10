@@ -1121,4 +1121,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public long ciclosPausado() {
+		return 0;
+	}
+
+	@Override
+	public boolean isCorridaPausada() {
+		return false;
+	}
+
 }

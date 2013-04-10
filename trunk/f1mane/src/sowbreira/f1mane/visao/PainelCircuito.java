@@ -642,7 +642,7 @@ public class PainelCircuito extends JPanel {
 						g2d.setColor(new Color(180, 190, 0));
 					}
 					if (info.contains("4682B4")) {
-						g2d.setColor(new Color(0, 0, 100));
+						g2d.setColor(new Color(45, 98, 168));
 					}
 					if (info.contains("FE0000")) {
 						g2d.setColor(new Color(121, 0, 0));
@@ -651,7 +651,7 @@ public class PainelCircuito extends JPanel {
 						g2d.setColor(new Color(0, 80, 0));
 					}
 					if (info.contains("2D62A8")) {
-						g2d.setColor(new Color(45, 98, 168));
+						g2d.setColor(new Color(0, 0, 100));
 					}
 					info = Html.tagsJava2d(info);
 					g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri
@@ -2060,24 +2060,8 @@ public class PainelCircuito extends JPanel {
 		int carX = piloto.getCarX() - Carro.MEIA_LARGURA_CIMA;
 		int carY = piloto.getCarY() - Carro.MEIA_LARGURA_CIMA;
 
-		boolean rabeadaAgressivo = piloto.isAgressivo()
-				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
-				&& (piloto.getNoAtual().verificaCruvaAlta() || piloto
-						.getNoAtual().verificaCruvaBaixa())
-				&& Math.random() > .5;
-		boolean rabeadaPneuErrado = piloto.getCarro()
-				.verificaPneusIncompativeisClima(controleJogo)
-				&& Math.random() > .5;
+		calculaAngulo = processaRabeada(piloto, calculaAngulo);
 
-		if (rabeadaAgressivo || rabeadaPneuErrado) {
-			if (piloto.getNoAtual().verificaCruvaAlta())
-				calculaAngulo += Util.intervalo(-7.5, 7.5);
-			if (piloto.getNoAtual().verificaCruvaBaixa())
-				calculaAngulo += Util.intervalo(-12.0, 12.0);
-		}
-		if (piloto.getTracado() == 4 || piloto.getTracado() == 5) {
-			calculaAngulo += Util.intervalo(-15, 15);
-		}
 		int width = Carro.LARGURA_CIMA;
 		int height = Carro.ALTURA_CIMA;
 		int w2 = Carro.MEIA_LARGURA_CIMA;
@@ -2181,6 +2165,31 @@ public class PainelCircuito extends JPanel {
 
 	}
 
+	private Double processaRabeada(Piloto piloto, Double calculaAngulo) {
+		if (controleJogo.isCorridaPausada()) {
+			return calculaAngulo;
+		}
+		boolean rabeadaAgressivo = piloto.isAgressivo()
+				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
+				&& (piloto.getNoAtual().verificaCruvaAlta() || piloto
+						.getNoAtual().verificaCruvaBaixa())
+				&& Math.random() > .5;
+		boolean rabeadaPneuErrado = piloto.getCarro()
+				.verificaPneusIncompativeisClima(controleJogo)
+				&& Math.random() > .5;
+
+		if (rabeadaAgressivo || rabeadaPneuErrado) {
+			if (piloto.getNoAtual().verificaCruvaAlta())
+				calculaAngulo += Util.intervalo(-7.5, 7.5);
+			if (piloto.getNoAtual().verificaCruvaBaixa())
+				calculaAngulo += Util.intervalo(-12.0, 12.0);
+		}
+		if (piloto.getTracado() == 4 || piloto.getTracado() == 5) {
+			calculaAngulo += Util.intervalo(-15, 15);
+		}
+		return calculaAngulo;
+	}
+
 	private void desenhaTravaRodaCarroCima(Graphics2D g2d, Piloto piloto,
 			int width, int height, int carx, int cary, AffineTransform afZoom,
 			AffineTransform afRotate) {
@@ -2247,6 +2256,15 @@ public class PainelCircuito extends JPanel {
 			eixoDianteras = frenteP;
 		}
 		double eixo = piloto.getDiateira().getWidth() / 2;
+		desenhaChuvaCarroCima(g2d, piloto, width, eixoDianteras, eixo);
+		desenhaFaiscasCarroCima(g2d, piloto, width, eixoDianteras, eixo);
+	}
+
+	private void desenhaChuvaCarroCima(Graphics2D g2d, Piloto piloto,
+			int width, Point eixoDianteras, double eixo) {
+		if (controleJogo.isCorridaPausada()) {
+			return;
+		}
 		double qtdeGotas = indiceNublado / 2000.0;
 		if ((controleJogo.isChovendo() || (Clima.NUBLADO.equals(controleJogo
 				.getClima())))
@@ -2287,6 +2305,13 @@ public class PainelCircuito extends JPanel {
 			}
 		}
 		g2d.setStroke(trilho);
+	}
+
+	private void desenhaFaiscasCarroCima(Graphics2D g2d, Piloto piloto,
+			int width, Point eixoDianteras, double eixo) {
+		if (controleJogo.isCorridaPausada()) {
+			return;
+		}
 		if (piloto.isAgressivo()
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
 				&& !controleJogo.isChovendo() && piloto.getVelocidade() != 0
@@ -2769,6 +2794,7 @@ public class PainelCircuito extends JPanel {
 		if (!controleJogo.getClima().equals(climaAnterior)) {
 			climaAnterior = controleJogo.getClima();
 		}
+		int indiceNubladoAntesPausa = indiceNublado;
 
 		if (Clima.NUBLADO.equals(controleJogo.getClima())) {
 			if (Clima.CHUVA.equals(climaAnterior)) {
@@ -2845,7 +2871,9 @@ public class PainelCircuito extends JPanel {
 				}
 			}
 		}
-
+		if (controleJogo.isCorridaPausada()) {
+			indiceNublado = indiceNubladoAntesPausa;
+		}
 	}
 
 	private void desenhaFaiscaLateral(Graphics2D g2d, Point p) {
@@ -3445,6 +3473,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private int calculaBounce(Carro carro) {
+		if (controleJogo.isCorridaPausada()) {
+			return 0;
+		}
 		if (carro.getPiloto().isDesqualificado()) {
 			return 0;
 		}
@@ -4483,5 +4514,4 @@ public class PainelCircuito extends JPanel {
 	public void setPilotoSelecionado(Piloto pilotoSelecionado) {
 		this.pilotoSelecionado = pilotoSelecionado;
 	}
-
 }

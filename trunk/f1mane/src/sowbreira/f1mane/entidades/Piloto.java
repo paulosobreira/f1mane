@@ -1151,6 +1151,7 @@ public class Piloto implements Serializable {
 		if (verificaColisaoCarroFrente(controleJogo)) {
 			colisao = true;
 		}
+
 		if (colisao && (System.currentTimeMillis() - ultimaColisao > 500)) {
 			acelerando = false;
 			setAgressivoF4(false);
@@ -1479,6 +1480,14 @@ public class Piloto implements Serializable {
 									.isAgressivo(), this, piloto);
 						}
 					}
+					if (!somenteVerifica
+							&& controleJogo.getNumVoltaAtual() == 1
+							&& getPtosPista() > piloto.getPtosPista()
+							&& Math.random() > 0.5
+							&& testeHabilidadePilotoCarro(controleJogo)) {
+						return false;
+					}
+
 					return true;
 				}
 			}
@@ -2245,7 +2254,9 @@ public class Piloto implements Serializable {
 			return;
 		}
 		Volta volta = getVoltaAtual();
-		volta.setCiclosFim(System.currentTimeMillis());
+
+		volta.setCiclosFim(System.currentTimeMillis()
+				- interfaceJogo.ciclosPausado());
 		volta.setVoltaBox(true);
 		setUltimaVolta(volta);
 		voltas.add(volta);
