@@ -39,6 +39,8 @@ public class ControleCorrida {
 	private double fatorAcidente = (Util.intervalo(.8, 1.1));
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
+	private long pausaIniMilis;
+	private long pausaFimMilis;
 
 	public long getPontosPilotoLargada() {
 		return pontosPilotoLargada;
@@ -140,6 +142,11 @@ public class ControleCorrida {
 	}
 
 	public void setCorridaPausada(boolean corridaPausada) {
+		if (corridaPausada) {
+			pausaIniMilis = System.currentTimeMillis();
+		} else {
+			pausaFimMilis = System.currentTimeMillis();
+		}
 		this.corridaPausada = corridaPausada;
 	}
 
@@ -654,4 +661,13 @@ public class ControleCorrida {
 	public void safetyCarNaPista(Piloto piloto) {
 		controleSafetyCar.safetyCarNaPista(piloto);
 	}
+
+	public long ciclosPausado() {
+		long diff = pausaFimMilis - pausaFimMilis;
+		if (diff > 0) {
+			return diff;
+		}
+		return 0;
+	}
+
 }

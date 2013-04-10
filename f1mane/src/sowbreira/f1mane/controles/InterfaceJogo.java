@@ -311,4 +311,7 @@ public interface InterfaceJogo {
 
 	public void selecionaPilotoBaixo();
 
+	public boolean isCorridaPausada();
+
+	public long ciclosPausado();
 }
