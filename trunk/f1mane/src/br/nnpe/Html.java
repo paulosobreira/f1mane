@@ -177,7 +177,7 @@ public class Html {
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("<font  size='").append(superSize)
-				.append("' color='F2F200'>").append(texto).append("</font>");
+				.append("' color='FABE00'>").append(texto).append("</font>");
 		return Html.bold(buffer.toString());
 	}
 
