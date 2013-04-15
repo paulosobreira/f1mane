@@ -3330,9 +3330,9 @@ public class PainelCircuito extends JPanel {
 		if (controleJogo.getNumVoltaAtual() < 1) {
 			return;
 		}
-		if (!Logger.carregaBkg) {
-			return;
-		}
+		// if (!Logger.carregaBkg) {
+		// return;
+		// }
 
 		BufferedImage carroimg = null;
 		int carSelX = limitesViewPort.x;
@@ -3342,14 +3342,14 @@ public class PainelCircuito extends JPanel {
 		Carro carroFrente = controleJogo.obterCarroNaFrente(psel);
 		if (carroFrente != null) {
 			carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
-			carSelX += carroimg.getWidth() / 2;
+			carSelX += (carroimg.getWidth() + 10) / 2;
 			bounce = calculaBounce(carroFrente);
 			double diff = controleJogo.calculaSegundosParaProximoDouble(psel);
 			int dstX = limitesViewPort.x + (limitesViewPort.width / 4);
 			int dstY = carSelY + 20;
 			int halfCarWidth = carroimg.getWidth() / 3;
 			carSelX += (120 - halfCarWidth);
-			dstX += 90;
+			dstX += 95;
 			g2d.setColor(this.transpMenus);
 			g2d.fillRoundRect(carSelX - 5, carSelY - 5,
 					carroimg.getWidth() + 5, carroimg.getHeight() + 5, 15, 15);
@@ -3417,7 +3417,8 @@ public class PainelCircuito extends JPanel {
 		if (carroAtraz != null) {
 			carroimg = controleJogo.obterCarroLado(carroAtraz.getPiloto());
 			carSelX = limitesViewPort.x + limitesViewPort.width
-					+ -carroimg.getWidth() - carroimg.getWidth() / 2;
+					+ -(carroimg.getWidth() + 10) - (carroimg.getWidth() + 10)
+					/ 2;
 
 			bounce = calculaBounce(carroAtraz);
 
@@ -3428,8 +3429,8 @@ public class PainelCircuito extends JPanel {
 					.calculaSegundosParaProximoDouble(carroAtraz.getPiloto());
 
 			int halfCarWidth = carroimg.getWidth() / 3;
-			carSelX -= (110 - halfCarWidth);
-			dstX -= 70;
+			carSelX -= (115 - halfCarWidth);
+			dstX -= 75;
 			g2d.setColor(this.transpMenus);
 			g2d.fillRoundRect(carSelX - 5, carSelY - 5,
 					carroimg.getWidth() + 5, carroimg.getHeight() + 5, 15, 15);
