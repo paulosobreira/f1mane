@@ -1007,7 +1007,8 @@ public class Piloto implements Serializable {
 			valComp = 100 * controleJogo.getNiveljogo();
 		}
 		if (getStress() > valComp && !controleJogo.isSafetyCarNaPista()
-				&& (!(getTracado() == 4 || getTracado() == 5)) && isAgressivo()
+				&& (!(getTracado() == 4 || getTracado() == 5))
+				&& AGRESSIVO.equals(modoPilotagem)
 				&& !testeHabilidadePilotoCarro(controleJogo)
 				&& getPtosBox() == 0) {
 			derrapa(controleJogo);
@@ -1503,7 +1504,6 @@ public class Piloto implements Serializable {
 		 * Verificar na entrada da curva e nao na area de escape
 		 */
 		if (getTracado() == 4 || getTracado() == 5) {
-			Logger.logar("ja derrapando");
 			return false;
 		}
 		double multi = 2;
@@ -1514,7 +1514,6 @@ public class Piloto implements Serializable {
 		int index = (int) (noAtual.getIndex() + controleJogo.getTempoCiclo()
 				* multi);
 		if (index >= controleJogo.getNosDaPista().size()) {
-			Logger.logar("Index Fora");
 			return false;
 		}
 		No proxPt = controleJogo.getNosDaPista().get(index);
@@ -1550,7 +1549,6 @@ public class Piloto implements Serializable {
 		}
 		mudarTracado(ladoDerrapa, controleJogo, true);
 		this.pontoDerrapada = pontoDerrapada;
-		Logger.logar("Derrapa 5");
 		return true;
 	}
 
