@@ -1177,6 +1177,7 @@ public class ControleCampeonato {
 				campeonato.getNomePiloto());
 		String rival = null;
 		String rivalEquipe = null;
+		int habilidadeAteAgora = 0;
 		for (Iterator iterator = campeonato.getPilotosHabilidadeCampeonato()
 				.keySet().iterator(); iterator.hasNext();) {
 			String pilotoRival = (String) iterator.next();
@@ -1188,10 +1189,11 @@ public class ControleCampeonato {
 				continue;
 			}
 			if (habilidadeRival < habilidadePiloto
+					&& habilidadeRival > habilidadeAteAgora
 					&& !equipePiloto.equals(equipeRival)) {
 				rival = pilotoRival;
 				rivalEquipe = equipeRival;
-				break;
+				habilidadeAteAgora = habilidadeRival;
 			}
 		}
 
