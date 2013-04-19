@@ -28,6 +28,13 @@ public class AppletPaddock extends JApplet {
 	DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
 	public String getVersao() {
+		if (versao == null) {
+			try {
+				initProperties();
+			} catch (IOException e) {
+				Logger.logarExept(e);
+			}
+		}
 		return " " + decimalFormat.format(new Integer(versao));
 	}
 
@@ -40,8 +47,8 @@ public class AppletPaddock extends JApplet {
 				Lang.mudarIdioma(lang);
 			}
 			initProperties();
-			controlePaddockApplet = new ControlePaddockCliente(
-					this.getCodeBase(), this);
+			controlePaddockApplet = new ControlePaddockCliente(this
+					.getCodeBase(), this);
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
@@ -57,8 +64,8 @@ public class AppletPaddock extends JApplet {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(),
-					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
+					.msg("059"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 

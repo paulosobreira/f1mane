@@ -1027,13 +1027,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public BufferedImage carregaBackGround(String backGround) {
-		if (mainFrame.getApplet() == null) {
-			Logger.logar("mainFrame.getApplet()==null ");
-			return null;
-		}
 		URL url = null;
 		try {
-			String caminho = mainFrame.getApplet().getCodeBase()
+			String caminho = mainFrame.getCodeBase()
 					+ "sowbreira/f1mane/recursos/" + backGround;
 			Logger.logar("Caminho Carregar Bkg " + caminho);
 			url = new URL(caminho);

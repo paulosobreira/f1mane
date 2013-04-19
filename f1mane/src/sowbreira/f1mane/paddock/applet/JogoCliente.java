@@ -830,10 +830,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public BufferedImage carregaBackGround(String backGround) {
-		if (mainFrame.getApplet() == null) {
-			Logger.logar("mainFrame.getApplet()==null ");
-			return null;
-		}
 		if (isCorridaIniciada()
 				&& monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 			try {
@@ -843,7 +839,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 		URL url = null;
 		try {
-			String caminho = mainFrame.getApplet().getCodeBase()
+			String caminho = mainFrame.getCodeBase()
 					+ "sowbreira/f1mane/recursos/" + backGround;
 			Logger.logar("Caminho Carregar Bkg " + caminho);
 			url = new URL(caminho);

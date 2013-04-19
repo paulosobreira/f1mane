@@ -396,11 +396,7 @@ public class GerenciadorVisual {
 				controleJogo.abandonar();
 				super.windowClosing(e);
 				controleJogo.matarTodasThreads();
-				if (controleJogo.getMainFrame().isModoApplet()) {
-					controleJogo.getMainFrame().setVisible(false);
-				} else {
-					System.exit(0);
-				}
+				System.exit(0);
 			}
 		});
 		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -798,8 +794,7 @@ public class GerenciadorVisual {
 
 	public PainelTabelaResultadoFinal exibirResultadoFinal() {
 		PainelTabelaResultadoFinal resultadoFinal = new PainelTabelaResultadoFinal(
-				controleJogo.getPilotos(), controleJogo.getMainFrame()
-						.isModoApplet());
+				controleJogo.getPilotos(), false);
 		this.resultadoFinal = resultadoFinal;
 		return resultadoFinal;
 

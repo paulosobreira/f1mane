@@ -78,7 +78,7 @@ public class ControlePaddockCliente {
 	public void init() {
 		Properties properties = new Properties();
 		try {
-			mainFrame = new MainFrame(applet, false);
+			mainFrame = new MainFrame(applet, applet.getCodeBase().toString());
 			mainFrame.setVisible(false);
 			mainFrame.desbilitarMenusModoOnline();
 

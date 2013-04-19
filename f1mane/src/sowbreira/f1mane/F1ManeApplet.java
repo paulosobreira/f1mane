@@ -30,16 +30,7 @@ public class F1ManeApplet extends JApplet {
 			if (!Util.isNullOrEmpty(lang)) {
 				Lang.mudarIdioma(lang);
 			}
-			frame = new MainFrame(this, true);
-			Component parent = this;
-			while (parent.getParent() != null)
-				parent = parent.getParent();
-			if (parent instanceof Frame) {
-				if (!((Frame) parent).isResizable()) {
-					((Frame) parent).setResizable(true);
-					((Frame) parent).setLayout(new GridLayout());
-				}
-			}
+			frame = new MainFrame(this, getCodeBase().toString());
 			frame.iniciar();
 		} catch (IOException e) {
 			StackTraceElement[] trace = e.getStackTrace();
@@ -47,8 +38,8 @@ public class F1ManeApplet extends JApplet {
 			int size = ((trace.length > 10) ? 10 : trace.length);
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(),
-					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
+					.msg("059"), JOptionPane.ERROR_MESSAGE);
 		}
 
 	}

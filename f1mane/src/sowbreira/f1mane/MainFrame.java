@@ -1,18 +1,14 @@
 package sowbreira.f1mane;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,7 +28,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -61,7 +56,7 @@ public class MainFrame extends JFrame {
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
 	private ControleCampeonato controleCampeonato;
-	private JApplet applet;
+	private String codeBase;
 	private JMenuBar bar;
 	private JMenu menuJogo;
 	private JMenu menuCampeonato;
@@ -73,16 +68,12 @@ public class MainFrame extends JFrame {
 	protected MainPanelEditorVetorizado editorInflado;
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
-	private boolean appletStand;
 	private JMenuItem compsSwing;
 	public static BufferedImage bg;
+	private AppletPaddock ver = new AppletPaddock();
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;
-	}
-
-	public JApplet getApplet() {
-		return applet;
 	}
 
 	public boolean isAtualizacaoSuave() {
@@ -92,27 +83,18 @@ public class MainFrame extends JFrame {
 		return atualizacaoSuave.isSelected();
 	}
 
-	public MainFrame(JApplet modoApplet, boolean appletStand)
-			throws IOException {
-		this.applet = modoApplet;
-		this.appletStand = appletStand;
+	public MainFrame(JApplet modoApplet, String codeBase) throws IOException {
+		this.codeBase = codeBase;
 		controleCampeonato = new ControleCampeonato(this);
 		bar = new JMenuBar();
-		if (appletStand) {
-			applet.getRootPane().setMenuBar(bar);
-		} else {
-			setJMenuBar(bar);
-		}
-
+		setJMenuBar(bar);
 		menuJogo = new JMenu() {
 			public String getText() {
 				return Lang.msg("088");
 			}
 
 		};
-
 		bar.add(menuJogo);
-
 		menuCampeonato = new JMenu() {
 			public String getText() {
 				return Lang.msg("268");
@@ -158,34 +140,13 @@ public class MainFrame extends JFrame {
 		gerarMenusidiomas(menuIdiomas);
 		setSize(1030, 720);
 		String title = "F1-MANE " + getVersao() + " MANager & Engineer";
-		if (this.appletStand) {
-			Component parent = applet;
-			while (parent.getParent() != null)
-				parent = parent.getParent();
-			if (parent instanceof Frame) {
-				((Frame) parent).setTitle(title);
-			}
-		} else {
-			setTitle(title);
-		}
-
+		setTitle(title);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		iniciar();
 	}
 
 	private String getVersao() {
-		if (this.appletStand || applet != null) {
-			if (applet instanceof F1ManeApplet) {
-				F1ManeApplet f1ManeApplet = (F1ManeApplet) applet;
-				return f1ManeApplet.getVersao();
-			}
-			if (applet instanceof AppletPaddock) {
-				AppletPaddock appletPaddock = (AppletPaddock) applet;
-				return appletPaddock.getVersao();
-			}
-			return "";
-		} else {
-			return " Debug ";
-		}
-
+		return ver.getVersao();
 	}
 
 	private void gerarMenusCampeonato(JMenu menu) {
@@ -320,8 +281,10 @@ public class MainFrame extends JFrame {
 					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
-				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(
-						area), Lang.msg("091"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane
+						.showMessageDialog(MainFrame.this,
+								new JScrollPane(area), Lang.msg("091"),
+								JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menuInfo2.add(leiaMe);
@@ -400,70 +363,11 @@ public class MainFrame extends JFrame {
 				String msg = Lang.msg("184")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2007-2012";
-				JOptionPane.showMessageDialog(MainFrame.this, msg,
-						Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
+						.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
-	}
-
-	@Override
-	public Container getContentPane() {
-		if (appletStand) {
-			return applet.getContentPane();
-		}
-		return super.getContentPane();
-	}
-
-	@Override
-	public JRootPane getRootPane() {
-		if (appletStand) {
-			return applet.getRootPane();
-		}
-		return super.getRootPane();
-	}
-
-	@Override
-	public synchronized void addWindowListener(WindowListener l) {
-		if (appletStand) {
-			Component parent = applet;
-			while (parent.getParent() != null)
-				parent = parent.getParent();
-			if (parent instanceof Frame) {
-				((Frame) parent).addWindowListener(l);
-			}
-		}
-		super.addWindowListener(l);
-	}
-
-	@Override
-	public synchronized void addKeyListener(KeyListener l) {
-		if (appletStand) {
-			applet.addKeyListener(l);
-		} else {
-			super.addKeyListener(l);
-		}
-	}
-
-	@Override
-	public Container getParent() {
-		if (appletStand) {
-			return applet.getParent();
-		}
-		return super.getParent();
-	}
-
-	@Override
-	public synchronized void addMouseWheelListener(MouseWheelListener l) {
-		if (appletStand) {
-			applet.addMouseWheelListener(l);
-		} else {
-			super.addMouseWheelListener(l);
-		}
-	}
-
-	public boolean isAppletStand() {
-		return appletStand;
 	}
 
 	private void gerarMenusSingle(JMenu menu1) {
@@ -481,8 +385,9 @@ public class MainFrame extends JFrame {
 					if (controleJogo != null) {
 						if (controleJogo.isCorridaIniciada()) {
 							int ret = JOptionPane.showConfirmDialog(
-									MainFrame.this, Lang.msg("095"),
-									Lang.msg("094"), JOptionPane.YES_NO_OPTION);
+									MainFrame.this, Lang.msg("095"), Lang
+											.msg("094"),
+									JOptionPane.YES_NO_OPTION);
 							if (ret == JOptionPane.NO_OPTION) {
 								return;
 							}
@@ -575,9 +480,6 @@ public class MainFrame extends JFrame {
 		removerKeyListeners();
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				if (appletStand) {
-					return;
-				}
 				int keyCoode = e.getKeyCode();
 				if (editor != null) {
 					if (keyCoode == KeyEvent.VK_DELETE) {
@@ -669,21 +571,6 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-	}
-
-	@Override
-	public synchronized KeyListener[] getKeyListeners() {
-		if (appletStand)
-			return applet.getKeyListeners();
-		return super.getKeyListeners();
-	}
-
-	@Override
-	public synchronized void removeKeyListener(KeyListener l) {
-		if (appletStand)
-			applet.removeKeyListener(l);
-		else
-			super.removeKeyListener(l);
 	}
 
 	private void removerKeyListeners() {
@@ -996,18 +883,17 @@ public class MainFrame extends JFrame {
 
 	public static void main(String[] args) throws IOException {
 		// Logger.ativo = true;
-		MainFrame frame = new MainFrame(null, false);
+		String codeBase = File.separator + "WebContent" + File.separator;
 		if (args != null && args.length > 0) {
-			Lang.mudarIdioma(args[0]);
+			codeBase = args[0];
+			Lang.mudarIdioma(args[1]);
 		}
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.iniciar();
+		MainFrame frame = new MainFrame(null, codeBase);
 	}
 
 	public void iniciar() {
 		if (ControleJogoLocal.VALENDO) {
-			if (!appletStand)
-				setVisible(true);
+			setVisible(true);
 			if (Logger.carregaBkg)
 				bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
 			JPanel bgPanel = new JPanel() {
@@ -1071,8 +957,8 @@ public class MainFrame extends JFrame {
 
 	}
 
-	public boolean isModoApplet() {
-		return applet != null;
+	public String getCodeBase() {
+		return codeBase;
 	}
 
 	public void desbilitarMenusModoOnline() {
