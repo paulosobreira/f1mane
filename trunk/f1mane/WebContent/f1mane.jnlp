@@ -17,11 +17,9 @@
 		<jar href="f1maneRecursos.jar" />
     </resources>
 
-    <applet-desc 
-	      documentBase="http://{host}/f1mane" 
-	      name="F1-Mane Online" 
-	      main-class="sowbreira.f1mane.F1ManeApplet" 
-	      width="1030" 
-	      height="720"> 
-	  </applet-desc>	
+	  
+	<application-desc
+		main-class="sowbreira.f1mane.MainFrame" >
+		<argument>http://{host}/f1mane/</argument>
+	</application-desc> 	  
 </jnlp>

@@ -354,19 +354,18 @@ public class ControleCampeonato {
 	}
 
 	private void persistirEmCache() {
-		JApplet applet = mainFrame.getApplet();
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
 			FileContents fileContents = null;
 			try {
-				fileContents = persistenceService.get(new URL(applet
+				fileContents = persistenceService.get(new URL(mainFrame
 						.getCodeBase()
 						+ "campeonato"));
 			} catch (Exception e) {
-				persistenceService.create(new URL(applet.getCodeBase()
+				persistenceService.create(new URL(mainFrame.getCodeBase()
 						+ "campeonato"), 1048576);
-				fileContents = persistenceService.get(new URL(applet
+				fileContents = persistenceService.get(new URL(mainFrame
 						.getCodeBase()
 						+ "campeonato"));
 			}
@@ -419,13 +418,11 @@ public class ControleCampeonato {
 	}
 
 	private void continuarCampeonatoCache() {
-		JApplet applet = mainFrame.getApplet();
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
-			FileContents fileContents = persistenceService.get(new URL(applet
-					.getCodeBase()
-					+ "campeonato"));
+			FileContents fileContents = persistenceService.get(new URL(
+					mainFrame.getCodeBase() + "campeonato"));
 			if (fileContents == null) {
 				Logger.logar(" fileContents == null  ");
 			}
@@ -447,7 +444,6 @@ public class ControleCampeonato {
 			JTextArea xmlArea = new JTextArea(30, 50);
 			xmlArea.setText(new String(byteArrayOutputStream.toByteArray())
 					+ "</java>");
-			this.mainFrame.getApplet();
 			xmlArea.setEditable(false);
 			xmlArea.setSelectionStart(0);
 			xmlArea.setSelectionEnd(xmlArea.getCaretPosition());

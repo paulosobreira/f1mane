@@ -19,6 +19,7 @@
 
 	<application-desc
 		main-class="sowbreira.f1mane.MainFrame" >
+		<argument>http://{host}/f1mane/</argument>
 		<argument>en</argument> 
 	</application-desc>	
 </jnlp>
