@@ -619,8 +619,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
-							.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(),
+					gerenciadorVisual.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			setarNivelCorrida();
@@ -640,9 +640,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
 		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
 				+ porcentagemChuvaCircuito(circuitoSelecionado));
-		Logger
-				.logar("porcentagemChuvaCircuito() "
-						+ porcentagemChuvaCircuito());
+		Logger.logar("porcentagemChuvaCircuito() " + porcentagemChuvaCircuito());
 	}
 
 	/**
@@ -1293,8 +1291,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	@Override
-	public long ciclosPausado() {
-		return controleCorrida.ciclosPausado();
+	public long ciclosPausado(int numVolta) {
+		return controleCorrida.ciclosPausado(numVolta);
 	}
 
 }

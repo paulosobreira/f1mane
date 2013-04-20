@@ -650,9 +650,6 @@ public class PainelCircuito extends JPanel {
 					if (info.contains("FF8C00")) {
 						g2d.setColor(new Color(210, 100, 0));
 					}
-					if (info.contains("FABE00")) {
-						g2d.setColor(new Color(250, 190, 0));
-					}
 					if (info.contains("4682B4")) {
 						g2d.setColor(new Color(45, 98, 168));
 					}
