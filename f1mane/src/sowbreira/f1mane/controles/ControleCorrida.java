@@ -3,8 +3,10 @@ package sowbreira.f1mane.controles;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.No;
@@ -40,7 +42,7 @@ public class ControleCorrida {
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private long pausaIniMilis;
-	private long pausaFimMilis;
+	private Map<Integer, Long> mapaTempoPausado = new HashMap<Integer, Long>();
 
 	public long getPontosPilotoLargada() {
 		return pontosPilotoLargada;
@@ -145,7 +147,13 @@ public class ControleCorrida {
 		if (corridaPausada) {
 			pausaIniMilis = System.currentTimeMillis();
 		} else {
-			pausaFimMilis = System.currentTimeMillis();
+			Long tempoPausado = mapaTempoPausado.get(controleJogo
+					.getNumVoltaAtual());
+			if (tempoPausado == null) {
+				tempoPausado = new Long(0);
+			}
+			tempoPausado += System.currentTimeMillis() - pausaIniMilis;
+			mapaTempoPausado.put(controleJogo.getNumVoltaAtual(), tempoPausado);
 		}
 		this.corridaPausada = corridaPausada;
 	}
@@ -327,11 +335,13 @@ public class ControleCorrida {
 			if (Math.random() > 0.9) {
 				if (!controleJogo.isSafetyCarNaPista()) {
 					if (Math.random() > 0.5) {
-						controleJogo.info(Html.azul(Lang.msg("021",
+						controleJogo.info(Html.azul(Lang.msg(
+								"021",
 								new String[] { pilotoNaFrente.getNome(),
 										piloto.getNome() })));
 					} else {
-						controleJogo.info(Html.azul(Lang.msg("020",
+						controleJogo.info(Html.azul(Lang.msg(
+								"020",
 								new String[] { pilotoNaFrente.getNome(),
 										piloto.getNome() })));
 					}
@@ -384,8 +394,8 @@ public class ControleCorrida {
 					if ((piloto.getStress() > (5 * piloto.getCarro()
 							.getDurabilidadeAereofolio()))) {
 						danificaAreofolio(piloto);
-						int stress = Util.intervalo(1, (int) controleJogo
-								.getNiveljogo() * 10);
+						int stress = Util.intervalo(1,
+								(int) controleJogo.getNiveljogo() * 10);
 						piloto.incStress(stress);
 						controleJogo.infoPrioritaria(Lang.msg("109",
 								new String[] { Html.superRed(piloto.getNome()),
@@ -441,7 +451,8 @@ public class ControleCorrida {
 						if (piloto.getStress() > 90) {
 							piloto.getCarro().setDanificado(
 									Carro.PERDEU_AEREOFOLIO);
-							controleJogo.infoPrioritaria(Lang.msg("017",
+							controleJogo.infoPrioritaria(Lang.msg(
+									"017",
 									new String[] {
 											Html.superRed(piloto.getNome()),
 											pilotoNaFrente.getNome() }));
@@ -480,9 +491,10 @@ public class ControleCorrida {
 			ganhador.setAgressivo(true, controleJogo);
 
 		if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
-			controleJogo.info(Lang.msg("018", new String[] {
-					Html.bold(perdedor.getNome()),
-					Html.bold(ganhador.getNome()) }));
+			controleJogo.info(Lang.msg(
+					"018",
+					new String[] { Html.bold(perdedor.getNome()),
+							Html.bold(ganhador.getNome()) }));
 		}
 
 		perdedor.incStress(Util.intervalo(1,
@@ -662,10 +674,11 @@ public class ControleCorrida {
 		controleSafetyCar.safetyCarNaPista(piloto);
 	}
 
-	public long ciclosPausado() {
-		long diff = pausaFimMilis - pausaFimMilis;
-		if (diff > 0) {
-			return diff;
+	public long ciclosPausado(int numVolta) {
+		Long tempoPausado = mapaTempoPausado.get(numVolta + 1);
+		if (tempoPausado != null) {
+			System.out.println("tempoPausado " + tempoPausado);
+			return tempoPausado;
 		}
 		return 0;
 	}

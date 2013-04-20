@@ -313,5 +313,5 @@ public interface InterfaceJogo {
 
 	public boolean isCorridaPausada();
 
-	public long ciclosPausado();
+	public long ciclosPausado(int numVolta);
 }
