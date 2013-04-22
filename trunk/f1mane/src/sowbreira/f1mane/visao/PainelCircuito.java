@@ -576,7 +576,6 @@ public class PainelCircuito extends JPanel {
 				desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
 			}
 			desenhaDebugIinfo(g2d);
-			Toolkit.getDefaultToolkit().sync();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -1438,7 +1437,7 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 
-		String msgKers = "K : " + Lang.msg("kers");
+		String msgKers = Lang.msg("kers");
 
 		int tamKers = Util.calculaLarguraText(msgKers, g2d);
 
@@ -1545,7 +1544,7 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 
-		String msgDrs = "D : " + Lang.msg("drs");
+		String msgDrs = Lang.msg("drs");
 
 		int tamDrs = Util.calculaLarguraText(msgDrs, g2d);
 		drs.setFrame(x, y - 25, tamDrs + 10, 20);
@@ -2768,15 +2767,13 @@ public class PainelCircuito extends JPanel {
 		PainelCircuito.this.oldP = oldp;
 		if (circuito.isUsaBkg() && backGround != null
 				&& limitesViewPort != null) {
-			synchronized (backGround) {
-				if ((p.x + limitesViewPort.width) > (backGround.getWidth() * zoom)) {
-					p.x = Util.inte((backGround.getWidth() * zoom)
-							- limitesViewPort.width);
-				}
-				if ((p.y + limitesViewPort.height) > (backGround.getHeight() * zoom)) {
-					p.y = Util.inte((backGround.getHeight() * zoom)
-							- limitesViewPort.height);
-				}
+			if ((p.x + limitesViewPort.width) > (backGround.getWidth() * zoom)) {
+				p.x = Util.inte((backGround.getWidth() * zoom)
+						- limitesViewPort.width);
+			}
+			if ((p.y + limitesViewPort.height) > (backGround.getHeight() * zoom)) {
+				p.y = Util.inte((backGround.getHeight() * zoom)
+						- limitesViewPort.height);
 			}
 		}
 		int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x, p.y);

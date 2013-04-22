@@ -453,13 +453,13 @@ public class GerenciadorVisual {
 				lastPress = now;
 				int keyCoode = e.getKeyCode();
 
-				if (keyCoode == KeyEvent.VK_F1) {
+				if (keyCoode == KeyEvent.VK_F1 || keyCoode == KeyEvent.VK_A) {
 					controleJogo.mudarGiroMotor(Carro.GIRO_MIN);
 				}
-				if (keyCoode == KeyEvent.VK_F2) {
+				if (keyCoode == KeyEvent.VK_F2 || keyCoode == KeyEvent.VK_S) {
 					controleJogo.mudarGiroMotor(Carro.GIRO_NOR);
 				}
-				if (keyCoode == KeyEvent.VK_F3) {
+				if (keyCoode == KeyEvent.VK_F3 || keyCoode == KeyEvent.VK_D) {
 					controleJogo.mudarGiroMotor(Carro.GIRO_MAX);
 				}
 				if (keyCoode == KeyEvent.VK_F4) {
@@ -468,27 +468,27 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_F11) {
 					progamacaoBox();
 				}
-				if (keyCoode == KeyEvent.VK_F12) {
+				if (keyCoode == KeyEvent.VK_F12 || keyCoode == KeyEvent.VK_B) {
 					if (painelCircuito != null) {
 						painelCircuito.mudarModoBox();
 					} else {
 						mudarModoBox();
 					}
 				}
-				if (keyCoode == KeyEvent.VK_F5) {
+				if (keyCoode == KeyEvent.VK_F5 || keyCoode == KeyEvent.VK_Z) {
 					mudarModoPilotagem(Piloto.LENTO);
 				}
-				if (keyCoode == KeyEvent.VK_F6) {
+				if (keyCoode == KeyEvent.VK_F6 || keyCoode == KeyEvent.VK_X) {
 					mudarModoPilotagem(Piloto.NORMAL);
 				}
-				if (keyCoode == KeyEvent.VK_F7) {
+				if (keyCoode == KeyEvent.VK_F7 || keyCoode == KeyEvent.VK_C) {
 					mudarModoPilotagem(Piloto.AGRESSIVO);
 				}
 				if (keyCoode == KeyEvent.VK_ESCAPE) {
 					painelCircuito.setDesenhaInfo(!painelCircuito
 							.isDesenhaInfo());
 				}
-				if (keyCoode == KeyEvent.VK_F8) {
+				if (keyCoode == KeyEvent.VK_F8 || keyCoode == KeyEvent.VK_G) {
 					mudarAutoPos();
 					controleJogo.selecionaPilotoJogador();
 				}
@@ -527,10 +527,10 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_F10) {
 					ligaDesligaSom();
 				}
-				if (keyCoode == KeyEvent.VK_K) {
+				if (keyCoode == KeyEvent.VK_W) {
 					kers();
 				}
-				if (keyCoode == KeyEvent.VK_D) {
+				if (keyCoode == KeyEvent.VK_Q) {
 					drs();
 				}
 
@@ -1809,46 +1809,42 @@ public class GerenciadorVisual {
 			return;
 		}
 		try {
-			synchronized (bufferTextual) {
-				if (string != null && !string.startsWith("<table>"))
-					string = Html.cinza(Lang.msg("082")
-							+ controleJogo.getNumVoltaAtual() + " ")
-							+ string + "<br>";
-				if (bufferTextual.size() > 6) {
-					boolean contains = false;
-					for (int i = bufferTextual.size() - 1; i < bufferTextual
-							.size() - 5; i--) {
-						if (string.equals(bufferTextual.get(i))) {
-							contains = true;
-						}
-					}
-					if (contains) {
-						return;
+			if (string != null && !string.startsWith("<table>"))
+				string = Html.cinza(Lang.msg("082")
+						+ controleJogo.getNumVoltaAtual() + " ")
+						+ string + "<br>";
+			if (bufferTextual.size() > 6) {
+				boolean contains = false;
+				for (int i = bufferTextual.size() - 1; i < bufferTextual.size() - 5; i--) {
+					if (string.equals(bufferTextual.get(i))) {
+						contains = true;
 					}
 				}
-
-				bufferTextual.add(string);
-
-				StringBuffer buffer = new StringBuffer();
-				for (int i = bufferTextual.size() - 1; i >= 0; i--) {
-					String texto = Html.sansSerif(bufferTextual.get(i)
-							.toString());
-					buffer.append(texto);
+				if (contains) {
+					return;
 				}
-				final StringReader reader = new StringReader(buffer.toString());
-
-				Runnable doInfo = new Runnable() {
-					public void run() {
-						try {
-							infoTextual.read(reader, "");
-						} catch (IOException e) {
-							Logger.logarExept(e);
-						}
-					}
-				};
-				SwingUtilities.invokeLater(doInfo);
-
 			}
+
+			bufferTextual.add(string);
+
+			StringBuffer buffer = new StringBuffer();
+			for (int i = bufferTextual.size() - 1; i >= 0; i--) {
+				String texto = Html.sansSerif(bufferTextual.get(i).toString());
+				buffer.append(texto);
+			}
+			final StringReader reader = new StringReader(buffer.toString());
+
+			Runnable doInfo = new Runnable() {
+				public void run() {
+					try {
+						infoTextual.read(reader, "");
+					} catch (IOException e) {
+						Logger.logarExept(e);
+					}
+				}
+			};
+			SwingUtilities.invokeLater(doInfo);
+
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
