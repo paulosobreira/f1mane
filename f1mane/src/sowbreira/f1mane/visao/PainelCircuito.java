@@ -67,6 +67,7 @@ public class PainelCircuito extends JPanel {
 	private InterfaceJogo controleJogo;
 	private GerenciadorVisual gerenciadorVisual;
 	private Point pointDesenhaClima = new Point(10, 10);
+	private Point pointDesenhaPneus = new Point(10, 10);
 	private Point pointDesenhaVelo = new Point(5, 60);
 	private Point pointDesenhaSC = new Point(350, 15);
 	private No posisRec;
@@ -914,8 +915,8 @@ public class PainelCircuito extends JPanel {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString(" Tracado() " + pilotoSelecionado.getTracado(), ptoOri,
-				yBase);
+		g2d.drawString(" isAcelerando() " + pilotoSelecionado.isAcelerando(),
+				ptoOri, yBase);
 
 		yBase += 20;
 
@@ -3715,11 +3716,11 @@ public class PainelCircuito extends JPanel {
 		}
 
 		g2d.setColor(transpMenus);
-		g2d.fillRoundRect(limitesViewPort.x + pointDesenhaClima.x + 105,
-				pointDesenhaClima.y + limitesViewPort.y + 42,
+		g2d.fillRoundRect(limitesViewPort.x + pointDesenhaPneus.x + 105,
+				pointDesenhaPneus.y + limitesViewPort.y + 42,
 				tpPneu.getWidth() + 10, tpPneu.getHeight() + 2, 15, 15);
-		g2d.drawImage(tpPneu, limitesViewPort.x + pointDesenhaClima.x + 110,
-				pointDesenhaClima.y + limitesViewPort.y + 44, null);
+		g2d.drawImage(tpPneu, limitesViewPort.x + pointDesenhaPneus.x + 110,
+				pointDesenhaPneus.y + limitesViewPort.y + 44, null);
 
 	}
 
@@ -4082,7 +4083,8 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaDRS(Graphics2D g2d) {
 		if (!(controleJogo.isDrs() && desenhaInfo && controleJogo
-				.getNumVoltaAtual() > 0)) {
+				.getNumVoltaAtual() > 0)
+				|| pilotoSelecionado == null) {
 			return;
 		}
 
