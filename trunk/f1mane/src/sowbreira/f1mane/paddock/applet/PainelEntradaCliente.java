@@ -95,9 +95,9 @@ public class PainelEntradaCliente {
 		painelInicio.setLayout(new GridLayout(5, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
-				return Lang.msg("110",
-						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
-								String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110", new String[] {
+						String.valueOf(Constantes.MIN_VOLTAS),
+						String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 
@@ -206,10 +206,10 @@ public class PainelEntradaCliente {
 				return Lang.msg("126");
 			}
 		});
-		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO + 40,
-				Constantes.MAX_CICLO - 30);
-		sliderTempoCiclo.setValue(new Integer(Util.intervalo(
-				Constantes.MIN_CICLO + 80, Constantes.MAX_CICLO - 30)));
+		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO,
+				Constantes.MAX_CICLO);
+		sliderTempoCiclo.setValue(new Integer(Constantes.MAX_CICLO / 2
+				+ Constantes.MIN_CICLO / 2));
 		labelTable = new Hashtable();
 		labelTable.put(new Integer(Constantes.MIN_CICLO + 40), new JLabel("") {
 			@Override
@@ -298,8 +298,8 @@ public class PainelEntradaCliente {
 		painelMostrar.add(painelInicio, BorderLayout.CENTER);
 		setaCampeonato();
 
-		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar,
-				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar, Lang
+				.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
@@ -316,8 +316,8 @@ public class PainelEntradaCliente {
 		if (campeonato != null) {
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
-			comboBoxNivelCorrida
-					.setSelectedItem(Lang.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida.setSelectedItem(Lang
+					.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
 			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
 			semReabastacimento.setEnabled(false);
@@ -571,8 +571,8 @@ public class PainelEntradaCliente {
 			}
 		});
 		panel.add(painelInicio, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(mainFrame, panel,
-				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, panel, Lang
+				.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
