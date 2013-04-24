@@ -48,6 +48,7 @@ public class Piloto implements Serializable {
 	protected Integer combustJogador;
 	private int id;
 	private int velocidade;
+	private int velocidadeExibir;
 	private int velocidadeAnterior;
 	private transient String setUpIncial;
 	private String nome;
@@ -962,9 +963,8 @@ public class Piloto implements Serializable {
 		decremetaPilotoDesconcentrado(controleJogo);
 		setPtosPista(Util.inte(getPtosPista() + ganho));
 		index += Math.round(ganho);
-		setVelocidade(Util.inte(((260 * ganho
-				* ((acelerando && !freiandoReta) ? 1 : 0.7) / ganhoMax)
-				+ ganho + Util.intervalo(0, 1))));
+		setVelocidade(Util
+				.inte(((260 * ganho * ((acelerando && !freiandoReta) ? 1 : 0.7) / ganhoMax) + ganho)));
 		return index;
 	}
 
@@ -2657,6 +2657,14 @@ public class Piloto implements Serializable {
 
 	public boolean isAcelerando() {
 		return acelerando;
+	}
+
+	public int getVelocidadeExibir() {
+		return velocidadeExibir;
+	}
+
+	public void setVelocidadeExibir(int velocidadeExibir) {
+		this.velocidadeExibir = velocidadeExibir;
 	}
 
 }

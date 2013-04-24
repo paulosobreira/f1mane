@@ -980,8 +980,8 @@ public class GerenciadorVisual {
 		});
 		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO,
 				Constantes.MAX_CICLO);
-		sliderTempoCiclo.setValue(new Integer(Util.intervalo(
-				Constantes.MIN_CICLO, Constantes.MAX_CICLO)));
+		sliderTempoCiclo.setValue(new Integer(Constantes.MAX_CICLO / 2
+				+ Constantes.MIN_CICLO / 2));
 		labelTable = new Hashtable();
 		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
 			@Override
@@ -1160,8 +1160,8 @@ public class GerenciadorVisual {
 		});
 		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO,
 				Constantes.MAX_CICLO);
-		sliderTempoCiclo.setValue(new Integer(Util.intervalo(
-				Constantes.MIN_CICLO, Constantes.MAX_CICLO)));
+		sliderTempoCiclo.setValue(Constantes.MAX_CICLO / 2
+				+ Constantes.MIN_CICLO / 2);
 		labelTable = new Hashtable();
 		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
 			@Override

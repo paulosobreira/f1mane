@@ -3974,9 +3974,23 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		Piloto ps = pilotoSelecionado;
-
+		int incAcell = 1;
+		int incFreiada = 1;
+		if (ps.getNoAtual().verificaCruvaBaixa()) {
+			incFreiada = Util.intervalo(1, 2);
+		}
+		if (ps.isFreiandoReta()) {
+			incFreiada++;
+		}
+		if (ps.getVelocidade() > ps.getVelocidadeExibir()) {
+			ps.setVelocidadeExibir(ps.getVelocidadeExibir() + incAcell);
+		}
+		if (ps.getVelocidade() < ps.getVelocidadeExibir()) {
+			ps.setVelocidadeExibir(ps.getVelocidadeExibir() - incFreiada);
+		}
 		int velocidade = (controleJogo.isSafetyCarNaPista() ? ps
-				.getVelocidade() / 2 : ps.getVelocidade());
+				.getVelocidadeExibir() / 2 : ps.getVelocidadeExibir())
+				+ Util.intervalo(0, 1);
 		String velo = "~" + velocidade + " Km/h";
 		if (ps.getVelocidade() == 1) {
 			return;
