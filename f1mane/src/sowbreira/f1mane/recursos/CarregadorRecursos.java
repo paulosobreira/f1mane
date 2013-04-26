@@ -415,6 +415,7 @@ public class CarregadorRecursos {
 			piloto.setId(cont++);
 			String name = (String) propNames.nextElement();
 			String prop = properties.getProperty(name);
+			piloto.setNomeOriginal(name);
 			piloto.setNome(Util.substVogais(name));
 			piloto.setNomeCarro(Util.substVogais(prop.split(",")[0]));
 			int duasCasas = Integer.parseInt(prop.split(",")[1])

@@ -51,7 +51,27 @@ public abstract class ControleRecursos {
 	private static Map bufferCarrosCima = new HashMap();
 	private static Map bufferCarrosCimaSemAreofolio = new HashMap();
 	private static Map bufferCarrosLado = new HashMap();
+	private static Map bufferCapacete = new HashMap();
 	private static Map bufferCarrosLadoSemAreofolio = new HashMap();
+
+	public BufferedImage obterCapacete(Piloto piloto) {
+		try {
+			BufferedImage ret = (BufferedImage) bufferCapacete.get(piloto
+					.getNomeOriginal());
+			if (ret == null) {
+				ret = CarregadorRecursos.carregaImagem("capacetes/" + seasson
+						+ "/" + piloto.getNomeOriginal().replaceAll("\\.", "")
+						+ ".png");
+				if (ret == null) {
+					ret = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+				}
+				bufferCapacete.put(piloto.getNomeOriginal(), ret);
+			}
+			return ret;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	public BufferedImage obterCarroLado(Piloto piloto) {
 		Carro carro = piloto.getCarro();
@@ -405,9 +425,9 @@ public abstract class ControleRecursos {
 	}
 
 	public static void main(String[] args) {
-		String strVal = String.valueOf(Util.intervalo(50, 99))
-				+ Util.intervalo(0, 9);
-		System.out.println(strVal);
+		// String strVal = String.valueOf(Util.intervalo(50, 99))
+		// + Util.intervalo(0, 9);
+		System.out.println("F.Alonso".replaceAll("\\.", ""));
 		// Logger.logar(((int) (0 + Math.random() * 9)));
 	}
 

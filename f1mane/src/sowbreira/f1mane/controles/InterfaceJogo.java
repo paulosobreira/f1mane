@@ -233,6 +233,8 @@ public interface InterfaceJogo {
 
 	public BufferedImage obterCarroLado(Piloto piloto);
 
+	public BufferedImage obterCapacete(Piloto piloto);
+
 	public No getNoEntradaBox();
 
 	public void travouRodas(Piloto piloto);
