@@ -52,6 +52,7 @@ public class Piloto implements Serializable {
 	private int velocidadeAnterior;
 	private transient String setUpIncial;
 	private String nome;
+	private String nomeOriginal;
 	private String nomeCarro;
 	private String nomeJogador;
 	private transient int habilidadeAntesQualify;
@@ -2665,6 +2666,14 @@ public class Piloto implements Serializable {
 
 	public void setVelocidadeExibir(int velocidadeExibir) {
 		this.velocidadeExibir = velocidadeExibir;
+	}
+
+	public String getNomeOriginal() {
+		return nomeOriginal;
+	}
+
+	public void setNomeOriginal(String nomeOriginal) {
+		this.nomeOriginal = nomeOriginal;
 	}
 
 }
