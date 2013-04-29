@@ -567,12 +567,12 @@ public class PainelCircuito extends JPanel {
 			desenhaMiniPista(g2d);
 			desenhaNarracao(g2d);
 			desenhaTabelaComparativa(g2d);
+			desenhaCarrosLado(pilotoSelecionado, g2d);
 			desenhaControles(g2d);
 			desenhaControlesBox(g2d);
 			desenhaKers(g2d);
 			desenhaDRS(g2d);
 			desenhaVelocidade(g2d);
-			desenhaCarrosLado(pilotoSelecionado, g2d);
 			if (controleJogo.getNumVoltaAtual() > 0) {
 				desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
 			}
@@ -3356,8 +3356,8 @@ public class PainelCircuito extends JPanel {
 
 			int dstY = carSelY + 20;
 			int halfCarWidth = carroimg.getWidth() / 3;
-			carSelX += (120 - halfCarWidth);
-			dstX += 95;
+			carSelX += (130 - halfCarWidth);
+			dstX += 105;
 			BufferedImage tpPneu = obterNomeImgTipoPneu(carroFrente);
 			if (tpPneu != null) {
 				g2d.drawImage(tpPneu, null, carSelX - (tpPneu.getWidth() + 5),
@@ -3451,8 +3451,8 @@ public class PainelCircuito extends JPanel {
 					.calculaSegundosParaProximoDouble(carroAtraz.getPiloto());
 
 			int halfCarWidth = carroimg.getWidth() / 3;
-			carSelX -= (115 - halfCarWidth);
-			dstX -= 75;
+			carSelX -= (125 - halfCarWidth);
+			dstX -= 80;
 			BufferedImage tpPneu = obterNomeImgTipoPneu(carroAtraz);
 			if (tpPneu != null) {
 				g2d.drawImage(tpPneu, null, carSelX + carroimg.getWidth() + 5,
@@ -3829,6 +3829,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaNomePilotoSelecionado(Piloto ps, Graphics2D g2d) {
+		if (controleJogo.getNumVoltaAtual() < 1) {
+			return;
+		}
 		if (ps == null)
 			return;
 		if (ps.getNoAtual() == null)
