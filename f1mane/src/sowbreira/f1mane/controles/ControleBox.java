@@ -563,39 +563,6 @@ public class ControleBox {
 			piloto.getCarro().setCombustivel(
 					(int) (controleCorrida.getTanqueCheio() * mod));
 		}
-
-		if (controleCorrida.getControleClima().isClimaAleatorio()) {
-			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				Logger.logarExept(e);
-			}
-			int val = Util.intervalo(1, 3);
-			switch (val) {
-			case 1:
-				piloto.getCarro().trocarPneus(controleJogo,
-						Carro.TIPO_PNEU_DURO,
-						controleCorrida.getDistaciaCorrida());
-
-				break;
-			case 2:
-				piloto.getCarro().trocarPneus(controleJogo,
-						Carro.TIPO_PNEU_MOLE,
-						controleCorrida.getDistaciaCorrida());
-
-				break;
-
-			case 3:
-				piloto.getCarro().trocarPneus(controleJogo,
-						Carro.TIPO_PNEU_CHUVA,
-						controleCorrida.getDistaciaCorrida());
-
-				break;
-
-			default:
-				break;
-			}
-		}
 		processarTipoAsaAutomatico(piloto);
 	}
 

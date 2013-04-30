@@ -52,7 +52,7 @@ public class ControleQualificacao {
 	public void gerarGridLargadaSemQualificacao() {
 		gerarQualificacaoAleatoria();
 		gerarVoltaQualificacaoAleatoria();
-		posiscionarCarrosLargada();
+		posicionarCarrosLargada();
 	}
 
 	private void gerarVoltaQualificacaoAleatoria() {
@@ -130,12 +130,12 @@ public class ControleQualificacao {
 		Piloto ant = null;
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = 3;
+			limite = Util.intervalo(3, 7);
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = 7;
+				limite = Util.intervalo(7, 15);
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = 15;
+				limite = Util.intervalo(15, 20);
 			}
 			maiorDiff = 0;
 			ant = null;
@@ -169,12 +169,12 @@ public class ControleQualificacao {
 		Piloto ant = null;
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = 3;
+			limite = Util.intervalo(3, 5);
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = 5;
+				limite = Util.intervalo(5, 7);
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = 7;
+				limite = Util.intervalo(7, 10);
 			}
 			maiorDiff = 0;
 			ant = null;
@@ -202,7 +202,7 @@ public class ControleQualificacao {
 		return modoQualify;
 	}
 
-	public void posiscionarCarrosLargada() {
+	public void posicionarCarrosLargada() {
 		Circuito circuito = controleJogo.getCircuito();
 		for (int i = 0; i < controleJogo.getPilotos().size(); i++) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
