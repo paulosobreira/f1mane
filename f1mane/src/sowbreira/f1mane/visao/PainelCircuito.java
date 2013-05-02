@@ -4412,7 +4412,7 @@ public class PainelCircuito extends JPanel {
 						* zoom));
 				if (No.CURVA_ALTA.equals(oldNo.getTipo())
 						|| No.CURVA_BAIXA.equals(oldNo.getTipo())) {
-					if (Logger.desenhaZebra) {
+					if (Logger.desenhaZebraBoxes) {
 						g2d.setColor(Color.RED);
 						g2d.setStroke(zebra);
 						g2d.drawLine(Util.inte(oldNo.getX() * zoom), Util
@@ -4434,6 +4434,9 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaBoxes(Graphics2D g2d) {
 		if (limitesViewPort == null) {
+			return;
+		}
+		if (!Logger.desenhaZebraBoxes) {
 			return;
 		}
 		for (int i = 0; i < 12; i++) {

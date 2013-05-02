@@ -13,7 +13,7 @@ public class Logger {
 	public static boolean ativo = false;
 	
 	public static boolean carregaBkg = true;
-	public static boolean desenhaZebra = true;
+	public static boolean desenhaZebraBoxes = true;
 	public static boolean desenhaCarroCima = true;
 
 	public static boolean novaSession = false;

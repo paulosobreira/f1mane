@@ -1460,7 +1460,8 @@ public class Piloto implements Serializable {
 				piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
 				boolean intercecionou = getDiateira().intersects(
 						piloto.getTrazeira())
-						|| getDiateira().intersects(piloto.getCentro());
+						|| getDiateira().intersects(piloto.getCentro())
+						|| getCentro().intersects(piloto.getTrazeira());
 				boolean msmPista = obterPista(controleJogo).size() == piloto
 						.obterPista(controleJogo).size();
 				boolean msmTracado = piloto.getTracado() == getTracado();
