@@ -223,118 +223,121 @@ public class GerenciadorVisual {
 		scrollPane.addMouseWheelListener(mw);
 		scrollPane.requestFocus();
 		if (!(controleJogo instanceof JogoCliente)) {
-			thAtualizaPainelSuave = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					boolean alive = true;
-					while (alive) {
-						if (!painelCircuito.isDesenhouQualificacao()) {
-							try {
-								Thread.sleep(50);
-								continue;
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
-						atualizaPainel();
+			iniciaThreadJOgoSuaveClientes();
+		}
+
+	}
+
+	private void iniciaThreadJOgoSuaveClientes() {
+		thAtualizaPainelSuave = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				boolean alive = true;
+				while (alive) {
+					if (!painelCircuito.isDesenhouQualificacao()) {
 						try {
-							Thread.sleep(40);
+							Thread.sleep(50);
+							continue;
 						} catch (InterruptedException e) {
-							alive = false;
 							e.printStackTrace();
 						}
 					}
-
+					atualizaPainel();
+					try {
+						Thread.sleep(40);
+					} catch (InterruptedException e) {
+						alive = false;
+						e.printStackTrace();
+					}
 				}
-			});
-			thAtualizaPilotosSuave = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					boolean alive = true;
-					while (alive) {
-						InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
-						List<Piloto> pilotos = controleJogo.getPilotos();
-						for (Iterator iterator = pilotos.iterator(); iterator
-								.hasNext();) {
-							Piloto piloto = (Piloto) iterator.next();
-							No noAtual = piloto.getNoAtual();
-							No noAtualSuave = piloto.getNoAtualSuave();
-							List pistaFull = controleJogo.getCircuito()
-									.getPistaFull();
-							List boxFull = controleJogo.getCircuito()
-									.getBoxFull();
-							if (noAtualSuave == null
-									|| (pistaFull.contains(noAtual) && boxFull
-											.contains(noAtualSuave))
-									|| (pistaFull.contains(noAtualSuave) && boxFull
-											.contains(noAtual))) {
+
+			}
+		});
+		thAtualizaPilotosSuave = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				boolean alive = true;
+				while (alive) {
+					InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
+					List<Piloto> pilotos = controleJogo.getPilotos();
+					for (Iterator iterator = pilotos.iterator(); iterator
+							.hasNext();) {
+						Piloto piloto = (Piloto) iterator.next();
+						No noAtual = piloto.getNoAtual();
+						No noAtualSuave = piloto.getNoAtualSuave();
+						List pistaFull = controleJogo.getCircuito()
+								.getPistaFull();
+						List boxFull = controleJogo.getCircuito().getBoxFull();
+						if (noAtualSuave == null
+								|| (pistaFull.contains(noAtual) && boxFull
+										.contains(noAtualSuave))
+								|| (pistaFull.contains(noAtualSuave) && boxFull
+										.contains(noAtual))) {
+							noAtualSuave = noAtual;
+						}
+						List<No> nos = null;
+						if (piloto.getPtosBox() != 0) {
+							nos = controleJogo.getCircuito().getBoxFull();
+						} else {
+							nos = controleJogo.getCircuito().getPistaFull();
+						}
+
+						if (noAtual.getIndex() != noAtualSuave.getIndex()) {
+							int diff = noAtual.getIndex()
+									- noAtualSuave.getIndex();
+							if (diff < 0) {
+								diff = (noAtual.getIndex() + nos.size())
+										- noAtualSuave.getIndex();
+							}
+							int ganhoSuave = 0;
+							int maxLoop = 500;
+							int inc = 25;
+							for (int i = 0; i < maxLoop; i += inc) {
+								if (diff >= i && diff < i + inc) {
+									break;
+								}
+								ganhoSuave += 1;
+							}
+							int ganhoSuaveAnt = piloto.getGanhoSuave();
+							if (ganhoSuaveAnt == 0) {
+								ganhoSuaveAnt = ganhoSuave;
+							} else {
+								if (ganhoSuave > ganhoSuaveAnt) {
+									ganhoSuave = ganhoSuaveAnt + 1;
+								}
+								if (ganhoSuave < ganhoSuaveAnt) {
+									ganhoSuave = ganhoSuaveAnt - 1;
+								}
+							}
+
+							piloto.setGanhoSuave(ganhoSuave);
+							if (ganhoSuave > 15) {
+								ganhoSuave = 15;
+							}
+							int index = noAtualSuave.getIndex() + ganhoSuave;
+							if (index >= nos.size()) {
+								index = index - nos.size();
+							}
+							if (index >= nos.size()) {
+								index = -1;
+							} else {
+								noAtualSuave = nos.get(index);
+							}
+							if (diff < 0 || diff > 500) {
 								noAtualSuave = noAtual;
 							}
-							List<No> nos = null;
-							if (piloto.getPtosBox() != 0) {
-								nos = controleJogo.getCircuito().getBoxFull();
-							} else {
-								nos = controleJogo.getCircuito().getPistaFull();
-							}
-
-							if (noAtual.getIndex() != noAtualSuave.getIndex()) {
-								int diff = noAtual.getIndex()
-										- noAtualSuave.getIndex();
-								if (diff < 0) {
-									diff = (noAtual.getIndex() + nos.size())
-											- noAtualSuave.getIndex();
-								}
-								int ganhoSuave = 0;
-								int maxLoop = 500;
-								int inc = 25;
-								for (int i = 0; i < maxLoop; i += inc) {
-									if (diff >= i && diff < i + inc) {
-										break;
-									}
-									ganhoSuave += 1;
-								}
-								int ganhoSuaveAnt = piloto.getGanhoSuave();
-								if (ganhoSuaveAnt == 0) {
-									ganhoSuaveAnt = ganhoSuave;
-								} else {
-									if (ganhoSuave > ganhoSuaveAnt) {
-										ganhoSuave = ganhoSuaveAnt + 1;
-									}
-									if (ganhoSuave < ganhoSuaveAnt) {
-										ganhoSuave = ganhoSuaveAnt - 1;
-									}
-								}
-
-								piloto.setGanhoSuave(ganhoSuave);
-								if (ganhoSuave > 15) {
-									ganhoSuave = 15;
-								}
-								int index = noAtualSuave.getIndex()
-										+ ganhoSuave;
-								if (index >= nos.size()) {
-									index = index - nos.size();
-								}
-								if (index >= nos.size()) {
-									index = -1;
-								} else {
-									noAtualSuave = nos.get(index);
-								}
-								if (diff < 0 || diff > 500) {
-									noAtualSuave = noAtual;
-								}
-							}
-							piloto.setNoAtualSuave(noAtualSuave);
 						}
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-							alive = false;
-							e.printStackTrace();
-						}
+						piloto.setNoAtualSuave(noAtualSuave);
+					}
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						alive = false;
+						e.printStackTrace();
 					}
 				}
-			});
-		}
+			}
+		});
 
 		thAtualizaPainelSuave.start();
 		thAtualizaPilotosSuave.start();
@@ -394,12 +397,15 @@ public class GerenciadorVisual {
 					return;
 				}
 				controleJogo.abandonar();
-				super.windowClosing(e);
 				controleJogo.matarTodasThreads();
-				System.exit(0);
+				if (!(controleJogo instanceof JogoCliente)) {
+					System.exit(0);
+				} else {
+					controleJogo.getMainFrame().setVisible(false);
+				}
+				super.windowClosing(e);
 			}
 		});
-		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 
 	protected void mudarAutoPos() {

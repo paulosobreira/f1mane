@@ -951,8 +951,11 @@ public class Piloto implements Serializable {
 		processaLimitadorGanho(controleJogo);
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
-			if (ganho > 30) {
-				ganho = 30;
+			if (ganho > 35) {
+				ganho = 35;
+			}
+			if (ganho < 10) {
+				ganho = 10;
 			}
 			if (getTracado() == 4) {
 				mudarTracado(2, controleJogo, true);
@@ -964,9 +967,21 @@ public class Piloto implements Serializable {
 		decremetaPilotoDesconcentrado(controleJogo);
 		setPtosPista(Util.inte(getPtosPista() + ganho));
 		index += Math.round(ganho);
-		setVelocidade(Util
-				.inte(((260 * ganho * ((acelerando && !freiandoReta) ? 1 : 0.7) / ganhoMax) + ganho)));
+		setVelocidade(calculoVelocidade(ganho));
 		return index;
+	}
+
+	public static void main(String[] args) {
+		Piloto p = new Piloto();
+		p.ganhoMax = 60;
+		p.freiandoReta = true;
+		p.acelerando = false;
+		System.out.println(p.calculoVelocidade(10));
+	}
+
+	private int calculoVelocidade(double ganho) {
+		return Util
+				.inte(((260 * ganho * ((acelerando && !freiandoReta) ? 1 : 0.7) / ganhoMax) + ganho));
 	}
 
 	public boolean processaColisao(InterfaceJogo controleJogo) {
@@ -974,8 +989,8 @@ public class Piloto implements Serializable {
 				.calculaDiffParaProximoRetardatario(this, true);
 		boolean colisao = processaVerificaColisao(controleJogo);
 		if (colisao) {
-			if (calculaDiffParaProximo < 100) {
-				ganho *= (calculaDiffParaProximo / 100.0);
+			if (calculaDiffParaProximo < 70) {
+				ganho *= (calculaDiffParaProximo / 70.0);
 			}
 		} else {
 			processaIAnovoIndex(controleJogo);
@@ -2022,28 +2037,6 @@ public class Piloto implements Serializable {
 		}
 		return ret;
 
-	}
-
-	public static void main(String[] args) throws InterruptedException {
-		// Logger.logar(1 + (int) (Math.random() * 3));
-		// System.out.println(0.5 * 1.5);
-		// System.out.println(Math.floor(4.9));
-		// Long time = System.currentTimeMillis();
-		// System.out.println(time.toString().length());
-		// System.out.println(time);
-		// time = new Long(time.toString().substring(
-		// time.toString().length() / 10, time.toString().length()));
-		// System.out.println(time);
-		//
-		// time *= 72;
-		//
-		// System.out.println(time);
-
-		double teste = 1;
-		while (teste < 7) {
-			System.out.println(teste);
-			teste *= 1.15;
-		}
 	}
 
 	private void verificaMudancaRegime(InterfaceJogo controleJogo) {
