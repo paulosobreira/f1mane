@@ -47,6 +47,7 @@ public class AppletPaddock extends JApplet {
 				Lang.mudarIdioma(lang);
 			}
 			initProperties();
+			System.out.println("Construtor");
 			controlePaddockApplet = new ControlePaddockCliente(this
 					.getCodeBase(), this);
 			Runnable runnable = new Runnable() {
