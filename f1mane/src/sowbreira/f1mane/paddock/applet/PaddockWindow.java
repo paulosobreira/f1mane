@@ -144,9 +144,9 @@ public class PaddockWindow {
 		}
 	};
 
-	private JComboBox comboTemporada = new JComboBox(new String[] { "2012",
-			"2011", "2010", "2009", "2008", "2007", "2003", "1990", "1993",
-			"1988", "1987", "1986", "1974", "1972", "1968", "super" });
+	private JComboBox comboTemporada = new JComboBox(new String[] { "2013",
+			"2012", "2011", "2010", "2009", "2008", "2007", "2003", "1990",
+			"1993", "1988", "1987", "1986", "1974", "1972", "1968", "super" });
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
