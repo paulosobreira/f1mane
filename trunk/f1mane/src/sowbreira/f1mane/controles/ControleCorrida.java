@@ -38,7 +38,7 @@ public class ControleCorrida {
 	private long tempoCiclo;
 	private boolean corridaPausada;
 	private boolean corridaIniciada;
-	private double fatorAcidente = (Util.intervalo(.8, 1.1));
+	private double fatorAcidente = (Util.intervalo(.5, .9));
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private long pausaIniMilis;
@@ -301,12 +301,6 @@ public class ControleCorrida {
 					mensagemRetardatario(piloto, pilotoNaFrente);
 				}
 				return ganho;
-			}
-			if ((Math.abs(indFrenteCarro - indTrazCarroFrente) < (multi * Carro.MEIA_LARGURA))
-					&& pilotoNaFrente.getTracado() == 0
-					&& piloto.getTracado() != 0
-					&& !piloto.getNoAtual().verificaRetaOuLargada()) {
-				return ganho * getFatorUtrapassagem();
 			}
 		}
 		return ganho;
