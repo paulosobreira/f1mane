@@ -3779,8 +3779,10 @@ public class PainelCircuito extends JPanel {
 		if (qtdeLuzesAcesas <= 0) {
 			return;
 		}
-		int xIni = 5;
-		int yIni = 5;
+		No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
+		Point pQualy = n.getPoint();
+		int xIni = Util.inte((pQualy.x * zoom) - (limitesViewPort.x - 50));
+		int yIni = Util.inte((pQualy.y * zoom) - (limitesViewPort.y - 50));
 		/**
 		 * 1ª luz
 		 */

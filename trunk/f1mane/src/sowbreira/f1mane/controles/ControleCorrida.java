@@ -290,9 +290,6 @@ public class ControleCorrida {
 					piloto.mudarTracado(novapos, controleJogo,
 							verificaCarroLentoOuDanificado(pilotoNaFrente));
 				}
-				if (Math.abs(indFrenteCarro - indTrazCarroFrente) < (Carro.MEIA_LARGURA)) {
-					ajusteUltrapassagem(piloto, pilotoNaFrente);
-				}
 				if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
 					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2),
 							controleJogo, true);
@@ -329,13 +326,11 @@ public class ControleCorrida {
 			if (Math.random() > 0.9) {
 				if (!controleJogo.isSafetyCarNaPista()) {
 					if (Math.random() > 0.5) {
-						controleJogo.info(Html.azul(Lang.msg(
-								"021",
+						controleJogo.info(Html.azul(Lang.msg("021",
 								new String[] { pilotoNaFrente.getNome(),
 										piloto.getNome() })));
 					} else {
-						controleJogo.info(Html.azul(Lang.msg(
-								"020",
+						controleJogo.info(Html.azul(Lang.msg("020",
 								new String[] { pilotoNaFrente.getNome(),
 										piloto.getNome() })));
 					}
@@ -388,8 +383,8 @@ public class ControleCorrida {
 					if ((piloto.getStress() > (5 * piloto.getCarro()
 							.getDurabilidadeAereofolio()))) {
 						danificaAreofolio(piloto);
-						int stress = Util.intervalo(1,
-								(int) controleJogo.getNiveljogo() * 10);
+						int stress = Util.intervalo(1, (int) controleJogo
+								.getNiveljogo() * 10);
 						piloto.incStress(stress);
 						controleJogo.infoPrioritaria(Lang.msg("109",
 								new String[] { Html.superRed(piloto.getNome()),
@@ -445,8 +440,7 @@ public class ControleCorrida {
 						if (piloto.getStress() > 90) {
 							piloto.getCarro().setDanificado(
 									Carro.PERDEU_AEREOFOLIO);
-							controleJogo.infoPrioritaria(Lang.msg(
-									"017",
+							controleJogo.infoPrioritaria(Lang.msg("017",
 									new String[] {
 											Html.superRed(piloto.getNome()),
 											pilotoNaFrente.getNome() }));
@@ -475,27 +469,6 @@ public class ControleCorrida {
 		// new Date(1);
 		// System.out.println(Util.intervalo(85, 95) / 100.0);
 		// System.out.println(Util.intervalo(0.1, 0.9));
-	}
-
-	public void ajusteUltrapassagem(Piloto perdedor, Piloto ganhador) {
-		if (perdedor.isDesqualificado() || ganhador.isDesqualificado()) {
-			return;
-		}
-		if (!ganhador.isJogadorHumano())
-			ganhador.setAgressivo(true, controleJogo);
-
-		if (perdedor.isJogadorHumano() && Math.random() > 0.950) {
-			controleJogo.info(Lang.msg(
-					"018",
-					new String[] { Html.bold(perdedor.getNome()),
-							Html.bold(ganhador.getNome()) }));
-		}
-
-		perdedor.incStress(Util.intervalo(1,
-				(int) controleJogo.getNiveljogo() * 10));
-		if (perdedor.isJogadorHumano() && !ganhador.isJogadorHumano()) {
-			return;
-		}
 	}
 
 	public int porcentagemCorridaCompletada() {

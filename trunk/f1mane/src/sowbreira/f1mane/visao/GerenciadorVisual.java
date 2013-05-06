@@ -223,12 +223,12 @@ public class GerenciadorVisual {
 		scrollPane.addMouseWheelListener(mw);
 		scrollPane.requestFocus();
 		if (!(controleJogo instanceof JogoCliente)) {
-			iniciaThreadJOgoSuaveClientes();
+			iniciaThreadJogoSuaveClientes();
 		}
 
 	}
 
-	private void iniciaThreadJOgoSuaveClientes() {
+	private void iniciaThreadJogoSuaveClientes() {
 		thAtualizaPainelSuave = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -1745,10 +1745,10 @@ public class GerenciadorVisual {
 				for (int i = 0; i < pilotos.size(); i++) {
 					Piloto piloto = (Piloto) pilotos.get(i);
 					if (piloto.getPosicao() % 2 == 0) {
-						ptosPilotos.add(new Point(midPainel + 300, iniY2));
+						ptosPilotos.add(new Point(midPainel + 290, iniY2));
 						iniY2 += 40;
 					} else {
-						ptosPilotos.add(new Point(midPainel - 140, iniY1));
+						ptosPilotos.add(new Point(midPainel - 130, iniY1));
 						iniY1 += 40;
 					}
 				}
