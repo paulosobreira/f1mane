@@ -947,7 +947,9 @@ public class Piloto implements Serializable {
 		processaFreioNaReta(controleJogo);
 		boolean colisao = processaColisao(controleJogo);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
+		ganho = evitaPoleDispararPrimeiraVolta(controleJogo, ganho);
 		ganho = calculaGanhoMedio(ganho, controleJogo, colisao);
+
 		processaLimitadorGanho(controleJogo);
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
@@ -1217,8 +1219,8 @@ public class Piloto implements Serializable {
 				incStress(Util.intervalo(2, 3));
 				agressivo = false;
 				if (getPosicao() <= 10 || isJogadorHumano())
-					controleJogo.info(Lang.msg("014",
-							new String[] { Html.bold(getNome()) }));
+					controleJogo.info(Lang.msg("014", new String[] { Html
+							.bold(getNome()) }));
 			}
 			retardaFreiandoReta = false;
 		}
@@ -1339,6 +1341,21 @@ public class Piloto implements Serializable {
 		}
 	}
 
+	private double evitaPoleDispararPrimeiraVolta(InterfaceJogo controleJogo,
+			double ganho) {
+		boolean val = (getPosicao() == 1
+				&& controleJogo.getNumVoltaAtual() == 1 && controleJogo
+				.percetagemDeVoltaCompletada(this) < 30)
+				&& controleJogo.getFatorUtrapassagem() < 0.8;
+		if (val) {
+			System.out.print("G Ant " + ganho);
+			System.out.println("G Depois " + ganho
+					* controleJogo.getFatorUtrapassagem());
+			return ganho * controleJogo.getFatorUtrapassagem();
+		}
+		return ganho;
+	}
+
 	private void tentarEscaparPilotoDaTraz(InterfaceJogo controleJogo,
 			boolean tentaPassarFrete) {
 		if (jogadorHumano || danificado() || getPtosBox() != 0) {
@@ -1386,8 +1403,7 @@ public class Piloto implements Serializable {
 			if (maxUltimasVoltas || maxPilotagem) {
 				setModoPilotagem(AGRESSIVO);
 			}
-			if (controleJogo.getNumVoltaAtual() > 1
-					&& !controleJogo.verificaNivelJogo()
+			if (!controleJogo.verificaNivelJogo()
 					&& !testeHabilidadePiloto(controleJogo)) {
 				porcentagemCombustivel = 0;
 				porcentagemDesgastePeneus = 0;
@@ -1514,7 +1530,6 @@ public class Piloto implements Serializable {
 						}
 					}
 					if (!somenteVerifica
-							&& controleJogo.getNumVoltaAtual() == 1
 							&& getPtosPista() > piloto.getPtosPista()
 							&& Math.random() > 0.5
 							&& testeHabilidadePilotoCarro(controleJogo)) {
