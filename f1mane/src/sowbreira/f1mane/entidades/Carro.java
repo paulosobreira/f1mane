@@ -537,10 +537,6 @@ public class Carro implements Serializable {
 			boolean agressivo, No no, InterfaceJogo controleJogo) {
 		int percent = porcentagemCombustivel();
 		double indicativo = percent / 100.0;
-		if (!getPiloto().isJogadorHumano()
-				&& percent < (20 * controleJogo.getNiveljogo())) {
-			setGiro(GIRO_MIN_VAL);
-		}
 
 		if (No.CURVA_BAIXA.equals(no)) {
 			if (0 <= indicativo && indicativo < .2) {
@@ -611,11 +607,11 @@ public class Carro implements Serializable {
 		}
 		int dificudade = 2;
 		if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
-			dificudade = ((testePotencia()) ? 1 : 2);
+			dificudade = ((testePotencia()) ? 1 : 3);
 		else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
-			dificudade = ((testePotencia()) ? 0 : 2);
+			dificudade = ((testePotencia()) ? 1 : 2);
 		else if (InterfaceJogo.FACIL == controleJogo.getNivelCorrida())
-			dificudade = ((testePotencia()) ? 0 : 1);
+			dificudade = 1;
 
 		int valConsumo = 0;
 		if (agressivo && !controleJogo.isSemReabastacimento()) {
