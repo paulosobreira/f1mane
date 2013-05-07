@@ -308,6 +308,9 @@ public class MainPanelEditor extends JPanel {
 			@Override
 			public void run() {
 				Point p = scrollPane.getViewport().getViewPosition();
+				if (p == null) {
+					return;
+				}
 				p.x -= 40;
 				repaint();
 				scrollPane.getViewport().setViewPosition(p);
@@ -320,6 +323,9 @@ public class MainPanelEditor extends JPanel {
 			@Override
 			public void run() {
 				Point p = scrollPane.getViewport().getViewPosition();
+				if (p == null) {
+					return;
+				}
 				p.x += 40;
 				repaint();
 				scrollPane.getViewport().setViewPosition(p);
@@ -333,6 +339,9 @@ public class MainPanelEditor extends JPanel {
 			@Override
 			public void run() {
 				Point p = scrollPane.getViewport().getViewPosition();
+				if (p == null) {
+					return;
+				}
 				p.y -= 40;
 				repaint();
 				scrollPane.getViewport().setViewPosition(p);
@@ -347,6 +356,9 @@ public class MainPanelEditor extends JPanel {
 			@Override
 			public void run() {
 				Point p = scrollPane.getViewport().getViewPosition();
+				if (p == null) {
+					return;
+				}
 				p.y += 40;
 				repaint();
 				scrollPane.getViewport().setViewPosition(p);

@@ -107,7 +107,6 @@ public class MainPanelEditorVetorizado extends JPanel {
 	private JSpinner transparencia = new JSpinner();
 	private FormularioListaObjetos formularioListaObjetos;
 	private BufferedImage backGround;
-	private double currentZoom;
 	private BufferedImage drawBuffer;
 	private Thread threadBkgGen;
 	private JCheckBox nosChave;
@@ -147,12 +146,8 @@ public class MainPanelEditorVetorizado extends JPanel {
 	public MainPanelEditorVetorizado(JFrame frame) throws IOException,
 			ClassNotFoundException {
 		this.srcFrame = frame;
-
 		srcFrame.getContentPane().removeAll();
 		setSize(10000, 10000);
-		scrollPane = new JScrollPane(this,
-				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 		JFileChooser fileChooser = new JFileChooser(CarregadorRecursos.class
 				.getResource("CarregadorRecursos.class").getFile());
@@ -172,9 +167,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 
 		circuito = (Circuito) ois.readObject();
-		if (circuito.isUsaBkg()) {
-
-		}
+		circuito.setUsaBkg(true);
 		backGround = CarregadorRecursos.carregaBackGround(
 				circuito.getBackGround(), this, circuito);
 		carroCima = CarregadorRecursos
@@ -233,6 +226,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 						objetoLivre.setNome("Objeto "
 								+ circuito.getObjetos().size());
 						objetoLivre.gerar();
+						objetoPista = null;
 					}
 					repaint();
 				} else if (desenhandoObjetoLivre
@@ -249,6 +243,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 						objetoTransparencia.setNome("Objeto "
 								+ circuito.getObjetos().size());
 						objetoTransparencia.gerar();
+						objetoPista = null;
 					}
 					repaint();
 				} else if (posicionaObjetoPista) {
@@ -270,13 +265,15 @@ public class MainPanelEditorVetorizado extends JPanel {
 				super.mouseClicked(e);
 			}
 		});
+		scrollPane = new JScrollPane(this,
+				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		srcFrame.setPreferredSize(new Dimension(800, 600));
 		srcFrame.getContentPane().setLayout(new BorderLayout());
 		srcFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		testePistaVetorizado = new TestePistaVetorizado(this, circuito);
 		iniciaEditor(srcFrame);
 		vetorizarPistaCarregado();
-		repaint();
 		srcFrame.pack();
 	}
 
@@ -677,35 +674,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
 		if (circuito.isUsaBkg()) {
-			if (currentZoom != zoom) {
-				Runnable runnable = new Runnable() {
-					@Override
-					public void run() {
-						AffineTransform affineTransform = AffineTransform
-								.getScaleInstance(zoom, zoom);
-						AffineTransformOp affineTransformOp = new AffineTransformOp(
-								affineTransform,
-								AffineTransformOp.TYPE_BILINEAR);
-						drawBuffer = new BufferedImage(
-								(int) (backGround.getWidth() * zoom),
-								(int) (backGround.getHeight() * zoom),
-								BufferedImage.TYPE_INT_ARGB);
-						affineTransformOp.filter(backGround, drawBuffer);
-					}
-				};
-				if (threadBkgGen != null) {
-					threadBkgGen.interrupt();
-				}
-				threadBkgGen = new Thread(runnable);
-				threadBkgGen.start();
-			}
-			if (drawBuffer == null) {
-				drawBuffer = backGround;
-			}
-
-			g2d.drawImage(drawBuffer, 0, 0, null);
-
-			currentZoom = zoom;
+			g2d.drawImage(backGround, 0, 0, null);
 		}
 
 		if (carroCima == null)
@@ -731,7 +700,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 						new float[] { 10, 10 }, 0);
 			Rectangle limitesViewPort = (Rectangle) limitesViewPort();
 			g2d.setColor(circuito.getCorFundo());
-			g2d.fill(limitesViewPort);
+			// g2d.fill(limitesViewPort);
 			desenhaTintaPistaEZebra(g2d);
 			desenhaPista(g2d);
 			desenhaPistaBox(g2d);
@@ -811,9 +780,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 					oldNo = no;
 				}
 			}
-
 		}
-
 	}
 
 	private void desenhaObjetosBaixo(Graphics2D g2d) {
@@ -1004,18 +971,18 @@ public class MainPanelEditorVetorizado extends JPanel {
 			double rad = Math.toRadians((double) calculaAngulo);
 			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
 					rectangle.getCenterY());
-			g2d.setColor(Color.LIGHT_GRAY);
+			g2d.setColor(new Color(255, 0, 255, 150));
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 			generalPath = new GeneralPath(retC1);
 			affineTransformRect.setToRotation(rad, retC1.getCenterX(),
 					retC1.getCenterY());
-			g2d.setColor(Color.CYAN);
+			g2d.setColor(new Color(0, 255, 255, 150));
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 
 			generalPath = new GeneralPath(retC2);
 			affineTransformRect.setToRotation(rad, retC2.getCenterX(),
 					retC2.getCenterY());
-			g2d.setColor(Color.MAGENTA);
+			g2d.setColor(new Color(255, 0, 255, 150));
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 			// g2d.fillOval((int) rectangle.getCenterX(), (int) rectangle
 			// .getCenterY(), 10, 10);
@@ -1104,7 +1071,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 			double rad = Math.toRadians((double) calculaAngulo);
 			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
 					rectangle.getCenterY());
-			g2d.setColor(Color.white);
+			g2d.setColor(new Color(255, 255, 255, 150));
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 
 			iP += 5;
@@ -1151,8 +1118,8 @@ public class MainPanelEditorVetorizado extends JPanel {
 			rad = Math.toRadians((double) calculaAngulo);
 			affineTransformRect.setToRotation(rad, rectangle.getCenterX(),
 					rectangle.getCenterY());
-			g2d.setColor(Color.lightGray);
-			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
+			g2d.setColor(new Color(192, 192, 192, 150));
+			// g2d.fill(generalPath.createTransformedShape(affineTransformRect));
 
 		}
 
@@ -1461,6 +1428,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		srcFrame.pack();
 		No n1 = (No) l.get(0);
 		centralizarPonto(n1.getPoint());
+		repaint();
 
 	}
 
