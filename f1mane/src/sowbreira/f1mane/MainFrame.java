@@ -126,11 +126,6 @@ public class MainFrame extends JFrame {
 
 		};
 		bar.add(menuIdiomas);
-
-		if (modoApplet == null) {
-			menuEditor.setEnabled(false);
-
-		}
 		gerarMenusSingle(menuJogo);
 		gerarMenusCampeonato(menuCampeonato);
 		gerarMenusEditor(menuEditor);
@@ -142,8 +137,11 @@ public class MainFrame extends JFrame {
 		setTitle(title);
 		if (modoApplet == null) {
 			iniciar();
+			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		} else {
+			menuEditor.setEnabled(false);
+			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		}
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 
 	private String getVersao() {
