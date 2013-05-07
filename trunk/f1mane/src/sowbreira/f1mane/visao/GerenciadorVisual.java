@@ -1741,10 +1741,10 @@ public class GerenciadorVisual {
 				for (int i = 0; i < pilotos.size(); i++) {
 					Piloto piloto = (Piloto) pilotos.get(i);
 					if (piloto.getPosicao() % 2 == 0) {
-						ptosPilotos.add(new Point(midPainel + 280, iniY2));
+						ptosPilotos.add(new Point(midPainel + 270, iniY2));
 						iniY2 += 40;
 					} else {
-						ptosPilotos.add(new Point(midPainel - 140, iniY1));
+						ptosPilotos.add(new Point(midPainel - 100, iniY1));
 						iniY1 += 40;
 					}
 				}
