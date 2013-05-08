@@ -42,6 +42,7 @@ import sowbreira.f1mane.paddock.applet.AppletPaddock;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.ControleSom;
+import sowbreira.f1mane.visao.PainelCircuito;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Logger;
 
@@ -892,7 +893,7 @@ public class MainFrame extends JFrame {
 	public void iniciar() {
 		if (ControleJogoLocal.VALENDO) {
 			setVisible(true);
-			if (Logger.carregaBkg)
+			if (PainelCircuito.carregaBkg)
 				bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
 			JPanel bgPanel = new JPanel() {
 				protected void paintComponent(Graphics g) {

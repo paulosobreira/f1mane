@@ -339,15 +339,15 @@ public class Carro implements Serializable {
 		calculaDesgasteMotor(novoModificador, agressivo, no, controleJogo);
 		novoModificador = calculaModificadorAsaGiro(novoModificador, no,
 				controleJogo);
-		novoModificador = calculaModificadorCombustivel(novoModificador,
-				agressivo, no, controleJogo);
+		novoModificador = calculaModificadorCombustivel(novoModificador, no,
+				controleJogo);
 		return novoModificador;
 	}
 
 	private int calculaModificadorAsaGiro(int novoModificadorOri, No no,
 			InterfaceJogo controleJogo) {
 		double mod = 0.5;
-
+		boolean testePotencia = testePotencia();
 		if (GIRO_MAX_VAL == giro) {
 			mod = 0.7;
 		}
@@ -363,26 +363,26 @@ public class Carro implements Serializable {
 				novoModificadorOri++;
 			}
 		}
-		if (Math.random() > mod || !testePotencia()) {
+		if (Math.random() > mod || !testePotencia) {
 			return novoModificadorOri;
 		}
 		int novoModificador = 0;
 
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod
-					&& testePotencia()) {
+					&& testePotencia) {
 				novoModificador++;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod) {
-				novoModificador -= Math.random() < 0.2 ? (testePotencia() ? 0
-						: 1) : (testePotencia() ? 1 : 2);
+				novoModificador -= Math.random() < 0.2 ? (testePotencia ? 0 : 1)
+						: (testePotencia ? 1 : 2);
 			}
 		}
 		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod) {
-				novoModificador -= Util.intervalo(testePotencia() ? 0 : 1,
-						testePotencia() ? 1 : 2);
+				novoModificador -= Util.intervalo(testePotencia ? 0 : 1,
+						testePotencia ? 1 : 2);
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
-					&& testePotencia()) {
+					&& testePotencia) {
 				novoModificador += Math.random() < 0.7 ? 1 : 0;
 			}
 		}
@@ -401,19 +401,20 @@ public class Carro implements Serializable {
 			No no, InterfaceJogo controleJogo) {
 		int valDesgaste = 0;
 		int novoModDano = novoModificador;
+		boolean testePotencia = testePotencia();
 		if (giro == GIRO_MAX_VAL) {
 			if (agressivo)
-				valDesgaste = ((testePotencia() ? 8 : 9) + novoModDano);
+				valDesgaste = ((testePotencia ? 8 : 9) + novoModDano);
 			else
-				valDesgaste = ((testePotencia() ? 6 : 7) + novoModDano);
+				valDesgaste = ((testePotencia ? 6 : 7) + novoModDano);
 		} else if (giro == GIRO_NOR_VAL) {
 			if (agressivo)
-				valDesgaste = ((testePotencia() ? 4 : 5) + novoModDano);
+				valDesgaste = ((testePotencia ? 4 : 5) + novoModDano);
 			else
-				valDesgaste = ((testePotencia() ? 2 : 3) + novoModDano);
+				valDesgaste = ((testePotencia ? 2 : 3) + novoModDano);
 		} else {
 			if (agressivo)
-				valDesgaste = ((testePotencia() ? 1 : 2) + novoModDano);
+				valDesgaste = ((testePotencia ? 1 : 2) + novoModDano);
 		}
 		if (Clima.SOL.equals(controleJogo.getClima())
 				&& Math.random() < (giro / 10.0)) {
@@ -428,27 +429,65 @@ public class Carro implements Serializable {
 			int perCombust = porcentagemCombustivel();
 			if (valor < perCombust)
 				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-					valDesgaste += (testePotencia() ? 1 : 3);
+					valDesgaste += (testePotencia ? 1 : 3);
 				} else if (InterfaceJogo.MEDIO_NV == controleJogo
 						.getNiveljogo()) {
-					valDesgaste += (testePotencia() ? 2 : 5);
+					valDesgaste += (testePotencia ? 2 : 5);
 				} else if (InterfaceJogo.DIFICIL_NV == controleJogo
 						.getNiveljogo()) {
-					valDesgaste += (testePotencia() ? 4 : 7);
+					valDesgaste += (testePotencia ? 4 : 7);
 				}
 		}
 		int dist = 20;
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-			dist = 10;
+			dist = 30;
 		}
 		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
-			dist = 30;
+			dist = 10;
 		}
 		if (!controleJogo.isModoQualify()
 				&& controleJogo.getNumVoltaAtual() != 1
-				&& piloto.calculaDiffParaProximo(controleJogo) < dist) {
-			valDesgaste += testePotencia() ? 1 : 2;
+				&& controleJogo
+						.calculaDiffParaProximoRetardatario(piloto, true) < dist) {
+			valDesgaste += testePotencia ? 1 : 2;
 		}
+		processaTemperaturaMotor(controleJogo);
+		double desg = (valDesgaste * controleJogo.getCircuito()
+				.getMultiplciador());
+		if (verificaMotorSuperAquecido()) {
+			double desgasteTemp = 1;
+			if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+				desgasteTemp = testePotencia ? 1 : 2;
+			}
+			if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+				desgasteTemp = testePotencia ? 2 : 3;
+			}
+			if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+				desgasteTemp = testePotencia ? 2 : 4;
+			}
+			desg *= desgasteTemp;
+		}
+		if (verificaDano()) {
+			desg /= 2;
+		}
+		int porcent = porcentagemDesgasteMotor();
+
+		if (porcent < 5 && (GIRO_MIN_VAL == giro)) {
+			desg *= 0.1;
+		}
+
+		motor -= desg;
+
+		if (porcent < 0) {
+			piloto.setDesqualificado(true);
+			setDanificado(Carro.EXPLODIU_MOTOR);
+			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("042",
+					new String[] { piloto.getNome() })));
+
+		}
+	}
+
+	private void processaTemperaturaMotor(InterfaceJogo controleJogo) {
 		if (giro == GIRO_MAX_VAL && temperaturaMotor < tempMax) {
 			temperaturaMotor++;
 			if (getPiloto().isJogadorHumano()
@@ -477,48 +516,6 @@ public class Carro implements Serializable {
 		if (temperaturaMotor < 0) {
 			temperaturaMotor = 0;
 		}
-		double desg = (valDesgaste * controleJogo.getCircuito()
-				.getMultiplciador());
-		if (verificaMotorSuperAquecido()) {
-
-			double desgasteTemp = 1;
-
-			if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
-				desgasteTemp = Util.intervalo(1, 2);
-			}
-			if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
-				desgasteTemp = Util.intervalo(1.5, 3);
-			}
-			if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-				desgasteTemp = Util.intervalo(2, 4);
-			}
-
-			desg *= desgasteTemp;
-		}
-
-		if (verificaDano()) {
-			desg /= 2;
-		}
-		int porcent = porcentagemDesgasteMotor();
-
-		if (porcent < 5 && (GIRO_MIN_VAL == giro)) {
-			desg *= 0.1;
-		}
-
-		motor -= desg;
-
-		if (porcent < 0
-				&& (GIRO_MIN_VAL == giro || !getPiloto().isJogadorHumano())) {
-			porcent = 1;
-		}
-
-		if (porcent < 0) {
-			piloto.setDesqualificado(true);
-			setDanificado(Carro.EXPLODIU_MOTOR);
-			controleJogo.infoPrioritaria(Html.superRed(Lang.msg("042",
-					new String[] { piloto.getNome() })));
-
-		}
 	}
 
 	private boolean verificaMotorSuperAquecido() {
@@ -533,10 +530,11 @@ public class Carro implements Serializable {
 		this.temperaturaMotor = temperaturaMotor;
 	}
 
-	private int calculaModificadorCombustivel(int novoModificador,
-			boolean agressivo, No no, InterfaceJogo controleJogo) {
+	private int calculaModificadorCombustivel(int novoModificador, No no,
+			InterfaceJogo controleJogo) {
 		int percent = porcentagemCombustivel();
 		double indicativo = percent / 100.0;
+		boolean testePotencia = testePotencia();
 
 		if (No.CURVA_BAIXA.equals(no)) {
 			if (0 <= indicativo && indicativo < .2) {
@@ -607,27 +605,20 @@ public class Carro implements Serializable {
 		}
 		int dificudade = 2;
 		if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
-			dificudade = ((testePotencia()) ? 1 : 3);
+			dificudade = ((testePotencia) ? 1 : 3);
 		else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
-			dificudade = ((testePotencia()) ? 1 : 2);
+			dificudade = ((testePotencia) ? 1 : 2);
 		else if (InterfaceJogo.FACIL == controleJogo.getNivelCorrida())
 			dificudade = 1;
 
 		int valConsumo = 0;
-		if (agressivo && !controleJogo.isSemReabastacimento()) {
-			valConsumo = (testePotencia() ? 0 : 2);
-		} else {
-			valConsumo = (testePotencia() ? 0 : 1);
-		}
 
 		if (giro == GIRO_MIN_VAL) {
-			valConsumo += ((testePotencia()) ? 0 : 1);
+			valConsumo += (testePotencia ? 0 : 1);
 		} else if (giro == GIRO_NOR_VAL) {
-			valConsumo += ((testePotencia()) ? 1 : 2);
+			valConsumo += (testePotencia ? 2 : 3);
 		} else if (giro == GIRO_MAX_VAL) {
-			valConsumo += (testePotencia() ? 1 : 3);
-		} else if (giro == GIRO_MAX_VAL && verificaMotorSuperAquecido()) {
-			valConsumo += (testePotencia() ? 2 : 3);
+			valConsumo += (testePotencia ? 3 : 6);
 		}
 
 		double consumoTotal = (valConsumo
