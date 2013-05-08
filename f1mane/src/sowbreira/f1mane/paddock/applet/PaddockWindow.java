@@ -43,6 +43,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import sowbreira.f1mane.visao.PainelCircuito;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -166,7 +167,7 @@ public class PaddockWindow {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D graphics2d = (Graphics2D) g;
-				if (img != null)
+				if (img != null && PainelCircuito.carregaBkg)
 					graphics2d.drawImage(img, null, 0, 0);
 			}
 		};
