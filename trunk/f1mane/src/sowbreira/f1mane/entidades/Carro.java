@@ -283,9 +283,6 @@ public class Carro implements Serializable {
 		if (combust < consumoMedioCombust) {
 			return true;
 		}
-		if (controleJogo.isSemReabastacimento() && combust < 20) {
-			return true;
-		}
 		if ((motor < 10) || (combust < 10)) {
 			return true;
 		}
@@ -518,7 +515,7 @@ public class Carro implements Serializable {
 		}
 	}
 
-	private boolean verificaMotorSuperAquecido() {
+	public boolean verificaMotorSuperAquecido() {
 		return temperaturaMotor >= tempMax;
 	}
 

@@ -3166,8 +3166,7 @@ public class PainelCircuito extends JPanel {
 				&& porcentComb > 25
 				&& pilotoSelecionado.getCarro().getDurabilidadeAereofolio() >= durabilidade
 				&& pneus > 25
-				&& pilotoSelecionado.getCarro().getTemperaturaMotor() < pilotoSelecionado
-						.getCarro().getTempMax())
+				&& !pilotoSelecionado.getCarro().verificaMotorSuperAquecido())
 			return;
 
 		g2d.setColor(this.transpMenus);
@@ -3227,8 +3226,7 @@ public class PainelCircuito extends JPanel {
 			g2d.fillOval(limitesViewPort.x + 278, limitesViewPort.y + 12, 15,
 					15);
 		} else if (motor <= 25
-				|| pilotoSelecionado.getCarro().getTemperaturaMotor() == pilotoSelecionado
-						.getCarro().getTempMax()) {
+				|| pilotoSelecionado.getCarro().verificaMotorSuperAquecido()) {
 			g2d.setColor(OcilaCor.geraOcila("motorGasto", Color.yellow));
 			g2d.fillOval(limitesViewPort.x + 278, limitesViewPort.y + 12, 15,
 					15);
