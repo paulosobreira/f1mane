@@ -74,7 +74,7 @@ public interface InterfaceJogo {
 	public void matarTodasThreads();
 
 	/**
-	 * Quanto Mais dificil o jogo mais facil de retornar true
+	 * Quanto Mais dificil o jogo mais ira de retornar true
 	 * 
 	 * @return boolean
 	 */
