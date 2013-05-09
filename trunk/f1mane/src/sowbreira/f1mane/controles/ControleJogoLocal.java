@@ -1292,8 +1292,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	@Override
-	public long ciclosPausado(int numVolta) {
-		return controleCorrida.ciclosPausado(numVolta);
+	public void descontaTempoPausado(Volta volta) {
+		controleCorrida.descontaTempoPausado(volta);
+
 	}
 
 }

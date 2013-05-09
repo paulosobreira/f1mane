@@ -77,9 +77,8 @@ public class ControleEstatisticas {
 		}
 
 		Volta volta = piloto.getVoltaAtual();
-		volta.setCiclosFim(System.currentTimeMillis()
-				- controleJogo.ciclosPausado(piloto.getVoltas().size()));
-
+		volta.setCiclosFim(System.currentTimeMillis());
+		controleJogo.descontaTempoPausado(volta);
 		controleJogo.verificaVoltaMaisRapidaCorrida(piloto);
 		verificaVoltaMaisRapidaPiloto(piloto);
 		piloto.setUltimaVolta(volta);

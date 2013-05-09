@@ -11,6 +11,7 @@ import br.nnpe.Logger;
 public class Volta implements Serializable {
 	private long ciclosInicio;
 	private long ciclosFim;
+	private long tempoPausado;
 	private int pilotoId;
 	private boolean voltaBox;
 	private boolean voltaSafetyCar;
@@ -24,7 +25,8 @@ public class Volta implements Serializable {
 	}
 
 	public String encode() {
-		return ciclosInicio + "§" + ciclosFim + "§" + pilotoId;
+		return ciclosInicio + "§" + ciclosFim + "§" + pilotoId + "§"
+				+ tempoPausado;
 	}
 
 	public void decode(String val) {
@@ -35,6 +37,7 @@ public class Volta implements Serializable {
 		ciclosInicio = parseLong(sp[0]);
 		ciclosFim = parseLong(sp[1]);
 		pilotoId = parseInt(sp[2]);
+		tempoPausado = parseInt(sp[3]);
 	}
 
 	private long parseLong(String string) {
@@ -78,7 +81,7 @@ public class Volta implements Serializable {
 	}
 
 	public double obterTempoVolta() {
-		return ((ciclosFim - ciclosInicio));
+		return ((ciclosFim - ciclosInicio) - tempoPausado);
 	}
 
 	public String obterTempoVoltaFormatado() {
@@ -109,4 +112,13 @@ public class Volta implements Serializable {
 	public void setVoltaSafetyCar(boolean voltaSAfetyCar) {
 		this.voltaSafetyCar = voltaSAfetyCar;
 	}
+
+	public long getTempoPausado() {
+		return tempoPausado;
+	}
+
+	public void setTempoPausado(long tempoPausado) {
+		this.tempoPausado = tempoPausado;
+	}
+
 }

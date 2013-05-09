@@ -576,8 +576,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					piloto.setTracado(posis.tracado);
 					if (piloto.getIndiceTracado() <= 0
 							&& piloto.getTracado() != piloto.getTracadoAntigo()) {
-						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-								.getMultiplicadorLarguraPista()));
+						piloto
+								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+										.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -1117,13 +1118,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public long ciclosPausado(int numVolta) {
-		return 0;
+	public boolean isCorridaPausada() {
+		return false;
 	}
 
 	@Override
-	public boolean isCorridaPausada() {
-		return false;
+	public void descontaTempoPausado(Volta volta) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

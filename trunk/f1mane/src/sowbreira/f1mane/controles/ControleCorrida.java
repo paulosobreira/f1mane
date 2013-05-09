@@ -1,17 +1,17 @@
 package sowbreira.f1mane.controles;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.Pausa;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
+import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
@@ -36,13 +36,12 @@ public class ControleCorrida {
 	private double fatorUtrapassagem;
 	private double indexVelcidadeDaPista;
 	private long tempoCiclo;
-	private boolean corridaPausada;
 	private boolean corridaIniciada;
 	private double fatorAcidente = (Util.intervalo(.5, .9));
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
-	private long pausaIniMilis;
-	private Map<Integer, Long> mapaTempoPausado = new HashMap<Integer, Long>();
+	private Pausa pausaAtual;
+	private List tempoPausado = new ArrayList();
 
 	public long getPontosPilotoLargada() {
 		return pontosPilotoLargada;
@@ -140,22 +139,18 @@ public class ControleCorrida {
 	}
 
 	public boolean isCorridaPausada() {
-		return corridaPausada;
+		return pausaAtual != null && pausaAtual.getPausaFimMilis() == 0;
 	}
 
 	public void setCorridaPausada(boolean corridaPausada) {
-		if (corridaPausada) {
-			pausaIniMilis = System.currentTimeMillis();
+		if (pausaAtual == null) {
+			pausaAtual = new Pausa();
+			pausaAtual.setPausaIniMilis(System.currentTimeMillis());
 		} else {
-			Long tempoPausado = mapaTempoPausado.get(controleJogo
-					.getNumVoltaAtual());
-			if (tempoPausado == null) {
-				tempoPausado = new Long(0);
-			}
-			tempoPausado += System.currentTimeMillis() - pausaIniMilis;
-			mapaTempoPausado.put(controleJogo.getNumVoltaAtual(), tempoPausado);
+			pausaAtual.setPausaFimMilis(System.currentTimeMillis());
+			tempoPausado.add(pausaAtual);
+			pausaAtual = null;
 		}
-		this.corridaPausada = corridaPausada;
 	}
 
 	public void gerarGridLargadaSemQualificacao() {
@@ -641,13 +636,16 @@ public class ControleCorrida {
 		controleSafetyCar.safetyCarNaPista(piloto);
 	}
 
-	public long ciclosPausado(int numVolta) {
-		Long tempoPausado = mapaTempoPausado.get(numVolta + 1);
-		if (tempoPausado != null) {
-			System.out.println("tempoPausado " + tempoPausado);
-			return tempoPausado;
+	public void descontaTempoPausado(Volta volta) {
+		for (Iterator iterator = tempoPausado.iterator(); iterator.hasNext();) {
+			Pausa pausa = (Pausa) iterator.next();
+			if (volta.getCiclosInicio() <= pausa.getPausaIniMilis()
+					&& volta.getCiclosFim() > pausa.getPausaFimMilis()) {
+				volta
+						.setTempoPausado(volta.getTempoPausado()
+								+ (pausa.getPausaFimMilis() - pausa
+										.getPausaIniMilis()));
+			}
 		}
-		return 0;
 	}
-
 }
