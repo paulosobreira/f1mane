@@ -1234,7 +1234,8 @@ public class Piloto implements Serializable {
 			if (!testeHabilidadePilotoCarro(controleJogo)) {
 				incStress(Util.intervalo(2, 3));
 				agressivo = false;
-				if (getPosicao() <= 10 || isJogadorHumano())
+				if (getPosicao() <= 10 || isJogadorHumano()
+						&& Math.random() > 0.7)
 					controleJogo.info(Lang.msg("014", new String[] { Html
 							.bold(getNome()) }));
 			}
@@ -1432,7 +1433,8 @@ public class Piloto implements Serializable {
 				porcentagemCombustivel = 0;
 				porcentagemDesgastePeneus = 0;
 			}
-			if (maxUltimasVoltas || maxMotor) {
+			if (!getCarro().verificaCondicoesCautelaGiro(controleJogo)
+					&& (maxUltimasVoltas || maxMotor)) {
 				getCarro().setGiro(Carro.GIRO_MAX_VAL);
 			} else {
 				getCarro().setGiro(Carro.GIRO_NOR_VAL);
@@ -2009,7 +2011,8 @@ public class Piloto implements Serializable {
 			boolean maxCorrida = !superAquecido
 					&& porcentagemCombustivel > porcentagemDesgastePeneus
 					&& poupaMotor && econmizaCombustivel;
-			if (maxUltimasVoltas || maxCorrida) {
+			if (!getCarro().verificaCondicoesCautelaGiro(controleJogo)
+					&& (maxUltimasVoltas || maxCorrida)) {
 				getCarro().setGiro(Carro.GIRO_MAX_VAL);
 				ret = true;
 			} else {
@@ -2020,7 +2023,9 @@ public class Piloto implements Serializable {
 				No no = getNoAtual();
 				if (Carro.MAIS_ASA.equals(getCarro().getAsa())) {
 					if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
-						if (maxUltimasVoltas || maxCorrida) {
+						if (!getCarro().verificaCondicoesCautelaGiro(
+								controleJogo)
+								&& (maxUltimasVoltas || maxCorrida)) {
 							getCarro().setGiro(Carro.GIRO_MAX_VAL);
 							ret = true;
 						} else {
@@ -2036,7 +2041,9 @@ public class Piloto implements Serializable {
 						getCarro().setGiro(Carro.GIRO_NOR_VAL);
 					}
 					if (no.verificaRetaOuLargada()) {
-						if (maxUltimasVoltas || maxCorrida) {
+						if (!getCarro().verificaCondicoesCautelaGiro(
+								controleJogo)
+								&& (maxUltimasVoltas || maxCorrida)) {
 							getCarro().setGiro(Carro.GIRO_MAX_VAL);
 							ret = true;
 						} else {
