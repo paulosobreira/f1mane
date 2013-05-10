@@ -143,7 +143,7 @@ public class PainelTabelaResultadoFinal extends JPanel {
 			case 7:
 				return Lang.msg("216");
 			case 8:
-				return Lang.msg("279");
+				return Lang.msg("215");
 			case 9:
 				return Lang.msg("217");
 			case 10:
