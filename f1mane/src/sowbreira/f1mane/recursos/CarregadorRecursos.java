@@ -477,6 +477,8 @@ public class CarregadorRecursos {
 			String[] values = prop.split(",");
 			carro.setPotencia(Integer.parseInt(values[0]));
 			carro.setPotenciaReal(Integer.parseInt(values[0]));
+			carro.setAerodinamica(Integer.parseInt(values[0]));
+			carro.setFreios(Integer.parseInt(values[0]));
 
 			String red = values[1];
 			String green = values[2];
