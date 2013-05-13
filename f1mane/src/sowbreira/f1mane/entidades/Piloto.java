@@ -1558,9 +1558,7 @@ public class Piloto implements Serializable {
 						}
 					}
 					if (!somenteVerifica
-							&& getPtosPista() > piloto.getPtosPista()
-							&& Math.random() > 0.5
-							&& testeHabilidadePilotoCarro(controleJogo)) {
+							&& getPtosPista() > piloto.getPtosPista()) {
 						return false;
 					}
 
@@ -2263,12 +2261,12 @@ public class Piloto implements Serializable {
 				&& getCarro().testePotencia()) {
 			acelerando = true;
 			return (Math.random() < bonusSecundario ? 3 : 2);
-		} else if (noAtual.verificaCruvaAlta()
-				&& testeHabilidadePilotoOuCarro(controleJogo) && agressivo) {
+		} else if (noAtual.verificaCruvaAlta() && getCarro().testePotencia()
+				&& agressivo) {
 			acelerando = true;
 			return (Math.random() < bonusSecundario ? 3 : 2);
 		} else if (noAtual.verificaCruvaAlta() && !agressivo
-				&& testeHabilidadePilotoCarro(controleJogo)) {
+				&& testeHabilidadePilotoOuCarro(controleJogo)) {
 			acelerando = false;
 			return (Math.random() < bonusSecundario ? 2 : 1);
 		} else if (agressivo && noAtual.verificaCruvaBaixa()
@@ -2756,6 +2754,29 @@ public class Piloto implements Serializable {
 
 	public void setNomeOriginal(String nomeOriginal) {
 		this.nomeOriginal = nomeOriginal;
+	}
+
+	public boolean testeHabilidadePilotoAerodinamica(InterfaceJogo controleJogo) {
+		if (danificado()) {
+			return false;
+		}
+		return carro.testeAerodinamica() && testeHabilidadePiloto(controleJogo);
+	}
+
+	public boolean testeHabilidadePilotoFreios(InterfaceJogo controleJogo) {
+		if (danificado()) {
+			return false;
+		}
+		return carro.testeFreios() && testeHabilidadePiloto(controleJogo);
+	}
+
+	public boolean testeHabilidadePilotoAerodinamicaFreios(
+			InterfaceJogo controleJogo) {
+		if (danificado()) {
+			return false;
+		}
+		return carro.testeFreios() && carro.testeAerodinamica()
+				&& testeHabilidadePiloto(controleJogo);
 	}
 
 }
