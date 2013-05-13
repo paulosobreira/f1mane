@@ -279,15 +279,19 @@ public class Carro implements Serializable {
 		if (controleJogo.isModoQualify()) {
 			return false;
 		}
+
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
+
+		if ((motor < 5) || (combust < 5)) {
+			return true;
+		}
 		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
+
 		if (combust < consumoMedioCombust) {
 			return true;
 		}
-		if ((motor < 10) || (combust < 10)) {
-			return true;
-		}
+
 		return false;
 	}
 
