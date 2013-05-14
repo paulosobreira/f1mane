@@ -1433,8 +1433,7 @@ public class Piloto implements Serializable {
 				porcentagemCombustivel = 0;
 				porcentagemDesgastePeneus = 0;
 			}
-			if (!getCarro().verificaCondicoesCautelaGiro(controleJogo)
-					&& (maxUltimasVoltas || maxMotor)) {
+			if (maxUltimasVoltas || maxMotor) {
 				getCarro().setGiro(Carro.GIRO_MAX_VAL);
 			} else {
 				getCarro().setGiro(Carro.GIRO_NOR_VAL);
@@ -1462,7 +1461,9 @@ public class Piloto implements Serializable {
 				mudarTracado(0, controleJogo);
 			}
 		}
-
+		if (getCarro().verificaCondicoesCautelaGiro(controleJogo)) {
+			getCarro().setGiro(Carro.GIRO_MIN_VAL);
+		}
 	}
 
 	private void tentaUsarDRS(InterfaceJogo controleJogo) {
@@ -2009,8 +2010,7 @@ public class Piloto implements Serializable {
 			boolean maxCorrida = !superAquecido
 					&& porcentagemCombustivel > porcentagemDesgastePeneus
 					&& poupaMotor && econmizaCombustivel;
-			if (!getCarro().verificaCondicoesCautelaGiro(controleJogo)
-					&& (maxUltimasVoltas || maxCorrida)) {
+			if (maxUltimasVoltas || maxCorrida) {
 				getCarro().setGiro(Carro.GIRO_MAX_VAL);
 				ret = true;
 			} else {
@@ -2021,9 +2021,7 @@ public class Piloto implements Serializable {
 				No no = getNoAtual();
 				if (Carro.MAIS_ASA.equals(getCarro().getAsa())) {
 					if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
-						if (!getCarro().verificaCondicoesCautelaGiro(
-								controleJogo)
-								&& (maxUltimasVoltas || maxCorrida)) {
+						if (maxUltimasVoltas || maxCorrida) {
 							getCarro().setGiro(Carro.GIRO_MAX_VAL);
 							ret = true;
 						} else {
@@ -2039,9 +2037,7 @@ public class Piloto implements Serializable {
 						getCarro().setGiro(Carro.GIRO_NOR_VAL);
 					}
 					if (no.verificaRetaOuLargada()) {
-						if (!getCarro().verificaCondicoesCautelaGiro(
-								controleJogo)
-								&& (maxUltimasVoltas || maxCorrida)) {
+						if (maxUltimasVoltas || maxCorrida) {
 							getCarro().setGiro(Carro.GIRO_MAX_VAL);
 							ret = true;
 						} else {
