@@ -283,7 +283,7 @@ public class Carro implements Serializable {
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
 
-		if ((motor < 5) || (combust < 5)) {
+		if ((motor <= 1) || (combust <= 1)) {
 			return true;
 		}
 		double consumoMedioCombust = getPiloto().calculaConsumoMedioCombust();
