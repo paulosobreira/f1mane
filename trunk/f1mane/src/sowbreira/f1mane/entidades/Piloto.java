@@ -1198,6 +1198,9 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaFreioNaReta(InterfaceJogo controleJogo) {
+		boolean testPilotoPneus = Carro.TIPO_PNEU_MOLE.equals(getCarro()
+				.getTipoPneu())
+				&& getCarro().testeFreios();
 		/**
 		 * efeito freiar na reta
 		 */
@@ -1209,16 +1212,23 @@ public class Piloto implements Serializable {
 				freiandoReta = true;
 				acelerando = false;
 				double multi = (val / 300.0);
-				if (Piloto.AGRESSIVO.equals(getModoPilotagem())) {
+
+				if (testPilotoPneus) {
+					retardaFreiandoReta = true;
+				}
+
+				if (!retardaFreiandoReta
+						&& Piloto.AGRESSIVO.equals(getModoPilotagem())) {
 					controleJogo.travouRodas(this);
 					retardaFreiandoReta = true;
 				}
+
 				double minMulti = 0.7;
 				if (controleJogo.isChovendo()) {
 					minMulti -= 0.2;
 				}
 				if (retardaFreiandoReta) {
-					minMulti += 0.1;
+					minMulti += (testPilotoPneus) ? 0.2 : 0.1;
 				}
 				if (multi < minMulti)
 					multi = minMulti;
@@ -1231,7 +1241,7 @@ public class Piloto implements Serializable {
 		}
 
 		if (noAtual.verificaCruvaBaixa() && retardaFreiandoReta) {
-			if (!testeHabilidadePilotoCarro(controleJogo)) {
+			if (!testeHabilidadePilotoFreios(controleJogo)) {
 				incStress(Util.intervalo(2, 3));
 				agressivo = false;
 				if (getPosicao() <= 10 || isJogadorHumano()
