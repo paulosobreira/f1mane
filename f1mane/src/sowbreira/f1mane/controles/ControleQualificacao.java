@@ -75,11 +75,6 @@ public class ControleQualificacao {
 				if (Math.random() > (piloto.getCarro().porcentagemCombustivel() / 100.0)
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao--;
-					if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro()
-							.getTipoPneu())
-							&& Math.random() < 0.05) {
-						contCiclosQualificacao--;
-					}
 				}
 			}
 			piloto.setCiclosVoltaQualificacao(contCiclosQualificacao);
