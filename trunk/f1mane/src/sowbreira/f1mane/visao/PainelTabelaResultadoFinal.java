@@ -8,6 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -95,29 +96,7 @@ public class PainelTabelaResultadoFinal extends JPanel {
 			case 10:
 				return p.getNomeJogador();
 			case 11:
-				if (p.getPosicao() == 1) {
-					return new Integer(25);
-				} else if (p.getPosicao() == 2) {
-					return new Integer(18);
-				} else if (p.getPosicao() == 3) {
-					return new Integer(15);
-				} else if (p.getPosicao() == 4) {
-					return new Integer(12);
-				} else if (p.getPosicao() == 5) {
-					return new Integer(10);
-				} else if (p.getPosicao() == 6) {
-					return new Integer(8);
-				} else if (p.getPosicao() == 7) {
-					return new Integer(6);
-				} else if (p.getPosicao() == 8) {
-					return new Integer(4);
-				} else if (p.getPosicao() == 9) {
-					return new Integer(2);
-				} else if (p.getPosicao() == 10) {
-					return new Integer(1);
-				} else {
-					return new Integer(0);
-				}
+				return ControleCorrida.calculaPontos25(p);
 
 			default:
 				return "";

@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
@@ -148,6 +149,8 @@ public class PainelCircuito extends JPanel {
 	protected Point newP;
 	private Point oldP;
 	private boolean alternaPiscaSCSair;
+
+	private boolean exibeResultadoFinal;
 
 	private RoundRectangle2D f1 = new RoundRectangle2D.Double(0, 0, 1, 1, 10,
 			10);
@@ -578,6 +581,7 @@ public class PainelCircuito extends JPanel {
 			desenhaKers(g2d);
 			desenhaDRS(g2d);
 			desenhaVelocidade(g2d);
+			desenhaResultadoFinal(g2d);
 			if (controleJogo.getNumVoltaAtual() > 0) {
 				desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
 			}
@@ -585,6 +589,152 @@ public class PainelCircuito extends JPanel {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
+	}
+
+	private void desenhaResultadoFinal(Graphics2D g2d) {
+		if (!exibeResultadoFinal) {
+			return;
+		}
+		Point o = new Point(limitesViewPort.x + limitesViewPort.width / 16,
+				limitesViewPort.y + limitesViewPort.height / 10);
+		int x = o.x;
+		int y = o.y;
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 16));
+
+		List<Piloto> pilotosList = controleJogo.getPilotos();
+		for (int i = 0; i < pilotosList.size(); i++) {
+			Piloto piloto = pilotosList.get(i);
+
+			/**
+			 * capacete
+			 */
+			BufferedImage cap = ImageUtil.geraResize(ImageUtil
+					.copiaImagem(controleJogo.obterCapacete(piloto)), 0.5);
+
+			if (cap != null)
+				g2d.drawImage(cap, x, y, null);
+
+			x += 30;
+
+			/**
+			 * Posicao
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 30, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString("" + piloto.getPosicao(), x + 5, y + 16);
+			x += 35;
+			/**
+			 * Piloto
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 140, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(piloto.getNome(), x + 10, y + 16);
+			x += 150;
+			/**
+			 * Equipe
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 160, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(piloto.getCarro().getNome(), x + 10, y + 16);
+			x += 170;
+			/**
+			 * Pneus
+			 */
+			BufferedImage pneu = ImageUtil.geraResize(
+					obterNomeImgTipoPneu(piloto.getCarro()), 0.5);
+			g2d.drawImage(pneu, x, y, null);
+
+			x += 30;
+
+			Volta volta = piloto.obterVoltaMaisRapida();
+
+			String melhorVolta = "";
+			if (volta != null) {
+				melhorVolta = volta.obterTempoVoltaFormatado();
+			}
+
+			/**
+			 * melhorVolta
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 80, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(melhorVolta, x + 5, y + 16);
+
+			x += 90;
+			/**
+			 * Paradas
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString("" + piloto.getQtdeParadasBox(), x + 20, y + 16);
+
+			x += 55;
+
+			/**
+			 * %Pneus
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString("" + piloto.getCarro().porcentagemDesgastePeneus()
+					+ "%", x + 12, y + 16);
+
+			x += 55;
+
+			/**
+			 * %Combustivel
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString("" + piloto.getCarro().porcentagemCombustivel()
+					+ "%", x + 12, y + 16);
+
+			x += 55;
+
+			/**
+			 * %Motor
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString("" + piloto.getCarro().porcentagemDesgasteMotor()
+					+ "%", x + 12, y + 16);
+
+			x += 55;
+
+			/**
+			 * Pontos
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString("" + ControleCorrida.calculaPontos25(piloto),
+					x + 15, y + 16);
+
+			x += 55;
+
+			/**
+			 * Dif
+			 */
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(""
+					+ (piloto.getPosicaoInicial() - piloto.getPosicao()),
+					x + 20, y + 16);
+
+			y += 24;
+			x = o.x;
+		}
+
+		g2d.setFont(fontOri);
 	}
 
 	private void desenhaLag(Graphics2D g2d) {
@@ -622,7 +772,11 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaNarracao(Graphics2D g2d) {
+
 		if (!desenhaInfo) {
+			return;
+		}
+		if (exibeResultadoFinal) {
 			return;
 		}
 		if (limitesViewPort == null) {
@@ -1357,6 +1511,9 @@ public class PainelCircuito extends JPanel {
 		if (!desenhaInfo) {
 			return;
 		}
+		if (exibeResultadoFinal) {
+			return;
+		}
 		if (limitesViewPort == null) {
 			return;
 		}
@@ -1710,6 +1867,9 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		if (limitesViewPort == null) {
+			return;
+		}
+		if (exibeResultadoFinal) {
 			return;
 		}
 		g2d.setColor(Color.LIGHT_GRAY);
@@ -3753,6 +3913,9 @@ public class PainelCircuito extends JPanel {
 		if (qtdeLuzesAcesas > 0) {
 			return;
 		}
+		if (exibeResultadoFinal) {
+			return;
+		}
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
 			return;
 		}
@@ -3964,8 +4127,7 @@ public class PainelCircuito extends JPanel {
 					200));
 		}
 		if (!Util.isNullOrEmpty(pilotoSelecionado.getCarro().getDanificado())) {
-			txt1 = Lang.msg(pilotoSelecionado.getCarro().getDanificado());
-			txt2 = null;
+			txt2 = Lang.msg(pilotoSelecionado.getCarro().getDanificado());
 		}
 
 		if (!Util.isNullOrEmpty(txt1)) {
@@ -4672,4 +4834,13 @@ public class PainelCircuito extends JPanel {
 	public void setPilotoSelecionado(Piloto pilotoSelecionado) {
 		this.pilotoSelecionado = pilotoSelecionado;
 	}
+
+	public boolean isExibeResultadoFinal() {
+		return exibeResultadoFinal;
+	}
+
+	public void setExibeResultadoFinal(boolean exibeResultadoFinal) {
+		this.exibeResultadoFinal = exibeResultadoFinal;
+	}
+
 }
