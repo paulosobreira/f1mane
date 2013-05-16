@@ -22,12 +22,46 @@ import javax.swing.ImageIcon;
  * @author Paulo Sobreira Criado Em 21/08/2005
  */
 public class ImageUtil {
+
+	public static BufferedImage copiaImagem(BufferedImage buffer) {
+		if (buffer == null) {
+			return null;
+		}
+		ImageIcon img = new ImageIcon(buffer);
+		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
+				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
+
+		BufferedImage bufferedImageRetorno = new BufferedImage(img
+				.getIconWidth(), img.getIconHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = srcBufferedImage.getData();
+		WritableRaster destRaster = bufferedImageRetorno.getRaster();
+		int[] argbArray = new int[4];
+
+		for (int i = 0; i < img.getIconWidth(); i++) {
+			for (int j = 0; j < img.getIconHeight(); j++) {
+				argbArray = new int[4];
+				argbArray = srcRaster.getPixel(i, j, argbArray);
+				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
+						argbArray[3]);
+				destRaster.setPixel(i, j, argbArray);
+			}
+		}
+
+		return bufferedImageRetorno;
+	}
+
 	public static BufferedImage geraResize(BufferedImage src, double fator) {
 		return geraResize(src, fator, fator);
 	}
 
 	public static BufferedImage geraResize(BufferedImage src, double fatorx,
 			double fatory) {
+		if (src == null) {
+			return null;
+		}
 		AffineTransform afZoom = new AffineTransform();
 		afZoom.setToScale(fatorx, fatory);
 		BufferedImage dst = new BufferedImage((int) Math.round(src.getWidth()
@@ -45,8 +79,8 @@ public class ImageUtil {
 				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
 
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
+		BufferedImage bufferedImageRetorno = new BufferedImage(img
+				.getIconWidth(), img.getIconHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
@@ -78,8 +112,8 @@ public class ImageUtil {
 				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
 
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
+		BufferedImage bufferedImageRetorno = new BufferedImage(img
+				.getIconWidth(), img.getIconHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
@@ -138,8 +172,8 @@ public class ImageUtil {
 
 			GraphicsConfiguration gc = gs.getDefaultConfiguration();
 
-			bimage = gc.createCompatibleImage(image.getWidth(null),
-					image.getHeight(null), transparency);
+			bimage = gc.createCompatibleImage(image.getWidth(null), image
+					.getHeight(null), transparency);
 		} catch (HeadlessException e) {
 			// The system does not have a screen
 		}
@@ -152,8 +186,8 @@ public class ImageUtil {
 				type = BufferedImage.TYPE_INT_ARGB;
 			}
 
-			bimage = new BufferedImage(image.getWidth(null),
-					image.getHeight(null), type);
+			bimage = new BufferedImage(image.getWidth(null), image
+					.getHeight(null), type);
 		}
 
 		// Copy image to buffered image
@@ -211,8 +245,8 @@ public class ImageUtil {
 				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
 
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
+		BufferedImage bufferedImageRetorno = new BufferedImage(img
+				.getIconWidth(), img.getIconHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();

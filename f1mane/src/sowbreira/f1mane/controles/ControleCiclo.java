@@ -110,7 +110,7 @@ public class ControleCiclo extends Thread {
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaPainel();
 					controleJogo.verificaProgramacaoBox();
-					if (InterfaceJogo.VALENDO) {
+					if (InterfaceJogo.VALENDO && false) {
 						Thread.sleep(tempoCiclo);
 					} else {
 						setPriority(Thread.MIN_PRIORITY);

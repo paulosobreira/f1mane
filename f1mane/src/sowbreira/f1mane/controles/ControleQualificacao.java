@@ -243,6 +243,7 @@ public class ControleQualificacao {
 			piloto.setIndiceTracado(0);
 			piloto.setNoAtual(nM);
 			piloto.setPosicao(i + 1);
+			piloto.setPosicaoInicial(piloto.getPosicao());
 			piloto.zerarGanhoEVariaveisUlt();
 			piloto.setPtosPista(nM.getIndex());
 			piloto.setPtosPistaIncial(nM.getIndex());

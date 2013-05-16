@@ -75,6 +75,7 @@ public class Piloto implements Serializable {
 	private Double angulo;
 	private transient int ptosBox;
 	private int posicao;
+	private int posicaoInicial;
 	private transient int paradoBox;
 	private int qtdeParadasBox;
 	private boolean desqualificado;
@@ -2783,6 +2784,14 @@ public class Piloto implements Serializable {
 		}
 		return carro.testeFreios() && carro.testeAerodinamica()
 				&& testeHabilidadePiloto(controleJogo);
+	}
+
+	public int getPosicaoInicial() {
+		return posicaoInicial;
+	}
+
+	public void setPosicaoInicial(int posicaoInicial) {
+		this.posicaoInicial = posicaoInicial;
 	}
 
 }
