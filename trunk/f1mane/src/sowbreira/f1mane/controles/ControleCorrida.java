@@ -648,4 +648,30 @@ public class ControleCorrida {
 			}
 		}
 	}
+
+	public static Integer calculaPontos25(Piloto p) {
+		if (p.getPosicao() == 1) {
+			return new Integer(25);
+		} else if (p.getPosicao() == 2) {
+			return new Integer(18);
+		} else if (p.getPosicao() == 3) {
+			return new Integer(15);
+		} else if (p.getPosicao() == 4) {
+			return new Integer(12);
+		} else if (p.getPosicao() == 5) {
+			return new Integer(10);
+		} else if (p.getPosicao() == 6) {
+			return new Integer(8);
+		} else if (p.getPosicao() == 7) {
+			return new Integer(6);
+		} else if (p.getPosicao() == 8) {
+			return new Integer(4);
+		} else if (p.getPosicao() == 9) {
+			return new Integer(2);
+		} else if (p.getPosicao() == 10) {
+			return new Integer(1);
+		} else {
+			return new Integer(0);
+		}
+	}
 }
