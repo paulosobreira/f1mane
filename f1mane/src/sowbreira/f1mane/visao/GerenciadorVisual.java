@@ -794,6 +794,9 @@ public class GerenciadorVisual {
 		PainelTabelaResultadoFinal resultadoFinal = new PainelTabelaResultadoFinal(
 				controleJogo.getPilotos(), false);
 		this.resultadoFinal = resultadoFinal;
+		if (painelCircuito != null) {
+			painelCircuito.setExibeResultadoFinal(true);
+		}
 		return resultadoFinal;
 
 	}
