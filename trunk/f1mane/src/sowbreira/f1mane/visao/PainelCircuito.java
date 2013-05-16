@@ -1446,7 +1446,7 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 
-		String msgKers = Lang.msg("kers");
+		String msgKers = "E : " + Lang.msg("kers");
 
 		int tamKers = Util.calculaLarguraText(msgKers, g2d);
 
@@ -1553,7 +1553,7 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 
-		String msgDrs = Lang.msg("drs");
+		String msgDrs = "W : " + Lang.msg("drs");
 
 		int tamDrs = Util.calculaLarguraText(msgDrs, g2d);
 		drs.setFrame(x, y - 25, tamDrs + 10, 20);
