@@ -250,8 +250,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void exibirResultadoFinal() {
-		mainFrame
-				.exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
+		gerenciadorVisual.exibirResultadoFinal();
+//		mainFrame
+//				.exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
 		matarTodasThreads();
 	}
 

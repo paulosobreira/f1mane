@@ -595,12 +595,16 @@ public class PainelCircuito extends JPanel {
 		if (!exibeResultadoFinal) {
 			return;
 		}
-		Point o = new Point(limitesViewPort.x + limitesViewPort.width / 16,
-				limitesViewPort.y + limitesViewPort.height / 10);
+		Point o = new Point(limitesViewPort.x + (limitesViewPort.width / 2)
+				- 500, limitesViewPort.y + (limitesViewPort.height / 2) - 260);
 		int x = o.x;
 		int y = o.y;
+		int yTitulo = y - 25;
 		Font fontOri = g2d.getFont();
-		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 16));
+		Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, fontOri
+				.getSize());
+		Font fontMaior = new Font(fontOri.getName(), Font.BOLD, 16);
+		g2d.setFont(fontMaior);
 
 		List<Piloto> pilotosList = controleJogo.getPilotos();
 		for (int i = 0; i < pilotosList.size(); i++) {
@@ -620,6 +624,14 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * Posicao
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 30, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("pos"), x + 2, yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 30, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
@@ -628,6 +640,15 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * Piloto
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 140, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("153").toUpperCase(), x + 50,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 140, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
@@ -636,6 +657,15 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * Equipe
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 160, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("277").toUpperCase(), x + 50,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 160, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
@@ -660,6 +690,15 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * melhorVolta
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 80, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("278").toUpperCase(), x + 10,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 80, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
@@ -669,6 +708,15 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * Paradas
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 50, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("147").toUpperCase(), x + 10,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
@@ -679,6 +727,15 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * %Pneus
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 50, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("216").toUpperCase(), x + 5,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
@@ -690,6 +747,15 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * %Combustivel
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 50, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("215").toUpperCase(), x + 5,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
@@ -701,6 +767,15 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * %Motor
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 50, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("217").toUpperCase(), x + 2,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
@@ -712,6 +787,15 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * Pontos
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 50, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("161").toUpperCase(), x + 2,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
@@ -723,6 +807,15 @@ public class PainelCircuito extends JPanel {
 			/**
 			 * Dif
 			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 50, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("diff").toUpperCase(), x + 18,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
