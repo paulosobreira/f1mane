@@ -726,8 +726,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#exibirResultadoFinal()
 	 */
 	public void exibirResultadoFinal() {
-		mainFrame
-				.exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
+		gerenciadorVisual.exibirResultadoFinal();
+//		mainFrame
+//				.exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
 		controleCorrida.pararThreads();
 		controleEstatisticas.setConsumidorAtivo(false);
 		if (controleCampeonato != null) {
