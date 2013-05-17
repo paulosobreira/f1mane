@@ -1,74 +1,75 @@
 			 F1-MANE por Paulo Sobreira 
- - F1-MANE (MANager & Engineer) é um jogo de gerenciamento e engenharia de corrida . 
- - Os comandos do jogador consistem em a enviar mensagens a 1 ou mais pilotos de 
- como guiar e fazer ajustes telemétricos do carro na corrida. 
+ - F1-MANE (MANager & Engineer) é um jogo de gerenciamento e engenharia de corrida. 
+ - O jogo consiste em o jogador enviar comandos a o piloto sobre como guiar e 
+ fazer ajustes telemétricos do carro na corrida. 
  - É possível escolher estratégia de box e muda-lá a qualquer momento na corrida.
  - Ao escolher iniciar o jogo o jogador poderá configurar sua corrida escolhendo 
  varias opções de como numero de voltas e tipo de clima.
- - As  opções Dificuldade de ultrapassagens , índice de velocidade em reta e 
- tempo de ciclo são ajustes as realidades da pista escolhida que devem ser 
- informadas pelo jogador.
+
   - Qualquer sugestão : sowbreira@gmail.com.
 
 Controles:
 
-F1 - Giro Baixo Modo Economia de Motor e Combustível
-F2 - Giro Normal Modo Normal de Motor e Combustível
-F3 - Giro Alto Modo Extremo de Motor e Combustível
-F4 - Alterna rapidamente Modo de Pilotagem (Normal/Agressivo)
-F5 - Piloto em Modo Cauteloso.
-F6 - Piloto Normal.
+F1 ou A - Giro Baixo Modo Economia de Motor e Combustível
+F2 ou S- Giro Normal Modo Normal de Motor e Combustível
+F3 ou D- Giro Alto Modo Extremo de Motor e Combustível
+F4 ou Z - Alterna rapidamente Modo de Pilotagem (Normal/Agressivo)
+F5 ou X- Piloto em Modo Cauteloso.
+F6 ou C- Piloto Normal.
 F7 - Piloto em Modo Agressivo.
 F9 - Alterna entre os Pilotos selecionados
 F11 - Programação de Box Automático.
 F12 - Alterna Modo Box.
 Esc - Remove Informações extras da tela.
-K - Ativa o kers
-D - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas) 
+W - Ativa o kers
+E - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas) 
 
 
 Histórico de versões:
-4.5
+1.4.6
+  - Temporadas 2012 e 2013
+  - Melhorias na interface e na performace do jogo
+1.4.5
   - Temporada 2011
-  - Sistema de kers (tecla K para usar) Recarga a cada nova volta
-  - Sistema DRS (tecla D para usar) Reduz a asa e melhora a velocidade em retas, 
+  - Sistema de kers (tecla E para usar) Recarga a cada nova volta
+  - Sistema DRS (tecla W para usar) Reduz a asa e melhora a velocidade em retas, 
   tem que estar a menos de 1s do proximo piloto para usar.
   - Campeonato de pilotos (jogo offline) com evolução de pilotos nas equipes similar
    ao classico super monaco gp do mega drive
 
-4.0
+1.4.0
   - 26 Novas pistas (Feitas originalmente para o jogo Mini Race Online http://www.miniracingonline.com/)
   - Modo Campeonato
   - Corrigidos varios bugs com ultrapagens e traçados e consumos
   - Varias Melhorias Visuais
-3.2
+1.3.2
   - Editor de objetos de Pista
   - Novos Efeitos de chuva e marcas de pneu
-3.0
+1.3.0
   - Novo modo gráfico com zoom(Scroll do Mouse) e vetorização das pistas
   - 3 traçados disponíveis podendo ser escolhidos automático e manual (Auto Pos)
   - F8 desliga e liga a seleção de traçado automatica
   - Setas ou mouse mudam o traçado.
-2.2
+1.2.2
   - Seleção de 1 ou mais pilotos(Para poder controlar uma equipe ou mais).
   - Modo campeonato (Sigleplayer).
-2.0
+1.2.0
   - Modo de programação de paradas (Auto Box).
   - Correções nos consumo de motor e pneus.
   - Correções nos ratios do modo carreira.
   - Novos circuitos e temporadas todos por Necross.
-1.9
+1.1.9
   - Temporadas 1968,1972,1974,1987,1986 ,1988,1990 e 2003 por Necross.
   - Implementado nível de stress do piloto.
   - Alterado comportamento do safaty car e acidades.
   - Realinhamento de itens na tela.
-1.8
+1.1.8
   - Retardatário agora podem causar lentidão aos dianteiros.
   - Novo modo de controle do piloto : Agressivo , normal e cauteloso.
   - É mostrada as ultimas 5 voltas para melhor acompanhamento.
   - Corrigido bug da volta do box.
   - Otimizado a versão via rede.
-1.7
+1.1.7
   - Temporada 2008.
   - Inclusão do modo Auto Agressivo(Evita que o piloto volte ao modo normal 
   após travar rodas).
@@ -78,7 +79,7 @@ Histórico de versões:
   muda temporariamente)
   - Melhorias Gráficas.
   - Ajuste de Asas(Mais asa para pistas de baixa e Menos para Pistas de alta)
-1.6
+1.1.6
   - Suporte a mudança de giro de motor.
   - Giro do motor influencia no gasto de combustível.
   - Giro do motor influencia no gasto do motor.
@@ -86,13 +87,13 @@ Histórico de versões:
   - Adicionado teclas de atalho.( Esc remove ou mostra a velocidade com giro
    de motor)
   - Adicionado circuito de A1,Imola e Hungaroring.
-1.5
+1.1.5
   - Suporte ao WebPaddock.
   - Melhoria na tabela de posições (cores de seleção de piloto).
   - Escolhe Circuito junto com outros dados de entrada.
   - Adicionado circuito de Suzuka,Spa e Sepang.
   - Estimativa de velocidade em km/h.
- 1.4
+ 1.1.4
   - Melhoria no layout do editor.
   - Possibilidade de adicionar vários tipos de nos na lista de nos do box 
 (Evite próximo do no de parada.).
@@ -101,7 +102,7 @@ Histórico de versões:
 disputam posição com os mais lentos em reta, passam logo sem dar conhecimento.
   - Adicionado funcionalidade de abandonar corrida.
   - Adicionado circuito de Nurburing.
- 1.3
+ 1.1.3
   - Correção de bug da volta de vantagem do Safety Car.
   - Timer para mudança de clima.
   - Mostra Diferença de tempos entre carro da frente e de traz
@@ -110,11 +111,11 @@ trava pneu.
   - Índex de velocidade em reta defini se a pista é de alta ou de baixa.
   - Adicionado Hockenhein Clássico e Hockenhein.
   - Novo Layout que deve ficar bom com pistas de alta resolução.
- 1.2
+ 1.1.2
   - Safety Car.
   - Corrigido erro no desgaste de pneus de chuva.
   - Gp SilverStone,Melbourne e Montreal.
- 1.1
+ 1.1.1
   - Desgaste de motor é levando em consideração.
   - Ajuste nas dificuldades do jogo.
   - Alerta qdo muda o clima.
@@ -156,8 +157,8 @@ selecionar cor e transparência de fundo e adicionar os objetos.
 
 Versão online, Montar um Servidor (paddock.war):
  - Existe uma versão de F1-Mane Online 
- - Para servir pela Net é preciso ter ip valido (também funciona sem, mas
-  só em LAN)
+ - Para servir o jogo em rede é preciso ter ip valido (também funciona sem, 
+ mas só em LAN)
  - O java mais novo mais o servidor de aplicação Tomcat:
    http://tomcat.apache.org que depois de baixado e instalado 
 deve-se colocar o arquivo paddock.war dentro da pasta:
