@@ -582,9 +582,9 @@ public class PainelCircuito extends JPanel {
 			desenhaDRS(g2d);
 			desenhaVelocidade(g2d);
 			desenhaResultadoFinal(g2d);
-			if (controleJogo.getNumVoltaAtual() > 0) {
-				desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
-			}
+
+			desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
+
 			desenhaDebugIinfo(g2d);
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -711,18 +711,18 @@ public class PainelCircuito extends JPanel {
 			if (i == 0) {
 				g2d.setFont(fontNegrito);
 				g2d.setColor(transpMenus);
-				g2d.fillRoundRect(x, yTitulo, 50, 20, 15, 15);
+				g2d.fillRoundRect(x, yTitulo, 40, 20, 15, 15);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString("" + Lang.msg("147").toUpperCase(), x + 10,
+				g2d.drawString("" + Lang.msg("147").toUpperCase(), x + 5,
 						yTitulo + 16);
 				g2d.setFont(fontMaior);
 			}
 			g2d.setColor(transpMenus);
-			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
+			g2d.fillRoundRect(x, y, 40, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString("" + piloto.getQtdeParadasBox(), x + 20, y + 16);
+			g2d.drawString("" + piloto.getQtdeParadasBox(), x + 10, y + 16);
 
-			x += 55;
+			x += 45;
 
 			/**
 			 * %Pneus
@@ -952,6 +952,9 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaTabelaComparativa(Graphics2D g2d) {
 		if (infoCompCont < 0 || Util.isNullOrEmpty(infoComp)) {
+			return;
+		}
+		if (exibeResultadoFinal) {
 			return;
 		}
 		if (verificaComponeteNaParteInferior()) {
@@ -1344,6 +1347,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaControlesBox(Graphics2D g2d) {
+		if (exibeResultadoFinal) {
+			return;
+		}
 		if (!controleJogo.isSemReabastacimento()) {
 			Font fontOri = g2d.getFont();
 			g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
@@ -1833,6 +1839,9 @@ public class PainelCircuito extends JPanel {
 		if (pilotoSelecionado == null) {
 			return;
 		}
+		if (exibeResultadoFinal) {
+			return;
+		}
 		int cargaKers = pilotoSelecionado.getCarro().getCargaKers() / 2;
 		int y = 100;
 		g2d.setColor(red);
@@ -2257,6 +2266,9 @@ public class PainelCircuito extends JPanel {
 			}
 			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
 			desenhaCarroCima(g2d, piloto);
+		}
+		if (exibeResultadoFinal) {
+			return;
 		}
 		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
@@ -3256,6 +3268,10 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 
+		if (exibeResultadoFinal) {
+			return;
+		}
+
 		int ptoOri = limitesViewPort.x + 10;
 		int yBase = limitesViewPort.y + 7;
 
@@ -3388,11 +3404,16 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaProblemasCarroSelecionado(Piloto pilotoSelecionado,
 			Graphics2D g2d) {
-
+		if (controleJogo.getNumVoltaAtual() <= 0) {
+			return;
+		}
 		if (qtdeLuzesAcesas > 0) {
 			return;
 		}
 		if (!desenhaInfo) {
+			return;
+		}
+		if (exibeResultadoFinal) {
 			return;
 		}
 		if (pilotoSelecionado == null) {
@@ -3643,7 +3664,9 @@ public class PainelCircuito extends JPanel {
 		if (!carregaBkg) {
 			return;
 		}
-
+		if (exibeResultadoFinal) {
+			return;
+		}
 		BufferedImage carroimg = null;
 		int carSelX = limitesViewPort.x;
 		int carSelY = limitesViewPort.y + limitesViewPort.height - 75;
@@ -4143,6 +4166,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaNomePilotoSelecionado(Piloto ps, Graphics2D g2d) {
+		if (exibeResultadoFinal) {
+			return;
+		}
 		if (controleJogo.getNumVoltaAtual() < 1) {
 			return;
 		}
@@ -4311,9 +4337,13 @@ public class PainelCircuito extends JPanel {
 		if (!desenhaInfo) {
 			return;
 		}
+		if (exibeResultadoFinal) {
+			return;
+		}
 		if (controleJogo.getNumVoltaAtual() < 1) {
 			return;
 		}
+
 		Piloto ps = pilotoSelecionado;
 		int incAcell = 1;
 		int incFreiada = 1;
@@ -4385,6 +4415,10 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 
+		if (exibeResultadoFinal) {
+			return;
+		}
+
 		if (controleJogo.getNumVoltaAtual() < 1) {
 			return;
 		}
@@ -4447,7 +4481,9 @@ public class PainelCircuito extends JPanel {
 				|| pilotoSelecionado == null) {
 			return;
 		}
-
+		if (exibeResultadoFinal) {
+			return;
+		}
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
 		if (Carro.MENOS_ASA.equals(pilotoSelecionado.getCarro().getAsa())) {
