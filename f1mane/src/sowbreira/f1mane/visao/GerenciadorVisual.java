@@ -520,11 +520,11 @@ public class GerenciadorVisual {
 					}
 				}
 
-				if (keyCoode == KeyEvent.VK_UP) {
+				if (keyCoode == KeyEvent.VK_PAGE_UP) {
 					controleJogo.selecionaPilotoCima();
 				}
 
-				if (keyCoode == KeyEvent.VK_DOWN) {
+				if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
 					controleJogo.selecionaPilotoBaixo();
 				}
 
@@ -534,10 +534,10 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_F10) {
 					ligaDesligaSom();
 				}
-				if (keyCoode == KeyEvent.VK_W) {
+				if (keyCoode == KeyEvent.VK_W || keyCoode == KeyEvent.VK_UP) {
 					drs();
 				}
-				if (keyCoode == KeyEvent.VK_E) {
+				if (keyCoode == KeyEvent.VK_E || keyCoode == KeyEvent.VK_DOWN) {
 					kers();
 				}
 
