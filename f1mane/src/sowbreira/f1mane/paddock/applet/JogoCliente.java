@@ -251,8 +251,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public void exibirResultadoFinal() {
 		gerenciadorVisual.exibirResultadoFinal();
-//		mainFrame
-//				.exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
+		// mainFrame
+		// .exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
 		matarTodasThreads();
 	}
 
@@ -1125,6 +1125,36 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void descontaTempoPausado(Volta volta) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void continuarCampeonato() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void criarCampeonato() throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void criarCampeonatoPiloto() throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void dadosPersistenciaCampeonato() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void proximaCorridaCampeonato() {
 		// TODO Auto-generated method stub
 
 	}

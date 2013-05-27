@@ -59,7 +59,7 @@ public class ControleSafetyCar {
 			if (diffIndex > 400) {
 				return ganho;
 			}
-			for (double i = 1; i < 400; i+=5) {
+			for (double i = 1; i < 400; i += 5) {
 				if (diffIndex < i) {
 					ganho *= i / 400;
 					break;
@@ -70,9 +70,13 @@ public class ControleSafetyCar {
 			long indexNafrente = safetyCar.getPtosPista();
 			long index = piloto.getPtosPista();
 			long diffIndex = (indexNafrente - index);
-			for (int i = 1; i < 300; i++) {
+			long max = 300;
+			if (safetyCar.isVaiProBox()) {
+				max = 500;
+			}
+			for (int i = 1; i < max; i++) {
 				if (diffIndex < (50 + i)) {
-					return ganho * i / 300.0;
+					return ganho * i / max;
 				}
 			}
 			return ganho;
@@ -106,7 +110,8 @@ public class ControleSafetyCar {
 		int cont = safetyCar.getNoAtual().getIndex();
 		Circuito circuito = controleJogo.getCircuito();
 		if ((cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
-				.getEntradaBoxIndex() + 50)) && safetyCar.isVaiProBox()) {
+				.getEntradaBoxIndex() + 50))
+				&& safetyCar.isVaiProBox()) {
 			controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("030")));
 			safetyCar.setNaPista(false);
 			safetyCar.setSaiuVolta(controleJogo.getNumVoltaAtual());
@@ -116,7 +121,8 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .5) ? 2 : 1) : (Math.random() > .3) ? 2 : 1;
+				.random() > .5) ? 2 : 1)
+				: (Math.random() > .3) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 
 		long ptsSc = safetyCar.getPtosPista();
