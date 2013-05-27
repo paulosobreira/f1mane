@@ -317,4 +317,14 @@ public interface InterfaceJogo {
 
 	public void descontaTempoPausado(Volta volta);
 
+	public void criarCampeonato() throws Exception;
+
+	public void criarCampeonatoPiloto() throws Exception;
+
+	public void continuarCampeonato();
+
+	public void dadosPersistenciaCampeonato();
+
+	public void proximaCorridaCampeonato();
+
 }

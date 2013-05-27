@@ -36,6 +36,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 		InterfaceJogo {
 	protected Piloto pilotoSelecionado;
 	protected Piloto pilotoJogador;
+
+	protected GerenciadorVisual gerenciadorVisual;
+	protected ControleCorrida controleCorrida;
+	protected ControleEstatisticas controleEstatisticas;
+	protected ControleCampeonato controleCampeonato;
+
 	protected List pilotosJogadores = new ArrayList();
 	protected double niveljogo = InterfaceJogo.MEDIO_NV;
 	protected String nivelCorrida;
@@ -44,9 +50,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected boolean semReabastacimento;
 	protected boolean kers;
 	protected boolean drs;
-	protected ControleCorrida controleCorrida;
-	protected GerenciadorVisual gerenciadorVisual;
-	protected ControleEstatisticas controleEstatisticas;
+
 	protected Integer qtdeVoltas = null;
 	protected Integer diffultrapassagem = null;
 	protected Integer tempoCiclo = null;
@@ -54,7 +58,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected Integer potencia = null;
 	protected Integer tempoQualificacao = null;
 	protected String circuitoSelecionado = null;
-	protected ControleCampeonato controleCampeonato;
+
 	private MainFrame mainFrame;
 	private boolean setouZoom;
 
@@ -727,8 +731,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void exibirResultadoFinal() {
 		gerenciadorVisual.exibirResultadoFinal();
-//		mainFrame
-//				.exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
+		// mainFrame
+		// .exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
 		controleCorrida.pararThreads();
 		controleEstatisticas.setConsumidorAtivo(false);
 		if (controleCampeonato != null) {
@@ -1296,6 +1300,31 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void descontaTempoPausado(Volta volta) {
 		controleCorrida.descontaTempoPausado(volta);
 
+	}
+
+	@Override
+	public void criarCampeonato() throws Exception {
+		controleCampeonato.criarCampeonato();
+	}
+
+	@Override
+	public void criarCampeonatoPiloto() throws Exception {
+		controleCampeonato.criarCampeonatoPiloto();
+	}
+
+	@Override
+	public void continuarCampeonato() {
+		controleCampeonato.continuarCampeonato();
+	}
+
+	@Override
+	public void dadosPersistenciaCampeonato() {
+		controleCampeonato.dadosPersistencia();
+	}
+
+	@Override
+	public void proximaCorridaCampeonato() {
+		controleCampeonato.proximaCorrida();
 	}
 
 }

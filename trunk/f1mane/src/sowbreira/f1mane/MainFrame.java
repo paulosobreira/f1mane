@@ -43,6 +43,7 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.ControleSom;
 import sowbreira.f1mane.visao.PainelCircuito;
+import sowbreira.f1mane.visao.PainelMenuSigle;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Logger;
 
@@ -56,7 +57,6 @@ public class MainFrame extends JFrame {
 	private static final long serialVersionUID = -284357233387917389L;
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
-	private ControleCampeonato controleCampeonato;
 	private String codeBase;
 	private JMenuBar bar;
 	private JMenu menuJogo;
@@ -70,7 +70,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
 	private JMenuItem compsSwing;
-	public static BufferedImage bg;
+
 	private AppletPaddock ver = new AppletPaddock();
 
 	public InterfaceJogo getControleJogo() {
@@ -86,7 +86,6 @@ public class MainFrame extends JFrame {
 
 	public MainFrame(JApplet modoApplet, String codeBase) throws IOException {
 		this.codeBase = codeBase;
-		controleCampeonato = new ControleCampeonato(this);
 		bar = new JMenuBar();
 		setJMenuBar(bar);
 		menuJogo = new JMenu() {
@@ -133,7 +132,7 @@ public class MainFrame extends JFrame {
 		gerarMenusInfo(menuInfo);
 		gerarMenusSobre(menuInfo);
 		gerarMenusidiomas(menuIdiomas);
-		setSize(1030, 720);
+		setSize(1280, 720);
 		String title = "F1-MANE " + getVersao() + " MANager & Engineer";
 		setTitle(title);
 		if (modoApplet == null) {
@@ -159,7 +158,10 @@ public class MainFrame extends JFrame {
 		criarCampeonato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					controleCampeonato.criarCampeonato();
+					if (!verificaCriarJogo()) {
+						return;
+					}
+					controleJogo.criarCampeonato();
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
 				}
@@ -175,7 +177,10 @@ public class MainFrame extends JFrame {
 		criarCampeonatoPiloto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					controleCampeonato.criarCampeonatoPiloto();
+					if (!verificaCriarJogo()) {
+						return;
+					}
+					controleJogo.criarCampeonatoPiloto();
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
 				}
@@ -190,7 +195,14 @@ public class MainFrame extends JFrame {
 		};
 		continuarCampeonato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleCampeonato.continuarCampeonato();
+				try {
+					if (!verificaCriarJogo()) {
+						return;
+					}
+					controleJogo.continuarCampeonato();
+				} catch (Exception ex) {
+					Logger.logarExept(ex);
+				}
 			}
 		});
 		JMenuItem dadosPersistencia = new JMenuItem("Criar Campeonato") {
@@ -201,7 +213,7 @@ public class MainFrame extends JFrame {
 		};
 		dadosPersistencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleCampeonato.dadosPersistencia();
+				controleJogo.dadosPersistenciaCampeonato();
 			}
 		});
 		JMenuItem proxCorrida = new JMenuItem("Proxima Corrida") {
@@ -212,7 +224,14 @@ public class MainFrame extends JFrame {
 		};
 		proxCorrida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleCampeonato.proximaCorrida();
+				try {
+					if (!verificaCriarJogo()) {
+						return;
+					}
+					controleJogo.proximaCorridaCampeonato();
+				} catch (Exception ex) {
+					Logger.logarExept(ex);
+				}
 			}
 		});
 
@@ -281,8 +300,10 @@ public class MainFrame extends JFrame {
 					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
-				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(
-						area), Lang.msg("091"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane
+						.showMessageDialog(MainFrame.this,
+								new JScrollPane(area), Lang.msg("091"),
+								JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menuInfo2.add(leiaMe);
@@ -361,8 +382,8 @@ public class MainFrame extends JFrame {
 				String msg = Lang.msg("184")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2007-2012";
-				JOptionPane.showMessageDialog(MainFrame.this, msg,
-						Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
+						.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
@@ -380,24 +401,16 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					removerKeyListeners();
-					if (controleJogo != null) {
-						if (controleJogo.isCorridaIniciada()) {
-							int ret = JOptionPane.showConfirmDialog(
-									MainFrame.this, Lang.msg("095"),
-									Lang.msg("094"), JOptionPane.YES_NO_OPTION);
-							if (ret == JOptionPane.NO_OPTION) {
-								return;
-							}
-						}
-						controleJogo.matarTodasThreads();
+					if (!verificaCriarJogo()) {
+						return;
 					}
-					controleJogo = new ControleJogoLocal();
 					controleJogo.setMainFrame(MainFrame.this);
 					controleJogo.iniciarJogo();
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
 				}
 			}
+
 		});
 		menu1.add(iniciar);
 
@@ -893,22 +906,10 @@ public class MainFrame extends JFrame {
 	public void iniciar() {
 		if (ControleJogoLocal.VALENDO) {
 			setVisible(true);
-			if (PainelCircuito.carregaBkg)
-				bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
-			JPanel bgPanel = new JPanel() {
-				protected void paintComponent(Graphics g) {
-					super.paintComponent(g);
-					if (bg != null)
-						g.drawImage(bg, 0, 0, null);
-				};
-
-				@Override
-				public Dimension getPreferredSize() {
-					return new Dimension(1020, 699);
-				}
-			};
-			getContentPane().add(bgPanel, BorderLayout.CENTER);
-			bgPanel.updateUI();
+			PainelMenuSigle painelMenuSigle = new PainelMenuSigle(this,
+					controleJogo);
+			getContentPane().add(painelMenuSigle, BorderLayout.CENTER);
+			painelMenuSigle.updateUI();
 			try {
 				controleJogo = new ControleJogoLocal();
 				controleJogo.setMainFrame(this);
@@ -978,4 +979,19 @@ public class MainFrame extends JFrame {
 		this.controleJogo = controleJogo;
 	}
 
+	private boolean verificaCriarJogo() throws Exception {
+		if (controleJogo != null) {
+			if (controleJogo.isCorridaIniciada()) {
+				int ret = JOptionPane
+						.showConfirmDialog(MainFrame.this, Lang.msg("095"),
+								Lang.msg("094"), JOptionPane.YES_NO_OPTION);
+				if (ret == JOptionPane.NO_OPTION) {
+					return false;
+				}
+			}
+			controleJogo.matarTodasThreads();
+		}
+		controleJogo = new ControleJogoLocal();
+		return true;
+	}
 }
