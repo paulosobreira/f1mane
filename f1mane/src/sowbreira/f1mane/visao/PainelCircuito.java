@@ -3682,7 +3682,7 @@ public class PainelCircuito extends JPanel {
 		if (carroFrente != null) {
 			carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
 			carSelX += (carroimg.getWidth() + 10) / 2;
-			bounce = calculaBounce(carroFrente);
+			bounce = calculaBounceCarroLado(carroFrente);
 			double diff = controleJogo.calculaSegundosParaProximoDouble(psel);
 			int dstX = limitesViewPort.x + (limitesViewPort.width / 4);
 
@@ -3749,7 +3749,7 @@ public class PainelCircuito extends JPanel {
 		carSelX = limitesViewPort.x + (limitesViewPort.width / 2)
 				- (carroimg.getWidth() / 2);
 		carSelY = limitesViewPort.y + limitesViewPort.height - 75;
-		bounce = calculaBounce(psel.getCarro());
+		bounce = calculaBounceCarroLado(psel.getCarro());
 		g2d.setColor(this.transpMenus);
 		g2d.fillRoundRect(carSelX - 5, carSelY - 5, carroimg.getWidth() + 5,
 				carroimg.getHeight() + 5, 15, 15);
@@ -3774,7 +3774,7 @@ public class PainelCircuito extends JPanel {
 					+ -(carroimg.getWidth() + 10) - (carroimg.getWidth() + 10)
 					/ 2;
 
-			bounce = calculaBounce(carroAtraz);
+			bounce = calculaBounceCarroLado(carroAtraz);
 
 			int dstX = limitesViewPort.x + limitesViewPort.width
 					+ -(limitesViewPort.width / 3);
@@ -3850,7 +3850,7 @@ public class PainelCircuito extends JPanel {
 		return null;
 	}
 
-	private int calculaBounce(Carro carro) {
+	private int calculaBounceCarroLado(Carro carro) {
 		if (controleJogo.isCorridaPausada()) {
 			return 0;
 		}
@@ -3858,15 +3858,15 @@ public class PainelCircuito extends JPanel {
 			return 0;
 		}
 		if (qtdeLuzesAcesas > 0 || carro.getPiloto().isBox()) {
-			return Math.random() > .7 ? 1 : 0;
+			return 0;
 		} else if (carro.getPiloto().isAgressivo() == false) {
 			return Math.random() > .5 ? 1 : 0;
 		} else if (carro.getPiloto().isAgressivo() == true
 				&& carro.getGiro() != Carro.GIRO_MAX_VAL) {
-			return Math.random() > .5 ? 2 : 1;
+			return 1;
 		} else if (carro.getPiloto().isAgressivo() == true
 				&& carro.getGiro() == Carro.GIRO_MAX_VAL) {
-			return Math.random() > .5 ? 3 : 2;
+			return Math.random() > .5 ? 2 : 1;
 		}
 		return 0;
 	}

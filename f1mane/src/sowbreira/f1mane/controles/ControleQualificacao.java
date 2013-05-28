@@ -95,20 +95,7 @@ public class ControleQualificacao {
 								.getCiclosVoltaQualificacao()));
 			}
 		});
-		for (int i = 0; i < pilotos.size(); i++) {
-			Piloto piloto = (Piloto) pilotos.get(i);
-			if ((i / pilotos.size() < Math.random())
-					&& !controleJogo.verificaNivelJogo()) {
-				if (piloto.getHabilidadeAntesQualify() > piloto.getHabilidade()) {
-					piloto.setHabilidade(piloto.getHabilidadeAntesQualify());
-				}
-				if (piloto.getCarro().getPotenciaAntesQualify() > piloto
-						.getCarro().getPotencia()) {
-					piloto.getCarro().setPotencia(
-							piloto.getCarro().getPotenciaAntesQualify());
-				}
-			}
-		}
+
 		modoQualify = false;
 	}
 
@@ -125,12 +112,12 @@ public class ControleQualificacao {
 		Piloto ant = null;
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = Util.intervalo(3, 7);
+			limite = Util.intervalo(3, 5);
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(7, 15);
+				limite = Util.intervalo(5, 7);
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(15, 20);
+				limite = Util.intervalo(7, 15);
 			}
 			maiorDiff = 0;
 			ant = null;
