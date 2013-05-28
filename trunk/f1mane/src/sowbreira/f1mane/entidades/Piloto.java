@@ -803,7 +803,7 @@ public class Piloto implements Serializable {
 			return;
 		}
 
-		if (jogadorHumano || recebeuBanderada || getPtosPista() < 0) {
+		if (isJogadorHumano() || isRecebeuBanderada() || getPtosPista() < 0) {
 			return;
 		}
 		int pneus = getCarro().porcentagemDesgastePeneus();
@@ -1385,7 +1385,7 @@ public class Piloto implements Serializable {
 
 	private void tentarEscaparPilotoDaTraz(InterfaceJogo controleJogo,
 			boolean tentaPassarFrete) {
-		if (jogadorHumano || danificado() || getPtosBox() != 0) {
+		if (isJogadorHumano() || danificado() || getPtosBox() != 0) {
 			return;
 		}
 		if (ControleQualificacao.modoQualify) {
@@ -1961,7 +1961,7 @@ public class Piloto implements Serializable {
 	}
 
 	private boolean tentarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
-		if (jogadorHumano || danificado()) {
+		if (isJogadorHumano() || danificado()) {
 			return false;
 		}
 		if (ControleQualificacao.modoQualify) {
@@ -2141,8 +2141,10 @@ public class Piloto implements Serializable {
 			return;
 		}
 		boolean novoModoAgressivo = agressivo;
+		boolean qualyJogHumano = isJogadorHumano()
+				|| controleJogo.isModoQualify();
 		if (testeHabilidadePiloto(controleJogo)) {
-			if (carro.verificaPilotoNormal(controleJogo) && !isJogadorHumano()) {
+			if (carro.verificaPilotoNormal(controleJogo) && !qualyJogHumano) {
 				novoModoAgressivo = false;
 				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsBox
 						.get(Messagens.PILOTO_EM_CAUTELA))
@@ -2153,7 +2155,7 @@ public class Piloto implements Serializable {
 							Messagens.PILOTO_EM_CAUTELA);
 				}
 			} else if (!noAtual.verificaRetaOuLargada() && !noAtual.isBox()) {
-				if (!jogadorHumano && controleJogo.verificaNivelJogo()) {
+				if (!qualyJogHumano && controleJogo.verificaNivelJogo()) {
 					if (testeHabilidadePiloto(controleJogo)) {
 						novoModoAgressivo = true;
 					} else {
@@ -2174,11 +2176,11 @@ public class Piloto implements Serializable {
 				incStress(3);
 			}
 		}
-		if (!jogadorHumano && controleJogo.isSafetyCarNaPista()) {
+		if (!qualyJogHumano && controleJogo.isSafetyCarNaPista()) {
 			novoModoAgressivo = false;
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 		}
-		if (jogadorHumano && !controleJogo.isModoQualify()) {
+		if (isJogadorHumano() && !controleJogo.isModoQualify()) {
 			if (!testeHabilidadePilotoHumanoCarro(controleJogo)
 					&& !controleJogo.isSafetyCarNaPista()
 					&& Math.random() < controleJogo.getNiveljogo()) {
