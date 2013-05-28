@@ -1090,8 +1090,8 @@ public class Piloto implements Serializable {
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
 		int calculaDiffParaProximo = controleJogo
 				.calculaDiffParaProximoRetardatario(this, false);
-		if (calculaDiffParaProximo > 50
-				&& calculaDiffParaProximo < 200
+		if (calculaDiffParaProximo > 25
+				&& calculaDiffParaProximo < 100
 				&& (No.CURVA_ALTA.equals(noAtual.getTipo()) || No.CURVA_BAIXA
 						.equals(noAtual.getTipo()))) {
 			ganho *= controleJogo.getFatorUtrapassagem();
