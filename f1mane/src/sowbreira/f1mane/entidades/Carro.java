@@ -373,9 +373,9 @@ public class Carro implements Serializable {
 				&& !no.verificaRetaOuLargada()
 				&& getPiloto().testeHabilidadePilotoAerodinamica(controleJogo)) {
 			if (no.verificaCruvaBaixa()) {
-				novoModificadorOri += Util.intervalo(0, 1);
-			} else {
 				novoModificadorOri++;
+			} else {
+				novoModificadorOri += Util.intervalo(0, 1);
 			}
 		}
 		if (Math.random() > mod || !testeAerodinamica) {
@@ -645,7 +645,7 @@ public class Carro implements Serializable {
 
 		combustivel -= consumoTotal;
 
-		if (percent < 0 && getPiloto().isJogadorHumano()) {
+		if (percent < 0) {
 			combustivel = 0;
 			setDanificado(PANE_SECA);
 			getPiloto().setDesqualificado(true);
