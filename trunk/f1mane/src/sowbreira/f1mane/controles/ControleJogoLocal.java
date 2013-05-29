@@ -92,6 +92,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 		controleEstatisticas = new ControleEstatisticas(this);
 	}
 
+	public ControleJogoLocal(MainFrame mainFrame) throws Exception {
+		super();
+		gerenciadorVisual = new GerenciadorVisual(this);
+		controleEstatisticas = new ControleEstatisticas(this);
+		controleCampeonato = new ControleCampeonato(mainFrame);
+	}
+
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCombustBox(sowbreira.f1mane.entidades.Piloto)
 	 */

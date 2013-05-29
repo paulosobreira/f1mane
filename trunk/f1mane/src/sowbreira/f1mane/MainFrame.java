@@ -132,7 +132,7 @@ public class MainFrame extends JFrame {
 		gerarMenusInfo(menuInfo);
 		gerarMenusSobre(menuInfo);
 		gerarMenusidiomas(menuIdiomas);
-		setSize(1280, 720);
+		setSize(1030, 720);
 		String title = "F1-MANE " + getVersao() + " MANager & Engineer";
 		setTitle(title);
 		if (modoApplet == null) {
@@ -991,7 +991,7 @@ public class MainFrame extends JFrame {
 			}
 			controleJogo.matarTodasThreads();
 		}
-		controleJogo = new ControleJogoLocal();
+		controleJogo = new ControleJogoLocal(this);
 		return true;
 	}
 }
