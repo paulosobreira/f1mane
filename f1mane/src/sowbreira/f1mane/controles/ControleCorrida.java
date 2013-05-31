@@ -674,4 +674,13 @@ public class ControleCorrida {
 			return new Integer(0);
 		}
 	}
+
+	public void climaChuvoso() {
+		controleClima.climaChuvoso();
+
+	}
+
+	public void climaEnsolarado() {
+		controleClima.climaEnsolarado();
+	}
 }

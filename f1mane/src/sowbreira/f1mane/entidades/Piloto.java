@@ -1243,7 +1243,8 @@ public class Piloto implements Serializable {
 		}
 
 		if (noAtual.verificaCruvaBaixa() && retardaFreiandoReta) {
-			if (!testeHabilidadePilotoFreios(controleJogo)) {
+			if (getPosicao() <= 10 && Math.random() > 0.9
+					&& !testeHabilidadePilotoFreios(controleJogo)) {
 				incStress(Util.intervalo(2, 3));
 				agressivo = false;
 				if (getPosicao() <= 10 || isJogadorHumano()

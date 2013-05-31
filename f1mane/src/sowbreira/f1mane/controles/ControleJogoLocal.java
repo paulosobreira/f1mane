@@ -1334,4 +1334,16 @@ public class ControleJogoLocal extends ControleRecursos implements
 		controleCampeonato.proximaCorrida();
 	}
 
+	@Override
+	public void climaChuvoso() {
+		controleCorrida.climaChuvoso();
+
+	}
+
+	@Override
+	public void climaEnsolarado() {
+		controleCorrida.climaEnsolarado();
+
+	}
+
 }

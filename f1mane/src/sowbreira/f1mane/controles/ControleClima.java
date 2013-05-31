@@ -171,4 +171,23 @@ public class ControleClima {
 		return Math.random() < (porc / 100.0);
 	}
 
+	public void climaEnsolarado() {
+		if (Clima.NUBLADO.equals(getClima())) {
+			setClima(Clima.SOL);
+		}
+		if (Clima.CHUVA.equals(getClima())) {
+			setClima(Clima.NUBLADO);
+		}
+
+	}
+
+	public void climaChuvoso() {
+		if (Clima.NUBLADO.equals(getClima())) {
+			setClima(Clima.CHUVA);
+		}
+		if (Clima.SOL.equals(getClima())) {
+			setClima(Clima.NUBLADO);
+		}
+	}
+
 }

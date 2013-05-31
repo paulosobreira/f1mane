@@ -1226,8 +1226,14 @@ public class PainelCircuito extends JPanel {
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
 
-		Piloto pilotoFrente = controleJogo
-				.obterCarroNaFrente(pilotoSelecionado).getPiloto();
+		Carro obterCarroNaFrente = controleJogo
+				.obterCarroNaFrente(pilotoSelecionado);
+
+		Piloto pilotoFrente = null;
+		;
+		if (obterCarroNaFrente != null) {
+			pilotoFrente = obterCarroNaFrente.getPiloto();
+		}
 		long indexNafrente = pilotoFrente != null ? pilotoFrente.getPtosPista()
 				: pilotoSelecionado.getPtosPista();
 		long index = pilotoSelecionado.getPtosPista();
@@ -3095,15 +3101,16 @@ public class PainelCircuito extends JPanel {
 			if (Clima.CHUVA.equals(climaAnterior)) {
 				if (Math.random() > 0.7) {
 					indiceNublado--;
-					if (indiceNublado < 500) {
-						indiceNublado = 500;
+					if (indiceNublado < 0) {
+						indiceNublado = 0;
 					}
 				}
 			} else {
 				if (Math.random() > 0.7) {
-					indiceNublado++;
 					if (indiceNublado > 1000) {
-						indiceNublado = 1000;
+						indiceNublado--;
+					} else {
+						indiceNublado++;
 					}
 				}
 			}
@@ -3127,16 +3134,20 @@ public class PainelCircuito extends JPanel {
 
 		if ((Clima.CHUVA.equals(controleJogo.getClima()))
 				&& limitesViewPort() != null) {
-			indiceNublado += 10;
-			if (indiceNublado > 2000) {
-				indiceNublado = 2000;
+			if (indiceNublado > 1500 && Math.random() > 0.7) {
+				indiceNublado++;
+				if (indiceNublado > 2000) {
+					indiceNublado = 2000;
+				}
+			} else {
+				indiceNublado++;
 			}
-			int alfaNub = indiceNublado / 20;
+			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
 					nublado.getBlue(), alfaNub));
 			g2d.fill(limitesViewPort().getBounds());
 		}
-		if (Clima.SOL.equals(controleJogo.getClima()))
+		if (indiceNublado <= 0)
 			return;
 		Point p1 = new Point(0, 0);
 		Point p2 = new Point(0, 0);
