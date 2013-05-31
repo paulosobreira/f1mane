@@ -556,6 +556,13 @@ public class GerenciadorVisual {
 								.getPilotoSelecionado();
 						pilotoSelecionado.derrapa(controleJogo);
 					}
+					if (keyCoode == KeyEvent.VK_8) {
+						controleJogo.climaEnsolarado();
+					}
+					if (keyCoode == KeyEvent.VK_7) {
+						controleJogo.climaChuvoso();
+					}
+					
 				}
 			}
 		};

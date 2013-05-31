@@ -1159,4 +1159,16 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public void climaChuvoso() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void climaEnsolarado() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
