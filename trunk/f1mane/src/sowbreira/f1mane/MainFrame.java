@@ -929,7 +929,7 @@ public class MainFrame extends JFrame {
 						}
 					}
 				});
-				autoIni.start();
+//				autoIni.start();
 
 			} catch (Exception e) {
 				Logger.logarExept(e);

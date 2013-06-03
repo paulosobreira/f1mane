@@ -3092,6 +3092,14 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaChuva(Graphics2D g2d) {
 
+		if (controleJogo.isCorridaPausada()) {
+			int alfaNub = indiceNublado / 10;
+			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
+					nublado.getBlue(), alfaNub));
+			g2d.fill(limitesViewPort.getBounds());
+			return;
+		}
+
 		if (!controleJogo.getClima().equals(climaAnterior)) {
 			climaAnterior = controleJogo.getClima();
 		}
@@ -3107,7 +3115,7 @@ public class PainelCircuito extends JPanel {
 				}
 			} else {
 				if (Math.random() > 0.7) {
-					if (indiceNublado > 1000) {
+					if (indiceNublado > 700) {
 						indiceNublado--;
 					} else {
 						indiceNublado++;

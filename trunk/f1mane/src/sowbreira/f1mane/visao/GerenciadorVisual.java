@@ -542,6 +542,10 @@ public class GerenciadorVisual {
 				}
 
 				if (Logger.ativo) {
+					if (keyCoode == KeyEvent.VK_T) {
+						controleJogo.tabelaComparativa();
+					}
+
 					if (keyCoode == KeyEvent.VK_EQUALS) {
 						controleJogo.aumentaFatorAcidade();
 					}
@@ -562,7 +566,7 @@ public class GerenciadorVisual {
 					if (keyCoode == KeyEvent.VK_7) {
 						controleJogo.climaChuvoso();
 					}
-					
+
 				}
 			}
 		};

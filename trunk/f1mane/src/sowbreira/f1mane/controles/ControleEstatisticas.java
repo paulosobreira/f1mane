@@ -329,11 +329,11 @@ public class ControleEstatisticas {
 		tabela = tabela.replaceAll("piloto2", Html.sansSerif(piloto2.getNome()
 				+ " " + piloto2.getPosicao()));
 		tabela = tabela.replaceAll("volta1", Html.sansSerif(Lang.msg("081")
-				+ piloto2.getNumeroVolta()));
-		tabela = tabela.replaceAll("volta2", Html.sansSerif(Lang.msg("081")
 				+ (piloto2.getNumeroVolta() - 1)));
-		tabela = tabela.replaceAll("volta3", Html.sansSerif(Lang.msg("081")
+		tabela = tabela.replaceAll("volta2", Html.sansSerif(Lang.msg("081")
 				+ (piloto2.getNumeroVolta() - 2)));
+		tabela = tabela.replaceAll("volta3", Html.sansSerif(Lang.msg("081")
+				+ (piloto2.getNumeroVolta() - 3)));
 		for (int i = 1; i < 4; i++) {
 			int gap = piloto1.getNumeroVolta() - piloto2.getNumeroVolta();
 			int index = piloto1.getVoltas().size() - i - gap;
