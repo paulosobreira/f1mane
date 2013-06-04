@@ -43,7 +43,7 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.ControleSom;
 import sowbreira.f1mane.visao.PainelCircuito;
-import sowbreira.f1mane.visao.PainelMenuSigle;
+import sowbreira.f1mane.visao.PainelMenuLocal;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Logger;
 
@@ -379,14 +379,24 @@ public class MainFrame extends JFrame {
 		};
 		sobre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String msg = Lang.msg("184")
-						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
-						+ "http://sowbreira.appspot.com \n" + "2007-2012";
-				JOptionPane.showMessageDialog(MainFrame.this, msg, Lang
-						.msg("093"), JOptionPane.INFORMATION_MESSAGE);
+				mostraSobre();
 			}
+
 		});
 		menu2.add(sobre);
+	}
+
+	public void mostraSobre() {
+		String msg = Lang.msg("184") + " Paulo Sobreira        ".trim() + "\n"
+				+ "- " + Lang.msg("pistas") + " "
+				+ " www.miniracingonline.com                   ".trim() + "\n"
+				+ "- " + Lang.msg("capacetesCarros") + " "
+				+ " spotterguidecentral.com                    ".trim() + "\n"
+				+ "- http://sowbreira.appspot.com              ".trim() + "\n"
+				+ "- sowbreira@gmail.com                       ".trim() + "\n"
+				+ "- 2007-2013";
+		JOptionPane.showMessageDialog(MainFrame.this, msg, Lang.msg("093"),
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void gerarMenusSingle(JMenu menu1) {
@@ -909,7 +919,7 @@ public class MainFrame extends JFrame {
 			try {
 				controleJogo = new ControleJogoLocal();
 				controleJogo.setMainFrame(this);
-				PainelMenuSigle painelMenuSigle = new PainelMenuSigle(this,
+				PainelMenuLocal painelMenuSigle = new PainelMenuLocal(this,
 						controleJogo);
 				getContentPane().add(painelMenuSigle, BorderLayout.CENTER);
 				painelMenuSigle.updateUI();

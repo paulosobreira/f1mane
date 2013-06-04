@@ -412,7 +412,7 @@ public class PainelCampeonato extends JPanel {
 				switch (columnIndex) {
 				case 0:
 					/* Corrida */
-					return Lang.msg("290");
+					return Lang.msg("corrida");
 				case 1:
 					/* Inicio */
 					return Lang.msg("155");

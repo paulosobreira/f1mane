@@ -805,8 +805,14 @@ public class ControleCampeonato {
 
 		panelPiloto.add(nivelPanel);
 
-		JOptionPane.showMessageDialog(mainFrame, panelPiloto, Lang
-				.msg("pilotoCampeonato"), JOptionPane.INFORMATION_MESSAGE);
+		int showConfirmDialog = JOptionPane.showConfirmDialog(mainFrame,
+				panelPiloto, Lang.msg("pilotoCampeonato"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+		if (JOptionPane.YES_OPTION != showConfirmDialog) {
+			campeonato = null;
+			return;
+		}
 
 		if (Util.isNullOrEmpty(nomePiloto.getText())) {
 			JOptionPane.showMessageDialog(mainFrame, Lang.msg("nomePiloto"),

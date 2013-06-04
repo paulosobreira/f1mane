@@ -3395,7 +3395,7 @@ public class PainelCircuito extends JPanel {
 				g2d.setColor(transpMenus);
 				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 105, 16, 10, 10);
 				g2d.setColor(Color.black);
-				g2d.drawString(Lang.msg("290") + ":"
+				g2d.drawString(Lang.msg("corrida") + ":"
 						+ voltaCorrida.obterTempoVoltaFormatado(), ptoOri,
 						yBase);
 			}
