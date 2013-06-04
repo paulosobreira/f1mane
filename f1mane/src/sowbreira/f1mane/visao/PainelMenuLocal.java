@@ -24,11 +24,11 @@ import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
-public class PainelMenuSigle extends JPanel {
+public class PainelMenuLocal extends JPanel {
 	public static BufferedImage bg;
 	private MainFrame mainFrame;
 	private InterfaceJogo controleJogo;
-	public final static Color lightWhite = new Color(255, 255, 255, 100);
+	public final static Color lightWhite = new Color(200, 200, 200, 100);
 
 	public final static Color yel = new Color(255, 255, 0, 150);
 
@@ -37,9 +37,15 @@ public class PainelMenuSigle extends JPanel {
 	private RoundRectangle2D campeonato = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
 
+	private RoundRectangle2D continuaCampeonato = new RoundRectangle2D.Double(
+			0, 0, 1, 1, 10, 10);
+
+	private RoundRectangle2D sobre = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
+
 	private Object selecionado = null;
 
-	public PainelMenuSigle(MainFrame mainFrame, InterfaceJogo controleJogo) {
+	public PainelMenuLocal(MainFrame mainFrame, InterfaceJogo controleJogo) {
 		this.mainFrame = mainFrame;
 		this.controleJogo = controleJogo;
 		addMouseListener(new MouseAdapter() {
@@ -53,14 +59,20 @@ public class PainelMenuSigle extends JPanel {
 	protected void processaClick(MouseEvent e) {
 		if (corrida.contains(e.getPoint())) {
 			selecionado = corrida;
-		}
-		if (campeonato.contains(e.getPoint())) {
+		} else if (campeonato.contains(e.getPoint())) {
 			selecionado = campeonato;
+		} else if (continuaCampeonato.contains(e.getPoint())) {
+			selecionado = continuaCampeonato;
+		} else if (sobre.contains(e.getPoint())) {
+			selecionado = sobre;
+		} else {
+			selecionado = null;
 		}
 		if (corrida.equals(selecionado)) {
 			try {
 				if (mainFrame.verificaCriarJogo()) {
-					controleJogo = mainFrame.getControleJogo(); 
+					controleJogo = mainFrame.getControleJogo();
+					controleJogo.setMainFrame(mainFrame);
 					controleJogo.iniciarJogo();
 				}
 			} catch (Exception e1) {
@@ -75,6 +87,26 @@ public class PainelMenuSigle extends JPanel {
 					controleJogo.criarCampeonatoPiloto();
 				}
 
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				Logger.logarExept(e1);
+			}
+		}
+		if (continuaCampeonato.equals(selecionado)) {
+			try {
+				if (mainFrame.verificaCriarJogo()) {
+					controleJogo = mainFrame.getControleJogo();
+					controleJogo.continuarCampeonato();
+				}
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				Logger.logarExept(e1);
+			}
+		}
+		if (sobre.equals(selecionado)) {
+			try {
+				mainFrame.mostraSobre();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				Logger.logarExept(e1);
@@ -148,6 +180,35 @@ public class PainelMenuSigle extends JPanel {
 		if (campeonato.equals(selecionado)) {
 			g2d.setColor(yel);
 			g2d.draw(campeonato);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, centerX + 5, centerY);
+
+		centerY += 40;
+
+		g2d.setColor(lightWhite);
+		txt = Lang.msg("continuaCampeonato");
+		larguraTexto = Util.larguraTexto(txt, g2d);
+		continuaCampeonato.setFrame(centerX, centerY - 25, larguraTexto + 10,
+				30);
+		g2d.fill(continuaCampeonato);
+		if (continuaCampeonato.equals(selecionado)) {
+			g2d.setColor(yel);
+			g2d.draw(continuaCampeonato);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, centerX + 5, centerY);
+
+		centerY += 40;
+
+		g2d.setColor(lightWhite);
+		txt = Lang.msg("sobre");
+		larguraTexto = Util.larguraTexto(txt, g2d);
+		sobre.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
+		g2d.fill(sobre);
+		if (sobre.equals(selecionado)) {
+			g2d.setColor(yel);
+			g2d.draw(sobre);
 		}
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(txt, centerX + 5, centerY);

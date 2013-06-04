@@ -152,7 +152,7 @@ public class PaddockWindow {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
 		public String getText() {
-			return Lang.msg("180");
+			return Lang.msg("sobre");
 		}
 	};
 	private JLabel infoLabel1 = new JLabel("  ");
@@ -319,7 +319,7 @@ public class PaddockWindow {
 						+ " Luciano Homem \n" + " Marcos Henrique";
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
-						.msg("180"), JOptionPane.INFORMATION_MESSAGE);
+						.msg("sobre"), JOptionPane.INFORMATION_MESSAGE);
 				verLogs();
 			}
 		});
