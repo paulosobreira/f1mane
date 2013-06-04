@@ -906,31 +906,13 @@ public class MainFrame extends JFrame {
 	public void iniciar() {
 		if (ControleJogoLocal.VALENDO) {
 			setVisible(true);
-			PainelMenuSigle painelMenuSigle = new PainelMenuSigle(this,
-					controleJogo);
-			getContentPane().add(painelMenuSigle, BorderLayout.CENTER);
-			painelMenuSigle.updateUI();
 			try {
 				controleJogo = new ControleJogoLocal();
 				controleJogo.setMainFrame(this);
-				Thread autoIni = new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						try {
-							Thread.sleep(500);
-							controleJogo.iniciarJogo();
-						} catch (Exception e) {
-							Logger.logarExept(e);
-						}
-						try {
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
-//				autoIni.start();
-
+				PainelMenuSigle painelMenuSigle = new PainelMenuSigle(this,
+						controleJogo);
+				getContentPane().add(painelMenuSigle, BorderLayout.CENTER);
+				painelMenuSigle.updateUI();
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
@@ -979,7 +961,7 @@ public class MainFrame extends JFrame {
 		this.controleJogo = controleJogo;
 	}
 
-	private boolean verificaCriarJogo() throws Exception {
+	public boolean verificaCriarJogo() throws Exception {
 		if (controleJogo != null) {
 			if (controleJogo.isCorridaIniciada()) {
 				int ret = JOptionPane
