@@ -816,13 +816,17 @@ public class PainelCircuito extends JPanel {
 						yTitulo + 16);
 				g2d.setFont(fontMaior);
 			}
+			int diff = (piloto.getPosicaoInicial() - piloto.getPosicao());
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
-			g2d.setColor(Color.BLACK);
-			g2d.drawString(""
-					+ (piloto.getPosicaoInicial() - piloto.getPosicao()),
-					x + 20, y + 16);
-
+			if (diff > 0) {
+				g2d.setColor(gre);
+			} else if (diff < 0) {
+				g2d.setColor(red);
+			} else {
+				g2d.setColor(yel);
+			}
+			g2d.drawString("" + diff, x + 20, y + 16);
 			y += 24;
 			x = o.x;
 		}

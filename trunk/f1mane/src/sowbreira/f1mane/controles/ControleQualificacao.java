@@ -73,6 +73,13 @@ public class ControleQualificacao {
 				piloto.processarCiclo(controleJogo);
 				contCiclosQualificacao++;
 				if (Math.random() > (piloto.getCarro().porcentagemCombustivel() / 100.0)
+						&& !piloto.getNoAtual().verificaRetaOuLargada()
+						&& piloto.getCarro().testeAerodinamica()
+						&& piloto.getCarro().testeFreios()) {
+					contCiclosQualificacao--;
+				}
+				if (Math.random() > (piloto.getCarro().porcentagemCombustivel() / 100.0)
+						&& piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao--;
 				}
