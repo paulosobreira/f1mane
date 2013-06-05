@@ -3146,12 +3146,12 @@ public class PainelCircuito extends JPanel {
 
 		if ((Clima.CHUVA.equals(controleJogo.getClima()))
 				&& limitesViewPort() != null) {
-			if (indiceNublado > 1500 && Math.random() > 0.7) {
+			if (indiceNublado > 1500 && Math.random() > 0.9) {
 				indiceNublado++;
 				if (indiceNublado > 2000) {
 					indiceNublado = 2000;
 				}
-			} else {
+			} else if (Math.random() > 0.7) {
 				indiceNublado++;
 			}
 			int alfaNub = indiceNublado / 10;
