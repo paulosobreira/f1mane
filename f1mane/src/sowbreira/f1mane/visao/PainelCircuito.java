@@ -3151,7 +3151,7 @@ public class PainelCircuito extends JPanel {
 				if (indiceNublado > 2000) {
 					indiceNublado = 2000;
 				}
-			} else if (Math.random() > 0.7) {
+			} else if (Math.random() > 0.7 && indiceNublado <= 1500) {
 				indiceNublado++;
 			}
 			int alfaNub = indiceNublado / 10;
