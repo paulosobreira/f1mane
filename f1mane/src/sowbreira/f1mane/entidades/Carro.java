@@ -882,10 +882,10 @@ public class Carro implements Serializable {
 			}
 		} else {
 			if (controleJogo.asfaltoAbrasivo()) {
-				desgPneus += (piloto.testeHabilidadePilotoOuCarro(controleJogo) ? 1
+				desgPneus += (piloto.testeHabilidadePilotoFreios(controleJogo) ? 1
 						: 2);
 			} else {
-				desgPneus += (piloto.testeHabilidadePilotoOuCarro(controleJogo) ? 0
+				desgPneus += (piloto.testeHabilidadePilotoFreios(controleJogo) ? 0
 						: 1);
 			}
 		}
