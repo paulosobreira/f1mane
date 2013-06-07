@@ -234,6 +234,7 @@ public class PainelCircuito extends JPanel {
 	private int contMostraLag;
 	private String climaAnterior;
 	private double zoomGrid;
+	private boolean verControles = true;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -594,11 +595,11 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaAjudaControles(Graphics2D g2d) {
-		if (getQtdeLuzesAcesas() <= 0) {
+		if (!isVerControles()) {
 			return;
 		}
 		Point o = new Point(limitesViewPort.x
-				+ (int) (limitesViewPort.width / 3), limitesViewPort.y
+				+ (int) (limitesViewPort.width / 3.5), limitesViewPort.y
 				+ (int) (limitesViewPort.height / 2));
 		int x = o.x;
 		int y = o.y;
@@ -625,6 +626,21 @@ public class PainelCircuito extends JPanel {
 		/**
 		 * Esquerda
 		 */
+
+		double rad = Math.toRadians(270);
+		AffineTransform afRotate = new AffineTransform();
+		afRotate.setToRotation(rad, setaCarroCima.getWidth() / 2, setaCarroCima
+				.getHeight() / 2);
+		AffineTransformOp opRotate = new AffineTransformOp(afRotate,
+				AffineTransformOp.TYPE_BILINEAR);
+		BufferedImage rotateBufferSetaCima = new BufferedImage(setaCarroCima
+				.getWidth(), setaCarroCima.getWidth(),
+				BufferedImage.TYPE_INT_ARGB);
+		opRotate.filter(setaCarroCima, rotateBufferSetaCima);
+		g2d.drawImage(rotateBufferSetaCima, x, y - 30, null);
+
+		x += 40;
+
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(x, y, 30, 30, 5, 5);
@@ -646,8 +662,9 @@ public class PainelCircuito extends JPanel {
 			g2d.drawString("\u2193", x + 5, y + 25);
 			g2d.setStroke(trilhoMiniPista);
 			g2d.setColor(yel);
-			g2d.drawLine(x + 15, y + 30, x + 140, y + 60);
-			g2d.drawLine(x + 140, y + 60,
+			// g2d.drawLine(x + 15, y + 30, x + 140, y + 60);
+			// g2d.drawLine(x + 140, y + 60,
+			g2d.drawLine(x + 15, y + 30,
 					(int) (kers.getX() + (kers.getWidth() / 2)), (int) kers
 							.getY());
 			g2d.setStroke(stroke);
@@ -662,6 +679,17 @@ public class PainelCircuito extends JPanel {
 		g2d.fillRoundRect(x, y, 30, 30, 5, 5);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString("\u2192", x + 5, y + 25);
+
+		rad = Math.toRadians(90);
+		afRotate = new AffineTransform();
+		afRotate.setToRotation(rad, setaCarroCima.getWidth() / 2, setaCarroCima
+				.getHeight() / 2);
+		opRotate = new AffineTransformOp(afRotate,
+				AffineTransformOp.TYPE_BILINEAR);
+		rotateBufferSetaCima = new BufferedImage(setaCarroCima.getWidth(),
+				setaCarroCima.getWidth(), BufferedImage.TYPE_INT_ARGB);
+		opRotate.filter(setaCarroCima, rotateBufferSetaCima);
+		g2d.drawImage(rotateBufferSetaCima, x - 15, y - 25, null);
 
 		x -= 40;
 
@@ -679,11 +707,25 @@ public class PainelCircuito extends JPanel {
 			g2d.setStroke(trilhoMiniPista);
 			g2d.setColor(yel);
 			g2d.drawLine(x + 15, y, x - 500, y);
-			g2d.drawLine(x - 500
-					, y, (int) (drs.getX() + (drs.getWidth() / 2)),
+			g2d.drawLine(x - 500, y, (int) (drs.getX() + (drs.getWidth() / 2)),
 					(int) drs.getY());
 			g2d.setStroke(stroke);
 		}
+
+		y -= 120;
+		x -= 40;
+
+		Stroke stroke = g2d.getStroke();
+		g2d.setColor(transpMenus);
+		g2d.fillRoundRect(x, y, 30, 30, 5, 5);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString("F12", x + 5, y + 25);
+		g2d.setStroke(trilhoMiniPista);
+		g2d.setColor(yel);
+		g2d.drawLine(x + 15, y,
+				(int) (vaiBox.getX() + (vaiBox.getWidth() / 2)), (int) (vaiBox
+						.getY() + vaiBox.getHeight()));
+		g2d.setStroke(stroke);
 
 		g2d.setFont(fontOri);
 
@@ -4756,6 +4798,9 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public void apagarLuz() {
+		if (qtdeLuzesAcesas <= 1) {
+			setVerControles(false);
+		}
 		qtdeLuzesAcesas--;
 	}
 
@@ -5089,6 +5134,14 @@ public class PainelCircuito extends JPanel {
 
 	public void setExibeResultadoFinal(boolean exibeResultadoFinal) {
 		this.exibeResultadoFinal = exibeResultadoFinal;
+	}
+
+	public boolean isVerControles() {
+		return verControles;
+	}
+
+	public void setVerControles(boolean verControles) {
+		this.verControles = verControles;
 	}
 
 }

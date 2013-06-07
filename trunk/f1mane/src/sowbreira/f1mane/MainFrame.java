@@ -69,7 +69,8 @@ public class MainFrame extends JFrame {
 	protected MainPanelEditorVetorizado editorInflado;
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
-	private JMenuItem compsSwing;
+	private JMenuItem narracao;
+	private JMenuItem verControles;
 
 	private AppletPaddock ver = new AppletPaddock();
 
@@ -471,19 +472,39 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu1.add(som);
-		compsSwing = new JMenuItem("compsSwing") {
+		narracao = new JMenuItem("compsSwing") {
 			public String getText() {
 				return Lang.msg("f1maneSwing");
 			}
 
 		};
-		compsSwing.addActionListener(new ActionListener() {
+		narracao.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				controleJogo.mostraCompsSwing();
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						controleJogo.mostraCompsSwing();
+					}
+				}).start();
+
 			}
 		});
-		menu1.add(compsSwing);
+		menu1.add(narracao);
+
+		verControles = new JMenuItem("verControles") {
+			public String getText() {
+				return Lang.msg("verControles");
+			}
+
+		};
+		verControles.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controleJogo.ativaVerControles();
+			}
+		});
+		menu1.add(verControles);
 
 	}
 
