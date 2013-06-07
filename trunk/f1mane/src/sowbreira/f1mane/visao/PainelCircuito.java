@@ -598,7 +598,7 @@ public class PainelCircuito extends JPanel {
 			return;
 		}
 		Point o = new Point(limitesViewPort.x
-				+ (int) (limitesViewPort.width / 2.5), limitesViewPort.y
+				+ (int) (limitesViewPort.width / 3), limitesViewPort.y
 				+ (int) (limitesViewPort.height / 2));
 		int x = o.x;
 		int y = o.y;
@@ -617,10 +617,26 @@ public class PainelCircuito extends JPanel {
 		x += 40;
 		desenhaAjudaComandoPiloto(g2d, x, y, f7, "C");
 
-		x = o.x + 150;
-		y = o.y - 40;
+		x = o.x + 300;
+		y = o.y + 20;
 
 		Font fontOri = g2d.getFont();
+
+		/**
+		 * Esquerda
+		 */
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		g2d.setColor(transpMenus);
+		g2d.fillRoundRect(x, y, 30, 30, 5, 5);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString("\u2190", x + 5, y + 25);
+		g2d.setStroke(trilhoMiniPista);
+
+		x += 40;
+
+		/**
+		 * Baixo
+		 */
 		if (controleJogo.isKers()) {
 			Stroke stroke = g2d.getStroke();
 			g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
@@ -630,15 +646,30 @@ public class PainelCircuito extends JPanel {
 			g2d.drawString("\u2193", x + 5, y + 25);
 			g2d.setStroke(trilhoMiniPista);
 			g2d.setColor(yel);
-			g2d.drawLine(x + 15, y + 30, x + 80, y + 60);
-			g2d.drawLine(x + 80, y + 60,
+			g2d.drawLine(x + 15, y + 30, x + 140, y + 60);
+			g2d.drawLine(x + 140, y + 60,
 					(int) (kers.getX() + (kers.getWidth() / 2)), (int) kers
 							.getY());
 			g2d.setStroke(stroke);
 		}
 
+		x += 40;
+		/**
+		 * Direita
+		 */
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		g2d.setColor(transpMenus);
+		g2d.fillRoundRect(x, y, 30, 30, 5, 5);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString("\u2192", x + 5, y + 25);
+
+		x -= 40;
+
 		y -= 40;
 
+		/**
+		 * cima
+		 */
 		if (controleJogo.isDrs()) {
 			Stroke stroke = g2d.getStroke();
 			g2d.setColor(transpMenus);
@@ -647,8 +678,9 @@ public class PainelCircuito extends JPanel {
 			g2d.drawString("\u2191", x + 5, y + 25);
 			g2d.setStroke(trilhoMiniPista);
 			g2d.setColor(yel);
-			g2d.drawLine(x + 15, y, x - 80, y);
-			g2d.drawLine(x - 80, y, (int) (drs.getX() + (drs.getWidth() / 2)),
+			g2d.drawLine(x + 15, y, x - 500, y);
+			g2d.drawLine(x - 500
+					, y, (int) (drs.getX() + (drs.getWidth() / 2)),
 					(int) drs.getY());
 			g2d.setStroke(stroke);
 		}
