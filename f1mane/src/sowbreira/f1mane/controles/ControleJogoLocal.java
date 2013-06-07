@@ -1346,4 +1346,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	}
 
+	@Override
+	public void ativaVerControles() {
+		if (gerenciadorVisual != null)
+			gerenciadorVisual.ativaVerControles();
+	}
+
 }

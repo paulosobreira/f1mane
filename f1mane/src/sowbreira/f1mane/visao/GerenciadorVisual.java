@@ -2070,4 +2070,10 @@ public class GerenciadorVisual {
 
 	}
 
+	public void ativaVerControles() {
+		if (painelCircuito != null) {
+			painelCircuito.setVerControles(!painelCircuito.isVerControles());
+		}
+	}
+
 }

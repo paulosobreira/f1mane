@@ -331,4 +331,6 @@ public interface InterfaceJogo {
 
 	public void climaChuvoso();
 
+	public void ativaVerControles();
+
 }
