@@ -63,7 +63,12 @@ public class ControleQualificacao {
 
 		nivelaPontecia(pilotos);
 		nivelaHabilidade(pilotos);
-
+		double incCurva = 0.5;
+		double increta = 0.7;
+		if (controleJogo.isSemReabastacimento()) {
+			incCurva = 0.7;
+			increta = 0.9;
+		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			piloto.setNoAtual(noLargada);
@@ -76,21 +81,24 @@ public class ControleQualificacao {
 						&& !piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.getCarro().testeAerodinamica()
 						&& piloto.getCarro().testeFreios()) {
-					contCiclosQualificacao--;
+					contCiclosQualificacao -= Math.random() > incCurva ? 1 : 0;
 				}
 				if (Math.random() > (piloto.getCarro().porcentagemCombustivel() / 100.0)
 						&& piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
-					contCiclosQualificacao--;
+					contCiclosQualificacao -= Math.random() > increta ? 1 : 0;
 				}
 			}
 			piloto.setCiclosVoltaQualificacao(contCiclosQualificacao);
+			evitaMesmoCiclo(piloto);
 			piloto.setNumeroVolta(0);
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);
 			piloto.setContTravouRodas(0);
 			piloto.setCiclosDesconcentrado(0);
 			piloto.setVoltas(new ArrayList());
+//			System.out.println("CiclosVoltaQualificacao " + piloto.getNome()
+//					+ " " + piloto.getCiclosVoltaQualificacao());
 			controleJogo.zerarMelhorVolta();
 		}
 		Collections.sort(pilotos, new Comparator() {
@@ -102,8 +110,32 @@ public class ControleQualificacao {
 								.getCiclosVoltaQualificacao()));
 			}
 		});
-
 		modoQualify = false;
+	}
+
+	private void evitaMesmoCiclo(Piloto p) {
+		List pilotos = controleJogo.getPilotos();
+		boolean diffTodos = false;
+		while (!diffTodos) {
+			boolean diffTodosIn = true;
+			for (int i = 0; i < pilotos.size(); i++) {
+				Piloto piloto = (Piloto) pilotos.get(i);
+				if (p.getCiclosVoltaQualificacao() != piloto
+						.getCiclosVoltaQualificacao()
+						|| p.equals(piloto)) {
+					continue;
+				} else {
+					diffTodosIn = false;
+					p
+							.setCiclosVoltaQualificacao(p
+									.getCiclosVoltaQualificacao() - 1);
+				}
+			}
+			if (diffTodosIn) {
+				diffTodos = true;
+			}
+		}
+
 	}
 
 	private void nivelaHabilidade(List pilotos) {

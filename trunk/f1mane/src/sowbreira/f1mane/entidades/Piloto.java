@@ -2334,7 +2334,6 @@ public class Piloto implements Serializable {
 		if (danificado()) {
 			return false;
 		}
-
 		return carro.testePotencia() && testeHabilidadePiloto(interfaceJogo);
 	}
 
