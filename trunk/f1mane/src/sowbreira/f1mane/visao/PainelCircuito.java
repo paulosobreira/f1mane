@@ -612,7 +612,7 @@ public class PainelCircuito extends JPanel {
 
 		y += 40;
 		x += 20;
-		
+
 		desenhaAjudaComandoPiloto(g2d, x, y, f5, "Z");
 		x += 40;
 		desenhaAjudaComandoPiloto(g2d, x, y, f6, "X");
@@ -3322,6 +3322,9 @@ public class PainelCircuito extends JPanel {
 				}
 			} else if (Math.random() > 0.7 && indiceNublado <= 1500) {
 				indiceNublado++;
+			}
+			if (indiceNublado < 700) {
+				indiceNublado = 700;
 			}
 			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
