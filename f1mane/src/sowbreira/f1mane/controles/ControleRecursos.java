@@ -20,6 +20,7 @@ import java.util.Set;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.NoWrapper;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.GeoUtil;
@@ -36,6 +37,8 @@ public abstract class ControleRecursos {
 	protected List nosDaPista = new ArrayList();
 	protected List nosDoBox = new ArrayList();
 	protected List carros;
+	protected List<NoWrapper> pistaWrapperFull = new ArrayList<NoWrapper>();
+	protected List<NoWrapper> boxWrapperFull = new ArrayList<NoWrapper>();
 	protected CarregadorRecursos carregadorRecursos;
 	protected Map circuitos = new HashMap();
 	protected Map circuitosClima = new HashMap();
@@ -83,10 +86,10 @@ public abstract class ControleRecursos {
 				.getNome());
 		if (carroLado == null) {
 			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
-			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), "CarroLadoC1.png");
-			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), "CarroLadoC2.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor1(), "CarroLadoC1.png");
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor2(), "CarroLadoC2.png");
 			Graphics graphics = carroLado.getGraphics();
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);
@@ -114,13 +117,12 @@ public abstract class ControleRecursos {
 					}
 				} catch (Exception e) {
 					carro.setImg(null);
-					bufferCarrosLado
-							.put(carro.getNome(), ImageUtil.geraTransparencia(
-									carroLado, Color.WHITE));
+					bufferCarrosLado.put(carro.getNome(), ImageUtil
+							.geraTransparencia(carroLado, Color.WHITE));
 				}
 			} else {
-				bufferCarrosLado.put(carro.getNome(),
-						ImageUtil.geraTransparencia(carroLado, Color.WHITE));
+				bufferCarrosLado.put(carro.getNome(), ImageUtil
+						.geraTransparencia(carroLado, Color.WHITE));
 			}
 
 		}
@@ -133,10 +135,10 @@ public abstract class ControleRecursos {
 				.get(carro.getNome());
 		if (carroLado == null) {
 			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
-			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), "CarroLadoC1.png");
-			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), "CarroLadoC3.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor1(), "CarroLadoC1.png");
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor2(), "CarroLadoC3.png");
 			Graphics graphics = carroLado.getGraphics();
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);
@@ -200,16 +202,16 @@ public abstract class ControleRecursos {
 				.get(carro.getNome());
 		if (carroCima == null) {
 			carroCima = CarregadorRecursos.carregaImagem("CarroCima.png");
-			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), "CarroCimaC1.png");
-			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), "CarroCimaC3.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor1(), "CarroCimaC1.png");
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor2(), "CarroCimaC3.png");
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.dispose();
-			bufferCarrosCimaSemAreofolio.put(carro.getNome(),
-					ImageUtil.geraTransparencia(carroCima, Color.WHITE));
+			bufferCarrosCimaSemAreofolio.put(carro.getNome(), ImageUtil
+					.geraTransparencia(carroCima, Color.WHITE));
 		}
 		return carroCima;
 	}
@@ -224,16 +226,16 @@ public abstract class ControleRecursos {
 				.getNome());
 		if (carroCima == null) {
 			carroCima = CarregadorRecursos.carregaImagem("CarroCima.png");
-			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), "CarroCimaC1.png");
-			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), "CarroCimaC2.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor1(), "CarroCimaC1.png");
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(carro
+					.getCor2(), "CarroCimaC2.png");
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.dispose();
-			bufferCarrosCima.put(carro.getNome(),
-					ImageUtil.geraTransparencia(carroCima, Color.WHITE));
+			bufferCarrosCima.put(carro.getNome(), ImageUtil.geraTransparencia(
+					carroCima, Color.WHITE));
 		}
 		return carroCima;
 	}
@@ -375,15 +377,13 @@ public abstract class ControleRecursos {
 				Point frenteCar = ((No) nosDaPista.get(frente)).getPoint();
 				double calculaAngulo = GeoUtil.calculaAngulo(frenteCar,
 						trazCar, 0);
-				Point p1 = GeoUtil.calculaPonto(
-						calculaAngulo,
-						Util.inte(Carro.ALTURA
+				Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util
+						.inte(Carro.ALTURA
 								* circuito.getMultiplicadorLarguraPista()),
 						new Point(Util.inte(rectangle.getCenterX()), Util
 								.inte(rectangle.getCenterY())));
-				Point p2 = GeoUtil.calculaPonto(
-						calculaAngulo + 180,
-						Util.inte(Carro.ALTURA
+				Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180, Util
+						.inte(Carro.ALTURA
 								* circuito.getMultiplicadorLarguraPista()),
 						new Point(Util.inte(rectangle.getCenterX()), Util
 								.inte(rectangle.getCenterY())));
@@ -509,6 +509,28 @@ public abstract class ControleRecursos {
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
+	}
+
+	public List<NoWrapper> getPistaWrapperFull() {
+		if (pistaWrapperFull.isEmpty() && circuito != null) {
+			List pistaFull = circuito.getPistaFull();
+			for (Iterator iterator = pistaFull.iterator(); iterator.hasNext();) {
+				No no = (No) iterator.next();
+				pistaWrapperFull.add(new NoWrapper(no));
+			}
+		}
+		return pistaWrapperFull;
+	}
+
+	public List<NoWrapper> getBoxWrapperFull() {
+		if (boxWrapperFull.isEmpty() && circuito != null) {
+			List boxFull = circuito.getBoxFull();
+			for (Iterator iterator = boxFull.iterator(); iterator.hasNext();) {
+				No no = (No) iterator.next();
+				boxWrapperFull.add(new NoWrapper(no));
+			}
+		}
+		return boxWrapperFull;
 	}
 
 }

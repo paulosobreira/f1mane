@@ -1,5 +1,6 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -9,6 +10,7 @@ import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.NoWrapper;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
@@ -332,5 +334,9 @@ public interface InterfaceJogo {
 	public void climaChuvoso();
 
 	public void ativaVerControles();
+
+	public List<NoWrapper> getPistaWrapperFull();
+
+	public List<NoWrapper> getBoxWrapperFull();
 
 }

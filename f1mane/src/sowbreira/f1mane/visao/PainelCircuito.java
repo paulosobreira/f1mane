@@ -68,7 +68,7 @@ import br.nnpe.Util;
  */
 public class PainelCircuito extends JPanel {
 
-	public static boolean carregaBkg = true;
+	public static boolean carregaBkg = false;
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
