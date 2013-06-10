@@ -666,6 +666,10 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			if (clientPaddockPack.getSessaoCliente().getNomeJogador().equals(
 					piloto.getNomeJogador())) {
+				if (jogoServidor.isChovendo()) {
+					piloto.setAtivarDRS(false);
+					break;
+				}
 				piloto.setAtivarDRS(((Boolean) (clientPaddockPack
 						.getDataObject())).booleanValue());
 				break;

@@ -115,9 +115,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public boolean isDrs() {
-		if (isChovendo()) {
-			return false;
-		}
 		return drs;
 	}
 
@@ -1063,6 +1060,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public boolean mudarModoDRS() {
 		if (pilotoJogador == null)
 			return false;
+		if (isChovendo()) {
+			controleEstatisticas.info(Lang.msg("drsDesabilitado"));
+			pilotoJogador.setAtivarDRS(false);
+			return false;
+		}
 		pilotoJogador.setAtivarDRS(!pilotoJogador.isAtivarDRS());
 		return pilotoJogador.isAtivarDRS();
 	}

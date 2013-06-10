@@ -329,7 +329,8 @@ public class MonitorJogo implements Runnable {
 			if (ret != null) {
 				clientPaddockPack = (ClientPaddockPack) ret;
 				if (clientPaddockPack.getDadosJogoCriado().getPilotosCarreira() != null) {
-					Logger.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
+					Logger
+							.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
 					List pilots = clientPaddockPack.getDadosJogoCriado()
 							.getPilotosCarreira();
 					List carros = new ArrayList();
@@ -346,14 +347,14 @@ public class MonitorJogo implements Runnable {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void atualizaPosicoes() {
-		Object ret = controlePaddockCliente.enviarObjeto(
-				jogoCliente.getNomeJogoCriado(), true);
+		Object ret = controlePaddockCliente.enviarObjeto(jogoCliente
+				.getNomeJogoCriado(), true);
 		if (retornoNaoValido(ret)) {
 			return;
 		}
@@ -483,7 +484,8 @@ public class MonitorJogo implements Runnable {
 						int diffINdex = no.getIndex() - indexPiloto;
 						if (diffINdex < 0) {
 							diffINdex = (no.getIndex() + jogoCliente
-									.getNosDaPista().size()) - indexPiloto;
+									.getNosDaPista().size())
+									- indexPiloto;
 							if (piloto.isJogadorHumano()) {
 								Logger.logar("no.getIndex() " + no.getIndex());
 								Logger.logar("indexPiloto " + indexPiloto);
@@ -661,8 +663,8 @@ public class MonitorJogo implements Runnable {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -839,8 +841,8 @@ public class MonitorJogo implements Runnable {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -1023,6 +1025,9 @@ public class MonitorJogo implements Runnable {
 			@Override
 			public void run() {
 				try {
+					if (jogoCliente.isChovendo()) {
+						jogoCliente.info(Lang.msg("drsDesabilitado"));
+					}
 					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 							Comandos.MUDAR_DRS, sessaoCliente);
 					clientPaddockPack.setNomeJogo(jogoCliente
