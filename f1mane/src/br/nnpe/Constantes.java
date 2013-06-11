@@ -14,7 +14,7 @@ public class Constantes {
 	public static final int MAX_VOLTAS = 72;
 	public static final int MIN_VOLTAS = 12;
 	public static final int MIN_CICLO = 70;
-	public static final int MAX_CICLO = 200;
+	public static final int MAX_CICLO = 210;
 	public static final int ACIMA_MEDIA_NORMAL = 5;
 	public static final int ACIMA_MEDIA_FACIL = 10;
 	public static final int LATENCIA_MAX = 240;
