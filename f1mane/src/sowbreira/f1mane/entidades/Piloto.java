@@ -1431,7 +1431,7 @@ public class Piloto implements Serializable {
 		if (verificaDesconcentrado()) {
 			return;
 		}
-		if (!controleJogo.verificaNivelJogo()) {
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.3)) {
 			return;
 		}
 		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 80 : 70)) {
@@ -2008,7 +2008,7 @@ public class Piloto implements Serializable {
 		if (ControleQualificacao.modoQualify) {
 			return false;
 		}
-		if (!controleJogo.verificaNivelJogo()) {
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.3)) {
 			return false;
 		}
 		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 80 : 70)) {
