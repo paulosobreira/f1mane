@@ -322,7 +322,7 @@ public class GerenciadorVisual {
 									&& noAtualSuave.getIndex() < entradaBoxIndex) {
 								nos = pistaFull;
 								piloto.mudarTracado(0, controleJogo, true);
-								System.out.println("entrando box");
+//								System.out.println("entrando box");
 								if (ganhoSuaveAnt > 5)
 									ganhoSuave = ganhoSuaveAnt - 1;
 								else
@@ -347,14 +347,14 @@ public class GerenciadorVisual {
 											.contains(
 													new NoWrapper(noAtualSuave))) {
 								nos = boxFull;
-								System.out.println("saindo do box");
+//								System.out.println("saindo do box");
 								piloto.mudarTracado(0, controleJogo, true);
-								ganhoSuave = 10;
+								ganhoSuave = ganhoSuaveAnt;
 								saindoBox = true;
 								diff = 1;
 								if ((noAtualSuave.getIndex() + ganhoSuave) >= boxFull
 										.size()) {
-									System.out.println("saiu box");
+//									System.out.println("saiu box");
 									nos = pistaFull;
 									saiuBox = true;
 								}
@@ -367,7 +367,7 @@ public class GerenciadorVisual {
 									new NoWrapper(noAtual))
 									&& noAtualSuave.getIndex() >= entradaBoxIndex) {
 								entrandoBox = false;
-								System.out.println("entrou box");
+//								System.out.println("entrou box");
 								nos = boxFull;
 								diff = 1;
 								index = 0;
@@ -382,8 +382,8 @@ public class GerenciadorVisual {
 							}
 							if (!entrandoBox && !saindoBox
 									&& (diff < 0 || diff > 500)) {
-								System.out.println("diff < 0 || diff > 500 "
-										+ diff);
+//								System.out.println("diff < 0 || diff > 500 "
+//										+ diff);
 								noAtualSuave = noAtual;
 							}
 						}
