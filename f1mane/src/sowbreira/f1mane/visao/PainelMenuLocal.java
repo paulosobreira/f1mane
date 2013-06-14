@@ -26,8 +26,16 @@ import br.nnpe.Util;
 
 public class PainelMenuLocal extends JPanel {
 	public static BufferedImage bg;
+
+	public static String MENU_PRINCIPAL = "MENU_PRINCIPAL";
+
+	public static String MENU_CORRIDA = "MENU_CORRIDA";
+
 	private MainFrame mainFrame;
 	private InterfaceJogo controleJogo;
+
+	private String MENU = MENU_PRINCIPAL;
+
 	public final static Color lightWhite = new Color(200, 200, 200, 100);
 
 	public final static Color yel = new Color(255, 255, 0, 150);
@@ -59,6 +67,7 @@ public class PainelMenuLocal extends JPanel {
 	protected void processaClick(MouseEvent e) {
 		if (corrida.contains(e.getPoint())) {
 			selecionado = corrida;
+			MENU = MENU_CORRIDA;
 		} else if (campeonato.contains(e.getPoint())) {
 			selecionado = campeonato;
 		} else if (continuaCampeonato.contains(e.getPoint())) {
@@ -131,11 +140,17 @@ public class PainelMenuLocal extends JPanel {
 				int bgY = bg.getHeight() / 2;
 				g.drawImage(bg, centerX - bgX, centerY - bgY, null);
 			}
-			desenhaMenuSelecao(g2d);
+			desenhaMenuPrincipalSelecao(g2d);
+			desenhaMenuCorridaSelecao(g2d);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
 
+	}
+
+	private void desenhaMenuCorridaSelecao(Graphics2D g2d) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void setarHints(Graphics2D g2d) {
@@ -149,7 +164,10 @@ public class PainelMenuLocal extends JPanel {
 				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	}
 
-	private void desenhaMenuSelecao(Graphics2D g2d) {
+	private void desenhaMenuPrincipalSelecao(Graphics2D g2d) {
+		if (!MENU.equals(MENU_PRINCIPAL)) {
+			return;
+		}
 		int centerX = (int) (getWidth() / 2.3);
 		int centerY = (int) (getHeight() / 2.5);
 
