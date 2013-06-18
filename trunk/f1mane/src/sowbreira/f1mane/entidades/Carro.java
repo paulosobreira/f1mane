@@ -676,9 +676,6 @@ public class Carro implements Serializable {
 			}
 			indicativoEmborrachamentoPista -= emborrachamento;
 		}
-		if (agressivo) {
-			indicativoEmborrachamentoPista -= .2;
-		}
 		if (TIPO_PNEU_MOLE.equals(tipoPneu)
 				|| (controleJogo.isModoQualify() && !controleJogo.isChovendo() && testeFreios())) {
 			int intervaloMin = Util.intervalo(5, 10);
