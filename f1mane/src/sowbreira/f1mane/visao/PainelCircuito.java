@@ -978,6 +978,7 @@ public class PainelCircuito extends JPanel {
 			int diff = (piloto.getPosicaoInicial() - piloto.getPosicao());
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
+			g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 18));
 			if (diff > 0) {
 				g2d.setColor(gre);
 				g2d.drawString(" \u2191", x + 5, y + 16);
@@ -985,6 +986,7 @@ public class PainelCircuito extends JPanel {
 				g2d.setColor(red);
 				g2d.drawString(" \u2193", x + 5, y + 16);
 			}
+			g2d.setFont(fontMaior);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("" + diff, x + 20, y + 16);
 			y += 24;
