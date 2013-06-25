@@ -17,12 +17,15 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
+import javax.management.ObjectName;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.ServerFactory;
+import org.apache.catalina.Server;
 import org.apache.catalina.connector.Connector;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -126,8 +129,16 @@ public class ServletPaddock extends HttpServlet {
 		String ip = Inet4Address.getLocalHost().getHostAddress();
 		int port = 80;
 		try {
-			Connector[] connectors = ServerFactory.getServer()
-					.findService("Catalina").findConnectors();
+			// Connector[] connectors = ServerFactory.getServer()
+			// .findService("Catalina").findConnectors();
+			MBeanServer mBeanServer = MBeanServerFactory.findMBeanServer(null)
+					.get(0);
+			ObjectName name = new ObjectName("Catalina", "type", "Server");
+			Server server = (Server) mBeanServer.getAttribute(name,
+					"managedResource");
+			Connector[] connectors = server.findService("Catalina")
+					.findConnectors();
+
 			for (int i = 0; i < connectors.length; i++) {
 				if ("HTTP/1.1".equals(connectors[i].getProtocol())) {
 					port = connectors[i].getPort();
