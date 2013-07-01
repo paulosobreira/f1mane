@@ -1,5 +1,6 @@
 package sowbreira.f1mane.visao;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -11,11 +12,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -149,8 +160,102 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void desenhaMenuCorridaSelecao(Graphics2D g2d) {
-		// TODO Auto-generated method stub
-		
+		if (!MENU.equals(MENU_CORRIDA)) {
+			return;
+		}
+		int centerX = 50;
+		int centerY = 100;
+
+		String circuitoStr = (String) controleJogo.getCircuitos().get(
+				"Interlagos");
+
+		desenhaMiniCircuito(circuitoStr, g2d, centerX, centerY);
+	}
+
+	protected void desenhaMiniCircuito(String circuitoStr, Graphics2D g2d,
+			int x, int y) {
+		g2d.setStroke(new BasicStroke(3.0f));
+		g2d.setColor(Color.BLACK);
+		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
+		ObjectInputStream ois;
+		Circuito circuito = null;
+		try {
+			ois = new ObjectInputStream(carregadorRecursos.getClass()
+					.getResourceAsStream(circuitoStr));
+			circuito = (Circuito) ois.readObject();
+			circuito.vetorizarPista();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		List pista = circuito.getPista();
+		ArrayList pistaMinimizada = new ArrayList();
+		double doubleMulti = 25;
+		Map map = new HashMap();
+		for (Iterator iterator = pista.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point p = new Point(no.getX(), no.getY());
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			p.x += x;
+			p.y += y;
+			if (!pistaMinimizada.contains(p)) {
+				map.put(p, no);
+				pistaMinimizada.add(p);
+			}
+
+		}
+		Point o = new Point(10, 10);
+		Point oldP = null;
+		No ultNo = null;
+		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			if (oldP != null) {
+				No no = (No) map.get(oldP);
+				if (no.verificaCruvaBaixa()) {
+					g2d.setColor(Color.red);
+				} else if (no.verificaCruvaAlta()) {
+					g2d.setColor(Color.orange);
+				} else if (no.verificaRetaOuLargada()) {
+					g2d.setColor(new Color(0, 200, 0));
+				}
+				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
+			}
+			oldP = p;
+			ultNo = (No) map.get(oldP);
+		}
+		Point p0 = (Point) pistaMinimizada.get(0);
+		if (ultNo.verificaCruvaBaixa()) {
+			g2d.setColor(Color.red);
+		} else if (ultNo.verificaCruvaAlta()) {
+			g2d.setColor(Color.orange);
+		} else if (ultNo.verificaRetaOuLargada()) {
+			g2d.setColor(new Color(0, 200, 0));
+		}
+		g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p0.x, o.y + p0.y);
+
+		ArrayList boxMinimizado = new ArrayList();
+		List box = circuito.getBox();
+		for (Iterator iterator = box.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point p = new Point(no.getX(), no.getY());
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			p.x += x;
+			p.y += y;
+			if (!boxMinimizado.contains(p))
+				boxMinimizado.add(p);
+		}
+		g2d.setStroke(new BasicStroke(2.0f));
+		oldP = null;
+		g2d.setColor(Color.lightGray);
+		for (Iterator iterator = boxMinimizado.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			if (oldP != null) {
+				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
+			}
+			oldP = p;
+		}
 	}
 
 	private void setarHints(Graphics2D g2d) {
