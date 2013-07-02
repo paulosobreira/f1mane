@@ -548,7 +548,7 @@ public class PainelCampeonato extends JPanel {
 					return Lang.msg("264");
 					// Voltas
 				case 4:
-					return Lang.msg("159");
+					return Lang.msg("voltas");
 					// MElhor
 				case 5:
 					return Lang.msg("278");
