@@ -68,7 +68,7 @@ import br.nnpe.Util;
  */
 public class PainelCircuito extends JPanel {
 
-	public static boolean carregaBkg = false;
+	public static boolean carregaBkg = true;
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
@@ -212,6 +212,8 @@ public class PainelCircuito extends JPanel {
 	private BufferedImage pneuChuvaImg;
 	private BufferedImage setaCarroCima;
 	private BufferedImage setaCarroBaixo;
+	private BufferedImage setaCarroEsquerda;
+	private BufferedImage setaCarroDireita;	
 	private BufferedImage gridCarro;
 	private BufferedImage scimg;
 	private BufferedImage scima;

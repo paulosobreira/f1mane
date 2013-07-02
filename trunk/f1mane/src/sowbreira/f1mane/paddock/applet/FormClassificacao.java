@@ -246,7 +246,7 @@ public class FormClassificacao extends JPanel {
 			case 6:
 				return Lang.msg("158");
 			case 7:
-				return Lang.msg("159");
+				return Lang.msg("voltas");
 			case 8:
 				return Lang.msg("160");
 			case 9:
