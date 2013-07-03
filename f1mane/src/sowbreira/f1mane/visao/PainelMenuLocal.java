@@ -10,6 +10,7 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -53,6 +54,8 @@ public class PainelMenuLocal extends JPanel {
 	private String MENU = MENU_PRINCIPAL;
 
 	public final static Color lightWhite = new Color(200, 200, 200, 100);
+
+	public final static Color lightWhite2 = new Color(255, 255, 255, 160);
 
 	public final static Color yel = new Color(255, 255, 0, 150);
 
@@ -141,6 +144,8 @@ public class PainelMenuLocal extends JPanel {
 
 	private String nivelSelecionado = InterfaceJogo.NORMAL;
 
+	private Piloto pilotoSelecionado;
+
 	private boolean kers = true;
 
 	private boolean drs = true;
@@ -161,6 +166,8 @@ public class PainelMenuLocal extends JPanel {
 	private BufferedImage nublado;
 	private List temporadas;
 	private Map circuitosPilotos;
+
+	private List<RoundRectangle2D> pilotosRect;
 
 	public PainelMenuLocal(MainFrame mainFrame, InterfaceJogo controleJogo) {
 		this.mainFrame = mainFrame;
@@ -218,6 +225,11 @@ public class PainelMenuLocal extends JPanel {
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 		temporadas = carregadorRecursos.getVectorTemps();
 		Collections.reverse(temporadas);
+		pilotosRect = new ArrayList<RoundRectangle2D>();
+		for (int i = 0; i < 24; i++) {
+			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 10, 10));
+		}
+
 	}
 
 	protected void processaClick(MouseEvent e) {
@@ -335,14 +347,20 @@ public class PainelMenuLocal extends JPanel {
 			selecionaProximaTemporada();
 		}
 		if (anteTemporada.contains(e.getPoint())) {
-			selecionaPistaTemporada();
+			selecionaAnteTemporada();
 		}
-
+		for (int i = 0; i < 24; i++) {
+			if (pilotosRect.get(i).contains(e.getPoint())) {
+				String temporada = "t" + temporadaSelecionada;
+				List pilotos = litasPilotosTemporada(temporada);
+				pilotoSelecionado = (Piloto) pilotos.get(i);
+			}
+		}
 		repaint();
-
 	}
 
-	private void selecionaPistaTemporada() {
+	private void selecionaAnteTemporada() {
+		removePilotosRect();
 		Object objectAnt = null;
 		for (int i = temporadas.size() - 1; i > -1; i--) {
 			Object object = (Object) temporadas.get(i);
@@ -357,6 +375,7 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void selecionaProximaTemporada() {
+		removePilotosRect();
 		Object objectAnt = null;
 		for (Iterator iterator = temporadas.iterator(); iterator.hasNext();) {
 			Object object = (Object) iterator.next();
@@ -367,6 +386,13 @@ public class PainelMenuLocal extends JPanel {
 			}
 			objectAnt = object;
 		}
+	}
+
+	private void removePilotosRect() {
+		for (int i = 0; i < 24; i++) {
+			pilotosRect.get(i).setFrame(0, 0, 1, 1);
+		}
+		pilotoSelecionado = null;
 	}
 
 	private void menosTurbulencia() {
@@ -464,7 +490,7 @@ public class PainelMenuLocal extends JPanel {
 		int y = (int) (getHeight() / 2);
 
 		x -= 490;
-		y -= 280;
+		y -= 285;
 
 		desenhaSeletorCircuito(g2d, x, y);
 
@@ -478,7 +504,7 @@ public class PainelMenuLocal extends JPanel {
 
 		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 460);
 
-		desenhaTemporadas(g2d, x + 560, y);
+		desenhaTemporadas(g2d, x + 580, y);
 
 	}
 
@@ -514,9 +540,36 @@ public class PainelMenuLocal extends JPanel {
 		x += 40;
 		x -= (80 + larguraTexto);
 		g2d.setFont(fontOri);
+		String temporada = "t" + temporadaSelecionada;
+		List pilotos = litasPilotosTemporada(temporada);
+		y += 8;
+		if (pilotoSelecionado == null) {
+			pilotoSelecionado = (Piloto) pilotos.get(0);
+		}
+		for (int i = 0; i < pilotos.size(); i++) {
+			Piloto piloto = (Piloto) pilotos.get(i);
+			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);
+			controleJogo.setTemporada(temporada);
+			BufferedImage capacete = controleJogo.obterCapacete(piloto);
+			int novoY = y + i * 24;
+			if (i % 2 == 0) {
+				g2d.drawImage(imageCarro, x - 100, novoY, null);
+				if (capacete != null)
+					g2d.drawImage(capacete, x - 150, novoY, null);
+				desenhaNomePiloto(g2d, x - 80, novoY + 35, i, piloto);
+			} else {
+				g2d.drawImage(imageCarro, x + 100, novoY, null);
+				if (capacete != null)
+					g2d.drawImage(capacete, x + 290, novoY, null);
+				desenhaNomePiloto(g2d, x + 120, novoY + 35, i, piloto);
+			}
 
-		List pilotos = new ArrayList((Collection) circuitosPilotos.get("t"
-				+ temporadaSelecionada));
+		}
+	}
+
+	private List litasPilotosTemporada(String temporada) {
+		List pilotos = new ArrayList(
+				(Collection) circuitosPilotos.get(temporada));
 		Collections.sort(pilotos, new Comparator() {
 
 			@Override
@@ -529,17 +582,27 @@ public class PainelMenuLocal extends JPanel {
 			}
 
 		});
-		y += 15;
-		for (int i = 0; i < pilotos.size(); i++) {
-			Piloto piloto = (Piloto) pilotos.get(i);
-			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);
-			if (i % 2 == 0) {
-				g2d.drawImage(imageCarro, x - 100, y + i * 23, null);
-			} else {
-				g2d.drawImage(imageCarro, x + 100, y + i * 23, null);
-			}
+		return pilotos;
+	}
 
+	private void desenhaNomePiloto(Graphics2D g2d, int x, int y, int i,
+			Piloto piloto) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
+		RoundRectangle2D pilotoRect = pilotosRect.get(i);
+		String nmPilotoStr = (piloto.getNome() + " " + piloto.getCarro()
+				.getNome()).toUpperCase();
+		int tamNmPiloto = Util.calculaLarguraText(nmPilotoStr, g2d);
+		pilotoRect.setFrame(x - 15, y, tamNmPiloto + 10, 18);
+		g2d.setColor(lightWhite2);
+		g2d.fill(pilotoRect);
+		if (piloto.equals(pilotoSelecionado)) {
+			g2d.setColor(yel);
+			g2d.draw(pilotoRect);
 		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(nmPilotoStr, x - 10, y + 15);
+		g2d.setFont(fontOri);
 	}
 
 	private void desenhaDrsKersPneusReabastecimento(Graphics2D g2d, int x, int y) {
