@@ -7,38 +7,37 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-
-import br.nnpe.GeoUtil;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
-import br.nnpe.OcilaCor;
 import br.nnpe.Util;
 
 public class PainelMenuLocal extends JPanel {
@@ -73,6 +72,12 @@ public class PainelMenuLocal extends JPanel {
 
 	private RoundRectangle2D antePista = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
+
+	private RoundRectangle2D proxTemporada = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
+
+	private RoundRectangle2D anteTemporada = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
 
 	private RoundRectangle2D pistaRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
@@ -126,6 +131,8 @@ public class PainelMenuLocal extends JPanel {
 
 	private String circuitoSelecionado = null;
 
+	private String temporadaSelecionada = null;
+
 	private int numVoltasSelecionado = 12;
 
 	private int turbulenciaSelecionado = 250;
@@ -142,6 +149,8 @@ public class PainelMenuLocal extends JPanel {
 
 	private boolean reabasteciemto = false;
 
+	private CarregadorRecursos carregadorRecursos;
+
 	private BufferedImage setaCarroCima;
 	private BufferedImage setaCarroBaixo;
 	private BufferedImage setaCarroEsquerda;
@@ -150,6 +159,8 @@ public class PainelMenuLocal extends JPanel {
 	private BufferedImage sol;
 	private BufferedImage chuva;
 	private BufferedImage nublado;
+	private List temporadas;
+	private Map circuitosPilotos;
 
 	public PainelMenuLocal(MainFrame mainFrame, InterfaceJogo controleJogo) {
 		this.mainFrame = mainFrame;
@@ -202,6 +213,11 @@ public class PainelMenuLocal extends JPanel {
 				"clima/nublado.gif", null);
 		chuva = CarregadorRecursos.carregaBufferedImageTransparecia(
 				"clima/chuva.gif", null);
+
+		carregadorRecursos = new CarregadorRecursos(true);
+		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
+		temporadas = carregadorRecursos.getVectorTemps();
+		Collections.reverse(temporadas);
 	}
 
 	protected void processaClick(MouseEvent e) {
@@ -285,7 +301,6 @@ public class PainelMenuLocal extends JPanel {
 		if (chuvaRect.contains(e.getPoint())) {
 			climaSelecionado = Clima.CHUVA;
 		}
-
 		if (facilRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.FACIL;
 		}
@@ -295,14 +310,12 @@ public class PainelMenuLocal extends JPanel {
 		if (dificilRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.DIFICIL;
 		}
-
 		if (maisTurbulenciaRect.contains(e.getPoint())) {
 			maisTurbulencia();
 		}
 		if (menosTurbulenciaRect.contains(e.getPoint())) {
 			menosTurbulencia();
 		}
-
 		if (drsRect.contains(e.getPoint())) {
 			drs = !drs;
 		}
@@ -318,9 +331,42 @@ public class PainelMenuLocal extends JPanel {
 		if (reabasteciemtoRect.contains(e.getPoint())) {
 			reabasteciemto = !reabasteciemto;
 		}
+		if (proxTemporada.contains(e.getPoint())) {
+			selecionaProximaTemporada();
+		}
+		if (anteTemporada.contains(e.getPoint())) {
+			selecionaPistaTemporada();
+		}
 
 		repaint();
 
+	}
+
+	private void selecionaPistaTemporada() {
+		Object objectAnt = null;
+		for (int i = temporadas.size() - 1; i > -1; i--) {
+			Object object = (Object) temporadas.get(i);
+			if (temporadaSelecionada != null
+					&& temporadaSelecionada.equals(objectAnt)) {
+				temporadaSelecionada = (String) object;
+				break;
+			}
+			objectAnt = object;
+
+		}
+	}
+
+	private void selecionaProximaTemporada() {
+		Object objectAnt = null;
+		for (Iterator iterator = temporadas.iterator(); iterator.hasNext();) {
+			Object object = (Object) iterator.next();
+			if (temporadaSelecionada != null
+					&& temporadaSelecionada.equals(objectAnt)) {
+				temporadaSelecionada = (String) object;
+				break;
+			}
+			objectAnt = object;
+		}
 	}
 
 	private void menosTurbulencia() {
@@ -404,12 +450,13 @@ public class PainelMenuLocal extends JPanel {
 			desenhaMenuPrincipalSelecao(g2d);
 			desenhaMenuCorridaSelecao(g2d);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Logger.logarExept(e);
 		}
 
 	}
 
-	private void desenhaMenuCorridaSelecao(Graphics2D g2d) {
+	private void desenhaMenuCorridaSelecao(Graphics2D g2d) throws Exception {
 		if (!MENU.equals(MENU_CORRIDA)) {
 			return;
 		}
@@ -431,6 +478,68 @@ public class PainelMenuLocal extends JPanel {
 
 		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 460);
 
+		desenhaTemporadas(g2d, x + 560, y);
+
+	}
+
+	private void desenhaTemporadas(Graphics2D g2d, int x, int y)
+			throws IOException {
+		g2d.setColor(lightWhite);
+		anteTemporada.setFrame(x, y - 25, 30, 30);
+		g2d.fill(anteTemporada);
+		g2d.drawImage(setaCarroEsquerda, x - 15, y - 55, null);
+		x += 40;
+
+		if (temporadaSelecionada == null) {
+			temporadaSelecionada = (String) temporadas
+					.get(temporadas.size() - 1);
+		}
+
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = temporadaSelecionada.replaceAll("\\*", "");
+		int larguraTexto = 120;
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt.toUpperCase(),
+				x + (130 - Util.larguraTexto(txt, g2d)) / 2, y);
+
+		x += larguraTexto + 30;
+
+		g2d.setColor(lightWhite);
+		proxTemporada.setFrame(x, y - 25, 30, 30);
+		g2d.fill(proxTemporada);
+		g2d.drawImage(setaCarroDireita, x - 45, y - 52, null);
+		x += 40;
+		x -= (80 + larguraTexto);
+		g2d.setFont(fontOri);
+
+		List pilotos = new ArrayList((Collection) circuitosPilotos.get("t"
+				+ temporadaSelecionada));
+		Collections.sort(pilotos, new Comparator() {
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				Piloto p1 = (Piloto) o1;
+				Piloto p2 = (Piloto) o2;
+
+				return new Integer(p2.getCarro().getPotenciaReal())
+						.compareTo(new Integer(p1.getCarro().getPotenciaReal()));
+			}
+
+		});
+		y += 15;
+		for (int i = 0; i < pilotos.size(); i++) {
+			Piloto piloto = (Piloto) pilotos.get(i);
+			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);
+			if (i % 2 == 0) {
+				g2d.drawImage(imageCarro, x - 100, y + i * 23, null);
+			} else {
+				g2d.drawImage(imageCarro, x + 100, y + i * 23, null);
+			}
+
+		}
 	}
 
 	private void desenhaDrsKersPneusReabastecimento(Graphics2D g2d, int x, int y) {
@@ -673,14 +782,15 @@ public class PainelMenuLocal extends JPanel {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 		String txt = circuitoSelecionado;
-		int larguraTexto = 350;// Util.larguraTexto(txt, g2d);
-		pistaRect.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
+		int larguraTexto = 350;
+		pistaRect.setFrame(centerX, centerY - 25, larguraTexto + 20, 30);
 		g2d.setColor(lightWhite);
 		g2d.fill(pistaRect);
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(txt.toUpperCase(), centerX + 5, centerY);
+		g2d.drawString(txt.toUpperCase(),
+				centerX + (320 - Util.larguraTexto(txt, g2d)) / 2, centerY);
 
-		centerX += larguraTexto + 20;
+		centerX += larguraTexto + 30;
 
 		g2d.setColor(lightWhite);
 		proxPista.setFrame(centerX, centerY - 25, 30, 30);
