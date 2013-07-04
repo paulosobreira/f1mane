@@ -276,15 +276,17 @@ public abstract class ControleRecursos {
 	public ControleRecursos(String temporada) throws Exception {
 		if (temporada != null) {
 			this.seasson = temporada;
-		} else {
-			this.seasson = "t2009";
 		}
+		carregarPilotosCarros();
+		carregarTemporadasTransp();
+		carregarCircuitos();
+	}
+
+	public void carregarPilotosCarros() throws IOException {
 		carregadorRecursos = new CarregadorRecursos(true);
 		carros = carregadorRecursos.carregarListaCarros(seasson);
 		pilotos = carregadorRecursos.carregarListaPilotos(seasson);
 		carregadorRecursos.ligarPilotosCarros(pilotos, carros);
-		carregarTemporadasTransp();
-		carregarCircuitos();
 	}
 
 	public void carregaRecursos(String circuitoStr) throws Exception {

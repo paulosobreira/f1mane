@@ -213,7 +213,7 @@ public class PainelCircuito extends JPanel {
 	private BufferedImage setaCarroCima;
 	private BufferedImage setaCarroBaixo;
 	private BufferedImage setaCarroEsquerda;
-	private BufferedImage setaCarroDireita;	
+	private BufferedImage setaCarroDireita;
 	private BufferedImage gridCarro;
 	private BufferedImage scimg;
 	private BufferedImage scima;

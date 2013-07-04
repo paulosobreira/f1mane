@@ -339,4 +339,11 @@ public interface InterfaceJogo {
 
 	public List<NoWrapper> getBoxWrapperFull();
 
+	public void iniciarJogoMenuLocal(String circuitoSelecionado,
+			String temporadaSelecionada, int numVoltasSelecionado,
+			int turbulenciaSelecionado, String climaSelecionado,
+			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+			boolean drs, boolean trocaPneus, boolean reabasteciemto)
+			throws Exception;
+
 }

@@ -48,6 +48,8 @@ public class PainelMenuLocal extends JPanel {
 
 	public static String MENU_CORRIDA = "MENU_CORRIDA";
 
+	public static String MENU_QUALIFICACAO = "MENU_QUALIFICACAO";
+
 	private MainFrame mainFrame;
 	private InterfaceJogo controleJogo;
 
@@ -58,6 +60,8 @@ public class PainelMenuLocal extends JPanel {
 	public final static Color lightWhite2 = new Color(255, 255, 255, 160);
 
 	public final static Color yel = new Color(255, 255, 0, 150);
+
+	public final static Color blu = new Color(105, 105, 105, 40);
 
 	private RoundRectangle2D corrida = new RoundRectangle2D.Double(0, 0, 1, 1,
 			10, 10);
@@ -129,6 +133,12 @@ public class PainelMenuLocal extends JPanel {
 
 	private RoundRectangle2D reabasteciemtoRect = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 10, 10);
+
+	private RoundRectangle2D proximoMenuRect = new RoundRectangle2D.Double(0,
+			0, 1, 1, 10, 10);
+
+	private RoundRectangle2D anteriroMenuRct = new RoundRectangle2D.Double(0,
+			0, 1, 1, 10, 10);
 
 	private Object selecionado = null;
 
@@ -229,6 +239,50 @@ public class PainelMenuLocal extends JPanel {
 		for (int i = 0; i < 24; i++) {
 			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 10, 10));
 		}
+
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		try {
+			Graphics2D g2d = (Graphics2D) g;
+			setarHints(g2d);
+			if (PainelCircuito.carregaBkg) {
+				if (MENU.equals(MENU_PRINCIPAL))
+					bg = ImageUtil.gerarFade(CarregadorRecursos
+							.carregaBufferedImage("bg-monaco.png"), 25);
+				if (MENU.equals(MENU_CORRIDA))
+					bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
+			}
+			if (bg != null) {
+				int centerX = getWidth() / 2;
+				int centerY = getHeight() / 2;
+				int bgX = bg.getWidth() / 2;
+				int bgY = bg.getHeight() / 2;
+				g.drawImage(bg, centerX - bgX, centerY - bgY, null);
+			}
+			desenhaMenuPrincipalSelecao(g2d);
+			desenhaMenuCorridaSelecao(g2d);
+			desenhaMenuQualificacao(g2d);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Logger.logarExept(e);
+		}
+
+	}
+
+	private void desenhaMenuQualificacao(Graphics2D g2d) {
+		if (!MENU.equals(MENU_QUALIFICACAO)) {
+			return;
+		}
+		int x = (int) (getWidth() / 2);
+		int y = (int) (getHeight() / 2);
+
+		x -= 490;
+		y -= 285;
+
+		desenhaAnteriroProximo(g2d, x + 250, y + 600);
 
 	}
 
@@ -356,7 +410,45 @@ public class PainelMenuLocal extends JPanel {
 				pilotoSelecionado = (Piloto) pilotos.get(i);
 			}
 		}
+		if (proximoMenuRect.contains(e.getPoint())) {
+			selecionaProximoMenu();
+		}
+		if (anteriroMenuRct.contains(e.getPoint())) {
+			selecionaAnteMenu();
+		}
+
 		repaint();
+	}
+
+	private void selecionaAnteMenu() {
+		if (MENU.equals(MENU_CORRIDA)) {
+			MENU = MENU_PRINCIPAL;
+		}
+	}
+
+	private void selecionaProximoMenu() {
+		if (MENU.equals(MENU_CORRIDA)) {
+			MENU = MENU_QUALIFICACAO;
+			return;
+		}
+		if (MENU.equals(MENU_QUALIFICACAO)) {
+			try {
+				if (mainFrame.verificaCriarJogo()) {
+					controleJogo = mainFrame.getControleJogo();
+					controleJogo.setMainFrame(mainFrame);
+
+					controleJogo.iniciarJogoMenuLocal(circuitoSelecionado,
+							temporadaSelecionada, numVoltasSelecionado,
+							turbulenciaSelecionado, climaSelecionado,
+							nivelSelecionado, pilotoSelecionado, kers, drs,
+							trocaPneus, reabasteciemto);
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				Logger.logarExept(e1);
+			}
+			return;
+		}
 	}
 
 	private void selecionaAnteTemporada() {
@@ -453,35 +545,6 @@ public class PainelMenuLocal extends JPanel {
 
 	}
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		try {
-			Graphics2D g2d = (Graphics2D) g;
-			setarHints(g2d);
-			if (PainelCircuito.carregaBkg) {
-				if (MENU.equals(MENU_PRINCIPAL))
-					bg = ImageUtil.gerarFade(CarregadorRecursos
-							.carregaBufferedImage("bg-monaco.png"), 25);
-				if (MENU.equals(MENU_CORRIDA))
-					bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
-			}
-			if (bg != null) {
-				int centerX = getWidth() / 2;
-				int centerY = getHeight() / 2;
-				int bgX = bg.getWidth() / 2;
-				int bgY = bg.getHeight() / 2;
-				g.drawImage(bg, centerX - bgX, centerY - bgY, null);
-			}
-			desenhaMenuPrincipalSelecao(g2d);
-			desenhaMenuCorridaSelecao(g2d);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Logger.logarExept(e);
-		}
-
-	}
-
 	private void desenhaMenuCorridaSelecao(Graphics2D g2d) throws Exception {
 		if (!MENU.equals(MENU_CORRIDA)) {
 			return;
@@ -494,18 +557,41 @@ public class PainelMenuLocal extends JPanel {
 
 		desenhaSeletorCircuito(g2d, x, y);
 
-		desenhaSeletorNumeroVoltas(g2d, x + 80, y + 220);
+		desenhaClima(g2d, x + 40, y + 200);
 
-		desenhaClima(g2d, x + 90, y + 280);
+		desenhaSeletorNumeroVoltas(g2d, x + 40, y + 280);
 
-		desenhaNivelCorrida(g2d, x + 40, y + 340);
+		desenhaTurbulencia(g2d, x + 40, y + 340);
 
-		desenhaTurbulencia(g2d, x + 60, y + 400);
+		desenhaNivelCorrida(g2d, x + 40, y + 400);
 
 		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 460);
 
 		desenhaTemporadas(g2d, x + 580, y);
 
+		desenhaAnteriroProximo(g2d, x + 250, y + 600);
+
+	}
+
+	private void desenhaAnteriroProximo(Graphics2D g2d, int x, int y) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 24));
+		String anteriorTxt = Lang.msg("anterior").toUpperCase();
+		int larguraTexto = Util.larguraTexto(anteriorTxt, g2d);
+		anteriroMenuRct.setFrame(x, y - 25, larguraTexto + 10, 30);
+		g2d.setColor(lightWhite);
+		g2d.fill(anteriroMenuRct);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(anteriorTxt, x, y);
+		x += (larguraTexto + 40);
+		String proximoTxt = Lang.msg("proximo").toUpperCase();
+		larguraTexto = Util.larguraTexto(proximoTxt, g2d);
+		proximoMenuRect.setFrame(x, y - 25, larguraTexto + 10, 30);
+		g2d.setColor(lightWhite);
+		g2d.fill(proximoMenuRect);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(proximoTxt, x, y);
+		g2d.setFont(fontOri);
 	}
 
 	private void desenhaTemporadas(Graphics2D g2d, int x, int y)
@@ -684,7 +770,7 @@ public class PainelMenuLocal extends JPanel {
 
 		x += 20;
 
-		String turbulencia = Lang.msg("turbulencia");
+		String turbulencia = Lang.msg("turbulencia").toUpperCase();
 		int tamTurbulencia = Util.calculaLarguraText(turbulencia, g2d) + 10;
 		g2d.setColor(lightWhite);
 		g2d.fillRoundRect(x - 15, y - 12, tamTurbulencia, 32, 10, 10);
@@ -695,6 +781,8 @@ public class PainelMenuLocal extends JPanel {
 				/ 100;
 		g2d.setColor(yel);
 		g2d.drawRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 10, 10);
+		g2d.setColor(blu);
+		g2d.fillRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 10, 10);
 
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(turbulencia, x - 10, y + 15);
@@ -806,8 +894,8 @@ public class PainelMenuLocal extends JPanel {
 
 		x += 20;
 
-		String numVoltasStr = "" + numVoltasSelecionado + " "
-				+ Lang.msg("voltas");
+		String numVoltasStr = (numVoltasSelecionado + " " + Lang.msg("voltas"))
+				.toUpperCase();
 		int tamVoltas = Util.calculaLarguraText(numVoltasStr, g2d);
 		numVoltasRect.setFrame(x - 15, y - 12, tamVoltas + 10, 32);
 		g2d.setColor(lightWhite);
