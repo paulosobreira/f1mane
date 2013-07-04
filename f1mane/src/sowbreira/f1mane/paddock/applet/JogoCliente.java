@@ -577,9 +577,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					piloto.setTracado(posis.tracado);
 					if (piloto.getIndiceTracado() <= 0
 							&& piloto.getTracado() != piloto.getTracadoAntigo()) {
-						piloto
-								.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-										.getMultiplicadorLarguraPista()));
+						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+								.getMultiplicadorLarguraPista()));
 					}
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -1175,6 +1174,16 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void ativaVerControles() {
 		if (gerenciadorVisual != null)
 			gerenciadorVisual.ativaVerControles();
+	}
+
+	@Override
+	public void iniciarJogoMenuLocal(String circuitoSelecionado,
+			String temporadaSelecionada, int numVoltasSelecionado,
+			int turbulenciaSelecionado, String climaSelecionado,
+			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+			boolean drs, boolean trocaPneus, boolean reabasteciemto) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

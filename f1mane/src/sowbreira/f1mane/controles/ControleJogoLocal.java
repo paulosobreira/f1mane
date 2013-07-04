@@ -24,6 +24,7 @@ import sowbreira.f1mane.paddock.servlet.JogoServidor;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
+import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
@@ -614,6 +615,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return controleCorrida.getIndexVelcidadeDaPista();
 	}
 
+	@Override
+	public void iniciarJogo() throws Exception {
+		iniciarJogo(null);
+	}
+
 	/**
 	 * @param campeonato
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#iniciarJogoSingle()
@@ -627,8 +633,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
 			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
-					gerenciadorVisual.getListaPilotosCombo(), gerenciadorVisual
-							.getListaCarrosCombo());
+					gerenciadorVisual.getListaPilotosCombo(),
+					gerenciadorVisual.getListaCarrosCombo());
 			this.nivelCorrida = Lang.key(gerenciadorVisual
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			setarNivelCorrida();
@@ -648,9 +654,43 @@ public class ControleJogoLocal extends ControleRecursos implements
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
 		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
 				+ porcentagemChuvaCircuito(circuitoSelecionado));
-		Logger
-				.logar("porcentagemChuvaCircuito() "
-						+ porcentagemChuvaCircuito());
+		Logger.logar("porcentagemChuvaCircuito() " + porcentagemChuvaCircuito());
+	}
+
+	@Override
+	public void iniciarJogoMenuLocal(String circuitoSelecionado,
+			String temporadaSelecionada, int numVoltasSelecionado,
+			int turbulenciaSelecionado, String climaSelecionado,
+			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+			boolean drs, boolean trocaPneus, boolean reabasteciemto)
+			throws Exception {
+
+		qtdeVoltas = new Integer(numVoltasSelecionado);
+
+		diffultrapassagem = new Integer(turbulenciaSelecionado);
+		tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
+				+ Constantes.MIN_CICLO / 2);
+		this.circuitoSelecionado = circuitoSelecionado;
+		semReabastacimento = reabasteciemto;
+		semTrocaPneu = trocaPneus;
+		this.kers = kers;
+		this.drs = drs;
+		setTemporada("t" + temporadaSelecionada);
+		this.nivelCorrida = nivelSelecionado;
+		carregarPilotosCarros();
+		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
+		setarNivelCorrida();
+		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
+				diffultrapassagem.intValue(), tempoCiclo.intValue());
+		controleCorrida.getControleClima().gerarClimaInicial(
+				new Clima(climaSelecionado));
+		controleCorrida.gerarGridLargadaSemQualificacao();
+		gerenciadorVisual.iniciarInterfaceGraficaJogo();
+		controleCorrida.iniciarCorrida();
+		if (controleCampeonato != null) {
+			controleCampeonato.iniciaCorrida(circuitoSelecionado);
+		}
+		controleEstatisticas.inicializarThreadConsumidoraInfo(500);
 	}
 
 	/**
@@ -926,11 +966,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void verificaProgramacaoBox() {
 		gerenciadorVisual.verificaProgramacaoBox();
 
-	}
-
-	@Override
-	public void iniciarJogo() throws Exception {
-		iniciarJogo(null);
 	}
 
 	@Override
