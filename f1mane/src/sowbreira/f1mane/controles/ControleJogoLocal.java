@@ -71,20 +71,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public static void main(String[] args) {
-		// for (int i = 0; i < 100; i++) {
-		// if (i % 10 == 0) {
-		// System.out.println(i);
-		// }
-		//
-		// }
-
-		for (int i = 0; i < 100; i += 6) {
-			System.out.println(i);
-		}
-
-		int teste = 5;
-		System.out.println(++teste);
-		System.out.println(teste);
+		System.out.println(Constantes.MAX_CICLO / 2 + Constantes.MIN_CICLO / 2);
 	}
 
 	public ControleJogoLocal() throws Exception {
@@ -664,22 +651,29 @@ public class ControleJogoLocal extends ControleRecursos implements
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
 			boolean drs, boolean trocaPneus, boolean reabasteciemto)
 			throws Exception {
-
-		qtdeVoltas = new Integer(numVoltasSelecionado);
-
-		diffultrapassagem = new Integer(turbulenciaSelecionado);
-		tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
+		this.qtdeVoltas = new Integer(numVoltasSelecionado);
+		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
+		this.tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
 				+ Constantes.MIN_CICLO / 2);
+		this.semReabastacimento = reabasteciemto;
+		this.semTrocaPneu = trocaPneus;
 		this.circuitoSelecionado = circuitoSelecionado;
-		semReabastacimento = reabasteciemto;
-		semTrocaPneu = trocaPneus;
 		this.kers = kers;
 		this.drs = drs;
-		setTemporada("t" + temporadaSelecionada);
 		this.nivelCorrida = nivelSelecionado;
+		setTemporada("t" + temporadaSelecionada);
 		carregarPilotosCarros();
 		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
 		setarNivelCorrida();
+		List<Piloto> pilotosList = getPilotos();
+		for (Iterator iterator = pilotosList.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (piloto.equals(pilotoSelecionado)) {
+				efetuarSelecaoPilotoJogador(piloto, Carro.TIPO_PNEU_MOLE,
+						new Integer(50), "F1-Mane", Carro.ASA_NORMAL);
+				break;
+			}
+		}
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 				diffultrapassagem.intValue(), tempoCiclo.intValue());
 		controleCorrida.getControleClima().gerarClimaInicial(
@@ -687,9 +681,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 		controleCorrida.gerarGridLargadaSemQualificacao();
 		gerenciadorVisual.iniciarInterfaceGraficaJogo();
 		controleCorrida.iniciarCorrida();
-		if (controleCampeonato != null) {
-			controleCampeonato.iniciaCorrida(circuitoSelecionado);
-		}
 		controleEstatisticas.inicializarThreadConsumidoraInfo(500);
 	}
 
