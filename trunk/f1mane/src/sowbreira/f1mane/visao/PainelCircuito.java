@@ -72,6 +72,7 @@ public class PainelCircuito extends JPanel {
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
+	private long ultCentralizada;
 	private static final long serialVersionUID = -5268795362549996148L;
 	private InterfaceJogo controleJogo;
 	private GerenciadorVisual gerenciadorVisual;
@@ -3199,6 +3200,12 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public void centralizarPonto(Point pin) {
+		if (ultCentralizada == 0) {
+			ultCentralizada = System.currentTimeMillis();
+		}
+		// System.out.println("Intervalo centralizarPonto "
+		// + (System.currentTimeMillis() - ultCentralizada));
+		ultCentralizada = System.currentTimeMillis();
 		final JScrollPane scrollPane = gerenciadorVisual.getScrollPane();
 		limitesViewPort = (Rectangle) limitesViewPort;
 		if (limitesViewPort == null)

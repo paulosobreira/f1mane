@@ -10,7 +10,6 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -28,9 +27,12 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
+
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
@@ -63,28 +65,28 @@ public class PainelMenuLocal extends JPanel {
 
 	public final static Color blu = new Color(105, 105, 105, 40);
 
-	private RoundRectangle2D corrida = new RoundRectangle2D.Double(0, 0, 1, 1,
-			10, 10);
-	private RoundRectangle2D campeonato = new RoundRectangle2D.Double(0, 0, 1,
+	private RoundRectangle2D corridaRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
+	private RoundRectangle2D campeonatoRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
 
-	private RoundRectangle2D continuaCampeonato = new RoundRectangle2D.Double(
+	private RoundRectangle2D continuaCampeonatoRect = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 10, 10);
 
-	private RoundRectangle2D sobre = new RoundRectangle2D.Double(0, 0, 1, 1,
-			10, 10);
-
-	private RoundRectangle2D proxPista = new RoundRectangle2D.Double(0, 0, 1,
+	private RoundRectangle2D sobreRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
 
-	private RoundRectangle2D antePista = new RoundRectangle2D.Double(0, 0, 1,
-			1, 10, 10);
-
-	private RoundRectangle2D proxTemporada = new RoundRectangle2D.Double(0, 0,
+	private RoundRectangle2D proxPistaRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
 
-	private RoundRectangle2D anteTemporada = new RoundRectangle2D.Double(0, 0,
+	private RoundRectangle2D antePistaRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
+
+	private RoundRectangle2D proxTemporadaRect = new RoundRectangle2D.Double(0,
+			0, 1, 1, 10, 10);
+
+	private RoundRectangle2D anteTemporadaRect = new RoundRectangle2D.Double(0,
+			0, 1, 1, 10, 10);
 
 	private RoundRectangle2D pistaRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
@@ -140,8 +142,6 @@ public class PainelMenuLocal extends JPanel {
 	private RoundRectangle2D anteriroMenuRct = new RoundRectangle2D.Double(0,
 			0, 1, 1, 10, 10);
 
-	private Object selecionado = null;
-
 	private String circuitoSelecionado = null;
 
 	private String temporadaSelecionada = null;
@@ -185,6 +185,7 @@ public class PainelMenuLocal extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				processaClick(e);
+				repaint();
 				super.mouseClicked(e);
 			}
 		});
@@ -287,34 +288,11 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	protected void processaClick(MouseEvent e) {
-		if (MENU.equals(MENU_PRINCIPAL) && corrida.contains(e.getPoint())) {
-			selecionado = corrida;
+		if (MENU.equals(MENU_PRINCIPAL) && corridaRect.contains(e.getPoint())) {
 			MENU = MENU_CORRIDA;
+			return;
 		}
-		if (MENU.equals(MENU_PRINCIPAL) && campeonato.contains(e.getPoint())) {
-			selecionado = campeonato;
-		}
-		if (MENU.equals(MENU_PRINCIPAL)
-				&& continuaCampeonato.contains(e.getPoint())) {
-			selecionado = continuaCampeonato;
-		}
-		if (MENU.equals(MENU_PRINCIPAL) && sobre.contains(e.getPoint())) {
-			selecionado = sobre;
-		}
-
-		if (corrida.equals(selecionado)) {
-			try {
-				if (mainFrame.verificaCriarJogo()) {
-					controleJogo = mainFrame.getControleJogo();
-					controleJogo.setMainFrame(mainFrame);
-					// controleJogo.iniciarJogo();
-				}
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				Logger.logarExept(e1);
-			}
-		}
-		if (campeonato.equals(selecionado)) {
+		if (campeonatoRect.contains(e.getPoint())) {
 			try {
 				if (mainFrame.verificaCriarJogo()) {
 					controleJogo = mainFrame.getControleJogo();
@@ -325,8 +303,9 @@ public class PainelMenuLocal extends JPanel {
 				e1.printStackTrace();
 				Logger.logarExept(e1);
 			}
+			return;
 		}
-		if (continuaCampeonato.equals(selecionado)) {
+		if (continuaCampeonatoRect.contains(e.getPoint())) {
 			try {
 				if (mainFrame.verificaCriarJogo()) {
 					controleJogo = mainFrame.getControleJogo();
@@ -337,96 +316,156 @@ public class PainelMenuLocal extends JPanel {
 				e1.printStackTrace();
 				Logger.logarExept(e1);
 			}
+			return;
 		}
-		if (sobre.equals(selecionado)) {
+		if (sobreRect.contains(e.getPoint())) {
 			try {
 				mainFrame.mostraSobre();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				Logger.logarExept(e1);
 			}
+			return;
 		}
-		if (proxPista.contains(e.getPoint())) {
+
+		if (proxPistaRect.contains(e.getPoint())) {
 			selecionaProximaPista();
+			return;
 		}
-		if (antePista.contains(e.getPoint())) {
+		if (antePistaRect.contains(e.getPoint())) {
 			selecionaPistaAnterior();
+			return;
 		}
 		if (maisVoltasRect.contains(e.getPoint())) {
 			maisVoltas();
+			return;
 		}
 		if (menosVoltasRect.contains(e.getPoint())) {
 			menosVoltas();
+			return;
 		}
 		if (solRect.contains(e.getPoint())) {
 			climaSelecionado = Clima.SOL;
+			return;
 		}
 		if (nubladoRect.contains(e.getPoint())) {
 			climaSelecionado = Clima.NUBLADO;
+			return;
 		}
 		if (chuvaRect.contains(e.getPoint())) {
 			climaSelecionado = Clima.CHUVA;
+			return;
 		}
 		if (facilRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.FACIL;
+			return;
 		}
 		if (normalRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.NORMAL;
+			return;
 		}
 		if (dificilRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.DIFICIL;
+			return;
 		}
 		if (maisTurbulenciaRect.contains(e.getPoint())) {
 			maisTurbulencia();
+			return;
 		}
 		if (menosTurbulenciaRect.contains(e.getPoint())) {
 			menosTurbulencia();
+			return;
 		}
 		if (drsRect.contains(e.getPoint())) {
 			drs = !drs;
+			return;
 		}
 
 		if (kersRect.contains(e.getPoint())) {
 			kers = !kers;
+			return;
 		}
 
 		if (trocaPneusRect.contains(e.getPoint())) {
 			trocaPneus = !trocaPneus;
+			return;
 		}
 
 		if (reabasteciemtoRect.contains(e.getPoint())) {
 			reabasteciemto = !reabasteciemto;
+			return;
 		}
-		if (proxTemporada.contains(e.getPoint())) {
+		if (proxTemporadaRect.contains(e.getPoint())) {
 			selecionaProximaTemporada();
+			return;
 		}
-		if (anteTemporada.contains(e.getPoint())) {
+		if (anteTemporadaRect.contains(e.getPoint())) {
 			selecionaAnteTemporada();
+			return;
 		}
+		if (proximoMenuRect.contains(e.getPoint())) {
+			selecionaProximoMenu();
+			return;
+		}
+		if (anteriroMenuRct.contains(e.getPoint())) {
+			selecionaAnteMenu();
+			return;
+		}
+
 		for (int i = 0; i < 24; i++) {
 			if (pilotosRect.get(i).contains(e.getPoint())) {
 				String temporada = "t" + temporadaSelecionada;
 				List pilotos = litasPilotosTemporada(temporada);
 				pilotoSelecionado = (Piloto) pilotos.get(i);
+				return;
 			}
 		}
-		if (proximoMenuRect.contains(e.getPoint())) {
-			selecionaProximoMenu();
-		}
-		if (anteriroMenuRct.contains(e.getPoint())) {
-			selecionaAnteMenu();
-		}
 
-		repaint();
 	}
 
 	private void selecionaAnteMenu() {
+		resetaRects();
 		if (MENU.equals(MENU_CORRIDA)) {
 			MENU = MENU_PRINCIPAL;
+			return;
+		}
+		if (MENU.equals(MENU_QUALIFICACAO)) {
+			MENU = MENU_CORRIDA;
+			return;
 		}
 	}
 
+	public static void main(String[] args) throws IOException, Exception {
+		PainelMenuLocal local = new PainelMenuLocal(new MainFrame(null, null),
+				new ControleJogoLocal());
+		local.resetaRects();
+	}
+
+	private void resetaRects() {
+		try {
+			Map mapVo = BeanUtils.describe(this);
+			for (Iterator iter = mapVo.keySet().iterator(); iter.hasNext();) {
+				String propriedade = (String) iter.next();
+
+				if (mapVo.keySet().contains(propriedade)) {
+					Class propriedadeTipo = PropertyUtils.getPropertyType(this,
+							propriedade);
+					Object property = PropertyUtils.getProperty(this,
+							propriedade);
+					if (RoundRectangle2D.class.equals(propriedadeTipo)) {
+						RoundRectangle2D rectangle2d = (RoundRectangle2D) property;
+						rectangle2d.setFrame(0, 0, 1, 1);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	private void selecionaProximoMenu() {
+		resetaRects();
 		if (MENU.equals(MENU_CORRIDA)) {
 			MENU = MENU_QUALIFICACAO;
 			return;
@@ -597,8 +636,8 @@ public class PainelMenuLocal extends JPanel {
 	private void desenhaTemporadas(Graphics2D g2d, int x, int y)
 			throws IOException {
 		g2d.setColor(lightWhite);
-		anteTemporada.setFrame(x, y - 25, 30, 30);
-		g2d.fill(anteTemporada);
+		anteTemporadaRect.setFrame(x, y - 25, 30, 30);
+		g2d.fill(anteTemporadaRect);
 		g2d.drawImage(setaCarroEsquerda, x - 15, y - 55, null);
 		x += 40;
 
@@ -620,8 +659,8 @@ public class PainelMenuLocal extends JPanel {
 		x += larguraTexto + 30;
 
 		g2d.setColor(lightWhite);
-		proxTemporada.setFrame(x, y - 25, 30, 30);
-		g2d.fill(proxTemporada);
+		proxTemporadaRect.setFrame(x, y - 25, 30, 30);
+		g2d.fill(proxTemporadaRect);
 		g2d.drawImage(setaCarroDireita, x - 45, y - 52, null);
 		x += 40;
 		x -= (80 + larguraTexto);
@@ -639,14 +678,18 @@ public class PainelMenuLocal extends JPanel {
 			BufferedImage capacete = controleJogo.obterCapacete(piloto);
 			int novoY = y + i * 24;
 			if (i % 2 == 0) {
-				g2d.drawImage(imageCarro, x - 100, novoY, null);
-				if (capacete != null)
-					g2d.drawImage(capacete, x - 150, novoY, null);
+				if (PainelCircuito.desenhaImagens) {
+					g2d.drawImage(imageCarro, x - 100, novoY, null);
+					if (capacete != null)
+						g2d.drawImage(capacete, x - 150, novoY, null);
+				}
 				desenhaNomePiloto(g2d, x - 80, novoY + 35, i, piloto);
 			} else {
-				g2d.drawImage(imageCarro, x + 100, novoY, null);
-				if (capacete != null)
-					g2d.drawImage(capacete, x + 290, novoY, null);
+				if (PainelCircuito.desenhaImagens) {
+					g2d.drawImage(imageCarro, x + 100, novoY, null);
+					if (capacete != null)
+						g2d.drawImage(capacete, x + 290, novoY, null);
+				}
 				desenhaNomePiloto(g2d, x + 120, novoY + 35, i, piloto);
 			}
 
@@ -918,8 +961,8 @@ public class PainelMenuLocal extends JPanel {
 
 	private void desenhaSeletorCircuito(Graphics2D g2d, int centerX, int centerY) {
 		g2d.setColor(lightWhite);
-		antePista.setFrame(centerX, centerY - 25, 30, 30);
-		g2d.fill(antePista);
+		antePistaRect.setFrame(centerX, centerY - 25, 30, 30);
+		g2d.fill(antePistaRect);
 		g2d.drawImage(setaCarroEsquerda, centerX - 15, centerY - 55, null);
 		centerX += 40;
 
@@ -944,8 +987,8 @@ public class PainelMenuLocal extends JPanel {
 		centerX += larguraTexto + 30;
 
 		g2d.setColor(lightWhite);
-		proxPista.setFrame(centerX, centerY - 25, 30, 30);
-		g2d.fill(proxPista);
+		proxPistaRect.setFrame(centerX, centerY - 25, 30, 30);
+		g2d.fill(proxPistaRect);
 		g2d.drawImage(setaCarroDireita, centerX - 45, centerY - 52, null);
 		centerX += 40;
 		centerX -= (80 + larguraTexto);
@@ -1065,12 +1108,8 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setColor(lightWhite);
 		String txt = Lang.msg("corrida").toUpperCase();
 		int larguraTexto = Util.larguraTexto(txt, g2d);
-		corrida.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
-		g2d.fill(corrida);
-		if (corrida.equals(selecionado)) {
-			g2d.setColor(yel);
-			g2d.draw(corrida);
-		}
+		corridaRect.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
+		g2d.fill(corridaRect);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(txt, centerX + 5, centerY);
 
@@ -1079,12 +1118,8 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setColor(lightWhite);
 		txt = Lang.msg("campeonato").toUpperCase();
 		larguraTexto = Util.larguraTexto(txt, g2d);
-		campeonato.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
-		g2d.fill(campeonato);
-		if (campeonato.equals(selecionado)) {
-			g2d.setColor(yel);
-			g2d.draw(campeonato);
-		}
+		campeonatoRect.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
+		g2d.fill(campeonatoRect);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(txt, centerX + 5, centerY);
 
@@ -1093,13 +1128,9 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setColor(lightWhite);
 		txt = Lang.msg("continuaCampeonato").toUpperCase();
 		larguraTexto = Util.larguraTexto(txt, g2d);
-		continuaCampeonato.setFrame(centerX, centerY - 25, larguraTexto + 10,
-				30);
-		g2d.fill(continuaCampeonato);
-		if (continuaCampeonato.equals(selecionado)) {
-			g2d.setColor(yel);
-			g2d.draw(continuaCampeonato);
-		}
+		continuaCampeonatoRect.setFrame(centerX, centerY - 25,
+				larguraTexto + 10, 30);
+		g2d.fill(continuaCampeonatoRect);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(txt, centerX + 5, centerY);
 
@@ -1108,15 +1139,229 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setColor(lightWhite);
 		txt = Lang.msg("sobre").toUpperCase();
 		larguraTexto = Util.larguraTexto(txt, g2d);
-		sobre.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
-		g2d.fill(sobre);
-		if (sobre.equals(selecionado)) {
-			g2d.setColor(yel);
-			g2d.draw(sobre);
-		}
+		sobreRect.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
+		g2d.fill(sobreRect);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(txt, centerX + 5, centerY);
 
 		g2d.setFont(fontOri);
 	}
+
+	public RoundRectangle2D getCorridaRect() {
+		return corridaRect;
+	}
+
+	public void setCorridaRect(RoundRectangle2D corridaRect) {
+		this.corridaRect = corridaRect;
+	}
+
+	public RoundRectangle2D getCampeonatoRect() {
+		return campeonatoRect;
+	}
+
+	public void setCampeonatoRect(RoundRectangle2D campeonatoRect) {
+		this.campeonatoRect = campeonatoRect;
+	}
+
+	public RoundRectangle2D getContinuaCampeonatoRect() {
+		return continuaCampeonatoRect;
+	}
+
+	public void setContinuaCampeonatoRect(
+			RoundRectangle2D continuaCampeonatoRect) {
+		this.continuaCampeonatoRect = continuaCampeonatoRect;
+	}
+
+	public RoundRectangle2D getSobreRect() {
+		return sobreRect;
+	}
+
+	public void setSobreRect(RoundRectangle2D sobreRect) {
+		this.sobreRect = sobreRect;
+	}
+
+	public RoundRectangle2D getProxPistaRect() {
+		return proxPistaRect;
+	}
+
+	public void setProxPistaRect(RoundRectangle2D proxPistaRect) {
+		this.proxPistaRect = proxPistaRect;
+	}
+
+	public RoundRectangle2D getAntePistaRect() {
+		return antePistaRect;
+	}
+
+	public void setAntePistaRect(RoundRectangle2D antePistaRect) {
+		this.antePistaRect = antePistaRect;
+	}
+
+	public RoundRectangle2D getProxTemporadaRect() {
+		return proxTemporadaRect;
+	}
+
+	public void setProxTemporadaRect(RoundRectangle2D proxTemporadaRect) {
+		this.proxTemporadaRect = proxTemporadaRect;
+	}
+
+	public RoundRectangle2D getAnteTemporadaRect() {
+		return anteTemporadaRect;
+	}
+
+	public void setAnteTemporadaRect(RoundRectangle2D anteTemporadaRect) {
+		this.anteTemporadaRect = anteTemporadaRect;
+	}
+
+	public RoundRectangle2D getPistaRect() {
+		return pistaRect;
+	}
+
+	public void setPistaRect(RoundRectangle2D pistaRect) {
+		this.pistaRect = pistaRect;
+	}
+
+	public RoundRectangle2D getMenosVoltasRect() {
+		return menosVoltasRect;
+	}
+
+	public void setMenosVoltasRect(RoundRectangle2D menosVoltasRect) {
+		this.menosVoltasRect = menosVoltasRect;
+	}
+
+	public RoundRectangle2D getMaisVoltasRect() {
+		return maisVoltasRect;
+	}
+
+	public void setMaisVoltasRect(RoundRectangle2D maisVoltasRect) {
+		this.maisVoltasRect = maisVoltasRect;
+	}
+
+	public RoundRectangle2D getMenosTurbulenciaRect() {
+		return menosTurbulenciaRect;
+	}
+
+	public void setMenosTurbulenciaRect(RoundRectangle2D menosTurbulenciaRect) {
+		this.menosTurbulenciaRect = menosTurbulenciaRect;
+	}
+
+	public RoundRectangle2D getMaisTurbulenciaRect() {
+		return maisTurbulenciaRect;
+	}
+
+	public void setMaisTurbulenciaRect(RoundRectangle2D maisTurbulenciaRect) {
+		this.maisTurbulenciaRect = maisTurbulenciaRect;
+	}
+
+	public RoundRectangle2D getNumVoltasRect() {
+		return numVoltasRect;
+	}
+
+	public void setNumVoltasRect(RoundRectangle2D numVoltasRect) {
+		this.numVoltasRect = numVoltasRect;
+	}
+
+	public RoundRectangle2D getSolRect() {
+		return solRect;
+	}
+
+	public void setSolRect(RoundRectangle2D solRect) {
+		this.solRect = solRect;
+	}
+
+	public RoundRectangle2D getChuvaRect() {
+		return chuvaRect;
+	}
+
+	public void setChuvaRect(RoundRectangle2D chuvaRect) {
+		this.chuvaRect = chuvaRect;
+	}
+
+	public RoundRectangle2D getNubladoRect() {
+		return nubladoRect;
+	}
+
+	public void setNubladoRect(RoundRectangle2D nubladoRect) {
+		this.nubladoRect = nubladoRect;
+	}
+
+	public RoundRectangle2D getFacilRect() {
+		return facilRect;
+	}
+
+	public void setFacilRect(RoundRectangle2D facilRect) {
+		this.facilRect = facilRect;
+	}
+
+	public RoundRectangle2D getNormalRect() {
+		return normalRect;
+	}
+
+	public void setNormalRect(RoundRectangle2D normalRect) {
+		this.normalRect = normalRect;
+	}
+
+	public RoundRectangle2D getDificilRect() {
+		return dificilRect;
+	}
+
+	public void setDificilRect(RoundRectangle2D dificilRect) {
+		this.dificilRect = dificilRect;
+	}
+
+	public RoundRectangle2D getDrsRect() {
+		return drsRect;
+	}
+
+	public void setDrsRect(RoundRectangle2D drsRect) {
+		this.drsRect = drsRect;
+	}
+
+	public RoundRectangle2D getKersRect() {
+		return kersRect;
+	}
+
+	public void setKersRect(RoundRectangle2D kersRect) {
+		this.kersRect = kersRect;
+	}
+
+	public RoundRectangle2D getTrocaPneusRect() {
+		return trocaPneusRect;
+	}
+
+	public void setTrocaPneusRect(RoundRectangle2D trocaPneusRect) {
+		this.trocaPneusRect = trocaPneusRect;
+	}
+
+	public RoundRectangle2D getReabasteciemtoRect() {
+		return reabasteciemtoRect;
+	}
+
+	public void setReabasteciemtoRect(RoundRectangle2D reabasteciemtoRect) {
+		this.reabasteciemtoRect = reabasteciemtoRect;
+	}
+
+	public RoundRectangle2D getProximoMenuRect() {
+		return proximoMenuRect;
+	}
+
+	public void setProximoMenuRect(RoundRectangle2D proximoMenuRect) {
+		this.proximoMenuRect = proximoMenuRect;
+	}
+
+	public RoundRectangle2D getAnteriroMenuRct() {
+		return anteriroMenuRct;
+	}
+
+	public void setAnteriroMenuRct(RoundRectangle2D anteriroMenuRct) {
+		this.anteriroMenuRct = anteriroMenuRct;
+	}
+
+	public List<RoundRectangle2D> getPilotosRect() {
+		return pilotosRect;
+	}
+
+	public void setPilotosRect(List<RoundRectangle2D> pilotosRect) {
+		this.pilotosRect = pilotosRect;
+	}
+
 }

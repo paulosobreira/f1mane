@@ -301,6 +301,13 @@ public abstract class ControleRecursos {
 		if (carros != null) {
 			this.carros = carros;
 		}
+		mapaIdsNos.clear();
+		mapaNosIds.clear();
+		idsNoPista.clear();
+		idsNoBox.clear();
+		pistaWrapperFull.clear();
+		boxWrapperFull.clear();
+		mapaNoProxCurva.clear();
 		ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
 				.getClass().getResourceAsStream(circuitoStr));
 
