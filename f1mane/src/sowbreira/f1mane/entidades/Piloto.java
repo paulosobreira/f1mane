@@ -1691,7 +1691,7 @@ public class Piloto implements Serializable {
 		Point p = noAtual.getPoint();
 		int carx = p.x;
 		int cary = p.y;
-		int meiaEnvergadura = 22;
+		int meiaEnvergadura = 26;
 		int traz = cont - meiaEnvergadura;
 		int frente = cont + meiaEnvergadura;
 		if (traz < 0) {
