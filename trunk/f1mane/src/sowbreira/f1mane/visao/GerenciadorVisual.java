@@ -333,9 +333,8 @@ public class GerenciadorVisual {
 
 							piloto.setGanhoSuave(ganhoSuave);
 							double defCic = controleJogo.getTempoCiclo() - 70;
-//							int ganhoMax = 15 - Util.inte(Math
-//									.round((defCic / 14)));
-							int ganhoMax = 3;
+							int ganhoMax = 11 - Util.inte(Math
+									.round((defCic / 14)));
 							if (ganhoSuave > ganhoMax) {
 								ganhoSuave = ganhoMax;
 							}
@@ -361,8 +360,8 @@ public class GerenciadorVisual {
 								}
 							}
 							int index = noAtualSuave.getIndex() + ganhoSuave;
-							if (piloto.isJogadorHumano())
-								System.out.println("ganhoSuave" + ganhoSuave);
+//							if (piloto.isJogadorHumano())
+//								System.out.println("ganhoSuave" + ganhoSuave);
 							if (saiuBox) {
 								index = saidaBoxIndex;
 							}
@@ -385,15 +384,15 @@ public class GerenciadorVisual {
 							}
 							if (!entrandoBox && !saindoBox
 									&& (diff < 0 || diff > 500)) {
-								System.out.println("diff < 0 || diff > 500 "
-										+ diff);
+//								System.out.println("diff < 0 || diff > 500 "
+//										+ diff);
 								noAtualSuave = noAtual;
 							}
 						}
 						piloto.setNoAtualSuave(noAtualSuave);
 					}
 					try {
-						Thread.sleep(5);
+						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						alive = false;
 						e.printStackTrace();
