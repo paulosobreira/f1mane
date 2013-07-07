@@ -1258,8 +1258,17 @@ public class Piloto implements Serializable {
 				}
 
 				double minMulti = 0.7;
-				if (controleJogo.isChovendo()) {
+				if (!controleJogo.isModoQualify()
+						&& (controleJogo.isChovendo() || controleJogo
+								.getNumVoltaAtual() <= 1)) {
 					minMulti -= 0.2;
+				}
+				if (controleJogo
+						.calculaDiffParaProximoRetardatario(this, false) < 200) {
+					minMulti -= 0.1;
+				} else if (controleJogo.calculaDiffParaProximoRetardatario(
+						this, true) < 100) {
+					minMulti -= 0.1;
 				}
 				if (retardaFreiandoReta) {
 					minMulti += (testPilotoPneus) ? 0.2 : 0.1;
@@ -1983,18 +1992,24 @@ public class Piloto implements Serializable {
 		if (controleJogo.isModoQualify()) {
 			return ganho;
 		}
-		double size = 15;
+		double size = 14;
 		if (!controleJogo.isChovendo() && acelerando) {
-			size = 7;
+			size = 9;
 		}
 
 		if (listGanho.size() > size) {
 			listGanho.remove(0);
 		}
-		listGanho.add(ganho);
 		if (colisao) {
-			return ganho;
+			if (!noAtual.verificaRetaOuLargada()) {
+				listGanho.clear();
+				return ganho;
+			}
+			while (listGanho.size() > 4) {
+				listGanho.remove(0);
+			}
 		}
+		listGanho.add(ganho);
 		double soma = 0;
 		for (Iterator iterator = listGanho.iterator(); iterator.hasNext();) {
 			Double val = (Double) iterator.next();

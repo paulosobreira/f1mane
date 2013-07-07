@@ -283,7 +283,7 @@ public class PainelMenuLocal extends JPanel {
 		x -= 490;
 		y -= 285;
 
-		desenhaAnteriroProximo(g2d, x + 250, y + 600);
+		desenhaAnteriroProximo(g2d, x + 350, y + 600);
 
 	}
 
@@ -608,7 +608,7 @@ public class PainelMenuLocal extends JPanel {
 
 		desenhaTemporadas(g2d, x + 580, y);
 
-		desenhaAnteriroProximo(g2d, x + 250, y + 600);
+		desenhaAnteriroProximo(g2d, x + 150, y + 600);
 
 	}
 
