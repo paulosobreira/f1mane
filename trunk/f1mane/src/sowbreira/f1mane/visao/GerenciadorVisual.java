@@ -383,7 +383,7 @@ public class GerenciadorVisual {
 								noAtualSuave = nos.get(index);
 							}
 							if (!entrandoBox && !saindoBox
-									&& (diff < 0 || diff > 500)) {
+									&& (diff < 0 || diff > 600)) {
 //								System.out.println("diff < 0 || diff > 500 "
 //										+ diff);
 								noAtualSuave = noAtual;
@@ -392,7 +392,7 @@ public class GerenciadorVisual {
 						piloto.setNoAtualSuave(noAtualSuave);
 					}
 					try {
-						Thread.sleep(10);
+						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						alive = false;
 						e.printStackTrace();

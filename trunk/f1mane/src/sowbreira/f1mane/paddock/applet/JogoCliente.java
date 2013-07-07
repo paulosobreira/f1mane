@@ -1186,4 +1186,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public boolean verificaPistaEmborrachada() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -346,4 +346,6 @@ public interface InterfaceJogo {
 			boolean drs, boolean trocaPneus, boolean reabasteciemto)
 			throws Exception;
 
+	public boolean verificaPistaEmborrachada();
+
 }

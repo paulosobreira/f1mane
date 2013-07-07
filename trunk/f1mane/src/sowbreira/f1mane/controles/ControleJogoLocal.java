@@ -655,8 +655,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
 		this.tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
 				+ Constantes.MIN_CICLO / 2);
-		this.semReabastacimento = reabasteciemto;
-		this.semTrocaPneu = trocaPneus;
+		this.semReabastacimento = !reabasteciemto;
+		this.semTrocaPneu = !trocaPneus;
 		this.circuitoSelecionado = circuitoSelecionado;
 		this.kers = kers;
 		this.drs = drs;
@@ -1378,6 +1378,19 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void ativaVerControles() {
 		if (gerenciadorVisual != null)
 			gerenciadorVisual.ativaVerControles();
+	}
+
+	public boolean verificaPistaEmborrachada() {
+		double indicativoEmborrachamentoPista = .85;
+		if (!isChovendo()) {
+			double emborrachamento = porcentagemCorridaCompletada() / 200.0;
+			if (emborrachamento > .4) {
+				emborrachamento = .4;
+			}
+			indicativoEmborrachamentoPista -= emborrachamento;
+		}
+		return Math.random() > 0.5
+				|| Math.random() > indicativoEmborrachamentoPista;
 	}
 
 }

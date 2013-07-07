@@ -3262,6 +3262,14 @@ public class PainelCircuito extends JPanel {
 			repaint();
 		} else {
 			try {
+				// SwingUtilities.invokeLater(new Runnable() {
+				// @Override
+				// public void run() {
+				// repaint();
+				// scrollPane.getViewport().setViewPosition(newP);
+				// }
+				// });
+
 				SwingUtilities.invokeAndWait(new Runnable() {
 					@Override
 					public void run() {
