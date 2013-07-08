@@ -285,6 +285,28 @@ public class PainelMenuLocal extends JPanel {
 
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
 
+		x += 350;
+		if (circuitoSelecionado == null) {
+			circuitoSelecionado = (String) controleJogo.getCircuitos().keySet()
+					.iterator().next();
+		}
+		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
+				circuitoSelecionado);
+
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = circuitoSelecionado;
+		int larguraTexto = 350;
+		pistaRect.setFrame(x, y - 25, larguraTexto + 20, 30);
+		g2d.setColor(lightWhite);
+		g2d.fill(pistaRect);
+		g2d.setColor(Color.BLACK);
+		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
+		g2d.drawString(txt.toUpperCase(), x + incX, y);
+		incX = (250 - Util.larguraTexto(txt, g2d)) / 2;
+		desenhaMiniCircuito(nmCircuitoMRO, g2d, x + incX, y);
+		g2d.setFont(fontOri);
+
 	}
 
 	protected void processaClick(MouseEvent e) {
@@ -981,8 +1003,10 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setColor(lightWhite);
 		g2d.fill(pistaRect);
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(txt.toUpperCase(),
-				centerX + (320 - Util.larguraTexto(txt, g2d)) / 2, centerY);
+		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
+		g2d.drawString(txt.toUpperCase(), centerX + incX, centerY);
+		incX = (250 - Util.larguraTexto(txt, g2d)) / 2;
+		desenhaMiniCircuito(nmCircuitoMRO, g2d, centerX + incX, centerY);
 
 		centerX += larguraTexto + 30;
 
@@ -990,10 +1014,8 @@ public class PainelMenuLocal extends JPanel {
 		proxPistaRect.setFrame(centerX, centerY - 25, 30, 30);
 		g2d.fill(proxPistaRect);
 		g2d.drawImage(setaCarroDireita, centerX - 45, centerY - 52, null);
-		centerX += 40;
-		centerX -= (80 + larguraTexto);
-		desenhaMiniCircuito(nmCircuitoMRO, g2d, centerX, centerY);
 		g2d.setFont(fontOri);
+
 	}
 
 	protected void desenhaMiniCircuito(String circuitoStr, Graphics2D g2d,
