@@ -2656,7 +2656,8 @@ public class PainelCircuito extends JPanel {
 			if (piloto.getNoAtual().verificaCruvaBaixa())
 				calculaAngulo += Util.intervalo(-12.0, 12.0);
 		}
-		if (piloto.getTracado() == 4 || piloto.getTracado() == 5) {
+		if ((piloto.getTracado() == 4 || piloto.getTracado() == 5)
+				&& Math.random() > 0.7) {
 			calculaAngulo += Util.intervalo(-15, 15);
 		}
 		return calculaAngulo;
