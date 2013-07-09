@@ -1253,7 +1253,6 @@ public class Piloto implements Serializable {
 
 				if (!retardaFreiandoReta
 						&& Piloto.AGRESSIVO.equals(getModoPilotagem())) {
-					controleJogo.travouRodas(this);
 					retardaFreiandoReta = true;
 				}
 
@@ -1262,15 +1261,22 @@ public class Piloto implements Serializable {
 						&& (controleJogo.isChovendo() || controleJogo
 								.getNumVoltaAtual() <= 1)) {
 					minMulti -= 0.2;
+					retardaFreiandoReta = false;
 				}
-				if (controleJogo
-						.calculaDiffParaProximoRetardatario(this, false) < 200) {
-					minMulti -= 0.1;
+				if (controleJogo.calculaDiffParaProximoRetardatario(this, false) < 50) {
+					minMulti -= Util.intervalo(0.05, 0.15);
+					retardaFreiandoReta = false;
 				} else if (controleJogo.calculaDiffParaProximoRetardatario(
 						this, true) < 100) {
 					minMulti -= 0.1;
+					retardaFreiandoReta = false;
+				} else if (controleJogo.calculaDiffParaProximoRetardatario(
+						this, true) < 150) {
+					minMulti -= Util.intervalo(0.05, 0.1);
+					retardaFreiandoReta = false;
 				}
 				if (retardaFreiandoReta) {
+					controleJogo.travouRodas(this);
 					minMulti += (testPilotoPneus) ? 0.2 : 0.1;
 				}
 				if (multi < minMulti)

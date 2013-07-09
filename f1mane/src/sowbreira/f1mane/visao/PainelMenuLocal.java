@@ -285,7 +285,78 @@ public class PainelMenuLocal extends JPanel {
 
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
 
-		x += 350;
+		desenhaCircuitoSelecionado(g2d, x + 350, y);
+
+		desenhaTemporadaPilotoSelecionado(g2d, x + 350, y + 230);
+
+	}
+
+	private void desenhaTemporadaPilotoSelecionado(Graphics2D g2d, int x, int y) {
+		BufferedImage imageCarro = controleJogo
+				.obterCarroLado(pilotoSelecionado);
+		String temporada = "t" + temporadaSelecionada;
+		controleJogo.setTemporada(temporada);
+		BufferedImage capacete = controleJogo.obterCapacete(pilotoSelecionado);
+
+		x += 40;
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = temporadaSelecionada.replaceAll("\\*", "");
+		int larguraTexto = 120;
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt.toUpperCase(),
+				x + (130 - Util.larguraTexto(txt, g2d)) / 2, y);
+
+		desenaImClimaSelecionado(g2d, x + larguraTexto + 30, y);
+
+		x -= 80;
+		y += 40;
+
+		txt = pilotoSelecionado.getCarro().getNome().toUpperCase();
+		larguraTexto = Util.larguraTexto(txt, g2d);
+		Color c = corRectPiloto(g2d, pilotoSelecionado, 1);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		corTxtPiloto(g2d, c);
+		g2d.drawString(txt, x + 10, y);
+
+		int xCarro = x + larguraTexto + 50;
+
+		g2d.drawImage(imageCarro, xCarro, y - 35, null);
+
+		y += 40;
+
+		txt = pilotoSelecionado.getNome().toUpperCase();
+		larguraTexto = Util.larguraTexto(txt, g2d);
+		c = corRectPiloto(g2d, pilotoSelecionado, 2);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		corTxtPiloto(g2d, c);
+		g2d.drawString(txt, x + 10, y);
+
+		if (capacete != null)
+			g2d.drawImage(capacete,
+					xCarro + imageCarro.getWidth() - capacete.getWidth(),
+					y - 35, null);
+
+		g2d.setFont(fontOri);
+	}
+
+	private void desenaImClimaSelecionado(Graphics2D g2d, int x, int y) {
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, 35, 30, 15, 15);
+		if (Clima.SOL.equals(climaSelecionado)) {
+			g2d.drawImage(sol, x, y - 25, null);
+		}
+		if (Clima.NUBLADO.equals(climaSelecionado)) {
+			g2d.drawImage(nublado, x, y - 25, null);
+		}
+		if (Clima.CHUVA.equals(climaSelecionado)) {
+			g2d.drawImage(chuva, x, y - 25, null);
+		}
+	}
+
+	private void desenhaCircuitoSelecionado(Graphics2D g2d, int x, int y) {
 		if (circuitoSelecionado == null) {
 			circuitoSelecionado = (String) controleJogo.getCircuitos().keySet()
 					.iterator().next();
@@ -303,15 +374,39 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setColor(Color.BLACK);
 		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
 		g2d.drawString(txt.toUpperCase(), x + incX, y);
-		incX = (250 - Util.larguraTexto(txt, g2d)) / 2;
-		desenhaMiniCircuito(nmCircuitoMRO, g2d, x + incX, y);
-		g2d.setFont(fontOri);
+		desenhaMiniCircuito(nmCircuitoMRO, g2d, x, y);
 
+		g2d.setFont(fontOri);
+	}
+
+	private void corTxtPiloto(Graphics2D g2d, Color c) {
+		int valor = (c.getRed() + c.getGreen() + c.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+	}
+
+	private Color corRectPiloto(Graphics2D g2d, Piloto ps, int i) {
+		Color c = null;
+		if (i == 2) {
+			c = ps.getCarro().getCor2();
+		}
+		if (i == 1) {
+			c = ps.getCarro().getCor1();
+		}
+		if (c != null) {
+			c = c.brighter();
+			g2d.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 200));
+		}
+		return c;
 	}
 
 	protected void processaClick(MouseEvent e) {
 		if (MENU.equals(MENU_PRINCIPAL) && corridaRect.contains(e.getPoint())) {
 			MENU = MENU_CORRIDA;
+			resetaRects();
 			return;
 		}
 		if (campeonatoRect.contains(e.getPoint())) {
@@ -480,6 +575,7 @@ public class PainelMenuLocal extends JPanel {
 					}
 				}
 			}
+			resetPilotosRect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -513,7 +609,8 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void selecionaAnteTemporada() {
-		removePilotosRect();
+		resetPilotosRect();
+		pilotoSelecionado = null;
 		Object objectAnt = null;
 		for (int i = temporadas.size() - 1; i > -1; i--) {
 			Object object = (Object) temporadas.get(i);
@@ -528,7 +625,8 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void selecionaProximaTemporada() {
-		removePilotosRect();
+		resetPilotosRect();
+		pilotoSelecionado = null;
 		Object objectAnt = null;
 		for (Iterator iterator = temporadas.iterator(); iterator.hasNext();) {
 			Object object = (Object) iterator.next();
@@ -541,11 +639,10 @@ public class PainelMenuLocal extends JPanel {
 		}
 	}
 
-	private void removePilotosRect() {
+	private void resetPilotosRect() {
 		for (int i = 0; i < 24; i++) {
 			pilotosRect.get(i).setFrame(0, 0, 1, 1);
 		}
-		pilotoSelecionado = null;
 	}
 
 	private void menosTurbulencia() {
@@ -745,13 +842,13 @@ public class PainelMenuLocal extends JPanel {
 				.getNome()).toUpperCase();
 		int tamNmPiloto = Util.calculaLarguraText(nmPilotoStr, g2d);
 		pilotoRect.setFrame(x - 15, y, tamNmPiloto + 10, 18);
-		g2d.setColor(lightWhite2);
+		Color c = corRectPiloto(g2d, piloto, 1);
 		g2d.fill(pilotoRect);
 		if (piloto.equals(pilotoSelecionado)) {
-			g2d.setColor(yel);
+			g2d.setColor(corRectPiloto(g2d, piloto, 2));
 			g2d.draw(pilotoRect);
 		}
-		g2d.setColor(Color.BLACK);
+		corTxtPiloto(g2d, c);
 		g2d.drawString(nmPilotoStr, x - 10, y + 15);
 		g2d.setFont(fontOri);
 	}
@@ -1005,8 +1102,7 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setColor(Color.BLACK);
 		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
 		g2d.drawString(txt.toUpperCase(), centerX + incX, centerY);
-		incX = (250 - Util.larguraTexto(txt, g2d)) / 2;
-		desenhaMiniCircuito(nmCircuitoMRO, g2d, centerX + incX, centerY);
+		desenhaMiniCircuito(nmCircuitoMRO, g2d, centerX, centerY);
 
 		centerX += larguraTexto + 30;
 
@@ -1020,6 +1116,8 @@ public class PainelMenuLocal extends JPanel {
 
 	protected void desenhaMiniCircuito(String circuitoStr, Graphics2D g2d,
 			int x, int y) {
+
+		int maxLagura = 0;
 		g2d.setStroke(new BasicStroke(3.0f));
 		g2d.setColor(Color.BLACK);
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
@@ -1043,14 +1141,32 @@ public class PainelMenuLocal extends JPanel {
 			Point p = new Point(no.getX(), no.getY());
 			p.x /= doubleMulti;
 			p.y /= doubleMulti;
-			p.x += x;
-			p.y += y;
+			if (p.x > maxLagura) {
+				maxLagura = p.x;
+			}
 			if (!pistaMinimizada.contains(p)) {
 				map.put(p, no);
 				pistaMinimizada.add(p);
 			}
 
 		}
+
+		ArrayList boxMinimizado = new ArrayList();
+		List box = circuito.getBox();
+		for (Iterator iterator = box.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point p = new Point(no.getX(), no.getY());
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			if (p.x > maxLagura) {
+				maxLagura = p.x;
+			}
+			if (!boxMinimizado.contains(p))
+				boxMinimizado.add(p);
+		}
+
+		int incX = (320 - maxLagura) / 2;
+
 		Point o = new Point(10, 10);
 		Point oldP = null;
 		No ultNo = null;
@@ -1065,7 +1181,8 @@ public class PainelMenuLocal extends JPanel {
 				} else if (no.verificaRetaOuLargada()) {
 					g2d.setColor(new Color(0, 200, 0));
 				}
-				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
+				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x
+						+ p.x + incX + x, o.y + p.y + y);
 			}
 			oldP = p;
 			ultNo = (No) map.get(oldP);
@@ -1078,27 +1195,17 @@ public class PainelMenuLocal extends JPanel {
 		} else if (ultNo.verificaRetaOuLargada()) {
 			g2d.setColor(new Color(0, 200, 0));
 		}
-		g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p0.x, o.y + p0.y);
+		g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x + p0.x
+				+ incX + x, o.y + p0.y + y);
 
-		ArrayList boxMinimizado = new ArrayList();
-		List box = circuito.getBox();
-		for (Iterator iterator = box.iterator(); iterator.hasNext();) {
-			No no = (No) iterator.next();
-			Point p = new Point(no.getX(), no.getY());
-			p.x /= doubleMulti;
-			p.y /= doubleMulti;
-			p.x += x;
-			p.y += y;
-			if (!boxMinimizado.contains(p))
-				boxMinimizado.add(p);
-		}
 		g2d.setStroke(new BasicStroke(2.0f));
 		oldP = null;
 		g2d.setColor(Color.lightGray);
 		for (Iterator iterator = boxMinimizado.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
-				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
+				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x
+						+ p.x + incX + x, o.y + p.y + y);
 			}
 			oldP = p;
 		}
