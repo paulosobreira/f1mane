@@ -100,7 +100,13 @@ public class PainelMenuLocal extends JPanel {
 	private RoundRectangle2D menosTurbulenciaRect = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 10, 10);
 
+	private RoundRectangle2D menosCombustivelRect = new RoundRectangle2D.Double(
+			0, 0, 1, 1, 10, 10);
+
 	private RoundRectangle2D maisTurbulenciaRect = new RoundRectangle2D.Double(
+			0, 0, 1, 1, 10, 10);
+
+	private RoundRectangle2D maisCombustivelRect = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 10, 10);
 
 	private RoundRectangle2D numVoltasRect = new RoundRectangle2D.Double(0, 0,
@@ -149,6 +155,8 @@ public class PainelMenuLocal extends JPanel {
 	private int numVoltasSelecionado = 12;
 
 	private int turbulenciaSelecionado = 250;
+
+	private int combustivelSelecionado = 75;
 
 	private String climaSelecionado = Clima.SOL;
 
@@ -288,6 +296,8 @@ public class PainelMenuLocal extends JPanel {
 		desenhaCircuitoSelecionado(g2d, x + 350, y);
 
 		desenhaTemporadaPilotoSelecionado(g2d, x + 350, y + 230);
+
+		desenhaCombustivel(g2d, x + 350, y + 350);
 
 	}
 
@@ -493,6 +503,16 @@ public class PainelMenuLocal extends JPanel {
 			menosTurbulencia();
 			return;
 		}
+
+		if (maisCombustivelRect.contains(e.getPoint())) {
+			maisCombustivel();
+			return;
+		}
+		if (menosCombustivelRect.contains(e.getPoint())) {
+			menosCombustivel();
+			return;
+		}
+
 		if (drsRect.contains(e.getPoint())) {
 			drs = !drs;
 			return;
@@ -536,6 +556,20 @@ public class PainelMenuLocal extends JPanel {
 				pilotoSelecionado = (Piloto) pilotos.get(i);
 				return;
 			}
+		}
+
+	}
+
+	private void menosCombustivel() {
+		if (combustivelSelecionado > 0) {
+			combustivelSelecionado -= 10;
+		}
+
+	}
+
+	private void maisCombustivel() {
+		if (combustivelSelecionado < 100) {
+			combustivelSelecionado += 10;
 		}
 
 	}
@@ -956,6 +990,50 @@ public class PainelMenuLocal extends JPanel {
 		maisTurbulenciaRect.setFrame(x - 17, y - 6, tamMais + 5, 22);
 		g2d.setColor(lightWhite);
 		g2d.fill(maisTurbulenciaRect);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(mais, x - 13, y + 16);
+
+		g2d.setFont(fontOri);
+	}
+
+	private void desenhaCombustivel(Graphics2D g2d, int x, int y) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+
+		String menos = "-";
+		int tamMenos = Util.calculaLarguraText(menos, g2d);
+		menosCombustivelRect.setFrame(x - 16, y - 6, tamMenos + 6, 22);
+		g2d.setColor(lightWhite);
+		g2d.fill(menosCombustivelRect);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(menos, x - 14, y + 15);
+
+		x += 20;
+
+		String combustivel = Lang.msg("combustivel").toUpperCase();
+		int tamCombustivel = Util.calculaLarguraText(combustivel, g2d) + 10;
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x - 15, y - 12, tamCombustivel, 32, 10, 10);
+
+		int porcetCombustivel = combustivelSelecionado;
+
+		int tamCombustivelSelecionado = porcetCombustivel * tamCombustivel
+				/ 100;
+		g2d.setColor(yel);
+		g2d.drawRoundRect(x - 15, y - 12, tamCombustivelSelecionado, 32, 10, 10);
+		g2d.setColor(blu);
+		g2d.fillRoundRect(x - 15, y - 12, tamCombustivelSelecionado, 32, 10, 10);
+
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(combustivel, x - 10, y + 15);
+
+		x += (tamCombustivel + 15);
+
+		String mais = "+";
+		int tamMais = Util.calculaLarguraText(mais, g2d);
+		maisCombustivelRect.setFrame(x - 17, y - 6, tamMais + 5, 22);
+		g2d.setColor(lightWhite);
+		g2d.fill(maisCombustivelRect);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(mais, x - 13, y + 16);
 
