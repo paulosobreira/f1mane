@@ -1,6 +1,5 @@
 package sowbreira.f1mane.controles;
 
-import java.awt.Component;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -343,8 +342,9 @@ public interface InterfaceJogo {
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabasteciemto)
-			throws Exception;
+			boolean drs, boolean trocaPneus, boolean reabasteciemto,
+			int combustivelSelecionado, String asaSelecionado,
+			String pneuSelecionado) throws Exception;
 
 	public boolean verificaPistaEmborrachada();
 

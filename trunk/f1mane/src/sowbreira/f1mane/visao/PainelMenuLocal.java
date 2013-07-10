@@ -33,6 +33,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
@@ -130,6 +131,24 @@ public class PainelMenuLocal extends JPanel {
 	private RoundRectangle2D dificilRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
 
+	private RoundRectangle2D pneuMoleRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
+
+	private RoundRectangle2D pneuDuroRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
+
+	private RoundRectangle2D pneuChuvaRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
+
+	private RoundRectangle2D maisAsaRect = new RoundRectangle2D.Double(0, 0, 1,
+			1, 10, 10);
+
+	private RoundRectangle2D normalAsaRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
+
+	private RoundRectangle2D menosAsaRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
+
 	private RoundRectangle2D drsRect = new RoundRectangle2D.Double(0, 0, 1, 1,
 			10, 10);
 
@@ -158,6 +177,10 @@ public class PainelMenuLocal extends JPanel {
 
 	private int combustivelSelecionado = 75;
 
+	private String asaSelecionado = Carro.ASA_NORMAL;
+
+	private String pneuSelecionado = Carro.TIPO_PNEU_MOLE;
+
 	private String climaSelecionado = Clima.SOL;
 
 	private String nivelSelecionado = InterfaceJogo.NORMAL;
@@ -172,6 +195,8 @@ public class PainelMenuLocal extends JPanel {
 
 	private boolean reabasteciemto = false;
 
+	private boolean desenhaCarregando = false;
+
 	private CarregadorRecursos carregadorRecursos;
 
 	private BufferedImage setaCarroCima;
@@ -182,6 +207,11 @@ public class PainelMenuLocal extends JPanel {
 	private BufferedImage sol;
 	private BufferedImage chuva;
 	private BufferedImage nublado;
+
+	private BufferedImage pneuMoleImg;
+	private BufferedImage pneuDuroImg;
+	private BufferedImage pneuChuvaImg;
+
 	private List temporadas;
 	private Map circuitosPilotos;
 
@@ -240,6 +270,13 @@ public class PainelMenuLocal extends JPanel {
 		chuva = CarregadorRecursos.carregaBufferedImageTransparecia(
 				"clima/chuva.gif", null);
 
+		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.3);
+		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.3);
+		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.3);
+
 		carregadorRecursos = new CarregadorRecursos(true);
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 		temporadas = carregadorRecursos.getVectorTemps();
@@ -271,6 +308,10 @@ public class PainelMenuLocal extends JPanel {
 				int bgY = bg.getHeight() / 2;
 				g.drawImage(bg, centerX - bgX, centerY - bgY, null);
 			}
+			if (desenhaCarregando) {
+				desenhaCarregando(g2d);
+				return;
+			}
 			desenhaMenuPrincipalSelecao(g2d);
 			desenhaMenuCorridaSelecao(g2d);
 			desenhaMenuQualificacao(g2d);
@@ -278,6 +319,23 @@ public class PainelMenuLocal extends JPanel {
 			e.printStackTrace();
 			Logger.logarExept(e);
 		}
+
+	}
+
+	private void desenhaCarregando(Graphics2D g2d) {
+		int x = (int) (getWidth() / 2);
+		int y = (int) (getHeight() / 2);
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		g2d.setColor(lightWhite);
+		String txt = Lang.msg("carregando").toUpperCase();
+		int larguraTexto = Util.larguraTexto(txt, g2d);
+		int desl = larguraTexto / 2;
+		corridaRect.setFrame(x - desl, y - 25, larguraTexto + 10, 30);
+		g2d.fill(corridaRect);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, x - desl + 5, y);
+		g2d.setFont(fontOri);
 
 	}
 
@@ -298,6 +356,10 @@ public class PainelMenuLocal extends JPanel {
 		desenhaTemporadaPilotoSelecionado(g2d, x + 350, y + 230);
 
 		desenhaCombustivel(g2d, x + 350, y + 350);
+
+		desenhaTipoPneu(g2d, x + 250, y + 460);
+
+		desenhaTipoAsa(g2d, x + 250, y + 520);
 
 	}
 
@@ -495,6 +557,34 @@ public class PainelMenuLocal extends JPanel {
 			nivelSelecionado = InterfaceJogo.DIFICIL;
 			return;
 		}
+		if (pneuMoleRect.contains(e.getPoint())) {
+			pneuSelecionado = Carro.TIPO_PNEU_MOLE;
+			return;
+		}
+		if (pneuDuroRect.contains(e.getPoint())) {
+			pneuSelecionado = Carro.TIPO_PNEU_DURO;
+			return;
+		}
+		if (pneuChuvaRect.contains(e.getPoint())) {
+			pneuSelecionado = Carro.TIPO_PNEU_CHUVA;
+			return;
+		}
+
+		if (menosAsaRect.contains(e.getPoint())) {
+			asaSelecionado = Carro.MENOS_ASA;
+			return;
+		}
+
+		if (maisAsaRect.contains(e.getPoint())) {
+			asaSelecionado = Carro.MAIS_ASA;
+			return;
+		}
+
+		if (normalAsaRect.contains(e.getPoint())) {
+			asaSelecionado = Carro.ASA_NORMAL;
+			return;
+		}
+
 		if (maisTurbulenciaRect.contains(e.getPoint())) {
 			maisTurbulencia();
 			return;
@@ -624,6 +714,9 @@ public class PainelMenuLocal extends JPanel {
 		}
 		if (MENU.equals(MENU_QUALIFICACAO)) {
 			try {
+				desenhaCarregando = true;
+				paintImmediately(getVisibleRect());
+				// Thread.sleep(100);
 				if (mainFrame.verificaCriarJogo()) {
 					controleJogo = mainFrame.getControleJogo();
 					controleJogo.setMainFrame(mainFrame);
@@ -632,7 +725,8 @@ public class PainelMenuLocal extends JPanel {
 							temporadaSelecionada, numVoltasSelecionado,
 							turbulenciaSelecionado, climaSelecionado,
 							nivelSelecionado, pilotoSelecionado, kers, drs,
-							trocaPneus, reabasteciemto);
+							trocaPneus, reabasteciemto, combustivelSelecionado,
+							asaSelecionado, pneuSelecionado);
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -836,16 +930,26 @@ public class PainelMenuLocal extends JPanel {
 					if (capacete != null)
 						g2d.drawImage(capacete, x - 150, novoY, null);
 				}
-				desenhaNomePiloto(g2d, x - 80, novoY + 35, i, piloto);
 			} else {
 				if (PainelCircuito.desenhaImagens) {
 					g2d.drawImage(imageCarro, x + 100, novoY, null);
 					if (capacete != null)
 						g2d.drawImage(capacete, x + 290, novoY, null);
 				}
-				desenhaNomePiloto(g2d, x + 120, novoY + 35, i, piloto);
 			}
 
+		}
+		for (int i = 0; i < pilotos.size(); i++) {
+			Piloto piloto = (Piloto) pilotos.get(i);
+			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);
+			controleJogo.setTemporada(temporada);
+			BufferedImage capacete = controleJogo.obterCapacete(piloto);
+			int novoY = y + i * 24;
+			if (i % 2 == 0) {
+				desenhaNomePiloto(g2d, x - 80, novoY + 35, i, piloto);
+			} else {
+				desenhaNomePiloto(g2d, x + 120, novoY + 35, i, piloto);
+			}
 		}
 	}
 
@@ -1010,7 +1114,7 @@ public class PainelMenuLocal extends JPanel {
 
 		x += 20;
 
-		String combustivel = Lang.msg("combustivel").toUpperCase();
+		String combustivel = Lang.msg("combustivelbar").toUpperCase();
 		int tamCombustivel = Util.calculaLarguraText(combustivel, g2d) + 10;
 		g2d.setColor(lightWhite);
 		g2d.fillRoundRect(x - 15, y - 12, tamCombustivel, 32, 10, 10);
@@ -1085,6 +1189,116 @@ public class PainelMenuLocal extends JPanel {
 		g2d.drawString(dificil, x - 10, y + 15);
 
 		g2d.setFont(fontOri);
+	}
+
+	private void desenhaTipoPneu(Graphics2D g2d, int x, int y) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+
+		String mole = Lang.msg(Carro.TIPO_PNEU_MOLE).toUpperCase();
+		int tamMole = Util.calculaLarguraText(mole, g2d);
+		pneuMoleRect.setFrame(x - 15, y - 12, tamMole + 10, 32);
+		g2d.setColor(lightWhite);
+		g2d.fill(pneuMoleRect);
+		if (Carro.TIPO_PNEU_MOLE.equals(pneuSelecionado)) {
+			g2d.setColor(yel);
+			g2d.draw(pneuMoleRect);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(mole, x - 10, y + 15);
+
+		desenhaImgTipoPneu(g2d, x, y, tamMole, pneuMoleImg);
+
+		x += (tamMole + 15);
+
+		String duro = Lang.msg(Carro.TIPO_PNEU_DURO).toUpperCase();
+		int tamDuro = Util.calculaLarguraText(duro, g2d);
+		pneuDuroRect.setFrame(x - 15, y - 12, tamDuro + 10, 32);
+		g2d.setColor(lightWhite);
+		g2d.fill(pneuDuroRect);
+		if (Carro.TIPO_PNEU_DURO.equals(pneuSelecionado)) {
+			g2d.setColor(yel);
+			g2d.draw(pneuDuroRect);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(duro, x - 10, y + 15);
+
+		desenhaImgTipoPneu(g2d, x, y, tamDuro, pneuDuroImg);
+
+		x += (tamDuro + 15);
+
+		String chuva = Lang.msg(Carro.TIPO_PNEU_CHUVA).toUpperCase();
+		int tamChuva = Util.calculaLarguraText(chuva, g2d);
+		pneuChuvaRect.setFrame(x - 15, y - 12, tamChuva + 10, 32);
+		g2d.setColor(lightWhite);
+		g2d.fill(pneuChuvaRect);
+		if (Carro.TIPO_PNEU_CHUVA.equals(pneuSelecionado)) {
+			g2d.setColor(yel);
+			g2d.draw(pneuChuvaRect);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(chuva, x - 10, y + 15);
+
+		desenhaImgTipoPneu(g2d, x, y, tamChuva, pneuChuvaImg);
+
+		g2d.setFont(fontOri);
+	}
+
+	private void desenhaTipoAsa(Graphics2D g2d, int x, int y) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+
+		String mais = Lang.msg(Carro.MAIS_ASA).toUpperCase();
+		int tamMais = Util.calculaLarguraText(mais, g2d);
+		maisAsaRect.setFrame(x - 15, y - 12, tamMais + 10, 32);
+		g2d.setColor(lightWhite);
+		g2d.fill(maisAsaRect);
+		if (Carro.MAIS_ASA.equals(asaSelecionado)) {
+			g2d.setColor(yel);
+			g2d.draw(maisAsaRect);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(mais, x - 10, y + 15);
+
+		x += (tamMais + 15);
+
+		String normal = Lang.msg(Carro.ASA_NORMAL).toUpperCase();
+		int tamDuro = Util.calculaLarguraText(normal, g2d);
+		normalAsaRect.setFrame(x - 15, y - 12, tamDuro + 10, 32);
+		g2d.setColor(lightWhite);
+		g2d.fill(normalAsaRect);
+		if (Carro.ASA_NORMAL.equals(asaSelecionado)) {
+			g2d.setColor(yel);
+			g2d.draw(normalAsaRect);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(normal, x - 10, y + 15);
+
+		x += (tamDuro + 15);
+
+		String menos = Lang.msg(Carro.MENOS_ASA).toUpperCase();
+		int tamMenos = Util.calculaLarguraText(menos, g2d);
+		menosAsaRect.setFrame(x - 15, y - 12, tamMenos + 10, 32);
+		g2d.setColor(lightWhite);
+		g2d.fill(menosAsaRect);
+		if (Carro.MENOS_ASA.equals(asaSelecionado)) {
+			g2d.setColor(yel);
+			g2d.draw(menosAsaRect);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(menos, x - 10, y + 15);
+
+		g2d.setFont(fontOri);
+	}
+
+	private void desenhaImgTipoPneu(Graphics2D g2d, int x, int y, int tam,
+			BufferedImage pneuImg) {
+		g2d.setColor(lightWhite);
+		int deslX = (tam / 2) - (pneuImg.getWidth() / 2);
+		g2d.fillRoundRect(x + deslX, y - 65, pneuImg.getWidth() + 10,
+				pneuImg.getHeight() + 2, 15, 15);
+		if (PainelCircuito.desenhaImagens)
+			g2d.drawImage(pneuImg, x + deslX + 5, y - 65, null);
 	}
 
 	private void desenhaClima(Graphics2D g2d, int x, int y) {

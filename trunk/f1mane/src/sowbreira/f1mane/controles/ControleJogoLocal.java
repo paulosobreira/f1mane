@@ -649,8 +649,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabasteciemto)
-			throws Exception {
+			boolean drs, boolean trocaPneus, boolean reabasteciemto,
+			int combustivelSelecionado, String asaSelecionado,
+			String pneuSelecionado) throws Exception {
 		this.qtdeVoltas = new Integer(numVoltasSelecionado);
 		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
 		this.tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
@@ -669,8 +670,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		for (Iterator iterator = pilotosList.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (piloto.equals(pilotoSelecionado)) {
-				efetuarSelecaoPilotoJogador(piloto, Carro.TIPO_PNEU_MOLE,
-						new Integer(50), "F1-Mane", Carro.ASA_NORMAL);
+				efetuarSelecaoPilotoJogador(piloto, pneuSelecionado,
+						new Integer(combustivelSelecionado), "F1-Mane",
+						asaSelecionado);
 				break;
 			}
 		}
