@@ -48,7 +48,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
@@ -292,8 +291,8 @@ public class GerenciadorVisual {
 										- noAtualSuave.getIndex();
 							}
 							int ganhoSuave = 0;
-							int maxLoop = 500;
-							int inc = 25;
+							int maxLoop = 600;
+							int inc = 40;
 							for (int i = 0; i < maxLoop; i += inc) {
 								if (diff >= i && diff < i + inc) {
 									break;
@@ -360,8 +359,8 @@ public class GerenciadorVisual {
 								}
 							}
 							int index = noAtualSuave.getIndex() + ganhoSuave;
-//							if (piloto.isJogadorHumano())
-//								System.out.println("ganhoSuave" + ganhoSuave);
+							// if (piloto.isJogadorHumano())
+							// System.out.println("ganhoSuave" + ganhoSuave);
 							if (saiuBox) {
 								index = saidaBoxIndex;
 							}
@@ -384,8 +383,8 @@ public class GerenciadorVisual {
 							}
 							if (!entrandoBox && !saindoBox
 									&& (diff < 0 || diff > 600)) {
-//								System.out.println("diff < 0 || diff > 500 "
-//										+ diff);
+								// System.out.println("diff < 0 || diff > 500 "
+								// + diff);
 								noAtualSuave = noAtual;
 							}
 						}
@@ -554,8 +553,7 @@ public class GerenciadorVisual {
 					mudarModoPilotagem(Piloto.AGRESSIVO);
 				}
 				if (keyCoode == KeyEvent.VK_ESCAPE) {
-					painelCircuito.setDesenhaInfo(!painelCircuito
-							.isDesenhaInfo());
+					controleJogo.pausarJogo();
 				}
 				if (keyCoode == KeyEvent.VK_F8 || keyCoode == KeyEvent.VK_G) {
 					mudarAutoPos();
