@@ -668,9 +668,9 @@ public class PainelCircuito extends JPanel {
 			g2d.setColor(yel);
 			// g2d.drawLine(x + 15, y + 30, x + 140, y + 60);
 			// g2d.drawLine(x + 140, y + 60,
-			g2d.drawLine(x + 15, y + 30,
+			g2d.drawLine(x + 15, y + 35,
 					(int) (kers.getX() + (kers.getWidth() / 2)),
-					(int) kers.getY());
+					(int) kers.getY() - 5);
 			g2d.setStroke(stroke);
 		}
 
@@ -710,9 +710,10 @@ public class PainelCircuito extends JPanel {
 			g2d.drawString("\u2191", x + 5, y + 25);
 			g2d.setStroke(trilhoMiniPista);
 			g2d.setColor(yel);
-			g2d.drawLine(x + 15, y, x - 500, y);
-			g2d.drawLine(x - 500, y, (int) (drs.getX() + (drs.getWidth() / 2)),
-					(int) drs.getY());
+			g2d.drawLine(x + 15, y - 5, x - 500, y - 5);
+			g2d.drawLine(x - 500, y - 5,
+					(int) (drs.getX() + (drs.getWidth() / 2)),
+					(int) drs.getY() - 5);
 			g2d.setStroke(stroke);
 		}
 
@@ -726,9 +727,9 @@ public class PainelCircuito extends JPanel {
 		g2d.drawString("F12", x + 5, y + 25);
 		g2d.setStroke(trilhoMiniPista);
 		g2d.setColor(yel);
-		g2d.drawLine(x + 30, y,
+		g2d.drawLine(x + 30, y - 5,
 				(int) (vaiBox.getX() + (vaiBox.getWidth() / 2)),
-				(int) (vaiBox.getY() + vaiBox.getHeight()));
+				(int) (vaiBox.getY() + vaiBox.getHeight()) + 5);
 		g2d.setStroke(stroke);
 
 		g2d.setFont(fontOri);
@@ -746,8 +747,9 @@ public class PainelCircuito extends JPanel {
 		g2d.drawString(txt, x + 5, y + 25);
 		g2d.setStroke(trilhoMiniPista);
 		g2d.setColor(yel);
-		g2d.drawLine(x + 15, y + 30,
-				(int) (rect.getX() + (rect.getWidth() / 2)), (int) rect.getY());
+		g2d.drawLine(x + 15, y + 35,
+				(int) (rect.getX() + (rect.getWidth() / 2)),
+				(int) rect.getY() - 5);
 		g2d.setStroke(stroke);
 		g2d.setFont(fontOri);
 	}
@@ -2476,10 +2478,12 @@ public class PainelCircuito extends JPanel {
 				Util.inte((piloto.getCarY() - 2) * zoom));
 		if (limitesViewPort.contains(p)) {
 			g2d.setColor(piloto.getCarro().getCor1());
+			marcaCorPilotoJogador(g2d, piloto);
 			g2d.fillOval(p.x, p.y, 8, 8);
 			g2d.setColor(new Color(piloto.getCarro().getCor2().getRed(), piloto
 					.getCarro().getCor2().getGreen(), piloto.getCarro()
 					.getCor2().getBlue(), 175));
+			marcaCorPilotoJogador(g2d, piloto);
 			Stroke stroke = g2d.getStroke();
 			g2d.setStroke(trilho);
 			Point p2 = new Point(Util.inte((piloto.getCarX() - 3) * zoom),
@@ -2488,6 +2492,14 @@ public class PainelCircuito extends JPanel {
 			g2d.setStroke(stroke);
 			desenhaNomePilotoSelecionadoCarroCima(piloto, g2d, p);
 		}
+	}
+
+	private void marcaCorPilotoJogador(Graphics2D g2d, Piloto piloto) {
+		if (piloto.equals(controleJogo.getPilotoJogador())
+				&& qtdeLuzesAcesas != 0) {
+			g2d.setColor(OcilaCor.geraOcila("mrkSel", yel));
+		}
+
 	}
 
 	public Shape limitesViewPort() {
@@ -3789,6 +3801,9 @@ public class PainelCircuito extends JPanel {
 					- (carroimg.getHeight() - 36) : point.y;
 			if (circuito != null && circuito.isUsaBkg()) {
 				g2d.setColor(transpMenus);
+				if (piloto.equals(controleJogo.getPilotoJogador())) {
+					g2d.setColor(OcilaCor.geraOcila("mrkSel", yel));
+				}
 				g2d.fillRoundRect(limitesViewPort.x + point.x - 5,
 						limitesViewPort.y + newY - 5, carroimg.getWidth() + 5,
 						carroimg.getHeight() + 5, 15, 15);
@@ -4779,10 +4794,12 @@ public class PainelCircuito extends JPanel {
 				Util.inte((ps.getCarY() - 2) * zoom));
 		if (limitesViewPort.contains(pt)) {
 			g2d.setColor(ps.getCarro().getCor1());
+			marcaCorPilotoJogador(g2d, ps);
 			g2d.fillOval(pt.x, pt.y, 8, 8);
 			g2d.setColor(new Color(ps.getCarro().getCor2().getRed(), ps
 					.getCarro().getCor2().getGreen(), ps.getCarro().getCor2()
 					.getBlue(), 175));
+			marcaCorPilotoJogador(g2d, ps);
 			Stroke stroke = g2d.getStroke();
 			g2d.setStroke(trilho);
 			Point p2 = new Point(Util.inte((ps.getCarX() - 3) * zoom),

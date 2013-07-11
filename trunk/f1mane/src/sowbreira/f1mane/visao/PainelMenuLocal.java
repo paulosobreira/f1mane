@@ -651,7 +651,7 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void menosCombustivel() {
-		if (combustivelSelecionado > 0) {
+		if (combustivelSelecionado > 10) {
 			combustivelSelecionado -= 10;
 		}
 
