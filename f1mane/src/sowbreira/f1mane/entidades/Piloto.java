@@ -996,7 +996,7 @@ public class Piloto implements Serializable {
 		ganho = evitaPoleDispararPrimeiraVolta(controleJogo, ganho);
 
 		ganho = calculaGanhoMedio(ganho, controleJogo, colisao);
-		processaLimitadorGanho(controleJogo);
+		processaLimitadorGanho(controleJogo, colisao);
 
 		if (controleJogo.isSafetyCarNaPista()) {
 			ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
@@ -1116,19 +1116,7 @@ public class Piloto implements Serializable {
 	private void processaGanho(InterfaceJogo controleJogo) {
 		ganho = ((novoModificador * controleJogo.getCircuito()
 				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
-		int calculaDiffParaProximo = controleJogo
-				.calculaDiffParaProximoRetardatario(this, false);
-		if (calculaDiffParaProximo > 25
-				&& calculaDiffParaProximo < 100
-				&& (No.CURVA_ALTA.equals(getNoAtual().getTipo()) || No.CURVA_BAIXA
-						.equals(getNoAtual().getTipo()))) {
-			Carro frente = controleJogo.obterCarroNaFrente(this);
-			if (frente != null && frente.getPiloto().verificaDesconcentrado()) {
-				return;
-			}
-			ganho *= controleJogo.getFatorUtrapassagem();
-		}
-		if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
+		if (verificaForaPista(this)) {
 			ganho *= controleJogo.getFatorUtrapassagem();
 		}
 	}
@@ -1163,54 +1151,58 @@ public class Piloto implements Serializable {
 		}
 	}
 
+	/**
+	 * Controla Efeito turbulencia e ultrapassagens usando tracado
+	 */
 	private void processaGanhoAerodinamico(InterfaceJogo controleJogo) {
-		/**
-		 * Controla Efeito turbulencia e ultrapassagens usando tracado
-		 */
-		if (!controleJogo.isModoQualify()) {
-			Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
-			if (carroPilotoDaFrente != null) {
-				double diff = calculaDiffParaProximo(controleJogo);
-				double distBrigaMin = 50;
-				double nGanho = (controleJogo.getFatorUtrapassagem());
-				if (diff < distBrigaMin) {
-					if (getTracado() != carroPilotoDaFrente.getPiloto()
-							.getTracado()) {
-						if (No.CURVA_ALTA.equals(getNoAtual().getTipo())
-								|| No.CURVA_BAIXA
-										.equals(getNoAtual().getTipo())) {
-							boolean pass = Math.random() > controleJogo
-									.getFatorUtrapassagem();
-							if (isAgressivo() && pass) {
-								nGanho += 0.1;
-							}
-							if (Carro.GIRO_MAX_VAL == getCarro().getGiro()
-									&& pass) {
-								nGanho += 0.1;
-							}
-						}
-					} else {
-						No noDafrente = carroPilotoDaFrente.getPiloto()
-								.getNoAtual();
-						if (No.CURVA_ALTA.equals(noDafrente)
-								|| No.CURVA_BAIXA.equals(noDafrente)) {
-							if (controleJogo.isChovendo()
-									&& !testeHabilidadePiloto(controleJogo)) {
-								nGanho = 1;
-							} else {
-								nGanho = distBrigaMin / (diff * 1.5);
-							}
-						}
+		if (controleJogo.isModoQualify()) {
+			return;
+		}
+		Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
+		if (carroPilotoDaFrente == null) {
+			return;
+		}
+		double diff = calculaDiffParaProximo(controleJogo);
+		double distLimiteTurbulencia = 20;
+		double nGanho = (controleJogo.getFatorUtrapassagem());
+		if (diff < distLimiteTurbulencia
+				&& !verificaForaPista(carroPilotoDaFrente.getPiloto())) {
+			if (getTracado() != carroPilotoDaFrente.getPiloto().getTracado()) {
+				if (No.CURVA_ALTA.equals(getNoAtual().getTipo())
+						|| No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
+					boolean pass = Math.random() > controleJogo
+							.getFatorUtrapassagem();
+					if (isAgressivo() && pass) {
+						nGanho += 0.1;
 					}
-					if (nGanho > 1) {
-						nGanho = 1;
-					} else if (nGanho < 0.01) {
-						nGanho = 0.01;
+					if (Carro.GIRO_MAX_VAL == getCarro().getGiro() && pass) {
+						nGanho += 0.1;
 					}
-					ganho *= (nGanho);
+				}
+			} else {
+				No noDafrente = carroPilotoDaFrente.getPiloto().getNoAtual();
+				if (noAtual.verificaRetaOuLargada()
+						&& (No.CURVA_ALTA.equals(noDafrente) || No.CURVA_BAIXA
+								.equals(noDafrente))) {
+					nGanho = diff / distLimiteTurbulencia;
 				}
 			}
+			if (nGanho > 1) {
+				nGanho = 1;
+			} else if (nGanho < 0.01) {
+				nGanho = 0.01;
+			}
+			ganho *= (nGanho);
 		}
+	}
+
+	private boolean verificaForaPista(Piloto piloto) {
+		boolean voltando = false;
+		if (getIndiceTracado() > 0
+				&& (piloto.getTracadoAntigo() == 4 || piloto.getTracadoAntigo() == 5)) {
+			voltando = true;
+		}
+		return piloto.getTracado() == 4 || piloto.getTracado() == 5 || voltando;
 	}
 
 	private boolean processaVerificaColisao(InterfaceJogo controleJogo) {
@@ -1263,7 +1255,8 @@ public class Piloto implements Serializable {
 					minMulti -= 0.2;
 					retardaFreiandoReta = false;
 				}
-				if (controleJogo.calculaDiffParaProximoRetardatario(this, false) < 50) {
+				if (controleJogo
+						.calculaDiffParaProximoRetardatario(this, false) < 50) {
 					minMulti -= Util.intervalo(0.05, 0.15);
 					retardaFreiandoReta = false;
 				} else if (controleJogo.calculaDiffParaProximoRetardatario(
@@ -1303,12 +1296,16 @@ public class Piloto implements Serializable {
 		}
 	}
 
-	private void processaLimitadorGanho(InterfaceJogo controleJogo) {
+	private void processaLimitadorGanho(InterfaceJogo controleJogo,
+			boolean colisao) {
 		if (ganho > 0 && ganho < 1) {
 			ganho = 1;
 		}
 		if (ganho > 60) {
 			ganho = 60;
+		}
+		if (!colisao && ganho < 10) {
+			ganho = 10;
 		}
 		if (getCarro().isPneuFurado()) {
 			ganho /= 2;

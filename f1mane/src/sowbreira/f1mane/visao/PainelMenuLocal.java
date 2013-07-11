@@ -175,7 +175,7 @@ public class PainelMenuLocal extends JPanel {
 
 	private int turbulenciaSelecionado = 250;
 
-	private int combustivelSelecionado = 75;
+	private int combustivelSelecionado = 70;
 
 	private String asaSelecionado = Carro.ASA_NORMAL;
 
@@ -395,7 +395,8 @@ public class PainelMenuLocal extends JPanel {
 
 		int xCarro = x + larguraTexto + 50;
 
-		g2d.drawImage(imageCarro, xCarro, y - 35, null);
+		if (PainelCircuito.desenhaImagens)
+			g2d.drawImage(imageCarro, xCarro, y - 35, null);
 
 		y += 40;
 
@@ -406,7 +407,7 @@ public class PainelMenuLocal extends JPanel {
 		corTxtPiloto(g2d, c);
 		g2d.drawString(txt, x + 10, y);
 
-		if (capacete != null)
+		if (capacete != null && PainelCircuito.desenhaImagens)
 			g2d.drawImage(capacete,
 					xCarro + imageCarro.getWidth() - capacete.getWidth(),
 					y - 35, null);
@@ -1120,7 +1121,6 @@ public class PainelMenuLocal extends JPanel {
 		g2d.fillRoundRect(x - 15, y - 12, tamCombustivel, 32, 10, 10);
 
 		int porcetCombustivel = combustivelSelecionado;
-
 		int tamCombustivelSelecionado = porcetCombustivel * tamCombustivel
 				/ 100;
 		g2d.setColor(yel);
