@@ -359,8 +359,8 @@ public class GerenciadorVisual {
 								}
 							}
 							int index = noAtualSuave.getIndex() + ganhoSuave;
-							// if (piloto.isJogadorHumano())
-							// System.out.println("ganhoSuave" + ganhoSuave);
+//							if (piloto.isJogadorHumano())
+//								System.out.println("ganhoSuave" + ganhoSuave);
 							if (saiuBox) {
 								index = saidaBoxIndex;
 							}
@@ -391,7 +391,7 @@ public class GerenciadorVisual {
 						piloto.setNoAtualSuave(noAtualSuave);
 					}
 					try {
-						Thread.sleep(5);
+						Thread.sleep(7);
 					} catch (InterruptedException e) {
 						alive = false;
 						e.printStackTrace();
