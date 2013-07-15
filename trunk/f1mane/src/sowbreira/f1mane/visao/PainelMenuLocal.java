@@ -355,11 +355,11 @@ public class PainelMenuLocal extends JPanel {
 
 		desenhaTemporadaPilotoSelecionado(g2d, x + 350, y + 230);
 
-		desenhaCombustivel(g2d, x + 350, y + 350);
+		desenhaCombustivel(g2d, x + 490, y + 350);
 
-		desenhaTipoPneu(g2d, x + 250, y + 460);
+		desenhaTipoPneu(g2d, x + 490, y + 460);
 
-		desenhaTipoAsa(g2d, x + 250, y + 520);
+		desenhaTipoAsa(g2d, x + 490, y + 520);
 
 	}
 
@@ -1106,7 +1106,19 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
 		String menos = "-";
+		String combustivel = Lang.msg("combustivelbar").toUpperCase();
+		String mais = "+";
+		int tamMais = Util.calculaLarguraText(mais, g2d);
 		int tamMenos = Util.calculaLarguraText(menos, g2d);
+		int porcetCombustivel = combustivelSelecionado;
+		int tamCombustivel = Util.calculaLarguraText(combustivel, g2d) + 10;
+		int tamCombustivelSelecionado = porcetCombustivel * tamCombustivel
+				/ 100;
+
+		int somTam = tamMais + tamMenos + tamCombustivel + 35;
+
+		x -= (somTam / 2);
+
 		menosCombustivelRect.setFrame(x - 16, y - 6, tamMenos + 6, 22);
 		g2d.setColor(lightWhite);
 		g2d.fill(menosCombustivelRect);
@@ -1115,14 +1127,9 @@ public class PainelMenuLocal extends JPanel {
 
 		x += 20;
 
-		String combustivel = Lang.msg("combustivelbar").toUpperCase();
-		int tamCombustivel = Util.calculaLarguraText(combustivel, g2d) + 10;
 		g2d.setColor(lightWhite);
 		g2d.fillRoundRect(x - 15, y - 12, tamCombustivel, 32, 10, 10);
 
-		int porcetCombustivel = combustivelSelecionado;
-		int tamCombustivelSelecionado = porcetCombustivel * tamCombustivel
-				/ 100;
 		g2d.setColor(yel);
 		g2d.drawRoundRect(x - 15, y - 12, tamCombustivelSelecionado, 32, 10, 10);
 		g2d.setColor(blu);
@@ -1133,8 +1140,6 @@ public class PainelMenuLocal extends JPanel {
 
 		x += (tamCombustivel + 15);
 
-		String mais = "+";
-		int tamMais = Util.calculaLarguraText(mais, g2d);
 		maisCombustivelRect.setFrame(x - 17, y - 6, tamMais + 5, 22);
 		g2d.setColor(lightWhite);
 		g2d.fill(maisCombustivelRect);
@@ -1197,6 +1202,17 @@ public class PainelMenuLocal extends JPanel {
 
 		String mole = Lang.msg(Carro.TIPO_PNEU_MOLE).toUpperCase();
 		int tamMole = Util.calculaLarguraText(mole, g2d);
+
+		String chuva = Lang.msg(Carro.TIPO_PNEU_CHUVA).toUpperCase();
+		int tamChuva = Util.calculaLarguraText(chuva, g2d);
+
+		String duro = Lang.msg(Carro.TIPO_PNEU_DURO).toUpperCase();
+		int tamDuro = Util.calculaLarguraText(duro, g2d);
+
+		int somaTam = tamMole + tamDuro + tamChuva + 30;
+
+		x -= somaTam / 2;
+
 		pneuMoleRect.setFrame(x - 15, y - 12, tamMole + 10, 32);
 		g2d.setColor(lightWhite);
 		g2d.fill(pneuMoleRect);
@@ -1211,8 +1227,6 @@ public class PainelMenuLocal extends JPanel {
 
 		x += (tamMole + 15);
 
-		String duro = Lang.msg(Carro.TIPO_PNEU_DURO).toUpperCase();
-		int tamDuro = Util.calculaLarguraText(duro, g2d);
 		pneuDuroRect.setFrame(x - 15, y - 12, tamDuro + 10, 32);
 		g2d.setColor(lightWhite);
 		g2d.fill(pneuDuroRect);
@@ -1227,8 +1241,6 @@ public class PainelMenuLocal extends JPanel {
 
 		x += (tamDuro + 15);
 
-		String chuva = Lang.msg(Carro.TIPO_PNEU_CHUVA).toUpperCase();
-		int tamChuva = Util.calculaLarguraText(chuva, g2d);
 		pneuChuvaRect.setFrame(x - 15, y - 12, tamChuva + 10, 32);
 		g2d.setColor(lightWhite);
 		g2d.fill(pneuChuvaRect);
@@ -1250,6 +1262,15 @@ public class PainelMenuLocal extends JPanel {
 
 		String mais = Lang.msg(Carro.MAIS_ASA).toUpperCase();
 		int tamMais = Util.calculaLarguraText(mais, g2d);
+		String normal = Lang.msg(Carro.ASA_NORMAL).toUpperCase();
+		int tamDuro = Util.calculaLarguraText(normal, g2d);
+		String menos = Lang.msg(Carro.MENOS_ASA).toUpperCase();
+		int tamMenos = Util.calculaLarguraText(menos, g2d);
+
+		int somaTam = tamMais + tamDuro + tamMenos + 30;
+
+		x -= somaTam / 2;
+
 		maisAsaRect.setFrame(x - 15, y - 12, tamMais + 10, 32);
 		g2d.setColor(lightWhite);
 		g2d.fill(maisAsaRect);
@@ -1262,8 +1283,6 @@ public class PainelMenuLocal extends JPanel {
 
 		x += (tamMais + 15);
 
-		String normal = Lang.msg(Carro.ASA_NORMAL).toUpperCase();
-		int tamDuro = Util.calculaLarguraText(normal, g2d);
 		normalAsaRect.setFrame(x - 15, y - 12, tamDuro + 10, 32);
 		g2d.setColor(lightWhite);
 		g2d.fill(normalAsaRect);
@@ -1276,8 +1295,6 @@ public class PainelMenuLocal extends JPanel {
 
 		x += (tamDuro + 15);
 
-		String menos = Lang.msg(Carro.MENOS_ASA).toUpperCase();
-		int tamMenos = Util.calculaLarguraText(menos, g2d);
 		menosAsaRect.setFrame(x - 15, y - 12, tamMenos + 10, 32);
 		g2d.setColor(lightWhite);
 		g2d.fill(menosAsaRect);

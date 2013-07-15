@@ -2650,7 +2650,7 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private Double processaRabeada(Piloto piloto, Double calculaAngulo) {
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isCorridaPausada() || piloto.isDesqualificado()) {
 			return calculaAngulo;
 		}
 		boolean rabeadaAgressivo = piloto.isAgressivo()
@@ -2723,6 +2723,9 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaChuvaFaiscasCarroCima(Graphics2D g2d, Piloto piloto,
 			int width) {
+		if (piloto.isDesqualificado()) {
+			return;
+		}
 		/**
 		 * Chuva e Faiscas
 		 */
