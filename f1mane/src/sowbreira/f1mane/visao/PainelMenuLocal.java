@@ -51,6 +51,8 @@ public class PainelMenuLocal extends JPanel {
 
 	public static String MENU_CORRIDA = "MENU_CORRIDA";
 
+	public static String MENU_NOVO_CAMPEONATO = "MENU_NOVO_CAMPEONATO";
+
 	public static String MENU_QUALIFICACAO = "MENU_QUALIFICACAO";
 
 	private MainFrame mainFrame;
@@ -81,6 +83,12 @@ public class PainelMenuLocal extends JPanel {
 			1, 1, 10, 10);
 
 	private RoundRectangle2D antePistaRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
+
+	private RoundRectangle2D addPistaRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
+
+	private RoundRectangle2D remPistaRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
 
 	private RoundRectangle2D proxTemporadaRect = new RoundRectangle2D.Double(0,
@@ -314,11 +322,63 @@ public class PainelMenuLocal extends JPanel {
 			}
 			desenhaMenuPrincipalSelecao(g2d);
 			desenhaMenuCorridaSelecao(g2d);
+			desenhaMenuNovoCampeonato(g2d);
 			desenhaMenuQualificacao(g2d);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Logger.logarExept(e);
 		}
+
+	}
+
+	private void desenhaMenuNovoCampeonato(Graphics2D g2d) {
+		if (!MENU.equals(MENU_NOVO_CAMPEONATO)) {
+			return;
+		}
+		int x = (int) (getWidth() / 2);
+		int y = (int) (getHeight() / 2);
+
+		x -= 490;
+		y -= 285;
+
+		desenhaSeletorCircuito(g2d, x, y);
+
+		desenhaAdicionaRemoverPistas(g2d, x + 30, y + 220);
+
+		desenhaSeletorNumeroVoltas(g2d, x + 40, y + 280);
+
+		desenhaNivelCorrida(g2d, x + 40, y + 340);
+
+		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 400);
+
+		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+
+	}
+
+	private void desenhaAdicionaRemoverPistas(Graphics2D g2d, int x, int y) {
+		g2d.setColor(lightWhite);
+		addPistaRect.setFrame(x, y - 25, 30, 30);
+		g2d.fill(addPistaRect);
+		g2d.drawImage(setaCarroEsquerda, x - 15, y - 55, null);
+		x += 40;
+
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = Lang.msg("adicionaRemove").toUpperCase();
+		int larguraTexto = 300;
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 10, 10);
+		g2d.setColor(Color.BLACK);
+		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
+		g2d.drawString(txt.toUpperCase(), x + incX, y);
+
+		x += larguraTexto + 30;
+
+		g2d.setColor(lightWhite);
+		remPistaRect.setFrame(x, y - 25, 30, 30);
+		g2d.fill(remPistaRect);
+		g2d.drawImage(setaCarroDireita, x - 45, y - 52, null);
+		g2d.setFont(fontOri);
 
 	}
 
@@ -482,17 +542,20 @@ public class PainelMenuLocal extends JPanel {
 			resetaRects();
 			return;
 		}
-		if (campeonatoRect.contains(e.getPoint())) {
-			try {
-				if (mainFrame.verificaCriarJogo()) {
-					controleJogo = mainFrame.getControleJogo();
-					controleJogo.criarCampeonatoPiloto();
-				}
-
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				Logger.logarExept(e1);
-			}
+		if (MENU.equals(MENU_PRINCIPAL)
+				&& campeonatoRect.contains(e.getPoint())) {
+			MENU = MENU_NOVO_CAMPEONATO;
+			resetaRects();
+			// try {
+			// if (mainFrame.verificaCriarJogo()) {
+			// controleJogo = mainFrame.getControleJogo();
+			// controleJogo.criarCampeonatoPiloto();
+			// }
+			//
+			// } catch (Exception e1) {
+			// e1.printStackTrace();
+			// Logger.logarExept(e1);
+			// }
 			return;
 		}
 		if (continuaCampeonatoRect.contains(e.getPoint())) {
@@ -673,6 +736,10 @@ public class PainelMenuLocal extends JPanel {
 		}
 		if (MENU.equals(MENU_QUALIFICACAO)) {
 			MENU = MENU_CORRIDA;
+			return;
+		}
+		if (MENU.equals(MENU_NOVO_CAMPEONATO)) {
+			MENU = MENU_PRINCIPAL;
 			return;
 		}
 	}
@@ -942,9 +1009,6 @@ public class PainelMenuLocal extends JPanel {
 		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
-			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);
-			controleJogo.setTemporada(temporada);
-			BufferedImage capacete = controleJogo.obterCapacete(piloto);
 			int novoY = y + i * 24;
 			if (i % 2 == 0) {
 				desenhaNomePiloto(g2d, x - 80, novoY + 35, i, piloto);
@@ -982,12 +1046,18 @@ public class PainelMenuLocal extends JPanel {
 		int tamNmPiloto = Util.calculaLarguraText(nmPilotoStr, g2d);
 		pilotoRect.setFrame(x - 15, y, tamNmPiloto + 10, 18);
 		Color c = corRectPiloto(g2d, piloto, 1);
+		if (!piloto.equals(pilotoSelecionado)) {
+			g2d.setColor(lightWhite);
+		}
 		g2d.fill(pilotoRect);
 		if (piloto.equals(pilotoSelecionado)) {
 			g2d.setColor(corRectPiloto(g2d, piloto, 2));
 			g2d.draw(pilotoRect);
 		}
 		corTxtPiloto(g2d, c);
+		if (!piloto.equals(pilotoSelecionado)) {
+			g2d.setColor(Color.BLACK);
+		}
 		g2d.drawString(nmPilotoStr, x - 10, y + 15);
 		g2d.setFont(fontOri);
 	}
