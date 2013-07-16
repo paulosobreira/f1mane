@@ -1167,6 +1167,7 @@ public class Piloto implements Serializable {
 		double nGanho = (controleJogo.getFatorUtrapassagem());
 		if (diff < distLimiteTurbulencia
 				&& !verificaForaPista(carroPilotoDaFrente.getPiloto())) {
+			No noDafrente = carroPilotoDaFrente.getPiloto().getNoAtual();
 			if (getTracado() != carroPilotoDaFrente.getPiloto().getTracado()) {
 				if (No.CURVA_ALTA.equals(getNoAtual().getTipo())
 						|| No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
@@ -1179,8 +1180,13 @@ public class Piloto implements Serializable {
 						nGanho += 0.1;
 					}
 				}
+				if (noAtual.verificaRetaOuLargada()) {
+					nGanho += 0.1;
+				}
+				if (noDafrente.verificaRetaOuLargada()) {
+					nGanho += 0.1;
+				}
 			} else {
-				No noDafrente = carroPilotoDaFrente.getPiloto().getNoAtual();
 				if (noAtual.verificaRetaOuLargada()
 						&& (No.CURVA_ALTA.equals(noDafrente) || No.CURVA_BAIXA
 								.equals(noDafrente))) {
@@ -2004,13 +2010,8 @@ public class Piloto implements Serializable {
 			listGanho.remove(0);
 		}
 		if (colisao) {
-			if (!noAtual.verificaRetaOuLargada()) {
-				listGanho.clear();
-				return ganho;
-			}
-			while (listGanho.size() > 4) {
-				listGanho.remove(0);
-			}
+			listGanho.clear();
+			return ganho;
 		}
 		listGanho.add(ganho);
 		double soma = 0;
