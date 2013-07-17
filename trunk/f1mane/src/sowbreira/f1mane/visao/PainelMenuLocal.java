@@ -221,6 +221,7 @@ public class PainelMenuLocal extends JPanel {
 	private BufferedImage pneuChuvaImg;
 
 	private List temporadas;
+	private List cirucitosCampeonato = new ArrayList();
 	private Map circuitosPilotos;
 
 	private List<RoundRectangle2D> pilotosRect;
@@ -236,304 +237,8 @@ public class PainelMenuLocal extends JPanel {
 			}
 		});
 
-		setaCarroCima = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
-						200);
-		setaCarroBaixo = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
-						200);
-		/**
-		 * Esquerda
-		 */
+		iniciaRecursos();
 
-		double rad = Math.toRadians(270);
-		AffineTransform afRotate = new AffineTransform();
-		afRotate.setToRotation(rad, setaCarroCima.getWidth() / 2,
-				setaCarroCima.getHeight() / 2);
-		AffineTransformOp opRotate = new AffineTransformOp(afRotate,
-				AffineTransformOp.TYPE_BILINEAR);
-		BufferedImage rotateBufferSetaCima = new BufferedImage(
-				setaCarroCima.getWidth(), setaCarroCima.getWidth(),
-				BufferedImage.TYPE_INT_ARGB);
-		opRotate.filter(setaCarroCima, rotateBufferSetaCima);
-
-		setaCarroEsquerda = rotateBufferSetaCima;
-
-		rad = Math.toRadians(90);
-		afRotate = new AffineTransform();
-		afRotate.setToRotation(rad, setaCarroCima.getWidth() / 2,
-				setaCarroCima.getHeight() / 2);
-		opRotate = new AffineTransformOp(afRotate,
-				AffineTransformOp.TYPE_BILINEAR);
-		rotateBufferSetaCima = new BufferedImage(setaCarroCima.getWidth(),
-				setaCarroCima.getWidth(), BufferedImage.TYPE_INT_ARGB);
-		opRotate.filter(setaCarroCima, rotateBufferSetaCima);
-
-		setaCarroDireita = rotateBufferSetaCima;
-
-		sol = CarregadorRecursos.carregaBufferedImageTransparecia(
-				"clima/sol.gif", null);
-		nublado = CarregadorRecursos.carregaBufferedImageTransparecia(
-				"clima/nublado.gif", null);
-		chuva = CarregadorRecursos.carregaBufferedImageTransparecia(
-				"clima/chuva.gif", null);
-
-		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.3);
-		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.3);
-		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.3);
-
-		carregadorRecursos = new CarregadorRecursos(true);
-		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
-		temporadas = carregadorRecursos.getVectorTemps();
-		Collections.reverse(temporadas);
-		pilotosRect = new ArrayList<RoundRectangle2D>();
-		for (int i = 0; i < 24; i++) {
-			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 10, 10));
-		}
-
-	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		try {
-			Graphics2D g2d = (Graphics2D) g;
-			setarHints(g2d);
-			if (PainelCircuito.carregaBkg) {
-				if (MENU.equals(MENU_PRINCIPAL))
-					bg = ImageUtil.gerarFade(CarregadorRecursos
-							.carregaBufferedImage("bg-monaco.png"), 25);
-				if (MENU.equals(MENU_CORRIDA))
-					bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
-			}
-			if (bg != null) {
-				int centerX = getWidth() / 2;
-				int centerY = getHeight() / 2;
-				int bgX = bg.getWidth() / 2;
-				int bgY = bg.getHeight() / 2;
-				g.drawImage(bg, centerX - bgX, centerY - bgY, null);
-			}
-			if (desenhaCarregando) {
-				desenhaCarregando(g2d);
-				return;
-			}
-			desenhaMenuPrincipalSelecao(g2d);
-			desenhaMenuCorridaSelecao(g2d);
-			desenhaMenuNovoCampeonato(g2d);
-			desenhaMenuQualificacao(g2d);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Logger.logarExept(e);
-		}
-
-	}
-
-	private void desenhaMenuNovoCampeonato(Graphics2D g2d) {
-		if (!MENU.equals(MENU_NOVO_CAMPEONATO)) {
-			return;
-		}
-		int x = (int) (getWidth() / 2);
-		int y = (int) (getHeight() / 2);
-
-		x -= 490;
-		y -= 285;
-
-		desenhaSeletorCircuito(g2d, x, y);
-
-		desenhaAdicionaRemoverPistas(g2d, x + 30, y + 220);
-
-		desenhaSeletorNumeroVoltas(g2d, x + 40, y + 280);
-
-		desenhaNivelCorrida(g2d, x + 40, y + 340);
-
-		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 400);
-
-		desenhaAnteriroProximo(g2d, x + 350, y + 600);
-
-	}
-
-	private void desenhaAdicionaRemoverPistas(Graphics2D g2d, int x, int y) {
-		g2d.setColor(lightWhite);
-		addPistaRect.setFrame(x, y - 25, 30, 30);
-		g2d.fill(addPistaRect);
-		g2d.drawImage(setaCarroEsquerda, x - 15, y - 55, null);
-		x += 40;
-
-		Font fontOri = g2d.getFont();
-		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-		String txt = Lang.msg("adicionaRemove").toUpperCase();
-		int larguraTexto = 300;
-		g2d.setColor(lightWhite);
-		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 10, 10);
-		g2d.setColor(Color.BLACK);
-		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
-		g2d.drawString(txt.toUpperCase(), x + incX, y);
-
-		x += larguraTexto + 30;
-
-		g2d.setColor(lightWhite);
-		remPistaRect.setFrame(x, y - 25, 30, 30);
-		g2d.fill(remPistaRect);
-		g2d.drawImage(setaCarroDireita, x - 45, y - 52, null);
-		g2d.setFont(fontOri);
-
-	}
-
-	private void desenhaCarregando(Graphics2D g2d) {
-		int x = (int) (getWidth() / 2);
-		int y = (int) (getHeight() / 2);
-		Font fontOri = g2d.getFont();
-		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-		g2d.setColor(lightWhite);
-		String txt = Lang.msg("carregando").toUpperCase();
-		int larguraTexto = Util.larguraTexto(txt, g2d);
-		int desl = larguraTexto / 2;
-		corridaRect.setFrame(x - desl, y - 25, larguraTexto + 10, 30);
-		g2d.fill(corridaRect);
-		g2d.setColor(Color.BLACK);
-		g2d.drawString(txt, x - desl + 5, y);
-		g2d.setFont(fontOri);
-
-	}
-
-	private void desenhaMenuQualificacao(Graphics2D g2d) {
-		if (!MENU.equals(MENU_QUALIFICACAO)) {
-			return;
-		}
-		int x = (int) (getWidth() / 2);
-		int y = (int) (getHeight() / 2);
-
-		x -= 490;
-		y -= 285;
-
-		desenhaAnteriroProximo(g2d, x + 350, y + 600);
-
-		desenhaCircuitoSelecionado(g2d, x + 350, y);
-
-		desenhaTemporadaPilotoSelecionado(g2d, x + 350, y + 230);
-
-		desenhaCombustivel(g2d, x + 490, y + 350);
-
-		desenhaTipoPneu(g2d, x + 490, y + 460);
-
-		desenhaTipoAsa(g2d, x + 490, y + 520);
-
-	}
-
-	private void desenhaTemporadaPilotoSelecionado(Graphics2D g2d, int x, int y) {
-		BufferedImage imageCarro = controleJogo
-				.obterCarroLado(pilotoSelecionado);
-		String temporada = "t" + temporadaSelecionada;
-		controleJogo.setTemporada(temporada);
-		BufferedImage capacete = controleJogo.obterCapacete(pilotoSelecionado);
-
-		x += 40;
-		Font fontOri = g2d.getFont();
-		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-		String txt = temporadaSelecionada.replaceAll("\\*", "");
-		int larguraTexto = 120;
-		g2d.setColor(lightWhite);
-		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
-		g2d.setColor(Color.BLACK);
-		g2d.drawString(txt.toUpperCase(),
-				x + (130 - Util.larguraTexto(txt, g2d)) / 2, y);
-
-		desenaImClimaSelecionado(g2d, x + larguraTexto + 30, y);
-
-		x -= 80;
-		y += 40;
-
-		txt = pilotoSelecionado.getCarro().getNome().toUpperCase();
-		larguraTexto = Util.larguraTexto(txt, g2d);
-		Color c = corRectPiloto(g2d, pilotoSelecionado, 1);
-		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
-		corTxtPiloto(g2d, c);
-		g2d.drawString(txt, x + 10, y);
-
-		int xCarro = x + larguraTexto + 50;
-
-		if (PainelCircuito.desenhaImagens)
-			g2d.drawImage(imageCarro, xCarro, y - 35, null);
-
-		y += 40;
-
-		txt = pilotoSelecionado.getNome().toUpperCase();
-		larguraTexto = Util.larguraTexto(txt, g2d);
-		c = corRectPiloto(g2d, pilotoSelecionado, 2);
-		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
-		corTxtPiloto(g2d, c);
-		g2d.drawString(txt, x + 10, y);
-
-		if (capacete != null && PainelCircuito.desenhaImagens)
-			g2d.drawImage(capacete,
-					xCarro + imageCarro.getWidth() - capacete.getWidth(),
-					y - 35, null);
-
-		g2d.setFont(fontOri);
-	}
-
-	private void desenaImClimaSelecionado(Graphics2D g2d, int x, int y) {
-		g2d.setColor(lightWhite);
-		g2d.fillRoundRect(x, y - 25, 35, 30, 15, 15);
-		if (Clima.SOL.equals(climaSelecionado)) {
-			g2d.drawImage(sol, x, y - 25, null);
-		}
-		if (Clima.NUBLADO.equals(climaSelecionado)) {
-			g2d.drawImage(nublado, x, y - 25, null);
-		}
-		if (Clima.CHUVA.equals(climaSelecionado)) {
-			g2d.drawImage(chuva, x, y - 25, null);
-		}
-	}
-
-	private void desenhaCircuitoSelecionado(Graphics2D g2d, int x, int y) {
-		if (circuitoSelecionado == null) {
-			circuitoSelecionado = (String) controleJogo.getCircuitos().keySet()
-					.iterator().next();
-		}
-		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
-				circuitoSelecionado);
-
-		Font fontOri = g2d.getFont();
-		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-		String txt = circuitoSelecionado;
-		int larguraTexto = 350;
-		pistaRect.setFrame(x, y - 25, larguraTexto + 20, 30);
-		g2d.setColor(lightWhite);
-		g2d.fill(pistaRect);
-		g2d.setColor(Color.BLACK);
-		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
-		g2d.drawString(txt.toUpperCase(), x + incX, y);
-		desenhaMiniCircuito(nmCircuitoMRO, g2d, x, y);
-
-		g2d.setFont(fontOri);
-	}
-
-	private void corTxtPiloto(Graphics2D g2d, Color c) {
-		int valor = (c.getRed() + c.getGreen() + c.getBlue()) / 2;
-		if (valor > 250) {
-			g2d.setColor(Color.BLACK);
-		} else {
-			g2d.setColor(Color.WHITE);
-		}
-	}
-
-	private Color corRectPiloto(Graphics2D g2d, Piloto ps, int i) {
-		Color c = null;
-		if (i == 2) {
-			c = ps.getCarro().getCor2();
-		}
-		if (i == 1) {
-			c = ps.getCarro().getCor1();
-		}
-		if (c != null) {
-			c = c.brighter();
-			g2d.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 200));
-		}
-		return c;
 	}
 
 	protected void processaClick(MouseEvent e) {
@@ -712,6 +417,367 @@ public class PainelMenuLocal extends JPanel {
 			}
 		}
 
+		if (addPistaRect.contains(e.getPoint())) {
+			adicionaPistaCampeonato();
+			return;
+		}
+		if (remPistaRect.contains(e.getPoint())) {
+			removePistaCampeonato();
+			return;
+		}
+
+	}
+
+	private void iniciaRecursos() {
+		setaCarroCima = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
+						200);
+		setaCarroBaixo = CarregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
+						200);
+		/**
+		 * Esquerda
+		 */
+
+		double rad = Math.toRadians(270);
+		AffineTransform afRotate = new AffineTransform();
+		afRotate.setToRotation(rad, setaCarroCima.getWidth() / 2,
+				setaCarroCima.getHeight() / 2);
+		AffineTransformOp opRotate = new AffineTransformOp(afRotate,
+				AffineTransformOp.TYPE_BILINEAR);
+		BufferedImage rotateBufferSetaCima = new BufferedImage(
+				setaCarroCima.getWidth(), setaCarroCima.getWidth(),
+				BufferedImage.TYPE_INT_ARGB);
+		opRotate.filter(setaCarroCima, rotateBufferSetaCima);
+
+		setaCarroEsquerda = rotateBufferSetaCima;
+
+		rad = Math.toRadians(90);
+		afRotate = new AffineTransform();
+		afRotate.setToRotation(rad, setaCarroCima.getWidth() / 2,
+				setaCarroCima.getHeight() / 2);
+		opRotate = new AffineTransformOp(afRotate,
+				AffineTransformOp.TYPE_BILINEAR);
+		rotateBufferSetaCima = new BufferedImage(setaCarroCima.getWidth(),
+				setaCarroCima.getWidth(), BufferedImage.TYPE_INT_ARGB);
+		opRotate.filter(setaCarroCima, rotateBufferSetaCima);
+
+		setaCarroDireita = rotateBufferSetaCima;
+
+		sol = CarregadorRecursos.carregaBufferedImageTransparecia(
+				"clima/sol.gif", null);
+		nublado = CarregadorRecursos.carregaBufferedImageTransparecia(
+				"clima/nublado.gif", null);
+		chuva = CarregadorRecursos.carregaBufferedImageTransparecia(
+				"clima/chuva.gif", null);
+
+		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.3);
+		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.3);
+		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.3);
+
+		carregadorRecursos = new CarregadorRecursos(true);
+		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
+		temporadas = carregadorRecursos.getVectorTemps();
+		Collections.reverse(temporadas);
+		pilotosRect = new ArrayList<RoundRectangle2D>();
+		for (int i = 0; i < 24; i++) {
+			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 10, 10));
+		}
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		try {
+			Graphics2D g2d = (Graphics2D) g;
+			setarHints(g2d);
+			if (PainelCircuito.carregaBkg) {
+				if (MENU.equals(MENU_PRINCIPAL))
+					bg = ImageUtil.gerarFade(CarregadorRecursos
+							.carregaBufferedImage("bg-monaco.png"), 25);
+				if (MENU.equals(MENU_CORRIDA))
+					bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
+			}
+			if (bg != null) {
+				int centerX = getWidth() / 2;
+				int centerY = getHeight() / 2;
+				int bgX = bg.getWidth() / 2;
+				int bgY = bg.getHeight() / 2;
+				g.drawImage(bg, centerX - bgX, centerY - bgY, null);
+			}
+			if (desenhaCarregando) {
+				desenhaCarregando(g2d);
+				return;
+			}
+			desenhaMenuPrincipalSelecao(g2d);
+			desenhaMenuCorridaSelecao(g2d);
+			desenhaMenuNovoCampeonato(g2d);
+			desenhaMenuQualificacao(g2d);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Logger.logarExept(e);
+		}
+
+	}
+
+	private void removePistaCampeonato() {
+		cirucitosCampeonato.remove(circuitoSelecionado);
+		selecionaPistaAnterior();
+	}
+
+	private void adicionaPistaCampeonato() {
+		if (!cirucitosCampeonato.contains(circuitoSelecionado)) {
+			cirucitosCampeonato.add(circuitoSelecionado);
+		}
+		selecionaProximaPista();
+
+	}
+
+	private void desenhaMenuNovoCampeonato(Graphics2D g2d) throws IOException {
+		if (!MENU.equals(MENU_NOVO_CAMPEONATO)) {
+			return;
+		}
+		int x = (int) (getWidth() / 2);
+		int y = (int) (getHeight() / 2);
+
+		x -= 490;
+		y -= 285;
+
+		desenhaSeletorCircuito(g2d, x, y);
+
+		desenhaAdicionaRemoverPistas(g2d, x + 30, y + 220);
+
+		desenhaSeletorNumeroVoltas(g2d, x + 40, y + 280);
+
+		desenhaNivelCorrida(g2d, x + 40, y + 340);
+
+		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 400);
+
+		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+
+		desenhaCircuitosSelecionados(g2d, x + 480, y - 50);
+
+		desenhaTemporadas(g2d, x + 580, y + 280, true);
+
+	}
+
+	private void desenhaCircuitosSelecionados(Graphics2D g2d, int x, int y) {
+
+		int cont = 0;
+		for (int i = 0; i < cirucitosCampeonato.size(); i++) {
+			if (i % 10 == 0) {
+				cont = 0;
+			}
+			int novoY = y + cont * 25;
+			int novoX = 0;
+			if (i > 9) {
+				novoX = 190;
+			}
+			if (i > 19) {
+				novoX = 380;
+			}
+			String circuito = (String) cirucitosCampeonato.get(i);
+			desenhaNomeCircuito(g2d, x + novoX, novoY + 35, i, circuito);
+			cont++;
+		}
+	}
+
+	private void desenhaNomeCircuito(Graphics2D g2d, int x, int y, int i,
+			String circuito) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 14));
+		circuito = (i + 1) + " " + circuito.toUpperCase();
+		int tamNmPiloto = Util.calculaLarguraText(circuito, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x - 15, y, tamNmPiloto + 10, 18, 10, 10);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(circuito, x - 10, y + 15);
+		g2d.setFont(fontOri);
+
+	}
+
+	private void desenhaAdicionaRemoverPistas(Graphics2D g2d, int x, int y) {
+		g2d.setColor(lightWhite);
+		remPistaRect.setFrame(x, y - 25, 30, 30);
+		g2d.fill(remPistaRect);
+		g2d.drawImage(setaCarroEsquerda, x - 15, y - 55, null);
+		x += 40;
+
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = Lang.msg("adicionaRemove").toUpperCase();
+		int larguraTexto = 300;
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 10, 10);
+		g2d.setColor(Color.BLACK);
+		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
+		g2d.drawString(txt.toUpperCase(), x + incX, y);
+
+		x += larguraTexto + 30;
+
+		g2d.setColor(lightWhite);
+		addPistaRect.setFrame(x, y - 25, 30, 30);
+		g2d.fill(addPistaRect);
+		g2d.drawImage(setaCarroDireita, x - 45, y - 52, null);
+		g2d.setFont(fontOri);
+
+	}
+
+	private void desenhaCarregando(Graphics2D g2d) {
+		int x = (int) (getWidth() / 2);
+		int y = (int) (getHeight() / 2);
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		g2d.setColor(lightWhite);
+		String txt = Lang.msg("carregando").toUpperCase();
+		int larguraTexto = Util.larguraTexto(txt, g2d);
+		int desl = larguraTexto / 2;
+		corridaRect.setFrame(x - desl, y - 25, larguraTexto + 10, 30);
+		g2d.fill(corridaRect);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, x - desl + 5, y);
+		g2d.setFont(fontOri);
+
+	}
+
+	private void desenhaMenuQualificacao(Graphics2D g2d) {
+		if (!MENU.equals(MENU_QUALIFICACAO)) {
+			return;
+		}
+		int x = (int) (getWidth() / 2);
+		int y = (int) (getHeight() / 2);
+
+		x -= 490;
+		y -= 285;
+
+		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+
+		desenhaCircuitoSelecionado(g2d, x + 350, y);
+
+		desenhaTemporadaPilotoSelecionado(g2d, x + 350, y + 230);
+
+		desenhaCombustivel(g2d, x + 490, y + 350);
+
+		desenhaTipoPneu(g2d, x + 490, y + 460);
+
+		desenhaTipoAsa(g2d, x + 490, y + 520);
+
+	}
+
+	private void desenhaTemporadaPilotoSelecionado(Graphics2D g2d, int x, int y) {
+		BufferedImage imageCarro = controleJogo
+				.obterCarroLado(pilotoSelecionado);
+		String temporada = "t" + temporadaSelecionada;
+		controleJogo.setTemporada(temporada);
+		BufferedImage capacete = controleJogo.obterCapacete(pilotoSelecionado);
+
+		x += 40;
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = temporadaSelecionada.replaceAll("\\*", "");
+		int larguraTexto = 120;
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt.toUpperCase(),
+				x + (130 - Util.larguraTexto(txt, g2d)) / 2, y);
+
+		desenaImClimaSelecionado(g2d, x + larguraTexto + 30, y);
+
+		x -= 80;
+		y += 40;
+
+		txt = pilotoSelecionado.getCarro().getNome().toUpperCase();
+		larguraTexto = Util.larguraTexto(txt, g2d);
+		Color c = corRectPiloto(g2d, pilotoSelecionado, 1);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		corTxtPiloto(g2d, c);
+		g2d.drawString(txt, x + 10, y);
+
+		int xCarro = x + larguraTexto + 50;
+
+		if (PainelCircuito.desenhaImagens)
+			g2d.drawImage(imageCarro, xCarro, y - 35, null);
+
+		y += 40;
+
+		txt = pilotoSelecionado.getNome().toUpperCase();
+		larguraTexto = Util.larguraTexto(txt, g2d);
+		c = corRectPiloto(g2d, pilotoSelecionado, 2);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		corTxtPiloto(g2d, c);
+		g2d.drawString(txt, x + 10, y);
+
+		if (capacete != null && PainelCircuito.desenhaImagens)
+			g2d.drawImage(capacete,
+					xCarro + imageCarro.getWidth() - capacete.getWidth(),
+					y - 35, null);
+
+		g2d.setFont(fontOri);
+	}
+
+	private void desenaImClimaSelecionado(Graphics2D g2d, int x, int y) {
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, 35, 30, 15, 15);
+		if (Clima.SOL.equals(climaSelecionado)) {
+			g2d.drawImage(sol, x, y - 25, null);
+		}
+		if (Clima.NUBLADO.equals(climaSelecionado)) {
+			g2d.drawImage(nublado, x, y - 25, null);
+		}
+		if (Clima.CHUVA.equals(climaSelecionado)) {
+			g2d.drawImage(chuva, x, y - 25, null);
+		}
+	}
+
+	private void desenhaCircuitoSelecionado(Graphics2D g2d, int x, int y) {
+		if (circuitoSelecionado == null) {
+			circuitoSelecionado = (String) controleJogo.getCircuitos().keySet()
+					.iterator().next();
+		}
+		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
+				circuitoSelecionado);
+
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = circuitoSelecionado;
+		int larguraTexto = 350;
+		pistaRect.setFrame(x, y - 25, larguraTexto + 20, 30);
+		g2d.setColor(lightWhite);
+		g2d.fill(pistaRect);
+		g2d.setColor(Color.BLACK);
+		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
+		g2d.drawString(txt.toUpperCase(), x + incX, y);
+		desenhaMiniCircuito(nmCircuitoMRO, g2d, x, y);
+
+		g2d.setFont(fontOri);
+	}
+
+	private void corTxtPiloto(Graphics2D g2d, Color c) {
+		int valor = (c.getRed() + c.getGreen() + c.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+	}
+
+	private Color corRectPiloto(Graphics2D g2d, Piloto ps, int i) {
+		Color c = null;
+		if (i == 2) {
+			c = ps.getCarro().getCor2();
+		}
+		if (i == 1) {
+			c = ps.getCarro().getCor1();
+		}
+		if (c != null) {
+			c = c.brighter();
+			g2d.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 200));
+		}
+		return c;
 	}
 
 	private void menosCombustivel() {
@@ -745,9 +811,7 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	public static void main(String[] args) throws IOException, Exception {
-		PainelMenuLocal local = new PainelMenuLocal(new MainFrame(null, null),
-				new ControleJogoLocal());
-		local.resetaRects();
+		System.out.println(0 % 10);
 	}
 
 	private void resetaRects() {
@@ -921,7 +985,7 @@ public class PainelMenuLocal extends JPanel {
 
 		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 460);
 
-		desenhaTemporadas(g2d, x + 580, y);
+		desenhaTemporadas(g2d, x + 580, y, false);
 
 		desenhaAnteriroProximo(g2d, x + 150, y + 600);
 
@@ -948,8 +1012,8 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setFont(fontOri);
 	}
 
-	private void desenhaTemporadas(Graphics2D g2d, int x, int y)
-			throws IOException {
+	private void desenhaTemporadas(Graphics2D g2d, int x, int y,
+			boolean campeonato) throws IOException {
 		g2d.setColor(lightWhite);
 		anteTemporadaRect.setFrame(x, y - 25, 30, 30);
 		g2d.fill(anteTemporadaRect);
@@ -986,6 +1050,27 @@ public class PainelMenuLocal extends JPanel {
 		if (pilotoSelecionado == null) {
 			pilotoSelecionado = (Piloto) pilotos.get(0);
 		}
+		int limite = 0;
+
+		if (campeonato) {
+			if (InterfaceJogo.FACIL.equals(nivelSelecionado)) {
+				limite = pilotos.size() - 6;
+			}
+			if (InterfaceJogo.NORMAL.equals(nivelSelecionado)) {
+				limite = pilotos.size() - 4;
+			}
+			if (InterfaceJogo.DIFICIL.equals(nivelSelecionado)) {
+				limite = pilotos.size() - 2;
+			}
+		}
+
+		if (limite < 0) {
+			limite = 0;
+		}
+		for (int i = 0; i < limite; i++) {
+			pilotos.remove(0);
+		}
+
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);

@@ -751,7 +751,8 @@ public class Piloto implements Serializable {
 				cruzouLargada = true;
 			}
 			setNumeroVolta(getNumeroVolta() + 1);
-			processaAjustesAntesDepoisQuyalify();
+			processaAjustesAntesDepoisQuyalify(Constantes.MAX_VOLTAS
+					/ controleJogo.getQtdeTotalVoltas());
 			if (!controleJogo.isModoQualify()) {
 				Logger.logar(" Numero Volta " + getNumeroVolta() + " "
 						+ getNome() + " Pos " + getPosicao() + " Pts "
@@ -789,19 +790,19 @@ public class Piloto implements Serializable {
 		this.setNoAtual((No) pista.get(index));
 	}
 
-	private void processaAjustesAntesDepoisQuyalify() {
+	private void processaAjustesAntesDepoisQuyalify(int i) {
 		if (getCarro().getPotenciaAntesQualify() > getCarro().getPotencia()) {
-			getCarro().setPotencia(getCarro().getPotencia() + 1);
+			getCarro().setPotencia(getCarro().getPotencia() + i);
 		}
 		if (getCarro().getPotenciaAntesQualify() < getCarro().getPotencia()) {
-			getCarro().setPotencia(getCarro().getPotencia() - 1);
+			getCarro().setPotencia(getCarro().getPotencia() - i);
 		}
 
 		if (getHabilidadeAntesQualify() > getHabilidade()) {
-			setHabilidade(getHabilidade() + 1);
+			setHabilidade(getHabilidade() + i);
 		}
 		if (getHabilidadeAntesQualify() < getHabilidade()) {
-			setHabilidade(getHabilidade() - 1);
+			setHabilidade(getHabilidade() - i);
 		}
 	}
 
