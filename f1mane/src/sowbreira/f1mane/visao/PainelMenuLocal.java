@@ -1096,9 +1096,9 @@ public class PainelMenuLocal extends JPanel {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			int novoY = y + i * 24;
 			if (i % 2 == 0) {
-				desenhaNomePiloto(g2d, x - 80, novoY + 35, i, piloto);
+				desenhaNomePiloto(g2d, x - 80, novoY + 35, i + limite, piloto);
 			} else {
-				desenhaNomePiloto(g2d, x + 120, novoY + 35, i, piloto);
+				desenhaNomePiloto(g2d, x + 120, novoY + 35, i + limite, piloto);
 			}
 		}
 	}
