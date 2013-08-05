@@ -45,20 +45,24 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class PainelMenuLocal extends JPanel {
+
 	public static BufferedImage bg;
 
 	public static String MENU_PRINCIPAL = "MENU_PRINCIPAL";
 
 	public static String MENU_CORRIDA = "MENU_CORRIDA";
 
-	public static String MENU_NOVO_CAMPEONATO = "MENU_NOVO_CAMPEONATO";
+	public static String MENU_NOVO_CAMPEONATO_PILOTOS = "MENU_NOVO_CAMPEONATO_PILOTOS";
 
 	public static String MENU_QUALIFICACAO = "MENU_QUALIFICACAO";
 
-	private MainFrame mainFrame;
-	private InterfaceJogo controleJogo;
+	private static final String MENU_CORRIDA_CAMPEONATO_PILOTOS = "MENU_CORRIDA_CAMPEONATO_PILOTOS";
 
 	private String MENU = MENU_PRINCIPAL;
+
+	private MainFrame mainFrame;
+
+	private InterfaceJogo controleJogo;
 
 	public final static Color lightWhite = new Color(200, 200, 200, 100);
 
@@ -249,7 +253,7 @@ public class PainelMenuLocal extends JPanel {
 		}
 		if (MENU.equals(MENU_PRINCIPAL)
 				&& campeonatoRect.contains(e.getPoint())) {
-			MENU = MENU_NOVO_CAMPEONATO;
+			MENU = MENU_NOVO_CAMPEONATO_PILOTOS;
 			resetaRects();
 			return;
 		}
@@ -527,7 +531,7 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void desenhaMenuNovoCampeonato(Graphics2D g2d) throws IOException {
-		if (!MENU.equals(MENU_NOVO_CAMPEONATO)) {
+		if (!MENU.equals(MENU_NOVO_CAMPEONATO_PILOTOS)) {
 			return;
 		}
 		int x = (int) (getWidth() / 2);
@@ -794,7 +798,7 @@ public class PainelMenuLocal extends JPanel {
 			MENU = MENU_CORRIDA;
 			return;
 		}
-		if (MENU.equals(MENU_NOVO_CAMPEONATO)) {
+		if (MENU.equals(MENU_NOVO_CAMPEONATO_PILOTOS)) {
 			MENU = MENU_PRINCIPAL;
 			return;
 		}
@@ -855,9 +859,9 @@ public class PainelMenuLocal extends JPanel {
 			}
 			return;
 		}
-		if (MENU.equals(MENU_NOVO_CAMPEONATO)) {
+		if (MENU.equals(MENU_NOVO_CAMPEONATO_PILOTOS)) {
 			try {
-				if(cirucitosCampeonato.isEmpty()){
+				if (cirucitosCampeonato.isEmpty()) {
 					cirucitosCampeonato.add(circuitoSelecionado);
 				}
 				if (mainFrame.verificaCriarJogo()) {
@@ -869,6 +873,7 @@ public class PainelMenuLocal extends JPanel {
 							nivelSelecionado, pilotoSelecionado, kers, drs,
 							trocaPneus, reabasteciemto);
 				}
+				MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				Logger.logarExept(e1);
