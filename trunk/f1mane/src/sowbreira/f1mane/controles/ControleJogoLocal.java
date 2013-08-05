@@ -1395,4 +1395,16 @@ public class ControleJogoLocal extends ControleRecursos implements
 				|| Math.random() > indicativoEmborrachamentoPista;
 	}
 
+	@Override
+	public void criarCampeonatoPiloto(List cirucitosCampeonato,
+			String temporadaSelecionada, int numVoltasSelecionado,
+			int turbulenciaSelecionado, String climaSelecionado,
+			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+			boolean drs, boolean trocaPneus, boolean reabasteciemto) {
+		controleCampeonato.criarCampeonatoPiloto(cirucitosCampeonato,
+				temporadaSelecionada, numVoltasSelecionado,
+				turbulenciaSelecionado, climaSelecionado, nivelSelecionado,
+				pilotoSelecionado, kers, drs, trocaPneus, reabasteciemto);
+	}
+
 }

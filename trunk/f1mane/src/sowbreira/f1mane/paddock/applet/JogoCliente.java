@@ -1194,4 +1194,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
+	@Override
+	public void criarCampeonatoPiloto(List cirucitosCampeonato,
+			String temporadaSelecionada, int numVoltasSelecionado,
+			int turbulenciaSelecionado, String climaSelecionado,
+			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+			boolean drs, boolean trocaPneus, boolean reabasteciemto) {
+	}
+
 }
