@@ -251,16 +251,6 @@ public class PainelMenuLocal extends JPanel {
 				&& campeonatoRect.contains(e.getPoint())) {
 			MENU = MENU_NOVO_CAMPEONATO;
 			resetaRects();
-			// try {
-			// if (mainFrame.verificaCriarJogo()) {
-			// controleJogo = mainFrame.getControleJogo();
-			// controleJogo.criarCampeonatoPiloto();
-			// }
-			//
-			// } catch (Exception e1) {
-			// e1.printStackTrace();
-			// Logger.logarExept(e1);
-			// }
 			return;
 		}
 		if (continuaCampeonatoRect.contains(e.getPoint())) {
@@ -848,7 +838,6 @@ public class PainelMenuLocal extends JPanel {
 			try {
 				desenhaCarregando = true;
 				paintImmediately(getVisibleRect());
-				// Thread.sleep(100);
 				if (mainFrame.verificaCriarJogo()) {
 					controleJogo = mainFrame.getControleJogo();
 					controleJogo.setMainFrame(mainFrame);
@@ -859,6 +848,26 @@ public class PainelMenuLocal extends JPanel {
 							nivelSelecionado, pilotoSelecionado, kers, drs,
 							trocaPneus, reabasteciemto, combustivelSelecionado,
 							asaSelecionado, pneuSelecionado);
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				Logger.logarExept(e1);
+			}
+			return;
+		}
+		if (MENU.equals(MENU_NOVO_CAMPEONATO)) {
+			try {
+				if(cirucitosCampeonato.isEmpty()){
+					cirucitosCampeonato.add(circuitoSelecionado);
+				}
+				if (mainFrame.verificaCriarJogo()) {
+					controleJogo = mainFrame.getControleJogo();
+					controleJogo.setMainFrame(mainFrame);
+					controleJogo.criarCampeonatoPiloto(cirucitosCampeonato,
+							temporadaSelecionada, numVoltasSelecionado,
+							turbulenciaSelecionado, climaSelecionado,
+							nivelSelecionado, pilotoSelecionado, kers, drs,
+							trocaPneus, reabasteciemto);
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -1047,9 +1056,7 @@ public class PainelMenuLocal extends JPanel {
 		String temporada = "t" + temporadaSelecionada;
 		List pilotos = litasPilotosTemporada(temporada);
 		y += 8;
-		if (pilotoSelecionado == null) {
-			pilotoSelecionado = (Piloto) pilotos.get(0);
-		}
+
 		int limite = 0;
 
 		if (campeonato) {
@@ -1070,7 +1077,9 @@ public class PainelMenuLocal extends JPanel {
 		for (int i = 0; i < limite; i++) {
 			pilotos.remove(0);
 		}
-
+		if (pilotoSelecionado == null) {
+			pilotoSelecionado = (Piloto) pilotos.get(0);
+		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);

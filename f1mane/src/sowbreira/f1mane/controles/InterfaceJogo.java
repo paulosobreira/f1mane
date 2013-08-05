@@ -348,4 +348,10 @@ public interface InterfaceJogo {
 
 	public boolean verificaPistaEmborrachada();
 
+	public void criarCampeonatoPiloto(List cirucitosCampeonato,
+			String temporadaSelecionada, int numVoltasSelecionado,
+			int turbulenciaSelecionado, String climaSelecionado,
+			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+			boolean drs, boolean trocaPneus, boolean reabasteciemto);
+
 }
