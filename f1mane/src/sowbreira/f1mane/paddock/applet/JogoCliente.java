@@ -6,12 +6,9 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -22,6 +19,7 @@ import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
@@ -1195,11 +1193,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void criarCampeonatoPiloto(List cirucitosCampeonato,
+	public Campeonato criarCampeonatoPiloto(List cirucitosCampeonato,
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
 			boolean drs, boolean trocaPneus, boolean reabasteciemto) {
+		return null;
 	}
 
 }

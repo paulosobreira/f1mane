@@ -33,6 +33,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
@@ -229,6 +230,8 @@ public class PainelMenuLocal extends JPanel {
 	private Map circuitosPilotos;
 
 	private List<RoundRectangle2D> pilotosRect;
+
+	private Campeonato campeonato;
 
 	public PainelMenuLocal(MainFrame mainFrame, InterfaceJogo controleJogo) {
 		this.mainFrame = mainFrame;
@@ -508,13 +511,48 @@ public class PainelMenuLocal extends JPanel {
 			}
 			desenhaMenuPrincipalSelecao(g2d);
 			desenhaMenuCorridaSelecao(g2d);
-			desenhaMenuNovoCampeonato(g2d);
+			desenhaMenuNovoCampeonatoPilotos(g2d);
+			desenhaMenuCorridaCampeonatoPilotos(g2d);
 			desenhaMenuQualificacao(g2d);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Logger.logarExept(e);
 		}
 
+	}
+
+	private void desenhaMenuCorridaCampeonatoPilotos(Graphics2D g2d) {
+		if (!MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
+			return;
+		}
+		int x = (int) (getWidth() / 2);
+		int y = (int) (getHeight() / 2);
+
+		x -= 490;
+		y -= 285;
+
+		desenhaCircuitoCorridaCampeonato(g2d, x, y);
+
+	}
+
+	private void desenhaCircuitoCorridaCampeonato(Graphics2D g2d, int x, int y) {
+		if (campeonato != null) {
+			circuitoSelecionado = campeonato.getCircuitoVez();
+		}
+		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
+				circuitoSelecionado);
+
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = circuitoSelecionado;
+		int larguraTexto = 350;
+		pistaRect.setFrame(x, y - 25, larguraTexto + 20, 30);
+		g2d.setColor(lightWhite);
+		g2d.fill(pistaRect);
+		g2d.setColor(Color.BLACK);
+		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
+		g2d.drawString(txt.toUpperCase(), x + incX, y);
+		desenhaMiniCircuito(nmCircuitoMRO, g2d, x, y);
 	}
 
 	private void removePistaCampeonato() {
@@ -530,7 +568,8 @@ public class PainelMenuLocal extends JPanel {
 
 	}
 
-	private void desenhaMenuNovoCampeonato(Graphics2D g2d) throws IOException {
+	private void desenhaMenuNovoCampeonatoPilotos(Graphics2D g2d)
+			throws IOException {
 		if (!MENU.equals(MENU_NOVO_CAMPEONATO_PILOTOS)) {
 			return;
 		}
@@ -867,13 +906,14 @@ public class PainelMenuLocal extends JPanel {
 				if (mainFrame.verificaCriarJogo()) {
 					controleJogo = mainFrame.getControleJogo();
 					controleJogo.setMainFrame(mainFrame);
-					controleJogo.criarCampeonatoPiloto(cirucitosCampeonato,
-							temporadaSelecionada, numVoltasSelecionado,
-							turbulenciaSelecionado, climaSelecionado,
-							nivelSelecionado, pilotoSelecionado, kers, drs,
-							trocaPneus, reabasteciemto);
+					campeonato = controleJogo.criarCampeonatoPiloto(
+							cirucitosCampeonato, temporadaSelecionada,
+							numVoltasSelecionado, turbulenciaSelecionado,
+							climaSelecionado, nivelSelecionado,
+							pilotoSelecionado, kers, drs, trocaPneus,
+							reabasteciemto);
+					MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 				}
-				MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				Logger.logarExept(e1);

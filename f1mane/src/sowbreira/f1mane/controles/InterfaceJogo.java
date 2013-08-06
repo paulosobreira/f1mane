@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
@@ -348,7 +349,7 @@ public interface InterfaceJogo {
 
 	public boolean verificaPistaEmborrachada();
 
-	public void criarCampeonatoPiloto(List cirucitosCampeonato,
+	public Campeonato criarCampeonatoPiloto(List cirucitosCampeonato,
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
