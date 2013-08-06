@@ -1210,7 +1210,7 @@ public class ControleCampeonato {
 
 	}
 
-	public void criarCampeonatoPiloto(List cirucitosCampeonato,
+	public Campeonato criarCampeonatoPiloto(List cirucitosCampeonato,
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
@@ -1254,5 +1254,6 @@ public class ControleCampeonato {
 		campeonato.setNivel(nivelSelecionado);
 		campeonato.setQtdeVoltas(new Integer(numVoltasSelecionado));
 		persistirEmCache();
+		return campeonato;
 	}
 }
