@@ -68,9 +68,9 @@ import br.nnpe.Util;
  */
 public class PainelCircuito extends JPanel {
 
-	public static boolean carregaBkg = false;
-	public static boolean desenhaPista = false;
-	public static boolean desenhaImagens = false;
+	public static boolean carregaBkg = true;
+	public static boolean desenhaPista = true;
+	public static boolean desenhaImagens = true;
 
 	private long ultCentralizada;
 	private static final long serialVersionUID = -5268795362549996148L;
