@@ -15,6 +15,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -238,7 +240,16 @@ public class PainelMenuLocal extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				processaClick(e);
-				repaint();
+				try {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							repaint();
+						}
+					});
+				} catch (Exception ex) {
+					Logger.logarExept(ex);
+				}
 				super.mouseClicked(e);
 			}
 		});

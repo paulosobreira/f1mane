@@ -1407,4 +1407,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 				pilotoSelecionado, kers, drs, trocaPneus, reabasteciemto);
 	}
 
+	@Override
+	public void voltaMenuPrincipal() {
+		matarTodasThreads();
+		mainFrame.iniciar();
+	}
+
 }

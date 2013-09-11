@@ -97,8 +97,8 @@ public class ControleQualificacao {
 			piloto.setContTravouRodas(0);
 			piloto.setCiclosDesconcentrado(0);
 			piloto.setVoltas(new ArrayList());
-//			System.out.println("CiclosVoltaQualificacao " + piloto.getNome()
-//					+ " " + piloto.getCiclosVoltaQualificacao());
+			// System.out.println("CiclosVoltaQualificacao " + piloto.getNome()
+			// + " " + piloto.getCiclosVoltaQualificacao());
 			controleJogo.zerarMelhorVolta();
 		}
 		Collections.sort(pilotos, new Comparator() {
@@ -121,14 +121,11 @@ public class ControleQualificacao {
 			for (int i = 0; i < pilotos.size(); i++) {
 				Piloto piloto = (Piloto) pilotos.get(i);
 				if (p.getCiclosVoltaQualificacao() != piloto
-						.getCiclosVoltaQualificacao()
-						|| p.equals(piloto)) {
+						.getCiclosVoltaQualificacao() || p.equals(piloto)) {
 					continue;
 				} else {
 					diffTodosIn = false;
-					p
-							.setCiclosVoltaQualificacao(p
-									.getCiclosVoltaQualificacao() - 1);
+					p.setCiclosVoltaQualificacao(p.getCiclosVoltaQualificacao() - 1);
 				}
 			}
 			if (diffTodosIn) {
@@ -151,12 +148,12 @@ public class ControleQualificacao {
 		Piloto ant = null;
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = Util.intervalo(3, 5);
+			limite = Util.intervalo(10, 20);
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(5, 7);
+				limite = Util.intervalo(20, 30);
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(7, 15);
+				limite = Util.intervalo(30, 40);
 			}
 			maiorDiff = 0;
 			ant = null;
@@ -190,12 +187,12 @@ public class ControleQualificacao {
 		Piloto ant = null;
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = Util.intervalo(3, 5);
+			limite = Util.intervalo(5, 10);
 			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(5, 7);
+				limite = Util.intervalo(10, 20);
 			}
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(7, 10);
+				limite = Util.intervalo(20, 30);
 			}
 			maiorDiff = 0;
 			ant = null;
@@ -247,12 +244,16 @@ public class ControleQualificacao {
 					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 					(Carro.ALTURA));
 
-			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util
-					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-					.getCenterX()), Util.inte(rectangle.getCenterY())));
-			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util
-					.inte(Carro.ALTURA * 1.2), new Point(Util.inte(rectangle
-					.getCenterX()), Util.inte(rectangle.getCenterY())));
+			Point cima = GeoUtil.calculaPonto(
+					calculaAngulo,
+					Util.inte(Carro.ALTURA * 1.2),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
+			Point baixo = GeoUtil.calculaPonto(
+					calculaAngulo + 180,
+					Util.inte(Carro.ALTURA * 1.2),
+					new Point(Util.inte(rectangle.getCenterX()), Util
+							.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA)),

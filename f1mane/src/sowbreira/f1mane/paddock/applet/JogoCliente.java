@@ -1201,4 +1201,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
+	@Override
+	public void voltaMenuPrincipal() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
