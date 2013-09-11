@@ -199,6 +199,9 @@ public class PainelCircuito extends JPanel {
 	private RoundRectangle2D vaiBox = new RoundRectangle2D.Double(0, 0, 1, 1,
 			10, 10);
 
+	private RoundRectangle2D voltaMenuPrincipalRect = new RoundRectangle2D.Double(
+			0, 0, 1, 1, 10, 10);
+
 	private int porcentCombust = 50;
 	private String tpPneu;
 	private String tpAsa;
@@ -478,6 +481,10 @@ public class PainelCircuito extends JPanel {
 				return true;
 			}
 		}
+		if (voltaMenuPrincipalRect.contains(e.getPoint())) {
+			controleJogo.voltaMenuPrincipal();
+			return true;
+		}
 
 		return false;
 	}
@@ -590,11 +597,34 @@ public class PainelCircuito extends JPanel {
 			desenhaResultadoFinal(g2d);
 			desenhaAjudaControles(g2d);
 			desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
-
+			desenhaVoltarMenuPrincipal(g2d);
 			desenhaDebugIinfo(g2d);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
+	}
+
+	private void desenhaVoltarMenuPrincipal(Graphics2D g2d) {
+		if (!controleJogo.isCorridaPausada()) {
+			voltaMenuPrincipalRect.setFrame(0, 0, 1, 1);
+			return;
+		}
+		int x = limitesViewPort.x + (int) (limitesViewPort.getWidth() / 2);
+		int y = limitesViewPort.y + (int) (limitesViewPort.getHeight() / 2)
+				- 50;
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		g2d.setColor(lightWhite);
+		String txt = Lang.msg("voltarMenuPrincipal").toUpperCase();
+		int larguraTexto = Util.larguraTexto(txt, g2d);
+		int desl = larguraTexto / 2;
+		voltaMenuPrincipalRect
+				.setFrame(x - desl, y - 25, larguraTexto + 10, 30);
+		g2d.fill(voltaMenuPrincipalRect);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, x - desl + 5, y);
+		g2d.setFont(fontOri);
+
 	}
 
 	private void desenhaAjudaControles(Graphics2D g2d) {
@@ -3277,7 +3307,16 @@ public class PainelCircuito extends JPanel {
 				p.y);
 
 		if (dst == 0) {
-			repaint();
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						repaint();
+					}
+				});
+			} catch (Exception e) {
+				Logger.logarExept(e);
+			}
 		} else {
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {

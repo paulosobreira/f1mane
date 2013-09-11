@@ -359,8 +359,8 @@ public class GerenciadorVisual {
 								}
 							}
 							int index = noAtualSuave.getIndex() + ganhoSuave;
-//							if (piloto.isJogadorHumano())
-//								System.out.println("ganhoSuave" + ganhoSuave);
+							// if (piloto.isJogadorHumano())
+							// System.out.println("ganhoSuave" + ganhoSuave);
 							if (saiuBox) {
 								index = saidaBoxIndex;
 							}
@@ -554,6 +554,7 @@ public class GerenciadorVisual {
 				}
 				if (keyCoode == KeyEvent.VK_ESCAPE) {
 					controleJogo.pausarJogo();
+					controleJogo.ativaVerControles();
 				}
 				if (keyCoode == KeyEvent.VK_F8 || keyCoode == KeyEvent.VK_G) {
 					mudarAutoPos();
@@ -1832,7 +1833,12 @@ public class GerenciadorVisual {
 						painelCircuito.definirDesenhoQualificacao(piloto, pd);
 						if (tempoSleepQualy != 0) {
 							try {
-								painelCircuito.repaint();
+								SwingUtilities.invokeLater(new Runnable() {
+									@Override
+									public void run() {
+										painelCircuito.repaint();
+									}
+								});
 							} catch (Exception e) {
 								Logger.logarExept(e);
 							}
@@ -1850,7 +1856,12 @@ public class GerenciadorVisual {
 							point);
 				}
 				try {
-					painelCircuito.repaint();
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							painelCircuito.repaint();
+						}
+					});
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}

@@ -935,6 +935,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public void iniciar() {
+		getContentPane().removeAll();
 		if (ControleJogoLocal.VALENDO) {
 			setVisible(true);
 			try {

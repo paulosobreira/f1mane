@@ -355,4 +355,6 @@ public interface InterfaceJogo {
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
 			boolean drs, boolean trocaPneus, boolean reabasteciemto);
 
+	public void voltaMenuPrincipal();
+
 }
