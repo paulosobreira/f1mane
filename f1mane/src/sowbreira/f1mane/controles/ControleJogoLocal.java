@@ -1093,6 +1093,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 			pilotoJogador.setAtivarDRS(false);
 			return false;
 		}
+		if (getNumVoltaAtual() <= 1) {
+			pilotoJogador.setAtivarDRS(false);
+			return false;
+		}
 		pilotoJogador.setAtivarDRS(!pilotoJogador.isAtivarDRS());
 		return pilotoJogador.isAtivarDRS();
 	}

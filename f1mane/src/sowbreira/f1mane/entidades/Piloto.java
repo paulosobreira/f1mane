@@ -1164,11 +1164,10 @@ public class Piloto implements Serializable {
 			return;
 		}
 		double diff = calculaDiffParaProximo(controleJogo);
-		double distLimiteTurbulencia = 20;
+		double distLimiteTurbulencia = 15;
 		double nGanho = (controleJogo.getFatorUtrapassagem());
 		if (diff < distLimiteTurbulencia
 				&& !verificaForaPista(carroPilotoDaFrente.getPiloto())) {
-			No noDafrente = carroPilotoDaFrente.getPiloto().getNoAtual();
 			if (getTracado() != carroPilotoDaFrente.getPiloto().getTracado()) {
 				if (No.CURVA_ALTA.equals(getNoAtual().getTipo())
 						|| No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
@@ -1180,18 +1179,6 @@ public class Piloto implements Serializable {
 					if (Carro.GIRO_MAX_VAL == getCarro().getGiro() && pass) {
 						nGanho += 0.1;
 					}
-				}
-				if (noAtual.verificaRetaOuLargada()) {
-					nGanho += 0.1;
-				}
-				if (noDafrente.verificaRetaOuLargada()) {
-					nGanho += 0.1;
-				}
-			} else {
-				if (noAtual.verificaRetaOuLargada()
-						&& (No.CURVA_ALTA.equals(noDafrente) || No.CURVA_BAIXA
-								.equals(noDafrente))) {
-					nGanho = diff / distLimiteTurbulencia;
 				}
 			}
 			if (nGanho > 1) {
@@ -1240,11 +1227,14 @@ public class Piloto implements Serializable {
 		No obterProxCurva = controleJogo.obterProxCurva(getNoAtual());
 		if (obterProxCurva != null) {
 			double val = obterProxCurva.getIndex() - getNoAtual().getIndex();
-			int distAfrente = 300;
+			double distAfrente = 300.0;
+			if (controleJogo.getNumVoltaAtual() <= 1) {
+				distAfrente = 500.0;
+			}
 			if (val < distAfrente && getNoAtual().verificaRetaOuLargada()) {
 				freiandoReta = true;
 				acelerando = false;
-				double multi = (val / 300.0);
+				double multi = (val / distAfrente);
 
 				if (testPilotoPneus) {
 					retardaFreiandoReta = true;
@@ -1259,7 +1249,7 @@ public class Piloto implements Serializable {
 				if (!controleJogo.isModoQualify()
 						&& (controleJogo.isChovendo() || controleJogo
 								.getNumVoltaAtual() <= 1)) {
-					minMulti -= 0.2;
+					minMulti -= 0.3;
 					retardaFreiandoReta = false;
 				}
 				if (controleJogo
@@ -1363,7 +1353,11 @@ public class Piloto implements Serializable {
 			if (getCarro().getCargaKers() <= 0) {
 				ativarKers = false;
 			} else {
-				ganho *= 1.2;
+				if (controleJogo.getNumVoltaAtual() <= 1) {
+					ganho *= 1.1;
+				} else {
+					ganho *= 1.2;
+				}
 				getCarro().usaKers();
 			}
 		}
@@ -1539,6 +1533,9 @@ public class Piloto implements Serializable {
 			return;
 		}
 		if (controleJogo.isChovendo()) {
+			return;
+		}
+		if (controleJogo.getNumVoltaAtual() <= 1) {
 			return;
 		}
 		if (ativarDRS) {
