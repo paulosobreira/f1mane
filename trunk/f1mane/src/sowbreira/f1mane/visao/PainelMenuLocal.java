@@ -1757,14 +1757,29 @@ public class PainelMenuLocal extends JPanel {
 		int centerX = (int) (getWidth() / 2.3);
 		int centerY = (int) (getHeight() / 2.5);
 
-		centerX -= 50;
+		centerX -= 250;
+		centerY -= 70;
 
 		Font fontOri = g2d.getFont();
+
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 144));
+
+		String txt = "F1-MANE";
+		int larguraTexto = Util.larguraTexto(txt, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(centerX, centerY - 120, larguraTexto + 10, 130, 15, 15);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, centerX + 5, centerY);
+
+		
+		centerX += 200;
+		centerY += 70;
+		
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
 		g2d.setColor(lightWhite);
-		String txt = Lang.msg("corrida").toUpperCase();
-		int larguraTexto = Util.larguraTexto(txt, g2d);
+		txt = Lang.msg("corrida").toUpperCase();
+		larguraTexto = Util.larguraTexto(txt, g2d);
 		corridaRect.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
 		g2d.fill(corridaRect);
 		g2d.setColor(Color.BLACK);
