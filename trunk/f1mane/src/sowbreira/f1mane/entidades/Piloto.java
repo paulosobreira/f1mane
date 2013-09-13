@@ -1348,11 +1348,15 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaUsoKERS(InterfaceJogo controleJogo) {
+
 		if (controleJogo.isKers() && ativarKers && getPtosBox() == 0
 				&& getNumeroVolta() > 0) {
 			if (getCarro().getCargaKers() <= 0) {
 				ativarKers = false;
 			} else {
+				if (!getCarro().testePotencia()) {
+					return;
+				}
 				if (controleJogo.getNumVoltaAtual() <= 1) {
 					ganho *= 1.1;
 				} else {
@@ -1364,12 +1368,17 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaUsoDRS(InterfaceJogo controleJogo) {
+
 		if (controleJogo.isDrs() && ativarDRS && getPtosBox() == 0
 				&& getNumeroVolta() > 0) {
+
 			if (getNoAtual().verificaRetaOuLargada()
 					&& controleJogo.calculaDiffParaProximoRetardatario(this,
 							false) < Constantes.LIMITE_DRS) {
 				getCarro().setAsa(Carro.MENOS_ASA);
+				if (Math.random() > 0.9 && !getCarro().testeAerodinamica()) {
+					getCarro().setAsa(Carro.ASA_NORMAL);
+				}
 			} else {
 				ativarDRS = false;
 				getCarro().setAsa(Carro.MAIS_ASA);
@@ -1422,6 +1431,7 @@ public class Piloto implements Serializable {
 	private double evitaPoleDispararPrimeiraVolta(InterfaceJogo controleJogo,
 			double ganho) {
 		boolean val = (getPosicao() == 1
+				&& !getNoAtual().verificaRetaOuLargada()
 				&& controleJogo.getNumVoltaAtual() == 1 && Math.random() > (controleJogo
 				.percetagemDeVoltaCompletada(this) / 100.0));
 		if (val) {

@@ -612,6 +612,9 @@ public class PainelCircuito extends JPanel {
 		int x = limitesViewPort.x + (int) (limitesViewPort.getWidth() / 2);
 		int y = limitesViewPort.y + (int) (limitesViewPort.getHeight() / 2)
 				- 50;
+		if (controleJogo.isCorridaTerminada()) {
+			y = limitesViewPort.y + (int) (limitesViewPort.getHeight()) - 20;
+		}
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 		g2d.setColor(lightWhite);
@@ -629,6 +632,9 @@ public class PainelCircuito extends JPanel {
 
 	private void desenhaAjudaControles(Graphics2D g2d) {
 		if (!isVerControles()) {
+			return;
+		}
+		if (controleJogo.isCorridaTerminada()) {
 			return;
 		}
 		Point o = new Point(limitesViewPort.x
@@ -2783,11 +2789,11 @@ public class PainelCircuito extends JPanel {
 		if (controleJogo.isCorridaPausada()) {
 			return;
 		}
-		double qtdeGotas = indiceNublado / 2000.0;
+		double qtdeGotas = indiceNublado / 2500.0;
 		if ((controleJogo.isChovendo() || (Clima.NUBLADO.equals(controleJogo
 				.getClima())))
-				&& piloto.getVelocidade() != 0
-				&& !piloto.isDesqualificado()) {
+				&& indiceNublado > 500
+				&& piloto.getVelocidade() != 0 && !piloto.isDesqualificado()) {
 			g2d.setColor(lightWhiteRain);
 			for (int i = 0; i < 30; i++) {
 				if (i % (Math.random() > 0.5 ? 3 : 2) == 0) {
@@ -3356,7 +3362,7 @@ public class PainelCircuito extends JPanel {
 					}
 				}
 			} else {
-				if (Math.random() > 0.7) {
+				if (Math.random() > 0.9) {
 					if (indiceNublado > 700) {
 						indiceNublado--;
 					} else {
@@ -4741,7 +4747,7 @@ public class PainelCircuito extends JPanel {
 			if (pilotoSelecionado.getNoAtual() != null
 					&& !controleJogo.isChovendo()
 					&& pilotoSelecionado.getNoAtual().verificaRetaOuLargada()
-					&& pilotoSelecionado.getNumeroVolta() > 0
+					&& pilotoSelecionado.getNumeroVolta() > 1
 					&& (controleJogo.obterCarroNaFrente(pilotoSelecionado) != null && controleJogo
 							.obterCarroNaFrente(pilotoSelecionado).getPiloto()
 							.getPtosBox() == 0)
