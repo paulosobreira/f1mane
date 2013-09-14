@@ -7,6 +7,18 @@ public class ConstrutoresPontosCampeonato implements Serializable {
 	private String nomeEquipe;
 	private int pontos;
 
+	
+	
+	public ConstrutoresPontosCampeonato(String nomeEquipe, int pontos) {
+		super();
+		this.nomeEquipe = nomeEquipe;
+		this.pontos = pontos;
+	}
+
+	public ConstrutoresPontosCampeonato() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		ConstrutoresPontosCampeonato construtoresPontosCampeonato = (ConstrutoresPontosCampeonato) obj;

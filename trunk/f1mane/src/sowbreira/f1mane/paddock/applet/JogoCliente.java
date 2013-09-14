@@ -23,8 +23,10 @@ import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.Comandos;
@@ -1204,7 +1206,18 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void voltaMenuPrincipal() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public List<PilotosPontosCampeonato> geraListaPilotosPontos() {
+		return null;
+	}
+
+	@Override
+	public List<ConstrutoresPontosCampeonato> geraListaContrutoresPontos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

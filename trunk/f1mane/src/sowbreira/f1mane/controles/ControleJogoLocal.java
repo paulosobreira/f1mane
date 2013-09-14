@@ -15,8 +15,10 @@ import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
@@ -1418,6 +1420,24 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void voltaMenuPrincipal() {
 		matarTodasThreads();
 		mainFrame.iniciar();
+	}
+
+	@Override
+	public List<PilotosPontosCampeonato> geraListaPilotosPontos() {
+		if (controleCampeonato == null) {
+			return new ArrayList<PilotosPontosCampeonato>();
+		}
+		controleCampeonato.geraListaPilotosPontos();
+		return controleCampeonato.getPilotosPontos();
+	}
+
+	@Override
+	public List<ConstrutoresPontosCampeonato> geraListaContrutoresPontos() {
+		if (controleCampeonato == null) {
+			return new ArrayList<ConstrutoresPontosCampeonato>();
+		}
+		controleCampeonato.geraListaContrutoresPontos();
+		return controleCampeonato.getContrutoresPontos();
 	}
 
 }

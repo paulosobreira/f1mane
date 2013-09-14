@@ -591,7 +591,9 @@ public class ControleCampeonato {
 	}
 
 	public void geraListaPilotosPontos() {
-		pilotosPontos = new ArrayList();
+		if (pilotosPontos == null)
+			pilotosPontos = new ArrayList();
+		pilotosPontos.clear();
 		if (campeonato.getCorridas().isEmpty()) {
 			return;
 		}
@@ -633,7 +635,7 @@ public class ControleCampeonato {
 
 	}
 
-	public List getPilotosPontos() {
+	public List<PilotosPontosCampeonato> getPilotosPontos() {
 		return pilotosPontos;
 	}
 
@@ -659,7 +661,7 @@ public class ControleCampeonato {
 		return pontos;
 	}
 
-	public ArrayList getContrutoresPontos() {
+	public List<ConstrutoresPontosCampeonato> getContrutoresPontos() {
 		return contrutoresPontos;
 	}
 

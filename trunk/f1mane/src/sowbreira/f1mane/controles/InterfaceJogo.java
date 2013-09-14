@@ -9,9 +9,11 @@ import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.NoWrapper;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
@@ -356,5 +358,9 @@ public interface InterfaceJogo {
 			boolean drs, boolean trocaPneus, boolean reabasteciemto);
 
 	public void voltaMenuPrincipal();
+
+	public List<PilotosPontosCampeonato> geraListaPilotosPontos();
+
+	public List<ConstrutoresPontosCampeonato> geraListaContrutoresPontos();
 
 }

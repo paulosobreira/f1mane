@@ -4,8 +4,18 @@ public class PilotosPontosCampeonato {
 
 	private String nome;
 	private int pontos;
-
 	private int vitorias;
+
+	public PilotosPontosCampeonato() {
+
+	}
+
+	public PilotosPontosCampeonato(String nome, int pontos, int vitorias) {
+		super();
+		this.nome = nome;
+		this.pontos = pontos;
+		this.vitorias = vitorias;
+	}
 
 	public int getVitorias() {
 		return vitorias;
