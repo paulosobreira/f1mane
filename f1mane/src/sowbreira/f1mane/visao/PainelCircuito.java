@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 
 import com.sun.org.apache.bcel.internal.generic.BALOAD;
 
+import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -72,7 +73,8 @@ public class PainelCircuito extends JPanel {
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
-	private long ultCentralizada;
+	private Point pontoCentralizado;
+
 	private static final long serialVersionUID = -5268795362549996148L;
 	private InterfaceJogo controleJogo;
 	private GerenciadorVisual gerenciadorVisual;
@@ -149,8 +151,6 @@ public class PainelCircuito extends JPanel {
 	private Thread threadCarregarBkg;
 	private List pistaMinimizada;
 	private ArrayList boxMinimizado;
-	protected Point newP;
-	private Point oldP;
 	private boolean alternaPiscaSCSair;
 
 	private boolean exibeResultadoFinal;
@@ -318,7 +318,6 @@ public class PainelCircuito extends JPanel {
 		mx += 300;
 		my += 300;
 		gerarGrid();
-
 	}
 
 	private void carregaRecursos() {
@@ -2096,6 +2095,7 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaBackGround(Graphics2D g2d) {
+		Rectangle limitesViewPort = (Rectangle) limitesViewPortCenter();
 		if (backGround == null) {
 			carregaBackGround();
 		}
@@ -2128,8 +2128,11 @@ public class PainelCircuito extends JPanel {
 								- backGround.getHeight());
 						rectangle.y -= diffY;
 					}
-					subimage = backGround.getSubimage(rectangle.x, rectangle.y,
-							rectangle.width, rectangle.height);
+					if (rectangle.x > 0 && rectangle.y > 0
+							&& rectangle.x < backGround.getWidth()
+							&& rectangle.y < backGround.getHeight())
+						subimage = backGround.getSubimage(rectangle.x,
+								rectangle.y, rectangle.width, rectangle.height);
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
@@ -2512,22 +2515,22 @@ public class PainelCircuito extends JPanel {
 		}
 		Point p = new Point(Util.inte((piloto.getCarX() - 2) * zoom),
 				Util.inte((piloto.getCarY() - 2) * zoom));
-		if (limitesViewPort.contains(p)) {
-			g2d.setColor(piloto.getCarro().getCor1());
-			marcaCorPilotoJogador(g2d, piloto);
-			g2d.fillOval(p.x, p.y, 8, 8);
-			g2d.setColor(new Color(piloto.getCarro().getCor2().getRed(), piloto
-					.getCarro().getCor2().getGreen(), piloto.getCarro()
-					.getCor2().getBlue(), 175));
-			marcaCorPilotoJogador(g2d, piloto);
-			Stroke stroke = g2d.getStroke();
-			g2d.setStroke(trilho);
-			Point p2 = new Point(Util.inte((piloto.getCarX() - 3) * zoom),
-					Util.inte((piloto.getCarY() - 3) * zoom));
-			g2d.drawOval(Util.inte((p2.x)), Util.inte((p2.y)), 8, 8);
-			g2d.setStroke(stroke);
-			desenhaNomePilotoSelecionadoCarroCima(piloto, g2d, p);
-		}
+		// if (limitesViewPort.contains(p)) {
+		g2d.setColor(piloto.getCarro().getCor1());
+		marcaCorPilotoJogador(g2d, piloto);
+		g2d.fillOval(p.x, p.y, 8, 8);
+		g2d.setColor(new Color(piloto.getCarro().getCor2().getRed(), piloto
+				.getCarro().getCor2().getGreen(), piloto.getCarro().getCor2()
+				.getBlue(), 175));
+		marcaCorPilotoJogador(g2d, piloto);
+		Stroke stroke = g2d.getStroke();
+		g2d.setStroke(trilho);
+		Point p2 = new Point(Util.inte((piloto.getCarX() - 3) * zoom),
+				Util.inte((piloto.getCarY() - 3) * zoom));
+		g2d.drawOval(Util.inte((p2.x)), Util.inte((p2.y)), 8, 8);
+		g2d.setStroke(stroke);
+		desenhaNomePilotoSelecionadoCarroCima(piloto, g2d, p);
+		// }
 	}
 
 	private void marcaCorPilotoJogador(Graphics2D g2d, Piloto piloto) {
@@ -2539,13 +2542,37 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public Shape limitesViewPort() {
-		JScrollPane scrollPane = gerenciadorVisual.getScrollPane();
-		if (scrollPane == null) {
-			return null;
+		// JScrollPane scrollPane = gerenciadorVisual.getScrollPane();
+		// if (scrollPane == null) {
+		// return null;
+		// }
+		int x = 0;
+		int y = 0;
+
+		MainFrame mainFrame = controleJogo.getMainFrame();
+		Rectangle rectangle = new Rectangle(x, y,
+				(int) (mainFrame.getWidth() * 0.98),
+				(int) (mainFrame.getHeight() * 0.90));
+		return rectangle;
+	}
+
+	public Shape limitesViewPortCenter() {
+		// JScrollPane scrollPane = gerenciadorVisual.getScrollPane();
+		// if (scrollPane == null) {
+		// return null;
+		// }
+		int x = 0;
+		int y = 0;
+
+		MainFrame mainFrame = controleJogo.getMainFrame();
+		if (pontoCentralizado != null) {
+			x = mainFrame.getWidth() / 2 - pontoCentralizado.x;
+			y = mainFrame.getHeight() / 2 - pontoCentralizado.y;
 		}
-		Rectangle rectangle = scrollPane.getViewport().getBounds();
-		rectangle.x = scrollPane.getViewport().getViewPosition().x;
-		rectangle.y = scrollPane.getViewport().getViewPosition().y;
+
+		Rectangle rectangle = new Rectangle(x, y,
+				(int) (mainFrame.getWidth() * 0.98),
+				(int) (mainFrame.getHeight() * 0.90));
 		// if (Logger.ativo && limitesViewPort != null) {
 		// rectangle = new Rectangle(limitesViewPort.x + 100,
 		// limitesViewPort.y + 100, limitesViewPort.width - 100,
@@ -2568,16 +2595,16 @@ public class PainelCircuito extends JPanel {
 			noAtual = piloto.getNoAtualSuave();
 		}
 		Point p = noAtual.getPoint();
-		if (!limitesViewPort
-				.contains(new Point2D.Double(p.x * zoom, p.y * zoom))) {
-			return;
-		}
+		// if (!limitesViewPort
+		// .contains(new Point2D.Double(p.x * zoom, p.y * zoom))) {
+		// return;
+		// }
 		g2d.setColor(Color.black);
 		Stroke stroke = g2d.getStroke();
 		g2d.setStroke(trilho);
 		Double calculaAngulo = piloto.getAngulo();
-		int carX = piloto.getCarX() - Carro.MEIA_LARGURA_CIMA;
-		int carY = piloto.getCarY() - Carro.MEIA_LARGURA_CIMA;
+		int carX = (piloto.getCarX() - Carro.MEIA_LARGURA_CIMA);
+		int carY = (piloto.getCarY() - Carro.MEIA_LARGURA_CIMA);
 
 		calculaAngulo = processaRabeada(piloto, calculaAngulo);
 
@@ -2602,8 +2629,10 @@ public class PainelCircuito extends JPanel {
 		AffineTransformOp opZoom = new AffineTransformOp(afZoom,
 				AffineTransformOp.TYPE_BILINEAR);
 		opZoom.filter(zoomBuffer, rotateBuffer);
-		int imagemCarroX = Util.inte(carX * zoom);
-		int imagemCarroY = Util.inte(carY * zoom);
+
+		Point dC = descontoCentraliza();
+		int imagemCarroX = Util.inte(carX - dC.x * zoom);
+		int imagemCarroY = Util.inte(carY - dC.y * zoom);
 
 		if (piloto.isJogadorHumano() && piloto.getSetaCima() != 0) {
 			if (piloto.getSetaCima() % 2 == 0) {
@@ -2683,6 +2712,17 @@ public class PainelCircuito extends JPanel {
 		desenhaDebugCarroCima(g2d, piloto, rad);
 		g2d.setStroke(stroke);
 
+	}
+
+	private Point descontoCentraliza() {
+		int x = 0;
+		int y = 0;
+		MainFrame mainFrame = controleJogo.getMainFrame();
+		if (pontoCentralizado != null) {
+			x = (int) (pontoCentralizado.x - mainFrame.getWidth() / 2);
+			y = (int) (pontoCentralizado.y - mainFrame.getHeight() / 2);
+		}
+		return new Point(x, y);
 	}
 
 	private Double processaRabeada(Piloto piloto, Double calculaAngulo) {
@@ -3219,123 +3259,61 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public void centralizarPontoDireto(Point pin) {
-		final JScrollPane scrollPane = gerenciadorVisual.getScrollPane();
-		final Point p = new Point((int) (pin.x * zoom)
-				- (scrollPane.getViewport().getWidth() / 2),
-				(int) (pin.y * zoom)
-						- (scrollPane.getViewport().getHeight() / 2));
-		if (p.x < 0) {
-			p.x = 1;
-		}
-		double maxX = ((getWidth() * zoom) - scrollPane.getViewport()
-				.getWidth());
-		if (p.x > maxX) {
-			p.x = Util.inte(maxX) - 1;
-		}
-		if (p.y < 0) {
-			p.y = 1;
-		}
-		double maxY = ((getHeight() * zoom) - (scrollPane.getViewport()
-				.getHeight()));
-		if (p.y > maxY) {
-			p.y = Util.inte(maxY) - 1;
-		}
-		Point oldp = scrollPane.getViewport().getViewPosition();
-		if (!oldp.equals(p)) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					scrollPane.getViewport().setViewPosition(p);
-				}
-			});
-		}
+		pontoCentralizado = pin;
+		repaint();
+		// final JScrollPane scrollPane = gerenciadorVisual. ();
+		// final Point p = new Point((int) (pin.x * zoom)
+		// - (scrollPane.getViewport().getWidth() / 2),
+		// (int) (pin.y * zoom)
+		// - (scrollPane.getViewport().getHeight() / 2));
+		// if (p.x < 0) {
+		// p.x = 1;
+		// }
+		// double maxX = ((getWidth() * zoom) - scrollPane.getViewport()
+		// .getWidth());
+		// if (p.x > maxX) {
+		// p.x = Util.inte(maxX) - 1;
+		// }
+		// if (p.y < 0) {
+		// p.y = 1;
+		// }
+		// double maxY = ((getHeight() * zoom) - (scrollPane.getViewport()
+		// .getHeight()));
+		// if (p.y > maxY) {
+		// p.y = Util.inte(maxY) - 1;
+		// }
+		// Point oldp = scrollPane.getViewport().getViewPosition();
+		// if (!oldp.equals(p)) {
+		// SwingUtilities.invokeLater(new Runnable() {
+		// @Override
+		// public void run() {
+		// scrollPane.getViewport().setViewPosition(p);
+		// }
+		// });
+		// }
 	}
 
 	public void centralizarPonto(Point pin) {
-		if (ultCentralizada == 0) {
-			ultCentralizada = System.currentTimeMillis();
-		}
-		// System.out.println("Intervalo centralizarPonto "
-		// + (System.currentTimeMillis() - ultCentralizada));
-		ultCentralizada = System.currentTimeMillis();
-		final JScrollPane scrollPane = gerenciadorVisual.getScrollPane();
-		limitesViewPort = (Rectangle) limitesViewPort;
-		if (limitesViewPort == null)
-			return;
-		Point ori = new Point((int) limitesViewPort.getCenterX() - 25,
-				(int) limitesViewPort.getCenterY() - 25);
-		Point des = new Point((int) (pin.x * zoom), (int) (pin.y * zoom));
+		if (pontoCentralizado == null)
+			pontoCentralizado = pin;
+		Point ori = pontoCentralizado;
+		Point des = pin;
 		final List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			int cont = reta.size() / Util.inte(3 / zoom);
-			for (int i = cont; i < reta.size(); i += cont) {
-				p = (Point) reta.get(i);
-				if (limitesViewPort.contains(p)) {
-					p.x -= ((limitesViewPort.width - 50) / 2);
-					p.y -= ((limitesViewPort.height - 50) / 2);
-					break;
-				}
-			}
+			int cont = reta.size() - 1;
+			p = (Point) reta.get(cont);
 		}
+
 		if (p.x < 0) {
 			p.x = 1;
 		}
 		if (p.y < 0) {
 			p.y = 1;
 		}
+		pontoCentralizado = p;
+		repaint();
 
-		int largMax = (int) ((getWidth()) - scrollPane.getViewport().getWidth());
-		if (p.x > largMax) {
-			p.x = largMax - 1;
-		}
-		int altMax = (int) ((getHeight()) - (scrollPane.getViewport()
-				.getHeight()));
-		if (p.y > altMax) {
-			p.y = altMax - 1;
-		}
-		final Point newP = p;
-		PainelCircuito.this.newP = newP;
-		final Point oldp = scrollPane.getViewport().getViewPosition();
-		PainelCircuito.this.oldP = oldp;
-		if (circuito.isUsaBkg() && backGround != null
-				&& limitesViewPort != null) {
-			if ((p.x + limitesViewPort.width) > (backGround.getWidth() * zoom)) {
-				p.x = Util.inte((backGround.getWidth() * zoom)
-						- limitesViewPort.width);
-			}
-			if ((p.y + limitesViewPort.height) > (backGround.getHeight() * zoom)) {
-				p.y = Util.inte((backGround.getHeight() * zoom)
-						- limitesViewPort.height);
-			}
-		}
-		final int dst = (int) GeoUtil.distaciaEntrePontos(oldp.x, oldp.y, p.x,
-				p.y);
-
-		if (dst == 0) {
-			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						repaint();
-					}
-				});
-			} catch (Exception e) {
-				Logger.logarExept(e);
-			}
-		} else {
-			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						repaint();
-						scrollPane.getViewport().setViewPosition(newP);
-					}
-				});
-			} catch (Exception e) {
-				Logger.logarExept(e);
-			}
-		}
 	}
 
 	private void desenhaChuva(Graphics2D g2d) {
@@ -4840,38 +4818,35 @@ public class PainelCircuito extends JPanel {
 	private void desenhaNomePilotoNaoSelecionado(Piloto ps, Graphics2D g2d) {
 		Point pt = new Point(Util.inte((ps.getCarX() - 2) * zoom),
 				Util.inte((ps.getCarY() - 2) * zoom));
-		if (limitesViewPort.contains(pt)) {
-			g2d.setColor(ps.getCarro().getCor1());
-			marcaCorPilotoJogador(g2d, ps);
-			g2d.fillOval(pt.x, pt.y, 8, 8);
-			g2d.setColor(new Color(ps.getCarro().getCor2().getRed(), ps
-					.getCarro().getCor2().getGreen(), ps.getCarro().getCor2()
-					.getBlue(), 175));
-			marcaCorPilotoJogador(g2d, ps);
-			Stroke stroke = g2d.getStroke();
-			g2d.setStroke(trilho);
-			Point p2 = new Point(Util.inte((ps.getCarX() - 3) * zoom),
-					Util.inte((ps.getCarY() - 3) * zoom));
-			g2d.drawOval(Util.inte((p2.x)), Util.inte((p2.y)), 8, 8);
-			g2d.setStroke(stroke);
+		g2d.setColor(ps.getCarro().getCor1());
+		marcaCorPilotoJogador(g2d, ps);
+		g2d.fillOval(pt.x, pt.y, 8, 8);
+		g2d.setColor(new Color(ps.getCarro().getCor2().getRed(), ps.getCarro()
+				.getCor2().getGreen(), ps.getCarro().getCor2().getBlue(), 175));
+		marcaCorPilotoJogador(g2d, ps);
+		Stroke stroke = g2d.getStroke();
+		g2d.setStroke(trilho);
+		Point p2 = new Point(Util.inte((ps.getCarX() - 3) * zoom),
+				Util.inte((ps.getCarY() - 3) * zoom));
+		g2d.drawOval(Util.inte((p2.x)), Util.inte((p2.y)), 8, 8);
+		g2d.setStroke(stroke);
 
-			Color c2 = ps.getCarro().getCor2();
-			if (c2 != null) {
-				g2d.setColor(new Color(c2.getRed(), c2.getGreen(),
-						c2.getBlue(), 100));
-			}
-
-			g2d.fillRoundRect(Util.inte((pt.x) - 3), Util.inte((pt.y) - 16), ps
-					.getNome().length() * 7, 18, 15, 15);
-			int valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
-			if (valor > 250) {
-				g2d.setColor(Color.BLACK);
-			} else {
-				g2d.setColor(Color.WHITE);
-			}
-			g2d.drawString(ps.getNome(), Util.inte((pt.x) - 2),
-					Util.inte((pt.y) - 3));
+		Color c2 = ps.getCarro().getCor2();
+		if (c2 != null) {
+			g2d.setColor(new Color(c2.getRed(), c2.getGreen(), c2.getBlue(),
+					100));
 		}
+
+		g2d.fillRoundRect(Util.inte((pt.x) - 3), Util.inte((pt.y) - 16), ps
+				.getNome().length() * 7, 18, 15, 15);
+		int valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+		g2d.drawString(ps.getNome(), Util.inte((pt.x) - 2),
+				Util.inte((pt.y) - 3));
 	}
 
 	private void setarHints(Graphics2D g2d) {

@@ -99,7 +99,7 @@ public class GerenciadorVisual {
 	private JSpinner spinnerQtdeMinutosQualificacao;
 	private JSlider spinnerDificuldadeUltrapassagem;
 	private PainelCircuito painelCircuito;
-	private JScrollPane scrollPane;
+	// private JScrollPane scrollPane;
 	private InterfaceJogo controleJogo;
 	private JPanel centerPanel = new JPanel();
 	private JLabel infoCorrida;
@@ -137,9 +137,9 @@ public class GerenciadorVisual {
 		return comboBoxTemporadas;
 	}
 
-	public JScrollPane getScrollPane() {
-		return scrollPane;
-	}
+	// public JScrollPane getScrollPane() {
+	// return scrollPane;
+	// }
 
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
@@ -165,12 +165,12 @@ public class GerenciadorVisual {
 	public void iniciarInterfaceGraficaJogo() throws IOException {
 		Logger.logar("iniciarInterfaceGraficaJogo()");
 		painelCircuito = new PainelCircuito(controleJogo, this);
-		scrollPane = new JScrollPane(painelCircuito,
-				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-		disableKeys(scrollPane
-				.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT));
+		// scrollPane = new JScrollPane(painelCircuito,
+		// JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+		// JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//
+		// disableKeys(scrollPane
+		// .getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT));
 
 		carregarInfoClima();
 		addiconarListenerComandos();
@@ -214,11 +214,11 @@ public class GerenciadorVisual {
 			frame.getParent().addKeyListener(keyListener);
 		}
 		painelCircuito.addKeyListener(keyListener);
-		scrollPane.addKeyListener(keyListener);
+		// scrollPane.addKeyListener(keyListener);
 		frame.addMouseWheelListener(mw);
 		painelCircuito.addMouseWheelListener(mw);
-		scrollPane.addMouseWheelListener(mw);
-		scrollPane.requestFocus();
+		// scrollPane.addMouseWheelListener(mw);
+		// scrollPane.requestFocus();
 		if (!(controleJogo instanceof JogoCliente)) {
 			iniciaThreadJogoSuaveClientes();
 		}
@@ -241,7 +241,7 @@ public class GerenciadorVisual {
 					}
 					atualizaPainel();
 					try {
-						Thread.sleep(40);
+						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						alive = false;
 						e.printStackTrace();
@@ -387,11 +387,12 @@ public class GerenciadorVisual {
 								// + diff);
 								noAtualSuave = noAtual;
 							}
+
 						}
 						piloto.setNoAtualSuave(noAtualSuave);
 					}
 					try {
-						Thread.sleep(7);
+						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						alive = false;
 						e.printStackTrace();
@@ -406,7 +407,7 @@ public class GerenciadorVisual {
 
 	private void gerarLayout() {
 		centerPanel.setLayout(new BorderLayout());
-		centerPanel.add(scrollPane, BorderLayout.CENTER);
+		centerPanel.add(painelCircuito, BorderLayout.CENTER);
 		controleJogo.getMainFrame().getContentPane().removeAll();
 		controleJogo.getMainFrame().getContentPane()
 				.setLayout(new BorderLayout());

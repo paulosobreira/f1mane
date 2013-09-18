@@ -143,6 +143,7 @@ public class MainFrame extends JFrame {
 			menuEditor.setEnabled(false);
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		}
+		this.createBufferStrategy(2);
 	}
 
 	private String getVersao() {
