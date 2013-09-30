@@ -17,8 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.paddock.servlet.JogoServidor;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.BeanUtil;
 import br.nnpe.Constantes;
@@ -1608,8 +1610,10 @@ public class Piloto implements Serializable {
 				if (verificaNoPitLaneOutro) {
 					continue;
 				}
-				centralizaDianteiraTrazeiraCarro(controleJogo);
-				piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
+				if (controleJogo instanceof JogoServidor) {
+					centralizaDianteiraTrazeiraCarro(controleJogo);
+					piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
+				}
 				boolean intercecionou = getDiateira().intersects(
 						piloto.getTrazeira())
 						|| getDiateira().intersects(piloto.getCentro())

@@ -241,7 +241,7 @@ public class GerenciadorVisual {
 					}
 					atualizaPainel();
 					try {
-						Thread.sleep(5);
+						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						alive = false;
 						e.printStackTrace();
@@ -392,7 +392,7 @@ public class GerenciadorVisual {
 						piloto.setNoAtualSuave(noAtualSuave);
 					}
 					try {
-						Thread.sleep(5);
+						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						alive = false;
 						e.printStackTrace();
