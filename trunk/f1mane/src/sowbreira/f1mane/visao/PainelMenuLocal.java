@@ -1756,8 +1756,10 @@ public class PainelMenuLocal extends JPanel {
 		centerX += 40;
 
 		if (circuitoSelecionado == null) {
-			circuitoSelecionado = (String) controleJogo.getCircuitos().keySet()
-					.iterator().next();
+			List<String> sorteio = new ArrayList<String>(controleJogo
+					.getCircuitos().keySet());
+			Collections.shuffle(sorteio);
+			circuitoSelecionado = sorteio.get(0);
 		}
 		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
 				circuitoSelecionado);

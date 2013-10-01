@@ -1610,10 +1610,8 @@ public class Piloto implements Serializable {
 				if (verificaNoPitLaneOutro) {
 					continue;
 				}
-				if (controleJogo instanceof JogoServidor) {
-					centralizaDianteiraTrazeiraCarro(controleJogo);
-					piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
-				}
+				centralizaDianteiraTrazeiraCarro(controleJogo);
+				piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
 				boolean intercecionou = getDiateira().intersects(
 						piloto.getTrazeira())
 						|| getDiateira().intersects(piloto.getCentro())
