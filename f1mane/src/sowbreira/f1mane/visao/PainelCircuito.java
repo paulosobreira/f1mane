@@ -242,6 +242,8 @@ public class PainelCircuito extends JPanel {
 	private AffineTransform translateBoxes;
 	private boolean desenhou = true;
 	private int dezporSuave;
+	private Rectangle limitesViewPortCenter;
+	private Rectangle limitesViewPortFull;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -547,10 +549,12 @@ public class PainelCircuito extends JPanel {
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+		long currentTimeMillis = System.currentTimeMillis();
 		try {
 			descontoCentraliza();
 			limitesViewPort = (Rectangle) limitesViewPort();
+			limitesViewPortCenter = (Rectangle) limitesViewPortCenter();
+			limitesViewPortFull = (Rectangle) limitesViewPortFull();
 			if (Math.abs(mouseZoom - zoom) < 0.01) {
 				zoom = mouseZoom;
 			}
@@ -603,6 +607,8 @@ public class PainelCircuito extends JPanel {
 			desenhaVoltarMenuPrincipal(g2d);
 			desenhaDebugIinfo(g2d);
 			desenhou = true;
+			// System.out.println(System.currentTimeMillis() -
+			// currentTimeMillis);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -2100,7 +2106,11 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaBackGround(Graphics2D g2d) {
-		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
+		if (circuito != null && circuito.getCorFundo() != null) {
+			g2d.setColor(circuito.getCorFundo());
+			g2d.fill(limitesViewPortFull);
+		}
+
 		if (backGround == null) {
 			carregaBackGround();
 		}
@@ -2163,9 +2173,8 @@ public class PainelCircuito extends JPanel {
 			}
 			if (drawBuffer != null && desenhaImagens) {
 				drawBuffer.setAccelerationPriority(1);
-				limitesViewPort = (Rectangle) limitesViewPortCenter();
-				int newX = Util.inte(limitesViewPort.getX());
-				int newY = Util.inte(limitesViewPort.getY());
+				int newX = Util.inte(limitesViewPortCenter.getX());
+				int newY = Util.inte(limitesViewPortCenter.getY());
 				g2d.drawImage(drawBuffer, newX, newY, null);
 			}
 		}
@@ -2346,6 +2355,10 @@ public class PainelCircuito extends JPanel {
 		for (TravadaRoda travadaRoda : travadaRodaCopia) {
 			No noAtual = controleJogo.obterNoPorId(travadaRoda.getIdNo());
 			Point p = noAtual.getPoint();
+			if (!limitesViewPort.contains(((p.x - dC.x) * zoom),
+					((p.y - dC.y) * zoom))) {
+				continue;
+			}
 			List<ObjetoPista> objetos = circuito.getObjetos();
 			if (objetos != null) {
 				boolean travadaNaTransparencia = false;
@@ -2489,12 +2502,20 @@ public class PainelCircuito extends JPanel {
 	private void desenhaPiloto(Graphics2D g2d) {
 		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
+			No noAtual = piloto.getNoAtualSuave();
+			if (noAtual == null) {
+				noAtual = piloto.getNoAtual();
+			}
+			if (!limitesViewPort.contains(((noAtual.getX() - dC.x) * zoom),
+					((noAtual.getY() - dC.y) * zoom))) {
+				continue;
+			}
 			if (Logger.ativo && piloto.isJogadorHumano()
 					&& piloto.getNoAtualSuave() != null) {
-				g2d.setColor(Color.BLACK);
-				No noAtualSuave = piloto.getNoAtual();
-				g2d.drawOval((int) ((noAtualSuave.getX() - dC.x) * zoom),
-						(int) ((noAtualSuave.getY() - dC.y) * zoom), 10, 10);
+				noAtual = piloto.getNoAtual();
+				g2d.setColor(OcilaCor.geraOcila("CompReal", Color.ORANGE));
+				g2d.fillOval((int) ((noAtual.getX() - dC.x) * zoom),
+						(int) ((noAtual.getY() - dC.y) * zoom), 10, 10);
 			}
 			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
 			desenhaCarroCima(g2d, piloto);
@@ -2507,6 +2528,14 @@ public class PainelCircuito extends JPanel {
 			if (piloto.equals(pilotoSelecionado)
 					|| piloto.getCarro().isPaneSeca()
 					|| piloto.getCarro().isRecolhido()) {
+				continue;
+			}
+			No noAtual = piloto.getNoAtualSuave();
+			if (noAtual == null) {
+				noAtual = piloto.getNoAtual();
+			}
+			if (!limitesViewPort.contains(((noAtual.getX() - dC.x) * zoom),
+					((noAtual.getY() - dC.y) * zoom))) {
 				continue;
 			}
 			desenhaNomePilotoNaoSelecionado(piloto, g2d);
@@ -2546,10 +2575,6 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public Shape limitesViewPort() {
-		// JScrollPane scrollPane = gerenciadorVisual.getScrollPane();
-		// if (scrollPane == null) {
-		// return null;
-		// }
 		int x = 0;
 		int y = 0;
 
@@ -2560,11 +2585,17 @@ public class PainelCircuito extends JPanel {
 		return rectangle;
 	}
 
+	public Shape limitesViewPortFull() {
+		int x = 0;
+		int y = 0;
+
+		MainFrame mainFrame = controleJogo.getMainFrame();
+		Rectangle rectangle = new Rectangle(x, y, (int) (mainFrame.getWidth()),
+				(int) (mainFrame.getHeight()));
+		return rectangle;
+	}
+
 	public Shape limitesViewPortCenter() {
-		// JScrollPane scrollPane = gerenciadorVisual.getScrollPane();
-		// if (scrollPane == null) {
-		// return null;
-		// }
 		int x = 0;
 		int y = 0;
 
@@ -2577,15 +2608,12 @@ public class PainelCircuito extends JPanel {
 		Rectangle rectangle = new Rectangle(x, y,
 				(int) (mainFrame.getWidth() * 0.98),
 				(int) (mainFrame.getHeight() * 0.90));
-		// if (Logger.ativo && limitesViewPort != null) {
-		// rectangle = new Rectangle(limitesViewPort.x + 100,
-		// limitesViewPort.y + 100, limitesViewPort.width - 100,
-		// limitesViewPort.height - 100);
-		// }
+
 		return rectangle;
 	}
 
 	private void desenhaCarroCima(Graphics2D g2d, Piloto piloto) {
+
 		if (zoom < 0.3) {
 			return;
 		}
@@ -2711,7 +2739,6 @@ public class PainelCircuito extends JPanel {
 		desenhaChuvaFaiscasCarroCima(g2d, piloto, width);
 		desenhaDebugCarroCima(g2d, piloto, rad);
 		g2d.setStroke(stroke);
-
 	}
 
 	private void descontoCentraliza() {
@@ -3290,12 +3317,18 @@ public class PainelCircuito extends JPanel {
 		if (pontoCentralizadoOld != null) {
 			List reta = GeoUtil.drawBresenhamLine(pontoCentralizadoOld,
 					pontoCentralizado);
-			int dezpor = (int) (reta.size() * 0.06);
+			int dezpor = (int) (reta.size() * 0.05);
 			if (dezpor > dezporSuave) {
 				dezporSuave++;
 			}
 			if (dezpor < dezporSuave) {
 				dezporSuave--;
+			}
+			if (dezporSuave >= reta.size()) {
+				dezporSuave = reta.size() - 1;
+			}
+			if (dezporSuave < 0) {
+				dezporSuave = 0;
 			}
 			pontoCentralizado = (Point) reta.get(dezporSuave);
 		}
@@ -3310,7 +3343,7 @@ public class PainelCircuito extends JPanel {
 			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
 					nublado.getBlue(), alfaNub));
-			g2d.fill(limitesViewPort.getBounds());
+			g2d.fill(limitesViewPortFull.getBounds());
 			return;
 		}
 
@@ -3393,9 +3426,9 @@ public class PainelCircuito extends JPanel {
 
 					p1 = new Point(i + 10, j + 10);
 					p2 = new Point(i + 15, j + 20);
-					// if (!(limitesViewPort.contains(p1) && limitesViewPort
-					// .contains(p2)))
-					// continue;
+					if (!(limitesViewPortCenter.contains(p1) && limitesViewPortCenter
+							.contains(p2)))
+						continue;
 					g2d.drawLine(p1.x + limitesViewPort.x, p1.y
 							+ limitesViewPort.y, p2.x + limitesViewPort.x, p2.y
 							+ limitesViewPort.y);
