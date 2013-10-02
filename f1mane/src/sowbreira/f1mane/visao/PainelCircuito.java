@@ -242,7 +242,6 @@ public class PainelCircuito extends JPanel {
 	private AffineTransform translateBoxes;
 	private boolean desenhou = true;
 	private int dezporSuave;
-	private Rectangle limitesViewPortCenter;
 	private Rectangle limitesViewPortFull;
 
 	public PainelCircuito(InterfaceJogo jogo,
@@ -553,7 +552,6 @@ public class PainelCircuito extends JPanel {
 		try {
 			descontoCentraliza();
 			limitesViewPort = (Rectangle) limitesViewPort();
-			limitesViewPortCenter = (Rectangle) limitesViewPortCenter();
 			limitesViewPortFull = (Rectangle) limitesViewPortFull();
 			if (Math.abs(mouseZoom - zoom) < 0.01) {
 				zoom = mouseZoom;
@@ -570,7 +568,6 @@ public class PainelCircuito extends JPanel {
 			}
 			Graphics2D g2d = (Graphics2D) g;
 			setarHints(g2d);
-			zoom = 1;
 			desenhaBackGround(g2d);
 			desenhaContadorVoltas(g2d);
 			if (controleJogo.getNumVoltaAtual() == 0 && !desenhouQualificacao) {
@@ -2106,14 +2103,16 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaBackGround(Graphics2D g2d) {
-		if (circuito != null && circuito.getCorFundo() != null) {
-			g2d.setColor(circuito.getCorFundo());
-			g2d.fill(limitesViewPortFull);
-		}
-
 		if (backGround == null) {
 			carregaBackGround();
 		}
+		if (circuito != null && circuito.getCorFundo() != null) {
+			g2d.setColor(circuito.getCorFundo());
+		} else if (backGround != null) {
+			g2d.setColor(Color.BLACK);
+		}
+		g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
+				(int) limitesViewPortFull.getHeight());
 		if (backGround == null) {
 			desenhaBackGroundComStrokes(g2d);
 		} else {
@@ -2122,59 +2121,89 @@ public class PainelCircuito extends JPanel {
 			AffineTransformOp affineTransformOp = new AffineTransformOp(
 					affineTransform, AffineTransformOp.TYPE_BILINEAR);
 			BufferedImage subimage = null;
+			BufferedImage drawBuffer = null;
+			Rectangle rectangle = null;
 			int diffX = 0;
 			int diffY = 0;
-			BufferedImage drawBuffer = null;
+			try {
+				if (backGround != null) {
+					int largura = Util.inte(limitesViewPortFull.getWidth()
+							/ zoom);
+					int altura = Util.inte(limitesViewPortFull.getHeight()
+							/ zoom);
 
-			// try {
-			// if (limitesViewPort != null && backGround != null) {
-			// Rectangle rectangle = new Rectangle(
-			// Util.inte(limitesViewPort.getX()),
-			// Util.inte(limitesViewPort.getY()),
-			// Util.inte(limitesViewPort.getWidth()),
-			// Util.inte(limitesViewPort.getHeight()));
-			// if ((rectangle.x + rectangle.getWidth()) > backGround
-			// .getWidth()) {
-			// diffX = Util.inte((rectangle.x + rectangle.getWidth())
-			// - backGround.getWidth());
-			// rectangle.x -= diffX;
-			// }
-			// if ((rectangle.y + rectangle.getHeight()) > backGround
-			// .getHeight()) {
-			// diffY = Util.inte((rectangle.y + rectangle.getHeight())
-			// - backGround.getHeight());
-			// rectangle.y -= diffY;
-			// }
-			// if (rectangle.x >= 0 && rectangle.y >= 0
-			// && rectangle.x < backGround.getWidth()
-			// && rectangle.y < backGround.getHeight()) {
-			// subimage = backGround.getSubimage(rectangle.x,
-			// rectangle.y, rectangle.width, rectangle.height);
-			// }
-			// }
-			// } catch (Exception e) {
-			// Logger.logarExept(e);
-			// subimage = backGround;
-			// }
+					int x = dC.x;
+					if (x <= 0) {
+						diffX += (dC.x * -1);
+						x = 0;
+					}
+					int y = dC.y;
+					if (y < 0) {
+						diffY += (dC.y * -1);
+						y = 0;
+					}
 
-			// if (zoom == 1) {
-			// drawBuffer = subimage;
-			// } else {
-			// drawBuffer = new BufferedImage(
-			// (int) (limitesViewPort.getWidth()),
-			// (int) (limitesViewPort.getHeight()),
-			// backGround.getType());
-			// if (subimage != null)
-			// affineTransformOp.filter(subimage, drawBuffer);
-			// }
+					int maxLarg = (dC.x + largura);
+					int maxAlt = (dC.y + altura);
 
-			if (drawBuffer == null) {
-				drawBuffer = backGround;
+					if (maxLarg >= backGround.getWidth()) {
+						largura -= (maxLarg - backGround.getWidth());
+					}
+
+					if (maxAlt >= backGround.getHeight()) {
+						altura -= (maxAlt - backGround.getHeight());
+					}
+
+					if ((x + largura) >= backGround.getWidth()) {
+						x -= ((x + largura) - backGround.getWidth());
+					}
+					if ((y + altura) >= backGround.getHeight()) {
+						y -= (y + altura) - backGround.getHeight();
+					}
+
+					if (x <= 0) {
+						x = 0;
+					}
+					if (y < 0) {
+						y = 0;
+					}
+
+					if (largura > backGround.getWidth()) {
+						largura = backGround.getWidth();
+					}
+
+					if (altura > backGround.getHeight()) {
+						altura = backGround.getHeight();
+					}
+
+					rectangle = new Rectangle(x, y, largura, altura);
+
+					subimage = backGround.getSubimage(rectangle.x, rectangle.y,
+							rectangle.width, rectangle.height);
+
+				}
+			} catch (Exception e) {
+				Logger.logarExept(e);
+				subimage = backGround;
 			}
+
+			if (zoom == 1) {
+				drawBuffer = subimage;
+			} else {
+				drawBuffer = new BufferedImage(
+						(int) (limitesViewPortFull.getWidth()),
+						(int) (limitesViewPortFull.getHeight()),
+						backGround.getType());
+				if (subimage != null)
+					affineTransformOp.filter(subimage, drawBuffer);
+			}
+
 			if (drawBuffer != null && desenhaImagens) {
 				drawBuffer.setAccelerationPriority(1);
-				int newX = Util.inte(limitesViewPortCenter.getX());
-				int newY = Util.inte(limitesViewPortCenter.getY());
+				int newX = Util.inte(limitesViewPortFull.getX()
+						+ (diffX * zoom));
+				int newY = Util.inte(limitesViewPortFull.getY()
+						+ (diffY * zoom));
 				g2d.drawImage(drawBuffer, newX, newY, null);
 			}
 		}
@@ -2348,7 +2377,7 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaMarcasPeneuPista(Graphics2D g2d) {
-		if (limitesViewPort == null || zoom < 0.3) {
+		if (limitesViewPort == null || zoom < 0.5) {
 			return;
 		}
 		Collection<TravadaRoda> travadaRodaCopia = getTravadaRodaCopia();
@@ -2477,8 +2506,8 @@ public class PainelCircuito extends JPanel {
 						travada);
 			}
 			if (desenhaImagens)
-				g2d.drawImage(travada, Util.inte(carx - dC.x * zoom),
-						Util.inte(cary - dC.y * zoom), null);
+				g2d.drawImage(travada, Util.inte((carx - dC.x) * zoom),
+						Util.inte((cary - dC.y) * zoom), null);
 
 		}
 	}
@@ -2580,8 +2609,8 @@ public class PainelCircuito extends JPanel {
 
 		MainFrame mainFrame = controleJogo.getMainFrame();
 		Rectangle rectangle = new Rectangle(x, y,
-				(int) (mainFrame.getWidth() * 0.98),
-				(int) (mainFrame.getHeight() * 0.90));
+				(int) (mainFrame.getWidth() - 20),
+				(int) (mainFrame.getHeight() - 70));
 		return rectangle;
 	}
 
@@ -2595,26 +2624,9 @@ public class PainelCircuito extends JPanel {
 		return rectangle;
 	}
 
-	public Shape limitesViewPortCenter() {
-		int x = 0;
-		int y = 0;
-
-		MainFrame mainFrame = controleJogo.getMainFrame();
-		if (pontoCentralizado != null) {
-			x = mainFrame.getWidth() / 2 - pontoCentralizado.x;
-			y = mainFrame.getHeight() / 2 - pontoCentralizado.y;
-		}
-
-		Rectangle rectangle = new Rectangle(x, y,
-				(int) (mainFrame.getWidth() * 0.98),
-				(int) (mainFrame.getHeight() * 0.90));
-
-		return rectangle;
-	}
-
 	private void desenhaCarroCima(Graphics2D g2d, Piloto piloto) {
 
-		if (zoom < 0.3) {
+		if (zoom < 0.5) {
 			return;
 		}
 		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
@@ -2658,8 +2670,8 @@ public class PainelCircuito extends JPanel {
 				AffineTransformOp.TYPE_BILINEAR);
 		opZoom.filter(zoomBuffer, rotateBuffer);
 
-		int imagemCarroX = Util.inte((carX) * zoom);
-		int imagemCarroY = Util.inte((carY) * zoom);
+		int imagemCarroX = Util.inte((carX - dC.x) * zoom);
+		int imagemCarroY = Util.inte((carY - dC.y) * zoom);
 
 		if (piloto.isJogadorHumano() && piloto.getSetaCima() != 0) {
 			if (piloto.getSetaCima() % 2 == 0) {
@@ -2670,8 +2682,8 @@ public class PainelCircuito extends JPanel {
 				opRotate.filter(setaCarroCima, zoomBufferSetaCima);
 				opZoom.filter(zoomBufferSetaCima, rotateBufferSetaCima);
 				if (desenhaImagens)
-					g2d.drawImage(rotateBufferSetaCima, imagemCarroX - dC.x,
-							imagemCarroY - dC.y, null);
+					g2d.drawImage(rotateBufferSetaCima, imagemCarroX,
+							imagemCarroY, null);
 			}
 			piloto.setSetaCima(piloto.getSetaCima() - 1);
 		}
@@ -2685,8 +2697,8 @@ public class PainelCircuito extends JPanel {
 				opRotate.filter(setaCarroBaixo, zoomBufferSetaBaixo);
 				opZoom.filter(zoomBufferSetaBaixo, rotateBufferSetaBaixo);
 				if (desenhaImagens)
-					g2d.drawImage(rotateBufferSetaBaixo, imagemCarroX - dC.x,
-							imagemCarroY - dC.y, null);
+					g2d.drawImage(rotateBufferSetaBaixo, imagemCarroX,
+							imagemCarroY, null);
 			}
 			piloto.setSetaBaixo(piloto.getSetaBaixo() - 1);
 		}
@@ -2725,8 +2737,7 @@ public class PainelCircuito extends JPanel {
 			}
 		}
 		if (desenhaImagens)
-			g2d.drawImage(rotateBuffer, imagemCarroX - dC.x, imagemCarroY
-					- dC.y, null);
+			g2d.drawImage(rotateBuffer, imagemCarroX, imagemCarroY, null);
 		if (naoDesenhaEfeitos) {
 			g2d.setStroke(stroke);
 			return;
@@ -2747,8 +2758,8 @@ public class PainelCircuito extends JPanel {
 
 		if (pontoCentralizado != null) {
 			MainFrame mainFrame = controleJogo.getMainFrame();
-			x = (int) (pontoCentralizado.x - mainFrame.getWidth() / 2);
-			y = (int) (pontoCentralizado.y - mainFrame.getHeight() / 2);
+			x = (int) (pontoCentralizado.x - ((mainFrame.getWidth() / 2) / zoom));
+			y = (int) (pontoCentralizado.y - ((mainFrame.getHeight() / 2) / zoom));
 		}
 		if (dC == null) {
 			dC = new Point(x, y);
@@ -3426,7 +3437,7 @@ public class PainelCircuito extends JPanel {
 
 					p1 = new Point(i + 10, j + 10);
 					p2 = new Point(i + 15, j + 20);
-					if (!(limitesViewPortCenter.contains(p1) && limitesViewPortCenter
+					if (!(limitesViewPort.contains(p1) && limitesViewPort
 							.contains(p2)))
 						continue;
 					g2d.drawLine(p1.x + limitesViewPort.x, p1.y
