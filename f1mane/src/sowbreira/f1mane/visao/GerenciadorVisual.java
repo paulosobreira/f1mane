@@ -395,7 +395,7 @@ public class GerenciadorVisual {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						alive = false;
-						e.printStackTrace();
+						Logger.logarExept(e);
 					}
 				}
 			}

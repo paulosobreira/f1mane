@@ -102,9 +102,7 @@ public class CarregadorRecursos {
 			String file) {
 		BufferedImage buffer = null;
 		try {
-			ImageIcon icon = new ImageIcon(
-					CarregadorRecursos.class.getResource(file));
-			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			buffer = ImageUtil.toBufferedImage(file);
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
 				System.exit(1);
@@ -121,9 +119,7 @@ public class CarregadorRecursos {
 	public static BufferedImage carregaBufferedImage(String file) {
 		BufferedImage buffer = null;
 		try {
-			ImageIcon icon = new ImageIcon(
-					CarregadorRecursos.class.getResource(file));
-			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			buffer = ImageUtil.toBufferedImage(file);
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
 				System.exit(1);
@@ -146,9 +142,7 @@ public class CarregadorRecursos {
 			String file, int ingVal, int translucidez) {
 		BufferedImage buffer = null;
 		try {
-			ImageIcon icon = new ImageIcon(
-					CarregadorRecursos.class.getResource(file));
-			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			buffer = ImageUtil.toBufferedImage(file);
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
 				System.exit(1);
@@ -166,9 +160,7 @@ public class CarregadorRecursos {
 			String file, int translucidez) {
 		BufferedImage buffer = null;
 		try {
-			ImageIcon icon = new ImageIcon(
-					CarregadorRecursos.class.getResource(file));
-			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			buffer = ImageUtil.toBufferedImage(file);
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
 				System.exit(1);
@@ -555,9 +547,7 @@ public class CarregadorRecursos {
 	}
 
 	public static BufferedImage carregaImgSemCache(String img) {
-		ImageIcon icon = new ImageIcon(
-				CarregadorRecursos.class.getResource(img));
-		return ImageUtil.toBufferedImage(icon.getImage());
+		return ImageUtil.toBufferedImage(img);
 	}
 
 	public static BufferedImage carregaImg(String img) {
@@ -565,9 +555,7 @@ public class CarregadorRecursos {
 		if (bufferedImage != null) {
 			return bufferedImage;
 		}
-		ImageIcon icon = new ImageIcon(
-				CarregadorRecursos.class.getResource(img));
-		bufferedImage = ImageUtil.toBufferedImage(icon.getImage());
+		bufferedImage = ImageUtil.toBufferedImage(img);
 		bufferImages.put(img, bufferedImage);
 		return bufferedImage;
 	}
@@ -576,9 +564,7 @@ public class CarregadorRecursos {
 			String file) {
 		BufferedImage buffer = null;
 		try {
-			ImageIcon icon = new ImageIcon(
-					CarregadorRecursos.class.getResource(file));
-			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			buffer = ImageUtil.toBufferedImage(file);
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
 				System.exit(1);

@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -843,15 +844,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					+ "sowbreira/f1mane/recursos/" + backGround;
 			Logger.logar("Caminho Carregar Bkg " + caminho);
 			url = new URL(caminho);
-			ImageIcon icon = new ImageIcon(url);
-			BufferedImage buff = ImageUtil.toBufferedImage(icon.getImage());
-			if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-				Logger.logar("Status " + icon.getImageLoadStatus()
-						+ " Nao Carregado " + url);
-				return null;
-			} else {
-				return buff;
-			}
+			BufferedImage buff = ImageIO.read(url.openStream());
+			return buff;
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -1218,6 +1212,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public List<ConstrutoresPontosCampeonato> geraListaContrutoresPontos() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
+			int combustivelSelecionado, String asaSelecionado,
+			String pneuSelecionado) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -32,6 +33,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import sowbreira.f1mane.MainFrame;
+import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
@@ -56,6 +58,8 @@ public class PainelMenuLocal extends JPanel {
 	public static String MENU_CORRIDA = "MENU_CORRIDA";
 
 	public static String MENU_NOVO_CAMPEONATO_PILOTOS = "MENU_NOVO_CAMPEONATO_PILOTOS";
+
+	public static String MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS = "MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS";
 
 	public static String MENU_QUALIFICACAO = "MENU_QUALIFICACAO";
 
@@ -262,12 +266,15 @@ public class PainelMenuLocal extends JPanel {
 	protected void processaClick(MouseEvent e) {
 		if (MENU.equals(MENU_PRINCIPAL) && corridaRect.contains(e.getPoint())) {
 			MENU = MENU_CORRIDA;
+			circuitoSelecionado = null;
 			resetaRects();
 			return;
 		}
 		if (MENU.equals(MENU_PRINCIPAL)
 				&& campeonatoRect.contains(e.getPoint())) {
 			MENU = MENU_NOVO_CAMPEONATO_PILOTOS;
+			circuitoSelecionado = null;
+			cirucitosCampeonato.clear();
 			resetaRects();
 			return;
 		}
@@ -727,7 +734,7 @@ public class PainelMenuLocal extends JPanel {
 		x -= 490;
 		y -= 285;
 
-		desenhaSeletorCircuito(g2d, x, y);
+		desenhaSeletorCircuito(g2d, x, y, false);
 
 		desenhaAdicionaRemoverPistas(g2d, x + 30, y + 220);
 
@@ -824,7 +831,8 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void desenhaMenuQualificacao(Graphics2D g2d) {
-		if (!MENU.equals(MENU_QUALIFICACAO)) {
+		if (!(MENU.equals(MENU_QUALIFICACAO) || MENU
+				.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS))) {
 			return;
 		}
 		int x = (int) (getWidth() / 2);
@@ -993,6 +1001,10 @@ public class PainelMenuLocal extends JPanel {
 			MENU = MENU_NOVO_CAMPEONATO_PILOTOS;
 			return;
 		}
+
+		if (MENU.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS)) {
+			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+		}
 	}
 
 	public static void main(String[] args) throws IOException, Exception {
@@ -1050,6 +1062,23 @@ public class PainelMenuLocal extends JPanel {
 			}
 			return;
 		}
+
+		if (MENU.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS)) {
+			try {
+				desenhaCarregando = true;
+				paintImmediately(getVisibleRect());
+				controleJogo.setMainFrame(mainFrame);
+				mainFrame.setControleJogo(controleJogo);
+				controleJogo
+						.iniciarJogoCapeonatoMenuLocal(campeonato,
+								combustivelSelecionado, asaSelecionado,
+								pneuSelecionado);
+			} catch (Exception e) {
+				Logger.logarExept(e);
+			}
+			return;
+		}
+
 		if (MENU.equals(MENU_NOVO_CAMPEONATO_PILOTOS)) {
 			try {
 				if (cirucitosCampeonato.isEmpty()) {
@@ -1072,6 +1101,11 @@ public class PainelMenuLocal extends JPanel {
 			}
 			return;
 		}
+		if (MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
+			MENU = MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS;
+			return;
+		}
+
 	}
 
 	private void selecionaAnteTemporada() {
@@ -1179,7 +1213,7 @@ public class PainelMenuLocal extends JPanel {
 		x -= 490;
 		y -= 285;
 
-		desenhaSeletorCircuito(g2d, x, y);
+		desenhaSeletorCircuito(g2d, x, y, true);
 
 		desenhaClima(g2d, x + 40, y + 200);
 
@@ -1748,7 +1782,8 @@ public class PainelMenuLocal extends JPanel {
 		g2d.setFont(fontOri);
 	}
 
-	private void desenhaSeletorCircuito(Graphics2D g2d, int centerX, int centerY) {
+	private void desenhaSeletorCircuito(Graphics2D g2d, int centerX,
+			int centerY, boolean mistura) {
 		g2d.setColor(lightWhite);
 		antePistaRect.setFrame(centerX, centerY - 25, 30, 30);
 		g2d.fill(antePistaRect);
@@ -1758,7 +1793,8 @@ public class PainelMenuLocal extends JPanel {
 		if (circuitoSelecionado == null) {
 			List<String> sorteio = new ArrayList<String>(controleJogo
 					.getCircuitos().keySet());
-			Collections.shuffle(sorteio);
+			if (mistura)
+				Collections.shuffle(sorteio);
 			circuitoSelecionado = sorteio.get(0);
 		}
 		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
