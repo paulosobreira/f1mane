@@ -363,4 +363,8 @@ public interface InterfaceJogo {
 
 	public List<ConstrutoresPontosCampeonato> geraListaContrutoresPontos();
 
+	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
+			int combustivelSelecionado, String asaSelecionado,
+			String pneuSelecionado) throws Exception;
+
 }

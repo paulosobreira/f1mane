@@ -302,10 +302,8 @@ public class MainFrame extends JFrame {
 					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
-				JOptionPane
-						.showMessageDialog(MainFrame.this,
-								new JScrollPane(area), Lang.msg("091"),
-								JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(
+						area), Lang.msg("091"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menuInfo2.add(leiaMe);
@@ -942,10 +940,15 @@ public class MainFrame extends JFrame {
 			try {
 				controleJogo = new ControleJogoLocal();
 				controleJogo.setMainFrame(this);
-				PainelMenuLocal painelMenuSigle = new PainelMenuLocal(this,
-						controleJogo);
+				final PainelMenuLocal painelMenuSigle = new PainelMenuLocal(
+						this, controleJogo);
 				getContentPane().add(painelMenuSigle, BorderLayout.CENTER);
-				painelMenuSigle.updateUI();
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						painelMenuSigle.updateUI();
+					}
+				});
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
@@ -997,9 +1000,9 @@ public class MainFrame extends JFrame {
 	public boolean verificaCriarJogo() throws Exception {
 		if (controleJogo != null) {
 			if (controleJogo.isCorridaIniciada()) {
-				int ret = JOptionPane
-						.showConfirmDialog(MainFrame.this, Lang.msg("095"),
-								Lang.msg("094"), JOptionPane.YES_NO_OPTION);
+				int ret = JOptionPane.showConfirmDialog(MainFrame.this,
+						Lang.msg("095"), Lang.msg("094"),
+						JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.NO_OPTION) {
 					return false;
 				}

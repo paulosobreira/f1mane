@@ -1243,7 +1243,7 @@ public class ControleCampeonato {
 		campeonato.setCorridas(cirucitosCampeonato);
 		int diffGanho = 30 / cirucitosCampeonato.size();
 		campeonato.setPtsGanho(diffGanho);
-		campeonato.setNomePiloto("F1-Mane");
+		campeonato.setNomePiloto(pilotoSelecionado.getNome());
 		campeonato.setPtsPiloto(pilotoSelecionado.getHabilidade());
 		campeonato.setPilotosEquipesCampeonato(pilotosEquipesCampeonato);
 		campeonato.setEquipesPotenciaCampeonato(equipesPotenciaCampeonato);

@@ -15,8 +15,12 @@ import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 /**
  * @author Paulo Sobreira Criado Em 21/08/2005
@@ -168,64 +172,15 @@ public class ImageUtil {
 	}
 
 	// This method returns a buffered image with the contents of an image
-	public static BufferedImage toBufferedImage(Image image) {
-		if (image instanceof BufferedImage) {
-			return (BufferedImage) image;
-		}
-
-		// This code ensures that all the pixels in the image are loaded
-		image = new ImageIcon(image).getImage();
-
-		// Determine if the image has transparent pixels; for this method's
-		boolean hasAlpha = false; // hasAlpha(image);
-
-		// Create a buffered image with a format that's compatible with the
-		// screen
-		BufferedImage bimage = null;
-
-		GraphicsEnvironment ge = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
+	public static BufferedImage toBufferedImage(String image) {
 
 		try {
-			// Determine the type of transparency of the new buffered image
-			int transparency = Transparency.OPAQUE;
-
-			if (hasAlpha) {
-				transparency = Transparency.BITMASK;
-			}
-
-			// Create the buffered image
-			GraphicsDevice gs = ge.getDefaultScreenDevice();
-
-			GraphicsConfiguration gc = gs.getDefaultConfiguration();
-
-			bimage = gc.createCompatibleImage(image.getWidth(null),
-					image.getHeight(null), transparency);
-		} catch (HeadlessException e) {
-			// The system does not have a screen
+			return ImageIO.read(CarregadorRecursos.class.getResource(image));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		if (bimage == null) {
-			// Create a buffered image using the default color model
-			int type = BufferedImage.TYPE_INT_RGB;
-
-			if (hasAlpha) {
-				type = BufferedImage.TYPE_INT_ARGB;
-			}
-
-			bimage = new BufferedImage(image.getWidth(null),
-					image.getHeight(null), type);
-		}
-
-		// Copy image to buffered image
-		Graphics g = bimage.createGraphics();
-
-		// Paint the image onto the buffered image
-		g.drawImage(image, 0, 0, null);
-
-		g.dispose();
-
-		return bimage;
+		return null;
 	}
 
 	/**

@@ -520,11 +520,11 @@ public class PainelCircuito extends JPanel {
 			backGround = null;
 		}
 		if (backGround == null) {
-			Logger.logar("Download Imagem");
 			if (threadCarregarBkg == null || !threadCarregarBkg.isAlive()) {
 				Runnable runnable = new Runnable() {
 					@Override
 					public void run() {
+						Logger.logar("Download Imagem");
 						backGround = controleJogo.carregaBackGround(circuito
 								.getBackGround());
 						if (backGround != null)

@@ -1,14 +1,14 @@
 package sowbreira.f1mane.controles;
 
-import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -28,7 +28,6 @@ import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
-import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -651,6 +650,44 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	@Override
+	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
+			int combustivelSelecionado, String asaSelecionado,
+			String pneuSelecionado) throws Exception {
+		int intervaloClima = Util.intervalo(1, 3);
+		String clima = null;
+		if (intervaloClima == 1) {
+			clima = Clima.SOL;
+		}
+		if (intervaloClima == 2) {
+			clima = Clima.NUBLADO;
+		}
+		if (intervaloClima == 3) {
+			clima = Clima.CHUVA;
+		}
+		Map circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
+		List pilotos = new ArrayList((Collection) circuitosPilotos.get("t"
+				+ campeonato.getTemporada()));
+		Piloto pilotoSel = null;
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (campeonato.getNomePiloto().equals(piloto.getNome())) {
+				pilotoSel = piloto;
+				break;
+			}
+
+		}
+
+		iniciarJogoMenuLocal(campeonato.getCircuitoVez(),
+				campeonato.getTemporada(), campeonato.getQtdeVoltas(),
+				Util.intervalo(000, 500), clima, campeonato.getNivel(),
+				pilotoSel, campeonato.isKers(), campeonato.isDrs(),
+				campeonato.isSemTrocaPneus(),
+				campeonato.isSemReabasteciemnto(), combustivelSelecionado,
+				asaSelecionado, pneuSelecionado);
+
+	}
+
+	@Override
 	public void iniciarJogoMenuLocal(String circuitoSelecionado,
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
@@ -1075,15 +1112,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 					+ "sowbreira/f1mane/recursos/" + backGround;
 			Logger.logar("Caminho Carregar Bkg " + caminho);
 			url = new URL(caminho);
-			ImageIcon icon = new ImageIcon(url);
-			BufferedImage buff = ImageUtil.toBufferedImage(icon.getImage());
-			if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-				Logger.logar("Status " + icon.getImageLoadStatus()
-						+ " Nao Carregado " + url);
-				return null;
-			} else {
-				return buff;
-			}
+			BufferedImage buff = ImageIO.read(url.openStream());
+			return buff;
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
