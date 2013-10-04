@@ -2,14 +2,11 @@ package sowbreira.f1mane;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -26,23 +23,21 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.editor.MainPanelEditor;
 import sowbreira.f1mane.editor.MainPanelEditorVetorizado;
+import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.paddock.applet.AppletPaddock;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.ControleSom;
-import sowbreira.f1mane.visao.PainelCircuito;
 import sowbreira.f1mane.visao.PainelMenuLocal;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Logger;
@@ -71,6 +66,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem pausa;
 	private JMenuItem narracao;
 	private JMenuItem verControles;
+	protected Campeonato campeonato;
 
 	private AppletPaddock ver = new AppletPaddock();
 
@@ -1012,4 +1008,13 @@ public class MainFrame extends JFrame {
 		controleJogo = new ControleJogoLocal(this);
 		return true;
 	}
+
+	public Campeonato getCampeonato() {
+		return campeonato;
+	}
+
+	public void setCampeonato(Campeonato campeonato) {
+		this.campeonato = campeonato;
+	}
+
 }

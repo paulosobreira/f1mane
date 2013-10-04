@@ -1123,12 +1123,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void continuarCampeonato() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void criarCampeonato() throws Exception {
 		// TODO Auto-generated method stub
 
@@ -1217,9 +1211,15 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
 			int combustivelSelecionado, String asaSelecionado,
-			String pneuSelecionado) throws Exception {
+			String pneuSelecionado, String clima) throws Exception {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public Campeonato continuarCampeonato() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

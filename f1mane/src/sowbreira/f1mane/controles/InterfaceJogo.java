@@ -325,7 +325,7 @@ public interface InterfaceJogo {
 
 	public void criarCampeonatoPiloto() throws Exception;
 
-	public void continuarCampeonato();
+	public Campeonato continuarCampeonato();
 
 	public void dadosPersistenciaCampeonato();
 
@@ -365,6 +365,6 @@ public interface InterfaceJogo {
 
 	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
 			int combustivelSelecionado, String asaSelecionado,
-			String pneuSelecionado) throws Exception;
+			String pneuSelecionado, String clima) throws Exception;
 
 }

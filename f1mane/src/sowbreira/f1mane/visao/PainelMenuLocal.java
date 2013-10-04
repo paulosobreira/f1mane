@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -33,7 +32,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import sowbreira.f1mane.MainFrame;
-import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
@@ -260,6 +258,10 @@ public class PainelMenuLocal extends JPanel {
 		});
 
 		iniciaRecursos();
+		if (mainFrame.getCampeonato() != null) {
+			campeonato = mainFrame.getCampeonato();
+			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+		}
 
 	}
 
@@ -282,7 +284,8 @@ public class PainelMenuLocal extends JPanel {
 			try {
 				if (mainFrame.verificaCriarJogo()) {
 					controleJogo = mainFrame.getControleJogo();
-					controleJogo.continuarCampeonato();
+					campeonato = controleJogo.continuarCampeonato();
+					MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 				}
 
 			} catch (Exception e1) {
@@ -1044,7 +1047,12 @@ public class PainelMenuLocal extends JPanel {
 		if (MENU.equals(MENU_QUALIFICACAO)) {
 			try {
 				desenhaCarregando = true;
-				paintImmediately(getVisibleRect());
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						paintImmediately(getVisibleRect());
+					}
+				});
 				if (mainFrame.verificaCriarJogo()) {
 					controleJogo = mainFrame.getControleJogo();
 					controleJogo.setMainFrame(mainFrame);
@@ -1066,13 +1074,17 @@ public class PainelMenuLocal extends JPanel {
 		if (MENU.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS)) {
 			try {
 				desenhaCarregando = true;
-				paintImmediately(getVisibleRect());
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						paintImmediately(getVisibleRect());
+					}
+				});
 				controleJogo.setMainFrame(mainFrame);
 				mainFrame.setControleJogo(controleJogo);
-				controleJogo
-						.iniciarJogoCapeonatoMenuLocal(campeonato,
-								combustivelSelecionado, asaSelecionado,
-								pneuSelecionado);
+				controleJogo.iniciarJogoCapeonatoMenuLocal(campeonato,
+						combustivelSelecionado, asaSelecionado,
+						pneuSelecionado, climaSelecionado);
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
@@ -1103,6 +1115,16 @@ public class PainelMenuLocal extends JPanel {
 		}
 		if (MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
 			MENU = MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS;
+			int intervaloClima = Util.intervalo(1, 3);
+			if (intervaloClima == 1) {
+				climaSelecionado = Clima.SOL;
+			}
+			if (intervaloClima == 2) {
+				climaSelecionado = Clima.NUBLADO;
+			}
+			if (intervaloClima == 3) {
+				climaSelecionado = Clima.CHUVA;
+			}
 			return;
 		}
 

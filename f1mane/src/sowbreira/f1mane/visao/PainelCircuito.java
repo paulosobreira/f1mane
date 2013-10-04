@@ -612,14 +612,14 @@ public class PainelCircuito extends JPanel {
 	}
 
 	private void desenhaVoltarMenuPrincipal(Graphics2D g2d) {
-		if (!controleJogo.isCorridaPausada()) {
+		if (!exibeResultadoFinal && !controleJogo.isCorridaPausada()) {
 			voltaMenuPrincipalRect.setFrame(0, 0, 1, 1);
 			return;
 		}
 		int x = limitesViewPort.x + (int) (limitesViewPort.getWidth() / 2);
 		int y = limitesViewPort.y + (int) (limitesViewPort.getHeight() / 2)
 				- 50;
-		if (controleJogo.isCorridaTerminada()) {
+		if (exibeResultadoFinal) {
 			y = limitesViewPort.y + (int) (limitesViewPort.getHeight()) - 20;
 		}
 		Font fontOri = g2d.getFont();

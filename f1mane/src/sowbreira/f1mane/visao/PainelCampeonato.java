@@ -174,7 +174,6 @@ public class PainelCampeonato extends JPanel {
 				Lang.msg("286"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (ret == JOptionPane.YES_OPTION) {
-
 			try {
 				if (campeonato.getCircuitoVez() == null) {
 					JOptionPane.showMessageDialog(mainFrame, Lang.msg("293"));

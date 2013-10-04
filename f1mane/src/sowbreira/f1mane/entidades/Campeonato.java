@@ -12,6 +12,7 @@ public class Campeonato implements Serializable {
 	private String nivel;
 	private String nomePiloto;
 	private String rival;
+	private boolean menuLocal;
 	private int vitorias;
 	private int derrotas;
 	private int ptsPiloto;
@@ -201,6 +202,14 @@ public class Campeonato implements Serializable {
 		}
 		return null;
 
+	}
+
+	public boolean isMenuLocal() {
+		return menuLocal;
+	}
+
+	public void setMenuLocal(boolean menuLocal) {
+		this.menuLocal = menuLocal;
 	}
 
 }
