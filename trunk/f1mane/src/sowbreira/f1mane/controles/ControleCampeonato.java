@@ -85,6 +85,10 @@ public class ControleCampeonato {
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
 
+	public ControleCampeonato(Campeonato campeonato) {
+		this.campeonato = campeonato;
+	}
+
 	public Campeonato getCampeonato() {
 		return campeonato;
 	}
@@ -390,7 +394,7 @@ public class ControleCampeonato {
 
 	}
 
-	public void continuarCampeonato() {
+	public Campeonato continuarCampeonato() {
 		continuarCampeonatoCache();
 		if (campeonato == null) {
 			try {
@@ -401,7 +405,7 @@ public class ControleCampeonato {
 						Lang.msg("281"), JOptionPane.INFORMATION_MESSAGE);
 
 				if (Util.isNullOrEmpty(xmlArea.getText())) {
-					return;
+					return null;
 				}
 				ByteArrayInputStream bin = new ByteArrayInputStream(xmlArea
 						.getText().getBytes());
@@ -418,10 +422,12 @@ public class ControleCampeonato {
 				Logger.logarExept(e);
 			}
 		}
-		new PainelCampeonato(this, mainFrame);
+		if (!campeonato.isMenuLocal())
+			new PainelCampeonato(this, mainFrame);
+		return campeonato;
 	}
 
-	private void continuarCampeonatoCache() {
+	public void continuarCampeonatoCache() {
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
@@ -531,7 +537,9 @@ public class ControleCampeonato {
 				corridaCampeonatoDados);
 		processaMudancaEquipe();
 		persistirEmCache();
-		new PainelCampeonato(this, mainFrame);
+		if (!campeonato.isMenuLocal()) {
+			new PainelCampeonato(this, mainFrame);
+		}
 	}
 
 	private void processaMudancaEquipe() {
@@ -1151,8 +1159,9 @@ public class ControleCampeonato {
 	}
 
 	public static void main(String[] args) {
-		ControleCampeonato controleCampeonato = new ControleCampeonato(null);
 		Campeonato campeonato = new Campeonato();
+		ControleCampeonato controleCampeonato = new ControleCampeonato(
+				campeonato);
 		campeonato.setVitorias(2);
 		controleCampeonato.campeonato = campeonato;
 		Map pilotosEquipesCampeonato = new HashMap();
@@ -1255,6 +1264,7 @@ public class ControleCampeonato {
 		campeonato.setTemporada(temporadaSelecionada);
 		campeonato.setNivel(nivelSelecionado);
 		campeonato.setQtdeVoltas(new Integer(numVoltasSelecionado));
+		campeonato.setMenuLocal(true);
 		persistirEmCache();
 		return campeonato;
 	}
