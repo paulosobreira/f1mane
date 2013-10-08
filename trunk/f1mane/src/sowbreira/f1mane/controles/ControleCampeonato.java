@@ -31,10 +31,10 @@ import javax.jnlp.FileContents;
 import javax.jnlp.PersistenceService;
 import javax.jnlp.ServiceManager;
 import javax.swing.DefaultListModel;
-import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -445,7 +445,7 @@ public class ControleCampeonato {
 
 	}
 
-	public void dadosPersistencia() {
+	public static void dadosPersistencia(Campeonato campeonato, JFrame mainFrame) {
 		if (campeonato != null) {
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 			XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);

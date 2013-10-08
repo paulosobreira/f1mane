@@ -655,8 +655,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
 			int combustivelSelecionado, String asaSelecionado,
 			String pneuSelecionado, String clima) throws Exception {
-		int intervaloClima = Util.intervalo(1, 3);
-
 		Map circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 		List pilotos = new ArrayList((Collection) circuitosPilotos.get("t"
 				+ campeonato.getTemporada()));
@@ -669,7 +667,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 			}
 
 		}
-
 		iniciarJogoMenuLocal(campeonato.getCircuitoVez(),
 				campeonato.getTemporada(), campeonato.getQtdeVoltas(),
 				Util.intervalo(000, 500), clima, campeonato.getNivel(),
@@ -678,7 +675,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 				campeonato.isSemReabasteciemnto(), combustivelSelecionado,
 				asaSelecionado, pneuSelecionado);
 		this.controleCampeonato = new ControleCampeonato(campeonato);
-
+		controleCampeonato.iniciaCorrida(campeonato.getCircuitoVez());
 	}
 
 	@Override
@@ -837,10 +834,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#desenhaQualificacao()
 	 */
 	public void desenhaQualificacao() {
-		if (gerenciadorVisual != null) {
-			gerenciadorVisual.desenhaQualificacao();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-
+		gerenciadorVisual.setDesenhouQualificacao(true);
+		selecionaPilotoJogador();
 	}
 
 	/**
@@ -1389,8 +1389,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	@Override
-	public void dadosPersistenciaCampeonato() {
-		controleCampeonato.dadosPersistencia();
+	public void dadosPersistenciaCampeonato(Campeonato campeonato) {
+		if (controleCampeonato != null && campeonato == null) {
+			campeonato = controleCampeonato.getCampeonato();
+		}
+		ControleCampeonato.dadosPersistencia(campeonato, mainFrame);
 	}
 
 	@Override
