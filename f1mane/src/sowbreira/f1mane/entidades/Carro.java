@@ -201,6 +201,10 @@ public class Carro implements Serializable {
 		this.pneus = pneus;
 	}
 
+	public void setPorcentPneus(int porcent) {
+		this.pneus = Util.inte(durabilidadeMaxPneus * (porcent / 100.0));
+	}
+
 	public void setDurabilidadeMaxPneus(int durabilidadeMaxPneus) {
 		this.durabilidadeMaxPneus = durabilidadeMaxPneus;
 	}
@@ -852,7 +856,7 @@ public class Carro implements Serializable {
 						&& noFrente.verificaCruvaBaixa()) {
 					controleJogo.travouRodas(getPiloto());
 					piloto.incStress(getPiloto().testeHabilidadePiloto(
-							controleJogo) ? 5 : 10);
+							controleJogo) ? 0 : 5);
 					if (controleJogo.asfaltoAbrasivo()
 							&& getPiloto().getStress() > 60
 							&& !controleJogo.isChovendo()
@@ -861,20 +865,17 @@ public class Carro implements Serializable {
 					}
 					teste = false;
 				}
-				if (controleJogo.asfaltoAbrasivo()) {
-					desgPneus += (teste ? 1 : 2);
-				} else {
-					if (Math.random() > 0.5)
-						desgPneus += (teste ? 1 : 2);
-				}
+				desgPneus += (teste ? 0 : 1);
 			}
 		} else {
-			if (controleJogo.asfaltoAbrasivo()) {
-				desgPneus += (piloto.testeHabilidadePilotoFreios(controleJogo) ? 1
-						: 2);
-			} else {
-				desgPneus += (piloto.testeHabilidadePilotoFreios(controleJogo) ? 0
-						: 1);
+			if (!no.verificaRetaOuLargada()) {
+				if (controleJogo.asfaltoAbrasivo()) {
+					desgPneus += (piloto
+							.testeHabilidadePilotoFreios(controleJogo) ? 5 : 10);
+				} else {
+					desgPneus += (piloto
+							.testeHabilidadePilotoFreios(controleJogo) ? 1 : 5);
+				}
 			}
 		}
 		if (!controleJogo.isChovendo()
@@ -893,27 +894,20 @@ public class Carro implements Serializable {
 					desgPneus += 1;
 			}
 		}
-		if ((no.verificaCruvaBaixa() || no.verificaCruvaAlta())) {
-			if (controleJogo.asfaltoAbrasivo()) {
-				desgPneus += Util.intervalo(7, 14);
-			} else {
-				desgPneus += Util.intervalo(1, 5);
-			}
-		}
-
 		double porcentComb = porcentagemCombustivel() / 100.0;
-		double combustivel = 1;
-		if (Math.random() < porcentComb)
-			combustivel = (piloto.testeHabilidadePiloto(controleJogo) ? Util
-					.intervalo(.7, .8) : Util.intervalo(.8, .9));
-
-		double fator = 0.5;
-		if (controleJogo.isSemTrocaPneu()) {
-			fator = 0.4;
+		if (no.verificaRetaOuLargada()) {
+			porcentComb = 0;
 		}
+		double fator = (1.8 - ((piloto.getCarro().getAerodinamica() + piloto
+				.getCarro().getFreios()) / 2000.0));
+		if (controleJogo.isSemTrocaPneu()) {
+			fator /= 2;
+		}
+
+		double combustivel = fator + porcentComb;
+
 		double valDesgaste = (desgPneus
-				* controleJogo.getCircuito().getMultiplciador() * combustivel * (fator + controleJogo
-				.getNiveljogo()));
+				* controleJogo.getCircuito().getMultiplciador() * combustivel);
 		if (controleJogo.isSafetyCarNaPista()) {
 			valDesgaste /= 5;
 		}

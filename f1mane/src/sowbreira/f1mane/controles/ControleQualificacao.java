@@ -97,8 +97,12 @@ public class ControleQualificacao {
 			piloto.setContTravouRodas(0);
 			piloto.setCiclosDesconcentrado(0);
 			piloto.setVoltas(new ArrayList());
-			// System.out.println("CiclosVoltaQualificacao " + piloto.getNome()
-			// + " " + piloto.getCiclosVoltaQualificacao());
+			if (controleJogo.asfaltoAbrasivo()
+					&& Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro()
+							.getTipoPneu())
+					&& piloto.getCarro().porcentagemDesgastePeneus() < 80) {
+				piloto.getCarro().setPorcentPneus(80);
+			}
 			controleJogo.zerarMelhorVolta();
 		}
 		Collections.sort(pilotos, new Comparator() {

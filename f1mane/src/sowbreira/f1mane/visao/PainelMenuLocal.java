@@ -67,8 +67,6 @@ public class PainelMenuLocal extends JPanel {
 
 	private MainFrame mainFrame;
 
-	private InterfaceJogo controleJogo;
-
 	public final static Color lightWhite = new Color(200, 200, 200, 100);
 
 	public final static Color lightWhite2 = new Color(255, 255, 255, 160);
@@ -237,9 +235,8 @@ public class PainelMenuLocal extends JPanel {
 
 	private Campeonato campeonato;
 
-	public PainelMenuLocal(MainFrame mainFrame, InterfaceJogo controleJogo) {
+	public PainelMenuLocal(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-		this.controleJogo = controleJogo;
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				processaClick(e);
@@ -259,9 +256,36 @@ public class PainelMenuLocal extends JPanel {
 
 		iniciaRecursos();
 		if (mainFrame.getCampeonato() != null) {
-			campeonato = mainFrame.getCampeonato();
-			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+			carregaCampeonato();
 		}
+
+	}
+
+	private void carregaCampeonato() {
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
+		campeonato = mainFrame.getCampeonato();
+		if (campeonato == null) {
+			campeonato = controleJogo.continuarCampeonato();
+		}
+		if (campeonato == null) {
+			return;
+		}
+		temporadaSelecionada = campeonato.getTemporada();
+		circuitoSelecionado = campeonato.getCircuitoVez();
+		Map circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
+		List pilotos = new ArrayList((Collection) circuitosPilotos.get("t"
+				+ campeonato.getTemporada()));
+		Piloto pilotoSel = null;
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (campeonato.getNomePiloto().equals(piloto.getNome())) {
+				pilotoSelecionado = piloto;
+				break;
+			}
+
+		}
+		climaAleatorio();
+		MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 
 	}
 
@@ -283,11 +307,8 @@ public class PainelMenuLocal extends JPanel {
 		if (continuaCampeonatoRect.contains(e.getPoint())) {
 			try {
 				if (mainFrame.verificaCriarJogo()) {
-					controleJogo = mainFrame.getControleJogo();
-					campeonato = controleJogo.continuarCampeonato();
-					MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+					carregaCampeonato();
 				}
-
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				Logger.logarExept(e1);
@@ -563,6 +584,7 @@ public class PainelMenuLocal extends JPanel {
 
 	private void desenhaClassificacaoEquipesCampeonato(Graphics2D g2d, int x,
 			int y) {
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		Font fontOri = g2d.getFont();
 		Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, 14);
 		Font fontMaior = new Font(fontOri.getName(), Font.BOLD, 14);
@@ -620,6 +642,7 @@ public class PainelMenuLocal extends JPanel {
 
 	private void desenhaClassificacaoPilotosCampeonato(Graphics2D g2d, int x,
 			int y) {
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		Font fontOri = g2d.getFont();
 		Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, 14);
 		Font fontMaior = new Font(fontOri.getName(), Font.BOLD, 14);
@@ -696,6 +719,7 @@ public class PainelMenuLocal extends JPanel {
 		if (campeonato != null) {
 			circuitoSelecionado = campeonato.getCircuitoVez();
 		}
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
 				circuitoSelecionado);
 
@@ -859,6 +883,7 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void desenhaTemporadaPilotoSelecionado(Graphics2D g2d, int x, int y) {
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		BufferedImage imageCarro = controleJogo
 				.obterCarroLado(pilotoSelecionado);
 		String temporada = "t" + temporadaSelecionada;
@@ -925,6 +950,7 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void desenhaCircuitoSelecionado(Graphics2D g2d, int x, int y) {
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		if (circuitoSelecionado == null) {
 			circuitoSelecionado = (String) controleJogo.getCircuitos().keySet()
 					.iterator().next();
@@ -1047,22 +1073,31 @@ public class PainelMenuLocal extends JPanel {
 		if (MENU.equals(MENU_QUALIFICACAO)) {
 			try {
 				desenhaCarregando = true;
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						paintImmediately(getVisibleRect());
-					}
-				});
 				if (mainFrame.verificaCriarJogo()) {
-					controleJogo = mainFrame.getControleJogo();
-					controleJogo.setMainFrame(mainFrame);
+					Thread run = new Thread(new Runnable() {
+						@Override
+						public void run() {
+							InterfaceJogo controleJogo = mainFrame
+									.getControleJogo();
+							controleJogo.setMainFrame(mainFrame);
+							try {
+								controleJogo.iniciarJogoMenuLocal(
+										circuitoSelecionado,
+										temporadaSelecionada,
+										numVoltasSelecionado,
+										turbulenciaSelecionado,
+										climaSelecionado, nivelSelecionado,
+										pilotoSelecionado, kers, drs,
+										trocaPneus, reabasteciemto,
+										combustivelSelecionado, asaSelecionado,
+										pneuSelecionado);
+							} catch (Exception e) {
+								Logger.logarExept(e);
+							}
 
-					controleJogo.iniciarJogoMenuLocal(circuitoSelecionado,
-							temporadaSelecionada, numVoltasSelecionado,
-							turbulenciaSelecionado, climaSelecionado,
-							nivelSelecionado, pilotoSelecionado, kers, drs,
-							trocaPneus, reabasteciemto, combustivelSelecionado,
-							asaSelecionado, pneuSelecionado);
+						}
+					});
+					run.start();
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -1074,17 +1109,24 @@ public class PainelMenuLocal extends JPanel {
 		if (MENU.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS)) {
 			try {
 				desenhaCarregando = true;
-				SwingUtilities.invokeLater(new Runnable() {
+
+				Thread run = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						paintImmediately(getVisibleRect());
+						InterfaceJogo controleJogo = mainFrame
+								.getControleJogo();
+						try {
+							controleJogo.iniciarJogoCapeonatoMenuLocal(
+									campeonato, combustivelSelecionado,
+									asaSelecionado, pneuSelecionado,
+									climaSelecionado);
+						} catch (Exception e) {
+							Logger.logarExept(e);
+						}
+
 					}
 				});
-				controleJogo.setMainFrame(mainFrame);
-				mainFrame.setControleJogo(controleJogo);
-				controleJogo.iniciarJogoCapeonatoMenuLocal(campeonato,
-						combustivelSelecionado, asaSelecionado,
-						pneuSelecionado, climaSelecionado);
+				run.start();
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
@@ -1096,17 +1138,13 @@ public class PainelMenuLocal extends JPanel {
 				if (cirucitosCampeonato.isEmpty()) {
 					cirucitosCampeonato.add(circuitoSelecionado);
 				}
-				if (mainFrame.verificaCriarJogo()) {
-					controleJogo = mainFrame.getControleJogo();
-					controleJogo.setMainFrame(mainFrame);
-					campeonato = controleJogo.criarCampeonatoPiloto(
-							cirucitosCampeonato, temporadaSelecionada,
-							numVoltasSelecionado, turbulenciaSelecionado,
-							climaSelecionado, nivelSelecionado,
-							pilotoSelecionado, kers, drs, trocaPneus,
-							reabasteciemto);
-					MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
-				}
+				InterfaceJogo controleJogo = mainFrame.getControleJogo();
+				campeonato = controleJogo.criarCampeonatoPiloto(
+						cirucitosCampeonato, temporadaSelecionada,
+						numVoltasSelecionado, turbulenciaSelecionado,
+						climaSelecionado, nivelSelecionado, pilotoSelecionado,
+						kers, drs, trocaPneus, reabasteciemto);
+				MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				Logger.logarExept(e1);
@@ -1115,19 +1153,23 @@ public class PainelMenuLocal extends JPanel {
 		}
 		if (MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
 			MENU = MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS;
-			int intervaloClima = Util.intervalo(1, 3);
-			if (intervaloClima == 1) {
-				climaSelecionado = Clima.SOL;
-			}
-			if (intervaloClima == 2) {
-				climaSelecionado = Clima.NUBLADO;
-			}
-			if (intervaloClima == 3) {
-				climaSelecionado = Clima.CHUVA;
-			}
+			climaAleatorio();
 			return;
 		}
 
+	}
+
+	private void climaAleatorio() {
+		int intervaloClima = Util.intervalo(1, 3);
+		if (intervaloClima == 1) {
+			climaSelecionado = Clima.SOL;
+		}
+		if (intervaloClima == 2) {
+			climaSelecionado = Clima.NUBLADO;
+		}
+		if (intervaloClima == 3) {
+			climaSelecionado = Clima.CHUVA;
+		}
 	}
 
 	private void selecionaAnteTemporada() {
@@ -1195,6 +1237,7 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void selecionaPistaAnterior() {
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		Set keySet = controleJogo.getCircuitos().keySet();
 		List list = new ArrayList(keySet);
 		Object objectAnt = null;
@@ -1211,6 +1254,7 @@ public class PainelMenuLocal extends JPanel {
 	}
 
 	private void selecionaProximaPista() {
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		Set keySet = controleJogo.getCircuitos().keySet();
 		Object objectAnt = null;
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
@@ -1333,6 +1377,7 @@ public class PainelMenuLocal extends JPanel {
 		if (pilotoSelecionado == null) {
 			pilotoSelecionado = (Piloto) pilotos.get(0);
 		}
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);
@@ -1806,6 +1851,7 @@ public class PainelMenuLocal extends JPanel {
 
 	private void desenhaSeletorCircuito(Graphics2D g2d, int centerX,
 			int centerY, boolean mistura) {
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		g2d.setColor(lightWhite);
 		antePistaRect.setFrame(centerX, centerY - 25, 30, 30);
 		g2d.fill(antePistaRect);

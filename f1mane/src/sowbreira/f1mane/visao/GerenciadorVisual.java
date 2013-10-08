@@ -81,7 +81,6 @@ public class GerenciadorVisual {
 	private JEditorPane infoTextual;
 	private ArrayList bufferTextual;
 	private JScrollPane scrollPaneTextual;
-	private JLabel imgClima;
 	private JLabel infoAdicionaLinha1;
 	private JComboBox comboBoxClimaInicial;
 	private JComboBox comboBoxNivelCorrida;
@@ -99,7 +98,6 @@ public class GerenciadorVisual {
 	private JSpinner spinnerQtdeMinutosQualificacao;
 	private JSlider spinnerDificuldadeUltrapassagem;
 	private PainelCircuito painelCircuito;
-	// private JScrollPane scrollPane;
 	private InterfaceJogo controleJogo;
 	private JPanel centerPanel = new JPanel();
 	private JLabel infoCorrida;
@@ -107,7 +105,6 @@ public class GerenciadorVisual {
 	private JPanel infoText = new JPanel();
 	private JTextField nomeJogador;
 	private PainelTabelaResultadoFinal resultadoFinal;
-	private int tempoSleepQualy = 30;
 	private long lastPress;
 	private ProgamacaoBox progamacaoBox;
 	private long ultimaChamadaBox;
@@ -117,29 +114,17 @@ public class GerenciadorVisual {
 	protected JCheckBox semReabastacimento;
 	protected JCheckBox kers;
 	protected JCheckBox drs;
-	private ImageIcon iconLua = new ImageIcon(
-			CarregadorRecursos.carregarImagem("clima/lua.gif"));
-	private ImageIcon iconSol = new ImageIcon(
-			CarregadorRecursos.carregarImagem("clima/sol.gif"));
-	private ImageIcon iconNublado = new ImageIcon(
-			CarregadorRecursos.carregarImagem("clima/nublado.gif"));
-	private ImageIcon iconChuva = new ImageIcon(
-			CarregadorRecursos.carregarImagem("clima/chuva.gif"));
+
 	private long ultimaTravavadaRodas;
 
 	private JFrame radioPadock;
 	private ThreadMudancaClima clima;
-	private Thread thDesenhaQualificacao;
 	private Thread thAtualizaPainelSuave;
 	private Thread thAtualizaPilotosSuave;
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
 	}
-
-	// public JScrollPane getScrollPane() {
-	// return scrollPane;
-	// }
 
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
@@ -165,14 +150,6 @@ public class GerenciadorVisual {
 	public void iniciarInterfaceGraficaJogo() throws IOException {
 		Logger.logar("iniciarInterfaceGraficaJogo()");
 		painelCircuito = new PainelCircuito(controleJogo, this);
-		// scrollPane = new JScrollPane(painelCircuito,
-		// JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-		// JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//
-		// disableKeys(scrollPane
-		// .getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT));
-
-		carregarInfoClima();
 		addiconarListenerComandos();
 		gerarPainelInfoText();
 		gerarLayout();
@@ -214,11 +191,8 @@ public class GerenciadorVisual {
 			frame.getParent().addKeyListener(keyListener);
 		}
 		painelCircuito.addKeyListener(keyListener);
-		// scrollPane.addKeyListener(keyListener);
 		frame.addMouseWheelListener(mw);
 		painelCircuito.addMouseWheelListener(mw);
-		// scrollPane.addMouseWheelListener(mw);
-		// scrollPane.requestFocus();
 		if (!(controleJogo instanceof JogoCliente)) {
 			iniciaThreadJogoSuaveClientes();
 		}
@@ -231,14 +205,6 @@ public class GerenciadorVisual {
 			public void run() {
 				boolean alive = true;
 				while (alive) {
-					if (!painelCircuito.isDesenhouQualificacao()) {
-						try {
-							Thread.sleep(50);
-							continue;
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
 					atualizaPainel();
 					try {
 						Thread.sleep(10);
@@ -420,12 +386,8 @@ public class GerenciadorVisual {
 	}
 
 	public void finalize() throws Throwable {
-		tempoSleepQualy = 0;
 		if (clima != null) {
 			clima.interrupt();
-		}
-		if (thDesenhaQualificacao != null) {
-			thDesenhaQualificacao.interrupt();
 		}
 		if (thAtualizaPainelSuave != null) {
 			thAtualizaPainelSuave.interrupt();
@@ -435,10 +397,6 @@ public class GerenciadorVisual {
 		}
 		ControleSom.paraTudo();
 		super.finalize();
-	}
-
-	public void carregarInfoClima() {
-		imgClima = new JLabel();
 	}
 
 	private void addiconarListenerComandos() {
@@ -683,20 +641,6 @@ public class GerenciadorVisual {
 		boolean modo = controleJogo.mudarModoAgressivo();
 	}
 
-	private void atualizarImgClima(Clima clima) {
-		if (Clima.SOL.equals(clima.getClima())) {
-			imgClima.setIcon(iconSol);
-			if (controleJogo.getCircuito() != null
-					&& controleJogo.getCircuito().isNoite()) {
-				imgClima.setIcon(iconLua);
-			}
-		}
-		if (Clima.CHUVA.equals(clima.getClima()))
-			imgClima.setIcon(iconChuva);
-		if (Clima.NUBLADO.equals(clima.getClima()))
-			imgClima.setIcon(iconNublado);
-
-	}
 
 	public void atualizaPainel() {
 		if (controleJogo == null) {
@@ -704,8 +648,14 @@ public class GerenciadorVisual {
 		}
 		Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
 		atualizaInfoAdicional(pilotoSelecionado);
-		atualizarImgClima(new Clima(controleJogo.getClima()));
-		if (pilotoSelecionado == null) {
+		if (!painelCircuito.isDesenhouQualificacao()) {
+			No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
+			Point pQualy = n.getPoint();
+			if (controleJogo.getCircuito().getCreditos() != null) {
+				pQualy = controleJogo.getCircuito().getCreditos();
+			}
+			painelCircuito.centralizarPonto(pQualy);
+		} else if (pilotoSelecionado == null) {
 			List l = controleJogo.getCircuito().getPistaFull();
 			No n = (No) l.get(0);
 			painelCircuito.centralizarPonto(n.getPoint());
@@ -825,10 +775,6 @@ public class GerenciadorVisual {
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;
-	}
-
-	public JLabel getImgClima() {
-		return imgClima;
 	}
 
 	public JLabel getInfoAdicionaLinha1() {
@@ -1765,124 +1711,6 @@ public class GerenciadorVisual {
 		return true;
 	}
 
-	public void desenhaQualificacao() {
-
-		No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
-		try {
-			painelCircuito.centralizarPontoDireto(n.getPoint());
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
-		Runnable runnable = new Runnable() {
-			@Override
-			public void run() {
-				No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
-				Point pQualy = n.getPoint();
-				if (controleJogo.getCircuito().getCreditos() != null) {
-					pQualy = controleJogo.getCircuito().getCreditos();
-				}
-				try {
-					painelCircuito.centralizarPontoDireto(pQualy);
-				} catch (Exception e) {
-					Logger.logarExept(e);
-				}
-				infoCorrida.setText(Lang.msg("213"));
-				infoPiloto.setText(Lang.msg("214"));
-				List pilotos = controleJogo.getPilotos();
-				List ptosPilotos = new ArrayList();
-				painelCircuito.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						tempoSleepQualy = 0;
-					}
-
-				});
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					Logger.logarExept(e);
-				}
-				Rectangle limitesViewPort = null;
-
-				limitesViewPort = (Rectangle) painelCircuito.limitesViewPort();
-
-				int iniY1 = 50;
-				int iniY2 = 60;
-				int midPainel = 0;
-				if (limitesViewPort != null)
-					midPainel = Util.inte(limitesViewPort.width / 3);
-				else {
-					midPainel = 500;
-					Logger.logarExept(new Exception("limitesViewPort == null "));
-				}
-				for (int i = 0; i < pilotos.size(); i++) {
-					Piloto piloto = (Piloto) pilotos.get(i);
-					if (piloto.getPosicao() % 2 == 0) {
-						ptosPilotos.add(new Point(midPainel + 270, iniY2));
-						iniY2 += 40;
-					} else {
-						ptosPilotos.add(new Point(midPainel - 100, iniY1));
-						iniY1 += 40;
-					}
-				}
-				Logger.logar("Iniciar Loop desenha Qualy");
-				for (int i = 0; i < pilotos.size(); i++) {
-					Piloto piloto = (Piloto) pilotos.get(i);
-					Point point = (Point) ptosPilotos.get(i);
-					int x = limitesViewPort.x + limitesViewPort.width;
-					while (x > (point.x + limitesViewPort.x)) {
-						Point pd = new Point(x, point.y + limitesViewPort.y);
-						painelCircuito.definirDesenhoQualificacao(piloto, pd);
-						if (tempoSleepQualy != 0) {
-							try {
-								SwingUtilities.invokeLater(new Runnable() {
-									@Override
-									public void run() {
-										painelCircuito.repaint();
-									}
-								});
-							} catch (Exception e) {
-								Logger.logarExept(e);
-							}
-						} else {
-							break;
-						}
-						x -= 5;
-						try {
-							Thread.sleep(tempoSleepQualy);
-						} catch (InterruptedException e) {
-							Logger.logarExept(e);
-						}
-					}
-					painelCircuito.getMapDesenharQualificacao().put(piloto,
-							point);
-				}
-				try {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							painelCircuito.repaint();
-						}
-					});
-				} catch (Exception e) {
-					Logger.logarExept(e);
-				}
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					Logger.logarExept(e);
-				}
-
-				painelCircuito.setDesenhouQualificacao(true);
-				Logger.logar("DesenhouQualificacao");
-			}
-		};
-		if (thDesenhaQualificacao != null) {
-			thDesenhaQualificacao.interrupt();
-		}
-		thDesenhaQualificacao = new Thread(runnable);
-		thDesenhaQualificacao.run();
-	}
-
 	public void adicionarInfoDireto(String string) {
 		if (string == null) {
 			return;
@@ -1927,14 +1755,6 @@ public class GerenciadorVisual {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
-	}
-
-	public int getTempoSleep() {
-		return tempoSleepQualy;
-	}
-
-	public void setTempoSleep(int tempoSleep) {
-		this.tempoSleepQualy = tempoSleep;
 	}
 
 	public JLabel getInfoCorrida() {
@@ -2065,13 +1885,6 @@ public class GerenciadorVisual {
 		painelCircuito.setMouseZoom(d);
 	}
 
-	public void interruptDesenhaQualificao() {
-		if (thDesenhaQualificacao != null) {
-			thDesenhaQualificacao.interrupt();
-		}
-
-	}
-
 	public boolean isDesenhouQualificacao() {
 		if (painelCircuito == null)
 			return false;
@@ -2125,6 +1938,12 @@ public class GerenciadorVisual {
 	public void ativaVerControles() {
 		if (painelCircuito != null) {
 			painelCircuito.setVerControles(!painelCircuito.isVerControles());
+		}
+	}
+
+	public void setDesenhouQualificacao(boolean b) {
+		if (painelCircuito != null) {
+			painelCircuito.setDesenhouQualificacao(true);
 		}
 	}
 

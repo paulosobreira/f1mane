@@ -1,6 +1,5 @@
 package sowbreira.f1mane.paddock.applet;
 
-import java.awt.MediaTracker;
 import java.awt.Point;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import sowbreira.f1mane.MainFrame;
@@ -40,7 +38,6 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Constantes;
-import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -241,7 +238,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (gerenciadorVisual == null) {
 			preparaGerenciadorVisual();
 		}
-		gerenciadorVisual.desenhaQualificacao();
 
 	}
 
@@ -561,8 +557,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (gerenciadorVisual == null) {
 			preparaGerenciadorVisual();
 		}
-		gerenciadorVisual.setTempoSleep(0);
-
 	}
 
 	public void atualizaPosicaoPiloto(Posis posis) {
@@ -1034,8 +1028,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void interruptDesenhaQualificao() {
-		if (gerenciadorVisual != null)
-			gerenciadorVisual.interruptDesenhaQualificao();
 
 	}
 
@@ -1135,12 +1127,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void dadosPersistenciaCampeonato() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void proximaCorridaCampeonato() {
 		// TODO Auto-generated method stub
 
@@ -1220,6 +1206,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public Campeonato continuarCampeonato() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void dadosPersistenciaCampeonato(Campeonato campeonato) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

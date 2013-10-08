@@ -211,7 +211,8 @@ public class MainFrame extends JFrame {
 		};
 		dadosPersistencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleJogo.dadosPersistenciaCampeonato();
+				controleJogo.dadosPersistenciaCampeonato(campeonato);
+
 			}
 		});
 		JMenuItem proxCorrida = new JMenuItem("Proxima Corrida") {
@@ -937,7 +938,7 @@ public class MainFrame extends JFrame {
 				controleJogo = new ControleJogoLocal();
 				controleJogo.setMainFrame(this);
 				final PainelMenuLocal painelMenuSigle = new PainelMenuLocal(
-						this, controleJogo);
+						this);
 				getContentPane().add(painelMenuSigle, BorderLayout.CENTER);
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override

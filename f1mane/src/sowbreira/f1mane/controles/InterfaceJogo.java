@@ -327,7 +327,7 @@ public interface InterfaceJogo {
 
 	public Campeonato continuarCampeonato();
 
-	public void dadosPersistenciaCampeonato();
+	public void dadosPersistenciaCampeonato(Campeonato campeonato);
 
 	public void proximaCorridaCampeonato();
 
