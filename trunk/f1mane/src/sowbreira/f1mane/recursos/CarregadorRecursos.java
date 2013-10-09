@@ -184,8 +184,8 @@ public class CarregadorRecursos {
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
-
-		panel.setSize(backGround.getWidth(), backGround.getHeight());
+		if (panel != null)
+			panel.setSize(backGround.getWidth(), backGround.getHeight());
 
 		if (backGround == null) {
 			Logger.logar("backGround=" + backGround);
@@ -475,9 +475,16 @@ public class CarregadorRecursos {
 			String[] values = prop.split(",");
 			carro.setPotencia(Integer.parseInt(values[0]));
 			carro.setPotenciaReal(Integer.parseInt(values[0]));
-			carro.setAerodinamica(Integer.parseInt(values[0]));
-			carro.setFreios(Integer.parseInt(values[0]));
-
+			if (values.length > 9) {
+				carro.setAerodinamica(Integer.parseInt(values[8]));
+			} else {
+				carro.setAerodinamica(Integer.parseInt(values[0]));
+			}
+			if (values.length > 10) {
+				carro.setFreios(Integer.parseInt(values[9]));
+			} else {
+				carro.setFreios(Integer.parseInt(values[0]));
+			}
 			String red = values[1];
 			String green = values[2];
 			String blue = values[3];

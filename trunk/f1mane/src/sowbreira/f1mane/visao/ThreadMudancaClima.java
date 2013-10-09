@@ -7,28 +7,28 @@ import sowbreira.f1mane.controles.InterfaceJogo;
 import br.nnpe.Logger;
 
 public class ThreadMudancaClima extends Thread {
-	private PainelCircuito painelCircuito;
+	private InterfaceJogo controleJogo;
 
 	/**
-	 * @param painelCircuito
+	 * @param controleJogo
 	 */
-	public ThreadMudancaClima(PainelCircuito painelCircuito) {
+	public ThreadMudancaClima(InterfaceJogo controleJogo) {
 		super();
-		this.painelCircuito = painelCircuito;
+		this.controleJogo = controleJogo;
 	}
 
 	public void run() {
-		Toolkit toolkit = painelCircuito.getToolkit();
-		Point point = painelCircuito.getPointDesenhaClima();
+		Toolkit toolkit = controleJogo.getMainFrame().getToolkit();
+		// Point point = controleJogo.getPointDesenhaClima();
 		for (int i = 0; i < 200; i++) {
 			try {
 				Point p;
 				if (i % 2 == 0) {
-					p = new Point(point.x - 1, point.y - 1);
+					// p = new Point(point.x - 1, point.y - 1);
 				} else {
-					p = new Point(point.x + 1, point.y + 1);
+					// p = new Point(point.x + 1, point.y + 1);
 				}
-				painelCircuito.setPointDesenhaClima(p);
+				// controleJogo.setPointDesenhaClima(p);
 				if (i % 20 == 0 && InterfaceJogo.VALENDO) {
 					toolkit.beep();
 				}
@@ -38,6 +38,6 @@ public class ThreadMudancaClima extends Thread {
 				return;
 			}
 		}
-		painelCircuito.setPointDesenhaClima(point);
+		// controleJogo.setPointDesenhaClima(point);
 	}
 }

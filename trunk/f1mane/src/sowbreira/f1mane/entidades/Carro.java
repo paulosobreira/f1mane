@@ -623,6 +623,15 @@ public class Carro implements Serializable {
 					novoModificador -= Util.intervalo(1, 2);
 			}
 		}
+		calculaConsumoCombustivel(controleJogo, percent, testePotencia);
+		if (percent == 0 && novoModificador > 0) {
+			novoModificador--;
+		}
+		return novoModificador;
+	}
+
+	private void calculaConsumoCombustivel(InterfaceJogo controleJogo,
+			int percent, boolean testePotencia) {
 		int dificudade = 2;
 		if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
 			dificudade = ((testePotencia) ? 1 : 3);
@@ -639,6 +648,10 @@ public class Carro implements Serializable {
 			valConsumo += (testePotencia ? 2 : 3);
 		} else if (giro == GIRO_MAX_VAL) {
 			valConsumo += (testePotencia ? 3 : 6);
+			if (piloto.getNoAtual().verificaCruvaAlta()
+					|| piloto.getNoAtual().verificaCruvaBaixa()) {
+				valConsumo++;
+			}
 		}
 
 		double consumoTotal = (valConsumo
@@ -656,10 +669,6 @@ public class Carro implements Serializable {
 			getPiloto().setDesqualificado(true);
 			paneSeca = true;
 		}
-		if (percent == 0 && novoModificador > 0) {
-			novoModificador--;
-		}
-		return novoModificador;
 	}
 
 	public boolean isPaneSeca() {
@@ -898,8 +907,8 @@ public class Carro implements Serializable {
 		if (no.verificaRetaOuLargada()) {
 			porcentComb = 0;
 		}
-		double fator = (1.8 - ((piloto.getCarro().getAerodinamica() + piloto
-				.getCarro().getFreios()) / 2000.0));
+		double fator = ((1.3 + controleJogo.getNiveljogo()) - ((piloto
+				.getCarro().getAerodinamica() + piloto.getCarro().getFreios()) / 2000.0));
 		if (controleJogo.isSemTrocaPneu()) {
 			fator /= 2;
 		}

@@ -15,8 +15,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
@@ -41,7 +39,6 @@ import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -66,7 +63,6 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.NoWrapper;
 import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
@@ -190,9 +186,9 @@ public class GerenciadorVisual {
 		if (frame.getParent() != null) {
 			frame.getParent().addKeyListener(keyListener);
 		}
-		painelCircuito.addKeyListener(keyListener);
+		// painelCircuito.addKeyListener(keyListener);
 		frame.addMouseWheelListener(mw);
-		painelCircuito.addMouseWheelListener(mw);
+		// painelCircuito.addMouseWheelListener(mw);
 		if (!(controleJogo instanceof JogoCliente)) {
 			iniciaThreadJogoSuaveClientes();
 		}
@@ -206,12 +202,6 @@ public class GerenciadorVisual {
 				boolean alive = true;
 				while (alive) {
 					atualizaPainel();
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException e) {
-						alive = false;
-						e.printStackTrace();
-					}
 				}
 
 			}
@@ -373,7 +363,7 @@ public class GerenciadorVisual {
 
 	private void gerarLayout() {
 		centerPanel.setLayout(new BorderLayout());
-		centerPanel.add(painelCircuito, BorderLayout.CENTER);
+		// centerPanel.add(painelCircuito, BorderLayout.CENTER);
 		controleJogo.getMainFrame().getContentPane().removeAll();
 		controleJogo.getMainFrame().getContentPane()
 				.setLayout(new BorderLayout());
@@ -641,13 +631,11 @@ public class GerenciadorVisual {
 		boolean modo = controleJogo.mudarModoAgressivo();
 	}
 
-
 	public void atualizaPainel() {
 		if (controleJogo == null) {
 			return;
 		}
 		Piloto pilotoSelecionado = controleJogo.getPilotoSelecionado();
-		atualizaInfoAdicional(pilotoSelecionado);
 		if (!painelCircuito.isDesenhouQualificacao()) {
 			No n = (No) controleJogo.getCircuito().getPistaFull().get(0);
 			Point pQualy = n.getPoint();
@@ -665,83 +653,6 @@ public class GerenciadorVisual {
 				p = pilotoSelecionado.getNoAtualSuave().getPoint();
 			}
 			painelCircuito.centralizarPonto(p);
-		}
-	}
-
-	private void atualizaInfoAdicional(Piloto pilotoSelecionado) {
-		Volta voltaCorrida = controleJogo.obterMelhorVolta();
-		if (voltaCorrida != null) {
-			List piltos = controleJogo.getPilotos();
-			Piloto piloto = null;
-			for (Iterator iter = piltos.iterator(); iter.hasNext();) {
-				Piloto element = (Piloto) iter.next();
-				if (element.getId() == voltaCorrida.getPiloto()) {
-					piloto = element;
-					break;
-				}
-
-			}
-			String text = Lang.msg("142",
-					new Object[] { voltaCorrida.obterTempoVoltaFormatado() })
-					+ (piloto != null ? piloto.getNome() + " - "
-							+ piloto.getCarro().getNome() : "")
-					+ " "
-					+ controleJogo.getNumVoltaAtual()
-					+ "/"
-					+ controleJogo.totalVoltasCorrida() + " ";
-
-			text += Lang.msg("245") + " : " + controleJogo.getNivelCorrida();
-			if (controleJogo.isSemReabastacimento()) {
-				text += Lang.msg("304");
-			}
-			if (controleJogo.isSemTrocaPneu()) {
-				text += Lang.msg("305");
-			}
-			if (controleJogo.isSafetyCarNaPista()) {
-				text += Lang.msg("145");
-			}
-			if (controleJogo.isKers()) {
-				text += " Kers ";
-			}
-			if (controleJogo.isDrs()) {
-				text += " DRS ";
-			}
-			infoCorrida.setText(text);
-		}
-
-		if (pilotoSelecionado != null) {
-
-			String plider = "";
-
-			String infoBox = pilotoSelecionado.getCarro().getTipoPneu() + " "
-					+ pilotoSelecionado.getCarro().getAsa() + Lang.msg("146")
-					+ pilotoSelecionado.getQtdeParadasBox() + " "
-					+ (pilotoSelecionado.isBox() ? Lang.msg("147") : "");
-
-			if (pilotoSelecionado.getPosicao() == 1) {
-				plider = Lang.msg("148");
-			} else {
-				controleJogo.calculaSegundosParaLider(pilotoSelecionado);
-				plider = pilotoSelecionado.getSegundosParaLider();
-			}
-
-			String text = Lang.msg("149") + plider;
-
-			if ((pilotoSelecionado.getNumeroVolta() > 0)) {
-				if (pilotoSelecionado.getUltimaVolta() != null) {
-					text += (Lang.msg("150") + pilotoSelecionado
-							.getUltimaVolta().obterTempoVoltaFormatado());
-				}
-
-				Volta voltaPiloto = controleJogo
-						.obterMelhorVolta(pilotoSelecionado);
-
-				if (voltaPiloto != null) {
-					text += (Lang.msg("151") + voltaPiloto
-							.obterTempoVoltaFormatado());
-				}
-			}
-			infoPiloto.setText(text + " " + infoBox);
 		}
 	}
 
@@ -826,7 +737,6 @@ public class GerenciadorVisual {
 
 	public void apagarLuz() {
 		painelCircuito.apagarLuz();
-		atualizaPainel();
 	}
 
 	public JTextField getNomeJogador() {
@@ -834,7 +744,7 @@ public class GerenciadorVisual {
 	}
 
 	public void informaMudancaClima() {
-		clima = new ThreadMudancaClima(painelCircuito);
+		clima = new ThreadMudancaClima(controleJogo);
 		clima.start();
 
 	}
