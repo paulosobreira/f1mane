@@ -575,11 +575,28 @@ public class PainelMenuLocal extends JPanel {
 
 		desenhaCircuitoCorridaCampeonato(g2d, x, y);
 
+		desenhaDadosCorridaCampeonato(g2d, x, y + 300);
+
 		desenhaClassificacaoPilotosCampeonato(g2d, x + 400, y + 5);
 
 		desenhaClassificacaoEquipesCampeonato(g2d, x + 700, y + 5);
 
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+	}
+
+	private void desenhaDadosCorridaCampeonato(Graphics2D g2d, int x, int y) {
+//		Font fontOri = g2d.getFont();
+//		Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, 14);
+//		int yTitulo = y - 30;
+//		int xOri = x;
+//		g2d.setFont(fontNegrito);
+//		g2d.setColor(lightWhite);
+//		g2d.fillRoundRect(x, yTitulo, 120, 20, 15, 15);
+//		g2d.setColor(Color.BLACK);
+//		int tamNmPiloto = Util.calculaLarguraText(circuito, g2d);
+//		g2d.drawString("" + Lang.msg("153").toUpperCase(), x + 2, yTitulo + 16);
+//
+//		g2d.setFont(fontOri);
 	}
 
 	private void desenhaClassificacaoEquipesCampeonato(Graphics2D g2d, int x,
@@ -596,6 +613,9 @@ public class PainelMenuLocal extends JPanel {
 			equipesList.add(new ConstrutoresPontosCampeonato());
 		}
 		for (int i = 0; i < equipesList.size(); i++) {
+			if (i > 9) {
+				break;
+			}
 			ConstrutoresPontosCampeonato equipe = equipesList.get(i);
 			if (i == 0) {
 				g2d.setFont(fontNegrito);
@@ -654,6 +674,9 @@ public class PainelMenuLocal extends JPanel {
 			pilotosList.add(new PilotosPontosCampeonato());
 		}
 		for (int i = 0; i < pilotosList.size(); i++) {
+			if (i > 9) {
+				break;
+			}
 			PilotosPontosCampeonato piloto = pilotosList.get(i);
 			if (i == 0) {
 				g2d.setFont(fontNegrito);

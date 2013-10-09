@@ -62,7 +62,7 @@ import br.nnpe.Util;
 /**
  * @author Paulo Sobreira
  */
-public class PainelCircuito extends JPanel {
+public class PainelCircuito {
 
 	public static boolean carregaBkg = true;
 	public static boolean desenhaPista = true;
@@ -136,6 +136,7 @@ public class PainelCircuito extends JPanel {
 	private Shape[] boxCor1 = new Shape[12];
 	private Shape[] boxCor2 = new Shape[12];
 	private Rectangle limitesViewPort;
+	private Rectangle limitesViewPortFull;
 	private Set<TravadaRoda> marcasPneu = new HashSet<TravadaRoda>();
 	private boolean inverterSpray;
 	private Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
@@ -244,10 +245,10 @@ public class PainelCircuito extends JPanel {
 	private Point centroP;
 	private Point frenteP;
 	private AffineTransform translateBoxes;
-	private boolean desenhou = true;
 	private int dezporSuave;
-	private Rectangle limitesViewPortFull;
 	private boolean naoDesenhaVelocidade;
+	private AffineTransform affineTransformBG;
+	private AffineTransformOp affineTransformOpBG;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -260,8 +261,7 @@ public class PainelCircuito extends JPanel {
 		for (int i = 0; i < pilotosRect.length; i++) {
 			pilotosRect[i] = new RoundRectangle2D.Double(0, 0, 1, 1, 10, 10);
 		}
-
-		addMouseListener(new MouseAdapter() {
+		controleJogo.getMainFrame().addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				controleJogo.getMainFrame().requestFocus();
 				if (!verificaComando(e)) {
@@ -529,7 +529,7 @@ public class PainelCircuito extends JPanel {
 		try {
 			if (!(threadCarregarBkg != null && threadCarregarBkg.isAlive()))
 				backGround = CarregadorRecursos.carregaBackGround(
-						circuito.getBackGround(), this, circuito);
+						circuito.getBackGround(), null, circuito);
 		} catch (Exception e) {
 			backGround = null;
 		}
@@ -560,9 +560,7 @@ public class PainelCircuito extends JPanel {
 		return qtdeLuzesAcesas;
 	}
 
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		long currentTimeMillis = System.currentTimeMillis();
+	protected void render() {
 		try {
 			descontoCentraliza();
 			limitesViewPort = (Rectangle) limitesViewPort();
@@ -580,13 +578,13 @@ public class PainelCircuito extends JPanel {
 				gerarGrid();
 				zoomGrid = zoom;
 			}
-			Graphics2D g2d = (Graphics2D) g;
+			Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
 			setarHints(g2d);
 			desenhaBackGround(g2d);
 			desenhaContadorVoltas(g2d);
 			desenhaQualificacao(g2d);
 			if (!desenhouQualificacao) {
-				desenhou = true;
+				controleJogo.getMainFrame().mostrarGraficos();
 				return;
 			}
 			ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
@@ -618,9 +616,7 @@ public class PainelCircuito extends JPanel {
 			desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
 			desenhaVoltarMenuPrincipal(g2d);
 			desenhaDebugIinfo(g2d);
-			desenhou = true;
-			// System.out.println(System.currentTimeMillis() -
-			// currentTimeMillis);
+			controleJogo.getMainFrame().mostrarGraficos();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -2127,10 +2123,6 @@ public class PainelCircuito extends JPanel {
 		if (backGround == null) {
 			desenhaBackGroundComStrokes(g2d);
 		} else {
-			AffineTransform affineTransform = AffineTransform.getScaleInstance(
-					zoom, zoom);
-			AffineTransformOp affineTransformOp = new AffineTransformOp(
-					affineTransform, AffineTransformOp.TYPE_BILINEAR);
 			BufferedImage subimage = null;
 			BufferedImage drawBuffer = null;
 			Rectangle rectangle = null;
@@ -2205,8 +2197,17 @@ public class PainelCircuito extends JPanel {
 						(int) (limitesViewPortFull.getWidth()),
 						(int) (limitesViewPortFull.getHeight()),
 						backGround.getType());
-				if (subimage != null)
-					affineTransformOp.filter(subimage, drawBuffer);
+				if (subimage != null) {
+					if (affineTransformBG == null
+							|| affineTransformBG.getScaleX() != zoom) {
+						affineTransformBG = AffineTransform.getScaleInstance(
+								zoom, zoom);
+						affineTransformOpBG = new AffineTransformOp(
+								affineTransformBG,
+								AffineTransformOp.TYPE_BILINEAR);
+					}
+					affineTransformOpBG.filter(subimage, drawBuffer);
+				}
 			}
 
 			if (drawBuffer != null && desenhaImagens) {
@@ -2615,13 +2616,13 @@ public class PainelCircuito extends JPanel {
 	}
 
 	public Shape limitesViewPort() {
-		int x = 0;
-		int y = 0;
+		int x = 10;
+		int y = 35;
 
 		MainFrame mainFrame = controleJogo.getMainFrame();
 		Rectangle rectangle = new Rectangle(x, y,
 				(int) (mainFrame.getWidth() - 20),
-				(int) (mainFrame.getHeight() - 70));
+				(int) (mainFrame.getHeight() - 40));
 		return rectangle;
 	}
 
@@ -3326,15 +3327,7 @@ public class PainelCircuito extends JPanel {
 		}
 	}
 
-	public void centralizarPontoDireto(Point pin) {
-		pontoCentralizado = pin;
-		repaint();
-	}
-
 	public void centralizarPonto(Point p) {
-		if (!desenhou) {
-			return;
-		}
 		pontoCentralizado = p;
 		if (pontoCentralizadoOld != null) {
 			List reta = GeoUtil.drawBresenhamLine(pontoCentralizadoOld,
@@ -3354,8 +3347,7 @@ public class PainelCircuito extends JPanel {
 			}
 			pontoCentralizado = (Point) reta.get(dezporSuave);
 		}
-		desenhou = false;
-		repaint();
+		render();
 		pontoCentralizadoOld = pontoCentralizado;
 	}
 
@@ -4941,9 +4933,9 @@ public class PainelCircuito extends JPanel {
 		return new Dimension(Util.inte((mx + 1000)), Util.inte((my + 1000)));
 	}
 
-	public Dimension getMinimumSize() {
-		return super.getPreferredSize();
-	}
+	// public Dimension getMinimumSize() {
+	// return super.getPreferredSize();
+	// }
 
 	public void apagarLuz() {
 		if (qtdeLuzesAcesas <= 1) {
