@@ -835,6 +835,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void desenhaQualificacao() {
 		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		gerenciadorVisual.setDesenhouCreditos(true);
+		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -1446,12 +1452,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	@Override
 	public void voltaMenuPrincipal() {
-		matarTodasThreads();
-		mainFrame.iniciar();
 		if (controleCampeonato != null) {
 			controleCampeonato.continuarCampeonatoCache();
 			matarTodasThreads();
 			mainFrame.setCampeonato(controleCampeonato.getCampeonato());
+			mainFrame.iniciar();
+		} else {
+			matarTodasThreads();
 			mainFrame.iniciar();
 		}
 	}

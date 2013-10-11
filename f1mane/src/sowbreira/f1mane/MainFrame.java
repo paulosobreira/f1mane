@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferStrategy;
 import java.io.BufferedReader;
 import java.io.File;
@@ -86,7 +88,7 @@ public class MainFrame extends JFrame {
 	public MainFrame(JApplet modoApplet, String codeBase) throws IOException {
 		this.codeBase = codeBase;
 		bar = new JMenuBar();
-		setJMenuBar(bar);
+		// setJMenuBar(bar);
 		menuJogo = new JMenu() {
 			public String getText() {
 				return Lang.msg("088");
@@ -933,21 +935,13 @@ public class MainFrame extends JFrame {
 	}
 
 	public void iniciar() {
-		getContentPane().removeAll();
+		removerListeners();
 		if (ControleJogoLocal.VALENDO) {
 			setVisible(true);
 			try {
 				controleJogo = new ControleJogoLocal();
 				controleJogo.setMainFrame(this);
-				final PainelMenuLocal painelMenuSigle = new PainelMenuLocal(
-						this);
-				getContentPane().add(painelMenuSigle, BorderLayout.CENTER);
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						painelMenuSigle.updateUI();
-					}
-				});
+				PainelMenuLocal painelMenuSigle = new PainelMenuLocal(this);
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
@@ -965,6 +959,22 @@ public class MainFrame extends JFrame {
 			}
 		}
 
+	}
+
+	private void removerListeners() {
+		getContentPane().removeAll();
+		MouseWheelListener[] mouseWheelListeners = getMouseWheelListeners();
+		for (int i = 0; i < mouseWheelListeners.length; i++) {
+			removeMouseWheelListener(mouseWheelListeners[i]);
+		}
+		KeyListener[] keyListeners = getKeyListeners();
+		for (int i = 0; i < keyListeners.length; i++) {
+			removeKeyListener(keyListeners[i]);
+		}
+		MouseListener[] mouseListeners = getMouseListeners();
+		for (int i = 0; i < mouseListeners.length; i++) {
+			removeMouseListener(mouseListeners[i]);
+		}
 	}
 
 	public void exibirResiltadoFinal(PainelTabelaResultadoFinal resultadoFinal) {
@@ -1030,6 +1040,7 @@ public class MainFrame extends JFrame {
 
 	public void mostrarGraficos() {
 		BufferStrategy strategy = getBufferStrategy();
+		strategy.getDrawGraphics().dispose();
 		strategy.show();
 	}
 
