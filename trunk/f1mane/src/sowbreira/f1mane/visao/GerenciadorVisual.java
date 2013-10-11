@@ -117,6 +117,8 @@ public class GerenciadorVisual {
 	private ThreadMudancaClima clima;
 	private Thread thAtualizaPainelSuave;
 	private Thread thAtualizaPilotosSuave;
+	protected boolean thAtualizaPainelSuaveAlive = true;
+	protected boolean thAtualizaPilotosSuaveAlive = true;
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
@@ -186,9 +188,7 @@ public class GerenciadorVisual {
 		if (frame.getParent() != null) {
 			frame.getParent().addKeyListener(keyListener);
 		}
-		// painelCircuito.addKeyListener(keyListener);
 		frame.addMouseWheelListener(mw);
-		// painelCircuito.addMouseWheelListener(mw);
 		if (!(controleJogo instanceof JogoCliente)) {
 			iniciaThreadJogoSuaveClientes();
 		}
@@ -199,18 +199,15 @@ public class GerenciadorVisual {
 		thAtualizaPainelSuave = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				boolean alive = true;
-				while (alive) {
+				while (thAtualizaPainelSuaveAlive) {
 					atualizaPainel();
 				}
-
 			}
 		});
 		thAtualizaPilotosSuave = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				boolean alive = true;
-				while (alive) {
+				while (thAtualizaPilotosSuaveAlive) {
 					InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
 					List<Piloto> pilotos = controleJogo.getPilotos();
 					for (Iterator iterator = pilotos.iterator(); iterator
@@ -348,9 +345,9 @@ public class GerenciadorVisual {
 						piloto.setNoAtualSuave(noAtualSuave);
 					}
 					try {
-						Thread.sleep(10);
+						Thread.sleep(5);
 					} catch (InterruptedException e) {
-						alive = false;
+						thAtualizaPilotosSuaveAlive = false;
 						Logger.logarExept(e);
 					}
 				}
@@ -379,12 +376,8 @@ public class GerenciadorVisual {
 		if (clima != null) {
 			clima.interrupt();
 		}
-		if (thAtualizaPainelSuave != null) {
-			thAtualizaPainelSuave.interrupt();
-		}
-		if (thAtualizaPilotosSuave != null) {
-			thAtualizaPilotosSuave.interrupt();
-		}
+		thAtualizaPainelSuaveAlive = false;
+		thAtualizaPilotosSuaveAlive = false;
 		ControleSom.paraTudo();
 		super.finalize();
 	}
@@ -654,6 +647,7 @@ public class GerenciadorVisual {
 			}
 			painelCircuito.centralizarPonto(p);
 		}
+		controleJogo.getMainFrame().mostrarGraficos();
 	}
 
 	public JSlider getSpinnerDificuldadeUltrapassagem() {
@@ -1855,6 +1849,13 @@ public class GerenciadorVisual {
 		if (painelCircuito != null) {
 			painelCircuito.setDesenhouQualificacao(true);
 		}
+	}
+
+	public void setDesenhouCreditos(boolean b) {
+		if (painelCircuito != null) {
+			painelCircuito.setDesenhouCreditos(true);
+		}
+
 	}
 
 }

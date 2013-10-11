@@ -47,9 +47,9 @@ import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
-public class PainelMenuLocal extends JPanel {
+public class PainelMenuLocal {
 
-	public static BufferedImage bg;
+	public BufferedImage bg;
 
 	public static String MENU_PRINCIPAL = "MENU_PRINCIPAL";
 
@@ -235,30 +235,36 @@ public class PainelMenuLocal extends JPanel {
 
 	private Campeonato campeonato;
 
+	private BufferedImage bgmonaco;
+
+	private BufferedImage bgf1;
+
+	protected boolean renderThreadAlive = true;
+
+
 	public PainelMenuLocal(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-		addMouseListener(new MouseAdapter() {
+
+		mainFrame.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				processaClick(e);
-				try {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							repaint();
-						}
-					});
-				} catch (Exception ex) {
-					Logger.logarExept(ex);
-				}
 				super.mouseClicked(e);
 			}
 		});
-
+		Thread renderThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (renderThreadAlive) {
+					render();
+					PainelMenuLocal.this.mainFrame.mostrarGraficos();
+				}
+			}
+		});
 		iniciaRecursos();
 		if (mainFrame.getCampeonato() != null) {
 			carregaCampeonato();
 		}
-
+		renderThread.start();
 	}
 
 	private void carregaCampeonato() {
@@ -521,31 +527,33 @@ public class PainelMenuLocal extends JPanel {
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 		temporadas = carregadorRecursos.getVectorTemps();
 		Collections.reverse(temporadas);
+		bgmonaco = ImageUtil.gerarFade(
+				CarregadorRecursos.carregaBufferedImage("bg-monaco.png"), 25);
+		bgf1 = CarregadorRecursos.carregaBufferedImage("f1bg.png");
 		pilotosRect = new ArrayList<RoundRectangle2D>();
 		for (int i = 0; i < 24; i++) {
 			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 10, 10));
 		}
 	}
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+	protected void render() {
 		try {
-			Graphics2D g2d = (Graphics2D) g;
+			Graphics2D g2d = mainFrame.obterGraficos();
 			setarHints(g2d);
+			g2d.setColor(Color.WHITE);
+			g2d.fillRect(0, 0, getWidth(), getHeight());
 			if (PainelCircuito.carregaBkg) {
 				if (MENU.equals(MENU_PRINCIPAL))
-					bg = ImageUtil.gerarFade(CarregadorRecursos
-							.carregaBufferedImage("bg-monaco.png"), 25);
+					bg = bgmonaco;
 				if (MENU.equals(MENU_CORRIDA))
-					bg = CarregadorRecursos.carregaBufferedImage("f1bg.png");
+					bg = bgf1;
 			}
 			if (bg != null) {
-				int centerX = getWidth() / 2;
-				int centerY = getHeight() / 2;
+				int centerX = mainFrame.getWidth() / 2;
+				int centerY = mainFrame.getHeight() / 2;
 				int bgX = bg.getWidth() / 2;
 				int bgY = bg.getHeight() / 2;
-				g.drawImage(bg, centerX - bgX, centerY - bgY, null);
+				g2d.drawImage(bg, centerX - bgX, centerY - bgY, null);
 			}
 			if (desenhaCarregando) {
 				desenhaCarregando(g2d);
@@ -557,7 +565,6 @@ public class PainelMenuLocal extends JPanel {
 			desenhaMenuCorridaCampeonatoPilotos(g2d);
 			desenhaMenuQualificacao(g2d);
 		} catch (Exception e) {
-			e.printStackTrace();
 			Logger.logarExept(e);
 		}
 
@@ -584,19 +591,28 @@ public class PainelMenuLocal extends JPanel {
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
 	}
 
+	private int getHeight() {
+		return mainFrame.getHeight();
+	}
+
+	private int getWidth() {
+		return mainFrame.getWidth();
+	}
+
 	private void desenhaDadosCorridaCampeonato(Graphics2D g2d, int x, int y) {
-//		Font fontOri = g2d.getFont();
-//		Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, 14);
-//		int yTitulo = y - 30;
-//		int xOri = x;
-//		g2d.setFont(fontNegrito);
-//		g2d.setColor(lightWhite);
-//		g2d.fillRoundRect(x, yTitulo, 120, 20, 15, 15);
-//		g2d.setColor(Color.BLACK);
-//		int tamNmPiloto = Util.calculaLarguraText(circuito, g2d);
-//		g2d.drawString("" + Lang.msg("153").toUpperCase(), x + 2, yTitulo + 16);
-//
-//		g2d.setFont(fontOri);
+		// Font fontOri = g2d.getFont();
+		// Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, 14);
+		// int yTitulo = y - 30;
+		// int xOri = x;
+		// g2d.setFont(fontNegrito);
+		// g2d.setColor(lightWhite);
+		// g2d.fillRoundRect(x, yTitulo, 120, 20, 15, 15);
+		// g2d.setColor(Color.BLACK);
+		// int tamNmPiloto = Util.calculaLarguraText(circuito, g2d);
+		// g2d.drawString("" + Lang.msg("153").toUpperCase(), x + 2, yTitulo +
+		// 16);
+		//
+		// g2d.setFont(fontOri);
 	}
 
 	private void desenhaClassificacaoEquipesCampeonato(Graphics2D g2d, int x,
@@ -1114,6 +1130,7 @@ public class PainelMenuLocal extends JPanel {
 										trocaPneus, reabasteciemto,
 										combustivelSelecionado, asaSelecionado,
 										pneuSelecionado);
+								renderThreadAlive = false;
 							} catch (Exception e) {
 								Logger.logarExept(e);
 							}
@@ -1121,6 +1138,7 @@ public class PainelMenuLocal extends JPanel {
 						}
 					});
 					run.start();
+
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -1143,6 +1161,7 @@ public class PainelMenuLocal extends JPanel {
 									campeonato, combustivelSelecionado,
 									asaSelecionado, pneuSelecionado,
 									climaSelecionado);
+							renderThreadAlive = false;
 						} catch (Exception e) {
 							Logger.logarExept(e);
 						}

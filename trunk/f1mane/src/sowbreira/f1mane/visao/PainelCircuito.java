@@ -121,6 +121,7 @@ public class PainelCircuito {
 	private int qtdeLuzesAcesas = 5;
 	private Map mapaZoomTravadasPneus = new HashMap();
 	private boolean desenhouQualificacao;
+	private boolean desenhouCreditos;
 	private boolean desenhaInfo = true;
 	private int mx;
 	private int my;
@@ -582,12 +583,14 @@ public class PainelCircuito {
 			setarHints(g2d);
 			desenhaBackGround(g2d);
 			desenhaContadorVoltas(g2d);
-			desenhaQualificacao(g2d);
-			if (!desenhouQualificacao) {
-				controleJogo.getMainFrame().mostrarGraficos();
+			if (!desenhouCreditos) {
 				return;
 			}
-			ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
+			desenhaQualificacao(g2d);
+			if (!desenhouQualificacao) {
+				return;
+			}
+			// ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
 			desenhaGrid(g2d);
 			iniciaPilotoSelecionado();
 			desenhaMarcasPeneuPista(g2d);
@@ -616,7 +619,6 @@ public class PainelCircuito {
 			desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
 			desenhaVoltarMenuPrincipal(g2d);
 			desenhaDebugIinfo(g2d);
-			controleJogo.getMainFrame().mostrarGraficos();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -3886,7 +3888,7 @@ public class PainelCircuito {
 					carroimg.getHeight() + 5, 15, 15);
 		}
 		int carSelX = x;
-		int carSelY = newY;
+		int carSelY = newY + 30;
 		if (desenhaImagens)
 			g2d.drawImage(carroimg, null, carSelX, carSelY);
 
@@ -4933,10 +4935,6 @@ public class PainelCircuito {
 		return new Dimension(Util.inte((mx + 1000)), Util.inte((my + 1000)));
 	}
 
-	// public Dimension getMinimumSize() {
-	// return super.getPreferredSize();
-	// }
-
 	public void apagarLuz() {
 		if (qtdeLuzesAcesas <= 1) {
 			setVerControles(false);
@@ -5078,9 +5076,6 @@ public class PainelCircuito {
 			if (boxParada[i] == null) {
 				break;
 			}
-			// if (!limitesViewPort.intersects(boxParada[i].getBounds2D())) {
-			// continue;
-			// }
 			if (i > (controleJogo.getCarrosBox().size() - 1)) {
 				break;
 			}
@@ -5276,6 +5271,14 @@ public class PainelCircuito {
 
 	public void setVerControles(boolean verControles) {
 		this.verControles = verControles;
+	}
+
+	public boolean isDesenhouCreditos() {
+		return desenhouCreditos;
+	}
+
+	public void setDesenhouCreditos(boolean desenhouCreditos) {
+		this.desenhouCreditos = desenhouCreditos;
 	}
 
 }
