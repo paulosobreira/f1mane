@@ -654,4 +654,8 @@ public class CarregadorRecursos {
 		}
 		return null;
 	}
+
+	public static BufferedImage carregaBufferedImageTransparecia(String string) {
+		return carregaBufferedImageTransparecia(string, null);
+	}
 }
