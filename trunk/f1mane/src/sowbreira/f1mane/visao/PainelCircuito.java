@@ -31,8 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleCorrida;
@@ -250,6 +248,7 @@ public class PainelCircuito {
 	private boolean naoDesenhaVelocidade;
 	private AffineTransform affineTransformBG;
 	private AffineTransformOp affineTransformOpBG;
+	private AffineTransform translateGrid;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -336,8 +335,8 @@ public class PainelCircuito {
 		setaCarroBaixo = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
 						200);
-		gridCarro = CarregadorRecursos.carregaBufferedImageTranspareciaPreta(
-				"GridCarro.png", 100);
+		gridCarro = CarregadorRecursos
+				.carregaBufferedImageTransparecia("GridCarro.png");
 		scimg = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("safetycar.gif");
 		scima = CarregadorRecursos
@@ -590,7 +589,6 @@ public class PainelCircuito {
 			if (!desenhouQualificacao) {
 				return;
 			}
-			// ControleSom.processaSom(pilotoSelecionado, controleJogo, this);
 			desenhaGrid(g2d);
 			iniciaPilotoSelecionado();
 			desenhaMarcasPeneuPista(g2d);
@@ -2119,12 +2117,18 @@ public class PainelCircuito {
 		if (backGround == null) {
 			carregaBackGround();
 		}
-		g2d.setColor(Color.BLACK);
-		g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
-				(int) limitesViewPortFull.getHeight());
 		if (backGround == null) {
+			g2d.setColor(Color.white);
+			if (circuito.getCorFundo() != null) {
+				g2d.setColor(circuito.getCorFundo());
+			}
+			g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
+					(int) limitesViewPortFull.getHeight());
 			desenhaBackGroundComStrokes(g2d);
 		} else {
+			g2d.setColor(Color.BLACK);
+			g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
+					(int) limitesViewPortFull.getHeight());
 			BufferedImage subimage = null;
 			BufferedImage drawBuffer = null;
 			Rectangle rectangle = null;
@@ -3137,26 +3141,33 @@ public class PainelCircuito {
 		if (gridCopy.isEmpty()) {
 			return;
 		}
+		if (translateGrid == null)
+			translateGrid = new AffineTransform();
+		translateGrid.setToTranslation(-dC.x * zoom, -dC.y * zoom);
 		for (int i = 0; i < 24; i++) {
+			Shape shapeGrid = translateGrid.createTransformedShape(grid[i]);
+			Shape shapeAsfalto = translateGrid
+					.createTransformedShape(asfaltoGrid[i]);
 			if (grid[i] == null
-					|| !limitesViewPort.intersects(grid[i].getBounds2D())) {
+					|| !limitesViewPort.intersects(shapeGrid.getBounds2D())) {
 				continue;
 			}
 			if (circuito != null && circuito.isUsaBkg()) {
 				if (i >= gridCopy.size()) {
 					continue;
 				}
+
 				BufferedImage buffer = (BufferedImage) gridCopy.get(i);
 				double meix = (gridCarro.getWidth() / 2) * zoom;
 				double meiy = (gridCarro.getHeight() / 2) * zoom;
-				g2d.drawImage(buffer, (int) (grid[i].getBounds().getCenterX()
-						- meix - dC.x), (int) (grid[i].getBounds().getCenterY()
-						- meiy - dC.y), null);
+				int x = Util.inte((shapeGrid.getBounds().getCenterX() - meix));
+				int y = Util.inte((shapeGrid.getBounds().getCenterY() - meiy));
+				g2d.drawImage(buffer, x, y, null);
 			} else {
 				g2d.setColor(Color.white);
-				g2d.fill(grid[i]);
+				g2d.fill(shapeGrid);
 				g2d.setColor(Color.lightGray);
-				g2d.fill(asfaltoGrid[i]);
+				g2d.fill(shapeAsfalto);
 			}
 
 		}
@@ -5071,7 +5082,7 @@ public class PainelCircuito {
 		}
 		if (translateBoxes == null)
 			translateBoxes = new AffineTransform();
-		translateBoxes.setToTranslation(-dC.x, -dC.y);
+		translateBoxes.setToTranslation(-dC.x * zoom, -dC.y * zoom);
 		for (int i = 0; i < 12; i++) {
 			if (boxParada[i] == null) {
 				break;

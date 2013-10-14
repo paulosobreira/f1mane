@@ -70,6 +70,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem pausa;
 	private JMenuItem narracao;
 	private JMenuItem verControles;
+	private JFrame menuFrame;
 	protected Campeonato campeonato;
 
 	private AppletPaddock ver = new AppletPaddock();
@@ -88,7 +89,8 @@ public class MainFrame extends JFrame {
 	public MainFrame(JApplet modoApplet, String codeBase) throws IOException {
 		this.codeBase = codeBase;
 		bar = new JMenuBar();
-		// setJMenuBar(bar);
+		menuFrame = new JFrame();
+		menuFrame.setJMenuBar(bar);
 		menuJogo = new JMenu() {
 			public String getText() {
 				return Lang.msg("088");
@@ -144,6 +146,15 @@ public class MainFrame extends JFrame {
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		}
 		this.createBufferStrategy(2);
+		this.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				int keyCoode = e.getKeyCode();
+				if (keyCoode == KeyEvent.VK_1 && e.isControlDown()) {
+					mostraMenuFrame();
+				}
+			}
+		});
+
 	}
 
 	private String getVersao() {
@@ -506,15 +517,6 @@ public class MainFrame extends JFrame {
 		});
 		menu1.add(verControles);
 
-	}
-
-	protected void selecionarTemporada() {
-		// carregarTemporadas();
-		// JComboBox temporadasCombo = new JComboBox(vectorTemps);
-		// JOptionPane.showMessageDialog(this, temporadasCombo, Lang.msg("272"),
-		// JOptionPane.QUESTION_MESSAGE);
-		// temporarada = (String) temporadas
-		// .get(temporadasCombo.getSelectedItem());
 	}
 
 	private void ativarKeysEditor() {
@@ -1044,4 +1046,13 @@ public class MainFrame extends JFrame {
 		strategy.show();
 	}
 
+	public void mostraMenuFrame() {
+		if (menuFrame != null) {
+			menuFrame.setVisible(!menuFrame.isVisible());
+			if(menuFrame.isVisible()){
+				menuFrame.pack();
+			}
+		}
+
+	}
 }
