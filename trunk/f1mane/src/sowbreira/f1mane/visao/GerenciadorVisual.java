@@ -244,8 +244,8 @@ public class GerenciadorVisual {
 										- noAtualSuave.getIndex();
 							}
 							int ganhoSuave = 0;
-							int maxLoop = 600;
-							int inc = 40;
+							int maxLoop = 500;
+							int inc = 50;
 							for (int i = 0; i < maxLoop; i += inc) {
 								if (diff >= i && diff < i + inc) {
 									break;
