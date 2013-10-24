@@ -64,7 +64,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected String circuitoSelecionado = null;
 
 	private MainFrame mainFrame;
-	private boolean setouZoom;
 
 	public ControleJogoLocal(String temporada) throws Exception {
 		super(temporada);
@@ -246,12 +245,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#atualizaPainel()
 	 */
 	public void atualizaPainel() {
-		if (gerenciadorVisual != null) {
-			if (gerenciadorVisual.isDesenhouQualificacao() && !setouZoom) {
-				gerenciadorVisual.setMouseZoom(0.7);
-				setouZoom = true;
-			}
-		}
 		decrementaTracado();
 	}
 

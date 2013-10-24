@@ -27,6 +27,25 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
  */
 public class ImageUtil {
 
+	public static BufferedImage subImagem(BufferedImage buffer, int x, int y,
+			int largura, int altura) {
+		if (buffer == null) {
+			return null;
+		}
+		BufferedImage bufferedImageRetorno = new BufferedImage(largura, altura,
+				buffer.getType());
+		Raster srcRaster = buffer.getData();
+		WritableRaster destRaster = bufferedImageRetorno.getRaster();
+		int[] argbArray = new int[4];
+		for (int i = x; i < (x + largura); i++) {
+			for (int j = y; j < (y + altura); j++) {
+				destRaster.setPixel(i - x, j - y,
+						srcRaster.getPixel(i, j, argbArray));
+			}
+		}
+		return bufferedImageRetorno;
+	}
+
 	public static BufferedImage copiaImagem(BufferedImage buffer) {
 		if (buffer == null) {
 			return null;
