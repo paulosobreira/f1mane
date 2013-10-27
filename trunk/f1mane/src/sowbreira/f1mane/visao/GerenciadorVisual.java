@@ -114,7 +114,6 @@ public class GerenciadorVisual {
 	private long ultimaTravavadaRodas;
 
 	private JFrame radioPadock;
-	private ThreadMudancaClima clima;
 	private Thread thAtualizaPainelSuave;
 	private Thread thAtualizaPilotosSuave;
 	protected boolean thAtualizaPainelSuaveAlive = true;
@@ -397,9 +396,6 @@ public class GerenciadorVisual {
 	}
 
 	public void finalize() throws Throwable {
-		if (clima != null) {
-			clima.interrupt();
-		}
 		thAtualizaPainelSuaveAlive = false;
 		thAtualizaPilotosSuaveAlive = false;
 		ControleSom.paraTudo();
