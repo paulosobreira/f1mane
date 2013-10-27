@@ -249,6 +249,7 @@ public class PainelCircuito {
 	private AffineTransform affineTransformBG;
 	private AffineTransformOp affineTransformOpBG;
 	private AffineTransform translateGrid;
+	private int informaMudancaClima;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -268,9 +269,11 @@ public class PainelCircuito {
 					Piloto pilotoJogador = controleJogo.getPilotoJogador();
 					if (pilotoJogador != null && pilotoJogador.getP1() != null
 							&& pilotoJogador.getP2() != null) {
-						Point p = new Point(Util.inte(e.getPoint().x / zoom),
-								Util.inte(e.getPoint().y / zoom));
-
+						Point p = new Point(
+								Util.inte((e.getPoint().x + pontoCentralizado.x)
+										/ zoom),
+								Util.inte((e.getPoint().y + pontoCentralizado.y)
+										/ zoom));
 						double menor = Integer.MAX_VALUE;
 						int pos = 0;
 						double p0p = GeoUtil.distaciaEntrePontos(
@@ -2960,7 +2963,7 @@ public class PainelCircuito {
 		if (piloto.isAgressivo()
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
 				&& !controleJogo.isChovendo() && piloto.getVelocidade() != 0
-				&& Math.random() > .955) {
+				&& Math.random() > .985) {
 			mapaFaiscas.put(piloto, piloto);
 			g2d.setColor(Color.YELLOW);
 			g2d.setStroke(strokeFaisca);
@@ -3471,7 +3474,7 @@ public class PainelCircuito {
 		if (p == null) {
 			return;
 		}
-		if (Math.random() > .5) {
+		if (Math.random() > .9) {
 			return;
 		}
 		Color color = g2d.getColor();
@@ -3627,6 +3630,9 @@ public class PainelCircuito {
 
 		yBase += 10;
 		g2d.setColor(Color.black);
+		g2d.drawString("FPS : " + gerenciadorVisual.getFps(), ptoOri, yBase);
+
+		yBase += 15;
 		g2d.drawString(Lang.msg("220"), ptoOri, yBase);
 
 		yBase += 15;
@@ -3634,8 +3640,6 @@ public class PainelCircuito {
 				+ (ControleSom.somLigado ? Lang.msg("SIM") : Lang.msg("NAO"));
 		g2d.drawString(msg, ptoOri, yBase);
 
-		yBase += 15;
-		g2d.drawString(Lang.msg("265"), ptoOri, yBase);
 		yBase += 15;
 		g2d.drawString(
 				Lang.msg("081") + ": " + pilotoSelecionado.getNumeroVolta(),
@@ -4337,9 +4341,6 @@ public class PainelCircuito {
 		if (!desenhaInfo) {
 			return;
 		}
-		if (qtdeLuzesAcesas > 0) {
-			return;
-		}
 		if (exibeResultadoFinal) {
 			return;
 		}
@@ -4363,6 +4364,10 @@ public class PainelCircuito {
 
 		if (icon != null && pointDesenhaClima != null) {
 			g2d.setColor(transpMenus);
+			if (informaMudancaClima > 0) {
+				g2d.setColor(OcilaCor.geraOcila("informaMudancaClima", yel));
+				informaMudancaClima--;
+			}
 			g2d.fillRoundRect(limitesViewPort.x + pointDesenhaClima.x + 105,
 					pointDesenhaClima.y + limitesViewPort.y - 5,
 					icon.getIconWidth() + 10, icon.getIconHeight() + 10, 15, 15);
@@ -5290,6 +5295,11 @@ public class PainelCircuito {
 
 	public void setDesenhouCreditos(boolean desenhouCreditos) {
 		this.desenhouCreditos = desenhouCreditos;
+	}
+
+	public void informaMudancaClima() {
+		informaMudancaClima = 500;
+
 	}
 
 }
