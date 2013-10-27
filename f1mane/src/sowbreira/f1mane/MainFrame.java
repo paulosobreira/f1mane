@@ -1,8 +1,10 @@
 package sowbreira.f1mane;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -14,6 +16,7 @@ import java.awt.image.BufferStrategy;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Set;
@@ -44,6 +47,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.ControleSom;
 import sowbreira.f1mane.visao.PainelMenuLocal;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
+import sun.font.TrueTypeFont;
 import br.nnpe.Logger;
 
 /**
@@ -154,7 +158,6 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-
 	}
 
 	private String getVersao() {
@@ -1049,7 +1052,7 @@ public class MainFrame extends JFrame {
 	public void mostraMenuFrame() {
 		if (menuFrame != null) {
 			menuFrame.setVisible(!menuFrame.isVisible());
-			if(menuFrame.isVisible()){
+			if (menuFrame.isVisible()) {
 				menuFrame.pack();
 			}
 		}

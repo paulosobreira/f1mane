@@ -119,6 +119,7 @@ public class GerenciadorVisual {
 	private Thread thAtualizaPilotosSuave;
 	protected boolean thAtualizaPainelSuaveAlive = true;
 	protected boolean thAtualizaPilotosSuaveAlive = true;
+	private int fps = 0;
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
@@ -199,8 +200,31 @@ public class GerenciadorVisual {
 		thAtualizaPainelSuave = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				int frames = 0;
+				long startTime = System.currentTimeMillis();
+				long lastTime = System.nanoTime();
+				double nsPerTick = 1000000000D / 60D;
+				double delta = 0;
 				while (thAtualizaPainelSuaveAlive) {
-					atualizaPainel();
+					long now = System.nanoTime();
+
+					delta += (now - lastTime) / nsPerTick;
+					lastTime = now;
+					boolean render = false;
+					while (delta >= 1) {
+						render = true;
+						delta -= 1;
+					}
+					if (render) {
+						atualizaPainel();
+						++frames;
+					}
+					if ((System.currentTimeMillis() - startTime) > 1000) {
+						startTime = System.currentTimeMillis();
+						fps = frames;
+						frames = 0;
+						delta = 0;
+					}
 				}
 			}
 		});
@@ -738,9 +762,7 @@ public class GerenciadorVisual {
 	}
 
 	public void informaMudancaClima() {
-		clima = new ThreadMudancaClima(controleJogo);
-		clima.start();
-
+		painelCircuito.informaMudancaClima();
 	}
 
 	private void gerarPainelInfoText() {
@@ -1856,6 +1878,10 @@ public class GerenciadorVisual {
 			painelCircuito.setDesenhouCreditos(true);
 		}
 
+	}
+
+	public int getFps() {
+		return fps;
 	}
 
 }
