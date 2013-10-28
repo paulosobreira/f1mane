@@ -241,7 +241,6 @@ public class PainelMenuLocal {
 
 	protected boolean renderThreadAlive = true;
 
-
 	public PainelMenuLocal(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 
@@ -254,9 +253,33 @@ public class PainelMenuLocal {
 		Thread renderThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				int frames = 0;
+				long startTime = System.currentTimeMillis();
+				long lastTime = System.nanoTime();
+				double nsPerTick = 1000000000D / 60D;
+				double delta = 0;
 				while (renderThreadAlive) {
-					render();
-					PainelMenuLocal.this.mainFrame.mostrarGraficos();
+					long now = System.nanoTime();
+
+					delta += (now - lastTime) / nsPerTick;
+					lastTime = now;
+					boolean render = false;
+					while (delta >= 1) {
+						render = true;
+						delta -= 1;
+					}
+					if (render) {
+						render();
+						PainelMenuLocal.this.mainFrame.mostrarGraficos();
+						++frames;
+					}
+					if ((System.currentTimeMillis() - startTime) > 1000) {
+						startTime = System.currentTimeMillis();
+						System.out.println(frames);
+						frames = 0;
+						delta = 0;
+					}
+
 				}
 			}
 		});
@@ -1420,10 +1443,13 @@ public class PainelMenuLocal {
 			pilotoSelecionado = (Piloto) pilotos.get(0);
 		}
 		InterfaceJogo controleJogo = mainFrame.getControleJogo();
+		if (controleJogo.getTemporada() != null
+				&& !controleJogo.getTemporada().equals(temporada)) {
+			controleJogo.setTemporada(temporada);
+		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);
-			controleJogo.setTemporada(temporada);
 			BufferedImage capacete = controleJogo.obterCapacete(piloto);
 			int novoY = y + i * 24;
 			if (i % 2 == 0) {
