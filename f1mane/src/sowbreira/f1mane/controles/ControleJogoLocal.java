@@ -1303,7 +1303,18 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	@Override
 	public int getLag() {
-		return 0;
+		if (pilotoJogador.getNoAtual() == null
+				|| pilotoJogador.getNoAtualSuave() == null
+				|| pilotoJogador == null) {
+			return 0;
+		}
+
+		int val = pilotoJogador.getNoAtual().getIndex()
+				- pilotoJogador.getNoAtualSuave().getIndex();
+		if (val < 0) {
+			return 0;
+		}
+		return val;
 	}
 
 	@Override
@@ -1437,6 +1448,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
 			boolean drs, boolean trocaPneus, boolean reabasteciemto) {
+		controleCampeonato = new ControleCampeonato(mainFrame);
 		return controleCampeonato.criarCampeonatoPiloto(cirucitosCampeonato,
 				temporadaSelecionada, numVoltasSelecionado,
 				turbulenciaSelecionado, climaSelecionado, nivelSelecionado,
