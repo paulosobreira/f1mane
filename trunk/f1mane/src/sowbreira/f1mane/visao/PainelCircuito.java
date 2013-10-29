@@ -250,6 +250,7 @@ public class PainelCircuito {
 	private AffineTransformOp affineTransformOpBG;
 	private AffineTransform translateGrid;
 	private int informaMudancaClima;
+	private int contMostraFPS;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -604,6 +605,7 @@ public class PainelCircuito {
 			desenharClima(g2d);
 			desenharTpPneuPsel(g2d);
 			desenhaListaPilotos(g2d);
+			desenhaFPS(g2d);
 			desenhaLag(g2d);
 			desenhaInfoPilotoSelecionado(g2d);
 			desenhaMiniPista(g2d);
@@ -1058,17 +1060,39 @@ public class PainelCircuito {
 		g2d.setFont(fontOri);
 	}
 
+	private void desenhaFPS(Graphics2D g2d) {
+		String msg = "FPS";
+		if (contMostraFPS >= 0 && contMostraFPS < 200) {
+
+			msg = "  " + gerenciadorVisual.getFps();
+		} else if (contMostraFPS > 200) {
+			contMostraFPS = -20;
+		}
+		contMostraFPS++;
+		Point pointDesenhaFPS = new Point(limitesViewPort.x
+				+ (limitesViewPort.width) - 70, Util.inte(limitesViewPort.y
+				+ limitesViewPort.getHeight() - 90));
+		g2d.setColor(transpMenus);
+		g2d.fillRoundRect(pointDesenhaFPS.x, pointDesenhaFPS.y, 65, 35, 15, 15);
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(Util
+				.inte(gerenciadorVisual.getFps() * 1.6)));
+		g2d.drawString(msg, pointDesenhaFPS.x + 2, pointDesenhaFPS.y + 26);
+		g2d.setFont(fontOri);
+	}
+
 	private void desenhaLag(Graphics2D g2d) {
 		if (controleJogo.verificaLag()) {
 			int largura = 0;
 			String msg = "LAG";
 			int lag = controleJogo.getLag();
-			if (contMostraLag >= 0 && contMostraLag < 20) {
+			if (contMostraLag >= 0 && contMostraLag < 200) {
 				if (lag > 999) {
 					lag = 999;
 				}
 				msg = " " + mil.format(lag);
-			} else if (contMostraLag > 20) {
+			} else if (contMostraLag > 200) {
 				contMostraLag = -20;
 			}
 
@@ -1078,8 +1102,8 @@ public class PainelCircuito {
 			}
 
 			Point pointDesenhaLag = new Point(limitesViewPort.x
-					+ (limitesViewPort.width) - 75, Util.inte(limitesViewPort.y
-					+ limitesViewPort.getHeight() - 90));
+					+ (limitesViewPort.width) - 70, Util.inte(limitesViewPort.y
+					+ limitesViewPort.getHeight() - 130));
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(pointDesenhaLag.x, pointDesenhaLag.y, 65, 35, 15,
 					15);
@@ -3629,10 +3653,8 @@ public class PainelCircuito {
 		g2d.fillRoundRect(ptoOri - 5, yBase - 2, 105, 75, 10, 10);
 
 		yBase += 10;
-		g2d.setColor(Color.black);
-		g2d.drawString("FPS : " + gerenciadorVisual.getFps(), ptoOri, yBase);
 
-		yBase += 15;
+		g2d.setColor(Color.BLACK);
 		g2d.drawString(Lang.msg("220"), ptoOri, yBase);
 
 		yBase += 15;

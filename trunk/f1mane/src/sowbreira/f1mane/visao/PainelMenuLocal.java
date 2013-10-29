@@ -241,6 +241,10 @@ public class PainelMenuLocal {
 
 	protected boolean renderThreadAlive = true;
 
+	private Circuito circuitoMini;
+
+	private String circuitoMiniCarregado;
+
 	public PainelMenuLocal(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 
@@ -275,7 +279,6 @@ public class PainelMenuLocal {
 					}
 					if ((System.currentTimeMillis() - startTime) > 1000) {
 						startTime = System.currentTimeMillis();
-						System.out.println(frames);
 						frames = 0;
 						delta = 0;
 					}
@@ -1966,17 +1969,20 @@ public class PainelMenuLocal {
 		g2d.setColor(Color.BLACK);
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
 		ObjectInputStream ois;
-		Circuito circuito = null;
 		try {
-			ois = new ObjectInputStream(carregadorRecursos.getClass()
-					.getResourceAsStream(circuitoStr));
-			circuito = (Circuito) ois.readObject();
-			circuito.vetorizarPista();
+			if (circuitoMini == null
+					|| !circuitoStr.equals(circuitoMiniCarregado)) {
+				ois = new ObjectInputStream(carregadorRecursos.getClass()
+						.getResourceAsStream(circuitoStr));
+				circuitoMini = (Circuito) ois.readObject();
+				circuitoMiniCarregado = circuitoStr;
+				circuitoMini.vetorizarPista();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		List pista = circuito.getPista();
+		List pista = circuitoMini.getPista();
 		ArrayList pistaMinimizada = new ArrayList();
 		double doubleMulti = 25;
 		Map map = new HashMap();
@@ -1996,7 +2002,7 @@ public class PainelMenuLocal {
 		}
 
 		ArrayList boxMinimizado = new ArrayList();
-		List box = circuito.getBox();
+		List box = circuitoMini.getBox();
 		for (Iterator iterator = box.iterator(); iterator.hasNext();) {
 			No no = (No) iterator.next();
 			Point p = new Point(no.getX(), no.getY());
