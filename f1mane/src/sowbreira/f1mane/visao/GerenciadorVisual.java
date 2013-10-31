@@ -230,6 +230,15 @@ public class GerenciadorVisual {
 		thAtualizaPilotosSuave = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				List pistaFull = controleJogo.getCircuito().getPistaFull();
+				List boxFull = controleJogo.getCircuito().getBoxFull();
+				int entradaBoxIndex = controleJogo.getCircuito()
+						.getEntradaBoxIndex();
+
+				int saidaBoxIndex = controleJogo.getCircuito()
+						.getSaidaBoxIndex();
+				List<No> nos = null;
+
 				while (thAtualizaPilotosSuaveAlive) {
 					InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
 					List<Piloto> pilotos = controleJogo.getPilotos();
@@ -238,22 +247,26 @@ public class GerenciadorVisual {
 						Piloto piloto = (Piloto) iterator.next();
 						No noAtual = piloto.getNoAtual();
 						No noAtualSuave = piloto.getNoAtualSuave();
-						List pistaFull = controleJogo.getCircuito()
-								.getPistaFull();
-						List boxFull = controleJogo.getCircuito().getBoxFull();
-
 						if (noAtualSuave == null) {
 							noAtualSuave = noAtual;
 						}
-						List<No> nos = null;
 
-						int entradaBoxIndex = controleJogo.getCircuito()
-								.getEntradaBoxIndex();
+						boolean pistasDiff = false;
+						if ((controleJogo.getBoxWrapperFull().contains(
+								new NoWrapper(noAtual)) && controleJogo
+								.getPistaWrapperFull().contains(
+										new NoWrapper(noAtualSuave)))
+								|| (controleJogo.getBoxWrapperFull().contains(
+										new NoWrapper(noAtualSuave)) && controleJogo
+										.getPistaWrapperFull().contains(
+												new NoWrapper(noAtual)))) {
+							pistasDiff = true;
+						}
 
-						int saidaBoxIndex = controleJogo.getCircuito()
-								.getSaidaBoxIndex();
-
-						if (piloto.getPtosBox() != 0) {
+						if (controleJogo.getBoxWrapperFull().contains(
+								new NoWrapper(noAtual))
+								&& controleJogo.getBoxWrapperFull().contains(
+										new NoWrapper(noAtualSuave))) {
 							nos = boxFull;
 						} else {
 							nos = pistaFull;
@@ -262,7 +275,7 @@ public class GerenciadorVisual {
 						if (noAtual.getIndex() != noAtualSuave.getIndex()) {
 							int diff = noAtual.getIndex()
 									- noAtualSuave.getIndex();
-							if (diff < 0) {
+							if (diff < 0 && !pistasDiff) {
 								diff = (noAtual.getIndex() + nos.size())
 										- noAtualSuave.getIndex();
 							}
@@ -287,7 +300,14 @@ public class GerenciadorVisual {
 									ganhoSuave = ganhoSuaveAnt - 1;
 								}
 							}
-							boolean entrandoBox = false;
+							piloto.setGanhoSuave(ganhoSuave);
+							double defCic = controleJogo.getTempoCiclo() - 70;
+							int ganhoMax = 11 - Util.inte(Math
+									.round((defCic / 14)));
+							if (ganhoSuave > ganhoMax) {
+								ganhoSuave = ganhoMax;
+							}
+
 							if (controleJogo.getBoxWrapperFull().contains(
 									new NoWrapper(noAtual))
 									&& controleJogo
@@ -297,24 +317,9 @@ public class GerenciadorVisual {
 									&& noAtualSuave.getIndex() < entradaBoxIndex) {
 								nos = pistaFull;
 								piloto.mudarTracado(0, controleJogo, true);
-								// System.out.println("entrando box");
-								if (ganhoSuaveAnt > 5)
-									ganhoSuave = ganhoSuaveAnt - 1;
-								else
-									ganhoSuave = 5;
-								diff = 1;
-								entrandoBox = true;
+								ganhoSuave = ganhoMax / 3;
 							}
 
-							piloto.setGanhoSuave(ganhoSuave);
-							double defCic = controleJogo.getTempoCiclo() - 70;
-							int ganhoMax = 11 - Util.inte(Math
-									.round((defCic / 14)));
-							if (ganhoSuave > ganhoMax) {
-								ganhoSuave = ganhoMax;
-							}
-							boolean saindoBox = false;
-							boolean saiuBox = false;
 							if (controleJogo.getPistaWrapperFull().contains(
 									new NoWrapper(noAtual))
 									&& controleJogo
@@ -322,33 +327,31 @@ public class GerenciadorVisual {
 											.contains(
 													new NoWrapper(noAtualSuave))) {
 								nos = boxFull;
-								// System.out.println("saindo do box");
 								piloto.mudarTracado(0, controleJogo, true);
-								ganhoSuave = ganhoSuaveAnt;
-								saindoBox = true;
-								diff = 1;
-								if ((noAtualSuave.getIndex() + ganhoSuave) >= boxFull
-										.size()) {
-									// System.out.println("saiu box");
-									nos = pistaFull;
-									saiuBox = true;
-								}
+								ganhoSuave = ganhoMax / 2;
 							}
+
 							int index = noAtualSuave.getIndex() + ganhoSuave;
-							// if (piloto.isJogadorHumano())
-							// System.out.println("ganhoSuave" + ganhoSuave);
-							if (saiuBox) {
-								index = saidaBoxIndex;
-							}
+
 							if (controleJogo.getBoxWrapperFull().contains(
 									new NoWrapper(noAtual))
 									&& noAtualSuave.getIndex() >= entradaBoxIndex) {
-								entrandoBox = false;
-								// System.out.println("entrou box");
 								nos = boxFull;
-								diff = 1;
 								index = 0;
 							}
+
+							if (controleJogo.getPistaWrapperFull().contains(
+									new NoWrapper(noAtual))
+									&& controleJogo
+											.getBoxWrapperFull()
+											.contains(
+													new NoWrapper(noAtualSuave))
+									&& index > (nos.size() - 5)) {
+								nos = pistaFull;
+								piloto.mudarTracado(0, controleJogo, true);
+								index = saidaBoxIndex - 25;
+							}
+
 							if (index >= nos.size()) {
 								index = index - nos.size();
 							}
@@ -357,10 +360,7 @@ public class GerenciadorVisual {
 							} else {
 								noAtualSuave = nos.get(index);
 							}
-							if (!entrandoBox && !saindoBox
-									&& (diff < 0 || diff > 600)) {
-								// System.out.println("diff < 0 || diff > 500 "
-								// + diff);
+							if (diff > 600) {
 								noAtualSuave = noAtual;
 							}
 
