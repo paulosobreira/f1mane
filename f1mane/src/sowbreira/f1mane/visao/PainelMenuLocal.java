@@ -608,7 +608,7 @@ public class PainelMenuLocal {
 
 		desenhaCircuitoCorridaCampeonato(g2d, x, y);
 
-		desenhaDadosCorridaCampeonato(g2d, x, y + 300);
+		desenhaDadosCorridaCampeonato(g2d, x, y + 280);
 
 		desenhaClassificacaoPilotosCampeonato(g2d, x + 400, y + 5);
 
@@ -626,19 +626,98 @@ public class PainelMenuLocal {
 	}
 
 	private void desenhaDadosCorridaCampeonato(Graphics2D g2d, int x, int y) {
-		// Font fontOri = g2d.getFont();
-		// Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, 14);
-		// int yTitulo = y - 30;
-		// int xOri = x;
-		// g2d.setFont(fontNegrito);
-		// g2d.setColor(lightWhite);
-		// g2d.fillRoundRect(x, yTitulo, 120, 20, 15, 15);
-		// g2d.setColor(Color.BLACK);
-		// int tamNmPiloto = Util.calculaLarguraText(circuito, g2d);
-		// g2d.drawString("" + Lang.msg("153").toUpperCase(), x + 2, yTitulo +
-		// 16);
-		//
-		// g2d.setFont(fontOri);
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		int xOri = x;
+		x += 60;
+		String txt = temporadaSelecionada.replaceAll("\\*", "");
+		int larguraTexto = 120;
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt.toUpperCase(),
+				x + (130 - Util.larguraTexto(txt, g2d)) / 2, y);
+
+		x -= 60;
+		y += 40;
+
+		String numVoltasStr = (numVoltasSelecionado + " " + Lang.msg("voltas"))
+				.toUpperCase();
+		int tamVoltas = Util.calculaLarguraText(numVoltasStr, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, tamVoltas + 10, 32, 15, 15);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(numVoltasStr, x, y);
+
+		x += 30 + tamVoltas;
+
+		String nivel = Lang.msg(nivelSelecionado).toUpperCase();
+
+		int tamNivel = Util.calculaLarguraText(nivel, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, tamNivel + 10, 32, 15, 15);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(nivel, x + 5, y);
+
+		x = xOri + 15;
+		y += 30;
+
+		String drsTxt = Lang.msg("drs").toUpperCase();
+		int tamDrs = Util.calculaLarguraText(drsTxt, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x - 15, y - 12, tamDrs + 10, 32, 15, 15);
+		if (this.drs) {
+			g2d.setColor(yel);
+			g2d.drawRoundRect(x - 15, y - 12, tamDrs + 10, 32, 15, 15);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(drsTxt, x - 10, y + 15);
+
+		x += (tamDrs + 30);
+
+		String reabasteciemtoTxt = Lang.msg("reabasteciemto").toUpperCase();
+		int tamReabasteciemto = Util.calculaLarguraText(reabasteciemtoTxt, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x - 15, y - 12, tamReabasteciemto + 10, 32, 15, 15);
+		if (reabasteciemto) {
+			g2d.setColor(yel);
+			g2d.drawRoundRect(x - 15, y - 12, tamReabasteciemto + 10, 32, 15,
+					15);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(reabasteciemtoTxt, x - 10, y + 15);
+
+		x = xOri + 15;
+
+		y += 45;
+
+		String kersTxt = Lang.msg("kers").toUpperCase();
+		int tamKers = Util.calculaLarguraText(kersTxt, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x - 15, y - 12, tamKers + 10, 32, 15, 15);
+		if (this.kers) {
+			g2d.setColor(yel);
+			g2d.drawRoundRect(x - 15, y - 12, tamKers + 10, 32, 15, 15);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(kersTxt, x - 10, y + 15);
+
+		x += (tamKers + 30);
+
+		String trocaPneusTxt = Lang.msg("trocaPneus").toUpperCase();
+		int tamTrocaPneus = Util.calculaLarguraText(trocaPneusTxt, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x - 15, y - 12, tamTrocaPneus + 10, 32, 15, 15);
+		if (trocaPneus) {
+			g2d.setColor(yel);
+			g2d.drawRoundRect(x - 15, y - 12, tamTrocaPneus + 10, 32, 15, 15);
+		}
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(trocaPneusTxt, x - 10, y + 15);
+
+		g2d.setFont(fontOri);
+
+		g2d.setFont(fontOri);
 	}
 
 	private void desenhaClassificacaoEquipesCampeonato(Graphics2D g2d, int x,
