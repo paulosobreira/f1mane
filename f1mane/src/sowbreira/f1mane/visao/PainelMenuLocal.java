@@ -3,7 +3,6 @@ package sowbreira.f1mane.visao;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -24,9 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -332,6 +328,7 @@ public class PainelMenuLocal {
 				&& campeonatoRect.contains(e.getPoint())) {
 			MENU = MENU_NOVO_CAMPEONATO_PILOTOS;
 			circuitoSelecionado = null;
+			pilotoSelecionado = null;
 			cirucitosCampeonato.clear();
 			resetaRects();
 			return;
@@ -387,14 +384,20 @@ public class PainelMenuLocal {
 		}
 		if (facilRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.FACIL;
+			resetPilotosRect();
+			pilotoSelecionado = null;
 			return;
 		}
 		if (normalRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.NORMAL;
+			resetPilotosRect();
+			pilotoSelecionado = null;
 			return;
 		}
 		if (dificilRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.DIFICIL;
+			resetPilotosRect();
+			pilotoSelecionado = null;
 			return;
 		}
 		if (pneuMoleRect.contains(e.getPoint())) {
@@ -614,7 +617,7 @@ public class PainelMenuLocal {
 
 		desenhaClassificacaoEquipesCampeonato(g2d, x + 700, y + 5);
 
-		desenhaPilotoSelecionado(g2d, x + 400, y + 280, pilotoSelecionado);
+		desenhaPilotoSelecionado(g2d, x + 400, y + 300, pilotoSelecionado);
 
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
 	}
@@ -786,6 +789,9 @@ public class PainelMenuLocal {
 	private void desenhaClassificacaoPilotosCampeonato(Graphics2D g2d, int x,
 			int y) {
 		InterfaceJogo controleJogo = mainFrame.getControleJogo();
+		if (controleJogo == null) {
+			return;
+		}
 		Font fontOri = g2d.getFont();
 		Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, 14);
 		Font fontMaior = new Font(fontOri.getName(), Font.BOLD, 14);
@@ -911,15 +917,17 @@ public class PainelMenuLocal {
 
 		desenhaAdicionaRemoverPistas(g2d, x + 30, y + 220);
 
-		desenhaSeletorNumeroVoltas(g2d, x + 40, y + 280);
+		desenhaSeletorNumeroVoltas(g2d, x + 40, y + 250);
 
-		desenhaNivelCorrida(g2d, x + 40, y + 340);
+		desenhaNivelCorrida(g2d, x + 40, y + 295);
 
-		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 400);
+		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 340);
 
 		desenhaCircuitosSelecionados(g2d, x + 480, y - 50);
 
 		desenhaTemporadas(g2d, x + 580, y + 280, true);
+
+		desenhaPilotoSelecionado(g2d, x, y + 450, pilotoSelecionado);
 
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
 	}
@@ -1054,6 +1062,9 @@ public class PainelMenuLocal {
 
 	private void desenhaPilotoSelecionado(Graphics2D g2d, int x, int y,
 			Piloto piloto) {
+		if (piloto == null) {
+			return;
+		}
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
@@ -1619,8 +1630,15 @@ public class PainelMenuLocal {
 	}
 
 	private List litasPilotosTemporada(String temporada) {
-		List pilotos = new ArrayList(
-				(Collection) circuitosPilotos.get(temporada));
+
+		Collection pilotosOri = (Collection) circuitosPilotos.get(temporada);
+		List pilotos = new ArrayList();
+
+		for (Iterator iterator = pilotosOri.iterator(); iterator.hasNext();) {
+			Object object = (Object) iterator.next();
+			pilotos.add(object);
+		}
+
 		Collections.sort(pilotos, new Comparator() {
 
 			@Override

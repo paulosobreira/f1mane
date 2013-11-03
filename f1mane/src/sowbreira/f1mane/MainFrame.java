@@ -1023,6 +1023,7 @@ public class MainFrame extends JFrame {
 			controleJogo.matarTodasThreads();
 		}
 		controleJogo = new ControleJogoLocal(this);
+		controleJogo.setMainFrame(this);
 		return true;
 	}
 
