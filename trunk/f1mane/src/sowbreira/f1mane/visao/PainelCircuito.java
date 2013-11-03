@@ -1597,12 +1597,9 @@ public class PainelCircuito {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString(
-				"getGanhoSuave()"
-						+ (pilotoSelecionado.getGanhoSuave()),
+		g2d.drawString("getGanhoSuave()" + (pilotoSelecionado.getGanhoSuave()),
 				ptoOri, yBase);
 
-		
 		if (controleJogo.isSafetyCarNaPista()) {
 
 			yBase += 20;
@@ -3085,9 +3082,11 @@ public class PainelCircuito {
 			g2d.setColor(new Color(255, 0, 0, 140));
 			g2d.setColor(Color.BLACK);
 			Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
-					.getCenterX(), piloto.getDiateira().getCenterY());
+					.getCenterX() + dC.x, piloto.getDiateira().getCenterY()
+					+ dC.y);
 			Point2D.Double trazCarD = new Point2D.Double(piloto.getTrazeira()
-					.getCenterX(), piloto.getTrazeira().getCenterY());
+					.getCenterX() + dC.x, piloto.getTrazeira().getCenterY()
+					+ dC.y);
 			g2d.setColor(Color.GREEN);
 			g2d.fillOval(Util.inte(frenteCarD.x * zoom),
 					Util.inte(frenteCarD.y * zoom), Util.inte(5 * zoom),
