@@ -1593,6 +1593,16 @@ public class PainelCircuito {
 						+ (pilotoSelecionado.getCiclosDesconcentrado()),
 				ptoOri, yBase);
 
+		yBase += 20;
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				"getGanhoSuave()"
+						+ (pilotoSelecionado.getGanhoSuave()),
+				ptoOri, yBase);
+
+		
 		if (controleJogo.isSafetyCarNaPista()) {
 
 			yBase += 20;

@@ -614,6 +614,8 @@ public class PainelMenuLocal {
 
 		desenhaClassificacaoEquipesCampeonato(g2d, x + 700, y + 5);
 
+		desenhaPilotoSelecionado(g2d, x + 400, y + 280, pilotoSelecionado);
+
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
 	}
 
@@ -639,7 +641,7 @@ public class PainelMenuLocal {
 				x + (130 - Util.larguraTexto(txt, g2d)) / 2, y);
 
 		x -= 60;
-		y += 40;
+		y += 50;
 
 		String numVoltasStr = (numVoltasSelecionado + " " + Lang.msg("voltas"))
 				.toUpperCase();
@@ -649,7 +651,7 @@ public class PainelMenuLocal {
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(numVoltasStr, x, y);
 
-		x += 30 + tamVoltas;
+		x += 40 + tamVoltas;
 
 		String nivel = Lang.msg(nivelSelecionado).toUpperCase();
 
@@ -660,7 +662,7 @@ public class PainelMenuLocal {
 		g2d.drawString(nivel, x + 5, y);
 
 		x = xOri + 15;
-		y += 30;
+		y += 40;
 
 		String drsTxt = Lang.msg("drs").toUpperCase();
 		int tamDrs = Util.calculaLarguraText(drsTxt, g2d);
@@ -1016,17 +1018,18 @@ public class PainelMenuLocal {
 
 		desenhaCircuitoSelecionado(g2d, x + 350, y);
 
-		desenhaTemporadaPilotoSelecionado(g2d, x + 350, y + 230);
+		desenhaTemporadaClima(g2d, x + 350, y + 230);
 
-		desenhaCombustivel(g2d, x + 490, y + 350);
+		desenhaPilotoSelecionado(g2d, x + 350, y + 290, pilotoSelecionado);
+
+		desenhaCombustivel(g2d, x + 490, y + 360);
 
 		desenhaTipoPneu(g2d, x + 490, y + 460);
 
 		desenhaTipoAsa(g2d, x + 490, y + 520);
-
 	}
 
-	private void desenhaTemporadaPilotoSelecionado(Graphics2D g2d, int x, int y) {
+	private void desenhaTemporadaClima(Graphics2D g2d, int x, int y) {
 		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		BufferedImage imageCarro = controleJogo
 				.obterCarroLado(pilotoSelecionado);
@@ -1046,37 +1049,90 @@ public class PainelMenuLocal {
 				x + (130 - Util.larguraTexto(txt, g2d)) / 2, y);
 
 		desenaImClimaSelecionado(g2d, x + larguraTexto + 30, y);
+		g2d.setFont(fontOri);
+	}
 
-		x -= 80;
-		y += 40;
+	private void desenhaPilotoSelecionado(Graphics2D g2d, int x, int y,
+			Piloto piloto) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
-		txt = pilotoSelecionado.getCarro().getNome().toUpperCase();
-		larguraTexto = Util.larguraTexto(txt, g2d);
-		Color c = corRectPiloto(g2d, pilotoSelecionado, 1);
+		InterfaceJogo controleJogo = mainFrame.getControleJogo();
+		BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);
+		String temporada = "t" + temporadaSelecionada;
+		controleJogo.setTemporada(temporada);
+		BufferedImage capacete = controleJogo.obterCapacete(piloto);
+
+		String txt = piloto.getCarro().getNome().toUpperCase();
+		int larguraTexto = Util.larguraTexto(txt, g2d);
+		Color c = corRectPiloto(g2d, piloto, 1);
 		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
 		corTxtPiloto(g2d, c);
 		g2d.drawString(txt, x + 10, y);
 
-		int xCarro = x + larguraTexto + 50;
+		int xCarro = x + 260;
 
 		if (PainelCircuito.desenhaImagens)
 			g2d.drawImage(imageCarro, xCarro, y - 35, null);
 
 		y += 40;
 
-		txt = pilotoSelecionado.getNome().toUpperCase();
+		txt = piloto.getNome().toUpperCase();
 		larguraTexto = Util.larguraTexto(txt, g2d);
-		c = corRectPiloto(g2d, pilotoSelecionado, 2);
+		c = corRectPiloto(g2d, piloto, 2);
 		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
 		corTxtPiloto(g2d, c);
 		g2d.drawString(txt, x + 10, y);
 
-		if (capacete != null && PainelCircuito.desenhaImagens)
+		int largCapacete = 0;
+		if (capacete != null && PainelCircuito.desenhaImagens) {
 			g2d.drawImage(capacete,
 					xCarro + imageCarro.getWidth() - capacete.getWidth(),
 					y - 35, null);
+			largCapacete = capacete.getWidth() + 10;
+		}
+
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
+
+		int xbarra = xCarro - largCapacete;
+
+		y -= 2;
+
+		int habilidade = piloto.getHabilidade() / 10;
+
+		desenhaBarraPilotoCarro(g2d, y, xbarra, habilidade,
+				Lang.msg("habilidade"));
+
+		int potencia = piloto.getCarro().getPotencia() / 10;
+
+		desenhaBarraPilotoCarro(g2d, y + 18, xbarra, potencia,
+				Lang.msg("potencia"));
+
+		xbarra += 105;
+
+		int aerodinamica = piloto.getCarro().getAerodinamica() / 10;
+
+		desenhaBarraPilotoCarro(g2d, y, xbarra, aerodinamica,
+				Lang.msg("aerodinamica"));
+
+		int freios = piloto.getCarro().getFreios() / 10;
+
+		desenhaBarraPilotoCarro(g2d, y + 18, xbarra, freios, Lang.msg("freios"));
 
 		g2d.setFont(fontOri);
+
+	}
+
+	private void desenhaBarraPilotoCarro(Graphics2D g2d, int y, int x, int val,
+			String nome) {
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x - 15, y - 24, 100, 14, 10, 10);
+		g2d.setColor(yel);
+		g2d.drawRoundRect(x - 15, y - 24, val, 14, 10, 10);
+		g2d.setColor(blu);
+		g2d.fillRoundRect(x - 15, y - 24, val, 14, 10, 10);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(nome.toUpperCase(), x - 10, y - 12);
 	}
 
 	private void desenaImClimaSelecionado(Graphics2D g2d, int x, int y) {
@@ -1428,17 +1484,19 @@ public class PainelMenuLocal {
 
 		desenhaSeletorCircuito(g2d, x, y, true);
 
-		desenhaClima(g2d, x + 40, y + 200);
+		desenhaClima(g2d, x + 40, y + 180);
 
-		desenhaSeletorNumeroVoltas(g2d, x + 40, y + 280);
+		desenhaSeletorNumeroVoltas(g2d, x + 40, y + 240);
 
-		desenhaTurbulencia(g2d, x + 40, y + 340);
+		desenhaTurbulencia(g2d, x + 40, y + 280);
 
-		desenhaNivelCorrida(g2d, x + 40, y + 400);
+		desenhaNivelCorrida(g2d, x + 40, y + 320);
 
-		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 460);
+		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 360);
 
 		desenhaTemporadas(g2d, x + 580, y, false);
+
+		desenhaPilotoSelecionado(g2d, x, y + 470, pilotoSelecionado);
 
 		desenhaAnteriroProximo(g2d, x + 150, y + 600);
 
@@ -1638,7 +1696,7 @@ public class PainelMenuLocal {
 
 		x = xOri;
 
-		y += 50;
+		y += 40;
 
 		String kersTxt = Lang.msg("kers").toUpperCase();
 		int tamKers = Util.calculaLarguraText(kersTxt, g2d);
