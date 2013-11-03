@@ -30,7 +30,7 @@ public class ThreadMudancaClima extends Thread {
 	public void run() {
 		try {
 			if (ControleJogoLocal.VALENDO) {
-				sleep(Util.intervalo(2500, 25000));
+				sleep(Util.intervalo(2500, 20000));
 			}
 
 			if (Clima.SOL.equals(controleClima.getClima())

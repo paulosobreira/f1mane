@@ -280,8 +280,8 @@ public class GerenciadorVisual {
 										- noAtualSuave.getIndex();
 							}
 							int ganhoSuave = 0;
-							int maxLoop = 500;
-							int inc = 50;
+							int maxLoop = 650;
+							int inc = 65;
 							for (int i = 0; i < maxLoop; i += inc) {
 								if (diff >= i && diff < i + inc) {
 									break;
@@ -360,7 +360,7 @@ public class GerenciadorVisual {
 							} else {
 								noAtualSuave = nos.get(index);
 							}
-							if (diff > 600) {
+							if (diff > 1000) {
 								noAtualSuave = noAtual;
 							}
 
