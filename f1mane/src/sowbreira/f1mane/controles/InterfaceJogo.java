@@ -367,4 +367,6 @@ public interface InterfaceJogo {
 			int combustivelSelecionado, String asaSelecionado,
 			String pneuSelecionado, String clima) throws Exception;
 
+	public void continuarCampeonato(Campeonato campeonato);
+
 }

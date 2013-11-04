@@ -1486,4 +1486,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return controleCampeonato.getContrutoresPontos();
 	}
 
+	@Override
+	public void continuarCampeonato(Campeonato campeonato) {
+		if (controleCampeonato == null) {
+			controleCampeonato = new ControleCampeonato(mainFrame);
+		}
+		controleCampeonato.setCampeonato(campeonato);
+
+	}
+
 }

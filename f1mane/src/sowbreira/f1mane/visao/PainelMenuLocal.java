@@ -287,6 +287,7 @@ public class PainelMenuLocal {
 			carregaCampeonato();
 		}
 		renderThread.start();
+		desenhaCarregando = false;
 	}
 
 	private void carregaCampeonato() {
@@ -294,6 +295,8 @@ public class PainelMenuLocal {
 		campeonato = mainFrame.getCampeonato();
 		if (campeonato == null) {
 			campeonato = controleJogo.continuarCampeonato();
+		} else {
+			controleJogo.continuarCampeonato(campeonato);
 		}
 		if (campeonato == null) {
 			return;
@@ -574,7 +577,8 @@ public class PainelMenuLocal {
 			if (PainelCircuito.carregaBkg) {
 				if (MENU.equals(MENU_PRINCIPAL))
 					bg = bgmonaco;
-				if (MENU.equals(MENU_CORRIDA))
+				if (MENU.equals(MENU_CORRIDA)
+						|| MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS))
 					bg = bgf1;
 			}
 			if (bg != null) {
@@ -594,6 +598,7 @@ public class PainelMenuLocal {
 			desenhaMenuCorridaCampeonatoPilotos(g2d);
 			desenhaMenuQualificacao(g2d);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Logger.logarExept(e);
 		}
 
