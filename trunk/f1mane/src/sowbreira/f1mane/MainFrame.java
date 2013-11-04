@@ -214,7 +214,7 @@ public class MainFrame extends JFrame {
 					if (!verificaCriarJogo()) {
 						return;
 					}
-					controleJogo.continuarCampeonato();
+					campeonato = controleJogo.continuarCampeonato();
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
 				}

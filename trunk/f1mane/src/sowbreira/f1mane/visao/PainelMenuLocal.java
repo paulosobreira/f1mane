@@ -284,20 +284,19 @@ public class PainelMenuLocal {
 		});
 		iniciaRecursos();
 		if (mainFrame.getCampeonato() != null) {
+			mainFrame.getControleJogo().continuarCampeonato(
+					mainFrame.getCampeonato());
+			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			carregaCampeonato();
 		}
 		renderThread.start();
 		desenhaCarregando = false;
+
 	}
 
 	private void carregaCampeonato() {
 		InterfaceJogo controleJogo = mainFrame.getControleJogo();
-		campeonato = mainFrame.getCampeonato();
-		if (campeonato == null) {
-			campeonato = controleJogo.continuarCampeonato();
-		} else {
-			controleJogo.continuarCampeonato(campeonato);
-		}
+		campeonato = controleJogo.continuarCampeonato();
 		if (campeonato == null) {
 			return;
 		}
