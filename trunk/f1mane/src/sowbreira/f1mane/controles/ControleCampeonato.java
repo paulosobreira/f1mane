@@ -1268,4 +1268,9 @@ public class ControleCampeonato {
 		persistirEmCache();
 		return campeonato;
 	}
+
+	public void setCampeonato(Campeonato campeonato) {
+		this.campeonato = campeonato;
+	}
+	
 }

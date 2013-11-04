@@ -1214,4 +1214,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public void continuarCampeonato(Campeonato campeonato) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
