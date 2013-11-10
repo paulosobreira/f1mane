@@ -249,8 +249,10 @@ public class PainelCircuito {
 	private AffineTransform affineTransformBG;
 	private AffineTransformOp affineTransformOpBG;
 	private AffineTransform translateGrid;
+	private AffineTransform translateDebug;
 	private int informaMudancaClima;
 	private int contMostraFPS;
+	private AffineTransform afZoomDebug;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -3058,72 +3060,81 @@ public class PainelCircuito {
 		/**
 		 * DEBUG
 		 */
-		if (Logger.ativo) {
+		if (!Logger.ativo) {
+			return;
+		}
 
-			No noAtual = piloto.getNoAtual();
+		No noAtual = piloto.getNoAtual();
 
-			double multi = 2;
-			if (piloto.getTracado() == 0) {
-				multi = 3;
-			}
+		double multi = 2;
+		if (piloto.getTracado() == 0) {
+			multi = 3;
+		}
 
-			int indexAtual = noAtual.getIndex();
-			if (indexAtual + (controleJogo.getTempoCiclo() * multi) < (controleJogo
-					.getNosDaPista().size() - 1)) {
-				g2d.setColor(Color.YELLOW);
-				No no = controleJogo
-						.getNosDaPista()
-						.get((int) (indexAtual + (controleJogo.getTempoCiclo() * multi)));
-				g2d.fillOval(Util.inte(no.getX() * zoom),
-						Util.inte(no.getY() * zoom), Util.inte(5 * zoom),
-						Util.inte(5 * zoom));
-			}
-
-			g2d.setColor(new Color(255, 0, 0, 140));
-			g2d.setColor(Color.BLACK);
-			Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
-					.getCenterX() + dC.x, piloto.getDiateira().getCenterY()
-					+ dC.y);
-			Point2D.Double trazCarD = new Point2D.Double(piloto.getTrazeira()
-					.getCenterX() + dC.x, piloto.getTrazeira().getCenterY()
-					+ dC.y);
-			g2d.setColor(Color.GREEN);
-			g2d.fillOval(Util.inte(frenteCarD.x * zoom),
-					Util.inte(frenteCarD.y * zoom), Util.inte(5 * zoom),
+		int indexAtual = noAtual.getIndex();
+		if (indexAtual + (controleJogo.getTempoCiclo() * multi) < (controleJogo
+				.getNosDaPista().size() - 1)) {
+			g2d.setColor(Color.YELLOW);
+			No no = controleJogo
+					.getNosDaPista()
+					.get((int) (indexAtual + (controleJogo.getTempoCiclo() * multi)));
+			g2d.fillOval(Util.inte((no.getX() - dC.x) * zoom),
+					Util.inte((no.getY() - dC.y) * zoom), Util.inte(5 * zoom),
 					Util.inte(5 * zoom));
-			g2d.fillOval(Util.inte(trazCarD.x * zoom),
-					Util.inte(trazCarD.y * zoom), Util.inte(5 * zoom),
-					Util.inte(5 * zoom));
-			if (posisAtual != null) {
-				g2d.setColor(Color.MAGENTA);
-				g2d.fillOval(Util.inte(posisAtual.x * zoom),
-						Util.inte(posisAtual.y * zoom), Util.inte(5 * zoom),
-						Util.inte(5 * zoom));
-			}
-			if (posisRec != null) {
-				g2d.setColor(Color.CYAN);
-				g2d.fillOval(Util.inte(posisRec.getPoint().x * zoom),
-						Util.inte(posisRec.getPoint().y * zoom),
-						Util.inte(5 * zoom), Util.inte(5 * zoom));
-			}
-			if (indexAtual + 100 < (controleJogo.getNosDaPista().size() - 1)) {
-				g2d.setColor(Color.YELLOW);
-				No no = controleJogo.getNosDaPista().get(indexAtual + 100);
-				g2d.fillOval(Util.inte(no.getX() * zoom),
-						Util.inte(no.getY() * zoom), Util.inte(5 * zoom),
-						Util.inte(5 * zoom));
-			}
-			AffineTransform afZoom = new AffineTransform();
-			afZoom.setToScale(zoom, zoom);
-			if (piloto.getCentro() != null) {
-				g2d.draw(afZoom.createTransformedShape(piloto.getCentro()));
-			}
-			if (piloto.getDiateira() != null) {
-				g2d.draw(afZoom.createTransformedShape(piloto.getDiateira()));
-			}
-			if (piloto.getTrazeira() != null) {
-				g2d.draw(afZoom.createTransformedShape(piloto.getTrazeira()));
-			}
+		}
+
+		g2d.setColor(new Color(255, 0, 0, 140));
+		g2d.setColor(Color.BLACK);
+		Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
+				.getCenterX() - dC.x, piloto.getDiateira().getCenterY() - dC.y);
+		Point2D.Double trazCarD = new Point2D.Double(piloto.getTrazeira()
+				.getCenterX() - dC.x, piloto.getTrazeira().getCenterY() - dC.y);
+		g2d.setColor(Color.GREEN);
+		g2d.fillOval(Util.inte(frenteCarD.x * zoom),
+				Util.inte(frenteCarD.y * zoom), Util.inte(5 * zoom),
+				Util.inte(5 * zoom));
+		g2d.fillOval(Util.inte(trazCarD.x * zoom),
+				Util.inte(trazCarD.y * zoom), Util.inte(5 * zoom),
+				Util.inte(5 * zoom));
+		if (posisAtual != null) {
+			g2d.setColor(Color.MAGENTA);
+			g2d.fillOval(Util.inte((posisAtual.x - dC.x) * zoom),
+					Util.inte((posisAtual.y - dC.y) * zoom),
+					Util.inte(5 * zoom), Util.inte(5 * zoom));
+		}
+		if (posisRec != null) {
+			g2d.setColor(Color.CYAN);
+			g2d.fillOval(Util.inte((posisRec.getPoint().x - dC.x) * zoom),
+					Util.inte((posisRec.getPoint().y - dC.y) * zoom),
+					Util.inte(5 * zoom), Util.inte(5 * zoom));
+		}
+		if (afZoomDebug == null)
+			afZoomDebug = new AffineTransform();
+		if (translateDebug == null) {
+			translateDebug = new AffineTransform();
+		}
+		afZoomDebug.setToScale(zoom, zoom);
+		translateDebug.setToTranslation(-dC.x * zoom, -dC.y * zoom);
+		if (piloto.getCentro() != null) {
+			Shape transformedShape = afZoomDebug.createTransformedShape(piloto
+					.getCentro());
+			transformedShape = translateDebug
+					.createTransformedShape(transformedShape);
+			g2d.draw(transformedShape);
+		}
+		if (piloto.getDiateira() != null) {
+			Shape transformedShape = afZoomDebug.createTransformedShape(piloto
+					.getDiateira());
+			transformedShape = translateDebug
+					.createTransformedShape(transformedShape);
+			g2d.draw(transformedShape);
+		}
+		if (piloto.getTrazeira() != null) {
+			Shape transformedShape = afZoomDebug.createTransformedShape(piloto
+					.getTrazeira());
+			transformedShape = translateDebug
+					.createTransformedShape(transformedShape);
+			g2d.draw(transformedShape);
 		}
 	}
 
@@ -4714,7 +4725,8 @@ public class PainelCircuito {
 		}
 
 		if (ps.getVelocidade() > ps.getVelocidadeExibir()) {
-			ps.setVelocidadeExibir(ps.getVelocidadeExibir() + incAcell);
+			if (ps.getVelocidadeExibir() > 300 && Math.random() > 0.5)
+				ps.setVelocidadeExibir(ps.getVelocidadeExibir() + incAcell);
 		}
 		if (ps.getVelocidade() < ps.getVelocidadeExibir()) {
 			ps.setVelocidadeExibir(ps.getVelocidadeExibir() - incFreiada);
