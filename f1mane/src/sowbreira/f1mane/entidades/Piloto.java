@@ -1034,8 +1034,12 @@ public class Piloto implements Serializable {
 	}
 
 	private int calculoVelocidade(double ganho) {
+		int val = 260;
+		if (getCarro().getPotenciaReal() > 900) {
+			val = 290;
+		}
 		return Util
-				.inte(((260 * ganho * ((acelerando && !freiandoReta) ? 1 : 0.7) / ganhoMax) + ganho));
+				.inte(((val * ganho * ((acelerando && !freiandoReta) ? 1 : 0.7) / ganhoMax) + ganho));
 	}
 
 	public boolean processaColisao(InterfaceJogo controleJogo) {
@@ -1171,8 +1175,8 @@ public class Piloto implements Serializable {
 		if (diff < distLimiteTurbulencia
 				&& !verificaForaPista(carroPilotoDaFrente.getPiloto())) {
 			if (getTracado() != carroPilotoDaFrente.getPiloto().getTracado()) {
-				if (No.CURVA_ALTA.equals(getNoAtual().getTipo())
-						|| No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
+				if (getNoAtual().verificaCruvaAlta()
+						|| getNoAtual().verificaRetaOuLargada()) {
 					boolean pass = Math.random() > controleJogo
 							.getFatorUtrapassagem();
 					if (isAgressivo() && pass) {
@@ -1659,9 +1663,9 @@ public class Piloto implements Serializable {
 		if (getTracado() == 4 || getTracado() == 5) {
 			return false;
 		}
-		double multi = 2;
+		double multi = 0.6;
 		if (getTracado() == 0) {
-			multi = 3;
+			multi = 1.2;
 		}
 
 		int index = (int) (getNoAtual().getIndex() + controleJogo
