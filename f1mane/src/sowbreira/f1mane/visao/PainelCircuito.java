@@ -62,9 +62,9 @@ import br.nnpe.Util;
  */
 public class PainelCircuito {
 
-	public static boolean carregaBkg = true;
-	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = true;
+	public static boolean carregaBkg = false;
+	public static boolean desenhaPista = false;
+	public static boolean desenhaImagens = false;
 
 	private Point pontoCentralizado;
 	private Point pontoCentralizadoOld;
@@ -245,7 +245,6 @@ public class PainelCircuito {
 	private Point frenteP;
 	private AffineTransform translateBoxes;
 	private int dezporSuave;
-	private boolean naoDesenhaVelocidade;
 	private AffineTransform affineTransformBG;
 	private AffineTransformOp affineTransformOpBG;
 	private AffineTransform translateGrid;
@@ -253,6 +252,7 @@ public class PainelCircuito {
 	private int informaMudancaClima;
 	private int contMostraFPS;
 	private AffineTransform afZoomDebug;
+	private long ultimaDesenhaVelocidade;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -841,7 +841,7 @@ public class PainelCircuito {
 					ImageUtil.copiaImagem(controleJogo.obterCapacete(piloto)),
 					0.5);
 
-			if (cap != null)
+			if (cap != null && desenhaImagens)
 				g2d.drawImage(cap, x, y, null);
 
 			x += 30;
@@ -3071,18 +3071,6 @@ public class PainelCircuito {
 			multi = 3;
 		}
 
-		int indexAtual = noAtual.getIndex();
-		if (indexAtual + (controleJogo.getTempoCiclo() * multi) < (controleJogo
-				.getNosDaPista().size() - 1)) {
-			g2d.setColor(Color.YELLOW);
-			No no = controleJogo
-					.getNosDaPista()
-					.get((int) (indexAtual + (controleJogo.getTempoCiclo() * multi)));
-			g2d.fillOval(Util.inte((no.getX() - dC.x) * zoom),
-					Util.inte((no.getY() - dC.y) * zoom), Util.inte(5 * zoom),
-					Util.inte(5 * zoom));
-		}
-
 		g2d.setColor(new Color(255, 0, 0, 140));
 		g2d.setColor(Color.BLACK);
 		Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
@@ -3990,7 +3978,7 @@ public class PainelCircuito {
 					g2d.drawImage(tpPneu, null, carSelX - (tpPneu.getWidth()),
 							carSelY);
 				BufferedImage cap = controleJogo.obterCapacete(piloto);
-				if (cap != null) {
+				if (cap != null && desenhaImagens) {
 					g2d.drawImage(cap, null,
 							carSelX - (cap.getWidth() + tpPneu.getWidth()),
 							carSelY);
@@ -4002,10 +3990,10 @@ public class PainelCircuito {
 				if (desenhaImagens)
 					g2d.drawImage(tpPneu, null, carSelX + (tpPneu.getWidth()),
 							carSelY);
-				if (cap != null) {
-					if (desenhaImagens)
-						g2d.drawImage(cap, null, carSelX + cap.getWidth()
-								+ tpPneu.getWidth() - 10, carSelY);
+				if (cap != null && desenhaImagens) {
+					g2d.drawImage(cap, null,
+							carSelX + cap.getWidth() + tpPneu.getWidth() - 10,
+							carSelY);
 				}
 			}
 		}
@@ -4141,7 +4129,7 @@ public class PainelCircuito {
 						carSelY);
 				BufferedImage cap = controleJogo.obterCapacete(carroAtraz
 						.getPiloto());
-				if (cap != null) {
+				if (cap != null && desenhaImagens) {
 					g2d.drawImage(cap, null, (carSelX + carroimg.getWidth()
 							+ tpPneu.getWidth() + 5), carSelY);
 				}
@@ -4709,36 +4697,32 @@ public class PainelCircuito {
 		if (exibeResultadoFinal) {
 			return;
 		}
-		if (naoDesenhaVelocidade) {
-			naoDesenhaVelocidade = !naoDesenhaVelocidade;
-			return;
-		}
-
 		Piloto ps = pilotoSelecionado;
-		int incAcell = 1;
-		int incFreiada = 1;
-		if (ps.getNoAtual().verificaCruvaBaixa()) {
-			incFreiada = Util.intervalo(1, 2);
-		}
-		if (ps.isFreiandoReta()) {
-			incFreiada++;
-		}
+		if (!(System.currentTimeMillis() - ultimaDesenhaVelocidade < (ps
+				.getVelocidadeExibir() / 5))) {
+			int incAcell = 1;
+			int incFreiada = 1;
+			if (ps.getNoAtual().verificaCruvaBaixa()) {
+				incFreiada = Util.intervalo(5, 10);
+			}
+			if (ps.getNoAtual().verificaCruvaAlta()) {
+				incFreiada = Util.intervalo(0, 5);
+			}
+			if (ps.isFreiandoReta()) {
+				incFreiada += 2;
+			}
 
-		if (ps.getVelocidade() > ps.getVelocidadeExibir()) {
-			if (ps.getVelocidadeExibir() > 300 && Math.random() > 0.5)
+			if (ps.getVelocidade() > ps.getVelocidadeExibir()) {
 				ps.setVelocidadeExibir(ps.getVelocidadeExibir() + incAcell);
-		}
-		if (ps.getVelocidade() < ps.getVelocidadeExibir()) {
-			ps.setVelocidadeExibir(ps.getVelocidadeExibir() - incFreiada);
-		}
-		if (Math.abs(ps.getVelocidade() - ps.getVelocidadeExibir()) > 50) {
-			ps.setVelocidadeExibir(ps.getVelocidade());
+			}
+			if (ps.getVelocidade() < ps.getVelocidadeExibir()) {
+				ps.setVelocidadeExibir(ps.getVelocidadeExibir() - incFreiada);
+			}
+			ultimaDesenhaVelocidade = System.currentTimeMillis();
 		}
 
 		int velocidade = (controleJogo.isSafetyCarNaPista() ? ps
-				.getVelocidadeExibir() / 2 : ps.getVelocidadeExibir())
-				+ ((ps.emMovimento() && !controleJogo.isCorridaPausada()) ? Util
-						.intervalo(0, 1) : 0);
+				.getVelocidadeExibir() / 2 : ps.getVelocidadeExibir());
 		String velo = "~" + velocidade + " Km/h";
 		if (ps.getVelocidade() == 1) {
 			return;
