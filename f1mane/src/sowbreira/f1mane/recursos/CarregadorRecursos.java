@@ -475,12 +475,12 @@ public class CarregadorRecursos {
 			String[] values = prop.split(",");
 			carro.setPotencia(Integer.parseInt(values[0]));
 			carro.setPotenciaReal(Integer.parseInt(values[0]));
-			if (values.length > 9) {
+			if (values.length > 8) {
 				carro.setAerodinamica(Integer.parseInt(values[8]));
 			} else {
 				carro.setAerodinamica(Integer.parseInt(values[0]));
 			}
-			if (values.length > 10) {
+			if (values.length > 9) {
 				carro.setFreios(Integer.parseInt(values[9]));
 			} else {
 				carro.setFreios(Integer.parseInt(values[0]));

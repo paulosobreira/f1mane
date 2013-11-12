@@ -253,6 +253,7 @@ public class PainelCircuito {
 	private int contMostraFPS;
 	private AffineTransform afZoomDebug;
 	private long ultimaDesenhaVelocidade;
+	private int delayLargadaSuave = 5000;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -4697,9 +4698,12 @@ public class PainelCircuito {
 		if (exibeResultadoFinal) {
 			return;
 		}
+		if (delayLargadaSuave > 0) {
+			delayLargadaSuave--;
+		}
 		Piloto ps = pilotoSelecionado;
 		if (!(System.currentTimeMillis() - ultimaDesenhaVelocidade < (ps
-				.getVelocidadeExibir() / 5))) {
+				.getVelocidadeExibir() / 4)) && (delayLargadaSuave > 0)) {
 			int incAcell = 1;
 			int incFreiada = 1;
 			if (ps.getNoAtual().verificaCruvaBaixa()) {
