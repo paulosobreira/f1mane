@@ -62,9 +62,9 @@ import br.nnpe.Util;
  */
 public class PainelCircuito {
 
-	public static boolean carregaBkg = false;
-	public static boolean desenhaPista = false;
-	public static boolean desenhaImagens = false;
+	public static boolean carregaBkg = true;
+	public static boolean desenhaPista = true;
+	public static boolean desenhaImagens = true;
 
 	private Point pontoCentralizado;
 	private Point pontoCentralizadoOld;
@@ -139,6 +139,7 @@ public class PainelCircuito {
 	private Set<TravadaRoda> marcasPneu = new HashSet<TravadaRoda>();
 	private boolean inverterSpray;
 	private Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
+	private Map<String, BufferedImage> mapaCarrosCima = new HashMap<String, BufferedImage>();
 	private Piloto pilotoSelecionado;
 	private BufferedImage backGround;
 	private Thread threadCarregarBkg;
@@ -253,7 +254,7 @@ public class PainelCircuito {
 	private int contMostraFPS;
 	private AffineTransform afZoomDebug;
 	private long ultimaDesenhaVelocidade;
-	private int delayLargadaSuave = 5000;
+	private int delayLargadaSuave = 300;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -2709,25 +2710,93 @@ public class PainelCircuito {
 		int h2 = Carro.MEIA_LARGURA_CIMA;
 
 		double rad = Math.toRadians((double) calculaAngulo);
+
+		int imagemCarroX = Util.inte((carX - dC.x) * zoom);
+		int imagemCarroY = Util.inte((carY - dC.y) * zoom);
+
 		AffineTransform afZoom = new AffineTransform();
 		AffineTransform afRotate = new AffineTransform();
 		afZoom.setToScale(zoom, zoom);
 		afRotate.setToRotation(rad, w2, h2);
 
-		BufferedImage rotateBuffer = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_ARGB);
+		String key = piloto.getCarro().getNome() + "-" + zoom + "-" + rad;
+
+		BufferedImage rotateBuffer = mapaCarrosCima.get(key);
+		boolean filtra = true;
+		if (rotateBuffer == null) {
+			rotateBuffer = new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_ARGB);
+		} else {
+			filtra = false;
+		}
 		BufferedImage zoomBuffer = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_ARGB);
 		AffineTransformOp opRotate = new AffineTransformOp(afRotate,
 				AffineTransformOp.TYPE_BILINEAR);
-		opRotate.filter(carroCima, zoomBuffer);
 		AffineTransformOp opZoom = new AffineTransformOp(afZoom,
 				AffineTransformOp.TYPE_BILINEAR);
-		opZoom.filter(zoomBuffer, rotateBuffer);
+		if (filtra) {
+			opRotate.filter(carroCima, zoomBuffer);
+			opZoom.filter(zoomBuffer, rotateBuffer);
+			mapaCarrosCima.put(key, rotateBuffer);
+		}
 
-		int imagemCarroX = Util.inte((carX - dC.x) * zoom);
-		int imagemCarroY = Util.inte((carY - dC.y) * zoom);
+		desenhaSetasCarroCima(g2d, piloto, width, height, imagemCarroX,
+				imagemCarroY, opRotate, opZoom);
+		boolean naoDesenhaEfeitos = false;
+		boolean temTransparencia = false;
+		if (circuito.getObjetos() != null) {
+			for (ObjetoPista objetoPista : circuito.getObjetos()) {
+				if (!(objetoPista instanceof ObjetoTransparencia))
+					continue;
+				if (objetoPista.isPintaEmcima()
+						&& controleJogo.obterPista(piloto.getNoAtual()) != controleJogo
+								.getNosDoBox()) {
+					continue;
+				}
+				if (objetoPista.getAltura() != 0
+						&& objetoPista.getLargura() != 0) {
+					int indexNoAtual = noAtual.getIndex();
+					if (objetoPista.getAltura() > indexNoAtual
+							|| objetoPista.getLargura() < indexNoAtual) {
+						continue;
+					}
+				}
+				ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+				Graphics2D gImage = rotateBuffer.createGraphics();
+				objetoTransparencia.desenhaCarro(gImage, zoom, carX, carY);
+				mapaCarrosCima.put(key, null);
+				if (objetoTransparencia.obterArea().contains(p)) {
+					piloto.setNaoDesenhaEfeitos(piloto.getNaoDesenhaEfeitos() + 1);
+					if (piloto.getNaoDesenhaEfeitos() > 10) {
+						naoDesenhaEfeitos = true;
+					}
+					temTransparencia = true;
+				}
+			}
+			if (!temTransparencia) {
+				piloto.setNaoDesenhaEfeitos(0);
+			}
+		}
+		if (desenhaImagens)
+			g2d.drawImage(rotateBuffer, imagemCarroX, imagemCarroY, null);
+		if (naoDesenhaEfeitos) {
+			g2d.setStroke(stroke);
+			return;
+		}
+		if (!temTransparencia) {
+			desenhaTravaRodaCarroCima(g2d, piloto, width, height, carX, carY,
+					afZoom, afRotate);
+			desenhaAjudaPistaCarroCima(g2d, piloto);
+		}
+		desenhaChuvaFaiscasCarroCima(g2d, piloto, width);
+		desenhaDebugCarroCima(g2d, piloto, rad);
+		g2d.setStroke(stroke);
+	}
 
+	private void desenhaSetasCarroCima(Graphics2D g2d, Piloto piloto,
+			int width, int height, int imagemCarroX, int imagemCarroY,
+			AffineTransformOp opRotate, AffineTransformOp opZoom) {
 		if (piloto.isJogadorHumano() && piloto.getSetaCima() != 0) {
 			if (piloto.getSetaCima() % 2 == 0) {
 				BufferedImage rotateBufferSetaCima = new BufferedImage(width,
@@ -2757,54 +2826,6 @@ public class PainelCircuito {
 			}
 			piloto.setSetaBaixo(piloto.getSetaBaixo() - 1);
 		}
-		boolean naoDesenhaEfeitos = false;
-		boolean temTransparencia = false;
-		if (circuito.getObjetos() != null) {
-			for (ObjetoPista objetoPista : circuito.getObjetos()) {
-				if (!(objetoPista instanceof ObjetoTransparencia))
-					continue;
-				if (objetoPista.isPintaEmcima()
-						&& controleJogo.obterPista(piloto.getNoAtual()) != controleJogo
-								.getNosDoBox()) {
-					continue;
-				}
-				if (objetoPista.getAltura() != 0
-						&& objetoPista.getLargura() != 0) {
-					int indexNoAtual = noAtual.getIndex();
-					if (objetoPista.getAltura() > indexNoAtual
-							|| objetoPista.getLargura() < indexNoAtual) {
-						continue;
-					}
-				}
-				ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
-				Graphics2D gImage = rotateBuffer.createGraphics();
-				objetoTransparencia.desenhaCarro(gImage, zoom, carX, carY);
-				if (objetoTransparencia.obterArea().contains(p)) {
-					piloto.setNaoDesenhaEfeitos(piloto.getNaoDesenhaEfeitos() + 1);
-					if (piloto.getNaoDesenhaEfeitos() > 10) {
-						naoDesenhaEfeitos = true;
-					}
-					temTransparencia = true;
-				}
-			}
-			if (!temTransparencia) {
-				piloto.setNaoDesenhaEfeitos(0);
-			}
-		}
-		if (desenhaImagens)
-			g2d.drawImage(rotateBuffer, imagemCarroX, imagemCarroY, null);
-		if (naoDesenhaEfeitos) {
-			g2d.setStroke(stroke);
-			return;
-		}
-		if (!temTransparencia) {
-			desenhaTravaRodaCarroCima(g2d, piloto, width, height, carX, carY,
-					afZoom, afRotate);
-			desenhaAjudaPistaCarroCima(g2d, piloto);
-		}
-		desenhaChuvaFaiscasCarroCima(g2d, piloto, width);
-		desenhaDebugCarroCima(g2d, piloto, rad);
-		g2d.setStroke(stroke);
 	}
 
 	private void descontoCentraliza() {
@@ -4698,12 +4719,10 @@ public class PainelCircuito {
 		if (exibeResultadoFinal) {
 			return;
 		}
-		if (delayLargadaSuave > 0) {
-			delayLargadaSuave--;
-		}
+
 		Piloto ps = pilotoSelecionado;
 		if (!(System.currentTimeMillis() - ultimaDesenhaVelocidade < (ps
-				.getVelocidadeExibir() / 4)) && (delayLargadaSuave > 0)) {
+				.getVelocidadeExibir() / 4))) {
 			int incAcell = 1;
 			int incFreiada = 1;
 			if (ps.getNoAtual().verificaCruvaBaixa()) {
@@ -4723,6 +4742,11 @@ public class PainelCircuito {
 				ps.setVelocidadeExibir(ps.getVelocidadeExibir() - incFreiada);
 			}
 			ultimaDesenhaVelocidade = System.currentTimeMillis();
+		}
+
+		if (delayLargadaSuave > 0) {
+			delayLargadaSuave--;
+			ps.setVelocidadeExibir(0);
 		}
 
 		int velocidade = (controleJogo.isSafetyCarNaPista() ? ps
