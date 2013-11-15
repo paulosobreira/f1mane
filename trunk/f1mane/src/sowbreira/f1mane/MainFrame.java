@@ -1039,6 +1039,7 @@ public class MainFrame extends JFrame {
 		BufferStrategy strategy = getBufferStrategy();
 		if (strategy == null) {
 			createBufferStrategy(2);
+			strategy = getBufferStrategy();
 		}
 		return (Graphics2D) strategy.getDrawGraphics();
 	}
