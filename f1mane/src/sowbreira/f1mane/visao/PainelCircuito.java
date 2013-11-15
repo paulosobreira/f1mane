@@ -142,7 +142,10 @@ public class PainelCircuito {
 	private Map<String, BufferedImage> mapaCarrosCima = new HashMap<String, BufferedImage>();
 	private Piloto pilotoSelecionado;
 	private BufferedImage backGround;
+	private BufferedImage backGroundZoom;
+	private boolean backGroundZoomPronto;
 	private Thread threadCarregarBkg;
+	private Thread threadCarregarBkgZoom;
 	private List pistaMinimizada;
 	private ArrayList boxMinimizado;
 	private boolean alternaPiscaSCSair;
@@ -211,8 +214,6 @@ public class PainelCircuito {
 	private BufferedImage pneuChuvaImg;
 	private BufferedImage setaCarroCima;
 	private BufferedImage setaCarroBaixo;
-	private BufferedImage setaCarroEsquerda;
-	private BufferedImage setaCarroDireita;
 	private BufferedImage gridCarro;
 	private BufferedImage scimg;
 	private BufferedImage scima;
@@ -255,6 +256,8 @@ public class PainelCircuito {
 	private AffineTransform afZoomDebug;
 	private long ultimaDesenhaVelocidade;
 	private int delayLargadaSuave = 300;
+	protected int larguraBGZoom;
+	protected int alturaBGZoom;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -2164,6 +2167,7 @@ public class PainelCircuito {
 					(int) limitesViewPortFull.getHeight());
 			desenhaBackGroundComStrokes(g2d);
 		} else {
+			carregaBackGroundZoom();
 			g2d.setColor(Color.BLACK);
 			g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
 					(int) limitesViewPortFull.getHeight());
@@ -2174,38 +2178,51 @@ public class PainelCircuito {
 			int diffY = 0;
 			try {
 				if (backGround != null) {
+					BufferedImage bg = backGround;
 					int largura = Util.inte(limitesViewPortFull.getWidth()
 							/ zoom);
 					int altura = Util.inte(limitesViewPortFull.getHeight()
 							/ zoom);
 
 					int x = dC.x;
-					if (x <= 0) {
-						diffX += (dC.x * -1);
-						x = 0;
-					}
 					int y = dC.y;
+
+					int bgWidth = bg.getWidth();
+					int bgHeight = bg.getHeight();
+
+					if (backGroundZoomPronto) {
+						x *= zoom;
+						y *= zoom;
+						bgWidth = larguraBGZoom;
+						bgHeight = alturaBGZoom;
+						bg = backGroundZoom;
+					}
+
+					if (x <= 0) {
+						diffX += (x * -1);
+						x = 0;
+					}
 					if (y < 0) {
-						diffY += (dC.y * -1);
+						diffY += (y * -1);
 						y = 0;
 					}
 
-					int maxLarg = (dC.x + largura);
-					int maxAlt = (dC.y + altura);
+					int maxLarg = (x + largura);
+					int maxAlt = (y + altura);
 
-					if (maxLarg >= backGround.getWidth()) {
-						largura -= (maxLarg - backGround.getWidth());
+					if (maxLarg >= bgWidth) {
+						largura -= (maxLarg - bgWidth);
 					}
 
-					if (maxAlt >= backGround.getHeight()) {
-						altura -= (maxAlt - backGround.getHeight());
+					if (maxAlt >= bgHeight) {
+						altura -= (maxAlt - bgHeight);
 					}
 
-					if ((x + largura) >= backGround.getWidth()) {
-						x -= ((x + largura) - backGround.getWidth());
+					if ((x + largura) >= bgWidth) {
+						x -= ((x + largura) - bgWidth);
 					}
-					if ((y + altura) >= backGround.getHeight()) {
-						y -= (y + altura) - backGround.getHeight();
+					if ((y + altura) >= bgHeight) {
+						y -= (y + altura) - bgHeight;
 					}
 
 					if (x <= 0) {
@@ -2215,17 +2232,17 @@ public class PainelCircuito {
 						y = 0;
 					}
 
-					if (largura > backGround.getWidth()) {
-						largura = backGround.getWidth();
+					if (largura > bg.getWidth()) {
+						largura = bg.getWidth();
 					}
 
-					if (altura > backGround.getHeight()) {
-						altura = backGround.getHeight();
+					if (altura > bg.getHeight()) {
+						altura = bg.getHeight();
 					}
 
 					rectangle = new Rectangle(x, y, largura, altura);
 
-					subimage = backGround.getSubimage(rectangle.x, rectangle.y,
+					subimage = bg.getSubimage(rectangle.x, rectangle.y,
 							rectangle.width, rectangle.height);
 
 				}
@@ -2234,7 +2251,7 @@ public class PainelCircuito {
 				subimage = backGround;
 			}
 
-			if (zoom == 1) {
+			if (zoom == 1 || backGroundZoomPronto) {
 				drawBuffer = subimage;
 			} else {
 				drawBuffer = new BufferedImage(
@@ -2260,9 +2277,66 @@ public class PainelCircuito {
 						+ (diffX * zoom));
 				int newY = Util.inte(limitesViewPortFull.getY()
 						+ (diffY * zoom));
+				if (backGroundZoomPronto) {
+					newX = Util.inte(limitesViewPortFull.getX() + (diffX));
+					newY = Util.inte(limitesViewPortFull.getY() + (diffY));
+				}
+
 				g2d.drawImage(drawBuffer, newX, newY, null);
 			}
 		}
+	}
+
+	private void carregaBackGroundZoom() {
+		if (backGround == null) {
+			return;
+		}
+		if (zoom == mouseZoom) {
+			return;
+		}
+		if (carreganadoBackGroundZoom()) {
+			return;
+		}
+		threadCarregarBkgZoom = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				if (zoom != mouseZoom || zoom == 1) {
+					backGroundZoomPronto = false;
+					return;
+				}
+				larguraBGZoom = Util.inte(backGround.getWidth() * zoom);
+				alturaBGZoom = Util.inte(backGround.getHeight() * zoom);
+
+				AffineTransform scaleInstance = AffineTransform
+						.getScaleInstance(zoom, zoom);
+				AffineTransformOp affineTransformOp = new AffineTransformOp(
+						scaleInstance, AffineTransformOp.TYPE_BILINEAR);
+
+				if (backGroundZoom == null) {
+					backGroundZoom = new BufferedImage(backGround.getWidth(),
+							backGround.getHeight(), backGround.getType());
+
+				}
+				affineTransformOp.filter(backGround, backGroundZoom);
+				backGroundZoomPronto = true;
+			}
+		});
+		threadCarregarBkgZoom.setPriority(Thread.MIN_PRIORITY);
+		threadCarregarBkgZoom.start();
+	}
+
+	private boolean carreganadoBackGroundZoom() {
+		if (threadCarregarBkgZoom != null && threadCarregarBkgZoom.isAlive()) {
+			return true;
+		}
+		return false;
 	}
 
 	private void desenhaBackGroundComStrokes(Graphics2D g2d) {
@@ -2573,6 +2647,7 @@ public class PainelCircuito {
 	}
 
 	public void setMouseZoom(double mouseZoom) {
+		backGroundZoomPronto = false;
 		this.mouseZoom = mouseZoom;
 	}
 

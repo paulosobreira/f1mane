@@ -569,6 +569,12 @@ public class PainelMenuLocal {
 
 	protected void render() {
 		try {
+			if (mainFrame == null) {
+				return;
+			}
+			if (!mainFrame.isVisible()) {
+				return;
+			}
 			Graphics2D g2d = mainFrame.obterGraficos();
 			setarHints(g2d);
 			g2d.setColor(Color.WHITE);
