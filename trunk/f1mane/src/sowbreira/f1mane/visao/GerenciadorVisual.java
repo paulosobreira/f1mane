@@ -119,6 +119,7 @@ public class GerenciadorVisual {
 	protected boolean thAtualizaPainelSuaveAlive = true;
 	protected boolean thAtualizaPilotosSuaveAlive = true;
 	private int fps = 0;
+	protected double fpsLimite = 60D;
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
@@ -202,11 +203,11 @@ public class GerenciadorVisual {
 				int frames = 0;
 				long startTime = System.currentTimeMillis();
 				long lastTime = System.nanoTime();
-				double nsPerTick = 1000000000D / 60D;
+
 				double delta = 0;
 				while (thAtualizaPainelSuaveAlive) {
 					long now = System.nanoTime();
-
+					double nsPerTick = 1000000000D / fpsLimite;
 					delta += (now - lastTime) / nsPerTick;
 					lastTime = now;
 					boolean render = false;
@@ -280,8 +281,8 @@ public class GerenciadorVisual {
 										- noAtualSuave.getIndex();
 							}
 							int ganhoSuave = 0;
-							int maxLoop = 650;
-							int inc = 65;
+							int maxLoop = 500;
+							int inc = 25;
 							for (int i = 0; i < maxLoop; i += inc) {
 								if (diff >= i && diff < i + inc) {
 									break;
@@ -1878,6 +1879,15 @@ public class GerenciadorVisual {
 
 	public int getFps() {
 		return fps;
+	}
+
+	public void mudaLimiteFps() {
+		if (fpsLimite == 60D) {
+			fpsLimite = 30D;
+		} else if (fpsLimite == 30D) {
+			fpsLimite = 60D;
+		}
+
 	}
 
 }

@@ -66,6 +66,14 @@ public class PainelCircuito {
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
+	private boolean verControles = true;
+	private boolean desenhouQualificacao;
+	private boolean desenhouCreditos;
+	private boolean desenhaInfo = true;
+	private boolean inverterSpray;
+	private boolean backGroundZoomPronto;
+	private boolean alternaPiscaSCSair;
+
 	private Point pontoCentralizado;
 	private Point pontoCentralizadoOld;
 
@@ -118,9 +126,6 @@ public class PainelCircuito {
 	private BasicStroke zebra;
 	private int qtdeLuzesAcesas = 5;
 	private Map mapaZoomTravadasPneus = new HashMap();
-	private boolean desenhouQualificacao;
-	private boolean desenhouCreditos;
-	private boolean desenhaInfo = true;
 	private int mx;
 	private int my;
 	private double zoom = 1.0;
@@ -137,18 +142,15 @@ public class PainelCircuito {
 	private Rectangle limitesViewPort;
 	private Rectangle limitesViewPortFull;
 	private Set<TravadaRoda> marcasPneu = new HashSet<TravadaRoda>();
-	private boolean inverterSpray;
 	private Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
 	private Map<String, BufferedImage> mapaCarrosCima = new HashMap<String, BufferedImage>();
 	private Piloto pilotoSelecionado;
 	private BufferedImage backGround;
 	private BufferedImage backGroundZoom;
-	private boolean backGroundZoomPronto;
 	private Thread threadCarregarBkg;
 	private Thread threadCarregarBkgZoom;
 	private List pistaMinimizada;
 	private ArrayList boxMinimizado;
-	private boolean alternaPiscaSCSair;
 	private List ptosPilotosDesQualy = new ArrayList();
 
 	private boolean exibeResultadoFinal;
@@ -200,6 +202,12 @@ public class PainelCircuito {
 	private RoundRectangle2D voltaMenuPrincipalRect = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 10, 10);
 
+	private RoundRectangle2D fps = new RoundRectangle2D.Double(0, 0, 1, 1, 10,
+			10);
+
+	private RoundRectangle2D ajuda = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
+
 	private int porcentCombust = 50;
 	private String tpPneu;
 	private String tpAsa;
@@ -241,7 +249,7 @@ public class PainelCircuito {
 	private int contMostraLag;
 	private String climaAnterior;
 	private double zoomGrid;
-	private boolean verControles = true;
+
 	private Point dC;
 	private Point centroP;
 	private Point frenteP;
@@ -511,6 +519,14 @@ public class PainelCircuito {
 			controleJogo.voltaMenuPrincipal();
 			return true;
 		}
+		if (fps.contains(e.getPoint())) {
+			gerenciadorVisual.mudaLimiteFps();
+			return true;
+		}
+		if (ajuda.contains(e.getPoint())) {
+			verControles = !verControles;
+			return true;
+		}
 
 		return false;
 	}
@@ -613,6 +629,7 @@ public class PainelCircuito {
 			desenharTpPneuPsel(g2d);
 			desenhaListaPilotos(g2d);
 			desenhaFPS(g2d);
+			desenhaAjuda(g2d);
 			desenhaLag(g2d);
 			desenhaInfoPilotoSelecionado(g2d);
 			desenhaMiniPista(g2d);
@@ -1080,12 +1097,32 @@ public class PainelCircuito {
 				+ (limitesViewPort.width) - 70, Util.inte(limitesViewPort.y
 				+ limitesViewPort.getHeight() - 90));
 		g2d.setColor(transpMenus);
-		g2d.fillRoundRect(pointDesenhaFPS.x, pointDesenhaFPS.y, 65, 35, 15, 15);
+		fps.setFrame(pointDesenhaFPS.x, pointDesenhaFPS.y, 65, 35);
+		g2d.fill(fps);
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(Util
 				.inte(gerenciadorVisual.getFps() * 1.6)));
 		g2d.drawString(msg, pointDesenhaFPS.x + 2, pointDesenhaFPS.y + 26);
+		g2d.setFont(fontOri);
+	}
+
+	private void desenhaAjuda(Graphics2D g2d) {
+		String msg = " ? ";
+		g2d.setColor(transpMenus);
+		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 120;
+		int y = limitesViewPort.y + 5;
+		ajuda.setFrame(x, y, 35, 35);
+		if (verControles) {
+			g2d.setColor(OcilaCor.geraOcila("desenhaAjuda", yel));
+		} else {
+			g2d.setColor(transpMenus);
+		}
+		g2d.fill(ajuda);
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(msg, x + 2, y + 26);
 		g2d.setFont(fontOri);
 	}
 
