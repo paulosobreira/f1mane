@@ -70,9 +70,11 @@ public class PainelCircuito {
 	private boolean desenhouQualificacao;
 	private boolean desenhouCreditos;
 	private boolean desenhaInfo = true;
-	private boolean inverterSpray;
 	private boolean backGroundZoomPronto;
 	private boolean alternaPiscaSCSair;
+
+	private Thread threadCarregarBkg;
+	private Thread threadCarregarBkgZoom;
 
 	private Point pontoCentralizado;
 	private Point pontoCentralizadoOld;
@@ -147,8 +149,7 @@ public class PainelCircuito {
 	private Piloto pilotoSelecionado;
 	private BufferedImage backGround;
 	private BufferedImage backGroundZoom;
-	private Thread threadCarregarBkg;
-	private Thread threadCarregarBkgZoom;
+
 	private List pistaMinimizada;
 	private ArrayList boxMinimizado;
 	private List ptosPilotosDesQualy = new ArrayList();
@@ -266,6 +267,7 @@ public class PainelCircuito {
 	private int delayLargadaSuave = 300;
 	protected int larguraBGZoom;
 	protected int alturaBGZoom;
+	protected int threadCarregarBkgZoomRodando;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -2325,6 +2327,9 @@ public class PainelCircuito {
 	}
 
 	private void carregaBackGroundZoom() {
+		if (threadCarregarBkgZoomRodando > 1) {
+			threadCarregarBkgZoom.interrupt();
+		}
 		if (backGround == null) {
 			return;
 		}
@@ -2339,34 +2344,41 @@ public class PainelCircuito {
 			@Override
 			public void run() {
 				try {
+					threadCarregarBkgZoomRodando++;
+					double zoomTh = zoom;
 					Thread.sleep(10000);
+					if (zoom != mouseZoom || zoom == 1 || zoom != zoomTh) {
+						backGroundZoomPronto = false;
+						return;
+					}
+					larguraBGZoom = Util.inte(backGround.getWidth() * zoom);
+					alturaBGZoom = Util.inte(backGround.getHeight() * zoom);
+
+					AffineTransform scaleInstance = AffineTransform
+							.getScaleInstance(zoom, zoom);
+					AffineTransformOp affineTransformOp = new AffineTransformOp(
+							scaleInstance, AffineTransformOp.TYPE_BILINEAR);
+
+					if (backGroundZoom == null) {
+						backGroundZoom = new BufferedImage(backGround
+								.getWidth(), backGround.getHeight(), backGround
+								.getType());
+
+					}
+					affineTransformOp.filter(backGround, backGroundZoom);
+					backGroundZoomPronto = true;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
+				} finally {
+					threadCarregarBkgZoomRodando--;
 				}
 
-				if (zoom != mouseZoom || zoom == 1) {
-					backGroundZoomPronto = false;
-					return;
-				}
-				larguraBGZoom = Util.inte(backGround.getWidth() * zoom);
-				alturaBGZoom = Util.inte(backGround.getHeight() * zoom);
-
-				AffineTransform scaleInstance = AffineTransform
-						.getScaleInstance(zoom, zoom);
-				AffineTransformOp affineTransformOp = new AffineTransformOp(
-						scaleInstance, AffineTransformOp.TYPE_BILINEAR);
-
-				if (backGroundZoom == null) {
-					backGroundZoom = new BufferedImage(backGround.getWidth(),
-							backGround.getHeight(), backGround.getType());
-
-				}
-				affineTransformOp.filter(backGround, backGroundZoom);
-				backGroundZoomPronto = true;
 			}
 		});
 		threadCarregarBkgZoom.setPriority(Thread.MIN_PRIORITY);
-		threadCarregarBkgZoom.start();
+		if (threadCarregarBkgZoomRodando == 0) {
+			threadCarregarBkgZoom.start();
+		}
 	}
 
 	private boolean carreganadoBackGroundZoom() {
