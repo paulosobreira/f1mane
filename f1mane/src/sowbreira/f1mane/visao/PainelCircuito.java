@@ -2345,9 +2345,8 @@ public class PainelCircuito {
 			public void run() {
 				try {
 					threadCarregarBkgZoomRodando++;
-					double zoomTh = zoom;
 					Thread.sleep(10000);
-					if (zoom != mouseZoom || zoom == 1 || zoom != zoomTh) {
+					if (zoom != mouseZoom || zoom == 1) {
 						backGroundZoomPronto = false;
 						return;
 					}
