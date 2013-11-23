@@ -648,10 +648,13 @@ public class Carro implements Serializable {
 			valConsumo += (testePotencia ? 2 : 3);
 		} else if (giro == GIRO_MAX_VAL) {
 			valConsumo += (testePotencia ? 3 : 6);
-			if (piloto.getNoAtual().verificaCruvaAlta()
-					|| piloto.getNoAtual().verificaCruvaBaixa()) {
-				valConsumo++;
-			}
+		}
+
+		if (piloto.isAgressivo()
+				&& giro != GIRO_MIN_VAL
+				&& (piloto.getNoAtual().verificaCruvaAlta() || piloto
+						.getNoAtual().verificaCruvaBaixa())) {
+			valConsumo++;
 		}
 
 		double consumoTotal = (valConsumo
