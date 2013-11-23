@@ -59,6 +59,8 @@ public class PainelMenuLocal {
 
 	private static final String MENU_CORRIDA_CAMPEONATO_PILOTOS = "MENU_CORRIDA_CAMPEONATO_PILOTOS";
 
+	private static final String MENU_DESAFIAR_PILOTO = "MENU_DESAFIAR_PILOTO";
+
 	private String MENU = MENU_PRINCIPAL;
 
 	private MainFrame mainFrame;
@@ -92,6 +94,9 @@ public class PainelMenuLocal {
 			1, 1, 10, 10);
 
 	private RoundRectangle2D remPistaRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
+
+	private RoundRectangle2D desafiarRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
 
 	private RoundRectangle2D proxTemporadaRect = new RoundRectangle2D.Double(0,
@@ -198,6 +203,8 @@ public class PainelMenuLocal {
 
 	private Piloto pilotoSelecionado;
 
+	private Piloto pilotoDesafio;
+
 	private boolean kers = true;
 
 	private boolean drs = true;
@@ -240,6 +247,8 @@ public class PainelMenuLocal {
 	private Circuito circuitoMini;
 
 	private String circuitoMiniCarregado;
+
+	private Object MENU_ANTERIOR;
 
 	public PainelMenuLocal(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -323,7 +332,6 @@ public class PainelMenuLocal {
 		if (MENU.equals(MENU_PRINCIPAL) && corridaRect.contains(e.getPoint())) {
 			MENU = MENU_CORRIDA;
 			circuitoSelecionado = null;
-			resetaRects();
 			return;
 		}
 		if (MENU.equals(MENU_PRINCIPAL)
@@ -332,7 +340,6 @@ public class PainelMenuLocal {
 			circuitoSelecionado = null;
 			pilotoSelecionado = null;
 			cirucitosCampeonato.clear();
-			resetaRects();
 			return;
 		}
 		if (continuaCampeonatoRect.contains(e.getPoint())) {
@@ -386,19 +393,16 @@ public class PainelMenuLocal {
 		}
 		if (facilRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.FACIL;
-			resetPilotosRect();
 			pilotoSelecionado = null;
 			return;
 		}
 		if (normalRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.NORMAL;
-			resetPilotosRect();
 			pilotoSelecionado = null;
 			return;
 		}
 		if (dificilRect.contains(e.getPoint())) {
 			nivelSelecionado = InterfaceJogo.DIFICIL;
-			resetPilotosRect();
 			pilotoSelecionado = null;
 			return;
 		}
@@ -476,11 +480,11 @@ public class PainelMenuLocal {
 			return;
 		}
 		if (proximoMenuRect.contains(e.getPoint())) {
-			selecionaProximoMenu();
+			proximoMenu();
 			return;
 		}
 		if (anteriroMenuRct.contains(e.getPoint())) {
-			selecionaAnteMenu();
+			anteriorMenu();
 			return;
 		}
 
@@ -488,7 +492,11 @@ public class PainelMenuLocal {
 			if (pilotosRect.get(i).contains(e.getPoint())) {
 				String temporada = "t" + temporadaSelecionada;
 				List pilotos = litasPilotosTemporada(temporada);
-				pilotoSelecionado = (Piloto) pilotos.get(i);
+				if (MENU.equals(MENU_DESAFIAR_PILOTO)) {
+					pilotoDesafio = (Piloto) pilotos.get(i);
+				} else {
+					pilotoSelecionado = (Piloto) pilotos.get(i);
+				}
 				return;
 			}
 		}
@@ -499,6 +507,11 @@ public class PainelMenuLocal {
 		}
 		if (remPistaRect.contains(e.getPoint())) {
 			removePistaCampeonato();
+			return;
+		}
+
+		if (desafiarRect.contains(e.getPoint())) {
+			MENU = MENU_DESAFIAR_PILOTO;
 			return;
 		}
 
@@ -563,12 +576,16 @@ public class PainelMenuLocal {
 		bgf1 = CarregadorRecursos.carregaBufferedImage("f1bg.png");
 		pilotosRect = new ArrayList<RoundRectangle2D>();
 		for (int i = 0; i < 24; i++) {
-			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 10, 10));
+			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 5, 5));
 		}
 	}
 
 	protected void render() {
 		try {
+			if (!MENU.equals(MENU_ANTERIOR)) {
+				MENU_ANTERIOR = MENU;
+				resetaRects();
+			}
 			if (mainFrame == null) {
 				return;
 			}
@@ -577,7 +594,7 @@ public class PainelMenuLocal {
 			}
 			Graphics2D g2d = mainFrame.obterGraficos();
 			setarHints(g2d);
-			g2d.setColor(Color.WHITE);
+			g2d.setColor(g2d.getBackground());
 			g2d.fillRect(0, 0, getWidth(), getHeight());
 			if (PainelCircuito.carregaBkg) {
 				if (MENU.equals(MENU_PRINCIPAL))
@@ -586,7 +603,7 @@ public class PainelMenuLocal {
 						|| MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS))
 					bg = bgf1;
 			}
-			if (bg != null) {
+			if (bg != null && PainelCircuito.desenhaImagens) {
 				int centerX = mainFrame.getWidth() / 2;
 				int centerY = mainFrame.getHeight() / 2;
 				int bgX = bg.getWidth() / 2;
@@ -602,6 +619,7 @@ public class PainelMenuLocal {
 			desenhaMenuNovoCampeonatoPilotos(g2d);
 			desenhaMenuCorridaCampeonatoPilotos(g2d);
 			desenhaMenuQualificacao(g2d);
+			desenhaMenuDesafiarPilto(g2d);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Logger.logarExept(e);
@@ -609,10 +627,45 @@ public class PainelMenuLocal {
 
 	}
 
+	private void desenhaMenuDesafiarPilto(Graphics2D g2d) throws IOException {
+		if (!MENU.equals(MENU_DESAFIAR_PILOTO)) {
+			return;
+		}
+		int x = (int) (getWidth() / 2);
+		int y = (int) (getHeight() / 2);
+
+		x -= 490;
+		y -= 285;
+
+		desenhaTemporadas(g2d, x + 580, y, false);
+
+		desenhaPilotoSelecionado(g2d, x, y + 100, pilotoSelecionado);
+
+		desenhaVersus(g2d, x + 100, y + 200);
+
+		desenhaPilotoSelecionado(g2d, x, y + 400, pilotoDesafio);
+
+		desenhaAnteriroProximo(g2d, x + 150, y + 600);
+
+	}
+
+	private void desenhaVersus(Graphics2D g2d, int x, int y) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = Lang.msg("versus").toUpperCase();
+		int larguraTexto = Util.larguraTexto(txt, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 10, 10);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, x + 10, y);
+		g2d.setFont(fontOri);
+	}
+
 	private void desenhaMenuCorridaCampeonatoPilotos(Graphics2D g2d) {
 		if (!MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
 			return;
 		}
+
 		int x = (int) (getWidth() / 2);
 		int y = (int) (getHeight() / 2);
 
@@ -629,7 +682,23 @@ public class PainelMenuLocal {
 
 		desenhaPilotoSelecionado(g2d, x + 400, y + 300, pilotoSelecionado);
 
+		desenhaDesafiarPiloto(g2d, x + 500, y + 400);
+
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+	}
+
+	private void desenhaDesafiarPiloto(Graphics2D g2d, int x, int y) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = Lang.msg("desafiarPiloto").toUpperCase();
+		int larguraTexto = Util.larguraTexto(txt, g2d);
+		g2d.setColor(lightWhite);
+		desafiarRect.setFrame(x, y - 25, larguraTexto + 20, 30);
+		g2d.fill(desafiarRect);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, x + 10, y);
+		g2d.setFont(fontOri);
+
 	}
 
 	private int getHeight() {
@@ -1147,11 +1216,11 @@ public class PainelMenuLocal {
 	private void desenhaBarraPilotoCarro(Graphics2D g2d, int y, int x, int val,
 			String nome) {
 		g2d.setColor(lightWhite);
-		g2d.fillRoundRect(x - 15, y - 24, 100, 14, 10, 10);
+		g2d.fillRoundRect(x - 15, y - 24, 100, 14, 5, 5);
 		g2d.setColor(yel);
-		g2d.drawRoundRect(x - 15, y - 24, val, 14, 10, 10);
+		g2d.drawRoundRect(x - 15, y - 24, val, 14, 5, 5);
 		g2d.setColor(blu);
-		g2d.fillRoundRect(x - 15, y - 24, val, 14, 10, 10);
+		g2d.fillRoundRect(x - 15, y - 24, val, 14, 5, 5);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(nome.toUpperCase(), x - 10, y - 12);
 	}
@@ -1232,8 +1301,7 @@ public class PainelMenuLocal {
 
 	}
 
-	private void selecionaAnteMenu() {
-		resetaRects();
+	private void anteriorMenu() {
 		if (MENU.equals(MENU_CORRIDA)) {
 			MENU = MENU_PRINCIPAL;
 			return;
@@ -1254,6 +1322,11 @@ public class PainelMenuLocal {
 
 		if (MENU.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS)) {
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+			return;
+		}
+		if (MENU.equals(MENU_DESAFIAR_PILOTO)) {
+			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+			return;
 		}
 	}
 
@@ -1285,8 +1358,7 @@ public class PainelMenuLocal {
 
 	}
 
-	private void selecionaProximoMenu() {
-		resetaRects();
+	private void proximoMenu() {
 		if (MENU.equals(MENU_CORRIDA)) {
 			MENU = MENU_QUALIFICACAO;
 			return;
@@ -1328,7 +1400,6 @@ public class PainelMenuLocal {
 			}
 			return;
 		}
-
 		if (MENU.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS)) {
 			try {
 				desenhaCarregando = true;
@@ -1356,7 +1427,6 @@ public class PainelMenuLocal {
 			}
 			return;
 		}
-
 		if (MENU.equals(MENU_NOVO_CAMPEONATO_PILOTOS)) {
 			try {
 				if (cirucitosCampeonato.isEmpty()) {
@@ -1378,6 +1448,10 @@ public class PainelMenuLocal {
 		if (MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
 			MENU = MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS;
 			climaAleatorio();
+			return;
+		}
+		if (MENU.equals(MENU_DESAFIAR_PILOTO)) {
+			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			return;
 		}
 
