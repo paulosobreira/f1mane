@@ -1,24 +1,18 @@
 package sowbreira.f1mane.controles;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.GeoUtil;
-import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -87,6 +81,10 @@ public class ControleQualificacao {
 						&& piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao -= Math.random() > increta ? 1 : 0;
+				}
+				if (piloto.getCarro().verificaPneusIncompativeisClima(
+						controleJogo)) {
+					contCiclosQualificacao++;
 				}
 			}
 			piloto.setCiclosVoltaQualificacao(contCiclosQualificacao);

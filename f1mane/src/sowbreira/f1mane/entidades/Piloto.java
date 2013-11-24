@@ -1171,7 +1171,7 @@ public class Piloto implements Serializable {
 			return;
 		}
 		double diff = calculaDiffParaProximo(controleJogo);
-		double distLimiteTurbulencia = 15;
+		double distLimiteTurbulencia = 20;
 		double nGanho = (controleJogo.getFatorUtrapassagem());
 		if (diff < distLimiteTurbulencia
 				&& !verificaForaPista(carroPilotoDaFrente.getPiloto())) {
