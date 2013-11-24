@@ -300,9 +300,6 @@ public class Carro implements Serializable {
 	}
 
 	public boolean verificaPneusIncompativeisClima(InterfaceJogo controleJogo) {
-		if (ControleQualificacao.modoQualify) {
-			return false;
-		}
 		if (controleJogo.isChovendo() && !tipoPneu.equals(TIPO_PNEU_CHUVA)) {
 			return true;
 		}
@@ -647,7 +644,7 @@ public class Carro implements Serializable {
 		} else if (giro == GIRO_NOR_VAL) {
 			valConsumo += (testePotencia ? 2 : 3);
 		} else if (giro == GIRO_MAX_VAL) {
-			valConsumo += (testePotencia ? 3 : 6);
+			valConsumo += (testePotencia ? 4 : 6);
 		}
 
 		if (piloto.isAgressivo()

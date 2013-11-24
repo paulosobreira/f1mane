@@ -610,8 +610,8 @@ public class PainelCircuito {
 				zoomGrid = zoom;
 			}
 			Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
-			setarHints(g2d);
 			desenhaBackGround(g2d);
+			setarHints(g2d);
 			desenhaContadorVoltas(g2d);
 			if (!desenhouCreditos) {
 				return;
@@ -2206,7 +2206,7 @@ public class PainelCircuito {
 		}
 		int cargaKers = pilotoSelecionado.getCarro().getCargaKers() / 2;
 		int y = 100;
-		g2d.setColor(red);
+		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 170, limitesViewPort.y + y, 20,
 				50, 5, 5);
 		g2d.setColor(gre);
@@ -3026,19 +3026,19 @@ public class PainelCircuito {
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
 				&& (piloto.getNoAtual().verificaCruvaAlta() || piloto
 						.getNoAtual().verificaCruvaBaixa())
-				&& Math.random() > .5;
+				&& Math.random() > .9;
 		boolean rabeadaPneuErrado = piloto.getCarro()
 				.verificaPneusIncompativeisClima(controleJogo)
-				&& Math.random() > .5;
+				&& Math.random() > .95;
 
 		if (rabeadaAgressivo || rabeadaPneuErrado) {
 			if (piloto.getNoAtual().verificaCruvaAlta())
-				calculaAngulo += Util.intervalo(-7.5, 7.5);
+				calculaAngulo += Util.intervalo(-5, 5);
 			if (piloto.getNoAtual().verificaCruvaBaixa())
-				calculaAngulo += Util.intervalo(-12.0, 12.0);
+				calculaAngulo += Util.intervalo(-10.0, 10.0);
 		}
 		if ((piloto.getTracado() == 4 || piloto.getTracado() == 5)
-				&& Math.random() > 0.7) {
+				&& Math.random() > 0.9) {
 			calculaAngulo += Util.intervalo(-15, 15);
 		}
 		return calculaAngulo;
@@ -3808,9 +3808,14 @@ public class PainelCircuito {
 		int yBase = limitesViewPort.y + 7;
 
 		g2d.setColor(transpMenus);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 2, 90, 90, 10, 10);
-		g2d.setColor(Color.black);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 2, 100, 90, 10, 10);
 		yBase += 10;
+
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(Lang.msg("220"), ptoOri, yBase);
+
+		yBase += 15;
+		g2d.setColor(Color.black);
 		g2d.drawString(Lang.msg(pilotoSelecionado.getCarro().getTipoPneu()),
 				ptoOri, yBase);
 
@@ -3842,9 +3847,6 @@ public class PainelCircuito {
 		g2d.drawString(Lang.msg(controleJogo.getNivelCorrida()), ptoOri, yBase);
 
 		yBase += 15;
-		g2d.setColor(Color.black);
-		g2d.drawString(Lang.msg("074"), ptoOri, yBase);
-		yBase += 15;
 		if (!pilotoSelecionado.isAutoPos()) {
 			g2d.setColor(OcilaCor.geraOcila("tracadoManual", yel));
 			g2d.fillRoundRect(ptoOri - 5, yBase - 12, 105, 16, 10, 10);
@@ -3857,17 +3859,9 @@ public class PainelCircuito {
 		yBase = limitesViewPort.y + 7;
 
 		g2d.setColor(transpMenus);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 2, 105, 75, 10, 10);
-
-		yBase += 10;
+		g2d.fillRoundRect(ptoOri - 5, yBase - 2, 105, 35, 10, 10);
 
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(Lang.msg("220"), ptoOri, yBase);
-
-		yBase += 15;
-		String msg = "F10 : " + Lang.msg("som")
-				+ (ControleSom.somLigado ? Lang.msg("SIM") : Lang.msg("NAO"));
-		g2d.drawString(msg, ptoOri, yBase);
 
 		yBase += 15;
 		g2d.drawString(
@@ -4912,7 +4906,10 @@ public class PainelCircuito {
 				incFreiada += 2;
 			}
 
-			if (ps.getVelocidade() >= ps.getVelocidadeExibir()) {
+			boolean incAceel = ps.getNoAtual().verificaRetaOuLargada()
+					&& ps.emMovimento();
+
+			if (ps.getVelocidade() >= ps.getVelocidadeExibir() || incAceel) {
 				ps.setVelocidadeExibir(ps.getVelocidadeExibir() + incAcell);
 			}
 			if (ps.getVelocidade() < ps.getVelocidadeExibir()) {
