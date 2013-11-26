@@ -407,8 +407,10 @@ public class PainelCircuito {
 				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.15);
 		pneuDuroImgMini = ImageUtil.geraResize(CarregadorRecursos
 				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.15);
-		pneuChuvaImgMini = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.15);
+		pneuChuvaImgMini = ImageUtil
+				.geraResize(CarregadorRecursos
+						.carregaBufferedImageTransparecia("pneu-chuva.png",
+								null), 0.15);
 
 		fuel = new ImageIcon(CarregadorRecursos.carregarImagem("fuel.gif"));
 		tyre = new ImageIcon(CarregadorRecursos.carregarImagem("tyre.gif"));
@@ -937,13 +939,13 @@ public class PainelCircuito {
 			 */
 			BufferedImage pneu = null;
 			if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro().getTipoPneu())) {
-				pneu = pneuMoleImg;
+				pneu = pneuMoleImgMini;
 			}
 			if (Carro.TIPO_PNEU_DURO.equals(piloto.getCarro().getTipoPneu())) {
-				pneu = pneuDuroImg;
+				pneu = pneuDuroImgMini;
 			}
 			if (Carro.TIPO_PNEU_CHUVA.equals(piloto.getCarro().getTipoPneu())) {
-				pneu = pneuChuvaImg;
+				pneu = pneuChuvaImgMini;
 			}
 			g2d.drawImage(pneu, x, y, null);
 
