@@ -221,6 +221,9 @@ public class PainelCircuito {
 	private BufferedImage pneuMoleImg;
 	private BufferedImage pneuDuroImg;
 	private BufferedImage pneuChuvaImg;
+	private BufferedImage pneuMoleImgMini;
+	private BufferedImage pneuDuroImgMini;
+	private BufferedImage pneuChuvaImgMini;
 	private BufferedImage setaCarroCima;
 	private BufferedImage setaCarroBaixo;
 	private BufferedImage gridCarro;
@@ -399,6 +402,13 @@ public class PainelCircuito {
 				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.3);
 		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos
 				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.3);
+
+		pneuMoleImgMini = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.15);
+		pneuDuroImgMini = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.15);
+		pneuChuvaImgMini = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.15);
 
 		fuel = new ImageIcon(CarregadorRecursos.carregarImagem("fuel.gif"));
 		tyre = new ImageIcon(CarregadorRecursos.carregarImagem("tyre.gif"));
@@ -925,8 +935,16 @@ public class PainelCircuito {
 			/**
 			 * Pneus
 			 */
-			BufferedImage pneu = ImageUtil.geraResize(
-					obterNomeImgTipoPneu(piloto.getCarro()), 0.5);
+			BufferedImage pneu = null;
+			if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro().getTipoPneu())) {
+				pneu = pneuMoleImg;
+			}
+			if (Carro.TIPO_PNEU_DURO.equals(piloto.getCarro().getTipoPneu())) {
+				pneu = pneuDuroImg;
+			}
+			if (Carro.TIPO_PNEU_CHUVA.equals(piloto.getCarro().getTipoPneu())) {
+				pneu = pneuChuvaImg;
+			}
 			g2d.drawImage(pneu, x, y, null);
 
 			x += 30;
@@ -1822,6 +1840,7 @@ public class PainelCircuito {
 		}
 		String strMole = Lang.msg("pneuMole");
 		int tamMole = Util.calculaLarguraText(strMole, g2d);
+		g2d.drawImage(pneuMoleImgMini, x, y, null);
 		pneuMole.setFrame(x, y, tamMole + 10, 20);
 		g2d.fill(pneuMole);
 		if (moleSel) {
@@ -1848,6 +1867,7 @@ public class PainelCircuito {
 		}
 		String strDuro = Lang.msg("pneuDuro");
 		int tamDuro = Util.calculaLarguraText(strDuro, g2d);
+		g2d.drawImage(pneuDuroImgMini, x, y, null);
 		pneuDuro.setFrame(x, y, tamDuro + 10, 20);
 		g2d.fill(pneuDuro);
 		if (duroSel) {
@@ -1874,6 +1894,7 @@ public class PainelCircuito {
 		}
 		String strChuva = Lang.msg("pneuChuva");
 		int tamChuva = Util.calculaLarguraText(strChuva, g2d);
+		g2d.drawImage(pneuChuvaImgMini, x, y, null);
 		pneuChuva.setFrame(x, y, tamChuva + 10, 20);
 		g2d.fill(pneuChuva);
 		if (chuvaSel) {

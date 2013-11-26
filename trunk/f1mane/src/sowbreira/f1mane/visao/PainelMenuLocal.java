@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -639,9 +640,9 @@ public class PainelMenuLocal {
 
 		desenhaTemporadas(g2d, x + 580, y, false);
 
-		desenhaPilotoSelecionado(g2d, x, y + 100, pilotoSelecionado);
+		desenhaPilotoSelecionado(g2d, x, y + 150, pilotoSelecionado);
 
-		desenhaVersus(g2d, x + 100, y + 200);
+		desenhaVersus(g2d, x + 100, y + 300);
 
 		desenhaPilotoSelecionado(g2d, x, y + 400, pilotoDesafio);
 
@@ -672,9 +673,11 @@ public class PainelMenuLocal {
 		x -= 490;
 		y -= 285;
 
+		verificaRivalCarregado();
+
 		desenhaCircuitoCorridaCampeonato(g2d, x, y);
 
-		desenhaDadosCorridaCampeonato(g2d, x, y + 280);
+		desenhaDadosCorridaCampeonato(g2d, x, y + 300);
 
 		desenhaClassificacaoPilotosCampeonato(g2d, x + 400, y + 5);
 
@@ -682,9 +685,47 @@ public class PainelMenuLocal {
 
 		desenhaPilotoSelecionado(g2d, x + 400, y + 300, pilotoSelecionado);
 
-		desenhaDesafiarPiloto(g2d, x + 500, y + 400);
+		desenhaPontos(g2d, x + 900, y + 320, campeonato.getVitorias());
+
+		if (pilotoDesafio == null) {
+			desenhaDesafiarPiloto(g2d, x + 500, y + 400);
+		} else {
+			desenhaVersus(g2d, x + 500, y + 400);
+			desenhaPilotoSelecionado(g2d, x + 400, y + 450, pilotoDesafio);
+			desenhaPontos(g2d, x + 900, y + 470, campeonato.getDerrotas());
+		}
 
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+	}
+
+	private void desenhaPontos(Graphics2D g2d, int x, int y, int pts) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String txt = "" + pts;
+		int larguraTexto = Util.larguraTexto(txt, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 10, 10);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, x + 10, y);
+		g2d.setFont(fontOri);
+
+	}
+
+	private void verificaRivalCarregado() {
+		String desafio = pilotoDesafio == null ? "" : pilotoDesafio.getNome();
+		if (campeonato != null && campeonato.getRival() != null
+				&& !campeonato.getRival().equals(desafio)) {
+			String temporada = "t" + campeonato.getTemporada();
+			List pilotos = litasPilotosTemporada(temporada);
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (piloto.getNome().equals(campeonato.getRival())) {
+					pilotoDesafio = piloto;
+					break;
+				}
+			}
+		}
+
 	}
 
 	private void desenhaDesafiarPiloto(Graphics2D g2d, int x, int y) {
@@ -986,6 +1027,9 @@ public class PainelMenuLocal {
 		if (!MENU.equals(MENU_NOVO_CAMPEONATO_PILOTOS)) {
 			return;
 		}
+
+		pilotoDesafio = null;
+
 		int x = (int) (getWidth() / 2);
 		int y = (int) (getHeight() / 2);
 
@@ -1325,6 +1369,7 @@ public class PainelMenuLocal {
 			return;
 		}
 		if (MENU.equals(MENU_DESAFIAR_PILOTO)) {
+			pilotoDesafio = null;
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			return;
 		}
@@ -1451,10 +1496,12 @@ public class PainelMenuLocal {
 			return;
 		}
 		if (MENU.equals(MENU_DESAFIAR_PILOTO)) {
+			if (!pilotoSelecionado.equals(pilotoDesafio)) {
+				campeonato.setRival(pilotoDesafio.getNome());
+			}
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			return;
 		}
-
 	}
 
 	private void climaAleatorio() {
@@ -2162,10 +2209,27 @@ public class PainelMenuLocal {
 	private void desenhaSeletorCircuito(Graphics2D g2d, int centerX,
 			int centerY, boolean mistura) {
 		InterfaceJogo controleJogo = mainFrame.getControleJogo();
-		g2d.setColor(lightWhite);
-		antePistaRect.setFrame(centerX, centerY - 25, 30, 30);
-		g2d.fill(antePistaRect);
-		g2d.drawImage(setaCarroEsquerda, centerX - 15, centerY - 55, null);
+
+		boolean desenhaEsquerda = true;
+		boolean desenhaDireita = true;
+		if (controleJogo.getCircuitos() != null
+				&& !controleJogo.getCircuitos().isEmpty()) {
+			ArrayList<String> arrayList = new ArrayList<String>(controleJogo
+					.getCircuitos().keySet());
+			if (arrayList.get(0).equals(circuitoSelecionado)) {
+				desenhaEsquerda = false;
+			}
+			if (arrayList.get(arrayList.size() - 1).equals(circuitoSelecionado)) {
+				desenhaDireita = false;
+			}
+		}
+
+		if (desenhaEsquerda) {
+			g2d.setColor(lightWhite);
+			antePistaRect.setFrame(centerX, centerY - 25, 30, 30);
+			g2d.fill(antePistaRect);
+			g2d.drawImage(setaCarroEsquerda, centerX - 15, centerY - 55, null);
+		}
 		centerX += 40;
 
 		if (circuitoSelecionado == null) {
@@ -2192,10 +2256,12 @@ public class PainelMenuLocal {
 
 		centerX += larguraTexto + 30;
 
-		g2d.setColor(lightWhite);
-		proxPistaRect.setFrame(centerX, centerY - 25, 30, 30);
-		g2d.fill(proxPistaRect);
-		g2d.drawImage(setaCarroDireita, centerX - 45, centerY - 52, null);
+		if (desenhaDireita) {
+			g2d.setColor(lightWhite);
+			proxPistaRect.setFrame(centerX, centerY - 25, 30, 30);
+			g2d.fill(proxPistaRect);
+			g2d.drawImage(setaCarroDireita, centerX - 45, centerY - 52, null);
+		}
 		g2d.setFont(fontOri);
 
 	}
