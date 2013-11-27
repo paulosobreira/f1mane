@@ -648,7 +648,7 @@ public class Carro implements Serializable {
 		}
 
 		if (piloto.isAgressivo()
-				&& giro != GIRO_MIN_VAL
+				&& giro == GIRO_MAX_VAL
 				&& (piloto.getNoAtual().verificaCruvaAlta() || piloto
 						.getNoAtual().verificaCruvaBaixa())) {
 			valConsumo++;
@@ -1072,7 +1072,7 @@ public class Carro implements Serializable {
 
 	public void usaKers() {
 		if (cargaKers > 0) {
-			cargaKers--;
+			cargaKers -= (testeAerodinamica() && testePotencia() ? 1 : 2);
 		}
 
 	}
