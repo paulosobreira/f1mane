@@ -310,21 +310,8 @@ public class PainelMenuLocal {
 		if (campeonato == null) {
 			return;
 		}
-		temporadaSelecionada = campeonato.getTemporada();
-		circuitoSelecionado = campeonato.getCircuitoVez();
-		Map circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
-		List pilotos = new ArrayList((Collection) circuitosPilotos.get("t"
-				+ campeonato.getTemporada()));
-		Piloto pilotoSel = null;
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (campeonato.getNomePiloto().equals(piloto.getNome())) {
-				pilotoSelecionado = piloto;
-				break;
-			}
+		carregaDadosCamponatoCarregado();
 
-		}
-		climaAleatorio();
 		MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 
 	}
@@ -673,7 +660,7 @@ public class PainelMenuLocal {
 		x -= 490;
 		y -= 285;
 
-		verificaRivalCarregado();
+		carregaDadosCamponatoCarregado();
 
 		desenhaCircuitoCorridaCampeonato(g2d, x, y);
 
@@ -711,16 +698,40 @@ public class PainelMenuLocal {
 
 	}
 
-	private void verificaRivalCarregado() {
+	private void carregaDadosCamponatoCarregado() {
+		if (campeonato == null) {
+			return;
+		}
+
+		temporadaSelecionada = campeonato.getTemporada();
+		circuitoSelecionado = campeonato.getCircuitoVez();
+		numVoltasSelecionado = campeonato.getQtdeVoltas();
+		nivelSelecionado = campeonato.getNivel();
+		reabasteciemto = campeonato.isSemReabasteciemnto();
+		kers = campeonato.isDrs();
+		drs = campeonato.isDrs();
+		trocaPneus = campeonato.isSemTrocaPneus();
+		climaAleatorio();
+		String temporada = "t" + temporadaSelecionada;
 		String desafio = pilotoDesafio == null ? "" : pilotoDesafio.getNome();
-		if (campeonato != null && campeonato.getRival() != null
+		if (campeonato.getRival() != null
 				&& !campeonato.getRival().equals(desafio)) {
-			String temporada = "t" + campeonato.getTemporada();
 			List pilotos = litasPilotosTemporada(temporada);
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getNome().equals(campeonato.getRival())) {
 					pilotoDesafio = piloto;
+					break;
+				}
+			}
+		}
+		if (campeonato.getNomePiloto() != null
+				&& !campeonato.getNomePiloto().equals(desafio)) {
+			List pilotos = litasPilotosTemporada(temporada);
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (piloto.getNome().equals(campeonato.getNomePiloto())) {
+					pilotoSelecionado = piloto;
 					break;
 				}
 			}
@@ -842,7 +853,6 @@ public class PainelMenuLocal {
 
 		g2d.setFont(fontOri);
 
-		g2d.setFont(fontOri);
 	}
 
 	private void desenhaClassificacaoEquipesCampeonato(Graphics2D g2d, int x,
@@ -1211,12 +1221,14 @@ public class PainelMenuLocal {
 
 		y += 40;
 
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
+
 		txt = piloto.getNome().toUpperCase();
 		larguraTexto = Util.larguraTexto(txt, g2d);
 		c = corRectPiloto(g2d, piloto, 2);
-		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		g2d.fillRoundRect(x, y - 24, larguraTexto + 20, 14, 5, 5);
 		corTxtPiloto(g2d, c);
-		g2d.drawString(txt, x + 10, y);
+		g2d.drawString(txt, x + 10, y - 12);
 
 		int largCapacete = 0;
 		if (capacete != null && PainelCircuito.desenhaImagens) {
@@ -1226,11 +1238,9 @@ public class PainelMenuLocal {
 			largCapacete = capacete.getWidth() + 10;
 		}
 
-		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
-
 		int xbarra = xCarro - largCapacete;
 
-		y -= 2;
+		y += 2;
 
 		int habilidade = piloto.getHabilidade() / 10;
 

@@ -1026,12 +1026,12 @@ public class Piloto implements Serializable {
 	}
 
 	public static void main(String[] args) {
-//		Piloto p = new Piloto();
-//		p.ganhoMax = 60;
-//		p.freiandoReta = true;
-//		p.acelerando = false;
-//		System.out.println(p.calculoVelocidade(10));
-		System.out.println(Math.log(2)/Math.log(2));
+		// Piloto p = new Piloto();
+		// p.ganhoMax = 60;
+		// p.freiandoReta = true;
+		// p.acelerando = false;
+		// System.out.println(p.calculoVelocidade(10));
+		System.out.println(Math.log(2) / Math.log(2));
 	}
 
 	private int calculoVelocidade(double ganho) {
@@ -2016,8 +2016,8 @@ public class Piloto implements Serializable {
 		if (controleJogo.isModoQualify()) {
 			return ganho;
 		}
-		
-		double size = ganho/3;
+
+		double size = ganho / 3;
 
 		if (listGanho.size() > size) {
 			listGanho.remove(0);
@@ -2619,7 +2619,7 @@ public class Piloto implements Serializable {
 	}
 
 	public void mudarTracado(int pos, InterfaceJogo interfaceJogo) {
-		mudarTracado(pos, interfaceJogo, false);
+		mudarTracado(pos, interfaceJogo, testeHabilidadePiloto(interfaceJogo));
 	}
 
 	public boolean mudarTracado(int pos, InterfaceJogo interfaceJogo,
