@@ -557,12 +557,7 @@ public class ControleCampeonato {
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					campeonato.getRival());
 			if (campeonato.isMenuLocal()) {
-				String equipeJogador = campeonato.getPilotosEquipesCampeonato()
-						.get(campeonato.getNomePiloto());
-				campeonato.getPilotosEquipesCampeonato().put(
-						campeonato.getNomePiloto(), equipeRival);
-				campeonato.getPilotosEquipesCampeonato().put(
-						campeonato.getRival(), equipeJogador);
+				campeonato.setNomePiloto(campeonato.getRival());
 			} else {
 				int retorno = JOptionPane.showConfirmDialog(this.mainFrame,
 						Lang.msg("irEquipe", new String[] { equipeRival }),
@@ -594,10 +589,14 @@ public class ControleCampeonato {
 						Lang.msg("rebaixado", new String[] { equipeRival }),
 						Lang.msg("mudarEquipe"),
 						JOptionPane.INFORMATION_MESSAGE);
-				campeonato.getPilotosEquipesCampeonato().put(
-						campeonato.getNomePiloto(), equipeRival);
-				campeonato.getPilotosEquipesCampeonato().put(
-						campeonato.getRival(), equipeJogador);
+				if (campeonato.isMenuLocal()) {
+					campeonato.setNomePiloto(campeonato.getRival());
+				} else {
+					campeonato.getPilotosEquipesCampeonato().put(
+							campeonato.getNomePiloto(), equipeRival);
+					campeonato.getPilotosEquipesCampeonato().put(
+							campeonato.getRival(), equipeJogador);
+				}
 			}
 			campeonato.setRival(null);
 			campeonato.setVitorias(0);
