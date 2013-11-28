@@ -651,7 +651,7 @@ public class Carro implements Serializable {
 				&& giro == GIRO_MAX_VAL
 				&& (piloto.getNoAtual().verificaCruvaAlta() || piloto
 						.getNoAtual().verificaCruvaBaixa())) {
-			valConsumo++;
+			valConsumo += testePotencia() || testeAerodinamica() ? 0 : 1;
 		}
 
 		double consumoTotal = (valConsumo

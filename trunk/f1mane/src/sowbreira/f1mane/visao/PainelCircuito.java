@@ -1842,7 +1842,9 @@ public class PainelCircuito {
 		}
 		String strMole = Lang.msg("pneuMole");
 		int tamMole = Util.calculaLarguraText(strMole, g2d);
-		g2d.drawImage(pneuMoleImgMini, x, y, null);
+		if (desenhaImagens)
+			g2d.drawImage(pneuMoleImgMini, x, y, null);
+		x += pneuChuvaImgMini.getWidth() + 2;
 		pneuMole.setFrame(x, y, tamMole + 10, 20);
 		g2d.fill(pneuMole);
 		if (moleSel) {
@@ -1869,7 +1871,9 @@ public class PainelCircuito {
 		}
 		String strDuro = Lang.msg("pneuDuro");
 		int tamDuro = Util.calculaLarguraText(strDuro, g2d);
-		g2d.drawImage(pneuDuroImgMini, x, y, null);
+		if (desenhaImagens)
+			g2d.drawImage(pneuDuroImgMini, x, y, null);
+		x += pneuDuroImgMini.getWidth() + 2;
 		pneuDuro.setFrame(x, y, tamDuro + 10, 20);
 		g2d.fill(pneuDuro);
 		if (duroSel) {
@@ -1896,7 +1900,9 @@ public class PainelCircuito {
 		}
 		String strChuva = Lang.msg("pneuChuva");
 		int tamChuva = Util.calculaLarguraText(strChuva, g2d);
-		g2d.drawImage(pneuChuvaImgMini, x, y, null);
+		if (desenhaImagens)
+			g2d.drawImage(pneuChuvaImgMini, x, y, null);
+		x += pneuChuvaImgMini.getWidth() + 2;
 		pneuChuva.setFrame(x, y, tamChuva + 10, 20);
 		g2d.fill(pneuChuva);
 		if (chuvaSel) {
@@ -3627,7 +3633,7 @@ public class PainelCircuito {
 			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
 					nublado.getBlue(), alfaNub));
-			g2d.fill(limitesViewPortFull.getBounds());
+			g2d.fill(limitesViewPort.getBounds());
 			return;
 		}
 
@@ -3882,7 +3888,7 @@ public class PainelCircuito {
 		yBase = limitesViewPort.y + 7;
 
 		g2d.setColor(transpMenus);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 2, 105, 35, 10, 10);
+		g2d.fillRoundRect(ptoOri - 5, yBase, 105, 35, 10, 10);
 
 		g2d.setColor(Color.BLACK);
 
