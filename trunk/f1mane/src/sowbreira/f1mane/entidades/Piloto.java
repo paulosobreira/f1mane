@@ -998,7 +998,7 @@ public class Piloto implements Serializable {
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
 		ganho = evitaPoleDispararPrimeiraVolta(controleJogo, ganho);
 
-		ganho = calculaGanhoMedio(ganho, controleJogo, colisao);
+		ganho = processaGanhoMedio(ganho, controleJogo, colisao);
 		processaLimitadorGanho(controleJogo, colisao);
 
 		if (controleJogo.isSafetyCarNaPista()) {
@@ -1035,9 +1035,9 @@ public class Piloto implements Serializable {
 	}
 
 	private int calculoVelocidade(double ganho) {
-		int val = 260;
+		int val = 300;
 		if (getCarro().getPotenciaReal() > 900) {
-			val = 290;
+			val = 320;
 		}
 		return Util
 				.inte(((val * ganho * ((acelerando && !freiandoReta) ? 1 : 0.7) / ganhoMax) + ganho));
@@ -2011,7 +2011,7 @@ public class Piloto implements Serializable {
 		ultModificador = 0;
 	}
 
-	public double calculaGanhoMedio(double ganho, InterfaceJogo controleJogo,
+	public double processaGanhoMedio(double ganho, InterfaceJogo controleJogo,
 			boolean colisao) {
 		if (controleJogo.isModoQualify()) {
 			return ganho;

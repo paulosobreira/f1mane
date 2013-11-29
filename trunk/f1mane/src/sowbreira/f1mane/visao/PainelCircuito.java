@@ -1826,7 +1826,7 @@ public class PainelCircuito {
 	}
 
 	private void desenhaControlePneuBox(Graphics2D g2d) {
-		int x = limitesViewPort.x + (limitesViewPort.width / 2) + 80;
+		int x = limitesViewPort.x + (limitesViewPort.width / 2) + 60;
 		int y = limitesViewPort.y + limitesViewPort.height - 25;
 
 		boolean moleSel = false;
@@ -4473,6 +4473,9 @@ public class PainelCircuito {
 			int carx = p.x - w2;
 			int cary = p.y - h2;
 
+			carx = Util.inte((carx - dC.x) * zoom);
+			cary = Util.inte((cary - dC.y) * zoom);
+
 			int traz = cont - 44;
 			int frente = cont + 44;
 
@@ -4683,7 +4686,7 @@ public class PainelCircuito {
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 5, 14, 14);
 		if (qtdeLuzesAcesas > 0) {
-			g2d.setColor(luzAcesa);
+			g2d.setColor(OcilaCor.geraOcila("farol", luzAcesa));
 		} else {
 			g2d.setColor(luzApagada);
 		}
@@ -4697,7 +4700,7 @@ public class PainelCircuito {
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 5, 14, 14);
 		if (qtdeLuzesAcesas > 1) {
-			g2d.setColor(luzAcesa);
+			g2d.setColor(OcilaCor.geraOcila("farol", luzAcesa));
 		} else {
 			g2d.setColor(luzApagada);
 		}
@@ -4711,7 +4714,7 @@ public class PainelCircuito {
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 5, 14, 14);
 		if (qtdeLuzesAcesas > 2) {
-			g2d.setColor(luzAcesa);
+			g2d.setColor(OcilaCor.geraOcila("farol", luzAcesa));
 		} else {
 			g2d.setColor(luzApagada);
 		}
@@ -4725,7 +4728,7 @@ public class PainelCircuito {
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 5, 14, 14);
 		if (qtdeLuzesAcesas > 3) {
-			g2d.setColor(luzAcesa);
+			g2d.setColor(OcilaCor.geraOcila("farol", luzAcesa));
 		} else {
 			g2d.setColor(luzApagada);
 		}
@@ -4739,7 +4742,7 @@ public class PainelCircuito {
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 5, 14, 14);
 		if (qtdeLuzesAcesas > 4) {
-			g2d.setColor(luzAcesa);
+			g2d.setColor(OcilaCor.geraOcila("farol", luzAcesa));
 		} else {
 			g2d.setColor(luzApagada);
 		}
@@ -4935,10 +4938,12 @@ public class PainelCircuito {
 				incFreiada += 2;
 			}
 
-			boolean incAceel = ps.getNoAtual().verificaRetaOuLargada()
-					&& ps.emMovimento();
+			No no = ps.getNoAtualSuave();
+			if (no == null) {
+				no = ps.getNoAtual();
+			}
 
-			if (ps.getVelocidade() >= ps.getVelocidadeExibir() || incAceel) {
+			if (ps.getVelocidade() >= ps.getVelocidadeExibir()) {
 				ps.setVelocidadeExibir(ps.getVelocidadeExibir() + incAcell);
 			}
 			if (ps.getVelocidade() < ps.getVelocidadeExibir()) {
@@ -4954,6 +4959,11 @@ public class PainelCircuito {
 
 		int velocidade = (controleJogo.isSafetyCarNaPista() ? ps
 				.getVelocidadeExibir() / 2 : ps.getVelocidadeExibir());
+
+		if (!ps.emMovimento()) {
+			velocidade = 0;
+		}
+
 		String velo = "~" + velocidade + " Km/h";
 		if (ps.getVelocidade() == 1) {
 			return;

@@ -50,7 +50,7 @@ import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Logger;
 
 /**
- * @author Paulo Sobreira Created on 31/12/2004
+ * @author Paulo Sobreira Created on 20/06/2007
  */
 public class MainFrame extends JFrame {
 	/**
@@ -149,14 +149,6 @@ public class MainFrame extends JFrame {
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		}
 		this.createBufferStrategy(2);
-		this.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				int keyCoode = e.getKeyCode();
-				if (keyCoode == KeyEvent.VK_1 && e.isControlDown()) {
-					mostraMenuFrame();
-				}
-			}
-		});
 	}
 
 	private String getVersao() {
