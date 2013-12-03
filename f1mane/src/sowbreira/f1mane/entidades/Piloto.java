@@ -1620,7 +1620,8 @@ public class Piloto implements Serializable {
 				boolean intercecionou = getDiateira().intersects(
 						piloto.getTrazeira())
 						|| getDiateira().intersects(piloto.getCentro())
-						|| getCentro().intersects(piloto.getTrazeira());
+						|| getCentro().intersects(piloto.getTrazeira())
+						|| getCentro().intersects(piloto.getCentro());
 				boolean msmPista = obterPista(controleJogo).size() == piloto
 						.obterPista(controleJogo).size();
 				boolean msmTracado = piloto.getTracado() == getTracado();
@@ -2021,7 +2022,7 @@ public class Piloto implements Serializable {
 			listGanho.remove(0);
 		}
 		if (colisao) {
-			ganho = 0;
+			ganho = 1;
 		}
 		listGanho.add(ganho);
 		double soma = 0;
