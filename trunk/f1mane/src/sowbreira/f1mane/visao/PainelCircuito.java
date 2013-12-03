@@ -4433,163 +4433,157 @@ public class PainelCircuito {
 
 	private void desenharSafetyCar(Graphics2D g2d) {
 		int scx, scy;
-		if (controleJogo.isSafetyCarNaPista()) {
-			SafetyCar safetyCar = controleJogo.getSafetyCar();
-			No noAtual = safetyCar.getNoAtual();
-			Point p = noAtual.getPoint();
-			if (controleJogo.isSafetyCarNaPista()) {
-				if (circuito != null && circuito.isUsaBkg()) {
-					g2d.setColor(transpMenus);
-					g2d.fillRoundRect(limitesViewPort.x
-							+ (pointDesenhaSC.x - 5), limitesViewPort.y
-							+ (pointDesenhaSC.y - 5), scimg.getWidth() + 10,
-							scimg.getHeight() + 10, 15, 15);
-				}
-				if (desenhaImagens)
-					g2d.drawImage(
-							scimg,
-							limitesViewPort.x
-									+ (pointDesenhaSC.x + (Math.random() > 0.5 ? 1
-											: -1)),
-							(limitesViewPort.y + pointDesenhaSC.y + (Math
-									.random() > 0.5 ? -1 : 0)), null);
-			}
-
-			if (!limitesViewPort.contains(new Point2D.Double(p.x * zoom, p.y
-					* zoom))) {
-				return;
-			}
-			g2d.setColor(Color.black);
-			Stroke stroke = g2d.getStroke();
-			g2d.setStroke(trilho);
-			List lista = controleJogo.getNosDaPista();
-
-			int cont = noAtual.getIndex();
-
-			int width = (int) (scima.getWidth());
-			int height = (int) (scima.getHeight());
-			int w2 = width / 2;
-			int h2 = height / 2;
-			int carx = p.x - w2;
-			int cary = p.y - h2;
-
-			carx = Util.inte((carx - dC.x) * zoom);
-			cary = Util.inte((cary - dC.y) * zoom);
-
-			int traz = cont - 44;
-			int frente = cont + 44;
-
-			if (traz < 0) {
-				traz = (lista.size() - 1) + traz;
-			}
-			if (frente > (lista.size() - 1)) {
-				frente = (frente - (lista.size() - 1)) - 1;
-			}
-
-			Point trazCar = ((No) lista.get(traz)).getPoint();
-			Point frenteCar = ((No) lista.get(frente)).getPoint();
-			double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-			Rectangle2D rectangle = new Rectangle2D.Double(
-					(p.x - Carro.MEIA_LARGURA), (p.y - Carro.MEIA_ALTURA),
-					Carro.LARGURA, Carro.ALTURA);
-			Point p1 = GeoUtil.calculaPonto(
-					calculaAngulo,
-					Util.inte(Carro.ALTURA
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista()),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			Point p2 = GeoUtil.calculaPonto(
-					calculaAngulo + 180,
-					Util.inte(Carro.ALTURA
-							* controleJogo.getCircuito()
-									.getMultiplicadorLarguraPista()),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			if (safetyCar == null) {
-				return;
-			}
-			if (safetyCar.getTracado() == 0) {
-				carx = p.x - w2;
-				cary = p.y - h2;
-			}
-			if (safetyCar.getTracado() == 1) {
-				carx = Util.inte((p1.x - w2));
-				cary = Util.inte((p1.y - h2));
-			}
-			if (safetyCar.getTracado() == 2) {
-				carx = Util.inte((p2.x - w2));
-				cary = Util.inte((p2.y - h2));
-			}
-
-			// carx = p.x - w2;
-			// cary = p.y - h2;
-			scx = carx + w2;
-			scy = cary + h2;
-			if (zoom > 0.3) {
-				double rad = Math.toRadians((double) calculaAngulo);
-				AffineTransform afZoom = new AffineTransform();
-				AffineTransform afRotate = new AffineTransform();
-				afZoom.setToScale(zoom, zoom);
-				afRotate.setToRotation(rad, w2, h2);
-
-				BufferedImage rotateBuffer = new BufferedImage(width, width,
-						BufferedImage.TYPE_INT_ARGB);
-				BufferedImage zoomBuffer = new BufferedImage(width, height,
-						BufferedImage.TYPE_INT_ARGB);
-				AffineTransformOp op = new AffineTransformOp(afRotate,
-						AffineTransformOp.TYPE_BILINEAR);
-				op.filter(scima, zoomBuffer);
-				AffineTransformOp op2 = new AffineTransformOp(afZoom,
-						AffineTransformOp.TYPE_BILINEAR);
-				op2.filter(zoomBuffer, rotateBuffer);
-
-				if (circuito.isUsaBkg() && circuito.getObjetos() != null) {
-					for (ObjetoPista objetoPista : circuito.getObjetos()) {
-						if (!(objetoPista instanceof ObjetoTransparencia))
-							continue;
-						if (objetoPista.isPintaEmcima()) {
-							continue;
-						}
-						if (objetoPista.getAltura() != 0
-								&& objetoPista.getLargura() != 0) {
-							int indexNoAtual = noAtual.getIndex();
-							if (objetoPista.getAltura() > indexNoAtual
-									|| objetoPista.getLargura() < indexNoAtual) {
-								continue;
-							}
-						}
-						ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
-						Graphics2D gImage = rotateBuffer.createGraphics();
-						objetoTransparencia.desenhaCarro(gImage, zoom, carx,
-								cary);
-
-					}
-				}
-				if (desenhaImagens)
-					g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
-							Util.inte(cary * zoom), null);
-			}
-
-			if (safetyCar.getNoAtual() == null) {
-				return;
-			}
-			g2d.setColor(Color.LIGHT_GRAY);
-			g2d.fillOval(Util.inte((Util.inte(scx * zoom) - 2)),
-					Util.inte((Util.inte(scy * zoom) - 2)), 8, 8);
-			if (!safetyCar.isVaiProBox()) {
-				if (Math.random() > .5) {
-					g2d.setColor(Color.YELLOW);
-				} else {
-					g2d.setColor(Color.BLACK);
-				}
-			} else
-				g2d.setColor(Color.BLACK);
-			g2d.drawOval(Util.inte((Util.inte(scx * zoom) - 2)),
-					Util.inte((Util.inte(scy * zoom) - 2)), 8, 8);
-
-			g2d.setStroke(stroke);
+		if (!controleJogo.isSafetyCarNaPista()) {
+			return;
 		}
+		SafetyCar safetyCar = controleJogo.getSafetyCar();
+		No noAtual = safetyCar.getNoAtual();
+
+		Point p = noAtual.getPoint();
+
+		if (circuito != null && circuito.isUsaBkg()) {
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(limitesViewPort.x + (pointDesenhaSC.x - 5),
+					limitesViewPort.y + (pointDesenhaSC.y - 5),
+					scimg.getWidth() + 10, scimg.getHeight() + 10, 15, 15);
+		}
+		if (desenhaImagens)
+			g2d.drawImage(
+					scimg,
+					limitesViewPort.x
+							+ (pointDesenhaSC.x + (Math.random() > 0.5 ? 1 : -1)),
+					(limitesViewPort.y + pointDesenhaSC.y + (Math.random() > 0.5 ? -1
+							: 0)), null);
+
+		if (!limitesViewPort.contains(((noAtual.getX() - dC.x) * zoom),
+				((noAtual.getY() - dC.y) * zoom))) {
+			return;
+		}
+
+		g2d.setColor(Color.black);
+		Stroke stroke = g2d.getStroke();
+		g2d.setStroke(trilho);
+		List lista = controleJogo.getNosDaPista();
+
+		int cont = noAtual.getIndex();
+
+		int width = (int) (scima.getWidth());
+		int height = (int) (scima.getHeight());
+		int w2 = width / 2;
+		int h2 = height / 2;
+		int carx = p.x - w2;
+		int cary = p.y - h2;
+
+		int traz = cont - 44;
+		int frente = cont + 44;
+
+		if (traz < 0) {
+			traz = (lista.size() - 1) + traz;
+		}
+		if (frente > (lista.size() - 1)) {
+			frente = (frente - (lista.size() - 1)) - 1;
+		}
+
+		Point trazCar = ((No) lista.get(traz)).getPoint();
+		Point frenteCar = ((No) lista.get(frente)).getPoint();
+		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
+		Rectangle2D rectangle = new Rectangle2D.Double(
+				(p.x - Carro.MEIA_LARGURA), (p.y - Carro.MEIA_ALTURA),
+				Carro.LARGURA, Carro.ALTURA);
+		Point p1 = GeoUtil.calculaPonto(
+				calculaAngulo,
+				Util.inte(Carro.ALTURA
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()),
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
+		Point p2 = GeoUtil.calculaPonto(
+				calculaAngulo + 180,
+				Util.inte(Carro.ALTURA
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()),
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
+		if (safetyCar == null) {
+			return;
+		}
+		if (safetyCar.getTracado() == 0) {
+			carx = p.x - w2;
+			cary = p.y - h2;
+		}
+		if (safetyCar.getTracado() == 1) {
+			carx = Util.inte((p1.x - w2));
+			cary = Util.inte((p1.y - h2));
+		}
+		if (safetyCar.getTracado() == 2) {
+			carx = Util.inte((p2.x - w2));
+			cary = Util.inte((p2.y - h2));
+		}
+
+		carx = Util.inte((carx - dC.x) * zoom);
+		cary = Util.inte((cary - dC.y) * zoom);
+		scx = carx + w2;
+		scy = cary + h2;
+		if (zoom > 0.3) {
+			double rad = Math.toRadians((double) calculaAngulo);
+			AffineTransform afZoom = new AffineTransform();
+			AffineTransform afRotate = new AffineTransform();
+			afZoom.setToScale(zoom, zoom);
+			afRotate.setToRotation(rad, w2, h2);
+
+			BufferedImage rotateBuffer = new BufferedImage(width, width,
+					BufferedImage.TYPE_INT_ARGB);
+			BufferedImage zoomBuffer = new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_ARGB);
+			AffineTransformOp op = new AffineTransformOp(afRotate,
+					AffineTransformOp.TYPE_BILINEAR);
+			op.filter(scima, zoomBuffer);
+			AffineTransformOp op2 = new AffineTransformOp(afZoom,
+					AffineTransformOp.TYPE_BILINEAR);
+			op2.filter(zoomBuffer, rotateBuffer);
+
+			if (circuito.isUsaBkg() && circuito.getObjetos() != null) {
+				for (ObjetoPista objetoPista : circuito.getObjetos()) {
+					if (!(objetoPista instanceof ObjetoTransparencia))
+						continue;
+					if (objetoPista.isPintaEmcima()) {
+						continue;
+					}
+					if (objetoPista.getAltura() != 0
+							&& objetoPista.getLargura() != 0) {
+						int indexNoAtual = noAtual.getIndex();
+						if (objetoPista.getAltura() > indexNoAtual
+								|| objetoPista.getLargura() < indexNoAtual) {
+							continue;
+						}
+					}
+					ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+					Graphics2D gImage = rotateBuffer.createGraphics();
+					objetoTransparencia.desenhaCarro(gImage, zoom, carx, cary);
+
+				}
+			}
+			if (desenhaImagens)
+				g2d.drawImage(rotateBuffer, Util.inte(carx), Util.inte(cary),
+						null);
+		}
+
+		g2d.setColor(Color.LIGHT_GRAY);
+		g2d.fillOval(Util.inte(carx + (w2 * zoom)),
+				Util.inte(cary + (h2 * zoom)), 8, 8);
+		if (!safetyCar.isVaiProBox()) {
+			if (Math.random() > .5) {
+				g2d.setColor(Color.YELLOW);
+			} else {
+				g2d.setColor(Color.BLACK);
+			}
+		} else
+			g2d.setColor(Color.BLACK);
+		g2d.drawOval(Util.inte(carx + (w2 * zoom)),
+				Util.inte(cary + (h2 * zoom)), 8, 8);
+
+		g2d.setStroke(stroke);
+
 	}
 
 	private void desenharClima(Graphics2D g2d) {
@@ -4960,7 +4954,7 @@ public class PainelCircuito {
 		int velocidade = (controleJogo.isSafetyCarNaPista() ? ps
 				.getVelocidadeExibir() / 2 : ps.getVelocidadeExibir());
 
-		if (!ps.emMovimento()) {
+		if (qtdeLuzesAcesas > 0) {
 			velocidade = 0;
 		}
 
