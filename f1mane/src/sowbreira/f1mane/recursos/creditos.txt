@@ -1,3 +1,5 @@
+-F1-MANE
+F1 MANager & Engineer
 -Desenvolvido / Developed
 Paulo Sobreira
 -Imanges das pistas / Track images
@@ -11,6 +13,11 @@ sowbreira@gmail.com
 -Licença / License
 Codigo aberto
 Open Source
+-Status
+F1-Mane é um prototipo e seus graficos 
+    e jogabilidade podem mudar com novas versões
+F1-Mane is a prototype and its graphics 
+    and gameplay game can change with new versions
 -Sobreira 2007-2013  
  Obrigado por jogar
  Thanks for playng

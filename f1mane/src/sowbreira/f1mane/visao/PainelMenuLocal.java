@@ -12,7 +12,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,11 +44,14 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.OcilaCor;
 import br.nnpe.Util;
 
 public class PainelMenuLocal {
 
 	public BufferedImage bg;
+
+	public static String MENU_SOBRE = "MENU_SOBRE";
 
 	public static String MENU_PRINCIPAL = "MENU_PRINCIPAL";
 
@@ -237,6 +242,8 @@ public class PainelMenuLocal {
 
 	private List<RoundRectangle2D> pilotosRect;
 
+	private List<String> creditos;
+
 	private Campeonato campeonato;
 
 	private BufferedImage bgmonaco;
@@ -250,6 +257,11 @@ public class PainelMenuLocal {
 	private String circuitoMiniCarregado;
 
 	private Object MENU_ANTERIOR;
+
+	private int yCreditos;
+	private int contMostraFPS;
+	private int fps = 0;
+	protected double fpsLimite = 60D;
 
 	public PainelMenuLocal(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -285,6 +297,7 @@ public class PainelMenuLocal {
 					}
 					if ((System.currentTimeMillis() - startTime) > 1000) {
 						startTime = System.currentTimeMillis();
+						fps = frames;
 						frames = 0;
 						delta = 0;
 					}
@@ -343,7 +356,9 @@ public class PainelMenuLocal {
 		}
 		if (sobreRect.contains(e.getPoint())) {
 			try {
-				mainFrame.mostraSobre();
+				// mainFrame.mostraSobre();
+				MENU = MENU_SOBRE;
+				yCreditos = 0;
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				Logger.logarExept(e1);
@@ -566,6 +581,20 @@ public class PainelMenuLocal {
 		for (int i = 0; i < 24; i++) {
 			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 5, 5));
 		}
+
+		creditos = new ArrayList<String>();
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				CarregadorRecursos.recursoComoStream("creditos.txt")));
+		try {
+			String linha = reader.readLine();
+			while (linha != null) {
+				creditos.add(linha + "\n");
+				linha = reader.readLine();
+			}
+		} catch (IOException e1) {
+			Logger.logarExept(e1);
+		}
 	}
 
 	protected void render() {
@@ -590,6 +619,9 @@ public class PainelMenuLocal {
 				if (MENU.equals(MENU_CORRIDA)
 						|| MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS))
 					bg = bgf1;
+				if (MENU.equals(MENU_SOBRE)) {
+					bg = null;
+				}
 			}
 			if (bg != null && PainelCircuito.desenhaImagens) {
 				int centerX = mainFrame.getWidth() / 2;
@@ -608,11 +640,61 @@ public class PainelMenuLocal {
 			desenhaMenuCorridaCampeonatoPilotos(g2d);
 			desenhaMenuQualificacao(g2d);
 			desenhaMenuDesafiarPilto(g2d);
+			desenhaMenuSobre(g2d);
+			desenhaFPS(g2d, getWidth() - 70, getHeight() - 50);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Logger.logarExept(e);
 		}
 
+	}
+
+	private void desenhaMenuSobre(Graphics2D g2d) {
+		if (!MENU.equals(MENU_SOBRE)) {
+			return;
+		}
+		int x = (int) (getWidth() / 2);
+		int y = (int) (getHeight() / 2);
+
+		x -= 490;
+		y -= 285;
+
+		desenhaTextosCreditos(g2d, x + 120, y - 40);
+
+		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+
+	}
+
+	private void desenhaTextosCreditos(Graphics2D g2d, int x, int y) {
+		Font fontOri = g2d.getFont();
+		Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, 14);
+		Font fontMaior = new Font(fontOri.getName(), fontOri.getStyle(), 28);
+		if (yCreditos == 0) {
+			yCreditos = getHeight();
+		}
+		if (yCreditos > y) {
+			yCreditos--;
+		}
+
+		int yDesenha = yCreditos;
+
+		for (int i = 0; i < creditos.size(); i++) {
+			String txt = creditos.get(i).toUpperCase();
+			if (txt.startsWith("-")) {
+				g2d.setFont(fontNegrito);
+			} else {
+				g2d.setFont(fontMaior);
+			}
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(txt, x + 5, yDesenha + 16);
+			if (txt.startsWith("-")) {
+				yDesenha += 30;
+			} else {
+				yDesenha += 25;
+			}
+			g2d.setFont(fontOri);
+		}
+		g2d.setFont(fontOri);
 	}
 
 	private void desenhaMenuDesafiarPilto(Graphics2D g2d) throws IOException {
@@ -662,24 +744,30 @@ public class PainelMenuLocal {
 
 		carregaDadosCamponatoCarregado();
 
-		desenhaCircuitoCorridaCampeonato(g2d, x, y);
+		if (circuitoSelecionado != null) {
+			desenhaCircuitoCorridaCampeonato(g2d, x, y);
 
-		desenhaDadosCorridaCampeonato(g2d, x, y + 300);
+			desenhaDadosCorridaCampeonato(g2d, x, y + 300);
 
-		desenhaClassificacaoPilotosCampeonato(g2d, x + 400, y + 5);
+			desenhaClassificacaoPilotosCampeonato(g2d, x + 400, y + 5, false);
 
-		desenhaClassificacaoEquipesCampeonato(g2d, x + 700, y + 5);
+			desenhaClassificacaoEquipesCampeonato(g2d, x + 700, y + 5, false);
 
-		desenhaPilotoSelecionado(g2d, x + 400, y + 300, pilotoSelecionado);
+			desenhaPilotoSelecionado(g2d, x + 400, y + 300, pilotoSelecionado);
 
-		desenhaPontos(g2d, x + 900, y + 320, campeonato.getVitorias());
+			desenhaPontos(g2d, x + 900, y + 320, campeonato.getVitorias());
 
-		if (pilotoDesafio == null) {
-			desenhaDesafiarPiloto(g2d, x + 500, y + 400);
+			if (pilotoDesafio == null) {
+				desenhaDesafiarPiloto(g2d, x + 500, y + 400);
+			} else {
+				desenhaVersus(g2d, x + 500, y + 400);
+				desenhaPilotoSelecionado(g2d, x + 400, y + 450, pilotoDesafio);
+				desenhaPontos(g2d, x + 900, y + 470, campeonato.getDerrotas());
+			}
 		} else {
-			desenhaVersus(g2d, x + 500, y + 400);
-			desenhaPilotoSelecionado(g2d, x + 400, y + 450, pilotoDesafio);
-			desenhaPontos(g2d, x + 900, y + 470, campeonato.getDerrotas());
+			desenhaClassificacaoPilotosCampeonato(g2d, x + 200, y + 5, true);
+
+			desenhaClassificacaoEquipesCampeonato(g2d, x + 500, y + 5, true);
 		}
 
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
@@ -856,7 +944,7 @@ public class PainelMenuLocal {
 	}
 
 	private void desenhaClassificacaoEquipesCampeonato(Graphics2D g2d, int x,
-			int y) {
+			int y, boolean todos) {
 		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		Font fontOri = g2d.getFont();
 		Font fontNegrito = new Font(fontOri.getName(), Font.BOLD, 14);
@@ -869,7 +957,7 @@ public class PainelMenuLocal {
 			equipesList.add(new ConstrutoresPontosCampeonato());
 		}
 		for (int i = 0; i < equipesList.size(); i++) {
-			if (i > 9) {
+			if (!todos && i > 9) {
 				break;
 			}
 			ConstrutoresPontosCampeonato equipe = equipesList.get(i);
@@ -917,7 +1005,7 @@ public class PainelMenuLocal {
 	}
 
 	private void desenhaClassificacaoPilotosCampeonato(Graphics2D g2d, int x,
-			int y) {
+			int y, boolean todos) {
 		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		if (controleJogo == null) {
 			return;
@@ -933,7 +1021,7 @@ public class PainelMenuLocal {
 			pilotosList.add(new PilotosPontosCampeonato());
 		}
 		for (int i = 0; i < pilotosList.size(); i++) {
-			if (i > 9) {
+			if (!todos && i > 9) {
 				break;
 			}
 			PilotosPontosCampeonato piloto = pilotosList.get(i);
@@ -1383,6 +1471,11 @@ public class PainelMenuLocal {
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			return;
 		}
+		if (MENU.equals(MENU_SOBRE)) {
+			MENU = MENU_PRINCIPAL;
+			return;
+		}
+
 	}
 
 	public static void main(String[] args) throws IOException, Exception {
@@ -1510,6 +1603,10 @@ public class PainelMenuLocal {
 				campeonato.setRival(pilotoDesafio.getNome());
 			}
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+			return;
+		}
+		if (MENU.equals(MENU_SOBRE)) {
+			MENU = MENU_PRINCIPAL;
 			return;
 		}
 	}
@@ -2395,7 +2492,7 @@ public class PainelMenuLocal {
 		int centerY = (int) (getHeight() / 2.5);
 
 		centerX -= 250;
-		centerY -= 70;
+		// centerY -= 30;
 
 		Font fontOri = g2d.getFont();
 
@@ -2671,6 +2768,24 @@ public class PainelMenuLocal {
 
 	public void setPilotosRect(List<RoundRectangle2D> pilotosRect) {
 		this.pilotosRect = pilotosRect;
+	}
+
+	private void desenhaFPS(Graphics2D g2d, int x, int y) {
+		String msg = "FPS";
+		if (contMostraFPS >= 0 && contMostraFPS < 200) {
+
+			msg = "  " + fps;
+		} else if (contMostraFPS > 200) {
+			contMostraFPS = -20;
+		}
+		contMostraFPS++;
+		g2d.setColor(new Color(255, 255, 255, 100));
+		g2d.fillRoundRect(x, y, 60, 35, 10, 10);
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(Util.inte(fps * 1.6)));
+		g2d.drawString(msg, x + 2, y + 26);
+		g2d.setFont(fontOri);
 	}
 
 }
