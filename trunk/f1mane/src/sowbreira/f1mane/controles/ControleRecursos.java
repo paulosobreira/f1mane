@@ -111,8 +111,7 @@ public abstract class ControleRecursos {
 							Integer transp = new Integer(
 									(String) temporadasTransp
 											.get(getTemporada()));
-							bufferCarrosLado.put(carro.getNome(), ImageUtil
-									.geraTransparencia(carroLado, transp));
+							bufferCarrosLado.put(carro.getNome(), carroLado);
 						}
 					}
 				} catch (Exception e) {
