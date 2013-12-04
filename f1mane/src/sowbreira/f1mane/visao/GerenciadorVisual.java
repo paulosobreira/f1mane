@@ -566,10 +566,6 @@ public class GerenciadorVisual {
 				}
 
 				
-				if (keyCoode == KeyEvent.VK_1 && e.isControlDown()) {
-					controleJogo.getMainFrame().mostraMenuFrame();
-				}
-
 				if (Logger.ativo) {
 					if (keyCoode == KeyEvent.VK_T) {
 						controleJogo.tabelaComparativa();
