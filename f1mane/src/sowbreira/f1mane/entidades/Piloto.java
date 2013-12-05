@@ -994,10 +994,12 @@ public class Piloto implements Serializable {
 		processaGanhoAerodinamico(controleJogo);
 		processaFreioNaReta(controleJogo);
 		boolean colisao = processaColisao(controleJogo);
+		if (colisao) {
+			setCiclosDesconcentrado(10);
+		}
 		processaIAnovoIndex(controleJogo, colisao);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
 		ganho = evitaPoleDispararPrimeiraVolta(controleJogo, ganho);
-
 		ganho = processaGanhoMedio(ganho, controleJogo, colisao);
 		processaLimitadorGanho(controleJogo, colisao);
 
@@ -2017,13 +2019,16 @@ public class Piloto implements Serializable {
 		if (controleJogo.isModoQualify()) {
 			return ganho;
 		}
-		double size = ganho / 3;
-		if (listGanho.size() > size) {
-			listGanho.remove(0);
-		}
 		if (colisao) {
 			ganho = 1;
 		}
+
+		double size = ganho / 3;
+
+		while (listGanho.size() > size) {
+			listGanho.remove(0);
+		}
+
 		listGanho.add(ganho);
 		double soma = 0;
 		for (Iterator iterator = listGanho.iterator(); iterator.hasNext();) {

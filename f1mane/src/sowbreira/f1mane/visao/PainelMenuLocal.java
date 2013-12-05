@@ -620,7 +620,7 @@ public class PainelMenuLocal {
 						|| MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS))
 					bg = bgf1;
 				if (MENU.equals(MENU_SOBRE)) {
-					bg = null;
+					bg = bgf1;
 				}
 			}
 			if (bg != null && PainelCircuito.desenhaImagens) {
