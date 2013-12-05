@@ -361,7 +361,7 @@ public class GerenciadorVisual {
 							} else {
 								noAtualSuave = nos.get(index);
 							}
-							if (diff > 1000) {
+							if (diff > 1000 && !pistasDiff) {
 								noAtualSuave = noAtual;
 							}
 
@@ -565,7 +565,6 @@ public class GerenciadorVisual {
 					kers();
 				}
 
-				
 				if (Logger.ativo) {
 					if (keyCoode == KeyEvent.VK_T) {
 						controleJogo.tabelaComparativa();
