@@ -629,13 +629,13 @@ public class Carro implements Serializable {
 
 	private void calculaConsumoCombustivel(InterfaceJogo controleJogo,
 			int percent, boolean testePotencia) {
-		int dificudade = 2;
+		int dificudade = 1;
 		if (InterfaceJogo.DIFICIL == controleJogo.getNivelCorrida())
-			dificudade = ((testePotencia) ? 1 : 3);
-		else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
 			dificudade = ((testePotencia) ? 1 : 2);
+		else if (InterfaceJogo.NORMAL == controleJogo.getNivelCorrida())
+			dificudade = ((testePotencia) ? 0 : 2);
 		else if (InterfaceJogo.FACIL == controleJogo.getNivelCorrida())
-			dificudade = 1;
+			dificudade = ((testePotencia) ? 0 : 1);
 
 		int valConsumo = 0;
 
