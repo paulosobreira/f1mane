@@ -623,7 +623,6 @@ public class PainelCircuito {
 			Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
 			desenhaBackGround(g2d);
 			setarHints(g2d);
-			desenhaContadorVoltas(g2d);
 			if (!desenhouCreditos) {
 				return;
 			}
@@ -635,11 +634,12 @@ public class PainelCircuito {
 			iniciaPilotoSelecionado();
 			desenhaMarcasPeneuPista(g2d);
 			desenhaPiloto(g2d);
-			desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
-			desenhaBarrasPilotoCarro(g2d);
+			desenhaChuva(g2d);
+			desenhaContadorVoltas(g2d);
 			desenharSafetyCarCima(g2d);
 			desenharFarois(g2d);
-			desenhaChuva(g2d);
+			desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
+			desenhaBarrasPilotoCarro(g2d);
 			desenharClima(g2d);
 			desenharTpPneuPsel(g2d);
 			desenhaListaPilotos(g2d);
@@ -1134,7 +1134,7 @@ public class PainelCircuito {
 	private void desenhaAjuda(Graphics2D g2d) {
 		String msg = " ? ";
 		g2d.setColor(transpMenus);
-		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 100;
+		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 110;
 		int y = limitesViewPort.y + 5;
 		ajuda.setFrame(x, y, 35, 35);
 		if (verControles) {
@@ -1156,7 +1156,7 @@ public class PainelCircuito {
 		}
 		String msg = " SC ";
 		g2d.setColor(transpMenus);
-		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 170;
+		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 175;
 		int y = limitesViewPort.y + 5;
 		if (!controleJogo.getSafetyCar().isVaiProBox()) {
 			g2d.setColor(OcilaCor.geraOcila("desenhaAjuda", yel));
@@ -3183,7 +3183,7 @@ public class PainelCircuito {
 		if (controleJogo.isCorridaPausada()) {
 			return;
 		}
-		double qtdeGotas = indiceNublado / 2500.0;
+		double qtdeGotas = indiceNublado / 3000.0;
 		if ((controleJogo.isChovendo() || (Clima.NUBLADO.equals(controleJogo
 				.getClima())))
 				&& indiceNublado > 500
@@ -3654,7 +3654,7 @@ public class PainelCircuito {
 			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
 					nublado.getBlue(), alfaNub));
-			g2d.fill(limitesViewPort.getBounds());
+			g2d.fill(limitesViewPortFull.getBounds());
 			return;
 		}
 
@@ -3683,7 +3683,7 @@ public class PainelCircuito {
 			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
 					nublado.getBlue(), alfaNub));
-			g2d.fill(limitesViewPort.getBounds());
+			g2d.fill(limitesViewPortFull.getBounds());
 		}
 		if (Clima.SOL.equals(controleJogo.getClima())) {
 			if (Math.random() > 0.7) {
@@ -3695,7 +3695,7 @@ public class PainelCircuito {
 			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
 					nublado.getBlue(), alfaNub));
-			g2d.fill(limitesViewPort.getBounds());
+			g2d.fill(limitesViewPortFull.getBounds());
 		}
 
 		if ((Clima.CHUVA.equals(controleJogo.getClima()))
@@ -3714,7 +3714,7 @@ public class PainelCircuito {
 			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
 					nublado.getBlue(), alfaNub));
-			g2d.fill(limitesViewPort().getBounds());
+			g2d.fill(limitesViewPortFull.getBounds());
 		}
 		if (indiceNublado <= 0)
 			return;
@@ -3725,11 +3725,11 @@ public class PainelCircuito {
 		if (Math.random() > qtdeGotas) {
 			return;
 		}
-		for (int i = 0; i < limitesViewPort.getWidth(); i += 20) {
+		for (int i = 0; i < limitesViewPortFull.getWidth(); i += 20) {
 			if (Math.random() > qtdeGotas) {
 				continue;
 			}
-			for (int j = 0; j < limitesViewPort.getHeight(); j += 20) {
+			for (int j = 0; j < limitesViewPortFull.getHeight(); j += 20) {
 				if (Math.random() > qtdeGotas) {
 					continue;
 				}
@@ -3737,12 +3737,13 @@ public class PainelCircuito {
 
 					p1 = new Point(i + 10, j + 10);
 					p2 = new Point(i + 15, j + 20);
-					if (!(limitesViewPort.contains(p1) && limitesViewPort
+					if (!(limitesViewPortFull.contains(p1) && limitesViewPortFull
 							.contains(p2)))
 						continue;
-					g2d.drawLine(p1.x + limitesViewPort.x, p1.y
-							+ limitesViewPort.y, p2.x + limitesViewPort.x, p2.y
-							+ limitesViewPort.y);
+					g2d.drawLine(p1.x + limitesViewPortFull.x, p1.y
+							+ limitesViewPortFull.y, p2.x
+							+ limitesViewPortFull.x, p2.y
+							+ limitesViewPortFull.y);
 				}
 			}
 		}
@@ -4036,7 +4037,7 @@ public class PainelCircuito {
 
 		if (porcentComb <= 25 && desenhaImagens) {
 			g2d.drawImage(fuel.getImage(),
-					limitesViewPort.x + carroimgDano.getWidth() + 145,
+					limitesViewPort.x + carroimgDano.getWidth() + 125,
 					limitesViewPort.y + 10, null);
 		}
 

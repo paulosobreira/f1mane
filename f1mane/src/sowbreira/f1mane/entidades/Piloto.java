@@ -1173,19 +1173,16 @@ public class Piloto implements Serializable {
 			return;
 		}
 		double diff = calculaDiffParaProximo(controleJogo);
-		double distLimiteTurbulencia = 20;
+		double distLimiteTurbulencia = 10;
 		double nGanho = (controleJogo.getFatorUtrapassagem());
 		if (diff < distLimiteTurbulencia
 				&& !verificaForaPista(carroPilotoDaFrente.getPiloto())) {
 			if (getTracado() != carroPilotoDaFrente.getPiloto().getTracado()) {
-				if (getNoAtual().verificaCruvaAlta()
-						|| getNoAtual().verificaRetaOuLargada()) {
-					boolean pass = Math.random() > controleJogo
-							.getFatorUtrapassagem();
-					if (isAgressivo() && pass) {
+				if (getNoAtual().verificaCruvaBaixa()) {
+					if (isAgressivo()) {
 						nGanho += 0.1;
 					}
-					if (Carro.GIRO_MAX_VAL == getCarro().getGiro() && pass) {
+					if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
 						nGanho += 0.1;
 					}
 				}

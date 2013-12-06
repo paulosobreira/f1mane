@@ -59,8 +59,9 @@ public abstract class ControleRecursos {
 
 	public BufferedImage obterCapacete(Piloto piloto) {
 		try {
-			BufferedImage ret = (BufferedImage) bufferCapacete.get(piloto
-					.getNomeOriginal());
+			String chave = piloto.getNomeOriginal()
+					+ piloto.getCarro().getNome();
+			BufferedImage ret = (BufferedImage) bufferCapacete.get(chave);
 			if (ret == null) {
 				ret = CarregadorRecursos.carregaImagem("capacetes/" + seasson
 						+ "/" + piloto.getNomeOriginal().replaceAll("\\.", "")
@@ -68,7 +69,7 @@ public abstract class ControleRecursos {
 				if (ret == null) {
 					ret = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
 				}
-				bufferCapacete.put(piloto.getNomeOriginal(), ret);
+				bufferCapacete.put(chave, ret);
 			}
 			return ret;
 		} catch (Exception e) {
@@ -241,8 +242,6 @@ public abstract class ControleRecursos {
 	}
 
 	public void setTemporada(String seasson) {
-		if (bufferCapacete != null)
-			bufferCapacete.clear();
 		this.seasson = seasson;
 	}
 
