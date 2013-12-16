@@ -77,6 +77,8 @@ public class PainelMenuLocal {
 
 	public final static Color yel = new Color(255, 255, 0, 150);
 
+	public final static Color oran = new Color(255, 188, 40, 180);
+
 	public final static Color blu = new Color(105, 105, 105, 40);
 
 	private RoundRectangle2D corridaRect = new RoundRectangle2D.Double(0, 0, 1,
@@ -760,8 +762,8 @@ public class PainelMenuLocal {
 			if (pilotoDesafio == null) {
 				desenhaDesafiarPiloto(g2d, x + 500, y + 400);
 			} else {
-				desenhaVersus(g2d, x + 500, y + 400);
-				desenhaPilotoSelecionado(g2d, x + 400, y + 450, pilotoDesafio);
+				desenhaVersus(g2d, x + 500, y + 390);
+				desenhaPilotoSelecionado(g2d, x + 400, y + 460, pilotoDesafio);
 				desenhaPontos(g2d, x + 900, y + 470, campeonato.getDerrotas());
 			}
 		} else {
@@ -971,11 +973,29 @@ public class PainelMenuLocal {
 			}
 			if (!Util.isNullOrEmpty(equipe.getNomeEquipe())) {
 				g2d.setFont(fontMaior);
-				g2d.setColor(lightWhite);
-				g2d.fillRoundRect(x, y, 160, 20, 15, 15);
+
+				if (pilotoSelecionado != null
+						&& pilotoSelecionado.getCarro().getNome()
+								.equals(equipe.getNomeEquipe())) {
+					g2d.setColor(yel);
+					g2d.fillRoundRect(x, y, 160, 20, 15, 15);
+					g2d.setColor(blu);
+					g2d.drawRoundRect(x, y, 160, 20, 15, 15);
+				} else {
+					g2d.setColor(lightWhite);
+					g2d.fillRoundRect(x, y, 160, 20, 15, 15);
+				}
 				g2d.setColor(Color.BLACK);
 				g2d.drawString("" + equipe.getNomeEquipe().toUpperCase(),
 						x + 5, y + 16);
+
+				if (pilotoDesafio != null
+						&& pilotoDesafio.getCarro().getNome()
+								.equals(equipe.getNomeEquipe())) {
+					g2d.setColor(oran);
+					g2d.drawRoundRect(x, y, 160, 20, 15, 15);
+				}
+
 			}
 
 			x += 170;
@@ -990,10 +1010,27 @@ public class PainelMenuLocal {
 			}
 			if (!Util.isNullOrEmpty(equipe.getNomeEquipe())) {
 				g2d.setFont(fontMaior);
-				g2d.setColor(lightWhite);
-				g2d.fillRoundRect(x, y, 80, 20, 15, 15);
+
+				if (pilotoSelecionado != null
+						&& pilotoSelecionado.getCarro().getNome()
+								.equals(equipe.getNomeEquipe())) {
+					g2d.setColor(yel);
+					g2d.fillRoundRect(x, y, 80, 20, 15, 15);
+					g2d.setColor(blu);
+					g2d.drawRoundRect(x, y, 80, 20, 15, 15);
+				} else {
+					g2d.setColor(lightWhite);
+					g2d.fillRoundRect(x, y, 80, 20, 15, 15);
+				}
 				g2d.setColor(Color.BLACK);
 				g2d.drawString("" + equipe.getPontos(), x + 20, y + 16);
+
+				if (pilotoDesafio != null
+						&& pilotoDesafio.getCarro().getNome()
+								.equals(equipe.getNomeEquipe())) {
+					g2d.setColor(oran);
+					g2d.drawRoundRect(x, y, 80, 20, 15, 15);
+				}
 			}
 
 			y += 25;
@@ -1035,11 +1072,24 @@ public class PainelMenuLocal {
 			}
 			if (!Util.isNullOrEmpty(piloto.getNome())) {
 				g2d.setFont(fontMaior);
-				g2d.setColor(lightWhite);
-				g2d.fillRoundRect(x, y, 120, 20, 15, 15);
+				if (pilotoSelecionado != null
+						&& pilotoSelecionado.getNome().equals(piloto.getNome())) {
+					g2d.setColor(yel);
+					g2d.fillRoundRect(x, y, 120, 20, 15, 15);
+					g2d.setColor(blu);
+					g2d.drawRoundRect(x, y, 120, 20, 15, 15);
+				} else {
+					g2d.setColor(lightWhite);
+					g2d.fillRoundRect(x, y, 120, 20, 15, 15);
+				}
 				g2d.setColor(Color.BLACK);
 				g2d.drawString("" + piloto.getNome().toUpperCase(), x + 5,
 						y + 16);
+				if (pilotoDesafio != null
+						&& pilotoDesafio.getNome().equals(piloto.getNome())) {
+					g2d.setColor(oran);
+					g2d.drawRoundRect(x, y, 120, 20, 15, 15);
+				}
 			}
 
 			x += 130;
@@ -1054,10 +1104,23 @@ public class PainelMenuLocal {
 			}
 			if (!Util.isNullOrEmpty(piloto.getNome())) {
 				g2d.setFont(fontMaior);
-				g2d.setColor(lightWhite);
-				g2d.fillRoundRect(x, y, 60, 20, 15, 15);
+				if (pilotoSelecionado != null
+						&& pilotoSelecionado.getNome().equals(piloto.getNome())) {
+					g2d.setColor(yel);
+					g2d.fillRoundRect(x, y, 60, 20, 15, 15);
+					g2d.setColor(blu);
+					g2d.drawRoundRect(x, y, 60, 20, 15, 15);
+				} else {
+					g2d.setColor(lightWhite);
+					g2d.fillRoundRect(x, y, 60, 20, 15, 15);
+				}
 				g2d.setColor(Color.BLACK);
 				g2d.drawString("" + piloto.getPontos(), x + 20, y + 16);
+				if (pilotoDesafio != null
+						&& pilotoDesafio.getNome().equals(piloto.getNome())) {
+					g2d.setColor(oran);
+					g2d.drawRoundRect(x, y, 60, 20, 15, 15);
+				}
 			}
 
 			x += 70;
@@ -1072,10 +1135,23 @@ public class PainelMenuLocal {
 			}
 			if (!Util.isNullOrEmpty(piloto.getNome())) {
 				g2d.setFont(fontMaior);
-				g2d.setColor(lightWhite);
-				g2d.fillRoundRect(x, y, 80, 20, 15, 15);
+				if (pilotoSelecionado != null
+						&& pilotoSelecionado.getNome().equals(piloto.getNome())) {
+					g2d.setColor(yel);
+					g2d.fillRoundRect(x, y, 80, 20, 15, 15);
+					g2d.setColor(blu);
+					g2d.drawRoundRect(x, y, 80, 20, 15, 15);
+				} else {
+					g2d.setColor(lightWhite);
+					g2d.fillRoundRect(x, y, 80, 20, 15, 15);
+				}
 				g2d.setColor(Color.BLACK);
 				g2d.drawString("" + piloto.getVitorias(), x + 30, y + 16);
+				if (pilotoDesafio != null
+						&& pilotoDesafio.getNome().equals(piloto.getNome())) {
+					g2d.setColor(oran);
+					g2d.drawRoundRect(x, y, 80, 20, 15, 15);
+				}
 			}
 			y += 25;
 			x = xOri;
@@ -1594,8 +1670,12 @@ public class PainelMenuLocal {
 			return;
 		}
 		if (MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
-			MENU = MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS;
-			climaAleatorio();
+			if (circuitoSelecionado == null) {
+				MENU = MENU_SOBRE;
+			} else {
+				MENU = MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS;
+				climaAleatorio();
+			}
 			return;
 		}
 		if (MENU.equals(MENU_DESAFIAR_PILOTO)) {

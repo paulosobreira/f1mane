@@ -369,4 +369,6 @@ public interface InterfaceJogo {
 
 	public void continuarCampeonato(Campeonato campeonato);
 
+	public Piloto obterRivalCampeonato();
+
 }

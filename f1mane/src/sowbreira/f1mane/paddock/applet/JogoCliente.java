@@ -1220,4 +1220,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		
 	}
 
+	@Override
+	public Piloto obterRivalCampeonato() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
