@@ -58,4 +58,5 @@ public class PilotosPontosCampeonato {
 		}
 		return super.hashCode();
 	}
+
 }

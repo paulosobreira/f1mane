@@ -662,7 +662,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 		iniciarJogoMenuLocal(campeonato.getCircuitoVez(),
 				campeonato.getTemporada(), campeonato.getQtdeVoltas(),
-				Util.intervalo(000, 500), clima, campeonato.getNivel(),
+				Util.intervalo(130, 370), clima, campeonato.getNivel(),
 				pilotoSel, campeonato.isKers(), campeonato.isDrs(),
 				campeonato.isSemTrocaPneus(),
 				campeonato.isSemReabasteciemnto(), combustivelSelecionado,
@@ -1493,6 +1493,28 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 		controleCampeonato.setCampeonato(campeonato);
 
+	}
+
+	@Override
+	public Piloto obterRivalCampeonato() {
+		if (controleCampeonato == null) {
+			return null;
+		}
+		if (controleCampeonato.getCampeonato() == null) {
+			return null;
+		}
+		if (controleCampeonato.getCampeonato().getRival() == null) {
+			return null;
+		}
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto p = (Piloto) iterator.next();
+			if (p.getNome().equals(
+					controleCampeonato.getCampeonato().getRival())) {
+				return p;
+			}
+
+		}
+		return null;
 	}
 
 }
