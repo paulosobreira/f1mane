@@ -2010,7 +2010,7 @@ public class Piloto implements Serializable {
 			ganho = 1;
 		}
 
-		double size = ganho / 2;
+		double size = ganho * 1.5;
 
 		while (listGanho.size() > size) {
 			listGanho.remove(0);

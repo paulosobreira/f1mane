@@ -428,9 +428,6 @@ public class ControleCampeonato {
 	}
 
 	public void continuarCampeonatoCache() {
-		if (campeonato != null) {
-			return;
-		}
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");

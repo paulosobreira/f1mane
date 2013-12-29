@@ -4171,18 +4171,21 @@ public class PainelCircuito {
 		Stroke stroke = g2d.getStroke();
 		newY = carroimg.getHeight() > 36 ? y - (carroimg.getHeight() - 36) : y;
 		if (circuito != null && circuito.isUsaBkg()) {
-			g2d.setColor(transpMenus);
-			g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
-					+ newY - 5, carroimg.getWidth() + 5,
-					carroimg.getHeight() + 5, 15, 15);
 			g2d.setStroke(trilhoMiniPista);
 			if (piloto.isJogadorHumano()) {
-				g2d.setColor(OcilaCor.geraOcila("mrkSel", blu));
+				g2d.setColor(OcilaCor.geraOcila("mrkSel", yel));
 				g2d.drawRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
 						+ newY - 5, carroimg.getWidth() + 5,
 						carroimg.getHeight() + 5, 15, 15);
+				g2d.setColor(OcilaCor.geraOcila("mrkSelYel", yel));
 
+			} else {
+				g2d.setColor(transpMenus);
 			}
+			g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
+					+ newY - 5, carroimg.getWidth() + 5,
+					carroimg.getHeight() + 5, 15, 15);
+
 			if (controleJogo.verirficaDesafiandoCampeonato(piloto)) {
 				g2d.setColor(OcilaCor.geraOcila("mrkDesaf", oran));
 				g2d.drawRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
@@ -4718,16 +4721,16 @@ public class PainelCircuito {
 		g2d.setColor(farol);
 		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
 				20, 50, 15, 15);
-		g2d.setColor(luzApagada);
-		g2d.fillOval(limitesViewPort.x + xIni + 3,
-				limitesViewPort.y + yIni + 5, 14, 14);
-		g2d.setColor(Color.WHITE);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
-				+ 30, 14, 14);
+
 		if (qtdeLuzesAcesas > 1) {
 			g2d.setColor(OcilaCor.geraOcila("farol", lightRed));
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
 		} else {
 			g2d.setColor(luzApagada);
+			g2d.fillOval(limitesViewPort.x + xIni + 3,
+					limitesViewPort.y + yIni + 5, 14, 14);
+
 		}
 		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
 				+ 30, 14, 14);
@@ -4994,7 +4997,7 @@ public class PainelCircuito {
 		int velocidade = (controleJogo.isSafetyCarNaPista() ? ps
 				.getVelocidadeExibir() / 2 : ps.getVelocidadeExibir());
 
-		if (qtdeLuzesAcesas > 0) {
+		if (qtdeLuzesAcesas > 0 || pilotoSelecionado.isDesqualificado()) {
 			velocidade = 0;
 		}
 
