@@ -2006,11 +2006,13 @@ public class Piloto implements Serializable {
 		if (controleJogo.isModoQualify()) {
 			return ganho;
 		}
+		double size = 10;
+
 		if (colisao) {
-			ganho = 1;
+			size = 7;
+			ganho = 0;
 		}
 
-		double size = ganho * 1.5;
 
 		while (listGanho.size() > size) {
 			listGanho.remove(0);
