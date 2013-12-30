@@ -62,9 +62,9 @@ import br.nnpe.Util;
  */
 public class PainelCircuito {
 
-	public static boolean carregaBkg = true;
-	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = true;
+	public static boolean carregaBkg = false;
+	public static boolean desenhaPista = false;
+	public static boolean desenhaImagens = false;
 
 	private boolean verControles = true;
 	private boolean desenhouQualificacao;
@@ -4707,29 +4707,34 @@ public class PainelCircuito {
 		g2d.setColor(luzApagada);
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 5, 14, 14);
-		g2d.setColor(Color.WHITE);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
-				+ 30, 14, 14);
 		if (qtdeLuzesAcesas > 0) {
-			g2d.setColor(OcilaCor.geraOcila("farol", lightRed));
-		} else {
-			g2d.setColor(luzApagada);
-		}
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
-				+ 30, 14, 14);
-		xIni += 25;
-		g2d.setColor(farol);
-		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
-				20, 50, 15, 15);
-
-		if (qtdeLuzesAcesas > 1) {
-			g2d.setColor(OcilaCor.geraOcila("farol", lightRed));
+			g2d.setColor(Color.WHITE);
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
+			g2d.setColor(OcilaCor.geraOcila("farol0", lightRed));
 			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
 					+ 30, 14, 14);
 		} else {
 			g2d.setColor(luzApagada);
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 5, 14, 14);
+		}
+		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+				+ 30, 14, 14);
+		xIni += 25;
+		g2d.setColor(farol);
+		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
+				20, 50, 15, 15);
+		g2d.setColor(luzApagada);
+		g2d.fillOval(limitesViewPort.x + xIni + 3,
+				limitesViewPort.y + yIni + 5, 14, 14);
+		if (qtdeLuzesAcesas > 1) {
+			g2d.setColor(Color.WHITE);
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
+			g2d.setColor(OcilaCor.geraOcila("farol1", lightRed));
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
+		} else {
+			g2d.setColor(luzApagada);
 
 		}
 		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
@@ -4741,11 +4746,14 @@ public class PainelCircuito {
 		g2d.setColor(luzApagada);
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 5, 14, 14);
-		g2d.setColor(Color.WHITE);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
-				+ 30, 14, 14);
+
 		if (qtdeLuzesAcesas > 2) {
-			g2d.setColor(OcilaCor.geraOcila("farol", lightRed));
+			g2d.setColor(Color.WHITE);
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
+			g2d.setColor(OcilaCor.geraOcila("farol2", lightRed));
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
 		} else {
 			g2d.setColor(luzApagada);
 		}
@@ -4758,11 +4766,14 @@ public class PainelCircuito {
 		g2d.setColor(luzApagada);
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 5, 14, 14);
-		g2d.setColor(Color.WHITE);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
-				+ 30, 14, 14);
+
 		if (qtdeLuzesAcesas > 3) {
-			g2d.setColor(OcilaCor.geraOcila("farol", lightRed));
+			g2d.setColor(Color.WHITE);
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
+			g2d.setColor(OcilaCor.geraOcila("farol3", lightRed));
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
 		} else {
 			g2d.setColor(luzApagada);
 		}
@@ -4775,11 +4786,14 @@ public class PainelCircuito {
 		g2d.setColor(luzApagada);
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 5, 14, 14);
-		g2d.setColor(Color.WHITE);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
-				+ 30, 14, 14);
+
 		if (qtdeLuzesAcesas > 4) {
-			g2d.setColor(OcilaCor.geraOcila("farol", lightRed));
+			g2d.setColor(Color.WHITE);
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
+			g2d.setColor(OcilaCor.geraOcila("farol4", lightRed));
+			g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni
+					+ 30, 14, 14);
 		} else {
 			g2d.setColor(luzApagada);
 		}
