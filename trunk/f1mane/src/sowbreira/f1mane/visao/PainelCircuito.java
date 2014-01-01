@@ -62,9 +62,9 @@ import br.nnpe.Util;
  */
 public class PainelCircuito {
 
-	public static boolean carregaBkg = false;
-	public static boolean desenhaPista = false;
-	public static boolean desenhaImagens = false;
+	public static boolean carregaBkg = true;
+	public static boolean desenhaPista = true;
+	public static boolean desenhaImagens = true;
 
 	private boolean verControles = true;
 	private boolean desenhouQualificacao;
@@ -104,6 +104,7 @@ public class PainelCircuito {
 	public final static Color transpSel = new Color(165, 165, 165, 165);
 	public final static Color ver = new Color(255, 10, 10, 150);
 	public final static Color blu = new Color(105, 105, 105, 40);
+	public final static Color bluQualy = new Color(105, 105, 105);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
 	public final static Color lightWhiteRain = new Color(255, 255, 255, 160);
 	public final static Color nublado = new Color(200, 200, 200, 100);
@@ -4173,22 +4174,26 @@ public class PainelCircuito {
 		if (circuito != null && circuito.isUsaBkg()) {
 			g2d.setStroke(trilhoMiniPista);
 			if (piloto.isJogadorHumano()) {
-				g2d.setColor(OcilaCor.geraOcila("mrkSel", yel));
+				g2d.setColor(OcilaCor.geraOcila("mrkSelYel", yel));
+				g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
+						+ newY - 5, carroimg.getWidth() + 5,
+						carroimg.getHeight() + 5, 15, 15);
+				g2d.setColor(OcilaCor.geraOcila("mrkSelBlu", bluQualy));
+				g2d.setStroke(trilho);
 				g2d.drawRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
 						+ newY - 5, carroimg.getWidth() + 5,
 						carroimg.getHeight() + 5, 15, 15);
-				g2d.setColor(OcilaCor.geraOcila("mrkSelYel", yel));
-
+				g2d.setStroke(stroke);
 			} else {
 				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
+						+ newY - 5, carroimg.getWidth() + 5,
+						carroimg.getHeight() + 5, 15, 15);
 			}
-			g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
-					+ newY - 5, carroimg.getWidth() + 5,
-					carroimg.getHeight() + 5, 15, 15);
 
 			if (controleJogo.verirficaDesafiandoCampeonato(piloto)) {
-				g2d.setColor(OcilaCor.geraOcila("mrkDesaf", oran));
-				g2d.drawRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
+				g2d.setColor(OcilaCor.geraOcila("mrkDesaf", Color.ORANGE));
+				g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
 						+ newY - 5, carroimg.getWidth() + 5,
 						carroimg.getHeight() + 5, 15, 15);
 			}
