@@ -387,7 +387,8 @@ public class ControleCampeonato {
 					fileContents.getOutputStream(true));
 			stream.writeObject(campeonato);
 			stream.flush();
-
+			stream.close();
+			System.out.println("Campeonato gravado em cache");
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -436,6 +437,7 @@ public class ControleCampeonato {
 			if (fileContents == null) {
 				Logger.logar(" fileContents == null  ");
 			}
+			System.out.println("Campeonato Lido do Cache");
 			ObjectInputStream ois = new ObjectInputStream(
 					fileContents.getInputStream());
 			campeonato = (Campeonato) ois.readObject();
@@ -461,6 +463,7 @@ public class ControleCampeonato {
 			xmlPane.setBorder(new TitledBorder(Lang.msg("280")));
 			JOptionPane.showMessageDialog(mainFrame, xmlPane, Lang.msg("281"),
 					JOptionPane.INFORMATION_MESSAGE);
+			System.out.println(xmlArea.getText());
 		}
 	}
 

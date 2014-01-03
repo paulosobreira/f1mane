@@ -104,7 +104,7 @@ public class PainelCircuito {
 	public final static Color transpSel = new Color(165, 165, 165, 165);
 	public final static Color ver = new Color(255, 10, 10, 150);
 	public final static Color blu = new Color(105, 105, 105, 40);
-	public final static Color bluQualy = new Color(105, 105, 105);
+	public final static Color bluQualy = new Color(105, 105, 205);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
 	public final static Color lightWhiteRain = new Color(255, 255, 255, 160);
 	public final static Color nublado = new Color(200, 200, 200, 100);
@@ -123,6 +123,7 @@ public class PainelCircuito {
 					10, 5, 10, 5, 10, 5, 10 }, 0);
 	private BasicStroke trilho = new BasicStroke(1.0f);
 	private BasicStroke trilhoMiniPista = new BasicStroke(2.5f);
+	private BasicStroke borda = new BasicStroke(5.5f);
 	private BasicStroke pista;
 	private BasicStroke pistaTinta;
 	private BasicStroke box;
@@ -204,6 +205,9 @@ public class PainelCircuito {
 
 	private RoundRectangle2D voltaMenuPrincipalRect = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 10, 10);
+
+	private RoundRectangle2D bordaPilotoSelecionado = new RoundRectangle2D.Double(
+			0, 0, 1, 1, 15, 15);
 
 	private RoundRectangle2D fps = new RoundRectangle2D.Double(0, 0, 1, 1, 10,
 			10);
@@ -4172,32 +4176,29 @@ public class PainelCircuito {
 		Stroke stroke = g2d.getStroke();
 		newY = carroimg.getHeight() > 36 ? y - (carroimg.getHeight() - 36) : y;
 		if (circuito != null && circuito.isUsaBkg()) {
-			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
+					+ newY - 5, carroimg.getWidth() + 5,
+					carroimg.getHeight() + 5, 15, 15);
+			boolean desenhaBorda = false;
 			if (piloto.isJogadorHumano()) {
-				g2d.setColor(OcilaCor.geraOcila("mrkSelYel", yel));
-				g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
-						+ newY - 5, carroimg.getWidth() + 5,
-						carroimg.getHeight() + 5, 15, 15);
 				g2d.setColor(OcilaCor.geraOcila("mrkSelBlu", bluQualy));
-				g2d.setStroke(trilho);
-				g2d.drawRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
-						+ newY - 5, carroimg.getWidth() + 5,
-						carroimg.getHeight() + 5, 15, 15);
-				g2d.setStroke(stroke);
-			} else {
-				g2d.setColor(transpMenus);
-				g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
-						+ newY - 5, carroimg.getWidth() + 5,
-						carroimg.getHeight() + 5, 15, 15);
-			}
+				desenhaBorda = true;
 
+			}
 			if (controleJogo.verirficaDesafiandoCampeonato(piloto)) {
 				g2d.setColor(OcilaCor.geraOcila("mrkDesaf", Color.ORANGE));
-				g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
-						+ newY - 5, carroimg.getWidth() + 5,
-						carroimg.getHeight() + 5, 15, 15);
+				desenhaBorda = true;
+
 			}
-			g2d.setStroke(stroke);
+			if (desenhaBorda) {
+				g2d.setStroke(borda);
+				bordaPilotoSelecionado.setFrame(limitesViewPort.x + x - 5,
+						limitesViewPort.y + newY - 5, carroimg.getWidth() + 5,
+						carroimg.getHeight() + 5);
+				g2d.draw(bordaPilotoSelecionado);
+				g2d.setStroke(stroke);
+			}
 
 		}
 		int carSelX = x;
