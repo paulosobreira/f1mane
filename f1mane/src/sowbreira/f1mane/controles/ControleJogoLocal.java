@@ -667,7 +667,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 				campeonato.isSemTrocaPneus(),
 				campeonato.isSemReabasteciemnto(), combustivelSelecionado,
 				asaSelecionado, pneuSelecionado);
-		this.controleCampeonato = new ControleCampeonato(campeonato);
+		this.controleCampeonato = new ControleCampeonato(campeonato,mainFrame);
 		controleCampeonato.iniciaCorrida(campeonato.getCircuitoVez());
 	}
 
@@ -795,8 +795,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void exibirResultadoFinal() {
 		gerenciadorVisual.exibirResultadoFinal();
-		// mainFrame
-		// .exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
+		if (!InterfaceJogo.VALENDO)
+			mainFrame.exibirResiltadoFinal(gerenciadorVisual
+					.exibirResultadoFinal());
 		controleCorrida.pararThreads();
 		controleEstatisticas.setConsumidorAtivo(false);
 		if (controleCampeonato != null) {

@@ -85,8 +85,9 @@ public class ControleCampeonato {
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
 
-	public ControleCampeonato(Campeonato campeonato) {
+	public ControleCampeonato(Campeonato campeonato,MainFrame mainFrame) {
 		this.campeonato = campeonato;
+		this.mainFrame = mainFrame;
 	}
 
 	public Campeonato getCampeonato() {
@@ -364,18 +365,23 @@ public class ControleCampeonato {
 	}
 
 	private void persistirEmCache() {
+		System.out.println("Chamado persistirEmCache 1");
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
+			System.out.println("Chamado persistirEmCache 2");
+			System.out.println("mainFrame " + mainFrame);
 			FileContents fileContents = null;
+			String url = mainFrame.getCodeBase() + "campeonato";
+			System.out.println("Chamado persistirEmCache 3");
+			System.out.println("persistirEmCache " + url);
 			try {
-				fileContents = persistenceService.get(new URL(mainFrame
-						.getCodeBase() + "campeonato"));
+				fileContents = persistenceService.get(new URL(url));
+				System.out.println("Chamado persistirEmCache 4");
 			} catch (Exception e) {
-				persistenceService.create(new URL(mainFrame.getCodeBase()
-						+ "campeonato"), 1048576);
-				fileContents = persistenceService.get(new URL(mainFrame
-						.getCodeBase() + "campeonato"));
+				persistenceService.create(new URL(url), 1048576);
+				fileContents = persistenceService.get(new URL(url));
+				System.out.println("Chamado persistirEmCache 5");
 			}
 
 			if (fileContents == null) {
@@ -385,11 +391,13 @@ public class ControleCampeonato {
 
 			ObjectOutputStream stream = new ObjectOutputStream(
 					fileContents.getOutputStream(true));
+			System.out.println("Chamado persistirEmCache 6");
 			stream.writeObject(campeonato);
+			System.out.println("Chamado persistirEmCache 7");
 			stream.flush();
-			stream.close();
 			System.out.println("Campeonato gravado em cache");
 		} catch (Exception e) {
+			e.printStackTrace();
 			Logger.logarExept(e);
 		}
 
@@ -429,11 +437,13 @@ public class ControleCampeonato {
 	}
 
 	public void continuarCampeonatoCache() {
+		System.out.println("Chamado continuarCampeonatoCache");
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
-			FileContents fileContents = persistenceService.get(new URL(
-					mainFrame.getCodeBase() + "campeonato"));
+			String url = mainFrame.getCodeBase() + "campeonato";
+			System.out.println("continuarCampeonatoCache " + url);
+			FileContents fileContents = persistenceService.get(new URL(url));
 			if (fileContents == null) {
 				Logger.logar(" fileContents == null  ");
 			}
@@ -1173,7 +1183,7 @@ public class ControleCampeonato {
 	public static void main(String[] args) {
 		Campeonato campeonato = new Campeonato();
 		ControleCampeonato controleCampeonato = new ControleCampeonato(
-				campeonato);
+				campeonato,null);
 		campeonato.setVitorias(2);
 		controleCampeonato.campeonato = campeonato;
 		Map pilotosEquipesCampeonato = new HashMap();
@@ -1277,7 +1287,6 @@ public class ControleCampeonato {
 		campeonato.setNivel(nivelSelecionado);
 		campeonato.setQtdeVoltas(new Integer(numVoltasSelecionado));
 		campeonato.setMenuLocal(true);
-		persistirEmCache();
 		return campeonato;
 	}
 
