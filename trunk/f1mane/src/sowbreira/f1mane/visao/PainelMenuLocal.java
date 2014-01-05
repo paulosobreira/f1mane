@@ -1102,7 +1102,7 @@ public class PainelMenuLocal {
 						&& pilotoSelecionado.getNome().equals(piloto.getNome())) {
 					g2d.setColor(bluQualy);
 					g2d.drawRoundRect(x, y, 60, 20, 15, 15);
-				} 
+				}
 				g2d.setColor(Color.BLACK);
 				g2d.drawString("" + piloto.getPontos(), x + 20, y + 16);
 				if (pilotoDesafio != null
@@ -1520,7 +1520,13 @@ public class PainelMenuLocal {
 		}
 
 		if (MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
-			MENU = MENU_NOVO_CAMPEONATO_PILOTOS;
+			InterfaceJogo controleJogo = mainFrame.getControleJogo();
+			List<PilotosPontosCampeonato> pilotosList = controleJogo
+					.geraListaPilotosPontos();
+			if (pilotosList != null && !pilotosList.isEmpty())
+				MENU = MENU_PRINCIPAL;
+			else
+				MENU = MENU_NOVO_CAMPEONATO_PILOTOS;
 			return;
 		}
 

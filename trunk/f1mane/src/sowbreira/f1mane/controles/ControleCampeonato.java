@@ -365,23 +365,16 @@ public class ControleCampeonato {
 	}
 
 	private void persistirEmCache() {
-		System.out.println("Chamado persistirEmCache 1");
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
-			System.out.println("Chamado persistirEmCache 2");
-			System.out.println("mainFrame " + mainFrame);
 			FileContents fileContents = null;
 			String url = mainFrame.getCodeBase() + "campeonato";
-			System.out.println("Chamado persistirEmCache 3");
-			System.out.println("persistirEmCache " + url);
 			try {
 				fileContents = persistenceService.get(new URL(url));
-				System.out.println("Chamado persistirEmCache 4");
 			} catch (Exception e) {
 				persistenceService.create(new URL(url), 1048576);
 				fileContents = persistenceService.get(new URL(url));
-				System.out.println("Chamado persistirEmCache 5");
 			}
 
 			if (fileContents == null) {
@@ -391,11 +384,8 @@ public class ControleCampeonato {
 
 			ObjectOutputStream stream = new ObjectOutputStream(
 					fileContents.getOutputStream(true));
-			System.out.println("Chamado persistirEmCache 6");
 			stream.writeObject(campeonato);
-			System.out.println("Chamado persistirEmCache 7");
 			stream.flush();
-			System.out.println("Campeonato gravado em cache");
 		} catch (Exception e) {
 			e.printStackTrace();
 			Logger.logarExept(e);
@@ -437,17 +427,14 @@ public class ControleCampeonato {
 	}
 
 	public void continuarCampeonatoCache() {
-		System.out.println("Chamado continuarCampeonatoCache");
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
 			String url = mainFrame.getCodeBase() + "campeonato";
-			System.out.println("continuarCampeonatoCache " + url);
 			FileContents fileContents = persistenceService.get(new URL(url));
 			if (fileContents == null) {
 				Logger.logar(" fileContents == null  ");
 			}
-			System.out.println("Campeonato Lido do Cache");
 			ObjectInputStream ois = new ObjectInputStream(
 					fileContents.getInputStream());
 			campeonato = (Campeonato) ois.readObject();
