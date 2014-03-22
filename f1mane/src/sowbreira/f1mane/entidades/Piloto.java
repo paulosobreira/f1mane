@@ -1213,7 +1213,7 @@ public class Piloto implements Serializable {
 			colisao = true;
 		}
 
-		if (colisao && (System.currentTimeMillis() - ultimaColisao > 500)) {
+		if (colisao && (System.currentTimeMillis() - ultimaColisao > 300)) {
 			acelerando = false;
 			setAgressivoF4(false);
 			incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(10,
@@ -1301,13 +1301,17 @@ public class Piloto implements Serializable {
 
 	private void processaLimitadorGanho(InterfaceJogo controleJogo,
 			boolean colisao) {
+		if (colisao) {
+			ganho = Util.intervalo(0, 1);
+			return;
+		}
 		if (ganho > 0 && ganho < 1) {
 			ganho = 1;
 		}
 		if (ganho > 60) {
 			ganho = 60;
 		}
-		if (!colisao && ganho < 10) {
+		if (ganho < 10) {
 			ganho = 10;
 		}
 		if (getCarro().isPneuFurado()) {
@@ -2007,10 +2011,6 @@ public class Piloto implements Serializable {
 			return ganho;
 		}
 		double size = 10;
-
-		if (colisao) {
-			size = 3;
-		}
 
 		while (listGanho.size() > size) {
 			listGanho.remove(0);

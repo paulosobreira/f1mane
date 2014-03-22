@@ -282,7 +282,7 @@ public class GerenciadorVisual {
 							}
 							int ganhoSuave = 0;
 							int maxLoop = 1000;
-							int inc = 50;
+							int inc = 30;
 							for (int i = 0; i < maxLoop; i += inc) {
 								if (diff >= i && diff < i + inc) {
 									break;
@@ -302,13 +302,6 @@ public class GerenciadorVisual {
 								}
 							}
 							piloto.setGanhoSuave(ganhoSuave);
-							double defCic = controleJogo.getTempoCiclo() - 70;
-							int ganhoMax = 11 - Util.inte(Math
-									.round((defCic / 14)));
-							if (ganhoSuave > ganhoMax) {
-								ganhoSuave = ganhoMax;
-							}
-
 							if (controleJogo.getBoxWrapperFull().contains(
 									new NoWrapper(noAtual))
 									&& controleJogo
@@ -318,7 +311,7 @@ public class GerenciadorVisual {
 									&& noAtualSuave.getIndex() < entradaBoxIndex) {
 								nos = pistaFull;
 								piloto.mudarTracado(0, controleJogo, true);
-								ganhoSuave = ganhoMax / 3;
+     							ganhoSuave = 1;
 							}
 
 							if (controleJogo.getPistaWrapperFull().contains(
@@ -329,7 +322,7 @@ public class GerenciadorVisual {
 													new NoWrapper(noAtualSuave))) {
 								nos = boxFull;
 								piloto.mudarTracado(0, controleJogo, true);
-								ganhoSuave = ganhoMax / 2;
+								ganhoSuave = 1;
 							}
 
 							int index = noAtualSuave.getIndex() + ganhoSuave;
