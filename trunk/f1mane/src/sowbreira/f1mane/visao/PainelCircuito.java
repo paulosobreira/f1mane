@@ -98,10 +98,10 @@ public class PainelCircuito {
 	public final static Color gre = new Color(0, 255, 0, 150);
 	public final static Color yel = new Color(255, 255, 0, 150);
 	public final static Color yelListaJogadores = new Color(255, 255, 0, 180);
-	public final static Color transpMenus = new Color(255, 255, 255, 100);
+	public final static Color transpMenus = new Color(255, 255, 255, 160);
 	public final static Color jogador = new Color(70, 140, 255, 180);
 	public final static Color oran = new Color(255, 188, 40, 180);
-	public final static Color transpSel = new Color(165, 165, 165, 165);
+	public final static Color transpSel = new Color(165, 165, 165, 180);
 	public final static Color ver = new Color(255, 10, 10, 150);
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color bluQualy = new Color(105, 105, 205);
