@@ -85,7 +85,6 @@ public class PainelCircuito {
 	private Point pointDesenhaClima = new Point(10, 10);
 	private Point pointDesenhaPneus = new Point(10, 10);
 	private Point pointDesenhaVelo = new Point(5, 60);
-	private Point pointDesenhaSC = new Point(350, 15);
 	private No posisRec;
 	private Point posisAtual;
 	public final static Color luzDistProx1 = new Color(0, 255, 0, 100);
@@ -233,7 +232,6 @@ public class PainelCircuito {
 	private BufferedImage setaCarroCima;
 	private BufferedImage setaCarroBaixo;
 	private BufferedImage gridCarro;
-	private BufferedImage scimg;
 	private BufferedImage scima;
 	private BufferedImage travadaRodaImg0;
 	private BufferedImage travadaRodaImg1;
@@ -369,8 +367,6 @@ public class PainelCircuito {
 						200);
 		gridCarro = CarregadorRecursos
 				.carregaBufferedImageTransparecia("GridCarro.png");
-		scimg = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("safetycar.gif");
 		scima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("sfcima.png");
 		travadaRodaImg0 = CarregadorRecursos
@@ -1563,11 +1559,7 @@ public class PainelCircuito {
 		g2d.drawString("emMovimento() " + pilotoSelecionado.emMovimento(),
 				ptoOri, yBase);
 
-		/**
-		 * Coluna 2
-		 */
-		ptoOri = limitesViewPort.x + 440;
-		yBase = limitesViewPort.y + 100;
+		yBase += 20;
 
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
@@ -1650,6 +1642,7 @@ public class PainelCircuito {
 				ptoOri, yBase);
 
 		yBase += 20;
+		
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
@@ -1657,10 +1650,10 @@ public class PainelCircuito {
 				ptoOri, yBase);
 
 		/**
-		 * Coluna 3
+		 * Coluna 2
 		 */
-		ptoOri = limitesViewPort.x + 660;
-		yBase = limitesViewPort.y + 100;
+		ptoOri = limitesViewPort.x + limitesViewPort.width - 320;
+		yBase = limitesViewPort.y + 300;
 
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
