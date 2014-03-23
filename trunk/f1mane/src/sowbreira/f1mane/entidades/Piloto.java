@@ -1617,7 +1617,7 @@ public class Piloto implements Serializable {
 						|| getCentro().intersects(piloto.getCentro());
 				boolean msmPista = obterPista(controleJogo).size() == piloto
 						.obterPista(controleJogo).size();
-				boolean msmTracado = piloto.getTracado() == getTracado();
+				boolean msmTracado = true;
 				if ((piloto.getTracadoAntigo() == 5 || piloto
 						.getTracadoAntigo() == 4) && !intercecionou) {
 					msmTracado = false;
