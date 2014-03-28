@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+	codebase="." href="f1maneLocal.jnlp">
+	<information>
+		<title>F1Mane</title>
+		<vendor>Paulo Sobreira</vendor>
+		<homepage href="http://sowbreira.appspot.com/" />
+		<icon href="icon.png"/>  
+		<description>
+			F1-MANE (MANager & Engineer) 
+		</description>
+	</information>
+
+	<resources>
+		<j2se version="1.7"  initial-heap-size="64m" max-heap-size="512m" />
+		<jar href="f1mane.jar" />
+		<jar href="f1maneRecursos.jar" />
+		<jar href="f1manePistas.jar" />
+		<jar href="commons-beanutils-1.8.2.jar" />
+		<jar href="commons-logging-1.1.1.jar" />		
+    </resources>
+
+	  
+	<application-desc
+		main-class="sowbreira.f1mane.MainFrame" >
+	</application-desc> 	  
+</jnlp>

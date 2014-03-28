@@ -29,6 +29,9 @@
 	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,criarWar">
 	</target>
 
+	<target name="targetFullInstall" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,criarZip">
+	</target>
+
 	<target name="atualizaVersao">
 		<propertyfile file="src/sowbreira/f1mane/paddock/applet/client.properties">
 			<entry operation="+" key="versao" type="int" value="1" />
@@ -79,30 +82,28 @@
 				<exclude name="sowbreira/f1mane/recursos/**/*_mro.jpg" />
 			</fileset>
 		</jar>
-		<!--
+
+	</target>
+
+	<target name="criarJarPistas">
 		<jar jarfile="f1manePistas.jar" compress="true" manifest="MANIFEST.MF">
 			<fileset dir="src">
 				<include name="sowbreira/f1mane/recursos/**/*_mro.jpg" />
 			</fileset>
 		</jar>
-		-->
 	</target>
+
 	<target name="atualizaPaddock">
 		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
 		<delete file="WebContent/f1mane.jar" />
 		<copy file="f1mane.jar" todir="WebContent/WEB-INF/lib" />
-		<move todir="WebContent">
-			<fileset dir=".">
-				<include name="*.jar" />
-			</fileset>
-		</move>
 		<copy todir="WebContent">
 			<fileset dir="src">
 				<include name="**/*_mro.jpg" />
 			</fileset>
 		</copy>
 	</target>
-	<target name="criarWar" depends="">
+	<target name="criarWar">
 		<delete dir="${env.TOMCAT_HOME}/webapps/f1mane" />
 		<war compress="on" destfile="${env.TOMCAT_HOME}/webapps/f1mane.war">
 			<fileset dir="WebContent">
@@ -111,13 +112,34 @@
 			<fileset dir="WebContent">
 				<include name="WEB-INF/lib/f1mane.jar" />
 				<include name="f1mane.jar" />
-
 				<include name="f1maneRecursos.jar" />
-				<!--
-				<include name="f1manePistas.jar" />
-				-->
 			</fileset>
 		</war>
 		<delete dir="WebContent/sowbreira" />
 	</target>
+
+	<target name="criarZip">
+		<copy todir=".">
+			<fileset dir="WebContent/WEB-INF/lib">
+				<include name="commons-beanutils-1.8.2.jar" />
+				<include name="commons-logging-1.1.1.jar" />
+			</fileset>
+		</copy>
+		<zip destfile="f1mane.zip" compress="true">
+			<fileset dir=".">
+				<include name="*.jar" />
+				<include name="f1maneLocal.jnlp" />
+			</fileset>
+			<fileset dir="WebContent">
+				<include name="f1maneLocal.jnlp" />
+			</fileset>
+		</zip>
+		<delete>
+			<fileset dir=".">
+				<include name="*.jar" />
+			</fileset>
+		</delete>
+	</target>
+
+
 </project>
