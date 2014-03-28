@@ -667,7 +667,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 				campeonato.isSemTrocaPneus(),
 				campeonato.isSemReabasteciemnto(), combustivelSelecionado,
 				asaSelecionado, pneuSelecionado);
-		this.controleCampeonato = new ControleCampeonato(campeonato,mainFrame);
+		this.controleCampeonato = new ControleCampeonato(campeonato, mainFrame);
 		controleCampeonato.iniciaCorrida(campeonato.getCircuitoVez());
 	}
 
@@ -1062,7 +1062,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	@Override
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
 	}
-
 
 	@Override
 	public No getNoEntradaBox() {
@@ -1478,6 +1477,13 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 		}
 		return null;
+	}
+
+	@Override
+	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
+			boolean analisaTracado) {
+		return controleCorrida.obterCarroNaFrenteRetardatario(piloto,
+				analisaTracado);
 	}
 
 }

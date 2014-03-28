@@ -1218,4 +1218,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
+	@Override
+	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
+			boolean analisaTracado) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
