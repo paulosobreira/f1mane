@@ -538,7 +538,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
-	public void verificaUltraPassagem(Piloto piloto, double novoModificador) {
+	public void verificaUltraPassagem(Piloto piloto) {
 		// TODO Auto-generated method stub
 	}
 
@@ -785,13 +785,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void verificaAcidenteUltrapassagem(boolean agressivo, Piloto piloto,
-			Piloto pilotoFrente) {
 		// TODO Auto-generated method stub
 
 	}
@@ -1216,7 +1209,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void continuarCampeonato(Campeonato campeonato) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
