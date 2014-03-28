@@ -368,4 +368,7 @@ public interface InterfaceJogo {
 
 	public Piloto obterRivalCampeonato();
 
+	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
+			boolean analisaTracado);
+
 }
