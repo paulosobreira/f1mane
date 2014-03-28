@@ -40,8 +40,10 @@ public class Piloto implements Serializable {
 	private int setaCima;
 	private int setaBaixo;
 	private transient Rectangle diateira;
+	private transient Rectangle diateiraExterna;
 	private transient Rectangle centro;
 	private transient Rectangle trazeira;
+	private transient Rectangle trazeiraExterna;
 	private List ultsConsumosCombustivel = new LinkedList();
 	private Integer ultimoConsumoCombust;
 	private List ultsConsumosPneu = new LinkedList();
@@ -135,6 +137,7 @@ public class Piloto implements Serializable {
 	private int tracadoDelay;
 	private int naoDesenhaEfeitos;
 	private long indexTracadoDelay;
+	private int tamanhoBufferGanho = 10;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -187,6 +190,22 @@ public class Piloto implements Serializable {
 
 	public Rectangle getDiateira() {
 		return diateira;
+	}
+
+	public Rectangle getDiateiraExterna() {
+		return diateiraExterna;
+	}
+
+	public void setDiateiraExterna(Rectangle diateiraExterna) {
+		this.diateiraExterna = diateiraExterna;
+	}
+
+	public Rectangle getTrazeiraExterna() {
+		return trazeiraExterna;
+	}
+
+	public void setTrazeiraExterna(Rectangle trazeiraExterna) {
+		this.trazeiraExterna = trazeiraExterna;
 	}
 
 	public int getTracadoAntigo() {
@@ -996,7 +1015,7 @@ public class Piloto implements Serializable {
 		boolean colisao = processaColisao(controleJogo);
 		processaIAnovoIndex(controleJogo, colisao);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
-		ganho = processaGanhoMedio(ganho, controleJogo, colisao);
+		ganho = processaGanhoMedio(ganho, controleJogo);
 		processaLimitadorGanho(controleJogo, colisao);
 
 		if (controleJogo.isSafetyCarNaPista()) {
@@ -1612,8 +1631,12 @@ public class Piloto implements Serializable {
 				piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
 				boolean intercecionou = getDiateira().intersects(
 						piloto.getTrazeira())
+						|| getDiateiraExterna().intersects(piloto.getTrazeira())
+						|| getDiateiraExterna().intersects(piloto.getTrazeiraExterna())
 						|| getDiateira().intersects(piloto.getCentro())
+						|| getDiateiraExterna().intersects(piloto.getCentro())
 						|| getCentro().intersects(piloto.getTrazeira())
+						|| getCentro().intersects(piloto.getTrazeiraExterna())
 						|| getCentro().intersects(piloto.getCentro());
 				boolean msmPista = obterPista(controleJogo).size() == piloto
 						.obterPista(controleJogo).size();
@@ -1718,7 +1741,8 @@ public class Piloto implements Serializable {
 		Point p = noAtual.getPoint();
 		int carx = p.x;
 		int cary = p.y;
-		int meiaEnvergadura = 26;
+		int meiaEnvergadura = 20;
+		int envergadura = 40;
 		int traz = cont - meiaEnvergadura;
 		int frente = cont + meiaEnvergadura;
 		if (traz < 0) {
@@ -1974,6 +1998,15 @@ public class Piloto implements Serializable {
 						* Carro.FATOR_AREA_CARRO);
 		setTrazeira(trazRec.getBounds());
 
+		trazCar = GeoUtil.calculaPonto(calculaAngulo + 90,
+				Util.inte(envergadura), new Point(carx, cary));
+
+		trazRec = new Rectangle2D.Double((trazCar.x - Carro.MEIA_ALTURA
+				* Carro.FATOR_AREA_CARRO), (trazCar.y - Carro.MEIA_ALTURA
+				* Carro.FATOR_AREA_CARRO), Carro.ALTURA
+				* Carro.FATOR_AREA_CARRO, Carro.ALTURA * Carro.FATOR_AREA_CARRO);
+		setTrazeiraExterna(trazRec.getBounds());
+
 		frenteCar = GeoUtil.calculaPonto(calculaAngulo + 270,
 				Util.inte(meiaEnvergadura), new Point(carx, cary));
 
@@ -1983,6 +2016,16 @@ public class Piloto implements Serializable {
 				Carro.ALTURA * Carro.FATOR_AREA_CARRO, Carro.ALTURA
 						* Carro.FATOR_AREA_CARRO);
 		setDiateira(frenteRec.getBounds());
+
+		frenteCar = GeoUtil.calculaPonto(calculaAngulo + 270,
+				Util.inte(envergadura), new Point(carx, cary));
+
+		frenteRec = new Rectangle2D.Double((frenteCar.x - Carro.MEIA_ALTURA
+				* Carro.FATOR_AREA_CARRO), (frenteCar.y - Carro.MEIA_ALTURA
+				* Carro.FATOR_AREA_CARRO), Carro.ALTURA
+				* Carro.FATOR_AREA_CARRO, Carro.ALTURA * Carro.FATOR_AREA_CARRO);
+		setDiateiraExterna(frenteRec.getBounds());
+
 		return rectangle;
 	}
 
@@ -2005,14 +2048,11 @@ public class Piloto implements Serializable {
 		ultModificador = 0;
 	}
 
-	public double processaGanhoMedio(double ganho, InterfaceJogo controleJogo,
-			boolean colisao) {
+	public double processaGanhoMedio(double ganho, InterfaceJogo controleJogo) {
 		if (controleJogo.isModoQualify()) {
 			return ganho;
 		}
-		double size = 10;
-
-		while (listGanho.size() > size) {
+		while (listGanho.size() > tamanhoBufferGanho) {
 			listGanho.remove(0);
 		}
 

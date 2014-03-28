@@ -3362,9 +3362,23 @@ public class PainelCircuito {
 					.createTransformedShape(transformedShape);
 			g2d.draw(transformedShape);
 		}
+		if (piloto.getDiateiraExterna() != null) {
+			Shape transformedShape = afZoomDebug.createTransformedShape(piloto
+					.getDiateiraExterna());
+			transformedShape = translateDebug
+					.createTransformedShape(transformedShape);
+			g2d.draw(transformedShape);
+		}
 		if (piloto.getTrazeira() != null) {
 			Shape transformedShape = afZoomDebug.createTransformedShape(piloto
 					.getTrazeira());
+			transformedShape = translateDebug
+					.createTransformedShape(transformedShape);
+			g2d.draw(transformedShape);
+		}
+		if (piloto.getTrazeiraExterna() != null) {
+			Shape transformedShape = afZoomDebug.createTransformedShape(piloto
+					.getTrazeiraExterna());
 			transformedShape = translateDebug
 					.createTransformedShape(transformedShape);
 			g2d.draw(transformedShape);
