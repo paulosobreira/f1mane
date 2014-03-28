@@ -217,12 +217,9 @@ public class ControleCorrida {
 		}
 	}
 
-	public double verificaUltraPassagem(Piloto piloto, double ganho) {
-		if (controleJogo.isModoQualify()) {
-			return ganho;
-		}
-		if (controleJogo.isSafetyCarNaPista()) {
-			return ganho;
+	public void verificaUltraPassagem(Piloto piloto, double ganho) {
+		if (controleJogo.isModoQualify() || controleJogo.isSafetyCarNaPista()) {
+			return;
 		}
 		No noAtualCarro = piloto.getNoAtual();
 		List pistaPiloto = piloto.obterPista(controleJogo);
@@ -273,29 +270,28 @@ public class ControleCorrida {
 			if (No.CURVA_ALTA.equals(noAtualCarro.getTipo())) {
 				multi = 1.3;
 			}
-			if ((Math.abs(indFrenteCarro - indTrazCarroFrente) < (multi * Carro.MEIA_LARGURA))
-					&& (pilotoNaFrente.getTracado() == piloto.getTracado())) {
-				if (piloto.isAutoPos() && !piloto.verificaDesconcentrado()) {
-					int novapos = Util.intervalo(0, 2);
-					int cont = 0;
-					while (novapos == pilotoNaFrente.getPosicao() && cont < 7) {
-						novapos = Util.intervalo(0, 2);
-						cont++;
-					}
-					piloto.mudarTracado(novapos, controleJogo,
-							verificaCarroLentoOuDanificado(pilotoNaFrente));
-				}
-				if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
-					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2),
-							controleJogo, true);
-					pilotoNaFrente.setCiclosDesconcentrado(Util.intervalo(10,
-							20));
-					mensagemRetardatario(piloto, pilotoNaFrente);
-				}
-				return ganho;
-			}
+//			if ((Math.abs(indFrenteCarro - indTrazCarroFrente) < (multi * Carro.MEIA_LARGURA))
+//					&& (pilotoNaFrente.getTracado() == piloto.getTracado())) {
+//				if (piloto.isAutoPos() && !piloto.verificaDesconcentrado()) {
+//					int novapos = Util.intervalo(0, 2);
+//					int cont = 0;
+//					while (novapos == pilotoNaFrente.getPosicao() && cont < 7) {
+//						novapos = Util.intervalo(0, 2);
+//						cont++;
+//					}
+//					piloto.mudarTracado(novapos, controleJogo,
+//							verificaCarroLentoOuDanificado(pilotoNaFrente));
+//				}
+//				if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
+//					pilotoNaFrente.mudarTracado(Util.intervalo(1, 2),
+//							controleJogo, true);
+//					pilotoNaFrente.setCiclosDesconcentrado(Util.intervalo(10,
+//							20));
+//					mensagemRetardatario(piloto, pilotoNaFrente);
+//				}
+//				return;
+//			}
 		}
-		return ganho;
 	}
 
 	public boolean verificaPassarRetardatario(Piloto piloto,
@@ -591,6 +587,46 @@ public class ControleCorrida {
 		return ((Piloto) controleJogo.getPilotos().get(pos)).getCarro();
 	}
 
+	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
+			boolean analisaTracado) {
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		int menorDistancia = Integer.MAX_VALUE;
+		Carro carroFrente = null;
+		if (piloto.getPtosBox() != 0) {
+			return carroFrente;
+		}
+		int indexAtual = piloto.getNoAtual().getIndex();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto pilotoFrente = (Piloto) iterator.next();
+			if (pilotoFrente.getPtosBox() != 0) {
+				continue;
+			}
+			if (pilotoFrente.getTracado() == 4
+					|| pilotoFrente.getTracado() == 5) {
+				continue;
+			}
+			if (analisaTracado
+					&& pilotoFrente.getTracado() != piloto.getTracado()) {
+				continue;
+			}
+			int indexFrente = pilotoFrente.getNoAtual().getIndex();
+			if (indexFrente > indexAtual
+					&& (indexFrente - indexAtual) < menorDistancia) {
+				menorDistancia = (indexFrente - indexAtual);
+				carroFrente = pilotoFrente.getCarro();
+			}
+
+			indexFrente += controleJogo.obterPista(piloto).size();
+
+			if (indexFrente > indexAtual
+					&& (indexFrente - indexAtual) < menorDistancia) {
+				menorDistancia = (indexFrente - indexAtual);
+				carroFrente = pilotoFrente.getCarro();
+			}
+		}
+		return carroFrente;
+	}
+
 	public Carro obterCarroAtraz(Piloto piloto) {
 		int pos = piloto.getPosicao();
 		if (pos < 0) {
@@ -683,5 +719,44 @@ public class ControleCorrida {
 
 	public void climaEnsolarado() {
 		controleClima.climaEnsolarado();
+	}
+
+	public int calculaDiffParaProximoRetardatario(Piloto piloto,
+			boolean analisaTracado) {
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		int menorDistancia = Integer.MAX_VALUE;
+		if (piloto.getPtosBox() != 0) {
+			return menorDistancia;
+		}
+		int indexAtual = piloto.getNoAtual().getIndex();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto pilotoFrente = (Piloto) iterator.next();
+			if (pilotoFrente.getPtosBox() != 0) {
+				continue;
+			}
+			if (pilotoFrente.getTracado() == 4
+					|| pilotoFrente.getTracado() == 5) {
+				continue;
+			}
+			if (analisaTracado
+					&& pilotoFrente.getTracado() != piloto.getTracado()) {
+				continue;
+			}
+			int indexFrente = pilotoFrente.getNoAtual().getIndex();
+			if (indexFrente > indexAtual
+					&& (indexFrente - indexAtual) < menorDistancia) {
+				menorDistancia = (indexFrente - indexAtual);
+			}
+
+			indexFrente += controleJogo.obterPista(piloto).size();
+
+			if (indexFrente > indexAtual
+					&& (indexFrente - indexAtual) < menorDistancia) {
+				menorDistancia = (indexFrente - indexAtual);
+			}
+		}
+
+		return menorDistancia;
+
 	}
 }

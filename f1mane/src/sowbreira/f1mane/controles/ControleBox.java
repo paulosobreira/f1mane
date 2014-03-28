@@ -232,10 +232,6 @@ public class ControleBox {
 				}
 
 				ptosBox *= circuito.getMultiplciador();
-				if (piloto.verificaColisaoCarroFrente(controleJogo)) {
-					piloto.mudarTracado(Util.intervalo(0, 2), controleJogo);
-					ptosBox = 0;
-				}
 				int novosPtsBox = Util.inte(ptosBox) + piloto.getPtosBox();
 
 				if (novosPtsBox >= (indexParada - (Carro.MEIA_LARGURA))
