@@ -380,8 +380,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltraPassagem(sowbreira.f1mane.entidades.Piloto,
 	 *      int)
 	 */
-	public void verificaUltraPassagem(Piloto piloto, double novoModificador) {
-		controleCorrida.verificaUltraPassagem(piloto, novoModificador);
+	public void verificaUltraPassagem(Piloto piloto) {
+		controleCorrida.verificaUltraPassagem(piloto);
 	}
 
 	/**
@@ -1063,13 +1063,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente) {
 	}
 
-	@Override
-	public void verificaAcidenteUltrapassagem(boolean agressivo, Piloto piloto,
-			Piloto pilotoFrente) {
-		controleCorrida.verificaAcidenteUltrapassagem(agressivo, piloto,
-				pilotoFrente);
-
-	}
 
 	@Override
 	public No getNoEntradaBox() {

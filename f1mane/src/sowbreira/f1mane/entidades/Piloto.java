@@ -1013,10 +1013,10 @@ public class Piloto implements Serializable {
 		processaGanhoAerodinamico(controleJogo);
 		processaFreioNaReta(controleJogo);
 		processaColisao(controleJogo);
-		controleJogo.verificaUltraPassagem(this, ganho);
 		processaIAnovoIndex(controleJogo);
+		controleJogo.verificaUltraPassagem(this);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
-		ganho = processaGanhoMedio(ganho, controleJogo);
+		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 
 		if (controleJogo.isSafetyCarNaPista()) {
@@ -1062,7 +1062,7 @@ public class Piloto implements Serializable {
 	}
 
 	public void processaColisao(InterfaceJogo controleJogo) {
-		if (controleJogo.isSafetyCarNaPista() || controleJogo.isModoQualify()) {
+		if (controleJogo.isModoQualify()) {
 			colisao = false;
 			muitoPerto = false;
 			return;
@@ -1304,25 +1304,25 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaLimitadorGanho(InterfaceJogo controleJogo) {
-		if(muitoPerto){
-			ganho = Util.intervalo(1, 2);
-			return;
-		}
-		if (colisao) {
-			ganho = Util.intervalo(0, 1);
-			return;
-		}
 		if (ganho > 0 && ganho < 1) {
 			ganho = 1;
 		}
-		if (ganho > 60) {
-			ganho = 60;
+		if (ganho > 70) {
+			ganho = 70;
 		}
-		if (ganho < 10) {
-			ganho = 10;
+		if (ganho < 15) {
+			ganho = 15;
 		}
 		if (getCarro().isPneuFurado()) {
 			ganho /= 2;
+		}
+		if (muitoPerto) {
+			acelerando = false;
+			ganho = Util.intervalo(1, 2);
+		}
+		if (colisao) {
+			acelerando = false;
+			ganho = Util.intervalo(0, 1);
 		}
 		double emborrachamento = controleJogo.porcentagemCorridaCompletada() / 100.0;
 		if (getNoAtual().verificaCruvaBaixa()) {
@@ -1601,8 +1601,6 @@ public class Piloto implements Serializable {
 			List pilotos = controleJogo.getPilotos();
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
-				boolean verificaNoPitLaneOutro = controleJogo
-						.verificaNoPitLane(piloto);
 				if (this.equals(piloto)) {
 					continue;
 				}
@@ -1610,33 +1608,26 @@ public class Piloto implements Serializable {
 						|| piloto.getCarro().isRecolhido()) {
 					continue;
 				}
+				boolean verificaNoPitLaneOutro = controleJogo
+						.verificaNoPitLane(piloto);
 				if (verificaNoPitLaneOutro) {
 					continue;
 				}
 				centralizaDianteiraTrazeiraCarro(controleJogo);
 				piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
-				colisao = getDiateira().intersects(piloto.getTrazeira())
+				muitoPerto = getDiateiraExterna().intersects(
+						piloto.getTrazeiraExterna())
 						|| getDiateiraExterna()
-								.intersects(piloto.getTrazeira())
-						|| getDiateiraExterna().intersects(
-								piloto.getTrazeiraExterna())
-						|| getDiateira().intersects(piloto.getCentro())
-						|| getDiateiraExterna().intersects(piloto.getCentro())
-						|| getCentro().intersects(piloto.getTrazeira())
-						|| getCentro().intersects(piloto.getTrazeiraExterna())
-						|| getCentro().intersects(piloto.getCentro());
+								.intersects(piloto.getTrazeira());
 
-				colisao = getDiateira().intersects(piloto.getTrazeira())
-						|| getDiateiraExterna()
-								.intersects(piloto.getTrazeira())
-						|| getDiateiraExterna().intersects(
-								piloto.getTrazeiraExterna())
+				colisao = getDiateiraExterna().intersects(piloto.getCentro())
+						|| getDiateira()
+								.intersects(piloto.getTrazeiraExterna())
+						|| getDiateira().intersects(piloto.getTrazeira())
 						|| getDiateira().intersects(piloto.getCentro())
-						|| getDiateiraExterna().intersects(piloto.getCentro())
-						|| getCentro().intersects(piloto.getTrazeira())
 						|| getCentro().intersects(piloto.getTrazeiraExterna())
+						|| getCentro().intersects(piloto.getTrazeira())
 						|| getCentro().intersects(piloto.getCentro());
-
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -2017,7 +2008,7 @@ public class Piloto implements Serializable {
 		ultModificador = 0;
 	}
 
-	public double processaGanhoMedio(double ganho, InterfaceJogo controleJogo) {
+	public double processaGanhoMedio(InterfaceJogo controleJogo, double ganho) {
 		if (controleJogo.isModoQualify()) {
 			return ganho;
 		}
@@ -2879,6 +2870,22 @@ public class Piloto implements Serializable {
 
 	public void setPosicaoInicial(int posicaoInicial) {
 		this.posicaoInicial = posicaoInicial;
+	}
+
+	public boolean isColisao() {
+		return colisao;
+	}
+
+	public void setColisao(boolean colisao) {
+		this.colisao = colisao;
+	}
+
+	public boolean isMuitoPerto() {
+		return muitoPerto;
+	}
+
+	public void setMuitoPerto(boolean muitoPerto) {
+		this.muitoPerto = muitoPerto;
 	}
 
 }

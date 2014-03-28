@@ -120,7 +120,7 @@ public interface InterfaceJogo {
 
 	public double getNiveljogo();
 
-	public void verificaUltraPassagem(Piloto piloto, double novoModificador);
+	public void verificaUltraPassagem(Piloto piloto);
 
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
 			Object combust, String nomeJogador, Object asa);
@@ -229,9 +229,6 @@ public interface InterfaceJogo {
 	public BufferedImage obterCarroCima(Piloto piloto);
 
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente);
-
-	public void verificaAcidenteUltrapassagem(boolean agressivo, Piloto piloto,
-			Piloto pilotoFrente);
 
 	public List obterPista(No noPiloto);
 

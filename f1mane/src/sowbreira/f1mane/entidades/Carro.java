@@ -882,6 +882,9 @@ public class Carro implements Serializable {
 				.getCarro().getAerodinamica() + piloto.getCarro().getFreios()) / 2000.0));
 		if (controleJogo.isSemTrocaPneu()) {
 			fator /= 2;
+		} else if (piloto.getQtdeParadasBox() == 0
+				&& controleJogo.porcentagemCorridaCompletada() > 50) {
+			fator++;
 		}
 
 		double combustivel = fator + porcentComb;
