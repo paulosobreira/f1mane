@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.sun.org.apache.bcel.internal.generic.CALOAD;
+
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -1063,17 +1065,17 @@ public class Piloto implements Serializable {
 
 	public void processaColisao(InterfaceJogo controleJogo) {
 		if (controleJogo.isModoQualify()) {
-			colisao = false;
-			muitoPerto = false;
+			setColisao(false);
+			setMuitoPerto(false);
 			return;
 		}
 		verificaColisaoCarroFrente(controleJogo);
-		if (muitoPerto) {
+		if (isMuitoPerto() || isColisao()) {
 			acelerando = false;
 			setAgressivoF4(false);
 			incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(10,
 					20) : Util.intervalo(20, 30));
-			setCiclosDesconcentrado(5);
+			setCiclosDesconcentrado(20);
 		}
 	}
 
@@ -1304,6 +1306,22 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaLimitadorGanho(InterfaceJogo controleJogo) {
+		if (isMuitoPerto()) {
+			acelerando = false;
+			int calculaDiffParaProximo = controleJogo
+					.calculaDiffParaProximoRetardatario(this, true);
+			if (calculaDiffParaProximo < 500.0)
+				ganho *= (calculaDiffParaProximo / 500.0);
+			else
+				ganho = Util.intervalo(0, 1);
+		}
+		if (isColisao()) {
+			acelerando = false;
+			ganho = Util.intervalo(0, 1);
+		}
+		if (isMuitoPerto() || isColisao()) {
+			return;
+		}
 		if (ganho > 0 && ganho < 1) {
 			ganho = 1;
 		}
@@ -1315,14 +1333,6 @@ public class Piloto implements Serializable {
 		}
 		if (getCarro().isPneuFurado()) {
 			ganho /= 2;
-		}
-		if (muitoPerto) {
-			acelerando = false;
-			ganho = Util.intervalo(1, 2);
-		}
-		if (colisao) {
-			acelerando = false;
-			ganho = Util.intervalo(0, 1);
 		}
 		double emborrachamento = controleJogo.porcentagemCorridaCompletada() / 100.0;
 		if (getNoAtual().verificaCruvaBaixa()) {
@@ -1591,47 +1601,47 @@ public class Piloto implements Serializable {
 	}
 
 	public void verificaColisaoCarroFrente(InterfaceJogo controleJogo) {
-		try {
-			boolean verificaNoPitLane = controleJogo.verificaNoPitLane(this);
-			if (verificaNoPitLane) {
-				colisao = false;
-				muitoPerto = false;
-				return;
-			}
-			List pilotos = controleJogo.getPilotos();
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				if (this.equals(piloto)) {
-					continue;
-				}
-				if (piloto.getCarro().isPaneSeca() || piloto.isDesqualificado()
-						|| piloto.getCarro().isRecolhido()) {
-					continue;
-				}
-				boolean verificaNoPitLaneOutro = controleJogo
-						.verificaNoPitLane(piloto);
-				if (verificaNoPitLaneOutro) {
-					continue;
-				}
-				centralizaDianteiraTrazeiraCarro(controleJogo);
-				piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
-				muitoPerto = getDiateiraExterna().intersects(
-						piloto.getTrazeiraExterna())
-						|| getDiateiraExterna()
-								.intersects(piloto.getTrazeira());
-
-				colisao = getDiateiraExterna().intersects(piloto.getCentro())
-						|| getDiateira()
-								.intersects(piloto.getTrazeiraExterna())
-						|| getDiateira().intersects(piloto.getTrazeira())
-						|| getDiateira().intersects(piloto.getCentro())
-						|| getCentro().intersects(piloto.getTrazeiraExterna())
-						|| getCentro().intersects(piloto.getTrazeira())
-						|| getCentro().intersects(piloto.getCentro());
-			}
-		} catch (Exception e) {
-			Logger.logarExept(e);
+		boolean verificaNoPitLane = controleJogo.verificaNoPitLane(this);
+		if (verificaNoPitLane) {
+			setColisao(false);
+			setMuitoPerto(false);
+			return;
 		}
+
+		Carro obterCarroNaFrenteRetardatario = controleJogo
+				.obterCarroNaFrenteRetardatario(this, false);
+		if (obterCarroNaFrenteRetardatario == null) {
+			setColisao(false);
+			setMuitoPerto(false);
+			return;
+		}
+
+		Piloto piloto = obterCarroNaFrenteRetardatario.getPiloto();
+		if (this.equals(piloto)) {
+			return;
+		}
+		if (piloto.getCarro().isPaneSeca() || piloto.isDesqualificado()
+				|| piloto.getCarro().isRecolhido()) {
+			return;
+		}
+		boolean verificaNoPitLaneOutro = controleJogo.verificaNoPitLane(piloto);
+		if (verificaNoPitLaneOutro) {
+			return;
+		}
+		centralizaDianteiraTrazeiraCarro(controleJogo);
+		piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
+		muitoPerto = getDiateiraExterna().intersects(
+				piloto.getTrazeiraExterna())
+				|| getDiateiraExterna().intersects(piloto.getTrazeira());
+
+		colisao = getDiateiraExterna().intersects(piloto.getCentro())
+				|| getDiateira().intersects(piloto.getTrazeiraExterna())
+				|| getDiateira().intersects(piloto.getTrazeira())
+				|| getDiateira().intersects(piloto.getCentro())
+				|| getCentro().intersects(piloto.getTrazeiraExterna())
+				|| getCentro().intersects(piloto.getTrazeira())
+				|| getCentro().intersects(piloto.getCentro());
+
 	}
 
 	public boolean derrapa(InterfaceJogo controleJogo) {
