@@ -223,27 +223,33 @@ public class ControleCorrida {
 		}
 		Carro obterCarroNaFrenteRetardatario = obterCarroNaFrenteRetardatario(
 				piloto, true);
+		if (obterCarroNaFrenteRetardatario == null) {
+			return;
+		}
 		Piloto pilotoNaFrente = obterCarroNaFrenteRetardatario.getPiloto();
 		if (piloto.isMuitoPerto()) {
-			if (piloto.isAutoPos() && !piloto.verificaDesconcentrado()) {
-				int novapos = Util.intervalo(0, 2);
-				int cont = 0;
-				while (novapos == pilotoNaFrente.getPosicao() && cont < 7) {
-					novapos = Util.intervalo(0, 2);
-					cont++;
-				}
-				piloto.mudarTracado(novapos, controleJogo,
-						verificaCarroLentoOuDanificado(pilotoNaFrente));
-			}
-			if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
-				pilotoNaFrente.mudarTracado(Util.intervalo(1, 2), controleJogo,
-						true);
-				pilotoNaFrente.setCiclosDesconcentrado(Util.intervalo(10, 20));
-				mensagemRetardatario(piloto, pilotoNaFrente);
-			}
+			fazPilotoMudarTracado(piloto, pilotoNaFrente);
 		}
 		if (piloto.isColisao()) {
 			verificaAcidenteUltrapassagem(piloto, pilotoNaFrente);
+			fazPilotoMudarTracado(piloto, pilotoNaFrente);
+		}
+	}
+
+	private void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoNaFrente) {
+		if (piloto.isAutoPos()) {
+			int novapos = Util.intervalo(0, 2);
+			int cont = 0;
+			while (novapos == pilotoNaFrente.getPosicao() && cont < 7) {
+				novapos = Util.intervalo(0, 2);
+				cont++;
+			}
+			piloto.mudarTracado(novapos, controleJogo,
+					verificaCarroLentoOuDanificado(pilotoNaFrente));
+		}
+		if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
+			pilotoNaFrente.setCiclosDesconcentrado(Util.intervalo(10, 20));
+			mensagemRetardatario(piloto, pilotoNaFrente);
 		}
 	}
 
@@ -321,7 +327,7 @@ public class ControleCorrida {
 						controleJogo)) {
 			fatorAcidenteLocal -= .2;
 		}
-		if ((Math.random() < fatorAcidenteLocal)) {
+		if (Math.random() < fatorAcidenteLocal || !piloto.isColisao()) {
 			return;
 		}
 		if (piloto.isJogadorHumano()) {

@@ -1518,6 +1518,22 @@ public class PainelCircuito {
 
 		yBase += 20;
 
+		debugDiferencaProximo(g2d, ptoOri, yBase);
+
+		yBase += 20;
+		
+		debugDiferencaProximoRetardatario(g2d, ptoOri, yBase);
+
+		yBase += 20;
+
+		debugMuitoPerto(g2d, ptoOri, yBase);
+
+		yBase += 20;
+
+		debugColisao(g2d, ptoOri, yBase);
+
+		yBase += 20;
+
 		debugStress(g2d, ptoOri, yBase);
 
 		yBase += 20;
@@ -1570,19 +1586,11 @@ public class PainelCircuito {
 
 		yBase += 20;
 
-		debugDiferencaProximoRetardatario(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
 		debugProximoRetardatario(g2d, ptoOri, yBase);
 
 		yBase += 20;
 
 		debugProximo(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
-		debugDiferencaProximo(g2d, ptoOri, yBase);
 
 		yBase += 20;
 
@@ -1604,6 +1612,22 @@ public class PainelCircuito {
 
 		debugPontosSC(g2d, ptoOri, yBase);
 
+	}
+
+	private void debugColisao(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(" Colisao " + pilotoSelecionado.isColisao(), ptoOri,
+				yBase);
+	}
+
+	private void debugMuitoPerto(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(" Muito Perto " + pilotoSelecionado.isMuitoPerto(),
+				ptoOri, yBase);
 	}
 
 	private void debugPontosSC(Graphics2D g2d, int ptoOri, int yBase) {
@@ -1652,9 +1676,9 @@ public class PainelCircuito {
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
 		Carro obterCarroNaFrenteRetardatario = controleJogo
-				.obterCarroNaFrenteRetardatario(pilotoSelecionado, true);
+				.obterCarroNaFrenteRetardatario(pilotoSelecionado, false);
 		String res = "";
-		if (obterCarroNaFrenteRetardatario == null) {
+		if (obterCarroNaFrenteRetardatario != null) {
 			res = obterCarroNaFrenteRetardatario.getPiloto().getNome();
 		}
 		g2d.drawString(" Prox Retard " + res, ptoOri, yBase);
@@ -1668,7 +1692,7 @@ public class PainelCircuito {
 		Carro obterCarroNaFrente = controleJogo
 				.obterCarroNaFrente(pilotoSelecionado);
 		String res = "";
-		if (obterCarroNaFrente == null) {
+		if (obterCarroNaFrente != null) {
 			res = obterCarroNaFrente.getPiloto().getNome();
 		}
 		g2d.drawString(" Prox " + res, ptoOri, yBase);
@@ -1801,14 +1825,14 @@ public class PainelCircuito {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString(" alloc Mem " + allocatedMemory, ptoOri, yBase);
+		g2d.drawString(" Alloc Mem " + allocatedMemory, ptoOri, yBase);
 	}
 
 	private void debugEmMovimento(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString("em Movimento " + pilotoSelecionado.emMovimento(),
+		g2d.drawString(" Em Movimento " + pilotoSelecionado.emMovimento(),
 				ptoOri, yBase);
 	}
 
