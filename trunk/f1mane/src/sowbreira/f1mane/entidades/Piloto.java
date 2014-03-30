@@ -42,10 +42,8 @@ public class Piloto implements Serializable {
 	private int setaCima;
 	private int setaBaixo;
 	private transient Rectangle diateira;
-	private transient Rectangle diateiraExterna;
 	private transient Rectangle centro;
 	private transient Rectangle trazeira;
-	private transient Rectangle trazeiraExterna;
 	private List ultsConsumosCombustivel = new LinkedList();
 	private Integer ultimoConsumoCombust;
 	private List ultsConsumosPneu = new LinkedList();
@@ -140,7 +138,10 @@ public class Piloto implements Serializable {
 	private long indexTracadoDelay;
 	private int tamanhoBufferGanho = 10;
 	private boolean colisao;
-	private boolean muitoPerto;
+	private int meiaEnvergadura = 20;
+	private int diferencaParaProximoRetardatario;
+	private boolean colisaoDiantera;
+	private boolean colisaoCentro;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -193,22 +194,6 @@ public class Piloto implements Serializable {
 
 	public Rectangle getDiateira() {
 		return diateira;
-	}
-
-	public Rectangle getDiateiraExterna() {
-		return diateiraExterna;
-	}
-
-	public void setDiateiraExterna(Rectangle diateiraExterna) {
-		this.diateiraExterna = diateiraExterna;
-	}
-
-	public Rectangle getTrazeiraExterna() {
-		return trazeiraExterna;
-	}
-
-	public void setTrazeiraExterna(Rectangle trazeiraExterna) {
-		this.trazeiraExterna = trazeiraExterna;
 	}
 
 	public int getTracadoAntigo() {
@@ -1014,10 +999,10 @@ public class Piloto implements Serializable {
 		processaUsoDRS(controleJogo);
 		processaGanhoAerodinamico(controleJogo);
 		processaFreioNaReta(controleJogo);
-		processaColisao(controleJogo);
 		processaIAnovoIndex(controleJogo);
 		controleJogo.verificaUltraPassagem(this);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
+		processaColisao(controleJogo);
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 
@@ -1066,17 +1051,20 @@ public class Piloto implements Serializable {
 	public void processaColisao(InterfaceJogo controleJogo) {
 		if (controleJogo.isModoQualify()) {
 			setColisao(false);
-			setMuitoPerto(false);
 			return;
 		}
 		verificaColisaoCarroFrente(controleJogo);
-		if (isMuitoPerto() || isColisao()) {
-			acelerando = false;
-			setAgressivoF4(false);
-			incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(10,
-					20) : Util.intervalo(20, 30));
-			setCiclosDesconcentrado(20);
+		if (isColisao()) {
+			penalidadeColisao(controleJogo);
 		}
+	}
+
+	private void penalidadeColisao(InterfaceJogo controleJogo) {
+		acelerando = false;
+		setAgressivoF4(false);
+		incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(10, 20)
+				: Util.intervalo(20, 30));
+		setCiclosDesconcentrado(20);
 	}
 
 	public double processaEscapadaDaPista(InterfaceJogo controleJogo,
@@ -1174,12 +1162,10 @@ public class Piloto implements Serializable {
 					|| (Carro.PERDEU_AEREOFOLIO.equals(getCarro()
 							.getDanificado()) && !getNoAtual()
 							.verificaRetaOuLargada()))
-				novoModificador = Util.intervalo(1, 2);
+				novoModificador = Util.intervalo(0, 2);
 			if (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
-					|| (Carro.PERDEU_AEREOFOLIO.equals(getCarro()
-							.getDanificado()) && getNoAtual()
-							.verificaRetaOuLargada()))
-				novoModificador = Util.intervalo(2, 3);
+					&& getNoAtual().verificaRetaOuLargada())
+				novoModificador = Util.intervalo(1, 3);
 		}
 	}
 
@@ -1306,20 +1292,9 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaLimitadorGanho(InterfaceJogo controleJogo) {
-		if (isMuitoPerto()) {
-			acelerando = false;
-			int calculaDiffParaProximo = controleJogo
-					.calculaDiffParaProximoRetardatario(this, true);
-			if (calculaDiffParaProximo < 500.0)
-				ganho *= (calculaDiffParaProximo / 500.0);
-			else
-				ganho = Util.intervalo(0, 1);
-		}
 		if (isColisao()) {
 			acelerando = false;
 			ganho = Util.intervalo(0, 1);
-		}
-		if (isMuitoPerto() || isColisao()) {
 			return;
 		}
 		if (ganho > 0 && ganho < 1) {
@@ -1327,9 +1302,6 @@ public class Piloto implements Serializable {
 		}
 		if (ganho > 70) {
 			ganho = 70;
-		}
-		if (ganho < 15) {
-			ganho = 15;
 		}
 		if (getCarro().isPneuFurado()) {
 			ganho /= 2;
@@ -1436,7 +1408,7 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaIAnovoIndex(InterfaceJogo controleJogo) {
-		if (colisao || muitoPerto) {
+		if (colisao) {
 			agressivo = false;
 			return;
 		}
@@ -1604,7 +1576,6 @@ public class Piloto implements Serializable {
 		boolean verificaNoPitLane = controleJogo.verificaNoPitLane(this);
 		if (verificaNoPitLane) {
 			setColisao(false);
-			setMuitoPerto(false);
 			return;
 		}
 
@@ -1612,7 +1583,6 @@ public class Piloto implements Serializable {
 				.obterCarroNaFrenteRetardatario(this, false);
 		if (obterCarroNaFrenteRetardatario == null) {
 			setColisao(false);
-			setMuitoPerto(false);
 			return;
 		}
 
@@ -1628,19 +1598,38 @@ public class Piloto implements Serializable {
 		if (verificaNoPitLaneOutro) {
 			return;
 		}
-		centralizaDianteiraTrazeiraCarro(controleJogo);
-		piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
-		muitoPerto = getDiateiraExterna().intersects(
-				piloto.getTrazeiraExterna())
-				|| getDiateiraExterna().intersects(piloto.getTrazeira());
+		diferencaParaProximoRetardatario = controleJogo
+				.calculaDiffParaProximoRetardatario(this, true);
+		if (diferencaParaProximoRetardatario < 100.0
+				&& diferencaParaProximoRetardatario > 0
+				&& (getTracado() == piloto.getTracado())) {
+			penalidadeColisao(controleJogo);
+			ganho *= (diferencaParaProximoRetardatario / 100.0);
+		}
 
-		colisao = getDiateiraExterna().intersects(piloto.getCentro())
-				|| getDiateira().intersects(piloto.getTrazeiraExterna())
-				|| getDiateira().intersects(piloto.getTrazeira())
-				|| getDiateira().intersects(piloto.getCentro())
-				|| getCentro().intersects(piloto.getTrazeiraExterna())
-				|| getCentro().intersects(piloto.getTrazeira())
-				|| getCentro().intersects(piloto.getCentro());
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		centralizaDianteiraTrazeiraCarro(controleJogo);
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto pilotoFrente = (Piloto) iterator.next();
+			if (pilotoFrente.equals(this)) {
+				continue;
+			}
+			if (pilotoFrente.isDesqualificado()
+					&& pilotoFrente.getCarro().isRecolhido()) {
+				continue;
+			}
+			pilotoFrente.centralizaDianteiraTrazeiraCarro(controleJogo);
+
+			colisaoDiantera = getDiateira().intersects(
+					pilotoFrente.getTrazeira())
+					|| getDiateira().intersects(pilotoFrente.getCentro());
+			colisaoCentro = getCentro().intersects(pilotoFrente.getTrazeira());
+
+			colisao = colisaoDiantera || colisaoCentro;
+			if (colisao) {
+				return;
+			}
+		}
 
 	}
 
@@ -1711,8 +1700,6 @@ public class Piloto implements Serializable {
 		Point p = noAtual.getPoint();
 		int carx = p.x;
 		int cary = p.y;
-		int meiaEnvergadura = 20;
-		int envergadura = 40;
 		int traz = cont - meiaEnvergadura;
 		int frente = cont + meiaEnvergadura;
 		if (traz < 0) {
@@ -1968,15 +1955,6 @@ public class Piloto implements Serializable {
 						* Carro.FATOR_AREA_CARRO);
 		setTrazeira(trazRec.getBounds());
 
-		trazCar = GeoUtil.calculaPonto(calculaAngulo + 90,
-				Util.inte(envergadura), new Point(carx, cary));
-
-		trazRec = new Rectangle2D.Double((trazCar.x - Carro.MEIA_ALTURA
-				* Carro.FATOR_AREA_CARRO), (trazCar.y - Carro.MEIA_ALTURA
-				* Carro.FATOR_AREA_CARRO), Carro.ALTURA
-				* Carro.FATOR_AREA_CARRO, Carro.ALTURA * Carro.FATOR_AREA_CARRO);
-		setTrazeiraExterna(trazRec.getBounds());
-
 		frenteCar = GeoUtil.calculaPonto(calculaAngulo + 270,
 				Util.inte(meiaEnvergadura), new Point(carx, cary));
 
@@ -1986,15 +1964,6 @@ public class Piloto implements Serializable {
 				Carro.ALTURA * Carro.FATOR_AREA_CARRO, Carro.ALTURA
 						* Carro.FATOR_AREA_CARRO);
 		setDiateira(frenteRec.getBounds());
-
-		frenteCar = GeoUtil.calculaPonto(calculaAngulo + 270,
-				Util.inte(envergadura), new Point(carx, cary));
-
-		frenteRec = new Rectangle2D.Double((frenteCar.x - Carro.MEIA_ALTURA
-				* Carro.FATOR_AREA_CARRO), (frenteCar.y - Carro.MEIA_ALTURA
-				* Carro.FATOR_AREA_CARRO), Carro.ALTURA
-				* Carro.FATOR_AREA_CARRO, Carro.ALTURA * Carro.FATOR_AREA_CARRO);
-		setDiateiraExterna(frenteRec.getBounds());
 
 		return rectangle;
 	}
@@ -2328,6 +2297,9 @@ public class Piloto implements Serializable {
 	}
 
 	public boolean decremetaPilotoDesconcentrado(InterfaceJogo interfaceJogo) {
+		if (colisao) {
+			return false;
+		}
 		if (ciclosDesconcentrado <= 0) {
 			ciclosDesconcentrado = 0;
 			return false;
@@ -2890,12 +2862,16 @@ public class Piloto implements Serializable {
 		this.colisao = colisao;
 	}
 
-	public boolean isMuitoPerto() {
-		return muitoPerto;
+	public int getDiferencaParaProximoRetardatario() {
+		return diferencaParaProximoRetardatario;
 	}
 
-	public void setMuitoPerto(boolean muitoPerto) {
-		this.muitoPerto = muitoPerto;
+	public boolean isColisaoDiantera() {
+		return colisaoDiantera;
+	}
+
+	public boolean isColisaoCentro() {
+		return colisaoCentro;
 	}
 
 }

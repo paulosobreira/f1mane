@@ -227,13 +227,14 @@ public class ControleCorrida {
 			return;
 		}
 		Piloto pilotoNaFrente = obterCarroNaFrenteRetardatario.getPiloto();
-		if (piloto.isMuitoPerto()) {
-			fazPilotoMudarTracado(piloto, pilotoNaFrente);
-		}
 		if (piloto.isColisao()) {
 			verificaAcidenteUltrapassagem(piloto, pilotoNaFrente);
 			fazPilotoMudarTracado(piloto, pilotoNaFrente);
+		} else if (piloto.getDiferencaParaProximoRetardatario() < 100
+				&& piloto.getTracado() == pilotoNaFrente.getTracado()) {
+			fazPilotoMudarTracado(piloto, pilotoNaFrente);
 		}
+
 	}
 
 	private void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoNaFrente) {
@@ -255,7 +256,7 @@ public class ControleCorrida {
 
 	public boolean verificaPassarRetardatario(Piloto piloto,
 			Piloto pilotoNaFrente) {
-		return pilotoNaFrente.isAutoPos() && !controleJogo.isCorridaTerminada()
+		return !controleJogo.isCorridaTerminada()
 				&& !piloto.isRecebeuBanderada()
 				&& pilotoNaFrente.getPtosPista() < piloto.getPtosPista()
 				&& !pilotoNaFrente.isDesqualificado()
@@ -327,9 +328,6 @@ public class ControleCorrida {
 						controleJogo)) {
 			fatorAcidenteLocal -= .2;
 		}
-		if (Math.random() < fatorAcidenteLocal || !piloto.isColisao()) {
-			return;
-		}
 		if (piloto.isJogadorHumano()) {
 			verificaAcidenteUltrapassagemJogadorHumano(piloto, pilotoNaFrente,
 					fatorAcidenteLocal);
@@ -351,7 +349,7 @@ public class ControleCorrida {
 						|| controleJogo.verificaUltimasVoltas()
 						|| piloto.getStress() <= Util.intervalo(60, 80)) {
 					piloto.incStress(Util.intervalo(30, 50));
-				} else {
+				} else if (piloto.isColisaoCentro()) {
 					piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 					controleJogo.infoPrioritaria(Lang.msg("016",
 							new String[] { Html.superRed(piloto.getNome()),
@@ -368,7 +366,7 @@ public class ControleCorrida {
 					piloto.incStress(Util.intervalo(40, 60));
 					danificaAreofolio(piloto);
 				} else {
-					if (piloto.getStress() > 90) {
+					if (piloto.getStress() > 90 && piloto.isColisaoCentro()) {
 						piloto.getCarro()
 								.setDanificado(Carro.PERDEU_AEREOFOLIO);
 						controleJogo.infoPrioritaria(Lang.msg("017",
@@ -578,6 +576,10 @@ public class ControleCorrida {
 			}
 			if (analisaTracado
 					&& pilotoFrente.getTracado() != piloto.getTracado()) {
+				continue;
+			}
+			if (pilotoFrente.isDesqualificado()
+					&& pilotoFrente.getCarro().isRecolhido()) {
 				continue;
 			}
 			int indexFrente = pilotoFrente.getNoAtual().getIndex();

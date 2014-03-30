@@ -1526,10 +1526,6 @@ public class PainelCircuito {
 
 		yBase += 20;
 
-		debugMuitoPerto(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
 		debugColisao(g2d, ptoOri, yBase);
 
 		yBase += 20;
@@ -1622,13 +1618,6 @@ public class PainelCircuito {
 				yBase);
 	}
 
-	private void debugMuitoPerto(Graphics2D g2d, int ptoOri, int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
-		g2d.setColor(Color.black);
-		g2d.drawString(" Muito Perto " + pilotoSelecionado.isMuitoPerto(),
-				ptoOri, yBase);
-	}
 
 	private void debugPontosSC(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
@@ -3516,6 +3505,9 @@ public class PainelCircuito {
 					.getCentro());
 			transformedShape = translateDebug
 					.createTransformedShape(transformedShape);
+			if(piloto.isColisaoCentro()){
+				g2d.setColor(Color.YELLOW);
+			}
 			g2d.draw(transformedShape);
 		}
 		if (piloto.getDiateira() != null) {
@@ -3523,25 +3515,14 @@ public class PainelCircuito {
 					.getDiateira());
 			transformedShape = translateDebug
 					.createTransformedShape(transformedShape);
-			g2d.draw(transformedShape);
-		}
-		if (piloto.getDiateiraExterna() != null) {
-			Shape transformedShape = afZoomDebug.createTransformedShape(piloto
-					.getDiateiraExterna());
-			transformedShape = translateDebug
-					.createTransformedShape(transformedShape);
+			if(piloto.isColisaoDiantera()){
+				g2d.setColor(Color.YELLOW);
+			}
 			g2d.draw(transformedShape);
 		}
 		if (piloto.getTrazeira() != null) {
 			Shape transformedShape = afZoomDebug.createTransformedShape(piloto
 					.getTrazeira());
-			transformedShape = translateDebug
-					.createTransformedShape(transformedShape);
-			g2d.draw(transformedShape);
-		}
-		if (piloto.getTrazeiraExterna() != null) {
-			Shape transformedShape = afZoomDebug.createTransformedShape(piloto
-					.getTrazeiraExterna());
 			transformedShape = translateDebug
 					.createTransformedShape(transformedShape);
 			g2d.draw(transformedShape);
