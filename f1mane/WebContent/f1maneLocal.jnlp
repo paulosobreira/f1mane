@@ -10,12 +10,14 @@
 			F1-MANE (MANager & Engineer) 
 		</description>
 	</information>
-
+    <security>
+      <all-permissions/>
+    </security>
 	<resources>
 		<j2se version="1.7"  initial-heap-size="64m" max-heap-size="512m" />
-		<jar href="f1mane.jar" />
-		<jar href="f1maneRecursos.jar" />
-		<jar href="f1manePistas.jar" />
+		<jar href="a-f1mane.jar" />
+		<jar href="a-f1maneRecursos.jar" />
+		<jar href="a-f1manePistas.jar" />
 		<jar href="commons-beanutils-1.8.2.jar" />
 		<jar href="commons-logging-1.1.1.jar" />		
     </resources>

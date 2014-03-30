@@ -8,6 +8,8 @@
      Paulo Sobreira
      
      java -Xmx512M -Xms512M  -cp .f1maneRecursos.jar; -jar f1mane.jar
+     
+     keytool -genkey -keystore jar-keystore -alias f1mane-key
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
@@ -29,7 +31,7 @@
 	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,criarWar">
 	</target>
 
-	<target name="targetFullInstall" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,criarZip">
+	<target name="targetFullInstall" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,sign_jar,criarZip">
 	</target>
 
 	<target name="atualizaVersao">
@@ -118,13 +120,37 @@
 		<delete dir="WebContent/sowbreira" />
 	</target>
 
-	<target name="criarZip">
+
+	<target name="sign_jar">
 		<copy todir=".">
 			<fileset dir="WebContent/WEB-INF/lib">
 				<include name="commons-beanutils-1.8.2.jar" />
 				<include name="commons-logging-1.1.1.jar" />
 			</fileset>
 		</copy>
+		<delete file="a-f1mane.jar" />
+		<delete file="a-f1maneRecursos.jar" />
+		<delete file="a-f1manePistas.jar" />
+		<delete file="a-commons-beanutils-1.8.2.jar" />
+		<delete file="a-commons-logging-1.1.1.jar" />
+		<signjar jar="f1mane.jar" signedjar="a-f1mane.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<signjar jar="f1maneRecursos.jar" signedjar="a-f1maneRecursos.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<signjar jar="f1manePistas.jar" signedjar="a-f1manePistas.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<signjar jar="commons-beanutils-1.8.2.jar" signedjar="a-commons-beanutils-1.8.2.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<signjar jar="commons-logging-1.1.1.jar" signedjar="a-commons-logging-1.1.1.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<delete file="f1mane.jar" />
+		<delete file="f1maneRecursos.jar" />
+		<delete file="f1manePistas.jar" />
+		<delete file="a-commons-beanutils-1.8.2.jar" />
+		<delete file="a-commons-logging-1.1.1.jar" />
+	</target>
+
+	<target name="criarZip">
 		<zip destfile="f1mane.zip" compress="true">
 			<fileset dir=".">
 				<include name="*.jar" />
