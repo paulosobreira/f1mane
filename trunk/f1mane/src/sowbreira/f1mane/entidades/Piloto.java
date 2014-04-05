@@ -1059,7 +1059,7 @@ public class Piloto implements Serializable {
 		}
 	}
 
-	private void penalidadeColisao(InterfaceJogo controleJogo) {
+	public void penalidadeColisao(InterfaceJogo controleJogo) {
 		acelerando = false;
 		setAgressivoF4(false);
 		incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(10, 20)

@@ -347,15 +347,20 @@ public class ControleCorrida {
 				if (piloto.testeHabilidadePiloto(controleJogo)
 						|| Math.random() < fatorAcidenteLocal
 						|| controleJogo.verificaUltimasVoltas()
-						|| piloto.getStress() <= Util.intervalo(60, 80)) {
-					piloto.incStress(Util.intervalo(30, 50));
-				} else if (piloto.isColisaoCentro()) {
-					piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
-					controleJogo.infoPrioritaria(Lang.msg("016",
-							new String[] { Html.superRed(piloto.getNome()),
-									pilotoNaFrente.getNome() }));
-					piloto.setDesqualificado(true);
-					controleSafetyCar.safetyCarNaPista(piloto);
+						|| piloto.getStress() <= Util.intervalo(70, 90)) {
+					piloto.incStress(Util.intervalo(10, 20));
+				} else {
+					if (piloto.isColisaoCentro()) {
+						piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
+						controleJogo.infoPrioritaria(Lang.msg("016",
+								new String[] { Html.superRed(piloto.getNome()),
+										pilotoNaFrente.getNome() }));
+						piloto.setDesqualificado(true);
+						controleSafetyCar.safetyCarNaPista(piloto);
+					}else{
+						piloto.penalidadeColisao(controleJogo);
+					}
+
 				}
 			} else {
 				if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
@@ -366,7 +371,7 @@ public class ControleCorrida {
 					piloto.incStress(Util.intervalo(40, 60));
 					danificaAreofolio(piloto);
 				} else {
-					if (piloto.getStress() > 90 && piloto.isColisaoCentro()) {
+					if (piloto.getStress() > 90) {
 						piloto.getCarro()
 								.setDanificado(Carro.PERDEU_AEREOFOLIO);
 						controleJogo.infoPrioritaria(Lang.msg("017",
