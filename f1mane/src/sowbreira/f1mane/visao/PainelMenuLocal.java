@@ -1299,6 +1299,9 @@ public class PainelMenuLocal {
 				.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS))) {
 			return;
 		}
+		if (Clima.CHUVA.equals(climaSelecionado)) {
+			pneuSelecionado = Carro.TIPO_PNEU_CHUVA;
+		}
 		int x = (int) (getWidth() / 2);
 		int y = (int) (getHeight() / 2);
 

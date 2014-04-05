@@ -146,8 +146,8 @@
 		<delete file="f1mane.jar" />
 		<delete file="f1maneRecursos.jar" />
 		<delete file="f1manePistas.jar" />
-		<delete file="a-commons-beanutils-1.8.2.jar" />
-		<delete file="a-commons-logging-1.1.1.jar" />
+		<delete file="commons-beanutils-1.8.2.jar" />
+		<delete file="commons-logging-1.1.1.jar" />
 	</target>
 
 	<target name="criarZip">
