@@ -148,6 +148,7 @@ public class PainelCircuito {
 	private Set<TravadaRoda> marcasPneu = new HashSet<TravadaRoda>();
 	private Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
 	private Map<String, BufferedImage> mapaZoomTravadasPneus = new HashMap<String, BufferedImage>();
+	private Map<Piloto, BufferedImage> capacetesResultadoFinal = new HashMap<Piloto, BufferedImage>();
 	private Piloto pilotoSelecionado;
 	private BufferedImage backGround;
 	private BufferedImage backGroundZoom;
@@ -870,7 +871,7 @@ public class PainelCircuito {
 				fontOri.getSize());
 		Font fontMaior = new Font(fontOri.getName(), Font.BOLD, 16);
 		g2d.setFont(fontMaior);
-
+		Stroke stroke = g2d.getStroke();
 		List<Piloto> pilotosList = controleJogo.getPilotos();
 		for (int i = 0; i < pilotosList.size(); i++) {
 			Piloto piloto = pilotosList.get(i);
@@ -878,10 +879,12 @@ public class PainelCircuito {
 			/**
 			 * capacete
 			 */
-			BufferedImage cap = ImageUtil.geraResize(
-					ImageUtil.copiaImagem(controleJogo.obterCapacete(piloto)),
-					0.5);
-
+			BufferedImage cap = capacetesResultadoFinal.get(piloto);
+			if (cap == null) {
+				cap = ImageUtil.geraResize(ImageUtil.copiaImagem(controleJogo
+						.obterCapacete(piloto)), 0.5);
+				capacetesResultadoFinal.put(piloto, cap);
+			}
 			if (cap != null && desenhaImagens)
 				g2d.drawImage(cap, x, y, null);
 
@@ -915,10 +918,30 @@ public class PainelCircuito {
 						yTitulo + 16);
 				g2d.setFont(fontMaior);
 			}
+			boolean desenhaBorda = false;
+			if (piloto.isJogadorHumano()) {
+				g2d.setColor(OcilaCor.geraOcila("mrkSelBlu", bluQualy));
+				desenhaBorda = true;
+
+			}
+			if (controleJogo.verirficaDesafiandoCampeonato(piloto)) {
+				g2d.setColor(OcilaCor.geraOcila("mrkDesaf", Color.ORANGE));
+				desenhaBorda = true;
+
+			}
+
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 140, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(piloto.getNome(), x + 10, y + 16);
+
+			if (desenhaBorda) {
+				g2d.setStroke(borda);
+				bordaPilotoSelecionado.setFrame(x-5, y-5, 145, 25);
+				g2d.draw(bordaPilotoSelecionado);
+				g2d.setStroke(stroke);
+			}
+			
 			x += 150;
 			/**
 			 * Equipe
@@ -1521,7 +1544,7 @@ public class PainelCircuito {
 		debugDiferencaProximo(g2d, ptoOri, yBase);
 
 		yBase += 20;
-		
+
 		debugDiferencaProximoRetardatario(g2d, ptoOri, yBase);
 
 		yBase += 20;
@@ -1617,7 +1640,6 @@ public class PainelCircuito {
 		g2d.drawString(" Colisao " + pilotoSelecionado.isColisao(), ptoOri,
 				yBase);
 	}
-
 
 	private void debugPontosSC(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
@@ -3505,7 +3527,7 @@ public class PainelCircuito {
 					.getCentro());
 			transformedShape = translateDebug
 					.createTransformedShape(transformedShape);
-			if(piloto.isColisaoCentro()){
+			if (piloto.isColisaoCentro()) {
 				g2d.setColor(Color.YELLOW);
 			}
 			g2d.draw(transformedShape);
@@ -3515,7 +3537,7 @@ public class PainelCircuito {
 					.getDiateira());
 			transformedShape = translateDebug
 					.createTransformedShape(transformedShape);
-			if(piloto.isColisaoDiantera()){
+			if (piloto.isColisaoDiantera()) {
 				g2d.setColor(Color.YELLOW);
 			}
 			g2d.draw(transformedShape);

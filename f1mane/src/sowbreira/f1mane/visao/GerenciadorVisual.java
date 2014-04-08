@@ -1877,7 +1877,8 @@ public class GerenciadorVisual {
 	}
 
 	public void ativaVerControles() {
-		if (painelCircuito != null) {
+		if (painelCircuito != null && controleJogo != null
+				&& controleJogo.isCorridaIniciada()) {
 			painelCircuito.setVerControles(!painelCircuito.isVerControles());
 		}
 	}
