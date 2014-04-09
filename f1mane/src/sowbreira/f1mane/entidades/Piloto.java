@@ -992,7 +992,6 @@ public class Piloto implements Serializable {
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, getNoAtual(), controleJogo);
 
-		processaNovoModificadorDanificado();
 		processaLimitadorModificador();
 		processaGanho(controleJogo);
 		processaUsoKERS(controleJogo);
@@ -1003,6 +1002,7 @@ public class Piloto implements Serializable {
 		controleJogo.verificaUltraPassagem(this);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
 		processaColisao(controleJogo);
+		processaGanhoDanificado();
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 
@@ -1062,8 +1062,8 @@ public class Piloto implements Serializable {
 	public void penalidadeColisao(InterfaceJogo controleJogo) {
 		acelerando = false;
 		setAgressivoF4(false);
-		incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(10, 20)
-				: Util.intervalo(20, 30));
+		incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(5, 10)
+				: Util.intervalo(10, 20));
 		setCiclosDesconcentrado(20);
 	}
 
@@ -1156,16 +1156,21 @@ public class Piloto implements Serializable {
 		ultModificador = novoModificador;
 	}
 
-	private void processaNovoModificadorDanificado() {
+	private void processaGanhoDanificado() {
 		if (danificado()) {
 			if (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
 					|| (Carro.PERDEU_AEREOFOLIO.equals(getCarro()
-							.getDanificado()) && !getNoAtual()
-							.verificaRetaOuLargada()))
-				novoModificador = Util.intervalo(0, 2);
+							.getDanificado()) && getNoAtual()
+							.verificaCruvaBaixa()))
+				ganho = 10;
+			if (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
+					|| (Carro.PERDEU_AEREOFOLIO.equals(getCarro()
+							.getDanificado()) && getNoAtual()
+							.verificaCruvaBaixa()))
+				ganho = 15;
 			if (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
 					&& getNoAtual().verificaRetaOuLargada())
-				novoModificador = Util.intervalo(1, 3);
+				ganho = 20;
 		}
 	}
 

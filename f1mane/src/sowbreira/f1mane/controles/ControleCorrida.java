@@ -357,28 +357,30 @@ public class ControleCorrida {
 										pilotoNaFrente.getNome() }));
 						piloto.setDesqualificado(true);
 						controleSafetyCar.safetyCarNaPista(piloto);
-					}else{
+					} else {
 						piloto.penalidadeColisao(controleJogo);
 					}
 
 				}
 			} else {
 				if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
-					if (controleJogo.getNumVoltaAtual() <= 1
-							&& Math.random() < fatorAcidenteLocal) {
+					if (piloto.testeHabilidadePiloto(controleJogo) 
+							|| piloto.getStress() < 50
+							|| Math.random() < fatorAcidenteLocal) {
+						piloto.penalidadeColisao(controleJogo);
 						return;
 					}
-					piloto.incStress(Util.intervalo(40, 60));
+					piloto.penalidadeColisao(controleJogo);
 					danificaAreofolio(piloto);
 				} else {
-					if (piloto.getStress() > 90) {
+					if (piloto.getStress() > 95) {
 						piloto.getCarro()
 								.setDanificado(Carro.PERDEU_AEREOFOLIO);
 						controleJogo.infoPrioritaria(Lang.msg("017",
 								new String[] { Html.superRed(piloto.getNome()),
 										pilotoNaFrente.getNome() }));
 					} else {
-						piloto.incStress(Util.intervalo(40, 50));
+						piloto.penalidadeColisao(controleJogo);
 					}
 				}
 			}
@@ -395,9 +397,7 @@ public class ControleCorrida {
 			if ((piloto.getStress() > (5 * piloto.getCarro()
 					.getDurabilidadeAereofolio()))) {
 				danificaAreofolio(piloto);
-				int stress = Util.intervalo(1,
-						(int) controleJogo.getNiveljogo() * 10);
-				piloto.incStress(stress);
+				piloto.penalidadeColisao(controleJogo);
 				controleJogo.infoPrioritaria(Lang.msg("109",
 						new String[] { Html.superRed(piloto.getNome()),
 								pilotoNaFrente.getNome() }));
