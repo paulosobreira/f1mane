@@ -221,23 +221,14 @@ public class ControleCorrida {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-		Carro obterCarroNaFrenteRetardatario = obterCarroNaFrenteRetardatario(
-				piloto, true);
-		if (obterCarroNaFrenteRetardatario == null) {
+		Piloto pilotoNaFrente = piloto.getColisao();
+		if (pilotoNaFrente == null) {
 			return;
 		}
-		Piloto pilotoNaFrente = obterCarroNaFrenteRetardatario.getPiloto();
-		if (piloto.isColisao()) {
-			verificaAcidenteUltrapassagem(piloto, pilotoNaFrente);
-			fazPilotoMudarTracado(piloto, pilotoNaFrente);
-		} else if (piloto.getDiferencaParaProximoRetardatario() < 100
-				&& piloto.getTracado() == pilotoNaFrente.getTracado()) {
-			fazPilotoMudarTracado(piloto, pilotoNaFrente);
-		}
-
+		verificaAcidenteUltrapassagem(piloto, pilotoNaFrente);
 	}
 
-	private void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoNaFrente) {
+	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoNaFrente) {
 		if (piloto.isAutoPos()) {
 			int novapos = Util.intervalo(0, 2);
 			int cont = 0;
@@ -316,9 +307,6 @@ public class ControleCorrida {
 		if (piloto.getCarro().verificaDano()) {
 			return;
 		}
-		if (!piloto.isColisao()) {
-			return;
-		}
 		double fatorAcidenteLocal = fatorAcidente;
 		if (controleJogo.isChovendo()) {
 			fatorAcidenteLocal -= .2;
@@ -364,7 +352,7 @@ public class ControleCorrida {
 				}
 			} else {
 				if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
-					if (piloto.testeHabilidadePiloto(controleJogo) 
+					if (piloto.testeHabilidadePiloto(controleJogo)
 							|| piloto.getStress() < 50
 							|| Math.random() < fatorAcidenteLocal) {
 						piloto.penalidadeColisao(controleJogo);

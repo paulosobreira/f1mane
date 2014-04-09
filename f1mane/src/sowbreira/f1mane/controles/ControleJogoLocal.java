@@ -1486,4 +1486,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 				analisaTracado);
 	}
 
+	@Override
+	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoFrente) {
+		controleCorrida.fazPilotoMudarTracado(piloto, pilotoFrente);
+	}
+
 }

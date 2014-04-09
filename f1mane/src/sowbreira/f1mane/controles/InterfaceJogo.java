@@ -371,4 +371,6 @@ public interface InterfaceJogo {
 	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
 			boolean analisaTracado);
 
+	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoFrente);
+
 }

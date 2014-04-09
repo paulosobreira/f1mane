@@ -1225,4 +1225,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
+	@Override
+	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoFrente) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

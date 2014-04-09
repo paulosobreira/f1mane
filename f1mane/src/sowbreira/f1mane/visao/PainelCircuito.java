@@ -1631,14 +1631,53 @@ public class PainelCircuito {
 		yBase += 20;
 
 		debugPontosSC(g2d, ptoOri, yBase);
+		
+		yBase += 20;
 
+		debugGanhosBaixa(g2d, ptoOri, yBase);
+		
+		yBase += 20;
+
+		debugGanhosAlta(g2d, ptoOri, yBase);
+		
+		yBase += 20;
+
+		debugGanhosReta(g2d, ptoOri, yBase);
+
+	}
+
+	private void debugGanhosReta(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(" GanhosReta " + pilotoSelecionado.getMedGanhosReta(), ptoOri,
+				yBase);
+		
+	}
+
+	private void debugGanhosAlta(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(" GanhosAlta " + pilotoSelecionado.getMedGanhosAlta(), ptoOri,
+				yBase);
+		
+	}
+
+	private void debugGanhosBaixa(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(" GanhosBaixa " + pilotoSelecionado.getMedGanhosBaixa(), ptoOri,
+				yBase);
+		
 	}
 
 	private void debugColisao(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString(" Colisao " + pilotoSelecionado.isColisao(), ptoOri,
+		g2d.drawString(" Colisao " + pilotoSelecionado.getColisao(), ptoOri,
 				yBase);
 	}
 
