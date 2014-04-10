@@ -125,9 +125,9 @@ public class Piloto implements Serializable {
 	private boolean driveThrough;
 	private long timeStampChegeda;
 	private boolean cruzouLargada = false;
-	private List ganhosBaixa = new ArrayList();
-	private List ganhosAlta = new ArrayList();
-	private List ganhosReta = new ArrayList();
+	private List<Double> ganhosBaixa = new ArrayList<Double>();
+	private List<Double> ganhosAlta = new ArrayList<Double>();
+	private List<Double> ganhosReta = new ArrayList<Double>();
 	private boolean travouRodas;
 	private int contTravouRodas;
 	private boolean freiandoReta;
@@ -1539,7 +1539,7 @@ public class Piloto implements Serializable {
 		if (isAutoPos() && (getTracado() == 1 || getTracado() == 2)) {
 			int diff = controleJogo.calculaDiffParaProximoRetardatario(this,
 					false);
-			if (diff > 500) {
+			if (diff > 50) {
 				mudarTracado(0, controleJogo);
 			}
 		}
@@ -2917,9 +2917,12 @@ public class Piloto implements Serializable {
 	}
 
 	private double mediaLista(List list) {
+		if (list == null) {
+			return 0;
+		}
 		double total = 0;
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			total += (Integer) iterator.next();
+			total += (Double) iterator.next();
 		}
 		return total / list.size();
 	}
