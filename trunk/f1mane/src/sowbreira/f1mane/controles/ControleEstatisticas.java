@@ -149,7 +149,7 @@ public class ControleEstatisticas {
 	public String calculaSegundosParaProximo(Piloto psel, long tempo) {
 		int diff = calculaDiferencaParaProximo(psel);
 		String ret = milesismos.format((diff / Double.parseDouble(String
-				.valueOf(tempo))) * 3.0)
+				.valueOf(tempo))))
 				+ "s";
 
 		return ret;
@@ -157,7 +157,7 @@ public class ControleEstatisticas {
 
 	public double calculaSegundosParaProximoDouble(Piloto psel, long tempo) {
 		int diff = calculaDiferencaParaProximo(psel);
-		return (diff / Double.parseDouble(String.valueOf(tempo))) * 3.0;
+		return (diff / Double.parseDouble(String.valueOf(tempo)));
 
 	}
 
@@ -172,8 +172,7 @@ public class ControleEstatisticas {
 		Piloto piloto = (Piloto) controleJogo.getPilotos().get(pos);
 		if (piloto != null) {
 			long diff = piloto.getPtosPista() - psel.getPtosPista();
-			return Util.inte(diff
-					/ controleJogo.getCircuito().getMultiplciador());
+			return Util.inte(diff);
 		}
 		return Integer.MAX_VALUE;
 	}
