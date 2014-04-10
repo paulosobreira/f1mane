@@ -564,12 +564,12 @@ public class Carro implements Serializable {
 		if (valDesgaste < 0) {
 			valDesgaste = 0;
 		}
-		int dist = 20;
+		int dist = 50;
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-			dist = 30;
+			dist = 70;
 		}
 		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
-			dist = 10;
+			dist = 30;
 		}
 		if (!controleJogo.isModoQualify()
 				&& controleJogo.getNumVoltaAtual() != 1

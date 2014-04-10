@@ -701,8 +701,7 @@ public class ControleCorrida {
 			}
 		}
 
-		return Util.inte(menorDistancia
-				/ controleJogo.getCircuito().getMultiplciador());
+		return Util.inte(menorDistancia);
 
 	}
 }

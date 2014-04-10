@@ -62,9 +62,9 @@ import br.nnpe.Util;
  */
 public class PainelCircuito {
 
-	public static boolean carregaBkg = true;
-	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = true;
+	public static boolean carregaBkg = false;
+	public static boolean desenhaPista = false;
+	public static boolean desenhaImagens = false;
 
 	private boolean verControles = true;
 	private boolean desenhouQualificacao;
@@ -1760,6 +1760,18 @@ public class PainelCircuito {
 						+ controleJogo.calculaDiffParaProximoRetardatario(
 								pilotoSelecionado, false), ptoOri, yBase);
 	}
+	
+	private void debugDiferencaProximo(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				" Diff Prox "
+						+ pilotoSelecionado
+								.calculaDiffParaProximo(controleJogo), ptoOri,
+				yBase);
+	}
+
 
 	private void debugeFreiandoNaReta(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
@@ -1852,16 +1864,6 @@ public class PainelCircuito {
 				yBase);
 	}
 
-	private void debugDiferencaProximo(Graphics2D g2d, int ptoOri, int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
-		g2d.setColor(Color.black);
-		g2d.drawString(
-				" Diff Prox "
-						+ pilotoSelecionado
-								.calculaDiffParaProximo(controleJogo), ptoOri,
-				yBase);
-	}
 
 	private void debuPontosBox(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
@@ -3515,21 +3517,12 @@ public class PainelCircuito {
 	}
 
 	private void desenhaDebugCarroCima(Graphics2D g2d, Piloto piloto, double rad) {
-
 		/**
 		 * DEBUG
 		 */
 		if (!Logger.ativo) {
 			return;
 		}
-
-		No noAtual = piloto.getNoAtual();
-
-		double multi = 2;
-		if (piloto.getTracado() == 0) {
-			multi = 3;
-		}
-
 		g2d.setColor(new Color(255, 0, 0, 140));
 		g2d.setColor(Color.BLACK);
 		Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
@@ -4486,9 +4479,6 @@ public class PainelCircuito {
 			return;
 		}
 		if (pilotoSelecionado == null) {
-			return;
-		}
-		if (!carregaBkg) {
 			return;
 		}
 		if (exibeResultadoFinal) {
