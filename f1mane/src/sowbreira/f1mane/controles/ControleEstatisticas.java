@@ -188,8 +188,7 @@ public class ControleEstatisticas {
 		Piloto piloto = (Piloto) controleJogo.getPilotos().get(pos);
 		if (piloto != null) {
 			long diff = psel.getPtosPista() - piloto.getPtosPista();
-			return Util.inte(diff
-					/ controleJogo.getCircuito().getMultiplciador());
+			return Util.inte(diff);
 		}
 		return Integer.MAX_VALUE;
 	}

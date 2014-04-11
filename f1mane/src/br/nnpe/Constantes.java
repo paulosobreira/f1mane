@@ -19,7 +19,7 @@ public class Constantes {
 	public static final int ACIMA_MEDIA_FACIL = 10;
 	public static final int LATENCIA_MAX = 240;
 	public static final int LATENCIA_MIN = 120;
-	public static final int LIMITE_DRS = 100;
+	public static final int LIMITE_DRS = 300;
 
 	private Constantes() {
 	}
