@@ -639,6 +639,8 @@ public class Carro implements Serializable {
 			setDanificado(PANE_SECA);
 			getPiloto().setDesqualificado(true);
 			paneSeca = true;
+			controleJogo.infoPrioritaria(Html.txtRedBold(getNome()
+					+ Lang.msg("118")));
 		}
 	}
 
