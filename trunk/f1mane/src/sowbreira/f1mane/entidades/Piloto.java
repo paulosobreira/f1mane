@@ -969,7 +969,6 @@ public class Piloto implements Serializable {
 
 	private int processaNovoIndex(InterfaceJogo controleJogo) {
 		int index = getNoAtual().getIndex();
-		calculaStress(controleJogo);
 		/**
 		 * Devagarinho qdo a corrida termina
 		 */
@@ -984,15 +983,11 @@ public class Piloto implements Serializable {
 		if (desqualificado) {
 			return getNoAtual().getIndex();
 		}
-		if (getCarro().isPaneSeca()) {
-			desqualificado = true;
-			controleJogo.infoPrioritaria(Html.txtRedBold(getNome()
-					+ Lang.msg("118")));
-		}
 		novoModificador = calcularNovoModificador(controleJogo);
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, getNoAtual(), controleJogo);
 
+		processaStress(controleJogo);
 		processaLimitadorModificador();
 		processaGanho(controleJogo);
 		processaUsoKERS(controleJogo);
@@ -1010,28 +1005,32 @@ public class Piloto implements Serializable {
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 
-		if (controleJogo.isSafetyCarNaPista()) {
-			ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
-			if (ganho > 40) {
-				ganho = 40;
-			}
-			if (ganho < 10
-					&& controleJogo.calculaDiferencaParaProximo(this) > 100) {
-				ganho = 10;
-			}
-			if (getTracado() == 4) {
-				mudarTracado(2, controleJogo, true);
-			}
-			if (getTracado() == 5) {
-				mudarTracado(1, controleJogo, true);
-			}
-		}
+		processaGanhoSafetyCar(controleJogo);
 
 		decremetaPilotoDesconcentrado(controleJogo);
 		setPtosPista(Util.inte(getPtosPista() + ganho));
 		index += Math.round(ganho);
 		setVelocidade(calculoVelocidade(ganho));
 		return index;
+	}
+
+	private void processaGanhoSafetyCar(InterfaceJogo controleJogo) {
+		if (!controleJogo.isSafetyCarNaPista()) {
+			return;
+		}
+		ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
+		if (ganho > 40) {
+			ganho = 40;
+		}
+		if (ganho < 10 && controleJogo.calculaDiferencaParaProximo(this) > 100) {
+			ganho = 10;
+		}
+		if (getTracado() == 4) {
+			mudarTracado(2, controleJogo, true);
+		}
+		if (getTracado() == 5) {
+			mudarTracado(1, controleJogo, true);
+		}
 	}
 
 	public static void main(String[] args) {
@@ -1410,7 +1409,7 @@ public class Piloto implements Serializable {
 		}
 	}
 
-	private void calculaStress(InterfaceJogo controleJogo) {
+	private void processaStress(InterfaceJogo controleJogo) {
 		int fatorStresse = Util.intervalo(1,
 				(int) controleJogo.getNiveljogo() * 10);
 		if (getNoAtual().verificaCruvaAlta()

@@ -62,9 +62,9 @@ import br.nnpe.Util;
  */
 public class PainelCircuito {
 
-	public static boolean carregaBkg = true;
-	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = true;
+	public static boolean carregaBkg = false;
+	public static boolean desenhaPista = false;
+	public static boolean desenhaImagens = false;
 
 	private boolean verControles = true;
 	private boolean desenhouQualificacao;
@@ -85,6 +85,7 @@ public class PainelCircuito {
 	private Point pointDesenhaClima = new Point(10, 10);
 	private Point pointDesenhaPneus = new Point(10, 10);
 	private Point pointDesenhaVelo = new Point(5, 60);
+	private Point pontoClicado = null;
 	private No posisRec;
 	private Point posisAtual;
 	public final static Color luzDistProx1 = new Color(0, 255, 0, 100);
@@ -302,6 +303,7 @@ public class PainelCircuito {
 										/ zoom),
 								Util.inte((e.getPoint().y + pontoCentralizado.y)
 										/ zoom));
+						pontoClicado = p;
 						double menor = Integer.MAX_VALUE;
 						int pos = 0;
 						double p0p = GeoUtil.distaciaEntrePontos(
@@ -638,6 +640,7 @@ public class PainelCircuito {
 			iniciaPilotoSelecionado();
 			desenhaMarcasPeneuPista(g2d);
 			desenhaPiloto(g2d);
+			desenhaSC(g2d);
 			desenhaChuva(g2d);
 			desenhaContadorVoltas(g2d);
 			desenharSafetyCarCima(g2d);
@@ -649,7 +652,6 @@ public class PainelCircuito {
 			desenhaListaPilotos(g2d);
 			desenhaFPS(g2d);
 			desenhaAjuda(g2d);
-			desenhaSC(g2d);
 			desenhaLag(g2d);
 			desenhaInfoPilotoSelecionado(g2d);
 			desenhaMiniPista(g2d);
@@ -935,14 +937,14 @@ public class PainelCircuito {
 				desenhaBorda = true;
 
 			}
-			
+
 			if (desenhaBorda) {
 				g2d.setStroke(borda);
-				bordaPilotoSelecionado.setFrame(x-2, y-2, 143, 23);
+				bordaPilotoSelecionado.setFrame(x - 2, y - 2, 143, 23);
 				g2d.draw(bordaPilotoSelecionado);
 				g2d.setStroke(stroke);
 			}
-			
+
 			x += 150;
 			/**
 			 * Equipe
@@ -1499,9 +1501,15 @@ public class PainelCircuito {
 			for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
 				Point point = (Point) iterator.next();
 				g2d.setColor(ver);
-				g2d.fillOval((int) (point.x * zoom) - mAltura,
-						(int) (point.y * zoom) - mAltura, altura, altura);
+				g2d.fillOval((int) ((point.x - dC.x) * zoom) - mAltura,
+						(int) ((point.y - dC.y) * zoom) - mAltura, altura,
+						altura);
 			}
+		}
+
+		if (pontoClicado != null) {
+			g2d.setColor(ver);
+			g2d.fillOval(pontoClicado.x, pontoClicado.y, 10, 10);
 		}
 
 		/**
@@ -1551,7 +1559,7 @@ public class PainelCircuito {
 		yBase += 20;
 
 		debugDiferencaAnterior(g2d, ptoOri, yBase);
-		
+
 		yBase += 20;
 
 		debugColisao(g2d, ptoOri, yBase);
@@ -1631,15 +1639,15 @@ public class PainelCircuito {
 		yBase += 20;
 
 		debugPontosSC(g2d, ptoOri, yBase);
-		
+
 		yBase += 20;
 
 		debugGanhosBaixa(g2d, ptoOri, yBase);
-		
+
 		yBase += 20;
 
 		debugGanhosAlta(g2d, ptoOri, yBase);
-		
+
 		yBase += 20;
 
 		debugGanhosReta(g2d, ptoOri, yBase);
@@ -1650,27 +1658,27 @@ public class PainelCircuito {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString(" GanhosReta " + pilotoSelecionado.getMedGanhosReta(), ptoOri,
-				yBase);
-		
+		g2d.drawString(" GanhosReta " + pilotoSelecionado.getMedGanhosReta(),
+				ptoOri, yBase);
+
 	}
 
 	private void debugGanhosAlta(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString(" GanhosAlta " + pilotoSelecionado.getMedGanhosAlta(), ptoOri,
-				yBase);
-		
+		g2d.drawString(" GanhosAlta " + pilotoSelecionado.getMedGanhosAlta(),
+				ptoOri, yBase);
+
 	}
 
 	private void debugGanhosBaixa(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString(" GanhosBaixa " + pilotoSelecionado.getMedGanhosBaixa(), ptoOri,
-				yBase);
-		
+		g2d.drawString(" GanhosBaixa " + pilotoSelecionado.getMedGanhosBaixa(),
+				ptoOri, yBase);
+
 	}
 
 	private void debugColisao(Graphics2D g2d, int ptoOri, int yBase) {
@@ -1760,7 +1768,7 @@ public class PainelCircuito {
 						+ controleJogo.calculaDiffParaProximoRetardatario(
 								pilotoSelecionado, false), ptoOri, yBase);
 	}
-	
+
 	private void debugDiferencaProximo(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
@@ -1771,7 +1779,6 @@ public class PainelCircuito {
 								.calculaDiffParaProximo(controleJogo), ptoOri,
 				yBase);
 	}
-
 
 	private void debugeFreiandoNaReta(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
@@ -1863,7 +1870,6 @@ public class PainelCircuito {
 								.calculaDiffParaAnterior(controleJogo), ptoOri,
 				yBase);
 	}
-
 
 	private void debuPontosBox(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
