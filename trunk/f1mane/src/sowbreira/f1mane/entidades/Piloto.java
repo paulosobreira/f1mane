@@ -997,16 +997,16 @@ public class Piloto implements Serializable {
 		processaGanho(controleJogo);
 		processaUsoKERS(controleJogo);
 		processaUsoDRS(controleJogo);
-		processaTurbulencia(controleJogo);
-		processaFreioNaReta(controleJogo);
 		processaMudarTracado(controleJogo);
 		verificaMudancaRegime(controleJogo);
 		processaIAnovoIndex(controleJogo);
-		controleJogo.verificaUltraPassagem(this);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
-		processaColisao(controleJogo);
-		processaEvitaBaterCarroFrente(controleJogo);
+		controleJogo.verificaUltraPassagem(this);
+		processaTurbulencia(controleJogo);
 		processaGanhoDanificado();
+		processaColisao(controleJogo);
+		processaFreioNaReta(controleJogo);
+		processaEvitaBaterCarroFrente(controleJogo);
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 
