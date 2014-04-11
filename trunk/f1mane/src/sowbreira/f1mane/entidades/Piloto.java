@@ -999,12 +999,13 @@ public class Piloto implements Serializable {
 		processaUsoDRS(controleJogo);
 		processaTurbulencia(controleJogo);
 		processaFreioNaReta(controleJogo);
-		verificaMudarTracado(controleJogo);
+		processaMudarTracado(controleJogo);
 		verificaMudancaRegime(controleJogo);
 		processaIAnovoIndex(controleJogo);
 		controleJogo.verificaUltraPassagem(this);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
 		processaColisao(controleJogo);
+		processaEvitaBaterCarroFrente(controleJogo);
 		processaGanhoDanificado();
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
@@ -1443,18 +1444,39 @@ public class Piloto implements Serializable {
 		}
 	}
 
-	private void verificaMudarTracado(InterfaceJogo controleJogo) {
+	private void processaMudarTracado(InterfaceJogo controleJogo) {
 		double diff = controleJogo.calculaDiffParaProximoRetardatario(this,
 				true);
-		double distLimite = 150;
-		if (testeHabilidadePilotoCarro(controleJogo)
-				&& diff < distLimite) {
-			controleJogo.fazPilotoMudarTracado(this, controleJogo
-					.obterCarroNaFrenteRetardatario(this, true).getPiloto());
-		}else{
-			mudarTracado(0, controleJogo);
-		}
+		int diffAnt = controleJogo.calculaDiferencaParaAnterior(this);
+		if (diff < diffAnt) {
+			if (diff < 120) {
+				if (testeHabilidadePilotoCarro(controleJogo)) {
+					controleJogo.fazPilotoMudarTracado(this, controleJogo
+							.obterCarroNaFrenteRetardatario(this, true)
+							.getPiloto());
+				} else {
+					controleJogo.fazPilotoMudarTracado(this, controleJogo
+							.obterCarroNaFrenteRetardatario(this, false)
+							.getPiloto());
 
+				}
+			}
+		} else {
+			if (diffAnt < 200) {
+				if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+					Carro carroAtraz = controleJogo.obterCarroAtraz(this);
+					Piloto pilotoAtraz = carroAtraz.getPiloto();
+					mudarTracado(pilotoAtraz.getTracado(), controleJogo, true);
+				} else if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
+					Carro carroAtraz = controleJogo.obterCarroAtraz(this);
+					Piloto pilotoAtraz = carroAtraz.getPiloto();
+					mudarTracado(pilotoAtraz.getTracado(), controleJogo, false);
+				} else if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
+					mudarTracado(0, controleJogo, true);
+				}
+			}
+
+		}
 	}
 
 	private void tentarEscaparPilotoDaTraz(InterfaceJogo controleJogo,
@@ -1535,18 +1557,6 @@ public class Piloto implements Serializable {
 			setModoPilotagem(NORMAL);
 			getCarro().setGiro(Carro.GIRO_NOR_VAL);
 		}
-		int diffAnt = controleJogo.calculaDiferencaParaAnterior(this);
-//		if (diffAnt < 100) {
-//			if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-//				Carro carroAtraz = controleJogo.obterCarroAtraz(this);
-//				Piloto pilotoAtraz = carroAtraz.getPiloto();
-//				mudarTracado(pilotoAtraz.getTracado(), controleJogo, true);
-//			} else if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
-//				mudarTracado(0, controleJogo, true);
-//			} else if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
-//				mudarTracado(0, controleJogo, false);
-//			}
-//		}
 	}
 
 	private void tentaUsarDRS(InterfaceJogo controleJogo) {
@@ -1600,35 +1610,6 @@ public class Piloto implements Serializable {
 			setColisao(null);
 			return;
 		}
-
-		Carro obterCarroNaFrenteRetardatario = controleJogo
-				.obterCarroNaFrenteRetardatario(this, false);
-		if (obterCarroNaFrenteRetardatario == null) {
-			setColisao(null);
-			return;
-		}
-
-		Piloto piloto = obterCarroNaFrenteRetardatario.getPiloto();
-		if (this.equals(piloto)) {
-			return;
-		}
-		if (piloto.getCarro().isPaneSeca() || piloto.isDesqualificado()
-				|| piloto.getCarro().isRecolhido()) {
-			return;
-		}
-		boolean verificaNoPitLaneOutro = controleJogo.verificaNoPitLane(piloto);
-		if (verificaNoPitLaneOutro) {
-			return;
-		}
-		diferencaParaProximoRetardatario = controleJogo
-				.calculaDiffParaProximoRetardatario(this, true);
-		if (diferencaParaProximoRetardatario < 100.0
-				&& diferencaParaProximoRetardatario > 0
-				&& (getTracado() == piloto.getTracado())) {
-			penalidadeColisao(controleJogo);
-			ganho *= (diferencaParaProximoRetardatario / 100.0);
-		}
-
 		List<Piloto> pilotos = controleJogo.getPilotos();
 		centralizaDianteiraTrazeiraCarro(controleJogo);
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
@@ -1652,7 +1633,35 @@ public class Piloto implements Serializable {
 				return;
 			}
 		}
+		setColisao(null);
 
+	}
+
+	private void processaEvitaBaterCarroFrente(InterfaceJogo controleJogo) {
+		Carro obterCarroNaFrenteRetardatario = controleJogo
+				.obterCarroNaFrenteRetardatario(this, true);
+		if (obterCarroNaFrenteRetardatario == null) {
+			return;
+		}
+
+		Piloto piloto = obterCarroNaFrenteRetardatario.getPiloto();
+		if (this.equals(piloto)) {
+			return;
+		}
+		if (piloto.getCarro().isPaneSeca() || piloto.getCarro().isRecolhido()) {
+			return;
+		}
+		boolean verificaNoPitLaneOutro = controleJogo.verificaNoPitLane(piloto);
+		if (verificaNoPitLaneOutro) {
+			return;
+		}
+		diferencaParaProximoRetardatario = controleJogo
+				.calculaDiffParaProximoRetardatario(this, true);
+		if (diferencaParaProximoRetardatario < 100.0
+				&& (getTracado() == piloto.getTracado())) {
+			penalidadeColisao(controleJogo);
+			ganho *= (diferencaParaProximoRetardatario / 100.0);
+		}
 	}
 
 	public boolean derrapa(InterfaceJogo controleJogo) {
