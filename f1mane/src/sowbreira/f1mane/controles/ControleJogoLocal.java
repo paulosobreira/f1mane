@@ -1491,4 +1491,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		controleCorrida.fazPilotoMudarTracado(piloto, pilotoFrente);
 	}
 
+	@Override
+	public int getDurabilidadeAreofolio() {
+		return InterfaceJogo.DURABILIDADE_AREOFOLIO / getQtdeTotalVoltas();
+	}
+
 }

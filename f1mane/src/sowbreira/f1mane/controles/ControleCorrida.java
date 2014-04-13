@@ -330,10 +330,12 @@ public class ControleCorrida {
 		if (piloto.testeHabilidadePiloto(controleJogo)) {
 			return;
 		}
+		if (Math.random() < fatorAcidenteLocal) {
+			return;
+		}
 		if (piloto.getCarro().getDurabilidadeAereofolio() <= 0
-				&& Math.random() > fatorAcidenteLocal
 				&& !controleSafetyCar.safetyCarUltimas3voltas()
-				&& piloto.getStress() > 95 && piloto.isColisaoCentro()) {
+				&& piloto.getStress() > 90 && piloto.isColisaoCentro()) {
 			piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 			controleJogo.infoPrioritaria(Lang.msg("016",
 					new String[] { Html.superRed(piloto.getNome()),
@@ -342,7 +344,7 @@ public class ControleCorrida {
 			controleSafetyCar.safetyCarNaPista(piloto);
 		} else {
 			if (piloto.getCarro().getDurabilidadeAereofolio() > 0
-					&& piloto.getStress() > 50
+					&& piloto.getStress() > 70
 					&& Math.random() < fatorAcidenteLocal) {
 				danificaAreofolio(piloto);
 			} else if (piloto.getStress() > 90 && piloto.isColisaoCentro()) {

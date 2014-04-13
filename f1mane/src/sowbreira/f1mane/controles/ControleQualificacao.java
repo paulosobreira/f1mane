@@ -277,14 +277,12 @@ public class ControleQualificacao {
 			piloto.setPtosPista(nM.getIndex());
 			piloto.setPtosPistaIncial(nM.getIndex());
 			Carro carro = piloto.getCarro();
-			int durabilidade = InterfaceJogo.DUR_AREO_NORMAL;
+			int durabilidade = InterfaceJogo.DURABILIDADE_AREOFOLIO;
 			carro.setTempMax(carro.getPotencia() / 4);
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				durabilidade = InterfaceJogo.DUR_AREO_FACIL;
 				carro.setTempMax(carro.getPotencia() / 2);
 			}
 			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-				durabilidade = InterfaceJogo.DUR_AREO_DIFICIL;
 				carro.setTempMax(carro.getPotencia() / 6);
 			}
 			carro.setDurabilidadeAereofolio(durabilidade);
