@@ -28,9 +28,7 @@ public interface InterfaceJogo {
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
 	public static int CARGA_KERS = 100;
-	public static int DUR_AREO_NORMAL = 10;
-	public static int DUR_AREO_FACIL = 20;
-	public static int DUR_AREO_DIFICIL = 5;
+	public static int DURABILIDADE_AREOFOLIO = 360;
 	public static boolean NOVO_LAYOUT = true;
 
 	public List listaInfo();
@@ -372,5 +370,7 @@ public interface InterfaceJogo {
 			boolean analisaTracado);
 
 	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoFrente);
+
+	public int getDurabilidadeAreofolio();
 
 }
