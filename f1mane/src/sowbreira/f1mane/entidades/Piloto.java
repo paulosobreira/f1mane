@@ -989,11 +989,10 @@ public class Piloto implements Serializable {
 
 		processaStress(controleJogo);
 		processaLimitadorModificador();
-		processaGanho(controleJogo);
 		processaUsoKERS(controleJogo);
 		processaUsoDRS(controleJogo);
-		processaMudarTracado(controleJogo);
 		verificaMudancaRegime(controleJogo);
+		processaGanho(controleJogo);
 		processaIAnovoIndex(controleJogo);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
 		controleJogo.verificaUltraPassagem(this);
@@ -1001,6 +1000,7 @@ public class Piloto implements Serializable {
 		processaGanhoDanificado();
 		processaFreioNaReta(controleJogo);
 		processaEvitaBaterCarroFrente(controleJogo);
+		processaMudarTracado(controleJogo);
 		processaColisao(controleJogo);
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
@@ -1192,6 +1192,9 @@ public class Piloto implements Serializable {
 		Carro carroPilotoDaFrente = controleJogo
 				.obterCarroNaFrenteRetardatario(this, true);
 		if (carroPilotoDaFrente == null) {
+			return;
+		}
+		if (carroPilotoDaFrente.getPiloto().isDesqualificado()) {
 			return;
 		}
 		double diff = controleJogo.calculaDiffParaProximoRetardatario(this,
@@ -1611,8 +1614,7 @@ public class Piloto implements Serializable {
 			if (pilotoFrente.equals(this)) {
 				continue;
 			}
-			if (pilotoFrente.isDesqualificado()
-					&& pilotoFrente.getCarro().isRecolhido()) {
+			if (verificaNaoPrecisaDesvia(controleJogo, pilotoFrente)) {
 				continue;
 			}
 			pilotoFrente.centralizaDianteiraTrazeiraCarro(controleJogo);
@@ -1631,6 +1633,12 @@ public class Piloto implements Serializable {
 
 	}
 
+	private boolean verificaNaoPrecisaDesvia(InterfaceJogo controleJogo,
+			Piloto pilotoFrente) {
+		return (pilotoFrente.isDesqualificado() && !controleJogo
+				.isSafetyCarNaPista()) || pilotoFrente.getCarro().isRecolhido();
+	}
+
 	private void processaEvitaBaterCarroFrente(InterfaceJogo controleJogo) {
 		Carro obterCarroNaFrenteRetardatario = controleJogo
 				.obterCarroNaFrenteRetardatario(this, true);
@@ -1642,7 +1650,7 @@ public class Piloto implements Serializable {
 		if (this.equals(piloto)) {
 			return;
 		}
-		if (piloto.getCarro().isPaneSeca() || piloto.getCarro().isRecolhido()) {
+		if (verificaNaoPrecisaDesvia(controleJogo, piloto)) {
 			return;
 		}
 		boolean verificaNoPitLaneOutro = controleJogo.verificaNoPitLane(piloto);
