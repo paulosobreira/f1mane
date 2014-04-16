@@ -1445,7 +1445,7 @@ public class Piloto implements Serializable {
 				true);
 		int diffAnt = controleJogo.calculaDiferencaParaAnterior(this);
 		if (diff < diffAnt) {
-			if (diff < 120) {
+			if (diff < 150) {
 				if (testeHabilidadePiloto(controleJogo)) {
 					controleJogo.fazPilotoMudarTracado(this, controleJogo
 							.obterCarroNaFrenteRetardatario(this, true)
