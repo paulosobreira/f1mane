@@ -224,11 +224,9 @@ public class MonitorJogo implements Runnable {
 						try {
 							if (jogoCliente.getPilotoSelecionado() == null)
 								jogoCliente.selecionaPilotoJogador();
-							jogoCliente.atualizaPainel();
-							List pilotos = jogoCliente.getPilotos();
 							jogoCliente.decrementaTracado();
 							jogoCliente.verificaProgramacaoBox();
-							Thread.sleep(70);
+							Thread.sleep(jogoCliente.getTempoCiclo());
 						} catch (Exception e) {
 							interrupt = true;
 							Logger.logarExept(e);

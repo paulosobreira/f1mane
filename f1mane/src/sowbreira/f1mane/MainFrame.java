@@ -999,7 +999,7 @@ public class MainFrame extends JFrame {
 			pausa.setEnabled(false);
 		}
 		if (atualizacaoSuave != null) {
-			atualizacaoSuave.setEnabled(true);
+			atualizacaoSuave.setEnabled(false);
 		}
 		menuEditor.setEnabled(false);
 
