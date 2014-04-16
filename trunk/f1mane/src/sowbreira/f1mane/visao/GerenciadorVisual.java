@@ -1880,6 +1880,9 @@ public class GerenciadorVisual {
 		if (painelCircuito != null && painelCircuito.getQtdeLuzesAcesas() == 0
 				&& controleJogo != null && controleJogo.isCorridaIniciada()) {
 			painelCircuito.setVerControles(!painelCircuito.isVerControles());
+			if(controleJogo.isCorridaPausada()){
+				painelCircuito.setVerControles(true);
+			}
 		}
 	}
 

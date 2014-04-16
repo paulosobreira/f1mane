@@ -1493,7 +1493,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	@Override
 	public int getDurabilidadeAreofolio() {
-		return InterfaceJogo.DURABILIDADE_AREOFOLIO / getQtdeTotalVoltas();
+		return (InterfaceJogo.DURABILIDADE_AREOFOLIO * getQtdeTotalVoltas()) / 72;
 	}
 
 }

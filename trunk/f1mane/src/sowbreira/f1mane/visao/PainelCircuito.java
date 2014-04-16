@@ -63,8 +63,8 @@ import br.nnpe.Util;
 public class PainelCircuito {
 
 	public static boolean carregaBkg = false;
-	public static boolean desenhaPista = false;
-	public static boolean desenhaImagens = false;
+	public static boolean desenhaPista = true;
+	public static boolean desenhaImagens = true;
 
 	private boolean verControles = true;
 	private boolean desenhouQualificacao;
@@ -4241,7 +4241,7 @@ public class PainelCircuito {
 		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
 		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
 
-		int durabilidade = controleJogo.getDurabilidadeAreofolio();
+		int durabilidade = controleJogo.getDurabilidadeAreofolio() / 2;
 		String dano = null;
 		if (pilotoSelecionado != null) {
 			dano = pilotoSelecionado.getCarro().getDanificado();
@@ -4252,8 +4252,9 @@ public class PainelCircuito {
 				&& porcentComb > 25
 				&& pilotoSelecionado.getCarro().getDurabilidadeAereofolio() >= durabilidade
 				&& pneus > 25
-				&& !pilotoSelecionado.getCarro().verificaMotorSuperAquecido())
+				&& !pilotoSelecionado.getCarro().verificaMotorSuperAquecido()){
 			return;
+		}
 
 		g2d.setColor(this.transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 170, limitesViewPort.y + 5,
