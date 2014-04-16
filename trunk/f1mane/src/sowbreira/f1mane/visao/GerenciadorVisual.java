@@ -190,13 +190,10 @@ public class GerenciadorVisual {
 			frame.getParent().addKeyListener(keyListener);
 		}
 		frame.addMouseWheelListener(mw);
-		if (!(controleJogo instanceof JogoCliente)) {
-			iniciaThreadJogoSuaveClientes();
-		}
-
+		iniciaThreadJogoSuave();
 	}
 
-	private void iniciaThreadJogoSuaveClientes() {
+	private void iniciaThreadJogoSuave() {
 		thAtualizaPainelSuave = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -1880,7 +1877,7 @@ public class GerenciadorVisual {
 		if (painelCircuito != null && painelCircuito.getQtdeLuzesAcesas() == 0
 				&& controleJogo != null && controleJogo.isCorridaIniciada()) {
 			painelCircuito.setVerControles(!painelCircuito.isVerControles());
-			if(controleJogo.isCorridaPausada()){
+			if (controleJogo.isCorridaPausada()) {
 				painelCircuito.setVerControles(true);
 			}
 		}

@@ -169,7 +169,7 @@ public class MonitorJogo implements Runnable {
 					setZoom = true;
 				}
 				iniciaJalena();
-				disparaAtualizadorPainel();
+				disparaAtualizadorPainel(tempoCiclo);
 				apagaLuzesLargada();
 				if (!atualizouDados) {
 					atualizarDados();
@@ -215,7 +215,7 @@ public class MonitorJogo implements Runnable {
 		}
 	}
 
-	private void disparaAtualizadorPainel() {
+	private void disparaAtualizadorPainel(final long tempoCiclo) {
 		if (atualizadorPainel == null) {
 			atualizadorPainel = new Thread(new Runnable() {
 				public void run() {
@@ -226,7 +226,7 @@ public class MonitorJogo implements Runnable {
 								jogoCliente.selecionaPilotoJogador();
 							jogoCliente.decrementaTracado();
 							jogoCliente.verificaProgramacaoBox();
-							Thread.sleep(jogoCliente.getTempoCiclo());
+							Thread.sleep(tempoCiclo);
 						} catch (Exception e) {
 							interrupt = true;
 							Logger.logarExept(e);
@@ -449,6 +449,7 @@ public class MonitorJogo implements Runnable {
 
 	}
 
+	@Deprecated
 	public void atualizaPosicaoPiloto(Posis posis) {
 		List pilotos = jogoCliente.getPilotos();
 		Map mapaIdsNos = jogoCliente.getMapaIdsNos();
