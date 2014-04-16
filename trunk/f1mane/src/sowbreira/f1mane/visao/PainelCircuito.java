@@ -63,8 +63,8 @@ import br.nnpe.Util;
 public class PainelCircuito {
 
 	public static boolean carregaBkg = false;
-	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = true;
+	public static boolean desenhaPista = false;
+	public static boolean desenhaImagens = false;
 
 	private boolean verControles = true;
 	private boolean desenhouQualificacao;
@@ -824,8 +824,8 @@ public class PainelCircuito {
 			g2d.setStroke(stroke);
 		}
 
-		y -= 120;
-		x -= 80;
+		y -= 180;
+		x -= 30;
 
 		Stroke stroke = g2d.getStroke();
 		g2d.setColor(transpMenus);
@@ -837,6 +837,19 @@ public class PainelCircuito {
 		g2d.drawLine(x + 30, y - 5,
 				(int) (vaiBox.getX() + (vaiBox.getWidth() / 2)),
 				(int) (vaiBox.getY() + vaiBox.getHeight()) + 5);
+
+		if (controleJogo.isCorridaPausada()) {
+			x = o.x - 50;
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 60, 30, 5, 5);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString("Esc", x + 5, y + 25);
+			g2d.setStroke(trilhoMiniPista);
+			g2d.setColor(yel);
+			g2d.drawLine(x + 30, y - 5,
+					(int) (ajuda.getX() + (ajuda.getWidth() / 2)),
+					(int) (ajuda.getY() + ajuda.getHeight()) + 5);
+		}
 		g2d.setStroke(stroke);
 
 		g2d.setFont(fontOri);
@@ -4252,7 +4265,7 @@ public class PainelCircuito {
 				&& porcentComb > 25
 				&& pilotoSelecionado.getCarro().getDurabilidadeAereofolio() >= durabilidade
 				&& pneus > 25
-				&& !pilotoSelecionado.getCarro().verificaMotorSuperAquecido()){
+				&& !pilotoSelecionado.getCarro().verificaMotorSuperAquecido()) {
 			return;
 		}
 
