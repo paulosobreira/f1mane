@@ -99,6 +99,7 @@
 		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
 		<delete file="WebContent/f1mane.jar" />
 		<copy file="f1mane.jar" todir="WebContent/WEB-INF/lib" />
+		<copy file="f1mane.jar" todir="WebContent" />
 		<copy todir="WebContent">
 			<fileset dir="src">
 				<include name="**/*_mro.jpg" />

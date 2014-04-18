@@ -62,9 +62,9 @@ import br.nnpe.Util;
  */
 public class PainelCircuito {
 
-	public static boolean carregaBkg = false;
-	public static boolean desenhaPista = false;
-	public static boolean desenhaImagens = false;
+	public static boolean carregaBkg = true;
+	public static boolean desenhaPista = true;
+	public static boolean desenhaImagens = true;
 
 	private boolean verControles = true;
 	private boolean desenhouQualificacao;
@@ -588,7 +588,6 @@ public class PainelCircuito {
 				Runnable runnable = new Runnable() {
 					@Override
 					public void run() {
-						Logger.logar("Download Imagem");
 						backGround = controleJogo.carregaBackGround(circuito
 								.getBackGround());
 						if (backGround != null)
@@ -615,19 +614,7 @@ public class PainelCircuito {
 			descontoCentraliza();
 			limitesViewPort = (Rectangle) limitesViewPort();
 			limitesViewPortFull = (Rectangle) limitesViewPortFull();
-			if (Math.abs(mouseZoom - zoom) < 0.01) {
-				zoom = mouseZoom;
-			}
-			if (mouseZoom > zoom) {
-				zoom += 0.01;
-			}
-			if (mouseZoom < zoom) {
-				zoom -= 0.01;
-			}
-			if (mouseZoom == zoom && zoomGrid != zoom) {
-				gerarGrid();
-				zoomGrid = zoom;
-			}
+			processaZoom();
 			Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
 			desenhaBackGround(g2d);
 			setarHints(g2d);
@@ -672,6 +659,22 @@ public class PainelCircuito {
 			desenhaDebugIinfo(g2d);
 		} catch (Exception e) {
 			Logger.logarExept(e);
+		}
+	}
+
+	private void processaZoom() {
+		if (Math.abs(mouseZoom - zoom) < 0.01) {
+			zoom = mouseZoom;
+		}
+		if (mouseZoom > zoom) {
+			zoom += 0.01;
+		}
+		if (mouseZoom < zoom) {
+			zoom -= 0.01;
+		}
+		if (mouseZoom == zoom && zoomGrid != zoom) {
+			gerarGrid();
+			zoomGrid = zoom;
 		}
 	}
 
@@ -1994,7 +1997,7 @@ public class PainelCircuito {
 				controleJogo.getMainFrame().requestFocus();
 
 			}
-			if (!ps.equals(pilotoSelecionado)) {
+			if (ps != null && !ps.equals(pilotoSelecionado)) {
 				pilotoSelecionado = ps;
 				controleJogo.getMainFrame().requestFocus();
 			}
@@ -3161,18 +3164,26 @@ public class PainelCircuito {
 	}
 
 	private void desenhaCarroCima(Graphics2D g2d, Piloto piloto) {
-
 		if (zoom < 0.5) {
+			return;
+		}
+		if (piloto == null) {
+			return;
+		}
+		if (descontoCentraliza == null) {
+			return;
+		}
+		No noAtual = piloto.getNoAtual();
+		if (piloto.getNoAtualSuave() != null) {
+			noAtual = piloto.getNoAtualSuave();
+		}
+		if (noAtual == null) {
 			return;
 		}
 		BufferedImage carroCima = controleJogo.obterCarroCima(piloto);
 		if (carroCima == null || piloto.getCarro().isPaneSeca()
 				|| piloto.getCarro().isRecolhido()) {
 			return;
-		}
-		No noAtual = piloto.getNoAtual();
-		if (piloto.getNoAtualSuave() != null) {
-			noAtual = piloto.getNoAtualSuave();
 		}
 		Point p = noAtual.getPoint();
 		g2d.setColor(Color.black);
@@ -3198,9 +3209,6 @@ public class PainelCircuito {
 		AffineTransform afRotate = new AffineTransform();
 		afZoom.setToScale(zoom, zoom);
 		afRotate.setToRotation(rad, w2, h2);
-
-		String key = piloto.getCarro().getNome() + "-" + zoom + "-"
-				+ calculaAngulo;
 
 		BufferedImage rotateBuffer = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_ARGB);
@@ -3400,6 +3408,10 @@ public class PainelCircuito {
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
 			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
+		}
+		if (piloto.getDiateira() == null || piloto.getCentro() == null
+				|| piloto.getTrazeira() == null) {
+			return;
 		}
 		if (frenteP == null) {
 			frenteP = new Point((int) (piloto.getDiateira().getCenterX()),
@@ -5521,6 +5533,9 @@ public class PainelCircuito {
 	}
 
 	public void apagarLuz() {
+		if (qtdeLuzesAcesas <= 0) {
+			return;
+		}
 		if (qtdeLuzesAcesas <= 1) {
 			setVerControles(false);
 		}

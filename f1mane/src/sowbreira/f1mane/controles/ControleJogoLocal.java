@@ -825,25 +825,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#desenhaQualificacao()
-	 */
-	public void desenhaQualificacao() {
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		gerenciadorVisual.setDesenhouCreditos(true);
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		gerenciadorVisual.setDesenhouQualificacao(true);
-		selecionaPilotoJogador();
-	}
-
-	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getTempoCiclo()
 	 */
 	public long getTempoCiclo() {
@@ -1494,6 +1475,35 @@ public class ControleJogoLocal extends ControleRecursos implements
 	@Override
 	public int getDurabilidadeAreofolio() {
 		return (InterfaceJogo.DURABILIDADE_AREOFOLIO * getQtdeTotalVoltas()) / 72;
+	}
+
+	/**
+	 * @see sowbreira.f1mane.controles.InterfaceJogo#desenhaQualificacao()
+	 */
+	public void desenhaQualificacao() {
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if (gerenciadorVisual != null) {
+			gerenciadorVisual.setDesenhouCreditos(true);
+		}
+		desenhouQualificacao();
+	}
+
+	
+	@Override
+	public void desenhouQualificacao() {
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if (gerenciadorVisual != null) {
+			gerenciadorVisual.setDesenhouQualificacao(true);
+		}
+		selecionaPilotoJogador();
 	}
 
 }

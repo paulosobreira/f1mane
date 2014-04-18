@@ -94,7 +94,6 @@ public class CarregadorRecursos {
 	}
 
 	public static URL carregarImagem(String imagem) {
-		Logger.logar("carregarImagem " + imagem);
 		return CarregadorRecursos.class.getResource(imagem);
 	}
 
