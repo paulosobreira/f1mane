@@ -1230,7 +1230,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (gerenciadorVisual != null) {
 			gerenciadorVisual.setDesenhouQualificacao(true);
 		}
-		selecionaPilotoJogador();
 	}
 
 	public void desenhaQualificacao() {

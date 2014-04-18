@@ -41,8 +41,6 @@ public class MonitorJogo implements Runnable {
 	public long lastPosis = 0;
 	public boolean procPosis = false;
 	private boolean atualizouDados;
-	private boolean apagarLuzes;
-	private long ultLuzApagada;
 	private boolean setZoom;
 
 	public boolean isJogoAtivo() {
@@ -99,7 +97,6 @@ public class MonitorJogo implements Runnable {
 
 	private void apagaLuzesLargada() {
 		boolean interupt = false;
-		atualizouDados = false;
 		while (!interupt && Comandos.LUZES.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
@@ -156,20 +153,22 @@ public class MonitorJogo implements Runnable {
 			throws InterruptedException {
 		int delayVerificaStado = 20;
 		boolean interrupt = false;
-		atualizouDados = false;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
-				apagarLuz();
-				atualizaZoom();
 				iniciaJalena();
-				Logger.logar("MonitorJogo iniciaJalena();");
-				disparaAtualizadorPainel(tempoCiclo);
+				apagarLuz();
+				jogoCliente.desenhaQualificacao();
+				jogoCliente.desenhouQualificacao();
+				atualizaZoom();
 				if (!atualizouDados) {
 					atualizarDados();
 					atualizaModoCarreira();
 					atualizouDados = true;
+					atualizaPosicoes();
+					jogoCliente.selecionaPilotoJogador();
 				}
+				disparaAtualizadorPainel(tempoCiclo);
 				delayVerificaStado--;
 				if (delayVerificaStado <= 0) {
 					atualizarDadosParciais(jogoCliente.getDadosJogo(),
@@ -177,7 +176,6 @@ public class MonitorJogo implements Runnable {
 					if (controlePaddockCliente.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 						jogoCliente.autoDrs();
 					}
-
 					if (controlePaddockCliente.getLatenciaReal() > 2000) {
 						delayVerificaStado = 5;
 					} else {
@@ -199,7 +197,6 @@ public class MonitorJogo implements Runnable {
 	private void atualizaZoom() {
 		if (!setZoom) {
 			jogoCliente.setMouseZoom(0.7);
-			Logger.logar("MonitorJogo jogoCliente.setMouseZoom(0.7)");
 			setZoom = true;
 		}
 	}
@@ -233,7 +230,6 @@ public class MonitorJogo implements Runnable {
 
 	private void mostraQualify(long tempoCiclo) throws InterruptedException {
 		boolean interrupt = false;
-		atualizouDados = false;
 		while (!interrupt && Comandos.MOSTRANDO_QUALIFY.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			iniciaJalena();
@@ -242,7 +238,7 @@ public class MonitorJogo implements Runnable {
 				atualizouDados = true;
 			}
 			jogoCliente.desenhaQualificacao();
-			mostraResultadoFinal(tempoCiclo);
+			Thread.sleep(tempoCiclo);
 			verificaEstadoJogo();
 
 		}

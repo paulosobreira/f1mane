@@ -1458,15 +1458,17 @@ public class Piloto implements Serializable {
 				}
 			}
 		} else {
-			if (diffAnt < 200 && testeHabilidadePiloto(controleJogo)
+			Carro carroAtraz = controleJogo.obterCarroAtraz(this);
+			if (carroAtraz == null) {
+				return;
+			}
+			Piloto pilotoAtraz = carroAtraz.getPiloto();
+			if (diffAnt < 200 && pilotoAtraz.getPtosBox() != 0
+					&& testeHabilidadePiloto(controleJogo)
 					&& controleJogo.getNiveljogo() < Math.random()) {
 				if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-					Carro carroAtraz = controleJogo.obterCarroAtraz(this);
-					Piloto pilotoAtraz = carroAtraz.getPiloto();
 					mudarTracado(pilotoAtraz.getTracado(), controleJogo, true);
 				} else if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
-					Carro carroAtraz = controleJogo.obterCarroAtraz(this);
-					Piloto pilotoAtraz = carroAtraz.getPiloto();
 					mudarTracado(pilotoAtraz.getTracado(), controleJogo, false);
 				} else if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
 					mudarTracado(0, controleJogo, true);
