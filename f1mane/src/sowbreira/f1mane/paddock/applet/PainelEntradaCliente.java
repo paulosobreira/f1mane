@@ -63,7 +63,6 @@ public class PainelEntradaCliente {
 	private JComboBox comboBoxAsa;
 	private JSlider sliderCombustivelInicial;
 	private JSlider sliderDificuldadeUltrapassagem;
-	private JSlider sliderTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
 	protected JCheckBox semTrocaPneu;
@@ -95,9 +94,9 @@ public class PainelEntradaCliente {
 		painelInicio.setLayout(new GridLayout(5, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
-				return Lang.msg("110", new String[] {
-						String.valueOf(Constantes.MIN_VOLTAS),
-						String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang.msg("110",
+						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
+								String.valueOf(Constantes.MAX_VOLTAS) });
 			}
 		};
 
@@ -180,8 +179,7 @@ public class PainelEntradaCliente {
 			}
 		});
 		sliderDificuldadeUltrapassagem = new JSlider(000, 500);
-		sliderDificuldadeUltrapassagem.setValue(new Integer(Util.intervalo(000,
-				500)));
+		sliderDificuldadeUltrapassagem.setValue(new Integer(250));
 		Hashtable labelTable = new Hashtable();
 		labelTable.put(new Integer(000), new JLabel("") {
 			@Override
@@ -198,35 +196,8 @@ public class PainelEntradaCliente {
 		sliderDificuldadeUltrapassagem.setLabelTable(labelTable);
 		sliderDificuldadeUltrapassagem.setPaintLabels(true);
 		jDiff.add(sliderDificuldadeUltrapassagem);
-		// painelInicio.add(jDiff);
+		painelInicio.add(jDiff);
 		JPanel pCiclo = new JPanel();
-		pCiclo.add(new JLabel("Tempo Ciclo :") {
-			@Override
-			public String getText() {
-				return Lang.msg("126");
-			}
-		});
-		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO,
-				Constantes.MAX_CICLO);
-		sliderTempoCiclo.setValue(new Integer(Constantes.MAX_CICLO / 2
-				+ Constantes.MIN_CICLO / 2));
-		labelTable = new Hashtable();
-		labelTable.put(new Integer(Constantes.MIN_CICLO + 40), new JLabel("") {
-			@Override
-			public String getText() {
-				return Lang.msg("RAPIDOS");
-			}
-		});
-		labelTable.put(new Integer(Constantes.MAX_CICLO - 30), new JLabel("") {
-			@Override
-			public String getText() {
-				return Lang.msg("LENTOS");
-			}
-		});
-		sliderTempoCiclo.setLabelTable(labelTable);
-		sliderTempoCiclo.setPaintLabels(true);
-		pCiclo.add(sliderTempoCiclo);
-		painelInicio.add(pCiclo);
 
 		JPanel p1 = new JPanel(new GridLayout(1, 2));
 
@@ -298,8 +269,8 @@ public class PainelEntradaCliente {
 		painelMostrar.add(painelInicio, BorderLayout.CENTER);
 		setaCampeonato();
 
-		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar, Lang
-				.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar,
+				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
@@ -316,8 +287,8 @@ public class PainelEntradaCliente {
 		if (campeonato != null) {
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
-			comboBoxNivelCorrida.setSelectedItem(Lang
-					.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida
+					.setSelectedItem(Lang.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
 			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
 			semReabastacimento.setEnabled(false);
@@ -497,20 +468,10 @@ public class PainelEntradaCliente {
 			qtdeVoltas = new Integer(Constantes.MIN_VOLTAS);
 		}
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
-		// dadosCriarJogo
-		// .setDiffultrapassagem((Integer) sliderDificuldadeUltrapassagem
-		// .getValue());
-		dadosCriarJogo.setDiffultrapassagem(new Integer(Util
-				.intervalo(000, 500)));
-
-		Integer integerTempoCiclo = (Integer) sliderTempoCiclo.getValue();
-		if (integerTempoCiclo.intValue() <= Constantes.MIN_CICLO) {
-			integerTempoCiclo = new Integer(Constantes.MIN_CICLO);
-		}
-		if (integerTempoCiclo.intValue() >= Constantes.MAX_CICLO) {
-			integerTempoCiclo = new Integer(Constantes.MAX_CICLO);
-		}
-		dadosCriarJogo.setTempoCiclo(integerTempoCiclo);
+		dadosCriarJogo
+				.setDiffultrapassagem((Integer) sliderDificuldadeUltrapassagem
+						.getValue());
+		dadosCriarJogo.setDiffultrapassagem(new Integer(250));
 		Integer habilidade = (Integer) spinnerSkillPadraoPilotos.getValue();
 		if (habilidade.intValue() > 99) {
 			habilidade = new Integer(99);
@@ -571,8 +532,8 @@ public class PainelEntradaCliente {
 			}
 		});
 		panel.add(painelInicio, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(mainFrame, panel, Lang
-				.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, panel,
+				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}

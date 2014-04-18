@@ -945,8 +945,16 @@ public class PainelCircuito {
 			g2d.drawString(piloto.getNome(), x + 10, y + 16);
 
 			boolean desenhaBorda = false;
-			if (piloto.isJogadorHumano()) {
+
+			if (piloto.isJogadorHumano()
+					&& controleJogo.getPilotoJogador().equals(piloto)) {
 				g2d.setColor(OcilaCor.geraOcila("mrkSelBlu", bluQualy));
+				desenhaBorda = true;
+
+			}
+			if (piloto.isJogadorHumano()
+					&& !controleJogo.getPilotoJogador().equals(piloto)) {
+				g2d.setColor(OcilaCor.geraOcila("mrkSelOran", Color.ORANGE));
 				desenhaBorda = true;
 
 			}
@@ -4442,8 +4450,15 @@ public class PainelCircuito {
 					+ newY - 5, carroimg.getWidth() + 5,
 					carroimg.getHeight() + 5, 15, 15);
 			boolean desenhaBorda = false;
-			if (piloto.isJogadorHumano()) {
+			if (piloto.isJogadorHumano()
+					&& controleJogo.getPilotoJogador().equals(piloto)) {
 				g2d.setColor(OcilaCor.geraOcila("mrkSelBlu", bluQualy));
+				desenhaBorda = true;
+
+			}
+			if (piloto.isJogadorHumano()
+					&& !controleJogo.getPilotoJogador().equals(piloto)) {
+				g2d.setColor(OcilaCor.geraOcila("mrkSelOran", Color.ORANGE));
 				desenhaBorda = true;
 
 			}

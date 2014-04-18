@@ -156,18 +156,18 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
-				iniciaJalena();
-				apagarLuz();
-				jogoCliente.desenhaQualificacao();
-				jogoCliente.desenhouQualificacao();
-				atualizaZoom();
 				if (!atualizouDados) {
 					atualizarDados();
 					atualizaModoCarreira();
 					atualizouDados = true;
 					atualizaPosicoes();
-					jogoCliente.selecionaPilotoJogador();
 				}
+				iniciaJalena();
+				atualizaZoom();
+				apagarLuz();
+				jogoCliente.desenhaQualificacao();
+				jogoCliente.desenhouQualificacao();
+				jogoCliente.selecionaPilotoJogador();
 				disparaAtualizadorPainel(tempoCiclo);
 				delayVerificaStado--;
 				if (delayVerificaStado <= 0) {
@@ -380,8 +380,6 @@ public class MonitorJogo implements Runnable {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -557,9 +555,8 @@ public class MonitorJogo implements Runnable {
 				}
 			}
 		} catch (Exception e) {
+			atualizarDados();
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
