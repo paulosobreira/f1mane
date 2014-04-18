@@ -300,10 +300,10 @@ public class Carro implements Serializable {
 	}
 
 	public boolean verificaPneusIncompativeisClima(InterfaceJogo controleJogo) {
-		if (controleJogo.isChovendo() && !tipoPneu.equals(TIPO_PNEU_CHUVA)) {
+		if (controleJogo.isChovendo() && !TIPO_PNEU_CHUVA.equals(tipoPneu)) {
 			return true;
 		}
-		if (!controleJogo.isChovendo() && tipoPneu.equals(TIPO_PNEU_CHUVA)) {
+		if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)) {
 			return true;
 		}
 		return false;

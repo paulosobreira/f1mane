@@ -62,7 +62,6 @@ public class MainFrame extends JFrame {
 	private JMenu menuEditor;
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
-	private JCheckBoxMenuItem atualizacaoSuave;
 	private JCheckBoxMenuItem som;
 	protected MainPanelEditorVetorizado editorInflado;
 	private JMenuItem iniciar;
@@ -76,13 +75,6 @@ public class MainFrame extends JFrame {
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;
-	}
-
-	public boolean isAtualizacaoSuave() {
-		if (atualizacaoSuave == null) {
-			return false;
-		}
-		return atualizacaoSuave.isSelected();
 	}
 
 	public MainFrame(JApplet modoApplet, String codeBase) throws IOException {
@@ -144,7 +136,6 @@ public class MainFrame extends JFrame {
 			menuEditor.setEnabled(false);
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		}
-		this.createBufferStrategy(2);
 		removerKeyListeners();
 	}
 
@@ -448,15 +439,6 @@ public class MainFrame extends JFrame {
 		});
 		menu1.add(pausa);
 
-		atualizacaoSuave = new JCheckBoxMenuItem("Atualizacao Suave") {
-			public String getText() {
-				return Lang.msg("atualizacaoSuave");
-			}
-
-		};
-		atualizacaoSuave.setSelected(true);
-		atualizacaoSuave.setEnabled(false);
-		menu1.add(atualizacaoSuave);
 		som = new JCheckBoxMenuItem("Som") {
 			public String getText() {
 				return Lang.msg("som");
@@ -998,11 +980,7 @@ public class MainFrame extends JFrame {
 		if (pausa != null) {
 			pausa.setEnabled(false);
 		}
-		if (atualizacaoSuave != null) {
-			atualizacaoSuave.setEnabled(false);
-		}
 		menuEditor.setEnabled(false);
-
 	}
 
 	public void setControleJogo(InterfaceJogo controleJogo) {

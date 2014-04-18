@@ -16,7 +16,6 @@ public class ControleCiclo extends Thread {
 	private int contadorCiclos;
 	private long tempoCiclo;
 	private boolean processadoCilcos = true;
-	private int contadorLuz = 60;
 
 	public long getTempoCiclo() {
 		return tempoCiclo;
@@ -57,26 +56,18 @@ public class ControleCiclo extends Thread {
 				Thread.sleep(tempoCiclo);
 				controleJogo.desenhaQualificacao();
 				controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
-				while (contadorLuz >= 0) {
-					Thread.sleep(tempoCiclo);
-					contadorLuz--;
-					controleJogo.atualizaPainel();
-					if (contadorLuz == 41) {
-						controleJogo.apagarLuz();
-					}
-					if (contadorLuz == 31) {
-						controleJogo.apagarLuz();
-					}
-					if (contadorLuz == 21) {
-						controleJogo.apagarLuz();
-					}
-					if (contadorLuz == 11) {
-						controleJogo.apagarLuz();
-					}
-					if (contadorLuz == 1) {
-						controleJogo.apagarLuz();
-					}
-				}
+				Thread.sleep(tempoCiclo);
+				controleJogo.atualizaPainel();
+				Thread.sleep(2000);
+				controleJogo.apagarLuz();
+				Thread.sleep(1000);
+				controleJogo.apagarLuz();
+				Thread.sleep(1000);
+				controleJogo.apagarLuz();
+				Thread.sleep(1000);
+				controleJogo.apagarLuz();
+				Thread.sleep(1000);
+				controleJogo.apagarLuz();
 			}
 			Logger.logar("Luzes apagadas iniciar processadoCilcos");
 			boolean interrupt = false;

@@ -373,4 +373,6 @@ public interface InterfaceJogo {
 
 	public int getDurabilidadeAreofolio();
 
+	public void desenhouQualificacao();
+
 }

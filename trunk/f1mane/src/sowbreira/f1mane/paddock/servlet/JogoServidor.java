@@ -281,7 +281,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		disparouInicio = true;
 		controleEstatisticas = new ControleEstatisticas(JogoServidor.this);
 		gerenciadorVisual = null;
-		this.estado = Comandos.MOSTRANDO_QUALIFY;
+		setEstado(Comandos.MOSTRANDO_QUALIFY);
 		processarEntradaDados();
 		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
 		atualizarJogadoresOnlineCarreira();
@@ -309,14 +309,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		}
 		Logger.logar("Tamanho carrobox servidor " + carrobox.size());
 		controleCorrida.getControleBox().geraBoxesEquipes(carrobox);
-		this.estado = Comandos.MOSTRANDO_QUALIFY;
+		setEstado(Comandos.MOSTRANDO_QUALIFY);
 		limpaBuffers();
 		Thread timer = new Thread(new Runnable() {
-
 			public void run() {
 				try {
-					Thread.sleep(30000);
-					estado = Comandos.CORRIDA_INICIADA;
+					Thread.sleep(3000);
 					tempoInicio = System.currentTimeMillis();
 					controleCorrida.iniciarCiclos();
 					controleEstatisticas.inicializarThreadConsumidoraInfo(500);
@@ -358,16 +356,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
 					piloto.setNomeJogador(key);
 					piloto.setJogadorHumano(true);
-					if (Comandos.MOSTRANDO_QUALIFY.equals(estado)) {
-						piloto.getCarro()
-								.setCombustivel(
-										dadosParticiparJogo.getCombustivel()
-												.intValue());
-						piloto.getCarro().trocarPneus(this,
-								dadosParticiparJogo.getTpPnueu(),
-								controleCorrida.getDistaciaCorrida());
-
-					}
 				}
 				if (piloto.isJogadorHumano()
 						&& mapJogadoresOnline.get(piloto.getNomeJogador()) == null) {
@@ -446,7 +434,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
 			Object combust, Object asa) {
-		if (Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)) {
+		if (Comandos.ESPERANDO_JOGO_COMECAR.equals(getEstado())) {
 			return 0;
 		} else {
 			return super
@@ -455,32 +443,18 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void apagarLuz() {
-		estado = Comandos.LUZES;
-		if (luzes == 1) {
-			Thread thread = new Thread(new Runnable() {
-
-				public void run() {
-					try {
-						Thread.sleep(100);
-						estado = Comandos.CORRIDA_INICIADA;
-					} catch (Exception e) {
-						Logger.topExecpts(e);
-					}
-
-				}
-
-			});
-			thread.start();
-
-		}
+		setEstado(Comandos.LUZES);
 		this.luzes--;
+		if (luzes <= 0) {
+			setEstado(Comandos.CORRIDA_INICIADA);
+		}
 	}
 
 	public void adicionarInfoDireto(String info) {
 	}
 
 	public void info(String info) {
-		if (Comandos.CORRIDA_INICIADA.equals(estado)) {
+		if (Comandos.CORRIDA_INICIADA.equals(getEstado())) {
 			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
 					.hasNext();) {
 				String key = (String) iter.next();
@@ -495,7 +469,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void infoPrioritaria(String info) {
-		if (Comandos.CORRIDA_INICIADA.equals(estado)) {
+		if (Comandos.CORRIDA_INICIADA.equals(getEstado())) {
 			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
 					.hasNext();) {
 				String key = (String) iter.next();
@@ -515,7 +489,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 			public void run() {
 				try {
-					estado = Comandos.MOSTRA_RESULTADO_FINAL;
+					setEstado(Comandos.MOSTRA_RESULTADO_FINAL);
 					tempoFim = System.currentTimeMillis();
 					try {
 						controleClassificacao.processaCorrida(tempoInicio,

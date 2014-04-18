@@ -74,8 +74,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void setDadosJogo(DadosJogo dadosJogo) {
 		this.dadosJogo = dadosJogo;
 		if (dadosJogo != null && dadosJogo.getPilotosList() != null
-				&& !dadosJogo.getPilotosList().isEmpty())
+				&& !dadosJogo.getPilotosList().isEmpty()) {
 			pilotos = dadosJogo.getPilotosList();
+		}
 		if (Comandos.CORRIDA_INICIADA.equals(monitorJogo.getEstado())) {
 			if (dadosJogo != null && dadosJogo.getClima() != null
 					&& clima != null && !clima.equals(dadosJogo.getClima())) {
@@ -119,6 +120,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		try {
 			preparaGerenciadorVisual(false);
 		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
 	}
 
@@ -198,11 +200,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void atualizaPainel() {
-		if (gerenciadorVisual == null) {
-			preparaGerenciadorVisual();
-		}
-		gerenciadorVisual.atualizaPainel();
-
 	}
 
 	public void atulizaTabelaPosicoes() {
@@ -232,13 +229,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		long tempo = dadosParticiparJogo.getTempoCiclo().intValue();
 		return controleEstatisticas.calculaSegundosParaProximoDouble(psel,
 				tempo);
-	}
-
-	public void desenhaQualificacao() {
-		if (gerenciadorVisual == null) {
-			preparaGerenciadorVisual();
-		}
-
 	}
 
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
@@ -564,16 +554,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			if (piloto.getId() == posis.idPiloto) {
 				piloto.setAgressivo(posis.agressivo, this);
 				piloto.setJogadorHumano(posis.humano);
-				if (!getMainFrame().isAtualizacaoSuave()) {
-					if (piloto.getIndiceTracado() <= 0) {
-						piloto.setTracadoAntigo(piloto.getTracado());
-					}
-					piloto.setTracado(posis.tracado);
-					if (piloto.getIndiceTracado() <= 0
-							&& piloto.getTracado() != piloto.getTracadoAntigo()) {
-						piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
-								.getMultiplicadorLarguraPista()));
-					}
+				if (piloto.getIndiceTracado() <= 0) {
+					piloto.setTracadoAntigo(piloto.getTracado());
+				}
+				piloto.setTracado(posis.tracado);
+				if (piloto.getIndiceTracado() <= 0
+						&& piloto.getTracado() != piloto.getTracadoAntigo()) {
+					piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+							.getMultiplicadorLarguraPista()));
 				}
 				piloto.setAutoPos(posis.autoPos);
 				if (posis.idNo >= -1) {
@@ -1067,7 +1055,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void decrementaTracado() {
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			piloto.decIndiceTracado(0);
+			piloto.decIndiceTracado();
 		}
 	}
 
@@ -1228,13 +1216,27 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoFrente) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public int getDurabilidadeAreofolio() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void desenhouQualificacao() {
+		if (gerenciadorVisual != null) {
+			gerenciadorVisual.setDesenhouQualificacao(true);
+		}
+		selecionaPilotoJogador();
+	}
+
+	public void desenhaQualificacao() {
+		if (gerenciadorVisual != null) {
+			gerenciadorVisual.setDesenhouCreditos(true);
+		}
 	}
 
 }
