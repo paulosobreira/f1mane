@@ -3,6 +3,8 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 import java.util.List;
 
+import br.nnpe.Constantes;
+
 import sowbreira.f1mane.entidades.Clima;
 
 /**
@@ -25,7 +27,8 @@ public class DadosCriarJogo implements Serializable {
 	private String senha;
 	private String nomeJogo;
 	private String circuitoSelecionado = null;
-	private Integer tempoCiclo = null;
+	private Integer tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
+			+ Constantes.MIN_CICLO / 2);
 	private Clima clima = null;
 	private Integer qtdeVoltas = null;
 	private String nivelCorrida = null;
@@ -173,10 +176,6 @@ public class DadosCriarJogo implements Serializable {
 
 	public Integer getTempoCiclo() {
 		return tempoCiclo;
-	}
-
-	public void setTempoCiclo(Integer tempoCiclo) {
-		this.tempoCiclo = tempoCiclo;
 	}
 
 	public Integer getTempoQualificacao() {

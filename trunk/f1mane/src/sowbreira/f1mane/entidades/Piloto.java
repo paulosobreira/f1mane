@@ -1463,7 +1463,7 @@ public class Piloto implements Serializable {
 				return;
 			}
 			Piloto pilotoAtraz = carroAtraz.getPiloto();
-			if (diffAnt < 200 && pilotoAtraz.getPtosBox() != 0
+			if (diffAnt < 200 && pilotoAtraz.getPtosBox() == 0
 					&& testeHabilidadePiloto(controleJogo)
 					&& controleJogo.getNiveljogo() < Math.random()) {
 				if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
@@ -2699,7 +2699,7 @@ public class Piloto implements Serializable {
 	}
 
 	public int decIndiceTracado() {
-		return decIndiceTracado(1);
+		return decIndiceTracado(0);
 	}
 
 	public int decIndiceTracado(int decExtra) {

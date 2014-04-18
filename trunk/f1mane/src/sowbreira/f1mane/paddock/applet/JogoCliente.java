@@ -471,6 +471,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void selecionaPilotoJogador() {
+		if (pilotoSelecionado != null) {
+			return;
+		}
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			if (nomeJogador.equals(piloto.getNomeJogador())) {

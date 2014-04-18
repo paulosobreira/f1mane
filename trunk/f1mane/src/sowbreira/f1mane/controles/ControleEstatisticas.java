@@ -42,9 +42,15 @@ public class ControleEstatisticas {
 		this.controleJogo = controleJogo;
 	}
 
+	private long calculaDiferenca(Piloto frente, Piloto piloto) {
+		long diff = frente.getPtosPista() - piloto.getPtosPista();
+		diff /= 3;
+		return diff;
+	}
+
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado, long tempo) {
 		Piloto lider = (Piloto) controleJogo.getPilotos().get(0);
-		long diff = lider.getPtosPista() - pilotoSelecionado.getPtosPista();
+		long diff = calculaDiferenca(lider, pilotoSelecionado);
 		String ret = milesismos.format((diff / Double.parseDouble(String
 				.valueOf(tempo)))) + "s";
 		pilotoSelecionado.setSegundosParaLider(ret);
@@ -53,7 +59,7 @@ public class ControleEstatisticas {
 
 	public String calculaSegundosParaRival(Piloto pilotoSelecionado,
 			Piloto rival, long tempo) {
-		long diff = rival.getPtosPista() - pilotoSelecionado.getPtosPista();
+		long diff = calculaDiferenca(rival, pilotoSelecionado);
 		String ret = milesismos.format((diff / Double.parseDouble(String
 				.valueOf(tempo)))) + "s";
 		return ret;
@@ -167,7 +173,7 @@ public class ControleEstatisticas {
 		}
 		Piloto piloto = (Piloto) controleJogo.getPilotos().get(pos);
 		if (piloto != null) {
-			long diff = piloto.getPtosPista() - psel.getPtosPista();
+			long diff = calculaDiferenca(piloto, psel);
 			return Util.inte(diff);
 		}
 		return Integer.MAX_VALUE;
@@ -183,7 +189,7 @@ public class ControleEstatisticas {
 		}
 		Piloto piloto = (Piloto) controleJogo.getPilotos().get(pos);
 		if (piloto != null) {
-			long diff = psel.getPtosPista() - piloto.getPtosPista();
+			long diff = calculaDiferenca(psel, piloto);
 			return Util.inte(diff);
 		}
 		return Integer.MAX_VALUE;
