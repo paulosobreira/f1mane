@@ -307,14 +307,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				}
 			}
 		}
-		Logger.logar("Tamanho carrobox servidor " + carrobox.size());
 		controleCorrida.getControleBox().geraBoxesEquipes(carrobox);
-		setEstado(Comandos.MOSTRANDO_QUALIFY);
 		limpaBuffers();
 		Thread timer = new Thread(new Runnable() {
 			public void run() {
 				try {
-					Thread.sleep(3000);
+					Thread.sleep(1000);
 					tempoInicio = System.currentTimeMillis();
 					controleCorrida.iniciarCiclos();
 					controleEstatisticas.inicializarThreadConsumidoraInfo(500);
@@ -446,6 +444,11 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		setEstado(Comandos.LUZES);
 		this.luzes--;
 		if (luzes <= 0) {
+			try {
+				Thread.sleep(1000);
+			} catch (Exception e) {
+				Logger.topExecpts(e);
+			}
 			setEstado(Comandos.CORRIDA_INICIADA);
 		}
 	}

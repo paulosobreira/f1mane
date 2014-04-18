@@ -3571,8 +3571,13 @@ public class PainelCircuito {
 		if (!Logger.ativo) {
 			return;
 		}
+		if (piloto.getDiateira() == null || piloto.getCentro() == null
+				|| piloto.getTrazeira() == null) {
+			return;
+		}
 		g2d.setColor(new Color(255, 0, 0, 140));
 		g2d.setColor(Color.BLACK);
+
 		Point2D.Double frenteCarD = new Point2D.Double(piloto.getDiateira()
 				.getCenterX() - descontoCentraliza.x, piloto.getDiateira()
 				.getCenterY() - descontoCentraliza.y);
