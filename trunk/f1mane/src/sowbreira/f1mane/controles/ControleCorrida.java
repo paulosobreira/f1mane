@@ -668,42 +668,4 @@ public class ControleCorrida {
 		controleClima.climaEnsolarado();
 	}
 
-	public int calculaDiffParaProximoRetardatario(Piloto piloto,
-			boolean analisaTracado) {
-		List<Piloto> pilotos = controleJogo.getPilotos();
-		int menorDistancia = Integer.MAX_VALUE;
-		if (piloto.getPtosBox() != 0) {
-			return menorDistancia;
-		}
-		int indexAtual = piloto.getNoAtual().getIndex();
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-			Piloto pilotoFrente = (Piloto) iterator.next();
-			if (pilotoFrente.getPtosBox() != 0) {
-				continue;
-			}
-			if (pilotoFrente.getTracado() == 4
-					|| pilotoFrente.getTracado() == 5) {
-				continue;
-			}
-			if (analisaTracado
-					&& pilotoFrente.getTracado() != piloto.getTracado()) {
-				continue;
-			}
-			int indexFrente = pilotoFrente.getNoAtual().getIndex();
-			if (indexFrente > indexAtual
-					&& (indexFrente - indexAtual) < menorDistancia) {
-				menorDistancia = (indexFrente - indexAtual);
-			}
-
-			indexFrente += controleJogo.obterPista(piloto).size();
-
-			if (indexFrente > indexAtual
-					&& (indexFrente - indexAtual) < menorDistancia) {
-				menorDistancia = (indexFrente - indexAtual);
-			}
-		}
-
-		return Util.inte(menorDistancia);
-
-	}
 }
