@@ -230,6 +230,7 @@ public class MonitorJogo implements Runnable {
 
 	private void mostraQualify(long tempoCiclo) throws InterruptedException {
 		boolean interrupt = false;
+		boolean creditos = false;
 		while (!interrupt && Comandos.MOSTRANDO_QUALIFY.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			iniciaJalena();
@@ -237,9 +238,13 @@ public class MonitorJogo implements Runnable {
 				atualizarDados();
 				atualizouDados = true;
 			}
-			Thread.sleep(3000);
-			jogoCliente.desenhaQualificacao();
-			Thread.sleep(tempoCiclo);
+			if (!creditos) {
+				Thread.sleep(3000);
+				creditos = true;
+			} else {
+				jogoCliente.desenhaQualificacao();
+				Thread.sleep(tempoCiclo);
+			}
 			verificaEstadoJogo();
 		}
 	}

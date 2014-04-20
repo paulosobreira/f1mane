@@ -83,16 +83,16 @@ public class GerenciadorVisual {
 	private JComboBox comboBoxCircuito;
 	private JComboBox boxPilotoSelecionado;
 	private JComboBox comboBoxTemporadas;
-	private JList listPilotosSelecionados;
 	private JComboBox boxPneuInicial;
 	private JComboBox comboBoxAsaInicial;
 	private JSlider spinnerCombustivel;
 	private JSpinner spinnerQtdeVoltas;
-	private JSlider sliderTempoCiclo;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
 	private JSpinner spinnerQtdeMinutosQualificacao;
+	private JSlider sliderTempoCiclo;
 	private JSlider spinnerDificuldadeUltrapassagem;
+	private JList listPilotosSelecionados;
 	private PainelCircuito painelCircuito;
 	private InterfaceJogo controleJogo;
 	private JPanel centerPanel = new JPanel();
