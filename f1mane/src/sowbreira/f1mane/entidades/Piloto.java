@@ -1501,9 +1501,7 @@ public class Piloto implements Serializable {
 		}
 		int calculaDiferencaParaAnterior = controleJogo
 				.calculaDiferencaParaAnterior(this);
-		if (calculaDiferencaParaAnterior < Util.intervalo(
-				50 * controleJogo.getNiveljogo(),
-				75 * controleJogo.getNiveljogo())
+		if (calculaDiferencaParaAnterior < 200
 				&& testeHabilidadePiloto(controleJogo)) {
 			int porcentagemCombustivel = getCarro().porcentagemCombustivel();
 			int porcentagemDesgastePeneus = getCarro()
@@ -2699,7 +2697,7 @@ public class Piloto implements Serializable {
 	}
 
 	public int decIndiceTracado() {
-		return decIndiceTracado(0);
+		return decIndiceTracado(1);
 	}
 
 	public int decIndiceTracado(int decExtra) {

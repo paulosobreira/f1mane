@@ -1294,7 +1294,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	@Override
 	public int calculaDiffParaProximoRetardatario(Piloto piloto,
 			boolean analisaTracado) {
-		return controleCorrida.calculaDiffParaProximoRetardatario(piloto,
+		return controleEstatisticas.calculaDiffParaProximoRetardatario(piloto,
 				analisaTracado);
 	}
 
@@ -1492,7 +1492,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 		desenhouQualificacao();
 	}
 
-	
 	@Override
 	public void desenhouQualificacao() {
 		try {

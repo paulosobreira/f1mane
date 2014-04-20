@@ -237,10 +237,10 @@ public class MonitorJogo implements Runnable {
 				atualizarDados();
 				atualizouDados = true;
 			}
+			Thread.sleep(3000);
 			jogoCliente.desenhaQualificacao();
 			Thread.sleep(tempoCiclo);
 			verificaEstadoJogo();
-
 		}
 	}
 
@@ -251,7 +251,8 @@ public class MonitorJogo implements Runnable {
 			jogoCliente.carregaBackGroundCliente();
 			verificaEstadoJogo();
 			try {
-				Thread.sleep(1000);
+				atualizouDados = false;
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				interupt = true;
 				Logger.logarExept(e);

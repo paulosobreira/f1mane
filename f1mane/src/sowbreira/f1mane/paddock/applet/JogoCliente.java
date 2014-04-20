@@ -557,13 +557,24 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			if (piloto.getId() == posis.idPiloto) {
 				piloto.setAgressivo(posis.agressivo, this);
 				piloto.setJogadorHumano(posis.humano);
+				int pos = posis.tracado;
+				double mod = Carro.ALTURA;
+				if (piloto.getTracado() == 0 && (pos == 4 || pos == 5)) {
+					mod *= 3;
+				} else if ((piloto.getTracado() == 1 || piloto.getTracado() == 2)
+						&& (pos == 4 || pos == 5)) {
+					mod *= 2;
+				} else if ((piloto.getTracado() == 5 || piloto.getTracado() == 4)
+						&& (pos == 2 || pos == 1)) {
+					mod *= 2;
+				}
 				if (piloto.getIndiceTracado() <= 0) {
 					piloto.setTracadoAntigo(piloto.getTracado());
 				}
-				piloto.setTracado(posis.tracado);
+				piloto.setTracado(pos);
 				if (piloto.getIndiceTracado() <= 0
 						&& piloto.getTracado() != piloto.getTracadoAntigo()) {
-					piloto.setIndiceTracado((int) (Carro.ALTURA * getCircuito()
+					piloto.setIndiceTracado((int) (mod * getCircuito()
 							.getMultiplicadorLarguraPista()));
 				}
 				piloto.setAutoPos(posis.autoPos);
@@ -1065,8 +1076,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public int calculaDiffParaProximoRetardatario(Piloto piloto,
 			boolean analisaTracado) {
-		// TODO Auto-generated method stub
-		return 0;
+		return controleEstatisticas.calculaDiffParaProximoRetardatario(piloto,
+				analisaTracado);
 	}
 
 	@Override
