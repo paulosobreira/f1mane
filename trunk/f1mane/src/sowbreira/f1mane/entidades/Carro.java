@@ -885,7 +885,7 @@ public class Carro implements Serializable {
 			fator /= 2;
 		} else if (piloto.getQtdeParadasBox() == 0
 				&& controleJogo.porcentagemCorridaCompletada() > 50) {
-			fator++;
+			fator *= 2;
 		}
 
 		double combustivel = fator + porcentComb;
@@ -919,9 +919,9 @@ public class Carro implements Serializable {
 				|| (controleJogo.isChovendo() && !TIPO_PNEU_CHUVA
 						.equals(tipoPneu))) {
 			if (controleJogo.asfaltoAbrasivo()) {
-				valDesgaste *= 0.5;
-			} else {
 				valDesgaste *= 0.3;
+			} else {
+				valDesgaste *= 0.1;
 			}
 		}
 
