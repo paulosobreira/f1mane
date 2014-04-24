@@ -213,7 +213,6 @@ public class GerenciadorVisual {
 						delta -= 1;
 					}
 					if (render) {
-						atualizaPilotosSuave();
 						atualizaPainel();
 						++frames;
 					}
@@ -235,7 +234,7 @@ public class GerenciadorVisual {
 		});
 
 		thAtualizaPainelSuave.start();
-		//thAtualizaPilotosSuave.start();
+		thAtualizaPilotosSuave.start();
 	}
 
 	private void atualizaPilotosSuave() {
@@ -375,12 +374,12 @@ public class GerenciadorVisual {
 
 				piloto.setNoAtualSuave(noAtualSuave);
 			}
-//			try {
-//				Thread.sleep(5);
-//			} catch (InterruptedException e) {
-//				thAtualizaPilotosSuaveAlive = false;
-//				Logger.logarExept(e);
-//			}
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				thAtualizaPilotosSuaveAlive = false;
+				Logger.logarExept(e);
+			}
 		}
 	}
 
