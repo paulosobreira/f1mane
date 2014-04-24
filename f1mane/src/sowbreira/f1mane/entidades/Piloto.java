@@ -1653,16 +1653,14 @@ public class Piloto implements Serializable {
 		if (verificaNaoPrecisaDesvia(controleJogo, piloto)) {
 			return;
 		}
-		boolean verificaNoPitLaneOutro = controleJogo.verificaNoPitLane(piloto);
-		if (verificaNoPitLaneOutro) {
+		if (piloto.getPtosBox() > 0) {
 			return;
 		}
 		diferencaParaProximoRetardatario = controleJogo
 				.calculaDiffParaProximoRetardatario(this, true);
-		if (diferencaParaProximoRetardatario < 100.0
+		if (diferencaParaProximoRetardatario < 200.0
 				&& (getTracado() == piloto.getTracado())) {
-			penalidadeColisao(controleJogo);
-			ganho *= (diferencaParaProximoRetardatario / 100.0);
+			ganho *= (diferencaParaProximoRetardatario / 200.0);
 		}
 	}
 
@@ -2713,6 +2711,11 @@ public class Piloto implements Serializable {
 		}
 		if (getTracado() == 4 || getTracado() == 5) {
 			indiceTracado -= decExtra;
+		} else {
+			if (noAtual.verificaRetaOuLargada()
+					&& getCarro().testeAerodinamica()) {
+				indiceTracado -= decExtra;
+			}
 		}
 		if (indiceTracado <= 0) {
 			indiceTracado = 0;
@@ -2931,8 +2934,10 @@ public class Piloto implements Serializable {
 			return 0;
 		}
 		double total = 0;
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			total += (Double) iterator.next();
+		synchronized (list) {
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				total += (Double) iterator.next();
+			}
 		}
 		return total / list.size();
 	}
