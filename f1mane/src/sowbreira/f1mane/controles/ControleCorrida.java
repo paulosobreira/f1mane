@@ -610,7 +610,9 @@ public class ControleCorrida {
 	}
 
 	public boolean asfaltoAbrasivo() {
-		return asfaltoAbrasivo;
+		return asfaltoAbrasivo
+				&& (Math.random() < ((double) controleJogo.getNumVoltaAtual() / (double) controleJogo
+						.getQtdeTotalVoltas()));
 	}
 
 	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
