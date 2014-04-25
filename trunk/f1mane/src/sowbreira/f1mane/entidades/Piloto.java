@@ -994,8 +994,8 @@ public class Piloto implements Serializable {
 		verificaMudancaRegime(controleJogo);
 		processaGanho(controleJogo);
 		processaIAnovoIndex(controleJogo);
-		ganho = processaEscapadaDaPista(controleJogo, ganho);
 		controleJogo.verificaUltraPassagem(this);
+		ganho = processaEscapadaDaPista(controleJogo, ganho);
 		processaTurbulencia(controleJogo);
 		processaGanhoDanificado();
 		processaFreioNaReta(controleJogo);
@@ -1463,16 +1463,10 @@ public class Piloto implements Serializable {
 				return;
 			}
 			Piloto pilotoAtraz = carroAtraz.getPiloto();
-			if (diffAnt < 200 && pilotoAtraz.getPtosBox() == 0
-					&& testeHabilidadePiloto(controleJogo)
+			if (diffAnt < 100 && pilotoAtraz.getPtosBox() == 0
+					&& testeHabilidadePiloto(controleJogo) && !isFreiandoReta()
 					&& controleJogo.getNiveljogo() < Math.random()) {
-				if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-					mudarTracado(pilotoAtraz.getTracado(), controleJogo, true);
-				} else if (controleJogo.getNiveljogo() == InterfaceJogo.MEDIO_NV) {
-					mudarTracado(pilotoAtraz.getTracado(), controleJogo, false);
-				} else if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
-					mudarTracado(0, controleJogo, true);
-				}
+				mudarTracado(pilotoAtraz.getTracado(), controleJogo, false);
 			}
 
 		}
