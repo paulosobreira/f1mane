@@ -681,6 +681,9 @@ public class PainelCircuito {
 			voltaMenuPrincipalRect.setFrame(0, 0, 1, 1);
 			return;
 		}
+		if (controleJogo instanceof JogoCliente) {
+			return;
+		}
 		int x = limitesViewPort.x + (int) (limitesViewPort.getWidth() / 2);
 		int y = limitesViewPort.y + (int) (limitesViewPort.getHeight() / 2)
 				- 50;
