@@ -32,6 +32,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -70,6 +71,14 @@ public class MainPanelEditor extends JPanel {
 	int ultimoItemPistaSelecionado = -1;
 	private JRadioButton pistasButton = new JRadioButton();
 	private JRadioButton boxButton = new JRadioButton();
+
+	private JRadioButton largadaButton = new JRadioButton();
+	private JRadioButton retaButton = new JRadioButton();
+	private JRadioButton curvaAltaButton = new JRadioButton();
+	private JRadioButton curvaBaixaButton = new JRadioButton();
+	private JRadioButton nosBoxButton = new JRadioButton();
+	private JRadioButton paraBoxButton = new JRadioButton();
+
 	private JScrollPane scrollPane;
 
 	public MainPanelEditor(String backGroundStr, JFrame frame) {
@@ -118,109 +127,144 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void iniciaEditor(JFrame frame) {
-		JPanel controlPanel = new JPanel();
-		controlPanel.setLayout(new GridLayout(2, 1));
 
-		pistaJList = new JList(new DefaultListModel());
-		boxJList = new JList(new DefaultListModel());
-		pistaJList.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				int keyCoode = e.getKeyCode();
+		JPanel controlPanel = gerarListsNosPistaBox();
 
-				if (keyCoode == KeyEvent.VK_DELETE) {
-					if (pistaJList.getSelectedValue() == null) {
-						return;
-					}
+		JPanel buttonsPanel = gerarBotoesTesteTracado();
 
-					circuito.getPista().remove(pistaJList.getSelectedValue());
-					((DefaultListModel) pistaJList.getModel())
-							.remove(pistaJList.getSelectedIndex());
+		JPanel radiosPanel = new JPanel();
+		radiosPanel.setLayout(new GridLayout(1, 9));
+
+		JButton apagarUltimoNoButton = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("105");
+			}
+		};
+		apagarUltimoNoButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					apagarUltimoNo();
+				} catch (Exception e1) {
+					Logger.logarExept(e1);
 				}
-
-				tipoNo = null;
-			}
-		});
-		pistaJList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				MainPanelEditor.this.repaint();
-				if (pistaJList.getSelectedIndex() > -1)
-					ultimoItemPistaSelecionado = pistaJList.getSelectedIndex();
-			}
-		});
-		pistaJList.addMouseListener(new MouseAdapter() {
-
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				ultimoItemPistaSelecionado = pistaJList.getSelectedIndex();
-			}
-
-		});
-		boxJList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				MainPanelEditor.this.repaint();
-				if (boxJList.getSelectedIndex() > -1)
-					ultimoItemBoxSelecionado = boxJList.getSelectedIndex();
 			}
 		});
 
-		boxJList.addMouseListener(new MouseAdapter() {
+		radiosPanel.add(apagarUltimoNoButton);
 
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				ultimoItemBoxSelecionado = boxJList.getSelectedIndex();
+		JButton apagarUltimoNoPistaButton = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("106");
 			}
-
-		});
-		boxJList.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				int keyCoode = e.getKeyCode();
-
-				if (keyCoode == KeyEvent.VK_DELETE) {
-					if (boxJList.getSelectedValue() == null) {
-						return;
-					}
-
-					circuito.getBox().remove(boxJList.getSelectedValue());
-					((DefaultListModel) boxJList.getModel()).remove(boxJList
-							.getSelectedIndex());
+		};
+		apagarUltimoNoPistaButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					apagarUltimoNoPista();
+				} catch (Exception e1) {
+					Logger.logarExept(e1);
 				}
-
-				tipoNo = null;
 			}
 		});
+
+		radiosPanel.add(apagarUltimoNoPistaButton);
+
+		JButton apagarUltimoNoBoxButton = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("107");
+			}
+		};
+		apagarUltimoNoBoxButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					apagarUltimoNoBox();
+				} catch (Exception e1) {
+					Logger.logarExept(e1);
+				}
+			}
+		});
+
+		radiosPanel.add(apagarUltimoNoBoxButton);
+
 		ButtonGroup buttonGroup = new ButtonGroup();
 
-		buttonGroup.add(boxButton);
-		buttonGroup.add(pistasButton);
-		pistasButton.setSelected(true);
-		JPanel radioPistaPanel = new JPanel();
-		radioPistaPanel.add(new JLabel() {
+		buttonGroup.add(largadaButton);
+		buttonGroup.add(retaButton);
+		buttonGroup.add(curvaAltaButton);
+		buttonGroup.add(curvaBaixaButton);
+		buttonGroup.add(nosBoxButton);
+		buttonGroup.add(paraBoxButton);
+
+		JPanel bottonsPanel = new JPanel();
+		bottonsPanel.add(new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("032");
+				return Lang.msg("099");
 			}
 		});
-		radioPistaPanel.add(pistasButton);
-		JPanel pistas = new JPanel();
-		pistas.setLayout(new BorderLayout());
-		pistas.add(radioPistaPanel, BorderLayout.NORTH);
-		pistas.add(new JScrollPane(pistaJList), BorderLayout.CENTER);
-		controlPanel.add(pistas);
+		bottonsPanel.add(largadaButton);
+		radiosPanel.add(bottonsPanel);
 
-		JPanel radioBoxPanel = new JPanel();
-		radioBoxPanel.add(new JLabel() {
+		bottonsPanel = new JPanel();
+		bottonsPanel.add(new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("033");
+				return Lang.msg("100");
 			}
 		});
-		radioBoxPanel.add(boxButton);
-		JPanel boxes = new JPanel();
-		boxes.setLayout(new BorderLayout());
-		boxes.add(radioBoxPanel, BorderLayout.NORTH);
-		boxes.add(new JScrollPane(boxJList), BorderLayout.CENTER);
-		controlPanel.add(boxes);
+		bottonsPanel.add(retaButton);
+		radiosPanel.add(bottonsPanel);
 
+		bottonsPanel = new JPanel();
+		bottonsPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("101");
+			}
+		});
+		bottonsPanel.add(curvaAltaButton);
+		radiosPanel.add(bottonsPanel);
+
+		bottonsPanel = new JPanel();
+		bottonsPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("102");
+			}
+		});
+		bottonsPanel.add(curvaBaixaButton);
+		radiosPanel.add(bottonsPanel);
+
+		bottonsPanel = new JPanel();
+		bottonsPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("103");
+			}
+		});
+		bottonsPanel.add(nosBoxButton);
+		radiosPanel.add(bottonsPanel);
+
+		bottonsPanel = new JPanel();
+		bottonsPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("104");
+			}
+		});
+		bottonsPanel.add(paraBoxButton);
+		radiosPanel.add(bottonsPanel);
+
+		gerarLayout(frame, controlPanel, buttonsPanel, radiosPanel);
+		testePista = new TestePista(this, circuito);
+		adicionaEventosMouse(frame);
+
+	}
+
+	private JPanel gerarBotoesTesteTracado() {
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridLayout(1, 4));
 
@@ -280,14 +324,114 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		buttonsPanel.add(desenhaTracadoBot);
+		return buttonsPanel;
+	}
 
-		gerarLayout(frame, controlPanel, buttonsPanel);
-		testePista = new TestePista(this, circuito);
-		adicionaEventosMouse(frame);
+	private JPanel gerarListsNosPistaBox() {
+		JPanel controlPanel = new JPanel();
+		controlPanel.setLayout(new GridLayout(2, 1));
+
+		pistaJList = new JList(new DefaultListModel());
+		boxJList = new JList(new DefaultListModel());
+		pistaJList.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				int keyCoode = e.getKeyCode();
+
+				if (keyCoode == KeyEvent.VK_DELETE) {
+					if (pistaJList.getSelectedValue() == null) {
+						return;
+					}
+
+					circuito.getPista().remove(pistaJList.getSelectedValue());
+					((DefaultListModel) pistaJList.getModel())
+							.remove(pistaJList.getSelectedIndex());
+				}
+
+			}
+		});
+		pistaJList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				MainPanelEditor.this.repaint();
+				if (pistaJList.getSelectedIndex() > -1)
+					ultimoItemPistaSelecionado = pistaJList.getSelectedIndex();
+			}
+		});
+		pistaJList.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				ultimoItemPistaSelecionado = pistaJList.getSelectedIndex();
+			}
+
+		});
+		boxJList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				MainPanelEditor.this.repaint();
+				if (boxJList.getSelectedIndex() > -1)
+					ultimoItemBoxSelecionado = boxJList.getSelectedIndex();
+			}
+		});
+
+		boxJList.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				ultimoItemBoxSelecionado = boxJList.getSelectedIndex();
+			}
+
+		});
+		boxJList.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				int keyCoode = e.getKeyCode();
+
+				if (keyCoode == KeyEvent.VK_DELETE) {
+					if (boxJList.getSelectedValue() == null) {
+						return;
+					}
+
+					circuito.getBox().remove(boxJList.getSelectedValue());
+					((DefaultListModel) boxJList.getModel()).remove(boxJList
+							.getSelectedIndex());
+				}
+			}
+		});
+		ButtonGroup buttonGroup = new ButtonGroup();
+
+		buttonGroup.add(boxButton);
+		buttonGroup.add(pistasButton);
+		pistasButton.setSelected(true);
+		JPanel radioPistaPanel = new JPanel();
+		radioPistaPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("032");
+			}
+		});
+		radioPistaPanel.add(pistasButton);
+		JPanel pistas = new JPanel();
+		pistas.setLayout(new BorderLayout());
+		pistas.add(radioPistaPanel, BorderLayout.NORTH);
+		pistas.add(new JScrollPane(pistaJList), BorderLayout.CENTER);
+		controlPanel.add(pistas);
+
+		JPanel radioBoxPanel = new JPanel();
+		radioBoxPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("033");
+			}
+		});
+		radioBoxPanel.add(boxButton);
+		JPanel boxes = new JPanel();
+		boxes.setLayout(new BorderLayout());
+		boxes.add(radioBoxPanel, BorderLayout.NORTH);
+		boxes.add(new JScrollPane(boxJList), BorderLayout.CENTER);
+		controlPanel.add(boxes);
+		return controlPanel;
 	}
 
 	private void gerarLayout(JFrame frame, JPanel controlPanel,
-			JPanel buttonsPanel) {
+			JPanel buttonsPanel, JPanel radiosPanel) {
 		frame.getContentPane().removeAll();
 		frame.setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(backGround.getWidth(), backGround
@@ -298,6 +442,7 @@ public class MainPanelEditor extends JPanel {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
+		frame.getContentPane().add(radiosPanel, BorderLayout.NORTH);
 		frame.pack();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
@@ -394,7 +539,7 @@ public class MainPanelEditor extends JPanel {
 				}
 
 				Logger.logar("Pontos Editor :" + e.getX() + " - " + e.getY());
-				if ((tipoNo == null) || (e.getButton() == 3)) {
+				if ((getTipoNo() == null) || (e.getButton() == 3)) {
 					srcFrame.requestFocus();
 
 					return;
@@ -405,7 +550,7 @@ public class MainPanelEditor extends JPanel {
 				Logger.logar(new Color(cor[0], cor[1], cor[2], cor[3]));
 
 				No no = new No();
-				no.setTipo(tipoNo);
+				no.setTipo(getTipoNo());
 				no.setPoint(e.getPoint());
 				inserirNoNasJList(no);
 
@@ -553,7 +698,7 @@ public class MainPanelEditor extends JPanel {
 					oldNo = no;
 				}
 
-				if (pistaJList.getSelectedValue() == no) {
+				if (pistaJList != null && pistaJList.getSelectedValue() == no) {
 					g2d.setColor(Color.WHITE);
 					g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6,
 							6, 2, 2);
@@ -577,7 +722,7 @@ public class MainPanelEditor extends JPanel {
 					oldNo = no;
 				}
 
-				if (boxJList.getSelectedValue() == no) {
+				if (boxJList != null && boxJList.getSelectedValue() == no) {
 					g2d.setColor(Color.WHITE);
 					g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6,
 							6, 2, 2);
@@ -604,30 +749,6 @@ public class MainPanelEditor extends JPanel {
 		repaint();
 	}
 
-	public void inserirNoLargada() {
-		tipoNo = No.LARGADA;
-	}
-
-	public void inserirNoReta() {
-		tipoNo = No.RETA;
-	}
-
-	public void inserirNoCurvaAlta() {
-		tipoNo = No.CURVA_ALTA;
-	}
-
-	public void inserirNoCurvaBaixa() {
-		tipoNo = No.CURVA_BAIXA;
-	}
-
-	public void inserirNoBox() {
-		tipoNo = No.BOX;
-	}
-
-	public void inserirNoParadaBox() {
-		tipoNo = No.PARADA_BOX;
-	}
-
 	public void apagarUltimoNoPista() {
 		if (circuito.getPista().size() == 0) {
 			return;
@@ -635,6 +756,7 @@ public class MainPanelEditor extends JPanel {
 
 		((DefaultListModel) pistaJList.getModel()).removeElement(circuito
 				.getPista().remove(circuito.getPista().size() - 1));
+		repaint();
 	}
 
 	public void apagarUltimoNoBox() {
@@ -644,6 +766,7 @@ public class MainPanelEditor extends JPanel {
 
 		((DefaultListModel) boxJList.getModel()).removeElement(circuito
 				.getBox().remove(circuito.getBox().size() - 1));
+		repaint();
 	}
 
 	public void salvarPista() throws IOException {
@@ -700,6 +823,28 @@ public class MainPanelEditor extends JPanel {
 					.remove(circuito.getEscapeList().size() - 1);
 			repaint();
 		}
+	}
+
+	public Color getTipoNo() {
+		if (pistasButton.isSelected()) {
+			tipoNo = No.LARGADA;
+		}
+		if (retaButton.isSelected()) {
+			tipoNo = No.RETA;
+		}
+		if (curvaAltaButton.isSelected()) {
+			tipoNo = No.CURVA_ALTA;
+		}
+		if (curvaBaixaButton.isSelected()) {
+			tipoNo = No.CURVA_BAIXA;
+		}
+		if (nosBoxButton.isSelected()) {
+			tipoNo = No.BOX;
+		}
+		if (paraBoxButton.isSelected()) {
+			tipoNo = No.PARADA_BOX;
+		}
+		return tipoNo;
 	}
 
 }

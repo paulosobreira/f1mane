@@ -513,29 +513,6 @@ public class MainFrame extends JFrame {
 						editor.apagarUltimoNoBox();
 					}
 
-					if (keyCoode == KeyEvent.VK_F1) {
-						editor.inserirNoLargada();
-					}
-
-					if (keyCoode == KeyEvent.VK_F2) {
-						editor.inserirNoReta();
-					}
-
-					if (keyCoode == KeyEvent.VK_F3) {
-						editor.inserirNoCurvaAlta();
-					}
-
-					if (keyCoode == KeyEvent.VK_F4) {
-						editor.inserirNoCurvaBaixa();
-					}
-
-					if (keyCoode == KeyEvent.VK_F5) {
-						editor.inserirNoBox();
-					}
-
-					if (keyCoode == KeyEvent.VK_F6) {
-						editor.inserirNoParadaBox();
-					}
 					if (keyCoode == KeyEvent.VK_LEFT) {
 						editor.esquerda();
 					} else if (keyCoode == KeyEvent.VK_RIGHT) {
@@ -663,87 +640,6 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu4.add(abrirImg);
-
-		JMenuItem inserirNoLargada = new JMenuItem("Inserir no Largada (F1)") {
-			public String getText() {
-				return Lang.msg("099");
-			}
-
-		};
-		inserirNoLargada.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editor.inserirNoLargada();
-			}
-		});
-		menu4.add(inserirNoLargada);
-
-		JMenuItem inserirNoReta = new JMenuItem("Inserir No Reta (F2)") {
-			public String getText() {
-				return Lang.msg("100");
-			}
-
-		};
-		inserirNoReta.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editor.inserirNoReta();
-			}
-		});
-		menu4.add(inserirNoReta);
-
-		JMenuItem inserirNoCurvaAlta = new JMenuItem(
-				"Inserir No Curva Alta (F3)") {
-			public String getText() {
-				return Lang.msg("101");
-			}
-
-		};
-		inserirNoCurvaAlta.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editor.inserirNoCurvaAlta();
-			}
-		});
-		menu4.add(inserirNoCurvaAlta);
-
-		JMenuItem inserirNoCurvaBaixa = new JMenuItem(
-				"Inserir No Curva Baixa (F4)") {
-			public String getText() {
-				return Lang.msg("102");
-			}
-
-		};
-		inserirNoCurvaBaixa.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editor.inserirNoCurvaBaixa();
-			}
-		});
-		menu4.add(inserirNoCurvaBaixa);
-
-		JMenuItem inserirNoEntradaBox = new JMenuItem("Inserir No Box (F5)") {
-			public String getText() {
-				return Lang.msg("103");
-			}
-
-		};
-		inserirNoEntradaBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editor.inserirNoBox();
-			}
-		});
-		menu4.add(inserirNoEntradaBox);
-
-		JMenuItem inserirNoParadaBox = new JMenuItem(
-				"Inserir No Parada Box (F6)") {
-			public String getText() {
-				return Lang.msg("104");
-			}
-
-		};
-		inserirNoParadaBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editor.inserirNoParadaBox();
-			}
-		});
-		menu4.add(inserirNoParadaBox);
 
 		JMenuItem apagarUltimoNo = new JMenuItem("Apagar ultimo NO (DEL)") {
 			public String getText() {
