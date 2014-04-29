@@ -1197,6 +1197,10 @@ public class Piloto implements Serializable {
 		if (carroPilotoDaFrente.getPiloto().isDesqualificado()) {
 			return;
 		}
+		if ((carroPilotoDaFrente.getPiloto().getTracado() == 1 && getTracado() == 2)
+				|| (carroPilotoDaFrente.getPiloto().getTracado() == 2 && getTracado() == 1)) {
+			return;
+		}
 		double diff = controleJogo.calculaDiffParaProximoRetardatario(this,
 				false);
 		double distLimiteTurbulencia = 50;
@@ -1467,6 +1471,8 @@ public class Piloto implements Serializable {
 					&& testeHabilidadePiloto(controleJogo) && !isFreiandoReta()
 					&& controleJogo.getNiveljogo() < Math.random()) {
 				mudarTracado(pilotoAtraz.getTracado(), controleJogo, false);
+			} else {
+				mudarTracado(0, controleJogo, false);
 			}
 
 		}
