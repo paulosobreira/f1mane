@@ -499,20 +499,6 @@ public class MainFrame extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				int keyCoode = e.getKeyCode();
 				if (editor != null) {
-					if (keyCoode == KeyEvent.VK_DELETE) {
-						editor.apagarUltimoNo();
-					}
-
-					if ((keyCoode == KeyEvent.VK_DELETE)
-							&& (e.getModifiers() == KeyEvent.SHIFT_MASK)) {
-						editor.apagarUltimoNoPista();
-					}
-
-					if ((keyCoode == KeyEvent.VK_DELETE)
-							&& (e.getModifiers() == KeyEvent.CTRL_MASK)) {
-						editor.apagarUltimoNoBox();
-					}
-
 					if (keyCoode == KeyEvent.VK_LEFT) {
 						editor.esquerda();
 					} else if (keyCoode == KeyEvent.VK_RIGHT) {
@@ -640,59 +626,6 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu4.add(abrirImg);
-
-		JMenuItem apagarUltimoNo = new JMenuItem("Apagar ultimo NO (DEL)") {
-			public String getText() {
-				return Lang.msg("105");
-			}
-
-		};
-		apagarUltimoNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					editor.apagarUltimoNo();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-		menu4.add(apagarUltimoNo);
-
-		JMenuItem apagarUltimoNoPista = new JMenuItem(
-				"Apagar ultimo NO (CTRL+DEL)") {
-			public String getText() {
-				return Lang.msg("106");
-			}
-
-		};
-		apagarUltimoNoPista.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					editor.apagarUltimoNoPista();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-		menu4.add(apagarUltimoNoPista);
-
-		JMenuItem apagarUltimoNoBox = new JMenuItem(
-				"Apagar ultimo NO (SHIFT+DEL)") {
-			public String getText() {
-				return Lang.msg("107");
-			}
-
-		};
-		apagarUltimoNoBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					editor.apagarUltimoNoBox();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-		menu4.add(apagarUltimoNoBox);
 
 		JMenuItem salvarPista = new JMenuItem("Salvar Pista F8") {
 			public String getText() {
