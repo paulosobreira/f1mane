@@ -44,13 +44,16 @@ public class ControleEstatisticas {
 
 	private long calculaDiferenca(Piloto frente, Piloto piloto) {
 		long diff = frente.getPtosPista() - piloto.getPtosPista();
-		diff /= 3;
 		return diff;
+	}
+
+	private long calculaDiferencaDiv3(Piloto frente, Piloto piloto) {
+		return calculaDiferenca(frente, piloto) / 3;
 	}
 
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado, long tempo) {
 		Piloto lider = (Piloto) controleJogo.getPilotos().get(0);
-		long diff = calculaDiferenca(lider, pilotoSelecionado);
+		long diff = calculaDiferencaDiv3(lider, pilotoSelecionado);
 		String ret = milesismos.format((diff / Double.parseDouble(String
 				.valueOf(tempo)))) + "s";
 		pilotoSelecionado.setSegundosParaLider(ret);
@@ -59,7 +62,7 @@ public class ControleEstatisticas {
 
 	public String calculaSegundosParaRival(Piloto pilotoSelecionado,
 			Piloto rival, long tempo) {
-		long diff = calculaDiferenca(rival, pilotoSelecionado);
+		long diff = calculaDiferencaDiv3(rival, pilotoSelecionado);
 		String ret = milesismos.format((diff / Double.parseDouble(String
 				.valueOf(tempo)))) + "s";
 		return ret;
@@ -402,6 +405,9 @@ public class ControleEstatisticas {
 		int indexAtual = piloto.getNoAtual().getIndex();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto pilotoFrente = (Piloto) iterator.next();
+			if (pilotoFrente.equals(piloto)) {
+				continue;
+			}
 			if (pilotoFrente.getPtosBox() != 0) {
 				continue;
 			}
@@ -417,6 +423,13 @@ public class ControleEstatisticas {
 			if (indexFrente > indexAtual
 					&& (indexFrente - indexAtual) < menorDistancia) {
 				menorDistancia = (indexFrente - indexAtual);
+			}
+
+			int tamPista = controleJogo.getCircuito().getPistaFull().size();
+			int diffTAmPista = tamPista - indexAtual;
+			if (indexFrente < indexAtual
+					&& (indexFrente + diffTAmPista) < menorDistancia) {
+				menorDistancia = (indexFrente + diffTAmPista);
 			}
 
 			indexFrente += controleJogo.obterPista(piloto.getNoAtual()).size();
