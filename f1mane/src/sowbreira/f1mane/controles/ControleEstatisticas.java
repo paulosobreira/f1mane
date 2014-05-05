@@ -149,9 +149,6 @@ public class ControleEstatisticas {
 			return seg + "." + mil.format(Math.abs(mili));
 	}
 
-	public static String formatarTempo(int ciclos, long tempoCiclo) {
-		return formatarTempo(tempoCiclo * ciclos);
-	}
 
 	public String calculaSegundosParaProximo(Piloto psel, long tempo) {
 		int diff = calculaDiferencaParaProximo(psel);

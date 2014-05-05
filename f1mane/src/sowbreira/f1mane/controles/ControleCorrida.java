@@ -668,4 +668,8 @@ public class ControleCorrida {
 		controleClima.climaEnsolarado();
 	}
 
+	public boolean safetyCarUltimas3voltas() {
+		return controleSafetyCar.safetyCarUltimas3voltas();
+	}
+
 }

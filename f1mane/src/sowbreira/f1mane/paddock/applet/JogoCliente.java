@@ -1258,4 +1258,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public boolean safetyCarUltimas3voltas() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

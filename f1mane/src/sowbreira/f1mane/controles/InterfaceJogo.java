@@ -377,4 +377,6 @@ public interface InterfaceJogo {
 
 	public void detalhesCorridaCampeonato();
 
+	public boolean safetyCarUltimas3voltas();
+
 }

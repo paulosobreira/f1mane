@@ -1510,4 +1510,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		controleCampeonato.detalhesCorrida();
 	}
 
+	@Override
+	public boolean safetyCarUltimas3voltas() {
+		return controleCorrida.safetyCarUltimas3voltas();
+	}
+
 }

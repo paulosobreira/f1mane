@@ -87,8 +87,9 @@ public class ControleQualificacao {
 					contCiclosQualificacao++;
 				}
 			}
-			piloto.setCiclosVoltaQualificacao(contCiclosQualificacao);
-			evitaMesmoCiclo(piloto);
+			piloto.setCiclosVoltaQualificacao(Util
+					.inte(((contCiclosQualificacao * controleJogo
+							.getTempoCiclo()) + Util.intervalo(0, 9))));
 			piloto.setNumeroVolta(0);
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);
@@ -284,7 +285,8 @@ public class ControleQualificacao {
 			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
 				carro.setTempMax(carro.getPotencia() / 6);
 			}
-			carro.setDurabilidadeAereofolio(controleJogo.getDurabilidadeAreofolio());
+			carro.setDurabilidadeAereofolio(controleJogo
+					.getDurabilidadeAreofolio());
 			Logger.logar(" PosLarg " + piloto.getPosicao() + " Nome "
 					+ piloto.getNome() + " pts " + piloto.getPtosPista());
 		}
