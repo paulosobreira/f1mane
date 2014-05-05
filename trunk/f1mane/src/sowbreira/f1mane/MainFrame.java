@@ -144,74 +144,75 @@ public class MainFrame extends JFrame {
 	}
 
 	private void gerarMenusCampeonato(JMenu menu) {
-		JMenuItem criarCampeonato = new JMenuItem("Criar Campeonato") {
-			public String getText() {
-				return Lang.msg("campeonatoEquipes");
-			}
+		// JMenuItem criarCampeonato = new JMenuItem("Criar Campeonato") {
+		// public String getText() {
+		// return Lang.msg("campeonatoEquipes");
+		// }
+		//
+		// };
+		// criarCampeonato.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent e) {
+		// try {
+		// if (!verificaCriarJogo()) {
+		// return;
+		// }
+		// controleJogo.criarCampeonato();
+		// } catch (Exception ex) {
+		// Logger.logarExept(ex);
+		// }
+		// }
+		// });
 
-		};
-		criarCampeonato.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (!verificaCriarJogo()) {
-						return;
-					}
-					controleJogo.criarCampeonato();
-				} catch (Exception ex) {
-					Logger.logarExept(ex);
-				}
-			}
-		});
+		// JMenuItem criarCampeonatoPiloto = new JMenuItem("campeonatoPiloto") {
+		// public String getText() {
+		// return Lang.msg("campeonatoPiloto");
+		// }
+		//
+		// };
+		// criarCampeonatoPiloto.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent e) {
+		// try {
+		// if (!verificaCriarJogo()) {
+		// return;
+		// }
+		// controleJogo.criarCampeonatoPiloto();
+		// } catch (Exception ex) {
+		// Logger.logarExept(ex);
+		// }
+		// }
+		// });
 
-		JMenuItem criarCampeonatoPiloto = new JMenuItem("campeonatoPiloto") {
-			public String getText() {
-				return Lang.msg("campeonatoPiloto");
-			}
-
-		};
-		criarCampeonatoPiloto.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (!verificaCriarJogo()) {
-						return;
-					}
-					controleJogo.criarCampeonatoPiloto();
-				} catch (Exception ex) {
-					Logger.logarExept(ex);
-				}
-			}
-		});
-
-		JMenuItem continuarCampeonato = new JMenuItem("Continuar Campeonato") {
-			public String getText() {
-				return Lang.msg("270");
-			}
-
-		};
-		continuarCampeonato.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (!verificaCriarJogo()) {
-						return;
-					}
-					campeonato = controleJogo.continuarCampeonato();
-				} catch (Exception ex) {
-					Logger.logarExept(ex);
-				}
-			}
-		});
-		JMenuItem dadosPersistencia = new JMenuItem("Criar Campeonato") {
-			public String getText() {
-				return Lang.msg("271");
-			}
-
-		};
-		dadosPersistencia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				controleJogo.dadosPersistenciaCampeonato(campeonato);
-
-			}
-		});
+		// JMenuItem continuarCampeonato = new JMenuItem("Continuar Campeonato")
+		// {
+		// public String getText() {
+		// return Lang.msg("270");
+		// }
+		//
+		// };
+		// continuarCampeonato.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent e) {
+		// try {
+		// if (!verificaCriarJogo()) {
+		// return;
+		// }
+		// campeonato = controleJogo.continuarCampeonato();
+		// } catch (Exception ex) {
+		// Logger.logarExept(ex);
+		// }
+		// }
+		// });
+		// JMenuItem dadosPersistencia = new JMenuItem("Criar Campeonato") {
+		// public String getText() {
+		// return Lang.msg("271");
+		// }
+		//
+		// };
+		// dadosPersistencia.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent e) {
+		// controleJogo.dadosPersistenciaCampeonato(campeonato);
+		//
+		// }
+		// });
 		JMenuItem proxCorrida = new JMenuItem("Proxima Corrida") {
 			public String getText() {
 				return Lang.msg("286");
@@ -221,20 +222,18 @@ public class MainFrame extends JFrame {
 		proxCorrida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (!verificaCriarJogo()) {
-						return;
-					}
-					controleJogo.proximaCorridaCampeonato();
+					//controleJogo.proximaCorridaCampeonato();
+					controleJogo.detalhesCorridaCampeonato();
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
 				}
 			}
 		});
 
-		menu.add(criarCampeonato);
-		menu.add(criarCampeonatoPiloto);
-		menu.add(continuarCampeonato);
-		menu.add(dadosPersistencia);
+		// menu.add(criarCampeonato);
+		// menu.add(criarCampeonatoPiloto);
+		// menu.add(continuarCampeonato);
+		// menu.add(dadosPersistencia);
 		menu.add(proxCorrida);
 
 	}

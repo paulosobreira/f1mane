@@ -1351,7 +1351,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	@Override
 	public void proximaCorridaCampeonato() {
-		controleCampeonato.proximaCorrida();
+		controleCampeonato.detalhesCorrida();
 	}
 
 	@Override
@@ -1503,6 +1503,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 			gerenciadorVisual.setDesenhouQualificacao(true);
 		}
 		selecionaPilotoJogador();
+	}
+
+	@Override
+	public void detalhesCorridaCampeonato() {
+		controleCampeonato.detalhesCorrida();
 	}
 
 }
