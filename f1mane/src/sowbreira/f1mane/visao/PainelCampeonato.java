@@ -162,37 +162,8 @@ public class PainelCampeonato extends JPanel {
 		panelBorder.add(corridas, BorderLayout.NORTH);
 		panelBorder.add(grid, BorderLayout.CENTER);
 		this.add(panelBorder, BorderLayout.CENTER);
-		JPanel label = new JPanel();
-		label.add(new JLabel("Jogar a proxima corrida?") {
-			@Override
-			public String getText() {
-				return Lang.msg("292");
-			}
-		});
-		this.add(label, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(mainFrame, this,
-				Lang.msg("286"), JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE);
-		if (ret == JOptionPane.YES_OPTION) {
-			try {
-				if (campeonato.getCircuitoVez() == null) {
-					JOptionPane.showMessageDialog(mainFrame, Lang.msg("293"));
-				} else {
-					ControleJogoLocal controleJogo = (ControleJogoLocal) mainFrame
-							.getControleJogo();
-					if (controleJogo != null) {
-						controleJogo.matarTodasThreads();
-					}
-					controleJogo = new ControleJogoLocal("t"
-							+ PainelCampeonato.this.campeonato.getTemporada());
-					controleJogo.setMainFrame(PainelCampeonato.this.mainFrame);
-					mainFrame.setControleJogo(controleJogo);
-					controleJogo.iniciarJogo(controleCampeonato);
-				}
-			} catch (Exception e) {
-				Logger.logarExept(e);
-			}
-		}
+		JOptionPane.showMessageDialog(mainFrame, this, Lang.msg("286"),
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void desefiar() {

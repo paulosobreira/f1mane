@@ -375,4 +375,6 @@ public interface InterfaceJogo {
 
 	public void desenhouQualificacao();
 
+	public void detalhesCorridaCampeonato();
+
 }

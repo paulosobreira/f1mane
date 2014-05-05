@@ -745,7 +745,7 @@ public class ControleCampeonato {
 		return pontos;
 	}
 
-	public void proximaCorrida() {
+	public void detalhesCorrida() {
 		if (campeonato != null)
 			new PainelCampeonato(this, mainFrame);
 

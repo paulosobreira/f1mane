@@ -994,7 +994,6 @@ public class Piloto implements Serializable {
 		verificaMudancaRegime(controleJogo);
 		processaGanho(controleJogo);
 		processaIAnovoIndex(controleJogo);
-		controleJogo.verificaUltraPassagem(this);
 		ganho = processaEscapadaDaPista(controleJogo, ganho);
 		processaTurbulencia(controleJogo);
 		processaGanhoDanificado();
@@ -1002,6 +1001,7 @@ public class Piloto implements Serializable {
 		processaEvitaBaterCarroFrente(controleJogo);
 		processaMudarTracado(controleJogo);
 		processaColisao(controleJogo);
+		controleJogo.verificaUltraPassagem(this);
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 
@@ -1091,7 +1091,7 @@ public class Piloto implements Serializable {
 		}
 		double valComp = 50;
 		if (isJogadorHumano()) {
-			valComp = 120 - 100 * controleJogo.getNiveljogo();
+			valComp = 100 * (1.0 - controleJogo.getNiveljogo());
 		} else {
 			valComp = 100 * controleJogo.getNiveljogo();
 		}
@@ -1467,11 +1467,12 @@ public class Piloto implements Serializable {
 				return;
 			}
 			Piloto pilotoAtraz = carroAtraz.getPiloto();
-			if (diffAnt < 100 && pilotoAtraz.getPtosBox() == 0
+			if (diffAnt < 200 && diffAnt > 50 && pilotoAtraz.getPtosBox() == 0
 					&& testeHabilidadePiloto(controleJogo) && !isFreiandoReta()
+					&& !isJogadorHumano()
 					&& controleJogo.getNiveljogo() < Math.random()) {
 				mudarTracado(pilotoAtraz.getTracado(), controleJogo, false);
-			} else {
+			} else if (!isJogadorHumano()) {
 				mudarTracado(0, controleJogo, false);
 			}
 
@@ -1656,11 +1657,19 @@ public class Piloto implements Serializable {
 		if (piloto.getPtosBox() > 0) {
 			return;
 		}
+		double limite = 200;
+		if (getNoAtual().verificaRetaOuLargada()
+				&& !isFreiandoReta()
+				&& Math.random() < ((double) controleJogo.getNumVoltaAtual() / (double) controleJogo
+						.getQtdeTotalVoltas())) {
+			limite = 100;
+		}
+
 		diferencaParaProximoRetardatario = controleJogo
 				.calculaDiffParaProximoRetardatario(this, true);
-		if (diferencaParaProximoRetardatario < 200.0
+		if (diferencaParaProximoRetardatario < limite
 				&& (getTracado() == piloto.getTracado())) {
-			ganho *= (diferencaParaProximoRetardatario / 200.0);
+			ganho *= (diferencaParaProximoRetardatario / limite);
 		}
 	}
 
