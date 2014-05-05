@@ -4528,8 +4528,7 @@ public class PainelCircuito {
 		String nomeTempo = piloto.getNome()
 				+ " - "
 				+ ControleEstatisticas.formatarTempo(
-						piloto.getCiclosVoltaQualificacao(),
-						controleJogo.getTempoCiclo());
+						piloto.getCiclosVoltaQualificacao());
 
 		int maior = nomeTempo.length();
 

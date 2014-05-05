@@ -406,7 +406,8 @@ public class ControleBox {
 		carro.setDanificado(null);
 		if (carro.getDurabilidadeAereofolio() <= 0
 				|| InterfaceJogo.DIFICIL_NV != controleJogo.getNiveljogo()) {
-			carro.setDurabilidadeAereofolio(controleJogo.getDurabilidadeAreofolio());
+			carro.setDurabilidadeAereofolio(controleJogo
+					.getDurabilidadeAreofolio());
 			penalidade = Util.inte(penalidade
 					* (2 - (carro.getPotencia() / 1000)));
 		}
@@ -472,10 +473,8 @@ public class ControleBox {
 		} else {
 			int voltaAtual = piloto.getNumeroVolta();
 			int metade = controleJogo.getQtdeTotalVoltas() / 2;
-			if (voltaAtual > metade
-					&& (!(InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) || piloto
-							.testeHabilidadePiloto(controleJogo))
-					&& !controleJogo.asfaltoAbrasivo()) {
+			boolean asfaltoAbrasivo = testaAsfaltoAbrasivoIA(piloto);
+			if (voltaAtual > metade && !asfaltoAbrasivo) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
@@ -604,9 +603,8 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			if (controleJogo.asfaltoAbrasivo()
-					&& (!(InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) || piloto
-							.testeHabilidadePiloto(controleJogo)))
+			boolean asfaltoAbrasivo = testaAsfaltoAbrasivoIA(piloto);
+			if (asfaltoAbrasivo)
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
 						controleCorrida.getDistaciaCorrida());
@@ -662,6 +660,20 @@ public class ControleBox {
 				qtddeCombust + piloto.getCarro().getCombustivel());
 
 		return diffCombust;
+	}
+
+	private boolean testaAsfaltoAbrasivoIA(Piloto piloto) {
+		boolean asfaltoAbrasivo = controleJogo.asfaltoAbrasivo();
+		int qtdeteste = piloto.getHabilidade() / 10;
+		if (!asfaltoAbrasivo) {
+			for (int i = 0; i < qtdeteste; i++) {
+				asfaltoAbrasivo = controleJogo.asfaltoAbrasivo();
+				if (asfaltoAbrasivo) {
+					break;
+				}
+			}
+		}
+		return asfaltoAbrasivo;
 	}
 
 	public void calculaQtdeNosPistaRefBox() {

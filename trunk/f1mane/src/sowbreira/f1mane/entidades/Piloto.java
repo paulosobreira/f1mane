@@ -1658,10 +1658,9 @@ public class Piloto implements Serializable {
 			return;
 		}
 		double limite = 200;
-		if (getNoAtual().verificaRetaOuLargada()
-				&& !isFreiandoReta()
-				&& Math.random() < ((double) controleJogo.getNumVoltaAtual() / (double) controleJogo
-						.getQtdeTotalVoltas())) {
+		if (getNoAtual().verificaRetaOuLargada() && !isFreiandoReta()
+				&& controleJogo.getNumVoltaAtual() > 1
+				&& !controleJogo.safetyCarUltimas3voltas()) {
 			limite = 100;
 		}
 
