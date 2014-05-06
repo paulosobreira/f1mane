@@ -675,7 +675,7 @@ public class Carro implements Serializable {
 			if (no.verificaCruvaAlta()) {
 				int mod = 0;
 				if (!controleJogo.asfaltoAbrasivo()) {
-					mod = Util.intervalo(15, 25);
+					mod = Util.intervalo(5, 15);
 				}
 				int intervaloMin = Util.intervalo(5 + mod, 10 + mod);
 				int intervaloMax = Util.intervalo(90 - mod, 95 - mod);
@@ -694,7 +694,7 @@ public class Carro implements Serializable {
 			if (no.verificaCruvaBaixa()) {
 				int mod = 0;
 				if (!controleJogo.asfaltoAbrasivo()) {
-					mod = Util.intervalo(10, 20);
+					mod = Util.intervalo(5, 10);
 				}
 				int intervaloMin = Util.intervalo(10 + mod, 15 + mod);
 				int intervaloMax = Util.intervalo(85 - mod, 90 - mod);
