@@ -13,10 +13,9 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
-
-	<property environment="env" />
+	<property name="TOMCAT_HOME"       value="C:\apache-tomcat-7.0.53"/>
 	<path id="classpath.compilacao">
-		<fileset dir="${env.TOMCAT_HOME}/lib">
+		<fileset dir="${TOMCAT_HOME}/lib">
 			<include name="*.jar" />
 		</fileset>
 		<fileset dir="WebContent/WEB-INF/lib">
@@ -99,6 +98,7 @@
 		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
 		<delete file="WebContent/f1mane.jar" />
 		<copy file="f1mane.jar" todir="WebContent/WEB-INF/lib" />
+		<copy file="f1maneRecursos.jar" todir="WebContent" />
 		<copy file="f1mane.jar" todir="WebContent" />
 		<copy todir="WebContent">
 			<fileset dir="src">
@@ -107,16 +107,9 @@
 		</copy>
 	</target>
 	<target name="criarWar">
-		<delete dir="${env.TOMCAT_HOME}/webapps/f1mane" />
-		<war compress="on" destfile="${env.TOMCAT_HOME}/webapps/f1mane.war">
-			<fileset dir="WebContent">
-				<exclude name="**/*.jar" />
-			</fileset>
-			<fileset dir="WebContent">
-				<include name="WEB-INF/lib/f1mane.jar" />
-				<include name="f1mane.jar" />
-				<include name="f1maneRecursos.jar" />
-			</fileset>
+		<delete dir="${TOMCAT_HOME}/webapps/f1mane" />
+		<war compress="on" destfile="${TOMCAT_HOME}/webapps/f1mane.war">
+			<fileset dir="WebContent" />
 		</war>
 		<delete dir="WebContent/sowbreira" />
 	</target>
