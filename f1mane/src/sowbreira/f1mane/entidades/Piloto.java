@@ -1661,7 +1661,7 @@ public class Piloto implements Serializable {
 		if (getNoAtual().verificaRetaOuLargada() && !isFreiandoReta()
 				&& controleJogo.getNumVoltaAtual() > 1
 				&& !controleJogo.safetyCarUltimas3voltas()) {
-			limite = 100;
+			limite -= controleJogo.porcentagemCorridaCompletada();
 		}
 
 		diferencaParaProximoRetardatario = controleJogo
