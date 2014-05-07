@@ -54,7 +54,6 @@ public class ControleQualificacao {
 		int position = controleJogo.getNosDaPista().size() - 1;
 		No noLargada = (No) controleJogo.getNosDaPista().get(position);
 		List pilotos = controleJogo.getPilotos();
-
 		nivelaPontecia(pilotos);
 		nivelaHabilidade(pilotos);
 		double incCurva = 0.5;
@@ -87,9 +86,15 @@ public class ControleQualificacao {
 					contCiclosQualificacao++;
 				}
 			}
+			int modMili = 9;
+			for (int j = 0; j < 9; j++) {
+				if (piloto.testeHabilidadePiloto(controleJogo)) {
+					modMili--;
+				}
+			}
 			piloto.setCiclosVoltaQualificacao(Util
 					.inte(((contCiclosQualificacao * controleJogo
-							.getTempoCiclo()) + Util.intervalo(0, 9))));
+							.getTempoCiclo()) + modMili)));
 			piloto.setNumeroVolta(0);
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);
@@ -151,13 +156,7 @@ public class ControleQualificacao {
 		Piloto ant = null;
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
-			limite = Util.intervalo(10, 20);
-			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(20, 30);
-			}
-			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(30, 40);
-			}
+			limite = Util.intervalo(5, 10);
 			maiorDiff = 0;
 			ant = null;
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
@@ -191,12 +190,6 @@ public class ControleQualificacao {
 		int maiorDiff = 0;
 		while (maiorDiff > limite) {
 			limite = Util.intervalo(5, 10);
-			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(10, 20);
-			}
-			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-				limite = Util.intervalo(20, 30);
-			}
 			maiorDiff = 0;
 			ant = null;
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {

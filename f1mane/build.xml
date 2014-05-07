@@ -27,10 +27,10 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,criarWar">
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,criarWar,limpaJars">
 	</target>
 
-	<target name="targetFullInstall" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,sign_jar,criarZip">
+	<target name="targetFullInstall" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,sign_jar,criarZip,limpaJars">
 	</target>
 
 	<target name="atualizaVersao">
@@ -160,6 +160,14 @@
 			</fileset>
 		</delete>
 	</target>
+	
+	<target name="limpaJars">
+		<delete>
+			<fileset dir=".">
+				<include name="*.jar" />
+			</fileset>
+		</delete>
+	</target>	
 
 
 </project>

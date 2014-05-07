@@ -1550,7 +1550,8 @@ public class PainelMenuLocal {
 	}
 
 	public static void main(String[] args) throws IOException, Exception {
-		System.out.println(0 % 10);
+		int porcetNumVolta = Util.inte((55 - 12) * 1.66);
+		System.out.println(porcetNumVolta);
 	}
 
 	private void resetaRects() {
@@ -1757,7 +1758,7 @@ public class PainelMenuLocal {
 	}
 
 	private void maisVoltas() {
-		if (numVoltasSelecionado < 73) {
+		if (numVoltasSelecionado < 72) {
 			numVoltasSelecionado++;
 		}
 
@@ -2355,7 +2356,9 @@ public class PainelMenuLocal {
 	private void desenhaSeletorNumeroVoltas(Graphics2D g2d, int x, int y) {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-
+		
+		int xOri = x;
+		
 		String menos = "-";
 		int tamMenos = Util.calculaLarguraText(menos, g2d);
 		menosVoltasRect.setFrame(x - 16, y - 6, tamMenos + 6, 22);
@@ -2386,6 +2389,17 @@ public class PainelMenuLocal {
 		g2d.drawString(mais, x - 13, y + 16);
 
 		g2d.setFont(fontOri);
+
+		int porcetNumVolta = Util.inte((numVoltasSelecionado - 12) * 1.66);
+
+		int tamNumVoltaSelecionado = porcetNumVolta * tamVoltas / 100;
+		x = xOri +20;
+		
+		g2d.setColor(yel);
+		g2d.drawRoundRect(x - 15, y - 12, tamNumVoltaSelecionado, 32, 10, 10);
+		g2d.setColor(blu);
+		g2d.fillRoundRect(x - 15, y - 12, tamNumVoltaSelecionado, 32, 10, 10);
+
 	}
 
 	private void desenhaSeletorCircuito(Graphics2D g2d, int centerX,
