@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,15 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.sun.corba.se.internal.Interceptors.PIORB;
-import com.sun.org.apache.bcel.internal.generic.CALOAD;
-
-import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.paddock.servlet.JogoServidor;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.BeanUtil;
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
@@ -1657,7 +1650,7 @@ public class Piloto implements Serializable {
 		if (piloto.getPtosBox() > 0) {
 			return;
 		}
-		double limite = 200;
+		double limite = 250;
 		if (getNoAtual().verificaRetaOuLargada() && !isFreiandoReta()
 				&& controleJogo.getNumVoltaAtual() > 1
 				&& !controleJogo.safetyCarUltimas3voltas()) {
