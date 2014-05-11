@@ -1487,7 +1487,7 @@ public class Piloto implements Serializable {
 		if (verificaDesconcentrado()) {
 			return;
 		}
-		if (Math.random() > (controleJogo.getNiveljogo() + 0.3)) {
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.2)) {
 			return;
 		}
 		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 80 : 70)) {
@@ -1564,7 +1564,7 @@ public class Piloto implements Serializable {
 			return;
 		}
 		if (getNoAtual().verificaRetaOuLargada()
-				&& Math.random() < (controleJogo.getNiveljogo() - 0.1)
+				&& Math.random() < (controleJogo.getNiveljogo())
 				&& testeHabilidadePiloto(controleJogo)) {
 			ativarDRS = true;
 		} else {
@@ -2043,7 +2043,7 @@ public class Piloto implements Serializable {
 		if (ControleQualificacao.modoQualify) {
 			return false;
 		}
-		if (Math.random() > (controleJogo.getNiveljogo() + 0.3)) {
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.2)) {
 			return false;
 		}
 		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 80 : 70)) {
