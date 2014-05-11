@@ -4252,7 +4252,7 @@ public class PainelCircuito {
 			Volta voltaPiloto = controleJogo
 					.obterMelhorVolta(pilotoSelecionado);
 			if (voltaPiloto != null) {
-				yBase += 17;
+				yBase += 18;
 				g2d.setColor(transpMenus);
 				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 105, 16, 10, 10);
 				g2d.setColor(new Color(0, 0, 111));
