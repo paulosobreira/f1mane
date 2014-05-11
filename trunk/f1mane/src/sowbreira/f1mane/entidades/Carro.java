@@ -564,12 +564,6 @@ public class Carro implements Serializable {
 			valDesgaste = 0;
 		}
 		int dist = 50;
-		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
-			dist = 70;
-		}
-		if (controleJogo.getNiveljogo() == InterfaceJogo.FACIL_NV) {
-			dist = 30;
-		}
 		if (!controleJogo.isModoQualify()
 				&& controleJogo.getNumVoltaAtual() != 1
 				&& controleJogo
@@ -626,10 +620,6 @@ public class Carro implements Serializable {
 
 		double consumoTotal = (valConsumo * controleJogo.getCircuito()
 				.getMultiplciador());
-
-		if (GIRO_MIN_VAL == getGiro() && percent < 5) {
-			consumoTotal *= (controleJogo.getNiveljogo() / 2);
-		}
 
 		combustivel -= consumoTotal;
 
@@ -778,7 +768,6 @@ public class Carro implements Serializable {
 		}
 		if (agressivo && no.verificaCruvaBaixa()) {
 			int stress = 0;
-			stress = Util.intervalo(1, (int) controleJogo.getNiveljogo() * 10);
 			if (verificaPneusIncompativeisClima(controleJogo)) {
 				piloto.incStress(getPiloto()
 						.testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? 1
@@ -879,8 +868,8 @@ public class Carro implements Serializable {
 		if (no.verificaRetaOuLargada()) {
 			porcentComb = 0;
 		}
-		double fator = ((1.3 + controleJogo.getNiveljogo()) - ((piloto
-				.getCarro().getAerodinamica() + piloto.getCarro().getFreios()) / 2000.0));
+		double fator = (2 - ((piloto.getCarro().getAerodinamica() + piloto
+				.getCarro().getFreios()) / 2000.0));
 		if (controleJogo.isSemTrocaPneu()) {
 			fator /= 2;
 		} else if (piloto.getQtdeParadasBox() == 0
@@ -904,13 +893,8 @@ public class Carro implements Serializable {
 				&& porcentPneus > 25
 				&& (piloto.getNoAtual().verificaCruvaBaixa() || piloto
 						.getNoAtual().verificaCruvaAlta())) {
-			if (InterfaceJogo.MEDIO_NV == controleJogo.getNiveljogo()) {
-				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
-						.getModoPilotagem()) ? Util.intervalo(1.05, 1.15) : 1.0;
-			} else if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-				valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
-						.getModoPilotagem()) ? Util.intervalo(1.1, 1.2) : 1.0;
-			}
+			valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
+					.getModoPilotagem()) ? Util.intervalo(1.05, 1.15) : 1.0;
 		} else {
 			valDesgaste *= 1.0;
 		}

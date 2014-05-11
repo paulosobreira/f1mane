@@ -185,6 +185,9 @@ public class PainelMenuLocal {
 	private RoundRectangle2D reabasteciemtoRect = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 10, 10);
 
+	private RoundRectangle2D detalhesCampeonatoRct = new RoundRectangle2D.Double(
+			0, 0, 1, 1, 10, 10);
+
 	private RoundRectangle2D proximoMenuRect = new RoundRectangle2D.Double(0,
 			0, 1, 1, 10, 10);
 
@@ -484,6 +487,10 @@ public class PainelMenuLocal {
 			selecionaAnteTemporada();
 			return;
 		}
+		if (detalhesCampeonatoRct.contains(e.getPoint())) {
+			mainFrame.getControleJogo().detalhesCorridaCampeonato();
+			return;
+		}
 		if (proximoMenuRect.contains(e.getPoint())) {
 			proximoMenu();
 			return;
@@ -751,6 +758,8 @@ public class PainelMenuLocal {
 
 			desenhaDadosCorridaCampeonato(g2d, x, y + 300);
 
+			desenhaDetalhesCorridaCampeonato(g2d, x, y + 500);
+
 			desenhaClassificacaoPilotosCampeonato(g2d, x + 400, y + 5, false);
 
 			desenhaClassificacaoEquipesCampeonato(g2d, x + 700, y + 5, false);
@@ -773,6 +782,20 @@ public class PainelMenuLocal {
 		}
 
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+	}
+
+	private void desenhaDetalhesCorridaCampeonato(Graphics2D g2d, int x, int y) {
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+		String detalhesStr = (Lang.msg("detalhes")).toUpperCase();
+		int tamVoltas = Util.calculaLarguraText(detalhesStr, g2d);
+		g2d.setColor(lightWhite);
+		detalhesCampeonatoRct.setFrame(x, y - 25, tamVoltas + 10, 32);
+		g2d.fill(detalhesCampeonatoRct);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(detalhesStr, x, y);
+		g2d.setFont(fontOri);
+
 	}
 
 	private void desenhaPontos(Graphics2D g2d, int x, int y, int pts) {
@@ -2356,9 +2379,9 @@ public class PainelMenuLocal {
 	private void desenhaSeletorNumeroVoltas(Graphics2D g2d, int x, int y) {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-		
+
 		int xOri = x;
-		
+
 		String menos = "-";
 		int tamMenos = Util.calculaLarguraText(menos, g2d);
 		menosVoltasRect.setFrame(x - 16, y - 6, tamMenos + 6, 22);
@@ -2393,8 +2416,8 @@ public class PainelMenuLocal {
 		int porcetNumVolta = Util.inte((numVoltasSelecionado - 12) * 1.66);
 
 		int tamNumVoltaSelecionado = porcetNumVolta * tamVoltas / 100;
-		x = xOri +20;
-		
+		x = xOri + 20;
+
 		g2d.setColor(yel);
 		g2d.drawRoundRect(x - 15, y - 12, tamNumVoltaSelecionado, 32, 10, 10);
 		g2d.setColor(blu);

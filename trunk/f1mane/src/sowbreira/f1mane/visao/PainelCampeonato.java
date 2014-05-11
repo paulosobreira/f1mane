@@ -3,8 +3,6 @@ package sowbreira.f1mane.visao;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
@@ -17,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -30,13 +27,11 @@ import javax.swing.table.TableModel;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleCampeonato;
-import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.CorridaCampeonato;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class PainelCampeonato extends JPanel {
@@ -55,7 +50,6 @@ public class PainelCampeonato extends JPanel {
 	private AbstractTableModel pilotosTableModel;
 	private JTable contrutoresTable;
 	private AbstractTableModel contrutoresTableModel;
-	private JButton desafiarButton;
 	private JTable desafiarTable;
 	private AbstractTableModel desafiarTableModel;
 	private JLabel jLabelDesafiando;
@@ -76,18 +70,6 @@ public class PainelCampeonato extends JPanel {
 		criacao.add(dadosCampeonato, BorderLayout.WEST);
 
 		if (!Util.isNullOrEmpty(campeonato.getNomePiloto())) {
-			desafiarButton = new JButton() {
-				@Override
-				public String getText() {
-					return Lang.msg("desafiar");
-				}
-			};
-			desafiarButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					desefiar();
-				}
-			});
 			JPanel grid = new JPanel(new GridLayout(5, 2));
 			grid.add(new JLabel() {
 				@Override
@@ -143,7 +125,6 @@ public class PainelCampeonato extends JPanel {
 				}
 			});
 			campeonatoPiloto.add(grid, BorderLayout.CENTER);
-			campeonatoPiloto.add(desafiarButton, BorderLayout.SOUTH);
 			criacao.add(campeonatoPiloto, BorderLayout.CENTER);
 		} else {
 			criacao.add(listJogadoresSelecionados, BorderLayout.CENTER);
@@ -686,7 +667,7 @@ public class PainelCampeonato extends JPanel {
 
 	private JPanel gerarPanelDadosCampeonato() {
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridLayout(8, 2));
+		p1.setLayout(new GridLayout(7, 2));
 		p1.setBorder(new TitledBorder("") {
 			@Override
 			public String getTitle() {
@@ -768,19 +749,6 @@ public class PainelCampeonato extends JPanel {
 			@Override
 			public String getText() {
 				return campeonato.isDrs() ? Lang.msg("SIM") : Lang.msg("NAO");
-			}
-		});
-
-		p1.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("266");
-			}
-		});
-		p1.add(new JLabel() {
-			@Override
-			public String getText() {
-				return "" + campeonato.getPtsPiloto();
 			}
 		});
 
