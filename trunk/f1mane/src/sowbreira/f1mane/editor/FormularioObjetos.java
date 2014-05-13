@@ -39,7 +39,7 @@ public class FormularioObjetos {
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
 	private JPanel panel = new JPanel(new GridLayout(9, 2));
-	private MainPanelEditorVetorizado mainPanelEditorVetorizado;
+	private MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
 	private JFrame frame;
 	public final static String OBJETO_LIVRE = "Objeto Livre";
@@ -50,8 +50,8 @@ public class FormularioObjetos {
 	public final static String OBJETO_GUAD_RAILS = "Objeto GuadRails";
 	protected static final String OBJETO_TRANSPARENCIA = "Objeto Transparencia";
 
-	public FormularioObjetos(MainPanelEditorVetorizado panelPai) {
-		this.mainPanelEditorVetorizado = panelPai;
+	public FormularioObjetos(MainPanelEditor panelPai) {
+		this.mainPanelEditor = panelPai;
 		tipoComboBox.addItem(OBJETO_TRANSPARENCIA);
 		tipoComboBox.addItem(OBJETO_PNEUS);
 		tipoComboBox.addItem(OBJETO_CIRCULO);
@@ -82,8 +82,8 @@ public class FormularioObjetos {
 		labelCor1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(panel, Lang
-						.msg("escolhaCor"), Color.WHITE);
+				Color color = JColorChooser.showDialog(panel,
+						Lang.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor1);
 			}
 		});
@@ -95,8 +95,8 @@ public class FormularioObjetos {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				Color color = JColorChooser.showDialog(panel, Lang
-						.msg("escolhaCor"), Color.WHITE);
+				Color color = JColorChooser.showDialog(panel,
+						Lang.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor2);
 			}
 		});
@@ -107,10 +107,9 @@ public class FormularioObjetos {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (objetoPista != null) {
-					mainPanelEditorVetorizado
-							.setMoverObjetoPista(!mainPanelEditorVetorizado
-									.isMoverObjetoPista());
-					mainPanelEditorVetorizado.setObjetoPista(objetoPista);
+					mainPanelEditor.setMoverObjetoPista(!mainPanelEditor
+							.isMoverObjetoPista());
+					mainPanelEditor.setObjetoPista(objetoPista);
 				}
 			}
 		});
@@ -122,7 +121,7 @@ public class FormularioObjetos {
 			public void actionPerformed(ActionEvent e) {
 				if (objetoPista != null)
 					formularioObjetoPista(objetoPista);
-				FormularioObjetos.this.mainPanelEditorVetorizado.repaint();
+				FormularioObjetos.this.mainPanelEditor.repaint();
 			}
 		});
 		ChangeListener changeListener = new ChangeListener() {
@@ -146,19 +145,17 @@ public class FormularioObjetos {
 
 	protected void atualizaMain() {
 		if (objetoPista != null
-				&& FormularioObjetos.this.mainPanelEditorVetorizado != null) {
+				&& FormularioObjetos.this.mainPanelEditor != null) {
 			formularioObjetoPista(objetoPista);
-			FormularioObjetos.this.mainPanelEditorVetorizado.repaint();
+			FormularioObjetos.this.mainPanelEditor.repaint();
 		}
 
 	}
 
 	public void mostrarPainel() {
-		Point location = this.mainPanelEditorVetorizado.getSrcFrame()
-				.getLocation();
+		Point location = this.mainPanelEditor.getSrcFrame().getLocation();
 		frame.setLocation(new Point(location.x
-				+ this.mainPanelEditorVetorizado.getSrcFrame().getWidth(),
-				location.y));
+				+ this.mainPanelEditor.getSrcFrame().getWidth(), location.y));
 		frame.setSize(250, 400);
 		if (objetoPista != null)
 			frame.setTitle(objetoPista.getNome());
@@ -168,8 +165,8 @@ public class FormularioObjetos {
 	}
 
 	public void mostrarPainelModal() {
-		JOptionPane.showMessageDialog(this.mainPanelEditorVetorizado
-				.getSrcFrame(), panel);
+		JOptionPane
+				.showMessageDialog(this.mainPanelEditor.getSrcFrame(), panel);
 	}
 
 	public void setCor(Color color, JLabel label) {
