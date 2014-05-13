@@ -88,7 +88,7 @@ public class MainFrame extends JFrame {
 
 		};
 		bar.add(menuJogo);
-		
+
 		menuInfo = new JMenu() {
 			public String getText() {
 				return Lang.msg("089");
@@ -565,69 +565,6 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu4.add(vetorizarPista);
-
-		JMenuItem creditos = new JMenuItem("creditos") {
-			public String getText() {
-				return Lang.msg("creditos");
-			}
-
-		};
-
-		creditos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					editor.creditos();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-
-			}
-		});
-		menu4.add(creditos);
-
-		JMenuItem escape = new JMenuItem("escape") {
-			public String getText() {
-				return Lang.msg("escape");
-			}
-
-		};
-
-		escape.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					editor.escape();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-
-			}
-		});
-
-		menu4.add(escape);
-
-		JMenuItem remEscape = new JMenuItem("escape") {
-			public String getText() {
-				return Lang.msg("remEscape");
-			}
-
-		};
-
-		remEscape.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					editor.removeUltEscape();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-
-			}
-		});
-
-		menu4.add(remEscape);
-
 	}
 
 	public static void main(String[] args) throws IOException {

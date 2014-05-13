@@ -72,13 +72,13 @@ import br.nnpe.Util;
 /**
  * @author Paulo Sobreira
  */
-public class MainPanelEditorVetorizado extends JPanel {
+public class MainPanelEditorVetorizado extends MainPanelEditor {
 	private static final long serialVersionUID = -7001602531075714400L;
 	private static final String LADO_COMBO_1 = "BOX LADO 1";
 	private static final String LADO_COMBO_2 = "BOX LADO 2";
 	private static final Color COR_PISTA = new Color(192, 192, 192);
 	private Circuito circuito = new Circuito();
-	private TestePistaVetorizado testePistaVetorizado;
+	private TestePista testePistaVetorizado;
 	private JFrame srcFrame;
 	private JRadioButton pistasButton = new JRadioButton();
 	private JRadioButton boxButton = new JRadioButton();
@@ -141,6 +141,9 @@ public class MainPanelEditorVetorizado extends JPanel {
 
 	public JFrame getSrcFrame() {
 		return srcFrame;
+	}
+
+	public MainPanelEditorVetorizado() {
 	}
 
 	public MainPanelEditorVetorizado(JFrame frame) throws IOException,
@@ -271,7 +274,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 		srcFrame.setPreferredSize(new Dimension(800, 600));
 		srcFrame.getContentPane().setLayout(new BorderLayout());
 		srcFrame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		testePistaVetorizado = new TestePistaVetorizado(this, circuito);
+		testePistaVetorizado = new TestePista(this, circuito);
 		iniciaEditor(srcFrame);
 		vetorizarPistaCarregado();
 		srcFrame.pack();
@@ -604,36 +607,6 @@ public class MainPanelEditorVetorizado extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					srcFrame.requestFocus();
-
-					// List remover = new ArrayList();
-					// List add = new ArrayList();
-					// List<ObjetoPista> objetos = circuito.getObjetos();
-					// int size = objetos.size();
-					// for (Iterator iterator = objetos.iterator(); iterator
-					// .hasNext();) {
-					// ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-					// if (objetoPista instanceof ObjetoGuadRails) {
-					// // ObjetoGuadRails objetoGuadRails = new
-					// // ObjetoGuadRails();
-					// // objetoGuadRails
-					// // .setAltura(objetoPista.getAltura() * 10);
-					// // objetoGuadRails.setAngulo(objetoPista.getAngulo());
-					// // objetoGuadRails.setCorPimaria(objetoPista
-					// // .getCorSecundaria());
-					// // objetoGuadRails.setCorSecundaria(objetoPista
-					// // .getCorSecundaria());
-					// // objetoGuadRails.setPosicaoQuina(objetoPista
-					// // .getPosicaoQuina());
-					// // objetoGuadRails.setPintaEmcima(objetoPista
-					// // .isPintaEmcima());
-					// // objetoGuadRails.setTransparencia(255);
-					// // objetoGuadRails.setNome("Objeto " + (size++));
-					// // add.add(objetoGuadRails);
-					// remover.add(objetoPista);
-					// }
-					// }
-					// objetos.removeAll(remover);
-					// objetos.addAll(add);
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -669,7 +642,7 @@ public class MainPanelEditorVetorizado extends JPanel {
 	}
 
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+//		/super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
@@ -835,7 +808,6 @@ public class MainPanelEditorVetorizado extends JPanel {
 			g2d.draw(generalPath.createTransformedShape(affineTransform));
 
 		}
-
 	}
 
 	private void desenhaPreObjetoLivre(Graphics2D g2d) {
