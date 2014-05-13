@@ -22,10 +22,11 @@ import sowbreira.f1mane.entidades.ObjetoPista;
 
 public class FormularioListaObjetos {
 
-	private MainPanelEditorVetorizado editorVetorizado;
+	private MainPanelEditor editorVetorizado;
 	private DefaultListModel defaultListModelOP;
 	private JList list;
 	private JFrame frame = new JFrame();
+	private JPanel objetos;
 
 	public DefaultListModel getDefaultListModelOP() {
 		return defaultListModelOP;
@@ -43,7 +44,7 @@ public class FormularioListaObjetos {
 		this.list = list;
 	}
 
-	public FormularioListaObjetos(MainPanelEditorVetorizado editorVetorizado) {
+	public FormularioListaObjetos(MainPanelEditor editorVetorizado) {
 		this.editorVetorizado = editorVetorizado;
 		defaultListModelOP = new DefaultListModel();
 		list = new JList(defaultListModelOP);
@@ -55,10 +56,10 @@ public class FormularioListaObjetos {
 
 			}
 		});
-		JPanel main = new JPanel(new BorderLayout());
+		objetos = new JPanel(new BorderLayout());
 		JPanel botoes = new JPanel(new GridLayout(3, 1));
-		main.add(new JScrollPane(list), BorderLayout.CENTER);
-		main.add(botoes, BorderLayout.SOUTH);
+		objetos.add(new JScrollPane(list), BorderLayout.CENTER);
+		objetos.add(botoes, BorderLayout.SOUTH);
 		JButton cima = new JButton("Cima");
 		cima.addActionListener(new ActionListener() {
 			@Override
@@ -148,26 +149,23 @@ public class FormularioListaObjetos {
 		botoes.add(ultimo);
 		botoes.add(editar);
 		botoes.add(remover);
-		frame.add(main);
+		frame.add(objetos);
 	}
 
-	public void mostrarPainel() {
+	public void listarObjetos() {
 		List<ObjetoPista> objetoPista = editorVetorizado.getCircuito()
 				.getObjetos();
-		if (objetoPista == null) {
-			JOptionPane.showMessageDialog(editorVetorizado.getSrcFrame(),
-					"Sem Objetos");
-			return;
+		if (objetoPista != null) {
+			defaultListModelOP.clear();
+			for (ObjetoPista op : objetoPista) {
+				defaultListModelOP.addElement(op);
+			}
 		}
-		defaultListModelOP.clear();
-		for (ObjetoPista op : objetoPista) {
-			defaultListModelOP.addElement(op);
-		}
-		Point location = this.editorVetorizado.getSrcFrame().getLocation();
-		frame.setLocation(new Point(location.x
-				+ this.editorVetorizado.getSrcFrame().getWidth(), location.y));
-		frame.setSize(250, 400);
-		frame.setVisible(true);
+		// Point location = this.editorVetorizado.getSrcFrame().getLocation();
+		// frame.setLocation(new Point(location.x
+		// + this.editorVetorizado.getSrcFrame().getWidth(), location.y));
+		// frame.setSize(250, 400);
+		// frame.setVisible(true);
 	}
 
 	protected void atualizarCircuito() {
@@ -178,6 +176,14 @@ public class FormularioListaObjetos {
 			objetos.add((ObjetoPista) defaultListModelOP.getElementAt(i));
 		}
 		editorVetorizado.repaint();
+	}
+
+	public JPanel getObjetos() {
+		return objetos;
+	}
+
+	public void setObjetos(JPanel objetos) {
+		this.objetos = objetos;
 	}
 
 	public static void main(String[] args) {
