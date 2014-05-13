@@ -53,7 +53,6 @@ public class TestePista {
 			alive = false;
 			testTh.interrupt();
 			testTh = null;
-
 			return;
 		}
 
@@ -63,14 +62,14 @@ public class TestePista {
 					int cont = 0;
 					No no = null;
 					try {
-						while (cont < pontosPista.size()) {
+						while (cont < pontosPista.size() && alive) {
 							editor.setUltimoClicado(null);
 							no = (No) pontosPista.get(cont);
 							int entradaBox = circuito.getEntradaBoxIndex();
 							if (irProBox
 									&& (cont > (entradaBox - 100) && cont < (entradaBox + 100))) {
 								int contBox = 0;
-								while (contBox < pontosBox.size()) {
+								while (contBox < pontosBox.size() && alive) {
 									No noBox = (No) pontosBox.get(contBox);
 									posicionaCarroBox(contBox, noBox, pontosBox);
 									centralizaTestCar();

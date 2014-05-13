@@ -107,8 +107,6 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 	private JSpinner transparencia = new JSpinner();
 	private FormularioListaObjetos formularioListaObjetos;
 	private BufferedImage backGround;
-	private BufferedImage drawBuffer;
-	private Thread threadBkgGen;
 	private JCheckBox nosChave;
 
 	public boolean isMoverObjetoPista() {
@@ -594,7 +592,7 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 		listaObjetos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					formularioListaObjetos.mostrarPainel();
+					formularioListaObjetos.listarObjetos();
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
