@@ -138,6 +138,7 @@ public class MainPanelEditor extends JPanel {
 	private Thread threadBkgGen;
 	private JCheckBox nosChave;
 	private boolean mostraBG = true;
+	protected boolean editarObjetos;
 
 	public MainPanelEditor() {
 	}
@@ -170,8 +171,8 @@ public class MainPanelEditor extends JPanel {
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 		circuito = (Circuito) ois.readObject();
 		testePista = new TestePista(this, circuito);
-		backGround = CarregadorRecursos.carregaBackGround(
-				circuito.getBackGround(), this, circuito);
+		// backGround = CarregadorRecursos.carregaBackGround(
+		// circuito.getBackGround(), this, circuito);
 		this.srcFrame = frame;
 		iniciaEditor(frame);
 		atualizaListas();
@@ -663,6 +664,19 @@ public class MainPanelEditor extends JPanel {
 			}
 
 			public void mouseClicked(MouseEvent e) {
+				if (editarObjetos) {
+					cliackEditarObjetos(e);
+				} else {
+					No no = new No();
+					no.setTipo(getTipoNo());
+					no.setPoint(e.getPoint());
+					inserirNoNasJList(no);
+					ultimoNo = no;
+				}
+				repaint();
+			}
+
+			private void cliackEditarObjetos(MouseEvent e) {
 				if (!moverObjetoPista && e.getClickCount() > 1) {
 					editaObjetoPista(ultimoClicado);
 					return;
@@ -743,15 +757,6 @@ public class MainPanelEditor extends JPanel {
 
 					return;
 				}
-
-				No no = new No();
-				no.setTipo(getTipoNo());
-				no.setPoint(e.getPoint());
-				inserirNoNasJList(no);
-
-				ultimoNo = no;
-
-				repaint();
 			}
 		});
 	}
@@ -1938,6 +1943,7 @@ public class MainPanelEditor extends JPanel {
 		noite.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				editarObjetos = true;
 				circuito.setNoite(noite.isSelected());
 				repaint();
 			}
@@ -1963,6 +1969,7 @@ public class MainPanelEditor extends JPanel {
 		criarObjeto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					editarObjetos = true;
 					FormularioObjetos formularioObjetos = new FormularioObjetos(
 							MainPanelEditor.this);
 					formularioObjetos.mostrarPainelModal();
@@ -2011,11 +2018,16 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		buttonsPanel.add(criarObjeto);
-		JButton listaObjetos = new JButton("Listar Objetos");
+		JButton listaObjetos = new JButton("Editar Objetos") {
+			@Override
+			public String getText() {
+				return "Editar Objetos " + editarObjetos;
+			}
+		};
 		listaObjetos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					formularioListaObjetos.listarObjetos();
+					editarObjetos = !editarObjetos;
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -2027,6 +2039,7 @@ public class MainPanelEditor extends JPanel {
 		moverPelaTela.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					editarObjetos = true;
 					srcFrame.requestFocus();
 				} catch (Exception e2) {
 					e2.printStackTrace();

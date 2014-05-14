@@ -155,7 +155,8 @@ public class FormularioObjetos {
 	public void mostrarPainel() {
 		Point location = this.mainPanelEditor.getSrcFrame().getLocation();
 		frame.setLocation(new Point(location.x
-				+ this.mainPanelEditor.getSrcFrame().getWidth(), location.y));
+				+ this.mainPanelEditor.getSrcFrame().getWidth()
+				- frame.getWidth(), location.y));
 		frame.setSize(250, 400);
 		if (objetoPista != null)
 			frame.setTitle(objetoPista.getNome());

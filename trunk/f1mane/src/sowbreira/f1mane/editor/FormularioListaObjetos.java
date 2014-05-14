@@ -161,11 +161,6 @@ public class FormularioListaObjetos {
 				defaultListModelOP.addElement(op);
 			}
 		}
-		// Point location = this.editorVetorizado.getSrcFrame().getLocation();
-		// frame.setLocation(new Point(location.x
-		// + this.editorVetorizado.getSrcFrame().getWidth(), location.y));
-		// frame.setSize(250, 400);
-		// frame.setVisible(true);
 	}
 
 	protected void atualizarCircuito() {
