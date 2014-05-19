@@ -41,7 +41,6 @@ public class FormularioObjetos {
 	private JPanel panel = new JPanel(new GridLayout(9, 2));
 	private MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
-	private JFrame frame;
 	public final static String OBJETO_LIVRE = "Objeto Livre";
 	public final static String OBJETO_PNEUS = "Objeto Pneus";
 	public final static String OBJETO_CONSTRUCAO = "Objeto Construção";
@@ -137,10 +136,6 @@ public class FormularioObjetos {
 		angulo.addChangeListener(changeListener);
 		transparencia.addChangeListener(changeListener);
 		transparencia.setValue(new Integer(255));
-		frame = new JFrame();
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().add(panel);
-
 	}
 
 	protected void atualizaMain() {
@@ -150,19 +145,6 @@ public class FormularioObjetos {
 			FormularioObjetos.this.mainPanelEditor.repaint();
 		}
 
-	}
-
-	public void mostrarPainel() {
-		Point location = this.mainPanelEditor.getSrcFrame().getLocation();
-		frame.setLocation(new Point(location.x
-				+ this.mainPanelEditor.getSrcFrame().getWidth()
-				- frame.getWidth(), location.y));
-		frame.setSize(250, 400);
-		if (objetoPista != null)
-			frame.setTitle(objetoPista.getNome());
-		else
-			frame.setTitle("Novo Objeto");
-		frame.setVisible(true);
 	}
 
 	public void mostrarPainelModal() {
@@ -189,7 +171,6 @@ public class FormularioObjetos {
 
 	public static void main(String[] args) {
 		FormularioObjetos formularioObjetos = new FormularioObjetos(null);
-		formularioObjetos.mostrarPainel();
 	}
 
 	public JSpinner getLargura() {
@@ -246,8 +227,7 @@ public class FormularioObjetos {
 		frente.setSelected(objetoPista.isPintaEmcima());
 		angulo.setValue(new Integer((int) objetoPista.getAngulo()));
 		this.objetoPista = objetoPista;
-		mostrarPainel();
-
+		mostrarPainelModal();
 	}
 
 	public void formularioObjetoPista(ObjetoPista objetoPista) {
