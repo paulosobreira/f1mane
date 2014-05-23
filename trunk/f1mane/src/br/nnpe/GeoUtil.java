@@ -67,13 +67,20 @@ public class GeoUtil {
 		return list;
 	}
 
-	public static List drawBresenhamLine(Point p1, Point p2) {
+	public static List<Point> drawBresenhamLine(Point p1, Point p2) {
 		return drawBresenhamLine(p1.x, p1.y, p2.x, p2.y);
-		// return myDrawLine(p1.x,p1.y,p2.x,p2.y);
 	}
 
-	public static List drawBresenhamLine(int x0, int y0, int x1, int y1) {
-		LinkedList list = new LinkedList();
+	public static List<Point> drawBresenhamLine(int x0, int y0, int x1, int y1) {
+		return drawBresenhamLine(x0, y0, x1, y1, new LinkedList<Point>());
+	}
+
+	public static List<Point> drawBresenhamLineAL(int x0, int y0, int x1, int y1) {
+		return drawBresenhamLine(x0, y0, x1, y1, new ArrayList<Point>());
+	}
+
+	public static List<Point> drawBresenhamLine(int x0, int y0, int x1, int y1,
+			List<Point> list) {
 		int dy = y1 - y0;
 		int dx = x1 - x0;
 		int stepx, stepy;
@@ -126,16 +133,13 @@ public class GeoUtil {
 		return list;
 	}
 
-	public static double distaciaEntrePontos(Point p1, Point p2) {
+	public static int distaciaEntrePontos(Point p1, Point p2) {
 		return distaciaEntrePontos(p1.x, p1.y, p2.x, p2.y);
-		// return Math.sqrt(Math.sqrt(Math.abs(x1 - x2))
-		// + Math.sqrt(Math.abs(y1 - y2)));
 	}
 
-	public static double distaciaEntrePontos(int x1, int y1, int x2, int y2) {
-		return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
-		// return Math.sqrt(Math.sqrt(Math.abs(x1 - x2))
-		// + Math.sqrt(Math.abs(y1 - y2)));
+	public static int distaciaEntrePontos(int x1, int y1, int x2, int y2) {
+		return drawBresenhamLine(x1, y1, x2, y2).size();
+		// return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
 	}
 
 	public static Point calculaPonto(int angulo, int comprimento, Point p1) {
@@ -151,126 +155,6 @@ public class GeoUtil {
 		// System.out.println("Angulo : "+ang);
 		// System.out.println("Pontos x="+x+" y="+y);
 		return new Point(p1.x + x, p1.y - y);
-	}
-
-	public static List myDrawLine(int x1, int y1, int x2, int y2) {
-		LinkedList list = new LinkedList();
-		int temp;
-		int dy_neg = 1;
-		int dx_neg = 1;
-		int switch_x_y = 0;
-		int neg_slope = 0;
-		int tempx, tempy;
-		int dx = x2 - x1;
-		if (dx == 0) {
-			if (y1 > y2) {
-				for (int n = y2; n <= y1; n++) {
-					list.add(new Point(x1, n));
-				}
-				return list;
-			} else {
-				for (int n = y1; n <= y2; n++) {
-					list.add(new Point(x1, n));
-				}
-				return list;
-			}
-		}
-
-		int dy = y2 - y1;
-		if (dy == 0) {
-			if (x1 > x2) {
-				for (int n = x2; n <= x1; n++) {
-					list.add(new Point(n, y1));
-				}
-				return list;
-			} else {
-				for (int n = x1; n <= x2; n++) {
-					list.add(new Point(n, y1));
-				}
-				return list;
-			}
-		}
-		float m = (float) dy / dx;
-
-		if (m > 1 || m < -1) {
-			temp = x1;
-			x1 = y1;
-			y1 = temp;
-			temp = x2;
-			x2 = y2;
-			y2 = temp;
-			dx = x2 - x1;
-			dy = y2 - y1;
-			m = (float) dy / dx;
-			switch_x_y = 1;
-		}
-
-		if (x1 > x2) {
-			temp = x1;
-			x1 = x2;
-			x2 = temp;
-			temp = y1;
-			y1 = y2;
-			y2 = temp;
-			dx = x2 - x1;
-			dy = y2 - y1;
-			m = (float) dy / dx;
-		}
-
-		if (m < 0) {
-			if (dy < 0) {
-				dy_neg = -1;
-				dx_neg = 1;
-			} else {
-				dy_neg = 1;
-				dx_neg = -1;
-			}
-			neg_slope = 1;
-		}
-
-		int d = 2 * (dy * dy_neg) - (dx * dx_neg);
-		int incrH = 2 * dy * dy_neg;
-		int incrHV = 2 * ((dy * dy_neg) - (dx * dx_neg));
-		int x = x1;
-		int y = y1;
-		tempx = x;
-		tempy = y;
-
-		if (switch_x_y == 1) {
-			temp = x;
-			x = y;
-			y = temp;
-		}
-		list.add(new Point(x, y));
-		x = tempx;
-		y = tempy;
-
-		while (x < x2) {
-			if (d <= 0) {
-				x++;
-				d += incrH;
-			} else {
-				d += incrHV;
-				x++;
-				if (neg_slope == 0) {
-					y++;
-				} else {
-					y--;
-				}
-			}
-			tempx = x;
-			tempy = y;
-
-			if (switch_x_y == 1) {
-				temp = x;
-				x = y;
-				y = temp;
-			}
-			list.add(new Point(x, y));
-			x = tempx;
-			y = tempy;
-		}
-		return list;
 	}
 
 	public static List fillCircle(int centerX, int centerY, int raio) {
