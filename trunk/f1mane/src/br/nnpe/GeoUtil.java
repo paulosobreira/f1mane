@@ -138,8 +138,8 @@ public class GeoUtil {
 	}
 
 	public static int distaciaEntrePontos(int x1, int y1, int x2, int y2) {
-		return drawBresenhamLine(x1, y1, x2, y2).size();
-		// return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
+		// return drawBresenhamLine(x1, y1, x2, y2).size();
+		return (int) Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
 	}
 
 	public static Point calculaPonto(int angulo, int comprimento, Point p1) {
