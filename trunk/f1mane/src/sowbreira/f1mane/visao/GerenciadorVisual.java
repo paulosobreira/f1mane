@@ -570,11 +570,18 @@ public class GerenciadorVisual {
 					Logger.ativo = !Logger.ativo;
 				}
 
+				if (keyCoode == KeyEvent.VK_2) {
+					PainelCircuito.desenhaBkg = !PainelCircuito.desenhaBkg;
+				}
+
+				if (keyCoode == KeyEvent.VK_3) {
+					PainelCircuito.desenhaImagens = !PainelCircuito.desenhaImagens;
+				}
+				
 				if (Logger.ativo) {
 					if (keyCoode == KeyEvent.VK_T) {
 						controleJogo.tabelaComparativa();
 					}
-
 					if (keyCoode == KeyEvent.VK_EQUALS) {
 						controleJogo.aumentaFatorAcidade();
 					}

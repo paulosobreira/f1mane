@@ -1515,4 +1515,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return controleCorrida.safetyCarUltimas3voltas();
 	}
 
+	@Override
+	public double getFatorAcidente() {
+		return controleCorrida.getFatorAcidente();
+	}
+
 }

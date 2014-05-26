@@ -622,7 +622,7 @@ public class PainelMenuLocal {
 			setarHints(g2d);
 			g2d.setColor(g2d.getBackground());
 			g2d.fillRect(0, 0, getWidth(), getHeight());
-			if (PainelCircuito.carregaBkg) {
+			if (PainelCircuito.desenhaBkg) {
 				if (MENU.equals(MENU_PRINCIPAL))
 					bg = bgmonaco;
 				if (MENU.equals(MENU_CORRIDA)
@@ -1873,16 +1873,19 @@ public class PainelMenuLocal {
 
 	private void desenhaTemporadas(Graphics2D g2d, int x, int y,
 			boolean campeonato) throws IOException {
-		g2d.setColor(lightWhite);
-		anteTemporadaRect.setFrame(x, y - 25, 30, 30);
-		g2d.fill(anteTemporadaRect);
-		g2d.drawImage(setaCarroEsquerda, x - 15, y - 55, null);
-		x += 40;
 
 		if (temporadaSelecionada == null) {
 			temporadaSelecionada = (String) temporadas
 					.get(temporadas.size() - 1);
 		}
+
+		if (temporadaSelecionada != (String) temporadas.get(0)) {
+			g2d.setColor(lightWhite);
+			anteTemporadaRect.setFrame(x, y - 25, 30, 30);
+			g2d.fill(anteTemporadaRect);
+			g2d.drawImage(setaCarroEsquerda, x - 15, y - 55, null);
+		}
+		x += 40;
 
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
@@ -1896,10 +1899,13 @@ public class PainelMenuLocal {
 
 		x += larguraTexto + 30;
 
-		g2d.setColor(lightWhite);
-		proxTemporadaRect.setFrame(x, y - 25, 30, 30);
-		g2d.fill(proxTemporadaRect);
-		g2d.drawImage(setaCarroDireita, x - 45, y - 52, null);
+		if (temporadaSelecionada != (String) temporadas
+				.get(temporadas.size() - 1)) {
+			g2d.setColor(lightWhite);
+			proxTemporadaRect.setFrame(x, y - 25, 30, 30);
+			g2d.fill(proxTemporadaRect);
+			g2d.drawImage(setaCarroDireita, x - 45, y - 52, null);
+		}
 		x += 40;
 		x -= (80 + larguraTexto);
 		g2d.setFont(fontOri);

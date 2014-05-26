@@ -62,7 +62,7 @@ import br.nnpe.Util;
  */
 public class PainelCircuito {
 
-	public static boolean carregaBkg = true;
+	public static boolean desenhaBkg = true;
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
@@ -568,7 +568,7 @@ public class PainelCircuito {
 	}
 
 	public void carregaBackGround() {
-		if (!carregaBkg) {
+		if (!desenhaBkg) {
 			return;
 		}
 		if (!InterfaceJogo.VALENDO) {
@@ -1363,7 +1363,7 @@ public class PainelCircuito {
 	}
 
 	private boolean verificaComponeteNaParteInferior() {
-		return carregaBkg
+		return desenhaBkg
 				&& !(backGround != null && ((limitesViewPort.y + limitesViewPort.height)) < (backGround
 						.getHeight() * 0.99) * zoom);
 	}
@@ -1636,10 +1636,6 @@ public class PainelCircuito {
 
 		yBase += 20;
 
-		debugDurabilidadeAreofolio(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
 		debugEmMovimento(g2d, ptoOri, yBase);
 
 		yBase += 20;
@@ -1717,6 +1713,24 @@ public class PainelCircuito {
 		yBase += 20;
 
 		debugGanhosReta(g2d, ptoOri, yBase);
+
+		yBase += 20;
+
+		debugDurabilidadeAreofolio(g2d, ptoOri, yBase);
+
+		yBase += 20;
+
+		debugFatorAcidente(g2d, ptoOri, yBase);
+	}
+
+	private void debugFatorAcidente(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(
+				" Fator Acidente  "
+						+ df4.format(controleJogo.getFatorAcidente()), ptoOri,
+				yBase);
 
 	}
 
@@ -2579,16 +2593,14 @@ public class PainelCircuito {
 	}
 
 	private void desenhaBackGround(Graphics2D g2d) {
+		if (!desenhaBkg) {
+			desenhaBackGroundComStrokes(g2d);
+			return;
+		}
 		if (backGround == null) {
 			carregaBackGround();
 		}
 		if (backGround == null) {
-			g2d.setColor(Color.white);
-			if (circuito.getCorFundo() != null) {
-				g2d.setColor(circuito.getCorFundo());
-			}
-			g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
-					(int) limitesViewPortFull.getHeight());
 			desenhaBackGroundComStrokes(g2d);
 		} else {
 			carregaBackGroundZoom();
@@ -2786,6 +2798,12 @@ public class PainelCircuito {
 		if (!desenhaPista) {
 			return;
 		}
+		g2d.setColor(Color.white);
+		if (circuito.getCorFundo() != null) {
+			g2d.setColor(circuito.getCorFundo());
+		}
+		g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
+				(int) limitesViewPortFull.getHeight());
 		int larguraPistaPixeisLoc = Util.inte(100
 				* circuito.getMultiplicadorLarguraPista() * zoom);
 		if (larguraPistaPixeisLoc != larguraPistaPixeis) {
@@ -4527,8 +4545,8 @@ public class PainelCircuito {
 
 		String nomeTempo = piloto.getNome()
 				+ " - "
-				+ ControleEstatisticas.formatarTempo(
-						piloto.getCiclosVoltaQualificacao());
+				+ ControleEstatisticas.formatarTempo(piloto
+						.getCiclosVoltaQualificacao());
 
 		int maior = nomeTempo.length();
 
