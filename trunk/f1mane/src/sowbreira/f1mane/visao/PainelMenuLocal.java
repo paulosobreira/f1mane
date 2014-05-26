@@ -216,7 +216,7 @@ public class PainelMenuLocal {
 
 	private Piloto pilotoDesafio;
 
-	private boolean kers = true;
+	private boolean kers = false;
 
 	private boolean drs = true;
 
