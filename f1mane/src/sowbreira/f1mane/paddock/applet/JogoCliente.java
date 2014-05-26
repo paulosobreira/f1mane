@@ -1264,4 +1264,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
+	@Override
+	public double getFatorAcidente() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

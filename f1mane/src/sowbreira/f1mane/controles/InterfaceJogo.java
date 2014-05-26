@@ -379,4 +379,6 @@ public interface InterfaceJogo {
 
 	public boolean safetyCarUltimas3voltas();
 
+	public double getFatorAcidente();
+
 }

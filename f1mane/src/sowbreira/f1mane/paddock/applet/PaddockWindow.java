@@ -167,7 +167,7 @@ public class PaddockWindow {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D graphics2d = (Graphics2D) g;
-				if (img != null && PainelCircuito.carregaBkg)
+				if (img != null && PainelCircuito.desenhaBkg)
 					graphics2d.drawImage(img, null, 0, 0);
 			}
 		};

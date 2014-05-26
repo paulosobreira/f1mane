@@ -329,15 +329,7 @@ public class ControleBox {
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
 			controleJogo.info(Html.orange(Lang.msg("298",
 					new String[] { carro.getNome() })));
-			penalidade = 15;
-			if (piloto.isJogadorHumano()) {
-				if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
-					penalidade = 20;
-				}
-				if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
-					penalidade = 5;
-				}
-			}
+			penalidade = 100;
 			penalidade = Util.inte(penalidade
 					* (2 - (carro.getPotencia() / 1000)));
 		}

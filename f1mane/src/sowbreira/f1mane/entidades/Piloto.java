@@ -136,6 +136,7 @@ public class Piloto implements Serializable {
 	private int diferencaParaProximoRetardatario;
 	private boolean colisaoDiantera;
 	private boolean colisaoCentro;
+	private int mudouTracadoReta;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -1435,6 +1436,9 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaMudarTracado(InterfaceJogo controleJogo) {
+		if (!noAtual.verificaRetaOuLargada()) {
+			mudouTracadoReta = 0;
+		}
 		if (!isAutoPos()) {
 			return;
 		}
@@ -1460,13 +1464,19 @@ public class Piloto implements Serializable {
 				return;
 			}
 			Piloto pilotoAtraz = carroAtraz.getPiloto();
+			int tracadoAntes = pilotoAtraz.getTracado();
 			if (diffAnt < 200 && diffAnt > 50 && pilotoAtraz.getPtosBox() == 0
 					&& testeHabilidadePiloto(controleJogo) && !isFreiandoReta()
 					&& !isJogadorHumano()
-					&& controleJogo.getNiveljogo() < Math.random()) {
+					&& controleJogo.getNiveljogo() < Math.random()
+					&& mudouTracadoReta < 2) {
 				mudarTracado(pilotoAtraz.getTracado(), controleJogo, false);
 			} else if (!isJogadorHumano()) {
 				mudarTracado(0, controleJogo, false);
+			}
+			if (noAtual.verificaRetaOuLargada()
+					&& pilotoAtraz.getTracado() != tracadoAntes) {
+				mudouTracadoReta++;
 			}
 
 		}
