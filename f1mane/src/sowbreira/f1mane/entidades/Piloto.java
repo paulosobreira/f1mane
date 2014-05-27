@@ -996,6 +996,9 @@ public class Piloto implements Serializable {
 		processaMudarTracado(controleJogo);
 		processaColisao(controleJogo);
 		controleJogo.verificaUltraPassagem(this);
+		if (getColisao() != null) {
+			penalidadeColisao(controleJogo);
+		}
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 
@@ -1051,9 +1054,6 @@ public class Piloto implements Serializable {
 			return;
 		}
 		verificaColisaoCarroFrente(controleJogo);
-		if (getColisao() != null) {
-			penalidadeColisao(controleJogo);
-		}
 	}
 
 	public void penalidadeColisao(InterfaceJogo controleJogo) {
