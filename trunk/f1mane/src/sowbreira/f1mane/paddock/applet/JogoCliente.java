@@ -131,8 +131,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 		try {
 			gerenciadorVisual = new GerenciadorVisual(this);
-			gerenciadorVisual.iniciarInterfaceGraficaJogo();
 			controleEstatisticas = new ControleEstatisticas(this);
+			gerenciadorVisual.iniciarInterfaceGraficaJogo();
 			controleEstatisticas.inicializarThreadConsumidoraInfo(500);
 		} catch (Exception e) {
 			if (monitor && e instanceof InterruptedException) {
@@ -1076,6 +1076,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public int calculaDiffParaProximoRetardatario(Piloto piloto,
 			boolean analisaTracado) {
+		if (controleEstatisticas == null) {
+			System.out.println("controleEstatisticas null");
+		}
 		return controleEstatisticas.calculaDiffParaProximoRetardatario(piloto,
 				analisaTracado);
 	}

@@ -69,18 +69,19 @@ public class MonitorJogo implements Runnable {
 					tempoCiclo = controlePaddockCliente.getLatenciaMinima();
 				}
 				Logger.logar("MonitorJogo");
-				verificaEstadoJogo();
 				Logger.logar("MonitorJogo verificaEstadoJogo()");
-				jogoCliente.preparaGerenciadorVisual(true);
+				verificaEstadoJogo();
 				Logger.logar("MonitorJogo jogoCliente.preparaGerenciadorVisual(true)");
-				esperaJogoComecar();
+				jogoCliente.preparaGerenciadorVisual(true);
 				Logger.logar("MonitorJogo esperaJogoComecar()");
-				mostraQualify(tempoCiclo);
+				esperaJogoComecar();
 				Logger.logar("MonitorJogo mostraQualify()");
-				apagaLuzesLargada();
+				mostraQualify(tempoCiclo);
 				Logger.logar("MonitorJogo apagaLuzesLargada()");
-				processaCiclosCorrida(tempoCiclo);
+				apagaLuzesLargada();
 				Logger.logar("MonitorJogo processaCiclosCorrida(tempoCiclo)");
+				processaCiclosCorrida(tempoCiclo);
+				Logger.logar("MonitorJogo mostraResultadoFinal(tempoCiclo)");
 				mostraResultadoFinal(tempoCiclo);
 				Thread.sleep(controlePaddockCliente.getLatenciaMinima());
 			} catch (InterruptedException e) {
@@ -103,7 +104,6 @@ public class MonitorJogo implements Runnable {
 				iniciaJalena();
 				if (!atualizouDados) {
 					atualizarDados();
-					atualizouDados = true;
 				}
 				jogoCliente.desenhouQualificacao();
 				atualizaZoom();
@@ -159,7 +159,6 @@ public class MonitorJogo implements Runnable {
 				if (!atualizouDados) {
 					atualizarDados();
 					atualizaModoCarreira();
-					atualizouDados = true;
 					atualizaPosicoes();
 				}
 				iniciaJalena();
@@ -233,10 +232,16 @@ public class MonitorJogo implements Runnable {
 		boolean creditos = false;
 		while (!interrupt && Comandos.MOSTRANDO_QUALIFY.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
+			int cont = 0;
+			while (!atualizouDados && cont < 5) {
+				atualizarDados();
+				cont++;
+				Thread.sleep(1000);
+			}
 			iniciaJalena();
 			if (!atualizouDados) {
-				atualizarDados();
-				atualizouDados = true;
+				controlePaddockCliente.setComunicacaoServer(false);
+				continue;
 			}
 			if (!creditos) {
 				Thread.sleep(3000);
@@ -384,8 +389,10 @@ public class MonitorJogo implements Runnable {
 				DadosJogo dadosJogo = (DadosJogo) ret;
 				jogoCliente.setDadosJogo(dadosJogo);
 			}
+			atualizouDados = true;
 		} catch (Exception e) {
 			Logger.logarExept(e);
+			atualizouDados = false;
 		}
 	}
 

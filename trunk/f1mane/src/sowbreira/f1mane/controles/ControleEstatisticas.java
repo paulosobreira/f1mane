@@ -147,7 +147,6 @@ public class ControleEstatisticas {
 			return seg + "." + mil.format(Math.abs(mili));
 	}
 
-
 	public String calculaSegundosParaProximo(Piloto psel, long tempo) {
 		int diff = calculaDiferencaParaProximo(psel);
 		String ret = milesismos.format((diff / Double.parseDouble(String
@@ -393,8 +392,11 @@ public class ControleEstatisticas {
 	public int calculaDiffParaProximoRetardatario(Piloto piloto,
 			boolean analisaTracado) {
 		List<Piloto> pilotos = controleJogo.getPilotos();
-		int menorDistancia = Integer.MAX_VALUE;
+		int menorDistancia = Util.inte(Integer.MAX_VALUE);
 		if (piloto.getPtosBox() != 0) {
+			return menorDistancia;
+		}
+		if (piloto.getNoAtual() == null) {
 			return menorDistancia;
 		}
 		int indexAtual = piloto.getNoAtual().getIndex();
@@ -408,6 +410,9 @@ public class ControleEstatisticas {
 			}
 			if (pilotoFrente.getTracado() == 4
 					|| pilotoFrente.getTracado() == 5) {
+				continue;
+			}
+			if (pilotoFrente.getNoAtual() == null) {
 				continue;
 			}
 			if (analisaTracado
@@ -426,9 +431,11 @@ public class ControleEstatisticas {
 					&& (indexFrente + diffTAmPista) < menorDistancia) {
 				menorDistancia = (indexFrente + diffTAmPista);
 			}
-
+			List obterPista = controleJogo.obterPista(piloto.getNoAtual());
+			if (obterPista == null) {
+				continue;
+			}
 			indexFrente += controleJogo.obterPista(piloto.getNoAtual()).size();
-
 			if (indexFrente > indexAtual
 					&& (indexFrente - indexAtual) < menorDistancia) {
 				menorDistancia = (indexFrente - indexAtual);
