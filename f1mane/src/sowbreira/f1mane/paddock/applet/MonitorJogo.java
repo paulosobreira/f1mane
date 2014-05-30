@@ -76,7 +76,7 @@ public class MonitorJogo implements Runnable {
 				Logger.logar("MonitorJogo esperaJogoComecar()");
 				esperaJogoComecar();
 				Logger.logar("MonitorJogo mostraQualify()");
-				mostraQualify(tempoCiclo);
+				mostraQualify();
 				Logger.logar("MonitorJogo apagaLuzesLargada()");
 				apagaLuzesLargada();
 				Logger.logar("MonitorJogo processaCiclosCorrida(tempoCiclo)");
@@ -84,7 +84,7 @@ public class MonitorJogo implements Runnable {
 				Logger.logar("MonitorJogo mostraResultadoFinal(tempoCiclo)");
 				mostraResultadoFinal(tempoCiclo);
 				Thread.sleep(controlePaddockCliente.getLatenciaMinima());
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
 				interrupt = true;
 				matarTodasThreads();
 				Logger.logarExept(e);
@@ -227,29 +227,28 @@ public class MonitorJogo implements Runnable {
 		}
 	}
 
-	private void mostraQualify(long tempoCiclo) throws InterruptedException {
+	private void mostraQualify() throws InterruptedException {
 		boolean interrupt = false;
 		boolean creditos = false;
+		boolean atualizouDadosQualify = false;
 		while (!interrupt && Comandos.MOSTRANDO_QUALIFY.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			int cont = 0;
-			while (!atualizouDados && cont < 5) {
+			while (!atualizouDadosQualify && !atualizouDados && cont < 5) {
 				atualizarDados();
-				cont++;
-				Thread.sleep(1000);
+				if (atualizouDados) {
+					atualizouDadosQualify = atualizouDados;
+				} else {
+					cont++;
+					Thread.sleep(1000);
+				}
 			}
 			iniciaJalena();
-			if (!atualizouDados) {
-				controlePaddockCliente.setComunicacaoServer(false);
-				continue;
-			}
 			if (!creditos) {
 				Thread.sleep(3000);
 				creditos = true;
-			} else {
-				jogoCliente.desenhaQualificacao();
-				Thread.sleep(tempoCiclo);
 			}
+			jogoCliente.desenhaQualificacao();
 			verificaEstadoJogo();
 		}
 	}
@@ -388,8 +387,10 @@ public class MonitorJogo implements Runnable {
 			if (ret != null) {
 				DadosJogo dadosJogo = (DadosJogo) ret;
 				jogoCliente.setDadosJogo(dadosJogo);
+				atualizouDados = true;
+			} else {
+				atualizouDados = false;
 			}
-			atualizouDados = true;
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			atualizouDados = false;
