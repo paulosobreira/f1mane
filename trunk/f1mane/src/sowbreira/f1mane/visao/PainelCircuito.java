@@ -4497,20 +4497,21 @@ public class PainelCircuito {
 			Point point = (Point) ptosPilotosDesQualy.get(i);
 			desenhaPilotoQualify(g2d, piloto, point.x, point.y);
 		}
+		for (int i = 0; i < pilotos.size(); i++) {
+			Piloto piloto = (Piloto) pilotos.get(i);
+			Point point = (Point) ptosPilotosDesQualy.get(i);
+			desenhaBordaPilotoQualify(g2d, piloto, point.x, point.y);
+		}
 	}
 
-	private void desenhaPilotoQualify(Graphics2D g2d, Piloto piloto, int x,
-			int y) {
+	private void desenhaBordaPilotoQualify(Graphics2D g2d, Piloto piloto,
+			int x, int y) {
 		BufferedImage carroimg;
 		int newY;
 		carroimg = controleJogo.obterCarroLado(piloto);
 		Stroke stroke = g2d.getStroke();
 		newY = carroimg.getHeight() > 36 ? y - (carroimg.getHeight() - 36) : y;
 		if (circuito != null && circuito.isUsaBkg()) {
-			g2d.setColor(transpMenus);
-			g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
-					+ newY - 5, carroimg.getWidth() + 5,
-					carroimg.getHeight() + 5, 15, 15);
 			boolean desenhaBorda = false;
 			if (piloto.isJogadorHumano()
 					&& controleJogo.getPilotoJogador().equals(piloto)) {
@@ -4536,7 +4537,21 @@ public class PainelCircuito {
 						carroimg.getHeight() + 5, 15, 15);
 				g2d.setStroke(stroke);
 			}
+		}
+	}
 
+	private void desenhaPilotoQualify(Graphics2D g2d, Piloto piloto, int x,
+			int y) {
+		BufferedImage carroimg;
+		int newY;
+		carroimg = controleJogo.obterCarroLado(piloto);
+		Stroke stroke = g2d.getStroke();
+		newY = carroimg.getHeight() > 36 ? y - (carroimg.getHeight() - 36) : y;
+		if (circuito != null && circuito.isUsaBkg()) {
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(limitesViewPort.x + x - 5, limitesViewPort.y
+					+ newY - 5, carroimg.getWidth() + 5,
+					carroimg.getHeight() + 5, 15, 15);
 		}
 		int carSelX = x;
 		int carSelY = newY + 30;
