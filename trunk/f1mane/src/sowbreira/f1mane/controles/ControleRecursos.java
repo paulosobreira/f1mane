@@ -544,4 +544,20 @@ public abstract class ControleRecursos {
 		return boxWrapperFull;
 	}
 
+	public List<Piloto> getPilotosCopia() {
+		List<Piloto> pilotosCopy = new ArrayList<Piloto>();
+		while (pilotosCopy.isEmpty()) {
+			try {
+				if (pilotos == null || pilotos.isEmpty()) {
+					return pilotosCopy;
+				}
+				pilotosCopy.addAll(pilotos);
+			} catch (Exception e) {
+				pilotosCopy.clear();
+				Logger.logarExept(e);
+			}
+		}
+		return pilotosCopy;
+	}
+
 }

@@ -381,4 +381,6 @@ public interface InterfaceJogo {
 
 	public double getFatorAcidente();
 
+	public List<Piloto> getPilotosCopia();
+
 }

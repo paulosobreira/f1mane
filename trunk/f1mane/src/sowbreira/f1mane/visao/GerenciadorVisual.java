@@ -247,7 +247,7 @@ public class GerenciadorVisual {
 
 		while (thAtualizaPilotosSuaveAlive) {
 			InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
-			List<Piloto> pilotos = controleJogo.getPilotos();
+			List<Piloto> pilotos = controleJogo.getPilotosCopia();
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				No noAtual = piloto.getNoAtual();
