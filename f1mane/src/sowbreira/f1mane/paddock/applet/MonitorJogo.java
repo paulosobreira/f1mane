@@ -387,7 +387,16 @@ public class MonitorJogo implements Runnable {
 			if (ret != null) {
 				DadosJogo dadosJogo = (DadosJogo) ret;
 				jogoCliente.setDadosJogo(dadosJogo);
-				atualizouDados = true;
+				if ((jogoCliente.getPilotos() == null || jogoCliente
+						.getPilotos().isEmpty())
+						|| (jogoCliente.getPilotos() != null
+								&& dadosJogo.getPilotosList() != null && jogoCliente
+								.getPilotos().size() != dadosJogo
+								.getPilotosList().size())) {
+					atualizouDados = false;
+				} else {
+					atualizouDados = true;
+				}
 			} else {
 				atualizouDados = false;
 			}
@@ -461,7 +470,7 @@ public class MonitorJogo implements Runnable {
 						&& !"".equals(dadosParciais.texto))
 					dadosJogo.setTexto(dadosParciais.texto);
 				dadosJogo.setVoltaAtual(dadosParciais.voltaAtual);
-				List pilotos = dadosJogo.getPilotosList();
+				List pilotos = jogoCliente.getPilotos();
 				for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 					Piloto piloto = (Piloto) iter.next();
 					piloto.setPtosPista(dadosParciais.pilotsPonts[piloto

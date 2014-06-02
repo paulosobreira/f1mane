@@ -71,11 +71,25 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return dadosJogo;
 	}
 
-	public void setDadosJogo(DadosJogo dadosJogo) {
+	public void setDadosJogo(DadosJogo dadosJogo) throws Exception {
 		this.dadosJogo = dadosJogo;
-		if (dadosJogo != null && dadosJogo.getPilotosList() != null
-				&& !dadosJogo.getPilotosList().isEmpty()) {
-			pilotos = dadosJogo.getPilotosList();
+		if ((dadosJogo != null && dadosJogo.getPilotosList() != null && !dadosJogo
+				.getPilotosList().isEmpty())) {
+			if (pilotos != null) {
+				pilotos.clear();
+			} else {
+				pilotos = new ArrayList();
+			}
+			List pilotosList = dadosJogo.getPilotosList();
+			for (Iterator iterator = pilotosList.iterator(); iterator.hasNext();) {
+				Piloto object = (Piloto) iterator.next();
+				if (pilotos.contains(object)) {
+					throw new Exception("Piloto Repetido");
+				} else {
+					pilotos.add(object);
+				}
+			}
+
 		}
 		if (Comandos.CORRIDA_INICIADA.equals(monitorJogo.getEstado())) {
 			if (dadosJogo != null && dadosJogo.getClima() != null
