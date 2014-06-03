@@ -2350,6 +2350,10 @@ public class Piloto implements Serializable {
 			}
 		}
 		int dec = (int) val;
+		if (getStress() < 100) {
+			incStress(1);
+			dec++;
+		}
 		ciclosDesconcentrado -= dec;
 		return true;
 	}
