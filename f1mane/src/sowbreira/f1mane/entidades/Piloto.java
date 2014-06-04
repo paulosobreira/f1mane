@@ -1292,7 +1292,7 @@ public class Piloto implements Serializable {
 		if (getNoAtual().verificaCruvaBaixa() && retardaFreiandoReta) {
 			if (getPosicao() <= 10 && Math.random() > 0.9
 					&& !testeHabilidadePilotoFreios(controleJogo)) {
-				incStress(Util.intervalo(2, 3));
+				incStress(Util.intervalo(5, 10));
 				agressivo = false;
 				if (getPosicao() <= 10 || isJogadorHumano()
 						&& Math.random() > 0.7)
@@ -2269,7 +2269,7 @@ public class Piloto implements Serializable {
 		} else {
 			if (No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
 				novoModoAgressivo = false;
-				incStress(5);
+				incStress(7);
 			} else if (No.CURVA_ALTA.equals(getNoAtual().getTipo())) {
 				incStress(3);
 			}
@@ -2350,8 +2350,8 @@ public class Piloto implements Serializable {
 			}
 		}
 		int dec = (int) val;
-		if (getStress() < 100) {
-			incStress(1);
+		if (AGRESSIVO.equals(modoPilotagem) && getStress() < 70) {
+			incStress(2);
 			dec++;
 		}
 		ciclosDesconcentrado -= dec;
