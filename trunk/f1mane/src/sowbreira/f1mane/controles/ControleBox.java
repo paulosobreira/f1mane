@@ -362,7 +362,7 @@ public class ControleBox {
 		}
 
 		double paradoBox = ((((porcentCombust + penalidade) * 100) / controleCorrida
-				.obterTempoCilco())) + 20;
+				.obterTempoCilco())) + 100;
 		if (boxRapido) {
 			double propNumVoltas = (controleJogo.getQtdeTotalVoltas() / Constantes.MAX_VOLTAS);
 			if (propNumVoltas >= 1) {
