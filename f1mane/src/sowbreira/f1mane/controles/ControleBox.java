@@ -223,12 +223,10 @@ public class ControleBox {
 				}
 
 				if (!mais90Porcent
+						&& controleJogo.isSafetyCarNaPista()
 						&& piloto.getNoAtual().getIndex() > (ultIndiceParada + Carro.MEIA_LARGURA)
 						&& verificaTemCarroPassandoSaida()) {
-					ptosBox = ((Math.random() > .7) ? 0 : 1);
-					if (controleJogo.isSafetyCarNaPista()) {
-						ptosBox = 0;
-					}
+					ptosBox = 0;
 				}
 
 				ptosBox *= circuito.getMultiplciador();
@@ -362,7 +360,7 @@ public class ControleBox {
 		}
 
 		double paradoBox = ((((porcentCombust + penalidade) * 100) / controleCorrida
-				.obterTempoCilco())) + 100;
+				.obterTempoCilco())) + 25;
 		if (boxRapido) {
 			double propNumVoltas = (controleJogo.getQtdeTotalVoltas() / Constantes.MAX_VOLTAS);
 			if (propNumVoltas >= 1) {
