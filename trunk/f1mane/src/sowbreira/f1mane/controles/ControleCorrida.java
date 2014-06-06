@@ -253,7 +253,7 @@ public class ControleCorrida {
 					verificaCarroLentoOuDanificado(pilotoNaFrente));
 		}
 		if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
-			pilotoNaFrente.setCiclosDesconcentrado(Util.intervalo(10, 20));
+			pilotoNaFrente.setCiclosDesconcentrado(Util.intervalo(20, 50));
 			mensagemRetardatario(piloto, pilotoNaFrente);
 		}
 	}

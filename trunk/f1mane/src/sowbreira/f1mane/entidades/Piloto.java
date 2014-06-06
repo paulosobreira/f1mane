@@ -1470,13 +1470,13 @@ public class Piloto implements Serializable {
 					&& !isJogadorHumano()
 					&& controleJogo.getNiveljogo() < Math.random()
 					&& mudouTracadoReta < 2) {
-				mudarTracado(pilotoAtraz.getTracado(), controleJogo, false);
+				if (mudarTracado(pilotoAtraz.getTracado(), controleJogo, false)
+						&& noAtual.verificaRetaOuLargada()) {
+					mudouTracadoReta++;
+				}
+
 			} else if (!isJogadorHumano()) {
 				mudarTracado(0, controleJogo, false);
-			}
-			if (noAtual.verificaRetaOuLargada()
-					&& pilotoAtraz.getTracado() != tracadoAntes) {
-				mudouTracadoReta++;
 			}
 
 		}
