@@ -2375,7 +2375,7 @@ public class Piloto implements Serializable {
 			acelerando = true;
 			return (Math.random() < bonusSecundario ? 4 : 3);
 		} else if (getNoAtual().verificaRetaOuLargada()
-				&& getCarro().testePotencia()) {
+				&& getCarro().testePotencia() && getCarro().testeAerodinamica()) {
 			acelerando = true;
 			return (Math.random() < bonusSecundario ? 3 : 2);
 		} else if (getNoAtual().verificaCruvaAlta()
@@ -2385,11 +2385,16 @@ public class Piloto implements Serializable {
 		} else if (getNoAtual().verificaCruvaAlta() && !agressivo
 				&& testeHabilidadePilotoAerodinamica(controleJogo)) {
 			acelerando = false;
-			return (Math.random() < bonusSecundario ? 2 : 1);
-		} else if (agressivo && getNoAtual().verificaCruvaBaixa()
+			return (Math.random() < bonusSecundario ? 3 : 1);
+		} else if (getNoAtual().verificaCruvaBaixa() && agressivo
+				&& testeHabilidadePilotoAerodinamica(controleJogo)
 				&& testeHabilidadePilotoFreios(controleJogo)) {
 			acelerando = false;
 			return (Math.random() < bonusSecundario ? 2 : 1);
+		} else if (getNoAtual().verificaCruvaBaixa()
+				&& testeHabilidadePilotoFreios(controleJogo)) {
+			acelerando = false;
+			return 1;
 		} else {
 			acelerando = false;
 			return (Math.random() < bonusSecundario) ? 1 : 0;
