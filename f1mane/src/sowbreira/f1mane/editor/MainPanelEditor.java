@@ -148,6 +148,8 @@ public class MainPanelEditor extends JPanel {
 				circuito);
 		this.srcFrame = frame;
 		iniciaEditor(frame);
+		atualizaListas();
+		frame.pack();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
@@ -171,8 +173,8 @@ public class MainPanelEditor extends JPanel {
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 		circuito = (Circuito) ois.readObject();
 		testePista = new TestePista(this, circuito);
-		// backGround = CarregadorRecursos.carregaBackGround(
-		// circuito.getBackGround(), this, circuito);
+		backGround = CarregadorRecursos.carregaBackGround(
+				circuito.getBackGround(), this, circuito);
 		this.srcFrame = frame;
 		iniciaEditor(frame);
 		atualizaListas();
@@ -1030,6 +1032,9 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void desenhaBoxes(Graphics2D g2d) {
+		if (circuito.getBoxFull().isEmpty()) {
+			return;
+		}
 		int paradas = circuito.getParadaBoxIndex();
 		for (int i = 0; i < 12; i++) {
 			int iP = paradas + Util.inte(Carro.LARGURA * 1.5 * i)
@@ -1149,7 +1154,9 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void desenhaGrid(Graphics2D g2d) {
-
+		if (circuito.getPistaFull().isEmpty()) {
+			return;
+		}
 		for (int i = 0; i < 24; i++) {
 			int iP = 50 + Util.inte(((Carro.LARGURA) * 0.8) * i);
 			No n1 = (No) circuito.getPistaFull().get(
@@ -1252,6 +1259,9 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void desenhaLargada(Graphics2D g2d) {
+		if (circuito.getPistaFull().isEmpty()) {
+			return;
+		}
 		No n1 = (No) circuito.getPistaFull().get(0);
 		No n2 = (No) circuito.getPistaFull().get(20);
 		Point p1 = new Point(Util.inte(n1.getPoint().x * zoom), Util.inte(n1
@@ -1275,6 +1285,12 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void desenhaEntradaParadaSaidaBox(Graphics2D g2d) {
+		if (circuito.getPistaFull().isEmpty()) {
+			return;
+		}
+		if (circuito.getBoxFull().isEmpty()) {
+			return;
+		}
 		Point e = ((No) circuito.getPistaFull().get(
 				circuito.getEntradaBoxIndex())).getPoint();
 		Point p = ((No) circuito.getBoxFull().get(circuito.getParadaBoxIndex()))
