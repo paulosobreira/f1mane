@@ -512,7 +512,7 @@ public class MainFrame extends JFrame {
 					}
 
 					File file = fileChooser.getSelectedFile();
-					editor = new MainPanelEditor(file.getName(), MainFrame.this);
+					editor = new MainPanelEditor(file.getName(), menuFrame);
 					ativarKeysEditor();
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
