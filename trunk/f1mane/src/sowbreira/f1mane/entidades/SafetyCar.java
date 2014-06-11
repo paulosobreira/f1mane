@@ -15,7 +15,16 @@ public class SafetyCar implements Serializable {
 	private int tracado;
 	private boolean vaiProBox;
 	private boolean naPista;
+	private boolean esperando;
 	private List mediaSc = new ArrayList();
+
+	public boolean isEsperando() {
+		return esperando;
+	}
+
+	public void setEsperando(boolean esperando) {
+		this.esperando = esperando;
+	}
 
 	public int getTracado() {
 		return tracado;

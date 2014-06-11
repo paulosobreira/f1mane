@@ -36,12 +36,6 @@ public class ControleSafetyCar {
 		safetyCar = new SafetyCar();
 	}
 
-	public static void main(String[] args) {
-		for (int i = 20; i < 300; i += 10) {
-			System.out.println(i / 300.0);
-		}
-	}
-
 	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
 			Piloto piloto) {
 		if (piloto.getPosicao() != 1) {
@@ -110,8 +104,7 @@ public class ControleSafetyCar {
 		int cont = safetyCar.getNoAtual().getIndex();
 		Circuito circuito = controleJogo.getCircuito();
 		if ((cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
-				.getEntradaBoxIndex() + 50))
-				&& safetyCar.isVaiProBox()) {
+				.getEntradaBoxIndex() + 50)) && safetyCar.isVaiProBox()) {
 			controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("030")));
 			safetyCar.setNaPista(false);
 			safetyCar.setSaiuVolta(controleJogo.getNumVoltaAtual());
@@ -121,8 +114,7 @@ public class ControleSafetyCar {
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .5) ? 2 : 1)
-				: (Math.random() > .3) ? 2 : 1;
+				.random() > .5) ? 2 : 1) : (Math.random() > .3) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 
 		long ptsSc = safetyCar.getPtosPista();
@@ -139,6 +131,9 @@ public class ControleSafetyCar {
 				multi = 0.1;
 			}
 			bonus *= multi;
+			if (bonus == 0) {
+				safetyCar.setEsperando(true);
+			}
 			safetyCar.setTracado(0);
 		}
 		bonus = calculaMediaSC(bonus);
@@ -155,6 +150,13 @@ public class ControleSafetyCar {
 			safetyCar.setTracado(1);
 		}
 		safetyCar.setNoAtual((No) pista.get(index));
+	}
+
+	public static void main(String[] args) {
+		double multi = 0.1;
+		int bonus = 1;
+		bonus *= multi;
+		System.out.println(bonus);
 	}
 
 	private boolean deixaRetardatarioPassar(int indice) {

@@ -4835,6 +4835,9 @@ public class PainelCircuito {
 		if (safetyCar == null) {
 			return;
 		}
+		if (safetyCar.isEsperando()) {
+			return;
+		}
 		No noAtual = safetyCar.getNoAtual();
 
 		Point p = noAtual.getPoint();
