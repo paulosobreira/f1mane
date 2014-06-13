@@ -96,14 +96,12 @@ public class MainPanelEditor extends JPanel {
 	private BufferedImage backGround;
 	int ultimoItemBoxSelecionado = -1;
 	int ultimoItemPistaSelecionado = -1;
-	private JRadioButton pistasButton = new JRadioButton();
-	private JRadioButton boxButton = new JRadioButton();
 
 	private JRadioButton largadaButton = new JRadioButton();
 	private JRadioButton retaButton = new JRadioButton();
 	private JRadioButton curvaAltaButton = new JRadioButton();
 	private JRadioButton curvaBaixaButton = new JRadioButton();
-	private JRadioButton nosBoxButton = new JRadioButton();
+	private JRadioButton boxButton = new JRadioButton();
 	private JRadioButton paraBoxButton = new JRadioButton();
 
 	private JScrollPane scrollPane;
@@ -329,7 +327,7 @@ public class MainPanelEditor extends JPanel {
 		buttonGroup.add(retaButton);
 		buttonGroup.add(curvaAltaButton);
 		buttonGroup.add(curvaBaixaButton);
-		buttonGroup.add(nosBoxButton);
+		buttonGroup.add(boxButton);
 		buttonGroup.add(paraBoxButton);
 
 		JPanel bottonsPanel = new JPanel();
@@ -379,7 +377,7 @@ public class MainPanelEditor extends JPanel {
 				return Lang.msg("103");
 			}
 		});
-		bottonsPanel.add(nosBoxButton);
+		bottonsPanel.add(boxButton);
 		radiosPanel.add(bottonsPanel);
 
 		bottonsPanel = new JPanel();
@@ -529,11 +527,6 @@ public class MainPanelEditor extends JPanel {
 				}
 			}
 		});
-		ButtonGroup buttonGroup = new ButtonGroup();
-
-		buttonGroup.add(boxButton);
-		buttonGroup.add(pistasButton);
-		pistasButton.setSelected(true);
 		JPanel radioPistaPanel = new JPanel();
 		radioPistaPanel.add(new JLabel() {
 			@Override
@@ -541,7 +534,6 @@ public class MainPanelEditor extends JPanel {
 				return Lang.msg("032");
 			}
 		});
-		radioPistaPanel.add(pistasButton);
 		JPanel pistas = new JPanel();
 		pistas.setLayout(new BorderLayout());
 		pistas.add(radioPistaPanel, BorderLayout.NORTH);
@@ -778,10 +770,8 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void inserirNoNasJList(No no) {
-		if (boxButton.isSelected()) {
-
+		if (boxButton.isSelected() || paraBoxButton.isSelected()) {
 			DefaultListModel model = ((DefaultListModel) boxJList.getModel());
-
 			if (ultimoItemBoxSelecionado > -1) {
 				ultimoItemBoxSelecionado += 1;
 
@@ -1728,7 +1718,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public Color getTipoNo() {
-		if (pistasButton.isSelected()) {
+		if (largadaButton.isSelected()) {
 			tipoNo = No.LARGADA;
 		}
 		if (retaButton.isSelected()) {
@@ -1740,7 +1730,7 @@ public class MainPanelEditor extends JPanel {
 		if (curvaBaixaButton.isSelected()) {
 			tipoNo = No.CURVA_BAIXA;
 		}
-		if (nosBoxButton.isSelected()) {
+		if (boxButton.isSelected()) {
 			tipoNo = No.BOX;
 		}
 		if (paraBoxButton.isSelected()) {
@@ -1750,11 +1740,6 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private JPanel iniciaEditorVetorizado() {
-		ButtonGroup buttonGroup = new ButtonGroup();
-
-		buttonGroup.add(boxButton);
-		buttonGroup.add(pistasButton);
-		pistasButton.setSelected(true);
 		JPanel radioPistaPanel = new JPanel();
 		radioPistaPanel.add(new JLabel() {
 			@Override
@@ -1762,7 +1747,6 @@ public class MainPanelEditor extends JPanel {
 				return Lang.msg("032");
 			}
 		});
-		radioPistaPanel.add(pistasButton);
 		JPanel radioBoxPanel = new JPanel();
 		radioBoxPanel.add(new JLabel() {
 			@Override
@@ -1770,7 +1754,6 @@ public class MainPanelEditor extends JPanel {
 				return Lang.msg("033");
 			}
 		});
-		radioBoxPanel.add(boxButton);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridLayout(3, 6));
 
