@@ -69,16 +69,18 @@ public class Circuito implements Serializable {
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
-				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
-						noAnt.getPoint(), no.getPoint()), noAnt));
+				arrayList.addAll(converterPointNo(
+						GeoUtil.drawBresenhamLine(noAnt.getPoint(),
+								no.getPoint()), noAnt));
 				noAnt = no;
 			}
 		}
 
 		if (!pista.isEmpty()) {
 			No no = (No) pista.get(0);
-			arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(noAnt
-					.getPoint(), no.getPoint()), noAnt));
+			arrayList.addAll(converterPointNo(
+					GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()),
+					noAnt));
 		}
 		for (int i = 0; i < arrayList.size(); i++) {
 			No no = (No) arrayList.get(i);
@@ -144,8 +146,8 @@ public class Circuito implements Serializable {
 				p2.x *= multi;
 				p2.y *= multi;
 				pistaKey.add(noAnt);
-				pistaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1,
-						p2), noAnt));
+				pistaFull.addAll(converterPointNo(
+						GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 				no.setPoint(p3);
 				noAnt = no;
 			}
@@ -199,8 +201,8 @@ public class Circuito implements Serializable {
 				p2.x *= multi;
 				p2.y *= multi;
 				boxKey.add(noAnt);
-				boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1,
-						p2), noAnt));
+				boxFull.addAll(converterPointNo(
+						GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 				no.setPoint(p3);
 				noAnt = no;
 			}
@@ -222,30 +224,32 @@ public class Circuito implements Serializable {
 			no.setIndex(i);
 		}
 
-		No boxEntrada = (No) boxKey.get(0);
-		No boxSaida = (No) boxKey.get(boxKey.size() - 1);
-		int entradaBoxSize = Integer.MAX_VALUE;
-		int saidaBoxSize = Integer.MAX_VALUE;
-		for (int i = 0; i < pistaFull.size(); i += 50) {
-			No pistaNo = (No) pistaFull.get(i);
-			List entrada = GeoUtil.drawBresenhamLine(boxEntrada.getPoint(),
-					pistaNo.getPoint());
-			if (entrada.size() < entradaBoxSize) {
-				entradaBoxSize = entrada.size();
-				entradaBoxIndex = i;
+		if (!boxKey.isEmpty()) {
+			No boxEntrada = (No) boxKey.get(0);
+			No boxSaida = (No) boxKey.get(boxKey.size() - 1);
+			int entradaBoxSize = Integer.MAX_VALUE;
+			int saidaBoxSize = Integer.MAX_VALUE;
+			for (int i = 0; i < pistaFull.size(); i += 50) {
+				No pistaNo = (No) pistaFull.get(i);
+				List entrada = GeoUtil.drawBresenhamLine(boxEntrada.getPoint(),
+						pistaNo.getPoint());
+				if (entrada.size() < entradaBoxSize) {
+					entradaBoxSize = entrada.size();
+					entradaBoxIndex = i;
+				}
+				List saida = GeoUtil.drawBresenhamLine(boxSaida.getPoint(),
+						pistaNo.getPoint());
+				if (saida.size() < saidaBoxSize) {
+					saidaBoxSize = saida.size();
+					saidaBoxIndex = i;
+				}
 			}
-			List saida = GeoUtil.drawBresenhamLine(boxSaida.getPoint(), pistaNo
-					.getPoint());
-			if (saida.size() < saidaBoxSize) {
-				saidaBoxSize = saida.size();
-				saidaBoxIndex = i;
-			}
-		}
-		for (int i = 0; i < boxFull.size(); i++) {
-			No boxNo = (No) boxFull.get(i);
-			if (No.PARADA_BOX.equals(boxNo.getTipo())) {
-				paradaBoxIndex = i;
-				break;
+			for (int i = 0; i < boxFull.size(); i++) {
+				No boxNo = (No) boxFull.get(i);
+				if (No.PARADA_BOX.equals(boxNo.getTipo())) {
+					paradaBoxIndex = i;
+					break;
+				}
 			}
 		}
 	}
@@ -268,8 +272,9 @@ public class Circuito implements Serializable {
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
-				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
-						noAnt.getPoint(), no.getPoint()), noAnt));
+				arrayList.addAll(converterPointNo(
+						GeoUtil.drawBresenhamLine(noAnt.getPoint(),
+								no.getPoint()), noAnt));
 				noAnt = no;
 			}
 		}
