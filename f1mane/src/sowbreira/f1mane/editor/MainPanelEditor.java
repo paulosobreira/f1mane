@@ -102,6 +102,8 @@ public class MainPanelEditor extends JPanel {
 	private JRadioButton curvaAltaButton = new JRadioButton();
 	private JRadioButton curvaBaixaButton = new JRadioButton();
 	private JRadioButton boxButton = new JRadioButton();
+	private JRadioButton boxRetaButton = new JRadioButton();
+	private JRadioButton boxCurvaAltaButton = new JRadioButton();
 	private JRadioButton paraBoxButton = new JRadioButton();
 
 	private JScrollPane scrollPane;
@@ -285,31 +287,13 @@ public class MainPanelEditor extends JPanel {
 
 		radiosPanel.add(apagarUltimoNoButton);
 
-		JButton apagarUltimoNoPistaButton = new JButton() {
+		JButton apagaNoListaButton = new JButton() {
 			@Override
 			public String getText() {
-				return Lang.msg("106");
+				return Lang.msg("apagaNoListaButton");
 			}
 		};
-		apagarUltimoNoPistaButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					apagarUltimoNoPista();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-
-		radiosPanel.add(apagarUltimoNoPistaButton);
-
-		JButton apagarUltimoNoBoxButton = new JButton() {
-			@Override
-			public String getText() {
-				return Lang.msg("107");
-			}
-		};
-		apagarUltimoNoBoxButton.addActionListener(new ActionListener() {
+		apagaNoListaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					apagarUltimoNoBox();
@@ -319,7 +303,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 
-		radiosPanel.add(apagarUltimoNoBoxButton);
+		radiosPanel.add(apagaNoListaButton);
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 
@@ -328,6 +312,8 @@ public class MainPanelEditor extends JPanel {
 		buttonGroup.add(curvaAltaButton);
 		buttonGroup.add(curvaBaixaButton);
 		buttonGroup.add(boxButton);
+		buttonGroup.add(boxRetaButton);
+		buttonGroup.add(boxCurvaAltaButton);
 		buttonGroup.add(paraBoxButton);
 
 		JPanel bottonsPanel = new JPanel();
@@ -379,7 +365,27 @@ public class MainPanelEditor extends JPanel {
 		});
 		bottonsPanel.add(boxButton);
 		radiosPanel.add(bottonsPanel);
-
+		
+		bottonsPanel = new JPanel();
+		bottonsPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("boxReta");
+			}
+		});
+		bottonsPanel.add(boxRetaButton);
+		radiosPanel.add(bottonsPanel);
+		
+		bottonsPanel = new JPanel();
+		bottonsPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("boxCurvaAlta");
+			}
+		});
+		bottonsPanel.add(boxCurvaAltaButton);
+		radiosPanel.add(bottonsPanel);
+		
 		bottonsPanel = new JPanel();
 		bottonsPanel.add(new JLabel() {
 			@Override
@@ -393,7 +399,6 @@ public class MainPanelEditor extends JPanel {
 		gerarLayout(frame, controlPanel, buttonsPanel, radiosPanel);
 		testePista = new TestePista(this, circuito);
 		adicionaEventosMouse(frame);
-
 	}
 
 	private JPanel gerarBotoesTracado() {
@@ -539,18 +544,8 @@ public class MainPanelEditor extends JPanel {
 		pistas.add(radioPistaPanel, BorderLayout.NORTH);
 		pistas.add(new JScrollPane(pistaJList), BorderLayout.CENTER);
 		controlPanel.add(pistas);
-
-		JPanel radioBoxPanel = new JPanel();
-		radioBoxPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("033");
-			}
-		});
-		radioBoxPanel.add(boxButton);
 		JPanel boxes = new JPanel();
 		boxes.setLayout(new BorderLayout());
-		boxes.add(radioBoxPanel, BorderLayout.NORTH);
 		boxes.add(new JScrollPane(boxJList), BorderLayout.CENTER);
 		controlPanel.add(boxes);
 		return controlPanel;
