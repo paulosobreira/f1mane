@@ -547,31 +547,31 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 							.getTipoComboBox().getSelectedItem())) {
 						objetoPista = new ObjetoLivre();
 						desenhandoObjetoLivre = true;
-					} else if (FormularioObjetos.OBJETO_CONSTRUCAO
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoConstrucao();
-						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_ARQUIBANCADA
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoArquibancada();
-						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_PNEUS
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoPneus();
-						posicionaObjetoPista = true;
+//					} else if (FormularioObjetos.OBJETO_CONSTRUCAO
+//							.equals(formularioObjetos.getTipoComboBox()
+//									.getSelectedItem())) {
+//						objetoPista = new ObjetoConstrucao();
+//						posicionaObjetoPista = true;
+//					} else if (FormularioObjetos.OBJETO_ARQUIBANCADA
+//							.equals(formularioObjetos.getTipoComboBox()
+//									.getSelectedItem())) {
+//						objetoPista = new ObjetoArquibancada();
+//						posicionaObjetoPista = true;
+//					} else if (FormularioObjetos.OBJETO_PNEUS
+//							.equals(formularioObjetos.getTipoComboBox()
+//									.getSelectedItem())) {
+//						objetoPista = new ObjetoPneus();
+//						posicionaObjetoPista = true;
 					} else if (FormularioObjetos.OBJETO_CIRCULO
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
 						objetoPista = new ObjetoCirculo();
 						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_GUAD_RAILS
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoGuadRails();
-						posicionaObjetoPista = true;
+//					} else if (FormularioObjetos.OBJETO_GUAD_RAILS
+//							.equals(formularioObjetos.getTipoComboBox()
+//									.getSelectedItem())) {
+//						objetoPista = new ObjetoGuadRails();
+//						posicionaObjetoPista = true;
 					} else if (FormularioObjetos.OBJETO_TRANSPARENCIA
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {

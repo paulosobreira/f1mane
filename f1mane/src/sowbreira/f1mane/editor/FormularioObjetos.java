@@ -42,22 +42,24 @@ public class FormularioObjetos {
 	private MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
 	public final static String OBJETO_LIVRE = "Objeto Livre";
-	public final static String OBJETO_PNEUS = "Objeto Pneus";
-	public final static String OBJETO_CONSTRUCAO = "Objeto Construção";
 	public final static String OBJETO_CIRCULO = "Objeto Circulo";
-	public final static String OBJETO_ARQUIBANCADA = "Objeto Arquibancada";
-	public final static String OBJETO_GUAD_RAILS = "Objeto GuadRails";
 	protected static final String OBJETO_TRANSPARENCIA = "Objeto Transparencia";
+	protected static final String OBJETO_ESCAPADA = "Objeto Escapada";
+//	public final static String OBJETO_PNEUS = "Objeto Pneus";
+//	public final static String OBJETO_CONSTRUCAO = "Objeto Construção";
+//	public final static String OBJETO_ARQUIBANCADA = "Objeto Arquibancada";
+//	public final static String OBJETO_GUAD_RAILS = "Objeto GuadRails";
 
 	public FormularioObjetos(MainPanelEditor panelPai) {
 		this.mainPanelEditor = panelPai;
 		tipoComboBox.addItem(OBJETO_TRANSPARENCIA);
-		tipoComboBox.addItem(OBJETO_PNEUS);
 		tipoComboBox.addItem(OBJETO_CIRCULO);
-		tipoComboBox.addItem(OBJETO_CONSTRUCAO);
-		tipoComboBox.addItem(OBJETO_ARQUIBANCADA);
 		tipoComboBox.addItem(OBJETO_LIVRE);
-		tipoComboBox.addItem(OBJETO_GUAD_RAILS);
+		tipoComboBox.addItem(OBJETO_ESCAPADA);
+//		tipoComboBox.addItem(OBJETO_PNEUS);
+//		tipoComboBox.addItem(OBJETO_CONSTRUCAO);
+//		tipoComboBox.addItem(OBJETO_ARQUIBANCADA);
+//		tipoComboBox.addItem(OBJETO_GUAD_RAILS);
 		panel.add(new JLabel("Tipo"));
 		panel.add(tipoComboBox);
 

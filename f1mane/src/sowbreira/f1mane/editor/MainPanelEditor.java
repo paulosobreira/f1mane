@@ -3,7 +3,6 @@ package sowbreira.f1mane.editor;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -59,13 +58,10 @@ import javax.swing.event.ListSelectionListener;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.ObjetoArquibancada;
 import sowbreira.f1mane.entidades.ObjetoCirculo;
-import sowbreira.f1mane.entidades.ObjetoConstrucao;
-import sowbreira.f1mane.entidades.ObjetoGuadRails;
+import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
-import sowbreira.f1mane.entidades.ObjetoPneus;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -421,32 +417,6 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		buttonsPanel.add(creditosButton);
-
-		JButton escapeButton = new JButton("Escape") {
-			@Override
-			public String getText() {
-				return Lang.msg("escape");
-			}
-		};
-		escapeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				escape();
-			}
-		});
-		buttonsPanel.add(escapeButton);
-
-		JButton removeEscapeBtn = new JButton() {
-			@Override
-			public String getText() {
-				return Lang.msg("remEscape");
-			}
-		};
-		removeEscapeBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				removeUltEscape();
-			}
-		});
-		buttonsPanel.add(removeEscapeBtn);
 
 		JButton desenhaTracadoBot = new JButton("Desenha Tracado") {
 			@Override
@@ -1700,18 +1670,6 @@ public class MainPanelEditor extends JPanel {
 		creditos = true;
 	}
 
-	public void escape() {
-		pontosEscape = true;
-	}
-
-	public void removeUltEscape() {
-		if (circuito != null && !circuito.getEscapeList().isEmpty()) {
-			circuito.getEscapeList()
-					.remove(circuito.getEscapeList().size() - 1);
-			repaint();
-		}
-	}
-
 	public Color getTipoNo() {
 		if (largadaButton.isSelected()) {
 			tipoNo = No.LARGADA;
@@ -1971,31 +1929,36 @@ public class MainPanelEditor extends JPanel {
 							.getTipoComboBox().getSelectedItem())) {
 						objetoPista = new ObjetoLivre();
 						desenhandoObjetoLivre = true;
-					} else if (FormularioObjetos.OBJETO_CONSTRUCAO
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoConstrucao();
-						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_ARQUIBANCADA
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoArquibancada();
-						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_PNEUS
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoPneus();
-						posicionaObjetoPista = true;
 					} else if (FormularioObjetos.OBJETO_CIRCULO
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
 						objetoPista = new ObjetoCirculo();
 						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_GUAD_RAILS
+					} else if (FormularioObjetos.OBJETO_ESCAPADA
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
-						objetoPista = new ObjetoGuadRails();
-						posicionaObjetoPista = true;
+						objetoPista = new ObjetoEscapada();
+						posicionaObjetoPista = true;						
+//					} else if (FormularioObjetos.OBJETO_CONSTRUCAO
+//							.equals(formularioObjetos.getTipoComboBox()
+//									.getSelectedItem())) {
+//						objetoPista = new ObjetoConstrucao();
+//						posicionaObjetoPista = true;
+//					} else if (FormularioObjetos.OBJETO_ARQUIBANCADA
+//							.equals(formularioObjetos.getTipoComboBox()
+//									.getSelectedItem())) {
+//						objetoPista = new ObjetoArquibancada();
+//						posicionaObjetoPista = true;
+//					} else if (FormularioObjetos.OBJETO_PNEUS
+//							.equals(formularioObjetos.getTipoComboBox()
+//									.getSelectedItem())) {
+//						objetoPista = new ObjetoPneus();
+//						posicionaObjetoPista = true;
+//					} else if (FormularioObjetos.OBJETO_GUAD_RAILS
+//							.equals(formularioObjetos.getTipoComboBox()
+//									.getSelectedItem())) {
+//						objetoPista = new ObjetoGuadRails();
+//						posicionaObjetoPista = true;
 					} else if (FormularioObjetos.OBJETO_TRANSPARENCIA
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
