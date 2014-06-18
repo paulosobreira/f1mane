@@ -1,1 +1,0 @@
-java -cp f1mane.jar sowbreira.f1mane.paddock.applet.JFramePaddock
