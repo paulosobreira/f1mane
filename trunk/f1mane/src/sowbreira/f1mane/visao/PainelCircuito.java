@@ -40,6 +40,7 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
 import sowbreira.f1mane.entidades.Piloto;
@@ -1561,6 +1562,23 @@ public class PainelCircuito {
 		int altura = (int) (Carro.LARGURA * 5 * zoom);
 		int mAltura = (int) (altura / 2 * zoom);
 		List<Point> escapeList = circuito.getEscapeList();
+		
+		if (escapeList == null) {
+			escapeList = new ArrayList<Point>();
+		}
+
+		if (escapeList.isEmpty()) {
+			List<ObjetoPista> objetos = circuito.getObjetos();
+			for (Iterator iterator = objetos.iterator(); iterator.hasNext();) {
+				ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+				if (objetoPista instanceof ObjetoEscapada) {
+					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+					escapeList.add(objetoEscapada.centro());
+				}
+			}
+		}
+
+		
 		if (escapeList != null) {
 			for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
 				Point point = (Point) iterator.next();
