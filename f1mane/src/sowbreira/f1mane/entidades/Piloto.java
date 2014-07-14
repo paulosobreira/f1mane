@@ -1697,6 +1697,22 @@ public class Piloto implements Serializable {
 		Circuito circuito = controleJogo.getCircuito();
 		Point pontoDerrapada = null;
 		List<Point> escapeList = circuito.getEscapeList();
+
+		if (escapeList == null) {
+			escapeList = new ArrayList<Point>();
+		}
+
+		if (escapeList.isEmpty()) {
+			List<ObjetoPista> objetos = circuito.getObjetos();
+			for (Iterator iterator = objetos.iterator(); iterator.hasNext();) {
+				ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+				if (objetoPista instanceof ObjetoEscapada) {
+					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+					escapeList.add(objetoEscapada.centro());
+				}
+			}
+		}
+
 		if (escapeList == null) {
 			return false;
 		}

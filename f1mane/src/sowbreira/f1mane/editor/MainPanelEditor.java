@@ -72,7 +72,6 @@ import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
- * 
  */
 public class MainPanelEditor extends JPanel {
 	private static final long serialVersionUID = -7001602531075714400L;
@@ -361,7 +360,7 @@ public class MainPanelEditor extends JPanel {
 		});
 		bottonsPanel.add(boxButton);
 		radiosPanel.add(bottonsPanel);
-		
+
 		bottonsPanel = new JPanel();
 		bottonsPanel.add(new JLabel() {
 			@Override
@@ -371,7 +370,7 @@ public class MainPanelEditor extends JPanel {
 		});
 		bottonsPanel.add(boxRetaButton);
 		radiosPanel.add(bottonsPanel);
-		
+
 		bottonsPanel = new JPanel();
 		bottonsPanel.add(new JLabel() {
 			@Override
@@ -381,7 +380,7 @@ public class MainPanelEditor extends JPanel {
 		});
 		bottonsPanel.add(boxCurvaAltaButton);
 		radiosPanel.add(bottonsPanel);
-		
+
 		bottonsPanel = new JPanel();
 		bottonsPanel.add(new JLabel() {
 			@Override
@@ -1524,6 +1523,8 @@ public class MainPanelEditor extends JPanel {
 			int altura = Carro.LARGURA * 5;
 			int mAltura = altura / 2;
 			List<Point> escapeList = circuito.getEscapeList();
+
+
 			if (escapeList != null) {
 				for (Iterator iterator = escapeList.iterator(); iterator
 						.hasNext();) {
@@ -1938,27 +1939,27 @@ public class MainPanelEditor extends JPanel {
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
 						objetoPista = new ObjetoEscapada();
-						posicionaObjetoPista = true;						
-//					} else if (FormularioObjetos.OBJETO_CONSTRUCAO
-//							.equals(formularioObjetos.getTipoComboBox()
-//									.getSelectedItem())) {
-//						objetoPista = new ObjetoConstrucao();
-//						posicionaObjetoPista = true;
-//					} else if (FormularioObjetos.OBJETO_ARQUIBANCADA
-//							.equals(formularioObjetos.getTipoComboBox()
-//									.getSelectedItem())) {
-//						objetoPista = new ObjetoArquibancada();
-//						posicionaObjetoPista = true;
-//					} else if (FormularioObjetos.OBJETO_PNEUS
-//							.equals(formularioObjetos.getTipoComboBox()
-//									.getSelectedItem())) {
-//						objetoPista = new ObjetoPneus();
-//						posicionaObjetoPista = true;
-//					} else if (FormularioObjetos.OBJETO_GUAD_RAILS
-//							.equals(formularioObjetos.getTipoComboBox()
-//									.getSelectedItem())) {
-//						objetoPista = new ObjetoGuadRails();
-//						posicionaObjetoPista = true;
+						posicionaObjetoPista = true;
+						// } else if (FormularioObjetos.OBJETO_CONSTRUCAO
+						// .equals(formularioObjetos.getTipoComboBox()
+						// .getSelectedItem())) {
+						// objetoPista = new ObjetoConstrucao();
+						// posicionaObjetoPista = true;
+						// } else if (FormularioObjetos.OBJETO_ARQUIBANCADA
+						// .equals(formularioObjetos.getTipoComboBox()
+						// .getSelectedItem())) {
+						// objetoPista = new ObjetoArquibancada();
+						// posicionaObjetoPista = true;
+						// } else if (FormularioObjetos.OBJETO_PNEUS
+						// .equals(formularioObjetos.getTipoComboBox()
+						// .getSelectedItem())) {
+						// objetoPista = new ObjetoPneus();
+						// posicionaObjetoPista = true;
+						// } else if (FormularioObjetos.OBJETO_GUAD_RAILS
+						// .equals(formularioObjetos.getTipoComboBox()
+						// .getSelectedItem())) {
+						// objetoPista = new ObjetoGuadRails();
+						// posicionaObjetoPista = true;
 					} else if (FormularioObjetos.OBJETO_TRANSPARENCIA
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
