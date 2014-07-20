@@ -1,10 +1,12 @@
 package sowbreira.f1mane.editor;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.Transient;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -56,7 +58,13 @@ public class FormularioListaObjetos {
 
 			}
 		});
-		objetos = new JPanel(new BorderLayout());
+		objetos = new JPanel(new BorderLayout()) {
+			@Override
+			@Transient
+			public Dimension getPreferredSize() {
+				return new Dimension(super.getPreferredSize().height, 160);
+			}
+		};
 		JPanel botoes = new JPanel(new GridLayout(3, 1));
 		objetos.add(new JScrollPane(list), BorderLayout.CENTER);
 		objetos.add(botoes, BorderLayout.SOUTH);

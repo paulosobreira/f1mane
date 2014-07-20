@@ -282,7 +282,7 @@ public class MainFrame extends JFrame {
 				+ " spotterguidecentral.com                    ".trim() + "\n"
 				+ "- http://sowbreira.appspot.com              ".trim() + "\n"
 				+ "- sowbreira@gmail.com                       ".trim() + "\n"
-				+ "- 2007-2013";
+				+ "- 2007-2014";
 		JOptionPane.showMessageDialog(MainFrame.this, msg, Lang.msg("093"),
 				JOptionPane.INFORMATION_MESSAGE);
 	}

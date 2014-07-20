@@ -50,7 +50,7 @@ import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 
 /**
- * @author Paulo Sobreira Created on 20/06/2007
+ * @author Paulo Sobreira Created on 14/06/2014
  */
 public class MainFrameEditor extends JFrame {
 	/**
@@ -257,7 +257,7 @@ public class MainFrameEditor extends JFrame {
 				+ " spotterguidecentral.com                    ".trim() + "\n"
 				+ "- http://sowbreira.appspot.com              ".trim() + "\n"
 				+ "- sowbreira@gmail.com                       ".trim() + "\n"
-				+ "- 2007-2013";
+				+ "- 2007-2014";
 		JOptionPane.showMessageDialog(MainFrameEditor.this, msg,
 				Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -278,32 +278,6 @@ public class MainFrameEditor extends JFrame {
 						editor.baixo();
 					}
 				}
-				/*
-				 * if (editorInflado != null) { if (e.isControlDown() &&
-				 * keyCoode == KeyEvent.VK_LEFT) { editorInflado.esquerdaObj();
-				 * } else if (e.isControlDown() && keyCoode ==
-				 * KeyEvent.VK_RIGHT) { editorInflado.direitaObj(); } else if
-				 * (e.isControlDown() && keyCoode == KeyEvent.VK_UP) {
-				 * editorInflado.cimaObj(); } else if (e.isControlDown() &&
-				 * keyCoode == KeyEvent.VK_DOWN) { editorInflado.baixoObj(); }
-				 * else if (keyCoode == KeyEvent.VK_LEFT) {
-				 * editorInflado.esquerda(); } else if (keyCoode ==
-				 * KeyEvent.VK_RIGHT) { editorInflado.direita(); } else if
-				 * (keyCoode == KeyEvent.VK_UP) { editorInflado.cima(); } else
-				 * if (keyCoode == KeyEvent.VK_DOWN) { editorInflado.baixo(); }
-				 * else if (e.isShiftDown() && keyCoode == KeyEvent.VK_PAGE_UP)
-				 * { editorInflado.maisLargura(); } else if (e.isShiftDown() &&
-				 * keyCoode == KeyEvent.VK_PAGE_DOWN) {
-				 * editorInflado.menosLargura(); } else if (e.isControlDown() &&
-				 * keyCoode == KeyEvent.VK_PAGE_UP) {
-				 * editorInflado.maisAltura(); } else if (e.isControlDown() &&
-				 * keyCoode == KeyEvent.VK_PAGE_DOWN) {
-				 * editorInflado.menosAltura(); } else if (e.isControlDown() &&
-				 * keyCoode == KeyEvent.VK_C) { editorInflado.copiarObjeto(); }
-				 * else if (keyCoode == KeyEvent.VK_PAGE_UP) {
-				 * editorInflado.menosAngulo(); } else if (keyCoode ==
-				 * KeyEvent.VK_PAGE_DOWN) { editorInflado.maisAngulo(); } }
-				 */
 			}
 		});
 	}
