@@ -23,6 +23,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.beans.Transient;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -58,7 +59,6 @@ import javax.swing.event.ListSelectionListener;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.ObjetoCirculo;
 import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
@@ -188,10 +188,10 @@ public class MainPanelEditor extends JPanel {
 		zebra = null;
 		larguraPistaPixeis = 0;
 		testePista.pararTeste();
-		if (circuito.getLadoBox() == 1) {
-			ladoBoxCombo.setSelectedItem(LADO_COMBO_1);
+		if (ladoBoxCombo.getSelectedItem().equals(LADO_COMBO_1)) {
+			circuito.setLadoBox(1);
 		} else {
-			ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
+			circuito.setLadoBox(2);
 		}
 		if (multiplicadorPista == 0 && circuito != null) {
 			multiplicadorPista = circuito.getMultiplciador();
@@ -263,42 +263,6 @@ public class MainPanelEditor extends JPanel {
 
 		JPanel radiosPanel = new JPanel();
 		radiosPanel.setLayout(new GridLayout(1, 9));
-
-		JButton apagarUltimoNoButton = new JButton() {
-			@Override
-			public String getText() {
-				return Lang.msg("105");
-			}
-		};
-		apagarUltimoNoButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					apagarUltimoNo();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-
-		radiosPanel.add(apagarUltimoNoButton);
-
-		JButton apagaNoListaButton = new JButton() {
-			@Override
-			public String getText() {
-				return Lang.msg("apagaNoListaButton");
-			}
-		};
-		apagaNoListaButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					apagarUltimoNoBox();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-
-		radiosPanel.add(apagaNoListaButton);
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 
@@ -429,6 +393,43 @@ public class MainPanelEditor extends JPanel {
 				MainPanelEditor.this.repaint();
 			}
 		});
+		
+		JButton apagarUltimoNoButton = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("105");
+			}
+		};
+		apagarUltimoNoButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					apagarUltimoNo();
+				} catch (Exception e1) {
+					Logger.logarExept(e1);
+				}
+			}
+		});
+
+		buttonsPanel.add(apagarUltimoNoButton);
+
+		JButton apagaNoListaButton = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("apagaNoListaButton");
+			}
+		};
+		apagaNoListaButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					apagarUltimoNoBox();
+				} catch (Exception e1) {
+					Logger.logarExept(e1);
+				}
+			}
+		});
+
+		buttonsPanel.add(apagaNoListaButton);
+		
 		buttonsPanel.add(desenhaTracadoBot);
 		return buttonsPanel;
 	}
@@ -511,11 +512,33 @@ public class MainPanelEditor extends JPanel {
 		JPanel pistas = new JPanel();
 		pistas.setLayout(new BorderLayout());
 		pistas.add(radioPistaPanel, BorderLayout.NORTH);
-		pistas.add(new JScrollPane(pistaJList), BorderLayout.CENTER);
+		JScrollPane pistaJListJScrollPane = new JScrollPane(pistaJList) {
+			@Override
+			@Transient
+			public Dimension getPreferredSize() {
+				return new Dimension(super.getPreferredSize().height, 160);
+			}
+		};
+		pistas.add(pistaJListJScrollPane, BorderLayout.CENTER);
 		controlPanel.add(pistas);
 		JPanel boxes = new JPanel();
 		boxes.setLayout(new BorderLayout());
-		boxes.add(new JScrollPane(boxJList), BorderLayout.CENTER);
+		radioPistaPanel = new JPanel();
+		radioPistaPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("033");
+			}
+		});
+		boxes.add(radioPistaPanel, BorderLayout.NORTH);
+		JScrollPane boxJListJScrollPane = new JScrollPane(boxJList) {
+			@Override
+			@Transient
+			public Dimension getPreferredSize() {
+				return new Dimension(super.getPreferredSize().height, 160);
+			}
+		};
+		boxes.add(boxJListJScrollPane, BorderLayout.CENTER);
 		controlPanel.add(boxes);
 		return controlPanel;
 	}
@@ -623,7 +646,7 @@ public class MainPanelEditor extends JPanel {
 
 			public void mouseClicked(MouseEvent e) {
 				if (editarObjetos) {
-					cliackEditarObjetos(e);
+					clickEditarObjetos(e);
 				} else {
 					No no = new No();
 					no.setTipo(getTipoNo());
@@ -634,7 +657,8 @@ public class MainPanelEditor extends JPanel {
 				repaint();
 			}
 
-			private void cliackEditarObjetos(MouseEvent e) {
+			private void clickEditarObjetos(MouseEvent e) {
+				ultimoClicado = e.getPoint();
 				if (!moverObjetoPista && e.getClickCount() > 1) {
 					editaObjetoPista(ultimoClicado);
 					return;
@@ -642,24 +666,7 @@ public class MainPanelEditor extends JPanel {
 				if (e.getButton() != MouseEvent.BUTTON1) {
 					moverObjetoPista = false;
 				}
-				if (desenhandoObjetoLivre && objetoPista != null
-						&& (objetoPista instanceof ObjetoLivre)) {
-					ObjetoLivre objetoLivre = (ObjetoLivre) objetoPista;
-					if (e.getButton() == MouseEvent.BUTTON1) {
-						objetoLivre.getPontos().add(ultimoClicado);
-					} else {
-						desenhandoObjetoLivre = false;
-						if (circuito.getObjetos() == null)
-							circuito.setObjetos(new ArrayList<ObjetoPista>());
-						circuito.getObjetos().add(objetoLivre);
-						objetoLivre.setNome("Objeto "
-								+ circuito.getObjetos().size());
-						objetoLivre.gerar();
-						objetoPista = null;
-					}
-					repaint();
-					return;
-				} else if (desenhandoObjetoLivre
+				if (desenhandoObjetoLivre
 						&& (objetoPista instanceof ObjetoTransparencia)) {
 					ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
 					if (e.getButton() == MouseEvent.BUTTON1) {
@@ -670,6 +677,7 @@ public class MainPanelEditor extends JPanel {
 						if (circuito.getObjetos() == null)
 							circuito.setObjetos(new ArrayList<ObjetoPista>());
 						circuito.getObjetos().add(objetoTransparencia);
+						formularioListaObjetos.listarObjetos();
 						objetoTransparencia.setNome("Objeto "
 								+ circuito.getObjetos().size());
 						objetoTransparencia.gerar();
@@ -682,6 +690,7 @@ public class MainPanelEditor extends JPanel {
 						circuito.setObjetos(new ArrayList<ObjetoPista>());
 					objetoPista.setPosicaoQuina(ultimoClicado);
 					circuito.getObjetos().add(objetoPista);
+					formularioListaObjetos.listarObjetos();
 					objetoPista.setNome("Objeto "
 							+ circuito.getObjetos().size());
 					repaint();
@@ -734,7 +743,9 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void inserirNoNasJList(No no) {
-		if (boxButton.isSelected() || paraBoxButton.isSelected()) {
+		if (boxButton.isSelected() || paraBoxButton.isSelected()
+				|| boxRetaButton.isSelected()
+				|| boxCurvaAltaButton.isSelected()) {
 			DefaultListModel model = ((DefaultListModel) boxJList.getModel());
 			if (ultimoItemBoxSelecionado > -1) {
 				ultimoItemBoxSelecionado += 1;
@@ -1348,7 +1359,8 @@ public class MainPanelEditor extends JPanel {
 			return;
 		}
 		for (ObjetoPista objetoPista : circuito.getObjetos()) {
-			if (objetoPista.isPintaEmcima())
+			if (objetoPista.isPintaEmcima()
+					|| objetoPista.getPosicaoQuina() == null)
 				continue;
 			objetoPista.desenha(g2d, zoom);
 			AffineTransform affineTransform = AffineTransform.getScaleInstance(
@@ -1524,7 +1536,6 @@ public class MainPanelEditor extends JPanel {
 			int mAltura = altura / 2;
 			List<Point> escapeList = circuito.getEscapeList();
 
-
 			if (escapeList != null) {
 				for (Iterator iterator = escapeList.iterator(); iterator
 						.hasNext();) {
@@ -1686,6 +1697,12 @@ public class MainPanelEditor extends JPanel {
 		}
 		if (boxButton.isSelected()) {
 			tipoNo = No.BOX;
+		}
+		if (boxRetaButton.isSelected()) {
+			tipoNo = No.RETA;
+		}
+		if (boxCurvaAltaButton.isSelected()) {
+			tipoNo = No.CURVA_ALTA;
 		}
 		if (paraBoxButton.isSelected()) {
 			tipoNo = No.PARADA_BOX;
@@ -1926,40 +1943,11 @@ public class MainPanelEditor extends JPanel {
 					FormularioObjetos formularioObjetos = new FormularioObjetos(
 							MainPanelEditor.this);
 					formularioObjetos.mostrarPainelModal();
-					if (FormularioObjetos.OBJETO_LIVRE.equals(formularioObjetos
-							.getTipoComboBox().getSelectedItem())) {
-						objetoPista = new ObjetoLivre();
-						desenhandoObjetoLivre = true;
-					} else if (FormularioObjetos.OBJETO_CIRCULO
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoCirculo();
-						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_ESCAPADA
+					if (FormularioObjetos.OBJETO_ESCAPADA
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
 						objetoPista = new ObjetoEscapada();
 						posicionaObjetoPista = true;
-						// } else if (FormularioObjetos.OBJETO_CONSTRUCAO
-						// .equals(formularioObjetos.getTipoComboBox()
-						// .getSelectedItem())) {
-						// objetoPista = new ObjetoConstrucao();
-						// posicionaObjetoPista = true;
-						// } else if (FormularioObjetos.OBJETO_ARQUIBANCADA
-						// .equals(formularioObjetos.getTipoComboBox()
-						// .getSelectedItem())) {
-						// objetoPista = new ObjetoArquibancada();
-						// posicionaObjetoPista = true;
-						// } else if (FormularioObjetos.OBJETO_PNEUS
-						// .equals(formularioObjetos.getTipoComboBox()
-						// .getSelectedItem())) {
-						// objetoPista = new ObjetoPneus();
-						// posicionaObjetoPista = true;
-						// } else if (FormularioObjetos.OBJETO_GUAD_RAILS
-						// .equals(formularioObjetos.getTipoComboBox()
-						// .getSelectedItem())) {
-						// objetoPista = new ObjetoGuadRails();
-						// posicionaObjetoPista = true;
 					} else if (FormularioObjetos.OBJETO_TRANSPARENCIA
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {

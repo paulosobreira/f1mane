@@ -1,10 +1,7 @@
 package sowbreira.f1mane.editor;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,16 +11,12 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import br.nnpe.Util;
 
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -41,25 +34,13 @@ public class FormularioObjetos {
 	private JPanel panel = new JPanel(new GridLayout(9, 2));
 	private MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
-	public final static String OBJETO_LIVRE = "Objeto Livre";
-	public final static String OBJETO_CIRCULO = "Objeto Circulo";
 	protected static final String OBJETO_TRANSPARENCIA = "Objeto Transparencia";
 	protected static final String OBJETO_ESCAPADA = "Objeto Escapada";
-//	public final static String OBJETO_PNEUS = "Objeto Pneus";
-//	public final static String OBJETO_CONSTRUCAO = "Objeto Construção";
-//	public final static String OBJETO_ARQUIBANCADA = "Objeto Arquibancada";
-//	public final static String OBJETO_GUAD_RAILS = "Objeto GuadRails";
 
 	public FormularioObjetos(MainPanelEditor panelPai) {
 		this.mainPanelEditor = panelPai;
 		tipoComboBox.addItem(OBJETO_TRANSPARENCIA);
-		tipoComboBox.addItem(OBJETO_CIRCULO);
-		tipoComboBox.addItem(OBJETO_LIVRE);
 		tipoComboBox.addItem(OBJETO_ESCAPADA);
-//		tipoComboBox.addItem(OBJETO_PNEUS);
-//		tipoComboBox.addItem(OBJETO_CONSTRUCAO);
-//		tipoComboBox.addItem(OBJETO_ARQUIBANCADA);
-//		tipoComboBox.addItem(OBJETO_GUAD_RAILS);
 		panel.add(new JLabel("Tipo"));
 		panel.add(tipoComboBox);
 

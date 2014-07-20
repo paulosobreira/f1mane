@@ -543,10 +543,10 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 					FormularioObjetos formularioObjetos = new FormularioObjetos(
 							MainPanelEditorVetorizado.this);
 					formularioObjetos.mostrarPainelModal();
-					if (FormularioObjetos.OBJETO_LIVRE.equals(formularioObjetos
-							.getTipoComboBox().getSelectedItem())) {
-						objetoPista = new ObjetoLivre();
-						desenhandoObjetoLivre = true;
+//					if (FormularioObjetos.OBJETO_LIVRE.equals(formularioObjetos
+//							.getTipoComboBox().getSelectedItem())) {
+//						objetoPista = new ObjetoLivre();
+//						desenhandoObjetoLivre = true;
 //					} else if (FormularioObjetos.OBJETO_CONSTRUCAO
 //							.equals(formularioObjetos.getTipoComboBox()
 //									.getSelectedItem())) {
@@ -562,17 +562,17 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 //									.getSelectedItem())) {
 //						objetoPista = new ObjetoPneus();
 //						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_CIRCULO
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoCirculo();
-						posicionaObjetoPista = true;
+//					} else if (FormularioObjetos.OBJETO_CIRCULO
+//							.equals(formularioObjetos.getTipoComboBox()
+//									.getSelectedItem())) {
+//						objetoPista = new ObjetoCirculo();
+//						posicionaObjetoPista = true;
 //					} else if (FormularioObjetos.OBJETO_GUAD_RAILS
 //							.equals(formularioObjetos.getTipoComboBox()
 //									.getSelectedItem())) {
 //						objetoPista = new ObjetoGuadRails();
 //						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_TRANSPARENCIA
+					if (FormularioObjetos.OBJETO_TRANSPARENCIA
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
 						objetoPista = new ObjetoTransparencia();

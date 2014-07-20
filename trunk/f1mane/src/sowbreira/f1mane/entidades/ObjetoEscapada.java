@@ -10,16 +10,12 @@ import java.awt.geom.GeneralPath;
 
 public class ObjetoEscapada extends ObjetoPista {
 
-	Ellipse2D externo;
-
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {
-		externo = new Ellipse2D.Double(getPosicaoQuina().x,
-				getPosicaoQuina().y, largura, altura);
 		double rad = Math.toRadians((double) getAngulo());
 		AffineTransform affineTransform = AffineTransform
 				.getScaleInstance(1, 1);
-		GeneralPath generalPath = new GeneralPath(externo);
+		GeneralPath generalPath = new GeneralPath(getExterno());
 		affineTransform.setToRotation(rad,
 				generalPath.getBounds().getCenterX(), generalPath.getBounds()
 						.getCenterY());
@@ -32,11 +28,17 @@ public class ObjetoEscapada extends ObjetoPista {
 
 	@Override
 	public Rectangle obterArea() {
-		return externo.getBounds();
+		return getExterno().getBounds();
 	}
 
 	public Point centro() {
-		return new Point(posicaoQuina.x+(largura/2), posicaoQuina.y+(altura/2));
+		return new Point(posicaoQuina.x + (largura / 2), posicaoQuina.y
+				+ (altura / 2));
+	}
+
+	public Ellipse2D getExterno() {
+		return new Ellipse2D.Double(getPosicaoQuina().x, getPosicaoQuina().y,
+				largura, altura);
 	}
 
 	public static void main(String[] args) {
