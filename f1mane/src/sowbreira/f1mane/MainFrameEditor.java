@@ -103,9 +103,9 @@ public class MainFrameEditor extends JFrame {
 		gerarMenusidiomas(menuIdiomas);
 		String title = "F1-MANE " + getVersao() + " MANager & Engineer Editor";
 		setTitle(title);
-		iniciar();
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		removerListeners();
 		removerKeyListeners();
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		final BufferedImage bg = ImageUtil.gerarFade(
 				CarregadorRecursos.carregaBufferedImage("bg-monaco.png"), 25);
 		setSize(bg.getWidth(), bg.getHeight());
@@ -277,6 +277,40 @@ public class MainFrameEditor extends JFrame {
 					} else if (keyCoode == KeyEvent.VK_DOWN) {
 						editor.baixo();
 					}
+					if (e.isControlDown()) {
+						if (keyCoode == KeyEvent.VK_LEFT) {
+							editor.esquerdaObj();
+						} else if (e.isControlDown()
+								&& keyCoode == KeyEvent.VK_RIGHT) {
+							editor.direitaObj();
+						} else if (e.isControlDown()
+								&& keyCoode == KeyEvent.VK_UP) {
+							editor.cimaObj();
+						} else if (e.isControlDown()
+								&& keyCoode == KeyEvent.VK_DOWN) {
+							editor.baixoObj();
+						} else if (keyCoode == KeyEvent.VK_C) {
+							editor.copiarObjeto();
+						} else if (keyCoode == KeyEvent.VK_PAGE_UP) {
+							editor.menosAngulo();
+						} else if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
+							editor.maisAngulo();
+						}
+					}
+					if (e.isShiftDown()) {
+						if (keyCoode == KeyEvent.VK_PAGE_UP) {
+							editor.maisLargura();
+						} else if (e.isShiftDown()
+								&& keyCoode == KeyEvent.VK_PAGE_DOWN) {
+							editor.menosLargura();
+						} else if (e.isControlDown()
+								&& keyCoode == KeyEvent.VK_PAGE_UP) {
+							editor.maisAltura();
+						} else if (e.isControlDown()
+								&& keyCoode == KeyEvent.VK_PAGE_DOWN) {
+							editor.menosAltura();
+						}
+					}
 				}
 			}
 		});
@@ -396,10 +430,6 @@ public class MainFrameEditor extends JFrame {
 			Lang.mudarIdioma(args[1]);
 		}
 		MainFrameEditor frame = new MainFrameEditor();
-	}
-
-	public void iniciar() {
-		removerListeners();
 	}
 
 	private void removerListeners() {

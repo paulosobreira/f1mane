@@ -10,6 +10,8 @@ import java.awt.geom.GeneralPath;
 
 public class ObjetoEscapada extends ObjetoPista {
 
+	public final static Color red = new Color(250, 0, 0, 150);
+
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {
 		double rad = Math.toRadians((double) getAngulo());
@@ -21,8 +23,7 @@ public class ObjetoEscapada extends ObjetoPista {
 						.getCenterY());
 		generalPath.transform(affineTransform);
 		affineTransform.setToScale(zoom, zoom);
-		g2d.setColor(new Color(getCorPimaria().getRed(), getCorPimaria()
-				.getGreen(), getCorPimaria().getBlue(), getTransparencia()));
+		g2d.setColor(red);
 		g2d.fill(generalPath.createTransformedShape(affineTransform));
 	}
 
@@ -32,16 +33,21 @@ public class ObjetoEscapada extends ObjetoPista {
 	}
 
 	public Point centro() {
-		return new Point(posicaoQuina.x + (largura / 2), posicaoQuina.y
-				+ (altura / 2));
+		return new Point(posicaoQuina.x + (getAltura() / 2), posicaoQuina.y
+				+ (getAltura() / 2));
 	}
 
 	public Ellipse2D getExterno() {
 		return new Ellipse2D.Double(getPosicaoQuina().x, getPosicaoQuina().y,
-				largura, altura);
+				getAltura(), getAltura());
 	}
 
 	public static void main(String[] args) {
 		System.out.println(220 / 10);
+	}
+
+	@Override
+	public int getAltura() {
+		return 310;
 	}
 }
