@@ -132,7 +132,7 @@ public class MainPanelEditor extends JPanel {
 	private BufferedImage drawBuffer;
 	private Thread threadBkgGen;
 	private JCheckBox nosChave;
-	private boolean mostraBG = true;
+	private boolean mostraBG = false;
 	protected boolean editarObjetos;
 
 	public MainPanelEditor() {
@@ -393,7 +393,7 @@ public class MainPanelEditor extends JPanel {
 				MainPanelEditor.this.repaint();
 			}
 		});
-		
+
 		JButton apagarUltimoNoButton = new JButton() {
 			@Override
 			public String getText() {
@@ -429,7 +429,7 @@ public class MainPanelEditor extends JPanel {
 		});
 
 		buttonsPanel.add(apagaNoListaButton);
-		
+
 		buttonsPanel.add(desenhaTracadoBot);
 		return buttonsPanel;
 	}
@@ -559,8 +559,8 @@ public class MainPanelEditor extends JPanel {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		JPanel nothPanel = new JPanel(new GridLayout(2, 1));
-		nothPanel.add(buttonsPanel);
 		nothPanel.add(radiosPanel);
+		nothPanel.add(buttonsPanel);
 		frame.getContentPane().add(nothPanel, BorderLayout.NORTH);
 		frame.getContentPane()
 				.add(iniciaEditorVetorizado(), BorderLayout.SOUTH);
@@ -842,19 +842,41 @@ public class MainPanelEditor extends JPanel {
 			desenhaPista(g2d);
 			desenhaPistaBox(g2d);
 		}
-		desenhaObjetosBaixo(g2d);
 		desenhaCarroTeste(g2d);
 		desenhaEntradaParadaSaidaBox(g2d);
 		desenhaLargada(g2d);
 		desenhaGrid(g2d);
 		desenhaBoxes(g2d);
+		desenhaObjetosBaixo(g2d);
 		desenhaPreObjetoLivre(g2d);
 		desenhaPreObjetoTransparencia(g2d);
 		desenhaObjetosCima(g2d);
 		desenhaInfo(g2d);
+		desenhaControles(g2d);
 		desenhaListaObjetos(g2d);
 		desenhaNosChave(g2d);
 		desenhaPainelClassico(g2d);
+	}
+
+	private void desenhaControles(Graphics2D g2d) {
+		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
+		int x = limitesViewPort.getBounds().x + limitesViewPort.width - 300;
+		int y = limitesViewPort.getBounds().y + 20;
+		g2d.setColor(PainelCircuito.lightWhiteRain);
+		g2d.fillRoundRect(x - 15, y - 15, 200, 180, 15, 15);
+		g2d.setColor(Color.black);
+		// Esquerda
+		g2d.drawString("\u2190", x, y);
+		y += 20;
+		// Baixo
+		g2d.drawString("\u2193", x, y);
+		y += 20;
+		//Direira
+		g2d.drawString("\u2192", x, y);
+		y += 20;
+		//Cima
+		g2d.drawString("\u2191", x + 5, y + 25);
+		// TODO Auto-generated method stub
 	}
 
 	private void desenhaListaObjetos(Graphics2D g2d) {
@@ -942,17 +964,6 @@ public class MainPanelEditor extends JPanel {
 			if (!objetoPista.isPintaEmcima())
 				continue;
 			objetoPista.desenha(g2d, zoom);
-			AffineTransform affineTransform = AffineTransform.getScaleInstance(
-					1, 1);
-			double rad = Math.toRadians((double) objetoPista.getAngulo());
-
-			GeneralPath generalPath = new GeneralPath(objetoPista.obterArea());
-			affineTransform.setToRotation(rad, generalPath.getBounds()
-					.getCenterX(), generalPath.getBounds().getCenterY());
-			generalPath.transform(affineTransform);
-			affineTransform.setToScale(zoom, zoom);
-			g2d.draw(generalPath.createTransformedShape(affineTransform));
-
 		}
 	}
 
@@ -1363,16 +1374,6 @@ public class MainPanelEditor extends JPanel {
 					|| objetoPista.getPosicaoQuina() == null)
 				continue;
 			objetoPista.desenha(g2d, zoom);
-			AffineTransform affineTransform = AffineTransform.getScaleInstance(
-					1, 1);
-			double rad = Math.toRadians((double) objetoPista.getAngulo());
-
-			GeneralPath generalPath = new GeneralPath(objetoPista.obterArea());
-			affineTransform.setToRotation(rad, generalPath.getBounds()
-					.getCenterX(), generalPath.getBounds().getCenterY());
-			generalPath.transform(affineTransform);
-			affineTransform.setToScale(zoom, zoom);
-			g2d.draw(generalPath.createTransformedShape(affineTransform));
 		}
 
 	}
@@ -1479,13 +1480,15 @@ public class MainPanelEditor extends JPanel {
 				oldNo = no;
 			}
 		}
-		No noFinal = (No) circuito.getBoxKey().get(
-				circuito.getBoxKey().size() - 1);
+		if (circuito.getBoxKey() != null && !circuito.getBoxKey().isEmpty()) {
+			No noFinal = (No) circuito.getBoxKey().get(
+					circuito.getBoxKey().size() - 1);
 
-		g2d.drawLine(Util.inte(oldNo.getX() * zoom),
-				Util.inte(oldNo.getY() * zoom),
-				Util.inte(noFinal.getX() * zoom),
-				Util.inte(noFinal.getY() * zoom));
+			g2d.drawLine(Util.inte(oldNo.getX() * zoom),
+					Util.inte(oldNo.getY() * zoom),
+					Util.inte(noFinal.getX() * zoom),
+					Util.inte(noFinal.getY() * zoom));
+		}
 	}
 
 	private void desenhaTintaPistaEZebra(Graphics2D g2d) {
@@ -2038,6 +2041,130 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 
+	}
+
+	public void esquerdaObj() {
+		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+			Point p = objetoPista.getPosicaoQuina();
+			p.x -= 5;
+			repaint();
+			return;
+		}
+	}
+
+	public void direitaObj() {
+		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+			Point p = objetoPista.getPosicaoQuina();
+			p.x += 5;
+			repaint();
+			return;
+		}
+	}
+
+	public void cimaObj() {
+		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+			Point p = objetoPista.getPosicaoQuina();
+			p.y -= 5;
+			repaint();
+			return;
+		}
+	}
+
+	public void baixoObj() {
+		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+			Point p = objetoPista.getPosicaoQuina();
+			p.y += 5;
+			repaint();
+			return;
+		}
+	}
+
+	public void menosAngulo() {
+		if (moverObjetoPista) {
+			objetoPista.setAngulo(objetoPista.getAngulo() - 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void maisAngulo() {
+		if (moverObjetoPista) {
+			objetoPista.setAngulo(objetoPista.getAngulo() + 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void maisLargura() {
+		if (moverObjetoPista) {
+			objetoPista.setLargura(objetoPista.getLargura() + 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void menosLargura() {
+		if (moverObjetoPista) {
+			objetoPista.setLargura(objetoPista.getLargura() - 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void maisAltura() {
+		if (moverObjetoPista) {
+			objetoPista.setAltura(objetoPista.getAltura() + 1);
+			repaint();
+			return;
+		}
+
+	}
+
+	public void menosAltura() {
+		if (moverObjetoPista) {
+			objetoPista.setAltura(objetoPista.getAltura() - 1);
+			repaint();
+			return;
+		}
+	}
+
+	public void copiarObjeto() {
+		if (moverObjetoPista) {
+			try {
+				ObjetoPista objetoPistaNovo = objetoPista.getClass()
+						.newInstance();
+				objetoPistaNovo.setAltura(objetoPista.getAltura());
+				objetoPistaNovo.setAngulo(objetoPista.getAngulo());
+				objetoPistaNovo.setCorPimaria(objetoPista.getCorPimaria());
+				objetoPistaNovo
+						.setCorSecundaria(objetoPista.getCorSecundaria());
+				objetoPistaNovo.setLargura(objetoPista.getLargura());
+				objetoPistaNovo.setPintaEmcima(objetoPista.isPintaEmcima());
+				objetoPistaNovo
+						.setTransparencia(objetoPista.getTransparencia());
+				objetoPistaNovo.setPosicaoQuina(new Point(objetoPista
+						.getPosicaoQuina().x, objetoPista.getPosicaoQuina().y));
+
+				if (objetoPista instanceof ObjetoLivre) {
+					ObjetoLivre src = (ObjetoLivre) objetoPista;
+					ObjetoLivre dst = (ObjetoLivre) objetoPistaNovo;
+					dst.setPontos(new ArrayList<Point>());
+					List<Point> pontos = src.getPontos();
+					for (Point point : pontos) {
+						dst.getPontos().add(new Point(point.x, point.y));
+					}
+					dst.gerar();
+				}
+				circuito.getObjetos().add(objetoPistaNovo);
+				objetoPistaNovo.setNome("Objeto "
+						+ circuito.getObjetos().size());
+
+			} catch (Exception e) {
+				Logger.logarExept(e);
+			}
+			repaint();
+			return;
+		}
 	}
 
 	public boolean isMoverObjetoPista() {

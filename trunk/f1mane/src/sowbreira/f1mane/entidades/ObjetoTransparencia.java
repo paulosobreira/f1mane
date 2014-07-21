@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObjetoTransparencia extends ObjetoPista {
-	/**
-	 * 
-	 */
+	
+	public final static Color transp = new Color(255, 255, 255, 160);
+	
 	private static final long serialVersionUID = 2035296854458757556L;
 	private List<Point> pontos = new ArrayList<Point>();
 	Polygon polygon = new Polygon();
@@ -40,9 +40,7 @@ public class ObjetoTransparencia extends ObjetoPista {
 			polygon.translate(posicaoQuina.x - polygon.getBounds().x,
 					posicaoQuina.y - polygon.getBounds().y);
 		}
-
-		g2d.setColor(new Color(getCorPimaria().getRed(), getCorPimaria()
-				.getGreen(), getCorPimaria().getBlue(), getTransparencia()));
+		g2d.setColor(transp);
 		double rad = Math.toRadians((double) getAngulo());
 		AffineTransform affineTransform = AffineTransform
 				.getScaleInstance(1, 1);
@@ -79,5 +77,10 @@ public class ObjetoTransparencia extends ObjetoPista {
 	@Override
 	public Rectangle obterArea() {
 		return polygon.getBounds();
+	}
+	
+	@Override
+	public boolean isPintaEmcima() {
+		return true;
 	}
 }
