@@ -478,7 +478,7 @@ public class MainFrame extends JFrame {
 					if (controleJogo != null) {
 						controleJogo.matarTodasThreads();
 					}
-					editor = new MainPanelEditor(menuFrame);
+					editor = new MainPanelEditorVetorizado(menuFrame);
 					ativarKeysEditor();
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
@@ -486,40 +486,6 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu4.add(abrirPista);
-
-		JMenuItem abrirImg = new JMenuItem("Criar Arquivo Circuito") {
-			public String getText() {
-				return Lang.msg("098");
-			}
-
-		};
-		abrirImg.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (controleJogo != null) {
-						controleJogo.matarTodasThreads();
-					}
-
-					JFileChooser fileChooser = new JFileChooser(
-							CarregadorRecursos.class.getResource(
-									"CarregadorRecursos.class").getFile());
-					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-					int result = fileChooser.showOpenDialog(null);
-
-					if (result == JFileChooser.CANCEL_OPTION) {
-						return;
-					}
-
-					File file = fileChooser.getSelectedFile();
-					editor = new MainPanelEditor(file.getName(), menuFrame);
-					ativarKeysEditor();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-		menu4.add(abrirImg);
 
 		JMenuItem salvarPista = new JMenuItem("Salvar Pista F8") {
 			public String getText() {

@@ -83,15 +83,13 @@ public class FormularioObjetos {
 			}
 		});
 
-		JButton buttonMover = new JButton("Mover/Parar");
+		JButton buttonMover = new JButton("NFun");
 		panel.add(buttonMover);
 		buttonMover.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (objetoPista != null) {
-					mainPanelEditor.setMoverObjetoPista(!mainPanelEditor
-							.isMoverObjetoPista());
-					mainPanelEditor.setObjetoPista(objetoPista);
+
 				}
 			}
 		});

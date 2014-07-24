@@ -50,4 +50,9 @@ public class ObjetoEscapada extends ObjetoPista {
 	public int getAltura() {
 		return 310;
 	}
+
+	@Override
+	public int getLargura() {
+		return getAltura();
+	}
 }
