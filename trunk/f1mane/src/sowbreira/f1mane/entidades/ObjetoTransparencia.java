@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObjetoTransparencia extends ObjetoPista {
-	
+
 	public final static Color transp = new Color(255, 255, 255, 160);
-	
+
 	private static final long serialVersionUID = 2035296854458757556L;
 	private List<Point> pontos = new ArrayList<Point>();
 	Polygon polygon = new Polygon();
@@ -32,6 +32,8 @@ public class ObjetoTransparencia extends ObjetoPista {
 		for (Point ponto : pontos) {
 			polygon.addPoint((int) (ponto.x), (int) (ponto.y));
 		}
+		setAltura((int) polygon.getBounds().getHeight());
+		setLargura((int) polygon.getBounds().getWidth());
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public class ObjetoTransparencia extends ObjetoPista {
 	public Rectangle obterArea() {
 		return polygon.getBounds();
 	}
-	
+
 	@Override
 	public boolean isPintaEmcima() {
 		return true;

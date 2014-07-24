@@ -56,6 +56,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import sowbreira.f1mane.MainFrameEditor;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
@@ -81,7 +82,7 @@ public class MainPanelEditor extends JPanel {
 	private No ultimoNo = null;
 	private JList pistaJList;
 	private JList boxJList;
-	private JFrame srcFrame;
+	private MainFrameEditor srcFrame;
 	private boolean desenhaTracado = true;
 	private boolean creditos = false;
 	private boolean pontosEscape = false;
@@ -125,7 +126,6 @@ public class MainPanelEditor extends JPanel {
 	private ObjetoPista objetoPista;
 	private boolean desenhandoObjetoLivre;
 	private boolean posicionaObjetoPista;
-	private boolean moverObjetoPista;
 	private Point ultimoClicado;
 	private JSpinner transparencia = new JSpinner();
 	private FormularioListaObjetos formularioListaObjetos;
@@ -138,7 +138,7 @@ public class MainPanelEditor extends JPanel {
 	public MainPanelEditor() {
 	}
 
-	public MainPanelEditor(String backGroundStr, JFrame frame) {
+	public MainPanelEditor(String backGroundStr, MainFrameEditor frame) {
 		backGround = CarregadorRecursos.carregaBackGround(backGroundStr, this,
 				circuito);
 		this.srcFrame = frame;
@@ -148,7 +148,7 @@ public class MainPanelEditor extends JPanel {
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
-	public MainPanelEditor(JFrame frame) throws IOException,
+	public MainPanelEditor(MainFrameEditor frame) throws IOException,
 			ClassNotFoundException {
 		JFileChooser fileChooser = new JFileChooser(CarregadorRecursos.class
 				.getResource("CarregadorRecursos.class").getFile());
@@ -659,12 +659,9 @@ public class MainPanelEditor extends JPanel {
 
 			private void clickEditarObjetos(MouseEvent e) {
 				ultimoClicado = e.getPoint();
-				if (!moverObjetoPista && e.getClickCount() > 1) {
+				if (e.getClickCount() > 1) {
 					editaObjetoPista(ultimoClicado);
 					return;
-				}
-				if (e.getButton() != MouseEvent.BUTTON1) {
-					moverObjetoPista = false;
 				}
 				if (desenhandoObjetoLivre
 						&& (objetoPista instanceof ObjetoTransparencia)) {
@@ -695,13 +692,6 @@ public class MainPanelEditor extends JPanel {
 							+ circuito.getObjetos().size());
 					repaint();
 					posicionaObjetoPista = false;
-					return;
-				} else if (moverObjetoPista) {
-					if (objetoPista != null)
-						objetoPista.setPosicaoQuina(new Point(Util.inte(e
-								.getPoint().x / zoom), Util.inte(e.getPoint().y
-								/ zoom)));
-					repaint();
 					return;
 				} else if (creditos) {
 					circuito.setCreditos(e.getPoint());
@@ -851,32 +841,60 @@ public class MainPanelEditor extends JPanel {
 		desenhaPreObjetoLivre(g2d);
 		desenhaPreObjetoTransparencia(g2d);
 		desenhaObjetosCima(g2d);
-		desenhaInfo(g2d);
-		desenhaControles(g2d);
 		desenhaListaObjetos(g2d);
 		desenhaNosChave(g2d);
 		desenhaPainelClassico(g2d);
+		desenhaInfo(g2d);
+		desenhaControles(g2d);
 	}
 
 	private void desenhaControles(Graphics2D g2d) {
 		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
-		int x = limitesViewPort.getBounds().x + limitesViewPort.width - 300;
+		int x = limitesViewPort.getBounds().x + limitesViewPort.width - 200;
 		int y = limitesViewPort.getBounds().y + 20;
 		g2d.setColor(PainelCircuito.lightWhiteRain);
 		g2d.fillRoundRect(x - 15, y - 15, 200, 180, 15, 15);
 		g2d.setColor(Color.black);
+		g2d.drawString("Shift ativado "
+				+ (srcFrame.isShiftApertado() ? "SIM" : "NÃO"), x, y);
+		y += 20;
+		g2d.drawString("Control ativado "
+				+ (srcFrame.isControlApertado() ? "SIM" : "NÃO"), x, y);
+		String esquera = "Move tela Esquerda";
+		String direita = "Move tela Direita";
+		String baixo = "Move tela Baixo";
+		String cima = "Move tela Cima";
+		if (srcFrame.isControlApertado()) {
+			esquera = "Move objeto Esquerda";
+			direita = "Move objeto Direita";
+			baixo = "Move objeto Baixo";
+			cima = "Move objeto Cima";
+		}
+		if (srcFrame.isShiftApertado()) {
+			esquera = "Objeto mais extreito";
+			direita = "Objeto mais largo";
+			baixo = "Objeto mais Baixo";
+			cima = "Objeto mais alto";
+		}
+		y += 20;
 		// Esquerda
-		g2d.drawString("\u2190", x, y);
+		g2d.drawString("\u2190 " + esquera, x, y);
 		y += 20;
 		// Baixo
-		g2d.drawString("\u2193", x, y);
+		g2d.drawString("\u2193 " + baixo, x, y);
 		y += 20;
-		//Direira
-		g2d.drawString("\u2192", x, y);
+		// Direira
+		g2d.drawString("\u2192 " + direita, x, y);
 		y += 20;
-		//Cima
-		g2d.drawString("\u2191", x + 5, y + 25);
-		// TODO Auto-generated method stub
+		// Cima
+		g2d.drawString("\u2191 " + cima, x, y);
+		y += 20;
+
+		g2d.drawString("PgUp Mais Angulo", x, y);
+		y += 20;
+		g2d.drawString("PgUp Menos Angulo", x, y);
+		y += 20;
+		g2d.drawString("Control+C Copiar Objeto", x, y);
 	}
 
 	private void desenhaListaObjetos(Graphics2D g2d) {
@@ -893,6 +911,9 @@ public class MainPanelEditor extends JPanel {
 				g2d.setColor(Color.BLACK);
 				g2d.drawString(objetoPista.getNome().split(" ")[1], loc.x,
 						loc.y + 10);
+				g2d.drawRect(objetoPista.getPosicaoQuina().x,
+						objetoPista.getPosicaoQuina().y,
+						objetoPista.getLargura(), objetoPista.getAltura());
 			}
 		}
 	}
@@ -1823,6 +1844,9 @@ public class MainPanelEditor extends JPanel {
 		ladoBoxCombo = new JComboBox();
 		ladoBoxCombo.addItem(LADO_COMBO_1);
 		ladoBoxCombo.addItem(LADO_COMBO_2);
+		if (circuito != null && circuito.getLadoBox() == 2) {
+			ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
+		}
 		buttonsPanel.add(ladoBoxCombo);
 
 		inflarPistaBot.addActionListener(new ActionListener() {
@@ -2044,7 +2068,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void esquerdaObj() {
-		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+		if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
 			Point p = objetoPista.getPosicaoQuina();
 			p.x -= 5;
 			repaint();
@@ -2053,7 +2077,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void direitaObj() {
-		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+		if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
 			Point p = objetoPista.getPosicaoQuina();
 			p.x += 5;
 			repaint();
@@ -2062,7 +2086,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void cimaObj() {
-		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+		if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
 			Point p = objetoPista.getPosicaoQuina();
 			p.y -= 5;
 			repaint();
@@ -2071,7 +2095,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void baixoObj() {
-		if (moverObjetoPista && objetoPista.getPosicaoQuina() != null) {
+		if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
 			Point p = objetoPista.getPosicaoQuina();
 			p.y += 5;
 			repaint();
@@ -2080,7 +2104,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void menosAngulo() {
-		if (moverObjetoPista) {
+		if (objetoPista != null) {
 			objetoPista.setAngulo(objetoPista.getAngulo() - 1);
 			repaint();
 			return;
@@ -2088,7 +2112,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void maisAngulo() {
-		if (moverObjetoPista) {
+		if (objetoPista != null) {
 			objetoPista.setAngulo(objetoPista.getAngulo() + 1);
 			repaint();
 			return;
@@ -2096,7 +2120,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void maisLargura() {
-		if (moverObjetoPista) {
+		if (objetoPista != null) {
 			objetoPista.setLargura(objetoPista.getLargura() + 1);
 			repaint();
 			return;
@@ -2104,7 +2128,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void menosLargura() {
-		if (moverObjetoPista) {
+		if (objetoPista != null) {
 			objetoPista.setLargura(objetoPista.getLargura() - 1);
 			repaint();
 			return;
@@ -2112,7 +2136,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void maisAltura() {
-		if (moverObjetoPista) {
+		if (objetoPista != null) {
 			objetoPista.setAltura(objetoPista.getAltura() + 1);
 			repaint();
 			return;
@@ -2121,7 +2145,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void menosAltura() {
-		if (moverObjetoPista) {
+		if (objetoPista != null) {
 			objetoPista.setAltura(objetoPista.getAltura() - 1);
 			repaint();
 			return;
@@ -2129,7 +2153,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void copiarObjeto() {
-		if (moverObjetoPista) {
+		if (objetoPista != null) {
 			try {
 				ObjetoPista objetoPistaNovo = objetoPista.getClass()
 						.newInstance();
@@ -2165,14 +2189,6 @@ public class MainPanelEditor extends JPanel {
 			repaint();
 			return;
 		}
-	}
-
-	public boolean isMoverObjetoPista() {
-		return moverObjetoPista;
-	}
-
-	public void setMoverObjetoPista(boolean moverObjetoPista) {
-		this.moverObjetoPista = moverObjetoPista;
 	}
 
 	public ObjetoPista getObjetoPista() {

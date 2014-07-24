@@ -65,6 +65,8 @@ public class MainFrameEditor extends JFrame {
 	private JMenu menuInfo;
 
 	private AppletPaddock ver = new AppletPaddock();
+	protected boolean controlApertado;
+	protected boolean shiftApertado;
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;
@@ -267,53 +269,64 @@ public class MainFrameEditor extends JFrame {
 		this.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				int keyCoode = e.getKeyCode();
-				if (editor != null) {
+				if (editor == null) {
+					return;
+				}
+				if (e.isControlDown()) {
+					controlApertado = true;
 					if (keyCoode == KeyEvent.VK_LEFT) {
-						editor.esquerda();
+						editor.esquerdaObj();
 					} else if (keyCoode == KeyEvent.VK_RIGHT) {
-						editor.direita();
-					} else if (keyCoode == KeyEvent.VK_UP) {
-						editor.cima();
+						editor.direitaObj();
+					} else if (e.isControlDown() && keyCoode == KeyEvent.VK_UP) {
+						editor.cimaObj();
 					} else if (keyCoode == KeyEvent.VK_DOWN) {
-						editor.baixo();
+						editor.baixoObj();
+					} else if (keyCoode == KeyEvent.VK_C) {
+						editor.copiarObjeto();
 					}
-					if (e.isControlDown()) {
-						if (keyCoode == KeyEvent.VK_LEFT) {
-							editor.esquerdaObj();
-						} else if (e.isControlDown()
-								&& keyCoode == KeyEvent.VK_RIGHT) {
-							editor.direitaObj();
-						} else if (e.isControlDown()
-								&& keyCoode == KeyEvent.VK_UP) {
-							editor.cimaObj();
-						} else if (e.isControlDown()
-								&& keyCoode == KeyEvent.VK_DOWN) {
-							editor.baixoObj();
-						} else if (keyCoode == KeyEvent.VK_C) {
-							editor.copiarObjeto();
-						} else if (keyCoode == KeyEvent.VK_PAGE_UP) {
-							editor.menosAngulo();
-						} else if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
-							editor.maisAngulo();
-						}
+					return;
+				} else {
+					controlApertado = false;
+				}
+				if (e.isShiftDown()) {
+					shiftApertado = true;
+					if (keyCoode == KeyEvent.VK_RIGHT) {
+						editor.maisLargura();
+					} else if (keyCoode == KeyEvent.VK_LEFT) {
+						editor.menosLargura();
+					} else if (keyCoode == KeyEvent.VK_UP) {
+						editor.maisAltura();
+					} else if (keyCoode == KeyEvent.VK_DOWN) {
+						editor.menosAltura();
 					}
-					if (e.isShiftDown()) {
-						if (keyCoode == KeyEvent.VK_PAGE_UP) {
-							editor.maisLargura();
-						} else if (e.isShiftDown()
-								&& keyCoode == KeyEvent.VK_PAGE_DOWN) {
-							editor.menosLargura();
-						} else if (e.isControlDown()
-								&& keyCoode == KeyEvent.VK_PAGE_UP) {
-							editor.maisAltura();
-						} else if (e.isControlDown()
-								&& keyCoode == KeyEvent.VK_PAGE_DOWN) {
-							editor.menosAltura();
-						}
-					}
+					return;
+				} else {
+					shiftApertado = false;
+				}
+				if (keyCoode == KeyEvent.VK_LEFT) {
+					editor.esquerda();
+				} else if (keyCoode == KeyEvent.VK_RIGHT) {
+					editor.direita();
+				} else if (keyCoode == KeyEvent.VK_UP) {
+					editor.cima();
+				} else if (keyCoode == KeyEvent.VK_DOWN) {
+					editor.baixo();
+				} else if (keyCoode == KeyEvent.VK_PAGE_UP) {
+					editor.menosAngulo();
+				} else if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
+					editor.maisAngulo();
 				}
 			}
 		});
+	}
+
+	public boolean isControlApertado() {
+		return controlApertado;
+	}
+
+	public boolean isShiftApertado() {
+		return shiftApertado;
 	}
 
 	private void removerKeyListeners() {
