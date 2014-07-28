@@ -369,7 +369,6 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 		};
 		regMax.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testePistaVetorizado.regMax();
 			}
 		});
 		buttonsPanel.add(regMax);
@@ -1129,8 +1128,6 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 				+ multiplicadorLarguraPista, x, y);
 		y += 20;
 		g2d.drawString("Box : " + testePistaVetorizado.isIrProBox(), x, y);
-		y += 20;
-		g2d.drawString("Simula Max : " + testePistaVetorizado.isMaxHP(), x, y);
 		if (circuito.getObjetos() != null) {
 			y += 20;
 			g2d.drawString("Num Objetos : " + circuito.getObjetos().size(), x,

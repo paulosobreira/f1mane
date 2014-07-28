@@ -32,8 +32,6 @@ public class ObjetoTransparencia extends ObjetoPista {
 		for (Point ponto : pontos) {
 			polygon.addPoint((int) (ponto.x), (int) (ponto.y));
 		}
-		setAltura((int) polygon.getBounds().getHeight());
-		setLargura((int) polygon.getBounds().getWidth());
 	}
 
 	@Override
@@ -84,5 +82,17 @@ public class ObjetoTransparencia extends ObjetoPista {
 	@Override
 	public boolean isPintaEmcima() {
 		return true;
+	}
+
+	@Override
+	public Point getPosicaoQuina() {
+		if (super.getPosicaoQuina() == null) {
+			Rectangle obterArea = obterArea();
+			setAltura((int) obterArea.getBounds().getHeight());
+			setLargura((int) obterArea.getBounds().getWidth());
+			setPosicaoQuina(new Point(obterArea.getBounds().x,
+					obterArea.getBounds().y));
+		}
+		return super.getPosicaoQuina();
 	}
 }

@@ -133,7 +133,6 @@ public class MainPanelEditor extends JPanel {
 	private Thread threadBkgGen;
 	private JCheckBox nosChave;
 	private boolean mostraBG = false;
-	protected boolean editarObjetos;
 
 	public MainPanelEditor() {
 	}
@@ -362,24 +361,7 @@ public class MainPanelEditor extends JPanel {
 
 	private JPanel gerarBotoesTracado() {
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new GridLayout(1, 4));
-
-		JButton creditosButton = new JButton() {
-			@Override
-			public String getText() {
-				return Lang.msg("creditos");
-			}
-		};
-		creditosButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					creditos();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-		buttonsPanel.add(creditosButton);
+		buttonsPanel.setLayout(new GridLayout(1, 3));
 
 		JButton desenhaTracadoBot = new JButton("Desenha Tracado") {
 			@Override
@@ -645,7 +627,7 @@ public class MainPanelEditor extends JPanel {
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				if (editarObjetos) {
+				if (false) {
 					clickEditarObjetos(e);
 				} else {
 					No no = new No();
@@ -911,9 +893,12 @@ public class MainPanelEditor extends JPanel {
 				g2d.setColor(Color.BLACK);
 				g2d.drawString(objetoPista.getNome().split(" ")[1], loc.x,
 						loc.y + 10);
-				g2d.drawRect(objetoPista.getPosicaoQuina().x,
-						objetoPista.getPosicaoQuina().y,
-						objetoPista.getLargura(), objetoPista.getAltura());
+				if (objetoPista.getPosicaoQuina() != null) {
+					g2d.setColor(Color.ORANGE);
+					g2d.drawRect(objetoPista.getPosicaoQuina().x,
+							objetoPista.getPosicaoQuina().y,
+							objetoPista.getLargura(), objetoPista.getAltura());
+				}
 			}
 		}
 	}
@@ -934,8 +919,6 @@ public class MainPanelEditor extends JPanel {
 				+ multiplicadorLarguraPista, x, y);
 		y += 20;
 		g2d.drawString("Box : " + testePista.isIrProBox(), x, y);
-		y += 20;
-		g2d.drawString("Simula Max : " + testePista.isMaxHP(), x, y);
 		if (circuito.getObjetos() != null) {
 			y += 20;
 			g2d.drawString("Num Objetos : " + circuito.getObjetos().size(), x,
@@ -1391,8 +1374,7 @@ public class MainPanelEditor extends JPanel {
 			return;
 		}
 		for (ObjetoPista objetoPista : circuito.getObjetos()) {
-			if (objetoPista.isPintaEmcima()
-					|| objetoPista.getPosicaoQuina() == null)
+			if (objetoPista.isPintaEmcima())
 				continue;
 			objetoPista.desenha(g2d, zoom);
 		}
@@ -1750,7 +1732,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new GridLayout(3, 6));
+		buttonsPanel.setLayout(new GridLayout(3, 4));
 
 		JButton testaPistaButton = new JButton() {
 			@Override
@@ -1783,18 +1765,6 @@ public class MainPanelEditor extends JPanel {
 		});
 		buttonsPanel.add(testaBoxButton);
 
-		JButton regMax = new JButton("Ligar/Desligar Agressivo") {
-			@Override
-			public String getText() {
-				return Lang.msg("036");
-			}
-		};
-		regMax.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				testePista.regMax();
-			}
-		});
-		buttonsPanel.add(regMax);
 		JButton left = new JButton() {
 			@Override
 			public String getText() {
@@ -1835,12 +1805,6 @@ public class MainPanelEditor extends JPanel {
 		});
 		buttonsPanel.add(right);
 
-		JButton inflarPistaBot = new JButton("") {
-			@Override
-			public String getText() {
-				return Lang.msg("vetorizarPista");
-			}
-		};
 		ladoBoxCombo = new JComboBox();
 		ladoBoxCombo.addItem(LADO_COMBO_1);
 		ladoBoxCombo.addItem(LADO_COMBO_2);
@@ -1848,22 +1812,6 @@ public class MainPanelEditor extends JPanel {
 			ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
 		}
 		buttonsPanel.add(ladoBoxCombo);
-
-		inflarPistaBot.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					multiplicadorPista = Double.parseDouble(tamanhoPistaText
-							.getText());
-					multiplicadorLarguraPista = Double
-							.parseDouble(larguraPistaText.getText());
-					vetorizarCircuito();
-				} catch (Exception e2) {
-					e2.printStackTrace();
-				}
-
-			}
-		});
-		buttonsPanel.add(inflarPistaBot);
 
 		tamanhoPistaText = new JTextField();
 		tamanhoPistaText.setText("" + multiplicadorPista);
@@ -1940,7 +1888,6 @@ public class MainPanelEditor extends JPanel {
 		noite.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				editarObjetos = true;
 				circuito.setNoite(noite.isSelected());
 				repaint();
 			}
@@ -1966,7 +1913,6 @@ public class MainPanelEditor extends JPanel {
 		criarObjeto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					editarObjetos = true;
 					FormularioObjetos formularioObjetos = new FormularioObjetos(
 							MainPanelEditor.this);
 					formularioObjetos.mostrarPainelModal();
@@ -1991,36 +1937,6 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		buttonsPanel.add(criarObjeto);
-		JButton listaObjetos = new JButton("Editar Objetos") {
-			@Override
-			public String getText() {
-				return "Editar Objetos " + editarObjetos;
-			}
-		};
-		listaObjetos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					editarObjetos = !editarObjetos;
-				} catch (Exception e2) {
-					e2.printStackTrace();
-				}
-
-			}
-		});
-		buttonsPanel.add(listaObjetos);
-		JButton moverPelaTela = new JButton("Mover Pela Tela");
-		moverPelaTela.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					editarObjetos = true;
-					srcFrame.requestFocus();
-				} catch (Exception e2) {
-					e2.printStackTrace();
-				}
-
-			}
-		});
-		buttonsPanel.add(moverPelaTela);
 
 		JPanel nosChavePanel = new JPanel(new GridLayout(1, 2));
 		nosChavePanel.add(new JLabel() {
@@ -2032,6 +1948,24 @@ public class MainPanelEditor extends JPanel {
 		nosChave = new JCheckBox();
 		nosChavePanel.add(nosChave);
 		buttonsPanel.add(nosChavePanel);
+
+		JButton creditosButton = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("creditos");
+			}
+		};
+		creditosButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					creditos();
+				} catch (Exception e1) {
+					Logger.logarExept(e1);
+				}
+			}
+		});
+		buttonsPanel.add(creditosButton);
+
 		return buttonsPanel;
 	}
 

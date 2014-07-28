@@ -278,7 +278,7 @@ public class MainFrameEditor extends JFrame {
 						editor.esquerdaObj();
 					} else if (keyCoode == KeyEvent.VK_RIGHT) {
 						editor.direitaObj();
-					} else if (e.isControlDown() && keyCoode == KeyEvent.VK_UP) {
+					} else if (keyCoode == KeyEvent.VK_UP) {
 						editor.cimaObj();
 					} else if (keyCoode == KeyEvent.VK_DOWN) {
 						editor.baixoObj();
