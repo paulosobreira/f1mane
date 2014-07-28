@@ -26,7 +26,6 @@ public class TestePista {
 	public Point frenteCar;
 	private boolean alive;
 	private boolean irProBox;
-	private boolean maxHP;
 	private List pontosPista;
 	private List pontosBox;
 	private MainPanelEditor editor;
@@ -76,28 +75,12 @@ public class TestePista {
 									if (No.RETA.equals(noBox.getTipo())
 											|| No.LARGADA.equals(noBox
 													.getTipo())) {
-										if (maxHP) {
-											contBox += ((Math.random() > .5 ? 3
-													: 4) * multi);
-										} else {
-											if ((contBox % 2) == 0) {
-												contBox += (3 * multi);
-											} else {
-												contBox += (2 * multi);
-											}
-										}
+										contBox += ((Math.random() > .5 ? 3 : 4) * multi);
+
 									} else if (No.CURVA_ALTA.equals(noBox
 											.getTipo())) {
-										if (maxHP) {
-											contBox += ((Math.random() > .5 ? 3
-													: 4) * multi);
-										} else {
-											if ((contBox % 2) == 0) {
-												contBox += (2 * multi);
-											} else {
-												contBox += (1 * multi);
-											}
-										}
+										contBox += ((Math.random() > .5 ? 3 : 4) * multi);
+
 									} else {
 										contBox += (1 * multi);
 									}
@@ -115,25 +98,10 @@ public class TestePista {
 							centralizaTestCar();
 							if (No.RETA.equals(no.getTipo())
 									|| No.LARGADA.equals(no.getTipo())) {
-								if (maxHP) {
-									cont += ((Math.random() > .5 ? 3 : 4) * multi);
-								} else {
-									if ((cont % 2) == 0) {
-										cont += (3 * multi);
-									} else {
-										cont += (2 * multi);
-									}
-								}
+								cont += ((Math.random() > .5 ? 3 : 4) * multi);
+
 							} else if (No.CURVA_ALTA.equals(no.getTipo())) {
-								if (maxHP) {
-									cont += ((Math.random() > .5 ? 3 : 4) * multi);
-								} else {
-									if ((cont % 2) == 0) {
-										cont += (2 * multi);
-									} else {
-										cont += (1 * multi);
-									}
-								}
+								cont += ((Math.random() > .5 ? 3 : 4) * multi);
 							} else if (No.CURVA_BAIXA.equals(no.getTipo())) {
 								cont += (1 * multi);
 							}
@@ -195,20 +163,12 @@ public class TestePista {
 		irProBox = !irProBox;
 	}
 
-	public void regMax() {
-		maxHP = !maxHP;
-	}
-
 	public boolean isIrProBox() {
 		return irProBox;
 	}
 
 	protected void centralizaTestCar() {
 		editor.centralizarPonto(testCar);
-	}
-
-	public boolean isMaxHP() {
-		return maxHP;
 	}
 
 	public void pararTeste() {
