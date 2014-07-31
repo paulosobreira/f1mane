@@ -171,9 +171,27 @@ public class MainPanelEditor extends JPanel {
 		iniciaEditor(frame);
 		atualizaListas();
 		vetorizarCircuito();
+		migrarEscapadas();
 		frame.pack();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		centralizarPonto(((No) circuito.getPistaFull().get(0)).getPoint());
+	}
+
+	private void migrarEscapadas() {
+		if (circuito.getEscapeList() != null
+				&& !circuito.getEscapeList().isEmpty()) {
+			List<Point> escapeList = circuito.getEscapeList();
+			for (Point point : escapeList) {
+				ObjetoEscapada objetoPista = new ObjetoEscapada();
+				objetoPista.setPosicaoQuina(point);
+				circuito.getObjetos().add(objetoPista);
+				formularioListaObjetos.listarObjetos();
+				objetoPista.setNome("Objeto " + circuito.getObjetos().size());
+			}
+			repaint();
+			circuito.getEscapeList().clear();
+		}
+
 	}
 
 	private void vetorizarCircuito() {
