@@ -24,7 +24,7 @@ import sowbreira.f1mane.entidades.ObjetoPista;
 
 public class FormularioListaObjetos {
 
-	private MainPanelEditor editorVetorizado;
+	private MainPanelEditor editor;
 	private DefaultListModel defaultListModelOP;
 	private JList list;
 	private JFrame frame = new JFrame();
@@ -46,16 +46,16 @@ public class FormularioListaObjetos {
 		this.list = list;
 	}
 
-	public FormularioListaObjetos(MainPanelEditor editorVetorizado) {
-		this.editorVetorizado = editorVetorizado;
+	public FormularioListaObjetos(MainPanelEditor editor) {
+		this.editor = editor;
 		defaultListModelOP = new DefaultListModel();
 		list = new JList(defaultListModelOP);
 		list.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				FormularioListaObjetos.this.editorVetorizado.repaint();
-
+				FormularioListaObjetos.this.editor.repaint();
+				FormularioListaObjetos.this.editor.desSelecionaNosPista();
 			}
 		});
 		objetos = new JPanel(new BorderLayout()) {
@@ -146,7 +146,7 @@ public class FormularioListaObjetos {
 					return;
 				ObjetoPista objetoPista = (ObjetoPista) list.getSelectedValue();
 				FormularioObjetos formularioObjetos = new FormularioObjetos(
-						FormularioListaObjetos.this.editorVetorizado);
+						FormularioListaObjetos.this.editor);
 				formularioObjetos.objetoLivreFormulario(objetoPista);
 			}
 		});
@@ -161,8 +161,7 @@ public class FormularioListaObjetos {
 	}
 
 	public void listarObjetos() {
-		List<ObjetoPista> objetoPista = editorVetorizado.getCircuito()
-				.getObjetos();
+		List<ObjetoPista> objetoPista = editor.getCircuito().getObjetos();
 		if (objetoPista != null) {
 			defaultListModelOP.clear();
 			for (ObjetoPista op : objetoPista) {
@@ -172,13 +171,13 @@ public class FormularioListaObjetos {
 	}
 
 	protected void atualizarCircuito() {
-		Circuito circuito = editorVetorizado.getCircuito();
+		Circuito circuito = editor.getCircuito();
 		List<ObjetoPista> objetos = circuito.getObjetos();
 		objetos.clear();
 		for (int i = 0; i < defaultListModelOP.getSize(); i++) {
 			objetos.add((ObjetoPista) defaultListModelOP.getElementAt(i));
 		}
-		editorVetorizado.repaint();
+		editor.repaint();
 	}
 
 	public JPanel getObjetos() {

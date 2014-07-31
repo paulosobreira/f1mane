@@ -542,35 +542,36 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 					FormularioObjetos formularioObjetos = new FormularioObjetos(
 							MainPanelEditorVetorizado.this);
 					formularioObjetos.mostrarPainelModal();
-//					if (FormularioObjetos.OBJETO_LIVRE.equals(formularioObjetos
-//							.getTipoComboBox().getSelectedItem())) {
-//						objetoPista = new ObjetoLivre();
-//						desenhandoObjetoLivre = true;
-//					} else if (FormularioObjetos.OBJETO_CONSTRUCAO
-//							.equals(formularioObjetos.getTipoComboBox()
-//									.getSelectedItem())) {
-//						objetoPista = new ObjetoConstrucao();
-//						posicionaObjetoPista = true;
-//					} else if (FormularioObjetos.OBJETO_ARQUIBANCADA
-//							.equals(formularioObjetos.getTipoComboBox()
-//									.getSelectedItem())) {
-//						objetoPista = new ObjetoArquibancada();
-//						posicionaObjetoPista = true;
-//					} else if (FormularioObjetos.OBJETO_PNEUS
-//							.equals(formularioObjetos.getTipoComboBox()
-//									.getSelectedItem())) {
-//						objetoPista = new ObjetoPneus();
-//						posicionaObjetoPista = true;
-//					} else if (FormularioObjetos.OBJETO_CIRCULO
-//							.equals(formularioObjetos.getTipoComboBox()
-//									.getSelectedItem())) {
-//						objetoPista = new ObjetoCirculo();
-//						posicionaObjetoPista = true;
-//					} else if (FormularioObjetos.OBJETO_GUAD_RAILS
-//							.equals(formularioObjetos.getTipoComboBox()
-//									.getSelectedItem())) {
-//						objetoPista = new ObjetoGuadRails();
-//						posicionaObjetoPista = true;
+					// if
+					// (FormularioObjetos.OBJETO_LIVRE.equals(formularioObjetos
+					// .getTipoComboBox().getSelectedItem())) {
+					// objetoPista = new ObjetoLivre();
+					// desenhandoObjetoLivre = true;
+					// } else if (FormularioObjetos.OBJETO_CONSTRUCAO
+					// .equals(formularioObjetos.getTipoComboBox()
+					// .getSelectedItem())) {
+					// objetoPista = new ObjetoConstrucao();
+					// posicionaObjetoPista = true;
+					// } else if (FormularioObjetos.OBJETO_ARQUIBANCADA
+					// .equals(formularioObjetos.getTipoComboBox()
+					// .getSelectedItem())) {
+					// objetoPista = new ObjetoArquibancada();
+					// posicionaObjetoPista = true;
+					// } else if (FormularioObjetos.OBJETO_PNEUS
+					// .equals(formularioObjetos.getTipoComboBox()
+					// .getSelectedItem())) {
+					// objetoPista = new ObjetoPneus();
+					// posicionaObjetoPista = true;
+					// } else if (FormularioObjetos.OBJETO_CIRCULO
+					// .equals(formularioObjetos.getTipoComboBox()
+					// .getSelectedItem())) {
+					// objetoPista = new ObjetoCirculo();
+					// posicionaObjetoPista = true;
+					// } else if (FormularioObjetos.OBJETO_GUAD_RAILS
+					// .equals(formularioObjetos.getTipoComboBox()
+					// .getSelectedItem())) {
+					// objetoPista = new ObjetoGuadRails();
+					// posicionaObjetoPista = true;
 					if (FormularioObjetos.OBJETO_TRANSPARENCIA
 							.equals(formularioObjetos.getTipoComboBox()
 									.getSelectedItem())) {
@@ -639,7 +640,7 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 	}
 
 	protected void paintComponent(Graphics g) {
-//		/super.paintComponent(g);
+		// /super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
@@ -1648,12 +1649,8 @@ public class MainPanelEditorVetorizado extends MainPanelEditor {
 				objetoPistaNovo.setNome("Objeto "
 						+ circuito.getObjetos().size());
 
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				Logger.logarExept(e);
 			}
 			repaint();
 			return;

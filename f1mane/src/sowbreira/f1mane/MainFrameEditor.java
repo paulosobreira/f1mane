@@ -115,7 +115,7 @@ public class MainFrameEditor extends JFrame {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(bg, 0, 0, null);
+				//g.drawImage(bg, 0, 0, null);
 			}
 		};
 		getContentPane().add(jPanel);
