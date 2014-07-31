@@ -101,6 +101,7 @@ public class MainPanelEditor extends JPanel {
 	private JRadioButton boxRetaButton = new JRadioButton();
 	private JRadioButton boxCurvaAltaButton = new JRadioButton();
 	private JRadioButton paraBoxButton = new JRadioButton();
+	private JRadioButton semSelecaoButton = new JRadioButton();
 
 	private JScrollPane scrollPane;
 
@@ -127,10 +128,7 @@ public class MainPanelEditor extends JPanel {
 	private boolean desenhandoObjetoLivre;
 	private boolean posicionaObjetoPista;
 	private Point ultimoClicado;
-	private JSpinner transparencia = new JSpinner();
 	private FormularioListaObjetos formularioListaObjetos;
-	private BufferedImage drawBuffer;
-	private Thread threadBkgGen;
 	private JCheckBox nosChave;
 	private boolean mostraBG = false;
 
@@ -209,9 +207,6 @@ public class MainPanelEditor extends JPanel {
 				this.multiplicadorLarguraPista);
 		tamanhoPistaText.setText(String.valueOf(multiplicadorPista));
 		larguraPistaText.setText(String.valueOf(multiplicadorLarguraPista));
-		if (circuito.getCorFundo() != null)
-			transparencia.setValue(circuito.getCorFundo().getAlpha());
-
 		List l = circuito.getPistaFull();
 
 		for (Iterator iterator = l.iterator(); iterator.hasNext();) {
@@ -273,6 +268,7 @@ public class MainPanelEditor extends JPanel {
 		buttonGroup.add(boxRetaButton);
 		buttonGroup.add(boxCurvaAltaButton);
 		buttonGroup.add(paraBoxButton);
+		buttonGroup.add(semSelecaoButton);
 
 		JPanel bottonsPanel = new JPanel();
 		bottonsPanel.add(new JLabel() {
@@ -410,9 +406,53 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 
-		buttonsPanel.add(apagaNoListaButton);
+		JButton criarObjeto = new JButton("Criar Objeto");
+		criarObjeto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					FormularioObjetos formularioObjetos = new FormularioObjetos(
+							MainPanelEditor.this);
+					formularioObjetos.mostrarPainelModal();
+					if (FormularioObjetos.OBJETO_ESCAPADA
+							.equals(formularioObjetos.getTipoComboBox()
+									.getSelectedItem())) {
+						objetoPista = new ObjetoEscapada();
+						posicionaObjetoPista = true;
+					} else if (FormularioObjetos.OBJETO_TRANSPARENCIA
+							.equals(formularioObjetos.getTipoComboBox()
+									.getSelectedItem())) {
+						objetoPista = new ObjetoTransparencia();
+						objetoPista.setTransparencia(125);
+						posicionaObjetoPista = true;
+						desenhandoObjetoLivre = true;
+					}
+					formularioObjetos.formularioObjetoPista(objetoPista);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
 
+			}
+		});
+		JButton creditosButton = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("creditos");
+			}
+		};
+		creditosButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					creditos();
+				} catch (Exception e1) {
+					Logger.logarExept(e1);
+				}
+			}
+		});
+
+		buttonsPanel.add(apagaNoListaButton);
 		buttonsPanel.add(desenhaTracadoBot);
+		buttonsPanel.add(creditosButton);
+		buttonsPanel.add(criarObjeto);
 		return buttonsPanel;
 	}
 
@@ -627,9 +667,10 @@ public class MainPanelEditor extends JPanel {
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				if (false) {
+				if (formularioListaObjetos.getList().getSelectedIndex() > 0) {
 					clickEditarObjetos(e);
-				} else {
+				}
+				if (!semSelecaoButton.isSelected()) {
 					No no = new No();
 					no.setTipo(getTipoNo());
 					no.setPoint(e.getPoint());
@@ -688,6 +729,11 @@ public class MainPanelEditor extends JPanel {
 					repaint();
 					pontosEscape = false;
 					return;
+				} else {
+					objetoPista = (ObjetoPista) formularioListaObjetos
+							.getDefaultListModelOP().get(
+									formularioListaObjetos.getList()
+											.getSelectedIndex());
 				}
 
 				Logger.logar("Pontos Editor :" + e.getX() + " - " + e.getY());
@@ -1120,13 +1166,17 @@ public class MainPanelEditor extends JPanel {
 					retC2.getCenterY());
 			g2d.setColor(new Color(255, 0, 255, 150));
 			g2d.fill(generalPath.createTransformedShape(affineTransformRect));
-			// g2d.fillOval((int) rectangle.getCenterX(), (int) rectangle
-			// .getCenterY(), 10, 10);
-			g2d.setColor(Color.ORANGE);
 
+			if (circuito.getLadoBox() == 1)
+				g2d.setColor(Color.BLUE);
+			else
+				g2d.setColor(PainelCircuito.transpMenus);
 			g2d.fillOval((int) cimaBoxC1.x, (int) cimaBoxC1.y, 10, 10);
-			g2d.setColor(Color.RED);
 
+			if (circuito.getLadoBox() == 2)
+				g2d.setColor(Color.BLUE);
+			else
+				g2d.setColor(PainelCircuito.transpMenus);
 			g2d.fillOval((int) baixoBoxC1.x, (int) baixoBoxC1.y, 10, 10);
 
 		}
@@ -1732,7 +1782,10 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new GridLayout(3, 4));
+		buttonsPanel.setLayout(new GridLayout(3, 1));
+
+		JPanel buttonsPanel1 = new JPanel();
+		buttonsPanel1.setLayout(new GridLayout(1, 5));
 
 		JButton testaPistaButton = new JButton() {
 			@Override
@@ -1750,7 +1803,7 @@ public class MainPanelEditor extends JPanel {
 				}
 			}
 		});
-		buttonsPanel.add(testaPistaButton);
+		buttonsPanel1.add(testaPistaButton);
 
 		JButton testaBoxButton = new JButton("Ligar/Desligar Box") {
 			@Override
@@ -1763,7 +1816,7 @@ public class MainPanelEditor extends JPanel {
 				testePista.testarBox();
 			}
 		});
-		buttonsPanel.add(testaBoxButton);
+		buttonsPanel1.add(testaBoxButton);
 
 		JButton left = new JButton() {
 			@Override
@@ -1776,7 +1829,7 @@ public class MainPanelEditor extends JPanel {
 				pos = 1;
 			}
 		});
-		buttonsPanel.add(left);
+		buttonsPanel1.add(left);
 
 		JButton center = new JButton() {
 			@Override
@@ -1790,7 +1843,7 @@ public class MainPanelEditor extends JPanel {
 				pos = 0;
 			}
 		});
-		buttonsPanel.add(center);
+		buttonsPanel1.add(center);
 
 		JButton right = new JButton() {
 			@Override
@@ -1803,7 +1856,10 @@ public class MainPanelEditor extends JPanel {
 				pos = 2;
 			}
 		});
-		buttonsPanel.add(right);
+		buttonsPanel1.add(right);
+
+		JPanel buttonsPanel2 = new JPanel();
+		buttonsPanel2.setLayout(new GridLayout(1, 4));
 
 		ladoBoxCombo = new JComboBox();
 		ladoBoxCombo.addItem(LADO_COMBO_1);
@@ -1811,7 +1867,7 @@ public class MainPanelEditor extends JPanel {
 		if (circuito != null && circuito.getLadoBox() == 2) {
 			ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
 		}
-		buttonsPanel.add(ladoBoxCombo);
+		buttonsPanel2.add(ladoBoxCombo);
 
 		tamanhoPistaText = new JTextField();
 		tamanhoPistaText.setText("" + multiplicadorPista);
@@ -1823,7 +1879,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		tamanhoPistaPanel.add(tamanhoPistaText);
-		buttonsPanel.add(tamanhoPistaPanel);
+		buttonsPanel2.add(tamanhoPistaPanel);
 
 		larguraPistaText = new JTextField();
 		larguraPistaText.setText("" + multiplicadorLarguraPista);
@@ -1836,7 +1892,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		larguraPistaPanel.add(larguraPistaText);
-		buttonsPanel.add(larguraPistaPanel);
+		buttonsPanel2.add(larguraPistaPanel);
 
 		JButton corFundo = new JButton("Cor de Fundo");
 		corFundo.addActionListener(new ActionListener() {
@@ -1853,38 +1909,16 @@ public class MainPanelEditor extends JPanel {
 
 			}
 		});
-		buttonsPanel.add(corFundo);
-		transparencia.setValue(255);
-		JPanel panelTransparencia = new JPanel(new GridLayout(1, 2));
-		panelTransparencia.add(new JLabel("Transparencia Fundo"));
-		panelTransparencia.add(transparencia);
-		buttonsPanel.add(panelTransparencia);
-		transparencia.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				int transp = (Integer) transparencia.getValue();
-				if (transp > 255) {
-					transp = 255;
-				}
-				if (transp < 0) {
-					transp = 0;
-				}
-				if (circuito.getCorFundo() == null) {
-					return;
-				}
-				Color color = new Color(circuito.getCorFundo().getRed(),
-						circuito.getCorFundo().getGreen(), circuito
-								.getCorFundo().getBlue(), transp);
-				circuito.setCorFundo(color);
-				repaint();
-			}
-		});
-
+		buttonsPanel2.add(corFundo);
 		JPanel panelNoite = new JPanel(new GridLayout(1, 2));
 		panelNoite.add(new JLabel("Noite"));
+
+		JPanel buttonsPanel3 = new JPanel();
+		buttonsPanel3.setLayout(new GridLayout(1, 4));
+
 		final JCheckBox noite = new JCheckBox();
 		panelNoite.add(noite);
-		buttonsPanel.add(panelNoite);
+		buttonsPanel3.add(panelNoite);
 		noite.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -1900,7 +1934,7 @@ public class MainPanelEditor extends JPanel {
 			usaBkg.setSelected(true);
 		}
 		panelUsaBkg.add(usaBkg);
-		buttonsPanel.add(panelUsaBkg);
+		buttonsPanel3.add(panelUsaBkg);
 		usaBkg.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -1909,63 +1943,43 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 
-		JButton criarObjeto = new JButton("Criar Objeto");
-		criarObjeto.addActionListener(new ActionListener() {
+		JPanel nosChavePanel = new JPanel(new GridLayout(1, 2));
+		nosChavePanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("desenhaNosChave");
+			}
+		});
+		nosChave = new JCheckBox();
+		nosChavePanel.add(nosChave);
+		buttonsPanel3.add(nosChavePanel);
+
+		JButton reprocessar = new JButton("reprocessarPista") {
+			@Override
+			public String getText() {
+				return Lang.msg("reprocessarPista");
+			}
+		};
+		reprocessar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					FormularioObjetos formularioObjetos = new FormularioObjetos(
-							MainPanelEditor.this);
-					formularioObjetos.mostrarPainelModal();
-					if (FormularioObjetos.OBJETO_ESCAPADA
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoEscapada();
-						posicionaObjetoPista = true;
-					} else if (FormularioObjetos.OBJETO_TRANSPARENCIA
-							.equals(formularioObjetos.getTipoComboBox()
-									.getSelectedItem())) {
-						objetoPista = new ObjetoTransparencia();
-						objetoPista.setTransparencia(125);
-						posicionaObjetoPista = true;
-						desenhandoObjetoLivre = true;
-					}
-					formularioObjetos.formularioObjetoPista(objetoPista);
+					multiplicadorPista = Double.parseDouble(tamanhoPistaText
+							.getText());
+					multiplicadorLarguraPista = Double
+							.parseDouble(larguraPistaText.getText());
+					vetorizarCircuito();
+					desSelecionaNosPista();
+					repaint();
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
 
 			}
 		});
-		buttonsPanel.add(criarObjeto);
-
-		JPanel nosChavePanel = new JPanel(new GridLayout(1, 2));
-		nosChavePanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("desnhaNosChave");
-			}
-		});
-		nosChave = new JCheckBox();
-		nosChavePanel.add(nosChave);
-		buttonsPanel.add(nosChavePanel);
-
-		JButton creditosButton = new JButton() {
-			@Override
-			public String getText() {
-				return Lang.msg("creditos");
-			}
-		};
-		creditosButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					creditos();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-		buttonsPanel.add(creditosButton);
-
+		buttonsPanel3.add(reprocessar);
+		buttonsPanel.add(buttonsPanel1);
+		buttonsPanel.add(buttonsPanel2);
+		buttonsPanel.add(buttonsPanel3);
 		return buttonsPanel;
 	}
 
@@ -2038,7 +2052,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void menosAngulo() {
-		if (objetoPista != null) {
+		if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
 			objetoPista.setAngulo(objetoPista.getAngulo() - 1);
 			repaint();
 			return;
@@ -2046,7 +2060,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void maisAngulo() {
-		if (objetoPista != null) {
+		if (objetoPista != null && objetoPista.getPosicaoQuina() != null) {
 			objetoPista.setAngulo(objetoPista.getAngulo() + 1);
 			repaint();
 			return;
@@ -2151,6 +2165,10 @@ public class MainPanelEditor extends JPanel {
 
 	public void setCircuito(Circuito circuito) {
 		this.circuito = circuito;
+	}
+
+	public void desSelecionaNosPista() {
+		semSelecaoButton.setSelected(true);
 	}
 
 }

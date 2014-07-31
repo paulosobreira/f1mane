@@ -2,12 +2,9 @@ package sowbreira.f1mane.editor;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
@@ -31,7 +28,7 @@ public class FormularioObjetos {
 	private JComboBox tipoComboBox = new JComboBox();
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
-	private JPanel panel = new JPanel(new GridLayout(9, 2));
+	private JPanel panel = new JPanel(new GridLayout(8, 2));
 	private MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
 	protected static final String OBJETO_TRANSPARENCIA = "Objeto Transparencia";
@@ -83,27 +80,6 @@ public class FormularioObjetos {
 			}
 		});
 
-		JButton buttonMover = new JButton("NFun");
-		panel.add(buttonMover);
-		buttonMover.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (objetoPista != null) {
-
-				}
-			}
-		});
-
-		JButton buttonAtualiza = new JButton("Atualiza");
-		panel.add(buttonAtualiza);
-		buttonAtualiza.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (objetoPista != null)
-					formularioObjetoPista(objetoPista);
-				FormularioObjetos.this.mainPanelEditor.repaint();
-			}
-		});
 		ChangeListener changeListener = new ChangeListener() {
 
 			@Override
@@ -131,6 +107,9 @@ public class FormularioObjetos {
 	public void mostrarPainelModal() {
 		JOptionPane
 				.showMessageDialog(this.mainPanelEditor.getSrcFrame(), panel);
+		if (objetoPista != null)
+			formularioObjetoPista(objetoPista);
+		FormularioObjetos.this.mainPanelEditor.repaint();
 	}
 
 	public void setCor(Color color, JLabel label) {
