@@ -1562,7 +1562,7 @@ public class PainelCircuito {
 		int altura = (int) (Carro.LARGURA * 5 * zoom);
 		int mAltura = (int) (altura / 2 * zoom);
 		List<Point> escapeList = circuito.getEscapeList();
-		
+
 		if (escapeList == null) {
 			escapeList = new ArrayList<Point>();
 		}
@@ -1578,7 +1578,6 @@ public class PainelCircuito {
 			}
 		}
 
-		
 		if (escapeList != null) {
 			for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
 				Point point = (Point) iterator.next();
@@ -3323,18 +3322,17 @@ public class PainelCircuito {
 								.getNosDoBox()) {
 					continue;
 				}
-				if (objetoPista.getAltura() != 0
-						&& objetoPista.getLargura() != 0) {
-					int indexNoAtual = noAtual.getIndex();
-					if (objetoPista.getAltura() > indexNoAtual
-							|| objetoPista.getLargura() < indexNoAtual) {
-						continue;
-					}
-				}
 				ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+				Rectangle obterArea = objetoTransparencia.obterArea();
+				if (!limitesViewPort
+						.contains(
+								((objetoTransparencia.getPosicaoQuina().x - descontoCentraliza.x) * zoom),
+								((objetoTransparencia.getPosicaoQuina().y - descontoCentraliza.y) * zoom))) {
+					continue;
+				}
 				Graphics2D gImage = rotateBuffer.createGraphics();
 				objetoTransparencia.desenhaCarro(gImage, zoom, carX, carY);
-				if (objetoTransparencia.obterArea().contains(p)) {
+				if (obterArea.contains(p)) {
 					piloto.setNaoDesenhaEfeitos(piloto.getNaoDesenhaEfeitos() + 1);
 					if (piloto.getNaoDesenhaEfeitos() > 10) {
 						naoDesenhaEfeitos = true;
@@ -4951,13 +4949,11 @@ public class PainelCircuito {
 					if (objetoPista.isPintaEmcima()) {
 						continue;
 					}
-					if (objetoPista.getAltura() != 0
-							&& objetoPista.getLargura() != 0) {
-						int indexNoAtual = noAtual.getIndex();
-						if (objetoPista.getAltura() > indexNoAtual
-								|| objetoPista.getLargura() < indexNoAtual) {
-							continue;
-						}
+					if (!limitesViewPort
+							.contains(
+									((objetoPista.getPosicaoQuina().x - descontoCentraliza.x) * zoom),
+									((objetoPista.getPosicaoQuina().y - descontoCentraliza.y) * zoom))) {
+						continue;
 					}
 					ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
 					Graphics2D gImage = rotateBuffer.createGraphics();

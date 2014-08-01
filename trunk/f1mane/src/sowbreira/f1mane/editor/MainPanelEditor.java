@@ -183,7 +183,8 @@ public class MainPanelEditor extends JPanel {
 			List<Point> escapeList = circuito.getEscapeList();
 			for (Point point : escapeList) {
 				ObjetoEscapada objetoPista = new ObjetoEscapada();
-				objetoPista.setPosicaoQuina(point);
+				objetoPista.setPosicaoQuina(new Point(point.x - 155,
+						point.y - 155));
 				circuito.getObjetos().add(objetoPista);
 				formularioListaObjetos.listarObjetos();
 				objetoPista.setNome("Objeto " + circuito.getObjetos().size());
@@ -211,14 +212,20 @@ public class MainPanelEditor extends JPanel {
 		if (multiplicadorPista == 0 && circuito != null) {
 			multiplicadorPista = circuito.getMultiplciador();
 		}
-		if (multiplicadorPista == 0) {
-			multiplicadorPista = 11;
+		if (multiplicadorPista < 5 || multiplicadorPista > 15) {
+			JOptionPane.showMessageDialog(this,
+					Lang.msg("multiplicadorPistaEntre5e15"), Lang.msg("039"),
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
 		}
 		if (multiplicadorLarguraPista == 0 && circuito != null) {
 			multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
 		}
-		if (multiplicadorLarguraPista == 0) {
-			multiplicadorLarguraPista = 1.1;
+		if (multiplicadorLarguraPista < 0.7 || multiplicadorLarguraPista > 2) {
+			JOptionPane.showMessageDialog(this,
+					Lang.msg("multiplicadorLarguraPista07e2"), Lang.msg("039"),
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
 		}
 		circuito.setUsaBkg(true);
 		circuito.vetorizarPista(this.multiplicadorPista,
@@ -901,9 +908,9 @@ public class MainPanelEditor extends JPanel {
 		g2d.setColor(PainelCircuito.lightWhiteRain);
 		g2d.fillRoundRect(x - 15, y - 15, 200, 180, 15, 15);
 		g2d.setColor(Color.black);
-		g2d.drawString("Shift ativado "
-				+ (srcFrame.isShiftApertado() ? "SIM" : "NÃO"), x, y);
-		y += 20;
+//		g2d.drawString("Shift ativado "
+//				+ (srcFrame.isShiftApertado() ? "SIM" : "NÃO"), x, y);
+//		y += 20;
 		g2d.drawString("Control ativado "
 				+ (srcFrame.isControlApertado() ? "SIM" : "NÃO"), x, y);
 		String esquera = "Move tela Esquerda";
@@ -1893,7 +1900,7 @@ public class MainPanelEditor extends JPanel {
 		tamanhoPistaPanel.add(new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("tamanhoPista");
+				return Lang.msg("consumoPista");
 			}
 		});
 		tamanhoPistaPanel.add(tamanhoPistaText);
