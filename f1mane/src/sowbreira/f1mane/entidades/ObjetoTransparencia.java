@@ -80,11 +80,6 @@ public class ObjetoTransparencia extends ObjetoPista {
 	}
 
 	@Override
-	public boolean isPintaEmcima() {
-		return true;
-	}
-
-	@Override
 	public Point getPosicaoQuina() {
 		if (super.getPosicaoQuina() == null) {
 			Rectangle obterArea = obterArea();

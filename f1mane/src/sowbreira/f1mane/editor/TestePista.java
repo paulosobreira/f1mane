@@ -79,10 +79,10 @@ public class TestePista {
 
 									} else if (No.CURVA_ALTA.equals(noBox
 											.getTipo())) {
-										contBox += ((Math.random() > .5 ? 3 : 4) * multi);
+										contBox += ((Math.random() > .5 ? 2 : 3) * multi);
 
 									} else {
-										contBox += (1 * multi);
+										contBox += ((Math.random() > .5 ? 1 : 2) * multi);
 									}
 
 									Thread.sleep(SEEP_TIME);
@@ -101,9 +101,9 @@ public class TestePista {
 								cont += ((Math.random() > .5 ? 3 : 4) * multi);
 
 							} else if (No.CURVA_ALTA.equals(no.getTipo())) {
-								cont += ((Math.random() > .5 ? 3 : 4) * multi);
+								cont += ((Math.random() > .5 ? 2 : 3) * multi);
 							} else if (No.CURVA_BAIXA.equals(no.getTipo())) {
-								cont += (1 * multi);
+								cont += ((Math.random() > .5 ? 1 : 2) * multi);
 							}
 
 							Thread.sleep(SEEP_TIME);

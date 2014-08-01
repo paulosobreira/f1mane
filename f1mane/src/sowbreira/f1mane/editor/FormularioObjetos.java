@@ -28,7 +28,7 @@ public class FormularioObjetos {
 	private JComboBox tipoComboBox = new JComboBox();
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
-	private JPanel panel = new JPanel(new GridLayout(8, 2));
+	private JPanel panel = new JPanel(new GridLayout(2, 2));
 	private MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
 	protected static final String OBJETO_TRANSPARENCIA = "Objeto Transparencia";
@@ -41,44 +41,44 @@ public class FormularioObjetos {
 		panel.add(new JLabel("Tipo"));
 		panel.add(tipoComboBox);
 
-		panel.add(new JLabel("Altura/De No"));
-		panel.add(altura);
-
-		panel.add(new JLabel("Largura/Ate No"));
-		panel.add(largura);
+//		panel.add(new JLabel("Altura"));
+//		panel.add(altura);
+//
+//		panel.add(new JLabel("Largura"));
+//		panel.add(largura);
 
 		panel.add(new JLabel("Angulo"));
 		panel.add(angulo);
 
-		panel.add(new JLabel("Transparencia"));
-		panel.add(transparencia);
+//		panel.add(new JLabel("Transparencia"));
+//		panel.add(transparencia);
+//
+//		panel.add(new JLabel("Desenha Frente/Nos Box"));
+//		panel.add(frente);
 
-		panel.add(new JLabel("Desenha Frente/Nos Box"));
-		panel.add(frente);
-
-		panel.add(new JLabel("Cor Primaria"));
-		panel.add(labelCor1);
-		labelCor1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(panel,
-						Lang.msg("escolhaCor"), Color.WHITE);
-				setCor(color, labelCor1);
-			}
-		});
-
-		panel.add(new JLabel("Cor Secundaria"));
-		panel.add(labelCor2);
-
-		labelCor2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				Color color = JColorChooser.showDialog(panel,
-						Lang.msg("escolhaCor"), Color.WHITE);
-				setCor(color, labelCor2);
-			}
-		});
+//		panel.add(new JLabel("Cor Primaria"));
+//		panel.add(labelCor1);
+//		labelCor1.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				Color color = JColorChooser.showDialog(panel,
+//						Lang.msg("escolhaCor"), Color.WHITE);
+//				setCor(color, labelCor1);
+//			}
+//		});
+//
+//		panel.add(new JLabel("Cor Secundaria"));
+//		panel.add(labelCor2);
+//
+//		labelCor2.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				super.mouseClicked(e);
+//				Color color = JColorChooser.showDialog(panel,
+//						Lang.msg("escolhaCor"), Color.WHITE);
+//				setCor(color, labelCor2);
+//			}
+//		});
 
 		ChangeListener changeListener = new ChangeListener() {
 
