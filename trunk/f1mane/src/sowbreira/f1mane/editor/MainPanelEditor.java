@@ -467,6 +467,9 @@ public class MainPanelEditor extends JPanel {
 		creditosButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					JOptionPane.showMessageDialog(MainPanelEditor.this,
+							Lang.msg("informePontoCreditos"), Lang.msg("089"),
+							JOptionPane.INFORMATION_MESSAGE);
 					creditos();
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
@@ -908,9 +911,9 @@ public class MainPanelEditor extends JPanel {
 		g2d.setColor(PainelCircuito.lightWhiteRain);
 		g2d.fillRoundRect(x - 15, y - 15, 200, 180, 15, 15);
 		g2d.setColor(Color.black);
-//		g2d.drawString("Shift ativado "
-//				+ (srcFrame.isShiftApertado() ? "SIM" : "NÃO"), x, y);
-//		y += 20;
+		// g2d.drawString("Shift ativado "
+		// + (srcFrame.isShiftApertado() ? "SIM" : "NÃO"), x, y);
+		// y += 20;
 		g2d.drawString("Control ativado "
 				+ (srcFrame.isControlApertado() ? "SIM" : "NÃO"), x, y);
 		String esquera = "Move tela Esquerda";
