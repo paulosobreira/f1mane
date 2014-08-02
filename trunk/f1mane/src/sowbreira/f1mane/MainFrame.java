@@ -1,6 +1,5 @@
 package sowbreira.f1mane;
 
-import java.awt.Container;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +19,6 @@ import java.util.Set;
 import javax.swing.ButtonGroup;
 import javax.swing.JApplet;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -35,7 +33,6 @@ import javax.swing.WindowConstants;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.editor.MainPanelEditor;
-import sowbreira.f1mane.editor.MainPanelEditorVetorizado;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.paddock.applet.AppletPaddock;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
@@ -58,11 +55,9 @@ public class MainFrame extends JFrame {
 	private String codeBase;
 	private JMenuBar bar;
 	private JMenu menuJogo;
-	private JMenu menuEditor;
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
 	private JCheckBoxMenuItem som;
-	protected MainPanelEditorVetorizado editorInflado;
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
 	private JMenuItem narracao;
@@ -97,13 +92,6 @@ public class MainFrame extends JFrame {
 		};
 		bar.add(menuInfo);
 
-		menuEditor = new JMenu() {
-			public String getText() {
-				return Lang.msg("090");
-			}
-
-		};
-		bar.add(menuEditor);
 		menuIdiomas = new JMenu() {
 			public String getText() {
 				return Lang.msg("219");
@@ -112,7 +100,6 @@ public class MainFrame extends JFrame {
 		};
 		bar.add(menuIdiomas);
 		gerarMenusSingle(menuJogo);
-		gerarMenusEditor(menuEditor);
 		gerarMenusInfo(menuInfo);
 		gerarMenusSobre(menuInfo);
 		gerarMenusidiomas(menuIdiomas);
@@ -123,7 +110,6 @@ public class MainFrame extends JFrame {
 			iniciar();
 			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		} else {
-			menuEditor.setEnabled(false);
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		}
 		removerKeyListeners();
@@ -403,46 +389,6 @@ public class MainFrame extends JFrame {
 						editor.baixo();
 					}
 				}
-				if (editorInflado != null) {
-					if (e.isControlDown() && keyCoode == KeyEvent.VK_LEFT) {
-						editorInflado.esquerdaObj();
-					} else if (e.isControlDown()
-							&& keyCoode == KeyEvent.VK_RIGHT) {
-						editorInflado.direitaObj();
-					} else if (e.isControlDown() && keyCoode == KeyEvent.VK_UP) {
-						editorInflado.cimaObj();
-					} else if (e.isControlDown()
-							&& keyCoode == KeyEvent.VK_DOWN) {
-						editorInflado.baixoObj();
-					} else if (keyCoode == KeyEvent.VK_LEFT) {
-						editorInflado.esquerda();
-					} else if (keyCoode == KeyEvent.VK_RIGHT) {
-						editorInflado.direita();
-					} else if (keyCoode == KeyEvent.VK_UP) {
-						editorInflado.cima();
-					} else if (keyCoode == KeyEvent.VK_DOWN) {
-						editorInflado.baixo();
-					} else if (e.isShiftDown()
-							&& keyCoode == KeyEvent.VK_PAGE_UP) {
-						editorInflado.maisLargura();
-					} else if (e.isShiftDown()
-							&& keyCoode == KeyEvent.VK_PAGE_DOWN) {
-						editorInflado.menosLargura();
-					} else if (e.isControlDown()
-							&& keyCoode == KeyEvent.VK_PAGE_UP) {
-						editorInflado.maisAltura();
-					} else if (e.isControlDown()
-							&& keyCoode == KeyEvent.VK_PAGE_DOWN) {
-						editorInflado.menosAltura();
-					} else if (e.isControlDown() && keyCoode == KeyEvent.VK_C) {
-						editorInflado.copiarObjeto();
-					} else if (keyCoode == KeyEvent.VK_PAGE_UP) {
-						editorInflado.menosAngulo();
-					} else if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
-						editorInflado.maisAngulo();
-					}
-
-				}
 			}
 		});
 	}
@@ -465,73 +411,6 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private void gerarMenusEditor(Container menu4) {
-		JMenuItem abrirPista = new JMenuItem("Editar Arquivo Circuito") {
-			public String getText() {
-				return Lang.msg("097");
-			}
-
-		};
-		abrirPista.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (controleJogo != null) {
-						controleJogo.matarTodasThreads();
-					}
-					editor = new MainPanelEditorVetorizado(menuFrame);
-					ativarKeysEditor();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-		menu4.add(abrirPista);
-
-		JMenuItem salvarPista = new JMenuItem("Salvar Pista F8") {
-			public String getText() {
-				return Lang.msg("108");
-			}
-
-		};
-		salvarPista.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (editor == null) {
-						editorInflado.salvarPista();
-					} else {
-						editor.salvarPista();
-					}
-
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-			}
-		});
-		menu4.add(salvarPista);
-
-		JMenuItem vetorizarPista = new JMenuItem("vetorizarPista") {
-			public String getText() {
-				return Lang.msg("vetorizarPista");
-			}
-
-		};
-		vetorizarPista.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					if (controleJogo != null) {
-						controleJogo.matarTodasThreads();
-					}
-					editorInflado = new MainPanelEditorVetorizado(menuFrame);
-					ativarKeysEditor();
-				} catch (Exception e1) {
-					Logger.logarExept(e1);
-				}
-
-			}
-		});
-		menu4.add(vetorizarPista);
-	}
 
 	public static void main(String[] args) throws IOException {
 		// Logger.ativo = true;
@@ -606,7 +485,6 @@ public class MainFrame extends JFrame {
 		if (pausa != null) {
 			pausa.setEnabled(false);
 		}
-		menuEditor.setEnabled(false);
 	}
 
 	public void setControleJogo(InterfaceJogo controleJogo) {

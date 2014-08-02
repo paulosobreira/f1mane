@@ -130,7 +130,7 @@ public class MainPanelEditor extends JPanel {
 	private Point ultimoClicado;
 	private FormularioListaObjetos formularioListaObjetos;
 	private JCheckBox nosChave;
-	private boolean mostraBG = false;
+	private boolean mostraBG = true;
 
 	public MainPanelEditor() {
 	}
@@ -174,7 +174,10 @@ public class MainPanelEditor extends JPanel {
 		migrarEscapadas();
 		frame.pack();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		centralizarPonto(((No) circuito.getPistaFull().get(0)).getPoint());
+		if (circuito.getPistaFull() != null
+				&& !circuito.getPistaFull().isEmpty()) {
+			centralizarPonto(((No) circuito.getPistaFull().get(0)).getPoint());
+		}
 	}
 
 	private void migrarEscapadas() {
@@ -213,7 +216,7 @@ public class MainPanelEditor extends JPanel {
 			multiplicadorPista = circuito.getMultiplciador();
 		}
 		if (multiplicadorPista < 5 || multiplicadorPista > 15) {
-			JOptionPane.showMessageDialog(this,
+			JOptionPane.showMessageDialog(null,
 					Lang.msg("multiplicadorPistaEntre5e15"), Lang.msg("039"),
 					JOptionPane.INFORMATION_MESSAGE);
 			return;
@@ -222,7 +225,7 @@ public class MainPanelEditor extends JPanel {
 			multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
 		}
 		if (multiplicadorLarguraPista < 0.7 || multiplicadorLarguraPista > 2) {
-			JOptionPane.showMessageDialog(this,
+			JOptionPane.showMessageDialog(null,
 					Lang.msg("multiplicadorLarguraPista07e2"), Lang.msg("039"),
 					JOptionPane.INFORMATION_MESSAGE);
 			return;
@@ -294,6 +297,7 @@ public class MainPanelEditor extends JPanel {
 		buttonGroup.add(boxCurvaAltaButton);
 		buttonGroup.add(paraBoxButton);
 		buttonGroup.add(semSelecaoButton);
+		semSelecaoButton.setSelected(true);
 
 		JPanel bottonsPanel = new JPanel();
 		bottonsPanel.add(new JLabel() {
@@ -424,7 +428,25 @@ public class MainPanelEditor extends JPanel {
 		apagaNoListaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					apagarUltimoNoBox();
+					DefaultListModel boxModel = ((DefaultListModel) boxJList
+							.getModel());
+					int selectedIndexBox = boxJList.getSelectedIndex();
+					if (selectedIndexBox >= 0
+							&& selectedIndexBox < boxModel.getSize()) {
+						circuito.getBox()
+								.remove(boxModel.get(selectedIndexBox));
+						boxModel.remove(selectedIndexBox);
+					}
+					DefaultListModel pistaModel = ((DefaultListModel) pistaJList
+							.getModel());
+					int selectedIndexPista = pistaJList.getSelectedIndex();
+					if (selectedIndexPista >= 0
+							&& selectedIndexPista < pistaModel.getSize()) {
+						circuito.getPista().remove(
+								pistaModel.get(selectedIndexPista));
+						pistaModel.remove(selectedIndexPista);
+					}
+					repaint();
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
 				}
@@ -435,6 +457,7 @@ public class MainPanelEditor extends JPanel {
 		criarObjeto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					semSelecaoButton.setSelected(true);
 					FormularioObjetos formularioObjetos = new FormularioObjetos(
 							MainPanelEditor.this);
 					formularioObjetos.mostrarPainelModal();
@@ -695,10 +718,9 @@ public class MainPanelEditor extends JPanel {
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				if (formularioListaObjetos.getList().getSelectedIndex() > 0) {
+				if (semSelecaoButton.isSelected()) {
 					clickEditarObjetos(e);
-				}
-				if (!semSelecaoButton.isSelected()) {
+				} else {
 					No no = new No();
 					no.setTipo(getTipoNo());
 					no.setPoint(e.getPoint());
@@ -758,10 +780,14 @@ public class MainPanelEditor extends JPanel {
 					pontosEscape = false;
 					return;
 				} else {
-					objetoPista = (ObjetoPista) formularioListaObjetos
-							.getDefaultListModelOP().get(
-									formularioListaObjetos.getList()
-											.getSelectedIndex());
+					int selectedIndex = formularioListaObjetos.getList()
+							.getSelectedIndex();
+					if (selectedIndex >= 0
+							&& selectedIndex < formularioListaObjetos
+									.getDefaultListModelOP().size()) {
+						objetoPista = (ObjetoPista) formularioListaObjetos
+								.getDefaultListModelOP().get(selectedIndex);
+					}
 				}
 
 				Logger.logar("Pontos Editor :" + e.getX() + " - " + e.getY());
@@ -1086,7 +1112,7 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void desenhaBoxes(Graphics2D g2d) {
-		if (circuito.getBoxFull().isEmpty()) {
+		if (circuito.getBoxFull() == null || circuito.getBoxFull().isEmpty()) {
 			return;
 		}
 		int paradas = circuito.getParadaBoxIndex();
@@ -1212,13 +1238,18 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void desenhaGrid(Graphics2D g2d) {
-		if (circuito.getPistaFull().isEmpty()) {
+		if (circuito.getPistaFull() == null
+				|| circuito.getPistaFull().isEmpty()) {
 			return;
 		}
 		for (int i = 0; i < 24; i++) {
 			int iP = 50 + Util.inte(((Carro.LARGURA) * 0.8) * i);
-			No n1 = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
+			int index1 = circuito.getPistaFull().size() - iP
+					- Carro.MEIA_LARGURA;
+			if (index1 < 0) {
+				return;
+			}
+			No n1 = (No) circuito.getPistaFull().get(index1);
 			No nM = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP);
 			No n2 = (No) circuito.getPistaFull().get(
@@ -1317,7 +1348,8 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void desenhaLargada(Graphics2D g2d) {
-		if (circuito.getPistaFull().isEmpty()) {
+		if (circuito.getPistaFull() == null
+				|| circuito.getPistaFull().isEmpty()) {
 			return;
 		}
 		No n1 = (No) circuito.getPistaFull().get(0);
@@ -1343,10 +1375,11 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	private void desenhaEntradaParadaSaidaBox(Graphics2D g2d) {
-		if (circuito.getPistaFull().isEmpty()) {
+		if (circuito.getPistaFull() == null
+				|| circuito.getPistaFull().isEmpty()) {
 			return;
 		}
-		if (circuito.getBoxFull().isEmpty()) {
+		if (circuito.getBoxFull() == null || circuito.getBoxFull().isEmpty()) {
 			return;
 		}
 		Point e = ((No) circuito.getPistaFull().get(
@@ -1695,26 +1728,6 @@ public class MainPanelEditor extends JPanel {
 		circuito.getPista().remove(ultimoNo);
 		((DefaultListModel) boxJList.getModel()).removeElement(ultimoNo);
 		((DefaultListModel) pistaJList.getModel()).removeElement(ultimoNo);
-		repaint();
-	}
-
-	public void apagarUltimoNoPista() {
-		if (circuito.getPista().size() == 0) {
-			return;
-		}
-
-		((DefaultListModel) pistaJList.getModel()).removeElement(circuito
-				.getPista().remove(circuito.getPista().size() - 1));
-		repaint();
-	}
-
-	public void apagarUltimoNoBox() {
-		if (circuito.getBox().size() == 0) {
-			return;
-		}
-
-		((DefaultListModel) boxJList.getModel()).removeElement(circuito
-				.getBox().remove(circuito.getBox().size() - 1));
 		repaint();
 	}
 

@@ -75,14 +75,14 @@ public class TestePista {
 									if (No.RETA.equals(noBox.getTipo())
 											|| No.LARGADA.equals(noBox
 													.getTipo())) {
-										contBox += ((Math.random() > .5 ? 3 : 4) * multi);
+										contBox += ((Math.random() > .7 ? 3 : 4) * multi);
 
 									} else if (No.CURVA_ALTA.equals(noBox
 											.getTipo())) {
-										contBox += ((Math.random() > .5 ? 2 : 3) * multi);
+										contBox += ((Math.random() > .7 ? 2 : 3) * multi);
 
 									} else {
-										contBox += ((Math.random() > .5 ? 1 : 2) * multi);
+										contBox += ((Math.random() > .7 ? 1 : 2) * multi);
 									}
 
 									Thread.sleep(SEEP_TIME);
@@ -98,12 +98,12 @@ public class TestePista {
 							centralizaTestCar();
 							if (No.RETA.equals(no.getTipo())
 									|| No.LARGADA.equals(no.getTipo())) {
-								cont += ((Math.random() > .5 ? 3 : 4) * multi);
+								cont += ((Math.random() > .7 ? 3 : 4) * multi);
 
 							} else if (No.CURVA_ALTA.equals(no.getTipo())) {
-								cont += ((Math.random() > .5 ? 2 : 3) * multi);
+								cont += ((Math.random() > .7 ? 2 : 3) * multi);
 							} else if (No.CURVA_BAIXA.equals(no.getTipo())) {
-								cont += ((Math.random() > .5 ? 1 : 2) * multi);
+								cont += ((Math.random() > .7 ? 1 : 2) * multi);
 							}
 
 							Thread.sleep(SEEP_TIME);
