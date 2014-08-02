@@ -2,7 +2,6 @@ package sowbreira.f1mane;
 
 import java.awt.Container;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -10,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,8 +18,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JApplet;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -35,16 +31,11 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.editor.MainPanelEditor;
-import sowbreira.f1mane.editor.MainPanelEditorVetorizado;
-import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.paddock.applet.AppletPaddock;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import sowbreira.f1mane.visao.ControleSom;
-import sowbreira.f1mane.visao.PainelMenuLocal;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
@@ -115,7 +106,7 @@ public class MainFrameEditor extends JFrame {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				//g.drawImage(bg, 0, 0, null);
+				g.drawImage(bg, 0, 0, null);
 			}
 		};
 		getContentPane().add(jPanel);
@@ -412,7 +403,7 @@ public class MainFrameEditor extends JFrame {
 
 		JMenuItem vetorizarPista = new JMenuItem("vetorizarPista") {
 			public String getText() {
-				return Lang.msg("vetorizarPista");
+				return Lang.msg("reprocessarPista");
 			}
 
 		};
