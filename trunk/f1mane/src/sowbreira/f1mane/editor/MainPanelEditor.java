@@ -210,6 +210,25 @@ public class MainPanelEditor extends JPanel {
 		zebra = null;
 		larguraPistaPixeis = 0;
 		testePista.pararTeste();
+
+		DefaultListModel defaultListModel = (DefaultListModel) pistaJList
+				.getModel();
+		No noAnt = null;
+		boolean noCurvaAltaAntesNoCurvaBaixa = false;
+		for (int i = 0; i < defaultListModel.size(); i++) {
+			No no = (No) defaultListModel.get(i);
+			if (noAnt != null && noAnt.verificaRetaOuLargada()
+					&& no.verificaCruvaBaixa()) {
+				centralizarPonto(no.getPoint());
+				JOptionPane.showMessageDialog(null, Lang
+						.msg("noCurvaAltaAntesNoCurvaBaixa", new String[] { ""
+								+ i }), Lang.msg("039"),
+						JOptionPane.INFORMATION_MESSAGE);
+				noCurvaAltaAntesNoCurvaBaixa = true;
+			}
+			noAnt = no;
+		}
+
 		if (ladoBoxCombo.getSelectedItem().equals(LADO_COMBO_1)) {
 			circuito.setLadoBox(1);
 		} else {
@@ -253,12 +272,14 @@ public class MainPanelEditor extends JPanel {
 		mx += 300;
 		my += 300;
 		No n1 = (No) l.get(0);
-		centralizarPonto(n1.getPoint());
+		if (!noCurvaAltaAntesNoCurvaBaixa)
+			centralizarPonto(n1.getPoint());
 	}
 
 	private void atualizaListas() {
 		for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
-			((DefaultListModel) pistaJList.getModel()).addElement(iter.next());
+			No no = (No) iter.next();
+			((DefaultListModel) pistaJList.getModel()).addElement(no);
 		}
 
 		for (Iterator iter = circuito.getBox().iterator(); iter.hasNext();) {
