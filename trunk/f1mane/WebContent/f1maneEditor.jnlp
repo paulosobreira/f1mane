@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="." href="f1maneLocal.jnlp">
+	codebase="." href="f1maneEditor.jnlp">
 	<information>
 		<title>F1Mane</title>
 		<vendor>Paulo Sobreira</vendor>
 		<homepage href="http://sowbreira.appspot.com/" />
 		<icon href="icon.png"/>  
 		<description>
-			F1-MANE (MANager & Engineer) 
+			F1-MANE Editor(MANager & Engineer) 
 		</description>
 	</information>
     <security>
@@ -24,6 +24,6 @@
 
 	  
 	<application-desc
-		main-class="sowbreira.f1mane.MainFrame" >
+		main-class="sowbreira.f1mane.MainFrameEditor" >
 	</application-desc> 	  
 </jnlp>
