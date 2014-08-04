@@ -1860,7 +1860,12 @@ public class MainPanelEditor extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					vetorizarCircuito();
-					testePista.iniciarTeste(multiplicadorPista);
+					if (testePista.isAlive()) {
+						testePista.pararTeste();
+					} else {
+						testePista.iniciarTeste(multiplicadorPista);
+					}
+
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
 				}

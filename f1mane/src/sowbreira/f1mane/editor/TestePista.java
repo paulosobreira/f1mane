@@ -31,6 +31,10 @@ public class TestePista {
 	private MainPanelEditor editor;
 	private Thread testTh;
 
+	public boolean isAlive() {
+		return alive;
+	}
+
 	public TestePista(MainPanelEditor editor, Circuito circuito) {
 		this.circuito = circuito;
 		this.editor = editor;
