@@ -184,6 +184,9 @@ public class MainPanelEditor extends JPanel {
 		if (circuito.getEscapeList() != null
 				&& !circuito.getEscapeList().isEmpty()) {
 			List<Point> escapeList = circuito.getEscapeList();
+			if (circuito.getObjetos() == null) {
+				circuito.setObjetos(new ArrayList<ObjetoPista>());
+			}
 			for (Point point : escapeList) {
 				ObjetoEscapada objetoPista = new ObjetoEscapada();
 				objetoPista.setPosicaoQuina(new Point(point.x - 155,
@@ -215,11 +218,10 @@ public class MainPanelEditor extends JPanel {
 		if (multiplicadorPista == 0 && circuito != null) {
 			multiplicadorPista = circuito.getMultiplciador();
 		}
-		if (multiplicadorPista < 5 || multiplicadorPista > 15) {
+		if (multiplicadorPista < 5 || multiplicadorPista > 10) {
 			JOptionPane.showMessageDialog(null,
-					Lang.msg("multiplicadorPistaEntre5e15"), Lang.msg("039"),
+					Lang.msg("multiplicadorPistaEntre5e10"), Lang.msg("039"),
 					JOptionPane.INFORMATION_MESSAGE);
-			return;
 		}
 		if (multiplicadorLarguraPista == 0 && circuito != null) {
 			multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
@@ -228,7 +230,6 @@ public class MainPanelEditor extends JPanel {
 			JOptionPane.showMessageDialog(null,
 					Lang.msg("multiplicadorLarguraPista07e2"), Lang.msg("039"),
 					JOptionPane.INFORMATION_MESSAGE);
-			return;
 		}
 		circuito.setUsaBkg(true);
 		circuito.vetorizarPista(this.multiplicadorPista,
@@ -490,7 +491,7 @@ public class MainPanelEditor extends JPanel {
 		creditosButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					JOptionPane.showMessageDialog(MainPanelEditor.this,
+					JOptionPane.showMessageDialog(null,
 							Lang.msg("informePontoCreditos"), Lang.msg("089"),
 							JOptionPane.INFORMATION_MESSAGE);
 					creditos();
