@@ -21,6 +21,8 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.NoWrapper;
+import sowbreira.f1mane.entidades.ObjetoEscapada;
+import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.GeoUtil;
@@ -354,6 +356,16 @@ public abstract class ControleRecursos {
 			}
 		}
 		List<Point> escapeList = circuito.getEscapeList();
+		if (escapeList == null || escapeList.isEmpty()) {
+			escapeList = new ArrayList<Point>();
+			List<ObjetoPista> objetos = circuito.getObjetos();
+			for (ObjetoPista objetoPista : objetos) {
+				if (objetoPista instanceof ObjetoEscapada) {
+					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+					escapeList.add(objetoEscapada.centro());
+				}
+			}
+		}
 		if (escapeList != null && !escapeList.isEmpty()) {
 			for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
 				Point pointDerrapagem = (Point) iterator.next();
