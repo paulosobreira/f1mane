@@ -1041,11 +1041,16 @@ public class Piloto implements Serializable {
 
 	private int calculoVelocidade(double ganho) {
 		int val = 300;
-		if (getCarro().getPotenciaReal() > 900) {
-			val = 320;
-		}
+		double porcent = getCarro().porcentagemCombustivel() / 100.0;
+		val += (21 - (porcent / 5.0));
+		boolean naReta = false;
+		if (noAtual != null)
+			naReta = noAtual.verificaRetaOuLargada();
 		return Util
-				.inte(((val * ganho * ((acelerando && !freiandoReta) ? 1 : 0.7) / ganhoMax) + ganho));
+				.inte(((val
+						* ganho
+						* ((naReta && !freiandoReta && (acelerando || ativarDRS || ativarKers)) ? 1
+								: 0.7) / ganhoMax) + ganho));
 	}
 
 	public void processaColisao(InterfaceJogo controleJogo) {
@@ -1700,17 +1705,6 @@ public class Piloto implements Serializable {
 
 		if (escapeList == null) {
 			escapeList = new ArrayList<Point>();
-		}
-
-		if (escapeList.isEmpty()) {
-			List<ObjetoPista> objetos = circuito.getObjetos();
-			for (Iterator iterator = objetos.iterator(); iterator.hasNext();) {
-				ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-				if (objetoPista instanceof ObjetoEscapada) {
-					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-					escapeList.add(objetoEscapada.centro());
-				}
-			}
 		}
 
 		if (escapeList == null) {

@@ -359,13 +359,16 @@ public abstract class ControleRecursos {
 		if (escapeList == null || escapeList.isEmpty()) {
 			escapeList = new ArrayList<Point>();
 			List<ObjetoPista> objetos = circuito.getObjetos();
-			for (ObjetoPista objetoPista : objetos) {
-				if (objetoPista instanceof ObjetoEscapada) {
-					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-					escapeList.add(objetoEscapada.centro());
+			if (objetos != null) {
+				for (ObjetoPista objetoPista : objetos) {
+					if (objetoPista instanceof ObjetoEscapada) {
+						ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+						escapeList.add(objetoEscapada.centro());
+					}
 				}
 			}
 		}
+		circuito.setEscapeList(escapeList);
 		if (escapeList != null && !escapeList.isEmpty()) {
 			for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
 				Point pointDerrapagem = (Point) iterator.next();
