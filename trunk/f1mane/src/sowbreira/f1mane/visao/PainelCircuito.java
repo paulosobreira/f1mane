@@ -1569,11 +1569,13 @@ public class PainelCircuito {
 
 		if (escapeList.isEmpty()) {
 			List<ObjetoPista> objetos = circuito.getObjetos();
-			for (Iterator iterator = objetos.iterator(); iterator.hasNext();) {
-				ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-				if (objetoPista instanceof ObjetoEscapada) {
-					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-					escapeList.add(objetoEscapada.centro());
+			if (objetos != null) {
+				for (Iterator iterator = objetos.iterator(); iterator.hasNext();) {
+					ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+					if (objetoPista instanceof ObjetoEscapada) {
+						ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+						escapeList.add(objetoEscapada.centro());
+					}
 				}
 			}
 		}
@@ -4694,6 +4696,7 @@ public class PainelCircuito {
 			newY = carroimg.getHeight() > 36 ? carSelY
 					- (carroimg.getHeight() - 36) : carSelY;
 			if (!carroFrente.getPiloto().isDesqualificado()
+					&& psel.getPtosBox() == 0
 					&& mapaFaiscas.get(carroFrente.getPiloto()) != null) {
 				desenhaFaiscaLateral(g2d,
 						new Point(carSelX + carroimg.getWidth() - 10, newY
