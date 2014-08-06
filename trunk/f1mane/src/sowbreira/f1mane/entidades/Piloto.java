@@ -1074,6 +1074,9 @@ public class Piloto implements Serializable {
 		if (controleJogo.isSafetyCarNaPista()) {
 			return ganho;
 		}
+		/**
+		 * Derrapa mas Fica na pista
+		 */
 		if (No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && agressivo
 				&& (getTracado() == 0)
 				&& (carro.porcentagemDesgastePeneus() < 30 || getStress() > 90)) {
@@ -1089,13 +1092,20 @@ public class Piloto implements Serializable {
 			}
 			return ganho;
 		}
-		double valComp = 50;
+
+		/**
+		 * Escapa la fora
+		 */
+		double valorLimiteStressePararErrarCurva = 50;
 		if (isJogadorHumano()) {
-			valComp = 100 * (1.0 - controleJogo.getNiveljogo());
+			valorLimiteStressePararErrarCurva = 100 * (1.0 - controleJogo
+					.getNiveljogo());
 		} else {
-			valComp = 100 * controleJogo.getNiveljogo();
+			valorLimiteStressePararErrarCurva = 100 * controleJogo
+					.getNiveljogo();
 		}
-		if (getStress() > valComp && !controleJogo.isSafetyCarNaPista()
+		if (getStress() > valorLimiteStressePararErrarCurva
+				&& !controleJogo.isSafetyCarNaPista()
 				&& (!(getTracado() == 4 || getTracado() == 5))
 				&& AGRESSIVO.equals(modoPilotagem)
 				&& !testeHabilidadePilotoCarro(controleJogo)
@@ -1103,6 +1113,9 @@ public class Piloto implements Serializable {
 			controleJogo.travouRodas(this);
 			derrapa(controleJogo);
 		}
+		/**
+		 * Volta a pista apos derrapagem
+		 */
 		if (getTracado() == 4 || getTracado() == 5) {
 			if (!verificaDesconcentrado()) {
 				setCiclosDesconcentrado(Util.intervalo(50, 150));
@@ -1706,12 +1719,9 @@ public class Piloto implements Serializable {
 		List<Point> escapeList = circuito.getEscapeList();
 
 		if (escapeList == null) {
-			escapeList = new ArrayList<Point>();
-		}
-
-		if (escapeList == null) {
 			return false;
 		}
+		
 		Point p = proxPt.getPoint();
 		double distancia = Double.MAX_VALUE;
 		for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
@@ -1725,7 +1735,7 @@ public class Piloto implements Serializable {
 		if (pontoDerrapada == null) {
 			return false;
 		}
-		if (distancia > Carro.LARGURA * 2.5) {
+		if (distancia > Carro.RAIO_DERRAPAGEM) {
 			return false;
 		}
 		int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoDerrapada);

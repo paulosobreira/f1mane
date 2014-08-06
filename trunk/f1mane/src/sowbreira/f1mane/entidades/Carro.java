@@ -42,6 +42,7 @@ public class Carro implements Serializable {
 	public static final int MEIA_ALTURA = 12;
 	public static final int MEIA_ALTURA_CIMA = 43;
 	public static final double FATOR_AREA_CARRO = .7;
+	public static final int RAIO_DERRAPAGEM = 155;
 	private Color cor1;
 	private Color cor2;
 	private String danificado;
