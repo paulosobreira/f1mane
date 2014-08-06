@@ -129,7 +129,6 @@ public class MainPanelEditor extends JPanel {
 	private boolean posicionaObjetoPista;
 	private Point ultimoClicado;
 	private FormularioListaObjetos formularioListaObjetos;
-	private JCheckBox nosChave;
 	private boolean mostraBG = true;
 
 	public MainPanelEditor() {
@@ -946,7 +945,6 @@ public class MainPanelEditor extends JPanel {
 		desenhaPreObjetoTransparencia(g2d);
 		desenhaObjetosCima(g2d);
 		desenhaListaObjetos(g2d);
-		desenhaNosChave(g2d);
 		desenhaPainelClassico(g2d);
 		desenhaInfo(g2d);
 		desenhaControles(g2d);
@@ -1481,6 +1479,18 @@ public class MainPanelEditor extends JPanel {
 			AffineTransformOp op2 = new AffineTransformOp(afZoom,
 					AffineTransformOp.TYPE_BILINEAR);
 			op2.filter(zoomBuffer, rotateBuffer);
+
+			if (circuito.getObjetos() != null) {
+				for (ObjetoPista objetoPista : circuito.getObjetos()) {
+					if (!(objetoPista instanceof ObjetoTransparencia))
+						continue;
+					ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+					Rectangle obterArea = objetoTransparencia.obterArea();
+					Graphics2D gImage = rotateBuffer.createGraphics();
+					objetoTransparencia.desenhaCarro(gImage, zoom, carx, cary);
+				}
+			}
+
 			g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
 					Util.inte(cary * zoom), null);
 
@@ -1546,57 +1556,6 @@ public class MainPanelEditor extends JPanel {
 		rectangle.x = scrollPane.getViewport().getViewPosition().x;
 		rectangle.y = scrollPane.getViewport().getViewPosition().y;
 		return rectangle;
-	}
-
-	private void desenhaNosChave(Graphics2D g2d) {
-		if (nosChave != null && nosChave.isSelected()) {
-			No oldNo = null;
-			int count = 0;
-			for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
-				No no = (No) iter.next();
-				g2d.drawImage(no.getBufferedImage(), no.getDrawX(),
-						no.getDrawY(), null);
-				g2d.setColor(Color.BLACK);
-				if (oldNo == null) {
-					oldNo = no;
-					g2d.setColor(Color.WHITE);
-					g2d.drawString("Index " + count, no.getDrawX(),
-							no.getDrawY());
-				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
-							no.getY());
-					count += GeoUtil.drawBresenhamLine(oldNo.getX(),
-							oldNo.getY(), no.getX(), no.getY()).size();
-					g2d.setColor(Color.WHITE);
-					g2d.drawString("Index " + count, no.getDrawX(),
-							no.getDrawY());
-					oldNo = no;
-				}
-			}
-			oldNo = null;
-			count = 0;
-			for (Iterator iter = circuito.getBox().iterator(); iter.hasNext();) {
-				No no = (No) iter.next();
-				g2d.setColor(no.getTipo());
-				g2d.fillRoundRect(no.getDrawX(), no.getDrawY(), 10, 10, 15, 15);
-				g2d.setColor(Color.BLACK);
-				if (oldNo == null) {
-					oldNo = no;
-					g2d.setColor(Color.WHITE);
-					g2d.drawString("Index " + count, no.getDrawX(),
-							no.getDrawY());
-				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
-							no.getY());
-					count += GeoUtil.drawBresenhamLine(oldNo.getX(),
-							oldNo.getY(), no.getX(), no.getY()).size();
-					g2d.setColor(Color.WHITE);
-					g2d.drawString("Index " + count, no.getDrawX(),
-							no.getDrawY());
-					oldNo = no;
-				}
-			}
-		}
 	}
 
 	private void desenhaPistaBox(Graphics2D g2d) {
@@ -1688,12 +1647,21 @@ public class MainPanelEditor extends JPanel {
 
 		if (desenhaTracado) {
 			No oldNo = null;
-
+			int conNoPista = 0;
 			for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
 				No no = (No) iter.next();
 				g2d.drawImage(no.getBufferedImage(), no.getDrawX(),
 						no.getDrawY(), null);
-
+				String num = " " + conNoPista + " ";
+				int larguraNum = Util.larguraTexto(num, (Graphics2D) g2d);
+				int qX = no.getDrawX() + 10;
+				int qY = no.getDrawY() - 10;
+				g2d.setColor(PainelCircuito.transpMenus);
+				g2d.fillRoundRect(qX, qY,
+						larguraNum, 15, 5, 5);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString(num, qX, qY + 12);
+				conNoPista++;
 				if (oldNo == null) {
 					oldNo = no;
 				} else {
@@ -1859,10 +1827,10 @@ public class MainPanelEditor extends JPanel {
 		testaPistaButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					vetorizarCircuito();
 					if (testePista.isAlive()) {
 						testePista.pararTeste();
 					} else {
+						vetorizarCircuito();
 						testePista.iniciarTeste(multiplicadorPista);
 					}
 
@@ -2010,17 +1978,6 @@ public class MainPanelEditor extends JPanel {
 				repaint();
 			}
 		});
-
-		JPanel nosChavePanel = new JPanel(new GridLayout(1, 2));
-		nosChavePanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("desenhaNosChave");
-			}
-		});
-		nosChave = new JCheckBox();
-		nosChavePanel.add(nosChave);
-		buttonsPanel3.add(nosChavePanel);
 
 		JButton reprocessar = new JButton("reprocessarPista") {
 			@Override
