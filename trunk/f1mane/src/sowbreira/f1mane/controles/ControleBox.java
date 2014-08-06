@@ -327,7 +327,7 @@ public class ControleBox {
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
 			controleJogo.info(Html.orange(Lang.msg("298",
 					new String[] { carro.getNome() })));
-			penalidade = 100;
+			penalidade = 25;
 			penalidade = Util.inte(penalidade
 					* (2 - (carro.getPotencia() / 1000)));
 		}
@@ -360,7 +360,7 @@ public class ControleBox {
 		}
 
 		double paradoBox = ((((porcentCombust + penalidade) * 100) / controleCorrida
-				.obterTempoCilco())) + 25;
+				.obterTempoCilco()) + 25);
 		if (boxRapido) {
 			double propNumVoltas = (controleJogo.getQtdeTotalVoltas() / Constantes.MAX_VOLTAS);
 			if (propNumVoltas >= 1) {

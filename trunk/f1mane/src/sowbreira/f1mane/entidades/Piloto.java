@@ -1076,7 +1076,8 @@ public class Piloto implements Serializable {
 		}
 		if (No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && agressivo
 				&& (getTracado() == 0)
-				&& (carro.porcentagemDesgastePeneus() < 30)) {
+				&& (carro.porcentagemDesgastePeneus() < 30 || getStress() > 90)) {
+			controleJogo.travouRodas(this);
 			if (getTracadoAntigo() != 0) {
 				if (getTracadoAntigo() == 1) {
 					mudarTracado(2, controleJogo, true);
@@ -1099,6 +1100,7 @@ public class Piloto implements Serializable {
 				&& AGRESSIVO.equals(modoPilotagem)
 				&& !testeHabilidadePilotoCarro(controleJogo)
 				&& getPtosBox() == 0) {
+			controleJogo.travouRodas(this);
 			derrapa(controleJogo);
 		}
 		if (getTracado() == 4 || getTracado() == 5) {
