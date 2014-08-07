@@ -988,7 +988,7 @@ public class Piloto implements Serializable {
 		verificaMudancaRegime(controleJogo);
 		processaGanho(controleJogo);
 		processaIAnovoIndex(controleJogo);
-		ganho = processaEscapadaDaPista(controleJogo, ganho);
+		processaEscapadaDaPista(controleJogo);
 		processaTurbulencia(controleJogo);
 		processaGanhoDanificado();
 		processaFreioNaReta(controleJogo);
@@ -1069,10 +1069,9 @@ public class Piloto implements Serializable {
 		setCiclosDesconcentrado(20);
 	}
 
-	public double processaEscapadaDaPista(InterfaceJogo controleJogo,
-			double ganho) {
+	public void processaEscapadaDaPista(InterfaceJogo controleJogo) {
 		if (controleJogo.isSafetyCarNaPista()) {
-			return ganho;
+			return;
 		}
 		/**
 		 * Derrapa mas Fica na pista
@@ -1090,7 +1089,7 @@ public class Piloto implements Serializable {
 			} else {
 				mudarTracado(Util.intervalo(1, 2), controleJogo, true);
 			}
-			return ganho;
+			return;
 		}
 
 		/**
@@ -1136,7 +1135,6 @@ public class Piloto implements Serializable {
 				if (getTracado() == 5) {
 					mudarTracado(1, controleJogo, true);
 				}
-				setCiclosDesconcentrado(Util.intervalo(10, 20));
 			} else {
 				if (controleJogo.isChovendo()) {
 					ganho *= 0.5;
@@ -1146,8 +1144,6 @@ public class Piloto implements Serializable {
 				decStress(2);
 			}
 		}
-
-		return ganho;
 	}
 
 	private void processaGanho(InterfaceJogo controleJogo) {
@@ -1808,7 +1804,7 @@ public class Piloto implements Serializable {
 		Point p5 = GeoUtil.calculaPonto(
 				calculaAngulo,
 				Util.inte(Carro.ALTURA
-						* 3
+						* 4
 						* controleJogo.getCircuito()
 								.getMultiplicadorLarguraPista()),
 				new Point(Util.inte(rectangle.getCenterX()), Util
@@ -1816,7 +1812,7 @@ public class Piloto implements Serializable {
 		Point p4 = GeoUtil.calculaPonto(
 				calculaAngulo + 180,
 				Util.inte(Carro.ALTURA
-						* 3
+						* 4
 						* controleJogo.getCircuito()
 								.getMultiplicadorLarguraPista()),
 				new Point(Util.inte(rectangle.getCenterX()), Util
@@ -2712,13 +2708,13 @@ public class Piloto implements Serializable {
 		if (!verificaColisaoPos(interfaceJogo, pos)) {
 			double mod = Carro.ALTURA;
 			if (getTracado() == 0 && (pos == 4 || pos == 5)) {
-				mod *= 3;
+				mod *= 4;
 			} else if ((getTracado() == 1 || getTracado() == 2)
 					&& (pos == 4 || pos == 5)) {
-				mod *= 2;
+				mod *= 3;
 			} else if ((getTracado() == 5 || getTracado() == 4)
 					&& (pos == 2 || pos == 1)) {
-				mod *= 2;
+				mod *= 3;
 			}
 
 			setTracadoAntigo(getTracado());
