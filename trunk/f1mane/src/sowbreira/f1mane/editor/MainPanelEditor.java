@@ -1657,8 +1657,7 @@ public class MainPanelEditor extends JPanel {
 				int qX = no.getDrawX() + 10;
 				int qY = no.getDrawY() - 10;
 				g2d.setColor(PainelCircuito.transpMenus);
-				g2d.fillRoundRect(qX, qY,
-						larguraNum, 15, 5, 5);
+				g2d.fillRoundRect(qX, qY, larguraNum, 15, 5, 5);
 				g2d.setColor(Color.BLACK);
 				g2d.drawString(num, qX, qY + 12);
 				conNoPista++;
@@ -1813,7 +1812,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new GridLayout(3, 1));
+		buttonsPanel.setLayout(new GridLayout(2, 1));
 
 		JPanel buttonsPanel1 = new JPanel();
 		buttonsPanel1.setLayout(new GridLayout(1, 5));
@@ -1894,42 +1893,6 @@ public class MainPanelEditor extends JPanel {
 		});
 		buttonsPanel1.add(right);
 
-		JPanel buttonsPanel2 = new JPanel();
-		buttonsPanel2.setLayout(new GridLayout(1, 4));
-
-		ladoBoxCombo = new JComboBox();
-		ladoBoxCombo.addItem(LADO_COMBO_1);
-		ladoBoxCombo.addItem(LADO_COMBO_2);
-		if (circuito != null && circuito.getLadoBox() == 2) {
-			ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
-		}
-		buttonsPanel2.add(ladoBoxCombo);
-
-		tamanhoPistaText = new JTextField();
-		tamanhoPistaText.setText("" + multiplicadorPista);
-		JPanel tamanhoPistaPanel = new JPanel(new GridLayout(1, 2));
-		tamanhoPistaPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("consumoPista");
-			}
-		});
-		tamanhoPistaPanel.add(tamanhoPistaText);
-		buttonsPanel2.add(tamanhoPistaPanel);
-
-		larguraPistaText = new JTextField();
-		larguraPistaText.setText("" + multiplicadorLarguraPista);
-
-		JPanel larguraPistaPanel = new JPanel(new GridLayout(1, 2));
-		larguraPistaPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("larguraPista");
-			}
-		});
-		larguraPistaPanel.add(larguraPistaText);
-		buttonsPanel2.add(larguraPistaPanel);
-
 		JButton corFundo = new JButton("Cor de Fundo");
 		corFundo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1945,39 +1908,7 @@ public class MainPanelEditor extends JPanel {
 
 			}
 		});
-		buttonsPanel2.add(corFundo);
-		JPanel panelNoite = new JPanel(new GridLayout(1, 2));
-		panelNoite.add(new JLabel("Noite"));
-
-		JPanel buttonsPanel3 = new JPanel();
-		buttonsPanel3.setLayout(new GridLayout(1, 4));
-
-		final JCheckBox noite = new JCheckBox();
-		panelNoite.add(noite);
-		buttonsPanel3.add(panelNoite);
-		noite.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				circuito.setNoite(noite.isSelected());
-				repaint();
-			}
-		});
-
-		JPanel panelUsaBkg = new JPanel(new GridLayout(1, 2));
-		panelUsaBkg.add(new JLabel("UsaBkg"));
-		final JCheckBox usaBkg = new JCheckBox();
-		if (circuito != null && mostraBG) {
-			usaBkg.setSelected(true);
-		}
-		panelUsaBkg.add(usaBkg);
-		buttonsPanel3.add(panelUsaBkg);
-		usaBkg.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				mostraBG = usaBkg.isSelected();
-				repaint();
-			}
-		});
+		buttonsPanel1.add(corFundo);
 
 		JButton reprocessar = new JButton("reprocessarPista") {
 			@Override
@@ -2001,10 +1932,78 @@ public class MainPanelEditor extends JPanel {
 
 			}
 		});
-		buttonsPanel3.add(reprocessar);
+		buttonsPanel1.add(reprocessar);
+
+		JPanel buttonsPanel2 = new JPanel();
+		buttonsPanel2.setLayout(new GridLayout(1, 9));
+
+		ladoBoxCombo = new JComboBox();
+		ladoBoxCombo.addItem(LADO_COMBO_1);
+		ladoBoxCombo.addItem(LADO_COMBO_2);
+		if (circuito != null && circuito.getLadoBox() == 2) {
+			ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
+		}
+		buttonsPanel2.add(ladoBoxCombo);
+
+		tamanhoPistaText = new JTextField();
+		tamanhoPistaText.setText("" + multiplicadorPista);
+		buttonsPanel2.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("consumoPista");
+			}
+		});
+		buttonsPanel2.add(tamanhoPistaText);
+
+		larguraPistaText = new JTextField();
+		larguraPistaText.setText("" + multiplicadorLarguraPista);
+
+		buttonsPanel2.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("larguraPista");
+			}
+		});
+		buttonsPanel2.add(larguraPistaText);
+
+		buttonsPanel2.add(new JLabel("Noite") {
+			@Override
+			public String getText() {
+				return Lang.msg("noite");
+			}
+		});
+
+		final JCheckBox noite = new JCheckBox();
+		noite.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				circuito.setNoite(noite.isSelected());
+				repaint();
+			}
+		});
+		buttonsPanel2.add(noite);
+
+		buttonsPanel2.add(new JLabel("UsaBkg") {
+			@Override
+			public String getText() {
+				return Lang.msg("UsaBkg");
+			}
+		});
+		final JCheckBox usaBkg = new JCheckBox();
+		if (circuito != null && mostraBG) {
+			usaBkg.setSelected(true);
+		}
+		buttonsPanel2.add(usaBkg);
+		usaBkg.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				mostraBG = usaBkg.isSelected();
+				repaint();
+			}
+		});
+
 		buttonsPanel.add(buttonsPanel1);
 		buttonsPanel.add(buttonsPanel2);
-		buttonsPanel.add(buttonsPanel3);
 		return buttonsPanel;
 	}
 

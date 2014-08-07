@@ -25,6 +25,8 @@ public class ObjetoEscapada extends ObjetoPista {
 		affineTransform.setToScale(zoom, zoom);
 		g2d.setColor(red);
 		g2d.fill(generalPath.createTransformedShape(affineTransform));
+		g2d.setColor(Color.WHITE);
+		g2d.fillOval(centro().x - 5, centro().y - 5, 10, 10);
 	}
 
 	@Override
