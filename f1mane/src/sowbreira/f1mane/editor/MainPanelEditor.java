@@ -113,10 +113,12 @@ public class MainPanelEditor extends JPanel {
 	private int mx;
 	private int my;
 	private int pos = 0;
-	protected double multiplicadorPista = 0;
+	private int probalidadeChuva = 0;
+	private double multiplicadorPista = 9;
 	private double multiplicadorLarguraPista = 0;
 	private JTextField larguraPistaText;
-	private JTextField tamanhoPistaText;
+	private JTextField Text;
+	private JTextField probalidadeChuvaText;
 	private BasicStroke trilho = new BasicStroke(1);
 	private BasicStroke pista;
 	private BasicStroke pistaTinta;
@@ -124,6 +126,7 @@ public class MainPanelEditor extends JPanel {
 	private int larguraPistaPixeis;
 	private BasicStroke zebra;
 	private JComboBox ladoBoxCombo;
+	private JComboBox ladoBoxSaidaBoxCombo;
 	private ObjetoPista objetoPista;
 	private boolean desenhandoObjetoLivre;
 	private boolean posicionaObjetoPista;
@@ -249,10 +252,16 @@ public class MainPanelEditor extends JPanel {
 		} else {
 			circuito.setLadoBox(2);
 		}
+		if (ladoBoxSaidaBoxCombo.getSelectedItem().equals(LADO_COMBO_1)) {
+			circuito.setLadoBoxSaidaBox(1);
+		} else {
+			circuito.setLadoBoxSaidaBox(2);
+		}
 		if (multiplicadorPista == 0 && circuito != null) {
 			multiplicadorPista = circuito.getMultiplciador();
+			circuito.setProbalidadeChuva(probalidadeChuva);
 		}
-		if (multiplicadorPista < 5 || multiplicadorPista > 10) {
+		if (multiplicadorPista > 5 && multiplicadorPista < 10) {
 			JOptionPane.showMessageDialog(null,
 					Lang.msg("multiplicadorPistaEntre5e10"), Lang.msg("039"),
 					JOptionPane.INFORMATION_MESSAGE);
@@ -268,7 +277,8 @@ public class MainPanelEditor extends JPanel {
 		circuito.setUsaBkg(true);
 		circuito.vetorizarPista(this.multiplicadorPista,
 				this.multiplicadorLarguraPista);
-		tamanhoPistaText.setText(String.valueOf(multiplicadorPista));
+		probalidadeChuvaText.setText(String.valueOf(circuito
+				.getProbalidadeChuva()));
 		larguraPistaText.setText(String.valueOf(multiplicadorLarguraPista));
 		List l = circuito.getPistaFull();
 
@@ -1935,8 +1945,6 @@ public class MainPanelEditor extends JPanel {
 		reprocessar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					multiplicadorPista = Double.parseDouble(tamanhoPistaText
-							.getText());
 					multiplicadorLarguraPista = Double
 							.parseDouble(larguraPistaText.getText());
 					vetorizarCircuito();
@@ -1960,16 +1968,25 @@ public class MainPanelEditor extends JPanel {
 			ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
 		}
 		buttonsPanel2.add(ladoBoxCombo);
+		
+		
+		ladoBoxSaidaBoxCombo = new JComboBox();
+		ladoBoxSaidaBoxCombo.addItem(LADO_COMBO_1);
+		ladoBoxSaidaBoxCombo.addItem(LADO_COMBO_2);
+		if (circuito != null && circuito.getLadoBoxSaidaBox() == 2) {
+			ladoBoxSaidaBoxCombo.setSelectedItem(LADO_COMBO_2);
+		}
+		buttonsPanel2.add(ladoBoxSaidaBoxCombo);
 
-		tamanhoPistaText = new JTextField();
-		tamanhoPistaText.setText("" + multiplicadorPista);
+		probalidadeChuvaText = new JTextField();
+		probalidadeChuvaText.setText("" + probalidadeChuva);
 		buttonsPanel2.add(new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("consumoPista");
+				return Lang.msg("probalidaDeChuva");
 			}
 		});
-		buttonsPanel2.add(tamanhoPistaText);
+		buttonsPanel2.add(probalidadeChuvaText);
 
 		larguraPistaText = new JTextField();
 		larguraPistaText.setText("" + multiplicadorLarguraPista);
