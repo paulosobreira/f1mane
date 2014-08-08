@@ -265,7 +265,6 @@ public class GerenciadorVisual {
 						new NoWrapper(noAtual))
 						&& controleJogo.getPistaWrapperFull().contains(
 								new NoWrapper(noAtualSuave))) {
-					piloto.mudarTracado(0, controleJogo, true);
 					nos = pistaFull;
 				} else if (controleJogo.getBoxWrapperFull().contains(
 						new NoWrapper(noAtualSuave))
@@ -330,7 +329,6 @@ public class GerenciadorVisual {
 								new NoWrapper(noAtualSuave))
 						&& noAtualSuave.getIndex() < entradaBoxIndex) {
 					nos = pistaFull;
-					piloto.mudarTracado(0, controleJogo, true);
 				}
 
 				if (controleJogo.getPistaWrapperFull().contains(
@@ -338,7 +336,6 @@ public class GerenciadorVisual {
 						&& controleJogo.getBoxWrapperFull().contains(
 								new NoWrapper(noAtualSuave))) {
 					nos = boxFull;
-					piloto.mudarTracado(0, controleJogo, true);
 				}
 
 				int index = noAtualSuave.getIndex() + ganhoSuave;
@@ -356,7 +353,6 @@ public class GerenciadorVisual {
 								new NoWrapper(noAtualSuave))
 						&& index > (nos.size() - 5)) {
 					nos = pistaFull;
-					piloto.mudarTracado(0, controleJogo, true);
 					index = saidaBoxIndex + 5;
 				}
 

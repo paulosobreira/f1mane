@@ -24,6 +24,8 @@ public class Circuito implements Serializable {
 	private double multiplicadorPista;
 	private double multiplicadorLarguraPista;
 	private int ladoBox = 0;
+	private int ladoBoxSaidaBox = 0;
+	private int probalidadeChuva = 0;
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;
 	private int paradaBoxIndex;
@@ -332,7 +334,8 @@ public class Circuito implements Serializable {
 	}
 
 	public double getMultiplciador() {
-		return multiplicadorPista;
+		//return multiplicadorPista;
+		return 9;
 	}
 
 	public void setMultiplicador(double multiplicadorPista) {
@@ -381,6 +384,22 @@ public class Circuito implements Serializable {
 
 	public void setEscapeList(List<Point> escapeList) {
 		this.escapeList = escapeList;
+	}
+
+	public int getLadoBoxSaidaBox() {
+		return ladoBoxSaidaBox;
+	}
+
+	public void setLadoBoxSaidaBox(int ladoBoxSaidaBox) {
+		this.ladoBoxSaidaBox = ladoBoxSaidaBox;
+	}
+
+	public int getProbalidadeChuva() {
+		return probalidadeChuva;
+	}
+
+	public void setProbalidadeChuva(int probalidadeChuva) {
+		this.probalidadeChuva = probalidadeChuva;
 	}
 
 }
