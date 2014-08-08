@@ -218,37 +218,38 @@ public class CarregadorRecursos {
 		// BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
 		// graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
-		Properties properties = new Properties();
 
-		properties.load(CarregadorRecursos
-				.recursoComoStream("properties/pistas.properties"));
-
-		Enumeration propName = properties.propertyNames();
-		double media = 0;
-		double qtde = 0;
-		while (propName.hasMoreElements()) {
-			final String name = (String) propName.nextElement();
-			// System.out.println(name);
-			ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
-					.getClass().getResourceAsStream(name));
-
-			Circuito circuito = (Circuito) ois.readObject();
-			// System.out.println(properties.getProperty(name));
-			System.out.println(name + " " + circuito.getNome() + " "
-					+ circuito.getMultiplciador());
-			media += circuito.getMultiplciador();
-			qtde++;
-			// circuito.setMultiplicador(circuito.getMultiplciador() + 1);
-			// FileOutputStream fileOutputStream = new FileOutputStream(new
-			// File(
-			// name));
-			// ObjectOutputStream oos = new
-			// ObjectOutputStream(fileOutputStream);
-			// oos.writeObject(circuito);
-			// oos.flush();
-			// fileOutputStream.close();
-		}
-		System.out.println("Media "+(media/qtde));
+		// Properties properties = new Properties();
+		//
+		// properties.load(CarregadorRecursos
+		// .recursoComoStream("properties/pistas.properties"));
+		//
+		// Enumeration propName = properties.propertyNames();
+		// double media = 0;
+		// double qtde = 0;
+		// while (propName.hasMoreElements()) {
+		// final String name = (String) propName.nextElement();
+		// // System.out.println(name);
+		// ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
+		// .getClass().getResourceAsStream(name));
+		//
+		// Circuito circuito = (Circuito) ois.readObject();
+		// // System.out.println(properties.getProperty(name));
+		// System.out.println(name + " " + circuito.getNome() + " "
+		// + circuito.getMultiplciador());
+		// media += circuito.getMultiplciador();
+		// qtde++;
+		// // circuito.setMultiplicador(circuito.getMultiplciador() + 1);
+		// // FileOutputStream fileOutputStream = new FileOutputStream(new
+		// // File(
+		// // name));
+		// // ObjectOutputStream oos = new
+		// // ObjectOutputStream(fileOutputStream);
+		// // oos.writeObject(circuito);
+		// // oos.flush();
+		// // fileOutputStream.close();
+		// }
+		// System.out.println("Media "+(media/qtde));
 
 		// BufferedImage travadaRodaImg = CarregadorRecursos
 		// .carregaBufferedImageTranspareciaBranca("travadaRoda.png", 200,
