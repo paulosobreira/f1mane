@@ -1717,7 +1717,7 @@ public class Piloto implements Serializable {
 		if (escapeList == null) {
 			return false;
 		}
-		
+
 		Point p = proxPt.getPoint();
 		double distancia = Double.MAX_VALUE;
 		for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
@@ -2510,7 +2510,14 @@ public class Piloto implements Serializable {
 		qtdeParadasBox++;
 		ptosBox = 0;
 		box = false;
-
+		int novoLado = 0;
+		if (interfaceJogo.getCircuito().getLadoBoxSaidaBox() == 0) {
+			novoLado = interfaceJogo.getCircuito().getLadoBox() == 1 ? 2 : 1;
+		} else {
+			novoLado = interfaceJogo.getCircuito().getLadoBoxSaidaBox() == 1 ? 2
+					: 1;
+		}
+		mudarTracado(novoLado, interfaceJogo, true);
 		if (getNumeroVolta() > 0)
 			processaVoltaNovaBox(interfaceJogo);
 	}
@@ -2658,34 +2665,34 @@ public class Piloto implements Serializable {
 		mudarTracado(pos, interfaceJogo, testeHabilidadePiloto(interfaceJogo));
 	}
 
-	public boolean mudarTracado(int pos, InterfaceJogo interfaceJogo,
+	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo,
 			boolean mesmoEmCurva) {
 		if (indiceTracado != 0) {
 			return false;
 		}
-		if (getTracado() == 4 && (pos == 0 || pos == 1)) {
+		if (getTracado() == 4 && (mudarTracado == 0 || mudarTracado == 1)) {
 			return false;
 		}
-		if (getTracado() == 5 && (pos == 0 || pos == 2)) {
+		if (getTracado() == 5 && (mudarTracado == 0 || mudarTracado == 2)) {
 			return false;
 		}
 		if (getSetaBaixo() <= 0) {
-			if (getTracado() == 0 && pos == 1) {
+			if (getTracado() == 0 && mudarTracado == 1) {
 				setSetaCima(11);
 			}
-			if (getTracado() == 2 && pos == 0) {
+			if (getTracado() == 2 && mudarTracado == 0) {
 				setSetaCima(11);
 			}
 		}
 		if (getSetaCima() <= 0) {
-			if (getTracado() == 0 && pos == 2) {
+			if (getTracado() == 0 && mudarTracado == 2) {
 				setSetaBaixo(11);
 			}
-			if (getTracado() == 1 && pos == 0) {
+			if (getTracado() == 1 && mudarTracado == 0) {
 				setSetaBaixo(11);
 			}
 		}
-		if (getTracado() == pos) {
+		if (getTracado() == mudarTracado) {
 			return false;
 		}
 		long agora = System.currentTimeMillis();
@@ -2694,10 +2701,10 @@ public class Piloto implements Serializable {
 				&& (agora - ultimaMudancaPos) < (interfaceJogo.getTempoCiclo() * 10)) {
 			return false;
 		}
-		if (getTracado() == 1 && pos == 2) {
+		if (getTracado() == 1 && mudarTracado == 2) {
 			return false;
 		}
-		if (getTracado() == 2 && pos == 1) {
+		if (getTracado() == 2 && mudarTracado == 1) {
 			return false;
 		}
 		if (!mesmoEmCurva) {
@@ -2705,20 +2712,20 @@ public class Piloto implements Serializable {
 				return false;
 			}
 		}
-		if (!verificaColisaoPos(interfaceJogo, pos)) {
+		if (!verificaColisaoPos(interfaceJogo, mudarTracado)) {
 			double mod = Carro.ALTURA;
-			if (getTracado() == 0 && (pos == 4 || pos == 5)) {
+			if (getTracado() == 0 && (mudarTracado == 4 || mudarTracado == 5)) {
 				mod *= 4;
 			} else if ((getTracado() == 1 || getTracado() == 2)
-					&& (pos == 4 || pos == 5)) {
+					&& (mudarTracado == 4 || mudarTracado == 5)) {
 				mod *= 3;
 			} else if ((getTracado() == 5 || getTracado() == 4)
-					&& (pos == 2 || pos == 1)) {
+					&& (mudarTracado == 2 || mudarTracado == 1)) {
 				mod *= 3;
 			}
 
 			setTracadoAntigo(getTracado());
-			setTracado(pos);
+			setTracado(mudarTracado);
 
 			setIndiceTracado((int) (mod * interfaceJogo.getCircuito()
 					.getMultiplicadorLarguraPista()));

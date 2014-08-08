@@ -212,8 +212,15 @@ public class MainPanelEditor extends JPanel {
 
 		DefaultListModel defaultListModel = (DefaultListModel) pistaJList
 				.getModel();
+		if (defaultListModel.size() < 10) {
+			JOptionPane.showMessageDialog(null,
+					Lang.msg("pelomenos10NosParaProcesar"), Lang.msg("039"),
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		No noAnt = null;
 		boolean noCurvaAltaAntesNoCurvaBaixa = false;
+		boolean temLargada = false;
 		for (int i = 0; i < defaultListModel.size(); i++) {
 			No no = (No) defaultListModel.get(i);
 			if (noAnt != null && noAnt.verificaRetaOuLargada()
@@ -225,7 +232,16 @@ public class MainPanelEditor extends JPanel {
 						JOptionPane.INFORMATION_MESSAGE);
 				noCurvaAltaAntesNoCurvaBaixa = true;
 			}
+			if (No.LARGADA.equals(no.getTipo())) {
+				temLargada = true;
+			}
 			noAnt = no;
+		}
+		if (!temLargada) {
+			JOptionPane.showMessageDialog(null,
+					Lang.msg("noLargadaObrigatorio"), Lang.msg("039"),
+					JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 
 		if (ladoBoxCombo.getSelectedItem().equals(LADO_COMBO_1)) {

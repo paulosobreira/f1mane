@@ -454,6 +454,7 @@ public abstract class ControleRecursos {
 		// + Util.intervalo(0, 9);
 		System.out.println("F.Alonso".replaceAll("\\.", ""));
 		// Logger.logar(((int) (0 + Math.random() * 9)));
+
 	}
 
 	protected void definirHabilidadePadraoPilotos(int value) {
