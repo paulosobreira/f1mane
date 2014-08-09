@@ -2511,9 +2511,7 @@ public class Piloto implements Serializable {
 		ptosBox = 0;
 		box = false;
 		int novoLado = 0;
-		if (interfaceJogo.getCircuito().getLadoBoxSaidaBox() == 0) {
-			novoLado = interfaceJogo.getCircuito().getLadoBox() == 1 ? 2 : 1;
-		} else {
+		if (interfaceJogo.getCircuito().getLadoBoxSaidaBox() != 0) {
 			novoLado = interfaceJogo.getCircuito().getLadoBoxSaidaBox() == 1 ? 2
 					: 1;
 		}

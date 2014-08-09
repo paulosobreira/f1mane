@@ -107,17 +107,18 @@ public class MainPanelEditor extends JPanel {
 
 	private static final String LADO_COMBO_1 = "BOX LADO 1";
 	private static final String LADO_COMBO_2 = "BOX LADO 2";
+	private static final String SAIDA_LADO_COMBO_1 = "SAIDA BOX LADO 1";
+	private static final String SAIDA_LADO_COMBO_2 = "SAIDA BOX LADO 2";
 	private static final Color COR_PISTA = new Color(192, 192, 192);
 	public double zoom = 1;
 	private BufferedImage carroCima;
 	private int mx;
 	private int my;
 	private int pos = 0;
-	private int probalidadeChuva = 0;
 	private double multiplicadorPista = 9;
 	private double multiplicadorLarguraPista = 0;
 	private JTextField larguraPistaText;
-	private JTextField Text;
+	private JTextField nomePistaText;
 	private JTextField probalidadeChuvaText;
 	private BasicStroke trilho = new BasicStroke(1);
 	private BasicStroke pista;
@@ -252,19 +253,13 @@ public class MainPanelEditor extends JPanel {
 		} else {
 			circuito.setLadoBox(2);
 		}
-		if (ladoBoxSaidaBoxCombo.getSelectedItem().equals(LADO_COMBO_1)) {
+		if (ladoBoxSaidaBoxCombo.getSelectedItem().equals(SAIDA_LADO_COMBO_1)) {
 			circuito.setLadoBoxSaidaBox(1);
 		} else {
 			circuito.setLadoBoxSaidaBox(2);
 		}
 		if (multiplicadorPista == 0 && circuito != null) {
 			multiplicadorPista = circuito.getMultiplciador();
-			circuito.setProbalidadeChuva(probalidadeChuva);
-		}
-		if (multiplicadorPista > 5 && multiplicadorPista < 10) {
-			JOptionPane.showMessageDialog(null,
-					Lang.msg("multiplicadorPistaEntre5e10"), Lang.msg("039"),
-					JOptionPane.INFORMATION_MESSAGE);
 		}
 		if (multiplicadorLarguraPista == 0 && circuito != null) {
 			multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
@@ -277,8 +272,11 @@ public class MainPanelEditor extends JPanel {
 		circuito.setUsaBkg(true);
 		circuito.vetorizarPista(this.multiplicadorPista,
 				this.multiplicadorLarguraPista);
+		circuito.setProbalidadeChuva(Integer.parseInt(probalidadeChuvaText
+				.getText()));
 		probalidadeChuvaText.setText(String.valueOf(circuito
 				.getProbalidadeChuva()));
+		circuito.setNome(nomePistaText.getText());
 		larguraPistaText.setText(String.valueOf(multiplicadorLarguraPista));
 		List l = circuito.getPistaFull();
 
@@ -1457,8 +1455,6 @@ public class MainPanelEditor extends JPanel {
 			int carx = testePista.getTestCar().x - w2;
 			int cary = testePista.getTestCar().y - h2;
 
-			AffineTransform afZoom = new AffineTransform();
-			AffineTransform afRotate = new AffineTransform();
 			double calculaAngulo = GeoUtil.calculaAngulo(testePista.frenteCar,
 					testePista.trazCar, 0);
 			Rectangle2D rectangle = new Rectangle2D.Double(
@@ -1491,6 +1487,8 @@ public class MainPanelEditor extends JPanel {
 			}
 
 			double rad = Math.toRadians((double) calculaAngulo);
+			AffineTransform afZoom = new AffineTransform();
+			AffineTransform afRotate = new AffineTransform();
 			afZoom.setToScale(zoom, zoom);
 			afRotate.setToRotation(rad, carroCima.getWidth() / 2,
 					carroCima.getHeight() / 2);
@@ -1671,59 +1669,85 @@ public class MainPanelEditor extends JPanel {
 			}
 		}
 
-		if (desenhaTracado) {
-			No oldNo = null;
-			int conNoPista = 0;
-			for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
-				No no = (No) iter.next();
-				g2d.drawImage(no.getBufferedImage(), no.getDrawX(),
-						no.getDrawY(), null);
-				String num = " " + conNoPista + " ";
-				int larguraNum = Util.larguraTexto(num, (Graphics2D) g2d);
-				int qX = no.getDrawX() + 10;
-				int qY = no.getDrawY() - 10;
-				g2d.setColor(PainelCircuito.transpMenus);
-				g2d.fillRoundRect(qX, qY, larguraNum, 15, 5, 5);
-				g2d.setColor(Color.BLACK);
-				g2d.drawString(num, qX, qY + 12);
-				conNoPista++;
-				if (oldNo == null) {
-					oldNo = no;
-				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
-							no.getY());
-					oldNo = no;
-				}
+		if (!desenhaTracado) {
+			return;
+		}
 
-				if (pistaJList != null && pistaJList.getSelectedValue() == no) {
-					g2d.setColor(Color.WHITE);
-					g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6,
-							6, 2, 2);
-					g2d.setColor(Color.black);
-				}
+		No oldNo = null;
+		int conNoPista = 0;
+		for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
+			No no = (No) iter.next();
+			g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no.getDrawY(),
+					null);
+			String num = " " + conNoPista + " ";
+			int larguraNum = Util.larguraTexto(num, (Graphics2D) g2d);
+			int qX = no.getDrawX() + 10;
+			int qY = no.getDrawY() - 10;
+			g2d.setColor(PainelCircuito.transpMenus);
+			g2d.fillRoundRect(qX, qY, larguraNum, 15, 5, 5);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(num, qX, qY + 12);
+			conNoPista++;
+			if (oldNo == null) {
+				oldNo = no;
+			} else {
+				g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no.getY());
+				oldNo = no;
 			}
 
-			oldNo = null;
+			if (pistaJList != null && pistaJList.getSelectedValue() == no) {
+				g2d.setColor(Color.WHITE);
+				g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6, 6,
+						2, 2);
+				g2d.setColor(Color.black);
+			}
+		}
 
-			for (Iterator iter = circuito.getBox().iterator(); iter.hasNext();) {
-				No no = (No) iter.next();
-				g2d.setColor(no.getTipo());
-				g2d.fillRoundRect(no.getDrawX(), no.getDrawY(), 10, 10, 15, 15);
-				g2d.setColor(Color.BLACK);
+		oldNo = null;
 
-				if (oldNo == null) {
-					oldNo = no;
-				} else {
-					g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(),
-							no.getY());
-					oldNo = no;
+		for (Iterator iter = circuito.getBox().iterator(); iter.hasNext();) {
+			No no = (No) iter.next();
+			g2d.setColor(no.getTipo());
+			g2d.fillRoundRect(no.getDrawX(), no.getDrawY(), 10, 10, 15, 15);
+			g2d.setColor(Color.BLACK);
+
+			if (oldNo == null) {
+				oldNo = no;
+			} else {
+				g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no.getY());
+				oldNo = no;
+			}
+
+			if (boxJList != null && boxJList.getSelectedValue() == no) {
+				g2d.setColor(Color.WHITE);
+				g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6, 6,
+						2, 2);
+				g2d.setColor(Color.black);
+			}
+		}
+		int index = circuito.getBox().size() - 1;
+		if (index > 0) {
+			No ultNo = (No) circuito.getBox().get(index);
+			index = circuito.getBox().size() - 2;
+			if (index > 0) {
+				No penutimoNo = (No) circuito.getBox().get(index);
+				double calculaAngulo = GeoUtil.calculaAngulo(ultNo.getPoint(),
+						penutimoNo.getPoint(), 0);
+				Point p1 = GeoUtil.calculaPonto(calculaAngulo,
+						Util.inte(Carro.ALTURA * multiplicadorLarguraPista),
+						ultNo.getPoint());
+				Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
+						Util.inte(Carro.ALTURA * multiplicadorLarguraPista),
+						ultNo.getPoint());
+				if (circuito.getLadoBoxSaidaBox() == 2) {
+					g2d.setColor(Color.ORANGE);
+					g2d.fillOval(Util.inte(p1.x - 5), Util.inte(p1.y - 5),
+							Util.inte(10), Util.inte(10));
 				}
-
-				if (boxJList != null && boxJList.getSelectedValue() == no) {
-					g2d.setColor(Color.WHITE);
-					g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6,
-							6, 2, 2);
-					g2d.setColor(Color.black);
+				if (circuito.getLadoBoxSaidaBox() == 1) {
+					g2d.setColor(Color.ORANGE);
+					g2d.fillOval(Util.inte(p2.x - 5), Util.inte(p2.y - 5),
+							Util.inte(10), Util.inte(10));
 				}
 			}
 		}
@@ -1959,7 +1983,19 @@ public class MainPanelEditor extends JPanel {
 		buttonsPanel1.add(reprocessar);
 
 		JPanel buttonsPanel2 = new JPanel();
-		buttonsPanel2.setLayout(new GridLayout(1, 9));
+		buttonsPanel2.setLayout(new GridLayout(1, 8));
+
+		nomePistaText = new JTextField();
+		if (circuito != null) {
+			nomePistaText.setText(circuito.getNome());
+		}
+		buttonsPanel2.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("nomeCircuito");
+			}
+		});
+		buttonsPanel2.add(nomePistaText);
 
 		ladoBoxCombo = new JComboBox();
 		ladoBoxCombo.addItem(LADO_COMBO_1);
@@ -1968,38 +2004,53 @@ public class MainPanelEditor extends JPanel {
 			ladoBoxCombo.setSelectedItem(LADO_COMBO_2);
 		}
 		buttonsPanel2.add(ladoBoxCombo);
-		
-		
+
 		ladoBoxSaidaBoxCombo = new JComboBox();
-		ladoBoxSaidaBoxCombo.addItem(LADO_COMBO_1);
-		ladoBoxSaidaBoxCombo.addItem(LADO_COMBO_2);
+		ladoBoxSaidaBoxCombo.addItem(SAIDA_LADO_COMBO_1);
+		ladoBoxSaidaBoxCombo.addItem(SAIDA_LADO_COMBO_2);
 		if (circuito != null && circuito.getLadoBoxSaidaBox() == 2) {
-			ladoBoxSaidaBoxCombo.setSelectedItem(LADO_COMBO_2);
+			ladoBoxSaidaBoxCombo.setSelectedItem(SAIDA_LADO_COMBO_2);
 		}
 		buttonsPanel2.add(ladoBoxSaidaBoxCombo);
 
-		probalidadeChuvaText = new JTextField();
-		probalidadeChuvaText.setText("" + probalidadeChuva);
-		buttonsPanel2.add(new JLabel() {
+		probalidadeChuvaText = new JTextField() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(30, super.getPreferredSize().height);
+			}
+		};
+		if (circuito != null) {
+			probalidadeChuvaText.setText("" + circuito.getProbalidadeChuva());
+		}
+		JPanel p2 = new JPanel();
+		p2.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("probalidaDeChuva");
 			}
 		});
-		buttonsPanel2.add(probalidadeChuvaText);
-
-		larguraPistaText = new JTextField();
+		p2.add(probalidadeChuvaText);
+		buttonsPanel2.add(p2);
+		larguraPistaText = new JTextField() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(20, super.getPreferredSize().height);
+			}
+		};
 		larguraPistaText.setText("" + multiplicadorLarguraPista);
 
-		buttonsPanel2.add(new JLabel() {
+		p2 = new JPanel();
+		p2.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("larguraPista");
 			}
 		});
-		buttonsPanel2.add(larguraPistaText);
+		p2.add(larguraPistaText);
+		buttonsPanel2.add(p2);
 
-		buttonsPanel2.add(new JLabel("Noite") {
+		p2 = new JPanel();
+		p2.add(new JLabel("Noite") {
 			@Override
 			public String getText() {
 				return Lang.msg("noite");
@@ -2014,9 +2065,10 @@ public class MainPanelEditor extends JPanel {
 				repaint();
 			}
 		});
-		buttonsPanel2.add(noite);
-
-		buttonsPanel2.add(new JLabel("UsaBkg") {
+		p2.add(noite);
+		buttonsPanel2.add(p2);
+		p2 = new JPanel();
+		p2.add(new JLabel("UsaBkg") {
 			@Override
 			public String getText() {
 				return Lang.msg("UsaBkg");
@@ -2026,7 +2078,6 @@ public class MainPanelEditor extends JPanel {
 		if (circuito != null && mostraBG) {
 			usaBkg.setSelected(true);
 		}
-		buttonsPanel2.add(usaBkg);
 		usaBkg.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -2034,7 +2085,8 @@ public class MainPanelEditor extends JPanel {
 				repaint();
 			}
 		});
-
+		p2.add(usaBkg);
+		buttonsPanel2.add(p2);
 		buttonsPanel.add(buttonsPanel1);
 		buttonsPanel.add(buttonsPanel2);
 		return buttonsPanel;
