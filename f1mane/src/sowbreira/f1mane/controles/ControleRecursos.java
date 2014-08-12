@@ -491,7 +491,7 @@ public abstract class ControleRecursos {
 		ObjectInputStream ois;
 		try {
 			ois = new ObjectInputStream(carregadorRecursos.getClass()
-					.getResourceAsStream(circuito));
+					.getResourceAsStream(circuitos.get(circuito)));
 			Circuito circuitoObj = (Circuito) ois.readObject();
 			return circuitoObj.getProbalidadeChuva();
 		} catch (Exception e) {

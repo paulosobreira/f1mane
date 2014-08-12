@@ -198,23 +198,28 @@ public class ControleBox {
 						* circuito.getMultiplciador()));
 			} else {
 				box = piloto.getNoAtual();
+				No nobox = (No) boxEquipes.get(piloto.getCarro());
+				int indexParada = piloto.obterPista(controleJogo)
+						.indexOf(nobox);
 				int ptosBox = 0;
-				if (box.isBox()) {
+				int indexParadaMenos10 = indexParada - 10;
+				int indexParadaMais10 = indexParada + 10;
+				if (box.isBox()
+						&& ((piloto.getPtosBox() < indexParadaMenos10 || piloto
+								.getPtosBox() > indexParadaMais10))) {
 					/**
 					 * gera limite velocidade no box
 					 */
-					ptosBox += 1;
+					ptosBox += ((boxRapido) ? Util.intervalo(1, 2) : 1);
 				} else if (box.verificaRetaOuLargada()) {
-					ptosBox += ((boxRapido) ? Util.intervalo(2, 3) : Util
+					ptosBox += ((boxRapido) ? Util.intervalo(1, 3) : Util
 							.intervalo(1, 2));
 				} else if (box.verificaCruvaAlta()) {
 					ptosBox += ((boxRapido) ? Util.intervalo(1, 2) : 1);
 				} else {
 					ptosBox += 1;
 				}
-				No nobox = (No) boxEquipes.get(piloto.getCarro());
-				int indexParada = piloto.obterPista(controleJogo)
-						.indexOf(nobox);
+
 				double iPilot = piloto.getNoAtual().getIndex();
 				double tamPista = controleJogo.getNosDoBox().size();
 				boolean mais90Porcent = (iPilot / tamPista) > 0.9;
