@@ -42,28 +42,27 @@ public abstract class ControleRecursos {
 	protected List<NoWrapper> pistaWrapperFull = new ArrayList<NoWrapper>();
 	protected List<NoWrapper> boxWrapperFull = new ArrayList<NoWrapper>();
 	protected CarregadorRecursos carregadorRecursos;
-	protected Map circuitos = new HashMap();
-	protected Map circuitosClima = new HashMap();
-	protected Map temporadasTransp = new HashMap();
+	protected Map<String, String> circuitos = new HashMap<String, String>();
+	protected Map<String, String> temporadasTransp = new HashMap<String, String>();
 	protected Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
 	protected Map<Point, Integer> mapaLadosDerrapaCurva = new HashMap<Point, Integer>();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
 	private final static int TRANPS = 250;
 	private String seasson;
-	private Set idsNoPista = new HashSet();
-	private Set idsNoBox = new HashSet();
-	private static Map bufferCarrosCima = new HashMap();
-	private static Map bufferCarrosCimaSemAreofolio = new HashMap();
-	private static Map bufferCarrosLado = new HashMap();
-	private static Map bufferCapacete = new HashMap();
-	private static Map bufferCarrosLadoSemAreofolio = new HashMap();
+	private Set<Integer> idsNoPista = new HashSet<Integer>();
+	private Set<Integer> idsNoBox = new HashSet<Integer>();
+	private static Map<String, BufferedImage> bufferCarrosCima = new HashMap<String, BufferedImage>();
+	private static Map<String, BufferedImage> bufferCarrosCimaSemAreofolio = new HashMap<String, BufferedImage>();
+	private static Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
+	private static Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
+	private static Map<String, BufferedImage> bufferCarrosLadoSemAreofolio = new HashMap<String, BufferedImage>();
 
 	public BufferedImage obterCapacete(Piloto piloto) {
 		try {
 			String chave = piloto.getNomeOriginal()
 					+ piloto.getCarro().getNome();
-			BufferedImage ret = (BufferedImage) bufferCapacete.get(chave);
+			BufferedImage ret = bufferCapacete.get(chave);
 			if (ret == null) {
 				ret = CarregadorRecursos.carregaImagem("capacetes/" + seasson
 						+ "/" + piloto.getNomeOriginal().replaceAll("\\.", "")
@@ -85,8 +84,7 @@ public abstract class ControleRecursos {
 			return obterCarroLadoSemAreofolio(piloto);
 
 		}
-		BufferedImage carroLado = (BufferedImage) bufferCarrosLado.get(carro
-				.getNome());
+		BufferedImage carroLado = bufferCarrosLado.get(carro.getNome());
 		if (carroLado == null) {
 			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
@@ -112,8 +110,7 @@ public abstract class ControleRecursos {
 						if (carroLadoPng != null) {
 							carroLado = carroLadoPng;
 							Integer transp = new Integer(
-									(String) temporadasTransp
-											.get(getTemporada()));
+									temporadasTransp.get(getTemporada()));
 							bufferCarrosLado.put(carro.getNome(), carroLado);
 						}
 					}
@@ -134,8 +131,8 @@ public abstract class ControleRecursos {
 
 	private BufferedImage obterCarroLadoSemAreofolio(Piloto piloto) {
 		Carro carro = piloto.getCarro();
-		BufferedImage carroLado = (BufferedImage) bufferCarrosLadoSemAreofolio
-				.get(carro.getNome());
+		BufferedImage carroLado = bufferCarrosLadoSemAreofolio.get(carro
+				.getNome());
 		if (carroLado == null) {
 			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
@@ -161,8 +158,7 @@ public abstract class ControleRecursos {
 						if (carroLadoPng != null) {
 							carroLado = carroLadoPng;
 							Integer transp = new Integer(
-									(String) temporadasTransp
-											.get(getTemporada()));
+									temporadasTransp.get(getTemporada()));
 							bufferCarrosLadoSemAreofolio.put(carro.getNome(),
 									ImageUtil.geraTransparencia(carroLado,
 											transp));
@@ -201,8 +197,8 @@ public abstract class ControleRecursos {
 
 	private BufferedImage obterCarroCimaSemAreofolio(Piloto piloto) {
 		Carro carro = piloto.getCarro();
-		BufferedImage carroCima = (BufferedImage) bufferCarrosCimaSemAreofolio
-				.get(carro.getNome());
+		BufferedImage carroCima = bufferCarrosCimaSemAreofolio.get(carro
+				.getNome());
 		if (carroCima == null) {
 			carroCima = CarregadorRecursos.carregaImagem("CarroCima.png");
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
@@ -225,8 +221,7 @@ public abstract class ControleRecursos {
 			return obterCarroCimaSemAreofolio(piloto);
 
 		}
-		BufferedImage carroCima = (BufferedImage) bufferCarrosCima.get(carro
-				.getNome());
+		BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
 		if (carroCima == null) {
 			carroCima = CarregadorRecursos.carregaImagem("CarroCima.png");
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
@@ -251,19 +246,19 @@ public abstract class ControleRecursos {
 		return seasson;
 	}
 
-	public Map getMapaIdsNos() {
+	public Map<Integer, No> getMapaIdsNos() {
 		return mapaIdsNos;
 	}
 
-	public void setMapaIdsNos(Map mapaIdsNos) {
+	public void setMapaIdsNos(Map<Integer, No> mapaIdsNos) {
 		this.mapaIdsNos = mapaIdsNos;
 	}
 
-	public Map getMapaNosIds() {
+	public Map<No, Integer> getMapaNosIds() {
 		return mapaNosIds;
 	}
 
-	public void setMapaNosIds(Map mapaNosIds) {
+	public void setMapaNosIds(Map<No, Integer> mapaNosIds) {
 		this.mapaNosIds = mapaNosIds;
 	}
 
@@ -293,8 +288,8 @@ public abstract class ControleRecursos {
 		carregaRecursos(circuitoStr, null, null);
 	}
 
-	public void carregaRecursos(String circuitoStr, List pilotos, List carros)
-			throws Exception {
+	public void carregaRecursos(String circuitoStr, List<Piloto> pilotos,
+			List carros) throws Exception {
 		if (pilotos != null) {
 			this.pilotos = pilotos;
 		}
@@ -314,9 +309,9 @@ public abstract class ControleRecursos {
 		circuito = (Circuito) ois.readObject();
 		circuito.vetorizarPista();
 		String nome = "";
-		for (Iterator iterator = circuitos.keySet().iterator(); iterator
+		for (Iterator<String> iterator = circuitos.keySet().iterator(); iterator
 				.hasNext();) {
-			String key = (String) iterator.next();
+			String key = iterator.next();
 			if (circuitoStr.equals(circuitos.get(key))) {
 				nome = key;
 				break;
@@ -343,9 +338,9 @@ public abstract class ControleRecursos {
 			mapaNosIds.put(noDoBox, boxId);
 			idsNoBox.add(boxId);
 		}
-		for (Iterator iterator = mapaNoProxCurva.keySet().iterator(); iterator
+		for (Iterator<No> iterator = mapaNoProxCurva.keySet().iterator(); iterator
 				.hasNext();) {
-			No no = (No) iterator.next();
+			No no = iterator.next();
 			int index = no.getIndex();
 			for (int i = index; i < nosDaPista.size(); i++) {
 				No noCurva = (No) nosDaPista.get(i);
@@ -370,8 +365,9 @@ public abstract class ControleRecursos {
 		}
 		circuito.setEscapeList(escapeList);
 		if (escapeList != null && !escapeList.isEmpty()) {
-			for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
-				Point pointDerrapagem = (Point) iterator.next();
+			for (Iterator<Point> iterator = escapeList.iterator(); iterator
+					.hasNext();) {
+				Point pointDerrapagem = iterator.next();
 				No noPerto = null;
 				double menorDistancia = Double.MAX_VALUE;
 				for (Iterator iterator2 = nosDaPista.iterator(); iterator2
@@ -458,16 +454,16 @@ public abstract class ControleRecursos {
 	}
 
 	protected void definirHabilidadePadraoPilotos(int value) {
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
+		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+			Piloto piloto = iter.next();
 			String strVal = String.valueOf(value) + Util.intervalo(0, 9);
 			piloto.setHabilidade(Integer.parseInt(strVal));
 		}
 	}
 
 	protected void definirPotenciaPadraoCarros(int value) {
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
+		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+			Piloto piloto = iter.next();
 			piloto.getCarro().setPotencia(value);
 		}
 	}
@@ -486,37 +482,22 @@ public abstract class ControleRecursos {
 
 			}
 
-			properties.load(CarregadorRecursos
-					.recursoComoStream("properties/chuvaPistas.properties"));
-
-			propName = properties.propertyNames();
-			while (propName.hasMoreElements()) {
-				final String name = (String) propName.nextElement();
-				circuitosClima.put(name, properties.getProperty(name));
-			}
-
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
 	}
 
 	public int porcentagemChuvaCircuito(String circuito) {
-		if (circuitosClima == null) {
-			return 0;
+		ObjectInputStream ois;
+		try {
+			ois = new ObjectInputStream(carregadorRecursos.getClass()
+					.getResourceAsStream(circuito));
+			Circuito circuitoObj = (Circuito) ois.readObject();
+			return circuitoObj.getProbalidadeChuva();
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
-		Object object = circuitos.get(circuito);
-		if (object == null) {
-			return 0;
-		}
-		String val = (String) circuitosClima.get(object);
-		if (Util.isNullOrEmpty(val)) {
-			return 0;
-		}
-		return Integer.valueOf(val);
-	}
-
-	public Map getCircuitosClima() {
-		return circuitosClima;
+		return 0;
 	}
 
 	protected void carregarTemporadasTransp() {

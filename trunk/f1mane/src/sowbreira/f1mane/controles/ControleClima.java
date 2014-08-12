@@ -168,7 +168,9 @@ public class ControleClima {
 
 	public boolean verificaPossibilidadeChoverNaPista() {
 		int porc = controleJogo.porcentagemChuvaCircuito();
-		return Math.random() < (porc / 100.0);
+		double val = (porc / 100.0);
+		System.out.println("Valor "+val);
+		return Math.random() < (val);
 	}
 
 	public void climaEnsolarado() {
