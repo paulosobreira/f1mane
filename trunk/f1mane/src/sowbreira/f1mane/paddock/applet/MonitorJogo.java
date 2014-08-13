@@ -483,7 +483,7 @@ public class MonitorJogo implements Runnable {
 						piloto.getCarro().setRecolhido(true);
 					} else if (valTsFinal == -2) {
 						if (!piloto.decContTravouRodas()) {
-							piloto.setContTravouRodas(2);
+							piloto.setContTravouRodas(Util.intervalo(10, 60));
 							TravadaRoda travadaRoda = new TravadaRoda();
 							travadaRoda.setIdNo(this.jogoCliente
 									.obterIdPorNo(piloto.getNoAtual()));
