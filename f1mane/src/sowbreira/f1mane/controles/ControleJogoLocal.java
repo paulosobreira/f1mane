@@ -1059,7 +1059,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
 		travadaRoda.setTracado(piloto.getTracado());
 		piloto.setTravouRodas(true);
-		piloto.setContTravouRodas(2);
+		piloto.setContTravouRodas(Util.intervalo(10, 60));
 		if (gerenciadorVisual != null)
 			gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
 

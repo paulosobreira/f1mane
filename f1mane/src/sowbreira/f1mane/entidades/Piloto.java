@@ -2710,7 +2710,7 @@ public class Piloto implements Serializable {
 				return false;
 			}
 		}
-		if (!verificaColisaoPos(interfaceJogo, mudarTracado)) {
+		if (!verificaColisaoAoMudarDeTracado(interfaceJogo, mudarTracado)) {
 			double mod = Carro.ALTURA;
 			if (getTracado() == 0 && (mudarTracado == 4 || mudarTracado == 5)) {
 				mod *= 4;
@@ -2774,7 +2774,7 @@ public class Piloto implements Serializable {
 		this.indiceTracado = indiceTracado;
 	}
 
-	private boolean verificaColisaoPos(InterfaceJogo controleJogo, int pos) {
+	private boolean verificaColisaoAoMudarDeTracado(InterfaceJogo controleJogo, int pos) {
 		int indice = getNoAtual().getIndex();
 		List pilotos = controleJogo.getPilotos();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {

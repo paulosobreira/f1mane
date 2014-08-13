@@ -210,12 +210,11 @@ public class ControleBox {
 					/**
 					 * gera limite velocidade no box
 					 */
-					ptosBox += ((boxRapido) ? Util.intervalo(1, 2) : 1);
+					ptosBox += ((boxRapido) ? 2 : 1);
 				} else if (box.verificaRetaOuLargada()) {
-					ptosBox += ((boxRapido) ? Util.intervalo(1, 3) : Util
-							.intervalo(1, 2));
+					ptosBox += ((boxRapido) ? 3 : Util.intervalo(2, 3));
 				} else if (box.verificaCruvaAlta()) {
-					ptosBox += ((boxRapido) ? Util.intervalo(1, 2) : 1);
+					ptosBox += ((boxRapido) ? 2 : Util.intervalo(1, 2));
 				} else {
 					ptosBox += 1;
 				}
@@ -223,6 +222,7 @@ public class ControleBox {
 				double iPilot = piloto.getNoAtual().getIndex();
 				double tamPista = controleJogo.getNosDoBox().size();
 				boolean mais90Porcent = (iPilot / tamPista) > 0.9;
+				boolean mais95Porcent = (iPilot / tamPista) > 0.95;
 				if (controleJogo.isSafetyCarNaPista()) {
 					mais90Porcent = false;
 				}
@@ -236,16 +236,20 @@ public class ControleBox {
 
 				ptosBox *= circuito.getMultiplciador();
 				int novosPtsBox = Util.inte(ptosBox) + piloto.getPtosBox();
-
-				if (novosPtsBox >= (indexParada - (Carro.MEIA_LARGURA))
-						&& novosPtsBox <= (indexParada)) {
-					piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2
-							: 1);
-				} else {
-					piloto.setTracado(0);
-				}
 				piloto.setPtosBox(novosPtsBox);
 				piloto.setVelocidade(Util.intervalo(50, 60) + ptosBox);
+				if (novosPtsBox >= (indexParada - (3 * Carro.LARGURA))
+						&& novosPtsBox <= (indexParada)) {
+					piloto.mudarTracado((controleJogo.getCircuito()
+							.getLadoBox() == 1 ? 2 : 1), controleJogo);
+				} else if (!mais90Porcent) {
+					piloto.mudarTracado(0, controleJogo);
+				}
+				if (mais95Porcent) {
+					int novoLado = controleJogo.getCircuito()
+							.getLadoBoxSaidaBox() == 1 ? 2 : 1;
+					piloto.mudarTracado(novoLado, controleJogo);
+				}
 			}
 
 			if (piloto.getPtosBox() < boxList.size()) {
