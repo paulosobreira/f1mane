@@ -784,7 +784,8 @@ public class Carro implements Serializable {
 				if (getPiloto().getStress() > 80
 						&& Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {
 					teste = false;
-					controleJogo.travouRodas(getPiloto());
+					if (!no.verificaRetaOuLargada())
+						controleJogo.travouRodas(getPiloto());
 					piloto.decStress(getPiloto().testeHabilidadePiloto(
 							controleJogo) ? 2 + stress : stress);
 				}
