@@ -1066,7 +1066,10 @@ public class Piloto implements Serializable {
 		setAgressivoF4(false);
 		incStress(testeHabilidadePiloto(controleJogo) ? Util.intervalo(5, 10)
 				: Util.intervalo(10, 20));
-		setCiclosDesconcentrado(20);
+		if (getStress() > 90 && Piloto.AGRESSIVO.equals(getModoPilotagem())) {
+			controleJogo.travouRodas(this);
+		}
+		setCiclosDesconcentrado(10);
 	}
 
 	public void processaEscapadaDaPista(InterfaceJogo controleJogo) {
@@ -1078,8 +1081,9 @@ public class Piloto implements Serializable {
 		 */
 		if (No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && agressivo
 				&& (getTracado() == 0)
-				&& (carro.porcentagemDesgastePeneus() < 30 || getStress() > 90)) {
-			controleJogo.travouRodas(this);
+				&& (carro.porcentagemDesgastePeneus() < 30)) {
+			if (getStress() > 60)
+				controleJogo.travouRodas(this);
 			if (getTracadoAntigo() != 0) {
 				if (getTracadoAntigo() == 1) {
 					mudarTracado(2, controleJogo, true);
@@ -1292,7 +1296,10 @@ public class Piloto implements Serializable {
 					retardaFreiandoReta = false;
 				}
 				if (retardaFreiandoReta) {
-					controleJogo.travouRodas(this);
+					if (getStress() > 90
+							&& Piloto.AGRESSIVO.equals(getModoPilotagem())) {
+						controleJogo.travouRodas(this);
+					}
 					minMulti += (testPilotoPneus) ? 0.2 : 0.1;
 				}
 				if (multi < minMulti)
@@ -1479,13 +1486,14 @@ public class Piloto implements Serializable {
 			if (carroAtraz == null) {
 				return;
 			}
+			if (mudouTracadoReta > 2) {
+				return;
+			}
 			Piloto pilotoAtraz = carroAtraz.getPiloto();
-			int tracadoAntes = pilotoAtraz.getTracado();
 			if (diffAnt < 200 && diffAnt > 50 && pilotoAtraz.getPtosBox() == 0
 					&& testeHabilidadePiloto(controleJogo) && !isFreiandoReta()
 					&& !isJogadorHumano()
-					&& controleJogo.getNiveljogo() < Math.random()
-					&& mudouTracadoReta < 2) {
+					&& controleJogo.getNiveljogo() < Math.random()) {
 				if (mudarTracado(pilotoAtraz.getTracado(), controleJogo, false)
 						&& noAtual.verificaRetaOuLargada()) {
 					mudouTracadoReta++;
@@ -2721,12 +2729,17 @@ public class Piloto implements Serializable {
 					&& (mudarTracado == 2 || mudarTracado == 1)) {
 				mod *= 3;
 			}
-
 			setTracadoAntigo(getTracado());
 			setTracado(mudarTracado);
 
-			setIndiceTracado((int) (mod * interfaceJogo.getCircuito()
-					.getMultiplicadorLarguraPista()));
+			double novoIndice = (mod * interfaceJogo.getCircuito()
+					.getMultiplicadorLarguraPista());
+
+			if (getPtosBox() != 0) {
+				novoIndice *= 0.4;
+			}
+			setIndiceTracado((int) novoIndice);
+
 			ultimaMudancaPos = System.currentTimeMillis();
 			return true;
 		} else {
@@ -2774,7 +2787,11 @@ public class Piloto implements Serializable {
 		this.indiceTracado = indiceTracado;
 	}
 
-	private boolean verificaColisaoAoMudarDeTracado(InterfaceJogo controleJogo, int pos) {
+	private boolean verificaColisaoAoMudarDeTracado(InterfaceJogo controleJogo,
+			int pos) {
+		if (getPtosBox() != 0) {
+			return false;
+		}
 		int indice = getNoAtual().getIndex();
 		List pilotos = controleJogo.getPilotos();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
