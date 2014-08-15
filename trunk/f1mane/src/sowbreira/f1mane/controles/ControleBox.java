@@ -222,7 +222,6 @@ public class ControleBox {
 				double iPilot = piloto.getNoAtual().getIndex();
 				double tamPista = controleJogo.getNosDoBox().size();
 				boolean mais90Porcent = (iPilot / tamPista) > 0.9;
-				boolean mais99Porcent = (iPilot / tamPista) > 0.99;
 				if (controleJogo.isSafetyCarNaPista()) {
 					mais90Porcent = false;
 				}
@@ -244,11 +243,6 @@ public class ControleBox {
 							.getLadoBox() == 1 ? 2 : 1), controleJogo);
 				} else if (!mais90Porcent) {
 					piloto.mudarTracado(0, controleJogo);
-				}
-				if (mais90Porcent) {
-					int novoLado = controleJogo.getCircuito()
-							.getLadoBoxSaidaBox() == 1 ? 2 : 1;
-					piloto.mudarTracado(novoLado, controleJogo);
 				}
 			}
 

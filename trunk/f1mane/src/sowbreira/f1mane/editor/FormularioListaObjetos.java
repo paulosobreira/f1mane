@@ -56,10 +56,15 @@ public class FormularioListaObjetos {
 			public void valueChanged(ListSelectionEvent e) {
 				FormularioListaObjetos.this.editor.repaint();
 				FormularioListaObjetos.this.editor.desSelecionaNosPista();
-				ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP
-						.get(list.getSelectedIndex());
-				FormularioListaObjetos.this.editor.centralizarPonto(objetoPista
-						.getPosicaoQuina());
+				int selectedIndex = list.getSelectedIndex();
+				if (selectedIndex > -1
+						&& selectedIndex < defaultListModelOP.size()) {
+					ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP
+							.get(selectedIndex);
+					FormularioListaObjetos.this.editor
+							.centralizarPonto(objetoPista.getPosicaoQuina());
+				}
+
 			}
 		});
 		objetos = new JPanel(new BorderLayout()) {

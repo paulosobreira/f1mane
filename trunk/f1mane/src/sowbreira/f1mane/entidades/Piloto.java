@@ -1068,8 +1068,10 @@ public class Piloto implements Serializable {
 				: Util.intervalo(10, 20));
 		if (getStress() > 90 && Piloto.AGRESSIVO.equals(getModoPilotagem())) {
 			controleJogo.travouRodas(this);
+			setCiclosDesconcentrado(5);
 		}
-		setCiclosDesconcentrado(10);
+		if (Piloto.AGRESSIVO.equals(getModoPilotagem()))
+			setCiclosDesconcentrado(5);
 	}
 
 	public void processaEscapadaDaPista(InterfaceJogo controleJogo) {
@@ -2736,7 +2738,7 @@ public class Piloto implements Serializable {
 					.getMultiplicadorLarguraPista());
 
 			if (getPtosBox() != 0) {
-				novoIndice *= 0.4;
+				novoIndice *= 0.7;
 			}
 			setIndiceTracado((int) novoIndice);
 
