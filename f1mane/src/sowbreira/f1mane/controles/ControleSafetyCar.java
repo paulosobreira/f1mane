@@ -121,7 +121,7 @@ public class ControleSafetyCar {
 		long polePts = pole.getPtosPista();
 		long diffPts = ptsSc - polePts;
 		bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo
-				.getIndexVelcidadeDaPista()) * 0.7;
+				.getIndexVelcidadeDaPista());
 		if (diffPts >= 100) {
 			double multi = (diffPts - 100 / 100.0);
 			if (multi > 0.9) {

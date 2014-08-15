@@ -2818,9 +2818,9 @@ public class PainelCircuito {
 			return;
 		}
 		g2d.setColor(Color.white);
-		if (circuito.getCorFundo() != null) {
-			g2d.setColor(circuito.getCorFundo());
-		}
+//		if (circuito.getCorFundo() != null) {
+//			g2d.setColor(circuito.getCorFundo());
+//		}
 		g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
 				(int) limitesViewPortFull.getHeight());
 		int larguraPistaPixeisLoc = Util.inte(100
