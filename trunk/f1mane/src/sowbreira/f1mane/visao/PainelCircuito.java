@@ -151,6 +151,7 @@ public class PainelCircuito {
 	private Set<TravadaRoda> marcasPneu = new HashSet<TravadaRoda>();
 	private Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
 	private Map<String, BufferedImage> mapaZoomTravadasPneus = new HashMap<String, BufferedImage>();
+	private Map<Piloto, Long> mapaTempoTravadasPneus = new HashMap<Piloto, Long>();
 	private Map<Piloto, BufferedImage> capacetesResultadoFinal = new HashMap<Piloto, BufferedImage>();
 	private Piloto pilotoSelecionado;
 	private BufferedImage backGround;
@@ -3350,8 +3351,8 @@ public class PainelCircuito {
 			return;
 		}
 		if (!temTransparencia) {
-			desenhaTravaRodaCarroCima(g2d, piloto, width, height, carX, carY,
-					afZoom, afRotate);
+			desenhaFumacaTravaRodaCarroCima(g2d, piloto, width, height, carX,
+					carY, afZoom, afRotate);
 			desenhaAjudaPistaCarroCima(g2d, piloto);
 		}
 		desenhaChuvaFaiscasCarroCima(g2d, piloto, width);
@@ -3436,9 +3437,22 @@ public class PainelCircuito {
 		return calculaAngulo;
 	}
 
-	private void desenhaTravaRodaCarroCima(Graphics2D g2d, Piloto piloto,
+	private void desenhaFumacaTravaRodaCarroCima(Graphics2D g2d, Piloto piloto,
 			int width, int height, int carx, int cary, AffineTransform afZoom,
 			AffineTransform afRotate) {
+
+		Long milisUltimaTrada = mapaTempoTravadasPneus.get(piloto);
+		int valMin = 50;
+		if (piloto.getNoAtual() != null
+				&& piloto.getNoAtual().verificaRetaOuLargada()) {
+			valMin = 200;
+		}
+		if (milisUltimaTrada != null
+				&& (System.currentTimeMillis() - milisUltimaTrada) < valMin) {
+			return;
+		}
+		milisUltimaTrada = System.currentTimeMillis();
+		mapaTempoTravadasPneus.put(piloto, milisUltimaTrada);
 		/**
 		 * Travada Roda
 		 */
