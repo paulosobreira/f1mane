@@ -166,6 +166,10 @@ public class Piloto implements Serializable {
 	public boolean decContTravouRodas() {
 		if (contTravouRodas > 0) {
 			contTravouRodas--;
+			if (contTravouRodas > 0 && noAtual != null
+					&& noAtual.verificaRetaOuLargada()) {
+				contTravouRodas--;
+			}
 			return true;
 		}
 		return false;
