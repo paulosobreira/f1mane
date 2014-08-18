@@ -2818,9 +2818,6 @@ public class PainelCircuito {
 			return;
 		}
 		g2d.setColor(Color.white);
-//		if (circuito.getCorFundo() != null) {
-//			g2d.setColor(circuito.getCorFundo());
-//		}
 		g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
 				(int) limitesViewPortFull.getHeight());
 		int larguraPistaPixeisLoc = Util.inte(100
@@ -3446,42 +3443,104 @@ public class PainelCircuito {
 		 * Travada Roda
 		 */
 		if (piloto.decContTravouRodas() && Math.random() > 0.7) {
+			double distancia = piloto.calculaPontoDerrapada(controleJogo);
+			Point pontoDerrapada = piloto.getPontoDerrapada();
+			if (pontoDerrapada != null
+					&& distancia < (2 * Carro.RAIO_DERRAPAGEM)) {
+				int ladoDerrapa = controleJogo.obterLadoDerrapa(piloto
+						.getPontoDerrapada());
+				if (ladoDerrapa == 5) {
+					if (Math.random() > 0.5) {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosD1);
+					} else {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosD2);
+					}
+					if (Math.random() > 0.5) {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosD3);
+					} else {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosD4);
+					}
+					if (Math.random() > 0.5) {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosD5);
+					} else {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosD1);
+					}
 
-			if (Math.random() > 0.5) {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosD1);
+				}
+				if (ladoDerrapa == 4) {
+					if (Math.random() > 0.5) {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosE1);
+					} else {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosE2);
+					}
+					if (Math.random() > 0.5) {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosE3);
+					} else {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosE4);
+					}
+					if (Math.random() > 0.5) {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosE5);
+					} else {
+						desenhaFumacaTravarRodas(width, height, afRotate,
+								afZoom, carx, cary, g2d, carroCimaFreiosE1);
+					}
+				}
 			} else {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosE1);
+				desenhaFumacaTravarRodasRandom(g2d, width, height, carx, cary,
+						afZoom, afRotate);
 			}
-			if (Math.random() > 0.5) {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosD2);
-			} else {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosE2);
-			}
-			if (Math.random() > 0.5) {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosD3);
-			} else {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosE3);
-			}
-			if (Math.random() > 0.5) {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosD4);
-			} else {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosE4);
-			}
-			if (Math.random() > 0.5) {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosD5);
-			} else {
-				desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
-						cary, g2d, carroCimaFreiosE5);
-			}
+		}
+	}
+
+	private void desenhaFumacaTravarRodasRandom(Graphics2D g2d, int width,
+			int height, int carx, int cary, AffineTransform afZoom,
+			AffineTransform afRotate) {
+		if (Math.random() > 0.5) {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+					cary, g2d, carroCimaFreiosD1);
+		} else {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+					cary, g2d, carroCimaFreiosE1);
+		}
+		if (Math.random() > 0.5) {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+					cary, g2d, carroCimaFreiosD2);
+		} else {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+					cary, g2d, carroCimaFreiosE2);
+		}
+		if (Math.random() > 0.5) {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+					cary, g2d, carroCimaFreiosD3);
+		} else {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+					cary, g2d, carroCimaFreiosE3);
+		}
+		if (Math.random() > 0.5) {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+
+			cary, g2d, carroCimaFreiosD4);
+		} else {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+					cary, g2d, carroCimaFreiosE4);
+		}
+		if (Math.random() > 0.5) {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+					cary, g2d, carroCimaFreiosD5);
+		} else {
+			desenhaFumacaTravarRodas(width, height, afRotate, afZoom, carx,
+					cary, g2d, carroCimaFreiosE5);
 		}
 	}
 

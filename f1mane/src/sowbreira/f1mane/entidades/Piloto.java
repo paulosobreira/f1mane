@@ -1708,36 +1708,7 @@ public class Piloto implements Serializable {
 		if (getTracado() == 4 || getTracado() == 5) {
 			return false;
 		}
-		double multi = 0.6;
-		if (getTracado() == 0) {
-			multi = 1.2;
-		}
-
-		int index = (int) (getNoAtual().getIndex() + controleJogo
-				.getTempoCiclo() * multi);
-		if (index >= controleJogo.getNosDaPista().size()) {
-			return false;
-		}
-		No proxPt = controleJogo.getNosDaPista().get(index);
-
-		Circuito circuito = controleJogo.getCircuito();
-		Point pontoDerrapada = null;
-		List<Point> escapeList = circuito.getEscapeList();
-
-		if (escapeList == null) {
-			return false;
-		}
-
-		Point p = proxPt.getPoint();
-		double distancia = Double.MAX_VALUE;
-		for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
-			Point point = (Point) iterator.next();
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p, point);
-			if (distaciaEntrePontos < distancia) {
-				distancia = distaciaEntrePontos;
-				pontoDerrapada = point;
-			}
-		}
+		double distancia = calculaPontoDerrapada(controleJogo);
 		if (pontoDerrapada == null) {
 			return false;
 		}
@@ -1752,8 +1723,45 @@ public class Piloto implements Serializable {
 			return false;
 		}
 		mudarTracado(ladoDerrapa, controleJogo, true);
-		this.pontoDerrapada = pontoDerrapada;
 		return true;
+	}
+
+	public Point getPontoDerrapada() {
+		return pontoDerrapada;
+	}
+
+	public double calculaPontoDerrapada(InterfaceJogo controleJogo) {
+		double distancia = Double.MAX_VALUE;
+		pontoDerrapada = null;
+		double multi = 0.6;
+		if (getTracado() == 0) {
+			multi = 1.2;
+		}
+		if (getNoAtual() == null) {
+			return 0;
+		}
+
+		int index = (int) (getNoAtual().getIndex() + controleJogo
+				.getTempoCiclo() * multi);
+		if (index >= controleJogo.getNosDaPista().size()) {
+			return 0;
+		}
+		No proxPt = controleJogo.getNosDaPista().get(index);
+		Circuito circuito = controleJogo.getCircuito();
+		List<Point> escapeList = circuito.getEscapeList();
+		if (escapeList == null) {
+			return 0;
+		}
+		Point p = proxPt.getPoint();
+		for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
+			Point point = (Point) iterator.next();
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p, point);
+			if (distaciaEntrePontos < distancia) {
+				distancia = distaciaEntrePontos;
+				pontoDerrapada = point;
+			}
+		}
+		return distancia;
 	}
 
 	public Rectangle2D centralizaDianteiraTrazeiraCarro(
