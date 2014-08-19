@@ -2288,6 +2288,10 @@ public class PainelMenuLocal {
 	}
 
 	private void desenhaTipoAsa(Graphics2D g2d, int x, int y) {
+		if (drs && !Clima.CHUVA.equals(climaSelecionado)) {
+			return;
+		}
+
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 

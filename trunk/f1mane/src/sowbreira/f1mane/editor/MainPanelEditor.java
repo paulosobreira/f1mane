@@ -3,6 +3,7 @@ package sowbreira.f1mane.editor;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -35,10 +36,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -48,8 +49,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -134,6 +135,7 @@ public class MainPanelEditor extends JPanel {
 	private Point ultimoClicado;
 	private FormularioListaObjetos formularioListaObjetos;
 	private boolean mostraBG = true;
+	protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
 	public MainPanelEditor() {
 	}
@@ -557,7 +559,31 @@ public class MainPanelEditor extends JPanel {
 		controlPanel.setLayout(new GridLayout(2, 1));
 
 		pistaJList = new JList(new DefaultListModel());
+		pistaJList.setCellRenderer(new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				JLabel renderer = (JLabel) defaultRenderer
+						.getListCellRendererComponent(list, value, index,
+								isSelected, cellHasFocus);
+				renderer.setText(value.toString() + " - " + index);
+				return renderer;
+			}
+		});
 		boxJList = new JList(new DefaultListModel());
+		boxJList.setCellRenderer(new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				JLabel renderer = (JLabel) defaultRenderer
+						.getListCellRendererComponent(list, value, index,
+								isSelected, cellHasFocus);
+				renderer.setText(value.toString() + " - " + index);
+				return renderer;
+			}
+		});
 		pistaJList.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				int keyCoode = e.getKeyCode();
@@ -579,6 +605,12 @@ public class MainPanelEditor extends JPanel {
 				MainPanelEditor.this.repaint();
 				if (pistaJList.getSelectedIndex() > -1)
 					ultimoItemPistaSelecionado = pistaJList.getSelectedIndex();
+
+				No no = (No) ((DefaultListModel) pistaJList.getModel())
+						.get(ultimoItemPistaSelecionado);
+				centralizarPonto(no.getPoint());
+
+				boxJList.clearSelection();
 			}
 		});
 		pistaJList.addMouseListener(new MouseAdapter() {
@@ -594,6 +626,12 @@ public class MainPanelEditor extends JPanel {
 				MainPanelEditor.this.repaint();
 				if (boxJList.getSelectedIndex() > -1)
 					ultimoItemBoxSelecionado = boxJList.getSelectedIndex();
+				
+				No no = (No) ((DefaultListModel) boxJList.getModel())
+						.get(ultimoItemBoxSelecionado);
+				centralizarPonto(no.getPoint());
+				
+				pistaJList.clearSelection();
 			}
 		});
 
@@ -954,7 +992,6 @@ public class MainPanelEditor extends JPanel {
 				zebra = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
 						BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
 						new float[] { 10, 10 }, 0);
-			g2d.setColor(circuito.getCorFundo());
 			desenhaTintaPistaEZebra(g2d);
 			desenhaPista(g2d);
 			desenhaPistaBox(g2d);
@@ -1942,23 +1979,6 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		buttonsPanel1.add(right);
-
-		JButton corFundo = new JButton("Cor de Fundo");
-		corFundo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Color color = JColorChooser.showDialog(
-							MainPanelEditor.this.srcFrame,
-							Lang.msg("escolhaCor"), Color.WHITE);
-					circuito.setCorFundo(color);
-					repaint();
-				} catch (Exception e2) {
-					e2.printStackTrace();
-				}
-
-			}
-		});
-		buttonsPanel1.add(corFundo);
 
 		JButton reprocessar = new JButton("reprocessarPista") {
 			@Override

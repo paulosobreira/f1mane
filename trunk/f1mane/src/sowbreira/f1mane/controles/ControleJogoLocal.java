@@ -662,9 +662,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 		iniciarJogoMenuLocal(campeonato.getCircuitoVez(),
 				campeonato.getTemporada(), campeonato.getQtdeVoltas(),
-				Util.intervalo(130, 370),
-				clima, campeonato.getNivel(), pilotoSel, campeonato.isKers(),
-				campeonato.isDrs(), campeonato.isSemTrocaPneus(),
+				Util.intervalo(130, 370), clima, campeonato.getNivel(),
+				pilotoSel, campeonato.isKers(), campeonato.isDrs(),
+				campeonato.isSemTrocaPneus(),
 				campeonato.isSemReabasteciemnto(), combustivelSelecionado,
 				asaSelecionado, pneuSelecionado);
 		this.controleCampeonato = new ControleCampeonato(campeonato, mainFrame);
@@ -1059,7 +1059,15 @@ public class ControleJogoLocal extends ControleRecursos implements
 		travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
 		travadaRoda.setTracado(piloto.getTracado());
 		piloto.setTravouRodas(true);
-		piloto.setContTravouRodas(Util.intervalo(10, 60));
+		int qtdeFumaca = 0;
+		if (piloto.getNoAtual().verificaRetaOuLargada()) {
+			qtdeFumaca = Util.intervalo(10, 20);
+		} else if (piloto.getNoAtual().verificaCruvaAlta()) {
+			qtdeFumaca = Util.intervalo(10, 30);
+		} else if (piloto.getNoAtual().verificaCruvaBaixa()) {
+			qtdeFumaca = Util.intervalo(10, 50);
+		}
+		piloto.setContTravouRodas(qtdeFumaca);
 		if (gerenciadorVisual != null)
 			gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
 
