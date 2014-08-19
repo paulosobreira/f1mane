@@ -151,7 +151,6 @@ public class PainelCircuito {
 	private Set<TravadaRoda> marcasPneu = new HashSet<TravadaRoda>();
 	private Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
 	private Map<String, BufferedImage> mapaZoomTravadasPneus = new HashMap<String, BufferedImage>();
-	private Map<Piloto, Long> mapaTempoTravadasPneus = new HashMap<Piloto, Long>();
 	private Map<Piloto, BufferedImage> capacetesResultadoFinal = new HashMap<Piloto, BufferedImage>();
 	private Piloto pilotoSelecionado;
 	private BufferedImage backGround;
@@ -3441,18 +3440,6 @@ public class PainelCircuito {
 			int width, int height, int carx, int cary, AffineTransform afZoom,
 			AffineTransform afRotate) {
 
-		Long milisUltimaTrada = mapaTempoTravadasPneus.get(piloto);
-		int valMin = 50;
-		if (piloto.getNoAtual() != null
-				&& piloto.getNoAtual().verificaRetaOuLargada()) {
-			valMin = 200;
-		}
-		if (milisUltimaTrada != null
-				&& (System.currentTimeMillis() - milisUltimaTrada) < valMin) {
-			return;
-		}
-		milisUltimaTrada = System.currentTimeMillis();
-		mapaTempoTravadasPneus.put(piloto, milisUltimaTrada);
 		/**
 		 * Travada Roda
 		 */
@@ -3663,8 +3650,9 @@ public class PainelCircuito {
 		}
 		if (piloto.isAgressivo()
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
+				&& Carro.MAIS_ASA.equals(piloto.getCarro().getAsa())
 				&& !controleJogo.isChovendo() && piloto.getVelocidade() != 0
-				&& Math.random() > .985) {
+				&& Math.random() > .995) {
 			mapaFaiscas.put(piloto, piloto);
 			g2d.setColor(Color.YELLOW);
 			g2d.setStroke(strokeFaisca);
