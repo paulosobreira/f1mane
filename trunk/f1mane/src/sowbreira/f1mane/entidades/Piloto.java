@@ -82,6 +82,7 @@ public class Piloto implements Serializable {
 	private boolean jogadorHumano;
 	private transient boolean recebeuBanderada;
 	private boolean box;
+	private boolean boxBaixoRendimento;
 	private boolean agressivo = true;
 	private boolean acelerando;
 	private Carro carro = new Carro();
@@ -120,7 +121,9 @@ public class Piloto implements Serializable {
 	private long timeStampChegeda;
 	private boolean cruzouLargada = false;
 	private List<Double> ganhosBaixa = new ArrayList<Double>();
+	private Double maxGanhoBaixa = new Double(0);
 	private List<Double> ganhosAlta = new ArrayList<Double>();
+	private Double maxGanhoAlta = new Double(0);
 	private List<Double> ganhosReta = new ArrayList<Double>();
 	private boolean travouRodas;
 	private int contTravouRodas;
@@ -850,67 +853,12 @@ public class Piloto implements Serializable {
 		if (controleJogo.isSemReabastacimento()) {
 			combust = 100;
 		}
-		if (box && controleJogo.verificaBoxOcupado(getCarro())) {
-			if (!Messagens.BOX_OCUPADO.equals(msgsBox
-					.get(Messagens.BOX_OCUPADO))) {
-				if (getPosicao() < 9) {
-					controleJogo.info(Html.orange(Lang.msg("046",
-							new String[] { Html.bold(getNome()) })));
-				}
-				msgsBox.put(Messagens.BOX_OCUPADO, Messagens.BOX_OCUPADO);
-			}
-		}
+		mensagemBoxOcupado(controleJogo);
 
 		if ((combust < 5) && !controleJogo.isCorridaTerminada()) {
 			box = true;
 		} else {
 			box = false;
-		}
-
-		double consumoMedioPneus = calculaConsumoMedioPneu();
-		if (pneus < 2 * consumoMedioPneus
-				&& (Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu()) || Carro.TIPO_PNEU_CHUVA
-						.equals(carro.getTipoPneu()))) {
-			box = true;
-		}
-		int minPneu = 5;
-		if (controleJogo.isBoxRapido()) {
-			minPneu = 10;
-		}
-
-		if (Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu())
-				&& (pneus < minPneu)) {
-			box = true;
-		}
-
-		if ((Carro.TIPO_PNEU_DURO.equals(carro.getTipoPneu()))
-				&& (pneus < minPneu)) {
-			box = true;
-		}
-
-		if (Carro.TIPO_PNEU_CHUVA.equals(carro.getTipoPneu())
-				&& (pneus < minPneu)) {
-			box = true;
-		}
-
-		if (controleJogo.asfaltoAbrasivo()) {
-			if (Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu())
-					&& (pneus < 20)) {
-				box = true;
-			}
-			if ((Carro.TIPO_PNEU_DURO.equals(carro.getTipoPneu()) || Carro.TIPO_PNEU_CHUVA
-					.equals(carro.getTipoPneu())) && (pneus < 20)) {
-				box = true;
-			}
-		} else {
-			if (Carro.TIPO_PNEU_MOLE.equals(carro.getTipoPneu())
-					&& (pneus < 10)) {
-				box = true;
-			}
-			if ((Carro.TIPO_PNEU_DURO.equals(carro.getTipoPneu()) || Carro.TIPO_PNEU_CHUVA
-					.equals(carro.getTipoPneu())) && (pneus < 30)) {
-				box = true;
-			}
 		}
 
 		if (controleJogo.isSafetyCarNaPista()
@@ -925,21 +873,30 @@ public class Piloto implements Serializable {
 			box = true;
 		}
 
-		if (!msgsBox.containsKey(Messagens.IR_BOX_FINAL_CORRIDA)
-				&& controleJogo.verificaUltimasVoltas() && (combust <= 5)
-				&& (pneus <= 5)) {
-			controleJogo.info(Html.orange(Lang.msg("047",
-					new String[] { getNome() })));
-			msgsBox.put(Messagens.IR_BOX_FINAL_CORRIDA,
-					Messagens.IR_BOX_FINAL_CORRIDA);
-			box = false;
-		}
-
 		if (carro.verificaDano()) {
 			box = true;
 		}
 
-		if (controleJogo.verificaUltimasVoltas()) {
+		if (!boxBaixoRendimento
+				&& pneus < 15
+				&& (ganho < (.5 * maxGanhoBaixa) && ganho < (.7 * maxGanhoAlta))) {
+			System.out.println("Box -" + getNome() + " ganho - " + ganho
+					+ " maxGanhoBaixa - " + maxGanhoBaixa + " - maxGanhoAlta "
+					+ maxGanhoAlta);
+			boxBaixoRendimento = true;
+		}
+
+		if (boxBaixoRendimento) {
+			box = true;
+		}
+
+		if (box && controleJogo.verificaUltimasVoltas()) {
+			if (!msgsBox.containsKey(Messagens.IR_BOX_FINAL_CORRIDA)) {
+				controleJogo.info(Html.orange(Lang.msg("047",
+						new String[] { getNome() })));
+				msgsBox.put(Messagens.IR_BOX_FINAL_CORRIDA,
+						Messagens.IR_BOX_FINAL_CORRIDA);
+			}
 			box = false;
 		}
 		if (controleJogo.getNumVoltaAtual() < 1) {
@@ -947,6 +904,19 @@ public class Piloto implements Serializable {
 		}
 		if (controleJogo.isCorridaTerminada()) {
 			box = false;
+		}
+	}
+
+	private void mensagemBoxOcupado(InterfaceJogo controleJogo) {
+		if (box && controleJogo.verificaBoxOcupado(getCarro())) {
+			if (!Messagens.BOX_OCUPADO.equals(msgsBox
+					.get(Messagens.BOX_OCUPADO))) {
+				if (getPosicao() < 9) {
+					controleJogo.info(Html.orange(Lang.msg("046",
+							new String[] { Html.bold(getNome()) })));
+				}
+				msgsBox.put(Messagens.BOX_OCUPADO, Messagens.BOX_OCUPADO);
+			}
 		}
 	}
 
@@ -1355,6 +1325,9 @@ public class Piloto implements Serializable {
 				ganho = limite;
 			}
 			ganhosBaixa.add(ganho);
+			if (ganho > maxGanhoBaixa) {
+				maxGanhoBaixa = ganho;
+			}
 		}
 		if (getNoAtual().verificaCruvaAlta()) {
 			double limite = 30;
@@ -1366,6 +1339,9 @@ public class Piloto implements Serializable {
 				ganho = limite;
 			}
 			ganhosAlta.add(ganho);
+			if (ganho > maxGanhoAlta) {
+				maxGanhoAlta = ganho;
+			}
 		}
 		if (getNoAtual().verificaRetaOuLargada()) {
 			ganhosReta.add(ganho);
@@ -2538,6 +2514,7 @@ public class Piloto implements Serializable {
 					: 1;
 		}
 		mudarTracado(novoLado, interfaceJogo, true);
+		boxBaixoRendimento = false;
 		if (getNumeroVolta() > 0)
 			processaVoltaNovaBox(interfaceJogo);
 	}
