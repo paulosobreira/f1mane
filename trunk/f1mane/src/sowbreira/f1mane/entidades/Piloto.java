@@ -1826,7 +1826,7 @@ public class Piloto implements Serializable {
 		Point p5 = GeoUtil.calculaPonto(
 				calculaAngulo,
 				Util.inte(Carro.ALTURA
-						* 4
+						* 3
 						* controleJogo.getCircuito()
 								.getMultiplicadorLarguraPista()),
 				new Point(Util.inte(rectangle.getCenterX()), Util
@@ -1834,7 +1834,7 @@ public class Piloto implements Serializable {
 		Point p4 = GeoUtil.calculaPonto(
 				calculaAngulo + 180,
 				Util.inte(Carro.ALTURA
-						* 4
+						* 3
 						* controleJogo.getCircuito()
 								.getMultiplicadorLarguraPista()),
 				new Point(Util.inte(rectangle.getCenterX()), Util
@@ -2735,13 +2735,13 @@ public class Piloto implements Serializable {
 		if (!verificaColisaoAoMudarDeTracado(interfaceJogo, mudarTracado)) {
 			double mod = Carro.ALTURA;
 			if (getTracado() == 0 && (mudarTracado == 4 || mudarTracado == 5)) {
-				mod *= 4;
+				mod *= 3.5;
 			} else if ((getTracado() == 1 || getTracado() == 2)
 					&& (mudarTracado == 4 || mudarTracado == 5)) {
-				mod *= 3;
+				mod *= 2;
 			} else if ((getTracado() == 5 || getTracado() == 4)
 					&& (mudarTracado == 2 || mudarTracado == 1)) {
-				mod *= 3;
+				mod *= 2;
 			}
 			setTracadoAntigo(getTracado());
 			setTracado(mudarTracado);
