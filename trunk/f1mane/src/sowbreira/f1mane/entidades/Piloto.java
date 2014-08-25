@@ -877,9 +877,8 @@ public class Piloto implements Serializable {
 			box = true;
 		}
 
-		if (!boxBaixoRendimento
-				&& pneus < 15
-				&& (ganho < (.5 * maxGanhoBaixa) && ganho < (.7 * maxGanhoAlta))) {
+		if (!boxBaixoRendimento && pneus < 15
+				&& (ganho < (.5 * maxGanhoBaixa) && colisao == null)) {
 			System.out.println("Box -" + getNome() + " ganho - " + ganho
 					+ " maxGanhoBaixa - " + maxGanhoBaixa + " - maxGanhoAlta "
 					+ maxGanhoAlta);
@@ -1388,6 +1387,16 @@ public class Piloto implements Serializable {
 			if (getNoAtual().verificaRetaOuLargada()
 					&& controleJogo.calculaDiffParaProximoRetardatario(this,
 							false) < Constantes.LIMITE_DRS) {
+				Carro carroNaFrenteRetardatario = controleJogo
+						.obterCarroNaFrenteRetardatario(this, false);
+				if (carroNaFrenteRetardatario != null
+						&& carroNaFrenteRetardatario.getPiloto()
+								.getNumeroVolta() > getNumeroVolta()
+						&& carroNaFrenteRetardatario.getPiloto().getPosicao() < (getPosicao() - 1)) {
+					ativarDRS = false;
+					getCarro().setAsa(Carro.MAIS_ASA);
+					return;
+				}
 				getCarro().setAsa(Carro.MENOS_ASA);
 				if (Math.random() > 0.9 && !getCarro().testeAerodinamica()) {
 					getCarro().setAsa(Carro.ASA_NORMAL);
@@ -1490,6 +1499,11 @@ public class Piloto implements Serializable {
 
 	private void tentarEscaparPilotoDaTraz(InterfaceJogo controleJogo,
 			boolean tentaPassarFrete) {
+		setModoPilotagem(NORMAL);
+		getCarro().setGiro(Carro.GIRO_NOR_VAL);
+		if(!tentaPassarFrete){
+			return;
+		}
 		if (getCarro().verificaCondicoesCautelaGiro(controleJogo)) {
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 			return;
@@ -1504,9 +1518,6 @@ public class Piloto implements Serializable {
 			return;
 		}
 		if (Math.random() > (controleJogo.getNiveljogo() + 0.2)) {
-			return;
-		}
-		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 80 : 70)) {
 			return;
 		}
 		int calculaDiferencaParaAnterior = controleJogo
@@ -1547,9 +1558,7 @@ public class Piloto implements Serializable {
 					&& porcentagemDesgastePeneus > min;
 			if (maxUltimasVoltas || maxPilotagem) {
 				setModoPilotagem(AGRESSIVO);
-			} else {
-				setModoPilotagem(NORMAL);
-			}
+			} 
 			if (!controleJogo.verificaNivelJogo()
 					&& !testeHabilidadePiloto(controleJogo)) {
 				porcentagemCombustivel = 0;
@@ -1557,13 +1566,8 @@ public class Piloto implements Serializable {
 			}
 			if (maxUltimasVoltas || maxMotor) {
 				getCarro().setGiro(Carro.GIRO_MAX_VAL);
-			} else {
-				getCarro().setGiro(Carro.GIRO_NOR_VAL);
-			}
-		} else if (!tentaPassarFrete) {
-			setModoPilotagem(NORMAL);
-			getCarro().setGiro(Carro.GIRO_NOR_VAL);
-		}
+			} 
+		} 
 	}
 
 	private void tentaUsarDRS(InterfaceJogo controleJogo) {
@@ -2063,6 +2067,8 @@ public class Piloto implements Serializable {
 	}
 
 	private boolean tentarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
+		setModoPilotagem(NORMAL);
+		getCarro().setGiro(Carro.GIRO_NOR_VAL);
 		if (danificado()) {
 			return false;
 		}
@@ -2070,9 +2076,6 @@ public class Piloto implements Serializable {
 			return false;
 		}
 		if (Math.random() > (controleJogo.getNiveljogo() + 0.2)) {
-			return false;
-		}
-		if (getStress() > (testeHabilidadePiloto(controleJogo) ? 80 : 70)) {
 			return false;
 		}
 		if (verificaDesconcentrado()) {
@@ -2127,9 +2130,7 @@ public class Piloto implements Serializable {
 			if (maxUltimasVoltas || maxCorrida) {
 				getCarro().setGiro(Carro.GIRO_MAX_VAL);
 				ret = true;
-			} else {
-				getCarro().setGiro(Carro.GIRO_NOR_VAL);
-			}
+			} 
 			if (controleJogo.verificaNivelJogo()
 					&& testeHabilidadePiloto(controleJogo)) {
 				No no = getNoAtual();
@@ -2138,8 +2139,6 @@ public class Piloto implements Serializable {
 						if (maxUltimasVoltas || maxCorrida) {
 							getCarro().setGiro(Carro.GIRO_MAX_VAL);
 							ret = true;
-						} else {
-							getCarro().setGiro(Carro.GIRO_NOR_VAL);
 						}
 					}
 					if (no.verificaRetaOuLargada()) {
@@ -2154,9 +2153,7 @@ public class Piloto implements Serializable {
 						if (maxUltimasVoltas || maxCorrida) {
 							getCarro().setGiro(Carro.GIRO_MAX_VAL);
 							ret = true;
-						} else {
-							getCarro().setGiro(Carro.GIRO_NOR_VAL);
-						}
+						} 
 					}
 				}
 			}
@@ -2179,16 +2176,9 @@ public class Piloto implements Serializable {
 					setModoPilotagem(AGRESSIVO);
 					ret = true;
 					memsagemTentaPasssar(controleJogo, carroPilotoDaFrente);
-				} else {
-					setModoPilotagem(NORMAL);
-				}
-			} else {
-				setModoPilotagem(NORMAL);
-			}
-		} else {
-			getCarro().setGiro(Carro.GIRO_NOR_VAL);
-			setModoPilotagem(NORMAL);
-		}
+				} 
+			} 
+		} 
 		if (getCarro().verificaCondicoesCautelaGiro(controleJogo)
 				|| entrouNoBox()) {
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
