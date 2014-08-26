@@ -879,9 +879,6 @@ public class Piloto implements Serializable {
 
 		if (!boxBaixoRendimento && pneus < 15
 				&& (ganho < (.5 * maxGanhoBaixa) && colisao == null)) {
-			System.out.println("Box -" + getNome() + " ganho - " + ganho
-					+ " maxGanhoBaixa - " + maxGanhoBaixa + " - maxGanhoAlta "
-					+ maxGanhoAlta);
 			boxBaixoRendimento = true;
 		}
 
@@ -2043,7 +2040,7 @@ public class Piloto implements Serializable {
 		}
 		int diff = calculaDiffParaProximo(controleJogo);
 		int size = controleJogo.getCircuito().getPistaFull().size();
-		int distBrigaMax = (int) (size * (controleJogo.getNiveljogo() + 0.3));
+		int distBrigaMax = (int) (size * 0.5);
 		int distBrigaMin = 0;
 		Piloto pilotoFrente = carroPilotoDaFrente.getPiloto();
 		if (pilotoFrente.getPtosBox() != 0) {
@@ -2088,7 +2085,10 @@ public class Piloto implements Serializable {
 		boolean maxCorrida = !superAquecido
 				&& porcentagemCombustivel > porcentagemDesgastePeneus
 				&& temMotor && temCombustivel;
-		if (maxUltimasVoltas || maxCorrida || ativarDRS) {
+		if (maxUltimasVoltas || maxCorrida) {
+			getCarro().setGiro(Carro.GIRO_MAX_VAL);
+		}
+		if (maxCorrida && ativarDRS) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
 		if (testeHabilidadePilotoAerodinamica(controleJogo)) {
