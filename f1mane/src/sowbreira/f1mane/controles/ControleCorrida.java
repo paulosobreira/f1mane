@@ -37,7 +37,7 @@ public class ControleCorrida {
 	private double velocidadeJogo;
 	private long tempoCiclo;
 	private boolean corridaIniciada;
-	private double fatorAcidente = Util.intervalo(0.3, 0.9);
+	private double fatorAcidente = Util.intervalo(0.7, 0.9);
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private Pausa pausaAtual;
@@ -235,7 +235,7 @@ public class ControleCorrida {
 		if (piloto.getCarro().verificaDano()) {
 			return;
 		}
-		if (!piloto.isColisaoCentro() && !piloto.isColisaoDiantera()) {
+		if (!piloto.isColisaoDiantera()) {
 			return;
 		}
 		verificaAcidenteUltrapassagem(piloto, pilotoNaFrente);
