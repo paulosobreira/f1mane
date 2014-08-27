@@ -89,8 +89,6 @@ public class GerenciadorVisual {
 	private JSpinner spinnerQtdeVoltas;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
-	private JSpinner spinnerQtdeMinutosQualificacao;
-	private JSlider sliderTempoCiclo;
 	private JSlider spinnerDificuldadeUltrapassagem;
 	private JList listPilotosSelecionados;
 	private PainelCircuito painelCircuito;
@@ -573,7 +571,7 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_3) {
 					PainelCircuito.desenhaImagens = !PainelCircuito.desenhaImagens;
 				}
-				
+
 				if (Logger.ativo) {
 					if (keyCoode == KeyEvent.VK_T) {
 						controleJogo.tabelaComparativa();
@@ -687,10 +685,6 @@ public class GerenciadorVisual {
 		return comboBoxCircuito;
 	}
 
-	public JSlider getSpinnerTempoCiclo() {
-		return sliderTempoCiclo;
-	}
-
 	public JComboBox getBoxPilotoSelecionado() {
 		return boxPilotoSelecionado;
 	}
@@ -729,10 +723,6 @@ public class GerenciadorVisual {
 
 	public JSpinner getSpinnerPotenciaPadraoCarros() {
 		return spinnerPotenciaPadraoCarros;
-	}
-
-	public JSpinner getSpinnerQtdeMinutosQualificacao() {
-		return spinnerQtdeMinutosQualificacao;
 	}
 
 	public JSlider getSpinnerCombustivelInicial() {
@@ -923,16 +913,6 @@ public class GerenciadorVisual {
 		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
 		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
 		painelInicio.add(spinnerDificuldadeUltrapassagem);
-		painelInicio.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("126");
-			}
-		});
-		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO,
-				Constantes.MAX_CICLO);
-		sliderTempoCiclo.setValue(new Integer(Constantes.MAX_CICLO / 2
-				+ Constantes.MIN_CICLO / 2));
 		labelTable = new Hashtable();
 		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
 			@Override
@@ -946,9 +926,6 @@ public class GerenciadorVisual {
 				return Lang.msg("LENTOS");
 			}
 		});
-		sliderTempoCiclo.setLabelTable(labelTable);
-		sliderTempoCiclo.setPaintLabels(true);
-		painelInicio.add(sliderTempoCiclo);
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
 		spinnerPotenciaPadraoCarros = new JSpinner();
@@ -1025,7 +1002,7 @@ public class GerenciadorVisual {
 		}, BorderLayout.CENTER);
 
 		JPanel grid = new JPanel();
-		grid.setLayout(new GridLayout(7, 2, 5, 5));
+		grid.setLayout(new GridLayout(6, 2, 5, 5));
 		JLabel label = new JLabel() {
 
 			public String getText() {
@@ -1103,16 +1080,6 @@ public class GerenciadorVisual {
 		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
 		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
 		grid.add(spinnerDificuldadeUltrapassagem);
-		grid.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("126");
-			}
-		});
-		sliderTempoCiclo = new JSlider(Constantes.MIN_CICLO,
-				Constantes.MAX_CICLO);
-		sliderTempoCiclo.setValue(Constantes.MAX_CICLO / 2
-				+ Constantes.MIN_CICLO / 2);
 		labelTable = new Hashtable();
 		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
 			@Override
@@ -1126,9 +1093,6 @@ public class GerenciadorVisual {
 				return Lang.msg("LENTOS");
 			}
 		});
-		sliderTempoCiclo.setLabelTable(labelTable);
-		sliderTempoCiclo.setPaintLabels(true);
-		grid.add(sliderTempoCiclo);
 
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
@@ -1231,6 +1195,9 @@ public class GerenciadorVisual {
 	}
 
 	protected void desenhaMiniCircuito(JLabel circuitosLabel) {
+		if (!InterfaceJogo.VALENDO){
+			return;
+		}
 		BufferedImage bufferedImage = new BufferedImage(400, 200,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
@@ -1592,20 +1559,12 @@ public class GerenciadorVisual {
 		return true;
 	}
 
-	private void gerarPainelJogo(JPanel painelInicio) {
-		painelInicio.setLayout(new GridLayout(13, 2));
-		painelInicio.add(new JLabel("Quantidade de Minutos Qualificação :"));
-		spinnerQtdeMinutosQualificacao = new JSpinner();
-		spinnerQtdeMinutosQualificacao.setValue(new Integer(5));
-		painelInicio.add(spinnerQtdeMinutosQualificacao);
-	}
-
 	public boolean iniciarJogo() {
 		JPanel painelInicio = new JPanel();
 		painelInicio.setBorder(new TitledBorder(
 				"Modo Completo com Qualificação:"));
 		gerarPainelJogoSingle(painelInicio);
-		gerarPainelJogo(painelInicio);
+		painelInicio.setLayout(new GridLayout(13, 2));
 		int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),
 				painelInicio, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {

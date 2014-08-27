@@ -453,20 +453,6 @@ public abstract class ControleRecursos {
 
 	}
 
-	protected void definirHabilidadePadraoPilotos(int value) {
-		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = iter.next();
-			String strVal = String.valueOf(value) + Util.intervalo(0, 9);
-			piloto.setHabilidade(Integer.parseInt(strVal));
-		}
-	}
-
-	protected void definirPotenciaPadraoCarros(int value) {
-		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = iter.next();
-			piloto.getCarro().setPotencia(value);
-		}
-	}
 
 	protected void carregarCircuitos() {
 		final Properties properties = new Properties();

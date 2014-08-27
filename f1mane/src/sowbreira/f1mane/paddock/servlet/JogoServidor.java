@@ -192,9 +192,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		qtdeVoltas = null;
 		diffultrapassagem = null;
 		tempoCiclo = null;
-		habilidade = null;
-		potencia = null;
-		tempoQualificacao = null;
 		circuitoSelecionado = null;
 
 	}
@@ -239,30 +236,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			if (tempoCiclo.intValue() >= Constantes.MAX_CICLO) {
 				tempoCiclo = new Integer(Constantes.MAX_CICLO);
 			}
-			habilidade = dadosCriarJogo.getHabilidade();
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
-			if (habilidade.intValue() != 0) {
-				if (habilidade.intValue() < 50) {
-					habilidade = new Integer(50);
-				}
-				if (habilidade.intValue() > 99) {
-					habilidade = new Integer(99);
-				}
 
-				definirHabilidadePadraoPilotos(habilidade.intValue());
-			}
 
-			potencia = dadosCriarJogo.getPotencia();
-			if (potencia.intValue() != 0) {
-				if (potencia.intValue() < 500) {
-					potencia = new Integer(500);
-				}
-				if (potencia.intValue() > 999) {
-					potencia = new Integer(999);
-				}
-				definirPotenciaPadraoCarros(potencia.intValue());
-			}
 			semReabastacimento = dadosCriarJogo.isSemReabastecimento();
 			semTrocaPneu = dadosCriarJogo.isSemTrocaPeneu();
 			kers = dadosCriarJogo.isKers();

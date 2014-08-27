@@ -58,9 +58,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	protected Integer qtdeVoltas = null;
 	protected Integer diffultrapassagem = null;
 	protected Integer tempoCiclo = null;
-	protected Integer habilidade = null;
-	protected Integer potencia = null;
-	protected Integer tempoQualificacao = null;
 	protected String circuitoSelecionado = null;
 
 	private MainFrame mainFrame;
@@ -310,7 +307,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			return false;
 		}
 		int corrida = porcentagemCorridaCompletada();
-		return (corrida > 80);
+		return (corrida > 75);
 	}
 
 	/**
@@ -732,44 +729,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 			}
 			diffultrapassagem = (Integer) gerenciadorVisual
 					.getSpinnerDificuldadeUltrapassagem().getValue();
-			tempoCiclo = (Integer) gerenciadorVisual.getSpinnerTempoCiclo()
-					.getValue();
-			habilidade = (Integer) gerenciadorVisual
-					.getSpinnerSkillPadraoPilotos().getValue();
+			this.tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
+					+ Constantes.MIN_CICLO / 2);
 			circuitoSelecionado = (String) gerenciadorVisual
 					.getComboBoxCircuito().getSelectedItem();
-			if (habilidade.intValue() != 0) {
-				if (habilidade.intValue() <= 50) {
-					habilidade = new Integer(50);
-				}
-				if (habilidade.intValue() >= 99) {
-					habilidade = new Integer(99);
-				}
-				definirHabilidadePadraoPilotos(habilidade.intValue());
-			}
 
-			potencia = (Integer) gerenciadorVisual
-					.getSpinnerPotenciaPadraoCarros().getValue();
-			if (potencia.intValue() != 0) {
-				if (potencia.intValue() <= 500) {
-					potencia = new Integer(500);
-				}
-				if (potencia.intValue() >= 999) {
-					potencia = new Integer(999);
-				}
-				definirPotenciaPadraoCarros(potencia.intValue());
-			}
-
-			if (gerenciadorVisual.getSpinnerQtdeMinutosQualificacao() != null) {
-				tempoQualificacao = (Integer) gerenciadorVisual
-						.getSpinnerQtdeMinutosQualificacao().getValue();
-				if (tempoQualificacao.intValue() < 3) {
-					tempoQualificacao = new Integer(3);
-				}
-				if (tempoQualificacao.intValue() > 15) {
-					tempoQualificacao = new Integer(15);
-				}
-			}
 			if (gerenciadorVisual.getSemReabastacimento().isSelected()) {
 				semReabastacimento = true;
 			}
