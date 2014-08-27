@@ -2102,6 +2102,10 @@ public class Piloto implements Serializable {
 					&& controleJogo.asfaltoAbrasivo()) {
 				min = 10;
 			}
+			double distancia = calculaPontoDerrapada(controleJogo);
+			if (pontoDerrapada != null && distancia < Carro.RAIO_DERRAPAGEM) {
+				valorLimiteStressePararErrarCurva = 100;
+			}
 			boolean maxPilotagem = !getNoAtual().verificaRetaOuLargada()
 					&& porcentagemCombustivel < porcentagemDesgastePeneus
 					&& porcentagemDesgastePeneus > min
