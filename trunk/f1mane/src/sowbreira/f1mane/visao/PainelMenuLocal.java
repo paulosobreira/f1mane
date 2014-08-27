@@ -361,7 +361,6 @@ public class PainelMenuLocal {
 		}
 		if (sobreRect.contains(e.getPoint())) {
 			try {
-				// mainFrame.mostraSobre();
 				MENU = MENU_SOBRE;
 				yCreditos = 0;
 			} catch (Exception e1) {

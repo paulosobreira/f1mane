@@ -535,17 +535,10 @@ public class Carro implements Serializable {
 		int novoModDano = novoModificador;
 		boolean testePotencia = testePotencia();
 		if (giro == GIRO_MAX_VAL) {
-			if (agressivo)
-				valDesgaste = ((testePotencia ? 8 : 9) + novoModDano);
-			else
 				valDesgaste = ((testePotencia ? 6 : 7) + novoModDano);
 		} else if (giro == GIRO_NOR_VAL) {
-			if (agressivo)
-				valDesgaste = ((testePotencia ? 4 : 5) + novoModDano);
-			else
 				valDesgaste = ((testePotencia ? 2 : 3) + novoModDano);
 		} else {
-			if (agressivo)
 				valDesgaste = ((testePotencia ? 1 : 2) + novoModDano);
 		}
 		if (Clima.SOL.equals(controleJogo.getClima())
@@ -603,7 +596,7 @@ public class Carro implements Serializable {
 			valConsumo += (testePotencia ? 5 : 7);
 		}
 
-		if (piloto.isAgressivo() && giro == GIRO_MAX_VAL) {
+		if (giro == GIRO_MAX_VAL) {
 			if (piloto.getNoAtual().verificaRetaOuLargada()) {
 				valConsumo += testePotencia() ? 0 : 3;
 			} else {
