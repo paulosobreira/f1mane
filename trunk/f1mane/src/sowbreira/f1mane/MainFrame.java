@@ -411,7 +411,6 @@ public class MainFrame extends JFrame {
 
 	}
 
-
 	public static void main(String[] args) throws IOException {
 		// Logger.ativo = true;
 		String codeBase = File.separator + "WebContent" + File.separator;
@@ -426,29 +425,14 @@ public class MainFrame extends JFrame {
 
 	public void iniciar() {
 		removerListeners();
-		if (ControleJogoLocal.VALENDO) {
-			setVisible(true);
-			try {
-				controleJogo = new ControleJogoLocal();
-				controleJogo.setMainFrame(this);
-				PainelMenuLocal painelMenuSigle = new PainelMenuLocal(this);
-			} catch (Exception e) {
-				Logger.logarExept(e);
-			}
-		} else {
-			try {
-				Logger.ativo = true;
-				if (controleJogo != null) {
-					controleJogo.matarTodasThreads();
-				}
-				controleJogo = new ControleJogoLocal();
-				controleJogo.setMainFrame(this);
-				controleJogo.iniciarJogo();
-			} catch (Exception e) {
-				Logger.logarExept(e);
-			}
+		setVisible(true);
+		try {
+			controleJogo = new ControleJogoLocal();
+			controleJogo.setMainFrame(this);
+			PainelMenuLocal painelMenuSigle = new PainelMenuLocal(this);
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
-
 	}
 
 	private void removerListeners() {

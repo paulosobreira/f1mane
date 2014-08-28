@@ -572,9 +572,6 @@ public class PainelCircuito {
 		if (!desenhaBkg) {
 			return;
 		}
-		if (!InterfaceJogo.VALENDO) {
-			return;
-		}
 		try {
 			if (!(threadCarregarBkg != null && threadCarregarBkg.isAlive()))
 				backGround = CarregadorRecursos.carregaBackGround(
@@ -3497,7 +3494,7 @@ public class PainelCircuito {
 								afZoom, carx, cary, g2d, carroCimaFreiosE1);
 					}
 				}
-			} else if(Math.random() > 0.7) {
+			} else if (Math.random() > 0.7) {
 				desenhaFumacaTravarRodasRandom(g2d, width, height, carx, cary,
 						afZoom, afRotate);
 			}

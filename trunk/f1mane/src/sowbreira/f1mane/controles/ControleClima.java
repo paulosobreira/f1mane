@@ -56,7 +56,7 @@ public class ControleClima {
 	}
 
 	public void gerarClimaInicial(Clima climaSel) {
-		if (!InterfaceJogo.VALENDO && InterfaceJogo.DEBUG_SEM_CHUVA) {
+		if (InterfaceJogo.DEBUG_SEM_CHUVA) {
 			clima = Clima.SOL;
 			return;
 		}
@@ -90,7 +90,7 @@ public class ControleClima {
 	}
 
 	public void processaPossivelMudancaClima() {
-		if (!InterfaceJogo.VALENDO && InterfaceJogo.DEBUG_SEM_CHUVA) {
+		if (InterfaceJogo.DEBUG_SEM_CHUVA) {
 			clima = Clima.SOL;
 			return;
 		}

@@ -32,10 +32,7 @@ public class ThreadRecolihimentoCarro extends Thread {
 
 	public void run() {
 		try {
-			if (controleJogo.VALENDO) {
-				sleep(delayRecolhimento);
-			}
-
+			sleep(delayRecolhimento);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
