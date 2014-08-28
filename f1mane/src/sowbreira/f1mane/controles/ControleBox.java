@@ -193,7 +193,13 @@ public class ControleBox {
 				if (piloto.getPosicao() < 8)
 					controleJogo.info(Html.orange(Lang.msg("entraBox",
 							new String[] { piloto.getNome() })));
-				Logger.logar(piloto.getNome() + " Entrou no Box " + cont);
+				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "
+						+ piloto.getNumeroVolta() + " Pneus : "
+						+ piloto.getCarro().porcentagemDesgastePeneus()
+						+ " Combustivel : "
+						+ piloto.getCarro().porcentagemCombustivel()
+						+ " Motor : "
+						+ piloto.getCarro().porcentagemDesgasteMotor());
 				piloto.setPtosBox(Util.inte((piloto.getPtosBox() + 1)
 						* circuito.getMultiplciador()));
 			} else {
@@ -413,9 +419,6 @@ public class ControleBox {
 		piloto.setNoAtual(saidaBox);
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		piloto.setNumeroVolta(piloto.getNumeroVolta() + 1);
-		Logger.logar(" Num Volta Box " + piloto.getNumeroVolta() + " "
-				+ piloto.getNome() + " Pos " + piloto.getPosicao() + " Pts "
-				+ piloto.getPtosPista());
 		/**
 		 * calback de nova volta para corrida Toda
 		 */

@@ -50,8 +50,7 @@ public class MainFrame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -284357233387917389L;
-	private MainPanelEditor editor;
-	private InterfaceJogo controleJogo;
+	protected InterfaceJogo controleJogo;
 	private String codeBase;
 	private JMenuBar bar;
 	private JMenu menuJogo;
@@ -115,7 +114,10 @@ public class MainFrame extends JFrame {
 		removerKeyListeners();
 	}
 
-	private String getVersao() {
+	public MainFrame() {
+	}
+
+	public String getVersao() {
 		return ver.getVersao();
 	}
 
@@ -191,7 +193,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (controleJogo != null) {
-						exibirResiltadoFinal(controleJogo.obterResultadoFinal());
+						exibirResultadoFinal(controleJogo.obterResultadoFinal());
 					}
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
@@ -373,26 +375,6 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private void ativarKeysEditor() {
-		removerKeyListeners();
-		menuFrame.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				int keyCoode = e.getKeyCode();
-				if (editor != null) {
-					if (keyCoode == KeyEvent.VK_LEFT) {
-						editor.esquerda();
-					} else if (keyCoode == KeyEvent.VK_RIGHT) {
-						editor.direita();
-					} else if (keyCoode == KeyEvent.VK_UP) {
-						editor.cima();
-					} else if (keyCoode == KeyEvent.VK_DOWN) {
-						editor.baixo();
-					}
-				}
-			}
-		});
-	}
-
 	private void removerKeyListeners() {
 		KeyListener[] listeners = getKeyListeners();
 		for (int i = 0; i < listeners.length; i++) {
@@ -451,7 +433,7 @@ public class MainFrame extends JFrame {
 		}
 	}
 
-	public void exibirResiltadoFinal(PainelTabelaResultadoFinal resultadoFinal) {
+	public void exibirResultadoFinal(PainelTabelaResultadoFinal resultadoFinal) {
 
 		JOptionPane.showMessageDialog(this, new JScrollPane(resultadoFinal),
 				"Resultado Final. ", JOptionPane.INFORMATION_MESSAGE);

@@ -607,11 +607,14 @@ public class PainelCircuito {
 
 	protected void render() {
 		try {
+			Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
+			if (g2d == null) {
+				return;
+			}
 			descontoCentraliza();
 			limitesViewPort = (Rectangle) limitesViewPort();
 			limitesViewPortFull = (Rectangle) limitesViewPortFull();
 			processaZoom();
-			Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
 			desenhaBackGround(g2d);
 			setarHints(g2d);
 			if (!desenhouCreditos) {

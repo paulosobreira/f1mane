@@ -230,9 +230,11 @@ public class GerenciadorVisual {
 			}
 
 		});
-
-		thAtualizaPainelSuave.start();
-		thAtualizaPilotosSuave.start();
+		Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
+		if (g2d != null) {
+			thAtualizaPainelSuave.start();
+			thAtualizaPilotosSuave.start();
+		}
 	}
 
 	private void atualizaPilotosSuave() {
@@ -907,19 +909,6 @@ public class GerenciadorVisual {
 		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
 		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
 		painelInicio.add(spinnerDificuldadeUltrapassagem);
-		labelTable = new Hashtable();
-		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
-			@Override
-			public String getText() {
-				return Lang.msg("RAPIDOS");
-			}
-		});
-		labelTable.put(new Integer(Constantes.MAX_CICLO), new JLabel("") {
-			@Override
-			public String getText() {
-				return Lang.msg("LENTOS");
-			}
-		});
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
 		spinnerPotenciaPadraoCarros = new JSpinner();
@@ -1070,20 +1059,6 @@ public class GerenciadorVisual {
 		spinnerDificuldadeUltrapassagem.setLabelTable(labelTable);
 		spinnerDificuldadeUltrapassagem.setPaintLabels(true);
 		grid.add(spinnerDificuldadeUltrapassagem);
-		labelTable = new Hashtable();
-		labelTable.put(new Integer(Constantes.MIN_CICLO), new JLabel("") {
-			@Override
-			public String getText() {
-				return Lang.msg("RAPIDOS");
-			}
-		});
-		labelTable.put(new Integer(Constantes.MAX_CICLO), new JLabel("") {
-			@Override
-			public String getText() {
-				return Lang.msg("LENTOS");
-			}
-		});
-
 		spinnerSkillPadraoPilotos = new JSpinner();
 		spinnerSkillPadraoPilotos.setValue(new Integer(0));
 		spinnerPotenciaPadraoCarros = new JSpinner();

@@ -764,12 +764,6 @@ public class Piloto implements Serializable {
 			setNumeroVolta(getNumeroVolta() + 1);
 			processaAjustesAntesDepoisQuyalify(Constantes.MAX_VOLTAS
 					/ controleJogo.getQtdeTotalVoltas());
-			if (!controleJogo.isModoQualify()) {
-				Logger.logar(" Numero Volta " + getNumeroVolta() + " "
-						+ getNome() + " Pos " + getPosicao() + " Pts "
-						+ getPtosPista());
-			}
-
 			processaUltimosDesgastesPneuECombustivel();
 
 			index = diff;
@@ -782,7 +776,15 @@ public class Piloto implements Serializable {
 			if (posicao == 1) {
 				controleJogo.processaNovaVolta();
 			}
-
+			if (Logger.ativo && !controleJogo.isModoQualify() ) {
+				String tempoVolta = "";
+				if (getUltimaVolta() != null) {
+					tempoVolta = getUltimaVolta().obterTempoVoltaFormatado();
+				}
+				Logger.logar(" Numero Volta " + getNumeroVolta() + " "
+						+ getNome() + " Posição " + getPosicao() + " Tempo "
+						+ tempoVolta);
+			}
 			if (numeroVolta > controleJogo.totalVoltasCorrida()) {
 				numeroVolta = controleJogo.totalVoltasCorrida();
 				return;

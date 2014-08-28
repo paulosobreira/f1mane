@@ -70,7 +70,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public static void main(String[] args) {
-		System.out.println(Constantes.MAX_CICLO / 2 + Constantes.MIN_CICLO / 2);
 	}
 
 	public ControleJogoLocal() throws Exception {
@@ -679,8 +678,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			String pneuSelecionado) throws Exception {
 		this.qtdeVoltas = new Integer(numVoltasSelecionado);
 		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
-		this.tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
-				+ Constantes.MIN_CICLO / 2);
+		this.tempoCiclo = Constantes.CICLO;
 		this.semReabastacimento = !reabasteciemto;
 		this.semTrocaPneu = !trocaPneus;
 		this.circuitoSelecionado = circuitoSelecionado;
@@ -729,8 +727,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			}
 			diffultrapassagem = (Integer) gerenciadorVisual
 					.getSpinnerDificuldadeUltrapassagem().getValue();
-			this.tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
-					+ Constantes.MIN_CICLO / 2);
+			this.tempoCiclo = Constantes.CICLO;
 			circuitoSelecionado = (String) gerenciadorVisual
 					.getComboBoxCircuito().getSelectedItem();
 
@@ -761,7 +758,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public void exibirResultadoFinal() {
 		gerenciadorVisual.exibirResultadoFinal();
 		if (Logger.ativo)
-			mainFrame.exibirResiltadoFinal(gerenciadorVisual
+			mainFrame.exibirResultadoFinal(gerenciadorVisual
 					.exibirResultadoFinal());
 		controleCorrida.pararThreads();
 		controleEstatisticas.setConsumidorAtivo(false);
@@ -770,12 +767,16 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
-
+			Carro carroAtraz = obterCarroAtraz(piloto);
+			String vantagem = "";
+			if (carroAtraz != null) {
+				vantagem = calculaSegundosParaProximo(carroAtraz.getPiloto());
+			}
 			Logger.logar(circuitoSelecionado + " PLista :" + (i + 1)
 					+ " Posicao " + piloto.getPosicao() + "-"
 					+ piloto.getNome() + " Volta :" + piloto.getNumeroVolta()
 					+ " Paradas Box :" + piloto.getQtdeParadasBox()
-					+ " Pontos Pista :" + piloto.getPtosPista());
+					+ " Vantagem :" + vantagem);
 
 		}
 	}
