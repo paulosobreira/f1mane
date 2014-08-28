@@ -795,14 +795,8 @@ public class GerenciadorVisual {
 		painelInicio.add(label);
 		spinnerQtdeVoltas = new JSpinner();
 		spinnerQtdeVoltas.setValue(new Integer(12));
-		if (!ControleJogoLocal.VALENDO) {
-			spinnerQtdeVoltas.setValue(new Integer(30));
-		}
-
 		painelInicio.add(spinnerQtdeVoltas);
-
 		painelInicio.add(new JLabel() {
-
 			public String getText() {
 				return Lang.msg("111");
 			}
@@ -1014,10 +1008,6 @@ public class GerenciadorVisual {
 		grid.add(label);
 		spinnerQtdeVoltas = new JSpinner();
 		spinnerQtdeVoltas.setValue(new Integer(12));
-		if (!ControleJogoLocal.VALENDO) {
-			spinnerQtdeVoltas.setValue(new Integer(30));
-		}
-
 		grid.add(spinnerQtdeVoltas);
 
 		boxPilotoSelecionado = new JComboBox();
@@ -1195,9 +1185,6 @@ public class GerenciadorVisual {
 	}
 
 	protected void desenhaMiniCircuito(JLabel circuitosLabel) {
-		if (!InterfaceJogo.VALENDO){
-			return;
-		}
 		BufferedImage bufferedImage = new BufferedImage(400, 200,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
@@ -1341,9 +1328,6 @@ public class GerenciadorVisual {
 
 		Object selec = listPilotosSelecionados.getSelectedValue();
 		controleJogo.setTemporada("t" + comboBoxTemporadas.getSelectedItem());
-		if (!ControleJogoLocal.VALENDO) {
-			selec = "";
-		}
 
 		if (selec instanceof Piloto) {
 			controleJogo.efetuarSelecaoPilotoJogador(selec,
@@ -1586,10 +1570,6 @@ public class GerenciadorVisual {
 		}
 
 		Object selec = boxPilotoSelecionado.getSelectedItem();
-
-		if (!ControleJogoLocal.VALENDO) {
-			selec = "";
-		}
 
 		if (selec instanceof Piloto) {
 			controleJogo.efetuarSelecaoPilotoJogador(selec,

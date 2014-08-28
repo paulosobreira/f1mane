@@ -760,7 +760,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void exibirResultadoFinal() {
 		gerenciadorVisual.exibirResultadoFinal();
-		if (!InterfaceJogo.VALENDO)
+		if (Logger.ativo)
 			mainFrame.exibirResiltadoFinal(gerenciadorVisual
 					.exibirResultadoFinal());
 		controleCorrida.pararThreads();

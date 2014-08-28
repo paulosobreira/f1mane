@@ -51,30 +51,27 @@ public class ControleCiclo extends Thread {
 
 	public void run() {
 		try {
-			if (ControleJogoLocal.VALENDO) {
-				controleJogo.atualizaPainel();
-				Thread.sleep(tempoCiclo);
-				controleJogo.desenhaQualificacao();
-				controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
-				Thread.sleep(tempoCiclo);
-				controleJogo.atualizaPainel();
-				Thread.sleep(2000);
-				controleJogo.apagarLuz();
-				Thread.sleep(1000);
-				controleJogo.apagarLuz();
-				Thread.sleep(1000);
-				controleJogo.apagarLuz();
-				Thread.sleep(1000);
-				controleJogo.apagarLuz();
-				Thread.sleep(1000);
-				controleJogo.apagarLuz();
-			}
+			controleJogo.atualizaPainel();
+			Thread.sleep(tempoCiclo);
+			controleJogo.desenhaQualificacao();
+			controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
+			Thread.sleep(tempoCiclo);
+			controleJogo.atualizaPainel();
+			Thread.sleep(2000);
+			controleJogo.apagarLuz();
+			Thread.sleep(1000);
+			controleJogo.apagarLuz();
+			Thread.sleep(1000);
+			controleJogo.apagarLuz();
+			Thread.sleep(1000);
+			controleJogo.apagarLuz();
+			Thread.sleep(1000);
+			controleJogo.apagarLuz();
 			Logger.logar("Luzes apagadas iniciar processadoCilcos");
 			boolean interrupt = false;
 			while (!interrupt && processadoCilcos) {
 				try {
-					if (InterfaceJogo.VALENDO
-							&& controleCorrida.isCorridaPausada()) {
+					if (controleCorrida.isCorridaPausada()) {
 						Thread.sleep(tempoCiclo);
 						continue;
 					}
@@ -101,11 +98,7 @@ public class ControleCiclo extends Thread {
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaPainel();
 					controleJogo.verificaProgramacaoBox();
-					if (InterfaceJogo.VALENDO) {
-						Thread.sleep(tempoCiclo);
-					} else {
-						setPriority(Thread.MIN_PRIORITY);
-					}
+					Thread.sleep(tempoCiclo);
 					contadorCiclos++;
 				} catch (Exception e) {
 					interrupt = true;

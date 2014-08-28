@@ -220,12 +220,7 @@ public class ControleEstatisticas {
 							} catch (Exception e) {
 								Logger.logarExept(e);
 							}
-
-							if (ControleJogoLocal.VALENDO) {
-								Thread.sleep(delay);
-							} else {
-								infoConsumer.setPriority(Thread.MIN_PRIORITY);
-							}
+							Thread.sleep(delay);
 						} catch (Exception e) {
 							interruput = true;
 							Logger.logarExept(e);
@@ -241,21 +236,18 @@ public class ControleEstatisticas {
 
 	public void info(String info, boolean prioritaria) {
 		// Logger.logar(info);
-		if (InterfaceJogo.VALENDO) {
-			if (bufferInfo.contains(info)) {
-				return;
-			}
-			if (allInfo.size() > 0
-					&& allInfo.get(allInfo.size() - 1).equals(info)) {
-				return;
-			}
-			if (prioritaria) {
-				bufferInfo.addFirst(info);
-			} else {
-				bufferInfo.add(info);
-			}
-			allInfo.add(info);
+		if (bufferInfo.contains(info)) {
+			return;
 		}
+		if (allInfo.size() > 0 && allInfo.get(allInfo.size() - 1).equals(info)) {
+			return;
+		}
+		if (prioritaria) {
+			bufferInfo.addFirst(info);
+		} else {
+			bufferInfo.add(info);
+		}
+		allInfo.add(info);
 	}
 
 	public void info(String info) {

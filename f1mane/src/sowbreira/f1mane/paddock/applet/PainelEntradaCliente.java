@@ -102,9 +102,6 @@ public class PainelEntradaCliente {
 
 		spinnerQtdeVoltas = new JSpinner();
 		spinnerQtdeVoltas.setValue(new Integer(12));
-		if (!ControleJogoLocal.VALENDO) {
-			spinnerQtdeVoltas.setValue(new Integer(30));
-		}
 		JPanel pNome = new JPanel(new GridLayout(1, 2));
 		pNome.add(new JLabel() {
 
