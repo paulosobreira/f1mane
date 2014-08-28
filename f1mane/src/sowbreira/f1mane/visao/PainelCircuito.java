@@ -3497,7 +3497,7 @@ public class PainelCircuito {
 								afZoom, carx, cary, g2d, carroCimaFreiosE1);
 					}
 				}
-			} else {
+			} else if(Math.random() > 0.7) {
 				desenhaFumacaTravarRodasRandom(g2d, width, height, carx, cary,
 						afZoom, afRotate);
 			}
