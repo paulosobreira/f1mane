@@ -850,6 +850,7 @@ public class Piloto implements Serializable {
 		}
 		int pneus = getCarro().porcentagemDesgastePeneus();
 		int combust = getCarro().porcentagemCombustivel();
+		int corrida = controleJogo.porcentagemCorridaCompletada();
 		if (controleJogo.isSemReabastacimento()) {
 			combust = 100;
 		}
@@ -886,8 +887,12 @@ public class Piloto implements Serializable {
 			box = true;
 		}
 
-		if (box && controleJogo.verificaUltimasVoltas()
-				&& getQtdeParadasBox() > 0) {
+		int limiteUltimasVoltas = 75;
+		if (controleJogo.isBoxRapido()) {
+			limiteUltimasVoltas = 85;
+		}
+
+		if (box && corrida > limiteUltimasVoltas && getQtdeParadasBox() > 0) {
 			if (!msgsBox.containsKey(Messagens.IR_BOX_FINAL_CORRIDA)) {
 				controleJogo.info(Html.orange(Lang.msg("047",
 						new String[] { getNome() })));
@@ -2066,10 +2071,10 @@ public class Piloto implements Serializable {
 		if (maxUltimasVoltas || maxCorrida) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
-		if (maxCorrida && drsAtivado) {
+		if (drsAtivado) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
-		if (testeHabilidadePilotoAerodinamica(controleJogo)) {
+		if (testeHabilidadePiloto(controleJogo)) {
 			No no = getNoAtual();
 			if (Carro.MAIS_ASA.equals(getCarro().getAsa())) {
 				if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
@@ -2092,7 +2097,7 @@ public class Piloto implements Serializable {
 				}
 			}
 		}
-		if (testeHabilidadePilotoFreios(controleJogo)) {
+		if (testeHabilidadePiloto(controleJogo)) {
 			int min = 15;
 			if (Carro.TIPO_PNEU_MOLE.equals(getCarro().getTipoPneu())
 					&& !controleJogo.asfaltoAbrasivo()) {
@@ -2111,7 +2116,8 @@ public class Piloto implements Serializable {
 					&& porcentagemDesgastePeneus > min
 					&& stress < valorLimiteStressePararErrarCurva;
 
-			if (controleJogo.verificaUltimasVoltas() || maxPilotagem) {
+			if ((stress < valorLimiteStressePararErrarCurva && controleJogo
+					.verificaUltimasVoltas()) || maxPilotagem) {
 				setModoPilotagem(AGRESSIVO);
 				if (carroPilotoDaFrente != null) {
 					memsagemTentaPasssar(controleJogo, carroPilotoDaFrente);
