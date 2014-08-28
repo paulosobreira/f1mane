@@ -27,8 +27,7 @@ public class DadosCriarJogo implements Serializable {
 	private String senha;
 	private String nomeJogo;
 	private String circuitoSelecionado = null;
-	private Integer tempoCiclo = new Integer(Constantes.MAX_CICLO / 2
-			+ Constantes.MIN_CICLO / 2);
+	private Integer tempoCiclo = Constantes.CICLO;
 	private Clima clima = null;
 	private Integer qtdeVoltas = null;
 	private String nivelCorrida = null;

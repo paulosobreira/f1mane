@@ -230,21 +230,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				qtdeVoltas = new Integer(Constantes.MAX_VOLTAS);
 			}
 			tempoCiclo = dadosCriarJogo.getTempoCiclo();
-			if (tempoCiclo.intValue() <= Constantes.MIN_CICLO) {
-				tempoCiclo = new Integer(Constantes.MIN_CICLO);
-			}
-			if (tempoCiclo.intValue() >= Constantes.MAX_CICLO) {
-				tempoCiclo = new Integer(Constantes.MAX_CICLO);
-			}
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
-
-
 			semReabastacimento = dadosCriarJogo.isSemReabastecimento();
 			semTrocaPneu = dadosCriarJogo.isSemTrocaPeneu();
 			kers = dadosCriarJogo.isKers();
 			drs = dadosCriarJogo.isDrs();
-
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 		}
