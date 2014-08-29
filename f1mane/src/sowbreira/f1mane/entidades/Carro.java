@@ -535,9 +535,9 @@ public class Carro implements Serializable {
 		int novoModDano = novoModificador;
 		boolean testePotencia = testePotencia();
 		if (giro == GIRO_MAX_VAL) {
-				valDesgaste = ((testePotencia ? 6 : 7) + novoModDano);
+				valDesgaste = ((testePotencia ? 5 : 7) + novoModDano);
 		} else if (giro == GIRO_NOR_VAL) {
-				valDesgaste = ((testePotencia ? 2 : 3) + novoModDano);
+				valDesgaste = ((testePotencia ? 3 : 5) + novoModDano);
 		} else {
 				valDesgaste = ((testePotencia ? 1 : 2) + novoModDano);
 		}

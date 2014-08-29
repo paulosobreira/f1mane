@@ -881,7 +881,7 @@ public class Piloto implements Serializable {
 		}
 
 		if (!boxBaixoRendimento && colisao == null && pneus < 20
-				&& (ganho < (.6 * maxGanhoBaixa))) {
+				&& (ganho < (.7 * maxGanhoBaixa))) {
 			boxBaixoRendimento = true;
 		}
 
