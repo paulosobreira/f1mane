@@ -626,7 +626,7 @@ public class Carro implements Serializable {
 	private int calculaModificadorPneu(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
 		int porcentPneus = porcentagemDesgastePeneus();
-		if (controleJogo.isSemTrocaPneu() && Math.random() > .4) {
+		if (controleJogo.isSemTrocaPneu() && Math.random() > .7) {
 			return novoModificador;
 		}
 
