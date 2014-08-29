@@ -280,8 +280,19 @@ public class ControleQualificacao {
 			}
 			carro.setDurabilidadeAereofolio(controleJogo
 					.getDurabilidadeAreofolio());
-			Logger.logar(" PosLarg " + piloto.getPosicao() + " Nome "
-					+ piloto.getNome() + " pts " + piloto.getPtosPista());
+			Logger.logar(" Posição Largada :"
+					+ piloto.getPosicao()
+					+ " Nome : "
+					+ piloto.getNome()
+					+ " Pneu : "
+					+ piloto.getCarro().getTipoPneu()
+					+ " Combustivel : "
+					+ piloto.getCarro().porcentagemCombustivel()
+					+ " Asa : "
+					+ piloto.getCarro().getAsa()
+					+ " Tempo Qualificação : "
+					+ ControleEstatisticas.formatarTempo(piloto
+							.getCiclosVoltaQualificacao()));
 		}
 
 	}

@@ -19,7 +19,7 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {
-	public static boolean DEBUG_SEM_CHUVA = true;
+	public static boolean DEBUG_SEM_CHUVA = false;
 	public static String NORMAL = "NORMAL";
 	public static String FACIL = "FACIL";
 	public static String DIFICIL = "DIFICIL";
@@ -28,7 +28,6 @@ public interface InterfaceJogo {
 	public static double DIFICIL_NV = .7;
 	public static int CARGA_KERS = 100;
 	public static int DURABILIDADE_AREOFOLIO = 60;
-	public static boolean NOVO_LAYOUT = true;
 
 	public List listaInfo();
 

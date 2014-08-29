@@ -12,9 +12,11 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -145,9 +147,7 @@ public class PaddockWindow {
 		}
 	};
 
-	private JComboBox comboTemporada = new JComboBox(new String[] { "2014",
-			"2013", "2012", "2011", "2010", "2009", "2008", "2007", "2003",
-			"1990", "1993", "1988", "1987", "1986", "1974", "1972", "1968" });
+	private JComboBox comboTemporada;
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
@@ -159,11 +159,36 @@ public class PaddockWindow {
 	private Set chatTimes = new HashSet();
 	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
+	public static void main(String[] args) {
+		// PaddockWindow paddockWindow = new PaddockWindow(null);
+		// DefaultListModel clientesModel = new DefaultListModel();
+		// for (int i = 0; i < 10; i++) {
+		// clientesModel.addElement("Teste" + i);
+		// }
+		// paddockWindow.listaClientes.setModel(clientesModel);
+		// JFrame frame = new JFrame();
+		// frame.getContentPane().add(paddockWindow.getMainPanel());
+		// frame.setSize(800, 400);
+		// frame.setVisible(true);
+		// frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(true);
+		carregadorRecursos.carregarTemporadasPilotos();
+		List<String> listTemporadas = new ArrayList<String>();
+		Object[] array = carregadorRecursos.getVectorTemps().toArray();
+		System.out.println("");
+
+	}
+
 	public PaddockWindow(ControlePaddockCliente controlePaddockApplet) {
 		img = ImageUtil
 				.geraResize(
 						CarregadorRecursos.carregaBufferedImage("f1bg.png"),
 						0.85, 0.66);
+		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(true);
+		carregadorRecursos.carregarTemporadasPilotos();
+		comboTemporada = new JComboBox(carregadorRecursos.getVectorTemps()
+				.toArray());
 		mainPanel = new JPanel(new BorderLayout()) {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -460,21 +485,6 @@ public class PaddockWindow {
 
 	public JPanel getMainPanel() {
 		return mainPanel;
-	}
-
-	public static void main(String[] args) {
-		PaddockWindow paddockWindow = new PaddockWindow(null);
-		DefaultListModel clientesModel = new DefaultListModel();
-		for (int i = 0; i < 10; i++) {
-			clientesModel.addElement("Teste" + i);
-		}
-		paddockWindow.listaClientes.setModel(clientesModel);
-		JFrame frame = new JFrame();
-		frame.getContentPane().add(paddockWindow.getMainPanel());
-		frame.setSize(800, 400);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
 	}
 
 	public void atualizar(DadosPaddock dadosPaddock) {

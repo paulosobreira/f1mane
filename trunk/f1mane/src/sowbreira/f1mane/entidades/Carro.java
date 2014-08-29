@@ -535,15 +535,15 @@ public class Carro implements Serializable {
 		int novoModDano = novoModificador;
 		boolean testePotencia = testePotencia();
 		if (giro == GIRO_MAX_VAL) {
-				valDesgaste = ((testePotencia ? 5 : 7) + novoModDano);
+			valDesgaste = ((testePotencia ? 6 : 7) + novoModDano);
 		} else if (giro == GIRO_NOR_VAL) {
-				valDesgaste = ((testePotencia ? 3 : 5) + novoModDano);
+			valDesgaste = ((testePotencia ? 4 : 5) + novoModDano);
 		} else {
-				valDesgaste = ((testePotencia ? 1 : 2) + novoModDano);
+			valDesgaste = ((testePotencia ? 1 : 2) + novoModDano);
 		}
 		if (Clima.SOL.equals(controleJogo.getClima())
 				&& Math.random() < (giro / 10.0)) {
-			valDesgaste += agressivo ? 2 : 1;
+			valDesgaste += 1;
 		}
 
 		if (valDesgaste < 0) {

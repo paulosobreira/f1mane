@@ -118,10 +118,13 @@ public class ControleClima {
 	public void informaMudancaClima() {
 		if (Clima.SOL.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("004")));
+			Logger.logar("SOL");
 		} else if (Clima.NUBLADO.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("005")));
+			Logger.logar("NUBLADO");
 		} else if (Clima.CHUVA.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("006")));
+			Logger.logar("CHUVA");
 		}
 		if (controleJogo.getNiveljogo() != InterfaceJogo.DIFICIL_NV)
 			controleJogo.informaMudancaClima();
