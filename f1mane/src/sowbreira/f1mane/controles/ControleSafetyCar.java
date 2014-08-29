@@ -89,6 +89,7 @@ public class ControleSafetyCar {
 		safetyCar.setNoAtual(controleCorrida.getNoSaidaBox());
 		safetyCar.setPtosPista(pts);
 		safetyCar.setNaPista(true);
+		Logger.logar("SAFETY CAR");
 		safetyCar.setVaiProBox(false);
 		controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("029")));
 		recolihimentoCarro = new ThreadRecolihimentoCarro(controleJogo, piloto,

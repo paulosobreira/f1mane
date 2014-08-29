@@ -37,7 +37,7 @@ public class ControleCorrida {
 	private double velocidadeJogo;
 	private long tempoCiclo;
 	private boolean corridaIniciada;
-	private double fatorAcidente = Util.intervalo(0.5, 0.9);
+	private double fatorAcidente = Util.intervalo(0.3, 0.9);
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private Pausa pausaAtual;
@@ -342,6 +342,7 @@ public class ControleCorrida {
 				&& !controleSafetyCar.safetyCarUltimas3voltas()
 				&& piloto.getStress() > stress) {
 			piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
+			Logger.logar(piloto.getNome() + " BATEU_FORTE");
 			controleJogo.infoPrioritaria(Lang.msg("016",
 					new String[] { Html.superRed(piloto.getNome()),
 							pilotoNaFrente.getNome() }));
@@ -353,6 +354,7 @@ public class ControleCorrida {
 				danificaAreofolio(piloto);
 			} else if (piloto.getStress() > stress) {
 				piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
+				Logger.logar(piloto.getNome() + " PERDEU_AEREOFOLIO");
 				controleJogo.infoPrioritaria(Lang.msg("017",
 						new String[] { Html.superRed(piloto.getNome()),
 								pilotoNaFrente.getNome() }));

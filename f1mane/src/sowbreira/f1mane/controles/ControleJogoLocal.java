@@ -772,7 +772,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			if (carroAtraz != null) {
 				vantagem = calculaSegundosParaProximo(carroAtraz.getPiloto());
 			}
-			Logger.logar(circuitoSelecionado + " PLista :" + (i + 1)
+			Logger.logar(piloto.getNome() + " PLista :" + (i + 1)
 					+ " Posicao " + piloto.getPosicao() + "-"
 					+ piloto.getNome() + " Volta :" + piloto.getNumeroVolta()
 					+ " Paradas Box :" + piloto.getQtdeParadasBox()
