@@ -776,7 +776,7 @@ public class Piloto implements Serializable {
 			if (posicao == 1) {
 				controleJogo.processaNovaVolta();
 			}
-			if (Logger.ativo && !controleJogo.isModoQualify() ) {
+			if (Logger.ativo && !controleJogo.isModoQualify()) {
 				String tempoVolta = "";
 				if (getUltimaVolta() != null) {
 					tempoVolta = getUltimaVolta().obterTempoVoltaFormatado();
@@ -903,6 +903,11 @@ public class Piloto implements Serializable {
 			}
 			box = false;
 		}
+		if (controleJogo.isSemReabastacimento()
+				&& controleJogo.isSemTrocaPneu() && !carro.verificaDano()) {
+			box = false;
+		}
+
 		if (controleJogo.getNumVoltaAtual() < 1) {
 			box = false;
 		}
@@ -1020,13 +1025,12 @@ public class Piloto implements Serializable {
 		double porcent = getCarro().porcentagemCombustivel() / 100.0;
 		val += (21 - (porcent / 5.0));
 		boolean naReta = false;
-		if (noAtual != null)
+		if (noAtual != null && !freiandoReta
+				&& (acelerando || ativarDRS || ativarKers))
 			naReta = noAtual.verificaRetaOuLargada();
 		return Util
-				.inte(((val
-						* ganho
-						* ((naReta && !freiandoReta && (acelerando || ativarDRS || ativarKers)) ? 1
-								: 0.7) / ganhoMax) + ganho));
+				.inte(((val * ganho * ((naReta) ? 1 : 0.7) / ganhoMax) + ganho
+						* ((naReta) ? 1 : 0.7)));
 	}
 
 	public void processaColisao(InterfaceJogo controleJogo) {

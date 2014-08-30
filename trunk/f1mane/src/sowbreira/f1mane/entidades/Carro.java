@@ -880,8 +880,7 @@ public class Carro implements Serializable {
 			valDesgaste *= 0.7;
 		}
 
-		if (!controleJogo.isSemTrocaPneu()
-				&& porcentPneus > 25
+		if (porcentPneus > 25
 				&& (piloto.getNoAtual().verificaCruvaBaixa() || piloto
 						.getNoAtual().verificaCruvaAlta())) {
 			valDesgaste *= Piloto.AGRESSIVO.equals(getPiloto()
