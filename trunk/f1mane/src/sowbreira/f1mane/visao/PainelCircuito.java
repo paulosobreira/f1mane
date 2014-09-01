@@ -628,10 +628,10 @@ public class PainelCircuito {
 			iniciaPilotoSelecionado();
 			desenhaMarcasPeneuPista(g2d);
 			desenhaPiloto(g2d);
-			desenhaSC(g2d);
-			desenhaChuva(g2d);
-			desenhaContadorVoltas(g2d);
 			desenharSafetyCarCima(g2d);
+			desenhaChuva(g2d);
+			desenhaSC(g2d);
+			desenhaContadorVoltas(g2d);
 			desenharFarois(g2d);
 			desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
 			desenhaBarrasPilotoCarro(g2d);
@@ -1748,8 +1748,8 @@ public class PainelCircuito {
 		g2d.setColor(Color.black);
 		g2d.drawString(
 				" Fator Acidente  "
-						+ df4.format(controleJogo.getFatorAcidente()), ptoOri,
-				yBase);
+						+ df4.format(100 - (controleJogo.getFatorAcidente() * 100)),
+				ptoOri, yBase);
 
 	}
 
@@ -3444,7 +3444,7 @@ public class PainelCircuito {
 		 * Travada Roda
 		 */
 		if (piloto.decContTravouRodas() && Math.random() > 0.7) {
-			double distancia = piloto.calculaPontoDerrapada(controleJogo);
+			double distancia = piloto.getDistanciaDerrapada();
 			Point pontoDerrapada = piloto.getPontoDerrapada();
 			if (pontoDerrapada != null
 					&& distancia < (2 * Carro.RAIO_DERRAPAGEM)) {
