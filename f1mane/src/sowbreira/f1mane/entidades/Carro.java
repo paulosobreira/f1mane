@@ -955,6 +955,9 @@ public class Carro implements Serializable {
 		if (Carro.PANE_SECA.equals(danificado)) {
 			paneSeca = true;
 		}
+		if (Carro.PERDEU_AEREOFOLIO.equals(danificado)) {
+			setDurabilidadeAereofolio(0);
+		}
 		this.danificado = danificado;
 		if (ABANDONOU.equals(danificado) || BATEU_FORTE.equals(danificado)
 				|| PANE_SECA.equals(danificado)
