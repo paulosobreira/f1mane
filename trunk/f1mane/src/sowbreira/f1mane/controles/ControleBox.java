@@ -546,37 +546,38 @@ public class ControleBox {
 	}
 
 	private void processarTipoAsaAutomatico(Piloto piloto) {
-		int noAlta = 0;
-		int noMedia = 0;
-		int noBaixa = 0;
-		List list = controleJogo.getCircuito().geraPontosPista();
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			No no = (No) iterator.next();
-			if (no.verificaRetaOuLargada()) {
-				noAlta++;
+		piloto.getCarro().setAsa(Carro.ASA_NORMAL);
+		if (piloto.testeHabilidadePiloto(controleJogo)) {
+			int noAlta = 0;
+			int noMedia = 0;
+			int noBaixa = 0;
+			List list = controleJogo.getCircuito().geraPontosPista();
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				No no = (No) iterator.next();
+				if (no.verificaRetaOuLargada()) {
+					noAlta++;
+				}
+				if (no.verificaCruvaAlta()) {
+					noMedia++;
+				}
+				if (no.verificaCruvaBaixa()) {
+					noBaixa++;
+				}
 			}
-			if (no.verificaCruvaAlta()) {
-				noMedia++;
+			double total = noAlta + noMedia + noBaixa;
+			int alta = (int) (100 * noAlta / total);
+			int media = (int) (100 * noMedia / total);
+			int baixa = (int) (100 * noBaixa / total);
+
+			if (alta >= 60) {
+				piloto.getCarro().setAsa(Carro.MENOS_ASA);
 			}
-			if (no.verificaCruvaBaixa()) {
-				noBaixa++;
+			if (baixa >= 15) {
+				piloto.getCarro().setAsa(Carro.MAIS_ASA);
 			}
-		}
-		double total = noAlta + noMedia + noBaixa;
-		int alta = (int) (100 * noAlta / total);
-		int media = (int) (100 * noMedia / total);
-		int baixa = (int) (100 * noBaixa / total);
-		if (alta >= 78) {
-			piloto.getCarro().setAsa(Carro.MENOS_ASA);
-		}
-		if (baixa >= 15) {
-			piloto.getCarro().setAsa(Carro.MAIS_ASA);
-		}
-		if (media >= 25 && piloto.testeHabilidadePiloto(controleJogo)) {
-			piloto.getCarro().setAsa(Carro.MAIS_ASA);
-		}
-		if (media >= 15 && piloto.testeHabilidadePiloto(controleJogo)) {
-			piloto.getCarro().setAsa(Carro.ASA_NORMAL);
+			if (media >= 25) {
+				piloto.getCarro().setAsa(Carro.MAIS_ASA);
+			}
 		}
 		if (controleJogo.isChovendo()) {
 			piloto.getCarro().setAsa(Carro.MAIS_ASA);

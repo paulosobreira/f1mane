@@ -905,6 +905,7 @@ public class Piloto implements Serializable {
 			box = false;
 		}
 		if (controleJogo.isSemReabastacimento()
+				&& !carro.verificaPneusIncompativeisClima(controleJogo)
 				&& controleJogo.isSemTrocaPneu() && !carro.verificaDano()) {
 			box = false;
 		}
@@ -1518,7 +1519,8 @@ public class Piloto implements Serializable {
 			}
 
 		}
-		if (testeHabilidadePiloto(controleJogo)
+		if (!isJogadorHumano()
+				&& testeHabilidadePiloto(controleJogo)
 				&& pontoDerrapada != null
 				&& distanciaDerrapada < ((2 * controleJogo.getNiveljogo()) * Carro.RAIO_DERRAPAGEM)) {
 			int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoDerrapada);
@@ -2078,9 +2080,10 @@ public class Piloto implements Serializable {
 		int corrida = controleJogo.porcentagemCorridaCompletada();
 		boolean temMotor = motor > corrida;
 		int combustivel = getCarro().porcentagemCombustivel();
-		boolean temCombustivel = combustivel > corrida;
+		boolean temCombustivel = combustivel > corrida
+				&& porcentagemCombustivel > 5;
 		double valorLimiteStressePararErrarCurva = getValorLimiteStressePararErrarCurva(controleJogo);
-		boolean maxUltimasVoltas = porcentagemCombustivel > 5
+		boolean maxUltimasVoltas = temCombustivel
 				&& controleJogo.verificaUltimasVoltas();
 		boolean maxCorrida = !superAquecido
 				&& porcentagemCombustivel > porcentagemDesgastePeneus
@@ -2088,7 +2091,7 @@ public class Piloto implements Serializable {
 		if (maxUltimasVoltas || maxCorrida) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
-		if (drsAtivado) {
+		if (drsAtivado && porcentagemCombustivel > 5) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
 		if (testeHabilidadePiloto(controleJogo)) {
