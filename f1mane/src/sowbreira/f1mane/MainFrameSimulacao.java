@@ -63,7 +63,6 @@ public class MainFrameSimulacao extends MainFrame {
 			default:
 				break;
 			}
-			clima = Clima.CHUVA;
 			switch (intervaloNivel) {
 			case 1:
 				nivel = InterfaceJogo.FACIL;
