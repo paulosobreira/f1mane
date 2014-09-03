@@ -90,6 +90,7 @@ public class MainFrameSimulacao extends MainFrame {
 			circuito = listCircuitos.get(0);
 			temporada = listTemporadas.get(0);
 			voltas = Util.intervalo(12, 72);
+			voltas = 72;
 			kers = Math.random() > 0.5;
 			drs = Math.random() > 0.5;
 			trocaPneus = Math.random() > 0.5;
