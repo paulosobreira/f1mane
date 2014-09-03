@@ -216,9 +216,9 @@ public class Carro implements Serializable {
 
 	public void trocarPneus(InterfaceJogo interfaceJogo, String tipoPneu,
 			int distaciaCorrida) {
-		if (interfaceJogo.isSemTrocaPneu()) {
-			if (!(interfaceJogo.isChovendo()
-					|| TIPO_PNEU_CHUVA.equals(tipoPneu) || pneus <= 0)) {
+		if (interfaceJogo.isSemTrocaPneu() && !interfaceJogo.isModoQualify()
+				&& this.tipoPneu != null) {
+			if (!verificaPneusIncompativeisClima(interfaceJogo) || pneus <= 0) {
 				return;
 			}
 		}
