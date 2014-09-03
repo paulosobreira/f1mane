@@ -218,7 +218,7 @@ public class Carro implements Serializable {
 			int distaciaCorrida) {
 		if (interfaceJogo.isSemTrocaPneu() && !interfaceJogo.isModoQualify()
 				&& this.tipoPneu != null) {
-			if (!verificaPneusIncompativeisClima(interfaceJogo) || pneus <= 0) {
+			if (!verificaPneusIncompativeisClima(interfaceJogo) || pneus > 0) {
 				return;
 			}
 		}
