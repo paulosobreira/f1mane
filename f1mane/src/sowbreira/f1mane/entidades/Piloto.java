@@ -873,14 +873,6 @@ public class Piloto implements Serializable {
 
 		}
 
-		if (carro.verificaPneusIncompativeisClima(controleJogo)) {
-			box = true;
-		}
-
-		if (carro.verificaDano()) {
-			box = true;
-		}
-
 		if (!boxBaixoRendimento && colisao == null && pneus < 20
 				&& (ganho < (.7 * maxGanhoBaixa))) {
 			boxBaixoRendimento = true;
@@ -904,15 +896,29 @@ public class Piloto implements Serializable {
 			}
 			box = false;
 		}
+
+		if (carro.verificaPneusIncompativeisClima(controleJogo)) {
+			box = true;
+		}
+
 		if (controleJogo.isSemReabastacimento()
 				&& !carro.verificaPneusIncompativeisClima(controleJogo)
 				&& controleJogo.isSemTrocaPneu() && !carro.verificaDano()) {
 			box = false;
 		}
 
+		if (carro.verificaDano()) {
+			box = true;
+		}
+
+		if (controleJogo.verificaUltimaVolta()) {
+			box = false;
+		}
+
 		if (controleJogo.getNumVoltaAtual() < 1) {
 			box = false;
 		}
+
 		if (controleJogo.isCorridaTerminada()) {
 			box = false;
 		}
