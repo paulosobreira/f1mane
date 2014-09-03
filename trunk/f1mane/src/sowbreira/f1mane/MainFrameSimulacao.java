@@ -63,6 +63,7 @@ public class MainFrameSimulacao extends MainFrame {
 			default:
 				break;
 			}
+			clima = Clima.CHUVA;
 			switch (intervaloNivel) {
 			case 1:
 				nivel = InterfaceJogo.FACIL;
@@ -90,10 +91,10 @@ public class MainFrameSimulacao extends MainFrame {
 			circuito = listCircuitos.get(0);
 			temporada = listTemporadas.get(0);
 			voltas = Util.intervalo(12, 72);
-			voltas = 72;
 			kers = Math.random() > 0.5;
 			drs = Math.random() > 0.5;
 			trocaPneus = Math.random() > 0.5;
+			trocaPneus = false;
 			reabastecimento = Math.random() > 0.5;
 			turbulencia = Util.intervalo(130, 370);
 			controleJogo.iniciarJogoMenuLocal(circuito, temporada, voltas,

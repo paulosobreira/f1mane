@@ -2106,9 +2106,9 @@ public class PainelMenuLocal {
 		g2d.setColor(lightWhite);
 		g2d.fillRoundRect(x - 15, y - 12, tamTurbulencia, 32, 10, 10);
 
-		int porcetTurbulencia = turbulenciaSelecionado / 5;
+		int porcentTurbulencia = turbulenciaSelecionado / 5;
 
-		int tamTurbulenciaSelecionado = porcetTurbulencia * tamTurbulencia
+		int tamTurbulenciaSelecionado = porcentTurbulencia * tamTurbulencia
 				/ 100;
 		g2d.setColor(yel);
 		g2d.drawRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 10, 10);
