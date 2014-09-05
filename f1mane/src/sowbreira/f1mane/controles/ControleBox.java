@@ -190,7 +190,7 @@ public class ControleBox {
 					&& (box.equals(piloto.getNoAtual()) || (cont > (circuito
 							.getEntradaBoxIndex() - 75) && cont < (circuito
 							.getEntradaBoxIndex() + 75)))) {
-				if (piloto.getPosicao() < 8)
+				if (piloto.getPosicao() < 5)
 					controleJogo.info(Html.orange(Lang.msg("entraBox",
 							new String[] { piloto.getNome() })));
 				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "

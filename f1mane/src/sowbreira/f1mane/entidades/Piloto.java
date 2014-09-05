@@ -928,7 +928,7 @@ public class Piloto implements Serializable {
 		if (box && controleJogo.verificaBoxOcupado(getCarro())) {
 			if (!Messagens.BOX_OCUPADO.equals(msgsBox
 					.get(Messagens.BOX_OCUPADO))) {
-				if (getPosicao() < 9) {
+				if (getPosicao() < 10) {
 					controleJogo.info(Html.orange(Lang.msg("046",
 							new String[] { Html.bold(getNome()) })));
 				}
@@ -1105,7 +1105,7 @@ public class Piloto implements Serializable {
 		if (getTracado() == 4 || getTracado() == 5) {
 			if (!verificaDesconcentrado()) {
 				setCiclosDesconcentrado(Util.intervalo(50, 150));
-				if (getPosicao() < 10)
+				if (getPosicao() < 3)
 					controleJogo.info(Lang.msg("saiDaPista",
 							new String[] { Html.superRed(getNome()) }));
 			}
@@ -1305,7 +1305,7 @@ public class Piloto implements Serializable {
 		}
 
 		if (getNoAtual().verificaCruvaBaixa() && retardaFreiandoReta) {
-			if (getPosicao() <= 10 && Math.random() > 0.9
+			if (getPosicao() <= 3 && Math.random() > 0.9
 					&& !testeHabilidadePilotoFreios(controleJogo)) {
 				incStress(Util.intervalo(5, 10));
 				agressivo = false;
@@ -2157,7 +2157,7 @@ public class Piloto implements Serializable {
 	private void memsagemTentaPasssar(InterfaceJogo controleJogo,
 			Carro carroPilotoDaFrente) {
 		if (Math.random() < controleJogo.obterIndicativoCorridaCompleta()
-				&& Math.random() > .9 && getPosicao() < 10
+				&& Math.random() > .9 && getPosicao() < 5
 				&& msgTentativaNumVolta == getNumeroVolta()) {
 			int val = Util.intervalo(1, 4);
 			msgTentativaNumVolta = getNumeroVolta() + val;
