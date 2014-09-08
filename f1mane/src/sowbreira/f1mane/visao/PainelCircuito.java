@@ -4322,7 +4322,7 @@ public class PainelCircuito {
 		yBase += 15;
 		if (!pilotoSelecionado.isAutoPos()) {
 			g2d.setColor(OcilaCor.geraOcila("tracadoManual", yel));
-			g2d.fillRoundRect(ptoOri - 5, yBase - 12, 105, 16, 10, 10);
+			g2d.fillRoundRect(ptoOri - 5, yBase - 12, 100, 16, 10, 10);
 			g2d.setColor(Color.black);
 			g2d.drawString(Lang.msg("tracadoManual"), ptoOri, yBase);
 		} else {
@@ -5412,7 +5412,7 @@ public class PainelCircuito {
 
 		Piloto ps = pilotoSelecionado;
 		if (!(System.currentTimeMillis() - ultimaDesenhaVelocidade < (ps
-				.getVelocidadeExibir() / 4))) {
+				.getVelocidadeExibir() / 5))) {
 			int incAcell = 1;
 			int incFreiada = 1;
 			if (ps.getNoAtual().verificaCruvaBaixa()) {
