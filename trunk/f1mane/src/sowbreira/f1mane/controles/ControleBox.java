@@ -523,8 +523,9 @@ public class ControleBox {
 					controleJogo.getAsaBox(piloto));
 			return;
 		}
-		if (!piloto.testeHabilidadePilotoCarro(controleJogo)
-				&& Math.random() < (controleJogo.getNiveljogo() - 0.2)) {
+		if (piloto.testeHabilidadePilotoCarro(controleJogo)
+				&& controleJogo.asfaltoAbrasivo()
+				&& !controleJogo.isBoxRapido()) {
 			piloto.setSetUpIncial(UMA_PARADA);
 			setupParadaUnica(piloto);
 		} else {
