@@ -141,6 +141,7 @@ public class Piloto implements Serializable {
 	private boolean colisaoDiantera;
 	private boolean colisaoCentro;
 	private int mudouTracadoReta;
+	private int indexRefDerrapada;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -1092,7 +1093,6 @@ public class Piloto implements Serializable {
 		 */
 		if (getStress() > getValorLimiteStressePararErrarCurva(controleJogo)
 				&& !controleJogo.isSafetyCarNaPista()
-				&& (!(getTracado() == 4 || getTracado() == 5))
 				&& AGRESSIVO.equals(modoPilotagem)
 				&& !testeHabilidadePilotoCarro(controleJogo)
 				&& getPtosBox() == 0) {
@@ -1685,6 +1685,9 @@ public class Piloto implements Serializable {
 		if (distanciaDerrapada > Carro.RAIO_DERRAPAGEM) {
 			return false;
 		}
+		if(getNoAtual() != null	&& indexRefDerrapada < getNoAtual().getIndex()){
+			return false;
+		}
 		int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoDerrapada);
 		if (ladoDerrapa == 5 && getTracado() == 2) {
 			return false;
@@ -1703,6 +1706,7 @@ public class Piloto implements Serializable {
 	public void processaPontoDerrapada(InterfaceJogo controleJogo) {
 		distanciaDerrapada = Double.MAX_VALUE;
 		pontoDerrapada = null;
+		indexRefDerrapada = 0;
 		double multi = 0.6;
 		if (getTracado() == 0) {
 			multi = 1.2;
@@ -1729,6 +1733,7 @@ public class Piloto implements Serializable {
 			if (distaciaEntrePontos < distanciaDerrapada) {
 				distanciaDerrapada = distaciaEntrePontos;
 				pontoDerrapada = point;
+				indexRefDerrapada = index;
 			}
 		}
 	}
