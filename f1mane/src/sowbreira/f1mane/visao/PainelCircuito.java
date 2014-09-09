@@ -885,7 +885,7 @@ public class PainelCircuito {
 		}
 		Point o = new Point(limitesViewPort.x + (limitesViewPort.width / 2)
 				- 500, limitesViewPort.y + (limitesViewPort.height / 2) - 260);
-		int x = o.x;
+		int x = o.x+20;
 		int y = o.y;
 		int yTitulo = y - 25;
 		Font fontOri = g2d.getFont();
@@ -1182,6 +1182,32 @@ public class PainelCircuito {
 			g2d.setFont(fontMaior);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("" + diff, x + 20, y + 16);
+
+			x += 55;
+
+			Carro carroAtraz = controleJogo.obterCarroAtraz(piloto);
+			String vantagem = "";
+			if (carroAtraz != null) {
+				vantagem = controleJogo.calculaSegundosParaProximo(carroAtraz
+						.getPiloto());
+			}
+			/**
+			 * vantagem
+			 */
+			if (i == 0) {
+				g2d.setFont(fontNegrito);
+				g2d.setColor(transpMenus);
+				g2d.fillRoundRect(x, yTitulo, 80, 20, 15, 15);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString("" + Lang.msg("vantagem").toUpperCase(), x + 10,
+						yTitulo + 16);
+				g2d.setFont(fontMaior);
+			}
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, 80, 20, 15, 15);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(vantagem, x + 5, y + 16);
+
 			if (corBorda != null) {
 				desenhaBordaResultadoFinal(g2d, x, y, 50, 20, corBorda);
 			}
@@ -1226,6 +1252,9 @@ public class PainelCircuito {
 	}
 
 	private void desenhaAjuda(Graphics2D g2d) {
+		if (isExibeResultadoFinal()) {
+			return;
+		}
 		String msg = " ? ";
 		g2d.setColor(transpMenus);
 		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 110;
@@ -1246,6 +1275,9 @@ public class PainelCircuito {
 
 	private void desenhaSC(Graphics2D g2d) {
 		if (!controleJogo.isSafetyCarNaPista()) {
+			return;
+		}
+		if (isExibeResultadoFinal()) {
 			return;
 		}
 		String msg = " SC ";
@@ -3146,6 +3178,9 @@ public class PainelCircuito {
 	}
 
 	private void desenhaPiloto(Graphics2D g2d) {
+		if (exibeResultadoFinal) {
+			return;
+		}
 		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
 			No noAtual = piloto.getNoAtualSuave();
@@ -3168,9 +3203,6 @@ public class PainelCircuito {
 			}
 			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
 			desenhaCarroCima(g2d, piloto);
-		}
-		if (exibeResultadoFinal) {
-			return;
 		}
 		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
@@ -4196,6 +4228,9 @@ public class PainelCircuito {
 
 	private void desenhaListaPilotos(Graphics2D g2d) {
 		if (!desenhaInfo) {
+			return;
+		}
+		if (isExibeResultadoFinal()) {
 			return;
 		}
 		int x = limitesViewPort.x + limitesViewPort.width - 165;
