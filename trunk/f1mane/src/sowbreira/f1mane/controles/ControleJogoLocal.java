@@ -767,15 +767,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
-			Carro carroAtraz = obterCarroAtraz(piloto);
-			String vantagem = "";
-			if (carroAtraz != null) {
-				vantagem = calculaSegundosParaProximo(carroAtraz.getPiloto());
-			}
-			Logger.logar((i + 1) + " Posicao "
-					+ piloto.getPosicao() + " - " + piloto.getNome() + " Volta :"
-					+ piloto.getNumeroVolta() + " Paradas Box :"
-					+ piloto.getQtdeParadasBox() + " Vantagem :" + vantagem);
+			Logger.logar((i + 1) + " Posicao " + piloto.getPosicao() + " - "
+					+ piloto.getNome() + " Volta :" + piloto.getNumeroVolta()
+					+ " Paradas Box :" + piloto.getQtdeParadasBox()
+					+ " Vantagem :" + piloto.getVantagem());
 
 		}
 	}
