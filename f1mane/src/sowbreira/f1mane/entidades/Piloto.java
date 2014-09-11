@@ -104,6 +104,7 @@ public class Piloto implements Serializable {
 	private String segundosParaLider;
 	private String tipoPneuBox;
 	private String asaBox;
+	private String vantagem;
 	private int qtdeCombustBox;
 	private long parouNoBoxMilis;
 	private long saiuDoBoxMilis;
@@ -578,6 +579,11 @@ public class Piloto implements Serializable {
 		}
 
 		this.recebeuBanderada = recebueBanderada;
+		Carro carroAtraz = controleJogo.obterCarroAtraz(this);
+		if (carroAtraz != null) {
+			setVantagem(controleJogo.calculaSegundosParaProximo(carroAtraz
+					.getPiloto()));
+		}
 	}
 
 	public void setQtdeParadasBox(int qtdeParadasBox) {
@@ -1685,7 +1691,7 @@ public class Piloto implements Serializable {
 		if (distanciaDerrapada > Carro.RAIO_DERRAPAGEM) {
 			return false;
 		}
-		if(getNoAtual() != null	&& indexRefDerrapada < getNoAtual().getIndex()){
+		if (getNoAtual() != null && indexRefDerrapada < getNoAtual().getIndex()) {
 			return false;
 		}
 		int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoDerrapada);
@@ -2958,6 +2964,14 @@ public class Piloto implements Serializable {
 
 	public double getDistanciaDerrapada() {
 		return distanciaDerrapada;
+	}
+
+	public String getVantagem() {
+		return vantagem;
+	}
+
+	public void setVantagem(String vantagem) {
+		this.vantagem = vantagem;
 	}
 
 }
