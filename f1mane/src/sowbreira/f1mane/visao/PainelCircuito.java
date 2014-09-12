@@ -1201,7 +1201,9 @@ public class PainelCircuito {
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 80, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(piloto.getVantagem(), x + 5, y + 16);
+			g2d.drawString(
+					piloto.getVantagem() == null ? "" : piloto.getVantagem(),
+					x + 5, y + 16);
 
 			if (corBorda != null) {
 				desenhaBordaResultadoFinal(g2d, x, y, 50, 20, corBorda);
