@@ -14,6 +14,8 @@ public abstract class ObjetoPista implements Serializable {
 	int transparencia;
 	int altura;
 	int largura;
+	int noInicioTranparencia;
+	int noFimTranparencia;
 	double angulo;
 	Point posicaoQuina;
 	private String nome;
@@ -103,6 +105,22 @@ public abstract class ObjetoPista implements Serializable {
 			transparencia = 255;
 		}
 		this.transparencia = transparencia;
+	}
+
+	public int getNoInicioTranparencia() {
+		return noInicioTranparencia;
+	}
+
+	public void setNoInicioTranparencia(int noInicioTranparencia) {
+		this.noInicioTranparencia = noInicioTranparencia;
+	}
+
+	public int getNoFimTranparencia() {
+		return noFimTranparencia;
+	}
+
+	public void setNoFimTranparencia(int noFimTranparencia) {
+		this.noFimTranparencia = noFimTranparencia;
 	}
 
 }
