@@ -21,14 +21,14 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 public class FormularioObjetos {
 
 	private JSpinner largura = new JSpinner();
-	private JSpinner altura = new JSpinner();
-	private JSpinner angulo = new JSpinner();
+	private JSpinner inicioTranparencia = new JSpinner();
+	private JSpinner fimTransparencia = new JSpinner();
 	private JSpinner transparencia = new JSpinner();
 	private JCheckBox frente = new JCheckBox();
 	private JComboBox tipoComboBox = new JComboBox();
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
-	private JPanel panel = new JPanel(new GridLayout(2, 2));
+	private JPanel panel = new JPanel(new GridLayout(4, 2));
 	private MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
 	protected static final String OBJETO_TRANSPARENCIA = "Objeto Transparencia";
@@ -41,44 +41,54 @@ public class FormularioObjetos {
 		panel.add(new JLabel("Tipo"));
 		panel.add(tipoComboBox);
 
-//		panel.add(new JLabel("Altura"));
-//		panel.add(altura);
-//
-//		panel.add(new JLabel("Largura"));
-//		panel.add(largura);
+		panel.add(new JLabel("No Inicio Transparencia"){
+			@Override
+			public String getText() {
+				return Lang.msg("noInicioTransparencia");
+			}
+		});
+		panel.add(inicioTranparencia);
+
+		panel.add(new JLabel("No Fim Transparencia"){
+			@Override
+			public String getText() {
+				return Lang.msg("noFimTransparencia");
+			}
+		});
+		panel.add(largura);
 
 		panel.add(new JLabel("Angulo"));
-		panel.add(angulo);
+		panel.add(fimTransparencia);
 
-//		panel.add(new JLabel("Transparencia"));
-//		panel.add(transparencia);
-//
-//		panel.add(new JLabel("Desenha Frente/Nos Box"));
-//		panel.add(frente);
+		// panel.add(new JLabel("Transparencia"));
+		// panel.add(transparencia);
+		//
+		// panel.add(new JLabel("Desenha Frente/Nos Box"));
+		// panel.add(frente);
 
-//		panel.add(new JLabel("Cor Primaria"));
-//		panel.add(labelCor1);
-//		labelCor1.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				Color color = JColorChooser.showDialog(panel,
-//						Lang.msg("escolhaCor"), Color.WHITE);
-//				setCor(color, labelCor1);
-//			}
-//		});
-//
-//		panel.add(new JLabel("Cor Secundaria"));
-//		panel.add(labelCor2);
-//
-//		labelCor2.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				super.mouseClicked(e);
-//				Color color = JColorChooser.showDialog(panel,
-//						Lang.msg("escolhaCor"), Color.WHITE);
-//				setCor(color, labelCor2);
-//			}
-//		});
+		// panel.add(new JLabel("Cor Primaria"));
+		// panel.add(labelCor1);
+		// labelCor1.addMouseListener(new MouseAdapter() {
+		// @Override
+		// public void mouseClicked(MouseEvent e) {
+		// Color color = JColorChooser.showDialog(panel,
+		// Lang.msg("escolhaCor"), Color.WHITE);
+		// setCor(color, labelCor1);
+		// }
+		// });
+		//
+		// panel.add(new JLabel("Cor Secundaria"));
+		// panel.add(labelCor2);
+		//
+		// labelCor2.addMouseListener(new MouseAdapter() {
+		// @Override
+		// public void mouseClicked(MouseEvent e) {
+		// super.mouseClicked(e);
+		// Color color = JColorChooser.showDialog(panel,
+		// Lang.msg("escolhaCor"), Color.WHITE);
+		// setCor(color, labelCor2);
+		// }
+		// });
 
 		ChangeListener changeListener = new ChangeListener() {
 
@@ -88,9 +98,9 @@ public class FormularioObjetos {
 
 			}
 		};
-		altura.addChangeListener(changeListener);
+		inicioTranparencia.addChangeListener(changeListener);
 		largura.addChangeListener(changeListener);
-		angulo.addChangeListener(changeListener);
+		fimTransparencia.addChangeListener(changeListener);
 		transparencia.addChangeListener(changeListener);
 		transparencia.setValue(new Integer(255));
 	}
@@ -137,12 +147,20 @@ public class FormularioObjetos {
 		return largura;
 	}
 
-	public JSpinner getAltura() {
-		return altura;
+	public JSpinner getInicioTranparencia() {
+		return inicioTranparencia;
 	}
 
-	public JSpinner getAngulo() {
-		return angulo;
+	public void setInicioTranparencia(JSpinner inicioTranparencia) {
+		this.inicioTranparencia = inicioTranparencia;
+	}
+
+	public JSpinner getFimTransparencia() {
+		return fimTransparencia;
+	}
+
+	public void setFimTransparencia(JSpinner fimTransparencia) {
+		this.fimTransparencia = fimTransparencia;
 	}
 
 	public JSpinner getTransparencia() {
@@ -179,13 +197,13 @@ public class FormularioObjetos {
 
 	public void objetoLivreFormulario(ObjetoPista objetoPista) {
 		this.objetoPista = null;
-		altura.setValue(objetoPista.getAltura());
+		inicioTranparencia.setValue(objetoPista.getAltura());
 		largura.setValue(objetoPista.getLargura());
 		setCor(objetoPista.getCorPimaria(), labelCor1);
 		setCor(objetoPista.getCorSecundaria(), labelCor2);
 		transparencia.setValue(objetoPista.getTransparencia());
 		frente.setSelected(objetoPista.isPintaEmcima());
-		angulo.setValue(new Integer((int) objetoPista.getAngulo()));
+		fimTransparencia.setValue(new Integer((int) objetoPista.getAngulo()));
 		this.objetoPista = objetoPista;
 		mostrarPainelModal();
 	}
@@ -193,10 +211,11 @@ public class FormularioObjetos {
 	public void formularioObjetoPista(ObjetoPista objetoPista) {
 		objetoPista.setCorPimaria(getLabelCor1().getBackground());
 		objetoPista.setCorSecundaria(getLabelCor2().getBackground());
-		objetoPista.setAngulo((Integer) angulo.getValue());
+		objetoPista.setAngulo((Integer) fimTransparencia.getValue());
 		objetoPista.setPintaEmcima(getFrente().isSelected());
-		objetoPista.setAltura((Integer) getAltura().getValue());
-		objetoPista.setLargura((Integer) getLargura().getValue());
+		objetoPista.setNoInicioTranparencia((Integer) getInicioTranparencia()
+				.getValue());
+		objetoPista.setNoFimTranparencia((Integer) getFimTransparencia().getValue());
 		objetoPista.setTransparencia((Integer) transparencia.getValue());
 	}
 }
