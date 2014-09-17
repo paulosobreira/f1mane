@@ -3341,6 +3341,7 @@ public class PainelCircuito {
 				imagemCarroY, opRotate, opZoom);
 		boolean naoDesenhaEfeitos = false;
 		boolean temTransparencia = false;
+		int indexNoAtual = noAtual.getIndex();
 		if (circuito.getObjetos() != null) {
 			for (ObjetoPista objetoPista : circuito.getObjetos()) {
 				if (!(objetoPista instanceof ObjetoTransparencia))
@@ -3353,10 +3354,9 @@ public class PainelCircuito {
 				}
 				if (objetoPista.getInicioTransparencia() != 0
 						&& objetoPista.getFimTransparencia() != 0) {
-					int indexNoAtual = noAtual.getIndex();
-					double inicio = objetoPista.getInicioTransparencia();
-					double fim = objetoPista.getFimTransparencia();
-					if (inicio < indexNoAtual || fim > indexNoAtual) {
+					int inicio = objetoPista.getInicioTransparencia();
+					int fim = objetoPista.getFimTransparencia();
+					if (indexNoAtual < inicio || indexNoAtual > fim) {
 						continue;
 					}
 				}

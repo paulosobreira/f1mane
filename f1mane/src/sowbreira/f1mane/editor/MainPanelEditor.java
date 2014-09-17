@@ -626,11 +626,11 @@ public class MainPanelEditor extends JPanel {
 				MainPanelEditor.this.repaint();
 				if (boxJList.getSelectedIndex() > -1)
 					ultimoItemBoxSelecionado = boxJList.getSelectedIndex();
-				
+
 				No no = (No) ((DefaultListModel) boxJList.getModel())
 						.get(ultimoItemBoxSelecionado);
 				centralizarPonto(no.getPoint());
-				
+
 				pistaJList.clearSelection();
 			}
 		});
@@ -1713,26 +1713,30 @@ public class MainPanelEditor extends JPanel {
 		No oldNo = null;
 		int count = 0;
 		int conNoPista = 0;
-		for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
-			No no = (No) iter.next();
+		for (int i = 0; i < circuito.getPista().size(); i++) {
+			No no = (No) circuito.getPista().get(i);
 			g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no.getDrawY(),
 					null);
-			String num = " " + conNoPista + " ";
+			String num = " " + conNoPista + " (" + count + ")";
 			int larguraNum = Util.larguraTexto(num, (Graphics2D) g2d);
 			int qX = no.getDrawX() + 10;
 			int qY = no.getDrawY() - 10;
 			g2d.setColor(PainelCircuito.transpMenus);
 			g2d.fillRoundRect(qX, qY, larguraNum, 15, 5, 5);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(num+"("+count+")", qX, qY + 12);
+			g2d.drawString(num, qX, qY + 12);
 			conNoPista++;
 			if (oldNo == null) {
 				oldNo = no;
 			} else {
-				count += GeoUtil.drawBresenhamLine(oldNo.getX(),
-						oldNo.getY(), no.getX(), no.getY()).size();
 				g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no.getY());
 				oldNo = no;
+			}
+
+			if (i + 1 < circuito.getPista().size()) {
+				No newNo = (No) circuito.getPista().get(i + 1);
+				count += GeoUtil.drawBresenhamLine(newNo.getX(), newNo.getY(),
+						no.getX(), no.getY()).size();
 			}
 
 			if (pistaJList != null && pistaJList.getSelectedValue() == no) {
@@ -1753,14 +1757,14 @@ public class MainPanelEditor extends JPanel {
 			g2d.fillRoundRect(no.getDrawX(), no.getDrawY(), 10, 10, 15, 15);
 			g2d.setColor(Color.BLACK);
 			String num = " " + conNoPista + " ";
-			g2d.drawString(num+"("+count+")", qX, qY + 12);
+			g2d.drawString(num + "(" + count + ")", qX, qY + 12);
 			conNoPista++;
 			if (oldNo == null) {
 				oldNo = no;
 			} else {
 				g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no.getY());
-				count += GeoUtil.drawBresenhamLine(oldNo.getX(),
-						oldNo.getY(), no.getX(), no.getY()).size();
+				count += GeoUtil.drawBresenhamLine(oldNo.getX(), oldNo.getY(),
+						no.getX(), no.getY()).size();
 				oldNo = no;
 			}
 
