@@ -23,7 +23,7 @@ public class FormularioObjetos {
 	private JSpinner largura = new JSpinner();
 	private JSpinner inicioTranparencia = new JSpinner();
 	private JSpinner fimTransparencia = new JSpinner();
-	private JSpinner transparencia = new JSpinner();
+	private JSpinner angulo = new JSpinner();
 	private JCheckBox frente = new JCheckBox();
 	private JComboBox tipoComboBox = new JComboBox();
 	private JLabel labelCor1 = new JLabel("Clique");
@@ -41,7 +41,7 @@ public class FormularioObjetos {
 		panel.add(new JLabel("Tipo"));
 		panel.add(tipoComboBox);
 
-		panel.add(new JLabel("No Inicio Transparencia"){
+		panel.add(new JLabel("No Inicio Transparencia") {
 			@Override
 			public String getText() {
 				return Lang.msg("noInicioTransparencia");
@@ -49,16 +49,16 @@ public class FormularioObjetos {
 		});
 		panel.add(inicioTranparencia);
 
-		panel.add(new JLabel("No Fim Transparencia"){
+		panel.add(new JLabel("No Fim Transparencia") {
 			@Override
 			public String getText() {
 				return Lang.msg("noFimTransparencia");
 			}
 		});
-		panel.add(largura);
+		panel.add(fimTransparencia);
 
 		panel.add(new JLabel("Angulo"));
-		panel.add(fimTransparencia);
+		panel.add(angulo);
 
 		// panel.add(new JLabel("Transparencia"));
 		// panel.add(transparencia);
@@ -101,8 +101,6 @@ public class FormularioObjetos {
 		inicioTranparencia.addChangeListener(changeListener);
 		largura.addChangeListener(changeListener);
 		fimTransparencia.addChangeListener(changeListener);
-		transparencia.addChangeListener(changeListener);
-		transparencia.setValue(new Integer(255));
 	}
 
 	protected void atualizaMain() {
@@ -163,10 +161,6 @@ public class FormularioObjetos {
 		this.fimTransparencia = fimTransparencia;
 	}
 
-	public JSpinner getTransparencia() {
-		return transparencia;
-	}
-
 	public JCheckBox getFrente() {
 		return frente;
 	}
@@ -197,13 +191,12 @@ public class FormularioObjetos {
 
 	public void objetoLivreFormulario(ObjetoPista objetoPista) {
 		this.objetoPista = null;
-		inicioTranparencia.setValue(objetoPista.getAltura());
 		largura.setValue(objetoPista.getLargura());
 		setCor(objetoPista.getCorPimaria(), labelCor1);
 		setCor(objetoPista.getCorSecundaria(), labelCor2);
-		transparencia.setValue(objetoPista.getTransparencia());
 		frente.setSelected(objetoPista.isPintaEmcima());
-		fimTransparencia.setValue(new Integer((int) objetoPista.getAngulo()));
+		inicioTranparencia.setValue(objetoPista.getInicioTransparencia());
+		fimTransparencia.setValue(objetoPista.getFimTransparencia());
 		this.objetoPista = objetoPista;
 		mostrarPainelModal();
 	}
@@ -211,11 +204,8 @@ public class FormularioObjetos {
 	public void formularioObjetoPista(ObjetoPista objetoPista) {
 		objetoPista.setCorPimaria(getLabelCor1().getBackground());
 		objetoPista.setCorSecundaria(getLabelCor2().getBackground());
-		objetoPista.setAngulo((Integer) fimTransparencia.getValue());
-		objetoPista.setPintaEmcima(getFrente().isSelected());
-		objetoPista.setNoInicioTranparencia((Integer) getInicioTranparencia()
-				.getValue());
-		objetoPista.setNoFimTranparencia((Integer) getFimTransparencia().getValue());
-		objetoPista.setTransparencia((Integer) transparencia.getValue());
+		objetoPista.setAngulo((Integer) angulo.getValue());
+		objetoPista.setInicioTransparencia((Integer) getInicioTranparencia().getValue());
+		objetoPista.setFimTransparencia((Integer) getFimTransparencia().getValue());
 	}
 }

@@ -8,17 +8,19 @@ import java.io.Serializable;
 
 public abstract class ObjetoPista implements Serializable {
 
+	private static final long serialVersionUID = 4416705642227491612L;
 	boolean pintaEmcima;
 	Color corPimaria;
 	Color corSecundaria;
 	int transparencia;
 	int altura;
 	int largura;
-	int noInicioTranparencia;
-	int noFimTranparencia;
 	double angulo;
 	Point posicaoQuina;
 	private String nome;
+	int inicioTransparencia;
+	int fimTransparencia;
+	boolean transparenciaBox;
 
 	public String getNome() {
 		return nome;
@@ -107,20 +109,28 @@ public abstract class ObjetoPista implements Serializable {
 		this.transparencia = transparencia;
 	}
 
-	public int getNoInicioTranparencia() {
-		return noInicioTranparencia;
+	public int getInicioTransparencia() {
+		return inicioTransparencia;
 	}
 
-	public void setNoInicioTranparencia(int noInicioTranparencia) {
-		this.noInicioTranparencia = noInicioTranparencia;
+	public void setInicioTransparencia(int inicioTransparencia) {
+		this.inicioTransparencia = inicioTransparencia;
 	}
 
-	public int getNoFimTranparencia() {
-		return noFimTranparencia;
+	public int getFimTransparencia() {
+		return fimTransparencia;
 	}
 
-	public void setNoFimTranparencia(int noFimTranparencia) {
-		this.noFimTranparencia = noFimTranparencia;
+	public void setFimTransparencia(int fimTransparencia) {
+		this.fimTransparencia = fimTransparencia;
+	}
+
+	public boolean isTransparenciaBox() {
+		return transparenciaBox;
+	}
+
+	public void setTransparenciaBox(boolean transparenciaBox) {
+		this.transparenciaBox = transparenciaBox;
 	}
 
 }
