@@ -3345,23 +3345,21 @@ public class PainelCircuito {
 			for (ObjetoPista objetoPista : circuito.getObjetos()) {
 				if (!(objetoPista instanceof ObjetoTransparencia))
 					continue;
-				if (objetoPista.isPintaEmcima()
+				ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+				if (objetoPista.isTransparenciaBox()
 						&& controleJogo.obterPista(piloto.getNoAtual()) != controleJogo
 								.getNosDoBox()) {
 					continue;
 				}
-				if (objetoPista.getNoInicioTranparencia() != 0
-						&& objetoPista.getNoFimTranparencia() != 0) {
+				if (objetoPista.getInicioTransparencia() != 0
+						&& objetoPista.getFimTransparencia() != 0) {
 					int indexNoAtual = noAtual.getIndex();
-					double inicio = objetoPista.getNoInicioTranparencia()
-							* controleJogo.getCircuito().getMultiplciador();
-					double fim = objetoPista.getNoFimTranparencia()
-							* controleJogo.getCircuito().getMultiplciador();
+					double inicio = objetoPista.getInicioTransparencia();
+					double fim = objetoPista.getFimTransparencia();
 					if (inicio < indexNoAtual || fim > indexNoAtual) {
 						continue;
 					}
 				}
-				ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
 				Rectangle obterArea = objetoTransparencia.obterArea();
 				if (!limitesViewPort
 						.contains(

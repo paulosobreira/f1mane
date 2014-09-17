@@ -1711,6 +1711,7 @@ public class MainPanelEditor extends JPanel {
 		}
 
 		No oldNo = null;
+		int count = 0;
 		int conNoPista = 0;
 		for (Iterator iter = circuito.getPista().iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
@@ -1723,11 +1724,13 @@ public class MainPanelEditor extends JPanel {
 			g2d.setColor(PainelCircuito.transpMenus);
 			g2d.fillRoundRect(qX, qY, larguraNum, 15, 5, 5);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(num, qX, qY + 12);
+			g2d.drawString(num+"("+count+")", qX, qY + 12);
 			conNoPista++;
 			if (oldNo == null) {
 				oldNo = no;
 			} else {
+				count += GeoUtil.drawBresenhamLine(oldNo.getX(),
+						oldNo.getY(), no.getX(), no.getY()).size();
 				g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no.getY());
 				oldNo = no;
 			}
@@ -1741,17 +1744,23 @@ public class MainPanelEditor extends JPanel {
 		}
 
 		oldNo = null;
-
+		count = 0;
 		for (Iterator iter = circuito.getBox().iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
+			int qX = no.getDrawX() + 10;
+			int qY = no.getDrawY() - 10;
 			g2d.setColor(no.getTipo());
 			g2d.fillRoundRect(no.getDrawX(), no.getDrawY(), 10, 10, 15, 15);
 			g2d.setColor(Color.BLACK);
-
+			String num = " " + conNoPista + " ";
+			g2d.drawString(num+"("+count+")", qX, qY + 12);
+			conNoPista++;
 			if (oldNo == null) {
 				oldNo = no;
 			} else {
 				g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no.getY());
+				count += GeoUtil.drawBresenhamLine(oldNo.getX(),
+						oldNo.getY(), no.getX(), no.getY()).size();
 				oldNo = no;
 			}
 
