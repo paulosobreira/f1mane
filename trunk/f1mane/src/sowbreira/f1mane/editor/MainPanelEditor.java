@@ -1749,25 +1749,33 @@ public class MainPanelEditor extends JPanel {
 
 		oldNo = null;
 		count = 0;
-		for (Iterator iter = circuito.getBox().iterator(); iter.hasNext();) {
-			No no = (No) iter.next();
+		for (int i = 0; i < circuito.getBox().size(); i++) {
+			No no = (No) circuito.getBox().get(i);
+			g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no.getDrawY(),
+					null);
 			int qX = no.getDrawX() + 10;
-			int qY = no.getDrawY() - 10;
-			g2d.setColor(no.getTipo());
-			g2d.fillRoundRect(no.getDrawX(), no.getDrawY(), 10, 10, 15, 15);
+			int qY = no.getDrawY() + 10;
+			String num = " " + conNoPista + " (" + count + ")";
+			int larguraNum = Util.larguraTexto(num, (Graphics2D) g2d);
+			g2d.setColor(PainelCircuito.gre);
+			g2d.fillRoundRect(qX, qY, larguraNum, 15, 5, 5);
 			g2d.setColor(Color.BLACK);
-			String num = " " + conNoPista + " ";
-			g2d.drawString(num + "(" + count + ")", qX, qY + 12);
+			g2d.drawString(num , qX, qY + 12);
 			conNoPista++;
 			if (oldNo == null) {
 				oldNo = no;
 			} else {
 				g2d.drawLine(oldNo.getX(), oldNo.getY(), no.getX(), no.getY());
-				count += GeoUtil.drawBresenhamLine(oldNo.getX(), oldNo.getY(),
-						no.getX(), no.getY()).size();
 				oldNo = no;
 			}
 
+			if (i + 1 < circuito.getBox().size()) {
+				No newNo = (No) circuito.getBox().get(i + 1);
+				count += GeoUtil.drawBresenhamLine(newNo.getX(), newNo.getY(),
+						no.getX(), no.getY()).size();
+			}
+			
+			
 			if (boxJList != null && boxJList.getSelectedValue() == no) {
 				g2d.setColor(Color.WHITE);
 				g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6, 6,

@@ -25,10 +25,11 @@ public class FormularioObjetos {
 	private JSpinner fimTransparencia = new JSpinner();
 	private JSpinner angulo = new JSpinner();
 	private JCheckBox frente = new JCheckBox();
+	private JCheckBox transparenciaBox = new JCheckBox();
 	private JComboBox tipoComboBox = new JComboBox();
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
-	private JPanel panel = new JPanel(new GridLayout(4, 2));
+	private JPanel panel = new JPanel(new GridLayout(5, 2));
 	private MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
 	protected static final String OBJETO_TRANSPARENCIA = "Objeto Transparencia";
@@ -38,7 +39,13 @@ public class FormularioObjetos {
 		this.mainPanelEditor = panelPai;
 		tipoComboBox.addItem(OBJETO_TRANSPARENCIA);
 		tipoComboBox.addItem(OBJETO_ESCAPADA);
-		panel.add(new JLabel("Tipo"));
+		
+		panel.add(new JLabel("Tipo"){
+			@Override
+			public String getText() {
+				return Lang.msg("tipo");
+			}
+		});
 		panel.add(tipoComboBox);
 
 		panel.add(new JLabel("No Inicio Transparencia") {
@@ -56,8 +63,23 @@ public class FormularioObjetos {
 			}
 		});
 		panel.add(fimTransparencia);
+		
+	
+		panel.add(new JLabel(){
+			@Override
+			public String getText() {
+				return Lang.msg("transparenciaBox");
+			}
+		});
+		panel.add(transparenciaBox);
 
-		panel.add(new JLabel("Angulo"));
+
+		panel.add(new JLabel("Angulo"){
+			@Override
+			public String getText() {
+				return Lang.msg("angulorRotacao");
+			}
+		});
 		panel.add(angulo);
 
 		// panel.add(new JLabel("Transparencia"));
@@ -197,6 +219,7 @@ public class FormularioObjetos {
 		frente.setSelected(objetoPista.isPintaEmcima());
 		inicioTranparencia.setValue(objetoPista.getInicioTransparencia());
 		fimTransparencia.setValue(objetoPista.getFimTransparencia());
+		transparenciaBox.setSelected(objetoPista.isTransparenciaBox());
 		this.objetoPista = objetoPista;
 		mostrarPainelModal();
 	}
@@ -207,5 +230,6 @@ public class FormularioObjetos {
 		objetoPista.setAngulo((Integer) angulo.getValue());
 		objetoPista.setInicioTransparencia((Integer) getInicioTranparencia().getValue());
 		objetoPista.setFimTransparencia((Integer) getFimTransparencia().getValue());
+		objetoPista.setTransparenciaBox(transparenciaBox.isSelected());
 	}
 }
