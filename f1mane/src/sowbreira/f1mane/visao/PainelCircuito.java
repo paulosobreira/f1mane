@@ -3364,7 +3364,27 @@ public class PainelCircuito {
 				if (!limitesViewPort
 						.contains(
 								((objetoTransparencia.getPosicaoQuina().x - descontoCentraliza.x) * zoom),
-								((objetoTransparencia.getPosicaoQuina().y - descontoCentraliza.y) * zoom))) {
+								((objetoTransparencia.getPosicaoQuina().y - descontoCentraliza.y) * zoom))
+						&& !limitesViewPort
+								.contains(
+										(((objetoTransparencia
+												.getPosicaoQuina().x + objetoTransparencia
+												.getLargura()) - descontoCentraliza.x) * zoom),
+										((objetoTransparencia.getPosicaoQuina().y - descontoCentraliza.y) * zoom))
+						&& !limitesViewPort
+								.contains(
+										((objetoTransparencia.getPosicaoQuina().x - descontoCentraliza.x) * zoom),
+										(((objetoTransparencia
+												.getPosicaoQuina().y + objetoTransparencia
+												.getAltura()) - descontoCentraliza.y) * zoom))
+						&& !limitesViewPort
+								.contains(
+										(((objetoTransparencia
+												.getPosicaoQuina().x + objetoTransparencia
+												.getLargura()) - descontoCentraliza.x) * zoom),
+										(((objetoTransparencia
+												.getPosicaoQuina().y + objetoTransparencia
+												.getAltura()) - descontoCentraliza.y) * zoom))) {
 					continue;
 				}
 				Graphics2D gImage = rotateBuffer.createGraphics();
