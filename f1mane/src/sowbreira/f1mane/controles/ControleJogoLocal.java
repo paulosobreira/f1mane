@@ -1488,4 +1488,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 		return controleCorrida.getFatorAcidente();
 	}
 
+	@Override
+	public boolean verificaInfoRelevante(Piloto piloto) {
+		return controleEstatisticas.verificaInfoRelevante(piloto);
+	}
+
 }

@@ -190,7 +190,7 @@ public class ControleBox {
 					&& (box.equals(piloto.getNoAtual()) || (cont > (circuito
 							.getEntradaBoxIndex() - 75) && cont < (circuito
 							.getEntradaBoxIndex() + 75)))) {
-				if (piloto.getPosicao() < 5)
+				if (controleJogo.verificaInfoRelevante(piloto))
 					controleJogo.info(Html.orange(Lang.msg("entraBox",
 							new String[] { piloto.getNome() })));
 				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "
@@ -334,8 +334,10 @@ public class ControleBox {
 		long penalidade = 0;
 		Carro carro = (Carro) boxEquipesOcupado.get(piloto.getCarro());
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
-			controleJogo.info(Html.orange(Lang.msg("298",
-					new String[] { carro.getNome() })));
+			if (controleJogo.verificaInfoRelevante(piloto)) {
+				controleJogo.info(Html.orange(Lang.msg("298",
+						new String[] { carro.getNome() })));
+			}
 			penalidade = 25;
 			penalidade = Util.inte(penalidade
 					* (2 - (carro.getPotencia() / 1000)));
@@ -375,22 +377,23 @@ public class ControleBox {
 
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());
 		piloto.setSaiuDoBoxMilis(0);
-		if (piloto.isJogadorHumano()) {
-			controleJogo
-					.infoPrioritaria(Html.orange(Lang.msg(
-							"002",
-							new String[] {
-									piloto.getNome(),
-									String.valueOf(controleJogo
-											.getNumVoltaAtual()) })));
-		} else if (piloto.getPosicao() < 9) {
-			controleJogo
-					.info(Html.orange(Lang.msg(
-							"002",
-							new String[] {
-									piloto.getNome(),
-									String.valueOf(controleJogo
-											.getNumVoltaAtual()) })));
+		if (controleJogo.verificaInfoRelevante(piloto)) {
+			if (piloto.isJogadorHumano()) {
+				controleJogo.infoPrioritaria(Html.orange(Lang
+						.msg("002",
+								new String[] {
+										piloto.getNome(),
+										String.valueOf(controleJogo
+												.getNumVoltaAtual()) })));
+			} else if (piloto.getPosicao() < 9) {
+				controleJogo
+						.info(Html.orange(Lang.msg(
+								"002",
+								new String[] {
+										piloto.getNome(),
+										String.valueOf(controleJogo
+												.getNumVoltaAtual()) })));
+			}
 		}
 		carro.setDanificado(null);
 		if (carro.getDurabilidadeAereofolio() <= 0
@@ -432,10 +435,12 @@ public class ControleBox {
 				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox()),
 				Lang.msg(piloto.getCarro().getTipoPneu()) };
 		String info = Lang.msg("003", strings);
-		if (piloto.isJogadorHumano()) {
-			controleJogo.infoPrioritaria(Html.orange(info));
-		} else if (piloto.getPosicao() < 9) {
-			controleJogo.info(Html.orange(info));
+		if (controleJogo.verificaInfoRelevante(piloto)) {
+			if (piloto.isJogadorHumano()) {
+				controleJogo.infoPrioritaria(Html.orange(info));
+			} else if (piloto.getPosicao() < 9) {
+				controleJogo.info(Html.orange(info));
+			}
 		}
 
 		boxEquipesOcupado.remove(piloto.getCarro());

@@ -1287,4 +1287,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return 0;
 	}
 
+	@Override
+	public boolean verificaInfoRelevante(Piloto piloto) {
+		return controleEstatisticas.verificaInfoRelevante(piloto);
+	}
+
 }

@@ -103,7 +103,7 @@ public class ControleEstatisticas {
 		}
 
 		if (!teveMelhor && !controleJogo.isSafetyCarNaPista()) {
-			if ((piloto.getPosicao() < 9)) {
+			if (controleJogo.verificaInfoRelevante(piloto)) {
 				controleJogo.info(Html.green(Lang.msg(
 						"022",
 						new String[] { Html.bold(piloto.getNome()),
@@ -359,6 +359,21 @@ public class ControleEstatisticas {
 
 		}
 		return tabela;
+	}
+
+	public boolean verificaInfoRelevante(Piloto piloto) {
+		if (piloto.isJogadorHumano()) {
+			return true;
+		}
+		if (piloto.getPosicao() == 1) {
+			return true;
+		}
+		if (controleJogo.verificaCampeonatoComRival()
+				&& piloto.equals(controleJogo.obterRivalCampeonato())) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private String carrgaTabelaComparativa() {
