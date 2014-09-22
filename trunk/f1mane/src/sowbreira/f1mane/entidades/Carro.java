@@ -917,7 +917,8 @@ public class Carro implements Serializable {
 			int intervaloMax) {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isChovendo() && (porcent > intervaloMax)
-				&& Math.random() > .99) {
+				&& Math.random() > .99
+				&& controleJogo.verificaInfoRelevante(piloto)) {
 			controleJogo.info(Html.orange(Lang.msg("pneusFrios",
 					new String[] { Html.txtRedBold(getPiloto().getNome()) })));
 		}

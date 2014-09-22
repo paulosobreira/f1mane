@@ -274,7 +274,7 @@ public class ControleCorrida {
 	}
 
 	public void mensagemRetardatario(Piloto piloto, Piloto pilotoNaFrente) {
-		if (piloto.getPosicao() < 5) {
+		if (controleJogo.verificaInfoRelevante(piloto)) {
 			if (Math.random() > 0.9) {
 				if (!controleJogo.isSafetyCarNaPista()) {
 					if (Math.random() > 0.5) {

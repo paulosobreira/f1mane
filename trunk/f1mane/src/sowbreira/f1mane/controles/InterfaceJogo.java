@@ -381,4 +381,6 @@ public interface InterfaceJogo {
 
 	public List<Piloto> getPilotosCopia();
 
+	public boolean verificaInfoRelevante(Piloto piloto);
+
 }

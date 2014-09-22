@@ -893,7 +893,8 @@ public class Piloto implements Serializable {
 		}
 
 		if (box && corrida > limiteUltimasVoltas && getQtdeParadasBox() > 0) {
-			if (!msgsBox.containsKey(Messagens.IR_BOX_FINAL_CORRIDA)) {
+			if (controleJogo.verificaInfoRelevante(this)
+					&& !msgsBox.containsKey(Messagens.IR_BOX_FINAL_CORRIDA)) {
 				controleJogo.info(Html.orange(Lang.msg("047",
 						new String[] { getNome() })));
 				msgsBox.put(Messagens.IR_BOX_FINAL_CORRIDA,
@@ -933,7 +934,7 @@ public class Piloto implements Serializable {
 		if (box && controleJogo.verificaBoxOcupado(getCarro())) {
 			if (!Messagens.BOX_OCUPADO.equals(msgsBox
 					.get(Messagens.BOX_OCUPADO))) {
-				if (getPosicao() < 10) {
+				if (controleJogo.verificaInfoRelevante(this)) {
 					controleJogo.info(Html.orange(Lang.msg("046",
 							new String[] { Html.bold(getNome()) })));
 				}
@@ -1109,7 +1110,7 @@ public class Piloto implements Serializable {
 		if (getTracado() == 4 || getTracado() == 5) {
 			if (!verificaDesconcentrado()) {
 				setCiclosDesconcentrado(Util.intervalo(50, 150));
-				if (getPosicao() < 3)
+				if (controleJogo.verificaInfoRelevante(this))
 					controleJogo.info(Lang.msg("saiDaPista",
 							new String[] { Html.superRed(getNome()) }));
 			}
@@ -1313,7 +1314,7 @@ public class Piloto implements Serializable {
 					&& !testeHabilidadePilotoFreios(controleJogo)) {
 				incStress(Util.intervalo(5, 10));
 				agressivo = false;
-				if (getPosicao() <= 10 || isJogadorHumano()
+				if (controleJogo.verificaInfoRelevante(this)
 						&& Math.random() > 0.7)
 					controleJogo.info(Lang.msg("014",
 							new String[] { Html.bold(getNome()) }));
@@ -2166,7 +2167,7 @@ public class Piloto implements Serializable {
 	private void memsagemTentaPasssar(InterfaceJogo controleJogo,
 			Carro carroPilotoDaFrente) {
 		if (Math.random() < controleJogo.obterIndicativoCorridaCompleta()
-				&& Math.random() > .9 && getPosicao() < 5
+				&& controleJogo.verificaInfoRelevante(this)
 				&& msgTentativaNumVolta == getNumeroVolta()) {
 			int val = Util.intervalo(1, 4);
 			msgTentativaNumVolta = getNumeroVolta() + val;
@@ -2228,7 +2229,7 @@ public class Piloto implements Serializable {
 			if (carro.verificaPilotoNormal(controleJogo) && !qualyJogHumano) {
 				novoModoAgressivo = false;
 				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsBox
-						.get(Messagens.PILOTO_EM_CAUTELA)) && getPosicao() <= 3) {
+						.get(Messagens.PILOTO_EM_CAUTELA)) && controleJogo.verificaInfoRelevante(this)) {
 					controleJogo
 							.info(Html.superRed(getNome() + Lang.msg("057")));
 					msgsBox.put(Messagens.PILOTO_EM_CAUTELA,
