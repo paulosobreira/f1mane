@@ -198,7 +198,7 @@ public class PainelMenuLocal {
 
 	private String temporadaSelecionada = null;
 
-	private int numVoltasSelecionado = 12;
+	private int numVoltasSelecionado = 22;
 
 	private int turbulenciaSelecionado = 250;
 
@@ -216,7 +216,7 @@ public class PainelMenuLocal {
 
 	private Piloto pilotoDesafio;
 
-	private boolean kers = false;
+	private boolean kers = true;
 
 	private boolean drs = true;
 
@@ -2422,7 +2422,7 @@ public class PainelMenuLocal {
 
 		g2d.setFont(fontOri);
 
-		int porcetNumVolta = Util.inte((numVoltasSelecionado - 12) * 1.66);
+		int porcetNumVolta = Util.inte((numVoltasSelecionado - 12) * 1.79);
 
 		int tamNumVoltaSelecionado = porcetNumVolta * tamVoltas / 100;
 		x = xOri + 20;
