@@ -1206,7 +1206,7 @@ public class PainelCircuito {
 					x + 5, y + 16);
 
 			if (corBorda != null) {
-				desenhaBordaResultadoFinal(g2d, x, y, 50, 20, corBorda);
+				desenhaBordaResultadoFinal(g2d, x, y, 80, 20, corBorda);
 			}
 
 			y += 24;

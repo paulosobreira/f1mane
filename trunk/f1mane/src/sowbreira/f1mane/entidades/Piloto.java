@@ -541,6 +541,11 @@ public class Piloto implements Serializable {
 			InterfaceJogo controleJogo) {
 		if (!this.recebeuBanderada) {
 			setTimeStampChegeda(System.currentTimeMillis());
+			Carro carroAtraz = controleJogo.obterCarroAtraz(this);
+			if (carroAtraz != null) {
+				setVantagem(controleJogo.calculaSegundosParaProximo(carroAtraz
+						.getPiloto()));
+			}
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
 			if (this.getPosicao() == 1) {
 				controleJogo.infoPrioritaria(Html.superBlack(getNome())
@@ -577,13 +582,7 @@ public class Piloto implements Serializable {
 			// + " SomaReta " + somaReta);
 			// controleJogo.pausarJogo();
 		}
-
 		this.recebeuBanderada = recebueBanderada;
-		Carro carroAtraz = controleJogo.obterCarroAtraz(this);
-		if (carroAtraz != null) {
-			setVantagem(controleJogo.calculaSegundosParaProximo(carroAtraz
-					.getPiloto()));
-		}
 	}
 
 	public void setQtdeParadasBox(int qtdeParadasBox) {
@@ -801,7 +800,6 @@ public class Piloto implements Serializable {
 
 		if (controleJogo.isCorridaTerminada()) {
 			int indexPiloto = getNoAtual().getIndex();
-			int tamPista = controleJogo.getNosDaPista().size();
 			if (indexPiloto < 100) {
 				setRecebeuBanderada(true, controleJogo);
 			}
