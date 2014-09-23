@@ -2229,7 +2229,8 @@ public class Piloto implements Serializable {
 			if (carro.verificaPilotoNormal(controleJogo) && !qualyJogHumano) {
 				novoModoAgressivo = false;
 				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsBox
-						.get(Messagens.PILOTO_EM_CAUTELA)) && controleJogo.verificaInfoRelevante(this)) {
+						.get(Messagens.PILOTO_EM_CAUTELA))
+						&& controleJogo.verificaInfoRelevante(this)) {
 					controleJogo
 							.info(Html.superRed(getNome() + Lang.msg("057")));
 					msgsBox.put(Messagens.PILOTO_EM_CAUTELA,
@@ -2347,10 +2348,11 @@ public class Piloto implements Serializable {
 		double bonusSecundario = 0.5;
 
 		if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
-			bonusSecundario += getCarro().testePotencia() ? 0.3 : 0.2;
+			bonusSecundario += getCarro().testePotencia() ? 0.2 : 0.1;
 		}
-		if (Carro.GIRO_MIN_VAL == getCarro().getGiro()) {
-			bonusSecundario -= getCarro().testePotencia() ? 0.2 : 0.3;
+		if (Carro.GIRO_MIN_VAL == getCarro().getGiro()
+				&& !getNoAtual().verificaRetaOuLargada()) {
+			bonusSecundario -= getCarro().testePotencia() ? 0.1 : 0.2;
 		}
 		if (controleJogo.isChovendo()) {
 			bonusSecundario -= 0.1;
