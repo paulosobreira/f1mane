@@ -149,7 +149,10 @@
 			<fileset dir=".">
 				<include name="*.jar" />
 				<include name="f1maneLocal.jnlp" />
-				<include name="f1maneEditor.jnlp" />				
+				<include name="f1maneEditor.jnlp" />
+				<include name="Descompatar.bat" />
+				<include name="Editor.bat" />
+				<include name="F1mane.bat" />
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="f1maneLocal.jnlp" />
