@@ -2956,7 +2956,7 @@ public class PainelCircuito {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 8));
 
-		List pilotos = controleJogo.getPilotos();
+		List pilotos = controleJogo.getPilotosCopia();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			Point point = piloto.getNoAtual().getPoint();

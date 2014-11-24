@@ -398,7 +398,7 @@ public class ControleEstatisticas {
 
 	public int calculaDiffParaProximoRetardatario(Piloto piloto,
 			boolean analisaTracado) {
-		List<Piloto> pilotos = controleJogo.getPilotos();
+		List<Piloto> pilotos = controleJogo.getPilotosCopia();
 		int menorDistancia = Util.inte(Integer.MAX_VALUE);
 		if (piloto.getPtosBox() != 0) {
 			return menorDistancia;
