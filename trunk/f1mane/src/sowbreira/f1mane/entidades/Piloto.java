@@ -2754,7 +2754,7 @@ public class Piloto implements Serializable {
 			return false;
 		}
 		int indice = getNoAtual().getIndex();
-		List pilotos = controleJogo.getPilotos();
+		List pilotos = controleJogo.getPilotosCopia();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (this.equals(piloto) || piloto.getTracado() == getTracado()) {

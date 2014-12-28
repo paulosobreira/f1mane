@@ -272,7 +272,7 @@ public class ControleEstatisticas {
 	public void tabelaComparativa() {
 		String tabela = carrgaTabelaComparativa();
 		List pilotos = new ArrayList();
-		for (Iterator iterator = controleJogo.getPilotos().iterator(); iterator
+		for (Iterator iterator = controleJogo.getPilotosCopia().iterator(); iterator
 				.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (piloto.isJogadorHumano() && !piloto.isDesqualificado()) {
@@ -282,7 +282,7 @@ public class ControleEstatisticas {
 		}
 
 		if (pilotos.isEmpty()) {
-			for (Iterator iterator = controleJogo.getPilotos().iterator(); iterator
+			for (Iterator iterator = controleJogo.getPilotosCopia().iterator(); iterator
 					.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getPosicao() < 9) {

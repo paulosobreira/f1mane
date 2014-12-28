@@ -894,7 +894,7 @@ public class PainelCircuito {
 				fontOri.getSize());
 		Font fontMaior = new Font(fontOri.getName(), Font.BOLD, 16);
 		g2d.setFont(fontMaior);
-		List<Piloto> pilotosList = controleJogo.getPilotos();
+		List<Piloto> pilotosList = controleJogo.getPilotosCopia();
 		for (int i = 0; i < pilotosList.size(); i++) {
 			Piloto piloto = pilotosList.get(i);
 
@@ -3178,8 +3178,9 @@ public class PainelCircuito {
 		if (isExibeResultadoFinal()) {
 			return;
 		}
-		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
-			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
+		List pilotos = controleJogo.getPilotosCopia();
+		for (int i = pilotos.size() - 1; i > -1; i--) {
+			Piloto piloto = (Piloto) pilotos.get(i);
 			No noAtual = piloto.getNoAtualSuave();
 			if (noAtual == null) {
 				noAtual = piloto.getNoAtual();
@@ -3201,8 +3202,8 @@ public class PainelCircuito {
 			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
 			desenhaCarroCima(g2d, piloto);
 		}
-		for (int i = controleJogo.getPilotos().size() - 1; i > -1; i--) {
-			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
+		for (int i = pilotos.size() - 1; i > -1; i--) {
+			Piloto piloto = (Piloto) pilotos.get(i);
 			if (piloto.equals(pilotoSelecionado)
 					|| piloto.getCarro().isPaneSeca()
 					|| piloto.getCarro().isRecolhido()) {
@@ -4262,7 +4263,7 @@ public class PainelCircuito {
 		int x = limitesViewPort.x + limitesViewPort.width - 165;
 		int y = limitesViewPort.y + 5;
 
-		List<Piloto> pilotos = controleJogo.getPilotos();
+		List<Piloto> pilotos = controleJogo.getPilotosCopia();
 		int tamNome = 90;
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = pilotos.get(i);
@@ -4609,7 +4610,7 @@ public class PainelCircuito {
 		if (desenhouQualificacao) {
 			return;
 		}
-		List<Piloto> pilotos = controleJogo.getPilotos();
+		List<Piloto> pilotos = controleJogo.getPilotosCopia();
 		if (ptosPilotosDesQualy.isEmpty()) {
 			int iniY1 = 50;
 			int iniY2 = 60;

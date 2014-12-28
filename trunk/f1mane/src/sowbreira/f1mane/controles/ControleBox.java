@@ -275,7 +275,7 @@ public class ControleBox {
 	}
 
 	private boolean verificaTemCarroPassandoSaida() {
-		List pilotos = controleJogo.getPilotos();
+		List pilotos = controleJogo.getPilotosCopia();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (piloto.getPtosBox() > 0 || piloto.isDesqualificado()
