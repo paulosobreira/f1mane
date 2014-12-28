@@ -737,7 +737,7 @@ public class GerenciadorVisual {
 
 	public PainelTabelaResultadoFinal exibirResultadoFinal() {
 		PainelTabelaResultadoFinal resultadoFinal = new PainelTabelaResultadoFinal(
-				controleJogo.getPilotos(), false);
+				controleJogo.getPilotosCopia(), false);
 		this.resultadoFinal = resultadoFinal;
 		if (painelCircuito != null) {
 			painelCircuito.setExibeResultadoFinal(true);
@@ -809,7 +809,7 @@ public class GerenciadorVisual {
 		boxPilotoSelecionado = new JComboBox();
 		boxPilotoSelecionado.addItem(Lang.msg("119"));
 
-		for (Iterator iter = controleJogo.getPilotos().iterator(); iter
+		for (Iterator iter = controleJogo.getPilotosCopia().iterator(); iter
 				.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			boxPilotoSelecionado.addItem(piloto);
@@ -1747,7 +1747,7 @@ public class GerenciadorVisual {
 	}
 
 	public void selecionaPilotoCima() {
-		List<Piloto> pilotos = controleJogo.getPilotos();
+		List<Piloto> pilotos = controleJogo.getPilotosCopia();
 		if (controleJogo.getPilotoSelecionado() == null) {
 			controleJogo.selecionouPiloto(pilotos.get(0));
 		} else {
@@ -1766,7 +1766,7 @@ public class GerenciadorVisual {
 	}
 
 	public void selecionaPilotoBaixo() {
-		List<Piloto> pilotos = controleJogo.getPilotos();
+		List<Piloto> pilotos = controleJogo.getPilotosCopia();
 		if (controleJogo.getPilotoSelecionado() == null) {
 			controleJogo.selecionouPiloto(pilotos.get(pilotos.size() - 1));
 		} else {
