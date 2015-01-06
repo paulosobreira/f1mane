@@ -204,6 +204,16 @@ public class Campeonato implements Serializable {
 
 	}
 
+	public int getEtapa() {
+		for (int i = 0; i < corridas.size(); i++) {
+			String circuito = (String) corridas.get(i);
+			if (dadosCorridas.get(circuito) == null) {
+				return i + 1;
+			}
+		}
+		return 0;
+	}
+
 	public boolean isMenuLocal() {
 		return menuLocal;
 	}

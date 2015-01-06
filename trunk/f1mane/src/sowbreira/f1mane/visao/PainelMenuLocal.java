@@ -268,6 +268,10 @@ public class PainelMenuLocal {
 	private int fps = 0;
 	protected double fpsLimite = 60D;
 
+	private int qtdeEtapasCampeonato;
+
+	private int etapaAtual;
+
 	public PainelMenuLocal(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 
@@ -823,6 +827,8 @@ public class PainelMenuLocal {
 		kers = campeonato.isDrs();
 		drs = campeonato.isDrs();
 		trocaPneus = campeonato.isSemTrocaPneus();
+		qtdeEtapasCampeonato = campeonato.getCorridas().size();
+		etapaAtual = campeonato.getEtapa();
 		climaAleatorio();
 		String temporada = "t" + temporadaSelecionada;
 		String desafio = pilotoDesafio == null ? "" : pilotoDesafio.getNome();
@@ -877,16 +883,27 @@ public class PainelMenuLocal {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 		int xOri = x;
-		x += 60;
+		// x += 60;
 		String txt = temporadaSelecionada.replaceAll("\\*", "");
-		int larguraTexto = 120;
+		int larguraTexto = 80;
 		g2d.setColor(lightWhite);
 		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(txt.toUpperCase(),
-				x + (130 - Util.larguraTexto(txt, g2d)) / 2, y);
+		g2d.drawString(txt.toUpperCase(), x
+				+ (90 - Util.larguraTexto(txt, g2d)) / 2, y);
 
-		x -= 60;
+		x += 160;
+		txt = Lang.msg(
+				"etapasCampeonato",
+				new String[] { String.valueOf(etapaAtual),
+						String.valueOf(qtdeEtapasCampeonato) }).toUpperCase();
+		larguraTexto = Util.calculaLarguraText(txt, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt.toUpperCase(), x + 10, y);
+
+		x -= 160;
 		y += 50;
 
 		String numVoltasStr = (numVoltasSelecionado + " " + Lang.msg("voltas"))
@@ -2609,6 +2626,9 @@ public class PainelMenuLocal {
 		if (!MENU.equals(MENU_PRINCIPAL)) {
 			return;
 		}
+		
+		pilotoDesafio = null;
+		
 		int centerX = (int) (getWidth() / 2.3);
 		int centerY = (int) (getHeight() / 2.5);
 
