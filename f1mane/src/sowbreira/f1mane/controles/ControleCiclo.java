@@ -95,9 +95,9 @@ public class ControleCiclo extends Thread {
 						}
 					}
 					controleCorrida.atualizaClassificacao();
+					controleJogo.verificaProgramacaoBox();
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaPainel();
-					controleJogo.verificaProgramacaoBox();
 					Thread.sleep(tempoCiclo);
 					contadorCiclos++;
 				} catch (Exception e) {
