@@ -378,7 +378,7 @@ public class ControleCampeonato {
 			}
 
 			if (fileContents == null) {
-				Logger.logar(" fileContents == null  ");
+				System.out.println(" fileContents == null  ");
 
 			}
 
@@ -433,12 +433,13 @@ public class ControleCampeonato {
 			String url = mainFrame.getCodeBase() + "campeonato";
 			FileContents fileContents = persistenceService.get(new URL(url));
 			if (fileContents == null) {
-				Logger.logar(" fileContents == null  ");
+				System.out.println(" fileContents == null  ");
 			}
 			ObjectInputStream ois = new ObjectInputStream(
 					fileContents.getInputStream());
 			campeonato = (Campeonato) ois.readObject();
 		} catch (Exception e) {
+			e.printStackTrace();
 			Logger.logarExept(e);
 		}
 

@@ -4593,12 +4593,12 @@ public class PainelCircuito {
 			}
 			g2d.setColor(luzApagada);
 			g2d.fillRoundRect(limitesViewPort.x + (limitesViewPort.width / 2)
-					- (largura / 2), limitesViewPort.y + 30, largura + 10, 20,
+					- (largura / 2), limitesViewPort.y + 34, largura + 10, 20,
 					15, 15);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(txt, (limitesViewPort.x
 					+ (limitesViewPort.width / 2) + 6)
-					- (largura / 2), limitesViewPort.y + 44);
+					- (largura / 2), limitesViewPort.y + 48);
 
 		}
 	}
