@@ -15,6 +15,8 @@ public class Campeonato implements Serializable {
 	private String nomePiloto;
 	private String rival;
 	private boolean menuLocal;
+	private boolean promovidoEquipeRival;
+	private boolean rebaixadoEquipeRival;
 	private int vitorias;
 	private int derrotas;
 	private int ptsPiloto;
@@ -222,6 +224,22 @@ public class Campeonato implements Serializable {
 
 	public void setMenuLocal(boolean menuLocal) {
 		this.menuLocal = menuLocal;
+	}
+
+	public boolean isPromovidoEquipeRival() {
+		return promovidoEquipeRival;
+	}
+
+	public void setPromovidoEquipeRival(boolean promovidoEquipeRival) {
+		this.promovidoEquipeRival = promovidoEquipeRival;
+	}
+
+	public boolean isRebaixadoEquipeRival() {
+		return rebaixadoEquipeRival;
+	}
+
+	public void setRebaixadoEquipeRival(boolean rebaixadoEquipeRival) {
+		this.rebaixadoEquipeRival = rebaixadoEquipeRival;
 	}
 
 }

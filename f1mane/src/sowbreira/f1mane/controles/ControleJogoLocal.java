@@ -1308,6 +1308,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public Campeonato continuarCampeonato() {
 		return controleCampeonato.continuarCampeonato();
 	}
+	
+	@Override
+	public Campeonato continuarCampeonatoXml() {
+		return controleCampeonato.continuarCampeonatoXml();
+	}
 
 	@Override
 	public void dadosPersistenciaCampeonato(Campeonato campeonato) {

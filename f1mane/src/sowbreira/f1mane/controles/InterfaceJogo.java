@@ -383,4 +383,6 @@ public interface InterfaceJogo {
 
 	public boolean verificaInfoRelevante(Piloto piloto);
 
+	public Campeonato continuarCampeonatoXml();
+
 }
