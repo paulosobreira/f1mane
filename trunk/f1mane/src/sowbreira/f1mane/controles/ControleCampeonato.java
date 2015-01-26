@@ -85,7 +85,7 @@ public class ControleCampeonato {
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
 
-	public ControleCampeonato(Campeonato campeonato,MainFrame mainFrame) {
+	public ControleCampeonato(Campeonato campeonato, MainFrame mainFrame) {
 		this.campeonato = campeonato;
 		this.mainFrame = mainFrame;
 	}
@@ -366,6 +366,7 @@ public class ControleCampeonato {
 
 	private void persistirEmCache() {
 		try {
+			System.out.println("persistirEmCache()");
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
 			FileContents fileContents = null;
@@ -377,18 +378,13 @@ public class ControleCampeonato {
 				fileContents = persistenceService.get(new URL(url));
 			}
 
-			if (fileContents == null) {
-				System.out.println(" fileContents == null  ");
-
-			}
-
 			ObjectOutputStream stream = new ObjectOutputStream(
 					fileContents.getOutputStream(true));
 			stream.writeObject(campeonato);
 			stream.flush();
 		} catch (Exception e) {
-			e.printStackTrace();
 			Logger.logarExept(e);
+			dadosPersistencia(campeonato, mainFrame);
 		}
 
 	}
@@ -439,7 +435,6 @@ public class ControleCampeonato {
 					fileContents.getInputStream());
 			campeonato = (Campeonato) ois.readObject();
 		} catch (Exception e) {
-			e.printStackTrace();
 			Logger.logarExept(e);
 		}
 
@@ -538,9 +533,6 @@ public class ControleCampeonato {
 				corridaCampeonatoDados);
 		processaMudancaEquipe();
 		persistirEmCache();
-		if (!campeonato.isMenuLocal()) {
-			new PainelCampeonato(this, mainFrame);
-		}
 	}
 
 	private void processaMudancaEquipe() {
@@ -1171,7 +1163,7 @@ public class ControleCampeonato {
 	public static void main(String[] args) {
 		Campeonato campeonato = new Campeonato();
 		ControleCampeonato controleCampeonato = new ControleCampeonato(
-				campeonato,null);
+				campeonato, null);
 		campeonato.setVitorias(2);
 		controleCampeonato.campeonato = campeonato;
 		Map pilotosEquipesCampeonato = new HashMap();

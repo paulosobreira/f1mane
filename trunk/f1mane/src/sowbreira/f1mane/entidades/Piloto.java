@@ -2254,7 +2254,7 @@ public class Piloto implements Serializable {
 		} else {
 			if (No.CURVA_BAIXA.equals(getNoAtual().getTipo())) {
 				novoModoAgressivo = false;
-				incStress(7);
+				incStress(5);
 			} else if (No.CURVA_ALTA.equals(getNoAtual().getTipo())) {
 				incStress(3);
 			}
@@ -2336,7 +2336,7 @@ public class Piloto implements Serializable {
 		}
 		int dec = (int) val;
 		if (AGRESSIVO.equals(modoPilotagem) && getStress() < 70) {
-			incStress(2);
+			incStress(1);
 			dec++;
 		}
 		ciclosDesconcentrado -= dec;
