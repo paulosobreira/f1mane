@@ -757,11 +757,11 @@ public class Carro implements Serializable {
 			if (verificaPneusIncompativeisClima(controleJogo)) {
 				piloto.incStress(getPiloto()
 						.testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? stress
-						: 5 + stress);
+						: 3 + stress);
 			} else {
 				piloto.incStress(getPiloto()
 						.testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? stress
-						: 2 + stress);
+						: stress);
 			}
 			if (!controleJogo.isChovendo() && getPiloto().getPtosBox() == 0) {
 				boolean teste = piloto

@@ -37,7 +37,7 @@ public class ControleCorrida {
 	private double velocidadeJogo;
 	private long tempoCiclo;
 	private boolean corridaIniciada;
-	private double fatorAcidente = Util.intervalo(0.3, 0.9);
+	private double fatorAcidente = Util.intervalo(0.5, 0.9);
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private Pausa pausaAtual;
@@ -62,6 +62,7 @@ public class ControleCorrida {
 	public ControleCorrida(ControleJogoLocal jogo, int qtdeVoltas,
 			double fatorUtr, long tempoCiclo) throws Exception {
 		controleJogo = jogo;
+		//qtdeVoltas = 2;
 		this.tempoCiclo = Constantes.CICLO;
 		this.fatorUtrapassagem = fatorUtr / 1000;
 		if (this.fatorUtrapassagem > 0.5) {
