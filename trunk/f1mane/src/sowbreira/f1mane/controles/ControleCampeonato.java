@@ -391,35 +391,36 @@ public class ControleCampeonato {
 
 	public Campeonato continuarCampeonato() {
 		continuarCampeonatoCache();
-		if (campeonato == null) {
-			try {
-				JTextArea xmlArea = new JTextArea(30, 50);
-				JScrollPane xmlPane = new JScrollPane(xmlArea);
-				xmlPane.setBorder(new TitledBorder(Lang.msg("282")));
-				JOptionPane.showMessageDialog(mainFrame, xmlPane,
-						Lang.msg("281"), JOptionPane.INFORMATION_MESSAGE);
-
-				if (Util.isNullOrEmpty(xmlArea.getText())) {
-					return null;
-				}
-				ByteArrayInputStream bin = new ByteArrayInputStream(xmlArea
-						.getText().getBytes());
-				XMLDecoder xmlDecoder = new XMLDecoder(bin);
-				campeonato = (Campeonato) xmlDecoder.readObject();
-			} catch (Exception e) {
-				StackTraceElement[] trace = e.getStackTrace();
-				StringBuffer retorno = new StringBuffer();
-				int size = ((trace.length > 10) ? 10 : trace.length);
-				for (int i = 0; i < size; i++)
-					retorno.append(trace[i] + "\n");
-				JOptionPane.showMessageDialog(mainFrame, retorno.toString(),
-						Lang.msg("283"), JOptionPane.ERROR_MESSAGE);
-				Logger.logarExept(e);
-			}
-		}
-		if (!campeonato.isMenuLocal())
-			new PainelCampeonato(this, mainFrame);
 		return campeonato;
+	}
+
+	public Campeonato continuarCampeonatoXml() {
+		try {
+			JTextArea xmlArea = new JTextArea(30, 50);
+			JScrollPane xmlPane = new JScrollPane(xmlArea);
+			xmlPane.setBorder(new TitledBorder(Lang.msg("282")));
+			JOptionPane.showMessageDialog(mainFrame, xmlPane, Lang.msg("281"),
+					JOptionPane.INFORMATION_MESSAGE);
+
+			if (Util.isNullOrEmpty(xmlArea.getText())) {
+				return null;
+			}
+			ByteArrayInputStream bin = new ByteArrayInputStream(xmlArea
+					.getText().getBytes());
+			XMLDecoder xmlDecoder = new XMLDecoder(bin);
+			campeonato = (Campeonato) xmlDecoder.readObject();
+			return campeonato;
+		} catch (Exception e) {
+			StackTraceElement[] trace = e.getStackTrace();
+			StringBuffer retorno = new StringBuffer();
+			int size = ((trace.length > 10) ? 10 : trace.length);
+			for (int i = 0; i < size; i++)
+				retorno.append(trace[i] + "\n");
+			JOptionPane.showMessageDialog(mainFrame, retorno.toString(),
+					Lang.msg("283"), JOptionPane.ERROR_MESSAGE);
+			Logger.logarExept(e);
+		}
+		return null;
 	}
 
 	public void continuarCampeonatoCache() {
@@ -531,41 +532,25 @@ public class ControleCampeonato {
 		}
 		campeonato.getDadosCorridas().put(circuitoJogando,
 				corridaCampeonatoDados);
-		processaMudancaEquipe();
+		verificaMudancaEquipe();
+		if(campeonato.isPromovidoEquipeRival() || campeonato.isRebaixadoEquipeRival()){
+			processaMudancaEquipe();			
+		}
 		persistirEmCache();
 	}
 
-	private void processaMudancaEquipe() {
-		int qtdeRaces = 0;
+	private void verificaMudancaEquipe() {
+		int qtdeDisputas = 0;
 		if (ControleJogoLocal.NORMAL.equals(campeonato.getNivel())) {
-			qtdeRaces = Util.intervalo(1, 2);
+			qtdeDisputas = Util.intervalo(1, 2);
 		}
 		if (ControleJogoLocal.DIFICIL.equals(campeonato.getNivel())) {
-			qtdeRaces = Util.intervalo(2, 3);
+			qtdeDisputas = Util.intervalo(2, 3);
 		}
-		if (campeonato.getVitorias() > qtdeRaces) {
-			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
-					campeonato.getRival());
-			if (campeonato.isMenuLocal()) {
-				campeonato.setNomePiloto(campeonato.getRival());
-			} else {
-				int retorno = JOptionPane.showConfirmDialog(this.mainFrame,
-						Lang.msg("irEquipe", new String[] { equipeRival }),
-						Lang.msg("mudarEquipe"), JOptionPane.YES_NO_OPTION);
-				if (JOptionPane.YES_OPTION == retorno) {
-					String equipeJogador = campeonato
-							.getPilotosEquipesCampeonato().get(
-									campeonato.getNomePiloto());
-					campeonato.getPilotosEquipesCampeonato().put(
-							campeonato.getNomePiloto(), equipeRival);
-					campeonato.getPilotosEquipesCampeonato().put(
-							campeonato.getRival(), equipeJogador);
-				}
-			}
-			campeonato.setRival(null);
-			campeonato.setVitorias(0);
-			campeonato.setDerrotas(0);
-		} else if (campeonato.getDerrotas() > qtdeRaces) {
+		if (campeonato.getVitorias() > qtdeDisputas) {
+			campeonato.setPromovidoEquipeRival(true);
+		} else if ((campeonato.getVitorias() + campeonato.getDerrotas()) > qtdeDisputas) {
+			campeonato.setRebaixadoEquipeRival(true);
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					campeonato.getRival());
 			String equipeJogador = campeonato.getPilotosEquipesCampeonato()
@@ -574,25 +559,40 @@ public class ControleCampeonato {
 					.getEquipesPotenciaCampeonato().get(equipeRival);
 			Integer potenciaEquipeJogador = campeonato
 					.getEquipesPotenciaCampeonato().get(equipeJogador);
-			if (ponteciaEquipeRival < potenciaEquipeJogador) {
-				JOptionPane.showMessageDialog(this.mainFrame,
-						Lang.msg("rebaixado", new String[] { equipeRival }),
-						Lang.msg("mudarEquipe"),
-						JOptionPane.INFORMATION_MESSAGE);
-				if (campeonato.isMenuLocal()) {
-					campeonato.setNomePiloto(campeonato.getRival());
-				} else {
-					campeonato.getPilotosEquipesCampeonato().put(
-							campeonato.getNomePiloto(), equipeRival);
-					campeonato.getPilotosEquipesCampeonato().put(
-							campeonato.getRival(), equipeJogador);
-				}
+			if (ponteciaEquipeRival > potenciaEquipeJogador) {
+				campeonato.setRival(null);
+				campeonato.setVitorias(0);
+				campeonato.setDerrotas(0);
+				campeonato.setRebaixadoEquipeRival(false);
+			} else {
+				campeonato.setRebaixadoEquipeRival(true);
 			}
+		}
+	}
+
+	private void processaMudancaEquipe() {
+		if (campeonato.isPromovidoEquipeRival()) {
+			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
+					campeonato.getRival());
+			JOptionPane.showMessageDialog(this.mainFrame,
+					Lang.msg("irEquipe", new String[] { equipeRival }),
+					Lang.msg("mudarEquipe"), JOptionPane.INFORMATION_MESSAGE);
+			campeonato.setNomePiloto(campeonato.getRival());
+			campeonato.setRival(null);
+			campeonato.setVitorias(0);
+			campeonato.setDerrotas(0);
+			campeonato.setPromovidoEquipeRival(false);
+		} else if (campeonato.isRebaixadoEquipeRival()) {
+			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
+					campeonato.getRival());
+			JOptionPane.showMessageDialog(this.mainFrame,
+					Lang.msg("rebaixado", new String[] { equipeRival }),
+					Lang.msg("mudarEquipe"), JOptionPane.INFORMATION_MESSAGE);
+			campeonato.setNomePiloto(campeonato.getRival());
 			campeonato.setRival(null);
 			campeonato.setVitorias(0);
 			campeonato.setDerrotas(0);
 		}
-
 	}
 
 	public void iniciaCorrida(String circuito) {

@@ -1292,4 +1292,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return controleEstatisticas.verificaInfoRelevante(piloto);
 	}
 
+	@Override
+	public Campeonato continuarCampeonatoXml() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
