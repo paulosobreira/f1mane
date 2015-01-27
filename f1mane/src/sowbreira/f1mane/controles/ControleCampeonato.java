@@ -366,7 +366,7 @@ public class ControleCampeonato {
 
 	private void persistirEmCache() {
 		try {
-			System.out.println("persistirEmCache()");
+			Logger.logar("persistirEmCache()");
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
 			FileContents fileContents = null;
@@ -377,7 +377,6 @@ public class ControleCampeonato {
 				persistenceService.create(new URL(url), 1048576);
 				fileContents = persistenceService.get(new URL(url));
 			}
-
 			ObjectOutputStream stream = new ObjectOutputStream(
 					fileContents.getOutputStream(true));
 			stream.writeObject(campeonato);
@@ -457,7 +456,7 @@ public class ControleCampeonato {
 			xmlPane.setBorder(new TitledBorder(Lang.msg("280")));
 			JOptionPane.showMessageDialog(mainFrame, xmlPane, Lang.msg("281"),
 					JOptionPane.INFORMATION_MESSAGE);
-			System.out.println(xmlArea.getText());
+			Logger.logar(xmlArea.getText());
 		}
 	}
 
@@ -533,8 +532,9 @@ public class ControleCampeonato {
 		campeonato.getDadosCorridas().put(circuitoJogando,
 				corridaCampeonatoDados);
 		verificaMudancaEquipe();
-		if(campeonato.isPromovidoEquipeRival() || campeonato.isRebaixadoEquipeRival()){
-			processaMudancaEquipe();			
+		if (campeonato.isPromovidoEquipeRival()
+				|| campeonato.isRebaixadoEquipeRival()) {
+			processaMudancaEquipe();
 		}
 		persistirEmCache();
 	}
@@ -549,16 +549,28 @@ public class ControleCampeonato {
 		}
 		if (campeonato.getVitorias() > qtdeDisputas) {
 			campeonato.setPromovidoEquipeRival(true);
-		} else if ((campeonato.getVitorias() + campeonato.getDerrotas()) > qtdeDisputas) {
-			campeonato.setRebaixadoEquipeRival(true);
+		} else if (campeonato.getDerrotas() > qtdeDisputas) {
+			System.out
+					.println("campeonato.getRival() " + campeonato.getRival());
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					campeonato.getRival());
+			System.out.println("equipeRival " + equipeRival);
 			String equipeJogador = campeonato.getPilotosEquipesCampeonato()
 					.get(campeonato.getNomePiloto());
+			System.out
+			.println("campeonato.getNomePiloto() " + campeonato.getNomePiloto());
+			System.out.println("equipeJogador " + equipeJogador);
 			Integer ponteciaEquipeRival = campeonato
 					.getEquipesPotenciaCampeonato().get(equipeRival);
+			System.out.println("ponteciaEquipeRival " + ponteciaEquipeRival);
 			Integer potenciaEquipeJogador = campeonato
 					.getEquipesPotenciaCampeonato().get(equipeJogador);
+			System.out
+					.println("potenciaEquipeJogador " + potenciaEquipeJogador);
+			ponteciaEquipeRival = ponteciaEquipeRival == null ? 0
+					: ponteciaEquipeRival;
+			potenciaEquipeJogador = potenciaEquipeJogador == null ? 0
+					: potenciaEquipeJogador;
 			if (ponteciaEquipeRival > potenciaEquipeJogador) {
 				campeonato.setRival(null);
 				campeonato.setVitorias(0);
@@ -1245,10 +1257,6 @@ public class ControleCampeonato {
 			pilotosHabilidadeCampeonato.put(piloto.getNome(),
 					piloto.getHabilidade());
 		}
-
-		pilotosEquipesCampeonato.remove(pilotoSelecionado.getNome());
-		pilotosEquipesCampeonato.put("F1-Mane", pilotoSelecionado.getCarro()
-				.getNome());
 
 		campeonato = new Campeonato();
 		campeonato.setCorridas(cirucitosCampeonato);
