@@ -532,10 +532,7 @@ public class ControleCampeonato {
 		campeonato.getDadosCorridas().put(circuitoJogando,
 				corridaCampeonatoDados);
 		verificaMudancaEquipe();
-		if (campeonato.isPromovidoEquipeRival()
-				|| campeonato.isRebaixadoEquipeRival()) {
-			processaMudancaEquipe();
-		}
+
 		persistirEmCache();
 	}
 
@@ -582,7 +579,7 @@ public class ControleCampeonato {
 		}
 	}
 
-	private void processaMudancaEquipe() {
+	public void processaMudancaEquipe() {
 		if (campeonato.isPromovidoEquipeRival()) {
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					campeonato.getRival());

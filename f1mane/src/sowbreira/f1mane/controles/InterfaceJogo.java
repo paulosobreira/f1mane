@@ -385,4 +385,6 @@ public interface InterfaceJogo {
 
 	public Campeonato continuarCampeonatoXml();
 
+	public void processaMudancaEquipeCampeontato();
+
 }
