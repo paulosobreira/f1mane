@@ -1309,7 +1309,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	public Campeonato continuarCampeonato() {
 		return controleCampeonato.continuarCampeonato();
 	}
-	
+
 	@Override
 	public Campeonato continuarCampeonatoXml() {
 		return controleCampeonato.continuarCampeonatoXml();
@@ -1497,6 +1497,14 @@ public class ControleJogoLocal extends ControleRecursos implements
 	@Override
 	public boolean verificaInfoRelevante(Piloto piloto) {
 		return controleEstatisticas.verificaInfoRelevante(piloto);
+	}
+
+	@Override
+	public void processaMudancaEquipeCampeontato() {
+		if (controleCampeonato != null) {
+			controleCampeonato.processaMudancaEquipe();
+		}
+
 	}
 
 }

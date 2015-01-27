@@ -1298,4 +1298,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
+	@Override
+	public void processaMudancaEquipeCampeontato() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

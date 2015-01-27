@@ -68,6 +68,8 @@ public class PainelMenuLocal {
 
 	private static final String MENU_DESAFIAR_PILOTO = "MENU_DESAFIAR_PILOTO";
 
+	private static final String MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS = "MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS";
+
 	private String MENU = MENU_PRINCIPAL;
 
 	private MainFrame mainFrame;
@@ -322,6 +324,12 @@ public class PainelMenuLocal {
 					mainFrame.getCampeonato());
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			carregaCampeonato();
+			if (campeonato.isPromovidoEquipeRival()
+					|| campeonato.isRebaixadoEquipeRival()) {
+				InterfaceJogo controleJogo = mainFrame.getControleJogo();
+				controleJogo.processaMudancaEquipeCampeontato();
+				MENU = MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS;
+			}
 		}
 		renderThread.start();
 		desenhaCarregando = false;
@@ -1391,7 +1399,7 @@ public class PainelMenuLocal {
 		}
 		if (Clima.CHUVA.equals(climaSelecionado)) {
 			pneuSelecionado = Carro.TIPO_PNEU_CHUVA;
-		}else if(Carro.TIPO_PNEU_CHUVA.equals(pneuSelecionado)){
+		} else if (Carro.TIPO_PNEU_CHUVA.equals(pneuSelecionado)) {
 			pneuSelecionado = Carro.TIPO_PNEU_MOLE;
 		}
 		int x = (int) (getWidth() / 2);
@@ -1613,7 +1621,10 @@ public class PainelMenuLocal {
 			MENU = MENU_PRINCIPAL;
 			return;
 		}
-
+		if (MENU.equals(MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS)) {
+			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+			return;
+		}
 		if (MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
 			InterfaceJogo controleJogo = mainFrame.getControleJogo();
 			List<PilotosPontosCampeonato> pilotosList = controleJogo
@@ -1775,6 +1786,10 @@ public class PainelMenuLocal {
 			if (!pilotoSelecionado.equals(pilotoDesafio)) {
 				campeonato.setRival(pilotoDesafio.getNome());
 			}
+			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+			return;
+		}
+		if (MENU.equals(MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS)) {
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			return;
 		}
