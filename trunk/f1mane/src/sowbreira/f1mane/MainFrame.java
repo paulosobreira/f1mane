@@ -32,7 +32,6 @@ import javax.swing.WindowConstants;
 
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.editor.MainPanelEditor;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.paddock.applet.AppletPaddock;
 import sowbreira.f1mane.recursos.CarregadorRecursos;

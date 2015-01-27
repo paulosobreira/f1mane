@@ -763,6 +763,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		controleCorrida.pararThreads();
 		controleEstatisticas.setConsumidorAtivo(false);
 		if (controleCampeonato != null) {
+			Logger.logar("controleCampeonato.processaFimCorrida(getPilotos());");
 			controleCampeonato.processaFimCorrida(getPilotos());
 		}
 		for (int i = 0; i < pilotos.size(); i++) {
