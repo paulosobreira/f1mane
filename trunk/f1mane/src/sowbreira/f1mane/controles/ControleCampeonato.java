@@ -580,28 +580,10 @@ public class ControleCampeonato {
 	}
 
 	public void processaMudancaEquipe() {
-		if (campeonato.isPromovidoEquipeRival()) {
-			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
-					campeonato.getRival());
-			JOptionPane.showMessageDialog(this.mainFrame,
-					Lang.msg("irEquipe", new String[] { equipeRival }),
-					Lang.msg("mudarEquipe"), JOptionPane.INFORMATION_MESSAGE);
-			campeonato.setNomePiloto(campeonato.getRival());
-			campeonato.setRival(null);
-			campeonato.setVitorias(0);
-			campeonato.setDerrotas(0);
-			campeonato.setPromovidoEquipeRival(false);
-		} else if (campeonato.isRebaixadoEquipeRival()) {
-			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
-					campeonato.getRival());
-			JOptionPane.showMessageDialog(this.mainFrame,
-					Lang.msg("rebaixado", new String[] { equipeRival }),
-					Lang.msg("mudarEquipe"), JOptionPane.INFORMATION_MESSAGE);
-			campeonato.setNomePiloto(campeonato.getRival());
-			campeonato.setRival(null);
-			campeonato.setVitorias(0);
-			campeonato.setDerrotas(0);
-		}
+		campeonato.setNomePiloto(campeonato.getRival());
+		campeonato.setRival(null);
+		campeonato.setVitorias(0);
+		campeonato.setDerrotas(0);
 	}
 
 	public void iniciaCorrida(String circuito) {

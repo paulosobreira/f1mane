@@ -328,6 +328,8 @@ public class PainelMenuLocal {
 					|| campeonato.isRebaixadoEquipeRival()) {
 				InterfaceJogo controleJogo = mainFrame.getControleJogo();
 				controleJogo.processaMudancaEquipeCampeontato();
+				String temporada = "t" +campeonato.getTemporada();
+				carregaPilotoSelecionadoCampeonato(temporada, null);
 				MENU = MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS;
 			}
 		}
@@ -679,6 +681,7 @@ public class PainelMenuLocal {
 			desenhaMenuCorridaSelecao(g2d);
 			desenhaMenuNovoCampeonatoPilotos(g2d);
 			desenhaMenuSubscreverCampeonato(g2d);
+			desenhaMenuMudarEquipeCampeonato(g2d);
 			desenhaMenuCorridaCampeonatoPilotos(g2d);
 			desenhaMenuQualificacao(g2d);
 			desenhaMenuDesafiarPilto(g2d);
@@ -688,6 +691,45 @@ public class PainelMenuLocal {
 			e.printStackTrace();
 			Logger.logarExept(e);
 		}
+
+	}
+
+	private void desenhaMenuMudarEquipeCampeonato(Graphics2D g2d) {
+		if (!MENU.equals(MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS)) {
+			return;
+		}
+
+		pilotoDesafio = null;
+
+		int centerX = (int) (getWidth() / 2.3);
+		int centerY = (int) (getHeight() / 2.5);
+
+		centerX -= 300;
+
+		Font fontOri = g2d.getFont();
+
+		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
+
+		String txt = "";
+		if (campeonato.isPromovidoEquipeRival()) {
+			txt = Lang.msg("irEquipe", new String[] { pilotoSelecionado
+					.getCarro().getNome() });
+		}
+		if (campeonato.isRebaixadoEquipeRival()) {
+			txt = Lang.msg("rebaixado", new String[] { pilotoSelecionado
+					.getCarro().getNome() });
+		}
+		int larguraTexto = Util.larguraTexto(txt, g2d);
+		g2d.setColor(lightWhite);
+		g2d.fillRoundRect(centerX, centerY - 20, larguraTexto + 10, 30, 15, 15);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, centerX + 5, centerY);
+		g2d.setFont(fontOri);
+
+		desenhaPilotoSelecionado(g2d, centerX + 130, centerY + 100,
+				pilotoSelecionado);
+
+		desenhaAnteriroProximo(g2d, centerX + 200, centerY + 400);
 
 	}
 
@@ -902,6 +944,11 @@ public class PainelMenuLocal {
 				}
 			}
 		}
+		carregaPilotoSelecionadoCampeonato(temporada, desafio);
+	}
+
+	private void carregaPilotoSelecionadoCampeonato(String temporada,
+			String desafio) {
 		if (campeonato.getNomePiloto() != null
 				&& !campeonato.getNomePiloto().equals(desafio)) {
 			List pilotos = litasPilotosTemporada(temporada);
@@ -913,7 +960,6 @@ public class PainelMenuLocal {
 				}
 			}
 		}
-
 	}
 
 	private void desenhaDesafiarPiloto(Graphics2D g2d, int x, int y) {
