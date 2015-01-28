@@ -51,10 +51,6 @@ public class Campeonato implements Serializable {
 	}
 
 	public void setRival(String rival) {
-		if(rival!=null){
-			setPromovidoEquipeRival(false);
-			setRebaixadoEquipeRival(false);
-		}
 		this.rival = rival;
 	}
 

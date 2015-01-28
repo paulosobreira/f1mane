@@ -320,17 +320,18 @@ public class PainelMenuLocal {
 		});
 		iniciaRecursos();
 		if (mainFrame.getCampeonato() != null) {
-			mainFrame.getControleJogo().continuarCampeonato(
-					mainFrame.getCampeonato());
+			InterfaceJogo controleJogo = mainFrame.getControleJogo();
+			controleJogo.continuarCampeonato(mainFrame.getCampeonato());
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			carregaCampeonato();
 			if (campeonato.isPromovidoEquipeRival()
 					|| campeonato.isRebaixadoEquipeRival()) {
-				InterfaceJogo controleJogo = mainFrame.getControleJogo();
 				controleJogo.processaMudancaEquipeCampeontato();
-				String temporada = "t" +campeonato.getTemporada();
+				String temporada = "t" + campeonato.getTemporada();
 				carregaPilotoSelecionadoCampeonato(temporada, null);
 				MENU = MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS;
+			} else {
+				controleJogo.verificaDesafioCampeonatoPiloto();
 			}
 		}
 		renderThread.start();
@@ -349,7 +350,6 @@ public class PainelMenuLocal {
 			return;
 		}
 		carregaDadosCamponatoCarregado();
-
 		MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 
 	}
@@ -1669,6 +1669,8 @@ public class PainelMenuLocal {
 		}
 		if (MENU.equals(MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS)) {
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+			campeonato.setRebaixadoEquipeRival(false);
+			campeonato.setPromovidoEquipeRival(false);
 			return;
 		}
 		if (MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS)) {
@@ -1837,6 +1839,8 @@ public class PainelMenuLocal {
 		}
 		if (MENU.equals(MENU_MUDAR_EQUIPE_CAMPEONATO_PILOTOS)) {
 			MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+			campeonato.setRebaixadoEquipeRival(false);
+			campeonato.setPromovidoEquipeRival(false);
 			return;
 		}
 		if (MENU.equals(MENU_SOBRE)) {

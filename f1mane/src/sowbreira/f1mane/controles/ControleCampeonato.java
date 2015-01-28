@@ -1207,9 +1207,6 @@ public class ControleCampeonato {
 			campeonato.setUltimaCorridaSemDesafiar(false);
 			Logger.logar("rival " + rival);
 			Logger.logar("rivalEquipe " + rivalEquipe);
-			JOptionPane.showMessageDialog(mainFrame, Lang.msg("desafiaVoce",
-					new String[] { rival, rivalEquipe }), Lang.msg("desafio"),
-					JOptionPane.INFORMATION_MESSAGE);
 		}
 
 	}
