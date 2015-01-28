@@ -366,7 +366,6 @@ public class ControleCampeonato {
 
 	private void persistirEmCache() {
 		try {
-			Logger.logar("persistirEmCache()");
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
 			FileContents fileContents = null;
@@ -428,9 +427,6 @@ public class ControleCampeonato {
 					.lookup("javax.jnlp.PersistenceService");
 			String url = mainFrame.getCodeBase() + "campeonato";
 			FileContents fileContents = persistenceService.get(new URL(url));
-			if (fileContents == null) {
-				System.out.println(" fileContents == null  ");
-			}
 			ObjectInputStream ois = new ObjectInputStream(
 					fileContents.getInputStream());
 			campeonato = (Campeonato) ois.readObject();
@@ -554,8 +550,8 @@ public class ControleCampeonato {
 			System.out.println("equipeRival " + equipeRival);
 			String equipeJogador = campeonato.getPilotosEquipesCampeonato()
 					.get(campeonato.getNomePiloto());
-			System.out
-			.println("campeonato.getNomePiloto() " + campeonato.getNomePiloto());
+			System.out.println("campeonato.getNomePiloto() "
+					+ campeonato.getNomePiloto());
 			System.out.println("equipeJogador " + equipeJogador);
 			Integer ponteciaEquipeRival = campeonato
 					.getEquipesPotenciaCampeonato().get(equipeRival);
