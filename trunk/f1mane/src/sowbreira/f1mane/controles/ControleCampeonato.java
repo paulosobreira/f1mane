@@ -11,6 +11,10 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -382,14 +386,45 @@ public class ControleCampeonato {
 			stream.flush();
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			dadosPersistencia(campeonato, mainFrame);
+			try {
+				salvarXmlEmDisco();
+			} catch (Exception e2) {
+				Logger.logarExept(e);
+				dadosPersistencia(campeonato, mainFrame);
+			}
 		}
 
+	}
+
+	private void salvarXmlEmDisco() throws FileNotFoundException, IOException {
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
+		encoder.writeObject(campeonato);
+		encoder.flush();
+		String save = new String(byteArrayOutputStream.toByteArray())
+				+ "</java>";
+		FileOutputStream fileOutputStream = new FileOutputStream(new File(
+				"f1mane_save.xml"));
+		fileOutputStream.write(save.getBytes());
+		fileOutputStream.close();
 	}
 
 	public Campeonato continuarCampeonato() {
 		continuarCampeonatoCache();
 		return campeonato;
+	}
+
+	public Campeonato continuarCampeonatoXmlDisco() {
+		try {
+			FileInputStream fileInputStream = new FileInputStream(new File(
+					"f1mane_save.xml"));
+			XMLDecoder xmlDecoder = new XMLDecoder(fileInputStream);
+			campeonato = (Campeonato) xmlDecoder.readObject();
+			return campeonato;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return null;
 	}
 
 	public Campeonato continuarCampeonatoXml() {
@@ -528,7 +563,6 @@ public class ControleCampeonato {
 		campeonato.getDadosCorridas().put(circuitoJogando,
 				corridaCampeonatoDados);
 		verificaMudancaEquipe();
-
 		persistirEmCache();
 	}
 
@@ -540,34 +574,29 @@ public class ControleCampeonato {
 		if (ControleJogoLocal.DIFICIL.equals(campeonato.getNivel())) {
 			qtdeDisputas = Util.intervalo(2, 3);
 		}
+
 		if (campeonato.getVitorias() > qtdeDisputas) {
-			campeonato.setPromovidoEquipeRival(true);
+			if (campeonato.isFoiDesafiado()) {
+				reiniciarDesafio();
+				campeonato.setPromovidoEquipeRival(false);
+			} else {
+				campeonato.setPromovidoEquipeRival(true);
+			}
 		} else if (campeonato.getDerrotas() > qtdeDisputas) {
-			System.out
-					.println("campeonato.getRival() " + campeonato.getRival());
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					campeonato.getRival());
-			System.out.println("equipeRival " + equipeRival);
-			String equipeJogador = campeonato.getPilotosEquipesCampeonato()
-					.get(campeonato.getNomePiloto());
-			System.out.println("campeonato.getNomePiloto() "
-					+ campeonato.getNomePiloto());
-			System.out.println("equipeJogador " + equipeJogador);
 			Integer ponteciaEquipeRival = campeonato
 					.getEquipesPotenciaCampeonato().get(equipeRival);
-			System.out.println("ponteciaEquipeRival " + ponteciaEquipeRival);
+			String equipeJogador = campeonato.getPilotosEquipesCampeonato()
+					.get(campeonato.getNomePiloto());
 			Integer potenciaEquipeJogador = campeonato
 					.getEquipesPotenciaCampeonato().get(equipeJogador);
-			System.out
-					.println("potenciaEquipeJogador " + potenciaEquipeJogador);
 			ponteciaEquipeRival = ponteciaEquipeRival == null ? 0
 					: ponteciaEquipeRival;
 			potenciaEquipeJogador = potenciaEquipeJogador == null ? 0
 					: potenciaEquipeJogador;
 			if (ponteciaEquipeRival > potenciaEquipeJogador) {
-				campeonato.setRival(null);
-				campeonato.setVitorias(0);
-				campeonato.setDerrotas(0);
+				reiniciarDesafio();
 				campeonato.setRebaixadoEquipeRival(false);
 			} else {
 				campeonato.setRebaixadoEquipeRival(true);
@@ -577,7 +606,12 @@ public class ControleCampeonato {
 
 	public void processaMudancaEquipe() {
 		campeonato.setNomePiloto(campeonato.getRival());
+		reiniciarDesafio();
+	}
+
+	private void reiniciarDesafio() {
 		campeonato.setRival(null);
+		campeonato.setFoiDesafiado(false);
 		campeonato.setVitorias(0);
 		campeonato.setDerrotas(0);
 	}
@@ -1173,33 +1207,37 @@ public class ControleCampeonato {
 			}
 			return;
 		}
-		int habilidadePiloto = campeonato.getPtsPiloto();
 		String equipePiloto = campeonato.getPilotosEquipesCampeonato().get(
 				campeonato.getNomePiloto());
 		String rival = null;
 		String rivalEquipe = null;
-		int habilidadeAteAgora = 0;
+		int ptenciaRivalAteAgora = 0;
 		for (Iterator iterator = campeonato.getPilotosHabilidadeCampeonato()
 				.keySet().iterator(); iterator.hasNext();) {
 			String pilotoRival = (String) iterator.next();
-			int habilidadeRival = campeonato.getPilotosHabilidadeCampeonato()
-					.get(pilotoRival);
+			
 			String equipeRival = campeonato.getPilotosEquipesCampeonato().get(
 					pilotoRival);
-			if (equipeRival == null) {
-				continue;
-			}
-			if (habilidadeRival < habilidadePiloto
-					&& habilidadeRival > habilidadeAteAgora
+			Integer ponteciaEquipeRival = campeonato
+					.getEquipesPotenciaCampeonato().get(equipeRival);
+			Integer potenciaEquipeJogador = campeonato
+					.getEquipesPotenciaCampeonato().get(equipePiloto);
+			ponteciaEquipeRival = ponteciaEquipeRival == null ? 0
+					: ponteciaEquipeRival;
+			potenciaEquipeJogador = potenciaEquipeJogador == null ? 0
+					: potenciaEquipeJogador;
+			if (ponteciaEquipeRival < potenciaEquipeJogador
+					&& ponteciaEquipeRival > ptenciaRivalAteAgora
 					&& !equipePiloto.equals(equipeRival)) {
 				rival = pilotoRival;
 				rivalEquipe = equipeRival;
-				habilidadeAteAgora = habilidadeRival;
+				ptenciaRivalAteAgora = ponteciaEquipeRival;
 			}
 		}
 
 		if (!Util.isNullOrEmpty(rival)) {
 			campeonato.setRival(rival);
+			campeonato.setFoiDesafiado(true);
 			campeonato.setUltimaCorridaSemDesafiar(false);
 			Logger.logar("rival " + rival);
 			Logger.logar("rivalEquipe " + rivalEquipe);

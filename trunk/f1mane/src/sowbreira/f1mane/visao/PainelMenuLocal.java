@@ -343,6 +343,9 @@ public class PainelMenuLocal {
 		InterfaceJogo controleJogo = mainFrame.getControleJogo();
 		campeonato = controleJogo.continuarCampeonato();
 		if (campeonato == null) {
+			campeonato = controleJogo.continuarCampeonatoXmlDisco();
+		}
+		if (campeonato == null) {
 			campeonato = controleJogo.continuarCampeonatoXml();
 		}
 		if (campeonato == null) {
@@ -366,6 +369,9 @@ public class PainelMenuLocal {
 				if (mainFrame.verificaCriarJogo()) {
 					InterfaceJogo controleJogo = mainFrame.getControleJogo();
 					campeonato = controleJogo.continuarCampeonato();
+					if (campeonato == null) {
+						campeonato = controleJogo.continuarCampeonatoXmlDisco();
+					}
 				}
 				if (campeonato != null) {
 					MENU = MENU_SUBSCREVER_CAMPEONATO;
@@ -721,7 +727,7 @@ public class PainelMenuLocal {
 		}
 		int larguraTexto = Util.larguraTexto(txt, g2d);
 		g2d.setColor(lightWhite);
-		g2d.fillRoundRect(centerX, centerY - 20, larguraTexto + 10, 30, 15, 15);
+		g2d.fillRoundRect(centerX, centerY - 25, larguraTexto + 10, 30, 15, 15);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(txt, centerX + 5, centerY);
 		g2d.setFont(fontOri);
@@ -752,7 +758,7 @@ public class PainelMenuLocal {
 		String txt = Lang.msg("desejaSubscreverCampento");
 		int larguraTexto = Util.larguraTexto(txt, g2d);
 		g2d.setColor(lightWhite);
-		g2d.fillRoundRect(centerX, centerY - 20, larguraTexto + 10, 30, 15, 15);
+		g2d.fillRoundRect(centerX, centerY - 25, larguraTexto + 10, 30, 15, 15);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(txt, centerX + 5, centerY);
 

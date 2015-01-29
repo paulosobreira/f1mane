@@ -1304,4 +1304,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		
 	}
 
+	@Override
+	public Campeonato continuarCampeonatoXmlDisco() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
