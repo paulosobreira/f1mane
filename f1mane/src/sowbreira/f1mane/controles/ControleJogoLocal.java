@@ -1507,4 +1507,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	}
 
+	@Override
+	public Campeonato continuarCampeonatoXmlDisco() {
+		if (controleCampeonato != null) {
+			return controleCampeonato.continuarCampeonatoXmlDisco();
+		}
+		return null;
+	}
+
 }

@@ -387,4 +387,6 @@ public interface InterfaceJogo {
 
 	public void processaMudancaEquipeCampeontato();
 
+	public Campeonato continuarCampeonatoXmlDisco();
+
 }
