@@ -1,1 +1,1 @@
-java -cp .;a-commons-beanutils-1.8.2.jar;a-commons-logging-1.1.1.jar sowbreira.f1mane.MainFrame
+java -cp .;a-commons-beanutils-1.8.2.jar;a-commons-logging-1.1.1.jar;a-f1mane.jar;a-f1manePistas.jar;a-f1maneRecursos.jar sowbreira.f1mane.MainFrame

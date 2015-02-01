@@ -13,7 +13,7 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
-	<property name="TOMCAT_HOME"       value="C:\apache-tomcat-7.0.53"/>
+	<property name="TOMCAT_HOME"       value="E:\apache-tomcat-7.0.35"/>
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
 			<include name="*.jar" />
@@ -153,6 +153,7 @@
 				<include name="Descompatar.bat" />
 				<include name="Editor.bat" />
 				<include name="F1mane.bat" />
+				<include name="F1mane-Descompatado.bat" />
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="f1maneLocal.jnlp" />
