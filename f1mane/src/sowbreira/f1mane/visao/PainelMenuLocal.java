@@ -1356,9 +1356,9 @@ public class PainelMenuLocal {
 
 		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 340);
 
-		desenhaCircuitosSelecionados(g2d, x + 480, y - 50);
+		desenhaCircuitosSelecionados(g2d, x + 480, y - 60);
 
-		desenhaTemporadas(g2d, x + 580, y + 280, true);
+		desenhaTemporadas(g2d, x + 580, y + 405, true);
 
 		desenhaPilotoSelecionado(g2d, x, y + 450, pilotoSelecionado);
 
@@ -1369,15 +1369,15 @@ public class PainelMenuLocal {
 
 		int cont = 0;
 		for (int i = 0; i < cirucitosCampeonato.size(); i++) {
-			if (i % 10 == 0) {
+			if (i % 15 == 0) {
 				cont = 0;
 			}
 			int novoY = y + cont * 25;
 			int novoX = 0;
-			if (i > 9) {
+			if (i > 14) {
 				novoX = 190;
 			}
-			if (i > 19) {
+			if (i > 29) {
 				novoX = 380;
 			}
 			String circuito = (String) cirucitosCampeonato.get(i);
