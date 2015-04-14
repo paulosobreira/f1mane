@@ -23,6 +23,7 @@ public class BeanUtil {
 		 * Corrige o bug do <i>BeanUtils</i> pra converter valores de data que
 		 * estão <b>null</b>.
 		 */
+		
 		ConvertUtils.register(new Converter() {
 			public Object convert(Class type, Object value) {
 				SqlTimestampConverter sqlTimestampConverter = new SqlTimestampConverter();
