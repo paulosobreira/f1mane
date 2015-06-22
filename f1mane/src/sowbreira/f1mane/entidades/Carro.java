@@ -363,32 +363,31 @@ public class Carro implements Serializable {
 		if (GIRO_MIN_VAL == giro) {
 			mod = 0.3;
 		}
+
+		int novoModificador = 0;
+		
 		if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa())
 				&& !no.verificaRetaOuLargada()
 				&& getPiloto().testeHabilidadePilotoAerodinamica(controleJogo)) {
 			if (no.verificaCruvaBaixa()) {
-				novoModificadorOri++;
+				novoModificador++;
 			} else {
-				novoModificadorOri += Util.intervalo(0, 1);
+				novoModificador += Util.intervalo(0, 1);
 			}
 		}
-		if (Math.random() > mod || !testeAerodinamica) {
-			return novoModificadorOri;
-		}
-		int novoModificador = 0;
 
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod) {
-				novoModificador += (testeAerodinamica ? 2 : 1);
+				novoModificador += (testeAerodinamica ? 2 : 0);
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() > mod) {
 				novoModificador -= Math.random() < 0.2 ? (testeAerodinamica ? 0
-						: 1) : (testeAerodinamica ? 1 : 2);
+						: 1) : (testeAerodinamica ? 0 : 2);
 			}
 		}
 		if (no.verificaCruvaAlta() || no.verificaCruvaBaixa()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod) {
 				novoModificador -= Util.intervalo(testeAerodinamica ? 0 : 1,
-						testeAerodinamica ? 1 : 2);
+						testeAerodinamica ? 0 : 2);
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() < mod
 					&& testeAerodinamica) {
 				novoModificador += Math.random() < 0.7 ? 1 : 0;
