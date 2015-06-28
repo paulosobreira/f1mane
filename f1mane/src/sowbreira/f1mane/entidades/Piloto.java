@@ -1149,9 +1149,9 @@ public class Piloto implements Serializable {
 	public double getValorLimiteStressePararErrarCurva(
 			InterfaceJogo controleJogo) {
 		if (isJogadorHumano()) {
-			return 100 * (1.0 - controleJogo.getNiveljogo());
+			return 100 * (1.3 - controleJogo.getNiveljogo());
 		} else {
-			return 100 * (controleJogo.getNiveljogo() + 0.1);
+			return 100 * (controleJogo.getNiveljogo() + 0.2);
 		}
 	}
 

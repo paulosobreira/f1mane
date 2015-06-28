@@ -278,6 +278,7 @@ public class PainelCircuito {
 	protected int threadCarregarBkgZoomRodando;
 	private BufferedImage rotateBufferTravarRodas;
 	private BufferedImage zoomBufferTravarRodas;
+	private Integer contDesenhaPilotosQualify;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -4632,13 +4633,22 @@ public class PainelCircuito {
 				}
 			}
 		}
-
+		if (contDesenhaPilotosQualify == null) {
+			contDesenhaPilotosQualify = pilotos.size() * 15;
+		}
+		contDesenhaPilotosQualify--;
 		for (int i = 0; i < pilotos.size(); i++) {
+			if ((i) * 15 < contDesenhaPilotosQualify) {
+				continue;
+			}
 			Piloto piloto = (Piloto) pilotos.get(i);
 			Point point = (Point) ptosPilotosDesQualy.get(i);
 			desenhaPilotoQualify(g2d, piloto, point.x, point.y);
 		}
 		for (int i = 0; i < pilotos.size(); i++) {
+			if ((i) * 15 < contDesenhaPilotosQualify) {
+				continue;
+			}
 			Piloto piloto = (Piloto) pilotos.get(i);
 			Point point = (Point) ptosPilotosDesQualy.get(i);
 			desenhaBordaPilotoQualify(g2d, piloto, point.x, point.y);
@@ -5475,7 +5485,7 @@ public class PainelCircuito {
 		Piloto ps = pilotoSelecionado;
 		Stroke stroke = g2d.getStroke();
 		if (!(System.currentTimeMillis() - ultimaDesenhaVelocidade < (ps
-				.getVelocidadeExibir() / 6))) {
+				.getVelocidadeExibir() / 4))) {
 			int incAcell = 1;
 			int incFreiada = 1;
 			if (ps.getNoAtual().verificaCruvaBaixa()) {
@@ -5485,7 +5495,7 @@ public class PainelCircuito {
 				incFreiada = Util.intervalo(0, 5);
 			}
 			if (ps.isFreiandoReta()) {
-				incFreiada += 2;
+				incFreiada += Util.intervalo(5, 10);
 			}
 
 			No no = ps.getNoAtualSuave();
@@ -5494,6 +5504,10 @@ public class PainelCircuito {
 			}
 
 			if (ps.getVelocidade() >= ps.getVelocidadeExibir()) {
+				int diff = (ps.getVelocidade() - ps.getVelocidadeExibir());
+				if (diff > 10) {
+					incAcell ++;
+				}
 				ps.setVelocidadeExibir(ps.getVelocidadeExibir() + incAcell);
 			}
 			if (ps.getVelocidade() < ps.getVelocidadeExibir()) {
@@ -5526,7 +5540,7 @@ public class PainelCircuito {
 		g2d.setStroke(trilhoMiniPista);
 		g2d.setColor(corVelocidade);
 		g2d.drawRoundRect(limitesViewPort.x + pointDesenhaVelo.x,
-				limitesViewPort.y + pointDesenhaVelo.y + 40, 160, 35, 15, 15);	
+				limitesViewPort.y + pointDesenhaVelo.y + 40, 160, 35, 15, 15);
 		g2d.setStroke(stroke);
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
@@ -6143,6 +6157,11 @@ public class PainelCircuito {
 	public void informaMudancaClima() {
 		informaMudancaClima = 500;
 
+	}
+
+	public boolean desenhouPilotosQualificacao() {
+		return contDesenhaPilotosQualify != null
+				&& contDesenhaPilotosQualify <= 0;
 	}
 
 }

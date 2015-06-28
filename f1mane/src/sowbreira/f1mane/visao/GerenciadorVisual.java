@@ -1825,4 +1825,8 @@ public class GerenciadorVisual {
 
 	}
 
+	public boolean naoDesenhouPilotosQualificacao() {
+		return !painelCircuito.desenhouPilotosQualificacao();
+	}
+
 }
