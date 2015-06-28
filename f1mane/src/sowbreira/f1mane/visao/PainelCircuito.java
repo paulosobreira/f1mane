@@ -5473,8 +5473,9 @@ public class PainelCircuito {
 		}
 
 		Piloto ps = pilotoSelecionado;
+		Stroke stroke = g2d.getStroke();
 		if (!(System.currentTimeMillis() - ultimaDesenhaVelocidade < (ps
-				.getVelocidadeExibir() / 5))) {
+				.getVelocidadeExibir() / 6))) {
 			int incAcell = 1;
 			int incFreiada = 1;
 			if (ps.getNoAtual().verificaCruvaBaixa()) {
@@ -5520,11 +5521,17 @@ public class PainelCircuito {
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + pointDesenhaVelo.x,
 				limitesViewPort.y + pointDesenhaVelo.y + 40, 160, 35, 15, 15);
+		Color corVelocidade = OcilaCor.porcentVermelho100Verde0((100 * ps
+				.getVelocidade() / 330));
+		g2d.setStroke(trilhoMiniPista);
+		g2d.setColor(corVelocidade);
+		g2d.drawRoundRect(limitesViewPort.x + pointDesenhaVelo.x,
+				limitesViewPort.y + pointDesenhaVelo.y + 40, 160, 35, 15, 15);	
+		g2d.setStroke(stroke);
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
-		g2d.setColor(OcilaCor.porcentVermelho100Verde0((100 * ps
-				.getVelocidade() / 330)));
+		g2d.setColor(Color.BLACK);
 		g2d.drawString(velo, limitesViewPort.x + pointDesenhaVelo.x + 2,
 				limitesViewPort.y + pointDesenhaVelo.y + 67);
 		g2d.setFont(fontOri);
@@ -5570,46 +5577,53 @@ public class PainelCircuito {
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
 		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
+		Color corComb = OcilaCor.porcentVerde100Vermelho0(porcentComb);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 3, y - 26, 2 * porcentComb, 30,
 				10, 10);
 		g2d.setStroke(trilhoMiniPista);
+		g2d.setColor(corComb);
 		g2d.drawRoundRect(limitesViewPort.x + 3, y - 26, 200, 30, 10, 10);
 		g2d.setStroke(stroke);
-		g2d.setColor(transpMenus);
-		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(porcentComb));
+		g2d.setColor(Color.BLACK);
 		g2d.drawString(Lang.msg("215") + " " + porcentComb + "%", x + 5, y);
 
 		y += 35;
 		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePeneus();
+		Color corPneus = OcilaCor.porcentVerde100Vermelho0(pneus);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 3, y - 26, 2 * pneus, 30, 10, 10);
 		g2d.setStroke(trilhoMiniPista);
+		g2d.setColor(corPneus);
 		g2d.drawRoundRect(limitesViewPort.x + 3, y - 26, 200, 30, 10, 10);
 		g2d.setStroke(stroke);
-		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(pneus));
+		g2d.setColor(Color.BLACK);
 		g2d.drawString(Lang.msg("216") + " " + pneus + "%", x + 5, y);
 
 		y += 35;
 
 		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
+		Color corMotor = OcilaCor.porcentVerde100Vermelho0(motor);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 3, y - 26, 2 * motor, 30, 10, 10);
 		g2d.setStroke(trilhoMiniPista);
+		g2d.setColor(corMotor);
 		g2d.drawRoundRect(limitesViewPort.x + 3, y - 26, 200, 30, 10, 10);
 		g2d.setStroke(stroke);
-		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(motor));
+		g2d.setColor(Color.BLACK);
 		g2d.drawString(Lang.msg("217") + " " + motor + "%", x + 5, y);
 
 		y += 35;
 
 		int stress = pilotoSelecionado.getStress();
+		Color corStress = OcilaCor.porcentVermelho100Verde0(stress);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 3, y - 26, 2 * stress, 30, 10, 10);
 		g2d.setStroke(trilhoMiniPista);
+		g2d.setColor(corStress);
 		g2d.drawRoundRect(limitesViewPort.x + 3, y - 26, 200, 30, 10, 10);
 		g2d.setStroke(stroke);
-		g2d.setColor(OcilaCor.porcentVermelho100Verde0(stress));
+		g2d.setColor(Color.BLACK);
 		g2d.drawString(Lang.msg("153") + " " + stress + "%", x + 5, y);
 		g2d.setFont(fontOri);
 	}
