@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
 
@@ -182,7 +184,11 @@ public class ControlePaddockServidor {
 				new String[] { jogadorDadosSrv.getEmail() }));
 	}
 
+	@Deprecated
 	private boolean validaCapcha(ClientPaddockPack clientPaddockPack) {
+		if (true) {
+			return true;
+		}
 		try {
 			Boolean validateResponseForID = capcha.validateResponseForID(
 					clientPaddockPack.getChaveCapcha(),
@@ -617,7 +623,11 @@ public class ControlePaddockServidor {
 		// String test = "#brual#llllp#";
 		// Logger.logar(test.replaceAll("#", ""));
 
-		System.out.println(Lang.decodeTexto("¢088¢ 0 2011"));
+		// System.out.println(Lang.decodeTexto("¢088¢ 0 2011"));
+		DefaultManageableImageCaptchaService capcha = new DefaultManageableImageCaptchaService();
+		String chave = String.valueOf(System.currentTimeMillis());
+		BufferedImage challenge = capcha.getImageChallengeForID(chave);
+		JOptionPane.showInputDialog(new ImageIcon(challenge));
 	}
 
 	public void removerClienteInativo(SessaoCliente sessaoCliente) {

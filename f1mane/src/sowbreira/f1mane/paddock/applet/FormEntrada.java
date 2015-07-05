@@ -97,7 +97,6 @@ public class FormEntrada extends JPanel {
 		langPanel.add(new JLabel() {
 			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("lembrar");
 			}
 		});
@@ -129,8 +128,12 @@ public class FormEntrada extends JPanel {
 
 		return langPanel;
 	}
-
+	
+	@Deprecated
 	protected void capchaReload() {
+		if(true){
+			return;
+		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setComando(Comandos.OBTER_NOVO_CAPCHA);
 		Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
@@ -142,7 +145,8 @@ public class FormEntrada extends JPanel {
 		}
 
 	}
-
+	
+	@Deprecated
 	private Component gerarCapchaPanel() {
 		JPanel capchaPanel = new JPanel(new BorderLayout());
 		capchaImage = new JLabel();
@@ -201,7 +205,7 @@ public class FormEntrada extends JPanel {
 
 		JPanel newPanel = new JPanel(new BorderLayout());
 		newPanel.add(registrarPanel, BorderLayout.NORTH);
-		newPanel.add(gerarCapchaPanel(), BorderLayout.CENTER);
+//		newPanel.add(gerarCapchaPanel(), BorderLayout.CENTER);
 		return newPanel;
 
 	}

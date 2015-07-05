@@ -554,6 +554,7 @@ public class PaddockWindow {
 			clientPaddockPack.setNomeJogo(element);
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			if (ret == null) {
+				Logger.logar("VER_INFO_VOLTAS_JOGO ret == null");
 				continue;
 			}
 			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;

@@ -1468,15 +1468,21 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	@Override
 	public void desenhouQualificacao() {
-		try {
-			while(gerenciadorVisual.naoDesenhouPilotosQualificacao()){
-				Thread.sleep(5000);
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		if (gerenciadorVisual != null) {
+			try {
+				while (gerenciadorVisual.naoDesenhouPilotosQualificacao()) {
+					Thread.sleep(5000);
+				}
+			} catch (InterruptedException e) {
+				Logger.logarExept(e);
+			}
 			gerenciadorVisual.setDesenhouQualificacao(true);
+		} else {
+			try {
+				Thread.sleep(15000);
+			} catch (InterruptedException e) {
+				Logger.logarExept(e);
+			}
 		}
 		selecionaPilotoJogador();
 	}
