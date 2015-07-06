@@ -523,6 +523,9 @@ public class ControlePaddockCliente {
 		clientPaddockPack.setEmailJogador(formEntrada.getEmail().getText());
 		clientPaddockPack.setRecuperar(formEntrada.getRecuperar().isSelected());
 		Object ret = enviarObjeto(clientPaddockPack);
+		if (retornoNaoValido(ret)) {
+			return false;
+		}
 		if (ret == null) {
 			Logger.logar("REGISTRAR_LOGIN ret == null");
 			return false;
@@ -564,6 +567,9 @@ public class ControlePaddockCliente {
 				sessaoCliente);
 		clientPaddockPack.setDataObject(anos.getSelectedItem());
 		ret = enviarObjeto(clientPaddockPack);
+		if (retornoNaoValido(ret)) {
+			return;
+		}
 		if (ret == null) {
 			JOptionPane.showMessageDialog(applet, Lang.msg("062"), "Erro",
 					JOptionPane.ERROR_MESSAGE);
@@ -587,6 +593,9 @@ public class ControlePaddockCliente {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.VER_CONTRUTORES, sessaoCliente);
 		Object ret = enviarObjeto(clientPaddockPack);
+		if (retornoNaoValido(ret)) {
+			return;
+		}
 		if (ret == null) {
 			Logger.logar("VER_CONTRUTORES ret == null");
 			return;
@@ -606,6 +615,9 @@ public class ControlePaddockCliente {
 		clientPaddockPack.setNomeJogador(jogadorSel);
 		clientPaddockPack.setDataObject(anoClassificacao);
 		Object ret = enviarObjeto(clientPaddockPack);
+		if (retornoNaoValido(ret)) {
+			return new ArrayList();
+		}
 		if (ret == null) {
 			Logger.logar("VER_CORRIDAS ret == null");
 			return new ArrayList();
