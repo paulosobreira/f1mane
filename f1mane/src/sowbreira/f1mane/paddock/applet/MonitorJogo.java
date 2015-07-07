@@ -86,12 +86,12 @@ public class MonitorJogo implements Runnable {
 				Thread.sleep(controlePaddockCliente.getLatenciaMinima());
 			} catch (Exception e) {
 				interrupt = true;
-				matarTodasThreads();
+				matarCmdThread();
 				Logger.logarExept(e);
 			}
 		}
 		if (jogoCliente != null) {
-			jogoCliente.matarTodasThreads();
+			jogoCliente.matarThreadsResultadoFnal();
 		}
 
 	}
@@ -830,6 +830,13 @@ public class MonitorJogo implements Runnable {
 		if (jogoCliente != null && jogoCliente.getMainFrame() != null)
 			jogoCliente.getMainFrame().setVisible(false);
 
+	}
+	
+	
+	public void matarCmdThread() {
+		if (threadCmd != null) {
+			threadCmd.interrupt();
+		}
 	}
 
 	public void matarTodasThreads() {

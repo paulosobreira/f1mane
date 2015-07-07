@@ -254,7 +254,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		gerenciadorVisual.exibirResultadoFinal();
 		// mainFrame
 		// .exibirResiltadoFinal(gerenciadorVisual.exibirResultadoFinal());
-		matarTodasThreads();
+		matarThreadsResultadoFnal();
 	}
 
 	public List getCarros() {
@@ -390,7 +390,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
-	public void matarTodasThreads() {
+	public void matarThreadsResultadoFnal() {
 		try {
 			if (monitorJogo != null) {
 				monitorJogo.setJogoAtivo(false);
@@ -402,6 +402,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			if (controleEstatisticas != null) {
 				controleEstatisticas.setConsumidorAtivo(false);
 			}
+		} catch (Throwable e) {
+			Logger.logarExept(e);
+		}
+	}
+	
+	public void matarTodasThreads() {
+		try {
+			matarThreadsResultadoFnal();
 			if (gerenciadorVisual != null) {
 				gerenciadorVisual.finalize();
 			}
