@@ -1458,7 +1458,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		if (gerenciadorVisual != null) {
 			gerenciadorVisual.setDesenhouCreditos(true);

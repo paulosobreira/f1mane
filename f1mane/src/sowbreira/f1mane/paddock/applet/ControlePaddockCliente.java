@@ -191,7 +191,6 @@ public class ControlePaddockCliente {
 			ultRetornoSucedido = retornoT;
 			return retorno;
 		} catch (Exception e) {
-			e.printStackTrace();
 			if ((System.currentTimeMillis() - ultRetornoSucedido) > 120000) {
 				setComunicacaoServer(false);
 				StackTraceElement[] trace = e.getStackTrace();

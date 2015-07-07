@@ -119,7 +119,7 @@ public class ServletPaddock extends HttpServlet {
 				return host;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 		String ip = Inet4Address.getLocalHost().getHostAddress();

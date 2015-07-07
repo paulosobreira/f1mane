@@ -655,7 +655,7 @@ public class CarregadorRecursos {
 		try {
 			return ImageIO.read(CarregadorRecursos.class.getResource(file));
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		return null;
 	}

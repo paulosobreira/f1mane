@@ -46,6 +46,7 @@ import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 
 /**
@@ -373,7 +374,7 @@ public class PainelEntradaCliente {
 			circuito = (Circuito) ois.readObject();
 			circuito.vetorizarPista();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 		List pista = circuito.getPista();

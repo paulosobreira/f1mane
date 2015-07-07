@@ -342,7 +342,7 @@ public class PainelCircuito {
 				carregaBackGround();
 			} catch (Error e) {
 				System.gc();
-				e.printStackTrace();
+				Logger.logarExept(e);
 			}
 		}
 		List l = circuito.getPistaFull();
@@ -2823,7 +2823,7 @@ public class PainelCircuito {
 					affineTransformOp.filter(backGround, backGroundZoom);
 					backGroundZoomPronto = true;
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					Logger.logarExept(e);
 				} finally {
 					threadCarregarBkgZoomRodando--;
 				}

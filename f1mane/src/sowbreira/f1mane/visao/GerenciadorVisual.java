@@ -1178,7 +1178,7 @@ public class GerenciadorVisual {
 			circuito = (Circuito) ois.readObject();
 			circuito.vetorizarPista();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 		List pista = circuito.getPista();

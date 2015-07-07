@@ -196,8 +196,7 @@ public class ImageUtil {
 		try {
 			return ImageIO.read(CarregadorRecursos.class.getResource(image));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		return null;
 	}

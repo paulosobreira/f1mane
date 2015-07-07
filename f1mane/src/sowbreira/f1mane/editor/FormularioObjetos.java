@@ -15,6 +15,7 @@ import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import br.nnpe.Logger;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
@@ -154,7 +155,7 @@ public class FormularioObjetos {
 		try {
 			label.repaint();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 		atualizaMain();
 	}

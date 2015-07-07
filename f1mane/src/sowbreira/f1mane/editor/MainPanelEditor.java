@@ -523,7 +523,7 @@ public class MainPanelEditor extends JPanel {
 					}
 					formularioObjetos.formularioObjetoPista(objetoPista);
 				} catch (Exception e2) {
-					e2.printStackTrace();
+					Logger.logarExept(e2);
 				}
 
 			}
@@ -2016,7 +2016,7 @@ public class MainPanelEditor extends JPanel {
 					desSelecionaNosPista();
 					repaint();
 				} catch (Exception e2) {
-					e2.printStackTrace();
+					Logger.logarExept(e2);
 				}
 
 			}

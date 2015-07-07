@@ -42,8 +42,7 @@ public class ControleSom {
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Logger.logarExept(e);
 					}
 					System.out
 							.println((clipVeloMax.getFramePosition() / frameLength));

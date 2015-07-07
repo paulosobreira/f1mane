@@ -384,7 +384,6 @@ public class PainelMenuLocal {
 					return;
 				}
 			} catch (Exception e1) {
-				e1.printStackTrace();
 				Logger.logarExept(e1);
 			}
 		}
@@ -395,7 +394,6 @@ public class PainelMenuLocal {
 					carregaCampeonato();
 				}
 			} catch (Exception e1) {
-				e1.printStackTrace();
 				Logger.logarExept(e1);
 			}
 			return;
@@ -405,7 +403,6 @@ public class PainelMenuLocal {
 				MENU = MENU_SOBRE;
 				yCreditos = 0;
 			} catch (Exception e1) {
-				e1.printStackTrace();
 				Logger.logarExept(e1);
 			}
 			return;
@@ -694,7 +691,6 @@ public class PainelMenuLocal {
 			desenhaMenuSobre(g2d);
 			desenhaFPS(g2d, getWidth() - 70, getHeight() - 50);
 		} catch (Exception e) {
-			e.printStackTrace();
 			Logger.logarExept(e);
 		}
 
@@ -1735,7 +1731,7 @@ public class PainelMenuLocal {
 			}
 			resetPilotosRect();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 	}
@@ -1777,7 +1773,6 @@ public class PainelMenuLocal {
 
 				}
 			} catch (Exception e1) {
-				e1.printStackTrace();
 				Logger.logarExept(e1);
 			}
 			return;
@@ -1822,7 +1817,6 @@ public class PainelMenuLocal {
 						kers, drs, trocaPneus, reabasteciemto);
 				MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			} catch (Exception e1) {
-				e1.printStackTrace();
 				Logger.logarExept(e1);
 			}
 			return;
@@ -2665,7 +2659,7 @@ public class PainelMenuLocal {
 				circuitoMini.vetorizarPista();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logarExept(e);
 		}
 
 		List pista = circuitoMini.getPista();
