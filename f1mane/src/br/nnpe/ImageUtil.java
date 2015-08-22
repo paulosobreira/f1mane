@@ -1,13 +1,7 @@
 package br.nnpe;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
 import java.awt.Image;
-import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -50,21 +44,15 @@ public class ImageUtil {
 		if (buffer == null) {
 			return null;
 		}
-		ImageIcon img = new ImageIcon(buffer);
-		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
-				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-
-		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
-
 		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
+				buffer.getWidth(), buffer.getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
-		Raster srcRaster = srcBufferedImage.getData();
+		Raster srcRaster = buffer.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
 
-		for (int i = 0; i < img.getIconWidth(); i++) {
-			for (int j = 0; j < img.getIconHeight(); j++) {
+		for (int i = 0; i < buffer.getWidth(); i++) {
+			for (int j = 0; j < buffer.getHeight(); j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
@@ -99,7 +87,6 @@ public class ImageUtil {
 				destRaster.setPixel(i, j, argbArray);
 			}
 		}
-
 		return bufferedImageRetorno;
 	}
 
@@ -124,20 +111,15 @@ public class ImageUtil {
 	}
 
 	public static BufferedImage geraTransparencia(BufferedImage src, Color color) {
-		ImageIcon img = new ImageIcon(src);
-		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
-				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
 
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-		Raster srcRaster = srcBufferedImage.getData();
+		BufferedImage bufferedImageRetorno = new BufferedImage(src.getWidth(),
+				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = src.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
 
-		for (int i = 0; i < img.getIconWidth(); i++) {
-			for (int j = 0; j < img.getIconHeight(); j++) {
+		for (int i = 0; i < src.getWidth(); i++) {
+			for (int j = 0; j < src.getHeight(); j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 
@@ -157,20 +139,15 @@ public class ImageUtil {
 
 	public static BufferedImage geraTransparencia(BufferedImage src,
 			Color color, int translucidez) {
-		ImageIcon img = new ImageIcon(src);
-		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
-				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
 
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-		Raster srcRaster = srcBufferedImage.getData();
+		BufferedImage bufferedImageRetorno = new BufferedImage(src.getWidth(),
+				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = src.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
 
-		for (int i = 0; i < img.getIconWidth(); i++) {
-			for (int j = 0; j < img.getIconHeight(); j++) {
+		for (int i = 0; i < src.getWidth(); i++) {
+			for (int j = 0; j < src.getHeight(); j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 
@@ -240,20 +217,15 @@ public class ImageUtil {
 
 	public static BufferedImage geraTransparencia(BufferedImage src,
 			int ingVal, int translucidez) {
-		ImageIcon img = new ImageIcon(src);
-		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
-				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
 
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-		Raster srcRaster = srcBufferedImage.getData();
+		BufferedImage bufferedImageRetorno = new BufferedImage(src.getWidth(),
+				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = src.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
 
-		for (int i = 0; i < img.getIconWidth(); i++) {
-			for (int j = 0; j < img.getIconHeight(); j++) {
+		for (int i = 0; i < src.getWidth(); i++) {
+			for (int j = 0; j < src.getHeight(); j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 

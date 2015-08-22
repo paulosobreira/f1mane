@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import sowbreira.f1mane.entidades.Carro;
@@ -119,9 +117,7 @@ public class CarregadorRecursos {
 			buffer = ImageUtil.toBufferedImage(file);
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
-				System.exit(1);
 			}
-
 		} catch (Exception e) {
 			Logger.logar("Erro gerando transparencia para :" + file);
 			Logger.logarExept(e);
@@ -360,22 +356,17 @@ public class CarregadorRecursos {
 	}
 
 	public static BufferedImage gerarCoresCarros(Color corPintar, String carro) {
-		ImageIcon img = new ImageIcon(
-				CarregadorRecursos.class.getResource(carro));
-
-		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
-				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
+		BufferedImage srcBufferedImage =  carregaBufferedImageTransparecia(carro);
 		srcBufferedImage = ImageUtil.geraTransparencia(srcBufferedImage,
 				Color.BLACK);
 		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
+				srcBufferedImage.getWidth(), srcBufferedImage.getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
-		for (int i = 0; i < img.getIconWidth(); i++) {
-			for (int j = 0; j < img.getIconHeight(); j++) {
+		for (int i = 0; i < srcBufferedImage.getWidth(); i++) {
+			for (int j = 0; j < srcBufferedImage.getHeight(); j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 				Color c = new Color(argbArray[0], argbArray[1], argbArray[2]);
@@ -580,27 +571,23 @@ public class CarregadorRecursos {
 			buffer = ImageUtil.toBufferedImage(file);
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
-				System.exit(1);
+				return null;
 			}
 
 		} catch (Exception e) {
 			Logger.logar("Erro gerando transparencia para :" + file);
 			Logger.logarExept(e);
 		}
-		ImageIcon img = new ImageIcon(buffer);
-		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
-				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
 
 		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
+				buffer.getWidth(), buffer.getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
-		Raster srcRaster = srcBufferedImage.getData();
+		Raster srcRaster = buffer.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
 
-		for (int i = 0; i < img.getIconWidth(); i++) {
-			for (int j = 0; j < img.getIconHeight(); j++) {
+		for (int i = 0; i < buffer.getWidth(); i++) {
+			for (int j = 0; j < buffer.getHeight(); j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 
@@ -620,22 +607,16 @@ public class CarregadorRecursos {
 
 	public static BufferedImage carregaBufferedImageTransparecia(String file,
 			Color cor) {
-		BufferedImage buffer = carregaImagem(file);
-		ImageIcon img = new ImageIcon(buffer);
-		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
-				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-
-		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
-
+		BufferedImage srcBufferedImage = carregaImagem(file);
 		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
+				srcBufferedImage.getWidth(), srcBufferedImage.getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
 
-		for (int i = 0; i < img.getIconWidth(); i++) {
-			for (int j = 0; j < img.getIconHeight(); j++) {
+		for (int i = 0; i < srcBufferedImage.getWidth(); i++) {
+			for (int j = 0; j < srcBufferedImage.getHeight(); j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 

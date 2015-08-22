@@ -1976,23 +1976,33 @@ public class PainelMenuLocal {
 		x -= 490;
 		y -= 285;
 
+		
 		desenhaSeletorCircuito(g2d, x, y, true);
+		
 
 		desenhaClima(g2d, x + 40, y + 180);
 
+		
 		desenhaSeletorNumeroVoltas(g2d, x + 40, y + 240);
+		
 
 		desenhaTurbulencia(g2d, x + 40, y + 280);
+		
 
 		desenhaNivelCorrida(g2d, x + 40, y + 320);
+		
 
 		desenhaDrsKersPneusReabastecimento(g2d, x + 40, y + 360);
+		
 
 		desenhaTemporadas(g2d, x + 580, y, false);
+		
 
 		desenhaPilotoSelecionado(g2d, x, y + 470, pilotoSelecionado);
+		
 
 		desenhaAnteriroProximo(g2d, x + 150, y + 600);
+		
 
 	}
 
@@ -2025,6 +2035,7 @@ public class PainelMenuLocal {
 					.get(temporadas.size() - 1);
 		}
 
+		
 		if (temporadaSelecionada != (String) temporadas.get(0)) {
 			g2d.setColor(lightWhite);
 			anteTemporadaRect.setFrame(x, y - 25, 30, 30);
@@ -2043,6 +2054,8 @@ public class PainelMenuLocal {
 		g2d.drawString(txt.toUpperCase(),
 				x + (130 - Util.larguraTexto(txt, g2d)) / 2, y);
 
+		
+		
 		x += larguraTexto + 30;
 
 		if (temporadaSelecionada != (String) temporadas
@@ -2055,6 +2068,7 @@ public class PainelMenuLocal {
 		x += 40;
 		x -= (80 + larguraTexto);
 		g2d.setFont(fontOri);
+		
 		String temporada = "t" + temporadaSelecionada;
 		List pilotos = litasPilotosTemporada(temporada);
 		y += 8;
@@ -2087,6 +2101,7 @@ public class PainelMenuLocal {
 				&& !controleJogo.getTemporada().equals(temporada)) {
 			controleJogo.setTemporada(temporada);
 		}
+		
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			BufferedImage imageCarro = controleJogo.obterCarroLado(piloto);
@@ -2107,6 +2122,7 @@ public class PainelMenuLocal {
 			}
 
 		}
+		
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			int novoY = y + i * 24;
@@ -2756,7 +2772,6 @@ public class PainelMenuLocal {
 		if (!MENU.equals(MENU_PRINCIPAL)) {
 			return;
 		}
-
 		pilotoDesafio = null;
 
 		int centerX = (int) (getWidth() / 2.3);

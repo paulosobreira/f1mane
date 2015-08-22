@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.ImageIcon;
-
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.controles.ControleEstatisticas;
@@ -248,12 +246,12 @@ public class PainelCircuito {
 	private BufferedImage carroCimaFreiosE4;
 	private BufferedImage carroCimaFreiosE5;
 
-	private ImageIcon iconLua;
-	private ImageIcon iconSol;
-	private ImageIcon iconNublado;
-	private ImageIcon iconChuva;
-	private ImageIcon fuel;
-	private ImageIcon tyre;
+	private BufferedImage iconLua;
+	private BufferedImage iconSol;
+	private BufferedImage iconNublado;
+	private BufferedImage iconChuva;
+	private BufferedImage fuel;
+	private BufferedImage tyre;
 	private int acionaDesenhaKers;
 	private int contMostraLag;
 	private String climaAnterior;
@@ -419,17 +417,13 @@ public class PainelCircuito {
 						.carregaBufferedImageTransparecia("pneu-chuva.png",
 								null), 0.15);
 
-		fuel = new ImageIcon(CarregadorRecursos.carregarImagem("fuel.gif"));
-		tyre = new ImageIcon(CarregadorRecursos.carregarImagem("tyre.gif"));
+		fuel = CarregadorRecursos.carregaBufferedImage("fuel.gif");
+		tyre = CarregadorRecursos.carregaBufferedImage("tyre.gif");
 
-		iconLua = new ImageIcon(
-				CarregadorRecursos.carregarImagem("clima/lua.gif"));
-		iconSol = new ImageIcon(
-				CarregadorRecursos.carregarImagem("clima/sol.gif"));
-		iconNublado = new ImageIcon(
-				CarregadorRecursos.carregarImagem("clima/nublado.gif"));
-		iconChuva = new ImageIcon(
-				CarregadorRecursos.carregarImagem("clima/chuva.gif"));
+		iconLua = CarregadorRecursos.carregaBufferedImage("clima/lua.gif");
+		iconSol = CarregadorRecursos.carregaBufferedImage("clima/sol.gif");
+		iconNublado = CarregadorRecursos.carregaBufferedImage("clima/nublado.gif");
+		iconChuva = CarregadorRecursos.carregaBufferedImage("clima/chuva.gif");
 
 	}
 
@@ -4516,7 +4510,7 @@ public class PainelCircuito {
 		}
 
 		if (porcentComb <= 25 && desenhaImagens) {
-			g2d.drawImage(fuel.getImage(),
+			g2d.drawImage(fuel,
 					limitesViewPort.x + carroimgDano.getWidth() + 125,
 					limitesViewPort.y + 10, null);
 		}
@@ -5132,7 +5126,7 @@ public class PainelCircuito {
 		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
 			return;
 		}
-		ImageIcon icon = null;
+		BufferedImage icon = null;
 
 		String clima = controleJogo.getClima();
 		if (Clima.SOL.equals(clima)) {
@@ -5155,9 +5149,9 @@ public class PainelCircuito {
 			}
 			g2d.fillRoundRect(limitesViewPort.x + pointDesenhaClima.x + 105,
 					pointDesenhaClima.y + limitesViewPort.y - 5,
-					icon.getIconWidth() + 10, icon.getIconHeight() + 10, 15, 15);
+					icon.getWidth() + 10, icon.getHeight() + 10, 15, 15);
 			if (desenhaImagens)
-				g2d.drawImage(icon.getImage(), limitesViewPort.x
+				g2d.drawImage(icon, limitesViewPort.x
 						+ pointDesenhaClima.x + 110, pointDesenhaClima.y
 						+ limitesViewPort.y, null);
 		}
@@ -5506,7 +5500,7 @@ public class PainelCircuito {
 			if (ps.getVelocidade() >= ps.getVelocidadeExibir()) {
 				int diff = (ps.getVelocidade() - ps.getVelocidadeExibir());
 				if (diff > 10) {
-					incAcell ++;
+					incAcell++;
 				}
 				ps.setVelocidadeExibir(ps.getVelocidadeExibir() + incAcell);
 			}
