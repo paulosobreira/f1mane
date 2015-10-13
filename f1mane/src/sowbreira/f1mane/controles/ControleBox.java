@@ -476,8 +476,7 @@ public class ControleBox {
 			}
 
 		}
-		if (piloto.testeHabilidadePiloto(controleJogo))
-			processarTipoAsaAutomatico(piloto);
+		processarTipoAsaAutomatico(piloto);
 
 		int percentagem = 0;
 
@@ -606,8 +605,7 @@ public class ControleBox {
 						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
 		}
-		if (!(InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo())
-				|| piloto.testeHabilidadePiloto(controleJogo))
+		if (!(InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()))
 			processarTipoAsaAutomatico(piloto);
 
 		int percentagem = 0;

@@ -378,9 +378,10 @@ public class Carro implements Serializable {
 
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod) {
-				novoModificador += (testeAerodinamica ? 1 : 0);
+				novoModificador += Math.random() < 0.5 ? (testeAerodinamica ? 1
+						: 0) : 0;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() > mod) {
-				novoModificador -= Math.random() < 0.2 ? (testeAerodinamica ? 0
+				novoModificador -= Math.random()  > 0.2 ? (testeAerodinamica ? 0
 						: 1) : (testeAerodinamica ? 0 : 2);
 			}
 		}
@@ -928,6 +929,7 @@ public class Carro implements Serializable {
 	private void msgPneusFrios(InterfaceJogo controleJogo, int porcent,
 			int intervaloMax) {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista()
+				&& Piloto.AGRESSIVO.equals(getPiloto().getModoPilotagem())
 				&& !controleJogo.isChovendo() && (porcent > intervaloMax)
 				&& Math.random() > .99
 				&& controleJogo.verificaInfoRelevante(piloto)) {

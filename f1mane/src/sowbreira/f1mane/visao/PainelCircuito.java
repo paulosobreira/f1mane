@@ -1675,7 +1675,7 @@ public class PainelCircuito {
 
 		yBase += 20;
 
-		debugStress(g2d, ptoOri, yBase);
+		debugEvitaBater(g2d, ptoOri, yBase);
 
 		yBase += 20;
 
@@ -1683,7 +1683,7 @@ public class PainelCircuito {
 
 		yBase += 20;
 
-		debuPontosBox(g2d, ptoOri, yBase);
+		debugPontosBox(g2d, ptoOri, yBase);
 
 		yBase += 20;
 
@@ -2000,7 +2000,7 @@ public class PainelCircuito {
 				yBase);
 	}
 
-	private void debuPontosBox(Graphics2D g2d, int ptoOri, int yBase) {
+	private void debugPontosBox(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
@@ -2034,11 +2034,11 @@ public class PainelCircuito {
 				ptoOri, yBase);
 	}
 
-	private void debugStress(Graphics2D g2d, int ptoOri, int yBase) {
+	private void debugEvitaBater(Graphics2D g2d, int ptoOri, int yBase) {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString(" Stress " + pilotoSelecionado.getStress(), ptoOri,
+		g2d.drawString(" Evita bater " + pilotoSelecionado.isProcessaEvitaBaterCarroFrente(), ptoOri,
 				yBase);
 	}
 

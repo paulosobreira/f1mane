@@ -147,7 +147,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			gerenciadorVisual = new GerenciadorVisual(this);
 			controleEstatisticas = new ControleEstatisticas(this);
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
-			controleEstatisticas.inicializarThreadConsumidoraInfo(500);
+			controleEstatisticas.inicializarThreadConsumidoraInfo();
 		} catch (Exception e) {
 			if (monitor && e instanceof InterruptedException) {
 				throw (InterruptedException) e;
@@ -406,7 +406,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			Logger.logarExept(e);
 		}
 	}
-	
+
 	public void matarTodasThreads() {
 		try {
 			matarThreadsResultadoFnal();
@@ -553,7 +553,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
-	public void verificaUltraPassagem(Piloto piloto) {
+	public void verificaUltrapassagem(Piloto piloto) {
 		// TODO Auto-generated method stub
 	}
 
@@ -1309,7 +1309,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void processaMudancaEquipeCampeontato() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

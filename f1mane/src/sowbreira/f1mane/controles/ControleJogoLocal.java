@@ -377,8 +377,8 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltraPassagem(sowbreira.f1mane.entidades.Piloto,
 	 *      int)
 	 */
-	public void verificaUltraPassagem(Piloto piloto) {
-		controleCorrida.verificaUltraPassagem(piloto);
+	public void verificaUltrapassagem(Piloto piloto) {
+		controleCorrida.verificaUltrapassagem(piloto);
 	}
 
 	/**
@@ -633,7 +633,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			if (controleCampeonato != null) {
 				controleCampeonato.iniciaCorrida(circuitoSelecionado);
 			}
-			controleEstatisticas.inicializarThreadConsumidoraInfo(500);
+			controleEstatisticas.inicializarThreadConsumidoraInfo();
 		}
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
 		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
@@ -706,7 +706,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 		controleCorrida.gerarGridLargadaSemQualificacao();
 		gerenciadorVisual.iniciarInterfaceGraficaJogo();
 		controleCorrida.iniciarCorrida();
-		controleEstatisticas.inicializarThreadConsumidoraInfo(500);
+		controleEstatisticas.inicializarThreadConsumidoraInfo();
 	}
 
 	/**

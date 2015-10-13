@@ -62,7 +62,7 @@ public class ControleCorrida {
 	public ControleCorrida(ControleJogoLocal jogo, int qtdeVoltas,
 			double fatorUtr, long tempoCiclo) throws Exception {
 		controleJogo = jogo;
-		//qtdeVoltas = 1;
+		// qtdeVoltas = 1;
 		this.tempoCiclo = Constantes.CICLO;
 		this.fatorUtrapassagem = fatorUtr / 1000;
 		if (this.fatorUtrapassagem > 0.5) {
@@ -219,7 +219,7 @@ public class ControleCorrida {
 		}
 	}
 
-	public void verificaUltraPassagem(Piloto piloto) {
+	public void verificaUltrapassagem(Piloto piloto) {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
@@ -251,7 +251,8 @@ public class ControleCorrida {
 					verificaCarroLentoOuDanificado(pilotoNaFrente));
 		}
 		if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
-			pilotoNaFrente.setCiclosDesconcentrado(Util.intervalo(20, 50));
+			pilotoNaFrente.setCiclosDesconcentrado(Util.intervalo(5, 10));
+			pilotoNaFrente.incStress(Util.intervalo(20, 50));
 			mensagemRetardatario(piloto, pilotoNaFrente);
 		}
 	}
@@ -325,6 +326,21 @@ public class ControleCorrida {
 			fatorAcidenteLocal = 0.1;
 		}
 		if (Math.random() < fatorAcidenteLocal) {
+			if (!piloto.testeHabilidadePilotoCarro(controleJogo)) {
+				if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
+					danificaAreofolio(piloto);
+					if (piloto.getPosicao() <= 5 || piloto.isJogadorHumano()) {
+						controleJogo.infoPrioritaria(Html.superRed(Lang.msg(
+								"109", new String[] { piloto.getNome(),
+										pilotoNaFrente.getNome() })));
+					}
+				} else {
+					piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
+					controleJogo.infoPrioritaria(Lang.msg("015",
+							new String[] { Html.superRed(piloto.getNome()),
+									pilotoNaFrente.getNome() }));
+				}
+			}
 			return;
 		}
 		if (piloto.isJogadorHumano()) {
@@ -550,9 +566,9 @@ public class ControleCorrida {
 		List<Piloto> pilotos = controleJogo.getPilotos();
 		int menorDistancia = Integer.MAX_VALUE;
 		Carro carroFrente = null;
-		if (piloto.getPtosBox() != 0) {
-			return carroFrente;
-		}
+//		if (piloto.getPtosBox() != 0) {
+//			return carroFrente;
+//		}
 		int indexAtual = piloto.getNoAtual().getIndex();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto pilotoFrente = (Piloto) iterator.next();

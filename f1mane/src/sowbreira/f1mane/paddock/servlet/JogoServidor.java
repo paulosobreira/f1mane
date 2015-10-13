@@ -283,7 +283,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					Thread.sleep(1000);
 					tempoInicio = System.currentTimeMillis();
 					controleCorrida.iniciarCiclos();
-					controleEstatisticas.inicializarThreadConsumidoraInfo(500);
+					controleEstatisticas.inicializarThreadConsumidoraInfo();
 				} catch (Exception e) {
 					Logger.topExecpts(e);
 				}

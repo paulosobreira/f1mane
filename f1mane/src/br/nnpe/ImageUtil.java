@@ -169,7 +169,6 @@ public class ImageUtil {
 
 	// This method returns a buffered image with the contents of an image
 	public static BufferedImage toBufferedImage(String image) {
-
 		try {
 			return ImageIO.read(CarregadorRecursos.class.getResource(image));
 		} catch (IOException e) {

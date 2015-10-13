@@ -116,7 +116,7 @@ public interface InterfaceJogo {
 
 	public double getNiveljogo();
 
-	public void verificaUltraPassagem(Piloto piloto);
+	public void verificaUltrapassagem(Piloto piloto);
 
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
 			Object combust, String nomeJogador, Object asa);

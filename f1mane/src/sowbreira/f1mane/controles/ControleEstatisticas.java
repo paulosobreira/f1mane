@@ -66,10 +66,6 @@ public class ControleEstatisticas {
 		return ret;
 	}
 
-	public LinkedList getBufferInfo() {
-		return bufferInfo;
-	}
-
 	public void processaVoltaRapida(Piloto piloto) {
 		if (piloto.getVoltaAtual() == null) {
 			Volta volta = new Volta();
@@ -197,7 +193,7 @@ public class ControleEstatisticas {
 
 	}
 
-	public void inicializarThreadConsumidoraInfo(final long delay) {
+	public void inicializarThreadConsumidoraInfo() {
 		bufferInfo.clear();
 		infoConsumer = new Thread(new Runnable() {
 			public void run() {
@@ -220,7 +216,7 @@ public class ControleEstatisticas {
 							} catch (Exception e) {
 								Logger.logarExept(e);
 							}
-							Thread.sleep(delay);
+							Thread.sleep(1000);
 						} catch (Exception e) {
 							interruput = true;
 							Logger.logarExept(e);
@@ -234,10 +230,32 @@ public class ControleEstatisticas {
 		infoConsumer.start();
 	}
 
+	public static void main(String[] args) {
+		List allInfo = new ArrayList();
+		allInfo.add("1");
+		allInfo.add("2");
+		allInfo.add("3");
+		allInfo.add("4");
+		allInfo.add("5");
+		allInfo.add("6");
+		allInfo.add("7");
+		if (allInfo.size() > 5) {
+			for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
+				System.out.println(allInfo.get(i));
+			}
+		}
+	}
+	
 	public void info(String info, boolean prioritaria) {
-		// Logger.logar(info);
 		if (bufferInfo.contains(info)) {
 			return;
+		}
+		if (allInfo.size() > 5) {
+			for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
+				if (allInfo.get(i).equals(info)) {
+					return;
+				}
+			}
 		}
 		if (allInfo.size() > 0 && allInfo.get(allInfo.size() - 1).equals(info)) {
 			return;
