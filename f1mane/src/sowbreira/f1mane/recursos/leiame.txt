@@ -1,11 +1,11 @@
 			 F1-MANE por Paulo Sobreira 
  - F1-MANE (MANager & Engineer) é um jogo de gerenciamento e engenharia de corrida. 
- - No jogo o jogador envia comandos sobre como guiar e faz ajustes telemétricos do carro. 
+ - O jogador envia comandos sobre como guiar e faz ajustes telemétricos do carro. 
  - É possível escolher estratégia de box e muda-lá a qualquer momento na corrida.
- - Ao escolher iniciar o jogo o jogador poderá configurar sua corrida escolhendo 
- varias opções de como numero de voltas e tipo de clima.
+ - Configuração da corrida com varias opções de como numero de voltas e tipo de clima e etc.
  - O jogo gerencia eventos dinamicos como mudança de clima e acidentes entre os corredores.
-
+ - Várias temporadas e pistas reais dispníveis
+ 
   -Contato Paulo Sobreira : sowbreira@gmail.com.
 
 Controles:
@@ -27,9 +27,14 @@ Setas e mouse - Escolhe umm traçado para o piloto seguir.
  Informação Adicional 
 
 Editor de objetos de Pista: 
-Opção Vetorizar Pista no menu editor.
-Ao se criar objetos na pista um clique duplo ativa o menu de edição de objetos.
-(A tela do editor não deve esta maximizada).
+
+Execute o Descompatar.bat depois o Editor.bat
+
+Pra criar uma pista precisa-se ter uma imagem(jpg) de um circuito na 
+pasta bin\sowbreira\f1mane\recursos então deve-se ir no menu "Criar Arquivo
+Circuito" e escolher esta imagem. 
+-Adicionar os nós de largada, reta , curva alta ,box etc e depois salvar a pista 
+(arquivo tipo .f1mane) na pasta bin\sowbreira\f1mane\recursos 
 Controle sobre os objetos ao se clicar no botão "Mover/Parar".
 Setas : mover pela tela.
 Ctrl +Setas :  move objeto selecionado pela tela.
@@ -38,20 +43,14 @@ Ctrl + Page up e down : altera a  altura do objeto.
 Page up e down : Gira objeto.
 Ctrl + C :  cria uma copia do objeto.
 
-
-Pra criar uma pista precisa-se ter uma imagem(jpg) de um circuito na 
-pasta bin\sowbreira\f1mane\recursos então deve-se ir no menu "Criar Arquivo
-Circuito" e escolher esta imagem. 
--Adicionar os nós de largada, reta , curva alta ,box etc 
-e fazer um test drive(inclusive de box) e depois salvar a pista 
-(tem que ser um arquivo .f1mane) na pasta bin\sowbreira\f1mane\recursos 
 -Atualizar o bin\sowbreira\f1mane\recursos\pistas.properties 
--Iniciar o jogo(rodar.bat) a pista nova deve esta em circuitos.		
+
+-Iniciar o jogo(F1mane.bat) a pista nova deve esta em circuitos.		
 
 Versão online, Montar um Servidor (paddock.war):
  - Para servir o jogo em rede é preciso ter ip valido (também funciona com ip interno, 
  mas só em LAN/Redes privadas)
- - O java mais novo mais o servidor de aplicação Tomcat:
+ - O servidor de aplicação Tomcat:
    http://tomcat.apache.org que depois de baixado e instalado 
 deve-se colocar o arquivo f1mane.war dentro da pasta:
 (unidade):\(dir do tomcat)\webapps então acessar o jogo pelo caminho:
