@@ -638,6 +638,7 @@ public class PainelMenuLocal {
 		} catch (IOException e1) {
 			Logger.logarExept(e1);
 		}
+		
 	}
 
 	protected void render() {
