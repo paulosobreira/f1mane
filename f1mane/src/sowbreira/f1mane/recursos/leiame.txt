@@ -24,9 +24,11 @@ W - Ativa o Ers.
 E - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas) .
 Setas e mouse - Escolhe umm traçado para o piloto seguir.
 
- Informação Adicional 
+Informação Adicional 
 
 Editor de objetos de Pista: 
+
+baixe o arquivo f1mane.zip
 
 Execute o Descompatar.bat depois o Editor.bat
 
@@ -45,7 +47,7 @@ Ctrl + C :  cria uma copia do objeto.
 
 -Atualizar o bin\sowbreira\f1mane\recursos\pistas.properties 
 
--Iniciar o jogo(F1mane.bat) a pista nova deve esta em circuitos.		
+-Iniciar o jogo(F1mane-Descompatado.bat) a pista nova deve esta em circuitos.		
 
 Versão online, Montar um Servidor (paddock.war):
  - Para servir o jogo em rede é preciso ter ip valido (também funciona com ip interno, 
