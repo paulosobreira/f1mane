@@ -33,8 +33,8 @@ Execute o Descompatar.bat depois o Editor.bat
 Pra criar uma pista precisa-se ter uma imagem(jpg) de um circuito na 
 pasta bin\sowbreira\f1mane\recursos então deve-se ir no menu "Criar Arquivo
 Circuito" e escolher esta imagem. 
--Adicionar os nós de largada, reta , curva alta ,box etc e depois salvar a pista 
-(arquivo tipo .f1mane) na pasta bin\sowbreira\f1mane\recursos 
+-Adicionar os nós de largada, reta , curva alta ,box , objetos de sobreposição
+ e depois salvar a pista (arquivo tipo .f1mane) na pasta bin\sowbreira\f1mane\recursos 
 Controle sobre os objetos ao se clicar no botão "Mover/Parar".
 Setas : mover pela tela.
 Ctrl +Setas :  move objeto selecionado pela tela.
