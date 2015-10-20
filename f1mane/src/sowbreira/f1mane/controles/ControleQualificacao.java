@@ -12,6 +12,7 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -93,8 +94,7 @@ public class ControleQualificacao {
 				}
 			}
 			piloto.setCiclosVoltaQualificacao(Util
-					.inte(((contCiclosQualificacao * controleJogo
-							.getTempoCiclo()) + modMili)));
+					.inte(((contCiclosQualificacao * Constantes.CICLO) + modMili)));
 			piloto.setNumeroVolta(0);
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);

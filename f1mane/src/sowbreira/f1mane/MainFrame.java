@@ -399,7 +399,7 @@ public class MainFrame extends JFrame {
 			codeBase = args[0];
 		}
 		if (args != null && args.length > 1) {
-			Lang.mudarIdioma(args[1]);
+ 			Lang.mudarIdioma(args[1]);
 		}
 		MainFrame frame = new MainFrame(null, codeBase);
 	}

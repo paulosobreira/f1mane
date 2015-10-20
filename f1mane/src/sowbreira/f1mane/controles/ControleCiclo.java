@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 
@@ -14,21 +15,15 @@ public class ControleCiclo extends Thread {
 	private InterfaceJogo controleJogo;
 	private ControleCorrida controleCorrida;
 	private int contadorCiclos;
-	private long tempoCiclo;
 	private boolean processadoCilcos = true;
-
-	public long getTempoCiclo() {
-		return tempoCiclo;
-	}
 
 	/**
 	 * @param controleJogo
 	 * @param circuito
 	 */
 	public ControleCiclo(InterfaceJogo controleJogo,
-			ControleCorrida controleCorrida, long tempoCiclo) {
+			ControleCorrida controleCorrida) {
 		super();
-		this.tempoCiclo = tempoCiclo;
 		this.controleJogo = controleJogo;
 		this.controleCorrida = controleCorrida;
 	}
@@ -52,10 +47,10 @@ public class ControleCiclo extends Thread {
 	public void run() {
 		try {
 			controleJogo.atualizaPainel();
-			Thread.sleep(tempoCiclo);
+			Thread.sleep(Constantes.CICLO);
 			controleJogo.desenhaQualificacao();
 			controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
-			Thread.sleep(tempoCiclo);
+			Thread.sleep(Constantes.CICLO);
 			controleJogo.atualizaPainel();
 			Thread.sleep(2000);
 			controleJogo.apagarLuz();
@@ -72,7 +67,7 @@ public class ControleCiclo extends Thread {
 			while (!interrupt && processadoCilcos) {
 				try {
 					if (controleCorrida.isCorridaPausada()) {
-						Thread.sleep(tempoCiclo);
+						Thread.sleep(Constantes.CICLO);
 						continue;
 					}
 					controleCorrida.processaVoltaSafetyCar();
@@ -98,7 +93,7 @@ public class ControleCiclo extends Thread {
 					controleJogo.verificaProgramacaoBox();
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaPainel();
-					Thread.sleep(tempoCiclo);
+					Thread.sleep(Constantes.CICLO);
 					contadorCiclos++;
 				} catch (Exception e) {
 					interrupt = true;

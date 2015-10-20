@@ -57,7 +57,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 
 	protected Integer qtdeVoltas = null;
 	protected Integer diffultrapassagem = null;
-	protected Integer tempoCiclo = null;
 	protected String circuitoSelecionado = null;
 
 	private MainFrame mainFrame;
@@ -323,7 +322,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#calculaSegundosParaLider(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {
-		long tempo = controleCorrida.obterTempoCilco();
+		long tempo = Constantes.CICLO;
 		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado,
 				tempo);
 	}
@@ -581,12 +580,12 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#calculaSegundosParaProximo(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String calculaSegundosParaProximo(Piloto psel) {
-		long tempo = controleCorrida.obterTempoCilco();
+		long tempo = Constantes.CICLO;
 		return controleEstatisticas.calculaSegundosParaProximo(psel, tempo);
 	}
 
 	public double calculaSegundosParaProximoDouble(Piloto psel) {
-		long tempo = controleCorrida.obterTempoCilco();
+		long tempo = Constantes.CICLO;
 		return controleEstatisticas.calculaSegundosParaProximoDouble(psel,
 				tempo);
 	}
@@ -623,7 +622,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			setarNivelCorrida();
 			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
-					diffultrapassagem.intValue(), tempoCiclo.intValue());
+					diffultrapassagem.intValue());
 			controleCorrida.getControleClima().gerarClimaInicial(
 					(Clima) gerenciadorVisual.getComboBoxClimaInicial()
 							.getSelectedItem());
@@ -678,7 +677,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 			String pneuSelecionado) throws Exception {
 		this.qtdeVoltas = new Integer(numVoltasSelecionado);
 		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
-		this.tempoCiclo = Constantes.CICLO;
 		this.semReabastacimento = !reabasteciemto;
 		this.semTrocaPneu = !trocaPneus;
 		this.circuitoSelecionado = circuitoSelecionado;
@@ -700,7 +698,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			}
 		}
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
-				diffultrapassagem.intValue(), tempoCiclo.intValue());
+				diffultrapassagem.intValue());
 		controleCorrida.getControleClima().gerarClimaInicial(
 				new Clima(climaSelecionado));
 		controleCorrida.gerarGridLargadaSemQualificacao();
@@ -727,7 +725,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 			}
 			diffultrapassagem = (Integer) gerenciadorVisual
 					.getSpinnerDificuldadeUltrapassagem().getValue();
-			this.tempoCiclo = Constantes.CICLO;
 			circuitoSelecionado = (String) gerenciadorVisual
 					.getComboBoxCircuito().getSelectedItem();
 
@@ -783,14 +780,6 @@ public class ControleJogoLocal extends ControleRecursos implements
 		if (pilotoJogador != null) {
 			pilotoJogador.abandonar();
 		}
-	}
-
-	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getTempoCiclo()
-	 */
-	public long getTempoCiclo() {
-
-		return controleCorrida.getTempoCiclo();
 	}
 
 	/**
@@ -1143,7 +1132,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 			}
 		}
 
-		long tempo = controleCorrida.obterTempoCilco();
+		long tempo = Constantes.CICLO;
 		return controleEstatisticas.calculaSegundosParaRival(pilotoSelecionado,
 				pRival, tempo);
 	}

@@ -13,6 +13,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -34,23 +35,49 @@ public class ControleSom {
 			UnsupportedAudioFileException, IOException,
 			LineUnavailableException {
 		iniciaVars();
-		final double frameLength = (double) clipVeloMax.getFrameLength();
-		System.out.println("frameLength" + frameLength);
+		final int l1 = clipLargada.getFrameLength();
+		final int l2 = clipVeloMed.getFrameLength();
+		final int l3 = clipVeloMax.getFrameLength();
+		final int l4 = clipRedo.getFrameLength();
+		final int l5 = clipAcel.getFrameLength();
 		Thread thread = new Thread() {
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(10);
+						Thread.sleep(30);
 					} catch (InterruptedException e) {
 						Logger.logarExept(e);
 					}
-					System.out
-							.println((clipVeloMax.getFramePosition() / frameLength));
+					if (clipLargada.getFramePosition() == 0) {
+						clipLargada.start();
+						System.out.println("clipLargada.start();");
+					}
+					if (0 == clipVeloMed.getFramePosition()
+							&& clipLargada.getFramePosition() == l1) {
+						clipVeloMed.start();
+						System.out.println("clipVeloMed.start();");
+					}
+					if (0 == clipVeloMax.getFramePosition()
+							&& clipVeloMed.getFramePosition() == l2) {
+						clipVeloMax.start();
+						System.out.println("clipVeloMax.start();");
+
+					}
+					if (0 == clipRedo.getFramePosition()
+							&& clipVeloMax.getFramePosition() == l3) {
+						clipRedo.start();
+						System.out.println("clipRedo.start();");
+					}
+					if (0 == clipAcel.getFramePosition()
+							&& clipRedo.getFramePosition() == l4) {
+						clipAcel.start();
+						System.out.println("clipAcel.start();");
+					}
+
 				}
 			};
 		};
 		thread.start();
-		clipVeloMax.start();
 	}
 
 	public static void somVelocidade(Piloto ps, InterfaceJogo controleJogo,
@@ -58,7 +85,7 @@ public class ControleSom {
 		int velocidade = ps.getVelocidade();
 		if (lastCall == 0) {
 			lastCall = System.currentTimeMillis();
-		} else if (lastCall + (20 + controleJogo.getTempoCiclo()) > System
+		} else if (lastCall + (20 + Constantes.CICLO) > System
 				.currentTimeMillis()) {
 			return;
 		}

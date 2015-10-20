@@ -1722,8 +1722,7 @@ public class Piloto implements Serializable {
 			return;
 		}
 
-		int index = (int) (getNoAtual().getIndex() + controleJogo
-				.getTempoCiclo() * multi);
+		int index = (int) (getNoAtual().getIndex() + Constantes.CICLO * multi);
 		if (index >= controleJogo.getNosDaPista().size()) {
 			return;
 		}
@@ -2326,7 +2325,7 @@ public class Piloto implements Serializable {
 			ciclosDesconcentrado = 0;
 			return false;
 		}
-		double val = (interfaceJogo.getTempoCiclo() / 80);
+		double val = (Constantes.CICLO / 80);
 		if (val < 1.0) {
 			if (Math.random() > val) {
 				val = 1;
@@ -2427,7 +2426,7 @@ public class Piloto implements Serializable {
 		if (getVoltaAtual() == null) {
 			Volta volta = new Volta();
 			volta.setCiclosInicio(System.currentTimeMillis()
-					- (getPtosBox() * interfaceJogo.getTempoCiclo()));
+					- (getPtosBox() * Constantes.CICLO));
 			setVoltaAtual(volta);
 
 			return;
@@ -2441,7 +2440,7 @@ public class Piloto implements Serializable {
 		voltas.add(volta);
 		volta = new Volta();
 		volta.setCiclosInicio(System.currentTimeMillis()
-				- (getPtosBox() * interfaceJogo.getTempoCiclo()));
+				- (getPtosBox() * Constantes.CICLO));
 		setVoltaAtual(volta);
 	}
 
@@ -2663,9 +2662,8 @@ public class Piloto implements Serializable {
 			return false;
 		}
 		long agora = System.currentTimeMillis();
-		if (getTracado() != 4
-				&& getTracado() != 5
-				&& (agora - ultimaMudancaPos) < (interfaceJogo.getTempoCiclo() * 10)) {
+		if (getTracado() != 4 && getTracado() != 5
+				&& (agora - ultimaMudancaPos) < (Constantes.CICLO * 10)) {
 			return false;
 		}
 		if (getTracado() == 1 && mudarTracado == 2) {
@@ -2705,7 +2703,7 @@ public class Piloto implements Serializable {
 			return true;
 		} else {
 			ultimaMudancaPos = System.currentTimeMillis()
-					+ (interfaceJogo.getTempoCiclo() * 20);
+					+ (Constantes.CICLO * 20);
 		}
 		return false;
 

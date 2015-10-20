@@ -370,8 +370,7 @@ public class ControleBox {
 					* (2 - (carro.getPotencia() / 1000)));
 		}
 
-		double paradoBox = ((((porcentCombust + penalidade) * 100) / controleCorrida
-				.obterTempoCilco()) + 30);
+		double paradoBox = ((((porcentCombust + penalidade) * 100) / Constantes.CICLO) + 30);
 		piloto.setParadoBox((int) paradoBox);
 		piloto.setPorcentagemCombustUltimaParadaBox(porcentCombust);
 

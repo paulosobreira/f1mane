@@ -191,7 +191,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		this.dadosCriarJogo = dadosCriarJogo;
 		qtdeVoltas = null;
 		diffultrapassagem = null;
-		tempoCiclo = null;
 		circuitoSelecionado = null;
 
 	}
@@ -229,7 +228,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			if (qtdeVoltas.intValue() >= Constantes.MAX_VOLTAS) {
 				qtdeVoltas = new Integer(Constantes.MAX_VOLTAS);
 			}
-			tempoCiclo = dadosCriarJogo.getTempoCiclo();
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
 			semReabastacimento = dadosCriarJogo.isSemReabastecimento();
@@ -255,7 +253,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		atualizarJogadoresOnlineCarreira();
 		setarNivelCorrida();
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
-				diffultrapassagem.intValue(), tempoCiclo.intValue());
+				diffultrapassagem.intValue());
 		controleCorrida.getControleClima().gerarClimaInicial(
 				dadosCriarJogo.getClima());
 		atualizarJogadoresOnline();

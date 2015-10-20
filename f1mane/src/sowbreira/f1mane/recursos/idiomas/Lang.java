@@ -107,8 +107,8 @@ public class Lang {
 				return "";
 			}
 			try {
-				MessageFormat messageFormat = new MessageFormat(bundle
-						.getString(key));
+				MessageFormat messageFormat = new MessageFormat(
+						bundle.getString(key));
 				return messageFormat.format(strings);
 			} catch (Exception e) {
 				return key;
@@ -174,18 +174,15 @@ public class Lang {
 				InputStream inputStream = CarregadorRecursos
 						.recursoComoStream(load);
 				if (inputStream == null) {
-					load = "idiomas/mensagens_en.properties";
-					inputStream = CarregadorRecursos.recursoComoStream(load);
+					Logger.logar("inputStream == null para " + load);
+					return;
 				}
 				validaProperties(inputStream);
 				inputStream = CarregadorRecursos.recursoComoStream(load);
 				bundle = new PropertyResourceBundle(inputStream);
 				if (bundle == null) {
-					load = "idiomas/mensagens.properties_pt";
-					inputStream = CarregadorRecursos.recursoComoStream(load);
-					validaProperties(inputStream);
-					inputStream = CarregadorRecursos.recursoComoStream(load);
-					bundle = new PropertyResourceBundle(inputStream);
+					Logger.logar("inputStream == null para " + load);
+					return;
 				}
 			}
 		} catch (Exception e) {

@@ -35,7 +35,6 @@ public class ControleCorrida {
 	private ControleQualificacao controleQualificacao;
 	private double fatorUtrapassagem;
 	private double velocidadeJogo;
-	private long tempoCiclo;
 	private boolean corridaIniciada;
 	private double fatorAcidente = Util.intervalo(0.5, 0.9);
 	private long pontosPilotoLargada;
@@ -55,15 +54,10 @@ public class ControleCorrida {
 		this.pontosPilotoLargada = pontosPilotoLargada;
 	}
 
-	public long getTempoCiclo() {
-		return tempoCiclo;
-	}
-
 	public ControleCorrida(ControleJogoLocal jogo, int qtdeVoltas,
-			double fatorUtr, long tempoCiclo) throws Exception {
+			double fatorUtr) throws Exception {
 		controleJogo = jogo;
 		// qtdeVoltas = 1;
-		this.tempoCiclo = Constantes.CICLO;
 		this.fatorUtrapassagem = fatorUtr / 1000;
 		if (this.fatorUtrapassagem > 0.5) {
 			this.fatorUtrapassagem = 0.5;
@@ -77,7 +71,7 @@ public class ControleCorrida {
 		controleBox = new ControleBox(controleJogo, this);
 		controleSafetyCar = new ControleSafetyCar(controleJogo, this);
 		controleClima = new ControleClima(controleJogo, qtdeTotalVoltas);
-		controleCiclo = new ControleCiclo(controleJogo, this, tempoCiclo);
+		controleCiclo = new ControleCiclo(controleJogo, this);
 		controleQualificacao = new ControleQualificacao(controleJogo,
 				controleBox);
 		if (controleJogo.isSemReabastacimento()) {
@@ -513,10 +507,6 @@ public class ControleCorrida {
 		controleCiclo.setProcessadoCilcos(false);
 	}
 
-	public long obterTempoCilco() {
-		return controleCiclo.getTempoCiclo();
-	}
-
 	public long calculaQtdePtsPistaPoleParaSaidaBox() {
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
 		return controleBox.calculaQtdePtsPistaPoleParaSaidaBox(pole);
@@ -566,9 +556,9 @@ public class ControleCorrida {
 		List<Piloto> pilotos = controleJogo.getPilotos();
 		int menorDistancia = Integer.MAX_VALUE;
 		Carro carroFrente = null;
-//		if (piloto.getPtosBox() != 0) {
-//			return carroFrente;
-//		}
+		// if (piloto.getPtosBox() != 0) {
+		// return carroFrente;
+		// }
 		int indexAtual = piloto.getNoAtual().getIndex();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto pilotoFrente = (Piloto) iterator.next();

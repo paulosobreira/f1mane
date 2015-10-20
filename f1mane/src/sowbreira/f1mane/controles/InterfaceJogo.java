@@ -168,8 +168,6 @@ public interface InterfaceJogo {
 
 	public void desenhaQualificacao();
 
-	public long getTempoCiclo();
-
 	public void zerarMelhorVolta();
 
 	public void adicionarInfoDireto(String string);
