@@ -82,7 +82,7 @@ public class ControleSom {
 
 	public static void somVelocidade(Piloto ps, InterfaceJogo controleJogo,
 			PainelCircuito painelCircuito) {
-		int velocidade = ps.getVelocidade();
+		int velocidade = ps.getVelocidadeExibir();
 		if (lastCall == 0) {
 			lastCall = System.currentTimeMillis();
 		} else if (lastCall + (20 + Constantes.CICLO) > System
@@ -133,7 +133,7 @@ public class ControleSom {
 
 			}
 
-			int diffVelo = (ps.getVelocidade() - ps.getVelocidadeAnterior());
+			int diffVelo = (ps.getVelocidadeExibir() - ps.getVelocidadeAnterior());
 			if (Math.random() > 0.5 && !tocandoClip() && !clipAcel.isRunning()
 					&& ps.getPtosBox() == 0
 					&& painelCircuito.getQtdeLuzesAcesas() <= 0
@@ -149,7 +149,7 @@ public class ControleSom {
 				clipRedo.start();
 			}
 			if (ps.getVelocidade() != 1)
-				ps.setVelocidadeAnterior(ps.getVelocidade());
+				ps.setVelocidadeAnterior(ps.getVelocidadeExibir());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}

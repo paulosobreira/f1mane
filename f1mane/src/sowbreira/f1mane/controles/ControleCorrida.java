@@ -553,7 +553,7 @@ public class ControleCorrida {
 
 	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
 			boolean analisaTracado) {
-		List<Piloto> pilotos = controleJogo.getPilotos();
+		List<Piloto> pilotos = controleJogo.getPilotosCopia();
 		int menorDistancia = Integer.MAX_VALUE;
 		Carro carroFrente = null;
 		// if (piloto.getPtosBox() != 0) {

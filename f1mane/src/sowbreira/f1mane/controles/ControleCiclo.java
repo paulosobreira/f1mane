@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import sowbreira.f1mane.visao.ControleSom;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
@@ -82,7 +83,6 @@ public class ControleCiclo extends Thread {
 						if (piloto.getPtosBox() == 0) {
 							piloto.processarCiclo(controleJogo);
 						}
-
 						if (!piloto.isDesqualificado()
 								&& (piloto.isBox() || controleJogo
 										.verificaNoPitLane(piloto))) {
