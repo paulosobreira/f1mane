@@ -116,7 +116,7 @@ public class ControleSafetyCar {
 		No noAtual = safetyCar.getNoAtual();
 		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
 				.random() > .5) ? 2 : 1) : (Math.random() > .3) ? 2 : 1;
-		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
+		Piloto pole = (Piloto) controleJogo.getPilotosCopia().get(0);
 
 		long ptsSc = safetyCar.getPtosPista();
 		long polePts = pole.getPtosPista();
@@ -161,7 +161,7 @@ public class ControleSafetyCar {
 	}
 
 	private boolean deixaRetardatarioPassar(int indice) {
-		List pilotos = controleJogo.getPilotos();
+		List pilotos = controleJogo.getPilotosCopia();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (this.equals(piloto) || piloto.getPosicao() == 1

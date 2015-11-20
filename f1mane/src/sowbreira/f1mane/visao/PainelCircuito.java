@@ -61,9 +61,9 @@ import br.nnpe.Util;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = false;
-	public static boolean desenhaPista = false;
-	public static boolean desenhaImagens = false;
+	public static boolean desenhaBkg = true;
+	public static boolean desenhaPista = true;
+	public static boolean desenhaImagens = true;
 
 	private boolean verControles = true;
 	private boolean desenhouQualificacao;
@@ -286,7 +286,7 @@ public class PainelCircuito {
 		carregaRecursos();
 		controleJogo = jogo;
 		this.gerenciadorVisual = gerenciadorVisual;
-		pilotosRect = new RoundRectangle2D.Double[controleJogo.getPilotos()
+		pilotosRect = new RoundRectangle2D.Double[controleJogo.getPilotosCopia()
 				.size()];
 
 		for (int i = 0; i < pilotosRect.length; i++) {
@@ -534,7 +534,7 @@ public class PainelCircuito {
 
 		for (int i = 0; i < pilotosRect.length; i++) {
 			if (pilotosRect[i].contains(e.getPoint())) {
-				pilotoSelecionado = controleJogo.getPilotos().get(i);
+				pilotoSelecionado = controleJogo.getPilotosCopia().get(i);
 				controleJogo.selecionouPiloto(pilotoSelecionado);
 				return true;
 			}

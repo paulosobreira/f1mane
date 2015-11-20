@@ -239,7 +239,7 @@ public class GerenciadorVisual {
 					ControleSom.processaSom(controleJogo.getPilotoJogador(),
 							controleJogo, painelCircuito);
 					try {
-						Thread.sleep(Constantes.CICLO);
+						Thread.sleep(Constantes.CICLO_SOM);
 					} catch (InterruptedException e) {
 						thAtualizaPilotosSuaveAlive = false;
 						Logger.logarExept(e);
