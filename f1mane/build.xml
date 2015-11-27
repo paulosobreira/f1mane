@@ -13,7 +13,7 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
-	<property name="TOMCAT_HOME"       value="E:\apache-tomcat-7.0.35"/>
+	<property name="TOMCAT_HOME"       value="C:\Java\apache-tomcat-8.0.28"/>
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
 			<include name="*.jar" />
@@ -120,6 +120,7 @@
 			<fileset dir="WebContent/WEB-INF/lib">
 				<include name="commons-beanutils-1.8.2.jar" />
 				<include name="commons-logging-1.1.1.jar" />
+				<include name="jnlp.jar" />
 			</fileset>
 		</copy>
 		<delete file="a-f1mane.jar" />
@@ -137,11 +138,15 @@
 		</signjar>
 		<signjar jar="commons-logging-1.1.1.jar" signedjar="a-commons-logging-1.1.1.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
 		</signjar>
+		<signjar jar="jnlp.jar" signedjar="a-jnlp.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
 		<delete file="f1mane.jar" />
 		<delete file="f1maneRecursos.jar" />
 		<delete file="f1manePistas.jar" />
 		<delete file="commons-beanutils-1.8.2.jar" />
 		<delete file="commons-logging-1.1.1.jar" />
+		<delete file="jnlp.jar" />
+		
 	</target>
 
 	<target name="criarZip">
