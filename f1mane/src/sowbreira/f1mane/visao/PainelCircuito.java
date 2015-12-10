@@ -2964,7 +2964,7 @@ public class PainelCircuito {
 			oldP = p;
 		}
 		g2d.setStroke(stroke);
-		Piloto lider = (Piloto) controleJogo.getPilotos().get(0);
+		Piloto lider = (Piloto) controleJogo.getPilotosCopia().get(0);
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 8));
 
