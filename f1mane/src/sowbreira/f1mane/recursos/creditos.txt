@@ -2,7 +2,7 @@
 F1 MANager & Engineer
 -Desenvolvido / Developed
 Paulo Sobreira
--Imanges das pistas / Track images
+-Imagens das pistas / Track images
 www.miniracingonline.com
 -Imagens dos carros e capacetes / Car and helmet Images
 spotterguidecentral.com
@@ -17,7 +17,7 @@ Open Source
 F1-Mane é um prototipo e seus graficos 
     e jogabilidade podem mudar com novas versões
 F1-Mane is a prototype and its graphics 
-    and gameplay game can change with new versions
+    and gameplay game can change in new versions
 -Sobreira 2007-2015  
  Obrigado por jogar
  Thanks for playng

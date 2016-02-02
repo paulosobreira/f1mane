@@ -378,7 +378,7 @@ public class Carro implements Serializable {
 
 		if (no.verificaRetaOuLargada()) {
 			if (MENOS_ASA.equals(getAsa()) && Math.random() < mod) {
-				novoModificador += Math.random() < 0.5 ? (testeAerodinamica ? 1
+				novoModificador += Math.random() < 0.4 ? (testeAerodinamica ? 1
 						: 0) : 0;
 			} else if (MAIS_ASA.equals(getAsa()) && Math.random() > mod) {
 				novoModificador -= Math.random()  > 0.2 ? (testeAerodinamica ? 0

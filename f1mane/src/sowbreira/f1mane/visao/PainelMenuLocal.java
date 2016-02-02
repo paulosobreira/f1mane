@@ -2,6 +2,7 @@ package sowbreira.f1mane.visao;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -16,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,6 +31,10 @@ import java.util.Set;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
+import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
+import br.nnpe.OcilaCor;
+import br.nnpe.Util;
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -41,10 +47,6 @@ import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.ImageUtil;
-import br.nnpe.Logger;
-import br.nnpe.OcilaCor;
-import br.nnpe.Util;
 
 public class PainelMenuLocal {
 
@@ -93,8 +95,8 @@ public class PainelMenuLocal {
 	private RoundRectangle2D continuaCampeonatoRect = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 10, 10);
 
-	private RoundRectangle2D sobreRect = new RoundRectangle2D.Double(0, 0, 1,
-			1, 10, 10);
+	private RoundRectangle2D sobreRect = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
 
 	private RoundRectangle2D proxPistaRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
@@ -102,14 +104,14 @@ public class PainelMenuLocal {
 	private RoundRectangle2D antePistaRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
 
-	private RoundRectangle2D addPistaRect = new RoundRectangle2D.Double(0, 0,
-			1, 1, 10, 10);
+	private RoundRectangle2D addPistaRect = new RoundRectangle2D.Double(0, 0, 1,
+			1, 10, 10);
 
-	private RoundRectangle2D remPistaRect = new RoundRectangle2D.Double(0, 0,
-			1, 1, 10, 10);
+	private RoundRectangle2D remPistaRect = new RoundRectangle2D.Double(0, 0, 1,
+			1, 10, 10);
 
-	private RoundRectangle2D desafiarRect = new RoundRectangle2D.Double(0, 0,
-			1, 1, 10, 10);
+	private RoundRectangle2D desafiarRect = new RoundRectangle2D.Double(0, 0, 1,
+			1, 10, 10);
 
 	private RoundRectangle2D proxTemporadaRect = new RoundRectangle2D.Double(0,
 			0, 1, 1, 10, 10);
@@ -117,11 +119,11 @@ public class PainelMenuLocal {
 	private RoundRectangle2D anteTemporadaRect = new RoundRectangle2D.Double(0,
 			0, 1, 1, 10, 10);
 
-	private RoundRectangle2D pistaRect = new RoundRectangle2D.Double(0, 0, 1,
-			1, 10, 10);
+	private RoundRectangle2D pistaRect = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
 
-	private RoundRectangle2D menosVoltasRect = new RoundRectangle2D.Double(0,
-			0, 1, 1, 10, 10);
+	private RoundRectangle2D menosVoltasRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
 
 	private RoundRectangle2D maisVoltasRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
@@ -144,14 +146,14 @@ public class PainelMenuLocal {
 	private RoundRectangle2D solRect = new RoundRectangle2D.Double(0, 0, 1, 1,
 			10, 10);
 
-	private RoundRectangle2D chuvaRect = new RoundRectangle2D.Double(0, 0, 1,
-			1, 10, 10);
+	private RoundRectangle2D chuvaRect = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
 
 	private RoundRectangle2D nubladoRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
 
-	private RoundRectangle2D facilRect = new RoundRectangle2D.Double(0, 0, 1,
-			1, 10, 10);
+	private RoundRectangle2D facilRect = new RoundRectangle2D.Double(0, 0, 1, 1,
+			10, 10);
 
 	private RoundRectangle2D normalRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
@@ -159,11 +161,11 @@ public class PainelMenuLocal {
 	private RoundRectangle2D dificilRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 10, 10);
 
-	private RoundRectangle2D pneuMoleRect = new RoundRectangle2D.Double(0, 0,
-			1, 1, 10, 10);
+	private RoundRectangle2D pneuMoleRect = new RoundRectangle2D.Double(0, 0, 1,
+			1, 10, 10);
 
-	private RoundRectangle2D pneuDuroRect = new RoundRectangle2D.Double(0, 0,
-			1, 1, 10, 10);
+	private RoundRectangle2D pneuDuroRect = new RoundRectangle2D.Double(0, 0, 1,
+			1, 10, 10);
 
 	private RoundRectangle2D pneuChuvaRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
@@ -174,8 +176,8 @@ public class PainelMenuLocal {
 	private RoundRectangle2D normalAsaRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
 
-	private RoundRectangle2D menosAsaRect = new RoundRectangle2D.Double(0, 0,
-			1, 1, 10, 10);
+	private RoundRectangle2D menosAsaRect = new RoundRectangle2D.Double(0, 0, 1,
+			1, 10, 10);
 
 	private RoundRectangle2D drsRect = new RoundRectangle2D.Double(0, 0, 1, 1,
 			10, 10);
@@ -186,17 +188,17 @@ public class PainelMenuLocal {
 	private RoundRectangle2D trocaPneusRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 10, 10);
 
-	private RoundRectangle2D reabasteciemtoRect = new RoundRectangle2D.Double(
-			0, 0, 1, 1, 10, 10);
+	private RoundRectangle2D reabasteciemtoRect = new RoundRectangle2D.Double(0,
+			0, 1, 1, 10, 10);
 
 	private RoundRectangle2D detalhesCampeonatoRct = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 10, 10);
 
-	private RoundRectangle2D proximoMenuRect = new RoundRectangle2D.Double(0,
-			0, 1, 1, 10, 10);
+	private RoundRectangle2D proximoMenuRect = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
 
-	private RoundRectangle2D anteriroMenuRct = new RoundRectangle2D.Double(0,
-			0, 1, 1, 10, 10);
+	private RoundRectangle2D anteriroMenuRct = new RoundRectangle2D.Double(0, 0,
+			1, 1, 10, 10);
 
 	private String circuitoSelecionado = null;
 
@@ -276,8 +278,59 @@ public class PainelMenuLocal {
 
 	private int etapaAtual;
 
+	private List<java.awt.geom.RoundRectangle2D> retangulos;
+
+	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+	private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+
 	public PainelMenuLocal(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
+
+		retangulos = new ArrayList<java.awt.geom.RoundRectangle2D>();
+		Field[] declaredFields = PainelMenuLocal.class.getDeclaredFields();
+		for (Field field : declaredFields) {
+			try {
+				Object object = field.get(PainelMenuLocal.this);
+				if (object instanceof java.awt.geom.RoundRectangle2D) {
+					retangulos.add((RoundRectangle2D) object);
+				}
+			} catch (IllegalArgumentException | IllegalAccessException e1) {
+				e1.printStackTrace();
+			}
+		}
+		mainFrame.addMouseMotionListener(new MouseAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				for (Iterator iterator = retangulos.iterator(); iterator
+						.hasNext();) {
+					RoundRectangle2D ret = (RoundRectangle2D) iterator.next();
+					if (ret.contains(e.getPoint())) {
+						if(!handCursor.equals(mainFrame.getCursor())){
+							mainFrame.setCursor(handCursor);
+						}
+						return;
+					}
+				}
+				if (pilotosRect != null) {
+					for (Iterator iterator = pilotosRect.iterator(); iterator
+							.hasNext();) {
+						RoundRectangle2D ret = (RoundRectangle2D) iterator
+								.next();
+						if (ret.contains(e.getPoint())) {
+							if (!handCursor.equals(mainFrame.getCursor())) {
+								mainFrame.setCursor(handCursor);
+							}
+							return;
+						}
+					}
+				}
+				if (!defaultCursor.equals(mainFrame.getCursor())) {
+					mainFrame.setCursor(defaultCursor);
+				}
+
+				super.mouseMoved(e);
+			}
+		});
 
 		mainFrame.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -638,7 +691,7 @@ public class PainelMenuLocal {
 		} catch (IOException e1) {
 			Logger.logarExept(e1);
 		}
-		
+
 	}
 
 	protected void render() {
@@ -712,12 +765,12 @@ public class PainelMenuLocal {
 
 		String txt = "";
 		if (campeonato.isPromovidoEquipeRival()) {
-			txt = Lang.msg("irEquipe", new String[] { pilotoSelecionado
-					.getCarro().getNome() });
+			txt = Lang.msg("irEquipe",
+					new String[]{pilotoSelecionado.getCarro().getNome()});
 		}
 		if (campeonato.isRebaixadoEquipeRival()) {
-			txt = Lang.msg("rebaixado", new String[] { pilotoSelecionado
-					.getCarro().getNome() });
+			txt = Lang.msg("rebaixado",
+					new String[]{pilotoSelecionado.getCarro().getNome()});
 		}
 		int larguraTexto = Util.larguraTexto(txt, g2d);
 		g2d.setColor(lightWhite);
@@ -888,7 +941,8 @@ public class PainelMenuLocal {
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
 	}
 
-	private void desenhaDetalhesCorridaCampeonato(Graphics2D g2d, int x, int y) {
+	private void desenhaDetalhesCorridaCampeonato(Graphics2D g2d, int x,
+			int y) {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 		String detalhesStr = (Lang.msg("detalhes")).toUpperCase();
@@ -994,14 +1048,15 @@ public class PainelMenuLocal {
 		g2d.setColor(lightWhite);
 		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(txt.toUpperCase(), x
-				+ (90 - Util.larguraTexto(txt, g2d)) / 2, y);
+		g2d.drawString(txt.toUpperCase(),
+				x + (90 - Util.larguraTexto(txt, g2d)) / 2, y);
 
 		x += 160;
-		txt = Lang.msg(
-				"etapasCampeonato",
-				new String[] { String.valueOf(etapaAtual),
-						String.valueOf(qtdeEtapasCampeonato) }).toUpperCase();
+		txt = Lang
+				.msg("etapasCampeonato",
+						new String[]{String.valueOf(etapaAtual),
+								String.valueOf(qtdeEtapasCampeonato)})
+				.toUpperCase();
 		larguraTexto = Util.calculaLarguraText(txt, g2d);
 		g2d.setColor(lightWhite);
 		g2d.fillRoundRect(x, y - 25, larguraTexto + 20, 30, 15, 15);
@@ -1119,19 +1174,17 @@ public class PainelMenuLocal {
 				g2d.setFont(fontMaior);
 				g2d.setColor(lightWhite);
 				g2d.fillRoundRect(x, y, 160, 20, 15, 15);
-				if (pilotoSelecionado != null
-						&& pilotoSelecionado.getCarro().getNome()
-								.equals(equipe.getNomeEquipe())) {
+				if (pilotoSelecionado != null && pilotoSelecionado.getCarro()
+						.getNome().equals(equipe.getNomeEquipe())) {
 					g2d.setColor(bluQualy);
 					g2d.drawRoundRect(x, y, 160, 20, 15, 15);
 				}
 				g2d.setColor(Color.BLACK);
-				g2d.drawString("" + equipe.getNomeEquipe().toUpperCase(),
-						x + 5, y + 16);
+				g2d.drawString("" + equipe.getNomeEquipe().toUpperCase(), x + 5,
+						y + 16);
 
-				if (pilotoDesafio != null
-						&& pilotoDesafio.getCarro().getNome()
-								.equals(equipe.getNomeEquipe())) {
+				if (pilotoDesafio != null && pilotoDesafio.getCarro().getNome()
+						.equals(equipe.getNomeEquipe())) {
 					g2d.setColor(oran);
 					g2d.drawRoundRect(x, y, 160, 20, 15, 15);
 				}
@@ -1153,18 +1206,16 @@ public class PainelMenuLocal {
 				g2d.setColor(lightWhite);
 				g2d.fillRoundRect(x, y, 80, 20, 15, 15);
 
-				if (pilotoSelecionado != null
-						&& pilotoSelecionado.getCarro().getNome()
-								.equals(equipe.getNomeEquipe())) {
+				if (pilotoSelecionado != null && pilotoSelecionado.getCarro()
+						.getNome().equals(equipe.getNomeEquipe())) {
 					g2d.setColor(bluQualy);
 					g2d.drawRoundRect(x, y, 80, 20, 15, 15);
 				}
 				g2d.setColor(Color.BLACK);
 				g2d.drawString("" + equipe.getPontos(), x + 20, y + 16);
 
-				if (pilotoDesafio != null
-						&& pilotoDesafio.getCarro().getNome()
-								.equals(equipe.getNomeEquipe())) {
+				if (pilotoDesafio != null && pilotoDesafio.getCarro().getNome()
+						.equals(equipe.getNomeEquipe())) {
 					g2d.setColor(oran);
 					g2d.drawRoundRect(x, y, 80, 20, 15, 15);
 				}
@@ -1213,8 +1264,8 @@ public class PainelMenuLocal {
 				g2d.setColor(lightWhite);
 				g2d.fillRoundRect(x, y, 120, 20, 15, 15);
 
-				if (pilotoSelecionado != null
-						&& pilotoSelecionado.getNome().equals(piloto.getNome())) {
+				if (pilotoSelecionado != null && pilotoSelecionado.getNome()
+						.equals(piloto.getNome())) {
 					g2d.setColor(bluQualy);
 					g2d.drawRoundRect(x, y, 120, 20, 15, 15);
 				}
@@ -1242,8 +1293,8 @@ public class PainelMenuLocal {
 				g2d.setFont(fontMaior);
 				g2d.setColor(lightWhite);
 				g2d.fillRoundRect(x, y, 60, 20, 15, 15);
-				if (pilotoSelecionado != null
-						&& pilotoSelecionado.getNome().equals(piloto.getNome())) {
+				if (pilotoSelecionado != null && pilotoSelecionado.getNome()
+						.equals(piloto.getNome())) {
 					g2d.setColor(bluQualy);
 					g2d.drawRoundRect(x, y, 60, 20, 15, 15);
 				}
@@ -1270,8 +1321,8 @@ public class PainelMenuLocal {
 				g2d.setFont(fontMaior);
 				g2d.setColor(lightWhite);
 				g2d.fillRoundRect(x, y, 80, 20, 15, 15);
-				if (pilotoSelecionado != null
-						&& pilotoSelecionado.getNome().equals(piloto.getNome())) {
+				if (pilotoSelecionado != null && pilotoSelecionado.getNome()
+						.equals(piloto.getNome())) {
 					g2d.setColor(bluQualy);
 					g2d.drawRoundRect(x, y, 80, 20, 15, 15);
 				}
@@ -1291,13 +1342,14 @@ public class PainelMenuLocal {
 
 	}
 
-	private void desenhaCircuitoCorridaCampeonato(Graphics2D g2d, int x, int y) {
+	private void desenhaCircuitoCorridaCampeonato(Graphics2D g2d, int x,
+			int y) {
 		if (campeonato != null) {
 			circuitoSelecionado = campeonato.getCircuitoVez();
 		}
 		InterfaceJogo controleJogo = mainFrame.getControleJogo();
-		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
-				circuitoSelecionado);
+		String nmCircuitoMRO = (String) controleJogo.getCircuitos()
+				.get(circuitoSelecionado);
 
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
@@ -1439,8 +1491,8 @@ public class PainelMenuLocal {
 	}
 
 	private void desenhaMenuQualificacao(Graphics2D g2d) {
-		if (!(MENU.equals(MENU_QUALIFICACAO) || MENU
-				.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS))) {
+		if (!(MENU.equals(MENU_QUALIFICACAO)
+				|| MENU.equals(MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS))) {
 			return;
 		}
 		if (Clima.CHUVA.equals(climaSelecionado)) {
@@ -1560,7 +1612,8 @@ public class PainelMenuLocal {
 
 		int freios = piloto.getCarro().getFreios() / 10;
 
-		desenhaBarraPilotoCarro(g2d, y + 18, xbarra, freios, Lang.msg("freios"));
+		desenhaBarraPilotoCarro(g2d, y + 18, xbarra, freios,
+				Lang.msg("freios"));
 
 		g2d.setFont(fontOri);
 
@@ -1598,8 +1651,8 @@ public class PainelMenuLocal {
 			circuitoSelecionado = (String) controleJogo.getCircuitos().keySet()
 					.iterator().next();
 		}
-		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
-				circuitoSelecionado);
+		String nmCircuitoMRO = (String) controleJogo.getCircuitos()
+				.get(circuitoSelecionado);
 
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
@@ -2136,8 +2189,8 @@ public class PainelMenuLocal {
 				Piloto p1 = (Piloto) o1;
 				Piloto p2 = (Piloto) o2;
 
-				return new Integer(p2.getCarro().getPotenciaReal())
-						.compareTo(new Integer(p1.getCarro().getPotenciaReal()));
+				return new Integer(p2.getCarro().getPotenciaReal()).compareTo(
+						new Integer(p1.getCarro().getPotenciaReal()));
 			}
 
 		});
@@ -2149,8 +2202,8 @@ public class PainelMenuLocal {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, fontOri.getSize()));
 		RoundRectangle2D pilotoRect = pilotosRect.get(i);
-		String nmPilotoStr = (piloto.getNome() + " " + piloto.getCarro()
-				.getNome()).toUpperCase();
+		String nmPilotoStr = (piloto.getNome() + " "
+				+ piloto.getCarro().getNome()).toUpperCase();
 		int tamNmPiloto = Util.calculaLarguraText(nmPilotoStr, g2d);
 		pilotoRect.setFrame(x - 15, y, tamNmPiloto + 10, 18);
 		Color c = corRectPiloto(g2d, piloto, 1);
@@ -2170,7 +2223,8 @@ public class PainelMenuLocal {
 		g2d.setFont(fontOri);
 	}
 
-	private void desenhaDrsKersPneusReabastecimento(Graphics2D g2d, int x, int y) {
+	private void desenhaDrsKersPneusReabastecimento(Graphics2D g2d, int x,
+			int y) {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
@@ -2259,9 +2313,11 @@ public class PainelMenuLocal {
 		int tamTurbulenciaSelecionado = porcentTurbulencia * tamTurbulencia
 				/ 100;
 		g2d.setColor(yel);
-		g2d.drawRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 10, 10);
+		g2d.drawRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 10,
+				10);
 		g2d.setColor(blu);
-		g2d.fillRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 10, 10);
+		g2d.fillRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 10,
+				10);
 
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(turbulencia, x - 10, y + 15);
@@ -2309,9 +2365,11 @@ public class PainelMenuLocal {
 		g2d.fillRoundRect(x - 15, y - 12, tamCombustivel, 32, 10, 10);
 
 		g2d.setColor(yel);
-		g2d.drawRoundRect(x - 15, y - 12, tamCombustivelSelecionado, 32, 10, 10);
+		g2d.drawRoundRect(x - 15, y - 12, tamCombustivelSelecionado, 32, 10,
+				10);
 		g2d.setColor(blu);
-		g2d.fillRoundRect(x - 15, y - 12, tamCombustivelSelecionado, 32, 10, 10);
+		g2d.fillRoundRect(x - 15, y - 12, tamCombustivelSelecionado, 32, 10,
+				10);
 
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(combustivel, x - 10, y + 15);
@@ -2590,12 +2648,13 @@ public class PainelMenuLocal {
 		boolean desenhaDireita = true;
 		if (controleJogo.getCircuitos() != null
 				&& !controleJogo.getCircuitos().isEmpty()) {
-			ArrayList<String> arrayList = new ArrayList<String>(controleJogo
-					.getCircuitos().keySet());
+			ArrayList<String> arrayList = new ArrayList<String>(
+					controleJogo.getCircuitos().keySet());
 			if (arrayList.get(0).equals(circuitoSelecionado)) {
 				desenhaEsquerda = false;
 			}
-			if (arrayList.get(arrayList.size() - 1).equals(circuitoSelecionado)) {
+			if (arrayList.get(arrayList.size() - 1)
+					.equals(circuitoSelecionado)) {
 				desenhaDireita = false;
 			}
 		}
@@ -2609,14 +2668,14 @@ public class PainelMenuLocal {
 		centerX += 40;
 
 		if (circuitoSelecionado == null) {
-			List<String> sorteio = new ArrayList<String>(controleJogo
-					.getCircuitos().keySet());
+			List<String> sorteio = new ArrayList<String>(
+					controleJogo.getCircuitos().keySet());
 			if (mistura)
 				Collections.shuffle(sorteio);
 			circuitoSelecionado = sorteio.get(0);
 		}
-		String nmCircuitoMRO = (String) controleJogo.getCircuitos().get(
-				circuitoSelecionado);
+		String nmCircuitoMRO = (String) controleJogo.getCircuitos()
+				.get(circuitoSelecionado);
 
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
@@ -2701,7 +2760,8 @@ public class PainelMenuLocal {
 		Point o = new Point(10, 10);
 		Point oldP = null;
 		No ultNo = null;
-		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = pistaMinimizada.iterator(); iterator
+				.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
 				No no = (No) map.get(oldP);
@@ -2712,8 +2772,8 @@ public class PainelMenuLocal {
 				} else if (no.verificaRetaOuLargada()) {
 					g2d.setColor(new Color(0, 200, 0));
 				}
-				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x
-						+ p.x + incX + x, o.y + p.y + y);
+				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
+						o.x + p.x + incX + x, o.y + p.y + y);
 			}
 			oldP = p;
 			ultNo = (No) map.get(oldP);
@@ -2726,17 +2786,18 @@ public class PainelMenuLocal {
 		} else if (ultNo.verificaRetaOuLargada()) {
 			g2d.setColor(new Color(0, 200, 0));
 		}
-		g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x + p0.x
-				+ incX + x, o.y + p0.y + y);
+		g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
+				o.x + p0.x + incX + x, o.y + p0.y + y);
 
 		g2d.setStroke(new BasicStroke(2.0f));
 		oldP = null;
 		g2d.setColor(Color.lightGray);
-		for (Iterator iterator = boxMinimizado.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = boxMinimizado.iterator(); iterator
+				.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
-				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x
-						+ p.x + incX + x, o.y + p.y + y);
+				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
+						o.x + p.x + incX + x, o.y + p.y + y);
 			}
 			oldP = p;
 		}
