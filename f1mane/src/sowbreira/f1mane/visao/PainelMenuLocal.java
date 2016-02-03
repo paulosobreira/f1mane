@@ -305,7 +305,7 @@ public class PainelMenuLocal {
 						.hasNext();) {
 					RoundRectangle2D ret = (RoundRectangle2D) iterator.next();
 					if (ret.contains(e.getPoint())) {
-						if(!handCursor.equals(mainFrame.getCursor())){
+						if (!handCursor.equals(mainFrame.getCursor())) {
 							mainFrame.setCursor(handCursor);
 						}
 						return;
@@ -2188,9 +2188,27 @@ public class PainelMenuLocal {
 			public int compare(Object o1, Object o2) {
 				Piloto p1 = (Piloto) o1;
 				Piloto p2 = (Piloto) o2;
+				return p1.getCarro().getNome()
+						.compareTo(p2.getCarro().getNome());
+			}
 
-				return new Integer(p2.getCarro().getPotenciaReal()).compareTo(
-						new Integer(p1.getCarro().getPotenciaReal()));
+		});
+
+		Collections.sort(pilotos, new Comparator() {
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				Piloto p1 = (Piloto) o1;
+				Piloto p2 = (Piloto) o2;
+
+				double val1 = (p1.getCarro().getPotenciaReal()
+						+ p1.getCarro().getAerodinamica()
+						+ p1.getCarro().getFreios()) / 3.0;
+				double val2 = (p2.getCarro().getPotenciaReal()
+						+ p2.getCarro().getAerodinamica()
+						+ p2.getCarro().getFreios()) / 3.0;
+
+				return new Double(val2).compareTo(new Double(val1));
 			}
 
 		});
