@@ -138,8 +138,8 @@ public class PainelCircuito {
 	private int qtdeLuzesAcesas = 5;
 	private int mx;
 	private int my;
-	private double zoom = 1.0;
-	private double mouseZoom = 1;
+	private double zoom = 1;
+	private double mouseZoom = 0.75;
 	private Circuito circuito;
 	private Shape[] grid = new Shape[24];
 	private List gridImg = new ArrayList();
@@ -3303,7 +3303,7 @@ public class PainelCircuito {
 				|| Carro.EXPLODIU_MOTOR.equals(danificado)) {
 			return;
 		}
-		if(piloto.getCarro().isRecolhido()){
+		if (piloto.getCarro().isRecolhido()) {
 			return;
 		}
 		No noAtual = piloto.getNoAtual();
@@ -3725,6 +3725,13 @@ public class PainelCircuito {
 		}
 		if (piloto.getPtosBox() != 0) {
 			return;
+		}
+		double mod = .995;
+		if(piloto.getTracado()!=0){
+			mod -= .50;
+		}
+		if (piloto.isFreiandoReta()) {
+			mod -= .100;
 		}
 		if (piloto.isAgressivo()
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
