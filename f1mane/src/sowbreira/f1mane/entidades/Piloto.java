@@ -1208,7 +1208,7 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaFreioNaReta(InterfaceJogo controleJogo) {
-		boolean testPilotoPneus = Carro.TIPO_PNEU_MOLE.equals(getCarro().getTipoPneu()) || getCarro().testeFreios();
+		boolean testPilotoPneus = getCarro().testeFreios();
 		/**
 		 * efeito freiar na reta
 		 */
@@ -1216,9 +1216,6 @@ public class Piloto implements Serializable {
 		if (obterProxCurva != null) {
 			double val = obterProxCurva.getIndex() - getNoAtual().getIndex();
 			double distAfrente = 300.0;
-			if (controleJogo.getNumVoltaAtual() <= 1) {
-				distAfrente = 500.0;
-			}
 			if (val < distAfrente && getNoAtual().verificaRetaOuLargada()) {
 				freiandoReta = true;
 				acelerando = false;
