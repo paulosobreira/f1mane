@@ -136,7 +136,7 @@ public class PainelCircuito {
 	private int mx;
 	private int my;
 	private double zoom = 1;
-	private double mouseZoom = 0.75;
+	private double mouseZoom = 1;
 	private Circuito circuito;
 	private Shape[] grid = new Shape[24];
 	private List gridImg = new ArrayList();
