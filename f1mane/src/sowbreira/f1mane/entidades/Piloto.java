@@ -2643,6 +2643,10 @@ public class Piloto implements Serializable {
 		return freiandoReta;
 	}
 
+	public void setFreiandoReta(boolean freiandoReta) {
+		this.freiandoReta = freiandoReta;
+	}
+
 	public int getTracadoDelay() {
 		return tracadoDelay;
 	}

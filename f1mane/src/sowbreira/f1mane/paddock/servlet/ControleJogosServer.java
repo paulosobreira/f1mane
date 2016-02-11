@@ -547,6 +547,7 @@ public class ControleJogosServer {
 				dadosParciais.nomeJogador = piloto.getNomeJogador();
 				dadosParciais.dano = piloto.getCarro().getDanificado();
 				dadosParciais.pselBox = piloto.isBox();
+				dadosParciais.freiandoReta = piloto.isFreiandoReta();
 				dadosParciais.pselMotor = piloto.getCarro().getMotor();
 				dadosParciais.pselStress = piloto.getStress();
 				dadosParciais.cargaKers = piloto.getCarro().getCargaKers();

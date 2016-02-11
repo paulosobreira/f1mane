@@ -5,12 +5,12 @@
 		<title>F1-Mane Online</title>
 		<vendor>Paulo Sobreira</vendor>
 		<homepage href="http://sowbreira.appspot.com/" />
-		<description>F1-MANE (MANager & Engineer)</description>
+		<description>F1-MANE (MANager and Engineer)</description>
 		<icon href="icon.png"/>  
 	</information>
 
 	<resources>
-		<j2se version="1.7"  initial-heap-size="64m" max-heap-size="512m" />
+		<j2se version="1.8"  initial-heap-size="64m" max-heap-size="512m" />
 		<jar href="f1mane.jar" />
 		<jar href="f1maneRecursos.jar" />
     </resources>

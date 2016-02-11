@@ -29,6 +29,7 @@ public class DadosParciais implements Serializable {
 	public int temperaturaMotor;
 	public int pselDurAereofolio;
 	public boolean pselBox;
+	public boolean freiandoReta;
 	public int pselMaxPneus;
 	public String clima;
 	public String estado;
@@ -66,6 +67,7 @@ public class DadosParciais implements Serializable {
 		pselDurAereofolio = parseInt(sp[spcont++]);
 		pselModoPilotar = decodeModoPilotar(sp[spcont++]);
 		pselBox = "S".equals(sp[spcont++]);
+		freiandoReta = "S".equals(sp[spcont++]);
 		pselMaxPneus = parseInt(sp[spcont++]);
 		clima = decodeClima(sp[spcont++]);
 		estado = sp[spcont++];
@@ -317,9 +319,10 @@ public class DadosParciais implements Serializable {
 				+ pselGiro + "@" + pselStress + "@" + cargaKers + "@"
 				+ temperaturaMotor + "@" + pselDurAereofolio + "@"
 				+ codpselModoPilotar + "@" + (pselBox ? "S" : "N") + "@"
-				+ pselMaxPneus + "@" + codClima + "@" + estado + "@" + codDano
-				+ "@" + codpselAsa + "@" + codpselAsaBox + "@" + codMelhorVolta
-				+ "@" + codpeselMelhorVolta + "@"
+				+ (freiandoReta ? "S" : "N") + "@" + pselMaxPneus + "@"
+				+ codClima + "@" + estado + "@" + codDano + "@" + codpselAsa
+				+ "@" + codpselAsaBox + "@" + codMelhorVolta + "@"
+				+ codpeselMelhorVolta + "@"
 				+ (nomeJogador == null ? "" : nomeJogador) + "@"
 				+ (texto == null ? "" : texto) + "@" + codUlt1 + "@" + codUlt2
 				+ "@" + codUlt3 + "@" + codUlt4 + "@" + codUlt5 + "@"
