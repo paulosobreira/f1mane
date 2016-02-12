@@ -344,7 +344,7 @@ public abstract class ControleRecursos {
 			int index = no.getIndex();
 			for (int i = index; i < nosDaPista.size(); i++) {
 				No noCurva = (No) nosDaPista.get(i);
-				if (noCurva.verificaCruvaBaixa()) {
+				if (noCurva.verificaCruvaBaixa() || noCurva.verificaCruvaAlta()) {
 					mapaNoProxCurva.put(no, noCurva);
 					break;
 				}
@@ -452,7 +452,6 @@ public abstract class ControleRecursos {
 		// Logger.logar(((int) (0 + Math.random() * 9)));
 
 	}
-
 
 	protected void carregarCircuitos() {
 		final Properties properties = new Properties();

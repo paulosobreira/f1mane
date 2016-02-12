@@ -3717,7 +3717,7 @@ public class PainelCircuito {
 		double mod = .995;
 
 		if (piloto.isFreiandoReta()
-				&& Util.intervalo(50, 100) < piloto.getCarro().getCombustivel()) {
+				&& Util.intervalo(50, 60) < piloto.getCarro().getCombustivel()) {
 			mod -= .50;
 			if (piloto.getTracado() != 0) {
 				mod -= .50;

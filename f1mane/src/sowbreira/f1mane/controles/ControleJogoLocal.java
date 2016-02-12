@@ -241,6 +241,9 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void atualizaPainel() {
 		decrementaTracado();
+		if(gerenciadorVisual!=null){
+			gerenciadorVisual.callBackAtualizarCiclo();
+		}
 	}
 
 	public void decrementaTracado() {
