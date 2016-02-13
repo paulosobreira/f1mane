@@ -1863,7 +1863,7 @@ public class GerenciadorVisual {
 		return !painelCircuito.desenhouPilotosQualificacao();
 	}
 
-	public void callBackAtualizarCiclo() {
+	public void callBackAtualizarPos() {
 		if ((ultMudaPos != 0) && controleJogo != null
 				&& !controleJogo.getPilotoJogador().isAutoPos()
 				&& System.currentTimeMillis() - ultMudaPos > 10000) {

@@ -214,6 +214,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void atualizaPainel() {
+		decrementaTracado();
+		if(gerenciadorVisual!=null){
+			gerenciadorVisual.callBackAtualizarPos();
+		}
 	}
 
 	public void atulizaTabelaPosicoes() {

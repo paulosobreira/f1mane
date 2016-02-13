@@ -1025,10 +1025,10 @@ public class Piloto implements Serializable {
 			ganho = 10;
 		}
 		if (getTracado() == 4) {
-			mudarTracado(2, controleJogo, true);
+			mudarTracado(2, controleJogo);
 		}
 		if (getTracado() == 5) {
-			mudarTracado(1, controleJogo, true);
+			mudarTracado(1, controleJogo);
 		}
 	}
 
@@ -1083,12 +1083,12 @@ public class Piloto implements Serializable {
 				controleJogo.travouRodas(this);
 			if (getTracadoAntigo() != 0) {
 				if (getTracadoAntigo() == 1) {
-					mudarTracado(2, controleJogo, true);
+					mudarTracado(2, controleJogo);
 				} else {
-					mudarTracado(1, controleJogo, true);
+					mudarTracado(1, controleJogo);
 				}
 			} else {
-				mudarTracado(Util.intervalo(1, 2), controleJogo, true);
+				mudarTracado(Util.intervalo(1, 2), controleJogo);
 			}
 			return;
 		}
@@ -1122,10 +1122,10 @@ public class Piloto implements Serializable {
 					ganho *= 0.3;
 				}
 				if (getTracado() == 4) {
-					mudarTracado(2, controleJogo, true);
+					mudarTracado(2, controleJogo);
 				}
 				if (getTracado() == 5) {
-					mudarTracado(1, controleJogo, true);
+					mudarTracado(1, controleJogo);
 				}
 			} else {
 				if (controleJogo.isChovendo()) {
@@ -1272,8 +1272,7 @@ public class Piloto implements Serializable {
 
 				double minMulti = 0.7;
 				if (!controleJogo.isModoQualify()
-						&& (controleJogo.isChovendo() || controleJogo
-								.getNumVoltaAtual() <= 1)) {
+						&& (controleJogo.isChovendo())) {
 					minMulti -= 0.3;
 					retardaFreiandoReta = false;
 				}
@@ -1386,11 +1385,7 @@ public class Piloto implements Serializable {
 				if (!getCarro().testePotencia()) {
 					return;
 				}
-				if (controleJogo.getNumVoltaAtual() <= 1) {
-					ganho *= 1.05;
-				} else {
-					ganho *= Util.intervalo(1.06, 1.09);
-				}
+				ganho *= Util.intervalo(1.06, 1.09);
 				getCarro().usaKers();
 			}
 		}
@@ -1521,13 +1516,13 @@ public class Piloto implements Serializable {
 					&& testeHabilidadePiloto(controleJogo) && !isFreiandoReta()
 					&& !isJogadorHumano()
 					&& controleJogo.getNiveljogo() < Math.random()) {
-				if (mudarTracado(pilotoAtraz.getTracado(), controleJogo, false)
+				if (mudarTracado(pilotoAtraz.getTracado(), controleJogo)
 						&& noAtual.verificaRetaOuLargada()) {
 					mudouTracadoReta++;
 				}
 
 			} else if (!isJogadorHumano()) {
-				mudarTracado(0, controleJogo, false);
+				mudarTracado(0, controleJogo);
 			}
 
 		}
@@ -1537,10 +1532,10 @@ public class Piloto implements Serializable {
 				&& distanciaDerrapada < ((2 * controleJogo.getNiveljogo()) * Carro.RAIO_DERRAPAGEM)) {
 			int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoDerrapada);
 			if (ladoDerrapa == 5 && getTracado() != 2) {
-				mudarTracado(2, controleJogo, false);
+				mudarTracado(2, controleJogo);
 			}
 			if (ladoDerrapa == 4 && getTracado() != 1) {
-				mudarTracado(1, controleJogo, false);
+				mudarTracado(1, controleJogo);
 			}
 		}
 	}
@@ -1701,7 +1696,7 @@ public class Piloto implements Serializable {
 		if (ladoDerrapa == 4 && getTracado() == 1) {
 			return false;
 		}
-		mudarTracado(ladoDerrapa, controleJogo, true);
+		mudarTracado(ladoDerrapa, controleJogo);
 		return true;
 	}
 
@@ -2481,7 +2476,7 @@ public class Piloto implements Serializable {
 			novoLado = interfaceJogo.getCircuito().getLadoBoxSaidaBox() == 1 ? 2
 					: 1;
 		}
-		mudarTracado(novoLado, interfaceJogo, true);
+		mudarTracado(novoLado, interfaceJogo);
 		boxBaixoRendimento = false;
 		if (getNumeroVolta() > 0)
 			processaVoltaNovaBox(interfaceJogo);
@@ -2626,12 +2621,7 @@ public class Piloto implements Serializable {
 		ultsConsumosPneu.clear();
 	}
 
-	public void mudarTracado(int pos, InterfaceJogo interfaceJogo) {
-		mudarTracado(pos, interfaceJogo, testeHabilidadePiloto(interfaceJogo));
-	}
-
-	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo,
-			boolean mesmoEmCurva) {
+	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo) {
 		if (indiceTracado != 0) {
 			return false;
 		}
@@ -2670,11 +2660,6 @@ public class Piloto implements Serializable {
 		}
 		if (getTracado() == 2 && mudarTracado == 1) {
 			return false;
-		}
-		if (!mesmoEmCurva) {
-			if ((No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && !testeHabilidadePilotoCarro(interfaceJogo))) {
-				return false;
-			}
 		}
 		if (!verificaColisaoAoMudarDeTracado(interfaceJogo, mudarTracado)) {
 			double mod = Carro.ALTURA;
