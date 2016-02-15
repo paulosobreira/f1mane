@@ -225,19 +225,9 @@ public class MainPanelEditor extends JPanel {
 			return;
 		}
 		No noAnt = null;
-		boolean noCurvaAltaAntesNoCurvaBaixa = false;
 		boolean temLargada = false;
 		for (int i = 0; i < defaultListModel.size(); i++) {
 			No no = (No) defaultListModel.get(i);
-			if (noAnt != null && noAnt.verificaRetaOuLargada()
-					&& no.verificaCruvaBaixa()) {
-				centralizarPonto(no.getPoint());
-				JOptionPane.showMessageDialog(null,
-						Lang.msg("noCurvaAltaAntesNoCurvaBaixa",
-								new String[]{"" + i}),
-						Lang.msg("039"), JOptionPane.INFORMATION_MESSAGE);
-				noCurvaAltaAntesNoCurvaBaixa = true;
-			}
 			if (No.LARGADA.equals(no.getTipo())) {
 				temLargada = true;
 			}
@@ -297,8 +287,6 @@ public class MainPanelEditor extends JPanel {
 		mx += 300;
 		my += 300;
 		No n1 = (No) l.get(0);
-		if (!noCurvaAltaAntesNoCurvaBaixa)
-			centralizarPonto(n1.getPoint());
 	}
 
 	private void atualizaListas() {

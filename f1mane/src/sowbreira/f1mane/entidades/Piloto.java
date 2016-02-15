@@ -146,6 +146,7 @@ public class Piloto implements Serializable {
 	private boolean processaEvitaBaterCarroFrente;
 	private int calculaDiffParaProximoRetardatario;
 	private int calculaDiffParaProximoRetardatarioTracado;
+	private int calculaDiferencaParaAnterior = Integer.MAX_VALUE;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -984,6 +985,8 @@ public class Piloto implements Serializable {
 				.calculaDiffParaProximoRetardatario(this, false);
 		calculaDiffParaProximoRetardatarioTracado = controleJogo
 				.calculaDiffParaProximoRetardatario(this, true);
+		calculaDiferencaParaAnterior = controleJogo
+				.calculaDiferencaParaAnterior(this);
 		processaStress(controleJogo);
 		processaLimitadorModificador();
 		processaUsoKERS(controleJogo);
@@ -1488,7 +1491,7 @@ public class Piloto implements Serializable {
 			return;
 		}
 		double diff = calculaDiffParaProximoRetardatarioTracado;
-		int diffAnt = controleJogo.calculaDiferencaParaAnterior(this);
+		int diffAnt = calculaDiferencaParaAnterior;
 		if (diff < diffAnt) {
 			if (diff < 150) {
 				if (testeHabilidadePiloto(controleJogo)) {
@@ -1545,12 +1548,10 @@ public class Piloto implements Serializable {
 		if (tentaPassarFrete) {
 			return false;
 		}
-		if (Math.random() > (controleJogo.getNiveljogo() + 0.2)) {
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.1)) {
 			return false;
 		}
-		int calculaDiferencaParaAnterior = controleJogo
-				.calculaDiferencaParaAnterior(this);
-		if (calculaDiferencaParaAnterior < 200
+		if (calculaDiferencaParaAnterior < 300
 				&& testeHabilidadePiloto(controleJogo)) {
 			modoIADefesaAtaque(controleJogo, null);
 			return true;
@@ -2057,7 +2058,7 @@ public class Piloto implements Serializable {
 	}
 
 	private boolean tentarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
-		if (Math.random() > (controleJogo.getNiveljogo() + 0.2)) {
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.1)) {
 			return false;
 		}
 		Carro carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
@@ -2099,7 +2100,9 @@ public class Piloto implements Serializable {
 		boolean maxCorrida = !superAquecido
 				&& porcentagemCombustivel > porcentagemDesgastePeneus
 				&& temMotor && temCombustivel;
-		if (maxUltimasVoltas || maxCorrida) {
+		if (maxUltimasVoltas || maxCorrida
+				|| calculaDiferencaParaAnterior < 200
+				|| calculaDiffParaProximoRetardatario < 200) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
 		if (drsAtivado && porcentagemCombustivel > 5) {
