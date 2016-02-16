@@ -2133,14 +2133,14 @@ public class Piloto implements Serializable {
 				}
 			}
 		}
-		int min = 15;
+		int min = 20;
 		if (Carro.TIPO_PNEU_MOLE.equals(getCarro().getTipoPneu())
 				&& !controleJogo.asfaltoAbrasivo()) {
-			min = 10;
+			min = 15;
 		}
 		if (Carro.TIPO_PNEU_DURO.equals(getCarro().getTipoPneu())
 				&& controleJogo.asfaltoAbrasivo()) {
-			min = 10;
+			min = 15;
 		}
 		if (pontoDerrapada != null
 				&& distanciaDerrapada > Carro.RAIO_DERRAPAGEM) {
