@@ -1005,6 +1005,8 @@ public class Piloto implements Serializable {
 		controleJogo.verificaUltrapassagem(this);
 		if (getColisao() != null) {
 			penalidadeColisao(controleJogo);
+			getColisao().setCiclosDesconcentrado(0);
+			getColisao().decStress(10);
 		}
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
@@ -1618,8 +1620,10 @@ public class Piloto implements Serializable {
 			if (verificaNaoPrecisaDesvia(controleJogo, pilotoFrente)) {
 				continue;
 			}
+			if(this.equals(pilotoFrente.getColisao())){
+				continue;
+			}
 			pilotoFrente.centralizaDianteiraTrazeiraCarro(controleJogo);
-
 			colisaoDiantera = getDiateira().intersects(
 					pilotoFrente.getTrazeira())
 					|| getDiateira().intersects(pilotoFrente.getCentro());
@@ -1627,9 +1631,6 @@ public class Piloto implements Serializable {
 
 			colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
 			if (colisao != null) {
-				pilotoFrente.setCiclosDesconcentrado(0);
-				pilotoFrente.decStress(10);
-				pilotoFrente.setColisao(null);
 				return;
 			}
 		}
