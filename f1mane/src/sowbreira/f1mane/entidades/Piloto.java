@@ -1627,6 +1627,9 @@ public class Piloto implements Serializable {
 
 			colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
 			if (colisao != null) {
+				pilotoFrente.setCiclosDesconcentrado(0);
+				pilotoFrente.decStress(10);
+				pilotoFrente.setColisao(null);
 				return;
 			}
 		}

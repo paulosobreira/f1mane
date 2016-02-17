@@ -71,20 +71,23 @@ public class ControleQualificacao {
 					.valueOf(controleJogo.getNosDaPista().size())) <= 1) {
 				piloto.processarCiclo(controleJogo);
 				contCiclosQualificacao++;
-				if (Math.random() > (piloto.getCarro().porcentagemCombustivel() / 100.0)
-						&& !piloto.getNoAtual().verificaRetaOuLargada()
+				if (Math.random() > (piloto.getCarro().porcentagemCombustivel()
+						/ 100.0) && !piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.getCarro().testeAerodinamica()
 						&& piloto.getCarro().testeFreios()) {
 					contCiclosQualificacao -= Math.random() > incCurva ? 1 : 0;
 				}
-				if (Math.random() > (piloto.getCarro().porcentagemCombustivel() / 100.0)
-						&& piloto.getNoAtual().verificaRetaOuLargada()
+				if (Math.random() > (piloto.getCarro().porcentagemCombustivel()
+						/ 100.0) && piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao -= Math.random() > increta ? 1 : 0;
 				}
-				if (piloto.getCarro().verificaPneusIncompativeisClima(
-						controleJogo)) {
+				if (piloto.getCarro()
+						.verificaPneusIncompativeisClima(controleJogo)) {
 					contCiclosQualificacao++;
+				}
+				if (!piloto.testeHabilidadePiloto(controleJogo)) {
+					piloto.incStress(Util.intervalo(1, 3));
 				}
 			}
 			int modMili = 9;
@@ -93,20 +96,13 @@ public class ControleQualificacao {
 					modMili--;
 				}
 			}
-			piloto.setCiclosVoltaQualificacao(Util
-					.inte(((contCiclosQualificacao * Constantes.CICLO) + modMili)));
+			piloto.setCiclosVoltaQualificacao(Util.inte(
+					((contCiclosQualificacao * Constantes.CICLO) + modMili)));
 			piloto.setNumeroVolta(0);
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);
 			piloto.setContTravouRodas(0);
-			piloto.setCiclosDesconcentrado(0);
 			piloto.setVoltas(new ArrayList());
-			if (controleJogo.asfaltoAbrasivo()
-					&& Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro()
-							.getTipoPneu())
-					&& piloto.getCarro().porcentagemDesgastePeneus() < 80) {
-				piloto.getCarro().setPorcentPneus(80);
-			}
 			controleJogo.zerarMelhorVolta();
 		}
 		Collections.sort(pilotos, new Comparator() {
@@ -114,8 +110,8 @@ public class ControleQualificacao {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
 				return new Integer(piloto0.getCiclosVoltaQualificacao())
-						.compareTo(new Integer(piloto1
-								.getCiclosVoltaQualificacao()));
+						.compareTo(new Integer(
+								piloto1.getCiclosVoltaQualificacao()));
 			}
 		});
 		modoQualify = false;
@@ -133,7 +129,8 @@ public class ControleQualificacao {
 					continue;
 				} else {
 					diffTodosIn = false;
-					p.setCiclosVoltaQualificacao(p.getCiclosVoltaQualificacao() - 1);
+					p.setCiclosVoltaQualificacao(
+							p.getCiclosVoltaQualificacao() - 1);
 				}
 			}
 			if (diffTodosIn) {
@@ -181,8 +178,8 @@ public class ControleQualificacao {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-				return new Integer(piloto0.getCarro().getPotencia())
-						.compareTo(new Integer(piloto1.getCarro().getPotencia()));
+				return new Integer(piloto0.getCarro().getPotencia()).compareTo(
+						new Integer(piloto1.getCarro().getPotencia()));
 			}
 		});
 		int limite = -1;
@@ -223,33 +220,30 @@ public class ControleQualificacao {
 			int iP = 50 + Util.inte((Carro.LARGURA * .8) * i);
 			No n1 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
-			No nM = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP);
+			No nM = (No) circuito.getPistaFull()
+					.get(circuito.getPistaFull().size() - iP);
 			No n2 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP + Carro.MEIA_LARGURA);
-			Point p1 = new Point(Util.inte(n1.getPoint().x), Util.inte(n1
-					.getPoint().y));
-			Point pm = new Point(Util.inte(nM.getPoint().x), Util.inte(nM
-					.getPoint().y));
-			Point p2 = new Point(Util.inte(n2.getPoint().x), Util.inte(n2
-					.getPoint().y));
+			Point p1 = new Point(Util.inte(n1.getPoint().x),
+					Util.inte(n1.getPoint().y));
+			Point pm = new Point(Util.inte(nM.getPoint().x),
+					Util.inte(nM.getPoint().y));
+			Point p2 = new Point(Util.inte(n2.getPoint().x),
+					Util.inte(n2.getPoint().y));
 
 			double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
 			Rectangle2D rectangle = new Rectangle2D.Double(
-					(pm.x - (Carro.MEIA_LARGURA)),
-					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
-					(Carro.ALTURA));
+					(pm.x - (Carro.MEIA_LARGURA)), (pm.y - (Carro.MEIA_ALTURA)),
+					(Carro.LARGURA), (Carro.ALTURA));
 
-			Point cima = GeoUtil.calculaPonto(
-					calculaAngulo,
+			Point cima = GeoUtil.calculaPonto(calculaAngulo,
 					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
-			Point baixo = GeoUtil.calculaPonto(
-					calculaAngulo + 180,
+					new Point(Util.inte(rectangle.getCenterX()),
+							Util.inte(rectangle.getCenterY())));
+			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180,
 					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()), Util
-							.inte(rectangle.getCenterY())));
+					new Point(Util.inte(rectangle.getCenterX()),
+							Util.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA)),
@@ -278,21 +272,15 @@ public class ControleQualificacao {
 			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
 				carro.setTempMax(carro.getPotencia() / 6);
 			}
-			carro.setDurabilidadeAereofolio(controleJogo
-					.getDurabilidadeAreofolio());
-			Logger.logar(" Posição Largada :"
-					+ piloto.getPosicao()
-					+ " Nome : "
-					+ piloto.getNome()
-					+ " Pneu : "
-					+ piloto.getCarro().getTipoPneu()
-					+ " Combustivel : "
-					+ piloto.getCarro().porcentagemCombustivel()
-					+ " Asa : "
-					+ piloto.getCarro().getAsa()
-					+ " Tempo Qualificação : "
-					+ ControleEstatisticas.formatarTempo(piloto
-							.getCiclosVoltaQualificacao()));
+			carro.setDurabilidadeAereofolio(
+					controleJogo.getDurabilidadeAreofolio());
+			Logger.logar(" Posição Largada :" + piloto.getPosicao() + " Nome : "
+					+ piloto.getNome() + " Pneu : "
+					+ piloto.getCarro().getTipoPneu() + " Combustivel : "
+					+ piloto.getCarro().porcentagemCombustivel() + " Asa : "
+					+ piloto.getCarro().getAsa() + " Tempo Qualificação : "
+					+ ControleEstatisticas.formatarTempo(
+							piloto.getCiclosVoltaQualificacao()));
 		}
 
 	}
