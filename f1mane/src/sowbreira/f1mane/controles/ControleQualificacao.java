@@ -24,7 +24,7 @@ public class ControleQualificacao {
 
 	private InterfaceJogo controleJogo;
 	private ControleBox controleBox;
-	public static boolean modoQualify = false;
+	private boolean modoQualify = false;
 
 	/**
 	 * @param controleJogo

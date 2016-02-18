@@ -291,7 +291,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#totalVoltasCorrida()
 	 */
 	public int totalVoltasCorrida() {
-		if (ControleQualificacao.modoQualify) {
+		if (isModoQualify()) {
 			return 1;
 		}
 		if (controleCorrida == null) {
@@ -304,7 +304,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltimasVoltas()
 	 */
 	public boolean verificaUltimasVoltas() {
-		if (ControleQualificacao.modoQualify) {
+		if (isModoQualify()) {
 			return false;
 		}
 		int corrida = porcentagemCorridaCompletada();
@@ -315,7 +315,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaBoxOcupado(sowbreira.f1mane.entidades.Carro)
 	 */
 	public boolean verificaBoxOcupado(Carro carro) {
-		if (ControleQualificacao.modoQualify) {
+		if (isModoQualify()) {
 			return false;
 		}
 		return controleCorrida.verificaBoxOcupado(carro);
@@ -334,7 +334,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltimaVolta()
 	 */
 	public boolean verificaUltimaVolta() {
-		if (ControleQualificacao.modoQualify) {
+		if (isModoQualify()) {
 			return false;
 		}
 		return ((controleCorrida.getQtdeTotalVoltas() - 1) == getNumVoltaAtual());
@@ -893,7 +893,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	public boolean isModoQualify() {
-		return ControleQualificacao.modoQualify;
+		return controleCorrida.isModoQualify();
 	}
 
 	public void tabelaComparativa() {

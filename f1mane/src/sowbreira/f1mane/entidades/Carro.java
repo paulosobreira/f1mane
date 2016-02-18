@@ -267,7 +267,7 @@ public class Carro implements Serializable {
 		return potencia;
 	}
 
-	public boolean verificaPilotoNormal(InterfaceJogo controleJogo) {
+	public boolean verificaCarroNormal(InterfaceJogo controleJogo) {
 		if (controleJogo.isModoQualify()) {
 			return false;
 		}
