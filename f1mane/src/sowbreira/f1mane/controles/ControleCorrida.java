@@ -347,11 +347,11 @@ public class ControleCorrida {
 
 	private void verificaAcidenteUltrapassagemIA(Piloto piloto,
 			Piloto pilotoNaFrente, double fatorAcidenteLocal) {
-		int stress = (int) (100 * fatorAcidenteLocal);
+		int limiteStress = (int) (100 * fatorAcidenteLocal);
 		if (piloto.getCarro().getDurabilidadeAereofolio() <= 0) {
 			if (!controleSafetyCar.safetyCarUltimas3voltas()
 					&& !piloto.isDesqualificado()
-					&& piloto.getStress() > stress) {
+					&& piloto.getStress() > limiteStress) {
 				piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 				Logger.logar(piloto.getNome() + " BATEU_FORTE");
 				controleJogo.infoPrioritaria(Html.bold(Html.red(Lang.msg(
@@ -361,18 +361,14 @@ public class ControleCorrida {
 				piloto.setDesqualificado(true);
 				controleSafetyCar.safetyCarNaPista(piloto);
 			} else {
-				if (piloto.getStress() > (stress / 2)) {
+				if (piloto.getStress() > (limiteStress / 2)) {
 					perdeuAereofolio(piloto, pilotoNaFrente);
-				} else {
-					piloto.incStress(10);
-				}
+				} 
 			}
 		} else {
-			if (piloto.getStress() > (stress / 2)) {
+			if (piloto.getStress() > (limiteStress / 2)) {
 				danificaAreofolio(piloto);
-			} else {
-				piloto.incStress(10);
-			}
+			} 
 		}
 	}
 

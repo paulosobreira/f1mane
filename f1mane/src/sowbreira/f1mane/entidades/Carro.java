@@ -807,14 +807,21 @@ public class Carro implements Serializable {
 				temperaturaPneus++;
 			}
 		}
-		if (controleJogo.isSafetyCarNaPista()) {
+		if (controleJogo.isSafetyCarNaPista() && Math.random() > modAquecer) {
 			temperaturaPneus--;
 		}
 		if (temperaturaPneus > 100) {
 			temperaturaPneus = 100;
 		}
-		if (temperaturaPneus < 30) {
-			temperaturaPneus = 30;
+		if (Clima.CHUVA.equals(controleJogo.getClima())) {
+			if (temperaturaPneus < 30) {
+				temperaturaPneus = 30;
+			}
+		}else{
+			if (temperaturaPneus < 50) {
+				temperaturaPneus = 50;
+			}
+
 		}
 	}
 
