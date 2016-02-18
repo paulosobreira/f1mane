@@ -1014,7 +1014,6 @@ public class Piloto implements Serializable {
 		if (getColisao() != null) {
 			penalidadeColisao(controleJogo);
 			getColisao().setCiclosDesconcentrado(0);
-			getColisao().decStress(70);
 		}
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
@@ -1542,6 +1541,18 @@ public class Piloto implements Serializable {
 			}
 
 		}
+		if (processaEvitaBaterCarroFrente
+				&& getTracado() == carroPilotoDaFrenteRetardatario.getPiloto()
+						.getTracado()) {
+			int novapos = Util.intervalo(0, 2);
+			int cont = 0;
+			while (novapos == carroPilotoDaFrenteRetardatario.getPiloto()
+					.getTracado() && cont < 10) {
+				novapos = Util.intervalo(0, 2);
+				cont++;
+			}
+			mudarTracado(novapos, controleJogo);
+		}
 		if (!isJogadorHumano() && testeHabilidadePiloto(controleJogo)
 				&& pontoDerrapada != null
 				&& distanciaDerrapada < ((2 * controleJogo.getNiveljogo())
@@ -1554,6 +1565,7 @@ public class Piloto implements Serializable {
 				mudarTracado(1, controleJogo);
 			}
 		}
+
 	}
 
 	private boolean tentarEscaparPilotoDaTraz(InterfaceJogo controleJogo,
@@ -2627,9 +2639,6 @@ public class Piloto implements Serializable {
 	}
 
 	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo) {
-		if (getStress() > 70) {
-			return false;
-		}
 		if (indiceTracado != 0) {
 			return false;
 		}
