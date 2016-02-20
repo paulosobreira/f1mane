@@ -54,6 +54,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
+import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -216,7 +217,7 @@ public class GerenciadorVisual {
 					if (render) {
 						atualizaPainel();
 						++frames;
-					}
+					} 
 					if ((System.currentTimeMillis() - startTime) > 1000) {
 						startTime = System.currentTimeMillis();
 						fps = frames;

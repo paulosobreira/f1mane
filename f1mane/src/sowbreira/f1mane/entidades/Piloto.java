@@ -150,7 +150,6 @@ public class Piloto implements Serializable {
 	private Carro carroPilotoDaFrente;
 	private double limiteEvitarBatrCarroFrente;
 	private int calculaDiffParaProximo;
-	private int calculou = 0;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -985,21 +984,18 @@ public class Piloto implements Serializable {
 		novoModificador = calcularNovoModificador(controleJogo);
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, getNoAtual(), controleJogo);
-		if (calculou < 0) {
-			calculaDiffParaProximoRetardatario = controleJogo
-					.calculaDiffParaProximoRetardatario(this, false);
-			calculaDiffParaProximoRetardatarioTracado = controleJogo
-					.calculaDiffParaProximoRetardatario(this, true);
-			calculaDiferencaParaAnterior = controleJogo
-					.calculaDiferencaParaAnterior(this);
-			carroPilotoDaFrenteRetardatario = controleJogo
-					.obterCarroNaFrenteRetardatario(this, false);
-			carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
-			calculaDiffParaProximo = calculaDiffParaProximo(controleJogo);
-			calculou = 3;
-		} else {
-			calculou--;
-		}
+
+		calculaDiffParaProximoRetardatario = controleJogo
+				.calculaDiffParaProximoRetardatario(this, false);
+		calculaDiffParaProximoRetardatarioTracado = controleJogo
+				.calculaDiffParaProximoRetardatario(this, true);
+		calculaDiferencaParaAnterior = controleJogo
+				.calculaDiferencaParaAnterior(this);
+		carroPilotoDaFrenteRetardatario = controleJogo
+				.obterCarroNaFrenteRetardatario(this, false);
+		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
+		calculaDiffParaProximo = calculaDiffParaProximo(controleJogo);
+
 		processaStress(controleJogo);
 		processaLimitadorModificador();
 		processaUsoKERS(controleJogo);

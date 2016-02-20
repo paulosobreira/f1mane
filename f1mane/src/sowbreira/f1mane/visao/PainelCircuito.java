@@ -1626,7 +1626,15 @@ public class PainelCircuito {
 		 * Coluna 1
 		 */
 		int ptoOri = limitesViewPort.x + 220;
-		int yBase = limitesViewPort.y + 100;
+		int yBase = limitesViewPort.y + 60;
+
+		debugMaiorTempo(g2d, ptoOri, yBase);
+
+		yBase += 20;
+
+		debugTempoAtual(g2d, ptoOri, yBase);
+
+		yBase += 20;
 
 		debugMemoriaLivre(g2d, freeMemory, ptoOri, yBase);
 
@@ -1765,6 +1773,23 @@ public class PainelCircuito {
 		yBase += 20;
 
 		debugFatorAcidente(g2d, ptoOri, yBase);
+	}
+
+	private void debugMaiorTempo(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(" Tempo Max " + ControleEstatisticas.maiorTempo, ptoOri,
+				yBase);
+
+	}
+
+	private void debugTempoAtual(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(" Tempo Atual  " + ControleEstatisticas.tempoAtual,
+				ptoOri, yBase);
 	}
 
 	private void debugFatorAcidente(Graphics2D g2d, int ptoOri, int yBase) {
@@ -5803,12 +5828,18 @@ public class PainelCircuito {
 	private void setarHints(Graphics2D g2d) {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
 		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
 				RenderingHints.VALUE_DITHER_ENABLE);
 		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+				RenderingHints.VALUE_COLOR_RENDER_SPEED);
+		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+				RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_SPEED);
 	}
 
 	public Dimension getPreferredSize() {
