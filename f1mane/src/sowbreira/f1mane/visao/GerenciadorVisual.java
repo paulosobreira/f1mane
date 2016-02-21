@@ -114,7 +114,6 @@ public class GerenciadorVisual {
 
 	private JFrame radioPadock;
 	private Thread thAtualizaPainelSuave;
-	private Thread thAtualizaPilotosSuave;
 	private Thread thAtualizaSom;
 	protected boolean thAtualizaPainelSuaveAlive = true;
 	protected boolean thAtualizaPilotosSuaveAlive = true;
@@ -215,9 +214,12 @@ public class GerenciadorVisual {
 						delta -= 1;
 					}
 					if (render) {
-						atualizaPainel();
+						loopAtualizaPilotosSuave();
+						centralizarPiloto();
+						painelCircuito.render();
+						controleJogo.getMainFrame().mostrarGraficos();
 						++frames;
-					} 
+					}
 					if ((System.currentTimeMillis() - startTime) > 1000) {
 						startTime = System.currentTimeMillis();
 						fps = frames;
@@ -227,13 +229,7 @@ public class GerenciadorVisual {
 				}
 			}
 		});
-		thAtualizaPilotosSuave = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				atualizaPilotosSuave();
-			}
 
-		});
 		thAtualizaSom = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -254,150 +250,141 @@ public class GerenciadorVisual {
 		Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
 		if (g2d != null) {
 			thAtualizaPainelSuave.start();
-			thAtualizaPilotosSuave.start();
 			thAtualizaSom.start();
 		}
 	}
 
-	private void atualizaPilotosSuave() {
+	private void loopAtualizaPilotosSuave() {
 		List pistaFull = controleJogo.getCircuito().getPistaFull();
 		List boxFull = controleJogo.getCircuito().getBoxFull();
 		int entradaBoxIndex = controleJogo.getCircuito().getEntradaBoxIndex();
-
 		int saidaBoxIndex = controleJogo.getCircuito().getSaidaBoxIndex();
-		List<No> nos = null;
-
-		while (thAtualizaPilotosSuaveAlive) {
-			InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
-			List<Piloto> pilotos = controleJogo.getPilotosCopia();
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				No noAtual = piloto.getNoAtual();
-				No noAtualSuave = piloto.getNoAtualSuave();
-				if (noAtualSuave == null) {
-					noAtualSuave = noAtual;
-				}
-
-				if (controleJogo.getBoxWrapperFull().contains(
-						new NoWrapper(noAtual))
-						&& controleJogo.getBoxWrapperFull().contains(
-								new NoWrapper(noAtualSuave))) {
-					nos = boxFull;
-				} else if (controleJogo.getBoxWrapperFull().contains(
-						new NoWrapper(noAtual))
-						&& controleJogo.getPistaWrapperFull().contains(
-								new NoWrapper(noAtualSuave))) {
-					nos = pistaFull;
-				} else if (controleJogo.getBoxWrapperFull().contains(
-						new NoWrapper(noAtualSuave))
-						&& controleJogo.getPistaWrapperFull().contains(
-								new NoWrapper(noAtual))) {
-					nos = boxFull;
-				} else {
-					nos = pistaFull;
-				}
-
-				int diff = noAtual.getIndex() - noAtualSuave.getIndex();
-				if (controleJogo.getBoxWrapperFull().contains(
-						new NoWrapper(noAtual))
-						&& controleJogo.getPistaWrapperFull().contains(
-								new NoWrapper(noAtualSuave))) {
-					diff = noAtual.getIndex()
-							+ (controleJogo.getCircuito().getEntradaBoxIndex() - noAtualSuave
-									.getIndex());
-
-				}
-				if (controleJogo.getBoxWrapperFull().contains(
-						new NoWrapper(noAtualSuave))
-						&& controleJogo.getPistaWrapperFull().contains(
-								new NoWrapper(noAtual))) {
-					diff = (noAtual.getIndex()
-							- (controleJogo.getCircuito().getSaidaBoxIndex()) + (boxFull
-							.size() - noAtualSuave.getIndex()));
-				}
-
-				if (diff < 0) {
-					diff = (noAtual.getIndex() + nos.size())
-							- noAtualSuave.getIndex();
-				}
-				int ganhoSuave = 0;
-				int maxLoop = 1000;
-				int inc = 30;
-				for (int i = 0; i < maxLoop; i += inc) {
-					if (diff >= i && diff < i + inc) {
-						break;
-					}
-					ganhoSuave += 1;
-				}
-
-				int ganhoSuaveAnt = piloto.getGanhoSuave();
-				if (ganhoSuaveAnt == 0) {
-					ganhoSuaveAnt = ganhoSuave;
-				} else {
-					if (ganhoSuave > ganhoSuaveAnt) {
-						ganhoSuave = ganhoSuaveAnt + 1;
-					}
-					if (ganhoSuave <= ganhoSuaveAnt) {
-						ganhoSuave = ganhoSuaveAnt - 1;
-					}
-				}
-				if (ganhoSuave <= 0) {
-					ganhoSuave = 0;
-				}
-				piloto.setGanhoSuave(ganhoSuave);
-				if (controleJogo.getBoxWrapperFull().contains(
-						new NoWrapper(noAtual))
-						&& controleJogo.getPistaWrapperFull().contains(
-								new NoWrapper(noAtualSuave))
-						&& noAtualSuave.getIndex() < entradaBoxIndex) {
-					nos = pistaFull;
-				}
-
-				if (controleJogo.getPistaWrapperFull().contains(
-						new NoWrapper(noAtual))
-						&& controleJogo.getBoxWrapperFull().contains(
-								new NoWrapper(noAtualSuave))) {
-					nos = boxFull;
-				}
-
-				int index = noAtualSuave.getIndex() + ganhoSuave;
-
-				if (controleJogo.getBoxWrapperFull().contains(
-						new NoWrapper(noAtual))
-						&& noAtualSuave.getIndex() >= entradaBoxIndex) {
-					nos = boxFull;
-					index = 0;
-				}
-
-				if (controleJogo.getPistaWrapperFull().contains(
-						new NoWrapper(noAtual))
-						&& controleJogo.getBoxWrapperFull().contains(
-								new NoWrapper(noAtualSuave))
-						&& index > (nos.size() - 5)) {
-					nos = pistaFull;
-					index = saidaBoxIndex + 5;
-				}
-
-				if (index >= nos.size()) {
-					index = index - nos.size();
-				}
-				if (index >= nos.size()) {
-					index = -1;
-				} else {
-					noAtualSuave = nos.get(index);
-				}
-				if (diff > 1000) {
-					noAtualSuave = noAtual;
-				}
-
-				piloto.setNoAtualSuave(noAtualSuave);
+		List<No> nos;
+		InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
+		List<Piloto> pilotos = controleJogo.getPilotosCopia();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			No noAtual = piloto.getNoAtual();
+			No noAtualSuave = piloto.getNoAtualSuave();
+			if (noAtualSuave == null) {
+				noAtualSuave = noAtual;
 			}
-			try {
-				Thread.sleep(5);
-			} catch (InterruptedException e) {
-				thAtualizaPilotosSuaveAlive = false;
-				Logger.logarExept(e);
+			if (controleJogo.getBoxWrapperFull().contains(
+					new NoWrapper(noAtual))
+					&& controleJogo.getBoxWrapperFull().contains(
+							new NoWrapper(noAtualSuave))) {
+				nos = boxFull;
+			} else if (controleJogo.getBoxWrapperFull().contains(
+					new NoWrapper(noAtual))
+					&& controleJogo.getPistaWrapperFull().contains(
+							new NoWrapper(noAtualSuave))) {
+				nos = pistaFull;
+			} else if (controleJogo.getBoxWrapperFull().contains(
+					new NoWrapper(noAtualSuave))
+					&& controleJogo.getPistaWrapperFull().contains(
+							new NoWrapper(noAtual))) {
+				nos = boxFull;
+			} else {
+				nos = pistaFull;
 			}
+
+			int diff = noAtual.getIndex() - noAtualSuave.getIndex();
+			if (controleJogo.getBoxWrapperFull().contains(
+					new NoWrapper(noAtual))
+					&& controleJogo.getPistaWrapperFull().contains(
+							new NoWrapper(noAtualSuave))) {
+				diff = noAtual.getIndex()
+						+ (controleJogo.getCircuito().getEntradaBoxIndex() - noAtualSuave
+								.getIndex());
+
+			}
+			if (controleJogo.getBoxWrapperFull().contains(
+					new NoWrapper(noAtualSuave))
+					&& controleJogo.getPistaWrapperFull().contains(
+							new NoWrapper(noAtual))) {
+				diff = (noAtual.getIndex()
+						- (controleJogo.getCircuito().getSaidaBoxIndex()) + (boxFull
+						.size() - noAtualSuave.getIndex()));
+			}
+
+			if (diff < 0) {
+				diff = (noAtual.getIndex() + nos.size())
+						- noAtualSuave.getIndex();
+			}
+			int ganhoSuave = 0;
+			int maxLoop = 500;
+			int inc = 10;
+			if(getFps()>30){
+				inc = 15;
+			}
+			for (int i = 0; i < maxLoop; i += inc) {
+				if (diff >= i && diff < i + inc) {
+					break;
+				}
+				ganhoSuave += 1;
+			}
+
+			int ganhoSuaveAnt = piloto.getGanhoSuave();
+			if (ganhoSuaveAnt == 0) {
+				ganhoSuaveAnt = ganhoSuave;
+			} else {
+				if (ganhoSuave > ganhoSuaveAnt) {
+					ganhoSuave = ganhoSuaveAnt + 1;
+				}
+				if (ganhoSuave <= ganhoSuaveAnt) {
+					ganhoSuave = ganhoSuaveAnt - 1;
+				}
+			}
+			if (ganhoSuave <= 0) {
+				ganhoSuave = 0;
+			}
+			piloto.setGanhoSuave(ganhoSuave);
+			if (controleJogo.getBoxWrapperFull().contains(
+					new NoWrapper(noAtual))
+					&& controleJogo.getPistaWrapperFull().contains(
+							new NoWrapper(noAtualSuave))
+					&& noAtualSuave.getIndex() < entradaBoxIndex) {
+				nos = pistaFull;
+			}
+
+			if (controleJogo.getPistaWrapperFull().contains(
+					new NoWrapper(noAtual))
+					&& controleJogo.getBoxWrapperFull().contains(
+							new NoWrapper(noAtualSuave))) {
+				nos = boxFull;
+			}
+
+			int index = noAtualSuave.getIndex() + ganhoSuave;
+
+			if (controleJogo.getBoxWrapperFull().contains(
+					new NoWrapper(noAtual))
+					&& noAtualSuave.getIndex() >= entradaBoxIndex) {
+				nos = boxFull;
+				index = 0;
+			}
+
+			if (controleJogo.getPistaWrapperFull().contains(
+					new NoWrapper(noAtual))
+					&& controleJogo.getBoxWrapperFull().contains(
+							new NoWrapper(noAtualSuave))
+					&& index > (nos.size() - 5)) {
+				nos = pistaFull;
+				index = saidaBoxIndex + 5;
+			}
+
+			if (index >= nos.size()) {
+				index = index - nos.size();
+			}
+			if (index >= nos.size()) {
+				index = -1;
+			} else {
+				noAtualSuave = nos.get(index);
+			}
+			if (diff > 500) {
+				noAtualSuave = noAtual;
+			}
+
+			piloto.setNoAtualSuave(noAtualSuave);
 		}
 	}
 
@@ -688,7 +675,7 @@ public class GerenciadorVisual {
 		boolean modo = controleJogo.mudarModoAgressivo();
 	}
 
-	public void atualizaPainel() {
+	public void centralizarPiloto() {
 		if (controleJogo == null) {
 			return;
 		}
@@ -711,7 +698,6 @@ public class GerenciadorVisual {
 			}
 			painelCircuito.centralizarPonto(p);
 		}
-		controleJogo.getMainFrame().mostrarGraficos();
 	}
 
 	public JSlider getSpinnerDificuldadeUltrapassagem() {

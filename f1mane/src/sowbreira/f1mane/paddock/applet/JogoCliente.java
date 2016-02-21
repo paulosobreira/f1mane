@@ -1322,4 +1322,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
+	@Override
+	public No obterCurvaAnterior(No noAtual) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

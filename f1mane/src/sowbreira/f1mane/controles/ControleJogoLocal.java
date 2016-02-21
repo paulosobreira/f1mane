@@ -241,7 +241,7 @@ public class ControleJogoLocal extends ControleRecursos implements
 	 */
 	public void atualizaPainel() {
 		decrementaTracado();
-		if(gerenciadorVisual!=null){
+		if (gerenciadorVisual != null) {
 			gerenciadorVisual.callBackAtualizarPos();
 		}
 	}
@@ -1513,6 +1513,11 @@ public class ControleJogoLocal extends ControleRecursos implements
 			return controleCampeonato.continuarCampeonatoXmlDisco();
 		}
 		return null;
+	}
+
+	@Override
+	public No obterCurvaAnterior(No noAtual) {
+		return mapaNoCurvaAnterior.get(noAtual);
 	}
 
 }

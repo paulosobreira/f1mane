@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +46,7 @@ public abstract class ControleRecursos {
 	protected Map<String, String> circuitos = new HashMap<String, String>();
 	protected Map<String, String> temporadasTransp = new HashMap<String, String>();
 	protected Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
+	protected Map<No, No> mapaNoCurvaAnterior = new HashMap<No, No>();
 	protected Map<Point, Integer> mapaLadosDerrapaCurva = new HashMap<Point, Integer>();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
@@ -303,6 +305,7 @@ public abstract class ControleRecursos {
 		pistaWrapperFull.clear();
 		boxWrapperFull.clear();
 		mapaNoProxCurva.clear();
+		mapaNoCurvaAnterior.clear();
 		ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
 				.getClass().getResourceAsStream(circuitoStr));
 
@@ -322,15 +325,18 @@ public abstract class ControleRecursos {
 		nosDaPista = circuito.getPistaFull();
 		nosDoBox = circuito.getBoxFull();
 		int contId = 1;
+		List<No> listaDeRetas = new ArrayList<No>();
 		for (Iterator iter = nosDaPista.iterator(); iter.hasNext();) {
 			No noPsita = (No) iter.next();
 			Integer pistaId = new Integer(contId++);
 			mapaIdsNos.put(pistaId, noPsita);
 			mapaNosIds.put(noPsita, pistaId);
 			idsNoPista.add(pistaId);
-			if (noPsita.verificaRetaOuLargada())
-				mapaNoProxCurva.put(noPsita, null);
+			if (noPsita.verificaRetaOuLargada()) {
+				listaDeRetas.add(noPsita);
+			}
 		}
+
 		for (Iterator iter = nosDoBox.iterator(); iter.hasNext();) {
 			No noDoBox = (No) iter.next();
 			Integer boxId = new Integer(contId++);
@@ -338,18 +344,51 @@ public abstract class ControleRecursos {
 			mapaNosIds.put(noDoBox, boxId);
 			idsNoBox.add(boxId);
 		}
-		for (Iterator<No> iterator = mapaNoProxCurva.keySet().iterator(); iterator
-				.hasNext();) {
-			No no = iterator.next();
+		No primiraCurva = null;
+		for (int iindex = 0; iindex < listaDeRetas.size(); iindex++) {
+			No no = listaDeRetas.get(iindex);
 			int index = no.getIndex();
 			for (int i = index; i < nosDaPista.size(); i++) {
 				No noCurva = (No) nosDaPista.get(i);
 				if (noCurva.verificaCruvaBaixa() || noCurva.verificaCruvaAlta()) {
 					mapaNoProxCurva.put(no, noCurva);
+					if (primiraCurva == null) {
+						primiraCurva = noCurva;
+					}
 					break;
 				}
 			}
 		}
+		No ultimaCurva = null;
+		for (int iindex = listaDeRetas.size() - 1; iindex >= 0; iindex--) {
+			No no = listaDeRetas.get(iindex);
+			int index = no.getIndex();
+			for (int i = index; i >= 0; i--) {
+				No noCurva = (No) nosDaPista.get(i);
+				if (noCurva.verificaCruvaBaixa() || noCurva.verificaCruvaAlta()) {
+					mapaNoCurvaAnterior.put(no, noCurva);
+					if (ultimaCurva == null) {
+						ultimaCurva = noCurva;
+					}
+					break;
+				}
+			}
+		}
+		for (int i = 0; i < nosDaPista.size(); i++) {
+			No no = (No) nosDaPista.get(i);
+			if (no.verificaRetaOuLargada()
+					&& mapaNoCurvaAnterior.get(no) == null) {
+				mapaNoCurvaAnterior.put(no, ultimaCurva);
+			}
+		}
+
+		for (int i = nosDaPista.size() - 1; i >= 0; i--) {
+			No no = (No) nosDaPista.get(i);
+			if (no.verificaRetaOuLargada() && mapaNoProxCurva.get(no) == null) {
+				mapaNoProxCurva.put(no, primiraCurva);
+			}
+		}
+
 		List<Point> escapeList = circuito.getEscapeList();
 		if (escapeList == null || escapeList.isEmpty()) {
 			escapeList = new ArrayList<Point>();

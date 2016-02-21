@@ -1628,6 +1628,10 @@ public class PainelCircuito {
 		int ptoOri = limitesViewPort.x + 220;
 		int yBase = limitesViewPort.y + 60;
 
+		debugTamanhoReta(g2d, ptoOri, yBase);
+
+		yBase += 20;
+
 		debugMaiorTempo(g2d, ptoOri, yBase);
 
 		yBase += 20;
@@ -2025,6 +2029,31 @@ public class PainelCircuito {
 						+ pilotoSelecionado
 								.calculaDiffParaAnterior(controleJogo), ptoOri,
 				yBase);
+	}
+
+	private void debugTamanhoReta(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		String tamanho = "";
+		No obterCurvaAnterior = controleJogo
+				.obterCurvaAnterior(pilotoSelecionado.getNoAtual());
+		No obterProxCurva = controleJogo.obterProxCurva(pilotoSelecionado
+				.getNoAtual());
+		if (obterCurvaAnterior == null) {
+			tamanho += "CAnt null ";
+		}else if (obterProxCurva == null) {
+			tamanho = "CProx null";
+		}
+		if (obterProxCurva != null && obterCurvaAnterior != null) {
+			int indexProxCurva = obterProxCurva.getIndex();
+			int indexCurvaAnterior = obterCurvaAnterior.getIndex();
+			if (indexProxCurva < indexCurvaAnterior) {
+				indexProxCurva += controleJogo.getNosDaPista().size();
+			}
+			tamanho = String.valueOf(indexProxCurva - indexCurvaAnterior);
+		}
+		g2d.drawString(" debugTamReta " + tamanho, ptoOri, yBase);
 	}
 
 	private void debugPontosBox(Graphics2D g2d, int ptoOri, int yBase) {
@@ -4169,7 +4198,6 @@ public class PainelCircuito {
 			}
 			pontoCentralizado = (Point) reta.get(dezporSuave);
 		}
-		render();
 		pontoCentralizadoOld = pontoCentralizado;
 	}
 
@@ -5696,16 +5724,7 @@ public class PainelCircuito {
 		if (Carro.MENOS_ASA.equals(pilotoSelecionado.getCarro().getAsa())) {
 			g2d.setColor(gre);
 		} else {
-			if (pilotoSelecionado.getNoAtual() != null
-					&& !controleJogo.isChovendo()
-					&& pilotoSelecionado.getNoAtual().verificaRetaOuLargada()
-					&& pilotoSelecionado.getNumeroVolta() > 1
-					&& (controleJogo.obterCarroNaFrente(pilotoSelecionado) != null && controleJogo
-							.obterCarroNaFrente(pilotoSelecionado).getPiloto()
-							.getPtosBox() == 0)
-					&& pilotoSelecionado.getPtosBox() == 0
-					&& controleJogo.calculaDiffParaProximoRetardatario(
-							pilotoSelecionado, false) < Constantes.LIMITE_DRS) {
+			if (pilotoSelecionado.isPodeUsarDRS()) {
 				g2d.setColor(OcilaCor.geraOcila("podeUsarDRS", yel));
 			} else {
 				g2d.setColor(lightWhite);
@@ -6210,6 +6229,14 @@ public class PainelCircuito {
 	public boolean desenhouPilotosQualificacao() {
 		return contDesenhaPilotosQualify != null
 				&& contDesenhaPilotosQualify <= 0;
+	}
+
+	public Point getDescontoCentraliza() {
+		return descontoCentraliza;
+	}
+
+	public double getZoom() {
+		return zoom;
 	}
 
 }

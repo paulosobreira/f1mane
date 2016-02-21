@@ -387,5 +387,7 @@ public interface InterfaceJogo {
 
 	public Campeonato continuarCampeonatoXmlDisco();
 
+	public No obterCurvaAnterior(No noAtual);
+
 	
 }

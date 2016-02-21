@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
@@ -150,6 +149,7 @@ public class Piloto implements Serializable {
 	private Carro carroPilotoDaFrente;
 	private double limiteEvitarBatrCarroFrente;
 	private int calculaDiffParaProximo;
+	private boolean podeUsarDRS;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -1046,15 +1046,7 @@ public class Piloto implements Serializable {
 	}
 
 	public static void main(String[] args) {
-		// Piloto p = new Piloto();
-		// p.ganhoMax = 60;
-		// p.freiandoReta = true;
-		// p.acelerando = false;
-		// System.out.println(p.calculoVelocidade(10));
-		// System.out.println(Math.log(2) / Math.log(2));
-		double ganho = 100;
-		ganho /= 2;
-		System.out.println(ganho);
+
 	}
 
 	private int calculoVelocidade(double ganho) {
@@ -1272,7 +1264,11 @@ public class Piloto implements Serializable {
 		 */
 		No obterProxCurva = controleJogo.obterProxCurva(getNoAtual());
 		if (obterProxCurva != null && obterProxCurva.verificaCruvaBaixa()) {
-			double val = obterProxCurva.getIndex() - getNoAtual().getIndex();
+			int indexProxCurva = obterProxCurva.getIndex();
+			if (indexProxCurva < getNoAtual().getIndex()) {
+				indexProxCurva += controleJogo.getNosDaPista().size();
+			}
+			double val = indexProxCurva - getNoAtual().getIndex();
 			double distAfrente = 300.0;
 			if (val < distAfrente && getNoAtual().verificaRetaOuLargada()) {
 				freiandoReta = true;
@@ -1414,29 +1410,17 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaUsoDRS(InterfaceJogo controleJogo) {
-
-		if (controleJogo.isDrs() && ativarDRS && getPtosBox() == 0
-				&& getNumeroVolta() > 0) {
-
-			if (getNoAtual().verificaRetaOuLargada()
-					&& calculaDiffParaProximoRetardatario < Constantes.LIMITE_DRS) {
-				if (carroPilotoDaFrenteRetardatario != null
-						&& carroPilotoDaFrenteRetardatario.getPiloto()
-								.getNumeroVolta() > getNumeroVolta()
-						&& carroPilotoDaFrenteRetardatario.getPiloto()
-								.getPosicao() < (getPosicao() - 1)) {
-					ativarDRS = false;
-					getCarro().setAsa(Carro.MAIS_ASA);
-					return;
-				}
-				getCarro().setAsa(Carro.MENOS_ASA);
-				if (Math.random() > 0.9 && !getCarro().testeAerodinamica()) {
-					getCarro().setAsa(Carro.ASA_NORMAL);
-				}
-			} else {
+		if (!verificaPodeUsarDRS(controleJogo)) {
+			podeUsarDRS = false;
+			if (controleJogo.isDrs()) {
 				ativarDRS = false;
 				getCarro().setAsa(Carro.MAIS_ASA);
 			}
+			return;
+		}
+		podeUsarDRS = true;
+		if (ativarDRS) {
+			getCarro().setAsa(Carro.MENOS_ASA);
 			if (!getNoAtual().verificaRetaOuLargada()
 					&& testeHabilidadePiloto(controleJogo)) {
 				ativarDRS = false;
@@ -1445,6 +1429,29 @@ public class Piloto implements Serializable {
 			ativarDRS = false;
 			getCarro().setAsa(Carro.MAIS_ASA);
 		}
+	}
+
+	private boolean verificaPodeUsarDRS(InterfaceJogo controleJogo) {
+		if (controleJogo.isDrs() && getPtosBox() == 0 && getNumeroVolta() > 1
+				&& getNoAtual().verificaRetaOuLargada()
+				&& carroPilotoDaFrenteRetardatario != null
+				&& calculaDiffParaProximoRetardatario < Constantes.LIMITE_DRS) {
+			No obterCurvaAnterior = controleJogo
+					.obterCurvaAnterior(getNoAtual());
+			No obterProxCurva = controleJogo.obterProxCurva(getNoAtual());
+			if (obterCurvaAnterior == null || obterProxCurva == null) {
+				return false;
+			}
+			int indexProxCurva = obterProxCurva.getIndex();
+			int indexCurvaAnterior = obterCurvaAnterior.getIndex();
+			if (indexProxCurva < indexCurvaAnterior) {
+				indexProxCurva += controleJogo.getNosDaPista().size();
+			}
+			if ((indexProxCurva - indexCurvaAnterior) >= 2000) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void processaStress(InterfaceJogo controleJogo) {
@@ -2988,6 +2995,10 @@ public class Piloto implements Serializable {
 
 	public boolean isProcessaEvitaBaterCarroFrente() {
 		return evitaBaterCarroFrente;
+	}
+
+	public boolean isPodeUsarDRS() {
+		return podeUsarDRS;
 	}
 
 }

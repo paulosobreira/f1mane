@@ -6,10 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-
 import java.io.Serializable;
-
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado Em 11:04:20
@@ -139,4 +136,5 @@ public class No implements Serializable {
 	public boolean verificaCruvaBaixa() {
 		return (CURVA_BAIXA.equals(tipo));
 	}
+
 }
