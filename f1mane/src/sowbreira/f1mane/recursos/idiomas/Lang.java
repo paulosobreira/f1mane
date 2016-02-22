@@ -21,7 +21,6 @@ public class Lang {
 	private static PropertyResourceBundle bundle;
 	private static String sufix;
 	private static boolean srvgame;
-	private static String mutex = "";
 
 	public Lang() throws IOException {
 	}
@@ -43,91 +42,80 @@ public class Lang {
 		// Logger.logar(array[i]);
 		// }
 		srvgame = true;
-		String enc = Lang.msg("003", new String[] { "S.Vettel", "8.218", "0",
-				Lang.msg("TIPO_PNEU_MOLE") });
+		String enc = Lang.msg("003", new String[]{"S.Vettel", "8.218", "0",
+				Lang.msg("TIPO_PNEU_MOLE")});
 		Logger.logar("enc : " + enc);
 		sufix = "en";
 		srvgame = false;
 		Logger.logar("dec : " + decodeTexto(enc));
-		System.out
-				.println(decodeTexto("<b><font  color='#FF8C00'>¢003¬S.Vettel¬8.218¬0¬¢TIPO_PNEU_MOLE¢¢</font></b>"));
+		System.out.println(decodeTexto(
+				"<b><font  color='#FF8C00'>¢003¬S.Vettel¬8.218¬0¬¢TIPO_PNEU_MOLE¢¢</font></b>"));
 		Locale locale = Locale.getDefault();
 
 		Logger.logar(locale.getLanguage());
 	}
 
 	public static void mudarIdioma(String sufix_) {
-		synchronized (mutex) {
-			sufix = sufix_;
-			synchronized (mutex) {
-				bundle = null;
-				iniciaBundle();
-			}
-		}
+		sufix = sufix_;
+		bundle = null;
+		iniciaBundle();
 	}
 
 	public static String msg(String key) {
-		synchronized (mutex) {
-			if (srvgame) {
-				return "¢" + key + "¢";
-			}
+		if (srvgame) {
+			return "¢" + key + "¢";
+		}
 
-			iniciaBundle();
-			if (key == null || "".equals(key)) {
-				return "";
-			}
-			try {
-				return bundle.getString(key);
-			} catch (Exception e) {
-				return key;
-			}
-
+		iniciaBundle();
+		if (key == null || "".equals(key)) {
+			return "";
+		}
+		try {
+			return bundle.getString(key);
+		} catch (Exception e) {
+			return key;
 		}
 	}
 
 	public static String msg(String key, Object[] strings) {
-		synchronized (mutex) {
-			if (srvgame) {
-				StringBuffer buffer = new StringBuffer();
-				buffer.append("¢" + key);
-				for (int i = 0; i < strings.length; i++) {
-					buffer.append("¬");
-					String stringIn = strings[i].toString();
-					if (stringIn.contains("¢")) {
-						buffer.append(stringIn.replace("¢", "£"));
-					} else {
-						buffer.append(stringIn);
-					}
+		if (srvgame) {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("¢" + key);
+			for (int i = 0; i < strings.length; i++) {
+				buffer.append("¬");
+				String stringIn = strings[i].toString();
+				if (stringIn.contains("¢")) {
+					buffer.append(stringIn.replace("¢", "£"));
+				} else {
+					buffer.append(stringIn);
 				}
-				buffer.append("¢");
-				return buffer.toString();
 			}
-			iniciaBundle();
-			if (key == null || "".equals(key)) {
-				return "";
-			}
-			try {
-				MessageFormat messageFormat = new MessageFormat(
-						bundle.getString(key));
-				return messageFormat.format(strings);
-			} catch (Exception e) {
-				return key;
-			}
+			buffer.append("¢");
+			return buffer.toString();
+		}
+		iniciaBundle();
+		if (key == null || "".equals(key)) {
+			return "";
+		}
+		try {
+			MessageFormat messageFormat = new MessageFormat(
+					bundle.getString(key));
+			return messageFormat.format(strings);
+		} catch (Exception e) {
+			return key;
 		}
 	}
 
 	public static String decodeTexto(String string) {
-		synchronized (mutex) {
-			String[] array = string.split("¢");
-			StringBuffer retorno = new StringBuffer();
-			for (int i = 0; i < array.length; i++) {
-				if (i % 2 == 1)
-					retorno.append(microDecode(array[i]));
-				else
-					retorno.append((array[i]));
-			}
-			return retorno.toString();
+		String[] array = string.split("¢");
+		StringBuffer retorno = new StringBuffer();
+		for (int i = 0; i < array.length; i++) {
+			if (i % 2 == 1)
+				retorno.append(microDecode(array[i]));
+			else
+				retorno.append((array[i]));
 		}
+		return retorno.toString();
 	}
 
 	private static String microDecode(String string) {
@@ -149,18 +137,16 @@ public class Lang {
 	}
 
 	public static String key(String mensagen) {
-		synchronized (mutex) {
-			iniciaBundle();
-			Enumeration enumeration = bundle.getKeys();
-			while (enumeration.hasMoreElements()) {
-				String key = (String) enumeration.nextElement();
-				String msg = bundle.getString(key);
-				if (msg.equals(mensagen)) {
-					return key;
-				}
+		iniciaBundle();
+		Enumeration enumeration = bundle.getKeys();
+		while (enumeration.hasMoreElements()) {
+			String key = (String) enumeration.nextElement();
+			String msg = bundle.getString(key);
+			if (msg.equals(mensagen)) {
+				return key;
 			}
-			return "";
 		}
+		return "";
 	}
 
 	private static void iniciaBundle() {

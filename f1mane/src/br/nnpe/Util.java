@@ -83,9 +83,13 @@ public class Util {
 	public static void campoMandatorio(String campo, String descricaoCampo)
 			throws Exception {
 		if ((campo == null) || "".equals(campo)) {
-			throw new Exception("O campo " + descricaoCampo.trim()
-					+ " é mandatório");
+			throw new Exception(
+					"O campo " + descricaoCampo.trim() + " é mandatório");
 		}
+	}
+
+	public static int inte(int d) {
+		return d;
 	}
 
 	public static int inte(double d) {
@@ -380,15 +384,15 @@ public class Util {
 		StringBuffer sb = new StringBuffer();
 
 		for (int i = 0; i < array.length; ++i) {
-			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(
-					1, 3));
+			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100)
+					.substring(1, 3));
 		}
 
 		return sb.toString();
 	}
 
-	public static String md5(String message) throws NoSuchAlgorithmException,
-			UnsupportedEncodingException {
+	public static String md5(String message)
+			throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest md = MessageDigest.getInstance("MD5");
 
 		return hex(md.digest(message.getBytes("CP1252")));
@@ -413,8 +417,9 @@ public class Util {
 			digito1 = digito2 = resto = 0;
 
 			for (int nCount = 1; nCount < (strCpf.length() - 1); nCount++) {
-				digitoCPF = Integer.valueOf(
-						strCpf.substring(nCount - 1, nCount)).intValue();
+				digitoCPF = Integer
+						.valueOf(strCpf.substring(nCount - 1, nCount))
+						.intValue();
 
 				// multiplique a última casa por 2, a seguinte por 3, a seguinte
 				// por 4 e assim por diante.
@@ -494,8 +499,9 @@ public class Util {
 				}
 
 			dig = 11 - (soma % 11);
-			cnpj_calc += (((dig == 10) || (dig == 11)) ? "0" : Integer
-					.toString(dig));
+			cnpj_calc += (((dig == 10) || (dig == 11))
+					? "0"
+					: Integer.toString(dig));
 
 			/* Segunda parte */
 			soma = 0;
@@ -512,8 +518,9 @@ public class Util {
 				}
 
 			dig = 11 - (soma % 11);
-			cnpj_calc += (((dig == 10) || (dig == 11)) ? "0" : Integer
-					.toString(dig));
+			cnpj_calc += (((dig == 10) || (dig == 11))
+					? "0"
+					: Integer.toString(dig));
 
 			return str_cnpj.equals(cnpj_calc);
 		} catch (Exception e) {
@@ -545,8 +552,8 @@ public class Util {
 		if (obj instanceof String) {
 			String string = (String) obj;
 
-			return String.valueOf((((string == null) || "".equals(string)) ? 0
-					: 1));
+			return String
+					.valueOf((((string == null) || "".equals(string)) ? 0 : 1));
 		}
 
 		return String.valueOf((((obj == null)) ? 0 : 1));
@@ -563,8 +570,9 @@ public class Util {
 			if (obj instanceof String) {
 				String string = (String) obj;
 
-				return (((string == null) || "".equals(string)) ? 0 : Integer
-						.parseInt(string));
+				return (((string == null) || "".equals(string))
+						? 0
+						: Integer.parseInt(string));
 			}
 
 			return (((obj == null)) ? 0 : Integer.parseInt((String) obj));
@@ -584,8 +592,9 @@ public class Util {
 			if (obj instanceof String) {
 				String string = (String) obj;
 
-				return (((string == null) || "".equals(string)) ? 0 : Double
-						.parseDouble(string));
+				return (((string == null) || "".equals(string))
+						? 0
+						: Double.parseDouble(string));
 			}
 
 			return (((obj == null)) ? 0 : Double.parseDouble((String) obj));
@@ -598,8 +607,9 @@ public class Util {
 		if (obj instanceof String) {
 			String string = (String) obj;
 
-			return (((string == null) || "".equals(string)) ? 0 : Long
-					.parseLong(string));
+			return (((string == null) || "".equals(string))
+					? 0
+					: Long.parseLong(string));
 		}
 
 		return (((obj == null)) ? 0 : Long.parseLong((String) obj));
@@ -632,9 +642,10 @@ public class Util {
 			valor = buffer.toString();
 		}
 
-		return ((valor.length() == 10) ? new java.sql.Timestamp(FormatDate
-				.parseDate(valor).getTime()) : FormatDate.parseTimestamp(valor,
-				Constantes.DATA_FORMATO_COMPLETO));
+		return ((valor.length() == 10)
+				? new java.sql.Timestamp(FormatDate.parseDate(valor).getTime())
+				: FormatDate.parseTimestamp(valor,
+						Constantes.DATA_FORMATO_COMPLETO));
 	}
 
 	/**
@@ -719,8 +730,8 @@ public class Util {
 			}
 		}
 
-		retorno.append(FormatDate.format(FormatDate.parseDate(dtnasc,
-				Constantes.DATA_FORMATO)));
+		retorno.append(FormatDate
+				.format(FormatDate.parseDate(dtnasc, Constantes.DATA_FORMATO)));
 		retorno.append(sexo.toUpperCase());
 
 		while (primeiroToken.length() < 3) {
@@ -788,11 +799,12 @@ public class Util {
 			}
 
 			if (timeStamp.indexOf('/') != -1) {
-				return new Timestamp(FormatDate.parse(timeStamp,
-						Constantes.DATA_FORMATO).getTime());
+				return new Timestamp(FormatDate
+						.parse(timeStamp, Constantes.DATA_FORMATO).getTime());
 			} else {
-				return new Timestamp(FormatDate.parse(timeStamp,
-						Constantes.DATA_FORMATO_COMPLETO).getTime());
+				return new Timestamp(FormatDate
+						.parse(timeStamp, Constantes.DATA_FORMATO_COMPLETO)
+						.getTime());
 			}
 		} else {
 			return null;
