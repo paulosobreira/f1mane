@@ -573,10 +573,10 @@ public class ControleJogoLocal extends ControleRecursos implements
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#obterCarroAtraz(sowbreira.f1mane.entidades.Piloto)
+	 * @see sowbreira.f1mane.controles.InterfaceJogo#obterCarroAtras(sowbreira.f1mane.entidades.Piloto)
 	 */
-	public Carro obterCarroAtraz(Piloto piloto) {
-		return controleCorrida.obterCarroAtraz(piloto);
+	public Carro obterCarroAtras(Piloto piloto) {
+		return controleCorrida.obterCarroAtras(piloto);
 	}
 
 	/**

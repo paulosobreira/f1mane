@@ -149,7 +149,7 @@ public interface InterfaceJogo {
 
 	public Carro obterCarroNaFrente(Piloto piloto);
 
-	public Carro obterCarroAtraz(Piloto piloto);
+	public Carro obterCarroAtras(Piloto piloto);
 
 	public String calculaSegundosParaProximo(Piloto psel);
 

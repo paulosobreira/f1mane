@@ -4944,7 +4944,7 @@ public class PainelCircuito {
 		if (desenhaImagens)
 			g2d.drawImage(carroimg, null, carSelX, newY);
 
-		Carro carroAtraz = controleJogo.obterCarroAtraz(psel);
+		Carro carroAtraz = controleJogo.obterCarroAtras(psel);
 		if (carroAtraz != null) {
 			carroimg = controleJogo.obterCarroLado(carroAtraz.getPiloto());
 			carSelX = limitesViewPort.x + limitesViewPort.width

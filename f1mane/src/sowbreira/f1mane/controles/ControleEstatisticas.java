@@ -330,7 +330,7 @@ public class ControleEstatisticas {
 		Piloto pilotoSel = (Piloto) pilotos.get(0);
 		Piloto pilotoComp = null;
 		if (pilotoSel.getPosicao() == 1) {
-			pilotoComp = controleJogo.obterCarroAtraz(pilotoSel).getPiloto();
+			pilotoComp = controleJogo.obterCarroAtras(pilotoSel).getPiloto();
 		} else {
 			pilotoComp = controleJogo.obterCarroNaFrente(pilotoSel).getPiloto();
 		}

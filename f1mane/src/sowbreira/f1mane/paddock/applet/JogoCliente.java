@@ -436,7 +436,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return modoBox;
 	}
 
-	public Carro obterCarroAtraz(Piloto piloto) {
+	public Carro obterCarroAtras(Piloto piloto) {
 		int pos = piloto.getPosicao();
 		if (pos < 0) {
 			return null;
