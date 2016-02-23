@@ -275,14 +275,10 @@ public class GerenciadorVisual {
 			NoWrapper noAtualWrapper = new NoWrapper(noAtual);
 			NoWrapper noAtualSuaveWrapper = new NoWrapper(noAtualSuave);
 
-			boolean boxContainsNoAtual = boxWrapperFull
-					.contains(noAtualWrapper);
-			boolean boxContainsNoAtualSuave = boxWrapperFull
-					.contains(noAtualSuaveWrapper);
-			boolean pistaContainsNoAtualSuave = pistaWrapperFull
-					.contains(noAtualSuaveWrapper);
-			boolean pistaContainsNoAtual = pistaWrapperFull
-					.contains(noAtualWrapper);
+			boolean boxContainsNoAtual = boxWrapperFull.contains(noAtualWrapper);
+			boolean boxContainsNoAtualSuave = boxWrapperFull.contains(noAtualSuaveWrapper);
+			boolean pistaContainsNoAtualSuave = pistaWrapperFull.contains(noAtualSuaveWrapper);
+			boolean pistaContainsNoAtual = pistaWrapperFull.contains(noAtualWrapper);
 
 			if (boxContainsNoAtual && boxContainsNoAtualSuave) {
 				nos = boxFull;
@@ -339,14 +335,12 @@ public class GerenciadorVisual {
 
 			int index = noAtualSuave.getIndex() + ganhoSuave;
 
-			if (boxContainsNoAtual
-					&& noAtualSuave.getIndex() >= entradaBoxIndex) {
+			if (boxContainsNoAtual && noAtualSuave.getIndex() >= entradaBoxIndex) {
 				nos = boxFull;
 				index = 0;
 			}
 
-			if (pistaContainsNoAtual && boxContainsNoAtualSuave
-					&& index > (nos.size() - 5)) {
+			if (pistaContainsNoAtual && boxContainsNoAtualSuave && index > (nos.size() - 5)) {
 				nos = pistaFull;
 				index = saidaBoxIndex + 5;
 			}
