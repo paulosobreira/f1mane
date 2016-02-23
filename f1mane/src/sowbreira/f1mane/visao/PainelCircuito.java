@@ -4913,11 +4913,11 @@ public class PainelCircuito {
 			g2d.fillRoundRect(carSelX - 5, carSelY - 5, carroimg.getWidth() + 5,
 					carroimg.getHeight() + 5, 15, 15);
 
-			if (diferencaParaProximo >= 3) {
+			if (diferencaParaProximo >= 3.0) {
 				g2d.setColor(gre);
-			} else if (diferencaParaProximo < 3 && diferencaParaProximo > 1) {
+			} else if (diferencaParaProximo < 3.0 && diferencaParaProximo > 1.0) {
 				g2d.setColor(yel);
-			} else if (diferencaParaProximo <= 1) {
+			} else if (diferencaParaProximo <= 1.0) {
 				g2d.setColor(red);
 			}
 			if (Math.random() > 0.5) {
