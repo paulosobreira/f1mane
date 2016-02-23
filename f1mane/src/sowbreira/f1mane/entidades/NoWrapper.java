@@ -111,7 +111,6 @@ public class NoWrapper {
 		int index = no.getIndex();
 		Color tipo = no.getTipo();
 		Point point = no.getPoint();
-
 		if (this == obj)
 			return true;
 		if (obj == null)
