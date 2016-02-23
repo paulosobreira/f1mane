@@ -121,6 +121,8 @@ public class GerenciadorVisual {
 	private int fps = 0;
 	protected double fpsLimite = 60D;
 	private long ultMudaPos;
+	List<NoWrapper> boxWrapperFull;
+	List<NoWrapper> pistaWrapperFull;
 
 	public JComboBox getComboBoxTemporadas() {
 		return comboBoxTemporadas;
@@ -195,13 +197,14 @@ public class GerenciadorVisual {
 	}
 
 	private void iniciaThreadJogoSuave() {
+		boxWrapperFull = controleJogo.getBoxWrapperFull();
+		pistaWrapperFull = controleJogo.getPistaWrapperFull();
 		thAtualizaPainelSuave = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				int frames = 0;
 				long startTime = System.currentTimeMillis();
 				long lastTime = System.nanoTime();
-				List<Piloto> pilotos = controleJogo.getPilotosCopia();
 				double delta = 0;
 				while (thAtualizaPainelSuaveAlive) {
 					long now = System.nanoTime();
@@ -214,8 +217,10 @@ public class GerenciadorVisual {
 						delta -= 1;
 					}
 					if (render) {
+						List<Piloto> pilotos = controleJogo.getPilotosCopia();
 						loopAtualizaPilotosSuave(pilotos);
 						centralizarPiloto();
+						painelCircuito.setPilotosList(pilotos);
 						painelCircuito.render();
 						controleJogo.getMainFrame().mostrarGraficos();
 						++frames;
@@ -260,9 +265,6 @@ public class GerenciadorVisual {
 		int entradaBoxIndex = controleJogo.getCircuito().getEntradaBoxIndex();
 		int saidaBoxIndex = controleJogo.getCircuito().getSaidaBoxIndex();
 		List<No> nos;
-		InterfaceJogo controleJogo = GerenciadorVisual.this.controleJogo;
-		List<NoWrapper> boxWrapperFull = controleJogo.getBoxWrapperFull();
-		List<NoWrapper> pistaWrapperFull = controleJogo.getPistaWrapperFull();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			No noAtual = piloto.getNoAtual();
@@ -272,41 +274,34 @@ public class GerenciadorVisual {
 			}
 			NoWrapper noAtualWrapper = new NoWrapper(noAtual);
 			NoWrapper noAtualSuaveWrapper = new NoWrapper(noAtualSuave);
-			
-			
-			if (controleJogo.getBoxWrapperFull()
-					.contains(noAtualWrapper)
-					&& controleJogo.getBoxWrapperFull()
-							.contains(noAtualSuaveWrapper)) {
+
+			boolean boxContainsNoAtual = boxWrapperFull
+					.contains(noAtualWrapper);
+			boolean boxContainsNoAtualSuave = boxWrapperFull
+					.contains(noAtualSuaveWrapper);
+			boolean pistaContainsNoAtualSuave = pistaWrapperFull
+					.contains(noAtualSuaveWrapper);
+			boolean pistaContainsNoAtual = pistaWrapperFull
+					.contains(noAtualWrapper);
+
+			if (boxContainsNoAtual && boxContainsNoAtualSuave) {
 				nos = boxFull;
-			} else if (controleJogo.getBoxWrapperFull()
-					.contains(noAtualWrapper)
-					&& controleJogo.getPistaWrapperFull()
-							.contains(noAtualSuaveWrapper)) {
+			} else if (boxContainsNoAtual && pistaContainsNoAtualSuave) {
 				nos = pistaFull;
-			} else if (controleJogo.getBoxWrapperFull()
-					.contains(noAtualSuaveWrapper)
-					&& controleJogo.getPistaWrapperFull()
-							.contains(noAtualWrapper)) {
+			} else if (boxContainsNoAtualSuave && pistaContainsNoAtual) {
 				nos = boxFull;
 			} else {
 				nos = pistaFull;
 			}
 
 			int diff = noAtual.getIndex() - noAtualSuave.getIndex();
-			if (controleJogo.getBoxWrapperFull()
-					.contains(noAtualWrapper)
-					&& controleJogo.getPistaWrapperFull()
-							.contains(noAtualSuaveWrapper)) {
+			if (boxContainsNoAtual && pistaContainsNoAtualSuave) {
 				diff = noAtual.getIndex()
 						+ (controleJogo.getCircuito().getEntradaBoxIndex()
 								- noAtualSuave.getIndex());
 
 			}
-			if (controleJogo.getBoxWrapperFull()
-					.contains(noAtualSuaveWrapper)
-					&& controleJogo.getPistaWrapperFull()
-							.contains(noAtualWrapper)) {
+			if (boxContainsNoAtualSuave && pistaContainsNoAtual) {
 				diff = (noAtual.getIndex()
 						- (controleJogo.getCircuito().getSaidaBoxIndex())
 						+ (boxFull.size() - noAtualSuave.getIndex()));
@@ -333,34 +328,24 @@ public class GerenciadorVisual {
 				ganhoSuave = 0;
 			}
 			piloto.setGanhoSuave(ganhoSuave);
-			if (controleJogo.getBoxWrapperFull()
-					.contains(noAtualWrapper)
-					&& controleJogo.getPistaWrapperFull()
-							.contains(noAtualSuaveWrapper)
+			if (boxContainsNoAtual && pistaContainsNoAtualSuave
 					&& noAtualSuave.getIndex() < entradaBoxIndex) {
 				nos = pistaFull;
 			}
 
-			if (controleJogo.getPistaWrapperFull()
-					.contains(noAtualWrapper)
-					&& controleJogo.getBoxWrapperFull()
-							.contains(noAtualSuaveWrapper)) {
+			if (pistaContainsNoAtual && boxContainsNoAtualSuave) {
 				nos = boxFull;
 			}
 
 			int index = noAtualSuave.getIndex() + ganhoSuave;
 
-			if (controleJogo.getBoxWrapperFull()
-					.contains(noAtualWrapper)
+			if (boxContainsNoAtual
 					&& noAtualSuave.getIndex() >= entradaBoxIndex) {
 				nos = boxFull;
 				index = 0;
 			}
 
-			if (controleJogo.getPistaWrapperFull()
-					.contains(noAtualWrapper)
-					&& controleJogo.getBoxWrapperFull()
-							.contains(noAtualSuaveWrapper)
+			if (pistaContainsNoAtual && boxContainsNoAtualSuave
 					&& index > (nos.size() - 5)) {
 				nos = pistaFull;
 				index = saidaBoxIndex + 5;

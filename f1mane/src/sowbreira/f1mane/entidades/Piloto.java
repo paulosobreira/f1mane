@@ -148,9 +148,9 @@ public class Piloto implements Serializable {
 	private Carro carroPilotoDaFrenteRetardatario;
 	private Carro carroPilotoDaFrente;
 	private double limiteEvitarBatrCarroFrente;
-	private int calculaDiffParaProximo;
 	private boolean podeUsarDRS;
 	private Carro carroPilotoAtras;
+	private int calculaDiferencaParaProximo;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -503,8 +503,7 @@ public class Piloto implements Serializable {
 	}
 
 	public String getSegundosParaLider() {
-		return ((segundosParaLider == null)
-				? Lang.msg("Lider")
+		return ((segundosParaLider == null) ? Lang.msg("Lider")
 				: segundosParaLider);
 	}
 
@@ -552,33 +551,31 @@ public class Piloto implements Serializable {
 			setTimeStampChegeda(System.currentTimeMillis());
 			Carro carroAtraz = carroPilotoAtras;
 			if (carroAtraz != null) {
-				setVantagem(controleJogo
-						.calculaSegundosParaProximo(carroAtraz.getPiloto()));
+				setVantagem(controleJogo.calculaSegundosParaProximo(carroAtraz
+						.getPiloto()));
 			}
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
 			if (this.getPosicao() == 1) {
-				controleJogo.infoPrioritaria(
-						Html.superBlack(getNome()) + Html.superGreen(
-								Lang.msg("044", new Object[]{getPosicao()})));
+				controleJogo.infoPrioritaria(Html.superBlack(getNome())
+						+ Html.superGreen(Lang.msg("044",
+								new Object[] { getPosicao() })));
 			} else {
-				controleJogo.info(Html.superBlack(getNome()) + Html
-						.green(Lang.msg("044", new Object[]{getPosicao()})));
+				controleJogo.info(Html.superBlack(getNome())
+						+ Html.green(Lang.msg("044",
+								new Object[] { getPosicao() })));
 			}
 			double somaBaixa = 0;
-			for (Iterator iterator = ganhosBaixa.iterator(); iterator
-					.hasNext();) {
+			for (Iterator iterator = ganhosBaixa.iterator(); iterator.hasNext();) {
 				Double d = (Double) iterator.next();
 				somaBaixa += d;
 			}
 			double somaAlta = 0;
-			for (Iterator iterator = ganhosAlta.iterator(); iterator
-					.hasNext();) {
+			for (Iterator iterator = ganhosAlta.iterator(); iterator.hasNext();) {
 				Double d = (Double) iterator.next();
 				somaAlta += d;
 			}
 			double somaReta = 0;
-			for (Iterator iterator = ganhosReta.iterator(); iterator
-					.hasNext();) {
+			for (Iterator iterator = ganhosReta.iterator(); iterator.hasNext();) {
 				Double d = (Double) iterator.next();
 				somaReta += d;
 			}
@@ -780,8 +777,8 @@ public class Piloto implements Serializable {
 				cruzouLargada = true;
 			}
 			setNumeroVolta(getNumeroVolta() + 1);
-			processaAjustesAntesDepoisQuyalify(
-					Constantes.MAX_VOLTAS / controleJogo.getQtdeTotalVoltas());
+			processaAjustesAntesDepoisQuyalify(Constantes.MAX_VOLTAS
+					/ controleJogo.getQtdeTotalVoltas());
 			processaUltimosDesgastesPneuECombustivel();
 
 			index = diff;
@@ -842,8 +839,8 @@ public class Piloto implements Serializable {
 			ultimoConsumoCombust = new Integer(pCombust);
 		} else {
 			if (ultimoConsumoCombust.intValue() > pCombust) {
-				ultsConsumosCombustivel
-						.add(ultimoConsumoCombust.intValue() - pCombust);
+				ultsConsumosCombustivel.add(ultimoConsumoCombust.intValue()
+						- pCombust);
 				ultimoConsumoCombust = new Integer(pCombust);
 
 			}
@@ -906,8 +903,8 @@ public class Piloto implements Serializable {
 		if (box && corrida > limiteUltimasVoltas && getQtdeParadasBox() > 0) {
 			if (controleJogo.verificaInfoRelevante(this)
 					&& !msgsBox.containsKey(Messagens.IR_BOX_FINAL_CORRIDA)) {
-				controleJogo.info(
-						Html.orange(Lang.msg("047", new String[]{getNome()})));
+				controleJogo.info(Html.orange(Lang.msg("047",
+						new String[] { getNome() })));
 				msgsBox.put(Messagens.IR_BOX_FINAL_CORRIDA,
 						Messagens.IR_BOX_FINAL_CORRIDA);
 			}
@@ -943,11 +940,11 @@ public class Piloto implements Serializable {
 
 	private void mensagemBoxOcupado(InterfaceJogo controleJogo) {
 		if (box && controleJogo.verificaBoxOcupado(getCarro())) {
-			if (!Messagens.BOX_OCUPADO
-					.equals(msgsBox.get(Messagens.BOX_OCUPADO))) {
+			if (!Messagens.BOX_OCUPADO.equals(msgsBox
+					.get(Messagens.BOX_OCUPADO))) {
 				if (controleJogo.verificaInfoRelevante(this)) {
 					controleJogo.info(Html.orange(Lang.msg("046",
-							new String[]{Html.bold(getNome())})));
+							new String[] { Html.bold(getNome()) })));
 				}
 				msgsBox.put(Messagens.BOX_OCUPADO, Messagens.BOX_OCUPADO);
 			}
@@ -999,7 +996,8 @@ public class Piloto implements Serializable {
 				.obterCarroNaFrenteRetardatario(this, false);
 		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		carroPilotoAtras = controleJogo.obterCarroAtras(this);
-		calculaDiffParaProximo = calculaDiffParaProximo(controleJogo);
+		controleJogo.calculaSegundosParaLider(this);
+		calculaDiferencaParaProximo = controleJogo.calculaDiferencaParaProximo(this);
 
 		processaStress(controleJogo);
 		processaLimitadorModificador();
@@ -1039,8 +1037,7 @@ public class Piloto implements Serializable {
 		if (ganho > 40) {
 			ganho = 40;
 		}
-		if (ganho < 10
-				&& controleJogo.calculaDiferencaParaProximo(this) > 100) {
+		if (ganho < 10 && calculaDiferencaParaProximo > 100) {
 			ganho = 10;
 		}
 		if (getTracado() == 4) {
@@ -1063,8 +1060,9 @@ public class Piloto implements Serializable {
 		if (noAtual != null && !freiandoReta
 				&& (acelerando || ativarDRS || ativarKers))
 			naReta = noAtual.verificaRetaOuLargada();
-		return Util.inte(((val * ganho * ((naReta) ? 1 : 0.7) / ganhoMax)
-				+ ganho * ((naReta) ? 1 : 0.7)));
+		return Util
+				.inte(((val * ganho * ((naReta) ? 1 : 0.7) / ganhoMax) + ganho
+						* ((naReta) ? 1 : 0.7)));
 	}
 
 	public void processaColisao(InterfaceJogo controleJogo) {
@@ -1127,7 +1125,7 @@ public class Piloto implements Serializable {
 				setCiclosDesconcentrado(Util.intervalo(50, 150));
 				if (controleJogo.verificaInfoRelevante(this))
 					controleJogo.info(Lang.msg("saiDaPista",
-							new String[]{Html.superRed(getNome())}));
+							new String[] { Html.superRed(getNome()) }));
 			}
 			setModoPilotagem(LENTO);
 			if (getIndiceTracado() <= 0) {
@@ -1154,9 +1152,8 @@ public class Piloto implements Serializable {
 	}
 
 	private void processaGanho(InterfaceJogo controleJogo) {
-		ganho = ((novoModificador
-				* controleJogo.getCircuito().getMultiplciador())
-				* (controleJogo.getIndexVelcidadeDaPista()));
+		ganho = ((novoModificador * controleJogo.getCircuito()
+				.getMultiplciador()) * (controleJogo.getIndexVelcidadeDaPista()));
 		if (verificaForaPista(this)) {
 			ganho *= controleJogo.getFatorUtrapassagem();
 		}
@@ -1192,16 +1189,14 @@ public class Piloto implements Serializable {
 	private void processaGanhoDanificado() {
 		if (danificado()) {
 			if (getNoAtual().verificaCruvaBaixa()
-					&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
-							|| (Carro.PERDEU_AEREOFOLIO
-									.equals(getCarro().getDanificado())))) {
+					&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado()) || (Carro.PERDEU_AEREOFOLIO
+							.equals(getCarro().getDanificado())))) {
 				if (ganho > 10)
 					ganho = 10;
 			}
 			if (getNoAtual().verificaCruvaAlta()
-					&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
-							|| (Carro.PERDEU_AEREOFOLIO
-									.equals(getCarro().getDanificado())))) {
+					&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado()) || (Carro.PERDEU_AEREOFOLIO
+							.equals(getCarro().getDanificado())))) {
 				if (ganho > 15)
 					ganho = 15;
 
@@ -1227,24 +1222,24 @@ public class Piloto implements Serializable {
 		if (carroPilotoDaFrenteRetardatario.getPiloto().isDesqualificado()) {
 			return;
 		}
-		if ((carroPilotoDaFrenteRetardatario.getPiloto()
-				.getTracado() == getTracado())) {
+		if ((carroPilotoDaFrenteRetardatario.getPiloto().getTracado() == getTracado())) {
 			return;
 		}
 		double diff = calculaDiffParaProximoRetardatario;
 		double multiplicadoGanhoTurbulencia = (controleJogo
 				.getFatorUtrapassagem());
 		double distLimiteTurbulencia = 100 * multiplicadoGanhoTurbulencia;
-		if (diff < distLimiteTurbulencia && !verificaForaPista(
-				carroPilotoDaFrenteRetardatario.getPiloto())) {
+		if (diff < distLimiteTurbulencia
+				&& !verificaForaPista(carroPilotoDaFrenteRetardatario
+						.getPiloto())) {
 			if (getTracado() != carroPilotoDaFrenteRetardatario.getPiloto()
 					.getTracado()) {
 				if (getNoAtual().verificaRetaOuLargada()) {
-					multiplicadoGanhoTurbulencia += (getCarro().testePotencia()
-							&& getCarro().testeAerodinamica()) ? 0.3 : 0.1;
+					multiplicadoGanhoTurbulencia += (getCarro().testePotencia() && getCarro()
+							.testeAerodinamica()) ? 0.3 : 0.1;
 				} else {
-					multiplicadoGanhoTurbulencia += (testeHabilidadePilotoAerodinamicaFreios(
-							controleJogo) ? 0.3 : 0.1);
+					multiplicadoGanhoTurbulencia += (testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? 0.3
+							: 0.1);
 				}
 			}
 			if (multiplicadoGanhoTurbulencia > 1) {
@@ -1258,8 +1253,8 @@ public class Piloto implements Serializable {
 
 	private boolean verificaForaPista(Piloto piloto) {
 		boolean voltando = false;
-		if (getIndiceTracado() > 0 && (piloto.getTracadoAntigo() == 4
-				|| piloto.getTracadoAntigo() == 5)) {
+		if (getIndiceTracado() > 0
+				&& (piloto.getTracadoAntigo() == 4 || piloto.getTracadoAntigo() == 5)) {
 			voltando = true;
 		}
 		return piloto.getTracado() == 4 || piloto.getTracado() == 5 || voltando;
@@ -1333,7 +1328,7 @@ public class Piloto implements Serializable {
 				if (controleJogo.verificaInfoRelevante(this)
 						&& Math.random() > 0.7)
 					controleJogo.info(Lang.msg("014",
-							new String[]{Html.bold(getNome())}));
+							new String[] { Html.bold(getNome()) }));
 			}
 			retardaFreiandoReta = false;
 		}
@@ -1346,8 +1341,7 @@ public class Piloto implements Serializable {
 			return;
 		}
 		if (evitaBaterCarroFrente) {
-			ganho *= (calculaDiffParaProximoRetardatarioTracado
-					/ limiteEvitarBatrCarroFrente);
+			ganho *= (calculaDiffParaProximoRetardatarioTracado / limiteEvitarBatrCarroFrente);
 			return;
 		}
 		if (ganho > 0.0 && ganho < 1.0) {
@@ -1356,8 +1350,7 @@ public class Piloto implements Serializable {
 		if (ganho > 70) {
 			ganho = 70;
 		}
-		double emborrachamento = controleJogo.porcentagemCorridaCompletada()
-				/ 100.0;
+		double emborrachamento = controleJogo.porcentagemCorridaCompletada() / 100.0;
 		if (getNoAtual().verificaCruvaBaixa()) {
 			double limite = 25;
 			if (Math.random() < emborrachamento
@@ -1502,19 +1495,26 @@ public class Piloto implements Serializable {
 					tentaPassarFrete);
 		}
 		if (getPosicao() < 8
-				&& Math.random() < controleJogo.obterIndicativoCorridaCompleta()
+				&& Math.random() < controleJogo
+						.obterIndicativoCorridaCompleta()
 				&& msgTentativaNumVolta == getNumeroVolta()) {
 			msgTentativaNumVolta = getNumeroVolta() + Util.intervalo(1, 3);
 			if (tentaPassarFrete) {
-				String txt = Lang.msg("tentaPassarFrete", new String[]{
-						Html.bold(getNome()),
-						Html.bold(carroPilotoDaFrente.getPiloto().getNome())});
+				String txt = Lang.msg(
+						"tentaPassarFrete",
+						new String[] {
+								Html.bold(getNome()),
+								Html.bold(carroPilotoDaFrente.getPiloto()
+										.getNome()) });
 				controleJogo.info(Html.silver(txt));
 			}
 			if (tentarEscaparAtras) {
-				String txt = Lang.msg("tentarEscaparAtras", new String[]{
-						Html.bold(getNome()),
-						Html.bold(carroPilotoAtras.getPiloto().getNome())});
+				String txt = Lang.msg(
+						"tentarEscaparAtras",
+						new String[] {
+								Html.bold(getNome()),
+								Html.bold(carroPilotoAtras.getPiloto()
+										.getNome()) });
 				controleJogo.info(Html.silver(txt));
 			}
 		}
@@ -1544,10 +1544,9 @@ public class Piloto implements Serializable {
 		if (diff < diffAnt) {
 			if (diff < 150) {
 				if (testeHabilidadePiloto(controleJogo)) {
-					controleJogo.fazPilotoMudarTracado(this,
-							controleJogo
-									.obterCarroNaFrenteRetardatario(this, true)
-									.getPiloto());
+					controleJogo.fazPilotoMudarTracado(this, controleJogo
+							.obterCarroNaFrenteRetardatario(this, true)
+							.getPiloto());
 				} else {
 					controleJogo.fazPilotoMudarTracado(this,
 							carroPilotoDaFrenteRetardatario.getPiloto());
@@ -1589,10 +1588,10 @@ public class Piloto implements Serializable {
 			}
 			mudarTracado(novapos, controleJogo);
 		}
-		if (!isJogadorHumano() && testeHabilidadePiloto(controleJogo)
+		if (!isJogadorHumano()
+				&& testeHabilidadePiloto(controleJogo)
 				&& pontoDerrapada != null
-				&& distanciaDerrapada < ((2 * controleJogo.getNiveljogo())
-						* Carro.RAIO_DERRAPAGEM)) {
+				&& distanciaDerrapada < ((2 * controleJogo.getNiveljogo()) * Carro.RAIO_DERRAPAGEM)) {
 			int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoDerrapada);
 			if (ladoDerrapa == 5 && getTracado() != 2) {
 				mudarTracado(2, controleJogo);
@@ -1651,8 +1650,7 @@ public class Piloto implements Serializable {
 		}
 		int percetagemDeVoltaCompletada = controleJogo
 				.percetagemDeVoltaCompletada(this);
-		if (percetagemDeVoltaCompletada > 50
-				&& noAtual.verificaRetaOuLargada()) {
+		if (percetagemDeVoltaCompletada > 50 && noAtual.verificaRetaOuLargada()) {
 			ativarKers = true;
 		}
 		if (percetagemDeVoltaCompletada > 70) {
@@ -1684,8 +1682,8 @@ public class Piloto implements Serializable {
 				continue;
 			}
 			pilotoFrente.centralizaDianteiraTrazeiraCarro(controleJogo);
-			colisaoDiantera = getDiateira()
-					.intersects(pilotoFrente.getTrazeira())
+			colisaoDiantera = getDiateira().intersects(
+					pilotoFrente.getTrazeira())
 					|| getDiateira().intersects(pilotoFrente.getCentro());
 			colisaoCentro = getCentro().intersects(pilotoFrente.getTrazeira());
 			colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
@@ -1699,9 +1697,8 @@ public class Piloto implements Serializable {
 
 	private boolean verificaNaoPrecisaDesvia(InterfaceJogo controleJogo,
 			Piloto pilotoFrente) {
-		return (pilotoFrente.isDesqualificado()
-				&& !controleJogo.isSafetyCarNaPista())
-				|| pilotoFrente.getCarro().isRecolhido();
+		return (pilotoFrente.isDesqualificado() && !controleJogo
+				.isSafetyCarNaPista()) || pilotoFrente.getCarro().isRecolhido();
 	}
 
 	private void processaEvitaBaterCarroFrente(InterfaceJogo controleJogo) {
@@ -1730,8 +1727,7 @@ public class Piloto implements Serializable {
 		if (piloto.getColisao() != null) {
 			limiteEvitarBatrCarroFrente += 100;
 		}
-		if (piloto.getColisao() != null
-				&& piloto.getTracado() == getTracado()) {
+		if (piloto.getColisao() != null && piloto.getTracado() == getTracado()) {
 			limiteEvitarBatrCarroFrente += 100;
 		}
 		if (calculaDiffParaProximoRetardatarioTracado < limiteEvitarBatrCarroFrente) {
@@ -1752,8 +1748,7 @@ public class Piloto implements Serializable {
 		if (distanciaDerrapada > Carro.RAIO_DERRAPAGEM) {
 			return false;
 		}
-		if (getNoAtual() != null
-				&& indexRefDerrapada < getNoAtual().getIndex()) {
+		if (getNoAtual() != null && indexRefDerrapada < getNoAtual().getIndex()) {
 			return false;
 		}
 		int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoDerrapada);
@@ -1843,30 +1838,39 @@ public class Piloto implements Serializable {
 		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
 		setAngulo(calculaAngulo);
 		Rectangle2D rectangle = new Rectangle2D.Double(
-				(p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
-				Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
-		Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-				Util.inte(Carro.ALTURA * controleJogo.getCircuito()
-						.getMultiplicadorLarguraPista()),
-				new Point(Util.inte(rectangle.getCenterX()),
-						Util.inte(rectangle.getCenterY())));
-		Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
-				Util.inte(Carro.ALTURA * controleJogo.getCircuito()
-						.getMultiplicadorLarguraPista()),
-				new Point(Util.inte(rectangle.getCenterX()),
-						Util.inte(rectangle.getCenterY())));
-		Point p5 = GeoUtil.calculaPonto(calculaAngulo,
-				Util.inte(Carro.ALTURA * 3
+				(p.x - Carro.MEIA_LARGURA_CIMA),
+				(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA,
+				Carro.ALTURA_CIMA);
+		Point p1 = GeoUtil.calculaPonto(
+				calculaAngulo,
+				Util.inte(Carro.ALTURA
 						* controleJogo.getCircuito()
 								.getMultiplicadorLarguraPista()),
-				new Point(Util.inte(rectangle.getCenterX()),
-						Util.inte(rectangle.getCenterY())));
-		Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
-				Util.inte(Carro.ALTURA * 3
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
+		Point p2 = GeoUtil.calculaPonto(
+				calculaAngulo + 180,
+				Util.inte(Carro.ALTURA
 						* controleJogo.getCircuito()
 								.getMultiplicadorLarguraPista()),
-				new Point(Util.inte(rectangle.getCenterX()),
-						Util.inte(rectangle.getCenterY())));
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
+		Point p5 = GeoUtil.calculaPonto(
+				calculaAngulo,
+				Util.inte(Carro.ALTURA
+						* 3
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()),
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
+		Point p4 = GeoUtil.calculaPonto(
+				calculaAngulo + 180,
+				Util.inte(Carro.ALTURA
+						* 3
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()),
+				new Point(Util.inte(rectangle.getCenterX()), Util
+						.inte(rectangle.getCenterY())));
 
 		setP1(p1);
 		setP2(p2);
@@ -2048,11 +2052,10 @@ public class Piloto implements Serializable {
 		setCarX(carx);
 		setCarY(cary);
 
-		rectangle = new Rectangle2D.Double(
-				(carx - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
-				(cary - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
-				Carro.ALTURA * Carro.FATOR_AREA_CARRO,
-				Carro.ALTURA * Carro.FATOR_AREA_CARRO);
+		rectangle = new Rectangle2D.Double((carx - Carro.MEIA_ALTURA
+				* Carro.FATOR_AREA_CARRO), (cary - Carro.MEIA_ALTURA
+				* Carro.FATOR_AREA_CARRO), Carro.ALTURA
+				* Carro.FATOR_AREA_CARRO, Carro.ALTURA * Carro.FATOR_AREA_CARRO);
 
 		setCentro(rectangle.getBounds());
 
@@ -2062,8 +2065,8 @@ public class Piloto implements Serializable {
 		Rectangle2D trazRec = new Rectangle2D.Double(
 				(trazCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
 				(trazCar.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
-				Carro.ALTURA * Carro.FATOR_AREA_CARRO,
-				Carro.ALTURA * Carro.FATOR_AREA_CARRO);
+				Carro.ALTURA * Carro.FATOR_AREA_CARRO, Carro.ALTURA
+						* Carro.FATOR_AREA_CARRO);
 		setTrazeira(trazRec.getBounds());
 
 		frenteCar = GeoUtil.calculaPonto(calculaAngulo + 270,
@@ -2072,8 +2075,8 @@ public class Piloto implements Serializable {
 		Rectangle2D frenteRec = new Rectangle2D.Double(
 				(frenteCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
 				(frenteCar.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
-				Carro.ALTURA * Carro.FATOR_AREA_CARRO,
-				Carro.ALTURA * Carro.FATOR_AREA_CARRO);
+				Carro.ALTURA * Carro.FATOR_AREA_CARRO, Carro.ALTURA
+						* Carro.FATOR_AREA_CARRO);
 		setDiateira(frenteRec.getBounds());
 
 		return rectangle;
@@ -2129,8 +2132,8 @@ public class Piloto implements Serializable {
 		int size = controleJogo.getCircuito().getPistaFull().size();
 		int distBrigaMax = (int) (size * controleJogo.getNiveljogo());
 		int distBrigaMin = 0;
-		if (calculaDiffParaProximo > distBrigaMin
-				&& calculaDiffParaProximo < distBrigaMax
+		if (calculaDiferencaParaProximo > distBrigaMin
+				&& calculaDiferencaParaProximo < distBrigaMax
 				&& testeHabilidadePiloto(controleJogo)) {
 			modoIADefesaAtaque(controleJogo);
 			return true;
@@ -2150,8 +2153,7 @@ public class Piloto implements Serializable {
 		int combustivel = getCarro().porcentagemCombustivel();
 		boolean temCombustivel = combustivel > corrida
 				&& porcentagemCombustivel > 5;
-		double valorLimiteStressePararErrarCurva = getValorLimiteStressePararErrarCurva(
-				controleJogo);
+		double valorLimiteStressePararErrarCurva = getValorLimiteStressePararErrarCurva(controleJogo);
 		boolean maxUltimasVoltas = temCombustivel
 				&& controleJogo.verificaUltimasVoltas();
 		boolean maxCorrida = !superAquecido
@@ -2179,7 +2181,8 @@ public class Piloto implements Serializable {
 			}
 		}
 
-		if (maxUltimasVoltas || maxCorrida || calculaDiferencaParaAnterior < 300
+		if (maxUltimasVoltas || maxCorrida
+				|| calculaDiferencaParaAnterior < 300
 				|| calculaDiffParaProximoRetardatario < 300) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
@@ -2234,8 +2237,8 @@ public class Piloto implements Serializable {
 		if (testeHabilidadePiloto(controleJogo)) {
 			if (carro.verificaCarroNormal(controleJogo) && !qualyJogHumano) {
 				novoModoAgressivo = false;
-				if (!Messagens.PILOTO_EM_CAUTELA
-						.equals(msgsBox.get(Messagens.PILOTO_EM_CAUTELA))
+				if (!Messagens.PILOTO_EM_CAUTELA.equals(msgsBox
+						.get(Messagens.PILOTO_EM_CAUTELA))
 						&& controleJogo.verificaInfoRelevante(this)) {
 					controleJogo
 							.info(Html.superRed(getNome() + Lang.msg("057")));
@@ -2310,8 +2313,7 @@ public class Piloto implements Serializable {
 		agressivo = novoModoAgressivo;
 	}
 
-	private boolean testeHabilidadePilotoHumanoCarro(
-			InterfaceJogo controleJogo) {
+	private boolean testeHabilidadePilotoHumanoCarro(InterfaceJogo controleJogo) {
 		if (danificado()) {
 			return false;
 		}
@@ -2364,13 +2366,11 @@ public class Piloto implements Serializable {
 		if (controleJogo.isChovendo()) {
 			bonusSecundario -= 0.1;
 		}
-		if (getNoAtual().verificaRetaOuLargada()
-				&& getCarro().testePotencia()) {
+		if (getNoAtual().verificaRetaOuLargada() && getCarro().testePotencia()) {
 			acelerando = true;
 			return (Math.random() < bonusSecundario ? 4 : 3);
 		} else if (getNoAtual().verificaRetaOuLargada()
-				&& getCarro().testePotencia()
-				&& getCarro().testeAerodinamica()) {
+				&& getCarro().testePotencia() && getCarro().testeAerodinamica()) {
 			acelerando = true;
 			return (Math.random() < bonusSecundario ? 3 : 2);
 		} else if (getNoAtual().verificaCruvaAlta()
@@ -2449,8 +2449,8 @@ public class Piloto implements Serializable {
 		setUltimaVolta(volta);
 		voltas.add(volta);
 		volta = new Volta();
-		volta.setCiclosInicio(
-				System.currentTimeMillis() - (getPtosBox() * Constantes.CICLO));
+		volta.setCiclosInicio(System.currentTimeMillis()
+				- (getPtosBox() * Constantes.CICLO));
 		setVoltaAtual(volta);
 	}
 
@@ -2489,8 +2489,7 @@ public class Piloto implements Serializable {
 		box = false;
 		int novoLado = 0;
 		if (interfaceJogo.getCircuito().getLadoBoxSaidaBox() != 0) {
-			novoLado = interfaceJogo.getCircuito().getLadoBoxSaidaBox() == 1
-					? 2
+			novoLado = interfaceJogo.getCircuito().getLadoBoxSaidaBox() == 1 ? 2
 					: 1;
 		}
 		mudarTracado(novoLado, interfaceJogo);
@@ -2548,11 +2547,6 @@ public class Piloto implements Serializable {
 
 	public void setMelhorVolta(Volta melhorVolta) {
 		this.melhorVolta = melhorVolta;
-	}
-
-	public int calculaDiffParaProximo(InterfaceJogo controleJogo) {
-		return controleJogo.calculaDiferencaParaProximo(this);
-
 	}
 
 	public String getAsaBox() {
@@ -2876,8 +2870,7 @@ public class Piloto implements Serializable {
 		this.nomeOriginal = nomeOriginal;
 	}
 
-	public boolean testeHabilidadePilotoAerodinamica(
-			InterfaceJogo controleJogo) {
+	public boolean testeHabilidadePilotoAerodinamica(InterfaceJogo controleJogo) {
 		if (danificado()) {
 			return false;
 		}
@@ -2983,6 +2976,18 @@ public class Piloto implements Serializable {
 
 	public boolean isPodeUsarDRS() {
 		return podeUsarDRS;
+	}
+
+	public Carro getCarroPilotoDaFrente() {
+		return carroPilotoDaFrente;
+	}
+
+	public Carro getCarroPilotoAtras() {
+		return carroPilotoAtras;
+	}
+
+	public int getCalculaDiferencaParaProximo() {
+		return calculaDiferencaParaProximo;
 	}
 
 }
