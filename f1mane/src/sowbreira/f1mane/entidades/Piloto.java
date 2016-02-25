@@ -1398,7 +1398,7 @@ public class Piloto implements Serializable {
 			if (indexProxCurva < indexCurvaAnterior) {
 				indexProxCurva += controleJogo.getNosDaPista().size();
 			}
-			if ((indexProxCurva - indexCurvaAnterior) >= 2000) {
+			if ((indexProxCurva - indexCurvaAnterior) >= Constantes.TAMANHO_RETA_DRS) {
 				return true;
 			}
 		}
@@ -2568,12 +2568,12 @@ public class Piloto implements Serializable {
 			setVelocidadeExibir(0);
 			return;
 		}
-		int incAcell = 3;
+		int incAcell = 6;
 		if (getVelocidadeExibir() > 100) {
-			incAcell = 2;
+			incAcell = 3;
 		}
 		if (getVelocidadeExibir() > 200) {
-			incAcell = 1;
+			incAcell = 2;
 		}
 		int incFreiada = 1;
 		if (getNoAtual().verificaCruvaBaixa()) {
