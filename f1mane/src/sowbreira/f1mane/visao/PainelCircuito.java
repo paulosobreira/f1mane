@@ -570,6 +570,7 @@ public class PainelCircuito {
 		if (noAtualSuave == null) {
 			noAtualSuave = noAtual;
 		}
+
 		NoWrapper noAtualWrapper = new NoWrapper(noAtual);
 		NoWrapper noAtualSuaveWrapper = new NoWrapper(noAtualSuave);
 

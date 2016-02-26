@@ -2071,9 +2071,15 @@ public class Piloto implements Serializable {
 		if (pontoDerrapada != null && distanciaDerrapada > Carro.RAIO_DERRAPAGEM) {
 			valorLimiteStressePararErrarCurva = 100;
 		}
-		boolean maxPilotagem = !getNoAtual().verificaRetaOuLargada()
-				&& porcentagemCombustivel < porcentagemDesgastePeneus && porcentagemDesgastePeneus > min
-				&& stress < valorLimiteStressePararErrarCurva;
+		boolean maxPilotagem = false;
+		if (getNoAtual().verificaRetaOuLargada()) {
+			maxPilotagem = porcentagemCombustivel < porcentagemDesgastePeneus && porcentagemDesgastePeneus > min
+					&& stress < valorLimiteStressePararErrarCurva && !getCarro().isPneuAquecido();
+		} else {
+			maxPilotagem = porcentagemCombustivel < porcentagemDesgastePeneus && porcentagemDesgastePeneus > min
+					&& stress < valorLimiteStressePararErrarCurva;
+		}
+
 		boolean maxPilotagemFinal = !getNoAtual().verificaRetaOuLargada() && controleJogo.verificaUltimasVoltas()
 				&& porcentagemDesgastePeneus > min && stress < valorLimiteStressePararErrarCurva;
 		if (maxPilotagemFinal || maxPilotagem) {
@@ -2584,6 +2590,12 @@ public class Piloto implements Serializable {
 		}
 		if (isFreiandoReta()) {
 			incFreiada += Util.intervalo(5, 10);
+		}
+		if (getVelocidadeExibir() > 100) {
+			incFreiada++;
+		}
+		if (getVelocidadeExibir() > 200) {
+			incFreiada++;
 		}
 
 		No no = getNoAtualSuave();

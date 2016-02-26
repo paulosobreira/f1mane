@@ -70,6 +70,7 @@ public class Carro implements Serializable {
 	private boolean recolhido;
 	private Piloto piloto;
 	private int tempMax;
+	private boolean pneuAquecido;
 
 	public int getPotenciaAntesQualify() {
 		return potenciaAntesQualify;
@@ -644,8 +645,8 @@ public class Carro implements Serializable {
 			No no, InterfaceJogo controleJogo) {
 		int porcentPneus = porcentagemDesgastePeneus();
 		processaTemperaturaPneus(controleJogo);
-		boolean pneuAquecido = false;
-		if (getTemperaturaPneus() > 80) {
+		pneuAquecido = false;
+		if (getTemperaturaPneus() > 55) {
 			pneuAquecido = Math.random() < getTemperaturaPneus() / 100.0;
 		}
 		if (controleJogo.isSemTrocaPneu() && Math.random() > .7) {
@@ -774,6 +775,10 @@ public class Carro implements Serializable {
 
 		}
 		return novoModificador;
+	}
+
+	public boolean isPneuAquecido() {
+		return pneuAquecido;
 	}
 
 	private void processaTemperaturaPneus(InterfaceJogo controleJogo) {
