@@ -1979,7 +1979,7 @@ public class PainelCircuito {
 		g2d.setColor(yel);
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
 		g2d.setColor(Color.black);
-		g2d.drawString("% Completada " + controleJogo.percetagemDeVoltaCompletada(pilotoSelecionado), ptoOri, yBase);
+		g2d.drawString("% Completada " + controleJogo.porcentagemCorridaCompletada(), ptoOri, yBase);
 	}
 
 	private void debugDiferencaAnterior(Graphics2D g2d, int ptoOri, int yBase) {
