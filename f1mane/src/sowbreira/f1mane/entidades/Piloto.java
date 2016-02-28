@@ -1997,29 +1997,29 @@ public class Piloto implements Serializable {
 		boolean drsAtivado = Carro.MENOS_ASA.equals(getCarro().getAsa()) && controleJogo.isDrs()
 				&& !controleJogo.isChovendo();
 		int porcentagemMotor = getCarro().porcentagemDesgasteMotor();
-		int porcentagemCorridaRestante = 110 - controleJogo.porcentagemCorridaCompletada();
-		boolean temMotor = porcentagemMotor > porcentagemCorridaRestante && porcentagemMotor > 5;
-		boolean temCombustivel = porcentagemCombustivel > 5;
+		int porcentagemCorridaRestante = 100 - controleJogo.porcentagemCorridaCompletada();
+		boolean temMotor = porcentagemMotor > porcentagemCorridaRestante && porcentagemMotor > 10;
+		boolean temCombustivel = porcentagemCombustivel > 10;
 		if (controleJogo.isSemReabastacimento()) {
-			temCombustivel = porcentagemCombustivel > porcentagemCorridaRestante && porcentagemCombustivel > 5;
+			temCombustivel = porcentagemCombustivel > porcentagemCorridaRestante && porcentagemCombustivel > 10;
 		}
-		boolean temPneu = porcentagemDesgastePeneus > 5;
+		boolean temPneu = porcentagemDesgastePeneus > 10;
 		if (controleJogo.isSemTrocaPneu()) {
-			temPneu = porcentagemDesgastePeneus > porcentagemCorridaRestante && porcentagemDesgastePeneus > 5;
+			temPneu = porcentagemDesgastePeneus > porcentagemCorridaRestante && porcentagemDesgastePeneus > 10;
 		}
 		double valorLimiteStressePararErrarCurva = pontoDerrapada == null ? 100
 				: getValorLimiteStressePararErrarCurva(controleJogo);
 		boolean maxGiro = !superAquecido && temMotor && temCombustivel;
-		if (porcentagemCombustivel > 5 && porcentagemMotor > 5
+		if (porcentagemCombustivel > 10 && porcentagemMotor > 10
 				&& (calculaDiferencaParaAnterior < 200 || calculaDiffParaProximoRetardatario < 200 || drsAtivado)) {
 			maxGiro = true;
 		}
 		boolean maxPilotagem = false;
 		if (getNoAtual().verificaRetaOuLargada()) {
-			maxPilotagem = porcentagemCombustivel > 5 && temPneu && stress < valorLimiteStressePararErrarCurva
+			maxPilotagem = porcentagemCombustivel > 10 && temPneu && stress < valorLimiteStressePararErrarCurva
 					&& !getCarro().isPneuAquecido();
 		} else {
-			maxPilotagem = porcentagemCombustivel > 5 && temPneu && stress < valorLimiteStressePararErrarCurva;
+			maxPilotagem = porcentagemCombustivel > 10 && temPneu && stress < valorLimiteStressePararErrarCurva;
 		}
 
 		No no = getNoAtual();
@@ -2589,7 +2589,6 @@ public class Piloto implements Serializable {
 		if (getVelocidade() < getVelocidadeExibir()) {
 			setVelocidadeExibir(getVelocidadeExibir() - incFreiada);
 		}
-
 		int velocidade = (controleJogo.isSafetyCarNaPista() ? getVelocidadeExibir() / 2 : getVelocidadeExibir());
 		setVelocidadeExibir(velocidade);
 	}

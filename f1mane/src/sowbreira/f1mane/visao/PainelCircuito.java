@@ -5092,6 +5092,10 @@ public class PainelCircuito {
 		}
 
 		String velo = "~" + velocidade + " Km/h";
+		
+		if(pilotoSelecionado.getPtosBox()!=0){
+			velo = "Limit Boxes";
+		}
 
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + pointDesenhaVelo.x, limitesViewPort.y + pointDesenhaVelo.y + 40, 160, 35,
