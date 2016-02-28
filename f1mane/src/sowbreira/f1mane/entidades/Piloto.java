@@ -2007,8 +2007,11 @@ public class Piloto implements Serializable {
 		if (controleJogo.isSemTrocaPneu()) {
 			temPneu = porcentagemDesgastePeneus > porcentagemCorridaRestante && porcentagemDesgastePeneus > 10;
 		}
-		double valorLimiteStressePararErrarCurva = pontoDerrapada == null ? 100
-				: getValorLimiteStressePararErrarCurva(controleJogo);
+		double valorLimiteStressePararErrarCurva = 100;
+		boolean derrapa = getNoAtual() != null && indexRefDerrapada > getNoAtual().getIndex();
+		if (derrapa && testeHabilidadePiloto(controleJogo)) {
+			valorLimiteStressePararErrarCurva = getValorLimiteStressePararErrarCurva(controleJogo);
+		}
 		boolean maxGiro = !superAquecido && temMotor && temCombustivel;
 		if (porcentagemCombustivel > 10 && porcentagemMotor > 10
 				&& (calculaDiferencaParaAnterior < 200 || calculaDiffParaProximoRetardatario < 200 || drsAtivado)) {

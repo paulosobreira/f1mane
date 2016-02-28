@@ -1732,6 +1732,10 @@ public class PainelCircuito {
 		ptoOri = limitesViewPort.x + limitesViewPort.width - 320;
 		yBase = limitesViewPort.y + 300;
 
+		debugPontoDerrapada(g2d, ptoOri, yBase);
+
+		yBase += 20;
+
 		debugIndiceTracado(g2d, ptoOri, yBase);
 
 		yBase += 20;
@@ -1789,6 +1793,13 @@ public class PainelCircuito {
 		yBase += 20;
 
 		debugFatorAcidente(g2d, ptoOri, yBase);
+	}
+
+	private void debugPontoDerrapada(Graphics2D g2d, int ptoOri, int yBase) {
+		g2d.setColor(yel);
+		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 10, 10);
+		g2d.setColor(Color.black);
+		g2d.drawString(" Ponto Derrapada " + pilotoSelecionado.getPontoDerrapada(), ptoOri, yBase);
 	}
 
 	private void debugMaiorTempo(Graphics2D g2d, int ptoOri, int yBase) {
@@ -5092,8 +5103,8 @@ public class PainelCircuito {
 		}
 
 		String velo = "~" + velocidade + " Km/h";
-		
-		if(pilotoSelecionado.getPtosBox()!=0){
+
+		if (pilotoSelecionado.getPtosBox() != 0) {
 			velo = "Limit Boxes";
 		}
 
