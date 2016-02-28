@@ -1998,59 +1998,38 @@ public class Piloto implements Serializable {
 				&& !controleJogo.isChovendo();
 		int porcentagemMotor = getCarro().porcentagemDesgasteMotor();
 		int porcentagemCorridaRestante = 100 - controleJogo.porcentagemCorridaCompletada();
-		boolean temMotor = porcentagemMotor > porcentagemCorridaRestante && porcentagemMotor > 10;
-		boolean temCombustivel = porcentagemCombustivel > 10;
+		boolean temMotor = porcentagemMotor > (porcentagemCorridaRestante + 5);
+		boolean temCombustivel = porcentagemCombustivel > 5;
 		if (controleJogo.isSemReabastacimento()) {
-			temCombustivel = porcentagemCombustivel > porcentagemCorridaRestante && porcentagemCombustivel > 10;
+			temCombustivel = porcentagemCombustivel > (porcentagemCorridaRestante + 15);
 		}
-		boolean temPneu = porcentagemDesgastePeneus > 10;
+		boolean temPneu = porcentagemDesgastePeneus > 5;
 		if (controleJogo.isSemTrocaPneu()) {
-			temPneu = porcentagemDesgastePeneus > porcentagemCorridaRestante && porcentagemDesgastePeneus > 10;
+			temPneu = porcentagemDesgastePeneus > (porcentagemCorridaRestante + 15);
 		}
 		double valorLimiteStressePararErrarCurva = 100;
 		boolean derrapa = getNoAtual() != null && indexRefDerrapada > getNoAtual().getIndex();
 		if (derrapa && testeHabilidadePiloto(controleJogo)) {
 			valorLimiteStressePararErrarCurva = getValorLimiteStressePararErrarCurva(controleJogo);
 		}
-		boolean maxGiro = !superAquecido && temMotor && temCombustivel;
-		if (porcentagemCombustivel > 10 && porcentagemMotor > 10
+		boolean maxGiro = false;
+		if (!superAquecido && temMotor && temCombustivel
 				&& (calculaDiferencaParaAnterior < 200 || calculaDiffParaProximoRetardatario < 200 || drsAtivado)) {
 			maxGiro = true;
 		}
 		boolean maxPilotagem = false;
 		if (getNoAtual().verificaRetaOuLargada()) {
-			maxPilotagem = porcentagemCombustivel > 10 && temPneu && stress < valorLimiteStressePararErrarCurva
+			maxPilotagem = temCombustivel && temPneu && stress < valorLimiteStressePararErrarCurva
 					&& !getCarro().isPneuAquecido();
 		} else {
-			maxPilotagem = porcentagemCombustivel > 10 && temPneu && stress < valorLimiteStressePararErrarCurva;
-		}
-
-		No no = getNoAtual();
-		if (Carro.MAIS_ASA.equals(getCarro().getAsa())) {
-			if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
-				if (maxGiro) {
-					getCarro().setGiro(Carro.GIRO_MAX_VAL);
-				}
-			}
-			if (no.verificaRetaOuLargada()) {
-				getCarro().setGiro(Carro.GIRO_NOR_VAL);
-			}
-		}
-		if (Carro.MENOS_ASA.equals(getCarro().getAsa())) {
-			if ((no.verificaCruvaAlta() || no.verificaCruvaBaixa())) {
-				getCarro().setGiro(Carro.GIRO_NOR_VAL);
-			}
-			if (no.verificaRetaOuLargada()) {
-				if (maxGiro) {
-					getCarro().setGiro(Carro.GIRO_MAX_VAL);
-				}
-			}
+			maxPilotagem = temPneu && stress < valorLimiteStressePararErrarCurva;
 		}
 
 		if (maxGiro) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
 
+		No no = getNoAtual();
 		if (no.verificaRetaOuLargada()) {
 			setAtivarKers(true);
 		}

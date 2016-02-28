@@ -646,7 +646,7 @@ public class Carro implements Serializable {
 		int porcentPneus = porcentagemDesgastePeneus();
 		processaTemperaturaPneus(controleJogo);
 		pneuAquecido = false;
-		if (getTemperaturaPneus() > 55) {
+		if (getTemperaturaPneus() > 50) {
 			pneuAquecido = Math.random() < getTemperaturaPneus() / 100.0;
 		}
 		if (controleJogo.isSemTrocaPneu() && Math.random() > .7) {
@@ -784,7 +784,7 @@ public class Carro implements Serializable {
 	private void processaTemperaturaPneus(InterfaceJogo controleJogo) {
 		No noAtual = getPiloto().getNoAtual();
 		String modoPilotagem = getPiloto().getModoPilotagem();
-		double modAquecer = 90;
+		double modAquecer = 80;
 		if (!TIPO_PNEU_MOLE.equals(tipoPneu)) {
 			modAquecer = 55;
 		}
