@@ -29,8 +29,7 @@ public class ControleQualificacao {
 	/**
 	 * @param controleJogo
 	 */
-	public ControleQualificacao(InterfaceJogo controleJogo,
-			ControleBox controleBox) {
+	public ControleQualificacao(InterfaceJogo controleJogo, ControleBox controleBox) {
 		super();
 		this.controleJogo = controleJogo;
 		this.controleBox = controleBox;
@@ -57,38 +56,35 @@ public class ControleQualificacao {
 		List pilotos = controleJogo.getPilotos();
 		nivelaPontecia(pilotos);
 		nivelaHabilidade(pilotos);
-		double incCurva = 0.5;
-		double increta = 0.7;
+		double incCurva = 0.6;
+		double increta = 0.8;
 		if (controleJogo.isSemReabastacimento()) {
-			incCurva = 0.7;
+			incCurva = 0.8;
 			increta = 0.9;
 		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			piloto.setNoAtual(noLargada);
 			int contCiclosQualificacao = 0;
-			while ((Double.valueOf(piloto.getPtosPista()) / Double
-					.valueOf(controleJogo.getNosDaPista().size())) <= 1) {
+			while ((Double.valueOf(piloto.getPtosPista()) / Double.valueOf(controleJogo.getNosDaPista().size())) <= 1) {
 				piloto.processarCiclo(controleJogo);
-				contCiclosQualificacao++;
+				contCiclosQualificacao ++;
 				if (piloto.getCarro().testeAerodinamica()) {
 					incCurva -= 0.1;
 				}
-				if (Math.random() > (piloto.getCarro().porcentagemCombustivel()
-						/ 100.0) && !piloto.getNoAtual().verificaRetaOuLargada()
-						&& piloto.getCarro().testeFreios()) {
+				if (Math.random() > (piloto.getCarro().porcentagemCombustivel() / 100.0)
+						&& !piloto.getNoAtual().verificaRetaOuLargada() && piloto.getCarro().testeFreios()) {
 					contCiclosQualificacao -= Math.random() > incCurva ? 1 : 0;
 				}
 				if (piloto.getCarro().testePotencia()) {
 					increta -= 0.1;
 				}
-				if (Math.random() > (piloto.getCarro().porcentagemCombustivel()
-						/ 100.0) && piloto.getNoAtual().verificaRetaOuLargada()
+				if (Math.random() > (piloto.getCarro().porcentagemCombustivel() / 100.0)
+						&& piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.testeHabilidadePilotoCarro(controleJogo)) {
 					contCiclosQualificacao -= Math.random() > increta ? 1 : 0;
 				}
-				if (piloto.getCarro()
-						.verificaPneusIncompativeisClima(controleJogo)) {
+				if (piloto.getCarro().verificaPneusIncompativeisClima(controleJogo)) {
 					contCiclosQualificacao++;
 				}
 				if (!piloto.testeHabilidadePiloto(controleJogo)) {
@@ -101,8 +97,7 @@ public class ControleQualificacao {
 					modMili--;
 				}
 			}
-			piloto.setCiclosVoltaQualificacao(Util.inte(
-					((contCiclosQualificacao * Constantes.CICLO) + modMili)));
+			piloto.setCiclosVoltaQualificacao(Util.inte(((contCiclosQualificacao * Constantes.CICLO) + modMili)));
 			piloto.setNumeroVolta(0);
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);
@@ -115,8 +110,7 @@ public class ControleQualificacao {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
 				return new Integer(piloto0.getCiclosVoltaQualificacao())
-						.compareTo(new Integer(
-								piloto1.getCiclosVoltaQualificacao()));
+						.compareTo(new Integer(piloto1.getCiclosVoltaQualificacao()));
 			}
 		});
 		modoQualify = false;
@@ -129,13 +123,11 @@ public class ControleQualificacao {
 			boolean diffTodosIn = true;
 			for (int i = 0; i < pilotos.size(); i++) {
 				Piloto piloto = (Piloto) pilotos.get(i);
-				if (p.getCiclosVoltaQualificacao() != piloto
-						.getCiclosVoltaQualificacao() || p.equals(piloto)) {
+				if (p.getCiclosVoltaQualificacao() != piloto.getCiclosVoltaQualificacao() || p.equals(piloto)) {
 					continue;
 				} else {
 					diffTodosIn = false;
-					p.setCiclosVoltaQualificacao(
-							p.getCiclosVoltaQualificacao() - 1);
+					p.setCiclosVoltaQualificacao(p.getCiclosVoltaQualificacao() - 1);
 				}
 			}
 			if (diffTodosIn) {
@@ -150,8 +142,7 @@ public class ControleQualificacao {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-				return new Integer(piloto0.getHabilidade())
-						.compareTo(new Integer(piloto1.getHabilidade()));
+				return new Integer(piloto0.getHabilidade()).compareTo(new Integer(piloto1.getHabilidade()));
 			}
 		});
 		int limite = -1;
@@ -183,8 +174,8 @@ public class ControleQualificacao {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-				return new Integer(piloto0.getCarro().getPotencia()).compareTo(
-						new Integer(piloto1.getCarro().getPotencia()));
+				return new Integer(piloto0.getCarro().getPotencia())
+						.compareTo(new Integer(piloto1.getCarro().getPotencia()));
 			}
 		});
 		int limite = -1;
@@ -197,13 +188,10 @@ public class ControleQualificacao {
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (ant != null) {
-					int diff = piloto.getCarro().getPotencia()
-							- ant.getCarro().getPotencia();
+					int diff = piloto.getCarro().getPotencia() - ant.getCarro().getPotencia();
 					if (diff > limite) {
-						ant.getCarro().setPotenciaAntesQualify(
-								ant.getCarro().getPotencia());
-						ant.getCarro().setPotencia(
-								piloto.getCarro().getPotencia() - limite);
+						ant.getCarro().setPotenciaAntesQualify(ant.getCarro().getPotencia());
+						ant.getCarro().setPotencia(piloto.getCarro().getPotencia() - limite);
 					}
 					if (diff > maiorDiff) {
 						maiorDiff = diff;
@@ -223,43 +211,28 @@ public class ControleQualificacao {
 		for (int i = 0; i < controleJogo.getPilotos().size(); i++) {
 			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
 			int iP = 50 + Util.inte((Carro.LARGURA * .8) * i);
-			No n1 = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
-			No nM = (No) circuito.getPistaFull()
-					.get(circuito.getPistaFull().size() - iP);
-			No n2 = (No) circuito.getPistaFull().get(
-					circuito.getPistaFull().size() - iP + Carro.MEIA_LARGURA);
-			Point p1 = new Point(Util.inte(n1.getPoint().x),
-					Util.inte(n1.getPoint().y));
-			Point pm = new Point(Util.inte(nM.getPoint().x),
-					Util.inte(nM.getPoint().y));
-			Point p2 = new Point(Util.inte(n2.getPoint().x),
-					Util.inte(n2.getPoint().y));
+			No n1 = (No) circuito.getPistaFull().get(circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
+			No nM = (No) circuito.getPistaFull().get(circuito.getPistaFull().size() - iP);
+			No n2 = (No) circuito.getPistaFull().get(circuito.getPistaFull().size() - iP + Carro.MEIA_LARGURA);
+			Point p1 = new Point(Util.inte(n1.getPoint().x), Util.inte(n1.getPoint().y));
+			Point pm = new Point(Util.inte(nM.getPoint().x), Util.inte(nM.getPoint().y));
+			Point p2 = new Point(Util.inte(n2.getPoint().x), Util.inte(n2.getPoint().y));
 
 			double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
-			Rectangle2D rectangle = new Rectangle2D.Double(
-					(pm.x - (Carro.MEIA_LARGURA)), (pm.y - (Carro.MEIA_ALTURA)),
+			Rectangle2D rectangle = new Rectangle2D.Double((pm.x - (Carro.MEIA_LARGURA)), (pm.y - (Carro.MEIA_ALTURA)),
 					(Carro.LARGURA), (Carro.ALTURA));
 
-			Point cima = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
-			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180,
-					Util.inte(Carro.ALTURA * 1.2),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+			Point cima = GeoUtil.calculaPonto(calculaAngulo, Util.inte(Carro.ALTURA * 1.2),
+					new Point(Util.inte(rectangle.getCenterX()), Util.inte(rectangle.getCenterY())));
+			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180, Util.inte(Carro.ALTURA * 1.2),
+					new Point(Util.inte(rectangle.getCenterX()), Util.inte(rectangle.getCenterY())));
 			if (i % 2 == 0) {
-				rectangle = new Rectangle2D.Double(
-						(cima.x - (Carro.MEIA_LARGURA)),
-						(cima.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
-						(Carro.ALTURA));
+				rectangle = new Rectangle2D.Double((cima.x - (Carro.MEIA_LARGURA)), (cima.y - (Carro.MEIA_ALTURA)),
+						(Carro.LARGURA), (Carro.ALTURA));
 				piloto.setTracado(2);
 			} else {
-				rectangle = new Rectangle2D.Double(
-						(baixo.x - (Carro.MEIA_LARGURA)),
-						(baixo.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
-						(Carro.ALTURA));
+				rectangle = new Rectangle2D.Double((baixo.x - (Carro.MEIA_LARGURA)), (baixo.y - (Carro.MEIA_ALTURA)),
+						(Carro.LARGURA), (Carro.ALTURA));
 				piloto.setTracado(1);
 			}
 			piloto.setIndiceTracado(0);
@@ -277,15 +250,11 @@ public class ControleQualificacao {
 			if (InterfaceJogo.DIFICIL_NV == controleJogo.getNiveljogo()) {
 				carro.setTempMax(carro.getPotencia() / 6);
 			}
-			carro.setDurabilidadeAereofolio(
-					controleJogo.getDurabilidadeAreofolio());
-			Logger.logar(" Posição Largada :" + piloto.getPosicao() + " Nome : "
-					+ piloto.getNome() + " Pneu : "
-					+ piloto.getCarro().getTipoPneu() + " Combustivel : "
-					+ piloto.getCarro().porcentagemCombustivel() + " Asa : "
-					+ piloto.getCarro().getAsa() + " Tempo Qualificação : "
-					+ ControleEstatisticas.formatarTempo(
-							piloto.getCiclosVoltaQualificacao()));
+			carro.setDurabilidadeAereofolio(controleJogo.getDurabilidadeAreofolio());
+			Logger.logar(" Posição Largada :" + piloto.getPosicao() + " Nome : " + piloto.getNome() + " Pneu : "
+					+ piloto.getCarro().getTipoPneu() + " Combustivel : " + piloto.getCarro().porcentagemCombustivel()
+					+ " Asa : " + piloto.getCarro().getAsa() + " Tempo Qualificação : "
+					+ ControleEstatisticas.formatarTempo(piloto.getCiclosVoltaQualificacao()));
 		}
 
 	}

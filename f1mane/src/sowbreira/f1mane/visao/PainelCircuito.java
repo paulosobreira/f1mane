@@ -783,8 +783,9 @@ public class PainelCircuito {
 			return;
 		}
 		int x = limitesViewPort.x + (int) (limitesViewPort.width / 3.5);
-		int y = (int) (limitesViewPort.height / 2);
+		int y = limitesViewPort.y + (int) (limitesViewPort.height / 2);
 		int xOri = x;
+		int yOri = y;
 		desenhaAjudaComandoPiloto(g2d, x, y, f1, "A");
 		x += 40;
 		desenhaAjudaComandoPiloto(g2d, x, y, f2, "S");
@@ -800,8 +801,8 @@ public class PainelCircuito {
 		x += 40;
 		desenhaAjudaComandoPiloto(g2d, x, y, f7, "C");
 
-		x = x + 300;
-		y = y + 20;
+		x = xOri + 300;
+		y = yOri + 20;
 
 		Font fontOri = g2d.getFont();
 		if (fontAjudaControles == null) {

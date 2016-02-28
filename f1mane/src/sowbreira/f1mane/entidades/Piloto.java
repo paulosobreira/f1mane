@@ -861,7 +861,6 @@ public class Piloto implements Serializable {
 		if (controleJogo.isSemReabastacimento()) {
 			combust = 100;
 		}
-		mensagemBoxOcupado(controleJogo);
 
 		if ((combust < 5) && !controleJogo.isCorridaTerminada()) {
 			box = true;
@@ -920,17 +919,6 @@ public class Piloto implements Serializable {
 
 		if (controleJogo.isCorridaTerminada()) {
 			box = false;
-		}
-	}
-
-	private void mensagemBoxOcupado(InterfaceJogo controleJogo) {
-		if (box && controleJogo.verificaBoxOcupado(getCarro())) {
-			if (!Messagens.BOX_OCUPADO.equals(msgsBox.get(Messagens.BOX_OCUPADO))) {
-				if (controleJogo.verificaInfoRelevante(this)) {
-					controleJogo.info(Html.orange(Lang.msg("046", new String[] { Html.bold(getNome()) })));
-				}
-				msgsBox.put(Messagens.BOX_OCUPADO, Messagens.BOX_OCUPADO);
-			}
 		}
 	}
 
@@ -1435,8 +1423,7 @@ public class Piloto implements Serializable {
 		if (!tentaPassarFrete) {
 			tentarEscaparAtras = tentarEscaparPilotoAtras(controleJogo, tentaPassarFrete);
 		}
-		if (Math.random() < controleJogo.obterIndicativoCorridaCompleta()
-				&& controleJogo.verificaInfoRelevante(this)) {
+		if (Math.random() < controleJogo.obterIndicativoCorridaCompleta() && controleJogo.verificaInfoRelevante(this)) {
 			if (tentaPassarFrete) {
 				String txt = Lang.msg("tentaPassarFrete",
 						new String[] { Html.bold(getNome()), Html.bold(carroPilotoDaFrente.getPiloto().getNome()) });
@@ -2024,7 +2011,7 @@ public class Piloto implements Serializable {
 				: getValorLimiteStressePararErrarCurva(controleJogo);
 		boolean maxGiro = !superAquecido && temMotor && temCombustivel;
 		if (porcentagemCombustivel > 5 && porcentagemMotor > 5
-				&& (calculaDiferencaParaAnterior < 150 || calculaDiffParaProximoRetardatario < 200 || drsAtivado)) {
+				&& (calculaDiferencaParaAnterior < 200 || calculaDiffParaProximoRetardatario < 200 || drsAtivado)) {
 			maxGiro = true;
 		}
 		boolean maxPilotagem = false;
@@ -2117,6 +2104,9 @@ public class Piloto implements Serializable {
 		if (!controleJogo.verificaInfoRelevante(this)) {
 			return;
 		}
+		if (Math.random() < 0.95) {
+			return;
+		}
 		if (AGRESSIVO.equals(getModoPilotagem())) {
 			if (controleJogo.isChovendo() && Math.random() > 0.970) {
 				controleJogo.info(Html.bold(getNome()) + Html.bold(Lang.msg("052")));
@@ -2185,8 +2175,11 @@ public class Piloto implements Serializable {
 		if (Carro.GIRO_MAX_VAL == getCarro().getGiro()) {
 			bonusSecundario += getCarro().testePotencia() ? 0.2 : 0.1;
 		}
+		if (Carro.GIRO_NOR_VAL == getCarro().getGiro()) {
+			bonusSecundario += getCarro().testePotencia() ? 0.1 : 0.0;
+		}
 		if (Carro.GIRO_MIN_VAL == getCarro().getGiro() && !getNoAtual().verificaRetaOuLargada()) {
-			bonusSecundario -= getCarro().testePotencia() ? 0.1 : 0.2;
+			bonusSecundario -= getCarro().testePotencia() ? 0.0 : 0.1;
 		}
 		if (controleJogo.isChovendo()) {
 			bonusSecundario -= 0.1;
@@ -2284,7 +2277,6 @@ public class Piloto implements Serializable {
 		if (paradoBox == 0) {
 			if (saiuDoBoxMilis == 0) {
 				saiuDoBoxMilis = System.currentTimeMillis();
-				msgsBox.put(Messagens.BOX_OCUPADO, null);
 				msgsBox.put(Messagens.PILOTO_EM_CAUTELA, null);
 			}
 			return false;
