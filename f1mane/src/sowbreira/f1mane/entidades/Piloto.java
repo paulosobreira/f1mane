@@ -1408,8 +1408,12 @@ public class Piloto implements Serializable {
 			agressivo = false;
 			return;
 		}
-		if (controleJogo.isModoQualify() || controleJogo.isSafetyCarNaPista() || isJogadorHumano() || getPtosBox() != 0
-				|| danificado() || verificaDesconcentrado()) {
+		if (controleJogo.isModoQualify() || isJogadorHumano() || danificado() || verificaDesconcentrado()) {
+			return;
+		}
+		if (controleJogo.isSafetyCarNaPista() || getPtosBox() != 0) {
+			getCarro().setGiro(Carro.GIRO_MIN_VAL);
+			setModoPilotagem(LENTO);
 			return;
 		}
 		if (controleJogo.isKers()) {
@@ -1515,7 +1519,7 @@ public class Piloto implements Serializable {
 		if (Math.random() > (controleJogo.getNiveljogo() + 0.1)) {
 			return false;
 		}
-		if (calculaDiferencaParaAnterior < 300 && testeHabilidadePiloto(controleJogo)) {
+		if (calculaDiferencaParaAnterior < (controleJogo.isDrs() ? 600 : 300) && testeHabilidadePiloto(controleJogo)) {
 			modoIADefesaAtaque(controleJogo);
 			return true;
 		}
@@ -1999,13 +2003,13 @@ public class Piloto implements Serializable {
 		int porcentagemMotor = getCarro().porcentagemDesgasteMotor();
 		int porcentagemCorridaRestante = 100 - controleJogo.porcentagemCorridaCompletada();
 		boolean temMotor = porcentagemMotor > (porcentagemCorridaRestante + 5);
-		boolean temCombustivel = porcentagemCombustivel > 5;
+		boolean temCombustivel = porcentagemCombustivel > 10;
 		if (controleJogo.isSemReabastacimento()) {
-			temCombustivel = porcentagemCombustivel > (porcentagemCorridaRestante + 15);
+			temCombustivel = porcentagemCombustivel > (porcentagemCorridaRestante + 5);
 		}
-		boolean temPneu = porcentagemDesgastePeneus > 5;
+		boolean temPneu = porcentagemDesgastePeneus > 10;
 		if (controleJogo.isSemTrocaPneu()) {
-			temPneu = porcentagemDesgastePeneus > (porcentagemCorridaRestante + 15);
+			temPneu = porcentagemDesgastePeneus > (porcentagemCorridaRestante + 5);
 		}
 		double valorLimiteStressePararErrarCurva = 100;
 		boolean derrapa = getNoAtual() != null && indexRefDerrapada > getNoAtual().getIndex();
@@ -2014,7 +2018,8 @@ public class Piloto implements Serializable {
 		}
 		boolean maxGiro = false;
 		if (!superAquecido && temMotor && temCombustivel
-				&& (calculaDiferencaParaAnterior < 200 || calculaDiffParaProximoRetardatario < 200 || drsAtivado)) {
+				&& (calculaDiferencaParaAnterior < (controleJogo.isDrs() ? 400 : 200)
+						|| calculaDiffParaProximoRetardatario < 200 || drsAtivado)) {
 			maxGiro = true;
 		}
 		boolean maxPilotagem = false;

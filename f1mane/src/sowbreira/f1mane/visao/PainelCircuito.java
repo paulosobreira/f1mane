@@ -5107,6 +5107,9 @@ public class PainelCircuito {
 		if (pilotoSelecionado.getPtosBox() != 0) {
 			velo = "Limit Boxes";
 		}
+		if (controleJogo.isSafetyCarNaPista()) {
+			velo = "Limit SC";
+		}
 
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + pointDesenhaVelo.x, limitesViewPort.y + pointDesenhaVelo.y + 40, 160, 35,
