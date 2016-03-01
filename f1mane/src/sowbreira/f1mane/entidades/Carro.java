@@ -268,10 +268,7 @@ public class Carro implements Serializable {
 		return potencia;
 	}
 
-	public boolean verificaCarroNormal(InterfaceJogo controleJogo) {
-		if (controleJogo.isModoQualify()) {
-			return false;
-		}
+	public boolean verificaCondicoesCautelaPneu(InterfaceJogo controleJogo) {
 		int pneus = porcentagemDesgastePeneus();
 		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
 		if (pneus < (consumoMedioPenus)) {
@@ -290,9 +287,6 @@ public class Carro implements Serializable {
 	}
 
 	public boolean verificaCondicoesCautelaGiro(InterfaceJogo controleJogo) {
-		if (controleJogo.isModoQualify()) {
-			return false;
-		}
 		int combust = porcentagemCombustivel();
 		int motor = porcentagemDesgasteMotor();
 		if ((motor <= 5) || (combust <= 5)) {
