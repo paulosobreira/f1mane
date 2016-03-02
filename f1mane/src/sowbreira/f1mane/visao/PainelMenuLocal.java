@@ -245,8 +245,8 @@ public class PainelMenuLocal {
 	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 	private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
 
-	public PainelMenuLocal(MainFrame mainFrame) {
-		this.mainFrame = mainFrame;
+	public PainelMenuLocal(MainFrame mf) {
+		this.mainFrame = mf;
 
 		retangulos = new ArrayList<java.awt.geom.RoundRectangle2D>();
 		Field[] declaredFields = PainelMenuLocal.class.getDeclaredFields();
