@@ -119,7 +119,7 @@ public class GerenciadorVisual {
 	protected boolean thAtualizaPilotosSuaveAlive = true;
 	protected boolean thAtualizaSomAlive = true;
 	private int fps = 0;
-	protected double fpsLimite = 60D;
+	protected double fpsLimite = 30D;
 	private long ultMudaPos;
 
 	public JComboBox getComboBoxTemporadas() {

@@ -1,11 +1,8 @@
 package sowbreira.f1mane.paddock.servlet;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,14 +26,14 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
-import sowbreira.f1mane.paddock.PaddockConstants;
-import sowbreira.f1mane.paddock.ZipUtil;
-import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Email;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.paddock.PaddockConstants;
+import sowbreira.f1mane.paddock.ZipUtil;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author paulo.sobreira
@@ -48,21 +45,12 @@ public class ServletPaddock extends HttpServlet {
 	protected static ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
 	private String webDir;
-	private String mutex = "mutex";
-	private static String replaceHost = "{host}";
+
 	public static Email email;
 
 	public void init() throws ServletException {
 		super.init();
 		webDir = getServletContext().getRealPath("") + File.separator;
-		try {
-			atualizarJnlp("f1mane.jnlp");
-			atualizarJnlp("f1mane_en.jnlp");
-			atualizarJnlp("f1maneonline_en.jnlp");
-			atualizarJnlp("f1maneonline.jnlp");
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
 		try {
 			email = new Email(getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator);
@@ -86,25 +74,7 @@ public class ServletPaddock extends HttpServlet {
 		monitor.start();
 	}
 
-	private void atualizarJnlp(String jnlp) throws IOException {
-		String file = webDir + File.separator + jnlp;
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		String host = obterHost();
-		String readLine = reader.readLine();
-		StringBuffer buffer = new StringBuffer();
-		while (readLine != null) {
-			if (readLine.contains("{host}")) {
-				buffer.append(readLine.replace(replaceHost, host));
-			} else {
-				buffer.append(readLine);
-			}
-			readLine = reader.readLine();
-		}
-		reader.close();
-		FileWriter fileWriter = new FileWriter(file);
-		fileWriter.write(buffer.toString());
-		fileWriter.close();
-	}
+
 
 	private String obterHost() throws UnknownHostException {
 		String host = "";

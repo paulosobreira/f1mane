@@ -985,10 +985,8 @@ public class Piloto implements Serializable {
 				.obterCarroNaFrenteRetardatario(this, false);
 		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		carroPilotoAtras = controleJogo.obterCarroAtras(this);
-		controleJogo.calculaSegundosParaLider(this);
 		calculaDiferencaParaProximo = controleJogo
 				.calculaDiferencaParaProximo(this);
-		calculaVelocidadeExibir(controleJogo);
 		processaStress(controleJogo);
 		processaLimitadorModificador();
 		processaUsoKERS(controleJogo);
@@ -2140,7 +2138,7 @@ public class Piloto implements Serializable {
 		int porcentagemMotor = getCarro().porcentagemDesgasteMotor();
 		int porcentagemCorridaRestante = 100
 				- controleJogo.porcentagemCorridaCompletada();
-		int limiteDesgaste = 20;
+		int limiteDesgaste = 10;
 		boolean temMotor = porcentagemMotor > limiteDesgaste
 				? Math.random() < porcentagemMotor / 100.0
 				: porcentagemMotor > porcentagemCorridaRestante;

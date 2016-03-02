@@ -152,7 +152,7 @@ A:hover {text-decoration: underline overline; color: black;}
 			<td class="c1"><a href="ServletPaddock?tipo=x"> Exceptions
 			</a></td>
 			<td class="c2"><a href="ServletPaddock?tipo=C">
-			Contrutores </a></td>
+			Construtores </a></td>
 		</tr>
 	</tbody>
 </table>

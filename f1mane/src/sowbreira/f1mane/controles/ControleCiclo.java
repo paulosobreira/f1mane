@@ -82,11 +82,14 @@ public class ControleCiclo extends Thread {
 
 						if (piloto.getPtosBox() == 0) {
 							piloto.processarCiclo(controleJogo);
+							piloto.calculaVelocidadeExibir(controleJogo);
+							controleJogo.calculaSegundosParaLider(piloto);
 						}
 						if (!piloto.isDesqualificado()
 								&& (piloto.isBox() || controleJogo
 										.verificaNoPitLane(piloto))) {
 							controleCorrida.processarPilotoBox(piloto);
+							piloto.calculaVelocidadeExibir(controleJogo);
 						}
 					}
 					controleCorrida.atualizaClassificacao();

@@ -14,6 +14,7 @@
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
 	<property name="TOMCAT_HOME"       value="C:\Java\apache-tomcat-8.0.28"/>
+	<property name="HOST"              value="f1mane-sowbreira.rhcloud.com/f1mane"/>
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
 			<include name="*.jar" />
@@ -27,7 +28,7 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,criarWar,limpaJars">
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,criarWar,limpaJars">
 	</target>
 
 	<target name="targetFullInstall" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,sign_jar,criarZip,limpaJars">
@@ -180,5 +181,13 @@
 		</delete>
 	</target>	
 
+	<target name="atualizarJnlp"  description="Atualizar JNPL" >
+		<!--
+	         <java classname="br.nnpe.HostJnpl" failonerror="yes" >
+	         	<arg line="${TOMCAT_HOME}"/>
+	         </java>
+	         -->
+	 </target>
+	
 
 </project>
