@@ -51,9 +51,7 @@ public class MonitorJogo implements Runnable {
 		this.jogoAtivo = jogoAtivo;
 	}
 
-	public MonitorJogo(JogoCliente local,
-			ControlePaddockCliente controlePaddockCliente,
-			SessaoCliente sessaoCliente) {
+	public MonitorJogo(JogoCliente local, ControlePaddockCliente controlePaddockCliente, SessaoCliente sessaoCliente) {
 		this.jogoCliente = local;
 		this.controlePaddockCliente = controlePaddockCliente;
 		this.sessaoCliente = sessaoCliente;
@@ -61,8 +59,7 @@ public class MonitorJogo implements Runnable {
 
 	public void run() {
 		boolean interrupt = false;
-		while (!interrupt && controlePaddockCliente.isComunicacaoServer()
-				&& jogoAtivo) {
+		while (!interrupt && controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
 				long tempoCiclo = jogoCliente.getTempoCiclo();
 				if (tempoCiclo < controlePaddockCliente.getLatenciaMinima()) {
@@ -71,8 +68,7 @@ public class MonitorJogo implements Runnable {
 				Logger.logar("MonitorJogo");
 				Logger.logar("MonitorJogo verificaEstadoJogo()");
 				verificaEstadoJogo();
-				Logger.logar(
-						"MonitorJogo jogoCliente.preparaGerenciadorVisual(true)");
+				Logger.logar("MonitorJogo jogoCliente.preparaGerenciadorVisual(true)");
 				jogoCliente.preparaGerenciadorVisual(true);
 				Logger.logar("MonitorJogo esperaJogoComecar()");
 				esperaJogoComecar();
@@ -99,8 +95,8 @@ public class MonitorJogo implements Runnable {
 
 	private void apagaLuzesLargada() {
 		boolean interupt = false;
-		while (!interupt && Comandos.LUZES.equals(estado)
-				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
+		while (!interupt && Comandos.LUZES.equals(estado) && controlePaddockCliente.isComunicacaoServer()
+				&& jogoAtivo) {
 			try {
 				iniciaJalena();
 				if (!atualizouDados) {
@@ -118,16 +114,14 @@ public class MonitorJogo implements Runnable {
 		}
 	}
 
-	private void mostraResultadoFinal(long tempoCiclo)
-			throws InterruptedException {
+	private void mostraResultadoFinal(long tempoCiclo) throws InterruptedException {
 		boolean interrupt = false;
 		while (!interrupt && Comandos.MOSTRA_RESULTADO_FINAL.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
 
 				List pilotos = jogoCliente.getPilotos();
-				for (Iterator iterator = pilotos.iterator(); iterator
-						.hasNext();) {
+				for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 					Piloto piloto = (Piloto) iterator.next();
 					// jogoCliente.adicionarInfoDireto(piloto.getPosicao() + " "
 					// + piloto.getNome() + " " + piloto.getCarro().getNome());
@@ -151,12 +145,11 @@ public class MonitorJogo implements Runnable {
 		}
 	}
 
-	private void processaCiclosCorrida(long tempoCiclo)
-			throws InterruptedException {
+	private void processaCiclosCorrida(long tempoCiclo) throws InterruptedException {
 		int delayVerificaStado = 20;
 		boolean interrupt = false;
-		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
-				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
+		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado) && controlePaddockCliente.isComunicacaoServer()
+				&& jogoAtivo) {
 			try {
 				if (!atualizouDados) {
 					atualizarDados();
@@ -172,10 +165,8 @@ public class MonitorJogo implements Runnable {
 				disparaAtualizadorPainel(tempoCiclo);
 				delayVerificaStado--;
 				if (delayVerificaStado <= 0) {
-					atualizarDadosParciais(jogoCliente.getDadosJogo(),
-							jogoCliente.getPilotoSelecionado());
-					if (controlePaddockCliente
-							.getLatenciaReal() > Constantes.LATENCIA_MAX) {
+					atualizarDadosParciais(jogoCliente.getDadosJogo(), jogoCliente.getPilotoSelecionado());
+					if (controlePaddockCliente.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 						jogoCliente.autoDrs();
 					}
 					if (controlePaddockCliente.getLatenciaReal() > 2000) {
@@ -207,8 +198,7 @@ public class MonitorJogo implements Runnable {
 		if (atualizadorPainel == null) {
 			atualizadorPainel = new Thread(new Runnable() {
 				public void run() {
-					Logger.logar(
-							"MonitorJogo disparaAtualizadorPainel(tempoCiclo);");
+					Logger.logar("MonitorJogo disparaAtualizadorPainel(tempoCiclo);");
 					boolean interrupt = false;
 					while (!interrupt && jogoAtivo) {
 						try {
@@ -235,16 +225,16 @@ public class MonitorJogo implements Runnable {
 		boolean interrupt = false;
 		boolean creditos = false;
 		boolean atualizouDadosQualify = false;
-		while (!interrupt && Comandos.MOSTRANDO_QUALIFY.equals(estado)
-				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
+		while (!interrupt && Comandos.MOSTRANDO_QUALIFY.equals(estado) && controlePaddockCliente.isComunicacaoServer()
+				&& jogoAtivo) {
 			int cont = 0;
-			while (!atualizouDadosQualify && !atualizouDados && cont < 5) {
+			while (!atualizouDadosQualify && !atualizouDados && cont < 15) {
 				atualizarDados();
 				if (atualizouDados) {
 					atualizouDadosQualify = atualizouDados;
 				} else {
 					cont++;
-					Thread.sleep(1000);
+					Thread.sleep(100);
 				}
 			}
 			iniciaJalena();
@@ -276,8 +266,7 @@ public class MonitorJogo implements Runnable {
 
 	private void atualizaModoCarreira() {
 		try {
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.VER_CARREIRA, sessaoCliente);
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.VER_CARREIRA, sessaoCliente);
 
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
@@ -287,12 +276,10 @@ public class MonitorJogo implements Runnable {
 			if (ret != null) {
 				CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) ret;
 				if (carreiraDadosSrv.isModoCarreira()) {
-					jogoCliente.setNomePilotoJogador(
-							carreiraDadosSrv.getNomePiloto());
+					jogoCliente.setNomePilotoJogador(carreiraDadosSrv.getNomePiloto());
 				}
 			}
-			clientPaddockPack = new ClientPaddockPack(
-					Comandos.DADOS_PILOTOS_JOGO, sessaoCliente);
+			clientPaddockPack = new ClientPaddockPack(Comandos.DADOS_PILOTOS_JOGO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 			ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			if (retornoNaoValido(ret)) {
@@ -300,15 +287,11 @@ public class MonitorJogo implements Runnable {
 			}
 			if (ret != null) {
 				clientPaddockPack = (ClientPaddockPack) ret;
-				if (clientPaddockPack.getDadosJogoCriado()
-						.getPilotosCarreira() != null) {
-					Logger.logar(
-							" Dentro dadosParticiparJogo.getPilotosCarreira()");
-					List pilots = clientPaddockPack.getDadosJogoCriado()
-							.getPilotosCarreira();
+				if (clientPaddockPack.getDadosJogoCriado().getPilotosCarreira() != null) {
+					Logger.logar(" Dentro dadosParticiparJogo.getPilotosCarreira()");
+					List pilots = clientPaddockPack.getDadosJogoCriado().getPilotosCarreira();
 					List carros = new ArrayList();
-					for (Iterator iterator = pilots.iterator(); iterator
-							.hasNext();) {
+					for (Iterator iterator = pilots.iterator(); iterator.hasNext();) {
 						Piloto piloto = (Piloto) iterator.next();
 						if (!carros.contains(piloto.getCarro())) {
 							carros.add(piloto.getCarro());
@@ -320,14 +303,13 @@ public class MonitorJogo implements Runnable {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void atualizaPosicoes() {
-		Object ret = controlePaddockCliente
-				.enviarObjeto(jogoCliente.getNomeJogoCriado(), true);
+		Object ret = controlePaddockCliente.enviarObjeto(jogoCliente.getNomeJogoCriado(), true);
 		if (retornoNaoValido(ret)) {
 			return;
 		}
@@ -337,8 +319,7 @@ public class MonitorJogo implements Runnable {
 			posisPack.decode(enc);
 			if (posisPack.safetyNoId != 0) {
 				jogoCliente.setSafetyCarBol(true);
-				jogoCliente.atualizaPosSafetyCar(posisPack.safetyNoId,
-						posisPack.safetySair);
+				jogoCliente.atualizaPosSafetyCar(posisPack.safetyNoId, posisPack.safetySair);
 			} else {
 				jogoCliente.setSafetyCarBol(false);
 			}
@@ -367,8 +348,7 @@ public class MonitorJogo implements Runnable {
 		// System.out.println(valor > 1500 && valor <= 2000);
 
 		for (int i = 0; i < 200; i += 5) {
-			System.out.println(
-					"if (diffINdex >=" + i + "&& diffINdex <" + (i + 5));
+			System.out.println("if (diffINdex >=" + i + "&& diffINdex <" + (i + 5));
 		}
 		// int cont = 0;
 		// for (int i = 0; i < 2000; i += 20) {
@@ -383,8 +363,7 @@ public class MonitorJogo implements Runnable {
 
 	public void atualizarDados() {
 		try {
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.OBTER_DADOS_JOGO, sessaoCliente);
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.OBTER_DADOS_JOGO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			if (retornoNaoValido(ret)) {
@@ -393,12 +372,9 @@ public class MonitorJogo implements Runnable {
 			if (ret != null) {
 				DadosJogo dadosJogo = (DadosJogo) ret;
 				jogoCliente.setDadosJogo(dadosJogo);
-				if ((jogoCliente.getPilotos() == null
-						|| jogoCliente.getPilotos().isEmpty())
-						|| (jogoCliente.getPilotos() != null
-								&& dadosJogo.getPilotosList() != null
-								&& jogoCliente.getPilotos().size() != dadosJogo
-										.getPilotosList().size())) {
+				if ((jogoCliente.getPilotos() == null || jogoCliente.getPilotos().isEmpty())
+						|| (jogoCliente.getPilotos() != null && dadosJogo.getPilotosList() != null
+								&& jogoCliente.getPilotos().size() != dadosJogo.getPilotosList().size())) {
 					atualizouDados = false;
 				} else {
 					atualizouDados = true;
@@ -415,12 +391,12 @@ public class MonitorJogo implements Runnable {
 	private void iniciaJalena() {
 		if (jogoAtivo) {
 			jogoCliente.iniciaJanela();
+			jogoCliente.preparaGerenciadorVisual();
 		}
 	}
 
 	private void verificaEstadoJogo() {
-		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-				Comandos.VERIFICA_ESTADO_JOGO, sessaoCliente);
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.VERIFICA_ESTADO_JOGO, sessaoCliente);
 		clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 		Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
 		if (retornoNaoValido(ret)) {
@@ -438,10 +414,9 @@ public class MonitorJogo implements Runnable {
 
 	public void abandonar() {
 		try {
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.SAIR_JOGO, sessaoCliente);
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.SAIR_JOGO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
+		    controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			jogoCliente.matarTodasThreads();
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -450,11 +425,9 @@ public class MonitorJogo implements Runnable {
 
 	}
 
-	public void atualizarDadosParciais(DadosJogo dadosJogo,
-			Piloto pilotoSelecionado) {
+	public void atualizarDadosParciais(DadosJogo dadosJogo, Piloto pilotoSelecionado) {
 		try {
-			String dataSend = jogoCliente.getNomeJogoCriado() + "#"
-					+ sessaoCliente.getNomeJogador();
+			String dataSend = jogoCliente.getNomeJogoCriado() + "#" + sessaoCliente.getNomeJogador();
 			if (pilotoSelecionado != null) {
 				dataSend += "#" + pilotoSelecionado.getId();
 			}
@@ -472,27 +445,22 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.verificaMudancaClima(dadosParciais.clima);
 				dadosJogo.setClima(dadosParciais.clima);
 				dadosJogo.setMelhoVolta(dadosParciais.melhorVolta);
-				if (dadosParciais.texto != null
-						&& !"".equals(dadosParciais.texto))
+				if (dadosParciais.texto != null && !"".equals(dadosParciais.texto))
 					dadosJogo.setTexto(dadosParciais.texto);
 				dadosJogo.setVoltaAtual(dadosParciais.voltaAtual);
 				List pilotos = jogoCliente.getPilotos();
 				for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 					Piloto piloto = (Piloto) iter.next();
-					piloto.setPtosPista(
-							dadosParciais.pilotsPonts[piloto.getId() - 1]);
-					piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
-							/ jogoCliente.getNosDaPista().size()));
-					long valTsFinal = dadosParciais.pilotsTs[piloto.getId()
-							- 1];
+					piloto.setPtosPista(dadosParciais.pilotsPonts[piloto.getId() - 1]);
+					piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista() / jogoCliente.getNosDaPista().size()));
+					long valTsFinal = dadosParciais.pilotsTs[piloto.getId() - 1];
 					if (valTsFinal == -1) {
 						piloto.getCarro().setRecolhido(true);
 					} else if (valTsFinal == -2) {
 						if (!piloto.decContTravouRodas()) {
 							piloto.setContTravouRodas(Util.intervalo(10, 60));
 							TravadaRoda travadaRoda = new TravadaRoda();
-							travadaRoda.setIdNo(this.jogoCliente
-									.obterIdPorNo(piloto.getNoAtual()));
+							travadaRoda.setIdNo(this.jogoCliente.obterIdPorNo(piloto.getNoAtual()));
 							travadaRoda.setTracado(piloto.getTracado());
 							jogoCliente.travouRodas(travadaRoda);
 						}
@@ -500,8 +468,7 @@ public class MonitorJogo implements Runnable {
 					} else {
 						piloto.setTimeStampChegeda(valTsFinal);
 					}
-					if (pilotoSelecionado != null
-							&& pilotoSelecionado.equals(piloto)) {
+					if (pilotoSelecionado != null && pilotoSelecionado.equals(piloto)) {
 						piloto.setMelhorVolta(dadosParciais.peselMelhorVolta);
 						piloto.getVoltas().clear();
 						piloto.getVoltas().add(dadosParciais.peselUltima5);
@@ -517,18 +484,15 @@ public class MonitorJogo implements Runnable {
 							piloto.setJogadorHumano(false);
 						}
 						piloto.getCarro().setDanificado(dadosParciais.dano);
-						if (!jogoCliente.isSafetyCarNaPista()
-								&& piloto.isDesqualificado()) {
+						if (!jogoCliente.isSafetyCarNaPista() && piloto.isDesqualificado()) {
 							piloto.getCarro().setRecolhido(true);
 						}
 						piloto.setBox(dadosParciais.pselBox);
 						piloto.setFreiandoReta(dadosParciais.freiandoReta);
 						piloto.setStress(dadosParciais.pselStress);
 						piloto.getCarro().setCargaKers(dadosParciais.cargaKers);
-						piloto.getCarro().setTemperaturaMotor(
-								dadosParciais.temperaturaMotor);
-						if (piloto
-								.getCargaKersOnline() != dadosParciais.cargaKers) {
+						piloto.getCarro().setTemperaturaMotor(dadosParciais.temperaturaMotor);
+						if (piloto.getCargaKersOnline() != dadosParciais.cargaKers) {
 							piloto.setAtivarKers(true);
 							piloto.setCargaKersOnline(dadosParciais.cargaKers);
 						} else {
@@ -536,15 +500,11 @@ public class MonitorJogo implements Runnable {
 						}
 						piloto.getCarro().setMotor(dadosParciais.pselMotor);
 						piloto.getCarro().setPneus(dadosParciais.pselPneus);
-						piloto.getCarro().setDurabilidadeMaxPneus(
-								dadosParciais.pselMaxPneus);
-						piloto.getCarro().setDurabilidadeAereofolio(
-								dadosParciais.pselDurAereofolio);
-						piloto.getCarro()
-								.setCombustivel(dadosParciais.pselCombust);
+						piloto.getCarro().setDurabilidadeMaxPneus(dadosParciais.pselMaxPneus);
+						piloto.getCarro().setDurabilidadeAereofolio(dadosParciais.pselDurAereofolio);
+						piloto.getCarro().setCombustivel(dadosParciais.pselCombust);
 						piloto.getCarro().setAsa(dadosParciais.pselAsaBox);
-						piloto.getCarro()
-								.setTipoPneu(dadosParciais.pselTpPneus);
+						piloto.getCarro().setTipoPneu(dadosParciais.pselTpPneus);
 						piloto.setVelocidade(dadosParciais.pselVelocidade);
 						piloto.setQtdeCombustBox(dadosParciais.pselCombustBox);
 						piloto.setTipoPneuBox(dadosParciais.pselTpPneusBox);
@@ -552,8 +512,6 @@ public class MonitorJogo implements Runnable {
 						piloto.setAsaBox(dadosParciais.pselAsaBox);
 						piloto.getCarro().setAsa(dadosParciais.pselAsa);
 						piloto.getCarro().setGiro(dadosParciais.pselGiro);
-						piloto.calculaVelocidadeExibir(jogoCliente);
-						jogoCliente.calculaSegundosParaLider(piloto);
 					}
 				}
 				Collections.sort(pilotos, new Comparator() {
@@ -562,24 +520,17 @@ public class MonitorJogo implements Runnable {
 						Piloto piloto1 = (Piloto) arg1;
 						long p1Val = piloto1.getPtosPista();
 						long p0Val = piloto0.getPtosPista();
-						if (piloto0.getTimeStampChegeda() != 0
-								&& piloto1.getTimeStampChegeda() != 0) {
-							Long val = new Long(Long.MAX_VALUE
-									- piloto0.getTimeStampChegeda());
-							val = new Long(val.toString().substring(
-									val.toString().length() / 4,
-									val.toString().length()));
+						if (piloto0.getTimeStampChegeda() != 0 && piloto1.getTimeStampChegeda() != 0) {
+							Long val = new Long(Long.MAX_VALUE - piloto0.getTimeStampChegeda());
+							val = new Long(
+									val.toString().substring(val.toString().length() / 4, val.toString().length()));
 							p0Val = (val * piloto0.getNumeroVolta());
-							val = new Long(Long.MAX_VALUE
-									- piloto1.getTimeStampChegeda());
-							val = new Long(val.toString().substring(
-									val.toString().length() / 4,
-									val.toString().length()));
+							val = new Long(Long.MAX_VALUE - piloto1.getTimeStampChegeda());
+							val = new Long(
+									val.toString().substring(val.toString().length() / 4, val.toString().length()));
 							p1Val = (val * piloto1.getNumeroVolta());
 						}
-						return ((p1Val < p0Val)
-								? (-1)
-								: ((p1Val == p0Val) ? 0 : 1));
+						return ((p1Val < p0Val) ? (-1) : ((p1Val == p0Val) ? 0 : 1));
 					}
 				});
 
@@ -605,18 +556,14 @@ public class MonitorJogo implements Runnable {
 			public void run() {
 				try {
 					String giro = (String) selectedItem;
-					if (!Carro.GIRO_MAX.equals(giro)
-							&& !Carro.GIRO_MIN.equals(giro)
-							&& !Carro.GIRO_NOR.equals(giro)) {
+					if (!Carro.GIRO_MAX.equals(giro) && !Carro.GIRO_MIN.equals(giro) && !Carro.GIRO_NOR.equals(giro)) {
 						return;
 					}
-					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.MUDAR_GIRO_MOTOR, sessaoCliente);
-					clientPaddockPack
-							.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.MUDAR_GIRO_MOTOR,
+							sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 					clientPaddockPack.setGiroMotor(giro);
-					Object ret = controlePaddockCliente
-							.enviarObjeto(clientPaddockPack, true);
+					Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}
@@ -636,18 +583,12 @@ public class MonitorJogo implements Runnable {
 			@Override
 			public void run() {
 				try {
-					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.MUDAR_MODO_BOX, sessaoCliente);
-					clientPaddockPack
-							.setNomeJogo(jogoCliente.getNomeJogoCriado());
-					clientPaddockPack.setTpPneuBox(
-							jogoCliente.getDadosCriarJogo().getTpPnueu());
-					clientPaddockPack.setCombustBox(jogoCliente
-							.getDadosCriarJogo().getCombustivel().intValue());
-					clientPaddockPack.setAsaBox(
-							jogoCliente.getDadosCriarJogo().getAsa());
-					Object ret = controlePaddockCliente
-							.enviarObjeto(clientPaddockPack, true);
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.MUDAR_MODO_BOX, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					clientPaddockPack.setTpPneuBox(jogoCliente.getDadosCriarJogo().getTpPnueu());
+					clientPaddockPack.setCombustBox(jogoCliente.getDadosCriarJogo().getCombustivel().intValue());
+					clientPaddockPack.setAsaBox(jogoCliente.getDadosCriarJogo().getAsa());
+					Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}
@@ -661,11 +602,9 @@ public class MonitorJogo implements Runnable {
 
 	public void mudarModoAgressivo(boolean modoAgressivo) {
 		try {
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.MUDAR_MODO_AGRESSIVO, sessaoCliente);
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.MUDAR_MODO_AGRESSIVO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack,
-					true);
+			controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -681,13 +620,11 @@ public class MonitorJogo implements Runnable {
 			@Override
 			public void run() {
 				try {
-					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.MUDAR_MODO_PILOTAGEM, sessaoCliente);
-					clientPaddockPack
-							.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.MUDAR_MODO_PILOTAGEM,
+							sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 					clientPaddockPack.setModoPilotagem(modo);
-					Object ret = controlePaddockCliente
-							.enviarObjeto(clientPaddockPack, true);
+					Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}
@@ -708,12 +645,10 @@ public class MonitorJogo implements Runnable {
 			@Override
 			public void run() {
 				try {
-					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.MUDAR_MODO_AUTOPOS, sessaoCliente);
-					clientPaddockPack
-							.setNomeJogo(jogoCliente.getNomeJogoCriado());
-					Object ret = controlePaddockCliente
-							.enviarObjeto(clientPaddockPack, true);
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.MUDAR_MODO_AUTOPOS,
+							sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}
@@ -734,13 +669,10 @@ public class MonitorJogo implements Runnable {
 			@Override
 			public void run() {
 				try {
-					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.MUDAR_TRACADO, sessaoCliente);
-					clientPaddockPack
-							.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.MUDAR_TRACADO, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 					clientPaddockPack.setTracado(tracado);
-					Object ret = controlePaddockCliente
-							.enviarObjeto(clientPaddockPack, true);
+					Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}
@@ -764,13 +696,10 @@ public class MonitorJogo implements Runnable {
 					if (jogoCliente.isChovendo()) {
 						jogoCliente.info(Lang.msg("drsDesabilitado"));
 					}
-					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.MUDAR_DRS, sessaoCliente);
-					clientPaddockPack
-							.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.MUDAR_DRS, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 					clientPaddockPack.setDataObject(new Boolean(modo));
-					Object ret = controlePaddockCliente
-							.enviarObjeto(clientPaddockPack, true);
+					Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}
@@ -790,13 +719,10 @@ public class MonitorJogo implements Runnable {
 			@Override
 			public void run() {
 				try {
-					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.MUDAR_KERS, sessaoCliente);
-					clientPaddockPack
-							.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.MUDAR_KERS, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 					clientPaddockPack.setDataObject(modo);
-					Object ret = controlePaddockCliente
-							.enviarObjeto(clientPaddockPack, true);
+					Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}
@@ -809,24 +735,18 @@ public class MonitorJogo implements Runnable {
 
 	public void driveThru(final Piloto pilotoSelecionado) {
 		if (pilotoSelecionado == null || !pilotoSelecionado.isJogadorHumano()
-				|| sessaoCliente.getNomeJogador()
-						.equals(pilotoSelecionado.getNomeJogador())) {
-			jogoCliente
-					.adicionarInfoDireto(Lang.msg("selecionePilotoDriveThru"));
+				|| sessaoCliente.getNomeJogador().equals(pilotoSelecionado.getNomeJogador())) {
+			jogoCliente.adicionarInfoDireto(Lang.msg("selecionePilotoDriveThru"));
 			return;
 		}
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
 				try {
-					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.DRIVE_THRU, sessaoCliente);
-					clientPaddockPack
-							.setNomeJogo(jogoCliente.getNomeJogoCriado());
-					clientPaddockPack
-							.setDataObject(pilotoSelecionado.getNomeJogador());
-					Object ret = controlePaddockCliente
-							.enviarObjeto(clientPaddockPack, true);
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.DRIVE_THRU, sessaoCliente);
+					clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					clientPaddockPack.setDataObject(pilotoSelecionado.getNomeJogador());
+					Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}

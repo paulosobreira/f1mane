@@ -604,6 +604,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 							.getMultiplicadorLarguraPista()));
 				}
 				piloto.setAutoPos(posis.autoPos);
+				piloto.calculaVelocidadeExibir(this);
+				calculaSegundosParaLider(piloto);
 				if (posis.idNo >= -1) {
 					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
 					piloto.setNoAtual(no);
@@ -1326,6 +1328,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public No obterCurvaAnterior(No noAtual) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public List<Piloto> getPilotosCopia() {
+		return pilotos;
 	}
 
 }
