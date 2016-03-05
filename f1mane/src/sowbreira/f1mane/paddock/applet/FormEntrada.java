@@ -27,13 +27,9 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class FormEntrada extends JPanel {
-	private JComboBox comboIdiomas = new JComboBox(new String[] {
-			Lang.msg("pt"), Lang.msg("en") });
+	private JComboBox comboIdiomas = new JComboBox(new String[] { Lang.msg("pt"), Lang.msg("en") });
 	private JTextField nomeLogar = new JTextField(20);
 	private JTextField nomeRegistrar = new JTextField(20);
-	private JTextField capchaTexto = new JTextField(20);
-	private String capchaChave = "";
-	private JLabel capchaImage;
 	private ControlePaddockCliente controlePaddockCliente;
 
 	private JLabel senhaLabel = new JLabel("Senha") {
@@ -74,9 +70,6 @@ public class FormEntrada extends JPanel {
 		panelAba2.add(gerarRegistrar(), BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("218"), panelAba2);
 		add(jTabbedPane, BorderLayout.CENTER);
-		if (controlePaddockCliente != null) {
-			capchaReload();
-		}
 		setSize(300, 300);
 		setVisible(true);
 
@@ -106,8 +99,7 @@ public class FormEntrada extends JPanel {
 	private JPanel gerarIdiomas() {
 		comboIdiomas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Logger.logar(Lang
-						.key(comboIdiomas.getSelectedItem().toString()));
+				Logger.logar(Lang.key(comboIdiomas.getSelectedItem().toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
 				if (i != null && !"".equals(i)) {
 					Lang.mudarIdioma(i);
@@ -127,56 +119,6 @@ public class FormEntrada extends JPanel {
 		langPanel.add(comboIdiomas, BorderLayout.CENTER);
 
 		return langPanel;
-	}
-	
-	@Deprecated
-	protected void capchaReload() {
-		if(true){
-			return;
-		}
-		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		clientPaddockPack.setComando(Comandos.OBTER_NOVO_CAPCHA);
-		Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
-		if (ret != null && ret instanceof ClientPaddockPack) {
-			clientPaddockPack = (ClientPaddockPack) ret;
-			capchaChave = (String) clientPaddockPack.getChaveCapcha();
-			capchaImage
-					.setIcon(new ImageIcon(clientPaddockPack.getDataBytes()));
-		}
-
-	}
-	
-	@Deprecated
-	private Component gerarCapchaPanel() {
-		JPanel capchaPanel = new JPanel(new BorderLayout());
-		capchaImage = new JLabel();
-
-		JPanel capchaImagePanel = new JPanel();
-		capchaImagePanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				capchaReload();
-				super.mouseClicked(e);
-			}
-		});
-		capchaImagePanel.setBorder(new TitledBorder("") {
-			@Override
-			public String getTitle() {
-				return Lang.msg("clickNovaImagem");
-			}
-		});
-		capchaImagePanel.add(capchaImage);
-		capchaPanel.add(capchaImagePanel, BorderLayout.CENTER);
-		JPanel sulPanel = new JPanel();
-		sulPanel.setBorder(new TitledBorder("") {
-			@Override
-			public String getTitle() {
-				return Lang.msg("digiteFrase");
-			}
-		});
-		sulPanel.add(capchaTexto);
-		capchaPanel.add(sulPanel, BorderLayout.SOUTH);
-		return capchaPanel;
 	}
 
 	public JCheckBox getRecuperar() {
@@ -205,7 +147,7 @@ public class FormEntrada extends JPanel {
 
 		JPanel newPanel = new JPanel(new BorderLayout());
 		newPanel.add(registrarPanel, BorderLayout.NORTH);
-//		newPanel.add(gerarCapchaPanel(), BorderLayout.CENTER);
+		// newPanel.add(gerarCapchaPanel(), BorderLayout.CENTER);
 		return newPanel;
 
 	}
@@ -255,8 +197,7 @@ public class FormEntrada extends JPanel {
 		// encoder.close();
 		FormEntrada formEntrada = new FormEntrada(null);
 		formEntrada.setToolTipText(Lang.msg("066"));
-		int result = JOptionPane.showConfirmDialog(null, formEntrada, Lang
-				.msg("066"), JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog(null, formEntrada, Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			Logger.logar("ok");
@@ -265,14 +206,6 @@ public class FormEntrada extends JPanel {
 
 	public JTextField getEmail() {
 		return email;
-	}
-
-	public String getCapchaTexto() {
-		return capchaTexto.getText();
-	}
-
-	public String getCapchaChave() {
-		return capchaChave;
 	}
 
 }

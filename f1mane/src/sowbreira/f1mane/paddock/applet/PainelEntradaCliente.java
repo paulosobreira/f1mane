@@ -206,6 +206,7 @@ public class PainelEntradaCliente {
 			}
 		});
 		semReabastacimento = new JCheckBox();
+		semReabastacimento.setSelected(true);
 		p1.add(semReabastacimento);
 		painelInicio.add(p1);
 
@@ -229,6 +230,7 @@ public class PainelEntradaCliente {
 			}
 		});
 		kers = new JCheckBox();
+		kers.setSelected(true);
 		p3.add(kers);
 		painelInicio.add(p3);
 
@@ -240,6 +242,7 @@ public class PainelEntradaCliente {
 			}
 		});
 		drs = new JCheckBox();
+		drs.setSelected(true);
 		p4.add(drs);
 		painelInicio.add(p4);
 

@@ -57,8 +57,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		return disparouInicio;
 	}
 
-	public void setControleCampeonatoServidor(
-			ControleCampeonatoServidor controleCampeonatoServidor) {
+	public void setControleCampeonatoServidor(ControleCampeonatoServidor controleCampeonatoServidor) {
 		this.controleCampeonatoServidor = controleCampeonatoServidor;
 	}
 
@@ -74,8 +73,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				voltasJogadoresOnline.add(voltaJogadorOnline);
 			}
 		}
-		mapVoltasJogadoresOnline.put(new Integer(contadorVolta++),
-				voltasJogadoresOnline);
+		mapVoltasJogadoresOnline.put(new Integer(contadorVolta++), voltasJogadoresOnline);
 	}
 
 	public String getNomeCriador() {
@@ -146,18 +144,15 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		this.tempoCriacao = tempoCriacao;
 	}
 
-	public Object adicionarJogador(String nomeJogador,
-			DadosCriarJogo dadosParticiparJogo) {
+	public Object adicionarJogador(String nomeJogador, DadosCriarJogo dadosParticiparJogo) {
 		if (mapJogadoresOnline.containsKey(nomeJogador)) {
 			return new MsgSrv(Lang.msg("259"));
 		}
-		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
+		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
 			if (dadosParticiparJogo.getPiloto().equals(valor.getPiloto())) {
-				return new MsgSrv(Lang.msg("257", new String[] {
-						dadosParticiparJogo.getPiloto(), key }));
+				return new MsgSrv(Lang.msg("257", new String[] { dadosParticiparJogo.getPiloto(), key }));
 
 			}
 		}
@@ -169,18 +164,15 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				pilotoDisponivel = true;
 				pilotoSelecionado = piloto;
 			}
-			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
-					&& piloto.isDesqualificado()) {
-				return new MsgSrv(Lang.msg("258",
-						new String[] { dadosParticiparJogo.getPiloto() }));
+			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto()) && piloto.isDesqualificado()) {
+				return new MsgSrv(Lang.msg("258", new String[] { dadosParticiparJogo.getPiloto() }));
 			}
 		}
 		if (pilotoDisponivel) {
 			mapJogadoresOnline.put(nomeJogador, dadosParticiparJogo);
 			mapJogadoresOnlineTexto.put(nomeJogador, new BufferTexto());
 		} else {
-			return new MsgSrv(Lang.msg("260",
-					new String[] { dadosParticiparJogo.getPiloto() }));
+			return new MsgSrv(Lang.msg("260", new String[] { dadosParticiparJogo.getPiloto() }));
 
 		}
 		dadosCriarJogo.setPilotosCarreira(pilotos);
@@ -197,12 +189,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public void preencherDetalhes(DetalhesJogo detalhesJogo) {
 		Map detMap = detalhesJogo.getJogadoresPilotos();
-		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
+		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
-			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-					.obterCarreiraSrv(key);
+			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao.obterCarreiraSrv(key);
 			String piloto = "";
 			if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 				piloto = carreiraDadosSrv.getNomePiloto();
@@ -247,17 +237,19 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		disparouInicio = true;
 		controleEstatisticas = new ControleEstatisticas(JogoServidor.this);
 		gerenciadorVisual = null;
-		setEstado(Comandos.MOSTRANDO_QUALIFY);
 		processarEntradaDados();
 		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
 		atualizarJogadoresOnlineCarreira();
+		Logger.logar("atualizarJogadoresOnlineCarreira();");
 		setarNivelCorrida();
-		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
-				diffultrapassagem.intValue());
-		controleCorrida.getControleClima().gerarClimaInicial(
-				dadosCriarJogo.getClima());
+		Logger.logar("setarNivelCorrida();");
+		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(), diffultrapassagem.intValue());
+		controleCorrida.getControleClima().gerarClimaInicial(dadosCriarJogo.getClima());
 		atualizarJogadoresOnline();
+		Logger.logar("atualizarJogadoresOnline();");
 		controleCorrida.gerarGridLargadaSemQualificacao();
+		Logger.logar("controleCorrida.gerarGridLargadaSemQualificacao();");
+		setEstado(Comandos.MOSTRANDO_QUALIFY);
 		List carrobox = new ArrayList();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
@@ -265,10 +257,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				carrobox.add(piloto.getCarro());
 			}
 			if (piloto.isJogadorHumano()) {
-				CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-						.obterCarreiraSrv(piloto.getNomeJogador());
-				if (carreiraDadosSrv != null
-						&& carreiraDadosSrv.isModoCarreira()) {
+				CarreiraDadosSrv carreiraDadosSrv = controleClassificacao.obterCarreiraSrv(piloto.getNomeJogador());
+				if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 					piloto.getCarro().setImg(null);
 				}
 			}
@@ -310,19 +300,16 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	private void atualizarJogadoresOnline() {
-		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
+		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();
-			DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-					.get(key);
+			DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline.get(key);
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
 					piloto.setNomeJogador(key);
 					piloto.setJogadorHumano(true);
 				}
-				if (piloto.isJogadorHumano()
-						&& mapJogadoresOnline.get(piloto.getNomeJogador()) == null) {
+				if (piloto.isJogadorHumano() && mapJogadoresOnline.get(piloto.getNomeJogador()) == null) {
 					piloto.setNomeJogador("IA");
 					piloto.setJogadorHumano(false);
 				}
@@ -332,27 +319,20 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	private void atualizarJogadoresOnlineCarreira() {
-		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
+		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();
-			DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-					.get(key);
+			DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline.get(key);
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
-					CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-							.obterCarreiraSrv(key);
+					CarreiraDadosSrv carreiraDadosSrv = controleClassificacao.obterCarreiraSrv(key);
 					if (carreiraDadosSrv.isModoCarreira()) {
 						piloto.setNome(carreiraDadosSrv.getNomePiloto());
-						dadosParticiparJogo.setPiloto(carreiraDadosSrv
-								.getNomePiloto());
-						piloto.setHabilidade((int) (carreiraDadosSrv
-								.getPtsPiloto()));
-						piloto.getCarro().setNome(
-								carreiraDadosSrv.getNomeCarro());
+						dadosParticiparJogo.setPiloto(carreiraDadosSrv.getNomePiloto());
+						piloto.setHabilidade((int) (carreiraDadosSrv.getPtsPiloto()));
+						piloto.getCarro().setNome(carreiraDadosSrv.getNomeCarro());
 						piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
-						piloto.getCarro().setPotencia(
-								carreiraDadosSrv.getPtsCarro());
+						piloto.getCarro().setPotencia(carreiraDadosSrv.getPtsCarro());
 						piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
 						piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
 					}
@@ -364,8 +344,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public String getTipoPeneuBox(Piloto piloto) {
-		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-				.get(piloto.getNomeJogador());
+		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline.get(piloto.getNomeJogador());
 		if (dadosParticiparJogo == null) {
 			piloto.setNomeJogador("IA");
 			piloto.setJogadorHumano(false);
@@ -375,8 +354,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public String getAsaBox(Piloto piloto) {
-		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-				.get(piloto.getNomeJogador());
+		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline.get(piloto.getNomeJogador());
 		if (dadosParticiparJogo == null) {
 			piloto.setNomeJogador("IA");
 			piloto.setJogadorHumano(false);
@@ -386,8 +364,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public Integer getCombustBox(Piloto piloto) {
-		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-				.get(piloto.getNomeJogador());
+		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline.get(piloto.getNomeJogador());
 		if (dadosParticiparJogo == null) {
 			piloto.setNomeJogador("IA");
 			piloto.setJogadorHumano(false);
@@ -396,14 +373,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		return dadosParticiparJogo.getCombustivel();
 	}
 
-	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
-			Object combust, Object asa) {
-		if (Comandos.ESPERANDO_JOGO_COMECAR.equals(getEstado())) {
-			return 0;
-		} else {
-			return super
-					.setUpJogadorHumano(pilotoJogador, tpPneu, combust, asa);
-		}
+	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu, Object combust, Object asa) {
+		return super.setUpJogadorHumano(pilotoJogador, tpPneu, combust, asa);
 	}
 
 	public void apagarLuz() {
@@ -424,11 +395,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public void info(String info) {
 		if (Comandos.CORRIDA_INICIADA.equals(getEstado())) {
-			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-					.hasNext();) {
+			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter.hasNext();) {
 				String key = (String) iter.next();
-				BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto
-						.get(key);
+				BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto.get(key);
 				if (bufferTexto != null) {
 					bufferTexto.adicionarTexto(info);
 				}
@@ -439,11 +408,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public void infoPrioritaria(String info) {
 		if (Comandos.CORRIDA_INICIADA.equals(getEstado())) {
-			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-					.hasNext();) {
+			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter.hasNext();) {
 				String key = (String) iter.next();
-				BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto
-						.get(key);
+				BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto.get(key);
 				if (bufferTexto != null) {
 					bufferTexto.adicionarTextoPrio(info);
 				}
@@ -461,15 +428,11 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					setEstado(Comandos.MOSTRA_RESULTADO_FINAL);
 					tempoFim = System.currentTimeMillis();
 					try {
-						controleClassificacao.processaCorrida(tempoInicio,
-								tempoFim, mapVoltasJogadoresOnline, pilotos,
+						controleClassificacao.processaCorrida(tempoInicio, tempoFim, mapVoltasJogadoresOnline, pilotos,
 								dadosCriarJogo);
-						if (!Util.isNullOrEmpty(dadosCriarJogo
-								.getNomeCampeonato())) {
-							controleCampeonatoServidor.processaCorrida(
-									tempoInicio, tempoFim,
-									mapVoltasJogadoresOnline, pilotos,
-									dadosCriarJogo, controleClassificacao);
+						if (!Util.isNullOrEmpty(dadosCriarJogo.getNomeCampeonato())) {
+							controleCampeonatoServidor.processaCorrida(tempoInicio, tempoFim, mapVoltasJogadoresOnline,
+									pilotos, dadosCriarJogo, controleClassificacao);
 						}
 					} catch (Exception e) {
 						Logger.topExecpts(e);
@@ -520,8 +483,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		return mapVoltasJogadoresOnline;
 	}
 
-	public void setControleClassificacao(
-			ControleClassificacao controleClassificacao) {
+	public void setControleClassificacao(ControleClassificacao controleClassificacao) {
 		this.controleClassificacao = controleClassificacao;
 	}
 

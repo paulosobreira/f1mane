@@ -323,7 +323,6 @@ public class ControlePaddockServidor {
 			String chave = String.valueOf(System.currentTimeMillis());
 			clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setComando(Comandos.OBTER_NOVO_CAPCHA);
-			clientPaddockPack.setChaveCapcha(chave);
 			clientPaddockPack.setDataBytes(jpegstream.toByteArray());
 			return clientPaddockPack;
 		} catch (Exception e) {

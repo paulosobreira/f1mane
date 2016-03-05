@@ -462,8 +462,6 @@ public class ControlePaddockCliente {
 
 	public boolean registrarUsuario(FormEntrada formEntrada) {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		clientPaddockPack.setTextoCapcha(formEntrada.getCapchaTexto());
-		clientPaddockPack.setChaveCapcha(formEntrada.getCapchaChave());
 		clientPaddockPack.setComando(Comandos.REGISTRAR_LOGIN);
 		clientPaddockPack.setNomeJogador(formEntrada.getNome().getText());
 		if ("IA".equals(clientPaddockPack.getNomeJogador()) || "Ia".equals(clientPaddockPack.getNomeJogador())

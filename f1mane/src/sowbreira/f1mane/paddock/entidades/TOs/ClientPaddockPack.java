@@ -14,8 +14,6 @@ public class ClientPaddockPack implements Serializable {
 	private String nomeJogador;
 	private String senhaJogador;
 	private String emailJogador;
-	private String chaveCapcha;
-	private String textoCapcha;
 	private SessaoCliente sessaoCliente;
 	private String texto;
 	private String nomeJogo;
@@ -37,22 +35,6 @@ public class ClientPaddockPack implements Serializable {
 
 	public void setDataObject(Object dataObject) {
 		this.dataObject = dataObject;
-	}
-
-	public String getChaveCapcha() {
-		return chaveCapcha;
-	}
-
-	public void setChaveCapcha(String chaveCapcha) {
-		this.chaveCapcha = chaveCapcha;
-	}
-
-	public String getTextoCapcha() {
-		return textoCapcha;
-	}
-
-	public void setTextoCapcha(String textoCapcha) {
-		this.textoCapcha = textoCapcha;
 	}
 
 	public CarreiraDadosSrv getJogadorDadosSrv() {

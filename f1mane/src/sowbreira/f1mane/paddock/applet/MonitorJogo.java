@@ -99,9 +99,7 @@ public class MonitorJogo implements Runnable {
 				&& jogoAtivo) {
 			try {
 				iniciaJalena();
-				if (!atualizouDados) {
-					atualizarDados();
-				}
+				atualizarDados();
 				jogoCliente.desenhouQualificacao();
 				atualizaZoom();
 				Thread.sleep(1000);
@@ -119,8 +117,7 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && Comandos.MOSTRA_RESULTADO_FINAL.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
-
-				List pilotos = jogoCliente.getPilotos();
+				List pilotos = jogoCliente.getPilotosCopia();
 				for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 					Piloto piloto = (Piloto) iterator.next();
 					// jogoCliente.adicionarInfoDireto(piloto.getPosicao() + " "
@@ -151,11 +148,7 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado) && controlePaddockCliente.isComunicacaoServer()
 				&& jogoAtivo) {
 			try {
-				if (!atualizouDados) {
-					atualizarDados();
-					atualizaModoCarreira();
-					atualizaPosicoes();
-				}
+				atualizarDados();
 				iniciaJalena();
 				atualizaZoom();
 				apagarLuz();
@@ -362,6 +355,9 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void atualizarDados() {
+		if (atualizouDados) {
+			return;
+		}
 		try {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.OBTER_DADOS_JOGO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
@@ -378,6 +374,9 @@ public class MonitorJogo implements Runnable {
 					atualizouDados = false;
 				} else {
 					atualizouDados = true;
+					Logger.logar("atualizouDados = true");
+					atualizaModoCarreira();
+					atualizaPosicoes();
 				}
 			} else {
 				atualizouDados = false;
@@ -391,7 +390,6 @@ public class MonitorJogo implements Runnable {
 	private void iniciaJalena() {
 		if (jogoAtivo) {
 			jogoCliente.iniciaJanela();
-			jogoCliente.preparaGerenciadorVisual();
 		}
 	}
 
@@ -416,7 +414,7 @@ public class MonitorJogo implements Runnable {
 		try {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.SAIR_JOGO, sessaoCliente);
 			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-		    controlePaddockCliente.enviarObjeto(clientPaddockPack);
+			controlePaddockCliente.enviarObjeto(clientPaddockPack);
 			jogoCliente.matarTodasThreads();
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -490,6 +488,7 @@ public class MonitorJogo implements Runnable {
 						piloto.setBox(dadosParciais.pselBox);
 						piloto.setFreiandoReta(dadosParciais.freiandoReta);
 						piloto.setStress(dadosParciais.pselStress);
+						piloto.setPodeUsarDRS(dadosParciais.podeUsarDRS);
 						piloto.getCarro().setCargaKers(dadosParciais.cargaKers);
 						piloto.getCarro().setTemperaturaMotor(dadosParciais.temperaturaMotor);
 						if (piloto.getCargaKersOnline() != dadosParciais.cargaKers) {
@@ -513,6 +512,8 @@ public class MonitorJogo implements Runnable {
 						piloto.setAsaBox(dadosParciais.pselAsaBox);
 						piloto.getCarro().setAsa(dadosParciais.pselAsa);
 						piloto.getCarro().setGiro(dadosParciais.pselGiro);
+						piloto.calculaCarrosAdjacentes(jogoCliente);
+						
 					}
 				}
 				Collections.sort(pilotos, new Comparator() {

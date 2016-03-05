@@ -30,6 +30,7 @@ public class DadosParciais implements Serializable {
 	public int pselDurAereofolio;
 	public boolean pselBox;
 	public boolean freiandoReta;
+	public boolean podeUsarDRS;
 	public int pselMaxPneus;
 	public String clima;
 	public String estado;
@@ -68,6 +69,7 @@ public class DadosParciais implements Serializable {
 		pselModoPilotar = decodeModoPilotar(sp[spcont++]);
 		pselBox = "S".equals(sp[spcont++]);
 		freiandoReta = "S".equals(sp[spcont++]);
+		podeUsarDRS = "S".equals(sp[spcont++]);
 		pselMaxPneus = parseInt(sp[spcont++]);
 		clima = decodeClima(sp[spcont++]);
 		estado = sp[spcont++];
@@ -79,8 +81,7 @@ public class DadosParciais implements Serializable {
 		peselMelhorVolta = new Volta();
 		peselMelhorVolta.decode(sp[spcont++]);
 		int contJogador = spcont++;
-		nomeJogador = (sp[contJogador] == null || "".equals(sp[contJogador]) ? null
-				: sp[contJogador]);
+		nomeJogador = (sp[contJogador] == null || "".equals(sp[contJogador]) ? null : sp[contJogador]);
 		int contTexto = spcont++;
 		if (sp[contTexto] != null && !"".equals(sp[contTexto])) {
 			texto = Lang.decodeTexto(sp[contTexto]);
@@ -268,16 +269,14 @@ public class DadosParciais implements Serializable {
 			stringBuffer.append(pilotsPonts[i]);
 			stringBuffer.append("§");
 		}
-		String lessLastPipe = stringBuffer.toString().substring(0,
-				stringBuffer.toString().length() - 1);
+		String lessLastPipe = stringBuffer.toString().substring(0, stringBuffer.toString().length() - 1);
 
 		stringBuffer = new StringBuffer();
 		for (int i = 0; i < pilotsTs.length; i++) {
 			stringBuffer.append(pilotsTs[i]);
 			stringBuffer.append("§");
 		}
-		String lessLastPipe2 = stringBuffer.toString().substring(0,
-				stringBuffer.toString().length() - 1);
+		String lessLastPipe2 = stringBuffer.toString().substring(0, stringBuffer.toString().length() - 1);
 
 		if (texto != null && !"".equals(texto)) {
 			texto = texto.replaceAll("@", "");
@@ -313,20 +312,14 @@ public class DadosParciais implements Serializable {
 			codUlt5 = peselUltima5.encode();
 		}
 
-		String enc = voltaAtual + "@" + pselCombust + "@" + codPneu + "@"
-				+ pselCombustBox + "@" + codPneuBox + "@" + pselVelocidade
-				+ "@" + pselPneus + "@" + pselMotor + "@" + pselParadas + "@"
-				+ pselGiro + "@" + pselStress + "@" + cargaKers + "@"
-				+ temperaturaMotor + "@" + pselDurAereofolio + "@"
-				+ codpselModoPilotar + "@" + (pselBox ? "S" : "N") + "@"
-				+ (freiandoReta ? "S" : "N") + "@" + pselMaxPneus + "@"
-				+ codClima + "@" + estado + "@" + codDano + "@" + codpselAsa
-				+ "@" + codpselAsaBox + "@" + codMelhorVolta + "@"
-				+ codpeselMelhorVolta + "@"
-				+ (nomeJogador == null ? "" : nomeJogador) + "@"
-				+ (texto == null ? "" : texto) + "@" + codUlt1 + "@" + codUlt2
-				+ "@" + codUlt3 + "@" + codUlt4 + "@" + codUlt5 + "@"
-				+ lessLastPipe + "@" + lessLastPipe2;
+		String enc = voltaAtual + "@" + pselCombust + "@" + codPneu + "@" + pselCombustBox + "@" + codPneuBox + "@"
+				+ pselVelocidade + "@" + pselPneus + "@" + pselMotor + "@" + pselParadas + "@" + pselGiro + "@"
+				+ pselStress + "@" + cargaKers + "@" + temperaturaMotor + "@" + pselDurAereofolio + "@"
+				+ codpselModoPilotar + "@" + (pselBox ? "S" : "N") + "@" + (freiandoReta ? "S" : "N") + "@"
+				+ (podeUsarDRS ? "S" : "N") + "@" + pselMaxPneus + "@" + codClima + "@" + estado + "@" + codDano + "@"
+				+ codpselAsa + "@" + codpselAsaBox + "@" + codMelhorVolta + "@" + codpeselMelhorVolta + "@"
+				+ (nomeJogador == null ? "" : nomeJogador) + "@" + (texto == null ? "" : texto) + "@" + codUlt1 + "@"
+				+ codUlt2 + "@" + codUlt3 + "@" + codUlt4 + "@" + codUlt5 + "@" + lessLastPipe + "@" + lessLastPipe2;
 		// Logger.logar(enc);
 		return enc;
 
