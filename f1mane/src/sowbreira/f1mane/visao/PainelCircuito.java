@@ -729,16 +729,7 @@ public class PainelCircuito {
 	private int loopCalculaGanhoSuave(int diff) {
 		int ganhoSuave = 0;
 		int maxLoop = 1000;
-		int inc = 10;
-		if (gerenciadorVisual.getFps() > 30) {
-			inc = 15;
-		}
-		if (controleJogo.getLag() > 50) {
-			inc = 20;
-		}
-		if (controleJogo.getLag() > 100) {
-			inc = 30;
-		}
+		int inc = 30;
 		for (int i = 0; i < maxLoop; i += inc) {
 			if (diff >= i && diff < i + inc) {
 				break;

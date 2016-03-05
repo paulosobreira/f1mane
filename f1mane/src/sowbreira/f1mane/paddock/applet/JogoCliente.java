@@ -604,7 +604,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 							.getMultiplicadorLarguraPista()));
 				}
 				piloto.setAutoPos(posis.autoPos);
-				piloto.calculaVelocidadeExibir(this);
 				calculaSegundosParaLider(piloto);
 				if (posis.idNo >= -1) {
 					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));

@@ -506,6 +506,7 @@ public class MonitorJogo implements Runnable {
 						piloto.getCarro().setAsa(dadosParciais.pselAsaBox);
 						piloto.getCarro().setTipoPneu(dadosParciais.pselTpPneus);
 						piloto.setVelocidade(dadosParciais.pselVelocidade);
+						piloto.setVelocidadeExibir(dadosParciais.pselVelocidade);
 						piloto.setQtdeCombustBox(dadosParciais.pselCombustBox);
 						piloto.setTipoPneuBox(dadosParciais.pselTpPneusBox);
 						piloto.setModoPilotagem(dadosParciais.pselModoPilotar);

@@ -13,7 +13,7 @@ public class Constantes {
 
 	public static final int MAX_VOLTAS = 72;
 	public static final int MIN_VOLTAS = 12;
-	public static final int CICLO = 140;
+	public static final int CICLO = 160;
 	public static final int CICLO_SOM = 100;
 	public static final int ACIMA_MEDIA_NORMAL = 5;
 	public static final int ACIMA_MEDIA_FACIL = 10;
