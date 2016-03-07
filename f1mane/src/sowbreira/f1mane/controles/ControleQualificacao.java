@@ -246,6 +246,7 @@ public class ControleQualificacao {
 				carro.setTempMax(carro.getPotencia() / 6);
 			}
 			carro.setDurabilidadeAereofolio(controleJogo.getDurabilidadeAreofolio());
+			piloto.calculaCarrosAdjacentes(controleJogo);
 			Logger.logar(" Posição Largada :" + piloto.getPosicao() + " Nome : " + piloto.getNome() + " Pneu : "
 					+ piloto.getCarro().getTipoPneu() + " Combustivel : " + piloto.getCarro().porcentagemCombustivel()
 					+ " Asa : " + piloto.getCarro().getAsa() + " Tempo Qualificação : "

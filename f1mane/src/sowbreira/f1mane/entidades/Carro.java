@@ -816,7 +816,7 @@ public class Carro implements Serializable {
 			if (temperaturaPneus < 30) {
 				temperaturaPneus = 30;
 			}
-		}else{
+		} else {
 			if (temperaturaPneus < 50) {
 				temperaturaPneus = 50;
 			}
@@ -991,7 +991,8 @@ public class Carro implements Serializable {
 			valDesgaste *= 0.5;
 		}
 
-		if (verificaDano()) {
+		if (verificaDano()
+				|| Piloto.LENTO.equals(getPiloto().getModoPilotagem())) {
 			valDesgaste /= 3;
 		}
 		return valDesgaste;

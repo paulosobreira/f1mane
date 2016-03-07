@@ -153,6 +153,8 @@ public interface InterfaceJogo {
 
 	public String calculaSegundosParaProximo(Piloto psel);
 
+	public String calculaSegundosParaProximo(Piloto psel, int diferenca);
+
 	public double getIndexVelcidadeDaPista();
 
 	public Map getCircuitos();
@@ -389,5 +391,6 @@ public interface InterfaceJogo {
 
 	public No obterCurvaAnterior(No noAtual);
 
-	
+	public int getFPS();
+
 }

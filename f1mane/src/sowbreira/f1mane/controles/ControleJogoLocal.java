@@ -34,7 +34,9 @@ import br.nnpe.Util;
 /**
  * @author Paulo Sobreira
  */
-public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo {
+public class ControleJogoLocal extends ControleRecursos
+		implements
+			InterfaceJogo {
 	protected Piloto pilotoSelecionado;
 	protected Piloto pilotoJogador;
 
@@ -325,7 +327,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	 */
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {
 		long tempo = Constantes.CICLO;
-		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado, tempo);
+		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado,
+				tempo);
 	}
 
 	/**
@@ -335,7 +338,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 		if (isModoQualify()) {
 			return false;
 		}
-		return ((controleCorrida.getQtdeTotalVoltas() - 1) == getNumVoltaAtual());
+		return ((controleCorrida.getQtdeTotalVoltas()
+				- 1) == getNumVoltaAtual());
 	}
 
 	/**
@@ -392,8 +396,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#efetuarSelecaoPilotoJogador(java.lang.Object,
 	 *      java.lang.Object, java.lang.Object, java.lang.String)
 	 */
-	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu, Object combust, String nomeJogador,
-			Object asa) {
+	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
+			Object combust, String nomeJogador, Object asa) {
 		pilotoJogador = (Piloto) selec;
 
 		pilotoJogador.setJogadorHumano(true);
@@ -467,10 +471,11 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	public void processaNovaVolta() {
 		int qtdeDesqualificados = 0;
 		Piloto piloto = (Piloto) pilotos.get(0);
-		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1) && (piloto.getPosicao() == 1)
-				&& !isCorridaTerminada()) {
+		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
+				&& (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
 
-			infoPrioritaria(Html.superBlack(piloto.getNome()) + Html.superGreen(Lang.msg("045")));
+			infoPrioritaria(Html.superBlack(piloto.getNome())
+					+ Html.superGreen(Lang.msg("045")));
 		}
 
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
@@ -482,7 +487,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 		if (qtdeDesqualificados >= 10) {
 			setCorridaTerminada(true);
 			controleCorrida.terminarCorrida();
-			infoPrioritaria(Html.superDarkRed(Lang.msg("024", new Object[] { getNumVoltaAtual() })));
+			infoPrioritaria(Html.superDarkRed(
+					Lang.msg("024", new Object[]{getNumVoltaAtual()})));
 		}
 		if (getNumVoltaAtual() == 2 && isDrs() && !isChovendo()) {
 			infoPrioritaria(Html.superBlue(Lang.msg("drsHabilitado")));
@@ -523,7 +529,9 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#pausarJogo()
 	 */
 	public void pausarJogo() {
-		info(Html.cinza(controleCorrida.isCorridaPausada() ? Lang.msg("025") : Lang.msg("026")));
+		info(Html.cinza(controleCorrida.isCorridaPausada()
+				? Lang.msg("025")
+				: Lang.msg("026")));
 		controleCorrida.setCorridaPausada(!controleCorrida.isCorridaPausada());
 
 	}
@@ -584,7 +592,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 
 	public double calculaSegundosParaProximoDouble(Piloto psel) {
 		long tempo = Constantes.CICLO;
-		return controleEstatisticas.calculaSegundosParaProximoDouble(psel, tempo);
+		return controleEstatisticas.calculaSegundosParaProximoDouble(psel,
+				tempo);
 	}
 
 	/**
@@ -604,20 +613,25 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	 * @param campeonato
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#iniciarJogoSingle()
 	 */
-	public void iniciarJogo(ControleCampeonato controleCampeonato) throws Exception {
+	public void iniciarJogo(ControleCampeonato controleCampeonato)
+			throws Exception {
 		this.controleCampeonato = controleCampeonato;
 		Campeonato campeonato = null;
 		if (controleCampeonato != null)
 			campeonato = controleCampeonato.getCampeonato();
 		if (gerenciadorVisual.iniciarJogoMulti(campeonato)) {
 			processarEntradaDados();
-			carregaRecursos((String) getCircuitos().get(circuitoSelecionado), gerenciadorVisual.getListaPilotosCombo(),
+			carregaRecursos((String) getCircuitos().get(circuitoSelecionado),
+					gerenciadorVisual.getListaPilotosCombo(),
 					gerenciadorVisual.getListaCarrosCombo());
-			this.nivelCorrida = Lang.key(gerenciadorVisual.getComboBoxNivelCorrida().getSelectedItem().toString());
+			this.nivelCorrida = Lang.key(gerenciadorVisual
+					.getComboBoxNivelCorrida().getSelectedItem().toString());
 			setarNivelCorrida();
-			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(), diffultrapassagem.intValue());
+			controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
+					diffultrapassagem.intValue());
 			controleCorrida.getControleClima()
-					.gerarClimaInicial((Clima) gerenciadorVisual.getComboBoxClimaInicial().getSelectedItem());
+					.gerarClimaInicial((Clima) gerenciadorVisual
+							.getComboBoxClimaInicial().getSelectedItem());
 			controleCorrida.gerarGridLargadaSemQualificacao();
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
 			controleCorrida.iniciarCorrida();
@@ -627,15 +641,19 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 			controleEstatisticas.inicializarThreadConsumidoraInfo();
 		}
 		Logger.logar("Circuito Selecionado " + circuitoSelecionado);
-		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) " + porcentagemChuvaCircuito(circuitoSelecionado));
-		Logger.logar("porcentagemChuvaCircuito() " + porcentagemChuvaCircuito());
+		Logger.logar("porcentagemChuvaCircuito(circuitoSelecionado) "
+				+ porcentagemChuvaCircuito(circuitoSelecionado));
+		Logger.logar(
+				"porcentagemChuvaCircuito() " + porcentagemChuvaCircuito());
 	}
 
 	@Override
-	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato, int combustivelSelecionado, String asaSelecionado,
+	public void iniciarJogoCapeonatoMenuLocal(Campeonato campeonato,
+			int combustivelSelecionado, String asaSelecionado,
 			String pneuSelecionado, String clima) throws Exception {
 		Map circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
-		List pilotos = new ArrayList((Collection) circuitosPilotos.get("t" + campeonato.getTemporada()));
+		List pilotos = new ArrayList((Collection) circuitosPilotos
+				.get("t" + campeonato.getTemporada()));
 		Piloto pilotoSel = null;
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
@@ -645,19 +663,24 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 			}
 
 		}
-		iniciarJogoMenuLocal(campeonato.getCircuitoVez(), campeonato.getTemporada(), campeonato.getQtdeVoltas(),
-				Util.intervalo(130, 370), clima, campeonato.getNivel(), pilotoSel, campeonato.isKers(),
-				campeonato.isDrs(), campeonato.isSemTrocaPneus(), campeonato.isSemReabasteciemnto(),
+		iniciarJogoMenuLocal(campeonato.getCircuitoVez(),
+				campeonato.getTemporada(), campeonato.getQtdeVoltas(),
+				Util.intervalo(130, 370), clima, campeonato.getNivel(),
+				pilotoSel, campeonato.isKers(), campeonato.isDrs(),
+				campeonato.isSemTrocaPneus(), campeonato.isSemReabasteciemnto(),
 				combustivelSelecionado, asaSelecionado, pneuSelecionado);
 		this.controleCampeonato = new ControleCampeonato(campeonato, mainFrame);
 		controleCampeonato.iniciaCorrida(campeonato.getCircuitoVez());
 	}
 
 	@Override
-	public void iniciarJogoMenuLocal(String circuitoSelecionado, String temporadaSelecionada, int numVoltasSelecionado,
-			int turbulenciaSelecionado, String climaSelecionado, String nivelSelecionado, Piloto pilotoSelecionado,
-			boolean kers, boolean drs, boolean trocaPneus, boolean reabasteciemto, int combustivelSelecionado,
-			String asaSelecionado, String pneuSelecionado) throws Exception {
+	public void iniciarJogoMenuLocal(String circuitoSelecionado,
+			String temporadaSelecionada, int numVoltasSelecionado,
+			int turbulenciaSelecionado, String climaSelecionado,
+			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+			boolean drs, boolean trocaPneus, boolean reabasteciemto,
+			int combustivelSelecionado, String asaSelecionado,
+			String pneuSelecionado) throws Exception {
 		this.qtdeVoltas = new Integer(numVoltasSelecionado);
 		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
 		this.semReabastacimento = !reabasteciemto;
@@ -674,13 +697,16 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 		for (Iterator iterator = pilotosList.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (piloto.equals(pilotoSelecionado)) {
-				efetuarSelecaoPilotoJogador(piloto, pneuSelecionado, new Integer(combustivelSelecionado), "F1-Mane",
+				efetuarSelecaoPilotoJogador(piloto, pneuSelecionado,
+						new Integer(combustivelSelecionado), "F1-Mane",
 						asaSelecionado);
 				break;
 			}
 		}
-		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(), diffultrapassagem.intValue());
-		controleCorrida.getControleClima().gerarClimaInicial(new Clima(climaSelecionado));
+		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
+				diffultrapassagem.intValue());
+		controleCorrida.getControleClima()
+				.gerarClimaInicial(new Clima(climaSelecionado));
 		controleCorrida.gerarGridLargadaSemQualificacao();
 		gerenciadorVisual.iniciarInterfaceGraficaJogo();
 		controleCorrida.iniciarCorrida();
@@ -696,14 +722,17 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 
 	protected void processarEntradaDados() throws Exception {
 		try {
-			qtdeVoltas = (Integer) gerenciadorVisual.getSpinnerQtdeVoltas().getValue();
+			qtdeVoltas = (Integer) gerenciadorVisual.getSpinnerQtdeVoltas()
+					.getValue();
 			if (qtdeVoltas.intValue() != 0) {
 				if (qtdeVoltas.intValue() >= 72) {
 					qtdeVoltas = new Integer(72);
 				}
 			}
-			diffultrapassagem = (Integer) gerenciadorVisual.getSpinnerDificuldadeUltrapassagem().getValue();
-			circuitoSelecionado = (String) gerenciadorVisual.getComboBoxCircuito().getSelectedItem();
+			diffultrapassagem = (Integer) gerenciadorVisual
+					.getSpinnerDificuldadeUltrapassagem().getValue();
+			circuitoSelecionado = (String) gerenciadorVisual
+					.getComboBoxCircuito().getSelectedItem();
 
 			if (gerenciadorVisual.getSemReabastacimento().isSelected()) {
 				semReabastacimento = true;
@@ -717,7 +746,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 			if (gerenciadorVisual.getDrs().isSelected()) {
 				drs = true;
 			}
-			setTemporada("t" + gerenciadorVisual.getComboBoxTemporadas().getSelectedItem());
+			setTemporada("t" + gerenciadorVisual.getComboBoxTemporadas()
+					.getSelectedItem());
 		} catch (Exception e) {
 			throw new Exception(Lang.msg("027"));
 		}
@@ -730,18 +760,21 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	public void exibirResultadoFinal() {
 		gerenciadorVisual.exibirResultadoFinal();
 		if (Logger.ativo)
-			mainFrame.exibirResultadoFinal(gerenciadorVisual.exibirResultadoFinal());
+			mainFrame.exibirResultadoFinal(
+					gerenciadorVisual.exibirResultadoFinal());
 		controleCorrida.pararThreads();
 		controleEstatisticas.setConsumidorAtivo(false);
 		if (controleCampeonato != null) {
-			Logger.logar("controleCampeonato.processaFimCorrida(getPilotos());");
+			Logger.logar(
+					"controleCampeonato.processaFimCorrida(getPilotos());");
 			controleCampeonato.processaFimCorrida(getPilotos());
 		}
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
-			Logger.logar((i + 1) + " Posicao " + piloto.getPosicao() + " - " + piloto.getNome() + " Volta :"
-					+ piloto.getNumeroVolta() + " Paradas Box :" + piloto.getQtdeParadasBox() + " Vantagem :"
-					+ piloto.getVantagem());
+			Logger.logar((i + 1) + " Posicao " + piloto.getPosicao() + " - "
+					+ piloto.getNome() + " Volta :" + piloto.getNumeroVolta()
+					+ " Paradas Box :" + piloto.getQtdeParadasBox()
+					+ " Vantagem :" + piloto.getVantagem());
 
 		}
 	}
@@ -793,26 +826,32 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 		return pilotoSelecionado;
 	}
 
-	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu, Object combust, Object asa) {
+	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
+			Object combust, Object asa) {
 		String tipoPneu = (String) tpPneu;
 		Integer qtdeCombustPorcent = (Integer) combust;
 		if (isSemReabastacimento() && qtdeCombustPorcent.intValue() < 75) {
 			qtdeCombustPorcent = new Integer(75);
 		}
 
-		pilotoJogador.getCarro().trocarPneus(this, tipoPneu, controleCorrida.getDistaciaCorrida());
+		pilotoJogador.getCarro().trocarPneus(this, tipoPneu,
+				controleCorrida.getDistaciaCorrida());
 
-		int undsComnustAbastecer = (controleCorrida.getTanqueCheio() * qtdeCombustPorcent.intValue()) / 100;
-		if (isSemReabastacimento() && isCorridaIniciada() && pilotoJogador.getNumeroVolta() != 0) {
+		int undsComnustAbastecer = (controleCorrida.getTanqueCheio()
+				* qtdeCombustPorcent.intValue()) / 100;
+		if (isSemReabastacimento() && isCorridaIniciada()
+				&& pilotoJogador.getNumeroVolta() != 0) {
 			undsComnustAbastecer = 0;
 		}
-		pilotoJogador.getCarro().setCombustivel(undsComnustAbastecer + pilotoJogador.getCarro().getCombustivel());
+		pilotoJogador.getCarro().setCombustivel(undsComnustAbastecer
+				+ pilotoJogador.getCarro().getCombustivel());
 		if (isDrs()) {
 			pilotoJogador.getCarro().setAsa(Carro.MAIS_ASA);
 		} else {
 			String strAsa = (String) asa;
 			if (!strAsa.equals(pilotoJogador.getCarro().getAsa())) {
-				infoPrioritaria(Html.orange(Lang.msg("028", new String[] { pilotoJogador.getNome() })));
+				infoPrioritaria(Html.orange(Lang.msg("028",
+						new String[]{pilotoJogador.getNome()})));
 			}
 			pilotoJogador.getCarro().setAsa(strAsa);
 		}
@@ -999,7 +1038,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	public BufferedImage carregaBackGround(String backGround) {
 		URL url = null;
 		try {
-			String caminho = mainFrame.getCodeBase() + "sowbreira/f1mane/recursos/" + backGround;
+			String caminho = mainFrame.getCodeBase()
+					+ "sowbreira/f1mane/recursos/" + backGround;
 			Logger.logar("Caminho Carregar Bkg " + caminho);
 			url = new URL(caminho);
 			BufferedImage buff = ImageIO.read(url.openStream());
@@ -1098,7 +1138,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 		}
 
 		long tempo = Constantes.CICLO;
-		return controleEstatisticas.calculaSegundosParaRival(pilotoSelecionado, pRival, tempo);
+		return controleEstatisticas.calculaSegundosParaRival(pilotoSelecionado,
+				pRival, tempo);
 	}
 
 	@Override
@@ -1136,7 +1177,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	}
 
 	@Override
-	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo, Piloto p) {
+	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
+			Piloto p) {
 		return controleCorrida.ganhoComSafetyCar(ganho, controleJogo, p);
 	}
 
@@ -1198,11 +1240,14 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 
 	@Override
 	public int getLag() {
-		if (pilotoJogador.getNoAtual() == null || pilotoJogador.getNoAtualSuave() == null || pilotoJogador == null) {
+		if (pilotoJogador.getNoAtual() == null
+				|| pilotoJogador.getNoAtualSuave() == null
+				|| pilotoJogador == null) {
 			return 0;
 		}
 
-		int val = pilotoJogador.getNoAtual().getIndex() - pilotoJogador.getNoAtualSuave().getIndex();
+		int val = pilotoJogador.getNoAtual().getIndex()
+				- pilotoJogador.getNoAtualSuave().getIndex();
 		if (val < 0) {
 			return 0;
 		}
@@ -1210,8 +1255,10 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	}
 
 	@Override
-	public int calculaDiffParaProximoRetardatario(Piloto piloto, boolean analisaTracado) {
-		return controleEstatisticas.calculaDiffParaProximoRetardatario(piloto, analisaTracado);
+	public int calculaDiffParaProximoRetardatario(Piloto piloto,
+			boolean analisaTracado) {
+		return controleEstatisticas.calculaDiffParaProximoRetardatario(piloto,
+				analisaTracado);
 	}
 
 	@Override
@@ -1302,17 +1349,21 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 			}
 			indicativoEmborrachamentoPista -= emborrachamento;
 		}
-		return Math.random() > 0.5 || Math.random() > indicativoEmborrachamentoPista;
+		return Math.random() > 0.5
+				|| Math.random() > indicativoEmborrachamentoPista;
 	}
 
 	@Override
-	public Campeonato criarCampeonatoPiloto(List cirucitosCampeonato, String temporadaSelecionada,
-			int numVoltasSelecionado, int turbulenciaSelecionado, String climaSelecionado, String nivelSelecionado,
-			Piloto pilotoSelecionado, boolean kers, boolean drs, boolean trocaPneus, boolean reabasteciemto) {
+	public Campeonato criarCampeonatoPiloto(List cirucitosCampeonato,
+			String temporadaSelecionada, int numVoltasSelecionado,
+			int turbulenciaSelecionado, String climaSelecionado,
+			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+			boolean drs, boolean trocaPneus, boolean reabasteciemto) {
 		controleCampeonato = new ControleCampeonato(mainFrame);
-		return controleCampeonato.criarCampeonatoPiloto(cirucitosCampeonato, temporadaSelecionada, numVoltasSelecionado,
-				turbulenciaSelecionado, climaSelecionado, nivelSelecionado, pilotoSelecionado, kers, drs, trocaPneus,
-				reabasteciemto);
+		return controleCampeonato.criarCampeonatoPiloto(cirucitosCampeonato,
+				temporadaSelecionada, numVoltasSelecionado,
+				turbulenciaSelecionado, climaSelecionado, nivelSelecionado,
+				pilotoSelecionado, kers, drs, trocaPneus, reabasteciemto);
 	}
 
 	@Override
@@ -1368,7 +1419,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 		}
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto p = (Piloto) iterator.next();
-			if (p.getNome().equals(controleCampeonato.getCampeonato().getRival())) {
+			if (p.getNome()
+					.equals(controleCampeonato.getCampeonato().getRival())) {
 				return p;
 			}
 
@@ -1377,8 +1429,10 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	}
 
 	@Override
-	public Carro obterCarroNaFrenteRetardatario(Piloto piloto, boolean analisaTracado) {
-		return controleCorrida.obterCarroNaFrenteRetardatario(piloto, analisaTracado);
+	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
+			boolean analisaTracado) {
+		return controleCorrida.obterCarroNaFrenteRetardatario(piloto,
+				analisaTracado);
 	}
 
 	@Override
@@ -1388,7 +1442,8 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 
 	@Override
 	public int getDurabilidadeAreofolio() {
-		return (InterfaceJogo.DURABILIDADE_AREOFOLIO * getQtdeTotalVoltas()) / 72;
+		return (InterfaceJogo.DURABILIDADE_AREOFOLIO * getQtdeTotalVoltas())
+				/ 72;
 	}
 
 	/**
@@ -1471,6 +1526,21 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	@Override
 	public No obterCurvaAnterior(No noAtual) {
 		return mapaNoCurvaAnterior.get(noAtual);
+	}
+
+	@Override
+	public int getFPS() {
+		if (gerenciadorVisual != null) {
+			return gerenciadorVisual.getFps();
+		}
+		return 0;
+	}
+
+	@Override
+	public String calculaSegundosParaProximo(Piloto psel, int diferenca) {
+		long tempo = Constantes.CICLO;
+		return controleEstatisticas.calculaSegundosParaProximo(psel, tempo,
+				diferenca);
 	}
 
 }

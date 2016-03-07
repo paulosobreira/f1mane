@@ -1294,4 +1294,18 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
+	@Override
+	public int getFPS() {
+		if(gerenciadorVisual!=null){
+			return gerenciadorVisual.getFps();
+		}
+		return 0;
+	}
+
+	@Override
+	public String calculaSegundosParaProximo(Piloto psel, int diferenca) {
+		long tempo = dadosParticiparJogo.getTempoCiclo().intValue();
+		return controleEstatisticas.calculaSegundosParaProximo(psel, tempo, diferenca);
+	}
+
 }
