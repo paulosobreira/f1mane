@@ -20,7 +20,7 @@ public class Constantes {
 	public static final int LATENCIA_MAX = 240;
 	public static final int LATENCIA_MIN = 150;
 	public static final int LIMITE_DRS = 300;
-	public static int TAMANHO_RETA_DRS = 1800;
+	public static int TAMANHO_RETA_DRS = 1500;
 
 	private Constantes() {
 	}

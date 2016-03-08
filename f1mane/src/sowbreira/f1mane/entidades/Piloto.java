@@ -1219,10 +1219,10 @@ public class Piloto implements Serializable {
 				.getTracado() == getTracado())) {
 			return;
 		}
-		double diff = calculaDiffParaProximoRetardatario;
+		double diff = calculaDiferencaParaProximo;
 		double multiplicadoGanhoTurbulencia = (controleJogo
 				.getFatorUtrapassagem());
-		double distLimiteTurbulencia = 100 * multiplicadoGanhoTurbulencia;
+		double distLimiteTurbulencia = 100.0 / multiplicadoGanhoTurbulencia;
 		if (diff < distLimiteTurbulencia && !verificaForaPista(
 				carroPilotoDaFrenteRetardatario.getPiloto())) {
 			if (getTracado() != carroPilotoDaFrenteRetardatario.getPiloto()
