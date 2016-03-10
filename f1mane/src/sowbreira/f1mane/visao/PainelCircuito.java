@@ -1223,9 +1223,13 @@ public class PainelCircuito {
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(
-					"" + piloto.getCarro().porcentagemDesgastePeneus() + "%",
-					x + 12, y + 16);
+			int porcentagemDesgastePeneus = piloto.getCarro()
+					.porcentagemDesgastePeneus();
+			if (porcentagemDesgastePeneus < 0) {
+				porcentagemDesgastePeneus = 0;
+			}
+			g2d.drawString("" + porcentagemDesgastePeneus + "%", x + 12,
+					y + 16);
 
 			if (corBorda != null) {
 				desenhaBordaResultadoFinal(g2d, x, y, 50, 20, corBorda);
@@ -1248,9 +1252,12 @@ public class PainelCircuito {
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(
-					"" + piloto.getCarro().porcentagemCombustivel() + "%",
-					x + 12, y + 16);
+			int porcentagemCombustivel = piloto.getCarro()
+					.porcentagemCombustivel();
+			if (porcentagemCombustivel < 0) {
+				porcentagemCombustivel = 0;
+			}
+			g2d.drawString("" + porcentagemCombustivel + "%", x + 12, y + 16);
 
 			if (corBorda != null) {
 				desenhaBordaResultadoFinal(g2d, x, y, 50, 20, corBorda);
@@ -1273,8 +1280,12 @@ public class PainelCircuito {
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
+			int porcentagemDesgasteMotor = piloto.getCarro().porcentagemDesgasteMotor();
+			if(porcentagemDesgasteMotor<0){
+				porcentagemDesgasteMotor = 0;
+			}
 			g2d.drawString(
-					"" + piloto.getCarro().porcentagemDesgasteMotor() + "%",
+					"" + porcentagemDesgasteMotor + "%",
 					x + 12, y + 16);
 
 			if (corBorda != null) {
