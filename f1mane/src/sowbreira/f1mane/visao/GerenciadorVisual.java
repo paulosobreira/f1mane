@@ -361,42 +361,39 @@ public class GerenciadorVisual {
 				lastPress = now;
 				int keyCoode = e.getKeyCode();
 
-				if (keyCoode == KeyEvent.VK_F1 || keyCoode == KeyEvent.VK_A) {
+				if (keyCoode == KeyEvent.VK_A) {
 					controleJogo.mudarGiroMotor(Carro.GIRO_MIN);
 				}
-				if (keyCoode == KeyEvent.VK_F2 || keyCoode == KeyEvent.VK_S) {
+				if (keyCoode == KeyEvent.VK_S) {
 					controleJogo.mudarGiroMotor(Carro.GIRO_NOR);
 				}
-				if (keyCoode == KeyEvent.VK_F3 || keyCoode == KeyEvent.VK_D) {
+				if (keyCoode == KeyEvent.VK_D) {
 					controleJogo.mudarGiroMotor(Carro.GIRO_MAX);
-				}
-				if (keyCoode == KeyEvent.VK_F4) {
-					mudarModoAgressivo();
 				}
 				if (keyCoode == KeyEvent.VK_F11) {
 					progamacaoBox();
 				}
-				if (keyCoode == KeyEvent.VK_F12 || keyCoode == KeyEvent.VK_B) {
+				if (keyCoode == KeyEvent.VK_B) {
 					if (painelCircuito != null) {
 						painelCircuito.mudarModoBox();
 					} else {
 						mudarModoBox();
 					}
 				}
-				if (keyCoode == KeyEvent.VK_F5 || keyCoode == KeyEvent.VK_Z) {
+				if (keyCoode == KeyEvent.VK_Z) {
 					mudarModoPilotagem(Piloto.LENTO);
 				}
-				if (keyCoode == KeyEvent.VK_F6 || keyCoode == KeyEvent.VK_X) {
+				if (keyCoode == KeyEvent.VK_X) {
 					mudarModoPilotagem(Piloto.NORMAL);
 				}
-				if (keyCoode == KeyEvent.VK_F7 || keyCoode == KeyEvent.VK_C) {
+				if (keyCoode == KeyEvent.VK_C) {
 					mudarModoPilotagem(Piloto.AGRESSIVO);
 				}
 				if (keyCoode == KeyEvent.VK_ESCAPE) {
 					controleJogo.pausarJogo();
 					controleJogo.ativaVerControles();
 				}
-				if (keyCoode == KeyEvent.VK_F8 || keyCoode == KeyEvent.VK_G) {
+				if (keyCoode == KeyEvent.VK_G) {
 					mudarAutoPos();
 					controleJogo.selecionaPilotoJogador();
 				}
@@ -432,17 +429,18 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_F9) {
 					mudaPilotoSelecionado();
 				}
+				
 				if (keyCoode == KeyEvent.VK_F10) {
 					ligaDesligaSom();
 				}
-				if (keyCoode == KeyEvent.VK_W || keyCoode == KeyEvent.VK_UP) {
+				if (keyCoode == KeyEvent.VK_UP) {
 					drs();
 				}
-				if (keyCoode == KeyEvent.VK_E || keyCoode == KeyEvent.VK_DOWN) {
+				if (keyCoode == KeyEvent.VK_DOWN) {
 					kers();
 				}
 
-				if (keyCoode == KeyEvent.VK_1) {
+				if (keyCoode == KeyEvent.VK_F1) {
 					Logger.ativo = !Logger.ativo;
 				}
 

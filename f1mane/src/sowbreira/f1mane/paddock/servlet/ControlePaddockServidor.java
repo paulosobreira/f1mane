@@ -275,8 +275,6 @@ public class ControlePaddockServidor {
 			return verCorridas(clientPaddockPack);
 		} else if (Comandos.DADOS_PILOTOS_JOGO.equals(commando)) {
 			return dadosPilotosJogo(clientPaddockPack);
-		} else if (Comandos.OBTER_NOVO_CAPCHA.equals(commando)) {
-			return obterNovoCapcha(clientPaddockPack);
 		} else if (Comandos.CRIAR_CAMPEONATO.equals(commando)) {
 			return criarCampeonato(clientPaddockPack);
 		} else if (Comandos.LISTAR_CAMPEONATOS.equals(commando)) {
@@ -315,20 +313,6 @@ public class ControlePaddockServidor {
 
 	private Object criarCampeonato(ClientPaddockPack clientPaddockPack) {
 		return controleCampeonatoServidor.criarCampeonato(clientPaddockPack);
-	}
-
-	private Object obterNovoCapcha(ClientPaddockPack clientPaddockPack) {
-		try {
-			ByteArrayOutputStream jpegstream = new ByteArrayOutputStream();
-			String chave = String.valueOf(System.currentTimeMillis());
-			clientPaddockPack = new ClientPaddockPack();
-			clientPaddockPack.setComando(Comandos.OBTER_NOVO_CAPCHA);
-			clientPaddockPack.setDataBytes(jpegstream.toByteArray());
-			return clientPaddockPack;
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
-		return new ErroServ(Lang.msg("erroCapcha"));
 	}
 
 	private Object dadosPilotosJogo(ClientPaddockPack clientPaddockPack) {

@@ -339,7 +339,7 @@ public class ControleBox {
 		long penalidade = 0;
 		Carro carro = (Carro) boxEquipesOcupado.get(piloto.getCarro());
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
-			if (controleJogo.verificaInfoRelevante(piloto)) {
+			if (piloto.getPosicao() <= 8) {
 				controleJogo.info(Html.orange(
 						Lang.msg("298", new String[]{carro.getNome()})));
 			}

@@ -27,19 +27,20 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class FormEntrada extends JPanel {
-	private JComboBox comboIdiomas = new JComboBox(new String[] { Lang.msg("pt"), Lang.msg("en") });
+	private JComboBox comboIdiomas = new JComboBox(
+			new String[]{Lang.msg("pt"), Lang.msg("en")});
 	private JTextField nomeLogar = new JTextField(20);
 	private JTextField nomeRegistrar = new JTextField(20);
+	private JTextField nomeRecuperar = new JTextField(20);
+
 	private ControlePaddockCliente controlePaddockCliente;
 
 	private JLabel senhaLabel = new JLabel("Senha") {
 		public String getText() {
-			return Lang.msg("234");
+			return Lang.msg("senha");
 		}
 	};
 	private JPasswordField senha = new JPasswordField(20);
-
-	private JCheckBox recuperar = new JCheckBox();
 
 	private JCheckBox lembrar = new JCheckBox();
 	private JLabel recuperarLabel = new JLabel("Recuperar Senha") {
@@ -48,27 +49,25 @@ public class FormEntrada extends JPanel {
 		}
 	};
 
-	private JLabel emailLabel = new JLabel("Entre com seu e-mail") {
-		public String getText() {
-			return Lang.msg("168");
-		}
-	};
-	private JTextField email = new JTextField(20);
+	private JTextField emailRegistrar = new JTextField(20);
+	private JTextField emailRecuperar = new JTextField(20);
 
 	public FormEntrada(ControlePaddockCliente controlePaddockCliente) {
 		this.controlePaddockCliente = controlePaddockCliente;
 		setLayout(new BorderLayout());
 		JTabbedPane jTabbedPane = new JTabbedPane();
-		JPanel panelAba1 = new JPanel(new BorderLayout(15, 15));
-		JPanel sulaba1 = new JPanel(new BorderLayout());
-		sulaba1.add(gerarLogin(), BorderLayout.CENTER);
-		sulaba1.add(gerarLembrar(), BorderLayout.SOUTH);
-		panelAba1.add(sulaba1, BorderLayout.CENTER);
-		panelAba1.add(gerarIdiomas(), BorderLayout.SOUTH);
-		jTabbedPane.addTab(Lang.msg("171"), panelAba1);
-		JPanel panelAba2 = new JPanel(new BorderLayout());
-		panelAba2.add(gerarRegistrar(), BorderLayout.CENTER);
-		jTabbedPane.addTab(Lang.msg("218"), panelAba2);
+		JPanel panelAbaEntrar = new JPanel(new BorderLayout(15, 15));
+		JPanel panelabaEntrarCenter = new JPanel(new BorderLayout());
+		panelabaEntrarCenter.add(gerarLogin(), BorderLayout.CENTER);
+		panelabaEntrarCenter.add(gerarLembrar(), BorderLayout.SOUTH);
+		panelAbaEntrar.add(panelabaEntrarCenter, BorderLayout.CENTER);
+		jTabbedPane.addTab(Lang.msg("171"), panelAbaEntrar);
+		JPanel panelAbaRegistrar = new JPanel(new BorderLayout());
+		panelAbaRegistrar.add(gerarRegistrar(), BorderLayout.CENTER);
+		jTabbedPane.addTab(Lang.msg("registrar"), panelAbaRegistrar);
+		JPanel panelAbaRecuperar = new JPanel(new BorderLayout());
+		panelAbaRecuperar.add(gerarRecuperar(), BorderLayout.CENTER);
+		jTabbedPane.addTab(Lang.msg("recuperar"), panelAbaRecuperar);
 		add(jTabbedPane, BorderLayout.CENTER);
 		setSize(300, 300);
 		setVisible(true);
@@ -99,7 +98,8 @@ public class FormEntrada extends JPanel {
 	private JPanel gerarIdiomas() {
 		comboIdiomas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Logger.logar(Lang.key(comboIdiomas.getSelectedItem().toString()));
+				Logger.logar(
+						Lang.key(comboIdiomas.getSelectedItem().toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
 				if (i != null && !"".equals(i)) {
 					Lang.mudarIdioma(i);
@@ -121,10 +121,6 @@ public class FormEntrada extends JPanel {
 		return langPanel;
 	}
 
-	public JCheckBox getRecuperar() {
-		return recuperar;
-	}
-
 	private JPanel gerarRegistrar() {
 		JPanel registrarPanel = new JPanel(new GridLayout(5, 2));
 		registrarPanel.setBorder(new TitledBorder("Registrar") {
@@ -138,16 +134,38 @@ public class FormEntrada extends JPanel {
 			}
 		});
 		registrarPanel.add(nomeRegistrar);
-		registrarPanel.add(emailLabel);
-		registrarPanel.add(email);
-		JPanel recuperarPanel = new JPanel();
-		recuperarPanel.add(recuperarLabel);
-		recuperarPanel.add(recuperar);
-		registrarPanel.add(recuperarPanel);
-
+		registrarPanel.add(new JLabel("Entre com seu e-mail") {
+			public String getText() {
+				return Lang.msg("168");
+			}
+		});
+		registrarPanel.add(emailRegistrar);
 		JPanel newPanel = new JPanel(new BorderLayout());
 		newPanel.add(registrarPanel, BorderLayout.NORTH);
-		// newPanel.add(gerarCapchaPanel(), BorderLayout.CENTER);
+		return newPanel;
+	}
+
+	private JPanel gerarRecuperar() {
+		JPanel recuperarPanel = new JPanel(new GridLayout(5, 2));
+		recuperarPanel.setBorder(new TitledBorder("Registrar") {
+			public String getTitle() {
+				return Lang.msg("235");
+			}
+		});
+		recuperarPanel.add(new JLabel("Entre com seu Nome") {
+			public String getText() {
+				return Lang.msg("167");
+			}
+		});
+		recuperarPanel.add(nomeRecuperar);
+		recuperarPanel.add(new JLabel("Entre com seu e-mail") {
+			public String getText() {
+				return Lang.msg("168");
+			}
+		});
+		recuperarPanel.add(emailRecuperar);
+		JPanel newPanel = new JPanel(new BorderLayout());
+		newPanel.add(recuperarPanel, BorderLayout.NORTH);
 		return newPanel;
 
 	}
@@ -197,15 +215,28 @@ public class FormEntrada extends JPanel {
 		// encoder.close();
 		FormEntrada formEntrada = new FormEntrada(null);
 		formEntrada.setToolTipText(Lang.msg("066"));
-		int result = JOptionPane.showConfirmDialog(null, formEntrada, Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog(null, formEntrada,
+				Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			Logger.logar("ok");
 		}
 	}
 
-	public JTextField getEmail() {
-		return email;
+	public JTextField getNomeRegistrar() {
+		return nomeRegistrar;
+	}
+
+	public JTextField getNomeRecuperar() {
+		return nomeRecuperar;
+	}
+
+	public JTextField getEmailRegistrar() {
+		return emailRegistrar;
+	}
+
+	public JTextField getEmailRecuperar() {
+		return emailRecuperar;
 	}
 
 }

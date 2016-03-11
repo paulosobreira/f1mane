@@ -1280,13 +1280,12 @@ public class PainelCircuito {
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
-			int porcentagemDesgasteMotor = piloto.getCarro().porcentagemDesgasteMotor();
-			if(porcentagemDesgasteMotor<0){
+			int porcentagemDesgasteMotor = piloto.getCarro()
+					.porcentagemDesgasteMotor();
+			if (porcentagemDesgasteMotor < 0) {
 				porcentagemDesgasteMotor = 0;
 			}
-			g2d.drawString(
-					"" + porcentagemDesgasteMotor + "%",
-					x + 12, y + 16);
+			g2d.drawString("" + porcentagemDesgasteMotor + "%", x + 12, y + 16);
 
 			if (corBorda != null) {
 				desenhaBordaResultadoFinal(g2d, x, y, 50, 20, corBorda);
@@ -1362,9 +1361,12 @@ public class PainelCircuito {
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 80, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(
-					piloto.getVantagem() == null ? "" : piloto.getVantagem(),
-					x + 5, y + 16);
+			String vantagem = piloto.getVantagem();
+			if (piloto.getVantagem() == null || piloto
+					.getPosicao() == controleJogo.getPilotosCopia().size()) {
+				vantagem = "";
+			}
+			g2d.drawString(vantagem, x + 5, y + 16);
 
 			if (corBorda != null) {
 				desenhaBordaResultadoFinal(g2d, x, y, 80, 20, corBorda);
@@ -4818,8 +4820,8 @@ public class PainelCircuito {
 
 	private void desenhaContadorVoltas(Graphics2D g2d) {
 		g2d.setColor(luzApagada);
-		String txt = controleJogo.getCircuito().getNome() + " "
-				+ controleJogo.getNumVoltaAtual() + "/"
+		String txt = Util.substVogais(controleJogo.getCircuito().getNome())
+				+ " " + controleJogo.getNumVoltaAtual() + "/"
 				+ controleJogo.totalVoltasCorrida();
 
 		int largura = 0;
