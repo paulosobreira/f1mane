@@ -13,7 +13,7 @@ import org.hibernate.annotations.ForeignKey;
 /**
  * @author Paulo Sobreira Criado em 27/06/2009 as 23:01:35
  */
-@Entity
+@Entity(name = "f1_carreiradadossrv")
 public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 
 	private int ptsConstrutores;

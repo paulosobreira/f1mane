@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-@Entity
+@Entity(name = "f1_corridacampeonato")
 public class CorridaCampeonato extends F1ManeDados {
 
 	private String nomeCircuito;

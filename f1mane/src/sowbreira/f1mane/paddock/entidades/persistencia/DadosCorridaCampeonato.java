@@ -13,7 +13,7 @@ import sowbreira.f1mane.controles.InterfaceJogo;
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15
  */
-@Entity
+@Entity(name = "f1_dadoscorridacampeonato")
 public class DadosCorridaCampeonato extends F1ManeDados {
 
 	private int posicao;

@@ -190,7 +190,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void atualizaZoom() {
-		if (!setZoom && jogoCliente.getFPS() > 30) {
+		if (!setZoom && jogoCliente.getFPS() >= 30) {
 			jogoCliente.setMouseZoom(0.7);
 			setZoom = true;
 		}
@@ -226,6 +226,7 @@ public class MonitorJogo implements Runnable {
 
 	private void mostraQualify() throws InterruptedException {
 		boolean interrupt = false;
+		boolean creditos = false;
 		boolean atualizouDadosQualify = false;
 		while (!interrupt && Comandos.MOSTRANDO_QUALIFY.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
@@ -240,6 +241,10 @@ public class MonitorJogo implements Runnable {
 				}
 			}
 			iniciaJalena();
+			if (!creditos) {
+				Thread.sleep(1500);
+				creditos = true;
+			}
 			jogoCliente.desenhaQualificacao();
 			verificaEstadoJogo();
 		}

@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-@Entity
+@Entity(name = "f1_campeonato")
 public class Campeonato extends F1ManeDados {
 	private transient String circuitoAtual;
 	private String temporada;

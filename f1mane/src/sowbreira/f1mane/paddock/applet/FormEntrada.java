@@ -19,6 +19,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
@@ -27,11 +29,13 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class FormEntrada extends JPanel {
-	private JComboBox comboIdiomas = new JComboBox(
-			new String[]{Lang.msg("pt"), Lang.msg("en")});
+	private JComboBox comboIdiomas = new JComboBox(new String[] { Lang.msg("pt"), Lang.msg("en") });
 	private JTextField nomeLogar = new JTextField(20);
 	private JTextField nomeRegistrar = new JTextField(20);
 	private JTextField nomeRecuperar = new JTextField(20);
+	private JTextField emailRegistrar = new JTextField(20);
+	private JTextField emailRecuperar = new JTextField(20);
+	private JPasswordField senha = new JPasswordField(20);
 
 	private ControlePaddockCliente controlePaddockCliente;
 
@@ -40,7 +44,6 @@ public class FormEntrada extends JPanel {
 			return Lang.msg("senha");
 		}
 	};
-	private JPasswordField senha = new JPasswordField(20);
 
 	private JCheckBox lembrar = new JCheckBox();
 	private JLabel recuperarLabel = new JLabel("Recuperar Senha") {
@@ -48,9 +51,6 @@ public class FormEntrada extends JPanel {
 			return Lang.msg("235");
 		}
 	};
-
-	private JTextField emailRegistrar = new JTextField(20);
-	private JTextField emailRecuperar = new JTextField(20);
 
 	public FormEntrada(ControlePaddockCliente controlePaddockCliente) {
 		this.controlePaddockCliente = controlePaddockCliente;
@@ -69,6 +69,15 @@ public class FormEntrada extends JPanel {
 		panelAbaRecuperar.add(gerarRecuperar(), BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("recuperar"), panelAbaRecuperar);
 		add(jTabbedPane, BorderLayout.CENTER);
+		jTabbedPane.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				nomeRegistrar.setText("");
+				nomeRecuperar.setText("");
+				emailRegistrar.setText("");
+				emailRecuperar.setText("");
+			}
+		});
 		setSize(300, 300);
 		setVisible(true);
 
@@ -98,8 +107,7 @@ public class FormEntrada extends JPanel {
 	private JPanel gerarIdiomas() {
 		comboIdiomas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Logger.logar(
-						Lang.key(comboIdiomas.getSelectedItem().toString()));
+				Logger.logar(Lang.key(comboIdiomas.getSelectedItem().toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
 				if (i != null && !"".equals(i)) {
 					Lang.mudarIdioma(i);
@@ -215,8 +223,7 @@ public class FormEntrada extends JPanel {
 		// encoder.close();
 		FormEntrada formEntrada = new FormEntrada(null);
 		formEntrada.setToolTipText(Lang.msg("066"));
-		int result = JOptionPane.showConfirmDialog(null, formEntrada,
-				Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog(null, formEntrada, Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			Logger.logar("ok");

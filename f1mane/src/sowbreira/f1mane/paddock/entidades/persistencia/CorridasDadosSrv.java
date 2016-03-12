@@ -12,7 +12,7 @@ import br.nnpe.Util;
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15
  */
-@Entity
+@Entity(name = "f1_corridasdadossrv")
 public class CorridasDadosSrv extends F1ManeDados implements Serializable {
 
 	@ManyToOne
