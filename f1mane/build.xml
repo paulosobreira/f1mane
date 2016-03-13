@@ -13,7 +13,7 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
-	<property name="TOMCAT_HOME" value="C:\Java\apache-tomcat-8.0.28" />
+	<property name="TOMCAT_HOME" value="E:\apache-tomcat-7.0.35" />
 	<property name="HOST" value="games-sowbreira.rhcloud.com" />
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
@@ -27,6 +27,13 @@
 		</fileset>
 		<pathelement location="build" />
 	</path>
+
+	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarLocalJnlp,criarWar,limpaJars">
+	</target>
+
+	<target name="targetPadraoNoLibs" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,criarWarNoLibs,limpaJars">
+	</target>
+
 	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,criarWar,limpaJars">
 	</target>
 
@@ -123,6 +130,24 @@
 		<delete dir="WebContent/sowbreira" />
 	</target>
 
+	
+	<target name="criarWarNoLibs">
+		<delete dir="${TOMCAT_HOME}/webapps/f1mane" />
+		<war compress="on" destfile="${TOMCAT_HOME}/webapps/f1mane.war">
+			<fileset dir="WebContent">
+				<exclude name="**/*.jnlp" />
+				<exclude name="WEB-INF/lib/*.jar" />
+			</fileset>
+			<fileset dir="WebContent">
+				<include name="WEB-INF/lib/f1mane.jar"  />
+			</fileset>			
+			<fileset dir="build">
+				<include name="**/*.jnlp" />
+			</fileset>
+		</war>
+		<delete dir="WebContent/sowbreira" />
+	</target>
+	
 
 	<target name="sign_jar">
 		<copy todir=".">
@@ -181,6 +206,7 @@
 		</delete>
 	</target>
 
+
 	<target name="limpaJars">
 		<delete>
 			<fileset dir=".">
@@ -190,8 +216,17 @@
 	</target>
 
 	<target name="atualizarJnlp" description="Atualizar JNPL">
-		<replace dir="build" value="${HOST}" token="{host}" >
+		<replace dir="build" value="${HOST}" token="{host}">
 			<include name="*.jnlp" />
 		</replace>
 	</target>
+
+	<target name="atualizarLocalJnlp" description="Atualizar JNPL">
+		<replace dir="build" value="localhost:8080" token="{host}">
+			<include name="*.jnlp" />
+		</replace>
+	</target>
+
+
+
 </project>

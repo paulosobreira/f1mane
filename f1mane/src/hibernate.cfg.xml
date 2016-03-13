@@ -3,19 +3,10 @@
 "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
+
 	<session-factory>
-		<property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sobreira_games</property>
-		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">root</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-
-		<!-- <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property> 
-			<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sobreira_games</property> 
-			<property name="hibernate.connection.username">sobreira_sowgame</property> 
-			<property name="hibernate.connection.password">sowgame</property> <property 
-			name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property> -->
-
+        <property name="hibernate.connection.datasource">java:comp/env/jdbc/MySQLDS</property>
 
 		<mapping
 			class="sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv" />

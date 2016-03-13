@@ -17,7 +17,7 @@
 		<servlet-name>ServletPaddock</servlet-name>
 		<url-pattern>/ServletPaddock</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>ServletMail</servlet-name>
 		<servlet-class>sowbreira.f1mane.paddock.servlet.ServletMail</servlet-class>
@@ -26,13 +26,17 @@
 	<servlet-mapping>
 		<servlet-name>ServletMail</servlet-name>
 		<url-pattern>/ServletMail</url-pattern>
-	</servlet-mapping>	
+	</servlet-mapping>
 
 	<!-- Standard Action Servlet Mapping -->
 
 	<!-- The Usual Welcome File List -->
 	<welcome-file-list>
 		<welcome-file>f1mane.jsp</welcome-file>
-		<!--	<welcome-file>esquema.jsp</welcome-file>-->
+		<!-- <welcome-file>esquema.jsp</welcome-file> -->
 	</welcome-file-list>
+	<resource-env-ref>
+		<resource-env-ref-name>jdbc/MySQLDS</resource-env-ref-name>
+		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+	</resource-env-ref>
 </web-app>

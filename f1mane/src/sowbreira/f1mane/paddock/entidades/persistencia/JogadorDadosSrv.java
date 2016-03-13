@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * @author Paulo Sobreira Criado em 20/10/2007 as 15:27:53
  */
 @Entity
-@Table(name = "Usuario")
+@Table(name = "usuario")
 public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 
 	@Column(name = "login", nullable = false, unique = true)
