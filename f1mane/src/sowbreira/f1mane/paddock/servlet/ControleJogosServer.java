@@ -361,6 +361,7 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
+		piloto.setAtivarDRS(true);
 		piloto.setAgressivoF4(true);
 		return null;
 	}
@@ -374,6 +375,7 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
+		piloto.setAtivarDRS(true);
 		piloto.getCarro().mudarGiroMotor(clientPaddockPack.getGiroMotor());
 		return null;
 	}
@@ -545,6 +547,7 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
+		piloto.setAtivarDRS(true);
 		piloto.setModoPilotagem(clientPaddockPack.getModoPilotagem());
 		return null;
 	}
@@ -558,6 +561,7 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
+		piloto.setAtivarDRS(true);
 		piloto.mudarAutoTracado();
 		return null;
 	}
@@ -571,6 +575,7 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
+		piloto.setAtivarDRS(true);
 		piloto.mudarTracado(clientPaddockPack.getTracado(), jogoServidor);
 		return null;
 	}
@@ -621,7 +626,7 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
-		piloto.setAtivarDRS(((Boolean) (clientPaddockPack.getDataObject())).booleanValue());
+		piloto.setAtivarDRS(true);
 		return null;
 	}
 
@@ -634,6 +639,7 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
+		piloto.setAtivarDRS(true);
 		piloto.setAtivarKers(((Boolean) (clientPaddockPack.getDataObject())).booleanValue());
 		return null;
 	}

@@ -587,6 +587,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				}
 				piloto.setAutoPos(posis.autoPos);
 				calculaSegundosParaLider(piloto);
+				piloto.calculaCarrosAdjacentes(this);
 				if (posis.idNo >= -1) {
 					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
 					piloto.setNoAtual(no);
@@ -661,7 +662,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public int calculaDiferencaParaProximo(Piloto piloto) {
-		return 0;
+		if (controleEstatisticas == null) {
+			return 0;
+		}
+		int calculaDiferencaParaProximo = controleEstatisticas.calculaDiferencaParaProximo(piloto);
+		if (calculaDiferencaParaProximo < 0) {
+			calculaDiferencaParaProximo = 0;
+		}
+		return calculaDiferencaParaProximo;
 	}
 
 	public void mudarModoPilotagem(String modo) {
@@ -1055,7 +1063,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (monitorJogo == null) {
 			return false;
 		}
-		return monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MAX;
+		return monitorJogo.getLatenciaReal() > Constantes.LATENCIA_MIN;
 	}
 
 	@Override
@@ -1296,7 +1304,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public int getFPS() {
-		if(gerenciadorVisual!=null){
+		if (gerenciadorVisual != null) {
 			return gerenciadorVisual.getFps();
 		}
 		return 0;

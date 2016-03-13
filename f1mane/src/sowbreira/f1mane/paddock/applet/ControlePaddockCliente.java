@@ -137,7 +137,7 @@ public class ControlePaddockCliente {
 			URL dataUrl;
 			long envioT = System.currentTimeMillis();
 			// Gerar Lag
-			// Thread.sleep(Util.intervalo(150, 900));
+			//Thread.sleep(Util.intervalo(10, 300));
 			Object retorno = null;
 			dataUrl = new URL(protocol, host, port, urlSufix);
 

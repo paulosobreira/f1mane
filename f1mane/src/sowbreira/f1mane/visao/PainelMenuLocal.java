@@ -625,19 +625,7 @@ public class PainelMenuLocal {
 			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 5, 5));
 		}
 
-		creditos = new ArrayList<String>();
-
-		BufferedReader reader = new BufferedReader(
-				new InputStreamReader(CarregadorRecursos.recursoComoStream("creditos.txt")));
-		try {
-			String linha = reader.readLine();
-			while (linha != null) {
-				creditos.add(linha + "\n");
-				linha = reader.readLine();
-			}
-		} catch (IOException e1) {
-			Logger.logarExept(e1);
-		}
+		creditos= CarregadorRecursos.carregarCreditosJogo();
 
 	}
 

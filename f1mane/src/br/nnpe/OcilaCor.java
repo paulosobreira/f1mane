@@ -112,7 +112,7 @@ public class OcilaCor {
 			g = 255 * (porcent + 25) / 100;
 			r = 255;
 		}
-		return new Color(r, g, 0, 150);
+		return new Color(r, g, 0);
 	}
 
 	public static void main(String[] args) {
@@ -136,6 +136,6 @@ public class OcilaCor {
 			r = 255 * (porcent + 25) / 100;
 			g = 255;
 		}
-		return new Color(r, g, 0, 150);
+		return new Color(r, g, 0);
 	}
 }

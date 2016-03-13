@@ -778,7 +778,7 @@ public class Carro implements Serializable {
 	private void processaTemperaturaPneus(InterfaceJogo controleJogo) {
 		No noAtual = getPiloto().getNoAtual();
 		String modoPilotagem = getPiloto().getModoPilotagem();
-		double modAquecer = 80;
+		double modAquecer = 85;
 		if (!TIPO_PNEU_MOLE.equals(tipoPneu)) {
 			modAquecer = 55;
 		}

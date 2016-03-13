@@ -561,7 +561,7 @@ public class PainelCircuito {
 	}
 
 	private void atualizacaoSuave(Piloto piloto) {
-		if (getQtdeLuzesAcesas() > 2 && controleJogo.getLag() < 50) {
+		if (getQtdeLuzesAcesas() > 1) {
 			return;
 		}
 		List<No> nos;
@@ -1345,8 +1345,7 @@ public class PainelCircuito {
 	}
 
 	private void desenhaLag(Graphics2D g2d) {
-		if (controleJogo.verificaLag()) {
-			int largura = 0;
+		if (controleJogo.getLag() > 50) {
 			String msg = "LAG";
 			int lag = controleJogo.getLag();
 			if (contMostraLag >= 0 && contMostraLag < 200) {
@@ -1357,19 +1356,14 @@ public class PainelCircuito {
 			} else if (contMostraLag > 200) {
 				contMostraLag = -20;
 			}
-
 			contMostraLag++;
-			for (int i = 0; i < msg.length(); i++) {
-				largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
-			}
-
 			int x = limitesViewPort.x + (limitesViewPort.width) - 70;
 			int y = Util.inte(limitesViewPort.y + limitesViewPort.getHeight() - 130);
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 65, 35, 15, 15);
 			Font fontOri = g2d.getFont();
 			g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-			g2d.setColor(OcilaCor.porcentVermelho100Verde0(lag / 10));
+			g2d.setColor(OcilaCor.porcentVermelho100Verde0(lag / 3));
 			g2d.drawString(msg, x + 2, y + 26);
 			g2d.setFont(fontOri);
 		}

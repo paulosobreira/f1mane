@@ -554,8 +554,6 @@ public class MonitorJogo implements Runnable {
 						piloto.setAsaBox(dadosParciais.pselAsaBox);
 						piloto.getCarro().setAsa(dadosParciais.pselAsa);
 						piloto.getCarro().setGiro(dadosParciais.pselGiro);
-						piloto.calculaCarrosAdjacentes(jogoCliente);
-
 					}
 				}
 				Collections.sort(pilotos, new Comparator() {

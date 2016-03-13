@@ -5,10 +5,12 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -61,8 +63,7 @@ public class CarregadorRecursos {
 		final Properties properties = new Properties();
 
 		try {
-			properties
-					.load(recursoComoStreamIn("properties/temporadas.properties"));
+			properties.load(recursoComoStreamIn("properties/temporadas.properties"));
 
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
@@ -93,8 +94,7 @@ public class CarregadorRecursos {
 		return CarregadorRecursos.class.getResource(imagem);
 	}
 
-	public static BufferedImage carregaBufferedImageTranspareciaBranca(
-			String file) {
+	public static BufferedImage carregaBufferedImageTranspareciaBranca(String file) {
 		BufferedImage buffer = null;
 		try {
 			buffer = ImageUtil.toBufferedImage(file);
@@ -126,13 +126,11 @@ public class CarregadorRecursos {
 		return buffer;
 	}
 
-	public static BufferedImage carregaBufferedImageTranspareciaBranca(
-			String file, int ingVal) {
+	public static BufferedImage carregaBufferedImageTranspareciaBranca(String file, int ingVal) {
 		return carregaBufferedImageTranspareciaBranca(file, ingVal, 255);
 	}
 
-	public static BufferedImage carregaBufferedImageTranspareciaBranca(
-			String file, int ingVal, int translucidez) {
+	public static BufferedImage carregaBufferedImageTranspareciaBranca(String file, int ingVal, int translucidez) {
 		BufferedImage buffer = null;
 		try {
 			buffer = ImageUtil.toBufferedImage(file);
@@ -149,8 +147,7 @@ public class CarregadorRecursos {
 		return ImageUtil.geraTransparencia(buffer, ingVal, translucidez);
 	}
 
-	public static BufferedImage carregaBufferedImageTranspareciaPreta(
-			String file, int translucidez) {
+	public static BufferedImage carregaBufferedImageTranspareciaPreta(String file, int translucidez) {
 		BufferedImage buffer = null;
 		try {
 			buffer = ImageUtil.toBufferedImage(file);
@@ -167,13 +164,11 @@ public class CarregadorRecursos {
 		return ImageUtil.geraTransparencia(buffer, Color.BLACK, translucidez);
 	}
 
-	public static BufferedImage carregaBackGround(String backGroundStr,
-			JPanel panel, Circuito circuito) {
+	public static BufferedImage carregaBackGround(String backGroundStr, JPanel panel, Circuito circuito) {
 
 		BufferedImage backGround = null;
 		try {
-			backGround = ImageIO.read(CarregadorRecursos.class
-					.getResource(backGroundStr));
+			backGround = ImageIO.read(CarregadorRecursos.class.getResource(backGroundStr));
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
@@ -199,8 +194,7 @@ public class CarregadorRecursos {
 		return this.getClass().getResourceAsStream(string);
 	}
 
-	public static void main(String[] args) throws URISyntaxException,
-			IOException, ClassNotFoundException {
+	public static void main(String[] args) throws URISyntaxException, IOException, ClassNotFoundException {
 		// String val = "tn_2008voi-mclaren.gif";
 		// System.out.println(Util.intervalo(0, 0));
 
@@ -262,8 +256,7 @@ public class CarregadorRecursos {
 			if (!dir[i].getName().startsWith(".")) {
 				File[] imgCar = dir[i].listFiles();
 				for (int j = 0; j < imgCar.length; j++) {
-					if (!imgCar[j].getName().startsWith(".")
-							&& !imgCar[j].getName().equals("Thumbs.db")) {
+					if (!imgCar[j].getName().startsWith(".") && !imgCar[j].getName().equals("Thumbs.db")) {
 						String str = imgCar[j].getPath().split("recursos")[1];
 						str = str.substring(1, str.length());
 						carList.add(str);
@@ -272,8 +265,7 @@ public class CarregadorRecursos {
 				}
 			}
 		}
-		FileWriter fileWriter = new FileWriter(
-				"src/sowbreira/f1mane/recursos/carlist.txt");
+		FileWriter fileWriter = new FileWriter("src/sowbreira/f1mane/recursos/carlist.txt");
 		for (Iterator iterator = carList.iterator(); iterator.hasNext();) {
 			String carro = (String) iterator.next();
 			StringBuffer nCarro = new StringBuffer();
@@ -301,8 +293,7 @@ public class CarregadorRecursos {
 				Properties properties = new Properties();
 
 				properties.load(CarregadorRecursos.class
-						.getResourceAsStream("properties/" + temporarada
-								+ "/carros.properties"));
+						.getResourceAsStream("properties/" + temporarada + "/carros.properties"));
 
 				Enumeration propNames = properties.propertyNames();
 
@@ -318,35 +309,26 @@ public class CarregadorRecursos {
 					String green = values[2];
 					String blue = values[3];
 					carro.setImg("carros/" + temporarada + "/" + values[4]);
-					carro.setCor1(new Color(Integer.parseInt(red), Integer
-							.parseInt(green), Integer.parseInt(blue)));
+					carro.setCor1(new Color(Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue)));
 
 					red = values[5];
 					green = values[6];
 					blue = values[7];
-					carro.setCor2(new Color(Integer.parseInt(red), Integer
-							.parseInt(green), Integer.parseInt(blue)));
-					BufferedImage carroCima = CarregadorRecursos
-							.carregaImg("CarroCima.png");
+					carro.setCor2(new Color(Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue)));
+					BufferedImage carroCima = CarregadorRecursos.carregaImg("CarroCima.png");
 
-					BufferedImage cor1 = gerarCoresCarros(carro.getCor1(),
-							"CarroCimaC1.png");
-					BufferedImage cor2 = gerarCoresCarros(carro.getCor2(),
-							"CarroCimaC2.png");
+					BufferedImage cor1 = gerarCoresCarros(carro.getCor1(), "CarroCimaC1.png");
+					BufferedImage cor2 = gerarCoresCarros(carro.getCor2(), "CarroCimaC2.png");
 					Graphics graphics = carroCima.getGraphics();
 					graphics.drawImage(cor2, 0, 0, null);
 					graphics.drawImage(cor1, 0, 0, null);
 					graphics.dispose();
-					File gravar = new File("src" + File.separator + "sowbreira"
-							+ File.separator + "f1mane" + File.separator
-							+ "recursos" + File.separator + "carros"
-							+ File.separator + temporarada + File.separator
-							+ carro.getNome() + ".png");
+					File gravar = new File("src" + File.separator + "sowbreira" + File.separator + "f1mane"
+							+ File.separator + "recursos" + File.separator + "carros" + File.separator + temporarada
+							+ File.separator + carro.getNome() + ".png");
 					ImageIO.write(carroCima, "png", gravar);
-					Logger.logar("src" + File.separator + "sowbreira"
-							+ File.separator + "f1mane" + File.separator
-							+ "recursos" + File.separator + "carros"
-							+ File.separator + temporarada + File.separator
+					Logger.logar("src" + File.separator + "sowbreira" + File.separator + "f1mane" + File.separator
+							+ "recursos" + File.separator + "carros" + File.separator + temporarada + File.separator
 							+ carro.getNome() + ".png");
 				}
 
@@ -356,12 +338,10 @@ public class CarregadorRecursos {
 	}
 
 	public static BufferedImage gerarCoresCarros(Color corPintar, String carro) {
-		BufferedImage srcBufferedImage =  carregaBufferedImageTransparecia(carro);
-		srcBufferedImage = ImageUtil.geraTransparencia(srcBufferedImage,
-				Color.BLACK);
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				srcBufferedImage.getWidth(), srcBufferedImage.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage srcBufferedImage = carregaBufferedImageTransparecia(carro);
+		srcBufferedImage = ImageUtil.geraTransparencia(srcBufferedImage, Color.BLACK);
+		BufferedImage bufferedImageRetorno = new BufferedImage(srcBufferedImage.getWidth(),
+				srcBufferedImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
@@ -399,8 +379,7 @@ public class CarregadorRecursos {
 		List retorno = new ArrayList();
 		Properties properties = new Properties();
 
-		properties.load(recursoComoStreamIn("properties/" + temporarada
-				+ "/pilotos.properties"));
+		properties.load(recursoComoStreamIn("properties/" + temporarada + "/pilotos.properties"));
 
 		Enumeration propNames = properties.propertyNames();
 		int cont = 1;
@@ -413,10 +392,8 @@ public class CarregadorRecursos {
 			piloto.setNome(Util.substVogais(name));
 			piloto.setNomeCarro(Util.substVogais(prop.split(",")[0]));
 			int duasCasas = Integer.parseInt(prop.split(",")[1])
-					+ (Math.random() > .5 ? (-1 * Util.intervalo(0, 1)) : Util
-							.intervalo(0, 1));
-			piloto.setHabilidade(Integer.parseInt(String.valueOf(duasCasas)
-					+ Util.intervalo(0, 9)));
+					+ (Math.random() > .5 ? (-1 * Util.intervalo(0, 1)) : Util.intervalo(0, 1));
+			piloto.setHabilidade(Integer.parseInt(String.valueOf(duasCasas) + Util.intervalo(0, 9)));
 			retorno.add(piloto);
 		}
 		Collections.sort(retorno, new Comparator() {
@@ -424,8 +401,7 @@ public class CarregadorRecursos {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
 
-				return new Integer(piloto1.getHabilidade())
-						.compareTo(new Integer(piloto0.getHabilidade()));
+				return new Integer(piloto1.getHabilidade()).compareTo(new Integer(piloto0.getHabilidade()));
 			}
 		});
 
@@ -460,8 +436,7 @@ public class CarregadorRecursos {
 	public List carregarListaCarrosArquivo(String temporada) throws IOException {
 		List retorno = new ArrayList();
 		Properties properties = new Properties();
-		properties.load(recursoComoStreamIn("properties/" + temporada
-				+ "/carros.properties"));
+		properties.load(recursoComoStreamIn("properties/" + temporada + "/carros.properties"));
 		Enumeration propNames = properties.propertyNames();
 		while (propNames.hasMoreElements()) {
 			Carro carro = new Carro();
@@ -487,15 +462,12 @@ public class CarregadorRecursos {
 
 			String[] tnsCarros = values[4].split(";");
 
-			carro.setImg("carros/" + temporada + "/"
-					+ tnsCarros[Util.intervalo(0, tnsCarros.length - 1)]);
-			carro.setCor1(new Color(Integer.parseInt(red), Integer
-					.parseInt(green), Integer.parseInt(blue)));
+			carro.setImg("carros/" + temporada + "/" + tnsCarros[Util.intervalo(0, tnsCarros.length - 1)]);
+			carro.setCor1(new Color(Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue)));
 			red = values[5];
 			green = values[6];
 			blue = values[7];
-			carro.setCor2(new Color(Integer.parseInt(red), Integer
-					.parseInt(green), Integer.parseInt(blue)));
+			carro.setCor2(new Color(Integer.parseInt(red), Integer.parseInt(green), Integer.parseInt(blue)));
 			retorno.add(carro);
 		}
 		return retorno;
@@ -525,8 +497,7 @@ public class CarregadorRecursos {
 		carroNovo.setPotenciaReal(carro.getPotencia());
 		carroNovo.setAerodinamica(carro.getAerodinamica());
 		carroNovo.setFreios(carro.getFreios());
-		carroNovo.setPotencia(carro.getPotencia()
-				+ (Math.random() > .5 ? -5 : 5));
+		carroNovo.setPotencia(carro.getPotencia() + (Math.random() > .5 ? -5 : 5));
 		return carroNovo;
 	}
 
@@ -534,8 +505,7 @@ public class CarregadorRecursos {
 		Map circuitosPilotos = new HashMap();
 		final Properties properties = new Properties();
 		try {
-			properties
-					.load(recursoComoStreamIn("properties/temporadas.properties"));
+			properties.load(recursoComoStreamIn("properties/temporadas.properties"));
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String temporada = (String) propName.nextElement();
@@ -564,8 +534,7 @@ public class CarregadorRecursos {
 		return bufferedImage;
 	}
 
-	public static BufferedImage carregaBufferedImageMeiaTransparenciaBraca(
-			String file) {
+	public static BufferedImage carregaBufferedImageMeiaTransparenciaBraca(String file) {
 		BufferedImage buffer = null;
 		try {
 			buffer = ImageUtil.toBufferedImage(file);
@@ -579,8 +548,7 @@ public class CarregadorRecursos {
 			Logger.logarExept(e);
 		}
 
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				buffer.getWidth(), buffer.getHeight(),
+		BufferedImage bufferedImageRetorno = new BufferedImage(buffer.getWidth(), buffer.getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = buffer.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
@@ -591,8 +559,7 @@ public class CarregadorRecursos {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 
-				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
-						argbArray[3]);
+				Color c = new Color(argbArray[0], argbArray[1], argbArray[2], argbArray[3]);
 				if (c.getRed() > 250 && c.getGreen() > 250 && c.getBlue() > 250) {
 					argbArray[3] = 0;
 				} else {
@@ -605,12 +572,10 @@ public class CarregadorRecursos {
 		return bufferedImageRetorno;
 	}
 
-	public static BufferedImage carregaBufferedImageTransparecia(String file,
-			Color cor) {
+	public static BufferedImage carregaBufferedImageTransparecia(String file, Color cor) {
 		BufferedImage srcBufferedImage = carregaImagem(file);
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				srcBufferedImage.getWidth(), srcBufferedImage.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bufferedImageRetorno = new BufferedImage(srcBufferedImage.getWidth(),
+				srcBufferedImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
@@ -620,8 +585,7 @@ public class CarregadorRecursos {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
 
-				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
-						argbArray[3]);
+				Color c = new Color(argbArray[0], argbArray[1], argbArray[2], argbArray[3]);
 				if (c.equals(cor)) {
 					argbArray[3] = 0;
 				}
@@ -643,5 +607,23 @@ public class CarregadorRecursos {
 
 	public static BufferedImage carregaBufferedImageTransparecia(String string) {
 		return carregaBufferedImageTransparecia(string, null);
+	}
+
+	public static List<String> carregarCreditosJogo() {
+		List<String> creditos = new ArrayList<String>();
+
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(CarregadorRecursos.recursoComoStream("creditos.txt")));
+		try {
+			String linha = reader.readLine();
+			while (linha != null) {
+				creditos.add(linha + "\n");
+				linha = reader.readLine();
+			}
+		} catch (IOException e1) {
+			Logger.logarExept(e1);
+		}
+
+		return creditos;
 	}
 }

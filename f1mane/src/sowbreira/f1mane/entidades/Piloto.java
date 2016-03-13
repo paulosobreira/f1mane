@@ -950,10 +950,6 @@ public class Piloto implements Serializable {
 		novoModificador = calcularNovoModificador(controleJogo);
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador, agressivo, getNoAtual(), controleJogo);
 
-		calculaDiffParaProximoRetardatario = controleJogo.calculaDiffParaProximoRetardatario(this, false);
-		calculaDiffParaProximoRetardatarioTracado = controleJogo.calculaDiffParaProximoRetardatario(this, true);
-		calculaDiferencaParaAnterior = controleJogo.calculaDiferencaParaAnterior(this);
-		carroPilotoDaFrenteRetardatario = controleJogo.obterCarroNaFrenteRetardatario(this, false);
 		calculaCarrosAdjacentes(controleJogo);
 		processaStress(controleJogo);
 		processaLimitadorModificador();
@@ -986,6 +982,10 @@ public class Piloto implements Serializable {
 	}
 
 	public void calculaCarrosAdjacentes(InterfaceJogo controleJogo) {
+		calculaDiffParaProximoRetardatario = controleJogo.calculaDiffParaProximoRetardatario(this, false);
+		calculaDiffParaProximoRetardatarioTracado = controleJogo.calculaDiffParaProximoRetardatario(this, true);
+		calculaDiferencaParaAnterior = controleJogo.calculaDiferencaParaAnterior(this);
+		carroPilotoDaFrenteRetardatario = controleJogo.obterCarroNaFrenteRetardatario(this, false);
 		calculaDiferencaParaProximo = controleJogo.calculaDiferencaParaProximo(this);
 		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		carroPilotoAtras = controleJogo.obterCarroAtras(this);
