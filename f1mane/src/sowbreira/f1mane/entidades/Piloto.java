@@ -769,7 +769,9 @@ public class Piloto implements Serializable {
 			setNumeroVolta(getNumeroVolta() + 1);
 			processaAjustesAntesDepoisQuyalify(Constantes.MAX_VOLTAS / controleJogo.getQtdeTotalVoltas());
 			processaUltimosDesgastesPneuECombustivel();
-
+			if (carroPilotoAtras != null && !isRecebeuBanderada()) {
+				setVantagem(controleJogo.calculaSegundosParaProximo(carroPilotoAtras.getPiloto()));
+			}
 			index = diff;
 			getCarro().setCargaKers(InterfaceJogo.CARGA_KERS);
 			ativarKers = false;
@@ -989,9 +991,6 @@ public class Piloto implements Serializable {
 		calculaDiferencaParaProximo = controleJogo.calculaDiferencaParaProximo(this);
 		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		carroPilotoAtras = controleJogo.obterCarroAtras(this);
-		if (carroPilotoAtras != null && !isRecebeuBanderada()) {
-			setVantagem(controleJogo.calculaSegundosParaProximo(carroPilotoAtras.getPiloto()));
-		}
 	}
 
 	private void processaGanhoSafetyCar(InterfaceJogo controleJogo) {
@@ -2396,6 +2395,9 @@ public class Piloto implements Serializable {
 		if (stress < 100 && (stress + val) < 100) {
 			if ((Math.random() < ((900 - getPosicao() * 35) / 1000.0)))
 				stress += val;
+		}
+		if(stress>=99 && AGRESSIVO.equals(getModoPilotagem())){
+			setModoPilotagem(NORMAL);
 		}
 	}
 

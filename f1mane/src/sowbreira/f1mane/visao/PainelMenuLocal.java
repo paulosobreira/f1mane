@@ -1336,12 +1336,12 @@ public class PainelMenuLocal {
 	private void desenhaNomeCircuito(Graphics2D g2d, int x, int y, int i, String circuito) {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 14));
-		circuito = (i + 1) + " " + circuito.toUpperCase();
-		int tamNmPiloto = Util.calculaLarguraText(circuito, g2d);
+		String circuitoNm = (i + 1) + " " + Util.substVogais(circuito.toUpperCase());
+		int tamNmPiloto = Util.calculaLarguraText(circuitoNm, g2d);
 		g2d.setColor(lightWhite);
 		g2d.fillRoundRect(x - 15, y, tamNmPiloto + 10, 18, 10, 10);
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(circuito, x - 10, y + 15);
+		g2d.drawString(circuitoNm, x - 10, y + 15);
 		g2d.setFont(fontOri);
 
 	}
