@@ -224,9 +224,9 @@ public class ControleBox {
 					ptosBox += 1;
 				}
 
-				double iPilot = piloto.getNoAtual().getIndex();
+				double indicePiloto = piloto.getNoAtual().getIndex();
 				double tamPista = controleJogo.getNosDoBox().size();
-				boolean mais90Porcent = (iPilot / tamPista) > 0.9;
+				boolean mais90Porcent = (indicePiloto / tamPista) > 0.9;
 				if (controleJogo.isSafetyCarNaPista()) {
 					mais90Porcent = false;
 				}

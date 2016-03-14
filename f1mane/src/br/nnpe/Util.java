@@ -975,7 +975,9 @@ public class Util {
 			} else if (name.charAt(i) == 'u' && !subst) {
 				retorno.append('o');
 				subst = true;
-			} else if (name.charAt(i) == 'A' && !subst) {
+			} 
+			/*
+			else if (name.charAt(i) == 'A' && !subst) {
 				retorno.append('E');
 				subst = true;
 			} else if (name.charAt(i) == 'E' && !subst) {
@@ -990,7 +992,8 @@ public class Util {
 			} else if (name.charAt(i) == 'U' && !subst) {
 				retorno.append('O');
 				subst = true;
-			} else {
+			}*/
+			 else {
 				//subst = true;
 				retorno.append(name.charAt(i));
 			}
