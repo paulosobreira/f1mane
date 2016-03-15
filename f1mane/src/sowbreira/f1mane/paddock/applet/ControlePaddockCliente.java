@@ -65,7 +65,7 @@ public class ControlePaddockCliente {
 	private JogoCliente jogoCliente;
 	private MainFrame mainFrame;
 	private boolean comunicacaoServer = true;
-	private int latenciaMinima = 50;
+	private int latenciaMinima = Constantes.LATENCIA_MIN;
 	private int latenciaReal;
 	private long ultRetornoSucedido;
 
@@ -137,7 +137,7 @@ public class ControlePaddockCliente {
 			URL dataUrl;
 			long envioT = System.currentTimeMillis();
 			// Gerar Lag
-			//Thread.sleep(Util.intervalo(10, 300));
+			// Thread.sleep(Util.intervalo(10, 300));
 			Object retorno = null;
 			dataUrl = new URL(protocol, host, port, urlSufix);
 

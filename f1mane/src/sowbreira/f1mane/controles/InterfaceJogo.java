@@ -121,8 +121,6 @@ public interface InterfaceJogo {
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
 			Object combust, String nomeJogador, Object asa);
 
-	public boolean mudarModoAgressivo();
-
 	public boolean mudarModoBox();
 
 	public void setBoxJogadorHumano(Object tpneu, Object combust, Object asa);
@@ -392,5 +390,11 @@ public interface InterfaceJogo {
 	public No obterCurvaAnterior(No noAtual);
 
 	public int getFPS();
+
+	public void pilotoSelecionadoMinimo();
+
+	public void pilotoSelecionadoNormal();
+
+	public void pilotoSelecionadoMaximo();
 
 }

@@ -634,13 +634,6 @@ public class Piloto implements Serializable {
 		return agressivo;
 	}
 
-	public void setAgressivoF4(boolean regMaximo) {
-		if (regMaximo && verificaDesconcentrado()) {
-			return;
-		}
-		this.agressivo = regMaximo;
-	}
-
 	public void setAgressivo(boolean regMaximo, InterfaceJogo interfaceJogo) {
 		if (regMaximo && verificaDesconcentrado()) {
 			return;
@@ -1064,7 +1057,7 @@ public class Piloto implements Serializable {
 
 	public void penalidadeColisao(InterfaceJogo controleJogo) {
 		acelerando = false;
-		setAgressivoF4(false);
+		setAgressivo(false, controleJogo);
 		incStress(10);
 		if (evitaBaterCarroFrente) {
 			incStress(5);

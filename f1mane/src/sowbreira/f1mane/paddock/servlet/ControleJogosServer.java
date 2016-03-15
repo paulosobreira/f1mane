@@ -386,21 +386,6 @@ public class ControleJogosServer {
 
 	}
 
-	public Object mudarModoAgressivo(ClientPaddockPack clientPaddockPack) {
-		JogoServidor jogoServidor = obterJogoPeloNome(
-				clientPaddockPack.getNomeJogo());
-		if (jogoServidor == null) {
-			return null;
-		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
-		if (piloto == null) {
-			return null;
-		}
-		piloto.setAtivarDRS(true);
-		piloto.setAgressivoF4(true);
-		return null;
-	}
-
 	public Object mudarGiroMotor(ClientPaddockPack clientPaddockPack) {
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
@@ -592,7 +577,7 @@ public class ControleJogosServer {
 
 	}
 
-	public Object mudarModoAutoAgressivo(ClientPaddockPack clientPaddockPack) {
+	public Object mudarModoPilotagem(ClientPaddockPack clientPaddockPack) {
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
 		if (jogoServidor == null) {
@@ -759,6 +744,57 @@ public class ControleJogosServer {
 										"" + (metadeJogadores + 1)})));
 			}
 		}
+		return null;
+	}
+
+	public Object mudarPilotoMinimo(ClientPaddockPack clientPaddockPack) {
+		JogoServidor jogoServidor = obterJogoPeloNome(
+				clientPaddockPack.getNomeJogo());
+		if (jogoServidor == null) {
+			return null;
+		}
+		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		if (piloto == null) {
+			return null;
+		}
+		piloto.setAtivarDRS(true);
+		piloto.setAtivarKers(false);
+		piloto.setModoPilotagem(Piloto.LENTO);
+		piloto.getCarro().mudarGiroMotor(Carro.GIRO_MIN);
+		return null;
+	}
+
+	public Object mudarPilotoNormal(ClientPaddockPack clientPaddockPack) {
+		JogoServidor jogoServidor = obterJogoPeloNome(
+				clientPaddockPack.getNomeJogo());
+		if (jogoServidor == null) {
+			return null;
+		}
+		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		if (piloto == null) {
+			return null;
+		}
+		piloto.setAtivarDRS(true);
+		piloto.setAtivarKers(false);
+		piloto.setModoPilotagem(Piloto.NORMAL);
+		piloto.getCarro().mudarGiroMotor(Carro.GIRO_NOR);
+		return null;
+	}
+
+	public Object mudarPilotoMaximo(ClientPaddockPack clientPaddockPack) {
+		JogoServidor jogoServidor = obterJogoPeloNome(
+				clientPaddockPack.getNomeJogo());
+		if (jogoServidor == null) {
+			return null;
+		}
+		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		if (piloto == null) {
+			return null;
+		}
+		piloto.setAtivarDRS(true);
+		piloto.setAtivarKers(true);
+		piloto.setModoPilotagem(Piloto.AGRESSIVO);
+		piloto.getCarro().mudarGiroMotor(Carro.GIRO_MAX);
 		return null;
 	}
 }

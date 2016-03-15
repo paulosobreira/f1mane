@@ -409,12 +409,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 	}
 
-	public boolean mudarModoAgressivo() {
-		modoAgressivo = !modoAgressivo;
-		monitorJogo.mudarModoAgressivo(modoAgressivo);
-		return modoAgressivo;
-	}
-
 	public boolean mudarModoBox() {
 		if (modoBox) {
 			modoBox = !modoBox;
@@ -1314,6 +1308,24 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public String calculaSegundosParaProximo(Piloto psel, int diferenca) {
 		long tempo = dadosParticiparJogo.getTempoCiclo().intValue();
 		return controleEstatisticas.calculaSegundosParaProximo(psel, tempo, diferenca);
+	}
+
+	@Override
+	public void pilotoSelecionadoMinimo() {
+		monitorJogo.pilotoSelecionadoMinimo();
+		
+	}
+
+	@Override
+	public void pilotoSelecionadoNormal() {
+		monitorJogo.pilotoSelecionadoNormal();
+		
+	}
+
+	@Override
+	public void pilotoSelecionadoMaximo() {
+		monitorJogo.pilotoSelecionadoMaximo();
+		
 	}
 
 }

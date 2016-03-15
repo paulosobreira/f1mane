@@ -22,7 +22,6 @@ public class Comandos {
 	public static final String CORRIDA_INICIADA = "12";
 	public static final String LUZES = "13";
 	public static final String OBTER_POSICAO_PILOTOS = "18";
-	public static final String MUDAR_MODO_AGRESSIVO = "19";
 	public static final String MUDAR_MODO_BOX = "20";
 	public static final String SAIR_JOGO = "21";
 	public static final String SAIR_PADDOCK = "22";
@@ -47,5 +46,8 @@ public class Comandos {
 	public static final String MUDAR_KERS = "41";
 	public static final String VER_INFO_VOLTAS_JOGO = "42";
 	public static final String DRIVE_THRU = "43";
+	public static final String MUDAR_PILOTO_MINIMO = "44";
+	public static final String MUDAR_PILOTO_NORMAL = "45";
+	public static final String MUDAR_PILOTO_MAXIMO = "46";
 
 }

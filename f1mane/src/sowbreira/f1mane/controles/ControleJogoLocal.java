@@ -406,16 +406,6 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#mudarModoAgressivo()
-	 */
-	public boolean mudarModoAgressivo() {
-		if (pilotoJogador == null)
-			return false;
-		pilotoJogador.setAgressivoF4(true);
-		return pilotoJogador.isAgressivo();
-	}
-
-	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#mudarModoBox()
 	 */
 	public boolean mudarModoBox() {
@@ -1480,6 +1470,37 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 	public String calculaSegundosParaProximo(Piloto psel, int diferenca) {
 		long tempo = Constantes.CICLO;
 		return controleEstatisticas.calculaSegundosParaProximo(psel, tempo, diferenca);
+	}
+
+	@Override
+	public void pilotoSelecionadoMinimo() {
+		if (pilotoJogador != null){
+			pilotoJogador.setModoPilotagem(Piloto.LENTO);
+			pilotoJogador.getCarro().mudarGiroMotor(Carro.GIRO_MIN);
+			pilotoJogador.setAtivarKers(false);
+		}
+		
+	}
+
+	@Override
+	public void pilotoSelecionadoNormal() {
+		if (pilotoJogador != null){
+			pilotoJogador.setModoPilotagem(Piloto.NORMAL);
+			pilotoJogador.getCarro().mudarGiroMotor(Carro.GIRO_NOR);
+			pilotoJogador.setAtivarKers(false);
+		}
+		
+	}
+
+	@Override
+	public void pilotoSelecionadoMaximo() {
+		if (pilotoJogador != null){
+			pilotoJogador.setModoPilotagem(Piloto.AGRESSIVO);
+			pilotoJogador.getCarro().mudarGiroMotor(Carro.GIRO_MAX);
+			pilotoJogador.setAtivarKers(true);
+			pilotoJogador.setAtivarDRS(true);
+		}
+		
 	}
 
 }

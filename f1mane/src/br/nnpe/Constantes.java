@@ -18,7 +18,7 @@ public class Constantes {
 	public static final int ACIMA_MEDIA_NORMAL = 5;
 	public static final int ACIMA_MEDIA_FACIL = 10;
 	public static final int LATENCIA_MAX = 250;
-	public static final int LATENCIA_MIN = 150;
+	public static final int LATENCIA_MIN = 50;
 	public static final int LIMITE_DRS = 300;
 	public static int TAMANHO_RETA_DRS = 1500;
 
@@ -28,7 +28,8 @@ public class Constantes {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		frame.setSize(200, 200);
-		frame.getContentPane().setBackground(new Color(200, 200, 200, 500 / 100));
+		frame.getContentPane()
+				.setBackground(new Color(200, 200, 200, 500 / 100));
 		frame.setVisible(true);
 	}
 }

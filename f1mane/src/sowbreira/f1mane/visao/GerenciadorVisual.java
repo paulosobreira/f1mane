@@ -389,6 +389,17 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_C) {
 					mudarModoPilotagem(Piloto.AGRESSIVO);
 				}
+				
+				if (keyCoode == KeyEvent.VK_Q) {
+					controleJogo.pilotoSelecionadoMinimo();
+				}
+				if (keyCoode == KeyEvent.VK_W) {
+					controleJogo.pilotoSelecionadoNormal();
+				}
+				if (keyCoode == KeyEvent.VK_E) {
+					controleJogo.pilotoSelecionadoMaximo();
+				}
+				
 				if (keyCoode == KeyEvent.VK_ESCAPE) {
 					controleJogo.pausarJogo();
 					controleJogo.ativaVerControles();
@@ -521,13 +532,6 @@ public class GerenciadorVisual {
 			return;
 		}
 		ultimaChamadaBox = System.currentTimeMillis();
-	}
-
-	protected void mudarModoAgressivo() {
-		if (controleJogo == null) {
-			return;
-		}
-		boolean modo = controleJogo.mudarModoAgressivo();
 	}
 
 	public void centralizarPiloto() {

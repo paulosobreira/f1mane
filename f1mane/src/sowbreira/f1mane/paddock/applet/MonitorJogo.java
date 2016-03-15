@@ -660,18 +660,6 @@ public class MonitorJogo implements Runnable {
 
 	}
 
-	public void mudarModoAgressivo(boolean modoAgressivo) {
-		try {
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-					Comandos.MUDAR_MODO_AGRESSIVO, sessaoCliente);
-			clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
-			controlePaddockCliente.enviarObjeto(clientPaddockPack, true);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
-
-	}
-
 	public void mudarModoPilotagem(final String modo) {
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
@@ -862,5 +850,75 @@ public class MonitorJogo implements Runnable {
 			return 0;
 		}
 		return controlePaddockCliente.getLatenciaReal();
+	}
+
+	public void pilotoSelecionadoMinimo() {
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_PILOTO_MINIMO, sessaoCliente);
+					clientPaddockPack
+							.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					Object ret = controlePaddockCliente
+							.enviarObjeto(clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+			}
+		};
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
+
+	}
+
+	public void pilotoSelecionadoNormal() {
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_PILOTO_NORMAL, sessaoCliente);
+					clientPaddockPack
+							.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					Object ret = controlePaddockCliente
+							.enviarObjeto(clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+			}
+		};
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
+	}
+
+	public void pilotoSelecionadoMaximo() {
+		if (threadCmd != null && threadCmd.isAlive()) {
+			return;
+		}
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+							Comandos.MUDAR_PILOTO_MAXIMO, sessaoCliente);
+					clientPaddockPack
+							.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					Object ret = controlePaddockCliente
+							.enviarObjeto(clientPaddockPack, true);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+			}
+		};
+		threadCmd = new Thread(runnable);
+		threadCmd.start();
 	}
 }
