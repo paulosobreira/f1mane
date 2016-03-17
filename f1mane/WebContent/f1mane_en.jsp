@@ -161,39 +161,23 @@ img {
 <table >
 	<tr> 
 	<td>
-	<div id="adds">
-		<script type="text/javascript"><!--
-		google_ad_client = "pub-1471236111248665";
-		/* 120x600, criado 14/06/10 */
-		google_ad_slot = "5219714006";
-		google_ad_width = 120;
-		google_ad_height = 600;
-		//-->
-		</script>
-		<script type="text/javascript"
-		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
-	</div>
-	</td>
-	<td>
 	<div id="main">
 		<div id="title">	
 			<span >F1-Mane
 				<h1 id="description">MANager & Engineer</h1>
 			</span>
-			
 			<a id="link" style="position: absolute; left: 160px; top: 10px;font-size: 16px;"
-				href="http://sowbra.com.br" style="text-align: right;"
-				target="_BLANK">Sowbra Games</a>
-			<a id="link" style="position: absolute; left: 320px; top: 10px;font-size: 16px;"
+				href="https://b4116f288ced0da9ffafef28a149df8144e98bd7.googledrive.com/host/0B1bELj5XAV79flRUMkFyMFNFanl0Tlc4bHU5YzJQU0JYelN3VmpqYkxGUklOTjFYX1BlYzg/sowbragames/sowbra.html" style="text-align: right;"
+				target="_BLANK">Games</a>
+			<a id="link" style="position: absolute; left: 260px; top: 10px;font-size: 16px;"
 				href="http://sowbreira.appspot.com/" style="text-align: right;"
 				target="_BLANK">Sowbreira</a>
-			<a id="link" style="position: absolute; left: 450px; top: 10px;font-size: 16px;"
+			<a id="link" style="position: absolute; left: 380px; top: 10px;font-size: 16px;"
 				href="f1mane.jsp">Portugues</a>
 			<a id="link" style="position: absolute; left: 160px; top: 50px;font-size: 16px;"
 				style="text-align: right;" onclick="document.getElementById('pop').style.display='block';">
 				How to Play</a>				
-			<a id="link" style="position: absolute; left: 310px; top: 50px;font-size: 16px;"
+			<a id="link" style="position: absolute; left: 300px; top: 50px;font-size: 16px;"
 				href="http://www.java.com/" style="text-align: right;"
 				target="_BLANK">Install Java</a>			
 			<br>					
@@ -206,15 +190,14 @@ img {
 			</p>
 			<UL>
 			   <LI >Your pilot is in the blue cell in the table on right side of screen</LI>
-			   <LI >You can follow the strategy of the other riders in the table</LI>			   
-			   <LI >Use F1, F2, F3 to control the rotation of the engine</LI>
-			   <LI >Use F4 to quickly switch between driving aggressive and normal</LI>
-			   <LI >Use F5, F6, F7 to control the aggressiveness of the pilot</LI>
-			   <LI >Use F8 to turn off the automatic trackside choose </LI>
-			   <LI >Use F9 to toggle between the pilots if you have chosen several</LI>
-			   <LI >Use F12 to select or cancel pit stop </LI>
+			   <LI >Use Z,X,C to control the rotation of the engine</LI>
+			   <LI >Use A,S,D to control the aggressiveness of the pilot</LI>
+			   <LI >Use B to go to pit stop </LI>
+			   <LI >Use the arrow keys(LEFT e RIGHT)  to choose the path </LI>		
+			   <LI >Use the arrow key UP to use DRS </LI>
+			   <LI >Use the arrow key DOWN to use ERS </LI>			   	   
 			   <LI >Use the mouse scroll wheel for zooming </LI>
-			   <LI >Use the arrow keys to choose the path </LI>			   
+			   <LI >You can follow the strategy of the other pilots in the table</LI>			   
 			</UL>
 			<p style="color: #0084B4;">
 				Online game:	
@@ -222,10 +205,10 @@ img {
 			<UL>
 			   <LI >Players can create and edit teams and drivers</LI>
 			   <LI >A game can have up to 24 simultaneous players</LI>
+			   <LI >You can create championships </LI>
 			   <LI >The player can evolve with your driver and team points earned </LI>
 			   <LI >You can see ranking of drivers, teams and players</LI>			   
-			   <LI >You can create Championships </LI>
-			   <LI >26 circuits available to play </LI>
+			   <LI >Lots of circuits and pilots available to play </LI>
 			</UL>				
 		</div>		
 		
@@ -253,6 +236,7 @@ img {
 				</a>
 		</div>
 		<br>
+		<!-- 
 		<div id="shotsPromo" class="highslide-gallery">
 			<table style="text-align: center;padding: 5px">
 			<tr>
@@ -275,7 +259,7 @@ img {
 			</td></tr>
 			</table>
 		</div>		
-		
+		 -->
 	</div>
 	</td>
 	</tr>

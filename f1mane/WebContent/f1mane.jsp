@@ -72,14 +72,6 @@ img {
 	height: 100px;
 }
 
-#adds {
-	font-family: Arial, sans-serif;
-	font-size: 24px;
-	font-weight: bold;
-	position: relative;
-	float :left;
-}
-
 #main{
 	padding: 3px;
 	padding-left: 20px;
@@ -161,38 +153,23 @@ img {
 <table >
 	<tr> 
 	<td>
-	<div id="adds">
-		<script type="text/javascript"><!--
-		google_ad_client = "pub-1471236111248665";
-		/* 120x600, criado 14/06/10 */
-		google_ad_slot = "5219714006";
-		google_ad_width = 120;
-		google_ad_height = 600;
-		//-->
-		</script>
-		<script type="text/javascript"
-		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-		</script>
-	</div>
-	</td>
-	<td>
 	<div id="main">
 		<div id="title">	
 			<span >F1-Mane
 				<h1 id="description">MANager & Engineer</h1>
 			</span>
 			<a id="link" style="position: absolute; left: 160px; top: 10px;font-size: 16px;"
-				href="http://sowbra.com.br" style="text-align: right;"
-				target="_BLANK">Sowbra Games</a>
-			<a id="link" style="position: absolute; left: 320px; top: 10px;font-size: 16px;"
+				href="https://b4116f288ced0da9ffafef28a149df8144e98bd7.googledrive.com/host/0B1bELj5XAV79flRUMkFyMFNFanl0Tlc4bHU5YzJQU0JYelN3VmpqYkxGUklOTjFYX1BlYzg/sowbragames/sowbra.html" style="text-align: right;"
+				target="_BLANK">Games</a>
+			<a id="link" style="position: absolute; left: 260px; top: 10px;font-size: 16px;"
 				href="http://sowbreira.appspot.com/" style="text-align: right;"
 				target="_BLANK">Sowbreira</a>
-			<a id="link" style="position: absolute; left: 450px; top: 10px;font-size: 16px;"
+			<a id="link" style="position: absolute; left: 380px; top: 10px;font-size: 16px;"
 				href="f1mane_en.jsp">English</a>
 			<a id="link" style="position: absolute; left: 160px; top: 50px;font-size: 16px;"
 				style="text-align: right;" onclick="document.getElementById('pop').style.display='block';">
 				Como Jogar</a>				
-			<a id="link" style="position: absolute; left: 310px; top: 50px;font-size: 16px;"
+			<a id="link" style="position: absolute; left: 300px; top: 50px;font-size: 16px;"
 				href="http://www.java.com/" style="text-align: right;"
 				target="_BLANK">Instale o Java</a>
 			<br>			
@@ -205,15 +182,14 @@ img {
 			</p>
 			<UL>
 			   <LI >Seu piloto esta na celula azul na tabela a direita</LI>
-			   <LI >Pode-se acompanhar a estrategia dos outros pilotos na tabela</LI>			   
-			   <LI >Use F1,F2,F3 para controlar o Giro do motor</LI>
-			   <LI >Use F4 para alternar rapidamente entre condução agressiva e normal</LI>
-			   <LI >Use F5,F6,F7 para controlar a agressividade do piloto</LI>
-			   <LI >Use F8 para desligar o modo de traçado automatico </LI>
-			   <LI >Use F9 para alternar entre os pilotos caso tenha escolhido varios</LI>
-			   <LI >Use F12 para marcar ou cancelar ida aos box </LI>
+			   <LI >Use Z,X,C para controlar o Giro do motor</LI>
+			   <LI >Use A,S,D para controlar a agressividade do piloto</LI>
+			   <LI >Use B para marcar ou cancelar ida aos box </LI>
+			   <LI >Use as setas (ESQUERDA e DIREITA) do teclado para escolher o traçado </LI>
+			   <LI >Use a seta CIMA para DRS </LI>
+			   <LI >Use a seta BAIXO para ERS </LI>
 			   <LI >Use a rolagem do mouse para controlar o zoom </LI>
-			   <LI >Use as setas do teclado para escolher o traçado </LI>			   
+			   <LI >Pode-se acompanhar a estrategia dos outros pilotos na tabela</LI>			   
 			</UL>
 			<p style="color: #0084B4;">
 				No jogo online:	
@@ -221,10 +197,10 @@ img {
 			<UL>
 			   <LI >Jogadores podem criar e editar equipes e pilotos</LI>
 			   <LI >Um jogo pode ter ate 24 jogadores simultaneos</LI>
+			   <LI >Pode-se criar campeonatos </LI>
 			   <LI >O jogador pode evoluir seu piloto e equipe com pontos ganhos </LI>
 			   <LI >Pode-se ver ranking de pilotos, equipes e jogadores</LI>			   
-			   <LI >Pode-se criar campeonatos </LI>
-			   <LI >26 Circuitos disponiveis para jogar </LI>
+			   <LI >Varios circuitos e pilotos disponiveis para jogar </LI>
 			</UL>				
 		</div>		
 		
@@ -254,6 +230,7 @@ img {
 			<div>	
 		</div>
 		<br>
+		<!-- 
 		<div id="shotsPromo" class="highslide-gallery">
 			<table style="text-align: center;padding: 5px">
 			<tr>
@@ -276,7 +253,7 @@ img {
 			</td></tr>
 			</table>
 		</div>		
-		
+		 -->
 	</div>
 	</td>
 	</tr>
