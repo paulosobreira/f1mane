@@ -248,7 +248,6 @@ public class GerenciadorVisual {
 		}
 	}
 
-
 	private void gerarLayout() {
 		centerPanel.setLayout(new BorderLayout());
 		// centerPanel.add(painelCircuito, BorderLayout.CENTER);
@@ -389,7 +388,7 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_C) {
 					mudarModoPilotagem(Piloto.AGRESSIVO);
 				}
-				
+
 				if (keyCoode == KeyEvent.VK_Q) {
 					controleJogo.pilotoSelecionadoMinimo();
 				}
@@ -399,7 +398,7 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_E) {
 					controleJogo.pilotoSelecionadoMaximo();
 				}
-				
+
 				if (keyCoode == KeyEvent.VK_ESCAPE) {
 					controleJogo.pausarJogo();
 					controleJogo.ativaVerControles();
@@ -440,7 +439,7 @@ public class GerenciadorVisual {
 				if (keyCoode == KeyEvent.VK_F9) {
 					mudaPilotoSelecionado();
 				}
-				
+
 				if (keyCoode == KeyEvent.VK_F10) {
 					ligaDesligaSom();
 				}
@@ -1644,6 +1643,10 @@ public class GerenciadorVisual {
 
 	public int getFps() {
 		return fps;
+	}
+
+	public double getFpsLimite() {
+		return fpsLimite;
 	}
 
 	public void mudaLimiteFps() {
