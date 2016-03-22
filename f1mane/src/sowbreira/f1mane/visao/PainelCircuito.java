@@ -797,10 +797,45 @@ public class PainelCircuito {
 			desenhaAjudaControles(g2d);
 			desenhaProblemasCarroSelecionado(pilotoSelecionado, g2d);
 			desenhaVoltarMenuPrincipal(g2d);
+			desenhaMarcaoCurvaERetas(g2d);
 			desenhaDebugIinfo(g2d);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
+	}
+
+	private void desenhaMarcaoCurvaERetas(Graphics2D g2d) {
+		if (isExibeResultadoFinal() || controleJogo.isCorridaPausada()
+				|| pilotoSelecionado == null
+				|| pilotoSelecionado.getPtosBox() != 0) {
+			return;
+		}
+		No noReal = pilotoSelecionado.getNoAtual();
+		No noSuave = pilotoSelecionado.getNoAtualSuave();
+		int index = noSuave.getIndex();
+		desenhaMarcaoNo(g2d, noReal, index + 250);
+		desenhaMarcaoNo(g2d, noReal, index + 225);
+		desenhaMarcaoNo(g2d, noReal, index + 200);
+		desenhaMarcaoNo(g2d, noReal, index + 175);
+
+	}
+
+	private void desenhaMarcaoNo(Graphics2D g2d, No noReal, int index) {
+		if (index > controleJogo.getNosDaPista().size()) {
+			index -= controleJogo.getNosDaPista().size();
+		}
+		No no = controleJogo.obterNoPorId(index);
+		if (no == null) {
+			return;
+		}
+		g2d.setColor(noReal.getTipo());
+		Stroke stroke = g2d.getStroke();
+		g2d.setStroke(trilho);
+		int x = no.getX();
+		int y = no.getY();
+		g2d.fillOval((int) ((x - descontoCentraliza.x) * zoom),
+				(int) ((y - descontoCentraliza.y) * zoom), 10, 10);
+		g2d.setStroke(stroke);
 	}
 
 	private void desenhaMarcaoCurvaERetas(Graphics2D g2d) {
