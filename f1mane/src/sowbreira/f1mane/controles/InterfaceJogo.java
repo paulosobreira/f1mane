@@ -397,4 +397,6 @@ public interface InterfaceJogo {
 
 	public void pilotoSelecionadoMaximo();
 
+	public boolean mostraTipoPneuAdversario();
+
 }
