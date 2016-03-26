@@ -379,6 +379,13 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public void apagarLuz() {
 		setEstado(Comandos.LUZES);
+		if (luzes == 5) {
+			try {
+				Thread.sleep(4000);
+			} catch (Exception e) {
+				Logger.topExecpts(e);
+			}
+		}
 		this.luzes--;
 		if (luzes <= 0) {
 			try {

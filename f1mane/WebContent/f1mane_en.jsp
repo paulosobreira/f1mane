@@ -230,7 +230,7 @@ img {
 					<img src="webstart.png" border="0">
 				</a>	
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<a id="link" href="f1mane_en.jnlp" style="text-align: left;">
+				<a id="link" href="https://b4116f288ced0da9ffafef28a149df8144e98bd7.googledrive.com/host/0B1bELj5XAV79flRUMkFyMFNFanl0Tlc4bHU5YzJQU0JYelN3VmpqYkxGUklOTjFYX1BlYzg/f1mane/f1mane_en.html" style="text-align: left;">
 					Play Offline
 					<img src="webstart.png" border="0">
 				</a>

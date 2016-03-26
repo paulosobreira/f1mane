@@ -150,7 +150,7 @@ public class MonitorJogo implements Runnable {
 
 	private void processaCiclosCorrida(long tempoCiclo)
 			throws InterruptedException {
-		int delayVerificaStado = 20;
+		int delayVerificaStado = 5;
 		boolean interrupt = false;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
@@ -171,16 +171,15 @@ public class MonitorJogo implements Runnable {
 							.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 						jogoCliente.autoDrs();
 					}
-					if (controlePaddockCliente.getLatenciaReal() > 2000) {
-						delayVerificaStado = 5;
+					if (controlePaddockCliente.getLatenciaReal() > 200) {
+						delayVerificaStado = 3;
 					} else {
-						delayVerificaStado = 7;
+						delayVerificaStado = 5;
 					}
 					continue;
 				}
 				atualizaPosicoes();
 				Thread.sleep(tempoCiclo);
-				verificaEstadoJogo();
 			} catch (InterruptedException e) {
 				interrupt = true;
 				Logger.logarExept(e);
