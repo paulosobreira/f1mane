@@ -1799,6 +1799,11 @@ public class Piloto implements Serializable {
 
 	public Rectangle2D centralizaDianteiraTrazeiraCarro(
 			InterfaceJogo controleJogo) {
+		if (getNoAnterior() != null && getDiateira() != null
+				&& getCentro() != null && getTrazeira() != null
+				&& !emMovimento()) {
+			return null;
+		}
 		No noAtual = getNoAtual();
 		if (getNoAtualSuave() != null) {
 			noAtual = getNoAtualSuave();

@@ -25,6 +25,7 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 27/06/2009 as 15:48:51
@@ -77,6 +78,26 @@ public class FormCarreira extends JPanel {
 		}
 	};
 	private JSpinner ptsCarro = new JSpinner();
+	
+	
+	private JLabel labelPtsAeroDimanica = new JLabel("AeroDinamica Carro:") {
+		@Override
+		public String getText() {
+			return Lang.msg("aerodinamica");
+		}
+	};
+	private JSpinner ptsAeroDinamica = new JSpinner();
+
+	
+	private JLabel labelPtsFreio = new JLabel("Freio Carro:") {
+		@Override
+		public String getText() {
+			return Lang.msg("freio");
+		}
+	};
+	private JSpinner ptsFreio = new JSpinner();
+
+	
 	private JLabel labelCor1 = new JLabel("Cor da equipe 1:");
 	private JLabel labelCor2 = new JLabel("Cor da equipe 2:");
 
@@ -88,7 +109,7 @@ public class FormCarreira extends JPanel {
 
 	public FormCarreira() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(3, 4));
+		panel.setLayout(new GridLayout(4, 4));
 
 		panel.add(labelModoCarreira);
 		panel.add(modoCarreira);
@@ -104,6 +125,12 @@ public class FormCarreira extends JPanel {
 		panel.add(nomeCarro);
 		panel.add(labelPtsCarro);
 		panel.add(ptsCarro);
+		
+		panel.add(labelPtsAeroDimanica);
+		panel.add(ptsAeroDinamica);
+		
+		panel.add(labelPtsFreio);
+		panel.add(ptsFreio);
 
 		JPanel panel2 = new JPanel();
 		panel2.setLayout(new GridLayout(1, 2));
@@ -145,6 +172,8 @@ public class FormCarreira extends JPanel {
 
 		ptsPiloto.setModel(new CarreiraSpinnerModel());
 		ptsCarro.setModel(new CarreiraSpinnerModel());
+		ptsAeroDinamica.setModel(new CarreiraSpinnerModel());
+		ptsFreio.setModel(new CarreiraSpinnerModel());
 		JFormattedTextField tfptsCarro = ((JSpinner.DefaultEditor) ptsCarro
 				.getEditor()).getTextField();
 		tfptsCarro.setEditable(false);
@@ -192,6 +221,11 @@ public class FormCarreira extends JPanel {
 
 	public static void main(String[] args) {
 		FormCarreira formCarreira = new FormCarreira();
+		formCarreira.ptsCarreira =Util.intervalo(1000, 5000);
+		formCarreira.ptsAeroDinamica.setValue(600);
+		formCarreira.ptsCarro.setValue(600);
+		formCarreira.ptsFreio.setValue(600);
+		formCarreira.ptsPiloto.setValue(600);
 		JOptionPane.showMessageDialog(null, formCarreira);
 	}
 
@@ -231,6 +265,9 @@ public class FormCarreira extends JPanel {
 				super.setValue(value);
 			} else {
 				int nexVal = (Integer) value;
+//				if(nexVal<500){
+//					return;
+//				}
 				if (val != nexVal && nexVal >= 600 && nexVal <= 999) {
 					int inc = 0;
 					if (nexVal >= 600 && nexVal < 700) {
@@ -241,15 +278,15 @@ public class FormCarreira extends JPanel {
 					} else if (nexVal >= 700 && nexVal < 800) {
 						inc = 4;
 						if (val == 800) {
-							inc = 10;
-						}
-					} else if (nexVal >= 800 && nexVal < 900) {
-						inc = 10;
-						if (val == 900) {
 							inc = 50;
 						}
-					} else if (nexVal >= 900 && nexVal < 999) {
+					} else if (nexVal >= 800 && nexVal < 900) {
 						inc = 50;
+						if (val == 900) {
+							inc = 100;
+						}
+					} else if (nexVal >= 900 && nexVal < 999) {
+						inc = 100;
 					}
 					if ((nexVal - val) > 0) {
 						if ((ptsCarreira - inc) >= 0) {

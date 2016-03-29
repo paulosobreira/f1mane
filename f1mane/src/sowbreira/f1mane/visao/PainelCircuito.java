@@ -942,19 +942,20 @@ public class PainelCircuito {
 		int xOri = x;
 		int yOri = y;
 
-		y -= 150;
+		if (controleJogo.getNiveljogo() != InterfaceJogo.DIFICIL_NV) {
+			y -= 150;
 
-		x -= 25;
+			x -= 25;
 
-		int lagura = desenhaAjudaComandoPiloto(g2d, x, y,
-				"Q : " + Lang.msg("GIRO_MIN").toUpperCase());
-		x += lagura + 10;
-		lagura = desenhaAjudaComandoPiloto(g2d, x, y,
-				"W : " + Lang.msg("GIRO_NOR").toUpperCase());
-		x += lagura + 10;
-		desenhaAjudaComandoPiloto(g2d, x, y,
-				"E : " + Lang.msg("GIRO_MAX").toUpperCase());
-
+			int lagura = desenhaAjudaComandoPiloto(g2d, x, y,
+					"Q : " + Lang.msg("GIRO_MIN").toUpperCase());
+			x += lagura + 10;
+			lagura = desenhaAjudaComandoPiloto(g2d, x, y,
+					"W : " + Lang.msg("GIRO_NOR").toUpperCase());
+			x += lagura + 10;
+			desenhaAjudaComandoPiloto(g2d, x, y,
+					"E : " + Lang.msg("GIRO_MAX").toUpperCase());
+		}
 		x = xOri;
 		y = yOri;
 
@@ -5815,7 +5816,7 @@ public class PainelCircuito {
 					g2d.fillRoundRect(xBase, yBase, 7, 15, 4, 4);
 					xBase += 8;
 				}
-			}else{
+			} else {
 				xBase += 24;
 			}
 			g2d.setColor(bg);
