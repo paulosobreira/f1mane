@@ -19,6 +19,8 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 	private int ptsConstrutores;
 	private int ptsPiloto;
 	private int ptsCarro;
+	private int ptsAerodinamica;
+	private int ptsFreio;
 	private String nomePiloto;
 	private String nomeCarro;
 	private boolean modoCarreira;
@@ -144,6 +146,22 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 
 	public void setJogadorDadosSrv(JogadorDadosSrv jogadorDadosSrv) {
 		this.jogadorDadosSrv = jogadorDadosSrv;
+	}
+
+	public int getPtsAerodinamica() {
+		return ptsAerodinamica;
+	}
+
+	public void setPtsAerodinamica(int ptsAerodinamica) {
+		this.ptsAerodinamica = ptsAerodinamica;
+	}
+
+	public int getPtsFreio() {
+		return ptsFreio;
+	}
+
+	public void setPtsFreio(int ptsFreio) {
+		this.ptsFreio = ptsFreio;
 	}
 
 }

@@ -345,12 +345,10 @@ public class ControleClassificacao {
 	public Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {
 		Session session = controlePersistencia.getSession();
 		try {
-
 			CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 					.carregaCarreiraJogador(clientPaddockPack
 							.getSessaoCliente().getNomeJogador(), false,
 							session);
-
 			carreiraDadosSrv.setNomePiloto(clientPaddockPack
 					.getJogadorDadosSrv().getNomePiloto());
 			carreiraDadosSrv.setNomeCarro(clientPaddockPack

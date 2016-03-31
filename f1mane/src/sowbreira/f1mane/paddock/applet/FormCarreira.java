@@ -308,6 +308,40 @@ public class FormCarreira extends JPanel {
 			}
 		}
 	}
+	
+	private Integer processaValor(int val, int nexVal) {
+		if (val != nexVal && nexVal >= 600 && nexVal <= 999) {
+			int inc = 0;
+			if (nexVal >= 600 && nexVal < 700) {
+				inc = 2;
+				if (val == 700) {
+					inc = 4;
+				}
+			} else if (nexVal >= 700 && nexVal < 800) {
+				inc = 4;
+				if (val == 800) {
+					inc = 50;
+				}
+			} else if (nexVal >= 800 && nexVal < 900) {
+				inc = 50;
+				if (val == 900) {
+					inc = 100;
+				}
+			} else if (nexVal >= 900 && nexVal < 999) {
+				inc = 100;
+			}
+			if ((nexVal - val) > 0) {
+				if ((ptsCarreira - inc) >= 0) {
+					ptsCarreira -= inc;
+				} else {
+					return val;
+				}
+			} else {
+				ptsCarreira += inc;
+			}
+		}
+		return null;
+	}
 
 	public JLabel getLabelCor1() {
 		return labelCor1;
@@ -364,4 +398,14 @@ public class FormCarreira extends JPanel {
 	public void setImgCarroStr(String imgCarroStr) {
 		this.imgCarroStr = imgCarroStr;
 	}
+
+	public JSpinner getPtsAeroDinamica() {
+		return ptsAeroDinamica;
+	}
+
+	public JSpinner getPtsFreio() {
+		return ptsFreio;
+	}
+	
+	
 }

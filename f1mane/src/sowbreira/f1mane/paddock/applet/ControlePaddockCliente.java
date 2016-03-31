@@ -783,6 +783,10 @@ public class ControlePaddockCliente {
 				.setSelected(carreiraDadosSrv.isModoCarreira());
 		formCarreira.getPtsPiloto()
 				.setValue(new Integer((int) carreiraDadosSrv.getPtsPiloto()));
+		formCarreira.getPtsAeroDinamica().setValue(
+				new Integer((int) carreiraDadosSrv.getPtsAerodinamica()));
+		formCarreira.getPtsFreio()
+				.setValue(new Integer((int) carreiraDadosSrv.getPtsFreio()));
 		formCarreira.getPtsCarro()
 				.setValue(new Integer((int) carreiraDadosSrv.getPtsCarro()));
 		formCarreira.setPtsCarreira(carreiraDadosSrv.getPtsConstrutores());
@@ -808,6 +812,10 @@ public class ControlePaddockCliente {
 		carreiraDadosSrv.setNomeCarro(formCarreira.getNomeCarro().getText());
 		carreiraDadosSrv
 				.setPtsCarro((Integer) formCarreira.getPtsCarro().getValue());
+		carreiraDadosSrv.setPtsAerodinamica(
+				(Integer) formCarreira.getPtsAeroDinamica().getValue());
+		carreiraDadosSrv
+				.setPtsFreio((Integer) formCarreira.getPtsFreio().getValue());
 		carreiraDadosSrv
 				.setPtsPiloto((Integer) formCarreira.getPtsPiloto().getValue());
 		carreiraDadosSrv.setPtsConstrutores(formCarreira.getPtsCarreira());
