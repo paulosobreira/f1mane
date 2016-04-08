@@ -1013,4 +1013,44 @@ public class Util {
 		}
 		return largura;
 	}
+	
+	public static boolean processaValorPontosCarreira(int valorAutal, int proximoValor,
+			Numero numero) {
+		Double numeroVal = numero.getNumero();
+		int inc = 0;
+		if (proximoValor >= 600 && proximoValor < 700) {
+			inc = 2;
+			if (valorAutal == 700) {
+				inc = 4;
+			}
+		} else if (proximoValor >= 700 && proximoValor < 800) {
+			inc = 4;
+			if (valorAutal == 800) {
+				inc = 50;
+			}
+		} else if (proximoValor >= 800 && proximoValor < 900) {
+			inc = 50;
+			if (valorAutal == 900) {
+				inc = 100;
+			}
+		} else if (proximoValor >= 900 && proximoValor < 999) {
+			inc = 100;
+		}
+		if ((proximoValor - valorAutal) > 0) {
+			if ((numeroVal - inc) >= 0) {
+				numeroVal--;
+				numero.setNumero(numeroVal);
+			} else {
+				return false;
+			}
+		} else {
+			numeroVal++;
+			numero.setNumero(numeroVal);
+		}
+		if (numeroVal > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

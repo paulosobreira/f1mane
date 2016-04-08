@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +22,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
+import br.nnpe.Logger;
+import br.nnpe.Numero;
+import br.nnpe.Util;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.ImageUtil;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 27/06/2009 as 15:48:51
@@ -78,8 +79,7 @@ public class FormCarreira extends JPanel {
 		}
 	};
 	private JSpinner ptsCarro = new JSpinner();
-	
-	
+
 	private JLabel labelPtsAeroDimanica = new JLabel("AeroDinamica Carro:") {
 		@Override
 		public String getText() {
@@ -88,7 +88,6 @@ public class FormCarreira extends JPanel {
 	};
 	private JSpinner ptsAeroDinamica = new JSpinner();
 
-	
 	private JLabel labelPtsFreio = new JLabel("Freio Carro:") {
 		@Override
 		public String getText() {
@@ -97,7 +96,6 @@ public class FormCarreira extends JPanel {
 	};
 	private JSpinner ptsFreio = new JSpinner();
 
-	
 	private JLabel labelCor1 = new JLabel("Cor da equipe 1:");
 	private JLabel labelCor2 = new JLabel("Cor da equipe 2:");
 
@@ -105,7 +103,7 @@ public class FormCarreira extends JPanel {
 	private JLabel imgCarroLado = new JLabel();
 	private JLabel imgCarroCima = new JLabel();
 	private String imgCarroStr = "";
-	private int ptsCarreira = 1;
+	private Integer ptsCarreira = 1;
 
 	public FormCarreira() {
 		JPanel panel = new JPanel();
@@ -125,10 +123,10 @@ public class FormCarreira extends JPanel {
 		panel.add(nomeCarro);
 		panel.add(labelPtsCarro);
 		panel.add(ptsCarro);
-		
+
 		panel.add(labelPtsAeroDimanica);
 		panel.add(ptsAeroDinamica);
-		
+
 		panel.add(labelPtsFreio);
 		panel.add(ptsFreio);
 
@@ -193,10 +191,10 @@ public class FormCarreira extends JPanel {
 	protected void gerarCarroCima() {
 		BufferedImage carroLado = CarregadorRecursos
 				.carregaImagem("CarroCima.png");
-		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(labelCor1
-				.getBackground(), "CarroCimaC1.png");
-		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(labelCor2
-				.getBackground(), "CarroCimaC2.png");
+		BufferedImage cor1 = CarregadorRecursos
+				.gerarCoresCarros(labelCor1.getBackground(), "CarroCimaC1.png");
+		BufferedImage cor2 = CarregadorRecursos
+				.gerarCoresCarros(labelCor2.getBackground(), "CarroCimaC2.png");
 		Graphics graphics = carroLado.getGraphics();
 		graphics.drawImage(cor1, 0, 0, null);
 		graphics.drawImage(cor2, 0, 0, null);
@@ -208,10 +206,10 @@ public class FormCarreira extends JPanel {
 	protected void gerarCarroLado() {
 		BufferedImage carroLado = CarregadorRecursos
 				.carregaImagem("CarroLado.png");
-		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(labelCor1
-				.getBackground(), "CarroLadoC1.png");
-		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(labelCor2
-				.getBackground(), "CarroLadoC2.png");
+		BufferedImage cor1 = CarregadorRecursos
+				.gerarCoresCarros(labelCor1.getBackground(), "CarroLadoC1.png");
+		BufferedImage cor2 = CarregadorRecursos
+				.gerarCoresCarros(labelCor2.getBackground(), "CarroLadoC2.png");
 		Graphics graphics = carroLado.getGraphics();
 		graphics.drawImage(cor1, 0, 0, null);
 		graphics.drawImage(cor2, 0, 0, null);
@@ -221,7 +219,7 @@ public class FormCarreira extends JPanel {
 
 	public static void main(String[] args) {
 		FormCarreira formCarreira = new FormCarreira();
-		formCarreira.ptsCarreira =Util.intervalo(1000, 5000);
+		formCarreira.ptsCarreira = Util.intervalo(1000, 5000);
 		formCarreira.ptsAeroDinamica.setValue(600);
 		formCarreira.ptsCarro.setValue(600);
 		formCarreira.ptsFreio.setValue(600);
@@ -265,82 +263,20 @@ public class FormCarreira extends JPanel {
 				super.setValue(value);
 			} else {
 				int nexVal = (Integer) value;
-//				if(nexVal<500){
-//					return;
-//				}
 				if (val != nexVal && nexVal >= 600 && nexVal <= 999) {
-					int inc = 0;
-					if (nexVal >= 600 && nexVal < 700) {
-						inc = 2;
-						if (val == 700) {
-							inc = 4;
+					Numero numero = new Numero(ptsCarreira);
+					if (Util.processaValorPontosCarreira(val, nexVal, numero)) {
+						ptsCarreira = numero.getNumero().intValue();
+						try {
+							ptsCarreiraVal.repaint();
+						} catch (Exception e) {
+							Logger.logarExept(e);
 						}
-					} else if (nexVal >= 700 && nexVal < 800) {
-						inc = 4;
-						if (val == 800) {
-							inc = 50;
-						}
-					} else if (nexVal >= 800 && nexVal < 900) {
-						inc = 50;
-						if (val == 900) {
-							inc = 100;
-						}
-					} else if (nexVal >= 900 && nexVal < 999) {
-						inc = 100;
+						super.setValue(value);
 					}
-					if ((nexVal - val) > 0) {
-						if ((ptsCarreira - inc) >= 0) {
-							ptsCarreira -= inc;
-						} else {
-							setValue(val);
-							return;
-						}
-					} else {
-						ptsCarreira += inc;
-					}
-					try {
-						ptsCarreiraVal.repaint();
-					} catch (Exception e) {
-						Logger.logarExept(e);
-					}
-					super.setValue(value);
 				}
 			}
 		}
-	}
-	
-	private Integer processaValor(int val, int nexVal) {
-		if (val != nexVal && nexVal >= 600 && nexVal <= 999) {
-			int inc = 0;
-			if (nexVal >= 600 && nexVal < 700) {
-				inc = 2;
-				if (val == 700) {
-					inc = 4;
-				}
-			} else if (nexVal >= 700 && nexVal < 800) {
-				inc = 4;
-				if (val == 800) {
-					inc = 50;
-				}
-			} else if (nexVal >= 800 && nexVal < 900) {
-				inc = 50;
-				if (val == 900) {
-					inc = 100;
-				}
-			} else if (nexVal >= 900 && nexVal < 999) {
-				inc = 100;
-			}
-			if ((nexVal - val) > 0) {
-				if ((ptsCarreira - inc) >= 0) {
-					ptsCarreira -= inc;
-				} else {
-					return val;
-				}
-			} else {
-				ptsCarreira += inc;
-			}
-		}
-		return null;
 	}
 
 	public JLabel getLabelCor1() {
@@ -406,6 +342,5 @@ public class FormCarreira extends JPanel {
 	public JSpinner getPtsFreio() {
 		return ptsFreio;
 	}
-	
-	
+
 }
