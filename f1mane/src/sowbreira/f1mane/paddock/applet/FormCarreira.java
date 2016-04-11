@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.TitledBorder;
 
 import br.nnpe.Logger;
 import br.nnpe.Numero;
@@ -80,10 +81,10 @@ public class FormCarreira extends JPanel {
 	};
 	private JSpinner ptsCarro = new JSpinner();
 
-	private JLabel labelPtsAeroDimanica = new JLabel("AeroDinamica Carro:") {
+	private JLabel labelPtsAeroDimanica = new JLabel("Aero dinâmica Carro:") {
 		@Override
 		public String getText() {
-			return Lang.msg("aerodinamica");
+			return Lang.msg("aerodinamicaCarro");
 		}
 	};
 	private JSpinner ptsAeroDinamica = new JSpinner();
@@ -91,13 +92,13 @@ public class FormCarreira extends JPanel {
 	private JLabel labelPtsFreio = new JLabel("Freio Carro:") {
 		@Override
 		public String getText() {
-			return Lang.msg("freio");
+			return Lang.msg("freioCarro");
 		}
 	};
 	private JSpinner ptsFreio = new JSpinner();
 
-	private JLabel labelCor1 = new JLabel("Cor da equipe 1:");
-	private JLabel labelCor2 = new JLabel("Cor da equipe 2:");
+	private JLabel labelCor1 = new JLabel("Click 1:");
+	private JLabel labelCor2 = new JLabel("Click 2:");
 
 	private List listaCarro = new ArrayList();
 	private JLabel imgCarroLado = new JLabel();
@@ -106,84 +107,117 @@ public class FormCarreira extends JPanel {
 	private Integer ptsCarreira = 1;
 
 	public FormCarreira() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(4, 4));
 
-		panel.add(labelModoCarreira);
-		panel.add(modoCarreira);
-		panel.add(labelPtsCarreira);
-		panel.add(ptsCarreiraVal);
+		JPanel panelNorte = new JPanel();
+		panelNorte.setBorder(new TitledBorder("") {
+			public String getTitle() {
+				return Lang.msg("dadosEquipe");
+			}
+		});
+		panelNorte.setLayout(new GridLayout(3, 2));
+		panelNorte.add(labelModoCarreira);
+		panelNorte.add(modoCarreira);
 
-		panel.add(labelNomePiloto);
-		panel.add(nomePiloto);
-		panel.add(labelPtsPiloto);
-		panel.add(ptsPiloto);
+		panelNorte.add(labelNomePiloto);
+		panelNorte.add(nomePiloto);
 
-		panel.add(labelNomeCarro);
-		panel.add(nomeCarro);
-		panel.add(labelPtsCarro);
-		panel.add(ptsCarro);
+		panelNorte.add(labelNomeCarro);
+		panelNorte.add(nomeCarro);
 
-		panel.add(labelPtsAeroDimanica);
-		panel.add(ptsAeroDinamica);
+		JPanel panelSul = new JPanel();
+		panelSul.setLayout(new GridLayout(5, 2));
+		panelSul.setBorder(new TitledBorder("") {
+			public String getTitle() {
+				return Lang.msg("distribuicaoPontos");
+			}
+		});
 
-		panel.add(labelPtsFreio);
-		panel.add(ptsFreio);
+		panelSul.add(labelPtsCarreira);
+		panelSul.add(ptsCarreiraVal);
 
-		JPanel panel2 = new JPanel();
-		panel2.setLayout(new GridLayout(1, 2));
+		panelSul.add(labelPtsPiloto);
+		panelSul.add(ptsPiloto);
 
-		panel2.add(labelCor1);
-		panel2.add(labelCor2);
+		panelSul.add(labelPtsCarro);
+		panelSul.add(ptsCarro);
 
-		JPanel panel3 = new JPanel();
-		panel3.setLayout(new GridLayout(1, 2));
-		panel3.add(imgCarroCima);
-		panel3.add(imgCarroLado);
+		panelSul.add(labelPtsAeroDimanica);
+		panelSul.add(ptsAeroDinamica);
+
+		panelSul.add(labelPtsFreio);
+		panelSul.add(ptsFreio);
+
+		JPanel panelLabel = new JPanel();
+		panelLabel.setLayout(new GridLayout(1, 2));
+
+		panelLabel.add(labelCor1);
+		panelLabel.add(labelCor2);
+
+		JPanel panelCarro = new JPanel();
+		panelCarro.setLayout(new GridLayout(1, 2));
+		panelCarro.add(imgCarroCima);
+		panelCarro.add(imgCarroLado);
 		labelCor1.setOpaque(true);
 		labelCor1.addMouseListener(new MouseAdapter() {
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(FormCarreira.this,
-						"Escolha uma cor", Color.WHITE);
-				setCor1(color);
-				gerarCarroLado();
-				gerarCarroCima();
+				setaCor1Carro();
 			}
 
 		});
+		imgCarroCima.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				setaCor1Carro();
+			}
+
+		});
+
 		labelCor2.setOpaque(true);
 		labelCor2.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(FormCarreira.this,
-						"Escolha uma cor", Color.WHITE);
-				setCor2(color);
-				gerarCarroLado();
-				gerarCarroCima();
-				FormCarreira.this.repaint();
+				setaCor2Carro();
 			}
 
 		});
+		imgCarroLado.addMouseListener(new MouseAdapter() {
 
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				setaCor2Carro();
+			}
+
+		});
 		ptsPiloto.setModel(new CarreiraSpinnerModel());
 		ptsCarro.setModel(new CarreiraSpinnerModel());
 		ptsAeroDinamica.setModel(new CarreiraSpinnerModel());
 		ptsFreio.setModel(new CarreiraSpinnerModel());
+		JFormattedTextField tfptsAeroDinamica = ((JSpinner.DefaultEditor) ptsAeroDinamica
+				.getEditor()).getTextField();
+		tfptsAeroDinamica.setEditable(false);
+		JFormattedTextField tfptsFreio = ((JSpinner.DefaultEditor) ptsFreio
+				.getEditor()).getTextField();
+		tfptsFreio.setEditable(false);
 		JFormattedTextField tfptsCarro = ((JSpinner.DefaultEditor) ptsCarro
 				.getEditor()).getTextField();
 		tfptsCarro.setEditable(false);
 		JFormattedTextField tfptsPiloto = ((JSpinner.DefaultEditor) ptsPiloto
 				.getEditor()).getTextField();
 		tfptsPiloto.setEditable(false);
+		JPanel panelCentro = new JPanel(new BorderLayout());
+		panelCentro.setBorder(new TitledBorder("") {
+			public String getTitle() {
+				return Lang.msg("corEquipeCarro");
+			}
+		});
+		panelCentro.add(panelLabel, BorderLayout.CENTER);
+		panelCentro.add(panelCarro, BorderLayout.SOUTH);
 		setLayout(new BorderLayout());
-		add(panel, BorderLayout.CENTER);
-		JPanel panel4 = new JPanel(new BorderLayout());
-		panel4.add(panel2, BorderLayout.CENTER);
-		panel4.add(panel3, BorderLayout.SOUTH);
-		add(panel4, BorderLayout.SOUTH);
+		add(panelNorte, BorderLayout.NORTH);
+		add(panelCentro, BorderLayout.CENTER);
+		add(panelSul, BorderLayout.SOUTH);
 		gerarCarroLado();
 		gerarCarroCima();
 	}
@@ -288,6 +322,9 @@ public class FormCarreira extends JPanel {
 	}
 
 	public void setCor1(Color color) {
+		if (color == null) {
+			return;
+		}
 		labelCor1.setBackground(color);
 		int valor = (color.getRed() + color.getGreen() + color.getBlue()) / 2;
 		if (valor > 250) {
@@ -312,6 +349,9 @@ public class FormCarreira extends JPanel {
 	}
 
 	public void setCor2(Color color) {
+		if (color == null) {
+			return;
+		}
 		labelCor2.setBackground(color);
 		int valor = (color.getRed() + color.getGreen() + color.getBlue()) / 2;
 		if (valor > 250) {
@@ -341,6 +381,23 @@ public class FormCarreira extends JPanel {
 
 	public JSpinner getPtsFreio() {
 		return ptsFreio;
+	}
+
+	private void setaCor1Carro() {
+		Color color = JColorChooser.showDialog(FormCarreira.this,
+				"Escolha uma cor", Color.WHITE);
+		setCor1(color);
+		gerarCarroLado();
+		gerarCarroCima();
+	}
+
+	private void setaCor2Carro() {
+		Color color = JColorChooser.showDialog(FormCarreira.this,
+				"Escolha uma cor", Color.WHITE);
+		setCor2(color);
+		gerarCarroLado();
+		gerarCarroCima();
+		FormCarreira.this.repaint();
 	}
 
 }
