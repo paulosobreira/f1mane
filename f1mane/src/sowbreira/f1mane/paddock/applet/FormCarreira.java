@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.TitledBorder;
 
 import br.nnpe.Logger;
 import br.nnpe.Numero;
@@ -80,10 +81,10 @@ public class FormCarreira extends JPanel {
 	};
 	private JSpinner ptsCarro = new JSpinner();
 
-	private JLabel labelPtsAeroDimanica = new JLabel("AeroDinamica Carro:") {
+	private JLabel labelPtsAeroDimanica = new JLabel("Aero dinâmica Carro:") {
 		@Override
 		public String getText() {
-			return Lang.msg("aerodinamica");
+			return Lang.msg("aerodinamicaCarro");
 		}
 	};
 	private JSpinner ptsAeroDinamica = new JSpinner();
@@ -91,7 +92,7 @@ public class FormCarreira extends JPanel {
 	private JLabel labelPtsFreio = new JLabel("Freio Carro:") {
 		@Override
 		public String getText() {
-			return Lang.msg("freio");
+			return Lang.msg("freioCarro");
 		}
 	};
 	private JSpinner ptsFreio = new JSpinner();
@@ -107,28 +108,51 @@ public class FormCarreira extends JPanel {
 
 	public FormCarreira() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(4, 4));
+		panel.setLayout(new GridLayout(2, 1));
+		
+		
+		JPanel panelNomePontos = new JPanel();
+		panelNomePontos.setBorder(new TitledBorder("") {
+			public String getTitle() {
+				return "";
+			}
+		});
+		panelNomePontos.setLayout(new GridLayout(4, 2));
+		panelNomePontos.add(labelModoCarreira);
+		panelNomePontos.add(modoCarreira);
+		
+		panelNomePontos.add(labelNomePiloto);
+		panelNomePontos.add(nomePiloto);
+		
+		panelNomePontos.add(labelNomeCarro);
+		panelNomePontos.add(nomeCarro);
+		
+		panelNomePontos.add(labelPtsCarreira);
+		panelNomePontos.add(ptsCarreiraVal);
+		panel.add(panelNomePontos);
+		
+		
+		JPanel panelPontos = new JPanel();
+		panelPontos.setLayout(new GridLayout(4, 2));
+		panelPontos.setBorder(new TitledBorder("") {
+			public String getTitle() {
+				return "";
+			}
+		});
+		
+		panelPontos.add(labelPtsPiloto);
+		panelPontos.add(ptsPiloto);
 
-		panel.add(labelModoCarreira);
-		panel.add(modoCarreira);
-		panel.add(labelPtsCarreira);
-		panel.add(ptsCarreiraVal);
+		panelPontos.add(labelPtsCarro);
+		panelPontos.add(ptsCarro);
 
-		panel.add(labelNomePiloto);
-		panel.add(nomePiloto);
-		panel.add(labelPtsPiloto);
-		panel.add(ptsPiloto);
+		panelPontos.add(labelPtsAeroDimanica);
+		panelPontos.add(ptsAeroDinamica);
 
-		panel.add(labelNomeCarro);
-		panel.add(nomeCarro);
-		panel.add(labelPtsCarro);
-		panel.add(ptsCarro);
-
-		panel.add(labelPtsAeroDimanica);
-		panel.add(ptsAeroDinamica);
-
-		panel.add(labelPtsFreio);
-		panel.add(ptsFreio);
+		panelPontos.add(labelPtsFreio);
+		panelPontos.add(ptsFreio);
+		
+		panel.add(panelPontos);
 
 		JPanel panel2 = new JPanel();
 		panel2.setLayout(new GridLayout(1, 2));
@@ -172,6 +196,12 @@ public class FormCarreira extends JPanel {
 		ptsCarro.setModel(new CarreiraSpinnerModel());
 		ptsAeroDinamica.setModel(new CarreiraSpinnerModel());
 		ptsFreio.setModel(new CarreiraSpinnerModel());
+		JFormattedTextField tfptsAeroDinamica = ((JSpinner.DefaultEditor) ptsAeroDinamica
+				.getEditor()).getTextField();
+		tfptsAeroDinamica.setEditable(false);
+		JFormattedTextField tfptsFreio = ((JSpinner.DefaultEditor) ptsFreio
+				.getEditor()).getTextField();
+		tfptsFreio.setEditable(false);
 		JFormattedTextField tfptsCarro = ((JSpinner.DefaultEditor) ptsCarro
 				.getEditor()).getTextField();
 		tfptsCarro.setEditable(false);
