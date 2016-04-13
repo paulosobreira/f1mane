@@ -31,6 +31,7 @@ import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
+import br.nnpe.Numero;
 import br.nnpe.Util;
 
 /**
@@ -60,18 +61,18 @@ public class ControleClassificacao {
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 						.carregaDadosJogador(key, session);
 				List corridas = session.createCriteria(CorridasDadosSrv.class)
-						.add(
-								Restrictions.eq("jogadorDadosSrv",
-										jogadorDadosSrv)).add(
-								Restrictions.ge("tempoFim", ini.toTimestamp()
-										.getTime())).add(
-								Restrictions.le("tempoFim", fim.toTimestamp()
-										.getTime())).list();
+						.add(Restrictions.eq("jogadorDadosSrv",
+								jogadorDadosSrv))
+						.add(Restrictions.ge("tempoFim",
+								ini.toTimestamp().getTime()))
+						.add(Restrictions.le("tempoFim",
+								fim.toTimestamp().getTime()))
+						.list();
 				DadosJogador dadosJogador = new DadosJogador();
 				dadosJogador.setNome(jogadorDadosSrv.getNome());
 				dadosJogador.setUltimoAceso(jogadorDadosSrv.getUltimoLogon());
-				dadosJogador.setPontos(somarPontos(jogadorDadosSrv, ano,
-						corridas));
+				dadosJogador
+						.setPontos(somarPontos(jogadorDadosSrv, ano, corridas));
 				dadosJogador.setCorridas(corridas.size());
 				returnList.add(dadosJogador);
 			}
@@ -80,8 +81,8 @@ public class ControleClassificacao {
 					DadosJogador d0 = (DadosJogador) arg0;
 					DadosJogador d1 = (DadosJogador) arg1;
 					return new Long(d1.getPontos() * d1.getCorridas())
-							.compareTo(new Long(d0.getPontos()
-									* d0.getCorridas()));
+							.compareTo(new Long(
+									d0.getPontos() * d0.getCorridas()));
 				}
 			});
 			return returnList;
@@ -126,10 +127,10 @@ public class ControleClassificacao {
 					corridasDadosSrv.setCarro(piloto.getNomeCarro());
 					corridasDadosSrv.setTempoInicio(tempoInicio);
 					corridasDadosSrv.setTempoFim(tempoFim);
-					corridasDadosSrv.setCircuito(dadosCriarJogo
-							.getCircuitoSelecionado());
-					corridasDadosSrv.setNumVoltas(dadosCriarJogo
-							.getQtdeVoltas().intValue());
+					corridasDadosSrv.setCircuito(
+							dadosCriarJogo.getCircuitoSelecionado());
+					corridasDadosSrv.setNumVoltas(
+							dadosCriarJogo.getQtdeVoltas().intValue());
 					corridasDadosSrv.setNivel(dadosCriarJogo.getNivelCorrida());
 					int pts = gerarPontos(piloto);
 					corridasDadosSrv.setPontos(pts);
@@ -148,9 +149,9 @@ public class ControleClassificacao {
 						if (ptsCorrida == 0) {
 							ptsCorrida = 1;
 						}
-						carreiraDadosSrv.setPtsConstrutores(carreiraDadosSrv
-								.getPtsConstrutores()
-								+ ptsCorrida);
+						carreiraDadosSrv.setPtsConstrutores(
+								carreiraDadosSrv.getPtsConstrutores()
+										+ ptsCorrida);
 					}
 					session.saveOrUpdate(corridasDadosSrv);
 					session.saveOrUpdate(carreiraDadosSrv);
@@ -172,14 +173,15 @@ public class ControleClassificacao {
 			CorridasDadosSrv corridasDadosSrv) {
 		double numVoltas = corridasDadosSrv.getNumVoltas();
 		double voltasCompletadas = 0;
-		for (Iterator iterMaster = mapVoltasJogadoresOnline.keySet().iterator(); iterMaster
-				.hasNext();) {
+		for (Iterator iterMaster = mapVoltasJogadoresOnline.keySet()
+				.iterator(); iterMaster.hasNext();) {
 			Integer lap = (Integer) iterMaster.next();
 			List voltas = (List) mapVoltasJogadoresOnline.get(lap);
 			for (Iterator iter = voltas.iterator(); iter.hasNext();) {
 				VoltaJogadorOnline jogadorOnline = (VoltaJogadorOnline) iter
 						.next();
-				if (jogadorOnline.getJogador().equals(piloto.getNomeJogador())) {
+				if (jogadorOnline.getJogador()
+						.equals(piloto.getNomeJogador())) {
 					voltasCompletadas++;
 					if (!jogadorOnline.getPiloto().equals(piloto.getNome())) {
 						corridasDadosSrv.setMudouCarro(true);
@@ -245,8 +247,8 @@ public class ControleClassificacao {
 	public List obterListaCorridas(String nomeJogador, Integer ano) {
 		Session session = controlePersistencia.getSession();
 		try {
-			return controlePersistencia.obterListaCorridas(nomeJogador,
-					session, ano);
+			return controlePersistencia.obterListaCorridas(nomeJogador, session,
+					ano);
 		} finally {
 			if (session.isOpen()) {
 				session.close();
@@ -314,8 +316,8 @@ public class ControleClassificacao {
 				String key = (String) iterator.next();
 				DadosConstrutoresPilotos dadosConstrutoresPilotos = new DadosConstrutoresPilotos();
 				dadosConstrutoresPilotos.setNome(key);
-				dadosConstrutoresPilotos.setPontos((Integer) mapaPilotos
-						.get(key));
+				dadosConstrutoresPilotos
+						.setPontos((Integer) mapaPilotos.get(key));
 				if (dadosConstrutoresPilotos.getPontos() > 0)
 					listaPilotos.add(dadosConstrutoresPilotos);
 			}
@@ -331,8 +333,9 @@ public class ControleClassificacao {
 	public CarreiraDadosSrv verCarreira(ClientPaddockPack clientPaddockPack,
 			Session session) {
 		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-				.carregaCarreiraJogador(clientPaddockPack.getSessaoCliente()
-						.getNomeJogador(), true, session);
+				.carregaCarreiraJogador(
+						clientPaddockPack.getSessaoCliente().getNomeJogador(),
+						true, session);
 		if (carreiraDadosSrv.getPtsCarro() == 0) {
 			carreiraDadosSrv.setPtsCarro(650);
 		}
@@ -346,33 +349,37 @@ public class ControleClassificacao {
 		Session session = controlePersistencia.getSession();
 		try {
 			CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-					.carregaCarreiraJogador(clientPaddockPack
-							.getSessaoCliente().getNomeJogador(), false,
-							session);
-			carreiraDadosSrv.setNomePiloto(clientPaddockPack
-					.getJogadorDadosSrv().getNomePiloto());
-			carreiraDadosSrv.setNomeCarro(clientPaddockPack
-					.getJogadorDadosSrv().getNomeCarro());
-			carreiraDadosSrv.setPtsCarro(clientPaddockPack.getJogadorDadosSrv()
-					.getPtsCarro());
-			carreiraDadosSrv.setPtsPiloto(clientPaddockPack
-					.getJogadorDadosSrv().getPtsPiloto());
+					.carregaCarreiraJogador(clientPaddockPack.getSessaoCliente()
+							.getNomeJogador(), false, session);
+			carreiraDadosSrv.setNomePiloto(
+					clientPaddockPack.getJogadorDadosSrv().getNomePiloto());
+			carreiraDadosSrv.setNomeCarro(
+					clientPaddockPack.getJogadorDadosSrv().getNomeCarro());
+			
+			if(!validadeDistribucaoPontos(clientPaddockPack, carreiraDadosSrv)){
+				return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
+			};
+
+			carreiraDadosSrv.setPtsCarro(
+					clientPaddockPack.getJogadorDadosSrv().getPtsCarro());
+			carreiraDadosSrv.setPtsPiloto(
+					clientPaddockPack.getJogadorDadosSrv().getPtsPiloto());
 			carreiraDadosSrv.setPtsConstrutores(clientPaddockPack
 					.getJogadorDadosSrv().getPtsConstrutores());
-			carreiraDadosSrv.setModoCarreira(clientPaddockPack
-					.getJogadorDadosSrv().isModoCarreira());
-			carreiraDadosSrv.setC1R(clientPaddockPack.getJogadorDadosSrv()
-					.getC1R());
-			carreiraDadosSrv.setC1G(clientPaddockPack.getJogadorDadosSrv()
-					.getC1G());
-			carreiraDadosSrv.setC1B(clientPaddockPack.getJogadorDadosSrv()
-					.getC1B());
-			carreiraDadosSrv.setC2R(clientPaddockPack.getJogadorDadosSrv()
-					.getC2R());
-			carreiraDadosSrv.setC2G(clientPaddockPack.getJogadorDadosSrv()
-					.getC2G());
-			carreiraDadosSrv.setC2B(clientPaddockPack.getJogadorDadosSrv()
-					.getC2B());
+			carreiraDadosSrv.setModoCarreira(
+					clientPaddockPack.getJogadorDadosSrv().isModoCarreira());
+			carreiraDadosSrv
+					.setC1R(clientPaddockPack.getJogadorDadosSrv().getC1R());
+			carreiraDadosSrv
+					.setC1G(clientPaddockPack.getJogadorDadosSrv().getC1G());
+			carreiraDadosSrv
+					.setC1B(clientPaddockPack.getJogadorDadosSrv().getC1B());
+			carreiraDadosSrv
+					.setC2R(clientPaddockPack.getJogadorDadosSrv().getC2R());
+			carreiraDadosSrv
+					.setC2G(clientPaddockPack.getJogadorDadosSrv().getC2G());
+			carreiraDadosSrv
+					.setC2B(clientPaddockPack.getJogadorDadosSrv().getC2B());
 			try {
 				controlePersistencia.gravarDados(session, carreiraDadosSrv);
 			} catch (Exception e) {
@@ -385,6 +392,47 @@ public class ControleClassificacao {
 			}
 		}
 		return new MsgSrv(Lang.msg("250"));
+	}
+
+	private boolean validadeDistribucaoPontos(ClientPaddockPack clientPaddockPack,
+			CarreiraDadosSrv carreiraDadosSrv) {
+		int ptsConstrutoresBase = carreiraDadosSrv.getPtsConstrutores();
+		int ptsAerodinamicaBase = carreiraDadosSrv.getPtsAerodinamica();
+		int ptsCarroBase = carreiraDadosSrv.getPtsCarro();
+		int ptsFreioBase = carreiraDadosSrv.getPtsFreio();
+		int ptsPilotoBase = carreiraDadosSrv.getPtsPiloto();
+
+		int ptsConstrutores = clientPaddockPack.getJogadorDadosSrv()
+				.getPtsConstrutores();
+		int ptsAerodinamica = clientPaddockPack.getJogadorDadosSrv()
+				.getPtsAerodinamica();
+		int ptsCarro = clientPaddockPack.getJogadorDadosSrv().getPtsCarro();
+		int ptsFreio = clientPaddockPack.getJogadorDadosSrv().getPtsFreio();
+		int ptsPiloto = clientPaddockPack.getJogadorDadosSrv()
+				.getPtsPiloto();
+
+		Numero numero = new Numero(ptsConstrutoresBase);
+		redistribuiPontos(ptsAerodinamicaBase, ptsAerodinamica, numero);
+		redistribuiPontos(ptsCarroBase, ptsCarro, numero);
+		redistribuiPontos(ptsFreioBase, ptsFreio, numero);
+		redistribuiPontos(ptsPilotoBase, ptsPiloto, numero);
+		
+		return ptsConstrutores == numero.getNumero().intValue();
+		
+	}
+
+	private void redistribuiPontos(int ptsBase, int pts,
+			Numero numero) {
+		if (pts < ptsBase) {
+			for (int i = ptsBase; i > pts; i--) {
+				Util.processaValorPontosCarreira(i, i - 1, numero);
+			}
+		}
+		if (pts > ptsBase) {
+			for (int i = ptsBase; i < pts; i++) {
+				Util.processaValorPontosCarreira(i, i + 1, numero);
+			}
+		}
 	}
 
 	public CarreiraDadosSrv obterCarreiraSrv(String nomeJogador) {
