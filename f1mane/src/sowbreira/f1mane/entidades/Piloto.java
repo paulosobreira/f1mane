@@ -1669,7 +1669,7 @@ public class Piloto implements Serializable {
 			if (pilotoFrente.equals(this)) {
 				continue;
 			}
-			if (verificaNaoPrecisaDesvia(controleJogo, pilotoFrente)) {
+			if (verificaNaoPrecisaDesviar(controleJogo, pilotoFrente)) {
 				continue;
 			}
 			if (this.equals(pilotoFrente.getColisao())) {
@@ -1689,11 +1689,26 @@ public class Piloto implements Serializable {
 
 	}
 
-	private boolean verificaNaoPrecisaDesvia(InterfaceJogo controleJogo,
+	public boolean verificaNaoPrecisaDesviar(InterfaceJogo controleJogo,
 			Piloto pilotoFrente) {
-		return (pilotoFrente.isDesqualificado()
-				&& !controleJogo.isSafetyCarNaPista())
-				|| pilotoFrente.getCarro().isRecolhido();
+		boolean naoPrecisa = false;
+		if (controleJogo.isSafetyCarNaPista()) {
+			if (pilotoFrente.getCarro().isRecolhido()) {
+				naoPrecisa = true;
+			}
+		} else {
+			String danificado = pilotoFrente.getCarro().getDanificado();
+			if (pilotoFrente.isDesqualificado()
+					|| pilotoFrente.getCarro().isPaneSeca()
+					|| Carro.ABANDONOU.equals(danificado)
+					|| Carro.BATEU_FORTE.equals(danificado)
+					|| Carro.PANE_SECA.equals(danificado)
+					|| Carro.EXPLODIU_MOTOR.equals(danificado)) {
+				naoPrecisa = true;
+			}
+		}
+
+		return naoPrecisa;
 	}
 
 	private void processaEvitaBaterCarroFrente(InterfaceJogo controleJogo) {
@@ -1708,7 +1723,7 @@ public class Piloto implements Serializable {
 		if (this.equals(piloto)) {
 			return;
 		}
-		if (verificaNaoPrecisaDesvia(controleJogo, piloto)) {
+		if (verificaNaoPrecisaDesviar(controleJogo, piloto)) {
 			return;
 		}
 		if (piloto.getPtosBox() > 0) {
@@ -2509,7 +2524,7 @@ public class Piloto implements Serializable {
 
 	public void abandonar() {
 		setDesqualificado(true);
-		carro.abandonou();
+		carro.abandonar();
 
 	}
 

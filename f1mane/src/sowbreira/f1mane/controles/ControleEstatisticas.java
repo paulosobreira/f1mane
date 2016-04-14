@@ -441,6 +441,9 @@ public class ControleEstatisticas {
 			if (pilotoFrente.equals(piloto)) {
 				continue;
 			}
+			if (piloto.verificaNaoPrecisaDesviar(controleJogo, pilotoFrente)) {
+				continue;
+			}
 			if (pilotoFrente.getPtosBox() != 0) {
 				continue;
 			}

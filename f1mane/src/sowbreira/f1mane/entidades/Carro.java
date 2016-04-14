@@ -1056,7 +1056,7 @@ public class Carro implements Serializable {
 		return ((danificado == null) ? false : true);
 	}
 
-	public void abandonou() {
+	public void abandonar() {
 		danificado = ABANDONOU;
 
 	}

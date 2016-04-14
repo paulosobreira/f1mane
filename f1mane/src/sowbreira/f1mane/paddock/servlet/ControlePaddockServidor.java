@@ -3,7 +3,6 @@
  */
 package sowbreira.f1mane.paddock.servlet;
 
-import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
