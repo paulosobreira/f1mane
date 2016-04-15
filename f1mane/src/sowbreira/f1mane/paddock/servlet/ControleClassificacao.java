@@ -355,8 +355,18 @@ public class ControleClassificacao {
 					clientPaddockPack.getJogadorDadosSrv().getNomePiloto());
 			carreiraDadosSrv.setNomeCarro(
 					clientPaddockPack.getJogadorDadosSrv().getNomeCarro());
-			
-			if(!validadeDistribucaoPontos(clientPaddockPack, carreiraDadosSrv)){
+
+			int ptsConstrutores = clientPaddockPack.getJogadorDadosSrv()
+					.getPtsConstrutores();
+			int ptsAerodinamica = clientPaddockPack.getJogadorDadosSrv()
+					.getPtsAerodinamica();
+			int ptsCarro = clientPaddockPack.getJogadorDadosSrv().getPtsCarro();
+			int ptsFreio = clientPaddockPack.getJogadorDadosSrv().getPtsFreio();
+			int ptsPiloto = clientPaddockPack.getJogadorDadosSrv()
+					.getPtsPiloto();
+
+			if (!validadeDistribucaoPontos(carreiraDadosSrv, ptsAerodinamica,
+					ptsCarro, ptsFreio, ptsPiloto, ptsConstrutores)) {
 				return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
 			};
 
@@ -394,35 +404,26 @@ public class ControleClassificacao {
 		return new MsgSrv(Lang.msg("250"));
 	}
 
-	private boolean validadeDistribucaoPontos(ClientPaddockPack clientPaddockPack,
-			CarreiraDadosSrv carreiraDadosSrv) {
+	public static boolean validadeDistribucaoPontos(
+			CarreiraDadosSrv carreiraDadosSrv, int ptsAerodinamica,
+			int ptsCarro, int ptsFreio, int ptsPiloto, int ptsConstrutores) {
 		int ptsConstrutoresBase = carreiraDadosSrv.getPtsConstrutores();
 		int ptsAerodinamicaBase = carreiraDadosSrv.getPtsAerodinamica();
 		int ptsCarroBase = carreiraDadosSrv.getPtsCarro();
 		int ptsFreioBase = carreiraDadosSrv.getPtsFreio();
 		int ptsPilotoBase = carreiraDadosSrv.getPtsPiloto();
 
-		int ptsConstrutores = clientPaddockPack.getJogadorDadosSrv()
-				.getPtsConstrutores();
-		int ptsAerodinamica = clientPaddockPack.getJogadorDadosSrv()
-				.getPtsAerodinamica();
-		int ptsCarro = clientPaddockPack.getJogadorDadosSrv().getPtsCarro();
-		int ptsFreio = clientPaddockPack.getJogadorDadosSrv().getPtsFreio();
-		int ptsPiloto = clientPaddockPack.getJogadorDadosSrv()
-				.getPtsPiloto();
-
 		Numero numero = new Numero(ptsConstrutoresBase);
 		redistribuiPontos(ptsAerodinamicaBase, ptsAerodinamica, numero);
 		redistribuiPontos(ptsCarroBase, ptsCarro, numero);
 		redistribuiPontos(ptsFreioBase, ptsFreio, numero);
 		redistribuiPontos(ptsPilotoBase, ptsPiloto, numero);
-		
+
 		return ptsConstrutores == numero.getNumero().intValue();
-		
+
 	}
 
-	private void redistribuiPontos(int ptsBase, int pts,
-			Numero numero) {
+	private static void redistribuiPontos(int ptsBase, int pts, Numero numero) {
 		if (pts < ptsBase) {
 			for (int i = ptsBase; i > pts; i--) {
 				Util.processaValorPontosCarreira(i, i - 1, numero);

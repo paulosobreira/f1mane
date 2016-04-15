@@ -26,6 +26,9 @@ import javax.swing.border.TitledBorder;
 import br.nnpe.Logger;
 import br.nnpe.Numero;
 import br.nnpe.Util;
+import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.paddock.servlet.ControleClassificacao;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
@@ -253,12 +256,28 @@ public class FormCarreira extends JPanel {
 
 	public static void main(String[] args) {
 		FormCarreira formCarreira = new FormCarreira();
-		formCarreira.ptsCarreira = Util.intervalo(1000, 5000);
+		int ptsCarreira = Util.intervalo(1000, 5000);
+		formCarreira.ptsCarreira = ptsCarreira;
 		formCarreira.ptsAeroDinamica.setValue(600);
 		formCarreira.ptsCarro.setValue(600);
 		formCarreira.ptsFreio.setValue(600);
 		formCarreira.ptsPiloto.setValue(600);
 		JOptionPane.showMessageDialog(null, formCarreira);
+		CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
+		carreiraDadosSrv
+				.setPtsCarro((Integer) formCarreira.getPtsCarro().getValue());
+		carreiraDadosSrv.setPtsAerodinamica(
+				(Integer) formCarreira.getPtsAeroDinamica().getValue());
+		carreiraDadosSrv
+				.setPtsFreio((Integer) formCarreira.getPtsFreio().getValue());
+		carreiraDadosSrv
+				.setPtsPiloto((Integer) formCarreira.getPtsPiloto().getValue());
+		carreiraDadosSrv.setPtsConstrutores(formCarreira.getPtsCarreira());
+		carreiraDadosSrv
+				.setModoCarreira(formCarreira.getModoCarreira().isSelected());
+
+		System.out.println(ControleClassificacao.validadeDistribucaoPontos(
+				carreiraDadosSrv, 600, 600, 600, 600, ptsCarreira));
 	}
 
 	public int getPtsCarreira() {

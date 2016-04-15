@@ -1038,13 +1038,13 @@ public class Util {
 		}
 		if ((proximoValor - valorAutal) > 0) {
 			if ((numeroVal - inc) >= 0) {
-				numeroVal--;
+				numeroVal-=inc;
 				numero.setNumero(numeroVal);
 			} else {
 				return false;
 			}
 		} else {
-			numeroVal++;
+			numeroVal+=inc;
 			numero.setNumero(numeroVal);
 		}
 		if (numeroVal > 0) {
