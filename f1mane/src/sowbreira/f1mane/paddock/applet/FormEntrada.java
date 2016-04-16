@@ -71,9 +71,9 @@ public class FormEntrada extends JPanel {
 		JPanel panelAbaRegistrar = new JPanel(new BorderLayout());
 		panelAbaRegistrar.add(gerarRegistrar(), BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("registrar"), panelAbaRegistrar);
-		// JPanel panelAbaRecuperar = new JPanel(new BorderLayout());
-		// panelAbaRecuperar.add(gerarRecuperar(), BorderLayout.CENTER);
-		// jTabbedPane.addTab(Lang.msg("recuperar"), panelAbaRecuperar);
+		JPanel panelAbaRecuperar = new JPanel(new BorderLayout());
+		panelAbaRecuperar.add(gerarRecuperar(), BorderLayout.CENTER);
+		jTabbedPane.addTab(Lang.msg("recuperar"), panelAbaRecuperar);
 		add(jTabbedPane, BorderLayout.CENTER);
 		jTabbedPane.addChangeListener(new ChangeListener() {
 			@Override
