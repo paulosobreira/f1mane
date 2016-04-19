@@ -177,6 +177,7 @@ public class ControlePaddockServidor {
 	private Object registrarLogin(ClientPaddockPack clientPaddockPack) {
 		JogadorDadosSrv jogadorDadosSrv = null;
 		Session session = controlePersistencia.getSession();
+		String senha;
 		try {
 
 			if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
@@ -194,7 +195,7 @@ public class ControlePaddockServidor {
 				jogadorDadosSrv.setEmail(clientPaddockPack.getEmailJogador());
 
 				PassGenerator generator = new PassGenerator();
-				String senha = generator.generateIt();
+				senha = generator.generateIt();
 				try {
 					mandaMailSenha(clientPaddockPack.getNomeJogador(),
 							clientPaddockPack.getEmailJogador(), senha);
@@ -221,7 +222,7 @@ public class ControlePaddockServidor {
 				session.close();
 		}
 
-		return criarSessao(clientPaddockPack);
+		return criarSessao(clientPaddockPack,senha);
 	}
 
 	private void mandaMailSenha(String nome, String email, String senha)
@@ -539,6 +540,10 @@ public class ControlePaddockServidor {
 	}
 
 	private Object criarSessao(ClientPaddockPack clientPaddockPack) {
+		return criarSessao(clientPaddockPack, null);
+	}
+	
+	private Object criarSessao(ClientPaddockPack clientPaddockPack, String senha) {
 		Session session = controlePersistencia.getSession();
 		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 				.carregaDadosJogador(clientPaddockPack.getNomeJogador(),
@@ -577,6 +582,7 @@ public class ControlePaddockServidor {
 		controleJogosServer.removerClienteInativo(sessaoCliente);
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setSessaoCliente(sessaoCliente);
+		srvPaddockPack.setSenhaCriada(senha);
 
 		return srvPaddockPack;
 	}

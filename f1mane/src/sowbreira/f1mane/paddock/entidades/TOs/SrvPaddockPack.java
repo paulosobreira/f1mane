@@ -14,6 +14,7 @@ public class SrvPaddockPack implements Serializable {
 	private DetalhesJogo detalhesJogo;
 	private DadosCriarJogo dadosCriarJogo;
 	private String nomeJogoCriado;
+	private String senhaCriada;
 	private String abandonar;
 	private List listaDadosJogador;
 	private List listaCorridasJogador;
@@ -101,6 +102,14 @@ public class SrvPaddockPack implements Serializable {
 
 	public void setListaConstrutoresPilotos(List listaConstrutoresPilotos) {
 		this.listaConstrutoresPilotos = listaConstrutoresPilotos;
+	}
+
+	public String getSenhaCriada() {
+		return senhaCriada;
+	}
+
+	public void setSenhaCriada(String senhaCriada) {
+		this.senhaCriada = senhaCriada;
 	}
 
 }

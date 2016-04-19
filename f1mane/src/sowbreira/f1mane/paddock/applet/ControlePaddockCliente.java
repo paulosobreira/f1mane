@@ -550,6 +550,13 @@ public class ControlePaddockCliente {
 		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
 		SessaoCliente cliente = srvPaddockPack.getSessaoCliente();
 		this.sessaoCliente = cliente;
+		if (srvPaddockPack.getSenhaCriada() != null) {
+			JOptionPane.showMessageDialog(applet,
+					Lang.msg("senhaGerada",
+							new String[]{cliente.getNomeJogador(),
+									srvPaddockPack.getSenhaCriada()}),
+					Lang.msg("guardeSenhaGerada"), JOptionPane.INFORMATION_MESSAGE);
+		}
 		return true;
 	}
 
