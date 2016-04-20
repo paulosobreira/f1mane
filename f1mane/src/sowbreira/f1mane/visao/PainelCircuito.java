@@ -296,7 +296,7 @@ public class PainelCircuito {
 	private List<NoWrapper> pistaWrapperFull;
 	private java.awt.geom.RoundRectangle2D.Double rectanglePos;
 	private java.awt.geom.RoundRectangle2D.Double rectangleVol;
-	private int interpolacao = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
+	private int interpolacao = AffineTransformOp.TYPE_BILINEAR;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -810,7 +810,7 @@ public class PainelCircuito {
 				|| pilotoSelecionado.getPtosBox() != 0) {
 			return;
 		}
-		if (controleJogo.getNiveljogo() == InterfaceJogo.DIFICIL_NV) {
+		if (controleJogo.getNiveljogo() != InterfaceJogo.FACIL_NV) {
 			return;
 		}
 		No noReal = pilotoSelecionado.getNoAtual();
@@ -6175,7 +6175,6 @@ public class PainelCircuito {
 					RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
 			g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
 					RenderingHints.VALUE_RENDER_QUALITY);
-			interpolacao = AffineTransformOp.TYPE_BILINEAR;
 		} else {
 			g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
 					RenderingHints.VALUE_COLOR_RENDER_SPEED);
@@ -6183,7 +6182,6 @@ public class PainelCircuito {
 					RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
 			g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
 					RenderingHints.VALUE_RENDER_SPEED);
-			interpolacao = AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
 		}
 	}
 

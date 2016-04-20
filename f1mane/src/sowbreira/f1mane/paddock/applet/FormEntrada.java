@@ -2,6 +2,7 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -107,22 +108,6 @@ public class FormEntrada extends JPanel {
 				return Lang.msg("lembrar");
 			}
 		});
-		JButton recuperar = new JButton("Recuperar") {
-			@Override
-			public String getText() {
-				return Lang.msg("235");
-			}
-		};
-		recuperar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,
-						Lang.msg("mensagemRecuperarSenha"));
-
-			}
-		});
-		langPanel.add(recuperar);
-
 		return langPanel;
 	}
 
@@ -186,28 +171,42 @@ public class FormEntrada extends JPanel {
 	}
 
 	private JPanel gerarRecuperar() {
-		JPanel recuperarPanel = new JPanel(new GridLayout(5, 2));
-		recuperarPanel.setBorder(new TitledBorder("Recuperar Senha") {
-			public String getTitle() {
-				return Lang.msg("235");
-			}
-		});
-		recuperarPanel.add(new JLabel("Entre com seu Nome") {
-			public String getText() {
-				return Lang.msg("167");
-			}
-		});
-		recuperarPanel.add(nomeRecuperar);
-		recuperarPanel.add(new JLabel("Entre com seu e-mail") {
-			public String getText() {
-				return Lang.msg("168");
-			}
-		});
-		recuperarPanel.add(emailRecuperar);
-		JPanel newPanel = new JPanel(new BorderLayout());
-		newPanel.add(recuperarPanel, BorderLayout.NORTH);
-		return newPanel;
+		// JPanel recuperarPanel = new JPanel(new GridLayout(5, 2));
+		// recuperarPanel.setBorder(new TitledBorder("Recuperar Senha") {
+		// public String getTitle() {
+		// return Lang.msg("235");
+		// }
+		// });
+		// recuperarPanel.add(new JLabel("Entre com seu Nome") {
+		// public String getText() {
+		// return Lang.msg("167");
+		// }
+		// });
+		// recuperarPanel.add(nomeRecuperar);
+		// recuperarPanel.add(new JLabel("Entre com seu e-mail") {
+		// public String getText() {
+		// return Lang.msg("168");
+		// }
+		// });
+		// recuperarPanel.add(emailRecuperar);
 
+		JPanel newPanel = new JPanel(new GridLayout(3, 1));
+		newPanel.add(new JLabel("mensagemRecuperarSenha1") {
+			public String getText() {
+				return Lang.msg("mensagemRecuperarSenha1");
+			}
+		});
+		newPanel.add(new JLabel("mensagemRecuperarSenha2") {
+			public String getText() {
+				return Lang.msg("mensagemRecuperarSenha2");
+			}
+		});
+		newPanel.add(new JLabel("mensagemRecuperarSenha3") {
+			public String getText() {
+				return Lang.msg("mensagemRecuperarSenha3");
+			}
+		});
+		return newPanel;
 	}
 
 	private JPanel gerarLogin() {
