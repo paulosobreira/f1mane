@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -1195,13 +1196,6 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public void mostraCompsSwing() {
-		if (gerenciadorVisual != null) {
-			gerenciadorVisual.mostraRadioPadock();
-		}
-	}
-
-	@Override
 	public List listaInfo() {
 		if (gerenciadorVisual != null) {
 			return gerenciadorVisual.getBufferTextual();
@@ -1559,6 +1553,14 @@ public class ControleJogoLocal extends ControleRecursos
 	@Override
 	public boolean mostraTipoPneuAdversario() {
 		return true;
+	}
+
+	@Override
+	public JPanel painelNarracao() {
+		if (gerenciadorVisual != null) {
+			return gerenciadorVisual.getPainelNarracaoText();
+		}
+		return null;
 	}
 
 }

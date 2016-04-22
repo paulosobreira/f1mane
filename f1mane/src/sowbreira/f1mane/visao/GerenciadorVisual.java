@@ -74,7 +74,7 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class GerenciadorVisual {
-	private JPanel painelInfText;
+	private JPanel painelNarracaoText;
 	private JEditorPane infoTextual;
 	private ArrayList bufferTextual;
 	private JScrollPane scrollPaneTextual;
@@ -112,7 +112,6 @@ public class GerenciadorVisual {
 
 	private long ultimaTravavadaRodas;
 
-	private JFrame radioPadock;
 	private Thread thAtualizaPainelSuave;
 	private Thread thAtualizaSom;
 	protected boolean thAtualizaPainelSuaveAlive = true;
@@ -129,11 +128,6 @@ public class GerenciadorVisual {
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
 		progamacaoBox = new ProgamacaoBox();
-		radioPadock = new JFrame();
-	}
-
-	public JFrame getRadioPadock() {
-		return radioPadock;
 	}
 
 	private void disableKeys(InputMap inputMap) {
@@ -263,9 +257,6 @@ public class GerenciadorVisual {
 		controleJogo.getMainFrame().getContentPane().add(centerPanel,
 				BorderLayout.CENTER);
 		centerPanel.revalidate();
-
-		radioPadock.getContentPane().setLayout(new BorderLayout());
-		radioPadock.getContentPane().add(painelInfText, BorderLayout.CENTER);
 	}
 
 	public void finalize() throws Throwable {
@@ -606,8 +597,8 @@ public class GerenciadorVisual {
 		return infoTextual;
 	}
 
-	public JPanel getPainelInfText() {
-		return painelInfText;
+	public JPanel getPainelNarracaoText() {
+		return painelNarracaoText;
 	}
 
 	public JSpinner getSpinnerSkillPadraoPilotos() {
@@ -654,7 +645,7 @@ public class GerenciadorVisual {
 	}
 
 	private void gerarPainelInfoText() {
-		painelInfText = new JPanel(new BorderLayout());
+		painelNarracaoText = new JPanel(new BorderLayout());
 		infoTextual = new JEditorPane("text/html", "");
 		infoTextual.setEditable(false);
 		bufferTextual = new ArrayList();
@@ -667,12 +658,12 @@ public class GerenciadorVisual {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		panel.add(scrollPaneTextual, BorderLayout.CENTER);
-		painelInfText.add(panel, BorderLayout.CENTER);
+		painelNarracaoText.add(panel, BorderLayout.CENTER);
 		infoText.setLayout(new GridLayout(1, 1));
 		infoCorrida = new JLabel(Lang.msg("213"));
 		infoPiloto = new JLabel(Lang.msg("214"));
 		infoText.add(infoCorrida);
-		painelInfText.add(infoText, BorderLayout.NORTH);
+		painelNarracaoText.add(infoText, BorderLayout.NORTH);
 	}
 
 	private void gerarPainelJogoSingle(JPanel painelInicio) {
@@ -1628,12 +1619,6 @@ public class GerenciadorVisual {
 			ganhoSuave += 1;
 		}
 		System.out.println(ganhoSuave);
-	}
-
-	public void mostraRadioPadock() {
-		getRadioPadock().setVisible(true);
-		getRadioPadock().setTitle(Lang.msg("f1maneSwing"));
-		getRadioPadock().setSize(500, 300);
 	}
 
 	public void setMouseZoom(double d) {

@@ -1,5 +1,7 @@
 package sowbreira.f1mane;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +26,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -177,8 +180,9 @@ public class MainFrame extends JFrame {
 					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
-				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(
-						area), Lang.msg("091"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(MainFrame.this,
+						new JScrollPane(area), Lang.msg("091"),
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menuInfo2.add(leiaMe);
@@ -192,7 +196,8 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (controleJogo != null) {
-						exibirResultadoFinal(controleJogo.obterResultadoFinal());
+						exibirResultadoFinal(
+								controleJogo.obterResultadoFinal());
 					}
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
@@ -211,7 +216,8 @@ public class MainFrame extends JFrame {
 				try {
 					JTextArea area = new JTextArea(20, 50);
 					Set top = Logger.topExceptions.keySet();
-					for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+					for (Iterator iterator = top.iterator(); iterator
+							.hasNext();) {
 						String exept = (String) iterator.next();
 						area.append("Quantidade : "
 								+ Logger.topExceptions.get(exept));
@@ -338,25 +344,6 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu1.add(som);
-		narracao = new JMenuItem("compsSwing") {
-			public String getText() {
-				return Lang.msg("f1maneSwing");
-			}
-
-		};
-		narracao.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						controleJogo.mostraCompsSwing();
-					}
-				}).start();
-
-			}
-		});
-		menu1.add(narracao);
 
 		verControles = new JMenuItem("verControles") {
 			public String getText() {
@@ -383,7 +370,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int keyCoode = e.getKeyCode();
-				if (keyCoode == KeyEvent.VK_1 && e.isControlDown()) {
+				if (keyCoode == KeyEvent.VK_F1) {
 					mostraMenuFrame();
 				}
 				super.keyPressed(e);
@@ -399,7 +386,7 @@ public class MainFrame extends JFrame {
 			codeBase = args[0];
 		}
 		if (args != null && args.length > 1) {
- 			Lang.mudarIdioma(args[1]);
+			Lang.mudarIdioma(args[1]);
 		}
 		MainFrame frame = new MainFrame(null, codeBase);
 	}
@@ -432,7 +419,8 @@ public class MainFrame extends JFrame {
 		}
 	}
 
-	public void exibirResultadoFinal(PainelTabelaResultadoFinal resultadoFinal) {
+	public void exibirResultadoFinal(
+			PainelTabelaResultadoFinal resultadoFinal) {
 
 		JOptionPane.showMessageDialog(this, new JScrollPane(resultadoFinal),
 				"Resultado Final. ", JOptionPane.INFORMATION_MESSAGE);
@@ -497,12 +485,55 @@ public class MainFrame extends JFrame {
 	}
 
 	public void mostraMenuFrame() {
-		if (menuFrame != null) {
-			menuFrame.setVisible(!menuFrame.isVisible());
-			if (menuFrame.isVisible()) {
-				menuFrame.pack();
-			}
+		if (menuFrame == null) {
+			return;
+		}
+		menuFrame.setVisible(!menuFrame.isVisible());
+		if (menuFrame.isVisible()) {
+			Logger.ativo = !Logger.ativo;
+			menuFrame.setLocation(MainFrame.this.getWidth(), 0);
+			posicionaJanelaDebug();
+			menuFrame.setLayout(new BorderLayout());
+			Thread atualizaDebug = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (menuFrame.isVisible()) {
+						try {
+							adicionaPainelNarracaoDebug();
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			});
+
+			atualizaDebug.start();
+
 		}
 
+	}
+
+	private void posicionaJanelaDebug() {
+		menuFrame.pack();
+		menuFrame.setSize(300, MainFrame.this.getHeight());
+		menuFrame.setTitle("F1-Mane Debug");
+	}
+
+	private void adicionaPainelNarracaoDebug() {
+		JPanel painelNarracao = controleJogo.painelNarracao();
+		if (painelNarracao != null) {
+			boolean temPainel = false;
+			Component[] components = menuFrame.getComponents();
+			for (int i = 0; i < components.length; i++) {
+				if (components[i].equals(painelNarracao))
+					temPainel = true;
+				break;
+			}
+			if (!temPainel) {
+				menuFrame.add(painelNarracao, BorderLayout.SOUTH);
+				posicionaJanelaDebug();
+			}
+		}
 	}
 }

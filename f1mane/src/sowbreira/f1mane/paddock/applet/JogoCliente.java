@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleBox;
@@ -1022,13 +1023,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void mostraCompsSwing() {
-		if (gerenciadorVisual != null) {
-			gerenciadorVisual.mostraRadioPadock();
-		}
-	}
-
-	@Override
 	public List listaInfo() {
 		if (gerenciadorVisual != null) {
 			return gerenciadorVisual.getBufferTextual();
@@ -1372,6 +1366,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public boolean mostraTipoPneuAdversario() {
 		return pilotoSelecionado != null
 				&& !pilotoSelecionado.equals(getPilotoJogador());
+	}
+
+	@Override
+	public JPanel painelNarracao() {
+		if (gerenciadorVisual != null) {
+			return gerenciadorVisual.getPainelNarracaoText();
+		}
+		return null;
 	}
 
 }

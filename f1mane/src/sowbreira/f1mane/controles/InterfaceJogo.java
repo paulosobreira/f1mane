@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JPanel;
+
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
@@ -285,7 +287,7 @@ public interface InterfaceJogo {
 
 	public boolean isBoxRapido();
 
-	public void mostraCompsSwing();
+	public JPanel painelNarracao();
 
 	public void forcaSafatyCar();
 
