@@ -86,6 +86,10 @@ public class MonitorJogo implements Runnable {
 				interrupt = true;
 				matarCmdThread();
 				Logger.logarExept(e);
+				if (!(e instanceof InterruptedException)) {
+					JOptionPane.showMessageDialog(jogoCliente.getMainFrame(), e.getMessage(), "Erro",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 		if (jogoCliente != null) {

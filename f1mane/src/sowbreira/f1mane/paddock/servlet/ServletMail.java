@@ -30,7 +30,7 @@ public class ServletMail extends HttpServlet {
 		String passe = arg0.getParameter("passe");
 		try {
 			if (Util.isNullOrEmpty(passe) || !Util.md5(passe)
-					.equals("04ef1824d6caa4e83f385e9cc033c8b8")) {
+					.equals("c846d80d826291f2a6a0d7a57e540307")) {
 				return;
 			}
 			if ("admail".equals(tipo)) {
@@ -76,7 +76,7 @@ public class ServletMail extends HttpServlet {
 					session.close();
 				}
 			}
-			printWriter.write("<br><hr><br>Gerado Nova Senha<br><hr>");
+			printWriter.write("<br>Gerado Nova Senha<br><hr>");
 			printWriter.write("<br>E-Mail : " + emailJogador);
 			printWriter.write("<br>Nome : " + nome);
 			printWriter.write("<br>Senha : " + senha);
