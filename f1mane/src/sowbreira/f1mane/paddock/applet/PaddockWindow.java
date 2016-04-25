@@ -147,11 +147,16 @@ public class PaddockWindow {
 		}
 	};
 
-	private JComboBox comboTemporada;
-	private JComboBox comboIdiomas = new JComboBox(new String[] { Lang.msg("pt"), Lang.msg("en") });
+	private JComboBox comboIdiomas = new JComboBox(
+			new String[]{Lang.msg("pt"), Lang.msg("en")});
 	private JButton sobre = new JButton("Sobre") {
 		public String getText() {
 			return Lang.msg("sobre");
+		}
+	};
+	private JButton logs = new JButton("logs") {
+		public String getText() {
+			return Lang.msg("267");
 		}
 	};
 	private JLabel infoLabel1 = new JLabel("  ");
@@ -159,31 +164,25 @@ public class PaddockWindow {
 	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 	public static void main(String[] args) {
-		// PaddockWindow paddockWindow = new PaddockWindow(null);
-		// DefaultListModel clientesModel = new DefaultListModel();
-		// for (int i = 0; i < 10; i++) {
-		// clientesModel.addElement("Teste" + i);
-		// }
-		// paddockWindow.listaClientes.setModel(clientesModel);
-		// JFrame frame = new JFrame();
-		// frame.getContentPane().add(paddockWindow.getMainPanel());
-		// frame.setSize(800, 400);
-		// frame.setVisible(true);
-		// frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(true);
-		carregadorRecursos.carregarTemporadasPilotos();
-		List<String> listTemporadas = new ArrayList<String>();
-		Object[] array = carregadorRecursos.getVectorTemps().toArray();
-		System.out.println("");
-
+		PaddockWindow paddockWindow = new PaddockWindow(null);
+		DefaultListModel clientesModel = new DefaultListModel();
+		for (int i = 0; i < 10; i++) {
+			clientesModel.addElement("Teste" + i);
+		}
+		paddockWindow.listaClientes.setModel(clientesModel);
+		JFrame frame = new JFrame();
+		frame.getContentPane().add(paddockWindow.getMainPanel());
+		frame.setSize(800, 400);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 
 	public PaddockWindow(ControlePaddockCliente controlePaddockApplet) {
-		img = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImage("f1bg.png"), 0.85, 0.66);
+		img = ImageUtil.geraResize(
+				CarregadorRecursos.carregaBufferedImage("f1bg.png"), 0.85,
+				0.66);
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(true);
 		carregadorRecursos.carregarTemporadasPilotos();
-		comboTemporada = new JComboBox(carregadorRecursos.getVectorTemps().toArray());
 		mainPanel = new JPanel(new BorderLayout()) {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -215,7 +214,8 @@ public class PaddockWindow {
 
 					public void run() {
 						try {
-							controlePaddockCliente.enviarTexto(textoEnviar.getText());
+							controlePaddockCliente
+									.enviarTexto(textoEnviar.getText());
 							textoEnviar.setText("");
 						} catch (Exception e) {
 							Logger.logarExept(e);
@@ -238,8 +238,7 @@ public class PaddockWindow {
 		criarJogo.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				String temporada = (String) comboTemporada.getSelectedItem();
-				controlePaddockCliente.criarJogo("t" + temporada);
+				controlePaddockCliente.criarJogo();
 
 			}
 
@@ -252,13 +251,16 @@ public class PaddockWindow {
 					object = listaJogosCriados.getModel().getElementAt(0);
 				}
 				if (object != null) {
-					int result = JOptionPane.showConfirmDialog(getMainPanel(), Lang.msg("181") + object,
-							Lang.msg("175"), JOptionPane.OK_CANCEL_OPTION);
+					int result = JOptionPane.showConfirmDialog(getMainPanel(),
+							Lang.msg("181") + object, Lang.msg("175"),
+							JOptionPane.OK_CANCEL_OPTION);
 					if (result == JOptionPane.OK_OPTION) {
-						controlePaddockCliente.entarJogo(mapaJogosCriados.get(object));
+						controlePaddockCliente
+								.entarJogo(mapaJogosCriados.get(object));
 					}
 				} else {
-					JOptionPane.showMessageDialog(getMainPanel(), Lang.msg("182"));
+					JOptionPane.showMessageDialog(getMainPanel(),
+							Lang.msg("182"));
 				}
 
 			}
@@ -274,11 +276,13 @@ public class PaddockWindow {
 					if (listaJogosCriados != null) {
 						object = listaJogosCriados.getSelectedValue();
 					}
-					if (object == null && listaJogosCriados.getModel().getSize() == 1) {
+					if (object == null
+							&& listaJogosCriados.getModel().getSize() == 1) {
 						object = listaJogosCriados.getModel().getElementAt(0);
 					}
 					try {
-						controlePaddockCliente.verDetalhesJogo(mapaJogosCriados.get(object));
+						controlePaddockCliente
+								.verDetalhesJogo(mapaJogosCriados.get(object));
 					} catch (Exception ex) {
 						Logger.logarExept(ex);
 					}
@@ -286,7 +290,8 @@ public class PaddockWindow {
 					if (object != null) {
 						controlePaddockCliente.verDetalhesJogador(object);
 					} else {
-						JOptionPane.showMessageDialog(getMainPanel(), Lang.msg("183"));
+						JOptionPane.showMessageDialog(getMainPanel(),
+								Lang.msg("183"));
 					}
 				}
 
@@ -324,16 +329,23 @@ public class PaddockWindow {
 		});
 		sobre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<String> carregarCreditosJogo = CarregadorRecursos.carregarCreditosJogo();
+				List<String> carregarCreditosJogo = CarregadorRecursos
+						.carregarCreditosJogo();
 
 				String msg = "";
 
-				for (Iterator iterator = carregarCreditosJogo.iterator(); iterator.hasNext();) {
+				for (Iterator iterator = carregarCreditosJogo
+						.iterator(); iterator.hasNext();) {
 					String string = (String) iterator.next();
 					msg += string;
 				}
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang.msg("sobre"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getMainPanel(), msg,
+						Lang.msg("sobre"), JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		logs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				verLogs();
 			}
 		});
@@ -365,8 +377,8 @@ public class PaddockWindow {
 			area.append("\n");
 		}
 		area.setCaretPosition(0);
-		JOptionPane.showMessageDialog(getMainPanel(), new JScrollPane(area), Lang.msg("listaDeErros"),
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(getMainPanel(), new JScrollPane(area),
+				Lang.msg("listaDeErros"), JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
@@ -382,7 +394,8 @@ public class PaddockWindow {
 		compTransp(chatPanel);
 		if (controlePaddockCliente != null)
 			chatPanel.setBorder(
-					new TitledBorder("F1-MANager Engineer Chat Room Ver " + controlePaddockCliente.getVersao()));
+					new TitledBorder("F1-MANager Engineer Chat Room Ver "
+							+ controlePaddockCliente.getVersao()));
 		JPanel usersPanel = new JPanel();
 		compTransp(usersPanel);
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
@@ -424,11 +437,12 @@ public class PaddockWindow {
 		buttonsPanel.add(iniciarJogo);
 		buttonsPanel.add(verDetalhes);
 		buttonsPanel.add(classificacao);
-		buttonsPanel.add(comboTemporada);
+		buttonsPanel.add(verCampeonato);
 		buttonsPanel.add(comboIdiomas);
 		comboIdiomas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Logger.logar(Lang.key(comboIdiomas.getSelectedItem().toString()));
+				Logger.logar(
+						Lang.key(comboIdiomas.getSelectedItem().toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
 				int selectedIndex = comboIdiomas.getSelectedIndex();
 				if (i != null && !"".equals(i)) {
@@ -446,7 +460,7 @@ public class PaddockWindow {
 		conta.setEnabled(false);
 		buttonsPanel.add(carreira);
 		buttonsPanel.add(campeonato);
-		buttonsPanel.add(verCampeonato);
+		buttonsPanel.add(logs);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
 		compTransp(panelTextoEnviar);
@@ -475,24 +489,29 @@ public class PaddockWindow {
 	public void atualizar(DadosPaddock dadosPaddock) {
 		atualizarChat(dadosPaddock);
 		DefaultListModel clientesModel = new DefaultListModel();
-		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter.hasNext();) {
+		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
+				.hasNext();) {
 			SessaoCliente element = (SessaoCliente) iter.next();
 			clientesModel.addElement(element);
 		}
 		listaClientes.setModel(clientesModel);
 		listaClientes.setCellRenderer(new ListCellRenderer() {
 			@Override
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 				SessaoCliente element = (SessaoCliente) value;
 				JPanel jPanel = new JPanel(new GridLayout(1, 1));
 				if (Util.isNullOrEmpty(element.getPilotoAtual())) {
-					jPanel.add(compTransp(new JLabel(element.getNomeJogador())));
+					jPanel.add(
+							compTransp(new JLabel(element.getNomeJogador())));
 				} else {
 					jPanel.setLayout(new GridLayout(2, 1));
-					jPanel.add(compTransp(new JLabel(element.getNomeJogador())));
-					jPanel.add(compTransp(new JLabel(
-							" " + element.getPilotoAtual() + " " + Lang.decodeTexto(element.getJogoAtual()))));
+					jPanel.add(
+							compTransp(new JLabel(element.getNomeJogador())));
+					jPanel.add(compTransp(new JLabel(" "
+							+ element.getPilotoAtual() + " "
+							+ Lang.decodeTexto(element.getJogoAtual()))));
 				}
 				if (isSelected) {
 					jPanel.setBorder(new LineBorder(new Color(184, 207, 229)));
@@ -506,13 +525,15 @@ public class PaddockWindow {
 				return jPanel;
 			}
 		});
-		DefaultListModel model = ((DefaultListModel) listaJogosCriados.getModel());
+		DefaultListModel model = ((DefaultListModel) listaJogosCriados
+				.getModel());
 
 		if (model.size() != dadosPaddock.getJogosCriados().size()) {
 			atualizaListaJogos(dadosPaddock, model);
 		} else if (model.size() == dadosPaddock.getJogosCriados().size()) {
 			boolean diferente = false;
-			for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter.hasNext();) {
+			for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
+					.hasNext();) {
 				String element = (String) iter.next();
 				if (mapaJogosCriados.get(Lang.decodeTexto(element)) == null) {
 					diferente = true;
@@ -524,10 +545,12 @@ public class PaddockWindow {
 			}
 		}
 
-		for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter.hasNext();) {
+		for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
+				.hasNext();) {
 			String element = (String) iter.next();
 			String key = Lang.decodeTexto(element);
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.VER_INFO_VOLTAS_JOGO,
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+					Comandos.VER_INFO_VOLTAS_JOGO,
 					controlePaddockCliente.getSessaoCliente());
 			clientPaddockPack.setNomeJogo(element);
 			Object ret = controlePaddockCliente.enviarObjeto(clientPaddockPack);
@@ -536,20 +559,23 @@ public class PaddockWindow {
 				continue;
 			}
 			SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
-			mapaJogosVoltas.put(key, srvPaddockPack.getDetalhesJogo().getVoltaAtual() + "/"
-					+ srvPaddockPack.getDetalhesJogo().getNumVoltas());
+			mapaJogosVoltas.put(key,
+					srvPaddockPack.getDetalhesJogo().getVoltaAtual() + "/"
+							+ srvPaddockPack.getDetalhesJogo().getNumVoltas());
 		}
 
 		listaJogosCriados.setCellRenderer(new ListCellRenderer() {
 			@Override
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 				Object object = mapaJogosVoltas.get(value);
 				JPanel jPanel = new JPanel(new GridLayout(1, 1));
 				if (object == null) {
 					jPanel.add(new JLabel(value.toString()));
 				} else {
-					jPanel.add(new JLabel(value.toString() + " " + object.toString()));
+					jPanel.add(new JLabel(
+							value.toString() + " " + object.toString()));
 				}
 
 				if (isSelected) {
@@ -569,10 +595,12 @@ public class PaddockWindow {
 			mainPanel.repaint();
 	}
 
-	private void atualizaListaJogos(DadosPaddock dadosPaddock, DefaultListModel model) {
+	private void atualizaListaJogos(DadosPaddock dadosPaddock,
+			DefaultListModel model) {
 		model.clear();
 		mapaJogosCriados.clear();
-		for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter.hasNext();) {
+		for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
+				.hasNext();) {
 			String element = (String) iter.next();
 			String key = Lang.decodeTexto(element);
 			mapaJogosCriados.put(key, element);
@@ -584,7 +612,8 @@ public class PaddockWindow {
 		if (dadosPaddock == null) {
 			return;
 		}
-		if ("".equals(dadosPaddock.getLinhaChat()) || dadosPaddock.getLinhaChat() == null
+		if ("".equals(dadosPaddock.getLinhaChat())
+				|| dadosPaddock.getLinhaChat() == null
 				|| dadosPaddock.getDataTime() == null) {
 			return;
 		}
@@ -592,11 +621,13 @@ public class PaddockWindow {
 			textAreaChat.append(dadosPaddock.getLinhaChat() + "\n");
 			textAreaChat.setCaretPosition(textAreaChat.getText().length());
 			chatTimes.add(dadosPaddock.getDataTime());
-			controlePaddockCliente.adicionaTextoJogo(dadosPaddock.getLinhaChat());
+			controlePaddockCliente
+					.adicionaTextoJogo(dadosPaddock.getLinhaChat());
 		}
 	}
 
-	public void mostrarDetalhes(DetalhesJogo detalhesJogo, PainelEntradaCliente painelEntradaCliente) {
+	public void mostrarDetalhes(DetalhesJogo detalhesJogo,
+			PainelEntradaCliente painelEntradaCliente) {
 		JPanel panelJogadores = gerarPainelJogadores(detalhesJogo);
 		JPanel panelJogo = gerarPainelJogo(detalhesJogo);
 		panelJogadores.setBorder(new TitledBorder("Jogadores") {
@@ -611,9 +642,10 @@ public class PaddockWindow {
 		});
 		JPanel panel = new JPanel(new BorderLayout());
 
-		panel.add(painelEntradaCliente.gerarSeletorCircuito(), BorderLayout.NORTH);
-		painelEntradaCliente.getComboBoxCircuito()
-				.setSelectedItem(detalhesJogo.getDadosCriarJogo().getCircuitoSelecionado());
+		panel.add(painelEntradaCliente.gerarSeletorTemporadaCircuito(),
+				BorderLayout.NORTH);
+		painelEntradaCliente.getComboBoxCircuito().setSelectedItem(
+				detalhesJogo.getDadosCriarJogo().getCircuitoSelecionado());
 		painelEntradaCliente.getComboBoxCircuito().setEnabled(false);
 
 		JPanel p2 = new JPanel(new GridLayout(1, 2));
@@ -638,52 +670,59 @@ public class PaddockWindow {
 				return Lang.msg("191");
 			}
 		});
-		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().getNivelCorrida()));
+		panelJogo.add(
+				new JLabel(detalhesJogo.getDadosCriarJogo().getNivelCorrida()));
 		panelJogo.add(new JLabel("Hora Criação : ") {
 			public String getText() {
 				return Lang.msg("192");
 			}
 		});
-		panelJogo.add(new JLabel(df.format(new Timestamp(detalhesJogo.getTempoCriacao()))));
+		panelJogo.add(new JLabel(
+				df.format(new Timestamp(detalhesJogo.getTempoCriacao()))));
 		panelJogo.add(new JLabel("Inicio Automatico : ") {
 			public String getText() {
 				return Lang.msg("193");
 			}
 		});
-		panelJogo.add(new JLabel(df.format(new Timestamp(detalhesJogo.getTempoCriacao() + 300000))));
+		panelJogo.add(new JLabel(df.format(
+				new Timestamp(detalhesJogo.getTempoCriacao() + 300000))));
 		panelJogo.add(new JLabel("Pista : ") {
 			public String getText() {
 				return Lang.msg("194");
 			}
 		});
-		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().getCircuitoSelecionado()));
+		panelJogo.add(new JLabel(
+				detalhesJogo.getDadosCriarJogo().getCircuitoSelecionado()));
 		panelJogo.add(new JLabel("Número Voltas : ") {
 			public String getText() {
 				return Lang.msg("195");
 			}
 		});
-		panelJogo.add(new JLabel(
-				detalhesJogo.getVoltaAtual() + "/" + detalhesJogo.getDadosCriarJogo().getQtdeVoltas().toString()));
+		panelJogo.add(new JLabel(detalhesJogo.getVoltaAtual() + "/"
+				+ detalhesJogo.getDadosCriarJogo().getQtdeVoltas().toString()));
 		panelJogo.add(new JLabel("Habilidade Todos : ") {
 			public String getText() {
 				return Lang.msg("196");
 			}
 		});
 		int ht = detalhesJogo.getDadosCriarJogo().getHabilidade().intValue();
-		panelJogo.add(new JLabel((ht == 0 ? Lang.msg("197") : String.valueOf(ht))));
+		panelJogo.add(
+				new JLabel((ht == 0 ? Lang.msg("197") : String.valueOf(ht))));
 		panelJogo.add(new JLabel("Potencia Todos: ") {
 			public String getText() {
 				return Lang.msg("198");
 			}
 		});
 		int pt = detalhesJogo.getDadosCriarJogo().getPotencia().intValue();
-		panelJogo.add(new JLabel((pt == 0 ? Lang.msg("197") : String.valueOf(pt))));
+		panelJogo.add(
+				new JLabel((pt == 0 ? Lang.msg("197") : String.valueOf(pt))));
 		panelJogo.add(new JLabel("Clima: ") {
 			public String getText() {
 				return Lang.msg("199");
 			}
 		});
-		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().getClima().toString()));
+		panelJogo.add(new JLabel(
+				detalhesJogo.getDadosCriarJogo().getClima().toString()));
 		panelJogo.add(new JLabel("Sem Raabaste: ") {
 
 			public String getText() {
@@ -692,7 +731,9 @@ public class PaddockWindow {
 			}
 		});
 		panelJogo.add(new JLabel(
-				detalhesJogo.getDadosCriarJogo().isSemReabastecimento() ? Lang.msg("SIM") : Lang.msg("NAO")));
+				detalhesJogo.getDadosCriarJogo().isSemReabastecimento()
+						? Lang.msg("SIM")
+						: Lang.msg("NAO")));
 		panelJogo.add(new JLabel("Sem troca pneu: ") {
 
 			public String getText() {
@@ -701,7 +742,9 @@ public class PaddockWindow {
 			}
 		});
 		panelJogo.add(
-				new JLabel(detalhesJogo.getDadosCriarJogo().isSemTrocaPeneu() ? Lang.msg("SIM") : Lang.msg("NAO")));
+				new JLabel(detalhesJogo.getDadosCriarJogo().isSemTrocaPeneu()
+						? Lang.msg("SIM")
+						: Lang.msg("NAO")));
 
 		panelJogo.add(new JLabel("Kers: ") {
 
@@ -710,7 +753,9 @@ public class PaddockWindow {
 				return Lang.msg("kers");
 			}
 		});
-		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().isKers() ? Lang.msg("SIM") : Lang.msg("NAO")));
+		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().isKers()
+				? Lang.msg("SIM")
+				: Lang.msg("NAO")));
 
 		panelJogo.add(new JLabel("DRS: ") {
 
@@ -719,7 +764,9 @@ public class PaddockWindow {
 				return Lang.msg("drs");
 			}
 		});
-		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().isDrs() ? Lang.msg("SIM") : Lang.msg("NAO")));
+		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().isDrs()
+				? Lang.msg("SIM")
+				: Lang.msg("NAO")));
 
 		panelJogo.add(new JLabel("nomeCampeonato") {
 
@@ -728,7 +775,8 @@ public class PaddockWindow {
 				return Lang.msg("nomeCampeonato");
 			}
 		});
-		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().getNomeCampeonato()));
+		panelJogo.add(new JLabel(
+				detalhesJogo.getDadosCriarJogo().getNomeCampeonato()));
 
 		return panelJogo;
 	}
@@ -815,13 +863,16 @@ public class PaddockWindow {
 				return Lang.msg("170");
 			}
 		});
-		panel.add(new JLabel(df.format(new Timestamp(cliente.getUlimaAtividade()))));
+		panel.add(new JLabel(
+				df.format(new Timestamp(cliente.getUlimaAtividade()))));
 		JOptionPane.showMessageDialog(mainPanel, panel);
 	}
 
 	public void atualizaInfo() {
-		String text = Lang.msg("114") + " " + controlePaddockCliente.getLatenciaMinima();
-		text += " " + Lang.msg("115") + " " + controlePaddockCliente.getLatenciaReal();
+		String text = Lang.msg("114") + " "
+				+ controlePaddockCliente.getLatenciaMinima();
+		text += " " + Lang.msg("115") + " "
+				+ controlePaddockCliente.getLatenciaReal();
 		text += " " + Lang.msg("116") + " " + (ControleJogosServer.MaxJogo);
 
 		infoLabel1.setText(text);

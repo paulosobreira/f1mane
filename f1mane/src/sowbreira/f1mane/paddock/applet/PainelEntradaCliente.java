@@ -35,6 +35,7 @@ import javax.swing.border.TitledBorder;
 
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleJogoLocal;
+import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
@@ -62,6 +63,7 @@ public class PainelEntradaCliente {
 	private JComboBox comboBoxClimaInicial;
 	private JComboBox comboBoxPneuInicial;
 	private JComboBox comboBoxAsa;
+	private JComboBox comboTemporada;
 	private JSlider sliderCombustivelInicial;
 	private JSlider sliderDificuldadeUltrapassagem;
 	private JSpinner spinnerSkillPadraoPilotos;
@@ -77,9 +79,20 @@ public class PainelEntradaCliente {
 	private String nomeCriador;
 	private Campeonato campeonato;
 	private JogoCliente controleJogo;
+	private String temporada;
 
 	public void setCampeonato(Campeonato campeonato) {
 		this.campeonato = campeonato;
+	}
+
+	public PainelEntradaCliente(MainFrame mainFrame, String nomeCriador) {
+		this.circuitos = ControleRecursos.carregarCircuitos();
+		this.mainFrame = mainFrame;
+		this.nomeCriador = nomeCriador;
+		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(true);
+		carregadorRecursos.carregarTemporadasPilotos();
+		comboTemporada = new JComboBox(
+				carregadorRecursos.getVectorTemps().toArray());
 	}
 
 	public PainelEntradaCliente(List pilotos, Map circuitos,
@@ -95,9 +108,11 @@ public class PainelEntradaCliente {
 		painelInicio.setLayout(new GridLayout(5, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
-				return Lang.msg("110",
-						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
-								String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang
+						.msg("110",
+								new String[]{
+										String.valueOf(Constantes.MIN_VOLTAS),
+										String.valueOf(Constantes.MAX_VOLTAS)});
 			}
 		};
 
@@ -255,7 +270,7 @@ public class PainelEntradaCliente {
 
 	public static void main(String[] args) {
 		PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
-				new ArrayList(), new Hashtable(), null, "teste", null);
+				null, "teste");
 		painelEntradaCliente.gerarDadosCriarJogo(new DadosCriarJogo());
 		// painelEntradaCliente.gerarDadosEntrarJogo(dadosParticiparJogo,
 		// panelJogoCriado, circuito)
@@ -266,7 +281,7 @@ public class PainelEntradaCliente {
 		JPanel painelInicio = new JPanel();
 		gerarPainelCriarJogo(painelInicio);
 		JPanel painelMostrar = new JPanel(new BorderLayout());
-		painelMostrar.add(gerarSeletorCircuito(), BorderLayout.NORTH);
+		painelMostrar.add(gerarSeletorTemporadaCircuito(), BorderLayout.NORTH);
 		painelMostrar.add(painelInicio, BorderLayout.CENTER);
 		setaCampeonato();
 
@@ -309,7 +324,7 @@ public class PainelEntradaCliente {
 		return comboBoxCircuito;
 	}
 
-	public Component gerarSeletorCircuito() {
+	public Component gerarSeletorTemporadaCircuito() {
 		JPanel grid = new JPanel() {
 			@Override
 			public Dimension getPreferredSize() {
@@ -318,16 +333,13 @@ public class PainelEntradaCliente {
 		};
 		comboBoxCircuito = new JComboBox();
 		List circuitosList = new ArrayList();
-		if (controleJogo == null) {
-			return grid;
-		}
-		for (Iterator iter = controleJogo.getCircuitos().keySet().iterator(); iter
-				.hasNext();) {
+		for (Iterator iter = circuitos.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();
 			circuitosList.add(key);
 		}
 		Collections.shuffle(circuitosList);
-		for (Iterator iterator = circuitosList.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = circuitosList.iterator(); iterator
+				.hasNext();) {
 			String object = (String) iterator.next();
 			comboBoxCircuito.addItem(object);
 		}
@@ -351,10 +363,23 @@ public class PainelEntradaCliente {
 			}
 		});
 
-		JPanel retPanel = new JPanel(new BorderLayout());
-		retPanel.add(grid, BorderLayout.WEST);
-		retPanel.add(circuitosLabel, BorderLayout.CENTER);
+		JPanel circPanel = new JPanel(new BorderLayout());
+		circPanel.add(grid, BorderLayout.WEST);
+		circPanel.add(circuitosLabel, BorderLayout.CENTER);
 		desenhaMiniCircuito(circuitosLabel);
+		
+		JPanel tempPanel = new JPanel(new GridLayout(1, 2));
+		tempPanel.add(new JLabel() {
+			public String getText() {
+				return Lang.msg("272")+" : ";
+			}
+		});
+		tempPanel.add(comboTemporada);
+		
+		JPanel retPanel = new JPanel(new BorderLayout());
+		retPanel.add(tempPanel, BorderLayout.SOUTH);
+		retPanel.add(circPanel, BorderLayout.CENTER);
+
 		return retPanel;
 	}
 
@@ -366,8 +391,8 @@ public class PainelEntradaCliente {
 		setarHints(g2d);
 		g2d.setStroke(new BasicStroke(3.0f));
 		g2d.setColor(Color.BLACK);
-		String circuitoStr = (String) controleJogo.getCircuitos().get(
-				comboBoxCircuito.getSelectedItem());
+		String circuitoStr = (String) circuitos
+				.get(comboBoxCircuito.getSelectedItem());
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
 		ObjectInputStream ois;
 		Circuito circuito = null;
@@ -398,7 +423,8 @@ public class PainelEntradaCliente {
 		Point o = new Point(10, 10);
 		Point oldP = null;
 		No ultNo = null;
-		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = pistaMinimizada.iterator(); iterator
+				.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
 				No no = (No) map.get(oldP);
@@ -437,7 +463,8 @@ public class PainelEntradaCliente {
 		g2d.setStroke(new BasicStroke(2.0f));
 		oldP = null;
 		g2d.setColor(Color.lightGray);
-		for (Iterator iterator = boxMinimizado.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = boxMinimizado.iterator(); iterator
+				.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
 				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
@@ -468,10 +495,10 @@ public class PainelEntradaCliente {
 		if (qtdeVoltas.intValue() <= Constantes.MIN_VOLTAS) {
 			qtdeVoltas = new Integer(Constantes.MIN_VOLTAS);
 		}
+		dadosCriarJogo.setTemporada(temporada);
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
-		dadosCriarJogo
-				.setDiffultrapassagem((Integer) sliderDificuldadeUltrapassagem
-						.getValue());
+		dadosCriarJogo.setDiffultrapassagem(
+				(Integer) sliderDificuldadeUltrapassagem.getValue());
 		dadosCriarJogo.setDiffultrapassagem(new Integer(250));
 		Integer habilidade = (Integer) spinnerSkillPadraoPilotos.getValue();
 		if (habilidade.intValue() > 99) {
@@ -486,8 +513,8 @@ public class PainelEntradaCliente {
 		String circuitoSelecionado = (String) comboBoxCircuito
 				.getSelectedItem();
 		dadosCriarJogo.setCircuitoSelecionado(circuitoSelecionado);
-		dadosCriarJogo.setNivelCorrida(Lang.key(comboBoxNivelCorrida
-				.getSelectedItem().toString()));
+		dadosCriarJogo.setNivelCorrida(
+				Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
 		dadosCriarJogo.setClima((Clima) comboBoxClimaInicial.getSelectedItem());
 		dadosCriarJogo.setSemReabastecimento(semReabastacimento.isSelected());
 		dadosCriarJogo.setSemTrocaPeneu(semTrocaPneu.isSelected());
@@ -496,8 +523,8 @@ public class PainelEntradaCliente {
 	}
 
 	private void preecherDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo) {
-		String tpPnueu = Lang.key(comboBoxPneuInicial.getSelectedItem()
-				.toString());
+		String tpPnueu = Lang
+				.key(comboBoxPneuInicial.getSelectedItem().toString());
 		Piloto piloto = (Piloto) comboBoxPilotoSelecionado.getSelectedItem();
 		String asa = Lang.key((String) comboBoxAsa.getSelectedItem());
 		Integer combustivel = (Integer) sliderCombustivelInicial.getValue();
@@ -523,7 +550,7 @@ public class PainelEntradaCliente {
 		gerarPainelParticiparJogo(painelInicio, clima);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(panelJogoCriado, BorderLayout.NORTH);
-		panel.add(gerarSeletorCircuito());
+		panel.add(gerarSeletorTemporadaCircuito());
 		comboBoxCircuito.setSelectedItem(circuito);
 		comboBoxCircuito.setEnabled(false);
 		painelInicio.setBorder(new TitledBorder("Configuração do carro") {
@@ -604,4 +631,9 @@ public class PainelEntradaCliente {
 		painelInicio.add(sliderCombustivelInicial);
 
 	}
+
+	public String getTemporada() {
+		return temporada;
+	}
+
 }
