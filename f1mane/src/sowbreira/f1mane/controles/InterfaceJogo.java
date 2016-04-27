@@ -401,4 +401,10 @@ public interface InterfaceJogo {
 
 	public boolean mostraTipoPneuAdversario();
 
+	public JPanel painelDebug();
+
+	public void atualizaInfoDebug();
+
+	public void atualizaInfoDebug(StringBuffer buffer);
+
 }

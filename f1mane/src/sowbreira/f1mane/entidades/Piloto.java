@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.paddock.applet.JogoCliente;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
@@ -3038,4 +3040,22 @@ public class Piloto implements Serializable {
 		return calculaDiferencaParaProximo;
 	}
 
+	public void atualizaInfoDebug(StringBuffer buffer) {
+		Field[] declaredFields = Piloto.class.getDeclaredFields();
+		for (Field field : declaredFields) {
+			try {
+				Object object = field.get(this);
+				String valor = "null";
+				if (object != null) {
+					valor = object.toString();
+				}
+				if (valor.indexOf("@") > -1) {
+					continue;
+				}
+				buffer.append(field.getName() + " = " + valor + "<br>");
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
 }

@@ -371,7 +371,7 @@ public class MainFrame extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				int keyCoode = e.getKeyCode();
 				if (keyCoode == KeyEvent.VK_F1) {
-					mostraMenuFrame();
+					mostraDebugFrame();
 				}
 				super.keyPressed(e);
 			}
@@ -484,13 +484,13 @@ public class MainFrame extends JFrame {
 		strategy.show();
 	}
 
-	public void mostraMenuFrame() {
+	public void mostraDebugFrame() {
 		if (menuFrame == null) {
 			return;
 		}
 		menuFrame.setVisible(!menuFrame.isVisible());
+		Logger.ativo = menuFrame.isVisible();
 		if (menuFrame.isVisible()) {
-			Logger.ativo = !Logger.ativo;
 			menuFrame.setLocation(MainFrame.this.getWidth(), 0);
 			posicionaJanelaDebug();
 			menuFrame.setLayout(new BorderLayout());
@@ -500,7 +500,10 @@ public class MainFrame extends JFrame {
 					while (menuFrame.isVisible()) {
 						try {
 							adicionaPainelNarracaoDebug();
-							Thread.sleep(1000);
+							if(controleJogo!=null){
+								controleJogo.atualizaInfoDebug();
+							}
+							Thread.sleep(200);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -522,18 +525,37 @@ public class MainFrame extends JFrame {
 
 	private void adicionaPainelNarracaoDebug() {
 		JPanel painelNarracao = controleJogo.painelNarracao();
-		if (painelNarracao != null) {
-			boolean temPainel = false;
-			Component[] components = menuFrame.getComponents();
-			for (int i = 0; i < components.length; i++) {
-				if (components[i].equals(painelNarracao))
-					temPainel = true;
-				break;
+		JPanel painelDebug = controleJogo.painelDebug();
+		boolean adicionaPainelNarracao = true;
+		boolean adicionaPainelDebug = true;
+		Component[] components = menuFrame.getContentPane().getComponents();
+		for (int i = 0; i < components.length; i++) {
+			if (components[i].equals(painelNarracao)) {
+				adicionaPainelNarracao = false;
 			}
-			if (!temPainel) {
-				menuFrame.add(painelNarracao, BorderLayout.SOUTH);
-				posicionaJanelaDebug();
+			if (components[i].equals(painelDebug)) {
+				adicionaPainelDebug = false;
 			}
+		}
+		
+		if(painelNarracao==null){
+			adicionaPainelNarracao = false;
+		}
+		
+		if(painelDebug==null){
+			adicionaPainelDebug = false;
+		}
+		
+		if (adicionaPainelDebug) {
+			menuFrame.add(painelDebug, BorderLayout.CENTER);
+		}
+
+		if (adicionaPainelNarracao) {
+			menuFrame.add(painelNarracao, BorderLayout.SOUTH);
+		}
+
+		if (adicionaPainelNarracao || adicionaPainelDebug) {
+			posicionaJanelaDebug();
 		}
 	}
 }

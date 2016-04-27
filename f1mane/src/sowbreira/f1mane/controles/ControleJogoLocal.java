@@ -1,6 +1,7 @@
 package sowbreira.f1mane.controles;
 
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -1561,6 +1562,41 @@ public class ControleJogoLocal extends ControleRecursos
 			return gerenciadorVisual.getPainelNarracaoText();
 		}
 		return null;
+	}
+
+	@Override
+	public JPanel painelDebug() {
+		if (controleEstatisticas != null) {
+			return controleEstatisticas.getPainelDebug();
+		}
+		return null;
+	}
+
+	@Override
+	public void atualizaInfoDebug() {
+		if (controleEstatisticas != null) {
+			controleEstatisticas.atualizaInfoDebug();
+		}
+	}
+
+	@Override
+	public void atualizaInfoDebug(StringBuffer buffer) {
+		Field[] declaredFields = ControleJogoLocal.class.getDeclaredFields();
+		for (Field field : declaredFields) {
+			try {
+				Object object = field.get(this);
+				String valor = "null";
+				if (object != null) {
+					valor = object.toString();
+				}
+				if (valor.indexOf("@") > -1) {
+					continue;
+				}
+				buffer.append(field.getName() + " = " + valor + "<br>");
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 
 }

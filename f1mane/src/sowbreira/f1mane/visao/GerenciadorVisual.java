@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +77,7 @@ import br.nnpe.Util;
 public class GerenciadorVisual {
 	private JPanel painelNarracaoText;
 	private JEditorPane infoTextual;
-	private ArrayList bufferTextual;
+	private LinkedList bufferTextual;
 	private JScrollPane scrollPaneTextual;
 	private JLabel infoAdicionaLinha1;
 	private JComboBox comboBoxClimaInicial;
@@ -137,7 +138,7 @@ public class GerenciadorVisual {
 		}
 	}
 
-	public ArrayList getBufferTextual() {
+	public List getBufferTextual() {
 		return bufferTextual;
 	}
 
@@ -452,10 +453,6 @@ public class GerenciadorVisual {
 					kers();
 				}
 
-				if (keyCoode == KeyEvent.VK_F1) {
-					Logger.ativo = !Logger.ativo;
-				}
-
 				if (keyCoode == KeyEvent.VK_2) {
 					PainelCircuito.desenhaBkg = !PainelCircuito.desenhaBkg;
 				}
@@ -648,7 +645,7 @@ public class GerenciadorVisual {
 		painelNarracaoText = new JPanel(new BorderLayout());
 		infoTextual = new JEditorPane("text/html", "");
 		infoTextual.setEditable(false);
-		bufferTextual = new ArrayList();
+		bufferTextual = new LinkedList();
 		scrollPaneTextual = new JScrollPane(infoTextual) {
 			@Override
 			public Dimension getPreferredSize() {

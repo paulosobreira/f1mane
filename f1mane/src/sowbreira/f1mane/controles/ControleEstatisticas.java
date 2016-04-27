@@ -1,8 +1,14 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.geom.RoundRectangle2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,10 +16,17 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import sowbreira.f1mane.visao.PainelMenuLocal;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -22,6 +35,9 @@ import br.nnpe.Util;
  * @author Paulo Sobreira Criado em 16/06/2007 as 13:24:54
  */
 public class ControleEstatisticas {
+	private JPanel painelDebug;
+	private JEditorPane infoTextual;
+	private JScrollPane scrollPaneTextual;
 	private InterfaceJogo controleJogo;
 	private Volta voltaMaisRapida;
 	private DecimalFormat milesismos = new DecimalFormat(".000");
@@ -495,5 +511,46 @@ public class ControleEstatisticas {
 	public String calculaSegundosParaProximo(Piloto psel, long tempo) {
 		int diff = calculaDiferencaParaProximo(psel);
 		return calculaSegundosParaProximo(psel, tempo, diff);
+	}
+
+	public JPanel getPainelDebug() {
+		if (painelDebug == null) {
+			gerarPainelDebug();
+		}
+		return painelDebug;
+	}
+
+	private void gerarPainelDebug() {
+		painelDebug = new JPanel(new BorderLayout());
+		infoTextual = new JEditorPane("text/html", "");
+		infoTextual.setEditable(false);
+		scrollPaneTextual = new JScrollPane(infoTextual);
+		painelDebug.setLayout(new BorderLayout());
+		painelDebug.add(scrollPaneTextual, BorderLayout.CENTER);
+	}
+
+	public void atualizaInfoDebug() {
+		StringBuffer buffer = new StringBuffer();
+		if (controleJogo != null) {
+			controleJogo.atualizaInfoDebug(buffer);
+		}
+
+		if (controleJogo != null
+				&& controleJogo.getPilotoSelecionado() != null) {
+			controleJogo.getPilotoSelecionado().atualizaInfoDebug(buffer);
+		}
+
+		final StringReader reader = new StringReader(
+				Html.sansSerif(buffer.toString()));
+		Runnable doInfo = new Runnable() {
+			public void run() {
+				try {
+					infoTextual.read(reader, "");
+				} catch (IOException e) {
+					Logger.logarExept(e);
+				}
+			}
+		};
+		SwingUtilities.invokeLater(doInfo);
 	}
 }

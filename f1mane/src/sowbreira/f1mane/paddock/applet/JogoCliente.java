@@ -3,6 +3,7 @@ package sowbreira.f1mane.paddock.applet;
 import java.awt.Point;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,6 +18,7 @@ import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleBox;
 import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleEstatisticas;
+import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -1375,5 +1377,39 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 		return null;
 	}
+	@Override
+	public JPanel painelDebug() {
+		if (controleEstatisticas != null) {
+			return controleEstatisticas.getPainelDebug();
+		}
+		return null;
+	}
 
+	@Override
+	public void atualizaInfoDebug() {
+		if (controleEstatisticas != null) {
+			controleEstatisticas.atualizaInfoDebug();
+		}
+	}
+
+	@Override
+	public void atualizaInfoDebug(StringBuffer buffer) {
+		Field[] declaredFields = JogoCliente.class.getDeclaredFields();
+		for (Field field : declaredFields) {
+			try {
+				Object object = field.get(this);
+				String valor = "null";
+				if (object != null) {
+					valor = object.toString();
+				}
+				if (valor.indexOf("@") > -1) {
+					continue;
+				}
+				buffer.append(field.getName() + " = " + valor + "<br>");
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+
+	}
 }
