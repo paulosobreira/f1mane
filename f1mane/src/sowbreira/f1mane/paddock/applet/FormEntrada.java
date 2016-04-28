@@ -32,8 +32,7 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class FormEntrada extends JPanel {
-	private JComboBox comboIdiomas = new JComboBox(
-			new String[]{Lang.msg("pt"), Lang.msg("en")});
+	private JComboBox comboIdiomas = new JComboBox(new String[] { Lang.msg("pt"), Lang.msg("en") });
 	private JTextField nomeLogar = new JTextField(20);
 	private JTextField nomeRegistrar = new JTextField(20);
 	private JTextField nomeRecuperar = new JTextField(20);
@@ -114,8 +113,7 @@ public class FormEntrada extends JPanel {
 	private JPanel gerarIdiomas() {
 		comboIdiomas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Logger.logar(
-						Lang.key(comboIdiomas.getSelectedItem().toString()));
+				Logger.logar(Lang.key(comboIdiomas.getSelectedItem().toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
 				if (i != null && !"".equals(i)) {
 					Lang.mudarIdioma(i);
@@ -160,8 +158,7 @@ public class FormEntrada extends JPanel {
 		conta2 = Util.intervalo(0, 10);
 		registrarPanel.add(new JLabel("Conta Facil") {
 			public String getText() {
-				return Lang.msg("contaFacil",
-						new String[]{"" + conta1, "" + conta2});
+				return Lang.msg("contaFacil", new String[] { "" + conta1, "" + conta2 });
 			}
 		});
 		registrarPanel.add(resultadorConta);
@@ -254,8 +251,7 @@ public class FormEntrada extends JPanel {
 		// encoder.close();
 		FormEntrada formEntrada = new FormEntrada(null);
 		formEntrada.setToolTipText(Lang.msg("066"));
-		int result = JOptionPane.showConfirmDialog(null, formEntrada,
-				Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog(null, formEntrada, Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			Logger.logar("ok");
@@ -276,6 +272,18 @@ public class FormEntrada extends JPanel {
 
 	public JTextField getEmailRecuperar() {
 		return emailRecuperar;
+	}
+
+	public int getConta1() {
+		return conta1;
+	}
+
+	public int getConta2() {
+		return conta2;
+	}
+
+	public JTextField getResultadorConta() {
+		return resultadorConta;
 	}
 
 }

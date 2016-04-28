@@ -20,11 +20,13 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -48,6 +50,27 @@ public class Util {
 		conectivos.addElement("DO");
 		conectivos.addElement("DOS");
 		conectivos.addElement("DAS");
+	}
+
+	private static final Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
+
+	public static boolean isWrapperType(Class<?> clazz) {
+		return WRAPPER_TYPES.contains(clazz);
+	}
+
+	private static Set<Class<?>> getWrapperTypes() {
+		Set<Class<?>> ret = new HashSet<Class<?>>();
+		ret.add(Boolean.class);
+		ret.add(Character.class);
+		ret.add(Byte.class);
+		ret.add(Short.class);
+		ret.add(Integer.class);
+		ret.add(Long.class);
+		ret.add(Float.class);
+		ret.add(Double.class);
+		ret.add(Void.class);
+		ret.add(String.class);
+		return ret;
 	}
 
 	public static int calculaLarguraText(String txt, Graphics2D g2d) {
@@ -80,11 +103,9 @@ public class Util {
 	 *            - Complemento da messagem de erro
 	 * @throws Exception
 	 */
-	public static void campoMandatorio(String campo, String descricaoCampo)
-			throws Exception {
+	public static void campoMandatorio(String campo, String descricaoCampo) throws Exception {
 		if ((campo == null) || "".equals(campo)) {
-			throw new Exception(
-					"O campo " + descricaoCampo.trim() + " é mandatório");
+			throw new Exception("O campo " + descricaoCampo.trim() + " é mandatório");
 		}
 	}
 
@@ -106,8 +127,7 @@ public class Util {
 			// serialize and pass the object
 			oos.writeObject(oldObj); // C
 			oos.flush(); // D
-			ByteArrayInputStream bin = new ByteArrayInputStream(
-					bos.toByteArray()); // E
+			ByteArrayInputStream bin = new ByteArrayInputStream(bos.toByteArray()); // E
 			ois = new ObjectInputStream(bin); // F
 			// return the new object
 			return ois.readObject(); // G
@@ -166,8 +186,7 @@ public class Util {
 	 *            - Date
 	 * @return
 	 */
-	public static boolean validaIntervaloData(java.sql.Date dataInicial,
-			java.sql.Date dataFinal) {
+	public static boolean validaIntervaloData(java.sql.Date dataInicial, java.sql.Date dataFinal) {
 		/**
 		 * Se a data inicial for após a data final retonar um número maior que
 		 * 0.
@@ -189,10 +208,8 @@ public class Util {
 	 *            - String
 	 * @throws Exception
 	 */
-	public static void validaIntervaloData(String dataInicial, String dataFinal)
-			throws Exception {
-		if (!validaIntervaloData(dataInicial, dataFinal,
-				Constantes.DATA_FORMATO)) {
+	public static void validaIntervaloData(String dataInicial, String dataFinal) throws Exception {
+		if (!validaIntervaloData(dataInicial, dataFinal, Constantes.DATA_FORMATO)) {
 			throw new Exception("Intervalo de datas invalido");
 		}
 	}
@@ -210,8 +227,7 @@ public class Util {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean validaIntervaloData(String dataInicial,
-			String dataFinal, String formato) throws Exception {
+	public static boolean validaIntervaloData(String dataInicial, String dataFinal, String formato) throws Exception {
 		java.sql.Date dt1 = FormatDate.parseDate(dataInicial, formato);
 		java.sql.Date dt2 = FormatDate.parseDate(dataFinal, formato);
 
@@ -229,8 +245,7 @@ public class Util {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean validaIntervaloData(Timestamp data_inicio,
-			Timestamp data_fim) throws Exception {
+	public static boolean validaIntervaloData(Timestamp data_inicio, Timestamp data_fim) throws Exception {
 		String inicio = FormatDate.format(data_inicio);
 		String fim = FormatDate.format(data_fim);
 
@@ -369,8 +384,7 @@ public class Util {
 		return buffer.toString();
 	}
 
-	public static InputStream getBinaryStream(ResultSet rs, String fieldName)
-			throws Exception {
+	public static InputStream getBinaryStream(ResultSet rs, String fieldName) throws Exception {
 		try {
 			Blob blob = rs.getBlob(fieldName);
 
@@ -384,15 +398,13 @@ public class Util {
 		StringBuffer sb = new StringBuffer();
 
 		for (int i = 0; i < array.length; ++i) {
-			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100)
-					.substring(1, 3));
+			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
 		}
 
 		return sb.toString();
 	}
 
-	public static String md5(String message)
-			throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	public static String md5(String message) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest md = MessageDigest.getInstance("MD5");
 
 		return hex(md.digest(message.getBytes("CP1252")));
@@ -417,9 +429,7 @@ public class Util {
 			digito1 = digito2 = resto = 0;
 
 			for (int nCount = 1; nCount < (strCpf.length() - 1); nCount++) {
-				digitoCPF = Integer
-						.valueOf(strCpf.substring(nCount - 1, nCount))
-						.intValue();
+				digitoCPF = Integer.valueOf(strCpf.substring(nCount - 1, nCount)).intValue();
 
 				// multiplique a última casa por 2, a seguinte por 3, a seguinte
 				// por 4 e assim por diante.
@@ -457,8 +467,7 @@ public class Util {
 			}
 
 			// Digito verificador do CPF que está sendo validado.
-			String nDigVerific = strCpf.substring(strCpf.length() - 2,
-					strCpf.length());
+			String nDigVerific = strCpf.substring(strCpf.length() - 2, strCpf.length());
 
 			// Concatenando o primeiro resto com o segundo.
 			nDigResult = String.valueOf(digito1) + String.valueOf(digito2);
@@ -493,15 +502,12 @@ public class Util {
 				}
 
 			for (int i = 0; i < 8; i++)
-				if (((chr_cnpj[i + 4] - 48) >= 0)
-						&& ((chr_cnpj[i + 4] - 48) <= 9)) {
+				if (((chr_cnpj[i + 4] - 48) >= 0) && ((chr_cnpj[i + 4] - 48) <= 9)) {
 					soma += ((chr_cnpj[i + 4] - 48) * (10 - (i + 1)));
 				}
 
 			dig = 11 - (soma % 11);
-			cnpj_calc += (((dig == 10) || (dig == 11))
-					? "0"
-					: Integer.toString(dig));
+			cnpj_calc += (((dig == 10) || (dig == 11)) ? "0" : Integer.toString(dig));
 
 			/* Segunda parte */
 			soma = 0;
@@ -512,15 +518,12 @@ public class Util {
 				}
 
 			for (int i = 0; i < 8; i++)
-				if (((chr_cnpj[i + 5] - 48) >= 0)
-						&& ((chr_cnpj[i + 5] - 48) <= 9)) {
+				if (((chr_cnpj[i + 5] - 48) >= 0) && ((chr_cnpj[i + 5] - 48) <= 9)) {
 					soma += ((chr_cnpj[i + 5] - 48) * (10 - (i + 1)));
 				}
 
 			dig = 11 - (soma % 11);
-			cnpj_calc += (((dig == 10) || (dig == 11))
-					? "0"
-					: Integer.toString(dig));
+			cnpj_calc += (((dig == 10) || (dig == 11)) ? "0" : Integer.toString(dig));
 
 			return str_cnpj.equals(cnpj_calc);
 		} catch (Exception e) {
@@ -552,8 +555,7 @@ public class Util {
 		if (obj instanceof String) {
 			String string = (String) obj;
 
-			return String
-					.valueOf((((string == null) || "".equals(string)) ? 0 : 1));
+			return String.valueOf((((string == null) || "".equals(string)) ? 0 : 1));
 		}
 
 		return String.valueOf((((obj == null)) ? 0 : 1));
@@ -570,9 +572,7 @@ public class Util {
 			if (obj instanceof String) {
 				String string = (String) obj;
 
-				return (((string == null) || "".equals(string))
-						? 0
-						: Integer.parseInt(string));
+				return (((string == null) || "".equals(string)) ? 0 : Integer.parseInt(string));
 			}
 
 			return (((obj == null)) ? 0 : Integer.parseInt((String) obj));
@@ -592,9 +592,7 @@ public class Util {
 			if (obj instanceof String) {
 				String string = (String) obj;
 
-				return (((string == null) || "".equals(string))
-						? 0
-						: Double.parseDouble(string));
+				return (((string == null) || "".equals(string)) ? 0 : Double.parseDouble(string));
 			}
 
 			return (((obj == null)) ? 0 : Double.parseDouble((String) obj));
@@ -607,9 +605,7 @@ public class Util {
 		if (obj instanceof String) {
 			String string = (String) obj;
 
-			return (((string == null) || "".equals(string))
-					? 0
-					: Long.parseLong(string));
+			return (((string == null) || "".equals(string)) ? 0 : Long.parseLong(string));
 		}
 
 		return (((obj == null)) ? 0 : Long.parseLong((String) obj));
@@ -620,8 +616,7 @@ public class Util {
 	 * Se o valor for igual a 10 usar dd/MM/yyyy caso não, usar yyyy-MM-dd
 	 * HH:mm:ss.mmm
 	 */
-	public static Timestamp converteStringTimestamp(String valor)
-			throws Exception {
+	public static Timestamp converteStringTimestamp(String valor) throws Exception {
 		if (valor == null) {
 			return null;
 		}
@@ -642,10 +637,8 @@ public class Util {
 			valor = buffer.toString();
 		}
 
-		return ((valor.length() == 10)
-				? new java.sql.Timestamp(FormatDate.parseDate(valor).getTime())
-				: FormatDate.parseTimestamp(valor,
-						Constantes.DATA_FORMATO_COMPLETO));
+		return ((valor.length() == 10) ? new java.sql.Timestamp(FormatDate.parseDate(valor).getTime())
+				: FormatDate.parseTimestamp(valor, Constantes.DATA_FORMATO_COMPLETO));
 	}
 
 	/**
@@ -705,8 +698,7 @@ public class Util {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String gerarChavePessoa(String nome, String dtnasc,
-			String sexo) throws Exception {
+	public static String gerarChavePessoa(String nome, String dtnasc, String sexo) throws Exception {
 		campoMandatorio(nome, "nome da pessoa");
 		campoMandatorio(dtnasc, "data de nascimento");
 		campoMandatorio(sexo, "sexo");
@@ -730,8 +722,7 @@ public class Util {
 			}
 		}
 
-		retorno.append(FormatDate
-				.format(FormatDate.parseDate(dtnasc, Constantes.DATA_FORMATO)));
+		retorno.append(FormatDate.format(FormatDate.parseDate(dtnasc, Constantes.DATA_FORMATO)));
 		retorno.append(sexo.toUpperCase());
 
 		while (primeiroToken.length() < 3) {
@@ -758,8 +749,7 @@ public class Util {
 	 * @param nulls
 	 *            - o capo pode vir nulll
 	 */
-	public static void campoNumerio(String campo, String msg, boolean nulls)
-			throws Exception {
+	public static void campoNumerio(String campo, String msg, boolean nulls) throws Exception {
 		try {
 			if (!nulls) {
 				int dumie = Integer.parseInt(campo);
@@ -775,8 +765,7 @@ public class Util {
 	 * @param item
 	 * @return retorno
 	 */
-	public static String[] converterListDeStringParaArrayDeString(
-			Collection item) {
+	public static String[] converterListDeStringParaArrayDeString(Collection item) {
 		String[] retorno = new String[item.size()];
 		int i = 0;
 
@@ -788,8 +777,7 @@ public class Util {
 		return retorno;
 	}
 
-	public static Timestamp stringtoTimestamp(String timeStamp)
-			throws Exception {
+	public static Timestamp stringtoTimestamp(String timeStamp) throws Exception {
 		if ((timeStamp != null) && !"".equals(timeStamp)) {
 			/**
 			 * Milésimos de segundos truncados 0000-00-00 00:00:00
@@ -799,12 +787,9 @@ public class Util {
 			}
 
 			if (timeStamp.indexOf('/') != -1) {
-				return new Timestamp(FormatDate
-						.parse(timeStamp, Constantes.DATA_FORMATO).getTime());
+				return new Timestamp(FormatDate.parse(timeStamp, Constantes.DATA_FORMATO).getTime());
 			} else {
-				return new Timestamp(FormatDate
-						.parse(timeStamp, Constantes.DATA_FORMATO_COMPLETO)
-						.getTime());
+				return new Timestamp(FormatDate.parse(timeStamp, Constantes.DATA_FORMATO_COMPLETO).getTime());
 			}
 		} else {
 			return null;
@@ -923,8 +908,7 @@ public class Util {
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(file);
 
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-					fileOutputStream);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 			objectOutputStream.writeObject(o);
 			fileOutputStream.flush();
 		} catch (Exception e) {
@@ -932,8 +916,7 @@ public class Util {
 		}
 	}
 
-	public static String mascarar(String valor, String mascara)
-			throws ParseException {
+	public static String mascarar(String valor, String mascara) throws ParseException {
 		MaskFormatter formatter = new MaskFormatter(mascara);
 		JFormattedTextField textField = new JFormattedTextField();
 		formatter.install(textField);
@@ -975,26 +958,18 @@ public class Util {
 			} else if (name.charAt(i) == 'u' && !subst) {
 				retorno.append('o');
 				subst = true;
-			} 
+			}
 			/*
-			else if (name.charAt(i) == 'A' && !subst) {
-				retorno.append('E');
-				subst = true;
-			} else if (name.charAt(i) == 'E' && !subst) {
-				retorno.append('I');
-				subst = true;
-			} else if (name.charAt(i) == 'I' && !subst) {
-				retorno.append('A');
-				subst = true;
-			} else if (name.charAt(i) == 'O' && !subst) {
-				retorno.append('U');
-				subst = true;
-			} else if (name.charAt(i) == 'U' && !subst) {
-				retorno.append('O');
-				subst = true;
-			}*/
-			 else {
-				//subst = true;
+			 * else if (name.charAt(i) == 'A' && !subst) { retorno.append('E');
+			 * subst = true; } else if (name.charAt(i) == 'E' && !subst) {
+			 * retorno.append('I'); subst = true; } else if (name.charAt(i) ==
+			 * 'I' && !subst) { retorno.append('A'); subst = true; } else if
+			 * (name.charAt(i) == 'O' && !subst) { retorno.append('U'); subst =
+			 * true; } else if (name.charAt(i) == 'U' && !subst) {
+			 * retorno.append('O'); subst = true; }
+			 */
+			else {
+				// subst = true;
 				retorno.append(name.charAt(i));
 			}
 
@@ -1013,9 +988,8 @@ public class Util {
 		}
 		return largura;
 	}
-	
-	public static boolean processaValorPontosCarreira(int valorAutal, int proximoValor,
-			Numero numero) {
+
+	public static boolean processaValorPontosCarreira(int valorAutal, int proximoValor, Numero numero) {
 		Double numeroVal = numero.getNumero();
 		int inc = 0;
 		if (proximoValor >= 600 && proximoValor < 700) {
@@ -1038,13 +1012,13 @@ public class Util {
 		}
 		if ((proximoValor - valorAutal) > 0) {
 			if ((numeroVal - inc) >= 0) {
-				numeroVal-=inc;
+				numeroVal -= inc;
 				numero.setNumero(numeroVal);
 			} else {
 				return false;
 			}
 		} else {
-			numeroVal+=inc;
+			numeroVal += inc;
 			numero.setNumero(numeroVal);
 		}
 		if (numeroVal > 0) {

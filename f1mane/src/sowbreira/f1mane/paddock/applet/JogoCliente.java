@@ -1395,15 +1395,16 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void atualizaInfoDebug(StringBuffer buffer) {
 		Field[] declaredFields = JogoCliente.class.getDeclaredFields();
+		buffer.append("-=JogoCliente=- <br>");
 		for (Field field : declaredFields) {
 			try {
 				Object object = field.get(this);
 				String valor = "null";
 				if (object != null) {
+					if (!Util.isWrapperType(object.getClass())) {
+						continue;
+					}
 					valor = object.toString();
-				}
-				if (valor.indexOf("@") > -1) {
-					continue;
 				}
 				buffer.append(field.getName() + " = " + valor + "<br>");
 			} catch (Exception e1) {

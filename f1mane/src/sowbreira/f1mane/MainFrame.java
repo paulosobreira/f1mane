@@ -65,6 +65,8 @@ public class MainFrame extends JFrame {
 	private JMenuItem verControles;
 	private JFrame menuFrame;
 	protected Campeonato campeonato;
+	boolean adicionouPainelNarracao = false;
+	boolean adicionouPainelDebug = false;
 
 	private AppletPaddock ver = new AppletPaddock();
 
@@ -168,8 +170,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JTextArea area = new JTextArea(20, 50);
 				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(CarregadorRecursos
-								.recursoComoStream("leiame.txt")));
+						new InputStreamReader(CarregadorRecursos.recursoComoStream("leiame.txt")));
 				try {
 					String linha = reader.readLine();
 					while (linha != null) {
@@ -180,8 +181,7 @@ public class MainFrame extends JFrame {
 					Logger.logarExept(e1);
 				}
 				area.setCaretPosition(0);
-				JOptionPane.showMessageDialog(MainFrame.this,
-						new JScrollPane(area), Lang.msg("091"),
+				JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(area), Lang.msg("091"),
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -196,8 +196,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (controleJogo != null) {
-						exibirResultadoFinal(
-								controleJogo.obterResultadoFinal());
+						exibirResultadoFinal(controleJogo.obterResultadoFinal());
 					}
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
@@ -216,18 +215,15 @@ public class MainFrame extends JFrame {
 				try {
 					JTextArea area = new JTextArea(20, 50);
 					Set top = Logger.topExceptions.keySet();
-					for (Iterator iterator = top.iterator(); iterator
-							.hasNext();) {
+					for (Iterator iterator = top.iterator(); iterator.hasNext();) {
 						String exept = (String) iterator.next();
-						area.append("Quantidade : "
-								+ Logger.topExceptions.get(exept));
+						area.append("Quantidade : " + Logger.topExceptions.get(exept));
 						area.append("\n");
 						area.append(exept.replaceAll("<br>", "\n"));
 						area.append("\n");
 					}
 					area.setCaretPosition(0);
-					JOptionPane.showMessageDialog(MainFrame.this,
-							new JScrollPane(area), Lang.msg("listaDeErros"),
+					JOptionPane.showMessageDialog(MainFrame.this, new JScrollPane(area), Lang.msg("listaDeErros"),
 							JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception ex) {
 					Logger.logarExept(ex);
@@ -268,16 +264,12 @@ public class MainFrame extends JFrame {
 	}
 
 	public void mostraSobre() {
-		String msg = Lang.msg("184") + " Paulo Sobreira        ".trim() + "\n"
-				+ "- " + Lang.msg("pistas") + " "
-				+ " www.miniracingonline.com                   ".trim() + "\n"
-				+ "- " + Lang.msg("capacetesCarros") + " "
-				+ " spotterguidecentral.com                    ".trim() + "\n"
+		String msg = Lang.msg("184") + " Paulo Sobreira        ".trim() + "\n" + "- " + Lang.msg("pistas") + " "
+				+ " www.miniracingonline.com                   ".trim() + "\n" + "- " + Lang.msg("capacetesCarros")
+				+ " " + " spotterguidecentral.com                    ".trim() + "\n"
 				+ "- http://sowbreira.appspot.com              ".trim() + "\n"
-				+ "- sowbreira@gmail.com                       ".trim() + "\n"
-				+ "- 2007-2014";
-		JOptionPane.showMessageDialog(MainFrame.this, msg, Lang.msg("093"),
-				JOptionPane.INFORMATION_MESSAGE);
+				+ "- sowbreira@gmail.com                       ".trim() + "\n" + "- 2007-2014";
+		JOptionPane.showMessageDialog(MainFrame.this, msg, Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void gerarMenusSingle(JMenu menu1) {
@@ -398,6 +390,7 @@ public class MainFrame extends JFrame {
 			controleJogo = new ControleJogoLocal();
 			controleJogo.setMainFrame(this);
 			PainelMenuLocal painelMenuSigle = new PainelMenuLocal(this);
+			removePainelNarracaoDebug();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -419,11 +412,10 @@ public class MainFrame extends JFrame {
 		}
 	}
 
-	public void exibirResultadoFinal(
-			PainelTabelaResultadoFinal resultadoFinal) {
+	public void exibirResultadoFinal(PainelTabelaResultadoFinal resultadoFinal) {
 
-		JOptionPane.showMessageDialog(this, new JScrollPane(resultadoFinal),
-				"Resultado Final. ", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, new JScrollPane(resultadoFinal), "Resultado Final. ",
+				JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
@@ -447,8 +439,7 @@ public class MainFrame extends JFrame {
 	public boolean verificaCriarJogo() throws Exception {
 		if (controleJogo != null) {
 			if (controleJogo.isCorridaIniciada()) {
-				int ret = JOptionPane.showConfirmDialog(MainFrame.this,
-						Lang.msg("095"), Lang.msg("094"),
+				int ret = JOptionPane.showConfirmDialog(MainFrame.this, Lang.msg("095"), Lang.msg("094"),
 						JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.NO_OPTION) {
 					return false;
@@ -458,7 +449,16 @@ public class MainFrame extends JFrame {
 		}
 		controleJogo = new ControleJogoLocal(this);
 		controleJogo.setMainFrame(this);
+		removePainelNarracaoDebug();
 		return true;
+	}
+
+	private void removePainelNarracaoDebug() {
+		if (menuFrame != null) {
+			menuFrame.getContentPane().removeAll();
+		}
+		adicionouPainelDebug = false;
+		adicionouPainelNarracao = false;
 	}
 
 	public Campeonato getCampeonato() {
@@ -500,7 +500,7 @@ public class MainFrame extends JFrame {
 					while (menuFrame.isVisible()) {
 						try {
 							adicionaPainelNarracaoDebug();
-							if(controleJogo!=null){
+							if (controleJogo != null) {
 								controleJogo.atualizaInfoDebug();
 							}
 							Thread.sleep(200);
@@ -526,36 +526,16 @@ public class MainFrame extends JFrame {
 	private void adicionaPainelNarracaoDebug() {
 		JPanel painelNarracao = controleJogo.painelNarracao();
 		JPanel painelDebug = controleJogo.painelDebug();
-		boolean adicionaPainelNarracao = true;
-		boolean adicionaPainelDebug = true;
-		Component[] components = menuFrame.getContentPane().getComponents();
-		for (int i = 0; i < components.length; i++) {
-			if (components[i].equals(painelNarracao)) {
-				adicionaPainelNarracao = false;
-			}
-			if (components[i].equals(painelDebug)) {
-				adicionaPainelDebug = false;
-			}
-		}
-		
-		if(painelNarracao==null){
-			adicionaPainelNarracao = false;
-		}
-		
-		if(painelDebug==null){
-			adicionaPainelDebug = false;
-		}
-		
-		if (adicionaPainelDebug) {
-			menuFrame.add(painelDebug, BorderLayout.CENTER);
-		}
-
-		if (adicionaPainelNarracao) {
+		if (painelNarracao != null && !adicionouPainelNarracao) {
+			adicionouPainelNarracao = true;
 			menuFrame.add(painelNarracao, BorderLayout.SOUTH);
+			menuFrame.setSize(menuFrame.getWidth() + 1, MainFrame.this.getHeight());
 		}
 
-		if (adicionaPainelNarracao || adicionaPainelDebug) {
-			posicionaJanelaDebug();
+		if (painelDebug != null && !adicionouPainelDebug) {
+			adicionouPainelDebug = true;
+			menuFrame.add(painelDebug, BorderLayout.CENTER);
+			menuFrame.setSize(menuFrame.getWidth() + 1, MainFrame.this.getHeight());
 		}
 	}
 }

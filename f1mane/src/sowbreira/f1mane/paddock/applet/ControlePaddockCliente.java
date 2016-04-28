@@ -468,6 +468,22 @@ public class ControlePaddockCliente {
 			JOptionPane.showMessageDialog(applet, Lang.msg("064"), Lang.msg("064"), JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
+
+		int resultado = 0;
+		try {
+			resultado = Integer.parseInt(formEntrada.getResultadorConta().getText());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(applet, Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if ((formEntrada.getConta1() + formEntrada.getConta2()) != resultado) {
+			JOptionPane.showMessageDialog(applet, Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+
+		}
 		try {
 			if (!Util.isNullOrEmpty(new String(formEntrada.getSenha().getPassword()))) {
 				clientPaddockPack.setSenhaJogador(Util.md5(new String(formEntrada.getSenha().getPassword())));

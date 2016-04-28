@@ -521,6 +521,7 @@ public class ControleEstatisticas {
 	}
 
 	private void gerarPainelDebug() {
+		System.out.println("gerarPainelDebug() ");
 		painelDebug = new JPanel(new BorderLayout());
 		infoTextual = new JEditorPane("text/html", "");
 		infoTextual.setEditable(false);
@@ -539,7 +540,13 @@ public class ControleEstatisticas {
 				&& controleJogo.getPilotoSelecionado() != null) {
 			controleJogo.getPilotoSelecionado().atualizaInfoDebug(buffer);
 		}
-
+		
+		if (controleJogo != null
+				&& controleJogo.getPilotoSelecionado() != null
+				&& controleJogo.getPilotoSelecionado().getCarro() != null) {
+			controleJogo.getPilotoSelecionado().getCarro().atualizaInfoDebug(buffer);
+		}
+		
 		final StringReader reader = new StringReader(
 				Html.sansSerif(buffer.toString()));
 		Runnable doInfo = new Runnable() {

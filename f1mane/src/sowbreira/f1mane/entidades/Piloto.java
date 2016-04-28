@@ -3042,15 +3042,16 @@ public class Piloto implements Serializable {
 
 	public void atualizaInfoDebug(StringBuffer buffer) {
 		Field[] declaredFields = Piloto.class.getDeclaredFields();
+		buffer.append("-=Piloto=- <br>");
 		for (Field field : declaredFields) {
 			try {
 				Object object = field.get(this);
 				String valor = "null";
 				if (object != null) {
+					if (!Util.isWrapperType(object.getClass())) {
+						continue;
+					}
 					valor = object.toString();
-				}
-				if (valor.indexOf("@") > -1) {
-					continue;
 				}
 				buffer.append(field.getName() + " = " + valor + "<br>");
 			} catch (Exception e1) {
