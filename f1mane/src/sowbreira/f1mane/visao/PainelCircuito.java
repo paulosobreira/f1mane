@@ -3633,6 +3633,26 @@ public class PainelCircuito {
 			return;
 		}
 
+		if (gerenciadorVisual.getFps() < 20) {
+			boolean desenha = false;
+			if (pilotoSelecionado.equals(piloto)) {
+				desenha = true;
+			}
+			if (pilotoSelecionado.getCarroPilotoDaFrente() != null
+					&& piloto.equals(pilotoSelecionado.getCarroPilotoDaFrente()
+							.getPiloto())) {
+				desenha = true;
+			}
+			if (pilotoSelecionado.getCarroPilotoAtras() != null
+					&& piloto.equals(pilotoSelecionado.getCarroPilotoAtras()
+							.getPiloto())) {
+				desenha = true;
+			}
+			if (!desenha) {
+				return;
+			}
+		}
+
 		String danificado = piloto.getCarro().getDanificado();
 		if (Carro.PANE_SECA.equals(danificado)
 				|| Carro.EXPLODIU_MOTOR.equals(danificado)) {
