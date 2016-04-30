@@ -879,7 +879,7 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 		int somaPontecias = 0;
 		for (int i = 0; i < getCarros().size(); i++) {
 			Carro carro = (Carro) getCarros().get(i);
-			somaPontecias += carro.getPotencia();
+			somaPontecias += carro.getPotencia() + carro.getFreios() + carro.getAerodinamica();
 		}
 		int mediaPontecia = somaPontecias / getCarros().size();
 		return mediaPontecia;

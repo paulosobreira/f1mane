@@ -381,6 +381,9 @@ public class ControlePaddockCliente {
 			}
 			clientPaddockPack.setDadosCriarJogo(dadosParticiparJogo);
 			ret = enviarObjeto(clientPaddockPack);
+			if (retornoNaoValido(ret)) {
+				return;
+			}
 			if (ret == null) {
 				return;
 			}
@@ -469,21 +472,6 @@ public class ControlePaddockCliente {
 			return false;
 		}
 
-		int resultado = 0;
-		try {
-			resultado = Integer.parseInt(formEntrada.getResultadorConta().getText());
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(applet, Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
-					JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-
-		if ((formEntrada.getConta1() + formEntrada.getConta2()) != resultado) {
-			JOptionPane.showMessageDialog(applet, Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
-					JOptionPane.ERROR_MESSAGE);
-			return false;
-
-		}
 		try {
 			if (!Util.isNullOrEmpty(new String(formEntrada.getSenha().getPassword()))) {
 				clientPaddockPack.setSenhaJogador(Util.md5(new String(formEntrada.getSenha().getPassword())));
@@ -500,6 +488,21 @@ public class ControlePaddockCliente {
 		}
 		if (!Util.isNullOrEmpty(formEntrada.getNomeRegistrar().getText())
 				|| !Util.isNullOrEmpty(formEntrada.getEmailRegistrar().getText())) {
+			int resultado = 0;
+			try {
+				resultado = Integer.parseInt(formEntrada.getResultadorConta().getText());
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(applet, Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+
+			if ((formEntrada.getConta1() + formEntrada.getConta2()) != resultado) {
+				JOptionPane.showMessageDialog(applet, Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+
+			}
 			clientPaddockPack.setNomeJogador(formEntrada.getNomeRegistrar().getText());
 			clientPaddockPack.setEmailJogador(formEntrada.getEmailRegistrar().getText());
 		}
@@ -764,7 +767,7 @@ public class ControlePaddockCliente {
 		carreiraDadosSrv.setC2B(formCarreira.getCor2().getBlue());
 		clientPaddockPack.setJogadorDadosSrv(carreiraDadosSrv);
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(4, 2));
+		panel.setLayout(new GridLayout(6, 2));
 		panel.add(new JLabel("Pontos Carreira:") {
 			@Override
 			public String getText() {
@@ -786,6 +789,23 @@ public class ControlePaddockCliente {
 			}
 		});
 		panel.add(new JLabel(String.valueOf(carreiraDadosSrv.getPtsCarro())));
+
+		panel.add(new JLabel("Aero dinâmica Carro:") {
+			@Override
+			public String getText() {
+				return Lang.msg("aerodinamicaCarro");
+			}
+		});
+		panel.add(new JLabel(String.valueOf(carreiraDadosSrv.getPtsAerodinamica())));
+
+		panel.add(new JLabel("Freio Carro:") {
+			@Override
+			public String getText() {
+				return Lang.msg("freioCarro");
+			}
+		});
+		panel.add(new JLabel(String.valueOf(carreiraDadosSrv.getPtsFreio())));
+
 		int result = JOptionPane.showConfirmDialog(null, panel);
 		if (JOptionPane.OK_OPTION == result) {
 			enviarObjeto(clientPaddockPack);
