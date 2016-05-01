@@ -992,7 +992,12 @@ public class Util {
 	public static boolean processaValorPontosCarreira(int valorAutal, int proximoValor, Numero numero) {
 		Double numeroVal = numero.getNumero();
 		int inc = 0;
-		if (proximoValor >= 600 && proximoValor < 700) {
+		if (proximoValor >= 400 && proximoValor < 600) {
+			inc = 1;
+			if (valorAutal == 600) {
+				inc = 2;
+			}
+		} else if (proximoValor >= 600 && proximoValor < 700) {
 			inc = 2;
 			if (valorAutal == 700) {
 				inc = 4;

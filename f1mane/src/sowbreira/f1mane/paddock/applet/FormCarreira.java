@@ -302,7 +302,7 @@ public class FormCarreira extends JPanel {
 				super.setValue(value);
 			} else {
 				int nexVal = (Integer) value;
-				if (val != nexVal && nexVal >= 600 && nexVal <= 999) {
+				if (val != nexVal && nexVal >= 400 && nexVal <= 999) {
 					Numero numero = new Numero(ptsCarreira);
 					if (Util.processaValorPontosCarreira(val, nexVal, numero)) {
 						ptsCarreira = numero.getNumero().intValue();
