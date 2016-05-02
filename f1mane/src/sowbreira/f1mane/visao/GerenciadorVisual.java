@@ -1451,21 +1451,17 @@ public class GerenciadorVisual {
 				string = Html.cinza(
 						Lang.msg("082") + controleJogo.getNumVoltaAtual() + " ")
 						+ string + "<br>";
-			if (bufferTextual.size() > 6) {
-				boolean contains = false;
-				for (int i = bufferTextual.size() - 1; i < bufferTextual.size()
-						- 5; i--) {
-					if (string.equals(bufferTextual.get(i))) {
-						contains = true;
-					}
-				}
-				if (contains) {
-					return;
+			boolean contains = false;
+			for (int i = bufferTextual.size() - 1; i < bufferTextual.size()
+					- 5; i--) {
+				if (string.equals(bufferTextual.get(i))) {
+					contains = true;
 				}
 			}
-
+			if (contains) {
+				return;
+			}
 			bufferTextual.add(string);
-
 			StringBuffer buffer = new StringBuffer();
 			for (int i = bufferTextual.size() - 1; i >= 0; i--) {
 				String texto = Html.sansSerif(bufferTextual.get(i).toString());
@@ -1483,7 +1479,6 @@ public class GerenciadorVisual {
 				}
 			};
 			SwingUtilities.invokeLater(doInfo);
-
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}

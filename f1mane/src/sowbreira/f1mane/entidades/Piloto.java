@@ -992,7 +992,7 @@ public class Piloto implements Serializable {
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 		processaGanhoSafetyCar(controleJogo);
-		decremetaPilotoDesconcentrado(controleJogo);
+		decrementaPilotoDesconcentrado(controleJogo);
 		setPtosPista(Util.inte(getPtosPista() + ganho));
 		index += Math.round(ganho);
 		setVelocidade(calculoVelocidade(ganho));
@@ -2311,7 +2311,7 @@ public class Piloto implements Serializable {
 		return ciclosDesconcentrado > 0;
 	}
 
-	public boolean decremetaPilotoDesconcentrado(InterfaceJogo interfaceJogo) {
+	public boolean decrementaPilotoDesconcentrado(InterfaceJogo interfaceJogo) {
 		if (colisao != null) {
 			return false;
 		}

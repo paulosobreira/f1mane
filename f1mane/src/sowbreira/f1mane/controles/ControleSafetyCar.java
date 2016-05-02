@@ -43,8 +43,10 @@ public class ControleSafetyCar {
 					.getPiloto();
 			if (pilotoFrente.getPtosBox() != 0
 					|| pilotoFrente.getCarro().verificaParado()
-					|| (pilotoFrente.danificado() && !piloto.danificado())
-					|| piloto.getNumeroVolta() != pilotoFrente.getNumeroVolta()) {
+					|| piloto.verificaNaoPrecisaDesviar(controleJogo,
+							pilotoFrente)
+					|| piloto.getNumeroVolta() != pilotoFrente
+							.getNumeroVolta()) {
 				return ganho;
 			}
 			long indexNafrente = pilotoFrente.getPtosPista();
@@ -104,8 +106,9 @@ public class ControleSafetyCar {
 		}
 		int cont = safetyCar.getNoAtual().getIndex();
 		Circuito circuito = controleJogo.getCircuito();
-		if ((cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito
-				.getEntradaBoxIndex() + 50)) && safetyCar.isVaiProBox()) {
+		if ((cont > (circuito.getEntradaBoxIndex() - 50)
+				&& cont < (circuito.getEntradaBoxIndex() + 50))
+				&& safetyCar.isVaiProBox()) {
 			controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("030")));
 			safetyCar.setNaPista(false);
 			safetyCar.setSaiuVolta(controleJogo.getNumVoltaAtual());
@@ -114,15 +117,16 @@ public class ControleSafetyCar {
 		List pista = controleJogo.getNosDaPista();
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
-		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta() ? ((Math
-				.random() > .5) ? 2 : 1) : (Math.random() > .3) ? 2 : 1;
+		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta()
+				? ((Math.random() > .5) ? 2 : 1)
+				: (Math.random() > .3) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotosCopia().get(0);
 
 		long ptsSc = safetyCar.getPtosPista();
 		long polePts = pole.getPtosPista();
 		long diffPts = ptsSc - polePts;
-		bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo
-				.getIndexVelcidadeDaPista());
+		bonus *= (controleJogo.getCircuito().getMultiplciador()
+				* controleJogo.getIndexVelcidadeDaPista());
 		if (diffPts >= 100) {
 			double multi = (diffPts - 100 / 100.0);
 			if (multi > 0.9) {

@@ -1096,7 +1096,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void decrementaTracado() {
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+		List<Piloto> pilotosCopia = getPilotosCopia();
+		for (Iterator iterator = pilotosCopia.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			piloto.decIndiceTracado();
 		}
