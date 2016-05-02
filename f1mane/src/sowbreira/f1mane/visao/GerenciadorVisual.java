@@ -1454,7 +1454,7 @@ public class GerenciadorVisual {
 			boolean contains = false;
 			for (int i = bufferTextual.size() - 1; i < bufferTextual.size()
 					- 5; i--) {
-				if (string.equals(bufferTextual.get(i))) {
+				if (i>=0 && string.equals(bufferTextual.get(i))) {
 					contains = true;
 				}
 			}
