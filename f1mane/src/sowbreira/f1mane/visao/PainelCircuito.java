@@ -733,7 +733,7 @@ public class PainelCircuito {
 		int maxLoop = 1000;
 		int inc = 30;
 		if (gerenciadorVisual.getFps() > 30) {
-			inc = 35;
+			inc = 32;
 		}
 		for (int i = 0; i < maxLoop; i += inc) {
 			if (diff >= i && diff < i + inc) {
