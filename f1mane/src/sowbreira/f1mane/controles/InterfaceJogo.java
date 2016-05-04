@@ -407,4 +407,6 @@ public interface InterfaceJogo {
 
 	public void atualizaInfoDebug(StringBuffer buffer);
 
+	public void forcaQuerbraAereofolio();
+
 }

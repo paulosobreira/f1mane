@@ -1547,4 +1547,13 @@ public class ControleJogoLocal extends ControleRecursos implements InterfaceJogo
 		}
 	}
 
+	@Override
+	public void forcaQuerbraAereofolio() {
+		if(pilotoSelecionado==null){
+			return;
+		}
+		pilotoSelecionado.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
+		pilotoSelecionado.getCarro().setDurabilidadeAereofolio(0);
+	}
+
 }

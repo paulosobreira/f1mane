@@ -485,6 +485,9 @@ public class GerenciadorVisual {
 					if (keyCoode == KeyEvent.VK_7) {
 						controleJogo.climaChuvoso();
 					}
+					if (keyCoode == KeyEvent.VK_6) {
+						controleJogo.forcaQuerbraAereofolio();
+					}
 
 				}
 			}

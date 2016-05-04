@@ -1473,11 +1473,12 @@ public class Piloto implements Serializable {
 			agressivo = false;
 			return;
 		}
-		if (controleJogo.isModoQualify() || isJogadorHumano() || danificado()
+		if (controleJogo.isModoQualify() || isJogadorHumano()
 				|| verificaDesconcentrado()) {
 			return;
 		}
-		if (controleJogo.isSafetyCarNaPista() || getPtosBox() != 0) {
+		if (controleJogo.isSafetyCarNaPista() || getPtosBox() != 0
+				|| danificado()) {
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 			setModoPilotagem(LENTO);
 			return;
