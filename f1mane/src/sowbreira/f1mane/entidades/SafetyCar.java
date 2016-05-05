@@ -2,14 +2,13 @@ package sowbreira.f1mane.entidades;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-public class SafetyCar implements Serializable {
+public class SafetyCar implements Serializable, PilotoSuave {
 
 	private No noAtual = new No();
+	private No noAtualSuave;
+	private int ganhoSuave;
 	private long ptosPista;
 	private int saiuVolta;
 	private int tracado;
@@ -79,6 +78,28 @@ public class SafetyCar implements Serializable {
 
 	public void setVaiProBox(boolean vaiProBox) {
 		this.vaiProBox = vaiProBox;
+	}
+
+	@Override
+	public No getNoAtualSuave() {
+		return this.noAtualSuave;
+	}
+
+	@Override
+	public int getGanhoSuave() {
+		return this.ganhoSuave;
+	}
+
+	@Override
+	public void setGanhoSuave(int ganhoSuave) {
+		this.ganhoSuave = ganhoSuave;
+
+	}
+
+	@Override
+	public void setNoAtualSuave(No noAtualSuave) {
+		this.noAtualSuave = noAtualSuave;
+
 	}
 
 }

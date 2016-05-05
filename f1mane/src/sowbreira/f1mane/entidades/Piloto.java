@@ -30,7 +30,7 @@ import br.nnpe.Util;
 /**
  * @author Paulo Sobreira
  */
-public class Piloto implements Serializable {
+public class Piloto implements Serializable, PilotoSuave {
 	private static final long serialVersionUID = 698992658460848522L;
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
@@ -778,7 +778,9 @@ public class Piloto implements Serializable {
 						carroPilotoAtras.getPiloto()));
 			}
 			index = diff;
-			getCarro().setCargaKers(InterfaceJogo.CARGA_KERS);
+			if (getNumeroVolta() != 1) {
+				getCarro().setCargaKers(InterfaceJogo.CARGA_KERS);
+			}
 			ativarKers = false;
 			controleJogo.processaVoltaRapida(this);
 			/**
@@ -971,7 +973,7 @@ public class Piloto implements Serializable {
 		calculaCarrosAdjacentes(controleJogo);
 		processaStress(controleJogo);
 		processaLimitadorModificador();
-		processaUsoKERS(controleJogo);
+		processaUsoERS(controleJogo);
 		processaUsoDRS(controleJogo);
 		verificaMudancaRegime(controleJogo);
 		processaGanho(controleJogo);
@@ -1385,17 +1387,14 @@ public class Piloto implements Serializable {
 		}
 	}
 
-	private void processaUsoKERS(InterfaceJogo controleJogo) {
+	private void processaUsoERS(InterfaceJogo controleJogo) {
 
-		if (controleJogo.isKers() && ativarKers && getPtosBox() == 0
-				&& getNumeroVolta() > 0) {
+		if (controleJogo.isKers() && ativarKers && getPtosBox() == 0) {
 			if (getCarro().getCargaKers() <= 0) {
 				ativarKers = false;
 			} else {
-				if (!getCarro().testePotencia()) {
-					return;
-				}
-				ganho *= Util.intervalo(1.06, 1.09);
+				double rev = (1000 - carro.getPotencia()) / 10000;
+				ganho *= Util.intervalo(1.05, 1.1 + rev);
 				getCarro().usaKers();
 			}
 		}
