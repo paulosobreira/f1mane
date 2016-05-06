@@ -1394,7 +1394,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				ativarKers = false;
 			} else {
 				double rev = (1000 - carro.getPotencia()) / 10000;
-				ganho *= Util.intervalo(1.05, 1.1 + rev);
+				ganho *= Util.intervalo(1.05, 1.1 + (rev * 2));
 				getCarro().usaKers();
 			}
 		}

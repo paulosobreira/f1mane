@@ -244,6 +244,12 @@ public class GerenciadorVisual {
 		});
 		Graphics2D g2d = controleJogo.getMainFrame().obterGraficos();
 		if (g2d != null) {
+			List<Piloto> pilotos = controleJogo.getPilotos();
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto2 = (Piloto) iterator.next();
+				controleJogo.obterCarroCima(piloto2);
+				
+			}
 			thAtualizaPainelSuave.start();
 			thAtualizaSom.start();
 		}
