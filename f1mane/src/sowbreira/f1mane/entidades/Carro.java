@@ -72,6 +72,7 @@ public class Carro implements Serializable {
 	private Piloto piloto;
 	private int tempMax;
 	private boolean pneuAquecido;
+	private boolean msgPeneu;
 
 	public int getPotenciaAntesQualify() {
 		return potenciaAntesQualify;
@@ -216,6 +217,7 @@ public class Carro implements Serializable {
 	}
 
 	public void trocarPneus(InterfaceJogo interfaceJogo, String tipoPneu, int distaciaCorrida) {
+		msgPeneu = false;
 		if (interfaceJogo.isSemTrocaPneu() && !interfaceJogo.isModoQualify() && this.tipoPneu != null) {
 			if (!verificaPneusIncompativeisClima(interfaceJogo) && pneus > 0) {
 				return;
@@ -916,8 +918,10 @@ public class Carro implements Serializable {
 
 	private void msgPneus(InterfaceJogo controleJogo) {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista() && !controleJogo.isChovendo()
-				&& pneuAquecido) {
-			controleJogo.info(Html.orange(Lang.msg("pneus", new String[] { Html.txtRedBold(getPiloto().getNome()) })));
+				&& pneuAquecido && !msgPeneu) {
+			msgPeneu = true;
+			controleJogo
+					.info(Html.orange(Lang.msg("msgpneus", new String[] { Html.txtRedBold(getPiloto().getNome()) })));
 		}
 	}
 
