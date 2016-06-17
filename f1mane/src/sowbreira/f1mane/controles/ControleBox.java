@@ -1,29 +1,25 @@
 package sowbreira.f1mane.controles;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.Messagens;
-import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.recursos.CarregadorRecursos;
-import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 09/06/2007 as 17:17:28

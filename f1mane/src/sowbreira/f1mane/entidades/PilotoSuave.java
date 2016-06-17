@@ -4,6 +4,8 @@ public interface PilotoSuave {
 
 	public No getNoAtual();
 
+	public No getNoAnterior();
+
 	public No getNoAtualSuave();
 
 	public int getGanhoSuave();
