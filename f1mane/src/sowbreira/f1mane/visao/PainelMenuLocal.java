@@ -672,7 +672,7 @@ public class PainelMenuLocal {
 		Collections.reverse(temporadas);
 		bgmonaco = ImageUtil.gerarFade(
 				CarregadorRecursos.carregaBufferedImage("bg-monaco.png"), 25);
-		bgf1 = CarregadorRecursos.carregaBufferedImage("f1bg.png");
+		bgf1 = bgmonaco;
 		pilotosRect = new ArrayList<RoundRectangle2D>();
 		for (int i = 0; i < 24; i++) {
 			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 5, 5));
@@ -703,9 +703,9 @@ public class PainelMenuLocal {
 					bg = bgmonaco;
 				if (MENU.equals(MENU_CORRIDA)
 						|| MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS))
-					bg = bgf1;
+					bg = bgmonaco;
 				if (MENU.equals(MENU_SOBRE)) {
-					bg = bgf1;
+					bg = bgmonaco;
 				}
 			}
 			if (bg != null && PainelCircuito.desenhaImagens) {

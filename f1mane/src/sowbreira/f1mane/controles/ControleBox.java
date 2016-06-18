@@ -429,6 +429,10 @@ public class ControleBox {
 				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox()),
 				Lang.msg(piloto.getCarro().getTipoPneu())};
 		String info = Lang.msg("003", strings);
+
+		if (controleJogo.isSemReabastacimento()) {
+			info = Lang.msg("saiBoxSemRebastecimento", strings);
+		}
 		if (controleJogo.verificaInfoRelevante(piloto)) {
 			if (piloto.isJogadorHumano()) {
 				controleJogo.infoPrioritaria(Html.orange(info));
