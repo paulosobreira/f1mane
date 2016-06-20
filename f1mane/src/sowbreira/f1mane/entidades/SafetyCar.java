@@ -104,7 +104,7 @@ public class SafetyCar implements Serializable, PilotoSuave {
 
 	@Override
 	public No getNoAnterior() {
-		return null;
+		return getNoAtualSuave();
 	}
 
 }
