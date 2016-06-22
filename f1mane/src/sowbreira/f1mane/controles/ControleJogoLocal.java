@@ -485,7 +485,8 @@ public class ControleJogoLocal extends ControleRecursos
 			infoPrioritaria(Html.superDarkRed(
 					Lang.msg("024", new Object[]{getNumVoltaAtual()})));
 		}
-		if (getNumVoltaAtual() == 2 && isDrs() && !isChovendo()) {
+		if (getNumVoltaAtual() == 2 && isDrs() && !isChovendo()
+				&& !isSafetyCarNaPista()) {
 			infoPrioritaria(Html.superBlue(Lang.msg("drsHabilitado")));
 		}
 		controleCorrida.getControleClima().processaPossivelMudancaClima();

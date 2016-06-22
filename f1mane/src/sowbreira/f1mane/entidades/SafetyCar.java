@@ -7,6 +7,7 @@ import java.util.List;
 public class SafetyCar implements Serializable, PilotoSuave {
 
 	private No noAtual = new No();
+	private No noAnterior = new No();
 	private No noAtualSuave;
 	private int ganhoSuave;
 	private long ptosPista;
@@ -61,6 +62,7 @@ public class SafetyCar implements Serializable, PilotoSuave {
 	}
 
 	public void setNoAtual(No noAtual) {
+		noAnterior = this.noAtual; 
 		this.noAtual = noAtual;
 	}
 
@@ -104,7 +106,7 @@ public class SafetyCar implements Serializable, PilotoSuave {
 
 	@Override
 	public No getNoAnterior() {
-		return getNoAtualSuave();
+		return noAnterior;
 	}
 
 }
