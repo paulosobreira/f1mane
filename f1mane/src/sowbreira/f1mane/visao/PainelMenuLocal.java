@@ -245,6 +245,10 @@ public class PainelMenuLocal {
 	private BufferedImage pneuDuroImg;
 	private BufferedImage pneuChuvaImg;
 
+	private BufferedImage maisAsaImg;
+	private BufferedImage menosAsaImg;
+	private BufferedImage normalAsaImg;
+
 	private List temporadas;
 	private List cirucitosCampeonato = new ArrayList();
 	private Map circuitosPilotos;
@@ -663,6 +667,13 @@ public class PainelMenuLocal {
 				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.3);
 		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos
 				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.3);
+
+		maisAsaImg = CarregadorRecursos
+				.carregaBufferedImageTransparecia("maisAsa.png", null);;
+		menosAsaImg = CarregadorRecursos
+				.carregaBufferedImageTransparecia("menosAsa.png", null);;
+		normalAsaImg = CarregadorRecursos
+				.carregaBufferedImageTransparecia("normalAsa.png", null);;
 
 		carregadorRecursos = new CarregadorRecursos(true);
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
@@ -1092,8 +1103,7 @@ public class PainelMenuLocal {
 		g2d.fillRoundRect(x - 15, y - 12, tamReabasteciemto + 10, 32, 0, 0);
 		if (reabasteciemto) {
 			g2d.setColor(yel);
-			g2d.drawRoundRect(x - 15, y - 12, tamReabasteciemto + 10, 32, 0,
-					0);
+			g2d.drawRoundRect(x - 15, y - 12, tamReabasteciemto + 10, 32, 0, 0);
 		}
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(reabasteciemtoTxt, x - 10, y + 15);
@@ -1495,15 +1505,15 @@ public class PainelMenuLocal {
 
 		desenhaAnteriroProximo(g2d, x + 350, y + 600);
 
-		desenhaCircuitoSelecionado(g2d, x + 350, y);
+		desenhaCircuitoSelecionado(g2d, x + 300, y);
 
-		desenhaTemporadaClima(g2d, x + 350, y + 230);
+		desenhaTemporadaClima(g2d, x + 340, y + 200);
 
-		desenhaPilotoSelecionado(g2d, x + 350, y + 290, pilotoSelecionado);
+		desenhaPilotoSelecionado(g2d, x + 260, y + 240, pilotoSelecionado);
 
-		desenhaCombustivel(g2d, x + 490, y + 360);
+		desenhaCombustivel(g2d, x + 490, y + 330);
 
-		desenhaTipoPneu(g2d, x + 490, y + 460);
+		desenhaTipoPneu(g2d, x + 490, y + 430);
 
 		desenhaTipoAsa(g2d, x + 490, y + 520);
 	}
@@ -2323,11 +2333,9 @@ public class PainelMenuLocal {
 		int tamTurbulenciaSelecionado = porcentTurbulencia * tamTurbulencia
 				/ 100;
 		g2d.setColor(yel);
-		g2d.drawRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 0,
-				0);
+		g2d.drawRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 0, 0);
 		g2d.setColor(blu);
-		g2d.fillRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 0,
-				0);
+		g2d.fillRoundRect(x - 15, y - 12, tamTurbulenciaSelecionado, 32, 0, 0);
 
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(turbulencia, x - 10, y + 15);
@@ -2467,7 +2475,7 @@ public class PainelMenuLocal {
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(mole, x - 10, y + 15);
 
-		desenhaImgTipoPneu(g2d, x, y, tamMole, pneuMoleImg);
+		desenhaImgTipo(g2d, x, y, tamMole, pneuMoleImg);
 
 		x += (tamMole + 15);
 
@@ -2481,7 +2489,7 @@ public class PainelMenuLocal {
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(duro, x - 10, y + 15);
 
-		desenhaImgTipoPneu(g2d, x, y, tamDuro, pneuDuroImg);
+		desenhaImgTipo(g2d, x, y, tamDuro, pneuDuroImg);
 
 		x += (tamDuro + 15);
 
@@ -2495,7 +2503,7 @@ public class PainelMenuLocal {
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(chuva, x - 10, y + 15);
 
-		desenhaImgTipoPneu(g2d, x, y, tamChuva, pneuChuvaImg);
+		desenhaImgTipo(g2d, x, y, tamChuva, pneuChuvaImg);
 
 		g2d.setFont(fontOri);
 	}
@@ -2511,11 +2519,11 @@ public class PainelMenuLocal {
 		String mais = Lang.msg(Carro.MAIS_ASA).toUpperCase();
 		int tamMais = Util.calculaLarguraText(mais, g2d);
 		String normal = Lang.msg(Carro.ASA_NORMAL).toUpperCase();
-		int tamDuro = Util.calculaLarguraText(normal, g2d);
+		int tamNomral = Util.calculaLarguraText(normal, g2d);
 		String menos = Lang.msg(Carro.MENOS_ASA).toUpperCase();
 		int tamMenos = Util.calculaLarguraText(menos, g2d);
 
-		int somaTam = tamMais + tamDuro + tamMenos + 30;
+		int somaTam = tamMais + tamNomral + tamMenos + 30;
 
 		x -= somaTam / 2;
 
@@ -2529,9 +2537,11 @@ public class PainelMenuLocal {
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(mais, x - 10, y + 15);
 
+		desenhaImgTipo(g2d, x, y + 10, tamMais, maisAsaImg);
+
 		x += (tamMais + 15);
 
-		normalAsaRect.setFrame(x - 15, y - 12, tamDuro + 10, 32);
+		normalAsaRect.setFrame(x - 15, y - 12, tamNomral + 10, 32);
 		g2d.setColor(lightWhite);
 		g2d.fill(normalAsaRect);
 		if (Carro.ASA_NORMAL.equals(asaSelecionado)) {
@@ -2540,10 +2550,13 @@ public class PainelMenuLocal {
 		}
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(normal, x - 10, y + 15);
+		
+		desenhaImgTipo(g2d, x, y + 10, tamNomral, normalAsaImg);
 
-		x += (tamDuro + 15);
+		x += (tamNomral + 15);
 
 		menosAsaRect.setFrame(x - 15, y - 12, tamMenos + 10, 32);
+
 		g2d.setColor(lightWhite);
 		g2d.fill(menosAsaRect);
 		if (Carro.MENOS_ASA.equals(asaSelecionado)) {
@@ -2552,18 +2565,20 @@ public class PainelMenuLocal {
 		}
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(menos, x - 10, y + 15);
+		
+		desenhaImgTipo(g2d, x, y + 10, tamMenos, menosAsaImg);
 
 		g2d.setFont(fontOri);
 	}
 
-	private void desenhaImgTipoPneu(Graphics2D g2d, int x, int y, int tam,
-			BufferedImage pneuImg) {
+	private void desenhaImgTipo(Graphics2D g2d, int x, int y, int tam,
+			BufferedImage img) {
 		g2d.setColor(lightWhite);
-		int deslX = (tam / 2) - (pneuImg.getWidth() / 2);
-		g2d.fillRoundRect(x + deslX, y - 65, pneuImg.getWidth() + 10,
-				pneuImg.getHeight() + 2, 0, 0);
+		int deslX = (tam / 2) - (img.getWidth() / 2);
+		g2d.fillRoundRect(x + deslX, y - 65, img.getWidth() + 10,
+				img.getHeight() + 2, 0, 0);
 		if (PainelCircuito.desenhaImagens)
-			g2d.drawImage(pneuImg, x + deslX + 5, y - 65, null);
+			g2d.drawImage(img, x + deslX + 5, y - 65, null);
 	}
 
 	private void desenhaClima(Graphics2D g2d, int x, int y) {
