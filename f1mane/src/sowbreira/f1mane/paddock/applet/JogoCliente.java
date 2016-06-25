@@ -57,7 +57,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private ControleEstatisticas controleEstatisticas;
 	private SafetyCar safetyCar = new SafetyCar();
 	private boolean safetyCarBol;
-	private boolean modoAgressivo;
 	private boolean modoBox;
 	private String nomeJogador;
 	private Piloto pilotoSelecionado;

@@ -59,7 +59,7 @@ public class PaddockWindow {
 	private JPanel mainPanel;
 	private ControlePaddockCliente controlePaddockCliente;
 	private JList listaClientes = new JList();
-	private JList listaJogosCriados = new JList(new DefaultListModel());
+	private JList listaJogosCriados = new JList();
 	private JTextArea textAreaChat = new JTextArea();
 	private JTextField textoEnviar = new JTextField();
 	private HashMap mapaJogosCriados = new HashMap();
@@ -527,12 +527,11 @@ public class PaddockWindow {
 				return jPanel;
 			}
 		});
-		DefaultListModel model = ((DefaultListModel) listaJogosCriados
-				.getModel());
-
-		if (model.size() != dadosPaddock.getJogosCriados().size()) {
-			atualizaListaJogos(dadosPaddock, model);
-		} else if (model.size() == dadosPaddock.getJogosCriados().size()) {
+		DefaultListModel listaJogosCriadosModel = new DefaultListModel<>();
+		listaJogosCriados.setModel(listaJogosCriadosModel);
+		if (listaJogosCriadosModel.size() != dadosPaddock.getJogosCriados().size()) {
+			atualizaListaJogos(dadosPaddock, listaJogosCriadosModel);
+		} else if (listaJogosCriadosModel.size() == dadosPaddock.getJogosCriados().size()) {
 			boolean diferente = false;
 			for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
 					.hasNext();) {
@@ -543,7 +542,7 @@ public class PaddockWindow {
 				}
 			}
 			if (diferente) {
-				atualizaListaJogos(dadosPaddock, model);
+				atualizaListaJogos(dadosPaddock, listaJogosCriadosModel);
 			}
 		}
 
@@ -582,14 +581,13 @@ public class PaddockWindow {
 
 				if (isSelected) {
 					jPanel.setBorder(new LineBorder(new Color(184, 207, 229)));
-				} else {
-					for (int i = 0; i < jPanel.getComponentCount(); i++) {
-						Component component = jPanel.getComponent(i);
-						component.setBackground(Color.WHITE);
-					}
-					jPanel.setBackground(Color.WHITE);
 				}
-
+				for (int i = 0; i < jPanel.getComponentCount(); i++) {
+					Component component = jPanel.getComponent(i);
+					compTransp(component);
+				}
+				compTransp(jPanel);
+				mainPanel.repaint();
 				return jPanel;
 			}
 		});
