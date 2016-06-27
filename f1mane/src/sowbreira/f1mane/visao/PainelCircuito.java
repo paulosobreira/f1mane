@@ -1878,8 +1878,8 @@ public class PainelCircuito {
 		g2d.setColor(fonte);
 		g2d.drawString(t3PilotoFrente, x + 321, y + 16);
 
-		rectanglePos = new RoundRectangle2D.Double(x + 306, y + 22, 100, 20, 15,
-				15);
+		rectanglePos = new RoundRectangle2D.Double(x + 306, y + 22, 100, 20, 0,
+				0);
 		g2d.setColor(bkg);
 		g2d.fill(rectanglePos);
 		g2d.setColor(fonte);
@@ -2140,15 +2140,15 @@ public class PainelCircuito {
 			return;
 		}
 
-		int altura = 90;
+		int altura = 100;
 
 		if (!controleJogo.isSemReabastacimento()) {
 			desenhaControlesReabastecimentoBox(g2d, altura);
-			altura += 40;
+			altura += 50;
 		}
 		if (!controleJogo.isSemTrocaPneu()) {
 			desenhaControlePneuBox(g2d, altura);
-			altura += 40;
+			altura += 50;
 		}
 		desenhaControleAsaBox(g2d, altura);
 	}
@@ -2158,15 +2158,14 @@ public class PainelCircuito {
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
-		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 115;
+		int x = limitesViewPort.x + (limitesViewPort.width / 2);
 		int y = limitesViewPort.y + altura;
 		g2d.setColor(transpMenus);
 		String combst = Lang.msg("Combustivel") + " " + porcentCombust + "%";
 		int tamCombust = Util.calculaLarguraText(combst, g2d);
+		x -= (tamCombust / 2) - 20;
 		porcentCombustivelTela.setFrame(x - 15, y - 12, tamCombust + 5, 32);
 		if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
-			g2d.setColor(OcilaCor.geraOcila("selCombBox", transpSel));
-			g2d.fill(porcentCombustivelTela);
 			Stroke stroke = g2d.getStroke();
 			g2d.setStroke(trilhoMiniPista);
 			g2d.setColor(yel);
@@ -2239,11 +2238,7 @@ public class PainelCircuito {
 
 		boolean moleSel = false;
 		if (pilotoSelecionado != null && Carro.TIPO_PNEU_MOLE.equals(tpPneu)) {
-			if (pilotoSelecionado.isBox()) {
-				g2d.setColor(OcilaCor.geraOcila("selPneuBox", transpSel));
-			} else {
-				g2d.setColor(transpSel);
-			}
+			g2d.setColor(transpSel);
 			moleSel = true;
 		} else {
 			g2d.setColor(transpMenus);
@@ -2268,11 +2263,7 @@ public class PainelCircuito {
 		x += (tamMole + 15);
 		boolean duroSel = false;
 		if (pilotoSelecionado != null && Carro.TIPO_PNEU_DURO.equals(tpPneu)) {
-			if (pilotoSelecionado.isBox()) {
-				g2d.setColor(OcilaCor.geraOcila("selPneuBox", transpSel));
-			} else {
-				g2d.setColor(transpSel);
-			}
+			g2d.setColor(transpSel);
 			duroSel = true;
 		} else {
 			g2d.setColor(transpMenus);
@@ -2297,11 +2288,7 @@ public class PainelCircuito {
 		x += (tamDuro + 15);
 		boolean chuvaSel = false;
 		if (pilotoSelecionado != null && Carro.TIPO_PNEU_CHUVA.equals(tpPneu)) {
-			if (pilotoSelecionado.isBox()) {
-				g2d.setColor(OcilaCor.geraOcila("selPneuBox", transpSel));
-			} else {
-				g2d.setColor(transpSel);
-			}
+			g2d.setColor(transpSel);
 			chuvaSel = true;
 		} else {
 			g2d.setColor(transpMenus);
@@ -2330,11 +2317,7 @@ public class PainelCircuito {
 		int y = limitesViewPort.y + altura;
 		boolean mensoSel = false;
 		if (pilotoSelecionado != null && Carro.MENOS_ASA.equals(tpAsa)) {
-			if (pilotoSelecionado.isBox()) {
-				g2d.setColor(OcilaCor.geraOcila("selAsaBox", transpSel));
-			} else {
-				g2d.setColor(transpSel);
-			}
+			g2d.setColor(transpSel);
 			mensoSel = true;
 		} else {
 			g2d.setColor(transpMenus);
@@ -2361,11 +2344,7 @@ public class PainelCircuito {
 
 		boolean norSel = false;
 		if (pilotoSelecionado != null && Carro.ASA_NORMAL.equals(tpAsa)) {
-			if (pilotoSelecionado.isBox()) {
-				g2d.setColor(OcilaCor.geraOcila("selAsaBox", transpSel));
-			} else {
-				g2d.setColor(transpSel);
-			}
+			g2d.setColor(transpSel);
 			norSel = true;
 		} else {
 			g2d.setColor(transpMenus);
@@ -2393,11 +2372,7 @@ public class PainelCircuito {
 		x += (tamNormal + 20);
 		boolean maisSel = false;
 		if (pilotoSelecionado != null && Carro.MAIS_ASA.equals(tpAsa)) {
-			if (pilotoSelecionado.isBox()) {
-				g2d.setColor(OcilaCor.geraOcila("selAsaBox", transpSel));
-			} else {
-				g2d.setColor(transpSel);
-			}
+			g2d.setColor(transpSel);
 			maisSel = true;
 		} else {
 			g2d.setColor(transpMenus);

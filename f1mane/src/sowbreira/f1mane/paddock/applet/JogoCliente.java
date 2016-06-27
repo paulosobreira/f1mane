@@ -619,7 +619,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public Piloto getPilotoSelecionado() {
 		if (pilotoSelecionado != null) {
-			for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
+			for (Iterator iter = getPilotosCopia().iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
 				if (piloto.getId() == pilotoSelecionado.getId()) {
 					return piloto;
@@ -636,7 +636,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		safetyCar.setNoAtual(no);
 		safetyCar.setVaiProBox(safetySair);
 		if (safetySair) {
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			for (Iterator iterator = getPilotosCopia().iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.isDesqualificado()) {
 					piloto.getCarro().setRecolhido(true);

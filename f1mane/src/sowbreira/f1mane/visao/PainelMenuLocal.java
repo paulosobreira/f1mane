@@ -824,7 +824,7 @@ public class PainelMenuLocal {
 
 		desenhaTextosCreditos(g2d, x + 120, y - 40);
 
-		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+		desenhaAnteriroProximo(g2d, x + 350, y + 620);
 
 	}
 
@@ -878,7 +878,7 @@ public class PainelMenuLocal {
 
 		desenhaPilotoSelecionado(g2d, x, y + 400, pilotoDesafio);
 
-		desenhaAnteriroProximo(g2d, x + 150, y + 600);
+		desenhaAnteriroProximo(g2d, x + 150, y + 620);
 
 	}
 
@@ -935,7 +935,7 @@ public class PainelMenuLocal {
 			desenhaClassificacaoEquipesCampeonato(g2d, x + 500, y + 5, true);
 		}
 
-		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+		desenhaAnteriroProximo(g2d, x + 350, y + 620);
 	}
 
 	private void desenhaDetalhesCorridaCampeonato(Graphics2D g2d, int x,
@@ -1404,7 +1404,7 @@ public class PainelMenuLocal {
 
 		desenhaPilotoSelecionado(g2d, x, y + 450, pilotoSelecionado);
 
-		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+		desenhaAnteriroProximo(g2d, x + 350, y + 620);
 	}
 
 	private void desenhaCircuitosSelecionados(Graphics2D g2d, int x, int y) {
@@ -1503,7 +1503,7 @@ public class PainelMenuLocal {
 		x -= 490;
 		y -= 285;
 
-		desenhaAnteriroProximo(g2d, x + 350, y + 600);
+		desenhaAnteriroProximo(g2d, x + 350, y + 620);
 
 		desenhaCircuitoSelecionado(g2d, x + 300, y);
 
@@ -2045,7 +2045,7 @@ public class PainelMenuLocal {
 
 		desenhaPilotoSelecionado(g2d, x, y + 470, pilotoSelecionado);
 
-		desenhaAnteriroProximo(g2d, x + 150, y + 600);
+		desenhaAnteriroProximo(g2d, x + 350, y + 620);
 
 	}
 
