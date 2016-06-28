@@ -539,8 +539,6 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-		controleJogo.setBoxJogadorHumano(painelCircuito.getTpPneu(),
-				painelCircuito.getPorcentCombust(), painelCircuito.getTpAsa());
 		modoBox();
 	}
 
