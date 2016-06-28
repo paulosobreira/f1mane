@@ -619,7 +619,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public Piloto getPilotoSelecionado() {
 		if (pilotoSelecionado != null) {
-			for (Iterator iter = getPilotosCopia().iterator(); iter.hasNext();) {
+			for (Iterator iter = getPilotosCopia().iterator(); iter
+					.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
 				if (piloto.getId() == pilotoSelecionado.getId()) {
 					return piloto;
@@ -636,7 +637,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		safetyCar.setNoAtual(no);
 		safetyCar.setVaiProBox(safetySair);
 		if (safetySair) {
-			for (Iterator iterator = getPilotosCopia().iterator(); iterator.hasNext();) {
+			for (Iterator iterator = getPilotosCopia().iterator(); iterator
+					.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.isDesqualificado()) {
 					piloto.getCarro().setRecolhido(true);
@@ -699,6 +701,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
 			Object combust, Object asa) {
+		monitorJogo.alterarOpcoesBox(tpPneu, combust, asa);
 		return 0;
 	}
 
@@ -1417,6 +1420,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void forcaQuerbraAereofolio() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

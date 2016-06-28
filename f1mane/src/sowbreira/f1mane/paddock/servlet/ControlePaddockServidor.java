@@ -222,7 +222,7 @@ public class ControlePaddockServidor {
 				session.close();
 		}
 
-		return criarSessao(clientPaddockPack,senha);
+		return criarSessao(clientPaddockPack, senha);
 	}
 
 	private void mandaMailSenha(String nome, String email, String senha)
@@ -270,6 +270,8 @@ public class ControlePaddockServidor {
 			return mudarDrs(clientPaddockPack);
 		} else if (Comandos.MUDAR_MODO_BOX.equals(commando)) {
 			return mudarModoBox(clientPaddockPack);
+		} else if (Comandos.ALTERAR_OPCOES_BOX.equals(commando)) {
+			return alterarOpcoesBox(clientPaddockPack);
 		} else if (Comandos.MUDAR_MODO_AUTOPOS.equals(commando)) {
 			return mudarModoAutoPos(clientPaddockPack);
 		} else if (Comandos.ATUALIZAR_VISAO.equals(commando)) {
@@ -312,6 +314,10 @@ public class ControlePaddockServidor {
 			return driveThru(clientPaddockPack);
 		}
 		return "Comando invalido";
+	}
+
+	private Object alterarOpcoesBox(ClientPaddockPack clientPaddockPack) {
+		return controleJogosServer.alterarOpcoesBox(clientPaddockPack);
 	}
 
 	private Object mudarPilotoMinimo(ClientPaddockPack clientPaddockPack) {
@@ -542,8 +548,9 @@ public class ControlePaddockServidor {
 	private Object criarSessao(ClientPaddockPack clientPaddockPack) {
 		return criarSessao(clientPaddockPack, null);
 	}
-	
-	private Object criarSessao(ClientPaddockPack clientPaddockPack, String senha) {
+
+	private Object criarSessao(ClientPaddockPack clientPaddockPack,
+			String senha) {
 		Session session = controlePersistencia.getSession();
 		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 				.carregaDadosJogador(clientPaddockPack.getNomeJogador(),

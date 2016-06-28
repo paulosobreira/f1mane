@@ -49,5 +49,6 @@ public class Comandos {
 	public static final String MUDAR_PILOTO_MINIMO = "44";
 	public static final String MUDAR_PILOTO_NORMAL = "45";
 	public static final String MUDAR_PILOTO_MAXIMO = "46";
+	public static final String ALTERAR_OPCOES_BOX = "48";
 
 }
