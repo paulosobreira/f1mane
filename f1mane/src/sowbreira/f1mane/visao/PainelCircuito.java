@@ -627,8 +627,8 @@ public class PainelCircuito {
 		}
 
 		int porcentCombust = 50;
-		String tpPneu = Carro.ASA_NORMAL;
-		String tpAsa = Carro.TIPO_PNEU_DURO;
+		String tpPneu = Carro.TIPO_PNEU_DURO;
+		String tpAsa = Carro.ASA_NORMAL;
 
 		if (controleJogo.getPilotoJogador() != null) {
 			porcentCombust = controleJogo.getPilotoJogador()
@@ -718,8 +718,8 @@ public class PainelCircuito {
 
 	public void mudarModoBox() {
 		int porcentCombust = 50;
-		String tpPneu = Carro.ASA_NORMAL;
-		String tpAsa = Carro.TIPO_PNEU_DURO;
+		String tpPneu = Carro.TIPO_PNEU_DURO;
+		String tpAsa = Carro.ASA_NORMAL;
 
 		if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
 			controleJogo.mudarModoBox();
@@ -2168,7 +2168,7 @@ public class PainelCircuito {
 			porcentCombust = controleJogo.getPilotoJogador()
 					.getQtdeCombustBox();
 		}
-		
+
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
@@ -2249,8 +2249,8 @@ public class PainelCircuito {
 	private void desenhaControlePneuBox(Graphics2D g2d, int altura) {
 		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 170;
 		int y = limitesViewPort.y + altura;
-		
-		String tpPneu = Carro.ASA_NORMAL;
+
+		String tpPneu = Carro.TIPO_PNEU_DURO;
 
 		if (controleJogo.getPilotoJogador() != null) {
 			tpPneu = controleJogo.getPilotoJogador().getTipoPneuBox();
@@ -2335,13 +2335,13 @@ public class PainelCircuito {
 	private void desenhaControleAsaBox(Graphics2D g2d, int altura) {
 		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 170;
 		int y = limitesViewPort.y + altura;
-		
-		String tpAsa = Carro.TIPO_PNEU_DURO;
+
+		String tpAsa = Carro.ASA_NORMAL;
 
 		if (controleJogo.getPilotoJogador() != null) {
 			tpAsa = controleJogo.getPilotoJogador().getAsaBox();
 		}
-		
+
 		boolean mensoSel = false;
 		if (pilotoSelecionado != null && Carro.MENOS_ASA.equals(tpAsa)) {
 			g2d.setColor(transpSel);

@@ -673,18 +673,17 @@ public class MonitorJogo implements Runnable {
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
+		final ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
+				Comandos.ALTERAR_OPCOES_BOX, sessaoCliente);
+		clientPaddockPack
+				.setNomeJogo(jogoCliente.getNomeJogoCriado());
+		clientPaddockPack.setTpPneuBox((String) tpPneu);
+		clientPaddockPack.setCombustBox((Integer) combust);
+		clientPaddockPack.setAsaBox((String) asa);
 		Runnable runnable = new Runnable() {
-
 			@Override
 			public void run() {
 				try {
-					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.ALTERAR_OPCOES_BOX, sessaoCliente);
-					clientPaddockPack
-							.setNomeJogo(jogoCliente.getNomeJogoCriado());
-					clientPaddockPack.setTpPneuBox((String) tpPneu);
-					clientPaddockPack.setCombustBox((Integer) combust);
-					clientPaddockPack.setAsaBox((String) asa);
 					Object ret = controlePaddockCliente
 							.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {
@@ -695,7 +694,6 @@ public class MonitorJogo implements Runnable {
 		};
 		threadCmd = new Thread(runnable);
 		threadCmd.start();
-
 	}
 
 	public void mudarModoPilotagem(final String modo) {
