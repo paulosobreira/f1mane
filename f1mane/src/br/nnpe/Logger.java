@@ -26,8 +26,8 @@ public class Logger {
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuffer retorno = new StringBuffer();
 			int size = ((trace.length > 15) ? 15 : trace.length);
-			retorno.append(e.getClass() + " - " + e.getLocalizedMessage()
-					+ "<br>");
+			retorno.append(
+					e.getClass() + " - " + e.getLocalizedMessage() + "<br>");
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "<br>");
 			String val = retorno.toString();
@@ -74,6 +74,8 @@ public class Logger {
 			novaSession = true;
 		} else if (e instanceof Exception) {
 			topExecpts((Exception) e);
+		} else {
+			e.printStackTrace();
 		}
 	}
 }

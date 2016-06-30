@@ -300,6 +300,7 @@ public class PainelCircuito {
 	private java.awt.geom.Rectangle2D.Double rectangleGerarGrid;
 	private java.awt.geom.Rectangle2D.Double rectangleSafetyCarCima;
 	private java.awt.geom.Rectangle2D.Double rectangleGerarBoxes;
+	public static boolean efeitosLigados = true;
 
 	public PainelCircuito(InterfaceJogo jogo,
 			GerenciadorVisual gerenciadorVisual) {
@@ -5827,7 +5828,7 @@ public class PainelCircuito {
 	}
 
 	private void setarHints(Graphics2D g2d) {
-		if (gerenciadorVisual.getFps() >= 20) {
+		if (efeitosLigados) {
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
@@ -6234,6 +6235,10 @@ public class PainelCircuito {
 
 	public void setPilotosList(List<Piloto> pilotosList) {
 		this.pilotosList = pilotosList;
+	}
+	
+	public static void ligaDesligaEfeitos() {
+		efeitosLigados = !efeitosLigados;
 	}
 
 }

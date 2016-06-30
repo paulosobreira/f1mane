@@ -1,6 +1,8 @@
 package sowbreira.f1mane.visao;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -10,12 +12,12 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 public class ControleSom {
 
@@ -189,9 +191,10 @@ public class ControleSom {
 	private static void iniciaVars() throws UnsupportedAudioFileException,
 			IOException, LineUnavailableException {
 		if (clipBox == null) {
+			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
+					.recursoComoStream("box.wav"));
 			AudioInputStream box = AudioSystem
-					.getAudioInputStream(CarregadorRecursos
-							.recursoComoStream("box.wav"));
+					.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class, box.getFormat());
 			clipBox = (Clip) AudioSystem.getLine(info);
 			clipBox.open(box);
@@ -202,9 +205,10 @@ public class ControleSom {
 		}
 
 		if (clipVeloMaxFinal == null) {
+			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
+					.recursoComoStream("highMax.wav"));
 			AudioInputStream veloMaxFinal = AudioSystem
-					.getAudioInputStream(CarregadorRecursos
-							.recursoComoStream("highMax.wav"));
+					.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class,
 					veloMaxFinal.getFormat());
 			clipVeloMaxFinal = (Clip) AudioSystem.getLine(info);
@@ -215,9 +219,10 @@ public class ControleSom {
 
 		}
 		if (clipVeloMax == null) {
+			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
+					.recursoComoStream("high.wav"));
 			AudioInputStream veloMax = AudioSystem
-					.getAudioInputStream(CarregadorRecursos
-							.recursoComoStream("high.wav"));
+					.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class,
 					veloMax.getFormat());
 			clipVeloMax = (Clip) AudioSystem.getLine(info);
@@ -228,9 +233,10 @@ public class ControleSom {
 
 		}
 		if (clipVeloMed == null) {
+			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
+					.recursoComoStream("med.wav"));
 			AudioInputStream veloMed = AudioSystem
-					.getAudioInputStream(CarregadorRecursos
-							.recursoComoStream("med.wav"));
+					.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class,
 					veloMed.getFormat());
 			clipVeloMed = (Clip) AudioSystem.getLine(info);
@@ -240,9 +246,10 @@ public class ControleSom {
 			gainControl.setValue(volume);
 		}
 		if (clipLargada == null) {
+			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
+					.recursoComoStream("largada.wav"));
 			AudioInputStream veloBaixa = AudioSystem
-					.getAudioInputStream(CarregadorRecursos
-							.recursoComoStream("largada.wav"));
+					.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class,
 					veloBaixa.getFormat());
 			clipLargada = (Clip) AudioSystem.getLine(info);
@@ -252,9 +259,10 @@ public class ControleSom {
 			gainControl.setValue(volume);
 		}
 		if (roncoClip == null) {
+			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
+					.recursoComoStream("ronco.wav"));
 			AudioInputStream ronco = AudioSystem
-					.getAudioInputStream(CarregadorRecursos
-							.recursoComoStream("ronco.wav"));
+					.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class,
 					ronco.getFormat());
 			roncoClip = (Clip) AudioSystem.getLine(info);
@@ -264,9 +272,10 @@ public class ControleSom {
 			gainControl.setValue(volume);
 		}
 		if (clipRedo == null) {
+			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
+					.recursoComoStream("redo.wav"));
 			AudioInputStream redo = AudioSystem
-					.getAudioInputStream(CarregadorRecursos
-							.recursoComoStream("redo.wav"));
+					.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class, redo.getFormat());
 			clipRedo = (Clip) AudioSystem.getLine(info);
 			clipRedo.open(redo);
@@ -275,9 +284,10 @@ public class ControleSom {
 			gainControl.setValue(-10f);
 		}
 		if (clipAcel == null) {
+			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
+					.recursoComoStream("acel.wav"));
 			AudioInputStream acel = AudioSystem
-					.getAudioInputStream(CarregadorRecursos
-							.recursoComoStream("acel.wav"));
+					.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class, acel.getFormat());
 			clipAcel = (Clip) AudioSystem.getLine(info);
 			clipAcel.open(acel);

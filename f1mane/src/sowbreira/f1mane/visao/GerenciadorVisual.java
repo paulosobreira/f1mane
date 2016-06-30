@@ -55,7 +55,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
-import sowbreira.f1mane.controles.ControleEstatisticas;
+import br.nnpe.Constantes;
+import br.nnpe.Html;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -63,16 +66,11 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.NoWrapper;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Constantes;
-import br.nnpe.Html;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 public class GerenciadorVisual {
 	private JPanel painelNarracaoText;
@@ -527,6 +525,11 @@ public class GerenciadorVisual {
 		ControleSom.ligaDesligaSom();
 	}
 
+	protected void ligaDesligaEfeitos() {
+		PainelCircuito.ligaDesligaEfeitos();
+	}
+
+	
 	protected void mudaPilotoSelecionado() {
 		if (controleJogo == null) {
 			return;

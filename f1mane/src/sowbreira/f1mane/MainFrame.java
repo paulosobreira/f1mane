@@ -40,6 +40,7 @@ import sowbreira.f1mane.paddock.applet.AppletPaddock;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.ControleSom;
+import sowbreira.f1mane.visao.PainelCircuito;
 import sowbreira.f1mane.visao.PainelMenuLocal;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Logger;
@@ -59,6 +60,7 @@ public class MainFrame extends JFrame {
 	private JMenu menuIdiomas;
 	private JMenu menuInfo;
 	private JCheckBoxMenuItem som;
+	private JCheckBoxMenuItem efeitos;
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
 	private JMenuItem narracao;
@@ -336,6 +338,26 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu1.add(som);
+		
+		efeitos = new JCheckBoxMenuItem("efeitos") {
+			public String getText() {
+				return Lang.msg("efeitos");
+			}
+
+		};
+		
+		efeitos.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (efeitos.isSelected()) {
+					PainelCircuito.efeitosLigados = false;
+				} else {
+					PainelCircuito.efeitosLigados = true;
+				}
+			}
+		});
+		menu1.add(efeitos);
 
 		verControles = new JMenuItem("verControles") {
 			public String getText() {
@@ -489,7 +511,6 @@ public class MainFrame extends JFrame {
 			return;
 		}
 		menuFrame.setVisible(!menuFrame.isVisible());
-		Logger.ativo = menuFrame.isVisible();
 		if (menuFrame.isVisible()) {
 			menuFrame.setLocation(MainFrame.this.getWidth(), 0);
 			posicionaJanelaDebug();
