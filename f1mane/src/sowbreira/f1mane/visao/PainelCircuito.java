@@ -739,6 +739,7 @@ public class PainelCircuito {
 				backGround = CarregadorRecursos.carregaBackGround(
 						circuito.getBackGround(), null, circuito);
 		} catch (Exception e) {
+			Logger.logarExept(e);
 			backGround = null;
 		}
 		if (backGround == null) {

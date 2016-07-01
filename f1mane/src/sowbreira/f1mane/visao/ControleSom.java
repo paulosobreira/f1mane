@@ -320,8 +320,8 @@ public class ControleSom {
 			iniciaVars();
 			somVelocidade(pilotoSelecionado, controleJogo, painelCircuito);
 		} catch (Exception e) {
-			paraTudo();
 			Logger.logarExept(e);
+			paraTudo();
 		}
 	}
 
