@@ -64,8 +64,9 @@ public class FormEntrada extends JPanel {
 		JTabbedPane jTabbedPane = new JTabbedPane();
 		JPanel panelAbaEntrar = new JPanel(new BorderLayout(15, 15));
 		JPanel panelabaEntrarCenter = new JPanel(new BorderLayout());
-		panelabaEntrarCenter.add(gerarLogin(), BorderLayout.CENTER);
-		panelabaEntrarCenter.add(gerarLembrar(), BorderLayout.SOUTH);
+		panelabaEntrarCenter.add(gerarLogin(), BorderLayout.NORTH);
+		panelabaEntrarCenter.add(gerarLembrar(), BorderLayout.CENTER);
+		panelabaEntrarCenter.add(gerarIdiomas(), BorderLayout.SOUTH);
 		panelAbaEntrar.add(panelabaEntrarCenter, BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("171"), panelAbaEntrar);
 		JPanel panelAbaRegistrar = new JPanel(new BorderLayout());
@@ -168,25 +169,6 @@ public class FormEntrada extends JPanel {
 	}
 
 	private JPanel gerarRecuperar() {
-		// JPanel recuperarPanel = new JPanel(new GridLayout(5, 2));
-		// recuperarPanel.setBorder(new TitledBorder("Recuperar Senha") {
-		// public String getTitle() {
-		// return Lang.msg("235");
-		// }
-		// });
-		// recuperarPanel.add(new JLabel("Entre com seu Nome") {
-		// public String getText() {
-		// return Lang.msg("167");
-		// }
-		// });
-		// recuperarPanel.add(nomeRecuperar);
-		// recuperarPanel.add(new JLabel("Entre com seu e-mail") {
-		// public String getText() {
-		// return Lang.msg("168");
-		// }
-		// });
-		// recuperarPanel.add(emailRecuperar);
-
 		JPanel newPanel = new JPanel(new GridLayout(3, 1));
 		newPanel.add(new JLabel("mensagemRecuperarSenha1") {
 			public String getText() {
