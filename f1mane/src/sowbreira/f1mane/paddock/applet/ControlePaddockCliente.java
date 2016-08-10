@@ -717,6 +717,9 @@ public class ControlePaddockCliente {
 	}
 
 	private void lembrarSenha(String nome, String senha) {
+		if(Util.isNullOrEmpty(nome) || Util.isNullOrEmpty(senha)){
+			return;
+		}
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
