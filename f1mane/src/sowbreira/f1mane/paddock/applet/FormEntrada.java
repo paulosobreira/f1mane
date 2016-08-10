@@ -66,7 +66,6 @@ public class FormEntrada extends JPanel {
 		JPanel panelabaEntrarCenter = new JPanel(new BorderLayout());
 		panelabaEntrarCenter.add(gerarLogin(), BorderLayout.NORTH);
 		panelabaEntrarCenter.add(gerarLembrar(), BorderLayout.CENTER);
-		panelabaEntrarCenter.add(gerarIdiomas(), BorderLayout.SOUTH);
 		panelAbaEntrar.add(panelabaEntrarCenter, BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("171"), panelAbaEntrar);
 		JPanel panelAbaRegistrar = new JPanel(new BorderLayout());
@@ -76,6 +75,7 @@ public class FormEntrada extends JPanel {
 		panelAbaRecuperar.add(gerarRecuperar(), BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("recuperar"), panelAbaRecuperar);
 		add(jTabbedPane, BorderLayout.CENTER);
+		add(gerarIdiomas(), BorderLayout.SOUTH);
 		jTabbedPane.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -123,6 +123,7 @@ public class FormEntrada extends JPanel {
 					comboIdiomas.addItem(Lang.msg("en"));
 				}
 				FormEntrada.this.repaint();
+				comboIdiomas.setSelectedItem(Lang.msg(i));
 			}
 		});
 		JPanel langPanel = new JPanel(new BorderLayout());
