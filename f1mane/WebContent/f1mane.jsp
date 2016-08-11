@@ -7,8 +7,7 @@
 <html>
 <head>
 <title>F1-Mane</title>
-<META NAME="description"
-	CONTENT="Formula 1,FIA,F1,Esportes,Sport,Jogo,Game,Manager,Gerenciamento">
+<META NAME="description" CONTENT="Esportes,Sport,Jogo,Game,Manager,Gerenciamento">
 
 <style type="text/css">
 div {
@@ -36,6 +35,7 @@ A:hover {text-decoration: underline overline; color: black;}
 	font-family: sans-serif;
 	color: #0084B4;
 	text-decoration: none;
+	margin: 3px;
 }
 
 #pop{
@@ -69,7 +69,7 @@ img {
 	font-size: 24px;
 	font-weight: bold;
 	line-height: 24px;
-	height: 100px;
+	margin-bottom: 15px;
 }
 
 #main{
@@ -98,7 +98,6 @@ img {
 	border-width: 1px;
 	border-color: #B8CFE5;
 	text-align: center;
-	padding: 15px;
 }
 
 #description {
@@ -155,25 +154,81 @@ img {
 	<td>
 	<div id="main">
 		<div id="title">	
-			<span >F1-Mane
-				<h1 id="description">MANager & Engineer</h1>
+			<span >F1-Mane <br>
+				<span id="description">MANager & Engineer</span>
 			</span>
-			<a id="link" style="position: absolute; left: 160px; top: 10px;font-size: 16px;"
-				href="https://b4116f288ced0da9ffafef28a149df8144e98bd7.googledrive.com/host/0B1bELj5XAV79flRUMkFyMFNFanl0Tlc4bHU5YzJQU0JYelN3VmpqYkxGUklOTjFYX1BlYzg/sowbragames/sowbra.html" style="text-align: right;"
-				target="_BLANK">Games</a>
-			<a id="link" style="position: absolute; left: 260px; top: 10px;font-size: 16px;"
-				href="http://sowbreira.appspot.com/" style="text-align: right;"
-				target="_BLANK">Sowbreira</a>
-			<a id="link" style="position: absolute; left: 380px; top: 10px;font-size: 16px;"
-				href="f1mane_en.jsp">English</a>
-			<a id="link" style="position: absolute; left: 160px; top: 50px;font-size: 16px;"
-				style="text-align: right;" onclick="document.getElementById('pop').style.display='block';">
-				Como Jogar</a>				
-			<a id="link" style="position: absolute; left: 300px; top: 50px;font-size: 16px;"
-				href="http://www.java.com/" style="text-align: right;"
-				target="_BLANK">Instale o Java</a>
-			<br>			
+			<a id="link" href="http://sowbreira.appspot.com/" target="_BLANK">
+				Sowbreira
+			</a>
+			<a id="link" 	href="f1mane_en.jsp">
+				English
+			</a>
+			<a id="link" style="text-align: right;" onclick="document.getElementById('pop').style.display='block';">
+				Como Jogar
+			</a>				
+			<a id="link" href="http://www.java.com/" target="_BLANK">
+				Java
+			</a>
 		</div>
+		<div id="shots" class="highslide-gallery">
+			<a href="fm1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm1.jpg" width="130" height="120" /></a>
+			<a href="fm2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm2.jpg" width="130" height="120" /></a>
+			<a href="fm3.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm3.jpg" width="130" height="120" /></a>
+			<a href="fm4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm4.jpg" width="130" height="120" /></a><br>
+			<a href="fm5.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm5.jpg" width="130" height="120" /></a>
+			<a href="fm6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm6.jpg" width="130" height="120" /></a>
+			<a href="fm7.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm7.jpg" width="130" height="120" /></a>
+			<a href="fm8.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm8.jpg" width="130" height="120" /></a><br>
+		</div>
+		<div style="text-align: center;">
+			<div style="text-align: center;	">
+				<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
+					Jogar Online
+					<img src="webstart.png" border="0">
+				</a>	
+			&nbsp;&nbsp;&nbsp;&nbsp;
+				<a id="link" href="https://b4116f288ced0da9ffafef28a149df8144e98bd7.googledrive.com/host/0B1bELj5XAV79flRUMkFyMFNFanl0Tlc4bHU5YzJQU0JYelN3VmpqYkxGUklOTjFYX1BlYzg/f1mane/f1mane.html" style="text-align: left;">
+					Jogar Offline
+					<img src="webstart.png" border="0">
+				</a>				
+			<div>	
+		</div>
+		<br>
+		<div id="shotsPromo" class="highslide-gallery">
+			<table style="text-align: center;padding: 10px">
+			<tr>
+			<td colspan="2">Veja Tambem</td>
+			</tr>
+			<tr>
+			<td  style="text-align: center;padding: 10px">
+				<a id="link" href="../../mesa11" style="text-align: center;" target="_BLANK">
+					Mesa-11
+				</a><br>
+				<a href="./../mesa11/m11-1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> 
+					<img  src="./../mesa11/m11-1.jpg" width="130" height="120" />
+				</a>
+				<a href="./../mesa11/m11-2.jpg" style="padding: 5px" onclick="return hs.expand(this)"> 
+					<img  src="./../mesa11/m11-2.jpg" width="130" height="120" />
+				</a>
+			</td>
+			<td  style="text-align: center;padding: 10px">				
+				<a id="link" href="../../topwar" style="text-align: center;" target="_BLANK">
+					Top-War
+				</a><br>
+				<a href="../../topwar/tw1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> 
+					<img  src="../../topwar/tw1.jpg" width="130" height="120" />
+				</a>
+				<a href="../../topwar/tw2.jpg" style="padding: 5px" onclick="return hs.expand(this)"> 
+					<img  src="../../topwar/tw2.jpg" width="130" height="120" />
+				</a>
+			</td></tr>
+			</table>
+		</div>		
+	</div>
+	</td>
+	</tr>
+</table>
+</center>
 		<div id="pop" style="background-color: white;">
 	    	F1 Mane Jogo de estrategia de corrida de F1
 	    	<a href="#" style="position:absolute; left:92%" onclick="document.getElementById('pop').style.display='none';">[X]</a>
@@ -202,62 +257,6 @@ img {
 			   <LI >Pode-se ver ranking de pilotos, equipes e jogadores</LI>			   
 			   <LI >Varios circuitos e pilotos disponiveis para jogar </LI>
 			</UL>				
-		</div>		
-		
-
-		<div id="shots" class="highslide-gallery">
-			<a href="fm1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm1.jpg" width="130" height="120" /></a>
-			<a href="fm2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm2.jpg" width="130" height="120" /></a>
-			<a href="fm3.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm3.jpg" width="130" height="120" /></a>
-			<a href="fm4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm4.jpg" width="130" height="120" /></a><br>
-			<a href="fm5.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm5.jpg" width="130" height="120" /></a>
-			<a href="fm6.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm6.jpg" width="130" height="120" /></a>
-			<a href="fm7.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm7.jpg" width="130" height="120" /></a>
-			<a href="fm8.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="fm8.jpg" width="130" height="120" /></a><br>
 		</div>
-		<br>
-		<div style="text-align: center;">
-			<div style="text-align: center;	">
-				<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
-					Jogar Online
-					<img src="webstart.png" border="0">
-				</a>	
-			&nbsp;&nbsp;&nbsp;&nbsp;
-				<a id="link" href="https://b4116f288ced0da9ffafef28a149df8144e98bd7.googledrive.com/host/0B1bELj5XAV79flRUMkFyMFNFanl0Tlc4bHU5YzJQU0JYelN3VmpqYkxGUklOTjFYX1BlYzg/f1mane/f1mane.html" style="text-align: left;">
-					Jogar Offline
-					<img src="webstart.png" border="0">
-				</a>				
-			<div>	
-		</div>
-		<br>
-		<!-- 
-		<div id="shotsPromo" class="highslide-gallery">
-			<table style="text-align: center;padding: 5px">
-			<tr>
-			<td colspan="2">Veja Tambem</td>
-			</tr>
-			<tr>
-			<td  style="text-align: center;padding: 10px">
-				<a id="link" 
-					href="../../mesa11" style="text-align: center;"
-					target="_BLANK">  Mesa-11 </a><br><br>
-				<a href="./../mesa11/m11-1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="./../mesa11/m11-1.jpg" width="130" height="120" /></a>
-				<a href="./../mesa11/m11-2.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="./../mesa11/m11-2.jpg" width="130" height="120" /></a>
-			</td>
-			<td  style="text-align: center;padding: 10px">				
-				<a id="link" 
-					href="../../topwar" style="text-align: center;"
-					target="_BLANK">  Top-War </a><br><br>
-				<a href="../../topwar/tw1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="../../topwar/tw1.jpg" width="130" height="120" /></a>
-				<a href="../../topwar/tw2.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="../../topwar/tw2.jpg" width="130" height="120" /></a>
-			</td></tr>
-			</table>
-		</div>		
-		 -->
-	</div>
-	</td>
-	</tr>
-</table>
-</center>
 </body>
 </html>
