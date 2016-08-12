@@ -718,16 +718,7 @@ public class PainelCircuito {
 	}
 
 	public void mudarModoBox() {
-		int porcentCombust = 50;
-		String tpPneu = Carro.TIPO_PNEU_DURO;
-		String tpAsa = Carro.ASA_NORMAL;
-
-		if (pilotoSelecionado != null && pilotoSelecionado.isBox()) {
-			controleJogo.mudarModoBox();
-		} else {
-			controleJogo.setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
-			controleJogo.mudarModoBox();
-		}
+		controleJogo.mudarModoBox();
 	}
 
 	public void carregaBackGround() {
@@ -6237,7 +6228,7 @@ public class PainelCircuito {
 	public void setPilotosList(List<Piloto> pilotosList) {
 		this.pilotosList = pilotosList;
 	}
-	
+
 	public static void ligaDesligaEfeitos() {
 		efeitosLigados = !efeitosLigados;
 	}

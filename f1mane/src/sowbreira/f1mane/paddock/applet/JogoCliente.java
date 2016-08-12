@@ -57,7 +57,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private ControleEstatisticas controleEstatisticas;
 	private SafetyCar safetyCar = new SafetyCar();
 	private boolean safetyCarBol;
-	private boolean modoBox;
 	private String nomeJogador;
 	private Piloto pilotoSelecionado;
 	private DadosJogo dadosJogo;
@@ -425,11 +424,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public boolean mudarModoBox() {
-		if (modoBox) {
-			modoBox = !modoBox;
-		}
-		monitorJogo.mudarModoBox(modoBox);
-		return modoBox;
+		monitorJogo.mudarModoBox();
+		return monitorJogo.getModoBox();
 	}
 
 	public Carro obterCarroAtras(Piloto piloto) {
@@ -509,6 +505,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		dadosParticiparJogo.setCombustivel((Integer) combust);
 		dadosParticiparJogo.setTpPnueu((String) tpneu);
 		dadosParticiparJogo.setAsa((String) asa);
+		if (monitorJogo != null) {
+			monitorJogo.alterarOpcoesBox(tpneu, combust, asa);
+		}else{
+			Logger.logar("monitorJogo null");
+		}
 	}
 
 	public void setCorridaTerminada(boolean corridaTerminada) {

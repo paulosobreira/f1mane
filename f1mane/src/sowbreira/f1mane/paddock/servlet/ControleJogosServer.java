@@ -426,6 +426,9 @@ public class ControleJogosServer {
 				.setCombustivel(new Integer(clientPaddockPack.getCombustBox()));
 		dadosParticiparJogo.setTpPnueu(clientPaddockPack.getTpPneuBox());
 		dadosParticiparJogo.setAsa(clientPaddockPack.getAsaBox());
+		if (piloto.isBox()) {
+			return "BOX";
+		}
 		return null;
 	}
 
@@ -808,6 +811,7 @@ public class ControleJogosServer {
 		}
 		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
+			Logger.logar("Piloto null");
 			return null;
 		}
 		if (piloto.getPtosBox() != 0) {

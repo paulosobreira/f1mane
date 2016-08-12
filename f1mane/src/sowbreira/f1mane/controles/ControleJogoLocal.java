@@ -419,10 +419,12 @@ public class ControleJogoLocal extends ControleRecursos
 			return false;
 		}
 		if (pilotoJogador != null) {
+			int porcentCombust = 50;
+			String tpPneu = Carro.TIPO_PNEU_DURO;
+			String tpAsa = Carro.ASA_NORMAL;
+			setBoxJogadorHumano(tpPneu, porcentCombust, tpAsa);
 			pilotoJogador.setBox(!pilotoJogador.isBox());
-
 			return pilotoJogador.isBox();
-
 		}
 		return false;
 	}

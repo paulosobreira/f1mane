@@ -43,6 +43,7 @@ public class MonitorJogo implements Runnable {
 	private boolean atualizouDados;
 	private boolean setZoom;
 	private boolean apagouLuz;
+	protected boolean modoBox;
 
 	public boolean isJogoAtivo() {
 		return jogoAtivo;
@@ -637,7 +638,7 @@ public class MonitorJogo implements Runnable {
 
 	}
 
-	public void mudarModoBox(boolean modoBox) {
+	public void mudarModoBox() {
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -650,14 +651,15 @@ public class MonitorJogo implements Runnable {
 							Comandos.MUDAR_MODO_BOX, sessaoCliente);
 					clientPaddockPack
 							.setNomeJogo(jogoCliente.getNomeJogoCriado());
-					clientPaddockPack.setTpPneuBox(
-							jogoCliente.getDadosCriarJogo().getTpPnueu());
-					clientPaddockPack.setCombustBox(jogoCliente
-							.getDadosCriarJogo().getCombustivel().intValue());
-					clientPaddockPack.setAsaBox(
-							jogoCliente.getDadosCriarJogo().getAsa());
+					int porcentCombust = 50;
+					String tpPneu = Carro.TIPO_PNEU_DURO;
+					String tpAsa = Carro.ASA_NORMAL;
+					clientPaddockPack.setTpPneuBox(tpPneu);
+					clientPaddockPack.setCombustBox(porcentCombust);
+					clientPaddockPack.setAsaBox(tpAsa);
 					Object ret = controlePaddockCliente
 							.enviarObjeto(clientPaddockPack, true);
+					modoBox = ret != null;
 				} catch (Exception e) {
 					Logger.logarExept(e);
 				}
@@ -675,8 +677,7 @@ public class MonitorJogo implements Runnable {
 		}
 		final ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.ALTERAR_OPCOES_BOX, sessaoCliente);
-		clientPaddockPack
-				.setNomeJogo(jogoCliente.getNomeJogoCriado());
+		clientPaddockPack.setNomeJogo(jogoCliente.getNomeJogoCriado());
 		clientPaddockPack.setTpPneuBox((String) tpPneu);
 		clientPaddockPack.setCombustBox((Integer) combust);
 		clientPaddockPack.setAsaBox((String) asa);
@@ -956,5 +957,9 @@ public class MonitorJogo implements Runnable {
 		};
 		threadCmd = new Thread(runnable);
 		threadCmd.start();
+	}
+
+	public boolean getModoBox() {
+		return modoBox;
 	}
 }
