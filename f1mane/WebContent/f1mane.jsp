@@ -36,6 +36,7 @@ A:hover {text-decoration: underline overline; color: black;}
 	color: #0084B4;
 	text-decoration: none;
 	margin: 3px;
+	font-size: 16px;
 }
 
 #pop{
@@ -195,12 +196,9 @@ img {
 		</div>
 		<br>
 		<div id="shotsPromo" class="highslide-gallery">
-			<table style="text-align: center;padding: 10px">
+			<table style="text-align: center;padding-left: 35px">
 			<tr>
-			<td colspan="2">Veja Tambem</td>
-			</tr>
-			<tr>
-			<td  style="text-align: center;padding: 10px">
+			<td  style="text-align: center;padding-top: 10px;">
 				<a id="link" href="../../mesa11" style="text-align: center;" target="_BLANK">
 					Mesa-11
 				</a><br>
@@ -211,7 +209,7 @@ img {
 					<img  src="./../mesa11/m11-2.jpg" width="130" height="120" />
 				</a>
 			</td>
-			<td  style="text-align: center;padding: 10px">				
+			<td  style="text-align: center;padding-top: 10px;">				
 				<a id="link" href="../../topwar" style="text-align: center;" target="_BLANK">
 					Top-War
 				</a><br>
