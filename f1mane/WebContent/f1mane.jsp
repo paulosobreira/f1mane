@@ -43,7 +43,7 @@ A:hover {text-decoration: underline overline; color: black;}
      display:none;
      position:absolute;
 	 top:28%;
-	 left:30%;
+	 left:35%;
 	 margin-left:-150px;
 	 margin-top:-100px;
 	 padding-left: 20px;
@@ -184,12 +184,12 @@ img {
 		<div style="text-align: center;">
 			<div style="text-align: center;	">
 				<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
-					Jogar Online
+					Online
 					<img src="webstart.png" border="0">
 				</a>	
 			&nbsp;&nbsp;&nbsp;&nbsp;
 				<a id="link" href="https://b4116f288ced0da9ffafef28a149df8144e98bd7.googledrive.com/host/0B1bELj5XAV79flRUMkFyMFNFanl0Tlc4bHU5YzJQU0JYelN3VmpqYkxGUklOTjFYX1BlYzg/f1mane/f1mane.html" style="text-align: left;">
-					Jogar Offline
+					Single
 					<img src="webstart.png" border="0">
 				</a>				
 			<div>	
