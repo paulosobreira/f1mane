@@ -274,8 +274,6 @@ public class PainelMenuLocal {
 	private int yCreditos;
 	private int contMostraFPS;
 	private int fps = 0;
-	protected double fpsLimite = 60D;
-
 	private int qtdeEtapasCampeonato;
 
 	private int etapaAtual;
@@ -346,7 +344,7 @@ public class PainelMenuLocal {
 				int frames = 0;
 				long startTime = System.currentTimeMillis();
 				long lastTime = System.nanoTime();
-				double nsPerTick = 1000000000D / 60D;
+				double nsPerTick = 1000000000D / 30D;
 				double delta = 0;
 				while (renderThreadAlive) {
 					long now = System.nanoTime();
