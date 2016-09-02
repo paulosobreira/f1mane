@@ -18,18 +18,18 @@ public class PosisPack implements Serializable {
 		StringBuffer stringBuffer = new StringBuffer();
 		for (int i = 0; i < posis.length; i++) {
 			stringBuffer.append(posis[i].encode());
-			stringBuffer.append("�");
+			stringBuffer.append("§");
 		}
 		String lessLastPipe = stringBuffer.toString().substring(0,
 				stringBuffer.toString().length() - 1);
-		return safetyNoId + "@" + (safetySair ? "S" : "N") + "@" + lessLastPipe;
+		return safetyNoId + "£" + (safetySair ? "S" : "N") + "£" + lessLastPipe;
 	}
 
 	public void decode(String val) {
-		String[] sp = val.split("@");
+		String[] sp = val.split("£");
 		safetyNoId = parseInt(sp[0]);
 		safetySair = "S".equals(sp[1]);
-		String[] posisEnc = sp[2].split("�");
+		String[] posisEnc = sp[2].split("§");
 		posis = new Posis[posisEnc.length];
 		for (int i = 0; i < posisEnc.length; i++) {
 			posis[i] = new Posis();

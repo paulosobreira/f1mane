@@ -88,8 +88,8 @@ public class ControlePaddockServidor {
 						|| "Ia".equals(clientPaddockPack.getNomeJogador())
 						|| "ia".equals(clientPaddockPack.getNomeJogador())
 						|| "iA".equals(clientPaddockPack.getNomeJogador())
-						|| clientPaddockPack.getNomeJogador().contains("@")
-						|| clientPaddockPack.getNomeJogador().contains("§")) {
+						|| clientPaddockPack.getNomeJogador().contains("Â£")
+						|| clientPaddockPack.getNomeJogador().contains("Â§")) {
 					return new MsgSrv(Lang.msg("242"));
 				}
 
@@ -155,11 +155,6 @@ public class ControlePaddockServidor {
 				controlePersistencia.gravarDados(session, jogadorDadosSrv);
 			} catch (Exception e) {
 				Logger.logarExept(e);
-				if (ServletPaddock.email != null) {
-					Logger.logarExept(new Exception(Lang.msg("237")));
-					System.out.println("Senha Gerada para "
-							+ jogadorDadosSrv.getNome() + ":" + senha);
-				}
 			}
 		} finally {
 			if (session.isOpen()) {
@@ -201,8 +196,6 @@ public class ControlePaddockServidor {
 							clientPaddockPack.getEmailJogador(), senha);
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
-					if (ServletPaddock.email != null)
-						Logger.logarExept(new Exception(Lang.msg("237")));
 				}
 				try {
 					jogadorDadosSrv.setSenha(Util.md5(senha));
@@ -228,9 +221,6 @@ public class ControlePaddockServidor {
 	private void mandaMailSenha(String nome, String email, String senha)
 			throws AddressException, MessagingException {
 		Logger.logar("Senha :" + senha);
-		ServletPaddock.email.sendSimpleMail("F1-Mane Game Password",
-				new String[]{email},
-				"Your game user:password is " + nome + ":" + senha, false);
 	}
 
 	private Object obterDadosParciaisPilotos(String[] args) {
@@ -555,7 +545,11 @@ public class ControlePaddockServidor {
 		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 				.carregaDadosJogador(clientPaddockPack.getNomeJogador(),
 						session);
-
+		if (jogadorDadosSrv == null) {
+			jogadorDadosSrv = controlePersistencia
+					.carregaDadosJogadorEmail(clientPaddockPack.getNomeJogador(),
+							session);
+		}
 		if (jogadorDadosSrv == null) {
 			return new MsgSrv(Lang.msg("238"));
 		} else if (jogadorDadosSrv.getSenha() == null || !jogadorDadosSrv
@@ -575,14 +569,14 @@ public class ControlePaddockServidor {
 				.hasNext();) {
 			SessaoCliente element = (SessaoCliente) iter.next();
 			if (element.getNomeJogador()
-					.equals(clientPaddockPack.getNomeJogador())) {
+					.equals(jogadorDadosSrv.getNome())) {
 				sessaoCliente = element;
 				break;
 			}
 		}
 		if (sessaoCliente == null) {
 			sessaoCliente = new SessaoCliente();
-			sessaoCliente.setNomeJogador(clientPaddockPack.getNomeJogador());
+			sessaoCliente.setNomeJogador(jogadorDadosSrv.getNome());
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 			dadosPaddock.getClientes().add(sessaoCliente);
 		}
@@ -598,7 +592,7 @@ public class ControlePaddockServidor {
 		// String test = "#brual#llllp#";
 		// Logger.logar(test.replaceAll("#", ""));
 
-		// System.out.println(Lang.decodeTexto("¢088¢ 0 2011"));
+		// System.out.println(Lang.decodeTexto("ï¿½088ï¿½ 0 2011"));
 		String chave = String.valueOf(System.currentTimeMillis());
 	}
 

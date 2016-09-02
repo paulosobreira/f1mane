@@ -26,7 +26,6 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
-import br.nnpe.Email;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -41,23 +40,12 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class ServletPaddock extends HttpServlet {
 
-	private static ControlePaddockServidor controlePaddock;
-	protected static ControlePersistencia controlePersistencia;
+	private ControlePaddockServidor controlePaddock;
+	private ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
-	private String webDir;
-
-	public static Email email;
 
 	public void init() throws ServletException {
 		super.init();
-		webDir = getServletContext().getRealPath("") + File.separator;
-		try {
-			email = new Email(getServletContext().getRealPath("")
-					+ File.separator + "WEB-INF" + File.separator);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-			email = null;
-		}
 		Lang.setSrvgame(true);
 		try {
 			controlePersistencia = new ControlePersistencia(getServletContext()
@@ -105,23 +93,6 @@ public class ServletPaddock extends HttpServlet {
 	public void doPost(HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
 		doGet(arg0, arg1);
-	}
-
-	private void adMail(String assunto, String texto, String passe,
-			HttpServletResponse res) {
-		try {
-			email.sendSimpleMail(assunto,
-					new String[] { "sowbreira@gmail.com" }, texto, false);
-		} catch (Exception e) {
-			PrintWriter printWriter = null;
-			try {
-				printWriter = res.getWriter();
-			} catch (IOException e1) {
-				Logger.logarExept(e1);
-			}
-			e.printStackTrace(printWriter);
-		}
-
 	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -237,7 +208,7 @@ public class ServletPaddock extends HttpServlet {
 		res.setContentType("text/html");
 		PrintWriter printWriter = res.getWriter();
 		printWriter.write("<html><body>");
-		printWriter.write("<h2>F1-Mane Exceções</h2><br><hr>");
+		printWriter.write("<h2>F1-Mane ExceÃ§Ãµes</h2><br><hr>");
 		synchronized (Logger.topExceptions) {
 			Set top = Logger.topExceptions.keySet();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {

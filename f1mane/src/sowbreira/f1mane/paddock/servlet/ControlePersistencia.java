@@ -277,7 +277,8 @@ public class ControlePersistencia {
 				: jogador.get(0));
 		return jogadorDadosSrv;
 	}
-
+	
+	
 	public Set obterListaJogadores(Session session) {
 		Set nomes = new HashSet();
 		List jogador = session.createCriteria(JogadorDadosSrv.class).list();

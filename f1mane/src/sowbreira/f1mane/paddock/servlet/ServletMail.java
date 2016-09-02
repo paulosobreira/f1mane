@@ -1,5 +1,6 @@
 package sowbreira.f1mane.paddock.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -24,20 +25,33 @@ import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 
 public class ServletMail extends HttpServlet {
 
-	public void doPost(HttpServletRequest arg0, HttpServletResponse responose)
-			throws ServletException, IOException {
-		String tipo = arg0.getParameter("tipo");
-		String passe = arg0.getParameter("passe");
+	private ControlePersistencia controlePersistencia;
+
+	public void init() throws ServletException {
+		super.init();
+		try {
+			controlePersistencia = new ControlePersistencia(
+					getServletContext().getRealPath("") + File.separator
+							+ "WEB-INF" + File.separator);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+	}
+	public void doPost(HttpServletRequest request,
+			HttpServletResponse responose)
+					throws ServletException, IOException {
+		String tipo = request.getParameter("tipo");
+		String passe = request.getParameter("passe");
 		try {
 			if (Util.isNullOrEmpty(passe) || !Util.md5(passe)
 					.equals("c846d80d826291f2a6a0d7a57e540307")) {
 				return;
 			}
 			if ("admail".equals(tipo)) {
-				adMail(arg0.getParameter("assunto"), arg0.getParameter("texto"),
-						responose);
+				adMail(request.getParameter("assunto"),
+						request.getParameter("texto"), responose);
 			} else if ("recuperar".equals(tipo)) {
-				recuperar(arg0.getParameter("email"), responose);
+				recuperar(request.getParameter("email"), responose);
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -50,36 +64,40 @@ public class ServletMail extends HttpServlet {
 			PrintWriter printWriter = res.getWriter();
 			printWriter.write("<html><body>");
 			printWriter.write("<h2>F1-Mane Recuperar</h2><br><hr>");
-			Session session = ServletPaddock.controlePersistencia.getSession();
+			Session session = controlePersistencia.getSession();
 			String senha, nome;
 			try {
 				List jogador = session.createCriteria(JogadorDadosSrv.class)
 						.add(Restrictions.eq("email", emailJogador)).list();
 				JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador
 						.isEmpty() ? null : jogador.get(0));
-				nome = jogadorDadosSrv.getNome();
-				PassGenerator generator = new PassGenerator();
-				senha = generator.generateIt();
-				jogadorDadosSrv.setSenha(Util.md5(senha));
-				jogadorDadosSrv
-						.setUltimaRecuperacao(System.currentTimeMillis());
-				Transaction transaction = session.beginTransaction();
-				try {
-					session.saveOrUpdate(jogadorDadosSrv);
-					transaction.commit();
-				} catch (Exception e) {
-					transaction.rollback();
-					throw e;
+				if (jogadorDadosSrv != null) {
+					nome = jogadorDadosSrv.getNome();
+					PassGenerator generator = new PassGenerator();
+					senha = generator.generateIt();
+					jogadorDadosSrv.setSenha(Util.md5(senha));
+					jogadorDadosSrv
+							.setUltimaRecuperacao(System.currentTimeMillis());
+					Transaction transaction = session.beginTransaction();
+					try {
+						session.saveOrUpdate(jogadorDadosSrv);
+						transaction.commit();
+					} catch (Exception e) {
+						transaction.rollback();
+						throw e;
+					}
+					printWriter.write("<br>Gerado Nova Senha<br><hr>");
+					printWriter.write("<br>E-Mail : " + emailJogador);
+					printWriter.write("<br>Nome : " + nome);
+					printWriter.write("<br>Senha : " + senha);
+				}else{
+					printWriter.write("<br>Email n&atilde;o encontrado<br>");
 				}
 			} finally {
 				if (session.isOpen()) {
 					session.close();
 				}
 			}
-			printWriter.write("<br>Gerado Nova Senha<br><hr>");
-			printWriter.write("<br>E-Mail : " + emailJogador);
-			printWriter.write("<br>Nome : " + nome);
-			printWriter.write("<br>Senha : " + senha);
 			printWriter.write("<br><hr>");
 			printWriter.write("</body></html>");
 			res.flushBuffer();
@@ -101,19 +119,18 @@ public class ServletMail extends HttpServlet {
 			PrintWriter printWriter = res.getWriter();
 			printWriter.write("<html><body>");
 			printWriter.write("<h2>F1-Mane Admin - Mail</h2><br><hr>");
-			Session session = ServletPaddock.controlePersistencia.getSession();
+			Session session = controlePersistencia.getSession();
 			int cont = 0;
 			try {
-				Set top = ServletPaddock.controlePersistencia
-						.obterListaJogadores(session);
+				Set top = controlePersistencia.obterListaJogadores(session);
 				for (Iterator iterator = top.iterator(); iterator.hasNext();) {
 					String nomeJogador = (String) iterator.next();
-					JogadorDadosSrv carregaDadosJogador = ServletPaddock.controlePersistencia
+					JogadorDadosSrv carregaDadosJogador = controlePersistencia
 							.carregaDadosJogador(nomeJogador, session);
 					try {
-						ServletPaddock.email.sendSimpleMail(assunto,
-								new String[]{carregaDadosJogador.getEmail()},
-								texto, false);
+						// email.sendSimpleMail(assunto,
+						// new String[]{carregaDadosJogador.getEmail()},
+						// texto, false);
 						printWriter.write("Jogador : " + nomeJogador
 								+ " E-mail " + carregaDadosJogador.getEmail());
 						printWriter.write("<br>");
@@ -147,6 +164,22 @@ public class ServletMail extends HttpServlet {
 		}
 	}
 
+	private void adMail(String assunto, String texto, String passe,
+			HttpServletResponse res) {
+		try {
+			// email.sendSimpleMail(assunto,
+			// new String[] { "sowbreira@gmail.com" }, texto, false);
+		} catch (Exception e) {
+			PrintWriter printWriter = null;
+			try {
+				printWriter = res.getWriter();
+			} catch (IOException e1) {
+				Logger.logarExept(e1);
+			}
+			e.printStackTrace(printWriter);
+		}
+
+	}
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 	}
