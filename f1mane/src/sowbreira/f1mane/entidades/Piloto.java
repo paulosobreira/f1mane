@@ -801,7 +801,7 @@ public class Piloto implements Serializable, PilotoSuave {
 					tempoVolta = getUltimaVolta().obterTempoVoltaFormatado();
 				}
 				Logger.logar(" Numero Volta " + getNumeroVolta() + " "
-						+ getNome() + " Posição " + getPosicao() + " Tempo "
+						+ getNome() + " Posiï¿½ï¿½o " + getPosicao() + " Tempo "
 						+ tempoVolta);
 			}
 			if (numeroVolta > controleJogo.totalVoltasCorrida()) {
@@ -965,7 +965,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (desqualificado) {
 			return getNoAtual().getIndex();
 		}
-		novoModificador = calcularNovoModificador(controleJogo);
+		novoModificador = calcularModificador(controleJogo);
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, getNoAtual(), controleJogo);
 
@@ -974,7 +974,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaLimitadorModificador();
 		processaUsoERS(controleJogo);
 		processaUsoDRS(controleJogo);
-		verificaMudancaRegime(controleJogo);
+		processaMudancaRegime(controleJogo);
 		processaGanho(controleJogo);
 		processaPontoDerrapada(controleJogo);
 		processaEscapadaDaPista(controleJogo);
@@ -1614,7 +1614,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (tentaPassarFrete) {
 			return false;
 		}
-		if (Math.random() > (controleJogo.getNiveljogo())) {
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.2)) {
 			return false;
 		}
 		if (calculaDiferencaParaAnterior < (controleJogo.isDrs() ? 600 : 300)
@@ -1675,8 +1675,8 @@ public class Piloto implements Serializable, PilotoSuave {
 			setColisao(null);
 			return;
 		}
-		List<Piloto> pilotos = controleJogo.getPilotos();
 		centralizaDianteiraTrazeiraCarro(controleJogo);
+		List<Piloto> pilotos = controleJogo.getPilotos();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto pilotoFrente = (Piloto) iterator.next();
 			if (pilotoFrente.equals(this)) {
@@ -1827,6 +1827,9 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public Rectangle2D centralizaDianteiraTrazeiraCarro(
 			InterfaceJogo controleJogo) {
+		if (controleJogo.isModoQualify()) {
+			return null;
+		}
 		if (getNoAnterior() != null && getDiateira() != null
 				&& getCentro() != null && getTrazeira() != null
 				&& !emMovimento()) {
@@ -2141,7 +2144,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private boolean tentarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
-		if (Math.random() > (controleJogo.getNiveljogo())) {
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.1)) {
 			return false;
 		}
 		if (carroPilotoDaFrente == null) {
@@ -2230,7 +2233,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	private void verificaMudancaRegime(InterfaceJogo controleJogo) {
+	private void processaMudancaRegime(InterfaceJogo controleJogo) {
 		if (verificaDesconcentrado()) {
 			agressivo = false;
 			if (Piloto.AGRESSIVO.equals(getModoPilotagem())) {
@@ -2350,7 +2353,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		return true;
 	}
 
-	private int calcularNovoModificador(InterfaceJogo controleJogo) {
+	private int calcularModificador(InterfaceJogo controleJogo) {
 
 		double bonusSecundario = 0.5;
 

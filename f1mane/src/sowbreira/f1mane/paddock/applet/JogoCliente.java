@@ -1370,8 +1370,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public boolean mostraTipoPneuAdversario() {
-		return pilotoSelecionado != null
-				&& !pilotoSelecionado.equals(getPilotoJogador());
+		return true;
 	}
 
 	@Override
