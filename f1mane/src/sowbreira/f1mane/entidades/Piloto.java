@@ -1614,7 +1614,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (tentaPassarFrete) {
 			return false;
 		}
-		if (Math.random() > (controleJogo.getNiveljogo() + 0.2)) {
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.3)) {
 			return false;
 		}
 		if (calculaDiferencaParaAnterior < (controleJogo.isDrs() ? 600 : 300)
@@ -2144,9 +2144,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private boolean tentarPassaPilotoDaFrente(InterfaceJogo controleJogo) {
-		if (Math.random() > (controleJogo.getNiveljogo() + 0.1)) {
-			return false;
-		}
 		if (carroPilotoDaFrente == null) {
 			return false;
 		}
@@ -2154,8 +2151,11 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (pilotoFrente.getPtosBox() != 0) {
 			return false;
 		}
+		if (Math.random() > (controleJogo.getNiveljogo() + 0.3)) {
+			return false;
+		}
 		int size = controleJogo.getCircuito().getPistaFull().size();
-		int distBrigaMax = (int) (size * controleJogo.getNiveljogo());
+		int distBrigaMax = (int) (size * (controleJogo.getNiveljogo()+0.2));
 		if (calculaDiferencaParaProximo < distBrigaMax
 				&& testeHabilidadePiloto(controleJogo)) {
 			modoIADefesaAtaque(controleJogo);
