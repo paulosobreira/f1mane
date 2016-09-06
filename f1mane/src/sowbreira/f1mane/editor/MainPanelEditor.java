@@ -1011,11 +1011,8 @@ public class MainPanelEditor extends JPanel {
 		g2d.setColor(PainelCircuito.lightWhiteRain);
 		g2d.fillRoundRect(x - 15, y - 15, 200, 180, 15, 15);
 		g2d.setColor(Color.black);
-		// g2d.drawString("Shift ativado "
-		// + (srcFrame.isShiftApertado() ? "SIM" : "N√O"), x, y);
-		// y += 20;
 		g2d.drawString("Control ativado "
-				+ (srcFrame.isControlApertado() ? "SIM" : "N√O"), x, y);
+				+ (srcFrame.isControlApertado() ? "SIM" : "N√ÉO"), x, y);
 		String esquera = "Move tela Esquerda";
 		String direita = "Move tela Direita";
 		String baixo = "Move tela Baixo";
@@ -1193,9 +1190,20 @@ public class MainPanelEditor extends JPanel {
 		for (int i = 0; i < 12; i++) {
 			int iP = paradas + Util.inte(Carro.LARGURA * 1.5 * i)
 					+ Carro.LARGURA;
-			No n1 = (No) circuito.getBoxFull().get(iP - Carro.MEIA_LARGURA);
+			int n1Idx = iP - Carro.MEIA_LARGURA;
+			int n2Idx = iP + Carro.MEIA_LARGURA;
+			if(n1Idx>circuito.getBoxFull().size()){
+				continue;
+			}
+			if(iP>circuito.getBoxFull().size()){
+				continue;
+			}
+			if(n2Idx>circuito.getBoxFull().size()){
+				continue;
+			}
+			No n1 = (No) circuito.getBoxFull().get(n1Idx);
 			No nM = (No) circuito.getBoxFull().get(iP);
-			No n2 = (No) circuito.getBoxFull().get(iP + Carro.MEIA_LARGURA);
+			No n2 = (No) circuito.getBoxFull().get(n2Idx);
 			Point p1 = new Point(Util.inte(n1.getPoint().x * zoom),
 					Util.inte(n1.getPoint().y * zoom));
 			Point pm = new Point(Util.inte(nM.getPoint().x * zoom),
