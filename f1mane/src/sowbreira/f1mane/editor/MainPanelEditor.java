@@ -256,10 +256,11 @@ public class MainPanelEditor extends JPanel {
 		if (multiplicadorLarguraPista == 0 && circuito != null) {
 			multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
 		}
-		if (multiplicadorLarguraPista < 0.7 || multiplicadorLarguraPista > 2) {
+		if (multiplicadorLarguraPista < 1.0 || multiplicadorLarguraPista > 2.0) {
 			JOptionPane.showMessageDialog(null,
-					Lang.msg("multiplicadorLarguraPista07e2"), Lang.msg("039"),
+					Lang.msg("multiplicadorLarguraPista"), Lang.msg("039"),
 					JOptionPane.INFORMATION_MESSAGE);
+			return;
 		}
 		circuito.setUsaBkg(true);
 		circuito.vetorizarPista(this.multiplicadorPista,
@@ -831,9 +832,10 @@ public class MainPanelEditor extends JPanel {
 					}
 					repaint();
 					return;
-				} else if (posicionaObjetoPista) {
-					if (circuito.getObjetos() == null)
+				} else if (posicionaObjetoPista && objetoPista != null) {
+					if (circuito.getObjetos() == null) {
 						circuito.setObjetos(new ArrayList<ObjetoPista>());
+					}
 					objetoPista.setPosicaoQuina(ultimoClicado);
 					circuito.getObjetos().add(objetoPista);
 					formularioListaObjetos.listarObjetos();
@@ -1192,13 +1194,13 @@ public class MainPanelEditor extends JPanel {
 					+ Carro.LARGURA;
 			int n1Idx = iP - Carro.MEIA_LARGURA;
 			int n2Idx = iP + Carro.MEIA_LARGURA;
-			if(n1Idx>circuito.getBoxFull().size()){
+			if (n1Idx > circuito.getBoxFull().size()) {
 				continue;
 			}
-			if(iP>circuito.getBoxFull().size()){
+			if (iP > circuito.getBoxFull().size()) {
 				continue;
 			}
-			if(n2Idx>circuito.getBoxFull().size()){
+			if (n2Idx > circuito.getBoxFull().size()) {
 				continue;
 			}
 			No n1 = (No) circuito.getBoxFull().get(n1Idx);

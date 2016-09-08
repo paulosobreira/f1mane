@@ -986,10 +986,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaMudarTracado(controleJogo);
 		processaColisao(controleJogo);
 		controleJogo.verificaUltrapassagem(this);
-		if (getColisao() != null) {
-			penalidadeColisao(controleJogo);
-			getColisao().setCiclosDesconcentrado(0);
-		}
+		processaPenalidadeColisao(controleJogo);
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 		processaGanhoSafetyCar(controleJogo);
@@ -1058,13 +1055,18 @@ public class Piloto implements Serializable, PilotoSuave {
 		verificaColisaoCarroFrente(controleJogo);
 	}
 
-	public void penalidadeColisao(InterfaceJogo controleJogo) {
+	public void processaPenalidadeColisao(InterfaceJogo controleJogo) {
+		if (getColisao() == null) {
+			return;
+		}
 		acelerando = false;
 		setAgressivo(false, controleJogo);
 		incStress(10);
 		if (evitaBaterCarroFrente) {
 			incStress(5);
 		}
+		Piloto pilotoFrente = getColisao();
+		pilotoFrente.setCiclosDesconcentrado(0);
 	}
 
 	public void processaEscapadaDaPista(InterfaceJogo controleJogo) {
@@ -2200,8 +2202,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		boolean maxGiro = false;
 		if (!superAquecido && temMotor && temCombustivel
 				&& (calculaDiferencaParaAnterior < (controleJogo.isDrs()
-						? 400
-						: 200) || calculaDiffParaProximoRetardatario < 200
+						? 800
+						: 400) || calculaDiffParaProximoRetardatario < 400
 						|| drsAtivado)) {
 			maxGiro = true;
 		}
