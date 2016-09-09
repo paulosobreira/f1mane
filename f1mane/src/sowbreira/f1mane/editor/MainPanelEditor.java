@@ -143,6 +143,13 @@ public class MainPanelEditor extends JPanel {
 	public MainPanelEditor(String backGroundStr, MainFrameEditor frame) {
 		backGround = CarregadorRecursos.carregaBackGround(backGroundStr, this,
 				circuito);
+		if(backGround==null){
+			JOptionPane.showMessageDialog(null,
+					Lang.msg("backGroundNull"), Lang.msg("039"),
+					JOptionPane.ERROR_MESSAGE);
+			return;
+
+		}
 		this.srcFrame = frame;
 		iniciaEditor(frame);
 		atualizaListas();

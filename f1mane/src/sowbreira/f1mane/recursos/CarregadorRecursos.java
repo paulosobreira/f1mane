@@ -169,15 +169,15 @@ public class CarregadorRecursos {
 		BufferedImage backGround = null;
 		try {
 			backGround = ImageIO.read(CarregadorRecursos.class.getResource(backGroundStr));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
-		if (panel != null)
+		if (panel != null && backGround!=null)
 			panel.setSize(backGround.getWidth(), backGround.getHeight());
 
 		if (backGround == null) {
 			Logger.logar("backGround=" + backGround);
-			System.exit(1);
+			return null;
 		}
 
 		circuito.setBackGround(backGroundStr);
