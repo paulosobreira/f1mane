@@ -68,6 +68,7 @@ public class PainelCircuito {
 	public static boolean desenhaImagens = true;
 
 	private boolean verControles = true;
+	private boolean carragandoBkg = false;
 	private boolean desenhouQualificacao;
 	private boolean desenhouCreditos;
 	private boolean desenhaInfo = true;
@@ -726,33 +727,33 @@ public class PainelCircuito {
 			return;
 		}
 		try {
-			if (!(threadCarregarBkg != null && threadCarregarBkg.isAlive()))
+			if (backGround == null && !carragandoBkg) {
 				backGround = CarregadorRecursos.carregaBackGround(
 						circuito.getBackGround(), null, circuito);
+			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			backGround = null;
 		}
 		if (backGround == null) {
-			if (threadCarregarBkg == null || !threadCarregarBkg.isAlive()) {
+			if (!carragandoBkg) {
 				Runnable runnable = new Runnable() {
 					@Override
 					public void run() {
+						carragandoBkg = true;
 						backGround = controleJogo
 								.carregaBackGround(circuito.getBackGround());
-						if (backGround != null)
+						if (backGround != null) {
 							backGround.setAccelerationPriority(1);
-						threadCarregarBkg = null;
+						}
+						carragandoBkg = false;
 					}
 				};
 				threadCarregarBkg = new Thread(runnable);
 				threadCarregarBkg.setPriority(Thread.MIN_PRIORITY);
 				threadCarregarBkg.start();
 			}
-		} else {
-			backGround.setAccelerationPriority(1);
 		}
-
 	}
 
 	private void atualizacaoSuave(PilotoSuave piloto) {
@@ -5272,7 +5273,7 @@ public class PainelCircuito {
 		int xIni = Util.inte(limitesViewPort.width / 2) - 50;
 		int yIni = 50;
 		/**
-		 * 1ª luz
+		 * 1ï¿½ luz
 		 */
 		g2d.setColor(farol);
 		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
