@@ -159,6 +159,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private boolean podeUsarDRS;
 	private Carro carroPilotoAtras;
 	private int calculaDiferencaParaProximo;
+	private int voltaMensagemLento;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -2157,7 +2158,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			return false;
 		}
 		int size = controleJogo.getCircuito().getPistaFull().size();
-		int distBrigaMax = (int) (size * (controleJogo.getNiveljogo()+0.2));
+		int distBrigaMax = (int) (size * (controleJogo.getNiveljogo() + 0.2));
 		if (calculaDiferencaParaProximo < distBrigaMax
 				&& testeHabilidadePiloto(controleJogo)) {
 			modoIADefesaAtaque(controleJogo);
@@ -2274,7 +2275,9 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isSafetyCarNaPista() || getCarro().verificaDano()) {
 			return;
 		}
-		if (Math.random() < 0.95) {
+		if ((controleJogo.getNumVoltaAtual() - voltaMensagemLento) > 2) {
+			voltaMensagemLento = controleJogo.getNumVoltaAtual();
+		} else {
 			return;
 		}
 		controleJogo.info(Html.superRed(getNome() + Lang.msg("057")));
