@@ -265,6 +265,11 @@ public class ControleQualificacao {
 			piloto.zerarGanhoEVariaveisUlt();
 			piloto.setPtosPista(nM.getIndex());
 			piloto.setPtosPistaIncial(nM.getIndex());
+			if (!piloto.isJogadorHumano() && controleJogo.verificaNivelJogo()
+					&& !piloto.testeHabilidadePilotoCarro(controleJogo)) {
+				piloto.setCiclosDesconcentrado(Util.intervalo(500,700));
+				piloto.setProblemaLargada(true);
+			}
 			Carro carro = piloto.getCarro();
 			carro.setTempMax(carro.getPotencia() / 4);
 			if (InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()) {
@@ -276,11 +281,11 @@ public class ControleQualificacao {
 			carro.setDurabilidadeAereofolio(
 					controleJogo.getDurabilidadeAreofolio());
 			piloto.calculaCarrosAdjacentes(controleJogo);
-			Logger.logar(" Posição Largada :" + piloto.getPosicao() + " Nome : "
+			Logger.logar(" PosiÃ§Ã£o Largada :" + piloto.getPosicao() + " Nome : "
 					+ piloto.getNome() + " Pneu : "
 					+ piloto.getCarro().getTipoPneu() + " Combustivel : "
 					+ piloto.getCarro().porcentagemCombustivel() + " Asa : "
-					+ piloto.getCarro().getAsa() + " Tempo Qualificação : "
+					+ piloto.getCarro().getAsa() + " Tempo QualificaÃ§Ã£o : "
 					+ ControleEstatisticas.formatarTempo(
 							piloto.getCiclosVoltaQualificacao()));
 		}

@@ -160,6 +160,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private Carro carroPilotoAtras;
 	private int calculaDiferencaParaProximo;
 	private int voltaMensagemLento;
+	private boolean problemaLargada;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -2339,6 +2340,13 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		if (ciclosDesconcentrado <= 0) {
 			ciclosDesconcentrado = 0;
+			if (isProblemaLargada()) {
+				if (getPosicao() < 8) {
+					interfaceJogo.info(Html.superRed(
+							getNome() + " " + Lang.msg("problemaLargada")));
+				}
+				setProblemaLargada(false);
+			}
 			return false;
 		}
 		double val = (Constantes.CICLO / 80);
@@ -2353,6 +2361,10 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (AGRESSIVO.equals(modoPilotagem) && getStress() < 70) {
 			incStress(1);
 			dec++;
+		}
+		if (interfaceJogo.getNumVoltaAtual() < 2) {
+			setModoPilotagem(LENTO);
+			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 		}
 		ciclosDesconcentrado -= dec;
 		return true;
@@ -3059,6 +3071,14 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public int getDiferencaParaProximo() {
 		return calculaDiferencaParaProximo;
+	}
+
+	public boolean isProblemaLargada() {
+		return problemaLargada;
+	}
+
+	public void setProblemaLargada(boolean problemaLargada) {
+		this.problemaLargada = problemaLargada;
 	}
 
 	public void atualizaInfoDebug(StringBuffer buffer) {
