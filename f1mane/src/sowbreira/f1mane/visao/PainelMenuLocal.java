@@ -85,6 +85,9 @@ public class PainelMenuLocal {
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color bluQualy = new Color(105, 105, 205);
 
+	private RoundRectangle2D langRect = new RoundRectangle2D.Double(0, 0, 1,
+			1, 0, 0);
+	
 	private RoundRectangle2D corridaRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 0, 0);
 	private RoundRectangle2D campeonatoRect = new RoundRectangle2D.Double(0, 0,
@@ -2889,6 +2892,16 @@ public class PainelMenuLocal {
 		continuaCampeonatoRect.setFrame(centerX, centerY - 25,
 				larguraTexto + 10, 30);
 		g2d.fill(continuaCampeonatoRect);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(txt, centerX + 5, centerY);
+		
+		centerY += 40;
+
+		g2d.setColor(lightWhite);
+		txt = Lang.msg("idioma").toUpperCase();
+		larguraTexto = Util.larguraTexto(txt, g2d);
+		langRect.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
+		g2d.fill(langRect);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(txt, centerX + 5, centerY);
 
