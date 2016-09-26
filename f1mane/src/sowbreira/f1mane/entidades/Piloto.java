@@ -1548,18 +1548,16 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (!isAutoPos()) {
 			return;
 		}
-		if (calculaDiffParaProximoRetardatarioTracado < calculaDiferencaParaAnterior) {
-			if (calculaDiffParaProximoRetardatarioTracado < 300) {
-				if (testeHabilidadePiloto(controleJogo)) {
-					controleJogo.fazPilotoMudarTracado(this,
-							controleJogo
-									.obterCarroNaFrenteRetardatario(this, true)
-									.getPiloto());
-				} else {
-					controleJogo.fazPilotoMudarTracado(this,
-							carroPilotoDaFrenteRetardatario.getPiloto());
+		if (calculaDiffParaProximoRetardatarioTracado < calculaDiferencaParaAnterior
+				|| calculaDiffParaProximoRetardatarioTracado < 300) {
+			if (testeHabilidadePiloto(controleJogo)) {
+				controleJogo.fazPilotoMudarTracado(this,
+						controleJogo.obterCarroNaFrenteRetardatario(this, true)
+								.getPiloto());
+			} else {
+				controleJogo.fazPilotoMudarTracado(this,
+						carroPilotoDaFrenteRetardatario.getPiloto());
 
-				}
 			}
 		} else {
 			Carro carroAtraz = carroPilotoAtras;
@@ -2362,10 +2360,8 @@ public class Piloto implements Serializable, PilotoSuave {
 			incStress(1);
 			dec++;
 		}
-		if (interfaceJogo.getNumVoltaAtual() < 2) {
-			setModoPilotagem(LENTO);
-			getCarro().setGiro(Carro.GIRO_MIN_VAL);
-		}
+		setModoPilotagem(LENTO);
+		getCarro().setGiro(Carro.GIRO_MIN_VAL);
 		ciclosDesconcentrado -= dec;
 		return true;
 	}
