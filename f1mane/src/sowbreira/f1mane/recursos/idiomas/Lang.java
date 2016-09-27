@@ -36,7 +36,7 @@ public class Lang {
 	public static void main(String[] args) throws IOException {
 		new Lang();
 		// Logger.logar(msg("TesteFormat", new Object[] { 123, 312 }));
-		// String[] array = "asd¢111¢qweqw¢22¢werwer ¢3¢¢4¢".split("¢");
+		// String[] array = "asdÂ¢111Â¢qweqwÂ¢22Â¢werwer Â¢3Â¢Â¢4Â¢".split("Â¢");
 		// for (int i = 0; i < array.length; i++) {
 		// if (i % 2 == 1)
 		// Logger.logar(array[i]);
@@ -49,7 +49,7 @@ public class Lang {
 		srvgame = false;
 		Logger.logar("dec : " + decodeTexto(enc));
 		System.out.println(decodeTexto(
-				"<b><font  color='#FF8C00'>¢003¬S.Vettel¬8.218¬0¬¢TIPO_PNEU_MOLE¢¢</font></b>"));
+				"<b><font  color='#FF8C00'>Â¢003Â¬S.VettelÂ¬8.218Â¬0Â¬Â¢TIPO_PNEU_MOLEÂ¢Â¢</font></b>"));
 		Locale locale = Locale.getDefault();
 
 		Logger.logar(locale.getLanguage());
@@ -63,7 +63,7 @@ public class Lang {
 
 	public static String msg(String key) {
 		if (srvgame) {
-			return "¢" + key + "¢";
+			return "Â¢" + key + "Â¢";
 		}
 
 		iniciaBundle();
@@ -80,17 +80,17 @@ public class Lang {
 	public static String msg(String key, Object[] strings) {
 		if (srvgame) {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append("¢" + key);
+			buffer.append("Â¢" + key);
 			for (int i = 0; i < strings.length; i++) {
-				buffer.append("¬");
+				buffer.append("Â¬");
 				String stringIn = strings[i].toString();
-				if (stringIn.contains("¢")) {
-					buffer.append(stringIn.replace("¢", "£"));
+				if (stringIn.contains("Â¢")) {
+					buffer.append(stringIn.replace("Â¢", "Â¥"));
 				} else {
 					buffer.append(stringIn);
 				}
 			}
-			buffer.append("¢");
+			buffer.append("Â¢");
 			return buffer.toString();
 		}
 		iniciaBundle();
@@ -107,7 +107,7 @@ public class Lang {
 	}
 
 	public static String decodeTexto(String string) {
-		String[] array = string.split("¢");
+		String[] array = string.split("Â¢");
 		StringBuffer retorno = new StringBuffer();
 		for (int i = 0; i < array.length; i++) {
 			if (i % 2 == 1)
@@ -119,14 +119,14 @@ public class Lang {
 	}
 
 	private static String microDecode(String string) {
-		if (string.contains("¬")) {
-			String[] sp = string.split("¬");
+		if (string.contains("Â¬")) {
+			String[] sp = string.split("Â¬");
 			String key = sp[0];
 			Object[] params = new Object[sp.length - 1];
 			for (int i = 1; i < sp.length; i++) {
 				String msp = sp[i];
-				if (msp.contains("£")) {
-					msp = Lang.decodeTexto(msp.replace("£", "¢"));
+				if (msp.contains("Â¥")) {
+					msp = Lang.decodeTexto(msp.replace("Â¥", "Â¢"));
 				}
 				params[i - 1] = msp;
 			}
@@ -167,6 +167,13 @@ public class Lang {
 				inputStream = CarregadorRecursos.recursoComoStream(load);
 				bundle = new PropertyResourceBundle(inputStream);
 				if (bundle == null) {
+					load = "idiomas/mensagens.properties_pt";
+					inputStream = CarregadorRecursos.recursoComoStream(load);
+					validaProperties(inputStream);
+					inputStream = CarregadorRecursos.recursoComoStream(load);
+					bundle = new PropertyResourceBundle(inputStream);
+				}
+				if (bundle == null) {
 					Logger.logar("inputStream == null para " + load);
 					return;
 				}
@@ -200,6 +207,10 @@ public class Lang {
 			line = bufferedReader.readLine();
 		}
 
+	}
+
+	public static String getSufix() {
+		return sufix;
 	}
 
 }

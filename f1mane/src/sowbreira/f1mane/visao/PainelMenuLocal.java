@@ -85,9 +85,9 @@ public class PainelMenuLocal {
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color bluQualy = new Color(105, 105, 205);
 
-	private RoundRectangle2D langRect = new RoundRectangle2D.Double(0, 0, 1,
-			1, 0, 0);
-	
+	private RoundRectangle2D langRect = new RoundRectangle2D.Double(0, 0, 1, 1,
+			0, 0);
+
 	private RoundRectangle2D corridaRect = new RoundRectangle2D.Double(0, 0, 1,
 			1, 0, 0);
 	private RoundRectangle2D campeonatoRect = new RoundRectangle2D.Double(0, 0,
@@ -463,6 +463,20 @@ public class PainelMenuLocal {
 			}
 			return;
 		}
+		
+		if (langRect.contains(e.getPoint())) {
+			try {
+				if ("pt".equals(Lang.getSufix())) {
+					Lang.mudarIdioma("en");
+				} else {
+					Lang.mudarIdioma("pt");
+				}
+			} catch (Exception e1) {
+				Logger.logarExept(e1);
+			}
+			return;
+		}
+		
 
 		if (proxPistaRect.contains(e.getPoint())) {
 			selecionaProximaPista();
@@ -2551,7 +2565,7 @@ public class PainelMenuLocal {
 		}
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(normal, x - 10, y + 15);
-		
+
 		desenhaImgTipo(g2d, x, y + 10, tamNomral, normalAsaImg);
 
 		x += (tamNomral + 15);
@@ -2566,7 +2580,7 @@ public class PainelMenuLocal {
 		}
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(menos, x - 10, y + 15);
-		
+
 		desenhaImgTipo(g2d, x, y + 10, tamMenos, menosAsaImg);
 
 		g2d.setFont(fontOri);
@@ -2894,11 +2908,15 @@ public class PainelMenuLocal {
 		g2d.fill(continuaCampeonatoRect);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(txt, centerX + 5, centerY);
-		
+
 		centerY += 40;
 
 		g2d.setColor(lightWhite);
-		txt = Lang.msg("idioma").toUpperCase();
+		if ("pt".equals(Lang.getSufix())) {
+			txt = Lang.msg("en").toUpperCase();
+		} else {
+			txt = Lang.msg("pt").toUpperCase();
+		}
 		larguraTexto = Util.larguraTexto(txt, g2d);
 		langRect.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
 		g2d.fill(langRect);
