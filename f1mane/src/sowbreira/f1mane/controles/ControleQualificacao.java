@@ -265,7 +265,7 @@ public class ControleQualificacao {
 			piloto.zerarGanhoEVariaveisUlt();
 			piloto.setPtosPista(nM.getIndex());
 			piloto.setPtosPistaIncial(nM.getIndex());
-			if (!piloto.isJogadorHumano() && controleJogo.verificaNivelJogo()
+			if (!piloto.isJogadorHumano() && !controleJogo.verificaNivelJogo()
 					&& !piloto.testeHabilidadePilotoCarro(controleJogo)) {
 				piloto.setCiclosDesconcentrado(Util.intervalo(500, 700));
 				piloto.setProblemaLargada(true);

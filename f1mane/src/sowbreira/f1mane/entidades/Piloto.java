@@ -2681,8 +2681,12 @@ public class Piloto implements Serializable, PilotoSuave {
 			return false;
 		}
 		long agora = System.currentTimeMillis();
+		double multi = 10;
+		if (testeHabilidadePilotoCarro(interfaceJogo)) {
+			multi = 5;
+		}
 		if (getTracado() != 4 && getTracado() != 5
-				&& (agora - ultimaMudancaPos) < (Constantes.CICLO * 10)) {
+				&& (agora - ultimaMudancaPos) < (Constantes.CICLO * multi)) {
 			return false;
 		}
 		if (getTracado() == 1 && mudarTracado == 2) {
@@ -2716,8 +2720,8 @@ public class Piloto implements Serializable, PilotoSuave {
 			ultimaMudancaPos = System.currentTimeMillis();
 			return true;
 		} else {
-			ultimaMudancaPos = System.currentTimeMillis()
-					+ (Constantes.CICLO * 10);
+			ultimaMudancaPos = (long) (System.currentTimeMillis()
+					+ (Constantes.CICLO * multi));
 		}
 		return false;
 
