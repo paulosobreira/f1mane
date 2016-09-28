@@ -2681,9 +2681,15 @@ public class Piloto implements Serializable, PilotoSuave {
 			return false;
 		}
 		long agora = System.currentTimeMillis();
-		double multi = 10;
+		double multi = 12;
 		if (testeHabilidadePilotoCarro(interfaceJogo)) {
-			multi = 5;
+			multi =-4 ;
+		}
+		if(getCarro().testeAerodinamica()){
+			multi =-2 ;
+		}
+		if(getCarro().testeFreios()){
+			multi =-2 ;
 		}
 		if (getTracado() != 4 && getTracado() != 5
 				&& (agora - ultimaMudancaPos) < (Constantes.CICLO * multi)) {
