@@ -3,6 +3,7 @@ package sowbreira.f1mane.entidades;
 import java.awt.Color;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Random;
 
 import sowbreira.f1mane.controles.ControleQualificacao;
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -305,19 +306,19 @@ public class Carro implements Serializable {
 	}
 
 	public boolean testePotencia() {
-		boolean teste = Math.random() < (potencia / 1000.0);
+		boolean teste = new Random().nextDouble() < (potencia / 1000.0);
 		return teste;
 
 	}
 
 	public boolean testeAerodinamica() {
-		boolean teste = Math.random() < (aerodinamica / 1000.0);
+		boolean teste = new Random().nextDouble() < (aerodinamica / 1000.0);
 		return teste;
 
 	}
 
 	public boolean testeFreios() {
-		boolean teste = Math.random() < (freios / 1000.0);
+		boolean teste = new Random().nextDouble() < (freios / 1000.0);
 		return teste;
 
 	}
@@ -803,7 +804,7 @@ public class Carro implements Serializable {
 					if (!no.verificaRetaOuLargada()) {
 						controleJogo.travouRodas(getPiloto());
 					}
-					piloto.decStress(getPiloto().testeHabilidadePiloto(controleJogo) ? stress : 5 + stress);
+					piloto.decStress(getPiloto().testeHabilidadePiloto() ? stress : 5 + stress);
 				}
 				if (controleJogo.asfaltoAbrasivo() && !controleJogo.isChovendo() && !no.verificaRetaOuLargada()
 						&& getPiloto().getStress() > 70) {
@@ -818,7 +819,7 @@ public class Carro implements Serializable {
 				if (getPiloto().getStress() > 70 && Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {
 					teste = false;
 					controleJogo.travouRodas(getPiloto());
-					piloto.decStress(getPiloto().testeHabilidadePiloto(controleJogo) ? 4 : 2);
+					piloto.decStress(getPiloto().testeHabilidadePiloto() ? 4 : 2);
 				}
 				if (controleJogo.asfaltoAbrasivo() && !controleJogo.isChovendo() && !no.verificaRetaOuLargada()
 						&& getPiloto().getStress() > 50 && Math.random() > 0.5) {
@@ -834,7 +835,7 @@ public class Carro implements Serializable {
 				if (getPiloto().getStress() > 60 && !controleJogo.isChovendo() && getPiloto().getPtosBox() == 0
 						&& noFrente.verificaCruvaBaixa()) {
 					controleJogo.travouRodas(getPiloto());
-					piloto.incStress(getPiloto().testeHabilidadePiloto(controleJogo) ? 0 : 5);
+					piloto.incStress(getPiloto().testeHabilidadePiloto() ? 0 : 5);
 					if (controleJogo.asfaltoAbrasivo() && getPiloto().getStress() > 80 && !controleJogo.isChovendo()
 							&& noFrente.verificaCruvaAlta() && Math.random() > 0.7) {
 						controleJogo.travouRodas(getPiloto());

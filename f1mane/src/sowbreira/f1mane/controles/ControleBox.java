@@ -67,7 +67,7 @@ public class ControleBox {
 		circuito = controleJogo.getCircuito();
 		calculaQtdeNosPistaRefBox();
 		if (saidaBox == null) {
-			throw new Exception("Saida box não encontrada!");
+			throw new Exception("Saida box nï¿½o encontrada!");
 		}
 		if (Math.random() < .5) {
 			boxRapido = true;
@@ -156,15 +156,15 @@ public class ControleBox {
 		}
 
 		if (paradaBox == null) {
-			throw new Exception("Parada de box não encontrrada");
+			throw new Exception("Parada de box nï¿½o encontrrada");
 		}
 
 		if (!entrada) {
-			throw new Exception("Entrada de box não encontrrada");
+			throw new Exception("Entrada de box nï¿½o encontrrada");
 		}
 
 		if (!saida) {
-			throw new Exception("Saida de box não encontrrada");
+			throw new Exception("Saida de box nï¿½o encontrrada");
 		}
 	}
 
@@ -527,7 +527,7 @@ public class ControleBox {
 					controleJogo.getAsaBox(piloto));
 			return;
 		}
-		if (piloto.testeHabilidadePilotoCarro(controleJogo)
+		if (piloto.testeHabilidadePilotoCarro()
 				&& controleJogo.asfaltoAbrasivo()
 				&& !controleJogo.isBoxRapido()) {
 			piloto.setSetUpIncial(UMA_PARADA);
@@ -538,10 +538,10 @@ public class ControleBox {
 		}
 		if (controleJogo.isSemReabastacimento()) {
 			double mod = 0.9;
-			if (piloto.testeHabilidadePiloto(controleJogo)) {
+			if (piloto.testeHabilidadePiloto()) {
 				mod = 0.85;
 			}
-			if (piloto.testeHabilidadePilotoCarro(controleJogo)) {
+			if (piloto.testeHabilidadePilotoCarro()) {
 				mod = 0.75;
 			}
 			piloto.getCarro().setCombustivel(
@@ -552,7 +552,7 @@ public class ControleBox {
 
 	private void processarTipoAsaAutomatico(Piloto piloto) {
 		piloto.getCarro().setAsa(Carro.ASA_NORMAL);
-		if (piloto.testeHabilidadePiloto(controleJogo)) {
+		if (piloto.testeHabilidadePiloto()) {
 			int noAlta = 0;
 			int noMedia = 0;
 			int noBaixa = 0;

@@ -327,7 +327,7 @@ public class ControleCorrida {
 			fatorAcidenteLocal = 0.1;
 		}
 		if (Math.random() < fatorAcidenteLocal) {
-			if (!piloto.testeHabilidadePilotoCarro(controleJogo)) {
+			if (!piloto.testeHabilidadePilotoCarro()) {
 				if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
 					danificaAreofolio(piloto);
 					if (controleJogo.verificaInfoRelevante(piloto)

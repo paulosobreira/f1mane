@@ -74,7 +74,7 @@ public class ControleQualificacao {
 				if (Math.random() > (piloto.getCarro().porcentagemCombustivel()
 						/ 100.0) && !piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.getCarro().testeAerodinamica()
-						&& piloto.testeHabilidadePilotoCarro(controleJogo)
+						&& piloto.testeHabilidadePilotoCarro()
 						&& piloto.getCarro().testeFreios()) {
 					contCiclosQualificacao -= Math.random() > incCurva ? 1 : 0;
 				}
@@ -87,15 +87,30 @@ public class ControleQualificacao {
 						.verificaPneusIncompativeisClima(controleJogo)) {
 					contCiclosQualificacao++;
 				}
-				if (!piloto.testeHabilidadePiloto(controleJogo)) {
-					piloto.incStress(Util.intervalo(1, 3));
-				}
 			}
-			int modMili = 20;
-			for (int j = 0; j < 20; j++) {
-				if (piloto.testeHabilidadePilotoCarro(controleJogo)) {
-					modMili--;
+			int modMili = 120;
+			for (int j = 0; j < 10; j++) {
+				if (piloto.testeHabilidadePiloto()) {
+					modMili -= 3;
+				} else {
+					piloto.incStress(40);
 				}
+				if (piloto.getCarro().testePotencia()) {
+					modMili -= 3;
+				} else {
+					piloto.incStress(10);
+				}
+				if (piloto.getCarro().testeFreios()) {
+					modMili -= 3;
+				} else {
+					piloto.incStress(10);
+				}
+				if (piloto.getCarro().testeAerodinamica()) {
+					modMili -= 3;
+				} else {
+					piloto.incStress(10);
+				}
+
 			}
 			piloto.setCiclosVoltaQualificacao(Util.inte(
 					((contCiclosQualificacao * Constantes.CICLO) + modMili)));
@@ -266,7 +281,7 @@ public class ControleQualificacao {
 			piloto.setPtosPista(nM.getIndex());
 			piloto.setPtosPistaIncial(nM.getIndex());
 			if (!piloto.isJogadorHumano() && !controleJogo.verificaNivelJogo()
-					&& !piloto.testeHabilidadePilotoCarro(controleJogo)) {
+					&& !piloto.testeHabilidadePilotoCarro()) {
 				piloto.setCiclosDesconcentrado(Util.intervalo(500, 700));
 				piloto.setProblemaLargada(true);
 			}
