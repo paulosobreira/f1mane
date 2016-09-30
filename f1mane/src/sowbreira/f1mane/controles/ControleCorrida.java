@@ -365,6 +365,7 @@ public class ControleCorrida {
 		if (piloto.getCarro().getDurabilidadeAereofolio() <= 0) {
 			if (!controleSafetyCar.safetyCarUltimas3voltas()
 					&& !piloto.isDesqualificado()
+					&& piloto.getVelocidade() > 150
 					&& piloto.getStress() > limiteStress) {
 				piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 				Logger.logar(piloto.getNome() + " BATEU_FORTE");

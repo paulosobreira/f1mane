@@ -538,7 +538,7 @@ public class ControleBox {
 		}
 		if (controleJogo.isSemReabastacimento()) {
 			double mod = 0.9;
-			if (piloto.testeHabilidadePiloto()) {
+			if (piloto.getCarro().testeAerodinamica()) {
 				mod = 0.85;
 			}
 			if (piloto.testeHabilidadePilotoCarro()) {
