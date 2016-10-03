@@ -4519,10 +4519,14 @@ public class PainelCircuito {
 			yBase += 17;
 			int contAlt = yBase;
 			int contVolta = 1;
-			List voltas = pilotoSelecionado.getVoltas();
+			List voltas = new ArrayList<>(); 
+		    voltas.addAll(pilotoSelecionado.getVoltas());
 			int cont = 1;
 			for (int i = voltas.size() - 1; i > -1; i--) {
 				Volta volta = (Volta) voltas.get(i);
+				if(volta==null){
+					continue;
+				}
 				if (volta.obterTempoVolta() == 0) {
 					continue;
 				}
@@ -5273,7 +5277,7 @@ public class PainelCircuito {
 		int xIni = Util.inte(limitesViewPort.width / 2) - 50;
 		int yIni = 50;
 		/**
-		 * 1� luz
+		 * 1ª luz
 		 */
 		g2d.setColor(farol);
 		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,

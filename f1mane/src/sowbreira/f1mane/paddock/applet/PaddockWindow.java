@@ -101,7 +101,7 @@ public class PaddockWindow {
 			return Lang.msg("178");
 		}
 	};
-	private JButton classificacao = new JButton("Classificação") {
+	private JButton classificacao = new JButton("ClassificaÃ§Ã£o") {
 
 		public String getText() {
 
@@ -677,7 +677,7 @@ public class PaddockWindow {
 		});
 		panelJogo.add(
 				new JLabel(detalhesJogo.getDadosCriarJogo().getNivelCorrida()));
-		panelJogo.add(new JLabel("Hora Criação : ") {
+		panelJogo.add(new JLabel("Hora CriaÃ§Ã£o : ") {
 			public String getText() {
 				return Lang.msg("192");
 			}
@@ -698,7 +698,7 @@ public class PaddockWindow {
 		});
 		panelJogo.add(new JLabel(
 				detalhesJogo.getDadosCriarJogo().getCircuitoSelecionado()));
-		panelJogo.add(new JLabel("Número Voltas : ") {
+		panelJogo.add(new JLabel("NÃºmero Voltas : ") {
 			public String getText() {
 				return Lang.msg("195");
 			}

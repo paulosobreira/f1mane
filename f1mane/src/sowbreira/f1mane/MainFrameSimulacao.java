@@ -126,7 +126,7 @@ public class MainFrameSimulacao extends MainFrame {
 
 	private void mostraDadosSimulacao() {
 		System.out
-				.println("############################ Dados Simulação ############################");
+				.println("############################ Dados SimulaÃ§Ã£o ############################");
 		System.out.println("Circuito : " + circuito);
 		System.out.println("Temporada : " + temporada);
 		System.out.println("Clima : " + clima);

@@ -534,7 +534,7 @@ public class PainelCampeonato extends JPanel {
 
 			public String getColumnName(int column) {
 				switch (column) {
-				// POsição
+				// POsiÃ§Ã£o
 				case 0:
 					return Lang.msg("160");
 					// Piloto

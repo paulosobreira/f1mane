@@ -67,7 +67,7 @@ public class ControleBox {
 		circuito = controleJogo.getCircuito();
 		calculaQtdeNosPistaRefBox();
 		if (saidaBox == null) {
-			throw new Exception("Saida box n�o encontrada!");
+			throw new Exception("Saida box não encontrada!");
 		}
 		if (Math.random() < .5) {
 			boxRapido = true;
@@ -156,15 +156,15 @@ public class ControleBox {
 		}
 
 		if (paradaBox == null) {
-			throw new Exception("Parada de box n�o encontrrada");
+			throw new Exception("Parada de box não encontrrada");
 		}
 
 		if (!entrada) {
-			throw new Exception("Entrada de box n�o encontrrada");
+			throw new Exception("Entrada de box não encontrrada");
 		}
 
 		if (!saida) {
-			throw new Exception("Saida de box n�o encontrrada");
+			throw new Exception("Saida de box não encontrrada");
 		}
 	}
 

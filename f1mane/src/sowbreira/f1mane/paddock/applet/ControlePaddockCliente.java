@@ -890,7 +890,7 @@ public class ControlePaddockCliente {
 		});
 		panel.add(new JLabel(String.valueOf(carreiraDadosSrv.getPtsCarro())));
 
-		panel.add(new JLabel("Aero din‚mica Carro:") {
+		panel.add(new JLabel("Aero din√¢mica Carro:") {
 			@Override
 			public String getText() {
 				return Lang.msg("aerodinamicaCarro");

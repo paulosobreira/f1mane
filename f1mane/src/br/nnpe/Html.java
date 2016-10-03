@@ -12,13 +12,6 @@ public class Html {
 
 	static int superSize = 4;
 
-	/**
-	 * Este método recebe uma String como parâmetro e retorna uma String com uma
-	 * tag HTML bold (negrito).
-	 * 
-	 * @param - str.
-	 * @return - String com código HTML.
-	 */
 	public static String bold(String str) {
 		StringBuffer buffer = new StringBuffer();
 
@@ -27,15 +20,6 @@ public class Html {
 		return buffer.toString();
 	}
 
-	/**
-	 * Método que recebe duas Strings por parâmetro e retorna a tag HTML maito.
-	 * 
-	 * @param email
-	 *            - E-mail
-	 * @param nome
-	 *            - Pode ser tanto o próprio e-mail como qualquer outro nome
-	 * @return
-	 */
 	public static String mailto(String email, String nome) {
 		StringBuffer buffer = new StringBuffer();
 

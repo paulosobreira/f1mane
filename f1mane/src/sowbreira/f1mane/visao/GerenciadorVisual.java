@@ -1426,7 +1426,7 @@ public class GerenciadorVisual {
 	public boolean iniciarJogo() {
 		JPanel painelInicio = new JPanel();
 		painelInicio
-				.setBorder(new TitledBorder("Modo Completo com Qualificação:"));
+				.setBorder(new TitledBorder("Modo Completo com QualificaÃ§Ã£o:"));
 		gerarPainelJogoSingle(painelInicio);
 		painelInicio.setLayout(new GridLayout(13, 2));
 		int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(),

@@ -57,14 +57,14 @@ public class TravadaRoda implements Serializable {
 	}
 
 	public String encode() {
-		return idNo + "§" + tracado;
+		return idNo + "Âµ" + tracado;
 	}
 
 	public void decode(String val) {
 		if (val == null || "".equals(val)) {
 			return;
 		}
-		String[] sp = val.split("§");
+		String[] sp = val.split("Âµ");
 		idNo = parseInt(sp[0]);
 		tracado = parseInt(sp[1]);
 	}

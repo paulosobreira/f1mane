@@ -465,10 +465,6 @@ public class FormatDate extends Object {
 		return FormatDate.parseDate(calendar.getTime());
 	}
 
-	/**
-	 * * Retorna data resultado da some dos dias com a data passada como
-	 * parâmetro
-	 */
 	public static java.util.Date anoAnterior(java.util.Date DATA) {
 		java.util.Date resultado = null;
 		Calendar calendar = Calendar.getInstance();

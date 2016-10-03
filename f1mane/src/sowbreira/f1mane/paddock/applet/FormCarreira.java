@@ -84,7 +84,7 @@ public class FormCarreira extends JPanel {
 	};
 	private JSpinner ptsCarro = new JSpinner();
 
-	private JLabel labelPtsAeroDimanica = new JLabel("Aero din‚mica Carro:") {
+	private JLabel labelPtsAeroDimanica = new JLabel("Aero din√¢mica Carro:") {
 		@Override
 		public String getText() {
 			return Lang.msg("aerodinamicaCarro");

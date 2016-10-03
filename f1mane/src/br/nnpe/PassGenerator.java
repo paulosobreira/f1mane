@@ -36,23 +36,11 @@ public class PassGenerator {
 
 		for (int i = 0; i < 6; i++) {
 
-			// Gerar password somente com números
-
-			// if ((contL == 1) || ((contU) == 2)) {
 			arrTam = 9;
 
-			// Adding a digit to password
 			pass = pass + getDigit(genNum());
 			contL = 0;
 			contU = 0;
-			/*
-			 * } else { arrTam = 26;
-			 * 
-			 * if ((genNum() % 2) == 0) { //Adding a Upper character to password
-			 * pass = pass + getUpper(genNum()); contU++; } else { //Adding a
-			 * Lower character to password pass = pass + getLower(genNum());
-			 * contL++; } }
-			 */
 		}
 
 		return pass;

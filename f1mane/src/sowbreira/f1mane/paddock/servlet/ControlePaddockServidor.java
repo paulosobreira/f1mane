@@ -592,7 +592,6 @@ public class ControlePaddockServidor {
 		// String test = "#brual#llllp#";
 		// Logger.logar(test.replaceAll("#", ""));
 
-		// System.out.println(Lang.decodeTexto("�088� 0 2011"));
 		String chave = String.valueOf(System.currentTimeMillis());
 	}
 

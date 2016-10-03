@@ -25,7 +25,7 @@ public class Volta implements Serializable {
 	}
 
 	public String encode() {
-		return ciclosInicio + "§" + ciclosFim + "§" + pilotoId + "§"
+		return ciclosInicio + "Âµ" + ciclosFim + "Âµ" + pilotoId + "Âµ"
 				+ tempoPausado;
 	}
 
@@ -33,7 +33,7 @@ public class Volta implements Serializable {
 		if (val == null || "".equals(val)) {
 			return;
 		}
-		String[] sp = val.split("§");
+		String[] sp = val.split("Âµ");
 		ciclosInicio = parseLong(sp[0]);
 		ciclosFim = parseLong(sp[1]);
 		pilotoId = parseInt(sp[2]);

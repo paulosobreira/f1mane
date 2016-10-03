@@ -22,25 +22,15 @@ public class GeoUtil {
 	public static double calculaAnguloRad(Point a, Point b) {
 		int dx = b.x - a.x;
 		int dy = b.y - a.y;
-		// double tan = Math.atan((double) dy / dx);
 		double tan = Math.atan2(dy, dx);
-		// Logger.logar("Tangete" + tan);
-		// return tan;
 		return tan;
-		// 2 quadrantes, -pi/2 até pi/2
-		// return Math.atan2(dy, dx); // 4 quadrantes, -pi até pi
 	}
 
 	public static double calculaAngulo(Point a, Point b, double fator) {
 		int dx = b.x - a.x;
 		int dy = b.y - a.y;
-		// double tan = Math.atan((double) dy / dx);
 		double tan = Math.atan2(dy, dx);
-		// Logger.logar("Tangete" + tan);
-		// return tan;
 		return Math.toDegrees(tan) + fator;
-		// 2 quadrantes, -pi/2 até pi/2
-		// return Math.atan2(dy, dx); // 4 quadrantes, -pi até pi
 	}
 
 	public static List drawParabola(int velocity, int angle,

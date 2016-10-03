@@ -531,7 +531,7 @@ public class PainelEntradaCliente {
 		comboBoxCircuito.setEnabled(false);
 		comboTemporada.setSelectedItem(temporada);
 		comboTemporada.setEnabled(false);
-		painelInicio.setBorder(new TitledBorder("Configuração do carro") {
+		painelInicio.setBorder(new TitledBorder("ConfiguraÃ§Ã£o do carro") {
 			@Override
 			public String getTitle() {
 				return Lang.msg("233");

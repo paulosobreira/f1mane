@@ -64,7 +64,6 @@ public class Email {
 
 		Properties mailProps = new Properties();
 
-		// definição do mailserver
 		mailProps.put("mail.smtp.host", MAILSERVER);
 		mailProps.put("mail.smtp.port", 25);
 
@@ -73,9 +72,6 @@ public class Email {
 
 		mailProps.put("mail.smtp.auth", "true");
 
-		// colocam no formato de endereços, supostamente válidos, de email os
-		// dados
-		// passados pelos parâmetros to e from.
 		InternetAddress remetente = new InternetAddress(from);
 
 		Address[] addresses = new Address[to.length];
@@ -84,37 +80,22 @@ public class Email {
 			addresses[i] = destinatario;
 		}
 
-		// As duas linhas de código a seguir, são
-		// responsáveis por setar os atributos e
-		// propriedas necessárias do objeto message
-		// para que o email seja enviado.
-		// inicialização do objeto Message
 		Message message = new MimeMessage(mailSession);
 
-		// Data de envio da mensagem
 		message.setSentDate(new Date());
 
-		// Definição de quem está enviando o email
 		message.setFrom(remetente);
 
-		// define o(s) destinatário(s) e qual o tipo do
-		// destinatário.
-		// os possíveis tipos de destinatário: TO, CC, BCC
 		message.setRecipients(Message.RecipientType.TO, addresses);
 
-		// definição do assunto do email
 		message.setSubject(subject);
 
-		// definição do conteúdo da mesnagem e do
-		// tipo da mensagem
 		if (html) {
 			message.setContent(mensagem.toString(), "text/html");
 		} else {
 			message.setContent(mensagem.toString(), "text/plain");
 		}
 
-		// a linha de código seguinte é a responsável
-		// pelo envio do email
 		Transport.send(message);
 
 	}
@@ -124,7 +105,6 @@ public class Email {
 			throws AddressException, MessagingException {
 		Properties mailProps = new Properties();
 
-		// definição do mailserver
 		mailProps.put("mail.smtp.host", MAILSERVER);
 		// mailProps.put("mail.smtp.port", 125);
 		Authenticator auth = new SMTPAuthenticator();
@@ -132,9 +112,6 @@ public class Email {
 
 		mailProps.put("mail.smtp.auth", "true");
 
-		// colocam no formato de endereços, supostamente válidos, de email os
-		// dados
-		// passados pelos parâmetros to e from.
 		InternetAddress remetente = new InternetAddress(from);
 
 		Address[] addresses = new Address[to.length];
@@ -143,28 +120,16 @@ public class Email {
 			addresses[i] = destinatario;
 		}
 
-		// As duas linhas de código a seguir, são
-		// responsáveis por setar os atributos e
-		// propriedas necessárias do objeto message
-		// para que o email seja enviado.
-		// inicialização do objeto Message
 		Message message = new MimeMessage(mailSession);
 
-		// Data de envio da mensagem
 		message.setSentDate(new Date());
 
-		// Definição de quem está enviando o email
 		message.setFrom(remetente);
 
-		// define o(s) destinatário(s) e qual o tipo do
-		// destinatário.
-		// os possíveis tipos de destinatário: TO, CC, BCC
 		message.setRecipients(Message.RecipientType.TO, addresses);
 
-		// definição do assunto do email
 		message.setSubject(subject);
 
-		// definição do conteúdo da mesnagem e do tipo da mensagem.
 		Multipart mp = new MimeMultipart();
 		MimeBodyPart mbp1 = new MimeBodyPart();
 		mbp1.setContent(mensagem.toString(), "text/html");
@@ -180,8 +145,6 @@ public class Email {
 		// message.setContent(mensagem.toString(), "text/html");
 		message.setContent(mp);
 
-		// a linha de código seguinte é a responsável
-		// pelo envio do email
 		Transport.send(message);
 	}
 
