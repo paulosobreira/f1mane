@@ -507,7 +507,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		dadosParticiparJogo.setAsa((String) asa);
 		if (monitorJogo != null) {
 			monitorJogo.alterarOpcoesBox(tpneu, combust, asa);
-		}else{
+		} else {
 			Logger.logar("monitorJogo null");
 		}
 	}
@@ -593,14 +593,19 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 						&& (pos == 2 || pos == 1)) {
 					mod *= 2;
 				}
-				if (piloto.getIndiceTracado() <= 0) {
-					piloto.setTracadoAntigo(piloto.getTracado());
-				}
-				piloto.setTracado(pos);
-				if (piloto.getIndiceTracado() <= 0
-						&& piloto.getTracado() != piloto.getTracadoAntigo()) {
-					piloto.setIndiceTracado((int) (mod
-							* getCircuito().getMultiplicadorLarguraPista()));
+				if (piloto.getIndiceTracado() > 0
+						&& pos != piloto.getTracado()) {
+					piloto.decIndiceTracado();
+				} else {
+					if (piloto.getIndiceTracado() <= 0) {
+						piloto.setTracadoAntigo(piloto.getTracado());
+					}
+					piloto.setTracado(pos);
+					if (piloto.getIndiceTracado() <= 0 && piloto
+							.getTracado() != piloto.getTracadoAntigo()) {
+						piloto.setIndiceTracado((int) (mod * getCircuito()
+								.getMultiplicadorLarguraPista()));
+					}
 				}
 				piloto.setAutoPos(posis.autoPos);
 				calculaSegundosParaLider(piloto);

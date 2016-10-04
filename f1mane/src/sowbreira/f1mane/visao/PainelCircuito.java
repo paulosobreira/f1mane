@@ -3258,7 +3258,7 @@ public class PainelCircuito {
 						(int) ((noAtual.getY() - descontoCentraliza.y) * zoom),
 						10, 10);
 			}
-			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
+			piloto.centralizaFrenteTrazCarro(controleJogo);
 			desenhaCarroCima(g2d, piloto);
 			if (piloto.equals(pilotoSelecionado)
 					|| piloto.getCarro().isPaneSeca()
@@ -3694,7 +3694,7 @@ public class PainelCircuito {
 		 */
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
-			piloto.centralizaDianteiraTrazeiraCarro(controleJogo);
+			piloto.centralizaFrenteTrazCarro(controleJogo);
 		}
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
