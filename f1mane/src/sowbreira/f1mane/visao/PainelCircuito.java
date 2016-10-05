@@ -868,7 +868,10 @@ public class PainelCircuito {
 	private int loopCalculaGanhoSuave(int diff) {
 		int ganhoSuave = 0;
 		int maxLoop = 1000;
-		int inc = 24;
+		int inc = 30;
+		if (gerenciadorVisual.getFpsLimite() == 30.0) {
+			inc = 20;
+		}
 		for (int i = 0; i < maxLoop; i += inc) {
 			if (diff >= i && diff < i + inc) {
 				break;
@@ -4519,12 +4522,12 @@ public class PainelCircuito {
 			yBase += 17;
 			int contAlt = yBase;
 			int contVolta = 1;
-			List voltas = new ArrayList<>(); 
-		    voltas.addAll(pilotoSelecionado.getVoltas());
+			List voltas = new ArrayList<>();
+			voltas.addAll(pilotoSelecionado.getVoltas());
 			int cont = 1;
 			for (int i = voltas.size() - 1; i > -1; i--) {
 				Volta volta = (Volta) voltas.get(i);
-				if(volta==null){
+				if (volta == null) {
 					continue;
 				}
 				if (volta.obterTempoVolta() == 0) {

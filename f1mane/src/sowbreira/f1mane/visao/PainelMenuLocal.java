@@ -752,7 +752,7 @@ public class PainelMenuLocal {
 			desenhaMenuQualificacao(g2d);
 			desenhaMenuDesafiarPilto(g2d);
 			desenhaMenuSobre(g2d);
-			desenhaFPS(g2d, getWidth() - 70, getHeight() - 50);
+			//desenhaFPS(g2d, getWidth() - 70, getHeight() - 50);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
