@@ -2210,6 +2210,9 @@ public class PainelCircuito {
 	}
 
 	private void desenhaComandoIrBox(Graphics2D g2d) {
+		if (isExibeResultadoFinal()) {
+			return;
+		}
 		if (qtdeLuzesAcesas > 0) {
 			return;
 		}
