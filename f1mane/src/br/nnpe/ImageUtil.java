@@ -1,6 +1,9 @@
 package br.nnpe;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -101,8 +104,9 @@ public class ImageUtil {
 		}
 		AffineTransform afZoom = new AffineTransform();
 		afZoom.setToScale(fatorx, fatory);
-		BufferedImage dst = new BufferedImage((int) Math.round(src.getWidth()
-				* fatorx), (int) Math.round(src.getHeight() * fatory),
+		BufferedImage dst = new BufferedImage(
+				(int) Math.round(src.getWidth() * fatorx),
+				(int) Math.round(src.getHeight() * fatory),
 				BufferedImage.TYPE_INT_ARGB);
 		AffineTransformOp op = new AffineTransformOp(afZoom,
 				AffineTransformOp.TYPE_BILINEAR);
@@ -110,7 +114,8 @@ public class ImageUtil {
 		return dst;
 	}
 
-	public static BufferedImage geraTransparencia(BufferedImage src, Color color) {
+	public static BufferedImage geraTransparencia(BufferedImage src,
+			Color color) {
 
 		BufferedImage bufferedImageRetorno = new BufferedImage(src.getWidth(),
 				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -210,12 +215,13 @@ public class ImageUtil {
 		return geraTransparencia(src, 250);
 	}
 
-	public static BufferedImage geraTransparencia(BufferedImage src, int ingVal) {
+	public static BufferedImage geraTransparencia(BufferedImage src,
+			int ingVal) {
 		return geraTransparencia(src, ingVal, 255);
 	}
 
-	public static BufferedImage geraTransparencia(BufferedImage src,
-			int ingVal, int translucidez) {
+	public static BufferedImage geraTransparencia(BufferedImage src, int ingVal,
+			int translucidez) {
 
 		BufferedImage bufferedImageRetorno = new BufferedImage(src.getWidth(),
 				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -242,6 +248,34 @@ public class ImageUtil {
 		}
 
 		return bufferedImageRetorno;
+	}
+
+	public static BufferedImage toCompatibleImage(BufferedImage image) {
+		// obtain the current system graphical settings
+		GraphicsConfiguration gfx_config = GraphicsEnvironment
+				.getLocalGraphicsEnvironment().getDefaultScreenDevice()
+				.getDefaultConfiguration();
+
+		/*
+		 * if image is already compatible and optimized for current system
+		 * settings, simply return it
+		 */
+		if (image.getColorModel().equals(gfx_config.getColorModel()))
+			return image;
+
+		// image is not optimized, so create a new image that is
+		BufferedImage new_image = gfx_config.createCompatibleImage(
+				image.getWidth(), image.getHeight(), image.getTransparency());
+
+		// get the graphics context of the new image to draw the old image on
+		Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+
+		// actually draw the image and dispose of context no longer needed
+		g2d.drawImage(image, 0, 0, null);
+		g2d.dispose();
+
+		// return the new optimized image
+		return new_image;
 	}
 
 }

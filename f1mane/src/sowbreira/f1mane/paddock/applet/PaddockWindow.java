@@ -373,7 +373,7 @@ public class PaddockWindow {
 		Set top = Logger.topExceptions.keySet();
 		for (Iterator iterator = top.iterator(); iterator.hasNext();) {
 			String exept = (String) iterator.next();
-			area.append("Quantidade : " + Logger.topExceptions.get(exept));
+			area.append("Qtde : " + Logger.topExceptions.get(exept));
 			area.append("\n");
 			area.append(exept.replaceAll("<br>", "\n"));
 			area.append("\n");
