@@ -41,6 +41,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
 import br.nnpe.Constantes;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
@@ -876,7 +877,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					+ "sowbreira/f1mane/recursos/" + backGround;
 			Logger.logar("Caminho Carregar Bkg " + caminho);
 			url = new URL(caminho);
-			BufferedImage buff = ImageIO.read(url.openStream());
+			BufferedImage buff = ImageUtil
+					.toCompatibleImage(ImageIO.read(url.openStream()));
 			return buff;
 		} catch (Exception e) {
 			Logger.logarExept(e);
