@@ -56,6 +56,9 @@ public class Lang {
 	}
 
 	public static void mudarIdioma(String sufix_) {
+		if (!"en".equals(sufix_) && !"pt".equals(sufix_)) {
+			return;
+		}
 		sufix = sufix_;
 		bundle = null;
 		iniciaBundle();

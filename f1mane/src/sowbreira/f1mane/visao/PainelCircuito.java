@@ -301,6 +301,7 @@ public class PainelCircuito {
 	private java.awt.geom.Rectangle2D.Double rectangleGerarGrid;
 	private java.awt.geom.Rectangle2D.Double rectangleSafetyCarCima;
 	private java.awt.geom.Rectangle2D.Double rectangleGerarBoxes;
+	private int contImgFundo;
 	public static boolean efeitosLigados = true;
 
 	public PainelCircuito(InterfaceJogo jogo,
@@ -326,19 +327,16 @@ public class PainelCircuito {
 						pontoClicado = p;
 						double menor = Integer.MAX_VALUE;
 						int pos = 0;
-						double p0p = GeoUtil.distaciaEntrePontos(
-								new Point(pilotoJogador.getP0().x
-										- descontoCentraliza.x,
+						double p0p = GeoUtil.distaciaEntrePontos(new Point(
+								pilotoJogador.getP0().x - descontoCentraliza.x,
 								pilotoJogador.getP0().y - descontoCentraliza.y),
 								p);
-						double p1p = GeoUtil.distaciaEntrePontos(
-								new Point(pilotoJogador.getP1().x
-										- descontoCentraliza.x,
+						double p1p = GeoUtil.distaciaEntrePontos(new Point(
+								pilotoJogador.getP1().x - descontoCentraliza.x,
 								pilotoJogador.getP1().y - descontoCentraliza.y),
 								p);
-						double p2p = GeoUtil.distaciaEntrePontos(
-								new Point(pilotoJogador.getP2().x
-										- descontoCentraliza.x,
+						double p2p = GeoUtil.distaciaEntrePontos(new Point(
+								pilotoJogador.getP2().x - descontoCentraliza.x,
 								pilotoJogador.getP2().y - descontoCentraliza.y),
 								p);
 						if (p0p < menor) {
@@ -2914,7 +2912,7 @@ public class PainelCircuito {
 					0);
 			gerarBoxes();
 		}
-		desenhaTintaPistaEZebra(g2d);
+		desenhaTintaPistaZebra(g2d);
 		desenhaPista(g2d);
 		desenhaPistaBox(g2d);
 		desenhaBoxes(g2d);
@@ -3755,11 +3753,13 @@ public class PainelCircuito {
 						(int) Util.intervalo(eixoDianteras.y - eixoDiatero,
 								eixoDianteras.y + eixoDiatero));
 
-				Point dest = new Point((int) Util.intervalo(
-						piloto.getTrazeira().getX() - Util.intervalo(2.5, 6),
-						(int) piloto.getTrazeira().getX()
-								+ piloto.getTrazeira().getWidth()
-								+ Util.intervalo(2.5, 6)),
+				Point dest = new Point(
+						(int) Util.intervalo(
+								piloto.getTrazeira().getX()
+										- Util.intervalo(2.5, 6),
+								(int) piloto.getTrazeira().getX()
+										+ piloto.getTrazeira().getWidth()
+										+ Util.intervalo(2.5, 6)),
 						(int) Util.intervalo(
 								piloto.getTrazeira().getY()
 										- Util.intervalo(2.5, 6),
@@ -3817,11 +3817,13 @@ public class PainelCircuito {
 						(int) Util.intervalo(eixoDianteras.y - eixo,
 								eixoDianteras.y + eixo));
 
-				Point dest = new Point((int) Util.intervalo(
-						piloto.getTrazeira().getX() - Util.intervalo(2.5, 15),
-						piloto.getTrazeira().getX()
-								+ piloto.getTrazeira().getWidth()
-								+ Util.intervalo(2.5, 15)),
+				Point dest = new Point(
+						(int) Util.intervalo(
+								piloto.getTrazeira().getX()
+										- Util.intervalo(2.5, 15),
+								piloto.getTrazeira().getX()
+										+ piloto.getTrazeira().getWidth()
+										+ Util.intervalo(2.5, 15)),
 						(int) Util.intervalo(
 								piloto.getTrazeira().getY()
 										- Util.intervalo(2.5, 15),
@@ -4064,17 +4066,17 @@ public class PainelCircuito {
 						(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 						(Carro.ALTURA));
 			}
-			Point cima = GeoUtil
-					.calculaPonto(calculaAngulo,
-							Util.inte(Carro.ALTURA
+			Point cima = GeoUtil.calculaPonto(calculaAngulo,
+					Util.inte(
+							Carro.ALTURA
 									* controleJogo.getCircuito()
 											.getMultiplicadorLarguraPista()
 									* zoom),
 					new Point(Util.inte(rectangleGerarGrid.getCenterX()),
 							Util.inte(rectangleGerarGrid.getCenterY())));
-			Point baixo = GeoUtil
-					.calculaPonto(calculaAngulo + 180,
-							Util.inte(Carro.ALTURA
+			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180,
+					Util.inte(
+							Carro.ALTURA
 									* controleJogo.getCircuito()
 											.getMultiplicadorLarguraPista()
 									* zoom),
@@ -4171,17 +4173,17 @@ public class PainelCircuito {
 						(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 						(Carro.ALTURA));
 
-				cima = GeoUtil
-						.calculaPonto(calculaAngulo,
-								Util.inte(Carro.ALTURA
+				cima = GeoUtil.calculaPonto(calculaAngulo,
+						Util.inte(
+								Carro.ALTURA
 										* controleJogo.getCircuito()
 												.getMultiplicadorLarguraPista()
 										* zoom),
 						new Point(Util.inte(rectangleGerarGrid.getCenterX()),
 								Util.inte(rectangleGerarGrid.getCenterY())));
-				baixo = GeoUtil
-						.calculaPonto(calculaAngulo + 180,
-								Util.inte(Carro.ALTURA
+				baixo = GeoUtil.calculaPonto(calculaAngulo + 180,
+						Util.inte(
+								Carro.ALTURA
 										* controleJogo.getCircuito()
 												.getMultiplicadorLarguraPista()
 										* zoom),
@@ -4678,22 +4680,24 @@ public class PainelCircuito {
 				(limitesViewPort.x + (limitesViewPort.width / 2) + 6)
 						- (largura / 2),
 				limitesViewPort.y + 24);
-		if (circuito.isUsaBkg() && backGround == null) {
+		if (circuito.isUsaBkg() && backGround == null
+				&& contImgFundo < 100000000) {
 			txt = Lang.msg("carregandoBackground");
 			largura = 0;
 			for (int i = 0; i < txt.length(); i++) {
 				largura += g2d.getFontMetrics().charWidth(txt.charAt(i));
 			}
-			g2d.setColor(luzApagada);
+			g2d.setColor(OcilaCor.geraOcila("carregandoBackground", yel));
 			g2d.fillRoundRect(
 					limitesViewPort.x + (limitesViewPort.width / 2)
 							- (largura / 2),
-					limitesViewPort.y + 34, largura + 10, 20, 0, 0);
+					limitesViewPort.y + 234, largura + 10, 20, 0, 0);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(txt,
 					(limitesViewPort.x + (limitesViewPort.width / 2) + 6)
 							- (largura / 2),
-					limitesViewPort.y + 48);
+					limitesViewPort.y + 248);
+			contImgFundo++;
 
 		}
 	}
@@ -5959,7 +5963,7 @@ public class PainelCircuito {
 		g2d.setStroke(stroke);
 	}
 
-	private void desenhaTintaPistaEZebra(Graphics2D g2d) {
+	private void desenhaTintaPistaZebra(Graphics2D g2d) {
 		g2d.setColor(Color.WHITE);
 		Stroke stroke = g2d.getStroke();
 		g2d.setStroke(pistaTinta);
@@ -6068,17 +6072,17 @@ public class PainelCircuito {
 						(Carro.ALTURA));
 			}
 
-			Point cima = GeoUtil
-					.calculaPonto(calculaAngulo,
-							Util.inte(Carro.ALTURA
+			Point cima = GeoUtil.calculaPonto(calculaAngulo,
+					Util.inte(
+							Carro.ALTURA
 									* controleJogo.getCircuito()
 											.getMultiplicadorLarguraPista()
 									* zoom),
 					new Point(Util.inte(rectangleGerarBoxes.getCenterX()),
 							Util.inte(rectangleGerarBoxes.getCenterY())));
-			Point baixo = GeoUtil
-					.calculaPonto(calculaAngulo + 180,
-							Util.inte(Carro.ALTURA
+			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180,
+					Util.inte(
+							Carro.ALTURA
 									* controleJogo.getCircuito()
 											.getMultiplicadorLarguraPista()
 									* zoom),
