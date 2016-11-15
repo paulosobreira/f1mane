@@ -207,8 +207,8 @@ public class CarregadorRecursos {
 
 		BufferedImage backGround = null;
 		try {
-			backGround = ImageUtil.toCompatibleImage(ImageIO
-					.read(CarregadorRecursos.class.getResource(backGroundStr)));
+			backGround = ImageIO
+					.read(CarregadorRecursos.class.getResource(backGroundStr));
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}

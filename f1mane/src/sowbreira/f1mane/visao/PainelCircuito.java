@@ -3558,6 +3558,18 @@ public class PainelCircuito {
 		if (controleJogo.isCorridaPausada() || piloto.isDesqualificado()) {
 			return calculaAngulo;
 		}
+		
+		double variacao1 = 5.0;
+		double variacao2 = 10.0;
+		if(Clima.NUBLADO.equals(controleJogo.getClima())){
+			variacao1 = 10.0;
+			variacao2 = 15.0;	
+		}
+		if(controleJogo.isChovendo()){
+			variacao1 = 15.0;
+			variacao2 = 20.0;	
+		}
+		
 		boolean rabeadaAgressivo = piloto.isAgressivo()
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
 				&& (noAtual.verificaCruvaAlta() || noAtual.verificaCruvaBaixa())
@@ -3568,9 +3580,9 @@ public class PainelCircuito {
 
 		if (rabeadaAgressivo || rabeadaPneuErrado) {
 			if (noAtual.verificaCruvaAlta())
-				calculaAngulo += Util.intervalo(-5, 5);
+				calculaAngulo += Util.intervalo(-variacao1, variacao1);
 			if (noAtual.verificaCruvaBaixa())
-				calculaAngulo += Util.intervalo(-10.0, 10.0);
+				calculaAngulo += Util.intervalo(-variacao2, variacao2);
 		}
 		if ((piloto.getTracado() == 4 || piloto.getTracado() == 5)
 				&& Math.random() > 0.9) {
