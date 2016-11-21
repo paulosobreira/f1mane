@@ -707,7 +707,7 @@ public class PainelCampeonato extends JPanel {
 		p1.add(new JLabel() {
 			@Override
 			public String getText() {
-				return campeonato.isSemReabasteciemnto() ? Lang.msg("SIM")
+				return campeonato.isReabasteciemnto() ? Lang.msg("SIM")
 						: Lang.msg("NAO");
 			}
 		});
@@ -721,7 +721,7 @@ public class PainelCampeonato extends JPanel {
 		p1.add(new JLabel() {
 			@Override
 			public String getText() {
-				return campeonato.isSemTrocaPneus() ? Lang.msg("SIM") : Lang
+				return campeonato.isTrocaPneus() ? Lang.msg("SIM") : Lang
 						.msg("NAO");
 			}
 		});

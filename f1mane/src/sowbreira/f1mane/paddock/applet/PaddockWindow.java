@@ -736,7 +736,7 @@ public class PaddockWindow {
 			}
 		});
 		panelJogo.add(new JLabel(
-				detalhesJogo.getDadosCriarJogo().isSemReabastecimento()
+				detalhesJogo.getDadosCriarJogo().isReabastecimento()
 						? Lang.msg("SIM")
 						: Lang.msg("NAO")));
 		panelJogo.add(new JLabel("Sem troca pneu: ") {
@@ -747,7 +747,7 @@ public class PaddockWindow {
 			}
 		});
 		panelJogo.add(
-				new JLabel(detalhesJogo.getDadosCriarJogo().isSemTrocaPeneu()
+				new JLabel(detalhesJogo.getDadosCriarJogo().isTrocaPeneu()
 						? Lang.msg("SIM")
 						: Lang.msg("NAO")));
 

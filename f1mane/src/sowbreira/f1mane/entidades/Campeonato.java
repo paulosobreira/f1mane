@@ -26,8 +26,8 @@ public class Campeonato implements Serializable {
 	private Map<String, Integer> pilotosHabilidadeCampeonato = new HashMap<String, Integer>();
 	private Map<String, Integer> equipesPotenciaCampeonato = new HashMap<String, Integer>();
 	private Integer qtdeVoltas;
-	private boolean semReabasteciemnto;
-	private boolean semTrocaPneus;
+	private boolean reabasteciemnto;
+	private boolean trocaPneus;
 	private boolean kers;
 	private boolean drs;
 	private boolean ultimaCorridaSemDesafiar;
@@ -122,20 +122,20 @@ public class Campeonato implements Serializable {
 		this.equipesPotenciaCampeonato = equipesPotenciaCampeonato;
 	}
 
-	public boolean isSemReabasteciemnto() {
-		return semReabasteciemnto;
+	public boolean isReabasteciemnto() {
+		return reabasteciemnto;
 	}
 
-	public void setSemReabasteciemnto(boolean semReabasteciemnto) {
-		this.semReabasteciemnto = semReabasteciemnto;
+	public void setReabasteciemnto(boolean reabasteciemnto) {
+		this.reabasteciemnto = reabasteciemnto;
 	}
 
-	public boolean isSemTrocaPneus() {
-		return semTrocaPneus;
+	public boolean isTrocaPneus() {
+		return trocaPneus;
 	}
 
-	public void setSemTrocaPneus(boolean semTrocaPneus) {
-		this.semTrocaPneus = semTrocaPneus;
+	public void setTrocaPneus(boolean trocaPneus) {
+		this.trocaPneus = trocaPneus;
 	}
 
 	public boolean isKers() {

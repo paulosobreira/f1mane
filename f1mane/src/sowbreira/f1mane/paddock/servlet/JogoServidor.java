@@ -220,8 +220,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
-			semReabastacimento = dadosCriarJogo.isSemReabastecimento();
-			semTrocaPneu = dadosCriarJogo.isSemTrocaPeneu();
+			reabastacimento = dadosCriarJogo.isReabastecimento();
+			trocaPneu = dadosCriarJogo.isTrocaPeneu();
 			kers = dadosCriarJogo.isKers();
 			drs = dadosCriarJogo.isDrs();
 		} catch (Exception e) {

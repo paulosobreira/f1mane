@@ -666,6 +666,10 @@ public class ControleBox {
 				}
 			}
 		}
+		if(asfaltoAbrasivo && piloto.getPosicao()<=3){
+			controleJogo
+			.infoPrioritaria(Html.orange(Lang.msg("asfaltoAbrasivo")));
+		}
 		return asfaltoAbrasivo;
 	}
 

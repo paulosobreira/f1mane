@@ -32,8 +32,8 @@ public class DadosCriarJogo implements Serializable {
 	private Integer qtdeVoltas = null;
 	private String nivelCorrida = null;
 	private List pilotosCarreira;
-	private boolean semReabastecimento;
-	private boolean semTrocaPeneu;
+	private boolean reabastecimento;
+	private boolean trocaPeneu;
 	private boolean kers;
 	private boolean drs;
 
@@ -61,20 +61,20 @@ public class DadosCriarJogo implements Serializable {
 		this.drs = drs;
 	}
 
-	public boolean isSemReabastecimento() {
-		return semReabastecimento;
+	public boolean isReabastecimento() {
+		return reabastecimento;
 	}
 
-	public void setSemReabastecimento(boolean semReabastecimento) {
-		this.semReabastecimento = semReabastecimento;
+	public void setReabastecimento(boolean reabastecimento) {
+		this.reabastecimento = reabastecimento;
 	}
 
-	public boolean isSemTrocaPeneu() {
-		return semTrocaPeneu;
+	public boolean isTrocaPeneu() {
+		return trocaPeneu;
 	}
 
-	public void setSemTrocaPeneu(boolean semTrocaPeneu) {
-		this.semTrocaPeneu = semTrocaPeneu;
+	public void setTrocaPeneu(boolean trocaPeneu) {
+		this.trocaPeneu = trocaPeneu;
 	}
 
 	public List getPilotosCarreira() {

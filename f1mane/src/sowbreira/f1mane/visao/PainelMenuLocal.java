@@ -990,10 +990,10 @@ public class PainelMenuLocal {
 		circuitoSelecionado = campeonato.getCircuitoVez();
 		numVoltasSelecionado = campeonato.getQtdeVoltas();
 		nivelSelecionado = campeonato.getNivel();
-		reabasteciemto = campeonato.isSemReabasteciemnto();
+		reabasteciemto = campeonato.isReabasteciemnto();
 		kers = campeonato.isDrs();
 		drs = campeonato.isDrs();
-		trocaPneus = campeonato.isSemTrocaPneus();
+		trocaPneus = campeonato.isTrocaPneus();
 		qtdeEtapasCampeonato = campeonato.getCorridas().size();
 		etapaAtual = campeonato.getEtapa();
 		climaAleatorio();

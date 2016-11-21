@@ -771,12 +771,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public boolean isSemReabastacimento() {
-		return dadosParticiparJogo.isSemReabastecimento();
+		return !dadosParticiparJogo.isReabastecimento();
 	}
 
 	@Override
 	public boolean isSemTrocaPneu() {
-		return dadosParticiparJogo.isSemTrocaPeneu();
+		return !dadosParticiparJogo.isTrocaPeneu();
 	}
 
 	@Override

@@ -68,8 +68,8 @@ public class PainelEntradaCliente {
 	private JSlider sliderDificuldadeUltrapassagem;
 	private JSpinner spinnerSkillPadraoPilotos;
 	private JSpinner spinnerPotenciaPadraoCarros;
-	protected JCheckBox semTrocaPneu;
-	protected JCheckBox semReabastacimento;
+	protected JCheckBox trocaPneu;
+	protected JCheckBox reabastacimento;
 	protected JCheckBox kers;
 	protected JCheckBox drs;
 	private List pilotos;
@@ -220,9 +220,9 @@ public class PainelEntradaCliente {
 				return Lang.msg("302");
 			}
 		});
-		semReabastacimento = new JCheckBox();
-		semReabastacimento.setSelected(true);
-		p1.add(semReabastacimento);
+		reabastacimento = new JCheckBox();
+		reabastacimento.setSelected(true);
+		p1.add(reabastacimento);
 		painelInicio.add(p1);
 
 		JPanel p2 = new JPanel(new GridLayout(1, 2));
@@ -233,8 +233,8 @@ public class PainelEntradaCliente {
 				return Lang.msg("303");
 			}
 		});
-		semTrocaPneu = new JCheckBox();
-		p2.add(semTrocaPneu);
+		trocaPneu = new JCheckBox();
+		p2.add(trocaPneu);
 		painelInicio.add(p2);
 
 		JPanel p3 = new JPanel(new GridLayout(1, 2));
@@ -303,10 +303,10 @@ public class PainelEntradaCliente {
 			spinnerQtdeVoltas.setEnabled(false);
 			comboBoxNivelCorrida.setSelectedItem(Lang.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
-			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
-			semReabastacimento.setEnabled(false);
-			semTrocaPneu.setSelected(campeonato.isSemTrocaPneus());
-			semTrocaPneu.setEnabled(false);
+			reabastacimento.setSelected(!campeonato.isSemReabasteciemnto());
+			reabastacimento.setEnabled(false);
+			trocaPneu.setSelected(!campeonato.isSemTrocaPneus());
+			trocaPneu.setEnabled(false);
 			nomeCampeonato.setText(campeonato.getNome());
 			comboBoxCircuito.setSelectedItem(campeonato.getCircuitoAtual());
 			comboBoxCircuito.setEnabled(false);
@@ -493,8 +493,8 @@ public class PainelEntradaCliente {
 		dadosCriarJogo.setCircuitoSelecionado(circuitoSelecionado);
 		dadosCriarJogo.setNivelCorrida(Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
 		dadosCriarJogo.setClima((Clima) comboBoxClimaInicial.getSelectedItem());
-		dadosCriarJogo.setSemReabastecimento(semReabastacimento.isSelected());
-		dadosCriarJogo.setSemTrocaPeneu(semTrocaPneu.isSelected());
+		dadosCriarJogo.setReabastecimento(reabastacimento.isSelected());
+		dadosCriarJogo.setTrocaPeneu(trocaPneu.isSelected());
 		dadosCriarJogo.setKers(kers.isSelected());
 		dadosCriarJogo.setDrs(drs.isSelected());
 	}

@@ -51,8 +51,8 @@ public class ControleJogoLocal extends ControleRecursos
 	protected double niveljogo = InterfaceJogo.MEDIO_NV;
 	protected String nivelCorrida;
 	protected boolean corridaTerminada;
-	protected boolean semTrocaPneu;
-	protected boolean semReabastacimento;
+	protected boolean trocaPneu;
+	protected boolean reabastacimento;
 	protected boolean kers;
 	protected boolean drs;
 
@@ -665,7 +665,7 @@ public class ControleJogoLocal extends ControleRecursos
 				campeonato.getTemporada(), campeonato.getQtdeVoltas(),
 				Util.intervalo(130, 370), clima, campeonato.getNivel(),
 				pilotoSel, campeonato.isKers(), campeonato.isDrs(),
-				campeonato.isSemTrocaPneus(), campeonato.isSemReabasteciemnto(),
+				campeonato.isTrocaPneus(), campeonato.isReabasteciemnto(),
 				combustivelSelecionado, asaSelecionado, pneuSelecionado);
 		this.controleCampeonato = new ControleCampeonato(campeonato, mainFrame);
 		controleCampeonato.iniciaCorrida(campeonato.getCircuitoVez());
@@ -681,8 +681,8 @@ public class ControleJogoLocal extends ControleRecursos
 			String pneuSelecionado) throws Exception {
 		this.qtdeVoltas = new Integer(numVoltasSelecionado);
 		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
-		this.semReabastacimento = !reabasteciemto;
-		this.semTrocaPneu = !trocaPneus;
+		this.reabastacimento = reabasteciemto;
+		this.trocaPneu = trocaPneus;
 		this.circuitoSelecionado = circuitoSelecionado;
 		this.kers = kers;
 		this.drs = drs;
@@ -732,11 +732,11 @@ public class ControleJogoLocal extends ControleRecursos
 			circuitoSelecionado = (String) gerenciadorVisual
 					.getComboBoxCircuito().getSelectedItem();
 
-			if (gerenciadorVisual.getSemReabastacimento().isSelected()) {
-				semReabastacimento = true;
+			if (gerenciadorVisual.getReabastacimento().isSelected()) {
+				reabastacimento = true;
 			}
-			if (gerenciadorVisual.getSemTrocaPneu().isSelected()) {
-				semTrocaPneu = true;
+			if (gerenciadorVisual.getTrocaPneu().isSelected()) {
+				trocaPneu = true;
 			}
 			if (gerenciadorVisual.getKers().isSelected()) {
 				kers = true;
@@ -954,19 +954,19 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	public boolean isSemTrocaPneu() {
-		return semTrocaPneu;
+		return trocaPneu;
 	}
 
-	public void setSemTrocaPneu(boolean semTrocaPneu) {
-		this.semTrocaPneu = semTrocaPneu;
+	public void setSemTrocaPneu(boolean trocaPneu) {
+		this.trocaPneu = !trocaPneu;
 	}
 
 	public boolean isSemReabastacimento() {
-		return semReabastacimento;
+		return !reabastacimento;
 	}
 
-	public void setSemReabastacimento(boolean semReabastacimento) {
-		this.semReabastacimento = semReabastacimento;
+	public void setSemReabastacimento(boolean reabastacimento) {
+		this.reabastacimento = !reabastacimento;
 	}
 
 	@Override

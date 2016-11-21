@@ -104,8 +104,8 @@ public class GerenciadorVisual {
 	private long ultimaChamadaBox;
 	private List listaPilotosCombo;
 	private List listaCarrosCombo;
-	protected JCheckBox semTrocaPneu;
-	protected JCheckBox semReabastacimento;
+	protected JCheckBox trocaPneu;
+	protected JCheckBox reabastacimento;
 	protected JCheckBox kers;
 	protected JCheckBox drs;
 
@@ -975,8 +975,8 @@ public class GerenciadorVisual {
 				return Lang.msg("302");
 			}
 		});
-		semReabastacimento = new JCheckBox();
-		p1.add(semReabastacimento);
+		reabastacimento = new JCheckBox();
+		p1.add(reabastacimento);
 		grid.add(p1);
 
 		JPanel p2 = new JPanel(new GridLayout(1, 2));
@@ -987,8 +987,8 @@ public class GerenciadorVisual {
 				return Lang.msg("303");
 			}
 		});
-		semTrocaPneu = new JCheckBox();
-		p2.add(semTrocaPneu);
+		trocaPneu = new JCheckBox();
+		p2.add(trocaPneu);
 		grid.add(p2);
 
 		JPanel p3 = new JPanel(new GridLayout(1, 2));
@@ -1167,12 +1167,12 @@ public class GerenciadorVisual {
 				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	}
 
-	public JCheckBox getSemTrocaPneu() {
-		return semTrocaPneu;
+	public JCheckBox getTrocaPneu() {
+		return trocaPneu;
 	}
 
-	public JCheckBox getSemReabastacimento() {
-		return semReabastacimento;
+	public JCheckBox getReabastacimento() {
+		return reabastacimento;
 	}
 
 	public JCheckBox getKers() {
@@ -1199,7 +1199,7 @@ public class GerenciadorVisual {
 		}
 		Integer combustivelInicial = (Integer) spinnerCombustivel.getValue();
 		if (combustivelInicial <= 0) {
-			if (semReabastacimento.isSelected()) {
+			if (reabastacimento.isSelected()) {
 				spinnerCombustivel.setValue(new Integer(1));
 			} else {
 				spinnerCombustivel.setValue(new Integer(20));
@@ -1225,11 +1225,11 @@ public class GerenciadorVisual {
 		spinnerQtdeVoltas.setValue(new Integer(12));
 		if (campeonato != null) {
 
-			semReabastacimento.setSelected(campeonato.isSemReabasteciemnto());
-			semReabastacimento.setEnabled(false);
+			reabastacimento.setSelected(campeonato.isReabasteciemnto());
+			reabastacimento.setEnabled(false);
 
-			semTrocaPneu.setSelected(campeonato.isSemTrocaPneus());
-			semTrocaPneu.setEnabled(false);
+			trocaPneu.setSelected(campeonato.isTrocaPneus());
+			trocaPneu.setEnabled(false);
 
 			kers.setSelected(campeonato.isKers());
 			kers.setEnabled(false);
@@ -1441,7 +1441,7 @@ public class GerenciadorVisual {
 		}
 		Integer combustivelInicial = (Integer) spinnerCombustivel.getValue();
 		if (combustivelInicial <= 0) {
-			if (semReabastacimento.isSelected()) {
+			if (reabastacimento.isSelected()) {
 				spinnerCombustivel.setValue(new Integer(1));
 			} else {
 				spinnerCombustivel.setValue(new Integer(20));

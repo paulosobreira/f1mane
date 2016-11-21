@@ -74,9 +74,9 @@ public class ControleCampeonato {
 
 	private String circuitoJogando;
 
-	private JCheckBox semReabastacimento;
+	private JCheckBox reabastacimento;
 
-	private JCheckBox semTrocaPneu;
+	private JCheckBox trocaPneu;
 
 	private JCheckBox kers;
 
@@ -976,17 +976,17 @@ public class ControleCampeonato {
 				return Lang.msg("302");
 			}
 		});
-		semReabastacimento = new JCheckBox();
-		grid.add(semReabastacimento);
+		reabastacimento = new JCheckBox();
+		grid.add(reabastacimento);
 		grid.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("303");
 			}
 		});
-		semTrocaPneu = new JCheckBox();
+		trocaPneu = new JCheckBox();
 
-		grid.add(semTrocaPneu);
+		grid.add(trocaPneu);
 
 		grid.add(new JLabel() {
 			@Override
@@ -1170,8 +1170,8 @@ public class ControleCampeonato {
 		campeonato.setPilotosHabilidadeCampeonato(pilotosHabilidadeCampeonato);
 		campeonato.setDrs(drs.isSelected());
 		campeonato.setKers(kers.isSelected());
-		campeonato.setSemReabasteciemnto(semReabastacimento.isSelected());
-		campeonato.setSemTrocaPneus(semTrocaPneu.isSelected());
+		campeonato.setReabasteciemnto(reabastacimento.isSelected());
+		campeonato.setTrocaPneus(trocaPneu.isSelected());
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
 				.getSelectedItem()));
@@ -1279,8 +1279,8 @@ public class ControleCampeonato {
 		campeonato.setPilotosHabilidadeCampeonato(pilotosHabilidadeCampeonato);
 		campeonato.setDrs(drs);
 		campeonato.setKers(kers);
-		campeonato.setSemReabasteciemnto(reabasteciemto);
-		campeonato.setSemTrocaPneus(trocaPneus);
+		campeonato.setReabasteciemnto(reabasteciemto);
+		campeonato.setTrocaPneus(trocaPneus);
 		campeonato.setTemporada(temporadaSelecionada);
 		campeonato.setNivel(nivelSelecionado);
 		campeonato.setQtdeVoltas(new Integer(numVoltasSelecionado));

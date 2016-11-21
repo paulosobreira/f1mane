@@ -49,9 +49,7 @@ import br.nnpe.Logger;
  * @author Paulo Sobreira Created on 20/06/2007
  */
 public class MainFrame extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -284357233387917389L;
 	protected InterfaceJogo controleJogo;
 	private String codeBase;
