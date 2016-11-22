@@ -463,8 +463,7 @@ public class ControleBox {
 		} else {
 			int voltaAtual = piloto.getNumeroVolta();
 			int metade = controleJogo.getQtdeTotalVoltas() / 2;
-			boolean asfaltoAbrasivo = testaAsfaltoAbrasivoIA(piloto);
-			if (voltaAtual > metade && !asfaltoAbrasivo) {
+			if (voltaAtual > metade && piloto.isAsfaltoAbrasivo()) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
@@ -595,8 +594,7 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			boolean asfaltoAbrasivo = testaAsfaltoAbrasivoIA(piloto);
-			if (asfaltoAbrasivo
+			if (piloto.isAsfaltoAbrasivo()
 					&& controleCorrida.porcentagemCorridaCompletada() < 75)
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
@@ -653,24 +651,6 @@ public class ControleBox {
 				qtddeCombust + piloto.getCarro().getCombustivel());
 
 		return diffCombust;
-	}
-
-	private boolean testaAsfaltoAbrasivoIA(Piloto piloto) {
-		boolean asfaltoAbrasivo = controleJogo.asfaltoAbrasivo();
-		int qtdeteste = piloto.getHabilidade() / 10;
-		if (!asfaltoAbrasivo) {
-			for (int i = 0; i < qtdeteste; i++) {
-				asfaltoAbrasivo = controleJogo.asfaltoAbrasivo();
-				if (asfaltoAbrasivo) {
-					break;
-				}
-			}
-		}
-		if(asfaltoAbrasivo && piloto.getPosicao()<=3){
-			controleJogo
-			.infoPrioritaria(Html.orange(Lang.msg("asfaltoAbrasivo")));
-		}
-		return asfaltoAbrasivo;
 	}
 
 	public void calculaQtdeNosPistaRefBox() {

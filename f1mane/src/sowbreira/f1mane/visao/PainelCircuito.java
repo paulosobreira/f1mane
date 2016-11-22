@@ -275,7 +275,6 @@ public class PainelCircuito {
 	private int informaMudancaClima;
 	private int contMostraFPS;
 	private AffineTransform afZoomDebug;
-	private int delayLargadaSuave = 300;
 	protected int larguraBGZoom;
 	protected int alturaBGZoom;
 	protected int threadCarregarBkgZoomRodando;

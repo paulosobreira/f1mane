@@ -108,18 +108,20 @@ public class PainelCampeonato extends JPanel {
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
 				if (controleCampeonato.getContrutoresPontos() == null
-						|| controleCampeonato.getContrutoresPontos().isEmpty()) {
+						|| controleCampeonato.getContrutoresPontos()
+								.isEmpty()) {
 					return "";
 				}
 				ConstrutoresPontosCampeonato construtoresPontosCampeonato = (ConstrutoresPontosCampeonato) controleCampeonato
 						.getContrutoresPontos().get(rowIndex);
 				switch (columnIndex) {
-				case 0:
-					return construtoresPontosCampeonato.getNomeEquipe();
-				case 1:
-					return new Integer(construtoresPontosCampeonato.getPontos());
-				default:
-					return "";
+					case 0 :
+						return construtoresPontosCampeonato.getNomeEquipe();
+					case 1 :
+						return new Integer(
+								construtoresPontosCampeonato.getPontos());
+					default :
+						return "";
 				}
 
 			}
@@ -127,7 +129,8 @@ public class PainelCampeonato extends JPanel {
 			@Override
 			public int getRowCount() {
 				if (controleCampeonato.getContrutoresPontos() == null
-						|| controleCampeonato.getContrutoresPontos().isEmpty()) {
+						|| controleCampeonato.getContrutoresPontos()
+								.isEmpty()) {
 					return 0;
 				}
 				return controleCampeonato.getContrutoresPontos().size();
@@ -142,14 +145,14 @@ public class PainelCampeonato extends JPanel {
 			public String getColumnName(int columnIndex) {
 
 				switch (columnIndex) {
-				case 0:
-					/* "Equipe" */
-					return Lang.msg("277");
-				case 1:
-					/* "Pontos" */
-					return Lang.msg("161");
-				default:
-					return "";
+					case 0 :
+						/* "Equipe" */
+						return Lang.msg("277");
+					case 1 :
+						/* "Pontos" */
+						return Lang.msg("161");
+					default :
+						return "";
 				}
 
 			}
@@ -187,14 +190,15 @@ public class PainelCampeonato extends JPanel {
 				PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) controleCampeonato
 						.getPilotosPontos().get(rowIndex);
 				switch (columnIndex) {
-				case 0:
-					return pilotosPontosCampeonato.getNome();
-				case 1:
-					return new Integer(pilotosPontosCampeonato.getPontos());
-				case 2:
-					return new Integer(pilotosPontosCampeonato.getVitorias());
-				default:
-					return "";
+					case 0 :
+						return pilotosPontosCampeonato.getNome();
+					case 1 :
+						return new Integer(pilotosPontosCampeonato.getPontos());
+					case 2 :
+						return new Integer(
+								pilotosPontosCampeonato.getVitorias());
+					default :
+						return "";
 				}
 
 			}
@@ -218,17 +222,17 @@ public class PainelCampeonato extends JPanel {
 			public String getColumnName(int columnIndex) {
 
 				switch (columnIndex) {
-				case 0:
-					/* Piloto */
-					return Lang.msg("153");
-				case 1:
-					/* "Pontos" */
-					return Lang.msg("161");
-				case 2:
-					/* "Vitorias" */
-					return Lang.msg("289");
-				default:
-					return "";
+					case 0 :
+						/* Piloto */
+						return Lang.msg("153");
+					case 1 :
+						/* "Pontos" */
+						return Lang.msg("161");
+					case 2 :
+						/* "Vitorias" */
+						return Lang.msg("289");
+					default :
+						return "";
 				}
 
 			}
@@ -266,14 +270,15 @@ public class PainelCampeonato extends JPanel {
 				PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) controleCampeonato
 						.getJogadoresPontos().get(rowIndex);
 				switch (columnIndex) {
-				case 0:
-					return pilotosPontosCampeonato.getNome();
-				case 1:
-					return new Integer(pilotosPontosCampeonato.getPontos());
-				case 2:
-					return new Integer(pilotosPontosCampeonato.getVitorias());
-				default:
-					return "";
+					case 0 :
+						return pilotosPontosCampeonato.getNome();
+					case 1 :
+						return new Integer(pilotosPontosCampeonato.getPontos());
+					case 2 :
+						return new Integer(
+								pilotosPontosCampeonato.getVitorias());
+					default :
+						return "";
 				}
 
 			}
@@ -297,17 +302,17 @@ public class PainelCampeonato extends JPanel {
 			public String getColumnName(int columnIndex) {
 
 				switch (columnIndex) {
-				case 0:
-					/* jogador */
-					return Lang.msg("162");
-				case 1:
-					/* "Pontos" */
-					return Lang.msg("161");
-				case 2:
-					/* "Vitorias" */
-					return Lang.msg("289");
-				default:
-					return "";
+					case 0 :
+						/* jogador */
+						return Lang.msg("162");
+					case 1 :
+						/* "Pontos" */
+						return Lang.msg("161");
+					case 2 :
+						/* "Vitorias" */
+						return Lang.msg("289");
+					default :
+						return "";
 				}
 
 			}
@@ -338,10 +343,10 @@ public class PainelCampeonato extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 				if (e.getClickCount() == 2) {
-					String corrida = (String) corridasTableModel.getValueAt(
-							corridasTable.getSelectedRow(), 0);
+					String corrida = (String) corridasTableModel
+							.getValueAt(corridasTable.getSelectedRow(), 0);
 					int ret = JOptionPane.showConfirmDialog(corridasTable,
-							Lang.msg("300", new String[] { corrida }),
+							Lang.msg("300", new String[]{corrida}),
 							Lang.msg("299"), JOptionPane.YES_NO_OPTION);
 					if (ret == JOptionPane.YES_OPTION) {
 						gerarPainelDetalhesCorrida(corrida, corridasTable);
@@ -358,37 +363,37 @@ public class PainelCampeonato extends JPanel {
 						.getCorridaCampeonatos().get(rowIndex);
 
 				switch (columnIndex) {
-				case 0:
-					if (corridaCampeonato == null) {
-						return "";
-					}
-					return corridaCampeonato.getNomeCircuito();
-				case 1:
-					if (corridaCampeonato == null
-							|| corridaCampeonato.getTempoInicio() == null) {
-						return "";
-					}
-					return dateFormat.format(new Date(corridaCampeonato
-							.getTempoInicio()));
-				case 2:
-					if (corridaCampeonato == null
-							|| corridaCampeonato.getTempoFim() == null) {
-						return "";
-					}
-					return dateFormat.format(new Date(corridaCampeonato
-							.getTempoFim()));
-				case 3:
-					if (corridaCampeonato == null)
-						return "";
-					for (DadosCorridaCampeonato dadosCorridaCampeonato : corridaCampeonato
-							.getDadosCorridaCampeonatos()) {
-						if (dadosCorridaCampeonato.getPosicao() == 1) {
-							return dadosCorridaCampeonato.getPiloto();
+					case 0 :
+						if (corridaCampeonato == null) {
+							return "";
 						}
-					}
-					return "";
-				default:
-					return "";
+						return corridaCampeonato.getNomeCircuito();
+					case 1 :
+						if (corridaCampeonato == null
+								|| corridaCampeonato.getTempoInicio() == null) {
+							return "";
+						}
+						return dateFormat.format(
+								new Date(corridaCampeonato.getTempoInicio()));
+					case 2 :
+						if (corridaCampeonato == null
+								|| corridaCampeonato.getTempoFim() == null) {
+							return "";
+						}
+						return dateFormat.format(
+								new Date(corridaCampeonato.getTempoFim()));
+					case 3 :
+						if (corridaCampeonato == null)
+							return "";
+						for (DadosCorridaCampeonato dadosCorridaCampeonato : corridaCampeonato
+								.getDadosCorridaCampeonatos()) {
+							if (dadosCorridaCampeonato.getPosicao() == 1) {
+								return dadosCorridaCampeonato.getPiloto();
+							}
+						}
+						return "";
+					default :
+						return "";
 				}
 			}
 
@@ -410,20 +415,20 @@ public class PainelCampeonato extends JPanel {
 			public String getColumnName(int columnIndex) {
 
 				switch (columnIndex) {
-				case 0:
-					/* Corrida */
-					return Lang.msg("corrida");
-				case 1:
-					/* Inicio */
-					return Lang.msg("155");
-				case 2:
-					/* Fim */
-					return Lang.msg("156");
-				case 3:
-					/* Vencedor */
-					return Lang.msg("291");
-				default:
-					return "";
+					case 0 :
+						/* Corrida */
+						return Lang.msg("corrida");
+					case 1 :
+						/* Inicio */
+						return Lang.msg("155");
+					case 2 :
+						/* Fim */
+						return Lang.msg("156");
+					case 3 :
+						/* Vencedor */
+						return Lang.msg("291");
+					default :
+						return "";
 				}
 
 			}
@@ -446,7 +451,8 @@ public class PainelCampeonato extends JPanel {
 		return jPanel;
 	}
 
-	protected void gerarPainelDetalhesCorrida(final String corrida, JTable table) {
+	protected void gerarPainelDetalhesCorrida(final String corrida,
+			JTable table) {
 		JTable detCorridaTable = new JTable();
 		List dets = new ArrayList();
 		for (CorridaCampeonato corridaCampeonato : campeonato
@@ -460,8 +466,8 @@ public class PainelCampeonato extends JPanel {
 			public int compare(Object o1, Object o2) {
 				DadosCorridaCampeonato c1 = (DadosCorridaCampeonato) o1;
 				DadosCorridaCampeonato c2 = (DadosCorridaCampeonato) o2;
-				return new Integer(c1.getPosicao()).compareTo(new Integer(c2
-						.getPosicao()));
+				return new Integer(c1.getPosicao())
+						.compareTo(new Integer(c2.getPosicao()));
 			}
 		});
 
@@ -484,30 +490,30 @@ public class PainelCampeonato extends JPanel {
 						.get(rowIndex);
 
 				switch (columnIndex) {
-				case 0:
-					return dadosCorridaCampeonato.getPosicao();
-				case 1:
-					return dadosCorridaCampeonato.getPiloto();
-				case 2:
-					return dadosCorridaCampeonato.getCarro();
-				case 3:
-					return Lang.msg(dadosCorridaCampeonato.getTpPneu());
-				case 4:
-					return dadosCorridaCampeonato.getNumVoltas();
-				case 5:
-					return dadosCorridaCampeonato.getVoltaMaisRapida();
-				case 6:
-					return dadosCorridaCampeonato.getQtdeParadasBox();
-				case 7:
-					return dadosCorridaCampeonato.getDesgastePneus();
-				case 8:
-					return dadosCorridaCampeonato.getCombustivelRestante();
-				case 9:
-					return dadosCorridaCampeonato.getDesgasteMotor();
-				case 10:
-					return dadosCorridaCampeonato.getPontos();
-				default:
-					return "";
+					case 0 :
+						return dadosCorridaCampeonato.getPosicao();
+					case 1 :
+						return dadosCorridaCampeonato.getPiloto();
+					case 2 :
+						return dadosCorridaCampeonato.getCarro();
+					case 3 :
+						return Lang.msg(dadosCorridaCampeonato.getTpPneu());
+					case 4 :
+						return dadosCorridaCampeonato.getNumVoltas();
+					case 5 :
+						return dadosCorridaCampeonato.getVoltaMaisRapida();
+					case 6 :
+						return dadosCorridaCampeonato.getQtdeParadasBox();
+					case 7 :
+						return dadosCorridaCampeonato.getDesgastePneus();
+					case 8 :
+						return dadosCorridaCampeonato.getCombustivelRestante();
+					case 9 :
+						return dadosCorridaCampeonato.getDesgasteMotor();
+					case 10 :
+						return dadosCorridaCampeonato.getPontos();
+					default :
+						return "";
 
 				}
 
@@ -534,36 +540,36 @@ public class PainelCampeonato extends JPanel {
 
 			public String getColumnName(int column) {
 				switch (column) {
-				// POsição
-				case 0:
-					return Lang.msg("160");
+					// POsição
+					case 0 :
+						return Lang.msg("160");
 					// Piloto
-				case 1:
-					return Lang.msg("153");
+					case 1 :
+						return Lang.msg("153");
 					// Equipe
-				case 2:
-					return Lang.msg("277");
+					case 2 :
+						return Lang.msg("277");
 					// Tp Pneu
-				case 3:
-					return Lang.msg("264");
+					case 3 :
+						return Lang.msg("264");
 					// Voltas
-				case 4:
-					return Lang.msg("voltas");
+					case 4 :
+						return Lang.msg("voltas");
 					// MElhor
-				case 5:
-					return Lang.msg("278");
-				case 6:
-					return Lang.msg("146");
-				case 7:
-					return Lang.msg("216");
-				case 8:
-					return Lang.msg("215");
-				case 9:
-					return Lang.msg("217");
-				case 10:
-					return Lang.msg("161");
-				default:
-					return "";
+					case 5 :
+						return Lang.msg("278");
+					case 6 :
+						return Lang.msg("146");
+					case 7 :
+						return Lang.msg("216");
+					case 8 :
+						return Lang.msg("215");
+					case 9 :
+						return Lang.msg("217");
+					case 10 :
+						return Lang.msg("161");
+					default :
+						return "";
 				}
 			}
 		};
@@ -583,7 +589,7 @@ public class PainelCampeonato extends JPanel {
 		});
 		jPanel.add(jScrollPane);
 		JOptionPane.showMessageDialog(corridasTable, jPanel,
-				Lang.msg("300", new String[] { corrida }),
+				Lang.msg("300", new String[]{corrida}),
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
@@ -595,7 +601,7 @@ public class PainelCampeonato extends JPanel {
 				return Lang.msg("dadosCampeonato");
 			}
 		});
-		
+
 		p1.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -641,7 +647,8 @@ public class PainelCampeonato extends JPanel {
 				return Lang.msg("302");
 			}
 		});
-		p1.add(new JLabel(campeonato.isSemReabasteciemnto() ? Lang.msg("SIM")
+		p1.add(new JLabel(!campeonato.isSemReabasteciemnto()
+				? Lang.msg("SIM")
 				: Lang.msg("NAO")));
 
 		p1.add(new JLabel() {
@@ -650,8 +657,9 @@ public class PainelCampeonato extends JPanel {
 				return Lang.msg("303");
 			}
 		});
-		p1.add(new JLabel(campeonato.isSemTrocaPneus() ? Lang.msg("SIM") : Lang
-				.msg("NAO")));
+		p1.add(new JLabel(!campeonato.isSemTrocaPneus()
+				? Lang.msg("SIM")
+				: Lang.msg("NAO")));
 
 		p1.add(new JLabel() {
 
@@ -659,19 +667,18 @@ public class PainelCampeonato extends JPanel {
 				return Lang.msg("kers");
 			}
 		});
-		p1.add(new JLabel(campeonato.isKers() ? Lang.msg("SIM") : Lang
-				.msg("NAO")));
+		p1.add(new JLabel(
+				campeonato.isKers() ? Lang.msg("SIM") : Lang.msg("NAO")));
 
-		
 		p1.add(new JLabel() {
 
 			public String getText() {
 				return Lang.msg("drs");
 			}
 		});
-		p1.add(new JLabel(campeonato.isDrs() ? Lang.msg("SIM") : Lang
-				.msg("NAO")));
-		
+		p1.add(new JLabel(
+				campeonato.isDrs() ? Lang.msg("SIM") : Lang.msg("NAO")));
+
 		return p1;
 	}
 }

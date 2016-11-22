@@ -221,7 +221,6 @@ public class PainelEntradaCliente {
 			}
 		});
 		reabastacimento = new JCheckBox();
-		reabastacimento.setSelected(true);
 		p1.add(reabastacimento);
 		painelInicio.add(p1);
 
@@ -234,6 +233,7 @@ public class PainelEntradaCliente {
 			}
 		});
 		trocaPneu = new JCheckBox();
+		trocaPneu.setSelected(true);
 		p2.add(trocaPneu);
 		painelInicio.add(p2);
 

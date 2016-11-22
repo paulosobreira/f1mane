@@ -220,7 +220,6 @@ public abstract class ControleRecursos {
 		Carro carro = piloto.getCarro();
 		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
 			return obterCarroCimaSemAreofolio(piloto);
-
 		}
 		BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
 		if (carroCima == null) {

@@ -42,6 +42,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private int ultModificador;
 	private boolean limiteGanho;
 	private boolean acelerando;
+	private boolean asfaltoAbrasivo;
 	private double ultGanhoReta = 0;
 
 	private int setaCima;
@@ -782,6 +783,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			processaAjustesAntesDepoisQuyalify(
 					Constantes.MAX_VOLTAS / controleJogo.getQtdeTotalVoltas());
 			processaUltimosDesgastesPneuECombustivel();
+			testaAsfaltoAbrasivoIA(controleJogo);
 			if (carroPilotoAtras != null && !isRecebeuBanderada()) {
 				setVantagem(controleJogo.calculaSegundosParaProximo(
 						carroPilotoAtras.getPiloto()));
@@ -860,6 +862,15 @@ public class Piloto implements Serializable, PilotoSuave {
 				ultsConsumosPneu.add(ultimoConsumoCombust.intValue() - pPneu);
 				ultimoConsumoPneu = new Integer(pPneu);
 			}
+		}
+	}
+
+	private void testaAsfaltoAbrasivoIA(InterfaceJogo controleJogo) {
+		this.setAsfaltoAbrasivo(
+				testeHabilidadePiloto() && controleJogo.asfaltoAbrasivo());
+		if (isAsfaltoAbrasivo() && getPosicao() == 1) {
+			controleJogo
+					.infoPrioritaria(Html.orange(Lang.msg("asfaltoAbrasivo")));
 		}
 	}
 
@@ -1117,6 +1128,7 @@ public class Piloto implements Serializable, PilotoSuave {
 							new String[]{Html.superRed(getNome())}));
 			}
 			setModoPilotagem(LENTO);
+			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 			if (getIndiceTracado() <= 0) {
 				if (controleJogo.isChovendo()) {
 					ganho *= 0.1;
@@ -1804,8 +1816,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	public Rectangle2D centralizaFrenteTrazCarro(
-			InterfaceJogo controleJogo) {
+	public Rectangle2D centralizaFrenteTrazCarro(InterfaceJogo controleJogo) {
 		if (controleJogo.isModoQualify()) {
 			return null;
 		}
@@ -2337,8 +2348,6 @@ public class Piloto implements Serializable, PilotoSuave {
 			incStress(1);
 			dec++;
 		}
-		setModoPilotagem(LENTO);
-		getCarro().setGiro(Carro.GIRO_MIN_VAL);
 		ciclosDesconcentrado -= dec;
 		return true;
 	}
@@ -3083,4 +3092,13 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 		}
 	}
+
+	public boolean isAsfaltoAbrasivo() {
+		return asfaltoAbrasivo;
+	}
+
+	public void setAsfaltoAbrasivo(boolean asfaltoAbrasivo) {
+		this.asfaltoAbrasivo = asfaltoAbrasivo;
+	}
+
 }

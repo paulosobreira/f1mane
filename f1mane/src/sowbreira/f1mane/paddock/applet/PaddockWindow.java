@@ -728,7 +728,7 @@ public class PaddockWindow {
 		});
 		panelJogo.add(new JLabel(
 				detalhesJogo.getDadosCriarJogo().getClima().toString()));
-		panelJogo.add(new JLabel("Sem Raabaste: ") {
+		panelJogo.add(new JLabel("") {
 
 			public String getText() {
 
