@@ -59,6 +59,7 @@ public class MainFrame extends JFrame {
 	private JMenu menuInfo;
 	private JCheckBoxMenuItem som;
 	private JCheckBoxMenuItem efeitos;
+	private JCheckBoxMenuItem atualizacaoSuave;
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
 	private JMenuItem narracao;
@@ -356,6 +357,25 @@ public class MainFrame extends JFrame {
 			}
 		});
 		menu1.add(efeitos);
+		atualizacaoSuave = new JCheckBoxMenuItem("atualizacaoSuave") {
+			public String getText() {
+				return Lang.msg("atualizacaoSuave");
+			}
+
+		};
+		atualizacaoSuave.setSelected(true);
+		atualizacaoSuave.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (atualizacaoSuave.isSelected()) {
+					controleJogo.setAtualizacaoSuave(true);
+				} else {
+					controleJogo.setAtualizacaoSuave(false);
+				}
+			}
+		});
+		menu1.add(atualizacaoSuave);
 
 		verControles = new JMenuItem("verControles") {
 			public String getText() {

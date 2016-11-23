@@ -754,6 +754,11 @@ public class PainelCircuito {
 	}
 
 	private void atualizacaoSuave(PilotoSuave piloto) {
+		if(!controleJogo.isAtualizacaoSuave()){
+			piloto.setNoAtualSuave(piloto.getNoAtual());
+			return;
+		}
+		
 		if (getQtdeLuzesAcesas() > 1) {
 			return;
 		}

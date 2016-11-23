@@ -64,6 +64,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private String clima;
 	private MainFrame mainFrame;
 	private ControleBox controleBox;
+	private boolean atualizacaoSuave = true;
 
 	public JogoCliente(String temporada) throws Exception {
 		super(temporada);
@@ -1428,5 +1429,13 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void forcaQuerbraAereofolio() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public boolean isAtualizacaoSuave() {
+		return atualizacaoSuave;
+	}
+
+	public void setAtualizacaoSuave(boolean atualizacaoSuave) {
+		this.atualizacaoSuave = atualizacaoSuave;
 	}
 }

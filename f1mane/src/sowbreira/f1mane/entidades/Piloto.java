@@ -783,7 +783,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			processaAjustesAntesDepoisQuyalify(
 					Constantes.MAX_VOLTAS / controleJogo.getQtdeTotalVoltas());
 			processaUltimosDesgastesPneuECombustivel();
-			testaAsfaltoAbrasivoIA(controleJogo);
+			processaAsfaltoAbrasivoIA(controleJogo);
 			if (carroPilotoAtras != null && !isRecebeuBanderada()) {
 				setVantagem(controleJogo.calculaSegundosParaProximo(
 						carroPilotoAtras.getPiloto()));
@@ -865,13 +865,17 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	private void testaAsfaltoAbrasivoIA(InterfaceJogo controleJogo) {
-		this.setAsfaltoAbrasivo(
-				testeHabilidadePiloto() && controleJogo.asfaltoAbrasivo());
-		if (isAsfaltoAbrasivo() && getPosicao() == 1) {
+	private void processaAsfaltoAbrasivoIA(InterfaceJogo controleJogo) {
+		if (isJogadorHumano()) {
+			return;
+		}
+		boolean testeAbrasivo = testeHabilidadePiloto()
+				&& controleJogo.asfaltoAbrasivo();
+		if (testeAbrasivo && !isAsfaltoAbrasivo() && getPosicao() <= 3) {
 			controleJogo
 					.infoPrioritaria(Html.orange(Lang.msg("asfaltoAbrasivo")));
 		}
+		this.setAsfaltoAbrasivo(testeAbrasivo);
 	}
 
 	private void verificaIrBox(InterfaceJogo controleJogo) {

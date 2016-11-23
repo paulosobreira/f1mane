@@ -408,5 +408,9 @@ public interface InterfaceJogo {
 	public void atualizaInfoDebug(StringBuffer buffer);
 
 	public void forcaQuerbraAereofolio();
+	
+	public boolean isAtualizacaoSuave() ;
+
+	public void setAtualizacaoSuave(boolean atualizacaoSuave);
 
 }

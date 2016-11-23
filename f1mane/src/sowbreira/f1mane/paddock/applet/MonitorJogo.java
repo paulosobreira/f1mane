@@ -165,6 +165,11 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
+				if(getLatenciaReal()>2000){
+					jogoCliente.setAtualizacaoSuave(false);
+				}else{
+					jogoCliente.setAtualizacaoSuave(true);
+				}
 				atualizarDados();
 				iniciaJalena();
 				atualizaZoom();

@@ -61,6 +61,7 @@ public class ControleJogoLocal extends ControleRecursos
 	protected Integer qtdeVoltas = null;
 	protected Integer diffultrapassagem = null;
 	protected String circuitoSelecionado = null;
+	protected boolean atualizacaoSuave = true;
 
 	private MainFrame mainFrame;
 
@@ -1614,6 +1615,14 @@ public class ControleJogoLocal extends ControleRecursos
 		}
 		pilotoSelecionado.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 		pilotoSelecionado.getCarro().setDurabilidadeAereofolio(0);
+	}
+
+	public boolean isAtualizacaoSuave() {
+		return atualizacaoSuave;
+	}
+
+	public void setAtualizacaoSuave(boolean atualizacaoSuave) {
+		this.atualizacaoSuave = atualizacaoSuave;
 	}
 
 }
