@@ -196,19 +196,20 @@ public abstract class ControleRecursos {
 			bufferCarrosLadoSemAreofolio.clear();
 	}
 
-	private BufferedImage obterCarroCimaSemAreofolio(Piloto piloto) {
+	private BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
+			String modelo) {
 		Carro carro = piloto.getCarro();
 		BufferedImage carroCima = bufferCarrosCimaSemAreofolio
 				.get(carro.getNome());
 		if (carroCima == null) {
 			BufferedImage base = CarregadorRecursos
-					.carregaImagem("CarroCima.png");
+					.carregaImagem(modelo + "CarroCima.png");
 			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
 					base.getType());
-			BufferedImage cor1 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor1(), "CarroCimaC1.png");
-			BufferedImage cor2 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor2(), "CarroCimaC3.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
+					carro.getCor1(), modelo + "CarroCimaC1.png");
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
+					carro.getCor2(), modelo + "CarroCimaC3.png");
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(base, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);
@@ -221,20 +222,21 @@ public abstract class ControleRecursos {
 	}
 
 	public BufferedImage obterCarroCima(Piloto piloto) {
+		String modelo = "cima1/";
 		Carro carro = piloto.getCarro();
 		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
-			return obterCarroCimaSemAreofolio(piloto);
+			return obterCarroCimaSemAreofolio(piloto, modelo);
 		}
 		BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
 		if (carroCima == null) {
 			BufferedImage base = CarregadorRecursos
-					.carregaImagem("CarroCima.png");
+					.carregaImagem(modelo + "CarroCima.png");
 			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
 					base.getType());
-			BufferedImage cor1 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor1(), "CarroCimaC1.png");
-			BufferedImage cor2 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor2(), "CarroCimaC2.png");
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
+					carro.getCor1(), modelo + "CarroCimaC1.png");
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
+					carro.getCor2(), modelo + "CarroCimaC2.png");
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(base, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);
