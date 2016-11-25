@@ -51,7 +51,7 @@ public abstract class ControleRecursos {
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
 	private final static int TRANPS = 250;
-	private String seasson;
+	private String temporada;
 	private Set<Integer> idsNoPista = new HashSet<Integer>();
 	private Set<Integer> idsNoBox = new HashSet<Integer>();
 	private static Map<String, BufferedImage> bufferCarrosCima = new HashMap<String, BufferedImage>();
@@ -66,7 +66,7 @@ public abstract class ControleRecursos {
 					+ piloto.getCarro().getNome();
 			BufferedImage ret = bufferCapacete.get(chave);
 			if (ret == null) {
-				ret = CarregadorRecursos.carregaImagem("capacetes/" + seasson
+				ret = CarregadorRecursos.carregaImagem("capacetes/" + temporada
 						+ "/" + piloto.getNomeOriginal().replaceAll("\\.", "")
 						+ ".png");
 				if (ret == null) {
@@ -215,14 +215,17 @@ public abstract class ControleRecursos {
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.dispose();
-			bufferCarrosCimaSemAreofolio.put(carro.getNome(),
-					ImageUtil.geraTransparencia(carroCima, Color.WHITE));
+			bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
 		}
 		return carroCima;
 	}
 
 	public BufferedImage obterCarroCima(Piloto piloto) {
-		String modelo = "cima1/";
+		String modelo = "cima20092016/";
+		Integer anoTemporada = new Integer(temporada.replace("t", ""));
+		if(anoTemporada<=1993){
+			 modelo = "cima19801993/";	
+		}
 		Carro carro = piloto.getCarro();
 		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
 			return obterCarroCimaSemAreofolio(piloto, modelo);
@@ -242,18 +245,17 @@ public abstract class ControleRecursos {
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.dispose();
-			bufferCarrosCima.put(carro.getNome(),
-					ImageUtil.geraTransparencia(carroCima, Color.WHITE));
+			bufferCarrosCima.put(carro.getNome(), carroCima);
 		}
 		return carroCima;
 	}
 
 	public void setTemporada(String seasson) {
-		this.seasson = seasson;
+		this.temporada = seasson;
 	}
 
 	public String getTemporada() {
-		return seasson;
+		return temporada;
 	}
 
 	public Map<Integer, No> getMapaIdsNos() {
@@ -280,7 +282,7 @@ public abstract class ControleRecursos {
 
 	public ControleRecursos(String temporada) throws Exception {
 		if (temporada != null) {
-			this.seasson = temporada;
+			this.temporada = temporada;
 		}
 		carregarPilotosCarros();
 		carregarTemporadasTransp();
@@ -289,8 +291,8 @@ public abstract class ControleRecursos {
 
 	public void carregarPilotosCarros() throws IOException {
 		carregadorRecursos = new CarregadorRecursos(true);
-		carros = carregadorRecursos.carregarListaCarros(seasson);
-		pilotos = carregadorRecursos.carregarListaPilotos(seasson);
+		carros = carregadorRecursos.carregarListaCarros(temporada);
+		pilotos = carregadorRecursos.carregarListaPilotos(temporada);
 		carregadorRecursos.ligarPilotosCarros(pilotos, carros);
 	}
 
