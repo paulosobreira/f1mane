@@ -207,9 +207,9 @@ public abstract class ControleRecursos {
 			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
 					base.getType());
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), modelo + "CarroCimaC1.png");
+					carro.getCor1(), modelo + "CarroCimaC1.png",base.getType());
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), modelo + "CarroCimaC3.png");
+					carro.getCor2(), modelo + "CarroCimaC3.png",base.getType());
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(base, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);
@@ -223,8 +223,11 @@ public abstract class ControleRecursos {
 	public BufferedImage obterCarroCima(Piloto piloto) {
 		String modelo = "cima20092016/";
 		Integer anoTemporada = new Integer(temporada.replace("t", ""));
-		if(anoTemporada<=1993){
-			 modelo = "cima19801993/";	
+		if(anoTemporada<=2009){
+			 modelo = "cima19982008/";	
+		}
+		if(anoTemporada<=1997){
+			 modelo = "cima19801997/";	
 		}
 		Carro carro = piloto.getCarro();
 		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
@@ -237,9 +240,9 @@ public abstract class ControleRecursos {
 			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
 					base.getType());
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), modelo + "CarroCimaC1.png");
+					carro.getCor1(), modelo + "CarroCimaC1.png",base.getType());
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), modelo + "CarroCimaC2.png");
+					carro.getCor2(), modelo + "CarroCimaC2.png",base.getType());
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(base, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);

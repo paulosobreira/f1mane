@@ -391,13 +391,16 @@ public class CarregadorRecursos {
 
 	public static BufferedImage gerarCoresCarros(Color corPintar,
 			String carro) {
+		return gerarCoresCarros(corPintar, carro, BufferedImage.TYPE_INT_ARGB);
+	}
+	
+	public static BufferedImage gerarCoresCarros(Color corPintar, String carro,
+			int argb) {
 		BufferedImage srcBufferedImage = carregaBufferedImageTransparecia(
 				carro);
-		srcBufferedImage = ImageUtil.geraTransparencia(srcBufferedImage,
-				Color.BLACK);
 		BufferedImage bufferedImageRetorno = new BufferedImage(
 				srcBufferedImage.getWidth(), srcBufferedImage.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
+				argb);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
 		int[] argbArray = new int[4];
@@ -405,16 +408,10 @@ public class CarregadorRecursos {
 			for (int j = 0; j < srcBufferedImage.getHeight(); j++) {
 				argbArray = new int[4];
 				argbArray = srcRaster.getPixel(i, j, argbArray);
-				Color c = new Color(argbArray[0], argbArray[1], argbArray[2]);
 				argbArray[0] = (int) ((argbArray[0] + corPintar.getRed()) / 2);
 				argbArray[1] = (int) ((argbArray[1] + corPintar.getGreen())
 						/ 2);
 				argbArray[2] = (int) ((argbArray[2] + corPintar.getBlue()) / 2);
-				if (Color.WHITE.equals(c)) {
-					argbArray[3] = 0;
-				}
-
-				// argbArray[3] = 255;
 				destRaster.setPixel(i, j, argbArray);
 			}
 		}
