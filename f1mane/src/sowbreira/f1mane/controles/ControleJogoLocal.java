@@ -955,7 +955,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	public boolean isSemTrocaPneu() {
-		return trocaPneu;
+		return !trocaPneu;
 	}
 
 	public void setSemTrocaPneu(boolean trocaPneu) {
