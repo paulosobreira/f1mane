@@ -241,15 +241,17 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	}
 
+	@Override
 	public boolean isSemReabastacimento() {
 		if (dadosCriarJogo != null)
-			return dadosCriarJogo.isReabastecimento();
+			return !dadosCriarJogo.isReabastecimento();
 		return super.isSemReabastacimento();
 	}
 	
+	@Override
 	public boolean isSemTrocaPneu() {
 		if (dadosCriarJogo != null)
-			return dadosCriarJogo.isTrocaPneu();
+			return !dadosCriarJogo.isTrocaPneu();
 		return super.isSemTrocaPneu();
 	}
 

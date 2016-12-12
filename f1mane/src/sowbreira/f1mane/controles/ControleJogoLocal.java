@@ -958,16 +958,8 @@ public class ControleJogoLocal extends ControleRecursos
 		return !trocaPneu;
 	}
 
-	public void setSemTrocaPneu(boolean trocaPneu) {
-		this.trocaPneu = !trocaPneu;
-	}
-
 	public boolean isSemReabastacimento() {
 		return !reabastacimento;
-	}
-
-	public void setSemReabastacimento(boolean reabastacimento) {
-		this.reabastacimento = !reabastacimento;
 	}
 
 	@Override

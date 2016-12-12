@@ -4,25 +4,29 @@
 package sowbreira.f1mane.paddock.applet;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Properties;
 
-import javax.swing.JApplet;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import sowbreira.f1mane.recursos.idiomas.Lang;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author paulo.sobreira
  * 
  */
-public class AppletPaddock extends JApplet {
+public class AppletPaddock {
 
 	private static final long serialVersionUID = -2007934906883016154L;
 	private ControlePaddockCliente controlePaddockApplet;
 	private String versao;
+	private JFrame frame;
+	private URL codeBase;
 	DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
 	public String getVersao() {
@@ -35,15 +39,24 @@ public class AppletPaddock extends JApplet {
 		}
 		return " " + decimalFormat.format(new Integer(versao));
 	}
-
+	
+	public static void main(String[] args) throws MalformedURLException {
+		AppletPaddock appletPaddock = new AppletPaddock();
+		if (args != null && args.length > 0) {
+			Logger.logar("codeBase "+args[0]);
+			appletPaddock.codeBase = new URL(args[0]);
+		}
+		if (args != null && args.length > 1) {
+			Logger.logar("lang "+args[1]);
+			Lang.mudarIdioma(args[1]);
+		}
+		appletPaddock.init();
+	}
+	
 	public void init() {
-		super.init();
-
 		try {
-			String lang = getParameter("lang");
-			if (!Util.isNullOrEmpty(lang)) {
-				Lang.mudarIdioma(lang);
-			}
+			frame = new JFrame();
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			initProperties();
 			controlePaddockApplet = new ControlePaddockCliente(this
 					.getCodeBase(), this);
@@ -53,6 +66,7 @@ public class AppletPaddock extends JApplet {
 					controlePaddockApplet.logar();
 				}
 			};
+			
 			Thread thread = new Thread(runnable);
 			thread.start();
 		} catch (Exception e) {
@@ -62,11 +76,20 @@ public class AppletPaddock extends JApplet {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
+			JOptionPane.showMessageDialog(null, retorno.toString(), Lang
 					.msg("059"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 
+	}
+
+
+	public URL getCodeBase() {
+		return codeBase;
+	}
+	
+	public JFrame getFrame() {
+		return frame;
 	}
 
 	public void initProperties() throws IOException {
@@ -78,22 +101,6 @@ public class AppletPaddock extends JApplet {
 			this.versao = versao.replaceAll("\\.", "");
 		}
 
-	}
-
-	@Override
-	public void stop() {
-		super.stop();
-	}
-
-	@Override
-	public void destroy() {
-		controlePaddockApplet.sairPaddock();
-		super.destroy();
-	}
-
-	public static void main(String[] args) {
-		System.out.println("127.234".replaceAll("\\.", ""));
-		// Logger.logar(JOptionPane.showInputDialog("teste"));
 	}
 
 }

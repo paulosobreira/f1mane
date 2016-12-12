@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JApplet;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -75,7 +74,7 @@ public class MainFrame extends JFrame {
 		return controleJogo;
 	}
 
-	public MainFrame(JApplet modoApplet, String codeBase) throws IOException {
+	public MainFrame(AppletPaddock modoApplet, String codeBase) throws IOException {
 		this.codeBase = codeBase;
 		bar = new JMenuBar();
 		menuFrame = new JFrame();

@@ -35,11 +35,7 @@ public interface InterfaceJogo {
 
 	public boolean isSemTrocaPneu();
 
-	public void setSemTrocaPneu(boolean semTrocaPneu);
-
 	public boolean isSemReabastacimento();
-
-	public void setSemReabastacimento(boolean semReabastacimento);
 
 	public Integer getCombustBox(Piloto piloto);
 

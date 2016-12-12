@@ -781,18 +781,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void setSemReabastacimento(boolean semReabastacimento) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setSemTrocaPneu(boolean semTrocaPneu) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public List getCarrosBox() {
 		return controleBox.getCarrosBox();
 	}
@@ -875,7 +863,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		URL url = null;
 		try {
 			String caminho = mainFrame.getCodeBase()
-					+ "sowbreira/f1mane/recursos/" + backGround;
+					+ "/sowbreira/f1mane/recursos/" + backGround;
 			Logger.logar("Caminho Carregar Bkg " + caminho);
 			url = new URL(caminho);
 			BufferedImage buff = ImageUtil

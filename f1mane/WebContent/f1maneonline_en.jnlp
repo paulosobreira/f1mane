@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://{host}/f1mane/" href="f1maneonline.jnlp">
+	codebase="http://{host}/f1mane/" href="f1maneonline_en.jnlp">
 	<information>
 		<title>F1-Mane Online Lite</title>
 		<vendor>Paulo Sobreira</vendor>
@@ -14,13 +14,11 @@
 		<jar href="f1mane.jar" />
 		<jar href="f1maneRecursos.jar" />
     </resources>
+    
+	<application-desc
+		main-class="sowbreira.f1mane.paddock.applet.AppletPaddock" >
+		<argument>http://{host}/f1mane</argument>
+		<argument>en</argument>
+	</application-desc>     
 
-	  <applet-desc 
-	      documentBase="http://{host}/f1mane" 
-	      name="F1-Mane Online" 
-	      main-class="sowbreira.f1mane.paddock.applet.AppletPaddock" 
-	      width="800" 
-	      height="410"> 
- 		<param name="lang" value="en" /> 	      
-	  </applet-desc>
 </jnlp>

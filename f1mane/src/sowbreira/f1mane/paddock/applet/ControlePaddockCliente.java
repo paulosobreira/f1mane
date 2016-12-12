@@ -9,9 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,13 +20,16 @@ import java.util.Properties;
 import javax.jnlp.FileContents;
 import javax.jnlp.PersistenceService;
 import javax.jnlp.ServiceManager;
-import javax.swing.JApplet;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import br.nnpe.Constantes;
+import br.nnpe.Dia;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
@@ -45,10 +46,6 @@ import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Constantes;
-import br.nnpe.Dia;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
@@ -56,7 +53,7 @@ import br.nnpe.Util;
  */
 public class ControlePaddockCliente {
 	private URL url;
-	private JApplet applet;
+	private AppletPaddock applet;
 	private String urlSufix;
 	private SessaoCliente sessaoCliente;
 	private PaddockWindow paddockWindow;
@@ -69,7 +66,7 @@ public class ControlePaddockCliente {
 	private int latenciaReal;
 	private long ultRetornoSucedido;
 
-	public ControlePaddockCliente(URL url, JApplet panel) {
+	public ControlePaddockCliente(URL url, AppletPaddock panel) {
 		this.url = url;
 		this.applet = panel;
 		init();
@@ -98,8 +95,13 @@ public class ControlePaddockCliente {
 			threadAtualizadora.setPriority(Thread.MIN_PRIORITY);
 			paddockWindow = new PaddockWindow(this);
 			atualizaVisao(paddockWindow);
-			applet.setLayout(new BorderLayout());
-			applet.add(paddockWindow.getMainPanel(), BorderLayout.CENTER);
+			applet.getFrame().setLayout(new BorderLayout());
+			applet.getFrame().add(paddockWindow.getMainPanel(), BorderLayout.CENTER);
+			applet.getFrame().setSize(800, 410);
+			applet.getFrame().pack();
+			applet.getFrame().setTitle("F1-Mane Paddock");
+			applet.getFrame().setResizable(false);
+			applet.getFrame().setVisible(true);
 			threadAtualizadora.start();
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -181,13 +183,13 @@ public class ControlePaddockCliente {
 			}
 			if (retorno instanceof ErroServ) {
 				ErroServ erroServ = (ErroServ) retorno;
-				JOptionPane.showMessageDialog(applet,
+				JOptionPane.showMessageDialog(applet.getFrame(),
 						Lang.decodeTexto(erroServ.obterErroFormatado()),
 						Lang.msg("060"), JOptionPane.ERROR_MESSAGE);
 			}
 			if (retorno instanceof MsgSrv) {
 				MsgSrv msgSrv = (MsgSrv) retorno;
-				JOptionPane.showMessageDialog(applet,
+				JOptionPane.showMessageDialog(applet.getFrame(),
 						Lang.decodeTexto(msgSrv.getMessageString()),
 						Lang.msg("061"), JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -202,7 +204,7 @@ public class ControlePaddockCliente {
 
 				for (int i = 0; i < size; i++)
 					retorno.append(trace[i] + "\n");
-				JOptionPane.showMessageDialog(applet, retorno.toString(),
+				JOptionPane.showMessageDialog(applet.getFrame(), retorno.toString(),
 						Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
 				if (jogoCliente != null) {
 					jogoCliente.matarTodasThreads();
@@ -326,7 +328,7 @@ public class ControlePaddockCliente {
 			entarJogo(srvPaddockPack.getNomeJogoCriado());
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(applet, e.getMessage(), "Erro",
+			JOptionPane.showMessageDialog(applet.getFrame(), e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 		}
 
@@ -402,7 +404,7 @@ public class ControlePaddockCliente {
 							&& Clima.CHUVA.equals(srvPaddockPack
 									.getDetalhesJogo().getDadosCriarJogo()
 									.getClima().getClima()))) {
-				int showConfirmDialog = JOptionPane.showConfirmDialog(applet,
+				int showConfirmDialog = JOptionPane.showConfirmDialog(applet.getFrame(),
 						Lang.msg("pneuIncompativel"), Lang.msg("alerta"),
 						JOptionPane.YES_NO_OPTION);
 				if (JOptionPane.YES_OPTION != showConfirmDialog) {
@@ -429,7 +431,7 @@ public class ControlePaddockCliente {
 			paddockWindow.atualizar(dadosPaddock);
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(applet, e.getMessage(), "Erro",
+			JOptionPane.showMessageDialog(applet.getFrame(), e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 		}
 
@@ -467,7 +469,7 @@ public class ControlePaddockCliente {
 			return;
 		}
 		if (jogoCliente == null) {
-			JOptionPane.showMessageDialog(applet, Lang.msg("063"), "Erro",
+			JOptionPane.showMessageDialog(applet.getFrame(), Lang.msg("063"), "Erro",
 					JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
@@ -509,7 +511,7 @@ public class ControlePaddockCliente {
 				|| "Ia".equals(clientPaddockPack.getNomeJogador())
 				|| "ia".equals(clientPaddockPack.getNomeJogador())
 				|| "iA".equals(clientPaddockPack.getNomeJogador())) {
-			JOptionPane.showMessageDialog(applet, Lang.msg("064"),
+			JOptionPane.showMessageDialog(applet.getFrame(), Lang.msg("064"),
 					Lang.msg("064"), JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -522,7 +524,7 @@ public class ControlePaddockCliente {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(applet, e.getMessage(), "Erro",
+			JOptionPane.showMessageDialog(applet.getFrame(), e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 		}
 		if (!Util.isNullOrEmpty(formEntrada.getNomeRecuperar().getText())
@@ -542,7 +544,7 @@ public class ControlePaddockCliente {
 				resultado = Integer
 						.parseInt(formEntrada.getResultadorConta().getText());
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(applet,
+				JOptionPane.showMessageDialog(applet.getFrame(),
 						Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
 						JOptionPane.ERROR_MESSAGE);
 				return false;
@@ -550,7 +552,7 @@ public class ControlePaddockCliente {
 
 			if ((formEntrada.getConta1()
 					+ formEntrada.getConta2()) != resultado) {
-				JOptionPane.showMessageDialog(applet,
+				JOptionPane.showMessageDialog(applet.getFrame(),
 						Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
 						JOptionPane.ERROR_MESSAGE);
 				return false;
@@ -575,7 +577,7 @@ public class ControlePaddockCliente {
 		if (srvPaddockPack.getSenhaCriada() != null) {
 			lembrarSenha(cliente.getNomeJogador(),
 					srvPaddockPack.getSenhaCriada());
-			JOptionPane.showMessageDialog(applet,
+			JOptionPane.showMessageDialog(applet.getFrame(),
 					Lang.msg("senhaGerada",
 							new String[]{cliente.getNomeJogador(),
 									srvPaddockPack.getSenhaCriada()}),
@@ -620,7 +622,7 @@ public class ControlePaddockCliente {
 			return;
 		}
 		if (ret == null) {
-			JOptionPane.showMessageDialog(applet, Lang.msg("062"), "Erro",
+			JOptionPane.showMessageDialog(applet.getFrame(), Lang.msg("062"), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -633,7 +635,7 @@ public class ControlePaddockCliente {
 				listaDadosJogador, this, listaConstrutoresCarros,
 				listaConstrutoresPilotos);
 		formClassificacao.setAnoClassificacao((Integer) anos.getSelectedItem());
-		JOptionPane.showMessageDialog(applet, formClassificacao,
+		JOptionPane.showMessageDialog(applet.getFrame(), formClassificacao,
 				Lang.msg("065"), JOptionPane.PLAIN_MESSAGE);
 
 	}
@@ -653,7 +655,7 @@ public class ControlePaddockCliente {
 		FormConstrutores formConstrutores = new FormConstrutores(
 				srvPaddockPack.getListaConstrutoresCarros(),
 				srvPaddockPack.getListaConstrutoresPilotos());
-		JOptionPane.showMessageDialog(applet, formConstrutores, Lang.msg("244"),
+		JOptionPane.showMessageDialog(applet.getFrame(), formConstrutores, Lang.msg("244"),
 				JOptionPane.PLAIN_MESSAGE);
 
 	}
@@ -702,7 +704,7 @@ public class ControlePaddockCliente {
 		}
 
 		formEntrada.setToolTipText(Lang.msg("066"));
-		int result = JOptionPane.showConfirmDialog(applet, formEntrada,
+		int result = JOptionPane.showConfirmDialog(applet.getFrame(), formEntrada,
 				Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
@@ -785,14 +787,14 @@ public class ControlePaddockCliente {
 		FormCarreira formCarreira = new FormCarreira();
 		formCarreira.setToolTipText(Lang.msg("246"));
 		carregaCarreira(formCarreira);
-		int result = JOptionPane.showConfirmDialog(applet, formCarreira,
+		int result = JOptionPane.showConfirmDialog(applet.getFrame(), formCarreira,
 				Lang.msg("246"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			int carLen = formCarreira.getNomeCarro().getText().length();
 			int piloLen = formCarreira.getNomePiloto().getText().length();
 			if (carLen == 0 || carLen > 20 || piloLen == 0 || piloLen > 20) {
-				JOptionPane.showMessageDialog(applet, Lang.msg("249"), "Erro",
+				JOptionPane.showMessageDialog(applet.getFrame(), Lang.msg("249"), "Erro",
 						JOptionPane.ERROR_MESSAGE);
 			} else {
 				atualizaCarreira(formCarreira);
@@ -985,7 +987,7 @@ public class ControlePaddockCliente {
 			entarJogo(srvPaddockPack.getNomeJogoCriado());
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(applet, e.getMessage(), "Erro",
+			JOptionPane.showMessageDialog(applet.getFrame(), e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -994,7 +996,7 @@ public class ControlePaddockCliente {
 		if (jogoCliente == null) {
 			return;
 		}
-		int result = JOptionPane.showConfirmDialog(applet, Lang.msg("sairJogo"),
+		int result = JOptionPane.showConfirmDialog(applet.getFrame(), Lang.msg("sairJogo"),
 				Lang.msg("095"), JOptionPane.OK_CANCEL_OPTION);
 		if (JOptionPane.OK_OPTION == result) {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
