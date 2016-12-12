@@ -296,7 +296,7 @@ public class PainelCircuito {
 	private java.awt.geom.RoundRectangle2D.Double rectanglePos;
 	private java.awt.geom.RoundRectangle2D.Double rectangleVol;
 	private int interpolacao = AffineTransformOp.TYPE_BILINEAR;
-	private java.awt.geom.Rectangle2D.Double rectangleMarcasPeneuPista;
+	private java.awt.geom.Rectangle2D.Double rectangleMarcasPneuPista;
 	private java.awt.geom.Rectangle2D.Double rectangleGerarGrid;
 	private java.awt.geom.Rectangle2D.Double rectangleSafetyCarCima;
 	private java.awt.geom.Rectangle2D.Double rectangleGerarBoxes;
@@ -414,7 +414,7 @@ public class PainelCircuito {
 			}
 			desenhaGrid(g2d);
 			iniciaPilotoSelecionado();
-			desenhaMarcasPeneuPista(g2d);
+			desenhaMarcasPneuPista(g2d);
 			desenhaMarcaoParaCurva(g2d);
 			desenhaPiloto(g2d);
 			desenharSafetyCarCima(g2d);
@@ -1425,12 +1425,12 @@ public class PainelCircuito {
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 50, 20, 0, 0);
 			g2d.setColor(Color.BLACK);
-			int porcentagemDesgastePeneus = piloto.getCarro()
-					.porcentagemDesgastePeneus();
-			if (porcentagemDesgastePeneus < 0) {
-				porcentagemDesgastePeneus = 0;
+			int porcentagemDesgastePneus = piloto.getCarro()
+					.porcentagemDesgastePneus();
+			if (porcentagemDesgastePneus < 0) {
+				porcentagemDesgastePneus = 0;
 			}
-			g2d.drawString("" + porcentagemDesgastePeneus + "%", x + 12,
+			g2d.drawString("" + porcentagemDesgastePneus + "%", x + 12,
 					y + 16);
 
 			if (corBorda != null) {
@@ -3068,7 +3068,7 @@ public class PainelCircuito {
 		}
 	}
 
-	private void desenhaMarcasPeneuPista(Graphics2D g2d) {
+	private void desenhaMarcasPneuPista(Graphics2D g2d) {
 		if (limitesViewPort == null || zoom < 0.5) {
 			return;
 		}
@@ -3131,25 +3131,25 @@ public class PainelCircuito {
 			Point trazCar = ((No) lista.get(traz)).getPoint();
 			Point frenteCar = ((No) lista.get(frente)).getPoint();
 			double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-			if (rectangleMarcasPeneuPista == null) {
-				rectangleMarcasPeneuPista = new Rectangle2D.Double(
+			if (rectangleMarcasPneuPista == null) {
+				rectangleMarcasPneuPista = new Rectangle2D.Double(
 						(p.x - Carro.MEIA_LARGURA), (p.y - Carro.MEIA_ALTURA),
 						Carro.LARGURA, Carro.ALTURA);
 			} else {
-				rectangleMarcasPeneuPista.setFrame((p.x - Carro.MEIA_LARGURA),
+				rectangleMarcasPneuPista.setFrame((p.x - Carro.MEIA_LARGURA),
 						(p.y - Carro.MEIA_ALTURA), Carro.LARGURA, Carro.ALTURA);
 			}
 
 			Point p1 = GeoUtil.calculaPonto(calculaAngulo,
 					Util.inte(Carro.ALTURA * controleJogo.getCircuito()
 							.getMultiplicadorLarguraPista()),
-					new Point(Util.inte(rectangleMarcasPeneuPista.getCenterX()),
-							Util.inte(rectangleMarcasPeneuPista.getCenterY())));
+					new Point(Util.inte(rectangleMarcasPneuPista.getCenterX()),
+							Util.inte(rectangleMarcasPneuPista.getCenterY())));
 			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
 					Util.inte(Carro.ALTURA * controleJogo.getCircuito()
 							.getMultiplicadorLarguraPista()),
-					new Point(Util.inte(rectangleMarcasPeneuPista.getCenterX()),
-							Util.inte(rectangleMarcasPeneuPista.getCenterY())));
+					new Point(Util.inte(rectangleMarcasPneuPista.getCenterX()),
+							Util.inte(rectangleMarcasPneuPista.getCenterY())));
 			if (travadaRoda.getTracado() == 0) {
 				carx = p.x - w2;
 				cary = p.y - h2;
@@ -4588,7 +4588,7 @@ public class PainelCircuito {
 				&& !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
 			return;
 		}
-		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePeneus();
+		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePneus();
 		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
 		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
 
@@ -4641,7 +4641,7 @@ public class PainelCircuito {
 
 		if (Carro.PNEU_FURADO
 				.equals(pilotoSelecionado.getCarro().getDanificado())) {
-			g2d.setColor(OcilaCor.geraOcila("peneuFurado", Color.red));
+			g2d.setColor(OcilaCor.geraOcila("pneuFurado", Color.red));
 			// Roda diantera
 			g2d.fillOval(limitesViewPort.x + 203, limitesViewPort.y + 24, 18,
 					18);
@@ -4649,7 +4649,7 @@ public class PainelCircuito {
 			g2d.fillOval(limitesViewPort.x + 307, limitesViewPort.y + 24, 18,
 					18);
 		} else if (pneus <= 25) {
-			g2d.setColor(OcilaCor.geraOcila("peneuGastos", Color.yellow));
+			g2d.setColor(OcilaCor.geraOcila("pneuGastos", Color.yellow));
 			// Roda diantera
 			g2d.fillOval(limitesViewPort.x + 203, limitesViewPort.y + 24, 18,
 					18);
@@ -5672,7 +5672,7 @@ public class PainelCircuito {
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(Lang.msg("215") + " " + porcentComb + "%", x + 5, y);
 		y += 35;
-		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePeneus();
+		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePneus();
 		Color corPneus = OcilaCor.porcentVerde100Vermelho0(pneus);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 5, y - 26, 2 * pneus, 30, 0, 0);

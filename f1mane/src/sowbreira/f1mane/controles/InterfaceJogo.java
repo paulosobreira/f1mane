@@ -43,7 +43,7 @@ public interface InterfaceJogo {
 
 	public Integer getCombustBox(Piloto piloto);
 
-	public String getTipoPeneuBox(Piloto piloto);
+	public String getTipoPneuBox(Piloto piloto);
 
 	public String getAsaBox(Piloto piloto);
 

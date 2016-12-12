@@ -747,7 +747,7 @@ public class PaddockWindow {
 			}
 		});
 		panelJogo.add(
-				new JLabel(detalhesJogo.getDadosCriarJogo().isTrocaPeneu()
+				new JLabel(detalhesJogo.getDadosCriarJogo().isTrocaPneu()
 						? Lang.msg("SIM")
 						: Lang.msg("NAO")));
 

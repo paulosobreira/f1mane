@@ -54,7 +54,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private Integer ultimoConsumoCombust;
 	private List ultsConsumosPneu = new LinkedList();
 	private Integer ultimoConsumoPneu;
-	protected String tipoPeneuJogador;
+	protected String tipoPneuJogador;
 	protected String asaJogador;
 	protected Integer combustJogador;
 	private int id;
@@ -414,12 +414,12 @@ public class Piloto implements Serializable, PilotoSuave {
 		return true;
 	}
 
-	public String getTipoPeneuJogador() {
-		return tipoPeneuJogador;
+	public String getTipoPneuJogador() {
+		return tipoPneuJogador;
 	}
 
-	public void setTipoPeneuJogador(String tipoPeneuJogador) {
-		this.tipoPeneuJogador = tipoPeneuJogador;
+	public void setTipoPneuJogador(String tipoPneuJogador) {
+		this.tipoPneuJogador = tipoPneuJogador;
 	}
 
 	public String getAsaJogador() {
@@ -854,7 +854,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 			}
 		}
-		int pPneu = getCarro().porcentagemDesgastePeneus();
+		int pPneu = getCarro().porcentagemDesgastePneus();
 		if (ultimoConsumoPneu == null) {
 			ultimoConsumoPneu = new Integer(pPneu);
 		} else {
@@ -886,7 +886,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (isJogadorHumano() || isRecebeuBanderada() || getPtosPista() < 0) {
 			return;
 		}
-		int pneus = getCarro().porcentagemDesgastePeneus();
+		int pneus = getCarro().porcentagemDesgastePneus();
 		int combust = getCarro().porcentagemCombustivel();
 		int corrida = controleJogo.porcentagemCorridaCompletada();
 		if (controleJogo.isSemReabastacimento()) {
@@ -1096,7 +1096,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		 */
 		if (No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && agressivo
 				&& (getTracado() == 0)
-				&& (carro.porcentagemDesgastePeneus() < 30)) {
+				&& (carro.porcentagemDesgastePneus() < 30)) {
 			if (getStress() > 60)
 				controleJogo.travouRodas(this);
 			if (getTracadoAntigo() != 0) {
@@ -2160,8 +2160,8 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private void modoIADefesaAtaque(InterfaceJogo controleJogo) {
 		double porcentagemCombustivel = getCarro().porcentagemCombustivel();
-		double porcentagemDesgastePeneus = getCarro()
-				.porcentagemDesgastePeneus();
+		double porcentagemDesgastePneus = getCarro()
+				.porcentagemDesgastePneus();
 		boolean superAquecido = getCarro().verificaMotorSuperAquecido();
 		boolean drsAtivado = Carro.MENOS_ASA.equals(getCarro().getAsa())
 				&& controleJogo.isDrs() && !controleJogo.isChovendo();
@@ -2178,11 +2178,11 @@ public class Piloto implements Serializable, PilotoSuave {
 					? Math.random() < porcentagemCombustivel / 100.0
 					: porcentagemCombustivel > porcentagemCorridaRestante;
 		}
-		boolean temPneu = porcentagemDesgastePeneus > 10;
+		boolean temPneu = porcentagemDesgastePneus > 10;
 		if (controleJogo.isSemTrocaPneu()) {
-			temPneu = porcentagemDesgastePeneus > limiteDesgaste
-					? Math.random() < porcentagemDesgastePeneus / 100.0
-					: porcentagemDesgastePeneus > porcentagemCorridaRestante;
+			temPneu = porcentagemDesgastePneus > limiteDesgaste
+					? Math.random() < porcentagemDesgastePneus / 100.0
+					: porcentagemDesgastePneus > porcentagemCorridaRestante;
 		}
 		double valorLimiteStressePararErrarCurva = 100;
 		boolean derrapa = getNoAtual() != null

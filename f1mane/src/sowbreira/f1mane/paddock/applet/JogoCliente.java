@@ -345,7 +345,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return dadosParticiparJogo.getTempoCiclo().longValue();
 	}
 
-	public String getTipoPeneuBox(Piloto piloto) {
+	public String getTipoPneuBox(Piloto piloto) {
 		return piloto.getTipoPneuBox();
 	}
 
@@ -777,7 +777,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public boolean isSemTrocaPneu() {
-		return !dadosParticiparJogo.isTrocaPeneu();
+		return !dadosParticiparJogo.isTrocaPneu();
 	}
 
 	@Override

@@ -494,7 +494,7 @@ public class PainelEntradaCliente {
 		dadosCriarJogo.setNivelCorrida(Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
 		dadosCriarJogo.setClima((Clima) comboBoxClimaInicial.getSelectedItem());
 		dadosCriarJogo.setReabastecimento(reabastacimento.isSelected());
-		dadosCriarJogo.setTrocaPeneu(trocaPneu.isSelected());
+		dadosCriarJogo.setTrocaPneu(trocaPneu.isSelected());
 		dadosCriarJogo.setKers(kers.isSelected());
 		dadosCriarJogo.setDrs(drs.isSelected());
 	}

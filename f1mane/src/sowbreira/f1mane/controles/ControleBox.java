@@ -191,7 +191,7 @@ public class ControleBox {
 							new String[]{piloto.getNome()})));
 				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "
 						+ piloto.getNumeroVolta() + " Pneus : "
-						+ piloto.getCarro().porcentagemDesgastePeneus()
+						+ piloto.getCarro().porcentagemDesgastePneus()
 						+ " Combustivel : "
 						+ piloto.getCarro().porcentagemCombustivel()
 						+ " Motor : "
@@ -326,7 +326,7 @@ public class ControleBox {
 				combust = new Integer(0);
 			}
 			qtdeCombust = controleJogo.setUpJogadorHumano(piloto,
-					controleJogo.getTipoPeneuBox(piloto), combust,
+					controleJogo.getTipoPneuBox(piloto), combust,
 					controleJogo.getAsaBox(piloto));
 		}
 
@@ -522,7 +522,7 @@ public class ControleBox {
 				combustBox = new Integer(10);
 			}
 			controleJogo.setUpJogadorHumano(piloto,
-					controleJogo.getTipoPeneuBox(piloto), combustBox,
+					controleJogo.getTipoPneuBox(piloto), combustBox,
 					controleJogo.getAsaBox(piloto));
 			return;
 		}

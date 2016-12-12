@@ -200,7 +200,7 @@ public class ControleCampeonatoServidor {
 				dadosCorridaCampeonato.setQtdeParadasBox(piloto
 						.getQtdeParadasBox());
 				dadosCorridaCampeonato.setDesgastePneus(String.valueOf(piloto
-						.getCarro().porcentagemDesgastePeneus() + "%"));
+						.getCarro().porcentagemDesgastePneus() + "%"));
 				dadosCorridaCampeonato.setCombustivelRestante(String
 						.valueOf(piloto.getCarro().porcentagemCombustivel()
 								+ "%"));

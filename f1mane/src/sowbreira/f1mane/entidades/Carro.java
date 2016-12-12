@@ -73,7 +73,7 @@ public class Carro implements Serializable {
 	private Piloto piloto;
 	private int tempMax;
 	private boolean pneuAquecido;
-	private boolean msgPeneu;
+	private boolean msgPneu;
 
 	public int getPotenciaAntesQualify() {
 		return potenciaAntesQualify;
@@ -218,7 +218,7 @@ public class Carro implements Serializable {
 	}
 
 	public void trocarPneus(InterfaceJogo interfaceJogo, String tipoPneu, int distaciaCorrida) {
-		msgPeneu = false;
+		msgPneu = false;
 		if (interfaceJogo.isSemTrocaPneu() && !interfaceJogo.isModoQualify() && this.tipoPneu != null) {
 			if (!verificaPneusIncompativeisClima(interfaceJogo) && pneus > 0) {
 				return;
@@ -269,7 +269,7 @@ public class Carro implements Serializable {
 	}
 
 	public boolean verificaCondicoesCautelaPneu(InterfaceJogo controleJogo) {
-		int pneus = porcentagemDesgastePeneus();
+		int pneus = porcentagemDesgastePneus();
 		double consumoMedioPenus = getPiloto().calculaConsumoMedioPneu();
 		if (pneus < (consumoMedioPenus)) {
 			return true;
@@ -612,7 +612,7 @@ public class Carro implements Serializable {
 	}
 
 	private int calculaModificadorPneu(int novoModificador, boolean agressivo, No no, InterfaceJogo controleJogo) {
-		int porcentPneus = porcentagemDesgastePeneus();
+		int porcentPneus = porcentagemDesgastePneus();
 		processaTemperaturaPneus(controleJogo);
 		pneuAquecido = false;
 		if (getTemperaturaPneus() > 50) {
@@ -919,14 +919,14 @@ public class Carro implements Serializable {
 
 	private void msgPneus(InterfaceJogo controleJogo) {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista() && !controleJogo.isChovendo()
-				&& pneuAquecido && !msgPeneu) {
-			msgPeneu = true;
+				&& pneuAquecido && !msgPneu) {
+			msgPneu = true;
 			controleJogo
 					.info(Html.orange(Lang.msg("msgpneus", new String[] { Html.txtRedBold(getPiloto().getNome()) })));
 		}
 	}
 
-	public int porcentagemDesgastePeneus() {
+	public int porcentagemDesgastePneus() {
 		if (durabilidadeMaxPneus == 0) {
 			return 0;
 		}

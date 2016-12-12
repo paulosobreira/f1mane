@@ -112,10 +112,10 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getTipoPeneuBox(sowbreira.f1mane.entidades.Piloto)
+	 * @see sowbreira.f1mane.controles.InterfaceJogo#getTipoPneuBox(sowbreira.f1mane.entidades.Piloto)
 	 */
-	public String getTipoPeneuBox(Piloto piloto) {
-		return piloto.getTipoPeneuJogador();
+	public String getTipoPneuBox(Piloto piloto) {
+		return piloto.getTipoPneuJogador();
 	}
 
 	protected void setarNivelCorrida() {
@@ -406,7 +406,7 @@ public class ControleJogoLocal extends ControleRecursos
 		pilotoJogador.setJogadorHumano(true);
 		pilotoJogador.setNomeJogador(nomeJogador);
 
-		pilotoJogador.setTipoPeneuJogador((String) tpneu);
+		pilotoJogador.setTipoPneuJogador((String) tpneu);
 		pilotoJogador.setCombustJogador((Integer) combust);
 		pilotoJogador.setAsaJogador((String) asa);
 		pilotosJogadores.add(pilotoJogador);
@@ -435,14 +435,14 @@ public class ControleJogoLocal extends ControleRecursos
 	 *      java.lang.Object)
 	 */
 	public void setBoxJogadorHumano(Object tpneu, Object combust, Object asa) {
-		String tipoPeneuJogador = (String) tpneu;
+		String tipoPneuJogador = (String) tpneu;
 		Integer combustJogador = (Integer) combust;
 		String asaJogador = (String) asa;
 		if (pilotoJogador != null) {
-			pilotoJogador.setTipoPeneuJogador(tipoPeneuJogador);
+			pilotoJogador.setTipoPneuJogador(tipoPneuJogador);
 			pilotoJogador.setCombustJogador(combustJogador);
 			pilotoJogador.setAsaJogador(asaJogador);
-			pilotoJogador.setTipoPneuBox(tipoPeneuJogador);
+			pilotoJogador.setTipoPneuBox(tipoPneuJogador);
 			pilotoJogador.setQtdeCombustBox(combustJogador);
 			pilotoJogador.setAsaBox(asaJogador);
 		}

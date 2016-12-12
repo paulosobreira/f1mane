@@ -511,7 +511,7 @@ public class ControleCampeonato {
 						.obterTempoVoltaFormatado());
 			corridaCampeonato.setQtdeParadasBox(p.getQtdeParadasBox());
 			corridaCampeonato.setDesgastePneus(String.valueOf(p.getCarro()
-					.porcentagemDesgastePeneus() + "%"));
+					.porcentagemDesgastePneus() + "%"));
 			corridaCampeonato.setCombustivelRestante(String.valueOf(p
 					.getCarro().porcentagemCombustivel() + "%"));
 			corridaCampeonato.setDesgasteMotor(String.valueOf(p.getCarro()
