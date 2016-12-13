@@ -105,7 +105,7 @@ public class PaddockWindow {
 
 		public String getText() {
 
-			return Lang.msg("179");
+			return Lang.msg("ranking");
 		}
 	};
 

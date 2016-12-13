@@ -13,7 +13,7 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
-	<property name="TOMCAT_HOME" value="E:\apache-tomcat-7.0.35" />
+	<property name="TOMCAT_HOME" value="C:\Java\apache-tomcat-8.0.28" />
 	<property name="HOST" value="games-sowbreira.rhcloud.com" />
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
@@ -28,7 +28,7 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarLocalJnlp,criarWar,limpaJars">
+	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarLocalJnlp,criarZipOnline,criarWar,limpaJars">
 	</target>
 
 	<target name="targetPadraoNoLibs" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,criarWarNoLibs,limpaJars">
@@ -65,6 +65,10 @@
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="**/*.jnlp" />
+			</fileset>
+			<fileset dir=".">
+				<include name="F1-Mane-Online-en-us.bat" />
+				<include name="F1-Mane-Online-pt-br.bat" />
 			</fileset>
 		</copy>
 	</target>
@@ -128,9 +132,10 @@
 			</fileset>
 		</war>
 		<delete dir="WebContent/sowbreira" />
+		<delete file="WebContent/f1mane.zip" />
 	</target>
 
-	
+
 	<target name="criarWarNoLibs">
 		<delete dir="${TOMCAT_HOME}/webapps/f1mane" />
 		<war compress="on" destfile="${TOMCAT_HOME}/webapps/f1mane.war">
@@ -139,15 +144,15 @@
 				<exclude name="WEB-INF/lib/*.jar" />
 			</fileset>
 			<fileset dir="WebContent">
-				<include name="WEB-INF/lib/f1mane.jar"  />
-			</fileset>			
+				<include name="WEB-INF/lib/f1mane.jar" />
+			</fileset>
 			<fileset dir="build">
 				<include name="**/*.jnlp" />
 			</fileset>
 		</war>
 		<delete dir="WebContent/sowbreira" />
 	</target>
-	
+
 
 	<target name="sign_jar">
 		<copy todir=".">
@@ -207,6 +212,31 @@
 	</target>
 
 
+	<target name="criarZipOnline">
+		<zip destfile="WebContent/f1mane.zip" compress="true">
+			<fileset dir="build">
+				<include name="F1-Mane-Online-en-us.bat" />
+				<include name="F1-Mane-Online-pt-br.bat" />
+				<include name="f1maneonline.jnlp" />
+				<include name="f1maneonline_en.jnlp" />				
+			</fileset>
+
+			<fileset dir="WebContent/WEB-INF/lib">
+				<include name="jnlp.jar" />
+			</fileset>
+			<fileset dir="WebContent">
+				<include name="f1mane.jar" />
+				<include name="f1maneRecursos.jar" />
+			</fileset>
+		</zip>
+		<delete>
+			<fileset dir=".">
+				<include name="*.jar" />
+			</fileset>
+		</delete>
+	</target>
+
+
 	<target name="limpaJars">
 		<delete>
 			<fileset dir=".">
@@ -218,14 +248,17 @@
 	<target name="atualizarJnlp" description="Atualizar JNPL">
 		<replace dir="build" value="${HOST}" token="{host}">
 			<include name="*.jnlp" />
+			<include name="*.bat" />
 		</replace>
 	</target>
 
 	<target name="atualizarLocalJnlp" description="Atualizar JNPL">
 		<replace dir="build" value="localhost:8080" token="{host}">
 			<include name="*.jnlp" />
+			<include name="*.bat" />
 		</replace>
 	</target>
+
 
 
 

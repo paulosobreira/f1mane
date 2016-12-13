@@ -1,0 +1,1 @@
+java -Xms64m -Xmx512m -cp .;f1mane.jar;f1maneRecursos.jar;jnlp.jar  sowbreira.f1mane.paddock.applet.AppletPaddock http://{host}/f1mane

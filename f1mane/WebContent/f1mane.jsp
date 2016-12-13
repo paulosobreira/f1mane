@@ -183,13 +183,13 @@ img {
 		</div>
 		<div style="text-align: center;">
 			<div style="text-align: center;	">
-				<a id="link"  href="f1maneonline.jnlp" style="text-align: left;">
-					Online
+				<a id="link"  href="f1mane.zip" style="text-align: left;">
+					Baixar
 					<img src="webstart.png" border="0">
 				</a>	
 			&nbsp;&nbsp;&nbsp;&nbsp;
-				<a id="link" href="https://sowbreira-26fe1.firebaseapp.com/f1mane/f1mane.html" style="text-align: left;">
-					Single
+				<a id="link" href="f1maneonline.jnlp" style="text-align: left;">
+					Java Web Start
 					<img src="webstart.png" border="0">
 				</a>				
 			<div>	
