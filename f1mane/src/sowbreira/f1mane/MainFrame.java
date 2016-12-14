@@ -122,7 +122,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public String getVersao() {
-		return ver.getVersao();
+		return ver.getVersaoFormatado();
 	}
 
 	private void gerarMenusidiomas(JMenu menuIdiomas) {

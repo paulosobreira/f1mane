@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class MsgSrv implements Serializable{
 	private String messageString;
+	private String versao;
 
 	/**
 	 * @param messageString
@@ -16,12 +17,26 @@ public class MsgSrv implements Serializable{
 		this.messageString = messageString;
 	}
 
+	public MsgSrv(String messageString, String versao) {
+		super();
+		this.messageString = messageString;
+		this.versao = versao;
+	}
+
 	public String getMessageString() {
 		return messageString;
 	}
 
 	public void setMessageString(String messageString) {
 		this.messageString = messageString;
+	}
+
+	public String getVersao() {
+		return versao;
+	}
+
+	public void setVersao(String versao) {
+		this.versao = versao;
 	}
 
 }

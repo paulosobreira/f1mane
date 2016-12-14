@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -29,7 +30,7 @@ public class AppletPaddock {
 	private URL codeBase;
 	DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
-	public String getVersao() {
+	public String getVersaoFormatado() {
 		if (versao == null) {
 			try {
 				initProperties();
@@ -38,6 +39,18 @@ public class AppletPaddock {
 			}
 		}
 		return " " + decimalFormat.format(new Integer(versao));
+	}
+	
+
+	public String getVersao() {
+		if (versao == null) {
+			try {
+				initProperties();
+			} catch (IOException e) {
+				Logger.logarExept(e);
+			}
+		}
+		return versao;
 	}
 	
 	public static void main(String[] args) throws MalformedURLException {
@@ -94,7 +107,7 @@ public class AppletPaddock {
 
 	public void initProperties() throws IOException {
 		Properties properties = new Properties();
-		properties.load(this.getClass()
+		properties.load(PaddockConstants.class
 				.getResourceAsStream("client.properties"));
 		this.versao = properties.getProperty("versao");
 		if (versao.contains(".")) {

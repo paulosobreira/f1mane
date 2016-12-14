@@ -41,7 +41,7 @@
 	</target>
 
 	<target name="atualizaVersao">
-		<propertyfile file="src/sowbreira/f1mane/paddock/applet/client.properties">
+		<propertyfile file="src/sowbreira/f1mane/paddock/client.properties">
 			<entry operation="+" key="versao" type="int" value="1" />
 		</propertyfile>
 	</target>

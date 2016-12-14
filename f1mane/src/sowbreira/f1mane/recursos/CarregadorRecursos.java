@@ -109,7 +109,6 @@ public class CarregadorRecursos {
 				buffer = ImageUtil.toBufferedImage(file);
 				if (buffer == null) {
 					Logger.logar("img=" + buffer);
-					System.exit(1);
 				}
 
 			} catch (Exception e) {
@@ -161,7 +160,6 @@ public class CarregadorRecursos {
 				buffer = ImageUtil.toBufferedImage(file);
 				if (buffer == null) {
 					Logger.logar("img=" + buffer);
-					System.exit(1);
 				}
 
 			} catch (Exception e) {
@@ -188,7 +186,6 @@ public class CarregadorRecursos {
 				buffer = ImageUtil.toBufferedImage(file);
 				if (buffer == null) {
 					Logger.logar("img=" + buffer);
-					System.exit(1);
 				}
 
 			} catch (Exception e) {

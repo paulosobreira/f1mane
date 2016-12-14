@@ -115,7 +115,7 @@ public class MainFrameEditor extends JFrame {
 	}
 
 	private String getVersao() {
-		return ver.getVersao();
+		return ver.getVersaoFormatado();
 	}
 
 	private void gerarMenusidiomas(JMenu menuIdiomas) {

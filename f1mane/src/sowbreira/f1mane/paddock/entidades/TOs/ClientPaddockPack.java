@@ -21,6 +21,7 @@ public class ClientPaddockPack implements Serializable {
 	private String modoPilotagem;
 	private String tpPneuBox;
 	private String asaBox;
+	private String versao;
 	private int combustBox;
 	private int tracado;
 	private boolean recuperar = false;
@@ -182,4 +183,13 @@ public class ClientPaddockPack implements Serializable {
 	public void setRecuperar(boolean recuperar) {
 		this.recuperar = recuperar;
 	}
+
+	public String getVersao() {
+		return versao;
+	}
+
+	public void setVersao(String versao) {
+		this.versao = versao;
+	}
+
 }

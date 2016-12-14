@@ -3,9 +3,11 @@
  */
 package sowbreira.f1mane.paddock.servlet;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -15,6 +17,7 @@ import org.hibernate.Session;
 import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.Util;
+import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
@@ -36,6 +39,7 @@ public class ControlePaddockServidor {
 	private ControlePersistencia controlePersistencia;
 	private ControleClassificacao controleClassificacao;
 	private ControleCampeonatoServidor controleCampeonatoServidor;
+	private String versao;
 
 	public DadosPaddock getDadosPaddock() {
 		return dadosPaddock;
@@ -53,7 +57,11 @@ public class ControlePaddockServidor {
 		controleJogosServer = new ControleJogosServer(dadosPaddock,
 				controleClassificacao, controleCampeonatoServidor,
 				controlePersistencia);
-
+		try {
+			initProperties();
+		} catch (IOException e) {
+			Logger.logarExept(e);
+		}
 	}
 
 	public ControleJogosServer getControleJogosServer() {
@@ -83,7 +91,9 @@ public class ControlePaddockServidor {
 			ClientPaddockPack clientPaddockPack = (ClientPaddockPack) object;
 			if (Comandos.REGISTRAR_LOGIN
 					.equals(clientPaddockPack.getComando())) {
-
+				if (!versao.equals(clientPaddockPack.getVersao())) {
+					return new MsgSrv(Lang.msg("novaVersao"), versao);
+				}
 				if ("IA".equals(clientPaddockPack.getNomeJogador())
 						|| "Ia".equals(clientPaddockPack.getNomeJogador())
 						|| "ia".equals(clientPaddockPack.getNomeJogador())
@@ -546,9 +556,8 @@ public class ControlePaddockServidor {
 				.carregaDadosJogador(clientPaddockPack.getNomeJogador(),
 						session);
 		if (jogadorDadosSrv == null) {
-			jogadorDadosSrv = controlePersistencia
-					.carregaDadosJogadorEmail(clientPaddockPack.getNomeJogador(),
-							session);
+			jogadorDadosSrv = controlePersistencia.carregaDadosJogadorEmail(
+					clientPaddockPack.getNomeJogador(), session);
 		}
 		if (jogadorDadosSrv == null) {
 			return new MsgSrv(Lang.msg("238"));
@@ -568,8 +577,7 @@ public class ControlePaddockServidor {
 		for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
 				.hasNext();) {
 			SessaoCliente element = (SessaoCliente) iter.next();
-			if (element.getNomeJogador()
-					.equals(jogadorDadosSrv.getNome())) {
+			if (element.getNomeJogador().equals(jogadorDadosSrv.getNome())) {
 				sessaoCliente = element;
 				break;
 			}
@@ -599,4 +607,15 @@ public class ControlePaddockServidor {
 		controleJogosServer.removerClienteInativo(sessaoCliente);
 		dadosPaddock.getClientes().remove(sessaoCliente);
 	}
+
+	public void initProperties() throws IOException {
+		Properties properties = new Properties();
+		properties.load(PaddockConstants.class
+				.getResourceAsStream("client.properties"));
+		this.versao = properties.getProperty("versao");
+		if (versao.contains(".")) {
+			this.versao = versao.replaceAll("\\.", "");
+		}
+	}
+
 }

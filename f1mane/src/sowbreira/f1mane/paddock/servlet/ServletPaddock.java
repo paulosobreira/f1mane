@@ -48,11 +48,9 @@ public class ServletPaddock extends HttpServlet {
 		super.init();
 		Lang.setSrvgame(true);
 		try {
-			controlePersistencia = new ControlePersistencia(getServletContext()
-					.getRealPath("")
-					+ File.separator
-					+ "WEB-INF"
-					+ File.separator);
+			controlePersistencia = new ControlePersistencia(
+					getServletContext().getRealPath("") + File.separator
+							+ "WEB-INF" + File.separator);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -62,15 +60,13 @@ public class ServletPaddock extends HttpServlet {
 		monitor.start();
 	}
 
-
-
 	private String obterHost() throws UnknownHostException {
 		String host = "";
 		int port = 80;
 		try {
 			Properties properties = new Properties();
-			properties.load(this.getClass().getResourceAsStream(
-					"server.properties"));
+			properties.load(PaddockConstants.class
+					.getResourceAsStream("server.properties"));
 			host = properties.getProperty("host");
 			port = Integer.parseInt(properties.getProperty("port"));
 			if (!Util.isNullOrEmpty(host)) {
@@ -113,9 +109,9 @@ public class ServletPaddock extends HttpServlet {
 						.processarObjetoRecebido(object);
 
 				if (PaddockConstants.modoZip) {
-					dumaparDadosZip(ZipUtil.compactarObjeto(
-							PaddockConstants.debug, escrever,
-							res.getOutputStream()));
+					dumaparDadosZip(
+							ZipUtil.compactarObjeto(PaddockConstants.debug,
+									escrever, res.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					dumaparDados(escrever);
@@ -168,7 +164,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private void updateSchema(AnnotationConfiguration cfg,
 			SessionFactory sessionFactory, PrintWriter printWriter)
-			throws SQLException {
+					throws SQLException {
 		Dialect dialect = Dialect.getDialect(cfg.getProperties());
 		Session session = sessionFactory.openSession();
 		DatabaseMetadata meta = new DatabaseMetadata(session.connection(),
@@ -198,7 +194,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private void createSchema(AnnotationConfiguration cfg,
 			SessionFactory sessionFactory, PrintWriter printWriter)
-			throws HibernateException, SQLException {
+					throws HibernateException, SQLException {
 		Dialect dialect = Dialect.getDialect(cfg.getProperties());
 		String[] strings = cfg.generateSchemaCreationScript(dialect);
 		executeStatement(sessionFactory, strings, printWriter);
@@ -213,8 +209,8 @@ public class ServletPaddock extends HttpServlet {
 			Set top = Logger.topExceptions.keySet();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
 				String exept = (String) iterator.next();
-				printWriter.write("Quantidade : "
-						+ Logger.topExceptions.get(exept));
+				printWriter.write(
+						"Quantidade : " + Logger.topExceptions.get(exept));
 				printWriter.write("<br>");
 				printWriter.write(exept);
 				printWriter.write("<br><hr>");
@@ -242,8 +238,8 @@ public class ServletPaddock extends HttpServlet {
 						continue;
 					}
 					if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
-							|| Util.isNullOrEmpty(carreiraDadosSrv
-									.getNomePiloto())) {
+							|| Util.isNullOrEmpty(
+									carreiraDadosSrv.getNomePiloto())) {
 						continue;
 					}
 					printWriter.write("Jogador : " + nomeJogador);
@@ -272,8 +268,8 @@ public class ServletPaddock extends HttpServlet {
 		if (PaddockConstants.debug) {
 			String basePath = getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator;
-			FileOutputStream fileOutputStream = new FileOutputStream(basePath
-					+ "Pack-" + System.currentTimeMillis() + ".zip");
+			FileOutputStream fileOutputStream = new FileOutputStream(
+					basePath + "Pack-" + System.currentTimeMillis() + ".zip");
 			fileOutputStream.write(byteArrayOutputStream.toByteArray());
 			fileOutputStream.close();
 
@@ -289,9 +285,9 @@ public class ServletPaddock extends HttpServlet {
 			objectOutputStream.writeObject(escrever);
 			String basePath = getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator;
-			FileOutputStream fileOutputStream = new FileOutputStream(basePath
-					+ escrever.getClass().getSimpleName() + "-"
-					+ System.currentTimeMillis() + ".txt");
+			FileOutputStream fileOutputStream = new FileOutputStream(
+					basePath + escrever.getClass().getSimpleName() + "-"
+							+ System.currentTimeMillis() + ".txt");
 			fileOutputStream.write(arrayOutputStream.toByteArray());
 			fileOutputStream.close();
 
