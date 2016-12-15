@@ -39,7 +39,7 @@ public class ControlePaddockServidor {
 	private ControlePersistencia controlePersistencia;
 	private ControleClassificacao controleClassificacao;
 	private ControleCampeonatoServidor controleCampeonatoServidor;
-	private String versao;
+	private int versao;
 
 	public DadosPaddock getDadosPaddock() {
 		return dadosPaddock;
@@ -89,11 +89,17 @@ public class ControlePaddockServidor {
 		}
 		if (object instanceof ClientPaddockPack) {
 			ClientPaddockPack clientPaddockPack = (ClientPaddockPack) object;
-			if (Comandos.REGISTRAR_LOGIN
+			if (Comandos.VERIFICA_VERSAO
 					.equals(clientPaddockPack.getComando())) {
-				if (!versao.equals(clientPaddockPack.getVersao())) {
-					return new MsgSrv(Lang.msg("novaVersao"), versao);
+				if (versao != clientPaddockPack.getVersao()) {
+					Logger.logar(
+							"Versao Cleinte : " + clientPaddockPack.getVersao()
+									+ " Versao servidor " + versao);
+					return new MsgSrv(Lang.msg("novaVersao"));
 				}
+				return "OK";
+			} else if (Comandos.REGISTRAR_LOGIN
+					.equals(clientPaddockPack.getComando())) {
 				if ("IA".equals(clientPaddockPack.getNomeJogador())
 						|| "Ia".equals(clientPaddockPack.getNomeJogador())
 						|| "ia".equals(clientPaddockPack.getNomeJogador())
@@ -612,9 +618,9 @@ public class ControlePaddockServidor {
 		Properties properties = new Properties();
 		properties.load(PaddockConstants.class
 				.getResourceAsStream("client.properties"));
-		this.versao = properties.getProperty("versao");
+		String versao = properties.getProperty("versao");
 		if (versao.contains(".")) {
-			this.versao = versao.replaceAll("\\.", "");
+			this.versao = Integer.parseInt(versao.replaceAll("\\.", ""));
 		}
 	}
 

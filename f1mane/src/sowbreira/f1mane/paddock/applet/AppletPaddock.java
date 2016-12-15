@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.paddock.PaddockConstants;
+import sowbreira.f1mane.paddock.entidades.Comandos;
+import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -24,7 +26,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 public class AppletPaddock {
 
 	private static final long serialVersionUID = -2007934906883016154L;
-	private ControlePaddockCliente controlePaddockApplet;
+	private ControlePaddockCliente controlePaddockCliente;
 	private String versao;
 	private JFrame frame;
 	private URL codeBase;
@@ -71,12 +73,15 @@ public class AppletPaddock {
 			frame = new JFrame();
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			initProperties();
-			controlePaddockApplet = new ControlePaddockCliente(this
+			controlePaddockCliente = new ControlePaddockCliente(this
 					.getCodeBase(), this);
+			
+			controlePaddockCliente.verificaVersao();
+			
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
-					controlePaddockApplet.logar();
+					controlePaddockCliente.logar();
 				}
 			};
 			

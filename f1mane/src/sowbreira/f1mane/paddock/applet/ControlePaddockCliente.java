@@ -111,8 +111,8 @@ public class ControlePaddockCliente {
 
 	private void loadSufx() throws IOException {
 		Properties properties = new Properties();
-		properties
-				.load(PaddockConstants.class.getResourceAsStream("client.properties"));
+		properties.load(PaddockConstants.class
+				.getResourceAsStream("client.properties"));
 		this.urlSufix = properties.getProperty("servidor");
 	}
 
@@ -197,6 +197,7 @@ public class ControlePaddockCliente {
 			ultRetornoSucedido = retornoT;
 			return retorno;
 		} catch (Exception e) {
+			e.printStackTrace();
 			if ((System.currentTimeMillis() - ultRetornoSucedido) > 120000) {
 				setComunicacaoServer(false);
 				StackTraceElement[] trace = e.getStackTrace();
@@ -211,7 +212,6 @@ public class ControlePaddockCliente {
 				if (jogoCliente != null) {
 					jogoCliente.matarTodasThreads();
 				}
-				Logger.logarExept(e);
 				if (getThreadAtualizadora() != null) {
 					getThreadAtualizadora().interrupt();
 				}
@@ -512,7 +512,6 @@ public class ControlePaddockCliente {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setRecuperar(false);
 		clientPaddockPack.setComando(Comandos.REGISTRAR_LOGIN);
-		clientPaddockPack.setVersao(applet.getVersao());
 		clientPaddockPack.setNomeJogador(formEntrada.getNome().getText());
 		if ("IA".equals(clientPaddockPack.getNomeJogador())
 				|| "Ia".equals(clientPaddockPack.getNomeJogador())
@@ -571,15 +570,6 @@ public class ControlePaddockCliente {
 					.setEmailJogador(formEntrada.getEmailRegistrar().getText());
 		}
 		Object ret = enviarObjeto(clientPaddockPack);
-		if (retornoNaoValido(ret)) {
-			if(ret instanceof MsgSrv){
-				MsgSrv msgSrv = (MsgSrv) ret;
-				if(!applet.getVersao().equals(msgSrv.getVersao())){
-					System.exit(0);
-				}
-			}
-			return false;
-		}
 		if (ret == null) {
 			Logger.logar("REGISTRAR_LOGIN ret == null");
 			return false;
@@ -1027,8 +1017,32 @@ public class ControlePaddockCliente {
 
 	}
 
-	public String getVersao() {
+	public String getVersaoFormatado() {
 		AppletPaddock appletPaddock = (AppletPaddock) applet;
 		return appletPaddock.getVersaoFormatado();
+	}
+
+	public String getVersao() {
+		AppletPaddock appletPaddock = (AppletPaddock) applet;
+		return appletPaddock.getVersao();
+	}
+
+	public void verificaVersao() {
+
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+		clientPaddockPack.setComando(Comandos.VERIFICA_VERSAO);
+		clientPaddockPack.setVersao(Integer.parseInt(getVersao()));
+		Logger.logar("Versao : " + clientPaddockPack.getVersao());
+		Object ret = enviarObjeto(clientPaddockPack);
+		if (!retornoNaoValido(ret) && ret == null) {
+			JOptionPane.showMessageDialog(applet.getFrame(),
+					Lang.msg("erroAcessando",new String[]{url.toString()}),
+					Lang.msg("060"), JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+		if (!"OK".equals(ret)) {
+			System.exit(0);
+		}
+
 	}
 }

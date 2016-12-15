@@ -60,4 +60,5 @@ public class SessaoCliente implements Serializable {
 	public String toString() {
 		return nomeJogador;
 	}
+
 }
