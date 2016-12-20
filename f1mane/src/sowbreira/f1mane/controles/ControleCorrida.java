@@ -150,7 +150,7 @@ public class ControleCorrida {
 	}
 
 	public void gerarGridLargadaSemQualificacao() {
-		controleQualificacao.gerarGridLargadaSemQualificacao();
+		controleQualificacao.gerarGridLargada();
 	}
 
 	public void iniciarCorrida() {

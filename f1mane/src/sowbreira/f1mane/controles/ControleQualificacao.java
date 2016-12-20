@@ -44,7 +44,7 @@ public class ControleQualificacao {
 		}
 	}
 
-	public void gerarGridLargadaSemQualificacao() {
+	public void gerarGridLargada() {
 		gerarQualificacaoAleatoria();
 		gerarVoltaQualificacaoAleatoria();
 		posicionarCarrosLargada();
@@ -55,8 +55,6 @@ public class ControleQualificacao {
 		int position = controleJogo.getNosDaPista().size() - 1;
 		No noLargada = (No) controleJogo.getNosDaPista().get(position);
 		List pilotos = controleJogo.getPilotos();
-		nivelaPontecia(pilotos);
-		nivelaHabilidade(pilotos);
 		double incCurva = 0.6;
 		double increta = 0.8;
 		if (controleJogo.isSemReabastacimento()) {
@@ -91,17 +89,17 @@ public class ControleQualificacao {
 			int modMili = 120;
 			for (int j = 0; j < 10; j++) {
 				if (piloto.testeHabilidadePiloto()) {
-					modMili -= 3;
+					modMili -= 2;
 				} else {
 					piloto.incStress(40);
 				}
 				if (piloto.getCarro().testePotencia()) {
-					modMili -= 3;
+					modMili -= 2;
 				} else {
 					piloto.incStress(10);
 				}
 				if (piloto.getCarro().testeFreios()) {
-					modMili -= 3;
+					modMili -= 1;
 				} else {
 					piloto.incStress(10);
 				}
@@ -121,6 +119,8 @@ public class ControleQualificacao {
 			piloto.setVoltas(new ArrayList());
 			controleJogo.zerarMelhorVolta();
 		}
+		nivelaPontecia(pilotos);
+		nivelaHabilidade(pilotos);
 		Collections.sort(pilotos, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;

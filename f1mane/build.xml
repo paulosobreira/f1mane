@@ -34,7 +34,7 @@
 	<target name="targetPadraoNoLibs" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,criarWarNoLibs,limpaJars">
 	</target>
 
-	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,criarWar,limpaJars">
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,criarZipOnline,criarWar,limpaJars">
 	</target>
 
 	<target name="targetGerarZip" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,sign_jar,criarZip,limpaJars">
