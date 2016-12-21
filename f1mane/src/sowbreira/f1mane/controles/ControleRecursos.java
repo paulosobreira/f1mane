@@ -223,7 +223,7 @@ public abstract class ControleRecursos {
 	public BufferedImage obterCarroCima(Piloto piloto) {
 		String modelo = "cima20092016/";
 		Integer anoTemporada = new Integer(temporada.replace("t", ""));
-		if(anoTemporada<=2009){
+		if(anoTemporada<2009){
 			 modelo = "cima19982008/";	
 		}
 		if(anoTemporada<=1997){
