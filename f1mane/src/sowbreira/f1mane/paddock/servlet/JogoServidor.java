@@ -274,7 +274,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				.gerarClimaInicial(dadosCriarJogo.getClima());
 		atualizarJogadoresOnline();
 		Logger.logar("atualizarJogadoresOnline();");
-		controleCorrida.gerarGridLargadaSemQualificacao();
+		controleCorrida.gerarGridLargada();
 		Logger.logar("controleCorrida.gerarGridLargadaSemQualificacao();");
 		setEstado(Comandos.MOSTRANDO_QUALIFY);
 		List carrobox = new ArrayList();

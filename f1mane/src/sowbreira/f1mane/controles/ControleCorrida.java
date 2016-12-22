@@ -149,7 +149,7 @@ public class ControleCorrida {
 		}
 	}
 
-	public void gerarGridLargadaSemQualificacao() {
+	public void gerarGridLargada() {
 		controleQualificacao.gerarGridLargada();
 	}
 

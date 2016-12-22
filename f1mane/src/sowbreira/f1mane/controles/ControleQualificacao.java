@@ -112,7 +112,7 @@ public class ControleQualificacao {
 			}
 			piloto.setCiclosVoltaQualificacao(Util.inte(
 					((contCiclosQualificacao * Constantes.CICLO) + modMili)));
-			piloto.setNumeroVolta(0);
+			piloto.setNumeroVolta(-1);
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);
 			piloto.setContTravouRodas(0);

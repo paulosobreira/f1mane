@@ -631,7 +631,7 @@ public class ControleJogoLocal extends ControleRecursos
 			controleCorrida.getControleClima()
 					.gerarClimaInicial((Clima) gerenciadorVisual
 							.getComboBoxClimaInicial().getSelectedItem());
-			controleCorrida.gerarGridLargadaSemQualificacao();
+			controleCorrida.gerarGridLargada();
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
 			controleCorrida.iniciarCorrida();
 			if (controleCampeonato != null) {
@@ -706,7 +706,7 @@ public class ControleJogoLocal extends ControleRecursos
 				diffultrapassagem.intValue());
 		controleCorrida.getControleClima()
 				.gerarClimaInicial(new Clima(climaSelecionado));
-		controleCorrida.gerarGridLargadaSemQualificacao();
+		controleCorrida.gerarGridLargada();
 		gerenciadorVisual.iniciarInterfaceGraficaJogo();
 		controleCorrida.iniciarCorrida();
 		controleEstatisticas.inicializarThreadConsumidoraInfo();
