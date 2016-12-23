@@ -4443,7 +4443,7 @@ public class PainelCircuito {
 		g2d.setColor(bkg);
 		g2d.fill(rectangleVol);
 		g2d.setColor(fonte);
-		g2d.drawString("" + piloto.getNumeroVolta(),
+		g2d.drawString("" + (piloto.getNumeroVolta()<0?0:piloto.getNumeroVolta()),
 				Util.inte(x + 40 + pilotosRect[i].getWidth()), y + 16);
 
 		if (piloto.equals(pilotoSelecionado)) {

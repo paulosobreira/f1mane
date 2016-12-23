@@ -461,7 +461,7 @@ public class ControleCorrida {
 					.getNumeroVolta();
 		}
 
-		return voltaAtual;
+		return voltaAtual<0?0:voltaAtual;
 	}
 
 	/**

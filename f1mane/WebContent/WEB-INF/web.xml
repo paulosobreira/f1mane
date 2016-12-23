@@ -13,6 +13,7 @@
 		<servlet-class>sowbreira.f1mane.paddock.servlet.ServletPaddock</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>ServletPaddock</servlet-name>
 		<url-pattern>/ServletPaddock</url-pattern>
@@ -23,11 +24,32 @@
 		<servlet-class>sowbreira.f1mane.paddock.servlet.ServletMail</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>ServletMail</servlet-name>
 		<url-pattern>/ServletMail</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>Jersey REST Service</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>sowbreira.f1mane.paddock.servlet</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>		
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Jersey REST Service</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>	
+	
+	
 	<!-- Standard Action Servlet Mapping -->
 
 	<!-- The Usual Welcome File List -->
