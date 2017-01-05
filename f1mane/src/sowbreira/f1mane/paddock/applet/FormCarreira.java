@@ -222,9 +222,9 @@ public class FormCarreira extends JPanel {
 	}
 
 	protected void gerarCarroCima() {
-		BufferedImage carroLado = CarregadorRecursos.carregaImagem("CarroCima.png");
-		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(labelCor1.getBackground(), "CarroCimaC1.png");
-		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(labelCor2.getBackground(), "CarroCimaC2.png");
+		BufferedImage carroLado = CarregadorRecursos.carregaImagem("cima20092016/CarroCima.png");
+		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(labelCor1.getBackground(), "cima20092016/CarroCimaC1.png");
+		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(labelCor2.getBackground(), "cima20092016/CarroCimaC2.png");
 		Graphics graphics = carroLado.getGraphics();
 		graphics.drawImage(cor1, 0, 0, null);
 		graphics.drawImage(cor2, 0, 0, null);
