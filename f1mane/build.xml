@@ -13,7 +13,7 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
-	<property name="TOMCAT_HOME" value="C:\Java\apache-tomcat-8.0.28" />
+	<property name="TOMCAT_HOME" value="C:\Java\apache-tomcat-7.0.73" />
 	<property name="HOST" value="games-sowbreira.rhcloud.com" />
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
@@ -112,6 +112,7 @@
 		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
 		<delete file="WebContent/f1mane.jar" />
 		<copy file="f1mane.jar" todir="WebContent/WEB-INF/lib" />
+		<copy file="f1maneRecursos.jar" todir="WebContent/WEB-INF/lib" />
 		<copy file="f1maneRecursos.jar" todir="WebContent" />
 		<copy file="f1mane.jar" todir="WebContent" />
 		<copy todir="WebContent">
