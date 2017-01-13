@@ -13,69 +13,73 @@
 		context.canvas.width  = window.innerWidth;
 		context.canvas.height = window.innerHeight;
 		var ponto ={ x: null , y:null };
-		var antigo ={ x: null , y:null };
+		var desenha ={ x: null , y:null };
 		var img = new Image();
 		img.src = "../rest/paddock/carro";
+		var linhaB;
 		
 		canvas.addEventListener('click', function(event) {
-			if(ponto.x!=null){
-				antigo.x = ponto.x;
-				antigo.y = ponto.y;
+			if(desenha.x==null){
+				desenha.x = event.pageX - (img.width /2);
+				desenha.y = event.pageY - (img.height /2);
+			}else{
+				ponto.x = event.pageX - (img.width /2),
+				ponto.y = event.pageY - (img.height /2);
 			}
-			ponto.x = event.pageX,
-			ponto.y = event.pageY;
+			if(ponto.x!=null && desenha.x!=null){
+				linhaB = bline(desenha, ponto);
+			}
+			linhaB.reverse();
+			
+			
+			/*
+			console.log('desenha x'+desenha.x+' y '+desenha.y);			
+			console.log('ponto x'+ponto.x+' y '+ponto.y);
+			var linhaB = bline(desenha, ponto);
+			console.log('linhaB.length '+linhaB.length);
+			if(linhaB.length>0){
+				console.log('inicio linhab x'+linhaB[0].x+' y '+linhaB[0].y);
+				console.log('fim linhab x'+linhaB[linhaB.length-1].x+' y '+linhaB[linhaB.length-1].y);
+			}
+			*/
 		}, false);
 
 		function render(){
 			context.clearRect(0, 0, canvas.width, canvas.height);
-			if(ponto.x!=null && antigo.x!=null){
-				var l = linha(antigo, ponto);
-				if(l.length>1){
-					ponto = l[l.length-1];
+			if(linhaB!=null){
+				linhaB.pop();
+				var novo = linhaB.pop();
+				if(novo!=null){
+					desenha = novo;
 				}
 			}
-			if(ponto.x!=null){
-				context.drawImage(img, ponto.x, ponto.y);
+			if(desenha.x!=null){
+				context.drawImage(img, desenha.x, desenha.y);
 			}
 		}
 		
 		var t = setInterval(function(){
 			render();
-		}, 100);
+		}, 34);
 		
-		
-		 function linha(startCoordinates, endCoordinates) {
-			    var coordinatesArray = new Array();
-			    // Translate coordinates
-			    var x1 = startCoordinates.x;
-			    var y1 = startCoordinates.y;
-			    var x2 = endCoordinates.x;
-			    var y2 = endCoordinates.y;
-			    // Define differences and error check
-			    var dx = Math.abs(x2 - x1);
-			    var dy = Math.abs(y2 - y1);
-			    var sx = (x1 < x2) ? 1 : -1;
-			    var sy = (y1 < y2) ? 1 : -1;
-			    var err = dx - dy;
-			    // Set first coordinates
-			    coordinatesArray.push({ x: y1, y: x1 });
-			    // Main loop
-			    while (!((x1 == x2) && (y1 == y2))) {
-			      var e2 = err << 1;
-			      if (e2 > -dy) {
-			        err -= dy;
-			        x1 += sx;
-			      }
-			      if (e2 < dx) {
-			        err += dx;
-			        y1 += sy;
-			      }
-			      // Set coordinates
-			      coordinatesArray.push({ x: y1, y: x1 });
-			    }
-			    // Return the result
-			    return coordinatesArray;
-			  }	
+		function bline(startCoordinates, endCoordinates) {
+			var coordinatesArray = new Array();
+			var x0 = startCoordinates.x;
+			var y0 = startCoordinates.y;
+			var x1 = endCoordinates.x;
+			var y1 = endCoordinates.y;
+			var dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+			var dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1; 
+			var err = (dx>dy ? dx : -dy)/2;
+			while (true) {
+				coordinatesArray.push({ x: x0, y: y0 });
+				if (x0 === x1 && y0 === y1) break;
+				var e2 = err;
+				if (e2 > -dx) { err -= dy; x0 += sx; }
+				if (e2 < dy) { err += dx; y0 += sy; }
+			}	
+			return coordinatesArray;
+		}		
     </script>
 
 </body>
