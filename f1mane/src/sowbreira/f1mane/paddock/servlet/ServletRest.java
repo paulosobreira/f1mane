@@ -31,8 +31,8 @@ public class ServletRest {
 	@Path("/carro")
 	@Produces("image/png")
 	public Response carro() throws IOException {
-		//String img = "carros/t2016/mercedes.png";
-		String img = "normalAsa.png";
+		String img = "carros/t2016/mercedes.png";
+		//String img = "normalAsa.png";
 		BufferedImage originalImage = CarregadorRecursos
 				.carregaBufferedImage(img);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
