@@ -111,8 +111,6 @@ public abstract class ControleRecursos {
 
 						if (carroLadoPng != null) {
 							carroLado = carroLadoPng;
-							Integer transp = new Integer(
-									temporadasTransp.get(getTemporada()));
 							bufferCarrosLado.put(carro.getNome(), carroLado);
 						}
 					}

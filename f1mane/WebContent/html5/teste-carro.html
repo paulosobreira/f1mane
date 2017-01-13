@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style=" width:  100%; height: 100%; margin: 0px;">
+    <canvas id="myCanvas" />
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script language="JavaScript">
+		var canvas = document.getElementById('myCanvas'),
+			context = canvas.getContext('2d');
+		context.canvas.width  = window.innerWidth;
+		context.canvas.height = window.innerHeight;
+		var ponto ={ x: null , y:null };
+		var antigo ={ x: null , y:null };
+		var img = new Image();
+		img.src = "../rest/paddock/carro";
+		
+		canvas.addEventListener('click', function(event) {
+			if(ponto.x!=null){
+				antigo.x = ponto.x;
+				antigo.y = ponto.y;
+			}
+			ponto.x = event.pageX,
+			ponto.y = event.pageY;
+		}, false);
+
+		function render(){
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			if(ponto.x!=null && antigo.x!=null){
+				var l = linha(antigo, ponto);
+				if(l.length>1){
+					ponto = l[l.length-1];
+				}
+			}
+			if(ponto.x!=null){
+				context.drawImage(img, ponto.x, ponto.y);
+			}
+		}
+		
+		var t = setInterval(function(){
+			render();
+		}, 100);
+		
+		
+		 function linha(startCoordinates, endCoordinates) {
+			    var coordinatesArray = new Array();
+			    // Translate coordinates
+			    var x1 = startCoordinates.x;
+			    var y1 = startCoordinates.y;
+			    var x2 = endCoordinates.x;
+			    var y2 = endCoordinates.y;
+			    // Define differences and error check
+			    var dx = Math.abs(x2 - x1);
+			    var dy = Math.abs(y2 - y1);
+			    var sx = (x1 < x2) ? 1 : -1;
+			    var sy = (y1 < y2) ? 1 : -1;
+			    var err = dx - dy;
+			    // Set first coordinates
+			    coordinatesArray.push({ x: y1, y: x1 });
+			    // Main loop
+			    while (!((x1 == x2) && (y1 == y2))) {
+			      var e2 = err << 1;
+			      if (e2 > -dy) {
+			        err -= dy;
+			        x1 += sx;
+			      }
+			      if (e2 < dx) {
+			        err += dx;
+			        y1 += sy;
+			      }
+			      // Set coordinates
+			      coordinatesArray.push({ x: y1, y: x1 });
+			    }
+			    // Return the result
+			    return coordinatesArray;
+			  }	
+    </script>
+
+</body>
+</html>

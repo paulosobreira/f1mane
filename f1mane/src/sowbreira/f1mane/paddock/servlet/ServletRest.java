@@ -32,7 +32,7 @@ public class ServletRest {
 	@Produces("image/png")
 	public Response carro() throws IOException {
 		BufferedImage originalImage = CarregadorRecursos
-				.carregaBufferedImage("pneu_mole.png");
+				.carregaBufferedImage("carros/t2016/mercedes.png");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write(originalImage, "png", baos);
 		byte[] imageData = baos.toByteArray();
