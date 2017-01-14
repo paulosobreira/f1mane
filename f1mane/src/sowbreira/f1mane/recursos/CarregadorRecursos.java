@@ -129,8 +129,7 @@ public class CarregadorRecursos {
 		if (bufferedImage == null) {
 
 			try {
-				bufferedImage = ImageUtil
-						.toCompatibleImage(ImageUtil.toBufferedImage(file));
+				bufferedImage = ImageUtil.toBufferedImage(file);
 				if (bufferedImage == null) {
 					Logger.logar("img=" + bufferedImage);
 				}
