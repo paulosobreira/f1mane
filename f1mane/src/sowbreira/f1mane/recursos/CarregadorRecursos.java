@@ -124,12 +124,22 @@ public class CarregadorRecursos {
 	}
 
 	public static BufferedImage carregaBufferedImage(String file) {
+		return carregaBufferedImage(file, true);
+	}
+
+	public static BufferedImage carregaBufferedImage(String file,
+			Boolean comaptible) {
 		BufferedImage bufferedImage = (BufferedImage) bufferImages.get(file);
 
 		if (bufferedImage == null) {
 
 			try {
-				bufferedImage = ImageUtil.toBufferedImage(file);
+				if (comaptible) {
+					bufferedImage = ImageUtil
+							.toCompatibleImage(ImageUtil.toBufferedImage(file));
+				} else {
+					bufferedImage = ImageUtil.toBufferedImage(file);
+				}
 				if (bufferedImage == null) {
 					Logger.logar("img=" + bufferedImage);
 				}
@@ -389,7 +399,7 @@ public class CarregadorRecursos {
 			String carro) {
 		return gerarCoresCarros(corPintar, carro, BufferedImage.TYPE_INT_ARGB);
 	}
-	
+
 	public static BufferedImage gerarCoresCarros(Color corPintar, String carro,
 			int argb) {
 		BufferedImage srcBufferedImage = carregaBufferedImageTransparecia(

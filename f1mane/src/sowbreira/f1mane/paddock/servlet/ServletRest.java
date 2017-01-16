@@ -32,15 +32,15 @@ public class ServletRest {
 	@Produces("image/png")
 	public Response carro() throws IOException {
 		String img = "carros/t2016/mercedes.png";
-		//String img = "normalAsa.png";
+		// String img = "normalAsa.png";
 		BufferedImage originalImage = CarregadorRecursos
-				.carregaBufferedImage(img);
+				.carregaBufferedImage(img, false);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write(originalImage, "png", baos);
 		byte[] imageData = baos.toByteArray();
 
 		// uncomment line below to send non-streamed
-		//return Response.ok(imageData).build();
+		// return Response.ok(imageData).build();
 
 		// uncomment line below to send streamed
 		return Response.ok(new ByteArrayInputStream(imageData)).build();
