@@ -6,7 +6,7 @@
 </head>
 <body style="width: 100%; height: 100%; margin: 0px;">
 	<canvas id="myCanvas" />
-	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+	<canvas id="cvRotate" />
 	<script language="JavaScript">
 		var canvas = document.getElementById('myCanvas'), context = canvas
 				.getContext('2d');
@@ -21,19 +21,20 @@
 			y : null
 		};
 		var linhaB;
-		var imgCarro = new Image();
-		imgCarro.src = "../rest/paddock/carro";
+		var img = new Image();
+		img.src = "../rest/paddock/carro";
 		
-		var imgBg = new Image();
-		imgBg.src = "../sowbreira/f1mane/recursos/montecarlo_mro.jpg";
+		var cvRotate = document.getElementById('cvRotate');
+		var ctxRotate = cvRotate.getContext('2d');
+		var degrees = 0;
 
 		canvas.addEventListener('click', function(event) {
 			if (desenha.x == null) {
-				desenha.x = event.pageX - (imgCarro.width / 2);
-				desenha.y = event.pageY - (imgCarro.height / 2);
+				desenha.x = event.pageX - (img.width / 2);
+				desenha.y = event.pageY - (img.height / 2);
 			} else {
-				ponto.x = event.pageX - (imgCarro.width / 2), ponto.y = event.pageY
-						- (imgCarro.height / 2);
+				ponto.x = event.pageX - (img.width / 2), ponto.y = event.pageY
+						- (img.height / 2);
 			}
 			if (ponto.x != null && desenha.x != null) {
 				linhaB = bline(desenha, ponto);
@@ -56,6 +57,23 @@
 		}, false);
 
 		function render() {
+			var maiorLado = 0;
+			if(img.width>img.height){
+				maiorLado = img.width;
+			}else{
+				maiorLado = img.height;
+			}
+			maiorLado*=1.2;
+			cvRotate.width = maiorLado;
+		    cvRotate.height = maiorLado;
+			ctxRotate.translate(cvRotate.width/2,cvRotate.height/2);
+		    ctxRotate.rotate(degrees*Math.PI/180);
+			ctxRotate.drawImage(img,-img.width/2,-img.width/2);
+		    degrees++;
+			if(degrees>360){
+				degrees = 0;
+			}
+			
 			context.clearRect(0, 0, canvas.width, canvas.height);
 			if (linhaB != null) {
 				var novo = linhaB.pop();
@@ -75,10 +93,8 @@
 					desenha = novo;
 				}
 			}
-			//context.drawImage(imgBg, 0, 0);
 			if (desenha.x != null) {
-				imgCarro.angle = 45;
-				context.drawImage(imgCarro, desenha.x, desenha.y);
+				context.drawImage(cvRotate, desenha.x, desenha.y);
 			}
 			if (fps != null) {
 				context.fillText("FPS: " + fps.frameRate(), 4, 30);
