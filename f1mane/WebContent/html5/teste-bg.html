@@ -26,6 +26,8 @@
 		
 		var imgBg = new Image();
 		imgBg.src = "../sowbreira/f1mane/recursos/montecarlo_mro.jpg";
+		
+		var ptBg = { x : 0 , y : 0};
 
 		canvas.addEventListener('click', function(event) {
 			if (desenha.x == null) {
@@ -75,7 +77,19 @@
 					desenha = novo;
 				}
 			}
-			context.drawImage(imgBg, 0, 0);
+			context.drawImage(imgBg, ptBg.x , ptBg.y );
+			
+			if(ptBg.x < -imgBg.width){
+				ptBg.x++;
+			}else{
+				ptBg.x--;
+			}
+			if(ptBg.y < -imgBg.height){
+				ptBg.y++;
+			}else{
+				ptBg.y--;
+			}
+			
 			if (desenha.x != null) {
 				imgCarro.angle = 45;
 				context.drawImage(imgCarro, desenha.x, desenha.y);

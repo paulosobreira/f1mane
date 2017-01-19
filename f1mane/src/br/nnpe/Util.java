@@ -1,5 +1,6 @@
 package br.nnpe;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -111,7 +112,8 @@ public class Util {
 			// serialize and pass the object
 			oos.writeObject(oldObj); // C
 			oos.flush(); // D
-			ByteArrayInputStream bin = new ByteArrayInputStream(bos.toByteArray()); // E
+			ByteArrayInputStream bin = new ByteArrayInputStream(
+					bos.toByteArray()); // E
 			ois = new ObjectInputStream(bin); // F
 			// return the new object
 			return ois.readObject(); // G
@@ -144,8 +146,8 @@ public class Util {
 		}
 	}
 
-
-	public static boolean validaIntervaloData(java.sql.Date dataInicial, java.sql.Date dataFinal) {
+	public static boolean validaIntervaloData(java.sql.Date dataInicial,
+			java.sql.Date dataFinal) {
 		if (dataInicial.compareTo(dataFinal) > 0) {
 			return false;
 		} else {
@@ -153,20 +155,24 @@ public class Util {
 		}
 	}
 
-	public static void validaIntervaloData(String dataInicial, String dataFinal) throws Exception {
-		if (!validaIntervaloData(dataInicial, dataFinal, Constantes.DATA_FORMATO)) {
+	public static void validaIntervaloData(String dataInicial, String dataFinal)
+			throws Exception {
+		if (!validaIntervaloData(dataInicial, dataFinal,
+				Constantes.DATA_FORMATO)) {
 			throw new Exception("Intervalo de datas invalido");
 		}
 	}
 
-	public static boolean validaIntervaloData(String dataInicial, String dataFinal, String formato) throws Exception {
+	public static boolean validaIntervaloData(String dataInicial,
+			String dataFinal, String formato) throws Exception {
 		java.sql.Date dt1 = FormatDate.parseDate(dataInicial, formato);
 		java.sql.Date dt2 = FormatDate.parseDate(dataFinal, formato);
 
 		return validaIntervaloData(dt1, dt2);
 	}
 
-	public static boolean validaIntervaloData(Timestamp data_inicio, Timestamp data_fim) throws Exception {
+	public static boolean validaIntervaloData(Timestamp data_inicio,
+			Timestamp data_fim) throws Exception {
 		String inicio = FormatDate.format(data_inicio);
 		String fim = FormatDate.format(data_fim);
 
@@ -195,8 +201,8 @@ public class Util {
 		return form.format(number);
 	}
 
-
-	public static InputStream getBinaryStream(ResultSet rs, String fieldName) throws Exception {
+	public static InputStream getBinaryStream(ResultSet rs, String fieldName)
+			throws Exception {
 		try {
 			Blob blob = rs.getBlob(fieldName);
 
@@ -210,13 +216,15 @@ public class Util {
 		StringBuffer sb = new StringBuffer();
 
 		for (int i = 0; i < array.length; ++i) {
-			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100)
+					.substring(1, 3));
 		}
 
 		return sb.toString();
 	}
 
-	public static String md5(String message) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	public static String md5(String message)
+			throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest md = MessageDigest.getInstance("MD5");
 
 		return hex(md.digest(message.getBytes("CP1252")));
@@ -343,7 +351,8 @@ public class Util {
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(file);
 
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+					fileOutputStream);
 			objectOutputStream.writeObject(o);
 			fileOutputStream.flush();
 		} catch (Exception e) {
@@ -351,7 +360,8 @@ public class Util {
 		}
 	}
 
-	public static String mascarar(String valor, String mascara) throws ParseException {
+	public static String mascarar(String valor, String mascara)
+			throws ParseException {
 		MaskFormatter formatter = new MaskFormatter(mascara);
 		JFormattedTextField textField = new JFormattedTextField();
 		formatter.install(textField);
@@ -420,7 +430,8 @@ public class Util {
 		return largura;
 	}
 
-	public static boolean processaValorPontosCarreira(int valorAutal, int proximoValor, Numero numero) {
+	public static boolean processaValorPontosCarreira(int valorAutal,
+			int proximoValor, Numero numero) {
 		Double numeroVal = numero.getNumero();
 		int inc = 0;
 		if (proximoValor >= 400 && proximoValor < 600) {
@@ -462,5 +473,37 @@ public class Util {
 		} else {
 			return false;
 		}
+	}
+	public static Color criarCorAleatoria() {
+
+		int intervalo = Util.intervalo(1, 10);
+
+		switch (intervalo) {
+			case 1 :
+				return Color.RED;
+			case 2 :
+				return Color.BLUE;
+			case 3 :
+				return Color.GREEN;
+			case 4 :
+				return Color.YELLOW;
+			case 5 :
+				return Color.ORANGE;
+			case 6 :
+				return Color.BLACK;
+			case 7 :
+				return Color.GRAY;
+			case 8 :
+				return Color.DARK_GRAY;
+			case 9 :
+				return Color.LIGHT_GRAY;
+			case 10 :
+				return Color.WHITE;
+
+			default :
+				break;
+		}
+
+		return Color.WHITE;
 	}
 }

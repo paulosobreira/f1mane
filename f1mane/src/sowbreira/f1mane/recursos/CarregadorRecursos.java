@@ -124,22 +124,13 @@ public class CarregadorRecursos {
 	}
 
 	public static BufferedImage carregaBufferedImage(String file) {
-		return carregaBufferedImage(file, true);
-	}
-
-	public static BufferedImage carregaBufferedImage(String file,
-			Boolean comaptible) {
 		BufferedImage bufferedImage = (BufferedImage) bufferImages.get(file);
 
 		if (bufferedImage == null) {
 
 			try {
-				if (comaptible) {
-					bufferedImage = ImageUtil
-							.toCompatibleImage(ImageUtil.toBufferedImage(file));
-				} else {
-					bufferedImage = ImageUtil.toBufferedImage(file);
-				}
+				bufferedImage = ImageUtil
+						.toCompatibleImage(ImageUtil.toBufferedImage(file));
 				if (bufferedImage == null) {
 					Logger.logar("img=" + bufferedImage);
 				}

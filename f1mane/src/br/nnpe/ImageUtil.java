@@ -251,6 +251,9 @@ public class ImageUtil {
 	}
 
 	public static BufferedImage toCompatibleImage(BufferedImage image) {
+		if(GraphicsEnvironment.isHeadless()){
+			return image;
+		}
 		// obtain the current system graphical settings
 		GraphicsConfiguration gfx_config = GraphicsEnvironment
 				.getLocalGraphicsEnvironment().getDefaultScreenDevice()
