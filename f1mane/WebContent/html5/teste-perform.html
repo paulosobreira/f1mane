@@ -50,7 +50,7 @@
 			movBg = !movBg;
 			
 			var img = new Image();
-			img.src = "../rest/paddock/carroCima";
+			img.src = "../rest/paddock/carroCima?"+new Date();
 			
 			elements.push({
 				imagem : img,
@@ -90,22 +90,22 @@
 					context.canvas.width, context.canvas.height);
 
 			if (movBg) {
-				ptBg.x -= 2;
+				ptBg.x -= 3;
 			} else {
-				ptBg.x += 2;
+				ptBg.x += 3;
 			}
 			if (movBg) {
-				ptBg.y -= 2;
+				ptBg.y -= 3;
 			} else {
-				ptBg.y += 2;
+				ptBg.y += 3;
 			}
 		}
 		
 		
 		
 		function render() {
-			context.canvas.width = window.innerWidth * 0.95;
-			context.canvas.height = window.innerHeight * 0.90;
+			context.canvas.width = window.innerWidth * 0.99;
+			context.canvas.height = window.innerHeight * 0.97;
 			
 			context.clearRect(0, 0, canvas.width, canvas.height);
 			
