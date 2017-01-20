@@ -110,7 +110,9 @@
 			context.clearRect(0, 0, canvas.width, canvas.height);
 			
 			desenhaBG();
-
+			if (fps != null) {
+				context.fillText("FPS: " + fps.frameRate(), 4, 30);
+			}
 			elements.forEach(function(element) {
 
 				var img = element.imagem;
@@ -158,11 +160,6 @@
 				}
 
 			});
-			
-
-			if (fps != null) {
-				context.fillText("FPS: " + fps.frameRate(), 4, 30);
-			}
 		}
 
 		// update canvas with some information and animation
@@ -224,12 +221,13 @@
 
 		function FpsCtrl(fps, callback) {
 
-			var delay = 1000 / fps, time = null, frame = -1, tref;
+			var delay = 1000 / fps, time = null, frame = -1, tref , fpscont = 0 , frames = 0 , lastTime = 0;
 
 			function loop(timestamp) {
 				if (time === null)
 					time = timestamp;
-				var seg = Math.floor((timestamp - time) / delay);
+				var diff = (timestamp - time);
+				var seg = Math.floor( diff / delay);
 				if (seg > frame) {
 					frame = seg;
 					callback({
@@ -238,13 +236,19 @@
 					})
 				}
 				tref = requestAnimationFrame(loop)
+				frames++;
+				if((timestamp -lastTime) >1000){
+					lastTime = timestamp;
+					fpscont = frames+' timestamp '+timestamp + ' lastTime  :'+lastTime;
+					frames = 0;
+				}
 			}
 
 			this.isPlaying = false;
 
 			this.frameRate = function(newfps) {
 				if (!arguments.length)
-					return fps;
+					return fpscont;
 				fps = newfps;
 				delay = 1000 / fps;
 				frame = -1;
