@@ -84,9 +84,25 @@
 			    dH            // scale sH to dH and draw a dH high sub-image on the canvas
 			}
 			 */
+			 
+			var cutX =  ptBg.x;
+			var cutY =  ptBg.y;
+			if(cutX<0){
+				cutX = 0;
+			}
+			if(cutY<0){
+				cutY = 0;
+			}
+			var cutW = context.canvas.width;
+			var cutH = context.canvas.height;
+			if((cutX + cutW) > imgBg.width){
+				cutX =  imgBg.width - cutW; 
+			}
+			if((cutY + cutH) > imgBg.height){
+				cutY =  imgBg.height - cutH;
+			}			
 
-			context.drawImage(imgBg, ptBg.x, ptBg.y, context.canvas.width,
-					context.canvas.height, 0, 0,
+			context.drawImage(imgBg, cutX, cutY, cutW, cutH, 0, 0,
 					context.canvas.width, context.canvas.height);
 
 			if (movBg) {
