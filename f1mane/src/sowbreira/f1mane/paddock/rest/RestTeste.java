@@ -1,4 +1,4 @@
-package sowbreira.f1mane.paddock.servlet;
+package sowbreira.f1mane.paddock.rest;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -17,8 +17,8 @@ import br.nnpe.Util;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 
-@Path("/paddock")
-public class ServletRest {
+@Path("/teste")
+public class RestTeste {
 
 	@GET
 	@Path("/piloto")

@@ -50,7 +50,7 @@
 			movBg = !movBg;
 			
 			var img = new Image();
-			img.src = "../rest/paddock/carroCima?"+new Date();
+			img.src = "../rest/teste/carroCima?"+new Date();
 			
 			elements.push({
 				imagem : img,
@@ -102,8 +102,7 @@
 				cutY =  imgBg.height - cutH;
 			}			
 
-			context.drawImage(imgBg, cutX, cutY, cutW, cutH, 0, 0,
-					context.canvas.width, context.canvas.height);
+			context.drawImage(imgBg, cutX, cutY, cutW, cutH, 0, 0,context.canvas.width, context.canvas.height);
 
 			if (movBg) {
 				ptBg.x -= 3;

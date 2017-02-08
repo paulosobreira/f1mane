@@ -28,7 +28,7 @@
 					elemtoMover = element;
 					alert('clicked an element -> Chamar Ajax');
 					$.ajax({
-						url: "../rest/paddock/piloto",
+						url: "../rest/teste/piloto",
 						success: function(response) {
 							alert('Retorno :'+response.nomeJogador);
 						}, error: function (xhRequest, ErrorText, thrownError) {

@@ -30,9 +30,9 @@ import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.paddock.PaddockConstants;
+import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.ZipUtil;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author paulo.sobreira
@@ -46,18 +46,10 @@ public class ServletPaddock extends HttpServlet {
 
 	public void init() throws ServletException {
 		super.init();
-		Lang.setSrvgame(true);
-		try {
-			controlePersistencia = new ControlePersistencia(
-					getServletContext().getRealPath("") + File.separator
-							+ "WEB-INF" + File.separator);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
-		controlePaddock = new ControlePaddockServidor(controlePersistencia);
-		monitorAtividade = new MonitorAtividade(controlePaddock);
-		Thread monitor = new Thread(monitorAtividade);
-		monitor.start();
+		PaddockServer.init(getServletContext().getRealPath(""));
+		controlePersistencia = PaddockServer.getControlePersistencia();
+		controlePaddock = PaddockServer.getControlePaddock();
+		monitorAtividade = PaddockServer.getMonitorAtividade();
 	}
 
 	private String obterHost() throws UnknownHostException {
@@ -164,7 +156,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private void updateSchema(AnnotationConfiguration cfg,
 			SessionFactory sessionFactory, PrintWriter printWriter)
-					throws SQLException {
+			throws SQLException {
 		Dialect dialect = Dialect.getDialect(cfg.getProperties());
 		Session session = sessionFactory.openSession();
 		DatabaseMetadata meta = new DatabaseMetadata(session.connection(),
@@ -194,7 +186,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private void createSchema(AnnotationConfiguration cfg,
 			SessionFactory sessionFactory, PrintWriter printWriter)
-					throws HibernateException, SQLException {
+			throws HibernateException, SQLException {
 		Dialect dialect = Dialect.getDialect(cfg.getProperties());
 		String[] strings = cfg.generateSchemaCreationScript(dialect);
 		executeStatement(sessionFactory, strings, printWriter);
