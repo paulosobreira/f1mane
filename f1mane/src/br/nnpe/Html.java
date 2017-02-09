@@ -3,7 +3,6 @@
  */
 package br.nnpe;
 
-
 /**
  * @author Rafael Carneiro (<a href="mailto:rafael@portaljava.com">e-mail</a>)
  * @author Paulo Sobreira
@@ -189,9 +188,10 @@ public class Html {
 				achouDigito = true;
 			}
 
-			if (pulaDigito && achouDigito && Character.isDigit(info.charAt(i))) {
+			if (pulaDigito && achouDigito
+					&& Character.isDigit(info.charAt(i))) {
 				continue;
-			}else{
+			} else {
 				pulaDigito = false;
 			}
 
@@ -204,5 +204,9 @@ public class Html {
 			}
 		}
 		return ret.toString();
+	}
+
+	public static String escapeHtml(String messageString) {
+		return messageString;
 	}
 }

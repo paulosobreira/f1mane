@@ -16,12 +16,15 @@ public class PaddockServer {
 	private static Boolean iniciado = false;
 
 	public static ControlePaddockServidor getControlePaddock() {
+		init(null);
 		return controlePaddock;
 	}
 	public static ControlePersistencia getControlePersistencia() {
+		init(null);
 		return controlePersistencia;
 	}
 	public static MonitorAtividade getMonitorAtividade() {
+		init(null);
 		return monitorAtividade;
 	}
 

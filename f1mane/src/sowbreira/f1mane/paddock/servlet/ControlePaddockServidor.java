@@ -461,7 +461,7 @@ public class ControlePaddockServidor {
 		return controleJogosServer.entrarJogo(clientPaddockPack);
 	}
 
-	private Object criarJogo(ClientPaddockPack clientPaddockPack) {
+	public Object criarJogo(ClientPaddockPack clientPaddockPack) {
 		return controleJogosServer.criarJogo(clientPaddockPack);
 	}
 
