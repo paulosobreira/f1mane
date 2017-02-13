@@ -29,21 +29,26 @@ public class MonitorAtividade implements Runnable {
 				long timeNow = System.currentTimeMillis();
 				List clientes = controlePaddock.getDadosPaddock().getClientes();
 				SessaoCliente sessaoClienteRemover = null;
-				for (Iterator iter = clientes.iterator(); iter.hasNext();) {
-					SessaoCliente sessaoCliente = (SessaoCliente) iter.next();
-					if ((timeNow - sessaoCliente.getUlimaAtividade()) > 60000) {
-						sessaoClienteRemover = sessaoCliente;
-						break;
+				synchronized (clientes) {
+					for (Iterator iter = clientes.iterator(); iter.hasNext();) {
+						SessaoCliente sessaoCliente = (SessaoCliente) iter
+								.next();
+						if ((timeNow
+								- sessaoCliente.getUlimaAtividade()) > 60000) {
+							sessaoClienteRemover = sessaoCliente;
+							break;
+						}
 					}
 				}
 				if (sessaoClienteRemover != null) {
-					Logger.logar("Remover "
-							+ sessaoClienteRemover.getNomeJogador());
+					Logger.logar(
+							"Remover " + sessaoClienteRemover.getNomeJogador());
 					controlePaddock.removerClienteInativo(sessaoClienteRemover);
 				}
 				Map jogos = controlePaddock.getControleJogosServer()
 						.getMapaJogosCriados();
-				for (Iterator iter = jogos.keySet().iterator(); iter.hasNext();) {
+				for (Iterator iter = jogos.keySet().iterator(); iter
+						.hasNext();) {
 					SessaoCliente key = (SessaoCliente) iter.next();
 					JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
 					if ((timeNow - jogoServidor.getTempoCriacao()) > 300000) {
@@ -57,8 +62,8 @@ public class MonitorAtividade implements Runnable {
 						JogoServidor jogoServidor = (JogoServidor) jogos
 								.get(key);
 						for (Iterator iterator = jogoServidor
-								.getMapJogadoresOnline().keySet().iterator(); iterator
-								.hasNext();) {
+								.getMapJogadoresOnline().keySet()
+								.iterator(); iterator.hasNext();) {
 							String nomeJogador = (String) iterator.next();
 							SessaoCliente sessaoCliente = controlePaddock
 									.verificaUsuarioSessao(nomeJogador);

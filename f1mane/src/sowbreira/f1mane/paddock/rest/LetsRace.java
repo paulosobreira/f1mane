@@ -22,19 +22,50 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 
-@Path("/paddock")
-public class Paddock {
-	
+@Path("/letsRace")
+public class LetsRace {
+
 	@GET
-	@Path("/letsRace")
+	@Path("/inciarJogo")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response letsRace() {
+	public Response inciarJogo() {
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		clientPaddockPack.setNomeJogador("Paulo Sobreira");
 		SessaoCliente sessaoCliente = new SessaoCliente();
-		sessaoCliente.setNomeJogador("Paulo Sobreira");
+		sessaoCliente.setNomeJogador("Sobreira");
+		clientPaddockPack.setSessaoCliente(sessaoCliente);
+		Object criarJogo = controlePaddock.iniciaJogo(clientPaddockPack);
+		if (criarJogo == null) {
+			return Response.status(400)
+					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (criarJogo instanceof MsgSrv) {
+			MsgSrv msgSrv = (MsgSrv) criarJogo;
+			return Response.status(400)
+					.entity(Html.escapeHtml(msgSrv.getMessageString()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (criarJogo instanceof ErroServ) {
+			ErroServ erroServ = (ErroServ) criarJogo;
+			return Response.status(500)
+					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) criarJogo;
+		return Response.status(200).entity(srvPaddockPack).build();
+	}
+
+	@GET
+	@Path("/criarJogo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response criarJogo() {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+		SessaoCliente sessaoCliente = new SessaoCliente();
+		sessaoCliente.setNomeJogador("Sobreira");
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace();
 		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
@@ -62,11 +93,13 @@ public class Paddock {
 
 	private DadosCriarJogo gerarJogoLetsRace() {
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
-		dadosCriarJogo.setTemporada("t2016" );
+		dadosCriarJogo.setTemporada("t2016");
 		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
 		dadosCriarJogo.setDiffultrapassagem(250);
-		Map<String, String> carregarCircuitos = ControleRecursos.carregarCircuitos();
-		dadosCriarJogo.setCircuitoSelecionado(carregarCircuitos.keySet().iterator().next());
+		Map<String, String> carregarCircuitos = ControleRecursos
+				.carregarCircuitos();
+		dadosCriarJogo.setCircuitoSelecionado(
+				carregarCircuitos.keySet().iterator().next());
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
 		dadosCriarJogo.setReabastecimento(false);

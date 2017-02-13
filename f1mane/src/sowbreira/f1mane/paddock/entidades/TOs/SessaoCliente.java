@@ -16,6 +16,8 @@ public class SessaoCliente implements Serializable {
 
 	private String nomeJogador;
 
+	private String token;
+
 	private String jogoAtual;
 
 	private String pilotoAtual;
@@ -59,6 +61,14 @@ public class SessaoCliente implements Serializable {
 
 	public String toString() {
 		return nomeJogador;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }
