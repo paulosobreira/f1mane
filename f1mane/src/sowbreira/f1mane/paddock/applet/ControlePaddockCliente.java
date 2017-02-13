@@ -404,12 +404,12 @@ public class ControlePaddockCliente {
 			}
 			if ((Carro.TIPO_PNEU_CHUVA.equals(dadosParticiparJogo.getTpPnueu())
 					&& !Clima.CHUVA.equals(srvPaddockPack.getDetalhesJogo()
-							.getDadosCriarJogo().getClima().getClima()))
+							.getDadosCriarJogo().getClima()))
 					|| (!Carro.TIPO_PNEU_CHUVA
 							.equals(dadosParticiparJogo.getTpPnueu())
-							&& Clima.CHUVA.equals(srvPaddockPack
-									.getDetalhesJogo().getDadosCriarJogo()
-									.getClima().getClima()))) {
+							&& Clima.CHUVA
+									.equals(srvPaddockPack.getDetalhesJogo()
+											.getDadosCriarJogo().getClima()))) {
 				int showConfirmDialog = JOptionPane.showConfirmDialog(
 						applet.getFrame(), Lang.msg("pneuIncompativel"),
 						Lang.msg("alerta"), JOptionPane.YES_NO_OPTION);
@@ -1036,7 +1036,7 @@ public class ControlePaddockCliente {
 		Object ret = enviarObjeto(clientPaddockPack);
 		if (!retornoNaoValido(ret) && ret == null) {
 			JOptionPane.showMessageDialog(applet.getFrame(),
-					Lang.msg("erroAcessando",new String[]{url.toString()}),
+					Lang.msg("erroAcessando", new String[]{url.toString()}),
 					Lang.msg("060"), JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}

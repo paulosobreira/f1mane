@@ -16,8 +16,6 @@ public class DadosCriarJogo implements Serializable {
 
 	private Integer diffultrapassagem = null;
 	private String nomeCampeonato;
-	private Integer habilidade = null;
-	private Integer potencia = null;
 	private Integer tempoQualificacao = null;
 	private String asa;
 	private String temporada;
@@ -28,7 +26,7 @@ public class DadosCriarJogo implements Serializable {
 	private String nomeJogo;
 	private String circuitoSelecionado = null;
 	private Integer tempoCiclo = Constantes.CICLO;
-	private Clima clima = null;
+	private String clima = null;
 	private Integer qtdeVoltas = null;
 	private String nivelCorrida = null;
 	private List pilotosCarreira;
@@ -93,11 +91,11 @@ public class DadosCriarJogo implements Serializable {
 		this.circuitoSelecionado = circuitoSelecionado;
 	}
 
-	public Clima getClima() {
+	public String getClima() {
 		return clima;
 	}
 
-	public void setClima(Clima clima) {
+	public void setClima(String clima) {
 		this.clima = clima;
 	}
 
@@ -115,14 +113,6 @@ public class DadosCriarJogo implements Serializable {
 
 	public void setDiffultrapassagem(Integer diffultrapassagem) {
 		this.diffultrapassagem = diffultrapassagem;
-	}
-
-	public Integer getHabilidade() {
-		return habilidade;
-	}
-
-	public void setHabilidade(Integer habilidade) {
-		this.habilidade = habilidade;
 	}
 
 	public String getNivelCorrida() {
@@ -147,14 +137,6 @@ public class DadosCriarJogo implements Serializable {
 
 	public void setPiloto(String piloto) {
 		this.piloto = piloto;
-	}
-
-	public Integer getPotencia() {
-		return potencia;
-	}
-
-	public void setPotencia(Integer potencia) {
-		this.potencia = potencia;
 	}
 
 	public Integer getQtdeVoltas() {

@@ -11,6 +11,7 @@ import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.BufferTexto;
 import sowbreira.f1mane.paddock.entidades.Comandos;
@@ -247,7 +248,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			return !dadosCriarJogo.isReabastecimento();
 		return super.isSemReabastacimento();
 	}
-	
+
 	@Override
 	public boolean isSemTrocaPneu() {
 		if (dadosCriarJogo != null)
@@ -271,7 +272,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
 				diffultrapassagem.intValue());
 		controleCorrida.getControleClima()
-				.gerarClimaInicial(dadosCriarJogo.getClima());
+				.gerarClimaInicial(new Clima(dadosCriarJogo.getClima()));
 		atualizarJogadoresOnline();
 		Logger.logar("atualizarJogadoresOnline();");
 		controleCorrida.gerarGridLargada();

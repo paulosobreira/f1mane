@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,6 +35,10 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
+import br.nnpe.Util;
+import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
@@ -46,9 +49,6 @@ import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCircuito;
-import br.nnpe.ImageUtil;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author paulo.sobreira
@@ -529,9 +529,11 @@ public class PaddockWindow {
 		});
 		DefaultListModel listaJogosCriadosModel = new DefaultListModel<>();
 		listaJogosCriados.setModel(listaJogosCriadosModel);
-		if (listaJogosCriadosModel.size() != dadosPaddock.getJogosCriados().size()) {
+		if (listaJogosCriadosModel.size() != dadosPaddock.getJogosCriados()
+				.size()) {
 			atualizaListaJogos(dadosPaddock, listaJogosCriadosModel);
-		} else if (listaJogosCriadosModel.size() == dadosPaddock.getJogosCriados().size()) {
+		} else if (listaJogosCriadosModel.size() == dadosPaddock
+				.getJogosCriados().size()) {
 			boolean diferente = false;
 			for (Iterator iter = dadosPaddock.getJogosCriados().iterator(); iter
 					.hasNext();) {
@@ -710,7 +712,7 @@ public class PaddockWindow {
 				return Lang.msg("196");
 			}
 		});
-		int ht = detalhesJogo.getDadosCriarJogo().getHabilidade().intValue();
+		int ht = 0;// detalhesJogo.getDadosCriarJogo().getHabilidade().intValue();
 		panelJogo.add(
 				new JLabel((ht == 0 ? Lang.msg("197") : String.valueOf(ht))));
 		panelJogo.add(new JLabel("Potencia Todos: ") {
@@ -718,7 +720,7 @@ public class PaddockWindow {
 				return Lang.msg("198");
 			}
 		});
-		int pt = detalhesJogo.getDadosCriarJogo().getPotencia().intValue();
+		int pt = 0;// detalhesJogo.getDadosCriarJogo().getPotencia().intValue();
 		panelJogo.add(
 				new JLabel((pt == 0 ? Lang.msg("197") : String.valueOf(pt))));
 		panelJogo.add(new JLabel("Clima: ") {
@@ -727,7 +729,8 @@ public class PaddockWindow {
 			}
 		});
 		panelJogo.add(new JLabel(
-				detalhesJogo.getDadosCriarJogo().getClima().toString()));
+				new Clima(detalhesJogo.getDadosCriarJogo().getClima())
+						.toString()));
 		panelJogo.add(new JLabel("") {
 
 			public String getText() {
@@ -735,8 +738,8 @@ public class PaddockWindow {
 				return Lang.msg("302");
 			}
 		});
-		panelJogo.add(new JLabel(
-				detalhesJogo.getDadosCriarJogo().isReabastecimento()
+		panelJogo.add(
+				new JLabel(detalhesJogo.getDadosCriarJogo().isReabastecimento()
 						? Lang.msg("SIM")
 						: Lang.msg("NAO")));
 		panelJogo.add(new JLabel("Sem troca pneu: ") {
@@ -746,10 +749,9 @@ public class PaddockWindow {
 				return Lang.msg("303");
 			}
 		});
-		panelJogo.add(
-				new JLabel(detalhesJogo.getDadosCriarJogo().isTrocaPneu()
-						? Lang.msg("SIM")
-						: Lang.msg("NAO")));
+		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().isTrocaPneu()
+				? Lang.msg("SIM")
+				: Lang.msg("NAO")));
 
 		panelJogo.add(new JLabel("Kers: ") {
 

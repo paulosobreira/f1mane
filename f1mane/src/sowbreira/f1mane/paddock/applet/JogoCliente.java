@@ -126,7 +126,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		monitorJogo = new MonitorJogo(this, controlePaddockCliente,
 				sessaoCliente);
 		nomeJogador = sessaoCliente.getNomeJogador();
-		clima = dadosParticiparJogo.getClima().getClima();
+		clima = dadosParticiparJogo.getClima();
 		mainFrame.setControleJogo(this);
 		selecionaPilotoJogador();
 		threadMonitoraJogoOnline = new Thread(monitorJogo);

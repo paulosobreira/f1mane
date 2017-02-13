@@ -91,8 +91,8 @@ public class PainelEntradaCliente {
 		carregaComboTemporadas();
 	}
 
-	public PainelEntradaCliente(List pilotos, Map circuitos, MainFrame mainFrame, String nomeCriador,
-			JogoCliente jogoCliente) {
+	public PainelEntradaCliente(List pilotos, Map circuitos,
+			MainFrame mainFrame, String nomeCriador, JogoCliente jogoCliente) {
 		this.pilotos = pilotos;
 		this.circuitos = circuitos;
 		this.mainFrame = mainFrame;
@@ -104,15 +104,19 @@ public class PainelEntradaCliente {
 	private void carregaComboTemporadas() {
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(true);
 		carregadorRecursos.carregarTemporadasPilotos();
-		comboTemporada = new JComboBox(carregadorRecursos.getVectorTemps().toArray());
+		comboTemporada = new JComboBox(
+				carregadorRecursos.getVectorTemps().toArray());
 	}
 
 	private void gerarPainelCriarJogo(JPanel painelInicio) {
 		painelInicio.setLayout(new GridLayout(5, 2, 5, 5));
 		JLabel label = new JLabel() {
 			public String getText() {
-				return Lang.msg("110",
-						new String[] { String.valueOf(Constantes.MIN_VOLTAS), String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang
+						.msg("110",
+								new String[]{
+										String.valueOf(Constantes.MIN_VOLTAS),
+										String.valueOf(Constantes.MAX_VOLTAS)});
 			}
 		};
 
@@ -269,7 +273,8 @@ public class PainelEntradaCliente {
 	}
 
 	public static void main(String[] args) {
-		PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(null, "teste");
+		PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
+				null, "teste");
 		painelEntradaCliente.gerarDadosCriarJogo(new DadosCriarJogo());
 		// String t = "t2015";
 		// System.out.println(t.substring(1, t.length()));
@@ -284,7 +289,8 @@ public class PainelEntradaCliente {
 		painelMostrar.add(painelInicio, BorderLayout.CENTER);
 		setaCampeonato();
 
-		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, painelMostrar,
+				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
@@ -301,7 +307,8 @@ public class PainelEntradaCliente {
 		if (campeonato != null) {
 			spinnerQtdeVoltas.setValue(campeonato.getQtdeVoltas());
 			spinnerQtdeVoltas.setEnabled(false);
-			comboBoxNivelCorrida.setSelectedItem(Lang.msg(campeonato.getNivel()));
+			comboBoxNivelCorrida
+					.setSelectedItem(Lang.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
 			reabastacimento.setSelected(!campeonato.isSemReabasteciemnto());
 			reabastacimento.setEnabled(false);
@@ -330,7 +337,8 @@ public class PainelEntradaCliente {
 			circuitosList.add(key);
 		}
 		Collections.shuffle(circuitosList);
-		for (Iterator iterator = circuitosList.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = circuitosList.iterator(); iterator
+				.hasNext();) {
 			String object = (String) iterator.next();
 			comboBoxCircuito.addItem(object);
 		}
@@ -373,17 +381,20 @@ public class PainelEntradaCliente {
 	}
 
 	protected void desenhaMiniCircuito(JLabel circuitosLabel) {
-		BufferedImage bufferedImage = new BufferedImage(400, 150, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bufferedImage = new BufferedImage(400, 150,
+				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
 		setarHints(g2d);
 		g2d.setStroke(new BasicStroke(3.0f));
 		g2d.setColor(Color.BLACK);
-		String circuitoStr = (String) circuitos.get(comboBoxCircuito.getSelectedItem());
+		String circuitoStr = (String) circuitos
+				.get(comboBoxCircuito.getSelectedItem());
 		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
 		ObjectInputStream ois;
 		Circuito circuito = null;
 		try {
-			ois = new ObjectInputStream(carregadorRecursos.getClass().getResourceAsStream(circuitoStr));
+			ois = new ObjectInputStream(carregadorRecursos.getClass()
+					.getResourceAsStream(circuitoStr));
 			circuito = (Circuito) ois.readObject();
 			circuito.vetorizarPista();
 		} catch (Exception e) {
@@ -408,7 +419,8 @@ public class PainelEntradaCliente {
 		Point o = new Point(10, 10);
 		Point oldP = null;
 		No ultNo = null;
-		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = pistaMinimizada.iterator(); iterator
+				.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
 				No no = (No) map.get(oldP);
@@ -447,7 +459,8 @@ public class PainelEntradaCliente {
 		g2d.setStroke(new BasicStroke(2.0f));
 		oldP = null;
 		g2d.setColor(Color.lightGray);
-		for (Iterator iterator = boxMinimizado.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = boxMinimizado.iterator(); iterator
+				.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
 				g2d.drawLine(o.x + oldP.x, o.y + oldP.y, o.x + p.x, o.y + p.y);
@@ -460,10 +473,14 @@ public class PainelEntradaCliente {
 	}
 
 	private void setarHints(Graphics2D g2d) {
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+				RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	}
 
 	private void preecherDadosCriarJogo() {
@@ -477,22 +494,23 @@ public class PainelEntradaCliente {
 		String temporada = (String) comboTemporada.getSelectedItem();
 		dadosCriarJogo.setTemporada("t" + temporada);
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
-		dadosCriarJogo.setDiffultrapassagem((Integer) sliderDificuldadeUltrapassagem.getValue());
-		dadosCriarJogo.setDiffultrapassagem(new Integer(250));
+		dadosCriarJogo.setDiffultrapassagem(
+				(Integer) sliderDificuldadeUltrapassagem.getValue());
 		Integer habilidade = (Integer) spinnerSkillPadraoPilotos.getValue();
 		if (habilidade.intValue() > 99) {
 			habilidade = new Integer(99);
 		}
-		dadosCriarJogo.setHabilidade(habilidade);
 		Integer potencia = (Integer) spinnerPotenciaPadraoCarros.getValue();
 		if (potencia.intValue() > 999) {
 			potencia = new Integer(999);
 		}
-		dadosCriarJogo.setPotencia(potencia);
-		String circuitoSelecionado = (String) comboBoxCircuito.getSelectedItem();
+		String circuitoSelecionado = (String) comboBoxCircuito
+				.getSelectedItem();
 		dadosCriarJogo.setCircuitoSelecionado(circuitoSelecionado);
-		dadosCriarJogo.setNivelCorrida(Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
-		dadosCriarJogo.setClima((Clima) comboBoxClimaInicial.getSelectedItem());
+		dadosCriarJogo.setNivelCorrida(
+				Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));
+		dadosCriarJogo.setClima(
+				((Clima) comboBoxClimaInicial.getSelectedItem()).getClima());
 		dadosCriarJogo.setReabastecimento(reabastacimento.isSelected());
 		dadosCriarJogo.setTrocaPneu(trocaPneu.isSelected());
 		dadosCriarJogo.setKers(kers.isSelected());
@@ -500,7 +518,8 @@ public class PainelEntradaCliente {
 	}
 
 	private void preecherDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo) {
-		String tpPnueu = Lang.key(comboBoxPneuInicial.getSelectedItem().toString());
+		String tpPnueu = Lang
+				.key(comboBoxPneuInicial.getSelectedItem().toString());
 		Piloto piloto = (Piloto) comboBoxPilotoSelecionado.getSelectedItem();
 		String asa = Lang.key((String) comboBoxAsa.getSelectedItem());
 		Integer combustivel = (Integer) sliderCombustivelInicial.getValue();
@@ -520,8 +539,9 @@ public class PainelEntradaCliente {
 		return dadosCriarJogo;
 	}
 
-	public boolean gerarDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo, JPanel panelJogoCriado, String circuito,
-			String temporada, Clima clima) {
+	public boolean gerarDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo,
+			JPanel panelJogoCriado, String circuito, String temporada,
+			String clima) {
 		JPanel painelInicio = new JPanel();
 		gerarPainelParticiparJogo(painelInicio, clima);
 		JPanel panel = new JPanel(new BorderLayout());
@@ -538,7 +558,8 @@ public class PainelEntradaCliente {
 			}
 		});
 		panel.add(painelInicio, BorderLayout.SOUTH);
-		int ret = JOptionPane.showConfirmDialog(mainFrame, panel, Lang.msg("127"), JOptionPane.YES_NO_OPTION);
+		int ret = JOptionPane.showConfirmDialog(mainFrame, panel,
+				Lang.msg("127"), JOptionPane.YES_NO_OPTION);
 		if (ret != JOptionPane.YES_OPTION) {
 			return false;
 		}
@@ -546,7 +567,7 @@ public class PainelEntradaCliente {
 		return true;
 	}
 
-	private void gerarPainelParticiparJogo(JPanel painelInicio, Clima clima) {
+	private void gerarPainelParticiparJogo(JPanel painelInicio, String clima) {
 		painelInicio.setLayout(new GridLayout(4, 2));
 
 		comboBoxPilotoSelecionado = new JComboBox();
@@ -574,8 +595,9 @@ public class PainelEntradaCliente {
 		comboBoxAsa.addItem(Lang.msg(Carro.MAIS_ASA));
 		comboBoxAsa.addItem(Lang.msg(Carro.MENOS_ASA));
 
-		if (Clima.CHUVA.equals(clima.getClima())) {
-			comboBoxPneuInicial.setSelectedItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
+		if (Clima.CHUVA.equals(clima)) {
+			comboBoxPneuInicial
+					.setSelectedItem(Lang.msg(Carro.TIPO_PNEU_CHUVA));
 			comboBoxAsa.setSelectedItem(Lang.msg(Carro.MAIS_ASA));
 		}
 
@@ -616,6 +638,5 @@ public class PainelEntradaCliente {
 	public JComboBox getComboTemporada() {
 		return comboTemporada;
 	}
-	
 
 }
