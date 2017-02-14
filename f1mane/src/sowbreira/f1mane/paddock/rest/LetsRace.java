@@ -35,26 +35,26 @@ public class LetsRace {
 		SessaoCliente sessaoCliente = new SessaoCliente();
 		sessaoCliente.setNomeJogador("Sobreira");
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
-		Object criarJogo = controlePaddock.iniciaJogo(clientPaddockPack);
-		if (criarJogo == null) {
+		Object iniciarJogo = controlePaddock.iniciaJogo(clientPaddockPack);
+		if (iniciarJogo == null) {
 			return Response.status(400)
 					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		if (criarJogo instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) criarJogo;
+		if (iniciarJogo instanceof MsgSrv) {
+			MsgSrv msgSrv = (MsgSrv) iniciarJogo;
 			return Response.status(400)
 					.entity(Html.escapeHtml(msgSrv.getMessageString()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		if (criarJogo instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) criarJogo;
+		if (iniciarJogo instanceof ErroServ) {
+			ErroServ erroServ = (ErroServ) iniciarJogo;
 			return Response.status(500)
 					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) criarJogo;
-		return Response.status(200).entity(srvPaddockPack).build();
+		Integer ret = (Integer) iniciarJogo;
+		return Response.status(ret).build();
 	}
 
 	@GET

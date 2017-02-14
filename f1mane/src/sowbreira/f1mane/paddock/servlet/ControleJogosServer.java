@@ -307,7 +307,7 @@ public class ControleJogosServer {
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 		}
-		return null;
+		return 200;
 	}
 
 	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
