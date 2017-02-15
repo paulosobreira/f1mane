@@ -576,14 +576,14 @@ public class PainelCircuito {
 				.carregaBufferedImageTransparecia("pneu-chuva.png", null),
 				0.15);
 
-		fuel = CarregadorRecursos.carregaBufferedImage("fuel.gif");
-		tyre = CarregadorRecursos.carregaBufferedImage("tyre.gif");
+		fuel = CarregadorRecursos.carregaBufferedImage("fuel.png");
+		tyre = CarregadorRecursos.carregaBufferedImage("tyre.png");
 
-		iconLua = CarregadorRecursos.carregaBufferedImage("clima/lua.gif");
-		iconSol = CarregadorRecursos.carregaBufferedImage("clima/sol.gif");
+		iconLua = CarregadorRecursos.carregaBufferedImage("lua.png");
+		iconSol = CarregadorRecursos.carregaBufferedImage("sol.png");
 		iconNublado = CarregadorRecursos
-				.carregaBufferedImage("clima/nublado.gif");
-		iconChuva = CarregadorRecursos.carregaBufferedImage("clima/chuva.gif");
+				.carregaBufferedImage("nublado.png");
+		iconChuva = CarregadorRecursos.carregaBufferedImage("chuva.png");
 
 	}
 

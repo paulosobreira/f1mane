@@ -8,6 +8,9 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
  * @author Paulo Sobreira Criado Em 11:04:20
  */
@@ -20,6 +23,7 @@ public class No implements Serializable {
 	public static Color PARADA_BOX = Color.ORANGE;
 	private Point point = new Point(1000, 1000);
 	private int index;
+	@JsonIgnore
 	private Color tipo;
 	private boolean noEntradaBox;
 	private boolean noSaidaBox;
@@ -65,7 +69,7 @@ public class No implements Serializable {
 
 		return super.toString();
 	}
-
+	@JsonIgnore
 	public BufferedImage getBufferedImage() {
 		BufferedImage srcBufferedImage = new BufferedImage(14, 14,
 				BufferedImage.TYPE_INT_ARGB);

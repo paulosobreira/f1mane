@@ -672,9 +672,9 @@ public class PainelMenuLocal {
 
 		setaCarroDireita = rotateBufferSetaCima;
 
-		sol = CarregadorRecursos.carregaBufferedImage("clima/sol.gif");
-		nublado = CarregadorRecursos.carregaBufferedImage("clima/nublado.gif");
-		chuva = CarregadorRecursos.carregaBufferedImage("clima/chuva.gif");
+		sol = CarregadorRecursos.carregaBufferedImage("sol.png");
+		nublado = CarregadorRecursos.carregaBufferedImage("nublado.png");
+		chuva = CarregadorRecursos.carregaBufferedImage("chuva.png");
 
 		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos
 				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.3);

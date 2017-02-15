@@ -233,7 +233,6 @@ public class CarregadorRecursos {
 
 	public static void main(String[] args)
 			throws URISyntaxException, IOException, ClassNotFoundException {
-		// String val = "tn_2008voi-mclaren.gif";
 		// System.out.println(Util.intervalo(0, 0));
 
 		// gerarListaCarrosLado();

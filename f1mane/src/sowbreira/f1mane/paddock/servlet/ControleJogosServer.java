@@ -157,7 +157,7 @@ public class ControleJogosServer {
 	}
 
 	private void gerarListaJogosCriados() {
-		List jogos = new ArrayList();
+		List<String> jogos = new ArrayList<String>();
 		for (Iterator iter = mapaJogosCriados.keySet().iterator(); iter
 				.hasNext();) {
 			SessaoCliente element = (SessaoCliente) iter.next();

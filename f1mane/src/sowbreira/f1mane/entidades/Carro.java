@@ -5,12 +5,13 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Random;
 
-import sowbreira.f1mane.controles.ControleQualificacao;
-import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.recursos.idiomas.Lang;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 06/05/2007 as 11:09:15
@@ -45,7 +46,9 @@ public class Carro implements Serializable {
 	public static final int MEIA_ALTURA_CIMA = 43;
 	public static final double FATOR_AREA_CARRO = .7;
 	public static final int RAIO_DERRAPAGEM = 155;
+	@JsonIgnore
 	private Color cor1;
+	@JsonIgnore
 	private Color cor2;
 	private String danificado;
 	private String nome;
@@ -70,6 +73,7 @@ public class Carro implements Serializable {
 	private String tipoPneu;
 	private boolean paneSeca;
 	private boolean recolhido;
+	@JsonIgnore
 	private Piloto piloto;
 	private int tempMax;
 	private boolean pneuAquecido;

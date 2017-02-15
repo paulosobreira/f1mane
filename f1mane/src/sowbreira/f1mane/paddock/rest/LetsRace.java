@@ -1,5 +1,6 @@
 package sowbreira.f1mane.paddock.rest;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.GET;
@@ -14,6 +15,7 @@ import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.paddock.PaddockServer;
+import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
@@ -25,6 +27,43 @@ import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 @Path("/letsRace")
 public class LetsRace {
 
+	
+	
+	@GET
+	@Path("/dadosJogo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response dadosJogo() {
+		SessaoCliente sessaoCliente = new SessaoCliente();
+		sessaoCliente.setNomeJogador("Sobreira");		
+		
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+		List<String> obterJogos = controlePaddock.obterJogos();
+		clientPaddockPack.setNomeJogo(obterJogos.get(0));
+		clientPaddockPack.setSessaoCliente(sessaoCliente);
+		Object dadosJogo = controlePaddock.obterDadosJogo(clientPaddockPack);
+		if (dadosJogo == null) {
+			return Response.status(400)
+					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (dadosJogo instanceof MsgSrv) {
+			MsgSrv msgSrv = (MsgSrv) dadosJogo;
+			return Response.status(400)
+					.entity(Html.escapeHtml(msgSrv.getMessageString()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (dadosJogo instanceof ErroServ) {
+			ErroServ erroServ = (ErroServ) dadosJogo;
+			return Response.status(500)
+					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(200).entity(dadosJogo).build();
+	}
+	
+	
 	@GET
 	@Path("/inciarJogo")
 	@Produces(MediaType.APPLICATION_JSON)

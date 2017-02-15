@@ -438,7 +438,7 @@ public class ControlePaddockServidor {
 		return controleJogosServer.mudarModoBox(clientPaddockPack);
 	}
 
-	private Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
+	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
 
 		return controleJogosServer.obterDadosJogo(clientPaddockPack);
 	}
@@ -654,6 +654,14 @@ public class ControlePaddockServidor {
 		if (versao.contains(".")) {
 			this.versao = Integer.parseInt(versao.replaceAll("\\.", ""));
 		}
+	}
+
+	public List<String> obterJogos() {
+		if (dadosPaddock != null) {
+			return dadosPaddock.getJogosCriados();
+		}
+		return null;
+
 	}
 
 }

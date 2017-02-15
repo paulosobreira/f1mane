@@ -2,7 +2,6 @@ package sowbreira.f1mane.entidades;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -10,23 +9,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.paddock.applet.JogoCliente;
-import sowbreira.f1mane.recursos.idiomas.Lang;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira
@@ -79,20 +77,28 @@ public class Piloto implements Serializable, PilotoSuave {
 	private double ganhoMax = Integer.MIN_VALUE;
 
 	private boolean autoPos = true;
+	@JsonIgnore
 	private Point p1;
+	@JsonIgnore
 	private Point p2;
+	@JsonIgnore
 	private Point p5;
+	@JsonIgnore
 	private Point p4;
+	@JsonIgnore
 	private Point pontoDerrapada;
 	private double distanciaDerrapada = Double.MAX_VALUE;
 	private Double angulo;
+	@JsonIgnore
 	private transient int ptosBox;
 	private int posicao;
 	private int posicaoInicial;
+	@JsonIgnore
 	private transient int paradoBox;
 	private int qtdeParadasBox;
 	private boolean desqualificado;
 	private boolean jogadorHumano;
+	@JsonIgnore
 	private transient boolean recebeuBanderada;
 	private boolean box;
 	private boolean boxBaixoRendimento;
@@ -104,7 +110,9 @@ public class Piloto implements Serializable, PilotoSuave {
 	private No noAtualSuave;
 	private int numeroVolta;
 	private int stress;
+	@JsonIgnore
 	private transient int ciclosDesconcentrado;
+	@JsonIgnore
 	private transient int porcentagemCombustUltimaParadaBox;
 	private List voltas = new ArrayList();
 	private String modoPilotagem = NORMAL;
@@ -1237,17 +1245,17 @@ public class Piloto implements Serializable, PilotoSuave {
 		double diff = calculaDiferencaParaProximo;
 		double multiplicadoGanhoTurbulencia = (controleJogo
 				.getFatorUtrapassagem());
-		double distLimiteTurbulencia = 150.0 / multiplicadoGanhoTurbulencia;
+		double distLimiteTurbulencia = 50.0 / multiplicadoGanhoTurbulencia;
 		if (diff < distLimiteTurbulencia && !verificaForaPista(
 				carroPilotoDaFrenteRetardatario.getPiloto())) {
 			if (getTracado() != carroPilotoDaFrenteRetardatario.getPiloto()
 					.getTracado()) {
 				if (getNoAtual().verificaRetaOuLargada()) {
 					multiplicadoGanhoTurbulencia += (getCarro().testePotencia()
-							&& getCarro().testeAerodinamica()) ? 0.3 : 0.1;
+							&& getCarro().testeAerodinamica()) ? 0.1 : -0.1;
 				} else {
 					multiplicadoGanhoTurbulencia += (testeHabilidadePilotoAerodinamicaFreios(
-							controleJogo) ? 0.3 : 0.1);
+							controleJogo) ? 0.1 : -0.1);
 				}
 			}
 			if (multiplicadoGanhoTurbulencia > 1) {
@@ -1255,7 +1263,11 @@ public class Piloto implements Serializable, PilotoSuave {
 			} else if (multiplicadoGanhoTurbulencia < 0.01) {
 				multiplicadoGanhoTurbulencia = 0.01;
 			}
+			System.out
+					.println("ganho " + ganho + " multiplicadoGanhoTurbulencia "
+							+ multiplicadoGanhoTurbulencia);
 			ganho *= (multiplicadoGanhoTurbulencia);
+			System.out.println("ganhoturb  " + ganho);
 		}
 	}
 
@@ -2160,8 +2172,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private void modoIADefesaAtaque(InterfaceJogo controleJogo) {
 		double porcentagemCombustivel = getCarro().porcentagemCombustivel();
-		double porcentagemDesgastePneus = getCarro()
-				.porcentagemDesgastePneus();
+		double porcentagemDesgastePneus = getCarro().porcentagemDesgastePneus();
 		boolean superAquecido = getCarro().verificaMotorSuperAquecido();
 		boolean drsAtivado = Carro.MENOS_ASA.equals(getCarro().getAsa())
 				&& controleJogo.isDrs() && !controleJogo.isChovendo();

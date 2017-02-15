@@ -16,7 +16,7 @@ public class DadosPaddock implements Serializable {
 	private static final long serialVersionUID = 2200481566401284586L;
 	private Long dataTime;
 	private List clientes = new Vector();
-	private List jogosCriados = new Vector();
+	private List<String> jogosCriados = new Vector<String>();
 	private String linhaChat = "";
 
 	public Long getDataTime() {
@@ -39,11 +39,11 @@ public class DadosPaddock implements Serializable {
 		return clientes;
 	}
 
-	public List getJogosCriados() {
+	public List<String> getJogosCriados() {
 		return jogosCriados;
 	}
 
-	public void setJogosCriados(List jogosCriados) {
+	public void setJogosCriados(List<String> jogosCriados) {
 		this.jogosCriados = jogosCriados;
 	}
 
