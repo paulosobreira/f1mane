@@ -3,13 +3,14 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 import java.util.List;
 
-import br.nnpe.Constantes;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import sowbreira.f1mane.entidades.Clima;
+import br.nnpe.Constantes;
 
 /**
  * @author Paulo Sobreira Criado em 12/08/2007 as 17:04:24
  */
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class DadosCriarJogo implements Serializable {
 
 	private static final long serialVersionUID = 8923188552953563909L;

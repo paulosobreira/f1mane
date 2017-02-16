@@ -3,13 +3,14 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 import java.util.List;
 
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 
 /**
  * @author Paulo Sobreira Criado em 15/08/2007 as 16:33:52
  */
 public class DadosJogo implements Serializable {
-	private List pilotosList = null;
+	private List<Piloto> pilotosList = null;
 	private Volta melhoVolta;
 	private int voltaAtual;
 	private boolean corridaTerminada;
@@ -56,11 +57,11 @@ public class DadosJogo implements Serializable {
 		this.melhoVolta = melhoVolta;
 	}
 
-	public List getPilotosList() {
+	public List<Piloto> getPilotosList() {
 		return pilotosList;
 	}
 
-	public void setPilotosList(List objects) {
+	public void setPilotosList(List<Piloto> objects) {
 		this.pilotosList = objects;
 	}
 

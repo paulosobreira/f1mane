@@ -10,10 +10,12 @@ import java.io.Serializable;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Paulo Sobreira Criado Em 11:04:20
  */
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class No implements Serializable {
 	public static Color LARGADA = Color.BLUE;
 	public static Color RETA = Color.GREEN;
@@ -21,10 +23,13 @@ public class No implements Serializable {
 	public static Color CURVA_BAIXA = Color.RED;
 	public static Color BOX = Color.CYAN;
 	public static Color PARADA_BOX = Color.ORANGE;
+	@JsonIgnore
 	private Point point = new Point(1000, 1000);
+	
 	private int index;
 	@JsonIgnore
 	private Color tipo;
+	
 	private boolean noEntradaBox;
 	private boolean noSaidaBox;
 

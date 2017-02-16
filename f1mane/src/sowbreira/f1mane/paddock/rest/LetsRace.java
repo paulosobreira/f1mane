@@ -15,11 +15,11 @@ import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.paddock.PaddockServer;
-import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
+import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
@@ -27,6 +27,70 @@ import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 @Path("/letsRace")
 public class LetsRace {
 
+
+	@GET
+	@Path("/posicaoPilotos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response posicaoPilotos() {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		Object posis = controlePaddock.obterPosicaoPilotos("¢088¢ 0-2016");
+		if (posis == null) {
+			return Response.status(400)
+					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (posis instanceof MsgSrv) {
+			MsgSrv msgSrv = (MsgSrv) posis;
+			return Response.status(400)
+					.entity(Html.escapeHtml(msgSrv.getMessageString()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (posis instanceof ErroServ) {
+			ErroServ erroServ = (ErroServ) posis;
+			return Response.status(500)
+					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		PosisPack posisPack = new PosisPack();
+		posisPack.decode((String)posis);
+		return Response.status(200).entity(posisPack).build();
+	}
+	
+
+	@GET
+	@Path("/dadosParciais")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response dadosParciais() {
+		SessaoCliente sessaoCliente = new SessaoCliente();
+		sessaoCliente.setNomeJogador("Sobreira");		
+		
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+		List<String> obterJogos = controlePaddock.obterJogos();
+		clientPaddockPack.setNomeJogo(obterJogos.get(0));
+		clientPaddockPack.setSessaoCliente(sessaoCliente);
+		Object dadosJogo = controlePaddock.obterDadosJogo(clientPaddockPack);
+		if (dadosJogo == null) {
+			return Response.status(400)
+					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (dadosJogo instanceof MsgSrv) {
+			MsgSrv msgSrv = (MsgSrv) dadosJogo;
+			return Response.status(400)
+					.entity(Html.escapeHtml(msgSrv.getMessageString()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (dadosJogo instanceof ErroServ) {
+			ErroServ erroServ = (ErroServ) dadosJogo;
+			return Response.status(500)
+					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(200).entity(dadosJogo).build();
+	}
 	
 	
 	@GET

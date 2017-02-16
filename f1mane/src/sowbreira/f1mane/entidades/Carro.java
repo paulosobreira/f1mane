@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.util.Random;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import br.nnpe.Constantes;
 import br.nnpe.Html;
@@ -16,6 +17,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 /**
  * @author Paulo Sobreira Criado em 06/05/2007 as 11:09:15
  */
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class Carro implements Serializable {
 	private static final long serialVersionUID = -181518724082829223L;
 	public final static String TIPO_PNEU_MOLE = "TIPO_PNEU_MOLE";
@@ -46,10 +48,6 @@ public class Carro implements Serializable {
 	public static final int MEIA_ALTURA_CIMA = 43;
 	public static final double FATOR_AREA_CARRO = .7;
 	public static final int RAIO_DERRAPAGEM = 155;
-	@JsonIgnore
-	private Color cor1;
-	@JsonIgnore
-	private Color cor2;
 	private String danificado;
 	private String nome;
 	private String img;
@@ -73,12 +71,17 @@ public class Carro implements Serializable {
 	private String tipoPneu;
 	private boolean paneSeca;
 	private boolean recolhido;
-	@JsonIgnore
-	private Piloto piloto;
 	private int tempMax;
 	private boolean pneuAquecido;
 	private boolean msgPneu;
-
+	
+	@JsonIgnore
+	private Color cor1;
+	@JsonIgnore
+	private Color cor2;
+	@JsonIgnore
+	private Piloto piloto;
+	
 	public int getPotenciaAntesQualify() {
 		return potenciaAntesQualify;
 	}

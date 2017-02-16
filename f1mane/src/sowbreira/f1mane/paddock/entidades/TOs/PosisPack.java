@@ -2,11 +2,14 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 18/08/2007 as 09:24:11
  */
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class PosisPack implements Serializable {
 
 	public Posis[] posis;
@@ -51,4 +54,38 @@ public class PosisPack implements Serializable {
 		}
 		return 0;
 	}
+
+	public Posis[] getPosis() {
+		return posis;
+	}
+
+	public void setPosis(Posis[] posis) {
+		this.posis = posis;
+	}
+
+	public int getSafetyNoId() {
+		return safetyNoId;
+	}
+
+	public void setSafetyNoId(int safetyNoId) {
+		this.safetyNoId = safetyNoId;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
+	}
+
+	public boolean isSafetySair() {
+		return safetySair;
+	}
+
+	public void setSafetySair(boolean safetySair) {
+		this.safetySair = safetySair;
+	}
+	
+	
 }

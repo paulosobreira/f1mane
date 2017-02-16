@@ -240,11 +240,11 @@ public class ControlePaddockServidor {
 		Logger.logar("Senha :" + senha);
 	}
 
-	private Object obterDadosParciaisPilotos(String[] args) {
+	public Object obterDadosParciaisPilotos(String[] args) {
 		return controleJogosServer.obterDadosParciaisPilotos(args);
 	}
-
-	private Object obterPosicaoPilotos(Object object) {
+	
+	public Object obterPosicaoPilotos(Object object) {
 		return controleJogosServer.obterPosicaoPilotos((String) object);
 	}
 

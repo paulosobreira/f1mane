@@ -345,8 +345,8 @@ public class ControleJogosServer {
 	 * @param nomeJogo
 	 * @return
 	 */
-	public Object obterPosicaoPilotos(String data) {
-		JogoServidor jogoServidor = obterJogoPeloNome(data);
+	public Object obterPosicaoPilotos(String nomeJogo) {
+		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 		if (jogoServidor == null) {
 			return null;
 		}

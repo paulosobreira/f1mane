@@ -3,9 +3,12 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 import java.util.List;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 /**
  * @author Paulo Sobreira Criado em 28/07/2007 as 15:55:15
  */
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class SrvPaddockPack implements Serializable {
 
 	private static final long serialVersionUID = 1162929434479206667L;
