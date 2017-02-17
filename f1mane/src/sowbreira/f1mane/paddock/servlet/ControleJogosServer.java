@@ -30,6 +30,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -485,21 +486,22 @@ public class ControleJogosServer {
 		dadosParciais.voltaAtual = jogoServidor.getNumVoltaAtual();
 		dadosParciais.clima = jogoServidor.getClima();
 		dadosParciais.estado = jogoServidor.getEstado();
-		List pilotos = jogoServidor.getPilotosCopia();
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
-			dadosParciais.pilotsPonts[piloto.getId() - 1] = piloto
-					.getPtosPista();
-			if (piloto.isRecebeuBanderada()) {
-				dadosParciais.pilotsTs[piloto.getId() - 1] = piloto
-						.getTimeStampChegeda();
-			} else if (piloto.getCarro().isRecolhido()
-					|| Carro.PANE_SECA.equals(piloto.getCarro().getDanificado())
-					|| Carro.EXPLODIU_MOTOR
-							.equals(piloto.getCarro().getDanificado())) {
-				dadosParciais.pilotsTs[piloto.getId() - 1] = -1;
-			}
+		TravadaRoda travadaRoda = jogoServidor.getTravadaRoda();
+		if (travadaRoda != null) {
+			dadosParciais.idTravadaRoda = travadaRoda.getIdNo();
+		}
+		List<Piloto> pilotos = jogoServidor.getPilotosCopia();
+		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+			Piloto piloto = iter.next();
+			String statusPilotos = "P" + String.valueOf(piloto.getPtosPista());
 
+			if (piloto.isRecebeuBanderada()) {
+				statusPilotos = "B"
+						+ String.valueOf(piloto.getTimeStampChegeda());
+			} else if (piloto.getCarro().isRecolhido()) {
+				statusPilotos = "R";
+			}
+			dadosParciais.statusPilotos[piloto.getId() - 1] = statusPilotos;
 			if (args.length > 2
 					&& piloto.getId() == Integer.parseInt(args[2])) {
 				dadosParciais.peselMelhorVolta = piloto.obterVoltaMaisRapida();
@@ -556,7 +558,8 @@ public class ControleJogosServer {
 				dadosParciais.vantagem = piloto.getVantagem();
 			}
 		}
-		Map<String,BufferTexto> mapJogo = jogoServidor.getMapJogadoresOnlineTexto();
+		Map<String, BufferTexto> mapJogo = jogoServidor
+				.getMapJogadoresOnlineTexto();
 		BufferTexto bufferTexto = (BufferTexto) mapJogo.get(args[1]);
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();

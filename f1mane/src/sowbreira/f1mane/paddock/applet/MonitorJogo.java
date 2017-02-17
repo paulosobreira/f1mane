@@ -165,9 +165,9 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
-				if(getLatenciaReal()>2000){
+				if (getLatenciaReal() > 2000) {
 					jogoCliente.setAtualizacaoSuave(false);
-				}else{
+				} else {
 					jogoCliente.setAtualizacaoSuave(true);
 				}
 				atualizarDados();
@@ -477,21 +477,18 @@ public class MonitorJogo implements Runnable {
 			if (retornoNaoValido(ret)) {
 				return;
 			}
-			/** Implemetar travar rodas
-			if (!piloto.decContTravouRodas()) {
-				piloto.setContTravouRodas(Util.intervalo(10, 60));
-				TravadaRoda travadaRoda = new TravadaRoda();
-				travadaRoda.setIdNo(this.jogoCliente
-						.obterIdPorNo(piloto.getNoAtual()));
-				travadaRoda.setTracado(piloto.getTracado());
-				jogoCliente.travouRodas(travadaRoda);
-			}
-			*/
+			
+			
 			if (ret != null) {
 				// dec dadosParciais
 				String enc = (String) ret;
 				DadosParciais dadosParciais = new DadosParciais();
 				dadosParciais.decode(enc);
+				
+				TravadaRoda travadaRoda = new TravadaRoda();
+				travadaRoda.setIdNo(dadosParciais.idTravadaRoda);
+				jogoCliente.travouRodas(travadaRoda);
+				
 				estado = dadosParciais.estado;
 				jogoCliente.verificaMudancaClima(dadosParciais.clima);
 				dadosJogo.setClima(dadosParciais.clima);
@@ -503,17 +500,23 @@ public class MonitorJogo implements Runnable {
 				List pilotos = jogoCliente.getPilotos();
 				for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 					Piloto piloto = (Piloto) iter.next();
-					piloto.setPtosPista(
-							dadosParciais.pilotsPonts[piloto.getId() - 1]);
+					String statusPilotos = dadosParciais.statusPilotos[piloto
+							.getId() - 1];
+					if (statusPilotos != null) {
+						if (statusPilotos.startsWith("P")) {
+							piloto.setPtosPista(
+									new Long(statusPilotos.split("P")[1]));
+						}
+						if ("R".equals(statusPilotos)) {
+							piloto.getCarro().setRecolhido(true);
+						}
+						if (statusPilotos.startsWith("B")) {
+							piloto.setTimeStampChegeda(
+									new Long(statusPilotos.split("B")[1]));
+						}
+					}
 					piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
 							/ jogoCliente.getNosDaPista().size()));
-					long valTsFinal = dadosParciais.pilotsTs[piloto.getId()
-							- 1];
-					if (valTsFinal == -1) {
-						piloto.getCarro().setRecolhido(true);
-					} else {
-						piloto.setTimeStampChegeda(valTsFinal);
-					}
 					if (pilotoSelecionado != null
 							&& pilotoSelecionado.equals(piloto)) {
 						piloto.setMelhorVolta(dadosParciais.peselMelhorVolta);

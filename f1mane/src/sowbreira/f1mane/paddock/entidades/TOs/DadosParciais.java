@@ -28,6 +28,7 @@ public class DadosParciais implements Serializable {
 	public int cargaKers;
 	public int temperaturaMotor;
 	public int pselDurAereofolio;
+	public int idTravadaRoda;
 	public boolean pselBox;
 	public boolean freiandoReta;
 	public boolean podeUsarDRS;
@@ -47,8 +48,7 @@ public class DadosParciais implements Serializable {
 	public String nomeJogador;
 	public String texto;
 	public String vantagem;
-	public long[] pilotsPonts = new long[24];
-	public long[] pilotsTs = new long[24];
+	public String[] statusPilotos = new String[24];
 
 	public void decode(String val) {
 		String[] sp = val.split("@");
@@ -67,6 +67,7 @@ public class DadosParciais implements Serializable {
 		cargaKers = parseInt(sp[spcont++]);
 		temperaturaMotor = parseInt(sp[spcont++]);
 		pselDurAereofolio = parseInt(sp[spcont++]);
+		idTravadaRoda = parseInt(sp[spcont++]);
 		pselModoPilotar = decodeModoPilotar(sp[spcont++]);
 		pselBox = "S".equals(sp[spcont++]);
 		freiandoReta = "S".equals(sp[spcont++]);
@@ -102,11 +103,7 @@ public class DadosParciais implements Serializable {
 		peselUltima5.decode(sp[spcont++]);
 		String[] pts = sp[spcont++].split("µ");
 		for (int i = 0; i < pts.length; i++) {
-			pilotsPonts[i] = parseInt(pts[i]);
-		}
-		pts = sp[spcont].split("µ");
-		for (int i = 0; i < pts.length; i++) {
-			pilotsTs[i] = parseLong(pts[i]);
+			statusPilotos[i] = pts[i];
 		}
 	}
 
@@ -269,18 +266,13 @@ public class DadosParciais implements Serializable {
 		}
 
 		StringBuffer stringBuffer = new StringBuffer();
-		for (int i = 0; i < pilotsPonts.length; i++) {
-			stringBuffer.append(pilotsPonts[i]);
+		for (int i = 0; i < statusPilotos.length; i++) {
+			stringBuffer.append(statusPilotos[i]);
 			stringBuffer.append("µ");
 		}
 		String lessLastPipe = stringBuffer.toString().substring(0,
 				stringBuffer.toString().length() - 1);
 
-		stringBuffer = new StringBuffer();
-		for (int i = 0; i < pilotsTs.length; i++) {
-			stringBuffer.append(pilotsTs[i]);
-			stringBuffer.append("µ");
-		}
 		String lessLastPipe2 = stringBuffer.toString().substring(0,
 				stringBuffer.toString().length() - 1);
 
@@ -323,15 +315,16 @@ public class DadosParciais implements Serializable {
 				+ pselPneus + "@" + pselMotor + "@" + pselParadas + "@"
 				+ pselGiro + "@" + pselStress + "@" + cargaKers + "@"
 				+ temperaturaMotor + "@" + pselDurAereofolio + "@"
-				+ codpselModoPilotar + "@" + (pselBox ? "S" : "N") + "@"
-				+ (freiandoReta ? "S" : "N") + "@" + (podeUsarDRS ? "S" : "N")
-				+ "@" + pselMaxPneus + "@" + codClima + "@" + estado + "@"
-				+ codDano + "@" + codpselAsa + "@" + codpselAsaBox + "@"
-				+ codMelhorVolta + "@" + codpeselMelhorVolta + "@"
+				+ idTravadaRoda + "@" + codpselModoPilotar + "@"
+				+ (pselBox ? "S" : "N") + "@" + (freiandoReta ? "S" : "N") + "@"
+				+ (podeUsarDRS ? "S" : "N") + "@" + pselMaxPneus + "@"
+				+ codClima + "@" + estado + "@" + codDano + "@" + codpselAsa
+				+ "@" + codpselAsaBox + "@" + codMelhorVolta + "@"
+				+ codpeselMelhorVolta + "@"
 				+ (nomeJogador == null ? "" : nomeJogador) + "@"
 				+ (texto == null ? "" : texto) + "@"
-				+ (vantagem == null ? "" : vantagem) + "@" + codUlt1 + "@" + codUlt2
-				+ "@" + codUlt3 + "@" + codUlt4 + "@" + codUlt5 + "@"
+				+ (vantagem == null ? "" : vantagem) + "@" + codUlt1 + "@"
+				+ codUlt2 + "@" + codUlt3 + "@" + codUlt4 + "@" + codUlt5 + "@"
 				+ lessLastPipe + "@" + lessLastPipe2;
 		// Logger.logar(enc);
 		return enc;
