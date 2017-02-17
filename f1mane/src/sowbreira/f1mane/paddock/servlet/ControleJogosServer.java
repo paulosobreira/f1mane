@@ -493,8 +493,6 @@ public class ControleJogosServer {
 			if (piloto.isRecebeuBanderada()) {
 				dadosParciais.pilotsTs[piloto.getId() - 1] = piloto
 						.getTimeStampChegeda();
-			} else if (piloto.decContTravouRodas()) {
-				dadosParciais.pilotsTs[piloto.getId() - 1] = -2;
 			} else if (piloto.getCarro().isRecolhido()
 					|| Carro.PANE_SECA.equals(piloto.getCarro().getDanificado())
 					|| Carro.EXPLODIU_MOTOR
@@ -506,7 +504,7 @@ public class ControleJogosServer {
 					&& piloto.getId() == Integer.parseInt(args[2])) {
 				dadosParciais.peselMelhorVolta = piloto.obterVoltaMaisRapida();
 				int contVolta = 1;
-				List voltas = piloto.getVoltas();
+				List<Volta> voltas = piloto.getVoltas();
 				for (int i = voltas.size() - 1; i > -1; i--) {
 					Volta volta = (Volta) voltas.get(i);
 					if (contVolta == 1) {
@@ -558,7 +556,7 @@ public class ControleJogosServer {
 				dadosParciais.vantagem = piloto.getVantagem();
 			}
 		}
-		Map mapJogo = jogoServidor.getMapJogadoresOnlineTexto();
+		Map<String,BufferTexto> mapJogo = jogoServidor.getMapJogadoresOnlineTexto();
 		BufferTexto bufferTexto = (BufferTexto) mapJogo.get(args[1]);
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();

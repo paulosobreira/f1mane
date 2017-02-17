@@ -17,6 +17,7 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosParciais;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
@@ -26,7 +27,6 @@ import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 
 @Path("/letsRace")
 public class LetsRace {
-
 
 	@GET
 	@Path("/posicaoPilotos")
@@ -53,53 +53,49 @@ public class LetsRace {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		PosisPack posisPack = new PosisPack();
-		posisPack.decode((String)posis);
+		posisPack.decode((String) posis);
 		return Response.status(200).entity(posisPack).build();
 	}
-	
 
 	@GET
-	@Path("/dadosParciais")
+	@Path("/dadosPiloto")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosParciais() {
-		SessaoCliente sessaoCliente = new SessaoCliente();
-		sessaoCliente.setNomeJogador("Sobreira");		
-		
+
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
-		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		List<String> obterJogos = controlePaddock.obterJogos();
-		clientPaddockPack.setNomeJogo(obterJogos.get(0));
-		clientPaddockPack.setSessaoCliente(sessaoCliente);
-		Object dadosJogo = controlePaddock.obterDadosJogo(clientPaddockPack);
-		if (dadosJogo == null) {
+		Object dParciais = controlePaddock
+				.obterDadosParciaisPilotos(new String[]{"¢088¢ 0-2016","Mane1","1"});
+
+		if (dParciais == null) {
 			return Response.status(400)
 					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		if (dadosJogo instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) dadosJogo;
+		if (dParciais instanceof MsgSrv) {
+			MsgSrv msgSrv = (MsgSrv) dParciais;
 			return Response.status(400)
 					.entity(Html.escapeHtml(msgSrv.getMessageString()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		if (dadosJogo instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) dadosJogo;
+		if (dParciais instanceof ErroServ) {
+			ErroServ erroServ = (ErroServ) dParciais;
 			return Response.status(500)
 					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		return Response.status(200).entity(dadosJogo).build();
+		DadosParciais dadosParciais = new DadosParciais();
+		dadosParciais.decode((String) dParciais);
+		return Response.status(200).entity(dadosParciais).build();
 	}
-	
-	
+
 	@GET
 	@Path("/dadosJogo")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosJogo() {
 		SessaoCliente sessaoCliente = new SessaoCliente();
-		sessaoCliente.setNomeJogador("Sobreira");		
-		
+		sessaoCliente.setNomeJogador("Sobreira");
+
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
@@ -126,8 +122,7 @@ public class LetsRace {
 		}
 		return Response.status(200).entity(dadosJogo).build();
 	}
-	
-	
+
 	@GET
 	@Path("/inciarJogo")
 	@Produces(MediaType.APPLICATION_JSON)

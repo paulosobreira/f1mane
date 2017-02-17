@@ -36,7 +36,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private long tempoCriacao, tempoInicio, tempoFim;
 	/* mapJogadoresOnline.put(apelido, dadosParticiparJogo) */
 	private Map<String, DadosCriarJogo> mapJogadoresOnline = new HashMap<String, DadosCriarJogo>();
-	private Map mapJogadoresOnlineTexto = new HashMap();
+	private Map<String,BufferTexto> mapJogadoresOnlineTexto = new HashMap<String,BufferTexto>();
 	/* Chave numVolta , valor lista de VoltaJogadorOnline */
 	private Map mapVoltasJogadoresOnline = new HashMap();
 	private int contadorVolta = 0;
@@ -103,7 +103,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		return estado;
 	}
 
-	public Map getMapJogadoresOnlineTexto() {
+	public Map<String,BufferTexto> getMapJogadoresOnlineTexto() {
 		return mapJogadoresOnlineTexto;
 	}
 
@@ -556,11 +556,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		if (piloto.getContTravouRodas() != 0) {
 			return;
 		}
-		piloto.setContTravouRodas(Util.intervalo(10, 60));
 		this.travadaRoda = new TravadaRoda();
 		this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
 		this.travadaRoda.setTracado(piloto.getTracado());
-
 	}
 
 	public TravadaRoda getTravadaRoda() {

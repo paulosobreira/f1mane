@@ -477,6 +477,16 @@ public class MonitorJogo implements Runnable {
 			if (retornoNaoValido(ret)) {
 				return;
 			}
+			/** Implemetar travar rodas
+			if (!piloto.decContTravouRodas()) {
+				piloto.setContTravouRodas(Util.intervalo(10, 60));
+				TravadaRoda travadaRoda = new TravadaRoda();
+				travadaRoda.setIdNo(this.jogoCliente
+						.obterIdPorNo(piloto.getNoAtual()));
+				travadaRoda.setTracado(piloto.getTracado());
+				jogoCliente.travouRodas(travadaRoda);
+			}
+			*/
 			if (ret != null) {
 				// dec dadosParciais
 				String enc = (String) ret;
@@ -501,16 +511,6 @@ public class MonitorJogo implements Runnable {
 							- 1];
 					if (valTsFinal == -1) {
 						piloto.getCarro().setRecolhido(true);
-					} else if (valTsFinal == -2) {
-						if (!piloto.decContTravouRodas()) {
-							piloto.setContTravouRodas(Util.intervalo(10, 60));
-							TravadaRoda travadaRoda = new TravadaRoda();
-							travadaRoda.setIdNo(this.jogoCliente
-									.obterIdPorNo(piloto.getNoAtual()));
-							travadaRoda.setTracado(piloto.getTracado());
-							jogoCliente.travouRodas(travadaRoda);
-						}
-
 					} else {
 						piloto.setTimeStampChegeda(valTsFinal);
 					}

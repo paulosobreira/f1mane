@@ -102,14 +102,14 @@ public class ServletPaddock extends HttpServlet {
 
 				if (PaddockConstants.modoZip) {
 					dumaparDadosZip(
-							ZipUtil.compactarObjeto(PaddockConstants.debug,
+							ZipUtil.compactarObjeto(PaddockConstants.dumparDados,
 									escrever, res.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-					dumaparDados(escrever);
 					ObjectOutputStream oos = new ObjectOutputStream(bos);
 					oos.writeObject(escrever);
 					oos.flush();
+					dumaparDados(escrever);
 					res.getOutputStream().write(bos.toByteArray());
 				}
 
@@ -257,7 +257,7 @@ public class ServletPaddock extends HttpServlet {
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
 			throws IOException {
-		if (PaddockConstants.debug) {
+		if (PaddockConstants.dumparDados) {
 			String basePath = getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator;
 			FileOutputStream fileOutputStream = new FileOutputStream(
@@ -270,7 +270,7 @@ public class ServletPaddock extends HttpServlet {
 	}
 
 	private void dumaparDados(Object escrever) throws IOException {
-		if (PaddockConstants.debug && (escrever != null)) {
+		if (PaddockConstants.dumparDados && (escrever != null)) {
 			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
 					arrayOutputStream);

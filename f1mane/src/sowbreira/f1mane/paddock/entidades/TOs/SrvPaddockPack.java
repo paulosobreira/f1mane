@@ -1,8 +1,10 @@
 package sowbreira.f1mane.paddock.entidades.TOs;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
@@ -23,7 +25,7 @@ public class SrvPaddockPack implements Serializable {
 	private List listaCorridasJogador;
 	private List listaConstrutoresCarros;
 	private List listaConstrutoresPilotos;
-
+	
 	public SrvPaddockPack() {
 	}
 
@@ -114,5 +116,6 @@ public class SrvPaddockPack implements Serializable {
 	public void setSenhaCriada(String senhaCriada) {
 		this.senhaCriada = senhaCriada;
 	}
+
 
 }
