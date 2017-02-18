@@ -3354,8 +3354,8 @@ public class PainelCircuito {
 			if (pilotoSelecionado.equals(piloto)) {
 				desenha = true;
 			}
-			if (pilotoSelecionado.getCarroPilotoDaFrente() != null
-					&& piloto.equals(pilotoSelecionado.getCarroPilotoDaFrente()
+			if (pilotoSelecionado.getCarroPilotoFrente() != null
+					&& piloto.equals(pilotoSelecionado.getCarroPilotoFrente()
 							.getPiloto())) {
 				desenha = true;
 			}
@@ -4876,7 +4876,7 @@ public class PainelCircuito {
 		int carSelY = limitesViewPort.y + limitesViewPort.height - 75;
 		int bounce = 0;
 		int newY = 0;
-		Carro carroFrente = psel.getCarroPilotoDaFrente();
+		Carro carroFrente = psel.getCarroPilotoFrente();
 		if (carroFrente != null) {
 			carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
 			carSelX += (carroimg.getWidth() + 10) / 2;

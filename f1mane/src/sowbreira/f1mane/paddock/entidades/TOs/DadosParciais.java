@@ -13,6 +13,7 @@ import br.nnpe.Logger;
  * @author Paulo Sobreira Criado em 21/08/2007 as 21:08:26
  */
 public class DadosParciais implements Serializable {
+	private static final long serialVersionUID = 4430749703769933486L;
 	public int voltaAtual;
 	public int pselCombust;
 	public String pselTpPneus;
@@ -32,19 +33,20 @@ public class DadosParciais implements Serializable {
 	public boolean pselBox;
 	public boolean freiandoReta;
 	public boolean podeUsarDRS;
-	public int pselMaxPneus;
+	public String pselTpPneusFrente;
+	public String pselTpPneusAtras;
 	public String clima;
 	public String estado;
 	public String dano;
 	public String pselAsa;
 	public String pselAsaBox;
-	public Volta melhorVolta;
-	public Volta peselMelhorVolta;
-	public Volta peselUltima1;
-	public Volta peselUltima2;
-	public Volta peselUltima3;
-	public Volta peselUltima4;
-	public Volta peselUltima5;
+	public Long melhorVolta;
+	public Long peselMelhorVolta;
+	public Long peselUltima1;
+	public Long peselUltima2;
+	public Long peselUltima3;
+	public Long peselUltima4;
+	public Long peselUltima5;
 	public String nomeJogador;
 	public String texto;
 	public String vantagem;
@@ -72,16 +74,15 @@ public class DadosParciais implements Serializable {
 		pselBox = "S".equals(sp[spcont++]);
 		freiandoReta = "S".equals(sp[spcont++]);
 		podeUsarDRS = "S".equals(sp[spcont++]);
-		pselMaxPneus = parseInt(sp[spcont++]);
+		pselTpPneusFrente = decodeTpPneu(sp[spcont++]);
+		pselTpPneusAtras = decodeTpPneu(sp[spcont++]);
 		clima = decodeClima(sp[spcont++]);
 		estado = sp[spcont++];
 		dano = decodeDano(sp[spcont++]);
 		pselAsa = decodeAsa(sp[spcont++]);
 		pselAsaBox = decodeAsa(sp[spcont++]);
-		melhorVolta = new Volta();
-		melhorVolta.decode(sp[spcont++]);
-		peselMelhorVolta = new Volta();
-		peselMelhorVolta.decode(sp[spcont++]);
+		melhorVolta = parseLong(sp[spcont++]);
+		peselMelhorVolta = parseLong(sp[spcont++]);
 		int contJogador = spcont++;
 		nomeJogador = (sp[contJogador] == null || "".equals(sp[contJogador])
 				? null
@@ -91,16 +92,11 @@ public class DadosParciais implements Serializable {
 			texto = Lang.decodeTexto(sp[contTexto]);
 		}
 		vantagem = sp[spcont++];
-		peselUltima1 = new Volta();
-		peselUltima1.decode(sp[spcont++]);
-		peselUltima2 = new Volta();
-		peselUltima2.decode(sp[spcont++]);
-		peselUltima3 = new Volta();
-		peselUltima3.decode(sp[spcont++]);
-		peselUltima4 = new Volta();
-		peselUltima4.decode(sp[spcont++]);
-		peselUltima5 = new Volta();
-		peselUltima5.decode(sp[spcont++]);
+		peselUltima1 = parseLong(sp[spcont++]);
+		peselUltima2 = parseLong(sp[spcont++]);
+		peselUltima3 = parseLong(sp[spcont++]);
+		peselUltima4 = parseLong(sp[spcont++]);
+		peselUltima5 = parseLong(sp[spcont++]);
 		String[] pts = sp[spcont++].split("µ");
 		for (int i = 0; i < pts.length; i++) {
 			statusPilotos[i] = pts[i];
@@ -208,6 +204,25 @@ public class DadosParciais implements Serializable {
 		} else if (Carro.TIPO_PNEU_MOLE.equals(pselTpPneus)) {
 			codPneu = "M";
 		}
+
+		String codPneuFrente = "";
+		if (Carro.TIPO_PNEU_CHUVA.equals(pselTpPneusFrente)) {
+			codPneuFrente = "C";
+		} else if (Carro.TIPO_PNEU_DURO.equals(pselTpPneusFrente)) {
+			codPneuFrente = "D";
+		} else if (Carro.TIPO_PNEU_MOLE.equals(pselTpPneusFrente)) {
+			codPneuFrente = "M";
+		}
+
+		String codPneuAtras = "";
+		if (Carro.TIPO_PNEU_CHUVA.equals(pselTpPneusAtras)) {
+			codPneuAtras = "C";
+		} else if (Carro.TIPO_PNEU_DURO.equals(pselTpPneusAtras)) {
+			codPneuAtras = "D";
+		} else if (Carro.TIPO_PNEU_MOLE.equals(pselTpPneusAtras)) {
+			codPneuAtras = "M";
+		}
+
 		String codPneuBox = "";
 		if (Carro.TIPO_PNEU_CHUVA.equals(pselTpPneusBox)) {
 			codPneuBox = "C";
@@ -280,35 +295,6 @@ public class DadosParciais implements Serializable {
 			texto = texto.replaceAll("@", "");
 			texto = texto.replaceAll("µ", "");
 		}
-		String codMelhorVolta = "";
-		if (melhorVolta != null) {
-			codMelhorVolta = melhorVolta.encode();
-		}
-		String codpeselMelhorVolta = "";
-		if (peselMelhorVolta != null) {
-			codpeselMelhorVolta = peselMelhorVolta.encode();
-		}
-
-		String codUlt1 = "";
-		if (peselUltima1 != null) {
-			codUlt1 = peselUltima1.encode();
-		}
-		String codUlt2 = "";
-		if (peselUltima2 != null) {
-			codUlt2 = peselUltima2.encode();
-		}
-		String codUlt3 = "";
-		if (peselUltima3 != null) {
-			codUlt3 = peselUltima3.encode();
-		}
-		String codUlt4 = "";
-		if (peselUltima4 != null) {
-			codUlt4 = peselUltima4.encode();
-		}
-		String codUlt5 = "";
-		if (peselUltima5 != null) {
-			codUlt5 = peselUltima5.encode();
-		}
 
 		String enc = voltaAtual + "@" + pselCombust + "@" + codPneu + "@"
 				+ pselCombustBox + "@" + codPneuBox + "@" + pselVelocidade + "@"
@@ -317,15 +303,15 @@ public class DadosParciais implements Serializable {
 				+ temperaturaMotor + "@" + pselDurAereofolio + "@"
 				+ idTravadaRoda + "@" + codpselModoPilotar + "@"
 				+ (pselBox ? "S" : "N") + "@" + (freiandoReta ? "S" : "N") + "@"
-				+ (podeUsarDRS ? "S" : "N") + "@" + pselMaxPneus + "@"
-				+ codClima + "@" + estado + "@" + codDano + "@" + codpselAsa
-				+ "@" + codpselAsaBox + "@" + codMelhorVolta + "@"
-				+ codpeselMelhorVolta + "@"
+				+ (podeUsarDRS ? "S" : "N") + "@" + codPneuFrente + "@"
+				+ codPneuAtras + "@" + codClima + "@" + estado + "@" + codDano
+				+ "@" + codpselAsa + "@" + codpselAsaBox + "@" + melhorVolta
+				+ "@" + peselMelhorVolta + "@"
 				+ (nomeJogador == null ? "" : nomeJogador) + "@"
 				+ (texto == null ? "" : texto) + "@"
-				+ (vantagem == null ? "" : vantagem) + "@" + codUlt1 + "@"
-				+ codUlt2 + "@" + codUlt3 + "@" + codUlt4 + "@" + codUlt5 + "@"
-				+ lessLastPipe + "@" + lessLastPipe2;
+				+ (vantagem == null ? "" : vantagem) + "@" + peselUltima1 + "@"
+				+ peselUltima2 + "@" + peselUltima3 + "@" + peselUltima4 + "@"
+				+ peselUltima5 + "@" + lessLastPipe + "@" + lessLastPipe2;
 		// Logger.logar(enc);
 		return enc;
 

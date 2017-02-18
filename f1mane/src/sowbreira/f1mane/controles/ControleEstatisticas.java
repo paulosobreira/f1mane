@@ -155,11 +155,15 @@ public class ControleEstatisticas {
 		return voltaMaisRapida;
 	}
 
-	public static String formatarTempo(long fullnum) {
+	public static String formatarTempo(Integer value) {
+		return formatarTempo(new Long(value));
+	}
+	
+	public static String formatarTempo(Long value) {
 
-		long minu = (fullnum / 60000);
-		long seg = ((fullnum - (minu * 60000)) / 1000);
-		long mili = fullnum - ((minu * 60000) + (seg * 1000));
+		long minu = (value / 60000);
+		long seg = ((value - (minu * 60000)) / 1000);
+		long mili = value - ((minu * 60000) + (seg * 1000));
 		if (minu > 0)
 			return (minu) + ":" + dez.format(Math.abs(seg)) + "." + mil.format(Math.abs(mili));
 		else

@@ -3083,7 +3083,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		return podeUsarDRS;
 	}
 
-	public Carro getCarroPilotoDaFrente() {
+	public Carro getCarroPilotoFrente() {
 		return carroPilotoDaFrente;
 	}
 

@@ -9,12 +9,21 @@ import br.nnpe.Logger;
  * @author Paulo Sobreira Criado em 16/06/2007 as 16:03:49
  */
 public class Volta implements Serializable {
-	private long ciclosInicio;
-	private long ciclosFim;
-	private long tempoPausado;
+	private Long ciclosInicio = new Long(0);
+	private Long ciclosFim = new Long(0);
+	private Long tempoNumero;
+	private Long tempoPausado = new Long(0);
 	private int pilotoId;
 	private boolean voltaBox;
 	private boolean voltaSafetyCar;
+
+	public Volta(Long fullnum) {
+		super();
+		this.tempoNumero = fullnum;
+	}
+
+	public Volta() {
+	}
 
 	public boolean isVoltaBox() {
 		return voltaBox;
@@ -22,22 +31,6 @@ public class Volta implements Serializable {
 
 	public void setVoltaBox(boolean voltaBox) {
 		this.voltaBox = voltaBox;
-	}
-
-	public String encode() {
-		return ciclosInicio + "µ" + ciclosFim + "µ" + pilotoId + "µ"
-				+ tempoPausado;
-	}
-
-	public void decode(String val) {
-		if (val == null || "".equals(val)) {
-			return;
-		}
-		String[] sp = val.split("µ");
-		ciclosInicio = parseLong(sp[0]);
-		ciclosFim = parseLong(sp[1]);
-		pilotoId = parseInt(sp[2]);
-		tempoPausado = parseInt(sp[3]);
 	}
 
 	private long parseLong(String string) {
@@ -80,29 +73,16 @@ public class Volta implements Serializable {
 		this.ciclosInicio = ciclos;
 	}
 
-	public double obterTempoVolta() {
+	public Long obterTempoVolta() {
+		if (tempoNumero != null) {
+			return tempoNumero;
+		}
 		return ((ciclosFim - ciclosInicio) - tempoPausado);
 	}
 
 	public String obterTempoVoltaFormatado() {
-		long fullnum = (long) obterTempoVolta();
-
+		Long fullnum = obterTempoVolta();
 		return ControleEstatisticas.formatarTempo(fullnum);
-	}
-
-	public static void main(String[] args) {
-		long fullnum = 85700;
-		long minu = (fullnum / 60000);
-		long seg = ((fullnum - (minu * 60000)) / 1000);
-		long mili = fullnum - ((minu * 60000) + (seg * 1000));
-
-		Volta volta = new Volta();
-		volta.decode("10000_20000_23");
-		Logger.logar(volta.obterTempoVoltaFormatado());
-
-		// System.out.prlongln("Min " + minu);
-		// System.out.prlongln("Segs " + seg);
-		// System.out.prlongln("mili " + mili);
 	}
 
 	public boolean isVoltaSafetyCar() {
@@ -120,5 +100,16 @@ public class Volta implements Serializable {
 	public void setTempoPausado(long tempoPausado) {
 		this.tempoPausado = tempoPausado;
 	}
+	
+	public Long getTempoNumero() {
+		tempoNumero = obterTempoVolta();
+		if (tempoNumero == null) {
+			tempoNumero = new Long(0);
+		}
+		return tempoNumero;
+	}
 
+	public void setTempoNumero(Long tempoNumero) {
+		this.tempoNumero = tempoNumero;
+	}
 }

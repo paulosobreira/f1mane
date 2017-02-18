@@ -482,7 +482,10 @@ public class ControleJogosServer {
 			return null;
 		}
 		DadosParciais dadosParciais = new DadosParciais();
-		dadosParciais.melhorVolta = jogoServidor.obterMelhorVolta();
+		Volta obterMelhorVolta = jogoServidor.obterMelhorVolta();
+		if (obterMelhorVolta != null) {
+			dadosParciais.melhorVolta = obterMelhorVolta.getTempoNumero();
+		}
 		dadosParciais.voltaAtual = jogoServidor.getNumVoltaAtual();
 		dadosParciais.clima = jogoServidor.getClima();
 		dadosParciais.estado = jogoServidor.getEstado();
@@ -504,25 +507,29 @@ public class ControleJogosServer {
 			dadosParciais.statusPilotos[piloto.getId() - 1] = statusPilotos;
 			if (args.length > 2
 					&& piloto.getId() == Integer.parseInt(args[2])) {
-				dadosParciais.peselMelhorVolta = piloto.obterVoltaMaisRapida();
+				Volta obterVoltaMaisRapida = piloto.obterVoltaMaisRapida();
+				if (obterVoltaMaisRapida != null) {
+					dadosParciais.peselMelhorVolta = obterVoltaMaisRapida
+							.getTempoNumero();
+				}
 				int contVolta = 1;
 				List<Volta> voltas = piloto.getVoltas();
 				for (int i = voltas.size() - 1; i > -1; i--) {
 					Volta volta = (Volta) voltas.get(i);
 					if (contVolta == 1) {
-						dadosParciais.peselUltima1 = volta;
+						dadosParciais.peselUltima1 = volta.getTempoNumero();
 					}
 					if (contVolta == 2) {
-						dadosParciais.peselUltima2 = volta;
+						dadosParciais.peselUltima2 = volta.getTempoNumero();
 					}
 					if (contVolta == 3) {
-						dadosParciais.peselUltima3 = volta;
+						dadosParciais.peselUltima3 = volta.getTempoNumero();
 					}
 					if (contVolta == 4) {
-						dadosParciais.peselUltima4 = volta;
+						dadosParciais.peselUltima4 = volta.getTempoNumero();
 					}
 					if (contVolta == 5) {
-						dadosParciais.peselUltima5 = volta;
+						dadosParciais.peselUltima5 = volta.getTempoNumero();
 					}
 					contVolta++;
 					if (contVolta > 5) {
@@ -544,8 +551,14 @@ public class ControleJogosServer {
 						.getDurabilidadeAereofolio();
 				dadosParciais.pselCombust = piloto.getCarro().getCombustivel();
 				dadosParciais.pselPneus = piloto.getCarro().getPneus();
-				dadosParciais.pselMaxPneus = piloto.getCarro()
-						.getDurabilidadeMaxPneus();
+				if (piloto.getCarroPilotoFrente() != null) {
+					dadosParciais.pselTpPneusFrente = piloto
+							.getCarroPilotoFrente().getTipoPneu();
+				}
+				if (piloto.getCarroPilotoAtras() != null) {
+					dadosParciais.pselTpPneusAtras = piloto
+							.getCarroPilotoAtras().getTipoPneu();
+				}
 				dadosParciais.pselTpPneus = piloto.getCarro().getTipoPneu();
 				dadosParciais.pselAsa = piloto.getCarro().getAsa();
 				dadosParciais.pselParadas = piloto.getQtdeParadasBox();
