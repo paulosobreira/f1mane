@@ -1008,7 +1008,6 @@ public class ControleJogoLocal extends ControleRecursos
 		TravadaRoda travadaRoda = new TravadaRoda();
 		travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
 		travadaRoda.setTracado(piloto.getTracado());
-		piloto.setTravouRodas(true);
 		int qtdeFumaca = 0;
 		if (piloto.getNoAtual().verificaRetaOuLargada()) {
 			qtdeFumaca = Util.intervalo(10, 20);
@@ -1017,7 +1016,7 @@ public class ControleJogoLocal extends ControleRecursos
 		} else if (piloto.getNoAtual().verificaCruvaBaixa()) {
 			qtdeFumaca = Util.intervalo(10, 50);
 		}
-		piloto.setContTravouRodas(qtdeFumaca);
+		piloto.setTravouRodas(qtdeFumaca);
 		if (gerenciadorVisual != null)
 			gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
 

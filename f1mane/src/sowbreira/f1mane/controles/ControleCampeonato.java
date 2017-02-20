@@ -511,11 +511,11 @@ public class ControleCampeonato {
 						.obterTempoVoltaFormatado());
 			corridaCampeonato.setQtdeParadasBox(p.getQtdeParadasBox());
 			corridaCampeonato.setDesgastePneus(String.valueOf(p.getCarro()
-					.porcentagemDesgastePneus() + "%"));
+					.getPorcentagemDesgastePneus() + "%"));
 			corridaCampeonato.setCombustivelRestante(String.valueOf(p
-					.getCarro().porcentagemCombustivel() + "%"));
+					.getCarro().getPorcentagemCombustivel() + "%"));
 			corridaCampeonato.setDesgasteMotor(String.valueOf(p.getCarro()
-					.porcentagemDesgasteMotor() + "%"));
+					.getPorcentagemDesgasteMotor() + "%"));
 
 			if (p.getPosicao() == 1) {
 				corridaCampeonato.setPontos(25);

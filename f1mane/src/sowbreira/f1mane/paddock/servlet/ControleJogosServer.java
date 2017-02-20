@@ -489,16 +489,15 @@ public class ControleJogosServer {
 		dadosParciais.voltaAtual = jogoServidor.getNumVoltaAtual();
 		dadosParciais.clima = jogoServidor.getClima();
 		dadosParciais.estado = jogoServidor.getEstado();
-		TravadaRoda travadaRoda = jogoServidor.getTravadaRoda();
-		if (travadaRoda != null) {
-			dadosParciais.idTravadaRoda = travadaRoda.getIdNo();
-		}
 		List<Piloto> pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = iter.next();
 			String statusPilotos = "P" + String.valueOf(piloto.getPtosPista());
-
-			if (piloto.isRecebeuBanderada()) {
+			if (piloto.isFreiandoReta()) {
+				statusPilotos = "F" + String.valueOf(piloto.getPtosPista());
+			}else if (piloto.isTravouRodas()) {
+				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
+			} else if (piloto.isRecebeuBanderada()) {
 				statusPilotos = "B"
 						+ String.valueOf(piloto.getTimeStampChegeda());
 			} else if (piloto.getCarro().isRecolhido()) {
@@ -540,17 +539,19 @@ public class ControleJogosServer {
 				dadosParciais.nomeJogador = piloto.getNomeJogador();
 				dadosParciais.dano = piloto.getCarro().getDanificado();
 				dadosParciais.pselBox = piloto.isBox();
-				dadosParciais.freiandoReta = piloto.isFreiandoReta();
 				dadosParciais.podeUsarDRS = piloto.isPodeUsarDRS();
-				dadosParciais.pselMotor = piloto.getCarro().getMotor();
 				dadosParciais.pselStress = piloto.getStress();
 				dadosParciais.cargaKers = piloto.getCarro().getCargaKers();
 				dadosParciais.temperaturaMotor = piloto.getCarro()
 						.getTemperaturaMotor();
 				dadosParciais.pselDurAereofolio = piloto.getCarro()
 						.getDurabilidadeAereofolio();
-				dadosParciais.pselCombust = piloto.getCarro().getCombustivel();
-				dadosParciais.pselPneus = piloto.getCarro().getPneus();
+				dadosParciais.pselCombust = piloto.getCarro()
+						.getPorcentagemCombustivel();
+				dadosParciais.pselPneus = piloto.getCarro()
+						.getPorcentagemDesgastePneus();
+				dadosParciais.pselMotor = piloto.getCarro()
+						.getPorcentagemDesgasteMotor();
 				if (piloto.getCarroPilotoFrente() != null) {
 					dadosParciais.pselTpPneusFrente = piloto
 							.getCarroPilotoFrente().getTipoPneu();

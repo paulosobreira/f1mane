@@ -1,7 +1,9 @@
 package sowbreira.f1mane.entidades;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -30,7 +32,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 /**
  * @author Paulo Sobreira
  */
-//@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+// @JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class Piloto implements Serializable, PilotoSuave {
 	private static final long serialVersionUID = 698992658460848522L;
 	public static final String AGRESSIVO = "AGRESSIVO";
@@ -47,7 +49,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private int setaCima;
 	private int setaBaixo;
-	
+
 	private Integer ultimoConsumoCombust;
 	private Integer ultimoConsumoPneu;
 	protected String tipoPneuJogador;
@@ -116,8 +118,12 @@ public class Piloto implements Serializable, PilotoSuave {
 	private boolean cruzouLargada = false;
 	private Double maxGanhoBaixa = new Double(0);
 	private Double maxGanhoAlta = new Double(0);
-	private boolean travouRodas;
 	private int contTravouRodas;
+	/**
+	 * Campo para versão online
+	 */
+	private boolean travouRodas;
+	private boolean faiscas;
 	private boolean freiandoReta;
 	private boolean retardaFreiandoReta;
 	private int tracadoDelay;
@@ -187,9 +193,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private ArrayList<Double> listGanho;
 	@JsonIgnore
 	private boolean recebeuBanderada;
-	
 
-	
 	public int getGanhoSuave() {
 		return ganhoSuave;
 	}
@@ -227,20 +231,12 @@ public class Piloto implements Serializable, PilotoSuave {
 		return false;
 	}
 
-	public void setContTravouRodas(int contTravouRodas) {
+	public void setTravouRodas(int contTravouRodas) {
 		this.contTravouRodas = contTravouRodas;
 	}
 
 	public int getContTravouRodas() {
 		return contTravouRodas;
-	}
-
-	public boolean isTravouRodas() {
-		return travouRodas;
-	}
-
-	public void setTravouRodas(boolean travouRodas) {
-		this.travouRodas = travouRodas;
 	}
 
 	public Rectangle getDiateira() {
@@ -326,7 +322,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public void setAutoPos(boolean autoPos) {
 		this.autoPos = autoPos;
 	}
-	
+
 	@JsonIgnore
 	public Point getP0() {
 		return getNoAtual().getPoint();
@@ -565,7 +561,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.voltaAtual = voltaAtual;
 	}
 
-	public List<Volta>  getVoltas() {
+	public List<Volta> getVoltas() {
 		return voltas;
 	}
 
@@ -870,7 +866,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private void processaUltimosDesgastesPneuECombustivel() {
-		int pCombust = getCarro().porcentagemCombustivel();
+		int pCombust = getCarro().getPorcentagemCombustivel();
 		if (ultimoConsumoCombust == null) {
 			ultimoConsumoCombust = new Integer(pCombust);
 		} else {
@@ -881,7 +877,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 			}
 		}
-		int pPneu = getCarro().porcentagemDesgastePneus();
+		int pPneu = getCarro().getPorcentagemDesgastePneus();
 		if (ultimoConsumoPneu == null) {
 			ultimoConsumoPneu = new Integer(pPneu);
 		} else {
@@ -913,8 +909,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (isJogadorHumano() || isRecebeuBanderada() || getPtosPista() < 0) {
 			return;
 		}
-		int pneus = getCarro().porcentagemDesgastePneus();
-		int combust = getCarro().porcentagemCombustivel();
+		int pneus = getCarro().getPorcentagemDesgastePneus();
+		int combust = getCarro().getPorcentagemCombustivel();
 		int corrida = controleJogo.porcentagemCorridaCompletada();
 		if (controleJogo.isSemReabastacimento()) {
 			combust = 100;
@@ -1025,6 +1021,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaEscapadaDaPista(controleJogo);
 		processaIAnovoIndex(controleJogo);
 		processaTurbulencia(controleJogo);
+		processaFaiscas(controleJogo);
 		processaGanhoDanificado();
 		processaFreioNaReta(controleJogo);
 		processaEvitaBaterCarroFrente(controleJogo);
@@ -1040,6 +1037,34 @@ public class Piloto implements Serializable, PilotoSuave {
 		index += Math.round(ganho);
 		setVelocidade(calculoVelocidade(ganho));
 		return index;
+	}
+
+	private void processaFaiscas(InterfaceJogo controleJogo) {
+		setFaiscas(false);
+		if (controleJogo.isCorridaPausada()) {
+			return;
+		}
+		if (getPtosBox() != 0) {
+			return;
+		}
+
+		double mod = .995;
+
+		if (isFreiandoReta() && getCarro().getPorcentagemCombustivel() > Util
+				.intervalo(40, 50)) {
+			mod -= .50;
+			if (getTracado() != 0) {
+				mod -= .50;
+			}
+		}
+		if (getCarro().getGiro() == Carro.GIRO_MAX_VAL
+				&& getNoAtualSuave() != null
+				&& getNoAtualSuave().verificaRetaOuLargada()
+				&& Clima.SOL.equals(controleJogo.getClima())
+				&& getVelocidade() != 0 && Math.random() > mod) {
+			setFaiscas(true);
+		} 
+
 	}
 
 	public void calculaCarrosAdjacentes(InterfaceJogo controleJogo) {
@@ -1082,7 +1107,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private int calculoVelocidade(double ganho) {
 		int val = 300;
-		double porcent = getCarro().porcentagemCombustivel() / 100.0;
+		double porcent = getCarro().getPorcentagemCombustivel() / 100.0;
 		val += (21 - (porcent / 5.0));
 		boolean naReta = false;
 		if (noAtual != null && !freiandoReta
@@ -1123,7 +1148,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		 */
 		if (No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && agressivo
 				&& (getTracado() == 0)
-				&& (carro.porcentagemDesgastePneus() < 30)) {
+				&& (carro.getPorcentagemDesgastePneus() < 30)) {
 			if (getStress() > 60)
 				controleJogo.travouRodas(this);
 			if (getTracadoAntigo() != 0) {
@@ -1808,7 +1833,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		mudarTracado(ladoDerrapa, controleJogo);
 		return true;
 	}
-	
+
 	public Point getPontoDerrapada() {
 		return pontoDerrapada;
 	}
@@ -2186,12 +2211,13 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private void modoIADefesaAtaque(InterfaceJogo controleJogo) {
-		double porcentagemCombustivel = getCarro().porcentagemCombustivel();
-		double porcentagemDesgastePneus = getCarro().porcentagemDesgastePneus();
+		double porcentagemCombustivel = getCarro().getPorcentagemCombustivel();
+		double porcentagemDesgastePneus = getCarro()
+				.getPorcentagemDesgastePneus();
 		boolean superAquecido = getCarro().verificaMotorSuperAquecido();
 		boolean drsAtivado = Carro.MENOS_ASA.equals(getCarro().getAsa())
 				&& controleJogo.isDrs() && !controleJogo.isChovendo();
-		int porcentagemMotor = getCarro().porcentagemDesgasteMotor();
+		int porcentagemMotor = getCarro().getPorcentagemDesgasteMotor();
 		int porcentagemCorridaRestante = 100
 				- controleJogo.porcentagemCorridaCompletada();
 		int limiteDesgaste = 10;
@@ -3129,6 +3155,22 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setAsfaltoAbrasivo(boolean asfaltoAbrasivo) {
 		this.asfaltoAbrasivo = asfaltoAbrasivo;
+	}
+
+	public boolean isTravouRodas() {
+		return travouRodas;
+	}
+
+	public void setTravouRodas(boolean travouRodas) {
+		this.travouRodas = travouRodas;
+	}
+
+	public boolean isFaiscas() {
+		return faiscas;
+	}
+
+	public void setFaiscas(boolean faiscas) {
+		this.faiscas = faiscas;
 	}
 
 }

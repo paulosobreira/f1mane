@@ -15,12 +15,12 @@ import br.nnpe.Logger;
 public class DadosParciais implements Serializable {
 	private static final long serialVersionUID = 4430749703769933486L;
 	public int voltaAtual;
-	public int pselCombust;
 	public String pselTpPneus;
 	public int pselCombustBox;
 	public String pselTpPneusBox;
 	public String pselModoPilotar;
 	public int pselVelocidade;
+	public int pselCombust;
 	public int pselPneus;
 	public int pselMotor;
 	public int pselParadas;
@@ -29,9 +29,7 @@ public class DadosParciais implements Serializable {
 	public int cargaKers;
 	public int temperaturaMotor;
 	public int pselDurAereofolio;
-	public int idTravadaRoda;
 	public boolean pselBox;
-	public boolean freiandoReta;
 	public boolean podeUsarDRS;
 	public String pselTpPneusFrente;
 	public String pselTpPneusAtras;
@@ -69,10 +67,8 @@ public class DadosParciais implements Serializable {
 		cargaKers = parseInt(sp[spcont++]);
 		temperaturaMotor = parseInt(sp[spcont++]);
 		pselDurAereofolio = parseInt(sp[spcont++]);
-		idTravadaRoda = parseInt(sp[spcont++]);
 		pselModoPilotar = decodeModoPilotar(sp[spcont++]);
 		pselBox = "S".equals(sp[spcont++]);
-		freiandoReta = "S".equals(sp[spcont++]);
 		podeUsarDRS = "S".equals(sp[spcont++]);
 		pselTpPneusFrente = decodeTpPneu(sp[spcont++]);
 		pselTpPneusAtras = decodeTpPneu(sp[spcont++]);
@@ -301,8 +297,7 @@ public class DadosParciais implements Serializable {
 				+ pselPneus + "@" + pselMotor + "@" + pselParadas + "@"
 				+ pselGiro + "@" + pselStress + "@" + cargaKers + "@"
 				+ temperaturaMotor + "@" + pselDurAereofolio + "@"
-				+ idTravadaRoda + "@" + codpselModoPilotar + "@"
-				+ (pselBox ? "S" : "N") + "@" + (freiandoReta ? "S" : "N") + "@"
+				+ codpselModoPilotar + "@" + (pselBox ? "S" : "N") + "@"
 				+ (podeUsarDRS ? "S" : "N") + "@" + codPneuFrente + "@"
 				+ codPneuAtras + "@" + codClima + "@" + estado + "@" + codDano
 				+ "@" + codpselAsa + "@" + codpselAsaBox + "@" + melhorVolta

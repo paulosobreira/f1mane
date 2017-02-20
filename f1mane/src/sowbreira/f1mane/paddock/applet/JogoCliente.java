@@ -837,8 +837,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void travouRodas(Piloto piloto) {
-		// TODO Auto-generated method stub
-
+		piloto.setTravouRodas(10);
 	}
 
 	public void travouRodas(TravadaRoda travadaRoda) {

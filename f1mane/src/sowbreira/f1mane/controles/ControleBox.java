@@ -191,11 +191,11 @@ public class ControleBox {
 							new String[]{piloto.getNome()})));
 				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "
 						+ piloto.getNumeroVolta() + " Pneus : "
-						+ piloto.getCarro().porcentagemDesgastePneus()
+						+ piloto.getCarro().getPorcentagemDesgastePneus()
 						+ " Combustivel : "
-						+ piloto.getCarro().porcentagemCombustivel()
+						+ piloto.getCarro().getPorcentagemCombustivel()
 						+ " Motor : "
-						+ piloto.getCarro().porcentagemDesgasteMotor());
+						+ piloto.getCarro().getPorcentagemDesgasteMotor());
 				piloto.setPtosBox(Util.inte((piloto.getPtosBox() + 1)
 						* circuito.getMultiplciador()));
 			} else {

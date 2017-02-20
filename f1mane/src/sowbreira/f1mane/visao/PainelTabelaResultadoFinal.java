@@ -84,14 +84,14 @@ public class PainelTabelaResultadoFinal extends JPanel {
 				return String.valueOf(p.getQtdeParadasBox());
 
 			case 7:
-				return String.valueOf(p.getCarro().porcentagemDesgastePneus()
+				return String.valueOf(p.getCarro().getPorcentagemDesgastePneus()
 						+ "%");
 
 			case 8:
-				return String.valueOf(p.getCarro().porcentagemCombustivel()
+				return String.valueOf(p.getCarro().getPorcentagemCombustivel()
 						+ "%");
 			case 9:
-				return String.valueOf(p.getCarro().porcentagemDesgasteMotor()
+				return String.valueOf(p.getCarro().getPorcentagemDesgasteMotor()
 						+ "%");
 			case 10:
 				return p.getNomeJogador();

@@ -69,14 +69,14 @@ public class ControleQualificacao {
 					.valueOf(controleJogo.getNosDaPista().size())) <= 1) {
 				piloto.processarCiclo(controleJogo);
 				contCiclosQualificacao++;
-				if (Math.random() > (piloto.getCarro().porcentagemCombustivel()
+				if (Math.random() > (piloto.getCarro().getPorcentagemCombustivel()
 						/ 100.0) && !piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.getCarro().testeAerodinamica()
 						&& piloto.testeHabilidadePilotoCarro()
 						&& piloto.getCarro().testeFreios()) {
 					contCiclosQualificacao -= Math.random() > incCurva ? 1 : 0;
 				}
-				if (Math.random() > (piloto.getCarro().porcentagemCombustivel()
+				if (Math.random() > (piloto.getCarro().getPorcentagemCombustivel()
 						/ 100.0) && piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.getCarro().testePotencia()) {
 					contCiclosQualificacao -= Math.random() > increta ? 1 : 0;
@@ -115,7 +115,7 @@ public class ControleQualificacao {
 			piloto.setNumeroVolta(-1);
 			piloto.setUltimaVolta(null);
 			piloto.setVoltaAtual(null);
-			piloto.setContTravouRodas(0);
+			piloto.setTravouRodas(0);
 			piloto.setVoltas(new ArrayList());
 			controleJogo.zerarMelhorVolta();
 		}
@@ -299,7 +299,7 @@ public class ControleQualificacao {
 			Logger.logar(" Posição Largada :" + piloto.getPosicao() + " Nome : "
 					+ piloto.getNome() + " Pneu : "
 					+ piloto.getCarro().getTipoPneu() + " Combustivel : "
-					+ piloto.getCarro().porcentagemCombustivel() + " Asa : "
+					+ piloto.getCarro().getPorcentagemCombustivel() + " Asa : "
 					+ piloto.getCarro().getAsa() + " Tempo Qualificação : "
 					+ ControleEstatisticas.formatarTempo(
 							piloto.getCiclosVoltaQualificacao()));

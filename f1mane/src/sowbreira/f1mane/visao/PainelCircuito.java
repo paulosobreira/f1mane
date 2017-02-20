@@ -581,8 +581,7 @@ public class PainelCircuito {
 
 		iconLua = CarregadorRecursos.carregaBufferedImage("lua.png");
 		iconSol = CarregadorRecursos.carregaBufferedImage("sol.png");
-		iconNublado = CarregadorRecursos
-				.carregaBufferedImage("nublado.png");
+		iconNublado = CarregadorRecursos.carregaBufferedImage("nublado.png");
 		iconChuva = CarregadorRecursos.carregaBufferedImage("chuva.png");
 
 	}
@@ -754,11 +753,11 @@ public class PainelCircuito {
 	}
 
 	private void atualizacaoSuave(PilotoSuave piloto) {
-		if(!controleJogo.isAtualizacaoSuave()){
+		if (!controleJogo.isAtualizacaoSuave()) {
 			piloto.setNoAtualSuave(piloto.getNoAtual());
 			return;
 		}
-		
+
 		if (getQtdeLuzesAcesas() > 1) {
 			return;
 		}
@@ -1426,12 +1425,11 @@ public class PainelCircuito {
 			g2d.fillRoundRect(x, y, 50, 20, 0, 0);
 			g2d.setColor(Color.BLACK);
 			int porcentagemDesgastePneus = piloto.getCarro()
-					.porcentagemDesgastePneus();
+					.getPorcentagemDesgastePneus();
 			if (porcentagemDesgastePneus < 0) {
 				porcentagemDesgastePneus = 0;
 			}
-			g2d.drawString("" + porcentagemDesgastePneus + "%", x + 12,
-					y + 16);
+			g2d.drawString("" + porcentagemDesgastePneus + "%", x + 12, y + 16);
 
 			if (corBorda != null) {
 				desenhaBordaResultadoFinal(g2d, x, y, 50, 20, corBorda);
@@ -1455,7 +1453,7 @@ public class PainelCircuito {
 			g2d.fillRoundRect(x, y, 50, 20, 0, 0);
 			g2d.setColor(Color.BLACK);
 			int porcentagemCombustivel = piloto.getCarro()
-					.porcentagemCombustivel();
+					.getPorcentagemCombustivel();
 			if (porcentagemCombustivel < 0) {
 				porcentagemCombustivel = 0;
 			}
@@ -1483,7 +1481,7 @@ public class PainelCircuito {
 			g2d.fillRoundRect(x, y, 50, 20, 0, 0);
 			g2d.setColor(Color.BLACK);
 			int porcentagemDesgasteMotor = piloto.getCarro()
-					.porcentagemDesgasteMotor();
+					.getPorcentagemDesgasteMotor();
 			if (porcentagemDesgasteMotor < 0) {
 				porcentagemDesgasteMotor = 0;
 			}
@@ -3562,18 +3560,18 @@ public class PainelCircuito {
 		if (controleJogo.isCorridaPausada() || piloto.isDesqualificado()) {
 			return calculaAngulo;
 		}
-		
+
 		double variacao1 = 5.0;
 		double variacao2 = 10.0;
-		if(Clima.NUBLADO.equals(controleJogo.getClima())){
+		if (Clima.NUBLADO.equals(controleJogo.getClima())) {
 			variacao1 = 10.0;
-			variacao2 = 15.0;	
+			variacao2 = 15.0;
 		}
-		if(controleJogo.isChovendo()){
+		if (controleJogo.isChovendo()) {
 			variacao1 = 15.0;
-			variacao2 = 20.0;	
+			variacao2 = 20.0;
 		}
-		
+
 		boolean rabeadaAgressivo = piloto.isAgressivo()
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
 				&& (noAtual.verificaCruvaAlta() || noAtual.verificaCruvaBaixa())
@@ -3802,27 +3800,7 @@ public class PainelCircuito {
 
 	private void desenhaFaiscasCarroCima(Graphics2D g2d, Piloto piloto,
 			int width, Point eixoDianteras, double eixo) {
-		if (controleJogo.isCorridaPausada()) {
-			return;
-		}
-		if (piloto.getPtosBox() != 0) {
-			return;
-		}
-
-		double mod = .995;
-
-		if (piloto.isFreiandoReta() && piloto.getCarro()
-				.porcentagemCombustivel() > Util.intervalo(40, 50)) {
-			mod -= .50;
-			if (piloto.getTracado() != 0) {
-				mod -= .50;
-			}
-		}
-		if (piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
-				&& piloto.getNoAtualSuave() != null
-				&& piloto.getNoAtualSuave().verificaRetaOuLargada()
-				&& Clima.SOL.equals(controleJogo.getClima())
-				&& piloto.getVelocidade() != 0 && Math.random() > mod) {
+		if (piloto.isFaiscas()) {
 			mapaFaiscas.put(piloto, piloto);
 			g2d.setColor(Color.YELLOW);
 			g2d.setStroke(strokeFaisca);
@@ -4443,7 +4421,10 @@ public class PainelCircuito {
 		g2d.setColor(bkg);
 		g2d.fill(rectangleVol);
 		g2d.setColor(fonte);
-		g2d.drawString("" + (piloto.getNumeroVolta()<0?0:piloto.getNumeroVolta()),
+		g2d.drawString(
+				"" + (piloto.getNumeroVolta() < 0
+						? 0
+						: piloto.getNumeroVolta()),
 				Util.inte(x + 40 + pilotosRect[i].getWidth()), y + 16);
 
 		if (piloto.equals(pilotoSelecionado)) {
@@ -4588,9 +4569,10 @@ public class PainelCircuito {
 				&& !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
 			return;
 		}
-		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePneus();
-		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
-		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
+		int pneus = pilotoSelecionado.getCarro().getPorcentagemDesgastePneus();
+		int porcentComb = pilotoSelecionado.getCarro()
+				.getPorcentagemCombustivel();
+		int motor = pilotoSelecionado.getCarro().getPorcentagemDesgasteMotor();
 
 		int durabilidade = controleJogo.getDurabilidadeAreofolio() / 2;
 		String dano = null;
@@ -5660,7 +5642,8 @@ public class PainelCircuito {
 			fonteBarrasPilotoCarro = new Font(fontOri.getName(), Font.BOLD, 28);
 		}
 		g2d.setFont(fonteBarrasPilotoCarro);
-		int porcentComb = pilotoSelecionado.getCarro().porcentagemCombustivel();
+		int porcentComb = pilotoSelecionado.getCarro()
+				.getPorcentagemCombustivel();
 		Color corComb = OcilaCor.porcentVerde100Vermelho0(porcentComb);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 5, y - 26, 2 * porcentComb, 30, 0,
@@ -5672,7 +5655,7 @@ public class PainelCircuito {
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(Lang.msg("215") + " " + porcentComb + "%", x + 5, y);
 		y += 35;
-		int pneus = pilotoSelecionado.getCarro().porcentagemDesgastePneus();
+		int pneus = pilotoSelecionado.getCarro().getPorcentagemDesgastePneus();
 		Color corPneus = OcilaCor.porcentVerde100Vermelho0(pneus);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 5, y - 26, 2 * pneus, 30, 0, 0);
@@ -5683,7 +5666,7 @@ public class PainelCircuito {
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(Lang.msg("216") + " " + pneus + "%", x + 5, y);
 		y += 35;
-		int motor = pilotoSelecionado.getCarro().porcentagemDesgasteMotor();
+		int motor = pilotoSelecionado.getCarro().getPorcentagemDesgasteMotor();
 		Color corMotor = OcilaCor.porcentVerde100Vermelho0(motor);
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 5, y - 26, 2 * motor, 30, 0, 0);
