@@ -243,7 +243,7 @@ public class ControlePaddockServidor {
 	public Object obterDadosParciaisPilotos(String[] args) {
 		return controleJogosServer.obterDadosParciaisPilotos(args);
 	}
-	
+
 	public Object obterPosicaoPilotos(Object object) {
 		return controleJogosServer.obterPosicaoPilotos((String) object);
 	}
@@ -493,33 +493,29 @@ public class ControlePaddockServidor {
 
 	private void atualizaPilotoJogoSessaoCliente() throws Exception {
 		List clientes = getDadosPaddock().getClientes();
-		synchronized (clientes) {
-			for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
-				SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
-				Map mapaJogosCriados = controleJogosServer
-						.getMapaJogosCriados();
-				boolean achouJogo = false;
-				for (Iterator iterator2 = mapaJogosCriados.keySet()
-						.iterator(); iterator2.hasNext();) {
-					Object key = (Object) iterator2.next();
-					JogoServidor jogoServidor = (JogoServidor) controleJogosServer
-							.getMapaJogosCriados().get(key);
-					Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
-							.getMapJogadoresOnline();
-					DadosCriarJogo participarJogo = mapJogadoresOnline
-							.get(sessaoCliente.getNomeJogador());
-					if (participarJogo != null) {
-						sessaoCliente.setJogoAtual(
-								jogoServidor.getNomeJogoServidor());
-						sessaoCliente
-								.setPilotoAtual(participarJogo.getPiloto());
-						achouJogo = true;
-					}
+		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+			Map mapaJogosCriados = controleJogosServer.getMapaJogosCriados();
+			boolean achouJogo = false;
+			for (Iterator iterator2 = mapaJogosCriados.keySet()
+					.iterator(); iterator2.hasNext();) {
+				Object key = (Object) iterator2.next();
+				JogoServidor jogoServidor = (JogoServidor) controleJogosServer
+						.getMapaJogosCriados().get(key);
+				Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
+						.getMapJogadoresOnline();
+				DadosCriarJogo participarJogo = mapJogadoresOnline
+						.get(sessaoCliente.getNomeJogador());
+				if (participarJogo != null) {
+					sessaoCliente
+							.setJogoAtual(jogoServidor.getNomeJogoServidor());
+					sessaoCliente.setPilotoAtual(participarJogo.getPiloto());
+					achouJogo = true;
 				}
-				if (!achouJogo) {
-					sessaoCliente.setJogoAtual(null);
-					sessaoCliente.setPilotoAtual(null);
-				}
+			}
+			if (!achouJogo) {
+				sessaoCliente.setJogoAtual(null);
+				sessaoCliente.setPilotoAtual(null);
 			}
 		}
 	}
@@ -543,13 +539,11 @@ public class ControlePaddockServidor {
 			if (token == null) {
 				return null;
 			}
-			synchronized (dadosPaddock.getClientes()) {
-				for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
-						.hasNext();) {
-					SessaoCliente element = (SessaoCliente) iter.next();
-					if (token.equals(element.getToken())) {
-						return element;
-					}
+			for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
+					.hasNext();) {
+				SessaoCliente element = (SessaoCliente) iter.next();
+				if (token.equals(element.getToken())) {
+					return element;
 				}
 			}
 			return null;
@@ -560,13 +554,11 @@ public class ControlePaddockServidor {
 	}
 
 	public SessaoCliente verificaUsuarioSessao(String apelido) {
-		synchronized (dadosPaddock.getClientes()) {
-			for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
-					.hasNext();) {
-				SessaoCliente element = (SessaoCliente) iter.next();
-				if (element.getNomeJogador().equals(apelido)) {
-					return element;
-				}
+		for (Iterator<SessaoCliente> iter = dadosPaddock.getClientes()
+				.iterator(); iter.hasNext();) {
+			SessaoCliente element = iter.next();
+			if (element.getNomeJogador().equals(apelido)) {
+				return element;
 			}
 		}
 		return null;
@@ -608,9 +600,9 @@ public class ControlePaddockServidor {
 
 		SessaoCliente sessaoCliente = null;
 		synchronized (dadosPaddock.getClientes()) {
-			for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
-					.hasNext();) {
-				SessaoCliente element = (SessaoCliente) iter.next();
+			for (Iterator<SessaoCliente> iter = dadosPaddock.getClientes()
+					.iterator(); iter.hasNext();) {
+				SessaoCliente element = iter.next();
 				if (element.getNomeJogador()
 						.equals(jogadorDadosSrv.getNome())) {
 					sessaoCliente = element;

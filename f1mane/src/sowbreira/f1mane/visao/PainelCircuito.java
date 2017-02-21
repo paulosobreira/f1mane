@@ -3800,6 +3800,9 @@ public class PainelCircuito {
 
 	private void desenhaFaiscasCarroCima(Graphics2D g2d, Piloto piloto,
 			int width, Point eixoDianteras, double eixo) {
+		if (controleJogo.isCorridaPausada()) {
+			return;
+		}
 		if (piloto.isFaiscas()) {
 			mapaFaiscas.put(piloto, piloto);
 			g2d.setColor(Color.YELLOW);
@@ -4348,6 +4351,9 @@ public class PainelCircuito {
 		if (p == null) {
 			return;
 		}
+		if (controleJogo.isCorridaPausada()) {
+			return;
+		}
 		if (Math.random() > .9) {
 			return;
 		}
@@ -4572,22 +4578,15 @@ public class PainelCircuito {
 		int pneus = pilotoSelecionado.getCarro().getPorcentagemDesgastePneus();
 		int porcentComb = pilotoSelecionado.getCarro()
 				.getPorcentagemCombustivel();
-		int motor = pilotoSelecionado.getCarro().getPorcentagemDesgasteMotor();
-
-		int durabilidade = controleJogo.getDurabilidadeAreofolio() / 2;
 		String dano = null;
 		if (pilotoSelecionado != null) {
 			dano = pilotoSelecionado.getCarro().getDanificado();
 		}
-
-		if ((dano == null || "".equals(dano)) && motor > 25 && porcentComb > 25
-				&& pilotoSelecionado.getCarro()
-						.getDurabilidadeAereofolio() >= durabilidade
-				&& pneus > 25
-				&& !pilotoSelecionado.getCarro().verificaMotorSuperAquecido()) {
+		if ((dano == null || "".equals(dano))
+				&& !pilotoSelecionado.isAlertaAerefolio()
+				&& !pilotoSelecionado.isAlertaMotor()) {
 			return;
 		}
-
 		g2d.setColor(this.transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 175, limitesViewPort.y + 5,
 				carroimgDano.getWidth() + 5, carroimgDano.getHeight() + 5, 0,
@@ -4596,10 +4595,8 @@ public class PainelCircuito {
 			g2d.drawImage(carroimgDano, limitesViewPort.x + 180,
 					limitesViewPort.y + 10, null);
 
-		if (pilotoSelecionado.getCarro()
-				.getDurabilidadeAereofolio() < durabilidade
-				&& !Carro.PERDEU_AEREOFOLIO
-						.equals(pilotoSelecionado.getCarro().getDanificado())) {
+		if (pilotoSelecionado.isAlertaAerefolio() && !Carro.PERDEU_AEREOFOLIO
+				.equals(pilotoSelecionado.getCarro().getDanificado())) {
 			// bico
 			g2d.setColor(OcilaCor.geraOcila("bicoAmarelo", Color.yellow));
 			g2d.fillOval(limitesViewPort.x + 183, limitesViewPort.y + 26, 15,
@@ -4645,8 +4642,7 @@ public class PainelCircuito {
 			// motor
 			g2d.fillOval(limitesViewPort.x + 273, limitesViewPort.y + 12, 15,
 					15);
-		} else if (motor <= 25
-				|| pilotoSelecionado.getCarro().verificaMotorSuperAquecido()) {
+		} else if (pilotoSelecionado.isAlertaMotor()) {
 			g2d.setColor(OcilaCor.geraOcila("motorGasto", Color.yellow));
 			g2d.fillOval(limitesViewPort.x + 273, limitesViewPort.y + 12, 15,
 					15);

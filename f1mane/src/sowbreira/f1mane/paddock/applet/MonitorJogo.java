@@ -487,7 +487,8 @@ public class MonitorJogo implements Runnable {
 				estado = dadosParciais.estado;
 				jogoCliente.verificaMudancaClima(dadosParciais.clima);
 				dadosJogo.setClima(dadosParciais.clima);
-				dadosJogo.setMelhoVolta(new Volta(dadosParciais.melhorVolta));
+				dadosJogo.setMelhoVolta(
+						new Volta(dadosParciais.melhorVoltaCorrida));
 				if (dadosParciais.texto != null
 						&& !"".equals(dadosParciais.texto))
 					dadosJogo.setTexto(dadosParciais.texto);
@@ -495,7 +496,6 @@ public class MonitorJogo implements Runnable {
 				List pilotos = jogoCliente.getPilotos();
 				for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 					Piloto piloto = (Piloto) iter.next();
-					piloto.setFreiandoReta(false);
 					piloto.setFaiscas(false);
 					String statusPilotos = dadosParciais.statusPilotos[piloto
 							.getId() - 1];
@@ -506,14 +506,14 @@ public class MonitorJogo implements Runnable {
 						} else if (statusPilotos.startsWith("F")) {
 							piloto.setPtosPista(
 									new Long(statusPilotos.split("F")[1]));
-							piloto.setFreiandoReta(true);
 							piloto.setFaiscas(true);
 						} else if (statusPilotos.startsWith("T")) {
 							piloto.setPtosPista(
 									new Long(statusPilotos.split("T")[1]));
 							jogoCliente.travouRodas(piloto);
 							TravadaRoda travadaRoda = new TravadaRoda();
-							travadaRoda.setIdNo(jogoCliente.obterIdPorNo(piloto.getNoAtual()));
+							travadaRoda.setIdNo(jogoCliente
+									.obterIdPorNo(piloto.getNoAtual()));
 							jogoCliente.travouRodas(travadaRoda);
 						} else if ("R".equals(statusPilotos)) {
 							piloto.getCarro().setRecolhido(true);
@@ -529,20 +529,20 @@ public class MonitorJogo implements Runnable {
 					if (pilotoSelecionado != null
 							&& pilotoSelecionado.equals(piloto)) {
 						piloto.setMelhorVolta(
-								new Volta(dadosParciais.peselMelhorVolta));
+								new Volta(dadosParciais.melhorVolta));
 						piloto.getVoltas().clear();
 						piloto.getVoltas()
-								.add(new Volta(dadosParciais.peselUltima5));
+								.add(new Volta(dadosParciais.ultima5));
 						piloto.getVoltas()
-								.add(new Volta(dadosParciais.peselUltima4));
+								.add(new Volta(dadosParciais.ultima4));
 						piloto.getVoltas()
-								.add(new Volta(dadosParciais.peselUltima3));
+								.add(new Volta(dadosParciais.ultima3));
 						piloto.getVoltas()
-								.add(new Volta(dadosParciais.peselUltima2));
+								.add(new Volta(dadosParciais.ultima2));
 						piloto.getVoltas()
-								.add(new Volta(dadosParciais.peselUltima1));
+								.add(new Volta(dadosParciais.ultima1));
 						piloto.setNomeJogador(dadosParciais.nomeJogador);
-						piloto.setQtdeParadasBox(dadosParciais.pselParadas);
+						piloto.setQtdeParadasBox(dadosParciais.paradas);
 						if (piloto.getNomeJogador() != null) {
 							piloto.setJogadorHumano(true);
 						} else {
@@ -553,12 +553,13 @@ public class MonitorJogo implements Runnable {
 								&& piloto.isDesqualificado()) {
 							piloto.getCarro().setRecolhido(true);
 						}
-						piloto.setBox(dadosParciais.pselBox);
-						piloto.setStress(dadosParciais.pselStress);
+						piloto.setBox(dadosParciais.box);
+						piloto.setStress(dadosParciais.stress);
 						piloto.setPodeUsarDRS(dadosParciais.podeUsarDRS);
 						piloto.getCarro().setCargaKers(dadosParciais.cargaKers);
-						piloto.getCarro().setTemperaturaMotor(
-								dadosParciais.temperaturaMotor);
+						piloto.setAlertaMotor(dadosParciais.alertaMotor);
+						piloto.setAlertaAerefolio(
+								dadosParciais.alertaAerefolio);
 						if (piloto
 								.getCargaKersOnline() != dadosParciais.cargaKers) {
 							piloto.setAtivarKers(true);
@@ -567,34 +568,29 @@ public class MonitorJogo implements Runnable {
 							piloto.setAtivarKers(false);
 						}
 						piloto.getCarro().setPorcentagemDesgasteMotor(
-								dadosParciais.pselMotor);
+								dadosParciais.pMotor);
 						piloto.getCarro().setPorcentagemDesgastePneus(
-								dadosParciais.pselPneus);
+								dadosParciais.pPneus);
 						piloto.getCarro().setPorcentagemCombustivel(
-								dadosParciais.pselCombust);
-						piloto.getCarro().setDurabilidadeAereofolio(
-								dadosParciais.pselDurAereofolio);
-
-						piloto.getCarro().setAsa(dadosParciais.pselAsaBox);
-						piloto.getCarro()
-								.setTipoPneu(dadosParciais.pselTpPneus);
+								dadosParciais.pCombust);
+						piloto.getCarro().setAsa(dadosParciais.asaBox);
+						piloto.getCarro().setTipoPneu(dadosParciais.tpPneus);
 						if (piloto.getCarroPilotoFrente() != null) {
-							piloto.getCarroPilotoFrente().setTipoPneu(
-									dadosParciais.pselTpPneusFrente);
+							piloto.getCarroPilotoFrente()
+									.setTipoPneu(dadosParciais.tpPneusFrente);
 						}
 						if (piloto.getCarroPilotoAtras() != null) {
-							piloto.getCarroPilotoAtras().setTipoPneu(
-									dadosParciais.pselTpPneusAtras);
+							piloto.getCarroPilotoAtras()
+									.setTipoPneu(dadosParciais.tpPneusAtras);
 						}
-						piloto.setVelocidade(dadosParciais.pselVelocidade);
-						piloto.setVelocidadeExibir(
-								dadosParciais.pselVelocidade);
-						piloto.setQtdeCombustBox(dadosParciais.pselCombustBox);
-						piloto.setTipoPneuBox(dadosParciais.pselTpPneusBox);
-						piloto.setModoPilotagem(dadosParciais.pselModoPilotar);
-						piloto.setAsaBox(dadosParciais.pselAsaBox);
-						piloto.getCarro().setAsa(dadosParciais.pselAsa);
-						piloto.getCarro().setGiro(dadosParciais.pselGiro);
+						piloto.setVelocidade(dadosParciais.velocidade);
+						piloto.setVelocidadeExibir(dadosParciais.velocidade);
+						piloto.setQtdeCombustBox(dadosParciais.combustBox);
+						piloto.setTipoPneuBox(dadosParciais.tpPneusBox);
+						piloto.setModoPilotagem(dadosParciais.modoPilotar);
+						piloto.setAsaBox(dadosParciais.asaBox);
+						piloto.getCarro().setAsa(dadosParciais.asa);
+						piloto.getCarro().setGiro(dadosParciais.giro);
 						piloto.setVantagem(dadosParciais.vantagem);
 					}
 				}

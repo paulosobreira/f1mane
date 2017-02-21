@@ -1,9 +1,7 @@
 package sowbreira.f1mane.entidades;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -32,7 +30,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 /**
  * @author Paulo Sobreira
  */
-// @JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Piloto implements Serializable, PilotoSuave {
 	private static final long serialVersionUID = 698992658460848522L;
 	public static final String AGRESSIVO = "AGRESSIVO";
@@ -46,10 +44,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	private boolean acelerando;
 	private boolean asfaltoAbrasivo;
 	private double ultGanhoReta = 0;
-
 	private int setaCima;
 	private int setaBaixo;
-
 	private Integer ultimoConsumoCombust;
 	private Integer ultimoConsumoPneu;
 	protected String tipoPneuJogador;
@@ -75,9 +71,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	private int tracadoAntigo;
 	private int indiceTracado;
 	private double ganhoMax = Integer.MIN_VALUE;
-
-	private boolean autoPos = true;
 	private double distanciaDerrapada = Double.MAX_VALUE;
+	private boolean autoPos = true;
 	private Double angulo;
 	private int posicao;
 	private int posicaoInicial;
@@ -119,11 +114,10 @@ public class Piloto implements Serializable, PilotoSuave {
 	private Double maxGanhoBaixa = new Double(0);
 	private Double maxGanhoAlta = new Double(0);
 	private int contTravouRodas;
-	/**
-	 * Campo para versão online
-	 */
 	private boolean travouRodas;
 	private boolean faiscas;
+	private boolean alertaMotor;
+	private boolean alertaAerefolio;
 	private boolean freiandoReta;
 	private boolean retardaFreiandoReta;
 	private int tracadoDelay;
@@ -133,36 +127,29 @@ public class Piloto implements Serializable, PilotoSuave {
 	private int meiaEnvergadura = 20;
 	private boolean colisaoDiantera;
 	private boolean colisaoCentro;
+	private double limiteEvitarBatrCarroFrente;
+	private boolean evitaBaterCarroFrente;
+	private boolean podeUsarDRS;
+	private boolean problemaLargada;
+	private boolean recebeuBanderada;
 	private int mudouTracadoReta;
 	private int indexRefDerrapada;
-	private boolean evitaBaterCarroFrente;
+	private int calculaDiferencaParaProximo;
+	private int voltaMensagemLento;
+	private int ptosBox;
+	private int paradoBox;
 	private int calculaDiffParaProximoRetardatario;
 	private int calculaDiffParaProximoRetardatarioMesmoTracado;
 	private int calculaDiferencaParaAnterior = Integer.MAX_VALUE;
-	private double limiteEvitarBatrCarroFrente;
-	private boolean podeUsarDRS;
-	private int calculaDiferencaParaProximo;
-	private int voltaMensagemLento;
-	private boolean problemaLargada;
-
-	@JsonIgnore
 	private List<Volta> voltas = new ArrayList<Volta>();
-	@JsonIgnore
 	private Set<String> votosDriveThru = new HashSet<String>();
-	@JsonIgnore
 	private List<Integer> ultsConsumosCombustivel = new LinkedList<Integer>();
-	@JsonIgnore
 	private List<Integer> ultsConsumosPneu = new LinkedList<Integer>();
-	@JsonIgnore
 	private List<Double> ganhosBaixa = new ArrayList<Double>();
-	@JsonIgnore
 	private List<Double> ganhosAlta = new ArrayList<Double>();
-	@JsonIgnore
 	private List<Double> ganhosReta = new ArrayList<Double>();
-	@JsonIgnore
-	private int ptosBox;
-	@JsonIgnore
-	private int paradoBox;
+	private ArrayList<Double> listGanho;
+	
 	@JsonIgnore
 	private Point p0;
 	@JsonIgnore
@@ -189,10 +176,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	private Carro carroPilotoDaFrente;
 	@JsonIgnore
 	private Piloto colisao;
-	@JsonIgnore
-	private ArrayList<Double> listGanho;
-	@JsonIgnore
-	private boolean recebeuBanderada;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -232,6 +215,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setTravouRodas(int contTravouRodas) {
+		setTravouRodas(true);
 		this.contTravouRodas = contTravouRodas;
 	}
 
@@ -1022,6 +1006,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaIAnovoIndex(controleJogo);
 		processaTurbulencia(controleJogo);
 		processaFaiscas(controleJogo);
+		processaAlertaMotor(controleJogo);
+		processaAlertaAerefolio(controleJogo);
 		processaGanhoDanificado();
 		processaFreioNaReta(controleJogo);
 		processaEvitaBaterCarroFrente(controleJogo);
@@ -1039,9 +1025,33 @@ public class Piloto implements Serializable, PilotoSuave {
 		return index;
 	}
 
+	private void processaAlertaAerefolio(InterfaceJogo controleJogo) {
+		setAlertaAerefolio(false);
+		if (controleJogo.isModoQualify()) {
+			return;
+		}
+		int durabilidade = controleJogo.getDurabilidadeAreofolio() / 2;
+		if (getCarro().getDurabilidadeAereofolio() <= durabilidade) {
+			setAlertaAerefolio(true);
+		}
+
+	}
+
+	private void processaAlertaMotor(InterfaceJogo controleJogo) {
+		setAlertaMotor(false);
+		if (controleJogo.isModoQualify()) {
+			return;
+		}
+		if (getCarro().getPorcentagemDesgasteMotor() <= 25
+				|| getCarro().verificaMotorSuperAquecido()) {
+			setAlertaMotor(true);
+		}
+
+	}
+
 	private void processaFaiscas(InterfaceJogo controleJogo) {
 		setFaiscas(false);
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isModoQualify()) {
 			return;
 		}
 		if (getPtosBox() != 0) {
@@ -1057,13 +1067,12 @@ public class Piloto implements Serializable, PilotoSuave {
 				mod -= .50;
 			}
 		}
-		if (getCarro().getGiro() == Carro.GIRO_MAX_VAL
-				&& getNoAtualSuave() != null
-				&& getNoAtualSuave().verificaRetaOuLargada()
+		if (getCarro().getGiro() == Carro.GIRO_MAX_VAL && getNoAtual() != null
+				&& getNoAtual().verificaRetaOuLargada()
 				&& Clima.SOL.equals(controleJogo.getClima())
 				&& getVelocidade() != 0 && Math.random() > mod) {
 			setFaiscas(true);
-		} 
+		}
 
 	}
 
@@ -3081,12 +3090,14 @@ public class Piloto implements Serializable, PilotoSuave {
 			return 0;
 		}
 		double total = 0;
-		synchronized (list) {
+		try {
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				total += (Double) iterator.next();
 			}
+			return total / list.size();
+		} catch (Exception e) {
+			return 0;
 		}
-		return total / list.size();
 	}
 
 	public double getDistanciaDerrapada() {
@@ -3171,6 +3182,22 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setFaiscas(boolean faiscas) {
 		this.faiscas = faiscas;
+	}
+
+	public boolean isAlertaMotor() {
+		return alertaMotor;
+	}
+
+	public void setAlertaMotor(boolean alertaMotor) {
+		this.alertaMotor = alertaMotor;
+	}
+
+	public boolean isAlertaAerefolio() {
+		return alertaAerefolio;
+	}
+
+	public void setAlertaAerefolio(boolean alertaAerefolio) {
+		this.alertaAerefolio = alertaAerefolio;
 	}
 
 }

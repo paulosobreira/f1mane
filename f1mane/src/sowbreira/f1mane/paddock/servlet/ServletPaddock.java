@@ -101,9 +101,9 @@ public class ServletPaddock extends HttpServlet {
 						.processarObjetoRecebido(object);
 
 				if (PaddockConstants.modoZip) {
-					dumaparDadosZip(
-							ZipUtil.compactarObjeto(PaddockConstants.dumparDados,
-									escrever, res.getOutputStream()));
+					dumaparDadosZip(ZipUtil.compactarObjeto(
+							PaddockConstants.dumparDados, escrever,
+							res.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -217,37 +217,34 @@ public class ServletPaddock extends HttpServlet {
 		PrintWriter printWriter = res.getWriter();
 		printWriter.write("<html><body>");
 		printWriter.write("<h2>F1-Mane Construtores</h2><br><hr>");
-		synchronized ("") {
-			Session session = controlePersistencia.getSession();
-			try {
-				Set top = controlePersistencia.obterListaJogadores(session);
-				for (Iterator iterator = top.iterator(); iterator.hasNext();) {
-					String nomeJogador = (String) iterator.next();
-					CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-							.carregaCarreiraJogador(nomeJogador, false,
-									controlePersistencia.getSession());
-					if (carreiraDadosSrv == null) {
-						continue;
-					}
-					if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
-							|| Util.isNullOrEmpty(
-									carreiraDadosSrv.getNomePiloto())) {
-						continue;
-					}
-					printWriter.write("Jogador : " + nomeJogador);
-					printWriter.write("<br> Pts Piloto: "
-							+ carreiraDadosSrv.getPtsPiloto());
-					printWriter.write("<br> Pts Carro: "
-							+ carreiraDadosSrv.getPtsCarro());
-					printWriter.write("<br> Pts Const: "
-							+ carreiraDadosSrv.getPtsConstrutores());
-					printWriter.write("<br><hr>");
+		Session session = controlePersistencia.getSession();
+		try {
+			Set top = controlePersistencia.obterListaJogadores(session);
+			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+				String nomeJogador = (String) iterator.next();
+				CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+						.carregaCarreiraJogador(nomeJogador, false,
+								controlePersistencia.getSession());
+				if (carreiraDadosSrv == null) {
+					continue;
 				}
+				if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro()) || Util
+						.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())) {
+					continue;
+				}
+				printWriter.write("Jogador : " + nomeJogador);
+				printWriter.write(
+						"<br> Pts Piloto: " + carreiraDadosSrv.getPtsPiloto());
+				printWriter.write(
+						"<br> Pts Carro: " + carreiraDadosSrv.getPtsCarro());
+				printWriter.write("<br> Pts Const: "
+						+ carreiraDadosSrv.getPtsConstrutores());
+				printWriter.write("<br><hr>");
+			}
 
-			} finally {
-				if (session.isOpen()) {
-					session.close();
-				}
+		} finally {
+			if (session.isOpen()) {
+				session.close();
 			}
 		}
 		printWriter.write("</body></html>");
