@@ -839,7 +839,7 @@ public class ControleJogoLocal extends ControleRecursos
 		int undsComnustAbastecer = (controleCorrida.getTanqueCheio()
 				* qtdeCombustPorcent.intValue()) / 100;
 		if (isSemReabastacimento() && isCorridaIniciada()
-				&& pilotoJogador.getNumeroVolta() != 0) {
+				&& pilotoJogador.getNumeroVolta() >= 0) {
 			undsComnustAbastecer = 0;
 		}
 		pilotoJogador.getCarro().setCombustivel(undsComnustAbastecer

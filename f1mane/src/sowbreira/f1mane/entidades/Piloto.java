@@ -149,7 +149,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private List<Double> ganhosAlta = new ArrayList<Double>();
 	private List<Double> ganhosReta = new ArrayList<Double>();
 	private ArrayList<Double> listGanho;
-	
+
 	@JsonIgnore
 	private Point p0;
 	@JsonIgnore
@@ -796,8 +796,8 @@ public class Piloto implements Serializable, PilotoSuave {
 						carroPilotoAtras.getPiloto()));
 			}
 			index = diff;
-			if (getNumeroVolta() != 1) {
-				getCarro().setCargaKers(InterfaceJogo.CARGA_KERS);
+			if (getNumeroVolta() > 0) {
+				getCarro().setCargaErs(InterfaceJogo.CARGA_KERS);
 			}
 			ativarKers = false;
 			controleJogo.processaVoltaRapida(this);
@@ -1476,7 +1476,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private void processaUsoERS(InterfaceJogo controleJogo) {
 
 		if (controleJogo.isKers() && ativarKers && getPtosBox() == 0) {
-			if (getCarro().getCargaKers() <= 0) {
+			if (getCarro().getCargaErs() <= 0) {
 				ativarKers = false;
 			} else {
 				double rev = (1000 - carro.getPotencia()) / 10000;

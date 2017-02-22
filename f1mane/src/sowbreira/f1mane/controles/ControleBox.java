@@ -398,10 +398,13 @@ public class ControleBox {
 					.inte(penalidade * (2 - (carro.getPotencia() / 1000)));
 		}
 		if (controleJogo.isKers()) {
-			piloto.getCarro().setCargaKers(InterfaceJogo.CARGA_KERS);
+			piloto.getCarro().setCargaErs(InterfaceJogo.CARGA_KERS);
 			piloto.setAtivarKers(false);
 		}
-		piloto.getCarro().setTemperaturaMotor(0);
+		carro.setTemperaturaMotor(0);
+		carro.processaPorcentagemDesgastePneus();
+		carro.processaPorcentagemDesgasteMotor();
+		carro.processaPorcentagemCombustivel();
 		piloto.setBox(false);
 	}
 

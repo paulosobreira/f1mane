@@ -543,7 +543,7 @@ public class ControleJogosServer {
 				dadosParciais.box = piloto.isBox();
 				dadosParciais.podeUsarDRS = piloto.isPodeUsarDRS();
 				dadosParciais.stress = piloto.getStress();
-				dadosParciais.cargaKers = piloto.getCarro().getCargaKers();
+				dadosParciais.cargaKers = piloto.getCarro().getCargaErs();
 				dadosParciais.alertaMotor = piloto.isAlertaMotor();
 				dadosParciais.alertaAerefolio = piloto.isAlertaAerefolio();
 				dadosParciais.pCombust = piloto.getCarro()

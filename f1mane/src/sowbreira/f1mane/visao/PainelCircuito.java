@@ -2528,9 +2528,9 @@ public class PainelCircuito {
 
 		kers.setFrame(xkers, y - 25, tamKers + 10, 20);
 		if (pilotoSelecionado != null
-				&& pilotoSelecionado.getCarro().getCargaKers() > 0
+				&& pilotoSelecionado.getCarro().getCargaErs() > 0
 				&& pilotoSelecionado.isAtivarKers()
-				&& pilotoSelecionado.getCarro().getCargaKers() > 0) {
+				&& pilotoSelecionado.getCarro().getCargaErs() > 0) {
 			g2d.setColor(transpSel);
 			g2d.fill(kers);
 			Stroke stroke = g2d.getStroke();
@@ -2658,7 +2658,7 @@ public class PainelCircuito {
 				&& !pilotoSelecionado.equals(controleJogo.getPilotoJogador())) {
 			return;
 		}
-		int cargaKers = pilotoSelecionado.getCarro().getCargaKers() / 2;
+		int cargaKers = pilotoSelecionado.getCarro().getCargaErs() / 2;
 		int y = 60;
 		g2d.setColor(transpMenus);
 		g2d.fillRoundRect(limitesViewPort.x + 175, limitesViewPort.y + y, 20,
@@ -2668,7 +2668,7 @@ public class PainelCircuito {
 				limitesViewPort.y + y + (50 - cargaKers), 20, cargaKers, 0, 0);
 
 		if (pilotoSelecionado.getCargaKersVisual() != pilotoSelecionado
-				.getCarro().getCargaKers()) {
+				.getCarro().getCargaErs()) {
 			acionaDesenhaKers = 35;
 		} else {
 			g2d.setColor(Color.WHITE);
@@ -2682,7 +2682,7 @@ public class PainelCircuito {
 		}
 
 		pilotoSelecionado.setCargaKersVisual(
-				pilotoSelecionado.getCarro().getCargaKers());
+				pilotoSelecionado.getCarro().getCargaErs());
 		g2d.drawString("+", limitesViewPort.x + 180,
 				limitesViewPort.y + y + 10);
 		g2d.drawString("-", limitesViewPort.x + 183,

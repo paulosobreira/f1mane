@@ -556,7 +556,7 @@ public class MonitorJogo implements Runnable {
 						piloto.setBox(dadosParciais.box);
 						piloto.setStress(dadosParciais.stress);
 						piloto.setPodeUsarDRS(dadosParciais.podeUsarDRS);
-						piloto.getCarro().setCargaKers(dadosParciais.cargaKers);
+						piloto.getCarro().setCargaErs(dadosParciais.cargaKers);
 						piloto.setAlertaMotor(dadosParciais.alertaMotor);
 						piloto.setAlertaAerefolio(
 								dadosParciais.alertaAerefolio);
