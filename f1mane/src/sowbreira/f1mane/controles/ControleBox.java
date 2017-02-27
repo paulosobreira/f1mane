@@ -107,7 +107,7 @@ public class ControleBox {
 		int cont = 0;
 		for (Iterator iter = carrosBox.iterator(); iter.hasNext();) {
 			Carro carro = (Carro) iter.next();
-			int indexParada = paradas + Util.inte(Carro.LARGURA * 1.5 * cont)
+			int indexParada = paradas + Util.inteiro(Carro.LARGURA * 1.5 * cont)
 					+ Carro.LARGURA;
 			if (cont < 12)
 				cont++;
@@ -196,7 +196,7 @@ public class ControleBox {
 						+ piloto.getCarro().getPorcentagemCombustivel()
 						+ " Motor : "
 						+ piloto.getCarro().getPorcentagemDesgasteMotor());
-				piloto.setPtosBox(Util.inte((piloto.getPtosBox() + 1)
+				piloto.setPtosBox(Util.inteiro((piloto.getPtosBox() + 1)
 						* circuito.getMultiplciador()));
 			} else {
 				box = piloto.getNoAtual();
@@ -236,7 +236,7 @@ public class ControleBox {
 				}
 
 				ptosBox *= circuito.getMultiplciador();
-				int novosPtsBox = Util.inte(ptosBox) + piloto.getPtosBox();
+				int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
 				piloto.setPtosBox(novosPtsBox);
 				piloto.setVelocidade(Util.intervalo(50, 60) + ptosBox);
 				if (novosPtsBox >= (indexParada - (3 * Carro.LARGURA))
@@ -341,12 +341,12 @@ public class ControleBox {
 			}
 			penalidade = 25;
 			penalidade = Util
-					.inte(penalidade * (2 - (carro.getPotencia() / 1000)));
+					.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
 		}
 		carro = piloto.getCarro();
 
 		carro.setMotor(
-				carro.getMotor() + (Util.inte(carro.getDurabilidadeMaxMotor()
+				carro.getMotor() + (Util.inteiro(carro.getDurabilidadeMaxMotor()
 						* Util.intervalo(1, 15) / 100.0)));
 		if (carro.getMotor() > carro.getDurabilidadeMaxMotor()) {
 			carro.setMotor(carro.getDurabilidadeMaxMotor());
@@ -368,7 +368,7 @@ public class ControleBox {
 
 		if (carro.getDurabilidadeAereofolio() <= 0) {
 			penalidade = Util
-					.inte(penalidade * (2 - (carro.getPotencia() / 1000)));
+					.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
 		}
 
 		double paradoBox = ((((porcentCombust + penalidade) * 100)
@@ -395,7 +395,7 @@ public class ControleBox {
 			carro.setDurabilidadeAereofolio(
 					controleJogo.getDurabilidadeAreofolio());
 			penalidade = Util
-					.inte(penalidade * (2 - (carro.getPotencia() / 1000)));
+					.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
 		}
 		if (controleJogo.isKers()) {
 			piloto.getCarro().setCargaErs(InterfaceJogo.CARGA_KERS);
@@ -446,7 +446,7 @@ public class ControleBox {
 
 		boxEquipesOcupado.remove(piloto.getCarro());
 		if (controleJogo.isCorridaTerminada()) {
-			piloto.setRecebeuBanderada(true, controleJogo);
+			piloto.setRecebeuBanderada(controleJogo);
 		}
 		if (controleJogo.isSafetyCarNaPista()
 				&& piloto.getVoltaAtual() != null) {
@@ -454,7 +454,7 @@ public class ControleBox {
 		}
 		piloto.efetuarSaidaBox(interfaceJogo);
 		if (interfaceJogo.isCorridaTerminada()) {
-			piloto.setRecebeuBanderada(true, interfaceJogo);
+			piloto.setRecebeuBanderada(interfaceJogo);
 		}
 	}
 
@@ -660,7 +660,7 @@ public class ControleBox {
 		List ptosPista = controleJogo.getNosDaPista();
 		int ateFim = ptosPista.size() - ptosPista.indexOf(entradaBox);
 		int ateSaidaBox = ptosPista.indexOf(saidaBox);
-		qtdeNosPistaRefBox = Util.inte((ateFim + ateSaidaBox));
+		qtdeNosPistaRefBox = Util.inteiro((ateFim + ateSaidaBox));
 		Logger.logar("qtdeNosPistaRefBox " + qtdeNosPistaRefBox);
 		Logger.logar("getNosDaPista() " + controleJogo.getNosDaPista().size());
 	}

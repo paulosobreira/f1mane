@@ -94,11 +94,11 @@ public class Util {
 		return ret;
 	}
 
-	public static int inte(int d) {
+	public static int inteiro(int d) {
 		return d;
 	}
 
-	public static int inte(double d) {
+	public static int inteiro(double d) {
 		return (int) Math.round(d);
 	}
 

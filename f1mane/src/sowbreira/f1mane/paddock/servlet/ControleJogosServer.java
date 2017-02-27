@@ -499,9 +499,6 @@ public class ControleJogosServer {
 				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
 			} else if (piloto.isFaiscas()) {
 				statusPilotos = "F" + String.valueOf(piloto.getPtosPista());
-			} else if (piloto.isRecebeuBanderada()) {
-				statusPilotos = "B"
-						+ String.valueOf(piloto.getTimeStampChegeda());
 			} else if (piloto.getCarro().isRecolhido()) {
 				statusPilotos = "R";
 			}

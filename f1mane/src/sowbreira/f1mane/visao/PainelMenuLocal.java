@@ -1771,7 +1771,7 @@ public class PainelMenuLocal {
 	}
 
 	public static void main(String[] args) throws IOException, Exception {
-		int porcetNumVolta = Util.inte((55 - 12) * 1.66);
+		int porcetNumVolta = Util.inteiro((55 - 12) * 1.66);
 		System.out.println(porcetNumVolta);
 	}
 
@@ -2666,7 +2666,7 @@ public class PainelMenuLocal {
 
 		g2d.setFont(fontOri);
 
-		int porcetNumVolta = Util.inte((numVoltasSelecionado - 12) * 1.79);
+		int porcetNumVolta = Util.inteiro((numVoltasSelecionado - 12) * 1.79);
 
 		int tamNumVoltaSelecionado = porcetNumVolta * tamVoltas / 100;
 		x = xOri + 20;
@@ -3166,7 +3166,7 @@ public class PainelMenuLocal {
 		g2d.fillRoundRect(x, y, 60, 35, 0, 0);
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(Util.inte(fps * 1.6)));
+		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(Util.inteiro(fps * 1.6)));
 		g2d.drawString(msg, x + 2, y + 26);
 		g2d.setFont(fontOri);
 	}

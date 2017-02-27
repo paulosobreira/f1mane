@@ -615,6 +615,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				if (posis.idNo >= -1) {
 					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
 					piloto.setNoAtual(no);
+					if(nosDoBox.contains(no)){
+						piloto.setPtosBox(1);
+					}else{
+						piloto.setPtosBox(0);
+					}
 				}
 				break;
 			}

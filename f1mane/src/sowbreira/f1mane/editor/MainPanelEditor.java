@@ -976,7 +976,7 @@ public class MainPanelEditor extends JPanel {
 		}
 
 		if (larguraPistaPixeis == 0)
-			larguraPistaPixeis = Util.inte(
+			larguraPistaPixeis = Util.inteiro(
 					Carro.LARGURA * 1.5 * multiplicadorLarguraPista * zoom);
 
 		if (!mostraBG) {
@@ -985,13 +985,13 @@ public class MainPanelEditor extends JPanel {
 						BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 			if (pistaTinta == null)
 				pistaTinta = new BasicStroke(
-						Util.inte(larguraPistaPixeis * 1.05),
+						Util.inteiro(larguraPistaPixeis * 1.05),
 						BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 			if (box == null)
-				box = new BasicStroke(Util.inte(larguraPistaPixeis * .4),
+				box = new BasicStroke(Util.inteiro(larguraPistaPixeis * .4),
 						BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 			if (zebra == null)
-				zebra = new BasicStroke(Util.inte(larguraPistaPixeis * 1.05),
+				zebra = new BasicStroke(Util.inteiro(larguraPistaPixeis * 1.05),
 						BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
 						new float[]{10, 10}, 0);
 			desenhaTintaPistaEZebra(g2d);
@@ -1163,8 +1163,8 @@ public class MainPanelEditor extends JPanel {
 		Point ant = null;
 		for (Point p : objetoTransparencia.getPontos()) {
 			if (ant != null) {
-				g2d.drawLine(Util.inte(ant.x * zoom), Util.inte(ant.y * zoom),
-						Util.inte(p.x * zoom), Util.inte(p.y * zoom));
+				g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom),
+						Util.inteiro(p.x * zoom), Util.inteiro(p.y * zoom));
 			}
 			ant = p;
 		}
@@ -1183,8 +1183,8 @@ public class MainPanelEditor extends JPanel {
 		Point ant = null;
 		for (Point p : objetoLivre.getPontos()) {
 			if (ant != null) {
-				g2d.drawLine(Util.inte(ant.x * zoom), Util.inte(ant.y * zoom),
-						Util.inte(p.x * zoom), Util.inte(p.y * zoom));
+				g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom),
+						Util.inteiro(p.x * zoom), Util.inteiro(p.y * zoom));
 			}
 			ant = p;
 		}
@@ -1197,7 +1197,7 @@ public class MainPanelEditor extends JPanel {
 		}
 		int paradas = circuito.getParadaBoxIndex();
 		for (int i = 0; i < 12; i++) {
-			int iP = paradas + Util.inte(Carro.LARGURA * 1.5 * i)
+			int iP = paradas + Util.inteiro(Carro.LARGURA * 1.5 * i)
 					+ Carro.LARGURA;
 			int n1Idx = iP - Carro.MEIA_LARGURA;
 			int n2Idx = iP + Carro.MEIA_LARGURA;
@@ -1213,12 +1213,12 @@ public class MainPanelEditor extends JPanel {
 			No n1 = (No) circuito.getBoxFull().get(n1Idx);
 			No nM = (No) circuito.getBoxFull().get(iP);
 			No n2 = (No) circuito.getBoxFull().get(n2Idx);
-			Point p1 = new Point(Util.inte(n1.getPoint().x * zoom),
-					Util.inte(n1.getPoint().y * zoom));
-			Point pm = new Point(Util.inte(nM.getPoint().x * zoom),
-					Util.inte(nM.getPoint().y * zoom));
-			Point p2 = new Point(Util.inte(n2.getPoint().x * zoom),
-					Util.inte(n2.getPoint().y * zoom));
+			Point p1 = new Point(Util.inteiro(n1.getPoint().x * zoom),
+					Util.inteiro(n1.getPoint().y * zoom));
+			Point pm = new Point(Util.inteiro(nM.getPoint().x * zoom),
+					Util.inteiro(nM.getPoint().y * zoom));
+			Point p2 = new Point(Util.inteiro(n2.getPoint().x * zoom),
+					Util.inteiro(n2.getPoint().y * zoom));
 			double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
 			Rectangle2D rectangle = new Rectangle2D.Double(
 					(pm.x - (Carro.MEIA_LARGURA)), (pm.y - (Carro.MEIA_ALTURA)),
@@ -1226,36 +1226,36 @@ public class MainPanelEditor extends JPanel {
 
 			Point cima = GeoUtil
 					.calculaPonto(calculaAngulo,
-							Util.inte(Carro.ALTURA
+							Util.inteiro(Carro.ALTURA
 									* getCircuito()
 											.getMultiplicadorLarguraPista()
 									* zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			Point baixo = GeoUtil
 					.calculaPonto(calculaAngulo + 180,
-							Util.inte(Carro.ALTURA
+							Util.inteiro(Carro.ALTURA
 									* getCircuito()
 											.getMultiplicadorLarguraPista()
 									* zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			Point cimaBoxC1 = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inte((Carro.ALTURA) * 3.5 * zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro((Carro.ALTURA) * 3.5 * zoom),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			Point baixoBoxC1 = GeoUtil.calculaPonto(calculaAngulo + 180,
-					Util.inte((Carro.ALTURA) * 3.2 * zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro((Carro.ALTURA) * 3.2 * zoom),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			Point cimaBoxC2 = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inte((Carro.ALTURA) * 3.5 * zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro((Carro.ALTURA) * 3.5 * zoom),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			Point baixoBoxC2 = GeoUtil.calculaPonto(calculaAngulo + 180,
-					Util.inte((Carro.ALTURA) * 3.2 * zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro((Carro.ALTURA) * 3.2 * zoom),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 
 			RoundRectangle2D retC1 = null;
 			RoundRectangle2D retC2 = null;
@@ -1331,7 +1331,7 @@ public class MainPanelEditor extends JPanel {
 			return;
 		}
 		for (int i = 0; i < 24; i++) {
-			int iP = 50 + Util.inte(((Carro.LARGURA) * 0.8) * i);
+			int iP = 50 + Util.inteiro(((Carro.LARGURA) * 0.8) * i);
 			int index1 = circuito.getPistaFull().size() - iP
 					- Carro.MEIA_LARGURA;
 			if (index1 < 0) {
@@ -1342,25 +1342,25 @@ public class MainPanelEditor extends JPanel {
 					.get(circuito.getPistaFull().size() - iP);
 			No n2 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP + Carro.MEIA_LARGURA);
-			Point p1 = new Point(Util.inte(n1.getPoint().x * zoom),
-					Util.inte(n1.getPoint().y * zoom));
-			Point pm = new Point(Util.inte(nM.getPoint().x * zoom),
-					Util.inte(nM.getPoint().y * zoom));
-			Point p2 = new Point(Util.inte(n2.getPoint().x * zoom),
-					Util.inte(n2.getPoint().y * zoom));
+			Point p1 = new Point(Util.inteiro(n1.getPoint().x * zoom),
+					Util.inteiro(n1.getPoint().y * zoom));
+			Point pm = new Point(Util.inteiro(nM.getPoint().x * zoom),
+					Util.inteiro(nM.getPoint().y * zoom));
+			Point p2 = new Point(Util.inteiro(n2.getPoint().x * zoom),
+					Util.inteiro(n2.getPoint().y * zoom));
 			double calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
 			Rectangle2D rectangle = new Rectangle2D.Double(
 					(pm.x - (Carro.MEIA_LARGURA)), (pm.y - (Carro.MEIA_ALTURA)),
 					(Carro.LARGURA), (Carro.ALTURA));
 
 			Point cima = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inte(Carro.ALTURA * 1.2 * zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro(Carro.ALTURA * 1.2 * zoom),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			Point baixo = GeoUtil.calculaPonto(calculaAngulo + 180,
-					Util.inte(Carro.ALTURA * 1.2 * zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro(Carro.ALTURA * 1.2 * zoom),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA * zoom)),
@@ -1390,25 +1390,25 @@ public class MainPanelEditor extends JPanel {
 					.get(circuito.getPistaFull().size() - iP);
 			n2 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP + Carro.MEIA_LARGURA);
-			p1 = new Point(Util.inte(n1.getPoint().x * zoom),
-					Util.inte(n1.getPoint().y * zoom));
-			pm = new Point(Util.inte(nM.getPoint().x * zoom),
-					Util.inte(nM.getPoint().y * zoom));
-			p2 = new Point(Util.inte(n2.getPoint().x * zoom),
-					Util.inte(n2.getPoint().y * zoom));
+			p1 = new Point(Util.inteiro(n1.getPoint().x * zoom),
+					Util.inteiro(n1.getPoint().y * zoom));
+			pm = new Point(Util.inteiro(nM.getPoint().x * zoom),
+					Util.inteiro(nM.getPoint().y * zoom));
+			p2 = new Point(Util.inteiro(n2.getPoint().x * zoom),
+					Util.inteiro(n2.getPoint().y * zoom));
 			calculaAngulo = GeoUtil.calculaAngulo(p1, p2, 0);
 			rectangle = new Rectangle2D.Double((pm.x - (Carro.MEIA_LARGURA)),
 					(pm.y - (Carro.MEIA_ALTURA)), (Carro.LARGURA),
 					(Carro.ALTURA));
 
 			cima = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inte(Carro.ALTURA * 1.2 * zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro(Carro.ALTURA * 1.2 * zoom),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			baixo = GeoUtil.calculaPonto(calculaAngulo + 180,
-					Util.inte(Carro.ALTURA * 1.2 * zoom),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro(Carro.ALTURA * 1.2 * zoom),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			if (i % 2 == 0) {
 				rectangle = new Rectangle2D.Double(
 						(cima.x - (Carro.MEIA_LARGURA * zoom)),
@@ -1439,10 +1439,10 @@ public class MainPanelEditor extends JPanel {
 		}
 		No n1 = (No) circuito.getPistaFull().get(0);
 		No n2 = (No) circuito.getPistaFull().get(20);
-		Point p1 = new Point(Util.inte(n1.getPoint().x * zoom),
-				Util.inte(n1.getPoint().y * zoom));
-		Point p2 = new Point(Util.inte(n2.getPoint().x * zoom),
-				Util.inte(n2.getPoint().y * zoom));
+		Point p1 = new Point(Util.inteiro(n1.getPoint().x * zoom),
+				Util.inteiro(n1.getPoint().y * zoom));
+		Point p2 = new Point(Util.inteiro(n2.getPoint().x * zoom),
+				Util.inteiro(n2.getPoint().y * zoom));
 		double larguraZebra = (larguraPistaPixeis * 0.01);
 		RoundRectangle2D rectangle = new RoundRectangle2D.Double(
 				(p1.x - (larguraZebra / 2)), (p1.y - (larguraPistaPixeis / 2)),
@@ -1474,13 +1474,13 @@ public class MainPanelEditor extends JPanel {
 		Point s = ((No) circuito.getPistaFull()
 				.get(circuito.getSaidaBoxIndex())).getPoint();
 		g2d.setColor(Color.BLACK);
-		g2d.fillOval(Util.inte(e.x * zoom), Util.inte(e.y * zoom),
-				Util.inte(5 * zoom), Util.inte(5 * zoom));
-		g2d.fillOval(Util.inte(p.x * zoom), Util.inte(p.y * zoom),
-				Util.inte(5 * zoom), Util.inte(5 * zoom));
+		g2d.fillOval(Util.inteiro(e.x * zoom), Util.inteiro(e.y * zoom),
+				Util.inteiro(5 * zoom), Util.inteiro(5 * zoom));
+		g2d.fillOval(Util.inteiro(p.x * zoom), Util.inteiro(p.y * zoom),
+				Util.inteiro(5 * zoom), Util.inteiro(5 * zoom));
 
-		g2d.fillOval(Util.inte(s.x * zoom), Util.inte(s.y * zoom),
-				Util.inte(5 * zoom), Util.inte(5 * zoom));
+		g2d.fillOval(Util.inteiro(s.x * zoom), Util.inteiro(s.y * zoom),
+				Util.inteiro(5 * zoom), Util.inteiro(5 * zoom));
 
 	}
 
@@ -1503,26 +1503,26 @@ public class MainPanelEditor extends JPanel {
 					(testePista.getTestCar().y - Carro.MEIA_ALTURA),
 					Carro.LARGURA, Carro.ALTURA);
 			Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inte(Carro.ALTURA * multiplicadorLarguraPista),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro(Carro.ALTURA * multiplicadorLarguraPista),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 			g2d.setColor(Color.black);
 			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
-					Util.inte(Carro.ALTURA * multiplicadorLarguraPista),
-					new Point(Util.inte(rectangle.getCenterX()),
-							Util.inte(rectangle.getCenterY())));
+					Util.inteiro(Carro.ALTURA * multiplicadorLarguraPista),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
 
 			if (pos == 0) {
 				carx = testePista.getTestCar().x - w2;
 				cary = testePista.getTestCar().y - h2;
 			}
 			if (pos == 1) {
-				carx = Util.inte((p1.x - w2));
-				cary = Util.inte((p1.y - h2));
+				carx = Util.inteiro((p1.x - w2));
+				cary = Util.inteiro((p1.y - h2));
 			}
 			if (pos == 2) {
-				carx = Util.inte((p2.x - w2));
-				cary = Util.inte((p2.y - h2));
+				carx = Util.inteiro((p2.x - w2));
+				cary = Util.inteiro((p2.y - h2));
 			}
 
 			double rad = Math.toRadians((double) calculaAngulo);
@@ -1554,8 +1554,8 @@ public class MainPanelEditor extends JPanel {
 				}
 			}
 
-			g2d.drawImage(rotateBuffer, Util.inte(carx * zoom),
-					Util.inte(cary * zoom), null);
+			g2d.drawImage(rotateBuffer, Util.inteiro(carx * zoom),
+					Util.inteiro(cary * zoom), null);
 
 			AffineTransform affineTransformRect = AffineTransform
 					.getScaleInstance(zoom, zoom);
@@ -1563,12 +1563,12 @@ public class MainPanelEditor extends JPanel {
 					rectangle.getCenterY());
 			g2d.setColor(new Color(255, 0, 0, 140));
 
-			g2d.fillOval(Util.inte(testePista.frenteCar.x * zoom),
-					Util.inte(testePista.frenteCar.y * zoom),
-					Util.inte(5 * zoom), Util.inte(5 * zoom));
-			g2d.fillOval(Util.inte(testePista.trazCar.x * zoom),
-					Util.inte(testePista.trazCar.y * zoom), Util.inte(5 * zoom),
-					Util.inte(5 * zoom));
+			g2d.fillOval(Util.inteiro(testePista.frenteCar.x * zoom),
+					Util.inteiro(testePista.frenteCar.y * zoom),
+					Util.inteiro(5 * zoom), Util.inteiro(5 * zoom));
+			g2d.fillOval(Util.inteiro(testePista.trazCar.x * zoom),
+					Util.inteiro(testePista.trazCar.y * zoom), Util.inteiro(5 * zoom),
+					Util.inteiro(5 * zoom));
 		}
 	}
 
@@ -1597,20 +1597,20 @@ public class MainPanelEditor extends JPanel {
 			if (oldNo == null) {
 				oldNo = no;
 			} else {
-				g2d.drawLine(Util.inte(oldNo.getX() * zoom),
-						Util.inte(oldNo.getY() * zoom),
-						Util.inte(no.getX() * zoom),
-						Util.inte(no.getY() * zoom));
+				g2d.drawLine(Util.inteiro(oldNo.getX() * zoom),
+						Util.inteiro(oldNo.getY() * zoom),
+						Util.inteiro(no.getX() * zoom),
+						Util.inteiro(no.getY() * zoom));
 
 				oldNo = no;
 			}
 		}
 
 		No noFinal = (No) circuito.getPistaKey().get(0);
-		g2d.drawLine(Util.inte(oldNo.getX() * zoom),
-				Util.inte(oldNo.getY() * zoom),
-				Util.inte(noFinal.getX() * zoom),
-				Util.inte(noFinal.getY() * zoom));
+		g2d.drawLine(Util.inteiro(oldNo.getX() * zoom),
+				Util.inteiro(oldNo.getY() * zoom),
+				Util.inteiro(noFinal.getX() * zoom),
+				Util.inteiro(noFinal.getY() * zoom));
 	}
 
 	public Shape limitesViewPort() {
@@ -1631,10 +1631,10 @@ public class MainPanelEditor extends JPanel {
 			if (oldNo == null) {
 				oldNo = no;
 			} else {
-				g2d.drawLine(Util.inte(oldNo.getX() * zoom),
-						Util.inte(oldNo.getY() * zoom),
-						Util.inte(no.getX() * zoom),
-						Util.inte(no.getY() * zoom));
+				g2d.drawLine(Util.inteiro(oldNo.getX() * zoom),
+						Util.inteiro(oldNo.getY() * zoom),
+						Util.inteiro(no.getX() * zoom),
+						Util.inteiro(no.getY() * zoom));
 
 				oldNo = no;
 			}
@@ -1643,10 +1643,10 @@ public class MainPanelEditor extends JPanel {
 			No noFinal = (No) circuito.getBoxKey()
 					.get(circuito.getBoxKey().size() - 1);
 
-			g2d.drawLine(Util.inte(oldNo.getX() * zoom),
-					Util.inte(oldNo.getY() * zoom),
-					Util.inte(noFinal.getX() * zoom),
-					Util.inte(noFinal.getY() * zoom));
+			g2d.drawLine(Util.inteiro(oldNo.getX() * zoom),
+					Util.inteiro(oldNo.getY() * zoom),
+					Util.inteiro(noFinal.getX() * zoom),
+					Util.inteiro(noFinal.getY() * zoom));
 		}
 	}
 
@@ -1663,28 +1663,28 @@ public class MainPanelEditor extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 				g2d.setStroke(pistaTinta);
-				g2d.drawLine(Util.inte(oldNo.getX() * zoom),
-						Util.inte(oldNo.getY() * zoom),
-						Util.inte(no.getX() * zoom),
-						Util.inte(no.getY() * zoom));
+				g2d.drawLine(Util.inteiro(oldNo.getX() * zoom),
+						Util.inteiro(oldNo.getY() * zoom),
+						Util.inteiro(no.getX() * zoom),
+						Util.inteiro(no.getY() * zoom));
 				if (No.CURVA_ALTA.equals(oldNo.getTipo())
 						|| No.CURVA_BAIXA.equals(oldNo.getTipo())) {
 					g2d.setColor(Color.RED);
 					g2d.setStroke(zebra);
-					g2d.drawLine(Util.inte(oldNo.getX() * zoom),
-							Util.inte(oldNo.getY() * zoom),
-							Util.inte(no.getX() * zoom),
-							Util.inte(no.getY() * zoom));
+					g2d.drawLine(Util.inteiro(oldNo.getX() * zoom),
+							Util.inteiro(oldNo.getY() * zoom),
+							Util.inteiro(no.getX() * zoom),
+							Util.inteiro(no.getY() * zoom));
 
 				}
 				oldNo = no;
 			}
 		}
 		No noFinal = (No) circuito.getPistaKey().get(0);
-		g2d.drawLine(Util.inte(oldNo.getX() * zoom),
-				Util.inte(oldNo.getY() * zoom),
-				Util.inte(noFinal.getX() * zoom),
-				Util.inte(noFinal.getY() * zoom));
+		g2d.drawLine(Util.inteiro(oldNo.getX() * zoom),
+				Util.inteiro(oldNo.getY() * zoom),
+				Util.inteiro(noFinal.getX() * zoom),
+				Util.inteiro(noFinal.getY() * zoom));
 	}
 
 	private void desenhaPainelClassico(Graphics g2d) {
@@ -1795,20 +1795,20 @@ public class MainPanelEditor extends JPanel {
 				double calculaAngulo = GeoUtil.calculaAngulo(ultNo.getPoint(),
 						penutimoNo.getPoint(), 0);
 				Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-						Util.inte(Carro.ALTURA * multiplicadorLarguraPista),
+						Util.inteiro(Carro.ALTURA * multiplicadorLarguraPista),
 						ultNo.getPoint());
 				Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
-						Util.inte(Carro.ALTURA * multiplicadorLarguraPista),
+						Util.inteiro(Carro.ALTURA * multiplicadorLarguraPista),
 						ultNo.getPoint());
 				if (circuito.getLadoBoxSaidaBox() == 2) {
 					g2d.setColor(Color.ORANGE);
-					g2d.fillOval(Util.inte(p1.x - 5), Util.inte(p1.y - 5),
-							Util.inte(10), Util.inte(10));
+					g2d.fillOval(Util.inteiro(p1.x - 5), Util.inteiro(p1.y - 5),
+							Util.inteiro(10), Util.inteiro(10));
 				}
 				if (circuito.getLadoBoxSaidaBox() == 1) {
 					g2d.setColor(Color.ORANGE);
-					g2d.fillOval(Util.inte(p2.x - 5), Util.inte(p2.y - 5),
-							Util.inte(10), Util.inte(10));
+					g2d.fillOval(Util.inteiro(p2.x - 5), Util.inteiro(p2.y - 5),
+							Util.inteiro(10), Util.inteiro(10));
 				}
 			}
 		}
@@ -2148,7 +2148,7 @@ public class MainPanelEditor extends JPanel {
 		double maxX = ((getWidth() * zoom)
 				- scrollPane.getViewport().getWidth());
 		if (p.x > maxX) {
-			p.x = Util.inte(maxX) - 1;
+			p.x = Util.inteiro(maxX) - 1;
 		}
 		if (p.y < 0) {
 			p.y = 1;
@@ -2156,7 +2156,7 @@ public class MainPanelEditor extends JPanel {
 		double maxY = ((getHeight() * zoom)
 				- (scrollPane.getViewport().getHeight()));
 		if (p.y > maxY) {
-			p.y = Util.inte(maxY) - 1;
+			p.y = Util.inteiro(maxY) - 1;
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {

@@ -188,7 +188,7 @@ public class ControleEstatisticas {
 		Piloto piloto = (Piloto) pilotosCopia.get(pos);
 		if (piloto != null) {
 			long diff = calculaDiferenca(piloto, psel);
-			return Util.inte(diff);
+			return Util.inteiro(diff);
 		}
 		return Integer.MAX_VALUE;
 	}
@@ -204,7 +204,7 @@ public class ControleEstatisticas {
 		Piloto piloto = (Piloto) controleJogo.getPilotos().get(pos);
 		if (piloto != null) {
 			long diff = calculaDiferenca(psel, piloto);
-			return Util.inte(diff);
+			return Util.inteiro(diff);
 		}
 		return Integer.MAX_VALUE;
 	}
@@ -418,7 +418,7 @@ public class ControleEstatisticas {
 
 	public int calculaDiffParaProximoRetardatario(Piloto piloto, boolean analisaTracado) {
 		List<Piloto> pilotos = controleJogo.getPilotosCopia();
-		int menorDistancia = Util.inte(Integer.MAX_VALUE);
+		int menorDistancia = Util.inteiro(Integer.MAX_VALUE);
 		if (piloto.getPtosBox() != 0) {
 			return menorDistancia;
 		}
@@ -466,7 +466,7 @@ public class ControleEstatisticas {
 			}
 		}
 
-		return Util.inte(menorDistancia);
+		return Util.inteiro(menorDistancia);
 
 	}
 

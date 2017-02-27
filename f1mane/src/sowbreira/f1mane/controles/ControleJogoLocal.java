@@ -468,7 +468,7 @@ public class ControleJogoLocal extends ControleRecursos
 	 */
 	public void processaNovaVolta() {
 		int qtdeDesqualificados = 0;
-		Piloto piloto = (Piloto) pilotos.get(0);
+		Piloto piloto = pilotos.get(0);
 		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
 				&& (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
 
@@ -476,8 +476,8 @@ public class ControleJogoLocal extends ControleRecursos
 					+ Html.superGreen(Lang.msg("045")));
 		}
 
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			piloto = (Piloto) iter.next();
+		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+			piloto = iter.next();
 			if (piloto.isDesqualificado()) {
 				qtdeDesqualificados++;
 			}

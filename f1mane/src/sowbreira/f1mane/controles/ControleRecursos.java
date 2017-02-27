@@ -450,15 +450,15 @@ public abstract class ControleRecursos {
 				double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar,
 						0);
 				Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-						Util.inte(Carro.ALTURA
+						Util.inteiro(Carro.ALTURA
 								* circuito.getMultiplicadorLarguraPista()),
-						new Point(Util.inte(rectangle.getCenterX()),
-								Util.inte(rectangle.getCenterY())));
+						new Point(Util.inteiro(rectangle.getCenterX()),
+								Util.inteiro(rectangle.getCenterY())));
 				Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
-						Util.inte(Carro.ALTURA
+						Util.inteiro(Carro.ALTURA
 								* circuito.getMultiplicadorLarguraPista()),
-						new Point(Util.inte(rectangle.getCenterX()),
-								Util.inte(rectangle.getCenterY())));
+						new Point(Util.inteiro(rectangle.getCenterX()),
+								Util.inteiro(rectangle.getCenterY())));
 				double distaciaEntrePontos1 = GeoUtil.distaciaEntrePontos(p1,
 						pointDerrapagem);
 				double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2,

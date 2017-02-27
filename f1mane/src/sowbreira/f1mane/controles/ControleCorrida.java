@@ -6,6 +6,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import br.nnpe.Html;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Pausa;
@@ -13,10 +16,6 @@ import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Constantes;
-import br.nnpe.Html;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -75,7 +74,8 @@ public class ControleCorrida {
 		controleQualificacao = new ControleQualificacao(controleJogo,
 				controleBox);
 		if (controleJogo.isSemReabastacimento()) {
-			tanqueCheio = (distaciaCorrida + Util.inte(distaciaCorrida / 1.4));
+			tanqueCheio = (distaciaCorrida
+					+ Util.inteiro(distaciaCorrida / 1.4));
 		} else {
 			tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
 		}
@@ -181,30 +181,18 @@ public class ControleCorrida {
 		}
 	}
 
+	public static int compare(Piloto piloto0, Piloto piloto1) {
+		long ptosPista0 = piloto0.getPtosPista();
+		long ptosPista1 = piloto1.getPtosPista();
+		return new Long(ptosPista1).compareTo(new Long(ptosPista0));
+	}
+
 	public void atualizaClassificacao() {
-		List pilotos = controleJogo.getPilotos();
-		Collections.sort(pilotos, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				Piloto piloto0 = (Piloto) arg0;
-				Piloto piloto1 = (Piloto) arg1;
-				long ptosPista0 = piloto0.getPtosPista();
-				long ptosPista1 = piloto1.getPtosPista();
-				if (piloto0.getTimeStampChegeda() != 0
-						&& piloto1.getTimeStampChegeda() != 0) {
-					Long val = new Long(
-							Long.MAX_VALUE - piloto0.getTimeStampChegeda());
-					val = new Long(val.toString().substring(
-							val.toString().length() / 4,
-							val.toString().length()));
-					ptosPista0 = (val * piloto0.getNumeroVolta());
-					val = new Long(
-							Long.MAX_VALUE - piloto1.getTimeStampChegeda());
-					val = new Long(val.toString().substring(
-							val.toString().length() / 4,
-							val.toString().length()));
-					ptosPista1 = (val * piloto1.getNumeroVolta());
-				}
-				return new Long(ptosPista1).compareTo(new Long(ptosPista0));
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		Collections.sort(pilotos, new Comparator<Piloto>() {
+			@Override
+			public int compare(Piloto piloto0, Piloto piloto1) {
+				return ControleCorrida.compare(piloto0, piloto1);
 			}
 		});
 
@@ -482,19 +470,18 @@ public class ControleCorrida {
 
 	public void verificaFinalCorrida() {
 		Piloto pole = (Piloto) controleJogo.getPilotos().get(0);
-		int indexPole = pole.getNoAtual().getIndex();
 		if (!pole.isRecebeuBanderada()
-				&& voltaAtual() == (getQtdeTotalVoltas())) {
+				&& pole.getNumeroVolta() == getQtdeTotalVoltas()) {
 			controleJogo.setCorridaTerminada(true);
-			pole.setRecebeuBanderada(true, controleJogo);
+			pole.setRecebeuBanderada(controleJogo);
 		}
 
 		if (controleJogo.isCorridaTerminada()) {
-			List pilotos = controleJogo.getPilotosCopia();
+			List<Piloto> pilotos = controleJogo.getPilotosCopia();
 			boolean todosReceberamBaderada = true;
 
-			for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-				Piloto piloto = (Piloto) iter.next();
+			for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+				Piloto piloto = iter.next();
 				if (!piloto.isRecebeuBanderada()
 						&& !piloto.isDesqualificado()) {
 					todosReceberamBaderada = false;

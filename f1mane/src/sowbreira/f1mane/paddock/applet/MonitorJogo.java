@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import br.nnpe.Constantes;
+import br.nnpe.Logger;
+import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
@@ -24,9 +27,6 @@ import sowbreira.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Constantes;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 05/08/2007 as 11:43:33
@@ -187,11 +187,7 @@ public class MonitorJogo implements Runnable {
 							.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 						jogoCliente.autoDrs();
 					}
-					if (controlePaddockCliente.getLatenciaReal() > 200) {
-						delayVerificaStado = 3;
-					} else {
-						delayVerificaStado = 5;
-					}
+					delayVerificaStado = 6;
 					continue;
 				}
 				atualizaPosicoes();
@@ -493,9 +489,10 @@ public class MonitorJogo implements Runnable {
 						&& !"".equals(dadosParciais.texto))
 					dadosJogo.setTexto(dadosParciais.texto);
 				dadosJogo.setVoltaAtual(dadosParciais.voltaAtual);
-				List pilotos = jogoCliente.getPilotos();
-				for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-					Piloto piloto = (Piloto) iter.next();
+				List<Piloto> pilotos = jogoCliente.getPilotos();
+				for (Iterator<Piloto> iter = pilotos.iterator(); iter
+						.hasNext();) {
+					Piloto piloto = iter.next();
 					piloto.setFaiscas(false);
 					String statusPilotos = dadosParciais.statusPilotos[piloto
 							.getId() - 1];
@@ -517,10 +514,6 @@ public class MonitorJogo implements Runnable {
 							jogoCliente.travouRodas(travadaRoda);
 						} else if ("R".equals(statusPilotos)) {
 							piloto.getCarro().setRecolhido(true);
-						} else if (statusPilotos.startsWith("B")) {
-							piloto.setPtosPista(piloto.getPtosPista() + 5);
-							piloto.setTimeStampChegeda(
-									new Long(statusPilotos.split("B")[1]));
 						}
 					}
 
@@ -594,30 +587,10 @@ public class MonitorJogo implements Runnable {
 						piloto.setVantagem(dadosParciais.vantagem);
 					}
 				}
-				Collections.sort(pilotos, new Comparator() {
-					public int compare(Object arg0, Object arg1) {
-						Piloto piloto0 = (Piloto) arg0;
-						Piloto piloto1 = (Piloto) arg1;
-						long p1Val = piloto1.getPtosPista();
-						long p0Val = piloto0.getPtosPista();
-						if (piloto0.getTimeStampChegeda() != 0
-								&& piloto1.getTimeStampChegeda() != 0) {
-							Long val = new Long(Long.MAX_VALUE
-									- piloto0.getTimeStampChegeda());
-							val = new Long(val.toString().substring(
-									val.toString().length() / 4,
-									val.toString().length()));
-							p0Val = (val * piloto0.getNumeroVolta());
-							val = new Long(Long.MAX_VALUE
-									- piloto1.getTimeStampChegeda());
-							val = new Long(val.toString().substring(
-									val.toString().length() / 4,
-									val.toString().length()));
-							p1Val = (val * piloto1.getNumeroVolta());
-						}
-						return ((p1Val < p0Val)
-								? (-1)
-								: ((p1Val == p0Val) ? 0 : 1));
+				Collections.sort(pilotos, new Comparator<Piloto>() {
+					@Override
+					public int compare(Piloto piloto0, Piloto piloto1) {
+						return ControleCorrida.compare(piloto0, piloto1);
 					}
 				});
 

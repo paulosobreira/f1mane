@@ -156,7 +156,7 @@ public class Carro implements Serializable {
 			mediaPontecia = 800;
 		}
 		this.durabilidadeMaxMotor = Util
-				.inte((durabilidadeMaxMotor * (mediaPontecia / 1000.0))
+				.inteiro((durabilidadeMaxMotor * (mediaPontecia / 1000.0))
 						+ (durabilidadeMaxMotor * (getPotencia() / 1000.0)));
 		this.motor = this.durabilidadeMaxMotor;
 	}
@@ -218,7 +218,7 @@ public class Carro implements Serializable {
 	}
 
 	public void setPorcentPneus(int porcent) {
-		this.pneus = Util.inte(durabilidadeMaxPneus * (porcent / 100.0));
+		this.pneus = Util.inteiro(durabilidadeMaxPneus * (porcent / 100.0));
 	}
 
 	public void setDurabilidadeMaxPneus(int durabilidadeMaxPneus) {
@@ -347,12 +347,12 @@ public class Carro implements Serializable {
 	}
 
 	public void setPneuDuro(int distaciaCorrida) {
-		pneus = Util.inte(distaciaCorrida * 1.2);
+		pneus = Util.inteiro(distaciaCorrida * 1.2);
 		durabilidadeMaxPneus = pneus;
 	}
 
 	public void setPneuMoleOuChuva(int distaciaCorrida) {
-		pneus = Util.inte(distaciaCorrida * 0.60);
+		pneus = Util.inteiro(distaciaCorrida * 0.60);
 		durabilidadeMaxPneus = pneus;
 	}
 
@@ -1011,8 +1011,8 @@ public class Carro implements Serializable {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isChovendo() && pneuAquecido && !msgPneu) {
 			msgPneu = true;
-			controleJogo.info(Html.orange(Lang.msg("msgpneus",
-					new String[]{Html.txtRedBold(getPiloto().getNome())})));
+			controleJogo.info(Html.orange(
+					Lang.msg("msgpneus", new String[]{getPiloto().getNome()})));
 		}
 	}
 
