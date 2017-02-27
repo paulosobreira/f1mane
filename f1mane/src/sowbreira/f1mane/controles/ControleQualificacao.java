@@ -37,24 +37,28 @@ public class ControleQualificacao {
 	}
 
 	private void gerarQualificacaoAleatoria() {
-		List pilotos = controleJogo.getPilotos();
+		List<Piloto> pilotos = controleJogo.getPilotos();
 		for (int i = 0; i < pilotos.size(); i++) {
-			Piloto piloto = (Piloto) pilotos.get(i);
-			controleBox.setupCorridaQualificacaoAleatoria(piloto);
+			Piloto piloto = pilotos.get(i);
+			controleBox.setupCorridaQualificacao(piloto);
 		}
 	}
 
 	public void gerarGridLargada() {
+		modoQualify=true;
 		gerarQualificacaoAleatoria();
+		Logger.logar("gerarQualificacaoAleatoria();");
 		gerarVoltaQualificacaoAleatoria();
+		Logger.logar("gerarVoltaQualificacaoAleatoria();");
 		posicionarCarrosLargada();
+		Logger.logar("gerarVoltaQualificacaoAleatoria();");
+		modoQualify=false;
 	}
 
 	private void gerarVoltaQualificacaoAleatoria() {
-		modoQualify = true;
 		int position = controleJogo.getNosDaPista().size() - 1;
 		No noLargada = (No) controleJogo.getNosDaPista().get(position);
-		List pilotos = controleJogo.getPilotos();
+		List<Piloto> pilotos = controleJogo.getPilotos();
 		double incCurva = 0.6;
 		double increta = 0.8;
 		if (controleJogo.isSemReabastacimento()) {
@@ -62,22 +66,24 @@ public class ControleQualificacao {
 			increta = 0.9;
 		}
 		for (int i = 0; i < pilotos.size(); i++) {
-			Piloto piloto = (Piloto) pilotos.get(i);
+			Piloto piloto = pilotos.get(i);
 			piloto.setNoAtual(noLargada);
 			int contCiclosQualificacao = 0;
 			while ((Double.valueOf(piloto.getPtosPista()) / Double
 					.valueOf(controleJogo.getNosDaPista().size())) <= 1) {
 				piloto.processarCiclo(controleJogo);
 				contCiclosQualificacao++;
-				if (Math.random() > (piloto.getCarro().getPorcentagemCombustivel()
-						/ 100.0) && !piloto.getNoAtual().verificaRetaOuLargada()
+				if (Math.random() > (piloto.getCarro()
+						.getPorcentagemCombustivel() / 100.0)
+						&& !piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.getCarro().testeAerodinamica()
 						&& piloto.testeHabilidadePilotoCarro()
 						&& piloto.getCarro().testeFreios()) {
 					contCiclosQualificacao -= Math.random() > incCurva ? 1 : 0;
 				}
-				if (Math.random() > (piloto.getCarro().getPorcentagemCombustivel()
-						/ 100.0) && piloto.getNoAtual().verificaRetaOuLargada()
+				if (Math.random() > (piloto.getCarro()
+						.getPorcentagemCombustivel() / 100.0)
+						&& piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.getCarro().testePotencia()) {
 					contCiclosQualificacao -= Math.random() > increta ? 1 : 0;
 				}
@@ -130,7 +136,6 @@ public class ControleQualificacao {
 								piloto1.getCiclosVoltaQualificacao()));
 			}
 		});
-		modoQualify = false;
 	}
 
 	private void evitaMesmoCiclo(Piloto p) {

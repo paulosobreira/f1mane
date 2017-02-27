@@ -161,7 +161,6 @@ public class ControleSafetyCar {
 		double multi = 0.1;
 		int bonus = 1;
 		bonus *= multi;
-		System.out.println(bonus);
 	}
 
 	private boolean deixaRetardatarioPassar(int indice) {

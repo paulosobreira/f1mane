@@ -2529,7 +2529,7 @@ public class PainelCircuito {
 		kers.setFrame(xkers, y - 25, tamKers + 10, 20);
 		if (pilotoSelecionado != null
 				&& pilotoSelecionado.getCarro().getCargaErs() > 0
-				&& pilotoSelecionado.isAtivarKers()
+				&& pilotoSelecionado.isAtivarErs()
 				&& pilotoSelecionado.getCarro().getCargaErs() > 0) {
 			g2d.setColor(transpSel);
 			g2d.fill(kers);
@@ -2681,7 +2681,7 @@ public class PainelCircuito {
 					20, 50, 0, 0);
 		}
 
-		pilotoSelecionado.setCargaKersVisual(
+		pilotoSelecionado.setCargaErsVisual(
 				pilotoSelecionado.getCarro().getCargaErs());
 		g2d.drawString("+", limitesViewPort.x + 180,
 				limitesViewPort.y + y + 10);

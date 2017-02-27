@@ -76,8 +76,9 @@ public class ControleCorrida {
 				controleBox);
 		if (controleJogo.isSemReabastacimento()) {
 			tanqueCheio = (distaciaCorrida + Util.inte(distaciaCorrida / 1.4));
-		} else
+		} else {
 			tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
+		}
 		definirTanqueCheio();
 		if (Math.random() > 0.5) {
 			asfaltoAbrasivo = true;
@@ -93,9 +94,9 @@ public class ControleCorrida {
 	}
 
 	private void definirTanqueCheio() {
-		List pilotos = controleJogo.getPilotos();
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+			Piloto piloto = iter.next();
 			piloto.getCarro().setTanqueCheio(tanqueCheio);
 		}
 
@@ -461,7 +462,7 @@ public class ControleCorrida {
 					.getNumeroVolta();
 		}
 
-		return voltaAtual<0?0:voltaAtual;
+		return voltaAtual < 0 ? 0 : voltaAtual;
 	}
 
 	/**
@@ -637,13 +638,11 @@ public class ControleCorrida {
 	public void aumentaFatorAcidade() {
 		fatorAcidente += 0.1;
 		Logger.logar("diminueFatorAcidade " + fatorAcidente);
-		System.out.println("diminueFatorAcidade " + fatorAcidente);
 	}
 
 	public void diminueFatorAcidade() {
 		fatorAcidente -= 0.1;
 		Logger.logar("aumentaFatorAcidade " + fatorAcidente);
-		System.out.println("aumentaFatorAcidade " + fatorAcidente);
 	}
 
 	public boolean asfaltoAbrasivo() {

@@ -832,13 +832,11 @@ public class ControleJogoLocal extends ControleRecursos
 		if (isSemReabastacimento() && qtdeCombustPorcent.intValue() < 75) {
 			qtdeCombustPorcent = new Integer(75);
 		}
-
 		pilotoJogador.getCarro().trocarPneus(this, tipoPneu,
 				controleCorrida.getDistaciaCorrida());
-
 		int undsComnustAbastecer = (controleCorrida.getTanqueCheio()
 				* qtdeCombustPorcent.intValue()) / 100;
-		if (isSemReabastacimento() && isCorridaIniciada()
+		if (isSemReabastacimento() && isCorridaIniciada() && !isModoQualify()
 				&& pilotoJogador.getNumeroVolta() >= 0) {
 			undsComnustAbastecer = 0;
 		}
@@ -1065,8 +1063,8 @@ public class ControleJogoLocal extends ControleRecursos
 	public boolean mudarModoKers() {
 		if (pilotoJogador == null)
 			return false;
-		pilotoJogador.setAtivarKers(!pilotoJogador.isAtivarKers());
-		return pilotoJogador.isAtivarKers();
+		pilotoJogador.setAtivarErs(!pilotoJogador.isAtivarErs());
+		return pilotoJogador.isAtivarErs();
 	}
 
 	@Override
@@ -1524,7 +1522,7 @@ public class ControleJogoLocal extends ControleRecursos
 		if (pilotoJogador != null) {
 			pilotoJogador.setModoPilotagem(Piloto.LENTO);
 			pilotoJogador.getCarro().mudarGiroMotor(Carro.GIRO_MIN);
-			pilotoJogador.setAtivarKers(false);
+			pilotoJogador.setAtivarErs(false);
 		}
 
 	}
@@ -1534,7 +1532,7 @@ public class ControleJogoLocal extends ControleRecursos
 		if (pilotoJogador != null) {
 			pilotoJogador.setModoPilotagem(Piloto.NORMAL);
 			pilotoJogador.getCarro().mudarGiroMotor(Carro.GIRO_NOR);
-			pilotoJogador.setAtivarKers(false);
+			pilotoJogador.setAtivarErs(false);
 		}
 
 	}
@@ -1544,7 +1542,7 @@ public class ControleJogoLocal extends ControleRecursos
 		if (pilotoJogador != null) {
 			pilotoJogador.setModoPilotagem(Piloto.AGRESSIVO);
 			pilotoJogador.getCarro().mudarGiroMotor(Carro.GIRO_MAX);
-			pilotoJogador.setAtivarKers(true);
+			pilotoJogador.setAtivarErs(true);
 			pilotoJogador.setAtivarDRS(true);
 		}
 

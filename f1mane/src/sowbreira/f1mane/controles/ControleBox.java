@@ -399,7 +399,7 @@ public class ControleBox {
 		}
 		if (controleJogo.isKers()) {
 			piloto.getCarro().setCargaErs(InterfaceJogo.CARGA_KERS);
-			piloto.setAtivarKers(false);
+			piloto.setAtivarErs(false);
 		}
 		carro.setTemperaturaMotor(0);
 		carro.processaPorcentagemDesgastePneus();
@@ -518,7 +518,7 @@ public class ControleBox {
 		return diffCombust;
 	}
 
-	public void setupCorridaQualificacaoAleatoria(Piloto piloto) {
+	public void setupCorridaQualificacao(Piloto piloto) {
 		if (piloto.isJogadorHumano()) {
 			Integer combustBox = controleJogo.getCombustBox(piloto);
 			if (combustBox.intValue() <= 10) {
@@ -678,7 +678,6 @@ public class ControleBox {
 		// Logger.logar(val);
 		// Hashtable hashtable = new Hashtable();
 		// hashtable.put("someval", null);
-		System.out.println("asdk*hjsak".replaceAll("\\*", ""));
 	}
 
 	public No getSaidaBox() {

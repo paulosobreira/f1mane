@@ -562,10 +562,10 @@ public class MonitorJogo implements Runnable {
 								dadosParciais.alertaAerefolio);
 						if (piloto
 								.getCargaKersOnline() != dadosParciais.cargaKers) {
-							piloto.setAtivarKers(true);
+							piloto.setAtivarErs(true);
 							piloto.setCargaKersOnline(dadosParciais.cargaKers);
 						} else {
-							piloto.setAtivarKers(false);
+							piloto.setAtivarErs(false);
 						}
 						piloto.getCarro().setPorcentagemDesgasteMotor(
 								dadosParciais.pMotor);

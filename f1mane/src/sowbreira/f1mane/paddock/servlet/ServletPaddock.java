@@ -286,7 +286,7 @@ public class ServletPaddock extends HttpServlet {
 
 	public static void main(String[] args) {
 		String teste = "hasjdhasjkd {asd} dsajdhauid";
-		System.out.println(teste.replace("{asd}", "paulo"));
+		//System.out.println(teste.replace("{asd}", "paulo"));
 		// Enumeration e = System.getProperties().propertyNames();
 		// while (e.hasMoreElements()) {
 		// String element = (String) e.nextElement();

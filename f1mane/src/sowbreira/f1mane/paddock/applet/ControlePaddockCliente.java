@@ -444,6 +444,10 @@ public class ControlePaddockCliente {
 	}
 
 	public void verDetalhesJogo(Object object) throws Exception {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.VER_DETALHES_JOGO, sessaoCliente);
 
@@ -644,6 +648,10 @@ public class ControlePaddockCliente {
 	}
 
 	public void verConstrutores() {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 				Comandos.VER_CONTRUTORES, sessaoCliente);
 		Object ret = enviarObjeto(clientPaddockPack);

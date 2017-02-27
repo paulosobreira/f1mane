@@ -259,7 +259,6 @@ public class ControleEstatisticas {
 		allInfo.add("7");
 		if (allInfo.size() > 5) {
 			for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
-				System.out.println(allInfo.get(i));
 			}
 		}
 	}

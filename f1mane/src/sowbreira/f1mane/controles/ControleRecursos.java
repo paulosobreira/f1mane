@@ -498,7 +498,6 @@ public abstract class ControleRecursos {
 	public static void main(String[] args) {
 		// String strVal = String.valueOf(Util.intervalo(50, 99))
 		// + Util.intervalo(0, 9);
-		System.out.println("F.Alonso".replaceAll("\\.", ""));
 		// Logger.logar(((int) (0 + Math.random() * 9)));
 
 	}

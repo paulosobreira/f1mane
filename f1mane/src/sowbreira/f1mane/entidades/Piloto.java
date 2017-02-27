@@ -103,8 +103,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	private long parouNoBoxMilis;
 	private long saiuDoBoxMilis;
 	private long ultimaMudancaPos;
-	private boolean ativarKers;
-	private int cargaKersVisual;
+	private boolean ativarErs;
+	private int cargaErsVisual;
 	private int cargaKersOnline;
 	private boolean ativarDRS;
 	private int novoModificador;
@@ -243,8 +243,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.driveThrough = driveThrough;
 	}
 
-	public boolean isAtivarKers() {
-		return ativarKers;
+	public boolean isAtivarErs() {
+		return ativarErs;
 	}
 
 	public int getCargaKersOnline() {
@@ -256,15 +256,15 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public int getCargaKersVisual() {
-		return cargaKersVisual;
+		return cargaErsVisual;
 	}
 
-	public void setCargaKersVisual(int cargaKersVisual) {
-		this.cargaKersVisual = cargaKersVisual;
+	public void setCargaErsVisual(int cargaErsVisual) {
+		this.cargaErsVisual = cargaErsVisual;
 	}
 
-	public void setAtivarKers(boolean ativarKers) {
-		this.ativarKers = ativarKers;
+	public void setAtivarErs(boolean ativarErs) {
+		this.ativarErs = ativarErs;
 	}
 
 	public boolean isAtivarDRS() {
@@ -775,7 +775,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void processarCiclo(InterfaceJogo controleJogo) {
-		List pista = controleJogo.getNosDaPista();
+		List<No> pista = controleJogo.getNosDaPista();
 		int index = processaNovoIndex(controleJogo);
 		int diff = index - pista.size();
 		/**
@@ -799,7 +799,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (getNumeroVolta() > 0) {
 				getCarro().setCargaErs(InterfaceJogo.CARGA_KERS);
 			}
-			ativarKers = false;
+			ativarErs = false;
 			controleJogo.processaVoltaRapida(this);
 			/**
 			 * calback de nova volta para corrida Toda
@@ -889,7 +889,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-
 		if (isJogadorHumano() || isRecebeuBanderada() || getPtosPista() < 0) {
 			return;
 		}
@@ -1020,6 +1019,14 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaGanhoSafetyCar(controleJogo);
 		decrementaPilotoDesconcentrado(controleJogo);
 		setPtosPista(Util.inte(getPtosPista() + ganho));
+//		Logger.logar("Double.valueOf(piloto.getPtosPista()) "
+//				+ Double.valueOf(getPtosPista()));
+//		Logger.logar("controleJogo.getNosDaPista().size() "
+//				+ controleJogo.getNosDaPista().size());
+//		Logger.logar("getCarro().getPorcentagemCombustivel() "+ getCarro().getPorcentagemCombustivel());
+//		Logger.logar("getCarro().getPorcentagemDesgasteMotor() "+getCarro().getPorcentagemDesgasteMotor());
+//		Logger.logar("getCarro().getPorcentagemDesgastePneus() " +getCarro().getPorcentagemDesgastePneus());
+
 		index += Math.round(ganho);
 		setVelocidade(calculoVelocidade(ganho));
 		return index;
@@ -1120,7 +1127,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		val += (21 - (porcent / 5.0));
 		boolean naReta = false;
 		if (noAtual != null && !freiandoReta
-				&& (acelerando || ativarDRS || ativarKers))
+				&& (acelerando || ativarDRS || ativarErs))
 			naReta = noAtual.verificaRetaOuLargada();
 		return Util.inte(((val * ganho * ((naReta) ? 1 : 0.7) / ganhoMax)
 				+ ganho * ((naReta) ? 1 : 0.7)));
@@ -1357,8 +1364,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				}
 
 				double minMulti = 0.7;
-				if (!controleJogo.isModoQualify()
-						&& (controleJogo.isChovendo())) {
+				if (controleJogo.isChovendo()) {
 					minMulti -= 0.3;
 					retardaFreiandoReta = false;
 				}
@@ -1475,9 +1481,9 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private void processaUsoERS(InterfaceJogo controleJogo) {
 
-		if (controleJogo.isKers() && ativarKers && getPtosBox() == 0) {
+		if (controleJogo.isKers() && ativarErs && getPtosBox() == 0) {
 			if (getCarro().getCargaErs() <= 0) {
-				ativarKers = false;
+				ativarErs = false;
 			} else {
 				double rev = (1000 - carro.getPotencia()) / 10000;
 				ganho *= Util.intervalo(1.05, 1.1 + (rev * 2));
@@ -1714,10 +1720,10 @@ public class Piloto implements Serializable, PilotoSuave {
 				.percetagemDeVoltaCompletada(this);
 		if (percetagemDeVoltaCompletada > 50
 				&& noAtual.verificaRetaOuLargada()) {
-			ativarKers = true;
+			ativarErs = true;
 		}
 		if (percetagemDeVoltaCompletada > 70) {
-			ativarKers = true;
+			ativarErs = true;
 		}
 	}
 
@@ -2276,7 +2282,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 		No no = getNoAtual();
 		if (no.verificaRetaOuLargada()) {
-			setAtivarKers(true);
+			setAtivarErs(true);
 		}
 
 		if (pontoDerrapada != null

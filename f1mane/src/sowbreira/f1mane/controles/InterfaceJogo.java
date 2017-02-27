@@ -65,7 +65,7 @@ public interface InterfaceJogo {
 
 	public List<No> getNosDaPista();
 
-	public List getCarros();
+	public List<Carro> getCarros();
 
 	public List<Piloto> getPilotos();
 

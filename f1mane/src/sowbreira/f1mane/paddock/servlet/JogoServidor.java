@@ -36,7 +36,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private long tempoCriacao, tempoInicio, tempoFim;
 	/* mapJogadoresOnline.put(apelido, dadosParticiparJogo) */
 	private Map<String, DadosCriarJogo> mapJogadoresOnline = new HashMap<String, DadosCriarJogo>();
-	private Map<String,BufferTexto> mapJogadoresOnlineTexto = new HashMap<String,BufferTexto>();
+	private Map<String, BufferTexto> mapJogadoresOnlineTexto = new HashMap<String, BufferTexto>();
 	/* Chave numVolta , valor lista de VoltaJogadorOnline */
 	private Map mapVoltasJogadoresOnline = new HashMap();
 	private int contadorVolta = 0;
@@ -103,7 +103,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		return estado;
 	}
 
-	public Map<String,BufferTexto> getMapJogadoresOnlineTexto() {
+	public Map<String, BufferTexto> getMapJogadoresOnlineTexto() {
 		return mapJogadoresOnlineTexto;
 	}
 
@@ -276,7 +276,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		atualizarJogadoresOnline();
 		Logger.logar("atualizarJogadoresOnline();");
 		controleCorrida.gerarGridLargada();
-		Logger.logar("controleCorrida.gerarGridLargadaSemQualificacao();");
+		Logger.logar("controleCorrida.gerarGridLargada();");
 		setEstado(Comandos.MOSTRANDO_QUALIFY);
 		List carrobox = new ArrayList();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
@@ -330,13 +330,13 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	private void atualizarJogadoresOnline() {
-		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
-			String key = (String) iter.next();
-			DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-					.get(key);
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
+		for (Iterator<String> iter = mapJogadoresOnline.keySet()
+				.iterator(); iter.hasNext();) {
+			String key = iter.next();
+			DadosCriarJogo dadosParticiparJogo = mapJogadoresOnline.get(key);
+			for (Iterator<Piloto> iterator = pilotos.iterator(); iterator
+					.hasNext();) {
+				Piloto piloto = iterator.next();
 				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
 					piloto.setNomeJogador(key);
 					piloto.setJogadorHumano(true);

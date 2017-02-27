@@ -25,7 +25,7 @@ public class MonitorAtividade implements Runnable {
 	public void run() {
 		while (alive) {
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(3000);
 				long timeNow = System.currentTimeMillis();
 				List<SessaoCliente> clientes = controlePaddock.getDadosPaddock()
 						.getClientes();

@@ -309,7 +309,7 @@ public class ControleJogosServer {
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 		}
-		return 200;
+		return "200";
 	}
 
 	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
@@ -708,7 +708,7 @@ public class ControleJogosServer {
 			return null;
 		}
 		piloto.setAtivarDRS(true);
-		piloto.setAtivarKers(
+		piloto.setAtivarErs(
 				((Boolean) (clientPaddockPack.getDataObject())).booleanValue());
 		return null;
 	}
@@ -778,7 +778,7 @@ public class ControleJogosServer {
 			return null;
 		}
 		piloto.setAtivarDRS(true);
-		piloto.setAtivarKers(false);
+		piloto.setAtivarErs(false);
 		piloto.setModoPilotagem(Piloto.LENTO);
 		piloto.getCarro().mudarGiroMotor(Carro.GIRO_MIN);
 		return null;
@@ -795,7 +795,7 @@ public class ControleJogosServer {
 			return null;
 		}
 		piloto.setAtivarDRS(true);
-		piloto.setAtivarKers(false);
+		piloto.setAtivarErs(false);
 		piloto.setModoPilotagem(Piloto.NORMAL);
 		piloto.getCarro().mudarGiroMotor(Carro.GIRO_NOR);
 		return null;
@@ -812,7 +812,7 @@ public class ControleJogosServer {
 			return null;
 		}
 		piloto.setAtivarDRS(true);
-		piloto.setAtivarKers(true);
+		piloto.setAtivarErs(true);
 		piloto.setModoPilotagem(Piloto.AGRESSIVO);
 		piloto.getCarro().mudarGiroMotor(Carro.GIRO_MAX);
 		return null;

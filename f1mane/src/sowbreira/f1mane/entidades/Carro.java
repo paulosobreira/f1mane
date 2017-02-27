@@ -232,8 +232,7 @@ public class Carro implements Serializable {
 	public void trocarPneus(InterfaceJogo interfaceJogo, String tipoPneu,
 			int distaciaCorrida) {
 		msgPneu = false;
-		if (interfaceJogo.isSemTrocaPneu() && !interfaceJogo.isModoQualify()
-				&& this.tipoPneu != null) {
+		if (interfaceJogo.isSemTrocaPneu() && this.tipoPneu != null) {
 			if (!verificaPneusIncompativeisClima(interfaceJogo) && pneus > 0) {
 				return;
 			}
@@ -345,7 +344,6 @@ public class Carro implements Serializable {
 		// val *= 0.1;
 		int vcar = 50;
 		vcar *= .3;
-		System.out.println(vcar);
 	}
 
 	public void setPneuDuro(int distaciaCorrida) {
@@ -581,10 +579,8 @@ public class Carro implements Serializable {
 			valDesgaste = 0;
 		}
 		int dist = 50;
-		if (!controleJogo.isModoQualify()
-				&& controleJogo.getNumVoltaAtual() != 1
-				&& controleJogo.calculaDiffParaProximoRetardatario(piloto,
-						true) < dist) {
+		if (controleJogo.calculaDiffParaProximoRetardatario(piloto,
+				true) < dist) {
 			valDesgaste += testePotencia ? 1 : 2;
 		}
 		double desg = (valDesgaste
@@ -662,8 +658,8 @@ public class Carro implements Serializable {
 			return novoModificador;
 		}
 
-		if (TIPO_PNEU_MOLE.equals(tipoPneu) || (controleJogo.isModoQualify()
-				&& !controleJogo.isChovendo() && testeFreios())) {
+		if (TIPO_PNEU_MOLE.equals(tipoPneu)
+				|| (!controleJogo.isChovendo() && testeFreios())) {
 			int intervaloMin = 5;
 			if (testeAerodinamica() && testeFreios()) {
 				intervaloMin = 5;
@@ -676,9 +672,7 @@ public class Carro implements Serializable {
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				if ((porcentagemDesgastePneus > intervaloMin)
 						&& (controleJogo.verificaPistaEmborrachada())
-						&& ((controleJogo.isModoQualify()
-								&& !controleJogo.isChovendo())
-								|| pneuAquecido)) {
+						&& ((!controleJogo.isChovendo()) || pneuAquecido)) {
 					novoModificador += 1;
 				} else if (!testeFreios()
 						|| (porcentagemDesgastePneus < intervaloMin

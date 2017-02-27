@@ -934,8 +934,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (pilotoSelecionado == null) {
 			return false;
 		}
-		monitorJogo.mudarModoKers(!pilotoSelecionado.isAtivarKers());
-		return pilotoSelecionado.isAtivarKers();
+		monitorJogo.mudarModoKers(!pilotoSelecionado.isAtivarErs());
+		return pilotoSelecionado.isAtivarErs();
 	}
 
 	@Override
