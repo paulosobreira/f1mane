@@ -91,6 +91,8 @@ public class ControleCiclo extends Thread {
 							controleCorrida.processarPilotoBox(piloto);
 							piloto.calculaVelocidadeExibir(controleJogo);
 						}
+						piloto.processaAlertaMotor(controleJogo);
+						piloto.processaAlertaAerefolio(controleJogo);
 					}
 					controleCorrida.atualizaClassificacao();
 					controleJogo.verificaProgramacaoBox();

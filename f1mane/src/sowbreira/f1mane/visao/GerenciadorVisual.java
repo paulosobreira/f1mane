@@ -108,9 +108,6 @@ public class GerenciadorVisual {
 	protected JCheckBox reabastacimento;
 	protected JCheckBox kers;
 	protected JCheckBox drs;
-
-	private long ultimaTravavadaRodas;
-
 	private Thread thAtualizaPainelSuave;
 	private Thread thAtualizaSom;
 	protected boolean thAtualizaPainelSuaveAlive = true;
@@ -529,7 +526,6 @@ public class GerenciadorVisual {
 		PainelCircuito.ligaDesligaEfeitos();
 	}
 
-	
 	protected void mudaPilotoSelecionado() {
 		if (controleJogo == null) {
 			return;
@@ -1585,14 +1581,9 @@ public class GerenciadorVisual {
 	}
 
 	public void adicinaTravadaRoda(TravadaRoda travadaRoda) {
-		if (ultimaTravavadaRodas == 0) {
-			ultimaTravavadaRodas = System.currentTimeMillis();
-		}
-		if (System.currentTimeMillis() - ultimaTravavadaRodas < 1000) {
-			return;
-		}
-		if (painelCircuito != null) {
-			ultimaTravavadaRodas = System.currentTimeMillis();
+		if (painelCircuito != null
+				&& (Math.random() < ((double) (controleJogo.getNumVoltaAtual()<=0?1:controleJogo.getNumVoltaAtual())
+						/ (double) controleJogo.getQtdeTotalVoltas()))) {
 			painelCircuito.adicionatrvadaRoda(travadaRoda);
 		}
 	}

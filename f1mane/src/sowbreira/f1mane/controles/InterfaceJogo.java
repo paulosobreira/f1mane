@@ -236,7 +236,7 @@ public interface InterfaceJogo {
 
 	public Integer obterIdPorNo(No no);
 
-	public List obterNosPista();
+	public List<No> obterNosPista();
 
 	public boolean verificaNoPitLane(Piloto piloto);
 
