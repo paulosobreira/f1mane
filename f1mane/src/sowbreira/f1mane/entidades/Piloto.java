@@ -778,7 +778,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 			setNumeroVolta(getNumeroVolta() + 1);
 			processaAjustesPosQualificacao(
-					Constantes.MAX_VOLTAS / controleJogo.getQtdeTotalVoltas());
+					Constantes.MAX_VOLTAS / controleJogo.totalVoltasCorrida());
 			processaUltimosDesgastesPneuECombustivel();
 			processaAsfaltoAbrasivoIA(controleJogo);
 			index = diff;
@@ -900,9 +900,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			box = true;
 		}
 
-		int limiteUltimasVoltas = 80;
+		int limiteUltimasVoltas = 70;
 		if (controleJogo.isBoxRapido()) {
-			limiteUltimasVoltas = 90;
+			limiteUltimasVoltas = 80;
 		}
 
 		if (box && corrida > limiteUltimasVoltas && getQtdeParadasBox() > 0) {

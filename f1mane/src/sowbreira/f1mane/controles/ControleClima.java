@@ -138,7 +138,7 @@ public class ControleClima {
 		setClima(Clima.NUBLADO);
 		intervaloMudancaClima = (quartoVoltas / 2)
 				+ ((int) (Math.random() * quartoVoltas));
-		if (controleJogo.getQtdeTotalVoltas() > (controleJogo
+		if (controleJogo.totalVoltasCorrida() > (controleJogo
 				.getNumVoltaAtual() + intervaloMudancaClima))
 			controleJogo.infoPrioritaria(Html.msgClima(Html.msgClima(Lang.msg(
 					"007", new Object[] { intervaloMudancaClima }))));

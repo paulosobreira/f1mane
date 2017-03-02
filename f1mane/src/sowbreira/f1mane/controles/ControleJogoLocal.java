@@ -2,6 +2,7 @@ package sowbreira.f1mane.controles;
 
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -295,9 +296,6 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#totalVoltasCorrida()
 	 */
 	public int totalVoltasCorrida() {
-		if (isModoQualify()) {
-			return 1;
-		}
 		if (controleCorrida == null) {
 			return 0;
 		}
@@ -338,7 +336,7 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltimaVolta()
 	 */
 	public boolean verificaUltimaVolta() {
-		if (isModoQualify()) {
+		if (isModoQualify() || controleCorrida == null) {
 			return false;
 		}
 		return ((controleCorrida.getQtdeTotalVoltas()
@@ -563,8 +561,10 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#isSafetyCarVaiBox()
 	 */
 	public boolean isSafetyCarVaiBox() {
-
-		return controleCorrida.isSafetyCarVaiBox();
+		if (controleCorrida != null) {
+			return controleCorrida.isSafetyCarVaiBox();
+		}
+		return false;
 	}
 
 	/**
@@ -599,8 +599,10 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getIndexVelcidadeDaPista()
 	 */
 	public double getIndexVelcidadeDaPista() {
-
-		return controleCorrida.getIndexVelcidadeDaPista();
+		if (controleCorrida != null) {
+			return controleCorrida.getIndexVelcidadeDaPista();
+		}
+		return 0;
 	}
 
 	@Override
@@ -895,16 +897,15 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	public boolean isModoQualify() {
-		return controleCorrida.isModoQualify();
+		if (controleCorrida != null) {
+			return controleCorrida.isModoQualify();
+		}
+		return false;
 	}
 
 	public void tabelaComparativa() {
 		controleEstatisticas.tabelaComparativa();
 
-	}
-
-	public int getQtdeTotalVoltas() {
-		return controleCorrida.getQtdeTotalVoltas();
 	}
 
 	public void iniciaJanela() {
@@ -977,7 +978,10 @@ public class ControleJogoLocal extends ControleRecursos
 	 */
 	@Override
 	public double getFatorUtrapassagem() {
-		return controleCorrida.getFatorUtrapassagem();
+		if (controleCorrida != null) {
+			return controleCorrida.getFatorUtrapassagem();
+		}
+		return 0;
 	}
 
 	@Override
@@ -1165,7 +1169,10 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public boolean asfaltoAbrasivo() {
-		return controleCorrida.asfaltoAbrasivo();
+		if (controleCorrida != null) {
+			return controleCorrida.asfaltoAbrasivo();
+		}
+		return false;
 	}
 
 	@Override
@@ -1416,7 +1423,7 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public int getDurabilidadeAreofolio() {
-		return (InterfaceJogo.DURABILIDADE_AREOFOLIO * getQtdeTotalVoltas())
+		return (InterfaceJogo.DURABILIDADE_AREOFOLIO * totalVoltasCorrida())
 				/ Constantes.MAX_VOLTAS;
 	}
 
@@ -1578,8 +1585,19 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public void atualizaInfoDebug(StringBuffer buffer) {
-		Field[] declaredFields = ControleJogoLocal.class.getDeclaredFields();
-		buffer.append("-=ControleJogoLocal=- <br>");
+		Field[] declaredFields = this.getClass().getDeclaredFields();
+		buffer.append("-=ControleJogo=- <br>");
+		buffer.append("asfaltoAbrasivo = " + this.asfaltoAbrasivo() + "<br>");
+		buffer.append("porcentagemChuvaCircuito = "
+				+ this.porcentagemChuvaCircuito() + "<br>");
+		buffer.append("isBoxRapido = " + this.isBoxRapido() + "<br>");
+		buffer.append("verificaPistaEmborrachada = "
+				+ this.verificaPistaEmborrachada() + "<br>");
+		buffer.append("porcentagemCorridaCompletada = "
+				+ this.porcentagemCorridaCompletada() + "<br>");
+		buffer.append("getFatorUtrapassagem = " + this.getFatorUtrapassagem()
+				+ "<br>");
+
 		for (Field field : declaredFields) {
 			try {
 				Object object = field.get(this);
@@ -1595,6 +1613,39 @@ public class ControleJogoLocal extends ControleRecursos
 				e1.printStackTrace();
 			}
 		}
+
+		buffer.append("getClima = " + this.getClima() + "<br>");
+		buffer.append("getNumVoltaAtual = " + this.getNumVoltaAtual() + "<br>");
+		buffer.append(
+				"totalVoltasCorrida = " + this.totalVoltasCorrida() + "<br>");
+		buffer.append("verificaUltimasVoltas = " + this.verificaUltimasVoltas()
+				+ "<br>");
+		buffer.append(
+				"verificaUltimaVolta = " + this.verificaUltimaVolta() + "<br>");
+		buffer.append("obterIndicativoCorridaCompleta = "
+				+ this.obterIndicativoCorridaCompleta() + "<br>");
+		buffer.append("isChovendo = " + this.isChovendo() + "<br>");
+		buffer.append(
+				"isSafetyCarNaPista = " + this.isSafetyCarNaPista() + "<br>");
+		buffer.append(
+				"isSafetyCarVaiBox = " + this.isSafetyCarVaiBox() + "<br>");
+		buffer.append("getIndexVelcidadeDaPista = "
+				+ this.getIndexVelcidadeDaPista() + "<br>");
+		buffer.append("isModoQualify = " + this.isModoQualify() + "<br>");
+		buffer.append("getTemporada = " + this.getTemporada() + "<br>");
+		buffer.append("verificaCampeonatoComRival = "
+				+ this.verificaCampeonatoComRival() + "<br>");
+		buffer.append("getLag = " + this.getLag() + "<br>");
+
+		buffer.append("verificaCampeonatoComRival = "
+				+ this.verificaCampeonatoComRival() + "<br>");
+		buffer.append("verificaCampeonatoComRival = "
+				+ this.verificaCampeonatoComRival() + "<br>");
+		buffer.append("verificaCampeonatoComRival = "
+				+ this.verificaCampeonatoComRival() + "<br>");
+		buffer.append("verificaCampeonatoComRival = "
+				+ this.verificaCampeonatoComRival() + "<br>");
+
 	}
 
 	@Override

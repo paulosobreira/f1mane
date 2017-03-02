@@ -465,7 +465,7 @@ public class ControleBox {
 			piloto.setSetUpIncial(UMA_OU_MAIS_PARADAS);
 		} else {
 			int voltaAtual = piloto.getNumeroVolta();
-			int metade = controleJogo.getQtdeTotalVoltas() / 2;
+			int metade = controleJogo.totalVoltasCorrida() / 2;
 			if (voltaAtual > metade && piloto.isAsfaltoAbrasivo()) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_MOLE,
@@ -496,7 +496,7 @@ public class ControleBox {
 				percentagem = 70;
 			}
 		} else {
-			int qtdeVoltRest = controleJogo.getQtdeTotalVoltas()
+			int qtdeVoltRest = controleJogo.totalVoltasCorrida()
 					- controleJogo.getNumVoltaAtual();
 			percentagem = (consumoMedio * (qtdeVoltRest)) + 15;
 		}
@@ -635,7 +635,7 @@ public class ControleBox {
 				percentagem = 70;
 			}
 		} else {
-			int qtdeVoltRest = controleJogo.getQtdeTotalVoltas()
+			int qtdeVoltRest = controleJogo.totalVoltasCorrida()
 					- controleJogo.getNumVoltaAtual();
 			percentagem = (consumoMedioCombustivel * (qtdeVoltRest / 2)) + 15;
 		}

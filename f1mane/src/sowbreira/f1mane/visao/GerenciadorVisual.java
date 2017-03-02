@@ -1583,7 +1583,7 @@ public class GerenciadorVisual {
 	public void adicinaTravadaRoda(TravadaRoda travadaRoda) {
 		if (painelCircuito != null
 				&& (Math.random() < ((double) (controleJogo.getNumVoltaAtual()<=0?1:controleJogo.getNumVoltaAtual())
-						/ (double) controleJogo.getQtdeTotalVoltas()))) {
+						/ (double) controleJogo.totalVoltasCorrida()))) {
 			painelCircuito.adicionatrvadaRoda(travadaRoda);
 		}
 	}

@@ -731,7 +731,7 @@ public class Carro implements Serializable {
 			}
 		}
 
-		double divVoltas = (controleJogo.getQtdeTotalVoltas()
+		double divVoltas = (controleJogo.totalVoltasCorrida()
 				/ Constantes.MAX_VOLTAS);
 		if (divVoltas >= 1) {
 			divVoltas = 0.999;
@@ -924,7 +924,7 @@ public class Carro implements Serializable {
 			if (!no.verificaRetaOuLargada()) {
 				if (controleJogo.asfaltoAbrasivo()) {
 					desgPneus += (piloto.testeHabilidadePilotoFreios(
-							controleJogo) ? 5 : 10);
+							controleJogo) ? 10 : 15);
 				} else {
 					desgPneus += (piloto
 							.testeHabilidadePilotoFreios(controleJogo) ? 1 : 5);
