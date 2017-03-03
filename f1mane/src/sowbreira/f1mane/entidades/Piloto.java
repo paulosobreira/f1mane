@@ -900,9 +900,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			box = true;
 		}
 
-		int limiteUltimasVoltas = 70;
+		int limiteUltimasVoltas = 90;
 		if (controleJogo.isBoxRapido()) {
-			limiteUltimasVoltas = 80;
+			limiteUltimasVoltas = 95;
 		}
 
 		if (box && corrida > limiteUltimasVoltas && getQtdeParadasBox() > 0) {

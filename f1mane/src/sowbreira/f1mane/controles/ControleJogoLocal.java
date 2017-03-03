@@ -2,7 +2,6 @@ package sowbreira.f1mane.controles;
 
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +12,10 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import br.nnpe.Constantes;
+import br.nnpe.Html;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
@@ -29,10 +32,6 @@ import sowbreira.f1mane.paddock.servlet.JogoServidor;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
-import br.nnpe.Constantes;
-import br.nnpe.Html;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -300,17 +299,6 @@ public class ControleJogoLocal extends ControleRecursos
 			return 0;
 		}
 		return controleCorrida.getQtdeTotalVoltas();
-	}
-
-	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltimasVoltas()
-	 */
-	public boolean verificaUltimasVoltas() {
-		if (isModoQualify()) {
-			return false;
-		}
-		int corrida = porcentagemCorridaCompletada();
-		return (corrida > 75);
 	}
 
 	/**
@@ -921,13 +909,16 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	public int getMediaPontecia() {
+		if(getCarros()==null){
+			return 0;
+		}
 		int somaPontecias = 0;
 		for (int i = 0; i < getCarros().size(); i++) {
 			Carro carro = (Carro) getCarros().get(i);
 			somaPontecias += carro.getPotencia() + carro.getFreios()
 					+ carro.getAerodinamica();
 		}
-		int mediaPontecia = somaPontecias / getCarros().size();
+		int mediaPontecia = somaPontecias / (getCarros().size() * 3);
 		return mediaPontecia;
 	}
 
@@ -1475,12 +1466,18 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public boolean safetyCarUltimas3voltas() {
-		return controleCorrida.safetyCarUltimas3voltas();
+		if (controleCorrida != null) {
+			return controleCorrida.safetyCarUltimas3voltas();
+		}
+		return false;
 	}
 
 	@Override
 	public double getFatorAcidente() {
-		return controleCorrida.getFatorAcidente();
+		if (controleCorrida != null) {
+			return controleCorrida.getFatorAcidente();
+		}
+		return 0;
 	}
 
 	@Override
@@ -1597,7 +1594,14 @@ public class ControleJogoLocal extends ControleRecursos
 				+ this.porcentagemCorridaCompletada() + "<br>");
 		buffer.append("getFatorUtrapassagem = " + this.getFatorUtrapassagem()
 				+ "<br>");
-
+		buffer.append("getFatorAcidente = " + this.getFatorAcidente() + "<br>");
+		buffer.append(
+				"verificaNivelJogo = " + this.verificaNivelJogo() + "<br>");
+		buffer.append("getNumVoltaAtual = " + this.getNumVoltaAtual() + "<br>");
+		buffer.append(
+				"totalVoltasCorrida = " + this.totalVoltasCorrida() + "<br>");
+		buffer.append(
+				"verificaUltimaVolta = " + this.verificaUltimaVolta() + "<br>");
 		for (Field field : declaredFields) {
 			try {
 				Object object = field.get(this);
@@ -1615,13 +1619,6 @@ public class ControleJogoLocal extends ControleRecursos
 		}
 
 		buffer.append("getClima = " + this.getClima() + "<br>");
-		buffer.append("getNumVoltaAtual = " + this.getNumVoltaAtual() + "<br>");
-		buffer.append(
-				"totalVoltasCorrida = " + this.totalVoltasCorrida() + "<br>");
-		buffer.append("verificaUltimasVoltas = " + this.verificaUltimasVoltas()
-				+ "<br>");
-		buffer.append(
-				"verificaUltimaVolta = " + this.verificaUltimaVolta() + "<br>");
 		buffer.append("obterIndicativoCorridaCompleta = "
 				+ this.obterIndicativoCorridaCompleta() + "<br>");
 		buffer.append("isChovendo = " + this.isChovendo() + "<br>");
@@ -1635,17 +1632,17 @@ public class ControleJogoLocal extends ControleRecursos
 		buffer.append("getTemporada = " + this.getTemporada() + "<br>");
 		buffer.append("verificaCampeonatoComRival = "
 				+ this.verificaCampeonatoComRival() + "<br>");
-		buffer.append("getLag = " + this.getLag() + "<br>");
-
-		buffer.append("verificaCampeonatoComRival = "
-				+ this.verificaCampeonatoComRival() + "<br>");
-		buffer.append("verificaCampeonatoComRival = "
-				+ this.verificaCampeonatoComRival() + "<br>");
-		buffer.append("verificaCampeonatoComRival = "
-				+ this.verificaCampeonatoComRival() + "<br>");
-		buffer.append("verificaCampeonatoComRival = "
-				+ this.verificaCampeonatoComRival() + "<br>");
-
+		buffer.append("getDurabilidadeAreofolio = "
+				+ this.getDurabilidadeAreofolio() + "<br>");
+		buffer.append("safetyCarUltimas3voltas = "
+				+ this.safetyCarUltimas3voltas() + "<br>");
+		buffer.append("mostraTipoPneuAdversario = "
+				+ this.mostraTipoPneuAdversario() + "<br>");
+		buffer.append(
+				"isCorridaTerminada = " + this.isCorridaTerminada() + "<br>");
+		buffer.append(
+				"isCorridaIniciada = " + this.isCorridaIniciada() + "<br>");
+		buffer.append("getMediaPontecia = " + this.getMediaPontecia() + "<br>");
 	}
 
 	@Override

@@ -83,7 +83,6 @@ public class ControleCorrida {
 		if (Math.random() > 0.5) {
 			asfaltoAbrasivo = true;
 		}
-		asfaltoAbrasivo = true;
 	}
 
 	public ControleBox getControleBox() {

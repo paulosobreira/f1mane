@@ -307,20 +307,7 @@ public class ControleBox {
 		piloto.setVelocidade(0);
 		int qtdeCombust = 0;
 		piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1);
-		if (!piloto.isJogadorHumano()) {
-			if (piloto.getCarro().verificaDano()) {
-				if (controleCorrida.porcentagemCorridaCompletada() < 35) {
-					qtdeCombust = setupParadaUnica(piloto);
-				} else {
-					qtdeCombust = setupDuasOuMaisParadas(piloto);
-				}
-			} else if (UMA_OU_MAIS_PARADAS.equals(piloto.getSetUpIncial())
-					|| controleJogo.isSemReabastacimento()) {
-				qtdeCombust = setupDuasOuMaisParadas(piloto);
-			} else {
-				qtdeCombust = setupParadaUnica(piloto);
-			}
-		} else {
+		if (piloto.isJogadorHumano()) {
 			Integer combust = controleJogo.getCombustBox(piloto);
 			if (controleJogo.isSemReabastacimento()) {
 				combust = new Integer(0);
@@ -328,6 +315,18 @@ public class ControleBox {
 			qtdeCombust = controleJogo.setUpJogadorHumano(piloto,
 					controleJogo.getTipoPneuBox(piloto), combust,
 					controleJogo.getAsaBox(piloto));
+		} else {
+			if (piloto.getCarro().verificaDano()) {
+				if (controleCorrida.porcentagemCorridaCompletada() < 35) {
+					qtdeCombust = setupParadaUnica(piloto);
+				} else {
+					qtdeCombust = setupDuasOuMaisParadas(piloto);
+				}
+			} else if (UMA_OU_MAIS_PARADAS.equals(piloto.getSetUpIncial())) {
+				qtdeCombust = setupDuasOuMaisParadas(piloto);
+			} else {
+				qtdeCombust = setupParadaUnica(piloto);
+			}
 		}
 
 		int porcentCombust = (100 * qtdeCombust)
@@ -530,7 +529,6 @@ public class ControleBox {
 			return;
 		}
 		if (piloto.testeHabilidadePilotoCarro()
-				&& controleJogo.asfaltoAbrasivo()
 				&& !controleJogo.isBoxRapido()) {
 			piloto.setSetUpIncial(UMA_PARADA);
 			setupParadaUnica(piloto);

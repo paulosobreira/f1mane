@@ -92,8 +92,6 @@ public interface InterfaceJogo {
 
 	public int totalVoltasCorrida();
 
-	public boolean verificaUltimasVoltas();
-
 	public boolean verificaBoxOcupado(Carro carro);
 
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado);

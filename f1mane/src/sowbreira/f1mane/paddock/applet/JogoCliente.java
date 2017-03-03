@@ -551,11 +551,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
-	public boolean verificaUltimasVoltas() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public void verificaUltrapassagem(Piloto piloto) {
 		// TODO Auto-generated method stub
 	}
