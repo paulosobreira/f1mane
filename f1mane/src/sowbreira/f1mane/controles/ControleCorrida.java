@@ -418,10 +418,8 @@ public class ControleCorrida {
 	}
 
 	public int porcentagemCorridaCompletada() {
-		long maxAteAgora = ((Piloto) controleJogo.getPilotosCopia().get(0))
-				.getPtosPista();
-
-		return (int) (maxAteAgora * 100) / distaciaCorrida;
+		Piloto piloto = controleJogo.getPilotosCopia().get(0);
+		return (piloto.getNumeroVolta() / getQtdeTotalVoltas()) * 100;
 	}
 
 	public int voltaAtual() {
