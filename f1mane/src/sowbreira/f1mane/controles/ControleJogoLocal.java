@@ -272,9 +272,9 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#porcentagemCorridaCompletada()
+	 * @see sowbreira.f1mane.controles.InterfaceJogo#porcentagemCorridaConcluida()
 	 */
-	public int porcentagemCorridaCompletada() {
+	public int porcentagemCorridaConcluida() {
 		if (controleCorrida == null) {
 			return 0;
 		}
@@ -356,7 +356,7 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#obterIndicativoCorridaCompleta()
 	 */
 	public double obterIndicativoCorridaCompleta() {
-		return (porcentagemCorridaCompletada() / 100.0) + 1;
+		return (porcentagemCorridaConcluida() / 100.0) + 1;
 	}
 
 	/**
@@ -492,7 +492,7 @@ public class ControleJogoLocal extends ControleRecursos
 			});
 			nvolta.start();
 		}
-		Integer porcentagemCorridaCompletada = porcentagemCorridaCompletada();
+		Integer porcentagemCorridaCompletada = porcentagemCorridaConcluida();
 	}
 
 	/**
@@ -1315,7 +1315,7 @@ public class ControleJogoLocal extends ControleRecursos
 	public boolean verificaPistaEmborrachada() {
 		double indicativoEmborrachamentoPista = .85;
 		if (!isChovendo()) {
-			double emborrachamento = porcentagemCorridaCompletada() / 200.0;
+			double emborrachamento = porcentagemCorridaConcluida() / 200.0;
 			if (emborrachamento > .4) {
 				emborrachamento = .4;
 			}
@@ -1591,7 +1591,7 @@ public class ControleJogoLocal extends ControleRecursos
 		buffer.append("verificaPistaEmborrachada = "
 				+ this.verificaPistaEmborrachada() + "<br>");
 		buffer.append("porcentagemCorridaCompletada = "
-				+ this.porcentagemCorridaCompletada() + "<br>");
+				+ this.porcentagemCorridaConcluida() + "<br>");
 		buffer.append("getFatorUtrapassagem = " + this.getFatorUtrapassagem()
 				+ "<br>");
 		buffer.append("getFatorAcidente = " + this.getFatorAcidente() + "<br>");

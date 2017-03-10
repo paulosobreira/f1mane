@@ -86,7 +86,7 @@ public interface InterfaceJogo {
 
 	public void infoPrioritaria(String info);
 
-	public int porcentagemCorridaCompletada();
+	public int porcentagemCorridaConcluida();
 
 	public int getNumVoltaAtual();
 

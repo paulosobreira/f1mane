@@ -387,13 +387,9 @@ public class Carro implements Serializable {
 		int novoModificador = 0;
 
 		if (controleJogo.isChovendo() && MAIS_ASA.equals(getAsa())
-				&& !no.verificaRetaOuLargada() && getPiloto()
+				&& no.verificaCruvaBaixa() && getPiloto()
 						.testeHabilidadePilotoAerodinamica(controleJogo)) {
-			if (no.verificaCruvaBaixa()) {
-				novoModificador++;
-			} else {
-				novoModificador += Util.intervalo(0, 1);
-			}
+			novoModificador += Util.intervalo(0, 1);
 		}
 
 		if (no.verificaRetaOuLargada()) {
@@ -927,7 +923,7 @@ public class Carro implements Serializable {
 							controleJogo) ? 10 : 15);
 				} else {
 					desgPneus += (piloto
-							.testeHabilidadePilotoFreios(controleJogo) ? 1 : 5);
+							.testeHabilidadePilotoFreios(controleJogo) ? 1 : 10);
 				}
 			}
 		}
@@ -957,7 +953,7 @@ public class Carro implements Serializable {
 		if (controleJogo.isSemTrocaPneu()) {
 			fator /= 2;
 		} else if (piloto.getQtdeParadasBox() == 0
-				&& controleJogo.porcentagemCorridaCompletada() > 50) {
+				&& controleJogo.porcentagemCorridaConcluida() > 50) {
 			fator *= 2;
 		}
 
@@ -982,9 +978,7 @@ public class Carro implements Serializable {
 		} else {
 			valDesgaste *= 1.0;
 		}
-		if (controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)
-				|| (controleJogo.isChovendo()
-						&& !TIPO_PNEU_CHUVA.equals(tipoPneu))) {
+		if (controleJogo.isChovendo()) {
 			if (controleJogo.asfaltoAbrasivo()) {
 				valDesgaste *= 0.7;
 			} else {

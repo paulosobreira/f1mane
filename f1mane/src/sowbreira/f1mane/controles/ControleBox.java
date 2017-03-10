@@ -465,7 +465,8 @@ public class ControleBox {
 		} else {
 			int voltaAtual = piloto.getNumeroVolta();
 			int metade = controleJogo.totalVoltasCorrida() / 2;
-			if (voltaAtual > metade && piloto.isAsfaltoAbrasivo()) {
+			if (voltaAtual > metade && piloto.isAsfaltoAbrasivo()
+					|| controleJogo.isModoQualify()) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
@@ -595,15 +596,16 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			if (piloto.isAsfaltoAbrasivo()
-					&& controleCorrida.porcentagemCorridaCompletada() < 75)
+			if (!controleJogo.isModoQualify() && piloto.isAsfaltoAbrasivo()
+					&& controleCorrida.porcentagemCorridaCompletada() < 65) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
 						controleCorrida.getDistaciaCorrida());
-			else
+			} else {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
+			}
 		}
 		if (!(InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()))
 			processarTipoAsaAutomatico(piloto);

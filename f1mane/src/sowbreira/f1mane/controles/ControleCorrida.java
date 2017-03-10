@@ -419,7 +419,9 @@ public class ControleCorrida {
 
 	public int porcentagemCorridaCompletada() {
 		Piloto piloto = controleJogo.getPilotosCopia().get(0);
-		return (piloto.getNumeroVolta() / getQtdeTotalVoltas()) * 100;
+		double vol = piloto.getNumeroVolta();
+		double tot = getQtdeTotalVoltas();
+		return Util.inteiro((vol / tot) * 100);
 	}
 
 	public int voltaAtual() {

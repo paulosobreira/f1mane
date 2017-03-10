@@ -2068,7 +2068,7 @@ public class PainelCircuito {
 		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
 		g2d.setColor(Color.black);
 		g2d.drawString(
-				"% Completada " + controleJogo.porcentagemCorridaCompletada(),
+				"% Completada " + controleJogo.porcentagemCorridaConcluida(),
 				ptoOri, yBase);
 	}
 

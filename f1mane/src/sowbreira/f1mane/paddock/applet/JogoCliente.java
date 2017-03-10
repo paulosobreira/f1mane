@@ -476,7 +476,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
-	public int porcentagemCorridaCompletada() {
+	public int porcentagemCorridaConcluida() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
