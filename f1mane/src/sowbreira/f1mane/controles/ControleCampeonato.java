@@ -492,6 +492,9 @@ public class ControleCampeonato {
 	}
 
 	public void processaFimCorrida(List<Piloto> pilotos) {
+		if (campeonato == null) {
+			return;
+		}
 		List<CorridaCampeonato> corridaCampeonatoDados = new ArrayList<CorridaCampeonato>();
 		int posicaoJogador = 0;
 		int posicaoDesafiando = 0;

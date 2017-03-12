@@ -443,12 +443,13 @@ public class CarregadorRecursos {
 			piloto.setNomeOriginal(name);
 			piloto.setNome(Util.substVogais(name));
 			piloto.setNomeCarro(Util.substVogais(prop.split(",")[0]));
-			int duasCasas = Integer.parseInt(prop.split(",")[1])
-					+ (Math.random() > .5
-							? (-1 * Util.intervalo(0, 1))
-							: Util.intervalo(0, 1));
-			piloto.setHabilidade(Integer.parseInt(
-					String.valueOf(duasCasas) + Util.intervalo(0, 9)));
+			int duasCasas = Integer.parseInt(prop.split(",")[1]);
+			int habilidade = Integer
+					.parseInt(String.valueOf(duasCasas) + Util.intervalo(0, 9));
+			if(habilidade>999){
+				habilidade = 999;
+			}
+			piloto.setHabilidade(habilidade);
 			retorno.add(piloto);
 		}
 		Collections.sort(retorno, new Comparator() {
@@ -464,15 +465,16 @@ public class CarregadorRecursos {
 		return retorno;
 	}
 
-	public List carregarListaCarros(String temporada) throws IOException {
+	public List<Carro> carregarListaCarros(String temporada)
+			throws IOException {
 		if (temporadas.get(temporada) != null) {
-			List pilotos = (List) temporadas.get(temporada);
-			Set carros = new HashSet();
+			List<Piloto> pilotos = (List) temporadas.get(temporada);
+			Set<Carro> carros = new HashSet<Carro>();
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				carros.add(piloto.getCarro());
 			}
-			List carrosL = new ArrayList(carros);
+			List<Carro> carrosL = new ArrayList<Carro>(carros);
 			Collections.sort(carrosL, new Comparator() {
 
 				@Override

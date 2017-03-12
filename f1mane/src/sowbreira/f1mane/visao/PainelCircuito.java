@@ -134,7 +134,7 @@ public class PainelCircuito {
 	private BasicStroke zebra;
 
 	private static DecimalFormat mil = new DecimalFormat("000");
-	private static DecimalFormat df4 = new DecimalFormat("00.0000");
+	public static DecimalFormat df4 = new DecimalFormat("00.0000");
 	private int larguraPistaPixeis;
 
 	private int qtdeLuzesAcesas = 5;
@@ -1949,161 +1949,7 @@ public class PainelCircuito {
 
 		}
 
-		/**
-		 * Coluna 1
-		 */
-		int ptoOri = limitesViewPort.x + 220;
-		int yBase = limitesViewPort.y + 60;
-
-		debugTamanhoReta(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
-		debugDiferencaProximoRetardatario(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
-		debugDiferencaAnterior(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
-		debugPorcentagemCorridaCompletada(g2d, ptoOri, yBase);
-
-		/**
-		 * Coluna 2
-		 */
-		ptoOri = limitesViewPort.x + limitesViewPort.width - 320;
-		yBase = limitesViewPort.y + 300;
-
-		debugDiferencaSuaveReal(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
-		debugPontosSC(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
-		debugGanhosBaixa(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
-		debugGanhosAlta(g2d, ptoOri, yBase);
-
-		yBase += 20;
-
-		debugGanhosReta(g2d, ptoOri, yBase);
-
-	}
-
-	private void debugGanhosReta(Graphics2D g2d, int ptoOri, int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
-		g2d.setColor(Color.black);
-		g2d.drawString(
-				" GanhosReta   "
-						+ df4.format(pilotoSelecionado.getMedGanhosReta()),
-				ptoOri, yBase);
-
-	}
-
-	private void debugGanhosAlta(Graphics2D g2d, int ptoOri, int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
-		g2d.setColor(Color.black);
-		g2d.drawString(
-				" GanhosAlta   "
-						+ df4.format(pilotoSelecionado.getMedGanhosAlta()),
-				ptoOri, yBase);
-
-	}
-
-	private void debugGanhosBaixa(Graphics2D g2d, int ptoOri, int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
-		g2d.setColor(Color.black);
-		g2d.drawString(
-				" GanhosBaixa  "
-						+ df4.format(pilotoSelecionado.getMedGanhosBaixa()),
-				ptoOri, yBase);
-
-	}
-
-	private void debugPontosSC(Graphics2D g2d, int ptoOri, int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
-		g2d.setColor(Color.black);
-		String res = "";
-		if (controleJogo.isSafetyCarNaPista()) {
-			res = "" + controleJogo.getSafetyCar().getPtosPista();
-		}
-		g2d.drawString("Ptos SC  " + res, ptoOri, yBase);
-	}
-
-	private void debugDiferencaSuaveReal(Graphics2D g2d, int ptoOri,
-			int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
-		g2d.setColor(Color.black);
-		g2d.drawString(" DiffSuaveReal " + (pilotoSelecionado.getNoAtual()
-				.getIndex()
-				- (pilotoSelecionado.getNoAtualSuave() != null
-						? pilotoSelecionado.getNoAtualSuave().getIndex()
-						: 0)),
-				ptoOri, yBase);
-	}
-
-	private void debugDiferencaProximoRetardatario(Graphics2D g2d, int ptoOri,
-			int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
-		g2d.setColor(Color.black);
-		g2d.drawString("Diff Prox Retard " + controleJogo
-				.calculaDiffParaProximoRetardatario(pilotoSelecionado, false),
-				ptoOri, yBase);
-	}
-
-	private void debugPorcentagemCorridaCompletada(Graphics2D g2d, int ptoOri,
-			int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
-		g2d.setColor(Color.black);
-		g2d.drawString(
-				"% Completada " + controleJogo.porcentagemCorridaConcluida(),
-				ptoOri, yBase);
-	}
-
-	private void debugDiferencaAnterior(Graphics2D g2d, int ptoOri, int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
-		g2d.setColor(Color.black);
-		g2d.drawString(" Diff Anterior "
-				+ pilotoSelecionado.calculaDiffParaAnterior(controleJogo),
-				ptoOri, yBase);
-	}
-
-	private void debugTamanhoReta(Graphics2D g2d, int ptoOri, int yBase) {
-		g2d.setColor(yel);
-		g2d.fillRoundRect(ptoOri - 5, yBase - 12, 160, 15, 0, 0);
-		g2d.setColor(Color.black);
-		String tamanho = "";
-		No obterCurvaAnterior = controleJogo
-				.obterCurvaAnterior(pilotoSelecionado.getNoAtual());
-		No obterProxCurva = controleJogo
-				.obterProxCurva(pilotoSelecionado.getNoAtual());
-		if (obterCurvaAnterior == null) {
-			tamanho += "CAnt null ";
-		} else if (obterProxCurva == null) {
-			tamanho = "CProx null";
-		}
-		if (obterProxCurva != null && obterCurvaAnterior != null) {
-			int indexProxCurva = obterProxCurva.getIndex();
-			int indexCurvaAnterior = obterCurvaAnterior.getIndex();
-			if (indexProxCurva < indexCurvaAnterior) {
-				indexProxCurva += controleJogo.getNosDaPista().size();
-			}
-			tamanho = String.valueOf(indexProxCurva - indexCurvaAnterior);
-		}
-		g2d.drawString(" debugTamReta " + tamanho, ptoOri, yBase);
+		
 	}
 
 	private void iniciaPilotoSelecionado() {
@@ -2152,7 +1998,9 @@ public class PainelCircuito {
 			desenhaControlePneuBox(g2d, altura);
 			altura += 50;
 		}
-		desenhaControleAsaBox(g2d, altura);
+		if (!controleJogo.isDrs() || controleJogo.isChovendo()) {
+			desenhaControleAsaBox(g2d, altura);
+		}
 	}
 
 	private void desenhaControlesReabastecimentoBox(Graphics2D g2d,
@@ -2335,7 +2183,10 @@ public class PainelCircuito {
 		int y = limitesViewPort.y + altura;
 
 		String tpAsa = Carro.ASA_NORMAL;
-
+		if(controleJogo.isDrs()){
+			tpAsa = Carro.MAIS_ASA;
+		}
+		
 		if (controleJogo.getPilotoJogador() != null) {
 			tpAsa = controleJogo.getPilotoJogador().getAsaBox();
 		}
@@ -4561,6 +4412,8 @@ public class PainelCircuito {
 			dano = pilotoSelecionado.getCarro().getDanificado();
 		}
 		if ((dano == null || "".equals(dano))
+				&& pneus > 25
+				&& porcentComb > 25
 				&& !pilotoSelecionado.isAlertaAerefolio()
 				&& !pilotoSelecionado.isAlertaMotor()) {
 			return;

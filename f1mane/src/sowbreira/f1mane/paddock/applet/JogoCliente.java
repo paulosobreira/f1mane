@@ -945,7 +945,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public int percetagemDeVoltaCompletada(Piloto pilotoSelecionado) {
+	public int percetagemDeVoltaConcluida(Piloto pilotoSelecionado) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

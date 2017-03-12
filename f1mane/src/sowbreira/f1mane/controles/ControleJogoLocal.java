@@ -150,7 +150,7 @@ public class ControleJogoLocal extends ControleRecursos
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getNosDoBox()
 	 */
-	public List getNosDoBox() {
+	public List<No> getNosDoBox() {
 		return nosDoBox;
 	}
 
@@ -278,7 +278,7 @@ public class ControleJogoLocal extends ControleRecursos
 		if (controleCorrida == null) {
 			return 0;
 		}
-		return controleCorrida.porcentagemCorridaCompletada();
+		return controleCorrida.porcentagemCorridaConcluida();
 	}
 
 	/**
@@ -492,7 +492,6 @@ public class ControleJogoLocal extends ControleRecursos
 			});
 			nvolta.start();
 		}
-		Integer porcentagemCorridaCompletada = porcentagemCorridaConcluida();
 	}
 
 	/**
@@ -1068,7 +1067,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public int percetagemDeVoltaCompletada(Piloto pilotoSelecionado) {
+	public int percetagemDeVoltaConcluida(Piloto pilotoSelecionado) {
 		if (circuito == null) {
 			return 0;
 		}
@@ -1590,7 +1589,7 @@ public class ControleJogoLocal extends ControleRecursos
 		buffer.append("isBoxRapido = " + this.isBoxRapido() + "<br>");
 		buffer.append("verificaPistaEmborrachada = "
 				+ this.verificaPistaEmborrachada() + "<br>");
-		buffer.append("porcentagemCorridaCompletada = "
+		buffer.append("porcentagemCorridaConcluida = "
 				+ this.porcentagemCorridaConcluida() + "<br>");
 		buffer.append("getFatorUtrapassagem = " + this.getFatorUtrapassagem()
 				+ "<br>");

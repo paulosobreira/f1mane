@@ -152,14 +152,14 @@ public class ControleClassificacao {
 
 	public void processarPontos(Map mapVoltasJogadoresOnline, Piloto piloto, CorridasDadosSrv corridasDadosSrv) {
 		double numVoltas = corridasDadosSrv.getNumVoltas();
-		double voltasCompletadas = 0;
+		double voltasConcluidas = 0;
 		for (Iterator iterMaster = mapVoltasJogadoresOnline.keySet().iterator(); iterMaster.hasNext();) {
 			Integer lap = (Integer) iterMaster.next();
 			List voltas = (List) mapVoltasJogadoresOnline.get(lap);
 			for (Iterator iter = voltas.iterator(); iter.hasNext();) {
 				VoltaJogadorOnline jogadorOnline = (VoltaJogadorOnline) iter.next();
 				if (jogadorOnline.getJogador().equals(piloto.getNomeJogador())) {
-					voltasCompletadas++;
+					voltasConcluidas++;
 					if (!jogadorOnline.getPiloto().equals(piloto.getNome())) {
 						corridasDadosSrv.setMudouCarro(true);
 					}
@@ -167,14 +167,14 @@ public class ControleClassificacao {
 				}
 			}
 		}
-		if (voltasCompletadas >= numVoltas) {
-			voltasCompletadas = numVoltas;
+		if (voltasConcluidas >= numVoltas) {
+			voltasConcluidas = numVoltas;
 		}
 
 		if (corridasDadosSrv.isMudouCarro()) {
 			corridasDadosSrv.setPontos(0);
 		} else {
-			double porcent = voltasCompletadas / numVoltas;
+			double porcent = voltasConcluidas / numVoltas;
 			corridasDadosSrv.setPorcentConcluida((int) (porcent * 100));
 			int pontos = (int) (porcent * corridasDadosSrv.getPontos());
 			if (InterfaceJogo.FACIL.equals(corridasDadosSrv.getNivel())) {

@@ -51,7 +51,7 @@ public interface InterfaceJogo {
 
 	public void setCorridaTerminada(boolean corridaTerminada);
 
-	public List getNosDoBox();
+	public List<No> getNosDoBox();
 
 	public MainFrame getMainFrame();
 
@@ -252,7 +252,7 @@ public interface InterfaceJogo {
 
 	public int calculaDiferencaParaAnterior(Piloto piloto);
 
-	public int percetagemDeVoltaCompletada(Piloto pilotoSelecionado);
+	public int percetagemDeVoltaConcluida(Piloto pilotoSelecionado);
 
 	public boolean verirficaDesafiandoCampeonato(Piloto piloto);
 

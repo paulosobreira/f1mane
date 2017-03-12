@@ -59,8 +59,8 @@ public class Circuito implements Serializable {
 		this.nome = nome;
 	}
 
-	public List geraPontosPista() {
-		List arrayList = new ArrayList();
+	public List<No> geraPontosPista() {
+		List<No> arrayList = new ArrayList<No>();
 		No noAnt = null;
 
 		for (Iterator iter = pista.iterator(); iter.hasNext();) {
@@ -69,9 +69,8 @@ public class Circuito implements Serializable {
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
-				arrayList.addAll(converterPointNo(
-						GeoUtil.drawBresenhamLine(noAnt.getPoint(),
-								no.getPoint()), noAnt));
+				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
+						noAnt.getPoint(), no.getPoint()), noAnt));
 				noAnt = no;
 			}
 		}
@@ -160,8 +159,8 @@ public class Circuito implements Serializable {
 			p1.x *= multi;
 			p1.y *= multi;
 			pistaKey.add(noAnt);
-			pistaFull.addAll(converterPointNo(
-					GeoUtil.drawBresenhamLine(p1, p2), noAnt));
+			pistaFull.addAll(
+					converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
 		}
 		for (int i = 0; i < pistaFull.size(); i++) {
@@ -215,8 +214,8 @@ public class Circuito implements Serializable {
 			p1.x *= multi;
 			p1.y *= multi;
 			boxKey.add(noAnt);
-			boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2),
-					noAnt));
+			boxFull.addAll(
+					converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
 		}
 		for (int i = 0; i < boxFull.size(); i++) {
@@ -272,9 +271,8 @@ public class Circuito implements Serializable {
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
-				arrayList.addAll(converterPointNo(
-						GeoUtil.drawBresenhamLine(noAnt.getPoint(),
-								no.getPoint()), noAnt));
+				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
+						noAnt.getPoint(), no.getPoint()), noAnt));
 				noAnt = no;
 			}
 		}
@@ -289,11 +287,11 @@ public class Circuito implements Serializable {
 		return arrayList;
 	}
 
-	public Collection converterPointNo(List list, No no) {
-		List retorno = new ArrayList();
+	public Collection<No> converterPointNo(List<Point> list, No no) {
+		List<No> retorno = new ArrayList<No>();
 
-		for (Iterator iter = list.iterator(); iter.hasNext();) {
-			Point element = (Point) iter.next();
+		for (Iterator<Point> iter = list.iterator(); iter.hasNext();) {
+			Point element = iter.next();
 			No newNo = new No();
 			newNo.setPoint(element);
 			newNo.setTipo(no.getTipo());
@@ -332,7 +330,7 @@ public class Circuito implements Serializable {
 	}
 
 	public double getMultiplciador() {
-		//return multiplicadorPista;
+		// return multiplicadorPista;
 		return 9;
 	}
 

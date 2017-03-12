@@ -45,14 +45,14 @@ public class ControleQualificacao {
 	}
 
 	public void gerarGridLargada() {
-		modoQualify=true;
+		modoQualify = true;
 		gerarQualificacaoAleatoria();
 		Logger.logar("gerarQualificacaoAleatoria();");
 		gerarVoltaQualificacaoAleatoria();
 		Logger.logar("gerarVoltaQualificacaoAleatoria();");
 		posicionarCarrosLargada();
 		Logger.logar("gerarVoltaQualificacaoAleatoria();");
-		modoQualify=false;
+		modoQualify = false;
 	}
 
 	private void gerarVoltaQualificacaoAleatoria() {
@@ -161,72 +161,68 @@ public class ControleQualificacao {
 
 	}
 
-	private void nivelaHabilidade(List pilotos) {
-		Collections.sort(pilotos, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				Piloto piloto0 = (Piloto) arg0;
-				Piloto piloto1 = (Piloto) arg1;
-				return new Integer(piloto0.getHabilidade())
-						.compareTo(new Integer(piloto1.getHabilidade()));
+	private void nivelaHabilidade(List<Piloto> pilotos) {
+		int valor = 0;
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			piloto.setHabilidadeAntesQualify(piloto.getHabilidade());
+			valor += piloto.getHabilidade();
+		}
+		valor = valor / pilotos.size();
+
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			int diff = 0;
+			if (piloto.getHabilidade() > valor) {
+				diff = piloto.getHabilidade() - valor;
+				piloto.setHabilidade(
+						piloto.getHabilidade() - Util.intervalo(diff/2, diff));
+			} else {
+				diff = valor - piloto.getHabilidade();
+				piloto.setHabilidade(
+						piloto.getHabilidade() + Util.intervalo(diff/2, diff));
 			}
-		});
-		int limite = -1;
-		Piloto ant = null;
-		int maiorDiff = 0;
-		while (maiorDiff > limite) {
-			limite = Util.intervalo(1, 5);
-			maiorDiff = 0;
-			ant = null;
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				if (ant != null) {
-					int diff = piloto.getHabilidade() - ant.getHabilidade();
-					if (diff > limite) {
-						ant.setHabilidadeAntesQualify(ant.getHabilidade());
-						ant.setHabilidade(piloto.getHabilidade() - limite);
-					}
-					if (diff > maiorDiff) {
-						maiorDiff = diff;
-					}
-				}
-				ant = piloto;
-			}
+
+		}
+		Logger.logar("-----------------=====nivelaHabilidade=====----------------");
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			Logger.logar(piloto.toString() + " HabilidadeAntesQualify : "
+					+ piloto.getHabilidadeAntesQualify() + " Habilidade: "
+					+ piloto.getHabilidade());
 		}
 	}
 
-	private void nivelaPontecia(List pilotos) {
-		Collections.sort(pilotos, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				Piloto piloto0 = (Piloto) arg0;
-				Piloto piloto1 = (Piloto) arg1;
-				return new Integer(piloto0.getCarro().getPotencia()).compareTo(
-						new Integer(piloto1.getCarro().getPotencia()));
+	private void nivelaPontecia(List<Piloto> pilotos) {
+		int valor = 0;
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			piloto.getCarro().setPotenciaAntesQualify(
+					piloto.getCarro().getPotencia());
+			valor += piloto.getCarro().getPotencia();
+		}
+		valor = valor / pilotos.size();
+
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			int diff = 0;
+			if (piloto.getCarro().getPotencia() > valor) {
+				diff = piloto.getCarro().getPotencia() - valor;
+				piloto.getCarro().setPotencia(
+						piloto.getCarro().getPotencia() - Util.intervalo(diff/2, diff));
+			} else {
+				diff = valor - piloto.getCarro().getPotencia();
+				piloto.getCarro().setPotencia(
+						piloto.getCarro().getPotencia() + Util.intervalo(diff/2, diff));
 			}
-		});
-		int limite = -1;
-		Piloto ant = null;
-		int maiorDiff = 0;
-		while (maiorDiff > limite) {
-			limite = Util.intervalo(1, 5);
-			maiorDiff = 0;
-			ant = null;
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				if (ant != null) {
-					int diff = piloto.getCarro().getPotencia()
-							- ant.getCarro().getPotencia();
-					if (diff > limite) {
-						ant.getCarro().setPotenciaAntesQualify(
-								ant.getCarro().getPotencia());
-						ant.getCarro().setPotencia(
-								piloto.getCarro().getPotencia() - limite);
-					}
-					if (diff > maiorDiff) {
-						maiorDiff = diff;
-					}
-				}
-				ant = piloto;
-			}
+
+		}
+		Logger.logar("-----------------=====nivelaPontecia=====----------------");
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			Logger.logar(piloto.toString() + " getPotenciaAntesQualify : "
+					+ piloto.getCarro().getPotenciaAntesQualify() + " getPotencia: "
+					+ piloto.getCarro().getPotencia());
 		}
 	}
 

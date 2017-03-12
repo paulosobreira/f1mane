@@ -26,6 +26,7 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import sowbreira.f1mane.visao.PainelCircuito;
 
 /**
  * @author Paulo Sobreira
@@ -555,6 +556,10 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setRecebeuBanderada(InterfaceJogo controleJogo) {
 		if (!this.recebeuBanderada) {
+			System.out.println(this.toString() + " Pts " + getPtosPista());
+			setPtosPista(getPtosPista() + (100 * (25 - getPosicao())));
+			System.out
+					.println(this.toString() + " Pts Depois " + getPtosPista());
 			if (this.getPosicao() == 1) {
 				controleJogo.infoPrioritaria(
 						Html.superBlack(getNome()) + Html.superGreen(
@@ -775,6 +780,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (controleJogo.isCorridaTerminada()) {
 				setRecebeuBanderada(controleJogo);
 			}
+			if (getHabilidadeAntesQualify() > getHabilidade()) {
+				setHabilidade(getHabilidade() + 1);
+			}
 			setNumeroVolta(getNumeroVolta() + 1);
 			processaAjustesPosQualificacao(
 					Constantes.MAX_VOLTAS / controleJogo.totalVoltasCorrida());
@@ -887,8 +895,15 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 
 		}
+		boolean boxPneus = false;
+		if (Carro.TIPO_PNEU_MOLE.equals(getCarro().getTipoPneu())
+				&& pneus < 20) {
+			boxPneus = true;
+		} else if (pneus < 15) {
+			boxPneus = true;
+		}
 
-		if (pneus < 20) {
+		if (boxPneus) {
 			if (voltas.size() > 3) {
 				Volta voltaUltima = voltas.get(voltas.size() - 1);
 				Volta voltaPenultima = voltas.get(voltas.size() - 2);
@@ -910,9 +925,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 		}
 
-		int limiteUltimasVoltas = 90;
+		int limiteUltimasVoltas = 80;
 		if (controleJogo.isBoxRapido()) {
-			limiteUltimasVoltas = 95;
+			limiteUltimasVoltas = 85;
 		}
 
 		if (box && corrida > limiteUltimasVoltas && getQtdeParadasBox() > 0) {
@@ -937,7 +952,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			box = false;
 		}
 
-		if (controleJogo.getNumVoltaAtual() < 1) {
+		if (controleJogo.getNumVoltaAtual() < 0) {
 			box = false;
 		}
 
@@ -1598,7 +1613,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			getCarro().setGiro(Carro.GIRO_NOR_VAL);
 			setModoPilotagem(NORMAL);
 		}
-
+		if (ativarDRS) {
+			getCarro().setGiro(Carro.GIRO_MAX_VAL);
+		}
 		if (getCarro().verificaCondicoesCautelaGiro(controleJogo)
 				|| entrouNoBox()) {
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
@@ -1644,7 +1661,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 		} else if (limiteStress
 				&& (calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
-						|| calculaDiffParaProximoRetardatarioMesmoTracado < 150)) {
+						&& calculaDiffParaProximoRetardatarioMesmoTracado < (testeHabilidadePilotoCarro()
+								? 150
+								: 200))) {
 			controleJogo.fazPilotoMudarTracado(this,
 					carroPilotoDaFrenteRetardatario.getPiloto());
 		} else if (!isJogadorHumano() && carroPilotoAtras != null
@@ -1710,13 +1729,13 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (noAtual == null) {
 			return;
 		}
-		int percetagemDeVoltaCompletada = controleJogo
-				.percetagemDeVoltaCompletada(this);
-		if (percetagemDeVoltaCompletada > 50
+		int percetagemDeVoltaConcluida = controleJogo
+				.percetagemDeVoltaConcluida(this);
+		if (percetagemDeVoltaConcluida > 50
 				&& noAtual.verificaRetaOuLargada()) {
 			ativarErs = true;
 		}
-		if (percetagemDeVoltaCompletada > 70) {
+		if (percetagemDeVoltaConcluida > 70) {
 			ativarErs = true;
 		}
 	}
@@ -3133,7 +3152,22 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void atualizaInfoDebug(StringBuffer buffer) {
 		Field[] declaredFields = Piloto.class.getDeclaredFields();
-		buffer.append("-=Piloto=- <br>");
+		buffer.append("---====Piloto====--- <br>");
+		buffer.append(" GanhosAlta   "
+				+ PainelCircuito.df4.format(getMedGanhosAlta()) + "<br>");
+
+		buffer.append(" GanhosBaixa  "
+				+ PainelCircuito.df4.format(getMedGanhosBaixa()));
+
+		buffer.append(" GanhosReta   "
+				+ PainelCircuito.df4.format(getMedGanhosReta()) + "<br>");
+
+		buffer.append(" DiffSuaveReal "
+				+ (getNoAtual().getIndex() - (getNoAtualSuave() != null
+						? getNoAtualSuave().getIndex()
+						: 0))
+				+ "<br>");
+
 		for (Field field : declaredFields) {
 			try {
 				Object object = field.get(this);

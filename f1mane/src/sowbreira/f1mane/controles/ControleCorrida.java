@@ -417,7 +417,7 @@ public class ControleCorrida {
 		// System.out.println(Util.intervalo(0.1, 0.9));
 	}
 
-	public int porcentagemCorridaCompletada() {
+	public int porcentagemCorridaConcluida() {
 		Piloto piloto = controleJogo.getPilotosCopia().get(0);
 		double vol = piloto.getNumeroVolta();
 		double tot = getQtdeTotalVoltas();

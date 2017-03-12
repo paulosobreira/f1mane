@@ -37,9 +37,9 @@ import br.nnpe.Util;
 public abstract class ControleRecursos {
 	protected Circuito circuito;
 	protected List<Piloto> pilotos = new ArrayList<Piloto>();
-	protected List nosDaPista = new ArrayList();
-	protected List nosDoBox = new ArrayList();
-	protected List carros;
+	protected List<No> nosDaPista = new ArrayList<No>();
+	protected List<No> nosDoBox = new ArrayList<No>();
+	protected List<Carro> carros;
 	protected List<NoWrapper> pistaWrapperFull = new ArrayList<NoWrapper>();
 	protected List<NoWrapper> boxWrapperFull = new ArrayList<NoWrapper>();
 	protected CarregadorRecursos carregadorRecursos;
@@ -205,9 +205,11 @@ public abstract class ControleRecursos {
 			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
 					base.getType());
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), modelo + "CarroCimaC1.png",base.getType());
+					carro.getCor1(), modelo + "CarroCimaC1.png",
+					base.getType());
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), modelo + "CarroCimaC3.png",base.getType());
+					carro.getCor2(), modelo + "CarroCimaC3.png",
+					base.getType());
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(base, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);
@@ -221,11 +223,11 @@ public abstract class ControleRecursos {
 	public BufferedImage obterCarroCima(Piloto piloto) {
 		String modelo = "cima20092016/";
 		Integer anoTemporada = new Integer(temporada.replace("t", ""));
-		if(anoTemporada<2009){
-			 modelo = "cima19982008/";	
+		if (anoTemporada < 2009) {
+			modelo = "cima19982008/";
 		}
-		if(anoTemporada<=1997){
-			 modelo = "cima19801997/";	
+		if (anoTemporada <= 1997) {
+			modelo = "cima19801997/";
 		}
 		Carro carro = piloto.getCarro();
 		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
@@ -238,9 +240,11 @@ public abstract class ControleRecursos {
 			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
 					base.getType());
 			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), modelo + "CarroCimaC1.png",base.getType());
+					carro.getCor1(), modelo + "CarroCimaC1.png",
+					base.getType());
 			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), modelo + "CarroCimaC2.png",base.getType());
+					carro.getCor2(), modelo + "CarroCimaC2.png",
+					base.getType());
 			Graphics graphics = carroCima.getGraphics();
 			graphics.drawImage(base, 0, 0, null);
 			graphics.drawImage(cor2, 0, 0, null);
@@ -528,8 +532,15 @@ public abstract class ControleRecursos {
 	public int porcentagemChuvaCircuito(String circuito) {
 		ObjectInputStream ois;
 		try {
-			ois = new ObjectInputStream(carregadorRecursos.getClass()
-					.getResourceAsStream(circuitos.get(circuito)));
+			if (circuitos == null || circuitos.isEmpty()) {
+				return 0;
+			}
+			String string = circuitos.get(circuito);
+			if (string == null) {
+				return 0;
+			}
+			ois = new ObjectInputStream(
+					carregadorRecursos.getClass().getResourceAsStream(string));
 			Circuito circuitoObj = (Circuito) ois.readObject();
 			return circuitoObj.getProbalidadeChuva();
 		} catch (Exception e) {
