@@ -114,7 +114,8 @@ public class ControleEstatisticas {
 		volta.setCiclosInicio(System.currentTimeMillis());
 		piloto.setVoltaAtual(volta);
 	}
-
+	
+	
 	private void verificaVoltaMaisRapidaPiloto(Piloto piloto) {
 		Volta voltaAtual = piloto.getVoltaAtual();
 		boolean teveMelhor = false;

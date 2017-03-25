@@ -1191,11 +1191,11 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public List listaInfo() {
+	public List<String> listaInfo() {
 		if (gerenciadorVisual != null) {
 			return gerenciadorVisual.getBufferTextual();
 		}
-		return new ArrayList();
+		return new ArrayList<String>();
 	}
 
 	@Override
@@ -1250,7 +1250,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public boolean isCorridaPausada() {
+	public boolean isJogoPausado() {
 		return controleCorrida.isCorridaPausada();
 	}
 

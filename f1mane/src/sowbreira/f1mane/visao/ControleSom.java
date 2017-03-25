@@ -16,32 +16,34 @@ import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 public class ControleSom {
 
-	private static Clip clipVeloMax;
 	private static Clip clipLargada;
-	private static Clip clipVeloMed;
-	private static Clip roncoClip;
-	private static Clip clipRedo;
-	private static Clip clipAcel;
-	private static long lastCall;
-	public static boolean somLigado = false;
-	private static Clip clipVeloMaxFinal;
+	private static Clip clipReducao;
+	private static Clip clipAceleracao;
+	private static Clip clipReducao1;
+	private static Clip clipAceleracao1;
+	private static Clip clipReducao2;
+	private static Clip clipAceleracao2;
+	public static boolean somLigado = true;
 	private static Clip clipBox;
-	private static float volume = -20f;
+	private static Clip clipSafetyCar;
+	private static Clip clipPararBox;
+	private static float volume = -15f;
+	private static Piloto psAnt;
+	private static No noAnterior;
 
-	public static void main(String[] args) throws InterruptedException,
-			UnsupportedAudioFileException, IOException,
-			LineUnavailableException {
+	public static void main(String[] args)
+			throws InterruptedException, UnsupportedAudioFileException,
+			IOException, LineUnavailableException {
 		iniciaVars();
 		final int l1 = clipLargada.getFrameLength();
-		final int l2 = clipVeloMed.getFrameLength();
-		final int l3 = clipVeloMax.getFrameLength();
-		final int l4 = clipRedo.getFrameLength();
-		final int l5 = clipAcel.getFrameLength();
+		final int l4 = clipReducao1.getFrameLength();
+		final int l5 = clipAceleracao1.getFrameLength();
 		Thread thread = new Thread() {
 			public void run() {
 				while (true) {
@@ -50,32 +52,33 @@ public class ControleSom {
 					} catch (InterruptedException e) {
 						Logger.logarExept(e);
 					}
-					if (clipLargada.getFramePosition() == 0) {
-						clipLargada.start();
-						System.out.println("clipLargada.start();");
-					}
-					if (0 == clipVeloMed.getFramePosition()
-							&& clipLargada.getFramePosition() == l1) {
-						clipVeloMed.start();
-						System.out.println("clipVeloMed.start();");
-					}
-					if (0 == clipVeloMax.getFramePosition()
-							&& clipVeloMed.getFramePosition() == l2) {
-						clipVeloMax.start();
-						System.out.println("clipVeloMax.start();");
+					/*
+					 * if (0 == clipReducao.getFramePosition() &&
+					 * !clipReducao.isActive()) { clipReducao.start();
+					 * System.out.println("clipRedo.start();");
+					 * System.out.println(clipReducao.getFrameLength()); } if (0
+					 * == clipAceleracao.getFramePosition() &&
+					 * !clipAceleracao.isActive() &&
+					 * clipReducao.getFramePosition() > 202000) {
+					 * clipAceleracao.start();
+					 * System.out.println("clipAcel.start();");
+					 * System.out.println(clipAceleracao.getFrameLength()); }
+					 */
 
-					}
-					if (0 == clipRedo.getFramePosition()
-							&& clipVeloMax.getFramePosition() == l3) {
-						clipRedo.start();
-						System.out.println("clipRedo.start();");
-					}
-					if (0 == clipAcel.getFramePosition()
-							&& clipRedo.getFramePosition() == l4) {
-						clipAcel.start();
+					if (0 == clipAceleracao1.getFramePosition()
+							&& !clipAceleracao1.isActive()) {
+						clipAceleracao1.start();
 						System.out.println("clipAcel.start();");
+						System.out.println(clipAceleracao1.getFrameLength());
 					}
-
+					if (0 == clipReducao1.getFramePosition()
+							&& !clipReducao1.isActive()
+							&& clipAceleracao1.getFramePosition() > 700000) {
+						clipReducao1.start();
+						clipAceleracao1.stop();
+						System.out.println("clipRedo.start();");
+						System.out.println(clipReducao1.getFrameLength());
+					}
 				}
 			};
 		};
@@ -84,117 +87,108 @@ public class ControleSom {
 
 	public static void somVelocidade(Piloto ps, InterfaceJogo controleJogo,
 			PainelCircuito painelCircuito) {
-		int velocidade = ps.getVelocidadeExibir();
-		if (lastCall == 0) {
-			lastCall = System.currentTimeMillis();
-		} else if (lastCall + (20 + Constantes.CICLO) > System
-				.currentTimeMillis()) {
-			return;
+		if (!clipLargada.isRunning()
+				&& painelCircuito.getQtdeLuzesAcesas() > 0) {
+			clipLargada.start();
 		}
-		if (!roncoClip.isRunning() && velocidade == 0
-				&& painelCircuito.getQtdeLuzesAcesas() < 5) {
-			roncoClip.loop(2);
-			roncoClip.start();
-		}
-		if (painelCircuito.getQtdeLuzesAcesas() <= 0) {
-			roncoClip.stop();
+		if (clipLargada.isRunning()
+				&& painelCircuito.getQtdeLuzesAcesas() <= 0) {
+			clipAceleracao.start();
+			clipLargada.stop();
 		}
 		try {
-			if (ps.getPtosBox() != 0) {
-				clipBox.loop(Clip.LOOP_CONTINUOUSLY);
-				clipBox.start();
+			if (ps == null) {
+				return;
+			}
+			if(painelCircuito.getQtdeLuzesAcesas() > 0){
+				return;
+			}
+			if (ps.isRecebeuBanderada()) {
+				if (!clipBox.isRunning()) {
+					paraTudo();
+					clipBox.loop(Clip.LOOP_CONTINUOUSLY);
+					clipBox.start();
+				}
+				return;
 			} else {
 				clipBox.stop();
 			}
-			if (!tocandoClip() && painelCircuito.getQtdeLuzesAcesas() <= 0
-					&& velocidade > 0 && velocidade <= 60) {
-				clipLargada.setFramePosition(0);
-				clipLargada.start();
-			} else if (!tocandoClip() && velocidade > 60) {
-				int inter = Util.intervalo(0, 2);
-				if (inter == 0 && Math.random() > 0.5) {
-					inter = Util.intervalo(1, 2);
+			if (!ps.equals(psAnt)) {
+				psAnt = ps;
+				noAnterior = ps.getNoAtualSuave();
+				return;
+			}
+			if (ps.getPtosBox() != 0) {
+				clipReducao.stop();
+				clipAceleracao.stop();
+				if (!clipBox.isRunning() && ps.getVelocidade() != 0) {
+					clipBox.setFramePosition(0);
+					clipBox.start();
 				}
-				switch (inter) {
-				case 0:
-					clipVeloMed.setFramePosition(0);
-					clipVeloMed.start();
-					break;
-				case 1:
-					clipVeloMax.setFramePosition(0);
-					clipVeloMax.start();
-					break;
-				case 2:
-					clipVeloMaxFinal.setFramePosition(0);
-					clipVeloMaxFinal.start();
-					break;
-
-				default:
-					break;
+				if (ps.getVelocidade() == 0 && !clipPararBox.isRunning()) {
+					clipBox.stop();
+					clipPararBox.setFramePosition(0);
+					clipPararBox.start();
 				}
-
+				if (clipPararBox.isRunning() && ps.getVelocidade() != 0) {
+					clipPararBox.stop();
+					clipBox.setFramePosition(0);
+					clipBox.start();
+				}
+			} else {
+				if (controleJogo.isSafetyCarNaPista()) {
+					if (!clipSafetyCar.isRunning()) {
+						paraTudo();
+						clipSafetyCar.loop(Clip.LOOP_CONTINUOUSLY);
+						clipSafetyCar.start();
+					}
+					return;
+				} else {
+					if (clipSafetyCar.isRunning()) {
+						clipSafetyCar.stop();
+						clipAceleracao.setFramePosition(0);
+						clipAceleracao.start();
+					}
+				}
+				clipBox.stop();
+				if (!clipAceleracao.isRunning()
+						&& !noAnterior.verificaRetaOuLargada()
+						&& ps.getNoAtual().verificaRetaOuLargada()) {
+					clipReducao.stop();
+					clipAceleracao.stop();
+					clipAceleracao = Math.random() > .5
+							? clipAceleracao1
+							: clipAceleracao2;
+					clipAceleracao.setFramePosition(0);
+					clipAceleracao.start();
+				}
+				if (!clipReducao.isRunning()
+						&& noAnterior.verificaRetaOuLargada()
+						&& !ps.getNoAtual().verificaRetaOuLargada()) {
+					clipAceleracao.stop();
+					clipReducao.stop();
+					if (ps.getNoAtual().verificaCruvaBaixa()) {
+						clipReducao = clipReducao1;
+					}
+					if (ps.getNoAtual().verificaCruvaAlta()) {
+						clipReducao = clipReducao2;
+					}
+					clipReducao.setFramePosition(0);
+					clipReducao.start();
+				}
 			}
-
-			int diffVelo = (ps.getVelocidadeExibir() - ps.getVelocidadeAnterior());
-			if (Math.random() > 0.5 && !tocandoClip() && !clipAcel.isRunning()
-					&& ps.getPtosBox() == 0
-					&& painelCircuito.getQtdeLuzesAcesas() <= 0
-					&& diffVelo > 40) {
-				clipAcel.setFramePosition(0);
-				clipAcel.start();
-			}
-			if (Math.random() > 0.5 && !tocandoClip() && !clipRedo.isRunning()
-					&& ps.getPtosBox() == 0
-					&& painelCircuito.getQtdeLuzesAcesas() <= 0
-					&& diffVelo < -40) {
-				clipRedo.setFramePosition(0);
-				clipRedo.start();
-			}
-			if (ps.getVelocidade() != 1)
-				ps.setVelocidadeAnterior(ps.getVelocidadeExibir());
+			noAnterior = ps.getNoAtual();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
-		lastCall = System.currentTimeMillis();
-	}
-
-	private static boolean tocandoClip() {
-
-		boolean tocando = false;
-
-		double frameLength = (double) clipLargada.getFrameLength();
-		double val = (clipLargada.getFramePosition() / frameLength);
-		if (val > 0 && val < 1) {
-			tocando = true;
-		}
-
-		frameLength = (double) clipVeloMax.getFrameLength();
-		val = (clipVeloMax.getFramePosition() / frameLength);
-		if (val > 0.1 && val < Util.intervalo(0.7, 0.9)) {
-			tocando = true;
-		}
-
-		frameLength = (double) clipVeloMaxFinal.getFrameLength();
-		val = (clipVeloMaxFinal.getFramePosition() / frameLength);
-		if (val > 0.1 && val < Util.intervalo(0.7, 0.9)) {
-			tocando = true;
-		}
-
-		frameLength = (double) clipVeloMed.getFrameLength();
-		val = (clipVeloMed.getFramePosition() / frameLength);
-		if (val > 0.1 && val < Util.intervalo(0.7, 0.9)) {
-			tocando = true;
-		}
-		return tocando;
 	}
 
 	private static void iniciaVars() throws UnsupportedAudioFileException,
 			IOException, LineUnavailableException {
 		if (clipBox == null) {
-			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
-					.recursoComoStream("box.wav"));
-			AudioInputStream box = AudioSystem
-					.getAudioInputStream(bufferedIn);
+			InputStream bufferedIn = new BufferedInputStream(
+					CarregadorRecursos.recursoComoStream("entroubox.wav"));
+			AudioInputStream box = AudioSystem.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class, box.getFormat());
 			clipBox = (Clip) AudioSystem.getLine(info);
 			clipBox.open(box);
@@ -203,51 +197,33 @@ public class ControleSom {
 			gainControl.setValue(volume);
 
 		}
-
-		if (clipVeloMaxFinal == null) {
-			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
-					.recursoComoStream("highMax.wav"));
-			AudioInputStream veloMaxFinal = AudioSystem
-					.getAudioInputStream(bufferedIn);
-			DataLine.Info info = new DataLine.Info(Clip.class,
-					veloMaxFinal.getFormat());
-			clipVeloMaxFinal = (Clip) AudioSystem.getLine(info);
-			clipVeloMaxFinal.open(veloMaxFinal);
-			FloatControl gainControl = (FloatControl) clipVeloMaxFinal
+		if (clipSafetyCar == null) {
+			InputStream bufferedIn = new BufferedInputStream(
+					CarregadorRecursos.recursoComoStream("entroubox.wav"));
+			AudioInputStream box = AudioSystem.getAudioInputStream(bufferedIn);
+			DataLine.Info info = new DataLine.Info(Clip.class, box.getFormat());
+			clipSafetyCar = (Clip) AudioSystem.getLine(info);
+			clipSafetyCar.open(box);
+			FloatControl gainControl = (FloatControl) clipSafetyCar
 					.getControl(FloatControl.Type.MASTER_GAIN);
 			gainControl.setValue(volume);
 
 		}
-		if (clipVeloMax == null) {
-			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
-					.recursoComoStream("high.wav"));
-			AudioInputStream veloMax = AudioSystem
-					.getAudioInputStream(bufferedIn);
-			DataLine.Info info = new DataLine.Info(Clip.class,
-					veloMax.getFormat());
-			clipVeloMax = (Clip) AudioSystem.getLine(info);
-			clipVeloMax.open(veloMax);
-			FloatControl gainControl = (FloatControl) clipVeloMax
+		if (clipPararBox == null) {
+			InputStream bufferedIn = new BufferedInputStream(
+					CarregadorRecursos.recursoComoStream("pararbox.wav"));
+			AudioInputStream box = AudioSystem.getAudioInputStream(bufferedIn);
+			DataLine.Info info = new DataLine.Info(Clip.class, box.getFormat());
+			clipPararBox = (Clip) AudioSystem.getLine(info);
+			clipPararBox.open(box);
+			FloatControl gainControl = (FloatControl) clipPararBox
 					.getControl(FloatControl.Type.MASTER_GAIN);
 			gainControl.setValue(volume);
 
-		}
-		if (clipVeloMed == null) {
-			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
-					.recursoComoStream("med.wav"));
-			AudioInputStream veloMed = AudioSystem
-					.getAudioInputStream(bufferedIn);
-			DataLine.Info info = new DataLine.Info(Clip.class,
-					veloMed.getFormat());
-			clipVeloMed = (Clip) AudioSystem.getLine(info);
-			clipVeloMed.open(veloMed);
-			FloatControl gainControl = (FloatControl) clipVeloMed
-					.getControl(FloatControl.Type.MASTER_GAIN);
-			gainControl.setValue(volume);
 		}
 		if (clipLargada == null) {
-			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
-					.recursoComoStream("largada.wav"));
+			InputStream bufferedIn = new BufferedInputStream(
+					CarregadorRecursos.recursoComoStream("largada.wav"));
 			AudioInputStream veloBaixa = AudioSystem
 					.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class,
@@ -258,55 +234,63 @@ public class ControleSom {
 					.getControl(FloatControl.Type.MASTER_GAIN);
 			gainControl.setValue(volume);
 		}
-		if (roncoClip == null) {
-			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
-					.recursoComoStream("ronco.wav"));
-			AudioInputStream ronco = AudioSystem
-					.getAudioInputStream(bufferedIn);
+		if (clipReducao1 == null) {
+			InputStream bufferedIn = new BufferedInputStream(
+					CarregadorRecursos.recursoComoStream("reducao1.wav"));
+			AudioInputStream redo = AudioSystem.getAudioInputStream(bufferedIn);
 			DataLine.Info info = new DataLine.Info(Clip.class,
-					ronco.getFormat());
-			roncoClip = (Clip) AudioSystem.getLine(info);
-			roncoClip.open(ronco);
-			FloatControl gainControl = (FloatControl) roncoClip
+					redo.getFormat());
+			clipReducao1 = (Clip) AudioSystem.getLine(info);
+			clipReducao1.open(redo);
+			FloatControl gainControl = (FloatControl) clipReducao1
 					.getControl(FloatControl.Type.MASTER_GAIN);
 			gainControl.setValue(volume);
 		}
-		if (clipRedo == null) {
-			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
-					.recursoComoStream("redo.wav"));
-			AudioInputStream redo = AudioSystem
-					.getAudioInputStream(bufferedIn);
-			DataLine.Info info = new DataLine.Info(Clip.class, redo.getFormat());
-			clipRedo = (Clip) AudioSystem.getLine(info);
-			clipRedo.open(redo);
-			FloatControl gainControl = (FloatControl) clipRedo
-					.getControl(FloatControl.Type.MASTER_GAIN);
-			gainControl.setValue(-10f);
-		}
-		if (clipAcel == null) {
-			InputStream bufferedIn = new BufferedInputStream(CarregadorRecursos
-					.recursoComoStream("acel.wav"));
-			AudioInputStream acel = AudioSystem
-					.getAudioInputStream(bufferedIn);
-			DataLine.Info info = new DataLine.Info(Clip.class, acel.getFormat());
-			clipAcel = (Clip) AudioSystem.getLine(info);
-			clipAcel.open(acel);
-			FloatControl gainControl = (FloatControl) clipAcel
+		if (clipAceleracao1 == null) {
+			InputStream bufferedIn = new BufferedInputStream(
+					CarregadorRecursos.recursoComoStream("aceleracao1.wav"));
+			AudioInputStream acel = AudioSystem.getAudioInputStream(bufferedIn);
+			DataLine.Info info = new DataLine.Info(Clip.class,
+					acel.getFormat());
+			clipAceleracao1 = (Clip) AudioSystem.getLine(info);
+			clipAceleracao1.open(acel);
+			FloatControl gainControl = (FloatControl) clipAceleracao1
 					.getControl(FloatControl.Type.MASTER_GAIN);
 			gainControl.setValue(volume);
+		}
+		if (clipReducao2 == null) {
+			InputStream bufferedIn = new BufferedInputStream(
+					CarregadorRecursos.recursoComoStream("reducao2.wav"));
+			AudioInputStream redo = AudioSystem.getAudioInputStream(bufferedIn);
+			DataLine.Info info = new DataLine.Info(Clip.class,
+					redo.getFormat());
+			clipReducao2 = (Clip) AudioSystem.getLine(info);
+			clipReducao2.open(redo);
+			FloatControl gainControl = (FloatControl) clipReducao2
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume);
+		}
+		if (clipAceleracao2 == null) {
+			InputStream bufferedIn = new BufferedInputStream(
+					CarregadorRecursos.recursoComoStream("aceleracao2.wav"));
+			AudioInputStream acel = AudioSystem.getAudioInputStream(bufferedIn);
+			DataLine.Info info = new DataLine.Info(Clip.class,
+					acel.getFormat());
+			clipAceleracao2 = (Clip) AudioSystem.getLine(info);
+			clipAceleracao2.open(acel);
+			FloatControl gainControl = (FloatControl) clipAceleracao2
+					.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume);
+		}
+		if (clipAceleracao == null) {
+			clipAceleracao = Math.random() > .5
+					? clipAceleracao1
+					: clipAceleracao2;
+		}
+		if (clipReducao == null) {
+			clipReducao = Math.random() > .5 ? clipReducao1 : clipReducao2;
 		}
 	}
-
-	/**
-	 * Plays audio from the given audio input stream.
-	 * 
-	 * @throws LineUnavailableException
-	 * @throws IOException
-	 */
-	public static void playAudioStream(AudioInputStream audioInputStream)
-			throws LineUnavailableException, IOException {
-
-	} // playAudioStream
 
 	public static void processaSom(Piloto pilotoSelecionado,
 			InterfaceJogo controleJogo, PainelCircuito painelCircuito) {
@@ -314,7 +298,11 @@ public class ControleSom {
 			if (!somLigado) {
 				return;
 			}
-			if (pilotoSelecionado == null) {
+			if(!controleJogo.getMainFrame().isVisible()){
+				return;
+			}
+			if (controleJogo.isJogoPausado()) {
+				paraTudo();
 				return;
 			}
 			iniciaVars();
@@ -334,22 +322,21 @@ public class ControleSom {
 	}
 
 	public static void paraTudo() {
-		if (clipVeloMax != null)
-			clipVeloMax.stop();
-		if (clipVeloMaxFinal != null)
-			clipVeloMaxFinal.stop();
-		if (clipLargada != null)
+		if (clipLargada != null) {
 			clipLargada.stop();
-		if (clipVeloMed != null)
-			clipVeloMed.stop();
-		if (roncoClip != null)
-			roncoClip.stop();
-		if (clipRedo != null)
-			clipRedo.stop();
-		if (clipAcel != null)
-			clipAcel.stop();
-		if (clipBox != null)
+		}
+		if (clipReducao != null) {
+			clipReducao.stop();
+		}
+		if (clipAceleracao != null) {
+			clipAceleracao.stop();
+		}
+		if (clipBox != null) {
 			clipBox.stop();
+		}
+		if (clipPararBox != null) {
+			clipPararBox.stop();
+		}
 	}
 
 }

@@ -211,7 +211,7 @@ public class ControleBox {
 					/**
 					 * gera limite velocidade no box
 					 */
-					ptosBox += ((boxRapido) ? 2 : 1);
+					ptosBox += ((boxRapido) ? 2 : Util.intervalo(1, 2));
 				} else if (box.verificaRetaOuLargada()) {
 					ptosBox += ((boxRapido) ? 3 : Util.intervalo(2, 3));
 				} else if (box.verificaCruvaAlta()) {
@@ -404,6 +404,16 @@ public class ControleBox {
 		carro.processaPorcentagemDesgastePneus();
 		carro.processaPorcentagemDesgasteMotor();
 		carro.processaPorcentagemCombustivel();
+		/**
+		 * calback de nova volta para corrida Toda
+		 */
+		if (piloto.getPosicao() == 1) {
+			controleJogo.processaNovaVolta();
+		}
+		controleJogo.processaVoltaRapida(piloto);
+		if (controleJogo.isCorridaTerminada()) {
+			piloto.setRecebeuBanderada(controleJogo);
+		}
 		piloto.setBox(false);
 	}
 
@@ -418,12 +428,6 @@ public class ControleBox {
 		piloto.setNoAtual(saidaBox);
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		piloto.setNumeroVolta(piloto.getNumeroVolta() + 1);
-		/**
-		 * calback de nova volta para corrida Toda
-		 */
-		if (piloto.getPosicao() == 1) {
-			controleJogo.processaNovaVolta();
-		}
 
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
 		String[] strings = new String[]{piloto.getNome(),
@@ -444,17 +448,11 @@ public class ControleBox {
 		}
 
 		boxEquipesOcupado.remove(piloto.getCarro());
-		if (controleJogo.isCorridaTerminada()) {
-			piloto.setRecebeuBanderada(controleJogo);
-		}
 		if (controleJogo.isSafetyCarNaPista()
 				&& piloto.getVoltaAtual() != null) {
 			piloto.getVoltaAtual().setVoltaSafetyCar(true);
 		}
 		piloto.efetuarSaidaBox(interfaceJogo);
-		if (interfaceJogo.isCorridaTerminada()) {
-			piloto.setRecebeuBanderada(interfaceJogo);
-		}
 	}
 
 	public int setupParadaUnica(Piloto piloto) {

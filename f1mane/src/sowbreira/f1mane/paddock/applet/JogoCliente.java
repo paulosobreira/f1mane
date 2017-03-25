@@ -1129,7 +1129,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public boolean isCorridaPausada() {
+	public boolean isJogoPausado() {
 		return false;
 	}
 

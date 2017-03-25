@@ -31,7 +31,7 @@ public interface InterfaceJogo {
 	public static int CARGA_KERS = 100;
 	public static int DURABILIDADE_AREOFOLIO = 30;
 
-	public List listaInfo();
+	public List<String> listaInfo();
 
 	public boolean isSemTrocaPneu();
 
@@ -302,7 +302,7 @@ public interface InterfaceJogo {
 
 	public void selecionaPilotoBaixo();
 
-	public boolean isCorridaPausada();
+	public boolean isJogoPausado();
 
 	public void descontaTempoPausado(Volta volta);
 

@@ -727,17 +727,11 @@ public class Carro implements Serializable {
 			}
 		}
 
-		double divVoltas = (controleJogo.totalVoltasCorrida()
-				/ Constantes.MAX_VOLTAS);
-		if (divVoltas >= 1) {
-			divVoltas = 0.999;
-		}
 		if (verificaPneusIncompativeisClima(controleJogo)
 				&& novoModificador >= 1) {
 			if (no.verificaCruvaBaixa() || no.verificaCruvaAlta()) {
 				novoModificador = 0;
-			} else if ((Math.random() > divVoltas)
-					&& !getPiloto().testeHabilidadePilotoFreios(controleJogo)) {
+			} else if (!getPiloto().testeHabilidadePilotoFreios(controleJogo)) {
 				novoModificador--;
 			}
 		}
@@ -920,10 +914,10 @@ public class Carro implements Serializable {
 			if (!no.verificaRetaOuLargada()) {
 				if (controleJogo.asfaltoAbrasivo()) {
 					desgPneus += (piloto.testeHabilidadePilotoFreios(
-							controleJogo) ? 10 : 15);
+							controleJogo) ? 5 : 15);
 				} else {
-					desgPneus += (piloto
-							.testeHabilidadePilotoFreios(controleJogo) ? 1 : 10);
+					desgPneus += (piloto.testeHabilidadePilotoFreios(
+							controleJogo) ? 1 : 10);
 				}
 			}
 		}

@@ -412,7 +412,7 @@ public class PainelCircuito {
 			}
 			desenhaGrid(g2d);
 			iniciaPilotoSelecionado();
-			desenhaMarcaoParaCurva(g2d);
+			desenhaMarcacaoParaCurva(g2d);
 			desenhaPiloto(g2d);
 			desenharSafetyCarCima(g2d);
 			desenhaChuva(g2d);
@@ -883,8 +883,8 @@ public class PainelCircuito {
 		return qtdeLuzesAcesas;
 	}
 
-	private void desenhaMarcaoParaCurva(Graphics2D g2d) {
-		if (isExibeResultadoFinal() || controleJogo.isCorridaPausada()
+	private void desenhaMarcacaoParaCurva(Graphics2D g2d) {
+		if (isExibeResultadoFinal() || controleJogo.isJogoPausado()
 				|| pilotoSelecionado == null
 				|| pilotoSelecionado.getPtosBox() != 0) {
 			return;
@@ -898,14 +898,14 @@ public class PainelCircuito {
 			return;
 		}
 		int index = noSuave.getIndex();
-		desenhaMarcaoNo(g2d, noReal, index + 250);
-		desenhaMarcaoNo(g2d, noReal, index + 225);
-		desenhaMarcaoNo(g2d, noReal, index + 200);
-		desenhaMarcaoNo(g2d, noReal, index + 175);
+		desenhaMarcacaoNo(g2d, noReal, index + 250);
+		desenhaMarcacaoNo(g2d, noReal, index + 225);
+		desenhaMarcacaoNo(g2d, noReal, index + 200);
+		desenhaMarcacaoNo(g2d, noReal, index + 175);
 
 	}
 
-	private void desenhaMarcaoNo(Graphics2D g2d, No noReal, int index) {
+	private void desenhaMarcacaoNo(Graphics2D g2d, No noReal, int index) {
 		int index2 = index - 15;
 
 		if (index > controleJogo.getNosDaPista().size()) {
@@ -977,7 +977,7 @@ public class PainelCircuito {
 	}
 
 	private void desenhaVoltarMenuPrincipal(Graphics2D g2d) {
-		if (!isExibeResultadoFinal() && !controleJogo.isCorridaPausada()) {
+		if (!isExibeResultadoFinal() && !controleJogo.isJogoPausado()) {
 			voltaMenuPrincipalRect.setFrame(0, 0, 1, 1);
 			return;
 		}
@@ -1169,7 +1169,7 @@ public class PainelCircuito {
 					(int) (vaiBox.getY() + vaiBox.getHeight()) + 5);
 
 		}
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isJogoPausado()) {
 			x = xOri - 50;
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 60, 30, 0, 0);
@@ -1949,7 +1949,6 @@ public class PainelCircuito {
 
 		}
 
-		
 	}
 
 	private void iniciaPilotoSelecionado() {
@@ -2183,10 +2182,10 @@ public class PainelCircuito {
 		int y = limitesViewPort.y + altura;
 
 		String tpAsa = Carro.ASA_NORMAL;
-		if(controleJogo.isDrs()){
+		if (controleJogo.isDrs()) {
 			tpAsa = Carro.MAIS_ASA;
 		}
-		
+
 		if (controleJogo.getPilotoJogador() != null) {
 			tpAsa = controleJogo.getPilotoJogador().getAsaBox();
 		}
@@ -3377,7 +3376,7 @@ public class PainelCircuito {
 
 	private Double processaRabeada(Piloto piloto, Double calculaAngulo,
 			No noAtual) {
-		if (controleJogo.isCorridaPausada() || piloto.isDesqualificado()) {
+		if (controleJogo.isJogoPausado() || piloto.isDesqualificado()) {
 			return calculaAngulo;
 		}
 
@@ -3566,7 +3565,7 @@ public class PainelCircuito {
 
 	private void desenhaChuvaCarroCima(Graphics2D g2d, Piloto piloto, int width,
 			Point eixoDianteras, double eixo) {
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isJogoPausado()) {
 			return;
 		}
 		double qtdeGotas = indiceNublado / 3000.0;
@@ -3620,7 +3619,7 @@ public class PainelCircuito {
 
 	private void desenhaFaiscasCarroCima(Graphics2D g2d, Piloto piloto,
 			int width, Point eixoDianteras, double eixo) {
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isJogoPausado()) {
 			return;
 		}
 		if (piloto.isFaiscas()) {
@@ -4064,7 +4063,7 @@ public class PainelCircuito {
 
 	private void desenhaChuva(Graphics2D g2d) {
 
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isJogoPausado()) {
 			int alfaNub = indiceNublado / 10;
 			g2d.setColor(new Color(nublado.getRed(), nublado.getGreen(),
 					nublado.getBlue(), alfaNub));
@@ -4134,7 +4133,7 @@ public class PainelCircuito {
 			return;
 		g2d.setColor(lightWhiteRain);
 		desenhaGotasDeChuva(g2d);
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isJogoPausado()) {
 			indiceNublado = indiceNubladoAntesPausa;
 		}
 	}
@@ -4177,7 +4176,7 @@ public class PainelCircuito {
 		if (p == null) {
 			return;
 		}
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isJogoPausado()) {
 			return;
 		}
 		if (Math.random() > .9) {
@@ -4324,7 +4323,7 @@ public class PainelCircuito {
 						: Lang.msg("070")) + plider,
 				ptoOri, yBase);
 
-		if ((pilotoSelecionado.getNumeroVolta() > 1)) {
+		if ((pilotoSelecionado.getNumeroVolta() > 0)) {
 			Volta voltaPiloto = controleJogo
 					.obterMelhorVolta(pilotoSelecionado);
 			if (voltaPiloto != null) {
@@ -4358,30 +4357,18 @@ public class PainelCircuito {
 
 			yBase += 17;
 			int contAlt = yBase;
-			int contVolta = 1;
-			List voltas = new ArrayList<>();
-			voltas.addAll(pilotoSelecionado.getVoltas());
-			int cont = 1;
-			for (int i = voltas.size() - 1; i > -1; i--) {
-				Volta volta = (Volta) voltas.get(i);
-				if (volta == null) {
-					continue;
-				}
-				if (volta.obterTempoVolta() == 0) {
+			List<String> voltas = pilotoSelecionado.getUltimas5Voltas();
+			for (Iterator<String> iterator = voltas.iterator(); iterator
+					.hasNext();) {
+				String volta = iterator.next();
+				if(volta==null){
 					continue;
 				}
 				g2d.setColor(transpMenus);
 				g2d.fillRoundRect(ptoOri - 5, contAlt - 12, 105, 16, 0, 0);
 				g2d.setColor(Color.black);
-				g2d.drawString(
-						pilotoSelecionado.getNumeroVolta() - (cont++) + " - "
-								+ volta.obterTempoVoltaFormatado(),
-						ptoOri, contAlt);
+				g2d.drawString(volta, ptoOri, contAlt);
 				contAlt += 17;
-				contVolta++;
-				if (contVolta > 5) {
-					break;
-				}
 			}
 		}
 	}
@@ -4411,9 +4398,7 @@ public class PainelCircuito {
 		if (pilotoSelecionado != null) {
 			dano = pilotoSelecionado.getCarro().getDanificado();
 		}
-		if ((dano == null || "".equals(dano))
-				&& pneus > 25
-				&& porcentComb > 25
+		if ((dano == null || "".equals(dano)) && pneus > 25 && porcentComb > 25
 				&& !pilotoSelecionado.isAlertaAerefolio()
 				&& !pilotoSelecionado.isAlertaMotor()) {
 			return;
@@ -4870,7 +4855,7 @@ public class PainelCircuito {
 	}
 
 	private int calculaBounceCarroLado(Carro carro) {
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isJogoPausado()) {
 			return 0;
 		}
 		if (carro.getPiloto().isDesqualificado()) {

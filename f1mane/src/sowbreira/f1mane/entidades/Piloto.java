@@ -139,6 +139,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private int calculaDiffParaProximoRetardatarioMesmoTracado;
 	private int calculaDiferencaParaAnterior = Integer.MAX_VALUE;
 	private List<Volta> voltas = new ArrayList<Volta>();
+	private List<String> ultimas5Voltas = new ArrayList<String>();
 	private Set<String> votosDriveThru = new HashSet<String>();
 	private List<Integer> ultsConsumosCombustivel = new LinkedList<Integer>();
 	private List<Integer> ultsConsumosPneu = new LinkedList<Integer>();
@@ -1018,6 +1019,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		processaLimitadorGanho(controleJogo);
 		processaGanhoSafetyCar(controleJogo);
+		processaUltimas5Voltas(controleJogo);
 		decrementaPilotoDesconcentrado(controleJogo);
 		setPtosPista(Util.inteiro(getPtosPista() + ganho));
 		// Logger.logar("Double.valueOf(piloto.getPtosPista()) "
@@ -1034,6 +1036,26 @@ public class Piloto implements Serializable, PilotoSuave {
 		index += Math.round(ganho);
 		setVelocidade(calculoVelocidade(ganho));
 		return index;
+	}
+
+	private void processaUltimas5Voltas(InterfaceJogo controleJogo) {
+		if (voltas == null || voltas.isEmpty()) {
+			return;
+		}
+		ultimas5Voltas.clear();
+		int numeroVolta = getNumeroVolta() - 1;
+		for (int i = voltas.size() - 1; i >= 0; i--) {
+			Volta volta = (Volta) voltas.get(i);
+			if(volta.getCiclosFim()==0){
+				continue;
+			}
+			ultimas5Voltas.add(numeroVolta+" - "+volta.obterTempoVoltaFormatado());
+			numeroVolta--;
+			if(ultimas5Voltas.size()>=5){
+				break;
+			}
+		}
+
 	}
 
 	public void processaAlertaAerefolio(InterfaceJogo controleJogo) {
@@ -2521,28 +2543,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.porcentagemCombustUltimaParadaBox = porcentagemCombustUltimaParadaBox;
 	}
 
-	public void processaVoltaNovaBox(InterfaceJogo interfaceJogo) {
-		if (getVoltaAtual() == null) {
-			Volta volta = new Volta();
-			volta.setCiclosInicio(System.currentTimeMillis()
-					- (getPtosBox() * Constantes.CICLO));
-			setVoltaAtual(volta);
-
-			return;
-		}
-		Volta volta = getVoltaAtual();
-
-		volta.setCiclosFim(System.currentTimeMillis());
-		interfaceJogo.descontaTempoPausado(volta);
-		volta.setVoltaBox(true);
-		setUltimaVolta(volta);
-		voltas.add(volta);
-		volta = new Volta();
-		volta.setCiclosInicio(
-				System.currentTimeMillis() - (getPtosBox() * Constantes.CICLO));
-		setVoltaAtual(volta);
-	}
-
 	public boolean decrementaParadoBox() {
 		if (paradoBox < 0) {
 			paradoBox = 0;
@@ -2581,8 +2581,6 @@ public class Piloto implements Serializable, PilotoSuave {
 					: 1;
 		}
 		mudarTracado(novoLado, interfaceJogo);
-		if (getNumeroVolta() > 0)
-			processaVoltaNovaBox(interfaceJogo);
 	}
 
 	public String obterTempoVoltaAtual() {
@@ -2840,7 +2838,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void calculaVelocidadeExibir(InterfaceJogo controleJogo) {
-		if (controleJogo.isCorridaPausada()) {
+		if (controleJogo.isJogoPausado()) {
 			setVelocidadeExibir(0);
 			return;
 		}
@@ -3223,6 +3221,22 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setAlertaAerefolio(boolean alertaAerefolio) {
 		this.alertaAerefolio = alertaAerefolio;
+	}
+
+	public List<String> getUltimas5Voltas() {
+		List<String> copy = new ArrayList<String>();
+		while (copy.isEmpty()) {
+			try {
+				if (ultimas5Voltas == null || ultimas5Voltas.isEmpty()) {
+					return copy;
+				}
+				copy.addAll(ultimas5Voltas);
+			} catch (Exception e) {
+				copy.clear();
+				Logger.logarExept(e);
+			}
+		}
+		return copy;
 	}
 
 }

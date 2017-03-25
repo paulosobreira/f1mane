@@ -75,7 +75,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 public class GerenciadorVisual {
 	private JPanel painelNarracaoText;
 	private JEditorPane infoTextual;
-	private LinkedList bufferTextual;
+	private LinkedList<String> bufferTextual;
 	private JScrollPane scrollPaneTextual;
 	private JLabel infoAdicionaLinha1;
 	private JComboBox comboBoxClimaInicial;
@@ -133,7 +133,7 @@ public class GerenciadorVisual {
 		}
 	}
 
-	public List getBufferTextual() {
+	public List<String> getBufferTextual() {
 		return bufferTextual;
 	}
 
@@ -229,7 +229,7 @@ public class GerenciadorVisual {
 					try {
 						Thread.sleep(Constantes.CICLO_SOM);
 					} catch (InterruptedException e) {
-						thAtualizaPilotosSuaveAlive = false;
+						thAtualizaSomAlive = false;
 						Logger.logarExept(e);
 					}
 				}
@@ -1684,7 +1684,7 @@ public class GerenciadorVisual {
 	public void ativaVerControles() {
 		if (painelCircuito != null && controleJogo != null) {
 			painelCircuito.setVerControles(!painelCircuito.isVerControles());
-			if (controleJogo.isCorridaPausada()) {
+			if (controleJogo.isJogoPausado()) {
 				painelCircuito.setVerControles(true);
 			}
 		}
