@@ -100,7 +100,7 @@ public class ControleSom {
 			if (ps == null) {
 				return;
 			}
-			if(painelCircuito.getQtdeLuzesAcesas() > 0){
+			if (painelCircuito.getQtdeLuzesAcesas() > 0) {
 				return;
 			}
 			if (ps.isRecebeuBanderada()) {
@@ -110,8 +110,27 @@ public class ControleSom {
 					clipBox.start();
 				}
 				return;
-			} else {
-				clipBox.stop();
+			}
+			if(nadaTocando()){
+				if (ps.getPtosBox() != 0) {
+					clipBox.setFramePosition(0);
+					clipBox.start();
+					return;
+				}
+				if(ps.getNoAtual().verificaRetaOuLargada()){
+					clipAceleracao.setFramePosition(0);
+					clipAceleracao.start();
+				}
+				if (ps.getNoAtual().verificaCruvaBaixa()) {
+					clipReducao = clipReducao1;
+					clipReducao.setFramePosition(0);
+					clipReducao.start();
+				}
+				if (ps.getNoAtual().verificaCruvaAlta()) {
+					clipReducao = clipReducao2;
+					clipReducao.setFramePosition(0);
+					clipReducao.start();
+				}
 			}
 			if (!ps.equals(psAnt)) {
 				psAnt = ps;
@@ -132,7 +151,7 @@ public class ControleSom {
 				}
 				if (clipPararBox.isRunning() && ps.getVelocidade() != 0) {
 					clipPararBox.stop();
-					clipBox.setFramePosition(0);
+					clipBox.setFramePosition(Util.intervalo(500,2000));
 					clipBox.start();
 				}
 			} else {
@@ -152,7 +171,8 @@ public class ControleSom {
 				}
 				clipBox.stop();
 				if (!clipAceleracao.isRunning()
-						&& !noAnterior.verificaRetaOuLargada()
+						&& (!noAnterior.verificaRetaOuLargada()
+								|| noAnterior.isBox())
 						&& ps.getNoAtual().verificaRetaOuLargada()) {
 					clipReducao.stop();
 					clipAceleracao.stop();
@@ -298,7 +318,7 @@ public class ControleSom {
 			if (!somLigado) {
 				return;
 			}
-			if(!controleJogo.getMainFrame().isVisible()){
+			if (!controleJogo.getMainFrame().isVisible()) {
 				return;
 			}
 			if (controleJogo.isJogoPausado()) {
@@ -319,6 +339,12 @@ public class ControleSom {
 			paraTudo();
 		}
 
+	}
+
+	public static boolean nadaTocando() {
+		return !clipLargada.isRunning() && !clipReducao.isRunning()
+				&& !clipAceleracao.isRunning() && !clipBox.isRunning()
+				&& !clipPararBox.isRunning();
 	}
 
 	public static void paraTudo() {
