@@ -151,7 +151,14 @@ public class LetsRace {
 					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		Integer ret = (Integer) iniciarJogo;
+		Integer ret = null;
+		try {
+			ret = new Integer(iniciarJogo.toString());	
+		} catch (Exception e) {
+			return Response.status(500)
+					.entity(Html.escapeHtml(e.getMessage()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
 		return Response.status(ret).build();
 	}
 

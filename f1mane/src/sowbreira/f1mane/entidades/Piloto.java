@@ -141,13 +141,18 @@ public class Piloto implements Serializable, PilotoSuave {
 	private List<Volta> voltas = new ArrayList<Volta>();
 	private List<String> ultimas5Voltas = new ArrayList<String>();
 	private Set<String> votosDriveThru = new HashSet<String>();
+	@JsonIgnore
 	private List<Integer> ultsConsumosCombustivel = new LinkedList<Integer>();
+	@JsonIgnore
 	private List<Integer> ultsConsumosPneu = new LinkedList<Integer>();
+	@JsonIgnore
 	private List<Double> ganhosBaixa = new ArrayList<Double>();
+	@JsonIgnore
 	private List<Double> ganhosAlta = new ArrayList<Double>();
+	@JsonIgnore
 	private List<Double> ganhosReta = new ArrayList<Double>();
+	@JsonIgnore
 	private ArrayList<Double> listGanho;
-
 	@JsonIgnore
 	private Point p0;
 	@JsonIgnore
