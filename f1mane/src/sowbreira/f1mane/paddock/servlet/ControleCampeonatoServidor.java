@@ -196,7 +196,7 @@ public class ControleCampeonatoServidor {
 				Volta volta = piloto.obterVoltaMaisRapida();
 				if (volta != null)
 					dadosCorridaCampeonato.setVoltaMaisRapida(volta
-							.obterTempoVoltaFormatado());
+							.getTempoVoltaFormatado());
 				dadosCorridaCampeonato.setQtdeParadasBox(piloto
 						.getQtdeParadasBox());
 				dadosCorridaCampeonato.setDesgastePneus(String.valueOf(piloto

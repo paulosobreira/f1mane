@@ -78,7 +78,7 @@ public class PainelTabelaResultadoFinal extends JPanel {
 				if (volta == null) {
 					return "";
 				}
-				return volta.obterTempoVoltaFormatado();
+				return volta.getTempoVoltaFormatado();
 
 			case 6:
 				return String.valueOf(p.getQtdeParadasBox());

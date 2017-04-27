@@ -38,60 +38,37 @@ public class Piloto implements Serializable, PilotoSuave {
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
 
-	private double ganho;
-	private int ganhoSuave;
-	private int ultModificador;
-	private boolean limiteGanho;
-	private boolean acelerando;
-	private boolean asfaltoAbrasivo;
-	private double ultGanhoReta = 0;
 	private int setaCima;
 	private int setaBaixo;
-	private Integer ultimoConsumoCombust;
-	private Integer ultimoConsumoPneu;
+	private int id;
+	private double ganho;
 	protected String tipoPneuJogador;
 	protected String asaJogador;
 	protected Integer combustJogador;
-	private int id;
-	private int velocidade;
 	private int velocidadeExibir;
-	private int velocidadeAnterior;
-	private transient String setUpIncial;
 	private String nome;
-	private String nomeOriginal;
 	private String nomeCarro;
 	private String nomeJogador;
-	private transient int habilidadeAntesQualify;
-	private transient int habilidade;
 	private int carX;
 	private int carY;
 	private long ptosPista;
-	private int ultimoIndice;
 	private int tracado;
-	private int tracadoAntigo;
 	private int indiceTracado;
-	private double ganhoMax = Integer.MIN_VALUE;
-	private double distanciaDerrapada = Double.MAX_VALUE;
 	private boolean autoPos = true;
 	private Double angulo;
 	private int posicao;
-	private int posicaoInicial;
 	private int qtdeParadasBox;
 	private boolean desqualificado;
 	private boolean jogadorHumano;
 	private boolean box;
 	private boolean agressivo = true;
 	private Carro carro = new Carro();
-	private No noAnterior = new No();
 	private No noAtual = new No();
 	private No noAtualSuave;
 	private int numeroVolta;
 	private int stress;
-	private transient int ciclosDesconcentrado;
-	private transient int porcentagemCombustUltimaParadaBox;
 	private String modoPilotagem = NORMAL;
 	private Volta voltaAtual;
-	private int ciclosVoltaQualificacao;
 	private Volta ultimaVolta;
 	private Volta melhorVolta;
 	private String segundosParaLider;
@@ -99,47 +76,130 @@ public class Piloto implements Serializable, PilotoSuave {
 	private String asaBox;
 	private String vantagem;
 	private int qtdeCombustBox;
-	private long parouNoBoxMilis;
-	private long saiuDoBoxMilis;
-	private long ultimaMudancaPos;
 	private boolean ativarErs;
 	private int cargaErsVisual;
 	private int cargaKersOnline;
 	private boolean ativarDRS;
-	private int novoModificador;
-	private boolean driveThrough;
-	private Double maxGanhoBaixa = new Double(0);
-	private Double maxGanhoAlta = new Double(0);
-	private int contTravouRodas;
-	private boolean travouRodas;
-	private boolean faiscas;
 	private boolean alertaMotor;
 	private boolean alertaAerefolio;
-	private boolean freiandoReta;
-	private boolean retardaFreiandoReta;
-	private int tracadoDelay;
-	private int naoDesenhaEfeitos;
-	private long indexTracadoDelay;
-	private int tamanhoBufferGanho = 10;
-	private int meiaEnvergadura = 20;
-	private boolean colisaoDiantera;
-	private boolean colisaoCentro;
-	private double limiteEvitarBatrCarroFrente;
-	private boolean evitaBaterCarroFrente;
 	private boolean podeUsarDRS;
-	private boolean problemaLargada;
-	private boolean recebeuBanderada;
-	private int mudouTracadoReta;
-	private int indexRefDerrapada;
-	private int calculaDiferencaParaProximo;
-	private int voltaMensagemLento;
-	private int ptosBox;
-	private int paradoBox;
-	private int calculaDiffParaProximoRetardatario;
-	private int calculaDiffParaProximoRetardatarioMesmoTracado;
-	private int calculaDiferencaParaAnterior = Integer.MAX_VALUE;
-	private List<Volta> voltas = new ArrayList<Volta>();
+	private String calculaSegundosParaProximo;
+	private String calculaSegundosParaAnterior;
 	private List<String> ultimas5Voltas = new ArrayList<String>();
+
+	@JsonIgnore
+	private int ganhoSuave;
+	@JsonIgnore
+	private int ultModificador;
+	@JsonIgnore
+	private boolean limiteGanho;
+	@JsonIgnore
+	private boolean acelerando;
+	@JsonIgnore
+	private boolean asfaltoAbrasivo;
+	@JsonIgnore
+	private double ultGanhoReta = 0;
+	@JsonIgnore
+	private Integer ultimoConsumoCombust;
+	@JsonIgnore
+	private Integer ultimoConsumoPneu;
+	@JsonIgnore
+	private int velocidade;
+	@JsonIgnore
+	private int velocidadeAnterior;
+	@JsonIgnore
+	private transient String setUpIncial;
+	@JsonIgnore
+	private String nomeOriginal;
+	@JsonIgnore
+	private transient int habilidadeAntesQualify;
+	@JsonIgnore
+	private transient int habilidade;
+	@JsonIgnore
+	private int ultimoIndice;
+	@JsonIgnore
+	private int tracadoAntigo;
+	@JsonIgnore
+	private double ganhoMax = Integer.MIN_VALUE;
+	@JsonIgnore
+	private double distanciaDerrapada = Double.MAX_VALUE;
+	@JsonIgnore
+	private int posicaoInicial;
+	@JsonIgnore
+	private No noAnterior = new No();
+	@JsonIgnore
+	private transient int ciclosDesconcentrado;
+	@JsonIgnore
+	private transient int porcentagemCombustUltimaParadaBox;
+	@JsonIgnore
+	private int ciclosVoltaQualificacao;
+	@JsonIgnore
+	private long parouNoBoxMilis;
+	@JsonIgnore
+	private long saiuDoBoxMilis;
+	@JsonIgnore
+	private long ultimaMudancaPos;
+	@JsonIgnore
+	private int novoModificador;
+	@JsonIgnore
+	private boolean driveThrough;
+	@JsonIgnore
+	private Double maxGanhoBaixa = new Double(0);
+	@JsonIgnore
+	private Double maxGanhoAlta = new Double(0);
+	@JsonIgnore
+	private int contTravouRodas;
+	@JsonIgnore
+	private boolean travouRodas;
+	@JsonIgnore
+	private boolean faiscas;
+	@JsonIgnore
+	private boolean freiandoReta;
+	@JsonIgnore
+	private boolean retardaFreiandoReta;
+	@JsonIgnore
+	private int tracadoDelay;
+	@JsonIgnore
+	private int naoDesenhaEfeitos;
+	@JsonIgnore
+	private long indexTracadoDelay;
+	@JsonIgnore
+	private int tamanhoBufferGanho = 10;
+	@JsonIgnore
+	private int meiaEnvergadura = 20;
+	@JsonIgnore
+	private boolean colisaoDiantera;
+	@JsonIgnore
+	private boolean colisaoCentro;
+	@JsonIgnore
+	private double limiteEvitarBatrCarroFrente;
+	@JsonIgnore
+	private boolean evitaBaterCarroFrente;
+	@JsonIgnore
+	private boolean problemaLargada;
+	@JsonIgnore
+	private boolean recebeuBanderada;
+	@JsonIgnore
+	private int mudouTracadoReta;
+	@JsonIgnore
+	private int indexRefDerrapada;
+	@JsonIgnore
+	private int calculaDiferencaParaProximo;
+	@JsonIgnore
+	private int voltaMensagemLento;
+	@JsonIgnore
+	private int ptosBox;
+	@JsonIgnore
+	private int paradoBox;
+	@JsonIgnore
+	private int calculaDiffParaProximoRetardatario;
+	@JsonIgnore
+	private int calculaDiffParaProximoRetardatarioMesmoTracado;
+	@JsonIgnore
+	private int calculaDiferencaParaAnterior = Integer.MAX_VALUE;
+	@JsonIgnore
+	private List<Volta> voltas = new ArrayList<Volta>();
+	@JsonIgnore
 	private Set<String> votosDriveThru = new HashSet<String>();
 	@JsonIgnore
 	private List<Integer> ultsConsumosCombustivel = new LinkedList<Integer>();
@@ -196,7 +256,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		setNoAnterior(getNoAtualSuave());
 		this.noAtualSuave = noAtualSuave;
 	}
-
+	@JsonIgnore
 	public int getHabilidadeAntesQualify() {
 		return habilidadeAntesQualify;
 	}
@@ -614,7 +674,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public void setQtdeParadasBox(int qtdeParadasBox) {
 		this.qtdeParadasBox = qtdeParadasBox;
 	}
-
+	@JsonIgnore
 	public String getSetUpIncial() {
 		return setUpIncial;
 	}
@@ -622,7 +682,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public void setSetUpIncial(String setUpIncial) {
 		this.setUpIncial = setUpIncial;
 	}
-
+	@JsonIgnore
 	public int getCiclosDesconcentrado() {
 		return ciclosDesconcentrado;
 	}
@@ -809,7 +869,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (Logger.ativo && !controleJogo.isModoQualify()) {
 				String tempoVolta = "";
 				if (getUltimaVolta() != null) {
-					tempoVolta = getUltimaVolta().obterTempoVoltaFormatado();
+					tempoVolta = getUltimaVolta().getTempoVoltaFormatado();
 				}
 				Logger.logar(" Numero Volta " + getNumeroVolta() + " "
 						+ getNome() + " Posição " + getPosicao() + " Tempo "
@@ -1051,12 +1111,13 @@ public class Piloto implements Serializable, PilotoSuave {
 		int numeroVolta = getNumeroVolta() - 1;
 		for (int i = voltas.size() - 1; i >= 0; i--) {
 			Volta volta = (Volta) voltas.get(i);
-			if(volta.getCiclosFim()==0){
+			if (volta.getCiclosFim() == 0) {
 				continue;
 			}
-			ultimas5Voltas.add(numeroVolta+" - "+volta.obterTempoVoltaFormatado());
+			ultimas5Voltas
+					.add(numeroVolta + " - " + volta.getTempoVoltaFormatado());
 			numeroVolta--;
-			if(ultimas5Voltas.size()>=5){
+			if (ultimas5Voltas.size() >= 5) {
 				break;
 			}
 		}
@@ -1127,6 +1188,14 @@ public class Piloto implements Serializable, PilotoSuave {
 				.calculaDiferencaParaProximo(this);
 		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		carroPilotoAtras = controleJogo.obterCarroAtras(this);
+		calculaSegundosParaProximo = controleJogo
+				.calculaSegundosParaProximo(this);
+		if (carroPilotoAtras != null && carroPilotoAtras.getPiloto() != null) {
+			calculaSegundosParaAnterior = controleJogo
+					.calculaSegundosParaProximo(carroPilotoAtras.getPiloto(),
+							carroPilotoAtras.getPiloto()
+									.getDiferencaParaProximo());
+		}
 	}
 
 	private void processaGanhoSafetyCar(InterfaceJogo controleJogo) {
@@ -2530,7 +2599,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public boolean danificado() {
 		return carro.verificaDano();
 	}
-
+	@JsonIgnore
 	public int getPorcentagemCombustUltimaParadaBox() {
 		if (porcentagemCombustUltimaParadaBox < 0) {
 			porcentagemCombustUltimaParadaBox = 0;
@@ -2593,7 +2662,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			return "";
 		}
 
-		return voltaAtual.obterTempoVoltaFormatado();
+		return voltaAtual.getTempoVoltaFormatado();
 	}
 
 	public Volta obterVoltaMaisRapida() {
@@ -3062,6 +3131,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.colisao = colisao;
 	}
 
+	@JsonIgnore
 	public int getDiferencaParaProximoRetardatario() {
 		return calculaDiffParaProximoRetardatarioMesmoTracado;
 	}
@@ -3081,19 +3151,18 @@ public class Piloto implements Serializable, PilotoSuave {
 	public List getGanhosAlta() {
 		return ganhosAlta;
 	}
-
 	public List getGanhosReta() {
 		return ganhosReta;
 	}
-
+	@JsonIgnore
 	public double getMedGanhosBaixa() {
 		return mediaLista(ganhosBaixa);
 	}
-
+	@JsonIgnore
 	public double getMedGanhosAlta() {
 		return mediaLista(ganhosAlta);
 	}
-
+	@JsonIgnore
 	public double getMedGanhosReta() {
 		return mediaLista(ganhosReta);
 	}
@@ -3124,7 +3193,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public void setVantagem(String vantagem) {
 		this.vantagem = vantagem;
 	}
-
+	@JsonIgnore
 	public boolean isProcessaEvitaBaterCarroFrente() {
 		return evitaBaterCarroFrente;
 	}
@@ -3228,6 +3297,10 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.alertaAerefolio = alertaAerefolio;
 	}
 
+	public String getCalculaSegundosParaProximo() {
+		return calculaSegundosParaProximo;
+	}
+
 	public List<String> getUltimas5Voltas() {
 		List<String> copy = new ArrayList<String>();
 		while (copy.isEmpty()) {
@@ -3244,4 +3317,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		return copy;
 	}
 
+	public String getCalculaSegundosParaAnterior() {
+		return calculaSegundosParaAnterior;
+	}
 }

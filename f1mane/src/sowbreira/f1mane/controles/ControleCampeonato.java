@@ -511,7 +511,7 @@ public class ControleCampeonato {
 			Volta volta = p.obterVoltaMaisRapida();
 			if (volta != null)
 				corridaCampeonato.setVoltaMaisRapida(volta
-						.obterTempoVoltaFormatado());
+						.getTempoVoltaFormatado());
 			corridaCampeonato.setQtdeParadasBox(p.getQtdeParadasBox());
 			corridaCampeonato.setDesgastePneus(String.valueOf(p.getCarro()
 					.getPorcentagemDesgastePneus() + "%"));

@@ -51,33 +51,50 @@ public class Carro implements Serializable {
 	private String danificado;
 	private String nome;
 	private String img;
-	private String asa = ASA_NORMAL;
-	private int potenciaAntesQualify;
-	private int potencia;
-	private int aerodinamica;
-	private int freios;
-	private int potenciaReal;
-	private int durabilidadeAereofolio;
-	private int giro = GIRO_NOR_VAL;
-	private int combustivel;
-	private int tanqueCheio;
-	private int pneus;
-	private int durabilidadeMaxPneus;
-	private int motor;
-	private int temperaturaMotor;
-	private int temperaturaPneus;
-	private int cargaErs;
-	private int durabilidadeMaxMotor;
 	private int porcentagemCombustivel;
 	private int porcentagemDesgastePneus;
 	private int porcentagemDesgasteMotor;
+	private int durabilidadeAereofolio;
+	private int cargaErs;
+	private String asa = ASA_NORMAL;
 	private String tipoPneu;
 	private boolean paneSeca;
 	private boolean recolhido;
+	
+	@JsonIgnore
+	private int pneus;
+	@JsonIgnore
+	private int giro = GIRO_NOR_VAL;
+	@JsonIgnore
+	private int combustivel;
+	@JsonIgnore
+	private int motor;
+	@JsonIgnore
+	private int potenciaAntesQualify;
+	@JsonIgnore
+	private int potencia;
+	@JsonIgnore
+	private int aerodinamica;
+	@JsonIgnore
+	private int freios;
+	@JsonIgnore
+	private int potenciaReal;
+	@JsonIgnore
+	private int tanqueCheio;
+	@JsonIgnore
+	private int durabilidadeMaxPneus;
+	@JsonIgnore
+	private int temperaturaMotor;
+	@JsonIgnore
+	private int temperaturaPneus;
+	@JsonIgnore
+	private int durabilidadeMaxMotor;
+	@JsonIgnore
 	private int tempMax;
+	@JsonIgnore
 	private boolean pneuAquecido;
+	@JsonIgnore
 	private boolean msgPneu;
-
 	@JsonIgnore
 	private Color cor1;
 	@JsonIgnore

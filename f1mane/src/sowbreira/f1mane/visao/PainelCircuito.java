@@ -63,9 +63,9 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = true;
-	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = true;
+	public static boolean desenhaBkg = false;
+	public static boolean desenhaPista = false;
+	public static boolean desenhaImagens = false;
 
 	private boolean verControles = true;
 	private boolean carragandoBkg = false;
@@ -1358,7 +1358,7 @@ public class PainelCircuito {
 
 			String melhorVolta = "";
 			if (volta != null) {
-				melhorVolta = volta.obterTempoVoltaFormatado();
+				melhorVolta = volta.getTempoVoltaFormatado();
 			}
 
 			/**
@@ -2917,6 +2917,9 @@ public class PainelCircuito {
 
 	private void desenhaMarcasPneuPista(TravadaRoda travadaRoda) {
 		No noAtual = controleJogo.obterNoPorId(travadaRoda.getIdNo());
+		if(noAtual==null){
+			return;
+		}
 		Point p = noAtual.getPoint();
 		List<ObjetoPista> objetos = circuito.getObjetos();
 		if (objetos != null) {
@@ -4332,8 +4335,7 @@ public class PainelCircuito {
 				g2d.fillRoundRect(ptoOri - 5, yBase - 12, 105, 16, 0, 0);
 				g2d.setColor(new Color(0, 0, 111));
 				g2d.drawString(
-						Lang.msg("079")
-								+ voltaPiloto.obterTempoVoltaFormatado(),
+						Lang.msg("079") + voltaPiloto.getTempoVoltaFormatado(),
 						ptoOri, yBase);
 			}
 
@@ -4345,7 +4347,7 @@ public class PainelCircuito {
 				g2d.setColor(Color.black);
 				g2d.drawString(
 						Lang.msg("corrida") + ":"
-								+ voltaCorrida.obterTempoVoltaFormatado(),
+								+ voltaCorrida.getTempoVoltaFormatado(),
 						ptoOri, yBase);
 			}
 
@@ -4361,7 +4363,7 @@ public class PainelCircuito {
 			for (Iterator<String> iterator = voltas.iterator(); iterator
 					.hasNext();) {
 				String volta = iterator.next();
-				if(volta==null){
+				if (volta == null) {
 					continue;
 				}
 				g2d.setColor(transpMenus);
@@ -4736,8 +4738,7 @@ public class PainelCircuito {
 			} else if (diferencaParaProximo <= 1.0) {
 				g2d.setColor(Color.WHITE);
 			}
-			String val = controleJogo.calculaSegundosParaProximo(psel,
-					psel.getDiferencaParaProximo());
+			String val = psel.getCalculaSegundosParaProximo();
 			if (val != null && val.length() < 8) {
 				g2d.drawString("  " + val, dstX, dstY);
 			}
@@ -4833,9 +4834,7 @@ public class PainelCircuito {
 			} else if (diferencaParaProximo <= 1) {
 				g2d.setColor(Color.WHITE);
 			}
-			String val = controleJogo.calculaSegundosParaProximo(
-					carroAtras.getPiloto(),
-					carroAtras.getPiloto().getDiferencaParaProximo());
+			String val = psel.getCalculaSegundosParaAnterior();
 			if (val != null && val.length() < 8) {
 				g2d.drawString("  " + val, dstX, dstY);
 			}

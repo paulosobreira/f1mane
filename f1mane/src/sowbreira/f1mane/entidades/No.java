@@ -97,11 +97,11 @@ public class No implements Serializable {
 
 		return srcBufferedImage;
 	}
-
+	@JsonIgnore
 	public int getDrawX() {
 		return point.x - 5;
 	}
-
+	@JsonIgnore
 	public int getDrawY() {
 		return point.y - 5;
 	}

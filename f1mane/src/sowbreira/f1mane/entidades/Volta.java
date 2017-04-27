@@ -2,6 +2,8 @@ package sowbreira.f1mane.entidades;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import br.nnpe.Logger;
 
@@ -9,12 +11,18 @@ import br.nnpe.Logger;
  * @author Paulo Sobreira Criado em 16/06/2007 as 16:03:49
  */
 public class Volta implements Serializable {
-	private Long ciclosInicio = new Long(0);
-	private Long ciclosFim = new Long(0);
-	private Long tempoNumero;
-	private Long tempoPausado = new Long(0);
 	private int pilotoId;
+	@JsonIgnore
+	private Long ciclosInicio = new Long(0);
+	@JsonIgnore
+	private Long ciclosFim = new Long(0);
+	@JsonIgnore
+	private Long tempoNumero;
+	@JsonIgnore
+	private Long tempoPausado = new Long(0);
+	@JsonIgnore
 	private boolean voltaBox;
+	@JsonIgnore
 	private boolean voltaSafetyCar;
 
 	public Volta(Long fullnum) {
@@ -80,7 +88,7 @@ public class Volta implements Serializable {
 		return ((ciclosFim - ciclosInicio) - tempoPausado);
 	}
 
-	public String obterTempoVoltaFormatado() {
+	public String getTempoVoltaFormatado() {
 		Long fullnum = obterTempoVolta();
 		return ControleEstatisticas.formatarTempo(fullnum);
 	}
