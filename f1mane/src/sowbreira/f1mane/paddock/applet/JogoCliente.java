@@ -113,8 +113,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			ControlePaddockCliente controlePaddockCliente,
 			SessaoCliente sessaoCliente, String nomePilotoJogador) {
 		try {
-			carregaRecursos((String) getCircuitos()
-					.get(dadosParticiparJogo.getCircuitoSelecionado()));
+			if (getCircuito() == null) {
+				carregaRecursos((String) getCircuitos()
+						.get(dadosParticiparJogo.getCircuitoSelecionado()));
+			}
 			controleBox = new ControleBox(this, null);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(getMainFrame(), e.getMessage());
@@ -610,9 +612,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				if (posis.idNo >= -1) {
 					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
 					piloto.setNoAtual(no);
-					if(nosDoBox.contains(no)){
+					if (nosDoBox.contains(no)) {
 						piloto.setPtosBox(1);
-					}else{
+					} else {
 						piloto.setPtosBox(0);
 					}
 				}
@@ -1417,7 +1419,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public boolean isAtualizacaoSuave() {
 		return atualizacaoSuave;
 	}

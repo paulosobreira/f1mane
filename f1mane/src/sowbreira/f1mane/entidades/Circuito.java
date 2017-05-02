@@ -8,8 +8,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import br.nnpe.GeoUtil;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import br.nnpe.GeoUtil;
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
 	private String backGround;
@@ -27,13 +30,17 @@ public class Circuito implements Serializable {
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;
 	private int paradaBoxIndex;
-	private Color corFundo;
-	private List<ObjetoPista> objetos;
 	private String nome;
 	private boolean noite;
 	private boolean usaBkg;
+	@JsonIgnore
 	private Point creditos;
+	@JsonIgnore
 	private List<Point> escapeList = new ArrayList<Point>();
+	@JsonIgnore
+	private List<ObjetoPista> objetos;
+	@JsonIgnore
+	private Color corFundo;
 
 	public Point getCreditos() {
 		return creditos;
@@ -256,7 +263,7 @@ public class Circuito implements Serializable {
 	public int getParadaBoxIndex() {
 		return paradaBoxIndex;
 	}
-
+	
 	public List getPistaFull() {
 		return pistaFull;
 	}

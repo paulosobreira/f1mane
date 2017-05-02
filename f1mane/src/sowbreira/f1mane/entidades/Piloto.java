@@ -1188,9 +1188,12 @@ public class Piloto implements Serializable, PilotoSuave {
 				.calculaDiferencaParaProximo(this);
 		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		carroPilotoAtras = controleJogo.obterCarroAtras(this);
-		calculaSegundosParaProximo = controleJogo
-				.calculaSegundosParaProximo(this);
-		if (carroPilotoAtras != null && carroPilotoAtras.getPiloto() != null) {
+		if (getPosicao() > 1) {
+			calculaSegundosParaProximo = controleJogo
+					.calculaSegundosParaProximo(this);
+		}
+		if (carroPilotoAtras != null && carroPilotoAtras.getPiloto() != null
+				&& getPosicao() < controleJogo.getPilotos().size()) {
 			calculaSegundosParaAnterior = controleJogo
 					.calculaSegundosParaProximo(carroPilotoAtras.getPiloto(),
 							carroPilotoAtras.getPiloto()

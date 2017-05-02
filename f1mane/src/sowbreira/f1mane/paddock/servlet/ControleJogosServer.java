@@ -242,7 +242,7 @@ public class ControleJogosServer {
 		return false;
 	}
 
-	private JogoServidor obterJogoPeloNome(String nomeJogo) {
+	public JogoServidor obterJogoPeloNome(String nomeJogo) {
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
 				.iterator(); iter.hasNext();) {
 			SessaoCliente key = iter.next();

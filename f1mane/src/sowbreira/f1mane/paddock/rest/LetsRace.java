@@ -29,6 +29,33 @@ import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 public class LetsRace {
 
 	@GET
+	@Path("/circuito")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response circuito() {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		Object circuito = controlePaddock.obterCircuito("¢088¢ 0-2016");
+		if (circuito == null) {
+			return Response.status(400)
+					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (circuito instanceof MsgSrv) {
+			MsgSrv msgSrv = (MsgSrv) circuito;
+			return Response.status(400)
+					.entity(Html.escapeHtml(msgSrv.getMessageString()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (circuito instanceof ErroServ) {
+			ErroServ erroServ = (ErroServ) circuito;
+			return Response.status(500)
+					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(200).entity(circuito).build();
+	}
+
+	@GET
 	@Path("/posicaoPilotos")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response posicaoPilotos() {
@@ -64,8 +91,8 @@ public class LetsRace {
 
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
-		Object dParciais = controlePaddock
-				.obterDadosParciaisPilotos(new String[]{"¢088¢ 0-2016","Mane1","1"});
+		Object dParciais = controlePaddock.obterDadosParciaisPilotos(
+				new String[]{"¢088¢ 0-2016", "Mane1", "1"});
 
 		if (dParciais == null) {
 			return Response.status(400)
@@ -153,10 +180,9 @@ public class LetsRace {
 		}
 		Integer ret = null;
 		try {
-			ret = new Integer(iniciarJogo.toString());	
+			ret = new Integer(iniciarJogo.toString());
 		} catch (Exception e) {
-			return Response.status(500)
-					.entity(Html.escapeHtml(e.getMessage()))
+			return Response.status(500).entity(Html.escapeHtml(e.getMessage()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(ret).build();

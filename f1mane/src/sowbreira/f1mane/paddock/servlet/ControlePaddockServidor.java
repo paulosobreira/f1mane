@@ -18,6 +18,7 @@ import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
 import br.nnpe.Util;
+import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
@@ -246,6 +247,23 @@ public class ControlePaddockServidor {
 
 	public Object obterPosicaoPilotos(Object object) {
 		return controleJogosServer.obterPosicaoPilotos((String) object);
+	}
+
+	public Object obterCircuito(Object object) {
+		JogoServidor jogo = controleJogosServer
+				.obterJogoPeloNome((String) object);
+		try {
+			if (jogo.getCircuito() == null) {
+				jogo.carregaRecursos((String) jogo.getCircuitos().get(
+						jogo.getDadosCriarJogo().getCircuitoSelecionado()));
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			ErroServ erroServ = new ErroServ(e);
+			return erroServ;
+		}
+		Circuito circuito = jogo.getCircuito();
+		return circuito;
 	}
 
 	private Object processarComando(ClientPaddockPack clientPaddockPack) {
