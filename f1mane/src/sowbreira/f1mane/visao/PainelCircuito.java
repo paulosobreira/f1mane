@@ -413,7 +413,7 @@ public class PainelCircuito {
 			desenhaGrid(g2d);
 			iniciaPilotoSelecionado();
 			desenhaMarcacaoParaCurva(g2d);
-			desenhaPiloto(g2d);
+			desenhaCarros(g2d);
 			desenharSafetyCarCima(g2d);
 			desenhaChuva(g2d);
 			desenhaContadorVoltas(g2d);
@@ -2917,7 +2917,7 @@ public class PainelCircuito {
 
 	private void desenhaMarcasPneuPista(TravadaRoda travadaRoda) {
 		No noAtual = controleJogo.obterNoPorId(travadaRoda.getIdNo());
-		if(noAtual==null){
+		if (noAtual == null) {
 			return;
 		}
 		Point p = noAtual.getPoint();
@@ -3051,7 +3051,7 @@ public class PainelCircuito {
 		this.desenhouQualificacao = desenhouQualificacao;
 	}
 
-	private void desenhaPiloto(Graphics2D g2d) {
+	private void desenhaCarros(Graphics2D g2d) {
 		if (isExibeResultadoFinal()) {
 			return;
 		}
@@ -3059,18 +3059,16 @@ public class PainelCircuito {
 		int y = limitesViewPort.y + 5;
 		int tamNome = 90;
 
-		List pilotos = pilotosList;
-
-		for (int i = pilotos.size() - 1; i > -1; i--) {
-			Piloto piloto = (Piloto) pilotos.get(i);
+		for (int i = pilotosList.size() - 1; i > -1; i--) {
+			Piloto piloto = pilotosList.get(i);
 			No noAtual = piloto.getNoAtualSuave();
 			if (noAtual == null) {
 				noAtual = piloto.getNoAtual();
 			}
 			atualizacaoSuave(piloto);
-			int inverter = pilotos.size() - i - 1;
+			int inverter = pilotosList.size() - i - 1;
 			desenhaBarraListaPiloto(g2d, x, y, tamNome, inverter,
-					(Piloto) pilotos.get(inverter));
+					(Piloto) pilotosList.get(inverter));
 			y += 23;
 			if (!limitesViewPort.contains(
 					((noAtual.getX() - descontoCentraliza.x) * zoom),
@@ -3086,7 +3084,7 @@ public class PainelCircuito {
 						(int) ((noAtual.getY() - descontoCentraliza.y) * zoom),
 						10, 10);
 			}
-			piloto.centralizaFrenteTrazCarro(controleJogo);
+			piloto.centralizaCarro(controleJogo);
 			desenhaCarroCima(g2d, piloto);
 			if (piloto.equals(pilotoSelecionado)
 					|| piloto.getCarro().isPaneSeca()
@@ -3217,7 +3215,7 @@ public class PainelCircuito {
 		int carX = (piloto.getCarX() - Carro.MEIA_LARGURA_CIMA);
 		int carY = (piloto.getCarY() - Carro.MEIA_LARGURA_CIMA);
 
-		calculaAngulo = processaRabeada(piloto, calculaAngulo, noAtual);
+		calculaAngulo = processaOcilacaoAngulo(piloto, calculaAngulo, noAtual);
 
 		int width = Carro.LARGURA_CIMA;
 		int height = Carro.ALTURA_CIMA;
@@ -3377,7 +3375,7 @@ public class PainelCircuito {
 		}
 	}
 
-	private Double processaRabeada(Piloto piloto, Double calculaAngulo,
+	private Double processaOcilacaoAngulo(Piloto piloto, Double calculaAngulo,
 			No noAtual) {
 		if (controleJogo.isJogoPausado() || piloto.isDesqualificado()) {
 			return calculaAngulo;
@@ -3410,7 +3408,7 @@ public class PainelCircuito {
 		}
 		if ((piloto.getTracado() == 4 || piloto.getTracado() == 5)
 				&& Math.random() > 0.9) {
-			calculaAngulo += Util.intervalo(-17, 17);
+			calculaAngulo += Util.intervalo(-20, 20);
 		}
 		return calculaAngulo;
 	}
@@ -3534,7 +3532,7 @@ public class PainelCircuito {
 		 */
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
-			piloto.centralizaFrenteTrazCarro(controleJogo);
+			piloto.centralizaCarro(controleJogo);
 		}
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {

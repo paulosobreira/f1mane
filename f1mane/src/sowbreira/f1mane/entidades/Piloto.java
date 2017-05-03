@@ -1849,7 +1849,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			setColisao(null);
 			return;
 		}
-		centralizaFrenteTrazCarro(controleJogo);
+		centralizaCarro(controleJogo);
 		List<Piloto> pilotos = controleJogo.getPilotos();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto pilotoFrente = (Piloto) iterator.next();
@@ -1862,7 +1862,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (this.equals(pilotoFrente.getColisao())) {
 				continue;
 			}
-			pilotoFrente.centralizaFrenteTrazCarro(controleJogo);
+			pilotoFrente.centralizaCarro(controleJogo);
 			colisaoDiantera = getDiateira()
 					.intersects(pilotoFrente.getTrazeira())
 					|| getDiateira().intersects(pilotoFrente.getCentro());
@@ -1999,7 +1999,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	public Rectangle2D centralizaFrenteTrazCarro(InterfaceJogo controleJogo) {
+	public Rectangle2D centralizaCarro(InterfaceJogo controleJogo) {
 		if (controleJogo.isModoQualify()) {
 			return null;
 		}

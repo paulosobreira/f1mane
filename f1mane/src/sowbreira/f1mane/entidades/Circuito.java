@@ -33,12 +33,13 @@ public class Circuito implements Serializable {
 	private String nome;
 	private boolean noite;
 	private boolean usaBkg;
+	private transient List<ObjetoPistaJSon> objetosNoTransparencia;
+	@JsonIgnore
+	private List<ObjetoPista> objetos;
 	@JsonIgnore
 	private Point creditos;
 	@JsonIgnore
 	private List<Point> escapeList = new ArrayList<Point>();
-	@JsonIgnore
-	private List<ObjetoPista> objetos;
 	@JsonIgnore
 	private Color corFundo;
 
@@ -263,7 +264,7 @@ public class Circuito implements Serializable {
 	public int getParadaBoxIndex() {
 		return paradaBoxIndex;
 	}
-	
+
 	public List getPistaFull() {
 		return pistaFull;
 	}
@@ -403,6 +404,35 @@ public class Circuito implements Serializable {
 
 	public void setProbalidadeChuva(int probalidadeChuva) {
 		this.probalidadeChuva = probalidadeChuva;
+	}
+
+	public List<ObjetoPistaJSon> getObjetosNoTransparencia() {
+		return objetosNoTransparencia;
+	}
+
+	public void gerarObjetosNoTransparencia() {
+		objetosNoTransparencia = new ArrayList<ObjetoPistaJSon>();
+		List<ObjetoPista> objetospista = getObjetos();
+		for (Iterator iterator = objetospista.iterator(); iterator.hasNext();) {
+			ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+			if (!(objetoPista instanceof ObjetoTransparencia))
+				continue;
+			ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+			List<Point> pontosPoint = objetoTransparencia.getPontos();
+			ObjetoPistaJSon objetoPistaJSon = new ObjetoPistaJSon();
+			List<Ponto> pontos = new ArrayList<Ponto>();
+			objetoPistaJSon.setPontos(pontos);
+			objetoPistaJSon.setIndexInicio(objetoTransparencia.getInicioTransparencia());
+			objetoPistaJSon.setIndexFim(objetoTransparencia.getFimTransparencia());
+			objetosNoTransparencia.add(objetoPistaJSon);
+			for (Iterator iterator2 = pontosPoint.iterator(); iterator2.hasNext();) {
+				Point point = (Point) iterator2.next();
+				Ponto ponto = new Ponto();
+				ponto.setPoint(point);
+				pontos.add(ponto);
+			}
+		}
+
 	}
 
 }

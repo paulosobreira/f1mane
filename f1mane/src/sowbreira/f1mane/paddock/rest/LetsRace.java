@@ -1,7 +1,10 @@
 package sowbreira.f1mane.paddock.rest;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -229,8 +232,9 @@ public class LetsRace {
 		dadosCriarJogo.setDiffultrapassagem(250);
 		Map<String, String> carregarCircuitos = ControleRecursos
 				.carregarCircuitos();
-		dadosCriarJogo.setCircuitoSelecionado(
-				carregarCircuitos.keySet().iterator().next());
+		List shuffle = new ArrayList(carregarCircuitos.keySet());
+		Collections.shuffle(shuffle);
+		dadosCriarJogo.setCircuitoSelecionado((String)shuffle.iterator().next());
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
 		dadosCriarJogo.setReabastecimento(false);

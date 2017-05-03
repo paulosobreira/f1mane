@@ -58,7 +58,6 @@ public class ObjetoTransparencia extends ObjetoPista {
 			polygonCarro.addPoint((int) (ponto.x - carroX),
 					(int) (ponto.y - carroY));
 		}
-
 		g2d.setColor(Color.white);
 		double rad = Math.toRadians((double) getAngulo());
 		AffineTransform affineTransform = AffineTransform

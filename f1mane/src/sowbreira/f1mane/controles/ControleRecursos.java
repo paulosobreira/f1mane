@@ -339,6 +339,7 @@ public abstract class ControleRecursos {
 		circuito.setNome(nome);
 		nosDaPista = circuito.getPistaFull();
 		nosDoBox = circuito.getBoxFull();
+		circuito.gerarObjetosNoTransparencia();
 		int contId = 1;
 		List<No> listaDeRetas = new ArrayList<No>();
 		for (Iterator iter = nosDaPista.iterator(); iter.hasNext();) {
