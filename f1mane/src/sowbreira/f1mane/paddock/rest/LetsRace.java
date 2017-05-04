@@ -211,7 +211,7 @@ public class LetsRace {
 		}
 		if (criarJogo instanceof MsgSrv) {
 			MsgSrv msgSrv = (MsgSrv) criarJogo;
-			return Response.status(400)
+			return Response.status(200)
 					.entity(Html.escapeHtml(msgSrv.getMessageString()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
