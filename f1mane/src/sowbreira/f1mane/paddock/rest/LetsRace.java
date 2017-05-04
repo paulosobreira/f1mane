@@ -235,6 +235,7 @@ public class LetsRace {
 		List shuffle = new ArrayList(carregarCircuitos.keySet());
 		Collections.shuffle(shuffle);
 		dadosCriarJogo.setCircuitoSelecionado((String)shuffle.iterator().next());
+		//dadosCriarJogo.setCircuitoSelecionado("Monte Carlo");
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
 		dadosCriarJogo.setReabastecimento(false);

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="jquery/jquery-3.1.1.min.js"></script>
 </head>
 <body style="width: 100%; height: 100%; margin: 0px;">
 	<canvas id="myCanvas" />
@@ -27,7 +28,7 @@
 
 
 		var imgBg = new Image();
-		imgBg.src = "../sowbreira/f1mane/recursos/testeBG_mro.jpg";
+		
 		
 		var ptBg = {
 			x : 0,
@@ -58,18 +59,75 @@
 
 		}, false);
 		
+		var   objetosNoTransparencia;
+		var   pista;
+		var   backGround;
+		function ciruito() {
+			$.ajax({
+				type : "GET",
+				url : "/f1mane/rest/letsRace/circuito",
+				contentType : "application/json",
+				dataType : "json",
+				success : function(response) {
+					debugger;
+				    objetosNoTransparencia = response.objetosNoTransparencia;
+					pista = response.pista;
+					backGround = response.backGround;
+					imgBg.src = "../sowbreira/f1mane/recursos/"+backGround;
+				},
+				error : function(xhRequest, ErrorText, thrownError) {
+					alert(xhRequest.status + '  ' + xhRequest.responseText);
+				}
+			});
+		}
+
+		function desenhaObjs(){
+			if(objetosNoTransparencia==null){
+				return;
+			}
+			context.fillStyle = '#babaca';
+			context.beginPath();			
+			for (i = 0; i < pista.length; i++) { 
+				var  pt = pista[i];
+				if(i==0){
+					context.moveTo(pt.x - ptBg.x, pt.y - ptBg.y);	
+				}else{
+					context.lineTo(pt.x - ptBg.x, pt.y - ptBg.y);	
+				}			
+			}				
+			context.stroke();
+			
+			for (i = 0; i < objetosNoTransparencia.length; i++) { 
+				var  pontosTp = objetosNoTransparencia[i];
+				context.fillStyle = '#f00';
+				context.beginPath();
+				for (j = 0; j < pontosTp.pontos.length; j++) { 
+					var  pt = pontosTp.pontos[j];
+					if(j==0){
+						context.moveTo(pt.x - ptBg.x, pt.y - ptBg.y);	
+					}else{
+						context.lineTo(pt.x - ptBg.x, pt.y - ptBg.y);	
+					}
+					
+				}						
+				context.closePath();
+				context.fill();
+			}				
+	
+		}
 		
+		ciruito();
 		window.addEventListener('keydown',this.check,false);
 
 		function check(e) {
 			if(e.keyCode == 65){
-				ptBg.x -= 5;
+				ptBg.x -= 15;
 			}else if (e.keyCode == 68){
-				ptBg.x += 5;
+				ptBg.x += 15;
 			}else if (e.keyCode == 87) {
-				ptBg.y -= 5;
+				ptBg.y -= 15;
 			}else if (e.keyCode == 83) {
-				ptBg.y += 5;
+				ptBg.y += 15;
 			}
 		}		
 
@@ -114,6 +172,8 @@
 			context.drawImage(imgBg, ptBg.x, ptBg.y, context.canvas.width,
 					context.canvas.height, 0, 0,
 					context.canvas.width, context.canvas.height);
+				
+			desenhaObjs();
 
 /*
 			if (linhaB != null) {
