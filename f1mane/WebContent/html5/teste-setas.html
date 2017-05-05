@@ -59,13 +59,9 @@
 
 		}, false);
 		
-		var   objetosNoTransparencia;
-		var   pista;
-		var   backGround;
+		var   circuito;
 		
-		
-		
-		function ciruito() {
+		function carregarCiruito() {
 			$.ajax({
 				type : "GET",
 				url : "/f1mane/rest/letsRace/circuito",
@@ -73,16 +69,51 @@
 				dataType : "json",
 				success : function(response) {
 					debugger;
-				    objetosNoTransparencia = response.objetosNoTransparencia;
-					pista = response.pista;
-					backGround = response.backGround;
-					//imgBg.src = "../sowbreira/f1mane/recursos/"+backGround;
+					circuito = response;
+					//imgBg.src = "../sowbreira/f1mane/recursos/"+response.backGround;
+					iniciarJogo();
 				},
 				error : function(xhRequest, ErrorText, thrownError) {
 					alert(xhRequest.status + '  ' + xhRequest.responseText);
 				}
 			});
 		}
+		
+		function iniciarJogo() {
+			$.ajax({
+				type : "GET",
+				url : "/f1mane/rest/letsRace/iniciarJogo",
+				success : function(response) {
+					debugger;
+					carregarPosicaoPilotos();
+				},
+				error : function(xhRequest, ErrorText, thrownError) {
+					debugger;
+					alert(xhRequest.status + '  ' + xhRequest.responseText);
+					carregarPosicaoPilotos();
+				}
+			});
+		}		
+		
+		
+		var posicaoPilotos;
+
+		function carregarPosicaoPilotos() {
+			$.ajax({
+				type : "GET",
+				url : "/f1mane/rest/letsRace/posicaoPilotos",
+				contentType : "application/json",
+				dataType : "json",
+				success : function(response) {
+					posicaoPilotos = response;
+					setInterval( carregarPosicaoPilotos(), 1000);
+				},
+				error : function(xhRequest, ErrorText, thrownError) {
+					alert(xhRequest.status + '  ' + xhRequest.responseText);
+				}
+			});
+		}		
+		
 
 		function criar() {
 			$.ajax({
@@ -91,7 +122,7 @@
 				contentType : "application/json",
 				dataType : "json",
 				success : function(response) {
-					ciruito();
+					carregarCiruito();
 				},
 				error : function(xhRequest, ErrorText, thrownError) {
 					alert(xhRequest.status + '  ' + xhRequest.responseText);
@@ -101,13 +132,14 @@
 		
 		
 		function desenhaObjs(){
-			if(objetosNoTransparencia==null){
+			if(circuito==null || circuito.objetosNoTransparencia==null){
 				return;
 			}
+			
 			context.fillStyle = '#babaca';
 			context.beginPath();			
-			for (i = 0; i < pista.length; i++) { 
-				var  pt = pista[i];
+			for (i = 0; i < circuito.pista.length; i++) { 
+				var  pt = circuito.pista[i];
 				if(i==0){
 					context.moveTo(pt.x - ptBg.x, pt.y - ptBg.y);	
 				}else{
@@ -116,8 +148,8 @@
 			}				
 			context.stroke();
 			
-			for (i = 0; i < objetosNoTransparencia.length; i++) { 
-				var  pontosTp = objetosNoTransparencia[i];
+			for (i = 0; i < circuito.objetosNoTransparencia.length; i++) { 
+				var  pontosTp = circuito.objetosNoTransparencia[i];
 				context.fillStyle = '#f00';
 				context.beginPath();
 				for (j = 0; j < pontosTp.pontos.length; j++) { 
@@ -131,8 +163,17 @@
 				}						
 				context.closePath();
 				context.fill();
-			}				
-	
+			}
+
+			if(posicaoPilotos!=null){
+				for (i = 0; i < posicaoPilotos.posis.length; i++) { 
+					var  pos = posicaoPilotos.posis[i];
+					var ponto = circuito.pistaFull[pos.idNo]
+					if(ponto !=null && ponto.x !=null && ponto.y!=null ){
+						context.fillText("Piloto: " + pos.idPiloto, ponto.x- ptBg.x, ponto.y- ptBg.y);								
+					}
+				}			
+			}
 		}
 		criar();
 		
@@ -223,8 +264,8 @@
 				context.fillText("FPS: " + fps.frameRate(), 4, 30);
 			}
 
-			if (backGround != null) {
-				context.fillText("Circuito: " + backGround, 4, 60);
+			if (circuito!=null && circuito.backGround != null) {
+				context.fillText("Circuito: " + circuito.backGround, 4, 60);
 			}			
 			
 			

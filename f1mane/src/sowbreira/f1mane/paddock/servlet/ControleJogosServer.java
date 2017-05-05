@@ -357,6 +357,9 @@ public class ControleJogosServer {
 		}
 		List posisList = new ArrayList();
 		List pilotos = jogoServidor.getPilotosCopia();
+		if(pilotos==null){
+			return null;
+		}
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			Posis posis = new Posis();
