@@ -622,10 +622,9 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setRecebeuBanderada(InterfaceJogo controleJogo) {
 		if (!this.recebeuBanderada) {
-			System.out.println(this.toString() + " Pts " + getPtosPista());
+			Logger.logar(this.toString() + " Pts " + getPtosPista());
 			setPtosPista(getPtosPista() + (100 * (25 - getPosicao())));
-			System.out
-					.println(this.toString() + " Pts Depois " + getPtosPista());
+			Logger.logar(this.toString() + " Pts Depois " + getPtosPista());
 			if (this.getPosicao() == 1) {
 				controleJogo.infoPrioritaria(
 						Html.superBlack(getNome()) + Html.superGreen(

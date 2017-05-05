@@ -155,7 +155,7 @@ public class LetsRace {
 
 	@GET
 	@Path("/iniciarJogo")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response iniciarJogo() {
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
