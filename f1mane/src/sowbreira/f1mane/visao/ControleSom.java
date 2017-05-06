@@ -111,13 +111,13 @@ public class ControleSom {
 				}
 				return;
 			}
-			if(nadaTocando()){
+			if (nadaTocando()) {
 				if (ps.getPtosBox() != 0) {
 					clipBox.setFramePosition(0);
 					clipBox.start();
 					return;
 				}
-				if(ps.getNoAtual().verificaRetaOuLargada()){
+				if (ps.getNoAtual().verificaRetaOuLargada()) {
 					clipAceleracao.setFramePosition(0);
 					clipAceleracao.start();
 				}
@@ -134,7 +134,7 @@ public class ControleSom {
 			}
 			if (!ps.equals(psAnt)) {
 				psAnt = ps;
-				noAnterior = ps.getNoAtualSuave();
+				noAnterior = ps.getNoAtual();
 				return;
 			}
 			if (ps.getPtosBox() != 0) {
@@ -144,14 +144,14 @@ public class ControleSom {
 					clipBox.setFramePosition(0);
 					clipBox.start();
 				}
-				if (ps.getVelocidade() == 0 && !clipPararBox.isRunning()) {
+				if ((ps.getVelocidade() == 0) && !clipPararBox.isRunning()) {
 					clipBox.stop();
 					clipPararBox.setFramePosition(0);
 					clipPararBox.start();
 				}
 				if (clipPararBox.isRunning() && ps.getVelocidade() != 0) {
 					clipPararBox.stop();
-					clipBox.setFramePosition(Util.intervalo(500,2000));
+					clipBox.setFramePosition(Util.intervalo(500, 2000));
 					clipBox.start();
 				}
 			} else {
@@ -169,7 +169,11 @@ public class ControleSom {
 						clipAceleracao.start();
 					}
 				}
-				clipBox.stop();
+				if (clipBox.isRunning()) {
+					clipBox.stop();
+					clipAceleracao.setFramePosition(0);
+					clipAceleracao.start();
+				}
 				if (!clipAceleracao.isRunning()
 						&& (!noAnterior.verificaRetaOuLargada()
 								|| noAnterior.isBox())
@@ -185,6 +189,7 @@ public class ControleSom {
 				if (!clipReducao.isRunning()
 						&& noAnterior.verificaRetaOuLargada()
 						&& !ps.getNoAtual().verificaRetaOuLargada()) {
+					clipBox.stop();
 					clipAceleracao.stop();
 					clipReducao.stop();
 					if (ps.getNoAtual().verificaCruvaBaixa()) {

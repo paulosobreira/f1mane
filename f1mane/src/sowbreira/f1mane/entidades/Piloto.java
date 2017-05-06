@@ -620,54 +620,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		return recebeuBanderada;
 	}
 
-	public void setRecebeuBanderada(InterfaceJogo controleJogo) {
-		if (!this.recebeuBanderada) {
-			Logger.logar(this.toString() + " Pts " + getPtosPista());
-			setPtosPista(getPtosPista() + (100 * (25 - getPosicao())));
-			Logger.logar(this.toString() + " Pts Depois " + getPtosPista());
-			if (this.getPosicao() == 1) {
-				controleJogo.infoPrioritaria(
-						Html.superBlack(getNome()) + Html.superGreen(
-								Lang.msg("044", new Object[]{getPosicao()})));
-			} else {
-				controleJogo.info(Html.superBlack(getNome()) + Html
-						.green(Lang.msg("044", new Object[]{getPosicao()})));
-			}
-			if (carroPilotoAtras != null) {
-				setVantagem(controleJogo.calculaSegundosParaProximo(
-						carroPilotoAtras.getPiloto()));
-			}
-			double somaBaixa = 0;
-			for (Iterator iterator = ganhosBaixa.iterator(); iterator
-					.hasNext();) {
-				Double d = (Double) iterator.next();
-				somaBaixa += d;
-			}
-			double somaAlta = 0;
-			for (Iterator iterator = ganhosAlta.iterator(); iterator
-					.hasNext();) {
-				Double d = (Double) iterator.next();
-				somaAlta += d;
-			}
-			double somaReta = 0;
-			for (Iterator iterator = ganhosReta.iterator(); iterator
-					.hasNext();) {
-				Double d = (Double) iterator.next();
-				somaReta += d;
-			}
-			somaBaixa /= ganhosBaixa.size();
-			somaAlta /= ganhosAlta.size();
-			somaReta /= ganhosReta.size();
-			// SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
-			// System.out.println("Bandeirada " + this + " Pts pista "
-			// + this.getPtosPista() + " Pos " + getPosicao() + " T "
-			// + df.format(new Date()));
-			// System.out.println(" SomaBaixa " + somaBaixa + " SomaAlta " +
-			// somaAlta
-			// + " SomaReta " + somaReta);
-			// controleJogo.pausarJogo();
-		}
-		this.recebeuBanderada = true;
+	public void setRecebeuBanderada(boolean recebeuBanderada) {
+		this.recebeuBanderada = recebeuBanderada;
 	}
 
 	public void setQtdeParadasBox(int qtdeParadasBox) {
@@ -843,7 +797,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		 */
 		if (diff >= 0) {
 			if (controleJogo.isCorridaTerminada()) {
-				setRecebeuBanderada(controleJogo);
+				controleJogo.setRecebeuBanderada(this);
 			}
 			if (getHabilidadeAntesQualify() > getHabilidade()) {
 				setHabilidade(getHabilidade() + 1);

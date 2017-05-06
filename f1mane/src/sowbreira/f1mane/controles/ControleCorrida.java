@@ -453,7 +453,7 @@ public class ControleCorrida {
 		if (!pole.isRecebeuBanderada()
 				&& pole.getNumeroVolta() == getQtdeTotalVoltas()) {
 			controleJogo.setCorridaTerminada(true);
-			pole.setRecebeuBanderada(controleJogo);
+			controleJogo.setRecebeuBanderada(pole);
 		}
 
 		if (controleJogo.isCorridaTerminada()) {

@@ -1427,4 +1427,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void setAtualizacaoSuave(boolean atualizacaoSuave) {
 		this.atualizacaoSuave = atualizacaoSuave;
 	}
+
+	@Override
+	public void setRecebeuBanderada(Piloto piloto) {
+		// TODO Auto-generated method stub
+		
+	}
 }

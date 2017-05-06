@@ -217,6 +217,9 @@ public class PainelCircuito {
 	private RoundRectangle2D ajuda = new RoundRectangle2D.Double(0, 0, 1, 1, 0,
 			0);
 
+	private RoundRectangle2D som = new RoundRectangle2D.Double(0, 0, 1, 1, 0,
+			0);
+
 	private double multiminiPista;
 	private Point maiorP;
 	private String infoComp;
@@ -255,7 +258,6 @@ public class PainelCircuito {
 	private BufferedImage iconNublado;
 	private BufferedImage iconChuva;
 	private BufferedImage fuel;
-	private BufferedImage tyre;
 	private int acionaDesenhaKers;
 	private int contMostraLag;
 	private String climaAnterior;
@@ -574,7 +576,6 @@ public class PainelCircuito {
 				0.15);
 
 		fuel = CarregadorRecursos.carregaBufferedImage("fuel.png");
-		tyre = CarregadorRecursos.carregaBufferedImage("tyre.png");
 
 		iconLua = CarregadorRecursos.carregaBufferedImage("lua.png");
 		iconSol = CarregadorRecursos.carregaBufferedImage("sol.png");
@@ -705,6 +706,10 @@ public class PainelCircuito {
 		}
 		if (ajuda.contains(e.getPoint())) {
 			verControles = !verControles;
+			return true;
+		}
+		if (som.contains(e.getPoint())) {
+			ControleSom.ligaDesligaSom();
 			return true;
 		}
 
@@ -1180,7 +1185,24 @@ public class PainelCircuito {
 			g2d.drawLine(x + 30, y - 5,
 					(int) (ajuda.getX() + (ajuda.getWidth() / 2)),
 					(int) (ajuda.getY() + ajuda.getHeight()) + 5);
+
 		}
+
+		x += ajuda.getWidth() + 50;
+		String txt = Lang.msg("som").toUpperCase();
+		int larguraTexto = Util.larguraTexto(txt, g2d) + 10;
+		if (ControleSom.somLigado) {
+			g2d.setColor(OcilaCor.geraOcila("mrkSom", yel));
+			g2d.fillRoundRect(x, y, larguraTexto, 30, 0, 0);
+		} else {
+			g2d.setColor(transpMenus);
+			g2d.fillRoundRect(x, y, larguraTexto, 30, 0, 0);
+		}
+		g2d.setColor(Color.BLACK);
+		som.setFrame(x, y, larguraTexto, 30);
+		g2d.drawString(txt, x + 5, y + 25);
+		g2d.setStroke(trilhoMiniPista);
+
 		g2d.setStroke(stroke);
 
 		g2d.setFont(fontOri);

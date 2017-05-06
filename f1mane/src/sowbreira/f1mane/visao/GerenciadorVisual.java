@@ -223,6 +223,13 @@ public class GerenciadorVisual {
 		thAtualizaSom = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				if (controleJogo instanceof sowbreira.f1mane.paddock.applet.JogoCliente) {
+					try {
+						Thread.sleep(15000);
+					} catch (InterruptedException e) {
+						Logger.logarExept(e);
+					}
+				}
 				while (thAtualizaSomAlive) {
 					ControleSom.processaSom(controleJogo.getPilotoJogador(),
 							controleJogo, painelCircuito);
@@ -1581,8 +1588,10 @@ public class GerenciadorVisual {
 	}
 
 	public void adicinaTravadaRoda(TravadaRoda travadaRoda) {
-		if (painelCircuito != null
-				&& (Math.random() < ((double) (controleJogo.getNumVoltaAtual()<=0?1:controleJogo.getNumVoltaAtual())
+		if (painelCircuito != null && (Math
+				.random() < ((double) (controleJogo.getNumVoltaAtual() <= 0
+						? 1
+						: controleJogo.getNumVoltaAtual())
 						/ (double) controleJogo.totalVoltasCorrida()))) {
 			painelCircuito.adicionatrvadaRoda(travadaRoda);
 		}

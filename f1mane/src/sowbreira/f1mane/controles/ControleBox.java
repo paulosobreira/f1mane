@@ -412,7 +412,7 @@ public class ControleBox {
 		}
 		controleJogo.processaVoltaRapida(piloto);
 		if (controleJogo.isCorridaTerminada()) {
-			piloto.setRecebeuBanderada(controleJogo);
+			controleJogo.setRecebeuBanderada(piloto);
 		}
 		piloto.setBox(false);
 	}

@@ -31,6 +31,7 @@ public class DadosParciais implements Serializable {
 	public boolean alertaAerefolio;
 	public boolean box;
 	public boolean podeUsarDRS;
+	public boolean recebeuBanderada;
 	public String tpPneusFrente;
 	public String tpPneusAtras;
 	public String clima;
@@ -70,6 +71,7 @@ public class DadosParciais implements Serializable {
 		modoPilotar = decodeModoPilotar(sp[spcont++]);
 		box = "S".equals(sp[spcont++]);
 		podeUsarDRS = "S".equals(sp[spcont++]);
+		recebeuBanderada = "S".equals(sp[spcont++]);
 		tpPneusFrente = decodeTpPneu(sp[spcont++]);
 		tpPneusAtras = decodeTpPneu(sp[spcont++]);
 		clima = decodeClima(sp[spcont++]);
@@ -294,19 +296,19 @@ public class DadosParciais implements Serializable {
 
 		String enc = voltaAtual + "@" + pCombust + "@" + codPneu + "@"
 				+ combustBox + "@" + codPneuBox + "@" + velocidade + "@"
-				+ pPneus + "@" + pMotor + "@" + paradas + "@"
-				+ giro + "@" + stress + "@" + cargaKers + "@"
-				+ (alertaMotor?"S":"N") + "@" + (alertaAerefolio?"S":"N")+ "@"
-				+ codpselModoPilotar + "@" + (box ? "S" : "N") + "@"
-				+ (podeUsarDRS ? "S" : "N") + "@" + codPneuFrente + "@"
-				+ codPneuAtras + "@" + codClima + "@" + estado + "@" + codDano
-				+ "@" + codpselAsa + "@" + codpselAsaBox + "@" + melhorVoltaCorrida
-				+ "@" + melhorVolta + "@"
+				+ pPneus + "@" + pMotor + "@" + paradas + "@" + giro + "@"
+				+ stress + "@" + cargaKers + "@" + (alertaMotor ? "S" : "N")
+				+ "@" + (alertaAerefolio ? "S" : "N") + "@" + codpselModoPilotar
+				+ "@" + (box ? "S" : "N") + "@" + (podeUsarDRS ? "S" : "N")
+				+ "@" + (recebeuBanderada ? "S" : "N") + "@" + codPneuFrente
+				+ "@" + codPneuAtras + "@" + codClima + "@" + estado + "@"
+				+ codDano + "@" + codpselAsa + "@" + codpselAsaBox + "@"
+				+ melhorVoltaCorrida + "@" + melhorVolta + "@"
 				+ (nomeJogador == null ? "" : nomeJogador) + "@"
 				+ (texto == null ? "" : texto) + "@"
 				+ (vantagem == null ? "" : vantagem) + "@" + ultima1 + "@"
-				+ ultima2 + "@" + ultima3 + "@" + ultima4 + "@"
-				+ ultima5 + "@" + lessLastPipe + "@" + lessLastPipe2;
+				+ ultima2 + "@" + ultima3 + "@" + ultima4 + "@" + ultima5 + "@"
+				+ lessLastPipe + "@" + lessLastPipe2;
 		// Logger.logar(enc);
 		return enc;
 

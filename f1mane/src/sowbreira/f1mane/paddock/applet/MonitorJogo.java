@@ -67,10 +67,12 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && controlePaddockCliente.isComunicacaoServer()
 				&& jogoAtivo) {
 			try {
-				long tempoCiclo = jogoCliente.getTempoCiclo();
-				if (tempoCiclo < controlePaddockCliente.getLatenciaMinima()) {
-					tempoCiclo = controlePaddockCliente.getLatenciaMinima();
-				}
+				// long tempoCiclo = jogoCliente.getTempoCiclo();
+				// if (tempoCiclo < controlePaddockCliente.getLatenciaMinima())
+				// {
+				// tempoCiclo = controlePaddockCliente.getLatenciaMinima();
+				// }
+				long tempoCiclo = 200;
 				Logger.logar("MonitorJogo");
 				Logger.logar("MonitorJogo verificaEstadoJogo()");
 				verificaEstadoJogo();
@@ -114,7 +116,7 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.desenhouQualificacao();
 				atualizaZoom();
 				if (!apagouLuz) {
-					Thread.sleep(4000);
+					Thread.sleep(5000);
 				} else {
 					Thread.sleep(1000);
 				}
@@ -171,6 +173,10 @@ public class MonitorJogo implements Runnable {
 				} else {
 					jogoCliente.setAtualizacaoSuave(true);
 				}
+				if (controlePaddockCliente
+						.getLatenciaReal() > Constantes.LATENCIA_MAX) {
+					jogoCliente.autoDrs();
+				}
 				atualizarDados();
 				iniciaJalena();
 				atualizaZoom();
@@ -180,17 +186,14 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.selecionaPilotoJogador();
 				disparaAtualizadorPainel(tempoCiclo);
 				delayVerificaStado--;
-				if (delayVerificaStado <= 0) {
+				if (delayVerificaStado < 0) {
 					atualizarDadosParciais(jogoCliente.getDadosJogo(),
 							jogoCliente.getPilotoSelecionado());
-					if (controlePaddockCliente
-							.getLatenciaReal() > Constantes.LATENCIA_MAX) {
-						jogoCliente.autoDrs();
-					}
-					delayVerificaStado = 6;
+					delayVerificaStado = 5;
 					continue;
+				} else {
+					atualizaPosicoes();
 				}
-				atualizaPosicoes();
 				Thread.sleep(tempoCiclo);
 			} catch (InterruptedException e) {
 				interrupt = true;
@@ -549,6 +552,8 @@ public class MonitorJogo implements Runnable {
 						piloto.setBox(dadosParciais.box);
 						piloto.setStress(dadosParciais.stress);
 						piloto.setPodeUsarDRS(dadosParciais.podeUsarDRS);
+						piloto.setRecebeuBanderada(
+								dadosParciais.recebeuBanderada);
 						piloto.getCarro().setCargaErs(dadosParciais.cargaKers);
 						piloto.setAlertaMotor(dadosParciais.alertaMotor);
 						piloto.setAlertaAerefolio(
@@ -578,6 +583,7 @@ public class MonitorJogo implements Runnable {
 						}
 						piloto.setVelocidade(dadosParciais.velocidade);
 						piloto.setVelocidadeExibir(dadosParciais.velocidade);
+						piloto.setVelocidade(dadosParciais.velocidade);
 						piloto.setQtdeCombustBox(dadosParciais.combustBox);
 						piloto.setTipoPneuBox(dadosParciais.tpPneusBox);
 						piloto.setModoPilotagem(dadosParciais.modoPilotar);

@@ -542,6 +542,7 @@ public class ControleJogosServer {
 				dadosParciais.dano = piloto.getCarro().getDanificado();
 				dadosParciais.box = piloto.isBox();
 				dadosParciais.podeUsarDRS = piloto.isPodeUsarDRS();
+				dadosParciais.recebeuBanderada = piloto.isRecebeuBanderada();
 				dadosParciais.stress = piloto.getStress();
 				dadosParciais.cargaKers = piloto.getCarro().getCargaErs();
 				dadosParciais.alertaMotor = piloto.isAlertaMotor();

@@ -3,8 +3,10 @@ package sowbreira.f1mane.controles;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -908,7 +910,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	public int getMediaPontecia() {
-		if(getCarros()==null){
+		if (getCarros() == null) {
 			return 0;
 		}
 		int somaPontecias = 0;
@@ -1659,6 +1661,59 @@ public class ControleJogoLocal extends ControleRecursos
 
 	public void setAtualizacaoSuave(boolean atualizacaoSuave) {
 		this.atualizacaoSuave = atualizacaoSuave;
+	}
+
+	@Override
+	public void setRecebeuBanderada(Piloto piloto) {
+		if (!piloto.isRecebeuBanderada()) {
+			piloto.setRecebeuBanderada(true);
+			Logger.logar(piloto.toString() + " Pts " + piloto.getPtosPista());
+			piloto.setPtosPista(
+					piloto.getPtosPista() + (100 * (25 - piloto.getPosicao())));
+			Logger.logar(
+					piloto.toString() + " Pts Depois " + piloto.getPtosPista());
+			if (piloto.getPosicao() == 1) {
+				infoPrioritaria(Html.superBlack(piloto.getNome())
+						+ Html.superGreen(Lang.msg("044",
+								new Object[]{piloto.getPosicao()})));
+			} else {
+				info(Html.superBlack(piloto.getNome()) + Html.green(
+						Lang.msg("044", new Object[]{piloto.getPosicao()})));
+			}
+			if (piloto.getCarroPilotoAtras() != null) {
+				piloto.setVantagem(calculaSegundosParaProximo(
+						piloto.getCarroPilotoAtras().getPiloto()));
+			}
+			double somaBaixa = 0;
+			for (Iterator iterator = piloto.getGanhosBaixa()
+					.iterator(); iterator.hasNext();) {
+				Double d = (Double) iterator.next();
+				somaBaixa += d;
+			}
+			double somaAlta = 0;
+			for (Iterator iterator = piloto.getGanhosAlta().iterator(); iterator
+					.hasNext();) {
+				Double d = (Double) iterator.next();
+				somaAlta += d;
+			}
+			double somaReta = 0;
+			for (Iterator iterator = piloto.getGanhosReta().iterator(); iterator
+					.hasNext();) {
+				Double d = (Double) iterator.next();
+				somaReta += d;
+			}
+			somaBaixa /= piloto.getGanhosBaixa().size();
+			somaAlta /= piloto.getGanhosAlta().size();
+			somaReta /= piloto.getGanhosReta().size();
+			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
+			Logger.logar("Bandeirada " + this + " Pts pista "
+					+ piloto.getPtosPista() + " Pos " + piloto.getPosicao() + " T "
+					+ df.format(new Date()));
+			Logger.logar(" SomaBaixa " + somaBaixa + " SomaAlta "
+					+ somaAlta + " SomaReta " + somaReta);
+
+		}
+
 	}
 
 }
