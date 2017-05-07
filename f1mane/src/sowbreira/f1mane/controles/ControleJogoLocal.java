@@ -5,7 +5,10 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -1584,24 +1587,24 @@ public class ControleJogoLocal extends ControleRecursos
 	@Override
 	public void atualizaInfoDebug(StringBuffer buffer) {
 		Field[] declaredFields = this.getClass().getDeclaredFields();
+		List<String> campos = new ArrayList<String>();
 		buffer.append("-=ControleJogo=- <br>");
-		buffer.append("asfaltoAbrasivo = " + this.asfaltoAbrasivo() + "<br>");
-		buffer.append("porcentagemChuvaCircuito = "
+		campos.add("asfaltoAbrasivo = " + this.asfaltoAbrasivo() + "<br>");
+		campos.add("porcentagemChuvaCircuito = "
 				+ this.porcentagemChuvaCircuito() + "<br>");
-		buffer.append("isBoxRapido = " + this.isBoxRapido() + "<br>");
-		buffer.append("verificaPistaEmborrachada = "
+		campos.add("isBoxRapido = " + this.isBoxRapido() + "<br>");
+		campos.add("verificaPistaEmborrachada = "
 				+ this.verificaPistaEmborrachada() + "<br>");
-		buffer.append("porcentagemCorridaConcluida = "
+		campos.add("porcentagemCorridaConcluida = "
 				+ this.porcentagemCorridaConcluida() + "<br>");
-		buffer.append("getFatorUtrapassagem = " + this.getFatorUtrapassagem()
+		campos.add("FatorUtrapassagem = " + this.getFatorUtrapassagem()
 				+ "<br>");
-		buffer.append("getFatorAcidente = " + this.getFatorAcidente() + "<br>");
-		buffer.append(
-				"verificaNivelJogo = " + this.verificaNivelJogo() + "<br>");
-		buffer.append("getNumVoltaAtual = " + this.getNumVoltaAtual() + "<br>");
-		buffer.append(
+		campos.add("FatorAcidente = " + this.getFatorAcidente() + "<br>");
+		campos.add("verificaNivelJogo = " + this.verificaNivelJogo() + "<br>");
+		campos.add("NumVoltaAtual = " + this.getNumVoltaAtual() + "<br>");
+		campos.add(
 				"totalVoltasCorrida = " + this.totalVoltasCorrida() + "<br>");
-		buffer.append(
+		campos.add(
 				"verificaUltimaVolta = " + this.verificaUltimaVolta() + "<br>");
 		for (Field field : declaredFields) {
 			try {
@@ -1613,37 +1616,44 @@ public class ControleJogoLocal extends ControleRecursos
 					}
 					valor = object.toString();
 				}
-				buffer.append(field.getName() + " = " + valor + "<br>");
+				campos.add(field.getName() + " = " + valor + "<br>");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		}
-
-		buffer.append("getClima = " + this.getClima() + "<br>");
-		buffer.append("obterIndicativoCorridaCompleta = "
+		campos.add("Clima = " + this.getClima() + "<br>");
+		campos.add("IndicativoCorridaCompleta = "
 				+ this.obterIndicativoCorridaCompleta() + "<br>");
-		buffer.append("isChovendo = " + this.isChovendo() + "<br>");
-		buffer.append(
+		campos.add("isChovendo = " + this.isChovendo() + "<br>");
+		campos.add(
 				"isSafetyCarNaPista = " + this.isSafetyCarNaPista() + "<br>");
-		buffer.append(
-				"isSafetyCarVaiBox = " + this.isSafetyCarVaiBox() + "<br>");
-		buffer.append("getIndexVelcidadeDaPista = "
-				+ this.getIndexVelcidadeDaPista() + "<br>");
-		buffer.append("isModoQualify = " + this.isModoQualify() + "<br>");
-		buffer.append("getTemporada = " + this.getTemporada() + "<br>");
-		buffer.append("verificaCampeonatoComRival = "
+		campos.add("isSafetyCarVaiBox = " + this.isSafetyCarVaiBox() + "<br>");
+		campos.add("IndexVelcidadeDaPista = " + this.getIndexVelcidadeDaPista()
+				+ "<br>");
+		campos.add("isModoQualify = " + this.isModoQualify() + "<br>");
+		campos.add("Temporada = " + this.getTemporada() + "<br>");
+		campos.add("verificaCampeonatoComRival = "
 				+ this.verificaCampeonatoComRival() + "<br>");
-		buffer.append("getDurabilidadeAreofolio = "
-				+ this.getDurabilidadeAreofolio() + "<br>");
-		buffer.append("safetyCarUltimas3voltas = "
-				+ this.safetyCarUltimas3voltas() + "<br>");
-		buffer.append("mostraTipoPneuAdversario = "
+		campos.add("DurabilidadeAreofolio = " + this.getDurabilidadeAreofolio()
+				+ "<br>");
+		campos.add("safetyCarUltimas3voltas = " + this.safetyCarUltimas3voltas()
+				+ "<br>");
+		campos.add("mostraTipoPneuAdversario = "
 				+ this.mostraTipoPneuAdversario() + "<br>");
-		buffer.append(
+		campos.add(
 				"isCorridaTerminada = " + this.isCorridaTerminada() + "<br>");
-		buffer.append(
-				"isCorridaIniciada = " + this.isCorridaIniciada() + "<br>");
-		buffer.append("getMediaPontecia = " + this.getMediaPontecia() + "<br>");
+		campos.add("isCorridaIniciada = " + this.isCorridaIniciada() + "<br>");
+		campos.add("MediaPontecia = " + this.getMediaPontecia() + "<br>");
+		Collections.sort(campos, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return o1.toLowerCase().compareTo(o2.toLowerCase());
+			}
+		});
+		for (Iterator<String> iterator = campos.iterator(); iterator
+				.hasNext();) {
+			buffer.append(iterator.next());
+		}
 	}
 
 	@Override
@@ -1707,10 +1717,10 @@ public class ControleJogoLocal extends ControleRecursos
 			somaReta /= piloto.getGanhosReta().size();
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss .S");
 			Logger.logar("Bandeirada " + this + " Pts pista "
-					+ piloto.getPtosPista() + " Pos " + piloto.getPosicao() + " T "
-					+ df.format(new Date()));
-			Logger.logar(" SomaBaixa " + somaBaixa + " SomaAlta "
-					+ somaAlta + " SomaReta " + somaReta);
+					+ piloto.getPtosPista() + " Pos " + piloto.getPosicao()
+					+ " T " + df.format(new Date()));
+			Logger.logar(" SomaBaixa " + somaBaixa + " SomaAlta " + somaAlta
+					+ " SomaReta " + somaReta);
 
 		}
 

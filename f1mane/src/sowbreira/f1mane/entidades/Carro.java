@@ -3,6 +3,12 @@ package sowbreira.f1mane.entidades;
 import java.awt.Color;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -1156,6 +1162,7 @@ public class Carro implements Serializable {
 	public void atualizaInfoDebug(StringBuffer buffer) {
 		Field[] declaredFields = Carro.class.getDeclaredFields();
 		buffer.append("-=Carro=- <br>");
+		List<String> campos = new ArrayList<String>();
 		for (Field field : declaredFields) {
 			try {
 				Object object = field.get(this);
@@ -1166,10 +1173,19 @@ public class Carro implements Serializable {
 					}
 					valor = object.toString();
 				}
-				buffer.append(field.getName() + " = " + valor + "<br>");
+				campos.add(field.getName() + " = " + valor + "<br>");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
+		}
+		Collections.sort(campos, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return o1.toLowerCase().compareTo(o2.toLowerCase());
+			}
+		});
+		for (Iterator<String> iterator = campos.iterator(); iterator.hasNext();) {
+			buffer.append(iterator.next());
 		}
 	}
 
