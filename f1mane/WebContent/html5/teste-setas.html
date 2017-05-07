@@ -6,9 +6,9 @@
 <script src="jquery/jquery-3.1.1.min.js"></script>
 </head>
 <body style="width: 100%; height: 100%; margin: 0px; overflow: hidden">
-	<canvas id="myCanvas" />
-	<canvas id="cvRotate" />
-	<script language="JavaScript">
+	<canvas id="myCanvas"></canvas>
+	<canvas id="cvRotate"></canvas>
+	<script>
 		var canvas = document.getElementById('myCanvas'), context = canvas
 				.getContext('2d');
 		context.canvas.width = window.innerWidth * 0.95;
@@ -70,7 +70,7 @@
 				success : function(response) {
 					debugger;
 					circuito = response;
-					//imgBg.src = "../sowbreira/f1mane/recursos/"+response.backGround;
+					imgBg.src = "../sowbreira/f1mane/recursos/"+response.backGround;
 					iniciarJogo();
 				},
 				error : function(xhRequest, ErrorText, thrownError) {
@@ -221,17 +221,31 @@
 			    sX,           // the left X position to start clipping 
 			    sY,           // the top Y position to start clipping
 			    sW,           // clip this width of pixels from the source
-			    wH,           // clip this height of pixels from the source
+			    sH,           // clip this height of pixels from the source
 			    dX,           // the left X canvas position to start drawing the clipped sub-image
 			    dY,           // the top Y canvas position to start drawing the clipped sub-image
 			    dW,           // scale sW to dW and draw a dW wide sub-image on the canvas
 			    dH            // scale sH to dH and draw a dH high sub-image on the canvas
 			}
 			 */
-
-			context.drawImage(imgBg, ptBg.x, ptBg.y, context.canvas.width,
-					context.canvas.height, 0, 0,
-					context.canvas.width, context.canvas.height);
+			var sX = ptBg.x;
+			 if(sX<0){
+				 sX = 0 ;
+			 }
+			var sY = ptBg.y;
+			 if(sY<0){
+				 sY = 0 ;
+			 }
+			 var sW = context.canvas.width;
+			 if( (ptBg.x+sW) > imgBg.width ){
+				 sW -= ((ptBg.x+sW) - imgBg.width);
+			 }
+			 var sH = context.canvas.height;
+			 if( (ptBg.y+sH) > imgBg.height){
+				 sH -= ((ptBg.y+sH) - imgBg.height);
+			 }
+			context.drawImage(imgBg, sX, sY, sW, sH, 
+					0, 0,context.canvas.width, context.canvas.height);
 				
 			desenhaObjs();
 
