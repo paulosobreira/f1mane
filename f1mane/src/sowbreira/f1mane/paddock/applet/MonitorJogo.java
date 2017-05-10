@@ -531,7 +531,7 @@ public class MonitorJogo implements Runnable {
 					piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
 							/ jogoCliente.getNosDaPista().size()));
 					if (pilotoSelecionado == null
-							&& !pilotoSelecionado.equals(piloto)) {
+							|| !pilotoSelecionado.equals(piloto)) {
 						continue;
 					}
 					piloto.setMelhorVolta(new Volta(dadosParciais.melhorVolta));
