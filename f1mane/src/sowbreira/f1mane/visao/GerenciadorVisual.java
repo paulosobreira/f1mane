@@ -100,7 +100,6 @@ public class GerenciadorVisual {
 	private JTextField nomeJogador;
 	private PainelTabelaResultadoFinal resultadoFinal;
 	private long lastPress;
-	private ProgamacaoBox progamacaoBox;
 	private long ultimaChamadaBox;
 	private List listaPilotosCombo;
 	private List listaCarrosCombo;
@@ -123,7 +122,6 @@ public class GerenciadorVisual {
 
 	public GerenciadorVisual(InterfaceJogo controleJogo) throws IOException {
 		this.controleJogo = controleJogo;
-		progamacaoBox = new ProgamacaoBox();
 	}
 
 	private void disableKeys(InputMap inputMap) {
@@ -350,10 +348,6 @@ public class GerenciadorVisual {
 		ultMudaPos = System.currentTimeMillis();
 	}
 
-	protected void progamacaoBox() {
-		JOptionPane.showMessageDialog(null, progamacaoBox.getPainel());
-	}
-
 	protected void mudarModoPilotagem(String modo) {
 		if (controleJogo == null) {
 			return;
@@ -380,9 +374,6 @@ public class GerenciadorVisual {
 				}
 				if (keyCoode == KeyEvent.VK_D) {
 					controleJogo.mudarGiroMotor(Carro.GIRO_MAX);
-				}
-				if (keyCoode == KeyEvent.VK_F11) {
-					progamacaoBox();
 				}
 				if (keyCoode == KeyEvent.VK_B) {
 					if (painelCircuito != null) {
@@ -1524,67 +1515,6 @@ public class GerenciadorVisual {
 
 	public void setComboBoxAsaInicial(JComboBox comboBoxAsaInicial) {
 		this.comboBoxAsaInicial = comboBoxAsaInicial;
-	}
-
-	public void verificaProgramacaoBox() {
-		if (controleJogo.getPilotoJogador() == null
-				|| controleJogo.getPilotoJogador().isBox()) {
-			return;
-		}
-		long volta = controleJogo.getPilotoJogador().getNumeroVolta();
-		boolean ativo1 = progamacaoBox.getAtive1().isSelected();
-		long voltaParada1 = ((Integer) (progamacaoBox
-				.getSpinnerNumVoltaParada1().getValue())).intValue();
-		if (ativo1 && volta == voltaParada1) {
-			controleJogo.setBoxJogadorHumano(
-					Lang.key(progamacaoBox.getBoxPneuParada1().getSelectedItem()
-							.toString()),
-					progamacaoBox.getSliderPercentCombustParada1().getValue(),
-					Lang.key(progamacaoBox.getComboBoxAsaParada1()
-							.getSelectedItem().toString()));
-			modoBox();
-			if (controleJogo.getPilotoJogador().getPtosBox() != 0) {
-				progamacaoBox.getAtive1().setSelected(false);
-			}
-		}
-		boolean ativo2 = progamacaoBox.getAtive2().isSelected();
-		long voltaParada2 = ((Integer) (progamacaoBox
-				.getSpinnerNumVoltaParada2().getValue())).intValue();
-		if (ativo2 && volta == voltaParada2
-				&& controleJogo.getPilotoJogador().getPtosBox() == 0) {
-			controleJogo.setBoxJogadorHumano(
-					Lang.key(progamacaoBox.getBoxPneuParada2().getSelectedItem()
-							.toString()),
-					progamacaoBox.getSliderPercentCombustParada2().getValue(),
-					Lang.key(progamacaoBox.getComboBoxAsaParada2()
-							.getSelectedItem().toString()));
-			modoBox();
-			if (controleJogo.getPilotoJogador().getPtosBox() != 0) {
-				progamacaoBox.getAtive2().setSelected(false);
-			}
-		}
-		boolean ativo3 = progamacaoBox.getAtive3().isSelected();
-		long voltaParada3 = ((Integer) (progamacaoBox
-				.getSpinnerNumVoltaParada3().getValue())).intValue();
-		if (ativo3 && volta == voltaParada3
-				&& controleJogo.getPilotoJogador().getPtosBox() == 0) {
-			controleJogo.setBoxJogadorHumano(
-					Lang.key(progamacaoBox.getBoxPneuParada3().getSelectedItem()
-							.toString()),
-					progamacaoBox.getSliderPercentCombustParada3().getValue(),
-					Lang.key(progamacaoBox.getComboBoxAsaParada3()
-							.getSelectedItem().toString()));
-			modoBox();
-			if (controleJogo.getPilotoJogador().getPtosBox() != 0) {
-				progamacaoBox.getAtive3().setSelected(false);
-			}
-		}
-	}
-
-	public boolean isProgamaBox() {
-		return progamacaoBox.getAtive1().isSelected()
-				|| progamacaoBox.getAtive2().isSelected()
-				|| progamacaoBox.getAtive3().isSelected();
 	}
 
 	public void adicinaTravadaRoda(TravadaRoda travadaRoda) {

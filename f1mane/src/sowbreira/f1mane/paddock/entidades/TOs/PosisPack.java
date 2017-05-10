@@ -18,6 +18,9 @@ public class PosisPack implements Serializable {
 	public boolean safetySair;
 
 	public String encode() {
+		if(posis.length==0){
+			return null;
+		}
 		StringBuffer stringBuffer = new StringBuffer();
 		for (int i = 0; i < posis.length; i++) {
 			stringBuffer.append(posis[i].encode());

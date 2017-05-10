@@ -7,28 +7,24 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 /**
  * @author Paulo Sobreira Criado em 17/08/2007 as 20:25:54
  */
-@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Posis implements Serializable {
 
 	public int idPiloto, idNo, tracado;
-	public boolean agressivo;
+	public String status;
 	public boolean humano;
-	public boolean autoPos;
-
 	public String encode() {
-		return idPiloto + "!" + idNo + "!" + (agressivo ? "S" : "N") + "!"
-				+ (humano ? "S" : "N") + "!" + tracado + "!"
-				+ (autoPos ? "S" : "N");
+		return idPiloto + "!" + idNo + "!" + status + "!" + (humano ? "S" : "N")
+				+ "!" + tracado;
 	}
 
 	public void decode(String val) {
 		String[] sp = val.split("!");
 		idPiloto = parseInt(sp[0]);
 		idNo = parseInt(sp[1]);
-		agressivo = "S".equals(sp[2]);
+		status = sp[2];
 		humano = "S".equals(sp[3]);
 		tracado = parseInt(sp[4]);
-		autoPos = "S".equals(sp[5]);
 	}
 
 	private int parseInt(String string) {
@@ -63,14 +59,6 @@ public class Posis implements Serializable {
 		this.tracado = tracado;
 	}
 
-	public boolean isAgressivo() {
-		return agressivo;
-	}
-
-	public void setAgressivo(boolean agressivo) {
-		this.agressivo = agressivo;
-	}
-
 	public boolean isHumano() {
 		return humano;
 	}
@@ -79,12 +67,4 @@ public class Posis implements Serializable {
 		this.humano = humano;
 	}
 
-	public boolean isAutoPos() {
-		return autoPos;
-	}
-
-	public void setAutoPos(boolean autoPos) {
-		this.autoPos = autoPos;
-	}
-	
 }

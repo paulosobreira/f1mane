@@ -195,8 +195,6 @@ public interface InterfaceJogo {
 
 	public void iniciaJanela();
 
-	public void verificaProgramacaoBox();
-
 	public void mudaPilotoSelecionado();
 
 	public List getCarrosBox();
@@ -400,8 +398,8 @@ public interface InterfaceJogo {
 	public void atualizaInfoDebug(StringBuffer buffer);
 
 	public void forcaQuerbraAereofolio();
-	
-	public boolean isAtualizacaoSuave() ;
+
+	public boolean isAtualizacaoSuave();
 
 	public void setAtualizacaoSuave(boolean atualizacaoSuave);
 

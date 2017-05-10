@@ -49,7 +49,7 @@ public class DadosParciais implements Serializable {
 	public String nomeJogador;
 	public String texto;
 	public String vantagem;
-	public String[] statusPilotos = new String[24];
+	public PosisPack posisPack;
 
 	public void decode(String val) {
 		String[] sp = val.split("@");
@@ -95,10 +95,8 @@ public class DadosParciais implements Serializable {
 		ultima3 = parseLong(sp[spcont++]);
 		ultima4 = parseLong(sp[spcont++]);
 		ultima5 = parseLong(sp[spcont++]);
-		String[] pts = sp[spcont++].split("µ");
-		for (int i = 0; i < pts.length; i++) {
-			statusPilotos[i] = pts[i];
-		}
+		posisPack = new PosisPack();
+		posisPack.decode(sp[spcont++]);
 	}
 
 	private String decodeModoPilotar(String string) {
@@ -278,17 +276,6 @@ public class DadosParciais implements Serializable {
 			codpselModoPilotar = "A";
 		}
 
-		StringBuffer stringBuffer = new StringBuffer();
-		for (int i = 0; i < statusPilotos.length; i++) {
-			stringBuffer.append(statusPilotos[i]);
-			stringBuffer.append("µ");
-		}
-		String lessLastPipe = stringBuffer.toString().substring(0,
-				stringBuffer.toString().length() - 1);
-
-		String lessLastPipe2 = stringBuffer.toString().substring(0,
-				stringBuffer.toString().length() - 1);
-
 		if (texto != null && !"".equals(texto)) {
 			texto = texto.replaceAll("@", "");
 			texto = texto.replaceAll("µ", "");
@@ -308,8 +295,8 @@ public class DadosParciais implements Serializable {
 				+ (texto == null ? "" : texto) + "@"
 				+ (vantagem == null ? "" : vantagem) + "@" + ultima1 + "@"
 				+ ultima2 + "@" + ultima3 + "@" + ultima4 + "@" + ultima5 + "@"
-				+ lessLastPipe + "@" + lessLastPipe2;
-		// Logger.logar(enc);
+				+ posisPack.encode();
+		Logger.logar(enc);
 		return enc;
 
 	};
@@ -317,10 +304,10 @@ public class DadosParciais implements Serializable {
 	public static void main(String[] args) {
 
 		DadosParciais dadosParciais = new DadosParciais();
-		dadosParciais.texto = "<table>    <tr>        <td>        </td>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Nµmero 8</font>        </td >                <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Nµmero 7</font>        </td>           <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Nµmero 6</font>        </td>               </tr>    <tr>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >M.Webber 9</font>        </td>        <td>        <font face='sans-serif' >2:52.656</font>        </td>                <td>        <font face='sans-serif' >1:25.250</font>        </td>           <td>        <font face='sans-serif' >1:26.032</font>        </td>               </tr>    <tr>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >F.Alonso 10</font>        </td>        <td>        <font face='sans-serif' >2:18.562</font>        </td>                <td>        <font face='sans-serif' >1:44.969</font>        </td>           <td>        <font face='sans-serif' >1:40.656</font>        </td>               </tr>        <tr>        <td>        </td>        <td bgcolor='#80FF00'>        <font face='sans-serif' >-34.-094</font>        </td>                <td bgcolor='#FFFF00'>        <font face='sans-serif' >19.719</font>        </td>           <td bgcolor='#FFFF00'>        <font face='sans-serif' >14.624</font>        </td>               </tr>     </table>";
-		dadosParciais.encode();
-		// dadosParciais
-		// .decode("4@14557@M@0@@308@11196@48328@0@5@N@23938@S@12@@N@@1240781962625µ1240782037063µ2@1240781962625µ1240782037063µ2@Sow@<table>
+//		dadosParciais.texto = "<table>    <tr>        <td>        </td>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Nµmero 8</font>        </td >                <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Nµmero 7</font>        </td>           <td bgcolor='#E0E0E0'>        <font face='sans-serif' >Volta Nµmero 6</font>        </td>               </tr>    <tr>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >M.Webber 9</font>        </td>        <td>        <font face='sans-serif' >2:52.656</font>        </td>                <td>        <font face='sans-serif' >1:25.250</font>        </td>           <td>        <font face='sans-serif' >1:26.032</font>        </td>               </tr>    <tr>        <td bgcolor='#E0E0E0'>        <font face='sans-serif' >F.Alonso 10</font>        </td>        <td>        <font face='sans-serif' >2:18.562</font>        </td>                <td>        <font face='sans-serif' >1:44.969</font>        </td>           <td>        <font face='sans-serif' >1:40.656</font>        </td>               </tr>        <tr>        <td>        </td>        <td bgcolor='#80FF00'>        <font face='sans-serif' >-34.-094</font>        </td>                <td bgcolor='#FFFF00'>        <font face='sans-serif' >19.719</font>        </td>           <td bgcolor='#FFFF00'>        <font face='sans-serif' >14.624</font>        </td>               </tr>     </table>";
+	//	dadosParciais.encode();
+		 dadosParciais
+		 .decode("0@80@M@0@@0@77@82@0@5@85@100@N@N@N@N@N@N@M@M@S@10@@A@@null@null@@@@null@null@null@null@null@0£N£4!18764!T18416!N!2§7!18714!T18069!N!1§20!18665!T18515!N!2§5!18615!T18763!N!1§9!18566!T18614!N!2§3!18516!T18118!N!1§15!18466!T18713!N!2§1!18417!T17870!N!1§13!18367!T18565!N!2§11!18318!T17721!N!1§19!18268!T18317!N!2§22!18218!T17771!N!1§18!18169!T18366!N!2§6!18119!T17920!N!1§2!18070!T18465!N!2§17!18020!T17821!N!1§21!17970!T18019!N!2§14!17921!T18168!N!1§8!17871!T18267!N!2§16!17822!T18664!N!1§12!17772!T17969!N!2§10!17722!T18217!N!1");
 		// <tr> <td> </td> <td bgcolor='#E0E0E0'> <font face='sans-serif' >Volta
 		// Nµmero 8</font> </td > <td bgcolor='#E0E0E0'> <font face='sans-serif'
 		// >Volta Nµmero 7</font> </td> <td bgcolor='#E0E0E0'> <font

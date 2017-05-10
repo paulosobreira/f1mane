@@ -355,6 +355,12 @@ public class ControleJogosServer {
 		if (jogoServidor.getMapaNosIds() == null) {
 			return null;
 		}
+		PosisPack pack = gerarPosicaoPilotos(jogoServidor);
+		return pack.encode();
+
+	}
+
+	private PosisPack gerarPosicaoPilotos(JogoServidor jogoServidor) {
 		List posisList = new ArrayList();
 		List pilotos = jogoServidor.getPilotosCopia();
 		if(pilotos==null){
@@ -365,8 +371,6 @@ public class ControleJogosServer {
 			Posis posis = new Posis();
 			posis.idPiloto = piloto.getId();
 			posis.tracado = piloto.getTracado();
-			posis.autoPos = piloto.isAutoPos();
-			posis.agressivo = piloto.isAgressivo();
 			Integer integer = jogoServidor.getMapaNosIds()
 					.get(piloto.getNoAtual());
 			if (integer == null) {
@@ -389,8 +393,7 @@ public class ControleJogosServer {
 					.get(jogoServidor.getSafetyCar().getNoAtual())).intValue();
 			pack.safetySair = jogoServidor.getSafetyCar().isVaiProBox();
 		}
-		return pack.encode();
-
+		return pack;
 	}
 
 	public Object mudarGiroMotor(ClientPaddockPack clientPaddockPack) {
@@ -494,6 +497,7 @@ public class ControleJogosServer {
 		dadosParciais.voltaAtual = jogoServidor.getNumVoltaAtual();
 		dadosParciais.clima = jogoServidor.getClima();
 		dadosParciais.estado = jogoServidor.getEstado();
+		dadosParciais.posisPack = gerarPosicaoPilotos(jogoServidor);
 		List<Piloto> pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = iter.next();
@@ -505,7 +509,7 @@ public class ControleJogosServer {
 			} else if (piloto.getCarro().isRecolhido()) {
 				statusPilotos = "R";
 			}
-			dadosParciais.statusPilotos[piloto.getId() - 1] = statusPilotos;
+			dadosParciais.posisPack.posis[piloto.getId() - 1].status = statusPilotos;
 			if (args.length > 2
 					&& piloto.getId() == Integer.parseInt(args[2])) {
 				Volta obterVoltaMaisRapida = piloto.obterVoltaMaisRapida();

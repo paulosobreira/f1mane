@@ -577,7 +577,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.getId() == posis.idPiloto) {
-				piloto.setAgressivo(posis.agressivo, this);
 				piloto.setJogadorHumano(posis.humano);
 				int pos = posis.tracado;
 				double mod = Carro.ALTURA;
@@ -606,7 +605,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 								.getMultiplicadorLarguraPista()));
 					}
 				}
-				piloto.setAutoPos(posis.autoPos);
 				calculaSegundosParaLider(piloto);
 				piloto.calculaCarrosAdjacentes(this);
 				if (posis.idNo >= -1) {
@@ -754,10 +752,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return 0;
 	}
 
-	public void verificaProgramacaoBox() {
-		gerenciadorVisual.verificaProgramacaoBox();
-
-	}
 
 	@Override
 	public void iniciarJogo(ControleCampeonato controleCampeonato)

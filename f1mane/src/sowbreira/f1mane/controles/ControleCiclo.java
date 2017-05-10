@@ -95,7 +95,6 @@ public class ControleCiclo extends Thread {
 						piloto.processaAlertaAerefolio(controleJogo);
 					}
 					controleCorrida.atualizaClassificacao();
-					controleJogo.verificaProgramacaoBox();
 					controleCorrida.verificaFinalCorrida();
 					controleJogo.atualizaPainel();
 					Thread.sleep(Constantes.CICLO);

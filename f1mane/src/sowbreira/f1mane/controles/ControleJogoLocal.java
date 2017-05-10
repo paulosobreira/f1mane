@@ -926,11 +926,6 @@ public class ControleJogoLocal extends ControleRecursos
 		return mediaPontecia;
 	}
 
-	public void verificaProgramacaoBox() {
-		gerenciadorVisual.verificaProgramacaoBox();
-
-	}
-
 	@Override
 	public void mudaPilotoSelecionado() {
 		Piloto outro = null;

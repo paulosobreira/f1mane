@@ -548,10 +548,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	@Override
-	public void verificaProgramacaoBox() {
-	}
-
-	@Override
 	public void travouRodas(Piloto piloto) {
 		this.travadaRoda = new TravadaRoda();
 		this.travadaRoda.setIdNo(mapaNosIds.get(piloto.getNoAtual()));
