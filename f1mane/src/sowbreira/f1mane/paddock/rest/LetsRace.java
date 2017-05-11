@@ -27,6 +27,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
+import sowbreira.f1mane.paddock.servlet.JogoServidor;
 
 @Path("/letsRace")
 public class LetsRace {
@@ -202,8 +203,16 @@ public class LetsRace {
 		sessaoCliente.setNomeJogador("Sobreira");
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace();
+
 		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-		Object criarJogo = controlePaddock.criarJogo(clientPaddockPack);
+
+		Object criarJogo = null;
+
+		criarJogo = controlePaddock
+				.obterJogoPeloNome(clientPaddockPack);
+		if (criarJogo == null) {
+			criarJogo = controlePaddock.criarJogo(clientPaddockPack);
+		}
 		if (criarJogo == null) {
 			return Response.status(400)
 					.entity(Html.escapeHtml("Jogo não pode ser criado."))
@@ -234,14 +243,16 @@ public class LetsRace {
 				.carregarCircuitos();
 		List shuffle = new ArrayList(carregarCircuitos.keySet());
 		Collections.shuffle(shuffle);
-		dadosCriarJogo.setCircuitoSelecionado((String)shuffle.iterator().next());
-//		dadosCriarJogo.setCircuitoSelecionado("Montreal");
+		dadosCriarJogo
+				.setCircuitoSelecionado((String) shuffle.iterator().next());
+		// dadosCriarJogo.setCircuitoSelecionado("Montreal");
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
 		dadosCriarJogo.setReabastecimento(false);
 		dadosCriarJogo.setTrocaPneu(true);
 		dadosCriarJogo.setKers(true);
 		dadosCriarJogo.setDrs(true);
+		dadosCriarJogo.setNomeJogo("¢088¢ 0-2016");
 		return dadosCriarJogo;
 	}
 }

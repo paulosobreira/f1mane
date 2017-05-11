@@ -131,19 +131,24 @@ public class ControleJogosServer {
 			jogoServidor.setControleJogosServer(this);
 			jogoServidor
 					.setControleCampeonatoServidor(controleCampeonatoServidor);
-			SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
-			srvPaddockPack.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
-			srvPaddockPack
-					.setNomeJogoCriado(jogoServidor.getNomeJogoServidor());
-			srvPaddockPack
-					.setSessaoCliente(clientPaddockPack.getSessaoCliente());
-			srvPaddockPack.setDadosPaddock(dadosPaddock);
+			SrvPaddockPack srvPaddockPack = preparaSrvPaddockPack(
+					clientPaddockPack, jogoServidor);
 			return srvPaddockPack;
 		} finally {
 			if (session.isOpen()) {
 				session.close();
 			}
 		}
+	}
+
+	public SrvPaddockPack preparaSrvPaddockPack(
+			ClientPaddockPack clientPaddockPack, JogoServidor jogoServidor) {
+		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+		srvPaddockPack.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
+		srvPaddockPack.setNomeJogoCriado(jogoServidor.getNomeJogoServidor());
+		srvPaddockPack.setSessaoCliente(clientPaddockPack.getSessaoCliente());
+		srvPaddockPack.setDadosPaddock(dadosPaddock);
+		return srvPaddockPack;
 	}
 
 	private boolean verificaExcedePotencia(int mediaPontecia, int ptsCarro,
@@ -363,7 +368,7 @@ public class ControleJogosServer {
 	private PosisPack gerarPosicaoPilotos(JogoServidor jogoServidor) {
 		List posisList = new ArrayList();
 		List pilotos = jogoServidor.getPilotosCopia();
-		if(pilotos==null){
+		if (pilotos == null) {
 			return null;
 		}
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
@@ -509,7 +514,8 @@ public class ControleJogosServer {
 			} else if (piloto.getCarro().isRecolhido()) {
 				statusPilotos = "R";
 			}
-			dadosParciais.posisPack.posis[piloto.getId() - 1].status = statusPilotos;
+			dadosParciais.posisPack.posis[piloto.getId()
+					- 1].status = statusPilotos;
 			if (args.length > 2
 					&& piloto.getId() == Integer.parseInt(args[2])) {
 				Volta obterVoltaMaisRapida = piloto.obterVoltaMaisRapida();

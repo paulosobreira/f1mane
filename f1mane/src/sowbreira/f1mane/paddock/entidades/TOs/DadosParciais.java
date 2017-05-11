@@ -296,7 +296,7 @@ public class DadosParciais implements Serializable {
 				+ (vantagem == null ? "" : vantagem) + "@" + ultima1 + "@"
 				+ ultima2 + "@" + ultima3 + "@" + ultima4 + "@" + ultima5 + "@"
 				+ posisPack.encode();
-		Logger.logar(enc);
+		//Logger.logar(enc);
 		return enc;
 
 	};

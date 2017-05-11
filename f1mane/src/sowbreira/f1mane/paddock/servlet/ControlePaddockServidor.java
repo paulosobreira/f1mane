@@ -674,4 +674,22 @@ public class ControlePaddockServidor {
 
 	}
 
+	public SrvPaddockPack obterJogoPeloNome(
+			ClientPaddockPack clientPaddockPack) {
+		if (clientPaddockPack == null
+				|| clientPaddockPack.getDadosJogoCriado() == null
+				|| clientPaddockPack.getDadosJogoCriado()
+						.getNomeJogo() == null) {
+			return null;
+		}
+		String nomeJogo = clientPaddockPack.getDadosJogoCriado().getNomeJogo();
+		JogoServidor jogoServidor = controleJogosServer
+				.obterJogoPeloNome(nomeJogo);
+		if (jogoServidor == null) {
+			return null;
+		}
+		return controleJogosServer.preparaSrvPaddockPack(clientPaddockPack,
+				jogoServidor);
+	}
+
 }

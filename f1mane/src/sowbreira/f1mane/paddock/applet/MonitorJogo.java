@@ -67,12 +67,7 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && controlePaddockCliente.isComunicacaoServer()
 				&& jogoAtivo) {
 			try {
-				// long tempoCiclo = jogoCliente.getTempoCiclo();
-				// if (tempoCiclo < controlePaddockCliente.getLatenciaMinima())
-				// {
-				// tempoCiclo = controlePaddockCliente.getLatenciaMinima();
-				// }
-				long tempoCiclo = 200;
+				long tempoCiclo = 500;
 				Logger.logar("MonitorJogo");
 				Logger.logar("MonitorJogo verificaEstadoJogo()");
 				verificaEstadoJogo();
@@ -163,6 +158,7 @@ public class MonitorJogo implements Runnable {
 
 	private void processaCiclosCorrida(long tempoCiclo)
 			throws InterruptedException {
+		tempoCiclo = 1000;
 		boolean interrupt = false;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
