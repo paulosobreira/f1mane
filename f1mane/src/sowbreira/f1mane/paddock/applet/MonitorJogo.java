@@ -163,7 +163,6 @@ public class MonitorJogo implements Runnable {
 
 	private void processaCiclosCorrida(long tempoCiclo)
 			throws InterruptedException {
-		int delayVerificaStado = 5;
 		boolean interrupt = false;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
@@ -185,16 +184,6 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.desenhouQualificacao();
 				jogoCliente.selecionaPilotoJogador();
 				disparaAtualizadorPainel(tempoCiclo);
-				// delayVerificaStado--;
-				// if (delayVerificaStado < 0) {
-				// atualizarDadosParciais(jogoCliente.getDadosJogo(),
-				// jogoCliente.getPilotoSelecionado());
-				// delayVerificaStado = 5;
-				// continue;
-				// } else {
-				// atualizaPosicoes();
-				// }
-
 				atualizarDadosParciais(jogoCliente.getDadosJogo(),
 						jogoCliente.getPilotoSelecionado());
 				Thread.sleep(tempoCiclo);
@@ -219,8 +208,7 @@ public class MonitorJogo implements Runnable {
 		}
 		atualizadorPainel = new Thread(new Runnable() {
 			public void run() {
-				Logger.logar(
-						"MonitorJogo disparaAtualizadorPainel");
+				Logger.logar("MonitorJogo disparaAtualizadorPainel");
 				boolean interrupt = false;
 				while (!interrupt && jogoAtivo) {
 					try {
@@ -335,20 +323,6 @@ public class MonitorJogo implements Runnable {
 		}
 	}
 
-	private void atualizaPosicoes() {
-		Object ret = controlePaddockCliente
-				.enviarObjeto(jogoCliente.getNomeJogoCriado(), true);
-		if (retornoNaoValido(ret)) {
-			return;
-		}
-		if (ret != null) {
-			String enc = (String) ret;
-			PosisPack posisPack = new PosisPack();
-			posisPack.decode(enc);
-			atualizaPosisPack(posisPack);
-		}
-	}
-
 	private void atualizaPosisPack(PosisPack posisPack) {
 		if (posisPack.safetyNoId != 0) {
 			jogoCliente.setSafetyCarBol(true);
@@ -422,7 +396,7 @@ public class MonitorJogo implements Runnable {
 					atualizouDados = true;
 					Logger.logar("atualizouDados = true");
 					atualizaModoCarreira();
-					atualizaPosicoes();
+					atualizarDados();
 				}
 			} else {
 				atualizouDados = false;
@@ -531,7 +505,7 @@ public class MonitorJogo implements Runnable {
 					piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
 							/ jogoCliente.getNosDaPista().size()));
 					if (pilotoSelecionado == null
-							&& !pilotoSelecionado.equals(piloto)) {
+							|| !pilotoSelecionado.equals(piloto)) {
 						continue;
 					}
 					piloto.setMelhorVolta(new Volta(dadosParciais.melhorVolta));
@@ -607,7 +581,6 @@ public class MonitorJogo implements Runnable {
 				}
 			}
 		} catch (Exception e) {
-			atualizarDados();
 			Logger.logarExept(e);
 		}
 
