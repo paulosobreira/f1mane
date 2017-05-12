@@ -574,6 +574,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void atualizaPosicaoPiloto(Posis posis) {
+		if (pilotos == null) {
+			return;
+		}
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = iter.next();
 			piloto.setFaiscas(false);
@@ -857,8 +860,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void travouRodas(TravadaRoda travadaRoda) {
-		if (gerenciadorVisual != null && travadaRoda != null)
+		if (gerenciadorVisual != null && travadaRoda != null) {
 			gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
+		}
 
 	}
 

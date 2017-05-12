@@ -320,6 +320,9 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void atualizaPosisPack(PosisPack posisPack) {
+		if(posisPack==null){
+			return;
+		}
 		if (posisPack.safetyNoId != 0) {
 			jogoCliente.setSafetyCarBol(true);
 			jogoCliente.atualizaPosSafetyCar(posisPack.safetyNoId,

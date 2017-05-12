@@ -64,7 +64,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 public class PainelCircuito {
 
 	public static boolean desenhaBkg = false;
-	public static boolean desenhaPista = false;
+	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = false;
 
 	private boolean verControles = true;
@@ -814,7 +814,9 @@ public class PainelCircuito {
 			diff = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
 		}
 		int ganhoSuave = loopCalculaGanhoSuave(diff);
-
+		if (pilotoSelecionado != null && pilotoSelecionado.isJogadorHumano()) {
+			Logger.logar("ganhoSuave = " + ganhoSuave);
+		}
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
 		if (ganhoSuaveAnt == 0) {
 			ganhoSuaveAnt = ganhoSuave;
@@ -876,8 +878,8 @@ public class PainelCircuito {
 			inc = 20;
 		}
 		if (controleJogo instanceof JogoCliente) {
-			inc = 20;
-			maxLoop = 2000;
+			inc = 50;
+			maxLoop = 5000;
 		}
 		for (int i = 0; i < maxLoop; i += inc) {
 			if (diff >= i && diff < i + inc) {
@@ -2942,33 +2944,41 @@ public class PainelCircuito {
 	}
 
 	private void desenhaMarcasPneuPista(TravadaRoda travadaRoda) {
+		if (controleJogo == null) {
+			return;
+		}
 		No noAtual = controleJogo.obterNoPorId(travadaRoda.getIdNo());
 		if (noAtual == null) {
 			return;
 		}
+		if (circuito == null) {
+			return;
+		}
 		Point p = noAtual.getPoint();
 		List<ObjetoPista> objetos = circuito.getObjetos();
-		if (objetos != null) {
-			boolean travadaNaTransparencia = false;
-			for (Iterator iterator = objetos.iterator(); iterator.hasNext();) {
-				ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-				if (objetoPista instanceof ObjetoTransparencia) {
-					ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
-					Rectangle rectangle = new Rectangle(Carro.LARGURA,
-							Carro.LARGURA);
-					rectangle.setLocation(p.x - Carro.LARGURA / 2,
-							p.y - Carro.LARGURA / 2);
-					if (objetoTransparencia.obterArea().intersects(rectangle)) {
-						travadaNaTransparencia = true;
-						break;
-					}
-				} else {
-					continue;
+		if (objetos == null) {
+			return;
+		}
+		boolean travadaNaTransparencia = false;
+		for (Iterator<ObjetoPista> iterator = objetos.iterator(); iterator
+				.hasNext();) {
+			ObjetoPista objetoPista = iterator.next();
+			if (objetoPista instanceof ObjetoTransparencia) {
+				ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
+				Rectangle rectangle = new Rectangle(Carro.LARGURA,
+						Carro.LARGURA);
+				rectangle.setLocation(p.x - Carro.LARGURA / 2,
+						p.y - Carro.LARGURA / 2);
+				if (objetoTransparencia.obterArea().intersects(rectangle)) {
+					travadaNaTransparencia = true;
+					break;
 				}
+			} else {
+				continue;
 			}
-			if (travadaNaTransparencia) {
-				return;
-			}
+		}
+		if (travadaNaTransparencia) {
+			return;
 		}
 		int width = (int) (travadaRodaImg0.getWidth());
 		int height = (int) (travadaRodaImg0.getHeight());
@@ -3049,7 +3059,13 @@ public class PainelCircuito {
 				break;
 		}
 		BufferedImage travada = rotateBuffer;
-		Graphics graphics = backGround.getGraphics();
+		Graphics graphics = null;
+		if (backGround != null) {
+			graphics = backGround.getGraphics();
+		} else {
+			graphics = controleJogo.getMainFrame().obterGraficos();
+		}
+
 		graphics.drawImage(travada, Util.inteiro((carx)), Util.inteiro((cary)),
 				null);
 	}
@@ -3192,13 +3208,13 @@ public class PainelCircuito {
 		if (piloto.getCarro() == null) {
 			return;
 		}
-		if(piloto.getAngulo()==null){
+		if (piloto.getAngulo() == null) {
 			return;
 		}
 		if (descontoCentraliza == null) {
 			return;
 		}
-		if(controleJogo==null){
+		if (controleJogo == null) {
 			return;
 		}
 		if (gerenciadorVisual.getFps() < 20) {
@@ -3253,8 +3269,7 @@ public class PainelCircuito {
 		int height = Carro.ALTURA_CIMA;
 		int w2 = Carro.MEIA_LARGURA_CIMA;
 		int h2 = Carro.MEIA_LARGURA_CIMA;
-		
-		Logger.logar("calculaAngulo = "+calculaAngulo);
+
 		double rad = Math.toRadians((double) calculaAngulo);
 
 		int imagemCarroX = Util.inteiro((carX - descontoCentraliza.x) * zoom);
