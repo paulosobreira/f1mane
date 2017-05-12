@@ -1,7 +1,11 @@
 function rest_dadosJogo() {
+	if(criarJogo ==null || criarJogo.nomeJogoCriado == null){
+		console.log('criarJogo ==null || criarJogo.nomeJogoCriado == null');
+		return;
+	}
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/dadosJogo",
+		url : "/f1mane/rest/letsRace/dadosJogo?nomeJogo="+criarJogo.nomeJogoCriado,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
@@ -14,9 +18,13 @@ function rest_dadosJogo() {
 }
 
 function rest_ciruito() {
+	if(criarJogo ==null || criarJogo.nomeJogoCriado == null){
+		console.log('criarJogo ==null || criarJogo.nomeJogoCriado == null');
+		return;
+	}
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/circuito",
+		url : "/f1mane/rest/letsRace/circuito?nomeJogo="+criarJogo.nomeJogoCriado,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
@@ -29,15 +37,19 @@ function rest_ciruito() {
 	});
 }
 
-function rest_posicaoPilotos() {
+function rest_dadosPiloto() {
+	if(criarJogo ==null || criarJogo.nomeJogoCriado == null){
+		console.log('criarJogo ==null || criarJogo.nomeJogoCriado == null');
+		return;
+	}	
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/posicaoPilotos",
+		url : "/f1mane/rest/letsRace/dadosPiloto?nomeJogo="+criarJogo.nomeJogoCriado,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
-			posicaoPilotos = response;
-			setInterval(rest_posicaoPilotos(), 1000);
+			dadosPiloto = response;
+			setInterval(rest_dadosPiloto(), 1000);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			alert(xhRequest.status + '  ' + xhRequest.responseText);
@@ -52,6 +64,7 @@ function rest_criarJogo() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
+			criarJogo = response;
 			rest_ciruito();
 			rest_dadosJogo();
 		},
@@ -66,7 +79,7 @@ function rest_iniciarJogo() {
 		type : "GET",
 		url : "/f1mane/rest/letsRace/iniciarJogo",
 		success : function(response) {
-			rest_posicaoPilotos();
+			rest_dadosPiloto();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			alert(xhRequest.status + '  ' + xhRequest.responseText);

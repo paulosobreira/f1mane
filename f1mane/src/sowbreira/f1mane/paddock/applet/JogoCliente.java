@@ -574,9 +574,30 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void atualizaPosicaoPiloto(Posis posis) {
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
+		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+			Piloto piloto = iter.next();
+			piloto.setFaiscas(false);
 			if (piloto.getId() == posis.idPiloto) {
+				String statusPilotos = posis.status;
+				if (statusPilotos != null) {
+					if (statusPilotos.startsWith("P")) {
+						piloto.setPtosPista(
+								new Long(statusPilotos.split("P")[1]));
+					} else if (statusPilotos.startsWith("F")) {
+						piloto.setPtosPista(
+								new Long(statusPilotos.split("F")[1]));
+						piloto.setFaiscas(true);
+					} else if (statusPilotos.startsWith("T")) {
+						piloto.setPtosPista(
+								new Long(statusPilotos.split("T")[1]));
+						travouRodas(piloto);
+						TravadaRoda travadaRoda = new TravadaRoda();
+						travadaRoda.setIdNo(obterIdPorNo(piloto.getNoAtual()));
+						travouRodas(travadaRoda);
+					} else if ("R".equals(statusPilotos)) {
+						piloto.getCarro().setRecolhido(true);
+					}
+				}
 				piloto.setJogadorHumano(posis.humano);
 				int pos = posis.tracado;
 				double mod = Carro.ALTURA;
@@ -751,7 +772,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 		return 0;
 	}
-
 
 	@Override
 	public void iniciarJogo(ControleCampeonato controleCampeonato)
@@ -1425,6 +1445,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void setRecebeuBanderada(Piloto piloto) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

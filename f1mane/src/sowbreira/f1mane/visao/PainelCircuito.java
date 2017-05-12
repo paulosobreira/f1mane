@@ -875,6 +875,10 @@ public class PainelCircuito {
 		if (gerenciadorVisual.getFpsLimite() == 30.0) {
 			inc = 20;
 		}
+		if (controleJogo instanceof JogoCliente) {
+			inc = 20;
+			maxLoop = 2000;
+		}
 		for (int i = 0; i < maxLoop; i += inc) {
 			if (diff >= i && diff < i + inc) {
 				break;
@@ -3185,10 +3189,18 @@ public class PainelCircuito {
 		if (piloto == null) {
 			return;
 		}
+		if (piloto.getCarro() == null) {
+			return;
+		}
+		if(piloto.getAngulo()==null){
+			return;
+		}
 		if (descontoCentraliza == null) {
 			return;
 		}
-
+		if(controleJogo==null){
+			return;
+		}
 		if (gerenciadorVisual.getFps() < 20) {
 			boolean desenha = false;
 			if (pilotoSelecionado.equals(piloto)) {
@@ -3208,7 +3220,6 @@ public class PainelCircuito {
 				return;
 			}
 		}
-
 		String danificado = piloto.getCarro().getDanificado();
 		if (Carro.PANE_SECA.equals(danificado)
 				|| Carro.EXPLODIU_MOTOR.equals(danificado)) {
@@ -3236,14 +3247,14 @@ public class PainelCircuito {
 		Double calculaAngulo = piloto.getAngulo();
 		int carX = (piloto.getCarX() - Carro.MEIA_LARGURA_CIMA);
 		int carY = (piloto.getCarY() - Carro.MEIA_LARGURA_CIMA);
-
 		calculaAngulo = processaOcilacaoAngulo(piloto, calculaAngulo, noAtual);
 
 		int width = Carro.LARGURA_CIMA;
 		int height = Carro.ALTURA_CIMA;
 		int w2 = Carro.MEIA_LARGURA_CIMA;
 		int h2 = Carro.MEIA_LARGURA_CIMA;
-
+		
+		Logger.logar("calculaAngulo = "+calculaAngulo);
 		double rad = Math.toRadians((double) calculaAngulo);
 
 		int imagemCarroX = Util.inteiro((carX - descontoCentraliza.x) * zoom);

@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +17,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import br.nnpe.GeoUtil;
+import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
@@ -26,10 +29,6 @@ import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
-import br.nnpe.GeoUtil;
-import br.nnpe.ImageUtil;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -221,6 +220,12 @@ public abstract class ControleRecursos {
 	}
 
 	public BufferedImage obterCarroCima(Piloto piloto) {
+		if (temporada == null) {
+			return null;
+		}
+		if (piloto.getCarro() == null) {
+			return null;
+		}
 		String modelo = "cima20092016/";
 		Integer anoTemporada = new Integer(temporada.replace("t", ""));
 		if (anoTemporada < 2009) {

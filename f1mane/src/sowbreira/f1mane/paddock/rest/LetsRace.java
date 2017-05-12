@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -35,10 +36,10 @@ public class LetsRace {
 	@GET
 	@Path("/circuito")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response circuito() {
+	public Response circuito(@QueryParam("nomeJogo") String nomeJogo) {
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
-		Object circuito = controlePaddock.obterCircuito("¢088¢ 0-2016");
+		Object circuito = controlePaddock.obterCircuito(nomeJogo);
 		if (circuito == null) {
 			return Response.status(400)
 					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
@@ -62,10 +63,10 @@ public class LetsRace {
 	@GET
 	@Path("/posicaoPilotos")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response posicaoPilotos() {
+	public Response posicaoPilotos(@QueryParam("nomeJogo") String nomeJogo) {
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
-		Object posis = controlePaddock.obterPosicaoPilotos("¢088¢ 0-2016");
+		Object posis = controlePaddock.obterPosicaoPilotos(nomeJogo);
 		if (posis == null) {
 			return Response.status(400)
 					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
@@ -91,12 +92,12 @@ public class LetsRace {
 	@GET
 	@Path("/dadosPiloto")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response dadosParciais() {
+	public Response dadosParciais(@QueryParam("nomeJogo") String nomeJogo) {
 
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
 		Object dParciais = controlePaddock.obterDadosParciaisPilotos(
-				new String[]{"¢088¢ 0-2016", "Mane1", "1"});
+				new String[]{nomeJogo, "Mane1", "1"});
 
 		if (dParciais == null) {
 			return Response.status(400)
@@ -123,15 +124,13 @@ public class LetsRace {
 	@GET
 	@Path("/dadosJogo")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response dadosJogo() {
+	public Response dadosJogo(@QueryParam("nomeJogo") String nomeJogo) {
 		SessaoCliente sessaoCliente = new SessaoCliente();
 		sessaoCliente.setNomeJogador("Sobreira");
-
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		List<String> obterJogos = controlePaddock.obterJogos();
-		clientPaddockPack.setNomeJogo(obterJogos.get(0));
+		clientPaddockPack.setNomeJogo(nomeJogo);
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		Object dadosJogo = controlePaddock.obterDadosJogo(clientPaddockPack);
 		if (dadosJogo == null) {
@@ -203,13 +202,14 @@ public class LetsRace {
 		sessaoCliente.setNomeJogador("Sobreira");
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace();
-
 		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-
 		Object criarJogo = null;
 
-		criarJogo = controlePaddock
-				.obterJogoPeloNome(clientPaddockPack);
+		List<String> obterJogos = controlePaddock.obterJogos();
+		if(!obterJogos.isEmpty()){
+			clientPaddockPack.setNomeJogo(obterJogos.get(0));
+		}
+		criarJogo = controlePaddock.obterJogoPeloNome(clientPaddockPack);
 		if (criarJogo == null) {
 			criarJogo = controlePaddock.criarJogo(clientPaddockPack);
 		}
@@ -252,7 +252,6 @@ public class LetsRace {
 		dadosCriarJogo.setTrocaPneu(true);
 		dadosCriarJogo.setKers(true);
 		dadosCriarJogo.setDrs(true);
-		dadosCriarJogo.setNomeJogo("¢088¢ 0-2016");
 		return dadosCriarJogo;
 	}
 }
