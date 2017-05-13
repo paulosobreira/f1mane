@@ -63,9 +63,9 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = false;
+	public static boolean desenhaBkg = true;
 	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = false;
+	public static boolean desenhaImagens = true;
 
 	private boolean verControles = true;
 	private boolean carragandoBkg = false;
@@ -814,11 +814,12 @@ public class PainelCircuito {
 			diff = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
 		}
 		int ganhoSuave = loopCalculaGanhoSuave(diff);
-		if (pilotoSelecionado != null && pilotoSelecionado.isJogadorHumano()) {
-			Logger.logar("ganhoSuave = " + ganhoSuave);
-		}
+		// if (pilotoSelecionado != null && pilotoSelecionado.isJogadorHumano())
+		// {
+		// Logger.logar(" ganhoSuave = " + ganhoSuave + " diff= " + diff);
+		// }
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
-		if (ganhoSuaveAnt == 0) {
+		if (ganhoSuaveAnt <= 0) {
 			ganhoSuaveAnt = ganhoSuave;
 		} else {
 			if (ganhoSuave > ganhoSuaveAnt) {
@@ -863,7 +864,7 @@ public class PainelCircuito {
 			noAtualSuave = nos.get(index);
 		}
 
-		if (diff > 1000) {
+		if (diff > 1000 && !(controleJogo instanceof JogoCliente)) {
 			noAtualSuave = noAtual;
 		}
 
@@ -878,8 +879,20 @@ public class PainelCircuito {
 			inc = 20;
 		}
 		if (controleJogo instanceof JogoCliente) {
-			inc = 50;
-			maxLoop = 5000;
+			if (gerenciadorVisual.getFpsLimite() == 30.0) {
+				inc = 40;
+			} else {
+				inc = 80;
+			}
+			if (diff > 250) {
+				diff = 250;
+				if (gerenciadorVisual.getFpsLimite() == 30.0) {
+					inc = 30;
+				} else {
+					inc = 70;
+				}
+			}
+			maxLoop = 100000;
 		}
 		for (int i = 0; i < maxLoop; i += inc) {
 			if (diff >= i && diff < i + inc) {

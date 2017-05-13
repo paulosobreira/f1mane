@@ -369,11 +369,21 @@ public class ControleJogosServer {
 		List posisList = new ArrayList();
 		List pilotos = jogoServidor.getPilotosCopia();
 		if (pilotos == null) {
+			Logger.logar("gerarPosicaoPilotos pilotos == null");
 			return null;
 		}
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			Posis posis = new Posis();
+			String statusPilotos = "P" + String.valueOf(piloto.getPtosPista());
+			if (piloto.isTravouRodas()) {
+				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
+			} else if (piloto.isFaiscas()) {
+				statusPilotos = "F" + String.valueOf(piloto.getPtosPista());
+			} else if (piloto.getCarro().isRecolhido()) {
+				statusPilotos = "R";
+			}
+			posis.status = statusPilotos;
 			posis.idPiloto = piloto.getId();
 			posis.tracado = piloto.getTracado();
 			Integer integer = jogoServidor.getMapaNosIds()
@@ -383,6 +393,7 @@ public class ControleJogosServer {
 			}
 			posis.idNo = integer.intValue();
 			posis.humano = piloto.isJogadorHumano();
+
 			posisList.add(posis);
 		}
 		PosisPack pack = new PosisPack();
@@ -506,82 +517,75 @@ public class ControleJogosServer {
 		List<Piloto> pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = iter.next();
-			String statusPilotos = "P" + String.valueOf(piloto.getPtosPista());
-			if (piloto.isTravouRodas()) {
-				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
-			} else if (piloto.isFaiscas()) {
-				statusPilotos = "F" + String.valueOf(piloto.getPtosPista());
-			} else if (piloto.getCarro().isRecolhido()) {
-				statusPilotos = "R";
+			if (args.length <= 2) {
+				break;
 			}
-			dadosParciais.posisPack.posis[piloto.getId()
-					- 1].status = statusPilotos;
-			if (args.length > 2
-					&& piloto.getId() == Integer.parseInt(args[2])) {
-				Volta obterVoltaMaisRapida = piloto.obterVoltaMaisRapida();
-				if (obterVoltaMaisRapida != null) {
-					dadosParciais.melhorVolta = obterVoltaMaisRapida
-							.getTempoNumero();
+			if (piloto.getId() != Integer.parseInt(args[2])) {
+				continue;
+			}
+			Volta obterVoltaMaisRapida = piloto.obterVoltaMaisRapida();
+			if (obterVoltaMaisRapida != null) {
+				dadosParciais.melhorVolta = obterVoltaMaisRapida
+						.getTempoNumero();
+			}
+			int contVolta = 1;
+			List<Volta> voltas = piloto.getVoltas();
+			for (int i = voltas.size() - 1; i > -1; i--) {
+				Volta volta = (Volta) voltas.get(i);
+				if (contVolta == 1) {
+					dadosParciais.ultima1 = volta.getTempoNumero();
 				}
-				int contVolta = 1;
-				List<Volta> voltas = piloto.getVoltas();
-				for (int i = voltas.size() - 1; i > -1; i--) {
-					Volta volta = (Volta) voltas.get(i);
-					if (contVolta == 1) {
-						dadosParciais.ultima1 = volta.getTempoNumero();
-					}
-					if (contVolta == 2) {
-						dadosParciais.ultima2 = volta.getTempoNumero();
-					}
-					if (contVolta == 3) {
-						dadosParciais.ultima3 = volta.getTempoNumero();
-					}
-					if (contVolta == 4) {
-						dadosParciais.ultima4 = volta.getTempoNumero();
-					}
-					if (contVolta == 5) {
-						dadosParciais.ultima5 = volta.getTempoNumero();
-					}
-					contVolta++;
-					if (contVolta > 5) {
-						break;
-					}
+				if (contVolta == 2) {
+					dadosParciais.ultima2 = volta.getTempoNumero();
+				}
+				if (contVolta == 3) {
+					dadosParciais.ultima3 = volta.getTempoNumero();
+				}
+				if (contVolta == 4) {
+					dadosParciais.ultima4 = volta.getTempoNumero();
+				}
+				if (contVolta == 5) {
+					dadosParciais.ultima5 = volta.getTempoNumero();
+				}
+				contVolta++;
+				if (contVolta > 5) {
+					break;
+				}
 
-				}
-				dadosParciais.nomeJogador = piloto.getNomeJogador();
-				dadosParciais.dano = piloto.getCarro().getDanificado();
-				dadosParciais.box = piloto.isBox();
-				dadosParciais.podeUsarDRS = piloto.isPodeUsarDRS();
-				dadosParciais.recebeuBanderada = piloto.isRecebeuBanderada();
-				dadosParciais.stress = piloto.getStress();
-				dadosParciais.cargaKers = piloto.getCarro().getCargaErs();
-				dadosParciais.alertaMotor = piloto.isAlertaMotor();
-				dadosParciais.alertaAerefolio = piloto.isAlertaAerefolio();
-				dadosParciais.pCombust = piloto.getCarro()
-						.getPorcentagemCombustivel();
-				dadosParciais.pPneus = piloto.getCarro()
-						.getPorcentagemDesgastePneus();
-				dadosParciais.pMotor = piloto.getCarro()
-						.getPorcentagemDesgasteMotor();
-				if (piloto.getCarroPilotoFrente() != null) {
-					dadosParciais.tpPneusFrente = piloto.getCarroPilotoFrente()
-							.getTipoPneu();
-				}
-				if (piloto.getCarroPilotoAtras() != null) {
-					dadosParciais.tpPneusAtras = piloto.getCarroPilotoAtras()
-							.getTipoPneu();
-				}
-				dadosParciais.tpPneus = piloto.getCarro().getTipoPneu();
-				dadosParciais.asa = piloto.getCarro().getAsa();
-				dadosParciais.paradas = piloto.getQtdeParadasBox();
-				dadosParciais.velocidade = piloto.getVelocidadeExibir();
-				dadosParciais.combustBox = piloto.getQtdeCombustBox();
-				dadosParciais.tpPneusBox = piloto.getTipoPneuBox();
-				dadosParciais.modoPilotar = piloto.getModoPilotagem();
-				dadosParciais.asaBox = piloto.getAsaBox();
-				dadosParciais.giro = piloto.getCarro().getGiro();
-				dadosParciais.vantagem = piloto.getVantagem();
 			}
+			dadosParciais.nomeJogador = piloto.getNomeJogador();
+			dadosParciais.dano = piloto.getCarro().getDanificado();
+			dadosParciais.box = piloto.isBox();
+			dadosParciais.podeUsarDRS = piloto.isPodeUsarDRS();
+			dadosParciais.recebeuBanderada = piloto.isRecebeuBanderada();
+			dadosParciais.stress = piloto.getStress();
+			dadosParciais.cargaKers = piloto.getCarro().getCargaErs();
+			dadosParciais.alertaMotor = piloto.isAlertaMotor();
+			dadosParciais.alertaAerefolio = piloto.isAlertaAerefolio();
+			dadosParciais.pCombust = piloto.getCarro()
+					.getPorcentagemCombustivel();
+			dadosParciais.pPneus = piloto.getCarro()
+					.getPorcentagemDesgastePneus();
+			dadosParciais.pMotor = piloto.getCarro()
+					.getPorcentagemDesgasteMotor();
+			if (piloto.getCarroPilotoFrente() != null) {
+				dadosParciais.tpPneusFrente = piloto.getCarroPilotoFrente()
+						.getTipoPneu();
+			}
+			if (piloto.getCarroPilotoAtras() != null) {
+				dadosParciais.tpPneusAtras = piloto.getCarroPilotoAtras()
+						.getTipoPneu();
+			}
+			dadosParciais.tpPneus = piloto.getCarro().getTipoPneu();
+			dadosParciais.asa = piloto.getCarro().getAsa();
+			dadosParciais.paradas = piloto.getQtdeParadasBox();
+			dadosParciais.velocidade = piloto.getVelocidadeExibir();
+			dadosParciais.combustBox = piloto.getQtdeCombustBox();
+			dadosParciais.tpPneusBox = piloto.getTipoPneuBox();
+			dadosParciais.modoPilotar = piloto.getModoPilotagem();
+			dadosParciais.asaBox = piloto.getAsaBox();
+			dadosParciais.giro = piloto.getCarro().getGiro();
+			dadosParciais.vantagem = piloto.getVantagem();
 		}
 		Map<String, BufferTexto> mapJogo = jogoServidor
 				.getMapJogadoresOnlineTexto();

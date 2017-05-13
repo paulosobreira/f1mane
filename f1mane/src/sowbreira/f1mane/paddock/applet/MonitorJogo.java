@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -12,6 +13,7 @@ import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.Comandos;
@@ -108,15 +110,16 @@ public class MonitorJogo implements Runnable {
 			try {
 				iniciaJalena();
 				atualizarDados();
+				atualizarDadosParciais(jogoCliente.getDadosJogo(),
+						jogoCliente.getPilotoSelecionado());
 				jogoCliente.desenhouQualificacao();
 				atualizaZoom();
 				if (!apagouLuz) {
-					Thread.sleep(5000);
+					Thread.sleep(4500);
 				} else {
-					Thread.sleep(500);
+					Thread.sleep(400);
 				}
 				apagarLuz();
-				verificaEstadoJogo();
 			} catch (InterruptedException e) {
 				interupt = true;
 				Logger.logarExept(e);
@@ -167,7 +170,7 @@ public class MonitorJogo implements Runnable {
 				} else {
 					jogoCliente.setAtualizacaoSuave(true);
 				}
-				tempoCiclo = 1000;
+				tempoCiclo = 500;
 				if (controlePaddockCliente
 						.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 					jogoCliente.autoDrs();
@@ -182,6 +185,11 @@ public class MonitorJogo implements Runnable {
 				disparaAtualizadorPainel(tempoCiclo);
 				atualizarDadosParciais(jogoCliente.getDadosJogo(),
 						jogoCliente.getPilotoSelecionado());
+				Piloto pilotoSelecionado = jogoCliente.getPilotoSelecionado();
+				if (pilotoSelecionado != null
+						&& pilotoSelecionado.getNumeroVolta() > 0) {
+					tempoCiclo = 1000;
+				}
 				Thread.sleep(tempoCiclo);
 			} catch (InterruptedException e) {
 				interrupt = true;
@@ -320,7 +328,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void atualizaPosisPack(PosisPack posisPack) {
-		if(posisPack==null){
+		if (posisPack == null) {
 			return;
 		}
 		if (posisPack.safetyNoId != 0) {
@@ -329,6 +337,9 @@ public class MonitorJogo implements Runnable {
 					posisPack.safetySair);
 		} else {
 			jogoCliente.setSafetyCarBol(false);
+		}
+		if (posisPack.posis == null) {
+			return;
 		}
 		atualizarListaPilotos(posisPack.posis);
 	}
@@ -341,10 +352,81 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void atualizarListaPilotos(Object[] posisArray) {
-		if (posisArray != null) {
-			for (int i = 0; i < posisArray.length; i++) {
-				Posis posis = (Posis) posisArray[i];
-				jogoCliente.atualizaPosicaoPiloto(posis);
+		List<Piloto> pilotos = jogoCliente.getPilotos();
+		if (pilotos == null) {
+			return;
+		}
+		for (int i = 0; i < posisArray.length; i++) {
+			Posis posis = (Posis) posisArray[i];
+			for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+				Piloto piloto = iter.next();
+				piloto.setFaiscas(false);
+				if (piloto.getId() != posis.idPiloto) {
+					continue;
+				}
+				String statusPilotos = posis.status;
+				if (statusPilotos != null) {
+					if (statusPilotos.startsWith("P")) {
+						piloto.setPtosPista(
+								new Long(statusPilotos.split("P")[1]));
+					} else if (statusPilotos.startsWith("F")) {
+						piloto.setPtosPista(
+								new Long(statusPilotos.split("F")[1]));
+						piloto.setFaiscas(true);
+					} else if (statusPilotos.startsWith("T")) {
+						piloto.setPtosPista(
+								new Long(statusPilotos.split("T")[1]));
+						jogoCliente.travouRodas(piloto);
+						TravadaRoda travadaRoda = new TravadaRoda();
+						travadaRoda.setIdNo(
+								jogoCliente.obterIdPorNo(piloto.getNoAtual()));
+						jogoCliente.travouRodas(travadaRoda);
+					} else if ("R".equals(statusPilotos)) {
+						piloto.getCarro().setRecolhido(true);
+					}
+				}
+				piloto.setJogadorHumano(posis.humano);
+				int pos = posis.tracado;
+				double mod = Carro.ALTURA;
+
+				if (piloto.getTracado() == 0 && (pos == 4 || pos == 5)) {
+					mod *= 3;
+				} else if ((piloto.getTracado() == 1
+						|| piloto.getTracado() == 2)
+						&& (pos == 4 || pos == 5)) {
+					mod *= 2;
+				} else if ((piloto.getTracado() == 5
+						|| piloto.getTracado() == 4)
+						&& (pos == 2 || pos == 1)) {
+					mod *= 2;
+				}
+				if (piloto.getIndiceTracado() > 0
+						&& pos != piloto.getTracado()) {
+					piloto.decIndiceTracado();
+				} else {
+					if (piloto.getIndiceTracado() <= 0) {
+						piloto.setTracadoAntigo(piloto.getTracado());
+					}
+					piloto.setTracado(pos);
+					if (piloto.getIndiceTracado() <= 0 && piloto
+							.getTracado() != piloto.getTracadoAntigo()) {
+						piloto.setIndiceTracado((int) (mod * jogoCliente
+								.getCircuito().getMultiplicadorLarguraPista()));
+					}
+				}
+				jogoCliente.calculaSegundosParaLider(piloto);
+				piloto.calculaCarrosAdjacentes(jogoCliente);
+				Map<Integer, No> mapaIdsNos = jogoCliente.getMapaIdsNos();
+				List nosDoBox = jogoCliente.getNosDoBox();
+				if (posis.idNo >= -1) {
+					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
+					piloto.setNoAtual(no);
+					if (nosDoBox.contains(no)) {
+						piloto.setPtosBox(1);
+					} else {
+						piloto.setPtosBox(0);
+					}
+				}
 			}
 		}
 	}
@@ -393,9 +475,9 @@ public class MonitorJogo implements Runnable {
 					atualizouDados = false;
 				} else {
 					atualizouDados = true;
-					Logger.logar("atualizouDados = true");
 					atualizaModoCarreira();
-					atualizarDados();
+					atualizarDadosParciais(dadosJogo, null);
+					Logger.logar("atualizouDados = true");
 				}
 			} else {
 				atualizouDados = false;
@@ -452,110 +534,108 @@ public class MonitorJogo implements Runnable {
 			if (pilotoSelecionado != null) {
 				dataSend += "#" + pilotoSelecionado.getId();
 			}
-
 			Object ret = controlePaddockCliente.enviarObjeto(dataSend, true);
 			if (retornoNaoValido(ret)) {
 				return;
 			}
-
-			if (ret != null) {
-				// dec dadosParciais
-				String enc = (String) ret;
-				DadosParciais dadosParciais = new DadosParciais();
-				dadosParciais.decode(enc);
-				estado = dadosParciais.estado;
-				jogoCliente.verificaMudancaClima(dadosParciais.clima);
-				dadosJogo.setClima(dadosParciais.clima);
-				dadosJogo.setMelhoVolta(
-						new Volta(dadosParciais.melhorVoltaCorrida));
-				if (dadosParciais.texto != null
-						&& !"".equals(dadosParciais.texto))
-					dadosJogo.setTexto(dadosParciais.texto);
-				dadosJogo.setVoltaAtual(dadosParciais.voltaAtual);
-				List<Piloto> pilotos = jogoCliente.getPilotos();
-				atualizaPosisPack(dadosParciais.posisPack);
-				for (Iterator<Piloto> iter = pilotos.iterator(); iter
-						.hasNext();) {
-					Piloto piloto = iter.next();
-					if (pilotoSelecionado == null) {
-						break;
-					}
-					if (!pilotoSelecionado.equals(piloto)) {
-						continue;
-					}
-					piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
-							/ jogoCliente.getNosDaPista().size()));
-					piloto.setMelhorVolta(new Volta(dadosParciais.melhorVolta));
-					piloto.getVoltas().clear();
-					piloto.getVoltas().add(new Volta(dadosParciais.ultima5));
-					piloto.getVoltas().add(new Volta(dadosParciais.ultima4));
-					piloto.getVoltas().add(new Volta(dadosParciais.ultima3));
-					piloto.getVoltas().add(new Volta(dadosParciais.ultima2));
-					piloto.getVoltas().add(new Volta(dadosParciais.ultima1));
-					piloto.setNomeJogador(dadosParciais.nomeJogador);
-					piloto.setQtdeParadasBox(dadosParciais.paradas);
-					if (piloto.getNomeJogador() != null) {
-						piloto.setJogadorHumano(true);
-					} else {
-						piloto.setJogadorHumano(false);
-					}
-					piloto.getCarro().setDanificado(dadosParciais.dano);
-					if (!jogoCliente.isSafetyCarNaPista()
-							&& piloto.isDesqualificado()) {
-						piloto.getCarro().setRecolhido(true);
-					}
-					piloto.setBox(dadosParciais.box);
-					piloto.setStress(dadosParciais.stress);
-					piloto.setPodeUsarDRS(dadosParciais.podeUsarDRS);
-					piloto.setRecebeuBanderada(dadosParciais.recebeuBanderada);
-					piloto.getCarro().setCargaErs(dadosParciais.cargaKers);
-					piloto.setAlertaMotor(dadosParciais.alertaMotor);
-					piloto.setAlertaAerefolio(dadosParciais.alertaAerefolio);
-					if (piloto
-							.getCargaKersOnline() != dadosParciais.cargaKers) {
-						piloto.setAtivarErs(true);
-						piloto.setCargaKersOnline(dadosParciais.cargaKers);
-					} else {
-						piloto.setAtivarErs(false);
-					}
-					piloto.getCarro()
-							.setPorcentagemDesgasteMotor(dadosParciais.pMotor);
-					piloto.getCarro()
-							.setPorcentagemDesgastePneus(dadosParciais.pPneus);
-					piloto.getCarro()
-							.setPorcentagemCombustivel(dadosParciais.pCombust);
-					piloto.getCarro().setAsa(dadosParciais.asaBox);
-					piloto.getCarro().setTipoPneu(dadosParciais.tpPneus);
-					if (piloto.getCarroPilotoFrente() != null) {
-						piloto.getCarroPilotoFrente()
-								.setTipoPneu(dadosParciais.tpPneusFrente);
-					}
-					if (piloto.getCarroPilotoAtras() != null) {
-						piloto.getCarroPilotoAtras()
-								.setTipoPneu(dadosParciais.tpPneusAtras);
-					}
-					piloto.setVelocidade(dadosParciais.velocidade);
-					piloto.setVelocidadeExibir(dadosParciais.velocidade);
-					piloto.setVelocidade(dadosParciais.velocidade);
-					piloto.setQtdeCombustBox(dadosParciais.combustBox);
-					piloto.setTipoPneuBox(dadosParciais.tpPneusBox);
-					piloto.setModoPilotagem(dadosParciais.modoPilotar);
-					piloto.setAsaBox(dadosParciais.asaBox);
-					piloto.getCarro().setAsa(dadosParciais.asa);
-					piloto.getCarro().setGiro(dadosParciais.giro);
-					piloto.setVantagem(dadosParciais.vantagem);
+			if (ret == null) {
+				Logger.logar("atualizarDadosParciais null");
+				return;
+			}
+			// dec dadosParciais
+			String enc = (String) ret;
+			DadosParciais dadosParciais = new DadosParciais();
+			dadosParciais.decode(enc);
+			estado = dadosParciais.estado;
+			jogoCliente.verificaMudancaClima(dadosParciais.clima);
+			dadosJogo.setClima(dadosParciais.clima);
+			dadosJogo
+					.setMelhoVolta(new Volta(dadosParciais.melhorVoltaCorrida));
+			if (dadosParciais.texto != null
+					&& !"".equals(dadosParciais.texto)) {
+				dadosJogo.setTexto(dadosParciais.texto);
+			}
+			dadosJogo.setVoltaAtual(dadosParciais.voltaAtual);
+			List<Piloto> pilotos = jogoCliente.getPilotos();
+			for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+				Piloto piloto = iter.next();
+				if (pilotoSelecionado == null) {
+					break;
 				}
-				Collections.sort(pilotos, new Comparator<Piloto>() {
-					@Override
-					public int compare(Piloto piloto0, Piloto piloto1) {
-						return ControleCorrida.compare(piloto0, piloto1);
-					}
-				});
-
-				for (int i = 0; i < pilotos.size(); i++) {
-					Piloto piloto = (Piloto) pilotos.get(i);
-					piloto.setPosicao(i + 1);
+				if (!pilotoSelecionado.equals(piloto)) {
+					continue;
 				}
+				piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
+						/ jogoCliente.getNosDaPista().size()));
+				piloto.setMelhorVolta(new Volta(dadosParciais.melhorVolta));
+				piloto.getVoltas().clear();
+				piloto.getVoltas().add(new Volta(dadosParciais.ultima5));
+				piloto.getVoltas().add(new Volta(dadosParciais.ultima4));
+				piloto.getVoltas().add(new Volta(dadosParciais.ultima3));
+				piloto.getVoltas().add(new Volta(dadosParciais.ultima2));
+				piloto.getVoltas().add(new Volta(dadosParciais.ultima1));
+				piloto.setNomeJogador(dadosParciais.nomeJogador);
+				piloto.setQtdeParadasBox(dadosParciais.paradas);
+				if (piloto.getNomeJogador() != null) {
+					piloto.setJogadorHumano(true);
+				} else {
+					piloto.setJogadorHumano(false);
+				}
+				piloto.getCarro().setDanificado(dadosParciais.dano);
+				if (!jogoCliente.isSafetyCarNaPista()
+						&& piloto.isDesqualificado()) {
+					piloto.getCarro().setRecolhido(true);
+				}
+				piloto.setBox(dadosParciais.box);
+				piloto.setStress(dadosParciais.stress);
+				piloto.setPodeUsarDRS(dadosParciais.podeUsarDRS);
+				piloto.setRecebeuBanderada(dadosParciais.recebeuBanderada);
+				piloto.getCarro().setCargaErs(dadosParciais.cargaKers);
+				piloto.setAlertaMotor(dadosParciais.alertaMotor);
+				piloto.setAlertaAerefolio(dadosParciais.alertaAerefolio);
+				if (piloto.getCargaKersOnline() != dadosParciais.cargaKers) {
+					piloto.setAtivarErs(true);
+					piloto.setCargaKersOnline(dadosParciais.cargaKers);
+				} else {
+					piloto.setAtivarErs(false);
+				}
+				piloto.getCarro()
+						.setPorcentagemDesgasteMotor(dadosParciais.pMotor);
+				piloto.getCarro()
+						.setPorcentagemDesgastePneus(dadosParciais.pPneus);
+				piloto.getCarro()
+						.setPorcentagemCombustivel(dadosParciais.pCombust);
+				piloto.getCarro().setAsa(dadosParciais.asaBox);
+				piloto.getCarro().setTipoPneu(dadosParciais.tpPneus);
+				if (piloto.getCarroPilotoFrente() != null) {
+					piloto.getCarroPilotoFrente()
+							.setTipoPneu(dadosParciais.tpPneusFrente);
+				}
+				if (piloto.getCarroPilotoAtras() != null) {
+					piloto.getCarroPilotoAtras()
+							.setTipoPneu(dadosParciais.tpPneusAtras);
+				}
+				piloto.setVelocidade(dadosParciais.velocidade);
+				piloto.setVelocidadeExibir(dadosParciais.velocidade);
+				piloto.setVelocidade(dadosParciais.velocidade);
+				piloto.setQtdeCombustBox(dadosParciais.combustBox);
+				piloto.setTipoPneuBox(dadosParciais.tpPneusBox);
+				piloto.setModoPilotagem(dadosParciais.modoPilotar);
+				piloto.setAsaBox(dadosParciais.asaBox);
+				piloto.getCarro().setAsa(dadosParciais.asa);
+				piloto.getCarro().setGiro(dadosParciais.giro);
+				piloto.setVantagem(dadosParciais.vantagem);
+			}
+			atualizaPosisPack(dadosParciais.posisPack);
+			Collections.sort(pilotos, new Comparator<Piloto>() {
+				@Override
+				public int compare(Piloto piloto0, Piloto piloto1) {
+					return ControleCorrida.compare(piloto0, piloto1);
+				}
+			});
+			for (int i = 0; i < pilotos.size(); i++) {
+				Piloto piloto = (Piloto) pilotos.get(i);
+				piloto.setPosicao(i + 1);
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);

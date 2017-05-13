@@ -311,7 +311,11 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setTravouRodas(int contTravouRodas) {
-		setTravouRodas(true);
+		if (contTravouRodas <= 0) {
+			setTravouRodas(false);
+		} else {
+			setTravouRodas(true);
+		}
 		this.contTravouRodas = contTravouRodas;
 	}
 
@@ -3344,6 +3348,5 @@ public class Piloto implements Serializable, PilotoSuave {
 	public int getGanhoBrutoBaixa() {
 		return ganhoBrutoBaixa;
 	}
-
 
 }
