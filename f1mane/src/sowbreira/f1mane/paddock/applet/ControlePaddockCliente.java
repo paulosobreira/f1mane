@@ -386,7 +386,6 @@ public class ControlePaddockCliente {
 					sessaoCliente);
 			DadosCriarJogo dadosParticiparJogo = new DadosCriarJogo();
 			String infoJogo = (String) object;
-			String nomeJogo = infoJogo.split("-")[0];
 			String temporada = infoJogo.split("-")[1];
 			dadosParticiparJogo.setNomeJogo(infoJogo);
 			Logger.logar("TEmporada cliente Entrar jogo " + "t" + temporada);

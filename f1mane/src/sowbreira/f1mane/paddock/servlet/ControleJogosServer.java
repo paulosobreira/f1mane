@@ -121,8 +121,8 @@ public class ControleJogosServer {
 				ErroServ erroServ = new ErroServ(e);
 				return erroServ;
 			}
-			jogoServidor.setNomeJogoServidor(Lang.msg("088") + " "
-					+ (qtdeJogos++) + "-" + temporada.replaceAll("t", ""));
+			jogoServidor.setNomeJogoServidor(
+					(qtdeJogos++) + "-" + temporada.replaceAll("t", ""));
 			mapaJogosCriados.put(clientPaddockPack.getSessaoCliente(),
 					jogoServidor);
 			gerarListaJogosCriados();

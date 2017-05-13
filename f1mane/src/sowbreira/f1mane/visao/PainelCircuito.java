@@ -760,9 +760,6 @@ public class PainelCircuito {
 			return;
 		}
 
-		if (getQtdeLuzesAcesas() > 1) {
-			return;
-		}
 		if (piloto.getNoAtual().equals(piloto.getNoAnterior())
 				|| piloto.getNoAnterior() == null) {
 			return;
@@ -813,22 +810,36 @@ public class PainelCircuito {
 		if (diff < 0) {
 			diff = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
 		}
-		int ganhoSuave = loopCalculaGanhoSuave(diff);
-		// if (pilotoSelecionado != null && pilotoSelecionado.isJogadorHumano())
-		// {
-		// Logger.logar(" ganhoSuave = " + ganhoSuave + " diff= " + diff);
-		// }
-		int ganhoSuaveAnt = piloto.getGanhoSuave();
-		if (ganhoSuaveAnt <= 0) {
-			ganhoSuaveAnt = ganhoSuave;
-		} else {
-			if (ganhoSuave > ganhoSuaveAnt) {
-				ganhoSuave = ganhoSuaveAnt + 1;
-			}
-			if (ganhoSuave <= ganhoSuaveAnt) {
-				ganhoSuave = ganhoSuaveAnt - 1;
-			}
+		int ganhoSuave = 0;
+		if (noAtualSuave.verificaRetaOuLargada()) {
+			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 7 : 3;
+		} else if (noAtualSuave.verificaCurvaAlta()) {
+			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 5 : 2;
+		} else if (noAtualSuave.verificaCurvaBaixa() || noAtualSuave.isBox()) {
+			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 3 : 1;
 		}
+
+		if (diff < 70) {
+			ganhoSuave--;
+		}
+		if (diff < 140) {
+			ganhoSuave--;
+		}
+		if (diff > 180) {
+			ganhoSuave += 1;
+		}
+		if (diff > 220) {
+			ganhoSuave += 1;
+		}
+		int ganhoSuaveAnt = piloto.getGanhoSuave();
+
+		if (ganhoSuave > ganhoSuaveAnt) {
+			ganhoSuave = ganhoSuaveAnt + 1;
+		}
+		if (ganhoSuave <= ganhoSuaveAnt) {
+			ganhoSuave = ganhoSuaveAnt - 1;
+		}
+
 		if (ganhoSuave <= 0) {
 			ganhoSuave = 0;
 		}
@@ -864,43 +875,11 @@ public class PainelCircuito {
 			noAtualSuave = nos.get(index);
 		}
 
-		if (diff > 1000 && !(controleJogo instanceof JogoCliente)) {
+		if (diff > 1000) {
 			noAtualSuave = noAtual;
 		}
 
 		piloto.setNoAtualSuave(noAtualSuave);
-	}
-
-	private int loopCalculaGanhoSuave(int diff) {
-		int ganhoSuave = 0;
-		int maxLoop = 1000;
-		int inc = 30;
-		if (gerenciadorVisual.getFpsLimite() == 30.0) {
-			inc = 20;
-		}
-		if (controleJogo instanceof JogoCliente) {
-			if (gerenciadorVisual.getFpsLimite() == 30.0) {
-				inc = 40;
-			} else {
-				inc = 80;
-			}
-			if (diff > 250) {
-				diff = 250;
-				if (gerenciadorVisual.getFpsLimite() == 30.0) {
-					inc = 30;
-				} else {
-					inc = 70;
-				}
-			}
-			maxLoop = 100000;
-		}
-		for (int i = 0; i < maxLoop; i += inc) {
-			if (diff >= i && diff < i + inc) {
-				break;
-			}
-			ganhoSuave += 1;
-		}
-		return ganhoSuave;
 	}
 
 	public int getQtdeLuzesAcesas() {
@@ -945,9 +924,9 @@ public class PainelCircuito {
 		}
 		if (noReal.verificaRetaOuLargada()) {
 			g2d.setColor(OcilaCor.geraOcila("desenhaMarcaoNo1", Color.GREEN));
-		} else if (noReal.verificaCruvaAlta()) {
+		} else if (noReal.verificaCurvaAlta()) {
 			g2d.setColor(OcilaCor.geraOcila("desenhaMarcaoNo2", Color.YELLOW));
-		} else if (noReal.verificaCruvaBaixa()) {
+		} else if (noReal.verificaCurvaBaixa()) {
 			g2d.setColor(OcilaCor.geraOcila("desenhaMarcaoNo3", Color.RED));
 		} else {
 			return;
@@ -3139,7 +3118,7 @@ public class PainelCircuito {
 						(int) ((noAtual.getY() - descontoCentraliza.y) * zoom),
 						10, 10);
 			}
-			piloto.centralizaCarro(controleJogo);
+			centralizaCarroDesenhar(controleJogo, piloto);
 			desenhaCarroCima(g2d, piloto);
 			if (piloto.equals(pilotoSelecionado)
 					|| piloto.getCarro().isPaneSeca()
@@ -3152,6 +3131,288 @@ public class PainelCircuito {
 			desenhaNomePilotoNaoSelecionado(piloto, g2d);
 		}
 		desenhaNomePilotoSelecionado(g2d, pilotoSelecionado);
+	}
+
+	public Rectangle2D centralizaCarroDesenhar(InterfaceJogo controleJogo,
+			Piloto piloto) {
+		if (controleJogo.isModoQualify()) {
+			return null;
+		}
+		if (piloto.getNoAnterior() != null && piloto.getDiateira() != null
+				&& piloto.getCentro() != null && piloto.getTrazeira() != null
+				&& !piloto.emMovimento()) {
+			return null;
+		}
+		No noAtual = piloto.getNoAtual();
+		if (piloto.getNoAtualSuave() != null) {
+			noAtual = piloto.getNoAtualSuave();
+		}
+		int cont = noAtual.getIndex();
+		List lista = controleJogo.obterPista(noAtual);
+		if (lista == null) {
+			return null;
+		}
+		Point p = noAtual.getPoint();
+		int carx = p.x;
+		int cary = p.y;
+		int traz = cont - Piloto.MEIAENVERGADURA;
+		int frente = cont + Piloto.MEIAENVERGADURA;
+		if (traz < 0) {
+			if (controleJogo.getNosDoBox().size() == lista.size()) {
+				traz = 0;
+			} else {
+				traz = (lista.size() - 1) + traz;
+			}
+		}
+		if (frente > (lista.size() - 1)) {
+			if (controleJogo.getNosDoBox().size() == lista.size()) {
+				frente = lista.size() - 1;
+			} else {
+				frente = (frente - (lista.size() - 1)) - 1;
+			}
+		}
+
+		Point trazCar = ((No) lista.get(traz)).getPoint();
+		trazCar = new Point(trazCar.x, trazCar.y);
+		Point frenteCar = ((No) lista.get(frente)).getPoint();
+		frenteCar = new Point(frenteCar.x, frenteCar.y);
+		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
+		piloto.setAngulo(calculaAngulo);
+		Rectangle2D rectangle = new Rectangle2D.Double(
+				(p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
+				Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
+		Point p1 = GeoUtil.calculaPonto(calculaAngulo,
+				Util.inteiro(Carro.ALTURA * controleJogo.getCircuito()
+						.getMultiplicadorLarguraPista()),
+				new Point(Util.inteiro(rectangle.getCenterX()),
+						Util.inteiro(rectangle.getCenterY())));
+		Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
+				Util.inteiro(Carro.ALTURA * controleJogo.getCircuito()
+						.getMultiplicadorLarguraPista()),
+				new Point(Util.inteiro(rectangle.getCenterX()),
+						Util.inteiro(rectangle.getCenterY())));
+		Point p5 = GeoUtil.calculaPonto(calculaAngulo,
+				Util.inteiro(Carro.ALTURA * 3
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()),
+				new Point(Util.inteiro(rectangle.getCenterX()),
+						Util.inteiro(rectangle.getCenterY())));
+		Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
+				Util.inteiro(Carro.ALTURA * 3
+						* controleJogo.getCircuito()
+								.getMultiplicadorLarguraPista()),
+				new Point(Util.inteiro(rectangle.getCenterX()),
+						Util.inteiro(rectangle.getCenterY())));
+
+		piloto.setP1(p1);
+		piloto.setP2(p2);
+		piloto.setP5(p5);
+		piloto.setP4(p4);
+		if (piloto.getTracado() == 0) {
+			carx = p.x;
+			cary = p.y;
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado > 0 && piloto.getTracadoAntigo() != 0) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 1) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+							p.x, p.y);
+				}
+				if (piloto.getTracadoAntigo() == 2) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+							p.x, p.y);
+				}
+				if (piloto.getTracadoAntigo() == 5) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
+							p.x, p.y);
+				}
+				if (piloto.getTracadoAntigo() == 4) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
+							p.x, p.y);
+				}
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x;
+				cary = pReta.y;
+			}
+		}
+		if (piloto.getTracado() == 1) {
+			carx = Util.inteiro((p1.x));
+			cary = Util.inteiro((p1.y));
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado > 0 && piloto.getTracadoAntigo() != 1) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 0) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+							p1.x, p1.y);
+				}
+				if (piloto.getTracadoAntigo() == 2) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+							p1.x, p1.y);
+				}
+				if (piloto.getTracadoAntigo() == 4) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
+							p1.x, p1.y);
+				}
+				if (piloto.getTracadoAntigo() == 5) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
+							p1.x, p1.y);
+				}
+
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x;
+				cary = pReta.y;
+			}
+		}
+
+		if (piloto.getTracado() == 5) {
+			carx = Util.inteiro((p5.x));
+			cary = Util.inteiro((p5.y));
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado > 0 && piloto.getTracadoAntigo() != 5) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 0) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+							p5.x, p5.y);
+				}
+				if (piloto.getTracadoAntigo() == 1) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+							p5.x, p5.y);
+				}
+				if (piloto.getTracadoAntigo() == 2) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+							p5.x, p5.y);
+				}
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x;
+				cary = pReta.y;
+			}
+		}
+
+		if (piloto.getTracado() == 2) {
+			carx = Util.inteiro((p2.x));
+			cary = Util.inteiro((p2.y));
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado > 0 && piloto.getTracadoAntigo() != 2) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 0) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+							p2.x, p2.y);
+				}
+				if (piloto.getTracadoAntigo() == 1) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+							p2.x, p2.y);
+				}
+
+				if (piloto.getTracadoAntigo() == 4) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
+							p2.x, p2.y);
+				}
+				if (piloto.getTracadoAntigo() == 5) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
+							p2.x, p2.y);
+				}
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x;
+				cary = pReta.y;
+			}
+		}
+
+		if (piloto.getTracado() == 4) {
+			carx = Util.inteiro((p4.x));
+			cary = Util.inteiro((p4.y));
+			int indTracado = piloto.getIndiceTracado();
+			if (indTracado > 0 && piloto.getTracadoAntigo() != 4) {
+				List drawBresenhamLine = null;
+				if (piloto.getTracadoAntigo() == 0) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+							p4.x, p4.y);
+				}
+				if (piloto.getTracadoAntigo() == 1) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+							p4.x, p4.y);
+				}
+				if (piloto.getTracadoAntigo() == 2) {
+					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+							p4.x, p4.y);
+				}
+				int indice = drawBresenhamLine.size() - indTracado;
+				if (indice <= 0) {
+					indice = 0;
+				}
+				if (indice >= drawBresenhamLine.size()) {
+					indice = drawBresenhamLine.size() - 1;
+				}
+
+				Point pReta = (Point) drawBresenhamLine.get(indice);
+				carx = pReta.x;
+				cary = pReta.y;
+			}
+		}
+
+		piloto.setCarX(carx);
+		piloto.setCarY(cary);
+
+		rectangle = new Rectangle2D.Double(
+				(carx - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+				(cary - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+				Carro.ALTURA * Carro.FATOR_AREA_CARRO,
+				Carro.ALTURA * Carro.FATOR_AREA_CARRO);
+
+		piloto.setCentro(rectangle.getBounds());
+
+		trazCar = GeoUtil.calculaPonto(calculaAngulo + 90,
+				Util.inteiro(Piloto.MEIAENVERGADURA), new Point(carx, cary));
+
+		Rectangle2D trazRec = new Rectangle2D.Double(
+				(trazCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+				(trazCar.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+				Carro.ALTURA * Carro.FATOR_AREA_CARRO,
+				Carro.ALTURA * Carro.FATOR_AREA_CARRO);
+		piloto.setTrazeira(trazRec.getBounds());
+
+		frenteCar = GeoUtil.calculaPonto(calculaAngulo + 270,
+				Util.inteiro(Piloto.MEIAENVERGADURA), new Point(carx, cary));
+
+		Rectangle2D frenteRec = new Rectangle2D.Double(
+				(frenteCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+				(frenteCar.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+				Carro.ALTURA * Carro.FATOR_AREA_CARRO,
+				Carro.ALTURA * Carro.FATOR_AREA_CARRO);
+		piloto.setDiateira(frenteRec.getBounds());
+
+		return rectangle;
 	}
 
 	private void desenhaNomePilotoSelecionado(Graphics2D g2d, Piloto piloto) {
@@ -3455,16 +3716,16 @@ public class PainelCircuito {
 
 		boolean rabeadaAgressivo = piloto.isAgressivo()
 				&& piloto.getCarro().getGiro() == Carro.GIRO_MAX_VAL
-				&& (noAtual.verificaCruvaAlta() || noAtual.verificaCruvaBaixa())
+				&& (noAtual.verificaCurvaAlta() || noAtual.verificaCurvaBaixa())
 				&& Math.random() > .9;
 		boolean rabeadaPneuErrado = piloto.getCarro()
 				.verificaPneusIncompativeisClima(controleJogo)
 				&& Math.random() > .95;
 
 		if (rabeadaAgressivo || rabeadaPneuErrado) {
-			if (noAtual.verificaCruvaAlta())
+			if (noAtual.verificaCurvaAlta())
 				calculaAngulo += Util.intervalo(-variacao1, variacao1);
-			if (noAtual.verificaCruvaBaixa())
+			if (noAtual.verificaCurvaBaixa())
 				calculaAngulo += Util.intervalo(-variacao2, variacao2);
 		}
 		if ((piloto.getTracado() == 4 || piloto.getTracado() == 5)
@@ -3593,7 +3854,7 @@ public class PainelCircuito {
 		 */
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
-			piloto.centralizaCarro(controleJogo);
+			centralizaCarroDesenhar(controleJogo,piloto);
 		}
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
@@ -3739,9 +4000,9 @@ public class PainelCircuito {
 		if (piloto.equals(pilotoSelecionado) && posisRec != null) {
 			if (posisRec.verificaRetaOuLargada()) {
 				g2d.setColor(new Color(100, 255, 100, 70));
-			} else if (posisRec.verificaCruvaAlta()) {
+			} else if (posisRec.verificaCurvaAlta()) {
 				g2d.setColor(new Color(255, 255, 100, 70));
-			} else if (posisRec.verificaCruvaBaixa()) {
+			} else if (posisRec.verificaCurvaBaixa()) {
 				g2d.setColor(new Color(255, 100, 100, 70));
 			} else {
 				g2d.setColor(new Color(100, 100, 100, 70));

@@ -17,6 +17,10 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  */
 @JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class No implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 493643626269961468L;
 	public static Color LARGADA = Color.BLUE;
 	public static Color RETA = Color.GREEN;
 	public static Color CURVA_ALTA = Color.YELLOW;
@@ -138,11 +142,11 @@ public class No implements Serializable {
 		return (LARGADA.equals(tipo)) || (RETA.equals(tipo));
 	}
 
-	public boolean verificaCruvaAlta() {
+	public boolean verificaCurvaAlta() {
 		return (CURVA_ALTA.equals(tipo));
 	}
 
-	public boolean verificaCruvaBaixa() {
+	public boolean verificaCurvaBaixa() {
 		return (CURVA_BAIXA.equals(tipo));
 	}
 

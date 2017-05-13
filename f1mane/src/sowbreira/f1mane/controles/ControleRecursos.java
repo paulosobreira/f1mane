@@ -371,8 +371,8 @@ public abstract class ControleRecursos {
 			int index = no.getIndex();
 			for (int i = index; i < nosDaPista.size(); i++) {
 				No noCurva = (No) nosDaPista.get(i);
-				if (noCurva.verificaCruvaBaixa()
-						|| noCurva.verificaCruvaAlta()) {
+				if (noCurva.verificaCurvaBaixa()
+						|| noCurva.verificaCurvaAlta()) {
 					mapaNoProxCurva.put(no, noCurva);
 					if (primiraCurva == null) {
 						primiraCurva = noCurva;
@@ -387,8 +387,8 @@ public abstract class ControleRecursos {
 			int index = no.getIndex();
 			for (int i = index; i >= 0; i--) {
 				No noCurva = (No) nosDaPista.get(i);
-				if (noCurva.verificaCruvaBaixa()
-						|| noCurva.verificaCruvaAlta()) {
+				if (noCurva.verificaCurvaBaixa()
+						|| noCurva.verificaCurvaAlta()) {
 					mapaNoCurvaAnterior.put(no, noCurva);
 					if (ultimaCurva == null) {
 						ultimaCurva = noCurva;

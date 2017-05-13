@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import br.nnpe.Constantes;
 import br.nnpe.Html;
+import br.nnpe.Logger;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Clima;
@@ -37,6 +38,7 @@ public class LetsRace {
 	@Path("/circuito")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response circuito(@QueryParam("nomeJogo") String nomeJogo) {
+		Logger.logar("String nomeJogo " + nomeJogo);
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
 		Object circuito = controlePaddock.obterCircuito(nomeJogo);
@@ -165,28 +167,32 @@ public class LetsRace {
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		Object iniciarJogo = controlePaddock.iniciaJogo(clientPaddockPack);
 		if (iniciarJogo == null) {
-			return Response.status(400)
-					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
-					.type(MediaType.APPLICATION_JSON).build();
+			Logger.logar("iniciarJogo == null");
+//			return Response.status(400)
+//					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
+//					.type(MediaType.APPLICATION_JSON).build();
 		}
 		if (iniciarJogo instanceof MsgSrv) {
 			MsgSrv msgSrv = (MsgSrv) iniciarJogo;
-			return Response.status(400)
-					.entity(Html.escapeHtml(msgSrv.getMessageString()))
-					.type(MediaType.APPLICATION_JSON).build();
+			Logger.logar(msgSrv.getMessageString());
+//			return Response.status(400)
+//					.entity(Html.escapeHtml(msgSrv.getMessageString()))
+//					.type(MediaType.APPLICATION_JSON).build();
 		}
 		if (iniciarJogo instanceof ErroServ) {
 			ErroServ erroServ = (ErroServ) iniciarJogo;
-			return Response.status(500)
-					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
-					.type(MediaType.APPLICATION_JSON).build();
+			Logger.logar(erroServ.obterErroFormatado());
+//			return Response.status(500)
+//					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+//					.type(MediaType.APPLICATION_JSON).build();
 		}
 		Integer ret = null;
 		try {
 			ret = new Integer(iniciarJogo.toString());
 		} catch (Exception e) {
-			return Response.status(500).entity(Html.escapeHtml(e.getMessage()))
-					.type(MediaType.APPLICATION_JSON).build();
+			ret = 1;
+//			return Response.status(500).entity(Html.escapeHtml(e.getMessage()))
+//					.type(MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(ret).build();
 	}
@@ -206,7 +212,7 @@ public class LetsRace {
 		Object criarJogo = null;
 
 		List<String> obterJogos = controlePaddock.obterJogos();
-		if(!obterJogos.isEmpty()){
+		if (!obterJogos.isEmpty()) {
 			clientPaddockPack.setNomeJogo(obterJogos.get(0));
 		}
 		criarJogo = controlePaddock.obterJogoPeloNome(clientPaddockPack);

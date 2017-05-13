@@ -379,7 +379,7 @@ public class ControleCorrida {
 									pilotoNaFrente.getNome()})));
 				}
 			}
-		} else if ((noAtual.verificaCruvaAlta())
+		} else if ((noAtual.verificaCurvaAlta())
 				&& (piloto.getStress() > stress) && piloto.isAgressivo()) {
 			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 			controleJogo
@@ -388,7 +388,7 @@ public class ControleCorrida {
 									new String[]{
 											Html.superRed(piloto.getNome()),
 											pilotoNaFrente.getNome()}));
-		} else if ((noAtual.verificaCruvaBaixa())
+		} else if ((noAtual.verificaCurvaBaixa())
 				&& (piloto.getStress() > stress)) {
 			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 			controleJogo

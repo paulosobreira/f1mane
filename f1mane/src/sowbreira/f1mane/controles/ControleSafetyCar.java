@@ -117,7 +117,7 @@ public class ControleSafetyCar {
 		List pista = controleJogo.getNosDaPista();
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
-		int bonus = noAtual.verificaCruvaBaixa() || noAtual.verificaCruvaAlta()
+		int bonus = noAtual.verificaCurvaBaixa() || noAtual.verificaCurvaAlta()
 				? ((Math.random() > .5) ? 2 : 1)
 				: (Math.random() > .3) ? 2 : 1;
 		Piloto pole = (Piloto) controleJogo.getPilotosCopia().get(0);

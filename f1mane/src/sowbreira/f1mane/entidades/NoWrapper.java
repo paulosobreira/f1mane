@@ -82,11 +82,11 @@ public class NoWrapper {
 	}
 
 	public boolean verificaCruvaAlta() {
-		return no.verificaCruvaAlta();
+		return no.verificaCurvaAlta();
 	}
 
 	public boolean verificaCruvaBaixa() {
-		return no.verificaCruvaBaixa();
+		return no.verificaCurvaBaixa();
 	}
 
 	public boolean verificaRetaOuLargada() {

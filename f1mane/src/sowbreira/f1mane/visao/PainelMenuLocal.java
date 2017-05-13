@@ -2803,9 +2803,9 @@ public class PainelMenuLocal {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
 				No no = (No) map.get(oldP);
-				if (no.verificaCruvaBaixa()) {
+				if (no.verificaCurvaBaixa()) {
 					g2d.setColor(Color.red);
-				} else if (no.verificaCruvaAlta()) {
+				} else if (no.verificaCurvaAlta()) {
 					g2d.setColor(Color.orange);
 				} else if (no.verificaRetaOuLargada()) {
 					g2d.setColor(new Color(0, 200, 0));
@@ -2817,9 +2817,9 @@ public class PainelMenuLocal {
 			ultNo = (No) map.get(oldP);
 		}
 		Point p0 = (Point) pistaMinimizada.get(0);
-		if (ultNo.verificaCruvaBaixa()) {
+		if (ultNo.verificaCurvaBaixa()) {
 			g2d.setColor(Color.red);
-		} else if (ultNo.verificaCruvaAlta()) {
+		} else if (ultNo.verificaCurvaAlta()) {
 			g2d.setColor(Color.orange);
 		} else if (ultNo.verificaRetaOuLargada()) {
 			g2d.setColor(new Color(0, 200, 0));

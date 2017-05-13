@@ -1113,10 +1113,10 @@ public class MainPanelEditor extends JPanel {
 			if (no.verificaRetaOuLargada()) {
 				noAlta++;
 			}
-			if (no.verificaCruvaAlta()) {
+			if (no.verificaCurvaAlta()) {
 				noMedia++;
 			}
-			if (no.verificaCruvaBaixa()) {
+			if (no.verificaCurvaBaixa()) {
 				noBaixa++;
 			}
 		}

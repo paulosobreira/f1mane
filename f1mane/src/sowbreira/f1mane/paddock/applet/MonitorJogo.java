@@ -115,9 +115,9 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.desenhouQualificacao();
 				atualizaZoom();
 				if (!apagouLuz) {
-					Thread.sleep(4500);
+					Thread.sleep(6500);
 				} else {
-					Thread.sleep(400);
+					Thread.sleep(500);
 				}
 				apagarLuz();
 			} catch (InterruptedException e) {

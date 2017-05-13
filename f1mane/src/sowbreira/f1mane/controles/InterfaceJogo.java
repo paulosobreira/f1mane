@@ -29,7 +29,7 @@ public interface InterfaceJogo {
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
 	public static int CARGA_KERS = 100;
-	public static int DURABILIDADE_AREOFOLIO = 30;
+	public static int DURABILIDADE_AREOFOLIO = 20;
 
 	public List<String> listaInfo();
 

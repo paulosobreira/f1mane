@@ -121,12 +121,12 @@ public class ControleSom {
 					clipAceleracao.setFramePosition(0);
 					clipAceleracao.start();
 				}
-				if (ps.getNoAtual().verificaCruvaBaixa()) {
+				if (ps.getNoAtual().verificaCurvaBaixa()) {
 					clipReducao = clipReducao1;
 					clipReducao.setFramePosition(0);
 					clipReducao.start();
 				}
-				if (ps.getNoAtual().verificaCruvaAlta()) {
+				if (ps.getNoAtual().verificaCurvaAlta()) {
 					clipReducao = clipReducao2;
 					clipReducao.setFramePosition(0);
 					clipReducao.start();
@@ -192,10 +192,10 @@ public class ControleSom {
 					clipBox.stop();
 					clipAceleracao.stop();
 					clipReducao.stop();
-					if (ps.getNoAtual().verificaCruvaBaixa()) {
+					if (ps.getNoAtual().verificaCurvaBaixa()) {
 						clipReducao = clipReducao1;
 					}
-					if (ps.getNoAtual().verificaCruvaAlta()) {
+					if (ps.getNoAtual().verificaCurvaAlta()) {
 						clipReducao = clipReducao2;
 					}
 					clipReducao.setFramePosition(0);

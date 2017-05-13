@@ -413,6 +413,9 @@ public class Circuito implements Serializable {
 	public void gerarObjetosNoTransparencia() {
 		objetosNoTransparencia = new ArrayList<ObjetoPistaJSon>();
 		List<ObjetoPista> objetospista = getObjetos();
+		if(objetospista==null){
+			return;
+		}
 		for (Iterator iterator = objetospista.iterator(); iterator.hasNext();) {
 			ObjetoPista objetoPista = (ObjetoPista) iterator.next();
 			if (!(objetoPista instanceof ObjetoTransparencia))

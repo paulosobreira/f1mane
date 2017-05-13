@@ -214,7 +214,7 @@ public class ControleBox {
 					ptosBox += ((boxRapido) ? 2 : Util.intervalo(1, 2));
 				} else if (box.verificaRetaOuLargada()) {
 					ptosBox += ((boxRapido) ? 3 : Util.intervalo(2, 3));
-				} else if (box.verificaCruvaAlta()) {
+				} else if (box.verificaCurvaAlta()) {
 					ptosBox += ((boxRapido) ? 2 : Util.intervalo(1, 2));
 				} else {
 					ptosBox += 1;
@@ -561,10 +561,10 @@ public class ControleBox {
 				if (no.verificaRetaOuLargada()) {
 					noAlta++;
 				}
-				if (no.verificaCruvaAlta()) {
+				if (no.verificaCurvaAlta()) {
 					noMedia++;
 				}
-				if (no.verificaCruvaBaixa()) {
+				if (no.verificaCurvaBaixa()) {
 					noBaixa++;
 				}
 			}
