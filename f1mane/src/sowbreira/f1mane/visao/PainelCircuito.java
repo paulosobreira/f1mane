@@ -418,6 +418,7 @@ public class PainelCircuito {
 			desenhaCarros(g2d);
 			desenharSafetyCarCima(g2d);
 			desenhaChuva(g2d);
+			desenhaBarraPilotos(g2d);
 			desenhaContadorVoltas(g2d);
 			desenharFarois(g2d);
 			desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
@@ -819,18 +820,54 @@ public class PainelCircuito {
 			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 3 : 1;
 		}
 
-		if (diff < 70) {
-			ganhoSuave--;
+		if (controleJogo.isSafetyCarNaPista()) {
+			if (diff < 40) {
+				ganhoSuave--;
+			}
+			if (diff < 60) {
+				ganhoSuave--;
+			}
 		}
-		if (diff < 140) {
-			ganhoSuave--;
+		if (controleJogo instanceof JogoCliente) {
+			if (diff < 100) {
+				ganhoSuave = 0;
+			}
+			if (diff < 150) {
+				ganhoSuave--;
+			}
+			if (diff < 200) {
+				ganhoSuave--;
+			}
+			if (diff > 300) {
+				ganhoSuave += 1;
+			}
+			if (diff > 350) {
+				ganhoSuave += 1;
+			}
+			if (diff > 400) {
+				ganhoSuave += 1;
+			}
+		} else {
+			if (diff < 60) {
+				ganhoSuave = 0;
+			}
+			if (diff < 80) {
+				ganhoSuave--;
+			}
+			if (diff < 100) {
+				ganhoSuave--;
+			}
+			if (diff > 200) {
+				ganhoSuave += 1;
+			}
+			if (diff > 250) {
+				ganhoSuave += 1;
+			}
+			if (diff > 300) {
+				ganhoSuave += 1;
+			}
 		}
-		if (diff > 180) {
-			ganhoSuave += 1;
-		}
-		if (diff > 220) {
-			ganhoSuave += 1;
-		}
+
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
 
 		if (ganhoSuave > ganhoSuaveAnt) {
@@ -1250,7 +1287,7 @@ public class PainelCircuito {
 		if (!isExibeResultadoFinal()) {
 			return;
 		}
-
+		ControleSom.somLigado = false;
 		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 450;
 		int y = limitesViewPort.y + (limitesViewPort.height / 2) - 260;
 		int xOri = x;
@@ -3089,10 +3126,6 @@ public class PainelCircuito {
 		if (isExibeResultadoFinal()) {
 			return;
 		}
-		int x = limitesViewPort.x + limitesViewPort.width - 165;
-		int y = limitesViewPort.y + 5;
-		int tamNome = 90;
-
 		for (int i = pilotosList.size() - 1; i > -1; i--) {
 			Piloto piloto = pilotosList.get(i);
 			No noAtual = piloto.getNoAtualSuave();
@@ -3100,10 +3133,6 @@ public class PainelCircuito {
 				noAtual = piloto.getNoAtual();
 			}
 			atualizacaoSuave(piloto);
-			int inverter = pilotosList.size() - i - 1;
-			desenhaBarraListaPiloto(g2d, x, y, tamNome, inverter,
-					(Piloto) pilotosList.get(inverter));
-			y += 23;
 			if (!limitesViewPort.contains(
 					((noAtual.getX() - descontoCentraliza.x) * zoom),
 					((noAtual.getY() - descontoCentraliza.y) * zoom))) {
@@ -3131,6 +3160,22 @@ public class PainelCircuito {
 			desenhaNomePilotoNaoSelecionado(piloto, g2d);
 		}
 		desenhaNomePilotoSelecionado(g2d, pilotoSelecionado);
+	}
+
+	private void desenhaBarraPilotos(Graphics2D g2d) {
+		if (isExibeResultadoFinal()) {
+			return;
+		}
+		int x = limitesViewPort.x + limitesViewPort.width - 165;
+		int y = limitesViewPort.y + 5;
+		int tamNome = 90;
+
+		for (int i = pilotosList.size() - 1; i > -1; i--) {
+			int inverter = pilotosList.size() - i - 1;
+			desenhaBarraListaPiloto(g2d, x, y, tamNome, inverter,
+					(Piloto) pilotosList.get(inverter));
+			y += 23;
+		}
 	}
 
 	public Rectangle2D centralizaCarroDesenhar(InterfaceJogo controleJogo,
@@ -3854,7 +3899,7 @@ public class PainelCircuito {
 		 */
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {
-			centralizaCarroDesenhar(controleJogo,piloto);
+			centralizaCarroDesenhar(controleJogo, piloto);
 		}
 		if (piloto.getDiateira() == null || piloto.getCentro() == null
 				|| piloto.getTrazeira() == null) {

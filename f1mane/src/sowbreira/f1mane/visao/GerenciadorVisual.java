@@ -222,6 +222,13 @@ public class GerenciadorVisual {
 			@Override
 			public void run() {
 				if (controleJogo instanceof sowbreira.f1mane.paddock.applet.JogoCliente) {
+					while (!controleJogo.getMainFrame().isVisible()) {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							Logger.logarExept(e);
+						}
+					}
 					try {
 						Thread.sleep(15000);
 					} catch (InterruptedException e) {

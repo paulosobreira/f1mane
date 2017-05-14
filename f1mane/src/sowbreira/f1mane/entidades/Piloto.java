@@ -38,7 +38,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
-	public static final  int MEIAENVERGADURA = 20;
+	public static final int MEIAENVERGADURA = 20;
 
 	private int setaCima;
 	private int setaBaixo;
@@ -1103,7 +1103,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			ganhoTotalBaixa += ganho;
 		}
 		processaGanhoSafetyCar(controleJogo);
-		processaUltimas5Voltas(controleJogo);
+		processaUltimas5Voltas();
 		decrementaPilotoDesconcentrado(controleJogo);
 		setPtosPista(Util.inteiro(getPtosPista() + ganho));
 		index += Math.round(ganho);
@@ -1111,7 +1111,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		return index;
 	}
 
-	private void processaUltimas5Voltas(InterfaceJogo controleJogo) {
+	public void processaUltimas5Voltas() {
 		if (voltas == null || voltas.isEmpty()) {
 			return;
 		}
@@ -1214,18 +1214,6 @@ public class Piloto implements Serializable, PilotoSuave {
 			return;
 		}
 		ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
-		if (ganho > 40) {
-			ganho = 40;
-		}
-		if (ganho < 10 && calculaDiferencaParaProximo > 100) {
-			ganho = 10;
-		}
-		if (getTracado() == 4) {
-			mudarTracado(2, controleJogo);
-		}
-		if (getTracado() == 5) {
-			mudarTracado(1, controleJogo);
-		}
 	}
 
 	public static void main(String[] args) {
@@ -1592,7 +1580,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private void processaUsoERS(InterfaceJogo controleJogo) {
-
 		if (controleJogo.isKers() && ativarErs && getPtosBox() == 0) {
 			if (getCarro().getCargaErs() <= 0) {
 				ativarErs = false;
@@ -1870,8 +1857,10 @@ public class Piloto implements Serializable, PilotoSuave {
 			pilotoFrente.centralizaCarroColisao(controleJogo);
 			colisaoDiantera = getDiateiraColisao()
 					.intersects(pilotoFrente.getTrazeiraColisao())
-					|| getDiateiraColisao().intersects(pilotoFrente.getCentroColisao());
-			colisaoCentro = getCentroColisao().intersects(pilotoFrente.getTrazeiraColisao());
+					|| getDiateiraColisao()
+							.intersects(pilotoFrente.getCentroColisao());
+			colisaoCentro = getCentroColisao()
+					.intersects(pilotoFrente.getTrazeiraColisao());
 			colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
 			if (colisao != null) {
 				return;
@@ -2542,9 +2531,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (Carro.GIRO_MIN_VAL == getCarro().getGiro()
 				&& !getNoAtual().verificaRetaOuLargada()) {
 			bonusMotor -= getCarro().testePotencia() ? 0.0 : 0.1;
-		}
-		if (controleJogo.isChovendo()) {
-			bonusMotor -= 0.1;
 		}
 		if (getNoAtual().verificaRetaOuLargada()
 				&& getCarro().testePotencia()) {

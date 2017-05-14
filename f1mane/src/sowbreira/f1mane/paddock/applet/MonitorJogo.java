@@ -115,7 +115,7 @@ public class MonitorJogo implements Runnable {
 				jogoCliente.desenhouQualificacao();
 				atualizaZoom();
 				if (!apagouLuz) {
-					Thread.sleep(6500);
+					Thread.sleep(6000);
 				} else {
 					Thread.sleep(500);
 				}
@@ -170,7 +170,7 @@ public class MonitorJogo implements Runnable {
 				} else {
 					jogoCliente.setAtualizacaoSuave(true);
 				}
-				tempoCiclo = 500;
+				tempoCiclo = 1000;
 				if (controlePaddockCliente
 						.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 					jogoCliente.autoDrs();
@@ -185,11 +185,6 @@ public class MonitorJogo implements Runnable {
 				disparaAtualizadorPainel(tempoCiclo);
 				atualizarDadosParciais(jogoCliente.getDadosJogo(),
 						jogoCliente.getPilotoSelecionado());
-				Piloto pilotoSelecionado = jogoCliente.getPilotoSelecionado();
-				if (pilotoSelecionado != null
-						&& pilotoSelecionado.getNumeroVolta() > 0) {
-					tempoCiclo = 1000;
-				}
 				Thread.sleep(tempoCiclo);
 			} catch (InterruptedException e) {
 				interrupt = true;
@@ -574,6 +569,7 @@ public class MonitorJogo implements Runnable {
 				piloto.getVoltas().add(new Volta(dadosParciais.ultima3));
 				piloto.getVoltas().add(new Volta(dadosParciais.ultima2));
 				piloto.getVoltas().add(new Volta(dadosParciais.ultima1));
+				piloto.processaUltimas5Voltas();
 				piloto.setNomeJogador(dadosParciais.nomeJogador);
 				piloto.setQtdeParadasBox(dadosParciais.paradas);
 				if (piloto.getNomeJogador() != null) {

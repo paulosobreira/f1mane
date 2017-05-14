@@ -349,7 +349,7 @@ public class ControleSom {
 	public static boolean nadaTocando() {
 		return !clipLargada.isRunning() && !clipReducao.isRunning()
 				&& !clipAceleracao.isRunning() && !clipBox.isRunning()
-				&& !clipPararBox.isRunning();
+				&& !clipPararBox.isRunning()&& !clipSafetyCar.isRunning();
 	}
 
 	public static void paraTudo() {
