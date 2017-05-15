@@ -753,7 +753,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				pilotoSelecionado.setSetaBaixo(11);
 			}
 		}
-		monitorJogo.mudarPos(pos);
+		monitorJogo.mudarTracado(pos);
 	}
 
 	@Override

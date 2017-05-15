@@ -63,15 +63,15 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = true;
-	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = true;
+	public static boolean desenhaBkg = false;
+	public static boolean desenhaPista = false;
+	public static boolean desenhaImagens = false;
 
-	private boolean verControles = true;
+	private boolean verControles = false;
 	private boolean carragandoBkg = false;
 	private boolean desenhouQualificacao;
 	private boolean desenhouCreditos;
-	private boolean desenhaInfo = true;
+	private boolean desenhaInfo = false;
 	private boolean backGroundZoomPronto;
 	private boolean alternaPiscaSCSair;
 
@@ -759,12 +759,18 @@ public class PainelCircuito {
 
 	private void atualizacaoSuave(PilotoSuave piloto) {
 		if (!controleJogo.isAtualizacaoSuave()) {
+			if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
+				//Logger.logar("atualizacaoSuave if (!controleJogo.isAtualizacaoSuave())" );
+			}
 			piloto.setNoAtualSuave(piloto.getNoAtual());
 			return;
 		}
 
 		if (piloto.getNoAtual().equals(piloto.getNoAnterior())
 				|| piloto.getNoAnterior() == null) {
+			if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
+			//	Logger.logar("atualizacaoSuave	if (piloto.getNoAtual().equals(piloto.getNoAnterior())" );
+			}
 			return;
 		}
 
@@ -833,8 +839,6 @@ public class PainelCircuito {
 		if (controleJogo instanceof JogoCliente) {
 			// if (false) {
 			if (diff < 150) {
-				ganhoSuave = 0;
-			} else if (diff < 200) {
 				ganhoSuave = 1;
 			}
 			if (diff > 300) {
@@ -847,23 +851,27 @@ public class PainelCircuito {
 				ganhoSuave += 1;
 			}
 		} else {
-			if (diff < 60) {
-				ganhoSuave = 0;
-			} else if (diff < 80) {
+			if (diff < 80) {
 				ganhoSuave = 1;
 			} else if (diff < 100) {
 				ganhoSuave--;
-			} else if (diff > 200) {
+			}
+			if (diff > 200) {
 				ganhoSuave += 1;
-			} else if (diff > 250) {
-				ganhoSuave += 2;
-			} else if (diff > 300) {
-				ganhoSuave += 3;
+			}
+			if (diff > 250) {
+				ganhoSuave += 1;
+			}
+			if (diff > 300) {
+				ganhoSuave += 1;
 			}
 		}
 
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
-
+		if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
+//			Logger.logar("diff " + diff + " ganhoSuave " + ganhoSuave
+//					+ " ganhoSuaveAnt " + ganhoSuaveAnt);
+		}
 		if (ganhoSuave > ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt + 1;
 		}

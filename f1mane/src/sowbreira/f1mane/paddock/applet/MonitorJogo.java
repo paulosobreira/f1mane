@@ -110,15 +110,20 @@ public class MonitorJogo implements Runnable {
 			try {
 				iniciaJalena();
 				atualizarDados();
-				atualizarDadosParciais(jogoCliente.getDadosJogo(),
-						jogoCliente.getPilotoSelecionado());
 				jogoCliente.desenhouQualificacao();
 				atualizaZoom();
 				if (!apagouLuz) {
-					Thread.sleep(6000);
+					Logger.logar(
+							"apagaLuzesLargada atualizarDadosParciais(jogoCliente.getDadosJogo(), 5000");
+					atualizarDadosParciais(jogoCliente.getDadosJogo(),
+							jogoCliente.getPilotoSelecionado());
+					Thread.sleep(5000);
 				} else {
+					Logger.logar("apagaLuzesLargada 500");
 					Thread.sleep(500);
 				}
+				verificaEstadoJogo();
+				Logger.logar("apagaLuzesLargada verificaEstadoJogo");
 				apagarLuz();
 			} catch (InterruptedException e) {
 				interupt = true;
@@ -137,8 +142,6 @@ public class MonitorJogo implements Runnable {
 				for (Iterator iterator = pilotos.iterator(); iterator
 						.hasNext();) {
 					Piloto piloto = (Piloto) iterator.next();
-					// jogoCliente.adicionarInfoDireto(piloto.getPosicao() + " "
-					// + piloto.getNome() + " " + piloto.getCarro().getNome());
 					atualizarDadosParciais(jogoCliente.getDadosJogo(), piloto);
 					try {
 						Thread.sleep(300);
@@ -162,30 +165,49 @@ public class MonitorJogo implements Runnable {
 	private void processaCiclosCorrida(long tempoCiclo)
 			throws InterruptedException {
 		boolean interrupt = false;
+		tempoCiclo = 1000;
+		Thread.sleep(tempoCiclo);
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
 				if (getLatenciaReal() > 1000) {
+					Logger.logar(
+							"processaCiclosCorrida jogoCliente.setAtualizacaoSuave(false);");
 					jogoCliente.setAtualizacaoSuave(false);
 				} else {
+					Logger.logar(
+							"processaCiclosCorrida jogoCliente.setAtualizacaoSuave(true);");
 					jogoCliente.setAtualizacaoSuave(true);
 				}
-				tempoCiclo = 1000;
+				Thread.sleep(tempoCiclo);
+				Logger.logar("processaCiclosCorrida Thread.sleep(tempoCiclo);");
 				if (controlePaddockCliente
 						.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 					jogoCliente.autoDrs();
 				}
 				atualizarDados();
+				Logger.logar("processaCiclosCorrida atualizarDados();");
 				iniciaJalena();
+				Logger.logar("processaCiclosCorrida iniciaJalena();");
 				atualizaZoom();
+				Logger.logar("processaCiclosCorrida atualizaZoom();");
 				apagarLuz();
+				Logger.logar("processaCiclosCorrida apagarLuz();");
 				jogoCliente.desenhaQualificacao();
+				Logger.logar(
+						"processaCiclosCorrida jogoCliente.desenhaQualificacao();");
 				jogoCliente.desenhouQualificacao();
+				Logger.logar(
+						"processaCiclosCorrida jogoCliente.desenhouQualificacao();");
 				jogoCliente.selecionaPilotoJogador();
+				Logger.logar(
+						"processaCiclosCorrida jogoCliente.selecionaPilotoJogador();");
 				disparaAtualizadorPainel(tempoCiclo);
+				Logger.logar(
+						"processaCiclosCorrida disparaAtualizadorPainel(tempoCiclo);");
 				atualizarDadosParciais(jogoCliente.getDadosJogo(),
 						jogoCliente.getPilotoSelecionado());
-				Thread.sleep(tempoCiclo);
+				Logger.logar("processaCiclosCorrida atualizarDadosParciais");
 			} catch (InterruptedException e) {
 				interrupt = true;
 				Logger.logarExept(e);
@@ -783,8 +805,7 @@ public class MonitorJogo implements Runnable {
 
 	}
 
-	public void mudarPos(final int tracado) {
-		Logger.logar("mudarPos(final int tracado) = " + tracado);
+	public void mudarTracado(final int tracado) {
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -797,6 +818,11 @@ public class MonitorJogo implements Runnable {
 							Comandos.MUDAR_TRACADO, sessaoCliente);
 					clientPaddockPack
 							.setNomeJogo(jogoCliente.getNomeJogoCriado());
+					Logger.logar(
+							"mudarTracado(final int tracado) = " + tracado);
+					Logger.logar(
+							"mudarTracado (jogoCliente.getNomeJogoCriado() = "
+									+ jogoCliente.getNomeJogoCriado());
 					clientPaddockPack.setTracado(tracado);
 					Object ret = controlePaddockCliente
 							.enviarObjeto(clientPaddockPack, true);
