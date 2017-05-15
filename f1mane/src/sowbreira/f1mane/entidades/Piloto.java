@@ -1119,7 +1119,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		int numeroVolta = getNumeroVolta() - 1;
 		for (int i = voltas.size() - 1; i >= 0; i--) {
 			Volta volta = (Volta) voltas.get(i);
-			if (volta.getCiclosFim() == 0) {
+			if (volta.getTempoNumero() == null && volta.getCiclosFim() == 0
+					|| volta.getTempoNumero() == 0) {
 				continue;
 			}
 			ultimas5Voltas

@@ -645,14 +645,22 @@ public class ControleJogosServer {
 	public Object mudarTracado(ClientPaddockPack clientPaddockPack) {
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
+		Logger.logar("mudarTracado clientPaddockPack.getNomeJogo() "
+				+ clientPaddockPack.getNomeJogo());
 		if (jogoServidor == null) {
 			return null;
 		}
 		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Logger.logar(
+				"mudarTracado clientPaddockPack.getSessaoCliente().getNomeJogador()"
+						+ clientPaddockPack.getSessaoCliente()
+								.getNomeJogador());
 		if (piloto == null) {
 			return null;
 		}
 		piloto.setAtivarDRS(true);
+		Logger.logar("mudarTracado clientPaddockPack.getTracado() "
+				+ clientPaddockPack.getTracado());
 		piloto.mudarTracado(clientPaddockPack.getTracado(), jogoServidor);
 		return null;
 	}

@@ -314,6 +314,8 @@ public class PainelCircuito {
 		for (int i = 0; i < pilotosRect.length; i++) {
 			pilotosRect[i] = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 		}
+		Logger.logar(
+				"controleJogo.getMainFrame().addMouseListener(new MouseAdapter() {");
 		controleJogo.getMainFrame().addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				controleJogo.getMainFrame().requestFocus();
@@ -829,14 +831,11 @@ public class PainelCircuito {
 			}
 		}
 		if (controleJogo instanceof JogoCliente) {
-			if (diff < 100) {
-				ganhoSuave = 0;
-			}
+			// if (false) {
 			if (diff < 150) {
-				ganhoSuave--;
-			}
-			if (diff < 200) {
-				ganhoSuave--;
+				ganhoSuave = 0;
+			} else if (diff < 200) {
+				ganhoSuave = 1;
 			}
 			if (diff > 300) {
 				ganhoSuave += 1;
@@ -850,21 +849,16 @@ public class PainelCircuito {
 		} else {
 			if (diff < 60) {
 				ganhoSuave = 0;
-			}
-			if (diff < 80) {
+			} else if (diff < 80) {
+				ganhoSuave = 1;
+			} else if (diff < 100) {
 				ganhoSuave--;
-			}
-			if (diff < 100) {
-				ganhoSuave--;
-			}
-			if (diff > 200) {
+			} else if (diff > 200) {
 				ganhoSuave += 1;
-			}
-			if (diff > 250) {
-				ganhoSuave += 1;
-			}
-			if (diff > 300) {
-				ganhoSuave += 1;
+			} else if (diff > 250) {
+				ganhoSuave += 2;
+			} else if (diff > 300) {
+				ganhoSuave += 3;
 			}
 		}
 

@@ -784,6 +784,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarPos(final int tracado) {
+		Logger.logar("mudarPos(final int tracado) = " + tracado);
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}

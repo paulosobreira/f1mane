@@ -734,22 +734,23 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void mudarPos(int pos) {
-		if (pilotoSelecionado != null) {
-			if (pilotoSelecionado.getSetaBaixo() <= 0) {
-				if (pilotoSelecionado.getTracado() == 0 && pos == 1) {
-					pilotoSelecionado.setSetaCima(11);
-				}
-				if (pilotoSelecionado.getTracado() == 2 && pos == 0) {
-					pilotoSelecionado.setSetaCima(11);
-				}
+		if (pilotoSelecionado == null) {
+			return;
+		}
+		if (pilotoSelecionado.getSetaBaixo() <= 0) {
+			if (pilotoSelecionado.getTracado() == 0 && pos == 1) {
+				pilotoSelecionado.setSetaCima(11);
 			}
-			if (pilotoSelecionado.getSetaCima() <= 0) {
-				if (pilotoSelecionado.getTracado() == 0 && pos == 2) {
-					pilotoSelecionado.setSetaBaixo(11);
-				}
-				if (pilotoSelecionado.getTracado() == 1 && pos == 0) {
-					pilotoSelecionado.setSetaBaixo(11);
-				}
+			if (pilotoSelecionado.getTracado() == 2 && pos == 0) {
+				pilotoSelecionado.setSetaCima(11);
+			}
+		}
+		if (pilotoSelecionado.getSetaCima() <= 0) {
+			if (pilotoSelecionado.getTracado() == 0 && pos == 2) {
+				pilotoSelecionado.setSetaBaixo(11);
+			}
+			if (pilotoSelecionado.getTracado() == 1 && pos == 0) {
+				pilotoSelecionado.setSetaBaixo(11);
 			}
 		}
 		monitorJogo.mudarPos(pos);
