@@ -199,7 +199,7 @@ public interface InterfaceJogo {
 
 	public List getCarrosBox();
 
-	public void mudarPos(int i);
+	public void mudarTracado(int i);
 
 	/**
 	 * Minimo 0.5 = Mais dificil de passar; Maximo 1.0 = Mais facil de passar;

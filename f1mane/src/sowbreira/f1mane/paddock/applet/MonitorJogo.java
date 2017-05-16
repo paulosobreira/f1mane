@@ -117,7 +117,7 @@ public class MonitorJogo implements Runnable {
 							"apagaLuzesLargada atualizarDadosParciais(jogoCliente.getDadosJogo(), 5000");
 					atualizarDadosParciais(jogoCliente.getDadosJogo(),
 							jogoCliente.getPilotoSelecionado());
-					Thread.sleep(5000);
+					Thread.sleep(6000);
 				} else {
 					Logger.logar("apagaLuzesLargada 500");
 					Thread.sleep(500);
@@ -166,48 +166,29 @@ public class MonitorJogo implements Runnable {
 			throws InterruptedException {
 		boolean interrupt = false;
 		tempoCiclo = 1000;
-		Thread.sleep(tempoCiclo);
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
 				if (getLatenciaReal() > 1000) {
-					Logger.logar(
-							"processaCiclosCorrida jogoCliente.setAtualizacaoSuave(false);");
 					jogoCliente.setAtualizacaoSuave(false);
 				} else {
-					Logger.logar(
-							"processaCiclosCorrida jogoCliente.setAtualizacaoSuave(true);");
 					jogoCliente.setAtualizacaoSuave(true);
 				}
-				Thread.sleep(tempoCiclo);
-				Logger.logar("processaCiclosCorrida Thread.sleep(tempoCiclo);");
 				if (controlePaddockCliente
 						.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 					jogoCliente.autoDrs();
 				}
 				atualizarDados();
-				Logger.logar("processaCiclosCorrida atualizarDados();");
 				iniciaJalena();
-				Logger.logar("processaCiclosCorrida iniciaJalena();");
 				atualizaZoom();
-				Logger.logar("processaCiclosCorrida atualizaZoom();");
 				apagarLuz();
-				Logger.logar("processaCiclosCorrida apagarLuz();");
 				jogoCliente.desenhaQualificacao();
-				Logger.logar(
-						"processaCiclosCorrida jogoCliente.desenhaQualificacao();");
 				jogoCliente.desenhouQualificacao();
-				Logger.logar(
-						"processaCiclosCorrida jogoCliente.desenhouQualificacao();");
 				jogoCliente.selecionaPilotoJogador();
-				Logger.logar(
-						"processaCiclosCorrida jogoCliente.selecionaPilotoJogador();");
 				disparaAtualizadorPainel(tempoCiclo);
-				Logger.logar(
-						"processaCiclosCorrida disparaAtualizadorPainel(tempoCiclo);");
 				atualizarDadosParciais(jogoCliente.getDadosJogo(),
 						jogoCliente.getPilotoSelecionado());
-				Logger.logar("processaCiclosCorrida atualizarDadosParciais");
+				Thread.sleep(tempoCiclo);
 			} catch (InterruptedException e) {
 				interrupt = true;
 				Logger.logarExept(e);
@@ -574,14 +555,8 @@ public class MonitorJogo implements Runnable {
 			}
 			dadosJogo.setVoltaAtual(dadosParciais.voltaAtual);
 			List<Piloto> pilotos = jogoCliente.getPilotos();
-			for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
-				Piloto piloto = iter.next();
-				if (pilotoSelecionado == null) {
-					break;
-				}
-				if (!pilotoSelecionado.equals(piloto)) {
-					continue;
-				}
+			if(pilotoSelecionado!=null){
+				Piloto piloto = pilotoSelecionado;
 				piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
 						/ jogoCliente.getNosDaPista().size()));
 				piloto.setMelhorVolta(new Volta(dadosParciais.melhorVolta));
@@ -662,6 +637,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarGiroMotor(final Object selectedItem) {
+		Logger.logar("mudarGiroMotor " + selectedItem);
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -694,6 +670,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarModoBox() {
+		Logger.logar("alterarOpcoesBox ");
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -727,6 +704,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void alterarOpcoesBox(Object tpPneu, Object combust, Object asa) {
+		Logger.logar("alterarOpcoesBox ");
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -753,6 +731,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarModoPilotagem(final String modo) {
+		Logger.logar("mudarModoPilotagem " + modo);
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -780,6 +759,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarAutoPos() {
+		Logger.logar("mudarAutoPos ");
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -806,11 +786,11 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarTracado(final int tracado) {
+		Logger.logar("mudarTracado(final int tracado) = " + tracado);
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
 		Runnable runnable = new Runnable() {
-
 			@Override
 			public void run() {
 				try {
@@ -818,11 +798,7 @@ public class MonitorJogo implements Runnable {
 							Comandos.MUDAR_TRACADO, sessaoCliente);
 					clientPaddockPack
 							.setNomeJogo(jogoCliente.getNomeJogoCriado());
-					Logger.logar(
-							"mudarTracado(final int tracado) = " + tracado);
-					Logger.logar(
-							"mudarTracado (jogoCliente.getNomeJogoCriado() = "
-									+ jogoCliente.getNomeJogoCriado());
+
 					clientPaddockPack.setTracado(tracado);
 					Object ret = controlePaddockCliente
 							.enviarObjeto(clientPaddockPack, true);
@@ -838,6 +814,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarModoDRS(final boolean modo) {
+		Logger.logar("mudarModoDRS " + modo);
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -867,6 +844,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarModoKers(final boolean modo) {
+		Logger.logar("mudarModoDRS " + modo);
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -950,6 +928,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void pilotoSelecionadoMinimo() {
+		Logger.logar("pilotoSelecionadoMinimo ");
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -974,6 +953,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void pilotoSelecionadoNormal() {
+		Logger.logar("pilotoSelecionadoNormal ");
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}
@@ -997,6 +977,7 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void pilotoSelecionadoMaximo() {
+		Logger.logar("pilotoSelecionadoMaximo ");
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}

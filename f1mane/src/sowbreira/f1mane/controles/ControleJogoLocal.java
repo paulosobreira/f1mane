@@ -957,7 +957,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public void mudarPos(int pos) {
+	public void mudarTracado(int pos) {
 		if (pilotoJogador == null)
 			return;
 		pilotoJogador.mudarTracado(pos, this);

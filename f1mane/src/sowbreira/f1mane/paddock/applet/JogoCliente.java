@@ -733,7 +733,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void mudarPos(int pos) {
+	public void mudarTracado(int pos) {
 		if (pilotoSelecionado == null) {
 			return;
 		}

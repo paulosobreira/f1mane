@@ -326,10 +326,7 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-		if (controleJogo.getPilotoJogador().isAutoPos()) {
-			controleJogo.mudarAutoPos();
-		}
-		controleJogo.mudarPos(2);
+		controleJogo.mudarTracado(2);
 		ultMudaPos = System.currentTimeMillis();
 	}
 
@@ -337,10 +334,7 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-		if (controleJogo.getPilotoJogador().isAutoPos()) {
-			controleJogo.mudarAutoPos();
-		}
-		controleJogo.mudarPos(0);
+		controleJogo.mudarTracado(0);
 		ultMudaPos = System.currentTimeMillis();
 	}
 
@@ -348,10 +342,7 @@ public class GerenciadorVisual {
 		if (controleJogo == null) {
 			return;
 		}
-		if (controleJogo.getPilotoJogador().isAutoPos()) {
-			controleJogo.mudarAutoPos();
-		}
-		controleJogo.mudarPos(1);
+		controleJogo.mudarTracado(1);
 		ultMudaPos = System.currentTimeMillis();
 	}
 

@@ -13,6 +13,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -22,13 +23,10 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
@@ -63,15 +61,15 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = false;
-	public static boolean desenhaPista = false;
-	public static boolean desenhaImagens = false;
+	public static boolean desenhaBkg = true;
+	public static boolean desenhaPista = true;
+	public static boolean desenhaImagens = true;
 
-	private boolean verControles = false;
+	private boolean verControles = true;
 	private boolean carragandoBkg = false;
 	private boolean desenhouQualificacao;
 	private boolean desenhouCreditos;
-	private boolean desenhaInfo = false;
+	private boolean desenhaInfo = true;
 	private boolean backGroundZoomPronto;
 	private boolean alternaPiscaSCSair;
 
@@ -310,9 +308,13 @@ public class PainelCircuito {
 		this.gerenciadorVisual = gerenciadorVisual;
 		pilotosRect = new RoundRectangle2D.Double[controleJogo.getPilotosCopia()
 				.size()];
-
 		for (int i = 0; i < pilotosRect.length; i++) {
 			pilotosRect[i] = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+		}
+		MouseListener[] mouseListeners = controleJogo.getMainFrame()
+				.getMouseListeners();
+		for (int i = 0; i < mouseListeners.length; i++) {
+			controleJogo.getMainFrame().removeMouseListener(mouseListeners[i]);
 		}
 		Logger.logar(
 				"controleJogo.getMainFrame().addMouseListener(new MouseAdapter() {");
@@ -357,7 +359,7 @@ public class PainelCircuito {
 										&& pilotoJogador.getTracado() == 2)) {
 							pos = 0;
 						}
-						controleJogo.mudarPos(pos);
+						controleJogo.mudarTracado(pos);
 					}
 				}
 				super.mouseClicked(e);
@@ -759,18 +761,11 @@ public class PainelCircuito {
 
 	private void atualizacaoSuave(PilotoSuave piloto) {
 		if (!controleJogo.isAtualizacaoSuave()) {
-			if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
-				//Logger.logar("atualizacaoSuave if (!controleJogo.isAtualizacaoSuave())" );
-			}
 			piloto.setNoAtualSuave(piloto.getNoAtual());
 			return;
 		}
 
-		if (piloto.getNoAtual().equals(piloto.getNoAnterior())
-				|| piloto.getNoAnterior() == null) {
-			if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
-			//	Logger.logar("atualizacaoSuave	if (piloto.getNoAtual().equals(piloto.getNoAnterior())" );
-			}
+		if (piloto.getNoAtual().equals(piloto.getNoAnterior())) {
 			return;
 		}
 
@@ -820,11 +815,11 @@ public class PainelCircuito {
 			diff = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
 		}
 		int ganhoSuave = 0;
-		if (noAtualSuave.verificaRetaOuLargada()) {
+		if (noAtual.verificaRetaOuLargada()) {
 			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 7 : 3;
-		} else if (noAtualSuave.verificaCurvaAlta()) {
+		} else if (noAtual.verificaCurvaAlta()) {
 			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 5 : 2;
-		} else if (noAtualSuave.verificaCurvaBaixa() || noAtualSuave.isBox()) {
+		} else if (noAtual.verificaCurvaBaixa() || noAtualSuave.isBox()) {
 			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 3 : 1;
 		}
 
@@ -838,20 +833,22 @@ public class PainelCircuito {
 		}
 		if (controleJogo instanceof JogoCliente) {
 			// if (false) {
-			if (diff < 150) {
+			if (diff < 100) {
 				ganhoSuave = 1;
+			}else if (diff < 150) {
+				ganhoSuave--;
 			}
-			if (diff > 300) {
-				ganhoSuave += 1;
+			if (diff > 500) {
+				ganhoSuave++;
 			}
-			if (diff > 350) {
-				ganhoSuave += 1;
+			if (diff > 600) {
+				ganhoSuave++;
 			}
-			if (diff > 400) {
-				ganhoSuave += 1;
+			if (diff > 700) {
+				ganhoSuave++;
 			}
 		} else {
-			if (diff < 80) {
+			if (diff < 50) {
 				ganhoSuave = 1;
 			} else if (diff < 100) {
 				ganhoSuave--;
@@ -868,9 +865,10 @@ public class PainelCircuito {
 		}
 
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
+
 		if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
-//			Logger.logar("diff " + diff + " ganhoSuave " + ganhoSuave
-//					+ " ganhoSuaveAnt " + ganhoSuaveAnt);
+			Logger.logar("diff " + diff + " ganhoSuave " + ganhoSuave
+					+ " ganhoSuaveAnt " + ganhoSuaveAnt);
 		}
 		if (ganhoSuave > ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt + 1;
@@ -879,6 +877,11 @@ public class PainelCircuito {
 			ganhoSuave = ganhoSuaveAnt - 1;
 		}
 
+		if (noAtualSuave.verificaRetaOuLargada()
+				&& ganhoSuaveAnt > ganhoSuave) {
+			ganhoSuave = ganhoSuaveAnt;
+		}
+		
 		if (ganhoSuave <= 0) {
 			ganhoSuave = 0;
 		}
@@ -915,6 +918,10 @@ public class PainelCircuito {
 		}
 
 		if (diff > 1000) {
+			if (piloto instanceof Piloto
+					&& ((Piloto) piloto).isJogadorHumano()) {
+				Logger.logar("atualizacaoSuave diff > 1000 " + diff);
+			}
 			noAtualSuave = noAtual;
 		}
 
