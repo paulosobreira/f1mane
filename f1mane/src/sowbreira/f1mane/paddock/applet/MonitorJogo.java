@@ -166,6 +166,7 @@ public class MonitorJogo implements Runnable {
 			throws InterruptedException {
 		boolean interrupt = false;
 		tempoCiclo = 1000;
+		boolean atualizaPosicoes = false;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
@@ -181,13 +182,16 @@ public class MonitorJogo implements Runnable {
 				atualizarDados();
 				iniciaJalena();
 				atualizaZoom();
-				apagarLuz();
+				if (atualizaPosicoes) {
+					apagarLuz();
+				}
 				jogoCliente.desenhaQualificacao();
 				jogoCliente.desenhouQualificacao();
 				jogoCliente.selecionaPilotoJogador();
 				disparaAtualizadorPainel(tempoCiclo);
 				atualizarDadosParciais(jogoCliente.getDadosJogo(),
-						jogoCliente.getPilotoSelecionado());
+						jogoCliente.getPilotoSelecionado(), atualizaPosicoes);
+				atualizaPosicoes = true;
 				Thread.sleep(tempoCiclo);
 			} catch (InterruptedException e) {
 				interrupt = true;
@@ -523,9 +527,13 @@ public class MonitorJogo implements Runnable {
 		}
 
 	}
-
 	public void atualizarDadosParciais(DadosJogo dadosJogo,
 			Piloto pilotoSelecionado) {
+		atualizarDadosParciais(dadosJogo, pilotoSelecionado, false);
+	}
+
+	public void atualizarDadosParciais(DadosJogo dadosJogo,
+			Piloto pilotoSelecionado, boolean atualizaPosicoes) {
 		try {
 			String dataSend = jogoCliente.getNomeJogoCriado() + "#"
 					+ sessaoCliente.getNomeJogador();
@@ -555,7 +563,7 @@ public class MonitorJogo implements Runnable {
 			}
 			dadosJogo.setVoltaAtual(dadosParciais.voltaAtual);
 			List<Piloto> pilotos = jogoCliente.getPilotos();
-			if(pilotoSelecionado!=null){
+			if (pilotoSelecionado != null) {
 				Piloto piloto = pilotoSelecionado;
 				piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
 						/ jogoCliente.getNosDaPista().size()));
@@ -619,7 +627,9 @@ public class MonitorJogo implements Runnable {
 				piloto.getCarro().setGiro(dadosParciais.giro);
 				piloto.setVantagem(dadosParciais.vantagem);
 			}
-			atualizaPosisPack(dadosParciais.posisPack);
+			if (atualizaPosicoes) {
+				atualizaPosisPack(dadosParciais.posisPack);
+			}
 			Collections.sort(pilotos, new Comparator<Piloto>() {
 				@Override
 				public int compare(Piloto piloto0, Piloto piloto1) {

@@ -61,7 +61,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = true;
+	public static boolean desenhaBkg = false;
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
@@ -766,6 +766,11 @@ public class PainelCircuito {
 		}
 
 		if (piloto.getNoAtual().equals(piloto.getNoAnterior())) {
+			if (piloto instanceof Piloto
+					&& ((Piloto) piloto).isJogadorHumano()) {
+				Logger.logar(
+						" atualizacaoSuave piloto.getNoAtual().equals(piloto.getNoAnterior()) ");
+			}
 			return;
 		}
 
@@ -817,6 +822,9 @@ public class PainelCircuito {
 		int ganhoSuave = 0;
 		if (noAtual.verificaRetaOuLargada()) {
 			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 7 : 3;
+		} else if (noAtual.verificaRetaOuLargada()
+				&& !noAtualSuave.verificaRetaOuLargada()) {
+			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 5 : 2;
 		} else if (noAtual.verificaCurvaAlta()) {
 			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 5 : 2;
 		} else if (noAtual.verificaCurvaBaixa() || noAtualSuave.isBox()) {
@@ -833,18 +841,20 @@ public class PainelCircuito {
 		}
 		if (controleJogo instanceof JogoCliente) {
 			// if (false) {
-			if (diff < 100) {
-				ganhoSuave = 1;
-			}else if (diff < 150) {
-				ganhoSuave--;
+			if (diff < 150) {
+				if (ganhoSuave > 1) {
+					ganhoSuave--;
+				} else {
+					ganhoSuave = 1;
+				}
+			}
+			if (diff > 400) {
+				ganhoSuave++;
 			}
 			if (diff > 500) {
 				ganhoSuave++;
 			}
 			if (diff > 600) {
-				ganhoSuave++;
-			}
-			if (diff > 700) {
 				ganhoSuave++;
 			}
 		} else {
@@ -865,25 +875,25 @@ public class PainelCircuito {
 		}
 
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
-
-		if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
-			Logger.logar("diff " + diff + " ganhoSuave " + ganhoSuave
-					+ " ganhoSuaveAnt " + ganhoSuaveAnt);
-		}
 		if (ganhoSuave > ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt + 1;
 		}
 		if (ganhoSuave <= ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt - 1;
 		}
-
 		if (noAtualSuave.verificaRetaOuLargada()
 				&& ganhoSuaveAnt > ganhoSuave) {
 			ganhoSuave = ganhoSuaveAnt;
 		}
-		
+		if (diff==0) {
+			ganhoSuave = 0;
+		}
 		if (ganhoSuave <= 0) {
 			ganhoSuave = 0;
+		}
+		if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
+			Logger.logar("diff " + diff + " ganhoSuave " + ganhoSuave
+					+ " ganhoSuaveAnt " + ganhoSuaveAnt);
 		}
 		piloto.setGanhoSuave(ganhoSuave);
 		if (boxContainsNoAtual && pistaContainsNoAtualSuave
