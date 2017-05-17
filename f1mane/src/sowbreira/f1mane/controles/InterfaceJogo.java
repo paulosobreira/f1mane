@@ -13,7 +13,6 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.NoWrapper;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.entidades.SafetyCar;
@@ -319,10 +318,6 @@ public interface InterfaceJogo {
 	public void climaChuvoso();
 
 	public void ativaVerControles();
-
-	public List<NoWrapper> getPistaWrapperFull();
-
-	public List<NoWrapper> getBoxWrapperFull();
 
 	public void iniciarJogoMenuLocal(String circuitoSelecionado,
 			String temporadaSelecionada, int numVoltasSelecionado,

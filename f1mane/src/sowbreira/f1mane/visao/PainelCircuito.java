@@ -43,7 +43,6 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.NoWrapper;
 import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
@@ -61,7 +60,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = true;
+	public static boolean desenhaBkg = false;
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
@@ -285,12 +284,10 @@ public class PainelCircuito {
 	private Font fontAjudaControles;
 	private Font desenhaAjudaComandoPiloto;
 	private Font fontVelocidade;
-	private List pistaFull;
-	private List boxFull;
+	private List<No> pistaFull;
+	private List<No> boxFull;
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;
-	private List<NoWrapper> boxWrapperFull;
-	private List<NoWrapper> pistaWrapperFull;
 	private java.awt.geom.RoundRectangle2D.Double rectanglePos;
 	private java.awt.geom.RoundRectangle2D.Double rectangleVol;
 	private int interpolacao = AffineTransformOp.TYPE_BILINEAR;
@@ -393,8 +390,6 @@ public class PainelCircuito {
 		boxFull = controleJogo.getCircuito().getBoxFull();
 		entradaBoxIndex = controleJogo.getCircuito().getEntradaBoxIndex();
 		saidaBoxIndex = controleJogo.getCircuito().getSaidaBoxIndex();
-		boxWrapperFull = controleJogo.getBoxWrapperFull();
-		pistaWrapperFull = controleJogo.getPistaWrapperFull();
 	}
 
 	protected void render() {
@@ -766,11 +761,6 @@ public class PainelCircuito {
 		}
 
 		if (piloto.getNoAtual().equals(piloto.getNoAnterior())) {
-			if (piloto instanceof Piloto
-					&& ((Piloto) piloto).isJogadorHumano()) {
-				Logger.logar(
-						" atualizacaoSuave piloto.getNoAtual().equals(piloto.getNoAnterior()) ");
-			}
 			return;
 		}
 
@@ -782,35 +772,29 @@ public class PainelCircuito {
 			noAtualSuave = noAtual;
 		}
 
-		NoWrapper noAtualWrapper = new NoWrapper(noAtual);
-		NoWrapper noAtualSuaveWrapper = new NoWrapper(noAtualSuave);
+		boolean noAtualBox = noAtual.isBox();
+		boolean noAtualSuaveBox = noAtualSuave.isBox();
+		boolean noAtualSuavePista = !noAtualSuave.isBox();
+		boolean noAtualPista = !noAtual.isBox();;
 
-		boolean boxContainsNoAtual = boxWrapperFull.contains(noAtualWrapper);
-		boolean boxContainsNoAtualSuave = boxWrapperFull
-				.contains(noAtualSuaveWrapper);
-		boolean pistaContainsNoAtualSuave = pistaWrapperFull
-				.contains(noAtualSuaveWrapper);
-		boolean pistaContainsNoAtual = pistaWrapperFull
-				.contains(noAtualWrapper);
-
-		if (boxContainsNoAtual && boxContainsNoAtualSuave) {
+		if (noAtualBox && noAtualSuaveBox) {
 			nos = boxFull;
-		} else if (boxContainsNoAtual && pistaContainsNoAtualSuave) {
+		} else if (noAtualBox && noAtualSuavePista) {
 			nos = pistaFull;
-		} else if (boxContainsNoAtualSuave && pistaContainsNoAtual) {
+		} else if (noAtualSuaveBox && noAtualPista) {
 			nos = boxFull;
 		} else {
 			nos = pistaFull;
 		}
 
 		int diff = noAtual.getIndex() - noAtualSuave.getIndex();
-		if (boxContainsNoAtual && pistaContainsNoAtualSuave) {
+		if (noAtualBox && noAtualSuavePista) {
 			diff = noAtual.getIndex()
 					+ (controleJogo.getCircuito().getEntradaBoxIndex()
 							- noAtualSuave.getIndex());
 
 		}
-		if (boxContainsNoAtualSuave && pistaContainsNoAtual) {
+		if (noAtualSuaveBox && noAtualPista) {
 			diff = (noAtual.getIndex()
 					- (controleJogo.getCircuito().getSaidaBoxIndex())
 					+ (boxFull.size() - noAtualSuave.getIndex()));
@@ -820,56 +804,13 @@ public class PainelCircuito {
 			diff = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
 		}
 		int ganhoSuave = 0;
-		if (noAtual.verificaRetaOuLargada()) {
-			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 7 : 3;
-		} else if (noAtual.verificaRetaOuLargada()
-				&& !noAtualSuave.verificaRetaOuLargada()) {
-			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 5 : 2;
-		} else if (noAtual.verificaCurvaAlta()) {
-			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 5 : 2;
-		} else if (noAtual.verificaCurvaBaixa() || noAtualSuave.isBox()) {
-			ganhoSuave = (gerenciadorVisual.getFpsLimite() == 30.0) ? 3 : 1;
-		}
-
-		if (controleJogo.isSafetyCarNaPista()) {
-			if (diff < 40) {
-				ganhoSuave--;
-			}
-			if (diff < 60) {
-				ganhoSuave--;
-			}
-		}
 		if (controleJogo instanceof JogoCliente) {
-			// if (false) {
-			int limiDiff = 150;
-			if (boxContainsNoAtual) {
-				limiDiff = 200;
-			}
-
-			if (diff < limiDiff) {
-				if (ganhoSuave > 1) {
-					ganhoSuave--;
-				} else {
-					ganhoSuave = 1;
-				}
+			ganhoSuave = loopCalculaGanhoSuave(diff, 60);
+			if (diff > 600) {
+				ganhoSuave++;
 			}
 		} else {
-			if (diff < 50) {
-				if (ganhoSuave > 1) {
-					ganhoSuave--;
-				} else {
-					ganhoSuave = 1;
-				}
-			}
-		}
-		if (diff > 400) {
-			ganhoSuave++;
-		}
-		if (diff > 500) {
-			ganhoSuave++;
-		}
-		if (diff > 600) {
-			ganhoSuave++;
+			ganhoSuave = loopCalculaGanhoSuave(diff, 0);
 		}
 
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
@@ -880,7 +821,7 @@ public class PainelCircuito {
 			ganhoSuave = ganhoSuaveAnt - 1;
 		}
 		if (noAtualSuave.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
-				&& diff > 50) {
+				&& diff > 100) {
 			ganhoSuave = ganhoSuaveAnt;
 		}
 		if (diff == 0) {
@@ -894,24 +835,23 @@ public class PainelCircuito {
 					+ " ganhoSuaveAnt " + ganhoSuaveAnt);
 		}
 		piloto.setGanhoSuave(ganhoSuave);
-		if (boxContainsNoAtual && pistaContainsNoAtualSuave
+		if (noAtualBox && noAtualSuavePista
 				&& noAtualSuave.getIndex() < entradaBoxIndex) {
 			nos = pistaFull;
 		}
 
-		if (pistaContainsNoAtual && boxContainsNoAtualSuave) {
+		if (noAtualPista && noAtualSuaveBox) {
 			nos = boxFull;
 		}
 
 		int index = noAtualSuave.getIndex() + ganhoSuave;
 
-		if (boxContainsNoAtual && noAtualSuave.getIndex() >= entradaBoxIndex) {
+		if (noAtualBox && noAtualSuave.getIndex() >= entradaBoxIndex) {
 			nos = boxFull;
 			index = 0;
 		}
 
-		if (pistaContainsNoAtual && boxContainsNoAtualSuave
-				&& index > (nos.size() - 5)) {
+		if (noAtualPista && noAtualSuaveBox && index > (nos.size() - 5)) {
 			nos = pistaFull;
 			index = saidaBoxIndex + 5;
 		}
@@ -934,6 +874,23 @@ public class PainelCircuito {
 		}
 
 		piloto.setNoAtualSuave(noAtualSuave);
+	}
+
+	private int loopCalculaGanhoSuave(int diff, int incExtra) {
+		int ganhoSuave = 0;
+		int maxLoop = 600;
+		int inc = 30;
+		if (gerenciadorVisual.getFpsLimite() == 30.0) {
+			inc = 20;
+		}
+		inc += incExtra;
+		for (int i = 0; i < maxLoop; i += inc) {
+			if (diff >= i && diff < i + inc) {
+				break;
+			}
+			ganhoSuave += 1;
+		}
+		return ganhoSuave;
 	}
 
 	public int getQtdeLuzesAcesas() {

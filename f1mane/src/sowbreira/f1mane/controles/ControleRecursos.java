@@ -24,7 +24,6 @@ import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.NoWrapper;
 import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.Piloto;
@@ -39,8 +38,6 @@ public abstract class ControleRecursos {
 	protected List<No> nosDaPista = new ArrayList<No>();
 	protected List<No> nosDoBox = new ArrayList<No>();
 	protected List<Carro> carros;
-	protected List<NoWrapper> pistaWrapperFull = new ArrayList<NoWrapper>();
-	protected List<NoWrapper> boxWrapperFull = new ArrayList<NoWrapper>();
 	protected CarregadorRecursos carregadorRecursos;
 	protected Map<String, String> circuitos = new HashMap<String, String>();
 	protected Map<String, String> temporadasTransp = new HashMap<String, String>();
@@ -311,7 +308,7 @@ public abstract class ControleRecursos {
 	}
 
 	public void carregaRecursos(String circuitoStr, List<Piloto> pilotos,
-			List carros) throws Exception {
+			List<Carro> carros) throws Exception {
 		if (pilotos != null) {
 			this.pilotos = pilotos;
 		}
@@ -322,8 +319,6 @@ public abstract class ControleRecursos {
 		mapaNosIds.clear();
 		idsNoPista.clear();
 		idsNoBox.clear();
-		pistaWrapperFull.clear();
-		boxWrapperFull.clear();
 		mapaNoProxCurva.clear();
 		mapaNoCurvaAnterior.clear();
 		ObjectInputStream ois = new ObjectInputStream(
@@ -347,8 +342,8 @@ public abstract class ControleRecursos {
 		circuito.gerarObjetosNoTransparencia();
 		int contId = 1;
 		List<No> listaDeRetas = new ArrayList<No>();
-		for (Iterator iter = nosDaPista.iterator(); iter.hasNext();) {
-			No noPsita = (No) iter.next();
+		for (Iterator<No> iter = nosDaPista.iterator(); iter.hasNext();) {
+			No noPsita = iter.next();
 			Integer pistaId = new Integer(contId++);
 			mapaIdsNos.put(pistaId, noPsita);
 			mapaNosIds.put(noPsita, pistaId);
@@ -571,29 +566,6 @@ public abstract class ControleRecursos {
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
-	}
-
-	public List<NoWrapper> getPistaWrapperFull() {
-		if (pistaWrapperFull.isEmpty() && circuito != null) {
-			List pistaFull = circuito.getPistaFull();
-			for (Iterator iterator = pistaFull.iterator(); iterator
-					.hasNext();) {
-				No no = (No) iterator.next();
-				pistaWrapperFull.add(new NoWrapper(no));
-			}
-		}
-		return pistaWrapperFull;
-	}
-
-	public List<NoWrapper> getBoxWrapperFull() {
-		if (boxWrapperFull.isEmpty() && circuito != null) {
-			List boxFull = circuito.getBoxFull();
-			for (Iterator iterator = boxFull.iterator(); iterator.hasNext();) {
-				No no = (No) iterator.next();
-				boxWrapperFull.add(new NoWrapper(no));
-			}
-		}
-		return boxWrapperFull;
 	}
 
 	public List<Piloto> getPilotosCopia() {

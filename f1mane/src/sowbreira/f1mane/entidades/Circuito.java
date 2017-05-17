@@ -16,12 +16,12 @@ import br.nnpe.GeoUtil;
 public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
 	private String backGround;
-	private List pista = new ArrayList();
-	private transient List pistaFull = new ArrayList();
-	private transient List pistaKey = new ArrayList();
-	private List box = new ArrayList();
-	private transient List boxFull = new ArrayList();
-	private transient List boxKey = new ArrayList();
+	private List<No> pista = new ArrayList<No>();
+	private transient List<No> pistaFull = new ArrayList<No>();
+	private transient List<No> pistaKey = new ArrayList<No>();
+	private List<No> box = new ArrayList<No>();
+	private transient List<No> boxFull = new ArrayList<No>();
+	private transient List<No> boxKey = new ArrayList<No>();
 	private double multiplicadorPista;
 	private double multiplicadorLarguraPista;
 	private int ladoBox = 0;
@@ -71,8 +71,8 @@ public class Circuito implements Serializable {
 		List<No> arrayList = new ArrayList<No>();
 		No noAnt = null;
 
-		for (Iterator iter = pista.iterator(); iter.hasNext();) {
-			No no = (No) iter.next();
+		for (Iterator<No> iter = pista.iterator(); iter.hasNext();) {
+			No no = iter.next();
 
 			if (noAnt == null) {
 				noAnt = no;
@@ -104,11 +104,11 @@ public class Circuito implements Serializable {
 		this.ladoBox = ladoBox;
 	}
 
-	public List getBoxFull() {
+	public List<No> getBoxFull() {
 		return boxFull;
 	}
 
-	public List getBoxKey() {
+	public List<No> getBoxKey() {
 		return boxKey;
 	}
 
@@ -124,24 +124,24 @@ public class Circuito implements Serializable {
 		}
 		No noAnt = null;
 		if (pistaFull == null) {
-			pistaFull = new ArrayList();
+			pistaFull = new ArrayList<No>();
 		}
 		pistaFull.clear();
 		if (pistaKey == null) {
-			pistaKey = new ArrayList();
+			pistaKey = new ArrayList<No>();
 		}
 		pistaKey.clear();
-		List pistaTemp = new ArrayList();
-		for (Iterator iter = pista.iterator(); iter.hasNext();) {
-			No no = (No) iter.next();
+		List<No> pistaTemp = new ArrayList<No>();
+		for (Iterator<No> iter = pista.iterator(); iter.hasNext();) {
+			No no = iter.next();
 			No newNo = new No();
 			newNo.setPoint(new Point(no.getPoint().x, no.getPoint().y));
 			newNo.setTipo(no.getTipo());
 			pistaTemp.add(newNo);
 		}
 
-		for (Iterator iter = pistaTemp.iterator(); iter.hasNext();) {
-			No no = (No) iter.next();
+		for (Iterator<No> iter = pistaTemp.iterator(); iter.hasNext();) {
+			No no = iter.next();
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
@@ -177,26 +177,28 @@ public class Circuito implements Serializable {
 		}
 
 		if (boxFull == null) {
-			boxFull = new ArrayList();
+			boxFull = new ArrayList<No>();
 		}
 		boxFull.clear();
 		if (boxKey == null) {
-			boxKey = new ArrayList();
+			boxKey = new ArrayList<No>();
 		}
 		boxKey.clear();
-		List boxTemp = new ArrayList();
-		for (Iterator iter = box.iterator(); iter.hasNext();) {
-			No no = (No) iter.next();
+		List<No> boxTemp = new ArrayList<No>();
+		for (Iterator<No> iter = box.iterator(); iter.hasNext();) {
+			No no = iter.next();
+			no.setBox(true);
 			No newNo = new No();
 			newNo.setPoint(new Point(no.getPoint().x, no.getPoint().y));
 			newNo.setTipo(no.getTipo());
+			newNo.setBox(true);
 			boxTemp.add(newNo);
 		}
 
 		noAnt = null;
 
-		for (Iterator iter = boxTemp.iterator(); iter.hasNext();) {
-			No no = (No) iter.next();
+		for (Iterator<No> iter = boxTemp.iterator(); iter.hasNext();) {
+			No no = iter.next();
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
@@ -238,14 +240,14 @@ public class Circuito implements Serializable {
 			int saidaBoxSize = Integer.MAX_VALUE;
 			for (int i = 0; i < pistaFull.size(); i += 50) {
 				No pistaNo = (No) pistaFull.get(i);
-				List entrada = GeoUtil.drawBresenhamLine(boxEntrada.getPoint(),
-						pistaNo.getPoint());
+				List<Point> entrada = GeoUtil.drawBresenhamLine(
+						boxEntrada.getPoint(), pistaNo.getPoint());
 				if (entrada.size() < entradaBoxSize) {
 					entradaBoxSize = entrada.size();
 					entradaBoxIndex = i;
 				}
-				List saida = GeoUtil.drawBresenhamLine(boxSaida.getPoint(),
-						pistaNo.getPoint());
+				List<Point> saida = GeoUtil.drawBresenhamLine(
+						boxSaida.getPoint(), pistaNo.getPoint());
 				if (saida.size() < saidaBoxSize) {
 					saidaBoxSize = saida.size();
 					saidaBoxIndex = i;
@@ -265,17 +267,16 @@ public class Circuito implements Serializable {
 		return paradaBoxIndex;
 	}
 
-	public List getPistaFull() {
+	public List<No> getPistaFull() {
 		return pistaFull;
 	}
 
-	public List geraPontosBox() {
-		List arrayList = new ArrayList();
+	public List<No> geraPontosBox() {
+		List<No> arrayList = new ArrayList<No>();
 		No noAnt = null;
 
-		for (Iterator iter = box.iterator(); iter.hasNext();) {
-			No no = (No) iter.next();
-
+		for (Iterator<No> iter = box.iterator(); iter.hasNext();) {
+			No no = iter.next();
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
@@ -303,6 +304,7 @@ public class Circuito implements Serializable {
 			No newNo = new No();
 			newNo.setPoint(element);
 			newNo.setTipo(no.getTipo());
+			newNo.setBox(no.isBox());
 			retorno.add(newNo);
 		}
 
@@ -317,28 +319,27 @@ public class Circuito implements Serializable {
 		this.backGround = backGround;
 	}
 
-	public List getBox() {
+	public List<No> getBox() {
 		return box;
 	}
 
-	public void setBox(List box) {
+	public void setBox(List<No> box) {
 		this.box = box;
 	}
 
-	public List getPista() {
+	public List<No> getPista() {
 		return pista;
 	}
 
-	public void setPista(List pista) {
+	public void setPista(List<No> pista) {
 		this.pista = pista;
 	}
 
-	public List getPistaKey() {
+	public List<No> getPistaKey() {
 		return pistaKey;
 	}
 
 	public double getMultiplciador() {
-		// return multiplicadorPista;
 		return 9;
 	}
 
@@ -413,11 +414,12 @@ public class Circuito implements Serializable {
 	public void gerarObjetosNoTransparencia() {
 		objetosNoTransparencia = new ArrayList<ObjetoPistaJSon>();
 		List<ObjetoPista> objetospista = getObjetos();
-		if(objetospista==null){
+		if (objetospista == null) {
 			return;
 		}
-		for (Iterator iterator = objetospista.iterator(); iterator.hasNext();) {
-			ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+		for (Iterator<ObjetoPista> iterator = objetospista.iterator(); iterator
+				.hasNext();) {
+			ObjetoPista objetoPista = iterator.next();
 			if (!(objetoPista instanceof ObjetoTransparencia))
 				continue;
 			ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
@@ -425,11 +427,14 @@ public class Circuito implements Serializable {
 			ObjetoPistaJSon objetoPistaJSon = new ObjetoPistaJSon();
 			List<Ponto> pontos = new ArrayList<Ponto>();
 			objetoPistaJSon.setPontos(pontos);
-			objetoPistaJSon.setIndexInicio(objetoTransparencia.getInicioTransparencia());
-			objetoPistaJSon.setIndexFim(objetoTransparencia.getFimTransparencia());
+			objetoPistaJSon.setIndexInicio(
+					objetoTransparencia.getInicioTransparencia());
+			objetoPistaJSon
+					.setIndexFim(objetoTransparencia.getFimTransparencia());
 			objetosNoTransparencia.add(objetoPistaJSon);
-			for (Iterator iterator2 = pontosPoint.iterator(); iterator2.hasNext();) {
-				Point point = (Point) iterator2.next();
+			for (Iterator<Point> iterator2 = pontosPoint.iterator(); iterator2
+					.hasNext();) {
+				Point point = iterator2.next();
 				Ponto ponto = new Ponto();
 				ponto.setPoint(point);
 				pontos.add(ponto);

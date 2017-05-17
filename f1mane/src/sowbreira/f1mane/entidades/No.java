@@ -13,13 +13,10 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
- * @author Paulo Sobreira Criado Em 11:04:20
+ * @author Paulo Sobreira Criado 
  */
 @JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class No implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 493643626269961468L;
 	public static Color LARGADA = Color.BLUE;
 	public static Color RETA = Color.GREEN;
@@ -30,6 +27,7 @@ public class No implements Serializable {
 	@JsonIgnore
 	private Point point = new Point(1000, 1000);
 	
+	private boolean box;
 	private int index;
 	@JsonIgnore
 	private Color tipo;
@@ -134,10 +132,6 @@ public class No implements Serializable {
 		return point.y;
 	}
 
-	public boolean isBox() {
-		return ((BOX.equals(tipo)) || (PARADA_BOX.equals(tipo)));
-	}
-
 	public boolean verificaRetaOuLargada() {
 		return (LARGADA.equals(tipo)) || (RETA.equals(tipo));
 	}
@@ -148,6 +142,14 @@ public class No implements Serializable {
 
 	public boolean verificaCurvaBaixa() {
 		return (CURVA_BAIXA.equals(tipo));
+	}
+
+	public boolean isBox() {
+		return box;
+	}
+
+	public void setBox(boolean box) {
+		this.box = box;
 	}
 
 }

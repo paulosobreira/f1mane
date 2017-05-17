@@ -166,7 +166,6 @@ public class MonitorJogo implements Runnable {
 			throws InterruptedException {
 		boolean interrupt = false;
 		tempoCiclo = 1000;
-		boolean atualizaPosicoes = false;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
@@ -182,16 +181,13 @@ public class MonitorJogo implements Runnable {
 				atualizarDados();
 				iniciaJalena();
 				atualizaZoom();
-				if (atualizaPosicoes) {
-					apagarLuz();
-				}
+				apagarLuz();
 				jogoCliente.desenhaQualificacao();
 				jogoCliente.desenhouQualificacao();
 				jogoCliente.selecionaPilotoJogador();
 				disparaAtualizadorPainel(tempoCiclo);
 				atualizarDadosParciais(jogoCliente.getDadosJogo(),
-						jogoCliente.getPilotoSelecionado(), atualizaPosicoes);
-				atualizaPosicoes = true;
+						jogoCliente.getPilotoSelecionado());
 				Thread.sleep(tempoCiclo);
 			} catch (InterruptedException e) {
 				interrupt = true;
@@ -527,13 +523,9 @@ public class MonitorJogo implements Runnable {
 		}
 
 	}
-	public void atualizarDadosParciais(DadosJogo dadosJogo,
-			Piloto pilotoSelecionado) {
-		atualizarDadosParciais(dadosJogo, pilotoSelecionado, false);
-	}
 
 	public void atualizarDadosParciais(DadosJogo dadosJogo,
-			Piloto pilotoSelecionado, boolean atualizaPosicoes) {
+			Piloto pilotoSelecionado) {
 		try {
 			String dataSend = jogoCliente.getNomeJogoCriado() + "#"
 					+ sessaoCliente.getNomeJogador();
@@ -627,9 +619,7 @@ public class MonitorJogo implements Runnable {
 				piloto.getCarro().setGiro(dadosParciais.giro);
 				piloto.setVantagem(dadosParciais.vantagem);
 			}
-			if (atualizaPosicoes) {
-				atualizaPosisPack(dadosParciais.posisPack);
-			}
+			atualizaPosisPack(dadosParciais.posisPack);
 			Collections.sort(pilotos, new Comparator<Piloto>() {
 				@Override
 				public int compare(Piloto piloto0, Piloto piloto1) {
