@@ -61,7 +61,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = false;
+	public static boolean desenhaBkg = true;
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
@@ -841,37 +841,35 @@ public class PainelCircuito {
 		}
 		if (controleJogo instanceof JogoCliente) {
 			// if (false) {
-			if (diff < 150) {
+			int limiDiff = 150;
+			if (boxContainsNoAtual) {
+				limiDiff = 200;
+			}
+
+			if (diff < limiDiff) {
 				if (ganhoSuave > 1) {
 					ganhoSuave--;
 				} else {
 					ganhoSuave = 1;
 				}
 			}
-			if (diff > 400) {
-				ganhoSuave++;
-			}
-			if (diff > 500) {
-				ganhoSuave++;
-			}
-			if (diff > 600) {
-				ganhoSuave++;
-			}
 		} else {
 			if (diff < 50) {
-				ganhoSuave = 1;
-			} else if (diff < 100) {
-				ganhoSuave--;
+				if (ganhoSuave > 1) {
+					ganhoSuave--;
+				} else {
+					ganhoSuave = 1;
+				}
 			}
-			if (diff > 200) {
-				ganhoSuave += 1;
-			}
-			if (diff > 250) {
-				ganhoSuave += 1;
-			}
-			if (diff > 300) {
-				ganhoSuave += 1;
-			}
+		}
+		if (diff > 400) {
+			ganhoSuave++;
+		}
+		if (diff > 500) {
+			ganhoSuave++;
+		}
+		if (diff > 600) {
+			ganhoSuave++;
 		}
 
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
@@ -881,11 +879,11 @@ public class PainelCircuito {
 		if (ganhoSuave <= ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt - 1;
 		}
-		if (noAtualSuave.verificaRetaOuLargada()
-				&& ganhoSuaveAnt > ganhoSuave) {
+		if (noAtualSuave.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
+				&& diff > 50) {
 			ganhoSuave = ganhoSuaveAnt;
 		}
-		if (diff==0) {
+		if (diff == 0) {
 			ganhoSuave = 0;
 		}
 		if (ganhoSuave <= 0) {

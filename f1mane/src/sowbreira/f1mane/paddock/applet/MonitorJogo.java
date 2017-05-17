@@ -117,7 +117,7 @@ public class MonitorJogo implements Runnable {
 							"apagaLuzesLargada atualizarDadosParciais(jogoCliente.getDadosJogo(), 5000");
 					atualizarDadosParciais(jogoCliente.getDadosJogo(),
 							jogoCliente.getPilotoSelecionado());
-					Thread.sleep(6000);
+					Thread.sleep(6500);
 				} else {
 					Logger.logar("apagaLuzesLargada 500");
 					Thread.sleep(500);
