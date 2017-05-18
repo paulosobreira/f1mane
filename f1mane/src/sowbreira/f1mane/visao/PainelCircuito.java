@@ -805,10 +805,7 @@ public class PainelCircuito {
 		}
 		int ganhoSuave = 0;
 		if (controleJogo instanceof JogoCliente) {
-			ganhoSuave = loopCalculaGanhoSuave(diff, 60);
-			if (diff > 600) {
-				ganhoSuave++;
-			}
+			ganhoSuave = loopCalculaGanhoSuave(diff, 50);
 		} else {
 			ganhoSuave = loopCalculaGanhoSuave(diff, 0);
 		}
@@ -820,7 +817,8 @@ public class PainelCircuito {
 		if (ganhoSuave <= ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt - 1;
 		}
-		if (noAtualSuave.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
+		if (noAtualSuave.verificaRetaOuLargada()
+				&& noAtual.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
 				&& diff > 100) {
 			ganhoSuave = ganhoSuaveAnt;
 		}
@@ -829,6 +827,11 @@ public class PainelCircuito {
 		}
 		if (ganhoSuave <= 0) {
 			ganhoSuave = 0;
+		}
+		if (noAtualBox && noAtualSuaveBox) {
+			if (ganhoSuave == 0 && diff > 0) {
+				ganhoSuave = 1;
+			}
 		}
 		if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
 			Logger.logar("diff " + diff + " ganhoSuave " + ganhoSuave
@@ -878,7 +881,7 @@ public class PainelCircuito {
 
 	private int loopCalculaGanhoSuave(int diff, int incExtra) {
 		int ganhoSuave = 0;
-		int maxLoop = 600;
+		int maxLoop = 1000;
 		int inc = 30;
 		if (gerenciadorVisual.getFpsLimite() == 30.0) {
 			inc = 20;
