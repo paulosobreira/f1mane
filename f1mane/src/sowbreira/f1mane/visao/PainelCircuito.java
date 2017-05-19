@@ -760,7 +760,7 @@ public class PainelCircuito {
 			return;
 		}
 
-		if (piloto.getNoAtual().equals(piloto.getNoAnterior())) {
+		if (piloto.getNoAtual().equals(piloto.getNoAtualSuave())) {
 			return;
 		}
 
@@ -830,13 +830,15 @@ public class PainelCircuito {
 		}
 		if (noAtualBox && noAtualSuaveBox) {
 			if (ganhoSuave == 0 && diff > 0) {
+				if (piloto instanceof Piloto
+						&& ((Piloto) piloto).isJogadorHumano()) {
+					Logger.logar("diff " + diff + " ganhoSuave " + ganhoSuave
+							+ " ganhoSuaveAnt " + ganhoSuaveAnt);
+				}
 				ganhoSuave = 1;
 			}
 		}
-		if (piloto instanceof Piloto && ((Piloto) piloto).isJogadorHumano()) {
-			Logger.logar("diff " + diff + " ganhoSuave " + ganhoSuave
-					+ " ganhoSuaveAnt " + ganhoSuaveAnt);
-		}
+
 		piloto.setGanhoSuave(ganhoSuave);
 		if (noAtualBox && noAtualSuavePista
 				&& noAtualSuave.getIndex() < entradaBoxIndex) {

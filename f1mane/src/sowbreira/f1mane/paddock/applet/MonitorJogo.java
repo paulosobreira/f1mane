@@ -166,7 +166,7 @@ public class MonitorJogo implements Runnable {
 			throws InterruptedException {
 		boolean interrupt = false;
 		tempoCiclo = 1000;
-		boolean atualizaPosicoes = false;
+		boolean atualizaPosicoes = true;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
