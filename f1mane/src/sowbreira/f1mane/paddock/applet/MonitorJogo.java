@@ -165,7 +165,7 @@ public class MonitorJogo implements Runnable {
 	private void processaCiclosCorrida(long tempoCiclo)
 			throws InterruptedException {
 		boolean interrupt = false;
-		tempoCiclo = 1000;
+		tempoCiclo = 500;
 		boolean atualizaPosicoes = true;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
