@@ -579,7 +579,9 @@ public class ControleJogosServer {
 			dadosParciais.tpPneus = piloto.getCarro().getTipoPneu();
 			dadosParciais.asa = piloto.getCarro().getAsa();
 			dadosParciais.paradas = piloto.getQtdeParadasBox();
-			dadosParciais.velocidade = piloto.getVelocidadeExibir();
+			dadosParciais.velocidade = piloto.getVelocidade() == 0
+					? 0
+					: piloto.getVelocidadeExibir();
 			dadosParciais.combustBox = piloto.getQtdeCombustBox();
 			dadosParciais.tpPneusBox = piloto.getTipoPneuBox();
 			dadosParciais.modoPilotar = piloto.getModoPilotagem();
