@@ -165,7 +165,7 @@ public class MonitorJogo implements Runnable {
 	private void processaCiclosCorrida(long tempoCiclo)
 			throws InterruptedException {
 		boolean interrupt = false;
-		tempoCiclo = 1000;
+		tempoCiclo = 500;
 		boolean atualizaPosicoes = true;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
@@ -371,6 +371,8 @@ public class MonitorJogo implements Runnable {
 					if (statusPilotos.startsWith("P")) {
 						piloto.setPtosPista(
 								new Long(statusPilotos.split("P")[1]));
+						piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
+								/ jogoCliente.getNosDaPista().size()));
 					} else if (statusPilotos.startsWith("F")) {
 						piloto.setPtosPista(
 								new Long(statusPilotos.split("F")[1]));
