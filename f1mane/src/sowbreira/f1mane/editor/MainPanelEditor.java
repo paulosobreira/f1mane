@@ -312,16 +312,6 @@ public class MainPanelEditor extends JPanel {
 
 		carroCima = CarregadorRecursos.carregaBufferedImage("CarroCima.png");
 
-		carroCima.getGraphics().drawImage(
-				CarregadorRecursos.carregaBufferedImage("CarroCimaC1.png"), 0,
-				0, null);
-		carroCima.getGraphics().drawImage(
-				CarregadorRecursos.carregaBufferedImage("CarroCimaC2.png"), 0,
-				0, null);
-		carroCima.getGraphics().drawImage(
-				CarregadorRecursos.carregaBufferedImage("CarroCimaC3.png"), 0,
-				0, null);
-
 		JPanel controlPanel = gerarListsNosPistaBox();
 
 		JPanel buttonsPanel = gerarBotoesTracado();

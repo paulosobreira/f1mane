@@ -127,17 +127,15 @@ public class CarregadorRecursos {
 		BufferedImage bufferedImage = (BufferedImage) bufferImages.get(file);
 
 		if (bufferedImage == null) {
-
 			try {
 				bufferedImage = ImageUtil
 						.toCompatibleImage(ImageUtil.toBufferedImage(file));
-				if (bufferedImage == null) {
-					Logger.logar("img=" + bufferedImage);
-				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
-
+			if (bufferedImage == null) {
+				Logger.logar("carregaBufferedImage null : " + file);
+			}
 			bufferImages.put(file, bufferedImage);
 		}
 		return bufferedImage;
@@ -446,7 +444,7 @@ public class CarregadorRecursos {
 			int duasCasas = Integer.parseInt(prop.split(",")[1]);
 			int habilidade = Integer
 					.parseInt(String.valueOf(duasCasas) + Util.intervalo(0, 9));
-			if(habilidade>999){
+			if (habilidade > 999) {
 				habilidade = 999;
 			}
 			piloto.setHabilidade(habilidade);

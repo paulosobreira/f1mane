@@ -807,7 +807,7 @@ public class PainelCircuito {
 		if (controleJogo instanceof JogoCliente) {
 			ganhoSuave = loopCalculaGanhoSuave(diff, 50);
 		} else {
-			ganhoSuave = loopCalculaGanhoSuave(diff, 0);
+			ganhoSuave = loopCalculaGanhoSuave(diff, 10);
 		}
 
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
