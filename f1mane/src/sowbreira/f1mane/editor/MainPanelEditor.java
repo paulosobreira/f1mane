@@ -1740,7 +1740,42 @@ public class MainPanelEditor extends JPanel {
 				g2d.setColor(Color.black);
 			}
 		}
+		No oldNo1 = null;
+		for (int i = 0; i < circuito.getPista1Full().size(); i+=100) {
+			No no = (No) circuito.getPista1Full().get(i);
+			g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no.getDrawY(),
+					null);
+			String num = " " + conNoPista + " (" + count + ")";
+			int larguraNum = Util.larguraTexto(num, (Graphics2D) g2d);
+			int qX = no.getDrawX() + 10;
+			int qY = no.getDrawY() - 10;
+			g2d.setColor(PainelCircuito.transpMenus);
+			g2d.fillRoundRect(qX, qY, larguraNum, 15, 5, 5);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(num, qX, qY + 12);
+			conNoPista++;
+			if (oldNo1 == null) {
+				oldNo1 = no;
+			} else {
+				g2d.drawLine(oldNo1.getX(), oldNo1.getY(), no.getX(), no.getY());
+				oldNo1 = no;
+			}
 
+			if (i + 1 < circuito.getPista1Full().size()) {
+				No newNo = (No) circuito.getPista1Full().get(i + 1);
+				count += GeoUtil.drawBresenhamLine(newNo.getX(), newNo.getY(),
+						no.getX(), no.getY()).size();
+			}
+
+			if (pistaJList != null && pistaJList.getSelectedValue() == no) {
+				g2d.setColor(Color.WHITE);
+				g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6, 6, 2,
+						2);
+				g2d.setColor(Color.black);
+			}
+		}
+		oldNo1 = null;
+		
 		oldNo = null;
 		count = 0;
 		for (int i = 0; i < circuito.getBox().size(); i++) {

@@ -2,6 +2,7 @@ package sowbreira.f1mane.entidades;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,11 +13,14 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import br.nnpe.GeoUtil;
+import br.nnpe.Util;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
 	private String backGround;
 	private List<No> pista = new ArrayList<No>();
+	private List<No> pista1Full = new ArrayList<No>();
+	private List<No> pista2Full = new ArrayList<No>();
 	private transient List<No> pistaFull = new ArrayList<No>();
 	private transient List<No> pistaKey = new ArrayList<No>();
 	private List<No> box = new ArrayList<No>();
@@ -132,12 +136,14 @@ public class Circuito implements Serializable {
 		}
 		pistaKey.clear();
 		List<No> pistaTemp = new ArrayList<No>();
+
 		for (Iterator<No> iter = pista.iterator(); iter.hasNext();) {
 			No no = iter.next();
 			No newNo = new No();
 			newNo.setPoint(new Point(no.getPoint().x, no.getPoint().y));
 			newNo.setTipo(no.getTipo());
 			pistaTemp.add(newNo);
+			newNo = new No();
 		}
 
 		for (Iterator<No> iter = pistaTemp.iterator(); iter.hasNext();) {
@@ -261,6 +267,52 @@ public class Circuito implements Serializable {
 				}
 			}
 		}
+		if (pista1Full == null) {
+			pista1Full = new ArrayList<No>();
+		}
+		if (pista2Full == null) {
+			pista2Full = new ArrayList<No>();
+		}
+		Double calculaAngulo;
+		for (int i = 0; i < pistaFull.size(); i++) {
+			No no = pistaFull.get(i);
+			Point p = no.getPoint();
+			Point frenteCar = null;
+			Point trazCar = null;
+			int traz = i - Piloto.MEIAENVERGADURA;
+			int frente = i + Piloto.MEIAENVERGADURA;
+			if (traz < 0) {
+				traz = (pistaFull.size() - 1) + traz;
+			}
+			if (frente > (pistaFull.size() - 1)) {
+				frente = (frente - (pistaFull.size() - 1)) - 1;
+			}
+			trazCar = pistaFull.get(traz).getPoint();
+			frenteCar = pistaFull.get(frente).getPoint();
+			calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
+			System.out.println(frenteCar + " " + trazCar + " " + calculaAngulo);
+			Rectangle2D rectangle = new Rectangle2D.Double(
+					(p.x - Carro.MEIA_LARGURA_CIMA),
+					(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA,
+					Carro.ALTURA_CIMA);
+			Point p1 = GeoUtil.calculaPonto(calculaAngulo,
+					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
+			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
+					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
+			No newNo1 = new No();
+			newNo1.setPoint(p1);
+			newNo1.setTipo(no.getTipo());
+			pista1Full.add(newNo1);
+			No newNo2 = new No();
+			newNo2.setPoint(p2);
+			newNo2.setTipo(no.getTipo());
+			pista2Full.add(newNo2);
+		}
+
 	}
 
 	public int getParadaBoxIndex() {
@@ -441,6 +493,10 @@ public class Circuito implements Serializable {
 			}
 		}
 
+	}
+
+	public List<No> getPista1Full() {
+		return pista1Full;
 	}
 
 }
