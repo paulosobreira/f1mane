@@ -269,9 +269,13 @@ public class Circuito implements Serializable {
 		}
 		if (pista1Full == null) {
 			pista1Full = new ArrayList<No>();
+		}else{
+			pista1Full.clear();
 		}
 		if (pista2Full == null) {
 			pista2Full = new ArrayList<No>();
+		}else{
+			pista2Full.clear();
 		}
 		Double calculaAngulo;
 		for (int i = 0; i < pistaFull.size(); i++) {
@@ -290,7 +294,6 @@ public class Circuito implements Serializable {
 			trazCar = pistaFull.get(traz).getPoint();
 			frenteCar = pistaFull.get(frente).getPoint();
 			calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-			System.out.println(frenteCar + " " + trazCar + " " + calculaAngulo);
 			Rectangle2D rectangle = new Rectangle2D.Double(
 					(p.x - Carro.MEIA_LARGURA_CIMA),
 					(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA,
@@ -498,5 +501,8 @@ public class Circuito implements Serializable {
 	public List<No> getPista1Full() {
 		return pista1Full;
 	}
-
+	
+	public List<No> getPista2Full() {
+		return pista2Full;
+	}
 }

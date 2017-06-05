@@ -10,7 +10,7 @@ import java.awt.geom.GeneralPath;
 
 public class ObjetoEscapada extends ObjetoPista {
 
-	public final static Color red = new Color(250, 0, 0, 150);
+	public final static Color red = new Color(250, 0, 0, 50);
 
 	@Override
 	public void desenha(Graphics2D g2d, double zoom) {

@@ -49,14 +49,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import br.nnpe.GeoUtil;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.MainFrameEditor;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
@@ -68,9 +73,6 @@ import sowbreira.f1mane.entidades.ObjetoTransparencia;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCircuito;
-import br.nnpe.GeoUtil;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira
@@ -118,7 +120,7 @@ public class MainPanelEditor extends JPanel {
 	private int pos = 0;
 	private double multiplicadorPista = 9;
 	private double multiplicadorLarguraPista = 0;
-	private JTextField larguraPistaText;
+	private JSpinner larguraPistaSpinner;
 	private JTextField nomePistaText;
 	private JTextField probalidadeChuvaText;
 	private BasicStroke trilho = new BasicStroke(1);
@@ -143,10 +145,9 @@ public class MainPanelEditor extends JPanel {
 	public MainPanelEditor(String backGroundStr, MainFrameEditor frame) {
 		backGround = CarregadorRecursos.carregaBackGround(backGroundStr, this,
 				circuito);
-		if(backGround==null){
-			JOptionPane.showMessageDialog(null,
-					Lang.msg("backGroundNull"), Lang.msg("039"),
-					JOptionPane.ERROR_MESSAGE);
+		if (backGround == null) {
+			JOptionPane.showMessageDialog(null, Lang.msg("backGroundNull"),
+					Lang.msg("039"), JOptionPane.ERROR_MESSAGE);
 			return;
 
 		}
@@ -182,7 +183,7 @@ public class MainPanelEditor extends JPanel {
 		this.srcFrame = frame;
 		iniciaEditor(frame);
 		atualizaListas();
-		vetorizarCircuito();
+		vetorizarCircuito(false);
 		migrarEscapadas();
 		frame.pack();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -213,7 +214,7 @@ public class MainPanelEditor extends JPanel {
 
 	}
 
-	private void vetorizarCircuito() {
+	private void vetorizarCircuito(boolean reprocessa) {
 		mx = 0;
 		my = 0;
 		pista = null;
@@ -257,13 +258,14 @@ public class MainPanelEditor extends JPanel {
 		} else {
 			circuito.setLadoBoxSaidaBox(2);
 		}
-		if (multiplicadorPista == 0 && circuito != null) {
+		if (!reprocessa && circuito != null) {
 			multiplicadorPista = circuito.getMultiplciador();
 		}
-		if (multiplicadorLarguraPista == 0 && circuito != null) {
+		if (!reprocessa && circuito != null) {
 			multiplicadorLarguraPista = circuito.getMultiplicadorLarguraPista();
 		}
-		if (multiplicadorLarguraPista < 1.0 || multiplicadorLarguraPista > 2.0) {
+		if (multiplicadorLarguraPista < 1.0
+				|| multiplicadorLarguraPista > 2.0) {
 			JOptionPane.showMessageDialog(null,
 					Lang.msg("multiplicadorLarguraPista"), Lang.msg("039"),
 					JOptionPane.INFORMATION_MESSAGE);
@@ -277,7 +279,7 @@ public class MainPanelEditor extends JPanel {
 		probalidadeChuvaText
 				.setText(String.valueOf(circuito.getProbalidadeChuva()));
 		circuito.setNome(nomePistaText.getText());
-		larguraPistaText.setText(String.valueOf(multiplicadorLarguraPista));
+		larguraPistaSpinner.getModel().setValue(multiplicadorLarguraPista);
 		List l = circuito.getPistaFull();
 
 		for (Iterator iterator = l.iterator(); iterator.hasNext();) {
@@ -1153,8 +1155,9 @@ public class MainPanelEditor extends JPanel {
 		Point ant = null;
 		for (Point p : objetoTransparencia.getPontos()) {
 			if (ant != null) {
-				g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom),
-						Util.inteiro(p.x * zoom), Util.inteiro(p.y * zoom));
+				g2d.drawLine(Util.inteiro(ant.x * zoom),
+						Util.inteiro(ant.y * zoom), Util.inteiro(p.x * zoom),
+						Util.inteiro(p.y * zoom));
 			}
 			ant = p;
 		}
@@ -1173,8 +1176,9 @@ public class MainPanelEditor extends JPanel {
 		Point ant = null;
 		for (Point p : objetoLivre.getPontos()) {
 			if (ant != null) {
-				g2d.drawLine(Util.inteiro(ant.x * zoom), Util.inteiro(ant.y * zoom),
-						Util.inteiro(p.x * zoom), Util.inteiro(p.y * zoom));
+				g2d.drawLine(Util.inteiro(ant.x * zoom),
+						Util.inteiro(ant.y * zoom), Util.inteiro(p.x * zoom),
+						Util.inteiro(p.y * zoom));
 			}
 			ant = p;
 		}
@@ -1220,16 +1224,16 @@ public class MainPanelEditor extends JPanel {
 									* getCircuito()
 											.getMultiplicadorLarguraPista()
 									* zoom),
-					new Point(Util.inteiro(rectangle.getCenterX()),
-							Util.inteiro(rectangle.getCenterY())));
+							new Point(Util.inteiro(rectangle.getCenterX()),
+									Util.inteiro(rectangle.getCenterY())));
 			Point baixo = GeoUtil
 					.calculaPonto(calculaAngulo + 180,
 							Util.inteiro(Carro.ALTURA
 									* getCircuito()
 											.getMultiplicadorLarguraPista()
 									* zoom),
-					new Point(Util.inteiro(rectangle.getCenterX()),
-							Util.inteiro(rectangle.getCenterY())));
+							new Point(Util.inteiro(rectangle.getCenterX()),
+									Util.inteiro(rectangle.getCenterY())));
 			Point cimaBoxC1 = GeoUtil.calculaPonto(calculaAngulo,
 					Util.inteiro((Carro.ALTURA) * 3.5 * zoom),
 					new Point(Util.inteiro(rectangle.getCenterX()),
@@ -1557,8 +1561,8 @@ public class MainPanelEditor extends JPanel {
 					Util.inteiro(testePista.frenteCar.y * zoom),
 					Util.inteiro(5 * zoom), Util.inteiro(5 * zoom));
 			g2d.fillOval(Util.inteiro(testePista.trazCar.x * zoom),
-					Util.inteiro(testePista.trazCar.y * zoom), Util.inteiro(5 * zoom),
-					Util.inteiro(5 * zoom));
+					Util.inteiro(testePista.trazCar.y * zoom),
+					Util.inteiro(5 * zoom), Util.inteiro(5 * zoom));
 		}
 	}
 
@@ -1741,41 +1745,35 @@ public class MainPanelEditor extends JPanel {
 			}
 		}
 		No oldNo1 = null;
-		for (int i = 0; i < circuito.getPista1Full().size(); i+=100) {
+		for (int i = 0; i < circuito.getPista1Full().size(); i += 10) {
 			No no = (No) circuito.getPista1Full().get(i);
-			g2d.drawImage(no.getBufferedImage(), no.getDrawX(), no.getDrawY(),
-					null);
-			String num = " " + conNoPista + " (" + count + ")";
-			int larguraNum = Util.larguraTexto(num, (Graphics2D) g2d);
-			int qX = no.getDrawX() + 10;
-			int qY = no.getDrawY() - 10;
-			g2d.setColor(PainelCircuito.transpMenus);
-			g2d.fillRoundRect(qX, qY, larguraNum, 15, 5, 5);
-			g2d.setColor(Color.BLACK);
-			g2d.drawString(num, qX, qY + 12);
+			g2d.setColor(no.getTipo());
 			conNoPista++;
 			if (oldNo1 == null) {
 				oldNo1 = no;
 			} else {
-				g2d.drawLine(oldNo1.getX(), oldNo1.getY(), no.getX(), no.getY());
+				g2d.drawLine(oldNo1.getX(), oldNo1.getY(), no.getX(),
+						no.getY());
 				oldNo1 = no;
-			}
-
-			if (i + 1 < circuito.getPista1Full().size()) {
-				No newNo = (No) circuito.getPista1Full().get(i + 1);
-				count += GeoUtil.drawBresenhamLine(newNo.getX(), newNo.getY(),
-						no.getX(), no.getY()).size();
-			}
-
-			if (pistaJList != null && pistaJList.getSelectedValue() == no) {
-				g2d.setColor(Color.WHITE);
-				g2d.fillRoundRect(no.getDrawX() + 2, no.getDrawY() + 2, 6, 6, 2,
-						2);
-				g2d.setColor(Color.black);
 			}
 		}
 		oldNo1 = null;
-		
+		No oldNo2 = null;
+		for (int i = 0; i < circuito.getPista2Full().size(); i += 10) {
+			No no = (No) circuito.getPista2Full().get(i);
+			g2d.setColor(no.getTipo());
+			conNoPista++;
+			if (oldNo2 == null) {
+				oldNo2 = no;
+			} else {
+				g2d.drawLine(oldNo2.getX(), oldNo2.getY(), no.getX(),
+						no.getY());
+				oldNo2 = no;
+			}
+
+		}
+		oldNo2 = null;
+
 		oldNo = null;
 		count = 0;
 		for (int i = 0; i < circuito.getBox().size(); i++) {
@@ -1965,7 +1963,7 @@ public class MainPanelEditor extends JPanel {
 					if (testePista.isAlive()) {
 						testePista.pararTeste();
 					} else {
-						vetorizarCircuito();
+						vetorizarCircuito(false);
 						testePista.iniciarTeste(multiplicadorPista);
 					}
 
@@ -2038,9 +2036,9 @@ public class MainPanelEditor extends JPanel {
 		reprocessar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					multiplicadorLarguraPista = Double
-							.parseDouble(larguraPistaText.getText());
-					vetorizarCircuito();
+					multiplicadorLarguraPista = (double) larguraPistaSpinner
+							.getModel().getValue();
+					vetorizarCircuito(true);
 					desSelecionaNosPista();
 					repaint();
 				} catch (Exception e2) {
@@ -2100,14 +2098,20 @@ public class MainPanelEditor extends JPanel {
 		});
 		p2.add(probalidadeChuvaText);
 		buttonsPanel2.add(p2);
-		larguraPistaText = new JTextField() {
+		if (multiplicadorLarguraPista < 1.0) {
+			multiplicadorLarguraPista = 1.0;
+		}
+		if (multiplicadorLarguraPista > 2.0) {
+			multiplicadorLarguraPista = 2.0;
+		}
+		SpinnerNumberModel model1 = new SpinnerNumberModel(
+				multiplicadorLarguraPista, 1.0, 2.0, 0.1);
+		larguraPistaSpinner = new JSpinner(model1) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(20, super.getPreferredSize().height);
+				return new Dimension(40, super.getPreferredSize().height);
 			}
 		};
-		larguraPistaText.setText("" + multiplicadorLarguraPista);
-
 		p2 = new JPanel();
 		p2.add(new JLabel() {
 			@Override
@@ -2115,7 +2119,7 @@ public class MainPanelEditor extends JPanel {
 				return Lang.msg("larguraPista");
 			}
 		});
-		p2.add(larguraPistaText);
+		p2.add(larguraPistaSpinner);
 		buttonsPanel2.add(p2);
 
 		p2 = new JPanel();
