@@ -371,8 +371,7 @@ public class MonitorJogo implements Runnable {
 					if (statusPilotos.startsWith("P")) {
 						piloto.setPtosPista(
 								new Long(statusPilotos.split("P")[1]));
-						piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
-								/ jogoCliente.getNosDaPista().size()));
+						calculaNumeroVoltaPorPontosPontosPista(piloto);
 					} else if (statusPilotos.startsWith("F")) {
 						piloto.setPtosPista(
 								new Long(statusPilotos.split("F")[1]));
@@ -433,6 +432,16 @@ public class MonitorJogo implements Runnable {
 				}
 			}
 		}
+	}
+
+	private void calculaNumeroVoltaPorPontosPontosPista(Piloto piloto) {
+		int volta = ((int) Math.floor(
+				piloto.getPtosPista() / jogoCliente.getNosDaPista().size()))
+				- 1;
+		if (volta < 0) {
+			volta = 0;
+		}
+		piloto.setNumeroVolta(volta);
 	}
 
 	public static void main(String[] args) {
@@ -567,8 +576,6 @@ public class MonitorJogo implements Runnable {
 			List<Piloto> pilotos = jogoCliente.getPilotos();
 			if (pilotoSelecionado != null) {
 				Piloto piloto = pilotoSelecionado;
-				piloto.setNumeroVolta((int) Math.floor(piloto.getPtosPista()
-						/ jogoCliente.getNosDaPista().size()));
 				piloto.setMelhorVolta(new Volta(dadosParciais.melhorVolta));
 				piloto.getVoltas().clear();
 				piloto.getVoltas().add(new Volta(dadosParciais.ultima5));

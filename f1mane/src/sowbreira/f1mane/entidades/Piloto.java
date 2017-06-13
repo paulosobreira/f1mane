@@ -627,9 +627,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public String getSegundosParaLider() {
-		return ((segundosParaLider == null)
-				? Lang.msg("Lider")
-				: segundosParaLider);
+		return ((segundosParaLider == null) ? "0" : segundosParaLider);
 	}
 
 	public void setSegundosParaLider(String segundosParaLider) {
@@ -1049,7 +1047,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		 */
 		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
 			double novoModificador = (controleJogo.getCircuito()
-					.getMultiplciador());
+					.getMultiplciador()) * 2;
 			index += novoModificador;
 			setPtosPista(Util.inteiro(novoModificador + getPtosPista()));
 			setVelocidade(Util.intervalo(50, 65));

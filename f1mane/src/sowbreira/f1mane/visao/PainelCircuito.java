@@ -805,7 +805,7 @@ public class PainelCircuito {
 		}
 		int ganhoSuave = 0;
 		if (controleJogo instanceof JogoCliente) {
-			ganhoSuave = loopCalculaGanhoSuave(diff, 50);
+			ganhoSuave = loopCalculaGanhoSuave(diff, 30);
 		} else {
 			ganhoSuave = loopCalculaGanhoSuave(diff, 10);
 		}
@@ -1267,6 +1267,7 @@ public class PainelCircuito {
 			return;
 		}
 		ControleSom.somLigado = false;
+		ControleSom.paraTudo();
 		int x = limitesViewPort.x + (limitesViewPort.width / 2) - 450;
 		int y = limitesViewPort.y + (limitesViewPort.height / 2) - 260;
 		int xOri = x;
@@ -4648,21 +4649,13 @@ public class PainelCircuito {
 		int yBase = limitesViewPort.y + 7;
 
 		g2d.setColor(transpMenus);
-		g2d.fillRoundRect(ptoOri - 5, yBase, 105, 50, 0, 0);
+		g2d.fillRoundRect(ptoOri - 5, yBase, 105, 35, 0, 0);
 
 		g2d.setColor(Color.BLACK);
 
 		yBase += 15;
-		g2d.drawString(
-				Lang.msg("081") + ": "
-						+ (pilotoSelecionado.getNumeroVolta() <= 0
-								? 0
-								: pilotoSelecionado.getNumeroVolta()),
-				ptoOri, yBase);
-		yBase += 15;
 		g2d.drawString(Lang.msg("068") + pilotoSelecionado.getQtdeParadasBox(),
 				ptoOri, yBase);
-
 		yBase += 15;
 		g2d.drawString(
 				(controleJogo.verificaCampeonatoComRival()
