@@ -6,8 +6,10 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -21,6 +23,7 @@ public class Circuito implements Serializable {
 	private List<No> pista = new ArrayList<No>();
 	private List<No> pista1Full = new ArrayList<No>();
 	private List<No> pista2Full = new ArrayList<No>();
+	private Map<PontoDerrapda, List<No>> escapeMap = new HashMap<PontoDerrapda, List<No>>();
 	private transient List<No> pistaFull = new ArrayList<No>();
 	private transient List<No> pistaKey = new ArrayList<No>();
 	private List<No> box = new ArrayList<No>();
@@ -269,12 +272,12 @@ public class Circuito implements Serializable {
 		}
 		if (pista1Full == null) {
 			pista1Full = new ArrayList<No>();
-		}else{
+		} else {
 			pista1Full.clear();
 		}
 		if (pista2Full == null) {
 			pista2Full = new ArrayList<No>();
-		}else{
+		} else {
 			pista2Full.clear();
 		}
 		Double calculaAngulo;
@@ -315,7 +318,151 @@ public class Circuito implements Serializable {
 			newNo2.setTipo(no.getTipo());
 			pista2Full.add(newNo2);
 		}
+		gerarEscapeList();
+		gerarEscapeMap();
 
+	}
+
+	private void gerarEscapeMap() {
+		if (escapeMap == null) {
+			escapeMap = new HashMap<PontoDerrapda, List<No>>();
+		}
+		List<No> nosDaPista = getPistaFull();
+		for (Iterator<Point> iterator = escapeList.iterator(); iterator
+				.hasNext();) {
+			Point pointDerrapagem = iterator.next();
+			No noPerto = null;
+			double menorDistancia = Double.MAX_VALUE;
+			for (Iterator iterator2 = nosDaPista.iterator(); iterator2
+					.hasNext();) {
+				No no = (No) iterator2.next();
+				Point pointPista = (Point) no.getPoint();
+				double distaciaEntrePontos = GeoUtil
+						.distaciaEntrePontos(pointPista, pointDerrapagem);
+				if (distaciaEntrePontos < menorDistancia) {
+					menorDistancia = distaciaEntrePontos;
+					noPerto = no;
+				}
+			}
+			if (noPerto == null) {
+				continue;
+			}
+			Point p = noPerto.getPoint();
+			Rectangle2D rectangle = new Rectangle2D.Double(
+					(p.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+					(p.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+					Carro.ALTURA * Carro.FATOR_AREA_CARRO,
+					Carro.ALTURA * Carro.FATOR_AREA_CARRO);
+			int cont = noPerto.getIndex();
+			int traz = cont - 44;
+			int frente = cont + 44;
+			Point trazCar = ((No) nosDaPista.get(traz)).getPoint();
+			Point frenteCar = ((No) nosDaPista.get(frente)).getPoint();
+			double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
+			Point p1 = GeoUtil.calculaPonto(calculaAngulo,
+					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
+			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
+					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
+			double distaciaEntrePontos1 = GeoUtil.distaciaEntrePontos(p1,
+					pointDerrapagem);
+			double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2,
+					pointDerrapagem);
+			if (distaciaEntrePontos1 < distaciaEntrePontos2) {
+				PontoDerrapda ponto = new PontoDerrapda();
+				ponto.setPoint(pointDerrapagem);
+				ponto.setPista(1);
+				List<No> nos = new ArrayList<No>();
+				int index = noPerto.getIndex();
+				nos.add(pista1Full.get(index));
+				int contSaida = 0;
+				int max = Util.inteiro(
+						Carro.ALTURA * 2 * getMultiplicadorLarguraPista());
+				int contVolta = max;
+				int contMax = 0;
+				int contPonto = 0;
+				for (int i = index; i < index + (max * 6); i++) {
+					No noIndex = pista1Full.get(i);
+					if (contMax > 1) {
+						contMax = 0;
+						contSaida++;
+						if (contSaida < max) {
+							contPonto = contSaida;
+						} else if (contVolta > 0) {
+							contVolta--;
+							contPonto = contVolta;
+						}
+
+					} else {
+						contMax++;
+					}
+					Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
+							Util.inteiro(contPonto), noIndex.getPoint());
+					No newNo = new No();
+					newNo.setPoint(p4);
+					newNo.setTipo(noIndex.getTipo());
+					nos.add(newNo);
+				}
+				escapeMap.put(ponto, nos);
+			}
+			if (distaciaEntrePontos2 < distaciaEntrePontos1) {
+				PontoDerrapda ponto = new PontoDerrapda();
+				ponto.setPoint(pointDerrapagem);
+				ponto.setPista(2);
+				List<No> nos = new ArrayList<No>();
+				int index = noPerto.getIndex();
+				nos.add(pista2Full.get(index));
+				int contSaida = 0;
+				int max = Util.inteiro(
+						Carro.ALTURA * 2 * getMultiplicadorLarguraPista());
+				int contVolta = max;
+				int contMax = 0;
+				int contPonto = 0;
+				for (int i = index; i < index + (max * 6); i++) {
+					No noIndex = pista2Full.get(i);
+					if (contMax > 1) {
+						contMax = 0;
+						contSaida++;
+						if (contSaida < max) {
+							contPonto = contSaida;
+						} else if (contVolta > 0) {
+							contVolta--;
+							contPonto = contVolta;
+						}
+
+					} else {
+						contMax++;
+					}
+					Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
+							Util.inteiro(contPonto), noIndex.getPoint());
+					No newNo = new No();
+					newNo.setPoint(p4);
+					newNo.setTipo(noIndex.getTipo());
+					nos.add(newNo);
+				}
+				escapeMap.put(ponto, nos);
+			}
+		}
+	}
+
+	private void gerarEscapeList() {
+		List<Point> escapeList = getEscapeList();
+		if (escapeList == null || escapeList.isEmpty()) {
+			escapeList = new ArrayList<Point>();
+			List<ObjetoPista> objetos = getObjetos();
+			if (objetos != null) {
+				for (ObjetoPista objetoPista : objetos) {
+					if (objetoPista instanceof ObjetoEscapada) {
+						ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+						escapeList.add(objetoEscapada.centro());
+					}
+				}
+			}
+		}
+		setEscapeList(escapeList);
 	}
 
 	public int getParadaBoxIndex() {
@@ -501,8 +648,13 @@ public class Circuito implements Serializable {
 	public List<No> getPista1Full() {
 		return pista1Full;
 	}
-	
+
 	public List<No> getPista2Full() {
 		return pista2Full;
 	}
+
+	public Map<PontoDerrapda, List<No>> getEscapeMap() {
+		return escapeMap;
+	}
+
 }

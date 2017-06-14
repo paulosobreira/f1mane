@@ -34,6 +34,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -70,6 +71,8 @@ import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
+import sowbreira.f1mane.entidades.Ponto;
+import sowbreira.f1mane.entidades.PontoDerrapda;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCircuito;
@@ -136,7 +139,7 @@ public class MainPanelEditor extends JPanel {
 	private boolean posicionaObjetoPista;
 	private Point ultimoClicado;
 	private FormularioListaObjetos formularioListaObjetos;
-	private boolean mostraBG = true;
+	private boolean mostraBG = false;
 	protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
 	public MainPanelEditor() {
@@ -1844,6 +1847,21 @@ public class MainPanelEditor extends JPanel {
 			g2d.fillOval(testePista.getTestCar().x - 2,
 					testePista.getTestCar().y - 2, 8, 8);
 		}
+
+		Map<PontoDerrapda, List<No>> escapeMap = circuito.getEscapeMap();
+		for (Iterator<PontoDerrapda> iterator = escapeMap.keySet().iterator(); iterator
+				.hasNext();) {
+			PontoDerrapda key = iterator.next();
+			List<No> list = escapeMap.get(key);
+			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
+				No no2 = (No) iterator2.next();
+				g2d.setColor(Color.MAGENTA);
+				g2d.fillOval(Util.inteiro(no2.getX() - 5),
+						Util.inteiro(no2.getY() - 5), Util.inteiro(10),
+						Util.inteiro(10));
+			}
+		}
+
 	}
 
 	public void apagarUltimoNo() {
