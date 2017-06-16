@@ -483,7 +483,7 @@ public class GerenciadorVisual {
 					if (keyCoode == KeyEvent.VK_9) {
 						Piloto pilotoSelecionado = controleJogo
 								.getPilotoSelecionado();
-						pilotoSelecionado.derrapa(controleJogo);
+						pilotoSelecionado.escapaTracado(controleJogo);
 					}
 					if (keyCoode == KeyEvent.VK_8) {
 						controleJogo.climaEnsolarado();

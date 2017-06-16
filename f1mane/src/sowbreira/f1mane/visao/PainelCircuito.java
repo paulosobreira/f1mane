@@ -3206,28 +3206,14 @@ public class PainelCircuito {
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
 				Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
-		Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-				Util.inteiro(Carro.ALTURA * controleJogo.getCircuito()
-						.getMultiplicadorLarguraPista()),
-				new Point(Util.inteiro(rectangle.getCenterX()),
-						Util.inteiro(rectangle.getCenterY())));
-		Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
-				Util.inteiro(Carro.ALTURA * controleJogo.getCircuito()
-						.getMultiplicadorLarguraPista()),
-				new Point(Util.inteiro(rectangle.getCenterX()),
-						Util.inteiro(rectangle.getCenterY())));
-		Point p5 = GeoUtil.calculaPonto(calculaAngulo,
-				Util.inteiro(Carro.ALTURA * 3
-						* controleJogo.getCircuito()
-								.getMultiplicadorLarguraPista()),
-				new Point(Util.inteiro(rectangle.getCenterX()),
-						Util.inteiro(rectangle.getCenterY())));
-		Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
-				Util.inteiro(Carro.ALTURA * 3
-						* controleJogo.getCircuito()
-								.getMultiplicadorLarguraPista()),
-				new Point(Util.inteiro(rectangle.getCenterX()),
-						Util.inteiro(rectangle.getCenterY())));
+		Point p1 = controleJogo.getCircuito().getPista1Full()
+				.get(noAtual.getIndex()).getPoint();
+		Point p2 = controleJogo.getCircuito().getPista2Full()
+				.get(noAtual.getIndex()).getPoint();
+		Point p5 = controleJogo.getCircuito().getPista5Full()
+				.get(noAtual.getIndex()).getPoint();
+		Point p4 = controleJogo.getCircuito().getPista4Full()
+				.get(noAtual.getIndex()).getPoint();
 
 		piloto.setP1(p1);
 		piloto.setP2(p2);

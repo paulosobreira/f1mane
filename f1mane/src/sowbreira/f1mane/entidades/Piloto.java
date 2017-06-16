@@ -136,7 +136,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private double ganhoMax = Integer.MIN_VALUE;
 	@JsonIgnore
-	private double distanciaDerrapada = Double.MAX_VALUE;
+	private double distanciaEscape = Double.MAX_VALUE;
 	@JsonIgnore
 	private int posicaoInicial;
 	@JsonIgnore
@@ -198,7 +198,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private int mudouTracadoReta;
 	@JsonIgnore
-	private int indexRefDerrapada;
+	private int indexRefEscape;
 	@JsonIgnore
 	private int calculaDiferencaParaProximo;
 	@JsonIgnore
@@ -240,7 +240,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private Point p4;
 	@JsonIgnore
-	private Point pontoDerrapada;
+	private Point pontoEscape;
 	@JsonIgnore
 	private Rectangle diateira;
 	@JsonIgnore
@@ -1068,7 +1068,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaUsoDRS(controleJogo);
 		processaMudancaRegime(controleJogo);
 		processaGanho(controleJogo);
-		processaPontoDerrapada(controleJogo);
 		processaEscapadaDaPista(controleJogo);
 		processaIAnovoIndex(controleJogo);
 		processaTurbulencia(controleJogo);
@@ -1259,7 +1258,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			return;
 		}
 		/**
-		 * Derrapa mas Fica na pista
+		 * Escapa para os tracados 1 ou 2
 		 */
 		if (No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && agressivo
 				&& (getTracado() == 0)
@@ -1279,17 +1278,17 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 
 		/**
-		 * Escapa la fora
+		 * Escapa para os tracados 4 ou 5
 		 */
 		if (getStress() > getValorLimiteStressePararErrarCurva(controleJogo)
 				&& !controleJogo.isSafetyCarNaPista()
 				&& AGRESSIVO.equals(modoPilotagem)
 				&& !testeHabilidadePilotoCarro() && getPtosBox() == 0) {
 			controleJogo.travouRodas(this);
-			derrapa(controleJogo);
+			escapaTracado(controleJogo);
 		}
 		/**
-		 * Volta a pista apos derrapagem
+		 * Volta a pista apos escapada
 		 */
 		if (getTracado() == 4 || getTracado() == 5) {
 			if (!verificaDesconcentrado()) {
@@ -1738,14 +1737,14 @@ public class Piloto implements Serializable, PilotoSuave {
 			controleJogo.fazPilotoMudarTracado(this,
 					carroPilotoDaFrenteRetardatario.getPiloto());
 		} else if (!isJogadorHumano() && testeHabilidadePiloto() && limiteStress
-				&& pontoDerrapada != null
+				&& pontoEscape != null
 				&& calculaDiffParaProximoRetardatario > 150
-				&& distanciaDerrapada < ((2 * controleJogo.getNiveljogo())
+				&& distanciaEscape < ((2 * controleJogo.getNiveljogo())
 						* Carro.RAIO_DERRAPAGEM)) {
 			if (getTracado() != 0) {
 				mudarTracado(0, controleJogo);
 			} else {
-				int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoDerrapada);
+				int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoEscape);
 				if (ladoDerrapa == 5) {
 					mudarTracado(2, controleJogo);
 				}
@@ -1926,24 +1925,25 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	public boolean derrapa(InterfaceJogo controleJogo) {
+	public boolean escapaTracado(InterfaceJogo controleJogo) {
+		processaPontoEscape(controleJogo);
 		/**
 		 * Verificar na entrada da curva e nao na area de escape
 		 */
 		if (getTracado() == 4 || getTracado() == 5) {
 			return false;
 		}
-		if (pontoDerrapada == null) {
+		if (pontoEscape == null) {
 			return false;
 		}
-		if (distanciaDerrapada > Carro.RAIO_DERRAPAGEM) {
+		if (distanciaEscape > Carro.RAIO_DERRAPAGEM) {
 			return false;
 		}
 		if (getNoAtual() != null
-				&& indexRefDerrapada < getNoAtual().getIndex()) {
+				&& indexRefEscape < getNoAtual().getIndex()) {
 			return false;
 		}
-		int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoDerrapada);
+		int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoEscape);
 		if (ladoDerrapa == 5 && getTracado() == 2) {
 			return false;
 		}
@@ -1955,13 +1955,13 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public Point getPontoDerrapada() {
-		return pontoDerrapada;
+		return pontoEscape;
 	}
 
-	public void processaPontoDerrapada(InterfaceJogo controleJogo) {
-		distanciaDerrapada = Double.MAX_VALUE;
-		pontoDerrapada = null;
-		indexRefDerrapada = 0;
+	public void processaPontoEscape(InterfaceJogo controleJogo) {
+		distanciaEscape = Double.MAX_VALUE;
+		pontoEscape = null;
+		indexRefEscape = 0;
 		double multi = 0.6;
 		if (getTracado() == 0) {
 			multi = 1.2;
@@ -1984,10 +1984,10 @@ public class Piloto implements Serializable, PilotoSuave {
 		for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
 			Point point = (Point) iterator.next();
 			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p, point);
-			if (distaciaEntrePontos < distanciaDerrapada) {
-				distanciaDerrapada = distaciaEntrePontos;
-				pontoDerrapada = point;
-				indexRefDerrapada = index;
+			if (distaciaEntrePontos < distanciaEscape) {
+				distanciaEscape = distaciaEntrePontos;
+				pontoEscape = point;
+				indexRefEscape = index;
 			}
 		}
 	}
@@ -2035,29 +2035,14 @@ public class Piloto implements Serializable, PilotoSuave {
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
 				Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
-		Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-				Util.inteiro(Carro.ALTURA * controleJogo.getCircuito()
-						.getMultiplicadorLarguraPista()),
-				new Point(Util.inteiro(rectangle.getCenterX()),
-						Util.inteiro(rectangle.getCenterY())));
-		Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
-				Util.inteiro(Carro.ALTURA * controleJogo.getCircuito()
-						.getMultiplicadorLarguraPista()),
-				new Point(Util.inteiro(rectangle.getCenterX()),
-						Util.inteiro(rectangle.getCenterY())));
-		Point p5 = GeoUtil.calculaPonto(calculaAngulo,
-				Util.inteiro(Carro.ALTURA * 3
-						* controleJogo.getCircuito()
-								.getMultiplicadorLarguraPista()),
-				new Point(Util.inteiro(rectangle.getCenterX()),
-						Util.inteiro(rectangle.getCenterY())));
-		Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
-				Util.inteiro(Carro.ALTURA * 3
-						* controleJogo.getCircuito()
-								.getMultiplicadorLarguraPista()),
-				new Point(Util.inteiro(rectangle.getCenterX()),
-						Util.inteiro(rectangle.getCenterY())));
-
+		Point p1 = controleJogo.getCircuito().getPista1Full()
+				.get(noAtual.getIndex()).getPoint();
+		Point p2 = controleJogo.getCircuito().getPista2Full()
+				.get(noAtual.getIndex()).getPoint();
+		Point p5 = controleJogo.getCircuito().getPista5Full()
+				.get(noAtual.getIndex()).getPoint();
+		Point p4 = controleJogo.getCircuito().getPista4Full()
+				.get(noAtual.getIndex()).getPoint();
 		if (getTracado() == 0) {
 			carx = p.x;
 			cary = p.y;
@@ -2347,7 +2332,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		double valorLimiteStressePararErrarCurva = 100;
 		boolean derrapa = getNoAtual() != null
-				&& indexRefDerrapada > getNoAtual().getIndex();
+				&& indexRefEscape > getNoAtual().getIndex();
 		if (derrapa && testeHabilidadePiloto()) {
 			valorLimiteStressePararErrarCurva = getValorLimiteStressePararErrarCurva(
 					controleJogo);
@@ -2379,8 +2364,8 @@ public class Piloto implements Serializable, PilotoSuave {
 			setAtivarErs(true);
 		}
 
-		if (pontoDerrapada != null
-				&& distanciaDerrapada > Carro.RAIO_DERRAPAGEM) {
+		if (pontoEscape != null
+				&& distanciaEscape > Carro.RAIO_DERRAPAGEM) {
 			valorLimiteStressePararErrarCurva = 100;
 		}
 		if (maxPilotagem) {
@@ -3155,7 +3140,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public double getDistanciaDerrapada() {
-		return distanciaDerrapada;
+		return distanciaEscape;
 	}
 
 	public String getVantagem() {

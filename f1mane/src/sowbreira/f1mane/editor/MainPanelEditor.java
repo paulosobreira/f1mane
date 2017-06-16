@@ -72,7 +72,7 @@ import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
 import sowbreira.f1mane.entidades.Ponto;
-import sowbreira.f1mane.entidades.PontoDerrapda;
+import sowbreira.f1mane.entidades.PontoDerrapada;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCircuito;
@@ -1848,10 +1848,10 @@ public class MainPanelEditor extends JPanel {
 					testePista.getTestCar().y - 2, 8, 8);
 		}
 
-		Map<PontoDerrapda, List<No>> escapeMap = circuito.getEscapeMap();
-		for (Iterator<PontoDerrapda> iterator = escapeMap.keySet().iterator(); iterator
+		Map<PontoDerrapada, List<No>> escapeMap = circuito.getEscapeMap();
+		for (Iterator<PontoDerrapada> iterator = escapeMap.keySet().iterator(); iterator
 				.hasNext();) {
-			PontoDerrapda key = iterator.next();
+			PontoDerrapada key = iterator.next();
 			List<No> list = escapeMap.get(key);
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
