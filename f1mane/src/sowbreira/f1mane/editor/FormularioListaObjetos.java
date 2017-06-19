@@ -186,6 +186,7 @@ public class FormularioListaObjetos {
 		for (int i = 0; i < defaultListModelOP.getSize(); i++) {
 			objetos.add((ObjetoPista) defaultListModelOP.getElementAt(i));
 		}
+		circuito.vetorizarPista();
 		editor.repaint();
 	}
 

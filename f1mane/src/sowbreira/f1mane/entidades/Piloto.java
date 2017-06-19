@@ -1939,11 +1939,12 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (distanciaEscape > Carro.RAIO_DERRAPAGEM) {
 			return false;
 		}
-		if (getNoAtual() != null
-				&& indexRefEscape < getNoAtual().getIndex()) {
+		if (getNoAtual() != null && indexRefEscape < getNoAtual().getIndex()) {
 			return false;
 		}
 		int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoEscape);
+		Logger.logar(
+				"ladoDerrapa " + ladoDerrapa + " getTracado() " + getTracado());
 		if (ladoDerrapa == 5 && getTracado() == 2) {
 			return false;
 		}
@@ -2364,8 +2365,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			setAtivarErs(true);
 		}
 
-		if (pontoEscape != null
-				&& distanciaEscape > Carro.RAIO_DERRAPAGEM) {
+		if (pontoEscape != null && distanciaEscape > Carro.RAIO_DERRAPAGEM) {
 			valorLimiteStressePararErrarCurva = 100;
 		}
 		if (maxPilotagem) {

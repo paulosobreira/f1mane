@@ -132,14 +132,8 @@ public class Circuito implements Serializable {
 			multi = 1;
 		}
 		No noAnt = null;
-		if (pistaFull == null) {
-			pistaFull = new ArrayList<No>();
-		}
-		pistaFull.clear();
-		if (pistaKey == null) {
-			pistaKey = new ArrayList<No>();
-		}
-		pistaKey.clear();
+		pistaFull = new ArrayList<No>();
+		pistaKey = new ArrayList<No>();
 		List<No> pistaTemp = new ArrayList<No>();
 
 		for (Iterator<No> iter = pista.iterator(); iter.hasNext();) {
@@ -147,6 +141,7 @@ public class Circuito implements Serializable {
 			No newNo = new No();
 			newNo.setPoint(new Point(no.getPoint().x, no.getPoint().y));
 			newNo.setTipo(no.getTipo());
+			newNo.setTracado(0);
 			pistaTemp.add(newNo);
 			newNo = new No();
 		}
@@ -187,14 +182,8 @@ public class Circuito implements Serializable {
 			no.setIndex(i);
 		}
 
-		if (boxFull == null) {
-			boxFull = new ArrayList<No>();
-		}
-		boxFull.clear();
-		if (boxKey == null) {
-			boxKey = new ArrayList<No>();
-		}
-		boxKey.clear();
+		boxFull = new ArrayList<No>();
+		boxKey = new ArrayList<No>();
 		List<No> boxTemp = new ArrayList<No>();
 		for (Iterator<No> iter = box.iterator(); iter.hasNext();) {
 			No no = iter.next();
@@ -202,6 +191,7 @@ public class Circuito implements Serializable {
 			No newNo = new No();
 			newNo.setPoint(new Point(no.getPoint().x, no.getPoint().y));
 			newNo.setTipo(no.getTipo());
+			newNo.setTracado(0);
 			newNo.setBox(true);
 			boxTemp.add(newNo);
 		}
@@ -272,16 +262,8 @@ public class Circuito implements Serializable {
 				}
 			}
 		}
-		if (pista1Full == null) {
-			pista1Full = new ArrayList<No>();
-		} else {
-			pista1Full.clear();
-		}
-		if (pista2Full == null) {
-			pista2Full = new ArrayList<No>();
-		} else {
-			pista2Full.clear();
-		}
+		pista1Full = new ArrayList<No>();
+		pista2Full = new ArrayList<No>();
 		Double calculaAngulo;
 		for (int i = 0; i < pistaFull.size(); i++) {
 			No no = pistaFull.get(i);
@@ -314,10 +296,12 @@ public class Circuito implements Serializable {
 			No newNo1 = new No();
 			newNo1.setPoint(p1);
 			newNo1.setTipo(no.getTipo());
+			newNo1.setTracado(1);
 			pista1Full.add(newNo1);
 			No newNo2 = new No();
 			newNo2.setPoint(p2);
 			newNo2.setTipo(no.getTipo());
+			newNo2.setTracado(2);
 			pista2Full.add(newNo2);
 		}
 		gerarEscapeList();
@@ -326,13 +310,11 @@ public class Circuito implements Serializable {
 	}
 
 	private void gerarEscapeMap() {
-		if (escapeMap == null) {
-			escapeMap = new HashMap<PontoDerrapada, List<No>>();
-			pista4Full  = new ArrayList<No>();
-			pista4Full.addAll(pista2Full);
-			pista5Full  = new ArrayList<No>();
-			pista5Full.addAll(pista1Full);
-		}
+		escapeMap = new HashMap<PontoDerrapada, List<No>>();
+		pista4Full = new ArrayList<No>();
+		pista4Full.addAll(pista2Full);
+		pista5Full = new ArrayList<No>();
+		pista5Full.addAll(pista1Full);
 		List<No> nosDaPista = getPistaFull();
 		for (Iterator<Point> iterator = escapeList.iterator(); iterator
 				.hasNext();) {
@@ -380,16 +362,16 @@ public class Circuito implements Serializable {
 			if (distaciaEntrePontos1 < distaciaEntrePontos2) {
 				PontoDerrapada ponto = new PontoDerrapada();
 				ponto.setPoint(pointDerrapagem);
-				ponto.setPista(1);
+				ponto.setPista(5);
 				int index = noPerto.getIndex();
-				pista5Full.add(pista1Full.get(index));
+				pista5Full.set(index, pista1Full.get(index));
 				int contSaida = 0;
 				int max = Util.inteiro(
-						Carro.ALTURA * 2 * getMultiplicadorLarguraPista());
+						Carro.ALTURA * 3 * getMultiplicadorLarguraPista());
 				int contVolta = max;
 				int contMax = 0;
 				int contPonto = 0;
-				for (int i = index; i < index + (max * 6); i++) {
+				for (int i = index; i < index + (max * 4); i++) {
 					No noIndex = pista1Full.get(i);
 					if (contMax > 1) {
 						contMax = 0;
@@ -404,28 +386,29 @@ public class Circuito implements Serializable {
 					} else {
 						contMax++;
 					}
-					Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
+					Point p5 = GeoUtil.calculaPonto(calculaAngulo,
 							Util.inteiro(contPonto), noIndex.getPoint());
 					No newNo = new No();
-					newNo.setPoint(p4);
+					newNo.setPoint(p5);
+					newNo.setTracado(5);
 					newNo.setTipo(noIndex.getTipo());
-					pista5Full.add(newNo);
+					pista5Full.set(i, newNo);
 				}
 				escapeMap.put(ponto, pista5Full);
 			}
 			if (distaciaEntrePontos2 < distaciaEntrePontos1) {
 				PontoDerrapada ponto = new PontoDerrapada();
 				ponto.setPoint(pointDerrapagem);
-				ponto.setPista(2);
+				ponto.setPista(4);
 				int index = noPerto.getIndex();
-				pista4Full.add(pista2Full.get(index));
+				pista4Full.set(index, pista2Full.get(index));
 				int contSaida = 0;
 				int max = Util.inteiro(
-						Carro.ALTURA * 2 * getMultiplicadorLarguraPista());
+						Carro.ALTURA * 3 * getMultiplicadorLarguraPista());
 				int contVolta = max;
 				int contMax = 0;
 				int contPonto = 0;
-				for (int i = index; i < index + (max * 6); i++) {
+				for (int i = index; i < index + (max * 4); i++) {
 					No noIndex = pista2Full.get(i);
 					if (contMax > 1) {
 						contMax = 0;
@@ -445,7 +428,8 @@ public class Circuito implements Serializable {
 					No newNo = new No();
 					newNo.setPoint(p4);
 					newNo.setTipo(noIndex.getTipo());
-					pista4Full.add(newNo);
+					newNo.setTracado(4);
+					pista4Full.set(i, newNo);
 				}
 				escapeMap.put(ponto, pista4Full);
 			}
@@ -453,20 +437,16 @@ public class Circuito implements Serializable {
 	}
 
 	private void gerarEscapeList() {
-		List<Point> escapeList = getEscapeList();
-		if (escapeList == null || escapeList.isEmpty()) {
-			escapeList = new ArrayList<Point>();
-			List<ObjetoPista> objetos = getObjetos();
-			if (objetos != null) {
-				for (ObjetoPista objetoPista : objetos) {
-					if (objetoPista instanceof ObjetoEscapada) {
-						ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-						escapeList.add(objetoEscapada.centro());
-					}
+		escapeList = new ArrayList<Point>();
+		List<ObjetoPista> objetos = getObjetos();
+		if (objetos != null) {
+			for (ObjetoPista objetoPista : objetos) {
+				if (objetoPista instanceof ObjetoEscapada) {
+					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+					escapeList.add(objetoEscapada.centro());
 				}
 			}
 		}
-		setEscapeList(escapeList);
 	}
 
 	public int getParadaBoxIndex() {
@@ -511,6 +491,7 @@ public class Circuito implements Serializable {
 			newNo.setPoint(element);
 			newNo.setTipo(no.getTipo());
 			newNo.setBox(no.isBox());
+			newNo.setTracado(no.getTracado());
 			retorno.add(newNo);
 		}
 
@@ -591,10 +572,6 @@ public class Circuito implements Serializable {
 
 	public List<Point> getEscapeList() {
 		return escapeList;
-	}
-
-	public void setEscapeList(List<Point> escapeList) {
-		this.escapeList = escapeList;
 	}
 
 	public int getLadoBoxSaidaBox() {

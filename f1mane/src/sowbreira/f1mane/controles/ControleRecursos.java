@@ -405,11 +405,9 @@ public abstract class ControleRecursos {
 
 	public int obterLadoDerrapa(Point pontoDerrapada) {
 		Set<PontoDerrapada> keySet = circuito.getEscapeMap().keySet();
-		PontoDerrapada pontoDerrapdaObj = new PontoDerrapada();
-		pontoDerrapdaObj.setPoint(pontoDerrapada);
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
 			PontoDerrapada pontoDerrapadaKey = (PontoDerrapada) iterator.next();
-			if(pontoDerrapadaKey.equals(pontoDerrapdaObj)){
+			if(pontoDerrapadaKey.getPoint().equals(pontoDerrapada)){
 				return pontoDerrapadaKey.getPista();
 			}
 		}

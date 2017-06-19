@@ -1970,7 +1970,7 @@ public class PainelCircuito {
 			for (Iterator iterator = escapeList.iterator(); iterator
 					.hasNext();) {
 				Point point = (Point) iterator.next();
-				g2d.setColor(ver);
+				g2d.setColor(ObjetoEscapada.red);
 				g2d.fillOval(
 						(int) ((point.x - descontoCentraliza.x) * zoom)
 								- mAltura,

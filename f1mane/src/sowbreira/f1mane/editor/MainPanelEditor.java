@@ -139,7 +139,7 @@ public class MainPanelEditor extends JPanel {
 	private boolean posicionaObjetoPista;
 	private Point ultimoClicado;
 	private FormularioListaObjetos formularioListaObjetos;
-	private boolean mostraBG = false;
+	private boolean mostraBG = true;
 	protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
 	public MainPanelEditor() {
@@ -187,7 +187,6 @@ public class MainPanelEditor extends JPanel {
 		iniciaEditor(frame);
 		atualizaListas();
 		vetorizarCircuito(false);
-		migrarEscapadas();
 		frame.pack();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		if (circuito.getPistaFull() != null
@@ -196,26 +195,6 @@ public class MainPanelEditor extends JPanel {
 		}
 	}
 
-	private void migrarEscapadas() {
-		if (circuito.getEscapeList() != null
-				&& !circuito.getEscapeList().isEmpty()) {
-			List<Point> escapeList = circuito.getEscapeList();
-			if (circuito.getObjetos() == null) {
-				circuito.setObjetos(new ArrayList<ObjetoPista>());
-			}
-			for (Point point : escapeList) {
-				ObjetoEscapada objetoPista = new ObjetoEscapada();
-				objetoPista.setPosicaoQuina(
-						new Point(point.x - 155, point.y - 155));
-				circuito.getObjetos().add(objetoPista);
-				formularioListaObjetos.listarObjetos();
-				objetoPista.setNome("Objeto " + circuito.getObjetos().size());
-			}
-			repaint();
-			circuito.getEscapeList().clear();
-		}
-
-	}
 
 	private void vetorizarCircuito(boolean reprocessa) {
 		mx = 0;
@@ -852,10 +831,6 @@ public class MainPanelEditor extends JPanel {
 					creditos = false;
 					return;
 				} else if (pontosEscape) {
-					if (circuito.getEscapeList() == null) {
-						circuito.setEscapeList(new ArrayList<Point>());
-					}
-					circuito.getEscapeList().add(e.getPoint());
 					repaint();
 					pontosEscape = false;
 					return;
@@ -1849,16 +1824,18 @@ public class MainPanelEditor extends JPanel {
 		}
 
 		Map<PontoDerrapada, List<No>> escapeMap = circuito.getEscapeMap();
-		for (Iterator<PontoDerrapada> iterator = escapeMap.keySet().iterator(); iterator
-				.hasNext();) {
+		for (Iterator<PontoDerrapada> iterator = escapeMap.keySet()
+				.iterator(); iterator.hasNext();) {
 			PontoDerrapada key = iterator.next();
 			List<No> list = escapeMap.get(key);
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
-				g2d.setColor(Color.MAGENTA);
-				g2d.fillOval(Util.inteiro(no2.getX() - 5),
-						Util.inteiro(no2.getY() - 5), Util.inteiro(10),
-						Util.inteiro(10));
+				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
+					g2d.setColor(Color.MAGENTA);
+					g2d.fillOval(Util.inteiro(no2.getX() - 5),
+							Util.inteiro(no2.getY() - 5), Util.inteiro(10),
+							Util.inteiro(10));
+				}
 			}
 		}
 

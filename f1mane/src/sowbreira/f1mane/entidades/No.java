@@ -13,9 +13,9 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
- * @author Paulo Sobreira Criado 
+ * @author Paulo Sobreira Criado
  */
-@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class No implements Serializable {
 	private static final long serialVersionUID = 493643626269961468L;
 	public static Color LARGADA = Color.BLUE;
@@ -26,12 +26,14 @@ public class No implements Serializable {
 	public static Color PARADA_BOX = Color.ORANGE;
 	@JsonIgnore
 	private Point point = new Point(1000, 1000);
-	
+
 	private boolean box;
 	private int index;
 	@JsonIgnore
 	private Color tipo;
-	
+
+	private int tracado;
+
 	private boolean noEntradaBox;
 	private boolean noSaidaBox;
 
@@ -150,6 +152,14 @@ public class No implements Serializable {
 
 	public void setBox(boolean box) {
 		this.box = box;
+	}
+
+	public int getTracado() {
+		return tracado;
+	}
+
+	public void setTracado(int tracado) {
+		this.tracado = tracado;
 	}
 
 }
