@@ -1831,7 +1831,7 @@ public class MainPanelEditor extends JPanel {
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
 				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
-					g2d.setColor(Color.MAGENTA);
+					g2d.setColor(ver);
 					g2d.fillOval(Util.inteiro(no2.getX() - 5),
 							Util.inteiro(no2.getY() - 5), Util.inteiro(10),
 							Util.inteiro(10));

@@ -367,11 +367,11 @@ public class Circuito implements Serializable {
 				pista5Full.set(index, pista1Full.get(index));
 				int contSaida = 0;
 				int max = Util.inteiro(
-						Carro.ALTURA * 3 * getMultiplicadorLarguraPista());
+						Carro.ALTURA * 2 * getMultiplicadorLarguraPista());
 				int contVolta = max;
 				int contMax = 0;
 				int contPonto = 0;
-				for (int i = index; i < index + (max * 4); i++) {
+				for (int i = index; i < index + (max * 5.5); i++) {
 					No noIndex = pista1Full.get(i);
 					if (contMax > 1) {
 						contMax = 0;
@@ -404,11 +404,11 @@ public class Circuito implements Serializable {
 				pista4Full.set(index, pista2Full.get(index));
 				int contSaida = 0;
 				int max = Util.inteiro(
-						Carro.ALTURA * 3 * getMultiplicadorLarguraPista());
+						Carro.ALTURA * 2 * getMultiplicadorLarguraPista());
 				int contVolta = max;
 				int contMax = 0;
 				int contPonto = 0;
-				for (int i = index; i < index + (max * 4); i++) {
+				for (int i = index; i < index + (max * 5.6); i++) {
 					No noIndex = pista2Full.get(i);
 					if (contMax > 1) {
 						contMax = 0;

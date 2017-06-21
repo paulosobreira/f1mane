@@ -202,7 +202,7 @@ public class ControleCorrida {
 		}
 	}
 
-	public void verificaUltrapassagem(Piloto piloto) {
+	public void verificaAcidente(Piloto piloto) {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
@@ -219,7 +219,7 @@ public class ControleCorrida {
 		if (!piloto.isColisaoDiantera()) {
 			return;
 		}
-		verificaAcidenteUltrapassagem(piloto, pilotoNaFrente);
+		verificaAcidente(piloto, pilotoNaFrente);
 	}
 
 	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoNaFrente) {
@@ -302,7 +302,7 @@ public class ControleCorrida {
 		return piloto;
 	}
 
-	public void verificaAcidenteUltrapassagem(Piloto piloto,
+	public void verificaAcidente(Piloto piloto,
 			Piloto pilotoNaFrente) {
 		double fatorAcidenteMomento = fatorAcidente;
 		if (controleJogo.isChovendo()) {
@@ -317,16 +317,16 @@ public class ControleCorrida {
 		}
 		if (Math.random() < fatorAcidenteMomento) {
 			if (piloto.isJogadorHumano()) {
-				verificaAcidenteUltrapassagemJogadorHumano(piloto,
+				verificaAcidenteJogadorHumano(piloto,
 						pilotoNaFrente, fatorAcidenteMomento);
 			} else {
-				verificaAcidenteUltrapassagemIA(piloto, pilotoNaFrente,
+				verificaAcidenteIA(piloto, pilotoNaFrente,
 						fatorAcidenteMomento);
 			}
 		}
 	}
 
-	private void verificaAcidenteUltrapassagemIA(Piloto piloto,
+	private void verificaAcidenteIA(Piloto piloto,
 			Piloto pilotoNaFrente, double fatorAcidenteLocal) {
 		int limiteStress = (int) (100 * (1 - fatorAcidenteLocal));
 		if (piloto.getCarro().getDurabilidadeAereofolio() <= 0) {
@@ -362,7 +362,7 @@ public class ControleCorrida {
 				new String[]{piloto.getNome(), pilotoNaFrente.getNome()}))));
 	}
 
-	private void verificaAcidenteUltrapassagemJogadorHumano(Piloto piloto,
+	private void verificaAcidenteJogadorHumano(Piloto piloto,
 			Piloto pilotoNaFrente, double fatorAcidenteLocal) {
 		int stress = (int) (100 * fatorAcidenteLocal);
 		if (!Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {

@@ -39,6 +39,7 @@ import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.editor.MainPanelEditor;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
@@ -48,6 +49,7 @@ import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotoSuave;
+import sowbreira.f1mane.entidades.PontoDerrapada;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
@@ -807,7 +809,7 @@ public class PainelCircuito {
 		if (controleJogo instanceof JogoCliente) {
 			ganhoSuave = loopCalculaGanhoSuave(diff, 30);
 		} else {
-			ganhoSuave = loopCalculaGanhoSuave(diff, 10);
+			ganhoSuave = loopCalculaGanhoSuave(diff, 0);
 		}
 
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
@@ -1977,6 +1979,25 @@ public class PainelCircuito {
 						(int) ((point.y - descontoCentraliza.y) * zoom)
 								- mAltura,
 						altura, altura);
+			}
+		}
+
+		Map<PontoDerrapada, List<No>> escapeMap = circuito.getEscapeMap();
+		for (Iterator<PontoDerrapada> iterator = escapeMap.keySet()
+				.iterator(); iterator.hasNext();) {
+			PontoDerrapada key = iterator.next();
+			List<No> list = escapeMap.get(key);
+			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
+				No no2 = (No) iterator2.next();
+				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
+					g2d.setColor(MainPanelEditor.ver);
+					g2d.fillOval(Util.inteiro(
+							((no2.getX() - 5) - descontoCentraliza.x) * zoom),
+							Util.inteiro(
+									((no2.getY() - 5) - descontoCentraliza.y)
+											* zoom),
+							Util.inteiro(10), Util.inteiro(10));
+				}
 			}
 		}
 

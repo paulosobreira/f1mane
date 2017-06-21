@@ -1077,7 +1077,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaEvitaBaterCarroFrente(controleJogo);
 		processaMudarTracado(controleJogo);
 		processaColisao(controleJogo);
-		controleJogo.verificaUltrapassagem(this);
+		controleJogo.verificaAcidente(this);
 		processaPenalidadeColisao(controleJogo);
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		if (noAtual.verificaRetaOuLargada()) {
@@ -1236,7 +1236,37 @@ public class Piloto implements Serializable, PilotoSuave {
 			setColisao(null);
 			return;
 		}
-		verificaColisaoCarroFrente(controleJogo);
+		boolean verificaNoPitLane = controleJogo.verificaNoPitLane(this);
+		if (verificaNoPitLane) {
+			setColisao(null);
+			return;
+		}
+		centralizaCarroColisao(controleJogo);
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto pilotoFrente = (Piloto) iterator.next();
+			if (pilotoFrente.equals(this)) {
+				continue;
+			}
+			if (verificaNaoPrecisaDesviar(controleJogo, pilotoFrente)) {
+				continue;
+			}
+			if (this.equals(pilotoFrente.getColisao())) {
+				continue;
+			}
+			pilotoFrente.centralizaCarroColisao(controleJogo);
+			colisaoDiantera = getDiateiraColisao()
+					.intersects(pilotoFrente.getTrazeiraColisao())
+					|| getDiateiraColisao()
+							.intersects(pilotoFrente.getCentroColisao());
+			colisaoCentro = getCentroColisao()
+					.intersects(pilotoFrente.getTrazeiraColisao());
+			colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
+			if (colisao != null) {
+				return;
+			}
+		}
+		setColisao(null);
 	}
 
 	public void processaPenalidadeColisao(InterfaceJogo controleJogo) {
@@ -1291,6 +1321,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		 * Volta a pista apos escapada
 		 */
 		if (getTracado() == 4 || getTracado() == 5) {
+
 			if (!verificaDesconcentrado()) {
 				setCiclosDesconcentrado(Util.intervalo(50, 150));
 				if (controleJogo.verificaInfoRelevante(this))
@@ -1299,6 +1330,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 			setModoPilotagem(LENTO);
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
+
 			if (getIndiceTracado() <= 0) {
 				if (controleJogo.isChovendo()) {
 					ganho *= 0.1;
@@ -1306,10 +1338,21 @@ public class Piloto implements Serializable, PilotoSuave {
 					ganho *= 0.3;
 				}
 				if (getTracado() == 4) {
-					mudarTracado(2, controleJogo);
+					if (controleJogo.getCircuito().getPista4Full()
+							.get(getNoAtual().getIndex()).getTracado() != 4) {
+						System.out.println(
+								".get(getNoAtual().getIndex()).getTracado() == 4");
+						mudarTracado(2, controleJogo);
+					}
 				}
 				if (getTracado() == 5) {
-					mudarTracado(1, controleJogo);
+					if (controleJogo.getCircuito().getPista5Full()
+							.get(getNoAtual().getIndex()).getTracado() != 5) {
+						System.out.println(
+								".get(getNoAtual().getIndex()).getTracado() == 5");
+						mudarTracado(1, controleJogo);
+					}
+
 				}
 			} else {
 				if (controleJogo.isChovendo()) {
@@ -1557,19 +1600,14 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 		}
 		if (getNoAtual().verificaRetaOuLargada()) {
+			if(ganho<(ultGanhoReta *.8)){
+				ganho = ultGanhoReta;
+			}
 			ganhosReta.add(ganho);
+			ultGanhoReta = ganho;
 		}
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
-		}
-		if (acelerando) {
-			if (ganho < ultGanhoReta) {
-				ganho = ultGanhoReta;
-			} else {
-				ultGanhoReta = ganho;
-			}
-		} else {
-			ultGanhoReta = 0;
 		}
 	}
 
@@ -1831,41 +1869,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (percetagemDeVoltaConcluida > 70) {
 			ativarErs = true;
 		}
-	}
-
-	public void verificaColisaoCarroFrente(InterfaceJogo controleJogo) {
-		boolean verificaNoPitLane = controleJogo.verificaNoPitLane(this);
-		if (verificaNoPitLane) {
-			setColisao(null);
-			return;
-		}
-		centralizaCarroColisao(controleJogo);
-		List<Piloto> pilotos = controleJogo.getPilotos();
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-			Piloto pilotoFrente = (Piloto) iterator.next();
-			if (pilotoFrente.equals(this)) {
-				continue;
-			}
-			if (verificaNaoPrecisaDesviar(controleJogo, pilotoFrente)) {
-				continue;
-			}
-			if (this.equals(pilotoFrente.getColisao())) {
-				continue;
-			}
-			pilotoFrente.centralizaCarroColisao(controleJogo);
-			colisaoDiantera = getDiateiraColisao()
-					.intersects(pilotoFrente.getTrazeiraColisao())
-					|| getDiateiraColisao()
-							.intersects(pilotoFrente.getCentroColisao());
-			colisaoCentro = getCentroColisao()
-					.intersects(pilotoFrente.getTrazeiraColisao());
-			colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
-			if (colisao != null) {
-				return;
-			}
-		}
-		setColisao(null);
-
 	}
 
 	public boolean verificaNaoPrecisaDesviar(InterfaceJogo controleJogo,
