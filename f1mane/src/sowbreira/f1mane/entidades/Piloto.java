@@ -1322,44 +1322,40 @@ public class Piloto implements Serializable, PilotoSuave {
 		 */
 		if (getTracado() == 4 || getTracado() == 5) {
 
-			if (!verificaDesconcentrado()) {
-				setCiclosDesconcentrado(Util.intervalo(50, 150));
-				if (controleJogo.verificaInfoRelevante(this))
-					controleJogo.info(Lang.msg("saiDaPista",
-							new String[]{Html.superRed(getNome())}));
-			}
 			setModoPilotagem(LENTO);
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
-
 			if (getIndiceTracado() <= 0) {
-				if (controleJogo.isChovendo()) {
-					ganho *= 0.1;
-				} else {
-					ganho *= 0.3;
-				}
 				if (getTracado() == 4) {
 					if (controleJogo.getCircuito().getPista4Full()
 							.get(getNoAtual().getIndex()).getTracado() != 4) {
-						System.out.println(
-								".get(getNoAtual().getIndex()).getTracado() == 4");
 						mudarTracado(2, controleJogo);
 					}
 				}
 				if (getTracado() == 5) {
 					if (controleJogo.getCircuito().getPista5Full()
 							.get(getNoAtual().getIndex()).getTracado() != 5) {
-						System.out.println(
-								".get(getNoAtual().getIndex()).getTracado() == 5");
 						mudarTracado(1, controleJogo);
 					}
-
+				}
+				if (controleJogo.getCircuito().getPista4Full()
+						.get(getNoAtual().getIndex()).getTracado() != 4
+						|| controleJogo.getCircuito().getPista5Full()
+								.get(getNoAtual().getIndex())
+								.getTracado() != 5) {
+					if (controleJogo.isChovendo()) {
+						ganho *= 0.5;
+					} else {
+						ganho *= 0.7;
+					}
+					if (!verificaDesconcentrado()) {
+						setCiclosDesconcentrado(Util.intervalo(50, 200));
+						if (controleJogo.verificaInfoRelevante(this))
+							controleJogo.info(Lang.msg("saiDaPista",
+									new String[]{Html.superRed(getNome())}));
+					}
 				}
 			} else {
-				if (controleJogo.isChovendo()) {
-					ganho *= 0.5;
-				} else {
-					ganho *= 0.7;
-				}
+				controleJogo.travouRodas(this);
 				decStress(2);
 			}
 		}
@@ -1552,6 +1548,9 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private void processaLimitadorGanho(InterfaceJogo controleJogo) {
 		limiteGanho = false;
+		if (!verificaForaPista(this)) {
+			return;
+		}
 		if (getColisao() != null) {
 			acelerando = false;
 			ganho = 1;
@@ -1600,7 +1599,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 		}
 		if (getNoAtual().verificaRetaOuLargada()) {
-			if(ganho<(ultGanhoReta *.8)){
+			if (!verificaDesconcentrado() && ganho < (ultGanhoReta * .8)) {
 				ganho = ultGanhoReta;
 			}
 			ganhosReta.add(ganho);

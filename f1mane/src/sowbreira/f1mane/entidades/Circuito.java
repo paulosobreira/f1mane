@@ -359,22 +359,21 @@ public class Circuito implements Serializable {
 					pointDerrapagem);
 			double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2,
 					pointDerrapagem);
+			int contSaida = 0;
+			int max = Util.inteiro(
+					Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista());
+			int contVolta = max;
+			int index = noPerto.getIndex();
+			int contMax = (int) (index + (max * 5.5));
+			int contPonto = 0;
 			if (distaciaEntrePontos1 < distaciaEntrePontos2) {
 				PontoDerrapada ponto = new PontoDerrapada();
 				ponto.setPoint(pointDerrapagem);
 				ponto.setPista(5);
-				int index = noPerto.getIndex();
 				pista5Full.set(index, pista1Full.get(index));
-				int contSaida = 0;
-				int max = Util.inteiro(
-						Carro.ALTURA * 2 * getMultiplicadorLarguraPista());
-				int contVolta = max;
-				int contMax = 0;
-				int contPonto = 0;
-				for (int i = index; i < index + (max * 5.5); i++) {
+				for (int i = index; i < contMax; i++) {
 					No noIndex = pista1Full.get(i);
-					if (contMax > 1) {
-						contMax = 0;
+					if (i > contMax / 2) {
 						contSaida++;
 						if (contSaida < max) {
 							contPonto = contSaida;
@@ -382,9 +381,16 @@ public class Circuito implements Serializable {
 							contVolta--;
 							contPonto = contVolta;
 						}
-
 					} else {
-						contMax++;
+						if (i % 2 == 0) {
+							contSaida++;
+							if (contSaida < max) {
+								contPonto = contSaida;
+							} else if (contVolta > 0) {
+								contVolta--;
+								contPonto = contVolta;
+							}
+						}
 					}
 					Point p5 = GeoUtil.calculaPonto(calculaAngulo,
 							Util.inteiro(contPonto), noIndex.getPoint());
@@ -400,18 +406,10 @@ public class Circuito implements Serializable {
 				PontoDerrapada ponto = new PontoDerrapada();
 				ponto.setPoint(pointDerrapagem);
 				ponto.setPista(4);
-				int index = noPerto.getIndex();
 				pista4Full.set(index, pista2Full.get(index));
-				int contSaida = 0;
-				int max = Util.inteiro(
-						Carro.ALTURA * 2 * getMultiplicadorLarguraPista());
-				int contVolta = max;
-				int contMax = 0;
-				int contPonto = 0;
-				for (int i = index; i < index + (max * 5.6); i++) {
+				for (int i = index; i < contMax; i++) {
 					No noIndex = pista2Full.get(i);
-					if (contMax > 1) {
-						contMax = 0;
+					if (i > contMax / 2) {
 						contSaida++;
 						if (contSaida < max) {
 							contPonto = contSaida;
@@ -419,9 +417,16 @@ public class Circuito implements Serializable {
 							contVolta--;
 							contPonto = contVolta;
 						}
-
 					} else {
-						contMax++;
+						if (i % 2 == 0) {
+							contSaida++;
+							if (contSaida < max) {
+								contPonto = contSaida;
+							} else if (contVolta > 0) {
+								contVolta--;
+								contPonto = contVolta;
+							}
+						}
 					}
 					Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
 							Util.inteiro(contPonto), noIndex.getPoint());

@@ -886,9 +886,9 @@ public class PainelCircuito {
 	private int loopCalculaGanhoSuave(int diff, int incExtra) {
 		int ganhoSuave = 0;
 		int maxLoop = 1000;
-		int inc = 30;
+		int inc = 20;
 		if (gerenciadorVisual.getFpsLimite() == 30.0) {
-			inc = 20;
+			inc = 10;
 		}
 		inc += incExtra;
 		for (int i = 0; i < maxLoop; i += inc) {
@@ -1987,16 +1987,22 @@ public class PainelCircuito {
 				.iterator(); iterator.hasNext();) {
 			PontoDerrapada key = iterator.next();
 			List<No> list = escapeMap.get(key);
+			Point pOld = null;
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
 				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
 					g2d.setColor(MainPanelEditor.ver);
-					g2d.fillOval(Util.inteiro(
+					Point pNew = new Point(Util.inteiro(
 							((no2.getX() - 5) - descontoCentraliza.x) * zoom),
 							Util.inteiro(
 									((no2.getY() - 5) - descontoCentraliza.y)
-											* zoom),
-							Util.inteiro(10), Util.inteiro(10));
+											* zoom));
+					if (pOld != null) {
+						g2d.drawLine(pOld.x, pOld.y, pNew.x, pNew.y);
+					}
+					pOld = pNew;
+				}else{
+					pOld = null;
 				}
 			}
 		}

@@ -195,7 +195,6 @@ public class MainPanelEditor extends JPanel {
 		}
 	}
 
-
 	private void vetorizarCircuito(boolean reprocessa) {
 		mx = 0;
 		my = 0;
@@ -1828,13 +1827,19 @@ public class MainPanelEditor extends JPanel {
 				.iterator(); iterator.hasNext();) {
 			PontoDerrapada key = iterator.next();
 			List<No> list = escapeMap.get(key);
+			Point pOld = null;
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
 				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
-					g2d.setColor(ver);
-					g2d.fillOval(Util.inteiro(no2.getX() - 5),
-							Util.inteiro(no2.getY() - 5), Util.inteiro(10),
-							Util.inteiro(10));
+					g2d.setColor(MainPanelEditor.ver);
+					Point pNew = new Point(Util.inteiro(no2.getX() - 5),
+							Util.inteiro(no2.getY() - 5));
+					if (pOld != null) {
+						g2d.drawLine(pOld.x, pOld.y, pNew.x, pNew.y);
+					}
+					pOld = pNew;
+				} else {
+					pOld = null;
 				}
 			}
 		}
