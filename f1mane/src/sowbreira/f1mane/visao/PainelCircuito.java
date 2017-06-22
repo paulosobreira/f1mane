@@ -1968,20 +1968,6 @@ public class PainelCircuito {
 			}
 		}
 
-		if (escapeList != null) {
-			for (Iterator iterator = escapeList.iterator(); iterator
-					.hasNext();) {
-				Point point = (Point) iterator.next();
-				g2d.setColor(ObjetoEscapada.red);
-				g2d.fillOval(
-						(int) ((point.x - descontoCentraliza.x) * zoom)
-								- mAltura,
-						(int) ((point.y - descontoCentraliza.y) * zoom)
-								- mAltura,
-						altura, altura);
-			}
-		}
-
 		Map<PontoDerrapada, List<No>> escapeMap = circuito.getEscapeMap();
 		for (Iterator<PontoDerrapada> iterator = escapeMap.keySet()
 				.iterator(); iterator.hasNext();) {
@@ -1991,7 +1977,7 @@ public class PainelCircuito {
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
 				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
-					g2d.setColor(MainPanelEditor.ver);
+					g2d.setColor(ObjetoEscapada.red);
 					Point pNew = new Point(Util.inteiro(
 							((no2.getX() - 5) - descontoCentraliza.x) * zoom),
 							Util.inteiro(

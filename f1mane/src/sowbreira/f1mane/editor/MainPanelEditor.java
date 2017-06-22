@@ -90,6 +90,7 @@ public class MainPanelEditor extends JPanel {
 	private JList boxJList;
 	private MainFrameEditor srcFrame;
 	private boolean desenhaTracado = true;
+	private boolean mostraBG = true;
 	private boolean creditos = false;
 	private boolean pontosEscape = false;
 	public final static Color oran = new Color(255, 188, 40, 180);
@@ -139,7 +140,6 @@ public class MainPanelEditor extends JPanel {
 	private boolean posicionaObjetoPista;
 	private Point ultimoClicado;
 	private FormularioListaObjetos formularioListaObjetos;
-	private boolean mostraBG = true;
 	protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
 	public MainPanelEditor() {
@@ -1665,22 +1665,6 @@ public class MainPanelEditor extends JPanel {
 					circuito.getCreditos().y - 2, 8, 8);
 		}
 
-		if (circuito != null) {
-			int altura = Carro.LARGURA * 5;
-			int mAltura = altura / 2;
-			List<Point> escapeList = circuito.getEscapeList();
-
-			if (escapeList != null) {
-				for (Iterator iterator = escapeList.iterator(); iterator
-						.hasNext();) {
-					Point point = (Point) iterator.next();
-					g2d.setColor(ver);
-					g2d.fillOval(point.x - mAltura, point.y - mAltura, altura,
-							altura);
-				}
-			}
-		}
-
 		if (!desenhaTracado) {
 			return;
 		}
@@ -1831,7 +1815,7 @@ public class MainPanelEditor extends JPanel {
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
 				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
-					g2d.setColor(MainPanelEditor.ver);
+					g2d.setColor(ObjetoEscapada.red);
 					Point pNew = new Point(Util.inteiro(no2.getX() - 5),
 							Util.inteiro(no2.getY() - 5));
 					if (pOld != null) {

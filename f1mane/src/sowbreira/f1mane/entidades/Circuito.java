@@ -361,10 +361,10 @@ public class Circuito implements Serializable {
 					pointDerrapagem);
 			int contSaida = 0;
 			int max = Util.inteiro(
-					Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista());
+					Carro.ALTURA * 3 * getMultiplicadorLarguraPista());
 			int contVolta = max;
 			int index = noPerto.getIndex();
-			int contMax = (int) (index + (max * 5.5));
+			int contMax = (int) (index + (max * 5));
 			int contPonto = 0;
 			if (distaciaEntrePontos1 < distaciaEntrePontos2) {
 				PontoDerrapada ponto = new PontoDerrapada();
@@ -373,24 +373,16 @@ public class Circuito implements Serializable {
 				pista5Full.set(index, pista1Full.get(index));
 				for (int i = index; i < contMax; i++) {
 					No noIndex = pista1Full.get(i);
-					if (i > contMax / 2) {
+					if (i % 2 == 0) {
 						contSaida++;
-						if (contSaida < max) {
-							contPonto = contSaida;
-						} else if (contVolta > 0) {
+					}
+					if (contSaida < max) {
+						contPonto = contSaida;
+					} else if (contVolta > 0) {
+						if (i % 3 == 0) {
 							contVolta--;
-							contPonto = contVolta;
 						}
-					} else {
-						if (i % 2 == 0) {
-							contSaida++;
-							if (contSaida < max) {
-								contPonto = contSaida;
-							} else if (contVolta > 0) {
-								contVolta--;
-								contPonto = contVolta;
-							}
-						}
+						contPonto = contVolta;
 					}
 					Point p5 = GeoUtil.calculaPonto(calculaAngulo,
 							Util.inteiro(contPonto), noIndex.getPoint());
@@ -409,24 +401,16 @@ public class Circuito implements Serializable {
 				pista4Full.set(index, pista2Full.get(index));
 				for (int i = index; i < contMax; i++) {
 					No noIndex = pista2Full.get(i);
-					if (i > contMax / 2) {
+					if (i % 2 == 0) {
 						contSaida++;
-						if (contSaida < max) {
-							contPonto = contSaida;
-						} else if (contVolta > 0) {
+					}
+					if (contSaida < max) {
+						contPonto = contSaida;
+					} else if (contVolta > 0) {
+						if (i % 3 == 0) {
 							contVolta--;
-							contPonto = contVolta;
 						}
-					} else {
-						if (i % 2 == 0) {
-							contSaida++;
-							if (contSaida < max) {
-								contPonto = contSaida;
-							} else if (contVolta > 0) {
-								contVolta--;
-								contPonto = contVolta;
-							}
-						}
+						contPonto = contVolta;
 					}
 					Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
 							Util.inteiro(contPonto), noIndex.getPoint());
