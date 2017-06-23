@@ -886,9 +886,9 @@ public class PainelCircuito {
 	private int loopCalculaGanhoSuave(int diff, int incExtra) {
 		int ganhoSuave = 0;
 		int maxLoop = 1000;
-		int inc = 20;
+		int inc = 25;
 		if (gerenciadorVisual.getFpsLimite() == 30.0) {
-			inc = 10;
+			inc = 15;
 		}
 		inc += incExtra;
 		for (int i = 0; i < maxLoop; i += inc) {
@@ -1948,22 +1948,14 @@ public class PainelCircuito {
 		}
 		int altura = (int) (Carro.LARGURA * 5 * zoom);
 		int mAltura = (int) (altura / 2 * zoom);
-		List<Point> escapeList = circuito.getEscapeList();
 
-		if (escapeList == null) {
-			escapeList = new ArrayList<Point>();
-		}
-
-		if (escapeList.isEmpty()) {
-			List<ObjetoPista> objetos = circuito.getObjetos();
-			if (objetos != null) {
-				for (Iterator iterator = objetos.iterator(); iterator
-						.hasNext();) {
-					ObjetoPista objetoPista = (ObjetoPista) iterator.next();
-					if (objetoPista instanceof ObjetoEscapada) {
-						ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-						escapeList.add(objetoEscapada.centro());
-					}
+		List<ObjetoPista> objetos = circuito.getObjetos();
+		if (objetos != null) {
+			for (Iterator iterator = objetos.iterator(); iterator.hasNext();) {
+				ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+				if (objetoPista instanceof ObjetoEscapada) {
+					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
+					objetoEscapada.desenha(g2d, mAltura);
 				}
 			}
 		}
@@ -1987,7 +1979,7 @@ public class PainelCircuito {
 						g2d.drawLine(pOld.x, pOld.y, pNew.x, pNew.y);
 					}
 					pOld = pNew;
-				}else{
+				} else {
 					pOld = null;
 				}
 			}
@@ -3219,14 +3211,25 @@ public class PainelCircuito {
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
 				Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
-		Point p1 = controleJogo.getCircuito().getPista1Full()
-				.get(noAtual.getIndex()).getPoint();
-		Point p2 = controleJogo.getCircuito().getPista2Full()
-				.get(noAtual.getIndex()).getPoint();
-		Point p5 = controleJogo.getCircuito().getPista5Full()
-				.get(noAtual.getIndex()).getPoint();
-		Point p4 = controleJogo.getCircuito().getPista4Full()
-				.get(noAtual.getIndex()).getPoint();
+		Point p1 = null;
+		Point p2 = null;
+		Point p4 = null;
+		Point p5 = null;
+		if (noAtual.isBox()) {
+			p1 = controleJogo.getCircuito().getBox1Full()
+					.get(noAtual.getIndex()).getPoint();
+			p2 = controleJogo.getCircuito().getBox2Full()
+					.get(noAtual.getIndex()).getPoint();
+		} else {
+			p1 = controleJogo.getCircuito().getPista1Full()
+					.get(noAtual.getIndex()).getPoint();
+			p2 = controleJogo.getCircuito().getPista2Full()
+					.get(noAtual.getIndex()).getPoint();
+			p5 = controleJogo.getCircuito().getPista5Full()
+					.get(noAtual.getIndex()).getPoint();
+			p4 = controleJogo.getCircuito().getPista4Full()
+					.get(noAtual.getIndex()).getPoint();
+		}
 
 		piloto.setP1(p1);
 		piloto.setP2(p2);

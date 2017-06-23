@@ -219,7 +219,7 @@
 				<include name="F1-Mane-Online-en-us.bat" />
 				<include name="F1-Mane-Online-pt-br.bat" />
 				<include name="f1maneonline.jnlp" />
-				<include name="f1maneonline_en.jnlp" />				
+				<include name="f1maneonline_en.jnlp" />
 			</fileset>
 
 			<fileset dir="WebContent/WEB-INF/lib">
@@ -239,6 +239,8 @@
 
 
 	<target name="limpaJars">
+		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
+		<delete file="WebContent/WEB-INF/lib/f1maneRecursos.jar" />
 		<delete>
 			<fileset dir=".">
 				<include name="*.jar" />

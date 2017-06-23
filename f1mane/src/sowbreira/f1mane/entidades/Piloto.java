@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -1979,17 +1980,20 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		No proxPt = controleJogo.getNosDaPista().get(index);
 		Circuito circuito = controleJogo.getCircuito();
-		List<Point> escapeList = circuito.getEscapeList();
-		if (escapeList == null) {
+		Map<PontoDerrapada, List<No>> escapeMap = circuito.getEscapeMap();
+		if (escapeMap == null) {
 			return;
 		}
 		Point p = proxPt.getPoint();
-		for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
-			Point point = (Point) iterator.next();
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p, point);
+		Set<PontoDerrapada> keySet = escapeMap.keySet();
+		for (Iterator<PontoDerrapada> iterator = keySet.iterator(); iterator
+				.hasNext();) {
+			PontoDerrapada pontoDerrapada = iterator.next();
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p,
+					pontoDerrapada.getPoint());
 			if (distaciaEntrePontos < distanciaEscape) {
 				distanciaEscape = distaciaEntrePontos;
-				pontoEscape = point;
+				pontoEscape = pontoDerrapada.getPoint();
 				indexRefEscape = index;
 			}
 		}
@@ -2038,14 +2042,25 @@ public class Piloto implements Serializable, PilotoSuave {
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
 				Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
-		Point p1 = controleJogo.getCircuito().getPista1Full()
-				.get(noAtual.getIndex()).getPoint();
-		Point p2 = controleJogo.getCircuito().getPista2Full()
-				.get(noAtual.getIndex()).getPoint();
-		Point p5 = controleJogo.getCircuito().getPista5Full()
-				.get(noAtual.getIndex()).getPoint();
-		Point p4 = controleJogo.getCircuito().getPista4Full()
-				.get(noAtual.getIndex()).getPoint();
+		Point p1 = null;
+		Point p2 = null;
+		Point p4 = null;
+		Point p5 = null;
+		if (noAtual.isBox()) {
+			p1 = controleJogo.getCircuito().getBox1Full()
+					.get(noAtual.getIndex()).getPoint();
+			p2 = controleJogo.getCircuito().getBox2Full()
+					.get(noAtual.getIndex()).getPoint();
+		} else {
+			p1 = controleJogo.getCircuito().getPista1Full()
+					.get(noAtual.getIndex()).getPoint();
+			p2 = controleJogo.getCircuito().getPista2Full()
+					.get(noAtual.getIndex()).getPoint();
+			p5 = controleJogo.getCircuito().getPista5Full()
+					.get(noAtual.getIndex()).getPoint();
+			p4 = controleJogo.getCircuito().getPista4Full()
+					.get(noAtual.getIndex()).getPoint();
+		}
 		if (getTracado() == 0) {
 			carx = p.x;
 			cary = p.y;
