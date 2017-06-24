@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -1077,7 +1078,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaEvitaBaterCarroFrente(controleJogo);
 		processaMudarTracado(controleJogo);
 		processaColisao(controleJogo);
-		controleJogo.verificaUltrapassagem(this);
+		controleJogo.verificaAcidente(this);
 		processaPenalidadeColisao(controleJogo);
 		ganho = processaGanhoMedio(controleJogo, ganho);
 		if (noAtual.verificaRetaOuLargada()) {
@@ -1236,7 +1237,37 @@ public class Piloto implements Serializable, PilotoSuave {
 			setColisao(null);
 			return;
 		}
-		verificaColisaoCarroFrente(controleJogo);
+		boolean verificaNoPitLane = controleJogo.verificaNoPitLane(this);
+		if (verificaNoPitLane) {
+			setColisao(null);
+			return;
+		}
+		centralizaCarroColisao(controleJogo);
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto pilotoFrente = (Piloto) iterator.next();
+			if (pilotoFrente.equals(this)) {
+				continue;
+			}
+			if (verificaNaoPrecisaDesviar(controleJogo, pilotoFrente)) {
+				continue;
+			}
+			if (this.equals(pilotoFrente.getColisao())) {
+				continue;
+			}
+			pilotoFrente.centralizaCarroColisao(controleJogo);
+			colisaoDiantera = getDiateiraColisao()
+					.intersects(pilotoFrente.getTrazeiraColisao())
+					|| getDiateiraColisao()
+							.intersects(pilotoFrente.getCentroColisao());
+			colisaoCentro = getCentroColisao()
+					.intersects(pilotoFrente.getTrazeiraColisao());
+			colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
+			if (colisao != null) {
+				return;
+			}
+		}
+		setColisao(null);
 	}
 
 	public void processaPenalidadeColisao(InterfaceJogo controleJogo) {
@@ -1291,32 +1322,41 @@ public class Piloto implements Serializable, PilotoSuave {
 		 * Volta a pista apos escapada
 		 */
 		if (getTracado() == 4 || getTracado() == 5) {
-			if (!verificaDesconcentrado()) {
-				setCiclosDesconcentrado(Util.intervalo(50, 150));
-				if (controleJogo.verificaInfoRelevante(this))
-					controleJogo.info(Lang.msg("saiDaPista",
-							new String[]{Html.superRed(getNome())}));
-			}
+
 			setModoPilotagem(LENTO);
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 			if (getIndiceTracado() <= 0) {
-				if (controleJogo.isChovendo()) {
-					ganho *= 0.1;
-				} else {
-					ganho *= 0.3;
-				}
 				if (getTracado() == 4) {
-					mudarTracado(2, controleJogo);
+					if (controleJogo.getCircuito().getPista4Full()
+							.get(getNoAtual().getIndex()).getTracado() != 4) {
+						mudarTracado(2, controleJogo);
+					}
 				}
 				if (getTracado() == 5) {
-					mudarTracado(1, controleJogo);
+					if (controleJogo.getCircuito().getPista5Full()
+							.get(getNoAtual().getIndex()).getTracado() != 5) {
+						mudarTracado(1, controleJogo);
+					}
+				}
+				if (controleJogo.getCircuito().getPista4Full()
+						.get(getNoAtual().getIndex()).getTracado() != 4
+						|| controleJogo.getCircuito().getPista5Full()
+								.get(getNoAtual().getIndex())
+								.getTracado() != 5) {
+					if (controleJogo.isChovendo()) {
+						ganho *= 0.5;
+					} else {
+						ganho *= 0.7;
+					}
+					if (!verificaDesconcentrado()) {
+						setCiclosDesconcentrado(Util.intervalo(50, 200));
+						if (controleJogo.verificaInfoRelevante(this))
+							controleJogo.info(Lang.msg("saiDaPista",
+									new String[]{Html.superRed(getNome())}));
+					}
 				}
 			} else {
-				if (controleJogo.isChovendo()) {
-					ganho *= 0.5;
-				} else {
-					ganho *= 0.7;
-				}
+				controleJogo.travouRodas(this);
 				decStress(2);
 			}
 		}
@@ -1509,6 +1549,9 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private void processaLimitadorGanho(InterfaceJogo controleJogo) {
 		limiteGanho = false;
+		if (!verificaForaPista(this)) {
+			return;
+		}
 		if (getColisao() != null) {
 			acelerando = false;
 			ganho = 1;
@@ -1557,19 +1600,14 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 		}
 		if (getNoAtual().verificaRetaOuLargada()) {
+			if (!verificaDesconcentrado() && ganho < (ultGanhoReta * .8)) {
+				ganho = ultGanhoReta;
+			}
 			ganhosReta.add(ganho);
+			ultGanhoReta = ganho;
 		}
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
-		}
-		if (acelerando) {
-			if (ganho < ultGanhoReta) {
-				ganho = ultGanhoReta;
-			} else {
-				ultGanhoReta = ganho;
-			}
-		} else {
-			ultGanhoReta = 0;
 		}
 	}
 
@@ -1833,41 +1871,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	public void verificaColisaoCarroFrente(InterfaceJogo controleJogo) {
-		boolean verificaNoPitLane = controleJogo.verificaNoPitLane(this);
-		if (verificaNoPitLane) {
-			setColisao(null);
-			return;
-		}
-		centralizaCarroColisao(controleJogo);
-		List<Piloto> pilotos = controleJogo.getPilotos();
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-			Piloto pilotoFrente = (Piloto) iterator.next();
-			if (pilotoFrente.equals(this)) {
-				continue;
-			}
-			if (verificaNaoPrecisaDesviar(controleJogo, pilotoFrente)) {
-				continue;
-			}
-			if (this.equals(pilotoFrente.getColisao())) {
-				continue;
-			}
-			pilotoFrente.centralizaCarroColisao(controleJogo);
-			colisaoDiantera = getDiateiraColisao()
-					.intersects(pilotoFrente.getTrazeiraColisao())
-					|| getDiateiraColisao()
-							.intersects(pilotoFrente.getCentroColisao());
-			colisaoCentro = getCentroColisao()
-					.intersects(pilotoFrente.getTrazeiraColisao());
-			colisao = (colisaoDiantera || colisaoCentro) ? pilotoFrente : null;
-			if (colisao != null) {
-				return;
-			}
-		}
-		setColisao(null);
-
-	}
-
 	public boolean verificaNaoPrecisaDesviar(InterfaceJogo controleJogo,
 			Piloto pilotoFrente) {
 		boolean naoPrecisa = false;
@@ -1977,17 +1980,20 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		No proxPt = controleJogo.getNosDaPista().get(index);
 		Circuito circuito = controleJogo.getCircuito();
-		List<Point> escapeList = circuito.getEscapeList();
-		if (escapeList == null) {
+		Map<PontoDerrapada, List<No>> escapeMap = circuito.getEscapeMap();
+		if (escapeMap == null) {
 			return;
 		}
 		Point p = proxPt.getPoint();
-		for (Iterator iterator = escapeList.iterator(); iterator.hasNext();) {
-			Point point = (Point) iterator.next();
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p, point);
+		Set<PontoDerrapada> keySet = escapeMap.keySet();
+		for (Iterator<PontoDerrapada> iterator = keySet.iterator(); iterator
+				.hasNext();) {
+			PontoDerrapada pontoDerrapada = iterator.next();
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p,
+					pontoDerrapada.getPoint());
 			if (distaciaEntrePontos < distanciaEscape) {
 				distanciaEscape = distaciaEntrePontos;
-				pontoEscape = point;
+				pontoEscape = pontoDerrapada.getPoint();
 				indexRefEscape = index;
 			}
 		}
@@ -2036,14 +2042,25 @@ public class Piloto implements Serializable, PilotoSuave {
 		Rectangle2D rectangle = new Rectangle2D.Double(
 				(p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
 				Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
-		Point p1 = controleJogo.getCircuito().getPista1Full()
-				.get(noAtual.getIndex()).getPoint();
-		Point p2 = controleJogo.getCircuito().getPista2Full()
-				.get(noAtual.getIndex()).getPoint();
-		Point p5 = controleJogo.getCircuito().getPista5Full()
-				.get(noAtual.getIndex()).getPoint();
-		Point p4 = controleJogo.getCircuito().getPista4Full()
-				.get(noAtual.getIndex()).getPoint();
+		Point p1 = null;
+		Point p2 = null;
+		Point p4 = null;
+		Point p5 = null;
+		if (noAtual.isBox()) {
+			p1 = controleJogo.getCircuito().getBox1Full()
+					.get(noAtual.getIndex()).getPoint();
+			p2 = controleJogo.getCircuito().getBox2Full()
+					.get(noAtual.getIndex()).getPoint();
+		} else {
+			p1 = controleJogo.getCircuito().getPista1Full()
+					.get(noAtual.getIndex()).getPoint();
+			p2 = controleJogo.getCircuito().getPista2Full()
+					.get(noAtual.getIndex()).getPoint();
+			p5 = controleJogo.getCircuito().getPista5Full()
+					.get(noAtual.getIndex()).getPoint();
+			p4 = controleJogo.getCircuito().getPista4Full()
+					.get(noAtual.getIndex()).getPoint();
+		}
 		if (getTracado() == 0) {
 			carx = p.x;
 			cary = p.y;

@@ -375,8 +375,8 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltraPassagem(sowbreira.f1mane.entidades.Piloto,
 	 *      int)
 	 */
-	public void verificaUltrapassagem(Piloto piloto) {
-		controleCorrida.verificaUltrapassagem(piloto);
+	public void verificaAcidente(Piloto piloto) {
+		controleCorrida.verificaAcidente(piloto);
 	}
 
 	/**

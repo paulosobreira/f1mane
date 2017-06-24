@@ -553,7 +553,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
-	public void verificaUltrapassagem(Piloto piloto) {
+	public void verificaAcidente(Piloto piloto) {
 		// TODO Auto-generated method stub
 	}
 

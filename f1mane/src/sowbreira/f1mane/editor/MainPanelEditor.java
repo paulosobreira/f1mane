@@ -71,7 +71,6 @@ import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
-import sowbreira.f1mane.entidades.Ponto;
 import sowbreira.f1mane.entidades.PontoDerrapada;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -90,6 +89,7 @@ public class MainPanelEditor extends JPanel {
 	private JList boxJList;
 	private MainFrameEditor srcFrame;
 	private boolean desenhaTracado = true;
+	private boolean mostraBG = true;
 	private boolean creditos = false;
 	private boolean pontosEscape = false;
 	public final static Color oran = new Color(255, 188, 40, 180);
@@ -139,7 +139,6 @@ public class MainPanelEditor extends JPanel {
 	private boolean posicionaObjetoPista;
 	private Point ultimoClicado;
 	private FormularioListaObjetos formularioListaObjetos;
-	private boolean mostraBG = true;
 	protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
 	public MainPanelEditor() {
@@ -194,7 +193,6 @@ public class MainPanelEditor extends JPanel {
 			centralizarPonto(((No) circuito.getPistaFull().get(0)).getPoint());
 		}
 	}
-
 
 	private void vetorizarCircuito(boolean reprocessa) {
 		mx = 0;
@@ -1666,22 +1664,6 @@ public class MainPanelEditor extends JPanel {
 					circuito.getCreditos().y - 2, 8, 8);
 		}
 
-		if (circuito != null) {
-			int altura = Carro.LARGURA * 5;
-			int mAltura = altura / 2;
-			List<Point> escapeList = circuito.getEscapeList();
-
-			if (escapeList != null) {
-				for (Iterator iterator = escapeList.iterator(); iterator
-						.hasNext();) {
-					Point point = (Point) iterator.next();
-					g2d.setColor(ver);
-					g2d.fillOval(point.x - mAltura, point.y - mAltura, altura,
-							altura);
-				}
-			}
-		}
-
 		if (!desenhaTracado) {
 			return;
 		}
@@ -1736,9 +1718,41 @@ public class MainPanelEditor extends JPanel {
 			}
 		}
 		oldNo1 = null;
+		
+		
+		for (int i = 0; i < circuito.getBox1Full().size(); i += 10) {
+			No no = (No) circuito.getBox1Full().get(i);
+			g2d.setColor(no.getTipo());
+			conNoPista++;
+			if (oldNo1 == null) {
+				oldNo1 = no;
+			} else {
+				g2d.drawLine(oldNo1.getX(), oldNo1.getY(), no.getX(),
+						no.getY());
+				oldNo1 = no;
+			}
+		}
+		oldNo1 = null;
+		
 		No oldNo2 = null;
 		for (int i = 0; i < circuito.getPista2Full().size(); i += 10) {
 			No no = (No) circuito.getPista2Full().get(i);
+			g2d.setColor(no.getTipo());
+			conNoPista++;
+			if (oldNo2 == null) {
+				oldNo2 = no;
+			} else {
+				g2d.drawLine(oldNo2.getX(), oldNo2.getY(), no.getX(),
+						no.getY());
+				oldNo2 = no;
+			}
+
+		}
+		oldNo2 = null;
+		
+		
+		for (int i = 0; i < circuito.getBox2Full().size(); i += 10) {
+			No no = (No) circuito.getBox2Full().get(i);
 			g2d.setColor(no.getTipo());
 			conNoPista++;
 			if (oldNo2 == null) {
@@ -1828,13 +1842,19 @@ public class MainPanelEditor extends JPanel {
 				.iterator(); iterator.hasNext();) {
 			PontoDerrapada key = iterator.next();
 			List<No> list = escapeMap.get(key);
+			Point pOld = null;
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
 				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
-					g2d.setColor(Color.MAGENTA);
-					g2d.fillOval(Util.inteiro(no2.getX() - 5),
-							Util.inteiro(no2.getY() - 5), Util.inteiro(10),
-							Util.inteiro(10));
+					g2d.setColor(ObjetoEscapada.red);
+					Point pNew = new Point(Util.inteiro(no2.getX() - 5),
+							Util.inteiro(no2.getY() - 5));
+					if (pOld != null) {
+						g2d.drawLine(pOld.x, pOld.y, pNew.x, pNew.y);
+					}
+					pOld = pNew;
+				} else {
+					pOld = null;
 				}
 			}
 		}

@@ -21,15 +21,17 @@ public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
 	private String backGround;
 	private List<No> pista = new ArrayList<No>();
+	private List<No> pistaFull = new ArrayList<No>();
 	private List<No> pista1Full = new ArrayList<No>();
 	private List<No> pista2Full = new ArrayList<No>();
 	private List<No> pista5Full = new ArrayList<No>();
 	private List<No> pista4Full = new ArrayList<No>();
 	private Map<PontoDerrapada, List<No>> escapeMap = new HashMap<PontoDerrapada, List<No>>();
-	private transient List<No> pistaFull = new ArrayList<No>();
 	private transient List<No> pistaKey = new ArrayList<No>();
 	private List<No> box = new ArrayList<No>();
 	private transient List<No> boxFull = new ArrayList<No>();
+	private List<No> box1Full = new ArrayList<No>();
+	private List<No> box2Full = new ArrayList<No>();
 	private transient List<No> boxKey = new ArrayList<No>();
 	private double multiplicadorPista;
 	private double multiplicadorLarguraPista;
@@ -217,7 +219,6 @@ public class Circuito implements Serializable {
 				noAnt = no;
 			}
 		}
-
 		if (!boxTemp.isEmpty()) {
 			No no = (No) boxTemp.get(boxTemp.size() - 1);
 			Point p1 = noAnt.getPoint();
@@ -262,6 +263,14 @@ public class Circuito implements Serializable {
 				}
 			}
 		}
+		gerarTracado1e2Box();
+		gerarTracado1e2Pista();
+		gerarEscapeList();
+		gerarEscapeMap();
+
+	}
+
+	private void gerarTracado1e2Pista() {
 		pista1Full = new ArrayList<No>();
 		pista2Full = new ArrayList<No>();
 		Double calculaAngulo;
@@ -304,9 +313,51 @@ public class Circuito implements Serializable {
 			newNo2.setTracado(2);
 			pista2Full.add(newNo2);
 		}
-		gerarEscapeList();
-		gerarEscapeMap();
+	}
 
+	private void gerarTracado1e2Box() {
+		box1Full = new ArrayList<No>();
+		box2Full = new ArrayList<No>();
+		Double calculaAngulo;
+		for (int i = 0; i < boxFull.size(); i++) {
+			No no = boxFull.get(i);
+			Point p = no.getPoint();
+			Point frenteCar = null;
+			Point trazCar = null;
+			int traz = i - Piloto.MEIAENVERGADURA;
+			int frente = i + Piloto.MEIAENVERGADURA;
+			if (traz < 0) {
+				continue;
+			}
+			if (frente > (boxFull.size() - 1)) {
+				frente = (boxFull.size() - 1);
+			}
+			trazCar = boxFull.get(traz).getPoint();
+			frenteCar = boxFull.get(frente).getPoint();
+			calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
+			Rectangle2D rectangle = new Rectangle2D.Double(
+					(p.x - Carro.MEIA_LARGURA_CIMA),
+					(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA,
+					Carro.ALTURA_CIMA);
+			Point p1 = GeoUtil.calculaPonto(calculaAngulo,
+					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
+			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
+					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
+					new Point(Util.inteiro(rectangle.getCenterX()),
+							Util.inteiro(rectangle.getCenterY())));
+			No newNo1 = new No();
+			newNo1.setPoint(p1);
+			newNo1.setTipo(no.getTipo());
+			newNo1.setTracado(1);
+			box1Full.add(newNo1);
+			No newNo2 = new No();
+			newNo2.setPoint(p2);
+			newNo2.setTipo(no.getTipo());
+			newNo2.setTracado(2);
+			box2Full.add(newNo2);
+		}
 	}
 
 	private void gerarEscapeMap() {
@@ -359,34 +410,43 @@ public class Circuito implements Serializable {
 					pointDerrapagem);
 			double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2,
 					pointDerrapagem);
+			int contSaida = 0;
+			int max = Util
+					.inteiro(Carro.ALTURA * 3 * getMultiplicadorLarguraPista());
+			int contVolta = max;
+			int index = noPerto.getIndex();
+			int contMax = (int) (index + (max * 5));
+			int contPonto = 0;
 			if (distaciaEntrePontos1 < distaciaEntrePontos2) {
 				PontoDerrapada ponto = new PontoDerrapada();
 				ponto.setPoint(pointDerrapagem);
 				ponto.setPista(5);
-				int index = noPerto.getIndex();
 				pista5Full.set(index, pista1Full.get(index));
-				int contSaida = 0;
-				int max = Util.inteiro(
-						Carro.ALTURA * 3 * getMultiplicadorLarguraPista());
-				int contVolta = max;
-				int contMax = 0;
-				int contPonto = 0;
-				for (int i = index; i < index + (max * 4); i++) {
+				Point p5 = null;
+				for (int i = index; i < contMax; i++) {
 					No noIndex = pista1Full.get(i);
-					if (contMax > 1) {
-						contMax = 0;
+					if (i % 2 == 0) {
 						contSaida++;
-						if (contSaida < max) {
-							contPonto = contSaida;
-						} else if (contVolta > 0) {
-							contVolta--;
-							contPonto = contVolta;
-						}
-
-					} else {
-						contMax++;
 					}
-					Point p5 = GeoUtil.calculaPonto(calculaAngulo,
+					if (contSaida < max) {
+						contPonto = contSaida;
+					} else if (contVolta > 0) {
+						boolean sair = false;
+						for (int j = (index + 10); j < pista1Full.size(); j++) {
+							if (GeoUtil.distaciaEntrePontos(
+									pista1Full.get(j).getPoint(), p5) < 10) {
+								sair = true;
+							}
+						}
+						if (sair) {
+							break;
+						}
+						if (i % 3 == 0) {
+							contVolta--;
+						}
+						contPonto = contVolta;
+					}
+					p5 = GeoUtil.calculaPonto(calculaAngulo,
 							Util.inteiro(contPonto), noIndex.getPoint());
 					No newNo = new No();
 					newNo.setPoint(p5);
@@ -400,30 +460,35 @@ public class Circuito implements Serializable {
 				PontoDerrapada ponto = new PontoDerrapada();
 				ponto.setPoint(pointDerrapagem);
 				ponto.setPista(4);
-				int index = noPerto.getIndex();
 				pista4Full.set(index, pista2Full.get(index));
-				int contSaida = 0;
-				int max = Util.inteiro(
-						Carro.ALTURA * 3 * getMultiplicadorLarguraPista());
-				int contVolta = max;
-				int contMax = 0;
-				int contPonto = 0;
-				for (int i = index; i < index + (max * 4); i++) {
+				Point p4 = null;
+				for (int i = index; i < contMax; i++) {
 					No noIndex = pista2Full.get(i);
-					if (contMax > 1) {
-						contMax = 0;
+					if (i % 2 == 0) {
 						contSaida++;
-						if (contSaida < max) {
-							contPonto = contSaida;
-						} else if (contVolta > 0) {
-							contVolta--;
-							contPonto = contVolta;
-						}
-
-					} else {
-						contMax++;
 					}
-					Point p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
+					if (contSaida < max) {
+						contPonto = contSaida;
+					} else if (contVolta > 0) {
+						boolean sair = false;
+						for (int j = (index + 10); j < pista2Full.size(); j++) {
+							if (GeoUtil.distaciaEntrePontos(
+									pista2Full.get(j).getPoint(), p4) < 10) {
+								sair = true;
+							}
+						}
+						if (sair) {
+							break;
+						}
+						if (sair) {
+							break;
+						}
+						if (i % 3 == 0) {
+							contVolta--;
+						}
+						contPonto = contVolta;
+					}
+					p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
 							Util.inteiro(contPonto), noIndex.getPoint());
 					No newNo = new No();
 					newNo.setPoint(p4);
@@ -644,6 +709,14 @@ public class Circuito implements Serializable {
 
 	public List<No> getPista4Full() {
 		return pista4Full;
+	}
+
+	public List<No> getBox1Full() {
+		return box1Full;
+	}
+
+	public List<No> getBox2Full() {
+		return box2Full;
 	}
 
 }
