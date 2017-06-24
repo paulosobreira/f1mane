@@ -77,13 +77,14 @@
 			<fileset dir="build">
 				<exclude name=".*" />
 				<exclude name=".*/" />
-				<!-- <exclude name="**/*.java" /> -->
+				<exclude name="**/*.java" />
 				<exclude name="build.xml" />
 				<exclude name="log4j.properties" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.gif" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.png" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.wav" />
 			</fileset>
+			<!--<fileset dir="src" includes="**/*.java"/>-->
 		</jar>
 	</target>
 	<target name="criarJarRecursos">
@@ -219,7 +220,7 @@
 				<include name="F1-Mane-Online-en-us.bat" />
 				<include name="F1-Mane-Online-pt-br.bat" />
 				<include name="f1maneonline.jnlp" />
-				<include name="f1maneonline_en.jnlp" />				
+				<include name="f1maneonline_en.jnlp" />
 			</fileset>
 
 			<fileset dir="WebContent/WEB-INF/lib">
@@ -239,6 +240,8 @@
 
 
 	<target name="limpaJars">
+		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
+		<delete file="WebContent/WEB-INF/lib/f1maneRecursos.jar" />
 		<delete>
 			<fileset dir=".">
 				<include name="*.jar" />
