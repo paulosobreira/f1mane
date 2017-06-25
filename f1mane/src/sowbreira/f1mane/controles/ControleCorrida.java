@@ -224,11 +224,9 @@ public class ControleCorrida {
 
 	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoNaFrente) {
 		if (piloto.isAutoPos()) {
-			int novapos = Util.intervalo(0, 2);
-			int cont = 0;
-			while (novapos == pilotoNaFrente.getTracado() && cont < 7) {
-				novapos = Util.intervalo(0, 2);
-				cont++;
+			int novapos = 0;
+			if (pilotoNaFrente.getTracado() == 0) {
+				novapos = Util.intervalo(1, 2);
 			}
 			piloto.mudarTracado(novapos, controleJogo);
 		}
@@ -302,8 +300,7 @@ public class ControleCorrida {
 		return piloto;
 	}
 
-	public void verificaAcidente(Piloto piloto,
-			Piloto pilotoNaFrente) {
+	public void verificaAcidente(Piloto piloto, Piloto pilotoNaFrente) {
 		double fatorAcidenteMomento = fatorAcidente;
 		if (controleJogo.isChovendo()) {
 			fatorAcidenteMomento -= .2;
@@ -317,8 +314,8 @@ public class ControleCorrida {
 		}
 		if (Math.random() < fatorAcidenteMomento) {
 			if (piloto.isJogadorHumano()) {
-				verificaAcidenteJogadorHumano(piloto,
-						pilotoNaFrente, fatorAcidenteMomento);
+				verificaAcidenteJogadorHumano(piloto, pilotoNaFrente,
+						fatorAcidenteMomento);
 			} else {
 				verificaAcidenteIA(piloto, pilotoNaFrente,
 						fatorAcidenteMomento);
@@ -326,8 +323,8 @@ public class ControleCorrida {
 		}
 	}
 
-	private void verificaAcidenteIA(Piloto piloto,
-			Piloto pilotoNaFrente, double fatorAcidenteLocal) {
+	private void verificaAcidenteIA(Piloto piloto, Piloto pilotoNaFrente,
+			double fatorAcidenteLocal) {
 		int limiteStress = (int) (100 * (1 - fatorAcidenteLocal));
 		if (piloto.getCarro().getDurabilidadeAereofolio() <= 0) {
 			if (!controleSafetyCar.safetyCarUltimas3voltas()
@@ -539,9 +536,6 @@ public class ControleCorrida {
 		List<Piloto> pilotos = controleJogo.getPilotosCopia();
 		int menorDistancia = Integer.MAX_VALUE;
 		Carro carroFrente = null;
-		// if (piloto.getPtosBox() != 0) {
-		// return carroFrente;
-		// }
 		int indexAtual = piloto.getNoAtual().getIndex();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto pilotoFrente = (Piloto) iterator.next();

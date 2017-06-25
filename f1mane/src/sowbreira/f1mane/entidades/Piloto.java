@@ -1541,7 +1541,9 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		if (getColisao() != null) {
 			acelerando = false;
-			ganho = 1;
+			if (ganho > 5) {
+				ganho = 5;
+			}
 			return;
 		}
 		if (evitaBaterCarroFrente) {
@@ -1759,14 +1761,15 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (!isAutoPos()) {
 			return;
 		}
-		boolean limiteStress = getStress() < 70;
-
-		if (evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
+		if ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
 				&& getTracado() == carroPilotoDaFrenteRetardatario.getPiloto()
-						.getTracado()) {
+						.getTracado())
+				|| getDiferencaParaProximo() < (testeHabilidadePiloto()
+						? 80
+						: 120)) {
 			controleJogo.fazPilotoMudarTracado(this,
 					carroPilotoDaFrenteRetardatario.getPiloto());
-		} else if (!isJogadorHumano() && testeHabilidadePiloto() && limiteStress
+		} else if (!isJogadorHumano() && testeHabilidadePiloto()
 				&& pontoEscape != null
 				&& calculaDiffParaProximoRetardatario > 150
 				&& distanciaEscape < ((2 * controleJogo.getNiveljogo())
@@ -1782,16 +1785,14 @@ public class Piloto implements Serializable, PilotoSuave {
 					mudarTracado(1, controleJogo);
 				}
 			}
-		} else if (limiteStress
-				&& (calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
-						&& calculaDiffParaProximoRetardatarioMesmoTracado < (testeHabilidadePilotoCarro()
-								? 150
-								: 200))) {
+		} else if ((calculaDiffParaProximoRetardatarioMesmoTracado < calculaDiferencaParaAnterior
+				&& calculaDiffParaProximoRetardatarioMesmoTracado < (testeHabilidadePilotoCarro()
+						? 150
+						: 200))) {
 			controleJogo.fazPilotoMudarTracado(this,
 					carroPilotoDaFrenteRetardatario.getPiloto());
 		} else if (!isJogadorHumano() && carroPilotoAtras != null
-				&& mudouTracadoReta <= 1 && limiteStress
-				&& calculaDiferencaParaAnterior < 150
+				&& mudouTracadoReta <= 1 && calculaDiferencaParaAnterior < 150
 				&& carroPilotoAtras.getPiloto().getTracado() != getTracado()
 				&& calculaDiferencaParaAnterior > 100
 				&& carroPilotoAtras.getPiloto().getPtosBox() == 0
@@ -1801,8 +1802,7 @@ public class Piloto implements Serializable, PilotoSuave {
 					controleJogo) && noAtual.verificaRetaOuLargada()) {
 				mudouTracadoReta++;
 			}
-		} else if (!isJogadorHumano() && limiteStress
-				&& calculaDiferencaParaAnterior > 250
+		} else if (!isJogadorHumano() && calculaDiferencaParaAnterior > 250
 				&& calculaDiffParaProximoRetardatario > 250) {
 			mudarTracado(0, controleJogo);
 		}
@@ -1882,7 +1882,6 @@ public class Piloto implements Serializable, PilotoSuave {
 				naoPrecisa = true;
 			}
 		}
-
 		return naoPrecisa;
 	}
 
@@ -2803,17 +2802,17 @@ public class Piloto implements Serializable, PilotoSuave {
 			return false;
 		}
 		long agora = System.currentTimeMillis();
-		double multi = 14;
+		double multi = 10;
 		if (testeHabilidadePilotoCarro()) {
-			multi = -4;
+			multi -= 4;
 		}
 		if (getCarro().testeAerodinamica()) {
-			multi = -2;
+			multi -= 2;
 		}
 		if (getCarro().testeFreios()) {
-			multi = -2;
+			multi -= 2;
 		}
-		if (getTracado() != 4 && getTracado() != 5
+		if (getTracado() != 4 && getTracado() != 5 && getColisao() != null
 				&& (agora - ultimaMudancaPos) < (Constantes.CICLO * multi)) {
 			return false;
 		}
@@ -2823,7 +2822,11 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getTracado() == 2 && mudarTracado == 1) {
 			return false;
 		}
-		if (!verificaColisaoAoMudarDeTracado(interfaceJogo, mudarTracado)) {
+		if (verificaColisaoAoMudarDeTracado(interfaceJogo, mudarTracado)) {
+			ultimaMudancaPos = (long) (System.currentTimeMillis())
+					+ Constantes.CICLO;
+			return false;
+		} else {
 			double mod = Carro.ALTURA;
 			if (getTracado() == 0 && (mudarTracado == 4 || mudarTracado == 5)) {
 				mod *= 3.5;
@@ -2847,12 +2850,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 			ultimaMudancaPos = System.currentTimeMillis();
 			return true;
-		} else {
-			ultimaMudancaPos = (long) (System.currentTimeMillis()
-					+ (Constantes.CICLO * multi));
 		}
-		return false;
-
 	}
 
 	public int decIndiceTracado(InterfaceJogo interfaceJogo) {
