@@ -216,7 +216,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
-	public void atualizaPainel() {
+	public void atualizaIndexTracadoPilotos() {
 		decrementaTracado();
 		if (gerenciadorVisual != null) {
 			gerenciadorVisual.callBackAtualizarPos();
@@ -1046,7 +1046,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		List<Piloto> pilotosCopia = getPilotosCopia();
 		for (Iterator iterator = pilotosCopia.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			piloto.decIndiceTracado();
+			piloto.decIndiceTracado(this);
 		}
 	}
 

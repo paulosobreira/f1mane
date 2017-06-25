@@ -246,9 +246,9 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#atualizaPainel()
+	 * @see sowbreira.f1mane.controles.InterfaceJogo#atualizaIndexTracadoPilotos()
 	 */
-	public void atualizaPainel() {
+	public void atualizaIndexTracadoPilotos() {
 		decrementaTracado();
 		if (gerenciadorVisual != null) {
 			gerenciadorVisual.callBackAtualizarPos();
@@ -258,7 +258,7 @@ public class ControleJogoLocal extends ControleRecursos
 	public void decrementaTracado() {
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			piloto.decIndiceTracado();
+			piloto.decIndiceTracado(this);
 		}
 	}
 
@@ -1592,8 +1592,8 @@ public class ControleJogoLocal extends ControleRecursos
 				+ this.verificaPistaEmborrachada() + "<br>");
 		campos.add("porcentagemCorridaConcluida = "
 				+ this.porcentagemCorridaConcluida() + "<br>");
-		campos.add("FatorUtrapassagem = " + this.getFatorUtrapassagem()
-				+ "<br>");
+		campos.add(
+				"FatorUtrapassagem = " + this.getFatorUtrapassagem() + "<br>");
 		campos.add("FatorAcidente = " + this.getFatorAcidente() + "<br>");
 		campos.add("verificaNivelJogo = " + this.verificaNivelJogo() + "<br>");
 		campos.add("NumVoltaAtual = " + this.getNumVoltaAtual() + "<br>");

@@ -221,7 +221,7 @@ public class MonitorJogo implements Runnable {
 						if (jogoCliente.getPilotoSelecionado() == null) {
 							jogoCliente.selecionaPilotoJogador();
 						}
-						jogoCliente.atualizaPainel();
+						jogoCliente.atualizaIndexTracadoPilotos();
 						Thread.sleep(tempoCiclo);
 					} catch (Exception e) {
 						interrupt = true;
@@ -405,7 +405,7 @@ public class MonitorJogo implements Runnable {
 				}
 				if (piloto.getIndiceTracado() > 0
 						&& pos != piloto.getTracado()) {
-					piloto.decIndiceTracado();
+					piloto.decIndiceTracado(jogoCliente);
 				} else {
 					if (piloto.getIndiceTracado() <= 0) {
 						piloto.setTracadoAntigo(piloto.getTracado());

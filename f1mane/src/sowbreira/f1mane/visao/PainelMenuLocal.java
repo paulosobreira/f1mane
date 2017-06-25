@@ -2754,7 +2754,6 @@ public class PainelMenuLocal {
 						.getResourceAsStream(circuitoStr));
 				circuitoMini = (Circuito) ois.readObject();
 				circuitoMiniCarregado = circuitoStr;
-				circuitoMini.vetorizarPista();
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);

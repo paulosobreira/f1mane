@@ -158,7 +158,7 @@ public class ControleCorrida {
 		Logger.logar("iniciarCorrida()");
 		controleJogo.selecionaPilotoJogador();
 		Logger.logar("selecionaPilotoJogador()");
-		controleJogo.atualizaPainel();
+		controleJogo.atualizaIndexTracadoPilotos();
 		Logger.logar("atualizaPainel()");
 		controleCiclo.start();
 		Logger.logar("controleCiclo.start()");

@@ -79,7 +79,7 @@ public interface InterfaceJogo {
 
 	public String getClima();
 
-	public void atualizaPainel();
+	public void atualizaIndexTracadoPilotos();
 
 	public void info(String info);
 
@@ -286,7 +286,7 @@ public interface InterfaceJogo {
 
 	public int getLag();
 
-	public int obterLadoDerrapa(Point pontoDerrapada);
+	public int obterLadoEscape(Point pontoDerrapada);
 
 	public void decrementaTracado();
 

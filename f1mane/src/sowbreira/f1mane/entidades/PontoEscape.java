@@ -5,7 +5,7 @@ import java.awt.Point;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class PontoDerrapada {
+public class PontoEscape {
 	@JsonIgnore
 	private Point point;
 

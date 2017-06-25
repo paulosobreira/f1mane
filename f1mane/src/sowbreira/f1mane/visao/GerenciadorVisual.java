@@ -1072,7 +1072,6 @@ public class GerenciadorVisual {
 			ois = new ObjectInputStream(carregadorRecursos.getClass()
 					.getResourceAsStream(circuitoStr));
 			circuito = (Circuito) ois.readObject();
-			circuito.vetorizarPista();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}

@@ -49,7 +49,7 @@ import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotoSuave;
-import sowbreira.f1mane.entidades.PontoDerrapada;
+import sowbreira.f1mane.entidades.PontoEscape;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
@@ -886,9 +886,9 @@ public class PainelCircuito {
 	private int loopCalculaGanhoSuave(int diff, int incExtra) {
 		int ganhoSuave = 0;
 		int maxLoop = 1000;
-		int inc = 25;
+		int inc = 40;
 		if (gerenciadorVisual.getFpsLimite() == 30.0) {
-			inc = 15;
+			inc = 20;
 		}
 		inc += incExtra;
 		for (int i = 0; i < maxLoop; i += inc) {
@@ -1960,10 +1960,10 @@ public class PainelCircuito {
 			}
 		}
 
-		Map<PontoDerrapada, List<No>> escapeMap = circuito.getEscapeMap();
-		for (Iterator<PontoDerrapada> iterator = escapeMap.keySet()
+		Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
+		for (Iterator<PontoEscape> iterator = escapeMap.keySet()
 				.iterator(); iterator.hasNext();) {
-			PontoDerrapada key = iterator.next();
+			PontoEscape key = iterator.next();
 			List<No> list = escapeMap.get(key);
 			Point pOld = null;
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
@@ -3775,7 +3775,7 @@ public class PainelCircuito {
 			if (pontoDerrapada != null
 					&& distancia < (2 * Carro.RAIO_DERRAPAGEM)) {
 				int ladoDerrapa = controleJogo
-						.obterLadoDerrapa(piloto.getPontoDerrapada());
+						.obterLadoEscape(piloto.getPontoDerrapada());
 				if (ladoDerrapa == 5) {
 					if (Math.random() > 0.5) {
 						desenhaFumacaTravarRodas(width, height, afRotate,

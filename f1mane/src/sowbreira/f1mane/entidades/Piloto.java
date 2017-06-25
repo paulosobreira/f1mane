@@ -1315,14 +1315,17 @@ public class Piloto implements Serializable, PilotoSuave {
 				&& !controleJogo.isSafetyCarNaPista()
 				&& AGRESSIVO.equals(modoPilotagem)
 				&& !testeHabilidadePilotoCarro() && getPtosBox() == 0) {
-			controleJogo.travouRodas(this);
-			escapaTracado(controleJogo);
+			if (escapaTracado(controleJogo) && !verificaDesconcentrado()) {
+				setCiclosDesconcentrado(Util.intervalo(50, 150));
+				if (controleJogo.verificaInfoRelevante(this))
+					controleJogo.info(Lang.msg("saiDaPista",
+							new String[]{Html.superRed(getNome())}));
+			}
 		}
 		/**
 		 * Volta a pista apos escapada
 		 */
 		if (getTracado() == 4 || getTracado() == 5) {
-
 			setModoPilotagem(LENTO);
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 			if (getIndiceTracado() <= 0) {
@@ -1338,26 +1341,10 @@ public class Piloto implements Serializable, PilotoSuave {
 						mudarTracado(1, controleJogo);
 					}
 				}
-				if (controleJogo.getCircuito().getPista4Full()
-						.get(getNoAtual().getIndex()).getTracado() != 4
-						|| controleJogo.getCircuito().getPista5Full()
-								.get(getNoAtual().getIndex())
-								.getTracado() != 5) {
-					if (controleJogo.isChovendo()) {
-						ganho *= 0.5;
-					} else {
-						ganho *= 0.7;
-					}
-					if (!verificaDesconcentrado()) {
-						setCiclosDesconcentrado(Util.intervalo(50, 200));
-						if (controleJogo.verificaInfoRelevante(this))
-							controleJogo.info(Lang.msg("saiDaPista",
-									new String[]{Html.superRed(getNome())}));
-					}
-				}
+				ganho *= .7;
 			} else {
 				controleJogo.travouRodas(this);
-				decStress(2);
+				ganho *= 1.3;
 			}
 		}
 	}
@@ -1549,7 +1536,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private void processaLimitadorGanho(InterfaceJogo controleJogo) {
 		limiteGanho = false;
-		if (!verificaForaPista(this)) {
+		if (verificaForaPista(this)) {
 			return;
 		}
 		if (getColisao() != null) {
@@ -1563,7 +1550,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			return;
 		}
 		if (ganho > 0.0 && ganho < 1.0) {
-			ganho = 1;
+			ganho = Math.random() > 0.5 ? 1 : 0;
 		}
 		if (ganho > 70) {
 			limiteGanho = true;
@@ -1600,14 +1587,19 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 		}
 		if (getNoAtual().verificaRetaOuLargada()) {
-			if (!verificaDesconcentrado() && ganho < (ultGanhoReta * .8)) {
-				ganho = ultGanhoReta;
-			}
 			ganhosReta.add(ganho);
-			ultGanhoReta = ganho;
 		}
 		if (ganho > ganhoMax) {
 			ganhoMax = ganho;
+		}
+		if (acelerando) {
+			if (ganho < ultGanhoReta) {
+				ganho = ultGanhoReta;
+			} else {
+				ultGanhoReta = ganho;
+			}
+		} else {
+			ultGanhoReta = 0;
 		}
 	}
 
@@ -1782,11 +1774,11 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (getTracado() != 0) {
 				mudarTracado(0, controleJogo);
 			} else {
-				int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoEscape);
-				if (ladoDerrapa == 5) {
+				int ladoEscape = controleJogo.obterLadoEscape(pontoEscape);
+				if (ladoEscape == 5) {
 					mudarTracado(2, controleJogo);
 				}
-				if (ladoDerrapa == 4) {
+				if (ladoEscape == 4) {
 					mudarTracado(1, controleJogo);
 				}
 			}
@@ -1809,7 +1801,8 @@ public class Piloto implements Serializable, PilotoSuave {
 					controleJogo) && noAtual.verificaRetaOuLargada()) {
 				mudouTracadoReta++;
 			}
-		} else if (limiteStress && calculaDiferencaParaAnterior > 250
+		} else if (!isJogadorHumano() && limiteStress
+				&& calculaDiferencaParaAnterior > 250
 				&& calculaDiffParaProximoRetardatario > 250) {
 			mudarTracado(0, controleJogo);
 		}
@@ -1911,7 +1904,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (piloto.getPtosBox() > 0) {
 			return;
 		}
-		limiteEvitarBatrCarroFrente = 100;
+		limiteEvitarBatrCarroFrente = 150;
 		if (getCarro().getDurabilidadeAereofolio() < controleJogo
 				.getDurabilidadeAreofolio() / 2) {
 			limiteEvitarBatrCarroFrente += 100;
@@ -1945,16 +1938,14 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getNoAtual() != null && indexRefEscape < getNoAtual().getIndex()) {
 			return false;
 		}
-		int ladoDerrapa = controleJogo.obterLadoDerrapa(pontoEscape);
-		Logger.logar(
-				"ladoDerrapa " + ladoDerrapa + " getTracado() " + getTracado());
-		if (ladoDerrapa == 5 && getTracado() == 2) {
+		int ladoEscape = controleJogo.obterLadoEscape(pontoEscape);
+		if (ladoEscape == 5 && getTracado() == 2) {
 			return false;
 		}
-		if (ladoDerrapa == 4 && getTracado() == 1) {
+		if (ladoEscape == 4 && getTracado() == 1) {
 			return false;
 		}
-		mudarTracado(ladoDerrapa, controleJogo);
+		mudarTracado(ladoEscape, controleJogo);
 		return true;
 	}
 
@@ -1980,15 +1971,15 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		No proxPt = controleJogo.getNosDaPista().get(index);
 		Circuito circuito = controleJogo.getCircuito();
-		Map<PontoDerrapada, List<No>> escapeMap = circuito.getEscapeMap();
+		Map<PontoEscape, List<No>> escapeMap = circuito.getEscapeMap();
 		if (escapeMap == null) {
 			return;
 		}
 		Point p = proxPt.getPoint();
-		Set<PontoDerrapada> keySet = escapeMap.keySet();
-		for (Iterator<PontoDerrapada> iterator = keySet.iterator(); iterator
+		Set<PontoEscape> keySet = escapeMap.keySet();
+		for (Iterator<PontoEscape> iterator = keySet.iterator(); iterator
 				.hasNext();) {
-			PontoDerrapada pontoDerrapada = iterator.next();
+			PontoEscape pontoDerrapada = iterator.next();
 			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p,
 					pontoDerrapada.getPoint());
 			if (distaciaEntrePontos < distanciaEscape) {
@@ -2060,6 +2051,12 @@ public class Piloto implements Serializable, PilotoSuave {
 					.get(noAtual.getIndex()).getPoint();
 			p4 = controleJogo.getCircuito().getPista4Full()
 					.get(noAtual.getIndex()).getPoint();
+			if (p4 == null) {
+				p4 = p2;
+			}
+			if (p5 == null) {
+				p5 = p1;
+			}
 		}
 		if (getTracado() == 0) {
 			carx = p.x;
@@ -2858,11 +2855,11 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	}
 
-	public int decIndiceTracado() {
-		return decIndiceTracado(1);
+	public int decIndiceTracado(InterfaceJogo interfaceJogo) {
+		return decIndiceTracado(interfaceJogo, 1);
 	}
 
-	public int decIndiceTracado(int decExtra) {
+	public int decIndiceTracado(InterfaceJogo interfaceJogo, int decExtra) {
 		if (indiceTracado <= 0) {
 			return 0;
 		}

@@ -26,7 +26,7 @@ public class Circuito implements Serializable {
 	private List<No> pista2Full = new ArrayList<No>();
 	private List<No> pista5Full = new ArrayList<No>();
 	private List<No> pista4Full = new ArrayList<No>();
-	private Map<PontoDerrapada, List<No>> escapeMap = new HashMap<PontoDerrapada, List<No>>();
+	private Map<PontoEscape, List<No>> escapeMap = new HashMap<PontoEscape, List<No>>();
 	private transient List<No> pistaKey = new ArrayList<No>();
 	private List<No> box = new ArrayList<No>();
 	private transient List<No> boxFull = new ArrayList<No>();
@@ -326,13 +326,14 @@ public class Circuito implements Serializable {
 			Point trazCar = null;
 			int traz = i - Piloto.MEIAENVERGADURA;
 			int frente = i + Piloto.MEIAENVERGADURA;
-			if (traz < 0) {
-				continue;
-			}
 			if (frente > (boxFull.size() - 1)) {
 				frente = (boxFull.size() - 1);
 			}
-			trazCar = boxFull.get(traz).getPoint();
+			if (traz < 0) {
+				trazCar = pistaFull.get(entradaBoxIndex + traz).getPoint();
+			} else {
+				trazCar = boxFull.get(traz).getPoint();
+			}
 			frenteCar = boxFull.get(frente).getPoint();
 			calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
 			Rectangle2D rectangle = new Rectangle2D.Double(
@@ -361,7 +362,7 @@ public class Circuito implements Serializable {
 	}
 
 	private void gerarEscapeMap() {
-		escapeMap = new HashMap<PontoDerrapada, List<No>>();
+		escapeMap = new HashMap<PontoEscape, List<No>>();
 		pista4Full = new ArrayList<No>();
 		pista4Full.addAll(pista2Full);
 		pista5Full = new ArrayList<No>();
@@ -412,13 +413,13 @@ public class Circuito implements Serializable {
 					pointDerrapagem);
 			int contSaida = 0;
 			int max = Util
-					.inteiro(Carro.ALTURA * 3 * getMultiplicadorLarguraPista());
+					.inteiro(Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista());
 			int contVolta = max;
 			int index = noPerto.getIndex();
-			int contMax = (int) (index + (max * 5));
+			int contMax = (int) (index + (max * 15));
 			int contPonto = 0;
 			if (distaciaEntrePontos1 < distaciaEntrePontos2) {
-				PontoDerrapada ponto = new PontoDerrapada();
+				PontoEscape ponto = new PontoEscape();
 				ponto.setPoint(pointDerrapagem);
 				ponto.setPista(5);
 				pista5Full.set(index, pista1Full.get(index));
@@ -434,7 +435,7 @@ public class Circuito implements Serializable {
 						boolean sair = false;
 						for (int j = (index + 10); j < pista1Full.size(); j++) {
 							if (GeoUtil.distaciaEntrePontos(
-									pista1Full.get(j).getPoint(), p5) < 10) {
+									pista1Full.get(j).getPoint(), p5) < 3) {
 								sair = true;
 							}
 						}
@@ -457,7 +458,7 @@ public class Circuito implements Serializable {
 				escapeMap.put(ponto, pista5Full);
 			}
 			if (distaciaEntrePontos2 < distaciaEntrePontos1) {
-				PontoDerrapada ponto = new PontoDerrapada();
+				PontoEscape ponto = new PontoEscape();
 				ponto.setPoint(pointDerrapagem);
 				ponto.setPista(4);
 				pista4Full.set(index, pista2Full.get(index));
@@ -473,7 +474,7 @@ public class Circuito implements Serializable {
 						boolean sair = false;
 						for (int j = (index + 10); j < pista2Full.size(); j++) {
 							if (GeoUtil.distaciaEntrePontos(
-									pista2Full.get(j).getPoint(), p4) < 10) {
+									pista2Full.get(j).getPoint(), p4) < 3) {
 								sair = true;
 							}
 						}
@@ -699,7 +700,7 @@ public class Circuito implements Serializable {
 		return pista2Full;
 	}
 
-	public Map<PontoDerrapada, List<No>> getEscapeMap() {
+	public Map<PontoEscape, List<No>> getEscapeMap() {
 		return escapeMap;
 	}
 

@@ -22,7 +22,7 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.PontoDerrapada;
+import sowbreira.f1mane.entidades.PontoEscape;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 /**
@@ -403,12 +403,12 @@ public abstract class ControleRecursos {
 
 	}
 
-	public int obterLadoDerrapa(Point pontoDerrapada) {
-		Set<PontoDerrapada> keySet = circuito.getEscapeMap().keySet();
+	public int obterLadoEscape(Point pontoDerrapada) {
+		Set<PontoEscape> keySet = circuito.getEscapeMap().keySet();
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
-			PontoDerrapada pontoDerrapadaKey = (PontoDerrapada) iterator.next();
-			if(pontoDerrapadaKey.getPoint().equals(pontoDerrapada)){
-				return pontoDerrapadaKey.getPista();
+			PontoEscape pontoEscapeKey = (PontoEscape) iterator.next();
+			if(pontoEscapeKey.getPoint().equals(pontoDerrapada)){
+				return pontoEscapeKey.getPista();
 			}
 		}
 		return 0;

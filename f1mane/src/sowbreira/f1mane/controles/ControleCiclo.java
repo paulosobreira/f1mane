@@ -47,12 +47,8 @@ public class ControleCiclo extends Thread {
 
 	public void run() {
 		try {
-			controleJogo.atualizaPainel();
-			Thread.sleep(Constantes.CICLO);
 			controleJogo.desenhaQualificacao();
 			controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
-			Thread.sleep(Constantes.CICLO);
-			controleJogo.atualizaPainel();
 			Thread.sleep(2000);
 			controleJogo.apagarLuz();
 			Thread.sleep(1000);
@@ -96,7 +92,7 @@ public class ControleCiclo extends Thread {
 					}
 					controleCorrida.atualizaClassificacao();
 					controleCorrida.verificaFinalCorrida();
-					controleJogo.atualizaPainel();
+					controleJogo.atualizaIndexTracadoPilotos();
 					Thread.sleep(Constantes.CICLO);
 					contadorCiclos++;
 				} catch (Exception e) {
