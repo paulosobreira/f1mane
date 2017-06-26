@@ -390,19 +390,8 @@ public class MonitorJogo implements Runnable {
 				}
 				piloto.setJogadorHumano(posis.humano);
 				int pos = posis.tracado;
-				double mod = Carro.ALTURA;
+				double mod = Carro.ALTURA * 2;
 
-				if (piloto.getTracado() == 0 && (pos == 4 || pos == 5)) {
-					mod *= 3;
-				} else if ((piloto.getTracado() == 1
-						|| piloto.getTracado() == 2)
-						&& (pos == 4 || pos == 5)) {
-					mod *= 2;
-				} else if ((piloto.getTracado() == 5
-						|| piloto.getTracado() == 4)
-						&& (pos == 2 || pos == 1)) {
-					mod *= 2;
-				}
 				if (piloto.getIndiceTracado() > 0
 						&& pos != piloto.getTracado()) {
 					piloto.decIndiceTracado(jogoCliente);
