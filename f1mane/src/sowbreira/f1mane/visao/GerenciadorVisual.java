@@ -1556,7 +1556,7 @@ public class GerenciadorVisual {
 			}
 			ganhoSuave += 1;
 		}
-		System.out.println(ganhoSuave);
+//		System.out.println(ganhoSuave);
 	}
 
 	public void setMouseZoom(double d) {

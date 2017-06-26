@@ -661,8 +661,6 @@ public class ControleJogosServer {
 			return null;
 		}
 		piloto.setAtivarDRS(true);
-		Logger.logar("mudarTracado clientPaddockPack.getTracado() "
-				+ clientPaddockPack.getTracado());
 		piloto.mudarTracado(clientPaddockPack.getTracado(), jogoServidor);
 		return null;
 	}

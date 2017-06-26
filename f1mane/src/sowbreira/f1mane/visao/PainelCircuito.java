@@ -807,7 +807,7 @@ public class PainelCircuito {
 		}
 		int ganhoSuave = 0;
 		if (controleJogo instanceof JogoCliente) {
-			ganhoSuave = loopCalculaGanhoSuave(diff, 30);
+			ganhoSuave = loopCalculaGanhoSuave(diff, 20);
 		} else {
 			ganhoSuave = loopCalculaGanhoSuave(diff, 0);
 		}
@@ -823,6 +823,11 @@ public class PainelCircuito {
 				&& noAtual.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
 				&& diff > 100) {
 			ganhoSuave = ganhoSuaveAnt;
+		}
+		if (noAtualSuave.verificaRetaOuLargada()
+				&& noAtual.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
+				&& diff > 50) {
+			ganhoSuave = ganhoSuaveAnt-1;
 		}
 		if (diff == 0) {
 			ganhoSuave = 0;

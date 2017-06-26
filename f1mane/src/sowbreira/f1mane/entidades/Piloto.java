@@ -1341,10 +1341,9 @@ public class Piloto implements Serializable, PilotoSuave {
 						mudarTracado(1, controleJogo);
 					}
 				}
-				ganho *= .7;
+				ganho *= .3;
 			} else {
 				controleJogo.travouRodas(this);
-				ganho *= 1.3;
 			}
 		}
 	}
@@ -2861,18 +2860,17 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (indiceTracado <= 0) {
 			return 0;
 		}
-		if (getPtosBox() != 0) {
-			indiceTracado--;
-		} else if (indiceTracado % 2 == 0) {
-			indiceTracado -= 3;
-		} else {
-			indiceTracado -= 2;
-		}
-		if (getTracado() == 4 || getTracado() == 5) {
+		if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
 			indiceTracado -= decExtra;
 		} else {
-			if (noAtual.verificaRetaOuLargada()
-					&& getCarro().testeAerodinamica()) {
+			if (getPtosBox() != 0) {
+				indiceTracado--;
+			} else if (indiceTracado % 2 == 0) {
+				indiceTracado -= 3;
+			} else {
+				indiceTracado -= 2;
+			}
+			if (getTracado() == 4 || getTracado() == 5) {
 				indiceTracado -= decExtra;
 			}
 		}
