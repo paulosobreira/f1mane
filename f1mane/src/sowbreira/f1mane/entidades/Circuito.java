@@ -412,8 +412,8 @@ public class Circuito implements Serializable {
 			double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2,
 					pointDerrapagem);
 			int contSaida = 0;
-			int max = Util
-					.inteiro(Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista());
+			int max = Util.inteiro(
+					Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista());
 			int contVolta = max;
 			int index = noPerto.getIndex();
 			int contMax = (int) (index + (max * 15));
@@ -500,8 +500,29 @@ public class Circuito implements Serializable {
 				escapeMap.put(ponto, pista4Full);
 			}
 		}
+		for (int i = 0; i < pista4Full.size(); i++) {
+			No no = pista4Full.get(i);
+			if (no.getTracado() != 4) {
+				pista4Full.set(i, null);
+			}
+		}
+		for (int i = 0; i < pista5Full.size(); i++) {
+			No no = pista5Full.get(i);
+			if (no.getTracado() != 5) {
+				pista5Full.set(i, null);
+			}
+		}
 	}
 
+	public static void main(String[] args) {
+		List<String> teste = new ArrayList<String>();
+		teste.add("ASD");
+		teste.add(null);
+		teste.add("BLA");
+		for (int i = 0; i < teste.size(); i++) {
+			System.out.println(teste.get(i));
+		}
+	}
 	private void gerarEscapeList() {
 		escapeList = new ArrayList<Point>();
 		List<ObjetoPista> objetos = getObjetos();

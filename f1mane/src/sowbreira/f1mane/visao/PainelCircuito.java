@@ -62,9 +62,9 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = true;
+	public static boolean desenhaBkg = false;
 	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = true;
+	public static boolean desenhaImagens = false;
 
 	private boolean verControles = true;
 	private boolean carragandoBkg = false;
@@ -826,7 +826,7 @@ public class PainelCircuito {
 		if (noAtualSuave.verificaRetaOuLargada()
 				&& noAtual.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
 				&& diff > 50) {
-			ganhoSuave = ganhoSuaveAnt-1;
+			ganhoSuave = ganhoSuaveAnt - 1;
 		}
 		if (diff == 0) {
 			ganhoSuave = 0;
@@ -1972,6 +1972,10 @@ public class PainelCircuito {
 			Point pOld = null;
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
+				if (no2 == null) {
+					pOld = null;
+					continue;
+				}
 				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
 					g2d.setColor(ObjetoEscapada.red);
 					Point pNew = new Point(Util.inteiro(
@@ -2786,12 +2790,12 @@ public class PainelCircuito {
 	}
 
 	private void desenhaBackGroundComStrokes(Graphics2D g2d) {
-		if (!desenhaPista) {
-			return;
-		}
 		g2d.setColor(Color.white);
 		g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(),
 				(int) limitesViewPortFull.getHeight());
+		if (!desenhaPista) {
+			return;
+		}
 		int larguraPistaPixeisLoc = Util
 				.inteiro(100 * circuito.getMultiplicadorLarguraPista() * zoom);
 		if (larguraPistaPixeisLoc != larguraPistaPixeis) {
@@ -3230,9 +3234,15 @@ public class PainelCircuito {
 			p2 = controleJogo.getCircuito().getPista2Full()
 					.get(noAtual.getIndex()).getPoint();
 			p5 = controleJogo.getCircuito().getPista5Full()
-					.get(noAtual.getIndex()).getPoint();
+					.get(noAtual.getIndex()) != null
+							? controleJogo.getCircuito().getPista5Full()
+									.get(noAtual.getIndex()).getPoint()
+							: p1;
 			p4 = controleJogo.getCircuito().getPista4Full()
-					.get(noAtual.getIndex()).getPoint();
+					.get(noAtual.getIndex()) != null
+							? controleJogo.getCircuito().getPista4Full()
+									.get(noAtual.getIndex()).getPoint()
+							: p2;
 		}
 
 		piloto.setP1(p1);
