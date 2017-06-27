@@ -766,7 +766,7 @@ public class MonitorJogo implements Runnable {
 
 	}
 
-	public void mudarAutoPos() {
+	public void mudarAutoPos(final boolean autoPos) {
 		Logger.logar("mudarAutoPos ");
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
@@ -777,7 +777,10 @@ public class MonitorJogo implements Runnable {
 			public void run() {
 				try {
 					ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
-							Comandos.MUDAR_MODO_AUTOPOS, sessaoCliente);
+							autoPos
+									? Comandos.MUDAR_MODO_AUTOPOS_S
+									: Comandos.MUDAR_MODO_AUTOPOS_N,
+							sessaoCliente);
 					clientPaddockPack
 							.setNomeJogo(jogoCliente.getNomeJogoCriado());
 					Object ret = controlePaddockCliente
@@ -794,7 +797,6 @@ public class MonitorJogo implements Runnable {
 	}
 
 	public void mudarTracado(final int tracado) {
-		Logger.logar("mudarTracado(final int tracado) = " + tracado);
 		if (threadCmd != null && threadCmd.isAlive()) {
 			return;
 		}

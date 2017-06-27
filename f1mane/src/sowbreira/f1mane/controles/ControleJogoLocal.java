@@ -975,10 +975,10 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public void mudarAutoPos() {
+	public void mudarAutoPos(boolean autoPos) {
 		if (pilotoJogador == null)
 			return;
-		pilotoJogador.mudarAutoTracado();
+		pilotoJogador.setAutoPos(autoPos);
 
 	}
 

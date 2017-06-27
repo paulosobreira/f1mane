@@ -763,8 +763,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void mudarAutoPos() {
-		monitorJogo.mudarAutoPos();
+	public void mudarAutoPos(boolean autoPos) {
+		monitorJogo.mudarAutoPos(autoPos);
 	}
 
 	@Override
@@ -1372,6 +1372,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void setAtualizacaoSuave(boolean atualizacaoSuave) {
+		Logger.logar("jogoCliente atualizacaoSuave " + atualizacaoSuave);
 		this.atualizacaoSuave = atualizacaoSuave;
 	}
 

@@ -1329,19 +1329,29 @@ public class Piloto implements Serializable, PilotoSuave {
 			setModoPilotagem(LENTO);
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 			if (getIndiceTracado() <= 0) {
+				int mudarTracado = 0;
 				if (getTracado() == 4) {
 					if (controleJogo.getCircuito().getPista4Full()
 							.get(getNoAtual().getIndex()).getTracado() != 4) {
-						mudarTracado(2, controleJogo);
+						mudarTracado = 2;
+						mudarTracado(mudarTracado, controleJogo, true);
 					}
 				}
 				if (getTracado() == 5) {
 					if (controleJogo.getCircuito().getPista5Full()
 							.get(getNoAtual().getIndex()).getTracado() != 5) {
-						mudarTracado(1, controleJogo);
+						mudarTracado = 1;
+						mudarTracado(mudarTracado, controleJogo, true);
 					}
 				}
-				ganho *= .3;
+				if (carroPilotoAtras != null
+						&& carroPilotoAtras.getPiloto()
+								.getTracado() == mudarTracado
+						&& carroPilotoAtras.getPiloto().getColisao() != null) {
+					ganho *= 1.2;
+				} else {
+					ganho *= .3;
+				}
 			} else {
 				controleJogo.travouRodas(this);
 			}
@@ -1754,18 +1764,18 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-		if (!noAtual.verificaRetaOuLargada()) {
-			mudouTracadoReta = 0;
-		}
 		if (!isAutoPos()) {
 			return;
+		}
+		if (!noAtual.verificaRetaOuLargada()) {
+			mudouTracadoReta = 0;
 		}
 		if ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
 				&& getTracado() == carroPilotoDaFrenteRetardatario.getPiloto()
 						.getTracado())
 				|| getDiferencaParaProximo() < (testeHabilidadePiloto()
-						? 17
-						: 140)) {
+						? 150
+						: 100)) {
 			controleJogo.fazPilotoMudarTracado(this,
 					carroPilotoDaFrenteRetardatario.getPiloto());
 		} else if (!isJogadorHumano() && testeHabilidadePiloto()
@@ -2773,20 +2783,12 @@ public class Piloto implements Serializable, PilotoSuave {
 		ultimoConsumoPneu = null;
 		ultsConsumosPneu.clear();
 	}
-
 	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo) {
-		if (indiceTracado != 0) {
-			return false;
-		}
-		if (getTracado() == 4 && (mudarTracado == 0 || mudarTracado == 1)) {
-			return false;
-		}
-		if (getTracado() == 5 && (mudarTracado == 0 || mudarTracado == 2)) {
-			return false;
-		}
-		if (getTracado() == 0 && (mudarTracado == 4 || mudarTracado == 5)) {
-			return false;
-		}
+		return mudarTracado(mudarTracado, interfaceJogo, false);
+	}
+
+	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo,
+			boolean mesmoComColisao) {
 		if (getSetaBaixo() <= 0) {
 			if (getTracado() == 0 && mudarTracado == 1) {
 				setSetaCima(11);
@@ -2802,6 +2804,18 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (getTracado() == 1 && mudarTracado == 0) {
 				setSetaBaixo(11);
 			}
+		}
+		if (indiceTracado != 0) {
+			return false;
+		}
+		if (getTracado() == 4 && (mudarTracado == 0 || mudarTracado == 1)) {
+			return false;
+		}
+		if (getTracado() == 5 && (mudarTracado == 0 || mudarTracado == 2)) {
+			return false;
+		}
+		if (getTracado() == 0 && (mudarTracado == 4 || mudarTracado == 5)) {
+			return false;
 		}
 		if (getTracado() == mudarTracado) {
 			return false;
@@ -2827,9 +2841,9 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getTracado() == 2 && mudarTracado == 1) {
 			return false;
 		}
-		if (verificaColisaoAoMudarDeTracado(interfaceJogo, mudarTracado)) {
-			ultimaMudancaPos = (long) (System.currentTimeMillis())
-					+ Constantes.CICLO;
+		if (!mesmoComColisao && verificaColisaoAoMudarDeTracado(interfaceJogo,
+				mudarTracado)) {
+			ultimaMudancaPos = (long) (System.currentTimeMillis());
 			return false;
 		} else {
 			double mod = Carro.ALTURA * 2;
@@ -2860,7 +2874,11 @@ public class Piloto implements Serializable, PilotoSuave {
 			indiceTracado -= decExtra;
 		} else {
 			if (getPtosBox() != 0) {
-				indiceTracado--;
+				if (indiceTracado % 2 == 0) {
+					indiceTracado -= 3;
+				} else {
+					indiceTracado -= 2;
+				}
 			} else if (indiceTracado % 2 == 0) {
 				indiceTracado -= 3;
 			} else {
@@ -2974,10 +2992,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		return false;
 
-	}
-
-	public void mudarAutoTracado() {
-		autoPos = !autoPos;
 	}
 
 	public int calculaDiffParaAnterior(InterfaceJogo controleJogo) {

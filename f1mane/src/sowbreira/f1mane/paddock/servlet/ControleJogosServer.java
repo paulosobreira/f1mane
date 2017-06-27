@@ -629,7 +629,8 @@ public class ControleJogosServer {
 		return null;
 	}
 
-	public Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack) {
+	public Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack,
+			boolean autoPos) {
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
 		if (jogoServidor == null) {
@@ -640,15 +641,13 @@ public class ControleJogosServer {
 			return null;
 		}
 		piloto.setAtivarDRS(true);
-		piloto.mudarAutoTracado();
+		piloto.setAutoPos(autoPos);
 		return null;
 	}
 
 	public Object mudarTracado(ClientPaddockPack clientPaddockPack) {
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
-		Logger.logar("mudarTracado clientPaddockPack.getNomeJogo() "
-				+ clientPaddockPack.getNomeJogo());
 		if (jogoServidor == null) {
 			return null;
 		}

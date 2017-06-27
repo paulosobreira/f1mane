@@ -35,7 +35,7 @@ public class Comandos {
 	public static final String VER_CONTRUTORES = "30";
 	public static final String VER_CARREIRA = "31";
 	public static final String ATUALIZA_CARREIRA = "32";
-	public static final String MUDAR_MODO_AUTOPOS = "33";
+	public static final String MUDAR_MODO_AUTOPOS_S = "33";
 	public static final String MUDAR_TRACADO = "34";
 	public static final String DADOS_PILOTOS_JOGO = "35";
 	public static final String CRIAR_CAMPEONATO = "37";
@@ -51,5 +51,6 @@ public class Comandos {
 	public static final String MUDAR_PILOTO_MAXIMO = "46";
 	public static final String ALTERAR_OPCOES_BOX = "48";
 	public static final String VERIFICA_VERSAO = "49";
+	public static final String MUDAR_MODO_AUTOPOS_N = "50";
 
 }

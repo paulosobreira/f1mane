@@ -297,8 +297,10 @@ public class ControlePaddockServidor {
 			return mudarModoBox(clientPaddockPack);
 		} else if (Comandos.ALTERAR_OPCOES_BOX.equals(commando)) {
 			return alterarOpcoesBox(clientPaddockPack);
-		} else if (Comandos.MUDAR_MODO_AUTOPOS.equals(commando)) {
-			return mudarModoAutoPos(clientPaddockPack);
+		} else if (Comandos.MUDAR_MODO_AUTOPOS_S.equals(commando)) {
+			return mudarModoAutoPos(clientPaddockPack, true);
+		} else if (Comandos.MUDAR_MODO_AUTOPOS_N.equals(commando)) {
+			return mudarModoAutoPos(clientPaddockPack, false);
 		} else if (Comandos.ATUALIZAR_VISAO.equals(commando)) {
 			return atualizarDadosVisao(clientPaddockPack, cliente);
 		} else if (Comandos.SAIR_PADDOCK.equals(commando)) {
@@ -393,8 +395,9 @@ public class ControlePaddockServidor {
 		return controleJogosServer.mudarTracado(clientPaddockPack);
 	}
 
-	private Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack) {
-		return controleJogosServer.mudarModoAutoPos(clientPaddockPack);
+	private Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack,
+			boolean autoPos) {
+		return controleJogosServer.mudarModoAutoPos(clientPaddockPack, autoPos);
 	}
 
 	private Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {
@@ -681,7 +684,7 @@ public class ControlePaddockServidor {
 			return null;
 		}
 		String nomeJogo = clientPaddockPack.getDadosJogoCriado().getNomeJogo();
-		if(nomeJogo==null){
+		if (nomeJogo == null) {
 			nomeJogo = clientPaddockPack.getNomeJogo();
 		}
 		JogoServidor jogoServidor = controleJogosServer

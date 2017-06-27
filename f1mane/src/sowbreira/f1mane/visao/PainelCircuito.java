@@ -773,7 +773,6 @@ public class PainelCircuito {
 		if (noAtualSuave == null) {
 			noAtualSuave = noAtual;
 		}
-
 		boolean noAtualBox = noAtual.isBox();
 		boolean noAtualSuaveBox = noAtualSuave.isBox();
 		boolean noAtualSuavePista = !noAtualSuave.isBox();

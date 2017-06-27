@@ -209,7 +209,7 @@ public interface InterfaceJogo {
 
 	public void setTemporada(String string);
 
-	public void mudarAutoPos();
+	public void mudarAutoPos(boolean autoPos);
 
 	public BufferedImage obterCarroCima(Piloto piloto);
 

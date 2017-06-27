@@ -314,11 +314,11 @@ public class GerenciadorVisual {
 		});
 	}
 
-	protected void mudarAutoPos() {
+	protected void mudarAutoPos(boolean autoPos) {
 		if (controleJogo == null) {
 			return;
 		}
-		controleJogo.mudarAutoPos();
+		controleJogo.mudarAutoPos(autoPos);
 
 	}
 
@@ -407,7 +407,7 @@ public class GerenciadorVisual {
 					controleJogo.ativaVerControles();
 				}
 				if (keyCoode == KeyEvent.VK_G) {
-					mudarAutoPos();
+					mudarAutoPos(false);
 					controleJogo.selecionaPilotoJogador();
 				}
 				if (keyCoode == KeyEvent.VK_LEFT) {
@@ -1556,7 +1556,7 @@ public class GerenciadorVisual {
 			}
 			ganhoSuave += 1;
 		}
-//		System.out.println(ganhoSuave);
+		// System.out.println(ganhoSuave);
 	}
 
 	public void setMouseZoom(double d) {
@@ -1668,7 +1668,7 @@ public class GerenciadorVisual {
 		if ((ultMudaPos != 0) && controleJogo != null
 				&& !controleJogo.getPilotoJogador().isAutoPos()
 				&& System.currentTimeMillis() - ultMudaPos > 10000) {
-			controleJogo.mudarAutoPos();
+			controleJogo.mudarAutoPos(true);
 		}
 
 	}
