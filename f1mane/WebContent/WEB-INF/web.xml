@@ -54,7 +54,7 @@
 
 	<!-- The Usual Welcome File List -->
 	<welcome-file-list>
-		<welcome-file>f1mane.jsp</welcome-file>
+		<welcome-file>f1mane.html</welcome-file>
 		<!-- <welcome-file>esquema.jsp</welcome-file> -->
 	</welcome-file-list>
 	<resource-env-ref>

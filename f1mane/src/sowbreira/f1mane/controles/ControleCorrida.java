@@ -227,6 +227,14 @@ public class ControleCorrida {
 			int novapos = 0;
 			if (pilotoNaFrente.getTracado() == 0) {
 				novapos = Util.intervalo(1, 2);
+				if (piloto.verificaColisaoAoMudarDeTracado(controleJogo,
+						novapos)) {
+					if (novapos == 2) {
+						novapos = 1;
+					} else {
+						novapos = 2;
+					}
+				}
 			}
 			piloto.mudarTracado(novapos, controleJogo);
 		}
