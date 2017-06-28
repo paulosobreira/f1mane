@@ -62,9 +62,9 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = false;
+	public static boolean desenhaBkg = true;
 	public static boolean desenhaPista = true;
-	public static boolean desenhaImagens = false;
+	public static boolean desenhaImagens = true;
 
 	private boolean verControles = true;
 	private boolean carragandoBkg = false;
@@ -825,7 +825,7 @@ public class PainelCircuito {
 		}
 		if (noAtualSuave.verificaRetaOuLargada()
 				&& noAtual.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
-				&& diff > 50) {
+				&& diff < 100) {
 			ganhoSuave = ganhoSuaveAnt - 1;
 		}
 		if (diff == 0) {

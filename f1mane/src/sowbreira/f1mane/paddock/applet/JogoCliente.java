@@ -219,7 +219,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void atualizaIndexTracadoPilotos() {
 		decrementaTracado();
 		if (gerenciadorVisual != null) {
-			gerenciadorVisual.callBackAtualizarPos();
+			gerenciadorVisual.voltaPilotoAutomaticaJogador();
 		}
 	}
 

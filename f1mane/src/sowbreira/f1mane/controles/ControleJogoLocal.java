@@ -251,7 +251,7 @@ public class ControleJogoLocal extends ControleRecursos
 	public void atualizaIndexTracadoPilotos() {
 		decrementaTracado();
 		if (gerenciadorVisual != null) {
-			gerenciadorVisual.callBackAtualizarPos();
+			gerenciadorVisual.voltaPilotoAutomaticaJogador();
 		}
 	}
 

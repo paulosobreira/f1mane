@@ -267,7 +267,6 @@ public class GerenciadorVisual {
 
 	private void gerarLayout() {
 		centerPanel.setLayout(new BorderLayout());
-		// centerPanel.add(painelCircuito, BorderLayout.CENTER);
 		controleJogo.getMainFrame().getContentPane().removeAll();
 		controleJogo.getMainFrame().getContentPane()
 				.setLayout(new BorderLayout());
@@ -328,6 +327,7 @@ public class GerenciadorVisual {
 		}
 		controleJogo.mudarTracado(2);
 		ultMudaPos = System.currentTimeMillis();
+		controleJogo.mudarAutoPos(false);
 	}
 
 	protected void mudarPos0() {
@@ -336,6 +336,7 @@ public class GerenciadorVisual {
 		}
 		controleJogo.mudarTracado(0);
 		ultMudaPos = System.currentTimeMillis();
+		controleJogo.mudarAutoPos(false);
 	}
 
 	protected void mudarPos1() {
@@ -344,6 +345,7 @@ public class GerenciadorVisual {
 		}
 		controleJogo.mudarTracado(1);
 		ultMudaPos = System.currentTimeMillis();
+		controleJogo.mudarAutoPos(false);
 	}
 
 	protected void mudarModoPilotagem(String modo) {
@@ -1664,10 +1666,9 @@ public class GerenciadorVisual {
 		return !painelCircuito.desenhouPilotosQualificacao();
 	}
 
-	public void callBackAtualizarPos() {
+	public void voltaPilotoAutomaticaJogador() {
 		if ((ultMudaPos != 0) && controleJogo != null
-				&& !controleJogo.getPilotoJogador().isAutoPos()
-				&& System.currentTimeMillis() - ultMudaPos > 10000) {
+				&& (System.currentTimeMillis() - ultMudaPos) > 30000) {
 			controleJogo.mudarAutoPos(true);
 		}
 

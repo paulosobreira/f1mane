@@ -181,8 +181,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private int naoDesenhaEfeitos;
 	@JsonIgnore
-	private long indexTracadoDelay;
-	@JsonIgnore
 	private int tamanhoBufferGanho = 10;
 	@JsonIgnore
 	private boolean colisaoDiantera;
@@ -1331,15 +1329,17 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (getIndiceTracado() <= 0) {
 				int mudarTracado = 0;
 				if (getTracado() == 4) {
-					if (controleJogo.getCircuito().getPista4Full()
-							.get(getNoAtual().getIndex()).getTracado() != 4) {
+					No no = controleJogo.getCircuito().getPista4Full()
+							.get(getNoAtual().getIndex());
+					if (no == null || no.getTracado() != 4) {
 						mudarTracado = 2;
 						mudarTracado(mudarTracado, controleJogo, true);
 					}
 				}
 				if (getTracado() == 5) {
-					if (controleJogo.getCircuito().getPista5Full()
-							.get(getNoAtual().getIndex()).getTracado() != 5) {
+					No no = controleJogo.getCircuito().getPista5Full()
+							.get(getNoAtual().getIndex());
+					if (no == null || no.getTracado() != 5) {
 						mudarTracado = 1;
 						mudarTracado(mudarTracado, controleJogo, true);
 					}
@@ -1350,9 +1350,11 @@ public class Piloto implements Serializable, PilotoSuave {
 						&& carroPilotoAtras.getPiloto().getColisao() != null) {
 					ganho *= 1.2;
 				} else {
-					ganho *= .3;
+					ganho *= .5;
 				}
 			} else {
+				setModoPilotagem(LENTO);
+				getCarro().setGiro(Carro.GIRO_MIN_VAL);
 				controleJogo.travouRodas(this);
 			}
 		}
@@ -1776,12 +1778,8 @@ public class Piloto implements Serializable, PilotoSuave {
 				|| getDiferencaParaProximo() < (testeHabilidadePiloto()
 						? 100
 						: 150)) {
-			// Logger.logar("ANTES fazPilotoMudarTracado " + getNome() + " - "
-			// + getTracado());
 			controleJogo.fazPilotoMudarTracado(this,
 					carroPilotoDaFrenteRetardatario.getPiloto());
-			// Logger.logar("DEPOIS fazPilotoMudarTracado " + getNome() + " - "
-			// + getTracado());
 		} else if (!isJogadorHumano() && testeHabilidadePiloto()
 				&& pontoEscape != null
 				&& calculaDiffParaProximoRetardatario > 150
@@ -2859,15 +2857,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			setTracadoAntigo(getTracado());
 			setTracado(mudarTracado);
 
-			// double mod = Carro.ALTURA * 2;
-			// double novoIndice = (mod * interfaceJogo.getCircuito()
-			// .getMultiplicadorLarguraPista());
-			//
-			// if (getPtosBox() != 0) {
-			// novoIndice *= 0.7;
-			// }
-
-			double novoIndice = (interfaceJogo.getCircuito()
+			double novoIndice = (Carro.ALTURA * interfaceJogo.getCircuito()
 					.getMultiplicadorLarguraPista());
 			setIndiceTracado((int) novoIndice);
 			return true;
@@ -2875,35 +2865,17 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public int decIndiceTracado(InterfaceJogo interfaceJogo) {
-		return decIndiceTracado(interfaceJogo, 1);
-	}
-
-	public int decIndiceTracado(InterfaceJogo interfaceJogo, int decExtra) {
 		if (indiceTracado <= 0) {
 			return 0;
 		}
-		indiceTracado--;
-		// if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
-		// indiceTracado -= decExtra;
-		// } else {
-		// if (getPtosBox() != 0) {
-		// if (indiceTracado % 2 == 0) {
-		// indiceTracado -= 3;
-		// } else {
-		// indiceTracado -= 2;
-		// }
-		// } else if (indiceTracado % 2 == 0) {
-		// indiceTracado -= 3;
-		// } else {
-		// indiceTracado -= 2;
-		// }
-		// if (getTracado() == 4 || getTracado() == 5) {
-		// indiceTracado -= decExtra;
-		// }
-		// }
-		// if (indiceTracado <= 0) {
-		// indiceTracado = 0;
-		// }
+		if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
+			indiceTracado--;
+		} else {
+			indiceTracado -= 2;
+		}
+		if (indiceTracado < 0) {
+			indiceTracado = 0;
+		}
 		return indiceTracado;
 	}
 
@@ -2985,8 +2957,8 @@ public class Piloto implements Serializable, PilotoSuave {
 				continue;
 			}
 			int indiceCarro = piloto.getNoAtual().getIndex();
-			int traz = indiceCarro - 40;
-			int frente = indiceCarro + 40;
+			int traz = indiceCarro - 50;
+			int frente = indiceCarro + 50;
 			List lista = piloto.obterPista(controleJogo);
 			if (traz < 0) {
 				traz = (lista.size() - 1) + traz;
@@ -3050,14 +3022,6 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setTracadoDelay(int tracadoDelay) {
 		this.tracadoDelay = tracadoDelay;
-	}
-
-	public long getIndexTracadoDelay() {
-		return indexTracadoDelay;
-	}
-
-	public void setIndexTracadoDelay(long indexTracadoDelay) {
-		this.indexTracadoDelay = indexTracadoDelay;
 	}
 
 	public int getNaoDesenhaEfeitos() {

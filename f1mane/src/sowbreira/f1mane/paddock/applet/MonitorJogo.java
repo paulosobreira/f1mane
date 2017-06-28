@@ -390,7 +390,6 @@ public class MonitorJogo implements Runnable {
 				}
 				piloto.setJogadorHumano(posis.humano);
 				int pos = posis.tracado;
-				double mod = Carro.ALTURA * 2;
 
 				if (piloto.getIndiceTracado() > 0
 						&& pos != piloto.getTracado()) {
@@ -402,8 +401,9 @@ public class MonitorJogo implements Runnable {
 					piloto.setTracado(pos);
 					if (piloto.getIndiceTracado() <= 0 && piloto
 							.getTracado() != piloto.getTracadoAntigo()) {
-						piloto.setIndiceTracado((int) (mod * jogoCliente
-								.getCircuito().getMultiplicadorLarguraPista()));
+						piloto.setIndiceTracado(
+								(int) (Carro.ALTURA * jogoCliente.getCircuito()
+										.getMultiplicadorLarguraPista()));
 					}
 				}
 				jogoCliente.calculaSegundosParaLider(piloto);
