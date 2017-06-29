@@ -3239,22 +3239,18 @@ public class PainelCircuito {
 					.get(noAtual.getIndex()) != null
 							? controleJogo.getCircuito().getPista5Full()
 									.get(noAtual.getIndex()).getPoint()
-							: piloto.getP5Ant();
+							: p1;
 			p4 = controleJogo.getCircuito().getPista4Full()
 					.get(noAtual.getIndex()) != null
 							? controleJogo.getCircuito().getPista4Full()
 									.get(noAtual.getIndex()).getPoint()
-							: piloto.getP4Ant();
+							: p2;
 
 			if (p4 == null) {
 				p4 = p2;
-			} else {
-				piloto.setP4Ant(p4);
 			}
 			if (p5 == null) {
 				p5 = p1;
-			} else {
-				piloto.setP5Ant(p5);
 			}
 		}
 
