@@ -435,7 +435,7 @@ public class Circuito implements Serializable {
 						boolean sair = false;
 						for (int j = (index + 10); j < pista1Full.size(); j++) {
 							if (GeoUtil.distaciaEntrePontos(
-									pista1Full.get(j).getPoint(), p5) < 3) {
+									pista1Full.get(j).getPoint(), p5) < 1) {
 								sair = true;
 							}
 						}
@@ -474,7 +474,7 @@ public class Circuito implements Serializable {
 						boolean sair = false;
 						for (int j = (index + 10); j < pista2Full.size(); j++) {
 							if (GeoUtil.distaciaEntrePontos(
-									pista2Full.get(j).getPoint(), p4) < 3) {
+									pista2Full.get(j).getPoint(), p4) < 1) {
 								sair = true;
 							}
 						}

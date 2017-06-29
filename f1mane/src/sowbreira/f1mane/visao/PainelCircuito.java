@@ -788,27 +788,28 @@ public class PainelCircuito {
 			nos = pistaFull;
 		}
 
-		int diff = noAtual.getIndex() - noAtualSuave.getIndex();
+		int diferencaSualReal = noAtual.getIndex() - noAtualSuave.getIndex();
 		if (noAtualBox && noAtualSuavePista) {
-			diff = noAtual.getIndex()
+			diferencaSualReal = noAtual.getIndex()
 					+ (controleJogo.getCircuito().getEntradaBoxIndex()
 							- noAtualSuave.getIndex());
 
 		}
 		if (noAtualSuaveBox && noAtualPista) {
-			diff = (noAtual.getIndex()
+			diferencaSualReal = (noAtual.getIndex()
 					- (controleJogo.getCircuito().getSaidaBoxIndex())
 					+ (boxFull.size() - noAtualSuave.getIndex()));
 		}
 
-		if (diff < 0) {
-			diff = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
+		if (diferencaSualReal < 0) {
+			diferencaSualReal = (noAtual.getIndex() + nos.size())
+					- noAtualSuave.getIndex();
 		}
 		int ganhoSuave = 0;
 		if (controleJogo instanceof JogoCliente) {
-			ganhoSuave = loopCalculaGanhoSuave(diff, 20);
+			ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 20);
 		} else {
-			ganhoSuave = loopCalculaGanhoSuave(diff, 0);
+			ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 0);
 		}
 
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
@@ -820,26 +821,26 @@ public class PainelCircuito {
 		}
 		if (noAtualSuave.verificaRetaOuLargada()
 				&& noAtual.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
-				&& diff > 100) {
+				&& diferencaSualReal > 100) {
 			ganhoSuave = ganhoSuaveAnt;
 		}
 		if (noAtualSuave.verificaRetaOuLargada()
 				&& noAtual.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave
-				&& diff < 100) {
+				&& diferencaSualReal < 100) {
 			ganhoSuave = ganhoSuaveAnt - 1;
 		}
-		if (diff == 0) {
+		if (diferencaSualReal == 0) {
 			ganhoSuave = 0;
 		}
 		if (ganhoSuave <= 0) {
 			ganhoSuave = 0;
 		}
 		if (noAtualBox && noAtualSuaveBox) {
-			if (ganhoSuave == 0 && diff > 0) {
+			if (ganhoSuave == 0 && diferencaSualReal > 0) {
 				if (piloto instanceof Piloto
 						&& ((Piloto) piloto).isJogadorHumano()) {
-					Logger.logar("diff " + diff + " ganhoSuave " + ganhoSuave
-							+ " ganhoSuaveAnt " + ganhoSuaveAnt);
+					Logger.logar("diff " + diferencaSualReal + " ganhoSuave "
+							+ ganhoSuave + " ganhoSuaveAnt " + ganhoSuaveAnt);
 				}
 				ganhoSuave = 1;
 			}
@@ -876,10 +877,11 @@ public class PainelCircuito {
 			noAtualSuave = nos.get(index);
 		}
 
-		if (diff > 1000) {
+		if (diferencaSualReal > 1000) {
 			if (piloto instanceof Piloto
 					&& ((Piloto) piloto).isJogadorHumano()) {
-				Logger.logar("atualizacaoSuave diff > 1000 " + diff);
+				Logger.logar(
+						"atualizacaoSuave diff > 1000 " + diferencaSualReal);
 			}
 			noAtualSuave = noAtual;
 		}
@@ -3237,12 +3239,23 @@ public class PainelCircuito {
 					.get(noAtual.getIndex()) != null
 							? controleJogo.getCircuito().getPista5Full()
 									.get(noAtual.getIndex()).getPoint()
-							: p1;
+							: piloto.getP5Ant();
 			p4 = controleJogo.getCircuito().getPista4Full()
 					.get(noAtual.getIndex()) != null
 							? controleJogo.getCircuito().getPista4Full()
 									.get(noAtual.getIndex()).getPoint()
-							: p2;
+							: piloto.getP4Ant();
+
+			if (p4 == null) {
+				p4 = p2;
+			} else {
+				piloto.setP4Ant(p4);
+			}
+			if (p5 == null) {
+				p5 = p1;
+			} else {
+				piloto.setP5Ant(p5);
+			}
 		}
 
 		piloto.setP1(p1);

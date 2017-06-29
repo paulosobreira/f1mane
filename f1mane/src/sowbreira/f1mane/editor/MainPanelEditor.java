@@ -1845,6 +1845,10 @@ public class MainPanelEditor extends JPanel {
 			Point pOld = null;
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
+				if(no2==null){
+					pOld = null;
+					continue;
+				}
 				if (no2.getTracado() == 4 || no2.getTracado() == 5) {
 					g2d.setColor(ObjetoEscapada.red);
 					Point pNew = new Point(Util.inteiro(no2.getX() - 5),

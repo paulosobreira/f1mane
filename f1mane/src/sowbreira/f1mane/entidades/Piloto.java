@@ -239,6 +239,10 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private Point p4;
 	@JsonIgnore
+	private Point p5Ant;
+	@JsonIgnore
+	private Point p4Ant;
+	@JsonIgnore
 	private Point pontoEscape;
 	@JsonIgnore
 	private Rectangle diateira;
@@ -2064,17 +2068,21 @@ public class Piloto implements Serializable, PilotoSuave {
 					.get(noAtual.getIndex()) != null
 							? controleJogo.getCircuito().getPista5Full()
 									.get(noAtual.getIndex()).getPoint()
-							: p1;
+							: p5Ant;
 			p4 = controleJogo.getCircuito().getPista4Full()
 					.get(noAtual.getIndex()) != null
 							? controleJogo.getCircuito().getPista4Full()
 									.get(noAtual.getIndex()).getPoint()
-							: p2;
+							: p4Ant;
 			if (p4 == null) {
 				p4 = p2;
+			}else{
+				p4Ant = p4;
 			}
 			if (p5 == null) {
 				p5 = p1;
+			}else{
+				p5Ant = p5;
 			}
 		}
 		if (getTracado() == 0) {
@@ -3317,6 +3325,22 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public Rectangle getTrazeiraColisao() {
 		return trazeiraColisao;
+	}
+
+	public Point getP5Ant() {
+		return p5Ant;
+	}
+
+	public void setP5Ant(Point p5Ant) {
+		this.p5Ant = p5Ant;
+	}
+
+	public Point getP4Ant() {
+		return p4Ant;
+	}
+
+	public void setP4Ant(Point p4Ant) {
+		this.p4Ant = p4Ant;
 	}
 
 }
