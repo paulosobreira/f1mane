@@ -635,14 +635,14 @@ public class Carro implements Serializable {
 		if (giro == GIRO_MIN_VAL) {
 			valConsumo += (testePotencia ? 0 : 3);
 		} else if (giro == GIRO_NOR_VAL) {
-			valConsumo += (testePotencia ? 3 : 5);
+			valConsumo += (testePotencia ? 3 : 6);
 		} else if (giro == GIRO_MAX_VAL) {
-			valConsumo += (testePotencia ? 6 : 8);
+			valConsumo += (testePotencia ? 5 : 7);
 		}
 
 		if (giro == GIRO_MAX_VAL) {
 			if (piloto.getNoAtual().verificaRetaOuLargada()) {
-				valConsumo += testePotencia() ? 0 : 4;
+				valConsumo += testePotencia() ? 0 : 3;
 			} else {
 				valConsumo += testePotencia() || testeAerodinamica() ? 3 : 5;
 			}

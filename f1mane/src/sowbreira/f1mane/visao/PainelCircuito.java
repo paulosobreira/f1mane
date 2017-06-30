@@ -1952,8 +1952,6 @@ public class PainelCircuito {
 		if (pilotoSelecionado == null) {
 			return;
 		}
-		int altura = (int) (Carro.LARGURA * 5 * zoom);
-		int mAltura = (int) (altura / 2 * zoom);
 
 		List<ObjetoPista> objetos = circuito.getObjetos();
 		if (objetos != null) {
@@ -1961,7 +1959,7 @@ public class PainelCircuito {
 				ObjetoPista objetoPista = (ObjetoPista) iterator.next();
 				if (objetoPista instanceof ObjetoEscapada) {
 					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-					objetoEscapada.desenha(g2d, mAltura);
+					objetoEscapada.desenha(g2d, zoom);
 				}
 			}
 		}
@@ -1994,9 +1992,15 @@ public class PainelCircuito {
 				}
 			}
 		}
-
-		if (pontoClicado != null) {
+		No noindexEscape = circuito.getPistaFull()
+				.get(pilotoSelecionado.getIndexRefEscape());
+		if (noindexEscape != null) {
 			g2d.setColor(ver);
+			g2d.fillOval(noindexEscape.getPoint().x - descontoCentraliza.x,
+					noindexEscape.getPoint().y - descontoCentraliza.y, 10, 10);
+		}
+		if (pontoClicado != null) {
+			g2d.setColor(gre);
 			g2d.fillOval(pontoClicado.x, pontoClicado.y, 10, 10);
 
 		}

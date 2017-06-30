@@ -1970,15 +1970,11 @@ public class Piloto implements Serializable, PilotoSuave {
 		distanciaEscape = Double.MAX_VALUE;
 		pontoEscape = null;
 		indexRefEscape = 0;
-		double multi = 0.6;
-		if (getTracado() == 0) {
-			multi = 1.2;
-		}
 		if (getNoAtual() == null) {
 			return;
 		}
 
-		int index = (int) (getNoAtual().getIndex() + Constantes.CICLO * multi);
+		int index = getNoAtual().getIndex() + 100;
 		if (index >= controleJogo.getNosDaPista().size()) {
 			return;
 		}
@@ -1992,12 +1988,18 @@ public class Piloto implements Serializable, PilotoSuave {
 		Set<PontoEscape> keySet = escapeMap.keySet();
 		for (Iterator<PontoEscape> iterator = keySet.iterator(); iterator
 				.hasNext();) {
-			PontoEscape pontoDerrapada = iterator.next();
+			PontoEscape pontoEscapada = iterator.next();
 			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p,
-					pontoDerrapada.getPoint());
+					pontoEscapada.getPoint());
 			if (distaciaEntrePontos < distanciaEscape) {
+				if (escapeMap.get(pontoEscapada).get(index) != null) {
+					indexRefEscape = 0;
+					distanciaEscape = Double.MAX_VALUE;
+					pontoEscape = null;
+					return;
+				}
 				distanciaEscape = distaciaEntrePontos;
-				pontoEscape = pontoDerrapada.getPoint();
+				pontoEscape = pontoEscapada.getPoint();
 				indexRefEscape = index;
 			}
 		}
@@ -2858,7 +2860,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			setTracado(mudarTracado);
 			double novoIndice = (Carro.ALTURA * interfaceJogo.getCircuito()
 					.getMultiplicadorLarguraPista());
-			if (getTracado() == 4 || getTracado() == 5) {
+			if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
 				novoIndice = Carro.ALTURA * 3.5 * interfaceJogo.getCircuito()
 						.getMultiplicadorLarguraPista();
 			}
@@ -3322,6 +3324,10 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public Rectangle getTrazeiraColisao() {
 		return trazeiraColisao;
+	}
+
+	public int getIndexRefEscape() {
+		return indexRefEscape;
 	}
 
 }
