@@ -401,9 +401,7 @@ public class MonitorJogo implements Runnable {
 					piloto.setTracado(pos);
 					if (piloto.getIndiceTracado() <= 0 && piloto
 							.getTracado() != piloto.getTracadoAntigo()) {
-						piloto.setIndiceTracado(
-								(int) (Carro.ALTURA * jogoCliente.getCircuito()
-										.getMultiplicadorLarguraPista()));
+						piloto.calculaIndiceTracado(jogoCliente);
 					}
 				}
 				jogoCliente.calculaSegundosParaLider(piloto);
