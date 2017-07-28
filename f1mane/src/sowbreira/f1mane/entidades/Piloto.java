@@ -2864,11 +2864,9 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void calculaIndiceTracado(InterfaceJogo interfaceJogo) {
-		double novoIndice = (Carro.ALTURA * interfaceJogo.getCircuito()
-				.getMultiplicadorLarguraPista());
+		double novoIndice = interfaceJogo.getCircuito().getIndiceTracado(); 
 		if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
-			novoIndice = Carro.ALTURA * 3.5 * interfaceJogo.getCircuito()
-					.getMultiplicadorLarguraPista();
+			novoIndice = interfaceJogo.getCircuito().getIndiceTracadoForaPista();  
 		}
 		setIndiceTracado((int) novoIndice);
 	}

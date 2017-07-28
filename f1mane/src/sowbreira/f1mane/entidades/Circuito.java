@@ -741,4 +741,12 @@ public class Circuito implements Serializable {
 		return box2Full;
 	}
 
+	public double getIndiceTracado() {
+		return Carro.ALTURA * getMultiplicadorLarguraPista();
+	}
+
+	public double getIndiceTracadoForaPista() {
+		return Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista();
+	}
+
 }
