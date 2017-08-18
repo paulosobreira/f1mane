@@ -306,11 +306,13 @@ public class Circuito implements Serializable {
 			newNo1.setPoint(p1);
 			newNo1.setTipo(no.getTipo());
 			newNo1.setTracado(1);
+			newNo1.setIndex(no.getIndex());
 			pista1Full.add(newNo1);
 			No newNo2 = new No();
 			newNo2.setPoint(p2);
 			newNo2.setTipo(no.getTipo());
 			newNo2.setTracado(2);
+			newNo2.setIndex(no.getIndex());
 			pista2Full.add(newNo2);
 		}
 	}
@@ -351,12 +353,14 @@ public class Circuito implements Serializable {
 			No newNo1 = new No();
 			newNo1.setPoint(p1);
 			newNo1.setTipo(no.getTipo());
+			newNo1.setIndex(no.getIndex());
 			newNo1.setTracado(1);
 			box1Full.add(newNo1);
 			No newNo2 = new No();
 			newNo2.setPoint(p2);
 			newNo2.setTipo(no.getTipo());
 			newNo2.setTracado(2);
+			newNo2.setIndex(no.getIndex());
 			box2Full.add(newNo2);
 		}
 	}
@@ -723,6 +727,22 @@ public class Circuito implements Serializable {
 
 	public Map<PontoEscape, List<No>> getEscapeMap() {
 		return escapeMap;
+	}
+
+	public void setEscapeMap(Map<PontoEscape, List<No>> escapeMap) {
+		this.escapeMap = escapeMap;
+	}
+
+	public void setPistaKey(List<No> pistaKey) {
+		this.pistaKey = pistaKey;
+	}
+
+	public void setBoxKey(List<No> boxKey) {
+		this.boxKey = boxKey;
+	}
+
+	public void setEscapeList(List<Point> escapeList) {
+		this.escapeList = escapeList;
 	}
 
 	public List<No> getPista5Full() {

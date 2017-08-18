@@ -37,19 +37,19 @@ function rest_ciruito() {
 	});
 }
 
-function rest_dadosPiloto() {
+function rest_dadosParciais() {
 	if(criarJogo ==null || criarJogo.nomeJogoCriado == null){
 		console.log('criarJogo ==null || criarJogo.nomeJogoCriado == null');
 		return;
 	}	
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/dadosPiloto?nomeJogo="+criarJogo.nomeJogoCriado,
+		url : "/f1mane/rest/letsRace/dadosParciais?nomeJogo="+criarJogo.nomeJogoCriado,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
-			dadosPiloto = response;
-			setInterval(rest_dadosPiloto(), 1000);
+			dadosParciais = response;
+			setInterval(rest_dadosParciais(), 1000);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			alert(xhRequest.status + '  ' + xhRequest.responseText);
@@ -79,7 +79,7 @@ function rest_iniciarJogo() {
 		type : "GET",
 		url : "/f1mane/rest/letsRace/iniciarJogo",
 		success : function(response) {
-			rest_dadosPiloto();
+			rest_dadosParciais();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			alert(xhRequest.status + '  ' + xhRequest.responseText);

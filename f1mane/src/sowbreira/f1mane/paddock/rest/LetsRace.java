@@ -16,9 +16,12 @@ import javax.ws.rs.core.Response;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
+import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
@@ -42,6 +45,7 @@ public class LetsRace {
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
 		Object circuito = controlePaddock.obterCircuito(nomeJogo);
+
 		if (circuito == null) {
 			return Response.status(400)
 					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
@@ -59,7 +63,20 @@ public class LetsRace {
 					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		return Response.status(200).entity(circuito).build();
+		Circuito podar = (Circuito) circuito;
+		podar.setPista(null);
+		podar.setBox(null);
+		podar.setEscapeList(null);
+		podar.setEscapeMap(null);
+		podar.setBoxKey(null);
+		podar.setPistaKey(null);
+		while (podar.getPista4Full().contains(null)) {
+			podar.getPista4Full().remove(null);
+		}
+		while (podar.getPista5Full().contains(null)) {
+			podar.getPista5Full().remove(null);
+		}
+		return Response.status(200).entity(podar).build();
 	}
 
 	@GET
@@ -92,7 +109,7 @@ public class LetsRace {
 	}
 
 	@GET
-	@Path("/dadosPiloto")
+	@Path("/dadosParciais")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosParciais(@QueryParam("nomeJogo") String nomeJogo) {
 
@@ -168,31 +185,32 @@ public class LetsRace {
 		Object iniciarJogo = controlePaddock.iniciaJogo(clientPaddockPack);
 		if (iniciarJogo == null) {
 			Logger.logar("iniciarJogo == null");
-//			return Response.status(400)
-//					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
-//					.type(MediaType.APPLICATION_JSON).build();
+			// return Response.status(400)
+			// .entity(Html.escapeHtml("Jogo não pode ser iniciado."))
+			// .type(MediaType.APPLICATION_JSON).build();
 		}
 		if (iniciarJogo instanceof MsgSrv) {
 			MsgSrv msgSrv = (MsgSrv) iniciarJogo;
 			Logger.logar(msgSrv.getMessageString());
-//			return Response.status(400)
-//					.entity(Html.escapeHtml(msgSrv.getMessageString()))
-//					.type(MediaType.APPLICATION_JSON).build();
+			// return Response.status(400)
+			// .entity(Html.escapeHtml(msgSrv.getMessageString()))
+			// .type(MediaType.APPLICATION_JSON).build();
 		}
 		if (iniciarJogo instanceof ErroServ) {
 			ErroServ erroServ = (ErroServ) iniciarJogo;
 			Logger.logar(erroServ.obterErroFormatado());
-//			return Response.status(500)
-//					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
-//					.type(MediaType.APPLICATION_JSON).build();
+			// return Response.status(500)
+			// .entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+			// .type(MediaType.APPLICATION_JSON).build();
 		}
 		Integer ret = null;
 		try {
 			ret = new Integer(iniciarJogo.toString());
 		} catch (Exception e) {
 			ret = 1;
-//			return Response.status(500).entity(Html.escapeHtml(e.getMessage()))
-//					.type(MediaType.APPLICATION_JSON).build();
+			// return
+			// Response.status(500).entity(Html.escapeHtml(e.getMessage()))
+			// .type(MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(ret).build();
 	}
@@ -260,4 +278,5 @@ public class LetsRace {
 		dadosCriarJogo.setDrs(true);
 		return dadosCriarJogo;
 	}
+
 }

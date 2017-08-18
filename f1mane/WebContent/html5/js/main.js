@@ -8,7 +8,7 @@ var ptBg = {
 var circuito;
 var dadosJogo;
 var criarJogo;
-var dadosPiloto;
+var dadosParciais;
 var carrosImgMap;
 
 
@@ -60,7 +60,7 @@ function render() {
 
 function desenhaObjs() {
 	if (circuito == null || circuito.objetosNoTransparencia == null
-			|| dadosPiloto == null) {
+			|| dadosParciais == null) {
 		return;
 	}
 
@@ -92,7 +92,7 @@ function desenhaObjs() {
 		maneContext.closePath();
 		maneContext.fill();
 	}
-	var posicaoPilotos = dadosPiloto.posisPack;
+	var posicaoPilotos = dadosParciais.posisPack;
 	for (i = 0; i < posicaoPilotos.posis.length; i++) {
 		var pos = posicaoPilotos.posis[i];
 		var ponto = circuito.pistaFull[pos.idNo];
