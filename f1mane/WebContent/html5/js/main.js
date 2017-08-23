@@ -19,13 +19,13 @@ function mapaDeCarros() {
 	if(carrosImgMap!=null){
 		return;
 	}
-	carrosImgMap = new Map();
-	for (i = 0; i < dadosJogo.pilotosList.length; i++) {
-		var pilotos = dadosJogo.pilotosList[i];
-		var imgCarro =  new Image();
-		imgCarro.src = "../rest/teste/carroCima";
-		carrosImgMap.set(pilotos.id, imgCarro);
-	}		
+//	carrosImgMap = new Map();
+//	for (i = 0; i < dadosJogo.pilotosList.length; i++) {
+//		var pilotos = dadosJogo.pilotosList[i];
+//		var imgCarro =  new Image();
+//		imgCarro.src = "../rest/teste/carroCima/";
+//		carrosImgMap.set(pilotos.id, imgCarro);
+//	}		
 }
 
 
@@ -64,18 +64,6 @@ function desenhaObjs() {
 		return;
 	}
 
-	maneContext.fillStyle = '#babaca';
-	maneContext.beginPath();
-	for (i = 0; i < circuito.pista.length; i++) {
-		var pt = circuito.pista[i];
-		if (i == 0) {
-			maneContext.moveTo(pt.x - ptBg.x, pt.y - ptBg.y);
-		} else {
-			maneContext.lineTo(pt.x - ptBg.x, pt.y - ptBg.y);
-		}
-	}
-	maneContext.stroke();
-	maneContext.closePath();
 
 	for (i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var pontosTp = circuito.objetosNoTransparencia[i];

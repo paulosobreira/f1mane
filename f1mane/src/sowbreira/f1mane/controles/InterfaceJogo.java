@@ -399,5 +399,7 @@ public interface InterfaceJogo {
 	public void setAtualizacaoSuave(boolean atualizacaoSuave);
 
 	public void setRecebeuBanderada(Piloto piloto);
+	
+	public Piloto obterPilotoPorId(String id);
 
 }

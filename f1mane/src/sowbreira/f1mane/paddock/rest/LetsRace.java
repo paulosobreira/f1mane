@@ -1,11 +1,17 @@
 package sowbreira.f1mane.paddock.rest;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -33,6 +39,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 import sowbreira.f1mane.paddock.servlet.JogoServidor;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 @Path("/letsRace")
 public class LetsRace {
@@ -277,6 +284,24 @@ public class LetsRace {
 		dadosCriarJogo.setKers(true);
 		dadosCriarJogo.setDrs(true);
 		return dadosCriarJogo;
+	}
+
+	@GET
+	@Path("/carroCima")
+	@Produces("image/png")
+	public Response carroCima(@QueryParam("nomeJogo") String nomeJogo,
+			@QueryParam("idPiloto") String idPiloto) throws IOException {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		BufferedImage carroCima = controlePaddock.obterCarroCima(nomeJogo,
+				idPiloto);
+		if(carroCima==null){
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(carroCima, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
 
 }

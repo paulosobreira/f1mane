@@ -10,6 +10,13 @@ function rest_dadosJogo() {
 		dataType : "json",
 		success : function(response) {
 			dadosJogo = response;
+			carrosImgMap = new Map();
+			for (i = 0; i < dadosJogo.pilotosList.length; i++) {
+				var pilotos = dadosJogo.pilotosList[i];
+				var imgCarro =  new Image();
+				imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo="+criarJogo.nomeJogoCriado+"&idPiloto="+pilotos.id;
+				carrosImgMap.set(pilotos.id, imgCarro);
+			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			alert(xhRequest.status + '  ' + xhRequest.responseText);

@@ -214,6 +214,9 @@ public abstract class ControleRecursos {
 		if (temporada == null) {
 			return null;
 		}
+		if (piloto == null) {
+			return null;
+		}
 		if (piloto.getCarro() == null) {
 			return null;
 		}
@@ -407,7 +410,7 @@ public abstract class ControleRecursos {
 		Set<PontoEscape> keySet = circuito.getEscapeMap().keySet();
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
 			PontoEscape pontoEscapeKey = (PontoEscape) iterator.next();
-			if(pontoEscapeKey.getPoint().equals(pontoDerrapada)){
+			if (pontoEscapeKey.getPoint().equals(pontoDerrapada)) {
 				return pontoEscapeKey.getPista();
 			}
 		}
@@ -514,6 +517,21 @@ public abstract class ControleRecursos {
 			}
 		}
 		return pilotosCopy;
+	}
+
+	public Piloto obterPilotoPorId(String id) {
+		if (id == null) {
+			return null;
+		}
+		int idInt = new Integer(id);
+
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (idInt == piloto.getId()) {
+				return piloto;
+			}
+		}
+		return null;
 	}
 
 }

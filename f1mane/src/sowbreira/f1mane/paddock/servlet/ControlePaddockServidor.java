@@ -3,6 +3,7 @@
  */
 package sowbreira.f1mane.paddock.servlet;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -694,6 +695,13 @@ public class ControlePaddockServidor {
 		}
 		return controleJogosServer.preparaSrvPaddockPack(clientPaddockPack,
 				jogoServidor);
+	}
+
+	public BufferedImage obterCarroCima(String nomeJogo, String idPiloto) {
+		JogoServidor jogoServidor = controleJogosServer
+				.obterJogoPeloNome(nomeJogo);
+		return jogoServidor
+				.obterCarroCima(jogoServidor.obterPilotoPorId(idPiloto));
 	}
 
 }
