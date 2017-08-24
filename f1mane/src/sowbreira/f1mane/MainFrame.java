@@ -1,7 +1,6 @@
 package sowbreira.f1mane;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +31,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import br.nnpe.Logger;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -42,7 +42,6 @@ import sowbreira.f1mane.visao.ControleSom;
 import sowbreira.f1mane.visao.PainelCircuito;
 import sowbreira.f1mane.visao.PainelMenuLocal;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
-import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Created on 20/06/2007

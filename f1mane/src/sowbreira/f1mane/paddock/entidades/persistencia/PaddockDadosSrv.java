@@ -1,7 +1,6 @@
 package sowbreira.f1mane.paddock.entidades.persistencia;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 

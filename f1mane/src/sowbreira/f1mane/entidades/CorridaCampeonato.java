@@ -2,10 +2,6 @@ package sowbreira.f1mane.entidades;
 
 import java.io.Serializable;
 
-import br.nnpe.Util;
-
-import sowbreira.f1mane.controles.InterfaceJogo;
-
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15
  */

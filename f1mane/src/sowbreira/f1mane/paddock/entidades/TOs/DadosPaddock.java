@@ -2,11 +2,7 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.Vector;
 
 /**
  * @author paulo.sobreira

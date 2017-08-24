@@ -2,14 +2,14 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 
 /**
  * @author Paulo Sobreira Criado em 28/07/2007 as 15:51:36
  */
-@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ClientPaddockPack implements Serializable {
 
 	private static final long serialVersionUID = 6938384085272885074L;

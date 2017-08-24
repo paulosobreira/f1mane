@@ -1,6 +1,5 @@
 package sowbreira.f1mane.paddock.rest;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.GET;
@@ -22,12 +20,10 @@ import javax.ws.rs.core.Response;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
@@ -38,13 +34,12 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
-import sowbreira.f1mane.paddock.servlet.JogoServidor;
-import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 @Path("/letsRace")
 public class LetsRace {
 
 	@GET
+	@Compress
 	@Path("/circuito")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response circuito(@QueryParam("nomeJogo") String nomeJogo) {

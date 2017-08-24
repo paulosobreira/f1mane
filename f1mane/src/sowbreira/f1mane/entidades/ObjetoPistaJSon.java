@@ -3,8 +3,8 @@ package sowbreira.f1mane.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ObjetoPistaJSon {
 
 	private List<Ponto> pontos = new ArrayList<Ponto>();

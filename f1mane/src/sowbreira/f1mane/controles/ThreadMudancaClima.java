@@ -1,8 +1,8 @@
 package sowbreira.f1mane.controles;
 
-import sowbreira.f1mane.entidades.Clima;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.entidades.Clima;
 
 /**
  * @author Paulo Sobreira

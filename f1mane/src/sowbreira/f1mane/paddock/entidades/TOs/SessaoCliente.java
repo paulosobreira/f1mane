@@ -2,8 +2,6 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
-import sowbreira.f1mane.paddock.servlet.JogoServidor;
-
 /**
  * @author paulo.sobreira
  * 

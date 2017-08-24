@@ -3,11 +3,8 @@ package sowbreira.f1mane.controles;
 import java.util.Iterator;
 import java.util.List;
 
-import br.nnpe.GeoUtil;
 import br.nnpe.Html;
 import br.nnpe.Logger;
-import br.nnpe.Util;
-
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;

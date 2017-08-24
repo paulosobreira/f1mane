@@ -2,10 +2,9 @@ package sowbreira.f1mane.entidades;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import sowbreira.f1mane.controles.ControleEstatisticas;
-import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 16:03:49

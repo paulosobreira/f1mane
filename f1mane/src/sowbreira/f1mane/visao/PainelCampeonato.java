@@ -25,6 +25,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import br.nnpe.Util;
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -32,7 +33,6 @@ import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.CorridaCampeonato;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Util;
 
 public class PainelCampeonato extends JPanel {
 

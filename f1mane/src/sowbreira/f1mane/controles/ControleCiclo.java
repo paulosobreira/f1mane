@@ -2,12 +2,11 @@ package sowbreira.f1mane.controles;
 
 import java.util.Iterator;
 
-import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.recursos.idiomas.Lang;
-import sowbreira.f1mane.visao.ControleSom;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira

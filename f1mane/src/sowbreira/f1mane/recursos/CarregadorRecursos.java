@@ -2,7 +2,6 @@ package sowbreira.f1mane.recursos;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
@@ -31,12 +30,12 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.Piloto;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.Piloto;
 
 public class CarregadorRecursos {
 	private HashMap temporadas;

@@ -13,8 +13,8 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
-import sowbreira.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Logger;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 public class Lang {
 

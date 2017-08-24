@@ -8,14 +8,14 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.entidades.Piloto;
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.Piloto;
 
 /**
  * @author Paulo Sobreira

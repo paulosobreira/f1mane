@@ -1,16 +1,14 @@
 package sowbreira.f1mane.paddock.entidades.TOs;
 
-import java.awt.Point;
 import java.io.Serializable;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * @author Paulo Sobreira Criado em 28/07/2007 as 15:55:15
  */
-@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SrvPaddockPack implements Serializable {
 
 	private static final long serialVersionUID = 1162929434479206667L;

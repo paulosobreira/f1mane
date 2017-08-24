@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,6 @@ import javax.swing.border.TitledBorder;
 import br.nnpe.Logger;
 import br.nnpe.Numero;
 import br.nnpe.Util;
-import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.servlet.ControleClassificacao;
 import sowbreira.f1mane.recursos.CarregadorRecursos;

@@ -5,10 +5,7 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.ForeignKey;
 
 /**
  * @author Paulo Sobreira Criado em 27/06/2009 as 23:01:35
