@@ -84,6 +84,12 @@ function desenhaObjs() {
 	for (i = 0; i < posicaoPilotos.posis.length; i++) {
 		var pos = posicaoPilotos.posis[i];
 		var ponto = circuito.pistaFull[pos.idNo];
+		if(pos.tracado==1){
+			ponto = circuito.pista1Full[pos.idNo];
+		}
+		if(pos.tracado==2){
+			ponto = circuito.pista2Full[pos.idNo];
+		}
 		if(ponto==null){
 			continue;
 		}

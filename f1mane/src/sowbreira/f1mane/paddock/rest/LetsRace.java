@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 import br.nnpe.Constantes;
 import br.nnpe.Html;
@@ -65,20 +68,8 @@ public class LetsRace {
 					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		Circuito podar = (Circuito) circuito;
-		podar.setPista(null);
-		podar.setBox(null);
-		podar.setEscapeList(null);
-		podar.setEscapeMap(null);
-		podar.setBoxKey(null);
-		podar.setPistaKey(null);
-		while (podar.getPista4Full().contains(null)) {
-			podar.getPista4Full().remove(null);
-		}
-		while (podar.getPista5Full().contains(null)) {
-			podar.getPista5Full().remove(null);
-		}
-		return Response.status(200).entity(podar).build();
+		Circuito circuitoJogo = (Circuito) circuito;
+		return Response.status(200).entity(circuitoJogo).build();
 	}
 
 	@GET
@@ -228,6 +219,7 @@ public class LetsRace {
 		sessaoCliente.setNomeJogador("Sobreira");
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace();
+		dadosCriarJogo.setCircuitoSelecionado("Shangai");
 		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 		Object criarJogo = null;
 

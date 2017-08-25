@@ -2015,7 +2015,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		No noAtual = getNoAtual();
 		int cont = noAtual.getIndex();
-		List lista = controleJogo.obterPista(noAtual);
+		List<No> lista = controleJogo.obterPista(noAtual);
 		if (lista == null) {
 			return null;
 		}
@@ -2038,10 +2038,17 @@ public class Piloto implements Serializable, PilotoSuave {
 				frente = (frente - (lista.size() - 1)) - 1;
 			}
 		}
+		if (traz > (lista.size() - 1)) {
+			if (controleJogo.getNosDoBox().size() == lista.size()) {
+				traz = lista.size() - 1;
+			} else {
+				traz = (traz - (lista.size() - 1)) - 1;
+			}
+		}
 
-		Point trazCar = ((No) lista.get(traz)).getPoint();
+		Point trazCar = lista.get(traz).getPoint();
 		trazCar = new Point(trazCar.x, trazCar.y);
-		Point frenteCar = ((No) lista.get(frente)).getPoint();
+		Point frenteCar = lista.get(frente).getPoint();
 		frenteCar = new Point(frenteCar.x, frenteCar.y);
 		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
 		Rectangle2D rectangle = new Rectangle2D.Double(
@@ -2863,9 +2870,10 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void calculaIndiceTracado(InterfaceJogo interfaceJogo) {
-		double novoIndice = interfaceJogo.getCircuito().getIndiceTracado(); 
+		double novoIndice = interfaceJogo.getCircuito().getIndiceTracado();
 		if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
-			novoIndice = interfaceJogo.getCircuito().getIndiceTracadoForaPista();  
+			novoIndice = interfaceJogo.getCircuito()
+					.getIndiceTracadoForaPista();
 		}
 		setIndiceTracado((int) novoIndice);
 	}

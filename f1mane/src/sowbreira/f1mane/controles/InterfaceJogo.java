@@ -215,7 +215,7 @@ public interface InterfaceJogo {
 
 	public void ajusteUltrapassagem(Piloto piloto, Piloto pilotoFrente);
 
-	public List obterPista(No noPiloto);
+	public List<No> obterPista(No noPiloto);
 
 	public BufferedImage obterCarroLado(Piloto piloto);
 
