@@ -9,8 +9,6 @@ var circuito;
 var dadosJogo;
 var criarJogo;
 var dadosParciais;
-var carrosImgMap;
-
 
 function mapaDeCarros() {
 	if(dadosJogo==null){
@@ -19,13 +17,6 @@ function mapaDeCarros() {
 	if(carrosImgMap!=null){
 		return;
 	}
-//	carrosImgMap = new Map();
-//	for (i = 0; i < dadosJogo.pilotosList.length; i++) {
-//		var pilotos = dadosJogo.pilotosList[i];
-//		var imgCarro =  new Image();
-//		imgCarro.src = "../rest/teste/carroCima/";
-//		carrosImgMap.set(pilotos.id, imgCarro);
-//	}		
 }
 
 
@@ -63,7 +54,6 @@ function desenhaObjs() {
 			|| dadosParciais == null) {
 		return;
 	}
-
 
 	for (i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var pontosTp = circuito.objetosNoTransparencia[i];
@@ -122,11 +112,20 @@ function desenhaObjs() {
 		}
 		if (ponto != null && ponto.x != null && ponto.y != null) {
 			mapaDeCarros();
-			maneContext.fillText("Piloto: " + pos.idPiloto, ponto.x - ptBg.x,
-					ponto.y - ptBg.y);
+			var angulo = 0;
+			if((pos.idNo-5)>0 && (pos.idNo+5)<circuito.pistaFull.length){
+				var frenteCar = circuito.pistaFull[pos.idNo-5];
+				var trazCar = circuito.pistaFull[pos.idNo+5];
+				angulo = calculaAngulo(frenteCar, trazCar, 0);
+				maneContext.fillText("Angulo : " + angulo, ponto.x - ptBg.x,
+						ponto.y - ptBg.y);
+			}
+
             if(carrosImgMap!=null){
 				var imgCarro = carrosImgMap.get(pos.idPiloto);
-				maneContext.drawImage(imgCarro, ponto.x - ptBg.x, ponto.y - ptBg.y);					
+				var x =  ponto.x - ptBg.x - (imgCarro.width/2);
+				var y = ponto.y - ptBg.y - (imgCarro.height/2);
+				maneContext.drawImage(rotacionarCarro(imgCarro,angulo), x, y);					
 			}					
 		}
 	}

@@ -46,3 +46,11 @@ function dist(startCoordinates, endCoordinates) {
 	}
 	return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
 }
+
+function calculaAngulo(startCoordinates, endCoordinates) {
+	var dx = endCoordinates.x - startCoordinates.x;
+	var dy = endCoordinates.y - startCoordinates.y;
+	var tan = Math.atan2(dy, dx);
+	var degrees = tan;// * (180/Math.PI) * Math.PI / 180;
+	return degrees;
+}
