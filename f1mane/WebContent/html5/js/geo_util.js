@@ -51,6 +51,6 @@ function calculaAngulo(startCoordinates, endCoordinates) {
 	var dx = endCoordinates.x - startCoordinates.x;
 	var dy = endCoordinates.y - startCoordinates.y;
 	var tan = Math.atan2(dy, dx);
-	var degrees = tan+Math.PI;// * (180/Math.PI) * Math.PI / 180;
+	var degrees = tan+Math.PI;
 	return degrees;
 }

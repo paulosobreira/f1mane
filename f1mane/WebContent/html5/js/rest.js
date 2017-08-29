@@ -36,6 +36,7 @@ function rest_ciruito() {
 		dataType : "json",
 		success : function(response) {
 			circuito = response;
+			vdp_carregaBackGround();
 			rest_iniciarJogo();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -56,6 +57,7 @@ function rest_dadosParciais() {
 		dataType : "json",
 		success : function(response) {
 			dadosParciais = response;
+			vdp_desenha();
 			setInterval(rest_dadosParciais(), 1000);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
