@@ -103,7 +103,7 @@ function vdp_desenhaCarrosCima() {
 			}
 
 			if (carrosImgMap != null) {
-				var imgCarro = carrosImgMap.piloto(piloto.idPiloto);
+				var imgCarro = carrosImgMap.get(piloto.idPiloto);
 				var x = ponto.x - ptBg.x - (imgCarro.width / 2);
 				var y = ponto.y - ptBg.y - (imgCarro.height / 2);
 				maneContext.drawImage(vdp_rotacionarCarro(imgCarro, angulo), x,
