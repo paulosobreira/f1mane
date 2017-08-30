@@ -9,7 +9,41 @@ var ptBg = {
 	y : 0
 };
 
+var posicaoCentraliza = 0;
+
 function vdp_desenha() {
+	vdp_centralizaPole();
+	vdp_desenhaBackGround();
+	vdp_desenhaObjs();
+	vdp_desenhaCarrosCima();
+	// if (fps != null) {
+	// maneContext.fillText("FPS: " + fps.frameRate(), 4, 30);
+	// }
+	if (circuito != null && circuito.backGround != null) {
+		maneContext.fillText("Circuito: " + circuito.backGround, 4, 60);
+	}
+}
+
+function vdp_centralizaPole() {
+	if (dadosParciais == null || dadosParciais.posisPack == null
+			|| circuito == null) {
+		return;
+	}
+	var pos = dadosParciais.posisPack.posis[posicaoCentraliza];
+	var ponto = circuito.pistaFull[pos.idNo];
+	if (pos.tracado == 1) {
+		ponto = circuito.pista1Full[pos.idNo];
+	}
+	if (pos.tracado == 2) {
+		ponto = circuito.pista2Full[pos.idNo];
+	}
+	if (ponto == null) {
+		return;
+	}
+	vdp_centralizaPonto(ponto);
+}
+
+function vdp_desenhaBackGround() {
 	maneContext.clearRect(0, 0, maneCanvas.width, maneCanvas.height);
 	maneCanvas.width = window.innerWidth;
 	maneCanvas.height = window.innerHeight;
@@ -20,23 +54,19 @@ function vdp_desenha() {
 			maneContext.drawImage(imgBg, ptBg.x, ptBg.y, sW, sH, 0, 0,
 					maneCanvas.width, maneCanvas.height);
 		} catch (e) {
-			// TODO: handle exception
+			console.log('vdp_desenhaBackGround');
+			console.log(e);
 		}
-	}
-	//vdp_desenhaObjs();
-	vdp_desenhaCarrosCima();
-//	if (fps != null) {
-//		maneContext.fillText("FPS: " + fps.frameRate(), 4, 30);
-//	}
-	if (circuito != null && circuito.backGround != null) {
-		maneContext.fillText("Circuito: " + circuito.backGround, 4, 60);
 	}
 }
 
 function vdp_carregaBackGround() {
-	 if (circuito == null) {
-		 return;
-	 }
+	if (circuito == null) {
+		return;
+	}
+	if (imgBg.src != "") {
+		return;
+	}
 	imgBg.src = "../sowbreira/f1mane/recursos/" + circuito.backGround;
 	// imgBg.src = "../sowbreira/f1mane/recursos/testeBG_mro.jpg";
 }
@@ -50,33 +80,30 @@ function vdp_desenhaCarrosCima() {
 
 	var posicaoPilotos = dadosParciais.posisPack;
 	for (i = 0; i < posicaoPilotos.posis.length; i++) {
-		var pos = posicaoPilotos.posis[i];
-		var ponto = circuito.pistaFull[pos.idNo];
-		if (pos.tracado == 1) {
-			ponto = circuito.pista1Full[pos.idNo];
+		var piloto = posicaoPilotos.posis[i];
+		var ponto = circuito.pistaFull[piloto.idNo];
+		if (piloto.tracado == 1) {
+			ponto = circuito.pista1Full[piloto.idNo];
 		}
-		if (pos.tracado == 2) {
-			ponto = circuito.pista2Full[pos.idNo];
+		if (piloto.tracado == 2) {
+			ponto = circuito.pista2Full[piloto.idNo];
 		}
 		if (ponto == null) {
 			continue;
 		}
-		if (i == 0) {
-			vdp_centralizaPonto(ponto);
-		}
 		if (ponto != null && ponto.x != null && ponto.y != null) {
 			var angulo = 0;
-			if ((pos.idNo - 5) > 0
-					&& (pos.idNo + 5) < circuito.pistaFull.length) {
-				var frenteCar = circuito.pistaFull[pos.idNo - 5];
-				var trazCar = circuito.pistaFull[pos.idNo + 5];
+			if ((piloto.idNo - 5) > 0
+					&& (piloto.idNo + 5) < circuito.pistaFull.length) {
+				var frenteCar = circuito.pistaFull[piloto.idNo - 5];
+				var trazCar = circuito.pistaFull[piloto.idNo + 5];
 				angulo = calculaAngulo(frenteCar, trazCar, 0);
-				maneContext.fillText("Angulo : " + angulo, ponto.x - ptBg.x,
+				maneContext.fillText(pilotosMap.get(piloto.idPiloto).nome, ponto.x - ptBg.x,
 						ponto.y - ptBg.y);
 			}
 
 			if (carrosImgMap != null) {
-				var imgCarro = carrosImgMap.get(pos.idPiloto);
+				var imgCarro = carrosImgMap.piloto(piloto.idPiloto);
 				var x = ponto.x - ptBg.x - (imgCarro.width / 2);
 				var y = ponto.y - ptBg.y - (imgCarro.height / 2);
 				maneContext.drawImage(vdp_rotacionarCarro(imgCarro, angulo), x,

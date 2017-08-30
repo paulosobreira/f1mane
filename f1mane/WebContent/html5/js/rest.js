@@ -19,7 +19,7 @@ function rest_dadosJogo() {
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
@@ -36,11 +36,10 @@ function rest_ciruito() {
 		dataType : "json",
 		success : function(response) {
 			circuito = response;
-			vdp_carregaBackGround();
 			rest_iniciarJogo();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
@@ -57,11 +56,9 @@ function rest_dadosParciais() {
 		dataType : "json",
 		success : function(response) {
 			dadosParciais = response;
-			vdp_desenha();
-			setInterval(rest_dadosParciais(), 1000);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
@@ -74,24 +71,25 @@ function rest_criarJogo() {
 		dataType : "json",
 		success : function(response) {
 			criarJogo = response;
-			rest_ciruito();
-			rest_dadosJogo();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
 
 function rest_iniciarJogo() {
+	var retorno = false;
 	$.ajax({
 		type : "GET",
 		url : "/f1mane/rest/letsRace/iniciarJogo",
+		async   : false,
 		success : function(response) {
-			rest_dadosParciais();
+			retorno =  true;
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
+	return retorno;
 }
