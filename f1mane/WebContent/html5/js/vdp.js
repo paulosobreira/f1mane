@@ -29,14 +29,8 @@ function vdp_centralizaPole() {
 			|| circuito == null) {
 		return;
 	}
-	var pos = dadosParciais.posisPack.posis[posicaoCentraliza];
-	var ponto = circuito.pistaFull[pos.idNo];
-	if (pos.tracado == 1) {
-		ponto = circuito.pista1Full[pos.idNo];
-	}
-	if (pos.tracado == 2) {
-		ponto = circuito.pista2Full[pos.idNo];
-	}
+	var piloto = dadosParciais.posisPack.posis[posicaoCentraliza];
+	var ponto = obeterPonto(piloto);
 	if (ponto == null) {
 		return;
 	}
@@ -71,6 +65,32 @@ function vdp_carregaBackGround() {
 	// imgBg.src = "../sowbreira/f1mane/recursos/testeBG_mro.jpg";
 }
 
+function obeterPonto(piloto) {
+	var ponto = circuito.pistaFull[piloto.idNo];
+	if (piloto.tracado == 1) {
+		ponto = circuito.pista1Full[piloto.idNo];
+	}
+	if (piloto.tracado == 2) {
+		ponto = circuito.pista2Full[piloto.idNo];
+	}
+	if (piloto.tracado == 4) {
+		ponto = circuito.pista4Full[piloto.idNo];
+	}
+	if (piloto.tracado == 5) {
+		ponto = circuito.pista5Full[piloto.idNo];
+	}
+	if(ponto==null){
+		ponto = circuito.boxFull[piloto.idNo];
+		if (piloto.tracado == 1) {
+			ponto = circuito.box1Full[piloto.idNo];
+		}
+		if (piloto.tracado == 2) {
+			ponto = circuito.box2Full[piloto.idNo];
+		}
+	}
+	return ponto;
+}
+
 function vdp_desenhaCarrosCima() {
 	if (circuito == null || circuito.objetosNoTransparencia == null
 			|| dadosParciais == null || dadosJogo == null
@@ -81,13 +101,7 @@ function vdp_desenhaCarrosCima() {
 	var posicaoPilotos = dadosParciais.posisPack;
 	for (i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
-		var ponto = circuito.pistaFull[piloto.idNo];
-		if (piloto.tracado == 1) {
-			ponto = circuito.pista1Full[piloto.idNo];
-		}
-		if (piloto.tracado == 2) {
-			ponto = circuito.pista2Full[piloto.idNo];
-		}
+		var ponto = obeterPonto(piloto);
 		if (ponto == null) {
 			continue;
 		}
@@ -98,8 +112,8 @@ function vdp_desenhaCarrosCima() {
 				var frenteCar = circuito.pistaFull[piloto.idNo - 5];
 				var trazCar = circuito.pistaFull[piloto.idNo + 5];
 				angulo = calculaAngulo(frenteCar, trazCar, 0);
-				maneContext.fillText(pilotosMap.get(piloto.idPiloto).nome, ponto.x - ptBg.x,
-						ponto.y - ptBg.y);
+				maneContext.fillText(pilotosMap.get(piloto.idPiloto).nome,
+						ponto.x - ptBg.x, ponto.y - ptBg.y);
 			}
 
 			if (carrosImgMap != null) {
