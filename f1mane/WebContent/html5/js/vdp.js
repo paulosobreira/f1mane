@@ -1,4 +1,5 @@
 var carrosImgMap;
+var mapaIdNos;
 var cvRotate = document.createElement('canvas');
 var ctxRotate = cvRotate.getContext('2d');
 var maneCanvas = document.getElementById('maneCanvas')
@@ -8,7 +9,6 @@ var ptBg = {
 	x : 0,
 	y : 0
 };
-
 var posicaoCentraliza = 0;
 
 function vdp_desenha() {
@@ -66,26 +66,29 @@ function vdp_carregaBackGround() {
 }
 
 function obeterPonto(piloto) {
-	var ponto = circuito.pistaFull[piloto.idNo];
-	if (piloto.tracado == 1) {
-		ponto = circuito.pista1Full[piloto.idNo];
-	}
-	if (piloto.tracado == 2) {
-		ponto = circuito.pista2Full[piloto.idNo];
-	}
-	if (piloto.tracado == 4) {
-		ponto = circuito.pista4Full[piloto.idNo];
-	}
-	if (piloto.tracado == 5) {
-		ponto = circuito.pista5Full[piloto.idNo];
-	}
-	if(ponto==null){
+	var no = mapaIdNos.get(piloto.idNo);
+	var ponto;
+	if (no.isBox) {
 		ponto = circuito.boxFull[piloto.idNo];
 		if (piloto.tracado == 1) {
 			ponto = circuito.box1Full[piloto.idNo];
 		}
 		if (piloto.tracado == 2) {
 			ponto = circuito.box2Full[piloto.idNo];
+		}
+	} else {
+		ponto = circuito.pistaFull[piloto.idNo];
+		if (piloto.tracado == 1) {
+			ponto = circuito.pista1Full[piloto.idNo];
+		}
+		if (piloto.tracado == 2) {
+			ponto = circuito.pista2Full[piloto.idNo];
+		}
+		if (piloto.tracado == 4) {
+			ponto = circuito.pista4Full[piloto.idNo];
+		}
+		if (piloto.tracado == 5) {
+			ponto = circuito.pista5Full[piloto.idNo];
 		}
 	}
 	return ponto;

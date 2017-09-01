@@ -73,35 +73,7 @@ public class LetsRace {
 	}
 
 	@GET
-	@Path("/posicaoPilotos")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response posicaoPilotos(@QueryParam("nomeJogo") String nomeJogo) {
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
-		Object posis = controlePaddock.obterPosicaoPilotos(nomeJogo);
-		if (posis == null) {
-			return Response.status(400)
-					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		if (posis instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) posis;
-			return Response.status(400)
-					.entity(Html.escapeHtml(msgSrv.getMessageString()))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		if (posis instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) posis;
-			return Response.status(500)
-					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		PosisPack posisPack = new PosisPack();
-		posisPack.decode((String) posis);
-		return Response.status(200).entity(posisPack).build();
-	}
-
-	@GET
+	@Compress
 	@Path("/dadosParciais")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosParciais(@QueryParam("nomeJogo") String nomeJogo) {
@@ -132,7 +104,8 @@ public class LetsRace {
 		dadosParciais.decode((String) dParciais);
 		return Response.status(200).entity(dadosParciais).build();
 	}
-
+	
+	
 	@GET
 	@Path("/dadosJogo")
 	@Produces(MediaType.APPLICATION_JSON)

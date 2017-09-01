@@ -36,6 +36,14 @@ function rest_ciruito() {
 		dataType : "json",
 		success : function(response) {
 			circuito = response;
+			mapaIdNos = new Map();
+			var id = 1; 
+			for (i = 0; i < circuito.pistaFull.length; i++) {
+				mapaIdNos.set(id++, circuito.pistaFull[i]);
+			}
+			for (i = 0; i < circuito.boxFull.length; i++) {
+				mapaIdNos.set(id++, circuito.boxFull[i]);
+			}
 			rest_iniciarJogo();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -43,6 +51,7 @@ function rest_ciruito() {
 		}
 	});
 }
+
 
 function rest_dadosParciais() {
 	if(criarJogo ==null || criarJogo.nomeJogoCriado == null){
