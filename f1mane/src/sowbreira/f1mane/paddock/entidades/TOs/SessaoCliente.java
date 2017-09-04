@@ -20,6 +20,8 @@ public class SessaoCliente implements Serializable {
 
 	private String pilotoAtual;
 
+	private boolean guest;
+
 	public long getUlimaAtividade() {
 		return ulimaAtividade;
 	}
@@ -67,6 +69,14 @@ public class SessaoCliente implements Serializable {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public boolean isGuest() {
+		return guest;
+	}
+
+	public void setGuest(boolean guest) {
+		this.guest = guest;
 	}
 
 }

@@ -140,6 +140,36 @@ public class LetsRace {
 	}
 
 	@GET
+	@Path("/obterJogos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response obterJogos() {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		return Response.status(200).entity(controlePaddock.obterJogos())
+				.build();
+	}
+
+	@GET
+	@Path("/atualizarDadosVisao")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response atualizarDadosVisao() {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		return Response.status(200)
+				.entity(controlePaddock.atualizarDadosVisao()).build();
+	}
+
+	@GET
+	@Path("/criarSessaoVisitante")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response criarSessaoVisitante() {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		return Response.status(200)
+				.entity(controlePaddock.criarSessaoVisitante()).build();
+	}
+
+	@GET
 	@Path("/iniciarJogo")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response iniciarJogo() {
@@ -351,7 +381,8 @@ public class LetsRace {
 	@Produces("image/png")
 	public Response png(@PathParam("recurso") String recurso)
 			throws IOException {
-		BufferedImage buffer = carregadorRecursos.carregaBufferedImage(recurso+".png");
+		BufferedImage buffer = carregadorRecursos
+				.carregaBufferedImage(recurso + ".png");
 		if (buffer == null) {
 			return Response.status(200).entity("null").build();
 		}
