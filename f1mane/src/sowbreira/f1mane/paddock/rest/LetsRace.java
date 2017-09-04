@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,15 +12,15 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.beanutils.BeanUtils;
-
 import br.nnpe.Constantes;
 import br.nnpe.Html;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
@@ -33,7 +32,6 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosParciais;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
-import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
@@ -265,19 +263,100 @@ public class LetsRace {
 		byte[] imageData = baos.toByteArray();
 		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
-	
-	
+
 	@GET
 	@Path("/capacete")
 	@Produces("image/png")
 	public Response capacete(@QueryParam("nomeOriginal") String nomeOriginal,
 			@QueryParam("temporada") String temporada) throws IOException {
-		BufferedImage capacetes = carregadorRecursos.obterCapacete(nomeOriginal, temporada);
+		BufferedImage capacetes = carregadorRecursos.obterCapacete(nomeOriginal,
+				temporada);
 		if (capacetes == null) {
 			return Response.status(200).entity("null").build();
 		}
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write(capacetes, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/setaCima")
+	@Produces("image/png")
+	public Response setaCima() throws IOException {
+		BufferedImage setaCima = carregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
+						200);
+		if (setaCima == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(setaCima, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/setaBaixo")
+	@Produces("image/png")
+	public Response setaBaixo() throws IOException {
+		BufferedImage setaBaixo = carregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
+						200);
+		if (setaBaixo == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(setaBaixo, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/setaEsquerda")
+	@Produces("image/png")
+	public Response setaEsquerda() throws IOException {
+		BufferedImage setaCima = carregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
+						200);
+		BufferedImage setaEsquerda = ImageUtil.rotacionar(setaCima, 270);
+		if (setaEsquerda == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(setaEsquerda, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/setaDireita")
+	@Produces("image/png")
+	public Response setaDireita() throws IOException {
+		BufferedImage setaCima = carregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
+						200);
+		BufferedImage setaDireita = ImageUtil.rotacionar(setaCima, 90);
+		if (setaDireita == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(setaDireita, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/png/{recurso}")
+	@Produces("image/png")
+	public Response png(@PathParam("recurso") String recurso)
+			throws IOException {
+		BufferedImage buffer = carregadorRecursos.carregaBufferedImage(recurso+".png");
+		if (buffer == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(buffer, "png", baos);
 		byte[] imageData = baos.toByteArray();
 		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}

@@ -562,18 +562,18 @@ public class PainelCircuito {
 		carroCimaFreiosE5 = CarregadorRecursos.carregaBufferedImageTransparecia(
 				"CarroCimaFreiosE5.png", null);
 		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.3);
+				.carregaBufferedImageTransparecia("pneuMole.png", null), 0.3);
 		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.3);
+				.carregaBufferedImageTransparecia("pneuDuro.png", null), 0.3);
 		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.3);
+				.carregaBufferedImageTransparecia("pneuChuva.png", null), 0.3);
 
 		pneuMoleImgMini = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.15);
+				.carregaBufferedImageTransparecia("pneuMole.png", null), 0.15);
 		pneuDuroImgMini = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.15);
+				.carregaBufferedImageTransparecia("pneuDuro.png", null), 0.15);
 		pneuChuvaImgMini = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-chuva.png", null),
+				.carregaBufferedImageTransparecia("pneuChuva.png", null),
 				0.15);
 
 		fuel = CarregadorRecursos.carregaBufferedImage("fuel.png");

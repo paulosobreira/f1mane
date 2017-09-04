@@ -677,11 +677,11 @@ public class PainelMenuLocal {
 		chuva = CarregadorRecursos.carregaBufferedImage("chuva.png");
 
 		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.3);
+				.carregaBufferedImageTransparecia("pneuMole.png", null), 0.3);
 		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.3);
+				.carregaBufferedImageTransparecia("pneuDuro.png", null), 0.3);
 		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.3);
+				.carregaBufferedImageTransparecia("pneuChuva.png", null), 0.3);
 
 		maisAsaImg = CarregadorRecursos
 				.carregaBufferedImageTransparecia("maisAsa.png", null);;
