@@ -47,27 +47,11 @@ public abstract class ControleRecursos {
 	private static Map<String, BufferedImage> bufferCarrosCima = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCarrosCimaSemAreofolio = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
-	private static Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCarrosLadoSemAreofolio = new HashMap<String, BufferedImage>();
 
 	public BufferedImage obterCapacete(Piloto piloto) {
-		try {
-			String chave = piloto.getNomeOriginal()
-					+ piloto.getCarro().getNome();
-			BufferedImage ret = bufferCapacete.get(chave);
-			if (ret == null) {
-				ret = CarregadorRecursos.carregaImagem("capacetes/" + temporada
-						+ "/" + piloto.getNomeOriginal().replaceAll("\\.", "")
-						+ ".png");
-				if (ret == null) {
-					ret = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-				}
-				bufferCapacete.put(chave, ret);
-			}
-			return ret;
-		} catch (Exception e) {
-			return null;
-		}
+		return carregadorRecursos.obterCapacete(piloto.getNomeOriginal(),
+				this.getTemporada());
 	}
 
 	public BufferedImage obterCarroLado(Piloto piloto) {

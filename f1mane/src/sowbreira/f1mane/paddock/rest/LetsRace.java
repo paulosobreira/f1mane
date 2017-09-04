@@ -37,9 +37,13 @@ import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 @Path("/letsRace")
 public class LetsRace {
+
+	private CarregadorRecursos carregadorRecursos = new CarregadorRecursos(
+			true);
 
 	@GET
 	@Compress
@@ -104,8 +108,7 @@ public class LetsRace {
 		dadosParciais.decode((String) dParciais);
 		return Response.status(200).entity(dadosParciais).build();
 	}
-	
-	
+
 	@GET
 	@Path("/dadosJogo")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -192,7 +195,6 @@ public class LetsRace {
 		sessaoCliente.setNomeJogador("Sobreira");
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace();
-		dadosCriarJogo.setCircuitoSelecionado("Shangai");
 		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 		Object criarJogo = null;
 
@@ -236,7 +238,7 @@ public class LetsRace {
 		Collections.shuffle(shuffle);
 		dadosCriarJogo
 				.setCircuitoSelecionado((String) shuffle.iterator().next());
-		// dadosCriarJogo.setCircuitoSelecionado("Montreal");
+		dadosCriarJogo.setCircuitoSelecionado("Montreal");
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
 		dadosCriarJogo.setReabastecimento(false);
@@ -255,13 +257,38 @@ public class LetsRace {
 				.getControlePaddock();
 		BufferedImage carroCima = controlePaddock.obterCarroCima(nomeJogo,
 				idPiloto);
-		if(carroCima==null){
+		if (carroCima == null) {
 			return Response.status(200).entity("null").build();
 		}
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write(carroCima, "png", baos);
 		byte[] imageData = baos.toByteArray();
 		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+	
+	
+	@GET
+	@Path("/capacete")
+	@Produces("image/png")
+	public Response capacete(@QueryParam("nomeOriginal") String nomeOriginal,
+			@QueryParam("temporada") String temporada) throws IOException {
+		BufferedImage capacetes = carregadorRecursos.obterCapacete(nomeOriginal, temporada);
+		if (capacetes == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(capacetes, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Compress
+	@Path("/temporadas")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response temporadas() {
+		return Response.status(200)
+				.entity(carregadorRecursos.carregarTemporadasPilotos()).build();
 	}
 
 }

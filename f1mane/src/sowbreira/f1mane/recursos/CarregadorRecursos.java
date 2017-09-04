@@ -43,6 +43,7 @@ public class CarregadorRecursos {
 	private static Map bufferImages = new HashMap();
 	private static Map bufferImagesTransp = new HashMap();
 	private static Map bufferCarros = new HashMap();
+	private static Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
 
 	public CarregadorRecursos(boolean carregaTemp) {
 		if (carregaTemp)
@@ -423,8 +424,9 @@ public class CarregadorRecursos {
 		return bufferedImage;
 	}
 
-	public List carregarListaPilotos(String temporarada) throws IOException {
-		List retorno = new ArrayList();
+	public List<Piloto> carregarListaPilotos(String temporarada)
+			throws IOException {
+		List<Piloto> retorno = new ArrayList<Piloto>();
 		Properties properties = new Properties();
 
 		properties.load(recursoComoStreamIn(
@@ -449,11 +451,8 @@ public class CarregadorRecursos {
 			piloto.setHabilidade(habilidade);
 			retorno.add(piloto);
 		}
-		Collections.sort(retorno, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				Piloto piloto0 = (Piloto) arg0;
-				Piloto piloto1 = (Piloto) arg1;
-
+		Collections.sort(retorno, new Comparator<Piloto>() {
+			public int compare(Piloto piloto0, Piloto piloto1) {
 				return new Integer(piloto1.getHabilidade())
 						.compareTo(new Integer(piloto0.getHabilidade()));
 			}
@@ -472,12 +471,9 @@ public class CarregadorRecursos {
 				carros.add(piloto.getCarro());
 			}
 			List<Carro> carrosL = new ArrayList<Carro>(carros);
-			Collections.sort(carrosL, new Comparator() {
-
+			Collections.sort(carrosL, new Comparator<Carro>() {
 				@Override
-				public int compare(Object o1, Object o2) {
-					Carro carro1 = (Carro) o1;
-					Carro carro2 = (Carro) o2;
+				public int compare(Carro carro1, Carro carro2) {
 					return carro1.getNome().compareTo(carro2.getNome());
 				}
 
@@ -571,8 +567,8 @@ public class CarregadorRecursos {
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String temporada = (String) propName.nextElement();
-				List pilotos = carregarListaPilotos(temporada);
-				List carros = carregarListaCarros(temporada);
+				List<Piloto> pilotos = carregarListaPilotos(temporada);
+				List<Carro> carros = carregarListaCarros(temporada);
 				ligarPilotosCarros(pilotos, carros);
 				circuitosPilotos.put(temporada, pilotos);
 			}
@@ -700,5 +696,23 @@ public class CarregadorRecursos {
 		}
 
 		return creditos;
+	}
+
+	public BufferedImage obterCapacete(String nomeOriginal, String temporada) {
+		try {
+			String chave = nomeOriginal + temporada;
+			BufferedImage ret = bufferCapacete.get(chave);
+			if (ret == null) {
+				ret = CarregadorRecursos.carregaImagem("capacetes/" + temporada
+						+ "/" + nomeOriginal.replaceAll("\\.", "") + ".png");
+				if (ret == null) {
+					ret = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+				}
+				bufferCapacete.put(chave, ret);
+			}
+			return ret;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

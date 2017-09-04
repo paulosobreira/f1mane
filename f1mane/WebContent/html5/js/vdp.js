@@ -68,13 +68,14 @@ function vdp_carregaBackGround() {
 function obeterPonto(piloto) {
 	var no = mapaIdNos.get(piloto.idNo);
 	var ponto;
-	if (no.isBox) {
-		ponto = circuito.boxFull[piloto.idNo];
+	if (no.box) {
+		var idNo =  piloto.idNo - circuito.pistaFull.length;
+		ponto = circuito.boxFull[idNo];
 		if (piloto.tracado == 1) {
-			ponto = circuito.box1Full[piloto.idNo];
+			ponto = circuito.box1Full[idNo];
 		}
 		if (piloto.tracado == 2) {
-			ponto = circuito.box2Full[piloto.idNo];
+			ponto = circuito.box2Full[idNo];
 		}
 	} else {
 		ponto = circuito.pistaFull[piloto.idNo];
