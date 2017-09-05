@@ -1,8 +1,13 @@
 package sowbreira.f1mane.entidades;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.nnpe.GeoUtil;
+import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
@@ -770,4 +777,109 @@ public class Circuito implements Serializable {
 		return Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista();
 	}
 
+	public BufferedImage desenhaMiniCircuito() {
+		int maxX = 0;
+		int maxY = 0;
+		double doubleMulti = 25;
+		for (Iterator iterator = pista.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point p = new Point(no.getX(), no.getY());
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			if (p.x > maxX) {
+				maxX = p.x;
+			}
+			if (p.y > maxY) {
+				maxY = p.y;
+			}
+		}
+		BufferedImage image = new BufferedImage(maxX + (int) (maxX * 0.1),
+				maxY + (int) (maxY * 0.1), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		desenhaMiniCircuito(g2d, 0, 0);
+		return image;
+	}
+
+	public void desenhaMiniCircuito(Graphics2D g2d, int x, int y) {
+		int maxLagura = 0;
+		g2d.setStroke(new BasicStroke(3.0f));
+		g2d.setColor(Color.BLACK);
+		List pista = getPista();
+		ArrayList pistaMinimizada = new ArrayList();
+		double doubleMulti = 25;
+		Map map = new HashMap();
+		for (Iterator iterator = pista.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point p = new Point(no.getX(), no.getY());
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			if (p.x > maxLagura) {
+				maxLagura = p.x;
+			}
+			if (!pistaMinimizada.contains(p)) {
+				map.put(p, no);
+				pistaMinimizada.add(p);
+			}
+		}
+		ArrayList boxMinimizado = new ArrayList();
+		List box = getBox();
+		for (Iterator iterator = box.iterator(); iterator.hasNext();) {
+			No no = (No) iterator.next();
+			Point p = new Point(no.getX(), no.getY());
+			p.x /= doubleMulti;
+			p.y /= doubleMulti;
+			if (p.x > maxLagura) {
+				maxLagura = p.x;
+			}
+			if (!boxMinimizado.contains(p))
+				boxMinimizado.add(p);
+		}
+
+		int incX = 0 ;// (320 - maxLagura) / 2;
+
+		Point o = new Point(0, 0);
+		Point oldP = null;
+		No ultNo = null;
+		for (Iterator iterator = pistaMinimizada.iterator(); iterator
+				.hasNext();) {
+			Point p = (Point) iterator.next();
+			if (oldP != null) {
+				No no = (No) map.get(oldP);
+				if (no.verificaCurvaBaixa()) {
+					g2d.setColor(Color.red);
+				} else if (no.verificaCurvaAlta()) {
+					g2d.setColor(Color.orange);
+				} else if (no.verificaRetaOuLargada()) {
+					g2d.setColor(new Color(0, 200, 0));
+				}
+				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
+						o.x + p.x + incX + x, o.y + p.y + y);
+			}
+			oldP = p;
+			ultNo = (No) map.get(oldP);
+		}
+		Point p0 = (Point) pistaMinimizada.get(0);
+		if (ultNo.verificaCurvaBaixa()) {
+			g2d.setColor(Color.red);
+		} else if (ultNo.verificaCurvaAlta()) {
+			g2d.setColor(Color.orange);
+		} else if (ultNo.verificaRetaOuLargada()) {
+			g2d.setColor(new Color(0, 200, 0));
+		}
+		g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
+				o.x + p0.x + incX + x, o.y + p0.y + y);
+
+		g2d.setStroke(new BasicStroke(2.0f));
+		oldP = null;
+		g2d.setColor(Color.lightGray);
+		for (Iterator iterator = boxMinimizado.iterator(); iterator
+				.hasNext();) {
+			Point p = (Point) iterator.next();
+			if (oldP != null) {
+				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
+						o.x + p.x + incX + x, o.y + p.y + y);
+			}
+			oldP = p;
+		}
+	}
 }

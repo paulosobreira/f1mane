@@ -6,6 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -253,6 +255,32 @@ public class LetsRace {
 		}
 		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) criarJogo;
 		return Response.status(200).entity(srvPaddockPack).build();
+	}
+
+	@GET
+	@Path("/circuitos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response circuitos() {
+		Map<String, String> carregarCircuitos = ControleRecursos
+				.carregarCircuitos();
+		return Response.status(200).entity(carregarCircuitos).build();
+	}
+
+	@GET
+	@Path("/circuitoMini/{nmCircuito}")
+	@Produces("image/png")
+	public Response circuitoMini(@PathParam("nmCircuito") String nmCircuito)
+			throws IOException, ClassNotFoundException {
+		Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
+		Circuito circuito = (Circuito) rec;
+		BufferedImage carroCima = circuito.desenhaMiniCircuito();
+		if (carroCima == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(carroCima, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.status(200).entity(imageData).build();
 	}
 
 	private DadosCriarJogo gerarJogoLetsRace() {
