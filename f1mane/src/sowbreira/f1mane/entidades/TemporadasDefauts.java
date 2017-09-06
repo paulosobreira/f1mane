@@ -1,0 +1,52 @@
+package sowbreira.f1mane.entidades;
+
+import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class TemporadasDefauts implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Boolean trocaPneu = false;
+	private Boolean reabastecimento = false;
+	private Boolean ers = false;
+	private Boolean drs = false;
+	private List<Piloto> pilotos;
+
+	public Boolean getTrocaPneu() {
+		return trocaPneu;
+	}
+	public void setTrocaPneu(Boolean trocaPneu) {
+		this.trocaPneu = trocaPneu;
+	}
+	public Boolean getReabastecimento() {
+		return reabastecimento;
+	}
+	public void setReabastecimento(Boolean reabastecimento) {
+		this.reabastecimento = reabastecimento;
+	}
+	public Boolean getErs() {
+		return ers;
+	}
+	public void setErs(Boolean ers) {
+		this.ers = ers;
+	}
+	public Boolean getDrs() {
+		return drs;
+	}
+	public void setDrs(Boolean drs) {
+		this.drs = drs;
+	}
+	public List<Piloto> getPilotos() {
+		return pilotos;
+	}
+	public void setPilotos(List<Piloto> pilotos) {
+		this.pilotos = pilotos;
+	}
+
+}

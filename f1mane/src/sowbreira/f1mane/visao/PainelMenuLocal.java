@@ -232,7 +232,6 @@ public class PainelMenuLocal {
 	private CarregadorRecursos carregadorRecursos;
 
 	private BufferedImage setaCarroCima;
-	private BufferedImage setaCarroBaixo;
 	private BufferedImage setaCarroEsquerda;
 	private BufferedImage setaCarroDireita;
 
@@ -634,9 +633,6 @@ public class PainelMenuLocal {
 	private void iniciaRecursos() {
 		setaCarroCima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
-						200);
-		setaCarroBaixo = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
 						200);
 		/**
 		 * Esquerda

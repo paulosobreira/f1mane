@@ -37,57 +37,65 @@ import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
 
 public class CarregadorRecursos {
-	private HashMap temporadas;
-	private Vector vectorTemps;
+	private HashMap<String, String> temporadas;
+	private HashMap<String, TemporadasDefauts> temporadasDefauts;
+	private Vector<String> vectorTemps;
+	private Map<String, List<Piloto>> temporadasPilotos;
+	private Map<String, TemporadasDefauts> temporadasPilotosDefauts;
 	private static Map bufferImages = new HashMap();
 	private static Map bufferImagesTransp = new HashMap();
 	private static Map bufferCarros = new HashMap();
 	private static Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
 
 	public CarregadorRecursos(boolean carregaTemp) {
-		if (carregaTemp)
+		if (carregaTemp) {
 			carregarTemporadas();
+		}
 	}
 
-	public Vector getVectorTemps() {
+	public Vector<String> getVectorTemps() {
 		return vectorTemps;
 	}
 
-	public void carregarTemporadas() {
+	public Vector<String> carregarTemporadas() {
 		if (temporadas != null) {
-			return;
+			return vectorTemps;
 		}
 		if (temporadas == null) {
-			temporadas = new HashMap();
-			vectorTemps = new Vector();
+			temporadas = new HashMap<String, String>();
+			temporadasDefauts = new HashMap<String, TemporadasDefauts>();
+			vectorTemps = new Vector<String>();
 		}
 		final Properties properties = new Properties();
-
 		try {
 			properties.load(
 					recursoComoStreamIn("properties/temporadas.properties"));
-
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String name = (String) propName.nextElement();
-				temporadas.put(properties.getProperty(name), name);
-				vectorTemps.add(properties.getProperty(name));
+				String[] split = properties.getProperty(name).split(",");
+				TemporadasDefauts defauts = new TemporadasDefauts();
+				defauts.setTrocaPneu("true".equals(split[1]));
+				defauts.setReabastecimento("true".equals(split[2]));
+				defauts.setErs("true".equals(split[3]));
+				defauts.setDrs("true".equals(split[4]));
+				temporadasDefauts.put(name, defauts);
+				temporadas.put(split[0], name);
+				vectorTemps.add(split[0]);
 			}
-			Collections.sort(vectorTemps, new Comparator() {
-
+			Collections.sort(vectorTemps, new Comparator<String>() {
 				@Override
-				public int compare(Object o1, Object o2) {
-					String o1s = (String) o1;
-					String o2s = (String) o2;
-					return o2s.compareTo(o1s);
+				public int compare(String o1, String o2) {
+					return o2.compareTo(o1);
 				}
-
 			});
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
+		return vectorTemps;
 	}
 
 	public HashMap getTemporadas() {
@@ -462,10 +470,9 @@ public class CarregadorRecursos {
 		return retorno;
 	}
 
-	public List<Carro> carregarListaCarros(String temporada)
+	public List<Carro> carregarListaCarros(List pilotos, String temporada)
 			throws IOException {
 		if (temporadas.get(temporada) != null) {
-			List<Piloto> pilotos = (List) temporadas.get(temporada);
 			Set<Carro> carros = new HashSet<Carro>();
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
@@ -482,6 +489,10 @@ public class CarregadorRecursos {
 			return carrosL;
 		}
 
+		return carregarListaCarrosArquivo(temporada);
+	}
+	public List<Carro> carregarListaCarros(String temporada)
+			throws IOException {
 		return carregarListaCarrosArquivo(temporada);
 	}
 
@@ -533,10 +544,8 @@ public class CarregadorRecursos {
 	public void ligarPilotosCarros(List pilotos, List carros) {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-
 			for (Iterator iterator = carros.iterator(); iterator.hasNext();) {
 				Carro carro = (Carro) iterator.next();
-
 				if (piloto.getNomeCarro().equals(carro.getNome())) {
 					piloto.setCarro(criarCopiaCarro(carro, piloto));
 				}
@@ -559,8 +568,11 @@ public class CarregadorRecursos {
 		return carroNovo;
 	}
 
-	public Map carregarTemporadasPilotos() {
-		Map circuitosPilotos = new HashMap();
+	public Map<String, List<Piloto>> carregarTemporadasPilotos() {
+		if (temporadasPilotos != null) {
+			return temporadasPilotos;
+		}
+		temporadasPilotos = new HashMap<String, List<Piloto>>();
 		final Properties properties = new Properties();
 		try {
 			properties.load(
@@ -569,14 +581,30 @@ public class CarregadorRecursos {
 			while (propName.hasMoreElements()) {
 				final String temporada = (String) propName.nextElement();
 				List<Piloto> pilotos = carregarListaPilotos(temporada);
-				List<Carro> carros = carregarListaCarros(temporada);
+				List<Carro> carros = carregarListaCarros(pilotos, temporada);
 				ligarPilotosCarros(pilotos, carros);
-				circuitosPilotos.put(temporada, pilotos);
+				temporadasPilotos.put(temporada, pilotos);
 			}
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
-		return circuitosPilotos;
+		return temporadasPilotos;
+	}
+
+	public Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts() {
+		if (temporadasPilotosDefauts != null) {
+			return temporadasPilotosDefauts;
+		}
+		temporadasPilotosDefauts = new HashMap<String, TemporadasDefauts>();
+		Map<String, List<Piloto>> carregarTemporadasPilotos = carregarTemporadasPilotos();
+		for (Iterator iterator = carregarTemporadasPilotos.keySet()
+				.iterator(); iterator.hasNext();) {
+			String temporada = (String) iterator.next();
+			TemporadasDefauts def = temporadasDefauts.get(temporada);
+			def.setPilotos(carregarTemporadasPilotos.get(temporada));
+			temporadasPilotosDefauts.put(temporada, def);
+		}
+		return temporadasPilotosDefauts;
 	}
 
 	public static BufferedImage carregaImgSemCache(String img) {

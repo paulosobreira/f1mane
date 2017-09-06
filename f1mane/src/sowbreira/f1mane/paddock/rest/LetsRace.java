@@ -28,6 +28,7 @@ import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
@@ -325,10 +326,19 @@ public class LetsRace {
 	@GET
 	@Path("/capacete")
 	@Produces("image/png")
-	public Response capacete(@QueryParam("nomeOriginal") String nomeOriginal,
+	public Response capacete(@QueryParam("id") String id,
 			@QueryParam("temporada") String temporada) throws IOException {
-		BufferedImage capacetes = carregadorRecursos.obterCapacete(nomeOriginal,
-				temporada);
+		BufferedImage capacetes = null;
+		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+				.get(temporada);
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (Integer.parseInt(id) == piloto.getId()) {
+				capacetes = carregadorRecursos
+						.obterCapacete(piloto.getNomeOriginal(), temporada);
+				break;
+			}
+		}
 		if (capacetes == null) {
 			return Response.status(200).entity("null").build();
 		}
@@ -422,11 +432,30 @@ public class LetsRace {
 
 	@GET
 	@Compress
+	@Path("/temporadasPilotos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response temporadasPilotos() {
+		return Response.status(200)
+				.entity(carregadorRecursos.carregarTemporadasPilotos()).build();
+	}
+
+	@GET
+	@Compress
+	@Path("/temporadasDefaults")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response temporadasDefaults() {
+		return Response.status(200)
+				.entity(carregadorRecursos.carregarTemporadasPilotosDefauts())
+				.build();
+	}
+
+	@GET
+	@Compress
 	@Path("/temporadas")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response temporadas() {
 		return Response.status(200)
-				.entity(carregadorRecursos.carregarTemporadasPilotos()).build();
+				.entity(carregadorRecursos.carregarTemporadas()).build();
 	}
 
 }
