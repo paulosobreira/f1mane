@@ -12,7 +12,6 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.InterfaceJogo;

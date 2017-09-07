@@ -14,11 +14,14 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import br.nnpe.Constantes;
+import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.controles.ControleBox;
 import sowbreira.f1mane.controles.ControleCampeonato;
 import sowbreira.f1mane.controles.ControleEstatisticas;
-import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
@@ -34,16 +37,11 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
-import sowbreira.f1mane.paddock.entidades.TOs.Posis;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.GerenciadorVisual;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
-import br.nnpe.Constantes;
-import br.nnpe.ImageUtil;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 17:30:43
@@ -1381,4 +1379,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		// TODO Auto-generated method stub
 
 	}
+
+
 }

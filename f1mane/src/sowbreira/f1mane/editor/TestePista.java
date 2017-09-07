@@ -1,22 +1,11 @@
 package sowbreira.f1mane.editor;
 
-import java.awt.Component;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-
-import sowbreira.f1mane.controles.ControleBox;
+import br.nnpe.Logger;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
-import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.GeoUtil;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 public class TestePista {
 	protected static final long SEEP_TIME = 100;

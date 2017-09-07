@@ -2,7 +2,6 @@ package sowbreira.f1mane.recursos;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
@@ -12,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,62 +31,71 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import sowbreira.f1mane.entidades.Carro;
-import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.Piloto;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
 
 public class CarregadorRecursos {
-	private HashMap temporadas;
-	private Vector vectorTemps;
+	private HashMap<String, String> temporadas;
+	private HashMap<String, TemporadasDefauts> temporadasDefauts;
+	private Vector<String> vectorTemps;
+	private Map<String, List<Piloto>> temporadasPilotos;
+	private Map<String, TemporadasDefauts> temporadasPilotosDefauts;
 	private static Map bufferImages = new HashMap();
 	private static Map bufferImagesTransp = new HashMap();
 	private static Map bufferCarros = new HashMap();
+	private static Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
 
 	public CarregadorRecursos(boolean carregaTemp) {
-		if (carregaTemp)
+		if (carregaTemp) {
 			carregarTemporadas();
+		}
 	}
 
-	public Vector getVectorTemps() {
+	public Vector<String> getVectorTemps() {
 		return vectorTemps;
 	}
 
-	public void carregarTemporadas() {
+	public Vector<String> carregarTemporadas() {
 		if (temporadas != null) {
-			return;
+			return vectorTemps;
 		}
 		if (temporadas == null) {
-			temporadas = new HashMap();
-			vectorTemps = new Vector();
+			temporadas = new HashMap<String, String>();
+			temporadasDefauts = new HashMap<String, TemporadasDefauts>();
+			vectorTemps = new Vector<String>();
 		}
 		final Properties properties = new Properties();
-
 		try {
 			properties.load(
 					recursoComoStreamIn("properties/temporadas.properties"));
-
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String name = (String) propName.nextElement();
-				temporadas.put(properties.getProperty(name), name);
-				vectorTemps.add(properties.getProperty(name));
+				String[] split = properties.getProperty(name).split(",");
+				TemporadasDefauts defauts = new TemporadasDefauts();
+				defauts.setTrocaPneu("true".equals(split[1]));
+				defauts.setReabastecimento("true".equals(split[2]));
+				defauts.setErs("true".equals(split[3]));
+				defauts.setDrs("true".equals(split[4]));
+				temporadasDefauts.put(name, defauts);
+				temporadas.put(split[0], name);
+				vectorTemps.add(split[0]);
 			}
-			Collections.sort(vectorTemps, new Comparator() {
-
+			Collections.sort(vectorTemps, new Comparator<String>() {
 				@Override
-				public int compare(Object o1, Object o2) {
-					String o1s = (String) o1;
-					String o2s = (String) o2;
-					return o2s.compareTo(o1s);
+				public int compare(String o1, String o2) {
+					return o2.compareTo(o1);
 				}
-
 			});
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
+		return vectorTemps;
 	}
 
 	public HashMap getTemporadas() {
@@ -424,8 +433,9 @@ public class CarregadorRecursos {
 		return bufferedImage;
 	}
 
-	public List carregarListaPilotos(String temporarada) throws IOException {
-		List retorno = new ArrayList();
+	public List<Piloto> carregarListaPilotos(String temporarada)
+			throws IOException {
+		List<Piloto> retorno = new ArrayList<Piloto>();
 		Properties properties = new Properties();
 
 		properties.load(recursoComoStreamIn(
@@ -450,11 +460,8 @@ public class CarregadorRecursos {
 			piloto.setHabilidade(habilidade);
 			retorno.add(piloto);
 		}
-		Collections.sort(retorno, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				Piloto piloto0 = (Piloto) arg0;
-				Piloto piloto1 = (Piloto) arg1;
-
+		Collections.sort(retorno, new Comparator<Piloto>() {
+			public int compare(Piloto piloto0, Piloto piloto1) {
 				return new Integer(piloto1.getHabilidade())
 						.compareTo(new Integer(piloto0.getHabilidade()));
 			}
@@ -463,22 +470,18 @@ public class CarregadorRecursos {
 		return retorno;
 	}
 
-	public List<Carro> carregarListaCarros(String temporada)
+	public List<Carro> carregarListaCarros(List pilotos, String temporada)
 			throws IOException {
 		if (temporadas.get(temporada) != null) {
-			List<Piloto> pilotos = (List) temporadas.get(temporada);
 			Set<Carro> carros = new HashSet<Carro>();
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				carros.add(piloto.getCarro());
 			}
 			List<Carro> carrosL = new ArrayList<Carro>(carros);
-			Collections.sort(carrosL, new Comparator() {
-
+			Collections.sort(carrosL, new Comparator<Carro>() {
 				@Override
-				public int compare(Object o1, Object o2) {
-					Carro carro1 = (Carro) o1;
-					Carro carro2 = (Carro) o2;
+				public int compare(Carro carro1, Carro carro2) {
 					return carro1.getNome().compareTo(carro2.getNome());
 				}
 
@@ -486,6 +489,10 @@ public class CarregadorRecursos {
 			return carrosL;
 		}
 
+		return carregarListaCarrosArquivo(temporada);
+	}
+	public List<Carro> carregarListaCarros(String temporada)
+			throws IOException {
 		return carregarListaCarrosArquivo(temporada);
 	}
 
@@ -537,10 +544,8 @@ public class CarregadorRecursos {
 	public void ligarPilotosCarros(List pilotos, List carros) {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-
 			for (Iterator iterator = carros.iterator(); iterator.hasNext();) {
 				Carro carro = (Carro) iterator.next();
-
 				if (piloto.getNomeCarro().equals(carro.getNome())) {
 					piloto.setCarro(criarCopiaCarro(carro, piloto));
 				}
@@ -563,8 +568,11 @@ public class CarregadorRecursos {
 		return carroNovo;
 	}
 
-	public Map carregarTemporadasPilotos() {
-		Map circuitosPilotos = new HashMap();
+	public Map<String, List<Piloto>> carregarTemporadasPilotos() {
+		if (temporadasPilotos != null) {
+			return temporadasPilotos;
+		}
+		temporadasPilotos = new HashMap<String, List<Piloto>>();
 		final Properties properties = new Properties();
 		try {
 			properties.load(
@@ -572,15 +580,31 @@ public class CarregadorRecursos {
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String temporada = (String) propName.nextElement();
-				List pilotos = carregarListaPilotos(temporada);
-				List carros = carregarListaCarros(temporada);
+				List<Piloto> pilotos = carregarListaPilotos(temporada);
+				List<Carro> carros = carregarListaCarros(pilotos, temporada);
 				ligarPilotosCarros(pilotos, carros);
-				circuitosPilotos.put(temporada, pilotos);
+				temporadasPilotos.put(temporada, pilotos);
 			}
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
-		return circuitosPilotos;
+		return temporadasPilotos;
+	}
+
+	public Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts() {
+		if (temporadasPilotosDefauts != null) {
+			return temporadasPilotosDefauts;
+		}
+		temporadasPilotosDefauts = new HashMap<String, TemporadasDefauts>();
+		Map<String, List<Piloto>> carregarTemporadasPilotos = carregarTemporadasPilotos();
+		for (Iterator iterator = carregarTemporadasPilotos.keySet()
+				.iterator(); iterator.hasNext();) {
+			String temporada = (String) iterator.next();
+			TemporadasDefauts def = temporadasDefauts.get(temporada);
+			def.setPilotos(carregarTemporadasPilotos.get(temporada));
+			temporadasPilotosDefauts.put(temporada, def);
+		}
+		return temporadasPilotosDefauts;
 	}
 
 	public static BufferedImage carregaImgSemCache(String img) {
@@ -701,5 +725,30 @@ public class CarregadorRecursos {
 		}
 
 		return creditos;
+	}
+
+	public BufferedImage obterCapacete(String nomeOriginal, String temporada) {
+		try {
+			String chave = nomeOriginal + temporada;
+			BufferedImage ret = bufferCapacete.get(chave);
+			if (ret == null) {
+				ret = CarregadorRecursos.carregaImagem("capacetes/" + temporada
+						+ "/" + nomeOriginal.replaceAll("\\.", "") + ".png");
+				if (ret == null) {
+					ret = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+				}
+				bufferCapacete.put(chave, ret);
+			}
+			return ret;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public Object carregarRecurso(String nmRecurso)
+			throws ClassNotFoundException, IOException {
+		ObjectInputStream ois = new ObjectInputStream(
+				this.getClass().getResourceAsStream(nmRecurso));
+		return ois.readObject();
 	}
 }

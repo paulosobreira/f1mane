@@ -2,12 +2,12 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * @author Paulo Sobreira Criado em 17/08/2007 as 20:25:54
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Posis implements Serializable {
 
 	public int idPiloto, idNo, tracado;

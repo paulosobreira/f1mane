@@ -2,11 +2,9 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.Vector;
+import java.util.Map;
 
 /**
  * @author paulo.sobreira
@@ -15,7 +13,7 @@ import java.util.Vector;
 public class DadosPaddock implements Serializable {
 	private static final long serialVersionUID = 2200481566401284586L;
 	private Long dataTime;
-	private List<SessaoCliente> clientes = new ArrayList<SessaoCliente>();
+	private Map<String, SessaoCliente> clientes = new HashMap<String, SessaoCliente>();
 	private List<String> jogosCriados = new ArrayList<String>();
 	private String linhaChat = "";
 
@@ -36,7 +34,7 @@ public class DadosPaddock implements Serializable {
 	}
 
 	public List<SessaoCliente> getClientes() {
-		return clientes;
+		return new ArrayList<SessaoCliente>(clientes.values());
 	}
 
 	public List<String> getJogosCriados() {
@@ -47,8 +45,17 @@ public class DadosPaddock implements Serializable {
 		this.jogosCriados = jogosCriados;
 	}
 
-	public void setClientes(List<SessaoCliente> clientes) {
-		this.clientes = clientes;
+	public void add(SessaoCliente sessaoCliente) {
+		clientes.put(sessaoCliente.getToken(), sessaoCliente);
+
+	}
+
+	public void remove(SessaoCliente cliente) {
+		clientes.remove(cliente.getToken());
+	}
+
+	public SessaoCliente obterPorToken(String token) {
+		return clientes.get(token);
 	}
 
 }

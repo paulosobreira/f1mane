@@ -13,10 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import br.nnpe.Logger;
-import br.nnpe.Util;
 import sowbreira.f1mane.paddock.PaddockConstants;
-import sowbreira.f1mane.paddock.entidades.Comandos;
-import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**

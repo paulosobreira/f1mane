@@ -1,13 +1,20 @@
 package sowbreira.f1mane.paddock.rest;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -15,26 +22,32 @@ import javax.ws.rs.core.Response;
 
 import br.nnpe.Constantes;
 import br.nnpe.Html;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
+import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosParciais;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
-import sowbreira.f1mane.paddock.entidades.TOs.PosisPack;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
-import sowbreira.f1mane.paddock.servlet.JogoServidor;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 @Path("/letsRace")
 public class LetsRace {
 
+	private CarregadorRecursos carregadorRecursos = new CarregadorRecursos(
+			true);
+
 	@GET
+	@Compress
 	@Path("/circuito")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response circuito(@QueryParam("nomeJogo") String nomeJogo) {
@@ -42,6 +55,7 @@ public class LetsRace {
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
 		Object circuito = controlePaddock.obterCircuito(nomeJogo);
+
 		if (circuito == null) {
 			return Response.status(400)
 					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
@@ -59,40 +73,13 @@ public class LetsRace {
 					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		return Response.status(200).entity(circuito).build();
+		Circuito circuitoJogo = (Circuito) circuito;
+		return Response.status(200).entity(circuitoJogo).build();
 	}
 
 	@GET
-	@Path("/posicaoPilotos")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response posicaoPilotos(@QueryParam("nomeJogo") String nomeJogo) {
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
-		Object posis = controlePaddock.obterPosicaoPilotos(nomeJogo);
-		if (posis == null) {
-			return Response.status(400)
-					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		if (posis instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) posis;
-			return Response.status(400)
-					.entity(Html.escapeHtml(msgSrv.getMessageString()))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		if (posis instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) posis;
-			return Response.status(500)
-					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		PosisPack posisPack = new PosisPack();
-		posisPack.decode((String) posis);
-		return Response.status(200).entity(posisPack).build();
-	}
-
-	@GET
-	@Path("/dadosPiloto")
+	@Compress
+	@Path("/dadosParciais")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosParciais(@QueryParam("nomeJogo") String nomeJogo) {
 
@@ -156,6 +143,36 @@ public class LetsRace {
 	}
 
 	@GET
+	@Path("/obterJogos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response obterJogos() {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		return Response.status(200).entity(controlePaddock.obterJogos())
+				.build();
+	}
+
+	@GET
+	@Path("/atualizarDadosVisao")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response atualizarDadosVisao() {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		return Response.status(200)
+				.entity(controlePaddock.atualizarDadosVisao()).build();
+	}
+
+	@GET
+	@Path("/criarSessaoVisitante")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response criarSessaoVisitante() {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		return Response.status(200)
+				.entity(controlePaddock.criarSessaoVisitante()).build();
+	}
+
+	@GET
 	@Path("/iniciarJogo")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response iniciarJogo() {
@@ -168,31 +185,32 @@ public class LetsRace {
 		Object iniciarJogo = controlePaddock.iniciaJogo(clientPaddockPack);
 		if (iniciarJogo == null) {
 			Logger.logar("iniciarJogo == null");
-//			return Response.status(400)
-//					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
-//					.type(MediaType.APPLICATION_JSON).build();
+			// return Response.status(400)
+			// .entity(Html.escapeHtml("Jogo não pode ser iniciado."))
+			// .type(MediaType.APPLICATION_JSON).build();
 		}
 		if (iniciarJogo instanceof MsgSrv) {
 			MsgSrv msgSrv = (MsgSrv) iniciarJogo;
 			Logger.logar(msgSrv.getMessageString());
-//			return Response.status(400)
-//					.entity(Html.escapeHtml(msgSrv.getMessageString()))
-//					.type(MediaType.APPLICATION_JSON).build();
+			// return Response.status(400)
+			// .entity(Html.escapeHtml(msgSrv.getMessageString()))
+			// .type(MediaType.APPLICATION_JSON).build();
 		}
 		if (iniciarJogo instanceof ErroServ) {
 			ErroServ erroServ = (ErroServ) iniciarJogo;
 			Logger.logar(erroServ.obterErroFormatado());
-//			return Response.status(500)
-//					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
-//					.type(MediaType.APPLICATION_JSON).build();
+			// return Response.status(500)
+			// .entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+			// .type(MediaType.APPLICATION_JSON).build();
 		}
 		Integer ret = null;
 		try {
 			ret = new Integer(iniciarJogo.toString());
 		} catch (Exception e) {
 			ret = 1;
-//			return Response.status(500).entity(Html.escapeHtml(e.getMessage()))
-//					.type(MediaType.APPLICATION_JSON).build();
+			// return
+			// Response.status(500).entity(Html.escapeHtml(e.getMessage()))
+			// .type(MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(ret).build();
 	}
@@ -240,6 +258,32 @@ public class LetsRace {
 		return Response.status(200).entity(srvPaddockPack).build();
 	}
 
+	@GET
+	@Path("/circuitos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response circuitos() {
+		Map<String, String> carregarCircuitos = ControleRecursos
+				.carregarCircuitos();
+		return Response.status(200).entity(carregarCircuitos).build();
+	}
+
+	@GET
+	@Path("/circuitoMini/{nmCircuito}")
+	@Produces("image/png")
+	public Response circuitoMini(@PathParam("nmCircuito") String nmCircuito)
+			throws IOException, ClassNotFoundException {
+		Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
+		Circuito circuito = (Circuito) rec;
+		BufferedImage carroCima = circuito.desenhaMiniCircuito();
+		if (carroCima == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(carroCima, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.status(200).entity(imageData).build();
+	}
+
 	private DadosCriarJogo gerarJogoLetsRace() {
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t2016");
@@ -251,7 +295,7 @@ public class LetsRace {
 		Collections.shuffle(shuffle);
 		dadosCriarJogo
 				.setCircuitoSelecionado((String) shuffle.iterator().next());
-		// dadosCriarJogo.setCircuitoSelecionado("Montreal");
+		dadosCriarJogo.setCircuitoSelecionado("Montreal");
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
 		dadosCriarJogo.setReabastecimento(false);
@@ -260,4 +304,158 @@ public class LetsRace {
 		dadosCriarJogo.setDrs(true);
 		return dadosCriarJogo;
 	}
+
+	@GET
+	@Path("/carroCima")
+	@Produces("image/png")
+	public Response carroCima(@QueryParam("nomeJogo") String nomeJogo,
+			@QueryParam("idPiloto") String idPiloto) throws IOException {
+		ControlePaddockServidor controlePaddock = PaddockServer
+				.getControlePaddock();
+		BufferedImage carroCima = controlePaddock.obterCarroCima(nomeJogo,
+				idPiloto);
+		if (carroCima == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(carroCima, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/capacete")
+	@Produces("image/png")
+	public Response capacete(@QueryParam("id") String id,
+			@QueryParam("temporada") String temporada) throws IOException {
+		BufferedImage capacetes = null;
+		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+				.get(temporada);
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (Integer.parseInt(id) == piloto.getId()) {
+				capacetes = carregadorRecursos
+						.obterCapacete(piloto.getNomeOriginal(), temporada);
+				break;
+			}
+		}
+		if (capacetes == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(capacetes, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/setaCima")
+	@Produces("image/png")
+	public Response setaCima() throws IOException {
+		BufferedImage setaCima = carregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
+						200);
+		if (setaCima == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(setaCima, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/setaBaixo")
+	@Produces("image/png")
+	public Response setaBaixo() throws IOException {
+		BufferedImage setaBaixo = carregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
+						200);
+		if (setaBaixo == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(setaBaixo, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/setaEsquerda")
+	@Produces("image/png")
+	public Response setaEsquerda() throws IOException {
+		BufferedImage setaCima = carregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
+						200);
+		BufferedImage setaEsquerda = ImageUtil.rotacionar(setaCima, 270);
+		if (setaEsquerda == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(setaEsquerda, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/setaDireita")
+	@Produces("image/png")
+	public Response setaDireita() throws IOException {
+		BufferedImage setaCima = carregadorRecursos
+				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
+						200);
+		BufferedImage setaDireita = ImageUtil.rotacionar(setaCima, 90);
+		if (setaDireita == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(setaDireita, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/png/{recurso}")
+	@Produces("image/png")
+	public Response png(@PathParam("recurso") String recurso)
+			throws IOException {
+		BufferedImage buffer = carregadorRecursos
+				.carregaBufferedImage(recurso + ".png");
+		if (buffer == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(buffer, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Compress
+	@Path("/temporadasPilotos")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response temporadasPilotos() {
+		return Response.status(200)
+				.entity(carregadorRecursos.carregarTemporadasPilotos()).build();
+	}
+
+	@GET
+	@Compress
+	@Path("/temporadasDefaults")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response temporadasDefaults() {
+		return Response.status(200)
+				.entity(carregadorRecursos.carregarTemporadasPilotosDefauts())
+				.build();
+	}
+
+	@GET
+	@Compress
+	@Path("/temporadas")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response temporadas() {
+		return Response.status(200)
+				.entity(carregadorRecursos.carregarTemporadas()).build();
+	}
+
 }

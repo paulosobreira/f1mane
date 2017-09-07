@@ -1,14 +1,10 @@
 package sowbreira.f1mane.controles;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.geom.RoundRectangle2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,19 +13,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JEditorPane;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import br.nnpe.Html;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import sowbreira.f1mane.visao.PainelMenuLocal;
-import br.nnpe.Html;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 13:24:54

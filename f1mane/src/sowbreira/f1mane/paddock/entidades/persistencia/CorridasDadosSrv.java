@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import sowbreira.f1mane.controles.InterfaceJogo;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.InterfaceJogo;
 
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15

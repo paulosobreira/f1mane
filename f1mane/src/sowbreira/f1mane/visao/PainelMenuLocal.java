@@ -1,11 +1,9 @@
 package sowbreira.f1mane.visao;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +37,6 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
-import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
@@ -236,7 +232,6 @@ public class PainelMenuLocal {
 	private CarregadorRecursos carregadorRecursos;
 
 	private BufferedImage setaCarroCima;
-	private BufferedImage setaCarroBaixo;
 	private BufferedImage setaCarroEsquerda;
 	private BufferedImage setaCarroDireita;
 
@@ -463,7 +458,7 @@ public class PainelMenuLocal {
 			}
 			return;
 		}
-		
+
 		if (langRect.contains(e.getPoint())) {
 			try {
 				if ("pt".equals(Lang.getSufix())) {
@@ -476,7 +471,6 @@ public class PainelMenuLocal {
 			}
 			return;
 		}
-		
 
 		if (proxPistaRect.contains(e.getPoint())) {
 			selecionaProximaPista();
@@ -640,9 +634,6 @@ public class PainelMenuLocal {
 		setaCarroCima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
 						200);
-		setaCarroBaixo = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
-						200);
 		/**
 		 * Esquerda
 		 */
@@ -677,11 +668,11 @@ public class PainelMenuLocal {
 		chuva = CarregadorRecursos.carregaBufferedImage("chuva.png");
 
 		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu_mole.png", null), 0.3);
+				.carregaBufferedImageTransparecia("pneuMole.png", null), 0.3);
 		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-duro.png", null), 0.3);
+				.carregaBufferedImageTransparecia("pneuDuro.png", null), 0.3);
 		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneu-chuva.png", null), 0.3);
+				.carregaBufferedImageTransparecia("pneuChuva.png", null), 0.3);
 
 		maisAsaImg = CarregadorRecursos
 				.carregaBufferedImageTransparecia("maisAsa.png", null);;
@@ -752,7 +743,7 @@ public class PainelMenuLocal {
 			desenhaMenuQualificacao(g2d);
 			desenhaMenuDesafiarPilto(g2d);
 			desenhaMenuSobre(g2d);
-			//desenhaFPS(g2d, getWidth() - 70, getHeight() - 50);
+			// desenhaFPS(g2d, getWidth() - 70, getHeight() - 50);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -1372,8 +1363,24 @@ public class PainelMenuLocal {
 		g2d.setColor(Color.BLACK);
 		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
 		g2d.drawString(txt.toUpperCase(), x + incX, y);
-		desenhaMiniCircuito(nmCircuitoMRO, g2d, x, y);
+		carragaMiniCircuito(nmCircuitoMRO);
+		circuitoMini.desenhaMiniCircuito(g2d, x, y);
 		g2d.setFont(fontOri);
+	}
+
+	private void carragaMiniCircuito(String nmCircuitoMRO) {
+		ObjectInputStream ois;
+		try {
+			if (circuitoMini == null
+					|| !nmCircuitoMRO.equals(circuitoMiniCarregado)) {
+				ois = new ObjectInputStream(carregadorRecursos.getClass()
+						.getResourceAsStream(nmCircuitoMRO));
+				circuitoMini = (Circuito) ois.readObject();
+				circuitoMiniCarregado = nmCircuitoMRO;
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 	}
 
 	private void removePistaCampeonato() {
@@ -1676,7 +1683,8 @@ public class PainelMenuLocal {
 		g2d.setColor(Color.BLACK);
 		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
 		g2d.drawString(txt.toUpperCase(), x + incX, y);
-		desenhaMiniCircuito(nmCircuitoMRO, g2d, x, y);
+		carragaMiniCircuito(nmCircuitoMRO);
+		circuitoMini.desenhaMiniCircuito(g2d, x, y);
 
 		g2d.setFont(fontOri);
 	}
@@ -2725,7 +2733,9 @@ public class PainelMenuLocal {
 		g2d.setColor(Color.BLACK);
 		int incX = (320 - Util.larguraTexto(txt, g2d)) / 2;
 		g2d.drawString(txt.toUpperCase(), centerX + incX, centerY);
-		desenhaMiniCircuito(nmCircuitoMRO, g2d, centerX, centerY);
+
+		carragaMiniCircuito(nmCircuitoMRO);
+		circuitoMini.desenhaMiniCircuito(g2d, centerX, centerY);
 
 		centerX += larguraTexto + 30;
 
@@ -2737,107 +2747,6 @@ public class PainelMenuLocal {
 		}
 		g2d.setFont(fontOri);
 
-	}
-
-	protected void desenhaMiniCircuito(String circuitoStr, Graphics2D g2d,
-			int x, int y) {
-
-		int maxLagura = 0;
-		g2d.setStroke(new BasicStroke(3.0f));
-		g2d.setColor(Color.BLACK);
-		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
-		ObjectInputStream ois;
-		try {
-			if (circuitoMini == null
-					|| !circuitoStr.equals(circuitoMiniCarregado)) {
-				ois = new ObjectInputStream(carregadorRecursos.getClass()
-						.getResourceAsStream(circuitoStr));
-				circuitoMini = (Circuito) ois.readObject();
-				circuitoMiniCarregado = circuitoStr;
-			}
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
-
-		List pista = circuitoMini.getPista();
-		ArrayList pistaMinimizada = new ArrayList();
-		double doubleMulti = 25;
-		Map map = new HashMap();
-		for (Iterator iterator = pista.iterator(); iterator.hasNext();) {
-			No no = (No) iterator.next();
-			Point p = new Point(no.getX(), no.getY());
-			p.x /= doubleMulti;
-			p.y /= doubleMulti;
-			if (p.x > maxLagura) {
-				maxLagura = p.x;
-			}
-			if (!pistaMinimizada.contains(p)) {
-				map.put(p, no);
-				pistaMinimizada.add(p);
-			}
-
-		}
-
-		ArrayList boxMinimizado = new ArrayList();
-		List box = circuitoMini.getBox();
-		for (Iterator iterator = box.iterator(); iterator.hasNext();) {
-			No no = (No) iterator.next();
-			Point p = new Point(no.getX(), no.getY());
-			p.x /= doubleMulti;
-			p.y /= doubleMulti;
-			if (p.x > maxLagura) {
-				maxLagura = p.x;
-			}
-			if (!boxMinimizado.contains(p))
-				boxMinimizado.add(p);
-		}
-
-		int incX = (320 - maxLagura) / 2;
-
-		Point o = new Point(0, 0);
-		Point oldP = null;
-		No ultNo = null;
-		for (Iterator iterator = pistaMinimizada.iterator(); iterator
-				.hasNext();) {
-			Point p = (Point) iterator.next();
-			if (oldP != null) {
-				No no = (No) map.get(oldP);
-				if (no.verificaCurvaBaixa()) {
-					g2d.setColor(Color.red);
-				} else if (no.verificaCurvaAlta()) {
-					g2d.setColor(Color.orange);
-				} else if (no.verificaRetaOuLargada()) {
-					g2d.setColor(new Color(0, 200, 0));
-				}
-				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
-						o.x + p.x + incX + x, o.y + p.y + y);
-			}
-			oldP = p;
-			ultNo = (No) map.get(oldP);
-		}
-		Point p0 = (Point) pistaMinimizada.get(0);
-		if (ultNo.verificaCurvaBaixa()) {
-			g2d.setColor(Color.red);
-		} else if (ultNo.verificaCurvaAlta()) {
-			g2d.setColor(Color.orange);
-		} else if (ultNo.verificaRetaOuLargada()) {
-			g2d.setColor(new Color(0, 200, 0));
-		}
-		g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
-				o.x + p0.x + incX + x, o.y + p0.y + y);
-
-		g2d.setStroke(new BasicStroke(2.0f));
-		oldP = null;
-		g2d.setColor(Color.lightGray);
-		for (Iterator iterator = boxMinimizado.iterator(); iterator
-				.hasNext();) {
-			Point p = (Point) iterator.next();
-			if (oldP != null) {
-				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
-						o.x + p.x + incX + x, o.y + p.y + y);
-			}
-			oldP = p;
-		}
 	}
 
 	private void setarHints(Graphics2D g2d) {
@@ -3165,7 +3074,8 @@ public class PainelMenuLocal {
 		g2d.fillRoundRect(x, y, 60, 35, 0, 0);
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
-		g2d.setColor(OcilaCor.porcentVerde100Vermelho0(Util.inteiro(fps * 1.6)));
+		g2d.setColor(
+				OcilaCor.porcentVerde100Vermelho0(Util.inteiro(fps * 1.6)));
 		g2d.drawString(msg, x + 2, y + 26);
 		g2d.setFont(fontOri);
 	}

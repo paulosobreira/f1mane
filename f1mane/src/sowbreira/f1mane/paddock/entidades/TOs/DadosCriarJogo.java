@@ -3,14 +3,14 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 import java.util.List;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.nnpe.Constantes;
 
 /**
  * @author Paulo Sobreira Criado em 12/08/2007 as 17:04:24
  */
-@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DadosCriarJogo implements Serializable {
 
 	private static final long serialVersionUID = 8923188552953563909L;

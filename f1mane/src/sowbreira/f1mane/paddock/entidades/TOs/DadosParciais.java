@@ -2,12 +2,11 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
+import br.nnpe.Logger;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 21/08/2007 as 21:08:26

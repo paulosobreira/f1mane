@@ -2,16 +2,11 @@ package sowbreira.f1mane.paddock.applet;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -24,12 +19,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import sowbreira.f1mane.paddock.entidades.Comandos;
-import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
-import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 public class FormEntrada extends JPanel {
 	private JComboBox comboIdiomas = new JComboBox(new String[] { Lang.msg("pt"), Lang.msg("en") });

@@ -2,14 +2,14 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Criado em 18/08/2007 as 09:24:11
  */
-@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PosisPack implements Serializable {
 
 	public Posis[] posis;

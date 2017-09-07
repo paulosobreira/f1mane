@@ -49,6 +49,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import br.nnpe.Constantes;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.MainFrame;
 import sowbreira.f1mane.entidades.Campeonato;
 import sowbreira.f1mane.entidades.Carro;
@@ -60,9 +63,6 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCampeonato;
-import br.nnpe.Constantes;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 public class ControleCampeonato {
 

@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import br.nnpe.Constantes;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.ControleJogoLocal;
@@ -22,9 +25,6 @@ import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Constantes;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:28:27

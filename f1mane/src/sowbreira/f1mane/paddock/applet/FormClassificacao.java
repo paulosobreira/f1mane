@@ -22,7 +22,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
 import br.nnpe.Logger;
-
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;

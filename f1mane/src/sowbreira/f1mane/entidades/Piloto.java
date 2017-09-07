@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -18,8 +17,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
@@ -33,7 +32,7 @@ import sowbreira.f1mane.visao.PainelCircuito;
 /**
  * @author Paulo Sobreira
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Piloto implements Serializable, PilotoSuave {
 	private static final long serialVersionUID = 698992658460848522L;
 	public static final String AGRESSIVO = "AGRESSIVO";
@@ -2016,7 +2015,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		No noAtual = getNoAtual();
 		int cont = noAtual.getIndex();
-		List lista = controleJogo.obterPista(noAtual);
+		List<No> lista = controleJogo.obterPista(noAtual);
 		if (lista == null) {
 			return null;
 		}
@@ -2039,10 +2038,17 @@ public class Piloto implements Serializable, PilotoSuave {
 				frente = (frente - (lista.size() - 1)) - 1;
 			}
 		}
+		if (traz > (lista.size() - 1)) {
+			if (controleJogo.getNosDoBox().size() == lista.size()) {
+				traz = lista.size() - 1;
+			} else {
+				traz = (traz - (lista.size() - 1)) - 1;
+			}
+		}
 
-		Point trazCar = ((No) lista.get(traz)).getPoint();
+		Point trazCar = lista.get(traz).getPoint();
 		trazCar = new Point(trazCar.x, trazCar.y);
-		Point frenteCar = ((No) lista.get(frente)).getPoint();
+		Point frenteCar = lista.get(frente).getPoint();
 		frenteCar = new Point(frenteCar.x, frenteCar.y);
 		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
 		Rectangle2D rectangle = new Rectangle2D.Double(
@@ -2864,9 +2870,10 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void calculaIndiceTracado(InterfaceJogo interfaceJogo) {
-		double novoIndice = interfaceJogo.getCircuito().getIndiceTracado(); 
+		double novoIndice = interfaceJogo.getCircuito().getIndiceTracado();
 		if (getTracadoAntigo() == 4 || getTracadoAntigo() == 5) {
-			novoIndice = interfaceJogo.getCircuito().getIndiceTracadoForaPista();  
+			novoIndice = interfaceJogo.getCircuito()
+					.getIndiceTracadoForaPista();
 		}
 		setIndiceTracado((int) novoIndice);
 	}

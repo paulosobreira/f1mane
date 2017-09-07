@@ -3,6 +3,7 @@
  */
 package sowbreira.f1mane.paddock.servlet;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +43,7 @@ public class ControlePaddockServidor {
 	private ControleClassificacao controleClassificacao;
 	private ControleCampeonatoServidor controleCampeonatoServidor;
 	private int versao;
+	private int contadorVistantes = 1;
 
 	public DadosPaddock getDadosPaddock() {
 		return dadosPaddock;
@@ -102,10 +104,10 @@ public class ControlePaddockServidor {
 				return "OK";
 			} else if (Comandos.REGISTRAR_LOGIN
 					.equals(clientPaddockPack.getComando())) {
-				if ("IA".equals(clientPaddockPack.getNomeJogador())
-						|| "Ia".equals(clientPaddockPack.getNomeJogador())
-						|| "ia".equals(clientPaddockPack.getNomeJogador())
-						|| "iA".equals(clientPaddockPack.getNomeJogador())
+				if ("IA".equals(
+						clientPaddockPack.getNomeJogador().toUpperCase())
+						|| clientPaddockPack.getNomeJogador().toUpperCase()
+								.startsWith("MANE")
 						|| clientPaddockPack.getNomeJogador().contains("£")
 						|| clientPaddockPack.getNomeJogador().contains("§")) {
 					return new MsgSrv(Lang.msg("242"));
@@ -118,7 +120,7 @@ public class ControlePaddockServidor {
 				if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())
 						&& !Util.isNullOrEmpty(
 								clientPaddockPack.getEmailJogador())) {
-					return registrarLogin(clientPaddockPack);
+					return criarLogin(clientPaddockPack);
 				}
 
 				if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())
@@ -187,7 +189,7 @@ public class ControlePaddockServidor {
 				Lang.msg("239", new String[]{jogadorDadosSrv.getEmail()}));
 	}
 
-	private Object registrarLogin(ClientPaddockPack clientPaddockPack) {
+	private Object criarLogin(ClientPaddockPack clientPaddockPack) {
 		JogadorDadosSrv jogadorDadosSrv = null;
 		Session session = controlePersistencia.getSession();
 		String senha;
@@ -302,7 +304,7 @@ public class ControlePaddockServidor {
 		} else if (Comandos.MUDAR_MODO_AUTOPOS_N.equals(commando)) {
 			return mudarModoAutoPos(clientPaddockPack, false);
 		} else if (Comandos.ATUALIZAR_VISAO.equals(commando)) {
-			return atualizarDadosVisao(clientPaddockPack, cliente);
+			return atualizarDadosVisao();
 		} else if (Comandos.SAIR_PADDOCK.equals(commando)) {
 			return sairPaddock(clientPaddockPack, cliente);
 		} else if (Comandos.ENVIAR_TEXTO.equals(commando)) {
@@ -500,8 +502,7 @@ public class ControlePaddockServidor {
 		return srvPaddockPack;
 	}
 
-	private Object atualizarDadosVisao(ClientPaddockPack clientPaddockPack,
-			SessaoCliente cliente) {
+	public Object atualizarDadosVisao() {
 		try {
 			atualizaPilotoJogoSessaoCliente();
 		} catch (Exception e) {
@@ -587,7 +588,7 @@ public class ControlePaddockServidor {
 
 	private Object sairPaddock(ClientPaddockPack clientPaddockPack,
 			SessaoCliente cliente) {
-		dadosPaddock.getClientes().remove(cliente);
+		dadosPaddock.remove(cliente);
 		return null;
 	}
 
@@ -637,13 +638,26 @@ public class ControlePaddockServidor {
 			sessaoCliente.setToken(tokenGenerator.nextSessionId());
 			sessaoCliente.setNomeJogador(jogadorDadosSrv.getNome());
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-			dadosPaddock.getClientes().add(sessaoCliente);
+			dadosPaddock.add(sessaoCliente);
 		}
 		controleJogosServer.removerClienteInativo(sessaoCliente);
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setSessaoCliente(sessaoCliente);
 		srvPaddockPack.setSenhaCriada(senha);
 
+		return srvPaddockPack;
+	}
+
+	public Object criarSessaoVisitante() {
+		SessaoCliente sessaoCliente = new SessaoCliente();
+		TokenGenerator tokenGenerator = new TokenGenerator();
+		sessaoCliente.setToken(tokenGenerator.nextSessionId());
+		sessaoCliente.setNomeJogador("Mane-" + (contadorVistantes++));
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		sessaoCliente.setGuest(true);
+		dadosPaddock.add(sessaoCliente);
+		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+		srvPaddockPack.setSessaoCliente(sessaoCliente);
 		return srvPaddockPack;
 	}
 
@@ -656,7 +670,7 @@ public class ControlePaddockServidor {
 
 	public void removerClienteInativo(SessaoCliente sessaoCliente) {
 		controleJogosServer.removerClienteInativo(sessaoCliente);
-		dadosPaddock.getClientes().remove(sessaoCliente);
+		dadosPaddock.remove(sessaoCliente);
 	}
 
 	public void initProperties() throws IOException {
@@ -694,6 +708,13 @@ public class ControlePaddockServidor {
 		}
 		return controleJogosServer.preparaSrvPaddockPack(clientPaddockPack,
 				jogoServidor);
+	}
+
+	public BufferedImage obterCarroCima(String nomeJogo, String idPiloto) {
+		JogoServidor jogoServidor = controleJogosServer
+				.obterJogoPeloNome(nomeJogo);
+		return jogoServidor
+				.obterCarroCima(jogoServidor.obterPilotoPorId(idPiloto));
 	}
 
 }

@@ -1,20 +1,18 @@
 package sowbreira.f1mane;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.visao.PainelCircuito;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Created on 28/08/2014

@@ -8,14 +8,13 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * @author Paulo Sobreira Criado
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class No implements Serializable {
 	private static final long serialVersionUID = 493643626269961468L;
 	public static Color LARGADA = Color.BLUE;

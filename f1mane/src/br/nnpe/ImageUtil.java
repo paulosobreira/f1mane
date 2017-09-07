@@ -24,6 +24,20 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
  */
 public class ImageUtil {
 
+	public static BufferedImage rotacionar(BufferedImage original,
+			double angulo) {
+		double rad = Math.toRadians(angulo);
+		AffineTransform afRotate = new AffineTransform();
+		afRotate.setToRotation(rad, original.getWidth() / 2,
+				original.getHeight() / 2);
+		AffineTransformOp opRotate = new AffineTransformOp(afRotate,
+				AffineTransformOp.TYPE_BILINEAR);
+		BufferedImage rotateBuffer = new BufferedImage(original.getWidth(),
+				original.getWidth(), BufferedImage.TYPE_INT_ARGB);
+		opRotate.filter(original, rotateBuffer);
+		return rotateBuffer;
+	}
+
 	public static BufferedImage subImagem(BufferedImage buffer, int x, int y,
 			int largura, int altura) {
 		if (buffer == null) {
@@ -251,7 +265,7 @@ public class ImageUtil {
 	}
 
 	public static BufferedImage toCompatibleImage(BufferedImage image) {
-		if(GraphicsEnvironment.isHeadless()){
+		if (GraphicsEnvironment.isHeadless()) {
 			return image;
 		}
 		// obtain the current system graphical settings

@@ -36,6 +36,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import br.nnpe.Constantes;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
@@ -46,9 +49,6 @@ import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonato;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
-import br.nnpe.Constantes;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 
 public class ControleCampeonatoCliente {
 

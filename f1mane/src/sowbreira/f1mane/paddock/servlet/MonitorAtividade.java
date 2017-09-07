@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import br.nnpe.Logger;
+import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 
 /**
  * @author Paulo Sobreira Criado em 25/08/2007 as 11:22:46

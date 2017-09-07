@@ -31,14 +31,14 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.editor.MainPanelEditor;
 import sowbreira.f1mane.paddock.applet.AppletPaddock;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelTabelaResultadoFinal;
-import br.nnpe.ImageUtil;
-import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira Created on 14/06/2014

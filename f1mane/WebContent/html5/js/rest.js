@@ -10,9 +10,16 @@ function rest_dadosJogo() {
 		dataType : "json",
 		success : function(response) {
 			dadosJogo = response;
+			carrosImgMap = new Map();
+			for (i = 0; i < dadosJogo.pilotosList.length; i++) {
+				var pilotos = dadosJogo.pilotosList[i];
+				var imgCarro =  new Image();
+				imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo="+criarJogo.nomeJogoCriado+"&idPiloto="+pilotos.id;
+				carrosImgMap.set(pilotos.id, imgCarro);
+			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
@@ -29,30 +36,38 @@ function rest_ciruito() {
 		dataType : "json",
 		success : function(response) {
 			circuito = response;
+			mapaIdNos = new Map();
+			var id = 1; 
+			for (i = 0; i < circuito.pistaFull.length; i++) {
+				mapaIdNos.set(id++, circuito.pistaFull[i]);
+			}
+			for (i = 0; i < circuito.boxFull.length; i++) {
+				mapaIdNos.set(id++, circuito.boxFull[i]);
+			}
 			rest_iniciarJogo();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
 
-function rest_dadosPiloto() {
+
+function rest_dadosParciais() {
 	if(criarJogo ==null || criarJogo.nomeJogoCriado == null){
 		console.log('criarJogo ==null || criarJogo.nomeJogoCriado == null');
 		return;
 	}	
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/dadosPiloto?nomeJogo="+criarJogo.nomeJogoCriado,
+		url : "/f1mane/rest/letsRace/dadosParciais?nomeJogo="+criarJogo.nomeJogoCriado,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
-			dadosPiloto = response;
-			setInterval(rest_dadosPiloto(), 1000);
+			dadosParciais = response;
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
@@ -65,24 +80,25 @@ function rest_criarJogo() {
 		dataType : "json",
 		success : function(response) {
 			criarJogo = response;
-			rest_ciruito();
-			rest_dadosJogo();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
 
 function rest_iniciarJogo() {
+	var retorno = false;
 	$.ajax({
 		type : "GET",
 		url : "/f1mane/rest/letsRace/iniciarJogo",
+		async   : false,
 		success : function(response) {
-			rest_dadosPiloto();
+			retorno =  true;
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
+	return retorno;
 }

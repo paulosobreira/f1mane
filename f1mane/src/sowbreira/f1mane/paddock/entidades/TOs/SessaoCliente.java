@@ -2,8 +2,6 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
-import sowbreira.f1mane.paddock.servlet.JogoServidor;
-
 /**
  * @author paulo.sobreira
  * 
@@ -21,6 +19,8 @@ public class SessaoCliente implements Serializable {
 	private String jogoAtual;
 
 	private String pilotoAtual;
+
+	private boolean guest;
 
 	public long getUlimaAtividade() {
 		return ulimaAtividade;
@@ -69,6 +69,14 @@ public class SessaoCliente implements Serializable {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public boolean isGuest() {
+		return guest;
+	}
+
+	public void setGuest(boolean guest) {
+		this.guest = guest;
 	}
 
 }
