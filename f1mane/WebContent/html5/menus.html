@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="../bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/f1mane.css">
 <script src="jquery/jquery-3.1.1.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+
 <title>F1-Mane</title>
 </head>
 <body>
@@ -15,7 +17,7 @@
 	</section>
 	<section class="container">
 		<div class="form-group">
-			<label>Temporadas</label>
+			<label>Temporada</label>
 			<div class="dropdown" id="temporadasDD">
 				<button class="btn btn-default dropdown-toggle btn-block"
 					type="button" data-toggle="dropdown" aria-haspopup="true"
@@ -27,9 +29,22 @@
 				</ul>
 			</div>
 		</div>
-		<img alt=""
-			src="/f1mane/rest/letsRace/circuitoMini/interlagos_mro.f1mane"
-			class="img-responsive" />
+		<div class="form-group">
+			<label>Circuito</label>
+			<div class="dropdown" id="circuitosDD">
+				<button class="btn btn-default dropdown-toggle btn-block"
+					type="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="true">
+					<span id="circuitosLabel">Selecione</span> <span class="caret"></span>
+				</button>
+				<ul id="circuitosList" class="dropdown-menu"
+					aria-labelledby="dropdownMenu1">
+				</ul>
+			</div>
+		</div>
+		<div class="form-group">
+			<img id="imgCircuito" class="img-responsive img-center" />
+		</div>
 		<div class="list-group">
 			<div class="row">
 				<div class="form-group col-md-6">
