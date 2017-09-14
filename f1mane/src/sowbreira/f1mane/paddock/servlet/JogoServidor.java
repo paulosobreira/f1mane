@@ -167,7 +167,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		Piloto pilotoSelecionado = null;
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
+			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
+					|| piloto.getId() == dadosCriarJogo.getIdPiloto()) {
 				pilotoDisponivel = true;
 				pilotoSelecionado = piloto;
 			}
@@ -234,7 +235,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
 			reabastacimento = dadosCriarJogo.isReabastecimento();
 			trocaPneu = dadosCriarJogo.isTrocaPneu();
-			kers = dadosCriarJogo.isKers();
+			ers = dadosCriarJogo.isErs();
 			drs = dadosCriarJogo.isDrs();
 		} catch (Exception e) {
 			Logger.topExecpts(e);

@@ -105,7 +105,7 @@ public class GerenciadorVisual {
 	private List listaCarrosCombo;
 	protected JCheckBox trocaPneu;
 	protected JCheckBox reabastacimento;
-	protected JCheckBox kers;
+	protected JCheckBox ers;
 	protected JCheckBox drs;
 	private Thread thAtualizaPainelSuave;
 	private Thread thAtualizaSom;
@@ -991,8 +991,8 @@ public class GerenciadorVisual {
 				return Lang.msg("kers");
 			}
 		});
-		kers = new JCheckBox();
-		p3.add(kers);
+		ers = new JCheckBox();
+		p3.add(ers);
 		grid.add(p3);
 
 		JPanel p4 = new JPanel(new GridLayout(1, 2));
@@ -1167,8 +1167,8 @@ public class GerenciadorVisual {
 		return reabastacimento;
 	}
 
-	public JCheckBox getKers() {
-		return kers;
+	public JCheckBox getErs() {
+		return ers;
 	}
 
 	public JCheckBox getDrs() {
@@ -1223,8 +1223,8 @@ public class GerenciadorVisual {
 			trocaPneu.setSelected(campeonato.isTrocaPneus());
 			trocaPneu.setEnabled(false);
 
-			kers.setSelected(campeonato.isKers());
-			kers.setEnabled(false);
+			ers.setSelected(campeonato.isKers());
+			ers.setEnabled(false);
 
 			drs.setSelected(campeonato.isDrs());
 			drs.setEnabled(false);

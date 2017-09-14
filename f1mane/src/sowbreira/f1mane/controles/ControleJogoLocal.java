@@ -57,7 +57,7 @@ public class ControleJogoLocal extends ControleRecursos
 	protected boolean corridaTerminada;
 	protected boolean trocaPneu;
 	protected boolean reabastacimento;
-	protected boolean kers;
+	protected boolean ers;
 	protected boolean drs;
 
 	protected boolean continuaCampeonato;
@@ -99,12 +99,12 @@ public class ControleJogoLocal extends ControleRecursos
 		return piloto.getCombustJogador();
 	}
 
-	public boolean isKers() {
-		return kers;
+	public boolean isErs() {
+		return ers;
 	}
 
-	public void setKers(boolean kers) {
-		this.kers = kers;
+	public void setErs(boolean ers) {
+		this.ers = ers;
 	}
 
 	public boolean isDrs() {
@@ -669,7 +669,7 @@ public class ControleJogoLocal extends ControleRecursos
 	public void iniciarJogoMenuLocal(String circuitoSelecionado,
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
-			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
+			String nivelSelecionado, Piloto pilotoSelecionado, boolean ers,
 			boolean drs, boolean trocaPneus, boolean reabasteciemto,
 			int combustivelSelecionado, String asaSelecionado,
 			String pneuSelecionado) throws Exception {
@@ -678,7 +678,7 @@ public class ControleJogoLocal extends ControleRecursos
 		this.reabastacimento = reabasteciemto;
 		this.trocaPneu = trocaPneus;
 		this.circuitoSelecionado = circuitoSelecionado;
-		this.kers = kers;
+		this.ers = ers;
 		this.drs = drs;
 		this.nivelCorrida = nivelSelecionado;
 		setTemporada("t" + temporadaSelecionada);
@@ -732,8 +732,8 @@ public class ControleJogoLocal extends ControleRecursos
 			if (gerenciadorVisual.getTrocaPneu().isSelected()) {
 				trocaPneu = true;
 			}
-			if (gerenciadorVisual.getKers().isSelected()) {
-				kers = true;
+			if (gerenciadorVisual.getErs().isSelected()) {
+				ers = true;
 			}
 			if (gerenciadorVisual.getDrs().isSelected()) {
 				drs = true;

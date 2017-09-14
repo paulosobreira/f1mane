@@ -388,7 +388,7 @@ public class ControlePaddockCliente {
 			String infoJogo = (String) object;
 			String temporada = infoJogo.split("-")[1];
 			dadosParticiparJogo.setNomeJogo(infoJogo);
-			Logger.logar("TEmporada cliente Entrar jogo " + "t" + temporada);
+			Logger.logar("Temporada cliente Entrar jogo " + "t" + temporada);
 			jogoCliente = new JogoCliente("t" + temporada);
 			jogoCliente.setMainFrame(mainFrame);
 			PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(

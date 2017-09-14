@@ -13,6 +13,11 @@
 </head>
 <body>
 	<section class="container">
+		<ul class="nav nav-pills" style="float: right; margin-top: 10px">
+			<li role="presentation"><a href="index.html"> <span
+					class="glyphicon glyphicon-home" aria-hidden="true"></span> Sair
+			</a></li>
+		</ul>
 		<h3 class="text-muted">F1-Mane</h3>
 	</section>
 	<section class="container">
@@ -29,27 +34,27 @@
 				</ul>
 			</div>
 		</div>
-		<div class="form-group">
-			<div class="checkbox">
-				<label> <input type="checkbox" id="trocaPneuCheckbox">
-					<b>Troca Pneu</b>
-				</label>
+		<section class="container hidden" id="detalheTemporada">
+			<div class="form-group">
+				<div class="checkbox">
+					<label> <input type="checkbox" id="trocaPneuCheckbox">
+						<b>Troca Pneu</b>
+					</label>
+				</div>
+				<div class="checkbox">
+					<label> <input type="checkbox" id="reabastecimentoCheckbox">
+						<b>Reabastecimento</b>
+					</label>
+				</div>
+				<div class="checkbox">
+					<label> <input type="checkbox" id="ersCheckbox"> <b>ERS</b>
+					</label>
+				</div>
+				<div class="checkbox">
+					<label> <input type="checkbox" id="drsCheckbox"> <b>DRS</b>
+					</label>
+				</div>
 			</div>
-			<div class="checkbox">
-				<label> <input type="checkbox" id="reabastecimentoCheckbox">
-					<b>Reabastecimento</b>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label> <input type="checkbox" id="ersCheckbox"> <b>ERS</b>
-				</label>
-			</div>
-			<div class="checkbox">
-				<label> <input type="checkbox" id="drsCheckbox"> <b>DRS</b>
-				</label>
-			</div>
-		</div>
-		<section class="container">
 			<table class="table table-hover table-responsive">
 				<caption>Pilotos</caption>
 				<thead>
@@ -78,15 +83,9 @@
 		<div class="form-group">
 			<img id="imgCircuito" class="img-responsive img-center" />
 		</div>
-		<div class="list-group">
-			<div class="row">
-				<div class="form-group col-md-6">
-					<button type="button" class="btn btn-default btn-block">Voltar</button>
-				</div>
-				<div class="form-group col-md-6">
-					<button type="button" class="btn btn-default btn-block">Proximo</button>
-				</div>
-			</div>
+		<div class="form-group col-md-6">
+			<button id="btnCriarJogo" type="button"
+				class="btn btn-default btn-block">Pronto</button>
 		</div>
 	</section>
 	<footer class="footer">

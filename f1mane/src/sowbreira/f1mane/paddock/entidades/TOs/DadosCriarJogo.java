@@ -22,6 +22,7 @@ public class DadosCriarJogo implements Serializable {
 	private String temporada;
 	private String tpPnueu;
 	private String piloto = "";
+	private int idPiloto = 0;
 	private Integer combustivel;
 	private String senha;
 	private String nomeJogo;
@@ -33,7 +34,7 @@ public class DadosCriarJogo implements Serializable {
 	private List pilotosCarreira;
 	private boolean reabastecimento;
 	private boolean trocaPneu;
-	private boolean kers;
+	private boolean ers;
 	private boolean drs;
 
 	public String getNomeCampeonato() {
@@ -44,12 +45,12 @@ public class DadosCriarJogo implements Serializable {
 		this.nomeCampeonato = nomeCampeonato;
 	}
 
-	public boolean isKers() {
-		return kers;
+	public boolean isErs() {
+		return ers;
 	}
 
-	public void setKers(boolean kers) {
-		this.kers = kers;
+	public void setErs(boolean ers) {
+		this.ers = ers;
 	}
 
 	public boolean isDrs() {
@@ -190,6 +191,14 @@ public class DadosCriarJogo implements Serializable {
 
 	public void setTemporada(String temporada) {
 		this.temporada = temporada;
+	}
+
+	public int getIdPiloto() {
+		return idPiloto;
+	}
+
+	public void setIdPiloto(int idPiloto) {
+		this.idPiloto = idPiloto;
 	}
 
 }

@@ -40,10 +40,10 @@ import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
 
 public class CarregadorRecursos {
-	private HashMap<String, String> temporadas;
-	private HashMap<String, TemporadasDefauts> temporadasDefauts;
-	protected Map<String, String> temporadasTransp = new HashMap<String, String>();
-	private Vector<String> vectorTemps;
+	private static HashMap<String, String> temporadas;
+	private static HashMap<String, TemporadasDefauts> temporadasDefauts;
+	protected static Map<String, String> temporadasTransp = new HashMap<String, String>();
+	private static Vector<String> vectorTemps;
 	private Map<String, List<Piloto>> temporadasPilotos;
 	private Map<String, TemporadasDefauts> temporadasPilotosDefauts;
 	private static Map bufferImages = new HashMap();
@@ -58,13 +58,13 @@ public class CarregadorRecursos {
 	private static CarregadorRecursos carregadorRecursos;
 
 	private CarregadorRecursos() {
-		carregarTemporadas();
-		carregarTemporadasTransp();
 	}
 
 	public static synchronized CarregadorRecursos getCarregadorRecursos() {
 		if (carregadorRecursos == null) {
 			carregadorRecursos = new CarregadorRecursos();
+			carregarTemporadas();
+			carregarTemporadasTransp();
 		}
 		return carregadorRecursos;
 	}
@@ -73,7 +73,7 @@ public class CarregadorRecursos {
 		return vectorTemps;
 	}
 
-	public Vector<String> carregarTemporadas() {
+	public static Vector<String> carregarTemporadas() {
 		if (temporadas != null) {
 			return vectorTemps;
 		}
@@ -85,7 +85,7 @@ public class CarregadorRecursos {
 		final Properties properties = new Properties();
 		try {
 			properties.load(
-					recursoComoStreamIn("properties/temporadas.properties"));
+					recursoComoStream("properties/temporadas.properties"));
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String name = (String) propName.nextElement();
@@ -243,12 +243,10 @@ public class CarregadorRecursos {
 	}
 
 	public static InputStream recursoComoStream(String string) {
-		CarregadorRecursos rec = CarregadorRecursos.getCarregadorRecursos();
-		return rec.getClass().getResourceAsStream(string);
-	}
-
-	public InputStream recursoComoStreamIn(String string) {
-		return this.getClass().getResourceAsStream(string);
+		if (carregadorRecursos == null) {
+			return null;
+		}
+		return carregadorRecursos.getClass().getResourceAsStream(string);
 	}
 
 	public static void main(String[] args)
@@ -264,7 +262,8 @@ public class CarregadorRecursos {
 		// .getGraphics();
 		// BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
 		// graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
-		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos
+				.getCarregadorRecursos();
 
 		// Properties properties = new Properties();
 		//
@@ -451,7 +450,7 @@ public class CarregadorRecursos {
 		List<Piloto> retorno = new ArrayList<Piloto>();
 		Properties properties = new Properties();
 
-		properties.load(recursoComoStreamIn(
+		properties.load(recursoComoStream(
 				"properties/" + temporarada + "/pilotos.properties"));
 
 		Enumeration propNames = properties.propertyNames();
@@ -513,7 +512,7 @@ public class CarregadorRecursos {
 			throws IOException {
 		List retorno = new ArrayList();
 		Properties properties = new Properties();
-		properties.load(recursoComoStreamIn(
+		properties.load(recursoComoStream(
 				"properties/" + temporada + "/carros.properties"));
 		Enumeration propNames = properties.propertyNames();
 		while (propNames.hasMoreElements()) {
@@ -589,7 +588,7 @@ public class CarregadorRecursos {
 		final Properties properties = new Properties();
 		try {
 			properties.load(
-					recursoComoStreamIn("properties/temporadas.properties"));
+					recursoComoStream("properties/temporadas.properties"));
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String temporada = (String) propName.nextElement();
@@ -931,7 +930,7 @@ public class CarregadorRecursos {
 		return carroCima;
 	}
 
-	protected void carregarTemporadasTransp() {
+	protected static void carregarTemporadasTransp() {
 		final Properties properties = new Properties();
 
 		try {

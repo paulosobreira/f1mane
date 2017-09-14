@@ -847,7 +847,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			processaAsfaltoAbrasivoIA(controleJogo);
 			index = diff;
 			if (getNumeroVolta() > 0) {
-				getCarro().setCargaErs(InterfaceJogo.CARGA_KERS);
+				getCarro().setCargaErs(InterfaceJogo.CARGA_ERS);
 			}
 			ativarErs = false;
 			controleJogo.processaVoltaRapida(this);
@@ -1620,7 +1620,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private void processaUsoERS(InterfaceJogo controleJogo) {
-		if (controleJogo.isKers() && ativarErs && getPtosBox() == 0) {
+		if (controleJogo.isErs() && ativarErs && getPtosBox() == 0) {
 			if (getCarro().getCargaErs() <= 0) {
 				ativarErs = false;
 			} else {
@@ -1712,8 +1712,8 @@ public class Piloto implements Serializable, PilotoSuave {
 			setModoPilotagem(LENTO);
 			return;
 		}
-		if (controleJogo.isKers()) {
-			tentaUsarKers(controleJogo);
+		if (controleJogo.isErs()) {
+			tentaUsarErs(controleJogo);
 		}
 		if (controleJogo.isDrs()) {
 			tentaUsarDRS(controleJogo);
@@ -1856,7 +1856,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	private void tentaUsarKers(InterfaceJogo controleJogo) {
+	private void tentaUsarErs(InterfaceJogo controleJogo) {
 		if (verificaDesconcentrado()) {
 			return;
 		}

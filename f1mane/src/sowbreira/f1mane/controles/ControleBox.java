@@ -396,8 +396,8 @@ public class ControleBox {
 			penalidade = Util
 					.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
 		}
-		if (controleJogo.isKers()) {
-			piloto.getCarro().setCargaErs(InterfaceJogo.CARGA_KERS);
+		if (controleJogo.isErs()) {
+			piloto.getCarro().setCargaErs(InterfaceJogo.CARGA_ERS);
 			piloto.setAtivarErs(false);
 		}
 		carro.setTemperaturaMotor(0);

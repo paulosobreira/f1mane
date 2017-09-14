@@ -27,7 +27,7 @@ public interface InterfaceJogo {
 	public static double FACIL_NV = .3;
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
-	public static int CARGA_KERS = 100;
+	public static int CARGA_ERS = 100;
 	public static int DURABILIDADE_AREOFOLIO = 20;
 
 	public List<String> listaInfo();
@@ -235,9 +235,9 @@ public interface InterfaceJogo {
 
 	public BufferedImage carregaBackGround(String backGround);
 
-	public boolean isKers();
+	public boolean isErs();
 
-	public void setKers(boolean kers);
+	public void setErs(boolean kers);
 
 	public boolean isDrs();
 

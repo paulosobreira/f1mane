@@ -217,16 +217,19 @@ public class LetsRace {
 	}
 
 	@GET
-	@Path("/criarJogo")
+	@Path("/criarJogo/{temporada}/{idPiloto}/{circuito}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response criarJogo() {
+	public Response criarJogo(@PathParam("temporada") String temporada,
+			@PathParam("idPiloto") String idPiloto,
+			@PathParam("circuito") String circuito) {
 		ControlePaddockServidor controlePaddock = PaddockServer
 				.getControlePaddock();
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		SessaoCliente sessaoCliente = new SessaoCliente();
 		sessaoCliente.setNomeJogador("Sobreira");
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
-		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace();
+		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada, circuito,
+				idPiloto);
 		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 		Object criarJogo = null;
 
@@ -285,24 +288,33 @@ public class LetsRace {
 		return Response.status(200).entity(imageData).build();
 	}
 
-	private DadosCriarJogo gerarJogoLetsRace() {
+	private DadosCriarJogo gerarJogoLetsRace(String temporada, String circuito,
+			String idPiloto) {
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
-		dadosCriarJogo.setTemporada("t2016");
+		dadosCriarJogo.setTemporada("t" + temporada);
 		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
 		dadosCriarJogo.setDiffultrapassagem(250);
 		Map<String, String> carregarCircuitos = ControleRecursos
 				.carregarCircuitos();
-		List shuffle = new ArrayList(carregarCircuitos.keySet());
-		Collections.shuffle(shuffle);
-		dadosCriarJogo
-				.setCircuitoSelecionado((String) shuffle.iterator().next());
-		dadosCriarJogo.setCircuitoSelecionado("Montreal");
+		String pista = "Interlagos";
+		for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
+				.hasNext();) {
+			String nmCircuito = (String) iterator.next();
+			if (carregarCircuitos.get(nmCircuito).equals(circuito)) {
+				pista = nmCircuito;
+			}
+		}
+		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
-		dadosCriarJogo.setReabastecimento(false);
-		dadosCriarJogo.setTrocaPneu(true);
-		dadosCriarJogo.setKers(true);
-		dadosCriarJogo.setDrs(true);
+		TemporadasDefauts temporadasDefauts = carregadorRecursos
+				.carregarTemporadasPilotosDefauts().get("t" + temporada);
+		dadosCriarJogo
+				.setReabastecimento(temporadasDefauts.getReabastecimento());
+		dadosCriarJogo.setTrocaPneu(temporadasDefauts.getTrocaPneu());
+		dadosCriarJogo.setErs(temporadasDefauts.getErs());
+		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
+		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
 		return dadosCriarJogo;
 	}
 
@@ -329,6 +341,7 @@ public class LetsRace {
 	@Produces("image/png")
 	public Response capacete(@QueryParam("id") String id,
 			@QueryParam("temporada") String temporada) throws IOException {
+		temporada = "t" + temporada;
 		BufferedImage capacetes = null;
 		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
 				.get(temporada);
@@ -354,6 +367,7 @@ public class LetsRace {
 	@Produces("image/png")
 	public Response carroLado(@QueryParam("id") String id,
 			@QueryParam("temporada") String temporada) throws IOException {
+		temporada = "t" + temporada;
 		BufferedImage capacetes = null;
 		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
 				.get(temporada);
@@ -471,10 +485,11 @@ public class LetsRace {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response temporadasDefaults(
 			@PathParam("temporada") String temporada) {
+		temporada = "t" + temporada;
 		Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
 				.carregarTemporadasPilotosDefauts();
 		return Response.status(200)
-				.entity(carregarTemporadasPilotosDefauts.get("t" + temporada))
+				.entity(carregarTemporadasPilotosDefauts.get(temporada))
 				.build();
 	}
 

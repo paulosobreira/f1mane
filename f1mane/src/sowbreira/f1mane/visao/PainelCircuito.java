@@ -438,7 +438,7 @@ public class PainelCircuito {
 			desenhaCarrosLado(pilotoSelecionado, g2d);
 			desenhaControles(g2d);
 			desenhaControlesBox(g2d);
-			desenhaKers(g2d);
+			desenhaErs(g2d);
 			desenhaDRS(g2d);
 			desenhaVelocidade(g2d);
 			desenhaResultadoFinal(g2d);
@@ -1121,7 +1121,7 @@ public class PainelCircuito {
 		/**
 		 * Baixo
 		 */
-		if (controleJogo.isKers()) {
+		if (controleJogo.isErs()) {
 			Stroke stroke = g2d.getStroke();
 			g2d.setFont(fontAjudaControles);
 			g2d.setColor(transpMenus);
@@ -2419,7 +2419,7 @@ public class PainelCircuito {
 	}
 
 	private void desenhaControleKers(Graphics2D g2d, int x, int y, int tamF5) {
-		if (!controleJogo.isKers()) {
+		if (!controleJogo.isErs()) {
 			return;
 		}
 
@@ -2547,8 +2547,8 @@ public class PainelCircuito {
 		g2d.drawString(msgDrs, x + 5, y - 10);
 	}
 
-	private void desenhaKers(Graphics2D g2d) {
-		if (!(controleJogo.isKers() && desenhaInfo)) {
+	private void desenhaErs(Graphics2D g2d) {
+		if (!(controleJogo.isErs() && desenhaInfo)) {
 			return;
 		}
 		if (pilotoSelecionado == null) {

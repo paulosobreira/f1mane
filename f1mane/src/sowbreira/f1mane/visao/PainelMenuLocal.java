@@ -247,7 +247,7 @@ public class PainelMenuLocal {
 	private BufferedImage menosAsaImg;
 	private BufferedImage normalAsaImg;
 
-	private List temporadas;
+	private List<String> temporadas;
 	private List cirucitosCampeonato = new ArrayList();
 	private Map circuitosPilotos;
 
@@ -683,7 +683,8 @@ public class PainelMenuLocal {
 
 		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
-		temporadas = carregadorRecursos.getVectorTemps();
+		temporadas = new ArrayList<String>();
+		temporadas.addAll(carregadorRecursos.getVectorTemps());
 		Collections.reverse(temporadas);
 		bgmonaco = ImageUtil.gerarFade(
 				CarregadorRecursos.carregaBufferedImage("bg-monaco.png"), 25);

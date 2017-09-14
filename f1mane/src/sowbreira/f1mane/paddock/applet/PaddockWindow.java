@@ -760,7 +760,7 @@ public class PaddockWindow {
 				return Lang.msg("kers");
 			}
 		});
-		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().isKers()
+		panelJogo.add(new JLabel(detalhesJogo.getDadosCriarJogo().isErs()
 				? Lang.msg("SIM")
 				: Lang.msg("NAO")));
 

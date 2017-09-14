@@ -846,12 +846,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public boolean isKers() {
-		return dadosParticiparJogo.isKers();
+	public boolean isErs() {
+		return dadosParticiparJogo.isErs();
 	}
 
 	@Override
-	public void setKers(boolean kers) {
+	public void setErs(boolean Ers) {
 		// TODO Auto-generated method stub
 
 	}

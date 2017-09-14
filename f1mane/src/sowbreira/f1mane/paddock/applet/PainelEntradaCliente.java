@@ -509,7 +509,7 @@ public class PainelEntradaCliente {
 				((Clima) comboBoxClimaInicial.getSelectedItem()).getClima());
 		dadosCriarJogo.setReabastecimento(reabastacimento.isSelected());
 		dadosCriarJogo.setTrocaPneu(trocaPneu.isSelected());
-		dadosCriarJogo.setKers(kers.isSelected());
+		dadosCriarJogo.setErs(kers.isSelected());
 		dadosCriarJogo.setDrs(drs.isSelected());
 	}
 
