@@ -36,7 +36,6 @@ public abstract class ControleRecursos {
 	protected List<Carro> carros;
 	protected CarregadorRecursos carregadorRecursos;
 	protected Map<String, String> circuitos = new HashMap<String, String>();
-	protected Map<String, String> temporadasTransp = new HashMap<String, String>();
 	protected Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
 	protected Map<No, No> mapaNoCurvaAnterior = new HashMap<No, No>();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
@@ -44,10 +43,6 @@ public abstract class ControleRecursos {
 	private String temporada;
 	private Set<Integer> idsNoPista = new HashSet<Integer>();
 	private Set<Integer> idsNoBox = new HashSet<Integer>();
-	private static Map<String, BufferedImage> bufferCarrosCima = new HashMap<String, BufferedImage>();
-	private static Map<String, BufferedImage> bufferCarrosCimaSemAreofolio = new HashMap<String, BufferedImage>();
-	private static Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
-	private static Map<String, BufferedImage> bufferCarrosLadoSemAreofolio = new HashMap<String, BufferedImage>();
 
 	public BufferedImage obterCapacete(Piloto piloto) {
 		return carregadorRecursos.obterCapacete(piloto.getNomeOriginal(),
@@ -55,98 +50,11 @@ public abstract class ControleRecursos {
 	}
 
 	public BufferedImage obterCarroLado(Piloto piloto) {
-		Carro carro = piloto.getCarro();
-		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
-			return obterCarroLadoSemAreofolio(piloto);
-
-		}
-		BufferedImage carroLado = bufferCarrosLado.get(carro.getNome());
-		if (carroLado == null) {
-			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
-			BufferedImage cor1 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
-			BufferedImage cor2 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor2(), "CarroLadoC2.png");
-			Graphics graphics = carroLado.getGraphics();
-			graphics.drawImage(cor1, 0, 0, null);
-			graphics.drawImage(cor2, 0, 0, null);
-			graphics.dispose();
-			if (carro.getImg() != null) {
-				try {
-					BufferedImage carroLadoPng = null;
-					if (carro.getImg().endsWith(".png")) {
-						carroLadoPng = CarregadorRecursos
-								.carregaImagem(carro.getImg());
-						bufferCarrosLado.put(carro.getNome(), carroLadoPng);
-						carroLado = carroLadoPng;
-					} else {
-						carroLadoPng = CarregadorRecursos
-								.carregaImgSemCache(carro.getImg());
-
-						if (carroLadoPng != null) {
-							carroLado = carroLadoPng;
-							bufferCarrosLado.put(carro.getNome(), carroLado);
-						}
-					}
-				} catch (Exception e) {
-					carro.setImg(null);
-					bufferCarrosLado.put(carro.getNome(), ImageUtil
-							.geraTransparencia(carroLado, Color.WHITE));
-				}
-			} else {
-				bufferCarrosLado.put(carro.getNome(),
-						ImageUtil.geraTransparencia(carroLado, Color.WHITE));
-			}
-
-		}
-		return carroLado;
+		return carregadorRecursos.obterCarroLado(piloto, temporada);
 	}
 
 	private BufferedImage obterCarroLadoSemAreofolio(Piloto piloto) {
-		Carro carro = piloto.getCarro();
-		BufferedImage carroLado = bufferCarrosLadoSemAreofolio
-				.get(carro.getNome());
-		if (carroLado == null) {
-			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
-			BufferedImage cor1 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
-			BufferedImage cor2 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor2(), "CarroLadoC3.png");
-			Graphics graphics = carroLado.getGraphics();
-			graphics.drawImage(cor1, 0, 0, null);
-			graphics.drawImage(cor2, 0, 0, null);
-			graphics.dispose();
-			if (carro.getImg() != null) {
-				try {
-					BufferedImage carroLadoPng = null;
-					if (carro.getImg().endsWith(".png")) {
-						carroLadoPng = CarregadorRecursos
-								.carregaImagem(carro.getImg());
-						carroLado = carroLadoPng;
-						bufferCarrosLadoSemAreofolio.put(carro.getNome(),
-								carroLadoPng);
-					} else {
-						carroLadoPng = CarregadorRecursos
-								.carregaImgSemCache(carro.getImg());
-						if (carroLadoPng != null) {
-							carroLado = carroLadoPng;
-							Integer transp = new Integer(
-									temporadasTransp.get(getTemporada()));
-							bufferCarrosLadoSemAreofolio.put(carro.getNome(),
-									ImageUtil.geraTransparencia(carroLado,
-											transp));
-						}
-					}
-				} catch (Exception e) {
-					carro.setImg(null);
-					bufferCarrosLadoSemAreofolio.put(carro.getNome(),
-							carroLado);
-				}
-			} else {
-				bufferCarrosLadoSemAreofolio.put(carro.getNome(), carroLado);
-			}
-		}
-		return carroLado;
+		return carregadorRecursos.obterCarroLadoSemAreofolio(piloto, temporada);
 	}
 
 	public No obterNoPorId(int idNo) {
@@ -157,85 +65,13 @@ public abstract class ControleRecursos {
 		return mapaNosIds.get(no);
 	}
 
-	protected void limpaBuffers() {
-		if (bufferCarrosCima != null)
-			bufferCarrosCima.clear();
-		if (bufferCarrosCimaSemAreofolio != null)
-			bufferCarrosCimaSemAreofolio.clear();
-		if (bufferCarrosLado != null)
-			bufferCarrosLado.clear();
-		if (bufferCarrosLadoSemAreofolio != null)
-			bufferCarrosLadoSemAreofolio.clear();
-	}
-
 	private BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
 			String modelo) {
-		Carro carro = piloto.getCarro();
-		BufferedImage carroCima = bufferCarrosCimaSemAreofolio
-				.get(carro.getNome());
-		if (carroCima == null) {
-			BufferedImage base = CarregadorRecursos
-					.carregaImagem(modelo + "CarroCima.png");
-			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
-					base.getType());
-			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), modelo + "CarroCimaC1.png",
-					base.getType());
-			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), modelo + "CarroCimaC3.png",
-					base.getType());
-			Graphics graphics = carroCima.getGraphics();
-			graphics.drawImage(base, 0, 0, null);
-			graphics.drawImage(cor2, 0, 0, null);
-			graphics.drawImage(cor1, 0, 0, null);
-			graphics.dispose();
-			bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
-		}
-		return carroCima;
+		return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, modelo);
 	}
 
 	public BufferedImage obterCarroCima(Piloto piloto) {
-		if (temporada == null) {
-			return null;
-		}
-		if (piloto == null) {
-			return null;
-		}
-		if (piloto.getCarro() == null) {
-			return null;
-		}
-		String modelo = "cima20092016/";
-		Integer anoTemporada = new Integer(temporada.replace("t", ""));
-		if (anoTemporada < 2009) {
-			modelo = "cima19982008/";
-		}
-		if (anoTemporada <= 1997) {
-			modelo = "cima19801997/";
-		}
-		Carro carro = piloto.getCarro();
-		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
-			return obterCarroCimaSemAreofolio(piloto, modelo);
-		}
-		BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
-		if (carroCima == null) {
-			BufferedImage base = CarregadorRecursos
-					.carregaImagem(modelo + "CarroCima.png");
-			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
-					base.getType());
-			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), modelo + "CarroCimaC1.png",
-					base.getType());
-			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), modelo + "CarroCimaC2.png",
-					base.getType());
-			Graphics graphics = carroCima.getGraphics();
-			graphics.drawImage(base, 0, 0, null);
-			graphics.drawImage(cor2, 0, 0, null);
-			graphics.drawImage(cor1, 0, 0, null);
-			graphics.dispose();
-			bufferCarrosCima.put(carro.getNome(), carroCima);
-		}
-		return carroCima;
+		return carregadorRecursos.obterCarroCima(piloto, temporada);
 	}
 
 	public void setTemporada(String seasson) {
@@ -263,8 +99,7 @@ public abstract class ControleRecursos {
 	}
 
 	public ControleRecursos() throws Exception {
-		carregadorRecursos = new CarregadorRecursos(true);
-		carregarTemporadasTransp();
+		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
 		circuitos = carregarCircuitos();
 	}
 
@@ -273,12 +108,11 @@ public abstract class ControleRecursos {
 			this.temporada = temporada;
 		}
 		carregarPilotosCarros();
-		carregarTemporadasTransp();
 		circuitos = carregarCircuitos();
 	}
 
 	public void carregarPilotosCarros() throws IOException {
-		carregadorRecursos = new CarregadorRecursos(true);
+		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
 		carros = carregadorRecursos.carregarListaCarros(temporada);
 		pilotos = carregadorRecursos.carregarListaPilotos(temporada);
 		carregadorRecursos.ligarPilotosCarros(pilotos, carros);
@@ -469,23 +303,6 @@ public abstract class ControleRecursos {
 		return 0;
 	}
 
-	protected void carregarTemporadasTransp() {
-		final Properties properties = new Properties();
-
-		try {
-			properties.load(CarregadorRecursos.recursoComoStream(
-					"properties/temporadasTransp.properties"));
-
-			Enumeration propName = properties.propertyNames();
-			while (propName.hasMoreElements()) {
-				final String name = (String) propName.nextElement();
-				temporadasTransp.put(name, properties.getProperty(name));
-
-			}
-		} catch (IOException e) {
-			Logger.logarExept(e);
-		}
-	}
 
 	public List<Piloto> getPilotosCopia() {
 		List<Piloto> pilotosCopy = new ArrayList<Piloto>();

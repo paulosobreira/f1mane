@@ -99,7 +99,7 @@ public class PainelEntradaCliente {
 	}
 
 	private void carregaComboTemporadas() {
-		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(true);
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
 		carregadorRecursos.carregarTemporadasPilotos();
 		comboTemporada = new JComboBox(
 				carregadorRecursos.getVectorTemps().toArray());
@@ -386,7 +386,7 @@ public class PainelEntradaCliente {
 		g2d.setColor(Color.BLACK);
 		String circuitoStr = (String) circuitos
 				.get(comboBoxCircuito.getSelectedItem());
-		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
 		ObjectInputStream ois;
 		Circuito circuito = null;
 		try {

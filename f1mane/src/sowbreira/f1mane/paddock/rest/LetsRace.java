@@ -29,6 +29,7 @@ import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
@@ -43,8 +44,8 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 @Path("/letsRace")
 public class LetsRace {
 
-	private CarregadorRecursos carregadorRecursos = new CarregadorRecursos(
-			true);
+	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
+			.getCarregadorRecursos();
 
 	@GET
 	@Compress
@@ -349,10 +350,35 @@ public class LetsRace {
 	}
 
 	@GET
+	@Path("/carroLado")
+	@Produces("image/png")
+	public Response carroLado(@QueryParam("id") String id,
+			@QueryParam("temporada") String temporada) throws IOException {
+		BufferedImage capacetes = null;
+		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+				.get(temporada);
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (Integer.parseInt(id) == piloto.getId()) {
+				capacetes = carregadorRecursos.obterCarroLado(piloto,
+						temporada);
+				break;
+			}
+		}
+		if (capacetes == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(capacetes, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
 	@Path("/setaCima")
 	@Produces("image/png")
 	public Response setaCima() throws IOException {
-		BufferedImage setaCima = carregadorRecursos
+		BufferedImage setaCima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
 						200);
 		if (setaCima == null) {
@@ -368,7 +394,7 @@ public class LetsRace {
 	@Path("/setaBaixo")
 	@Produces("image/png")
 	public Response setaBaixo() throws IOException {
-		BufferedImage setaBaixo = carregadorRecursos
+		BufferedImage setaBaixo = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
 						200);
 		if (setaBaixo == null) {
@@ -384,7 +410,7 @@ public class LetsRace {
 	@Path("/setaEsquerda")
 	@Produces("image/png")
 	public Response setaEsquerda() throws IOException {
-		BufferedImage setaCima = carregadorRecursos
+		BufferedImage setaCima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
 						200);
 		BufferedImage setaEsquerda = ImageUtil.rotacionar(setaCima, 270);
@@ -401,7 +427,7 @@ public class LetsRace {
 	@Path("/setaDireita")
 	@Produces("image/png")
 	public Response setaDireita() throws IOException {
-		BufferedImage setaCima = carregadorRecursos
+		BufferedImage setaCima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
 						200);
 		BufferedImage setaDireita = ImageUtil.rotacionar(setaCima, 90);
@@ -419,7 +445,7 @@ public class LetsRace {
 	@Produces("image/png")
 	public Response png(@PathParam("recurso") String recurso)
 			throws IOException {
-		BufferedImage buffer = carregadorRecursos
+		BufferedImage buffer = CarregadorRecursos
 				.carregaBufferedImage(recurso + ".png");
 		if (buffer == null) {
 			return Response.status(200).entity("null").build();
@@ -441,11 +467,14 @@ public class LetsRace {
 
 	@GET
 	@Compress
-	@Path("/temporadasDefaults")
+	@Path("/temporadas/{temporada}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response temporadasDefaults() {
+	public Response temporadasDefaults(
+			@PathParam("temporada") String temporada) {
+		Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
+				.carregarTemporadasPilotosDefauts();
 		return Response.status(200)
-				.entity(carregadorRecursos.carregarTemporadasPilotosDefauts())
+				.entity(carregarTemporadasPilotosDefauts.get("t" + temporada))
 				.build();
 	}
 

@@ -85,7 +85,7 @@ public class ControleCampeonato {
 	public ControleCampeonato(MainFrame mainFrame) {
 		carregarCircuitos();
 		this.mainFrame = mainFrame;
-		carregadorRecursos = new CarregadorRecursos(true);
+		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
 

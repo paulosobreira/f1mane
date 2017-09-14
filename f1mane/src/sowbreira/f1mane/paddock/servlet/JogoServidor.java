@@ -294,7 +294,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 		}
 		controleCorrida.getControleBox().geraBoxesEquipes(carrobox);
-		limpaBuffers();
 		Thread timer = new Thread(new Runnable() {
 			public void run() {
 				try {

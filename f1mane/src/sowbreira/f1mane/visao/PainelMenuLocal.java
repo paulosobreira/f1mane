@@ -681,7 +681,7 @@ public class PainelMenuLocal {
 		normalAsaImg = CarregadorRecursos
 				.carregaBufferedImageTransparecia("normalAsa.png", null);;
 
-		carregadorRecursos = new CarregadorRecursos(true);
+		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 		temporadas = carregadorRecursos.getVectorTemps();
 		Collections.reverse(temporadas);

@@ -37,6 +37,53 @@ function listaCircuitos() {
 	});
 }
 
+function selecionaTemporada(temporada) {
+	var urlServico = "/f1mane/rest/letsRace/temporadas/"+temporada;
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		// headers: { 'token': token },
+		contentType : "application/json",
+		dataType : "json",
+		success : function(response) {
+			if (!response) {
+				console.log('selecionaTemporada() null');
+				return;
+			}
+			$('#trocaPneuCheckbox').prop('disabled',true);
+			$('#trocaPneuCheckbox').prop('checked',response.trocaPneu);
+			$('#reabastecimentoCheckbox').prop('disabled',true);
+			$('#reabastecimentoCheckbox').prop('checked',response.reabastecimento);
+			$('#ersCheckbox').prop('disabled',true);
+			$('#ersCheckbox').prop('checked',response.ers);
+			$('#drsCheckbox').prop('disabled',true);
+			$('#drsCheckbox').prop('checked',response.drs);
+			var pilotos = response.pilotos;
+			$('#pilotos').find('tr').remove();
+			$.each(pilotos, function(i, val) {
+				var td1 = $('<td scope="row"/>');
+				td1.append(pilotos[i].nome);
+				var td2 = $('<td/>');
+				td2.append(pilotos[i].nomeCarro);
+				var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+				var capacete = $('<img class="img-responsive img-center"/>');
+				capacete.attr('src','/f1mane/rest/letsRace/capacete?id='+pilotos[i].id+'&temporada=t'+temporada);
+				td1.append(capacete);
+				tr.append(td1);
+				var carro = new Image();
+				tr.append(td2);
+				$('#pilotos').append(tr);
+				tr.bind("click", function() {
+					console.log('Escolheu  '+pilotos[i].nome);
+				});
+			});
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log('selecionaTemporada() response.length==0')
+		}
+	});
+}
+
 function listaTemporadas() {
 	var urlServico = "/f1mane/rest/letsRace/temporadas";
 	$.ajax({
@@ -57,6 +104,7 @@ function listaTemporadas() {
 					console.log('temporadasLabel click');
 					$('#temporadasLabel').data('temporada', temporadas[i]);
 					$('#temporadasLabel').html(temporadas[i]);
+					selecionaTemporada(temporadas[i]);
 				});
 				$('#temporadasList').append(li);
 			});

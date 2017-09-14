@@ -30,6 +30,39 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<div class="checkbox">
+				<label> <input type="checkbox" id="trocaPneuCheckbox">
+					<b>Troca Pneu</b>
+				</label>
+			</div>
+			<div class="checkbox">
+				<label> <input type="checkbox" id="reabastecimentoCheckbox">
+					<b>Reabastecimento</b>
+				</label>
+			</div>
+			<div class="checkbox">
+				<label> <input type="checkbox" id="ersCheckbox"> <b>ERS</b>
+				</label>
+			</div>
+			<div class="checkbox">
+				<label> <input type="checkbox" id="drsCheckbox"> <b>DRS</b>
+				</label>
+			</div>
+		</div>
+		<section class="container">
+			<table class="table table-hover table-responsive">
+				<caption>Pilotos</caption>
+				<thead>
+					<tr>
+						<th>Piloto</th>
+						<th>Carro</th>
+					</tr>
+				</thead>
+				<tbody id="pilotos">
+				</tbody>
+			</table>
+		</section>
+		<div class="form-group">
 			<label>Circuito</label>
 			<div class="dropdown" id="circuitosDD">
 				<button class="btn btn-default dropdown-toggle btn-block"

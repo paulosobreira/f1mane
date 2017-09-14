@@ -42,18 +42,31 @@ import sowbreira.f1mane.entidades.TemporadasDefauts;
 public class CarregadorRecursos {
 	private HashMap<String, String> temporadas;
 	private HashMap<String, TemporadasDefauts> temporadasDefauts;
+	protected Map<String, String> temporadasTransp = new HashMap<String, String>();
 	private Vector<String> vectorTemps;
 	private Map<String, List<Piloto>> temporadasPilotos;
 	private Map<String, TemporadasDefauts> temporadasPilotosDefauts;
 	private static Map bufferImages = new HashMap();
 	private static Map bufferImagesTransp = new HashMap();
 	private static Map bufferCarros = new HashMap();
+	private static Map<String, BufferedImage> bufferCarrosCima = new HashMap<String, BufferedImage>();
+	private static Map<String, BufferedImage> bufferCarrosCimaSemAreofolio = new HashMap<String, BufferedImage>();
+	private static Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
+	private static Map<String, BufferedImage> bufferCarrosLadoSemAreofolio = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
 
-	public CarregadorRecursos(boolean carregaTemp) {
-		if (carregaTemp) {
-			carregarTemporadas();
+	private static CarregadorRecursos carregadorRecursos;
+
+	private CarregadorRecursos() {
+		carregarTemporadas();
+		carregarTemporadasTransp();
+	}
+
+	public static synchronized CarregadorRecursos getCarregadorRecursos() {
+		if (carregadorRecursos == null) {
+			carregadorRecursos = new CarregadorRecursos();
 		}
+		return carregadorRecursos;
 	}
 
 	public Vector<String> getVectorTemps() {
@@ -230,7 +243,7 @@ public class CarregadorRecursos {
 	}
 
 	public static InputStream recursoComoStream(String string) {
-		CarregadorRecursos rec = new CarregadorRecursos(false);
+		CarregadorRecursos rec = CarregadorRecursos.getCarregadorRecursos();
 		return rec.getClass().getResourceAsStream(string);
 	}
 
@@ -251,7 +264,7 @@ public class CarregadorRecursos {
 		// .getGraphics();
 		// BufferedImage gerarCorresCarros = gerarCorresCarros(Color.BLUE, 1);
 		// graphics2d.drawImage(gerarCorresCarros, 0, 0, null);
-		CarregadorRecursos carregadorRecursos = new CarregadorRecursos(false);
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
 
 		// Properties properties = new Properties();
 		//
@@ -751,4 +764,189 @@ public class CarregadorRecursos {
 				this.getClass().getResourceAsStream(nmRecurso));
 		return ois.readObject();
 	}
+
+	public BufferedImage obterCarroLado(Piloto piloto, String temporada) {
+		Carro carro = piloto.getCarro();
+		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
+			return obterCarroLadoSemAreofolio(piloto, temporada);
+
+		}
+		BufferedImage carroLado = bufferCarrosLado.get(carro.getNome());
+		if (carroLado == null) {
+			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
+			BufferedImage cor1 = CarregadorRecursos
+					.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
+			BufferedImage cor2 = CarregadorRecursos
+					.gerarCoresCarros(carro.getCor2(), "CarroLadoC2.png");
+			Graphics graphics = carroLado.getGraphics();
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.dispose();
+			if (carro.getImg() != null) {
+				try {
+					BufferedImage carroLadoPng = null;
+					if (carro.getImg().endsWith(".png")) {
+						carroLadoPng = CarregadorRecursos
+								.carregaImagem(carro.getImg());
+						bufferCarrosLado.put(carro.getNome(), carroLadoPng);
+						carroLado = carroLadoPng;
+					} else {
+						carroLadoPng = CarregadorRecursos
+								.carregaImgSemCache(carro.getImg());
+
+						if (carroLadoPng != null) {
+							carroLado = carroLadoPng;
+							bufferCarrosLado.put(carro.getNome(), carroLado);
+						}
+					}
+				} catch (Exception e) {
+					carro.setImg(null);
+					bufferCarrosLado.put(carro.getNome(), ImageUtil
+							.geraTransparencia(carroLado, Color.WHITE));
+				}
+			} else {
+				bufferCarrosLado.put(carro.getNome(),
+						ImageUtil.geraTransparencia(carroLado, Color.WHITE));
+			}
+
+		}
+		return carroLado;
+	}
+
+	public BufferedImage obterCarroLadoSemAreofolio(Piloto piloto,
+			String temporada) {
+		Carro carro = piloto.getCarro();
+		BufferedImage carroLado = bufferCarrosLadoSemAreofolio
+				.get(carro.getNome());
+		if (carroLado == null) {
+			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
+			BufferedImage cor1 = CarregadorRecursos
+					.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
+			BufferedImage cor2 = CarregadorRecursos
+					.gerarCoresCarros(carro.getCor2(), "CarroLadoC3.png");
+			Graphics graphics = carroLado.getGraphics();
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.dispose();
+			if (carro.getImg() != null) {
+				try {
+					BufferedImage carroLadoPng = null;
+					if (carro.getImg().endsWith(".png")) {
+						carroLadoPng = CarregadorRecursos
+								.carregaImagem(carro.getImg());
+						carroLado = carroLadoPng;
+						bufferCarrosLadoSemAreofolio.put(carro.getNome(),
+								carroLadoPng);
+					} else {
+						carroLadoPng = CarregadorRecursos
+								.carregaImgSemCache(carro.getImg());
+						if (carroLadoPng != null) {
+							carroLado = carroLadoPng;
+							Integer transp = new Integer(
+									temporadasTransp.get(temporada));
+							bufferCarrosLadoSemAreofolio.put(carro.getNome(),
+									ImageUtil.geraTransparencia(carroLado,
+											transp));
+						}
+					}
+				} catch (Exception e) {
+					carro.setImg(null);
+					bufferCarrosLadoSemAreofolio.put(carro.getNome(),
+							carroLado);
+				}
+			} else {
+				bufferCarrosLadoSemAreofolio.put(carro.getNome(), carroLado);
+			}
+		}
+		return carroLado;
+	}
+
+	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
+			String modelo) {
+		Carro carro = piloto.getCarro();
+		BufferedImage carroCima = bufferCarrosCimaSemAreofolio
+				.get(carro.getNome());
+		if (carroCima == null) {
+			BufferedImage base = CarregadorRecursos
+					.carregaImagem(modelo + "CarroCima.png");
+			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
+					base.getType());
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
+					carro.getCor1(), modelo + "CarroCimaC1.png",
+					base.getType());
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
+					carro.getCor2(), modelo + "CarroCimaC3.png",
+					base.getType());
+			Graphics graphics = carroCima.getGraphics();
+			graphics.drawImage(base, 0, 0, null);
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.dispose();
+			bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
+		}
+		return carroCima;
+	}
+
+	public BufferedImage obterCarroCima(Piloto piloto, String temporada) {
+		if (temporada == null) {
+			return null;
+		}
+		if (piloto == null) {
+			return null;
+		}
+		if (piloto.getCarro() == null) {
+			return null;
+		}
+		String modelo = "cima20092016/";
+		Integer anoTemporada = new Integer(temporada.replace("t", ""));
+		if (anoTemporada < 2009) {
+			modelo = "cima19982008/";
+		}
+		if (anoTemporada <= 1997) {
+			modelo = "cima19801997/";
+		}
+		Carro carro = piloto.getCarro();
+		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
+			return obterCarroCimaSemAreofolio(piloto, modelo);
+		}
+		BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
+		if (carroCima == null) {
+			BufferedImage base = CarregadorRecursos
+					.carregaImagem(modelo + "CarroCima.png");
+			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
+					base.getType());
+			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
+					carro.getCor1(), modelo + "CarroCimaC1.png",
+					base.getType());
+			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
+					carro.getCor2(), modelo + "CarroCimaC2.png",
+					base.getType());
+			Graphics graphics = carroCima.getGraphics();
+			graphics.drawImage(base, 0, 0, null);
+			graphics.drawImage(cor2, 0, 0, null);
+			graphics.drawImage(cor1, 0, 0, null);
+			graphics.dispose();
+			bufferCarrosCima.put(carro.getNome(), carroCima);
+		}
+		return carroCima;
+	}
+
+	protected void carregarTemporadasTransp() {
+		final Properties properties = new Properties();
+
+		try {
+			properties.load(CarregadorRecursos.recursoComoStream(
+					"properties/temporadasTransp.properties"));
+
+			Enumeration propName = properties.propertyNames();
+			while (propName.hasMoreElements()) {
+				final String name = (String) propName.nextElement();
+				temporadasTransp.put(name, properties.getProperty(name));
+
+			}
+		} catch (IOException e) {
+			Logger.logarExept(e);
+		}
+	}
+
 }

@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 body {
  margin: 0;
- background: url(/f1mane/rest/letsRace/png/f1bg);
+ /*background: url(/f1mane/rest/letsRace/png/f1bg);*/
  background-size: 100%,100%;;
  background-repeat:no-repeat;
 }
