@@ -1,6 +1,15 @@
 var pilotoSelecionado;
 var temporadaSelecionada;
 var circuitoSelecionado;
+var sessaoVisitante;
+
+criarSessao();
+
+var criarJogoR;
+
+$('#btnCriarJogo').bind("click", function() {
+	criarJogo();
+});
 
 $('#temporadasDD').on('show.bs.dropdown', function() {
 	listaTemporadas();
@@ -9,12 +18,50 @@ $('#circuitosDD').on('show.bs.dropdown', function() {
 	listaCircuitos();
 });
 
+
+function criarJogo() {
+	var urlServico = "/f1mane/rest/letsRace/criarJogo/"+temporadaSelecionada+"/"+pilotoSelecionado+"/"+circuitoSelecionado;
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		headers : {
+			'token' : sessaoVisitante.sessaoCliente.token
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(response) {
+			criarJogoR = response;
+			console.log('Criou jogo');
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log('criarJogo() '+xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
+
+function criarSessao() {
+	var urlServico = "/f1mane/rest/letsRace/criarSessaoVisitante";
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		contentType : "application/json",
+		dataType : "json",
+		success : function(response) {
+			sessaoVisitante = response;
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log('criarSessao() '+xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
+
 function listaCircuitos() {
 	var urlServico = "/f1mane/rest/letsRace/circuitos";
 	$.ajax({
 		type : "GET",
 		url : urlServico,
-		// headers: { 'token': token },
 		contentType : "application/json",
 		dataType : "json",
 		success : function(circuitosMap) {
@@ -37,7 +84,7 @@ function listaCircuitos() {
 			});
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			console.log('listaCircuitos() response.length==0')
+			console.log('listaCircuitos() '+xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
@@ -47,7 +94,6 @@ function selecionaTemporada(temporada) {
 	$.ajax({
 		type : "GET",
 		url : urlServico,
-		// headers: { 'token': token },
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
@@ -89,7 +135,7 @@ function selecionaTemporada(temporada) {
 			$('#detalheTemporada').removeClass('hidden');
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			console.log('selecionaTemporada() response.length==0')
+			console.log('selecionaTemporada() '+xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
@@ -99,7 +145,6 @@ function listaTemporadas() {
 	$.ajax({
 		type : "GET",
 		url : urlServico,
-		// headers: { 'token': token },
 		contentType : "application/json",
 		dataType : "json",
 		success : function(temporadas) {
@@ -122,7 +167,7 @@ function listaTemporadas() {
 
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			console.log('listaTemporadas() response.length==0')
+			console.log('listaTemporadas() '+xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }

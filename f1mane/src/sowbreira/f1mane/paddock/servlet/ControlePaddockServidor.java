@@ -481,7 +481,7 @@ public class ControlePaddockServidor {
 		return controleJogosServer.detalhesJogo(clientPaddockPack);
 	}
 
-	private Object entrarJogo(ClientPaddockPack clientPaddockPack) {
+	public Object entrarJogo(ClientPaddockPack clientPaddockPack) {
 		return controleJogosServer.entrarJogo(clientPaddockPack);
 	}
 
@@ -556,7 +556,7 @@ public class ControlePaddockServidor {
 		return null;
 	}
 
-	private SessaoCliente obterSessaoPorToken(String token) {
+	public SessaoCliente obterSessaoPorToken(String token) {
 		try {
 			if (token == null) {
 				return null;
@@ -669,8 +669,8 @@ public class ControlePaddockServidor {
 	}
 
 	public void removerClienteInativo(SessaoCliente sessaoCliente) {
-		controleJogosServer.removerClienteInativo(sessaoCliente);
-		dadosPaddock.remove(sessaoCliente);
+//		controleJogosServer.removerClienteInativo(sessaoCliente);
+//		dadosPaddock.remove(sessaoCliente);
 	}
 
 	public void initProperties() throws IOException {
