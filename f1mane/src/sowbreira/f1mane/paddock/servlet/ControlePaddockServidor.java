@@ -669,8 +669,8 @@ public class ControlePaddockServidor {
 	}
 
 	public void removerClienteInativo(SessaoCliente sessaoCliente) {
-//		controleJogosServer.removerClienteInativo(sessaoCliente);
-//		dadosPaddock.remove(sessaoCliente);
+		controleJogosServer.removerClienteInativo(sessaoCliente);
+		dadosPaddock.remove(sessaoCliente);
 	}
 
 	public void initProperties() throws IOException {

@@ -233,33 +233,28 @@ public class LetsRace {
 		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada, circuito,
 				idPiloto);
 		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-		Object criarJogo = null;
 		List<String> obterJogos = controlePaddock.obterJogos();
 		if (!obterJogos.isEmpty()) {
 			clientPaddockPack.setNomeJogo(obterJogos.get(0));
 		}
 		SrvPaddockPack srvPaddockPack = null;
-		criarJogo = controlePaddock.obterJogoPeloNome(clientPaddockPack);
-		if (criarJogo == null) {
-			criarJogo = controlePaddock.criarJogo(clientPaddockPack);
-			if (criarJogo == null) {
+		Object statusJogo = null;
+		statusJogo = controlePaddock.obterJogoPeloNome(clientPaddockPack);
+		/**
+		 * Criar Jogo
+		 */
+		if (statusJogo == null) {
+			statusJogo = controlePaddock.criarJogo(clientPaddockPack);
+			if (statusJogo == null) {
 				return Response.status(400)
 						.entity(Html.escapeHtml("Jogo não pode ser criado."))
 						.type(MediaType.APPLICATION_JSON).build();
 			}
-			if (criarJogo instanceof MsgSrv) {
-				MsgSrv msgSrv = (MsgSrv) criarJogo;
-				return Response.status(200)
-						.entity(Html.escapeHtml(msgSrv.getMessageString()))
-						.type(MediaType.APPLICATION_JSON).build();
+			Response erro = processsaMensagem(statusJogo);
+			if (erro != null) {
+				return erro;
 			}
-			if (criarJogo instanceof ErroServ) {
-				ErroServ erroServ = (ErroServ) criarJogo;
-				return Response.status(500)
-						.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
-						.type(MediaType.APPLICATION_JSON).build();
-			}
-			srvPaddockPack = (SrvPaddockPack) criarJogo;
+			srvPaddockPack = (SrvPaddockPack) statusJogo;
 			clientPaddockPack.setNomeJogo(
 					srvPaddockPack.getDadosCriarJogo().getNomeJogo());
 			clientPaddockPack
@@ -267,25 +262,41 @@ public class LetsRace {
 			clientPaddockPack.getDadosJogoCriado()
 					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
 		}
-		if (criarJogo != null) {
-			criarJogo = controlePaddock.entrarJogo(clientPaddockPack);
+		/**
+		 * Entrar Jogo
+		 */
+		if (statusJogo != null) {
+			statusJogo = controlePaddock.entrarJogo(clientPaddockPack);
+			if (statusJogo == null) {
+				return Response.status(400)
+						.entity(Html
+								.escapeHtml("Não foi possivel entrar no jogo."))
+						.type(MediaType.APPLICATION_JSON).build();
+			}
+			Response erro = processsaMensagem(statusJogo);
+			if (erro != null) {
+				return erro;
+			}
 		}
-		if (criarJogo != null) {
-			criarJogo = controlePaddock.iniciaJogo(clientPaddockPack);
-			if ("200".equals(criarJogo)) {
+		/**
+		 * Iniciar Jogo
+		 */
+		if (statusJogo != null) {
+			statusJogo = controlePaddock.iniciaJogo(clientPaddockPack);
+			if ("200".equals(statusJogo)) {
 				return Response.status(200).entity(
 						controlePaddock.obterDadosJogo(clientPaddockPack))
 						.build();
 			}
 		}
-		if (criarJogo == null) {
-			return Response.status(400)
-					.entity(Html.escapeHtml("Jogo não pode ser criado."))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
+		processsaMensagem(statusJogo);
+		return Response.status(200).entity(statusJogo).build();
+	}
+
+	private Response processsaMensagem(Object criarJogo) {
 		if (criarJogo instanceof MsgSrv) {
 			MsgSrv msgSrv = (MsgSrv) criarJogo;
-			return Response.status(200)
+			return Response.status(400)
 					.entity(Html.escapeHtml(msgSrv.getMessageString()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
@@ -295,7 +306,7 @@ public class LetsRace {
 					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		return Response.status(200).entity(criarJogo).build();
+		return null;
 	}
 
 	@GET
