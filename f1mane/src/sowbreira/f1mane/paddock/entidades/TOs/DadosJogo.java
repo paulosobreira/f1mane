@@ -3,19 +3,24 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 
 /**
  * @author Paulo Sobreira Criado em 15/08/2007 as 16:33:52
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DadosJogo implements Serializable {
 	private List<Piloto> pilotosList = null;
 	private Volta melhoVolta;
 	private int voltaAtual;
 	private boolean corridaTerminada;
+	private boolean corridaIniciada;
 	private String texto;
 	private String clima;
+	private String nomeJogo;
 
 	public String getClima() {
 		return clima;
@@ -63,6 +68,22 @@ public class DadosJogo implements Serializable {
 
 	public void setPilotosList(List<Piloto> objects) {
 		this.pilotosList = objects;
+	}
+
+	public String getNomeJogo() {
+		return nomeJogo;
+	}
+
+	public void setNomeJogo(String nomeJogo) {
+		this.nomeJogo = nomeJogo;
+	}
+
+	public boolean isCorridaIniciada() {
+		return corridaIniciada;
+	}
+
+	public void setCorridaIniciada(boolean corridaIniciada) {
+		this.corridaIniciada = corridaIniciada;
 	}
 
 }

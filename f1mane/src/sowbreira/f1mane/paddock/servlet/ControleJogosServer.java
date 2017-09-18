@@ -183,6 +183,10 @@ public class ControleJogosServer {
 		String nomeJogo = clientPaddockPack.getDadosJogoCriado().getNomeJogo();
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 
+		if (jogoServidor == null) {
+			return new MsgSrv(Lang.msg("207", new String[]{nomeJogo}));
+		}
+
 		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 				.obterCarreiraSrv(
 						clientPaddockPack.getSessaoCliente().getNomeJogador());
@@ -211,9 +215,6 @@ public class ControleJogosServer {
 
 		if (jogoServidor.isCorridaTerminada()) {
 			return new MsgSrv(Lang.msg("206", new String[]{nomeJogo}));
-		}
-		if (jogoServidor == null) {
-			return new MsgSrv(Lang.msg("207", new String[]{nomeJogo}));
 		}
 		jogoServidor.setControleClassificacao(controleClassificacao);
 		Object retorno = jogoServidor.adicionarJogador(
@@ -310,7 +311,7 @@ public class ControleJogosServer {
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 		}
-		return "200";
+		return obterDadosJogo(clientPaddockPack);
 	}
 
 	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
@@ -323,6 +324,8 @@ public class ControleJogosServer {
 		dadosJogo.setMelhoVolta(jogoServidor.obterMelhorVolta());
 		dadosJogo.setVoltaAtual(jogoServidor.getNumVoltaAtual());
 		dadosJogo.setClima(jogoServidor.getClima());
+		dadosJogo.setCorridaIniciada(jogoServidor.isCorridaIniciada());
+		dadosJogo.setNomeJogo(clientPaddockPack.getNomeJogo());
 		List pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();

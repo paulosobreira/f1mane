@@ -549,7 +549,7 @@ public class ControleBox {
 		processarTipoAsaAutomatico(piloto);
 	}
 
-	private void processarTipoAsaAutomatico(Piloto piloto) {
+	public void processarTipoAsaAutomatico(Piloto piloto) {
 		piloto.getCarro().setAsa(Carro.ASA_NORMAL);
 		if (piloto.testeHabilidadePiloto()) {
 			int noAlta = 0;

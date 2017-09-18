@@ -27,6 +27,7 @@ import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
@@ -34,6 +35,7 @@ import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosParciais;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
@@ -41,6 +43,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 @Path("/letsRace")
 public class LetsRace {
@@ -175,49 +178,6 @@ public class LetsRace {
 	}
 
 	@GET
-	@Path("/iniciarJogo")
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response iniciarJogo() {
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
-		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		SessaoCliente sessaoCliente = new SessaoCliente();
-		sessaoCliente.setNomeJogador("Sobreira");
-		clientPaddockPack.setSessaoCliente(sessaoCliente);
-		Object iniciarJogo = controlePaddock.iniciaJogo(clientPaddockPack);
-		if (iniciarJogo == null) {
-			Logger.logar("iniciarJogo == null");
-			// return Response.status(400)
-			// .entity(Html.escapeHtml("Jogo não pode ser iniciado."))
-			// .type(MediaType.APPLICATION_JSON).build();
-		}
-		if (iniciarJogo instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) iniciarJogo;
-			Logger.logar(msgSrv.getMessageString());
-			// return Response.status(400)
-			// .entity(Html.escapeHtml(msgSrv.getMessageString()))
-			// .type(MediaType.APPLICATION_JSON).build();
-		}
-		if (iniciarJogo instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) iniciarJogo;
-			Logger.logar(erroServ.obterErroFormatado());
-			// return Response.status(500)
-			// .entity(Html.escapeHtml(erroServ.obterErroFormatado()))
-			// .type(MediaType.APPLICATION_JSON).build();
-		}
-		Integer ret = null;
-		try {
-			ret = new Integer(iniciarJogo.toString());
-		} catch (Exception e) {
-			ret = 1;
-			// return
-			// Response.status(500).entity(Html.escapeHtml(e.getMessage()))
-			// .type(MediaType.APPLICATION_JSON).build();
-		}
-		return Response.status(ret).build();
-	}
-
-	@GET
 	@Path("/criarJogo/{temporada}/{idPiloto}/{circuito}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response criarJogo(@HeaderParam("token") String token,
@@ -254,14 +214,34 @@ public class LetsRace {
 			if (erro != null) {
 				return erro;
 			}
-			srvPaddockPack = (SrvPaddockPack) statusJogo;
-			clientPaddockPack.setNomeJogo(
-					srvPaddockPack.getDadosCriarJogo().getNomeJogo());
-			clientPaddockPack
-					.setDadosCriarJogo(srvPaddockPack.getDadosCriarJogo());
-			clientPaddockPack.getDadosJogoCriado()
-					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+		} else {
+			DadosJogo dadosJogo = (DadosJogo) controlePaddock
+					.obterDadosJogo(clientPaddockPack);
+			List<Piloto> pilotosList = dadosJogo.getPilotosList();
+			for (Iterator iterator = pilotosList.iterator(); iterator
+					.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (piloto.isJogadorHumano()
+						&& piloto.getId() == dadosCriarJogo.getIdPiloto()) {
+					if (sessaoCliente.getNomeJogador()
+							.equals(piloto.getNomeJogador())) {
+						return Response.status(200).entity(dadosJogo).build();
+					} else {
+						return Response.status(400).entity(dadosJogo).build();
+					}
+				}
+			}
 		}
+		srvPaddockPack = (SrvPaddockPack) statusJogo;
+
+		/**
+		 * Preenchento todos possiveis campos para nome do jogo Bagunça...
+		 */
+		clientPaddockPack.setDadosCriarJogo(srvPaddockPack.getDadosCriarJogo());
+		clientPaddockPack.getDadosJogoCriado()
+				.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+		clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+
 		/**
 		 * Entrar Jogo
 		 */
@@ -283,13 +263,11 @@ public class LetsRace {
 		 */
 		if (statusJogo != null) {
 			statusJogo = controlePaddock.iniciaJogo(clientPaddockPack);
-			if ("200".equals(statusJogo)) {
-				return Response.status(200).entity(
-						controlePaddock.obterDadosJogo(clientPaddockPack))
-						.build();
+			Response erro = processsaMensagem(statusJogo);
+			if (erro != null) {
+				return erro;
 			}
 		}
-		processsaMensagem(statusJogo);
 		return Response.status(200).entity(statusJogo).build();
 	}
 
@@ -297,8 +275,9 @@ public class LetsRace {
 		if (criarJogo instanceof MsgSrv) {
 			MsgSrv msgSrv = (MsgSrv) criarJogo;
 			return Response.status(400)
-					.entity(Html.escapeHtml(msgSrv.getMessageString()))
-					.type(MediaType.APPLICATION_JSON).build();
+					.entity(Html.escapeHtml(
+							Lang.decodeTextoKey(msgSrv.getMessageString())))
+					.type(MediaType.TEXT_HTML).build();
 		}
 		if (criarJogo instanceof ErroServ) {
 			ErroServ erroServ = (ErroServ) criarJogo;
@@ -362,6 +341,12 @@ public class LetsRace {
 		dadosCriarJogo.setErs(temporadasDefauts.getErs());
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
+		if (temporadasDefauts.getReabastecimento()) {
+			dadosCriarJogo.setCombustivel(50);
+		} else {
+			dadosCriarJogo.setCombustivel(85);
+		}
+		dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_MOLE);
 		return dadosCriarJogo;
 	}
 

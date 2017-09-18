@@ -820,6 +820,11 @@ public class ControleJogoLocal extends ControleRecursos
 
 	public int setUpJogadorHumano(Piloto pilotoJogador, Object tpPneu,
 			Object combust, Object asa) {
+		if (asa == null) {
+			controleCorrida.processarTipoAsaAutomatico(pilotoJogador);
+			asa = pilotoJogador.getCarro().getAsa();
+		}
+
 		String tipoPneu = (String) tpPneu;
 		Integer qtdeCombustPorcent = (Integer) combust;
 		if (isSemReabastacimento() && qtdeCombustPorcent.intValue() < 75) {

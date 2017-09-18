@@ -337,7 +337,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			for (Iterator<Piloto> iterator = pilotos.iterator(); iterator
 					.hasNext();) {
 				Piloto piloto = iterator.next();
-				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
+				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
+						|| piloto.getId() == dadosParticiparJogo
+								.getIdPiloto()) {
 					piloto.setNomeJogador(key);
 					piloto.setJogadorHumano(true);
 				}

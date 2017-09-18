@@ -683,5 +683,8 @@ public class ControleCorrida {
 	public boolean isModoQualify() {
 		return controleQualificacao.isModoQualify();
 	}
+	public void processarTipoAsaAutomatico(Piloto piloto) {
+		controleBox.processarTipoAsaAutomatico(piloto);
+	}
 
 }

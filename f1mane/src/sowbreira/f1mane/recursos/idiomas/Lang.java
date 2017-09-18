@@ -41,18 +41,21 @@ public class Lang {
 		// if (i % 2 == 1)
 		// Logger.logar(array[i]);
 		// }
-		srvgame = true;
-		String enc = Lang.msg("003", new String[]{"S.Vettel", "8.218", "0",
-				Lang.msg("TIPO_PNEU_MOLE")});
-		Logger.logar("enc : " + enc);
-		sufix = "en";
-		srvgame = false;
-		Logger.logar("dec : " + decodeTexto(enc));
-		System.out.println(decodeTexto(
-				"<b><font  color='#FF8C00'>¢003¬S.Vettel¬8.218¬0¬¢TIPO_PNEU_MOLE¢¢</font></b>"));
-		Locale locale = Locale.getDefault();
+		// srvgame = true;
+		// String enc = Lang.msg("003", new String[]{"S.Vettel", "8.218", "0",
+		// Lang.msg("TIPO_PNEU_MOLE")});
+		// Logger.logar("enc : " + enc);
+		// sufix = "en";
+		// srvgame = false;
+		// Logger.logar("dec : " + decodeTexto(enc));
+		// System.out.println(decodeTexto(
+		// "<b><font
+		// color='#FF8C00'>¢003¬S.Vettel¬8.218¬0¬¢TIPO_PNEU_MOLE¢¢</font></b>"));
+		// Locale locale = Locale.getDefault();
+		//
+		// Logger.logar(locale.getLanguage());
+		// System.out.println(key(decodeTexto("¢203¢")));
 
-		Logger.logar(locale.getLanguage());
 	}
 
 	public static void mudarIdioma(String sufix_) {
@@ -119,6 +122,19 @@ public class Lang {
 				retorno.append((array[i]));
 		}
 		return retorno.toString();
+	}
+
+	public static String decodeTextoKey(String string) {
+		string = string.replaceAll("¢", "");
+		iniciaBundle();
+		if (string == null || "".equals(string)) {
+			return "";
+		}
+		try {
+			return bundle.getString(string);
+		} catch (Exception e) {
+			return string;
+		}
 	}
 
 	private static String microDecode(String string) {
