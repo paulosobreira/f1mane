@@ -5,7 +5,6 @@ var sessaoVisitante;
 
 criarSessao();
 
-var criarJogoR;
 
 $('#btnCriarJogo').bind("click", function() {
 	criarJogo();
@@ -46,9 +45,10 @@ function criarJogo() {
 		},
 		contentType : "application/json",
 		dataType : "json",
-		success : function(response) {
-			criarJogoR = response;
-			console.log('Criou jogo');
+		success : function(dadosJogo) {
+			localStorage.setItem("nomeJogo", dadosJogo.nomeJogo);
+			localStorage.setItem("token", sessaoVisitante.sessaoCliente.token);
+			window.location.href = "f1mane.html";
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			console.log('criarJogo() ' + xhRequest.status + '  '

@@ -4,9 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +113,7 @@ public class LetsRace {
 	}
 
 	@GET
+	@Compress
 	@Path("/dadosJogo")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosJogo(@QueryParam("nomeJogo") String nomeJogo) {
@@ -178,6 +176,7 @@ public class LetsRace {
 	}
 
 	@GET
+	@Compress
 	@Path("/criarJogo/{temporada}/{idPiloto}/{circuito}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response criarJogo(@HeaderParam("token") String token,

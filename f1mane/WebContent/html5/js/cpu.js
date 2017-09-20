@@ -1,11 +1,10 @@
-var criarJogo;
 var circuito;
 var dadosJogo;
 var dadosParciais;
 var ativo = true;
-var jogoInciado = false;
 var delay = 1000;
 var pilotosMap = new Map();
+var token;
 
 // update canvas with some information and animation
 // var fps = new FpsCtrl(20, function(e) {
@@ -20,30 +19,33 @@ maneCanvas.addEventListener('click', function(event) {
 });
 
 function cpu_main(){
-	if (criarJogo == null) {
-		console.log('cpu_main rest_criarJogo()');
-		rest_criarJogo();
+	var nomeJogo = localStorage.getItem("nomeJogo");
+	if(nomeJogo==null){
+		console.log('nomeJogo==null');
+		return;
 	}
-	if (criarJogo != null && dadosJogo == null) {
-		console.log('cpu_main rest_dadosJogo()');
-		rest_dadosJogo();
+	if(dadosJogo == null){
+		rest_dadosJogo(nomeJogo);
 	}
-	if (criarJogo != null && dadosJogo != null && circuito == null) {
+	if (dadosJogo!=null && circuito == null) {
 		for (i = 0; i < dadosJogo.pilotosList.length; i++) {
 			pilotosMap.set(dadosJogo.pilotosList[i].id, dadosJogo.pilotosList[i]);
 		}
+		carrosImgMap = new Map();
+		for (i = 0; i < dadosJogo.pilotosList.length; i++) {
+			var pilotos = dadosJogo.pilotosList[i];
+			var imgCarro =  new Image();
+			imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo="+dadosJogo.nomeJogo+"&idPiloto="+pilotos.id;
+			carrosImgMap.set(pilotos.id, imgCarro);
+		}		
 		console.log('cpu_main rest_ciruito()');
 		rest_ciruito();
 	}
-	if (criarJogo != null && dadosJogo != null && circuito != null && !jogoInciado) {
-		console.log('cpu_main rest_iniciarJogo()');
-		jogoInciado = rest_iniciarJogo();
-	}
-	if(criarJogo != null && circuito != null && imgBg.src == ""){
+	if(dadosJogo!=null && circuito != null && imgBg.src == ""){
 		console.log('cpu_main vdp_carregaBackGround()');
 		vdp_carregaBackGround();
 	}
-	if(criarJogo != null && circuito != null && dadosJogo != null && jogoInciado && ativo){
+	if(dadosJogo!=null && circuito != null && dadosJogo != null && ativo){
 		delay = 100;
 		rest_dadosParciais();
 		vdp_desenha();
