@@ -12,7 +12,7 @@ var ptBg = {
 var posicaoCentraliza = 0;
 
 function vdp_desenha() {
-	vdp_centralizaPole();
+	vdp_centralizaPilotoSelecionado();
 	vdp_desenhaBackGround();
 	vdp_desenhaObjs();
 	vdp_desenhaCarrosCima();
@@ -24,7 +24,7 @@ function vdp_desenha() {
 	}
 }
 
-function vdp_centralizaPole() {
+function vdp_centralizaPilotoSelecionado() {
 	if (dadosParciais == null || dadosParciais.posisPack == null
 			|| circuito == null) {
 		return;
@@ -69,7 +69,7 @@ function obeterPonto(piloto) {
 	var no = mapaIdNos.get(piloto.idNo);
 	var ponto;
 	if (no.box) {
-		var idNo =  piloto.idNo - circuito.pistaFull.length;
+		var idNo = piloto.idNo - circuito.pistaFull.length;
 		ponto = circuito.boxFull[idNo];
 		if (piloto.tracado == 1) {
 			ponto = circuito.box1Full[idNo];
@@ -105,6 +105,9 @@ function vdp_desenhaCarrosCima() {
 	var posicaoPilotos = dadosParciais.posisPack;
 	for (i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
+		if (piloto.idPiloto == idPilotoSelecionado) {
+			posicaoCentraliza = i;
+		}
 		var ponto = obeterPonto(piloto);
 		if (ponto == null) {
 			continue;

@@ -1,4 +1,4 @@
-var pilotoSelecionado;
+var idPilotoSelecionado;
 var temporadaSelecionada;
 var circuitoSelecionado;
 var sessaoVisitante;
@@ -21,7 +21,7 @@ function mostrarEntrarJogo() {
 	if (!temporadaSelecionada) {
 		return;
 	}
-	if (!pilotoSelecionado) {
+	if (!idPilotoSelecionado) {
 		return;
 	}
 	if (!circuitoSelecionado) {
@@ -36,7 +36,7 @@ function mostrarEntrarJogo() {
 
 function criarJogo() {
 	var urlServico = "/f1mane/rest/letsRace/criarJogo/" + temporadaSelecionada
-			+ "/" + pilotoSelecionado + "/" + circuitoSelecionado;
+			+ "/" + idPilotoSelecionado + "/" + circuitoSelecionado;
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -48,6 +48,7 @@ function criarJogo() {
 		success : function(dadosJogo) {
 			localStorage.setItem("nomeJogo", dadosJogo.nomeJogo);
 			localStorage.setItem("token", sessaoVisitante.sessaoCliente.token);
+			localStorage.setItem("idPilotoSelecionado", idPilotoSelecionado);
 			window.location.href = "f1mane.html";
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -154,7 +155,7 @@ function selecionaTemporada(temporada) {
 				tr.bind("click", function() {
 					$('#pilotos').find('tr').removeClass('active');
 					tr.addClass('active');
-					pilotoSelecionado = pilotos[i].id;
+					idPilotoSelecionado = pilotos[i].id;
 					mostrarEntrarJogo();
 				});
 			});
