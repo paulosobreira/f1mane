@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
 <head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body style=" width:  100%; height: 100%; margin: 0px;">
-    <canvas id="myCanvas" />
-    <script language="JavaScript">
+<body style="width: 100%; height: 100%; margin: 0px;">
+	<canvas id="myCanvas" />
+	<script language="JavaScript">
 		var elem = document.getElementById('myCanvas'),
 			elemLeft = elem.offsetLeft,
 			elemTop = elem.offsetTop,
@@ -27,6 +27,7 @@
 					&& x > element.x && x < element.x + element.width) {
 					elemtoMover = element;
 					alert('clicked an element -> Chamar Ajax');
+					/*
 					$.ajax({
 						url: "../rest/teste/piloto",
 						success: function(response) {
@@ -39,7 +40,7 @@
 					    	}
 						}
 					});					
-					
+					*/
 				}
 			});
 			
@@ -54,22 +55,92 @@
 		// Add element.
 		elements.push({
 			cor: '#BABACA',
-			width: 150,
-			height: 100,
-			y: window.innerHeight/2 - 50,
-			x: window.innerWidth/2 - 75
+			valor: '1',
+			tipo : 'controleMotor',
+			width: 50,
+			height: 50,
+			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+			y: window.innerHeight - (window.innerHeight/2-20),
+			x: 10
 		});
+		elements.push({
+			cor: '#BABACA',
+			valor: '2',
+			tipo : 'controleMotor',
+			width: 50,
+			height: 50,
+			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+			y: window.innerHeight - (window.innerHeight/2-20),
+			x: 70
+		});
+		elements.push({
+			cor: '#BABACA',
+			valor: '3',
+			tipo : 'controleMotor',
+			width: 50,
+			height: 50,
+			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+			y: window.innerHeight - (window.innerHeight/2-20),
+			x: 130
+		});
+		
+		
+		
+		elements.push({
+			cor: '#5fba7d',
+			valor: '3',
+			tipo : 'controlePiloto',
+			width: 50,
+			height: 50,
+			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+			y: window.innerHeight - (window.innerHeight/2-20),
+			evalX : 'window.innerWidth - 180;',
+			x: 0
+		});
+		elements.push({
+			cor: '#5fba7d',
+			valor: '2',
+			tipo : 'controlePiloto',
+			width: 50,
+			height: 50,
+			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+			y: window.innerHeight - (window.innerHeight/2-20),
+			evalX : 'window.innerWidth - 120;',
+			x: 0
+		});
+		elements.push({
+			cor: '#5fba7d',
+			valor: '1',
+			tipo : 'controlePiloto',
+			width: 50,
+			height: 50,
+			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+			y: window.innerHeight - (window.innerHeight/2-20),
+			evalX : 'window.innerWidth - 60;',
+			x: 0
+		});		
 		function render(){
+			console.log('render()');
 			context.canvas.width  = window.innerWidth;
 			context.canvas.height = window.innerHeight;
 			// Render elements.
     		elements.forEach(function(element) {
-				context.fillStyle = element.cor;
-				context.fillRect(element.x, element.y, element.width, element.height);
+    			if(element.evalY){
+    				element.y = eval(element.evalY);
+    			}
+    			if(element.evalX){
+    				element.x = eval(element.evalX);
+    			}
+    			context.beginPath();
+				context.strokeStyle = element.cor;
+				context.rect(element.x, element.y, element.width, element.height);
+				context.font='30px sans-serif';
+				context.fillText(element.valor,element.x+(element.width/2)-10,element.y+(element.height/2)+10);
+				context.stroke();
 			});
 		}
 		
-		render();
+		var main = setInterval(render, 500);
     </script>
 
 </body>
