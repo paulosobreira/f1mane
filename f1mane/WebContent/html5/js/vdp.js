@@ -8,6 +8,7 @@ var ctxRotate = cvRotate.getContext('2d');
 var maneCanvas = document.getElementById('maneCanvas')
 var maneContext = maneCanvas.getContext('2d');
 var imgBg = new Image();
+var desenhaImagens = false;
 var ptBg = {
 	x : 0,
 	y : 0
@@ -51,7 +52,7 @@ function vdp_desenhaBackGround() {
 	maneCanvas.height = window.innerHeight;
 	var sW = maneCanvas.width;
 	var sH = maneCanvas.height;
-	if (imgBg.src != "") {
+	if (imgBg.src != "" && desenhaImagens) {
 		try {
 			maneContext.drawImage(imgBg, ptBg.x, ptBg.y, sW, sH, 0, 0,
 					maneCanvas.width, maneCanvas.height);
@@ -131,7 +132,7 @@ function vdp_desenhaCarrosCima() {
 						ponto.x - ptBg.x, ponto.y - ptBg.y);
 			}
 
-			if (carrosImgMap != null) {
+			if (carrosImgMap != null && desenhaImagens) {
 				var imgCarro = carrosImgMap.get(piloto.idPiloto);
 				var x = ponto.x - ptBg.x - (imgCarro.width / 2);
 				var y = ponto.y - ptBg.y - (imgCarro.height / 2);

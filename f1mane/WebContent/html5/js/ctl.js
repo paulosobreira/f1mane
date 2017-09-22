@@ -36,46 +36,53 @@ function ctl_desenhaControles() {
 	largura = maneCanvas.width;
 	altura = maneCanvas.height;
 	// Render elements.
-	controles.forEach(function(controle) {
-		if (evalY && controle.evalY) {
-			controle.y = eval(controle.evalY);
-		}
-		if (evalX && controle.evalX) {
-			controle.x = eval(controle.evalX);
-		}
-		maneContext.beginPath();
+	controles
+			.forEach(function(controle) {
+				if (evalY && controle.evalY) {
+					controle.y = eval(controle.evalY);
+				}
+				if (evalX && controle.evalX) {
+					controle.x = eval(controle.evalX);
+				}
+				maneContext.beginPath();
 
-		if (controle.tipo == 'controleMotor') {
-			if (dadosParciais.giro == 1) {
-				maneContext.strokeStyle = '#00FF00';
-			} else if (dadosParciais.giro == 5) {
-				maneContext.strokeStyle = '#FFFF00';
-			} else if (dadosParciais.giro == 9) {
-				maneContext.strokeStyle = '#FF0000';
-			} else {
-				maneContext.strokeStyle = controle.cor;
-			}
-		}
-		if (controle.tipo == 'controlePiloto') {
-			if (dadosParciais.modoPilotar == 'LENTO') {
-				maneContext.strokeStyle = '#00FF00';
-			} else if (dadosParciais.modoPilotar == 'NORMAL') {
-				maneContext.strokeStyle = '#FFFF00';
-			} else if (dadosParciais.modoPilotar == 'AGRESSIVO') {
-				maneContext.strokeStyle = '#FF0000';
-			} else {
-				maneContext.strokeStyle = controle.cor;
-			}
-		}
+				if (controle.tipo == 'controleMotor') {
+					if (dadosParciais.giro == 1 && controle.valor == 'GIRO_MIN') {
+						maneContext.strokeStyle = '#00FF00';
+					} else if (dadosParciais.giro == 5
+							&& controle.valor == 'GIRO_NOR') {
+						maneContext.strokeStyle = '#FFFF00';
+					} else if (dadosParciais.giro == 9
+							&& controle.valor == 'GIRO_MAX') {
+						maneContext.strokeStyle = '#FF0000';
+					} else {
+						maneContext.strokeStyle = controle.cor;
+					}
+				}
+				if (controle.tipo == 'controlePiloto') {
+					if (dadosParciais.modoPilotar == 'LENTO'
+							&& controle.valor == 'LENTO') {
+						maneContext.strokeStyle = '#00FF00';
+					} else if (dadosParciais.modoPilotar == 'NORMAL'
+							&& controle.valor == 'NORMAL') {
+						maneContext.strokeStyle = '#FFFF00';
+					} else if (dadosParciais.modoPilotar == 'AGRESSIVO'
+							&& controle.valor == 'AGRESSIVO') {
+						maneContext.strokeStyle = '#FF0000';
+					} else {
+						maneContext.strokeStyle = controle.cor;
+					}
+				}
 
-		maneContext.rect(controle.x, controle.y, controle.width,
-				controle.height);
-		maneContext.font = '30px sans-serif';
-		maneContext.fillText(controle.exibir, controle.x + (controle.width / 2)
-				- 10, controle.y + (controle.height / 2) + 10);
-		maneContext.closePath();
-		maneContext.stroke();
-	});
+				maneContext.rect(controle.x, controle.y, controle.width,
+						controle.height);
+				maneContext.font = '30px sans-serif';
+				maneContext.fillText(controle.exibir, controle.x
+						+ (controle.width / 2) - 10, controle.y
+						+ (controle.height / 2) + 10);
+				maneContext.closePath();
+				maneContext.stroke();
+			});
 }
 
 // Add element.

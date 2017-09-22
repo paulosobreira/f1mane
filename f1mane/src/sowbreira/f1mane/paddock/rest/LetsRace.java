@@ -548,9 +548,9 @@ public class LetsRace {
 		}
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();;
-		return Response
-				.status(200).entity(controleJogosServer
-						.mudarGiroMotor(sessaoCliente, idPiloto, agresividade))
+		return Response.status(200)
+				.entity(controleJogosServer.mudarAgressividadePiloto(
+						sessaoCliente, idPiloto, agresividade))
 				.build();
 	}
 }
