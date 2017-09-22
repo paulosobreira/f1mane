@@ -12,6 +12,8 @@ import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.nnpe.Html;
 import br.nnpe.Util;
@@ -21,6 +23,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 /**
  * @author Paulo Sobreira Criado em 06/05/2007 as 11:09:15
  */
+@JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Carro implements Serializable {
 	private static final long serialVersionUID = -181518724082829223L;
@@ -64,11 +67,10 @@ public class Carro implements Serializable {
 	private String tipoPneu;
 	private boolean paneSeca;
 	private boolean recolhido;
+	private int giro = GIRO_NOR_VAL;
 
 	@JsonIgnore
 	private int pneus;
-	@JsonIgnore
-	private int giro = GIRO_NOR_VAL;
 	@JsonIgnore
 	private int combustivel;
 	@JsonIgnore
@@ -1095,6 +1097,7 @@ public class Carro implements Serializable {
 
 	}
 
+	@JsonIgnore
 	public String getGiroFormatado() {
 		switch (giro) {
 			case 1 :

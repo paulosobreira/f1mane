@@ -38,6 +38,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -47,6 +48,8 @@ public class LetsRace {
 
 	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
 			.getCarregadorRecursos();
+	private ControlePaddockServidor controlePaddock = PaddockServer
+			.getControlePaddock();
 
 	@GET
 	@Compress
@@ -54,10 +57,7 @@ public class LetsRace {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response circuito(@QueryParam("nomeJogo") String nomeJogo) {
 		Logger.logar("String nomeJogo " + nomeJogo);
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
 		Object circuito = controlePaddock.obterCircuito(nomeJogo);
-
 		if (circuito == null) {
 			return Response.status(400)
 					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
@@ -81,31 +81,22 @@ public class LetsRace {
 
 	@GET
 	@Compress
-	@Path("/dadosParciais")
+	@Path("/dadosParciais/{nomeJogo}/{idPiloto}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response dadosParciais(@QueryParam("nomeJogo") String nomeJogo) {
-
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
-		Object dParciais = controlePaddock.obterDadosParciaisPilotos(
-				new String[]{nomeJogo, "Mane1", "1"});
-
-		if (dParciais == null) {
-			return Response.status(400)
-					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
-					.type(MediaType.APPLICATION_JSON).build();
+	public Response dadosParciais(@HeaderParam("token") String token,
+			@PathParam("nomeJogo") String nomeJogo,
+			@PathParam("idPiloto") String idPiloto) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
 		}
-		if (dParciais instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) dParciais;
-			return Response.status(400)
-					.entity(Html.escapeHtml(msgSrv.getMessageString()))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		if (dParciais instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) dParciais;
-			return Response.status(500)
-					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
-					.type(MediaType.APPLICATION_JSON).build();
+		Object dParciais = controlePaddock
+				.obterDadosParciaisPilotos(new String[]{nomeJogo,
+						sessaoCliente.getNomeJogador(), idPiloto});
+		Response erro = processsaMensagem(dParciais);
+		if (erro != null) {
+			return erro;
 		}
 		DadosParciais dadosParciais = new DadosParciais();
 		dadosParciais.decode((String) dParciais);
@@ -119,8 +110,6 @@ public class LetsRace {
 	public Response dadosJogo(@QueryParam("nomeJogo") String nomeJogo) {
 		SessaoCliente sessaoCliente = new SessaoCliente();
 		sessaoCliente.setNomeJogador("Sobreira");
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setNomeJogo(nomeJogo);
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
@@ -149,8 +138,6 @@ public class LetsRace {
 	@Path("/obterJogos")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response obterJogos() {
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
 		return Response.status(200).entity(controlePaddock.obterJogos())
 				.build();
 	}
@@ -159,8 +146,6 @@ public class LetsRace {
 	@Path("/atualizarDadosVisao")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response atualizarDadosVisao() {
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
 		return Response.status(200)
 				.entity(controlePaddock.atualizarDadosVisao()).build();
 	}
@@ -169,8 +154,6 @@ public class LetsRace {
 	@Path("/criarSessaoVisitante")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response criarSessaoVisitante() {
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
 		return Response.status(200)
 				.entity(controlePaddock.criarSessaoVisitante()).build();
 	}
@@ -183,11 +166,12 @@ public class LetsRace {
 			@PathParam("temporada") String temporada,
 			@PathParam("idPiloto") String idPiloto,
 			@PathParam("circuito") String circuito) {
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
-		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		SessaoCliente sessaoCliente = controlePaddock
 				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada, circuito,
 				idPiloto);
@@ -204,11 +188,6 @@ public class LetsRace {
 		 */
 		if (statusJogo == null) {
 			statusJogo = controlePaddock.criarJogo(clientPaddockPack);
-			if (statusJogo == null) {
-				return Response.status(400)
-						.entity(Html.escapeHtml("Jogo não pode ser criado."))
-						.type(MediaType.APPLICATION_JSON).build();
-			}
 			Response erro = processsaMensagem(statusJogo);
 			if (erro != null) {
 				return erro;
@@ -246,12 +225,6 @@ public class LetsRace {
 		 */
 		if (statusJogo != null) {
 			statusJogo = controlePaddock.entrarJogo(clientPaddockPack);
-			if (statusJogo == null) {
-				return Response.status(400)
-						.entity(Html
-								.escapeHtml("Não foi possivel entrar no jogo."))
-						.type(MediaType.APPLICATION_JSON).build();
-			}
 			Response erro = processsaMensagem(statusJogo);
 			if (erro != null) {
 				return erro;
@@ -270,16 +243,20 @@ public class LetsRace {
 		return Response.status(200).entity(statusJogo).build();
 	}
 
-	private Response processsaMensagem(Object criarJogo) {
-		if (criarJogo instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) criarJogo;
+	private Response processsaMensagem(Object objeto) {
+		if (objeto == null) {
+			return Response.status(400).entity(Html.escapeHtml("Objeto Nulo."))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (objeto instanceof MsgSrv) {
+			MsgSrv msgSrv = (MsgSrv) objeto;
 			return Response.status(400)
 					.entity(Html.escapeHtml(
 							Lang.decodeTextoKey(msgSrv.getMessageString())))
 					.type(MediaType.TEXT_HTML).build();
 		}
-		if (criarJogo instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) criarJogo;
+		if (objeto instanceof ErroServ) {
+			ErroServ erroServ = (ErroServ) objeto;
 			return Response.status(500)
 					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
 					.type(MediaType.APPLICATION_JSON).build();
@@ -354,8 +331,6 @@ public class LetsRace {
 	@Produces("image/png")
 	public Response carroCima(@QueryParam("nomeJogo") String nomeJogo,
 			@QueryParam("idPiloto") String idPiloto) throws IOException {
-		ControlePaddockServidor controlePaddock = PaddockServer
-				.getControlePaddock();
 		BufferedImage carroCima = controlePaddock.obterCarroCima(nomeJogo,
 				idPiloto);
 		if (carroCima == null) {
@@ -533,4 +508,49 @@ public class LetsRace {
 				.entity(carregadorRecursos.carregarTemporadas()).build();
 	}
 
+	/**
+	 * potencia : GIRO_MIN , GIRO_NOR , GIRO_MAX
+	 */
+	@GET
+	@Compress
+	@Path("/potenciaMotor/{potencia}/{idPiloto}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response potenciaMotor(@HeaderParam("token") String token,
+			@PathParam("potencia") String potencia,
+			@PathParam("idPiloto") String idPiloto) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		ControleJogosServer controleJogosServer = controlePaddock
+				.getControleJogosServer();;
+		return Response
+				.status(200).entity(controleJogosServer
+						.mudarGiroMotor(sessaoCliente, idPiloto, potencia))
+				.build();
+	}
+
+	/**
+	 * agresividade : LENTO , NORMAL , AGRESSIVO
+	 */
+	@GET
+	@Compress
+	@Path("/agressividadePiloto/{agresividade}/{idPiloto}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response agressividadePiloto(@HeaderParam("token") String token,
+			@PathParam("agresividade") String agresividade,
+			@PathParam("idPiloto") String idPiloto) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		ControleJogosServer controleJogosServer = controlePaddock
+				.getControleJogosServer();;
+		return Response
+				.status(200).entity(controleJogosServer
+						.mudarGiroMotor(sessaoCliente, idPiloto, agresividade))
+				.build();
+	}
 }

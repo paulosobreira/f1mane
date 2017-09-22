@@ -1,0 +1,151 @@
+/**
+ * Controle comandos no jogo
+ */
+var controles = [];
+var largura, altura;
+maneCanvas.addEventListener('click', function(event) {
+	var x = event.pageX;
+	var y = event.pageY;
+
+	// Collision detection between clicked offset and element.
+	controles.forEach(function(controle) {
+		if (y > controle.y && y < controle.y + controle.height
+				&& x > controle.x && x < controle.x + controle.width) {
+			if (controle.tipo == 'controleMotor') {
+				rest_potenciaMotor(controle.valor);
+			}
+			if (controle.tipo == 'controlePiloto') {
+				rest_agressividadePiloto(controle.valor);
+			}
+		}
+	});
+}, false);
+
+function ctl_desenhaControles() {
+	if (dadosParciais == null) {
+		return;
+	}
+	var evalX = false;
+	var evalY = false;
+	if (largura != maneCanvas.width) {
+		evalX = true;
+	}
+	if (altura != maneCanvas.height) {
+		evalY = true;
+	}
+	largura = maneCanvas.width;
+	altura = maneCanvas.height;
+	// Render elements.
+	controles.forEach(function(controle) {
+		if (evalY && controle.evalY) {
+			controle.y = eval(controle.evalY);
+		}
+		if (evalX && controle.evalX) {
+			controle.x = eval(controle.evalX);
+		}
+		maneContext.beginPath();
+
+		if (controle.tipo == 'controleMotor') {
+			if (dadosParciais.giro == 1) {
+				maneContext.strokeStyle = '#00FF00';
+			} else if (dadosParciais.giro == 5) {
+				maneContext.strokeStyle = '#FFFF00';
+			} else if (dadosParciais.giro == 9) {
+				maneContext.strokeStyle = '#FF0000';
+			} else {
+				maneContext.strokeStyle = controle.cor;
+			}
+		}
+		if (controle.tipo == 'controlePiloto') {
+			if (dadosParciais.modoPilotar == 'LENTO') {
+				maneContext.strokeStyle = '#00FF00';
+			} else if (dadosParciais.modoPilotar == 'NORMAL') {
+				maneContext.strokeStyle = '#FFFF00';
+			} else if (dadosParciais.modoPilotar == 'AGRESSIVO') {
+				maneContext.strokeStyle = '#FF0000';
+			} else {
+				maneContext.strokeStyle = controle.cor;
+			}
+		}
+
+		maneContext.rect(controle.x, controle.y, controle.width,
+				controle.height);
+		maneContext.font = '30px sans-serif';
+		maneContext.fillText(controle.exibir, controle.x + (controle.width / 2)
+				- 10, controle.y + (controle.height / 2) + 10);
+		maneContext.closePath();
+		maneContext.stroke();
+	});
+}
+
+// Add element.
+controles.push({
+	cor : '#BABACA',
+	valor : 'GIRO_MIN',
+	exibir : '1',
+	tipo : 'controleMotor',
+	width : 40,
+	height : 40,
+	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	x : 10
+});
+controles.push({
+	cor : '#BABACA',
+	valor : 'GIRO_NOR',
+	exibir : '2',
+	tipo : 'controleMotor',
+	width : 40,
+	height : 40,
+	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	x : 60
+});
+controles.push({
+	cor : '#BABACA',
+	valor : 'GIRO_MAX',
+	exibir : '3',
+	tipo : 'controleMotor',
+	width : 40,
+	height : 40,
+	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	x : 110
+});
+
+controles.push({
+	cor : '#BABACA',
+	valor : 'AGRESSIVO',
+	exibir : '3',
+	tipo : 'controlePiloto',
+	width : 40,
+	height : 40,
+	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	evalX : 'window.innerWidth - 150;',
+	x : 0
+});
+controles.push({
+	cor : '#BABACA',
+	valor : 'NORMAL',
+	exibir : '2',
+	tipo : 'controlePiloto',
+	width : 40,
+	height : 40,
+	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	evalX : 'window.innerWidth - 100;',
+	x : 0
+});
+controles.push({
+	cor : '#BABACA',
+	valor : 'LENTO',
+	exibir : '1',
+	tipo : 'controlePiloto',
+	width : 40,
+	height : 40,
+	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
+	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	evalX : 'window.innerWidth - 50;',
+	x : 0
+});

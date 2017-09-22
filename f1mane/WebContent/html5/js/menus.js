@@ -1,3 +1,7 @@
+/**
+ * Controle de menus
+ */
+
 var idPilotoSelecionado;
 var temporadaSelecionada;
 var circuitoSelecionado;
@@ -49,7 +53,7 @@ function criarJogo() {
 			localStorage.setItem("nomeJogo", dadosJogo.nomeJogo);
 			localStorage.setItem("token", sessaoVisitante.sessaoCliente.token);
 			localStorage.setItem("idPilotoSelecionado", idPilotoSelecionado);
-			window.location.href = "f1mane.html";
+			window.location.href = "corrida.html";
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			console.log('criarJogo() ' + xhRequest.status + '  '

@@ -532,12 +532,14 @@ public class ControlePaddockServidor {
 					sessaoCliente
 							.setJogoAtual(jogoServidor.getNomeJogoServidor());
 					sessaoCliente.setPilotoAtual(participarJogo.getPiloto());
+					sessaoCliente.setIdPilotoAtual(participarJogo.getIdPiloto());
 					achouJogo = true;
 				}
 			}
 			if (!achouJogo) {
 				sessaoCliente.setJogoAtual(null);
 				sessaoCliente.setPilotoAtual(null);
+				sessaoCliente.setIdPilotoAtual(null);
 			}
 		}
 	}

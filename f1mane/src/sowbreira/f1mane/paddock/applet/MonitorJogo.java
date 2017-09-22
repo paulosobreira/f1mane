@@ -587,12 +587,12 @@ public class MonitorJogo implements Runnable {
 				piloto.setStress(dadosParciais.stress);
 				piloto.setPodeUsarDRS(dadosParciais.podeUsarDRS);
 				piloto.setRecebeuBanderada(dadosParciais.recebeuBanderada);
-				piloto.getCarro().setCargaErs(dadosParciais.cargaKers);
+				piloto.getCarro().setCargaErs(dadosParciais.cargaErs);
 				piloto.setAlertaMotor(dadosParciais.alertaMotor);
 				piloto.setAlertaAerefolio(dadosParciais.alertaAerefolio);
-				if (piloto.getCargaKersOnline() != dadosParciais.cargaKers) {
+				if (piloto.getCargaKersOnline() != dadosParciais.cargaErs) {
 					piloto.setAtivarErs(true);
-					piloto.setCargaKersOnline(dadosParciais.cargaKers);
+					piloto.setCargaKersOnline(dadosParciais.cargaErs);
 				} else {
 					piloto.setAtivarErs(false);
 				}
@@ -604,8 +604,8 @@ public class MonitorJogo implements Runnable {
 						.setPorcentagemCombustivel(dadosParciais.pCombust);
 				piloto.getCarro().setAsa(dadosParciais.asaBox);
 				piloto.getCarro().setTipoPneu(dadosParciais.tpPneus);
-				if (piloto.getCarroPilotoFrente() != null) {
-					piloto.getCarroPilotoFrente()
+				if (piloto.getCarroPilotoDaFrente() != null) {
+					piloto.getCarroPilotoDaFrente()
 							.setTipoPneu(dadosParciais.tpPneusFrente);
 				}
 				if (piloto.getCarroPilotoAtras() != null) {

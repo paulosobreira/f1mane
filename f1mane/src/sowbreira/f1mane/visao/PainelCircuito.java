@@ -2570,7 +2570,7 @@ public class PainelCircuito {
 		g2d.fillRoundRect(limitesViewPort.x + 175,
 				limitesViewPort.y + y + (50 - cargaKers), 20, cargaKers, 0, 0);
 
-		if (pilotoSelecionado.getCargaKersVisual() != pilotoSelecionado
+		if (pilotoSelecionado.getCargaErsVisual() != pilotoSelecionado
 				.getCarro().getCargaErs()) {
 			acionaDesenhaKers = 35;
 		} else {
@@ -3549,8 +3549,8 @@ public class PainelCircuito {
 			if (pilotoSelecionado.equals(piloto)) {
 				desenha = true;
 			}
-			if (pilotoSelecionado.getCarroPilotoFrente() != null
-					&& piloto.equals(pilotoSelecionado.getCarroPilotoFrente()
+			if (pilotoSelecionado.getCarroPilotoDaFrente() != null
+					&& piloto.equals(pilotoSelecionado.getCarroPilotoDaFrente()
 							.getPiloto())) {
 				desenha = true;
 			}
@@ -5037,7 +5037,7 @@ public class PainelCircuito {
 		int carSelY = limitesViewPort.y + limitesViewPort.height - 75;
 		int bounce = 0;
 		int newY = 0;
-		Carro carroFrente = psel.getCarroPilotoFrente();
+		Carro carroFrente = psel.getCarroPilotoDaFrente();
 		if (carroFrente != null) {
 			carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
 			carSelX += (carroimg.getWidth() + 10) / 2;

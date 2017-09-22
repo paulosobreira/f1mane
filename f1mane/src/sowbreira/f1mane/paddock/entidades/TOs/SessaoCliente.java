@@ -2,10 +2,15 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * @author paulo.sobreira
- * 
  */
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SessaoCliente implements Serializable {
 
 	private static final long serialVersionUID = -1814045404166555104L;
@@ -19,6 +24,8 @@ public class SessaoCliente implements Serializable {
 	private String jogoAtual;
 
 	private String pilotoAtual;
+
+	private Integer idPilotoAtual;
 
 	private boolean guest;
 
@@ -77,6 +84,14 @@ public class SessaoCliente implements Serializable {
 
 	public void setGuest(boolean guest) {
 		this.guest = guest;
+	}
+
+	public Integer getIdPilotoAtual() {
+		return idPilotoAtual;
+	}
+
+	public void setIdPilotoAtual(Integer idPilotoAtual) {
+		this.idPilotoAtual = idPilotoAtual;
 	}
 
 }

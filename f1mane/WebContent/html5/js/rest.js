@@ -1,11 +1,11 @@
 function rest_dadosJogo(nomeJogo) {
-	if(nomeJogo ==null){
+	if (nomeJogo == null) {
 		console.log('rest_dadosJogo nomeJogo==null');
 		return;
 	}
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/dadosJogo?nomeJogo="+nomeJogo,
+		url : "/f1mane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
@@ -18,19 +18,19 @@ function rest_dadosJogo(nomeJogo) {
 }
 
 function rest_ciruito() {
-	if(dadosJogo ==null || dadosJogo.nomeJogo == null){
+	if (dadosJogo == null || dadosJogo.nomeJogo == null) {
 		console.log('dadosJogo ==null || dadosJogo.nomeJogo == null');
 		return;
 	}
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/circuito?nomeJogo="+dadosJogo.nomeJogo,
+		url : "/f1mane/rest/letsRace/circuito?nomeJogo=" + dadosJogo.nomeJogo,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
 			circuito = response;
 			mapaIdNos = new Map();
-			var id = 1; 
+			var id = 1;
 			for (i = 0; i < circuito.pistaFull.length; i++) {
 				mapaIdNos.set(id++, circuito.pistaFull[i]);
 			}
@@ -44,15 +44,18 @@ function rest_ciruito() {
 	});
 }
 
-
 function rest_dadosParciais() {
-	if(dadosJogo ==null || dadosJogo.nomeJogo == null){
+	if (dadosJogo == null || dadosJogo.nomeJogo == null) {
 		console.log('dadosJogo ==null || dadosJogo.nomeJogo == null');
 		return;
 	}
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/dadosParciais?nomeJogo="+dadosJogo.nomeJogo,
+		url : "/f1mane/rest/letsRace/dadosParciais/" + dadosJogo.nomeJogo + "/"
+				+ idPilotoSelecionado,
+		headers : {
+			'token' : token
+		},
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
@@ -60,6 +63,48 @@ function rest_dadosParciais() {
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			console.log(xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
+function rest_potenciaMotor(valor) {
+	$.ajax({
+		type : "GET",
+		url : "/f1mane/rest/letsRace/potenciaMotor/" + valor + "/"
+				+ idPilotoSelecionado,
+		headers : {
+			'token' : token
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(retorno) {
+			console.log('rest_potenciaMotor valor: ' + valor + ' retorno :'
+					+ retorno);
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log('rest_potenciaMotor() ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
+		}
+	});
+
+}
+function rest_agressividadePiloto(valor) {
+	$.ajax({
+		type : "GET",
+		url : "/f1mane/rest/letsRace/agressividadePiloto/" + valor + "/"
+				+ idPilotoSelecionado,
+		headers : {
+			'token' : token
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(retorno) {
+			console.log('rest_agressividadePiloto valor: ' + valor
+					+ ' retorno :' + retorno);
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log('rest_agressividadePiloto ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
 		}
 	});
 }

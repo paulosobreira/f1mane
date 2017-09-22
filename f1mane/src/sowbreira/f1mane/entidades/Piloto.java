@@ -19,6 +19,8 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
@@ -32,6 +34,7 @@ import sowbreira.f1mane.visao.PainelCircuito;
 /**
  * @author Paulo Sobreira
  */
+@JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Piloto implements Serializable, PilotoSuave {
 	private static final long serialVersionUID = 698992658460848522L;
@@ -40,55 +43,99 @@ public class Piloto implements Serializable, PilotoSuave {
 	public static final String LENTO = "LENTO";
 	public static final int MEIAENVERGADURA = 20;
 
-	private int setaCima;
-	private int setaBaixo;
 	private int id;
-	private double ganho;
-	protected String tipoPneuJogador;
-	protected String asaJogador;
-	protected Integer combustJogador;
-	private int velocidadeExibir;
 	private String nome;
 	private String nomeCarro;
 	private String nomeJogador;
-	private int carX;
-	private int carY;
-	private long ptosPista;
-	private int tracado;
-	private int indiceTracado;
-	private boolean autoPos = true;
-	private Double angulo;
 	private int posicao;
-	private int qtdeParadasBox;
 	private boolean desqualificado;
 	private boolean jogadorHumano;
-	private boolean box;
-	private boolean agressivo = true;
-	private Carro carro = new Carro();
-	private No noAtual = new No();
-	private No noAtualSuave;
 	private int numeroVolta;
-	private int stress;
-	private String modoPilotagem = NORMAL;
-	private Volta voltaAtual;
-	private Volta ultimaVolta;
-	private Volta melhorVolta;
-	private String segundosParaLider;
-	private String tipoPneuBox;
-	private String asaBox;
-	private String vantagem;
-	private int qtdeCombustBox;
-	private boolean ativarErs;
-	private int cargaErsVisual;
-	private int cargaKersOnline;
-	private boolean ativarDRS;
-	private boolean alertaMotor;
-	private boolean alertaAerefolio;
-	private boolean podeUsarDRS;
-	private String calculaSegundosParaProximo;
-	private String calculaSegundosParaAnterior;
-	private List<String> ultimas5Voltas = new ArrayList<String>();
 
+	@JsonIgnore
+	private int carX;
+	@JsonIgnore
+	private int carY;
+	@JsonIgnore
+	private double ganho;
+	@JsonIgnore
+	private int velocidadeExibir;
+	@JsonIgnore
+	private boolean autoPos = true;
+	@JsonIgnore
+	private long ptosPista;
+	@JsonIgnore
+	private int tracado;
+	@JsonIgnore
+	private int qtdeParadasBox;
+	@JsonIgnore
+	private boolean box;
+	@JsonIgnore
+	private boolean agressivo = true;
+	@JsonIgnore
+	private Carro carro = new Carro();
+	@JsonIgnore
+	private No noAtual = new No();
+	@JsonIgnore
+	private int stress;
+	@JsonIgnore
+	private String modoPilotagem = NORMAL;
+	@JsonIgnore
+	private Volta voltaAtual;
+	@JsonIgnore
+	private Volta ultimaVolta;
+	@JsonIgnore
+	private Volta melhorVolta;
+	@JsonIgnore
+	private String segundosParaLider;
+	@JsonIgnore
+	private String tipoPneuBox;
+	@JsonIgnore
+	private String asaBox;
+	@JsonIgnore
+	private String vantagem;
+	@JsonIgnore
+	private int qtdeCombustBox;
+	@JsonIgnore
+	private boolean ativarErs;
+	@JsonIgnore
+	private boolean ativarDRS;
+	@JsonIgnore
+	private boolean alertaMotor;
+	@JsonIgnore
+	private boolean alertaAerefolio;
+	@JsonIgnore
+	private boolean podeUsarDRS;
+	@JsonIgnore
+	private String calculaSegundosParaProximo;
+	@JsonIgnore
+	private int cargaErsVisual;
+	@JsonIgnore
+	private int cargaKersOnline;
+	@JsonIgnore
+	private List<String> ultimas5Voltas = new ArrayList<String>();
+	@JsonIgnore
+	private String calculaSegundosParaAnterior;
+	@JsonIgnore
+	private Carro carroPilotoAtras;
+	@JsonIgnore
+	private Carro carroPilotoDaFrente;
+	@JsonIgnore
+	private No noAtualSuave;
+	@JsonIgnore
+	private int setaCima;
+	@JsonIgnore
+	private int setaBaixo;
+	@JsonIgnore
+	protected String tipoPneuJogador;
+	@JsonIgnore
+	protected String asaJogador;
+	@JsonIgnore
+	protected Integer combustJogador;
+	@JsonIgnore
+	private int indiceTracado;
+	@JsonIgnore
+	private Double angulo;
 	@JsonIgnore
 	private int ganhoTotalReta;
 	@JsonIgnore
@@ -252,11 +299,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private Rectangle trazeiraColisao;
 	@JsonIgnore
-	private Carro carroPilotoAtras;
-	@JsonIgnore
 	private Carro carroPilotoDaFrenteRetardatario;
-	@JsonIgnore
-	private Carro carroPilotoDaFrente;
 	@JsonIgnore
 	private Piloto colisao;
 
@@ -357,8 +400,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	public void setCargaKersOnline(int cargaKersOnline) {
 		this.cargaKersOnline = cargaKersOnline;
 	}
-
-	public int getCargaKersVisual() {
+	
+	public int getCargaErsVisual() {
 		return cargaErsVisual;
 	}
 
@@ -1961,6 +2004,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		return true;
 	}
 
+	@JsonIgnore
 	public Point getPontoDerrapada() {
 		return pontoEscape;
 	}
@@ -3148,7 +3192,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			return 0;
 		}
 	}
-
+	@JsonIgnore
 	public double getDistanciaDerrapada() {
 		return distanciaEscape;
 	}
@@ -3169,7 +3213,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		return podeUsarDRS;
 	}
 
-	public Carro getCarroPilotoFrente() {
+	public Carro getCarroPilotoDaFrente() {
 		return carroPilotoDaFrente;
 	}
 
@@ -3177,6 +3221,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		return carroPilotoAtras;
 	}
 
+	@JsonIgnore
 	public int getDiferencaParaProximo() {
 		return calculaDiferencaParaProximo;
 	}

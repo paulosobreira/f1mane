@@ -426,6 +426,61 @@ public class ControleJogosServer {
 		return null;
 	}
 
+	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
+			String giro) {
+		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		if (piloto == null) {
+			return null;
+		}
+		piloto.setAtivarDRS(true);
+		int giroAntes = piloto.getCarro().getGiro();
+		piloto.getCarro().mudarGiroMotor(giro);
+		return giroAntes != piloto.getCarro().getGiro();
+	}
+
+	public Boolean mudarAgressividadePiloto(SessaoCliente sessaoCliente,
+			String idPiloto, String agressividade) {
+		if (!Piloto.LENTO.equals(agressividade)
+				&& !Piloto.AGRESSIVO.equals(agressividade)
+				&& !Piloto.NORMAL.equals(agressividade)) {
+			return false;
+		}
+
+		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		if (piloto == null) {
+			return null;
+		}
+		piloto.setAtivarDRS(true);
+		piloto.setModoPilotagem(agressividade);
+		return agressividade.equals(piloto.getModoPilotagem());
+	}
+
+	public Piloto acharPilotoPorId(SessaoCliente sessaoCliente,
+			String idPiloto) {
+		Piloto acharPiloto = null;
+		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
+				.iterator(); iterator.hasNext();) {
+			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
+			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
+					.getMapJogadoresOnline();
+			if (!String
+					.valueOf(mapJogadoresOnline
+							.get(sessaoCliente.getNomeJogador()).getIdPiloto())
+					.equals(idPiloto)) {
+				return null;
+			}
+			List piList = jogoServidor.getPilotos();
+			for (Iterator iter = piList.iterator(); iter.hasNext();) {
+				Piloto piloto = (Piloto) iter.next();
+				if (String.valueOf(piloto.getId()).equals(idPiloto)) {
+					acharPiloto = piloto;
+					break;
+				}
+			}
+		}
+		return acharPiloto;
+	}
+
 	public Object mudarModoBox(ClientPaddockPack clientPaddockPack) {
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
@@ -558,7 +613,7 @@ public class ControleJogosServer {
 			dadosParciais.podeUsarDRS = piloto.isPodeUsarDRS();
 			dadosParciais.recebeuBanderada = piloto.isRecebeuBanderada();
 			dadosParciais.stress = piloto.getStress();
-			dadosParciais.cargaKers = piloto.getCarro().getCargaErs();
+			dadosParciais.cargaErs = piloto.getCarro().getCargaErs();
 			dadosParciais.alertaMotor = piloto.isAlertaMotor();
 			dadosParciais.alertaAerefolio = piloto.isAlertaAerefolio();
 			dadosParciais.pCombust = piloto.getCarro()
@@ -567,8 +622,8 @@ public class ControleJogosServer {
 					.getPorcentagemDesgastePneus();
 			dadosParciais.pMotor = piloto.getCarro()
 					.getPorcentagemDesgasteMotor();
-			if (piloto.getCarroPilotoFrente() != null) {
-				dadosParciais.tpPneusFrente = piloto.getCarroPilotoFrente()
+			if (piloto.getCarroPilotoDaFrente() != null) {
+				dadosParciais.tpPneusFrente = piloto.getCarroPilotoDaFrente()
 						.getTipoPneu();
 			}
 			if (piloto.getCarroPilotoAtras() != null) {

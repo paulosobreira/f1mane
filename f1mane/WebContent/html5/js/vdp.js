@@ -1,3 +1,6 @@
+/**
+ * Controle video e desenho
+ */
 var carrosImgMap;
 var mapaIdNos;
 var cvRotate = document.createElement('canvas');
@@ -16,11 +19,16 @@ function vdp_desenha() {
 	vdp_desenhaBackGround();
 	vdp_desenhaObjs();
 	vdp_desenhaCarrosCima();
+	ctl_desenhaControles();
 	// if (fps != null) {
 	// maneContext.fillText("FPS: " + fps.frameRate(), 4, 30);
 	// }
 	if (circuito != null && circuito.backGround != null) {
+		maneContext.beginPath();
+		maneContext.font = '14px sans-serif';
 		maneContext.fillText("Circuito: " + circuito.backGround, 4, 60);
+		maneContext.closePath();
+		maneContext.stroke();
 	}
 }
 

@@ -1,3 +1,6 @@
+/**
+ * Controle central de jogo
+ */
 var circuito;
 var dadosJogo;
 var dadosParciais;
@@ -24,6 +27,7 @@ function cpu_main() {
 	if (nomeJogo == null) {
 		nomeJogo = localStorage.getItem("nomeJogo");
 		idPilotoSelecionado = localStorage.getItem("idPilotoSelecionado");
+		token = localStorage.getItem("token");
 		if (nomeJogo == null) {
 			console.log('nomeJogo==null');
 			return;
