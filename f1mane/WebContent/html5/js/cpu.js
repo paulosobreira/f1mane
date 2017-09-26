@@ -5,7 +5,7 @@ var circuito;
 var dadosJogo;
 var dadosParciais;
 var ativo = true;
-var delay = 1000;
+var delay = 100;
 var pilotosMap = new Map();
 var token;
 var idPilotoSelecionado;
@@ -62,7 +62,7 @@ function cpu_main() {
 		vdp_desenha();
 	} else {
 		console.log('cpu_main inativo');
-		delay = 1000;
+		delay = 100;
 	}
 }
 
