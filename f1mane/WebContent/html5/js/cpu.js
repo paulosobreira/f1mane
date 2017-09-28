@@ -19,10 +19,6 @@ var nomeJogo;
 // start the loop
 // fps.start();
 
-maneCanvas.addEventListener('click', function(event) {
-	// ativo = !ativo;
-});
-
 function cpu_main() {
 	if (nomeJogo == null) {
 		nomeJogo = localStorage.getItem("nomeJogo");

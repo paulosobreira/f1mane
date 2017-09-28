@@ -553,4 +553,62 @@ public class LetsRace {
 						sessaoCliente, idPiloto, agresividade))
 				.build();
 	}
+
+	@GET
+	@Compress
+	@Path("/tracadoPiloto/{tracado}/{idPiloto}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response tracadoPiloto(@HeaderParam("token") String token,
+			@PathParam("tracado") String tracado,
+			@PathParam("idPiloto") String idPiloto) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		ControleJogosServer controleJogosServer = controlePaddock
+				.getControleJogosServer();;
+		return Response
+				.status(200).entity(controleJogosServer
+						.mudarTracadoPiloto(sessaoCliente, idPiloto, tracado))
+				.build();
+	}
+
+	@GET
+	@Compress
+	@Path("/drsPiloto/{idPiloto}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response drsPiloto(@HeaderParam("token") String token,
+			@PathParam("idPiloto") String idPiloto) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		ControleJogosServer controleJogosServer = controlePaddock
+				.getControleJogosServer();;
+		return Response
+				.status(200).entity(controleJogosServer
+						.mudarDrs(sessaoCliente, idPiloto))
+				.build();
+	}
+
+	@GET
+	@Compress
+	@Path("/ersPiloto/{idPiloto}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response ersPiloto(@HeaderParam("token") String token,
+			@PathParam("idPiloto") String idPiloto) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		ControleJogosServer controleJogosServer = controlePaddock
+				.getControleJogosServer();;
+		return Response
+				.status(200).entity(controleJogosServer
+						.mudarErs(sessaoCliente, idPiloto))
+				.build();
+	}
 }

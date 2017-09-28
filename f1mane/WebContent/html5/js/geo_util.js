@@ -1,4 +1,4 @@
-function bline(startCoordinates, endCoordinates) {
+function gu_bline(startCoordinates, endCoordinates) {
 	if (startCoordinates == null || endCoordinates == null) {
 		return;
 	}
@@ -33,7 +33,7 @@ function bline(startCoordinates, endCoordinates) {
 	return coordinatesArray;
 }
 
-function dist(startCoordinates, endCoordinates) {
+function gu_distancia(startCoordinates, endCoordinates) {
 	if (startCoordinates == null || endCoordinates == null) {
 		return;
 	}
@@ -47,7 +47,7 @@ function dist(startCoordinates, endCoordinates) {
 	return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
 }
 
-function calculaAngulo(startCoordinates, endCoordinates) {
+function gu_calculaAngulo(startCoordinates, endCoordinates) {
 	var dx = endCoordinates.x - startCoordinates.x;
 	var dy = endCoordinates.y - startCoordinates.y;
 	var tan = Math.atan2(dy, dx);

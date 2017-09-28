@@ -39,7 +39,7 @@ function vdp_centralizaPilotoSelecionado() {
 		return;
 	}
 	var piloto = dadosParciais.posisPack.posis[posicaoCentraliza];
-	var ponto = obeterPonto(piloto);
+	var ponto = vdp_obeterPonto(piloto);
 	if (ponto == null) {
 		return;
 	}
@@ -74,7 +74,7 @@ function vdp_carregaBackGround() {
 	// imgBg.src = "../sowbreira/f1mane/recursos/testeBG_mro.jpg";
 }
 
-function obeterPonto(piloto) {
+function vdp_obeterPonto(piloto) {
 	var no = mapaIdNos.get(piloto.idNo);
 	var ponto;
 	if (no.box) {
@@ -117,7 +117,7 @@ function vdp_desenhaCarrosCima() {
 		if (piloto.idPiloto == idPilotoSelecionado) {
 			posicaoCentraliza = i;
 		}
-		var ponto = obeterPonto(piloto);
+		var ponto = vdp_obeterPonto(piloto);
 		if (ponto == null) {
 			continue;
 		}
@@ -127,7 +127,7 @@ function vdp_desenhaCarrosCima() {
 					&& (piloto.idNo + 5) < circuito.pistaFull.length) {
 				var frenteCar = circuito.pistaFull[piloto.idNo - 5];
 				var trazCar = circuito.pistaFull[piloto.idNo + 5];
-				angulo = calculaAngulo(frenteCar, trazCar, 0);
+				angulo = gu_calculaAngulo(frenteCar, trazCar, 0);
 				maneContext.fillText(pilotosMap.get(piloto.idPiloto).nome,
 						ponto.x - ptBg.x, ponto.y - ptBg.y);
 			}

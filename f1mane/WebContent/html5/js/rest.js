@@ -108,3 +108,24 @@ function rest_agressividadePiloto(valor) {
 		}
 	});
 }
+
+function rest_tracadoPiloto(valor) {
+	$.ajax({
+		type : "GET",
+		url : "/f1mane/rest/letsRace/tracadoPiloto/" + valor + "/"
+				+ idPilotoSelecionado,
+		headers : {
+			'token' : token
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(retorno) {
+			console.log('rest_tracadoPiloto valor: ' + valor
+					+ ' retorno :' + retorno);
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log('rest_tracadoPiloto ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
+		}
+	});
+}

@@ -448,7 +448,7 @@ public class ControleJogosServer {
 
 		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
-			return null;
+			return false;
 		}
 		piloto.setAtivarDRS(true);
 		piloto.setModoPilotagem(agressividade);
@@ -479,6 +479,32 @@ public class ControleJogosServer {
 			}
 		}
 		return acharPiloto;
+	}
+
+	public InterfaceJogo acharJogoPorPilotoPorId(SessaoCliente sessaoCliente,
+			String idPiloto) {
+		InterfaceJogo acharJogo = null;
+		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
+				.iterator(); iterator.hasNext();) {
+			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
+			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
+					.getMapJogadoresOnline();
+			if (!String
+					.valueOf(mapJogadoresOnline
+							.get(sessaoCliente.getNomeJogador()).getIdPiloto())
+					.equals(idPiloto)) {
+				return null;
+			}
+			List piList = jogoServidor.getPilotos();
+			for (Iterator iter = piList.iterator(); iter.hasNext();) {
+				Piloto piloto = (Piloto) iter.next();
+				if (String.valueOf(piloto.getId()).equals(idPiloto)) {
+					acharJogo = jogoServidor;
+					break;
+				}
+			}
+		}
+		return acharJogo;
 	}
 
 	public Object mudarModoBox(ClientPaddockPack clientPaddockPack) {
@@ -718,6 +744,22 @@ public class ControleJogosServer {
 		return null;
 	}
 
+	public Object mudarTracadoPiloto(SessaoCliente sessaoCliente,
+			String idPiloto, String tracado) {
+		if (!"0".equals(tracado) && !"1".equals(tracado)
+				&& !"2".equals(tracado)) {
+			return false;
+		}
+
+		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		if (piloto == null) {
+			return false;
+		}
+		piloto.setAtivarDRS(true);
+		return piloto.mudarTracado(Integer.parseInt(tracado),
+				acharJogoPorPilotoPorId(sessaoCliente, idPiloto));
+	}
+
 	private Piloto acharPiloto(ClientPaddockPack clientPaddockPack,
 			JogoServidor jogoServidor) {
 		Piloto acharPiloto = acharPilotoLista(clientPaddockPack, jogoServidor);
@@ -922,4 +964,23 @@ public class ControleJogosServer {
 		dadosParticiparJogo.setAsa(clientPaddockPack.getAsaBox());
 		return null;
 	}
+
+	public Object mudarDrs(SessaoCliente sessaoCliente, String idPiloto) {
+		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		if (piloto == null) {
+			return false;
+		}
+		piloto.setAtivarDRS(true);
+		return piloto.isAtivarDRS();
+	}
+
+	public Object mudarErs(SessaoCliente sessaoCliente, String idPiloto) {
+		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		if (piloto == null) {
+			return false;
+		}
+		piloto.setAtivarErs(piloto.isAtivarErs());
+		return piloto.isAtivarErs();
+	}
+
 }

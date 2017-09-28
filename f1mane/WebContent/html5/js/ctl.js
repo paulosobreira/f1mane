@@ -19,6 +19,61 @@ maneCanvas.addEventListener('click', function(event) {
 			}
 		}
 	});
+
+	var piloto = dadosParciais.posisPack.posis[posicaoCentraliza];
+
+	var no = mapaIdNos.get(piloto.idNo);
+	var ponto0;
+	var ponto1;
+	var ponto2;
+	if (no.box) {
+		return;
+	}
+	ponto0 = circuito.pistaFull[piloto.idNo];
+	ponto1 = circuito.pista1Full[piloto.idNo];
+	ponto2 = circuito.pista2Full[piloto.idNo];
+	var pontoCarro0 = {
+		x : ponto0.x - ptBg.x,
+		y : ponto0.y - ptBg.y
+	};
+	var pontoCarro1 = {
+		x : ponto1.x - ptBg.x,
+		y : ponto1.y - ptBg.y
+	};
+
+	var pontoCarro2 = {
+		x : ponto2.x - ptBg.x,
+		y : ponto2.y - ptBg.y
+	};
+	var pontoClick = {
+		x : event.pageX,
+		y : event.pageY
+	};
+	var menor = 100000;
+	var mudar = 0;
+	var dp0 = gu_distancia(pontoCarro0, pontoClick);
+	var dp1 = gu_distancia(pontoCarro1, pontoClick);
+	var dp2 = gu_distancia(pontoCarro2, pontoClick);
+	if (dp0 < menor && piloto.tracado != 0) {
+		menor = dp0;
+	}
+	if (dp1 < menor && piloto.tracado == 0) {
+		menor = dp1;
+		mudar = 1;
+	}
+	if (dp2 < menor && piloto.tracado == 0) {
+		menor = dp2;
+		mudar = 2;
+	}
+	if ((mudar == 2 && piloto.tracado == 1)
+			|| (mudar == 1 && piloto.tracado == 2)) {
+		mudar = 0;
+	}
+	console.log('rest_tracadoPiloto(mudar); ' + mudar)
+	if (menor < 100000) {
+		rest_tracadoPiloto(mudar);
+	}
+
 }, false);
 
 function ctl_desenhaControles() {
