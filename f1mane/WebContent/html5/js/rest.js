@@ -120,11 +120,31 @@ function rest_tracadoPiloto(valor) {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(retorno) {
-			console.log('rest_tracadoPiloto valor: ' + valor
-					+ ' retorno :' + retorno);
+			console.log('rest_tracadoPiloto valor: ' + valor + ' retorno :'
+					+ retorno);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			console.log('rest_tracadoPiloto ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
+		}
+	});
+}
+
+function rest_boxPiloto(ativa, pneu, combustivel, asa) {
+	$.ajax({
+		type : "GET",
+		url : "/f1mane/rest/letsRace/boxPiloto/" + idPilotoSelecionado + "/"
+				+ ativa + "/" + pneu + "/" + combustivel + "/" + asa,
+		headers : {
+			'token' : token
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(retorno) {
+			console.log('rest_boxPiloto retorno:' + retorno);
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log('rest_boxPiloto ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
 	});

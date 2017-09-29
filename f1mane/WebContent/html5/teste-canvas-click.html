@@ -54,71 +54,234 @@
 
 		// Add element.
 		elements.push({
-			cor: '#BABACA',
-			valor: '1',
+			cor : '#BABACA',
+			valor : 'GIRO_MIN',
+			exibir : '1',
+			centralizaTexto : true,
 			tipo : 'controleMotor',
-			width: 50,
-			height: 50,
-			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-			y: window.innerHeight - (window.innerHeight/2-20),
-			x: 10
+			width : 40,
+			height : 40,
+			evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+			y : window.innerHeight - (window.innerHeight / 2 - 40),
+			x : 10
 		});
 		elements.push({
-			cor: '#BABACA',
-			valor: '2',
+			cor : '#BABACA',
+			valor : 'GIRO_NOR',
+			exibir : '2',
 			tipo : 'controleMotor',
-			width: 50,
-			height: 50,
-			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-			y: window.innerHeight - (window.innerHeight/2-20),
-			x: 70
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+			y : window.innerHeight - (window.innerHeight / 2 - 40),
+			x : 60
 		});
 		elements.push({
-			cor: '#BABACA',
-			valor: '3',
+			cor : '#BABACA',
+			valor : 'GIRO_MAX',
+			exibir : '3',
 			tipo : 'controleMotor',
-			width: 50,
-			height: 50,
-			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-			y: window.innerHeight - (window.innerHeight/2-20),
-			x: 130
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+			y : window.innerHeight - (window.innerHeight / 2 - 40),
+			x : 110
 		});
 		
-		
-		
 		elements.push({
-			cor: '#5fba7d',
-			valor: '3',
+			cor : '#BABACA',
+			valor : 'AGRESSIVO',
+			exibir : '3',
 			tipo : 'controlePiloto',
-			width: 50,
-			height: 50,
-			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-			y: window.innerHeight - (window.innerHeight/2-20),
-			evalX : 'window.innerWidth - 180;',
-			x: 0
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+			y : window.innerHeight - (window.innerHeight / 2 - 40),
+			evalX : 'window.innerWidth - 150;',
+			x : 0
 		});
 		elements.push({
-			cor: '#5fba7d',
-			valor: '2',
+			cor : '#BABACA',
+			valor : 'NORMAL',
+			exibir : '2',
+			centralizaTexto : true,
 			tipo : 'controlePiloto',
-			width: 50,
-			height: 50,
-			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-			y: window.innerHeight - (window.innerHeight/2-20),
-			evalX : 'window.innerWidth - 120;',
-			x: 0
+			width : 40,
+			height : 40,
+			evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+			y : window.innerHeight - (window.innerHeight / 2 - 40),
+			evalX : 'window.innerWidth - 100;',
+			x : 0
 		});
 		elements.push({
-			cor: '#5fba7d',
-			valor: '1',
+			cor : '#BABACA',
+			valor : 'LENTO',
+			exibir : '1',
+			centralizaTexto : true,
 			tipo : 'controlePiloto',
-			width: 50,
-			height: 50,
-			evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-			y: window.innerHeight - (window.innerHeight/2-20),
-			evalX : 'window.innerWidth - 60;',
-			x: 0
+			width : 40,
+			height : 40,
+			evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+			y : window.innerHeight - (window.innerHeight / 2 - 40),
+			evalX : 'window.innerWidth - 50;',
+			x : 0
+		});
+		elements.push({
+			cor : '#BABACA',
+			valor : 'E',
+			exibir : 'E',
+			tipo : 'Ers',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			evalY : 'window.innerHeight - (window.innerHeight/2 + 10);',
+			y : window.innerHeight - (window.innerHeight / 2 + 10),
+			x : 10
+		});
+		elements.push({
+			cor : '#BABACA',
+			valor : 'D',
+			exibir : 'D',
+			tipo : 'Drs',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			evalY : 'window.innerHeight - (window.innerHeight/2 + 10);',
+			y : window.innerHeight - (window.innerHeight / 2 + 10),
+			evalX : 'window.innerWidth - 50;',
+			x : 0
+		});
+		//controles box
+		elements.push({
+			cor : '#BABACA',
+			valor : 'BOX',
+			exibir : 'BOX',
+			tipo : 'Box',
+			centralizaTexto : false,
+			width : 80,
+			height : 40,
+			y : 10,
+			evalX : '(window.innerWidth/2 - 40);',
+			x : (window.innerWidth / 2 - 40)
+		});	
+
+		
+		elements.push({
+			cor : '#BABACA',
+			valor : 'TIPO_PNEU_MOLE',
+			exibir : 'M',
+			tipo : 'Pneu',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			y : 60,
+			evalX : '(window.innerWidth/2 - 80);',
+			x : (window.innerWidth / 2 - 80)
+		});
+		elements.push({
+			cor : '#BABACA',
+			valor : 'TIPO_PNEU_DURO',
+			exibir : 'D',
+			tipo : 'Pneu',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			y : 60,
+			evalX : '(window.innerWidth/2 - 20);',
+			x : (window.innerWidth / 2 - 20)
+		});
+		elements.push({
+			cor : '#BABACA',
+			valor : 'TIPO_PNEU_CHUVA',
+			exibir : 'C',
+			tipo : 'Pneu',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			y : 60,
+			evalX : '(window.innerWidth/2 + 40);',
+			x : (window.innerWidth / 2 + 40)
 		});		
+				
+		elements.push({
+			cor : '#BABACA',
+			valor : 'MAIS_ASA',
+			exibir : '1',
+			tipo : 'Asa',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			y : 110,
+			evalX : '(window.innerWidth/2 - 80);',
+			x : (window.innerWidth / 2 - 80)
+		});
+		elements.push({
+			cor : '#BABACA',
+			valor : 'ASA_NORMAL',
+			exibir : '2',
+			tipo : 'Asa',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			y : 110,
+			evalX : '(window.innerWidth/2 - 20);',
+			x : (window.innerWidth / 2 - 20)
+		});
+		elements.push({
+			cor : '#BABACA',
+			valor : 'MAIS_ASA',
+			exibir : '3',
+			tipo : 'Asa',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			y : 110,
+			evalX : '(window.innerWidth/2 + 40);',
+			x : (window.innerWidth / 2 + 40)
+		});		
+		
+
+		elements.push({
+			cor : '#BABACA',
+			valor : '10',
+			exibir : '-',
+			tipo : 'Combustivel',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			y : 160,
+			evalX : '(window.innerWidth/2 - 80);',
+			x : (window.innerWidth / 2 - 80)
+		});
+		elements.push({
+			cor : '#BABACA',
+			valor : '',
+			exibir : '100',
+			tipo : 'Combustivel',
+			centralizaTexto : false,
+			width : 60,
+			height : 40,
+			y : 160,
+			evalX : '(window.innerWidth/2 - 30);',
+			x : (window.innerWidth / 2 - 30)
+		});
+		elements.push({
+			cor : '#BABACA',
+			valor : '10',
+			exibir : '+',
+			tipo : 'Combustivel',
+			centralizaTexto : true,
+			width : 40,
+			height : 40,
+			y : 160,
+			evalX : '(window.innerWidth/2 + 40);',
+			x : (window.innerWidth / 2 + 40)
+		});		
+		
+		
 		function render(){
 			console.log('render()');
 			context.canvas.width  = window.innerWidth;
@@ -135,7 +298,12 @@
 				context.strokeStyle = element.cor;
 				context.rect(element.x, element.y, element.width, element.height);
 				context.font='30px sans-serif';
-				context.fillText(element.valor,element.x+(element.width/2)-10,element.y+(element.height/2)+10);
+				if(element.centralizaTexto){
+					context.fillText(element.exibir,element.x+(element.width/2)-10,element.y+(element.height/2)+10);	
+				}else{
+					context.fillText(element.exibir,element.x+5,element.y+(element.height/2)+10);
+				}
+				
 				context.stroke();
 			});
 		}

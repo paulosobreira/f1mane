@@ -417,7 +417,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -428,7 +428,7 @@ public class ControleJogosServer {
 
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
 			String giro) {
-		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
 			return null;
 		}
@@ -446,7 +446,7 @@ public class ControleJogosServer {
 			return false;
 		}
 
-		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
 			return false;
 		}
@@ -455,7 +455,7 @@ public class ControleJogosServer {
 		return agressividade.equals(piloto.getModoPilotagem());
 	}
 
-	public Piloto acharPilotoPorId(SessaoCliente sessaoCliente,
+	public Piloto obterPilotoPorId(SessaoCliente sessaoCliente,
 			String idPiloto) {
 		Piloto acharPiloto = null;
 		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
@@ -481,9 +481,9 @@ public class ControleJogosServer {
 		return acharPiloto;
 	}
 
-	public InterfaceJogo acharJogoPorPilotoPorId(SessaoCliente sessaoCliente,
+	public JogoServidor obterJogoPorIdPiloto(SessaoCliente sessaoCliente,
 			String idPiloto) {
-		InterfaceJogo acharJogo = null;
+		JogoServidor acharJogo = null;
 		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
 				.iterator(); iterator.hasNext();) {
 			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
@@ -513,7 +513,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -700,7 +700,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -716,7 +716,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -731,7 +731,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		Logger.logar(
 				"mudarTracado clientPaddockPack.getSessaoCliente().getNomeJogador()"
 						+ clientPaddockPack.getSessaoCliente()
@@ -751,27 +751,27 @@ public class ControleJogosServer {
 			return false;
 		}
 
-		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
 			return false;
 		}
 		piloto.setAtivarDRS(true);
 		return piloto.mudarTracado(Integer.parseInt(tracado),
-				acharJogoPorPilotoPorId(sessaoCliente, idPiloto));
+				obterJogoPorIdPiloto(sessaoCliente, idPiloto));
 	}
 
-	private Piloto acharPiloto(ClientPaddockPack clientPaddockPack,
+	private Piloto obterPiloto(ClientPaddockPack clientPaddockPack,
 			JogoServidor jogoServidor) {
-		Piloto acharPiloto = acharPilotoLista(clientPaddockPack, jogoServidor);
+		Piloto acharPiloto = obterPilotoLista(clientPaddockPack, jogoServidor);
 		int cont = 0;
 		while (acharPiloto == null && cont < 5) {
-			acharPiloto = acharPilotoLista(clientPaddockPack, jogoServidor);
+			acharPiloto = obterPilotoLista(clientPaddockPack, jogoServidor);
 			cont++;
 		}
 		return acharPiloto;
 	}
 
-	private Piloto acharPilotoLista(ClientPaddockPack clientPaddockPack,
+	private Piloto obterPilotoLista(ClientPaddockPack clientPaddockPack,
 			JogoServidor jogoServidor) {
 		try {
 			List piList = jogoServidor.getPilotos();
@@ -807,7 +807,7 @@ public class ControleJogosServer {
 		if (jogoServidor.isChovendo()) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -821,7 +821,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -859,7 +859,7 @@ public class ControleJogosServer {
 			Logger.logar("jogadorDriveTru null");
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -891,7 +891,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -908,7 +908,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -925,7 +925,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			return null;
 		}
@@ -942,7 +942,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		Piloto piloto = acharPiloto(clientPaddockPack, jogoServidor);
+		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
 		if (piloto == null) {
 			Logger.logar("Piloto null");
 			return null;
@@ -966,7 +966,7 @@ public class ControleJogosServer {
 	}
 
 	public Object mudarDrs(SessaoCliente sessaoCliente, String idPiloto) {
-		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
 			return false;
 		}
@@ -975,12 +975,36 @@ public class ControleJogosServer {
 	}
 
 	public Object mudarErs(SessaoCliente sessaoCliente, String idPiloto) {
-		Piloto piloto = acharPilotoPorId(sessaoCliente, idPiloto);
+		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
 			return false;
 		}
 		piloto.setAtivarErs(piloto.isAtivarErs());
 		return piloto.isAtivarErs();
+	}
+
+	public Object boxPiloto(SessaoCliente sessaoCliente, String idPiloto,
+			Boolean ativa, String pneu, Integer combustivel, String asa) {
+		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
+		if (piloto == null) {
+			return false;
+		}
+		if (piloto.entrouNoBox()) {
+			return false;
+		}
+		piloto.setBox(ativa);
+		piloto.setTipoPneuBox(pneu);
+		piloto.setQtdeCombustBox(combustivel);
+		piloto.setAsaBox(asa);
+		JogoServidor jogoServidor = obterJogoPorIdPiloto(sessaoCliente,
+				idPiloto);
+		Map mapJogo = jogoServidor.getMapJogadoresOnline();
+		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
+				.get(sessaoCliente.getNomeJogador());
+		dadosParticiparJogo.setCombustivel(combustivel);
+		dadosParticiparJogo.setTpPnueu(pneu);
+		dadosParticiparJogo.setAsa(asa);
+		return piloto.isBox();
 	}
 
 }

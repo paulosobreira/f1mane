@@ -17,6 +17,15 @@ maneCanvas.addEventListener('click', function(event) {
 			if (controle.tipo == 'controlePiloto') {
 				rest_agressividadePiloto(controle.valor);
 			}
+			if (controle.tipo == 'Ers') {
+				// rest_ers(controle.valor);
+			}
+			if (controle.tipo == 'Drs') {
+				// rest_drs(controle.valor);
+			}
+			if (controle.tipo == 'Box') {
+				rest_boxPiloto(true, 'TIPO_PNEU_DURO', 25, 'MENOS_ASA');
+			}
 		}
 	});
 
@@ -69,8 +78,13 @@ maneCanvas.addEventListener('click', function(event) {
 			|| (mudar == 1 && piloto.tracado == 2)) {
 		mudar = 0;
 	}
+	if ((piloto.tracado == 1 && mudar == 1)
+			|| (piloto.tracado == 2 && mudar == 2)) {
+		menor = 100000;
+	}
+	
 	console.log('rest_tracadoPiloto(mudar); ' + mudar)
-	if (menor < 100000) {
+	if (menor != 100000) {
 		rest_tracadoPiloto(mudar);
 	}
 
@@ -132,24 +146,30 @@ function ctl_desenhaControles() {
 				maneContext.rect(controle.x, controle.y, controle.width,
 						controle.height);
 				maneContext.font = '30px sans-serif';
-				maneContext.fillText(controle.exibir, controle.x
-						+ (controle.width / 2) - 10, controle.y
-						+ (controle.height / 2) + 10);
+				if (controle.centralizaTexto) {
+					maneContext.fillText(controle.exibir, controle.x
+							+ (controle.width / 2) - 10, controle.y
+							+ (controle.height / 2) + 10);
+				} else {
+					maneContext.fillText(controle.exibir, controle.x + 5,
+							controle.y + (controle.height / 2) + 10);
+
+				}
 				maneContext.closePath();
 				maneContext.stroke();
 			});
 }
 
-// Add element.
 controles.push({
 	cor : '#BABACA',
 	valor : 'GIRO_MIN',
 	exibir : '1',
+	centralizaTexto : true,
 	tipo : 'controleMotor',
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+	y : window.innerHeight - (window.innerHeight / 2 - 40),
 	x : 10
 });
 controles.push({
@@ -157,10 +177,11 @@ controles.push({
 	valor : 'GIRO_NOR',
 	exibir : '2',
 	tipo : 'controleMotor',
+	centralizaTexto : true,
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+	y : window.innerHeight - (window.innerHeight / 2 - 40),
 	x : 60
 });
 controles.push({
@@ -168,10 +189,11 @@ controles.push({
 	valor : 'GIRO_MAX',
 	exibir : '3',
 	tipo : 'controleMotor',
+	centralizaTexto : true,
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+	y : window.innerHeight - (window.innerHeight / 2 - 40),
 	x : 110
 });
 
@@ -180,10 +202,11 @@ controles.push({
 	valor : 'AGRESSIVO',
 	exibir : '3',
 	tipo : 'controlePiloto',
+	centralizaTexto : true,
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+	y : window.innerHeight - (window.innerHeight / 2 - 40),
 	evalX : 'window.innerWidth - 150;',
 	x : 0
 });
@@ -191,11 +214,12 @@ controles.push({
 	cor : '#BABACA',
 	valor : 'NORMAL',
 	exibir : '2',
+	centralizaTexto : true,
 	tipo : 'controlePiloto',
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+	y : window.innerHeight - (window.innerHeight / 2 - 40),
 	evalX : 'window.innerWidth - 100;',
 	x : 0
 });
@@ -203,11 +227,163 @@ controles.push({
 	cor : '#BABACA',
 	valor : 'LENTO',
 	exibir : '1',
+	centralizaTexto : true,
 	tipo : 'controlePiloto',
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2-20);',
-	y : window.innerHeight - (window.innerHeight / 2 - 20),
+	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
+	y : window.innerHeight - (window.innerHeight / 2 - 40),
 	evalX : 'window.innerWidth - 50;',
 	x : 0
 });
+controles.push({
+	cor : '#BABACA',
+	valor : 'E',
+	exibir : 'E',
+	tipo : 'Ers',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	evalY : 'window.innerHeight - (window.innerHeight/2 + 10);',
+	y : window.innerHeight - (window.innerHeight / 2 + 10),
+	x : 10
+});
+controles.push({
+	cor : '#BABACA',
+	valor : 'D',
+	exibir : 'D',
+	tipo : 'Drs',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	evalY : 'window.innerHeight - (window.innerHeight/2 + 10);',
+	y : window.innerHeight - (window.innerHeight / 2 + 10),
+	evalX : 'window.innerWidth - 50;',
+	x : 0
+});
+
+controles.push({
+	cor : '#BABACA',
+	valor : 'BOX',
+	exibir : 'BOX',
+	tipo : 'Box',
+	centralizaTexto : false,
+	width : 80,
+	height : 40,
+	y : 10,
+	evalX : '(window.innerWidth/2 - 40);',
+	x : (window.innerWidth / 2 - 40)
+});	
+
+
+controles.push({
+	cor : '#BABACA',
+	valor : 'TIPO_PNEU_MOLE',
+	exibir : 'M',
+	tipo : 'Pneu',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	y : 60,
+	evalX : '(window.innerWidth/2 - 80);',
+	x : (window.innerWidth / 2 - 80)
+});
+controles.push({
+	cor : '#BABACA',
+	valor : 'TIPO_PNEU_DURO',
+	exibir : 'D',
+	tipo : 'Pneu',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	y : 60,
+	evalX : '(window.innerWidth/2 - 20);',
+	x : (window.innerWidth / 2 - 20)
+});
+controles.push({
+	cor : '#BABACA',
+	valor : 'TIPO_PNEU_CHUVA',
+	exibir : 'C',
+	tipo : 'Pneu',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	y : 60,
+	evalX : '(window.innerWidth/2 + 40);',
+	x : (window.innerWidth / 2 + 40)
+});		
+		
+controles.push({
+	cor : '#BABACA',
+	valor : 'MAIS_ASA',
+	exibir : '1',
+	tipo : 'Asa',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	y : 110,
+	evalX : '(window.innerWidth/2 - 80);',
+	x : (window.innerWidth / 2 - 80)
+});
+controles.push({
+	cor : '#BABACA',
+	valor : 'ASA_NORMAL',
+	exibir : '2',
+	tipo : 'Asa',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	y : 110,
+	evalX : '(window.innerWidth/2 - 20);',
+	x : (window.innerWidth / 2 - 20)
+});
+controles.push({
+	cor : '#BABACA',
+	valor : 'MAIS_ASA',
+	exibir : '3',
+	tipo : 'Asa',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	y : 110,
+	evalX : '(window.innerWidth/2 + 40);',
+	x : (window.innerWidth / 2 + 40)
+});		
+
+
+controles.push({
+	cor : '#BABACA',
+	valor : '10',
+	exibir : '-',
+	tipo : 'Combustivel',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	y : 160,
+	evalX : '(window.innerWidth/2 - 80);',
+	x : (window.innerWidth / 2 - 80)
+});
+controles.push({
+	cor : '#BABACA',
+	valor : '',
+	exibir : '100',
+	tipo : 'Combustivel',
+	centralizaTexto : false,
+	width : 60,
+	height : 40,
+	y : 160,
+	evalX : '(window.innerWidth/2 - 30);',
+	x : (window.innerWidth / 2 - 30)
+});
+controles.push({
+	cor : '#BABACA',
+	valor : '10',
+	exibir : '+',
+	tipo : 'Combustivel',
+	centralizaTexto : true,
+	width : 40,
+	height : 40,
+	y : 160,
+	evalX : '(window.innerWidth/2 + 40);',
+	x : (window.innerWidth / 2 + 40)
+});		

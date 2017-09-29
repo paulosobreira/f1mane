@@ -586,10 +586,9 @@ public class LetsRace {
 			return Response.status(401).build();
 		}
 		ControleJogosServer controleJogosServer = controlePaddock
-				.getControleJogosServer();;
-		return Response
-				.status(200).entity(controleJogosServer
-						.mudarDrs(sessaoCliente, idPiloto))
+				.getControleJogosServer();
+		return Response.status(200)
+				.entity(controleJogosServer.mudarDrs(sessaoCliente, idPiloto))
 				.build();
 	}
 
@@ -605,10 +604,32 @@ public class LetsRace {
 			return Response.status(401).build();
 		}
 		ControleJogosServer controleJogosServer = controlePaddock
-				.getControleJogosServer();;
-		return Response
-				.status(200).entity(controleJogosServer
-						.mudarErs(sessaoCliente, idPiloto))
+				.getControleJogosServer();
+		return Response.status(200)
+				.entity(controleJogosServer.mudarErs(sessaoCliente, idPiloto))
 				.build();
 	}
+
+	@GET
+	@Compress
+	@Path("/boxPiloto/{idPiloto}/{ativa}/{pneu}/{combustivel}/{asa}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response boxPiloto(@HeaderParam("token") String token,
+			@PathParam("idPiloto") String idPiloto,
+			@PathParam("ativa") Boolean ativa, @PathParam("pneu") String pneu,
+			@PathParam("combustivel") Integer combustivel,
+			@PathParam("asa") String asa) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		ControleJogosServer controleJogosServer = controlePaddock
+				.getControleJogosServer();;
+		return Response.status(200)
+				.entity(controleJogosServer.boxPiloto(sessaoCliente, idPiloto,
+						ativa, pneu, combustivel, asa))
+				.build();
+	}
+
 }

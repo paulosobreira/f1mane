@@ -8,7 +8,7 @@ var ctxRotate = cvRotate.getContext('2d');
 var maneCanvas = document.getElementById('maneCanvas')
 var maneContext = maneCanvas.getContext('2d');
 var imgBg = new Image();
-var desenhaImagens = true;
+var desenhaImagens = false;
 var ptBg = {
 	x : 0,
 	y : 0
