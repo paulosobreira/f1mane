@@ -3,7 +3,7 @@
 	<name>f1mane</name>
 	<comment></comment>
 	<projects>
-	</projects>
+	</projects>	
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.wst.jsdt.core.javascriptValidator</name>

@@ -130,6 +130,44 @@ function rest_tracadoPiloto(valor) {
 	});
 }
 
+function rest_ers() {
+	$.ajax({
+		type : "GET",
+		url : "/f1mane/rest/letsRace/ersPiloto/" + idPilotoSelecionado,
+		headers : {
+			'token' : token
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(retorno) {
+			console.log('rest_ers retorno :' + retorno);
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log('rest_ers ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
+		}
+	});
+}
+
+function rest_drs() {
+	$.ajax({
+		type : "GET",
+		url : "/f1mane/rest/letsRace/drsPiloto/" + idPilotoSelecionado,
+		headers : {
+			'token' : token
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(retorno) {
+			console.log('rest_drs retorno :' + retorno);
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log('rest_drs ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
+		}
+	});
+}
+
 function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 	$.ajax({
 		type : "GET",

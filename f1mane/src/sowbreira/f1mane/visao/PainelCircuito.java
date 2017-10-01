@@ -2371,7 +2371,7 @@ public class PainelCircuito {
 		}
 		g2d.setColor(Color.black);
 		g2d.drawString(strAgressivo, x + 5, y + 16);
-		desenhaControleKers(g2d, x, y, tamAgressivo);
+		desenhaControleErs(g2d, x, y, tamAgressivo);
 
 		String strNormal = Lang.msg("076");
 		int tamNormal = Util.calculaLarguraText(strNormal, g2d);
@@ -2418,7 +2418,7 @@ public class PainelCircuito {
 
 	}
 
-	private void desenhaControleKers(Graphics2D g2d, int x, int y, int tamF5) {
+	private void desenhaControleErs(Graphics2D g2d, int x, int y, int tamF5) {
 		if (!controleJogo.isErs()) {
 			return;
 		}

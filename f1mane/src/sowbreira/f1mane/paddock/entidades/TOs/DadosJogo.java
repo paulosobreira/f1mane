@@ -21,6 +21,10 @@ public class DadosJogo implements Serializable {
 	private int voltaAtual;
 	private boolean corridaTerminada;
 	private boolean corridaIniciada;
+	private boolean drs;
+	private boolean ers;
+	private boolean trocaPneu;
+	private boolean reabastacimento;
 	private String texto;
 	private String clima;
 	private String nomeJogo;
@@ -87,6 +91,38 @@ public class DadosJogo implements Serializable {
 
 	public void setCorridaIniciada(boolean corridaIniciada) {
 		this.corridaIniciada = corridaIniciada;
+	}
+
+	public boolean isDrs() {
+		return drs;
+	}
+
+	public void setDrs(boolean drs) {
+		this.drs = drs;
+	}
+
+	public boolean isErs() {
+		return ers;
+	}
+
+	public void setErs(boolean ers) {
+		this.ers = ers;
+	}
+
+	public boolean isTrocaPneu() {
+		return trocaPneu;
+	}
+
+	public void setTrocaPneu(boolean trocaPneu) {
+		this.trocaPneu = trocaPneu;
+	}
+
+	public boolean isReabastacimento() {
+		return reabastacimento;
+	}
+
+	public void setReabastacimento(boolean reabastacimento) {
+		this.reabastacimento = reabastacimento;
 	}
 
 }

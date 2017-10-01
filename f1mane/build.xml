@@ -13,7 +13,7 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
-	<property name="TOMCAT_HOME" value="C:\Java\apache-tomcat-7.0.73" />
+	<property name="TOMCAT_HOME" value="E:\apache-tomcat-7.0.35" />
 	<property name="HOST" value="games-sowbreira.rhcloud.com" />
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
@@ -215,6 +215,7 @@
 
 
 	<target name="criarZipOnline">
+<!--
 		<zip destfile="WebContent/f1mane.zip" compress="true">
 			<fileset dir="build">
 				<include name="F1-Mane-Online-en-us.bat" />
@@ -236,6 +237,7 @@
 				<include name="*.jar" />
 			</fileset>
 		</delete>
+	-->
 	</target>
 
 

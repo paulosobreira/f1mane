@@ -326,6 +326,10 @@ public class ControleJogosServer {
 		dadosJogo.setClima(jogoServidor.getClima());
 		dadosJogo.setCorridaIniciada(jogoServidor.isCorridaIniciada());
 		dadosJogo.setNomeJogo(clientPaddockPack.getNomeJogo());
+		dadosJogo.setErs(jogoServidor.isErs());
+		dadosJogo.setDrs(jogoServidor.isDrs());
+		dadosJogo.setTrocaPneu(jogoServidor.isTrocaPneu());
+		dadosJogo.setReabastacimento(jogoServidor.isReabastacimento());
 		List pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
@@ -664,8 +668,14 @@ public class ControleJogosServer {
 					: piloto.getVelocidadeExibir();
 			dadosParciais.combustBox = piloto.getQtdeCombustBox();
 			dadosParciais.tpPneusBox = piloto.getTipoPneuBox();
-			dadosParciais.modoPilotar = piloto.getModoPilotagem();
+			if (Util.isNullOrEmpty(dadosParciais.tpPneusBox)) {
+				dadosParciais.tpPneusBox = dadosParciais.tpPneus;
+			}
 			dadosParciais.asaBox = piloto.getAsaBox();
+			if (Util.isNullOrEmpty(dadosParciais.asaBox)) {
+				dadosParciais.asaBox = dadosParciais.asa;
+			}
+			dadosParciais.modoPilotar = piloto.getModoPilotagem();
 			dadosParciais.giro = piloto.getCarro().getGiro();
 			dadosParciais.vantagem = piloto.getVantagem();
 		}
@@ -971,7 +981,7 @@ public class ControleJogosServer {
 			return false;
 		}
 		piloto.setAtivarDRS(true);
-		return piloto.isAtivarDRS();
+		return Carro.MENOS_ASA.equals(piloto.getCarro().getAsa());
 	}
 
 	public Object mudarErs(SessaoCliente sessaoCliente, String idPiloto) {
@@ -979,7 +989,7 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return false;
 		}
-		piloto.setAtivarErs(piloto.isAtivarErs());
+		piloto.setAtivarErs(!piloto.isAtivarErs());
 		return piloto.isAtivarErs();
 	}
 
@@ -991,6 +1001,21 @@ public class ControleJogosServer {
 		}
 		if (piloto.entrouNoBox()) {
 			return false;
+		}
+		if (!Carro.MAIS_ASA.equals(asa) && !Carro.MENOS_ASA.equals(asa)
+				&& !Carro.ASA_NORMAL.equals(asa)) {
+			return false;
+		}
+		if (!Carro.TIPO_PNEU_CHUVA.equals(pneu)
+				&& !Carro.TIPO_PNEU_MOLE.equals(pneu)
+				&& !Carro.TIPO_PNEU_DURO.equals(pneu)) {
+			return false;
+		}
+		if (combustivel > 100) {
+			combustivel = 100;
+		}
+		if (combustivel < 0) {
+			combustivel = 0;
 		}
 		piloto.setBox(ativa);
 		piloto.setTipoPneuBox(pneu);

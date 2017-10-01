@@ -1725,4 +1725,11 @@ public class ControleJogoLocal extends ControleRecursos
 
 	}
 
+	public boolean isTrocaPneu() {
+		return trocaPneu;
+	}
+
+	public boolean isReabastacimento() {
+		return reabastacimento;
+	}
 }

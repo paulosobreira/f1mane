@@ -3,32 +3,71 @@
  */
 var controles = [];
 var largura, altura;
-maneCanvas.addEventListener('click', function(event) {
-	var x = event.pageX;
-	var y = event.pageY;
+var cargaErs;
 
-	// Collision detection between clicked offset and element.
-	controles.forEach(function(controle) {
-		if (y > controle.y && y < controle.y + controle.height
-				&& x > controle.x && x < controle.x + controle.width) {
-			if (controle.tipo == 'controleMotor') {
-				rest_potenciaMotor(controle.valor);
-			}
-			if (controle.tipo == 'controlePiloto') {
-				rest_agressividadePiloto(controle.valor);
-			}
-			if (controle.tipo == 'Ers') {
-				// rest_ers(controle.valor);
-			}
-			if (controle.tipo == 'Drs') {
-				// rest_drs(controle.valor);
-			}
-			if (controle.tipo == 'Box') {
-				rest_boxPiloto(true, 'TIPO_PNEU_DURO', 25, 'MENOS_ASA');
-			}
-		}
-	});
+maneCanvas.addEventListener('click',
+		function(event) {
+			var x = event.pageX;
+			var y = event.pageY;
 
+			var clickControle = false;
+			controles
+					.forEach(function(controle) {
+						if (y > controle.y && y < controle.y + controle.height
+								&& x > controle.x
+								&& x < controle.x + controle.width) {
+							clickControle = true;
+							if (controle.tipo == 'controleMotor') {
+								rest_potenciaMotor(controle.valor);
+							}
+							if (controle.tipo == 'controlePiloto') {
+								rest_agressividadePiloto(controle.valor);
+							}
+							if (controle.tipo == 'Ers') {
+								rest_ers();
+							}
+							if (controle.tipo == 'Drs') {
+								rest_drs();
+							}
+							if (controle.tipo == 'Box') {
+								rest_boxPiloto(!dadosParciais.box,
+										dadosParciais.tpPneusBox,
+										dadosParciais.combustBox,
+										dadosParciais.asaBox);
+							}
+							if (controle.tipo == 'Pneu') {
+								rest_boxPiloto(true, controle.valor,
+										dadosParciais.combustBox,
+										dadosParciais.asaBox);
+							}
+							if (controle.tipo == 'Asa') {
+								rest_boxPiloto(true, dadosParciais.tpPneusBox,
+										dadosParciais.combustBox,
+										controle.valor);
+							}
+							if (controle.tipo == 'Combustivel') {
+								if (controle.valor == '+') {
+									rest_boxPiloto(true,
+											dadosParciais.tpPneusBox,
+											dadosParciais.combustBox + 10,
+											dadosParciais.asaBox);
+								} else if (controle.valor == '-') {
+									rest_boxPiloto(true,
+											dadosParciais.tpPneusBox,
+											dadosParciais.combustBox - 10,
+											dadosParciais.asaBox);
+								}
+
+							}
+						}
+					});
+			if (!clickControle) {
+				ctl_mudaTracadoPiloto(event);
+			}
+
+		}, false);
+
+function ctl_mudaTracadoPiloto(event) {
 	var piloto = dadosParciais.posisPack.posis[posicaoCentraliza];
 
 	var no = mapaIdNos.get(piloto.idNo);
@@ -82,13 +121,12 @@ maneCanvas.addEventListener('click', function(event) {
 			|| (piloto.tracado == 2 && mudar == 2)) {
 		menor = 100000;
 	}
-	
+
 	console.log('rest_tracadoPiloto(mudar); ' + mudar)
 	if (menor != 100000) {
 		rest_tracadoPiloto(mudar);
 	}
-
-}, false);
+}
 
 function ctl_desenhaControles() {
 	if (dadosParciais == null) {
@@ -143,6 +181,35 @@ function ctl_desenhaControles() {
 					}
 				}
 
+				if (controle.tipo == 'Ers' && dadosJogo.ers) {
+					if (!cargaErs) {
+						cargaErs = dadosParciais.cargaErs;
+					}
+					if (dadosParciais.cargaErs != cargaErs) {
+						cargaErs = dadosParciais.cargaErs;
+						maneContext.strokeStyle = '#00FF00';
+					} else {
+						maneContext.strokeStyle = controle.cor;
+					}
+				}
+
+				if (controle.tipo == 'Drs' && dadosJogo.drs) {
+					if (dadosParciais.asa == 'MENOS_ASA') {
+						maneContext.strokeStyle = '#00FF00';
+					} else {
+						maneContext.strokeStyle = controle.cor;
+					}
+				}
+
+				if (!dadosParciais.box
+						&& (controle.tipo == 'Asa' || controle.tipo == 'Pneu'
+								|| controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
+					return;
+				}
+				if (controle.tipo == 'CombustivelValor') {
+					controle.valor = dadosParciais.combustBox;
+				}
+
 				maneContext.rect(controle.x, controle.y, controle.width,
 						controle.height);
 				maneContext.font = '30px sans-serif';
@@ -168,8 +235,8 @@ controles.push({
 	tipo : 'controleMotor',
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
-	y : window.innerHeight - (window.innerHeight / 2 - 40),
+	evalY : 'window.innerHeight - 100;',
+	y : window.innerHeight - 100,
 	x : 10
 });
 controles.push({
@@ -180,8 +247,8 @@ controles.push({
 	centralizaTexto : true,
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
-	y : window.innerHeight - (window.innerHeight / 2 - 40),
+	evalY : 'window.innerHeight - 100;',
+	y : window.innerHeight - 100,
 	x : 60
 });
 controles.push({
@@ -192,8 +259,8 @@ controles.push({
 	centralizaTexto : true,
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
-	y : window.innerHeight - (window.innerHeight / 2 - 40),
+	evalY : 'window.innerHeight - 100;',
+	y : window.innerHeight - 100,
 	x : 110
 });
 
@@ -205,8 +272,8 @@ controles.push({
 	centralizaTexto : true,
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
-	y : window.innerHeight - (window.innerHeight / 2 - 40),
+	evalY : 'window.innerHeight - 100;',
+	y : window.innerHeight - 100,
 	evalX : 'window.innerWidth - 150;',
 	x : 0
 });
@@ -218,8 +285,8 @@ controles.push({
 	tipo : 'controlePiloto',
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
-	y : window.innerHeight - (window.innerHeight / 2 - 40),
+	evalY : 'window.innerHeight - 100;',
+	y : window.innerHeight - 100,
 	evalX : 'window.innerWidth - 100;',
 	x : 0
 });
@@ -231,8 +298,8 @@ controles.push({
 	tipo : 'controlePiloto',
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2 - 40);',
-	y : window.innerHeight - (window.innerHeight / 2 - 40),
+	evalY : 'window.innerHeight - 100;',
+	y : window.innerHeight - 100,
 	evalX : 'window.innerWidth - 50;',
 	x : 0
 });
@@ -244,8 +311,8 @@ controles.push({
 	centralizaTexto : true,
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2 + 10);',
-	y : window.innerHeight - (window.innerHeight / 2 + 10),
+	evalY : 'window.innerHeight - 150;',
+	y : window.innerHeight - 150,
 	x : 10
 });
 controles.push({
@@ -256,12 +323,13 @@ controles.push({
 	centralizaTexto : true,
 	width : 40,
 	height : 40,
-	evalY : 'window.innerHeight - (window.innerHeight/2 + 10);',
-	y : window.innerHeight - (window.innerHeight / 2 + 10),
+	evalY : 'window.innerHeight - 150;',
+	y : window.innerHeight - 150,
 	evalX : 'window.innerWidth - 50;',
 	x : 0
 });
 
+// Box
 controles.push({
 	cor : '#BABACA',
 	valor : 'BOX',
@@ -273,8 +341,7 @@ controles.push({
 	y : 10,
 	evalX : '(window.innerWidth/2 - 40);',
 	x : (window.innerWidth / 2 - 40)
-});	
-
+});
 
 controles.push({
 	cor : '#BABACA',
@@ -311,8 +378,8 @@ controles.push({
 	y : 60,
 	evalX : '(window.innerWidth/2 + 40);',
 	x : (window.innerWidth / 2 + 40)
-});		
-		
+});
+
 controles.push({
 	cor : '#BABACA',
 	valor : 'MAIS_ASA',
@@ -348,12 +415,11 @@ controles.push({
 	y : 110,
 	evalX : '(window.innerWidth/2 + 40);',
 	x : (window.innerWidth / 2 + 40)
-});		
-
+});
 
 controles.push({
 	cor : '#BABACA',
-	valor : '10',
+	valor : '-',
 	exibir : '-',
 	tipo : 'Combustivel',
 	centralizaTexto : true,
@@ -367,7 +433,7 @@ controles.push({
 	cor : '#BABACA',
 	valor : '',
 	exibir : '100',
-	tipo : 'Combustivel',
+	tipo : 'CombustivelValor',
 	centralizaTexto : false,
 	width : 60,
 	height : 40,
@@ -377,7 +443,7 @@ controles.push({
 });
 controles.push({
 	cor : '#BABACA',
-	valor : '10',
+	valor : '+',
 	exibir : '+',
 	tipo : 'Combustivel',
 	centralizaTexto : true,
@@ -386,4 +452,4 @@ controles.push({
 	y : 160,
 	evalX : '(window.innerWidth/2 + 40);',
 	x : (window.innerWidth / 2 + 40)
-});		
+});

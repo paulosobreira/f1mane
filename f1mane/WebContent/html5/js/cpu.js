@@ -52,12 +52,13 @@ function cpu_main() {
 		console.log('cpu_main vdp_carregaBackGround()');
 		vdp_carregaBackGround();
 	}
-	if (dadosJogo != null && circuito != null && ativo) {
-		delay = 100;
+	if (dadosJogo != null && circuito != null && ativo && imgBg.complete) {
+		delay = 500;
 		rest_dadosParciais();
 		vdp_desenha();
 	} else {
-		console.log('cpu_main inativo');
+		console.log('cpu_main dadosJogo:' + dadosJogo + ' circuito:' + circuito
+				+ ' ativo:' + ativo + ' imgBg.complete:' + imgBg.complete);
 		delay = 100;
 	}
 }

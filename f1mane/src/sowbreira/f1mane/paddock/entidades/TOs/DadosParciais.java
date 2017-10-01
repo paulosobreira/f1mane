@@ -15,7 +15,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 /**
  * @author Paulo Sobreira Criado em 21/08/2007 as 21:08:26
  */
-@JsonInclude(Include.NON_NULL)
+//@JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DadosParciais implements Serializable {
 	private static final long serialVersionUID = 4430749703769933486L;

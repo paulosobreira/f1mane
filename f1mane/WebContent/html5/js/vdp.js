@@ -8,7 +8,7 @@ var ctxRotate = cvRotate.getContext('2d');
 var maneCanvas = document.getElementById('maneCanvas')
 var maneContext = maneCanvas.getContext('2d');
 var imgBg = new Image();
-var desenhaImagens = false;
+var desenhaImagens = true;
 var ptBg = {
 	x : 0,
 	y : 0
@@ -24,13 +24,13 @@ function vdp_desenha() {
 	// if (fps != null) {
 	// maneContext.fillText("FPS: " + fps.frameRate(), 4, 30);
 	// }
-	if (circuito != null && circuito.backGround != null) {
-		maneContext.beginPath();
-		maneContext.font = '14px sans-serif';
-		maneContext.fillText("Circuito: " + circuito.backGround, 4, 60);
-		maneContext.closePath();
-		maneContext.stroke();
-	}
+//	if (circuito != null && circuito.backGround != null) {
+//		maneContext.beginPath();
+//		maneContext.font = '14px sans-serif';
+//		maneContext.fillText("Circuito: " + circuito.backGround, 4, 60);
+//		maneContext.closePath();
+//		maneContext.stroke();
+//	}
 }
 
 function vdp_centralizaPilotoSelecionado() {
@@ -52,7 +52,7 @@ function vdp_desenhaBackGround() {
 	maneCanvas.height = window.innerHeight;
 	var sW = maneCanvas.width;
 	var sH = maneCanvas.height;
-	if (imgBg.src != "" && desenhaImagens) {
+	if (imgBg.src != "" && desenhaImagens && imgBg.complete) {
 		try {
 			maneContext.drawImage(imgBg, ptBg.x, ptBg.y, sW, sH, 0, 0,
 					maneCanvas.width, maneCanvas.height);
