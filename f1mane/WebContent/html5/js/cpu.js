@@ -10,6 +10,9 @@ var pilotosMap = new Map();
 var token;
 var idPilotoSelecionado;
 var nomeJogo;
+var alternador = true;
+var alternadorValor = 0;
+
 
 // update canvas with some information and animation
 // var fps = new FpsCtrl(20, function(e) {
@@ -56,11 +59,27 @@ function cpu_main() {
 		delay = 500;
 		rest_dadosParciais();
 		vdp_desenha();
+		ctl_desenhaControles();
+		cpu_altenador();
 	} else {
 		console.log('cpu_main dadosJogo:' + dadosJogo + ' circuito:' + circuito
 				+ ' ativo:' + ativo + ' imgBg.complete:' + imgBg.complete);
 		delay = 100;
 	}
 }
+
+function cpu_altenador(){
+	if(alternador){
+		alternadorValor++;
+		if(alternadorValor>20){
+			alternador=false;	
+		}
+	}else{
+		alternadorValor--;
+		if(alternadorValor<-20){
+			alternador=true;	
+		}
+	}
+} 
 
 var main = setInterval(cpu_main, delay);

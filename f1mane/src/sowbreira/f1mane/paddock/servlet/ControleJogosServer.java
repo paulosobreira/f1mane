@@ -646,15 +646,45 @@ public class ControleJogosServer {
 			dadosParciais.podeUsarDRS = piloto.isPodeUsarDRS();
 			dadosParciais.recebeuBanderada = piloto.isRecebeuBanderada();
 			dadosParciais.stress = piloto.getStress();
+			if(dadosParciais.stress>100){
+				dadosParciais.stress = 100;
+			}
+			if(dadosParciais.stress<0){
+				dadosParciais.stress = 0;
+			}
 			dadosParciais.cargaErs = piloto.getCarro().getCargaErs();
+			if (dadosParciais.cargaErs > 100) {
+				dadosParciais.cargaErs = 100;
+			}
+			if (dadosParciais.cargaErs < 0) {
+				dadosParciais.cargaErs = 0;
+			}
 			dadosParciais.alertaMotor = piloto.isAlertaMotor();
 			dadosParciais.alertaAerefolio = piloto.isAlertaAerefolio();
 			dadosParciais.pCombust = piloto.getCarro()
 					.getPorcentagemCombustivel();
+			if (dadosParciais.pCombust > 100) {
+				dadosParciais.pCombust = 100;
+			}
+			if (dadosParciais.pCombust < 0) {
+				dadosParciais.pCombust = 0;
+			}
 			dadosParciais.pPneus = piloto.getCarro()
 					.getPorcentagemDesgastePneus();
+			if (dadosParciais.pPneus > 100) {
+				dadosParciais.pPneus = 100;
+			}
+			if (dadosParciais.pPneus < 0) {
+				dadosParciais.pPneus = 0;
+			}
 			dadosParciais.pMotor = piloto.getCarro()
 					.getPorcentagemDesgasteMotor();
+			if (dadosParciais.pMotor > 100) {
+				dadosParciais.pMotor = 100;
+			}
+			if (dadosParciais.pMotor < 0) {
+				dadosParciais.pMotor = 0;
+			}
 			if (piloto.getCarroPilotoDaFrente() != null) {
 				dadosParciais.tpPneusFrente = piloto.getCarroPilotoDaFrente()
 						.getTipoPneu();
