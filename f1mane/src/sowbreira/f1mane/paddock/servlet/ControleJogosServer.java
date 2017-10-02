@@ -330,6 +330,9 @@ public class ControleJogosServer {
 		dadosJogo.setDrs(jogoServidor.isDrs());
 		dadosJogo.setTrocaPneu(jogoServidor.isTrocaPneu());
 		dadosJogo.setReabastacimento(jogoServidor.isReabastacimento());
+		dadosJogo.setNomeCircuito(
+				Util.substVogais(jogoServidor.getCircuito().getNome()));
+		dadosJogo.setNumeroVotas(jogoServidor.totalVoltasCorrida());
 		List pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();

@@ -244,18 +244,19 @@ public class ControleEstatisticas {
 	}
 
 	public static void main(String[] args) {
-		List allInfo = new ArrayList();
-		allInfo.add("1");
-		allInfo.add("2");
-		allInfo.add("3");
-		allInfo.add("4");
-		allInfo.add("5");
-		allInfo.add("6");
-		allInfo.add("7");
-		if (allInfo.size() > 5) {
-			for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
-			}
-		}
+//		List allInfo = new ArrayList();
+//		allInfo.add("1");
+//		allInfo.add("2");
+//		allInfo.add("3");
+//		allInfo.add("4");
+//		allInfo.add("5");
+//		allInfo.add("6");
+//		allInfo.add("7");
+//		if (allInfo.size() > 5) {
+//			for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
+//			}
+//		}
+		System.out.println(formatarTempo(90001));
 	}
 
 	public void info(String info, boolean prioritaria) {

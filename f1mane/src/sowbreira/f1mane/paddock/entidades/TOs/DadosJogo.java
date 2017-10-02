@@ -19,6 +19,7 @@ public class DadosJogo implements Serializable {
 	private List<Piloto> pilotosList = null;
 	private Volta melhoVolta;
 	private int voltaAtual;
+	private int numeroVotas;
 	private boolean corridaTerminada;
 	private boolean corridaIniciada;
 	private boolean drs;
@@ -27,6 +28,7 @@ public class DadosJogo implements Serializable {
 	private boolean reabastacimento;
 	private String texto;
 	private String clima;
+	private String nomeCircuito;
 	private String nomeJogo;
 
 	public String getClima() {
@@ -123,6 +125,22 @@ public class DadosJogo implements Serializable {
 
 	public void setReabastacimento(boolean reabastacimento) {
 		this.reabastacimento = reabastacimento;
+	}
+
+	public String getNomeCircuito() {
+		return nomeCircuito;
+	}
+
+	public void setNomeCircuito(String nomeCircuito) {
+		this.nomeCircuito = nomeCircuito;
+	}
+
+	public int getNumeroVotas() {
+		return numeroVotas;
+	}
+
+	public void setNumeroVotas(int numeroVotas) {
+		this.numeroVotas = numeroVotas;
 	}
 
 }
