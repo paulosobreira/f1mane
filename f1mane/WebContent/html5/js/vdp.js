@@ -20,17 +20,93 @@ function vdp_desenha() {
 	vdp_desenhaBackGround();
 	vdp_desenhaObjs();
 	vdp_desenhaCarrosCima();
+	vdp_desenhaInfoCarro();
 	ctl_desenhaControles();
-	// if (fps != null) {
-	// maneContext.fillText("FPS: " + fps.frameRate(), 4, 30);
-	// }
-//	if (circuito != null && circuito.backGround != null) {
-//		maneContext.beginPath();
-//		maneContext.font = '14px sans-serif';
-//		maneContext.fillText("Circuito: " + circuito.backGround, 4, 60);
-//		maneContext.closePath();
-//		maneContext.stroke();
-//	}
+}
+
+function vdp_desenhaInfoCarro() {
+	if (!dadosParciais) {
+		return
+	}
+	
+	maneContext.beginPath();
+
+	var x = 10;
+	var y = 10;
+
+	maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+	maneContext.fillRect(x, y, 80, 20);
+	maneContext.font = '14px sans-serif';
+	maneContext.fillStyle = "black"
+	maneContext.fillText('~'
+			+ dadosParciais.velocidade + ' Km/h', x + 5, y + 15);
+		
+	y += 30;
+	
+	maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+	maneContext.fillRect(x, y, 80, 20);
+	maneContext.font = '14px sans-serif';
+	maneContext.fillStyle = "black"
+	maneContext.fillText(lang_text('Comb.'), x + 5, y + 15);
+	maneContext.fillText(dadosParciais.pCombust + '%', x + 50, y + 15);
+	if(dadosParciais.pCombust<15){
+		maneContext.strokeStyle = '#FF0000';
+		maneContext.rect(x, y, 80, 20);
+	}
+	
+	y += 30;
+		
+	maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+	maneContext.fillRect(x, y, 80, 20);
+	maneContext.font = '14px sans-serif';
+	maneContext.fillStyle = "black"
+	maneContext.fillText(lang_text('Pneus')
+			, x + 5, y + 15);
+	maneContext.fillText(dadosParciais.pPneus + '%', x + 50, y + 15);
+	if(dadosParciais.pPneus<15){
+		maneContext.strokeStyle = '#FF0000';
+		maneContext.rect(x, y, 80, 20);
+	}	
+	
+	y += 30;
+	
+	maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+	maneContext.fillRect(x, y, 80, 20);
+	maneContext.font = '14px sans-serif';
+	maneContext.fillStyle = "black"
+	maneContext.fillText(lang_text('Motor'), x + 5, y + 15);
+	maneContext.fillText(dadosParciais.pMotor + '%', x + 50, y + 15);
+	
+	if(dadosParciais.pMotor<15){
+		maneContext.strokeStyle = '#FF0000';
+		maneContext.rect(x, y, 80, 20);
+	}	
+
+	y += 30;
+	
+	maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+	maneContext.fillRect(x, y, 80, 20);
+	maneContext.font = '14px sans-serif';
+	maneContext.fillStyle = "black"
+	maneContext.fillText(lang_text('Piloto'), x + 5, y + 15);
+	maneContext.fillText(dadosParciais.stress + '%', x + 50, y + 15);
+	
+	if(dadosParciais.stress>90){
+		maneContext.strokeStyle = '#FF0000';
+		maneContext.rect(x, y, 80, 20);
+	}	
+
+	y += 30;
+	
+	maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+	maneContext.fillRect(x, y, 80, 20);
+	maneContext.font = '14px sans-serif';
+	maneContext.fillStyle = "black"
+	maneContext.fillText('Ers ', x + 5, y + 15);
+	maneContext.fillText(dadosParciais.cargaErs + '%', x + 50, y + 15);
+	
+	maneContext.closePath();
+	maneContext.stroke();
 }
 
 function vdp_centralizaPilotoSelecionado() {

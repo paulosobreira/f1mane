@@ -16,6 +16,11 @@ maneCanvas.addEventListener('click',
 						if (y > controle.y && y < controle.y + controle.height
 								&& x > controle.x
 								&& x < controle.x + controle.width) {
+							var validaControle = ctl_validaControle(controle);
+							if (validaControle) {
+								return;
+							}
+
 							clickControle = true;
 							if (controle.tipo == 'controleMotor') {
 								rest_potenciaMotor(controle.valor);
@@ -145,6 +150,11 @@ function ctl_desenhaControles() {
 	// Render elements.
 	controles
 			.forEach(function(controle) {
+				var validaControle = ctl_validaControle(controle);
+				if (validaControle) {
+					return;
+				}
+
 				if (evalY && controle.evalY) {
 					controle.y = eval(controle.evalY);
 				}
@@ -152,6 +162,11 @@ function ctl_desenhaControles() {
 					controle.x = eval(controle.evalX);
 				}
 				maneContext.beginPath();
+
+				maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+				maneContext.fillRect(controle.x, controle.y, controle.width,
+						controle.height);
+				maneContext.strokeStyle = controle.cor;
 
 				if (controle.tipo == 'controleMotor') {
 					if (dadosParciais.giro == 1 && controle.valor == 'GIRO_MIN') {
@@ -162,8 +177,6 @@ function ctl_desenhaControles() {
 					} else if (dadosParciais.giro == 9
 							&& controle.valor == 'GIRO_MAX') {
 						maneContext.strokeStyle = '#FF0000';
-					} else {
-						maneContext.strokeStyle = controle.cor;
 					}
 				}
 				if (controle.tipo == 'controlePiloto') {
@@ -176,8 +189,6 @@ function ctl_desenhaControles() {
 					} else if (dadosParciais.modoPilotar == 'AGRESSIVO'
 							&& controle.valor == 'AGRESSIVO') {
 						maneContext.strokeStyle = '#FF0000';
-					} else {
-						maneContext.strokeStyle = controle.cor;
 					}
 				}
 
@@ -188,24 +199,24 @@ function ctl_desenhaControles() {
 					if (dadosParciais.cargaErs != cargaErs) {
 						cargaErs = dadosParciais.cargaErs;
 						maneContext.strokeStyle = '#00FF00';
-					} else {
-						maneContext.strokeStyle = controle.cor;
 					}
 				}
 
-				if (controle.tipo == 'Drs' && dadosJogo.drs) {
-					if (dadosParciais.asa == 'MENOS_ASA') {
-						maneContext.strokeStyle = '#00FF00';
-					} else {
-						maneContext.strokeStyle = controle.cor;
-					}
+				if (controle.tipo == 'Drs' && dadosJogo.drs
+						&& dadosParciais.asa == 'MENOS_ASA') {
+					maneContext.strokeStyle = '#00FF00';
 				}
 
-				if (!dadosParciais.box
-						&& (controle.tipo == 'Asa' || controle.tipo == 'Pneu'
-								|| controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
-					return;
+				if (controle.tipo == 'Pneu'
+						&& dadosParciais.tpPneusBox == controle.valor) {
+					maneContext.strokeStyle = '#FFFF00';
 				}
+
+				if (controle.tipo == 'Asa'
+						&& dadosParciais.asaBox == controle.valor) {
+					maneContext.strokeStyle = '#FFFF00';
+				}
+
 				if (controle.tipo == 'CombustivelValor') {
 					controle.valor = dadosParciais.combustBox;
 				}
@@ -213,6 +224,7 @@ function ctl_desenhaControles() {
 				maneContext.rect(controle.x, controle.y, controle.width,
 						controle.height);
 				maneContext.font = '30px sans-serif';
+				maneContext.fillStyle = "black"
 				if (controle.centralizaTexto) {
 					maneContext.fillText(controle.exibir, controle.x
 							+ (controle.width / 2) - 10, controle.y
@@ -227,6 +239,27 @@ function ctl_desenhaControles() {
 			});
 }
 
+function ctl_validaControle(controle) {
+	if (!dadosParciais.box
+			&& (controle.tipo == 'Asa' || controle.tipo == 'Pneu'
+					|| controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
+		return true;
+	}
+	if (dadosJogo.drs && controle.tipo == 'Asa'
+			&& 'chuva.png' != dadosParciais.clima) {
+		return true;
+	}
+	if (!dadosJogo.reabastacimento
+			&& (controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
+		return true;
+	}
+
+	if (!dadosJogo.trocaPneu && controle.tipo == 'Pneu' && dadosJogo.pPneus > 0) {
+		return true;
+	}
+
+	return false;
+}
 controles.push({
 	cor : '#BABACA',
 	valor : 'GIRO_MIN',
