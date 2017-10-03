@@ -26,6 +26,7 @@ import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.CircuitosDefauts;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
@@ -107,28 +108,19 @@ public class LetsRace {
 	@Compress
 	@Path("/dadosJogo")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response dadosJogo(@QueryParam("nomeJogo") String nomeJogo) {
-		SessaoCliente sessaoCliente = new SessaoCliente();
-		sessaoCliente.setNomeJogador("Sobreira");
+	public Response dadosJogo(@HeaderParam("token") String token,
+			@QueryParam("nomeJogo") String nomeJogo) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setNomeJogo(nomeJogo);
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		Object dadosJogo = controlePaddock.obterDadosJogo(clientPaddockPack);
-		if (dadosJogo == null) {
-			return Response.status(400)
-					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		if (dadosJogo instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) dadosJogo;
-			return Response.status(400)
-					.entity(Html.escapeHtml(msgSrv.getMessageString()))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		if (dadosJogo instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) dadosJogo;
-			return Response.status(500)
-					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+		if (dadosJogo == null || !(dadosJogo instanceof DadosJogo)) {
+			return Response.status(200).entity(new DadosJogo())
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(200).entity(dadosJogo).build();
@@ -267,10 +259,12 @@ public class LetsRace {
 	@GET
 	@Path("/circuitos")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response circuitos() {
+	public Response circuitos() throws ClassNotFoundException, IOException {
 		Map<String, String> carregarCircuitos = ControleRecursos
 				.carregarCircuitos();
-		return Response.status(200).entity(carregarCircuitos).build();
+		List<CircuitosDefauts> circuitosDefauts = carregadorRecursos
+				.carregarCircuitosDefaults();
+		return Response.status(200).entity(circuitosDefauts).build();
 	}
 
 	@GET

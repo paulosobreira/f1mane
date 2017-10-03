@@ -34,8 +34,10 @@ import javax.swing.JPanel;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.CircuitosDefauts;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
 
@@ -46,6 +48,7 @@ public class CarregadorRecursos {
 	private static Vector<String> vectorTemps;
 	private Map<String, List<Piloto>> temporadasPilotos;
 	private Map<String, TemporadasDefauts> temporadasPilotosDefauts;
+	private List<CircuitosDefauts> circuitosDefauts;
 	private static Map bufferImages = new HashMap();
 	private static Map bufferImagesTransp = new HashMap();
 	private static Map bufferCarros = new HashMap();
@@ -946,6 +949,30 @@ public class CarregadorRecursos {
 		} catch (IOException e) {
 			Logger.logarExept(e);
 		}
+	}
+
+	public List<CircuitosDefauts> carregarCircuitosDefaults()
+			throws IOException, ClassNotFoundException {
+		if (circuitosDefauts != null) {
+			return circuitosDefauts;
+		}
+		circuitosDefauts = new ArrayList<CircuitosDefauts>();
+		Map<String, String> carregarCircuitos = ControleRecursos
+				.carregarCircuitos();
+		for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
+				.hasNext();) {
+			CircuitosDefauts cd = new CircuitosDefauts();
+			String nmCircuitoOri = (String) iterator.next();
+			cd.setNome(Util.substVogais(nmCircuitoOri));
+			cd.setArquivo(carregarCircuitos.get(nmCircuitoOri));
+			ObjectInputStream ois = new ObjectInputStream(carregadorRecursos
+					.getClass().getResourceAsStream(cd.getArquivo()));
+			Circuito circuito = (Circuito) ois.readObject();
+			cd.setProbalidadeChuva(circuito.getProbalidadeChuva());
+			circuitosDefauts.add(cd);
+		}
+
+		return circuitosDefauts;
 	}
 
 }

@@ -1,7 +1,5 @@
 package sowbreira.f1mane.controles;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -16,7 +14,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
@@ -334,5 +331,6 @@ public abstract class ControleRecursos {
 		}
 		return null;
 	}
+
 
 }

@@ -5,6 +5,9 @@ function rest_dadosJogo(nomeJogo) {
 	}
 	$.ajax({
 		type : "GET",
+		headers : {
+			'token' : token
+		},
 		url : "/f1mane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
 		contentType : "application/json",
 		dataType : "json",

@@ -30,6 +30,7 @@ public class DadosJogo implements Serializable {
 	private String clima;
 	private String nomeCircuito;
 	private String nomeJogo;
+	private String estado;
 
 	public String getClima() {
 		return clima;
@@ -141,6 +142,14 @@ public class DadosJogo implements Serializable {
 
 	public void setNumeroVotas(int numeroVotas) {
 		this.numeroVotas = numeroVotas;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 }
