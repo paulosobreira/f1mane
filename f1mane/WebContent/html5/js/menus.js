@@ -6,9 +6,13 @@ var idPilotoSelecionado;
 var temporadaSelecionada;
 var circuitoSelecionado;
 var sessaoVisitante;
+var dadosJogo;
 
-criarSessao();
-
+if(!localStorage.getItem("token")){
+	criarSessao();
+}else{
+	dadosJogo();
+}
 
 $('#btnCriarJogo').bind("click", function() {
 	criarJogo();
@@ -36,6 +40,25 @@ function mostrarEntrarJogo() {
 		return;
 	}
 	$('#divEntrarNoJogo').removeClass('hidden');
+}
+
+
+function dadosJogo() {
+	$.ajax({
+		type : "GET",
+		headers : {
+			'token' : localStorage.getItem("token")
+		},
+		url : "/f1mane/rest/letsRace/dadosJogo",
+		contentType : "application/json",
+		dataType : "json",
+		success : function(res) {
+			dadosJogo = res;
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			console.log(xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
 }
 
 function criarJogo() {
@@ -71,6 +94,7 @@ function criarSessao() {
 		dataType : "json",
 		success : function(response) {
 			sessaoVisitante = response;
+			localStorage.setItem("token", sessaoVisitante.sessaoCliente.token);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			console.log('criarSessao() ' + xhRequest.status + '  '
@@ -86,24 +110,23 @@ function listaCircuitos() {
 		url : urlServico,
 		contentType : "application/json",
 		dataType : "json",
-		success : function(circuitosMap) {
-			var circuitos = Object.keys(circuitosMap);
+		success : function(circuitos) {
 			if (circuitos.length == 0) {
 				console.log('listaCircuitos() response.length==0');
 				return;
 			}
 			$('#circuitosList').find('li').remove();
-			$.each(circuitos, function(i, val) {
-				var li = $('<li><a>' + circuitos[i] + '</a></li>');
+			$.each(circuitos, function(i, circuito) {
+				var li = $('<li><a>' + circuito.nome + '</a></li>');
 				li.bind("click", function() {
 					console.log('circuitosLabel click');
-					$('#circuitosLabel').data('circuitos', circuitos[i]);
-					$('#circuitosLabel').html(circuitos[i]);
+					$('#circuitosLabel').data('circuitos', circuito.nome);
+					$('#circuitosLabel').html(circuito.nome);
 					$('#imgCircuito').attr(
 							'src',
 							'/f1mane/rest/letsRace/circuitoMini/'
-									+ circuitosMap[circuitos[i]]);
-					circuitoSelecionado = circuitosMap[circuitos[i]];
+									+ circuito.arquivo);
+					circuitoSelecionado = circuito.arquivo;
 					mostrarEntrarJogo();
 				});
 				$('#circuitosList').append(li);

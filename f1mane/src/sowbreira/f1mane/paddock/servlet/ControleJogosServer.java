@@ -315,8 +315,14 @@ public class ControleJogosServer {
 	}
 
 	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
-		JogoServidor jogoServidor = obterJogoPeloNome(
-				clientPaddockPack.getNomeJogo());
+		String nomeJogo = clientPaddockPack.getNomeJogo();
+		JogoServidor jogoServidor = null;
+		if (nomeJogo != null) {
+			jogoServidor = obterJogoPeloNome(nomeJogo);
+		}else{
+			SessaoCliente sessaoCliente = clientPaddockPack.getSessaoCliente();
+			jogoServidor = obterJogoPorSessaoCliente(sessaoCliente);
+		}
 		if (jogoServidor == null) {
 			return null;
 		}
@@ -333,6 +339,7 @@ public class ControleJogosServer {
 		dadosJogo.setNomeCircuito(
 				Util.substVogais(jogoServidor.getCircuito().getNome()));
 		dadosJogo.setNumeroVotas(jogoServidor.totalVoltasCorrida());
+		dadosJogo.setEstado(jogoServidor.getEstado());
 		List pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
@@ -514,6 +521,20 @@ public class ControleJogosServer {
 		return acharJogo;
 	}
 
+	public JogoServidor obterJogoPorSessaoCliente(SessaoCliente sessaoCliente) {
+		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
+				.iterator(); iterator.hasNext();) {
+			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
+			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
+					.getMapJogadoresOnline();
+			if (mapJogadoresOnline
+					.containsKey(sessaoCliente.getNomeJogador())) {
+				return jogoServidor;
+			}
+		}
+		return null;
+	}
+
 	public Object mudarModoBox(ClientPaddockPack clientPaddockPack) {
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
@@ -646,10 +667,10 @@ public class ControleJogosServer {
 			dadosParciais.podeUsarDRS = piloto.isPodeUsarDRS();
 			dadosParciais.recebeuBanderada = piloto.isRecebeuBanderada();
 			dadosParciais.stress = piloto.getStress();
-			if(dadosParciais.stress>100){
+			if (dadosParciais.stress > 100) {
 				dadosParciais.stress = 100;
 			}
-			if(dadosParciais.stress<0){
+			if (dadosParciais.stress < 0) {
 				dadosParciais.stress = 0;
 			}
 			dadosParciais.cargaErs = piloto.getCarro().getCargaErs();
