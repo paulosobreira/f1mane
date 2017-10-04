@@ -5,22 +5,17 @@
 var idPilotoSelecionado;
 var temporadaSelecionada;
 var circuitoSelecionado;
-var sessaoVisitante;
+var token;
 
 if (localStorage.getItem("token")) {
+	token = localStorage.getItem("token");
 	dadosJogo();
 } else {
 	criarSessao();
-	$('#temporadasDD').on('show.bs.dropdown', function() {
-		listaTemporadas();
-	});
-	$('#circuitosDD').on('show.bs.dropdown', function() {
-		listaCircuitos();
-	});
 }
 
-$('#btnCriarJogo').bind("click", function() {
-	criarJogo();
+$('#btnJogar').bind("click", function() {
+	jogar();
 });
 
 function mostrarEntrarJogo() {
@@ -33,8 +28,7 @@ function mostrarEntrarJogo() {
 	if (!circuitoSelecionado) {
 		return;
 	}
-	if (!sessaoVisitante || !sessaoVisitante.sessaoCliente
-			|| !sessaoVisitante.sessaoCliente.token) {
+	if (!token) {
 		return;
 	}
 	$('#divEntrarNoJogo').removeClass('hidden');
@@ -50,11 +44,21 @@ function dadosJogo() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(dadosJogo) {
+			console.log(dadosJogo);
+			if('NENHUM'==dadosJogo.estado){
+				$('#temporadasDD').on('show.bs.dropdown', function() {
+					listaTemporadas();
+				});
+				$('#circuitosDD').on('show.bs.dropdown', function() {
+					listaCircuitos();
+				});
+				return;
+			}
 			$('#imgCircuito').attr('src',
 					'/f1mane/rest/letsRace/circuitoMini/' + dadosJogo.arquivoCircuito);
 			circuitoSelecionado = dadosJogo.arquivoCircuito;
 			idPilotoSelecionado = dadosJogo.idPilotoSelecionado;
-			var temporada = dadosJogo.temporada;
+			temporadaSelecionada = dadosJogo.temporada;
 			$('#circuitosLabel').html(dadosJogo.nomeCircuito);
 			$('#temporadasLabel').html(dadosJogo.temporada);
 			$('#trocaPneuCheckbox').prop('disabled', true);
@@ -75,19 +79,27 @@ function dadosJogo() {
 				td2.append(pilotos[i].nomeCarro);
 				var tr = $('<tr style="cursor: pointer; cursor: hand" />');
 				var capacete = $('<img class="img-responsive img-center"/>');
-				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id='
-						+ pilotos[i].id + '&temporada=' + temporada);
+//				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id='
+//						+ pilotos[i].id + '&temporada=' + temporadaSelecionada);
 				td1.append(capacete);
 				tr.append(td1);
 				var carroLado = $('<img class="img-responsive img-center"/>');
-				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id='
-						+ pilotos[i].id + '&temporada=' + temporada);
+//				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id='
+//						+ pilotos[i].id + '&temporada=' + temporadaSelecionada);
 				td2.append(carroLado);
 				if(pilotos[i].nomeJogador){
-					tr.addClass('active');
+					tr.addClass('info');
 				}
 				tr.append(td2);
 				$('#pilotos').append(tr);
+				tr.addClass('active');
+				tr.unbind();
+				tr.bind("click", function() {
+					$('#pilotos').find('tr').removeClass('info');
+					$('#pilotos').find('tr').removeClass('active');
+					tr.addClass('active');
+					idPilotoSelecionado = pilotos[i].id;
+				});
 			});
 			$('#detalheTemporada').removeClass('hidden');
 			mostrarEntrarJogo();
@@ -99,25 +111,25 @@ function dadosJogo() {
 	});
 }
 
-function criarJogo() {
-	var urlServico = "/f1mane/rest/letsRace/criarJogo/" + temporadaSelecionada
+function jogar() {
+	var urlServico = "/f1mane/rest/letsRace/jogar/" + temporadaSelecionada
 			+ "/" + idPilotoSelecionado + "/" + circuitoSelecionado;
 	$.ajax({
 		type : "GET",
 		url : urlServico,
 		headers : {
-			'token' : sessaoVisitante.sessaoCliente.token
+			'token' : token
 		},
 		contentType : "application/json",
 		dataType : "json",
 		success : function(dadosJogo) {
 			localStorage.setItem("nomeJogo", dadosJogo.nomeJogo);
-			localStorage.setItem("token", sessaoVisitante.sessaoCliente.token);
+			localStorage.setItem("token", token);
 			localStorage.setItem("idPilotoSelecionado", idPilotoSelecionado);
 			window.location.href = "corrida.html";
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			console.log('criarJogo() ' + xhRequest.status + '  '
+			console.log('jogar() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
 	});
@@ -130,9 +142,10 @@ function criarSessao() {
 		url : urlServico,
 		contentType : "application/json",
 		dataType : "json",
-		success : function(response) {
-			sessaoVisitante = response;
-			localStorage.setItem("token", sessaoVisitante.sessaoCliente.token);
+		success : function(sessaoVisitante) {
+			token = sessaoVisitante.sessaoCliente.token;
+			localStorage.setItem("token", token);
+			dadosJogo();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			console.log('criarSessao() ' + xhRequest.status + '  '
@@ -207,16 +220,17 @@ function selecionaTemporada(temporada) {
 				td2.append(pilotos[i].nomeCarro);
 				var tr = $('<tr style="cursor: pointer; cursor: hand" />');
 				var capacete = $('<img class="img-responsive img-center"/>');
-				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id='
-						+ pilotos[i].id + '&temporada=' + temporada);
+//				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id='
+//						+ pilotos[i].id + '&temporada=' + temporada);
 				td1.append(capacete);
 				tr.append(td1);
 				var carroLado = $('<img class="img-responsive img-center"/>');
-				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id='
-						+ pilotos[i].id + '&temporada=' + temporada);
+//				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id='
+//						+ pilotos[i].id + '&temporada=' + temporada);
 				td2.append(carroLado);
 				tr.append(td2);
 				$('#pilotos').append(tr);
+				tr.unbind();
 				tr.bind("click", function() {
 					$('#pilotos').find('tr').removeClass('active');
 					tr.addClass('active');

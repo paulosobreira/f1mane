@@ -66,6 +66,9 @@ function cpu_main() {
 				+ ' ativo:' + ativo + ' imgBg.complete:' + imgBg.complete);
 		delay = 100;
 	}
+	if(dadosJogo){
+		console.log(dadosJogo.estado);
+	}
 }
 
 function cpu_altenador(){

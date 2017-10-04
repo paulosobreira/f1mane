@@ -120,7 +120,19 @@ public class LetsRace {
 		clientPaddockPack.setSessaoCliente(sessaoCliente);
 		Object dadosJogo = controlePaddock.obterDadosJogo(clientPaddockPack);
 		if (dadosJogo == null || !(dadosJogo instanceof DadosJogo)) {
-			return Response.status(200).entity(new DadosJogo())
+			if (!controlePaddock.obterJogos().isEmpty()) {
+				String jogo = controlePaddock.obterJogos().get(0);
+				clientPaddockPack = new ClientPaddockPack();
+				clientPaddockPack.setNomeJogo(jogo);
+				clientPaddockPack.setSessaoCliente(sessaoCliente);
+				dadosJogo = controlePaddock.obterDadosJogo(clientPaddockPack);
+			}
+			if (dadosJogo == null) {
+				DadosJogo nenhum = new DadosJogo();
+				nenhum.setEstado("NENHUM");
+				dadosJogo = nenhum;
+			}
+			return Response.status(200).entity(dadosJogo)
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(200).entity(dadosJogo).build();
@@ -152,9 +164,9 @@ public class LetsRace {
 
 	@GET
 	@Compress
-	@Path("/criarJogo/{temporada}/{idPiloto}/{circuito}")
+	@Path("/jogar/{temporada}/{idPiloto}/{circuito}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response criarJogo(@HeaderParam("token") String token,
+	public Response jogar(@HeaderParam("token") String token,
 			@PathParam("temporada") String temporada,
 			@PathParam("idPiloto") String idPiloto,
 			@PathParam("circuito") String circuito) {
@@ -185,6 +197,9 @@ public class LetsRace {
 				return erro;
 			}
 		} else {
+			/**
+			 * Entrar Jogo
+			 */
 			DadosJogo dadosJogo = (DadosJogo) controlePaddock
 					.obterDadosJogo(clientPaddockPack);
 			List<Piloto> pilotosList = dadosJogo.getPilotos();
@@ -197,7 +212,8 @@ public class LetsRace {
 							.equals(piloto.getNomeJogador())) {
 						return Response.status(200).entity(dadosJogo).build();
 					} else {
-						return Response.status(400).entity(dadosJogo).build();
+						return Response.status(400).entity("Piloto "
+								+ piloto.getNome() + " já selecionado").build();
 					}
 				}
 			}

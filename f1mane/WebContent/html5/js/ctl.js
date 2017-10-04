@@ -145,6 +145,8 @@ function ctl_desenhaControles() {
 	if (altura != maneCanvas.height) {
 		evalY = true;
 	}
+	ctl_desenhaInfoEsquerda();
+	ctl_desenhaInfoDireita();
 	largura = maneCanvas.width;
 	altura = maneCanvas.height;
 	// Render elements.
@@ -238,6 +240,250 @@ function ctl_desenhaControles() {
 				maneContext.stroke();
 			});
 }
+
+
+function ctl_desenhaInfoDireita() {
+	if (!dadosParciais) {
+		return
+	}
+	
+	maneContext.beginPath();
+
+	var x = maneCanvas.width - 120;
+	var y = 10;
+
+	if(dadosParciais.melhorVolta && (altura>480 || !alternador)){
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 110, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText(lang_text('Melhor'), x + 5, y + 15);
+		maneContext.fillText(formatarTempo(dadosParciais.melhorVolta), x + 53, y + 15);
+		y += 30;
+	}
+
+	if(dadosParciais.ultima1 && (altura>480 ||!alternador)){
+			maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+			maneContext.fillRect(x, y, 110, 20);
+			maneContext.font = '14px sans-serif';
+			maneContext.fillStyle = "black"
+			maneContext.fillText(lang_text('Volta')+' '+(dadosParciais.voltaAtual-1) +' '+formatarTempo(dadosParciais.ultima1), x + 5, y + 15);
+
+			y += 30;
+	
+			if(dadosParciais.ultima2){
+				maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+				maneContext.fillRect(x, y, 110, 20);
+				maneContext.font = '14px sans-serif';
+				maneContext.fillStyle = "black"
+				maneContext.fillText(lang_text('Volta')+' '+(dadosParciais.voltaAtual-2)+' '+formatarTempo(dadosParciais.ultima2), x + 5, y + 15);
+				y += 30;
+			}
+			
+			if(dadosParciais.ultima3){
+				maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+				maneContext.fillRect(x, y, 110, 20);
+				maneContext.font = '14px sans-serif';
+				maneContext.fillStyle = "black"
+				maneContext.fillText(lang_text('Volta')+' '+(dadosParciais.voltaAtual-3)+' '+formatarTempo(dadosParciais.ultima3), x + 5, y + 15);
+				y += 30;
+			}
+			
+			if(dadosParciais.ultima4){
+				maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+				maneContext.fillRect(x, y, 110, 20);
+				maneContext.font = '14px sans-serif';
+				maneContext.fillStyle = "black"
+				maneContext.fillText(lang_text('Volta')+' '+(dadosParciais.voltaAtual-4)+' '+formatarTempo(dadosParciais.ultima4), x + 5, y + 15);
+				y += 30;
+			}
+	
+	}
+	
+	var posicaoPilotos = dadosParciais.posisPack;
+	if(posicaoPilotos && (altura>480 ||(alternador || !dadosParciais.melhorVoltaCorrida))){
+		var piloto = posicaoPilotos.posis[0];
+		var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 110, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText('1 '+nomePiloto, x + 5, y + 15);
+		if(posicaoCentraliza==0){
+			maneContext.strokeStyle = '#FFFF00';
+			maneContext.rect(x, y, 110, 20);
+		}
+
+		y += 30;
+		var min = posicaoCentraliza-2;
+		var max = posicaoCentraliza+2;
+		
+		if(min<1){
+			min = 1;
+			max = 5;
+		}else if(max>posicaoPilotos.posis.length){
+			var diff = posicaoPilotos.posis.length-max;
+			min-=diff;
+			max-=diff;
+		}
+		for (i = min; i < max; i++) {
+			var piloto = posicaoPilotos.posis[i];
+			var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
+			maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+			maneContext.fillRect(x, y, 110, 20);
+			maneContext.font = '14px sans-serif';
+			maneContext.fillStyle = "black"
+			maneContext.fillText((i+1)+' '+nomePiloto, x + 5, y + 15);
+			if(posicaoCentraliza==i){
+				maneContext.strokeStyle = '#FFFF00';
+				maneContext.rect(x, y, 110, 20);
+			}
+	
+			y += 30;
+		}
+	}
+	maneContext.closePath();
+	maneContext.stroke();
+}
+
+function ctl_desenhaInfoEsquerda() {
+	if (!dadosParciais) {
+		return
+	}
+	
+	maneContext.beginPath();
+
+	var x = 10;
+	var y = 10;
+
+	if(altura>480 || !alternador){
+	
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 120, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText(dadosJogo.nomeCircuito, x + 5, y + 15);
+				
+		y += 30;
+		
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 80, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText(lang_text('Volta'), x + 5, y + 15);
+		maneContext.fillText(dadosParciais.voltaAtual+'/'+dadosJogo.numeroVotas, x + 45, y + 15);
+				
+		y += 30;	
+		
+		if(dadosParciais.melhorVoltaCorrida){	
+			maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+			maneContext.fillRect(x, y, 110, 20);
+			maneContext.font = '14px sans-serif';
+			maneContext.fillStyle = "black"
+			maneContext.fillText(lang_text('Corrida'), x + 5, y + 15);
+			maneContext.fillText(formatarTempo(dadosParciais.melhorVoltaCorrida), x + 53, y + 15);
+			y += 30;
+		}		
+		
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 80, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		var climaDesc = '';	
+		if(dadosParciais.clima=="sol.png"){
+			climaDesc = "Ensolarado"
+		}
+		if(dadosParciais.clima=="nublado.png"){
+			climaDesc = "Nublado"
+		}
+		if(dadosParciais.clima=="chuva.png"){
+			climaDesc = "Chovendo"
+		}
+		maneContext.fillText(lang_text(climaDesc), x + 5, y + 15);
+					
+		y += 30;	
+		
+		
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 80, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText('~'
+				+ dadosParciais.velocidade + ' Km/h', x + 5, y + 15);
+			
+		y += 30;
+	
+	}
+	
+	if(altura>480 || alternador){
+	
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 80, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText(lang_text('Comb.'), x + 5, y + 15);
+		maneContext.fillText(dadosParciais.pCombust + '%', x +(dadosParciais.pCombust>99?45:50), y + 15);
+		if(dadosParciais.pCombust<15){
+			maneContext.strokeStyle = '#FF0000';
+			maneContext.rect(x, y, 80, 20);
+		}
+		
+		y += 30;
+			
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 80, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText(lang_text('Pneus')
+				, x + 5, y + 15);
+		maneContext.fillText(dadosParciais.pPneus + '%', x + (dadosParciais.pPneus>99?45:50), y + 15);
+		if(dadosParciais.pPneus<15){
+			maneContext.strokeStyle = '#FF0000';
+			maneContext.rect(x, y, 80, 20);
+		}	
+		
+		y += 30;
+		
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 80, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText(lang_text('Motor'), x + 5, y + 15);
+		maneContext.fillText(dadosParciais.pMotor + '%', x +(dadosParciais.pMotor>99?45:50), y + 15);
+		
+		if(dadosParciais.pMotor<15){
+			maneContext.strokeStyle = '#FF0000';
+			maneContext.rect(x, y, 80, 20);
+		}	
+	
+		y += 30;
+		
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 80, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText(lang_text('Piloto'), x + 5, y + 15);
+		maneContext.fillText(dadosParciais.stress + '%', x +(dadosParciais.stress>99?45:50), y + 15);
+		
+		if(dadosParciais.stress>90){
+			maneContext.strokeStyle = '#FF0000';
+			maneContext.rect(x, y, 80, 20);
+		}	
+	
+		y += 30;
+		
+		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillRect(x, y, 80, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText('Ers ', x + 5, y + 15);
+		maneContext.fillText(dadosParciais.cargaErs + '%', x+(dadosParciais.cargaErs>99?45:50), y + 15);
+	}
+	maneContext.closePath();
+	maneContext.stroke();
+}
+
+
 
 function ctl_validaControle(controle) {
 	if (!dadosParciais.box
