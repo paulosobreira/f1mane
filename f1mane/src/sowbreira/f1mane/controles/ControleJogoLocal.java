@@ -708,7 +708,7 @@ public class ControleJogoLocal extends ControleRecursos
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCircuitos()
 	 */
-	public Map getCircuitos() {
+	public Map<String, String> getCircuitos() {
 		return circuitos;
 	}
 

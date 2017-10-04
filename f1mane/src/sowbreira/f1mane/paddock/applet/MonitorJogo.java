@@ -469,9 +469,9 @@ public class MonitorJogo implements Runnable {
 				if ((jogoCliente.getPilotos() == null
 						|| jogoCliente.getPilotos().isEmpty())
 						|| (jogoCliente.getPilotos() != null
-								&& dadosJogo.getPilotosList() != null
+								&& dadosJogo.getPilotos() != null
 								&& jogoCliente.getPilotos().size() != dadosJogo
-										.getPilotosList().size())) {
+										.getPilotos().size())) {
 					atualizouDados = false;
 				} else {
 					atualizouDados = true;

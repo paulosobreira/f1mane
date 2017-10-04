@@ -74,14 +74,14 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public void setDadosJogo(DadosJogo dadosJogo) throws Exception {
 		this.dadosJogo = dadosJogo;
-		if ((dadosJogo != null && dadosJogo.getPilotosList() != null
-				&& !dadosJogo.getPilotosList().isEmpty())) {
+		if ((dadosJogo != null && dadosJogo.getPilotos() != null
+				&& !dadosJogo.getPilotos().isEmpty())) {
 			if (pilotos != null) {
 				pilotos.clear();
 			} else {
 				pilotos = new ArrayList();
 			}
-			List pilotosList = dadosJogo.getPilotosList();
+			List pilotosList = dadosJogo.getPilotos();
 			for (Iterator iterator = pilotosList.iterator(); iterator
 					.hasNext();) {
 				Piloto object = (Piloto) iterator.next();
@@ -382,7 +382,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public boolean isCorridaTerminada() {
 		if (dadosJogo != null) {
-			return dadosJogo.isCorridaTerminada();
+			return dadosJogo.getCorridaTerminada();
 		}
 		return false;
 	}

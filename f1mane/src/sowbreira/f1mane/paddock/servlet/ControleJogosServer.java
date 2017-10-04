@@ -317,10 +317,11 @@ public class ControleJogosServer {
 	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
 		String nomeJogo = clientPaddockPack.getNomeJogo();
 		JogoServidor jogoServidor = null;
+		SessaoCliente sessaoCliente = null;
 		if (nomeJogo != null) {
 			jogoServidor = obterJogoPeloNome(nomeJogo);
-		}else{
-			SessaoCliente sessaoCliente = clientPaddockPack.getSessaoCliente();
+		} else {
+			sessaoCliente = clientPaddockPack.getSessaoCliente();
 			jogoServidor = obterJogoPorSessaoCliente(sessaoCliente);
 		}
 		if (jogoServidor == null) {
@@ -338,6 +339,13 @@ public class ControleJogosServer {
 		dadosJogo.setReabastacimento(jogoServidor.isReabastacimento());
 		dadosJogo.setNomeCircuito(
 				Util.substVogais(jogoServidor.getCircuito().getNome()));
+		dadosJogo.setArquivoCircuito(jogoServidor.getCircuitos()
+				.get(jogoServidor.getCircuito().getNome()));
+		dadosJogo.setTemporada(jogoServidor.getTemporada().replaceAll("t", ""));
+		Piloto pilotoSessao = obterPilotoPorSessaoCliente(sessaoCliente);
+		if (pilotoSessao != null) {
+			dadosJogo.setIdPilotoSelecionado(pilotoSessao.getId());
+		}
 		dadosJogo.setNumeroVotas(jogoServidor.totalVoltasCorrida());
 		dadosJogo.setEstado(jogoServidor.getEstado());
 		List pilotos = jogoServidor.getPilotosCopia();
@@ -348,7 +356,7 @@ public class ControleJogosServer {
 			piloto.setMelhorVolta(melhor);
 		}
 		dadosJogo.setCorridaTerminada(jogoServidor.isCorridaTerminada());
-		dadosJogo.setPilotosList(pilotos);
+		dadosJogo.setPilotos(pilotos);
 
 		Map mapJogo = jogoServidor.getMapJogadoresOnlineTexto();
 		BufferTexto bufferTexto = (BufferTexto) mapJogo
@@ -357,6 +365,27 @@ public class ControleJogosServer {
 			dadosJogo.setTexto(bufferTexto.consumirTexto());
 		}
 		return dadosJogo;
+	}
+
+	private Piloto obterPilotoPorSessaoCliente(SessaoCliente sessaoCliente) {
+		if (sessaoCliente == null) {
+			return null;
+		}
+		Piloto acharPiloto = null;
+		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
+				.iterator(); iterator.hasNext();) {
+			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
+			List piList = jogoServidor.getPilotos();
+			for (Iterator iter = piList.iterator(); iter.hasNext();) {
+				Piloto piloto = (Piloto) iter.next();
+				if (sessaoCliente.getNomeJogador()
+						.equals(piloto.getNomeJogador())) {
+					acharPiloto = piloto;
+					break;
+				}
+			}
+		}
+		return acharPiloto;
 	}
 
 	/**

@@ -187,7 +187,7 @@ public class LetsRace {
 		} else {
 			DadosJogo dadosJogo = (DadosJogo) controlePaddock
 					.obterDadosJogo(clientPaddockPack);
-			List<Piloto> pilotosList = dadosJogo.getPilotosList();
+			List<Piloto> pilotosList = dadosJogo.getPilotos();
 			for (Iterator iterator = pilotosList.iterator(); iterator
 					.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();

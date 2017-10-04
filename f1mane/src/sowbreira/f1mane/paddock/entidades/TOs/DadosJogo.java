@@ -16,138 +16,131 @@ import sowbreira.f1mane.entidades.Volta;
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DadosJogo implements Serializable {
-	private List<Piloto> pilotosList = null;
+	private List<Piloto> pilotos = null;
 	private Volta melhoVolta;
-	private int voltaAtual;
-	private int numeroVotas;
-	private boolean corridaTerminada;
-	private boolean corridaIniciada;
-	private boolean drs;
-	private boolean ers;
-	private boolean trocaPneu;
-	private boolean reabastacimento;
+	private Integer voltaAtual;
+	private Integer numeroVotas;
+	private Boolean corridaTerminada;
+	private Boolean corridaIniciada;
+	private Boolean drs;
+	private Boolean ers;
+	private Boolean trocaPneu;
+	private Boolean reabastacimento;
 	private String texto;
 	private String clima;
 	private String nomeCircuito;
+	private String arquivoCircuito;
+	private String temporada;
+	private Integer idPilotoSelecionado;
 	private String nomeJogo;
 	private String estado;
-
-	public String getClima() {
-		return clima;
+	
+	
+	public List<Piloto> getPilotos() {
+		return pilotos;
 	}
-
-	public void setClima(String clima) {
-		this.clima = clima;
+	public void setPilotos(List<Piloto> pilotosList) {
+		this.pilotos = pilotosList;
 	}
-
-	public boolean isCorridaTerminada() {
-		return corridaTerminada;
-	}
-
-	public void setCorridaTerminada(boolean corridaTerminada) {
-		this.corridaTerminada = corridaTerminada;
-	}
-
-	public int getVoltaAtual() {
-		return voltaAtual;
-	}
-
-	public void setVoltaAtual(int voltaAtual) {
-		this.voltaAtual = voltaAtual;
-	}
-
-	public String getTexto() {
-		return texto;
-	}
-
-	public void setTexto(String texto) {
-		this.texto = texto;
-	}
-
 	public Volta getMelhoVolta() {
 		return melhoVolta;
 	}
-
 	public void setMelhoVolta(Volta melhoVolta) {
 		this.melhoVolta = melhoVolta;
 	}
-
-	public List<Piloto> getPilotosList() {
-		return pilotosList;
+	public Integer getVoltaAtual() {
+		return voltaAtual;
 	}
-
-	public void setPilotosList(List<Piloto> objects) {
-		this.pilotosList = objects;
+	public void setVoltaAtual(Integer voltaAtual) {
+		this.voltaAtual = voltaAtual;
 	}
-
-	public String getNomeJogo() {
-		return nomeJogo;
+	public Integer getNumeroVotas() {
+		return numeroVotas;
 	}
-
-	public void setNomeJogo(String nomeJogo) {
-		this.nomeJogo = nomeJogo;
+	public void setNumeroVotas(Integer numeroVotas) {
+		this.numeroVotas = numeroVotas;
 	}
-
-	public boolean isCorridaIniciada() {
+	public Boolean getCorridaTerminada() {
+		return corridaTerminada;
+	}
+	public void setCorridaTerminada(Boolean corridaTerminada) {
+		this.corridaTerminada = corridaTerminada;
+	}
+	public Boolean getCorridaIniciada() {
 		return corridaIniciada;
 	}
-
-	public void setCorridaIniciada(boolean corridaIniciada) {
+	public void setCorridaIniciada(Boolean corridaIniciada) {
 		this.corridaIniciada = corridaIniciada;
 	}
-
-	public boolean isDrs() {
+	public Boolean getDrs() {
 		return drs;
 	}
-
-	public void setDrs(boolean drs) {
+	public void setDrs(Boolean drs) {
 		this.drs = drs;
 	}
-
-	public boolean isErs() {
+	public Boolean getErs() {
 		return ers;
 	}
-
-	public void setErs(boolean ers) {
+	public void setErs(Boolean ers) {
 		this.ers = ers;
 	}
-
-	public boolean isTrocaPneu() {
+	public Boolean getTrocaPneu() {
 		return trocaPneu;
 	}
-
-	public void setTrocaPneu(boolean trocaPneu) {
+	public void setTrocaPneu(Boolean trocaPneu) {
 		this.trocaPneu = trocaPneu;
 	}
-
-	public boolean isReabastacimento() {
+	public Boolean getReabastacimento() {
 		return reabastacimento;
 	}
-
-	public void setReabastacimento(boolean reabastacimento) {
+	public void setReabastacimento(Boolean reabastacimento) {
 		this.reabastacimento = reabastacimento;
 	}
-
+	public String getTexto() {
+		return texto;
+	}
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+	public String getClima() {
+		return clima;
+	}
+	public void setClima(String clima) {
+		this.clima = clima;
+	}
 	public String getNomeCircuito() {
 		return nomeCircuito;
 	}
-
 	public void setNomeCircuito(String nomeCircuito) {
 		this.nomeCircuito = nomeCircuito;
 	}
-
-	public int getNumeroVotas() {
-		return numeroVotas;
+	public String getArquivoCircuito() {
+		return arquivoCircuito;
 	}
-
-	public void setNumeroVotas(int numeroVotas) {
-		this.numeroVotas = numeroVotas;
+	public void setArquivoCircuito(String arquivoCircuito) {
+		this.arquivoCircuito = arquivoCircuito;
 	}
-
+	public String getTemporada() {
+		return temporada;
+	}
+	public void setTemporada(String temporada) {
+		this.temporada = temporada;
+	}
+	public Integer getIdPilotoSelecionado() {
+		return idPilotoSelecionado;
+	}
+	public void setIdPilotoSelecionado(Integer idPilotoSelecionado) {
+		this.idPilotoSelecionado = idPilotoSelecionado;
+	}
+	public String getNomeJogo() {
+		return nomeJogo;
+	}
+	public void setNomeJogo(String nomeJogo) {
+		this.nomeJogo = nomeJogo;
+	}
 	public String getEstado() {
 		return estado;
 	}
-
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}

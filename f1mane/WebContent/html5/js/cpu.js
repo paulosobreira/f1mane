@@ -36,13 +36,13 @@ function cpu_main() {
 		rest_dadosJogo(nomeJogo);
 	}
 	if (dadosJogo != null && circuito == null) {
-		for (i = 0; i < dadosJogo.pilotosList.length; i++) {
-			pilotosMap.set(dadosJogo.pilotosList[i].id,
-					dadosJogo.pilotosList[i]);
+		for (i = 0; i < dadosJogo.pilotos.length; i++) {
+			pilotosMap.set(dadosJogo.pilotos[i].id,
+					dadosJogo.pilotos[i]);
 		}
 		carrosImgMap = new Map();
-		for (i = 0; i < dadosJogo.pilotosList.length; i++) {
-			var pilotos = dadosJogo.pilotosList[i];
+		for (i = 0; i < dadosJogo.pilotos.length; i++) {
+			var pilotos = dadosJogo.pilotos[i];
 			var imgCarro = new Image();
 			imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo="
 					+ dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
