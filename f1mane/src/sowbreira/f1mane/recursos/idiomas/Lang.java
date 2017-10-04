@@ -112,6 +112,21 @@ public class Lang {
 		}
 	}
 
+	
+	public static String msgRest(String key, Object[] strings) {
+		iniciaBundle();
+		if (key == null || "".equals(key)) {
+			return "";
+		}
+		try {
+			MessageFormat messageFormat = new MessageFormat(
+					bundle.getString(key));
+			return messageFormat.format(strings);
+		} catch (Exception e) {
+			return key;
+		}
+	}
+	
 	public static String decodeTexto(String string) {
 		String[] array = string.split("¢");
 		StringBuffer retorno = new StringBuffer();

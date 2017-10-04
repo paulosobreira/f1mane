@@ -335,10 +335,12 @@ function ctl_desenhaInfoDireita() {
 			maneContext.fillStyle = "black"
 			maneContext.fillText((i+1)+' '+nomePiloto, x + 5, y + 15);
 			if(posicaoCentraliza==i){
+				maneContext.strokeStyle = '#00FF00';
+				maneContext.rect(x, y, 110, 20);
+			}else if(piloto.humano){
 				maneContext.strokeStyle = '#FFFF00';
 				maneContext.rect(x, y, 110, 20);
-			}
-	
+			}	
 			y += 30;
 		}
 	}

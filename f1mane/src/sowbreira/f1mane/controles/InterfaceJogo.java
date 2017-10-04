@@ -395,6 +395,8 @@ public interface InterfaceJogo {
 	public void forcaQuerbraAereofolio();
 
 	public boolean isAtualizacaoSuave();
+	
+	public boolean isSafetyCar();
 
 	public void setAtualizacaoSuave(boolean atualizacaoSuave);
 

@@ -1380,5 +1380,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
+	@Override
+	public boolean isSafetyCar() {
+		if (dadosParticiparJogo != null) {
+			return dadosParticiparJogo.isSafetyCar();
+		}
+		return false;
+	}
 
 }

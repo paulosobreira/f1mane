@@ -335,7 +335,8 @@ public class ControleCorrida {
 			double fatorAcidenteLocal) {
 		int limiteStress = (int) (100 * (1 - fatorAcidenteLocal));
 		if (piloto.getCarro().getDurabilidadeAereofolio() <= 0) {
-			if (!controleSafetyCar.safetyCarUltimas3voltas()
+			if (controleJogo.isSafetyCar()
+					&& !controleSafetyCar.safetyCarUltimas3voltas()
 					&& !piloto.isDesqualificado()
 					&& !piloto.testeHabilidadePilotoCarro()
 					&& piloto.getVelocidade() > 150

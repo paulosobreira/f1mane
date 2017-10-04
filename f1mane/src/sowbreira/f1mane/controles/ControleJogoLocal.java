@@ -59,6 +59,7 @@ public class ControleJogoLocal extends ControleRecursos
 	protected boolean reabastacimento;
 	protected boolean ers;
 	protected boolean drs;
+	protected boolean safetyCar;
 
 	protected boolean continuaCampeonato;
 
@@ -1732,4 +1733,9 @@ public class ControleJogoLocal extends ControleRecursos
 	public boolean isReabastacimento() {
 		return reabastacimento;
 	}
+
+	public boolean isSafetyCar() {
+		return safetyCar;
+	}
+	
 }

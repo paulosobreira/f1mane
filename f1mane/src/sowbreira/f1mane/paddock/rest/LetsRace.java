@@ -212,8 +212,9 @@ public class LetsRace {
 							.equals(piloto.getNomeJogador())) {
 						return Response.status(200).entity(dadosJogo).build();
 					} else {
-						return Response.status(400).entity("Piloto "
-								+ piloto.getNome() + " já selecionado").build();
+						MsgSrv msgSrv = new MsgSrv(Lang.msgRest("257", new String[]{
+								piloto.getNome(), piloto.getNomeJogador()}));
+						return Response.status(400).entity(msgSrv).build();
 					}
 				}
 			}
@@ -327,6 +328,7 @@ public class LetsRace {
 		dadosCriarJogo.setErs(temporadasDefauts.getErs());
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
+		dadosCriarJogo.setSafetyCar(false);
 		if (temporadasDefauts.getReabastecimento()) {
 			dadosCriarJogo.setCombustivel(50);
 		} else {

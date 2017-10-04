@@ -36,6 +36,7 @@ public class DadosCriarJogo implements Serializable {
 	private boolean trocaPneu;
 	private boolean ers;
 	private boolean drs;
+	private boolean safetyCar = true;
 
 	public String getNomeCampeonato() {
 		return nomeCampeonato;
@@ -199,6 +200,14 @@ public class DadosCriarJogo implements Serializable {
 
 	public void setIdPiloto(int idPiloto) {
 		this.idPiloto = idPiloto;
+	}
+
+	public boolean isSafetyCar() {
+		return safetyCar;
+	}
+
+	public void setSafetyCar(boolean safetyCar) {
+		this.safetyCar = safetyCar;
 	}
 
 }

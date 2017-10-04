@@ -237,6 +237,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			trocaPneu = dadosCriarJogo.isTrocaPneu();
 			ers = dadosCriarJogo.isErs();
 			drs = dadosCriarJogo.isDrs();
+			safetyCar = dadosCriarJogo.isSafetyCar();
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 		}
