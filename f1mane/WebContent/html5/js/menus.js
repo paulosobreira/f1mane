@@ -79,13 +79,13 @@ function dadosJogo() {
 				td2.append(pilotos[i].nomeCarro);
 				var tr = $('<tr style="cursor: pointer; cursor: hand" />');
 				var capacete = $('<img class="img-responsive img-center"/>');
-//				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id='
-//						+ pilotos[i].id + '&temporada=' + temporadaSelecionada);
+				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id='
+						+ pilotos[i].id + '&temporada=' + temporadaSelecionada);
 				td1.append(capacete);
 				tr.append(td1);
 				var carroLado = $('<img class="img-responsive img-center"/>');
-//				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id='
-//						+ pilotos[i].id + '&temporada=' + temporadaSelecionada);
+				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id='
+						+ pilotos[i].id + '&temporada=' + temporadaSelecionada);
 				td2.append(carroLado);
 				if(pilotos[i].nomeJogador){
 					tr.addClass('info');
@@ -99,6 +99,7 @@ function dadosJogo() {
 					$('#pilotos').find('tr').removeClass('active');
 					tr.addClass('active');
 					idPilotoSelecionado = pilotos[i].id;
+					mostrarEntrarJogo();
 				});
 			});
 			$('#detalheTemporada').removeClass('hidden');
@@ -106,7 +107,8 @@ function dadosJogo() {
 
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			console.log(xhRequest.status + '  ' + xhRequest.responseText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText+ ' '+ErrorText);
+			dadosJogo();
 		}
 	});
 }
@@ -129,6 +131,7 @@ function jogar() {
 			window.location.href = "corrida.html";
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			alert(xhRequest.responseJSON.messageString);
 			console.log('jogar() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -220,13 +223,13 @@ function selecionaTemporada(temporada) {
 				td2.append(pilotos[i].nomeCarro);
 				var tr = $('<tr style="cursor: pointer; cursor: hand" />');
 				var capacete = $('<img class="img-responsive img-center"/>');
-//				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id='
-//						+ pilotos[i].id + '&temporada=' + temporada);
+				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id='
+						+ pilotos[i].id + '&temporada=' + temporada);
 				td1.append(capacete);
 				tr.append(td1);
 				var carroLado = $('<img class="img-responsive img-center"/>');
-//				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id='
-//						+ pilotos[i].id + '&temporada=' + temporada);
+				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id='
+						+ pilotos[i].id + '&temporada=' + temporada);
 				td2.append(carroLado);
 				tr.append(td2);
 				$('#pilotos').append(tr);

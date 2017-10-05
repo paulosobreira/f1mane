@@ -157,7 +157,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				.hasNext();) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
-			if (dadosParticiparJogo.getPiloto().equals(valor.getPiloto())) {
+			System.out.println("dadosParticiparJogo.getIdPiloto() "
+					+ dadosParticiparJogo.getIdPiloto());
+			if (dadosParticiparJogo.getIdPiloto() == valor.getIdPiloto()) {
 				return new MsgSrv(Lang.msg("257",
 						new String[]{dadosParticiparJogo.getPiloto(), key}));
 
@@ -167,12 +169,11 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		Piloto pilotoSelecionado = null;
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
-					|| piloto.getId() == dadosCriarJogo.getIdPiloto()) {
+			if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 				pilotoDisponivel = true;
 				pilotoSelecionado = piloto;
 			}
-			if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
+			if (piloto.getId() == dadosParticiparJogo.getIdPiloto()
 					&& piloto.isDesqualificado()) {
 				return new MsgSrv(Lang.msg("258",
 						new String[]{dadosParticiparJogo.getPiloto()}));

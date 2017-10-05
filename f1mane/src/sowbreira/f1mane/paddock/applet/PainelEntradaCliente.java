@@ -529,6 +529,7 @@ public class PainelEntradaCliente {
 		dadosParticiparJogo.setAsa(asa);
 		dadosParticiparJogo.setCombustivel(combustivel);
 		dadosParticiparJogo.setPiloto(piloto.getNome());
+		dadosParticiparJogo.setIdPiloto(piloto.getId());
 	}
 
 	public DadosCriarJogo getDadosCriarJogo() {

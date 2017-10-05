@@ -190,12 +190,14 @@ public class LetsRace {
 		/**
 		 * Criar Jogo
 		 */
+		boolean criarJogo = false;
 		if (statusJogo == null) {
 			statusJogo = controlePaddock.criarJogo(clientPaddockPack);
 			Response erro = processsaMensagem(statusJogo);
 			if (erro != null) {
 				return erro;
 			}
+			criarJogo = true;
 		} else {
 			/**
 			 * Entrar Jogo
@@ -212,9 +214,11 @@ public class LetsRace {
 							.equals(piloto.getNomeJogador())) {
 						return Response.status(200).entity(dadosJogo).build();
 					} else {
-						MsgSrv msgSrv = new MsgSrv(Lang.msgRest("257", new String[]{
-								piloto.getNome(), piloto.getNomeJogador()}));
-						return Response.status(400).entity(msgSrv).build();
+
+						// MsgSrv msgSrv = new MsgSrv(Lang.msgRest("257", new
+						// String[]{
+						// piloto.getNome(), piloto.getNomeJogador()}));
+						// return Response.status(400).entity(msgSrv).build();
 					}
 				}
 			}
@@ -224,7 +228,7 @@ public class LetsRace {
 		/**
 		 * Preenchento todos possiveis campos para nome do jogo Bagunça...
 		 */
-		clientPaddockPack.setDadosCriarJogo(srvPaddockPack.getDadosCriarJogo());
+		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 		clientPaddockPack.getDadosJogoCriado()
 				.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
 		clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
@@ -242,7 +246,7 @@ public class LetsRace {
 		/**
 		 * Iniciar Jogo
 		 */
-		if (statusJogo != null) {
+		if (criarJogo && statusJogo != null) {
 			statusJogo = controlePaddock.iniciaJogo(clientPaddockPack);
 			Response erro = processsaMensagem(statusJogo);
 			if (erro != null) {
@@ -254,20 +258,20 @@ public class LetsRace {
 
 	private Response processsaMensagem(Object objeto) {
 		if (objeto == null) {
-			return Response.status(400).entity(Html.escapeHtml("Objeto Nulo."))
+			return Response.status(400).entity(new MsgSrv("Objeto Nulo."))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		if (objeto instanceof MsgSrv) {
 			MsgSrv msgSrv = (MsgSrv) objeto;
 			return Response.status(400)
-					.entity(Html.escapeHtml(
+					.entity(new MsgSrv(
 							Lang.decodeTextoKey(msgSrv.getMessageString())))
-					.type(MediaType.TEXT_HTML).build();
+					.type(MediaType.APPLICATION_JSON).build();
 		}
 		if (objeto instanceof ErroServ) {
 			ErroServ erroServ = (ErroServ) objeto;
 			return Response.status(500)
-					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
+					.entity(new MsgSrv(erroServ.obterErroFormatado()))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		return null;
