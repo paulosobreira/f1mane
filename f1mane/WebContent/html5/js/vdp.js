@@ -1,7 +1,6 @@
 /**
  * Controle video e desenho
  */
-var carrosImgMap;
 var mapaIdNos;
 var cvRotate = document.createElement('canvas');
 var ctxRotate = cvRotate.getContext('2d');
@@ -21,7 +20,6 @@ function vdp_desenha() {
 	vdp_desenhaObjs();
 	vdp_desenhaCarrosCima();
 }
-
 
 function vdp_centralizaPilotoSelecionado() {
 	if (dadosParciais == null || dadosParciais.posisPack == null
@@ -100,7 +98,7 @@ function vdp_desenhaCarrosCima() {
 			|| carrosImgMap == null || imgBg.src == "") {
 		return;
 	}
-
+	maneContext.beginPath();
 	var posicaoPilotos = dadosParciais.posisPack;
 	for (i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
@@ -118,19 +116,36 @@ function vdp_desenhaCarrosCima() {
 				var frenteCar = circuito.pistaFull[piloto.idNo - 5];
 				var trazCar = circuito.pistaFull[piloto.idNo + 5];
 				angulo = gu_calculaAngulo(frenteCar, trazCar, 0);
-				maneContext.fillText(pilotosMap.get(piloto.idPiloto).nome,
-						ponto.x - ptBg.x, ponto.y - ptBg.y);
 			}
 
-			if (carrosImgMap != null && desenhaImagens) {
+			if (carrosImgMap != null) {
 				var imgCarro = carrosImgMap.get(piloto.idPiloto);
 				var x = ponto.x - ptBg.x - (imgCarro.width / 2);
 				var y = ponto.y - ptBg.y - (imgCarro.height / 2);
-				maneContext.drawImage(vdp_rotacionarCarro(imgCarro, angulo), x,
-						y);
+
+				if(idPilotoSelecionado == piloto.idPiloto){
+					maneContext.strokeStyle = '#00FF00';
+					maneContext.rect(x-5, y, 80, 20);
+				}else if(piloto.humano){
+					maneContext.strokeStyle = '#FFFF00';
+					maneContext.rect(x-5, y, 80, 20);
+				}	
+				
+				maneContext.fillStyle = corFundo
+				maneContext.fillRect(x - 5, y, 80, 20);
+				maneContext.font = '14px sans-serif';
+				maneContext.fillStyle = "black"
+				maneContext.fillText(pilotosMap.get(piloto.idPiloto).nome, x, y+15);
+
+				if(desenhaImagens){
+					maneContext.drawImage(vdp_rotacionarCarro(imgCarro, angulo), x,
+							y);
+				}
 			}
 		}
 	}
+	maneContext.closePath();
+	maneContext.stroke();
 }
 
 function vdp_desenhaObjs() {

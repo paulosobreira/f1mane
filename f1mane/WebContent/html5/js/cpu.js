@@ -12,6 +12,8 @@ var idPilotoSelecionado;
 var nomeJogo;
 var alternador = true;
 var alternadorValor = 0;
+var carrosImgMap;
+var carrosLadoImgMap;
 
 
 // update canvas with some information and animation
@@ -41,12 +43,17 @@ function cpu_main() {
 					dadosJogo.pilotos[i]);
 		}
 		carrosImgMap = new Map();
+		carrosLadoImgMap = new Map();
 		for (i = 0; i < dadosJogo.pilotos.length; i++) {
 			var pilotos = dadosJogo.pilotos[i];
 			var imgCarro = new Image();
 			imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo="
 					+ dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
 			carrosImgMap.set(pilotos.id, imgCarro);
+			var imgCarroLado = new Image();
+			imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id="
+					+ pilotos.id + "&temporada=" + dadosJogo.temporada;
+			carrosLadoImgMap.set(pilotos.id, imgCarroLado);
 		}
 		console.log('cpu_main rest_ciruito()');
 		rest_ciruito();
@@ -59,7 +66,7 @@ function cpu_main() {
 		delay = 500;
 		rest_dadosParciais();
 		vdp_desenha();
-		ctl_desenhaControles();
+		ctl_desenha();
 		cpu_altenador();
 	} else {
 		console.log('cpu_main dadosJogo:' + dadosJogo + ' circuito:' + circuito

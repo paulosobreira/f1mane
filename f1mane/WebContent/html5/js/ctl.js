@@ -2,75 +2,122 @@
  * Controle comandos no jogo
  */
 var controles = [];
-var largura, altura;
+var largura, altura, centroX;
 var cargaErs;
+var corFundo = "rgba(255, 255, 255, 0.6)";
 
-maneCanvas.addEventListener('click',
-		function(event) {
-			var x = event.pageX;
-			var y = event.pageY;
+function ctl_desenha() {
+	if (dadosParciais == null) {
+		return;
+	}
+	var evalX = false;
+	var evalY = false;
+	if (largura != maneCanvas.width) {
+		evalX = true;
+	}
+	if (altura != maneCanvas.height) {
+		evalY = true;
+	}
+	largura = maneCanvas.width;
+	altura = maneCanvas.height;
+	centroX = largura/2; 
+	ctl_desenhaInfoEsquerda();
+	ctl_desenhaInfoDireita();
+	ctl_desenhaInfoBaixo();
+	ctl_desenhaControles(evalX,evalY);
+}
 
-			var clickControle = false;
-			controles
-					.forEach(function(controle) {
-						if (y > controle.y && y < controle.y + controle.height
-								&& x > controle.x
-								&& x < controle.x + controle.width) {
-							var validaControle = ctl_validaControle(controle);
-							if (validaControle) {
-								return;
-							}
+function ctl_desenhaControles(evalX,evalY){
+	controles.forEach(function(controle) {
+		var validaControle = ctl_validaControle(controle);
+		if (validaControle) {
+			return;
+		}
 
-							clickControle = true;
-							if (controle.tipo == 'controleMotor') {
-								rest_potenciaMotor(controle.valor);
-							}
-							if (controle.tipo == 'controlePiloto') {
-								rest_agressividadePiloto(controle.valor);
-							}
-							if (controle.tipo == 'Ers') {
-								rest_ers();
-							}
-							if (controle.tipo == 'Drs') {
-								rest_drs();
-							}
-							if (controle.tipo == 'Box') {
-								rest_boxPiloto(!dadosParciais.box,
-										dadosParciais.tpPneusBox,
-										dadosParciais.combustBox,
-										dadosParciais.asaBox);
-							}
-							if (controle.tipo == 'Pneu') {
-								rest_boxPiloto(true, controle.valor,
-										dadosParciais.combustBox,
-										dadosParciais.asaBox);
-							}
-							if (controle.tipo == 'Asa') {
-								rest_boxPiloto(true, dadosParciais.tpPneusBox,
-										dadosParciais.combustBox,
-										controle.valor);
-							}
-							if (controle.tipo == 'Combustivel') {
-								if (controle.valor == '+') {
-									rest_boxPiloto(true,
-											dadosParciais.tpPneusBox,
-											dadosParciais.combustBox + 10,
-											dadosParciais.asaBox);
-								} else if (controle.valor == '-') {
-									rest_boxPiloto(true,
-											dadosParciais.tpPneusBox,
-											dadosParciais.combustBox - 10,
-											dadosParciais.asaBox);
-								}
+		if (evalY && controle.evalY) {
+			controle.y = eval(controle.evalY);
+		}
+		if (evalX && controle.evalX) {
+			controle.x = eval(controle.evalX);
+		}
+		maneContext.beginPath();
 
-							}
-						}
-					});
-			if (!clickControle) {
-				ctl_mudaTracadoPiloto(event);
+		maneContext.fillStyle = corFundo
+		maneContext.fillRect(controle.x, controle.y, controle.width,
+				controle.height);
+		maneContext.strokeStyle = controle.cor;
+
+		if (controle.tipo == 'controleMotor') {
+			if (dadosParciais.giro == 1 && controle.valor == 'GIRO_MIN') {
+				maneContext.strokeStyle = '#00FF00';
+			} else if (dadosParciais.giro == 5
+					&& controle.valor == 'GIRO_NOR') {
+				maneContext.strokeStyle = '#FFFF00';
+			} else if (dadosParciais.giro == 9
+					&& controle.valor == 'GIRO_MAX') {
+				maneContext.strokeStyle = '#FF0000';
 			}
+		}
+		if (controle.tipo == 'controlePiloto') {
+			if (dadosParciais.modoPilotar == 'LENTO'
+					&& controle.valor == 'LENTO') {
+				maneContext.strokeStyle = '#00FF00';
+			} else if (dadosParciais.modoPilotar == 'NORMAL'
+					&& controle.valor == 'NORMAL') {
+				maneContext.strokeStyle = '#FFFF00';
+			} else if (dadosParciais.modoPilotar == 'AGRESSIVO'
+					&& controle.valor == 'AGRESSIVO') {
+				maneContext.strokeStyle = '#FF0000';
+			}
+		}
 
-		}, false);
+		if (controle.tipo == 'Ers' && dadosJogo.ers) {
+			if (!cargaErs) {
+				cargaErs = dadosParciais.cargaErs;
+			}
+			if (dadosParciais.cargaErs != cargaErs) {
+				cargaErs = dadosParciais.cargaErs;
+				maneContext.strokeStyle = '#00FF00';
+			}
+		}
+
+		if (controle.tipo == 'Drs' && dadosJogo.drs
+				&& dadosParciais.asa == 'MENOS_ASA') {
+			maneContext.strokeStyle = '#00FF00';
+		}
+
+		if (controle.tipo == 'Pneu'
+				&& dadosParciais.tpPneusBox == controle.valor) {
+			maneContext.strokeStyle = '#FFFF00';
+		}
+
+		if (controle.tipo == 'Asa'
+				&& dadosParciais.asaBox == controle.valor) {
+			maneContext.strokeStyle = '#FFFF00';
+		}
+
+		if (controle.tipo == 'CombustivelValor') {
+			controle.valor = dadosParciais.combustBox;
+		}
+
+		maneContext.rect(controle.x, controle.y, controle.width,
+				controle.height);
+		maneContext.font = '30px sans-serif';
+		maneContext.fillStyle = "black"
+		if (controle.centralizaTexto) {
+			maneContext.fillText(controle.exibir, controle.x
+					+ (controle.width / 2) - 10, controle.y
+					+ (controle.height / 2) + 10);
+		} else {
+			maneContext.fillText(controle.exibir, controle.x + 5,
+					controle.y + (controle.height / 2) + 10);
+
+		}
+		maneContext.closePath();
+		maneContext.stroke();
+	});
+
+}
 
 function ctl_mudaTracadoPiloto(event) {
 	var piloto = dadosParciais.posisPack.posis[posicaoCentraliza];
@@ -133,114 +180,17 @@ function ctl_mudaTracadoPiloto(event) {
 	}
 }
 
-function ctl_desenhaControles() {
-	if (dadosParciais == null) {
-		return;
-	}
-	var evalX = false;
-	var evalY = false;
-	if (largura != maneCanvas.width) {
-		evalX = true;
-	}
-	if (altura != maneCanvas.height) {
-		evalY = true;
-	}
-	ctl_desenhaInfoEsquerda();
-	ctl_desenhaInfoDireita();
-	largura = maneCanvas.width;
-	altura = maneCanvas.height;
-	// Render elements.
-	controles
-			.forEach(function(controle) {
-				var validaControle = ctl_validaControle(controle);
-				if (validaControle) {
-					return;
-				}
 
-				if (evalY && controle.evalY) {
-					controle.y = eval(controle.evalY);
-				}
-				if (evalX && controle.evalX) {
-					controle.x = eval(controle.evalX);
-				}
-				maneContext.beginPath();
+function ctl_desenhaInfoBaixo(){
+	var imgCarro = carrosLadoImgMap.get(parseInt(idPilotoSelecionado));
+	
+	maneContext.drawImage(imgCarro, centroX - imgCarro.width - 40,
+			altura - imgCarro.height - 10);
 
-				maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
-				maneContext.fillRect(controle.x, controle.y, controle.width,
-						controle.height);
-				maneContext.strokeStyle = controle.cor;
-
-				if (controle.tipo == 'controleMotor') {
-					if (dadosParciais.giro == 1 && controle.valor == 'GIRO_MIN') {
-						maneContext.strokeStyle = '#00FF00';
-					} else if (dadosParciais.giro == 5
-							&& controle.valor == 'GIRO_NOR') {
-						maneContext.strokeStyle = '#FFFF00';
-					} else if (dadosParciais.giro == 9
-							&& controle.valor == 'GIRO_MAX') {
-						maneContext.strokeStyle = '#FF0000';
-					}
-				}
-				if (controle.tipo == 'controlePiloto') {
-					if (dadosParciais.modoPilotar == 'LENTO'
-							&& controle.valor == 'LENTO') {
-						maneContext.strokeStyle = '#00FF00';
-					} else if (dadosParciais.modoPilotar == 'NORMAL'
-							&& controle.valor == 'NORMAL') {
-						maneContext.strokeStyle = '#FFFF00';
-					} else if (dadosParciais.modoPilotar == 'AGRESSIVO'
-							&& controle.valor == 'AGRESSIVO') {
-						maneContext.strokeStyle = '#FF0000';
-					}
-				}
-
-				if (controle.tipo == 'Ers' && dadosJogo.ers) {
-					if (!cargaErs) {
-						cargaErs = dadosParciais.cargaErs;
-					}
-					if (dadosParciais.cargaErs != cargaErs) {
-						cargaErs = dadosParciais.cargaErs;
-						maneContext.strokeStyle = '#00FF00';
-					}
-				}
-
-				if (controle.tipo == 'Drs' && dadosJogo.drs
-						&& dadosParciais.asa == 'MENOS_ASA') {
-					maneContext.strokeStyle = '#00FF00';
-				}
-
-				if (controle.tipo == 'Pneu'
-						&& dadosParciais.tpPneusBox == controle.valor) {
-					maneContext.strokeStyle = '#FFFF00';
-				}
-
-				if (controle.tipo == 'Asa'
-						&& dadosParciais.asaBox == controle.valor) {
-					maneContext.strokeStyle = '#FFFF00';
-				}
-
-				if (controle.tipo == 'CombustivelValor') {
-					controle.valor = dadosParciais.combustBox;
-				}
-
-				maneContext.rect(controle.x, controle.y, controle.width,
-						controle.height);
-				maneContext.font = '30px sans-serif';
-				maneContext.fillStyle = "black"
-				if (controle.centralizaTexto) {
-					maneContext.fillText(controle.exibir, controle.x
-							+ (controle.width / 2) - 10, controle.y
-							+ (controle.height / 2) + 10);
-				} else {
-					maneContext.fillText(controle.exibir, controle.x + 5,
-							controle.y + (controle.height / 2) + 10);
-
-				}
-				maneContext.closePath();
-				maneContext.stroke();
-			});
+	maneContext.drawImage(imgCarro, centroX + 40,
+			altura - imgCarro.height - 10);
+	
 }
-
 
 function ctl_desenhaInfoDireita() {
 	if (!dadosParciais) {
@@ -253,7 +203,7 @@ function ctl_desenhaInfoDireita() {
 	var y = 10;
 
 	if(dadosParciais.melhorVolta && (altura>480 || !alternador)){
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 110, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -263,7 +213,7 @@ function ctl_desenhaInfoDireita() {
 	}
 
 	if(dadosParciais.ultima1 && (altura>480 ||!alternador)){
-			maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+			maneContext.fillStyle = corFundo
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
@@ -272,7 +222,7 @@ function ctl_desenhaInfoDireita() {
 			y += 30;
 	
 			if(dadosParciais.ultima2){
-				maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+				maneContext.fillStyle = corFundo
 				maneContext.fillRect(x, y, 110, 20);
 				maneContext.font = '14px sans-serif';
 				maneContext.fillStyle = "black"
@@ -281,7 +231,7 @@ function ctl_desenhaInfoDireita() {
 			}
 			
 			if(dadosParciais.ultima3){
-				maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+				maneContext.fillStyle = corFundo
 				maneContext.fillRect(x, y, 110, 20);
 				maneContext.font = '14px sans-serif';
 				maneContext.fillStyle = "black"
@@ -290,7 +240,7 @@ function ctl_desenhaInfoDireita() {
 			}
 			
 			if(dadosParciais.ultima4){
-				maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+				maneContext.fillStyle = corFundo
 				maneContext.fillRect(x, y, 110, 20);
 				maneContext.font = '14px sans-serif';
 				maneContext.fillStyle = "black"
@@ -304,15 +254,18 @@ function ctl_desenhaInfoDireita() {
 	if(posicaoPilotos && (altura>480 ||(alternador || !dadosParciais.melhorVoltaCorrida))){
 		var piloto = posicaoPilotos.posis[0];
 		var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 110, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
 		maneContext.fillText('1 '+nomePiloto, x + 5, y + 15);
-		if(posicaoCentraliza==0){
+		if(idPilotoSelecionado == piloto.idPiloto){
+			maneContext.strokeStyle = '#00FF00';
+			maneContext.rect(x, y, 110, 20);
+		}else if(piloto.humano){
 			maneContext.strokeStyle = '#FFFF00';
 			maneContext.rect(x, y, 110, 20);
-		}
+		}	
 
 		y += 30;
 		var min = posicaoCentraliza-2;
@@ -329,12 +282,12 @@ function ctl_desenhaInfoDireita() {
 		for (i = min; i < max; i++) {
 			var piloto = posicaoPilotos.posis[i];
 			var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
-			maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+			maneContext.fillStyle = corFundo
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
 			maneContext.fillText((i+1)+' '+nomePiloto, x + 5, y + 15);
-			if(posicaoCentraliza==i){
+			if(idPilotoSelecionado == piloto.idPiloto){
 				maneContext.strokeStyle = '#00FF00';
 				maneContext.rect(x, y, 110, 20);
 			}else if(piloto.humano){
@@ -360,7 +313,7 @@ function ctl_desenhaInfoEsquerda() {
 
 	if(altura>480 || !alternador){
 	
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 120, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -368,7 +321,7 @@ function ctl_desenhaInfoEsquerda() {
 				
 		y += 30;
 		
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -378,7 +331,7 @@ function ctl_desenhaInfoEsquerda() {
 		y += 30;	
 		
 		if(dadosParciais.melhorVoltaCorrida){	
-			maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+			maneContext.fillStyle = corFundo
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
@@ -387,7 +340,7 @@ function ctl_desenhaInfoEsquerda() {
 			y += 30;
 		}		
 		
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -406,7 +359,7 @@ function ctl_desenhaInfoEsquerda() {
 		y += 30;	
 		
 		
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -419,7 +372,7 @@ function ctl_desenhaInfoEsquerda() {
 	
 	if(altura>480 || alternador){
 	
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -432,7 +385,7 @@ function ctl_desenhaInfoEsquerda() {
 		
 		y += 30;
 			
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -446,7 +399,7 @@ function ctl_desenhaInfoEsquerda() {
 		
 		y += 30;
 		
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -460,7 +413,7 @@ function ctl_desenhaInfoEsquerda() {
 	
 		y += 30;
 		
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -474,7 +427,7 @@ function ctl_desenhaInfoEsquerda() {
 	
 		y += 30;
 		
-		maneContext.fillStyle = "rgba(255, 255, 255, 0.4)"
+		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
@@ -734,3 +687,71 @@ controles.push({
 	evalX : '(window.innerWidth/2 + 40);',
 	x : (window.innerWidth / 2 + 40)
 });
+
+
+maneCanvas.addEventListener('click',
+		function(event) {
+			var x = event.pageX;
+			var y = event.pageY;
+
+			var clickControle = false;
+			controles
+					.forEach(function(controle) {
+						if (y > controle.y && y < controle.y + controle.height
+								&& x > controle.x
+								&& x < controle.x + controle.width) {
+							var validaControle = ctl_validaControle(controle);
+							if (validaControle) {
+								return;
+							}
+
+							clickControle = true;
+							if (controle.tipo == 'controleMotor') {
+								rest_potenciaMotor(controle.valor);
+							}
+							if (controle.tipo == 'controlePiloto') {
+								rest_agressividadePiloto(controle.valor);
+							}
+							if (controle.tipo == 'Ers') {
+								rest_ers();
+							}
+							if (controle.tipo == 'Drs') {
+								rest_drs();
+							}
+							if (controle.tipo == 'Box') {
+								rest_boxPiloto(!dadosParciais.box,
+										dadosParciais.tpPneusBox,
+										dadosParciais.combustBox,
+										dadosParciais.asaBox);
+							}
+							if (controle.tipo == 'Pneu') {
+								rest_boxPiloto(true, controle.valor,
+										dadosParciais.combustBox,
+										dadosParciais.asaBox);
+							}
+							if (controle.tipo == 'Asa') {
+								rest_boxPiloto(true, dadosParciais.tpPneusBox,
+										dadosParciais.combustBox,
+										controle.valor);
+							}
+							if (controle.tipo == 'Combustivel') {
+								if (controle.valor == '+') {
+									rest_boxPiloto(true,
+											dadosParciais.tpPneusBox,
+											dadosParciais.combustBox + 10,
+											dadosParciais.asaBox);
+								} else if (controle.valor == '-') {
+									rest_boxPiloto(true,
+											dadosParciais.tpPneusBox,
+											dadosParciais.combustBox - 10,
+											dadosParciais.asaBox);
+								}
+
+							}
+						}
+					});
+			if (!clickControle) {
+				ctl_mudaTracadoPiloto(event);
+			}
+
+		}, false);

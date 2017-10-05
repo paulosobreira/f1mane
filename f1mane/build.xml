@@ -13,7 +13,8 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetPadrao">
-	<property name="TOMCAT_HOME" value="E:\apache-tomcat-7.0.35" />
+	<!-- <property name="TOMCAT_HOME" value="E:\apache-tomcat-7.0.35" /> -->
+	<property name="TOMCAT_HOME" value="C:\Java\apache-tomcat-7.0.73" />
 	<property name="HOST" value="games-sowbreira.rhcloud.com" />
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
@@ -28,13 +29,13 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarLocalJnlp,criarZipOnline,criarWar,limpaJars">
+	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarLocalJnlp,atualizarVersaoHtml,criarZipOnline,criarWar,limpaJars">
 	</target>
 
-	<target name="targetPadraoNoLibs" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,criarWarNoLibs,limpaJars">
+	<target name="targetPadraoNoLibs" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,atualizarVersaoHtml,criarWarNoLibs,limpaJars">
 	</target>
 
-	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,criarZipOnline,criarWar,limpaJars">
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,atualizarVersaoHtml,criarZipOnline,criarWar,limpaJars">
 	</target>
 
 	<target name="targetGerarZip" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,sign_jar,criarZip,limpaJars">
@@ -65,6 +66,7 @@
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="**/*.jnlp" />
+				<include name="**/*.html" />
 			</fileset>
 			<fileset dir=".">
 				<include name="F1-Mane-Online-en-us.bat" />
@@ -128,9 +130,11 @@
 		<war compress="on" destfile="${TOMCAT_HOME}/webapps/f1mane.war">
 			<fileset dir="WebContent">
 				<exclude name="**/*.jnlp" />
+				<exclude name="**/*.html" />
 			</fileset>
 			<fileset dir="build">
 				<include name="**/*.jnlp" />
+				<include name="**/*.html" />
 			</fileset>
 		</war>
 		<delete dir="WebContent/sowbreira" />
@@ -150,6 +154,7 @@
 			</fileset>
 			<fileset dir="build">
 				<include name="**/*.jnlp" />
+				<include name="**/*.html" />
 			</fileset>
 		</war>
 		<delete dir="WebContent/sowbreira" />
@@ -215,7 +220,7 @@
 
 
 	<target name="criarZipOnline">
-<!--
+		<!--
 		<zip destfile="WebContent/f1mane.zip" compress="true">
 			<fileset dir="build">
 				<include name="F1-Mane-Online-en-us.bat" />
@@ -255,6 +260,13 @@
 		<replace dir="build" value="${HOST}" token="{host}">
 			<include name="*.jnlp" />
 			<include name="*.bat" />
+		</replace>
+	</target>
+
+	<target name="atualizarVersaoHtml" description="Atualizar Versao HTML">
+		<property file="src/sowbreira/f1mane/paddock/client.properties" prefix="client"/>
+		<replace dir="build" value="${client.versao}" token="{versao}">
+			<include name="**/*.html" />
 		</replace>
 	</target>
 
