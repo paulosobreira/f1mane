@@ -4,6 +4,8 @@
 var circuito;
 var dadosJogo;
 var dadosParciais;
+var nomeJogo;
+
 var ativo = true;
 var delay = 100;
 
@@ -11,7 +13,6 @@ var token;
 var idPilotoSelecionado;
 var posicaoCentraliza = 0;
 
-var nomeJogo;
 var alternador = true;
 var alternadorValor = 0;
 
@@ -43,28 +44,7 @@ function cpu_main() {
 		rest_dadosJogo(nomeJogo);
 	}
 	if (dadosJogo != null && circuito == null) {
-		for (i = 0; i < dadosJogo.pilotos.length; i++) {
-			pilotosMap.set(dadosJogo.pilotos[i].id, dadosJogo.pilotos[i]);
-		}
-		carrosImgMap = new Map();
-		carrosLadoImgMap = new Map();
-		capaceteImgMap = new Map();
-		for (i = 0; i < dadosJogo.pilotos.length; i++) {
-			var pilotos = dadosJogo.pilotos[i];
-			var imgCarro = new Image();
-			imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo="
-					+ dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
-			carrosImgMap.set(pilotos.id, imgCarro);
-			var imgCarroLado = new Image();
-			imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id="
-					+ pilotos.id + "&temporada=" + dadosJogo.temporada;
-			carrosLadoImgMap.set(pilotos.id, imgCarroLado);
-			
-			var imgCapacete = new Image();
-			imgCapacete.src = "/f1mane/rest/letsRace/capacete?id="
-				+ pilotos.id  + "&temporada=" + dadosJogo.temporada
-			capaceteImgMap.set(pilotos.id, imgCapacete);
-		}
+		cpu_carregaDadosPilotos();
 		console.log('cpu_main rest_ciruito()');
 		rest_ciruito();
 	}
@@ -75,23 +55,7 @@ function cpu_main() {
 	if (dadosJogo != null && circuito != null && ativo && imgBg.complete) {
 		delay = 500;
 		rest_dadosParciais();
-		if (dadosParciais) {
-			var posicaoPilotos = dadosParciais.posisPack;
-			for (i = 0; i < posicaoPilotos.posis.length; i++) {
-				var piloto = posicaoPilotos.posis[i];
-				if (piloto.idPiloto == idPilotoSelecionado) {
-					posicaoCentraliza = i;
-				}
-				var status = new String(piloto.status);
-				if (status.startsWith("P")) {
-					ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace(
-							"P", "")));
-				}
-			}
-			if(dadosParciais.texto){
-				console.log('dadosParciais.texto: '+dadosParciais.texto);				
-			}
-		}
+		cpu_dadosParciais();
 		vdp_desenha();
 		ctl_desenha();
 		cpu_altenador();
@@ -104,6 +68,54 @@ function cpu_main() {
 		console.log(dadosJogo.estado);
 	}
 }
+
+
+function cpu_dadosParciais(){
+	if (!dadosParciais) {
+		return;
+	}
+	var posicaoPilotos = dadosParciais.posisPack;
+	for (i = 0; i < posicaoPilotos.posis.length; i++) {
+		var piloto = posicaoPilotos.posis[i];
+		if (piloto.idPiloto == idPilotoSelecionado) {
+			posicaoCentraliza = i;
+		}
+		var status = new String(piloto.status);
+		if (status.startsWith("P")) {
+			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace(
+					"P", "")));
+		}
+	}
+	if(dadosParciais.texto){
+		console.log('dadosParciais.texto: '+dadosParciais.texto);				
+	}
+}
+
+function cpu_carregaDadosPilotos(){
+	for (i = 0; i < dadosJogo.pilotos.length; i++) {
+		pilotosMap.set(dadosJogo.pilotos[i].id, dadosJogo.pilotos[i]);
+	}
+	carrosImgMap = new Map();
+	carrosLadoImgMap = new Map();
+	capaceteImgMap = new Map();
+	for (i = 0; i < dadosJogo.pilotos.length; i++) {
+		var pilotos = dadosJogo.pilotos[i];
+		var imgCarro = new Image();
+		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo="
+				+ dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
+		carrosImgMap.set(pilotos.id, imgCarro);
+		var imgCarroLado = new Image();
+		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id="
+				+ pilotos.id + "&temporada=" + dadosJogo.temporada;
+		carrosLadoImgMap.set(pilotos.id, imgCarroLado);
+		
+		var imgCapacete = new Image();
+		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id="
+			+ pilotos.id  + "&temporada=" + dadosJogo.temporada
+		capaceteImgMap.set(pilotos.id, imgCapacete);
+	}
+}
+
 
 function cpu_altenador() {
 	if (alternador) {
