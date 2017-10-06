@@ -12,7 +12,6 @@ var ptBg = {
 	x : 0,
 	y : 0
 };
-var posicaoCentraliza = 0;
 
 function vdp_desenha() {
 	vdp_centralizaPilotoSelecionado();
@@ -102,9 +101,6 @@ function vdp_desenhaCarrosCima() {
 	for (i = 0; i < posicaoPilotos.posis.length; i++) {
 		maneContext.beginPath();
 		var piloto = posicaoPilotos.posis[i];
-		if (piloto.idPiloto == idPilotoSelecionado) {
-			posicaoCentraliza = i;
-		}
 		var ponto = vdp_obeterPonto(piloto);
 		if (ponto == null) {
 			continue;

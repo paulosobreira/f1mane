@@ -6,15 +6,20 @@ var dadosJogo;
 var dadosParciais;
 var ativo = true;
 var delay = 100;
-var pilotosMap = new Map();
+
 var token;
 var idPilotoSelecionado;
+var posicaoCentraliza = 0;
+
 var nomeJogo;
 var alternador = true;
 var alternadorValor = 0;
-var carrosImgMap;
-var carrosLadoImgMap;
 
+var pilotosMap = new Map();
+var carrosImgMap;
+var capaceteImgMap;
+var ptsPistaMap = new Map();
+var carrosLadoImgMap;
 
 // update canvas with some information and animation
 // var fps = new FpsCtrl(20, function(e) {
@@ -39,11 +44,11 @@ function cpu_main() {
 	}
 	if (dadosJogo != null && circuito == null) {
 		for (i = 0; i < dadosJogo.pilotos.length; i++) {
-			pilotosMap.set(dadosJogo.pilotos[i].id,
-					dadosJogo.pilotos[i]);
+			pilotosMap.set(dadosJogo.pilotos[i].id, dadosJogo.pilotos[i]);
 		}
 		carrosImgMap = new Map();
 		carrosLadoImgMap = new Map();
+		capaceteImgMap = new Map();
 		for (i = 0; i < dadosJogo.pilotos.length; i++) {
 			var pilotos = dadosJogo.pilotos[i];
 			var imgCarro = new Image();
@@ -54,6 +59,11 @@ function cpu_main() {
 			imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id="
 					+ pilotos.id + "&temporada=" + dadosJogo.temporada;
 			carrosLadoImgMap.set(pilotos.id, imgCarroLado);
+			
+			var imgCapacete = new Image();
+			imgCapacete.src = "/f1mane/rest/letsRace/capacete?id="
+				+ pilotos.id  + "&temporada=" + dadosJogo.temporada
+			capaceteImgMap.set(pilotos.id, imgCapacete);
 		}
 		console.log('cpu_main rest_ciruito()');
 		rest_ciruito();
@@ -65,6 +75,23 @@ function cpu_main() {
 	if (dadosJogo != null && circuito != null && ativo && imgBg.complete) {
 		delay = 500;
 		rest_dadosParciais();
+		if (dadosParciais) {
+			var posicaoPilotos = dadosParciais.posisPack;
+			for (i = 0; i < posicaoPilotos.posis.length; i++) {
+				var piloto = posicaoPilotos.posis[i];
+				if (piloto.idPiloto == idPilotoSelecionado) {
+					posicaoCentraliza = i;
+				}
+				var status = new String(piloto.status);
+				if (status.startsWith("P")) {
+					ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace(
+							"P", "")));
+				}
+			}
+			if(dadosParciais.texto){
+				console.log('dadosParciais.texto: '+dadosParciais.texto);				
+			}
+		}
 		vdp_desenha();
 		ctl_desenha();
 		cpu_altenador();
@@ -73,23 +100,23 @@ function cpu_main() {
 				+ ' ativo:' + ativo + ' imgBg.complete:' + imgBg.complete);
 		delay = 100;
 	}
-	if(dadosJogo){
+	if (dadosJogo) {
 		console.log(dadosJogo.estado);
 	}
 }
 
-function cpu_altenador(){
-	if(alternador){
+function cpu_altenador() {
+	if (alternador) {
 		alternadorValor++;
-		if(alternadorValor>20){
-			alternador=false;	
+		if (alternadorValor > 20) {
+			alternador = false;
 		}
-	}else{
+	} else {
 		alternadorValor--;
-		if(alternadorValor<-20){
-			alternador=true;	
+		if (alternadorValor < -20) {
+			alternador = true;
 		}
 	}
-} 
+}
 
 var main = setInterval(cpu_main, delay);
