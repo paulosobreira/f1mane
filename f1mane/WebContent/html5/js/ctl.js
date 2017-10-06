@@ -187,8 +187,11 @@ function ctl_desenhaInfoBaixo() {
 
 	var img1, img2;
 	var imgCap1, imgCap2;
+	var imgPneu1, imgPneu2;
 
 	var diff;
+	
+
 	
 	if (posicaoCentraliza == 0) {
 		img1 = carrosLadoImgMap.get(posicaoPilotos.posis[0].idPiloto);
@@ -198,6 +201,20 @@ function ctl_desenhaInfoBaixo() {
 		var ptsFrente = ptsPistaMap.get(posicaoPilotos.posis[0].idPiloto);
 		var ptsAtras = ptsPistaMap.get(posicaoPilotos.posis[1].idPiloto);
 		diff = formatarTempo(ptsFrente-ptsAtras);
+		if(dadosParciais.tpPneus == "TIPO_PNEU_MOLE"){
+			imgPneu1 = imgPneuM;
+		}else if(dadosParciais.tpPneus == "TIPO_PNEU_DURO"){
+			imgPneu1 = imgPneuD;
+		}else if(dadosParciais.tpPneus == "TIPO_PNEU_CHUVA"){
+			imgPneu1 = imgPneuC;
+		}
+		if(dadosParciais.tpPneusAtras == "TIPO_PNEU_MOLE"){
+			imgPneu2 = imgPneuM;
+		}else if(dadosParciais.tpPneusAtras == "TIPO_PNEU_DURO"){
+			imgPneu2 = imgPneuD;
+		}else if(dadosParciais.tpPneusAtras == "TIPO_PNEU_CHUVA"){
+			imgPneu2 = imgPneuC;
+		}
 	}else if (posicaoCentraliza == posicaoPilotos.posis.length-1) {
 		img1 = carrosLadoImgMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-2].idPiloto);
 		img2 = carrosLadoImgMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-1].idPiloto);
@@ -206,6 +223,21 @@ function ctl_desenhaInfoBaixo() {
 		var ptsFrente = ptsPistaMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-2].idPiloto);
 		var ptsAtras = ptsPistaMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-1].idPiloto);
 		diff = formatarTempo(ptsFrente-ptsAtras);
+		if(dadosParciais.tpPneusFrente == "TIPO_PNEU_MOLE"){
+			imgPneu1 = imgPneuM;
+		}else if(dadosParciais.tpPneusFrente == "TIPO_PNEU_DURO"){
+			imgPneu1 = imgPneuD;
+		}else if(dadosParciais.tpPneusFrente == "TIPO_PNEU_CHUVA"){
+			imgPneu1 = imgPneuC;
+		}
+		if(dadosParciais.tpPneus == "TIPO_PNEU_MOLE"){
+			imgPneu2 = imgPneuM;
+		}else if(dadosParciais.tpPneus == "TIPO_PNEU_DURO"){
+			imgPneu2 = imgPneuD;
+		}else if(dadosParciais.tpPneus == "TIPO_PNEU_CHUVA"){
+			imgPneu2 = imgPneuC;
+		}
+
 	}else{
 		var pilotoFrete = posicaoPilotos.posis[posicaoCentraliza-1];
 		var pilotoAtras = posicaoPilotos.posis[posicaoCentraliza+1];
@@ -219,11 +251,39 @@ function ctl_desenhaInfoBaixo() {
 			img2 = carrosLadoImgMap.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			imgCap1 = capaceteImgMap.get(pilotoFrete.idPiloto);
 			imgCap2 = capaceteImgMap.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+			if(dadosParciais.tpPneus == "TIPO_PNEU_MOLE"){
+				imgPneu2 = imgPneuM;
+			}else if(dadosParciais.tpPneus == "TIPO_PNEU_DURO"){
+				imgPneu2 = imgPneuD;
+			}else if(dadosParciais.tpPneus == "TIPO_PNEU_CHUVA"){
+				imgPneu2 = imgPneuC;
+			}
+			if(dadosParciais.tpPneusFrente == "TIPO_PNEU_MOLE"){
+				imgPneu1 = imgPneuM;
+			}else if(dadosParciais.tpPneusFrente == "TIPO_PNEU_DURO"){
+				imgPneu1 = imgPneuD;
+			}else if(dadosParciais.tpPneusFrente == "TIPO_PNEU_CHUVA"){
+				imgPneu1 = imgPneuC;
+			}
 		}else{
 			img1 = carrosLadoImgMap.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			img2 = carrosLadoImgMap.get(pilotoAtras.idPiloto);
 			imgCap1 = capaceteImgMap.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			imgCap2 = capaceteImgMap.get(pilotoAtras.idPiloto);
+			if(dadosParciais.tpPneus == "TIPO_PNEU_MOLE"){
+				imgPneu1 = imgPneuM;
+			}else if(dadosParciais.tpPneus == "TIPO_PNEU_DURO"){
+				imgPneu1 = imgPneuD;
+			}else if(dadosParciais.tpPneus == "TIPO_PNEU_CHUVA"){
+				imgPneu1 = imgPneuC;
+			}
+			if(dadosParciais.tpPneusAtras == "TIPO_PNEU_MOLE"){
+				imgPneu2 = imgPneuM;
+			}else if(dadosParciais.tpPneusAtras == "TIPO_PNEU_DURO"){
+				imgPneu2 = imgPneuD;
+			}else if(dadosParciais.tpPneusAtras == "TIPO_PNEU_CHUVA"){
+				imgPneu2 = imgPneuC;
+			}
 		}
 		diff = formatarTempo(ptsFrente-ptsAtras);
 	}
@@ -237,24 +297,20 @@ function ctl_desenhaInfoBaixo() {
 	if (img1) {
 		maneContext.drawImage(img1, centroX - img1.width - 40, altura
 				- img1.height - 10);
+		maneContext.drawImage(imgPneu1, centroX - imgPneu1.width - img1.width - 45, altura
+				- imgPneu1.height - 10);
 		if (imgCap1) {
-			maneContext.drawImage(imgCap1, centroX - imgCap1.width - img1.width - 45, altura
+			maneContext.drawImage(imgCap1, centroX - imgCap1.width - img1.width - 55, altura
 					- imgCap1.height - 10);
 		}
 	}
 	if (img2) {
 		maneContext.drawImage(img2, centroX + 40, altura - img2.height - 10);
+		maneContext.drawImage(imgPneu2, centroX + 45 + img2.width, altura - imgPneu2.height - 10);
 		if (imgCap2) {
-			maneContext.drawImage(imgCap2, centroX + 45 + img2.width, altura - imgCap2.height - 10);
+			maneContext.drawImage(imgCap2, centroX + 55 + img2.width, altura - imgCap2.height - 10);
 		}
 	}
-	if(alternador){
-
-	}else{
-
-
-	}
-
 }
 
 function ctl_desenhaInfoDireita() {

@@ -101,6 +101,7 @@ public class LetsRace {
 		}
 		DadosParciais dadosParciais = new DadosParciais();
 		dadosParciais.decode((String) dParciais);
+		dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto);
 		return Response.status(200).entity(dadosParciais).build();
 	}
 

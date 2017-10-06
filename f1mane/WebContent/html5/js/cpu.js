@@ -21,6 +21,7 @@ var carrosImgMap;
 var capaceteImgMap;
 var ptsPistaMap = new Map();
 var carrosLadoImgMap;
+var imgPneuM,imgPneuD,imgPneuC;
 
 // update canvas with some information and animation
 // var fps = new FpsCtrl(20, function(e) {
@@ -49,6 +50,12 @@ function cpu_main() {
 		rest_ciruito();
 	}
 	if (dadosJogo != null && circuito != null && imgBg.src == "") {
+		imgPneuM = new Image();
+		imgPneuM.src = "../img/pneuMole.png"
+		imgPneuD = new Image();
+		imgPneuD.src = "../img/pneuDuro.png"
+		imgPneuC = new Image();
+		imgPneuC.src = "../img/pneuChuva.png"
 		console.log('cpu_main vdp_carregaBackGround()');
 		vdp_carregaBackGround();
 	}
@@ -85,6 +92,9 @@ function cpu_dadosParciais(){
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace(
 					"P", "")));
 		}
+	}
+	if(dadosParciais.estado){
+		console.log('dadosParciais.estado: '+dadosParciais.estado);				
 	}
 	if(dadosParciais.texto){
 		console.log('dadosParciais.texto: '+dadosParciais.texto);				
