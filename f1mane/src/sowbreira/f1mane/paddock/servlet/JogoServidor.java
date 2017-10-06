@@ -157,8 +157,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				.hasNext();) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
-			System.out.println("dadosParticiparJogo.getIdPiloto() "
-					+ dadosParticiparJogo.getIdPiloto());
 			if (dadosParticiparJogo.getIdPiloto() == valor.getIdPiloto()) {
 				return new MsgSrv(Lang.msg("257",
 						new String[]{dadosParticiparJogo.getPiloto(), key}));

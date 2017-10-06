@@ -98,9 +98,9 @@ function vdp_desenhaCarrosCima() {
 			|| carrosImgMap == null || imgBg.src == "") {
 		return;
 	}
-	maneContext.beginPath();
 	var posicaoPilotos = dadosParciais.posisPack;
 	for (i = 0; i < posicaoPilotos.posis.length; i++) {
+		maneContext.beginPath();
 		var piloto = posicaoPilotos.posis[i];
 		if (piloto.idPiloto == idPilotoSelecionado) {
 			posicaoCentraliza = i;
@@ -143,9 +143,9 @@ function vdp_desenhaCarrosCima() {
 				}
 			}
 		}
+		maneContext.closePath();
+		maneContext.stroke();
 	}
-	maneContext.closePath();
-	maneContext.stroke();
 }
 
 function vdp_desenhaObjs() {
