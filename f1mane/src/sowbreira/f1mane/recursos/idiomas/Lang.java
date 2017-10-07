@@ -112,7 +112,6 @@ public class Lang {
 		}
 	}
 
-	
 	public static String msgRest(String key, Object[] strings) {
 		iniciaBundle();
 		if (key == null || "".equals(key)) {
@@ -126,7 +125,7 @@ public class Lang {
 			return key;
 		}
 	}
-	
+
 	public static String decodeTexto(String string) {
 		String[] array = string.split("¢");
 		StringBuffer retorno = new StringBuffer();
@@ -140,6 +139,9 @@ public class Lang {
 	}
 
 	public static String decodeTextoKey(String string) {
+		if (string == null) {
+			return string;
+		}
 		string = string.replaceAll("¢", "");
 		iniciaBundle();
 		if (string == null || "".equals(string)) {
@@ -192,7 +194,7 @@ public class Lang {
 				}
 				String load = "idiomas/mensagens_" + sufix + ".properties";
 				InputStream inputStream = CarregadorRecursos
-						.recursoComoStream(load);
+						.getCarregadorRecursos().recursoComoStream(load);
 				if (inputStream == null) {
 					Logger.logar("inputStream == null para " + load);
 					return;

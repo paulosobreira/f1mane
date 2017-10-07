@@ -4,6 +4,7 @@
 var controles = [];
 var largura, altura, centroX;
 var cargaErs;
+var telaCheia = false;
 var corFundo = "rgba(255, 255, 255, 0.6)";
 
 function ctl_desenha() {
@@ -42,10 +43,11 @@ function ctl_desenhaControles(evalX, evalY) {
 					controle.x = eval(controle.evalX);
 				}
 				maneContext.beginPath();
-
-				maneContext.fillStyle = corFundo
-				maneContext.fillRect(controle.x, controle.y, controle.width,
-						controle.height);
+				if (!controle.img) {
+					maneContext.fillStyle = corFundo
+					maneContext.fillRect(controle.x, controle.y,
+							controle.width, controle.height);
+				}
 				maneContext.strokeStyle = controle.cor;
 
 				if (controle.tipo == 'controleMotor') {
@@ -101,19 +103,26 @@ function ctl_desenhaControles(evalX, evalY) {
 					controle.valor = dadosParciais.combustBox;
 				}
 
-				maneContext.rect(controle.x, controle.y, controle.width,
-						controle.height);
 				maneContext.font = '30px sans-serif';
 				maneContext.fillStyle = "black"
-				if (controle.centralizaTexto) {
-					maneContext.fillText(controle.exibir, controle.x
-							+ (controle.width / 2) - 10, controle.y
-							+ (controle.height / 2) + 10);
+				if (controle.img) {
+					maneContext.rect(controle.x, controle.y,
+							controle.width + 5, controle.height + 5);
+					maneContext.drawImage(controle.img, controle.x, controle.y);
 				} else {
-					maneContext.fillText(controle.exibir, controle.x + 5,
-							controle.y + (controle.height / 2) + 10);
+					maneContext.rect(controle.x, controle.y, controle.width,
+							controle.height);
+					if (controle.centralizaTexto) {
+						maneContext.fillText(controle.exibir, controle.x
+								+ (controle.width / 2) - 10, controle.y
+								+ (controle.height / 2) + 10);
+					} else {
+						maneContext.fillText(controle.exibir, controle.x + 5,
+								controle.y + (controle.height / 2) + 10);
 
+					}
 				}
+
 				maneContext.closePath();
 				maneContext.stroke();
 			});
@@ -190,125 +199,141 @@ function ctl_desenhaInfoBaixo() {
 	var imgPneu1, imgPneu2;
 
 	var diff;
-	
 
-	
 	if (posicaoCentraliza == 0) {
 		img1 = carrosLadoImgMap.get(posicaoPilotos.posis[0].idPiloto);
 		img2 = carrosLadoImgMap.get(posicaoPilotos.posis[1].idPiloto);
 		imgCap1 = capaceteImgMap.get(posicaoPilotos.posis[0].idPiloto);
-		imgCap2 =	capaceteImgMap.get(posicaoPilotos.posis[1].idPiloto);
+		imgCap2 = capaceteImgMap.get(posicaoPilotos.posis[1].idPiloto);
 		var ptsFrente = ptsPistaMap.get(posicaoPilotos.posis[0].idPiloto);
 		var ptsAtras = ptsPistaMap.get(posicaoPilotos.posis[1].idPiloto);
-		diff = formatarTempo(ptsFrente-ptsAtras);
-		if(dadosParciais.tpPneus == "TIPO_PNEU_MOLE"){
+		diff = formatarTempo(ptsFrente - ptsAtras);
+		if (dadosParciais.tpPneus == "TIPO_PNEU_MOLE") {
 			imgPneu1 = imgPneuM;
-		}else if(dadosParciais.tpPneus == "TIPO_PNEU_DURO"){
+		} else if (dadosParciais.tpPneus == "TIPO_PNEU_DURO") {
 			imgPneu1 = imgPneuD;
-		}else if(dadosParciais.tpPneus == "TIPO_PNEU_CHUVA"){
+		} else if (dadosParciais.tpPneus == "TIPO_PNEU_CHUVA") {
 			imgPneu1 = imgPneuC;
 		}
-		if(dadosParciais.tpPneusAtras == "TIPO_PNEU_MOLE"){
+		if (dadosParciais.tpPneusAtras == "TIPO_PNEU_MOLE") {
 			imgPneu2 = imgPneuM;
-		}else if(dadosParciais.tpPneusAtras == "TIPO_PNEU_DURO"){
+		} else if (dadosParciais.tpPneusAtras == "TIPO_PNEU_DURO") {
 			imgPneu2 = imgPneuD;
-		}else if(dadosParciais.tpPneusAtras == "TIPO_PNEU_CHUVA"){
+		} else if (dadosParciais.tpPneusAtras == "TIPO_PNEU_CHUVA") {
 			imgPneu2 = imgPneuC;
 		}
-	}else if (posicaoCentraliza == posicaoPilotos.posis.length-1) {
-		img1 = carrosLadoImgMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-2].idPiloto);
-		img2 = carrosLadoImgMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-1].idPiloto);
-		imgCap1 = capaceteImgMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-2].idPiloto);
-		imgCap2 =	capaceteImgMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-1].idPiloto);
-		var ptsFrente = ptsPistaMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-2].idPiloto);
-		var ptsAtras = ptsPistaMap.get(posicaoPilotos.posis[posicaoPilotos.posis.length-1].idPiloto);
-		diff = formatarTempo(ptsFrente-ptsAtras);
-		if(dadosParciais.tpPneusFrente == "TIPO_PNEU_MOLE"){
+	} else if (posicaoCentraliza == posicaoPilotos.posis.length - 1) {
+		img1 = carrosLadoImgMap
+				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
+		img2 = carrosLadoImgMap
+				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
+		imgCap1 = capaceteImgMap
+				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
+		imgCap2 = capaceteImgMap
+				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
+		var ptsFrente = ptsPistaMap
+				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
+		var ptsAtras = ptsPistaMap
+				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
+		diff = formatarTempo(ptsFrente - ptsAtras);
+		if (dadosParciais.tpPneusFrente == "TIPO_PNEU_MOLE") {
 			imgPneu1 = imgPneuM;
-		}else if(dadosParciais.tpPneusFrente == "TIPO_PNEU_DURO"){
+		} else if (dadosParciais.tpPneusFrente == "TIPO_PNEU_DURO") {
 			imgPneu1 = imgPneuD;
-		}else if(dadosParciais.tpPneusFrente == "TIPO_PNEU_CHUVA"){
+		} else if (dadosParciais.tpPneusFrente == "TIPO_PNEU_CHUVA") {
 			imgPneu1 = imgPneuC;
 		}
-		if(dadosParciais.tpPneus == "TIPO_PNEU_MOLE"){
+		if (dadosParciais.tpPneus == "TIPO_PNEU_MOLE") {
 			imgPneu2 = imgPneuM;
-		}else if(dadosParciais.tpPneus == "TIPO_PNEU_DURO"){
+		} else if (dadosParciais.tpPneus == "TIPO_PNEU_DURO") {
 			imgPneu2 = imgPneuD;
-		}else if(dadosParciais.tpPneus == "TIPO_PNEU_CHUVA"){
+		} else if (dadosParciais.tpPneus == "TIPO_PNEU_CHUVA") {
 			imgPneu2 = imgPneuC;
 		}
 
-	}else{
-		var pilotoFrete = posicaoPilotos.posis[posicaoCentraliza-1];
-		var pilotoAtras = posicaoPilotos.posis[posicaoCentraliza+1];
+	} else {
+		var pilotoFrete = posicaoPilotos.posis[posicaoCentraliza - 1];
+		var pilotoAtras = posicaoPilotos.posis[posicaoCentraliza + 1];
 		var ptsFrente = ptsPistaMap.get(pilotoFrete.idPiloto);
 		var ptsAtras = ptsPistaMap.get(pilotoAtras.idPiloto);
-		var pSelPts = ptsPistaMap.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+		var pSelPts = ptsPistaMap
+				.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 		var diffFrente = ptsFrente - pSelPts;
 		var diffAtras = pSelPts - ptsAtras;
-		if(diffFrente<diffAtras){
+		if (diffFrente < diffAtras) {
 			img1 = carrosLadoImgMap.get(pilotoFrete.idPiloto);
-			img2 = carrosLadoImgMap.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+			img2 = carrosLadoImgMap
+					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			imgCap1 = capaceteImgMap.get(pilotoFrete.idPiloto);
-			imgCap2 = capaceteImgMap.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
-			if(dadosParciais.tpPneus == "TIPO_PNEU_MOLE"){
+			imgCap2 = capaceteImgMap
+					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+			if (dadosParciais.tpPneus == "TIPO_PNEU_MOLE") {
 				imgPneu2 = imgPneuM;
-			}else if(dadosParciais.tpPneus == "TIPO_PNEU_DURO"){
+			} else if (dadosParciais.tpPneus == "TIPO_PNEU_DURO") {
 				imgPneu2 = imgPneuD;
-			}else if(dadosParciais.tpPneus == "TIPO_PNEU_CHUVA"){
+			} else if (dadosParciais.tpPneus == "TIPO_PNEU_CHUVA") {
 				imgPneu2 = imgPneuC;
 			}
-			if(dadosParciais.tpPneusFrente == "TIPO_PNEU_MOLE"){
+			if (dadosParciais.tpPneusFrente == "TIPO_PNEU_MOLE") {
 				imgPneu1 = imgPneuM;
-			}else if(dadosParciais.tpPneusFrente == "TIPO_PNEU_DURO"){
+			} else if (dadosParciais.tpPneusFrente == "TIPO_PNEU_DURO") {
 				imgPneu1 = imgPneuD;
-			}else if(dadosParciais.tpPneusFrente == "TIPO_PNEU_CHUVA"){
+			} else if (dadosParciais.tpPneusFrente == "TIPO_PNEU_CHUVA") {
 				imgPneu1 = imgPneuC;
 			}
-		}else{
-			img1 = carrosLadoImgMap.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+		} else {
+			img1 = carrosLadoImgMap
+					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			img2 = carrosLadoImgMap.get(pilotoAtras.idPiloto);
-			imgCap1 = capaceteImgMap.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+			imgCap1 = capaceteImgMap
+					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			imgCap2 = capaceteImgMap.get(pilotoAtras.idPiloto);
-			if(dadosParciais.tpPneus == "TIPO_PNEU_MOLE"){
+			if (dadosParciais.tpPneus == "TIPO_PNEU_MOLE") {
 				imgPneu1 = imgPneuM;
-			}else if(dadosParciais.tpPneus == "TIPO_PNEU_DURO"){
+			} else if (dadosParciais.tpPneus == "TIPO_PNEU_DURO") {
 				imgPneu1 = imgPneuD;
-			}else if(dadosParciais.tpPneus == "TIPO_PNEU_CHUVA"){
+			} else if (dadosParciais.tpPneus == "TIPO_PNEU_CHUVA") {
 				imgPneu1 = imgPneuC;
 			}
-			if(dadosParciais.tpPneusAtras == "TIPO_PNEU_MOLE"){
+			if (dadosParciais.tpPneusAtras == "TIPO_PNEU_MOLE") {
 				imgPneu2 = imgPneuM;
-			}else if(dadosParciais.tpPneusAtras == "TIPO_PNEU_DURO"){
+			} else if (dadosParciais.tpPneusAtras == "TIPO_PNEU_DURO") {
 				imgPneu2 = imgPneuD;
-			}else if(dadosParciais.tpPneusAtras == "TIPO_PNEU_CHUVA"){
+			} else if (dadosParciais.tpPneusAtras == "TIPO_PNEU_CHUVA") {
 				imgPneu2 = imgPneuC;
 			}
 		}
-		diff = formatarTempo(ptsFrente-ptsAtras);
+		diff = formatarTempo(ptsFrente - ptsAtras);
 	}
-	if(diff){
+	if (diff) {
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(centroX-25, altura-40, 60, 20);
+		maneContext.fillRect(centroX - 25, altura - 40, 60, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText(diff, centroX-20,altura-25);
+		maneContext.fillText(diff, centroX - 20, altura - 25);
 	}
 	if (img1) {
 		maneContext.drawImage(img1, centroX - img1.width - 40, altura
 				- img1.height - 10);
-		maneContext.drawImage(imgPneu1, centroX - imgPneu1.width - img1.width - 45, altura
-				- imgPneu1.height - 10);
-		if (imgCap1) {
-			maneContext.drawImage(imgCap1, centroX - imgCap1.width - img1.width - 55, altura
-					- imgCap1.height - 10);
+		if (imgPneu1) {
+			maneContext.drawImage(imgPneu1, centroX - imgPneu1.width
+					- img1.width - 40, altura - imgPneu1.height - 10);
+			if (imgCap1) {
+				maneContext.drawImage(imgCap1, centroX - imgCap1.width
+						- img1.width - 45 - (imgPneu1.width / 2), altura
+						- imgCap1.height - 10);
+			}
 		}
 	}
 	if (img2) {
 		maneContext.drawImage(img2, centroX + 40, altura - img2.height - 10);
-		maneContext.drawImage(imgPneu2, centroX + 45 + img2.width, altura - imgPneu2.height - 10);
-		if (imgCap2) {
-			maneContext.drawImage(imgCap2, centroX + 55 + img2.width, altura - imgCap2.height - 10);
+		if (imgPneu2) {
+			maneContext.drawImage(imgPneu2, centroX + 40 + img2.width, altura
+					- imgPneu2.height - 10);
+			if (imgCap2) {
+				maneContext.drawImage(imgCap2, centroX + 45 + img2.width
+						+ (imgPneu2.width / 2), altura - imgCap2.height - 10);
+			}
 		}
 	}
 }
@@ -316,8 +341,6 @@ function ctl_desenhaInfoBaixo() {
 function ctl_desenhaInfoDireita() {
 	if (!dadosParciais) {
 		return
-		
-
 	}
 
 	maneContext.beginPath();
@@ -384,9 +407,10 @@ function ctl_desenhaInfoDireita() {
 
 	var posicaoPilotos = dadosParciais.posisPack;
 	if (posicaoPilotos
-			&& (altura > 480 || (alternador || !dadosParciais.melhorVoltaCorrida))) {
+			&& (altura > 480 || (alternador || !dadosParciais.melhorVolta))) {
 		var piloto = posicaoPilotos.posis[0];
 		var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
+		maneContext.beginPath();
 		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 110, 20);
 		maneContext.font = '14px sans-serif';
@@ -399,6 +423,8 @@ function ctl_desenhaInfoDireita() {
 			maneContext.strokeStyle = '#FFFF00';
 			maneContext.rect(x, y, 110, 20);
 		}
+		maneContext.closePath();
+		maneContext.stroke();
 
 		y += 30;
 		var min = posicaoCentraliza - 2;
@@ -408,11 +434,12 @@ function ctl_desenhaInfoDireita() {
 			min = 1;
 			max = 5;
 		} else if (max > posicaoPilotos.posis.length) {
-			var diff = posicaoPilotos.posis.length - max;
+			var diff =  max - (posicaoPilotos.posis.length);
 			min -= diff;
 			max -= diff;
 		}
 		for (i = min; i < max; i++) {
+			maneContext.beginPath();
 			var piloto = posicaoPilotos.posis[i];
 			var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
 			maneContext.fillStyle = corFundo
@@ -428,6 +455,8 @@ function ctl_desenhaInfoDireita() {
 				maneContext.rect(x, y, 110, 20);
 			}
 			y += 30;
+			maneContext.closePath();
+			maneContext.stroke();
 		}
 	}
 	maneContext.closePath();
@@ -437,8 +466,6 @@ function ctl_desenhaInfoDireita() {
 function ctl_desenhaInfoEsquerda() {
 	if (!dadosParciais) {
 		return
-		
-
 	}
 
 	maneContext.beginPath();
@@ -500,8 +527,16 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText('~' + dadosParciais.velocidade + ' Km/h', x + 5,
-				y + 15);
+		if (pitLane) {
+			maneContext.fillText('PitLane', x + 5, y + 15);
+		} else {
+			maneContext.fillText('~' + dadosParciais.velocidade + ' Km/h',
+					x + 5, y + 15);
+		}
+		if (pitLane) {
+			maneContext.strokeStyle = '#FFFF00';
+			maneContext.rect(x, y, 80, 20);
+		}
 
 		y += 30;
 
@@ -600,235 +635,258 @@ function ctl_validaControle(controle) {
 
 	return false;
 }
-controles.push({
-	cor : '#BABACA',
-	valor : 'GIRO_MIN',
-	exibir : '1',
-	centralizaTexto : true,
-	tipo : 'controleMotor',
-	width : 40,
-	height : 40,
-	evalY : 'window.innerHeight - 100;',
-	y : window.innerHeight - 100,
-	x : 10
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'GIRO_NOR',
-	exibir : '2',
-	tipo : 'controleMotor',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	evalY : 'window.innerHeight - 100;',
-	y : window.innerHeight - 100,
-	x : 60
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'GIRO_MAX',
-	exibir : '3',
-	tipo : 'controleMotor',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	evalY : 'window.innerHeight - 100;',
-	y : window.innerHeight - 100,
-	x : 110
-});
 
-controles.push({
-	cor : '#BABACA',
-	valor : 'AGRESSIVO',
-	exibir : '3',
-	tipo : 'controlePiloto',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	evalY : 'window.innerHeight - 100;',
-	y : window.innerHeight - 100,
-	evalX : 'window.innerWidth - 150;',
-	x : 0
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'NORMAL',
-	exibir : '2',
-	centralizaTexto : true,
-	tipo : 'controlePiloto',
-	width : 40,
-	height : 40,
-	evalY : 'window.innerHeight - 100;',
-	y : window.innerHeight - 100,
-	evalX : 'window.innerWidth - 100;',
-	x : 0
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'LENTO',
-	exibir : '1',
-	centralizaTexto : true,
-	tipo : 'controlePiloto',
-	width : 40,
-	height : 40,
-	evalY : 'window.innerHeight - 100;',
-	y : window.innerHeight - 100,
-	evalX : 'window.innerWidth - 50;',
-	x : 0
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'E',
-	exibir : 'E',
-	tipo : 'Ers',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	evalY : 'window.innerHeight - 150;',
-	y : window.innerHeight - 150,
-	x : 10
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'D',
-	exibir : 'D',
-	tipo : 'Drs',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	evalY : 'window.innerHeight - 150;',
-	y : window.innerHeight - 150,
-	evalX : 'window.innerWidth - 50;',
-	x : 0
-});
+function ctl_gerarControles() {
+	controles.push({
+		cor : '#BABACA',
+		valor : 'GIRO_MIN',
+		exibir : '1',
+		centralizaTexto : true,
+		tipo : 'controleMotor',
+		width : 40,
+		height : 40,
+		evalY : 'window.innerHeight - 100;',
+		y : window.innerHeight - 100,
+		x : 10
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'GIRO_NOR',
+		exibir : '2',
+		tipo : 'controleMotor',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		evalY : 'window.innerHeight - 100;',
+		y : window.innerHeight - 100,
+		x : 60
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'GIRO_MAX',
+		exibir : '3',
+		tipo : 'controleMotor',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		evalY : 'window.innerHeight - 100;',
+		y : window.innerHeight - 100,
+		x : 110
+	});
 
-// Box
-controles.push({
-	cor : '#BABACA',
-	valor : 'BOX',
-	exibir : 'BOX',
-	tipo : 'Box',
-	centralizaTexto : false,
-	width : 80,
-	height : 40,
-	y : 10,
-	evalX : '(window.innerWidth/2 - 40);',
-	x : (window.innerWidth / 2 - 40)
-});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'AGRESSIVO',
+		exibir : '3',
+		tipo : 'controlePiloto',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		evalY : 'window.innerHeight - 100;',
+		y : window.innerHeight - 100,
+		evalX : 'window.innerWidth - 150;',
+		x : 0
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'NORMAL',
+		exibir : '2',
+		centralizaTexto : true,
+		tipo : 'controlePiloto',
+		width : 40,
+		height : 40,
+		evalY : 'window.innerHeight - 100;',
+		y : window.innerHeight - 100,
+		evalX : 'window.innerWidth - 100;',
+		x : 0
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'LENTO',
+		exibir : '1',
+		centralizaTexto : true,
+		tipo : 'controlePiloto',
+		width : 40,
+		height : 40,
+		evalY : 'window.innerHeight - 100;',
+		y : window.innerHeight - 100,
+		evalX : 'window.innerWidth - 50;',
+		x : 0
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'E',
+		exibir : 'E',
+		tipo : 'Ers',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		evalY : 'window.innerHeight - 150;',
+		y : window.innerHeight - 150,
+		x : 10
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'D',
+		exibir : 'D',
+		tipo : 'Drs',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		evalY : 'window.innerHeight - 150;',
+		y : window.innerHeight - 150,
+		evalX : 'window.innerWidth - 50;',
+		x : 0
+	});
 
-controles.push({
-	cor : '#BABACA',
-	valor : 'TIPO_PNEU_MOLE',
-	exibir : 'M',
-	tipo : 'Pneu',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	y : 60,
-	evalX : '(window.innerWidth/2 - 80);',
-	x : (window.innerWidth / 2 - 80)
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'TIPO_PNEU_DURO',
-	exibir : 'D',
-	tipo : 'Pneu',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	y : 60,
-	evalX : '(window.innerWidth/2 - 20);',
-	x : (window.innerWidth / 2 - 20)
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'TIPO_PNEU_CHUVA',
-	exibir : 'C',
-	tipo : 'Pneu',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	y : 60,
-	evalX : '(window.innerWidth/2 + 40);',
-	x : (window.innerWidth / 2 + 40)
-});
+	// Box
+	controles.push({
+		cor : '#BABACA',
+		valor : 'BOX',
+		exibir : 'BOX',
+		tipo : 'Box',
+		centralizaTexto : false,
+		width : 80,
+		height : 40,
+		y : 10,
+		evalX : '(window.innerWidth/2 - 40);',
+		x : (window.innerWidth / 2 - 40)
+	});
 
-controles.push({
-	cor : '#BABACA',
-	valor : 'MAIS_ASA',
-	exibir : '1',
-	tipo : 'Asa',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	y : 110,
-	evalX : '(window.innerWidth/2 - 80);',
-	x : (window.innerWidth / 2 - 80)
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'ASA_NORMAL',
-	exibir : '2',
-	tipo : 'Asa',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	y : 110,
-	evalX : '(window.innerWidth/2 - 20);',
-	x : (window.innerWidth / 2 - 20)
-});
-controles.push({
-	cor : '#BABACA',
-	valor : 'MAIS_ASA',
-	exibir : '3',
-	tipo : 'Asa',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	y : 110,
-	evalX : '(window.innerWidth/2 + 40);',
-	x : (window.innerWidth / 2 + 40)
-});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'TIPO_PNEU_MOLE',
+		exibir : 'M',
+		tipo : 'Pneu',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		y : 60,
+		evalX : '(window.innerWidth/2 - 80);',
+		x : (window.innerWidth / 2 - 80),
+		img : imgPneuM
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'TIPO_PNEU_DURO',
+		exibir : 'D',
+		tipo : 'Pneu',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		y : 60,
+		evalX : '(window.innerWidth/2 - 20);',
+		x : (window.innerWidth / 2 - 20),
+		img : imgPneuD
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'TIPO_PNEU_CHUVA',
+		exibir : 'C',
+		tipo : 'Pneu',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		y : 60,
+		evalX : '(window.innerWidth/2 + 40);',
+		x : (window.innerWidth / 2 + 40),
+		img : imgPneuC
+	});
 
-controles.push({
-	cor : '#BABACA',
-	valor : '-',
-	exibir : '-',
-	tipo : 'Combustivel',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	y : 160,
-	evalX : '(window.innerWidth/2 - 80);',
-	x : (window.innerWidth / 2 - 80)
-});
-controles.push({
-	cor : '#BABACA',
-	valor : '',
-	exibir : '100',
-	tipo : 'CombustivelValor',
-	centralizaTexto : false,
-	width : 60,
-	height : 40,
-	y : 160,
-	evalX : '(window.innerWidth/2 - 30);',
-	x : (window.innerWidth / 2 - 30)
-});
-controles.push({
-	cor : '#BABACA',
-	valor : '+',
-	exibir : '+',
-	tipo : 'Combustivel',
-	centralizaTexto : true,
-	width : 40,
-	height : 40,
-	y : 160,
-	evalX : '(window.innerWidth/2 + 40);',
-	x : (window.innerWidth / 2 + 40)
-});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'MAIS_ASA',
+		exibir : '1',
+		tipo : 'Asa',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		y : 110,
+		evalX : '(window.innerWidth/2 - 80);',
+		x : (window.innerWidth / 2 - 80)
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'ASA_NORMAL',
+		exibir : '2',
+		tipo : 'Asa',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		y : 110,
+		evalX : '(window.innerWidth/2 - 20);',
+		x : (window.innerWidth / 2 - 20)
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : 'MAIS_ASA',
+		exibir : '3',
+		tipo : 'Asa',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		y : 110,
+		evalX : '(window.innerWidth/2 + 40);',
+		x : (window.innerWidth / 2 + 40)
+	});
 
+	controles.push({
+		cor : '#BABACA',
+		valor : '-',
+		exibir : '-',
+		tipo : 'Combustivel',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		y : 160,
+		evalX : '(window.innerWidth/2 - 80);',
+		x : (window.innerWidth / 2 - 80)
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : '',
+		exibir : '100',
+		tipo : 'CombustivelValor',
+		centralizaTexto : false,
+		width : 60,
+		height : 40,
+		y : 160,
+		evalX : '(window.innerWidth/2 - 30);',
+		x : (window.innerWidth / 2 - 30)
+	});
+	controles.push({
+		cor : '#BABACA',
+		valor : '+',
+		exibir : '+',
+		tipo : 'Combustivel',
+		centralizaTexto : true,
+		width : 40,
+		height : 40,
+		y : 160,
+		evalX : '(window.innerWidth/2 + 40);',
+		x : (window.innerWidth / 2 + 40)
+	});
+}
 maneCanvas.addEventListener('click',
 		function(event) {
+	
+			if(!telaCheia){
+				try {
+					maneCanvas.webkitRequestFullScreen(); //Chrome
+				} catch (e) {
+					try {
+						maneCanvas.mozRequestFullScreen(); //Firefox
+					} catch (e) {
+						try {
+							maneCanvas.requestFullscreen();//Firefox
+						} catch (e) {
+						}
+					}
+				}
+				telaCheia = true;
+			}
+	
+	
 			var x = event.pageX;
 			var y = event.pageY;
 

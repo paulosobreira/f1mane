@@ -180,6 +180,9 @@ public class MainPanelEditor extends JPanel {
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 		circuito = (Circuito) ois.readObject();
 		testePista = new TestePista(this, circuito);
+//		if("jacarepagua.jpg".equals(circuito.getBackGround())){
+//			circuito.setBackGround("jacarepagua_mro.jpg");
+//		}
 		backGround = CarregadorRecursos
 				.carregaBackGround(circuito.getBackGround(), this, circuito);
 		this.srcFrame = frame;

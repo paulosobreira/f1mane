@@ -51,12 +51,13 @@ function cpu_main() {
 	}
 	if (dadosJogo != null && circuito != null && imgBg.src == "") {
 		imgPneuM = new Image();
-		imgPneuM.src = "../img/pneuMole.png"
+		imgPneuM.src = "img/pneuMole.png"
 		imgPneuD = new Image();
-		imgPneuD.src = "../img/pneuDuro.png"
+		imgPneuD.src = "img/pneuDuro.png"
 		imgPneuC = new Image();
-		imgPneuC.src = "../img/pneuChuva.png"
+		imgPneuC.src = "img/pneuChuva.png"
 		console.log('cpu_main vdp_carregaBackGround()');
+		ctl_gerarControles();
 		vdp_carregaBackGround();
 	}
 	if (dadosJogo != null && circuito != null && ativo && imgBg.complete) {
@@ -70,9 +71,6 @@ function cpu_main() {
 		console.log('cpu_main dadosJogo:' + dadosJogo + ' circuito:' + circuito
 				+ ' ativo:' + ativo + ' imgBg.complete:' + imgBg.complete);
 		delay = 100;
-	}
-	if (dadosJogo) {
-		console.log(dadosJogo.estado);
 	}
 }
 
@@ -92,9 +90,6 @@ function cpu_dadosParciais(){
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace(
 					"P", "")));
 		}
-	}
-	if(dadosParciais.estado){
-		console.log('dadosParciais.estado: '+dadosParciais.estado);				
 	}
 	if(dadosParciais.texto){
 		console.log('dadosParciais.texto: '+dadosParciais.texto);				
@@ -122,6 +117,9 @@ function cpu_carregaDadosPilotos(){
 		var imgCapacete = new Image();
 		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id="
 			+ pilotos.id  + "&temporada=" + dadosJogo.temporada
+		if(imgCapacete.width==0){
+			imgCapacete = null;
+		}
 		capaceteImgMap.set(pilotos.id, imgCapacete);
 	}
 }

@@ -48,6 +48,9 @@ function gu_distancia(startCoordinates, endCoordinates) {
 }
 
 function gu_calculaAngulo(startCoordinates, endCoordinates) {
+	if(!startCoordinates || !endCoordinates){
+		return 0;
+	}
 	var dx = endCoordinates.x - startCoordinates.x;
 	var dy = endCoordinates.y - startCoordinates.y;
 	var tan = Math.atan2(dy, dx);
