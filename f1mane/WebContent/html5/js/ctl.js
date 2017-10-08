@@ -193,7 +193,40 @@ function ctl_mudaTracadoPiloto(event) {
 	}
 }
 
+function ctl_desenhaInfo() {
+	$('#info').css('position', 'absolute');
+	if(altura>480){
+		$('#info').css('top', (altura-100)+'px');
+	}else{
+		$('#info').css('top', (altura-40)+'px');
+	}
+	$('#info').css('left', '10px');
+	$('#info').css('margin-right', '10px');
+	$('#info').css('background-color', corFundo);
+	$('#info').css('font-family', 'sans-serif');
+	if($('#info').html().indexOf('table')>0){
+		$('#info').css('font-size', '11px');
+		if(altura<480){
+			$('#info').css('top', (altura-50)+'px');
+			$('#info').css('font-size', '8px');
+		}
+	}else{
+		$('#info').css('font-size', '14px');
+	}
+}
+
 function ctl_desenhaInfoBaixo() {
+	if(alternador && $('#info').html()!=''){
+		ctl_desenhaInfo();
+		$('#info').show();
+	}else{
+		$('#info').hide();
+		ctl_desenhaInfoCarros();
+	}
+}
+
+
+function ctl_desenhaInfoCarros() {
 	var posicaoPilotos = dadosParciais.posisPack;
 	var pilotoSelecionado = posicaoPilotos.posis[posicaoCentraliza];
 
@@ -310,8 +343,8 @@ function ctl_desenhaInfoBaixo() {
 	}
 	if (diff) {
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(centroX - 25, altura - 40, 60, 20);
 		maneContext.font = '14px sans-serif';
+		maneContext.fillRect(centroX - 25, altura - 40,  maneContext.measureText(diff).width+10, 20);
 		maneContext.fillStyle = "black"
 		maneContext.fillText(diff, centroX - 20, altura - 25);
 	}
@@ -319,23 +352,50 @@ function ctl_desenhaInfoBaixo() {
 		maneContext.drawImage(img1, centroX - img1.width - 40, altura
 				- img1.height - 10);
 		if (imgPneu1) {
-			maneContext.drawImage(imgPneu1, centroX - imgPneu1.width
-					- img1.width - 40, altura - imgPneu1.height - 10);
+			var x;
+			var y;
+			if(largura<400){
+				x = centroX - imgPneu1.width - 40;
+				y =  altura - (imgPneu1.height*2) - 10
+			}else{
+				x = centroX - imgPneu1.width - img1.width - 40;
+				y =  altura - imgPneu1.height - 10;
+			}
+			maneContext.drawImage(imgPneu1,x, y);
 			if (imgCap1) {
-				maneContext.drawImage(imgCap1, centroX - imgCap1.width
-						- img1.width - 45 - (imgPneu1.width / 2), altura
-						- imgCap1.height - 10);
+				if(largura<400){
+					x = centroX - imgCap1.width	- 45 - (imgPneu1.width / 2);
+					y = altura - (imgCap1.height*2) - 10;
+				}else{
+					x = centroX - imgCap1.width	- img1.width - 45 - (imgPneu1.width / 2);
+					y = altura - imgCap1.height - 10;
+				}
+				maneContext.drawImage(imgCap1, x, y);
 			}
 		}
 	}
 	if (img2) {
 		maneContext.drawImage(img2, centroX + 40, altura - img2.height - 10);
 		if (imgPneu2) {
-			maneContext.drawImage(imgPneu2, centroX + 40 + img2.width, altura
-					- imgPneu2.height - 10);
+			var x;
+			var y;
+			if(largura<400){
+				x = centroX + 40;
+				y =  altura - (imgPneu2.height*2) - 10
+			}else{
+				x = centroX + 40 + img2.width;
+				y =  altura - imgPneu2.height - 10;
+			}
+			maneContext.drawImage(imgPneu2, x , y);
 			if (imgCap2) {
-				maneContext.drawImage(imgCap2, centroX + 45 + img2.width
-						+ (imgPneu2.width / 2), altura - imgCap2.height - 10);
+				if(largura<400){
+					x = centroX + 45 + (imgPneu2.width / 2);
+					y = altura - (imgCap1.height*2) - 10;
+				}else{
+					x = centroX + 45 + img2.width + (imgPneu2.width / 2);
+					y = altura - imgCap2.height - 10;
+				}
+				maneContext.drawImage(imgCap2, x , y);
 			}
 		}
 	}
@@ -479,8 +539,8 @@ function ctl_desenhaInfoEsquerda() {
 	if (altura > 480 || !alternador) {
 
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 120, 20);
 		maneContext.font = '14px sans-serif';
+		maneContext.fillRect(x, y, maneContext.measureText(dadosJogo.nomeCircuito).width+10, 20);
 		maneContext.fillStyle = "black"
 		maneContext.fillText(dadosJogo.nomeCircuito, x + 5, y + 15);
 
@@ -650,7 +710,7 @@ function ctl_gerarControles() {
 		tipo : 'controleMotor',
 		width : 40,
 		height : 40,
-		evalY : 'window.innerHeight - 100;',
+		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : window.innerHeight - 100,
 		x : 10,
 		img : motor
@@ -663,7 +723,7 @@ function ctl_gerarControles() {
 		centralizaTexto : true,
 		width : 40,
 		height : 40,
-		evalY : 'window.innerHeight - 100;',
+		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : window.innerHeight - 100,
 		x : 60,
 		img : motor
@@ -676,7 +736,7 @@ function ctl_gerarControles() {
 		centralizaTexto : true,
 		width : 40,
 		height : 40,
-		evalY : 'window.innerHeight - 100;',
+		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : window.innerHeight - 100,
 		x : 110,
 		img : motor
@@ -690,7 +750,7 @@ function ctl_gerarControles() {
 		centralizaTexto : true,
 		width : 40,
 		height : 40,
-		evalY : 'window.innerHeight - 100;',
+		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : window.innerHeight - 100,
 		evalX : 'window.innerWidth - 150;',
 		x : 0,
@@ -704,7 +764,7 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : 'window.innerHeight - 100;',
+		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : window.innerHeight - 100,
 		evalX : 'window.innerWidth - 100;',
 		x : 0,
@@ -718,7 +778,7 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : 'window.innerHeight - 100;',
+		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : window.innerHeight - 100,
 		evalX : 'window.innerWidth - 50;',
 		x : 0,
@@ -727,26 +787,26 @@ function ctl_gerarControles() {
 	controles.push({
 		cor : '#BABACA',
 		valor : 'E',
-		exibir : 'E',
+		exibir : 'Ers',
 		tipo : 'Ers',
-		centralizaTexto : true,
-		width : 40,
+		centralizaTexto : false,
+		width : 60,
 		height : 40,
-		evalY : 'window.innerHeight - 150;',
+		evalY : '(altura > 480)?(window.innerHeight - 200):(window.innerHeight - 150);',
 		y : window.innerHeight - 150,
 		x : 10
 	});
 	controles.push({
 		cor : '#BABACA',
 		valor : 'D',
-		exibir : 'D',
+		exibir : 'Drs',
 		tipo : 'Drs',
-		centralizaTexto : true,
-		width : 40,
+		centralizaTexto : false,
+		width : 60,
 		height : 40,
-		evalY : 'window.innerHeight - 150;',
+		evalY : '(altura > 480)?(window.innerHeight - 200):(window.innerHeight - 150);',
 		y : window.innerHeight - 150,
-		evalX : 'window.innerWidth - 50;',
+		evalX : 'window.innerWidth - 70;',
 		x : 0
 	});
 
@@ -883,13 +943,13 @@ maneCanvas.addEventListener('click',
 	
 			if(!telaCheia){
 				try {
-					maneCanvas.webkitRequestFullScreen(); //Chrome
+					document.getElementById('body').webkitRequestFullScreen(); // Chrome
 				} catch (e) {
 					try {
-						maneCanvas.mozRequestFullScreen(); //Firefox
+						document.getElementById('body').mozRequestFullScreen(); // Firefox
 					} catch (e) {
 						try {
-							maneCanvas.requestFullscreen();//Firefox
+							document.getElementById('body').requestFullscreen();// Edge
 						} catch (e) {
 						}
 					}

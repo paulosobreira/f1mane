@@ -39,6 +39,7 @@ function cpu_main() {
 		token = localStorage.getItem("token");
 		if (nomeJogo == null) {
 			console.log('nomeJogo==null');
+			window.location.href = "index.html";
 			return;
 		}
 	}
@@ -51,18 +52,7 @@ function cpu_main() {
 		rest_ciruito();
 	}
 	if (dadosJogo != null && circuito != null && imgBg.src == "") {
-		imgPneuM = new Image();
-		imgPneuM.src = "img/pneuMole.png"
-		imgPneuD = new Image();
-		imgPneuD.src = "img/pneuDuro.png"
-		imgPneuC = new Image();
-		imgPneuC.src = "img/pneuChuva.png"
-		motor = new Image();
-		motor.src = "img/motor.png"
-		capacete = new Image();
-		capacete.src = "img/capacete.png"
-		ctl_gerarControles();
-		console.log('cpu_main vdp_carregaBackGround()');
+		cpu_caregaMidia();
 		vdp_carregaBackGround();
 	}
 	if (dadosJogo != null && circuito != null && ativo && imgBg.complete) {
@@ -73,12 +63,24 @@ function cpu_main() {
 		ctl_desenha();
 		cpu_altenador();
 	} else {
-		console.log('cpu_main dadosJogo:' + dadosJogo + ' circuito:' + circuito
-				+ ' ativo:' + ativo + ' imgBg.complete:' + imgBg.complete);
-		delay = 100;
+		delay = 1000;
 	}
 }
 
+function cpu_caregaMidia() {
+	imgPneuM = new Image();
+	imgPneuM.src = "img/pneuMole.png"
+	imgPneuD = new Image();
+	imgPneuD.src = "img/pneuDuro.png"
+	imgPneuC = new Image();
+	imgPneuC.src = "img/pneuChuva.png"
+	motor = new Image();
+	motor.src = "img/motor.png"
+	capacete = new Image();
+	capacete.src = "img/capacete.png"
+	ctl_gerarControles();
+	console.log('cpu_main vdp_carregaBackGround()');
+}
 
 function cpu_dadosParciais(){
 	if (!dadosParciais) {
@@ -97,6 +99,7 @@ function cpu_dadosParciais(){
 		}
 	}
 	if(dadosParciais.texto){
+		$('#info').html(dadosParciais.texto);
 		console.log('dadosParciais.texto: '+dadosParciais.texto);				
 	}
 }

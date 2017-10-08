@@ -448,6 +448,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public void info(String info) {
 		if (Comandos.CORRIDA_INICIADA.equals(getEstado())) {
+		}
 			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
 					.hasNext();) {
 				String key = (String) iter.next();
@@ -458,7 +459,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				}
 
 			}
-		}
 	}
 
 	public void infoPrioritaria(String info) {

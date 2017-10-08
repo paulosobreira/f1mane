@@ -22,8 +22,7 @@ function vdp_desenha() {
 }
 
 function vdp_centralizaPilotoSelecionado() {
-	if (dadosParciais == null || dadosParciais.posisPack == null
-			|| circuito == null) {
+	if (dadosParciais == null || dadosParciais.posisPack == null || circuito == null) {
 		return;
 	}
 	var piloto = dadosParciais.posisPack.posis[posicaoCentraliza];
@@ -40,8 +39,7 @@ function vdp_desenhaBackGround() {
 	var sH = maneCanvas.height;
 	if (imgBg.src != "" && desenhaImagens && imgBg.complete) {
 		try {
-			maneContext.drawImage(imgBg, ptBg.x, ptBg.y, sW, sH, 0, 0,
-					maneCanvas.width, maneCanvas.height);
+			maneContext.drawImage(imgBg, ptBg.x, ptBg.y, sW, sH, 0, 0, maneCanvas.width, maneCanvas.height);
 		} catch (e) {
 			console.log('vdp_desenhaBackGround');
 			console.log(e);
@@ -90,9 +88,8 @@ function vdp_obeterPonto(piloto) {
 }
 
 function vdp_desenhaCarrosCima() {
-	if (circuito == null || circuito.objetosNoTransparencia == null
-			|| dadosParciais == null || dadosJogo == null
-			|| carrosImgMap == null || imgBg.src == "") {
+	if (circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null || dadosJogo == null || carrosImgMap == null
+			|| imgBg.src == "") {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
@@ -118,8 +115,7 @@ function vdp_desenhaCarrosCima() {
 					}
 				}
 			} else {
-				if ((piloto.idNo - 5) > 0
-						&& (piloto.idNo + 5) < circuito.pistaFull.length) {
+				if ((piloto.idNo - 5) > 0 && (piloto.idNo + 5) < circuito.pistaFull.length) {
 					frenteCar = circuito.pistaFull[piloto.idNo - 5];
 					trazCar = circuito.pistaFull[piloto.idNo + 5];
 					if (piloto.idPiloto == idPilotoSelecionado) {
@@ -134,24 +130,25 @@ function vdp_desenhaCarrosCima() {
 				var x = ponto.x - ptBg.x - (imgCarro.width / 2);
 				var y = ponto.y - ptBg.y - (imgCarro.height / 2);
 
+
+
+				maneContext.font = '14px sans-serif';
+				var nmPiloto = pilotosMap.get(piloto.idPiloto).nome;
+				var laruraTxt = maneContext.measureText(nmPiloto).width+10;
 				if (idPilotoSelecionado == piloto.idPiloto) {
 					maneContext.strokeStyle = '#00FF00';
-					maneContext.rect(x - 5, y, 80, 20);
+					maneContext.rect(x - 5, y, laruraTxt, 20);
 				} else if (piloto.humano) {
 					maneContext.strokeStyle = '#FFFF00';
-					maneContext.rect(x - 5, y, 80, 20);
+					maneContext.rect(x - 5, y, laruraTxt, 20);
 				}
-
 				maneContext.fillStyle = corFundo
-				maneContext.fillRect(x - 5, y, 80, 20);
-				maneContext.font = '14px sans-serif';
+				maneContext.fillRect(x - 5, y, laruraTxt, 20);
 				maneContext.fillStyle = "black"
-				maneContext.fillText(pilotosMap.get(piloto.idPiloto).nome, x,
-						y + 15);
+				maneContext.fillText(nmPiloto, x, y + 15);
 
 				if (desenhaImagens) {
-					maneContext.drawImage(
-							vdp_rotacionarCarro(imgCarro, angulo), x, y);
+					maneContext.drawImage(vdp_rotacionarCarro(imgCarro, angulo), x, y);
 				}
 			}
 		}
@@ -161,8 +158,7 @@ function vdp_desenhaCarrosCima() {
 }
 
 function vdp_desenhaObjs() {
-	if (circuito == null || circuito.objetosNoTransparencia == null
-			|| dadosParciais == null) {
+	if (circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null) {
 		return;
 	}
 

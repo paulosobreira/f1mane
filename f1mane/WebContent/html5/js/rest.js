@@ -15,6 +15,9 @@ function rest_dadosJogo(nomeJogo) {
 			dadosJogo = response;
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			if(xhRequest.status = 401){
+				window.location.href = "index.html";
+			}
 			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
@@ -65,6 +68,9 @@ function rest_dadosParciais() {
 			dadosParciais = response;
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			if(xhRequest.status = 401){
+				window.location.href = "index.html";
+			}
 			console.log(xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
@@ -85,6 +91,9 @@ function rest_potenciaMotor(valor) {
 					+ retorno);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			if(xhRequest.status = 401){
+				window.location.href = "index.html";
+			}
 			console.log('rest_potenciaMotor() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -106,6 +115,9 @@ function rest_agressividadePiloto(valor) {
 					+ ' retorno :' + retorno);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			if(xhRequest.status = 401){
+				window.location.href = "index.html";
+			}
 			console.log('rest_agressividadePiloto ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -127,6 +139,9 @@ function rest_tracadoPiloto(valor) {
 					+ retorno);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			if(xhRequest.status = 401){
+				window.location.href = "index.html";
+			}
 			console.log('rest_tracadoPiloto ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -146,6 +161,9 @@ function rest_ers() {
 			console.log('rest_ers retorno :' + retorno);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			if(xhRequest.status = 401){
+				window.location.href = "index.html";
+			}
 			console.log('rest_ers ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -165,6 +183,9 @@ function rest_drs() {
 			console.log('rest_drs retorno :' + retorno);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			if(xhRequest.status = 401){
+				window.location.href = "index.html";
+			}
 			console.log('rest_drs ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -185,6 +206,9 @@ function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 			console.log('rest_boxPiloto retorno:' + retorno);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			if(xhRequest.status = 401){
+				window.location.href = "index.html";
+			}
 			console.log('rest_boxPiloto ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}

@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -282,11 +284,12 @@ public class LetsRace {
 	@Path("/circuitos")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response circuitos() throws ClassNotFoundException, IOException {
-		Map<String, String> carregarCircuitos = ControleRecursos
-				.carregarCircuitos();
 		List<CircuitosDefauts> circuitosDefauts = carregadorRecursos
 				.carregarCircuitosDefaults();
-		return Response.status(200).entity(circuitosDefauts).build();
+		List<CircuitosDefauts> shuffle = new ArrayList<>();
+		shuffle.addAll(circuitosDefauts);
+		Collections.shuffle(shuffle);
+		return Response.status(200).entity(shuffle).build();
 	}
 
 	@GET

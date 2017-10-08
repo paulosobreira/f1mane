@@ -139,18 +139,62 @@ public class Lang {
 	}
 
 	public static String decodeTextoKey(String string) {
-		if (string == null) {
-			return string;
+		if(string==null){
+			return null;
 		}
-		string = string.replaceAll("¢", "");
+		String[] array = string.split("¢");
+		StringBuffer retorno = new StringBuffer();
+		for (int i = 0; i < array.length; i++) {
+			if (i % 2 == 1)
+				retorno.append(microDecodeKey(array[i]));
+			else
+				retorno.append((array[i]));
+		}
+		return retorno.toString();
+	}
+	
+	
+	private static String microDecodeKey(String string) {
+		if (string.contains("¬")) {
+			String[] sp = string.split("¬");
+			String key = sp[0];
+			Object[] params = new Object[sp.length - 1];
+			for (int i = 1; i < sp.length; i++) {
+				String msp = sp[i];
+				if (msp.contains("¥")) {
+					msp = Lang.decodeTexto(msp.replace("¥", "¢"));
+				}
+				params[i - 1] = msp;
+			}
+			return Lang.msgKey(key, params);
+		} else {
+			return Lang.msgKey(string);
+		}
+	}
+	
+	public static String msgKey(String key, Object[] strings) {
 		iniciaBundle();
-		if (string == null || "".equals(string)) {
+		if (key == null || "".equals(key)) {
 			return "";
 		}
 		try {
-			return bundle.getString(string);
+			MessageFormat messageFormat = new MessageFormat(
+					bundle.getString(key));
+			return messageFormat.format(strings);
 		} catch (Exception e) {
-			return string;
+			return key;
+		}
+	}
+	
+	public static String msgKey(String key) {
+		iniciaBundle();
+		if (key == null || "".equals(key)) {
+			return "";
+		}
+		try {
+			return bundle.getString(key);
+		} catch (Exception e) {
+			return key;
 		}
 	}
 
