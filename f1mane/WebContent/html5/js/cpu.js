@@ -22,6 +22,7 @@ var capaceteImgMap;
 var ptsPistaMap = new Map();
 var carrosLadoImgMap;
 var imgPneuM,imgPneuD,imgPneuC;
+var motor,capacete;
 
 // update canvas with some information and animation
 // var fps = new FpsCtrl(20, function(e) {
@@ -56,8 +57,12 @@ function cpu_main() {
 		imgPneuD.src = "img/pneuDuro.png"
 		imgPneuC = new Image();
 		imgPneuC.src = "img/pneuChuva.png"
-		console.log('cpu_main vdp_carregaBackGround()');
+		motor = new Image();
+		motor.src = "img/motor.png"
+		capacete = new Image();
+		capacete.src = "img/capacete.png"
 		ctl_gerarControles();
+		console.log('cpu_main vdp_carregaBackGround()');
 		vdp_carregaBackGround();
 	}
 	if (dadosJogo != null && circuito != null && ativo && imgBg.complete) {

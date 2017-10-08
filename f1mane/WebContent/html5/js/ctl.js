@@ -109,6 +109,9 @@ function ctl_desenhaControles(evalX, evalY) {
 					maneContext.rect(controle.x, controle.y,
 							controle.width + 5, controle.height + 5);
 					maneContext.drawImage(controle.img, controle.x, controle.y);
+					if (controle.img2) {
+						maneContext.drawImage(controle.img2, controle.x, controle.y);
+					}
 				} else {
 					maneContext.rect(controle.x, controle.y, controle.width,
 							controle.height);
@@ -594,9 +597,11 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillText(lang_text('Piloto'), x + 5, y + 15);
 		maneContext.fillText(dadosParciais.stress + '%', x
 				+ (dadosParciais.stress > 99 ? 45 : 50), y + 15);
-
 		if (dadosParciais.stress > 90) {
 			maneContext.strokeStyle = '#FF0000';
+			maneContext.rect(x, y, 80, 20);
+		}else if (dadosParciais.stress > 70) {
+			maneContext.strokeStyle = '#FFFF00';
 			maneContext.rect(x, y, 80, 20);
 		}
 
@@ -647,7 +652,8 @@ function ctl_gerarControles() {
 		height : 40,
 		evalY : 'window.innerHeight - 100;',
 		y : window.innerHeight - 100,
-		x : 10
+		x : 10,
+		img : motor
 	});
 	controles.push({
 		cor : '#BABACA',
@@ -659,7 +665,8 @@ function ctl_gerarControles() {
 		height : 40,
 		evalY : 'window.innerHeight - 100;',
 		y : window.innerHeight - 100,
-		x : 60
+		x : 60,
+		img : motor
 	});
 	controles.push({
 		cor : '#BABACA',
@@ -671,7 +678,8 @@ function ctl_gerarControles() {
 		height : 40,
 		evalY : 'window.innerHeight - 100;',
 		y : window.innerHeight - 100,
-		x : 110
+		x : 110,
+		img : motor
 	});
 
 	controles.push({
@@ -685,7 +693,8 @@ function ctl_gerarControles() {
 		evalY : 'window.innerHeight - 100;',
 		y : window.innerHeight - 100,
 		evalX : 'window.innerWidth - 150;',
-		x : 0
+		x : 0,
+		img : capacete
 	});
 	controles.push({
 		cor : '#BABACA',
@@ -698,7 +707,8 @@ function ctl_gerarControles() {
 		evalY : 'window.innerHeight - 100;',
 		y : window.innerHeight - 100,
 		evalX : 'window.innerWidth - 100;',
-		x : 0
+		x : 0,
+		img : capacete
 	});
 	controles.push({
 		cor : '#BABACA',
@@ -711,7 +721,8 @@ function ctl_gerarControles() {
 		evalY : 'window.innerHeight - 100;',
 		y : window.innerHeight - 100,
 		evalX : 'window.innerWidth - 50;',
-		x : 0
+		x : 0,
+		img : capacete
 	});
 	controles.push({
 		cor : '#BABACA',

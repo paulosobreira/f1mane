@@ -6,6 +6,7 @@ var idPilotoSelecionado;
 var temporadaSelecionada;
 var circuitoSelecionado;
 var token;
+var circuitos, temporadas;
 
 if (localStorage.getItem("token")) {
 	token = localStorage.getItem("token");
@@ -17,6 +18,23 @@ if (localStorage.getItem("token")) {
 $('#btnJogar').bind("click", function() {
 	jogar();
 });
+
+$('#temporadaCarousel').on('slide.bs.carousel', function(event) {
+	selecionaTemporada($(event.relatedTarget).prop('temporada'));
+	$('#temporadaCarousel').carousel('pause');
+	$('#circuitoCarousel').carousel('pause');
+});
+
+$('#temporadaCarousel').carousel('pause');
+
+$('#circuitoCarousel').on('slide.bs.carousel', function(event) {
+	circuitoSelecionado = $(event.relatedTarget).prop('circuito');
+	$('#temporadaCarousel').carousel('pause');
+	$('#circuitoCarousel').carousel('pause');
+});
+
+$('#circuitoCarousel').carousel('pause');
+
 
 function mostrarEntrarJogo() {
 	if (!temporadaSelecionada) {
@@ -35,82 +53,84 @@ function mostrarEntrarJogo() {
 }
 
 function dadosJogo() {
-	$.ajax({
-		type : "GET",
-		headers : {
-			'token' : localStorage.getItem("token")
-		},
-		url : "/f1mane/rest/letsRace/dadosJogo",
-		contentType : "application/json",
-		dataType : "json",
-		success : function(dadosJogo) {
-			console.log(dadosJogo);
-			if('NENHUM'==dadosJogo.estado){
-				$('#temporadasDD').on('show.bs.dropdown', function() {
-					listaTemporadas();
-				});
-				$('#circuitosDD').on('show.bs.dropdown', function() {
-					listaCircuitos();
-				});
-				return;
-			}
-			$('#imgCircuito').attr('src',
-					'/f1mane/rest/letsRace/circuitoMini/' + dadosJogo.arquivoCircuito);
-			circuitoSelecionado = dadosJogo.arquivoCircuito;
-			idPilotoSelecionado = dadosJogo.idPilotoSelecionado;
-			temporadaSelecionada = dadosJogo.temporada;
-			$('#circuitosLabel').html(dadosJogo.nomeCircuito);
-			$('#temporadasLabel').html(dadosJogo.temporada);
-			$('#trocaPneuCheckbox').prop('disabled', true);
-			$('#trocaPneuCheckbox').prop('checked', dadosJogo.trocaPneu);
-			$('#reabastecimentoCheckbox').prop('disabled', true);
-			$('#reabastecimentoCheckbox').prop('checked',
-					dadosJogo.reabastecimento);
-			$('#ersCheckbox').prop('disabled', true);
-			$('#ersCheckbox').prop('checked', dadosJogo.ers);
-			$('#drsCheckbox').prop('disabled', true);
-			$('#drsCheckbox').prop('checked', dadosJogo.drs);
-			var pilotos = dadosJogo.pilotos;
-			$('#pilotos').find('tr').remove();
-			$.each(pilotos, function(i, val) {
-				var td1 = $('<td scope="row"/>');
-				td1.append(pilotos[i].nome);
-				var td2 = $('<td/>');
-				td2.append(pilotos[i].nomeCarro);
-				var tr = $('<tr style="cursor: pointer; cursor: hand" />');
-				var capacete = $('<img class="img-responsive img-center"/>');
-				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id='
-						+ pilotos[i].id + '&temporada=' + temporadaSelecionada);
-				td1.append(capacete);
-				tr.append(td1);
-				var carroLado = $('<img class="img-responsive img-center"/>');
-				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id='
-						+ pilotos[i].id + '&temporada=' + temporadaSelecionada);
-				td2.append(carroLado);
-				if(pilotos[i].nomeJogador){
-					tr.addClass('info');
-				}
-				tr.append(td2);
-				$('#pilotos').append(tr);
-				tr.addClass('active');
-				tr.unbind();
-				tr.bind("click", function() {
-					$('#pilotos').find('tr').removeClass('info');
-					$('#pilotos').find('tr').removeClass('active');
-					tr.addClass('active');
-					idPilotoSelecionado = pilotos[i].id;
+	$
+			.ajax({
+				type : "GET",
+				headers : {
+					'token' : localStorage.getItem("token")
+				},
+				url : "/f1mane/rest/letsRace/dadosJogo",
+				contentType : "application/json",
+				dataType : "json",
+				success : function(dadosJogo) {
+					console.log(dadosJogo);
+					if ('NENHUM' == dadosJogo.estado) {
+						listaTemporadas();
+						listaCircuitos();
+						return;
+					}
+					$('#imgCircuito').attr('src','/f1mane/rest/letsRace/circuitoMini/'+ dadosJogo.arquivoCircuito);
+					circuitoSelecionado = dadosJogo.arquivoCircuito;
+					idPilotoSelecionado = dadosJogo.idPilotoSelecionado;
+					temporadaSelecionada = dadosJogo.temporada;
+					$('#circuitosLabel').html(dadosJogo.nomeCircuito);
+					$('#temporadasLabel').html(dadosJogo.temporada);
+					$('#trocaPneuCheckbox').prop('disabled', true);
+					$('#trocaPneuCheckbox')
+							.prop('checked', dadosJogo.trocaPneu);
+					$('#reabastecimentoCheckbox').prop('disabled', true);
+					$('#reabastecimentoCheckbox').prop('checked',
+							dadosJogo.reabastecimento);
+					$('#ersCheckbox').prop('disabled', true);
+					$('#ersCheckbox').prop('checked', dadosJogo.ers);
+					$('#drsCheckbox').prop('disabled', true);
+					$('#drsCheckbox').prop('checked', dadosJogo.drs);
+					var pilotos = dadosJogo.pilotos;
+					$('#pilotos').find('tr').remove();
+					$.each(pilotos,	function(i, val) {
+						var td1 = $('<td scope="row"/>');
+						td1.append(pilotos[i].nome);
+						var td2 = $('<td/>');
+						td2.append(pilotos[i].nomeCarro);
+						var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+						var capacete = $('<img class="img-responsive img-center"/>');
+						capacete.attr('src','/f1mane/rest/letsRace/capacete?id='
+										+ pilotos[i].id
+										+ '&temporada='
+										+ temporadaSelecionada);
+						td1.append(capacete);
+						tr.append(td1);
+						var carroLado = $('<img class="img-responsive img-center"/>');
+						carroLado.attr('src','/f1mane/rest/letsRace/carroLado?id='
+										+ pilotos[i].id
+										+ '&temporada='
+										+ temporadaSelecionada);
+						td2.append(carroLado);
+						if (pilotos[i].nomeJogador) {
+							tr.addClass('info');
+						}
+						tr.append(td2);
+						$('#pilotos').append(tr);
+						tr.addClass('active');
+						tr.unbind();
+						tr.bind("click",function() {
+							$('#pilotos').find('tr').removeClass('info');
+							$('#pilotos').find('tr').removeClass('active');
+							tr.addClass('active');
+							idPilotoSelecionado = pilotos[i].id;
+							mostrarEntrarJogo();
+						});
+					});
+					$('#detalheTemporada').removeClass('hidden');
 					mostrarEntrarJogo();
-				});
-			});
-			$('#detalheTemporada').removeClass('hidden');
-			mostrarEntrarJogo();
 
-		},
-		error : function(xhRequest, ErrorText, thrownError) {
-			console.log(xhRequest.status + '  ' + xhRequest.responseText+ ' '+ErrorText);
-			dadosJogo();
-		}
-	});
+				},
+				error : function(xhRequest, ErrorText, thrownError) {
+					console.log(xhRequest.status + '  '
+							+ xhRequest.responseText + ' ' + ErrorText);
+					dadosJogo();
+				}
+			});
 }
 
 function jogar() {
@@ -164,27 +184,33 @@ function listaCircuitos() {
 		url : urlServico,
 		contentType : "application/json",
 		dataType : "json",
-		success : function(circuitos) {
-			if (circuitos.length == 0) {
+		success : function(circuitosRes) {
+			if (circuitosRes.length == 0) {
 				console.log('listaCircuitos() response.length==0');
 				return;
 			}
-			$('#circuitosList').find('li').remove();
-			$.each(circuitos, function(i, circuito) {
-				var li = $('<li><a>' + circuito.nome + '</a></li>');
-				li.bind("click", function() {
-					console.log('circuitosLabel click');
-					$('#circuitosLabel').data('circuitos', circuito.nome);
-					$('#circuitosLabel').html(circuito.nome);
-					$('#imgCircuito').attr(
-							'src',
-							'/f1mane/rest/letsRace/circuitoMini/'
-									+ circuito.arquivo);
-					circuitoSelecionado = circuito.arquivo;
-					mostrarEntrarJogo();
-				});
-				$('#circuitosList').append(li);
-			});
+			circuitos = circuitosRes;
+			var circuito = circuitosRes[0];
+			$('#circuitosLabel').html(circuito.nome);
+			$('#imgCircuito').attr('src',
+					'/f1mane/rest/letsRace/circuitoMini/' + circuito.arquivo);
+			circuitoSelecionado = circuito.arquivo;
+			$('#circuitoActive').prop('circuito',circuito.arquivo);
+			$.each(circuitosRes,	function(i, val) {
+				if(i==0){
+					return;
+				}
+				var dv = $('<div class="item"></div>');
+				var img = $('<img class="img-responsive center-block"/>');
+				img.attr('src',
+						'/f1mane/rest/letsRace/circuitoMini/' + this.arquivo);
+				var h3 = $('<h3 class="text-center"></h3>');
+				dv.prop('circuito',this.arquivo);
+				h3.append(this.nome);
+				dv.append(h3);
+				dv.append(img);
+				$('#circuitoCarousel-inner').append(dv);
+			});			
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			console.log('listaCircuitos() ' + xhRequest.status + '  '
@@ -205,6 +231,7 @@ function selecionaTemporada(temporada) {
 				console.log('selecionaTemporada() null');
 				return;
 			}
+			$('#temporadasLabel').html(temporada);
 			$('#trocaPneuCheckbox').prop('disabled', true);
 			$('#trocaPneuCheckbox').prop('checked', response.trocaPneu);
 			$('#reabastecimentoCheckbox').prop('disabled', true);
@@ -257,24 +284,26 @@ function listaTemporadas() {
 		url : urlServico,
 		contentType : "application/json",
 		dataType : "json",
-		success : function(temporadas) {
-			if (temporadas.length == 0) {
+		success : function(temporadasRes) {
+			if (temporadasRes.length == 0) {
 				console.log('listaTemporadas() response.length==0');
 				return;
 			}
-			$('#temporadasList').find('li').remove();
-			$.each(temporadas, function(i, val) {
-				var li = $('<li><a>' + temporadas[i] + '</a></li>');
-				li.bind("click", function() {
-					console.log('temporadasLabel click');
-					$('#temporadasLabel').data('temporada', temporadas[i]);
-					$('#temporadasLabel').html(temporadas[i]);
-					selecionaTemporada(temporadas[i]);
-					temporadaSelecionada = temporadas[i];
-				});
-				$('#temporadasList').append(li);
+			temporadas = temporadasRes;
+			selecionaTemporada(temporadasRes[0]);
+			temporadaSelecionada = temporadasRes[0];
+			$('#temporadaActive').prop('temporada',temporadasRes[0]);
+			$.each(temporadasRes,	function(i, val) {
+				if(i==0){
+					return;
+				}
+				var dv = $('<div class="item"></div>');
+				var h1 = $('<h1 class="text-center"></h1>');
+				dv.prop('temporada',this);
+				h1.append(this);
+				dv.append(h1);
+				$('#temporadaCarousel-inner').append(dv);
 			});
-
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			console.log('listaTemporadas() ' + xhRequest.status + '  '
