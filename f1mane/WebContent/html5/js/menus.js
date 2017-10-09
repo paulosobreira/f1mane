@@ -54,8 +54,7 @@ function mostrarEntrarJogo() {
 }
 
 function dadosJogo() {
-	$
-			.ajax({
+	$.ajax({
 				type : "GET",
 				headers : {
 					'token' : localStorage.getItem("token")
@@ -239,12 +238,12 @@ function selecionaTemporada(temporada) {
 			$('#trocaPneuCheckbox').prop('disabled', true);
 			$('#trocaPneuCheckbox').prop('checked', response.trocaPneu);
 			$('#reabastecimentoCheckbox').prop('disabled', true);
-			$('#reabastecimentoCheckbox').prop('checked',
-					response.reabastecimento);
+			$('#reabastecimentoCheckbox').prop('checked',response.reabastecimento);
 			$('#ersCheckbox').prop('disabled', true);
 			$('#ersCheckbox').prop('checked', response.ers);
 			$('#drsCheckbox').prop('disabled', true);
 			$('#drsCheckbox').prop('checked', response.drs);
+			temporadaSelecionada = temporada;
 			var pilotos = response.pilotos;
 			$('#pilotos').find('tr').remove();
 			$.each(pilotos, function(i, val) {

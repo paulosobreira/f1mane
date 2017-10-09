@@ -29,8 +29,7 @@ function ctl_desenha() {
 }
 
 function ctl_desenhaControles(evalX, evalY) {
-	controles
-			.forEach(function(controle) {
+	controles.forEach(function(controle) {
 				var validaControle = ctl_validaControle(controle);
 				if (validaControle) {
 					return;
@@ -105,13 +104,11 @@ function ctl_desenhaControles(evalX, evalY) {
 
 				maneContext.font = '30px sans-serif';
 				maneContext.fillStyle = "black"
-				if (controle.img) {
+			    var verImg = maneContext.strokeStyle != controle.cor || (controle.tipo != 'controlePiloto' && controle.tipo != 'controleMotor');				
+				if (controle.img && verImg) {
 					maneContext.rect(controle.x, controle.y,
 							controle.width + 5, controle.height + 5);
 					maneContext.drawImage(controle.img, controle.x, controle.y);
-					if (controle.img2) {
-						maneContext.drawImage(controle.img2, controle.x, controle.y);
-					}
 				} else {
 					maneContext.rect(controle.x, controle.y, controle.width,
 							controle.height);
@@ -222,6 +219,21 @@ function ctl_desenhaInfoBaixo() {
 	}else{
 		$('#info').hide();
 		ctl_desenhaInfoCarros();
+	}
+	if(!dadosJogo.drs){
+		var y =(altura > 480)?(window.innerHeight - 200):(window.innerHeight - 150);
+		var x = window.innerWidth - 70;
+		var img;
+		if(dadosParciais.asa = 'MAIS_ASA'){
+			img = maisAsa;
+		}else if(dadosParciais.asa = 'ASA_NORMAL'){
+			img =  normalAsa;
+		}else if(dadosParciais.asa = 'MENOS_ASA'){
+			img = menosAsa;
+		}
+		maneContext.strokeStyle = '#babaca';
+		maneContext.rect(x, y, img.width + 5, img.height + 5);
+		maneContext.drawImage(img, x, y);
 	}
 }
 
@@ -689,6 +701,15 @@ function ctl_validaControle(controle) {
 			&& 'chuva.png' != dadosParciais.clima) {
 		return true;
 	}
+	
+	if (!dadosJogo.drs && controle.tipo == 'Drs') {
+		return false;
+	}
+	
+	if (!dadosJogo.ers && controle.tipo == 'Ers') {
+		return false;
+	}
+	
 	if (!dadosJogo.reabastacimento
 			&& (controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
 		return true;
@@ -703,7 +724,7 @@ function ctl_validaControle(controle) {
 
 function ctl_gerarControles() {
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'GIRO_MIN',
 		exibir : '1',
 		centralizaTexto : true,
@@ -716,7 +737,7 @@ function ctl_gerarControles() {
 		img : motor
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'GIRO_NOR',
 		exibir : '2',
 		tipo : 'controleMotor',
@@ -729,7 +750,7 @@ function ctl_gerarControles() {
 		img : motor
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'GIRO_MAX',
 		exibir : '3',
 		tipo : 'controleMotor',
@@ -743,7 +764,7 @@ function ctl_gerarControles() {
 	});
 
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'AGRESSIVO',
 		exibir : '3',
 		tipo : 'controlePiloto',
@@ -757,7 +778,7 @@ function ctl_gerarControles() {
 		img : capacete
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'NORMAL',
 		exibir : '2',
 		centralizaTexto : true,
@@ -771,7 +792,7 @@ function ctl_gerarControles() {
 		img : capacete
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'LENTO',
 		exibir : '1',
 		centralizaTexto : true,
@@ -785,7 +806,7 @@ function ctl_gerarControles() {
 		img : capacete
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'E',
 		exibir : 'Ers',
 		tipo : 'Ers',
@@ -797,7 +818,7 @@ function ctl_gerarControles() {
 		x : 10
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'D',
 		exibir : 'Drs',
 		tipo : 'Drs',
@@ -812,7 +833,7 @@ function ctl_gerarControles() {
 
 	// Box
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'BOX',
 		exibir : 'BOX',
 		tipo : 'Box',
@@ -825,7 +846,7 @@ function ctl_gerarControles() {
 	});
 
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'TIPO_PNEU_MOLE',
 		exibir : 'M',
 		tipo : 'Pneu',
@@ -838,7 +859,7 @@ function ctl_gerarControles() {
 		img : imgPneuM
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'TIPO_PNEU_DURO',
 		exibir : 'D',
 		tipo : 'Pneu',
@@ -851,7 +872,7 @@ function ctl_gerarControles() {
 		img : imgPneuD
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'TIPO_PNEU_CHUVA',
 		exibir : 'C',
 		tipo : 'Pneu',
@@ -865,8 +886,8 @@ function ctl_gerarControles() {
 	});
 
 	controles.push({
-		cor : '#BABACA',
-		valor : 'MAIS_ASA',
+		cor : '#babaca',
+		valor : 'MENOS_ASA',
 		exibir : '1',
 		tipo : 'Asa',
 		centralizaTexto : true,
@@ -874,10 +895,11 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 110,
 		evalX : '(window.innerWidth/2 - 80);',
-		x : (window.innerWidth / 2 - 80)
+		x : (window.innerWidth / 2 - 80),
+		img : menosAsa
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'ASA_NORMAL',
 		exibir : '2',
 		tipo : 'Asa',
@@ -886,10 +908,11 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 110,
 		evalX : '(window.innerWidth/2 - 20);',
-		x : (window.innerWidth / 2 - 20)
+		x : (window.innerWidth / 2 - 20),
+		img : normalAsa
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : 'MAIS_ASA',
 		exibir : '3',
 		tipo : 'Asa',
@@ -898,11 +921,12 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 110,
 		evalX : '(window.innerWidth/2 + 40);',
-		x : (window.innerWidth / 2 + 40)
+		x : (window.innerWidth / 2 + 40),
+		img : maisAsa
 	});
 
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : '-',
 		exibir : '-',
 		tipo : 'Combustivel',
@@ -914,7 +938,7 @@ function ctl_gerarControles() {
 		x : (window.innerWidth / 2 - 80)
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : '',
 		exibir : '100',
 		tipo : 'CombustivelValor',
@@ -926,7 +950,7 @@ function ctl_gerarControles() {
 		x : (window.innerWidth / 2 - 30)
 	});
 	controles.push({
-		cor : '#BABACA',
+		cor : '#babaca',
 		valor : '+',
 		exibir : '+',
 		tipo : 'Combustivel',
@@ -962,8 +986,7 @@ maneCanvas.addEventListener('click',
 			var y = event.pageY;
 
 			var clickControle = false;
-			controles
-					.forEach(function(controle) {
+			controles.forEach(function(controle) {
 						if (y > controle.y && y < controle.y + controle.height
 								&& x > controle.x
 								&& x < controle.x + controle.width) {
@@ -971,7 +994,6 @@ maneCanvas.addEventListener('click',
 							if (validaControle) {
 								return;
 							}
-
 							clickControle = true;
 							if (controle.tipo == 'controleMotor') {
 								rest_potenciaMotor(controle.valor);

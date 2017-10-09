@@ -22,6 +22,7 @@ var capaceteImgMap;
 var ptsPistaMap = new Map();
 var carrosLadoImgMap;
 var imgPneuM,imgPneuD,imgPneuC;
+var menosAsa,maisAsa,normalAsa;
 var motor,capacete;
 
 // update canvas with some information and animation
@@ -78,6 +79,13 @@ function cpu_caregaMidia() {
 	motor.src = "img/motor.png"
 	capacete = new Image();
 	capacete.src = "img/capacete.png"
+	menosAsa = new Image();
+	menosAsa.src = "/f1mane/rest/letsRace/png/menosAsa";
+	maisAsa = new Image();
+	maisAsa.src = "/f1mane/rest/letsRace/png/maisAsa";
+	normalAsa = new Image();		
+	normalAsa.src =	"/f1mane/rest/letsRace/png/normalAsa"
+		
 	ctl_gerarControles();
 	console.log('cpu_main vdp_carregaBackGround()');
 }
