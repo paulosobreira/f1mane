@@ -1737,5 +1737,5 @@ public class ControleJogoLocal extends ControleRecursos
 	public boolean isSafetyCar() {
 		return safetyCar;
 	}
-	
+
 }

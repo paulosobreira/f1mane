@@ -30,8 +30,7 @@ function ctl_desenha() {
 
 function ctl_desenhaControles(evalX, evalY) {
 	controles.forEach(function(controle) {
-				var validaControle = ctl_validaControle(controle);
-				if (validaControle) {
+				if (ctl_removeControle(controle)) {
 					return;
 				}
 
@@ -224,11 +223,11 @@ function ctl_desenhaInfoBaixo() {
 		var y =(altura > 480)?(window.innerHeight - 200):(window.innerHeight - 150);
 		var x = window.innerWidth - 70;
 		var img;
-		if(dadosParciais.asa = 'MAIS_ASA'){
+		if(dadosParciais.asa == 'MAIS_ASA'){
 			img = maisAsa;
-		}else if(dadosParciais.asa = 'ASA_NORMAL'){
+		}else if(dadosParciais.asa == 'ASA_NORMAL'){
 			img =  normalAsa;
-		}else if(dadosParciais.asa = 'MENOS_ASA'){
+		}else if(dadosParciais.asa == 'MENOS_ASA'){
 			img = menosAsa;
 		}
 		maneContext.strokeStyle = '#babaca';
@@ -691,7 +690,20 @@ function ctl_desenhaInfoEsquerda() {
 	maneContext.stroke();
 }
 
-function ctl_validaControle(controle) {
+function ctl_removeControle(controle) {
+	
+	if (!dadosJogo.drs && controle.tipo == 'Drs') {
+		return true;
+	}
+	
+	if (!dadosJogo.ers && controle.tipo == 'Ers') {
+		return true;
+	}
+	if (!dadosJogo.reabastacimento
+			&& (controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
+		return true;
+	}
+	
 	if (!dadosParciais.box
 			&& (controle.tipo == 'Asa' || controle.tipo == 'Pneu'
 					|| controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
@@ -702,18 +714,6 @@ function ctl_validaControle(controle) {
 		return true;
 	}
 	
-	if (!dadosJogo.drs && controle.tipo == 'Drs') {
-		return false;
-	}
-	
-	if (!dadosJogo.ers && controle.tipo == 'Ers') {
-		return false;
-	}
-	
-	if (!dadosJogo.reabastacimento
-			&& (controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
-		return true;
-	}
 
 	if (!dadosJogo.trocaPneu && controle.tipo == 'Pneu' && dadosJogo.pPneus > 0) {
 		return true;
@@ -990,8 +990,7 @@ maneCanvas.addEventListener('click',
 						if (y > controle.y && y < controle.y + controle.height
 								&& x > controle.x
 								&& x < controle.x + controle.width) {
-							var validaControle = ctl_validaControle(controle);
-							if (validaControle) {
+							if (ctl_removeControle(controle)) {
 								return;
 							}
 							clickControle = true;
