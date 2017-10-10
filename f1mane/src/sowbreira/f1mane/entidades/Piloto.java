@@ -1772,13 +1772,13 @@ public class Piloto implements Serializable, PilotoSuave {
 				String txt = Lang.msg("tentaPassarFrete", new String[]{
 						Html.bold(getNome()),
 						Html.bold(carroPilotoDaFrente.getPiloto().getNome())});
-				controleJogo.info(Html.silver(txt));
+				controleJogo.info(Html.black(txt));
 			}
 			if (tentarEscaparAtras) {
 				String txt = Lang.msg("tentarEscaparAtras", new String[]{
 						Html.bold(getNome()),
 						Html.bold(carroPilotoAtras.getPiloto().getNome())});
-				controleJogo.info(Html.silver(txt));
+				controleJogo.info(Html.black(txt));
 			}
 		}
 		if (!tentaPassarFrete && !tentarEscaparAtras) {

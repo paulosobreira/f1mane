@@ -25,6 +25,7 @@ function ctl_desenha() {
 	ctl_desenhaInfoEsquerda();
 	ctl_desenhaInfoDireita();
 	ctl_desenhaInfoBaixo();
+	ctl_desenhaInfoAsa();
 	ctl_desenhaControles(evalX, evalY);
 }
 
@@ -96,9 +97,14 @@ function ctl_desenhaControles(evalX, evalY) {
 						&& dadosParciais.asaBox == controle.valor) {
 					maneContext.strokeStyle = '#FFFF00';
 				}
+				
+				if (controle.tipo == 'Box' && dadosParciais.box) {
+					maneContext.strokeStyle = '#FFFF00';
+				}
 
 				if (controle.tipo == 'CombustivelValor') {
 					controle.valor = dadosParciais.combustBox;
+					controle.exibir = dadosParciais.combustBox;
 				}
 
 				maneContext.font = '30px sans-serif';
@@ -198,15 +204,16 @@ function ctl_desenhaInfo() {
 	}
 	$('#info').css('left', '10px');
 	$('#info').css('margin-right', '10px');
-	$('#info').css('background-color', corFundo);
 	$('#info').css('font-family', 'sans-serif');
 	if($('#info').html().indexOf('table')>0){
+		$('#info').css('background-color', 'white');
 		$('#info').css('font-size', '11px');
 		if(altura<480){
-			$('#info').css('top', (altura-50)+'px');
-			$('#info').css('font-size', '8px');
+			$('#info').css('top', (altura-60)+'px');
+			$('#info').css('left', centroX - ($('#info').width()/2) +'px');
 		}
 	}else{
+		$('#info').css('background-color', corFundo);
 		$('#info').css('font-size', '14px');
 	}
 }
@@ -219,21 +226,25 @@ function ctl_desenhaInfoBaixo() {
 		$('#info').hide();
 		ctl_desenhaInfoCarros();
 	}
-	if(!dadosJogo.drs){
-		var y =(altura > 480)?(window.innerHeight - 200):(window.innerHeight - 150);
-		var x = window.innerWidth - 70;
-		var img;
-		if(dadosParciais.asa == 'MAIS_ASA'){
-			img = maisAsa;
-		}else if(dadosParciais.asa == 'ASA_NORMAL'){
-			img =  normalAsa;
-		}else if(dadosParciais.asa == 'MENOS_ASA'){
-			img = menosAsa;
-		}
-		maneContext.strokeStyle = '#babaca';
-		maneContext.rect(x, y, img.width + 5, img.height + 5);
-		maneContext.drawImage(img, x, y);
+}
+
+function ctl_desenhaInfoAsa() {
+	if(dadosJogo.drs){
+		return
 	}
+	var y =(altura > 480)?(maneCanvas.height - 200):(maneCanvas.height - 150);
+	var x = maneCanvas.width - 70;
+	var img;
+	if(dadosParciais.asa == 'MAIS_ASA'){
+		img = maisAsa;
+	}else if(dadosParciais.asa == 'ASA_NORMAL'){
+		img =  normalAsa;
+	}else if(dadosParciais.asa == 'MENOS_ASA'){
+		img = menosAsa;
+	}
+	maneContext.strokeStyle = '#babaca';
+	maneContext.rect(x, y, img.width + 5, img.height + 5);
+	maneContext.drawImage(img, x, y);
 }
 
 
@@ -677,14 +688,15 @@ function ctl_desenhaInfoEsquerda() {
 		}
 
 		y += 30;
-
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 80, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
-		maneContext.fillText('Ers ', x + 5, y + 15);
-		maneContext.fillText(dadosParciais.cargaErs + '%', x
-				+ (dadosParciais.cargaErs > 99 ? 45 : 50), y + 15);
+		if(dadosJogo.ers){
+			maneContext.fillStyle = corFundo
+			maneContext.fillRect(x, y, 80, 20);
+			maneContext.font = '14px sans-serif';
+			maneContext.fillStyle = "black"
+			maneContext.fillText('Ers ', x + 5, y + 15);
+			maneContext.fillText(dadosParciais.cargaErs + '%', x
+					+ (dadosParciais.cargaErs > 99 ? 45 : 50), y + 15);
+		}
 	}
 	maneContext.closePath();
 	maneContext.stroke();
@@ -731,8 +743,8 @@ function ctl_gerarControles() {
 		tipo : 'controleMotor',
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
-		y : window.innerHeight - 100,
+		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		y : maneCanvas.height - 100,
 		x : 10,
 		img : motor
 	});
@@ -744,8 +756,8 @@ function ctl_gerarControles() {
 		centralizaTexto : true,
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
-		y : window.innerHeight - 100,
+		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		y : maneCanvas.height - 100,
 		x : 60,
 		img : motor
 	});
@@ -757,8 +769,8 @@ function ctl_gerarControles() {
 		centralizaTexto : true,
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
-		y : window.innerHeight - 100,
+		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		y : maneCanvas.height - 100,
 		x : 110,
 		img : motor
 	});
@@ -771,9 +783,9 @@ function ctl_gerarControles() {
 		centralizaTexto : true,
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
-		y : window.innerHeight - 100,
-		evalX : 'window.innerWidth - 150;',
+		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		y : maneCanvas.height - 100,
+		evalX : 'maneCanvas.width - 150;',
 		x : 0,
 		img : capacete
 	});
@@ -785,9 +797,9 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
-		y : window.innerHeight - 100,
-		evalX : 'window.innerWidth - 100;',
+		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		y : maneCanvas.height - 100,
+		evalX : 'maneCanvas.width - 100;',
 		x : 0,
 		img : capacete
 	});
@@ -799,9 +811,9 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(window.innerHeight - 150):(window.innerHeight - 100);',
-		y : window.innerHeight - 100,
-		evalX : 'window.innerWidth - 50;',
+		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		y : maneCanvas.height - 100,
+		evalX : 'maneCanvas.width - 50;',
 		x : 0,
 		img : capacete
 	});
@@ -813,8 +825,8 @@ function ctl_gerarControles() {
 		centralizaTexto : false,
 		width : 60,
 		height : 40,
-		evalY : '(altura > 480)?(window.innerHeight - 200):(window.innerHeight - 150);',
-		y : window.innerHeight - 150,
+		evalY : '(altura > 480)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
+		y : maneCanvas.height - 150,
 		x : 10
 	});
 	controles.push({
@@ -825,9 +837,9 @@ function ctl_gerarControles() {
 		centralizaTexto : false,
 		width : 60,
 		height : 40,
-		evalY : '(altura > 480)?(window.innerHeight - 200):(window.innerHeight - 150);',
-		y : window.innerHeight - 150,
-		evalX : 'window.innerWidth - 70;',
+		evalY : '(altura > 480)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
+		y : maneCanvas.height - 150,
+		evalX : 'maneCanvas.width - 70;',
 		x : 0
 	});
 
@@ -841,8 +853,8 @@ function ctl_gerarControles() {
 		width : 80,
 		height : 40,
 		y : 10,
-		evalX : '(window.innerWidth/2 - 40);',
-		x : (window.innerWidth / 2 - 40)
+		evalX : '(maneCanvas.width/2 - 40);',
+		x : (maneCanvas.width / 2 - 40)
 	});
 
 	controles.push({
@@ -854,8 +866,8 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 60,
-		evalX : '(window.innerWidth/2 - 80);',
-		x : (window.innerWidth / 2 - 80),
+		evalX : '(maneCanvas.width/2 - 80);',
+		x : (maneCanvas.width / 2 - 80),
 		img : imgPneuM
 	});
 	controles.push({
@@ -867,8 +879,8 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 60,
-		evalX : '(window.innerWidth/2 - 20);',
-		x : (window.innerWidth / 2 - 20),
+		evalX : '(maneCanvas.width/2 - 20);',
+		x : (maneCanvas.width / 2 - 20),
 		img : imgPneuD
 	});
 	controles.push({
@@ -880,8 +892,8 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 60,
-		evalX : '(window.innerWidth/2 + 40);',
-		x : (window.innerWidth / 2 + 40),
+		evalX : '(maneCanvas.width/2 + 40);',
+		x : (maneCanvas.width / 2 + 40),
 		img : imgPneuC
 	});
 
@@ -894,8 +906,8 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 110,
-		evalX : '(window.innerWidth/2 - 80);',
-		x : (window.innerWidth / 2 - 80),
+		evalX : '(maneCanvas.width/2 - 80);',
+		x : (maneCanvas.width / 2 - 80),
 		img : menosAsa
 	});
 	controles.push({
@@ -907,8 +919,8 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 110,
-		evalX : '(window.innerWidth/2 - 20);',
-		x : (window.innerWidth / 2 - 20),
+		evalX : '(maneCanvas.width/2 - 20);',
+		x : (maneCanvas.width / 2 - 20),
 		img : normalAsa
 	});
 	controles.push({
@@ -920,8 +932,8 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 110,
-		evalX : '(window.innerWidth/2 + 40);',
-		x : (window.innerWidth / 2 + 40),
+		evalX : '(maneCanvas.width/2 + 40);',
+		x : (maneCanvas.width / 2 + 40),
 		img : maisAsa
 	});
 
@@ -934,8 +946,8 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 160,
-		evalX : '(window.innerWidth/2 - 80);',
-		x : (window.innerWidth / 2 - 80)
+		evalX : '(maneCanvas.width/2 - 80);',
+		x : (maneCanvas.width / 2 - 80)
 	});
 	controles.push({
 		cor : '#babaca',
@@ -946,8 +958,8 @@ function ctl_gerarControles() {
 		width : 60,
 		height : 40,
 		y : 160,
-		evalX : '(window.innerWidth/2 - 30);',
-		x : (window.innerWidth / 2 - 30)
+		evalX : '(maneCanvas.width/2 - 30);',
+		x : (maneCanvas.width / 2 - 30)
 	});
 	controles.push({
 		cor : '#babaca',
@@ -958,8 +970,8 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 160,
-		evalX : '(window.innerWidth/2 + 40);',
-		x : (window.innerWidth / 2 + 40)
+		evalX : '(maneCanvas.width/2 + 40);',
+		x : (maneCanvas.width / 2 + 40)
 	});
 }
 maneCanvas.addEventListener('click',

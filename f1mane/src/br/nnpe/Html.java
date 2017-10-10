@@ -107,7 +107,7 @@ public class Html {
 	}
 
 	public static String orange(String texto) {
-		return bold(fontColor("#FF8C00", texto));
+		return bold(fontColor("#C87800", texto));
 	}
 
 	public static String superBlack(String texto) {
@@ -135,9 +135,9 @@ public class Html {
 		return buffer.toString();
 	}
 
-	public static String silver(String texto) {
+	public static String black(String texto) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("<font  color='#B5B5B5'>").append(texto)
+		buffer.append("<font  color='#000000'>").append(texto)
 				.append("</font>");
 		return buffer.toString();
 	}
@@ -160,7 +160,7 @@ public class Html {
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("<font  size='").append(superSize)
-				.append("' color='FF8C00'>").append(texto).append("</font>");
+				.append("' color='C87800'>").append(texto).append("</font>");
 		return Html.bold(buffer.toString());
 	}
 
