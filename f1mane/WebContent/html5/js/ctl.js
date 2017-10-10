@@ -209,7 +209,7 @@ function ctl_desenhaInfo() {
 		$('#info').css('background-color', 'white');
 		$('#info').css('font-size', '11px');
 		if(altura<480){
-			$('#info').css('top', (altura-60)+'px');
+			$('#info').css('top', (altura-70)+'px');
 			$('#info').css('left', centroX - ($('#info').width()/2) +'px');
 		}
 	}else{
