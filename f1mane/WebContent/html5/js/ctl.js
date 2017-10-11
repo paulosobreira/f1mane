@@ -386,7 +386,7 @@ function ctl_desenhaInfoCarros() {
 			maneContext.drawImage(imgPneu1,x, y);
 			if (imgCap1) {
 				if(largura<400){
-					x = centroX - imgCap1.width	- 45 - (imgPneu1.width / 2);
+					x = centroX - imgCap1.width	- 45 - (imgPneu1.width);
 					y = altura - (imgCap1.height*2) - 10;
 				}else{
 					x = centroX - imgCap1.width	- img1.width - 45 - (imgPneu1.width / 2);
@@ -411,7 +411,7 @@ function ctl_desenhaInfoCarros() {
 			maneContext.drawImage(imgPneu2, x , y);
 			if (imgCap2) {
 				if(largura<400){
-					x = centroX + 45 + (imgPneu2.width / 2);
+					x = centroX + 45 + (imgPneu2.width);
 					y = altura - (imgCap1.height*2) - 10;
 				}else{
 					x = centroX + 45 + img2.width + (imgPneu2.width / 2);

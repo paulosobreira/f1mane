@@ -10,6 +10,7 @@ var circuitos, temporadas;
 
 if (localStorage.getItem("token")) {
 	token = localStorage.getItem("token");
+	idPilotoSelecionado = localStorage.getItem("idPilotoSelecionado");
 	dadosJogo();
 } else {
 	criarSessao();
@@ -106,14 +107,16 @@ function dadosJogo() {
 										+ '&temporada='
 										+ temporadaSelecionada);
 						td2.append(carroLado);
-						if (pilotos[i].nomeJogador) {
+						if(pilotos[i].id==idPilotoSelecionado){
+							tr.addClass('active');
+						}else if (pilotos[i].nomeJogador) {
 							tr.addClass('warning');
 						}
 						tr.append(td2);
 						$('#pilotos').append(tr);
 						tr.unbind();
 						tr.bind("click",function() {
-							if(tr.hasClass('warning')){
+							if(tr.hasClass('warning')||tr.hasClass('active')){
 								return;
 							}
 							$('#pilotos').find('tr').removeClass('active');

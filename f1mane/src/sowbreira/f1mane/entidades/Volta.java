@@ -3,20 +3,25 @@ package sowbreira.f1mane.entidades;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import sowbreira.f1mane.controles.ControleEstatisticas;
 
 /**
  * @author Paulo Sobreira Criado em 16/06/2007 as 16:03:49
  */
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Volta implements Serializable {
 	private int pilotoId;
+	@JsonIgnore
+	private Long tempoNumero;
 	@JsonIgnore
 	private Long ciclosInicio = new Long(0);
 	@JsonIgnore
 	private Long ciclosFim = new Long(0);
-	@JsonIgnore
-	private Long tempoNumero;
 	@JsonIgnore
 	private Long tempoPausado = new Long(0);
 	@JsonIgnore
@@ -107,7 +112,7 @@ public class Volta implements Serializable {
 	public void setTempoPausado(long tempoPausado) {
 		this.tempoPausado = tempoPausado;
 	}
-	
+
 	public Long getTempoNumero() {
 		tempoNumero = obterTempoVolta();
 		if (tempoNumero == null) {

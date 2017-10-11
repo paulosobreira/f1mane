@@ -27,6 +27,7 @@ import br.nnpe.GeoUtil;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 import sowbreira.f1mane.visao.PainelCircuito;
@@ -51,6 +52,9 @@ public class Piloto implements Serializable, PilotoSuave {
 	private boolean desqualificado;
 	private boolean jogadorHumano;
 	private int numeroVolta;
+	private Volta melhorVolta;
+	private Carro carro = new Carro();
+	private String vantagem;
 
 	@JsonIgnore
 	private int carX;
@@ -73,8 +77,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private boolean agressivo = true;
 	@JsonIgnore
-	private Carro carro = new Carro();
-	@JsonIgnore
 	private No noAtual = new No();
 	@JsonIgnore
 	private int stress;
@@ -85,15 +87,11 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private Volta ultimaVolta;
 	@JsonIgnore
-	private Volta melhorVolta;
-	@JsonIgnore
 	private String segundosParaLider;
 	@JsonIgnore
 	private String tipoPneuBox;
 	@JsonIgnore
 	private String asaBox;
-	@JsonIgnore
-	private String vantagem;
 	@JsonIgnore
 	private int qtdeCombustBox;
 	@JsonIgnore
@@ -400,7 +398,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public void setCargaKersOnline(int cargaKersOnline) {
 		this.cargaKersOnline = cargaKersOnline;
 	}
-	
+
 	public int getCargaErsVisual() {
 		return cargaErsVisual;
 	}
@@ -3382,6 +3380,20 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public int getIndexRefEscape() {
 		return indexRefEscape;
+	}
+
+	public int getPontosCorrida() {
+		return ControleCorrida.calculaPontos25(this);
+	}
+
+	public void setPontosCorrida(int pontosCorrida) {
+	}
+
+	public int getDiferencaPosiscoesCorrida() {
+		return (getPosicaoInicial() - getPosicao());
+	}
+
+	public void setDiferencaPosiscoesCorrida(int diferencaPosiscoesCorrida) {
 	}
 
 }

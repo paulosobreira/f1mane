@@ -21,9 +21,9 @@ var carrosImgMap;
 var capaceteImgMap;
 var ptsPistaMap = new Map();
 var carrosLadoImgMap;
-var imgPneuM,imgPneuD,imgPneuC;
-var menosAsa,maisAsa,normalAsa;
-var motor,capacete;
+var imgPneuM, imgPneuD, imgPneuC;
+var menosAsa, maisAsa, normalAsa;
+var motor, capacete;
 
 // update canvas with some information and animation
 // var fps = new FpsCtrl(20, function(e) {
@@ -83,14 +83,14 @@ function cpu_caregaMidia() {
 	menosAsa.src = "/f1mane/rest/letsRace/png/menosAsa";
 	maisAsa = new Image();
 	maisAsa.src = "/f1mane/rest/letsRace/png/maisAsa";
-	normalAsa = new Image();		
-	normalAsa.src =	"/f1mane/rest/letsRace/png/normalAsa"
-		
+	normalAsa = new Image();
+	normalAsa.src = "/f1mane/rest/letsRace/png/normalAsa"
+
 	ctl_gerarControles();
 	console.log('cpu_main vdp_carregaBackGround()');
 }
 
-function cpu_dadosParciais(){
+function cpu_dadosParciais() {
 	if (!dadosParciais) {
 		return;
 	}
@@ -102,17 +102,19 @@ function cpu_dadosParciais(){
 		}
 		var status = new String(piloto.status);
 		if (status.startsWith("P")) {
-			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace(
-					"P", "")));
+			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("P", "")));
 		}
 	}
-	if(dadosParciais.texto){
+	if (dadosParciais.texto) {
 		$('#info').html(dadosParciais.texto);
-		console.log('dadosParciais.texto: '+dadosParciais.texto);				
+	}
+	console.log('dadosParciais.estado: ' + dadosParciais.estado);
+	if ('24' === dadosParciais.estado) {
+		window.location.href = "resultado.html";
 	}
 }
 
-function cpu_carregaDadosPilotos(){
+function cpu_carregaDadosPilotos() {
 	for (i = 0; i < dadosJogo.pilotos.length; i++) {
 		pilotosMap.set(dadosJogo.pilotos[i].id, dadosJogo.pilotos[i]);
 	}
@@ -126,20 +128,19 @@ function cpu_carregaDadosPilotos(){
 				+ dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
 		carrosImgMap.set(pilotos.id, imgCarro);
 		var imgCarroLado = new Image();
-		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id="
-				+ pilotos.id + "&temporada=" + dadosJogo.temporada;
+		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id=" + pilotos.id
+				+ "&temporada=" + dadosJogo.temporada;
 		carrosLadoImgMap.set(pilotos.id, imgCarroLado);
-		
+
 		var imgCapacete = new Image();
-		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id="
-			+ pilotos.id  + "&temporada=" + dadosJogo.temporada
-		if(imgCapacete.width==0){
+		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + pilotos.id
+				+ "&temporada=" + dadosJogo.temporada
+		if (imgCapacete.width == 0) {
 			imgCapacete = null;
 		}
 		capaceteImgMap.set(pilotos.id, imgCapacete);
 	}
 }
-
 
 function cpu_altenador() {
 	if (alternador) {
