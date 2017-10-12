@@ -201,30 +201,6 @@ public class LetsRace {
 				return erro;
 			}
 			criarJogo = true;
-		} else {
-			/**
-			 * Entrar Jogo
-			 */
-			DadosJogo dadosJogo = (DadosJogo) controlePaddock
-					.obterDadosJogo(clientPaddockPack);
-			List<Piloto> pilotosList = dadosJogo.getPilotos();
-			for (Iterator iterator = pilotosList.iterator(); iterator
-					.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				if (piloto.isJogadorHumano()
-						&& piloto.getId() == dadosCriarJogo.getIdPiloto()) {
-					if (sessaoCliente.getNomeJogador()
-							.equals(piloto.getNomeJogador())) {
-						return Response.status(200).entity(dadosJogo).build();
-					} else {
-
-						// MsgSrv msgSrv = new MsgSrv(Lang.msgRest("257", new
-						// String[]{
-						// piloto.getNome(), piloto.getNomeJogador()}));
-						// return Response.status(400).entity(msgSrv).build();
-					}
-				}
-			}
 		}
 		srvPaddockPack = (SrvPaddockPack) statusJogo;
 
@@ -245,6 +221,7 @@ public class LetsRace {
 			if (erro != null) {
 				return erro;
 			}
+			controlePaddock.atualizarDadosVisao();
 		}
 		/**
 		 * Iniciar Jogo

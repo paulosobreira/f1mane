@@ -11,20 +11,85 @@
 </head>
 <body>
 	<section class="container">
-		<h3 class="text-muted">Resultado Final</h3>
+		<ul class="nav nav-pills" style="float: right; margin-top: 10px">
+			<li role="presentation"><a href="index.html"> <span
+					class="glyphicon glyphicon-home" aria-hidden="true"></span> Sair
+			</a></li>
+		</ul>
+		<h3 class="text-muted">F1-Mane Resultado</h3>
 	</section>
-	<section class="container">
-		<div class="list-group">
-			<a href="menus.html" class="list-group-item">
-				<button type="button" class="btn btn-default btn-block">Jogar</button>
-			</a> 
+	<section class="container containerPadless">
+		<div>
+			<label>Temporada</label>
+			<div id="temporadaCarousel" class="carousel slide"  data-ride="carousel">
+				<div id="temporadaCarousel-inner" class="carousel-inner" role="listbox">
+					<div id="temporadaActive" class="item active">
+						<h1 class="text-center" id="temporadasLabel"></h1>
+					</div>
+				</div>
+			</div>
+		</div>
+		<section class="container containerPadless" id="detalheTemporada">
+			<div class="form-group">
+				<div class="col-sm-6">
+					<div class="checkbox">
+						<label> <input type="checkbox" id="trocaPneuCheckbox">
+							<b>Troca Pneu</b>
+						</label>
+					</div>
+					<div class="checkbox">
+						<label> <input type="checkbox"
+							id="reabastecimentoCheckbox"> <b>Reabastecimento</b>
+						</label>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="checkbox">
+						<label> <input type="checkbox" id="ersCheckbox"> <b>ERS</b>
+						</label>
+					</div>
+					<div class="checkbox">
+						<label> <input type="checkbox" id="drsCheckbox"> <b>DRS</b>
+						</label>
+					</div>
+				</div>
+			</div>
+			<table class="table table-hover table-responsive">
+				<caption>Pilotos</caption>
+				<thead>
+					<tr>
+						<th>Piloto</th>
+						<th>Carro</th>
+					</tr>
+				</thead>
+				<tbody id="pilotos">
+				</tbody>
+			</table>
+		</section>
+		<div class="form-group">
+			<label>Circuito</label>
+			<div id="circuitoCarousel" class="carousel slide">
+				<div id="circuitoCarousel-inner" class="carousel-inner" role="listbox">
+					<div id="temporadaActive" class="item active">
+						<h3 class="text-center" id="circuitosLabel"></h3>
+						<img class="img-responsive center-block" id="imgCircuito" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<img id="imgCircuito" class="img-responsive img-center" />
+		</div>
+		<div  class="form-group">
+			<button id="btnVoltar" type="button" class="btn btn-default btn-block">Inicio</button>
 		</div>
 	</section>
 	<footer class="footer">
-	      <div class="container">
-	        <p class="text-muted">F1-Mane Versão: {versao}</p>
-	      </div>
-	 </footer>	
+		<div class="container">
+			<p class="text-muted">F1-Mane Versão: {versao}</p>
+		</div>
+	</footer>
 </body>
+<script src="js/util.js?v={versao}"></script>
 <script src="js/resultado.js?v={versao}"></script>
 </html>

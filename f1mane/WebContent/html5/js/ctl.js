@@ -13,7 +13,7 @@ function ctl_desenha() {
 	}
 	var evalX = false;
 	var evalY = false;
-	if (largura != maneCanvas.width) {
+	if (largura == maneCanvas.width) {
 		evalX = true;
 	}
 	if (altura != maneCanvas.height) {
@@ -491,22 +491,26 @@ function ctl_desenhaInfoDireita() {
 	}
 
 	var posicaoPilotos = dadosParciais.posisPack;
+	x+=60;
+	var larg = 50;
 	if (posicaoPilotos
 			&& (altura > 480 || (alternador || !dadosParciais.melhorVolta))) {
 		var piloto = posicaoPilotos.posis[0];
 		var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
+		nomePiloto = nomePiloto.split(".")[1];
+		nomePiloto = nomePiloto.substr(0, 3);
 		maneContext.beginPath();
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 110, 20);
+		maneContext.fillRect(x, y, larg, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
 		maneContext.fillText('1 ' + nomePiloto, x + 5, y + 15);
 		if (idPilotoSelecionado == piloto.idPiloto) {
 			maneContext.strokeStyle = '#00FF00';
-			maneContext.rect(x, y, 110, 20);
+			maneContext.rect(x, y, larg, 20);
 		} else if (piloto.humano) {
 			maneContext.strokeStyle = '#FFFF00';
-			maneContext.rect(x, y, 110, 20);
+			maneContext.rect(x, y, larg, 20);
 		}
 		maneContext.closePath();
 		maneContext.stroke();
@@ -527,17 +531,19 @@ function ctl_desenhaInfoDireita() {
 			maneContext.beginPath();
 			var piloto = posicaoPilotos.posis[i];
 			var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
+			nomePiloto = nomePiloto.split(".")[1];
+			nomePiloto = nomePiloto.substr(0, 3);
 			maneContext.fillStyle = corFundo
-			maneContext.fillRect(x, y, 110, 20);
+			maneContext.fillRect(x, y, larg, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
 			maneContext.fillText((i + 1) + ' ' + nomePiloto, x + 5, y + 15);
 			if (idPilotoSelecionado == piloto.idPiloto) {
 				maneContext.strokeStyle = '#00FF00';
-				maneContext.rect(x, y, 110, 20);
+				maneContext.rect(x, y, larg, 20);
 			} else if (piloto.humano) {
 				maneContext.strokeStyle = '#FFFF00';
-				maneContext.rect(x, y, 110, 20);
+				maneContext.rect(x, y, larg, 20);
 			}
 			y += 30;
 			maneContext.closePath();

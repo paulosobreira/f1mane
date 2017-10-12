@@ -39,7 +39,7 @@ function cpu_main() {
 		idPilotoSelecionado = localStorage.getItem("idPilotoSelecionado");
 		token = localStorage.getItem("token");
 		if (nomeJogo == null) {
-			console.log('nomeJogo==null');
+			alert('nomeJogo == null');
 			window.location.href = "index.html";
 			return;
 		}
@@ -108,9 +108,10 @@ function cpu_dadosParciais() {
 	if (dadosParciais.texto) {
 		$('#info').html(dadosParciais.texto);
 	}
-	console.log('dadosParciais.estado: ' + dadosParciais.estado);
-	if ('24' === dadosParciais.estado) {
-		window.location.href = "resultado.html";
+	//console.log('dadosParciais.estado: ' + dadosParciais.estado);
+	if ('24' == dadosParciais.estado) {
+		ativo = false;
+		window.location.href = "resultado.html?token="+token+"&nomeJogo="+nomeJogo;
 	}
 }
 

@@ -17,7 +17,7 @@ var ptBg = {
 function vdp_desenha() {
 	vdp_centralizaPilotoSelecionado();
 	vdp_desenhaBackGround();
-	vdp_desenhaObjs();
+	//vdp_desenhaObjs();
 	vdp_desenhaCarrosCima();
 }
 

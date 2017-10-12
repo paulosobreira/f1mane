@@ -18,7 +18,7 @@ function gu_bline(startCoordinates, endCoordinates) {
 			x : x0,
 			y : y0
 		});
-		if (x0 === x1 && y0 === y1)
+		if (x0 == x1 && y0 == y1)
 			break;
 		var e2 = err;
 		if (e2 > -dx) {

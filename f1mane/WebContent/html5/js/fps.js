@@ -3,7 +3,7 @@ function FpsCtrl(fps, callback) {
 	var delay = 1000 / fps, time = null, frame = -1, tref;
 
 	function loop(timestamp) {
-		if (time === null)
+		if (time == null)
 			time = timestamp;
 		var seg = Math.floor((timestamp - time) / delay);
 		if (seg > frame) {

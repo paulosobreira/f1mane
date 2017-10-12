@@ -1,5 +1,7 @@
 var carregando = false;
 
+var limite = 250;
+
 function rest_dadosJogo(nomeJogo) {
 	if(carregando){
 		return;
@@ -21,9 +23,13 @@ function rest_dadosJogo(nomeJogo) {
 			dadosJogo = response;
 			carregando = false;
 		},
-		error : function(xhRequest, ErrorText, thrownError) {
+		error : function(xhRequest, errorText, thrownError) {
 			carregando = false;
-			if(xhRequest.status = 401 && ErrorText!="timeout"){
+			if(errorText=='timeout'){
+				return;
+			}
+			if(xhRequest.status = 401){
+				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log(xhRequest.status + '  ' + xhRequest.responseText);
@@ -57,9 +63,13 @@ function rest_ciruito() {
 			}
 			carregando = false;
 		},
-		error : function(xhRequest, ErrorText, thrownError) {
+		error : function(xhRequest, errorText, thrownError) {
 			carregando = false;
-			if(xhRequest.status = 401 && ErrorText!="timeout"){
+			if(errorText=='timeout'){
+				return;
+			}
+			if(xhRequest.status = 401){
+				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log(xhRequest.status + '  ' + xhRequest.responseText);
@@ -68,10 +78,14 @@ function rest_ciruito() {
 }
 
 function rest_dadosParciais() {
+	if(carregando){
+		return;
+	}
 	if (dadosJogo == null || dadosJogo.nomeJogo == null) {
 		console.log('dadosJogo ==null || dadosJogo.nomeJogo == null');
 		return;
 	}
+	carregando = true;
 	$.ajax({
 		type : "GET",
 		url : "/f1mane/rest/letsRace/dadosParciais/" + dadosJogo.nomeJogo + "/"
@@ -82,11 +96,17 @@ function rest_dadosParciais() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
+			carregando = false;
 			dadosParciais = response;
 		},
-		timeout : 500,
-		error : function(xhRequest, ErrorText, thrownError) {
-			if(xhRequest.status = 401 && ErrorText!="timeout"){
+		timeout : limite,
+		error : function(xhRequest, errorText, thrownError) {
+			carregando = false;
+			if(errorText=='timeout'){
+				return;
+			}
+			if(xhRequest.status = 401){
+				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log(xhRequest.status + '  ' + xhRequest.responseText);
@@ -105,12 +125,17 @@ function rest_potenciaMotor(valor) {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(retorno) {
+			carregando = false;
 			console.log('rest_potenciaMotor valor: ' + valor + ' retorno :'
 					+ retorno);
 		},
-		timeout : 500,
-		error : function(xhRequest, ErrorText, thrownError) {
-			if(xhRequest.status = 401 && ErrorText!="timeout"){
+		timeout : limite,
+		error : function(xhRequest, errorText, thrownError) {
+			if(errorText=='timeout'){
+				return;
+			}
+			if(xhRequest.status = 401){
+				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_potenciaMotor() ' + xhRequest.status + '  '
@@ -133,9 +158,13 @@ function rest_agressividadePiloto(valor) {
 			console.log('rest_agressividadePiloto valor: ' + valor
 					+ ' retorno :' + retorno);
 		},
-		timeout : 500,
-		error : function(xhRequest, ErrorText, thrownError) {
-			if(xhRequest.status = 401 && ErrorText!="timeout"){
+		timeout : limite,
+		error : function(xhRequest, errorText, thrownError) {
+			if(errorText=='timeout'){
+				return;
+			}
+			if(xhRequest.status = 401){
+				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_agressividadePiloto ' + xhRequest.status + '  '
@@ -155,12 +184,17 @@ function rest_tracadoPiloto(valor) {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(retorno) {
+			carregando = false;
 			console.log('rest_tracadoPiloto valor: ' + valor + ' retorno :'
 					+ retorno);
 		},
-		timeout : 500,
-		error : function(xhRequest, ErrorText, thrownError) {
-			if(xhRequest.status = 401 && ErrorText!="timeout"){
+		timeout : limite,
+		error : function(xhRequest, errorText, thrownError) {
+			if(errorText=='timeout'){
+				return;
+			}
+			if(xhRequest.status = 401){
+				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_tracadoPiloto ' + xhRequest.status + '  '
@@ -179,11 +213,16 @@ function rest_ers() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(retorno) {
+			carregando = false;
 			console.log('rest_ers retorno :' + retorno);
 		},
-		timeout : 500,
-		error : function(xhRequest, ErrorText, thrownError) {
-			if(xhRequest.status = 401 && ErrorText!="timeout"){
+		timeout : limite,
+		error : function(xhRequest, errorText, thrownError) {
+			if(errorText=='timeout'){
+				return;
+			}
+			if(xhRequest.status = 401){
+				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_ers ' + xhRequest.status + '  '
@@ -204,9 +243,13 @@ function rest_drs() {
 		success : function(retorno) {
 			console.log('rest_drs retorno :' + retorno);
 		},
-		timeout : 500,
-		error : function(xhRequest, ErrorText, thrownError) {
-			if(xhRequest.status = 401 && ErrorText!="timeout"){
+		timeout : limite,
+		error : function(xhRequest, errorText, thrownError) {
+			if(errorText=='timeout'){
+				return;
+			}
+			if(xhRequest.status = 401){
+				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_drs ' + xhRequest.status + '  '
@@ -228,9 +271,13 @@ function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 		success : function(retorno) {
 			console.log('rest_boxPiloto retorno:' + retorno);
 		},
-		timeout : 500,
-		error : function(xhRequest, ErrorText, thrownError) {
-			if(xhRequest.status = 401 && ErrorText!="timeout"){
+		timeout : limite,
+		error : function(xhRequest, errorText, thrownError) {
+			if(errorText=='timeout'){
+				return;
+			}
+			if(xhRequest.status = 401){
+				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_boxPiloto ' + xhRequest.status + '  '

@@ -9,3 +9,11 @@ body {
 .img-center {
     margin: 0 auto;
 }
+.containerPadless {
+    padding-right: 0px; 
+    padding-left: 0px; 
+}
+
+.img-responsive-line{
+    display: inline;
+}

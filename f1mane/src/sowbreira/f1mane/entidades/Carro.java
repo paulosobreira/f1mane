@@ -55,20 +55,30 @@ public class Carro implements Serializable {
 	public static final int MEIA_ALTURA_CIMA = 43;
 	public static final double FATOR_AREA_CARRO = .7;
 	public static final int RAIO_DERRAPAGEM = 155;
-	private String danificado;
-	private String nome;
-	private String img;
 	private int porcentagemCombustivel;
 	private int porcentagemDesgastePneus;
 	private int porcentagemDesgasteMotor;
-	private int durabilidadeAereofolio;
-	private int cargaErs;
-	private String asa = ASA_NORMAL;
 	private String tipoPneu;
-	private boolean paneSeca;
-	private boolean recolhido;
-	private int giro = GIRO_NOR_VAL;
 
+	
+	@JsonIgnore
+	private String nome;
+	@JsonIgnore
+	private String img;
+	@JsonIgnore
+	private int durabilidadeAereofolio;
+	@JsonIgnore
+	private int cargaErs;
+	@JsonIgnore
+	private String asa = ASA_NORMAL;
+	@JsonIgnore
+	private String danificado;
+	@JsonIgnore
+	private int giro = GIRO_NOR_VAL;
+	@JsonIgnore
+	private boolean paneSeca;
+	@JsonIgnore
+	private boolean recolhido;
 	@JsonIgnore
 	private int pneus;
 	@JsonIgnore

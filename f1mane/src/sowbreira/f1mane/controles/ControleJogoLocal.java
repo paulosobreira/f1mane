@@ -78,6 +78,8 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	public static void main(String[] args) {
+		long var = (long) Math.pow(2, 149);
+		System.out.println(var);
 	}
 
 	public ControleJogoLocal() throws Exception {
@@ -1677,9 +1679,13 @@ public class ControleJogoLocal extends ControleRecursos
 	public void setRecebeuBanderada(Piloto piloto) {
 		if (!piloto.isRecebeuBanderada()) {
 			piloto.setRecebeuBanderada(true);
+			if (piloto.getCarroPilotoAtras() != null) {
+				piloto.setVantagem(calculaSegundosParaProximo(
+						piloto.getCarroPilotoAtras().getPiloto()));
+			}
 			Logger.logar(piloto.toString() + " Pts " + piloto.getPtosPista());
-			piloto.setPtosPista(
-					piloto.getPtosPista() + (100 * (25 - piloto.getPosicao())));
+			int exp = (50 - piloto.getPosicao());
+			piloto.setPtosPista(piloto.getPtosPista() + (100 * exp));
 			Logger.logar(
 					piloto.toString() + " Pts Depois " + piloto.getPtosPista());
 			if (piloto.getPosicao() == 1) {
@@ -1689,10 +1695,6 @@ public class ControleJogoLocal extends ControleRecursos
 			} else {
 				info(Html.superBlack(piloto.getNome()) + Html.green(
 						Lang.msg("044", new Object[]{piloto.getPosicao()})));
-			}
-			if (piloto.getCarroPilotoAtras() != null) {
-				piloto.setVantagem(calculaSegundosParaProximo(
-						piloto.getCarroPilotoAtras().getPiloto()));
 			}
 			double somaBaixa = 0;
 			for (Iterator iterator = piloto.getGanhosBaixa()

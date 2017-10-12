@@ -317,11 +317,10 @@ public class ControleJogosServer {
 	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
 		String nomeJogo = clientPaddockPack.getNomeJogo();
 		JogoServidor jogoServidor = null;
-		SessaoCliente sessaoCliente = null;
+		SessaoCliente sessaoCliente = clientPaddockPack.getSessaoCliente();
 		if (nomeJogo != null) {
 			jogoServidor = obterJogoPeloNome(nomeJogo);
 		} else {
-			sessaoCliente = clientPaddockPack.getSessaoCliente();
 			jogoServidor = obterJogoPorSessaoCliente(sessaoCliente);
 		}
 		if (jogoServidor == null) {
@@ -378,8 +377,7 @@ public class ControleJogosServer {
 			List piList = jogoServidor.getPilotos();
 			for (Iterator iter = piList.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
-				if (sessaoCliente.getNomeJogador()
-						.equals(piloto.getNomeJogador())) {
+				if (sessaoCliente.getIdPilotoAtual() == piloto.getId()) {
 					acharPiloto = piloto;
 					break;
 				}

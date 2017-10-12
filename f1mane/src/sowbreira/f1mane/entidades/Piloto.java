@@ -55,6 +55,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private Volta melhorVolta;
 	private Carro carro = new Carro();
 	private String vantagem;
+	private int qtdeParadasBox;
 
 	@JsonIgnore
 	private int carX;
@@ -70,8 +71,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	private long ptosPista;
 	@JsonIgnore
 	private int tracado;
-	@JsonIgnore
-	private int qtdeParadasBox;
 	@JsonIgnore
 	private boolean box;
 	@JsonIgnore
@@ -2842,11 +2841,17 @@ public class Piloto implements Serializable, PilotoSuave {
 		ultsConsumosPneu.clear();
 	}
 	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo) {
+		if (isRecebeuBanderada()) {
+			return false;
+		}
 		return mudarTracado(mudarTracado, interfaceJogo, false);
 	}
 
 	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo,
 			boolean mesmoComColisao) {
+		if (isRecebeuBanderada()) {
+			return false;
+		}
 		if (getSetaBaixo() <= 0) {
 			if (getTracado() == 0 && mudarTracado == 1) {
 				setSetaCima(11);

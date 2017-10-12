@@ -116,7 +116,7 @@ function dadosJogo() {
 						$('#pilotos').append(tr);
 						tr.unbind();
 						tr.bind("click",function() {
-							if(tr.hasClass('warning')||tr.hasClass('active')){
+							if(tr.hasClass('warning') || tr.hasClass('active')){
 								return;
 							}
 							$('#pilotos').find('tr').removeClass('active');
@@ -138,6 +138,9 @@ function dadosJogo() {
 }
 
 function jogar() {
+	if(temporadaSelecionada==null || idPilotoSelecionado == null || circuitoSelecionado == null){
+		return;
+	}
 	var urlServico = "/f1mane/rest/letsRace/jogar/" + temporadaSelecionada
 			+ "/" + idPilotoSelecionado + "/" + circuitoSelecionado;
 	$.ajax({
@@ -268,6 +271,9 @@ function selecionaTemporada(temporada) {
 				$('#pilotos').append(tr);
 				tr.unbind();
 				tr.bind("click", function() {
+					if(tr.hasClass('warning') || tr.hasClass('active')){
+						return;
+					}
 					$('#pilotos').find('tr').removeClass('active');
 					tr.addClass('active');
 					idPilotoSelecionado = pilotos[i].id;

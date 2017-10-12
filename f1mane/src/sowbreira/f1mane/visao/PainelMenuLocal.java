@@ -26,6 +26,7 @@ import java.util.Set;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
+import br.nnpe.Constantes;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.OcilaCor;
@@ -1997,14 +1998,14 @@ public class PainelMenuLocal {
 	}
 
 	private void menosVoltas() {
-		if (numVoltasSelecionado > 12) {
+		if (numVoltasSelecionado > Constantes.MIN_VOLTAS) {
 			numVoltasSelecionado--;
 		}
 
 	}
 
 	private void maisVoltas() {
-		if (numVoltasSelecionado < 72) {
+		if (numVoltasSelecionado < Constantes.MAX_VOLTAS) {
 			numVoltasSelecionado++;
 		}
 
