@@ -25,7 +25,7 @@ public class SessaoCliente implements Serializable {
 
 	private String pilotoAtual;
 
-	private Integer idPilotoAtual;
+	private int idPilotoAtual;
 
 	private boolean guest;
 
@@ -86,11 +86,11 @@ public class SessaoCliente implements Serializable {
 		this.guest = guest;
 	}
 
-	public Integer getIdPilotoAtual() {
+	public int getIdPilotoAtual() {
 		return idPilotoAtual;
 	}
 
-	public void setIdPilotoAtual(Integer idPilotoAtual) {
+	public void setIdPilotoAtual(int idPilotoAtual) {
 		this.idPilotoAtual = idPilotoAtual;
 	}
 

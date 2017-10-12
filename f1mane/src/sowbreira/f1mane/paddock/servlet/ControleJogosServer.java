@@ -311,7 +311,7 @@ public class ControleJogosServer {
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 		}
-		return obterDadosJogo(clientPaddockPack);
+		return clientPaddockPack; 
 	}
 
 	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
@@ -377,7 +377,7 @@ public class ControleJogosServer {
 			List piList = jogoServidor.getPilotos();
 			for (Iterator iter = piList.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
-				if (sessaoCliente.getIdPilotoAtual() == piloto.getId()) {
+				if ( sessaoCliente.getIdPilotoAtual() == piloto.getId()) {
 					acharPiloto = piloto;
 					break;
 				}

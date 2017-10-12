@@ -209,7 +209,7 @@ function ctl_desenhaInfo() {
 		$('#info').css('background-color', 'white');
 		$('#info').css('font-size', '11px');
 		if(altura<480){
-			$('#info').css('top', (altura-70)+'px');
+			$('#info').css('top', (altura-90)+'px');
 			$('#info').css('left', centroX - ($('#info').width()/2) +'px');
 		}
 	}else{
@@ -376,7 +376,7 @@ function ctl_desenhaInfoCarros() {
 		if (imgPneu1) {
 			var x;
 			var y;
-			if(largura<400){
+			if(largura<450){
 				x = centroX - imgPneu1.width - 40;
 				y =  altura - (imgPneu1.height*2) - 10
 			}else{
@@ -385,7 +385,7 @@ function ctl_desenhaInfoCarros() {
 			}
 			maneContext.drawImage(imgPneu1,x, y);
 			if (imgCap1) {
-				if(largura<400){
+				if(largura<450){
 					x = centroX - imgCap1.width	- 45 - (imgPneu1.width);
 					y = altura - (imgCap1.height*2) - 10;
 				}else{
@@ -401,7 +401,7 @@ function ctl_desenhaInfoCarros() {
 		if (imgPneu2) {
 			var x;
 			var y;
-			if(largura<400){
+			if(largura<450){
 				x = centroX + 40;
 				y =  altura - (imgPneu2.height*2) - 10
 			}else{
@@ -410,7 +410,7 @@ function ctl_desenhaInfoCarros() {
 			}
 			maneContext.drawImage(imgPneu2, x , y);
 			if (imgCap2) {
-				if(largura<400){
+				if(largura<450){
 					x = centroX + 45 + (imgPneu2.width);
 					y = altura - (imgCap1.height*2) - 10;
 				}else{

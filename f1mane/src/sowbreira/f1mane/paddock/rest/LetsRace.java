@@ -233,7 +233,9 @@ public class LetsRace {
 				return erro;
 			}
 		}
-		return Response.status(200).entity(statusJogo).build();
+		return Response.status(200)
+				.entity(controlePaddock.obterDadosJogo(clientPaddockPack))
+				.build();
 	}
 
 	private Response processsaMensagem(Object objeto) {

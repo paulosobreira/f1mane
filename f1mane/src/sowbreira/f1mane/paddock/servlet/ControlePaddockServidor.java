@@ -540,7 +540,6 @@ public class ControlePaddockServidor {
 			if (!achouJogo) {
 				sessaoCliente.setJogoAtual(null);
 				sessaoCliente.setPilotoAtual(null);
-				sessaoCliente.setIdPilotoAtual(null);
 			}
 		}
 	}

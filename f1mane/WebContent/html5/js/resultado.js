@@ -24,7 +24,6 @@ function resultado() {
 		dataType : "json",
 		success : function(dadosJogo) {
 			if ('24' != dadosJogo.estado) {
-				alert(dadosJogo.estado);
 				window.location.href = "index.html";
 				return;
 			}
