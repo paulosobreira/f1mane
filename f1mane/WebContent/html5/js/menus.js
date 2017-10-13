@@ -203,7 +203,7 @@ function listaCircuitos() {
 					'/f1mane/rest/letsRace/circuitoMini/' + circuito.arquivo);
 			circuitoSelecionado = circuito.arquivo;
 			$('#circuitoActive').prop('circuito',circuito.arquivo);
-			$.each(circuitosRes,	function(i, val) {
+			$.each(circuitosRes, function(i, val) {
 				if(i==0){
 					return;
 				}
