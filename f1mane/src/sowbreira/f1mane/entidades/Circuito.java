@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ObjectInputStream;
@@ -704,23 +708,20 @@ public class Circuito implements Serializable {
 			ObjetoPista objetoPista = iterator.next();
 			if (!(objetoPista instanceof ObjetoTransparencia))
 				continue;
+
 			ObjetoTransparencia objetoTransparencia = (ObjetoTransparencia) objetoPista;
-			List<Point> pontosPoint = objetoTransparencia.getPontos();
+			Rectangle area = objetoPista.obterArea();
+			if (area == null || area.width <= 0 || area.height <= 0) {
+				continue;
+			}
 			ObjetoPistaJSon objetoPistaJSon = new ObjetoPistaJSon();
-			List<Ponto> pontos = new ArrayList<Ponto>();
-			objetoPistaJSon.setPontos(pontos);
+			objetoPistaJSon.setX(objetoTransparencia.getPosicaoQuina().x);
+			objetoPistaJSon.setY(objetoTransparencia.getPosicaoQuina().y);
 			objetoPistaJSon.setIndexInicio(
 					objetoTransparencia.getInicioTransparencia());
 			objetoPistaJSon
 					.setIndexFim(objetoTransparencia.getFimTransparencia());
 			objetosNoTransparencia.add(objetoPistaJSon);
-			for (Iterator<Point> iterator2 = pontosPoint.iterator(); iterator2
-					.hasNext();) {
-				Point point = iterator2.next();
-				Ponto ponto = new Ponto();
-				ponto.setPoint(point);
-				pontos.add(ponto);
-			}
 		}
 
 	}
@@ -835,7 +836,7 @@ public class Circuito implements Serializable {
 				boxMinimizado.add(p);
 		}
 
-		int incX = 0 ;// (320 - maxLagura) / 2;
+		int incX = 0;// (320 - maxLagura) / 2;
 
 		Point o = new Point(0, 0);
 		Point oldP = null;
@@ -881,5 +882,50 @@ public class Circuito implements Serializable {
 			}
 			oldP = p;
 		}
+	}
+
+	public BufferedImage desenhaObjetoPista(String indice) {
+		Integer i = null;
+		try {
+			i = new Integer(indice);
+		} catch (Exception e) {
+		}
+		if (i == null) {
+			return null;
+		}
+		List<ObjetoTransparencia> objsTransp = new ArrayList<ObjetoTransparencia>();
+		for (Iterator iterator = objetos.iterator(); iterator.hasNext();) {
+			ObjetoPista objetoPista = (ObjetoPista) iterator.next();
+			if (objetoPista instanceof ObjetoTransparencia) {
+				objsTransp.add((ObjetoTransparencia) objetoPista);
+			}
+		}
+
+		ObjetoTransparencia transparencia = objsTransp.get(i);;
+		List<Point> pontos = transparencia.getPontos();
+		Polygon polygon = new Polygon();
+		Point posicaoQuina = transparencia.getPosicaoQuina();
+		for (Point ponto : pontos) {
+			if (posicaoQuina != null) {
+				polygon.addPoint(Util.inteiro(ponto.x - posicaoQuina.x),
+						Util.inteiro(ponto.y - posicaoQuina.y));
+			} else {
+				polygon.addPoint((int) (ponto.x), (int) (ponto.y));
+			}
+		}
+		Rectangle area = transparencia.obterArea();
+		BufferedImage image = new BufferedImage(area.width, area.height,
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		g2d.setColor(Color.BLACK);
+		AffineTransform affineTransform = AffineTransform.getScaleInstance(1,
+				1);
+		double rad = Math.toRadians((double) transparencia.getAngulo());
+		affineTransform.setToRotation(rad, polygon.getBounds().getCenterX(),
+				polygon.getBounds().getCenterY());
+		GeneralPath generalPath = new GeneralPath(polygon);
+		generalPath.transform(affineTransform);
+		g2d.fill(generalPath.createTransformedShape(affineTransform));
+		return image;
 	}
 }

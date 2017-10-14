@@ -20,6 +20,7 @@ var pilotosMap = new Map();
 var carrosImgMap;
 var capaceteImgMap;
 var ptsPistaMap = new Map();
+var objImgPistaMap = new Map();
 var carrosLadoImgMap;
 var imgPneuM, imgPneuD, imgPneuC;
 var menosAsa, maisAsa, normalAsa;
@@ -88,6 +89,13 @@ function cpu_caregaMidia() {
 
 	ctl_gerarControles();
 	console.log('cpu_main vdp_carregaBackGround()');
+
+	for (i = 0; i < circuito.objetosNoTransparencia.length; i++) {
+		var img = new Image();
+		img.src = "/f1mane/rest/letsRace/objetoPista/" + dadosJogo.arquivoCircuito + "/" + i;
+		objImgPistaMap.set(i, img);
+	}
+
 }
 
 function cpu_dadosParciais() {
@@ -108,10 +116,10 @@ function cpu_dadosParciais() {
 	if (dadosParciais.texto) {
 		$('#info').html(dadosParciais.texto);
 	}
-	//console.log('dadosParciais.estado: ' + dadosParciais.estado);
+	// console.log('dadosParciais.estado: ' + dadosParciais.estado);
 	if ('24' == dadosParciais.estado) {
 		ativo = false;
-		window.location.href = "resultado.html?token="+token+"&nomeJogo="+nomeJogo;
+		window.location.href = "resultado.html?token=" + token + "&nomeJogo=" + nomeJogo;
 	}
 }
 
@@ -125,17 +133,14 @@ function cpu_carregaDadosPilotos() {
 	for (i = 0; i < dadosJogo.pilotos.length; i++) {
 		var pilotos = dadosJogo.pilotos[i];
 		var imgCarro = new Image();
-		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo="
-				+ dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
+		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
 		carrosImgMap.set(pilotos.id, imgCarro);
 		var imgCarroLado = new Image();
-		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id=" + pilotos.id
-				+ "&temporada=" + dadosJogo.temporada;
+		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada;
 		carrosLadoImgMap.set(pilotos.id, imgCarroLado);
 
 		var imgCapacete = new Image();
-		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + pilotos.id
-				+ "&temporada=" + dadosJogo.temporada
+		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada
 		if (imgCapacete.width == 0) {
 			imgCapacete = null;
 		}

@@ -1,25 +1,16 @@
 package sowbreira.f1mane.entidades;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ObjetoPistaJSon {
 
-	private List<Ponto> pontos = new ArrayList<Ponto>();
-
 	private Integer indexInicio;
 
 	private Integer indexFim;
-
-	public List<Ponto> getPontos() {
-		return pontos;
-	}
-
-	public void setPontos(List<Ponto> pontos) {
-		this.pontos = pontos;
-	}
+	
+	private Integer x;
+	
+	private Integer y;
 
 	public Integer getIndexInicio() {
 		return indexInicio;
@@ -35,6 +26,22 @@ public class ObjetoPistaJSon {
 
 	public void setIndexFim(Integer indexFim) {
 		this.indexFim = indexFim;
+	}
+
+	public Integer getX() {
+		return x;
+	}
+
+	public void setX(Integer x) {
+		this.x = x;
+	}
+
+	public Integer getY() {
+		return y;
+	}
+
+	public void setY(Integer y) {
+		this.y = y;
 	}
 
 }

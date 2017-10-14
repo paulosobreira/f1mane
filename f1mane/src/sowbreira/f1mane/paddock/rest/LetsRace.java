@@ -288,6 +288,24 @@ public class LetsRace {
 		return Response.status(200).entity(imageData).build();
 	}
 
+	@GET
+	@Path("/objetoPista/{nmCircuito}/{indice}")
+	@Produces("image/png")
+	public Response objetoPista(@PathParam("nmCircuito") String nmCircuito,
+			@PathParam("indice") String indice)
+			throws IOException, ClassNotFoundException {
+		Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
+		Circuito circuito = (Circuito) rec;
+		BufferedImage carroCima = circuito.desenhaObjetoPista(indice);
+		if (carroCima == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(carroCima, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.status(200).entity(imageData).build();
+	}
+
 	private DadosCriarJogo gerarJogoLetsRace(String temporada, String circuito,
 			String idPiloto) {
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
@@ -304,6 +322,7 @@ public class LetsRace {
 				pista = nmCircuito;
 			}
 		}
+		pista = "Monte Carlo";
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
