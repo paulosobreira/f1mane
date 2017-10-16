@@ -527,7 +527,7 @@ function ctl_desenhaInfoDireita() {
 			min -= diff;
 			max -= diff;
 		}
-		for (i = min; i < max; i++) {
+		for (var i = min; i < max; i++) {
 			maneContext.beginPath();
 			var piloto = posicaoPilotos.posis[i];
 			var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;

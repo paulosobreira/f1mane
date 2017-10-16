@@ -55,10 +55,10 @@ function rest_ciruito() {
 			circuito = response;
 			mapaIdNos = new Map();
 			var id = 1;
-			for (i = 0; i < circuito.pistaFull.length; i++) {
+			for (var i = 0; i < circuito.pistaFull.length; i++) {
 				mapaIdNos.set(id++, circuito.pistaFull[i]);
 			}
-			for (i = 0; i < circuito.boxFull.length; i++) {
+			for (var i = 0; i < circuito.boxFull.length; i++) {
 				mapaIdNos.set(id++, circuito.boxFull[i]);
 			}
 			carregando = false;

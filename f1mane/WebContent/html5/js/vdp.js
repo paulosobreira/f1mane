@@ -96,7 +96,7 @@ function vdp_desenhaCarrosCima() {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
-	for (i = 0; i < posicaoPilotos.posis.length; i++) {
+	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		maneContext.beginPath();
 		var piloto = posicaoPilotos.posis[i];
 		var ponto = vdp_obeterPonto(piloto);
@@ -229,7 +229,7 @@ function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro) {
 	cvBlend.width = maiorLado;
 	cvBlend.height = maiorLado;
 	ctxBlend.drawImage(imgCarro, 0, 0);
-	for (j = 0; j < circuito.objetosNoTransparencia.length; j++) {
+	for (var j = 0; j < circuito.objetosNoTransparencia.length; j++) {
 		var img = objImgPistaMap.get(j);
 		if (img && img.width > 0 && img.height > 0) {
 			var pontosTp = circuito.objetosNoTransparencia[j];

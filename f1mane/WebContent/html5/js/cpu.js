@@ -90,7 +90,7 @@ function cpu_caregaMidia() {
 	ctl_gerarControles();
 	console.log('cpu_main vdp_carregaBackGround()');
 
-	for (i = 0; i < circuito.objetosNoTransparencia.length; i++) {
+	for (var i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var img = new Image();
 		img.src = "/f1mane/rest/letsRace/objetoPista/" + dadosJogo.arquivoCircuito + "/" + i;
 		objImgPistaMap.set(i, img);
@@ -103,7 +103,7 @@ function cpu_dadosParciais() {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
-	for (i = 0; i < posicaoPilotos.posis.length; i++) {
+	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
 		if (piloto.idPiloto == idPilotoSelecionado) {
 			posicaoCentraliza = i;
@@ -124,13 +124,13 @@ function cpu_dadosParciais() {
 }
 
 function cpu_carregaDadosPilotos() {
-	for (i = 0; i < dadosJogo.pilotos.length; i++) {
+	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		pilotosMap.set(dadosJogo.pilotos[i].id, dadosJogo.pilotos[i]);
 	}
 	carrosImgMap = new Map();
 	carrosLadoImgMap = new Map();
 	capaceteImgMap = new Map();
-	for (i = 0; i < dadosJogo.pilotos.length; i++) {
+	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		var pilotos = dadosJogo.pilotos[i];
 		var imgCarro = new Image();
 		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
