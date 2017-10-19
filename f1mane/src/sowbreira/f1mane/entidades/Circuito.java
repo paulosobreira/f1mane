@@ -721,6 +721,8 @@ public class Circuito implements Serializable {
 					objetoTransparencia.getInicioTransparencia());
 			objetoPistaJSon
 					.setIndexFim(objetoTransparencia.getFimTransparencia());
+			objetoPistaJSon.setTransparenciaBox(
+					objetoTransparencia.isTransparenciaBox());
 			objetosNoTransparencia.add(objetoPistaJSon);
 		}
 

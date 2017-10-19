@@ -15,17 +15,24 @@ var ptBg = {
 	x : 0,
 	y : 0
 };
+var rectBg = {
+		left : ptBg.x,
+		top : ptBg.y,
+		right : ptBg.x + maneCanvas.width,
+		bottom : ptBg.y + maneCanvas.height
+	};
 var blendOp = 'destination-out'
 
 function vdp_desenha() {
 	vdp_centralizaPilotoSelecionado();
 	vdp_desenhaBackGround();
-	vdp_desenhaObjs();
+	// vdp_desenhaObjs();
 	vdp_desenhaCarrosCima();
 }
 
 function vdp_centralizaPilotoSelecionado() {
-	if (dadosParciais == null || dadosParciais.posisPack == null || circuito == null) {
+	if (dadosParciais == null || dadosParciais.posisPack == null
+			|| circuito == null) {
 		return;
 	}
 	var piloto = dadosParciais.posisPack.posis[posicaoCentraliza];
@@ -42,7 +49,8 @@ function vdp_desenhaBackGround() {
 	var sH = maneCanvas.height;
 	if (imgBg.src != "" && desenhaImagens && imgBg.complete) {
 		try {
-			maneContext.drawImage(imgBg, ptBg.x, ptBg.y, sW, sH, 0, 0, maneCanvas.width, maneCanvas.height);
+			maneContext.drawImage(imgBg, ptBg.x, ptBg.y, sW, sH, 0, 0,
+					maneCanvas.width, maneCanvas.height);
 		} catch (e) {
 			console.log('vdp_desenhaBackGround');
 			console.log(e);
@@ -91,8 +99,9 @@ function vdp_obeterPonto(piloto) {
 }
 
 function vdp_desenhaCarrosCima() {
-	if (circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null || dadosJogo == null || carrosImgMap == null
-			|| imgBg.src == "") {
+	if (circuito == null || circuito.objetosNoTransparencia == null
+			|| dadosParciais == null || dadosJogo == null
+			|| carrosImgMap == null || imgBg.src == "") {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
@@ -118,7 +127,8 @@ function vdp_desenhaCarrosCima() {
 					}
 				}
 			} else {
-				if ((piloto.idNo - 5) > 0 && (piloto.idNo + 5) < circuito.pistaFull.length) {
+				if ((piloto.idNo - 5) > 0
+						&& (piloto.idNo + 5) < circuito.pistaFull.length) {
 					frenteCar = circuito.pistaFull[piloto.idNo - 5];
 					trazCar = circuito.pistaFull[piloto.idNo + 5];
 					if (piloto.idPiloto == idPilotoSelecionado) {
@@ -130,6 +140,16 @@ function vdp_desenhaCarrosCima() {
 
 			if (carrosImgMap != null) {
 				var imgCarro = carrosImgMap.get(piloto.idPiloto);
+				var rectObj = {
+						left : ponto.x,
+						top : ponto.y,
+						right : ponto.x + imgCarro.width,
+						bottom : ponto.y + imgCarro.height
+					};
+				if (!vdp_intersectRect(rectBg, rectObj)) {
+					continue;
+				}
+				
 				var x = ponto.x - ptBg.x - (imgCarro.width / 2);
 				var y = ponto.y - ptBg.y - (imgCarro.height / 2);
 
@@ -150,7 +170,8 @@ function vdp_desenhaCarrosCima() {
 
 				if (desenhaImagens) {
 					var rotacionarCarro = vdp_rotacionarCarro(imgCarro, angulo);
-					var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x, y);
+					var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x,
+							y, no);
 					maneContext.drawImage(blendCarro, x, y);
 				}
 			}
@@ -160,16 +181,28 @@ function vdp_desenhaCarrosCima() {
 	}
 }
 
+function vdp_intersectRect(r1, r2) {
+	return !(r2.left > r1.right || r2.right < r1.left || r2.top > r1.bottom || r2.bottom < r1.top);
+}
+
 function vdp_desenhaObjs() {
-	if (circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null) {
+	if (circuito == null || circuito.objetosNoTransparencia == null
+			|| dadosParciais == null) {
 		return;
 	}
-
 	for (i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var pontosTp = circuito.objetosNoTransparencia[i];
 		var img = objImgPistaMap.get(i);
-		if (img && img.width > 0 && img.height > 0) {
-			maneContext.drawImage(img, pontosTp.x - ptBg.x, pontosTp.y - ptBg.y);
+		var rectObj = {
+			left : pontosTp.x,
+			top : pontosTp.y,
+			right : pontosTp.x + img.width,
+			bottom : pontosTp.y + img.height
+		};
+		if (img && img.width > 0 && img.height > 0
+				&& vdp_intersectRect(rectBg, rectObj)) {
+			maneContext
+					.drawImage(img, pontosTp.x - ptBg.x, pontosTp.y - ptBg.y);
 		}
 	}
 }
@@ -201,6 +234,12 @@ function vdp_centralizaPonto(ponto) {
 	}
 	ptBg.x = x;
 	ptBg.y = y;
+	rectBg = {
+		left : ptBg.x,
+		top : ptBg.y,
+		right : ptBg.x + maneCanvas.width,
+		bottom : ptBg.y + maneCanvas.height
+	};
 }
 
 function vdp_rotacionarCarro(imgCarro, angulo) {
@@ -218,35 +257,42 @@ function vdp_rotacionarCarro(imgCarro, angulo) {
 	return cvRotate;
 }
 
-function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro) {
+function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro, no) {
 	var maiorLado = 0;
 	if (imgCarro.width > imgCarro.height) {
 		maiorLado = imgCarro.width;
 	} else {
 		maiorLado = imgCarro.height;
 	}
-	// ctxRotate.globalCompositeOperation = "source-over";
 	cvBlend.width = maiorLado;
 	cvBlend.height = maiorLado;
 	ctxBlend.drawImage(imgCarro, 0, 0);
+
 	for (var j = 0; j < circuito.objetosNoTransparencia.length; j++) {
 		var img = objImgPistaMap.get(j);
-		if (img && img.width > 0 && img.height > 0) {
-			var pontosTp = circuito.objetosNoTransparencia[j];
-			if (ptCarro.x > pontosTp.x && ptCarro.y > pontosTp.y && ptCarro.x < (pontosTp.x + img.width) && ptCarro.y < (pontosTp.y + img.height)) {
-				 var x = pontosTp.x + xCarro;
-				 var y = pontosTp.y + yCarro;
-				 ctxBlend.globalCompositeOperation = blendOp;
-				 ctxBlend.drawImage(img, x, y);
-//				 console.log('i transp ' + i);
-			     console.log('x '+x+' y '+y+'xCarro '+xCarro+' yCarro '+yCarro+' pontosTp.x '+pontosTp.x+' pontosTp.y '+pontosTp.y);
-			}
+		var pontosTp = circuito.objetosNoTransparencia[j];
+		if (pontosTp.transparenciaBox != no.box) {
+			continue;
+		}
+		if (pontosTp.indexFim != 0
+				&& pontosTp.indexInicio != 0
+				&& (no.index < pontosTp.indexInicio || no.index > pontosTp.indexFim)) {
+			continue;
+		}
+		var rectObj = {
+			left : pontosTp.x,
+			top : pontosTp.y,
+			right : pontosTp.x + img.width,
+			bottom : pontosTp.y + img.height
+		};
+		if (img && img.width > 0 && img.height > 0
+				&& vdp_intersectRect(rectBg, rectObj)) {
+			var x = pontosTp.x - ptBg.x - xCarro;
+			var y = pontosTp.y - ptBg.y - yCarro;
+			ctxBlend.globalCompositeOperation = blendOp;
+			ctxBlend.drawImage(img, x, y);
 		}
 	}
-	
-//	var img = objImgPistaMap.get(0);
-//	ctxBlend.globalCompositeOperation = blendOp;
-//	ctxBlend.drawImage(img, 60, 60);
-//	ctxBlend.restore();
+
 	return cvBlend;
 }

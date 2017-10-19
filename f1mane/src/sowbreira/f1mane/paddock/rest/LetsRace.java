@@ -314,7 +314,7 @@ public class LetsRace {
 		dadosCriarJogo.setDiffultrapassagem(250);
 		Map<String, String> carregarCircuitos = ControleRecursos
 				.carregarCircuitos();
-		String pista = "Interlagos";
+		String pista = "";
 		for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
 				.hasNext();) {
 			String nmCircuito = (String) iterator.next();
@@ -322,7 +322,7 @@ public class LetsRace {
 				pista = nmCircuito;
 			}
 		}
-		pista = "Monte Carlo";
+		//pista = "Monte Carlo";
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);

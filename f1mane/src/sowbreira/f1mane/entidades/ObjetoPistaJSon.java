@@ -7,10 +7,12 @@ public class ObjetoPistaJSon {
 	private Integer indexInicio;
 
 	private Integer indexFim;
-	
+
 	private Integer x;
-	
+
 	private Integer y;
+
+	boolean transparenciaBox;
 
 	public Integer getIndexInicio() {
 		return indexInicio;
@@ -42,6 +44,14 @@ public class ObjetoPistaJSon {
 
 	public void setY(Integer y) {
 		this.y = y;
+	}
+
+	public boolean isTransparenciaBox() {
+		return transparenciaBox;
+	}
+
+	public void setTransparenciaBox(boolean transparenciaBox) {
+		this.transparenciaBox = transparenciaBox;
 	}
 
 }
