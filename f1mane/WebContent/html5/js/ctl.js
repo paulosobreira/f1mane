@@ -6,6 +6,8 @@ var largura, altura, centroX;
 var cargaErs;
 var telaCheia = false;
 var corFundo = "rgba(255, 255, 255, 0.6)";
+var corAmarelo = "rgba(255, 255, 0, 0.6)";
+var corVermelho = "rgba(255, 0, 0, 0.6)";
 
 function ctl_desenha() {
 	if (dadosParciais == null) {
@@ -255,12 +257,15 @@ function ctl_desenhaInfoCarros() {
 	var img1, img2;
 	var imgCap1, imgCap2;
 	var imgPneu1, imgPneu2;
+	var idPiloto1, idPiloto2;
 
 	var diff;
 
 	if (posicaoCentraliza == 0) {
 		img1 = carrosLadoImgMap.get(posicaoPilotos.posis[0].idPiloto);
 		img2 = carrosLadoImgMap.get(posicaoPilotos.posis[1].idPiloto);
+		idPiloto1 = posicaoPilotos.posis[0].idPiloto;
+		idPiloto2 = posicaoPilotos.posis[1].idPiloto;
 		imgCap1 = capaceteImgMap.get(posicaoPilotos.posis[0].idPiloto);
 		imgCap2 = capaceteImgMap.get(posicaoPilotos.posis[1].idPiloto);
 		var ptsFrente = ptsPistaMap.get(posicaoPilotos.posis[0].idPiloto);
@@ -285,6 +290,9 @@ function ctl_desenhaInfoCarros() {
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
 		img2 = carrosLadoImgMap
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
+		idPiloto1 = posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto;
+		idPiloto2 = posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto;
+
 		imgCap1 = capaceteImgMap
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
 		imgCap2 = capaceteImgMap
@@ -322,6 +330,9 @@ function ctl_desenhaInfoCarros() {
 			img1 = carrosLadoImgMap.get(pilotoFrete.idPiloto);
 			img2 = carrosLadoImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+			
+			idPiloto1 = pilotoFrete.idPiloto;
+			idPiloto2 = posicaoPilotos.posis[posicaoCentraliza].idPiloto;
 			imgCap1 = capaceteImgMap.get(pilotoFrete.idPiloto);
 			imgCap2 = capaceteImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
@@ -343,6 +354,9 @@ function ctl_desenhaInfoCarros() {
 			img1 = carrosLadoImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			img2 = carrosLadoImgMap.get(pilotoAtras.idPiloto);
+			idPiloto1 = posicaoPilotos.posis[posicaoCentraliza].idPiloto;
+			idPiloto2 = pilotoAtras.idPiloto;
+			
 			imgCap1 = capaceteImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			imgCap2 = capaceteImgMap.get(pilotoAtras.idPiloto);
@@ -373,6 +387,7 @@ function ctl_desenhaInfoCarros() {
 	if (img1) {
 		maneContext.drawImage(img1, centroX - img1.width - 40, altura
 				- img1.height - 10);
+		ctl_problemasCarrro(img1 , centroX, idPiloto1 , 1);
 		if (imgPneu1) {
 			var x;
 			var y;
@@ -398,6 +413,7 @@ function ctl_desenhaInfoCarros() {
 	}
 	if (img2) {
 		maneContext.drawImage(img2, centroX + 40, altura - img2.height - 10);
+		ctl_problemasCarrro(img2 , centroX, idPiloto2 , 2);
 		if (imgPneu2) {
 			var x;
 			var y;
@@ -421,6 +437,50 @@ function ctl_desenhaInfoCarros() {
 			}
 		}
 	}
+}
+
+function ctl_problemasCarrro(img , x, idPiloto , posicao){
+	if(idPilotoSelecionado!=idPiloto){
+		return;
+	}
+	if(posicao == 1){
+		maneContext.beginPath();
+		if("PERDEU_AEREOFOLIO" == dadosParciais.dano){
+			maneContext.fillStyle = corVermelho;
+			maneContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
+		}
+		if(("PANE_SECA" == dadosParciais.dano) || (dadosParciais.dano ==  "EXPLODIU_MOTOR")){
+			maneContext.fillStyle = corVermelho;
+			maneContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 60, 30);
+		}
+		if(("BATEU_FORTE" == dadosParciais.dano) || (dadosParciais.dano ==  "ABANDONOU")){
+			maneContext.fillStyle = corVermelho;
+			maneContext.fillRect(x - img.width - 40, altura	- img.height - 10, img.width, img.height);
+		}
+		maneContext.closePath();
+		maneContext.stroke();
+	}else{
+		maneContext.beginPath();
+		if("PERDEU_AEREOFOLIO" == dadosParciais.dano){
+			maneContext.fillStyle = corAmarelo;
+			maneContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
+		}
+		
+		if(("PANE_SECA" == dadosParciais.dano) || (dadosParciais.dano ==  "EXPLODIU_MOTOR")){
+			maneContext.fillStyle = corVermelho;
+			maneContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 60, 30);
+		}
+		
+		if(("BATEU_FORTE" == dadosParciais.dano) || (dadosParciais.dano ==  "ABANDONOU")){
+			maneContext.fillStyle = corVermelho;
+			maneContext.fillRect(x + 40, altura - img.height - 10, img.width, img.height);
+		}
+		
+		maneContext.closePath();
+		maneContext.stroke();
+
+	}
+		
 }
 
 function ctl_desenhaInfoDireita() {
