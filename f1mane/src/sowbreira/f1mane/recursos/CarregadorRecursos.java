@@ -742,17 +742,37 @@ public class CarregadorRecursos {
 		return creditos;
 	}
 
-	public BufferedImage obterCapacete(String nomeOriginal, String temporada) {
+	public BufferedImage obterCapacete(Piloto piloto, String temporada) {
+		if(temporada==null){
+			return null;
+		}
 		try {
+			String nomeOriginal = piloto.getNomeOriginal();
 			String chave = nomeOriginal + temporada;
 			BufferedImage ret = bufferCapacete.get(chave);
 			if (ret == null) {
-				ret = CarregadorRecursos.carregaImagem("capacetes/" + temporada
-						+ "/" + nomeOriginal.replaceAll("\\.", "") + ".png");
-				if (ret == null) {
-					ret = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+				try {
+					ret = CarregadorRecursos.carregaImagem("capacetes/"
+							+ temporada + "/"
+							+ nomeOriginal.replaceAll("\\.", "") + ".png");
+				} catch (Exception e) {
 				}
-				bufferCapacete.put(chave, ret);
+				if (ret == null) {
+//					ret = CarregadorRecursos.carregaImagem("capacete.png");
+//					BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
+//							piloto.getCarro().getCor1(), "capacete1.png",
+//							ret.getType());
+//					BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
+//							piloto.getCarro().getCor2(), "capacete2.png",
+//							ret.getType());
+//					Graphics graphics = ret.getGraphics();
+//					graphics.drawImage(cor1, 0, 0, null);
+//					graphics.drawImage(cor2, 0, 0, null);
+//					graphics.dispose();
+				}
+				if(ret!=null){
+					bufferCapacete.put(chave, ret);
+				}
 			}
 			return ret;
 		} catch (Exception e) {
@@ -864,7 +884,8 @@ public class CarregadorRecursos {
 	}
 
 	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
-			String modelo) {
+			String temporada) {
+		String modelo = obterModeloCarroCima(temporada);
 		Carro carro = piloto.getCarro();
 		BufferedImage carroCima = bufferCarrosCimaSemAreofolio
 				.get(carro.getNome());
@@ -899,17 +920,10 @@ public class CarregadorRecursos {
 		if (piloto.getCarro() == null) {
 			return null;
 		}
-		String modelo = "cima20092016/";
-		Integer anoTemporada = new Integer(temporada.replace("t", ""));
-		if (anoTemporada < 2009) {
-			modelo = "cima19982008/";
-		}
-		if (anoTemporada <= 1997) {
-			modelo = "cima19801997/";
-		}
+		String modelo = obterModeloCarroCima(temporada);
 		Carro carro = piloto.getCarro();
 		if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
-			return obterCarroCimaSemAreofolio(piloto, modelo);
+			return obterCarroCimaSemAreofolio(piloto, temporada);
 		}
 		BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
 		if (carroCima == null) {
@@ -931,6 +945,18 @@ public class CarregadorRecursos {
 			bufferCarrosCima.put(carro.getNome(), carroCima);
 		}
 		return carroCima;
+	}
+
+	private String obterModeloCarroCima(String temporada) {
+		String modelo = "cima20092016/";
+		Integer anoTemporada = new Integer(temporada.replace("t", ""));
+		if (anoTemporada < 2009) {
+			modelo = "cima19982008/";
+		}
+		if (anoTemporada <= 1997) {
+			modelo = "cima19801997/";
+		}
+		return modelo;
 	}
 
 	protected static void carregarTemporadasTransp() {

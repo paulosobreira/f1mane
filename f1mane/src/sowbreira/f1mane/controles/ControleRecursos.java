@@ -42,8 +42,7 @@ public abstract class ControleRecursos {
 	private Set<Integer> idsNoBox = new HashSet<Integer>();
 
 	public BufferedImage obterCapacete(Piloto piloto) {
-		return carregadorRecursos.obterCapacete(piloto.getNomeOriginal(),
-				this.getTemporada());
+		return carregadorRecursos.obterCapacete(piloto, this.getTemporada());
 	}
 
 	public BufferedImage obterCarroLado(Piloto piloto) {
@@ -300,7 +299,6 @@ public abstract class ControleRecursos {
 		return 0;
 	}
 
-
 	public List<Piloto> getPilotosCopia() {
 		List<Piloto> pilotosCopy = new ArrayList<Piloto>();
 		while (pilotosCopy.isEmpty()) {
@@ -331,6 +329,5 @@ public abstract class ControleRecursos {
 		}
 		return null;
 	}
-
 
 }

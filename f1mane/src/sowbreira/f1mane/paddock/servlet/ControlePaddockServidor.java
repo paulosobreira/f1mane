@@ -720,4 +720,12 @@ public class ControlePaddockServidor {
 				.obterCarroCima(jogoServidor.obterPilotoPorId(idPiloto));
 	}
 
+	public BufferedImage obterCarroCimaSemAreofolio(String nomeJogo,
+			String idPiloto) {
+		JogoServidor jogoServidor = controleJogosServer
+				.obterJogoPeloNome(nomeJogo);
+		return jogoServidor
+				.obterCarroCimaSemAreofolio(jogoServidor.obterPilotoPorId(idPiloto));
+	}
+
 }

@@ -1,5 +1,6 @@
 package sowbreira.f1mane.paddock.servlet;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -571,6 +572,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 		}
 		return cont;
+	}
+
+	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto) {
+		return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, getTemporada());
 	}
 
 }

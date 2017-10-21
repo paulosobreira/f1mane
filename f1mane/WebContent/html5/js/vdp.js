@@ -108,6 +108,9 @@ function vdp_desenhaCarrosCima() {
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		maneContext.beginPath();
 		var piloto = posicaoPilotos.posis[i];
+		if(pilotosDnfMap.get(piloto.pilotoidPiloto)){
+			continue;
+		};
 		var ponto = vdp_obeterPonto(piloto);
 		if (ponto == null) {
 			continue;
@@ -140,6 +143,9 @@ function vdp_desenhaCarrosCima() {
 
 			if (carrosImgMap != null) {
 				var imgCarro = carrosImgMap.get(piloto.idPiloto);
+				if(pilotosAereofolioMap.get(piloto.idPiloto)){
+					imgCarro = carrosImgSemAereofolioMap.get(piloto.idPiloto);
+				}
 				var rectObj = {
 						left : ponto.x,
 						top : ponto.y,

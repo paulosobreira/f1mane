@@ -420,6 +420,8 @@ public class ControleJogosServer {
 				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
 			} else if (piloto.isFaiscas()) {
 				statusPilotos = "F" + String.valueOf(piloto.getPtosPista());
+			} else if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
+				statusPilotos = "A" + String.valueOf(piloto.getPtosPista());
 			} else if (piloto.getCarro().isRecolhido()) {
 				statusPilotos = "R";
 			}

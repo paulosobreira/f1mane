@@ -359,6 +359,22 @@ public class LetsRace {
 		byte[] imageData = baos.toByteArray();
 		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
+	
+	@GET
+	@Path("/carroCimaSemAreofolio")
+	@Produces("image/png")
+	public Response carroCimaSemAreofolio(@QueryParam("nomeJogo") String nomeJogo,
+			@QueryParam("idPiloto") String idPiloto) throws IOException {
+		BufferedImage carroCima = controlePaddock.obterCarroCimaSemAreofolio(nomeJogo,
+				idPiloto);
+		if (carroCima == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(carroCima, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
 
 	@GET
 	@Path("/capacete")
@@ -373,7 +389,7 @@ public class LetsRace {
 			Piloto piloto = (Piloto) iterator.next();
 			if (Integer.parseInt(id) == piloto.getId()) {
 				capacetes = carregadorRecursos
-						.obterCapacete(piloto.getNomeOriginal(), temporada);
+						.obterCapacete(piloto, temporada);
 				break;
 			}
 		}

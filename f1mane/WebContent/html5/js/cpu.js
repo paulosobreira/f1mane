@@ -17,7 +17,10 @@ var alternador = true;
 var alternadorValor = 0;
 
 var pilotosMap = new Map();
+var pilotosDnfMap = new Map();
+var pilotosAereofolioMap = new Map();
 var carrosImgMap;
+var carrosImgSemAereofolioMap;
 var capaceteImgMap;
 var ptsPistaMap = new Map();
 var objImgPistaMap = new Map();
@@ -109,8 +112,14 @@ function cpu_dadosParciais() {
 			posicaoCentraliza = i;
 		}
 		var status = new String(piloto.status);
+		pilotosAereofolioMap.set(piloto.idPiloto, false);
 		if (status.startsWith("P")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("P", "")));
+		}if (status.startsWith("A")) {
+			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("A", "")));
+			pilotosAereofolioMap.set(piloto.idPiloto, true);
+		}else if (status.startsWith("R")) {
+			pilotosDnfMap.set(piloto.idPiloto, true);
 		}
 	}
 	if (dadosParciais.texto) {
@@ -128,6 +137,7 @@ function cpu_carregaDadosPilotos() {
 		pilotosMap.set(dadosJogo.pilotos[i].id, dadosJogo.pilotos[i]);
 	}
 	carrosImgMap = new Map();
+	carrosImgSemAereofolioMap = new Map();
 	carrosLadoImgMap = new Map();
 	capaceteImgMap = new Map();
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
@@ -135,6 +145,11 @@ function cpu_carregaDadosPilotos() {
 		var imgCarro = new Image();
 		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
 		carrosImgMap.set(pilotos.id, imgCarro);
+		
+		var imgSemAereofolio = new Image();
+		imgSemAereofolio.src = "/f1mane/rest/letsRace/carroCimaSemAreofolio?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
+		carrosImgSemAereofolioMap.set(pilotos.id, imgSemAereofolio);
+		
 		var imgCarroLado = new Image();
 		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada;
 		carrosLadoImgMap.set(pilotos.id, imgCarroLado);

@@ -440,20 +440,25 @@ function ctl_desenhaInfoCarros() {
 }
 
 function ctl_problemasCarrro(img , x, idPiloto , posicao){
+	var alertaMotor;
+	
 	if(idPilotoSelecionado!=idPiloto){
-		return;
+		alertaMotor = ("PANE_SECA" == dadosParciais.dano) || (dadosParciais.dano ==  "EXPLODIU_MOTOR");
 	}
+	var perdeuAerefolio = pilotosAereofolioMap.get(idPiloto);
+	var dnf = pilotosDnfMap.get(idPiloto);
+	
 	if(posicao == 1){
 		maneContext.beginPath();
-		if("PERDEU_AEREOFOLIO" == dadosParciais.dano){
+		if(perdeuAerefolio){
 			maneContext.fillStyle = corVermelho;
 			maneContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
 		}
-		if(("PANE_SECA" == dadosParciais.dano) || (dadosParciais.dano ==  "EXPLODIU_MOTOR")){
+		if(alertaMotor){
 			maneContext.fillStyle = corVermelho;
 			maneContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 60, 30);
 		}
-		if(("BATEU_FORTE" == dadosParciais.dano) || (dadosParciais.dano ==  "ABANDONOU")){
+		if(dnf){
 			maneContext.fillStyle = corVermelho;
 			maneContext.fillRect(x - img.width - 40, altura	- img.height - 10, img.width, img.height);
 		}
@@ -461,17 +466,17 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 		maneContext.stroke();
 	}else{
 		maneContext.beginPath();
-		if("PERDEU_AEREOFOLIO" == dadosParciais.dano){
-			maneContext.fillStyle = corAmarelo;
+		if(perdeuAerefolio){
+			maneContext.fillStyle = corVermelho;
 			maneContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
 		}
 		
-		if(("PANE_SECA" == dadosParciais.dano) || (dadosParciais.dano ==  "EXPLODIU_MOTOR")){
+		if(alertaMotor){
 			maneContext.fillStyle = corVermelho;
 			maneContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 60, 30);
 		}
 		
-		if(("BATEU_FORTE" == dadosParciais.dano) || (dadosParciais.dano ==  "ABANDONOU")){
+		if(dnf){
 			maneContext.fillStyle = corVermelho;
 			maneContext.fillRect(x + 40, altura - img.height - 10, img.width, img.height);
 		}

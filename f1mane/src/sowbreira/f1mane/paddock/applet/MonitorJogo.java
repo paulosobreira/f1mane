@@ -384,7 +384,10 @@ public class MonitorJogo implements Runnable {
 						travadaRoda.setIdNo(
 								jogoCliente.obterIdPorNo(piloto.getNoAtual()));
 						jogoCliente.travouRodas(travadaRoda);
-					} else if ("R".equals(statusPilotos)) {
+					} else if ("A".equals(statusPilotos)) {
+						piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);;
+						piloto.getCarro().setDurabilidadeAereofolio(0);
+					}	else if ("R".equals(statusPilotos)) {
 						piloto.getCarro().setRecolhido(true);
 					}
 				}
