@@ -115,7 +115,7 @@ function cpu_dadosParciais() {
 		pilotosAereofolioMap.set(piloto.idPiloto, false);
 		if (status.startsWith("P")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("P", "")));
-		}if (status.startsWith("A")) {
+		}else if (status.startsWith("A")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("A", "")));
 			pilotosAereofolioMap.set(piloto.idPiloto, true);
 		}else if (status.startsWith("R")) {
