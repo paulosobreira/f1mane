@@ -96,8 +96,10 @@ function rest_dadosParciais() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
-			carregando = false;
+			cpu_dadosParciaisAnterior();
 			dadosParciais = response;
+			cpu_dadosParciais();
+			carregando = false;
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {

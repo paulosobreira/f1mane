@@ -7,7 +7,7 @@ var dadosParciais;
 var nomeJogo;
 
 var ativo = true;
-var delay = 100;
+var delay = 500;
 
 var token;
 var idPilotoSelecionado;
@@ -23,6 +23,7 @@ var carrosImgMap;
 var carrosImgSemAereofolioMap;
 var capaceteImgMap;
 var ptsPistaMap = new Map();
+var ptsPistaMapAnterior = new Map();
 var objImgPistaMap = new Map();
 var carrosLadoImgMap;
 var imgPneuM, imgPneuD, imgPneuC;
@@ -61,15 +62,9 @@ function cpu_main() {
 		vdp_carregaBackGround();
 	}
 	if (dadosJogo != null && circuito != null && ativo && imgBg.complete) {
-		delay = 500;
 		rest_dadosParciais();
-		cpu_dadosParciais();
-		vdp_desenha();
-		ctl_desenha();
 		cpu_altenador();
-	} else {
-		delay = 1000;
-	}
+	} 
 }
 
 function cpu_caregaMidia() {
@@ -101,6 +96,22 @@ function cpu_caregaMidia() {
 
 }
 
+function cpu_dadosParciaisAnterior() {
+	if (!dadosParciais) {
+		return;
+	}
+	var posicaoPilotosAnt = dadosParciais.posisPack;
+	for (var i = 0; i < posicaoPilotosAnt.posis.length; i++) {
+		var piloto = posicaoPilotosAnt.posis[i];
+		var status = new String(piloto.status);
+		if (status.startsWith("P")) {
+			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace("P", "")));
+		} else if (status.startsWith("A")) {
+			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace("A", "")));
+		}
+	}
+}
+
 function cpu_dadosParciais() {
 	if (!dadosParciais) {
 		return;
@@ -115,10 +126,10 @@ function cpu_dadosParciais() {
 		pilotosAereofolioMap.set(piloto.idPiloto, false);
 		if (status.startsWith("P")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("P", "")));
-		}else if (status.startsWith("A")) {
+		} else if (status.startsWith("A")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("A", "")));
 			pilotosAereofolioMap.set(piloto.idPiloto, true);
-		}else if (status.startsWith("R")) {
+		} else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		}
 	}
@@ -145,11 +156,11 @@ function cpu_carregaDadosPilotos() {
 		var imgCarro = new Image();
 		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
 		carrosImgMap.set(pilotos.id, imgCarro);
-		
+
 		var imgSemAereofolio = new Image();
 		imgSemAereofolio.src = "/f1mane/rest/letsRace/carroCimaSemAreofolio?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
 		carrosImgSemAereofolioMap.set(pilotos.id, imgSemAereofolio);
-		
+
 		var imgCarroLado = new Image();
 		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada;
 		carrosLadoImgMap.set(pilotos.id, imgCarroLado);
@@ -178,3 +189,4 @@ function cpu_altenador() {
 }
 
 var main = setInterval(cpu_main, delay);
+var render = setInterval(vdp_desenha, 100);

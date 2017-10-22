@@ -1,3 +1,13 @@
+// Converts from degrees to radians.
+Math.radians = function(degrees) {
+	return degrees * Math.PI / 180;
+};
+
+// Converts from radians to degrees.
+Math.degrees = function(radians) {
+	return radians * 180 / Math.PI;
+};
+
 function gu_bline(startCoordinates, endCoordinates) {
 	if (startCoordinates == null || endCoordinates == null) {
 		return;
@@ -47,13 +57,36 @@ function gu_distancia(startCoordinates, endCoordinates) {
 	return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
 }
 
-function gu_calculaAngulo(startCoordinates, endCoordinates) {
-	if(!startCoordinates || !endCoordinates){
+function gu_calculaAngulo(startCoordinates, endCoordinates, inc) {
+	if (!startCoordinates || !endCoordinates) {
 		return 0;
 	}
 	var dx = endCoordinates.x - startCoordinates.x;
 	var dy = endCoordinates.y - startCoordinates.y;
-	var tan = Math.atan2(dy, dx);
-	var degrees = tan+Math.PI;
+	var tan = Math.atan2(dy, dx) + Math.radians(inc);
+	var degrees = tan + Math.PI;
 	return degrees;
+}
+
+//function gu_calculaPonto(angulo, comprimento, p1) {
+//	var x = 0;
+//	var y = 0;
+//	// double ang = Math.toRadians(angulo);
+//	var ang = angulo;
+//	var nx = (comprimento * Math.sin(ang));
+//	var ny = (comprimento * Math.cos(ang));
+//	var ponto = {
+//		x : p1.x + nx,
+//		y : p1.y + ny
+//	};
+//	return ponto;
+//}
+
+function gu_calculaPonto(angulo, comprimento, p1) {
+    var result = {};
+
+    result.x = Math.round(Math.cos(angulo) * comprimento + p1.x);
+    result.y = Math.round(Math.sin(angulo) * comprimento + p1.y);
+
+    return result;
 }
