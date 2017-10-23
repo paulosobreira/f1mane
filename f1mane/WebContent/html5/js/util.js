@@ -6,7 +6,11 @@ function safeArray(arr, i) {
 		return arr[0];
 	}
 	if (i >= arr.length) {
-		return arr[arr.length - 1];
+		var virou = i - arr.length;
+		if(virou>= arr.length){
+			virou = 0;
+		}
+		return arr[virou];
 	}
 	
 	return arr[i];

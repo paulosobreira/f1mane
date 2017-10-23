@@ -18,6 +18,7 @@ var alternadorValor = 0;
 
 var pilotosMap = new Map();
 var pilotosDnfMap = new Map();
+var pilotosFaiscaMap = new Map();
 var pilotosAereofolioMap = new Map();
 var carrosImgMap;
 var carrosImgSemAereofolioMap;
@@ -129,7 +130,10 @@ function cpu_dadosParciais() {
 		} else if (status.startsWith("A")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("A", "")));
 			pilotosAereofolioMap.set(piloto.idPiloto, true);
-		} else if (status.startsWith("R")) {
+		} else if (status.startsWith("F")) {
+			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("F", "")));
+			pilotosFaiscaMap.set(piloto.idPiloto, 5);
+		}else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		}
 	}
@@ -167,9 +171,6 @@ function cpu_carregaDadosPilotos() {
 
 		var imgCapacete = new Image();
 		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada
-		if (imgCapacete.width == 0) {
-			imgCapacete = null;
-		}
 		capaceteImgMap.set(pilotos.id, imgCapacete);
 	}
 }
@@ -189,4 +190,4 @@ function cpu_altenador() {
 }
 
 var main = setInterval(cpu_main, delay);
-var render = setInterval(vdp_desenha, 100);
+var render = setInterval(vdp_desenha, 50);

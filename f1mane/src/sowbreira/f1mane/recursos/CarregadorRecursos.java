@@ -743,7 +743,7 @@ public class CarregadorRecursos {
 	}
 
 	public BufferedImage obterCapacete(Piloto piloto, String temporada) {
-		if(temporada==null){
+		if (temporada == null) {
 			return null;
 		}
 		try {
@@ -758,19 +758,9 @@ public class CarregadorRecursos {
 				} catch (Exception e) {
 				}
 				if (ret == null) {
-//					ret = CarregadorRecursos.carregaImagem("capacete.png");
-//					BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-//							piloto.getCarro().getCor1(), "capacete1.png",
-//							ret.getType());
-//					BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-//							piloto.getCarro().getCor2(), "capacete2.png",
-//							ret.getType());
-//					Graphics graphics = ret.getGraphics();
-//					graphics.drawImage(cor1, 0, 0, null);
-//					graphics.drawImage(cor2, 0, 0, null);
-//					graphics.dispose();
+					return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 				}
-				if(ret!=null){
+				if (ret != null) {
 					bufferCapacete.put(chave, ret);
 				}
 			}
