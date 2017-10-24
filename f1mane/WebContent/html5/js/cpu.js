@@ -132,7 +132,7 @@ function cpu_dadosParciais() {
 			pilotosAereofolioMap.set(piloto.idPiloto, true);
 		} else if (status.startsWith("F")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("F", "")));
-			pilotosFaiscaMap.set(piloto.idPiloto, 5);
+			pilotosFaiscaMap.set(piloto.idPiloto, 15);
 		}else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		}
@@ -190,4 +190,4 @@ function cpu_altenador() {
 }
 
 var main = setInterval(cpu_main, delay);
-var render = setInterval(vdp_desenha, 50);
+var render = setInterval(vdp_desenha, 30);

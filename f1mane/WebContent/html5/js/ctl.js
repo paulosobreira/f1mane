@@ -44,6 +44,7 @@ function ctl_desenhaControles(evalX, evalY) {
 					controle.x = eval(controle.evalX);
 				}
 				maneContext.beginPath();
+				maneContext.setLineDash([]);
 				if (!controle.img) {
 					maneContext.fillStyle = corFundo
 					maneContext.fillRect(controle.x, controle.y,

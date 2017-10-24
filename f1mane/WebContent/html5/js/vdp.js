@@ -25,6 +25,7 @@ var blendOp = 'destination-out'
 var corNublado = "rgba(255, 255, 255, 0.3)";
 var corChuva = "rgba(255, 255, 255,0.5)";
 var corFaisca = "rgba(255, 255, 0 ,0.5)";
+var pilotosEfeitosMap = new Map();
 
 function vdp_desenha() {
 	if (dadosJogo == null || circuito == null || !ativo || !imgBg.complete) {
@@ -102,15 +103,15 @@ function vdp_desenhaClima() {
 }
 
 function vdp_desenhaRastroFaisca(frenteCar, trazCar) {
-	if (dadosParciais.clima == "chuva.png") {
+	if (dadosParciais.clima == "chuva.png" || !frenteCar || !trazCar) {
 		return;
 	}
 	for (var i = 0; i < 15; i++) {
 		var p1 = {
-			x : intervalo((frenteCar.x - ptBg.x - intervalo(2.5, 10)), (frenteCar.x
-					- ptBg.x + intervalo(2.5, 10))),
-			y : intervalo((frenteCar.y - ptBg.y - intervalo(2.5, 10)), (frenteCar.y
-					- ptBg.y + intervalo(2.5, 10)))
+			x : intervalo((frenteCar.x - ptBg.x - intervalo(2.5, 6)),
+					(frenteCar.x - ptBg.x + intervalo(2.5, 6))),
+			y : intervalo((frenteCar.y - ptBg.y - intervalo(2.5, 6)),
+					(frenteCar.y - ptBg.y + intervalo(2.5, 6)))
 		};
 		var p2 = {
 			x : intervalo((trazCar.x - ptBg.x - intervalo(2.5, 15)), (trazCar.x
@@ -122,7 +123,7 @@ function vdp_desenhaRastroFaisca(frenteCar, trazCar) {
 		var ptDest = gu_calculaPonto(angulo, intervalo(43, 86), p1);
 		maneContext.beginPath();
 		maneContext.strokeStyle = corFaisca;
-		maneContext.setLineDash([intervalo(5, 10), intervalo(10, 15)]);
+		maneContext.setLineDash([ intervalo(5, 10), intervalo(10, 15) ]);
 		maneContext.moveTo(p1.x, p1.y);
 		maneContext.lineTo(ptDest.x, ptDest.y);
 		maneContext.closePath();
@@ -132,7 +133,7 @@ function vdp_desenhaRastroFaisca(frenteCar, trazCar) {
 }
 
 function vdp_desenhaRastroChuva(frenteCar, trazCar) {
-	if (dadosParciais.clima != "chuva.png") {
+	if (dadosParciais.clima != "chuva.png" || !frenteCar || !trazCar) {
 		return;
 	}
 	for (var i = 0; i < 20; i++) {
@@ -140,9 +141,12 @@ function vdp_desenhaRastroChuva(frenteCar, trazCar) {
 			continue;
 		}
 		var p1 = {
-			x : frenteCar.x - ptBg.x,
-			y : frenteCar.y - ptBg.y
-		};
+				x : intervalo((frenteCar.x - ptBg.x - intervalo(1, 3)),
+						(frenteCar.x - ptBg.x + intervalo(1, 3))),
+				y : intervalo((frenteCar.y - ptBg.y - intervalo(1, 3)),
+						(frenteCar.y - ptBg.y + intervalo(1, 3)))
+			};
+
 		var p2 = {
 			x : intervalo((trazCar.x - ptBg.x - intervalo(2.5, 6)), (trazCar.x
 					- ptBg.x + intervalo(2.5, 6))),
@@ -297,19 +301,18 @@ function vdp_desenhaCarrosCima() {
 				maneContext.fillRect(x - 5, y, laruraTxt, 20);
 				maneContext.fillStyle = "black"
 				maneContext.fillText(nmPiloto, x, y + 15);
-
+				pilotosEfeitosMap.set(piloto.idPiloto,true);
 				if (desenhaImagens) {
 					var rotacionarCarro = vdp_rotacionarCarro(imgCarro, angulo);
-					var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x,
-							y, no);
+					var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x, y, no,piloto.idPiloto);
 					maneContext.drawImage(blendCarro, x, y);
 				}
-				if (vdp_emMovimento(piloto.idPiloto)) {
+				if (vdp_emMovimento(piloto.idPiloto) && pilotosEfeitosMap.get(piloto.idPiloto)) {
 					vdp_desenhaRastroChuva(frenteCar, trazCar);
-					if (pilotosFaiscaMap.get(piloto.idPiloto)>0) {
-						pilotosFaiscaMap.set(piloto.idPiloto,pilotosFaiscaMap.get(piloto.idPiloto)-1);
+					if (pilotosFaiscaMap.get(piloto.idPiloto) > 0) {
+						pilotosFaiscaMap.set(piloto.idPiloto, pilotosFaiscaMap
+								.get(piloto.idPiloto) - 1);
 						vdp_desenhaRastroFaisca(frenteCar, trazCar);
-						
 					}
 				}
 			}
@@ -402,7 +405,7 @@ function vdp_rotacionarCarro(imgCarro, angulo) {
 	return cvRotate;
 }
 
-function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro, no) {
+function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro, no, idPiloto) {
 	var maiorLado = 0;
 	if (imgCarro.width > imgCarro.height) {
 		maiorLado = imgCarro.width;
@@ -412,14 +415,21 @@ function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro, no) {
 	cvBlend.width = maiorLado;
 	cvBlend.height = maiorLado;
 	ctxBlend.drawImage(imgCarro, 0, 0);
-
+	var rectCarro = {
+		left : ptCarro.x + (imgCarro.width/2) -10, 
+		top : ptCarro.y + (imgCarro.height/2) -10,
+		right : ptCarro.x + (imgCarro.width/2) +10,
+		bottom : ptCarro.y + (imgCarro.height/2) +10
+	};
 	for (var j = 0; j < circuito.objetosNoTransparencia.length; j++) {
 		var img = objImgPistaMap.get(j);
 		var pontosTp = circuito.objetosNoTransparencia[j];
 		if (pontosTp.transparenciaBox != no.box) {
 			continue;
 		}
-		if (pontosTp.indexFim != 0
+		if (pontosTp.indexFim
+				&& pontosTp.indexFim != 0
+				&& pontosTp.indexInicio
 				&& pontosTp.indexInicio != 0
 				&& (no.index < pontosTp.indexInicio || no.index > pontosTp.indexFim)) {
 			continue;
@@ -431,11 +441,12 @@ function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro, no) {
 			bottom : pontosTp.y + img.height
 		};
 		if (img && img.width > 0 && img.height > 0
-				&& vdp_intersectRect(rectBg, rectObj)) {
+				&& vdp_intersectRect(rectCarro, rectObj)) {
 			var x = pontosTp.x - ptBg.x - xCarro;
 			var y = pontosTp.y - ptBg.y - yCarro;
 			ctxBlend.globalCompositeOperation = blendOp;
 			ctxBlend.drawImage(img, x, y);
+			pilotosEfeitosMap.set(idPiloto,false);
 		}
 	}
 

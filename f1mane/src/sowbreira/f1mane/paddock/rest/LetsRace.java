@@ -322,10 +322,10 @@ public class LetsRace {
 				pista = nmCircuito;
 			}
 		}
-		//pista = "Monte Carlo";
+		pista = "Monte Carlo";
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
-		dadosCriarJogo.setClima(Clima.SOL);
+		dadosCriarJogo.setClima(Clima.CHUVA);
 		TemporadasDefauts temporadasDefauts = carregadorRecursos
 				.carregarTemporadasPilotosDefauts().get("t" + temporada);
 		dadosCriarJogo
@@ -340,7 +340,7 @@ public class LetsRace {
 		} else {
 			dadosCriarJogo.setCombustivel(85);
 		}
-		dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_MOLE);
+		dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
 		return dadosCriarJogo;
 	}
 
