@@ -141,11 +141,11 @@ function vdp_desenhaRastroChuva(frenteCar, trazCar) {
 			continue;
 		}
 		var p1 = {
-				x : intervalo((frenteCar.x - ptBg.x - intervalo(1, 3)),
-						(frenteCar.x - ptBg.x + intervalo(1, 3))),
-				y : intervalo((frenteCar.y - ptBg.y - intervalo(1, 3)),
-						(frenteCar.y - ptBg.y + intervalo(1, 3)))
-			};
+			x : intervalo((frenteCar.x - ptBg.x - intervalo(1, 3)),
+					(frenteCar.x - ptBg.x + intervalo(1, 3))),
+			y : intervalo((frenteCar.y - ptBg.y - intervalo(1, 3)),
+					(frenteCar.y - ptBg.y + intervalo(1, 3)))
+		};
 
 		var p2 = {
 			x : intervalo((trazCar.x - ptBg.x - intervalo(2.5, 6)), (trazCar.x
@@ -301,13 +301,15 @@ function vdp_desenhaCarrosCima() {
 				maneContext.fillRect(x - 5, y, laruraTxt, 20);
 				maneContext.fillStyle = "black"
 				maneContext.fillText(nmPiloto, x, y + 15);
-				pilotosEfeitosMap.set(piloto.idPiloto,true);
+				pilotosEfeitosMap.set(piloto.idPiloto, true);
 				if (desenhaImagens) {
 					var rotacionarCarro = vdp_rotacionarCarro(imgCarro, angulo);
-					var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x, y, no,piloto.idPiloto);
+					var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x,
+							y, no, piloto.idPiloto);
 					maneContext.drawImage(blendCarro, x, y);
 				}
-				if (vdp_emMovimento(piloto.idPiloto) && pilotosEfeitosMap.get(piloto.idPiloto)) {
+				if (vdp_emMovimento(piloto.idPiloto)
+						&& pilotosEfeitosMap.get(piloto.idPiloto)) {
 					vdp_desenhaRastroChuva(frenteCar, trazCar);
 					if (pilotosFaiscaMap.get(piloto.idPiloto) > 0) {
 						pilotosFaiscaMap.set(piloto.idPiloto, pilotosFaiscaMap
@@ -416,11 +418,17 @@ function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro, no, idPiloto) {
 	cvBlend.height = maiorLado;
 	ctxBlend.drawImage(imgCarro, 0, 0);
 	var rectCarro = {
-		left : ptCarro.x + (imgCarro.width/2) -10, 
-		top : ptCarro.y + (imgCarro.height/2) -10,
-		right : ptCarro.x + (imgCarro.width/2) +10,
-		bottom : ptCarro.y + (imgCarro.height/2) +10
+		left : ptCarro.x - 10,
+		top : ptCarro.y - 10,
+		right : ptCarro.x + 10,
+		bottom : ptCarro.y  + 10
 	};
+	if (idPiloto == idPilotoSelecionado) {
+//		maneContext.fillStyle = 'black';
+		// maneContext.fillRect(xCarro, yCarro, maiorLado, maiorLado);
+//		maneContext.fillRect(rectCarro.left - ptBg.x, rectCarro.top - ptBg.y,
+//				10, 10);
+	}
 	for (var j = 0; j < circuito.objetosNoTransparencia.length; j++) {
 		var img = objImgPistaMap.get(j);
 		var pontosTp = circuito.objetosNoTransparencia[j];
@@ -446,7 +454,7 @@ function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro, no, idPiloto) {
 			var y = pontosTp.y - ptBg.y - yCarro;
 			ctxBlend.globalCompositeOperation = blendOp;
 			ctxBlend.drawImage(img, x, y);
-			pilotosEfeitosMap.set(idPiloto,false);
+			pilotosEfeitosMap.set(idPiloto, false);
 		}
 	}
 
