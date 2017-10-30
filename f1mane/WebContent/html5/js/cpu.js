@@ -31,6 +31,11 @@ var imgPneuM, imgPneuD, imgPneuC;
 var menosAsa, maisAsa, normalAsa;
 var motor, capacete;
 
+
+var loader = $('<div class="loader"></div>');
+$('body').prepend(loader);
+var $loading = loader.hide();
+
 // update canvas with some information and animation
 // var fps = new FpsCtrl(20, function(e) {
 // vdp_desenha();
@@ -41,6 +46,7 @@ var motor, capacete;
 
 function cpu_main() {
 	if (nomeJogo == null) {
+		$loading.show();
 		nomeJogo = localStorage.getItem("nomeJogo");
 		idPilotoSelecionado = localStorage.getItem("idPilotoSelecionado");
 		token = localStorage.getItem("token");
@@ -63,6 +69,7 @@ function cpu_main() {
 		vdp_carregaBackGround();
 	}
 	if (dadosJogo != null && circuito != null && ativo && imgBg.complete) {
+		$loading.hide();
 		rest_dadosParciais();
 		cpu_altenador();
 	} 
