@@ -334,11 +334,11 @@ public class MonitorJogo implements Runnable {
 			return;
 		}
 		if (posisPack.safetyNoId != 0) {
-			jogoCliente.setSafetyCarBol(true);
+			jogoCliente.setSafetyCarNaPista(true);
 			jogoCliente.atualizaPosSafetyCar(posisPack.safetyNoId,
 					posisPack.safetySair);
 		} else {
-			jogoCliente.setSafetyCarBol(false);
+			jogoCliente.setSafetyCarNaPista(false);
 		}
 		if (posisPack.posis == null) {
 			return;

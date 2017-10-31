@@ -55,7 +55,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private GerenciadorVisual gerenciadorVisual;
 	private ControleEstatisticas controleEstatisticas;
 	private SafetyCar safetyCar = new SafetyCar();
-	private boolean safetyCarBol;
+	private boolean safetyCarNaPista;
 	private String nomeJogador;
 	private Piloto pilotoSelecionado;
 	private DadosJogo dadosJogo;
@@ -337,8 +337,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return safetyCar;
 	}
 
-	public void setSafetyCarBol(boolean safetyCarBol) {
-		this.safetyCarBol = safetyCarBol;
+	public void setSafetyCarNaPista(boolean safetyCarNaPista) {
+		this.safetyCarNaPista = safetyCarNaPista;
 	}
 
 	public long getTempoCiclo() {
@@ -388,7 +388,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public boolean isSafetyCarNaPista() {
-		return safetyCarBol;
+		return safetyCarNaPista;
 	}
 
 	public boolean isSafetyCarVaiBox() {
