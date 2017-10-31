@@ -30,6 +30,8 @@ var carrosLadoImgMap;
 var imgPneuM, imgPneuD, imgPneuC;
 var menosAsa, maisAsa, normalAsa;
 var motor, capacete;
+var safetycar;
+var travadaRoda0,travadaRoda1,travadaRoda2;
 
 
 var loader = $('<div class="loader"></div>');
@@ -92,6 +94,14 @@ function cpu_caregaMidia() {
 	maisAsa.src = "/f1mane/rest/letsRace/png/maisAsa";
 	normalAsa = new Image();
 	normalAsa.src = "/f1mane/rest/letsRace/png/normalAsa"
+	safetycar = new Image();
+	safetycar.src = "/f1mane/rest/letsRace/png/sfcima"
+	travadaRoda0 = new Image();
+	travadaRoda0.src = "/f1mane/rest/letsRace/png/travadaRoda0"
+	travadaRoda1 = new Image();
+	travadaRoda1.src = "/f1mane/rest/letsRace/png/travadaRoda1"
+	travadaRoda2 = new Image();
+	travadaRoda2.src = "/f1mane/rest/letsRace/png/travadaRoda2"
 
 	ctl_gerarControles();
 	console.log('cpu_main vdp_carregaBackGround()');

@@ -24,14 +24,14 @@ body {
   left: 50%;
   top: 50%;
   z-index: 1;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   margin: -75px 0 0 -75px;
   border: 5px solid #f3f3f3;
   border-radius: 50%;
   border-top: 5px solid grey;
-  width: 120px;
-  height: 120px;
+  width: 200px;
+  height: 200px;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
