@@ -26,12 +26,15 @@ var capaceteImgMap;
 var ptsPistaMap = new Map();
 var ptsPistaMapAnterior = new Map();
 var objImgPistaMap = new Map();
+var imgBg;
 var carrosLadoImgMap;
 var imgPneuM, imgPneuD, imgPneuC;
 var menosAsa, maisAsa, normalAsa;
 var motor, capacete;
 var safetycar;
 var travadaRoda0,travadaRoda1,travadaRoda2;
+var carregouMidia = false;
+var contCarregouMidia = 0;
 
 
 var loader = $('<div class="loader"></div>');
@@ -66,18 +69,24 @@ function cpu_main() {
 		console.log('cpu_main rest_ciruito()');
 		rest_ciruito();
 	}
-	if (dadosJogo != null && circuito != null && imgBg.src == "") {
+	if (dadosJogo != null && circuito != null && !carregouMidia) {
 		cpu_caregaMidia();
-		vdp_carregaBackGround();
+		carregouMidia = true;
+		contCarregouMidia = 10;
 	}
-	if (dadosJogo != null && circuito != null && ativo && imgBg.complete) {
+	if (dadosJogo != null && circuito != null && ativo && contCarregouMidia==0) {
 		$loading.hide();
 		rest_dadosParciais();
 		cpu_altenador();
 	} 
+	if(carregouMidia && contCarregouMidia>0){
+		contCarregouMidia--;
+	}
 }
 
 function cpu_caregaMidia() {
+	imgBg = new Image();
+	imgBg.src = "../sowbreira/f1mane/recursos/" + circuito.backGround;
 	imgPneuM = new Image();
 	imgPneuM.src = "img/pneuMole.png"
 	imgPneuD = new Image();
@@ -104,7 +113,7 @@ function cpu_caregaMidia() {
 	travadaRoda2.src = "/f1mane/rest/letsRace/png/travadaRoda2"
 
 	ctl_gerarControles();
-	console.log('cpu_main vdp_carregaBackGround()');
+
 
 	for (var i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var img = new Image();

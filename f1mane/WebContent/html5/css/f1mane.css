@@ -21,7 +21,7 @@ body {
 .loader {
   position: absolute;
   background-color : white;
-  left: 50%;
+  left: 55%;
   top: 50%;
   z-index: 1;
   width: 200px;
@@ -30,8 +30,8 @@ body {
   border: 5px solid #f3f3f3;
   border-radius: 50%;
   border-top: 5px solid grey;
-  width: 200px;
-  height: 200px;
+  width: 120px;
+  height: 120px;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
