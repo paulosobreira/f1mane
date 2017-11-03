@@ -264,6 +264,33 @@ public class ImageUtil {
 		return bufferedImageRetorno;
 	}
 
+	public static BufferedImage geraTransparenciaAlpha(BufferedImage src,
+			int translucidez) {
+
+		BufferedImage bufferedImageRetorno = new BufferedImage(src.getWidth(),
+				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = src.getData();
+		WritableRaster destRaster = bufferedImageRetorno.getRaster();
+		int[] argbArray = new int[4];
+
+		for (int i = 0; i < src.getWidth(); i++) {
+			for (int j = 0; j < src.getHeight(); j++) {
+				argbArray = new int[4];
+				argbArray = srcRaster.getPixel(i, j, argbArray);
+
+				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
+						argbArray[3]);
+				if (argbArray[3] != 0) {
+					argbArray[3] = translucidez;
+				}
+
+				destRaster.setPixel(i, j, argbArray);
+			}
+		}
+
+		return bufferedImageRetorno;
+	}
+
 	public static BufferedImage toCompatibleImage(BufferedImage image) {
 		if (GraphicsEnvironment.isHeadless()) {
 			return image;

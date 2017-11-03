@@ -32,19 +32,19 @@ function ctl_desenha() {
 }
 
 function ctl_desenhaControles(evalX, evalY) {
+
 	controles.forEach(function(controle) {
 				if (ctl_removeControle(controle)) {
 					return;
 				}
-
+				maneContext.beginPath();
+				maneContext.setLineDash([]);
 				if (evalY && controle.evalY) {
 					controle.y = eval(controle.evalY);
 				}
 				if (evalX && controle.evalX) {
 					controle.x = eval(controle.evalX);
 				}
-				maneContext.beginPath();
-				maneContext.setLineDash([]);
 				if (!controle.img) {
 					maneContext.fillStyle = corFundo
 					maneContext.fillRect(controle.x, controle.y,
@@ -130,11 +130,9 @@ function ctl_desenhaControles(evalX, evalY) {
 
 					}
 				}
-
 				maneContext.closePath();
 				maneContext.stroke();
 			});
-
 }
 
 function ctl_mudaTracadoPiloto(event) {

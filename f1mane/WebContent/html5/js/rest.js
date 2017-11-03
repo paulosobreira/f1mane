@@ -54,6 +54,7 @@ function rest_ciruito() {
 		success : function(response) {
 			circuito = response;
 			mapaIdNos = new Map();
+			mapaIdNosSuave = new Map();
 			var id = 1;
 			for (var i = 0; i < circuito.pistaFull.length; i++) {
 				mapaIdNos.set(id++, circuito.pistaFull[i]);

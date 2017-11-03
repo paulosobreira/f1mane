@@ -310,7 +310,7 @@ public class LetsRace {
 			String idPiloto) {
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t" + temporada);
-		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
+		dadosCriarJogo.setQtdeVoltas(Constantes.MAX_VOLTAS);
 		dadosCriarJogo.setDiffultrapassagem(250);
 		Map<String, String> carregarCircuitos = ControleRecursos
 				.carregarCircuitos();
@@ -322,7 +322,7 @@ public class LetsRace {
 				pista = nmCircuito;
 			}
 		}
-		//pista = "Monte Carlo";
+		// pista = "Monte Carlo";
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
@@ -359,14 +359,15 @@ public class LetsRace {
 		byte[] imageData = baos.toByteArray();
 		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
-	
+
 	@GET
 	@Path("/carroCimaSemAreofolio")
 	@Produces("image/png")
-	public Response carroCimaSemAreofolio(@QueryParam("nomeJogo") String nomeJogo,
+	public Response carroCimaSemAreofolio(
+			@QueryParam("nomeJogo") String nomeJogo,
 			@QueryParam("idPiloto") String idPiloto) throws IOException {
-		BufferedImage carroCima = controlePaddock.obterCarroCimaSemAreofolio(nomeJogo,
-				idPiloto);
+		BufferedImage carroCima = controlePaddock
+				.obterCarroCimaSemAreofolio(nomeJogo, idPiloto);
 		if (carroCima == null) {
 			return Response.status(200).entity("null").build();
 		}
@@ -388,8 +389,7 @@ public class LetsRace {
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (Integer.parseInt(id) == piloto.getId()) {
-				capacetes = carregadorRecursos
-						.obterCapacete(piloto, temporada);
+				capacetes = carregadorRecursos.obterCapacete(piloto, temporada);
 				break;
 			}
 		}
@@ -501,6 +501,24 @@ public class LetsRace {
 			throws IOException {
 		BufferedImage buffer = CarregadorRecursos
 				.carregaBufferedImage(recurso + ".png");
+		if (buffer == null) {
+			return Response.status(200).entity("null").build();
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(buffer, "png", baos);
+		byte[] imageData = baos.toByteArray();
+		return Response.ok(new ByteArrayInputStream(imageData)).build();
+	}
+
+	@GET
+	@Path("/png/{recurso}/{trasnparencia}")
+	@Produces("image/png")
+	public Response png(@PathParam("recurso") String recurso,
+			@PathParam("trasnparencia") String trasnparencia)
+			throws IOException {
+		BufferedImage buffer = ImageUtil.geraTransparenciaAlpha(
+				CarregadorRecursos.carregaBufferedImage(recurso + ".png"),
+				new Integer(trasnparencia));
 		if (buffer == null) {
 			return Response.status(200).entity("null").build();
 		}

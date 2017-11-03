@@ -133,14 +133,26 @@ public class No implements Serializable {
 		return point.y;
 	}
 
+	public boolean getRetaOuLargada() {
+		return (LARGADA.equals(tipo)) || (RETA.equals(tipo));
+	}
+	
 	public boolean verificaRetaOuLargada() {
 		return (LARGADA.equals(tipo)) || (RETA.equals(tipo));
 	}
 
+	public boolean getCurvaAlta() {
+		return (CURVA_ALTA.equals(tipo));
+	}
+	
 	public boolean verificaCurvaAlta() {
 		return (CURVA_ALTA.equals(tipo));
 	}
 
+	public boolean getCurvaBaixa() {
+		return (CURVA_BAIXA.equals(tipo));
+	}
+	
 	public boolean verificaCurvaBaixa() {
 		return (CURVA_BAIXA.equals(tipo));
 	}

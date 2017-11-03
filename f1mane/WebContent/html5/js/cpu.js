@@ -19,35 +19,14 @@ var alternadorValor = 0;
 var pilotosMap = new Map();
 var pilotosDnfMap = new Map();
 var pilotosFaiscaMap = new Map();
+var pilotosTravadaMap = new Map();
 var pilotosAereofolioMap = new Map();
-var carrosImgMap;
-var carrosImgSemAereofolioMap;
-var capaceteImgMap;
 var ptsPistaMap = new Map();
 var ptsPistaMapAnterior = new Map();
-var objImgPistaMap = new Map();
-var imgBg;
-var carrosLadoImgMap;
-var imgPneuM, imgPneuD, imgPneuC;
-var menosAsa, maisAsa, normalAsa;
-var motor, capacete;
-var safetycar;
-var travadaRoda0,travadaRoda1,travadaRoda2;
-var carregouMidia = false;
-var contCarregouMidia = 0;
-
 
 var loader = $('<div class="loader"></div>');
 $('body').prepend(loader);
 var $loading = loader.hide();
-
-// update canvas with some information and animation
-// var fps = new FpsCtrl(20, function(e) {
-// vdp_desenha();
-// })
-
-// start the loop
-// fps.start();
 
 function cpu_main() {
 	if (nomeJogo == null) {
@@ -70,8 +49,9 @@ function cpu_main() {
 		rest_ciruito();
 	}
 	if (dadosJogo != null && circuito != null && !carregouMidia) {
-		cpu_caregaMidia();
+		mid_caregaMidia();
 		carregouMidia = true;
+		ctl_gerarControles();
 		contCarregouMidia = 10;
 	}
 	if (dadosJogo != null && circuito != null && ativo && contCarregouMidia==0) {
@@ -84,44 +64,6 @@ function cpu_main() {
 	}
 }
 
-function cpu_caregaMidia() {
-	imgBg = new Image();
-	imgBg.src = "../sowbreira/f1mane/recursos/" + circuito.backGround;
-	imgPneuM = new Image();
-	imgPneuM.src = "img/pneuMole.png"
-	imgPneuD = new Image();
-	imgPneuD.src = "img/pneuDuro.png"
-	imgPneuC = new Image();
-	imgPneuC.src = "img/pneuChuva.png"
-	motor = new Image();
-	motor.src = "img/motor.png"
-	capacete = new Image();
-	capacete.src = "img/capacete.png"
-	menosAsa = new Image();
-	menosAsa.src = "/f1mane/rest/letsRace/png/menosAsa";
-	maisAsa = new Image();
-	maisAsa.src = "/f1mane/rest/letsRace/png/maisAsa";
-	normalAsa = new Image();
-	normalAsa.src = "/f1mane/rest/letsRace/png/normalAsa"
-	safetycar = new Image();
-	safetycar.src = "/f1mane/rest/letsRace/png/sfcima"
-	travadaRoda0 = new Image();
-	travadaRoda0.src = "/f1mane/rest/letsRace/png/travadaRoda0"
-	travadaRoda1 = new Image();
-	travadaRoda1.src = "/f1mane/rest/letsRace/png/travadaRoda1"
-	travadaRoda2 = new Image();
-	travadaRoda2.src = "/f1mane/rest/letsRace/png/travadaRoda2"
-
-	ctl_gerarControles();
-
-
-	for (var i = 0; i < circuito.objetosNoTransparencia.length; i++) {
-		var img = new Image();
-		img.src = "/f1mane/rest/letsRace/objetoPista/" + dadosJogo.arquivoCircuito + "/" + i;
-		objImgPistaMap.set(i, img);
-	}
-
-}
 
 function cpu_dadosParciaisAnterior() {
 	if (!dadosParciais) {
@@ -133,6 +75,10 @@ function cpu_dadosParciaisAnterior() {
 		var status = new String(piloto.status);
 		if (status.startsWith("P")) {
 			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace("P", "")));
+		} else if (status.startsWith("T")) {
+			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace("T", "")));
+		} else if (status.startsWith("F")) {
+			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace("F", "")));
 		} else if (status.startsWith("A")) {
 			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace("A", "")));
 		}
@@ -159,6 +105,10 @@ function cpu_dadosParciais() {
 		} else if (status.startsWith("F")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("F", "")));
 			pilotosFaiscaMap.set(piloto.idPiloto, 15);
+		} else if (status.startsWith("T")) {
+			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("T", "")));
+			pilotosTravadaMap.set(piloto.idPiloto, true);
+			pilotosFaiscaMap.set(piloto.idPiloto, 15);
 		}else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		}
@@ -177,28 +127,6 @@ function cpu_carregaDadosPilotos() {
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		pilotosMap.set(dadosJogo.pilotos[i].id, dadosJogo.pilotos[i]);
 	}
-	carrosImgMap = new Map();
-	carrosImgSemAereofolioMap = new Map();
-	carrosLadoImgMap = new Map();
-	capaceteImgMap = new Map();
-	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
-		var pilotos = dadosJogo.pilotos[i];
-		var imgCarro = new Image();
-		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
-		carrosImgMap.set(pilotos.id, imgCarro);
-
-		var imgSemAereofolio = new Image();
-		imgSemAereofolio.src = "/f1mane/rest/letsRace/carroCimaSemAreofolio?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
-		carrosImgSemAereofolioMap.set(pilotos.id, imgSemAereofolio);
-
-		var imgCarroLado = new Image();
-		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada;
-		carrosLadoImgMap.set(pilotos.id, imgCarroLado);
-
-		var imgCapacete = new Image();
-		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada
-		capaceteImgMap.set(pilotos.id, imgCapacete);
-	}
 }
 
 function cpu_altenador() {
@@ -216,4 +144,12 @@ function cpu_altenador() {
 }
 
 var main = setInterval(cpu_main, delay);
-var render = setInterval(vdp_desenha, 30);
+
+//update canvas with some information and animation
+var fps = new FpsCtrl(30, function(e) {
+ vdp_desenha();
+})
+
+//start the loop
+fps.start();
+
