@@ -108,7 +108,6 @@ function cpu_dadosParciais() {
 		} else if (status.startsWith("T")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("T", "")));
 			pilotosTravadaMap.set(piloto.idPiloto, true);
-			pilotosFaiscaMap.set(piloto.idPiloto, 15);
 		}else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		}
@@ -147,7 +146,7 @@ var main = setInterval(cpu_main, delay);
 
 //update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {
- vdp_desenha();
+ vdp_desenha(fps);
 })
 
 //start the loop

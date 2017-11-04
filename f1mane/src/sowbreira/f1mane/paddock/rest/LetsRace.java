@@ -310,7 +310,7 @@ public class LetsRace {
 			String idPiloto) {
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t" + temporada);
-		dadosCriarJogo.setQtdeVoltas(Constantes.MAX_VOLTAS);
+		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
 		dadosCriarJogo.setDiffultrapassagem(250);
 		Map<String, String> carregarCircuitos = ControleRecursos
 				.carregarCircuitos();

@@ -21,7 +21,7 @@ body {
 .loader {
   position: absolute;
   background-color : white;
-  left: 55%;
+  left: 52%;
   top: 50%;
   z-index: 1;
   width: 200px;

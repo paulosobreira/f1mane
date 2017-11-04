@@ -45,7 +45,12 @@ function ctl_desenhaControles(evalX, evalY) {
 				if (evalX && controle.evalX) {
 					controle.x = eval(controle.evalX);
 				}
-				if (!controle.img) {
+				if (!controle.img 
+						&& controle.tipo != 'Combustivel' 
+							&& controle.tipo != 'CombustivelValor' 
+								&& controle.tipo != 'Box' 
+									&& controle.tipo != 'Drs' 
+										&& controle.tipo != 'Ers') {
 					maneContext.fillStyle = corFundo
 					maneContext.fillRect(controle.x, controle.y,
 							controle.width, controle.height);
@@ -252,7 +257,6 @@ function ctl_desenhaInfoAsa() {
 function ctl_desenhaInfoCarros() {
 	var posicaoPilotos = dadosParciais.posisPack;
 	var pilotoSelecionado = posicaoPilotos.posis[posicaoCentraliza];
-
 	var img1, img2;
 	var imgCap1, imgCap2;
 	var imgPneu1, imgPneu2;
@@ -377,11 +381,14 @@ function ctl_desenhaInfoCarros() {
 		diff = formatarTempo(ptsFrente - ptsAtras);
 	}
 	if (diff) {
+		maneContext.beginPath();
 		maneContext.fillStyle = corFundo
 		maneContext.font = '14px sans-serif';
 		maneContext.fillRect(centroX - 25, altura - 40,  maneContext.measureText(diff).width+10, 20);
 		maneContext.fillStyle = "black"
 		maneContext.fillText(diff, centroX - 20, altura - 25);
+		maneContext.closePath();
+		maneContext.stroke();
 	}
 	if (img1) {
 		maneContext.drawImage(img1, centroX - img1.width - 40, altura
