@@ -2055,6 +2055,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			return null;
 		}
 		No noAtual = getNoAtual();
+		if (noAtual == null) {
+			return null;
+		}
 		int cont = noAtual.getIndex();
 		List<No> lista = controleJogo.obterPista(noAtual);
 		if (lista == null) {
@@ -2148,6 +2151,10 @@ public class Piloto implements Serializable, PilotoSuave {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
 							p.x, p.y);
 				}
+				if(drawBresenhamLine==null){
+					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 1");
+					return null;
+				}
 				int indice = drawBresenhamLine.size() - indTracado;
 				if (indice <= 0) {
 					indice = 0;
@@ -2183,7 +2190,10 @@ public class Piloto implements Serializable, PilotoSuave {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
 							p1.x, p1.y);
 				}
-
+				if(drawBresenhamLine==null){
+					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 2");
+					return null;
+				}
 				int indice = drawBresenhamLine.size() - indTracado;
 				if (indice <= 0) {
 					indice = 0;
@@ -2215,6 +2225,10 @@ public class Piloto implements Serializable, PilotoSuave {
 				if (getTracadoAntigo() == 2) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p5.x, p5.y);
+				}
+				if(drawBresenhamLine==null){
+					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 3");
+					return null;
 				}
 				int indice = drawBresenhamLine.size() - indTracado;
 				if (indice <= 0) {
@@ -2253,6 +2267,10 @@ public class Piloto implements Serializable, PilotoSuave {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
 							p2.x, p2.y);
 				}
+				if(drawBresenhamLine==null){
+					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 4");
+					return null;
+				}
 				int indice = drawBresenhamLine.size() - indTracado;
 				if (indice <= 0) {
 					indice = 0;
@@ -2284,6 +2302,10 @@ public class Piloto implements Serializable, PilotoSuave {
 				if (getTracadoAntigo() == 2) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p4.x, p4.y);
+				}
+				if(drawBresenhamLine==null){
+					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 5");
+					return null;
 				}
 				int indice = drawBresenhamLine.size() - indTracado;
 				if (indice <= 0) {

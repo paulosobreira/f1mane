@@ -8,6 +8,7 @@ var telaCheia = false;
 var corFundo = "rgba(255, 255, 255, 0.6)";
 var corAmarelo = "rgba(255, 255, 0, 0.6)";
 var corVermelho = "rgba(255, 0, 0, 0.6)";
+var contCargaErs;
 
 function ctl_desenha() {
 	if (dadosParciais == null) {
@@ -87,6 +88,10 @@ function ctl_desenhaControles(evalX, evalY) {
 					}
 					if (dadosParciais.cargaErs != cargaErs) {
 						cargaErs = dadosParciais.cargaErs;
+						contCargaErs = 25;
+					}
+					if(contCargaErs>0){
+						contCargaErs--;
 						maneContext.strokeStyle = '#00FF00';
 					}
 				}

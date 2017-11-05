@@ -29,7 +29,6 @@ function rest_dadosJogo(nomeJogo) {
 				return;
 			}
 			if(xhRequest.status = 401){
-				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log(xhRequest.status + '  ' + xhRequest.responseText);
@@ -70,7 +69,6 @@ function rest_ciruito() {
 				return;
 			}
 			if(xhRequest.status = 401){
-				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log(xhRequest.status + '  ' + xhRequest.responseText);
@@ -109,7 +107,6 @@ function rest_dadosParciais() {
 				return;
 			}
 			if(xhRequest.status = 401){
-				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log(xhRequest.status + '  ' + xhRequest.responseText);
@@ -136,9 +133,10 @@ function rest_potenciaMotor(valor) {
 				return;
 			}
 			if(xhRequest.status = 401){
-				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
+			console.log('rest_potenciaMotor ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
 		}
 	});
 
@@ -161,9 +159,10 @@ function rest_agressividadePiloto(valor) {
 				return;
 			}
 			if(xhRequest.status = 401){
-				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
+			console.log('rest_agressividadePiloto ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
 		}
 	});
 }
@@ -187,7 +186,6 @@ function rest_tracadoPiloto(valor) {
 				return;
 			}
 			if(xhRequest.status = 401){
-				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_tracadoPiloto ' + xhRequest.status + '  '
@@ -214,7 +212,6 @@ function rest_ers() {
 				return;
 			}
 			if(xhRequest.status = 401){
-				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_ers ' + xhRequest.status + '  '
@@ -240,7 +237,6 @@ function rest_drs() {
 				return;
 			}
 			if(xhRequest.status = 401){
-				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_drs ' + xhRequest.status + '  '
@@ -267,7 +263,6 @@ function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 				return;
 			}
 			if(xhRequest.status = 401){
-				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
 			console.log('rest_boxPiloto ' + xhRequest.status + '  '
