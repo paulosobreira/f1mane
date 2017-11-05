@@ -129,8 +129,6 @@ function rest_potenciaMotor(valor) {
 		dataType : "json",
 		success : function(retorno) {
 			carregando = false;
-			console.log('rest_potenciaMotor valor: ' + valor + ' retorno :'
-					+ retorno);
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
@@ -141,8 +139,6 @@ function rest_potenciaMotor(valor) {
 				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
-			console.log('rest_potenciaMotor() ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
 		}
 	});
 
@@ -158,8 +154,6 @@ function rest_agressividadePiloto(valor) {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(retorno) {
-			console.log('rest_agressividadePiloto valor: ' + valor
-					+ ' retorno :' + retorno);
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
@@ -170,8 +164,6 @@ function rest_agressividadePiloto(valor) {
 				alert('kick errorText:'+errorText+' thrownError:'+thrownError)
 				window.location.href = "index.html";
 			}
-			console.log('rest_agressividadePiloto ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
 		}
 	});
 }
@@ -188,8 +180,6 @@ function rest_tracadoPiloto(valor) {
 		dataType : "json",
 		success : function(retorno) {
 			carregando = false;
-			console.log('rest_tracadoPiloto valor: ' + valor + ' retorno :'
-					+ retorno);
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
@@ -217,7 +207,6 @@ function rest_ers() {
 		dataType : "json",
 		success : function(retorno) {
 			carregando = false;
-			console.log('rest_ers retorno :' + retorno);
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
@@ -244,7 +233,6 @@ function rest_drs() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(retorno) {
-			console.log('rest_drs retorno :' + retorno);
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
@@ -272,7 +260,6 @@ function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(retorno) {
-			console.log('rest_boxPiloto retorno:' + retorno);
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {

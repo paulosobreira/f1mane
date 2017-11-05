@@ -20,6 +20,7 @@ var pilotosMap = new Map();
 var pilotosDnfMap = new Map();
 var pilotosFaiscaMap = new Map();
 var pilotosTravadaMap = new Map();
+var pilotosTravadaFumacaMap = new Map();
 var pilotosAereofolioMap = new Map();
 var ptsPistaMap = new Map();
 var ptsPistaMapAnterior = new Map();
@@ -108,6 +109,7 @@ function cpu_dadosParciais() {
 		} else if (status.startsWith("T")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("T", "")));
 			pilotosTravadaMap.set(piloto.idPiloto, true);
+			pilotosTravadaFumacaMap.set(piloto.idPiloto, 15);
 		}else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		}

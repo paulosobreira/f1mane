@@ -6,7 +6,9 @@ var imgPneuM, imgPneuD, imgPneuC;
 var menosAsa, maisAsa, normalAsa;
 var motor, capacete;
 var safetycar;
-var travadaRoda0,travadaRoda1,travadaRoda2;
+var travadaRoda0, travadaRoda1, travadaRoda2;
+var carroCimaFreiosD1, carroCimaFreiosD2, carroCimaFreiosD3, carroCimaFreiosD4, carroCimaFreiosD5;
+var carroCimaFreiosE1, carroCimaFreiosE2, carroCimaFreiosE3, carroCimaFreiosE4, carroCimaFreiosE5;
 var carregouMidia = false;
 var contCarregouMidia = 0;
 var carrosLadoImgMap;
@@ -16,7 +18,7 @@ var capaceteImgMap;
 var objImgPistaMap = new Map();
 
 function mid_caregaMidia() {
-	
+
 	carrosImgMap = new Map();
 	carrosImgSemAereofolioMap = new Map();
 	carrosLadoImgMap = new Map();
@@ -38,9 +40,8 @@ function mid_caregaMidia() {
 		var imgCapacete = new Image();
 		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada
 		capaceteImgMap.set(pilotos.id, imgCapacete);
-	}	
-	
-	
+	}
+
 	imgBg = new Image();
 	imgBg.src = "../sowbreira/f1mane/recursos/" + circuito.backGround;
 	imgPneuM = new Image();
@@ -67,6 +68,28 @@ function mid_caregaMidia() {
 	travadaRoda1.src = "/f1mane/rest/letsRace/png/travadaRoda1/50"
 	travadaRoda2 = new Image();
 	travadaRoda2.src = "/f1mane/rest/letsRace/png/travadaRoda2/50"
+
+	carroCimaFreiosD1 = new Image();
+	carroCimaFreiosD1.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD1"
+	carroCimaFreiosD2 = new Image();
+	carroCimaFreiosD2.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD2"
+	carroCimaFreiosD3 = new Image();
+	carroCimaFreiosD3.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD3"
+	carroCimaFreiosD4 = new Image();
+	carroCimaFreiosD4.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD4"
+	carroCimaFreiosD5 = new Image();
+	carroCimaFreiosD5.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD5"
+
+	carroCimaFreiosE1 = new Image();
+	carroCimaFreiosE1.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE1"
+	carroCimaFreiosE2 = new Image();
+	carroCimaFreiosE2.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE2"
+	carroCimaFreiosE3 = new Image();
+	carroCimaFreiosE3.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE3"
+	carroCimaFreiosE4 = new Image();
+	carroCimaFreiosE4.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE4"
+	carroCimaFreiosE5 = new Image();
+	carroCimaFreiosE5.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE5"
 
 	for (var i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var img = new Image();
