@@ -567,8 +567,8 @@ function ctl_desenhaInfoDireita() {
 	}
 
 	var posicaoPilotos = dadosParciais.posisPack;
-	x+=60;
-	var larg = 50;
+	x+=50;
+	var larg = 55;
 	if (posicaoPilotos
 			&& (altura > 480 || (alternador || !dadosParciais.melhorVolta))) {
 		var piloto = posicaoPilotos.posis[0];
