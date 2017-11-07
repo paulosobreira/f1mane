@@ -16,6 +16,8 @@ var cvBg;
 var ctxBg;
 var maneCanvas = document.getElementById('maneCanvas')
 var maneContext = maneCanvas.getContext('2d');
+var pilotosTracadoForaMap = new Map();
+var pilotosTracadoForaIndexMap = new Map();
 var desenhaImagens = true;
 var pitLane = false;
 var ptBg = {
@@ -71,107 +73,108 @@ function vdp_atualizaSuave() {
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
 		var noSuave = mapaIdNosSuave.get(piloto.idPiloto);
-		var no = mapaIdNos.get(piloto.idNo);
+		var noReal = mapaIdNos.get(piloto.idNo);
 		if (noSuave == null) {
-			if (piloto.idPiloto == idPilotoSelecionado) {
-				console.log(piloto.idPiloto + ' noSuave == null ');
-			}
-			mapaIdNosSuave.set(piloto.idPiloto, no);
+			// if (piloto.idPiloto == idPilotoSelecionado) {
+			// console.log(piloto.idPiloto + ' noSuave == null ');
+			// }
+			mapaIdNosSuave.set(piloto.idPiloto, noReal);
 			continue;
 		}
-		var indexReal = no.index;
+		var indexReal = noReal.index;
 		var indexSuave = noSuave.index;
 		if (indexReal == indexSuave) {
-			if (piloto.idPiloto == idPilotoSelecionado) {
-				console.log(piloto.idPiloto + ' indexReal == indexSuave '
-						+ indexReal + ' ' + indexSuave);
-			}
+			// if (piloto.idPiloto == idPilotoSelecionado) {
+			// console.log(piloto.idPiloto + ' indexReal == indexSuave '
+			// + indexReal + ' ' + indexSuave);
+			// }
 			continue;
 		}
-		if (!no.box && !noSuave.box && indexSuave > indexReal) {
+		if (!noReal.box && !noSuave.box && indexSuave > indexReal) {
 			indexReal = indexReal + (circuito.pistaFull.length - 1);
 		}
-		if (no.box && !noSuave.box) {
+		if (noReal.box && !noSuave.box) {
 			if (piloto.idPiloto == idPilotoSelecionado) {
-				console.log(piloto.idPiloto + ' no.box && !noSuave.box ');
+				console.log(piloto.idPiloto + ' noReal.box && !noSuave.box ');
 			}
 			indexReal = indexReal + circuito.entradaBoxIndex;
 		}
-		if (!no.box && noSuave.box) {
+		if (!noReal.box && noSuave.box) {
 			if (piloto.idPiloto == idPilotoSelecionado) {
-				console.log(piloto.idPiloto + ' !no.box && noSuave.box ');
+				console.log(piloto.idPiloto + ' !noReal.box && noSuave.box ');
 			}
 			indexReal = (indexReal - circuito.saidaBoxIndex)
 					+ (circuito.boxFull.length - 1);
 		}
 		var diff = (indexReal - indexSuave);
 		var multi = Math.floor(diff / 100);
-		arr = [ 4 * multi, 3 * multi, 2 * multi ];
+		arr = [ 3 * multi, 3 * multi, 2 * multi ];
 		if (noSuave.box) {
 			arr = [ 3 * multi, 2 * multi, 2 * multi ];
 		}
-		var novoindex;
+		var novoIndex;
 		if (noSuave.retaOuLargada) {
-			novoindex = noSuave.index + arr[0];
+			novoIndex = noSuave.index + arr[0];
 		} else if (noSuave.curvaAlta) {
-			novoindex = noSuave.index + arr[1];
+			novoIndex = noSuave.index + arr[1];
 		} else if (noSuave.curvaBaixa) {
-			novoindex = noSuave.index + arr[2];
+			novoIndex = noSuave.index + arr[2];
 		} else {
-			novoindex = noSuave.index + arr[2];
+			novoIndex = noSuave.index + arr[2];
 		}
-		if (novoindex > indexReal) {
+		if (novoIndex > indexReal) {
 			if (piloto.idPiloto == idPilotoSelecionado) {
-				console.log(piloto.idPiloto + ' novoindex > indexReal '
-						+ novoindex);
+				console.log(piloto.idPiloto + ' novoIndex > indexReal '
+						+ novoIndex);
 			}
-			novoindex = indexReal - 1;
+			novoIndex = indexReal - 1;
 		}
 		if (noSuave.box) {
-			if (novoindex > (circuito.boxFull.length - 1)) {
-				novoindex = (circuito.boxFull.length - 1);
+			if (novoIndex > (circuito.boxFull.length - 1)) {
+				novoIndex = (circuito.boxFull.length - 1);
 			}
 		} else {
-			if (novoindex > (circuito.pistaFull.length - 1)) {
-				novoindex = novoindex - circuito.pistaFull.length - 1;
+			if (novoIndex > (circuito.pistaFull.length - 1)) {
+				novoIndex = novoIndex - circuito.pistaFull.length - 1;
 			}
 		}
-		if (novoindex < 0) {
-			novoindex = 0;
+		if (novoIndex < 0) {
+			novoIndex = 0;
 		}
-		var noS = circuito.pistaFull[novoindex];
-		if (no.box && !noSuave.box && novoindex >= circuito.entradaBoxIndex) {
+		var noSuaveNovo = circuito.pistaFull[novoIndex];
+		if (noReal.box && !noSuave.box && novoIndex >= circuito.entradaBoxIndex) {
 			if (piloto.idPiloto == idPilotoSelecionado) {
 				console
 						.log(piloto.idPiloto
-								+ ' no.box && !noSuave.box && novoindex >= circuito.entradaBoxIndex '
-								+ novoindex);
+								+ ' noReal.box && !noSuave.box && novoIndex >= circuito.entradaBoxIndex '
+								+ novoIndex);
 			}
-			noS = circuito.boxFull[novoindex - circuito.entradaBoxIndex];
+			noSuaveNovo = circuito.boxFull[novoIndex - circuito.entradaBoxIndex];
 		}
 		if (noSuave.box) {
-			noS = circuito.boxFull[novoindex];
+			noSuaveNovo = circuito.boxFull[novoIndex];
 		}
-		if (!no.box && noSuave.box
-				&& novoindex >= (circuito.boxFull.length - 1)) {
+		if (!noReal.box && noSuave.box
+				&& novoIndex >= (circuito.boxFull.length - 1)) {
 			if (piloto.idPiloto == idPilotoSelecionado) {
 				console
 						.log(piloto.idPiloto
-								+ ' !no.box && noSuave.box && novoindex > (circuito.boxFull.length - 1 '
-								+ novoindex);
+								+ ' !no.box && noSuave.box && novoIndex > (circuito.boxFull.length - 1 '
+								+ novoIndex);
 			}
-			noS = circuito.pistaFull[novoindex - (circuito.boxFull.length - 1)
-					+ circuito.saidaBoxIndex];
+			noSuaveNovo = circuito.pistaFull[novoIndex
+					- (circuito.boxFull.length - 1) + circuito.saidaBoxIndex];
 		}
-		if (noS == null) {
-			console.log(piloto.idPiloto + ' noS ' + noS);
+		if (noSuaveNovo == null) {
+			console.log(piloto.idPiloto + ' noSuaveNovo ' + noS);
 		}
-		mapaIdNosSuave.set(piloto.idPiloto, noS);
+		mapaIdNosSuave.set(piloto.idPiloto, noSuaveNovo);
 		if (diff >= 1000) {
-			console.log(piloto.idPiloto + ' diff >= 1000 ' + novoindex);
-			mapaIdNosSuave.set(piloto.idPiloto, no);
+			console.log(piloto.idPiloto + ' diff >= 1000 ' + novoIndex);
+			mapaIdNosSuave.set(piloto.idPiloto, noReal);
 		}
-		mapaPontoSuave.set(piloto.idPiloto, vdp_pontoTracadoSuave(piloto, noS));
+		mapaPontoSuave.set(piloto.idPiloto, vdp_pontoTracadoSuave(piloto,
+				noSuaveNovo, noReal));
 	}
 }
 
@@ -186,61 +189,6 @@ function vdp_centralizaPilotoSelecionado() {
 		return;
 	}
 	vdp_centralizaPonto(ponto);
-}
-
-function vdp_desenhaClima() {
-	if (dadosParciais && dadosParciais.clima
-			&& dadosParciais.clima == "nublado.png") {
-		maneContext.fillStyle = corNublado;
-		maneContext.fillRect(0, 0, maneCanvas.width, maneCanvas.height);
-	}
-
-	if (dadosParciais && dadosParciais.clima
-			&& dadosParciais.clima == "chuva.png") {
-		maneContext.fillStyle = corNublado;
-		maneContext.fillRect(0, 0, maneCanvas.width, maneCanvas.height);
-		var p1;
-		var p2;
-		for (var i = 0; i < maneCanvas.width; i += 20) {
-			for (var j = 0; j < maneCanvas.height; j += 20) {
-				if (Math.random() > .8) {
-					p1 = {
-						x : i + 10,
-						y : j + 10
-					};
-					p2 = {
-						x : i + 15,
-						y : j + 20
-					};
-					maneContext.beginPath();
-					maneContext.strokeStyle = corChuva;
-					maneContext.moveTo(p1.x, p1.y);
-					maneContext.lineTo(p2.x, p2.y);
-					maneContext.stroke();
-				}
-			}
-		}
-	}
-}
-
-function vdp_desenhaTravadaRoda(piloto, x, y, angulo) {
-	if (!pilotosTravadaMap.get(piloto.idPiloto)) {
-		return;
-	}
-	if (dadosParciais.clima == "chuva.png") {
-		return;
-	}
-	var rotacionar;
-	var sw = Math.round(intervalo(0, 2));
-	if (sw == 0) {
-		rotacionar = vdp_rotacionar(travadaRoda0, angulo);
-	} else if (sw == 1) {
-		rotacionar = vdp_rotacionar(travadaRoda1, angulo);
-	} else if (sw == 2) {
-		rotacionar = vdp_rotacionar(travadaRoda2, angulo);
-	}
-	ctxBg.drawImage(rotacionar, x + ptBg.x, y + ptBg.y);
-	pilotosTravadaMap.set(piloto.idPiloto, false);
 }
 
 function vdp_obterPonto(piloto, real) {
@@ -289,8 +237,8 @@ function vdp_obterPonto(piloto, real) {
 	return ponto;
 }
 
-function vdp_pontoTracadoSuave(piloto, no) {
-	if (no == null) {
+function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
+	if (noSuave == null) {
 		return;
 	}
 	var tracadoSuave = mapaTracadoSuave.get(piloto.idPiloto);
@@ -313,78 +261,120 @@ function vdp_pontoTracadoSuave(piloto, no) {
 	var pontoSuave;
 	var ponto;
 	if (tracadoSuave == 0) {
-		pontoSuave = circuito.pistaFull[no.index];
-		if (no.box) {
-			pontoSuave = circuito.boxFull[no.index]
+		pontoSuave = circuito.pistaFull[noSuave.index];
+		if (noSuave.box) {
+			pontoSuave = circuito.boxFull[noSuave.index]
 		}
 	}
 	if (tracadoSuave == 1) {
-		pontoSuave = circuito.pista1Full[no.index];
-		if (no.box) {
-			pontoSuave = circuito.box1Full[no.index]
+		pontoSuave = circuito.pista1Full[noSuave.index];
+		if (noSuave.box) {
+			pontoSuave = circuito.box1Full[noSuave.index]
 		}
 	}
 	if (tracadoSuave == 2) {
-		pontoSuave = circuito.pista2Full[no.index];
-		if (no.box) {
-			pontoSuave = circuito.box2Full[no.index]
+		pontoSuave = circuito.pista2Full[noSuave.index];
+		if (noSuave.box) {
+			pontoSuave = circuito.box2Full[noSuave.index]
 		}
 	}
 	if (tracadoSuave == 4) {
-		pontoSuave = circuito.pista4Full[no.index];
+		pontoSuave = circuito.pista4Full[noSuave.index];
 		if (pontoSuave == null) {
-			pontoSuave = circuito.pista2Full[no.index];
+			pontoSuave = circuito.pista2Full[noSuave.index];
 		}
-		if (no.box) {
-			pontoSuave = circuito.box2Full[no.index]
+		if (noSuave.box) {
+			pontoSuave = circuito.box2Full[noSuave.index]
 		}
 	}
 	if (tracadoSuave == 5) {
-		pontoSuave = circuito.pista5Full[no.index];
+		pontoSuave = circuito.pista5Full[noSuave.index];
 		if (pontoSuave == null) {
-			pontoSuave = circuito.pista1Full[no.index];
+			pontoSuave = circuito.pista1Full[noSuave.index];
 		}
-		if (no.box) {
-			pontoSuave = circuito.box1Full[no.index]
+		if (noSuave.box) {
+			pontoSuave = circuito.box1Full[noSuave.index]
 		}
 	}
 
 	if (piloto.tracado == 0) {
-		ponto = circuito.pistaFull[no.index];
-		if (no.box) {
-			ponto = circuito.boxFull[no.index]
+		ponto = circuito.pistaFull[noSuave.index];
+		if (noSuave.box) {
+			ponto = circuito.boxFull[noSuave.index]
 		}
 	}
 	if (piloto.tracado == 1) {
-		ponto = circuito.pista1Full[no.index];
-		if (no.box) {
-			ponto = circuito.box1Full[no.index]
+		ponto = circuito.pista1Full[noSuave.index];
+		if (noSuave.box) {
+			ponto = circuito.box1Full[noSuave.index]
 		}
 	}
 	if (piloto.tracado == 2) {
-		ponto = circuito.pista2Full[no.index];
-		if (no.box) {
-			ponto = circuito.box2Full[no.index]
+		ponto = circuito.pista2Full[noSuave.index];
+		if (noSuave.box) {
+			ponto = circuito.box2Full[noSuave.index]
 		}
 	}
 	if (piloto.tracado == 4) {
-		ponto = circuito.pista4Full[no.index];
+		ponto = circuito.pista4Full[noSuave.index];
 		if (ponto == null) {
-			ponto = circuito.pista2Full[no.index];
+			ponto = circuito.pista2Full[noSuave.index];
 		}
-		if (no.box) {
-			ponto = circuito.box2Full[no.index]
+		if (noSuave.box) {
+			ponto = circuito.box2Full[noSuave.index]
 		}
 	}
 	if (piloto.tracado == 5) {
-		ponto = circuito.pista5Full[no.index];
+		ponto = circuito.pista5Full[noSuave.index];
 		if (ponto == null) {
-			ponto = circuito.pista1Full[no.index];
+			ponto = circuito.pista1Full[noSuave.index];
 		}
-		if (no.box) {
-			ponto = circuito.box1Full[no.index]
+		if (noSuave.box) {
+			ponto = circuito.box1Full[noSuave.index]
 		}
 	}
+
+	var tracadoFora = pilotosTracadoForaMap.get(piloto.idPiloto);
+	var tracadoForaIndex = pilotosTracadoForaIndexMap.get(piloto.idPiloto);
+	if (tracadoFora == null && (piloto.tracado == 4 || piloto.tracado == 5)) {
+		tracadoFora = piloto.tracado;
+		tracadoForaIndex = noReal.index;
+		pilotosTracadoForaMap.set(piloto.idPiloto, tracadoFora);
+		pilotosTracadoForaIndexMap.set(piloto.idPiloto, tracadoForaIndex);
+		if (piloto.idPiloto == idPilotoSelecionado) {
+			console.log(piloto.idPiloto + ' Saiu Pista ' + tracadoFora + ' '
+					+ tracadoForaIndex);
+		}
+	}
+	if (tracadoFora == 4) {
+		ponto = circuito.pista4Full[noSuave.index];
+		if (ponto == null) {
+			ponto = circuito.pista2Full[noSuave.index];
+			console.log(piloto.idPiloto + ' Voltou Pista ' + tracadoFora + ' '
+					+ tracadoForaIndex);
+			if (noSuave.index > tracadoForaIndex) {
+				pilotosTracadoForaMap.set(piloto.idPiloto, null);
+				pilotosTracadoForaIndexMap.set(piloto.idPiloto, -1);
+				console.log(piloto.idPiloto + ' Voltou Pista Zerou Indexes'
+						+ tracadoFora + ' ' + tracadoForaIndex);
+			}
+		}
+	}
+	if (tracadoFora == 5) {
+		ponto = circuito.pista5Full[noSuave.index];
+		if (ponto == null) {
+			ponto = circuito.pista1Full[noSuave.index];
+			console.log(piloto.idPiloto + ' Voltou Pista ' + tracadoFora + ' '
+					+ tracadoForaIndex);
+			if (noSuave.index > tracadoForaIndex) {
+				pilotosTracadoForaMap.set(piloto.idPiloto, null);
+				pilotosTracadoForaIndexMap.set(piloto.idPiloto, -1);
+				console.log(piloto.idPiloto + ' Voltou Pista Zerou Indexes'
+						+ tracadoFora + ' ' + tracadoForaIndex);
+			}
+		}
+	}
+
 	var linha = gu_bline(ponto, pontoSuave);
 	if (indexTracadoSuave > linha.length - 1) {
 		indexTracadoSuave = linha.length - 1;
@@ -854,4 +844,59 @@ function vdp_desenhaTravadaRodaFumaca(piloto, x, y, angulo, no) {
 	maneContext.drawImage(rotacionar, x, y);
 	pilotosTravadaFumacaMap.set(piloto.idPiloto, pilotosTravadaFumacaMap
 			.get(piloto.idPiloto) - 1);
+}
+
+function vdp_desenhaClima() {
+	if (dadosParciais && dadosParciais.clima
+			&& dadosParciais.clima == "nublado.png") {
+		maneContext.fillStyle = corNublado;
+		maneContext.fillRect(0, 0, maneCanvas.width, maneCanvas.height);
+	}
+
+	if (dadosParciais && dadosParciais.clima
+			&& dadosParciais.clima == "chuva.png") {
+		maneContext.fillStyle = corNublado;
+		maneContext.fillRect(0, 0, maneCanvas.width, maneCanvas.height);
+		var p1;
+		var p2;
+		for (var i = 0; i < maneCanvas.width; i += 20) {
+			for (var j = 0; j < maneCanvas.height; j += 20) {
+				if (Math.random() > .8) {
+					p1 = {
+						x : i + 10,
+						y : j + 10
+					};
+					p2 = {
+						x : i + 15,
+						y : j + 20
+					};
+					maneContext.beginPath();
+					maneContext.strokeStyle = corChuva;
+					maneContext.moveTo(p1.x, p1.y);
+					maneContext.lineTo(p2.x, p2.y);
+					maneContext.stroke();
+				}
+			}
+		}
+	}
+}
+
+function vdp_desenhaTravadaRoda(piloto, x, y, angulo) {
+	if (!pilotosTravadaMap.get(piloto.idPiloto)) {
+		return;
+	}
+	if (dadosParciais.clima == "chuva.png") {
+		return;
+	}
+	var rotacionar;
+	var sw = Math.round(intervalo(0, 2));
+	if (sw == 0) {
+		rotacionar = vdp_rotacionar(travadaRoda0, angulo);
+	} else if (sw == 1) {
+		rotacionar = vdp_rotacionar(travadaRoda1, angulo);
+	} else if (sw == 2) {
+		rotacionar = vdp_rotacionar(travadaRoda2, angulo);
+	}
+	ctxBg.drawImage(rotacionar, x + ptBg.x, y + ptBg.y);
+	pilotosTravadaMap.set(piloto.idPiloto, false);
 }
