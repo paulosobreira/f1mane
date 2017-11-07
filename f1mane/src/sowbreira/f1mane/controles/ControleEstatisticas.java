@@ -124,7 +124,7 @@ public class ControleEstatisticas {
 
 		if (!teveMelhor && !controleJogo.isSafetyCarNaPista()) {
 			if (controleJogo.verificaInfoRelevante(piloto)) {
-				controleJogo.info(Html.green(Lang.msg("022",
+				controleJogo.info(Html.verde(Lang.msg("022",
 						new String[] { Html.bold(piloto.getNome()), voltaAtual.getTempoVoltaFormatado() })));
 			}
 		}
@@ -141,7 +141,7 @@ public class ControleEstatisticas {
 
 		if (voltaMaisRapida.obterTempoVolta() > piloto.getVoltaAtual().obterTempoVolta()) {
 			voltaMaisRapida = piloto.getVoltaAtual();
-			controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("023",
+			controleJogo.infoPrioritaria(Html.verde(Lang.msg("023",
 					new String[] { Html.bold(piloto.getNome()), voltaMaisRapida.getTempoVoltaFormatado() })));
 		}
 	}
@@ -215,7 +215,7 @@ public class ControleEstatisticas {
 			public void run() {
 				try {
 					controleJogo.adicionarInfoDireto(
-							Html.superGreen(Lang.msg("000", new Object[] { controleJogo.totalVoltasCorrida() })));
+							Html.verde(Lang.msg("000", new Object[] { controleJogo.totalVoltasCorrida() })));
 					boolean interruput = false;
 					while (!interruput && consumidorAtivo) {
 						try {

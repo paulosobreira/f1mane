@@ -1459,7 +1459,7 @@ public class GerenciadorVisual {
 		}
 		try {
 			if (string != null && !string.startsWith("<table>"))
-				string = Html.cinza(
+				string = Html.preto(
 						Lang.msg("082") + controleJogo.getNumVoltaAtual() + " ")
 						+ string + "<br>";
 			boolean contains = false;

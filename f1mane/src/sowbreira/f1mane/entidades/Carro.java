@@ -462,7 +462,7 @@ public class Carro implements Serializable {
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6
 							&& temperaturaMotor <= tempMax - 5))
-				controleJogo.infoPrioritaria(Html.orange(Lang.msg("temperatura",
+				controleJogo.infoPrioritaria(Html.laranja(Lang.msg("temperatura",
 						new String[]{Html.txtRedBold(getPiloto().getNome())})));
 		}
 		if (giro != GIRO_MAX_VAL) {
@@ -633,7 +633,7 @@ public class Carro implements Serializable {
 			piloto.setDesqualificado(true);
 			setDanificado(Carro.EXPLODIU_MOTOR);
 			controleJogo.infoPrioritaria(Html
-					.superRed(Lang.msg("042", new String[]{piloto.getNome()})));
+					.vermelho(Lang.msg("042", new String[]{piloto.getNome()})));
 
 		}
 	}
@@ -797,7 +797,7 @@ public class Carro implements Serializable {
 		if ((pneus < 0) && !verificaDano()) {
 			setDanificado(PNEU_FURADO);
 			pneus = -1;
-			controleJogo.infoPrioritaria(Html.superRed(
+			controleJogo.infoPrioritaria(Html.vermelho(
 					Lang.msg("043", new String[]{getPiloto().getNome()})));
 
 		}
@@ -1033,7 +1033,7 @@ public class Carro implements Serializable {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isChovendo() && pneuAquecido && !msgPneu) {
 			msgPneu = true;
-			controleJogo.info(Html.orange(
+			controleJogo.info(Html.laranja(
 					Lang.msg("msgpneus", new String[]{getPiloto().getNome()})));
 		}
 	}

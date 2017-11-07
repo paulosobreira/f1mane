@@ -47,7 +47,7 @@ public class ControleCiclo extends Thread {
 	public void run() {
 		try {
 			controleJogo.desenhaQualificacao();
-			controleJogo.infoPrioritaria(Html.superGreen(Lang.msg("001")));
+			controleJogo.infoPrioritaria(Html.verde(Lang.msg("001")));
 			Thread.sleep(2000);
 			controleJogo.apagarLuz();
 			Thread.sleep(1000);

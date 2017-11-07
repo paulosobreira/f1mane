@@ -962,7 +962,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				&& controleJogo.asfaltoAbrasivo();
 		if (testeAbrasivo && !isAsfaltoAbrasivo() && getPosicao() == 1) {
 			controleJogo
-					.infoPrioritaria(Html.orange(Lang.msg("asfaltoAbrasivo")));
+					.infoPrioritaria(Html.laranja(Lang.msg("asfaltoAbrasivo")));
 		}
 		this.setAsfaltoAbrasivo(testeAbrasivo);
 	}
@@ -1356,7 +1356,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				setCiclosDesconcentrado(Util.intervalo(50, 150));
 				if (controleJogo.verificaInfoRelevante(this))
 					controleJogo.info(Lang.msg("saiDaPista",
-							new String[]{Html.superRed(getNome())}));
+							new String[]{Html.vermelho(getNome())}));
 			}
 		}
 		/**
@@ -1769,13 +1769,13 @@ public class Piloto implements Serializable, PilotoSuave {
 				String txt = Lang.msg("tentaPassarFrete", new String[]{
 						Html.bold(getNome()),
 						Html.bold(carroPilotoDaFrente.getPiloto().getNome())});
-				controleJogo.info(Html.black(txt));
+				controleJogo.info(Html.preto(txt));
 			}
 			if (tentarEscaparAtras) {
 				String txt = Lang.msg("tentarEscaparAtras", new String[]{
 						Html.bold(getNome()),
 						Html.bold(carroPilotoAtras.getPiloto().getNome())});
-				controleJogo.info(Html.black(txt));
+				controleJogo.info(Html.preto(txt));
 			}
 		}
 		if (!tentaPassarFrete && !tentarEscaparAtras) {
@@ -2521,7 +2521,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		} else {
 			return;
 		}
-		controleJogo.info(Html.superRed(getNome() + Lang.msg("057")));
+		controleJogo.info(Html.vermelho(getNome() + Lang.msg("057")));
 	}
 
 	private void mensangesModoAgressivo(InterfaceJogo controleJogo) {
@@ -2550,10 +2550,10 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (Math.random() > 0.999) {
 				if (controleJogo.isChovendo()) {
 					controleJogo.info(
-							Html.bold(getNome()) + Html.red(Lang.msg("055")));
+							Html.bold(getNome()) + Html.vermelho(Lang.msg("055")));
 				} else {
 					controleJogo.info(
-							Html.bold(getNome()) + Html.red(Lang.msg("056")));
+							Html.bold(getNome()) + Html.vermelho(Lang.msg("056")));
 				}
 			}
 		}
@@ -2582,7 +2582,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			ciclosDesconcentrado = 0;
 			if (isProblemaLargada()) {
 				if (getPosicao() < 8) {
-					interfaceJogo.info(Html.superRed(
+					interfaceJogo.info(Html.vermelho(
 							getNome() + " " + Lang.msg("problemaLargada")));
 				}
 				setProblemaLargada(false);

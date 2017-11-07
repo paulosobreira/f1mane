@@ -465,8 +465,8 @@ public class ControleJogoLocal extends ControleRecursos
 		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
 				&& (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
 
-			infoPrioritaria(Html.superBlack(piloto.getNome())
-					+ Html.superGreen(Lang.msg("045")));
+			infoPrioritaria(Html.preto(piloto.getNome())
+					+ Html.verde(Lang.msg("045")));
 		}
 
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
@@ -478,12 +478,12 @@ public class ControleJogoLocal extends ControleRecursos
 		if (qtdeDesqualificados >= 10) {
 			setCorridaTerminada(true);
 			controleCorrida.terminarCorrida();
-			infoPrioritaria(Html.superDarkRed(
+			infoPrioritaria(Html.vinho(
 					Lang.msg("024", new Object[]{getNumVoltaAtual()})));
 		}
 		if (getNumVoltaAtual() == 2 && isDrs() && !isChovendo()
 				&& !isSafetyCarNaPista()) {
-			infoPrioritaria(Html.superBlue(Lang.msg("drsHabilitado")));
+			infoPrioritaria(Html.azul(Lang.msg("drsHabilitado")));
 		}
 		controleCorrida.getControleClima().processaPossivelMudancaClima();
 		if (!isSafetyCarNaPista()) {
@@ -520,7 +520,7 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#pausarJogo()
 	 */
 	public void pausarJogo() {
-		info(Html.cinza(controleCorrida.isCorridaPausada()
+		info(Html.preto(controleCorrida.isCorridaPausada()
 				? Lang.msg("025")
 				: Lang.msg("026")));
 		controleCorrida.setCorridaPausada(!controleCorrida.isCorridaPausada());
@@ -848,7 +848,7 @@ public class ControleJogoLocal extends ControleRecursos
 		} else {
 			String strAsa = (String) asa;
 			if (!strAsa.equals(pilotoJogador.getCarro().getAsa())) {
-				infoPrioritaria(Html.orange(Lang.msg("028",
+				infoPrioritaria(Html.laranja(Lang.msg("028",
 						new String[]{pilotoJogador.getNome()})));
 			}
 			pilotoJogador.getCarro().setAsa(strAsa);
@@ -1689,11 +1689,10 @@ public class ControleJogoLocal extends ControleRecursos
 			Logger.logar(
 					piloto.toString() + " Pts Depois " + piloto.getPtosPista());
 			if (piloto.getPosicao() == 1) {
-				infoPrioritaria(Html.superBlack(piloto.getNome())
-						+ Html.superGreen(Lang.msg("044",
-								new Object[]{piloto.getPosicao()})));
+				infoPrioritaria(Html.preto(piloto.getNome()) + Html.verde(
+						Lang.msg("044", new Object[]{piloto.getPosicao()})));
 			} else {
-				info(Html.superBlack(piloto.getNome()) + Html.green(
+				info(Html.preto(piloto.getNome()) + Html.verde(
 						Lang.msg("044", new Object[]{piloto.getPosicao()})));
 			}
 			double somaBaixa = 0;

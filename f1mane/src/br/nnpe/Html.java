@@ -46,18 +46,6 @@ public class Html {
 		return buffer.toString();
 	}
 
-	public static String azul(String texto) {
-		return fontColor("#2D62A8", texto);
-	}
-
-	public static String green(String texto) {
-		return fontColor("#008D25", texto);
-	}
-
-	public static String red(String texto) {
-		return fontColor("#FE0000", texto);
-	}
-
 	public static String txtRedBold(String texto) {
 		return bold(fontColor("#FE0000", texto));
 	}
@@ -97,7 +85,7 @@ public class Html {
 		return buffer.toString();
 	}
 
-	public static String superRed(String texto) {
+	public static String vermelho(String texto) {
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("<font  size='").append(superSize)
@@ -106,39 +94,32 @@ public class Html {
 		return buffer.toString();
 	}
 
-	public static String orange(String texto) {
-		return bold(fontColor("#C87800", texto));
+	public static String laranja(String texto) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("<font  size='").append(superSize)
+				.append("' color='#C87800'>").append(texto).append("</font>");
+		return buffer.toString();
+
 	}
 
-	public static String superBlack(String texto) {
+	public static String preto(String texto) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<font  size='").append(superSize)
 				.append("' color='black'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
-	public static String superGreen(String texto) {
+	public static String verde(String texto) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<font  size='").append(superSize)
 				.append("' color='#008D25'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
-	public static String cinza(String texto) {
-		return fontColor("Gray", texto);
-	}
-
-	public static String superDarkRed(String texto) {
+	public static String vinho(String texto) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<font  size='").append(superSize)
 				.append("' color='#8B0000'>").append(texto).append("</font>");
-		return buffer.toString();
-	}
-
-	public static String black(String texto) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("<font  color='#000000'>").append(texto)
-				.append("</font>");
 		return buffer.toString();
 	}
 
@@ -149,7 +130,7 @@ public class Html {
 		return buffer.toString();
 	}
 
-	public static String superBlue(String texto) {
+	public static String azul(String texto) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<font  size='").append(superSize)
 				.append("' color='#2D62A8'>").append(texto).append("</font>");

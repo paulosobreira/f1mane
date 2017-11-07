@@ -187,7 +187,7 @@ public class ControleBox {
 					|| (cont > (circuito.getEntradaBoxIndex() - 75)
 							&& cont < (circuito.getEntradaBoxIndex() + 75)))) {
 				if (controleJogo.verificaInfoRelevante(piloto))
-					controleJogo.info(Html.orange(Lang.msg("entraBox",
+					controleJogo.info(Html.laranja(Lang.msg("entraBox",
 							new String[]{piloto.getNome()})));
 				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "
 						+ piloto.getNumeroVolta() + " Pneus : "
@@ -335,7 +335,7 @@ public class ControleBox {
 		Carro carro = (Carro) boxEquipesOcupado.get(piloto.getCarro());
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
 			if (piloto.getPosicao() <= 8) {
-				controleJogo.info(Html.orange(
+				controleJogo.info(Html.laranja(
 						Lang.msg("298", new String[]{carro.getNome()})));
 			}
 			penalidade = 30;
@@ -379,11 +379,11 @@ public class ControleBox {
 		piloto.setSaiuDoBoxMilis(0);
 		if (controleJogo.verificaInfoRelevante(piloto)) {
 			if (piloto.isJogadorHumano()) {
-				controleJogo.infoPrioritaria(Html.orange(
+				controleJogo.infoPrioritaria(Html.laranja(
 						Lang.msg("002", new String[]{piloto.getNome(), String
 								.valueOf(controleJogo.getNumVoltaAtual())})));
 			} else if (piloto.getPosicao() < 9) {
-				controleJogo.info(Html.orange(Lang.msg("002", new String[]{
+				controleJogo.info(Html.laranja(Lang.msg("002", new String[]{
 						piloto.getNome(),
 						String.valueOf(controleJogo.getNumVoltaAtual())})));
 			}
@@ -441,9 +441,9 @@ public class ControleBox {
 		}
 		if (controleJogo.verificaInfoRelevante(piloto)) {
 			if (piloto.isJogadorHumano()) {
-				controleJogo.infoPrioritaria(Html.orange(info));
+				controleJogo.infoPrioritaria(Html.laranja(info));
 			} else if (piloto.getPosicao() < 9) {
-				controleJogo.info(Html.orange(info));
+				controleJogo.info(Html.laranja(info));
 			}
 		}
 
