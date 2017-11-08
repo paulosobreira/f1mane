@@ -322,7 +322,7 @@ public class LetsRace {
 				pista = nmCircuito;
 			}
 		}
-		pista = "Interlagos";
+//		pista = "Interlagos";
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);

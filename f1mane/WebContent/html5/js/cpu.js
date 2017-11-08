@@ -120,6 +120,7 @@ function cpu_dadosParciais() {
 	// console.log('dadosParciais.estado: ' + dadosParciais.estado);
 	if ('24' == dadosParciais.estado) {
 		ativo = false;
+		clearInterval(main);
 		window.location.href = "resultado.html?token=" + token + "&nomeJogo=" + nomeJogo;
 	}
 }

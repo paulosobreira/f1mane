@@ -2151,8 +2151,9 @@ public class Piloto implements Serializable, PilotoSuave {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
 							p.x, p.y);
 				}
-				if(drawBresenhamLine==null){
-					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 1");
+				if (drawBresenhamLine == null) {
+					Logger.logar(
+							"Piloto.centralizaCarroColisao drawBresenhamLine=null 1");
 					return null;
 				}
 				int indice = drawBresenhamLine.size() - indTracado;
@@ -2190,8 +2191,9 @@ public class Piloto implements Serializable, PilotoSuave {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
 							p1.x, p1.y);
 				}
-				if(drawBresenhamLine==null){
-					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 2");
+				if (drawBresenhamLine == null) {
+					Logger.logar(
+							"Piloto.centralizaCarroColisao drawBresenhamLine=null 2");
 					return null;
 				}
 				int indice = drawBresenhamLine.size() - indTracado;
@@ -2226,8 +2228,9 @@ public class Piloto implements Serializable, PilotoSuave {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p5.x, p5.y);
 				}
-				if(drawBresenhamLine==null){
-					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 3");
+				if (drawBresenhamLine == null) {
+					Logger.logar(
+							"Piloto.centralizaCarroColisao drawBresenhamLine=null 3");
 					return null;
 				}
 				int indice = drawBresenhamLine.size() - indTracado;
@@ -2267,8 +2270,9 @@ public class Piloto implements Serializable, PilotoSuave {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
 							p2.x, p2.y);
 				}
-				if(drawBresenhamLine==null){
-					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 4");
+				if (drawBresenhamLine == null) {
+					Logger.logar(
+							"Piloto.centralizaCarroColisao drawBresenhamLine=null 4");
 					return null;
 				}
 				int indice = drawBresenhamLine.size() - indTracado;
@@ -2303,8 +2307,9 @@ public class Piloto implements Serializable, PilotoSuave {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p4.x, p4.y);
 				}
-				if(drawBresenhamLine==null){
-					Logger.logar("Piloto.centralizaCarroColisao drawBresenhamLine=null 5");
+				if (drawBresenhamLine == null) {
+					Logger.logar(
+							"Piloto.centralizaCarroColisao drawBresenhamLine=null 5");
 					return null;
 				}
 				int indice = drawBresenhamLine.size() - indTracado;
@@ -2549,11 +2554,11 @@ public class Piloto implements Serializable, PilotoSuave {
 		} else {
 			if (Math.random() > 0.999) {
 				if (controleJogo.isChovendo()) {
-					controleJogo.info(
-							Html.bold(getNome()) + Html.vermelho(Lang.msg("055")));
+					controleJogo.info(Html.bold(getNome())
+							+ Html.vermelho(Lang.msg("055")));
 				} else {
-					controleJogo.info(
-							Html.bold(getNome()) + Html.vermelho(Lang.msg("056")));
+					controleJogo.info(Html.bold(getNome())
+							+ Html.vermelho(Lang.msg("056")));
 				}
 			}
 		}
