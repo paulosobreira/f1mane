@@ -963,14 +963,14 @@ public class ControleJogosServer {
 				jogoServidor.infoPrioritaria(
 						Html.driveThru(Lang.msg("penalidadePilotoDriveThru",
 								new String[]{Html.vermelho(jogadorDriveTru),
-										Html.bold(requisitorDriveThru),
+										Html.negrito(requisitorDriveThru),
 										"" + piloto.getVotosDriveThru(),
 										"" + (metadeJogadores + 1)})));
 			} else {
 				jogoServidor.infoPrioritaria(
 						Html.driveThru(Lang.msg("votoPilotoDriveThru",
 								new String[]{Html.vermelho(jogadorDriveTru),
-										Html.bold(requisitorDriveThru),
+										Html.negrito(requisitorDriveThru),
 										"" + piloto.getVotosDriveThru(),
 										"" + (metadeJogadores + 1)})));
 			}

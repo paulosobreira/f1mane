@@ -1578,7 +1578,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				if (controleJogo.verificaInfoRelevante(this)
 						&& Math.random() > 0.7)
 					controleJogo.info(Lang.msg("014",
-							new String[]{Html.bold(getNome())}));
+							new String[]{Html.negrito(getNome())}));
 			}
 			retardaFreiandoReta = false;
 		}
@@ -1767,14 +1767,14 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (Math.random() > 0.95 && controleJogo.verificaInfoRelevante(this)) {
 			if (tentaPassarFrete) {
 				String txt = Lang.msg("tentaPassarFrete", new String[]{
-						Html.bold(getNome()),
-						Html.bold(carroPilotoDaFrente.getPiloto().getNome())});
+						Html.negrito(getNome()),
+						Html.negrito(carroPilotoDaFrente.getPiloto().getNome())});
 				controleJogo.info(Html.preto(txt));
 			}
 			if (tentarEscaparAtras) {
 				String txt = Lang.msg("tentarEscaparAtras", new String[]{
-						Html.bold(getNome()),
-						Html.bold(carroPilotoAtras.getPiloto().getNome())});
+						Html.negrito(getNome()),
+						Html.negrito(carroPilotoAtras.getPiloto().getNome())});
 				controleJogo.info(Html.preto(txt));
 			}
 		}
@@ -2539,25 +2539,25 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (AGRESSIVO.equals(getModoPilotagem())) {
 			if (controleJogo.isChovendo() && Math.random() > 0.970) {
 				controleJogo.info(
-						Html.bold(getNome()) + Html.bold(Lang.msg("052")));
+						Html.negrito(getNome()) + Html.negrito(Lang.msg("052")));
 			} else if (Math.random() > 0.97
 					&& getNoAtual().verificaCurvaBaixa()) {
 
 				if (Math.random() > 0.95) {
 					controleJogo.info(Html.txtRedBold(getNome())
-							+ Html.bold(Lang.msg("053")));
+							+ Html.negrito(Lang.msg("053")));
 				} else {
 					controleJogo.info(Html.txtRedBold(getNome())
-							+ Html.bold(Lang.msg("054")));
+							+ Html.negrito(Lang.msg("054")));
 				}
 			}
 		} else {
 			if (Math.random() > 0.999) {
 				if (controleJogo.isChovendo()) {
-					controleJogo.info(Html.bold(getNome())
+					controleJogo.info(Html.negrito(getNome())
 							+ Html.vermelho(Lang.msg("055")));
 				} else {
-					controleJogo.info(Html.bold(getNome())
+					controleJogo.info(Html.negrito(getNome())
 							+ Html.vermelho(Lang.msg("056")));
 				}
 			}

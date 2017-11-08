@@ -344,7 +344,7 @@ public class ControleCorrida {
 				piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 				Logger.logar(piloto.getNome() + " BATEU_FORTE");
 				controleJogo.infoPrioritaria(
-						Html.bold(Html.vermelho(Lang.msg("016", new String[]{
+						Html.negrito(Html.vermelho(Lang.msg("016", new String[]{
 								piloto.getNome(), pilotoNaFrente.getNome()}))));
 				piloto.setDesqualificado(true);
 				controleSafetyCar.safetyCarNaPista(piloto);
@@ -364,7 +364,7 @@ public class ControleCorrida {
 	private void perdeuAereofolio(Piloto piloto, Piloto pilotoNaFrente) {
 		piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 		Logger.logar(piloto.getNome() + " PERDEU_AEREOFOLIO");
-		controleJogo.infoPrioritaria(Html.bold(Html.vermelho(Lang.msg("017",
+		controleJogo.infoPrioritaria(Html.negrito(Html.vermelho(Lang.msg("017",
 				new String[]{piloto.getNome(), pilotoNaFrente.getNome()}))));
 	}
 

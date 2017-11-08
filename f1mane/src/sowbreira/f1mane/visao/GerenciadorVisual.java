@@ -819,7 +819,8 @@ public class GerenciadorVisual {
 	}
 
 	private void gerarPainelJogoMulti(JPanel incialPanel) {
-		final CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
+		final CarregadorRecursos carregadorRecursos = CarregadorRecursos
+				.getCarregadorRecursos();
 		final Map circuitosPilotos = carregadorRecursos
 				.carregarTemporadasPilotos();
 		comboBoxTemporadas = new JComboBox(carregadorRecursos.getVectorTemps());
@@ -1066,7 +1067,8 @@ public class GerenciadorVisual {
 		g2d.setColor(Color.BLACK);
 		String circuitoStr = (String) controleJogo.getCircuitos()
 				.get(comboBoxCircuito.getSelectedItem());
-		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos
+				.getCarregadorRecursos();
 		ObjectInputStream ois;
 		Circuito circuito = null;
 		try {
@@ -1475,7 +1477,7 @@ public class GerenciadorVisual {
 			bufferTextual.add(string);
 			StringBuffer buffer = new StringBuffer();
 			for (int i = bufferTextual.size() - 1; i >= 0; i--) {
-				String texto = Html.sansSerif(bufferTextual.get(i).toString());
+				String texto = Html.preto(bufferTextual.get(i).toString());
 				buffer.append(texto);
 			}
 			final StringReader reader = new StringReader(buffer.toString());
