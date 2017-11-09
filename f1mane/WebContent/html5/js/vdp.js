@@ -107,7 +107,7 @@ function vdp_atualizaSuave() {
 		}
 		var diff = (indexReal - indexSuave);
 		var multi = diff / 100;
-		arr = [ 3.5 * multi, 3 * multi, 2 * multi ];
+		arr = [ 3.5 * multi, 2.5 * multi, 2 * multi ];
 		if (noSuave.box) {
 			arr = [ 3 * multi, 2 * multi, 2 * multi ];
 		}

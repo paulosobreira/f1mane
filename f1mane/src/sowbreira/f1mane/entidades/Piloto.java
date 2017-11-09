@@ -1766,9 +1766,9 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		if (Math.random() > 0.95 && controleJogo.verificaInfoRelevante(this)) {
 			if (tentaPassarFrete) {
-				String txt = Lang.msg("tentaPassarFrete", new String[]{
-						Html.negrito(getNome()),
-						Html.negrito(carroPilotoDaFrente.getPiloto().getNome())});
+				String txt = Lang.msg("tentaPassarFrete",
+						new String[]{Html.negrito(getNome()), Html.negrito(
+								carroPilotoDaFrente.getPiloto().getNome())});
 				controleJogo.info(Html.preto(txt));
 			}
 			if (tentarEscaparAtras) {
@@ -2135,19 +2135,19 @@ public class Piloto implements Serializable, PilotoSuave {
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 0) {
 				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 1) {
+				if (getTracadoAntigo() == 1 & p1 != null && p != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
 							p.x, p.y);
 				}
-				if (getTracadoAntigo() == 2) {
+				if (getTracadoAntigo() == 2 && p2 != null && p != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p.x, p.y);
 				}
-				if (getTracadoAntigo() == 5) {
+				if (getTracadoAntigo() == 5 && p5 != null && p != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
 							p.x, p.y);
 				}
-				if (getTracadoAntigo() == 4) {
+				if (getTracadoAntigo() == 4 && p4 != null && p != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
 							p.x, p.y);
 				}
@@ -2175,19 +2175,19 @@ public class Piloto implements Serializable, PilotoSuave {
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 1) {
 				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 0) {
+				if (getTracadoAntigo() == 0 && p != null && p1 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
 							p1.x, p1.y);
 				}
-				if (getTracadoAntigo() == 2) {
+				if (getTracadoAntigo() == 2 && p1 != null && p2 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p1.x, p1.y);
 				}
-				if (getTracadoAntigo() == 4) {
+				if (getTracadoAntigo() == 4 && p4 != null && p1 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
 							p1.x, p1.y);
 				}
-				if (getTracadoAntigo() == 5) {
+				if (getTracadoAntigo() == 5 && p5 != null && p1 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
 							p1.x, p1.y);
 				}
@@ -2216,15 +2216,15 @@ public class Piloto implements Serializable, PilotoSuave {
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 5) {
 				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 0) {
+				if (getTracadoAntigo() == 0 && p != null && p5 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
 							p5.x, p5.y);
 				}
-				if (getTracadoAntigo() == 1) {
+				if (getTracadoAntigo() == 1 && p1 != null && p5 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
 							p5.x, p5.y);
 				}
-				if (getTracadoAntigo() == 2) {
+				if (getTracadoAntigo() == 2 && p2 != null && p5 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p5.x, p5.y);
 				}
@@ -2253,20 +2253,20 @@ public class Piloto implements Serializable, PilotoSuave {
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 2) {
 				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 0) {
+				if (getTracadoAntigo() == 0 && p != null && p2 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
 							p2.x, p2.y);
 				}
-				if (getTracadoAntigo() == 1) {
+				if (getTracadoAntigo() == 1 && p1 != null && p2 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
 							p2.x, p2.y);
 				}
 
-				if (getTracadoAntigo() == 4) {
+				if (getTracadoAntigo() == 4 && p4 != null && p2 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
 							p2.x, p2.y);
 				}
-				if (getTracadoAntigo() == 5) {
+				if (getTracadoAntigo() == 5 && p5 != null && p2 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
 							p2.x, p2.y);
 				}
@@ -2295,15 +2295,15 @@ public class Piloto implements Serializable, PilotoSuave {
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 4) {
 				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 0) {
+				if (getTracadoAntigo() == 0 && p != null && p4 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
 							p4.x, p4.y);
 				}
-				if (getTracadoAntigo() == 1) {
+				if (getTracadoAntigo() == 1 && p1 != null && p4 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
 							p4.x, p4.y);
 				}
-				if (getTracadoAntigo() == 2) {
+				if (getTracadoAntigo() == 2 && p2 != null && p4 != null) {
 					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
 							p4.x, p4.y);
 				}
@@ -2538,8 +2538,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		if (AGRESSIVO.equals(getModoPilotagem())) {
 			if (controleJogo.isChovendo() && Math.random() > 0.970) {
-				controleJogo.info(
-						Html.negrito(getNome()) + Html.negrito(Lang.msg("052")));
+				controleJogo.info(Html.negrito(getNome())
+						+ Html.negrito(Lang.msg("052")));
 			} else if (Math.random() > 0.97
 					&& getNoAtual().verificaCurvaBaixa()) {
 

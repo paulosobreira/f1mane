@@ -217,7 +217,7 @@ function ctl_desenhaInfo() {
 	$('#info').css('margin-right', '10px');
 	$('#info').css('font-family', 'sans-serif');
 	if($('#info').html().indexOf('table')>0){
-		$('#info').css('background-color', 'white');
+		$('#info').css('background-color', corFundo);
 		$('#info').css('font-size', '11px');
 		if(altura<480){
 			$('#info').css('top', (altura-90)+'px');
@@ -525,7 +525,7 @@ function ctl_desenhaInfoDireita() {
 		maneContext.fillRect(x, y, 110, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('Volta') + ' '
+		maneContext.fillText(lang_text('Vol') + ' '
 				+ (dadosParciais.voltaAtual - 1) + ' '
 				+ formatarTempo(dadosParciais.ultima1), x + 5, y + 15);
 
@@ -536,7 +536,7 @@ function ctl_desenhaInfoDireita() {
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('Volta') + ' '
+			maneContext.fillText(lang_text('Vol') + ' '
 					+ (dadosParciais.voltaAtual - 2) + ' '
 					+ formatarTempo(dadosParciais.ultima2), x + 5, y + 15);
 			y += 30;
@@ -547,7 +547,7 @@ function ctl_desenhaInfoDireita() {
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('Volta') + ' '
+			maneContext.fillText(lang_text('Vol') + ' '
 					+ (dadosParciais.voltaAtual - 3) + ' '
 					+ formatarTempo(dadosParciais.ultima3), x + 5, y + 15);
 			y += 30;
@@ -558,7 +558,7 @@ function ctl_desenhaInfoDireita() {
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('Volta') + ' '
+			maneContext.fillText(lang_text('Vol') + ' '
 					+ (dadosParciais.voltaAtual - 4) + ' '
 					+ formatarTempo(dadosParciais.ultima4), x + 5, y + 15);
 			y += 30;
