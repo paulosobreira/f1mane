@@ -1,6 +1,6 @@
 var carregando = false;
 
-var limite = 250;
+var limite = 1250;
 
 function rest_dadosJogo(nomeJogo) {
 	if(carregando){
