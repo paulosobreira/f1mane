@@ -61,7 +61,11 @@ function cpu_main() {
 		cpu_altenador();
 	} 
 	if(carregouMidia && contCarregouMidia>0){
-		contCarregouMidia--;
+		if(imgBg!=null && !imgBg.complete){
+			contCarregouMidia = 5;
+		}else{
+			contCarregouMidia--;
+		}
 	}
 }
 
