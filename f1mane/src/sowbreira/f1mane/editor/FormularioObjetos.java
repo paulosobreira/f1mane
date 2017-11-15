@@ -37,8 +37,8 @@ public class FormularioObjetos {
 		this.mainPanelEditor = panelPai;
 		tipoComboBox.addItem(OBJETO_TRANSPARENCIA);
 		tipoComboBox.addItem(OBJETO_ESCAPADA);
-		
-		panel.add(new JLabel("Tipo"){
+
+		panel.add(new JLabel("Tipo") {
 			@Override
 			public String getText() {
 				return Lang.msg("tipo");
@@ -61,9 +61,8 @@ public class FormularioObjetos {
 			}
 		});
 		panel.add(fimTransparencia);
-		
-	
-		panel.add(new JLabel(){
+
+		panel.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("transparenciaBox");
@@ -71,8 +70,7 @@ public class FormularioObjetos {
 		});
 		panel.add(transparenciaBox);
 
-
-		panel.add(new JLabel("Angulo"){
+		panel.add(new JLabel("Angulo") {
 			@Override
 			public String getText() {
 				return Lang.msg("angulorRotacao");
@@ -133,14 +131,17 @@ public class FormularioObjetos {
 	}
 
 	public void mostrarPainelModal() {
-		JOptionPane
-				.showMessageDialog(this.mainPanelEditor.getSrcFrame(), panel);
+		JOptionPane.showMessageDialog(this.mainPanelEditor.getSrcFrame(),
+				panel);
 		if (objetoPista != null)
 			formularioObjetoPista(objetoPista);
 		FormularioObjetos.this.mainPanelEditor.repaint();
 	}
 
 	public void setCor(Color color, JLabel label) {
+		if (color == null) {
+			return;
+		}
 		label.setOpaque(true);
 		label.setBackground(color);
 		int valor = (color.getRed() + color.getGreen() + color.getBlue()) / 2;
@@ -226,8 +227,10 @@ public class FormularioObjetos {
 		objetoPista.setCorPimaria(getLabelCor1().getBackground());
 		objetoPista.setCorSecundaria(getLabelCor2().getBackground());
 		objetoPista.setAngulo((Integer) angulo.getValue());
-		objetoPista.setInicioTransparencia((Integer) getInicioTranparencia().getValue());
-		objetoPista.setFimTransparencia((Integer) getFimTransparencia().getValue());
+		objetoPista.setInicioTransparencia(
+				(Integer) getInicioTranparencia().getValue());
+		objetoPista.setFimTransparencia(
+				(Integer) getFimTransparencia().getValue());
 		objetoPista.setTransparenciaBox(transparenciaBox.isSelected());
 	}
 }

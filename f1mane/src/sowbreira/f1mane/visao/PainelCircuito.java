@@ -515,11 +515,9 @@ public class PainelCircuito {
 	private void carregaRecursos() {
 		carroimgDano = CarregadorRecursos.carregaImagem("CarroLadoDef.png");
 		setaCarroCima = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
-						200);
+				.carregaBufferedImage("SetaCarroCima.png");
 		setaCarroBaixo = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
-						200);
+				.carregaBufferedImage("SetaCarroBaixo.png");
 
 		maisAsaIco = CarregadorRecursos
 				.carregaBufferedImageTransparecia("maisAsa.png", null);;
@@ -532,15 +530,15 @@ public class PainelCircuito {
 				.carregaBufferedImageTransparecia("GridCarro.png");
 		scima = CarregadorRecursos
 				.carregaBufferedImageTranspareciaBranca("sfcima.png");
-		travadaRodaImg0 = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("travadaRoda0.png", 150,
-						100);
-		travadaRodaImg1 = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("travadaRoda1.png", 150,
-						100);
-		travadaRodaImg2 = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("travadaRoda2.png", 150,
-						100);
+		travadaRodaImg0 = ImageUtil.geraTransparenciaAlpha(
+				CarregadorRecursos.carregaBufferedImage("travadaRoda0.png"),
+				new Integer(40));
+		travadaRodaImg1 = ImageUtil.geraTransparenciaAlpha(
+				CarregadorRecursos.carregaBufferedImage("travadaRoda1.png"),
+				new Integer(40));
+		travadaRodaImg2 = ImageUtil.geraTransparenciaAlpha(
+				CarregadorRecursos.carregaBufferedImage("travadaRoda2.png"),
+				new Integer(40));
 		carroCimaFreiosD1 = CarregadorRecursos.carregaBufferedImageTransparecia(
 				"CarroCimaFreiosD1.png", null);
 		carroCimaFreiosD2 = CarregadorRecursos.carregaBufferedImageTransparecia(
@@ -573,8 +571,7 @@ public class PainelCircuito {
 		pneuDuroImgMini = ImageUtil.geraResize(CarregadorRecursos
 				.carregaBufferedImageTransparecia("pneuDuro.png", null), 0.15);
 		pneuChuvaImgMini = ImageUtil.geraResize(CarregadorRecursos
-				.carregaBufferedImageTransparecia("pneuChuva.png", null),
-				0.15);
+				.carregaBufferedImageTransparecia("pneuChuva.png", null), 0.15);
 
 		fuel = CarregadorRecursos.carregaBufferedImage("fuel.png");
 
@@ -1728,7 +1725,7 @@ public class PainelCircuito {
 			int cont = 1;
 			while (indemax > -1) {
 				String info = (String) controleJogo.listaInfo().get(indemax);
-				if (info.contains("<table>")) {
+				if (info.contains("<table style='font-family: sans-serif;'>")) {
 					if (!info.equals(infoComp)) {
 						infoComp = info;
 						infoCompCont = 1000;
@@ -1775,14 +1772,17 @@ public class PainelCircuito {
 	}
 
 	private static String geraLabelVoltaTabelaComparativa(String parte,
-			String volta1) {
+			String volta) {
 		for (int i = 0; i < parte.length(); i++) {
 			if (parte.charAt(i) == '<') {
 				break;
 			}
-			volta1 += parte.charAt(i);
+			volta += parte.charAt(i);
 		}
-		return volta1;
+		if(volta.contains(">")){
+			return volta.split(">")[1];
+		}
+		return volta;
 	}
 
 	private void desenhaTabelaComparativa(Graphics2D g2d) {
@@ -1795,40 +1795,40 @@ public class PainelCircuito {
 		if (verificaComponeteNaParteInferior()) {
 			return;
 		}
-		String parte[] = infoComp.split("<font face='sans-serif' >");
+		String parte[] = infoComp.split("<td ");
 		String volta1 = "";
-		volta1 = geraLabelVoltaTabelaComparativa(parte[1], volta1);
+		volta1 = geraLabelVoltaTabelaComparativa(parte[2], volta1);
 		String volta2 = "";
-		volta2 = geraLabelVoltaTabelaComparativa(parte[2], volta2);
+		volta2 = geraLabelVoltaTabelaComparativa(parte[3], volta2);
 		String volta3 = "";
-		volta3 = geraLabelVoltaTabelaComparativa(parte[3], volta3);
+		volta3 = geraLabelVoltaTabelaComparativa(parte[4], volta3);
 		String nmPilotoFrente = "";
-		nmPilotoFrente = geraLabelVoltaTabelaComparativa(parte[4],
+		nmPilotoFrente = geraLabelVoltaTabelaComparativa(parte[5],
 				nmPilotoFrente);
 		String t1PilotoFrente = "";
-		t1PilotoFrente = geraLabelVoltaTabelaComparativa(parte[5],
+		t1PilotoFrente = geraLabelVoltaTabelaComparativa(parte[6],
 				t1PilotoFrente);
 		String t2PilotoFrente = "";
-		t2PilotoFrente = geraLabelVoltaTabelaComparativa(parte[6],
+		t2PilotoFrente = geraLabelVoltaTabelaComparativa(parte[7],
 				t2PilotoFrente);
 		String t3PilotoFrente = "";
-		t3PilotoFrente = geraLabelVoltaTabelaComparativa(parte[7],
+		t3PilotoFrente = geraLabelVoltaTabelaComparativa(parte[8],
 				t3PilotoFrente);
 
 		String nmPilotoTraz = "";
-		nmPilotoTraz = geraLabelVoltaTabelaComparativa(parte[8], nmPilotoTraz);
+		nmPilotoTraz = geraLabelVoltaTabelaComparativa(parte[9], nmPilotoTraz);
 		String t1PilotoTraz = "";
-		t1PilotoTraz = geraLabelVoltaTabelaComparativa(parte[9], t1PilotoTraz);
+		t1PilotoTraz = geraLabelVoltaTabelaComparativa(parte[10], t1PilotoTraz);
 		String t2PilotoTraz = "";
-		t2PilotoTraz = geraLabelVoltaTabelaComparativa(parte[10], t2PilotoTraz);
+		t2PilotoTraz = geraLabelVoltaTabelaComparativa(parte[11], t2PilotoTraz);
 		String t3PilotoTraz = "";
-		t3PilotoTraz = geraLabelVoltaTabelaComparativa(parte[11], t3PilotoTraz);
+		t3PilotoTraz = geraLabelVoltaTabelaComparativa(parte[12], t3PilotoTraz);
 		String t1Diff = "";
-		t1Diff = geraLabelVoltaTabelaComparativa(parte[12], t1Diff);
+		t1Diff = geraLabelVoltaTabelaComparativa(parte[14], t1Diff);
 		String t2Diff = "";
-		t2Diff = geraLabelVoltaTabelaComparativa(parte[13], t2Diff);
+		t2Diff = geraLabelVoltaTabelaComparativa(parte[15], t2Diff);
 		String t3Diff = "";
-		t3Diff = geraLabelVoltaTabelaComparativa(parte[14], t3Diff);
+		t3Diff = geraLabelVoltaTabelaComparativa(parte[16], t3Diff);
 
 		int x = limitesViewPort.x + limitesViewPort.width - 580;
 		int y = limitesViewPort.y + limitesViewPort.height - 150;
@@ -3198,8 +3198,8 @@ public class PainelCircuito {
 		Point p = noAtual.getPoint();
 		int carx = p.x;
 		int cary = p.y;
-		int traz = cont - Piloto.MEIAENVERGADURA;
-		int frente = cont + Piloto.MEIAENVERGADURA;
+		int traz = cont - Piloto.METADE_CARRO;
+		int frente = cont + Piloto.METADE_CARRO;
 		if (traz < 0) {
 			if (controleJogo.getNosDoBox().size() == lista.size()) {
 				traz = 0;
@@ -3446,7 +3446,7 @@ public class PainelCircuito {
 		piloto.setCentro(rectangle.getBounds());
 
 		trazCar = GeoUtil.calculaPonto(calculaAngulo + 90,
-				Util.inteiro(Piloto.MEIAENVERGADURA), new Point(carx, cary));
+				Util.inteiro(Piloto.METADE_CARRO), new Point(carx, cary));
 
 		Rectangle2D trazRec = new Rectangle2D.Double(
 				(trazCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
@@ -3456,7 +3456,7 @@ public class PainelCircuito {
 		piloto.setTrazeira(trazRec.getBounds());
 
 		frenteCar = GeoUtil.calculaPonto(calculaAngulo + 270,
-				Util.inteiro(Piloto.MEIAENVERGADURA), new Point(carx, cary));
+				Util.inteiro(Piloto.METADE_CARRO), new Point(carx, cary));
 
 		Rectangle2D frenteRec = new Rectangle2D.Double(
 				(frenteCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),

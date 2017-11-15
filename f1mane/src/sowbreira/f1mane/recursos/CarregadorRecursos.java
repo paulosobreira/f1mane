@@ -166,62 +166,6 @@ public class CarregadorRecursos {
 		return bufferedImage;
 	}
 
-	public static BufferedImage carregaBufferedImageTranspareciaBranca(
-			String file, int ingVal) {
-		return carregaBufferedImageTranspareciaBranca(file, ingVal, 255);
-	}
-
-	public static BufferedImage carregaBufferedImageTranspareciaBranca(
-			String file, int ingVal, int translucidez) {
-		String chave = file + "-" + ingVal + "-" + translucidez;
-		BufferedImage bufferedImage = (BufferedImage) bufferImagesTransp
-				.get(chave);
-
-		if (bufferedImage == null) {
-			BufferedImage buffer = null;
-			try {
-				buffer = ImageUtil.toBufferedImage(file);
-				if (buffer == null) {
-					Logger.logar("img=" + buffer);
-				}
-
-			} catch (Exception e) {
-				Logger.logar("Erro gerando transparencia para :" + file);
-				Logger.logarExept(e);
-			}
-
-			bufferedImage = ImageUtil.toCompatibleImage(
-					ImageUtil.geraTransparencia(buffer, ingVal, translucidez));
-			bufferImagesTransp.put(chave, bufferedImage);
-		}
-		return bufferedImage;
-	}
-
-	public static BufferedImage carregaBufferedImageTranspareciaPreta(
-			String file, int translucidez) {
-		String chave = file + "-" + translucidez;
-		BufferedImage bufferedImage = (BufferedImage) bufferImagesTransp
-				.get(chave);
-
-		if (bufferedImage == null) {
-			BufferedImage buffer = null;
-			try {
-				buffer = ImageUtil.toBufferedImage(file);
-				if (buffer == null) {
-					Logger.logar("img=" + buffer);
-				}
-
-			} catch (Exception e) {
-				Logger.logarExept(e);
-			}
-
-			bufferedImage = ImageUtil.toCompatibleImage(ImageUtil
-					.geraTransparencia(buffer, Color.BLACK, translucidez));
-			bufferImagesTransp.put(chave, bufferedImage);
-		}
-		return bufferedImage;
-	}
-
 	public static BufferedImage carregaBackGround(String backGroundStr,
 			JPanel panel, Circuito circuito) {
 

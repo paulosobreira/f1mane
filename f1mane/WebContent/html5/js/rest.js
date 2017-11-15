@@ -3,7 +3,7 @@ var carregando = false;
 var limite = 1250;
 
 function rest_dadosJogo(nomeJogo) {
-	if(carregando){
+	if (carregando) {
 		return;
 	}
 	if (nomeJogo == null) {
@@ -25,19 +25,23 @@ function rest_dadosJogo(nomeJogo) {
 		},
 		error : function(xhRequest, errorText, thrownError) {
 			carregando = false;
-			if(errorText=='timeout'){
+			if (errorText == 'timeout') {
 				return;
 			}
-			if(xhRequest.status = 401){
+			if (xhRequest.status = 401) {
 				window.location.href = "index.html";
 			}
-			console.log(xhRequest.status + '  ' + xhRequest.responseText);
+			try {
+				console.log('rest_dadosJogo '+xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	});
 }
 
 function rest_ciruito() {
-	if(carregando){
+	if (carregando) {
 		return;
 	}
 	if (dadosJogo == null || dadosJogo.nomeJogo == null) {
@@ -65,19 +69,23 @@ function rest_ciruito() {
 		},
 		error : function(xhRequest, errorText, thrownError) {
 			carregando = false;
-			if(errorText=='timeout'){
+			if (errorText == 'timeout') {
 				return;
 			}
-			if(xhRequest.status = 401){
+			if (xhRequest.status = 401) {
 				window.location.href = "index.html";
 			}
-			console.log(xhRequest.status + '  ' + xhRequest.responseText);
+			try {
+				console.log('rest_ciruito '+xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	});
 }
 
 function rest_dadosParciais() {
-	if(carregando){
+	if (carregando) {
 		return;
 	}
 	if (dadosJogo == null || dadosJogo.nomeJogo == null) {
@@ -87,8 +95,7 @@ function rest_dadosParciais() {
 	carregando = true;
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/dadosParciais/" + dadosJogo.nomeJogo + "/"
-				+ idPilotoSelecionado,
+		url : "/f1mane/rest/letsRace/dadosParciais/" + dadosJogo.nomeJogo + "/" + idPilotoSelecionado,
 		headers : {
 			'token' : token
 		},
@@ -103,13 +110,17 @@ function rest_dadosParciais() {
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
 			carregando = false;
-			if(errorText=='timeout'){
+			if (errorText == 'timeout') {
 				return;
 			}
-			if(xhRequest.status = 401){
+			if (xhRequest.status = 401) {
 				window.location.href = "index.html";
 			}
-			console.log(xhRequest.status + '  ' + xhRequest.responseText);
+			try {
+				console.log('rest_dadosParciais '+xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	});
 }
@@ -117,8 +128,7 @@ function rest_dadosParciais() {
 function rest_potenciaMotor(valor) {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/potenciaMotor/" + valor + "/"
-				+ idPilotoSelecionado,
+		url : "/f1mane/rest/letsRace/potenciaMotor/" + valor + "/" + idPilotoSelecionado,
 		headers : {
 			'token' : token
 		},
@@ -129,14 +139,17 @@ function rest_potenciaMotor(valor) {
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
-			if(errorText=='timeout'){
+			if (errorText == 'timeout') {
 				return;
 			}
-			if(xhRequest.status = 401){
+			if (xhRequest.status = 401) {
 				window.location.href = "index.html";
 			}
-			console.log('rest_potenciaMotor ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
+			try {
+				console.log('rest_potenciaMotor ' + xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	});
 
@@ -144,8 +157,7 @@ function rest_potenciaMotor(valor) {
 function rest_agressividadePiloto(valor) {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/agressividadePiloto/" + valor + "/"
-				+ idPilotoSelecionado,
+		url : "/f1mane/rest/letsRace/agressividadePiloto/" + valor + "/" + idPilotoSelecionado,
 		headers : {
 			'token' : token
 		},
@@ -155,14 +167,17 @@ function rest_agressividadePiloto(valor) {
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
-			if(errorText=='timeout'){
+			if (errorText == 'timeout') {
 				return;
 			}
-			if(xhRequest.status = 401){
+			if (xhRequest.status = 401) {
 				window.location.href = "index.html";
 			}
-			console.log('rest_agressividadePiloto ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
+			try {
+				console.log('rest_agressividadePiloto ' + xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	});
 }
@@ -170,8 +185,7 @@ function rest_agressividadePiloto(valor) {
 function rest_tracadoPiloto(valor) {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/tracadoPiloto/" + valor + "/"
-				+ idPilotoSelecionado,
+		url : "/f1mane/rest/letsRace/tracadoPiloto/" + valor + "/" + idPilotoSelecionado,
 		headers : {
 			'token' : token
 		},
@@ -182,14 +196,18 @@ function rest_tracadoPiloto(valor) {
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
-			if(errorText=='timeout'){
+			if (errorText == 'timeout') {
 				return;
 			}
-			if(xhRequest.status = 401){
+			if (xhRequest.status = 401) {
 				window.location.href = "index.html";
 			}
-			console.log('rest_tracadoPiloto ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
+			try {
+				console.log('rest_tracadoPiloto ' + xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
+
 		}
 	});
 }
@@ -208,14 +226,17 @@ function rest_ers() {
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
-			if(errorText=='timeout'){
+			if (errorText == 'timeout') {
 				return;
 			}
-			if(xhRequest.status = 401){
+			if (xhRequest.status = 401) {
 				window.location.href = "index.html";
 			}
-			console.log('rest_ers ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
+			try {
+				console.log('rest_ers ' + xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	});
 }
@@ -233,14 +254,18 @@ function rest_drs() {
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
-			if(errorText=='timeout'){
+			if (errorText == 'timeout') {
 				return;
 			}
-			if(xhRequest.status = 401){
+			if (xhRequest.status = 401) {
 				window.location.href = "index.html";
 			}
-			console.log('rest_drs ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
+			try {
+				console.log('rest_drs ' + xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
+
 		}
 	});
 }
@@ -248,8 +273,7 @@ function rest_drs() {
 function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/boxPiloto/" + idPilotoSelecionado + "/"
-				+ ativa + "/" + pneu + "/" + combustivel + "/" + asa,
+		url : "/f1mane/rest/letsRace/boxPiloto/" + idPilotoSelecionado + "/" + ativa + "/" + pneu + "/" + combustivel + "/" + asa,
 		headers : {
 			'token' : token
 		},
@@ -259,14 +283,17 @@ function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 		},
 		timeout : limite,
 		error : function(xhRequest, errorText, thrownError) {
-			if(errorText=='timeout'){
+			if (errorText == 'timeout') {
 				return;
 			}
-			if(xhRequest.status = 401){
+			if (xhRequest.status = 401) {
 				window.location.href = "index.html";
 			}
-			console.log('rest_boxPiloto ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
+			try {
+				console.log('rest_boxPiloto ' + xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	});
 }

@@ -291,8 +291,8 @@ public class Circuito implements Serializable {
 			Point p = no.getPoint();
 			Point frenteCar = null;
 			Point trazCar = null;
-			int traz = i - Piloto.MEIAENVERGADURA;
-			int frente = i + Piloto.MEIAENVERGADURA;
+			int traz = i - Piloto.METADE_CARRO;
+			int frente = i + Piloto.METADE_CARRO;
 			if (traz < 0) {
 				traz = (pistaFull.size() - 1) + traz;
 			}
@@ -338,8 +338,8 @@ public class Circuito implements Serializable {
 			Point p = no.getPoint();
 			Point frenteCar = null;
 			Point trazCar = null;
-			int traz = i - Piloto.MEIAENVERGADURA;
-			int frente = i + Piloto.MEIAENVERGADURA;
+			int traz = i - Piloto.METADE_CARRO;
+			int frente = i + Piloto.METADE_CARRO;
 			if (frente > (boxFull.size() - 1)) {
 				frente = (boxFull.size() - 1);
 			}

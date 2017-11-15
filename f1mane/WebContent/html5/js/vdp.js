@@ -503,13 +503,25 @@ function vdp_desenhaCarrosCima() {
 			}
 
 			if (piloto.tracado == 4) {
-				frenteCar = safeArray(circuito.pista4Full, indexFrente);
-				atrasCar = safeArray(circuito.pista4Full, indexAtras);
+				frenteCar = circuito.pista4Full[indexFrente];
+				if(frenteCar==null){
+					frenteCar = safeArray(circuito.pista2Full, indexFrente);
+				}
+				atrasCar = circuito.pista4Full[indexAtras];
+				if(atrasCar==null){
+					atrasCar = safeArray(circuito.pista2Full, indexAtras);
+				}
 				angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
 			}
 			if (piloto.tracado == 5) {
-				frenteCar = safeArray(circuito.pista5Full, indexFrente);
-				atrasCar = safeArray(circuito.pista5Full, indexAtras);
+				frenteCar = circuito.pista5Full[indexFrente];
+				if(frenteCar==null){
+					frenteCar = safeArray(circuito.pista1Full, indexFrente);
+				}
+				atrasCar = circuito.pista5Full[indexAtras];
+				if(atrasCar==null){
+					atrasCar = safeArray(circuito.pista1Full, indexAtras);
+				}
 				angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
 			}
 			if (piloto.idPiloto == idPilotoSelecionado) {

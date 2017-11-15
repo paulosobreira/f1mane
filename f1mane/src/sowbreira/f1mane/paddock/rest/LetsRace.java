@@ -322,7 +322,7 @@ public class LetsRace {
 				pista = nmCircuito;
 			}
 		}
-//		pista = "Interlagos";
+		// pista = "Interlagos";
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setClima(Clima.SOL);
@@ -424,72 +424,6 @@ public class LetsRace {
 		}
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write(capacetes, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
-	}
-
-	@GET
-	@Path("/setaCima")
-	@Produces("image/png")
-	public Response setaCima() throws IOException {
-		BufferedImage setaCima = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
-						200);
-		if (setaCima == null) {
-			return Response.status(200).entity("null").build();
-		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(setaCima, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
-	}
-
-	@GET
-	@Path("/setaBaixo")
-	@Produces("image/png")
-	public Response setaBaixo() throws IOException {
-		BufferedImage setaBaixo = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroBaixo.png",
-						200);
-		if (setaBaixo == null) {
-			return Response.status(200).entity("null").build();
-		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(setaBaixo, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
-	}
-
-	@GET
-	@Path("/setaEsquerda")
-	@Produces("image/png")
-	public Response setaEsquerda() throws IOException {
-		BufferedImage setaCima = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
-						200);
-		BufferedImage setaEsquerda = ImageUtil.rotacionar(setaCima, 270);
-		if (setaEsquerda == null) {
-			return Response.status(200).entity("null").build();
-		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(setaEsquerda, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
-	}
-
-	@GET
-	@Path("/setaDireita")
-	@Produces("image/png")
-	public Response setaDireita() throws IOException {
-		BufferedImage setaCima = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
-						200);
-		BufferedImage setaDireita = ImageUtil.rotacionar(setaCima, 90);
-		if (setaDireita == null) {
-			return Response.status(200).entity("null").build();
-		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(setaDireita, "png", baos);
 		byte[] imageData = baos.toByteArray();
 		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}

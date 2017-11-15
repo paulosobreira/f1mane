@@ -633,12 +633,10 @@ public class PainelMenuLocal {
 
 	private void iniciaRecursos() {
 		setaCarroCima = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("SetaCarroCima.png",
-						200);
+				.carregaBufferedImage("SetaCarroCima.png");
 		/**
 		 * Esquerda
 		 */
-
 		double rad = Math.toRadians(270);
 		AffineTransform afRotate = new AffineTransform();
 		afRotate.setToRotation(rad, setaCarroCima.getWidth() / 2,

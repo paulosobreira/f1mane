@@ -2,7 +2,9 @@
 body {
  margin: 0;
  /*background: url(/f1mane/rest/letsRace/png/f1bg);*/
- background-size: 100%,100%;;
+ background-size: 100%,100%;
+ width: 100%;
+ height: 100%;
  background-repeat:no-repeat;
  font-family: sans-serif;
 }

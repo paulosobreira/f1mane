@@ -28,7 +28,7 @@ public class ControleSom {
 	private static Clip clipAceleracao1;
 	private static Clip clipReducao2;
 	private static Clip clipAceleracao2;
-	public static boolean somLigado = true;
+	public static boolean somLigado = false;
 	private static Clip clipBox;
 	private static Clip clipSafetyCar;
 	private static Clip clipPararBox;

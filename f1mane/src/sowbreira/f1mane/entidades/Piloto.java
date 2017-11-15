@@ -42,7 +42,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public static final String AGRESSIVO = "AGRESSIVO";
 	public static final String NORMAL = "NORMAL";
 	public static final String LENTO = "LENTO";
-	public static final int MEIAENVERGADURA = 20;
+	public static final int METADE_CARRO = 20;
 
 	private int id;
 	private String nome;
@@ -1106,6 +1106,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaUsoDRS(controleJogo);
 		processaMudancaRegime(controleJogo);
 		processaGanho(controleJogo);
+		processaPontoEscape(controleJogo);
 		processaEscapadaDaPista(controleJogo);
 		processaIAnovoIndex(controleJogo);
 		processaTurbulencia(controleJogo);
@@ -1325,6 +1326,9 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isSafetyCarNaPista()) {
 			return;
 		}
+		if (controleJogo.isModoQualify()) {
+			return;
+		}
 		/**
 		 * Escapa para os tracados 1 ou 2
 		 */
@@ -1353,12 +1357,13 @@ public class Piloto implements Serializable, PilotoSuave {
 				&& AGRESSIVO.equals(modoPilotagem)
 				&& !testeHabilidadePilotoCarro() && getPtosBox() == 0) {
 			if (escapaTracado(controleJogo) && !verificaDesconcentrado()) {
-				setCiclosDesconcentrado(Util.intervalo(50, 150));
+				setCiclosDesconcentrado(150);
 				if (controleJogo.verificaInfoRelevante(this))
 					controleJogo.info(Lang.msg("saiDaPista",
 							new String[]{Html.vermelho(getNome())}));
 			}
 		}
+
 		/**
 		 * Volta a pista apos escapada
 		 */
@@ -1971,7 +1976,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public boolean escapaTracado(InterfaceJogo controleJogo) {
-		processaPontoEscape(controleJogo);
 		/**
 		 * Verificar na entrada da curva e nao na area de escape
 		 */
@@ -1988,10 +1992,18 @@ public class Piloto implements Serializable, PilotoSuave {
 			return false;
 		}
 		int ladoEscape = controleJogo.obterLadoEscape(pontoEscape);
-		if (ladoEscape == 5 && getTracado() == 2) {
+		if (ladoEscape == 5 && getTracado() != 1) {
 			return false;
 		}
-		if (ladoEscape == 4 && getTracado() == 1) {
+		if (ladoEscape == 5 && controleJogo.getCircuito().getPista5Full()
+				.get(noAtual.getIndex()) != null) {
+			return false;
+		}
+		if (ladoEscape == 4 && controleJogo.getCircuito().getPista4Full()
+				.get(noAtual.getIndex()) != null) {
+			return false;
+		}
+		if (ladoEscape == 4 && getTracado() != 2) {
 			return false;
 		}
 		if ((ladoEscape == 4 || ladoEscape == 5) && getTracado() == 0) {
@@ -2013,7 +2025,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getNoAtual() == null) {
 			return;
 		}
-
 		int index = getNoAtual().getIndex() + 100;
 		if (index >= controleJogo.getNosDaPista().size()) {
 			return;
@@ -2066,8 +2077,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		Point p = noAtual.getPoint();
 		int carx = p.x;
 		int cary = p.y;
-		int traz = cont - MEIAENVERGADURA;
-		int frente = cont + MEIAENVERGADURA;
+		int traz = cont - METADE_CARRO;
+		int frente = cont + METADE_CARRO;
 		if (traz < 0) {
 			if (controleJogo.getNosDoBox().size() == lista.size()) {
 				traz = 0;
@@ -2335,7 +2346,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		centroColisao = rectangle.getBounds();
 
 		trazCar = GeoUtil.calculaPonto(calculaAngulo + 90,
-				Util.inteiro(MEIAENVERGADURA), new Point(carx, cary));
+				Util.inteiro(METADE_CARRO), new Point(carx, cary));
 
 		Rectangle2D trazRec = new Rectangle2D.Double(
 				(trazCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
@@ -2345,7 +2356,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		trazeiraColisao = trazRec.getBounds();
 
 		frenteCar = GeoUtil.calculaPonto(calculaAngulo + 270,
-				Util.inteiro(MEIAENVERGADURA), new Point(carx, cary));
+				Util.inteiro(METADE_CARRO), new Point(carx, cary));
 
 		Rectangle2D frenteRec = new Rectangle2D.Double(
 				(frenteCar.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
@@ -2877,6 +2888,10 @@ public class Piloto implements Serializable, PilotoSuave {
 	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo,
 			boolean mesmoComColisao) {
 		if (isRecebeuBanderada()) {
+			return false;
+		}
+		if (verificaDesconcentrado()
+				&& (getTracado() == 4 || getTracado() == 5)) {
 			return false;
 		}
 		if (getSetaBaixo() <= 0) {
