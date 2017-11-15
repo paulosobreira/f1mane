@@ -1329,25 +1329,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-		/**
-		 * Escapa para os tracados 1 ou 2
-		 */
-		if (No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && agressivo
-				&& (getTracado() == 0)
-				&& (carro.getPorcentagemDesgastePneus() < 30)) {
-			if (getStress() > 60)
-				controleJogo.travouRodas(this);
-			if (getTracadoAntigo() != 0) {
-				if (getTracadoAntigo() == 1) {
-					mudarTracado(2, controleJogo);
-				} else {
-					mudarTracado(1, controleJogo);
-				}
-			} else {
-				mudarTracado(Util.intervalo(1, 2), controleJogo);
-			}
-			return;
-		}
 
 		/**
 		 * Escapa para os tracados 4 ou 5
@@ -1356,11 +1337,29 @@ public class Piloto implements Serializable, PilotoSuave {
 				&& !controleJogo.isSafetyCarNaPista()
 				&& AGRESSIVO.equals(modoPilotagem)
 				&& !testeHabilidadePilotoCarro() && getPtosBox() == 0) {
-			if (escapaTracado(controleJogo) && !verificaDesconcentrado()) {
+			if (escapaTracado(controleJogo)) {
 				setCiclosDesconcentrado(150);
 				if (controleJogo.verificaInfoRelevante(this))
 					controleJogo.info(Lang.msg("saiDaPista",
 							new String[]{Html.vermelho(getNome())}));
+			} else if (No.CURVA_BAIXA.equals(getNoAtual().getTipo())
+					&& (getTracado() == 0)
+					&& (carro.getPorcentagemDesgastePneus() < 30)) {
+				/**
+				 * Escapa para os tracados 1 ou 2
+				 */
+				if (getStress() > 60)
+					controleJogo.travouRodas(this);
+				if (getTracadoAntigo() != 0) {
+					if (getTracadoAntigo() == 1) {
+						mudarTracado(2, controleJogo);
+					} else {
+						mudarTracado(1, controleJogo);
+					}
+				} else {
+					mudarTracado(Util.intervalo(1, 2), controleJogo);
+				}
+				return;
 			}
 		}
 
@@ -1377,7 +1376,7 @@ public class Piloto implements Serializable, PilotoSuave {
 							.get(getNoAtual().getIndex());
 					if (no == null || no.getTracado() != 4) {
 						mudarTracado = 2;
-						mudarTracado(mudarTracado, controleJogo, true);
+						mudarTracado(mudarTracado, controleJogo);
 					}
 				}
 				if (getTracado() == 5) {
@@ -1385,7 +1384,7 @@ public class Piloto implements Serializable, PilotoSuave {
 							.get(getNoAtual().getIndex());
 					if (no == null || no.getTracado() != 5) {
 						mudarTracado = 1;
-						mudarTracado(mudarTracado, controleJogo, true);
+						mudarTracado(mudarTracado, controleJogo);
 					}
 				}
 				if (carroPilotoAtras != null
@@ -2890,8 +2889,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (isRecebeuBanderada()) {
 			return false;
 		}
-		if (verificaDesconcentrado()
-				&& (getTracado() == 4 || getTracado() == 5)) {
+		if (verificaDesconcentrado() && (getTracado() == 4 || getTracado() == 5)
+				&& (mudarTracado != 4 && mudarTracado != 5)) {
 			return false;
 		}
 		if (getSetaBaixo() <= 0) {

@@ -230,7 +230,7 @@ function ctl_desenhaInfo() {
 }
 
 function ctl_desenhaInfoBaixo() {
-	if(alternador && $('#info').html()!=''){
+	if(dadosParciais.recebeuBanderada || (alternador && $('#info').html()!='')){
 		ctl_desenhaInfo();
 		$('#info').show();
 	}else{
