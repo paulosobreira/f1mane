@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
@@ -124,12 +125,12 @@ public class ControleSafetyCar {
 		List pista = controleJogo.getNosDaPista();
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
-		int bonus = Math.random()<0.3?3:2;
+		int bonus = Math.random() < 0.3 ? 3 : 2;
 		if (noAtual.verificaCurvaAlta()) {
-			bonus = Math.random()<0.9?2:1;
+			bonus = Math.random() < 0.9 ? 2 : 1;
 		}
 		if (noAtual.verificaCurvaBaixa()) {
-			bonus = Math.random()<0.7?2:1;
+			bonus = Math.random() < 0.7 ? 2 : 1;
 		}
 		Piloto pole = (Piloto) controleJogo.getPilotosCopia().get(0);
 
@@ -162,9 +163,15 @@ public class ControleSafetyCar {
 			index = diff;
 		}
 		safetyCar.setPtosPista(safetyCar.getPtosPista() + bonus);
-		if (deixaRetardatarioPassar(index)) {
-			safetyCar.setTracado(1);
+		int desviar = desviarTracado(index);
+		if (desviar == -1) {
+			safetyCar.setTracado(0);
+		} else if (desviar == 0) {
+			safetyCar.setTracado(Util.intervalo(1, 2));
+		}else{
+			safetyCar.setTracado(0);
 		}
+
 		safetyCar.setNoAtual((No) pista.get(index));
 	}
 
@@ -174,19 +181,20 @@ public class ControleSafetyCar {
 		bonus *= multi;
 	}
 
-	private boolean deixaRetardatarioPassar(int indice) {
+	private int desviarTracado(int indice) {
 		List pilotos = controleJogo.getPilotosCopia();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (this.equals(piloto) || piloto.getPosicao() == 1
-					|| piloto.getTracado() != safetyCar.getTracado()) {
+			if (safetyCar.equals(piloto) || piloto.getPosicao() == 1
+					|| piloto.getTracado() != safetyCar.getTracado()
+					|| piloto.getCarro().isRecolhido()) {
 				continue;
 			}
 
 			int indiceCarro = piloto.getNoAtual().getIndex();
 
-			int traz = indiceCarro - Carro.LARGURA;
-			int frente = indiceCarro + Carro.LARGURA;
+			int traz = indiceCarro - 150;
+			int frente = indiceCarro + 150;
 
 			List lista = piloto.obterPista(controleJogo);
 
@@ -198,11 +206,10 @@ public class ControleSafetyCar {
 			}
 
 			if (indice >= traz && indice <= frente) {
-				return true;
+				return piloto.getTracado();
 			}
 		}
-		return false;
-
+		return -1;
 	}
 
 	private int calculaMediaSC(int bonus) {

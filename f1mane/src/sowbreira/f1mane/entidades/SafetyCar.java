@@ -13,6 +13,7 @@ public class SafetyCar implements Serializable, PilotoSuave {
 	private long ptosPista;
 	private int saiuVolta;
 	private int tracado;
+	private long ultMudancaTracado = 0;
 	private boolean vaiProBox;
 	private boolean naPista;
 	private boolean esperando;
@@ -31,6 +32,10 @@ public class SafetyCar implements Serializable, PilotoSuave {
 	}
 
 	public void setTracado(int tracado) {
+		if ((System.currentTimeMillis() - ultMudancaTracado) < 2000) {
+			return;
+		}
+		ultMudancaTracado = System.currentTimeMillis();
 		this.tracado = tracado;
 	}
 
@@ -62,7 +67,7 @@ public class SafetyCar implements Serializable, PilotoSuave {
 	}
 
 	public void setNoAtual(No noAtual) {
-		noAnterior = this.noAtual; 
+		noAnterior = this.noAtual;
 		this.noAtual = noAtual;
 	}
 
