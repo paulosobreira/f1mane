@@ -696,11 +696,13 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillStyle = "black"
 		if (pitLane) {
 			maneContext.fillText('PitLane', x + 5, y + 15);
-		} else {
+		}else if(dadosParciais.posisPack.safetyNoId != 0){
+			maneContext.fillText('SafetyCar', x + 5, y + 15);
+		}	else {
 			maneContext.fillText('~' + dadosParciais.velocidade + ' Km/h',
 					x + 5, y + 15);
 		}
-		if (pitLane) {
+		if (pitLane || dadosParciais.posisPack.safetyNoId != 0) {
 			maneContext.strokeStyle = '#FFFF00';
 			maneContext.rect(x, y, 80, 20);
 		}

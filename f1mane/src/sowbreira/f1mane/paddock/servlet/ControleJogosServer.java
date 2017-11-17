@@ -311,7 +311,7 @@ public class ControleJogosServer {
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 		}
-		return clientPaddockPack; 
+		return clientPaddockPack;
 	}
 
 	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
@@ -377,7 +377,7 @@ public class ControleJogosServer {
 			List piList = jogoServidor.getPilotos();
 			for (Iterator iter = piList.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
-				if ( sessaoCliente.getIdPilotoAtual() == piloto.getId()) {
+				if (sessaoCliente.getIdPilotoAtual() == piloto.getId()) {
 					acharPiloto = piloto;
 					break;
 				}
@@ -416,14 +416,15 @@ public class ControleJogosServer {
 			Piloto piloto = (Piloto) iter.next();
 			Posis posis = new Posis();
 			String statusPilotos = "P" + String.valueOf(piloto.getPtosPista());
-			if (piloto.isTravouRodas()) {
-				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
+			if (piloto.getCarro().isRecolhido()) {
+				statusPilotos = "R";
+			} else if (Carro.PERDEU_AEREOFOLIO
+					.equals(piloto.getCarro().getDanificado())) {
+				statusPilotos = "A" + String.valueOf(piloto.getPtosPista());
 			} else if (piloto.isFaiscas()) {
 				statusPilotos = "F" + String.valueOf(piloto.getPtosPista());
-			} else if (Carro.PERDEU_AEREOFOLIO.equals(piloto.getCarro().getDanificado())) {
-				statusPilotos = "A" + String.valueOf(piloto.getPtosPista());
-			} else if (piloto.getCarro().isRecolhido()) {
-				statusPilotos = "R";
+			} else if (piloto.isTravouRodas()) {
+				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
 			}
 			posis.status = statusPilotos;
 			posis.idPiloto = piloto.getId();
@@ -449,6 +450,7 @@ public class ControleJogosServer {
 				&& jogoServidor.getSafetyCar() != null) {
 			pack.safetyNoId = ((Integer) jogoServidor.getMapaNosIds()
 					.get(jogoServidor.getSafetyCar().getNoAtual())).intValue();
+			pack.safetyTracado = jogoServidor.getSafetyCar().getTracado();
 			pack.safetySair = jogoServidor.getSafetyCar().isVaiProBox();
 		}
 		return pack;
@@ -475,6 +477,8 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
+		JogoServidor obterJogoPorSessaoCliente = obterJogoPorSessaoCliente(sessaoCliente);
+		obterJogoPorSessaoCliente.forcaSafatyCar();
 		piloto.setAtivarDRS(true);
 		int giroAntes = piloto.getCarro().getGiro();
 		piloto.getCarro().mudarGiroMotor(giro);

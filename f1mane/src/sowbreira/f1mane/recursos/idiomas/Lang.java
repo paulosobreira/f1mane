@@ -83,6 +83,18 @@ public class Lang {
 		}
 	}
 
+	public static String msgRest(String key) {
+		iniciaBundle();
+		if (key == null || "".equals(key)) {
+			return "";
+		}
+		try {
+			return bundle.getString(key);
+		} catch (Exception e) {
+			return key;
+		}
+	}
+
 	public static String msg(String key, Object[] strings) {
 		if (srvgame) {
 			StringBuffer buffer = new StringBuffer();
@@ -139,7 +151,7 @@ public class Lang {
 	}
 
 	public static String decodeTextoKey(String string) {
-		if(string==null){
+		if (string == null) {
 			return null;
 		}
 		String[] array = string.split("¢");
@@ -152,8 +164,7 @@ public class Lang {
 		}
 		return retorno.toString();
 	}
-	
-	
+
 	private static String microDecodeKey(String string) {
 		if (string.contains("¬")) {
 			String[] sp = string.split("¬");
@@ -171,7 +182,7 @@ public class Lang {
 			return Lang.msgKey(string);
 		}
 	}
-	
+
 	public static String msgKey(String key, Object[] strings) {
 		iniciaBundle();
 		if (key == null || "".equals(key)) {
@@ -185,7 +196,7 @@ public class Lang {
 			return key;
 		}
 	}
-	
+
 	public static String msgKey(String key) {
 		iniciaBundle();
 		if (key == null || "".equals(key)) {

@@ -14,11 +14,12 @@ public class PosisPack implements Serializable {
 
 	public Posis[] posis;
 	public int safetyNoId;
+	public int safetyTracado;
 	public long time = System.currentTimeMillis();
 	public boolean safetySair;
 
 	public String encode() {
-		if(posis.length==0){
+		if (posis.length == 0) {
 			return null;
 		}
 		StringBuffer stringBuffer = new StringBuffer();
@@ -28,14 +29,16 @@ public class PosisPack implements Serializable {
 		}
 		String lessLastPipe = stringBuffer.toString().substring(0,
 				stringBuffer.toString().length() - 1);
-		return safetyNoId + "£" + (safetySair ? "S" : "N") + "£" + lessLastPipe;
+		return safetyNoId + "£" + safetyTracado + "£" + (safetySair ? "S" : "N")
+				+ "£" + lessLastPipe;
 	}
 
 	public void decode(String val) {
 		String[] sp = val.split("£");
 		safetyNoId = parseInt(sp[0]);
-		safetySair = "S".equals(sp[1]);
-		String[] posisEnc = sp[2].split("§");
+		safetyTracado = parseInt(sp[1]);
+		safetySair = "S".equals(sp[2]);
+		String[] posisEnc = sp[3].split("§");
 		posis = new Posis[posisEnc.length];
 		for (int i = 0; i < posisEnc.length; i++) {
 			posis[i] = new Posis();
@@ -89,6 +92,13 @@ public class PosisPack implements Serializable {
 	public void setSafetySair(boolean safetySair) {
 		this.safetySair = safetySair;
 	}
-	
-	
+
+	public int getSafetyTracado() {
+		return safetyTracado;
+	}
+
+	public void setSafetyTracado(int safetyTracado) {
+		this.safetyTracado = safetyTracado;
+	}
+
 }

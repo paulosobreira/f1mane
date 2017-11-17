@@ -24,6 +24,7 @@ import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Carro;
@@ -334,11 +335,11 @@ public class LetsRace {
 		dadosCriarJogo.setErs(temporadasDefauts.getErs());
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
-		dadosCriarJogo.setSafetyCar(false);
+		dadosCriarJogo.setSafetyCar(true);
 		if (temporadasDefauts.getReabastecimento()) {
-			dadosCriarJogo.setCombustivel(50);
+			dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
 		} else {
-			dadosCriarJogo.setCombustivel(85);
+			dadosCriarJogo.setCombustivel(Util.intervalo(70, 90));
 		}
 		dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_MOLE);
 		return dadosCriarJogo;
@@ -510,7 +511,7 @@ public class LetsRace {
 			return Response.status(401).build();
 		}
 		ControleJogosServer controleJogosServer = controlePaddock
-				.getControleJogosServer();;
+				.getControleJogosServer();
 		return Response
 				.status(200).entity(controleJogosServer
 						.mudarGiroMotor(sessaoCliente, idPiloto, potencia))

@@ -82,7 +82,8 @@ public class ControleBox {
 		this.carrosBox = cBox;
 		boxEquipes = new HashMap<Carro, No>();
 		boxEquipesOcupado = new Hashtable<Carro, Carro>();
-		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos
+				.getCarregadorRecursos();
 		try {
 			if (carrosBox == null)
 				carrosBox = carregadorRecursos.carregarListaCarrosArquivo(
@@ -433,7 +434,7 @@ public class ControleBox {
 		String[] strings = new String[]{piloto.getNome(),
 				ControleEstatisticas.formatarTempo(diff),
 				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox()),
-				Lang.msg(piloto.getCarro().getTipoPneu())};
+				Lang.msgRest(piloto.getCarro().getTipoPneu())};
 		String info = Lang.msg("003", strings);
 
 		if (controleJogo.isSemReabastacimento()) {
