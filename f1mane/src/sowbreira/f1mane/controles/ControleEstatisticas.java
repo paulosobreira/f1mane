@@ -75,17 +75,21 @@ public class ControleEstatisticas {
 		return calculaDiferenca(frente, piloto) / 3;
 	}
 
-	public String calculaSegundosParaLider(Piloto pilotoSelecionado, long tempo) {
+	public String calculaSegundosParaLider(Piloto pilotoSelecionado,
+			long tempo) {
 		Piloto lider = (Piloto) controleJogo.getPilotosCopia().get(0);
 		long diff = calculaDiferencaDiv3(lider, pilotoSelecionado);
-		String ret = milesismos.format((diff / Double.parseDouble(String.valueOf(tempo)))) + "s";
+		String ret = milesismos.format(
+				(diff / Double.parseDouble(String.valueOf(tempo)))) + "s";
 		pilotoSelecionado.setSegundosParaLider(ret);
 		return ret;
 	}
 
-	public String calculaSegundosParaRival(Piloto pilotoSelecionado, Piloto rival, long tempo) {
+	public String calculaSegundosParaRival(Piloto pilotoSelecionado,
+			Piloto rival, long tempo) {
 		long diff = calculaDiferencaDiv3(rival, pilotoSelecionado);
-		String ret = milesismos.format((diff / Double.parseDouble(String.valueOf(tempo)))) + "s";
+		String ret = milesismos.format(
+				(diff / Double.parseDouble(String.valueOf(tempo)))) + "s";
 		return ret;
 	}
 
@@ -108,8 +112,7 @@ public class ControleEstatisticas {
 		volta.setCiclosInicio(System.currentTimeMillis());
 		piloto.setVoltaAtual(volta);
 	}
-	
-	
+
 	private void verificaVoltaMaisRapidaPiloto(Piloto piloto) {
 		Volta voltaAtual = piloto.getVoltaAtual();
 		boolean teveMelhor = false;
@@ -125,7 +128,8 @@ public class ControleEstatisticas {
 		if (!teveMelhor && !controleJogo.isSafetyCarNaPista()) {
 			if (controleJogo.verificaInfoRelevante(piloto)) {
 				controleJogo.info(Html.verde(Lang.msg("022",
-						new String[] { Html.negrito(piloto.getNome()), voltaAtual.getTempoVoltaFormatado() })));
+						new String[]{Html.negrito(piloto.getNome()),
+								voltaAtual.getTempoVoltaFormatado()})));
 			}
 		}
 		if (controleJogo.isSafetyCarNaPista()) {
@@ -139,10 +143,12 @@ public class ControleEstatisticas {
 			voltaMaisRapida = piloto.getVoltaAtual();
 		}
 
-		if (voltaMaisRapida.obterTempoVolta() > piloto.getVoltaAtual().obterTempoVolta()) {
+		if (voltaMaisRapida.obterTempoVolta() > piloto.getVoltaAtual()
+				.obterTempoVolta()) {
 			voltaMaisRapida = piloto.getVoltaAtual();
-			controleJogo.infoPrioritaria(Html.verde(Lang.msg("023",
-					new String[] { Html.negrito(piloto.getNome()), voltaMaisRapida.getTempoVoltaFormatado() })));
+			controleJogo.infoPrioritaria(Html.verde(
+					Lang.msg("023", new String[]{Html.negrito(piloto.getNome()),
+							voltaMaisRapida.getTempoVoltaFormatado()})));
 		}
 	}
 
@@ -153,14 +159,17 @@ public class ControleEstatisticas {
 	public static String formatarTempo(Integer value) {
 		return formatarTempo(new Long(value));
 	}
-	
-	public static String formatarTempo(Long value) {
 
+	public static String formatarTempo(Long value) {
+		if (value == null) {
+			return null;
+		}
 		long minu = (value / 60000);
 		long seg = ((value - (minu * 60000)) / 1000);
 		long mili = value - ((minu * 60000) + (seg * 1000));
 		if (minu > 0)
-			return (minu) + ":" + dez.format(Math.abs(seg)) + "." + mil.format(Math.abs(mili));
+			return (minu) + ":" + dez.format(Math.abs(seg)) + "."
+					+ mil.format(Math.abs(mili));
 		else
 			return seg + "." + mil.format(Math.abs(mili));
 	}
@@ -214,16 +223,18 @@ public class ControleEstatisticas {
 		infoConsumer = new Thread(new Runnable() {
 			public void run() {
 				try {
-					controleJogo.adicionarInfoDireto(
-							Html.verde(Lang.msg("000", new Object[] { controleJogo.totalVoltasCorrida() })));
+					controleJogo.adicionarInfoDireto(Html.verde(Lang.msg("000",
+							new Object[]{controleJogo.totalVoltasCorrida()})));
 					boolean interruput = false;
 					while (!interruput && consumidorAtivo) {
 						try {
 							controleJogo.atulizaTabelaPosicoes();
 							try {
 								if (!bufferInfo.isEmpty()) {
-									Object object = bufferInfo.iterator().next();
-									controleJogo.adicionarInfoDireto((String) object);
+									Object object = bufferInfo.iterator()
+											.next();
+									controleJogo.adicionarInfoDireto(
+											(String) object);
 									bufferInfo.remove(object);
 								}
 							} catch (Exception e) {
@@ -244,18 +255,18 @@ public class ControleEstatisticas {
 	}
 
 	public static void main(String[] args) {
-//		List allInfo = new ArrayList();
-//		allInfo.add("1");
-//		allInfo.add("2");
-//		allInfo.add("3");
-//		allInfo.add("4");
-//		allInfo.add("5");
-//		allInfo.add("6");
-//		allInfo.add("7");
-//		if (allInfo.size() > 5) {
-//			for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
-//			}
-//		}
+		// List allInfo = new ArrayList();
+		// allInfo.add("1");
+		// allInfo.add("2");
+		// allInfo.add("3");
+		// allInfo.add("4");
+		// allInfo.add("5");
+		// allInfo.add("6");
+		// allInfo.add("7");
+		// if (allInfo.size() > 5) {
+		// for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
+		// }
+		// }
 		System.out.println(formatarTempo(90001));
 	}
 
@@ -270,7 +281,8 @@ public class ControleEstatisticas {
 				}
 			}
 		}
-		if (allInfo.size() > 0 && allInfo.get(allInfo.size() - 1).equals(info)) {
+		if (allInfo.size() > 0
+				&& allInfo.get(allInfo.size() - 1).equals(info)) {
 			return;
 		}
 		if (prioritaria) {
@@ -303,7 +315,8 @@ public class ControleEstatisticas {
 	public void tabelaComparativa() {
 		String tabela = carrgaTabelaComparativa();
 		List pilotos = new ArrayList();
-		for (Iterator iterator = controleJogo.getPilotosCopia().iterator(); iterator.hasNext();) {
+		for (Iterator iterator = controleJogo.getPilotosCopia()
+				.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (piloto.isJogadorHumano() && !piloto.isDesqualificado()) {
 				pilotos.add(piloto);
@@ -312,7 +325,8 @@ public class ControleEstatisticas {
 		}
 
 		if (pilotos.isEmpty()) {
-			for (Iterator iterator = controleJogo.getPilotosCopia().iterator(); iterator.hasNext();) {
+			for (Iterator iterator = controleJogo.getPilotosCopia()
+					.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getPosicao() < 9) {
 					pilotos.add(piloto);
@@ -328,7 +342,8 @@ public class ControleEstatisticas {
 		} else {
 			pilotoComp = controleJogo.obterCarroNaFrente(pilotoSel).getPiloto();
 		}
-		if (pilotoComp.getVoltas().size() < 3 || pilotoSel.getVoltas().size() < 3) {
+		if (pilotoComp.getVoltas().size() < 3
+				|| pilotoSel.getVoltas().size() < 3) {
 			return;
 		}
 		if (pilotoSel.getPosicao() == 1) {
@@ -340,12 +355,18 @@ public class ControleEstatisticas {
 			controleJogo.info(tabela);
 	}
 
-	private String preencherTabela(Piloto piloto1, Piloto piloto2, String tabela) {
-		tabela = tabela.replaceAll("piloto1", piloto1.getNome() + " " + piloto1.getPosicao());
-		tabela = tabela.replaceAll("piloto2", piloto2.getNome() + " " + piloto2.getPosicao());
-		tabela = tabela.replaceAll("volta1", Lang.msg("081") + (piloto2.getNumeroVolta() - 1));
-		tabela = tabela.replaceAll("volta2", Lang.msg("081") + (piloto2.getNumeroVolta() - 2));
-		tabela = tabela.replaceAll("volta3", Lang.msg("081") + (piloto2.getNumeroVolta() - 3));
+	private String preencherTabela(Piloto piloto1, Piloto piloto2,
+			String tabela) {
+		tabela = tabela.replaceAll("piloto1",
+				piloto1.getNome() + " " + piloto1.getPosicao());
+		tabela = tabela.replaceAll("piloto2",
+				piloto2.getNome() + " " + piloto2.getPosicao());
+		tabela = tabela.replaceAll("volta1",
+				Lang.msg("081") + (piloto2.getNumeroVolta() - 1));
+		tabela = tabela.replaceAll("volta2",
+				Lang.msg("081") + (piloto2.getNumeroVolta() - 2));
+		tabela = tabela.replaceAll("volta3",
+				Lang.msg("081") + (piloto2.getNumeroVolta() - 3));
 		for (int i = 1; i < 4; i++) {
 			int gap = piloto1.getNumeroVolta() - piloto2.getNumeroVolta();
 			int index = piloto1.getVoltas().size() - i - gap;
@@ -359,17 +380,21 @@ public class ControleEstatisticas {
 			if (vp1.isVoltaBox() || vp1.isVoltaSafetyCar()) {
 				return null;
 			}
-			tabela = tabela.replaceAll("p1_v" + i, (vp1.getTempoVoltaFormatado()));
-			Volta vp2 = (Volta) piloto2.getVoltas().get(piloto2.getVoltas().size() - i);
+			tabela = tabela.replaceAll("p1_v" + i,
+					(vp1.getTempoVoltaFormatado()));
+			Volta vp2 = (Volta) piloto2.getVoltas()
+					.get(piloto2.getVoltas().size() - i);
 			if (vp2.isVoltaBox() || vp2.isVoltaSafetyCar()) {
 				return null;
 			}
-			tabela = tabela.replaceAll("p2_v" + i, (vp2.getTempoVoltaFormatado()));
+			tabela = tabela.replaceAll("p2_v" + i,
+					(vp2.getTempoVoltaFormatado()));
 			long diff = (long) (vp2.obterTempoVolta() - vp1.obterTempoVolta());
 			if (diff < 0) {
 				tabela = tabela.replaceAll("cor" + i, "#80FF00");
 				String subs = formatarTempo(diff);
-				tabela = tabela.replaceAll("diff_v" + i, (subs.startsWith("-") ? subs : "-" + subs));
+				tabela = tabela.replaceAll("diff_v" + i,
+						(subs.startsWith("-") ? subs : "-" + subs));
 			} else {
 				tabela = tabela.replaceAll("cor" + i, "#FFFF00");
 				tabela = tabela.replaceAll("diff_v" + i, (formatarTempo(diff)));
@@ -386,7 +411,8 @@ public class ControleEstatisticas {
 		if (piloto.getPosicao() == 1 && Math.random() > 0.95) {
 			return true;
 		}
-		if (controleJogo.verificaCampeonatoComRival() && piloto.equals(controleJogo.obterRivalCampeonato())) {
+		if (controleJogo.verificaCampeonatoComRival()
+				&& piloto.equals(controleJogo.obterRivalCampeonato())) {
 			return true;
 		}
 
@@ -397,7 +423,8 @@ public class ControleEstatisticas {
 		try {
 			InputStreamReader inputStreamReader = new InputStreamReader(
 					CarregadorRecursos.recursoComoStream("tabela.html"));
-			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+			BufferedReader bufferedReader = new BufferedReader(
+					inputStreamReader);
 			StringBuffer buffer = new StringBuffer();
 			String line;
 			line = bufferedReader.readLine();
@@ -412,7 +439,8 @@ public class ControleEstatisticas {
 		return "";
 	}
 
-	public int calculaDiffParaProximoRetardatario(Piloto piloto, boolean analisaTracado) {
+	public int calculaDiffParaProximoRetardatario(Piloto piloto,
+			boolean analisaTracado) {
 		List<Piloto> pilotos = controleJogo.getPilotosCopia();
 		int menorDistancia = Util.inteiro(Integer.MAX_VALUE);
 		if (piloto.getPtosBox() != 0) {
@@ -433,23 +461,27 @@ public class ControleEstatisticas {
 			if (pilotoFrente.getPtosBox() != 0) {
 				continue;
 			}
-			if (pilotoFrente.getTracado() == 4 || pilotoFrente.getTracado() == 5) {
+			if (pilotoFrente.getTracado() == 4
+					|| pilotoFrente.getTracado() == 5) {
 				continue;
 			}
 			if (pilotoFrente.getNoAtual() == null) {
 				continue;
 			}
-			if (analisaTracado && pilotoFrente.getTracado() != piloto.getTracado()) {
+			if (analisaTracado
+					&& pilotoFrente.getTracado() != piloto.getTracado()) {
 				continue;
 			}
 			int indexFrente = pilotoFrente.getNoAtual().getIndex();
-			if (indexFrente > indexAtual && (indexFrente - indexAtual) < menorDistancia) {
+			if (indexFrente > indexAtual
+					&& (indexFrente - indexAtual) < menorDistancia) {
 				menorDistancia = (indexFrente - indexAtual);
 			}
 
 			int tamPista = controleJogo.getCircuito().getPistaFull().size();
 			int diffTAmPista = tamPista - indexAtual;
-			if (indexFrente < indexAtual && (indexFrente + diffTAmPista) < menorDistancia) {
+			if (indexFrente < indexAtual
+					&& (indexFrente + diffTAmPista) < menorDistancia) {
 				menorDistancia = (indexFrente + diffTAmPista);
 			}
 			List obterPista = controleJogo.obterPista(piloto.getNoAtual());
@@ -457,7 +489,8 @@ public class ControleEstatisticas {
 				continue;
 			}
 			indexFrente += controleJogo.obterPista(piloto.getNoAtual()).size();
-			if (indexFrente > indexAtual && (indexFrente - indexAtual) < menorDistancia) {
+			if (indexFrente > indexAtual
+					&& (indexFrente - indexAtual) < menorDistancia) {
 				menorDistancia = (indexFrente - indexAtual);
 			}
 		}
@@ -466,8 +499,10 @@ public class ControleEstatisticas {
 
 	}
 
-	public String calculaSegundosParaProximo(Piloto psel, long tempo, int diferenca) {
-		String ret = milesismos.format((diferenca / Double.parseDouble(String.valueOf(tempo)))) + "s";
+	public String calculaSegundosParaProximo(Piloto psel, long tempo,
+			int diferenca) {
+		String ret = milesismos.format(
+				(diferenca / Double.parseDouble(String.valueOf(tempo)))) + "s";
 		return ret;
 	}
 
@@ -507,13 +542,15 @@ public class ControleEstatisticas {
 			controleJogo.atualizaInfoDebug(buffer);
 		}
 
-		if (controleJogo != null && controleJogo.getPilotoSelecionado() != null) {
+		if (controleJogo != null
+				&& controleJogo.getPilotoSelecionado() != null) {
 			controleJogo.getPilotoSelecionado().atualizaInfoDebug(buffer);
 		}
 
 		if (controleJogo != null && controleJogo.getPilotoSelecionado() != null
 				&& controleJogo.getPilotoSelecionado().getCarro() != null) {
-			controleJogo.getPilotoSelecionado().getCarro().atualizaInfoDebug(buffer);
+			controleJogo.getPilotoSelecionado().getCarro()
+					.atualizaInfoDebug(buffer);
 		}
 
 		final StringReader reader = new StringReader((buffer.toString()));

@@ -465,8 +465,8 @@ public class ControleJogoLocal extends ControleRecursos
 		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
 				&& (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
 
-			infoPrioritaria(Html.preto(piloto.getNome())
-					+ Html.verde(Lang.msg("045")));
+			infoPrioritaria(
+					Html.preto(piloto.getNome()) + Html.verde(Lang.msg("045")));
 		}
 
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
@@ -475,11 +475,11 @@ public class ControleJogoLocal extends ControleRecursos
 				qtdeDesqualificados++;
 			}
 		}
-		if (qtdeDesqualificados >= 10) {
+		if (qtdeDesqualificados >= 2) {
 			setCorridaTerminada(true);
 			controleCorrida.terminarCorrida();
-			infoPrioritaria(Html.vinho(
-					Lang.msg("024", new Object[]{getNumVoltaAtual()})));
+			infoPrioritaria(Html
+					.vinho(Lang.msg("024", new Object[]{getNumVoltaAtual()})));
 		}
 		if (getNumVoltaAtual() == 2 && isDrs() && !isChovendo()
 				&& !isSafetyCarNaPista()) {
@@ -1207,6 +1207,9 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public void forcaSafatyCar() {
+		if (controleCorrida.isSafetyCarNaPista()) {
+			return;
+		}
 		int i = 1;
 		Piloto piloto = pilotos.get(pilotos.size() - i);
 		while (Carro.BATEU_FORTE.equals(piloto.getCarro().getDanificado())) {

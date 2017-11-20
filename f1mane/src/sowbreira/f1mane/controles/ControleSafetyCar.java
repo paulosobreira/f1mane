@@ -193,8 +193,8 @@ public class ControleSafetyCar {
 
 			int indiceCarro = piloto.getNoAtual().getIndex();
 
-			int traz = indiceCarro - 150;
-			int frente = indiceCarro + 150;
+			int traz = indiceCarro - 50;
+			int frente = indiceCarro + 200;
 
 			List lista = piloto.obterPista(controleJogo);
 

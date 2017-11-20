@@ -528,8 +528,7 @@ public class PainelCircuito {
 
 		gridCarro = CarregadorRecursos
 				.carregaBufferedImageTransparecia("GridCarro.png");
-		scima = CarregadorRecursos
-				.carregaBufferedImageTranspareciaBranca("sfcima.png");
+		scima = CarregadorRecursos.carregaBufferedImage("sfcima.png");
 		travadaRodaImg0 = ImageUtil.geraTransparenciaAlpha(
 				CarregadorRecursos.carregaBufferedImage("travadaRoda0.png"),
 				new Integer(40));
@@ -1779,7 +1778,7 @@ public class PainelCircuito {
 			}
 			volta += parte.charAt(i);
 		}
-		if(volta.contains(">")){
+		if (volta.contains(">")) {
 			return volta.split(">")[1];
 		}
 		return volta;
