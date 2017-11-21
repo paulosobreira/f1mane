@@ -168,7 +168,7 @@ public class ControleSafetyCar {
 			safetyCar.setTracado(0);
 		} else if (desviar == 0) {
 			safetyCar.setTracado(Util.intervalo(1, 2));
-		}else{
+		} else {
 			safetyCar.setTracado(0);
 		}
 
@@ -193,8 +193,8 @@ public class ControleSafetyCar {
 
 			int indiceCarro = piloto.getNoAtual().getIndex();
 
-			int traz = indiceCarro - 50;
-			int frente = indiceCarro + 200;
+			int traz = indiceCarro - 300;
+			int frente = indiceCarro + 100;
 
 			List lista = piloto.obterPista(controleJogo);
 
