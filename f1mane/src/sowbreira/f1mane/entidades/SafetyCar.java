@@ -32,7 +32,8 @@ public class SafetyCar implements Serializable, PilotoSuave {
 	}
 
 	public void setTracado(int tracado) {
-		if ((System.currentTimeMillis() - ultMudancaTracado) < 5000) {
+		if (tracado == 0
+				&& (System.currentTimeMillis() - ultMudancaTracado) < 5000) {
 			return;
 		}
 		ultMudancaTracado = System.currentTimeMillis();

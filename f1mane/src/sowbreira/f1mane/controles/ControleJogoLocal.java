@@ -475,7 +475,7 @@ public class ControleJogoLocal extends ControleRecursos
 				qtdeDesqualificados++;
 			}
 		}
-		if (qtdeDesqualificados >= 2) {
+		if (qtdeDesqualificados >= 10) {
 			setCorridaTerminada(true);
 			controleCorrida.terminarCorrida();
 			infoPrioritaria(Html
