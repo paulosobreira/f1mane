@@ -1815,10 +1815,17 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (!noAtual.verificaRetaOuLargada()) {
 			mudouTracadoReta = 0;
 		}
-		if ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
+		if (Carro.BATEU_FORTE
+				.equals(carroPilotoDaFrenteRetardatario.getDanificado())
+				&& !carroPilotoDaFrenteRetardatario.isRecolhido()
+				&& calculaDiffParaProximoRetardatario < 400) {
+			controleJogo.fazPilotoMudarTracado(this,
+					carroPilotoDaFrenteRetardatario.getPiloto());
+		} else if ((evitaBaterCarroFrente
+				&& carroPilotoDaFrenteRetardatario != null
 				&& getTracado() == carroPilotoDaFrenteRetardatario.getPiloto()
 						.getTracado())
-				|| getDiferencaParaProximo() < (testeHabilidadePiloto()
+				|| calculaDiffParaProximoRetardatario < (testeHabilidadePiloto()
 						? 100
 						: 150)) {
 			controleJogo.fazPilotoMudarTracado(this,

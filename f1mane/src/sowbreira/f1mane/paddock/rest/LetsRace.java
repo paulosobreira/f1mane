@@ -44,6 +44,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
+import sowbreira.f1mane.paddock.servlet.JogoServidor;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
@@ -574,6 +575,8 @@ public class LetsRace {
 		}
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();
+		JogoServidor obterJogoPorSessaoCliente = controleJogosServer.obterJogoPorSessaoCliente(sessaoCliente);
+		obterJogoPorSessaoCliente.forcaSafatyCar();
 		return Response.status(200)
 				.entity(controleJogosServer.mudarDrs(sessaoCliente, idPiloto))
 				.build();

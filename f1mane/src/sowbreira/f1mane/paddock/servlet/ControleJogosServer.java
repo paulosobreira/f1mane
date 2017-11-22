@@ -477,8 +477,6 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return null;
 		}
-		JogoServidor obterJogoPorSessaoCliente = obterJogoPorSessaoCliente(sessaoCliente);
-		obterJogoPorSessaoCliente.forcaSafatyCar();
 		piloto.setAtivarDRS(true);
 		int giroAntes = piloto.getCarro().getGiro();
 		piloto.getCarro().mudarGiroMotor(giro);
