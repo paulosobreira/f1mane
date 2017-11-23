@@ -222,39 +222,6 @@ public class ControleCorrida {
 		verificaAcidente(piloto, pilotoNaFrente);
 	}
 
-	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoNaFrente) {
-		if (piloto.isAutoPos()) {
-			int novapos = 0;
-			if (pilotoNaFrente.getTracado() == 0) {
-				novapos = Util.intervalo(1, 2);
-				if (piloto.verificaColisaoAoMudarDeTracado(controleJogo,
-						novapos)) {
-					if (novapos == 2) {
-						novapos = 1;
-					} else {
-						novapos = 2;
-					}
-				}
-			}
-			piloto.mudarTracado(novapos, controleJogo);
-		}
-		if (verificaPassarRetardatario(piloto, pilotoNaFrente)) {
-			pilotoNaFrente.getCarro().setGiro(Carro.GIRO_MIN_VAL);
-			pilotoNaFrente.setModoPilotagem(Piloto.LENTO);
-			pilotoNaFrente.setCiclosDesconcentrado(10);
-			mensagemRetardatario(piloto, pilotoNaFrente);
-		}
-	}
-
-	public boolean verificaPassarRetardatario(Piloto piloto,
-			Piloto pilotoNaFrente) {
-		return !controleJogo.isCorridaTerminada()
-				&& !piloto.isRecebeuBanderada()
-				&& pilotoNaFrente.getPtosPista() < piloto.getPtosPista()
-				&& !pilotoNaFrente.isDesqualificado()
-				&& (pilotoNaFrente.getPtosBox() == 0);
-	}
-
 	public boolean verificaCarroLentoOuDanificado(Piloto pilotoNaFrente) {
 		return (Carro.BATEU_FORTE
 				.equals(pilotoNaFrente.getCarro().getDanificado())
@@ -264,33 +231,6 @@ public class ControleCorrida {
 				|| Carro.PNEU_FURADO
 						.equals(pilotoNaFrente.getCarro().getDanificado())
 				|| pilotoNaFrente.isDesqualificado();
-	}
-
-	public void mensagemRetardatario(Piloto piloto, Piloto pilotoNaFrente) {
-		if (controleJogo.verificaInfoRelevante(piloto)) {
-			if (Math.random() > 0.9) {
-				if (!controleJogo.isSafetyCarNaPista()) {
-					if (Math.random() > 0.5) {
-						controleJogo
-								.info(Html
-										.azul(Lang.msg("021",
-												new String[]{
-														pilotoNaFrente
-																.getNome(),
-														piloto.getNome()})));
-					} else {
-						controleJogo
-								.info(Html
-										.azul(Lang.msg("020",
-												new String[]{
-														pilotoNaFrente
-																.getNome(),
-														piloto.getNome()})));
-					}
-					pilotoNaFrente.setCiclosDesconcentrado(10);
-				}
-			}
-		}
 	}
 
 	public Piloto acharPilotoDaFrente(Piloto piloto) {
@@ -686,6 +626,10 @@ public class ControleCorrida {
 	}
 	public void processarTipoAsaAutomatico(Piloto piloto) {
 		controleBox.processarTipoAsaAutomatico(piloto);
+	}
+
+	public Piloto getPilotoBateu() {
+		return controleSafetyCar.getPilotoBateu();
 	}
 
 }

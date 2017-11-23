@@ -21,6 +21,7 @@ public class ControleSafetyCar {
 	private ControleJogoLocal controleJogo;
 	private SafetyCar safetyCar;
 	private ThreadRecolihimentoCarro recolihimentoCarro;
+	private Piloto pilotoBateu;
 
 	/**
 	 * @param controleCorrida
@@ -95,6 +96,7 @@ public class ControleSafetyCar {
 		if (safetyCar.isNaPista()) {
 			return;
 		}
+		pilotoBateu = piloto;
 		long pts = controleCorrida.calculaQtdePtsPistaPoleParaSaidaBox();
 		safetyCar.setNoAtual(controleCorrida.getNoSaidaBox());
 		safetyCar.setPtosPista(pts);
@@ -250,5 +252,9 @@ public class ControleSafetyCar {
 			recolihimentoCarro.interrupt();
 		}
 
+	}
+
+	public Piloto getPilotoBateu() {
+		return pilotoBateu;
 	}
 }

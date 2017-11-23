@@ -1417,11 +1417,6 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoFrente) {
-		controleCorrida.fazPilotoMudarTracado(piloto, pilotoFrente);
-	}
-
-	@Override
 	public int getDurabilidadeAreofolio() {
 		return (InterfaceJogo.DURABILIDADE_AREOFOLIO * totalVoltasCorrida())
 				/ Constantes.MAX_VOLTAS;
@@ -1740,6 +1735,11 @@ public class ControleJogoLocal extends ControleRecursos
 
 	public boolean isSafetyCar() {
 		return safetyCar;
+	}
+
+	@Override
+	public Piloto getPilotoBateu() {
+		return controleCorrida.getPilotoBateu();
 	}
 
 }

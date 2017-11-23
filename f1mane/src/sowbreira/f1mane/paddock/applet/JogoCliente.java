@@ -1206,12 +1206,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoFrente) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public int getDurabilidadeAreofolio() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -1386,6 +1380,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			return dadosParticiparJogo.isSafetyCar();
 		}
 		return false;
+	}
+
+	@Override
+	public Piloto getPilotoBateu() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

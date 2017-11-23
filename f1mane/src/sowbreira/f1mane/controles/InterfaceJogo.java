@@ -352,8 +352,6 @@ public interface InterfaceJogo {
 	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
 			boolean analisaTracado);
 
-	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoFrente);
-
 	public int getDurabilidadeAreofolio();
 
 	public void desenhouQualificacao();
@@ -403,5 +401,7 @@ public interface InterfaceJogo {
 	public void setRecebeuBanderada(Piloto piloto);
 	
 	public Piloto obterPilotoPorId(String id);
+
+	public Piloto getPilotoBateu();
 
 }
