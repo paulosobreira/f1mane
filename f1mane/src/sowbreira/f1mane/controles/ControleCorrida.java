@@ -279,8 +279,8 @@ public class ControleCorrida {
 					&& !controleSafetyCar.safetyCarUltimas3voltas()
 					&& !piloto.isDesqualificado()
 					&& !piloto.testeHabilidadePilotoCarro()
-					&& piloto.getVelocidade() > 150
-					&& piloto.getStress() > 85) {
+					&& piloto.getVelocidade() > 140
+					&& piloto.getStress() > 80) {
 				piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 				Logger.logar(piloto.getNome() + " BATEU_FORTE");
 				controleJogo.infoPrioritaria(

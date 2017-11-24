@@ -233,7 +233,7 @@ public class ControleBox {
 								.getIndex() > (ultIndiceParada
 										+ Carro.MEIA_LARGURA)
 						&& verificaTemCarroPassandoSaida()) {
-					ptosBox = 0;
+					ptosBox = 1;
 				}
 
 				ptosBox *= circuito.getMultiplciador();

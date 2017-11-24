@@ -59,7 +59,7 @@ public class ControleJogoLocal extends ControleRecursos
 	protected boolean reabastacimento;
 	protected boolean ers;
 	protected boolean drs;
-	protected boolean safetyCar;
+	protected boolean safetyCar = true;
 
 	protected boolean continuaCampeonato;
 

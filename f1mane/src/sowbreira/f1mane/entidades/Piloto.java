@@ -1817,7 +1817,9 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		Piloto pilotoBateu = controleJogo.getPilotoBateu();
 		if (controleJogo.isSafetyCarNaPista() && pilotoBateu != null
-				&& !getNoAtual().isBox()) {
+				&& !getNoAtual().isBox()
+				&& !pilotoBateu.getCarro().isRecolhido()
+				&& getTracado() == pilotoBateu.getTracado()) {
 			int indiceCarro = pilotoBateu.getNoAtual().getIndex();
 
 			int traz = indiceCarro - 300;
@@ -2973,11 +2975,12 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo,
-			boolean mesmoComColisao) {
+			boolean forcaMudar) {
 		if (isRecebeuBanderada()) {
 			return false;
 		}
-		if (verificaDesconcentrado() && (getTracado() == 4 || getTracado() == 5)
+		if (!forcaMudar && verificaDesconcentrado()
+				&& (getTracado() == 4 || getTracado() == 5)
 				&& (mudarTracado != 4 && mudarTracado != 5)) {
 			return false;
 		}
@@ -3023,7 +3026,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getCarro().testeFreios()) {
 			multi -= 2;
 		}
-		if (getTracado() != 4 && getTracado() != 5 && getColisao() != null
+		if (!forcaMudar && getTracado() != 4 && getTracado() != 5
+				&& getColisao() != null
 				&& (agora - ultimaMudancaPos) < (Constantes.CICLO * multi)) {
 			return false;
 		}
@@ -3034,7 +3038,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			return false;
 		}
 		ultimaMudancaPos = System.currentTimeMillis();
-		if (!mesmoComColisao && verificaColisaoAoMudarDeTracado(interfaceJogo,
+		if (!forcaMudar && verificaColisaoAoMudarDeTracado(interfaceJogo,
 				mudarTracado)) {
 			return false;
 		} else {
