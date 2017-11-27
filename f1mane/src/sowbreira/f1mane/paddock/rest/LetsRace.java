@@ -228,13 +228,13 @@ public class LetsRace {
 		/**
 		 * Iniciar Jogo
 		 */
-		if (criarJogo && statusJogo != null) {
-			statusJogo = controlePaddock.iniciaJogo(clientPaddockPack);
-			Response erro = processsaMensagem(statusJogo);
-			if (erro != null) {
-				return erro;
-			}
-		}
+//		if (criarJogo && statusJogo != null) {
+//			statusJogo = controlePaddock.iniciaJogo(clientPaddockPack);
+//			Response erro = processsaMensagem(statusJogo);
+//			if (erro != null) {
+//				return erro;
+//			}
+//		}
 		return Response.status(200)
 				.entity(controlePaddock.obterDadosJogo(clientPaddockPack))
 				.build();
@@ -336,7 +336,6 @@ public class LetsRace {
 		dadosCriarJogo.setErs(temporadasDefauts.getErs());
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
-		dadosCriarJogo.setSafetyCar(true);
 		if (temporadasDefauts.getReabastecimento()) {
 			dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
 		} else {

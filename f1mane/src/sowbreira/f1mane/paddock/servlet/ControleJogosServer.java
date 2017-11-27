@@ -106,8 +106,7 @@ public class ControleJogosServer {
 					.getTemporada();
 			try {
 				Logger.logar("Temporada Serviddor " + temporada);
-				jogoServidor = new JogoServidor(temporada);
-				jogoServidor.prepararJogoOnline(
+				jogoServidor = new JogoServidor(temporada,
 						clientPaddockPack.getDadosJogoCriado());
 				jogoServidor.setNomeCriador(
 						clientPaddockPack.getSessaoCliente().getNomeJogador());

@@ -96,8 +96,17 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		}
 	}
 
-	public JogoServidor(String temporada) throws Exception {
+	public JogoServidor(String temporada,DadosCriarJogo dadosCriarJogo) throws Exception {
 		super(temporada);
+		this.dadosCriarJogo = dadosCriarJogo;
+		controleEstatisticas = new ControleEstatisticas(JogoServidor.this);
+		processarEntradaDados();
+		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
+		setarNivelCorrida();
+		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
+				diffultrapassagem.intValue());
+		controleCorrida.getControleClima()
+				.gerarClimaInicial(new Clima(dadosCriarJogo.getClima()));
 	}
 
 	public String getEstado() {
@@ -190,14 +199,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		return null;
 	}
 
-	public void prepararJogoOnline(DadosCriarJogo dadosCriarJogo) {
-		this.dadosCriarJogo = dadosCriarJogo;
-		qtdeVoltas = null;
-		diffultrapassagem = null;
-		circuitoSelecionado = null;
-
-	}
-
 	public void preencherDetalhes(DetalhesJogo detalhesJogo) {
 		Map detMap = detalhesJogo.getJogadoresPilotos();
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
@@ -263,18 +264,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			return;
 		}
 		disparouInicio = true;
-		controleEstatisticas = new ControleEstatisticas(JogoServidor.this);
 		gerenciadorVisual = null;
-		processarEntradaDados();
-		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
 		atualizarJogadoresOnlineCarreira();
 		Logger.logar("atualizarJogadoresOnlineCarreira();");
-		setarNivelCorrida();
-		Logger.logar("setarNivelCorrida();");
-		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
-				diffultrapassagem.intValue());
-		controleCorrida.getControleClima()
-				.gerarClimaInicial(new Clima(dadosCriarJogo.getClima()));
 		atualizarJogadoresOnline();
 		Logger.logar("atualizarJogadoresOnline();");
 		controleCorrida.gerarGridLargada();
@@ -450,16 +442,16 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void info(String info) {
 		if (Comandos.CORRIDA_INICIADA.equals(getEstado())) {
 		}
-			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-					.hasNext();) {
-				String key = (String) iter.next();
-				BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto
-						.get(key);
-				if (bufferTexto != null) {
-					bufferTexto.adicionarTexto(info);
-				}
-
+		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
+				.hasNext();) {
+			String key = (String) iter.next();
+			BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto
+					.get(key);
+			if (bufferTexto != null) {
+				bufferTexto.adicionarTexto(info);
 			}
+
+		}
 	}
 
 	public void infoPrioritaria(String info) {
@@ -575,7 +567,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto) {
-		return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, getTemporada());
+		return carregadorRecursos.obterCarroCimaSemAreofolio(piloto,
+				getTemporada());
 	}
 
 }
