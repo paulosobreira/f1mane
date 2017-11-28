@@ -67,6 +67,7 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.Ponto;
 import sowbreira.f1mane.paddock.applet.JogoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
@@ -643,7 +644,7 @@ public class GerenciadorVisual {
 	}
 
 	public void apagarLuz() {
-		painelCircuito.apagarLuz();
+		painelCircuito.acendeLuz();
 	}
 
 	public JTextField getNomeJogador() {

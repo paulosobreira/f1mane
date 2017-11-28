@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 
@@ -34,7 +35,8 @@ public class MonitorAtividade implements Runnable {
 						.hasNext();) {
 					SessaoCliente sessaoCliente = iter.next();
 					int intervaloAtividade = 300000;
-					if ((timeNow - sessaoCliente.getUlimaAtividade()) > intervaloAtividade) {
+					if ((timeNow - sessaoCliente
+							.getUlimaAtividade()) > intervaloAtividade) {
 						sessaoClienteRemover = sessaoCliente;
 						break;
 					}
@@ -50,7 +52,9 @@ public class MonitorAtividade implements Runnable {
 						.iterator(); iter.hasNext();) {
 					SessaoCliente key = iter.next();
 					JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
-					if ((timeNow - jogoServidor.getTempoCriacao()) > 300000) {
+					if ((timeNow - jogoServidor
+							.getTempoCriacao()) > (Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA
+									* 1000)) {
 						jogoServidor.iniciarJogo();
 					}
 				}

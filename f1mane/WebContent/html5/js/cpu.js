@@ -7,8 +7,6 @@ var dadosParciais;
 var nomeJogo;
 
 var ativo = true;
-var delay = 500;
-
 var token;
 var idPilotoSelecionado;
 var posicaoCentraliza = 0;
@@ -58,7 +56,13 @@ function cpu_main() {
 	if (dadosJogo != null && circuito != null && ativo
 			&& contCarregouMidia == 0) {
 		$loading.hide();
-		rest_dadosParciais();
+		if('07' == dadosJogo.estado){
+			rest_dadosJogo(nomeJogo);
+		}else if('13' == dadosJogo.estado){
+			$('#info').html(dadosJogo.texto);
+		}else{
+			rest_dadosParciais();	
+		}
 		cpu_altenador();
 	}
 	if (carregouMidia && contCarregouMidia > 0) {
@@ -165,7 +169,7 @@ function cpu_altenador() {
 	}
 }
 
-var main = setInterval(cpu_main, delay);
+var main = setInterval(cpu_main, 500);
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {

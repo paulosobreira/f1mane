@@ -34,6 +34,8 @@ var corNublado = "rgba(255, 255, 255, 0.3)";
 var corChuva = "rgba(255, 255, 255,0.5)";
 var corFaisca = "rgba(255, 255, 0 ,0.5)";
 var pilotosEfeitosMap = new Map();
+maneCanvas.width = 0;
+maneCanvas.height = 0;
 
 function vdp_desenha(fps) {
 	if (imgBg && imgBg.complete) {
@@ -188,8 +190,10 @@ function vdp_atualizaSuave() {
 }
 
 function vdp_centralizaPilotoSelecionado() {
-	if (dadosParciais == null || dadosParciais.posisPack == null
-			|| circuito == null) {
+	if (dadosParciais == null || dadosParciais.posisPack == null) {
+		if(circuito!=null){
+			vdp_centralizaPonto(circuito.creditosPonto);
+		}
 		return;
 	}
 	var piloto = dadosParciais.posisPack.posis[posicaoCentraliza];

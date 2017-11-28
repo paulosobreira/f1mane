@@ -71,6 +71,7 @@ import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
+import sowbreira.f1mane.entidades.Ponto;
 import sowbreira.f1mane.entidades.PontoEscape;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -180,9 +181,9 @@ public class MainPanelEditor extends JPanel {
 		ObjectInputStream ois = new ObjectInputStream(inputStream);
 		circuito = (Circuito) ois.readObject();
 		testePista = new TestePista(this, circuito);
-//		if("jacarepagua.jpg".equals(circuito.getBackGround())){
-//			circuito.setBackGround("jacarepagua_mro.jpg");
-//		}
+		// if("jacarepagua.jpg".equals(circuito.getBackGround())){
+		// circuito.setBackGround("jacarepagua_mro.jpg");
+		// }
 		backGround = CarregadorRecursos
 				.carregaBackGround(circuito.getBackGround(), this, circuito);
 		this.srcFrame = frame;
@@ -1663,8 +1664,8 @@ public class MainPanelEditor extends JPanel {
 	private void desenhaPainelClassico(Graphics g2d) {
 		if (circuito != null && circuito.getCreditos() != null) {
 			g2d.setColor(oran);
-			g2d.fillOval(circuito.getCreditos().x - 2,
-					circuito.getCreditos().y - 2, 8, 8);
+			g2d.fillOval((int) circuito.getCreditos().getX() - 2,
+					(int) circuito.getCreditos().getY() - 2, 8, 8);
 		}
 
 		if (!desenhaTracado) {
@@ -1721,8 +1722,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		}
 		oldNo1 = null;
-		
-		
+
 		for (int i = 0; i < circuito.getBox1Full().size(); i += 10) {
 			No no = (No) circuito.getBox1Full().get(i);
 			g2d.setColor(no.getTipo());
@@ -1736,7 +1736,7 @@ public class MainPanelEditor extends JPanel {
 			}
 		}
 		oldNo1 = null;
-		
+
 		No oldNo2 = null;
 		for (int i = 0; i < circuito.getPista2Full().size(); i += 10) {
 			No no = (No) circuito.getPista2Full().get(i);
@@ -1752,8 +1752,7 @@ public class MainPanelEditor extends JPanel {
 
 		}
 		oldNo2 = null;
-		
-		
+
 		for (int i = 0; i < circuito.getBox2Full().size(); i += 10) {
 			No no = (No) circuito.getBox2Full().get(i);
 			g2d.setColor(no.getTipo());
@@ -1848,7 +1847,7 @@ public class MainPanelEditor extends JPanel {
 			Point pOld = null;
 			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
 				No no2 = (No) iterator2.next();
-				if(no2==null){
+				if (no2 == null) {
 					pOld = null;
 					continue;
 				}

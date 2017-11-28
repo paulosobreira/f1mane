@@ -340,6 +340,13 @@ public class ControleJogosServer {
 		dadosJogo.setArquivoCircuito(jogoServidor.getCircuitos()
 				.get(jogoServidor.getCircuito().getNome()));
 		dadosJogo.setTemporada(jogoServidor.getTemporada().replaceAll("t", ""));
+		Integer segundosParaIniciar = Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA
+				- Util.inteiro((System.currentTimeMillis()
+						- jogoServidor.getTempoCriacao() / 1000));
+		if (segundosParaIniciar < 0) {
+			segundosParaIniciar = 0;
+		}
+		dadosJogo.setSegundosParaIniciar(segundosParaIniciar);
 		Piloto pilotoSessao = obterPilotoPorSessaoCliente(sessaoCliente);
 		if (pilotoSessao != null) {
 			dadosJogo.setIdPilotoSelecionado(pilotoSessao.getId());
@@ -361,6 +368,9 @@ public class ControleJogosServer {
 				.get(clientPaddockPack.getSessaoCliente().getNomeJogador());
 		if (bufferTexto != null) {
 			dadosJogo.setTexto(bufferTexto.consumirTexto());
+		}
+		if (Util.isNullOrEmpty(dadosJogo.getTexto())) {
+			dadosJogo.setTexto(Html.verde(Lang.msg("001")));
 		}
 		return dadosJogo;
 	}

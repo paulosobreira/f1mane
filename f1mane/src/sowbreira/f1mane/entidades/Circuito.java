@@ -45,8 +45,6 @@ public class Circuito implements Serializable {
 	private List<No> box1Full = new ArrayList<No>();
 	private List<No> box2Full = new ArrayList<No>();
 	private transient List<No> boxKey = new ArrayList<No>();
-	private double multiplicadorPista;
-	private double multiplicadorLarguraPista;
 	private int ladoBox = 0;
 	private int ladoBoxSaidaBox = 0;
 	private int probalidadeChuva = 0;
@@ -58,6 +56,10 @@ public class Circuito implements Serializable {
 	private boolean usaBkg;
 	private transient List<ObjetoPistaJSon> objetosNoTransparencia;
 	@JsonIgnore
+	private double multiplicadorPista;
+	@JsonIgnore
+	private double multiplicadorLarguraPista;
+	@JsonIgnore
 	private List<ObjetoPista> objetos;
 	@JsonIgnore
 	private Point creditos;
@@ -68,6 +70,10 @@ public class Circuito implements Serializable {
 
 	public Point getCreditos() {
 		return creditos;
+	}
+
+	public Ponto getCreditosPonto() {
+		return new Ponto(creditos);
 	}
 
 	public void setCreditos(Point creditos) {

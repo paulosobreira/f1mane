@@ -9,6 +9,11 @@ public class Ponto {
 	@JsonIgnore
 	private Point point;
 
+	public Ponto(Point point) {
+		super();
+		this.point = point;
+	}
+
 	public double getX() {
 		return point.getX();
 	}

@@ -88,9 +88,9 @@ public class PainelCircuito {
 	private Point posisAtual;
 	public final static Color luzDistProx1 = new Color(0, 255, 0, 100);
 	public final static Color luzDistProx2 = new Color(255, 255, 0, 100);
-	public final static Color luzApagada = new Color(255, 255, 255, 170);
-	public final static Color luzAcesa = new Color(255, 0, 0, 255);
-	public final static Color farol = new Color(0, 0, 0);
+	public final static Color luzLargadaApagada = new Color(255, 255, 255, 170);
+	public final static Color luzLargadaAcesa = new Color(255, 10, 10, 255);
+	public final static Color farolLargada = new Color(0, 0, 0);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public final static Color lightRed = new Color(250, 0, 0, 100);
 	public final static Color gre = new Color(0, 255, 0, 150);
@@ -135,7 +135,7 @@ public class PainelCircuito {
 	public static DecimalFormat df4 = new DecimalFormat("00.0000");
 	private int larguraPistaPixeis;
 
-	private int qtdeLuzesAcesas = 5;
+	private int qtdeLuzesApagadas = 5;
 	private int mx;
 	private int my;
 	private double zoom = 1;
@@ -420,7 +420,7 @@ public class PainelCircuito {
 			desenhaChuva(g2d);
 			desenhaBarraPilotos(g2d);
 			desenhaContadorVoltas(g2d);
-			desenharFarois(g2d);
+			desenharLuzesLargada(g2d);
 			desenhaNomePilotoSelecionado(pilotoSelecionado, g2d);
 			desenhaBarrasPilotoCarro(g2d);
 			desenharClima(g2d);
@@ -901,8 +901,8 @@ public class PainelCircuito {
 		return ganhoSuave;
 	}
 
-	public int getQtdeLuzesAcesas() {
-		return qtdeLuzesAcesas;
+	public int getQtdeLuzesApagadas() {
+		return qtdeLuzesApagadas;
 	}
 
 	private void desenhaMarcacaoParaCurva(Graphics2D g2d) {
@@ -1179,7 +1179,7 @@ public class PainelCircuito {
 		y -= 180;
 		x -= 30;
 		Stroke stroke = g2d.getStroke();
-		if (qtdeLuzesAcesas <= 0) {
+		if (qtdeLuzesApagadas <= 0) {
 			g2d.setColor(transpMenus);
 			g2d.fillRoundRect(x, y, 60, 30, 0, 0);
 			g2d.setColor(Color.BLACK);
@@ -2112,7 +2112,7 @@ public class PainelCircuito {
 		if (isExibeResultadoFinal()) {
 			return;
 		}
-		if (qtdeLuzesAcesas > 0) {
+		if (qtdeLuzesApagadas > 0) {
 			return;
 		}
 		if (pilotoSelecionado != null
@@ -3497,7 +3497,7 @@ public class PainelCircuito {
 
 	private void marcaCorPilotoJogador(Graphics2D g2d, Piloto piloto) {
 		if (piloto.equals(controleJogo.getPilotoJogador())
-				&& qtdeLuzesAcesas != 0) {
+				&& qtdeLuzesApagadas != 0) {
 			g2d.setColor(OcilaCor.geraOcila("mrkSel", yel));
 		}
 
@@ -4741,7 +4741,7 @@ public class PainelCircuito {
 
 	private void desenhaProblemasCarroSelecionado(Piloto pilotoSelecionado,
 			Graphics2D g2d) {
-		if (qtdeLuzesAcesas > 0) {
+		if (qtdeLuzesApagadas > 0) {
 			return;
 		}
 		if (!desenhaInfo) {
@@ -4839,7 +4839,7 @@ public class PainelCircuito {
 	}
 
 	private void desenhaContadorVoltas(Graphics2D g2d) {
-		g2d.setColor(luzApagada);
+		g2d.setColor(transpMenus);
 		String txt = Util.substVogais(controleJogo.getCircuito().getNome())
 				+ " " + controleJogo.getNumVoltaAtual() + "/"
 				+ controleJogo.totalVoltasCorrida();
@@ -5040,7 +5040,7 @@ public class PainelCircuito {
 		if (carroFrente != null) {
 			carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
 			carSelX += (carroimg.getWidth() + 10) / 2;
-			bounce = calculaBounceCarroLado(carroFrente);
+			bounce = calculaBalancoCarroLado(carroFrente);
 			int diferencaParaProximo = psel.getDiferencaParaProximo()
 					/ Constantes.CICLO;
 			int dstX = limitesViewPort.x + (limitesViewPort.width / 4);
@@ -5112,7 +5112,7 @@ public class PainelCircuito {
 		carSelX = limitesViewPort.x + (limitesViewPort.width / 2)
 				- (carroimg.getWidth() / 2);
 		carSelY = limitesViewPort.y + limitesViewPort.height - 75;
-		bounce = calculaBounceCarroLado(psel.getCarro());
+		bounce = calculaBalancoCarroLado(psel.getCarro());
 		g2d.setColor(this.transpMenus);
 		g2d.fillRoundRect(carSelX - 5, carSelY - 5, carroimg.getWidth() + 5,
 				carroimg.getHeight() + 5, 0, 0);
@@ -5139,7 +5139,7 @@ public class PainelCircuito {
 					+ -(carroimg.getWidth() + 10)
 					- (carroimg.getWidth() + 10) / 2;
 
-			bounce = calculaBounceCarroLado(carroAtras);
+			bounce = calculaBalancoCarroLado(carroAtras);
 
 			int dstX = limitesViewPort.x + limitesViewPort.width
 					+ -(limitesViewPort.width / 3);
@@ -5217,14 +5217,14 @@ public class PainelCircuito {
 		return null;
 	}
 
-	private int calculaBounceCarroLado(Carro carro) {
+	private int calculaBalancoCarroLado(Carro carro) {
 		if (controleJogo.isJogoPausado()) {
 			return 0;
 		}
 		if (carro.getPiloto().isDesqualificado()) {
 			return 0;
 		}
-		if (qtdeLuzesAcesas > 0 || carro.getPiloto().isBox()) {
+		if (qtdeLuzesApagadas > 0 || carro.getPiloto().isBox()) {
 			return 0;
 		} else if (carro.getPiloto().isAgressivo() == false) {
 			return Math.random() > .5 ? 1 : 0;
@@ -5452,9 +5452,9 @@ public class PainelCircuito {
 
 	}
 
-	private void desenharFarois(Graphics2D g2d) {
+	private void desenharLuzesLargada(Graphics2D g2d) {
 
-		if (qtdeLuzesAcesas <= 0) {
+		if (qtdeLuzesApagadas <= 0) {
 			return;
 		}
 		int xIni = Util.inteiro(limitesViewPort.width / 2) - 50;
@@ -5462,101 +5462,65 @@ public class PainelCircuito {
 		/**
 		 * 1ª luz
 		 */
-		g2d.setColor(farol);
+		g2d.setColor(farolLargada);
 		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
 				20, 50, 0, 0);
-		g2d.setColor(luzApagada);
+		g2d.setColor(luzLargadaApagada);
 		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
 				14, 14);
-		if (qtdeLuzesAcesas > 0) {
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-			g2d.setColor(OcilaCor.geraOcila("farol0", lightRed));
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-		} else {
-			g2d.setColor(luzApagada);
+		if (qtdeLuzesApagadas <= 5) {
+			g2d.setColor(OcilaCor.geraOcila("farol0", luzLargadaAcesa));
 		}
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 30, 14, 14);
 		xIni += 25;
-		g2d.setColor(farol);
+		g2d.setColor(farolLargada);
 		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
 				20, 50, 0, 0);
-		g2d.setColor(luzApagada);
+		g2d.setColor(luzLargadaApagada);
 		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
 				14, 14);
-		if (qtdeLuzesAcesas > 1) {
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-			g2d.setColor(OcilaCor.geraOcila("farol1", lightRed));
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-		} else {
-			g2d.setColor(luzApagada);
-
+		if (qtdeLuzesApagadas <= 4) {
+			g2d.setColor(OcilaCor.geraOcila("farol1", luzLargadaAcesa));
 		}
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 30, 14, 14);
 		xIni += 25;
-		g2d.setColor(farol);
+		g2d.setColor(farolLargada);
 		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
 				20, 50, 0, 0);
-		g2d.setColor(luzApagada);
+		g2d.setColor(luzLargadaApagada);
 		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
 				14, 14);
 
-		if (qtdeLuzesAcesas > 2) {
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-			g2d.setColor(OcilaCor.geraOcila("farol2", lightRed));
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-		} else {
-			g2d.setColor(luzApagada);
+		if (qtdeLuzesApagadas <= 3) {
+			g2d.setColor(OcilaCor.geraOcila("farol2", luzLargadaAcesa));
 		}
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 30, 14, 14);
 		xIni += 25;
-		g2d.setColor(farol);
+		g2d.setColor(farolLargada);
 		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
 				20, 50, 0, 0);
-		g2d.setColor(luzApagada);
+		g2d.setColor(luzLargadaApagada);
 		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
 				14, 14);
 
-		if (qtdeLuzesAcesas > 3) {
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-			g2d.setColor(OcilaCor.geraOcila("farol3", lightRed));
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-		} else {
-			g2d.setColor(luzApagada);
+		if (qtdeLuzesApagadas <= 2) {
+			g2d.setColor(OcilaCor.geraOcila("farol3", luzLargadaAcesa));
 		}
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 30, 14, 14);
 		xIni += 25;
-		g2d.setColor(farol);
+		g2d.setColor(farolLargada);
 		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
 				20, 50, 0, 0);
-		g2d.setColor(luzApagada);
+		g2d.setColor(luzLargadaApagada);
 		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
 				14, 14);
 
-		if (qtdeLuzesAcesas > 4) {
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-			g2d.setColor(OcilaCor.geraOcila("farol4", lightRed));
-			g2d.fillOval(limitesViewPort.x + xIni + 3,
-					limitesViewPort.y + yIni + 30, 14, 14);
-		} else {
-			g2d.setColor(luzApagada);
+		if (qtdeLuzesApagadas <= 1) {
+			g2d.setColor(OcilaCor.geraOcila("farol4", luzLargadaAcesa));
 		}
 		g2d.fillOval(limitesViewPort.x + xIni + 3,
 				limitesViewPort.y + yIni + 30, 14, 14);
@@ -5724,13 +5688,13 @@ public class PainelCircuito {
 		Piloto ps = pilotoSelecionado;
 		Stroke stroke = g2d.getStroke();
 
-		if (qtdeLuzesAcesas > 0) {
+		if (qtdeLuzesApagadas > 0) {
 			ps.setVelocidadeExibir(0);
 			ps.setVelocidade(0);
 		}
 		int velocidade = ps.getVelocidadeExibir();
 
-		if (qtdeLuzesAcesas > 0 || pilotoSelecionado.isDesqualificado()) {
+		if (qtdeLuzesApagadas > 0 || pilotoSelecionado.isDesqualificado()) {
 			velocidade = 0;
 		}
 
@@ -6042,14 +6006,14 @@ public class PainelCircuito {
 				Util.inteiro((my + 1000)));
 	}
 
-	public void apagarLuz() {
-		if (qtdeLuzesAcesas <= 0) {
+	public void acendeLuz() {
+		if (qtdeLuzesApagadas <= 0) {
 			return;
 		}
-		if (qtdeLuzesAcesas <= 1) {
+		if (qtdeLuzesApagadas <= 1) {
 			setVerControles(false);
 		}
-		qtdeLuzesAcesas--;
+		qtdeLuzesApagadas--;
 	}
 
 	public boolean isDesenhaInfo() {

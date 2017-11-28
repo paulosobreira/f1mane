@@ -87,11 +87,11 @@ public class ControleSom {
 	public static void somVelocidade(Piloto ps, InterfaceJogo controleJogo,
 			PainelCircuito painelCircuito) {
 		if (!clipLargada.isRunning()
-				&& painelCircuito.getQtdeLuzesAcesas() > 0) {
+				&& painelCircuito.getQtdeLuzesApagadas() > 0) {
 			clipLargada.start();
 		}
 		if (clipLargada.isRunning()
-				&& painelCircuito.getQtdeLuzesAcesas() <= 0) {
+				&& painelCircuito.getQtdeLuzesApagadas() <= 0) {
 			clipAceleracao.start();
 			clipLargada.stop();
 		}
@@ -99,7 +99,7 @@ public class ControleSom {
 			if (ps == null) {
 				return;
 			}
-			if (painelCircuito.getQtdeLuzesAcesas() > 0) {
+			if (painelCircuito.getQtdeLuzesApagadas() > 0) {
 				return;
 			}
 			if (ps.isRecebeuBanderada()) {
