@@ -153,6 +153,12 @@ function cpu_carregaDadosPilotos() {
 	}
 }
 
+function cpu_sair() {
+	ativo = false;
+	clearInterval(main);
+	window.location.href = "index.html";
+}
+
 function cpu_altenador() {
 	if (alternador) {
 		alternadorValor++;

@@ -9,14 +9,15 @@ var corFundo = "rgba(255, 255, 255, 0.6)";
 var corAmarelo = "rgba(255, 255, 0, 0.6)";
 var corVermelho = "rgba(255, 0, 0, 0.6)";
 var contCargaErs;
+var confirmaSair = false;
 
 function ctl_desenha() {
 	var evalX = false;
 	var evalY = false;
-	if (largura != window.innerWidth) {
+	if (largura != window.innerWidth || maneCanvas.width==0) {
 		evalX = true;
 	}
-	if (altura != window.innerWidth) {
+	if (altura != window.innerWidth || maneCanvas.height==0) {
 		evalY = true;
 	}
 	largura = window.innerWidth;
@@ -898,9 +899,16 @@ function ctl_removeControle(controle) {
 			&& 'chuva.png' != dadosParciais.clima) {
 		return true;
 	}
-	
 
 	if (!dadosJogo.trocaPneu && controle.tipo == 'Pneu' && dadosJogo.pPneus > 0) {
+		return true;
+	}
+	
+	if(!confirmaSair && (controle.tipo == 'confirmaSair' || controle.tipo == 'cancelaSair' )){
+		return true;
+	}
+	
+	if(confirmaSair && controle.tipo != 'confirmaSair' && controle.tipo != 'cancelaSair'){
 		return true;
 	}
 
@@ -1146,6 +1154,42 @@ function ctl_gerarControles() {
 		evalX : '(maneCanvas.width/2 + 40);',
 		x : (maneCanvas.width / 2 + 40)
 	});
+	controles.push({
+		cor : '#babaca',
+		valor : '',
+		exibir : lang_text('Sair?'),
+		tipo : 'perguntaSair',
+		centralizaTexto : false,
+		width : 60,
+		height : 40,
+		y : 210,
+		evalX : '(maneCanvas.width/2 - 30);',
+		x : (maneCanvas.width / 2 - 30)
+	});	
+	controles.push({
+		cor : '#babaca',
+		valor : '',
+		exibir : lang_text('Confirma'),
+		tipo : 'confirmaSair',
+		centralizaTexto : false,
+		width : 60,
+		height : 40,
+		y : 210,
+		evalX : '(maneCanvas.width/2 - 70);',
+		x : (maneCanvas.width / 2 - 70)
+	});
+	controles.push({
+		cor : '#babaca',
+		valor : '',
+		exibir : lang_text('Cancela'),
+		tipo : 'cancelaSair',
+		centralizaTexto : false,
+		width : 60,
+		height : 40,
+		y : 210,
+		evalX : '(maneCanvas.width/2 + 10);',
+		x : (maneCanvas.width / 2 + 10)
+	});	
 }
 maneCanvas.addEventListener('click',
 		function(event) {
@@ -1207,6 +1251,17 @@ maneCanvas.addEventListener('click',
 										dadosParciais.combustBox,
 										controle.valor);
 							}
+							if (controle.tipo == 'perguntaSair') {
+								confirmaSair = true;
+							}
+							if (controle.tipo == 'cancelaSair') {
+								confirmaSair = false;
+							}
+							
+							if (controle.tipo == 'confirmaSair') {
+								cpu_sair();
+							}
+							
 							if (controle.tipo == 'Combustivel') {
 								if (controle.valor == '+') {
 									rest_boxPiloto(true,
