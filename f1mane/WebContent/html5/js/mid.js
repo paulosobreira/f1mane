@@ -2,6 +2,7 @@
  * Arquivo de midia
  */
 var imgBg;
+var imgFarois;
 var imgPneuM, imgPneuD, imgPneuC;
 var menosAsa, maisAsa, normalAsa;
 var motor, capacete;
@@ -44,6 +45,8 @@ function mid_caregaMidia() {
 
 	imgBg = new Image();
 	imgBg.src = "../sowbreira/f1mane/recursos/" + circuito.backGround;
+	imgFarois = new Image();
+	imgFarois.src = "img/farois.png"
 	imgPneuM = new Image();
 	imgPneuM.src = "img/pneuMole.png"
 	imgPneuD = new Image();

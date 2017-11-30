@@ -225,12 +225,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		if (gerenciadorVisual == null) {
 			preparaGerenciadorVisual();
 		}
-		if (dadosJogo != null && !"".equals(dadosJogo.getTexto())
-				&& dadosJogo.getTexto() != null) {
-			gerenciadorVisual.adicionarInfoDireto(
-					Lang.decodeTexto(dadosJogo.getTexto()));
-			dadosJogo.setTexto(null);
-		}
 	}
 
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {

@@ -92,8 +92,8 @@ public class ControleQualificacao {
 					contCiclosQualificacao++;
 				}
 			}
-			int modMili = 120;
-			for (int j = 0; j < 10; j++) {
+			int modMili = 60;
+			for (int j = 0; j < 5; j++) {
 				if (piloto.testeHabilidadePiloto()) {
 					modMili -= 2;
 				} else {
@@ -125,14 +125,14 @@ public class ControleQualificacao {
 			piloto.setVoltas(new ArrayList());
 			controleJogo.zerarMelhorVolta();
 		}
-		nivelaPontecia(pilotos);
 		nivelaHabilidade(pilotos);
+		nivelaPontecia(pilotos);
 		Collections.sort(pilotos, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-				return new Integer(piloto0.getCiclosVoltaQualificacao())
-						.compareTo(new Integer(
+				return new Long(piloto0.getCiclosVoltaQualificacao())
+						.compareTo(new Long(
 								piloto1.getCiclosVoltaQualificacao()));
 			}
 		});

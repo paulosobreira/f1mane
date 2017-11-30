@@ -11,29 +11,113 @@ var corVermelho = "rgba(255, 0, 0, 0.6)";
 var contCargaErs;
 
 function ctl_desenha() {
-	if (dadosParciais == null) {
-		return;
-	}
 	var evalX = false;
 	var evalY = false;
-	if (largura == maneCanvas.width) {
+	if (largura != window.innerWidth) {
 		evalX = true;
 	}
-	if (altura != maneCanvas.height) {
+	if (altura != window.innerWidth) {
 		evalY = true;
 	}
-	largura = maneCanvas.width;
-	altura = maneCanvas.height;
+	largura = window.innerWidth;
+	altura = window.innerWidth;
 	centroX = largura / 2;
+	centroY = altura / 2;
+	ctl_desenhaInfoSegundosParaIniciar();
+	ctl_desenhaQualificacao();
 	ctl_desenhaInfoEsquerda();
 	ctl_desenhaInfoDireita();
 	ctl_desenhaInfoBaixo();
 	ctl_desenhaInfoAsa();
 	ctl_desenhaControles(evalX, evalY);
+	ctl_desenhaFarois();
+}
+
+function ctl_desenhaFarois(){
+	if (!dadosParciais) {
+		return;
+	}
+	if (dadosParciais.estado != "13") {
+		return;
+	}
+	maneContext.drawImage(imgFarois, centroX - (imgFarois.width/2) , 100);
+}
+
+
+function ctl_desenhaQualificacao(){
+	if(!dadosJogo || dadosParciais){
+		return;
+	}
+	if(dadosJogo.estado != "10"){
+		return;
+	}
+	
+	var x = centroX-120;
+	var y = 20;
+	
+	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
+		if(i%2==0){
+			x = centroX-120;
+		}else{
+			x = centroX+30;
+		}
+		var piloto = dadosJogo.pilotos[i];
+		maneContext.beginPath();
+		maneContext.font = '14px sans-serif';
+		
+		var nmPiloto = piloto.nome;
+		nmPiloto = nmPiloto.split(".")[1];
+		nmPiloto = nmPiloto.substr(0, 3);
+		nmPiloto = (i + 1) + ' ' + nmPiloto+' '+piloto.tempoVoltaQualificacao;
+		
+		var nmLargura = nmPiloto;
+		
+		if((i + 1) <10){
+			nmLargura = '0'+nmPiloto;
+		}
+		var laruraTxt = maneContext.measureText(nmLargura).width + 10;
+		if (idPilotoSelecionado == piloto.idPiloto) {
+			maneContext.strokeStyle = '#00FF00';
+			maneContext.rect(x - 5, y, laruraTxt, 20);
+		} else if (piloto.humano) {
+			maneContext.strokeStyle = '#FFFF00';
+			maneContext.rect(x - 5, y, laruraTxt, 20);
+		}
+		maneContext.fillStyle = corFundo
+		maneContext.fillRect(x - 5, y, laruraTxt, 20);
+		maneContext.fillStyle = "black"
+		maneContext.fillText(nmPiloto, x, y + 15);
+		maneContext.closePath();
+		maneContext.stroke();
+		
+		y+=15;
+
+	}
+	
+}
+
+function ctl_desenhaInfoSegundosParaIniciar(){
+	if(!dadosJogo || dadosParciais){
+		return;
+	}
+	if(dadosJogo.estado != "07"){
+		return;
+	}
+	var x = centroX - 70;
+	var y = centroY - 50;
+	maneContext.fillStyle = corFundo
+	maneContext.fillRect(x, y, 160, 40);
+	maneContext.font = '24px sans-serif';
+	maneContext.fillStyle = "black"
+	maneContext.fillText(lang_text('Inicia em :'), x + 5, y + 28);
+	maneContext.fillText(dadosJogo.segundosParaIniciar, x + 120, y + 28);
+	
 }
 
 function ctl_desenhaControles(evalX, evalY) {
-
+	if (!dadosParciais) {
+		return;
+	}
 	controles.forEach(function(controle) {
 				if (ctl_removeControle(controle)) {
 					return;
@@ -146,6 +230,9 @@ function ctl_desenhaControles(evalX, evalY) {
 }
 
 function ctl_mudaTracadoPiloto(event) {
+	if(!dadosParciais){
+		return;
+	}
 	var piloto = dadosParciais.posisPack.posis[posicaoCentraliza];
 
 	var no = mapaIdNos.get(piloto.idNo);
@@ -230,7 +317,10 @@ function ctl_desenhaInfo() {
 }
 
 function ctl_desenhaInfoBaixo() {
-	if(dadosParciais.posisPack.safetyNoId != 0 ||  dadosParciais.recebeuBanderada || (alternador && $('#info').html()!='')){
+	if (dadosParciais == null) {
+		return;
+	}
+	if(dadosParciais.posisPack.safetyNoId != 0 ||  dadosParciais.estado != '12' ||  dadosParciais.recebeuBanderada || (alternador && $('#info').html()!='')){
 		ctl_desenhaInfo();
 		$('#info').show();
 	}else{
@@ -240,6 +330,9 @@ function ctl_desenhaInfoBaixo() {
 }
 
 function ctl_desenhaInfoAsa() {
+	if (!dadosParciais) {
+		return;
+	}
 	if(dadosJogo.drs){
 		return
 	}
@@ -501,9 +594,7 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 
 function ctl_desenhaInfoDireita() {
 	if (!dadosParciais) {
-		return
-	}
-
+		return;	}
 	maneContext.beginPath();
 
 	var x = maneCanvas.width - 120;
@@ -632,9 +723,7 @@ function ctl_desenhaInfoDireita() {
 
 function ctl_desenhaInfoEsquerda() {
 	if (!dadosParciais) {
-		return
-	}
-
+		return;	}
 	maneContext.beginPath();
 
 	var x = 10;

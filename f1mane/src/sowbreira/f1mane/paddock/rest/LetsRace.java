@@ -141,9 +141,6 @@ public class LetsRace {
 			}
 			dadosJogo = (DadosJogo) dadosJogoObj;
 		}
-		if (dadosJogo != null) {
-			dadosJogo.setTexto(Lang.decodeTextoKey(dadosJogo.getTexto()));
-		}
 		return Response.status(200).entity(dadosJogo).build();
 	}
 
@@ -241,9 +238,6 @@ public class LetsRace {
 		// }
 		DadosJogo dadosJogo = (DadosJogo) controlePaddock
 				.obterDadosJogo(clientPaddockPack);
-		if (dadosJogo != null) {
-			dadosJogo.setTexto(Lang.decodeTextoKey(dadosJogo.getTexto()));
-		}
 		return Response.status(200).entity(dadosJogo).build();
 	}
 

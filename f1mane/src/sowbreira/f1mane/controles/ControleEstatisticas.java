@@ -156,9 +156,6 @@ public class ControleEstatisticas {
 		return voltaMaisRapida;
 	}
 
-	public static String formatarTempo(Integer value) {
-		return formatarTempo(new Long(value));
-	}
 
 	public static String formatarTempo(Long value) {
 		if (value == null) {
@@ -267,10 +264,13 @@ public class ControleEstatisticas {
 		// for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
 		// }
 		// }
-		System.out.println(formatarTempo(90001));
+		System.out.println(formatarTempo(90001l));
 	}
 
 	public void info(String info, boolean prioritaria) {
+		if (controleJogo.isModoQualify()) {
+			return;
+		}
 		if (bufferInfo.contains(info)) {
 			return;
 		}
@@ -294,6 +294,9 @@ public class ControleEstatisticas {
 	}
 
 	public void info(String info) {
+		if (controleJogo.isModoQualify()) {
+			return;
+		}
 		info(info, false);
 	}
 

@@ -56,12 +56,10 @@ function cpu_main() {
 	if (dadosJogo != null && circuito != null && ativo
 			&& contCarregouMidia == 0) {
 		$loading.hide();
-		if('07' == dadosJogo.estado){
+		if ('07' == dadosJogo.estado || '10' == dadosJogo.estado) {
 			rest_dadosJogo(nomeJogo);
-		}else if('13' == dadosJogo.estado){
-			$('#info').html(dadosJogo.texto);
-		}else{
-			rest_dadosParciais();	
+		} else {
+			rest_dadosParciais();
 		}
 		cpu_altenador();
 	}

@@ -13,6 +13,7 @@ import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Piloto;
@@ -341,8 +342,8 @@ public class ControleJogosServer {
 				.get(jogoServidor.getCircuito().getNome()));
 		dadosJogo.setTemporada(jogoServidor.getTemporada().replaceAll("t", ""));
 		Integer segundosParaIniciar = Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA
-				- Util.inteiro((System.currentTimeMillis()
-						- jogoServidor.getTempoCriacao() / 1000));
+				- Util.inteiro(((System.currentTimeMillis()
+						- jogoServidor.getTempoCriacao()) / 1000));
 		if (segundosParaIniciar < 0) {
 			segundosParaIniciar = 0;
 		}
@@ -359,19 +360,13 @@ public class ControleJogosServer {
 			piloto.setMelhorVolta(null);
 			Volta melhor = piloto.obterVoltaMaisRapida();
 			piloto.setMelhorVolta(melhor);
+			piloto.setTempoVoltaQualificacao(ControleEstatisticas
+					.formatarTempo(piloto.getCiclosVoltaQualificacao()));
 		}
 		dadosJogo.setCorridaTerminada(jogoServidor.isCorridaTerminada());
 		dadosJogo.setPilotos(pilotos);
 
 		Map mapJogo = jogoServidor.getMapJogadoresOnlineTexto();
-		BufferTexto bufferTexto = (BufferTexto) mapJogo
-				.get(clientPaddockPack.getSessaoCliente().getNomeJogador());
-		if (bufferTexto != null) {
-			dadosJogo.setTexto(bufferTexto.consumirTexto());
-		}
-		if (Util.isNullOrEmpty(dadosJogo.getTexto())) {
-			dadosJogo.setTexto(Html.verde(Lang.msg("001")));
-		}
 		return dadosJogo;
 	}
 
@@ -779,7 +774,10 @@ public class ControleJogosServer {
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();
 		}
-		// enc dadosParciais
+		if (Util.isNullOrEmpty(dadosParciais.texto)
+				&& "13".equals(jogoServidor.getEstado())) {
+			dadosParciais.texto = Html.verde(Lang.msg("001"));
+		}
 
 		return dadosParciais.encode();
 	}

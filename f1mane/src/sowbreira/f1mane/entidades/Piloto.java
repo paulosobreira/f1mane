@@ -56,6 +56,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private Carro carro = new Carro();
 	private String vantagem;
 	private int qtdeParadasBox;
+	private String tempoVoltaQualificacao;
 
 	@JsonIgnore
 	private int carX;
@@ -190,7 +191,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private transient int porcentagemCombustUltimaParadaBox;
 	@JsonIgnore
-	private int ciclosVoltaQualificacao;
+	private long ciclosVoltaQualificacao;
 	@JsonIgnore
 	private long parouNoBoxMilis;
 	@JsonIgnore
@@ -632,11 +633,11 @@ public class Piloto implements Serializable, PilotoSuave {
 		return parouNoBoxMilis;
 	}
 
-	public int getCiclosVoltaQualificacao() {
+	public long getCiclosVoltaQualificacao() {
 		return ciclosVoltaQualificacao;
 	}
 
-	public void setCiclosVoltaQualificacao(int ciclosVoltaQualificacao) {
+	public void setCiclosVoltaQualificacao(long ciclosVoltaQualificacao) {
 		this.ciclosVoltaQualificacao = ciclosVoltaQualificacao;
 	}
 
@@ -3532,6 +3533,14 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setDiferencaPosiscoesCorrida(int diferencaPosiscoesCorrida) {
+	}
+
+	public String getTempoVoltaQualificacao() {
+		return tempoVoltaQualificacao;
+	}
+
+	public void setTempoVoltaQualificacao(String tempoVoltaQualificacao) {
+		this.tempoVoltaQualificacao = tempoVoltaQualificacao;
 	}
 
 }

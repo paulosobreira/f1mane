@@ -3,6 +3,7 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -26,7 +27,6 @@ public class DadosJogo implements Serializable {
 	private Boolean ers;
 	private Boolean trocaPneu;
 	private Boolean reabastacimento;
-	private String texto;
 	private String clima;
 	private String nomeCircuito;
 	private String arquivoCircuito;
@@ -35,7 +35,6 @@ public class DadosJogo implements Serializable {
 	private String nomeJogo;
 	private String estado;
 	private Integer segundosParaIniciar;
-
 	public List<Piloto> getPilotos() {
 		return pilotos;
 	}
@@ -95,12 +94,6 @@ public class DadosJogo implements Serializable {
 	}
 	public void setReabastacimento(Boolean reabastacimento) {
 		this.reabastacimento = reabastacimento;
-	}
-	public String getTexto() {
-		return texto;
-	}
-	public void setTexto(String texto) {
-		this.texto = texto;
 	}
 	public String getClima() {
 		return clima;

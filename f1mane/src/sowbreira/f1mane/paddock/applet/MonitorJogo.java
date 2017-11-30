@@ -558,10 +558,6 @@ public class MonitorJogo implements Runnable {
 			dadosJogo.setClima(dadosParciais.clima);
 			dadosJogo
 					.setMelhoVolta(new Volta(dadosParciais.melhorVoltaCorrida));
-			if (dadosParciais.texto != null
-					&& !"".equals(dadosParciais.texto)) {
-				dadosJogo.setTexto(dadosParciais.texto);
-			}
 			dadosJogo.setVoltaAtual(dadosParciais.voltaAtual);
 			List<Piloto> pilotos = jogoCliente.getPilotos();
 			if (pilotoSelecionado != null) {

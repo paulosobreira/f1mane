@@ -4916,11 +4916,11 @@ public class PainelCircuito {
 			}
 			Piloto piloto = (Piloto) pilotos.get(i);
 			Point point = (Point) ptosPilotosDesQualy.get(i);
-			desenhaPilotoQualify(g2d, piloto, point.x, point.y);
+			desenhaPilotoQualificacaoLargada(g2d, piloto, point.x, point.y);
 		}
 	}
 
-	private void desenhaPilotoQualify(Graphics2D g2d, Piloto piloto, int x,
+	private void desenhaPilotoQualificacaoLargada(Graphics2D g2d, Piloto piloto, int x,
 			int y) {
 		BufferedImage carroimg;
 		int newY;
