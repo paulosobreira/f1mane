@@ -60,7 +60,6 @@ public class Carro implements Serializable {
 	private int porcentagemDesgasteMotor;
 	private String tipoPneu;
 
-	
 	@JsonIgnore
 	private String nome;
 	@JsonIgnore
@@ -117,6 +116,16 @@ public class Carro implements Serializable {
 	private Color cor2;
 	@JsonIgnore
 	private Piloto piloto;
+
+	public String getCor1Hex() {
+		return String.format("#%02x%02x%02x", cor1.getRed(), cor1.getGreen(),
+				cor1.getBlue());
+	}
+
+	public String getCor2Hex() {
+		return String.format("#%02x%02x%02x", cor2.getRed(), cor2.getGreen(),
+				cor2.getBlue());
+	}
 
 	public int getPotenciaAntesQualify() {
 		return potenciaAntesQualify;
@@ -462,7 +471,8 @@ public class Carro implements Serializable {
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6
 							&& temperaturaMotor <= tempMax - 5))
-				controleJogo.infoPrioritaria(Html.laranja(Lang.msg("temperatura",
+				controleJogo.infoPrioritaria(Html.laranja(Lang.msg(
+						"temperatura",
 						new String[]{Html.txtRedBold(getPiloto().getNome())})));
 		}
 		if (giro != GIRO_MAX_VAL) {

@@ -12,16 +12,8 @@ var contCargaErs;
 var confirmaSair = false;
 
 function ctl_desenha() {
-	var evalX = false;
-	var evalY = false;
-	if (largura != window.innerWidth || maneCanvas.width==0) {
-		evalX = true;
-	}
-	if (altura != window.innerWidth || maneCanvas.height==0) {
-		evalY = true;
-	}
-	largura = window.innerWidth;
-	altura = window.innerWidth;
+	largura = maneCanvas.width;
+	altura = maneCanvas.height;
 	centroX = largura / 2;
 	centroY = altura / 2;
 	ctl_desenhaInfoSegundosParaIniciar();
@@ -30,7 +22,7 @@ function ctl_desenha() {
 	ctl_desenhaInfoDireita();
 	ctl_desenhaInfoBaixo();
 	ctl_desenhaInfoAsa();
-	ctl_desenhaControles(evalX, evalY);
+	ctl_desenhaControles();
 	ctl_desenhaFarois();
 }
 
@@ -54,7 +46,7 @@ function ctl_desenhaQualificacao(){
 	}
 	
 	var x = centroX-120;
-	var y = 20;
+	var y = 50;
 	
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		if(i%2==0){
@@ -71,19 +63,20 @@ function ctl_desenhaQualificacao(){
 		nmPiloto = nmPiloto.substr(0, 3);
 		nmPiloto = (i + 1) + ' ' + nmPiloto+' '+piloto.tempoVoltaQualificacao;
 		
-		var nmLargura = nmPiloto;
-		
-		if((i + 1) <10){
-			nmLargura = '0'+nmPiloto;
-		}
-		var laruraTxt = maneContext.measureText(nmLargura).width + 10;
-		if (idPilotoSelecionado == piloto.idPiloto) {
+		var laruraTxt = 110;
+		if (idPilotoSelecionado == piloto.id) {
 			maneContext.strokeStyle = '#00FF00';
 			maneContext.rect(x - 5, y, laruraTxt, 20);
-		} else if (piloto.humano) {
+		} else if (piloto.jogadorHumano) {
 			maneContext.strokeStyle = '#FFFF00';
 			maneContext.rect(x - 5, y, laruraTxt, 20);
 		}
+		maneContext.fillStyle = piloto.carro.cor1Hex;
+		maneContext.fillRect(x - 15, y, 5, 20);
+
+		maneContext.fillStyle = piloto.carro.cor2Hex;
+		maneContext.fillRect(x - 10, y, 5, 20);
+		
 		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x - 5, y, laruraTxt, 20);
 		maneContext.fillStyle = "black"
@@ -115,7 +108,7 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	
 }
 
-function ctl_desenhaControles(evalX, evalY) {
+function ctl_desenhaControles() {
 	if (!dadosParciais) {
 		return;
 	}
@@ -125,22 +118,13 @@ function ctl_desenhaControles(evalX, evalY) {
 				}
 				maneContext.beginPath();
 				maneContext.setLineDash([]);
-				if (evalY && controle.evalY) {
+				if (controle.evalY) {
 					controle.y = eval(controle.evalY);
 				}
-				if (evalX && controle.evalX) {
+				if (controle.evalX) {
 					controle.x = eval(controle.evalX);
 				}
-				if (!controle.img 
-						&& controle.tipo != 'Combustivel' 
-							&& controle.tipo != 'CombustivelValor' 
-								&& controle.tipo != 'Box' 
-									&& controle.tipo != 'Drs' 
-										&& controle.tipo != 'Ers') {
-					maneContext.fillStyle = corFundo
-					maneContext.fillRect(controle.x, controle.y,
-							controle.width, controle.height);
-				}
+
 				maneContext.strokeStyle = controle.cor;
 
 				if (controle.tipo == 'controleMotor') {
@@ -321,6 +305,10 @@ function ctl_desenhaInfoBaixo() {
 	if (dadosParciais == null) {
 		return;
 	}
+	if(confirmaSair){
+		$('#info').hide();
+		return;
+	}
 	if(dadosParciais.posisPack.safetyNoId != 0 ||  dadosParciais.estado != '12' ||  dadosParciais.recebeuBanderada || (alternador && $('#info').html()!='')){
 		ctl_desenhaInfo();
 		$('#info').show();
@@ -334,9 +322,13 @@ function ctl_desenhaInfoAsa() {
 	if (!dadosParciais) {
 		return;
 	}
+	if(confirmaSair){
+		return;
+	}
 	if(dadosJogo.drs){
 		return
 	}
+	
 	var y =(altura > 480)?(maneCanvas.height - 200):(maneCanvas.height - 150);
 	var x = maneCanvas.width - 70;
 	var img;
@@ -596,6 +588,9 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 function ctl_desenhaInfoDireita() {
 	if (!dadosParciais) {
 		return;	}
+	if(confirmaSair){
+		return;
+	}
 	maneContext.beginPath();
 
 	var x = maneCanvas.width - 120;
@@ -725,6 +720,9 @@ function ctl_desenhaInfoDireita() {
 function ctl_desenhaInfoEsquerda() {
 	if (!dadosParciais) {
 		return;	}
+	if(confirmaSair){
+		return;
+	}
 	maneContext.beginPath();
 
 	var x = 10;
@@ -904,6 +902,10 @@ function ctl_removeControle(controle) {
 		return true;
 	}
 	
+	if(!dadosParciais.box &&(controle.tipo == 'confirmaSair' || controle.tipo == 'cancelaSair' || controle.tipo == 'perguntaSair' )){
+		return true;
+	}
+	
 	if(!confirmaSair && (controle.tipo == 'confirmaSair' || controle.tipo == 'cancelaSair' )){
 		return true;
 	}
@@ -925,7 +927,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
-		y : maneCanvas.height - 100,
+		y : 0,
 		x : 10,
 		img : motor
 	});
@@ -938,7 +940,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
-		y : maneCanvas.height - 100,
+		y : 0,
 		x : 60,
 		img : motor
 	});
@@ -951,7 +953,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
-		y : maneCanvas.height - 100,
+		y : 0,
 		x : 110,
 		img : motor
 	});
@@ -965,7 +967,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
-		y : maneCanvas.height - 100,
+		y : 0,
 		evalX : 'maneCanvas.width - 150;',
 		x : 0,
 		img : capacete
@@ -979,7 +981,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
-		y : maneCanvas.height - 100,
+		y : 0,
 		evalX : 'maneCanvas.width - 100;',
 		x : 0,
 		img : capacete
@@ -993,7 +995,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
-		y : maneCanvas.height - 100,
+		y : 0,
 		evalX : 'maneCanvas.width - 50;',
 		x : 0,
 		img : capacete
@@ -1007,7 +1009,7 @@ function ctl_gerarControles() {
 		width : 60,
 		height : 40,
 		evalY : '(altura > 480)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
-		y : maneCanvas.height - 150,
+		y : 0,
 		x : 10
 	});
 	controles.push({
@@ -1019,7 +1021,7 @@ function ctl_gerarControles() {
 		width : 60,
 		height : 40,
 		evalY : '(altura > 480)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
-		y : maneCanvas.height - 150,
+		y : 0,
 		evalX : 'maneCanvas.width - 70;',
 		x : 0
 	});
@@ -1035,7 +1037,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 10,
 		evalX : '(maneCanvas.width/2 - 40);',
-		x : (maneCanvas.width / 2 - 40)
+		x : 0
 	});
 
 	controles.push({
@@ -1048,7 +1050,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 60,
 		evalX : '(maneCanvas.width/2 - 80);',
-		x : (maneCanvas.width / 2 - 80),
+		x : 0,
 		img : imgPneuM
 	});
 	controles.push({
@@ -1061,7 +1063,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 60,
 		evalX : '(maneCanvas.width/2 - 20);',
-		x : (maneCanvas.width / 2 - 20),
+		x : 0,
 		img : imgPneuD
 	});
 	controles.push({
@@ -1074,7 +1076,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 60,
 		evalX : '(maneCanvas.width/2 + 40);',
-		x : (maneCanvas.width / 2 + 40),
+		x : 0,
 		img : imgPneuC
 	});
 
@@ -1088,7 +1090,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 110,
 		evalX : '(maneCanvas.width/2 - 80);',
-		x : (maneCanvas.width / 2 - 80),
+		x : 0,
 		img : menosAsa
 	});
 	controles.push({
@@ -1101,7 +1103,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 110,
 		evalX : '(maneCanvas.width/2 - 20);',
-		x : (maneCanvas.width / 2 - 20),
+		x : 0,
 		img : normalAsa
 	});
 	controles.push({
@@ -1114,7 +1116,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 110,
 		evalX : '(maneCanvas.width/2 + 40);',
-		x : (maneCanvas.width / 2 + 40),
+		x : 0,
 		img : maisAsa
 	});
 
@@ -1128,7 +1130,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 160,
 		evalX : '(maneCanvas.width/2 - 80);',
-		x : (maneCanvas.width / 2 - 80)
+		x : 0
 	});
 	controles.push({
 		cor : '#babaca',
@@ -1140,7 +1142,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 160,
 		evalX : '(maneCanvas.width/2 - 30);',
-		x : (maneCanvas.width / 2 - 30)
+		x : 0
 	});
 	controles.push({
 		cor : '#babaca',
@@ -1152,7 +1154,7 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 160,
 		evalX : '(maneCanvas.width/2 + 40);',
-		x : (maneCanvas.width / 2 + 40)
+		x : 0
 	});
 	controles.push({
 		cor : '#babaca',
@@ -1160,35 +1162,35 @@ function ctl_gerarControles() {
 		exibir : lang_text('Sair?'),
 		tipo : 'perguntaSair',
 		centralizaTexto : false,
-		width : 60,
+		width : 80,
 		height : 40,
 		y : 210,
-		evalX : '(maneCanvas.width/2 - 30);',
-		x : (maneCanvas.width / 2 - 30)
+		evalX : '(maneCanvas.width/2 - 40);',
+		x : 0
 	});	
-	controles.push({
-		cor : '#babaca',
-		valor : '',
-		exibir : lang_text('Confirma'),
-		tipo : 'confirmaSair',
-		centralizaTexto : false,
-		width : 60,
-		height : 40,
-		y : 210,
-		evalX : '(maneCanvas.width/2 - 70);',
-		x : (maneCanvas.width / 2 - 70)
-	});
 	controles.push({
 		cor : '#babaca',
 		valor : '',
 		exibir : lang_text('Cancela'),
 		tipo : 'cancelaSair',
 		centralizaTexto : false,
-		width : 60,
+		width : 120,
 		height : 40,
 		y : 210,
-		evalX : '(maneCanvas.width/2 + 10);',
-		x : (maneCanvas.width / 2 + 10)
+		evalX : '(maneCanvas.width/2 - 40);',
+		x : 0
+	});
+	controles.push({
+		cor : '#babaca',
+		valor : '',
+		exibir : lang_text('Confirma'),
+		tipo : 'confirmaSair',
+		centralizaTexto : false,
+		width : 130,
+		height : 40,
+		y : 260,
+		evalX : '(maneCanvas.width/2 - 40);',
+		x : 0
 	});	
 }
 maneCanvas.addEventListener('click',
@@ -1257,11 +1259,9 @@ maneCanvas.addEventListener('click',
 							if (controle.tipo == 'cancelaSair') {
 								confirmaSair = false;
 							}
-							
 							if (controle.tipo == 'confirmaSair') {
 								cpu_sair();
 							}
-							
 							if (controle.tipo == 'Combustivel') {
 								if (controle.valor == '+') {
 									rest_boxPiloto(true,
