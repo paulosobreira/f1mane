@@ -1810,10 +1810,10 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-		if (!isAutoPos()) {
+		if (!isAutoPos() && !controleJogo.isSafetyCar()) {
 			return;
 		}
-		if (!noAtual.verificaRetaOuLargada()) {
+		if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCar()) {
 			mudouTracadoReta = 0;
 		}
 		Piloto pilotoBateu = controleJogo.getPilotoBateu();
@@ -1949,6 +1949,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			Piloto pilotoNaFrente, InterfaceJogo controleJogo) {
 		return !controleJogo.isCorridaTerminada()
 				&& !piloto.isRecebeuBanderada()
+				&& pilotoNaFrente.getNumeroVolta() > getNumeroVolta()
 				&& pilotoNaFrente.getPtosPista() < piloto.getPtosPista()
 				&& !pilotoNaFrente.isDesqualificado()
 				&& (pilotoNaFrente.getPtosBox() == 0);
@@ -2013,19 +2014,13 @@ public class Piloto implements Serializable, PilotoSuave {
 	public boolean verificaNaoPrecisaDesviar(InterfaceJogo controleJogo,
 			Piloto pilotoFrente) {
 		boolean naoPrecisa = false;
-		if (controleJogo.isSafetyCarNaPista()) {
-			if (pilotoFrente.getCarro().isRecolhido()) {
-				naoPrecisa = true;
-			}
-		} else {
-			String danificado = pilotoFrente.getCarro().getDanificado();
-			if (pilotoFrente.getCarro().isPaneSeca()
-					|| Carro.ABANDONOU.equals(danificado)
-					|| getCarro().isRecolhido()
-					|| Carro.PANE_SECA.equals(danificado)
-					|| Carro.EXPLODIU_MOTOR.equals(danificado)) {
-				naoPrecisa = true;
-			}
+		String danificado = pilotoFrente.getCarro().getDanificado();
+		if (pilotoFrente.getCarro().isPaneSeca()
+				|| Carro.ABANDONOU.equals(danificado)
+				|| getCarro().isRecolhido()
+				|| Carro.PANE_SECA.equals(danificado)
+				|| Carro.EXPLODIU_MOTOR.equals(danificado)) {
+			naoPrecisa = true;
 		}
 		return naoPrecisa;
 	}
@@ -3001,7 +2996,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				setSetaBaixo(11);
 			}
 		}
-		if (indiceTracado != 0) {
+		if (!forcaMudar && indiceTracado != 0) {
 			return false;
 		}
 		if (getTracado() == 4 && (mudarTracado == 0 || mudarTracado == 1)) {

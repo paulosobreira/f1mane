@@ -45,8 +45,8 @@ function ctl_desenhaQualificacao(){
 		return;
 	}
 	
-	var x = centroX-120;
-	var y = 50;
+	var x = centroX-150;
+	var y = 20;
 	
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		if(i%2==0){
@@ -61,26 +61,31 @@ function ctl_desenhaQualificacao(){
 		var nmPiloto = piloto.nome;
 		nmPiloto = nmPiloto.split(".")[1];
 		nmPiloto = nmPiloto.substr(0, 3);
-		nmPiloto = (i + 1) + ' ' + nmPiloto+' '+piloto.tempoVoltaQualificacao;
-		
-		var laruraTxt = 110;
+		nmPiloto = (i + 1) + ' ' + nmPiloto;
+		var tempo = piloto.tempoVoltaQualificacao;
 		if (idPilotoSelecionado == piloto.id) {
 			maneContext.strokeStyle = '#00FF00';
-			maneContext.rect(x - 5, y, laruraTxt, 20);
+			maneContext.rect(x - 5, y, 50, 20);
 		} else if (piloto.jogadorHumano) {
 			maneContext.strokeStyle = '#FFFF00';
-			maneContext.rect(x - 5, y, laruraTxt, 20);
+			maneContext.rect(x - 5, y, 50, 20);
 		}
 		maneContext.fillStyle = piloto.carro.cor1Hex;
-		maneContext.fillRect(x - 15, y, 5, 20);
-
-		maneContext.fillStyle = piloto.carro.cor2Hex;
 		maneContext.fillRect(x - 10, y, 5, 20);
 		
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x - 5, y, laruraTxt, 20);
+		maneContext.fillRect(x - 5, y, 50, 20);
 		maneContext.fillStyle = "black"
 		maneContext.fillText(nmPiloto, x, y + 15);
+		
+		maneContext.fillStyle = piloto.carro.cor2Hex;
+		maneContext.fillRect(x - 10, y+20, 130, 5);
+		
+		maneContext.fillStyle = corFundo
+		maneContext.fillRect(x + 50, y, 70, 20);
+		maneContext.fillStyle = "black"
+		maneContext.fillText(tempo, x + 60, y + 15);
+		
 		maneContext.closePath();
 		maneContext.stroke();
 		
@@ -100,7 +105,7 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	var x = centroX - 70;
 	var y = centroY - 50;
 	maneContext.fillStyle = corFundo
-	maneContext.fillRect(x, y, 160, 40);
+	maneContext.fillRect(x-10, y, 170, 40);
 	maneContext.font = '24px sans-serif';
 	maneContext.fillStyle = "black"
 	maneContext.fillText(lang_text('Inicia em :'), x + 5, y + 28);
@@ -739,7 +744,7 @@ function ctl_desenhaInfoEsquerda() {
 		y += 30;
 
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 80, 20);
+		maneContext.fillRect(x, y, 90, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
 		maneContext.fillText(lang_text('Volta'), x + 5, y + 15);
@@ -1177,7 +1182,7 @@ function ctl_gerarControles() {
 		width : 120,
 		height : 40,
 		y : 210,
-		evalX : '(maneCanvas.width/2 - 40);',
+		evalX : '(maneCanvas.width/2 - 140);',
 		x : 0
 	});
 	controles.push({
@@ -1188,98 +1193,109 @@ function ctl_gerarControles() {
 		centralizaTexto : false,
 		width : 130,
 		height : 40,
-		y : 260,
-		evalX : '(maneCanvas.width/2 - 40);',
+		y : 210,
+		evalX : '(maneCanvas.width/2 + 20);',
 		x : 0
 	});	
 }
-maneCanvas.addEventListener('click',
-		function(event) {
-	
-			if(!telaCheia){
+maneCanvas.addEventListener('click',ctl_click, false);
+
+function ctl_click(event) {
+	if(!telaCheia){
+		try {
+			document.getElementById('body').webkitRequestFullScreen(); // Chrome
+		} catch (e) {
+			try {
+				document.getElementById('body').mozRequestFullScreen(); // Firefox
+			} catch (e) {
 				try {
-					document.getElementById('body').webkitRequestFullScreen(); // Chrome
+					document.getElementById('body').requestFullscreen();// Edge
 				} catch (e) {
-					try {
-						document.getElementById('body').mozRequestFullScreen(); // Firefox
-					} catch (e) {
-						try {
-							document.getElementById('body').requestFullscreen();// Edge
-						} catch (e) {
-						}
-					}
 				}
-				telaCheia = true;
 			}
-	
-	
-			var x = event.pageX;
-			var y = event.pageY;
+		}
+		telaCheia = true;
+	}
+	var x = event.pageX;
+	var y = event.pageY;
 
-			var clickControle = false;
-			controles.forEach(function(controle) {
-						if (y > controle.y && y < controle.y + controle.height
-								&& x > controle.x
-								&& x < controle.x + controle.width) {
-							if (ctl_removeControle(controle)) {
-								return;
-							}
-							clickControle = true;
-							if (controle.tipo == 'controleMotor') {
-								rest_potenciaMotor(controle.valor);
-							}
-							if (controle.tipo == 'controlePiloto') {
-								rest_agressividadePiloto(controle.valor);
-							}
-							if (controle.tipo == 'Ers') {
-								rest_ers();
-							}
-							if (controle.tipo == 'Drs') {
-								rest_drs();
-							}
-							if (controle.tipo == 'Box') {
-								rest_boxPiloto(!dadosParciais.box,
-										dadosParciais.tpPneusBox,
-										dadosParciais.combustBox,
-										dadosParciais.asaBox);
-							}
-							if (controle.tipo == 'Pneu') {
-								rest_boxPiloto(true, controle.valor,
-										dadosParciais.combustBox,
-										dadosParciais.asaBox);
-							}
-							if (controle.tipo == 'Asa') {
-								rest_boxPiloto(true, dadosParciais.tpPneusBox,
-										dadosParciais.combustBox,
-										controle.valor);
-							}
-							if (controle.tipo == 'perguntaSair') {
-								confirmaSair = true;
-							}
-							if (controle.tipo == 'cancelaSair') {
-								confirmaSair = false;
-							}
-							if (controle.tipo == 'confirmaSair') {
-								cpu_sair();
-							}
-							if (controle.tipo == 'Combustivel') {
-								if (controle.valor == '+') {
-									rest_boxPiloto(true,
-											dadosParciais.tpPneusBox,
-											dadosParciais.combustBox + 10,
-											dadosParciais.asaBox);
-								} else if (controle.valor == '-') {
-									rest_boxPiloto(true,
-											dadosParciais.tpPneusBox,
-											dadosParciais.combustBox - 10,
-											dadosParciais.asaBox);
-								}
-
-							}
-						}
-					});
-			if (!clickControle) {
-				ctl_mudaTracadoPiloto(event);
+	var clickControle = false;
+	for (var i = 0; i < controles.length; i++) {
+		var controle = controles[i];
+		var contains = (y > controle.y && y < controle.y + controle.height
+		&& x > controle.x
+		&& x < controle.x + controle.width);
+		if (!contains){
+			continue;
+		}
+		if (ctl_removeControle(controle)) {
+			continue;
+		}
+		clickControle = true;
+		if (controle.tipo == 'controleMotor') {
+			rest_potenciaMotor(controle.valor);
+			return;
+		}
+		if (controle.tipo == 'controlePiloto') {
+			rest_agressividadePiloto(controle.valor);
+			return;
+		}
+		if (controle.tipo == 'Ers') {
+			rest_ers();
+			return;
+		}
+		if (controle.tipo == 'Drs') {
+			rest_drs();
+			return;
+		}
+		if (controle.tipo == 'Box') {
+			rest_boxPiloto(!dadosParciais.box,
+					dadosParciais.tpPneusBox,
+					dadosParciais.combustBox,
+					dadosParciais.asaBox);
+			return;
+		}
+		if (controle.tipo == 'Pneu') {
+			rest_boxPiloto(true, controle.valor,
+					dadosParciais.combustBox,
+					dadosParciais.asaBox);
+			return;
+		}
+		if (controle.tipo == 'Asa') {
+			rest_boxPiloto(true, dadosParciais.tpPneusBox,
+					dadosParciais.combustBox,
+					controle.valor);
+			return;
+		}
+		if (controle.tipo == 'perguntaSair') {
+			confirmaSair = true;
+			return;
+		}
+		if (controle.tipo == 'cancelaSair') {
+			confirmaSair = false;
+			return;
+		}
+		if (controle.tipo == 'confirmaSair') {
+			cpu_sair();
+			return;
+		}
+		if (controle.tipo == 'Combustivel') {
+			if (controle.valor == '+') {
+				rest_boxPiloto(true,
+						dadosParciais.tpPneusBox,
+						dadosParciais.combustBox + 10,
+						dadosParciais.asaBox);
+				return;
+			} else if (controle.valor == '-') {
+				rest_boxPiloto(true,
+						dadosParciais.tpPneusBox,
+						dadosParciais.combustBox - 10,
+						dadosParciais.asaBox);
+				return;
 			}
-
-		}, false);
+		}
+	}
+	if (!clickControle) {
+		ctl_mudaTracadoPiloto(event);
+	}
+}

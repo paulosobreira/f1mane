@@ -54,7 +54,7 @@ public class ControleSafetyCar {
 			long indexNafrente = safetyCar.getPtosPista();
 			long index = piloto.getPtosPista();
 			long diffIndex = (indexNafrente - index);
-			long max = 200;
+			long max = 300;
 			if (safetyCar.isVaiProBox()) {
 				max = 400;
 			}

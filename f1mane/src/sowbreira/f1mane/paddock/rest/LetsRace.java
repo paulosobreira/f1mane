@@ -575,9 +575,9 @@ public class LetsRace {
 		}
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();
-		JogoServidor obterJogoPorSessaoCliente = controleJogosServer
-				.obterJogoPorSessaoCliente(sessaoCliente);
-		obterJogoPorSessaoCliente.forcaSafatyCar();
+//		JogoServidor obterJogoPorSessaoCliente = controleJogosServer
+//				.obterJogoPorSessaoCliente(sessaoCliente);
+//		obterJogoPorSessaoCliente.forcaSafatyCar();
 		return Response.status(200)
 				.entity(controleJogosServer.mudarDrs(sessaoCliente, idPiloto))
 				.build();
