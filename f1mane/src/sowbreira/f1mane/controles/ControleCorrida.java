@@ -632,4 +632,8 @@ public class ControleCorrida {
 		return controleSafetyCar.getPilotoBateu();
 	}
 
+	public boolean verificaLinhaBrancaSaidaBox(Piloto piloto) {
+		return controleBox.verificaLinhaBrancaSaidaBox(piloto);
+	}
+
 }

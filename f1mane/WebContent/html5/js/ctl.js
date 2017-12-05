@@ -45,12 +45,12 @@ function ctl_desenhaQualificacao(){
 		return;
 	}
 	
-	var x = centroX-150;
+	var x = centroX-140;
 	var y = 20;
 	
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		if(i%2==0){
-			x = centroX-120;
+			x = centroX-140;
 		}else{
 			x = centroX+30;
 		}
@@ -744,7 +744,7 @@ function ctl_desenhaInfoEsquerda() {
 		y += 30;
 
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 90, 20);
+		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
 		maneContext.fillText(lang_text('Volta'), x + 5, y + 15);

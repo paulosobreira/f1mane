@@ -59,6 +59,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	private String tempoVoltaQualificacao;
 
 	@JsonIgnore
+	private boolean boxSaiuNestaVolta = false;
+	@JsonIgnore
 	private int carX;
 	@JsonIgnore
 	private int carY;
@@ -882,6 +884,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				setHabilidade(getHabilidade() + 1);
 			}
 			setNumeroVolta(getNumeroVolta() + 1);
+			setBoxSaiuNestaVolta(false);
 			processaAjustesPosQualificacao(
 					Constantes.MAX_VOLTAS / controleJogo.totalVoltasCorrida());
 			processaUltimosDesgastesPneuECombustivel();
@@ -1845,7 +1848,16 @@ public class Piloto implements Serializable, PilotoSuave {
 				return;
 			}
 		}
-		if ((evitaBaterCarroFrente && carroPilotoDaFrenteRetardatario != null
+		if (controleJogo.verificaLinhaBrancaSaidaBox(this)
+				&& getTracado() == controleJogo.getCircuito()
+						.getLadoBoxSaidaBox()) {
+			mudarTracado(0, controleJogo);
+		} else if (controleJogo.verificaLinhaBrancaSaidaBox(this)
+				&& isBoxSaiuNestaVolta()) {
+			mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(),
+					controleJogo, true);
+		} else if ((evitaBaterCarroFrente
+				&& carroPilotoDaFrenteRetardatario != null
 				&& getTracado() == carroPilotoDaFrenteRetardatario.getPiloto()
 						.getTracado())
 				|| calculaDiffParaProximoRetardatario < (testeHabilidadePiloto()
@@ -2820,13 +2832,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		qtdeParadasBox++;
 		ptosBox = 0;
 		box = false;
-		int novoLado = 0;
-		if (interfaceJogo.getCircuito().getLadoBoxSaidaBox() != 0) {
-			novoLado = interfaceJogo.getCircuito().getLadoBoxSaidaBox() == 1
-					? 2
-					: 1;
-		}
-		mudarTracado(novoLado, interfaceJogo);
+		setBoxSaiuNestaVolta(true);
 	}
 
 	public String obterTempoVoltaAtual() {
@@ -3536,6 +3542,14 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setTempoVoltaQualificacao(String tempoVoltaQualificacao) {
 		this.tempoVoltaQualificacao = tempoVoltaQualificacao;
+	}
+
+	public boolean isBoxSaiuNestaVolta() {
+		return boxSaiuNestaVolta;
+	}
+
+	public void setBoxSaiuNestaVolta(boolean boxSaiuNestaVolta) {
+		this.boxSaiuNestaVolta = boxSaiuNestaVolta;
 	}
 
 }

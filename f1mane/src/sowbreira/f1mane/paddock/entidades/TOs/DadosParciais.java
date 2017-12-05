@@ -346,4 +346,13 @@ public class DadosParciais implements Serializable {
 		// </table>@1240781962625µ1240782037063µ2@1240781886704µ1240781962625µ2@1240781811157µ1240781886704µ2@1240781735344µ1240781811157µ2@@6549µ7279µ6547µ6934µ7087µ7070µ6859µ6696µ6354µ6846µ6929µ5003µ6418µ6398µ4770µ6593µ6302µ6965µ6372µ7139µ0µ0");
 		Logger.logar("asdµqweµzxcµtyu".split("µ")[2]);
 	}
+
+	public boolean isBox() {
+		return box;
+	}
+
+	public void setBox(boolean box) {
+		this.box = box;
+	}
+	
 }

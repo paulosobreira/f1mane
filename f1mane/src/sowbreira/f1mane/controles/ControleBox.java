@@ -429,7 +429,6 @@ public class ControleBox {
 		piloto.setNoAtual(saidaBox);
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		piloto.setNumeroVolta(piloto.getNumeroVolta() + 1);
-
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
 		String[] strings = new String[]{piloto.getNome(),
 				ControleEstatisticas.formatarTempo(diff),
@@ -705,6 +704,12 @@ public class ControleBox {
 					+ ((ptsPista.size() - indexPole) + indexSaidaBox);
 		}
 		return diferenca;
+	}
+
+	public boolean verificaLinhaBrancaSaidaBox(Piloto piloto) {
+		int saidaBoxIndex = circuito.getSaidaBoxIndex();
+		int index = piloto.getNoAtual().getIndex();
+		return (index > saidaBoxIndex - 300 && index < saidaBoxIndex + 300);
 	}
 
 }

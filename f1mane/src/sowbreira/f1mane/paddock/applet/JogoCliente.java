@@ -1382,4 +1382,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
+	@Override
+	public boolean verificaLinhaBrancaSaidaBox(Piloto piloto) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
