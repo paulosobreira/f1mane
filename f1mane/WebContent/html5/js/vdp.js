@@ -191,7 +191,7 @@ function vdp_atualizaSuave() {
 
 function vdp_centralizaPilotoSelecionado() {
 	if (dadosParciais == null || dadosParciais.posisPack == null) {
-		if(circuito!=null){
+		if (circuito != null) {
 			vdp_centralizaPonto(circuito.creditosPonto);
 		}
 		return;
@@ -461,6 +461,7 @@ function vdp_desenhaCarrosCima() {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
+	var carrosDesenhado = 0;
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
 		if (pilotosDnfMap.get(piloto.idPiloto)) {
@@ -470,6 +471,24 @@ function vdp_desenhaCarrosCima() {
 		if (ponto == null || ponto.x == null || ponto.y == null) {
 			continue;
 		}
+		var imgCarro = carrosImgMap.get(piloto.idPiloto);
+		if (pilotosAereofolioMap.get(piloto.idPiloto)) {
+			imgCarro = carrosImgSemAereofolioMap.get(piloto.idPiloto);
+		}
+		if ('SC' == piloto.idPiloto) {
+			imgCarro = safetycar;
+		}
+		var rectObj = {
+			left : ponto.x,
+			top : ponto.y,
+			right : ponto.x + imgCarro.width,
+			bottom : ponto.y + imgCarro.height
+		};
+		if (!vdp_intersectRect(rectBg, rectObj)) {
+			continue;
+		}
+		carrosDesenhado++;
+
 		var angulo = 0;
 		var frenteCar;
 		var atrasCar;
@@ -539,23 +558,6 @@ function vdp_desenhaCarrosCima() {
 			}
 		}
 
-		var imgCarro = carrosImgMap.get(piloto.idPiloto);
-		if (pilotosAereofolioMap.get(piloto.idPiloto)) {
-			imgCarro = carrosImgSemAereofolioMap.get(piloto.idPiloto);
-		}
-		if ('SC' == piloto.idPiloto) {
-			imgCarro = safetycar;
-		}
-		var rectObj = {
-			left : ponto.x,
-			top : ponto.y,
-			right : ponto.x + imgCarro.width,
-			bottom : ponto.y + imgCarro.height
-		};
-		if (!vdp_intersectRect(rectBg, rectObj)) {
-			continue;
-		}
-
 		var x = ponto.x - ptBg.x - (imgCarro.width / 2);
 		var y = ponto.y - ptBg.y - (imgCarro.height / 2);
 		pilotosEfeitosMap.set(piloto.idPiloto, true);
@@ -590,6 +592,7 @@ function vdp_desenhaCarrosCima() {
 		}
 
 	}
+	console.log('carrosDesenhado : '+carrosDesenhado);
 }
 
 function vdp_emMovimento(id) {
