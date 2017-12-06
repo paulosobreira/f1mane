@@ -1848,10 +1848,20 @@ public class Piloto implements Serializable, PilotoSuave {
 				return;
 			}
 		}
-		if (controleJogo.verificaLinhaBrancaSaidaBox(this)
-				&& getTracado() == controleJogo.getCircuito()
-						.getLadoBoxSaidaBox()) {
+		if (getTracado() == controleJogo.getCircuito().getLadoBoxSaidaBox()
+				&& controleJogo.verificaLinhaBrancaSaidaBox(this)) {
 			mudarTracado(0, controleJogo);
+		} else if (isBox()
+				&& getTracado() != controleJogo.getCircuito()
+						.getLadoBoxSaidaBox()
+				&& controleJogo.verificaEntradaBox(this)) {
+			if (getTracado() == 0) {
+				mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(),
+						controleJogo);
+			} else {
+				mudarTracado(0, controleJogo);
+			}
+
 		} else if (controleJogo.verificaLinhaBrancaSaidaBox(this)
 				&& isBoxSaiuNestaVolta()) {
 			mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(),

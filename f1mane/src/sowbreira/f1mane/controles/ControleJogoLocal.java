@@ -1747,4 +1747,9 @@ public class ControleJogoLocal extends ControleRecursos
 		return controleCorrida.verificaLinhaBrancaSaidaBox(piloto);
 	}
 
+	@Override
+	public boolean verificaEntradaBox(Piloto piloto) {
+		return controleCorrida.verificaEntradaBox(piloto);
+	}
+
 }

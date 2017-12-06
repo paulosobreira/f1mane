@@ -461,7 +461,6 @@ function vdp_desenhaCarrosCima() {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
-	var carrosDesenhado = 0;
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
 		if (pilotosDnfMap.get(piloto.idPiloto)) {
@@ -487,8 +486,6 @@ function vdp_desenhaCarrosCima() {
 		if (!vdp_intersectRect(rectBg, rectObj)) {
 			continue;
 		}
-		carrosDesenhado++;
-
 		var angulo = 0;
 		var frenteCar;
 		var atrasCar;
@@ -592,7 +589,6 @@ function vdp_desenhaCarrosCima() {
 		}
 
 	}
-	console.log('carrosDesenhado : '+carrosDesenhado);
 }
 
 function vdp_emMovimento(id) {

@@ -709,7 +709,13 @@ public class ControleBox {
 	public boolean verificaLinhaBrancaSaidaBox(Piloto piloto) {
 		int saidaBoxIndex = circuito.getSaidaBoxIndex();
 		int index = piloto.getNoAtual().getIndex();
-		return (index > saidaBoxIndex - 300 && index < saidaBoxIndex + 300);
+		return (index > saidaBoxIndex - 500 && index < saidaBoxIndex + 500);
+	}
+
+	public boolean verificaEntradaBox(Piloto piloto) {
+		int entradaBoxIndex = circuito.getEntradaBoxIndex();
+		int index = piloto.getNoAtual().getIndex();
+		return (index > entradaBoxIndex - 1000 && index < entradaBoxIndex);
 	}
 
 }

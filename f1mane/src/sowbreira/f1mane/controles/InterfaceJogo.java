@@ -406,4 +406,6 @@ public interface InterfaceJogo {
 
 	public Piloto getPilotoBateu();
 
+	public boolean verificaEntradaBox(Piloto piloto);
+
 }

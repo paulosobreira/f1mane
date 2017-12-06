@@ -636,4 +636,8 @@ public class ControleCorrida {
 		return controleBox.verificaLinhaBrancaSaidaBox(piloto);
 	}
 
+	public boolean verificaEntradaBox(Piloto piloto) {
+		return controleBox.verificaEntradaBox(piloto);
+	}
+
 }

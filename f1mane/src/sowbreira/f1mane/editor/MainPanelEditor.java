@@ -1060,7 +1060,7 @@ public class MainPanelEditor extends JPanel {
 		int x = limitesViewPort.getBounds().x + 30;
 		int y = limitesViewPort.getBounds().y + 20;
 		g2d.setColor(PainelCircuito.lightWhiteRain);
-		g2d.fillRoundRect(x - 15, y - 15, 200, 180, 15, 15);
+		g2d.fillRoundRect(x - 15, y - 15, 200, 200, 15, 15);
 		g2d.setColor(Color.black);
 		g2d.drawString("Zoom : " + zoom, x, y);
 		y += 20;
@@ -1102,6 +1102,16 @@ public class MainPanelEditor extends JPanel {
 		y += 20;
 		g2d.drawString(Lang.msg("BAIXA") + ":" + noBaixa + " "
 				+ (int) (100 * noBaixa / total) + "%", x, y);
+		y += 20;
+		g2d.setColor(Color.CYAN);
+		g2d.drawLine(x + 50, y, x + 100, y);
+		g2d.setColor(Color.black);
+		g2d.drawString("Pista 1 ", x, y);
+		y += 20;
+		g2d.setColor(Color.MAGENTA);
+		g2d.drawLine(x + 50, y, x + 100, y);
+		g2d.setColor(Color.black);
+		g2d.drawString("Pista 2 ", x, y);
 
 		// limitesViewPort.width -= 100;
 		// limitesViewPort.height -= 100;
@@ -1711,7 +1721,7 @@ public class MainPanelEditor extends JPanel {
 		No oldNo1 = null;
 		for (int i = 0; i < circuito.getPista1Full().size(); i += 10) {
 			No no = (No) circuito.getPista1Full().get(i);
-			g2d.setColor(no.getTipo());
+			g2d.setColor(Color.CYAN);
 			conNoPista++;
 			if (oldNo1 == null) {
 				oldNo1 = no;
@@ -1725,7 +1735,7 @@ public class MainPanelEditor extends JPanel {
 
 		for (int i = 0; i < circuito.getBox1Full().size(); i += 10) {
 			No no = (No) circuito.getBox1Full().get(i);
-			g2d.setColor(no.getTipo());
+			g2d.setColor(Color.CYAN);
 			conNoPista++;
 			if (oldNo1 == null) {
 				oldNo1 = no;
@@ -1740,7 +1750,7 @@ public class MainPanelEditor extends JPanel {
 		No oldNo2 = null;
 		for (int i = 0; i < circuito.getPista2Full().size(); i += 10) {
 			No no = (No) circuito.getPista2Full().get(i);
-			g2d.setColor(no.getTipo());
+			g2d.setColor(Color.MAGENTA);
 			conNoPista++;
 			if (oldNo2 == null) {
 				oldNo2 = no;
@@ -1755,7 +1765,7 @@ public class MainPanelEditor extends JPanel {
 
 		for (int i = 0; i < circuito.getBox2Full().size(); i += 10) {
 			No no = (No) circuito.getBox2Full().get(i);
-			g2d.setColor(no.getTipo());
+			g2d.setColor(Color.MAGENTA);
 			conNoPista++;
 			if (oldNo2 == null) {
 				oldNo2 = no;
@@ -1808,24 +1818,23 @@ public class MainPanelEditor extends JPanel {
 			No ultNo = (No) circuito.getBox().get(index);
 			index = circuito.getBox().size() - 2;
 			if (index > 0) {
-				No penutimoNo = (No) circuito.getBox().get(index);
-				double calculaAngulo = GeoUtil.calculaAngulo(ultNo.getPoint(),
-						penutimoNo.getPoint(), 0);
-				Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-						Util.inteiro(Carro.ALTURA * multiplicadorLarguraPista),
-						ultNo.getPoint());
-				Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
-						Util.inteiro(Carro.ALTURA * multiplicadorLarguraPista),
-						ultNo.getPoint());
 				if (circuito.getLadoBoxSaidaBox() == 2) {
 					g2d.setColor(Color.ORANGE);
-					g2d.fillOval(Util.inteiro(p1.x - 5), Util.inteiro(p1.y - 5),
-							Util.inteiro(10), Util.inteiro(10));
+					No no = circuito.getPista2Full()
+							.get(circuito.getSaidaBoxIndex());
+					Point point = no.getPoint();
+					g2d.fillOval(Util.inteiro(point.x - 5),
+							Util.inteiro(point.y - 5), Util.inteiro(10),
+							Util.inteiro(10));
 				}
 				if (circuito.getLadoBoxSaidaBox() == 1) {
 					g2d.setColor(Color.ORANGE);
-					g2d.fillOval(Util.inteiro(p2.x - 5), Util.inteiro(p2.y - 5),
-							Util.inteiro(10), Util.inteiro(10));
+					No no = circuito.getPista1Full()
+							.get(circuito.getSaidaBoxIndex());
+					Point point = no.getPoint();
+					g2d.fillOval(Util.inteiro(point.x - 5),
+							Util.inteiro(point.y - 5), Util.inteiro(10),
+							Util.inteiro(10));
 				}
 			}
 		}
@@ -1920,6 +1929,9 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void creditos() {
+		if (circuito.getCreditos() != null) {
+			centralizarPonto(circuito.getCreditos());
+		}
 		creditos = true;
 	}
 
