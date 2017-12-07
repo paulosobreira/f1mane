@@ -275,11 +275,12 @@ public class ControleCorrida {
 			double fatorAcidenteLocal) {
 		int limiteStress = (int) (100 * (1 - fatorAcidenteLocal));
 		if (piloto.getCarro().getDurabilidadeAereofolio() <= 0) {
-			if (controleJogo.isSafetyCar()
+			if (!controleJogo.isSafetyCar()
 					&& !controleSafetyCar.safetyCarUltimas3voltas()
 					&& !piloto.isDesqualificado()
 					&& !piloto.testeHabilidadePilotoCarro()
-					&& piloto.getVelocidade() > 140
+					&& !controleJogo.verificaEntradaBox(piloto)
+					&& !controleJogo.verificaLinhaBrancaSaidaBox(piloto)
 					&& piloto.getStress() > 80) {
 				piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 				Logger.logar(piloto.getNome() + " BATEU_FORTE");
