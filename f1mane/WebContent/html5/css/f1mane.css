@@ -1,12 +1,60 @@
 @CHARSET "UTF-8";
-body {
- margin: 0;
- /*background: url(/f1mane/rest/letsRace/png/f1bg);*/
- background-size: 100%,100%;
- width: 100%;
- height: 100%;
- background-repeat:no-repeat;
- font-family: sans-serif;
+@media (orientation: landscape) {
+	body {
+	 margin: 0;
+	 /*background: url(/f1mane/rest/letsRace/png/f1bg);*/
+	 background-size: 100%,100%;
+	 width: 100%;
+	 height: 100%;
+	 background-repeat:no-repeat;
+	 font-family: sans-serif;
+	}
+	.loader {
+	  position: absolute;
+	  background-color : white;
+	  left: 50%;
+	  top: 50%;
+	  z-index: 1;
+	  width: 200px;
+	  height: 200px;
+	  margin: -75px 0 0 -75px;
+	  border: 5px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 5px solid grey;
+	  width: 120px;
+	  height: 120px;
+	  -webkit-animation: spin 2s linear infinite;
+	  animation: spin 2s linear infinite;
+	}	
+}
+
+@media (orientation: portrait) {
+	body {
+	 margin: 0;
+	 /*background: url(/f1mane/rest/letsRace/png/f1bg);*/
+	 background-size: 100%,100%;
+	 width: 100%;
+	 height: 100%;
+	 background-repeat:no-repeat;
+	 font-family: sans-serif;
+	}
+	.loader {
+	  position: absolute;
+	  background-color : white;
+	  left: 55%;
+	  top: 50%;
+	  z-index: 1;
+	  width: 200px;
+	  height: 200px;
+	  margin: -75px 0 0 -75px;
+	  border: 5px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 5px solid grey;
+	  width: 120px;
+	  height: 120px;
+	  -webkit-animation: spin 2s linear infinite;
+	  animation: spin 2s linear infinite;
+	}	
 }
 
 .img-center {
@@ -19,24 +67,6 @@ body {
 
 .img-responsive-line{
     display: inline;
-}
-
-.loader {
-  position: absolute;
-  background-color : white;
-  left: 53%;
-  top: 50%;
-  z-index: 1;
-  width: 200px;
-  height: 200px;
-  margin: -75px 0 0 -75px;
-  border: 5px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 5px solid grey;
-  width: 120px;
-  height: 120px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
 }
 
 .capa{
@@ -58,4 +88,3 @@ body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
