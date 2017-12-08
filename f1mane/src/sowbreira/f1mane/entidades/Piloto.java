@@ -1848,7 +1848,12 @@ public class Piloto implements Serializable, PilotoSuave {
 				return;
 			}
 		}
-		if (getTracado() == controleJogo.getCircuito().getLadoBoxSaidaBox()
+		if (isBoxSaiuNestaVolta()
+				&& controleJogo.verificaLinhaBrancaSaidaBox(this)) {
+			mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(),
+					controleJogo, true);
+		} else if (getTracado() == controleJogo.getCircuito()
+				.getLadoBoxSaidaBox()
 				&& controleJogo.verificaLinhaBrancaSaidaBox(this)) {
 			mudarTracado(0, controleJogo);
 		} else if (isBox()
@@ -1862,10 +1867,6 @@ public class Piloto implements Serializable, PilotoSuave {
 				mudarTracado(0, controleJogo);
 			}
 
-		} else if (controleJogo.verificaLinhaBrancaSaidaBox(this)
-				&& isBoxSaiuNestaVolta()) {
-			mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(),
-					controleJogo, true);
 		} else if ((evitaBaterCarroFrente
 				&& carroPilotoDaFrenteRetardatario != null
 				&& getTracado() == carroPilotoDaFrenteRetardatario.getPiloto()

@@ -221,21 +221,6 @@ public class ControleBox {
 					ptosBox += 1;
 				}
 
-				double indicePiloto = piloto.getNoAtual().getIndex();
-				double tamPista = controleJogo.getNosDoBox().size();
-				boolean mais90Porcent = (indicePiloto / tamPista) > 0.9;
-				if (controleJogo.isSafetyCarNaPista()) {
-					mais90Porcent = false;
-				}
-
-				if (!mais90Porcent && controleJogo.isSafetyCarNaPista()
-						&& piloto.getNoAtual()
-								.getIndex() > (ultIndiceParada
-										+ Carro.MEIA_LARGURA)
-						&& verificaTemCarroPassandoSaida()) {
-					ptosBox = 1;
-				}
-
 				ptosBox *= circuito.getMultiplciador();
 				int novosPtsBox = Util.inteiro(ptosBox) + piloto.getPtosBox();
 				piloto.setPtosBox(novosPtsBox);
@@ -247,9 +232,9 @@ public class ControleBox {
 									? 2
 									: 1),
 							controleJogo);
-				} else if (!mais90Porcent) {
-					piloto.mudarTracado(0, controleJogo);
 				}
+
+				piloto.mudarTracado(0, controleJogo);
 			}
 
 			if (piloto.getPtosBox() < boxList.size()) {
@@ -274,27 +259,6 @@ public class ControleBox {
 				&& !piloto.decrementaParadoBox() && piloto.isBox()) {
 			processarPilotoPararBox(piloto);
 		}
-	}
-
-	private boolean verificaTemCarroPassandoSaida() {
-		List pilotos = controleJogo.getPilotosCopia();
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.getPtosBox() > 0 || piloto.isDesqualificado()
-					|| piloto.getCarro().verificaDano()) {
-				continue;
-			}
-			No noAtual = piloto.getNoAtual();
-			int iniAnalise = saidaBox.getIndex() - 200;
-			if (controleCorrida.isSafetyCarNaPista()) {
-				iniAnalise = 0;
-			}
-			if (saidaBox.getIndex() + 50 > noAtual.getIndex()
-					&& noAtual.getIndex() > iniAnalise) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public No getEntradaBox() {
