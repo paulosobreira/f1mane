@@ -8,6 +8,7 @@ var menosAsa, maisAsa, normalAsa;
 var motor, capacete;
 var safetycar;
 var travadaRoda0, travadaRoda1, travadaRoda2;
+var girdLargadaMarca;
 var carroCimaFreiosD1, carroCimaFreiosD2, carroCimaFreiosD3, carroCimaFreiosD4, carroCimaFreiosD5;
 var carroCimaFreiosE1, carroCimaFreiosE2, carroCimaFreiosE3, carroCimaFreiosE4, carroCimaFreiosE5;
 var carregouMidia = false;
@@ -53,6 +54,8 @@ function mid_caregaMidia() {
 	imgPneuD.src = "img/pneuDuro.png"
 	imgPneuC = new Image();
 	imgPneuC.src = "img/pneuChuva.png"
+    girdLargadaMarca = new Image();		
+	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro";
 	motor = new Image();
 	motor.src = "img/motor.png"
 	capacete = new Image();

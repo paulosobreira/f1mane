@@ -19,6 +19,7 @@ var maneContext = maneCanvas.getContext('2d');
 var pilotosTracadoForaMap = new Map();
 var desenhaImagens = true;
 var pitLane = false;
+var desenhouMarcasLargadaGrid = false;
 var ptBg = {
 	x : 0,
 	y : 0
@@ -53,6 +54,7 @@ function vdp_desenha(fps) {
 	vdp_atualizaSuave();
 	vdp_centralizaPilotoSelecionado();
 	vdp_desenhaBackGround();
+	vdp_desenhaMarcasLargadaGrid();
 	vdp_desenhaCarrosCima();
 	vdp_desenhaNomesCima();
 	// vdp_desenhaObjs();
@@ -62,6 +64,29 @@ function vdp_desenha(fps) {
 	// maneContext.fillStyle = 'black';
 	// maneContext.fillText("FPS: " + fps.frameRate(), 4, 30);
 	// }
+}
+
+function vdp_desenhaMarcasLargadaGrid() {
+	if (desenhouMarcasLargadaGrid || circuito == null
+			|| circuito.objetosNoTransparencia == null || dadosParciais == null
+			|| dadosJogo == null || carrosImgMap == null || cvBg == null
+			|| carrosImgMap == null) {
+		return;
+	}
+	var posicaoPilotos = dadosParciais.posisPack;
+	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
+		var piloto = posicaoPilotos.posis[i];
+		var no = mapaIdNos.get(piloto.idNo);
+		var frenteCar = safeArray(circuito.pistaFull, no.index + 15);
+		var atrasCar = safeArray(circuito.pistaFull, no.index - 15);
+		var angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
+		var ponto = vdp_obterPonto(piloto);
+		var x = ponto.x - ptBg.x - 60;
+		var y = ponto.y - ptBg.y - 60;
+		var rotacionar = vdp_rotacionar(girdLargadaMarca, angulo);
+		ctxBg.drawImage(rotacionar, x + ptBg.x, y + ptBg.y);
+	}
+	desenhouMarcasLargadaGrid = true;
 }
 
 function vdp_atualizaSuave() {
