@@ -503,7 +503,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 		});
 		timer.start();
-
 	}
 
 	public void atualizaIndexTracadoPilotos() {

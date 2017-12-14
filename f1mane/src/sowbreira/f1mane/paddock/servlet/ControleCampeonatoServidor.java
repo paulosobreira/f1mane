@@ -25,7 +25,8 @@ public class ControleCampeonatoServidor {
 
 	private ControlePersistencia controlePersistencia;
 
-	public ControleCampeonatoServidor(ControlePersistencia controlePersistencia) {
+	public ControleCampeonatoServidor(
+			ControlePersistencia controlePersistencia) {
 		super();
 		this.controlePersistencia = controlePersistencia;
 	}
@@ -66,8 +67,8 @@ public class ControleCampeonatoServidor {
 
 	private boolean verificaCampeonatoEmAberto(JogadorDadosSrv jogadorDadosSrv,
 			Session session) {
-		List campeonatos = controlePersistencia.pesquisaCampeonatos(
-				jogadorDadosSrv, session);
+		List campeonatos = controlePersistencia
+				.pesquisaCampeonatos(jogadorDadosSrv, session);
 		for (Iterator iterator = campeonatos.iterator(); iterator.hasNext();) {
 			Campeonato campeonato = (Campeonato) iterator.next();
 			List<CorridaCampeonato> corridaCampeonatos = campeonato
@@ -88,8 +89,8 @@ public class ControleCampeonatoServidor {
 		if (Util.isNullOrEmpty(nome)) {
 			return true;
 		}
-		Campeonato campeonatoBanco = controlePersistencia.pesquisaCampeonato(
-				session, nome, false);
+		Campeonato campeonatoBanco = controlePersistencia
+				.pesquisaCampeonato(session, nome, false);
 		return campeonatoBanco != null;
 	}
 
@@ -99,7 +100,8 @@ public class ControleCampeonatoServidor {
 			List<Campeonato> campeonatos = controlePersistencia
 					.obterListaCampeonatos(session);
 			List retorno = new ArrayList();
-			for (Iterator iterator = campeonatos.iterator(); iterator.hasNext();) {
+			for (Iterator iterator = campeonatos.iterator(); iterator
+					.hasNext();) {
 				Campeonato campeonato = (Campeonato) iterator.next();
 				Object[] row = new Object[4];
 				row[0] = campeonato.getNome();
@@ -131,8 +133,8 @@ public class ControleCampeonatoServidor {
 		String campString = (String) clientPaddockPack.getDataObject();
 		Session session = controlePersistencia.getSession();
 		try {
-			Campeonato campeonato = controlePersistencia.pesquisaCampeonato(
-					session, campString, true);
+			Campeonato campeonato = controlePersistencia
+					.pesquisaCampeonato(session, campString, true);
 			return campeonato;
 		} finally {
 			if (session.isOpen()) {
@@ -146,12 +148,15 @@ public class ControleCampeonatoServidor {
 			Map mapVoltasJogadoresOnline, List pilotos,
 			DadosCriarJogo dadosCriarJogo,
 			ControleClassificacao controleClassificacao) {
+		if (!controlePersistencia.isDatabase()) {
+			return;
+		}
 		String campString = dadosCriarJogo.getNomeCampeonato();
 		Session session = controlePersistencia.getSession();
 		try {
 
-			Campeonato campeonato = controlePersistencia.pesquisaCampeonato(
-					session, campString, false);
+			Campeonato campeonato = controlePersistencia
+					.pesquisaCampeonato(session, campString, false);
 			if (campeonato == null) {
 				Logger.logar("campeonato nulo");
 				return;
@@ -159,8 +164,8 @@ public class ControleCampeonatoServidor {
 			CorridaCampeonato corridaCampeonatoCorrente = null;
 			for (CorridaCampeonato corridaCampeonato : campeonato
 					.getCorridaCampeonatos()) {
-				if (dadosCriarJogo.getCircuitoSelecionado().equals(
-						corridaCampeonato.getNomeCircuito())) {
+				if (dadosCriarJogo.getCircuitoSelecionado()
+						.equals(corridaCampeonato.getNomeCircuito())) {
 					corridaCampeonatoCorrente = corridaCampeonato;
 					break;
 				}
@@ -187,24 +192,23 @@ public class ControleCampeonatoServidor {
 				int pts = controleClassificacao.gerarPontos(piloto);
 				dadosCorridaCampeonato.setPontos(pts);
 				dadosCorridaCampeonato.setPosicao(piloto.getPosicao());
-				dadosCorridaCampeonato.setTpPneu(piloto.getCarro()
-						.getTipoPneu());
+				dadosCorridaCampeonato
+						.setTpPneu(piloto.getCarro().getTipoPneu());
 				dadosCorridaCampeonato.setNumVoltas(piloto.getNumeroVolta());
 				Volta volta = piloto.obterVoltaMaisRapida();
 				if (volta != null)
-					dadosCorridaCampeonato.setVoltaMaisRapida(volta
-							.getTempoVoltaFormatado());
-				dadosCorridaCampeonato.setQtdeParadasBox(piloto
-						.getQtdeParadasBox());
-				dadosCorridaCampeonato.setDesgastePneus(String.valueOf(piloto
-						.getCarro().getPorcentagemDesgastePneus() + "%"));
-				dadosCorridaCampeonato.setCombustivelRestante(String
-						.valueOf(piloto.getCarro().getPorcentagemCombustivel()
-								+ "%"));
-				dadosCorridaCampeonato.setDesgasteMotor(String.valueOf(piloto
-						.getCarro().getPorcentagemDesgasteMotor() + "%"));
-				corridaCampeonatoCorrente.getDadosCorridaCampeonatos().add(
-						dadosCorridaCampeonato);
+					dadosCorridaCampeonato
+							.setVoltaMaisRapida(volta.getTempoVoltaFormatado());
+				dadosCorridaCampeonato
+						.setQtdeParadasBox(piloto.getQtdeParadasBox());
+				dadosCorridaCampeonato.setDesgastePneus(String.valueOf(
+						piloto.getCarro().getPorcentagemDesgastePneus() + "%"));
+				dadosCorridaCampeonato.setCombustivelRestante(String.valueOf(
+						piloto.getCarro().getPorcentagemCombustivel() + "%"));
+				dadosCorridaCampeonato.setDesgasteMotor(String.valueOf(
+						piloto.getCarro().getPorcentagemDesgasteMotor() + "%"));
+				corridaCampeonatoCorrente.getDadosCorridaCampeonatos()
+						.add(dadosCorridaCampeonato);
 			}
 			try {
 				controlePersistencia.gravarDados(session, campeonato);

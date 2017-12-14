@@ -79,8 +79,9 @@ public class ControleJogosServer {
 		Session session = controlePersistencia.getSession();
 		try {
 
-			if (!Util.isNullOrEmpty(clientPaddockPack.getDadosJogoCriado()
-					.getNomeCampeonato())) {
+			if (controlePersistencia.isDatabase()
+					&& !Util.isNullOrEmpty(clientPaddockPack
+							.getDadosJogoCriado().getNomeCampeonato())) {
 				Campeonato campeonato = controlePersistencia.pesquisaCampeonato(
 						session, clientPaddockPack.getDadosJogoCriado()
 								.getNomeCampeonato(),
@@ -131,7 +132,7 @@ public class ControleJogosServer {
 					clientPaddockPack, jogoServidor);
 			return srvPaddockPack;
 		} finally {
-			if (session.isOpen()) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -147,7 +148,7 @@ public class ControleJogosServer {
 		return srvPaddockPack;
 	}
 
-	private boolean verificaExcedePotencia(int mediaPontecia, int ptsCarro,
+	private boolean verificaPotenciaLimite(int mediaPontecia, int ptsCarro,
 			double nivel) {
 		int permitidoAcimaMedia = 0;
 		if (InterfaceJogo.FACIL_NV == nivel) {
@@ -194,7 +195,7 @@ public class ControleJogosServer {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
 			}
-			if (verificaExcedePotencia(jogoServidor.getMediaPontecia(),
+			if (verificaPotenciaLimite(jogoServidor.getMediaPontecia(),
 					carreiraDadosSrv.getPtsCarro()
 							+ carreiraDadosSrv.getPtsAerodinamica()
 							+ carreiraDadosSrv.getPtsFreio(),
