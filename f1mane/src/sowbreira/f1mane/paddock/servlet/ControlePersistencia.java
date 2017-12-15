@@ -476,6 +476,9 @@ public class ControlePersistencia {
 
 	public CarreiraDadosSrv carregaCarreiraJogador(String nomeJogador,
 			boolean vaiCliente, Session session) {
+		if(!isDatabase()){
+			return null;
+		}
 		List list = session.createCriteria(CarreiraDadosSrv.class)
 				.createAlias("jogadorDadosSrv", "j")
 				.add(Restrictions.eq("j.nome", nomeJogador)).list();

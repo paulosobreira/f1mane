@@ -176,69 +176,74 @@ public class LetsRace {
 			@PathParam("temporada") String temporada,
 			@PathParam("idPiloto") String idPiloto,
 			@PathParam("circuito") String circuito) {
-		SessaoCliente sessaoCliente = controlePaddock
-				.obterSessaoPorToken(token);
-		if (sessaoCliente == null) {
-			return Response.status(401).build();
-		}
-		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		clientPaddockPack.setSessaoCliente(sessaoCliente);
-		DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada, circuito,
-				idPiloto);
-		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-		List<String> obterJogos = controlePaddock.obterJogos();
-		if (!obterJogos.isEmpty()) {
-			clientPaddockPack.setNomeJogo(obterJogos.get(0));
-		}
-		SrvPaddockPack srvPaddockPack = null;
-		Object statusJogo = null;
-		statusJogo = controlePaddock.obterJogoPeloNome(clientPaddockPack);
-		/**
-		 * Criar Jogo
-		 */
-		boolean criarJogo = false;
-		if (statusJogo == null) {
-			statusJogo = controlePaddock.criarJogo(clientPaddockPack);
-			Response erro = processsaMensagem(statusJogo);
-			if (erro != null) {
-				return erro;
+		try {
+			SessaoCliente sessaoCliente = controlePaddock
+					.obterSessaoPorToken(token);
+			if (sessaoCliente == null) {
+				return Response.status(401).build();
 			}
-			criarJogo = true;
-		}
-		srvPaddockPack = (SrvPaddockPack) statusJogo;
-
-		/**
-		 * Preenchento todos possiveis campos para nome do jogo Bagunça...
-		 */
-		clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-		clientPaddockPack.getDadosJogoCriado()
-				.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
-		clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
-
-		/**
-		 * Entrar Jogo
-		 */
-		if (statusJogo != null) {
-			statusJogo = controlePaddock.entrarJogo(clientPaddockPack);
-			Response erro = processsaMensagem(statusJogo);
-			if (erro != null) {
-				return erro;
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+			clientPaddockPack.setSessaoCliente(sessaoCliente);
+			DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada,
+					circuito, idPiloto);
+			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
+			List<String> obterJogos = controlePaddock.obterJogos();
+			if (!obterJogos.isEmpty()) {
+				clientPaddockPack.setNomeJogo(obterJogos.get(0));
 			}
-			controlePaddock.atualizarDadosVisao();
+			SrvPaddockPack srvPaddockPack = null;
+			Object statusJogo = null;
+			statusJogo = controlePaddock.obterJogoPeloNome(clientPaddockPack);
+			/**
+			 * Criar Jogo
+			 */
+			boolean criarJogo = false;
+			if (statusJogo == null) {
+				statusJogo = controlePaddock.criarJogo(clientPaddockPack);
+				Response erro = processsaMensagem(statusJogo);
+				if (erro != null) {
+					return erro;
+				}
+				criarJogo = true;
+			}
+			srvPaddockPack = (SrvPaddockPack) statusJogo;
+
+			/**
+			 * Preenchento todos possiveis campos para nome do jogo Bagunça...
+			 */
+			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
+			clientPaddockPack.getDadosJogoCriado()
+					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+			clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+
+			/**
+			 * Entrar Jogo
+			 */
+			if (statusJogo != null) {
+				statusJogo = controlePaddock.entrarJogo(clientPaddockPack);
+				Response erro = processsaMensagem(statusJogo);
+				if (erro != null) {
+					return erro;
+				}
+				controlePaddock.atualizarDadosVisao();
+			}
+			/**
+			 * Iniciar Jogo
+			 */
+			// if (criarJogo && statusJogo != null) {
+			// statusJogo = controlePaddock.iniciaJogo(clientPaddockPack);
+			// Response erro = processsaMensagem(statusJogo);
+			// if (erro != null) {
+			// return erro;
+			// }
+			// }
+			DadosJogo dadosJogo = (DadosJogo) controlePaddock
+					.obterDadosJogo(clientPaddockPack);
+			return Response.status(200).entity(dadosJogo).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
 		}
-		/**
-		 * Iniciar Jogo
-		 */
-		// if (criarJogo && statusJogo != null) {
-		// statusJogo = controlePaddock.iniciaJogo(clientPaddockPack);
-		// Response erro = processsaMensagem(statusJogo);
-		// if (erro != null) {
-		// return erro;
-		// }
-		// }
-		DadosJogo dadosJogo = (DadosJogo) controlePaddock
-				.obterDadosJogo(clientPaddockPack);
-		return Response.status(200).entity(dadosJogo).build();
+		return null;
 	}
 
 	private Response processsaMensagem(Object objeto) {
@@ -575,9 +580,9 @@ public class LetsRace {
 		}
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();
-//		JogoServidor obterJogoPorSessaoCliente = controleJogosServer
-//				.obterJogoPorSessaoCliente(sessaoCliente);
-//		obterJogoPorSessaoCliente.forcaSafatyCar();
+		// JogoServidor obterJogoPorSessaoCliente = controleJogosServer
+		// .obterJogoPorSessaoCliente(sessaoCliente);
+		// obterJogoPorSessaoCliente.forcaSafatyCar();
 		return Response.status(200)
 				.entity(controleJogosServer.mudarDrs(sessaoCliente, idPiloto))
 				.build();
