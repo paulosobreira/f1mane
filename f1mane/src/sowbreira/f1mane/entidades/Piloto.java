@@ -1849,12 +1849,12 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 		}
 		if (isBoxSaiuNestaVolta()
-				&& controleJogo.verificaLinhaBrancaSaidaBox(this)) {
+				&& controleJogo.verificaSaidaBox(this)) {
 			mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(),
 					controleJogo, true);
 		} else if (getTracado() == controleJogo.getCircuito()
 				.getLadoBoxSaidaBox()
-				&& controleJogo.verificaLinhaBrancaSaidaBox(this)) {
+				&& controleJogo.verificaSaidaBox(this)) {
 			mudarTracado(0, controleJogo);
 		} else if (isBox()
 				&& getTracado() != controleJogo.getCircuito()

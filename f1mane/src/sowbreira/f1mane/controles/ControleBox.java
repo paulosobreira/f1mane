@@ -670,7 +670,7 @@ public class ControleBox {
 		return diferenca;
 	}
 
-	public boolean verificaLinhaBrancaSaidaBox(Piloto piloto) {
+	public boolean verificaSaidaBox(Piloto piloto) {
 		int saidaBoxIndex = circuito.getSaidaBoxIndex();
 		int index = piloto.getNoAtual().getIndex();
 		return (index > saidaBoxIndex - 500 && index < saidaBoxIndex + 500);

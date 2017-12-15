@@ -274,14 +274,16 @@ public class ControleCorrida {
 	private void verificaAcidenteIA(Piloto piloto, Piloto pilotoNaFrente,
 			double fatorAcidenteLocal) {
 		int limiteStress = (int) (100 * (1 - fatorAcidenteLocal));
+		if (!pilotoNaFrente.isJogadorHumano() && limiteStress < 80) {
+			limiteStress += 10;
+		}
 		if (piloto.getCarro().getDurabilidadeAereofolio() <= 0) {
-			if (!controleJogo.isSafetyCar()
-					&& !controleSafetyCar.safetyCarUltimas3voltas()
+			if (!controleSafetyCar.safetyCarUltimas3voltas()
 					&& !piloto.isDesqualificado()
 					&& !piloto.testeHabilidadePilotoCarro()
 					&& !controleJogo.verificaEntradaBox(piloto)
-					&& !controleJogo.verificaLinhaBrancaSaidaBox(piloto)
-					&& piloto.getStress() > 80) {
+					&& !controleJogo.verificaSaidaBox(piloto)
+					&& piloto.getStress() > limiteStress) {
 				piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 				Logger.logar(piloto.getNome() + " BATEU_FORTE");
 				controleJogo.infoPrioritaria(
@@ -290,7 +292,7 @@ public class ControleCorrida {
 				piloto.setDesqualificado(true);
 				controleSafetyCar.safetyCarNaPista(piloto);
 			} else {
-				if (piloto.getStress() > 70
+				if (piloto.getStress() > limiteStress
 						&& !piloto.testeHabilidadePilotoCarro()) {
 					perdeuAereofolio(piloto, pilotoNaFrente);
 				}
@@ -633,8 +635,8 @@ public class ControleCorrida {
 		return controleSafetyCar.getPilotoBateu();
 	}
 
-	public boolean verificaLinhaBrancaSaidaBox(Piloto piloto) {
-		return controleBox.verificaLinhaBrancaSaidaBox(piloto);
+	public boolean verificaSaidaBox(Piloto piloto) {
+		return controleBox.verificaSaidaBox(piloto);
 	}
 
 	public boolean verificaEntradaBox(Piloto piloto) {
