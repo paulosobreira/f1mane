@@ -35,7 +35,7 @@ public class ControleCorrida {
 	private double fatorUtrapassagem;
 	private double velocidadeJogo;
 	private boolean corridaIniciada;
-	private double fatorAcidente = Util.intervalo(0.5, 0.7);
+	private double fatorAcidente = Util.intervalo(0.7, 0.9);
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private Pausa pausaAtual;
@@ -260,7 +260,8 @@ public class ControleCorrida {
 		if (fatorAcidenteMomento < 0.1) {
 			fatorAcidenteMomento = 0.1;
 		}
-		if (Math.random() < fatorAcidenteMomento) {
+		if (Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())
+				&& Math.random() > fatorAcidenteMomento) {
 			if (piloto.isJogadorHumano()) {
 				verificaAcidenteJogadorHumano(piloto, pilotoNaFrente,
 						fatorAcidenteMomento);
@@ -274,8 +275,8 @@ public class ControleCorrida {
 	private void verificaAcidenteIA(Piloto piloto, Piloto pilotoNaFrente,
 			double fatorAcidenteLocal) {
 		int limiteStress = (int) (100 * (1 - fatorAcidenteLocal));
-		if (!pilotoNaFrente.isJogadorHumano() && limiteStress < 80) {
-			limiteStress += 10;
+		if (pilotoNaFrente.isJogadorHumano() && limiteStress > 10) {
+			limiteStress -= 10;
 		}
 		if (piloto.getCarro().getDurabilidadeAereofolio() <= 0) {
 			if (!controleSafetyCar.safetyCarUltimas3voltas()
