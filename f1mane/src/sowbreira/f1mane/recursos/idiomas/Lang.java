@@ -247,6 +247,7 @@ public class Lang {
 				if (locale != null && sufix == null) {
 					sufix = locale.getLanguage();
 				}
+				sufix = "pt";
 				String load = "idiomas/mensagens_" + sufix + ".properties";
 				InputStream inputStream = CarregadorRecursos
 						.getCarregadorRecursos().recursoComoStream(load);

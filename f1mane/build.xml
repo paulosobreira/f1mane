@@ -12,7 +12,7 @@
      keytool -genkey -keystore jar-keystore -alias f1mane-key
 
      ====================================================================== -->
-<project name="F1-Mane" default="targetPadrao">
+<project name="F1-Mane" default="targetHtml">
 	<!-- <property name="TOMCAT_HOME" value="E:\apache-tomcat-7.0.35" /> -->
 	<property name="TOMCAT_HOME" value="C:\Java\apache-tomcat-7.0.73" />
 	<property name="HOST" value="games-sowbreira.rhcloud.com" />
@@ -29,6 +29,9 @@
 		<pathelement location="build" />
 	</path>
 
+	<target name="targetHtml" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddockHTML,atualizarVersaoHtml,atualizarURLBGHtml,criarWar,limpaJars">
+	</target>
+	
 	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarLocalJnlp,atualizarVersaoHtml,criarZipOnline,criarWar,limpaJars">
 	</target>
 
@@ -80,6 +83,11 @@
 				<exclude name=".*" />
 				<exclude name=".*/" />
 				<exclude name="**/*.java" />
+				<exclude name="**/*.html" />
+				<exclude name="**/*.js" />
+				<exclude name="**/*.css" />
+				<exclude name="**/*.bat" />
+				<exclude name="**/*.jnlp" />
 				<exclude name="build.xml" />
 				<exclude name="log4j.properties" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.gif" />
@@ -124,6 +132,13 @@
 			</fileset>
 		</copy>
 	</target>
+	
+	<target name="atualizaPaddockHTML">
+		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
+		<delete file="WebContent/f1mane.jar" />
+		<copy file="f1mane.jar" todir="WebContent/WEB-INF/lib" />
+		<copy file="f1maneRecursos.jar" todir="WebContent/WEB-INF/lib" />
+	</target>	
 
 	<target name="criarWar">
 		<delete dir="${TOMCAT_HOME}/webapps/f1mane" />
@@ -270,6 +285,14 @@
 		</replace>
 	</target>
 
+	<target name="atualizarURLBGHtml" description="Atualizar Versao HTML">
+		<!--<replace dir="build" value="../sowbreira/f1mane/recursos/" token="{urlBg}"> -->
+		<replace dir="build" value="http://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" token="{urlBg}">
+			<include name="**/*.js" />
+		</replace>
+	</target>
+	
+	
 	<target name="atualizarLocalJnlp" description="Atualizar JNPL">
 		<replace dir="build" value="localhost:8080" token="{host}">
 			<include name="*.jnlp" />
