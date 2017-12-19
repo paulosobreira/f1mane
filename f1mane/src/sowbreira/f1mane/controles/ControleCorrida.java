@@ -292,6 +292,9 @@ public class ControleCorrida {
 								piloto.getNome(), pilotoNaFrente.getNome()}))));
 				piloto.setDesqualificado(true);
 				controleSafetyCar.safetyCarNaPista(piloto);
+				if (fatorAcidente < 0.9) {
+					fatorAcidente += 0.1;
+				}
 			} else {
 				if (piloto.getStress() > limiteStress
 						&& !piloto.testeHabilidadePilotoCarro()) {
@@ -353,6 +356,7 @@ public class ControleCorrida {
 	public void danificaAreofolio(Piloto piloto) {
 		piloto.getCarro().setDurabilidadeAereofolio(
 				piloto.getCarro().getDurabilidadeAereofolio() - 1);
+		piloto.incStress(100);
 	}
 
 	public static void main(String[] args) {
