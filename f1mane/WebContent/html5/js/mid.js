@@ -45,7 +45,9 @@ function mid_caregaMidia() {
 	}
 
 	imgBg = new Image();
-	imgBg.src = "../sowbreira/f1mane/recursos/" + circuito.backGround;
+	//imgBg.src = {urlBg} + circuito.backGround;
+	imgBg.src = "http://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" + circuito.backGround;
+	
 	imgFarois = new Image();
 	imgFarois.src = "img/farois.png"
 	imgPneuM = new Image();

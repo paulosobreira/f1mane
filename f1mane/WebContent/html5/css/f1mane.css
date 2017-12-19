@@ -12,7 +12,7 @@
 	}
 	.loader {
 	  position: absolute;
-	  background-color : white;
+	  background-color : transparent;
 	  left: 50%;
 	  top: 50%;
 	  z-index: 1;
@@ -42,7 +42,7 @@
 	}
 	.loader {
 	  position: absolute;
-	  background-color : white;
+	  background-color : transparent;
 	  left: 55%;
 	  top: 50%;
 	  z-index: 1;
