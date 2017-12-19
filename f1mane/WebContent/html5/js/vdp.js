@@ -54,7 +54,7 @@ function vdp_desenha(fps) {
 	vdp_atualizaSuave();
 	vdp_centralizaPilotoSelecionado();
 	vdp_desenhaBackGround();
-	vdp_desenhaMarcasLargadaGrid();
+	//vdp_desenhaMarcasLargadaGrid();
 	vdp_desenhaCarrosCima();
 	vdp_desenhaNomesCima();
 	// vdp_desenhaObjs();
