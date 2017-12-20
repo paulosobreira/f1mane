@@ -57,7 +57,7 @@ function mid_caregaMidia() {
 	imgPneuC = new Image();
 	imgPneuC.src = "img/pneuChuva.png"
     girdLargadaMarca = new Image();		
-	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro";
+	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro/90";
 	motor = new Image();
 	motor.src = "img/motor.png"
 	capacete = new Image();

@@ -68,19 +68,6 @@ function gu_calculaAngulo(startCoordinates, endCoordinates, inc) {
 	return degrees;
 }
 
-//function gu_calculaPonto(angulo, comprimento, p1) {
-//	var x = 0;
-//	var y = 0;
-//	// double ang = Math.toRadians(angulo);
-//	var ang = angulo;
-//	var nx = (comprimento * Math.sin(ang));
-//	var ny = (comprimento * Math.cos(ang));
-//	var ponto = {
-//		x : p1.x + nx,
-//		y : p1.y + ny
-//	};
-//	return ponto;
-//}
 
 function gu_calculaPonto(angulo, comprimento, p1) {
     var result = {};

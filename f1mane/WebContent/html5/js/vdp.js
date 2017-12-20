@@ -54,7 +54,7 @@ function vdp_desenha(fps) {
 	vdp_atualizaSuave();
 	vdp_centralizaPilotoSelecionado();
 	vdp_desenhaBackGround();
-	//vdp_desenhaMarcasLargadaGrid();
+	vdp_desenhaMarcasLargadaGrid();
 	vdp_desenhaCarrosCima();
 	vdp_desenhaNomesCima();
 	// vdp_desenhaObjs();
@@ -70,7 +70,7 @@ function vdp_desenhaMarcasLargadaGrid() {
 	if (desenhouMarcasLargadaGrid || circuito == null
 			|| circuito.objetosNoTransparencia == null || dadosParciais == null
 			|| dadosJogo == null || carrosImgMap == null || cvBg == null
-			|| carrosImgMap == null) {
+			|| carrosImgMap == null || dadosParciais.estado!=13) {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
@@ -579,7 +579,35 @@ function vdp_desenhaCarrosCima() {
 				pitLane = false;
 			}
 		}
-
+		/**
+		 * Suavização de angulo
+		 */
+//		var anguloPilotoSuave = pilotosMap.get(piloto.idPiloto).angulo;
+//		if(anguloPilotoSuave==null){
+//			anguloPilotoSuave = Math.round(Math.degrees(angulo));
+//		}
+//		var anguloGraus = Math.round(Math.degrees(angulo));
+//		if (piloto.idPiloto == idPilotoSelecionado) {
+//			console.log('rads :'+angulo+' graus :'+Math.degrees(angulo));
+//		}
+//		if(anguloGraus>anguloPilotoSuave){
+//			anguloPilotoSuave+=1;
+//			if((anguloGraus-anguloPilotoSuave)<10){
+//				angulo = Math.radians(anguloPilotoSuave);	
+//			}else{
+//				anguloPilotoSuave = Math.round(Math.degrees(angulo));
+//			}
+//		}else if(anguloGraus<anguloPilotoSuave){
+//			anguloPilotoSuave=-1;
+//			if((anguloPilotoSuave-anguloGraus)<10){
+//				angulo = Math.radians(anguloPilotoSuave);	
+//			}else{
+//				anguloPilotoSuave = Math.round(Math.degrees(angulo));
+//			}
+//		}
+//		pilotosMap.get(piloto.idPiloto).angulo = anguloPilotoSuave;
+		
+		
 		var x = ponto.x - ptBg.x - (imgCarro.width / 2);
 		var y = ponto.y - ptBg.y - (imgCarro.height / 2);
 		pilotosEfeitosMap.set(piloto.idPiloto, true);

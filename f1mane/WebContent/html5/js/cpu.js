@@ -130,7 +130,7 @@ function cpu_dadosParciais() {
 		} else if (status.startsWith("T")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("T", "")));
 			pilotosTravadaMap.set(piloto.idPiloto, true);
-			pilotosTravadaFumacaMap.set(piloto.idPiloto, 15);
+			pilotosTravadaFumacaMap.set(piloto.idPiloto, 5);
 		} else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		}

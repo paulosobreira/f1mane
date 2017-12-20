@@ -84,6 +84,9 @@
 .transparent {
     background-color: transparent!important;
 }
+.alerta{
+	z-index: 0;
+}
 
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }

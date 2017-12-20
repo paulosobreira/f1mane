@@ -47,3 +47,23 @@ function pad(n, width, z) {
 	n = n + '';
 	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
+
+function tratamentoErro(xhRequest) {
+	var erro;
+	$('#alert').remove();
+	if (xhRequest.status == 401) {
+		erro = $('<div id="alert" class="alerta alert alert-warning" role="alert">Sessão expirada <a href="index.html">Re-logar?</a></div>');
+	} else {
+		var erroMsg = xhRequest.status + '  ' + xhRequest.responseText; ;
+		if(xhRequest.responseJSON!=null && xhRequest.responseJSON.messageString!=null){
+			erroMsg = xhRequest.responseJSON.messageString;
+		}
+		erro = $('<div id="alert" class="alerta alert alert-danger" role="alert">Erro no servidor : '
+				+  erroMsg + '</div>');
+	}
+	erro.focus();
+	$('#head').append(erro);
+	$("html, body").animate({
+		scrollTop : 0
+	}, "slow");
+}

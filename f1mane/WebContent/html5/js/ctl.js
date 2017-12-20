@@ -46,7 +46,7 @@ function ctl_desenhaQualificacao(){
 	}
 	
 	var x = centroX-140;
-	var y = 20;
+	var y = 60;
 	
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		if(i%2==0){
@@ -63,23 +63,24 @@ function ctl_desenhaQualificacao(){
 		nmPiloto = nmPiloto.substr(0, 3);
 		nmPiloto = (i + 1) + ' ' + nmPiloto;
 		var tempo = piloto.tempoVoltaQualificacao;
-		if (idPilotoSelecionado == piloto.id) {
-			maneContext.strokeStyle = '#00FF00';
-			maneContext.rect(x - 5, y, 50, 20);
-		} else if (piloto.jogadorHumano) {
-			maneContext.strokeStyle = '#FFFF00';
-			maneContext.rect(x - 5, y, 50, 20);
-		}
+
 		maneContext.fillStyle = piloto.carro.cor1Hex;
 		maneContext.fillRect(x - 10, y, 5, 20);
+//		maneContext.fillStyle = piloto.carro.cor2Hex;
+//		maneContext.fillRect(x - 7, y, 3, 20);
 		
 		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x - 5, y, 50, 20);
 		maneContext.fillStyle = "black"
 		maneContext.fillText(nmPiloto, x, y + 15);
 		
-		maneContext.fillStyle = piloto.carro.cor2Hex;
-		maneContext.fillRect(x - 10, y+20, 130, 5);
+		if (idPilotoSelecionado == piloto.id) {
+			maneContext.fillStyle = '#00FF00';
+			maneContext.fillRect(x - 10, y+20, 130, 5);
+		} else if (piloto.jogadorHumano) {
+			maneContext.fillStyle = '#FFFF00';
+			maneContext.fillRect(x - 10, y+20, 130, 5);
+		}
 		
 		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x + 50, y, 70, 20);

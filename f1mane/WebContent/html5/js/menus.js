@@ -108,7 +108,7 @@ function dadosJogo() {
 										+ temporadaSelecionada);
 						td2.append(carroLado);
 						if(pilotos[i].id==idPilotoSelecionado){
-							tr.addClass('active');
+							tr.addClass('success');
 						}else if (pilotos[i].nomeJogador) {
 							tr.addClass('warning');
 						}
@@ -116,11 +116,11 @@ function dadosJogo() {
 						$('#pilotos').append(tr);
 						tr.unbind();
 						tr.bind("click",function() {
-							if(tr.hasClass('warning') || tr.hasClass('active')){
+							if(tr.hasClass('warning') || tr.hasClass('success')){
 								return;
 							}
-							$('#pilotos').find('tr').removeClass('active');
-							tr.addClass('active');
+							$('#pilotos').find('tr').removeClass('success');
+							tr.addClass('success');
 							idPilotoSelecionado = pilotos[i].id;
 							mostrarEntrarJogo();
 						});
@@ -130,6 +130,7 @@ function dadosJogo() {
 
 				},
 				error : function(xhRequest, ErrorText, thrownError) {
+					tratamentoErro(xhRequest);
 					console.log(xhRequest.status + '  '
 							+ xhRequest.responseText + ' ' + ErrorText);
 					dadosJogo();
@@ -158,7 +159,7 @@ function jogar() {
 			window.location.href = "corrida.html";
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.responseJSON.messageString);
+			tratamentoErro(xhRequest);
 			console.log('jogar() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -178,6 +179,7 @@ function criarSessao() {
 			dadosJogo();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
 			console.log('criarSessao() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -222,6 +224,7 @@ function listaCircuitos() {
 			$('#circuitoCarousel').carousel('pause');
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
 			console.log('listaCircuitos() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -271,11 +274,11 @@ function selecionaTemporada(temporada) {
 				$('#pilotos').append(tr);
 				tr.unbind();
 				tr.bind("click", function() {
-					if(tr.hasClass('warning') || tr.hasClass('active')){
+					if(tr.hasClass('warning') || tr.hasClass('success')){
 						return;
 					}
-					$('#pilotos').find('tr').removeClass('active');
-					tr.addClass('active');
+					$('#pilotos').find('tr').removeClass('success');
+					tr.addClass('success');
 					idPilotoSelecionado = pilotos[i].id;
 					mostrarEntrarJogo();
 				});
@@ -283,6 +286,7 @@ function selecionaTemporada(temporada) {
 			$('#detalheTemporada').removeClass('hidden');
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
 			console.log('selecionaTemporada() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -320,6 +324,7 @@ function listaTemporadas() {
 			$('#circuitoCarousel').carousel('pause');
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
 			console.log('listaTemporadas() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
