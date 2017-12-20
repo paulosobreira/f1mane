@@ -49,10 +49,10 @@ function ctl_desenhaQualificacao(){
 	var y = 20;
 	
 	maneContext.fillStyle = corFundo
-	maneContext.fillRect(x-10, y, 170, 40);
+	maneContext.fillRect(centroX-75, y, 170, 40);
 	maneContext.font = '24px sans-serif';
 	maneContext.fillStyle = "black"
-	maneContext.fillText(lang_text('Classificação'), x + 5, y + 28);
+	maneContext.fillText(lang_text('Classificação'), centroX-65, y + 28);
 
 	y += 60;
 		
@@ -74,8 +74,8 @@ function ctl_desenhaQualificacao(){
 
 		maneContext.fillStyle = piloto.carro.cor1Hex;
 		maneContext.fillRect(x - 10, y, 5, 20);
-//		maneContext.fillStyle = piloto.carro.cor2Hex;
-//		maneContext.fillRect(x - 7, y, 3, 20);
+// maneContext.fillStyle = piloto.carro.cor2Hex;
+// maneContext.fillRect(x - 7, y, 3, 20);
 		
 		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x - 5, y, 50, 20);
