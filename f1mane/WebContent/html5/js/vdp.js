@@ -20,6 +20,7 @@ var pilotosTracadoForaMap = new Map();
 var desenhaImagens = true;
 var pitLane = false;
 var desenhouMarcasLargadaGrid = false;
+var eixoCarro = 10;
 var ptBg = {
 	x : 0,
 	y : 0
@@ -519,8 +520,8 @@ function vdp_desenhaCarrosCima() {
 			no = mapaIdNos.get(piloto.idNo);
 		}
 		if (no.box) {
-			var indexAtras = (no.index - 15) > 0 ? (no.index - 15) : 0;
-			var indexFrente = (no.index + 15) < circuito.boxFull.length ? (no.index + 15)
+			var indexAtras = (no.index - eixoCarro) > 0 ? (no.index - eixoCarro) : 0;
+			var indexFrente = (no.index + eixoCarro) < circuito.boxFull.length ? (no.index + eixoCarro)
 					: circuito.boxFull.length - 1;
 
 			frenteCar = safeArray(circuito.boxFull, indexFrente);
@@ -538,8 +539,8 @@ function vdp_desenhaCarrosCima() {
 				pitLane = true;
 			}
 		} else {
-			var indexAtras = (no.index - 15) > 0 ? (no.index - 15) : 0;
-			var indexFrente = (no.index + 15) < circuito.pistaFull.length ? (no.index + 15)
+			var indexAtras = (no.index - eixoCarro) > 0 ? (no.index - eixoCarro) : 0;
+			var indexFrente = (no.index + eixoCarro) < circuito.pistaFull.length ? (no.index + eixoCarro)
 					: circuito.pistaFull.length - 1;
 			frenteCar = safeArray(circuito.pistaFull, no.index + 15);
 			atrasCar = safeArray(circuito.pistaFull, no.index - 15);

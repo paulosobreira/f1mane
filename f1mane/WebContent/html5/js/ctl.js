@@ -46,8 +46,16 @@ function ctl_desenhaQualificacao(){
 	}
 	
 	var x = centroX-140;
-	var y = 60;
+	var y = 20;
 	
+	maneContext.fillStyle = corFundo
+	maneContext.fillRect(x-10, y, 170, 40);
+	maneContext.font = '24px sans-serif';
+	maneContext.fillStyle = "black"
+	maneContext.fillText(lang_text('Classificação'), x + 5, y + 28);
+
+	y += 60;
+		
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		if(i%2==0){
 			x = centroX-140;
@@ -545,6 +553,8 @@ function ctl_desenhaInfoCarros() {
 function ctl_problemasCarrro(img , x, idPiloto , posicao){
 	var alertaMotor;
 	
+	var alertaAerefolio = dadosParciais.alertaAerefolio;
+	
 	if(idPilotoSelecionado!=idPiloto){
 		alertaMotor = ("PANE_SECA" == dadosParciais.dano) || (dadosParciais.dano ==  "EXPLODIU_MOTOR");
 	}
@@ -555,6 +565,9 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 		maneContext.beginPath();
 		if(perdeuAerefolio){
 			maneContext.fillStyle = corVermelho;
+			maneContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
+		}else if(alertaAerefolio){
+			maneContext.fillStyle = corAmarelo;
 			maneContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
 		}
 		if(alertaMotor){
@@ -797,8 +810,11 @@ function ctl_desenhaInfoEsquerda() {
 					x + 5, y + 15);
 		}
 		if (pitLane || dadosParciais.posisPack.safetyNoId != 0) {
+			maneContext.beginPath();
 			maneContext.strokeStyle = '#FFFF00';
 			maneContext.rect(x, y, 80, 20);
+			maneContext.closePath();
+			maneContext.stroke();			
 		}
 
 		y += 30;
@@ -815,8 +831,11 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillText(dadosParciais.pCombust + '%', x
 				+ (dadosParciais.pCombust > 99 ? 45 : 50), y + 15);
 		if (dadosParciais.pCombust < 15) {
+			maneContext.beginPath();
 			maneContext.strokeStyle = '#FF0000';
 			maneContext.rect(x, y, 80, 20);
+			maneContext.closePath();
+			maneContext.stroke();			
 		}
 
 		y += 30;
@@ -829,8 +848,11 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillText(dadosParciais.pPneus + '%', x
 				+ (dadosParciais.pPneus > 99 ? 45 : 50), y + 15);
 		if (dadosParciais.pPneus < 15) {
+			maneContext.beginPath();
 			maneContext.strokeStyle = '#FF0000';
 			maneContext.rect(x, y, 80, 20);
+			maneContext.closePath();
+			maneContext.stroke();			
 		}
 
 		y += 30;
@@ -844,8 +866,11 @@ function ctl_desenhaInfoEsquerda() {
 				+ (dadosParciais.pMotor > 99 ? 45 : 50), y + 15);
 
 		if (dadosParciais.pMotor < 15) {
+			maneContext.beginPath();
 			maneContext.strokeStyle = '#FF0000';
 			maneContext.rect(x, y, 80, 20);
+			maneContext.closePath();
+			maneContext.stroke();
 		}
 
 		y += 30;
@@ -858,11 +883,17 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillText(dadosParciais.stress + '%', x
 				+ (dadosParciais.stress > 99 ? 45 : 50), y + 15);
 		if (dadosParciais.stress > 90) {
+			maneContext.beginPath();
 			maneContext.strokeStyle = '#FF0000';
 			maneContext.rect(x, y, 80, 20);
+			maneContext.closePath();
+			maneContext.stroke();
 		}else if (dadosParciais.stress > 70) {
+			maneContext.beginPath();
 			maneContext.strokeStyle = '#FFFF00';
 			maneContext.rect(x, y, 80, 20);
+			maneContext.closePath();
+			maneContext.stroke();
 		}
 
 		y += 30;

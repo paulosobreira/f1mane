@@ -337,7 +337,9 @@ public class ControleBox {
 
 		double paradoBox = (((porcentCombust + penalidade) * 100)
 				/ Constantes.CICLO);
-		piloto.setParadoBox((int) paradoBox);
+
+		piloto.setParadoBox(
+				Util.inteiro(paradoBox * controleJogo.getFatorBoxTemporada()));
 		piloto.setPorcentagemCombustUltimaParadaBox(porcentCombust);
 
 		piloto.setParouNoBoxMilis(System.currentTimeMillis());

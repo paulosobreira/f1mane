@@ -30,6 +30,7 @@ import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.entidades.SafetyCar;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.paddock.servlet.JogoServidor;
@@ -1011,9 +1012,9 @@ public class ControleJogoLocal extends ControleRecursos
 		if (piloto.getNoAtual().verificaRetaOuLargada()) {
 			qtdeFumaca = Util.intervalo(10, 20);
 		} else if (piloto.getNoAtual().verificaCurvaAlta()) {
-			qtdeFumaca = Util.intervalo(10, 30);
+			qtdeFumaca = Util.intervalo(10, 25);
 		} else if (piloto.getNoAtual().verificaCurvaBaixa()) {
-			qtdeFumaca = Util.intervalo(10, 50);
+			qtdeFumaca = Util.intervalo(10, 30);
 		}
 		piloto.setTravouRodas(qtdeFumaca);
 		if (gerenciadorVisual != null)
@@ -1750,6 +1751,13 @@ public class ControleJogoLocal extends ControleRecursos
 	@Override
 	public boolean verificaEntradaBox(Piloto piloto) {
 		return controleCorrida.verificaEntradaBox(piloto);
+	}
+
+	@Override
+	public Double getFatorBoxTemporada() {
+		TemporadasDefauts temporadasDefauts = carregadorRecursos
+				.carregarTemporadasPilotosDefauts().get(getTemporada());
+		return temporadasDefauts.getFatorBox();
 	}
 
 }

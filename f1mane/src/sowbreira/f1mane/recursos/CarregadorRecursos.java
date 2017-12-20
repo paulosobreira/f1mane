@@ -98,6 +98,7 @@ public class CarregadorRecursos {
 				defauts.setReabastecimento("true".equals(split[2]));
 				defauts.setErs("true".equals(split[3]));
 				defauts.setDrs("true".equals(split[4]));
+				defauts.setFatorBox(new Double(split[5]));
 				temporadasDefauts.put(name, defauts);
 				temporadas.put(split[0], name);
 				vectorTemps.add(split[0]);

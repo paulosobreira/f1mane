@@ -1394,4 +1394,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return false;
 	}
 
+	@Override
+	public Double getFatorBoxTemporada() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
