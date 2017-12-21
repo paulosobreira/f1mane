@@ -162,12 +162,12 @@ function cpu_sair() {
 function cpu_altenador() {
 	if (alternador) {
 		alternadorValor++;
-		if (alternadorValor > 10) {
+		if (alternadorValor > 5) {
 			alternador = false;
 		}
 	} else {
 		alternadorValor--;
-		if (alternadorValor < -10) {
+		if (alternadorValor < -5) {
 			alternador = true;
 		}
 	}

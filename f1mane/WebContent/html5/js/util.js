@@ -52,13 +52,17 @@ function tratamentoErro(xhRequest) {
 	var erro;
 	$('#alert').remove();
 	if (xhRequest.status == 401) {
-		erro = $('<div id="alert" class="alerta alert alert-warning" role="alert">Sessão expirada <a href="index.html">Re-logar?</a></div>');
+		erro = $('<div id="alert" class="alerta alert alert-warning" role="alert">Sessão expirada voltando ao inicio...</div>');
+		setTimeout(function(){ 
+			localStorage.clear();
+			window.location = "index.html";
+		}, 2000);
 	} else {
 		var erroMsg = xhRequest.status + '  ' + xhRequest.responseText; ;
 		if(xhRequest.responseJSON!=null && xhRequest.responseJSON.messageString!=null){
 			erroMsg = xhRequest.responseJSON.messageString;
 		}
-		erro = $('<div id="alert" class="alerta alert alert-danger" role="alert">Erro no servidor : '
+		erro = $('<div id="alert" class="alerta alert alert-danger" role="alert">Mensagem do servidor : '
 				+  erroMsg + '</div>');
 	}
 	erro.focus();

@@ -33,14 +33,26 @@ function resultado() {
 			temporadaSelecionada = dadosJogo.temporada;
 			$('#circuitosLabel').html(dadosJogo.nomeCircuito);
 			$('#temporadasLabel').html(dadosJogo.temporada);
-			$('#trocaPneuCheckbox').prop('disabled', true);
-			$('#trocaPneuCheckbox').prop('checked', dadosJogo.trocaPneu);
-			$('#reabastecimentoCheckbox').prop('disabled', true);
-			$('#reabastecimentoCheckbox').prop('checked', dadosJogo.reabastecimento);
-			$('#ersCheckbox').prop('disabled', true);
-			$('#ersCheckbox').prop('checked', dadosJogo.ers);
-			$('#drsCheckbox').prop('disabled', true);
-			$('#drsCheckbox').prop('checked', dadosJogo.drs);
+			if(dadosJogo.trocaPneu){
+				$('#trocaPneuCheck').removeClass('text-muted');
+			}else{
+				$('#trocaPneuCheck').addClass('text-muted');
+			}
+			if(dadosJogo.reabastecimento){
+				$('#reabastecimentoCheck').removeClass('text-muted');
+			}else{
+				$('#reabastecimentoCheck').addClass('text-muted');
+			}
+			if(dadosJogo.ers){
+				$('#ersCheck').removeClass('text-muted');
+			}else{
+				$('#ersCheck').addClass('text-muted');
+			}
+			if(dadosJogo.drs){
+				$('#drsCheck').removeClass('text-muted');
+			}else{
+				$('#drsCheck').addClass('text-muted');
+			}
 			var pilotos = dadosJogo.pilotos;
 			$('#pilotos').find('tr').remove();
 			$.each(pilotos, function(i, val) {

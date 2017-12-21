@@ -35,7 +35,7 @@ public class ControleCorrida {
 	private double fatorUtrapassagem;
 	private double velocidadeJogo;
 	private boolean corridaIniciada;
-	private double fatorAcidente = Util.intervalo(0.7, 0.9);
+	private double fatorAcidente = Util.intervalo(0.5, 0.9);
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private Pausa pausaAtual;
@@ -356,7 +356,7 @@ public class ControleCorrida {
 	public void danificaAreofolio(Piloto piloto) {
 		piloto.getCarro().setDurabilidadeAereofolio(
 				piloto.getCarro().getDurabilidadeAereofolio() - 1);
-		piloto.incStress(100);
+		piloto.incStress(50);
 	}
 
 	public static void main(String[] args) {

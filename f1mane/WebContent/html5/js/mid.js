@@ -71,11 +71,11 @@ function mid_caregaMidia() {
 	safetycar = new Image();
 	safetycar.src = "/f1mane/rest/letsRace/png/sfcima"
 	travadaRoda0 = new Image();
-	travadaRoda0.src = "/f1mane/rest/letsRace/png/travadaRoda0/60"
+	travadaRoda0.src = "/f1mane/rest/letsRace/png/travadaRoda0/50"
 	travadaRoda1 = new Image();
-	travadaRoda1.src = "/f1mane/rest/letsRace/png/travadaRoda1/60"
+	travadaRoda1.src = "/f1mane/rest/letsRace/png/travadaRoda1/50"
 	travadaRoda2 = new Image();
-	travadaRoda2.src = "/f1mane/rest/letsRace/png/travadaRoda2/60"
+	travadaRoda2.src = "/f1mane/rest/letsRace/png/travadaRoda2/50"
 
 	carroCimaFreiosD1 = new Image();
 	carroCimaFreiosD1.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD1"

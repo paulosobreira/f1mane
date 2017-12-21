@@ -23,7 +23,6 @@
 	</section>
 	<section class="container containerPadless">
 		<div>
-			<label>Temporada</label>
 			<div id="temporadaCarousel" class="carousel slide"  data-ride="carousel">
 				<div id="temporadaCarousel-inner" class="carousel-inner" role="listbox">
 					<div id="temporadaActive" class="item active">
@@ -44,42 +43,32 @@
 		<section class="container containerPadless hidden" id="detalheTemporada">
 			<div class="form-group">
 				<div class="col-sm-6">
-					<div class="checkbox">
-						<label> <input type="checkbox" id="trocaPneuCheckbox">
-							<b>Troca Pneu</b>
+					<div  class="checkbox">
+						<label> 
+							<b id="trocaPneuCheck">	Troca Pneu</b>
 						</label>
 					</div>
 					<div class="checkbox">
-						<label> <input type="checkbox"
-							id="reabastecimentoCheckbox"> <b>Reabastecimento</b>
+						<label> 
+							<b id="reabastecimentoCheck">Reabastecimento</b>
 						</label>
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="checkbox">
-						<label> <input type="checkbox" id="ersCheckbox"> <b>ERS</b>
+						<label> 
+							 <b id="ersCheck">ERS</b>
 						</label>
 					</div>
 					<div class="checkbox">
-						<label> <input type="checkbox" id="drsCheckbox"> <b>DRS</b>
+						<label> 
+							<b id="drsCheck">DRS</b>
 						</label>
 					</div>
 				</div>
 			</div>
-			<table class="table table-hover table-responsive">
-				<caption>Pilotos</caption>
-				<thead>
-					<tr>
-						<th>Piloto</th>
-						<th>Carro</th>
-					</tr>
-				</thead>
-				<tbody id="pilotos">
-				</tbody>
-			</table>
 		</section>
 		<div class="form-group">
-			<label>Circuito</label>
 			<div id="circuitoCarousel" class="carousel slide">
 				<div id="circuitoCarousel-inner" class="carousel-inner" role="listbox">
 					<div id="temporadaActive" class="item active">
@@ -104,6 +93,18 @@
 		<div  class="form-group">
 			<button id="btnJogar" type="button" class="btn btn-default btn-block disabled">Selecione um piloto</button>
 		</div>
+		<section class="container containerPadless">
+			<table class="table table-hover table-responsive">
+				<thead>
+					<tr>
+						<th>Piloto</th>
+						<th>Carro</th>
+					</tr>
+				</thead>
+				<tbody id="pilotos">
+				</tbody>
+			</table>		
+		</section>
 	</section>
 	<footer class="footer">
 		<div class="container">
