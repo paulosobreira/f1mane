@@ -1562,7 +1562,7 @@ public class Piloto implements Serializable, PilotoSuave {
 					retardaFreiandoReta = false;
 				}
 				if (retardaFreiandoReta) {
-					if (getStress() > 70
+					if (getStress() > 50
 							&& Piloto.AGRESSIVO.equals(getModoPilotagem())) {
 						controleJogo.travouRodas(this);
 					}

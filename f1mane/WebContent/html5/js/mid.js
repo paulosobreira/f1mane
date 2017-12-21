@@ -57,7 +57,7 @@ function mid_caregaMidia() {
 	imgPneuC = new Image();
 	imgPneuC.src = "img/pneuChuva.png"
     girdLargadaMarca = new Image();		
-	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro/90";
+	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro/180";
 	motor = new Image();
 	motor.src = "img/motor.png"
 	capacete = new Image();
@@ -71,11 +71,11 @@ function mid_caregaMidia() {
 	safetycar = new Image();
 	safetycar.src = "/f1mane/rest/letsRace/png/sfcima"
 	travadaRoda0 = new Image();
-	travadaRoda0.src = "/f1mane/rest/letsRace/png/travadaRoda0/40"
+	travadaRoda0.src = "/f1mane/rest/letsRace/png/travadaRoda0/60"
 	travadaRoda1 = new Image();
-	travadaRoda1.src = "/f1mane/rest/letsRace/png/travadaRoda1/40"
+	travadaRoda1.src = "/f1mane/rest/letsRace/png/travadaRoda1/60"
 	travadaRoda2 = new Image();
-	travadaRoda2.src = "/f1mane/rest/letsRace/png/travadaRoda2/40"
+	travadaRoda2.src = "/f1mane/rest/letsRace/png/travadaRoda2/60"
 
 	carroCimaFreiosD1 = new Image();
 	carroCimaFreiosD1.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosD1"

@@ -1012,9 +1012,9 @@ public class ControleJogoLocal extends ControleRecursos
 		if (piloto.getNoAtual().verificaRetaOuLargada()) {
 			qtdeFumaca = Util.intervalo(10, 20);
 		} else if (piloto.getNoAtual().verificaCurvaAlta()) {
-			qtdeFumaca = Util.intervalo(10, 25);
-		} else if (piloto.getNoAtual().verificaCurvaBaixa()) {
 			qtdeFumaca = Util.intervalo(10, 30);
+		} else if (piloto.getNoAtual().verificaCurvaBaixa()) {
+			qtdeFumaca = Util.intervalo(10, 40);
 		}
 		piloto.setTravouRodas(qtdeFumaca);
 		if (gerenciadorVisual != null)

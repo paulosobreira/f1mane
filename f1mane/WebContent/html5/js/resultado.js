@@ -106,7 +106,7 @@ function montaLinhaGridResultado(i, piloto) {
 	td2.append(carroLado);
 	tr.append(td2);
 	if (piloto.id == idPilotoSelecionado) {
-		tr.addClass('active');
+		tr.addClass('success');
 	} else if (piloto.nomeJogador) {
 		tr.addClass('warning');
 	}
