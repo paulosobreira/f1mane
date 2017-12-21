@@ -54,6 +54,11 @@ function mostrarEntrarJogo() {
 	$('#btnJogar').html('Jogar');
 }
 
+function esconderEntrarJogo() {
+	$('#btnJogar').addClass('disabled');
+	$('#btnJogar').html('Selecione um piloto');
+}
+
 function dadosJogo() {
 	$.ajax({
 				type : "GET",
@@ -252,6 +257,10 @@ function selecionaTemporada(temporada) {
 			if (!response) {
 				console.log('selecionaTemporada() null');
 				return;
+			}
+			if(idPilotoSelecionado){
+				idPilotoSelecionado = null;
+				esconderEntrarJogo();				
 			}
 			$('#temporadasLabel').html(temporada);
 			if(response.trocaPneu){

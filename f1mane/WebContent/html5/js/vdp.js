@@ -857,7 +857,7 @@ function vdp_desenhaRastroChuvaFx(piloto, x, y, angulo, no) {
 		y : Math.round(cvFx.height * 0.5)
 	};
 
-	for (var i = 0; i < 15; i++) {
+	for (var i = 0; i < 10; i++) {
 		var p1 = {
 			x : intervalo((frenteCar.x - intervalo(1, 10)),
 					(frenteCar.x + intervalo(1, 10))),
@@ -866,10 +866,10 @@ function vdp_desenhaRastroChuvaFx(piloto, x, y, angulo, no) {
 		};
 
 		var p2 = {
-			x : intervalo((atrasCar.x - intervalo(10, 60)),
-					(atrasCar.x + intervalo(10, 60))),
-			y : intervalo((atrasCar.y - intervalo(10, 60)),
-					(atrasCar.y + intervalo(10, 60)))
+			x : intervalo((atrasCar.x - intervalo(10, 50)),
+					(atrasCar.x + intervalo(10, 50))),
+			y : intervalo((atrasCar.y - intervalo(10, 50)),
+					(atrasCar.y + intervalo(10, 50)))
 		};
 		var anguloFx = gu_calculaAngulo(p1, p2, 180);
 		var tam;

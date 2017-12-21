@@ -39,7 +39,7 @@ public class ControleCorrida {
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private Pausa pausaAtual;
-	private List tempoPausado = new ArrayList();
+	private List<Pausa> tempoPausado = new ArrayList<Pausa>();
 
 	public long getPontosPilotoLargada() {
 		return pontosPilotoLargada;
@@ -356,7 +356,7 @@ public class ControleCorrida {
 	public void danificaAreofolio(Piloto piloto) {
 		piloto.getCarro().setDurabilidadeAereofolio(
 				piloto.getCarro().getDurabilidadeAereofolio() - 1);
-		piloto.incStress(50);
+		piloto.incStress(25);
 	}
 
 	public static void main(String[] args) {
