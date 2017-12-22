@@ -1848,13 +1848,11 @@ public class Piloto implements Serializable, PilotoSuave {
 				return;
 			}
 		}
-		if (isBoxSaiuNestaVolta()
-				&& controleJogo.verificaSaidaBox(this)) {
+		if (isBoxSaiuNestaVolta() && controleJogo.verificaSaidaBox(this)) {
 			mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(),
 					controleJogo, true);
 		} else if (getTracado() == controleJogo.getCircuito()
-				.getLadoBoxSaidaBox()
-				&& controleJogo.verificaSaidaBox(this)) {
+				.getLadoBoxSaidaBox() && controleJogo.verificaSaidaBox(this)) {
 			mudarTracado(0, controleJogo);
 		} else if (isBox()
 				&& getTracado() != controleJogo.getCircuito()
@@ -1942,29 +1940,28 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void mensagemRetardatario(Piloto piloto, Piloto pilotoNaFrente,
 			InterfaceJogo controleJogo) {
-		if (controleJogo.verificaInfoRelevante(piloto)) {
-			if (Math.random() > 0.9) {
-				if (!controleJogo.isSafetyCarNaPista()) {
-					if (Math.random() > 0.5) {
-						controleJogo
-								.info(Html
-										.azul(Lang.msg("021",
+		if (controleJogo.verificaInfoRelevante(piloto) && Math.random() > 0.9
+				&& !controleJogo.isSafetyCarNaPista()) {
+			if (Math.random() > 0.5) {
+				controleJogo
+						.info(Html
+								.azul(Lang
+										.msg("021",
 												new String[]{
 														pilotoNaFrente
 																.getNome(),
 														piloto.getNome()})));
-					} else {
-						controleJogo
-								.info(Html
-										.azul(Lang.msg("020",
+			} else {
+				controleJogo
+						.info(Html
+								.azul(Lang
+										.msg("020",
 												new String[]{
 														pilotoNaFrente
 																.getNome(),
 														piloto.getNome()})));
-					}
-					pilotoNaFrente.setCiclosDesconcentrado(10);
-				}
 			}
+			pilotoNaFrente.setCiclosDesconcentrado(10);
 		}
 	}
 
@@ -1972,7 +1969,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			Piloto pilotoNaFrente, InterfaceJogo controleJogo) {
 		return !controleJogo.isCorridaTerminada()
 				&& !piloto.isRecebeuBanderada()
-				&& pilotoNaFrente.getNumeroVolta() > getNumeroVolta()
+				&& pilotoNaFrente.getNumeroVolta() < getNumeroVolta()
 				&& pilotoNaFrente.getPtosPista() < piloto.getPtosPista()
 				&& !pilotoNaFrente.isDesqualificado()
 				&& (pilotoNaFrente.getPtosBox() == 0);

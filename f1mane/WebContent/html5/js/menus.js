@@ -38,16 +38,16 @@ $('#circuitoCarousel').carousel('pause');
 
 
 function mostrarEntrarJogo() {
-	if (!temporadaSelecionada) {
+	if (temporadaSelecionada==null) {
 		return;
 	}
-	if (!idPilotoSelecionado) {
+	if (idPilotoSelecionado==null) {
 		return;
 	}
-	if (!circuitoSelecionado) {
+	if (circuitoSelecionado==null) {
 		return;
 	}
-	if (!token) {
+	if (token==null) {
 		return;
 	}
 	$('#btnJogar').removeClass('disabled');
@@ -175,6 +175,7 @@ function jogar() {
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
+			dadosJogo();
 			console.log('jogar() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -258,7 +259,9 @@ function selecionaTemporada(temporada) {
 				console.log('selecionaTemporada() null');
 				return;
 			}
-			if(idPilotoSelecionado){
+			
+			if(idPilotoSelecionado!=null){
+				console.log('selecionaTemporada '+temporada+' idPilotoSelecionado '+idPilotoSelecionado);
 				idPilotoSelecionado = null;
 				esconderEntrarJogo();				
 			}

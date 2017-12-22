@@ -846,7 +846,7 @@ public class Carro implements Serializable {
 			if (noAtual.verificaRetaOuLargada()) {
 				temperaturaPneus += Util.intervalo(0, 1);
 			} else {
-				temperaturaPneus++;
+				temperaturaPneus+= Util.intervalo(1, 3);
 			}
 		}
 		if (controleJogo.isSafetyCarNaPista() && Math.random() > modAquecer) {

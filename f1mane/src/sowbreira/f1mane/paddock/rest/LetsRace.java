@@ -315,7 +315,7 @@ public class LetsRace {
 	}
 
 	private DadosCriarJogo gerarJogoLetsRace(String temporada, String circuito,
-			String idPiloto) {
+			String idPiloto) throws ClassNotFoundException, IOException {
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t" + temporada);
 		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
@@ -333,7 +333,12 @@ public class LetsRace {
 		// pista = "Interlagos";
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
-		dadosCriarJogo.setClima(Clima.SOL);
+		Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);
+		if(Math.random() < (circuitoObj.getProbalidadeChuva()/100.0)){
+			dadosCriarJogo.setClima(Clima.NUBLADO);
+		}else{
+			dadosCriarJogo.setClima(Clima.SOL);
+		}
 		TemporadasDefauts temporadasDefauts = carregadorRecursos
 				.carregarTemporadasPilotosDefauts().get("t" + temporada);
 		dadosCriarJogo

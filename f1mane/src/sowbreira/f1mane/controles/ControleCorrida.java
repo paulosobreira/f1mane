@@ -272,7 +272,7 @@ public class ControleCorrida {
 		}
 	}
 
-	private void verificaAcidenteIA(Piloto piloto, Piloto pilotoNaFrente,
+	private void verificaAcidenteIA(final Piloto piloto, final Piloto pilotoNaFrente,
 			double fatorAcidenteLocal) {
 		int limiteStress = (int) (100 * (1 - fatorAcidenteLocal));
 		if (pilotoNaFrente.isJogadorHumano() && limiteStress > 10) {
@@ -287,9 +287,20 @@ public class ControleCorrida {
 					&& piloto.getStress() > limiteStress) {
 				piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
 				Logger.logar(piloto.getNome() + " BATEU_FORTE");
-				controleJogo.infoPrioritaria(
-						Html.negrito(Html.vermelho(Lang.msg("016", new String[]{
-								piloto.getNome(), pilotoNaFrente.getNome()}))));
+				Runnable runnable = new Runnable() {
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(7000);
+						} catch (InterruptedException e) {
+						}
+						controleJogo.infoPrioritaria(
+								Html.negrito(Html.vermelho(Lang.msg("016", new String[]{
+										piloto.getNome(), pilotoNaFrente.getNome()}))));
+					}
+				};
+				Thread thread = new Thread(runnable);
+				thread.start();
 				piloto.setDesqualificado(true);
 				controleSafetyCar.safetyCarNaPista(piloto);
 				if (fatorAcidente < 0.9) {

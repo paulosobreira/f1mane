@@ -162,18 +162,18 @@ function cpu_sair() {
 function cpu_altenador() {
 	if (alternador) {
 		alternadorValor++;
-		if (alternadorValor > 5) {
+		if (alternadorValor > 6) {
 			alternador = false;
 		}
 	} else {
 		alternadorValor--;
-		if (alternadorValor < -5) {
+		if (alternadorValor < -6) {
 			alternador = true;
 		}
 	}
 }
 
-var main = setInterval(cpu_main, 500);
+var main = setInterval(cpu_main, 400);
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {

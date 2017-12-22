@@ -52,6 +52,7 @@ public class CarregadorRecursos {
 	private static Map bufferImages = new HashMap();
 	private static Map bufferImagesTransp = new HashMap();
 	private static Map bufferCarros = new HashMap();
+	private static Map<String, Circuito> bufferCircuitos = new HashMap<String, Circuito>();
 	private static Map<String, BufferedImage> bufferCarrosCima = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCarrosCimaSemAreofolio = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
@@ -934,6 +935,18 @@ public class CarregadorRecursos {
 		}
 
 		return circuitosDefauts;
+	}
+
+	public static Circuito carregarCircuito(String nmCircuito)
+			throws IOException, ClassNotFoundException {
+		Circuito circuito = bufferCircuitos.get(nmCircuito);
+		if (circuito == null) {
+			ObjectInputStream ois = new ObjectInputStream(
+					CarregadorRecursos.class.getResourceAsStream(nmCircuito));
+			circuito = (Circuito) ois.readObject();
+			bufferCircuitos.put(nmCircuito, circuito);
+		}
+		return circuito;
 	}
 
 }

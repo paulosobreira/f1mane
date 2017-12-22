@@ -41,6 +41,7 @@ public class ControleEstatisticas {
 	private LinkedList<String> allInfo = new LinkedList<String>();
 	private boolean consumidorAtivo = true;
 	private Thread infoConsumer;
+	private long timeStampUltinfo;
 	public static long maiorTempo;
 	private static long inicio;
 	public static long tempoAtual;
@@ -155,7 +156,6 @@ public class ControleEstatisticas {
 	public Volta getVoltaMaisRapida() {
 		return voltaMaisRapida;
 	}
-
 
 	public static String formatarTempo(Long value) {
 		if (value == null) {
@@ -285,6 +285,7 @@ public class ControleEstatisticas {
 				&& allInfo.get(allInfo.size() - 1).equals(info)) {
 			return;
 		}
+		timeStampUltinfo = System.currentTimeMillis();
 		if (prioritaria) {
 			bufferInfo.addFirst(info);
 		} else {
@@ -408,6 +409,10 @@ public class ControleEstatisticas {
 	}
 
 	public boolean verificaInfoRelevante(Piloto piloto) {
+		if (timeStampUltinfo != 0
+				&& (System.currentTimeMillis() - timeStampUltinfo) > 3000) {
+			return true;
+		}
 		if (piloto.isJogadorHumano()) {
 			return true;
 		}

@@ -3,7 +3,6 @@ package sowbreira.f1mane.controles;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -132,10 +131,7 @@ public abstract class ControleRecursos {
 		idsNoBox.clear();
 		mapaNoProxCurva.clear();
 		mapaNoCurvaAnterior.clear();
-		ObjectInputStream ois = new ObjectInputStream(
-				carregadorRecursos.getClass().getResourceAsStream(circuitoStr));
-
-		circuito = (Circuito) ois.readObject();
+		circuito = CarregadorRecursos.carregarCircuito(circuitoStr); 
 		circuito.vetorizarPista();
 		String nome = "";
 		for (Iterator<String> iterator = circuitos.keySet().iterator(); iterator
@@ -280,7 +276,6 @@ public abstract class ControleRecursos {
 	}
 
 	public int porcentagemChuvaCircuito(String circuito) {
-		ObjectInputStream ois;
 		try {
 			if (circuitos == null || circuitos.isEmpty()) {
 				return 0;
@@ -289,9 +284,7 @@ public abstract class ControleRecursos {
 			if (string == null) {
 				return 0;
 			}
-			ois = new ObjectInputStream(
-					carregadorRecursos.getClass().getResourceAsStream(string));
-			Circuito circuitoObj = (Circuito) ois.readObject();
+			Circuito circuitoObj =  CarregadorRecursos.carregarCircuito(string); 
 			return circuitoObj.getProbalidadeChuva();
 		} catch (Exception e) {
 			Logger.logarExept(e);

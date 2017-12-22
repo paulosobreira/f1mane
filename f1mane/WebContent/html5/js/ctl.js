@@ -811,7 +811,7 @@ function ctl_desenhaInfoEsquerda() {
 		}
 		if (pitLane || dadosParciais.posisPack.safetyNoId != 0) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = corAmarelo;
+			maneContext.strokeStyle = '#FFFF00';
 			maneContext.rect(x, y, 80, 20);
 			maneContext.closePath();
 			maneContext.stroke();			
@@ -832,7 +832,7 @@ function ctl_desenhaInfoEsquerda() {
 				+ (dadosParciais.pCombust > 99 ? 45 : 50), y + 15);
 		if (dadosParciais.pCombust < 15) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = corVermelho;
+			maneContext.strokeStyle = '#FF0000';
 			maneContext.rect(x, y, 80, 20);
 			maneContext.closePath();
 			maneContext.stroke();			
@@ -849,7 +849,7 @@ function ctl_desenhaInfoEsquerda() {
 				+ (dadosParciais.pPneus > 99 ? 45 : 50), y + 15);
 		if (dadosParciais.pPneus < 15) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = corVermelho;
+			maneContext.strokeStyle = '#FF0000';
 			maneContext.rect(x, y, 80, 20);
 			maneContext.closePath();
 			maneContext.stroke();			
@@ -868,13 +868,13 @@ function ctl_desenhaInfoEsquerda() {
 		
 		if (dadosParciais.pMotor < 15) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = corVermelho;
+			maneContext.strokeStyle = '#FF0000';
 			maneContext.rect(x, y, 80, 20);
 			maneContext.closePath();
 			maneContext.stroke();
 		}else if (dadosParciais.alertaMotor) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = corAmarelo;
+			maneContext.strokeStyle = '#FFFF00';
 			maneContext.rect(x, y, 80, 20);
 			maneContext.closePath();
 			maneContext.stroke();

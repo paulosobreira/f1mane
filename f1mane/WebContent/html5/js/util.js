@@ -71,3 +71,5 @@ function tratamentoErro(xhRequest) {
 		scrollTop : 0
 	}, "slow");
 }
+
+

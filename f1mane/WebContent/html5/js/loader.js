@@ -2,13 +2,21 @@ var loader = $('<div class="loader"></div>');
 $('body').prepend(loader);
 var $loading = loader.hide();
 $(document).ajaxStart(function() {
+	mostraLoad();
+}).ajaxStop(function() {
+	escondeLoad();
+});
+
+function mostraLoad(){
 	$("button").prop("disabled",true);
 	$("a").prop("disabled",true);
-	$('body').prepend($('<div class="capa"></div>'));
+	$('#f1body').hide();
 	$loading.show();
-}).ajaxStop(function() {
+}
+
+function escondeLoad(){
 	$("button").prop("disabled",false);
 	$("a").prop("disabled",false);
 	$loading.hide();
-	$('body').find('.capa').remove();
-});
+	$('#f1body').show();
+}
