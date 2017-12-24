@@ -44,7 +44,6 @@ import sowbreira.f1mane.entidades.TemporadasDefauts;
 public class CarregadorRecursos {
 	private static HashMap<String, String> temporadas;
 	private static HashMap<String, TemporadasDefauts> temporadasDefauts;
-	protected static Map<String, String> temporadasTransp = new HashMap<String, String>();
 	private static Vector<String> vectorTemps;
 	private Map<String, List<Piloto>> temporadasPilotos;
 	private Map<String, TemporadasDefauts> temporadasPilotosDefauts;
@@ -68,7 +67,6 @@ public class CarregadorRecursos {
 		if (carregadorRecursos == null) {
 			carregadorRecursos = new CarregadorRecursos();
 			carregarTemporadas();
-			carregarTemporadasTransp();
 		}
 		return carregadorRecursos;
 	}
@@ -789,24 +787,12 @@ public class CarregadorRecursos {
 			if (carro.getImg() != null) {
 				try {
 					BufferedImage carroLadoPng = null;
-					if (carro.getImg().endsWith(".png")) {
-						carroLadoPng = CarregadorRecursos
-								.carregaImagem(carro.getImg());
-						carroLado = carroLadoPng;
-						bufferCarrosLadoSemAreofolio.put(carro.getNome(),
-								carroLadoPng);
-					} else {
-						carroLadoPng = CarregadorRecursos
-								.carregaImgSemCache(carro.getImg());
-						if (carroLadoPng != null) {
-							carroLado = carroLadoPng;
-							Integer transp = new Integer(
-									temporadasTransp.get(temporada));
-							bufferCarrosLadoSemAreofolio.put(carro.getNome(),
-									ImageUtil.geraTransparencia(carroLado,
-											transp));
-						}
-					}
+					carroLadoPng = CarregadorRecursos
+							.carregaImagem(carro.getImg());
+					carroLado = carroLadoPng;
+					bufferCarrosLadoSemAreofolio.put(carro.getNome(),
+							carroLadoPng);
+
 				} catch (Exception e) {
 					carro.setImg(null);
 					bufferCarrosLadoSemAreofolio.put(carro.getNome(),
@@ -884,8 +870,12 @@ public class CarregadorRecursos {
 	}
 
 	private String obterModeloCarroCima(String temporada) {
-		String modelo = "cima20092016/";
+		String modelo = "cima2017/";
 		Integer anoTemporada = new Integer(temporada.replace("t", ""));
+		if (anoTemporada < 2017) {
+			modelo = "cima20092016/";
+		}
+
 		if (anoTemporada < 2009) {
 			modelo = "cima19982008/";
 		}
@@ -893,24 +883,6 @@ public class CarregadorRecursos {
 			modelo = "cima19801997/";
 		}
 		return modelo;
-	}
-
-	protected static void carregarTemporadasTransp() {
-		final Properties properties = new Properties();
-
-		try {
-			properties.load(CarregadorRecursos.recursoComoStream(
-					"properties/temporadasTransp.properties"));
-
-			Enumeration propName = properties.propertyNames();
-			while (propName.hasMoreElements()) {
-				final String name = (String) propName.nextElement();
-				temporadasTransp.put(name, properties.getProperty(name));
-
-			}
-		} catch (IOException e) {
-			Logger.logarExept(e);
-		}
 	}
 
 	public List<CircuitosDefauts> carregarCircuitosDefaults()

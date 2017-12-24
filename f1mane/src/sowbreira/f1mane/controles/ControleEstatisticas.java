@@ -355,8 +355,9 @@ public class ControleEstatisticas {
 		} else {
 			tabela = preencherTabela(pilotoComp, pilotoSel, tabela);
 		}
-		if (tabela != null && !pilotoSel.entrouNoBox())
+		if (tabela != null && !pilotoSel.entrouNoBox()){
 			controleJogo.info(tabela);
+		}
 	}
 
 	private String preencherTabela(Piloto piloto1, Piloto piloto2,

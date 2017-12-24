@@ -1343,9 +1343,10 @@ public class Piloto implements Serializable, PilotoSuave {
 				&& !testeHabilidadePilotoCarro() && getPtosBox() == 0) {
 			if (escapaTracado(controleJogo)) {
 				setCiclosDesconcentrado(150);
-				if (controleJogo.verificaInfoRelevante(this))
+				if (controleJogo.verificaInfoRelevante(this)) {
 					controleJogo.info(Lang.msg("saiDaPista",
 							new String[]{Html.vermelho(getNome())}));
+				}
 			} else if (No.CURVA_BAIXA.equals(getNoAtual().getTipo())
 					&& (getTracado() == 0)
 					&& (carro.getPorcentagemDesgastePneus() < 30)) {
@@ -2702,7 +2703,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (ciclosDesconcentrado <= 0) {
 			ciclosDesconcentrado = 0;
 			if (isProblemaLargada()) {
-				if (getPosicao() < 8) {
+				if (interfaceJogo.verificaInfoRelevante(this)) {
 					interfaceJogo.info(Html.vermelho(
 							getNome() + " " + Lang.msg("problemaLargada")));
 				}

@@ -187,9 +187,10 @@ public class ControleBox {
 			if (piloto.getPtosBox() == 0 && (box.equals(piloto.getNoAtual())
 					|| (cont > (circuito.getEntradaBoxIndex() - 75)
 							&& cont < (circuito.getEntradaBoxIndex() + 75)))) {
-				if (controleJogo.verificaInfoRelevante(piloto))
+				if (controleJogo.verificaInfoRelevante(piloto)) {
 					controleJogo.info(Html.laranja(Lang.msg("entraBox",
 							new String[]{piloto.getNome()})));
+				}
 				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "
 						+ piloto.getNumeroVolta() + " Pneus : "
 						+ piloto.getCarro().getPorcentagemDesgastePneus()
@@ -299,7 +300,7 @@ public class ControleBox {
 		long penalidade = 30;
 		Carro carro = (Carro) boxEquipesOcupado.get(piloto.getCarro());
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
-			if (piloto.getPosicao() <= 8) {
+			if (controleJogo.verificaInfoRelevante(piloto)) {
 				controleJogo.info(Html.laranja(
 						Lang.msg("298", new String[]{carro.getNome()})));
 			}
@@ -408,7 +409,7 @@ public class ControleBox {
 		if (controleJogo.verificaInfoRelevante(piloto)) {
 			if (piloto.isJogadorHumano()) {
 				controleJogo.infoPrioritaria(Html.laranja(info));
-			} else if (piloto.getPosicao() < 9) {
+			} else {
 				controleJogo.info(Html.laranja(info));
 			}
 		}
