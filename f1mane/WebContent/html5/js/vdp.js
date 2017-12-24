@@ -20,7 +20,7 @@ var pilotosTracadoForaMap = new Map();
 var desenhaImagens = true;
 var pitLane = false;
 var desenhouMarcasLargadaGrid = false;
-var eixoCarro = 10;
+var eixoCarro = 15;
 var ptBg = {
 	x : 0,
 	y : 0
@@ -78,8 +78,8 @@ function vdp_desenhaMarcasLargadaGrid() {
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
 		var no = mapaIdNos.get(piloto.idNo);
-		var frenteCar = safeArray(circuito.pistaFull, no.index + 15);
-		var atrasCar = safeArray(circuito.pistaFull, no.index - 15);
+		var frenteCar = safeArray(circuito.pistaFull, no.index + eixoCarro);
+		var atrasCar = safeArray(circuito.pistaFull, no.index - eixoCarro);
 		var angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
 		var ponto = vdp_obterPonto(piloto);
 		var x = ponto.x - ptBg.x - 60;

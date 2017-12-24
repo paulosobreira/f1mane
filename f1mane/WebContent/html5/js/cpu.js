@@ -114,6 +114,7 @@ function cpu_dadosParciais() {
 
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
+//		console.log(piloto.idPiloto+'  '+piloto.tracado+'  '+piloto.idNo);
 		if (piloto.idPiloto == idPilotoSelecionado) {
 			posicaoCentraliza = i;
 		}
@@ -173,7 +174,7 @@ function cpu_altenador() {
 	}
 }
 
-var main = setInterval(cpu_main, 400);
+var main = setInterval(cpu_main, 350);
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {

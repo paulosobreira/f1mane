@@ -28,7 +28,7 @@ function rest_dadosJogo(nomeJogo) {
 			if (errorText == 'timeout') {
 				return;
 			}
-			if (xhRequest.status = 401) {
+			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
 			try {
@@ -72,7 +72,7 @@ function rest_ciruito() {
 			if (errorText == 'timeout') {
 				return;
 			}
-			if (xhRequest.status = 401) {
+			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
 			try {
@@ -113,7 +113,7 @@ function rest_dadosParciais() {
 			if (errorText == 'timeout') {
 				return;
 			}
-			if (xhRequest.status = 401) {
+			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
 			try {
@@ -142,7 +142,7 @@ function rest_potenciaMotor(valor) {
 			if (errorText == 'timeout') {
 				return;
 			}
-			if (xhRequest.status = 401) {
+			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
 			try {
@@ -170,7 +170,7 @@ function rest_agressividadePiloto(valor) {
 			if (errorText == 'timeout') {
 				return;
 			}
-			if (xhRequest.status = 401) {
+			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
 			try {
@@ -199,7 +199,7 @@ function rest_tracadoPiloto(valor) {
 			if (errorText == 'timeout') {
 				return;
 			}
-			if (xhRequest.status = 401) {
+			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
 			try {
@@ -229,7 +229,7 @@ function rest_ers() {
 			if (errorText == 'timeout') {
 				return;
 			}
-			if (xhRequest.status = 401) {
+			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
 			try {
@@ -257,7 +257,7 @@ function rest_drs() {
 			if (errorText == 'timeout') {
 				return;
 			}
-			if (xhRequest.status = 401) {
+			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
 			try {
@@ -286,7 +286,7 @@ function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 			if (errorText == 'timeout') {
 				return;
 			}
-			if (xhRequest.status = 401) {
+			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
 			try {

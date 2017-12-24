@@ -934,7 +934,7 @@ function ctl_removeControle(controle) {
 		return true;
 	}
 	
-	if (!dadosParciais.box
+	if (dadosParciais!=null && !dadosParciais.box
 			&& (controle.tipo == 'Asa' || controle.tipo == 'Pneu'
 					|| controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
 		return true;
@@ -948,7 +948,7 @@ function ctl_removeControle(controle) {
 		return true;
 	}
 	
-	if(!dadosParciais.box &&(controle.tipo == 'confirmaSair' || controle.tipo == 'cancelaSair' || controle.tipo == 'perguntaSair' )){
+	if(dadosParciais!=null && !dadosParciais.box &&(controle.tipo == 'confirmaSair' || controle.tipo == 'cancelaSair' || controle.tipo == 'perguntaSair' )){
 		return true;
 	}
 	

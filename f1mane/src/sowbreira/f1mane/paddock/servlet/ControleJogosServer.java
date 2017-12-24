@@ -444,12 +444,16 @@ public class ControleJogosServer {
 
 			posisList.add(posis);
 		}
+
 		PosisPack pack = new PosisPack();
 		Object[] object = posisList.toArray();
 		Posis[] posis = new Posis[object.length];
 		for (int i = 0; i < posis.length; i++) {
 			posis[i] = (Posis) object[i];
 		}
+//		Logger.logar(posis[posis.length - 1].idPiloto + " "
+//				+ +posis[posis.length - 1].tracado + " "
+//				+ posis[posis.length - 1].idNo);
 		pack.posis = posis;
 		if (jogoServidor.isSafetyCarNaPista()
 				&& jogoServidor.getSafetyCar() != null) {

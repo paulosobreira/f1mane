@@ -14,13 +14,11 @@
 </head>
 <body>
 <div id="f1body">
-	<section id="head" class="container">
-		<ul class="nav nav-pills" style="float: right; margin-top: 10px">
-			<li role="presentation"><a href="index.html"> <span
-					class="glyphicon glyphicon-home" aria-hidden="true"></span> Sair
-			</a></li>
-		</ul>
-		<h3>F1-Mane</h3>
+	<section id="head" class="container" style="margin: 10px;">
+        <a href="index.html" style=" margin-right: 20px;  color: darkgray;  font-size: 22px;"> 
+          <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 
+        </a>
+		<h3 style="display: inline;">F1-Mane</h3>
 	</section>
 	<section class="container containerPadless">
 		<div>
@@ -92,7 +90,10 @@
 			<img id="imgCircuito" class="img-responsive img-center" />
 		</div>
 		<div  class="form-group">
-			<button id="btnJogar" type="button" class="btn btn-default btn-block disabled">Selecione um piloto</button>
+			<label id="infoJogar" >Selecione um piloto</label>
+			<div id="btnJogar"  class="floatBtn">
+			    <i class="fa fa-plus floatBtnContent glyphicon glyphicon-road"></i>
+			</div>
 		</div>
 		<section class="container containerPadless">
 			<table class="table table-hover table-responsive">
