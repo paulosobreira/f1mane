@@ -49,7 +49,7 @@ function ctl_desenhaQualificacao(){
 	var y = 20;
 	
 	maneContext.fillStyle = corFundo
-	maneContext.fillRect(centroX-75, y, 170, 40);
+	maneContext.fillRect(centroX-80, y, 170, 40);
 	maneContext.font = '24px sans-serif';
 	maneContext.fillStyle = "black"
 	maneContext.fillText(lang_text('Classificação'), centroX-65, y + 28);
@@ -498,7 +498,9 @@ function ctl_desenhaInfoCarros() {
 	if (img1) {
 		maneContext.drawImage(img1, centroX - img1.width - 40, altura
 				- img1.height - 10);
-		ctl_problemasCarrro(img1 , centroX, idPiloto1 , 1);
+		if(idPiloto1==idPilotoSelecionado){
+			ctl_problemasCarrro(img1 , centroX, idPiloto1 , 1);
+		}
 		if (imgPneu1) {
 			var x;
 			var y;
@@ -524,7 +526,9 @@ function ctl_desenhaInfoCarros() {
 	}
 	if (img2) {
 		maneContext.drawImage(img2, centroX + 40, altura - img2.height - 10);
-		ctl_problemasCarrro(img2 , centroX, idPiloto2 , 2);
+		if(idPiloto2==idPilotoSelecionado){
+			ctl_problemasCarrro(img2 , centroX, idPiloto2 , 2);
+		}
 		if (imgPneu2) {
 			var x;
 			var y;
@@ -551,12 +555,12 @@ function ctl_desenhaInfoCarros() {
 }
 
 function ctl_problemasCarrro(img , x, idPiloto , posicao){
-	var alertaMotor;
+	var alertaMotorDnf;
 	
 	var alertaAerefolio = dadosParciais.alertaAerefolio;
 	
 	if(idPilotoSelecionado!=idPiloto){
-		alertaMotor = ("PANE_SECA" == dadosParciais.dano) || (dadosParciais.dano ==  "EXPLODIU_MOTOR");
+		alertaMotorDnf = ("PANE_SECA" == dadosParciais.dano) || (dadosParciais.dano ==  "EXPLODIU_MOTOR");
 	}
 	var perdeuAerefolio = pilotosAereofolioMap.get(idPiloto);
 	var dnf = pilotosDnfMap.get(idPiloto);
@@ -570,9 +574,13 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 			maneContext.fillStyle = corAmarelo;
 			maneContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
 		}
-		if(alertaMotor){
+		
+		if(alertaMotorDnf){
 			maneContext.fillStyle = corVermelho;
-			maneContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 60, 30);
+			maneContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 50, 30);
+		}else if(dadosParciais.alertaMotor){
+			maneContext.fillStyle = corAmarelo;
+			maneContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 50, 30);
 		}
 		if(dnf){
 			maneContext.fillStyle = corVermelho;
@@ -585,21 +593,25 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 		if(perdeuAerefolio){
 			maneContext.fillStyle = corVermelho;
 			maneContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
+		}else if(alertaAerefolio){
+			maneContext.fillStyle = corAmarelo;
+			maneContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
 		}
 		
-		if(alertaMotor){
+		if(alertaMotorDnf){
 			maneContext.fillStyle = corVermelho;
-			maneContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 60, 30);
+			maneContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 50, 30);
+		}else if(dadosParciais.alertaMotor){
+			maneContext.fillStyle = corAmarelo;
+			maneContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 50, 30);
 		}
 		
 		if(dnf){
 			maneContext.fillStyle = corVermelho;
 			maneContext.fillRect(x + 40, altura - img.height - 10, img.width, img.height);
 		}
-		
 		maneContext.closePath();
 		maneContext.stroke();
-
 	}
 		
 }

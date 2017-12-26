@@ -23,18 +23,19 @@ public class No implements Serializable {
 	public static Color CURVA_BAIXA = Color.RED;
 	public static Color BOX = Color.CYAN;
 	public static Color PARADA_BOX = Color.ORANGE;
-	@JsonIgnore
-	private Point point = new Point(1000, 1000);
-
 	private boolean box;
 	private int index;
+	
+	@JsonIgnore
+	private int tracado;
+	@JsonIgnore
+	private boolean noEntradaBox;
+	@JsonIgnore
+	private boolean noSaidaBox;
 	@JsonIgnore
 	private Color tipo;
-
-	private int tracado;
-
-	private boolean noEntradaBox;
-	private boolean noSaidaBox;
+	@JsonIgnore
+	private Point point = new Point(1000, 1000);
 
 	public int getIndex() {
 		return index;
@@ -133,26 +134,25 @@ public class No implements Serializable {
 		return point.y;
 	}
 
-	public boolean getRetaOuLargada() {
-		return (LARGADA.equals(tipo)) || (RETA.equals(tipo));
+	public String getTipoJson() {
+		if ((LARGADA.equals(tipo)) || (RETA.equals(tipo))) {
+			return "R";
+		} else if (CURVA_ALTA.equals(tipo)) {
+			return "A";
+		} else if (CURVA_BAIXA.equals(tipo)) {
+			return "B";
+		}
+		return null;
 	}
-	
+
 	public boolean verificaRetaOuLargada() {
 		return (LARGADA.equals(tipo)) || (RETA.equals(tipo));
 	}
 
-	public boolean getCurvaAlta() {
-		return (CURVA_ALTA.equals(tipo));
-	}
-	
 	public boolean verificaCurvaAlta() {
 		return (CURVA_ALTA.equals(tipo));
 	}
 
-	public boolean getCurvaBaixa() {
-		return (CURVA_BAIXA.equals(tipo));
-	}
-	
 	public boolean verificaCurvaBaixa() {
 		return (CURVA_BAIXA.equals(tipo));
 	}

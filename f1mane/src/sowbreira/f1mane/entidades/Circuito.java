@@ -32,19 +32,18 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
 	private String backGround;
+	@JsonIgnore
 	private List<No> pista = new ArrayList<No>();
 	private List<No> pistaFull = new ArrayList<No>();
 	private List<No> pista1Full = new ArrayList<No>();
 	private List<No> pista2Full = new ArrayList<No>();
 	private List<No> pista5Full = new ArrayList<No>();
 	private List<No> pista4Full = new ArrayList<No>();
-	private Map<PontoEscape, List<No>> escapeMap = new HashMap<PontoEscape, List<No>>();
-	private transient List<No> pistaKey = new ArrayList<No>();
+	@JsonIgnore
 	private List<No> box = new ArrayList<No>();
 	private transient List<No> boxFull = new ArrayList<No>();
 	private List<No> box1Full = new ArrayList<No>();
 	private List<No> box2Full = new ArrayList<No>();
-	private transient List<No> boxKey = new ArrayList<No>();
 	private int ladoBox = 0;
 	private int ladoBoxSaidaBox = 0;
 	private int probalidadeChuva = 0;
@@ -55,6 +54,13 @@ public class Circuito implements Serializable {
 	private boolean noite;
 	private boolean usaBkg;
 	private transient List<ObjetoPistaJSon> objetosNoTransparencia;
+	
+	@JsonIgnore
+	private transient List<No> pistaKey = new ArrayList<No>();
+	@JsonIgnore
+	private transient List<No> boxKey = new ArrayList<No>();
+	@JsonIgnore
+	private Map<PontoEscape, List<No>> escapeMap = new HashMap<PontoEscape, List<No>>();
 	@JsonIgnore
 	private double multiplicadorPista;
 	@JsonIgnore

@@ -174,7 +174,7 @@ function cpu_altenador() {
 	}
 }
 
-var main = setInterval(cpu_main, 350);
+var main = setInterval(cpu_main, 500);
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {
