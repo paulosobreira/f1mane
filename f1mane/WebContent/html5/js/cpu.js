@@ -114,7 +114,7 @@ function cpu_dadosParciais() {
 
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
-//		console.log(piloto.idPiloto+'  '+piloto.tracado+'  '+piloto.idNo);
+		//console.log(dadosParciais.estado+' '+piloto.idPiloto+'  '+piloto.tracado+'  '+piloto.idNo);
 		if (piloto.idPiloto == idPilotoSelecionado) {
 			posicaoCentraliza = i;
 		}

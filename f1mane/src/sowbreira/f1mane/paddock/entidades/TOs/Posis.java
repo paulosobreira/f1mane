@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Posis implements Serializable {
 
-	public int idPiloto, idNo, tracado;
-	public String status;
-	public boolean humano;
+	private int idPiloto, idNo, tracado;
+	private String status;
+	private boolean humano;
 	public String encode() {
 		return idPiloto + "!" + idNo + "!" + status + "!" + (humano ? "S" : "N")
 				+ "!" + tracado;
@@ -65,6 +65,14 @@ public class Posis implements Serializable {
 
 	public void setHumano(boolean humano) {
 		this.humano = humano;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

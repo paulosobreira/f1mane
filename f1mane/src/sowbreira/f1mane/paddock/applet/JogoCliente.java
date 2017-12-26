@@ -309,11 +309,11 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return 0;
 	}
 
-	public List getNosDaPista() {
+	public List<No> getNosDaPista() {
 		return nosDaPista;
 	}
 
-	public List getNosDoBox() {
+	public List<No> getNosDoBox() {
 		return nosDoBox;
 	}
 

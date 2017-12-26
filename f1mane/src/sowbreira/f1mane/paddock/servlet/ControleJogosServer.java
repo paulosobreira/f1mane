@@ -19,6 +19,7 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.BufferTexto;
+import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
@@ -411,14 +412,14 @@ public class ControleJogosServer {
 	}
 
 	private PosisPack gerarPosicaoPilotos(JogoServidor jogoServidor) {
-		List posisList = new ArrayList();
-		List pilotos = jogoServidor.getPilotosCopia();
+		List<Posis> posisList = new ArrayList<Posis>();
+		List<Piloto> pilotos = jogoServidor.getPilotosCopia();
 		if (pilotos == null) {
 			Logger.logar("gerarPosicaoPilotos pilotos == null");
 			return null;
 		}
-		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
-			Piloto piloto = (Piloto) iter.next();
+		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
+			Piloto piloto = iter.next();
 			Posis posis = new Posis();
 			String statusPilotos = "P" + String.valueOf(piloto.getPtosPista());
 			if (piloto.getCarro().isRecolhido()) {
@@ -431,16 +432,16 @@ public class ControleJogosServer {
 			} else if (piloto.isTravouRodas()) {
 				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
 			}
-			posis.status = statusPilotos;
-			posis.idPiloto = piloto.getId();
-			posis.tracado = piloto.getTracado();
+			posis.setStatus(statusPilotos);
+			posis.setIdPiloto(piloto.getId());
+			posis.setTracado(piloto.getTracado());
 			Integer integer = jogoServidor.getMapaNosIds()
 					.get(piloto.getNoAtual());
 			if (integer == null) {
 				continue;
 			}
-			posis.idNo = integer.intValue();
-			posis.humano = piloto.isJogadorHumano();
+			posis.setIdNo(integer.intValue());
+			posis.setHumano(piloto.isJogadorHumano());
 
 			posisList.add(posis);
 		}
@@ -451,9 +452,6 @@ public class ControleJogosServer {
 		for (int i = 0; i < posis.length; i++) {
 			posis[i] = (Posis) object[i];
 		}
-//		Logger.logar(posis[posis.length - 1].idPiloto + " "
-//				+ +posis[posis.length - 1].tracado + " "
-//				+ posis[posis.length - 1].idNo);
 		pack.posis = posis;
 		if (jogoServidor.isSafetyCarNaPista()
 				&& jogoServidor.getSafetyCar() != null) {
@@ -648,7 +646,23 @@ public class ControleJogosServer {
 	 * @return
 	 */
 	public Object obterDadosParciaisPilotos(String[] args) {
-		JogoServidor jogoServidor = obterJogoPeloNome(args[0]);
+		DadosParciais dadosParciais = obterDadosParciaisPilotos(
+				args[0], args[1], args[2]);
+		return dadosParciais.encode();
+	}
+
+	/**
+	 * 
+	 * @param idPiloto
+	 * @param nomeJogador
+	 * @param args
+	 *            args[0] jogo args[1] apelido args[2] pilto Sel
+	 * @return
+	 */
+	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
+			String nomeJogador, String idPiloto) {
+
+		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 		if (jogoServidor == null) {
 			return null;
 		}
@@ -665,10 +679,10 @@ public class ControleJogosServer {
 		List<Piloto> pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = iter.next();
-			if (args.length <= 2) {
+			if (Util.isNullOrEmpty(idPiloto)) {
 				break;
 			}
-			if (piloto.getId() != Integer.parseInt(args[2])) {
+			if (piloto.getId() != Integer.parseInt(idPiloto)) {
 				continue;
 			}
 			Volta obterVoltaMaisRapida = piloto.obterVoltaMaisRapida();
@@ -775,7 +789,7 @@ public class ControleJogosServer {
 		}
 		Map<String, BufferTexto> mapJogo = jogoServidor
 				.getMapJogadoresOnlineTexto();
-		BufferTexto bufferTexto = (BufferTexto) mapJogo.get(args[1]);
+		BufferTexto bufferTexto = (BufferTexto) mapJogo.get(nomeJogador);
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();
 		}
@@ -784,7 +798,8 @@ public class ControleJogosServer {
 			dadosParciais.texto = Html.verde(Lang.msg("001"));
 		}
 
-		return dadosParciais.encode();
+		return dadosParciais;
+
 	}
 
 	public void removerClienteInativo(SessaoCliente sessaoCliente) {

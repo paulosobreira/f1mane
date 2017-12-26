@@ -35,6 +35,9 @@ var blendOp = 'destination-out'
 var corNublado = "rgba(255, 255, 255, 0.3)";
 var corChuva = "rgba(255, 255, 255,0.5)";
 var corFaisca = "rgba(255, 255, 0 ,0.5)";
+var vdp_amarelo = "rgba(255, 255, 0)";
+var vdp_vermelho = "rgba(255, 0, 0, 0.6)";
+var vdp_verde = "rgba(0, 255, 0, 0.6)";
 var pilotosEfeitosMap = new Map();
 maneCanvas.width = 0;
 maneCanvas.height = 0;
@@ -71,7 +74,7 @@ function vdp_desenhaMarcasLargadaGrid() {
 	if (desenhouMarcasLargadaGrid || circuito == null
 			|| circuito.objetosNoTransparencia == null || dadosParciais == null
 			|| dadosJogo == null || carrosImgMap == null || cvBg == null
-			|| carrosImgMap == null || dadosParciais.estado!=13) {
+			|| carrosImgMap == null || dadosParciais.estado!='13') {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;

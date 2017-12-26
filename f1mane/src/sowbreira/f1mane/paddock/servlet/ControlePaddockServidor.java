@@ -25,6 +25,7 @@ import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosParciais;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
@@ -724,8 +725,14 @@ public class ControlePaddockServidor {
 			String idPiloto) {
 		JogoServidor jogoServidor = controleJogosServer
 				.obterJogoPeloNome(nomeJogo);
-		return jogoServidor
-				.obterCarroCimaSemAreofolio(jogoServidor.obterPilotoPorId(idPiloto));
+		return jogoServidor.obterCarroCimaSemAreofolio(
+				jogoServidor.obterPilotoPorId(idPiloto));
+	}
+
+	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
+			String nomeJogador, String idPiloto) {
+		return controleJogosServer.obterDadosParciaisPilotos(nomeJogo,
+				nomeJogador, idPiloto);
 	}
 
 }

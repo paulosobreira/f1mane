@@ -363,10 +363,10 @@ public class MonitorJogo implements Runnable {
 			for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
 				Piloto piloto = iter.next();
 				piloto.setFaiscas(false);
-				if (piloto.getId() != posis.idPiloto) {
+				if (piloto.getId() != posis.getIdPiloto()) {
 					continue;
 				}
-				String statusPilotos = posis.status;
+				String statusPilotos = posis.getStatus();
 				if (statusPilotos != null) {
 					if (statusPilotos.startsWith("P")) {
 						piloto.setPtosPista(
@@ -391,8 +391,8 @@ public class MonitorJogo implements Runnable {
 						piloto.getCarro().setRecolhido(true);
 					}
 				}
-				piloto.setJogadorHumano(posis.humano);
-				int pos = posis.tracado;
+				piloto.setJogadorHumano(posis.isHumano());
+				int pos = posis.getTracado();
 
 				if (piloto.getIndiceTracado() > 0
 						&& pos != piloto.getTracado()) {
@@ -411,8 +411,8 @@ public class MonitorJogo implements Runnable {
 				piloto.calculaCarrosAdjacentes(jogoCliente);
 				Map<Integer, No> mapaIdsNos = jogoCliente.getMapaIdsNos();
 				List nosDoBox = jogoCliente.getNosDoBox();
-				if (posis.idNo >= -1) {
-					No no = (No) mapaIdsNos.get(new Integer(posis.idNo));
+				if (posis.getIdNo() >= -1) {
+					No no = (No) mapaIdsNos.get(new Integer(posis.getIdNo()));
 					piloto.setNoAtual(no);
 					if (nosDoBox.contains(no)) {
 						piloto.setPtosBox(1);

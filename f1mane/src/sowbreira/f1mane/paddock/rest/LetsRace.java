@@ -44,7 +44,6 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
-import sowbreira.f1mane.paddock.servlet.JogoServidor;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
@@ -96,15 +95,9 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
-		Object dParciais = controlePaddock
-				.obterDadosParciaisPilotos(new String[]{nomeJogo,
-						sessaoCliente.getNomeJogador(), idPiloto});
-		Response erro = processsaMensagem(dParciais);
-		if (erro != null) {
-			return erro;
-		}
-		DadosParciais dadosParciais = new DadosParciais();
-		dadosParciais.decode((String) dParciais);
+		DadosParciais dadosParciais = controlePaddock
+				.obterDadosParciaisPilotos(nomeJogo,
+						sessaoCliente.getNomeJogador(), idPiloto);
 		dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto);
 		return Response.status(200).entity(dadosParciais).build();
 	}
@@ -334,9 +327,9 @@ public class LetsRace {
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);
-		if(Math.random() < (circuitoObj.getProbalidadeChuva()/100.0)){
+		if (Math.random() < (circuitoObj.getProbalidadeChuva() / 100.0)) {
 			dadosCriarJogo.setClima(Clima.NUBLADO);
-		}else{
+		} else {
 			dadosCriarJogo.setClima(Clima.SOL);
 		}
 		TemporadasDefauts temporadasDefauts = carregadorRecursos
