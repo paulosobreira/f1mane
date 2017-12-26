@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import br.nnpe.Util;
+
 /**
  * @author Paulo Sobreira Criado em 17/08/2007 as 20:25:54
  */
@@ -29,6 +31,7 @@ public class Posis implements Serializable {
 
 	private int parseInt(String string) {
 		try {
+			string = Util.extrairNumeros(string);
 			return Integer.parseInt(string);
 		} catch (Exception e) {
 		}

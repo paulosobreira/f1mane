@@ -71,6 +71,7 @@ public class TravadaRoda implements Serializable {
 
 	private int parseInt(String string) {
 		try {
+			string = Util.extrairNumeros(string);
 			return Integer.parseInt(string);
 		} catch (Exception e) {
 		}

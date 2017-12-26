@@ -502,4 +502,8 @@ public class Util {
 
 		return Color.WHITE;
 	}
+
+	public static String extrairNumeros(String string) {
+		return string.replaceAll("\\D+","");
+	}
 }

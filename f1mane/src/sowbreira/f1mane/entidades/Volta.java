@@ -53,14 +53,6 @@ public class Volta implements Serializable {
 		return 0;
 	}
 
-	private int parseInt(String string) {
-		try {
-			return Integer.parseInt(string);
-		} catch (Exception e) {
-		}
-		return 0;
-	}
-
 	public int getPiloto() {
 		return pilotoId;
 	}

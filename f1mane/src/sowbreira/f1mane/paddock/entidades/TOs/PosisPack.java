@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 /**
  * @author Paulo Sobreira Criado em 18/08/2007 as 09:24:11
@@ -55,6 +56,7 @@ public class PosisPack implements Serializable {
 
 	private int parseInt(String string) {
 		try {
+			string = Util.extrairNumeros(string);
 			return Integer.parseInt(string);
 		} catch (Exception e) {
 		}

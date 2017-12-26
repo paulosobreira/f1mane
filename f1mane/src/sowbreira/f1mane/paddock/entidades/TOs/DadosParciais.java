@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
@@ -118,6 +119,7 @@ public class DadosParciais implements Serializable {
 
 	private int parseInt(String string) {
 		try {
+			string = Util.extrairNumeros(string);
 			return Integer.parseInt(string);
 		} catch (Exception e) {
 		}
