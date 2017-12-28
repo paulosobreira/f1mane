@@ -299,8 +299,12 @@ function ctl_desenhaInfo() {
 	}else{
 		$('#info').css('top', (altura-40)+'px');
 	}
-	$('#info').css('left', '10px');
-	$('#info').css('margin-right', '10px');
+	if(altura<480){
+		$('#info').css('left',  centroX - ($('#info').width()/2)+'px');
+	}else{
+		$('#info').css('left', '10px');
+		$('#info').css('margin-right', '10px');
+	}
 	$('#info').css('font-family', 'sans-serif');
 	if($('#info').html().indexOf('table')>0){
 		$('#info').css('background-color', corFundo);
@@ -694,17 +698,21 @@ function ctl_desenhaInfoDireita() {
 		nomePiloto = nomePiloto.split(".")[1];
 		nomePiloto = nomePiloto.substr(0, 3);
 		maneContext.beginPath();
+		
+		maneContext.fillStyle = pilotosMap.get(piloto.idPiloto).carro.cor1Hex;
+		maneContext.fillRect(x, y, 5, 20);
+		
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, larg, 20);
+		maneContext.fillRect(x + 5, y, larg, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText('1 ' + nomePiloto, x + 5, y + 15);
+		maneContext.fillText('1 ' + nomePiloto, x + 10, y + 15);
 		if (idPilotoSelecionado == piloto.idPiloto) {
 			maneContext.strokeStyle = '#00FF00';
-			maneContext.rect(x, y, larg, 20);
+			maneContext.rect(x + 5, y, larg, 20);
 		} else if (piloto.humano) {
 			maneContext.strokeStyle = '#FFFF00';
-			maneContext.rect(x, y, larg, 20);
+			maneContext.rect(x + 5, y, larg, 20);
 		}
 		maneContext.closePath();
 		maneContext.stroke();
@@ -727,17 +735,21 @@ function ctl_desenhaInfoDireita() {
 			var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
 			nomePiloto = nomePiloto.split(".")[1];
 			nomePiloto = nomePiloto.substr(0, 3);
+			
+			maneContext.fillStyle = pilotosMap.get(piloto.idPiloto).carro.cor1Hex;
+			maneContext.fillRect(x, y, 5, 20);
+			
 			maneContext.fillStyle = corFundo
-			maneContext.fillRect(x, y, larg, 20);
+			maneContext.fillRect(x + 5, y, larg, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
-			maneContext.fillText((i + 1) + ' ' + nomePiloto, x + 5, y + 15);
+			maneContext.fillText((i + 1) + ' ' + nomePiloto, x + 10, y + 15);
 			if (idPilotoSelecionado == piloto.idPiloto) {
 				maneContext.strokeStyle = '#00FF00';
-				maneContext.rect(x, y, larg, 20);
+				maneContext.rect(x + 5, y, larg, 20);
 			} else if (piloto.humano) {
 				maneContext.strokeStyle = '#FFFF00';
-				maneContext.rect(x, y, larg, 20);
+				maneContext.rect(x + 5, y, larg, 20);
 			}
 			y += 30;
 			maneContext.closePath();

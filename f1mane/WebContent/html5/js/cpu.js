@@ -34,7 +34,7 @@ function cpu_main() {
 		idPilotoSelecionado = localStorage.getItem("idPilotoSelecionado");
 		token = localStorage.getItem("token");
 		if (nomeJogo == null) {
-			alert('nomeJogo == null');
+			console.log('cpu_main nomeJogo == null');
 			window.location.href = "index.html";
 			return;
 		}

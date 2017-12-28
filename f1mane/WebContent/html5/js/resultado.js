@@ -60,7 +60,9 @@ function resultado() {
 			});
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			alert(xhRequest.status + '  ' + xhRequest.responseText + ' ' + ErrorText);
+			tratamentoErro(xhRequest);
+			console.log(xhRequest.status + '  '
+					+ xhRequest.responseText + ' ' + ErrorText);
 		}
 	});
 }
