@@ -210,6 +210,9 @@ public class ControleCorrida {
 		if (pilotoNaFrente == null) {
 			return;
 		}
+		if(pilotoNaFrente.isDesqualificado()){
+			return;
+		}
 		if (controleJogo.isSafetyCarNaPista()) {
 			return;
 		}

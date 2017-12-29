@@ -70,7 +70,11 @@ function resultado() {
 function montaLinhaGridResultado(i, piloto) {
 	var tr = $('<tr style="cursor: pointer; cursor: hand" />');
 	var td1 = $('<td scope="row"/>');
-	td1.append('P'+(i+1)+' ');
+	if(piloto.desqualificado){
+		td1.append('DNF ');
+	}else{
+		td1.append('P'+(i+1)+' ');
+	}
 	td1.append(piloto.nome);
 	td1.append('<br>');
 	td1.append('<b>Box : </b>');
