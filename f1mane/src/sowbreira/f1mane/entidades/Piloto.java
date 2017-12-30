@@ -1853,7 +1853,8 @@ public class Piloto implements Serializable, PilotoSuave {
 			mudarTracado(controleJogo.getCircuito().getLadoBoxSaidaBox(),
 					controleJogo, true);
 		} else if (getTracado() == controleJogo.getCircuito()
-				.getLadoBoxSaidaBox() && controleJogo.verificaSaidaBox(this)) {
+				.getLadoBoxSaidaBox() && controleJogo.verificaSaidaBox(this)
+				&& getNumeroVolta() > 0) {
 			mudarTracado(0, controleJogo);
 		} else if (isBox()
 				&& getTracado() != controleJogo.getCircuito()

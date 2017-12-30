@@ -1,5 +1,5 @@
 -F1-MANE
-F1 MANager & Engineer
+Formula league - Manager & Engineer
 -Desenvolvido / Developed
 Paulo Sobreira
 -Imagens das pistas / Track images
@@ -7,17 +7,19 @@ www.miniracingonline.com
 -Imagens dos carros e capacetes / Car and helmet Images
 spotterguidecentral.com
 -Web Site
-http://sowbreira.appspot.com
+sowbreira-26fe1.firebaseapp.com
 -E-mail 
 sowbreira@gmail.com
--Licen�a / License
+-Licença / License
 Codigo aberto
 Open Source
 -Status
-F1-Mane � um prototipo e seus graficos 
-    e jogabilidade podem mudar com novas vers�es
+F1-Mane é um prototipo e seus graficos 
+    e jogabilidade podem mudar com novas versões
 F1-Mane is a prototype and its graphics 
     and gameplay game can change in new versions
--Sobreira 2007-2016
+-Sobreira 2007-2018
  Obrigado por jogar
  Thanks for playng
+ 
+ Sem você não seria possível Gizele.

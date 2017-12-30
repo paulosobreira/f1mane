@@ -782,7 +782,7 @@ function ctl_desenhaInfoEsquerda() {
 		y += 30;
 
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 80, 20);
+		maneContext.fillRect(x, y, 100, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
 		maneContext.fillText(lang_text('Volta'), x + 5, y + 15);

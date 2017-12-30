@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.ws.rs.Encoded;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
@@ -19,6 +20,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import br.nnpe.Constantes;
 import br.nnpe.Html;
@@ -59,28 +62,22 @@ public class LetsRace {
 	@Compress
 	@Path("/circuito")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response circuito(@QueryParam("nomeJogo") String nomeJogo) {
-		Logger.logar("String nomeJogo " + nomeJogo);
-		Object circuito = controlePaddock.obterCircuito(nomeJogo);
+	public Response circuito(@QueryParam("nomeCircuito") String nomeCircuito) {
+		Logger.logar("String nomeCircuito " + nomeCircuito);
+		Circuito circuito = null;
+		try {
+			circuito = CarregadorRecursos.carregarCircuito(nomeCircuito);
+		} catch (ClassNotFoundException | IOException e) {
+			return Response.status(500).entity(e)
+					.type(MediaType.APPLICATION_JSON).build();
+		}
 		if (circuito == null) {
 			return Response.status(400)
-					.entity(Html.escapeHtml("Jogo não pode ser iniciado."))
+					.entity(StringEscapeUtils
+							.escapeHtml4("Circuito não encontrado."))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-		if (circuito instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) circuito;
-			return Response.status(400)
-					.entity(Html.escapeHtml(msgSrv.getMessageString()))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		if (circuito instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) circuito;
-			return Response.status(500)
-					.entity(Html.escapeHtml(erroServ.obterErroFormatado()))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		Circuito circuitoJogo = (Circuito) circuito;
-		return Response.status(200).entity(circuitoJogo).build();
+		return Response.status(200).entity(circuito).build();
 	}
 
 	@GET
@@ -95,9 +92,8 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
-		DadosParciais dadosParciais = controlePaddock
-				.obterDadosParciaisPilotos(nomeJogo,
-						sessaoCliente.getNomeJogador(), idPiloto);
+		DadosParciais dadosParciais = controlePaddock.obterDadosParciaisPilotos(
+				nomeJogo, sessaoCliente.getNomeJogador(), idPiloto);
 		dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto);
 		return Response.status(200).entity(dadosParciais).build();
 	}
@@ -499,6 +495,36 @@ public class LetsRace {
 				.entity(carregadorRecursos.carregarTemporadas()).build();
 	}
 
+	@GET
+	@Compress
+	@Path("/sobre")
+	@Produces(MediaType.TEXT_HTML)
+	public Response sobre() {
+		List<String> carregarCreditosJogo = CarregadorRecursos
+				.carregarCreditosJogo();
+		StringBuffer buffer = new StringBuffer();
+		for (Iterator<String> iterator = carregarCreditosJogo
+				.iterator(); iterator.hasNext();) {
+			String string = iterator.next();
+			buffer.append("<br>");
+			buffer.append(StringEscapeUtils.escapeHtml4(string));
+		}
+		return Response.status(200).entity(buffer.toString()).build();
+	}
+
+	public static void main(String[] args) {
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos
+				.getCarregadorRecursos();
+		List<String> carregarCreditosJogo = carregadorRecursos
+				.carregarCreditosJogo();
+		StringBuffer buffer = new StringBuffer();
+		for (Iterator<String> iterator = carregarCreditosJogo
+				.iterator(); iterator.hasNext();) {
+			String string = iterator.next();
+			System.out.println(StringEscapeUtils.escapeHtml4(string));
+		}
+
+	}
 	/**
 	 * potencia : GIRO_MIN , GIRO_NOR , GIRO_MAX
 	 */

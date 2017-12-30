@@ -10,15 +10,16 @@
 <script src="../jquery/jquery-3.2.1.min.js"></script>
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 
-<title>F1-Mane</title>
+<title>Fl-Mane</title>
 </head>
 <body>
 <div id="f1body">
 	<section id="head" class="container" style="margin: 10px;">
-        <a href="index.html" style=" margin-right: 20px;  color: darkgray;  font-size: 22px;"> 
-          <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 
+        <a href="index.html" class="voltar"> 
+          <span class="glyphicon glyphicon glyphicon-chevron-left" aria-hidden="true"></span> 
         </a>
-		<h3 style="display: inline;">F1-Mane</h3>
+		<h3 style="display: inline;">Fl-Mane</h3>
+		<h5>Formula league-Manager & Engineer</h5>
 	</section>
 	<section class="container containerPadless">
 		<div>
@@ -70,7 +71,7 @@
 		<div class="form-group">
 			<div id="circuitoCarousel" class="carousel slide">
 				<div id="circuitoCarousel-inner" class="carousel-inner" role="listbox">
-					<div id="temporadaActive" class="item active">
+					<div id="circuitoActive" class="item active">
 						<h3 class="text-center" id="circuitosLabel"></h3>
 						<img class="img-responsive center-block" id="imgCircuito" />
 					</div>
@@ -90,7 +91,9 @@
 			<img id="imgCircuito" class="img-responsive img-center" />
 		</div>
 		<div  class="form-group">
-			<label id="infoJogar" >Selecione um piloto</label>
+		 	<div class="transbox">
+				<label id="infoJogar" >Selecione um piloto</label>
+			</div>	
 			<div id="btnJogar"  class="floatBtn">
 			    <i class="fa fa-plus floatBtnContent glyphicon glyphicon-road"></i>
 			</div>

@@ -177,7 +177,9 @@ function jogar() {
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
-			dadosJogo();
+			if (xhRequest.status != 401) {
+				dadosJogo();
+			}
 			console.log('jogar() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);
 		}
@@ -223,6 +225,9 @@ function listaCircuitos() {
 					'/f1mane/rest/letsRace/circuitoMini/' + circuito.arquivo);
 			circuitoSelecionado = circuito.arquivo;
 			$('#circuitoActive').prop('circuito',circuito.arquivo);
+			var dvChuva = $('<div class="well"></div>');
+			dvChuva.append('Probabilidade de chuva : '+circuito.probalidadeChuva+'%');
+			$('#circuitoActive').append(dvChuva);
 			$.each(circuitosRes, function(i, val) {
 				if(i==0){
 					return;
@@ -236,6 +241,9 @@ function listaCircuitos() {
 				h3.append(this.nome);
 				dv.append(h3);
 				dv.append(img);
+				var dvChuva = $('<div class="well"></div>');
+				dvChuva.append('Probabilidade de chuva : '+this.probalidadeChuva+'%');
+				dv.append(dvChuva);
 				$('#circuitoCarousel-inner').append(dv);
 			});		
 			$('#temporadaCarousel').carousel('pause');

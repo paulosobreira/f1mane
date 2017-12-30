@@ -3,6 +3,9 @@
  */
 package br.nnpe;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author Rafael Carneiro (<a href="mailto:rafael@portaljava.com">e-mail</a>)
  * @author Paulo Sobreira
@@ -176,7 +179,4 @@ public class Html {
 		return ret.toString();
 	}
 
-	public static String escapeHtml(String messageString) {
-		return messageString;
-	}
 }

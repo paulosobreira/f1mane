@@ -103,18 +103,35 @@
 	margin-top:22px;
 }
 
+.voltar{
+	margin-right: 20px;  color: darkgray;  font-size: 22px;
+}
+
+.transbox {
+  background-color: #ffffff;
+  border-radius: 5px;
+  opacity: 0.8;
+  filter: alpha(opacity=60); /* For IE8 and earlier */
+}	
+
+.creditos{
+  background-color: #ffffff;
+  border-radius: 5px;
+  opacity: 0.6;
+  filter: alpha(opacity=60); /* For IE8 and earlier */
+  padding: 10px;
+}
+
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
     visibility: hidden; /* Hidden by default. Visible on click */
-    min-width: 250px; /* Set a default minimum width */
-    margin-left: -125px; /* Divide value of min-width by 2 */
+    margin-left: 10px;
+	margin-right: 10px;
     text-align: center; /* Centered text */
     border-radius: 2px; /* Rounded borders */
-    padding: 16px; /* Padding */
     position: fixed; /* Sit on top of the screen */
     z-index: 1; /* Add a z-index if needed */
-    left: 50%; /* Center the snackbar */
     bottom: 30px; /* 30px from the bottom */
 }
 

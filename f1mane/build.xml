@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- ======================================================================
      28/07/2007
 
      project    F1-Mane
-     description Build file padrão
-
+     
      Paulo Sobreira
      
      java -Xmx512M -Xms512M  -cp .f1maneRecursos.jar; -jar f1mane.jar

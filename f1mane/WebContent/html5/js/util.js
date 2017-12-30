@@ -7,12 +7,12 @@ function safeArray(arr, i) {
 	}
 	if (i >= arr.length) {
 		var virou = i - arr.length;
-		if(virou>= arr.length){
+		if (virou >= arr.length) {
 			virou = 0;
 		}
 		return arr[virou];
 	}
-	
+
 	return arr[i];
 }
 
@@ -48,32 +48,34 @@ function pad(n, width, z) {
 	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-function tratamentoErro( xhRequest) {
+function tratamentoErro(xhRequest) {
 	if (xhRequest.status == 401) {
-		toaster('Sem sessão voltando ao inicio...',2000,'alert alert-danger');
-		setTimeout(function(){ 
+		toaster('Sem sessão voltando ao inicio...', 2000, 'alert alert-danger');
+		setTimeout(function() {
 			localStorage.clear();
 			window.location = "index.html";
 		}, 3000);
 	} else {
-		var erroMsg = xhRequest.status + '  ' + xhRequest.responseText; ;
-		if(xhRequest.responseJSON!=null && xhRequest.responseJSON.messageString!=null){
+		var erroMsg = xhRequest.status + '  ' + xhRequest.responseText;
+		;
+		if (xhRequest.responseJSON != null && xhRequest.responseJSON.messageString != null) {
 			erroMsg = xhRequest.responseJSON.messageString;
 		}
-		toaster('Mensagem do servidor : '+  erroMsg,3000,'alert alert-danger');
+		toaster('Mensagem do servidor : ' + erroMsg, 3000, 'alert alert-danger');
 	}
 }
 
-
-function toaster(msg,tempo,classe) {
-	if(classe==null){
+function toaster(msg, tempo, classe) {
+	if (classe == null) {
 		classe = 'alert alert-info';
 	}
 	$('#snackbar').remove();
-	var toast = $('<div id="snackbar" class="show '+classe+'" role="alert">'
-			+  msg + '</div>');
+	var toast = $('<div id="snackbar" class="show ' + classe + '" role="alert">' + msg + '</div>');
 	$('#head').append(toast);
-	setTimeout(function(){$('#snackbar').remove(); }, tempo);
+	if (toast.width() > 0) {
+		toast.css('left', ((window.innerWidth / 2) - (toast.width() / 2) - 20) + 'px');
+	}
+	setTimeout(function() {
+		$('#snackbar').remove();
+	}, tempo);
 }
-
-

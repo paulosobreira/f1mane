@@ -48,23 +48,21 @@ function rest_ciruito() {
 		console.log('dadosJogo ==null || dadosJogo.nomeJogo == null');
 		return;
 	}
+	if (localStorage.getItem(dadosJogo.arquivoCircuito)) {
+		console.log('Carregando circuito localStorage '+dadosJogo.arquivoCircuito);
+		rest_processaCircuito(JSON.parse(localStorage.getItem(dadosJogo.arquivoCircuito)));
+		return;
+	}
 	carregando = true;
 	$.ajax({
 		type : "GET",
-		url : "/f1mane/rest/letsRace/circuito?nomeJogo=" + dadosJogo.nomeJogo,
+		url : "/f1mane/rest/letsRace/circuito?nomeCircuito=" + dadosJogo.arquivoCircuito,
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
-			circuito = response;
-			mapaIdNos = new Map();
-			mapaIdNosSuave = new Map();
-			var id = 1;
-			for (var i = 0; i < circuito.pistaFull.length; i++) {
-				mapaIdNos.set(id++, circuito.pistaFull[i]);
-			}
-			for (var i = 0; i < circuito.boxFull.length; i++) {
-				mapaIdNos.set(id++, circuito.boxFull[i]);
-			}
+			console.log('Carregando circuito rest '+dadosJogo.arquivoCircuito);
+			localStorage.setItem(dadosJogo.arquivoCircuito,JSON.stringify(response));
+			rest_processaCircuito(response);
 			carregando = false;
 		},
 		error : function(xhRequest, errorText, thrownError) {
@@ -82,6 +80,19 @@ function rest_ciruito() {
 			}
 		}
 	});
+}
+
+function rest_processaCircuito(response){
+	circuito = response;
+	mapaIdNos = new Map();
+	mapaIdNosSuave = new Map();
+	var id = 1;
+	for (var i = 0; i < circuito.pistaFull.length; i++) {
+		mapaIdNos.set(id++, circuito.pistaFull[i]);
+	}
+	for (var i = 0; i < circuito.boxFull.length; i++) {
+		mapaIdNos.set(id++, circuito.boxFull[i]);
+	}
 }
 
 function rest_dadosParciais() {

@@ -1,5 +1,6 @@
 package sowbreira.f1mane.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -8,6 +9,7 @@ public class CircuitosDefauts {
 	private String nome;
 	private String arquivo;
 	private Integer probalidadeChuva;
+	@JsonIgnore
 	private Integer voltas = 16;
 	public String getNome() {
 		return nome;
