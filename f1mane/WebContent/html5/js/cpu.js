@@ -164,14 +164,19 @@ function cpu_altenador() {
 	if (alternador) {
 		alternadorValor++;
 		if (alternadorValor > 6) {
-			alternador = false;
+			cpu_viradaAlterador();
 		}
 	} else {
 		alternadorValor--;
 		if (alternadorValor < -6) {
-			alternador = true;
+			cpu_viradaAlterador();
 		}
 	}
+}
+
+function cpu_viradaAlterador(){
+	alternador = !alternador;
+	vdp_precessaCorCeu();
 }
 
 var main = setInterval(cpu_main, 500);

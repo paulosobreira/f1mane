@@ -61,7 +61,11 @@ function rest_ciruito() {
 		dataType : "json",
 		success : function(response) {
 			console.log('Carregando circuito rest '+dadosJogo.arquivoCircuito);
-			localStorage.setItem(dadosJogo.arquivoCircuito,JSON.stringify(response));
+			try {
+				localStorage.setItem(dadosJogo.arquivoCircuito,JSON.stringify(response));	
+			} catch (e) {
+				console.log('Nao Gravou no localStorage '+dadosJogo.arquivoCircuito);
+			}
 			rest_processaCircuito(response);
 			carregando = false;
 		},

@@ -422,7 +422,7 @@ public class ControleJogosServer {
 			Piloto piloto = iter.next();
 			Posis posis = new Posis();
 			String statusPilotos = "P" + String.valueOf(piloto.getPtosPista());
-			if (piloto.getCarro().isRecolhido()) {
+			if (piloto.verificaNaoPrecisaDesenhar()) {
 				statusPilotos = "R";
 			} else if (Carro.PERDEU_AEREOFOLIO
 					.equals(piloto.getCarro().getDanificado())) {

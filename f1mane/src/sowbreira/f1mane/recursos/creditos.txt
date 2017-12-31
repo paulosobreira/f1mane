@@ -1,4 +1,4 @@
--F1-MANE
+-Fl-MANE
 Formula league - Manager & Engineer
 -Desenvolvido / Developed
 Paulo Sobreira
@@ -14,9 +14,9 @@ sowbreira@gmail.com
 Codigo aberto
 Open Source
 -Status
-F1-Mane é um prototipo e seus graficos 
+Fl-Mane é um prototipo e seus graficos 
     e jogabilidade podem mudar com novas versões
-F1-Mane is a prototype and its graphics 
+Fl-Mane is a prototype and its graphics 
     and gameplay game can change in new versions
 -Sobreira 2007-2018
  Obrigado por jogar

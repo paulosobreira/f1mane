@@ -66,9 +66,7 @@ function ctl_desenhaQualificacao(){
 		maneContext.beginPath();
 		maneContext.font = '14px sans-serif';
 		
-		var nmPiloto = piloto.nome;
-		nmPiloto = nmPiloto.split(".")[1];
-		nmPiloto = nmPiloto.substr(0, 3);
+		var nmPiloto = piloto.nomeAbreviado;
 		nmPiloto = (i + 1) + ' ' + nmPiloto;
 		var tempo = piloto.tempoVoltaQualificacao;
 
@@ -294,12 +292,12 @@ function ctl_mudaTracadoPiloto(event) {
 
 function ctl_desenhaInfo() {
 	$('#info').css('position', 'absolute');
-	if(altura>480){
+	if(altura>largura){
 		$('#info').css('top', (altura-100)+'px');
 	}else{
 		$('#info').css('top', (altura-40)+'px');
 	}
-	if(altura<480){
+	if(altura<largura){
 		$('#info').css('left',  centroX - ($('#info').width()/2)+'px');
 	}else{
 		$('#info').css('left', '10px');
@@ -309,7 +307,7 @@ function ctl_desenhaInfo() {
 	if($('#info').html().indexOf('table')>0){
 		$('#info').css('background-color', corFundo);
 		$('#info').css('font-size', '11px');
-		if(altura<480){
+		if(altura<largura){
 			$('#info').css('top', (altura-90)+'px');
 			$('#info').css('left', centroX - ($('#info').width()/2) +'px');
 		}
@@ -347,7 +345,7 @@ function ctl_desenhaInfoAsa() {
 		return
 	}
 	
-	var y =(altura > 480)?(maneCanvas.height - 200):(maneCanvas.height - 150);
+	var y =(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 150);
 	var x = maneCanvas.width - 70;
 	var img;
 	if(dadosParciais.asa == 'MAIS_ASA'){
@@ -631,7 +629,7 @@ function ctl_desenhaInfoDireita() {
 	var x = maneCanvas.width - 120;
 	var y = 10;
 
-	if (dadosParciais.melhorVolta && (altura > 480 || !alternador)) {
+	if (dadosParciais.melhorVolta && (altura > largura || !alternador)) {
 		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 110, 20);
 		maneContext.font = '14px sans-serif';
@@ -642,7 +640,7 @@ function ctl_desenhaInfoDireita() {
 		y += 30;
 	}
 
-	if (dadosParciais.ultima1 && (altura > 480 || !alternador)) {
+	if (dadosParciais.ultima1 && (altura > largura || !alternador)) {
 		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 110, 20);
 		maneContext.font = '14px sans-serif';
@@ -692,11 +690,9 @@ function ctl_desenhaInfoDireita() {
 	x+=50;
 	var larg = 55;
 	if (posicaoPilotos
-			&& (altura > 480 || (alternador || !dadosParciais.melhorVolta))) {
+			&& (altura > largura || (alternador || !dadosParciais.melhorVolta))) {
 		var piloto = posicaoPilotos.posis[0];
-		var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
-		nomePiloto = nomePiloto.split(".")[1];
-		nomePiloto = nomePiloto.substr(0, 3);
+		var nomePiloto = pilotosMap.get(piloto.idPiloto).nomeAbreviado;
 		maneContext.beginPath();
 		
 		maneContext.fillStyle = pilotosMap.get(piloto.idPiloto).carro.cor1Hex;
@@ -771,7 +767,7 @@ function ctl_desenhaInfoEsquerda() {
 	var x = 10;
 	var y = 10;
 
-	if (altura > 480 || !alternador) {
+	if (altura > largura || !alternador) {
 
 		maneContext.fillStyle = corFundo
 		maneContext.font = '14px sans-serif';
@@ -782,7 +778,7 @@ function ctl_desenhaInfoEsquerda() {
 		y += 30;
 
 		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 100, 20);
+		maneContext.fillRect(x, y, 90, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
 		maneContext.fillText(lang_text('Volta'), x + 5, y + 15);
@@ -845,7 +841,7 @@ function ctl_desenhaInfoEsquerda() {
 
 	}
 
-	if (altura > 480 || alternador) {
+	if (altura > largura || alternador) {
 
 		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 80, 20);
@@ -950,6 +946,10 @@ function ctl_removeControle(controle) {
 		return true;
 	}
 	
+	if (dadosParciais!=null && 'chuva.png' == dadosParciais.clima && controle.tipo == 'Drs'){
+		return true;
+	}
+	
 	if (!dadosJogo.ers && controle.tipo == 'Ers') {
 		return true;
 	}
@@ -996,7 +996,7 @@ function ctl_gerarControles() {
 		tipo : 'controleMotor',
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
 		y : 0,
 		x : 10,
 		img : motor
@@ -1009,7 +1009,7 @@ function ctl_gerarControles() {
 		centralizaTexto : true,
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
 		y : 0,
 		x : 60,
 		img : motor
@@ -1022,7 +1022,7 @@ function ctl_gerarControles() {
 		centralizaTexto : true,
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
 		y : 0,
 		x : 110,
 		img : motor
@@ -1036,7 +1036,7 @@ function ctl_gerarControles() {
 		centralizaTexto : true,
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
 		y : 0,
 		evalX : 'maneCanvas.width - 150;',
 		x : 0,
@@ -1050,7 +1050,7 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
 		y : 0,
 		evalX : 'maneCanvas.width - 100;',
 		x : 0,
@@ -1064,7 +1064,7 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : '(altura > 480)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
 		y : 0,
 		evalX : 'maneCanvas.width - 50;',
 		x : 0,
@@ -1078,7 +1078,7 @@ function ctl_gerarControles() {
 		centralizaTexto : false,
 		width : 60,
 		height : 40,
-		evalY : '(altura > 480)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
+		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
 		y : 0,
 		x : 10
 	});
@@ -1090,7 +1090,7 @@ function ctl_gerarControles() {
 		centralizaTexto : false,
 		width : 60,
 		height : 40,
-		evalY : '(altura > 480)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
+		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
 		y : 0,
 		evalX : 'maneCanvas.width - 70;',
 		x : 0

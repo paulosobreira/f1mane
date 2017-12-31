@@ -318,10 +318,10 @@ public class ControleEstatisticas {
 
 	public void tabelaComparativa() {
 		String tabela = carrgaTabelaComparativa();
-		List pilotos = new ArrayList();
-		for (Iterator iterator = controleJogo.getPilotosCopia()
+		List<Piloto> pilotos = new ArrayList<Piloto>();
+		for (Iterator<Piloto> iterator = controleJogo.getPilotosCopia()
 				.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
+			Piloto piloto = iterator.next();
 			if (piloto.isJogadorHumano() && !piloto.isDesqualificado()) {
 				pilotos.add(piloto);
 			}
@@ -329,9 +329,9 @@ public class ControleEstatisticas {
 		}
 
 		if (pilotos.isEmpty()) {
-			for (Iterator iterator = controleJogo.getPilotosCopia()
+			for (Iterator<Piloto> iterator = controleJogo.getPilotosCopia()
 					.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
+				Piloto piloto = iterator.next();
 				if (piloto.getPosicao() < 9) {
 					pilotos.add(piloto);
 				}
@@ -355,7 +355,7 @@ public class ControleEstatisticas {
 		} else {
 			tabela = preencherTabela(pilotoComp, pilotoSel, tabela);
 		}
-		if (tabela != null && !pilotoSel.entrouNoBox()){
+		if (tabela != null && !pilotoSel.entrouNoBox()) {
 			controleJogo.info(tabela);
 		}
 	}
@@ -363,9 +363,9 @@ public class ControleEstatisticas {
 	private String preencherTabela(Piloto piloto1, Piloto piloto2,
 			String tabela) {
 		tabela = tabela.replaceAll("piloto1",
-				piloto1.getNome() + " " + piloto1.getPosicao());
+				piloto1.getNomeAbreviado() + " " + piloto1.getPosicao());
 		tabela = tabela.replaceAll("piloto2",
-				piloto2.getNome() + " " + piloto2.getPosicao());
+				piloto2.getNomeAbreviado() + " " + piloto2.getPosicao());
 		tabela = tabela.replaceAll("volta1",
 				Lang.msg("081") + (piloto2.getNumeroVolta() - 1));
 		tabela = tabela.replaceAll("volta2",
@@ -464,7 +464,7 @@ public class ControleEstatisticas {
 			if (pilotoFrente.equals(piloto)) {
 				continue;
 			}
-			if (piloto.verificaNaoPrecisaDesviar(controleJogo, pilotoFrente)) {
+			if (piloto.verificaNaoPrecisaDesviar(pilotoFrente)) {
 				continue;
 			}
 			if (pilotoFrente.getPtosBox() != 0) {

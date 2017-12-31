@@ -837,6 +837,15 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.habilidade = habilidade;
 	}
 
+	public String getNomeAbreviado() {
+		if (nome != null && nome.contains(".")) {
+			String nmPiloto = nome.split("\\.")[1];
+			nmPiloto = nmPiloto.substring(0, 3);
+			return nmPiloto;
+		}
+		return null;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -1257,10 +1266,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		ganho = controleJogo.ganhoComSafetyCar(ganho, controleJogo, this);
 	}
 
-	public static void main(String[] args) {
-
-	}
-
 	private int calculoVelocidade(double ganho) {
 		int val = 290;
 		double porcent = getCarro().getPorcentagemCombustivel() / 100.0;
@@ -1291,7 +1296,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (pilotoFrente.equals(this)) {
 				continue;
 			}
-			if (verificaNaoPrecisaDesviar(controleJogo, pilotoFrente)) {
+			if (verificaNaoPrecisaDesviar(pilotoFrente)) {
 				continue;
 			}
 			if (this.equals(pilotoFrente.getColisao())) {
@@ -1673,9 +1678,8 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (getCarro().getCargaErs() <= 0) {
 				ativarErs = false;
 			} else {
-				double rev = (1000 - carro.getPotencia()) / 10000;
-				ganho *= Util.intervalo(1.05, 1.1 + (rev * 2));
-				getCarro().usaKers();
+				ganho *= getCarro().testePotencia() ? 1.1 : 1.05;
+				getCarro().usaErs();
 			}
 		}
 	}
@@ -1874,7 +1878,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				|| calculaDiffParaProximoRetardatario < (testeHabilidadePiloto()
 						? 100
 						: 150)) {
-			fazPilotoMudarTracado(this,
+			desviaPilotoNaFrente(this,
 					carroPilotoDaFrenteRetardatario.getPiloto(), controleJogo);
 		} else if (!isJogadorHumano() && testeHabilidadePiloto()
 				&& pontoEscape != null
@@ -1896,7 +1900,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				&& calculaDiffParaProximoRetardatarioMesmoTracado < (testeHabilidadePilotoCarro()
 						? 150
 						: 200))) {
-			fazPilotoMudarTracado(this,
+			desviaPilotoNaFrente(this,
 					carroPilotoDaFrenteRetardatario.getPiloto(), controleJogo);
 		} else if (!isJogadorHumano() && carroPilotoAtras != null
 				&& mudouTracadoReta <= 1 && calculaDiferencaParaAnterior < 150
@@ -1915,8 +1919,14 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	public void fazPilotoMudarTracado(Piloto piloto, Piloto pilotoNaFrente,
+	public void desviaPilotoNaFrente(Piloto piloto, Piloto pilotoNaFrente,
 			InterfaceJogo controleJogo) {
+		if (verificaPassarRetardatario(piloto, pilotoNaFrente, controleJogo)) {
+			pilotoNaFrente.getCarro().setGiro(Carro.GIRO_MIN_VAL);
+			pilotoNaFrente.setModoPilotagem(Piloto.LENTO);
+			pilotoNaFrente.setCiclosDesconcentrado(10);
+			mensagemRetardatario(piloto, pilotoNaFrente, controleJogo);
+		}
 		if (piloto.isAutoPos()) {
 			int novapos = 0;
 			if (pilotoNaFrente.getTracado() == 0) {
@@ -1932,36 +1942,20 @@ public class Piloto implements Serializable, PilotoSuave {
 			}
 			piloto.mudarTracado(novapos, controleJogo);
 		}
-		if (verificaPassarRetardatario(piloto, pilotoNaFrente, controleJogo)) {
-			pilotoNaFrente.getCarro().setGiro(Carro.GIRO_MIN_VAL);
-			pilotoNaFrente.setModoPilotagem(Piloto.LENTO);
-			pilotoNaFrente.setCiclosDesconcentrado(10);
-			mensagemRetardatario(piloto, pilotoNaFrente, controleJogo);
-		}
 	}
 
 	public void mensagemRetardatario(Piloto piloto, Piloto pilotoNaFrente,
 			InterfaceJogo controleJogo) {
 		if (controleJogo.verificaInfoRelevante(piloto) && Math.random() > 0.9
 				&& !controleJogo.isSafetyCarNaPista()) {
-			if (Math.random() > 0.5) {
-				controleJogo
-						.info(Html
-								.azul(Lang
-										.msg("021",
-												new String[]{
-														pilotoNaFrente
-																.getNome(),
-														piloto.getNome()})));
+			if (pilotoNaFrente.getTracado() == piloto.getTracado()) {
+				String msg = Lang.msg("020", new String[]{
+						pilotoNaFrente.getNome(), piloto.getNome()});
+				controleJogo.info(Html.azul(msg));
 			} else {
-				controleJogo
-						.info(Html
-								.azul(Lang
-										.msg("020",
-												new String[]{
-														pilotoNaFrente
-																.getNome(),
-														piloto.getNome()})));
+				String msg = Lang.msg("021", new String[]{
+						pilotoNaFrente.getNome(), piloto.getNome()});
+				controleJogo.info(Html.azul(msg));
 			}
 			pilotoNaFrente.setCiclosDesconcentrado(10);
 		}
@@ -2033,18 +2027,16 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	public boolean verificaNaoPrecisaDesviar(InterfaceJogo controleJogo,
-			Piloto pilotoFrente) {
-		boolean naoPrecisa = false;
-		String danificado = pilotoFrente.getCarro().getDanificado();
-		if (pilotoFrente.getCarro().isPaneSeca()
-				|| Carro.ABANDONOU.equals(danificado)
+	public boolean verificaNaoPrecisaDesviar(Piloto pilotoFrente) {
+		return pilotoFrente.verificaNaoPrecisaDesenhar();
+	}
+
+	public boolean verificaNaoPrecisaDesenhar() {
+		String danificado = getCarro().getDanificado();
+		return getCarro().isPaneSeca() || Carro.ABANDONOU.equals(danificado)
 				|| getCarro().isRecolhido()
 				|| Carro.PANE_SECA.equals(danificado)
-				|| Carro.EXPLODIU_MOTOR.equals(danificado)) {
-			naoPrecisa = true;
-		}
-		return naoPrecisa;
+				|| Carro.EXPLODIU_MOTOR.equals(danificado);
 	}
 
 	private void processaEvitaBaterCarroFrente(InterfaceJogo controleJogo) {
@@ -2059,7 +2051,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (this.equals(piloto)) {
 			return;
 		}
-		if (verificaNaoPrecisaDesviar(controleJogo, piloto)) {
+		if (verificaNaoPrecisaDesviar(piloto)) {
 			return;
 		}
 		if (piloto.getPtosBox() > 0) {

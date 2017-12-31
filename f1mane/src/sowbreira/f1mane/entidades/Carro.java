@@ -774,9 +774,8 @@ public class Carro implements Serializable {
 		if (verificaPneusIncompativeisClima(controleJogo)
 				&& novoModificador >= 1) {
 			if (no.verificaCurvaBaixa() || no.verificaCurvaAlta()) {
-				novoModificador = modificador;
-			} else if (!getPiloto().testeHabilidadePilotoFreios(controleJogo)) {
-				novoModificador--;
+				novoModificador -= getPiloto()
+						.testeHabilidadePilotoFreios(controleJogo) ? 1 : 2;
 			}
 		}
 
@@ -846,7 +845,7 @@ public class Carro implements Serializable {
 			if (noAtual.verificaRetaOuLargada()) {
 				temperaturaPneus += Util.intervalo(0, 1);
 			} else {
-				temperaturaPneus+= Util.intervalo(1, 3);
+				temperaturaPneus += Util.intervalo(1, 3);
 			}
 		}
 		if (controleJogo.isSafetyCarNaPista() && Math.random() > modAquecer) {
@@ -1148,9 +1147,9 @@ public class Carro implements Serializable {
 		this.durabilidadeAereofolio = durabilidadeAereofolio;
 	}
 
-	public void usaKers() {
+	public void usaErs() {
 		if (cargaErs > 0) {
-			cargaErs -= (testeFreios() && testePotencia() ? 1 : 2);
+			cargaErs -= (testePotencia() ? 1 : 2);
 		}
 
 	}

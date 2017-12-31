@@ -486,6 +486,7 @@ public class LetsRace {
 				.build();
 	}
 
+	@SuppressWarnings("static-access")
 	@GET
 	@Compress
 	@Path("/temporadas")

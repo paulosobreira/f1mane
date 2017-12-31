@@ -22,10 +22,10 @@
 		<fileset dir="WebContent/WEB-INF/lib">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="build">
+		<fileset dir="buildAnt">
 			<include name="**/*.class" />
 		</fileset>
-		<pathelement location="build" />
+		<pathelement location="buildAnt" />
 	</path>
 
 	<target name="targetHtml" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddockHTML,atualizarVersaoHtml,criarWar,limpaJars">
@@ -50,15 +50,15 @@
 	</target>
 
 	<target name="compilarClasses">
-		<javac destdir="build" srcdir="src" nowarn="true" optimize="true">
+		<javac destdir="buildAnt" srcdir="src" nowarn="true" optimize="true">
 			<classpath refid="classpath.compilacao" />
 		</javac>
 	</target>
 
 	<target name="copiaRecursos">
-		<delete dir="build" />
-		<mkdir dir="build" />
-		<copy todir="build" verbose="true">
+		<delete dir="buildAnt" />
+		<mkdir dir="buildAnt" />
+		<copy todir="buildAnt" verbose="true">
 			<fileset dir="src">
 				<exclude name=".*" />
 				<exclude name=".*/" />
@@ -78,7 +78,7 @@
 	</target>
 	<target name="criarJar">
 		<jar jarfile="f1mane.jar" compress="true" manifest="MANIFEST.MF">
-			<fileset dir="build">
+			<fileset dir="buildAnt">
 				<exclude name=".*" />
 				<exclude name=".*/" />
 				<exclude name="**/*.java" />
@@ -93,7 +93,7 @@
 				<exclude name="sowbreira/f1mane/recursos/**/*.png" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.wav" />
 			</fileset>
-			<fileset dir="build">
+			<fileset dir="buildAnt">
 				<include name="sowbreira/f1mane/recursos/tabela.html"/>
 			</fileset>
 			<fileset dir="src" includes="**/*.java"/>
@@ -150,7 +150,7 @@
 				<exclude name="**/*.jnlp" />
 				<exclude name="**/*.html" />
 			</fileset>
-			<fileset dir="build">
+			<fileset dir="buildAnt">
 				<include name="**/*.jnlp" />
 				<include name="**/*.html" />
 			</fileset>
@@ -170,7 +170,7 @@
 			<fileset dir="WebContent">
 				<include name="WEB-INF/lib/f1mane.jar" />
 			</fileset>
-			<fileset dir="build">
+			<fileset dir="buildAnt">
 				<include name="**/*.jnlp" />
 				<include name="**/*.html" />
 			</fileset>
@@ -240,7 +240,7 @@
 	<target name="criarZipOnline">
 		<!--
 		<zip destfile="WebContent/f1mane.zip" compress="true">
-			<fileset dir="build">
+			<fileset dir="buildAnt">
 				<include name="F1-Mane-Online-en-us.bat" />
 				<include name="F1-Mane-Online-pt-br.bat" />
 				<include name="f1maneonline.jnlp" />
@@ -272,10 +272,11 @@
 				<include name="*.jar" />
 			</fileset>
 		</delete>
+		<delete dir="buildAnt" />
 	</target>
 
 	<target name="atualizarJnlp" description="Atualizar JNPL">
-		<replace dir="build" value="${HOST}" token="{host}">
+		<replace dir="buildAnt" value="${HOST}" token="{host}">
 			<include name="*.jnlp" />
 			<include name="*.bat" />
 		</replace>
@@ -283,7 +284,7 @@
 
 	<target name="atualizarVersaoHtml" description="Atualizar Versao HTML">
 		<property file="src/sowbreira/f1mane/paddock/client.properties" prefix="client"/>
-		<replace dir="build" value="${client.versao}" token="{versao}">
+		<replace dir="buildAnt" value="${client.versao}" token="{versao}">
 			<include name="**/*.html" />
 		</replace>
 	</target>
@@ -291,7 +292,7 @@
 
 	
 	<target name="atualizarLocalJnlp" description="Atualizar JNPL">
-		<replace dir="build" value="localhost:8080" token="{host}">
+		<replace dir="buildAnt" value="localhost:8080" token="{host}">
 			<include name="*.jnlp" />
 			<include name="*.bat" />
 		</replace>
