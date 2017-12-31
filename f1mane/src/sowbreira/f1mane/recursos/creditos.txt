@@ -14,7 +14,7 @@ sowbreira@gmail.com
 Codigo aberto
 Open Source
 -Status
-Fl-Mane é um prototipo e seus graficos 
+Fl-Mane é um protótipo e seus gráficos 
     e jogabilidade podem mudar com novas versões
 Fl-Mane is a prototype and its graphics 
     and gameplay game can change in new versions
