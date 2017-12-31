@@ -48,11 +48,6 @@ function rest_ciruito() {
 		console.log('dadosJogo ==null || dadosJogo.nomeJogo == null');
 		return;
 	}
-	if (localStorage.getItem(dadosJogo.arquivoCircuito)) {
-		console.log('Carregando circuito localStorage '+dadosJogo.arquivoCircuito);
-		rest_processaCircuito(JSON.parse(localStorage.getItem(dadosJogo.arquivoCircuito)));
-		return;
-	}
 	carregando = true;
 	$.ajax({
 		type : "GET",
@@ -60,12 +55,6 @@ function rest_ciruito() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
-			console.log('Carregando circuito rest '+dadosJogo.arquivoCircuito);
-			try {
-				localStorage.setItem(dadosJogo.arquivoCircuito,JSON.stringify(response));	
-			} catch (e) {
-				console.log('Nao Gravou no localStorage '+dadosJogo.arquivoCircuito);
-			}
 			rest_processaCircuito(response);
 			carregando = false;
 		},
