@@ -405,12 +405,12 @@ public class Carro implements Serializable {
 		processaPorcentagemDesgastePneus();
 		processaTemperaturaMotor(controleJogo);
 		processaTemperaturaPneus(controleJogo);;
-		novoModificador = calculaModificadorPneu(novoModificador, agressivo, no,
-				controleJogo);
 		calculaDesgasteMotor(novoModificador, agressivo, no, controleJogo);
 		novoModificador = calculaModificadorAsaGiro(novoModificador, no,
 				controleJogo);
 		novoModificador = calculaModificadorCombustivel(novoModificador, no,
+				controleJogo);
+		novoModificador = calculaModificadorPneu(novoModificador, agressivo, no,
 				controleJogo);
 		return novoModificador;
 	}
@@ -775,7 +775,7 @@ public class Carro implements Serializable {
 				&& novoModificador >= 1) {
 			if (no.verificaCurvaBaixa() || no.verificaCurvaAlta()) {
 				novoModificador -= getPiloto()
-						.testeHabilidadePilotoFreios(controleJogo) ? 1 : 2;
+						.testeHabilidadePilotoFreios(controleJogo) ? 2 : 4;
 			}
 		}
 

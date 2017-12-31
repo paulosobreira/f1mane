@@ -341,7 +341,7 @@ function ctl_desenhaInfoAsa() {
 	if(confirmaSair){
 		return;
 	}
-	if(dadosJogo.drs){
+	if(dadosJogo.drs && dadosParciais.clima != "chuva.png"){
 		return
 	}
 	

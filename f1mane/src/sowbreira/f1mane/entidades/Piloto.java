@@ -201,8 +201,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private long ultimaMudancaPos;
 	@JsonIgnore
-	private int novoModificadorBruto;
-	@JsonIgnore
 	private int novoModificador;
 	@JsonIgnore
 	private int novoModificadorCarro;
@@ -1088,9 +1086,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	public int getNovoModificadorCarro() {
 		return novoModificadorCarro;
 	}
-	public int getNovoModificadorBruto() {
-		return novoModificadorBruto;
-	}
 	private int processaNovoIndex(InterfaceJogo controleJogo) {
 		int index = getNoAtual().getIndex();
 		/**
@@ -1108,7 +1103,6 @@ public class Piloto implements Serializable, PilotoSuave {
 			return getNoAtual().getIndex();
 		}
 		novoModificador = calcularModificador(controleJogo);
-		novoModificadorBruto = novoModificador;
 		novoModificador = getCarro().calcularModificadorCarro(novoModificador,
 				agressivo, getNoAtual(), controleJogo);
 		novoModificadorCarro = novoModificador;
@@ -1433,6 +1427,8 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private void processaLimitadorModificador() {
 		if (novoModificador > 5) {
+			Logger.logar("processaLimitadorModificador novoModificador > 5 "
+					+ getNome() + " " + novoModificador);
 			novoModificador = 5;
 		} else if (novoModificador < 1) {
 			novoModificador = 1;
@@ -2734,6 +2730,13 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (Carro.GIRO_MIN_VAL == getCarro().getGiro()
 				&& !getNoAtual().verificaRetaOuLargada()) {
 			bonusMotor -= getCarro().testePotencia() ? 0.0 : 0.1;
+		}
+
+		if (controleJogo.isChovendo()
+				&& !getNoAtual().verificaRetaOuLargada()) {
+			bonusMotor -= testeHabilidadePilotoAerodinamica(controleJogo)
+					? 0.1
+					: 0.3;
 		}
 		if (getNoAtual().verificaRetaOuLargada()
 				&& getCarro().testePotencia()) {
