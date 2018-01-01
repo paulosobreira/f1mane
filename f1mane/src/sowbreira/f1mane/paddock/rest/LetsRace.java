@@ -68,6 +68,7 @@ public class LetsRace {
 		try {
 			circuito = CarregadorRecursos.carregarCircuito(nomeCircuito);
 		} catch (ClassNotFoundException | IOException e) {
+			Logger.logarExept(e);
 			return Response.status(500).entity(e)
 					.type(MediaType.APPLICATION_JSON).build();
 		}
@@ -216,23 +217,15 @@ public class LetsRace {
 				}
 				controlePaddock.atualizarDadosVisao();
 			}
-			/**
-			 * Iniciar Jogo
-			 */
-			// if (criarJogo && statusJogo != null) {
-			// statusJogo = controlePaddock.iniciaJogo(clientPaddockPack);
-			// Response erro = processsaMensagem(statusJogo);
-			// if (erro != null) {
-			// return erro;
-			// }
-			// }
 			DadosJogo dadosJogo = (DadosJogo) controlePaddock
 					.obterDadosJogo(clientPaddockPack);
 			return Response.status(200).entity(dadosJogo).build();
 		} catch (Exception e) {
 			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
 		}
-		return null;
 	}
 
 	private Response processsaMensagem(Object objeto) {
@@ -259,48 +252,68 @@ public class LetsRace {
 	@GET
 	@Path("/circuitos")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response circuitos() throws ClassNotFoundException, IOException {
-		List<CircuitosDefauts> circuitosDefauts = carregadorRecursos
-				.carregarCircuitosDefaults();
-		List<CircuitosDefauts> shuffle = new ArrayList<>();
-		shuffle.addAll(circuitosDefauts);
-		Collections.shuffle(shuffle);
-		return Response.status(200).entity(shuffle).build();
+	public Response circuitos() {
+		List<CircuitosDefauts> circuitosDefauts;
+		try {
+			circuitosDefauts = carregadorRecursos.carregarCircuitosDefaults();
+			List<CircuitosDefauts> shuffle = new ArrayList<>();
+			shuffle.addAll(circuitosDefauts);
+			Collections.shuffle(shuffle);
+			return Response.status(200).entity(shuffle).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+
 	}
 
 	@GET
 	@Path("/circuitoMini/{nmCircuito}")
 	@Produces("image/png")
-	public Response circuitoMini(@PathParam("nmCircuito") String nmCircuito)
-			throws IOException, ClassNotFoundException {
-		Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
-		Circuito circuito = (Circuito) rec;
-		BufferedImage carroCima = circuito.desenhaMiniCircuito();
-		if (carroCima == null) {
-			return Response.status(200).entity("null").build();
+	public Response circuitoMini(@PathParam("nmCircuito") String nmCircuito) {
+		try {
+			Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
+			Circuito circuito = (Circuito) rec;
+			BufferedImage carroCima = circuito.desenhaMiniCircuito();
+			if (carroCima == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(carroCima, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.status(200).entity(imageData).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
 		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(carroCima, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.status(200).entity(imageData).build();
 	}
 
 	@GET
 	@Path("/objetoPista/{nmCircuito}/{indice}")
 	@Produces("image/png")
 	public Response objetoPista(@PathParam("nmCircuito") String nmCircuito,
-			@PathParam("indice") String indice)
-			throws IOException, ClassNotFoundException {
-		Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
-		Circuito circuito = (Circuito) rec;
-		BufferedImage carroCima = circuito.desenhaObjetoPista(indice);
-		if (carroCima == null) {
-			return Response.status(200).entity("null").build();
+			@PathParam("indice") String indice) {
+		try {
+			Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
+			Circuito circuito = (Circuito) rec;
+			BufferedImage carroCima = circuito.desenhaObjetoPista(indice);
+			if (carroCima == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(carroCima, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.status(200).entity(imageData).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
 		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(carroCima, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.status(200).entity(imageData).build();
 	}
 
 	private DadosCriarJogo gerarJogoLetsRace(String temporada, String circuito,
@@ -349,16 +362,23 @@ public class LetsRace {
 	@Path("/carroCima")
 	@Produces("image/png")
 	public Response carroCima(@QueryParam("nomeJogo") String nomeJogo,
-			@QueryParam("idPiloto") String idPiloto) throws IOException {
-		BufferedImage carroCima = controlePaddock.obterCarroCima(nomeJogo,
-				idPiloto);
-		if (carroCima == null) {
-			return Response.status(200).entity("null").build();
+			@QueryParam("idPiloto") String idPiloto) {
+		try {
+			BufferedImage carroCima = controlePaddock.obterCarroCima(nomeJogo,
+					idPiloto);
+			if (carroCima == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(carroCima, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
 		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(carroCima, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
 
 	@GET
@@ -366,101 +386,135 @@ public class LetsRace {
 	@Produces("image/png")
 	public Response carroCimaSemAreofolio(
 			@QueryParam("nomeJogo") String nomeJogo,
-			@QueryParam("idPiloto") String idPiloto) throws IOException {
-		BufferedImage carroCima = controlePaddock
-				.obterCarroCimaSemAreofolio(nomeJogo, idPiloto);
-		if (carroCima == null) {
-			return Response.status(200).entity("null").build();
+			@QueryParam("idPiloto") String idPiloto) {
+		try {
+			BufferedImage carroCima = controlePaddock
+					.obterCarroCimaSemAreofolio(nomeJogo, idPiloto);
+			if (carroCima == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(carroCima, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
 		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(carroCima, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
 
 	@GET
 	@Path("/capacete")
 	@Produces("image/png")
 	public Response capacete(@QueryParam("id") String id,
-			@QueryParam("temporada") String temporada) throws IOException {
-		temporada = "t" + temporada;
-		BufferedImage capacetes = null;
-		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-				.get(temporada);
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (Integer.parseInt(id) == piloto.getId()) {
-				capacetes = carregadorRecursos.obterCapacete(piloto, temporada);
-				break;
+			@QueryParam("temporada") String temporada) {
+		try {
+			temporada = "t" + temporada;
+			BufferedImage capacetes = null;
+			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+					.get(temporada);
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (Integer.parseInt(id) == piloto.getId()) {
+					capacetes = carregadorRecursos.obterCapacete(piloto,
+							temporada);
+					break;
+				}
 			}
+			if (capacetes == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(capacetes, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
 		}
-		if (capacetes == null) {
-			return Response.status(200).entity("null").build();
-		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(capacetes, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
 
 	@GET
 	@Path("/carroLado")
 	@Produces("image/png")
 	public Response carroLado(@QueryParam("id") String id,
-			@QueryParam("temporada") String temporada) throws IOException {
-		temporada = "t" + temporada;
-		BufferedImage capacetes = null;
-		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-				.get(temporada);
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (Integer.parseInt(id) == piloto.getId()) {
-				capacetes = carregadorRecursos.obterCarroLado(piloto,
-						temporada);
-				break;
+			@QueryParam("temporada") String temporada) {
+		try {
+			temporada = "t" + temporada;
+			BufferedImage capacetes = null;
+			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+					.get(temporada);
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (Integer.parseInt(id) == piloto.getId()) {
+					capacetes = carregadorRecursos.obterCarroLado(piloto,
+							temporada);
+					break;
+				}
 			}
+			if (capacetes == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(capacetes, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
 		}
-		if (capacetes == null) {
-			return Response.status(200).entity("null").build();
-		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(capacetes, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
 
 	@GET
 	@Path("/png/{recurso}")
 	@Produces("image/png")
-	public Response png(@PathParam("recurso") String recurso)
-			throws IOException {
-		BufferedImage buffer = CarregadorRecursos
-				.carregaBufferedImage(recurso + ".png");
-		if (buffer == null) {
-			return Response.status(200).entity("null").build();
+	public Response png(@PathParam("recurso") String recurso) {
+		try {
+			BufferedImage buffer = CarregadorRecursos
+					.carregaBufferedImage(recurso + ".png");
+			if (buffer == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(buffer, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
 		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(buffer, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
 
 	@GET
 	@Path("/png/{recurso}/{trasnparencia}")
 	@Produces("image/png")
 	public Response png(@PathParam("recurso") String recurso,
-			@PathParam("trasnparencia") String trasnparencia)
-			throws IOException {
-		BufferedImage buffer = ImageUtil.geraTransparenciaAlpha(
-				CarregadorRecursos.carregaBufferedImage(recurso + ".png"),
-				new Integer(trasnparencia));
-		if (buffer == null) {
-			return Response.status(200).entity("null").build();
+			@PathParam("trasnparencia") String trasnparencia) {
+		try {
+			BufferedImage buffer = ImageUtil.geraTransparenciaAlpha(
+					CarregadorRecursos.carregaBufferedImage(recurso + ".png"),
+					new Integer(trasnparencia));
+			if (buffer == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(buffer, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
 		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(buffer, "png", baos);
-		byte[] imageData = baos.toByteArray();
-		return Response.ok(new ByteArrayInputStream(imageData)).build();
 	}
 
 	@GET
@@ -513,19 +567,7 @@ public class LetsRace {
 		return Response.status(200).entity(buffer.toString()).build();
 	}
 
-	public static void main(String[] args) {
-		CarregadorRecursos carregadorRecursos = CarregadorRecursos
-				.getCarregadorRecursos();
-		List<String> carregarCreditosJogo = carregadorRecursos
-				.carregarCreditosJogo();
-		StringBuffer buffer = new StringBuffer();
-		for (Iterator<String> iterator = carregarCreditosJogo
-				.iterator(); iterator.hasNext();) {
-			String string = iterator.next();
-			System.out.println(StringEscapeUtils.escapeHtml4(string));
-		}
 
-	}
 	/**
 	 * potencia : GIRO_MIN , GIRO_NOR , GIRO_MAX
 	 */
@@ -605,9 +647,6 @@ public class LetsRace {
 		}
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();
-		// JogoServidor obterJogoPorSessaoCliente = controleJogosServer
-		// .obterJogoPorSessaoCliente(sessaoCliente);
-		// obterJogoPorSessaoCliente.forcaSafatyCar();
 		return Response.status(200)
 				.entity(controleJogosServer.mudarDrs(sessaoCliente, idPiloto))
 				.build();

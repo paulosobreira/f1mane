@@ -124,15 +124,15 @@ function vdp_atualizaSuave() {
 			indexReal = indexReal + (circuito.pistaFull.length - 1);
 		}
 		if (noReal.box && !noSuave.box) {
-			if (piloto.idPiloto == idPilotoSelecionado) {
-				console.log(piloto.idPiloto + ' noReal.box && !noSuave.box ');
-			}
+//			if (piloto.idPiloto == idPilotoSelecionado) {
+//				console.log(piloto.idPiloto + ' noReal.box && !noSuave.box ');
+//			}
 			indexReal = indexReal + circuito.entradaBoxIndex;
 		}
 		if (!noReal.box && noSuave.box) {
-			if (piloto.idPiloto == idPilotoSelecionado) {
-				console.log(piloto.idPiloto + ' !noReal.box && noSuave.box ');
-			}
+//			if (piloto.idPiloto == idPilotoSelecionado) {
+//				console.log(piloto.idPiloto + ' !noReal.box && noSuave.box ');
+//			}
 			indexReal = (indexReal - circuito.saidaBoxIndex) + (circuito.boxFull.length - 1);
 		}
 		var diff = (indexReal - indexSuave);
@@ -141,9 +141,6 @@ function vdp_atualizaSuave() {
 		if (noSuave.box) {
 			arr = [ 3 * multi, 2 * multi, 2 * multi ];
 		}
-//		if (mapaTracadoSuave.get(piloto.idPiloto) == 4 || mapaTracadoSuave.get(piloto.idPiloto) == 5) {
-//			arr = [ 2 * multi, 2 * multi, 1 * multi ];
-//		}
 		var novoIndex;
 		if (noSuave.tipoJson == 'R') {
 			novoIndex = noSuave.index + Math.round(arr[0]);

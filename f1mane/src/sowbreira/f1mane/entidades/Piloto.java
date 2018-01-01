@@ -1427,8 +1427,6 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private void processaLimitadorModificador() {
 		if (novoModificador > 5) {
-			Logger.logar("processaLimitadorModificador novoModificador > 5 "
-					+ getNome() + " " + novoModificador);
 			novoModificador = 5;
 		} else if (novoModificador < 1) {
 			novoModificador = 1;

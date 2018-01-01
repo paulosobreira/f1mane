@@ -370,7 +370,7 @@ public class ControleCorrida {
 	public void danificaAreofolio(Piloto piloto) {
 		piloto.getCarro().setDurabilidadeAereofolio(
 				piloto.getCarro().getDurabilidadeAereofolio() - 1);
-		piloto.incStress(25);
+		piloto.incStress(15);
 	}
 
 	public static void main(String[] args) {
