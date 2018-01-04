@@ -5587,7 +5587,7 @@ public class PainelCircuito {
 		if (ps.getCarro() == null)
 			return;
 		String intel = (ps.isJogadorHumano()
-				? ps.isAutoPos() ? "A " : "M "
+				? "H"
 				: "IA ");
 		String txtDraw = intel + " " + ps.getNome();
 

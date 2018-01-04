@@ -69,8 +69,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private int velocidadeExibir;
 	@JsonIgnore
-	private boolean autoPos = true;
-	@JsonIgnore
 	private long ptosPista;
 	@JsonIgnore
 	private int tracado;
@@ -447,10 +445,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.angulo = angulo;
 	}
 
-	public void setAutoPos(boolean autoPos) {
-		this.autoPos = autoPos;
-	}
-
 	@JsonIgnore
 	public Point getP0() {
 		return getNoAtual().getPoint();
@@ -486,10 +480,6 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setP2(Point p2) {
 		this.p2 = p2;
-	}
-
-	public boolean isAutoPos() {
-		return autoPos;
 	}
 
 	public int getTracado() {
@@ -1332,7 +1322,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-
 		/**
 		 * Escapa para os tracados 4 ou 5
 		 */
@@ -1341,7 +1330,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				&& AGRESSIVO.equals(modoPilotagem)
 				&& !testeHabilidadePilotoCarro() && getPtosBox() == 0) {
 			if (escapaTracado(controleJogo)) {
-				setCiclosDesconcentrado(150);
+				setCiclosDesconcentrado(100);
 				if (controleJogo.verificaInfoRelevante(this)) {
 					controleJogo.info(Lang.msg("saiDaPista",
 							new String[]{Html.vermelho(getNome())}));
@@ -1426,7 +1415,11 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private void processaLimitadorModificador() {
-		if (novoModificador > 5) {
+		if (novoModificador > 5 && noAtual.verificaRetaOuLargada()
+				&& getCarro().testePotencia()) {
+			Logger.logar("Potencia extra na reta " + getNome() + " Potencia "
+					+ novoModificador);
+		} else if (novoModificador > 5) {
 			novoModificador = 5;
 		} else if (novoModificador < 1) {
 			novoModificador = 1;
@@ -1812,9 +1805,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-		if (!isAutoPos() && !controleJogo.isSafetyCar()) {
-			return;
-		}
 		if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCar()) {
 			mudouTracadoReta = 0;
 		}
@@ -1921,21 +1911,18 @@ public class Piloto implements Serializable, PilotoSuave {
 			pilotoNaFrente.setCiclosDesconcentrado(10);
 			mensagemRetardatario(piloto, pilotoNaFrente, controleJogo);
 		}
-		if (piloto.isAutoPos()) {
-			int novapos = 0;
-			if (pilotoNaFrente.getTracado() == 0) {
-				novapos = Util.intervalo(1, 2);
-				if (piloto.verificaColisaoAoMudarDeTracado(controleJogo,
-						novapos)) {
-					if (novapos == 2) {
-						novapos = 1;
-					} else {
-						novapos = 2;
-					}
+		int novapos = 0;
+		if (pilotoNaFrente.getTracado() == 0) {
+			novapos = Util.intervalo(1, 2);
+			if (piloto.verificaColisaoAoMudarDeTracado(controleJogo, novapos)) {
+				if (novapos == 2) {
+					novapos = 1;
+				} else {
+					novapos = 2;
 				}
 			}
-			piloto.mudarTracado(novapos, controleJogo);
 		}
+		piloto.mudarTracado(novapos, controleJogo);
 	}
 
 	public void mensagemRetardatario(Piloto piloto, Piloto pilotoNaFrente,
@@ -2102,7 +2089,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if ((ladoEscape == 4 || ladoEscape == 5) && getTracado() == 0) {
 			return false;
 		}
-		mudarTracado(ladoEscape, controleJogo);
+		mudarTracado(ladoEscape, controleJogo, true);
 		return true;
 	}
 
@@ -2973,9 +2960,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		ultsConsumosPneu.clear();
 	}
 	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo) {
-		if (isRecebeuBanderada()) {
-			return false;
-		}
 		return mudarTracado(mudarTracado, interfaceJogo, false);
 	}
 

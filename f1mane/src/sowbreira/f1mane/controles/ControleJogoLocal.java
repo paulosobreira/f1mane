@@ -986,8 +986,7 @@ public class ControleJogoLocal extends ControleRecursos
 	public void mudarAutoPos(boolean autoPos) {
 		if (pilotoJogador == null)
 			return;
-		pilotoJogador.setAutoPos(autoPos);
-
+		
 	}
 
 	@Override

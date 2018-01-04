@@ -843,7 +843,6 @@ public class ControleJogosServer {
 			return null;
 		}
 		piloto.setAtivarDRS(true);
-		piloto.setAutoPos(autoPos);
 		return null;
 	}
 
