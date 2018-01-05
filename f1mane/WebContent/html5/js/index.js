@@ -13,7 +13,12 @@ if (localStorage.getItem("versao") != $("#versao").val()) {
 
 var userLang = navigator.language || navigator.userLanguage;
 if(userLang!=null && localStorage.getItem('idioma')==null){
-	lang_idioma(userLang.split('-')[0],true);
+	if(userLang.split('-')[0]=='pt'){
+		lang_idioma('pt',true);	
+	}else{
+		lang_idioma('en',true);
+	}
+	
 }else{
 	lang_idioma(localStorage.getItem('idioma'),true);	
 }
