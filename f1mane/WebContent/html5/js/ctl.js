@@ -114,10 +114,12 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	var x = centroX - 70;
 	var y = centroY - 50;
 	maneContext.fillStyle = corFundo
-	maneContext.fillRect(x-10, y, 170, 40);
+	var iniciaEm = lang_text('iniciaEm')+' : ';
 	maneContext.font = '24px sans-serif';
+	var laruraTxt = maneContext.measureText(iniciaEm).width + 10;
+	maneContext.fillRect(x-10, y, laruraTxt, 40);
 	maneContext.fillStyle = "black"
-	maneContext.fillText(lang_text('iniciaEm')+' : ', x + 5, y + 28);
+	maneContext.fillText(iniciaEm, x + 5, y + 28);
 	maneContext.fillText(dadosJogo.segundosParaIniciar, x + 120, y + 28);
 	
 }
