@@ -8,6 +8,12 @@ var circuitoSelecionado;
 var token;
 var circuitos, temporadas;
 
+$('#trocaPneus').html(lang_text('trocaPneus'));
+$('#reabasteciemto').html(lang_text('reabasteciemto'));
+$('#selecionePiloto').html(lang_text('selecionePiloto'));
+$('#153').html(lang_text('153'));
+$('#154').html(lang_text('154'));
+
 if (localStorage.getItem("token")) {
 	token = localStorage.getItem("token");
 	idPilotoSelecionado = localStorage.getItem("idPilotoSelecionado");
@@ -165,7 +171,8 @@ function jogar() {
 		type : "GET",
 		url : urlServico,
 		headers : {
-			'token' : token
+			'token' : token,
+			'idioma' : localStorage.getItem('idioma')
 		},
 		contentType : "application/json",
 		dataType : "json",

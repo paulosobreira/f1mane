@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.PropertyResourceBundle;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.Encoded;
@@ -86,6 +87,7 @@ public class LetsRace {
 	@Path("/dadosParciais/{nomeJogo}/{idPiloto}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosParciais(@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma,
 			@PathParam("nomeJogo") String nomeJogo,
 			@PathParam("idPiloto") String idPiloto) {
 		SessaoCliente sessaoCliente = controlePaddock
@@ -95,7 +97,7 @@ public class LetsRace {
 		}
 		DadosParciais dadosParciais = controlePaddock.obterDadosParciaisPilotos(
 				nomeJogo, sessaoCliente.getNomeJogador(), idPiloto);
-		dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto);
+		dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto, idioma);
 		return Response.status(200).entity(dadosParciais).build();
 	}
 
@@ -104,6 +106,7 @@ public class LetsRace {
 	@Path("/dadosJogo")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosJogo(@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma,
 			@QueryParam("nomeJogo") String nomeJogo) {
 		SessaoCliente sessaoCliente = controlePaddock
 				.obterSessaoPorToken(token);
@@ -163,6 +166,7 @@ public class LetsRace {
 	@Path("/jogar/{temporada}/{idPiloto}/{circuito}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response jogar(@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma,
 			@PathParam("temporada") String temporada,
 			@PathParam("idPiloto") String idPiloto,
 			@PathParam("circuito") String circuito) {
@@ -190,7 +194,7 @@ public class LetsRace {
 			boolean criarJogo = false;
 			if (statusJogo == null) {
 				statusJogo = controlePaddock.criarJogo(clientPaddockPack);
-				Response erro = processsaMensagem(statusJogo);
+				Response erro = processsaMensagem(statusJogo, idioma);
 				if (erro != null) {
 					return erro;
 				}
@@ -211,7 +215,7 @@ public class LetsRace {
 			 */
 			if (statusJogo != null) {
 				statusJogo = controlePaddock.entrarJogo(clientPaddockPack);
-				Response erro = processsaMensagem(statusJogo);
+				Response erro = processsaMensagem(statusJogo,idioma);
 				if (erro != null) {
 					return erro;
 				}
@@ -228,7 +232,7 @@ public class LetsRace {
 		}
 	}
 
-	private Response processsaMensagem(Object objeto) {
+	private Response processsaMensagem(Object objeto, String idioma) {
 		if (objeto == null) {
 			return Response.status(400).entity(new MsgSrv("Objeto Nulo."))
 					.type(MediaType.APPLICATION_JSON).build();
@@ -236,8 +240,8 @@ public class LetsRace {
 		if (objeto instanceof MsgSrv) {
 			MsgSrv msgSrv = (MsgSrv) objeto;
 			return Response.status(400)
-					.entity(new MsgSrv(
-							Lang.decodeTextoKey(msgSrv.getMessageString())))
+					.entity(new MsgSrv(Lang
+							.decodeTextoKey(msgSrv.getMessageString(), idioma)))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		if (objeto instanceof ErroServ) {
@@ -567,7 +571,6 @@ public class LetsRace {
 		return Response.status(200).entity(buffer.toString()).build();
 	}
 
-
 	/**
 	 * potencia : GIRO_MIN , GIRO_NOR , GIRO_MAX
 	 */
@@ -690,6 +693,22 @@ public class LetsRace {
 				.entity(controleJogosServer.boxPiloto(sessaoCliente, idPiloto,
 						ativa, pneu, combustivel, asa))
 				.build();
+	}
+
+	@GET
+	@Compress
+	@Path("/lang/{lang}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response lang(@PathParam("lang") String lang) {
+		try {
+			PropertyResourceBundle bundle = Lang.carregraBundleMensagens(lang);
+			return Response.status(200).entity(Util.bundle2Map(bundle)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
+		}
 	}
 
 }

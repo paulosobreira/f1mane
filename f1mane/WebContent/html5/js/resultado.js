@@ -2,16 +2,17 @@ var idPilotoSelecionado, temporadaSelecionada, circuitoSelecionado;
 var token = localStorage.getItem("token");
 var nomeJogo = localStorage.getItem("nomeJogo");
 
+$('#trocaPneus').html(lang_text('trocaPneus'));
+$('#reabasteciemto').html(lang_text('reabasteciemto'));
+$('#153').html(lang_text('153'));
+$('#154').html(lang_text('154'));
+
 if (token == null) {
 	token = getParameter('token');
 }
 if (nomeJogo == null) {
 	nomeJogo = getParameter('nomeJogo');
 }
-
-$('#btnVoltar').bind("click", function() {
-	window.location.href = "index.html";
-});
 
 function resultado() {
 	$.ajax({

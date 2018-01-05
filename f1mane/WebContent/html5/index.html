@@ -18,19 +18,22 @@
 	<section id="mainContainer" class="container">
 		<div id="botoes" class="list-group">
 			<a href="menus.html" class="list-group-item transparent">
-				<button type="button" class="btn btn-default btn-block">Jogar</button>
+				<button type="button" id="btnJogar" class="btn btn-default btn-block"></button>
 			</a> 
 			<a href="controles.html" class="list-group-item transparent">
-				<button type="button" class="btn btn-default btn-block">Controles</button>
-			</a> 			
+				<button type="button" id="btnControles" class="btn btn-default btn-block"></button>
+			</a>
 			<a class="list-group-item transparent">
-				<button type="button" id="btnSobre" class="btn btn-default btn-block">Sobre</button>
+				<button type="button" id="btnIdioma" class="btn btn-default btn-block"></button>
+			</a>			 			
+			<a class="list-group-item transparent">
+				<button type="button" id="btnSobre" class="btn btn-default btn-block"></button>
 			</a> 			
 		</div>
 	</section>
 	<footer class="footer">
 	      <div class="container">
-	        <p>Versão: {versao}</p>
+	        <p>Build: {versao}</p>
 	        <input id="versao" type="hidden" value="{versao}"/>
 	      </div>
 	 </footer>	
@@ -38,5 +41,6 @@
 </body>
 <script src="js/util.js?v={versao}"></script>
 <script src="js/loader.js?v={versao}"></script>
+<script src="js/lang.js?v={versao}"></script>
 <script src="js/index.js?v={versao}"></script>
 </html>

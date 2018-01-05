@@ -14,7 +14,8 @@ function rest_dadosJogo(nomeJogo) {
 	$.ajax({
 		type : "GET",
 		headers : {
-			'token' : token
+			'token' : token,
+			'idioma' : localStorage.getItem('idioma')
 		},
 		url : "/f1mane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
 		contentType : "application/json",
@@ -101,7 +102,8 @@ function rest_dadosParciais() {
 		type : "GET",
 		url : "/f1mane/rest/letsRace/dadosParciais/" + dadosJogo.nomeJogo + "/" + idPilotoSelecionado,
 		headers : {
-			'token' : token
+			'token' : token,
+			'idioma' : localStorage.getItem('idioma')
 		},
 		contentType : "application/json",
 		dataType : "json",

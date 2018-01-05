@@ -45,12 +45,12 @@
 				<div class="col-sm-6">
 					<div  class="checkbox">
 						<label> 
-							<b id="trocaPneuCheck">	Troca Pneu</b>
+							<b id="trocaPneuCheck" id="trocaPneus"></b>
 						</label>
 					</div>
 					<div class="checkbox">
 						<label> 
-							<b id="reabastecimentoCheck">Reabastecimento</b>
+							<b id="reabastecimentoCheck" id="reabasteciemto"></b>
 						</label>
 					</div>
 				</div>
@@ -92,7 +92,7 @@
 		</div>
 		<div  class="form-group">
 		 	<div class="transbox">
-				<label id="infoJogar" >Selecione um piloto</label>
+				<label id="infoJogar" id="selecionePiloto"></label>
 			</div>	
 			<div id="btnJogar"  class="floatBtn">
 			    <i class="fa fa-plus floatBtnContent glyphicon glyphicon-road"></i>
@@ -102,8 +102,8 @@
 			<table class="table table-hover table-responsive">
 				<thead>
 					<tr>
-						<th>Piloto</th>
-						<th>Carro</th>
+						<th id="153"></th>
+						<th id="154"></th>
 					</tr>
 				</thead>
 				<tbody id="pilotos">
@@ -113,12 +113,13 @@
 	</section>
 	<footer class="footer">
 		<div class="container">
-			<p>Versão: {versao}</p>
+			<p>Build: {versao}</p>
 		</div>
 	</footer>
 </div>	
 </body>
 <script src="js/util.js?v={versao}"></script>
 <script src="js/loader.js?v={versao}"></script>
+<script src="js/lang.js?v={versao}"></script>
 <script src="js/menus.js?v={versao}"></script>
 </html>

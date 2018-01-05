@@ -26,69 +26,86 @@
 			<table class="table table-hover table-responsive">
 				<thead>
 					<tr>
-						<th>Icone</th>
-						<th>Comando</th>
+						<th id="icone"></th>
+						<th id="comando"></th>
 					</tr>
 				</thead>
 				<tbody id="pilotos">
 					<tr>
 						<td><img alt="" src="img/pneuMole.png"></td>
-						<td><div class="transbox">Pneu Mole</div></td>
+						<td><div class="transbox" id="TIPO_PNEU_MOLE"></div></td>
 					</tr>
 					<tr>
 						<td><img alt="" src="img/pneuDuro.png"></td>
-						<td><div class="transbox">Pneu Duro</div></td>
+						<td><div class="transbox" id="TIPO_PNEU_DURO"></div></td>
 					</tr>
 					<tr>
 						<td><img alt="" src="img/pneuChuva.png"></td>
-						<td><div class="transbox">Pneu de Chuva</div></td>
+						<td><div class="transbox" id="TIPO_PNEU_CHUVA"></div></td>
 					</tr>
 					<tr>
 						<td><img alt="" src="img/motor.png"></td>
-						<td><div class="transbox">Giro e potência do Motor</div></td>
+						<td><div class="transbox" id="giroPotencia"></div></td>
 					</tr>
 					<tr>
 						<td><img alt="" src="img/capacete.png"></td>
-						<td><div class="transbox">Agressividade e determinação do Piloto</div></td>
+						<td><div class="transbox" id="agressividadeDeterminacao"></div></td>
 					</tr>
 					<tr>
 						<td><img alt="" src="/f1mane/rest/letsRace/png/menosAsa"></td>
-						<td><div class="transbox">Menos ajuste de asas</div></td>
+						<td><div class="transbox" id="menosAjuste"></div></td>
 					</tr>
 					<tr>
 						<td><img alt="" src="/f1mane/rest/letsRace/png/maisAsa"></td>
-						<td><div class="transbox">Mais ajuste de asas</div></td>
+						<td><div class="transbox" id="maisAjuste"></div></td>
 					</tr>
 					<tr>
 						<td><img alt="" src="/f1mane/rest/letsRace/png/normalAsa"></td>
-						<td><div class="transbox">Ajuste mediano de asas</div></td>
+						<td><div class="transbox" id="ajusteMediano"></div></td>
 					</tr>				
 					<tr>
 						<td>BOX</td>
-						<td><div class="transbox">Ativa entrada no boxes</div></td>
+						<td><div class="transbox" id="ativaEntradaBox"></div></td>
 					</tr>											
 					<tr>
 						<td>ERS</td>
-						<td><div class="transbox">Bateria para acrescimo de performance</div></td>
+						<td><div class="transbox" id="bateriaPerformance"></div></td>
 					</tr>	
 					<tr>
 						<td>DRS</td>
-						<td><div class="transbox">Sistema de redução de arrasto</div></td>
+						<td><div class="transbox" id="reducaoArrasto"></div></td>
 					</tr>
 					<tr>
 						<td>- 0 +</td>
-						<td><div class="transbox">Regulador de porcentagem de combustivel para reabastecimento</div></td>
+						<td><div class="transbox" id="reguladorCombustivel"></div></td>
 					</tr>																			
 				</tbody>
 			</table>
 		</section>
 		<footer class="footer">
 			<div class="container">
-				<p>Versão: {versao}</p>
+				<p>Build: {versao}</p>
 			</div>
 		</footer>
 	</div>
 </body>
 <script src="js/util.js?v={versao}"></script>
 <script src="js/loader.js?v={versao}"></script>
+<script src="js/lang.js?v={versao}"></script>
+<script>
+$('#TIPO_PNEU_MOLE').html(lang_text('TIPO_PNEU_MOLE'));
+$('#TIPO_PNEU_DURO').html(lang_text('TIPO_PNEU_DURO'));
+$('#TIPO_PNEU_CHUVA').html(lang_text('TIPO_PNEU_CHUVA'));
+$('#giroPotencia').html(lang_text('giroPotencia'));
+$('#agressividadeDeterminacao').html(lang_text('agressividadeDeterminacao'));
+$('#menosAjuste').html(lang_text('menosAjuste'));
+$('#maisAjuste').html(lang_text('maisAjuste'));
+$('#ajusteMediano').html(lang_text('ajusteMediano'));
+$('#ativaEntradaBox').html(lang_text('ativaEntradaBox'));
+$('#bateriaPerformance').html(lang_text('bateriaPerformance'));
+$('#reducaoArrasto').html(lang_text('reducaoArrasto'));
+$('#reguladorCombustivel').html(lang_text('reguladorCombustivel'));
+$('#icone').html(lang_text('icone'));
+$('#comando').html(lang_text('comando'));
+</script>
 </html>

@@ -49,10 +49,12 @@ function ctl_desenhaQualificacao(){
 	var y = 20;
 	
 	maneContext.fillStyle = corFundo
-	maneContext.fillRect(centroX-80, y, 170, 40);
 	maneContext.font = '24px sans-serif';
+	var ranking = lang_text('ranking');
+	var laruraTxt = maneContext.measureText(ranking).width + 50;
+	maneContext.fillRect(centroX-80, y, laruraTxt, 40);
 	maneContext.fillStyle = "black"
-	maneContext.fillText(lang_text('Classificação'), centroX-65, y + 28);
+	maneContext.fillText(ranking, centroX-65, y + 28);
 
 	y += 60;
 		
@@ -115,7 +117,7 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	maneContext.fillRect(x-10, y, 170, 40);
 	maneContext.font = '24px sans-serif';
 	maneContext.fillStyle = "black"
-	maneContext.fillText(lang_text('Inicia em :'), x + 5, y + 28);
+	maneContext.fillText(lang_text('iniciaEm')+' : ', x + 5, y + 28);
 	maneContext.fillText(dadosJogo.segundosParaIniciar, x + 120, y + 28);
 	
 }
@@ -209,8 +211,14 @@ function ctl_desenhaControles() {
 							controle.width + 5, controle.height + 5);
 					maneContext.drawImage(controle.img, controle.x, controle.y);
 				} else {
-					maneContext.rect(controle.x, controle.y, controle.width,
-							controle.height);
+					if(controle.larguraTexto){
+						var laruraTxt = maneContext.measureText(controle.exibir).width + 10;
+						maneContext.rect(controle.x, controle.y, laruraTxt,
+								controle.height);
+					}else{
+						maneContext.rect(controle.x, controle.y, controle.width,
+								controle.height);
+					}
 					if (controle.centralizaTexto) {
 						maneContext.fillText(controle.exibir, controle.x
 								+ (controle.width / 2) - 10, controle.y
@@ -634,7 +642,7 @@ function ctl_desenhaInfoDireita() {
 		maneContext.fillRect(x, y, 110, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('Melhor'), x + 5, y + 15);
+		maneContext.fillText(lang_text('278'), x + 5, y + 15);
 		maneContext.fillText(formatarTempo(dadosParciais.melhorVolta), x + 53,
 				y + 15);
 		y += 30;
@@ -645,7 +653,7 @@ function ctl_desenhaInfoDireita() {
 		maneContext.fillRect(x, y, 110, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('Vol') + ' '
+		maneContext.fillText(lang_text('vol') + ' '
 				+ (dadosParciais.voltaAtual - 1) + ' '
 				+ formatarTempo(dadosParciais.ultima1), x + 5, y + 15);
 
@@ -656,7 +664,7 @@ function ctl_desenhaInfoDireita() {
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('Vol') + ' '
+			maneContext.fillText(lang_text('vol') + ' '
 					+ (dadosParciais.voltaAtual - 2) + ' '
 					+ formatarTempo(dadosParciais.ultima2), x + 5, y + 15);
 			y += 30;
@@ -667,7 +675,7 @@ function ctl_desenhaInfoDireita() {
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('Vol') + ' '
+			maneContext.fillText(lang_text('vol') + ' '
 					+ (dadosParciais.voltaAtual - 3) + ' '
 					+ formatarTempo(dadosParciais.ultima3), x + 5, y + 15);
 			y += 30;
@@ -678,7 +686,7 @@ function ctl_desenhaInfoDireita() {
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('Vol') + ' '
+			maneContext.fillText(lang_text('vol') + ' '
 					+ (dadosParciais.voltaAtual - 4) + ' '
 					+ formatarTempo(dadosParciais.ultima4), x + 5, y + 15);
 			y += 30;
@@ -781,7 +789,7 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillRect(x, y, 90, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('Volta'), x + 5, y + 15);
+		maneContext.fillText(lang_text('voltas'), x + 5, y + 15);
 		maneContext.fillText(dadosParciais.voltaAtual + '/'
 				+ dadosJogo.numeroVotas, x + 45, y + 15);
 
@@ -792,7 +800,7 @@ function ctl_desenhaInfoEsquerda() {
 			maneContext.fillRect(x, y, 110, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('Corrida'), x + 5, y + 15);
+			maneContext.fillText(lang_text('corrida'), x + 5, y + 15);
 			maneContext.fillText(
 					formatarTempo(dadosParciais.melhorVoltaCorrida), x + 53,
 					y + 15);
@@ -847,7 +855,7 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('Comb.'), x + 5, y + 15);
+		maneContext.fillText(lang_text('215'), x + 5, y + 15);
 		maneContext.fillText(dadosParciais.pCombust + '%', x
 				+ (dadosParciais.pCombust > 99 ? 45 : 50), y + 15);
 		if (dadosParciais.pCombust < 15) {
@@ -864,7 +872,7 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('Pneus'), x + 5, y + 15);
+		maneContext.fillText(lang_text('216'), x + 5, y + 15);
 		maneContext.fillText(dadosParciais.pPneus + '%', x
 				+ (dadosParciais.pPneus > 99 ? 45 : 50), y + 15);
 		if (dadosParciais.pPneus < 15) {
@@ -881,7 +889,7 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('Motor'), x + 5, y + 15);
+		maneContext.fillText(lang_text('217'), x + 5, y + 15);
 		maneContext.fillText(dadosParciais.pMotor + '%', x
 				+ (dadosParciais.pMotor > 99 ? 45 : 50), y + 15);
 
@@ -908,7 +916,7 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillRect(x, y, 80, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('Piloto'), x + 5, y + 15);
+		maneContext.fillText(lang_text('153'), x + 5, y + 15);
 		maneContext.fillText(dadosParciais.stress + '%', x
 				+ (dadosParciais.stress > 99 ? 45 : 50), y + 15);
 		if (dadosParciais.stress > 90) {
@@ -993,6 +1001,7 @@ function ctl_gerarControles() {
 		valor : 'GIRO_MIN',
 		exibir : '1',
 		centralizaTexto : true,
+		larguraTexto : false,
 		tipo : 'controleMotor',
 		width : 40,
 		height : 40,
@@ -1007,6 +1016,7 @@ function ctl_gerarControles() {
 		exibir : '2',
 		tipo : 'controleMotor',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
@@ -1020,6 +1030,7 @@ function ctl_gerarControles() {
 		exibir : '3',
 		tipo : 'controleMotor',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
@@ -1034,6 +1045,7 @@ function ctl_gerarControles() {
 		exibir : '3',
 		tipo : 'controlePiloto',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
@@ -1047,6 +1059,7 @@ function ctl_gerarControles() {
 		valor : 'NORMAL',
 		exibir : '2',
 		centralizaTexto : true,
+		larguraTexto : false,
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
@@ -1061,6 +1074,7 @@ function ctl_gerarControles() {
 		valor : 'LENTO',
 		exibir : '1',
 		centralizaTexto : true,
+		larguraTexto : false,
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
@@ -1076,6 +1090,7 @@ function ctl_gerarControles() {
 		exibir : 'Ers',
 		tipo : 'Ers',
 		centralizaTexto : false,
+		larguraTexto : false,
 		width : 60,
 		height : 40,
 		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
@@ -1088,6 +1103,7 @@ function ctl_gerarControles() {
 		exibir : 'Drs',
 		tipo : 'Drs',
 		centralizaTexto : false,
+		larguraTexto : false,
 		width : 60,
 		height : 40,
 		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
@@ -1103,6 +1119,7 @@ function ctl_gerarControles() {
 		exibir : 'BOX',
 		tipo : 'Box',
 		centralizaTexto : false,
+		larguraTexto : false,
 		width : 80,
 		height : 40,
 		y : 10,
@@ -1116,6 +1133,7 @@ function ctl_gerarControles() {
 		exibir : 'M',
 		tipo : 'Pneu',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		y : 60,
@@ -1129,6 +1147,7 @@ function ctl_gerarControles() {
 		exibir : 'D',
 		tipo : 'Pneu',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		y : 60,
@@ -1142,6 +1161,7 @@ function ctl_gerarControles() {
 		exibir : 'C',
 		tipo : 'Pneu',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		y : 60,
@@ -1156,6 +1176,7 @@ function ctl_gerarControles() {
 		exibir : '1',
 		tipo : 'Asa',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		y : 110,
@@ -1169,6 +1190,7 @@ function ctl_gerarControles() {
 		exibir : '2',
 		tipo : 'Asa',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		y : 110,
@@ -1182,6 +1204,7 @@ function ctl_gerarControles() {
 		exibir : '3',
 		tipo : 'Asa',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		y : 110,
@@ -1196,6 +1219,7 @@ function ctl_gerarControles() {
 		exibir : '-',
 		tipo : 'Combustivel',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		y : 160,
@@ -1208,6 +1232,7 @@ function ctl_gerarControles() {
 		exibir : '100',
 		tipo : 'CombustivelValor',
 		centralizaTexto : false,
+		larguraTexto : false,
 		width : 60,
 		height : 40,
 		y : 160,
@@ -1220,6 +1245,7 @@ function ctl_gerarControles() {
 		exibir : '+',
 		tipo : 'Combustivel',
 		centralizaTexto : true,
+		larguraTexto : false,
 		width : 40,
 		height : 40,
 		y : 160,
@@ -1229,37 +1255,40 @@ function ctl_gerarControles() {
 	controles.push({
 		cor : '#babaca',
 		valor : '',
-		exibir : lang_text('Sair?'),
+		exibir : lang_text('sairJogo'),
 		tipo : 'perguntaSair',
 		centralizaTexto : false,
-		width : 80,
+		larguraTexto : true,
+		width : 150,
 		height : 40,
 		y : 210,
-		evalX : '(maneCanvas.width/2 - 40);',
+		evalX : '(maneCanvas.width/2 - 80);',
 		x : 0
 	});	
 	controles.push({
 		cor : '#babaca',
 		valor : '',
-		exibir : lang_text('Cancela'),
+		exibir : lang_text('cancela'),
 		tipo : 'cancelaSair',
 		centralizaTexto : false,
+		larguraTexto : true,
 		width : 120,
 		height : 40,
 		y : 210,
-		evalX : '(maneCanvas.width/2 - 140);',
+		evalX : '(maneCanvas.width/2 - 150);',
 		x : 0
 	});
 	controles.push({
 		cor : '#babaca',
 		valor : '',
-		exibir : lang_text('Confirma'),
+		exibir : lang_text('095'),
 		tipo : 'confirmaSair',
 		centralizaTexto : false,
-		width : 130,
+		larguraTexto : true,
+		width : 190,
 		height : 40,
 		y : 210,
-		evalX : '(maneCanvas.width/2 + 20);',
+		evalX : '(maneCanvas.width/2 - 20);',
 		x : 0
 	});	
 }

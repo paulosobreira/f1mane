@@ -1,6 +1,7 @@
 /**
  * Controle do menu inicial
  */
+
 if (localStorage.getItem("versao") != $("#versao").val()) {
 	console.log('Limpando localStorage versao: '+$("#versao").val());
 	localStorage.clear();
@@ -10,10 +11,34 @@ if (localStorage.getItem("versao") != $("#versao").val()) {
 	localStorage.removeItem("idPilotoSelecionado");
 }
 
+var userLang = navigator.language || navigator.userLanguage;
+if(userLang!=null && localStorage.getItem('idioma')==null){
+	lang_idioma(userLang.split('-')[0],true);
+}else{
+	lang_idioma(localStorage.getItem('idioma'),true);	
+}
+
+$('#btnJogar').html(lang_text('jogar'));
+$('#btnSobre').html(lang_text('sobre'));
+$('#btnControles').html(lang_text('verControles'));
+if(localStorage.getItem('idioma')=='pt'){
+	$('#btnIdioma').html(lang_text('en'));	
+}else{
+	$('#btnIdioma').html(lang_text('pt'));
+}
 
 $('#btnSobre').bind("click", function() {
 	$('#botoes').hide();
 	sobre();
+});
+
+$('#btnIdioma').bind("click", function() {
+	if(localStorage.getItem('idioma')=='pt'){
+		lang_idioma('en');	
+	}else{
+		lang_idioma('pt');
+	}
+	location.reload();
 });
 
 function sobre() {

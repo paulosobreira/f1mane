@@ -19,11 +19,15 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.PropertyResourceBundle;
 import java.util.Set;
 import java.util.Vector;
 
@@ -504,6 +508,19 @@ public class Util {
 	}
 
 	public static String extrairNumeros(String string) {
-		return string.replaceAll("\\D+","");
+		return string.replaceAll("\\D+", "");
+	}
+
+	public static Map<String, String> bundle2Map(
+			PropertyResourceBundle bundle) {
+		Map<String, String> map = new HashMap<String, String>();
+
+		Enumeration<String> keys = bundle.getKeys();
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			map.put(key, bundle.getString(key));
+		}
+
+		return map;
 	}
 }

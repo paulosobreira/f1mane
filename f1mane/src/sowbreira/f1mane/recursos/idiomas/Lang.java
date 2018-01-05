@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ import sowbreira.f1mane.recursos.CarregadorRecursos;
 public class Lang {
 
 	private static PropertyResourceBundle bundle;
+	private static Map<String, PropertyResourceBundle> mapaBundle = new HashMap<String, PropertyResourceBundle>();
 	private static String sufix;
 	private static boolean srvgame;
 
@@ -150,7 +153,7 @@ public class Lang {
 		return retorno.toString();
 	}
 
-	public static String decodeTextoKey(String string) {
+	public static String decodeTextoKey(String string, String idioma) {
 		if (string == null) {
 			return null;
 		}
@@ -158,14 +161,14 @@ public class Lang {
 		StringBuffer retorno = new StringBuffer();
 		for (int i = 0; i < array.length; i++) {
 			if (i % 2 == 1)
-				retorno.append(microDecodeKey(array[i]));
+				retorno.append(microDecodeKey(array[i], idioma));
 			else
 				retorno.append((array[i]));
 		}
 		return retorno.toString();
 	}
 
-	private static String microDecodeKey(String string) {
+	private static String microDecodeKey(String string, String idioma) {
 		if (string.contains("¬")) {
 			String[] sp = string.split("¬");
 			String key = sp[0];
@@ -177,14 +180,20 @@ public class Lang {
 				}
 				params[i - 1] = msp;
 			}
-			return Lang.msgKey(key, params);
+			return Lang.msgKey(key, params, idioma);
 		} else {
-			return Lang.msgKey(string);
+			return Lang.msgKey(string, idioma);
 		}
 	}
 
-	public static String msgKey(String key, Object[] strings) {
-		iniciaBundle();
+	public static String msgKey(String key, Object[] strings, String idioma) {
+		PropertyResourceBundle bundle = null;
+		if (idioma == null) {
+			iniciaBundle();
+			bundle = Lang.bundle;
+		} else {
+			bundle = mapaBundle.get(idioma);
+		}
 		if (key == null || "".equals(key)) {
 			return "";
 		}
@@ -197,8 +206,14 @@ public class Lang {
 		}
 	}
 
-	public static String msgKey(String key) {
-		iniciaBundle();
+	public static String msgKey(String key, String idioma) {
+		PropertyResourceBundle bundle = null;
+		if (idioma == null) {
+			iniciaBundle();
+			bundle = Lang.bundle;
+		} else {
+			bundle = mapaBundle.get(idioma);
+		}
 		if (key == null || "".equals(key)) {
 			return "";
 		}
@@ -248,25 +263,9 @@ public class Lang {
 					sufix = locale.getLanguage();
 				}
 				sufix = "pt";
-				String load = "idiomas/mensagens_" + sufix + ".properties";
-				InputStream inputStream = CarregadorRecursos
-						.getCarregadorRecursos().recursoComoStream(load);
-				if (inputStream == null) {
-					Logger.logar("inputStream == null para " + load);
-					return;
-				}
-				validaProperties(inputStream);
-				inputStream = CarregadorRecursos.recursoComoStream(load);
-				bundle = new PropertyResourceBundle(inputStream);
+				bundle = carregraBundleMensagens(sufix);
 				if (bundle == null) {
-					load = "idiomas/mensagens.properties_pt";
-					inputStream = CarregadorRecursos.recursoComoStream(load);
-					validaProperties(inputStream);
-					inputStream = CarregadorRecursos.recursoComoStream(load);
-					bundle = new PropertyResourceBundle(inputStream);
-				}
-				if (bundle == null) {
-					Logger.logar("inputStream == null para " + load);
+					Logger.logar("iniciaBundle sufix " + sufix);
 					return;
 				}
 			}
@@ -275,6 +274,25 @@ public class Lang {
 			JOptionPane.showMessageDialog(null, e.getMessage(),
 					"Message Properties Error", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	public static PropertyResourceBundle carregraBundleMensagens(String sufix)
+			throws Exception, IOException {
+		PropertyResourceBundle propertyResourceBundle = mapaBundle.get(sufix);
+		if (propertyResourceBundle == null) {
+			String load = "idiomas/mensagens_" + sufix + ".properties";
+			InputStream inputStream = CarregadorRecursos.getCarregadorRecursos()
+					.recursoComoStream(load);
+			if (inputStream == null) {
+				Logger.logar("inputStream == null para " + load);
+				return null;
+			}
+			validaProperties(inputStream);
+			inputStream = CarregadorRecursos.recursoComoStream(load);
+			propertyResourceBundle = new PropertyResourceBundle(inputStream);
+			mapaBundle.put(sufix, propertyResourceBundle);
+		}
+		return propertyResourceBundle;
 	}
 
 	private static void validaProperties(InputStream inputStream)
