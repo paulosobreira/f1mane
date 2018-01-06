@@ -1627,7 +1627,7 @@ public class PainelMenuLocal {
 		int aerodinamica = piloto.getCarro().getAerodinamica() / 10;
 
 		desenhaBarraPilotoCarro(g2d, y, xbarra, aerodinamica,
-				Lang.msg("aerodinamica"));
+				Lang.msg("aero"));
 
 		int freios = piloto.getCarro().getFreios() / 10;
 

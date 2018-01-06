@@ -411,13 +411,13 @@ public class ControleEstatisticas {
 
 	public boolean verificaInfoRelevante(Piloto piloto) {
 		if (timeStampUltinfo != 0
-				&& (System.currentTimeMillis() - timeStampUltinfo) > 3000) {
-			return true;
+				&& (System.currentTimeMillis() - timeStampUltinfo) < 3000) {
+			return false;
 		}
 		if (piloto.isJogadorHumano()) {
 			return true;
 		}
-		if (piloto.getPosicao() == 1 && Math.random() > 0.95) {
+		if (piloto.getPosicao() == 1) {
 			return true;
 		}
 		if (controleJogo.verificaCampeonatoComRival()

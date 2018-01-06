@@ -4,7 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="../bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/f1mane.css">
 <script src="../jquery/jquery-3.2.1.min.js"></script>
 <title>Fl-Mane</title>
@@ -14,31 +13,30 @@
         <a href="index.html" class="voltar"> 
           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> 
         </a>
-		<h3 style="display: inline;">Fl-Mane Resultado</h3>
+		<h3 style="display: inline;">Fl-Mane</h3>
 		<h5>Formula league-Manager & Engineer</h5>
 	</section>
 	<section class="container containerPadless">
-		<div>
-			<div id="temporadaCarousel" class="carousel slide"  data-ride="carousel">
-				<div id="temporadaCarousel-inner" class="carousel-inner" role="listbox">
-					<div id="temporadaActive" class="item active">
-						<h1 class="text-center" id="temporadasLabel"></h1>
-					</div>
-				</div>
-			</div>
-		</div>
 		<section class="container containerPadless" id="detalheTemporada">
+			<table class="table table-hover table-responsive">
+				<thead>
+					<tr>
+						<th id="153"></th>
+						<th id="154"></th>
+					</tr>
+				</thead>
+				<tbody id="pilotos">
+				</tbody>
+			</table>
 			<div class="form-group">
 				<div class="col-sm-6">
-					<div class="checkbox">
-						<label> 
-							<b id="trocaPneuCheck" id="trocaPneus"></b>
-						</label>
+					<div  class="checkbox">
+						<p id="trocaPneuCheck" class="font-weight-bold"> 
+						</p>
 					</div>
 					<div class="checkbox">
-						<label> 
-							<b id="reabastecimentoCheck" id="reabasteciemto"></b>
-						</label>
+						<p id="reabastecimentoCheck" class="font-weight-bold"> 
+						</p>
 					</div>
 				</div>
 				<div class="col-sm-6">
@@ -54,17 +52,16 @@
 					</div>
 				</div>
 			</div>
-			<table class="table table-hover table-responsive">
-				<thead>
-					<tr>
-						<th id="153"></th>
-						<th id="154"></th>
-					</tr>
-				</thead>
-				<tbody id="pilotos">
-				</tbody>
-			</table>
 		</section>
+		<div>
+			<div id="temporadaCarousel" class="carousel slide"  data-ride="carousel">
+				<div id="temporadaCarousel-inner" class="carousel-inner" role="listbox">
+					<div id="temporadaActive" class="item active">
+						<h1 class="text-center" id="temporadasLabel"></h1>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="form-group">
 			<div id="circuitoCarousel" class="carousel slide">
 				<div id="circuitoCarousel-inner" class="carousel-inner" role="listbox">

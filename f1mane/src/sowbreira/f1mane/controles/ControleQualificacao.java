@@ -131,9 +131,8 @@ public class ControleQualificacao {
 			public int compare(Object arg0, Object arg1) {
 				Piloto piloto0 = (Piloto) arg0;
 				Piloto piloto1 = (Piloto) arg1;
-				return new Long(piloto0.getCiclosVoltaQualificacao())
-						.compareTo(new Long(
-								piloto1.getCiclosVoltaQualificacao()));
+				return new Long(piloto0.getCiclosVoltaQualificacao()).compareTo(
+						new Long(piloto1.getCiclosVoltaQualificacao()));
 			}
 		});
 	}
@@ -175,16 +174,17 @@ public class ControleQualificacao {
 			int diff = 0;
 			if (piloto.getHabilidade() > valor) {
 				diff = piloto.getHabilidade() - valor;
-				piloto.setHabilidade(
-						piloto.getHabilidade() - Util.intervalo(diff/2, diff));
+				piloto.setHabilidade(piloto.getHabilidade()
+						- Util.intervalo(diff / 2, diff));
 			} else {
 				diff = valor - piloto.getHabilidade();
-				piloto.setHabilidade(
-						piloto.getHabilidade() + Util.intervalo(diff/2, diff));
+				piloto.setHabilidade(piloto.getHabilidade()
+						+ Util.intervalo(diff / 2, diff));
 			}
 
 		}
-		Logger.logar("-----------------=====nivelaHabilidade=====----------------");
+		Logger.logar(
+				"-----------------=====nivelaHabilidade=====----------------");
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			Logger.logar(piloto.toString() + " HabilidadeAntesQualify : "
@@ -197,8 +197,8 @@ public class ControleQualificacao {
 		int valor = 0;
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			piloto.getCarro().setPotenciaAntesQualify(
-					piloto.getCarro().getPotencia());
+			piloto.getCarro()
+					.setPotenciaAntesQualify(piloto.getCarro().getPotencia());
 			valor += piloto.getCarro().getPotencia();
 		}
 		valor = valor / pilotos.size();
@@ -208,21 +208,22 @@ public class ControleQualificacao {
 			int diff = 0;
 			if (piloto.getCarro().getPotencia() > valor) {
 				diff = piloto.getCarro().getPotencia() - valor;
-				piloto.getCarro().setPotencia(
-						piloto.getCarro().getPotencia() - Util.intervalo(diff/2, diff));
+				piloto.getCarro().setPotencia(piloto.getCarro().getPotencia()
+						- Util.intervalo(diff / 2, diff));
 			} else {
 				diff = valor - piloto.getCarro().getPotencia();
-				piloto.getCarro().setPotencia(
-						piloto.getCarro().getPotencia() + Util.intervalo(diff/2, diff));
+				piloto.getCarro().setPotencia(piloto.getCarro().getPotencia()
+						+ Util.intervalo(diff / 2, diff));
 			}
 
 		}
-		Logger.logar("-----------------=====nivelaPontecia=====----------------");
+		Logger.logar(
+				"-----------------=====nivelaPontecia=====----------------");
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			Logger.logar(piloto.toString() + " getPotenciaAntesQualify : "
-					+ piloto.getCarro().getPotenciaAntesQualify() + " getPotencia: "
-					+ piloto.getCarro().getPotencia());
+					+ piloto.getCarro().getPotenciaAntesQualify()
+					+ " getPotencia: " + piloto.getCarro().getPotencia());
 		}
 	}
 
@@ -294,7 +295,7 @@ public class ControleQualificacao {
 				carro.setTempMax(carro.getPotencia() / 6);
 			}
 			carro.setDurabilidadeAereofolio(
-					controleJogo.getDurabilidadeAreofolio());
+					InterfaceJogo.DURABILIDADE_AREOFOLIO);
 			piloto.calculaCarrosAdjacentes(controleJogo);
 			Logger.logar(" Posição Largada :" + piloto.getPosicao() + " Nome : "
 					+ piloto.getNome() + " Pneu : "

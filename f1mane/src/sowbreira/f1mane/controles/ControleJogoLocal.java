@@ -1416,12 +1416,6 @@ public class ControleJogoLocal extends ControleRecursos
 				analisaTracado);
 	}
 
-	@Override
-	public int getDurabilidadeAreofolio() {
-		return (InterfaceJogo.DURABILIDADE_AREOFOLIO * totalVoltasCorrida())
-				/ Constantes.MAX_VOLTAS;
-	}
-
 	/**
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#desenhaQualificacao()
 	 */
@@ -1634,8 +1628,6 @@ public class ControleJogoLocal extends ControleRecursos
 		campos.add("Temporada = " + this.getTemporada() + "<br>");
 		campos.add("verificaCampeonatoComRival = "
 				+ this.verificaCampeonatoComRival() + "<br>");
-		campos.add("DurabilidadeAreofolio = " + this.getDurabilidadeAreofolio()
-				+ "<br>");
 		campos.add("safetyCarUltimas3voltas = " + this.safetyCarUltimas3voltas()
 				+ "<br>");
 		campos.add("mostraTipoPneuAdversario = "

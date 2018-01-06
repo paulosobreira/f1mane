@@ -262,7 +262,6 @@ public class Lang {
 				if (locale != null && sufix == null) {
 					sufix = locale.getLanguage();
 				}
-				sufix = "pt";
 				bundle = carregraBundleMensagens(sufix);
 				if (bundle == null) {
 					Logger.logar("iniciaBundle sufix " + sufix);

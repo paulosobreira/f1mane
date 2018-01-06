@@ -2,8 +2,8 @@ var idPilotoSelecionado, temporadaSelecionada, circuitoSelecionado;
 var token = localStorage.getItem("token");
 var nomeJogo = localStorage.getItem("nomeJogo");
 
-$('#trocaPneus').html(lang_text('trocaPneus'));
-$('#reabasteciemto').html(lang_text('reabasteciemto'));
+$('#trocaPneuCheck').append(lang_text('trocaPneus'));
+$('#reabastecimentoCheck').append(lang_text('reabastecimento'));
 $('#153').html(lang_text('153'));
 $('#154').html(lang_text('154'));
 
@@ -109,7 +109,11 @@ function montaLinhaGridResultado(i, piloto) {
 	td2.append(piloto.nomeCarro);
 	td2.append('<br>');
 	td2.append('<b>Melhor : </b>');
-	td2.append(piloto.melhorVolta.tempoVoltaFormatado);
+	if(piloto.melhorVolta){
+		td2.append(piloto.melhorVolta.tempoVoltaFormatado);
+	}else{
+		td2.append('-');
+	}
 	td2.append('<br>');
 	td2.append('<b>Vantagem : </b>');
 	td2.append(piloto.vantagem);

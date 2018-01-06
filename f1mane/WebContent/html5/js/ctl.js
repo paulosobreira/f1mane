@@ -51,7 +51,7 @@ function ctl_desenhaQualificacao(){
 	maneContext.fillStyle = corFundo
 	maneContext.font = '24px sans-serif';
 	var ranking = lang_text('ranking');
-	var laruraTxt = maneContext.measureText(ranking).width + 50;
+	var laruraTxt = maneContext.measureText(ranking).width + 30;
 	maneContext.fillRect(centroX-80, y, laruraTxt, 40);
 	maneContext.fillStyle = "black"
 	maneContext.fillText(ranking, centroX-65, y + 28);
@@ -116,7 +116,7 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	maneContext.fillStyle = corFundo
 	var iniciaEm = lang_text('iniciaEm')+' : ';
 	maneContext.font = '24px sans-serif';
-	var laruraTxt = maneContext.measureText(iniciaEm).width + 10;
+	var laruraTxt = maneContext.measureText(iniciaEm).width + 50;
 	maneContext.fillRect(x-10, y, laruraTxt, 40);
 	maneContext.fillStyle = "black"
 	maneContext.fillText(iniciaEm, x + 5, y + 28);
@@ -1277,7 +1277,7 @@ function ctl_gerarControles() {
 		width : 120,
 		height : 40,
 		y : 210,
-		evalX : '(maneCanvas.width/2 - 150);',
+		evalX : '(maneCanvas.width/2 - 160);',
 		x : 0
 	});
 	controles.push({
@@ -1290,28 +1290,28 @@ function ctl_gerarControles() {
 		width : 190,
 		height : 40,
 		y : 210,
-		evalX : '(maneCanvas.width/2 - 20);',
+		evalX : '(maneCanvas.width/2 - 30);',
 		x : 0
 	});	
 }
 maneCanvas.addEventListener('click',ctl_click, false);
 
 function ctl_click(event) {
-	if(!telaCheia){
-		try {
-			document.getElementById('body').webkitRequestFullScreen(); // Chrome
-		} catch (e) {
-			try {
-				document.getElementById('body').mozRequestFullScreen(); // Firefox
-			} catch (e) {
-				try {
-					document.getElementById('body').requestFullscreen();// Edge
-				} catch (e) {
-				}
-			}
-		}
-		telaCheia = true;
-	}
+//	if(!telaCheia){
+//		try {
+//			document.getElementById('body').webkitRequestFullScreen(); // Chrome
+//		} catch (e) {
+//			try {
+//				document.getElementById('body').mozRequestFullScreen(); // Firefox
+//			} catch (e) {
+//				try {
+//					document.getElementById('body').requestFullscreen();// Edge
+//				} catch (e) {
+//				}
+//			}
+//		}
+//		telaCheia = true;
+//	}
 	var x = event.pageX;
 	var y = event.pageY;
 

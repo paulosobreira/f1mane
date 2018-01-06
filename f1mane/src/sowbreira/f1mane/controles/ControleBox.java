@@ -360,7 +360,7 @@ public class ControleBox {
 		if (carro.getDurabilidadeAereofolio() <= 0
 				|| InterfaceJogo.DIFICIL_NV != controleJogo.getNiveljogo()) {
 			carro.setDurabilidadeAereofolio(
-					controleJogo.getDurabilidadeAreofolio());
+					InterfaceJogo.DURABILIDADE_AREOFOLIO);
 			penalidade = Util
 					.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
 		}

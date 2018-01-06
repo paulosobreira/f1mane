@@ -496,7 +496,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 						Logger.topExecpts(e);
 					}
 
-					Thread.sleep(60000);
+					Thread.sleep(10000);
 					controleEstatisticas.setConsumidorAtivo(false);
 					controleJogosServer.removerJogo(JogoServidor.this);
 				} catch (Exception e) {

@@ -5586,10 +5586,7 @@ public class PainelCircuito {
 			return;
 		if (ps.getCarro() == null)
 			return;
-		String intel = (ps.isJogadorHumano()
-				? "H"
-				: "IA ");
-		String txtDraw = intel + " " + ps.getNome();
+		String txtDraw = ps.getPosicao() + " " + ps.getNome();
 
 		Color c2 = ps.getCarro().getCor2();
 		if (c2 != null) {

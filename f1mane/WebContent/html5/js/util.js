@@ -61,7 +61,7 @@ function tratamentoErro(xhRequest) {
 		if (xhRequest.responseJSON != null && xhRequest.responseJSON.messageString != null) {
 			erroMsg = xhRequest.responseJSON.messageString;
 		}
-		toaster('Mensagem do servidor : ' + erroMsg, 3000, 'alert alert-danger');
+		toaster(erroMsg, 3000, 'alert alert-danger');
 	}
 }
 

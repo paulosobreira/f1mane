@@ -1200,12 +1200,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public int getDurabilidadeAreofolio() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public void desenhouQualificacao() {
 		if (gerenciadorVisual != null) {
 			gerenciadorVisual.setDesenhouQualificacao(true);

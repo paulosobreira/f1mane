@@ -4,8 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="../bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/f1mane.css?v={versao}">
+<link rel="stylesheet" href="css/mdb-btns.css?v={versao}">
 <script src="../jquery/jquery-3.2.1.min.js"></script>
 <title>Fl-Mane</title>
 </head>
@@ -18,16 +18,16 @@
 	<section id="mainContainer" class="container">
 		<div id="botoes" class="list-group">
 			<a href="menus.html" class="list-group-item transparent">
-				<button type="button" id="btnJogar" class="btn btn-default btn-block"></button>
+				<button type="button" id="btnJogar" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a> 
 			<a href="controles.html" class="list-group-item transparent">
-				<button type="button" id="btnControles" class="btn btn-default btn-block"></button>
+				<button type="button" id="btnControles" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
 			<a class="list-group-item transparent">
-				<button type="button" id="btnIdioma" class="btn btn-default btn-block"></button>
+				<button type="button" id="btnIdioma" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>			 			
 			<a class="list-group-item transparent">
-				<button type="button" id="btnSobre" class="btn btn-default btn-block"></button>
+				<button type="button" id="btnSobre" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a> 			
 		</div>
 	</section>
@@ -43,4 +43,39 @@
 <script src="js/loader.js?v={versao}"></script>
 <script src="js/lang.js?v={versao}"></script>
 <script src="js/index.js?v={versao}"></script>
+<script>
+//Ripple-effect animation
+(function($) {
+    $(".ripple-effect").click(function(e){
+        var rippler = $(this);
+
+        // create .ink element if it doesn't exist
+        if(rippler.find(".ink").length == 0) {
+            rippler.append("<span class='ink'></span>");
+        }
+
+        var ink = rippler.find(".ink");
+
+        // prevent quick double clicks
+        ink.removeClass("animate");
+
+        // set .ink diametr
+        if(!ink.height() && !ink.width())
+        {
+            var d = Math.max(rippler.outerWidth(), rippler.outerHeight());
+            ink.css({height: d, width: d});
+        }
+
+        // get click coordinates
+        var x = e.pageX - rippler.offset().left - ink.width()/2;
+        var y = e.pageY - rippler.offset().top - ink.height()/2;
+
+        // set .ink position and add class .animate
+        ink.css({
+          top: y+'px',
+          left:x+'px'
+        }).addClass("animate");
+    })
+})(jQuery);
+</script>
 </html>

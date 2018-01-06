@@ -35,7 +35,7 @@ public class ControleCorrida {
 	private double fatorUtrapassagem;
 	private double velocidadeJogo;
 	private boolean corridaIniciada;
-	private double fatorAcidente = Util.intervalo(0.5, 0.9);
+	private double fatorAcidente = Util.intervalo(0.3, 0.9);
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private Pausa pausaAtual;
@@ -210,7 +210,7 @@ public class ControleCorrida {
 		if (pilotoNaFrente == null) {
 			return;
 		}
-		if(pilotoNaFrente.isDesqualificado()){
+		if (pilotoNaFrente.isDesqualificado()) {
 			return;
 		}
 		if (controleJogo.isSafetyCarNaPista()) {
@@ -275,9 +275,9 @@ public class ControleCorrida {
 		}
 	}
 
-	private void verificaAcidenteIA(final Piloto piloto, final Piloto pilotoNaFrente,
-			double fatorAcidenteLocal) {
-		int limiteStress = (int) (100 * (1 - fatorAcidenteLocal));
+	private void verificaAcidenteIA(final Piloto piloto,
+			final Piloto pilotoNaFrente, double fatorAcidenteMomento) {
+		int limiteStress = (int) (100 * (1 - fatorAcidenteMomento));
 		if (pilotoNaFrente.isJogadorHumano() && limiteStress > 10) {
 			limiteStress -= 10;
 		}
@@ -297,9 +297,9 @@ public class ControleCorrida {
 							Thread.sleep(7000);
 						} catch (InterruptedException e) {
 						}
-						controleJogo.infoPrioritaria(
-								Html.negrito(Html.vermelho(Lang.msg("016", new String[]{
-										piloto.getNome(), pilotoNaFrente.getNome()}))));
+						controleJogo.infoPrioritaria(Html.negrito(Html.vermelho(
+								Lang.msg("016", new String[]{piloto.getNome(),
+										pilotoNaFrente.getNome()}))));
 					}
 				};
 				Thread thread = new Thread(runnable);
@@ -316,9 +316,7 @@ public class ControleCorrida {
 				}
 			}
 		} else {
-			if (piloto.getStress() > limiteStress) {
-				danificaAreofolio(piloto);
-			}
+			danificaAreofolio(piloto);
 		}
 	}
 
@@ -370,7 +368,10 @@ public class ControleCorrida {
 	public void danificaAreofolio(Piloto piloto) {
 		piloto.getCarro().setDurabilidadeAereofolio(
 				piloto.getCarro().getDurabilidadeAereofolio() - 1);
-		piloto.incStress(15);
+		if (piloto.testeHabilidadePiloto() && Math.random() < fatorAcidente) {
+			piloto.incStress(15);
+			piloto.setModoPilotagem(Piloto.LENTO);
+		}
 	}
 
 	public static void main(String[] args) {

@@ -1171,7 +1171,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-		int durabilidade = controleJogo.getDurabilidadeAreofolio() / 2;
+		int durabilidade = InterfaceJogo.DURABILIDADE_AREOFOLIO / 2;
 		if (getCarro().getDurabilidadeAereofolio() <= durabilidade) {
 			setAlertaAerefolio(true);
 		}
@@ -1764,13 +1764,14 @@ public class Piloto implements Serializable, PilotoSuave {
 			tentarEscaparAtras = tentarEscaparPilotoAtras(controleJogo,
 					tentaPassarFrete);
 		}
-		if (Math.random() > 0.95 && controleJogo.verificaInfoRelevante(this)) {
-			if (tentaPassarFrete) {
+		if (getNumeroVolta() > 0 && controleJogo.verificaInfoRelevante(this)) {
+			if (tentaPassarFrete && calculaDiferencaParaProximo < 100) {
 				String txt = Lang.msg("tentaPassarFrete",
 						new String[]{Html.negrito(getNome()), Html.negrito(
 								carroPilotoDaFrente.getPiloto().getNome())});
 				controleJogo.info(Html.preto(txt));
-			}else if (tentarEscaparAtras) {
+			} else if (tentarEscaparAtras
+					&& calculaDiferencaParaAnterior < 100) {
 				String txt = Lang.msg("tentarEscaparAtras", new String[]{
 						Html.negrito(getNome()),
 						Html.negrito(carroPilotoAtras.getPiloto().getNome())});
@@ -2038,8 +2039,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			return;
 		}
 		limiteEvitarBatrCarroFrente = 150;
-		if (getCarro().getDurabilidadeAereofolio() < controleJogo
-				.getDurabilidadeAreofolio() / 2) {
+		if (getCarro()
+				.getDurabilidadeAereofolio() < (InterfaceJogo.DURABILIDADE_AREOFOLIO
+						/ 2)) {
 			limiteEvitarBatrCarroFrente += 100;
 		}
 		if (piloto.getColisao() != null) {

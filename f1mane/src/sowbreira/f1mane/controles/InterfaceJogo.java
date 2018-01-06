@@ -28,7 +28,7 @@ public interface InterfaceJogo {
 	public static double MEDIO_NV = .5;
 	public static double DIFICIL_NV = .7;
 	public static int CARGA_ERS = 100;
-	public static int DURABILIDADE_AREOFOLIO = 20;
+	public static int DURABILIDADE_AREOFOLIO = 4;
 
 	public List<String> listaInfo();
 
@@ -353,8 +353,6 @@ public interface InterfaceJogo {
 
 	public Carro obterCarroNaFrenteRetardatario(Piloto piloto,
 			boolean analisaTracado);
-
-	public int getDurabilidadeAreofolio();
 
 	public void desenhouQualificacao();
 
