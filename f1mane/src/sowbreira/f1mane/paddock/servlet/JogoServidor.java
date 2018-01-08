@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.nnpe.Constantes;
+import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleCorrida;
@@ -96,7 +97,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		}
 	}
 
-	public JogoServidor(String temporada,DadosCriarJogo dadosCriarJogo) throws Exception {
+	public JogoServidor(String temporada, DadosCriarJogo dadosCriarJogo)
+			throws Exception {
 		super(temporada);
 		this.dadosCriarJogo = dadosCriarJogo;
 		controleEstatisticas = new ControleEstatisticas(JogoServidor.this);
@@ -172,7 +174,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					Piloto piloto = (Piloto) iter2.next();
 					if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 						return new MsgSrv(Lang.msg("257",
-								new String[]{piloto.getNome(), key}));						
+								new String[]{piloto.getNome(), key}));
 					}
 				}
 			}
@@ -187,8 +189,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 			if (piloto.getId() == dadosParticiparJogo.getIdPiloto()
 					&& piloto.isDesqualificado()) {
-				return new MsgSrv(Lang.msg("258",
-						new String[]{piloto.getNome()}));
+				return new MsgSrv(
+						Lang.msg("258", new String[]{piloto.getNome()}));
 			}
 		}
 		if (pilotoDisponivel) {
@@ -441,10 +443,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void adicionarInfoDireto(String info) {
+		infoPrioritaria(info);
 	}
 
 	public void info(String info) {
-		if (Comandos.CORRIDA_INICIADA.equals(getEstado())) {
+		if(isModoQualify()){
+			return;
 		}
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
 				.hasNext();) {
@@ -459,17 +463,18 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void infoPrioritaria(String info) {
-		if (Comandos.CORRIDA_INICIADA.equals(getEstado())) {
-			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-					.hasNext();) {
-				String key = (String) iter.next();
-				BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto
-						.get(key);
-				if (bufferTexto != null) {
-					bufferTexto.adicionarTextoPrio(info);
-				}
-
+		if(isModoQualify()){
+			return;
+		}
+		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
+				.hasNext();) {
+			String key = (String) iter.next();
+			BufferTexto bufferTexto = (BufferTexto) mapJogadoresOnlineTexto
+					.get(key);
+			if (bufferTexto != null) {
+				bufferTexto.adicionarTextoPrio(info);
 			}
+
 		}
 	}
 
@@ -572,6 +577,13 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto) {
 		return carregadorRecursos.obterCarroCimaSemAreofolio(piloto,
 				getTemporada());
+	}
+
+	public void encerraCorrida() {
+		setCorridaTerminada(true);
+		controleCorrida.terminarCorrida();
+		infoPrioritaria(
+				Html.vinho(Lang.msg("024", new Object[]{getNumVoltaAtual()})));
 	}
 
 }

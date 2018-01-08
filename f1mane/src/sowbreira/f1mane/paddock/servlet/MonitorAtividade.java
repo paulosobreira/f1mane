@@ -28,51 +28,12 @@ public class MonitorAtividade implements Runnable {
 			try {
 				Thread.sleep(3000);
 				long timeNow = System.currentTimeMillis();
-				List<SessaoCliente> clientes = controlePaddock.getDadosPaddock()
-						.getClientes();
-				SessaoCliente sessaoClienteRemover = null;
-				for (Iterator<SessaoCliente> iter = clientes.iterator(); iter
-						.hasNext();) {
-					SessaoCliente sessaoCliente = iter.next();
-					int intervaloAtividade = 300000;
-					if ((timeNow - sessaoCliente
-							.getUlimaAtividade()) > intervaloAtividade) {
-						sessaoClienteRemover = sessaoCliente;
-						break;
-					}
-				}
-				if (sessaoClienteRemover != null) {
-					Logger.logar(
-							"Remover " + sessaoClienteRemover.getNomeJogador());
-					controlePaddock.removerClienteInativo(sessaoClienteRemover);
-				}
+				removeClientesIniativos(timeNow);
 				Map<SessaoCliente, JogoServidor> jogos = controlePaddock
 						.getControleJogosServer().getMapaJogosCriados();
-				for (Iterator<SessaoCliente> iter = jogos.keySet()
-						.iterator(); iter.hasNext();) {
-					SessaoCliente key = iter.next();
-					JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
-					if ((timeNow - jogoServidor
-							.getTempoCriacao()) > (Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA
-									* 1000)) {
-						jogoServidor.iniciarJogo();
-					}
-				}
-				for (Iterator<SessaoCliente> iter = jogos.keySet()
-						.iterator(); iter.hasNext();) {
-					SessaoCliente key = iter.next();
-					JogoServidor jogoServidor = jogos.get(key);
-					for (Iterator<String> iterator = jogoServidor
-							.getMapJogadoresOnline().keySet()
-							.iterator(); iterator.hasNext();) {
-						String nomeJogador = iterator.next();
-						SessaoCliente sessaoCliente = controlePaddock
-								.verificaUsuarioSessao(nomeJogador);
-						if (sessaoCliente == null) {
-							iterator.remove();
-						}
-					}
-				}
+				iniciaJogos(timeNow, jogos);
+				removeJogadoresSemSessao(jogos);
+				removeJogosSemJogadores(jogos);
 			} catch (InterruptedException e) {
 				Logger.logarExept(e);
 			} catch (Exception e) {
@@ -80,6 +41,76 @@ public class MonitorAtividade implements Runnable {
 			}
 		}
 
+	}
+
+	private void removeJogosSemJogadores(
+			Map<SessaoCliente, JogoServidor> jogos) {
+		for (Iterator<SessaoCliente> iter = jogos.keySet().iterator(); iter
+				.hasNext();) {
+			SessaoCliente key = iter.next();
+			JogoServidor jogoServidor = jogos.get(key);
+			if (jogoServidor.getMapJogadoresOnline().isEmpty()) {
+				if (!jogoServidor.isCorridaTerminada()) {
+					Logger.logar("removeJogosSemJogadores "
+							+ jogoServidor.getCircuito().getNome() + " - "
+							+ jogoServidor.getTemporada());
+				}
+				jogoServidor.encerraCorrida();
+			}
+		}
+	}
+
+	public void removeJogadoresSemSessao(
+			Map<SessaoCliente, JogoServidor> jogos) {
+		for (Iterator<SessaoCliente> iter = jogos.keySet().iterator(); iter
+				.hasNext();) {
+			SessaoCliente key = iter.next();
+			JogoServidor jogoServidor = jogos.get(key);
+			for (Iterator<String> iterator = jogoServidor
+					.getMapJogadoresOnline().keySet().iterator(); iterator
+							.hasNext();) {
+				String nomeJogador = iterator.next();
+				SessaoCliente sessaoCliente = controlePaddock
+						.verificaUsuarioSessao(nomeJogador);
+				if (sessaoCliente == null) {
+					iterator.remove();
+				}
+			}
+		}
+	}
+
+	public void iniciaJogos(long timeNow,
+			Map<SessaoCliente, JogoServidor> jogos) throws Exception {
+		for (Iterator<SessaoCliente> iter = jogos.keySet().iterator(); iter
+				.hasNext();) {
+			SessaoCliente key = iter.next();
+			JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
+			if ((timeNow - jogoServidor
+					.getTempoCriacao()) > (Constantes.SEGUNDOS_PARA_INICIAR_CORRRIDA
+							* 1000)) {
+				jogoServidor.iniciarJogo();
+			}
+		}
+	}
+
+	public void removeClientesIniativos(long timeNow) {
+		List<SessaoCliente> clientes = controlePaddock.getDadosPaddock()
+				.getClientes();
+		SessaoCliente sessaoClienteRemover = null;
+		for (Iterator<SessaoCliente> iter = clientes.iterator(); iter
+				.hasNext();) {
+			SessaoCliente sessaoCliente = iter.next();
+			int intervaloAtividade = 300000;
+			if ((timeNow
+					- sessaoCliente.getUlimaAtividade()) > intervaloAtividade) {
+				sessaoClienteRemover = sessaoCliente;
+				break;
+			}
+		}
+		if (sessaoClienteRemover != null) {
+			Logger.logar("Remover " + sessaoClienteRemover.getNomeJogador());
+			controlePaddock.removerClienteInativo(sessaoClienteRemover);
+		}
 	}
 
 	public boolean isAlive() {

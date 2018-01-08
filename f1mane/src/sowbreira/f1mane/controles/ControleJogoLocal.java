@@ -269,6 +269,9 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#info(java.lang.String)
 	 */
 	public void info(String info) {
+		if(isModoQualify()){
+			return;
+		}
 		controleEstatisticas.info(info);
 	}
 
@@ -276,6 +279,9 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#infoPrioritaria(java.lang.String)
 	 */
 	public void infoPrioritaria(String info) {
+		if(isModoQualify()){
+			return;
+		}
 		controleEstatisticas.info(info, true);
 	}
 

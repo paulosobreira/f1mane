@@ -1933,7 +1933,8 @@ public class Piloto implements Serializable, PilotoSuave {
 				String msg = Lang.msg("020", new String[]{
 						pilotoNaFrente.getNome(), piloto.getNome()});
 				controleJogo.info(Html.azul(msg));
-			} else {
+			} else if (pilotoNaFrente.getTracado() == piloto.getTracado()
+					&& pilotoNaFrente.equals(piloto.getColisao())) {
 				String msg = Lang.msg("021", new String[]{
 						pilotoNaFrente.getNome(), piloto.getNome()});
 				controleJogo.info(Html.azul(msg));

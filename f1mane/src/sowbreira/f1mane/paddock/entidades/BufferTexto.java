@@ -8,7 +8,13 @@ import java.util.LinkedList;
  */
 public class BufferTexto implements Serializable {
 
-	private LinkedList bufferinfo = new LinkedList();
+	private static final long serialVersionUID = 1L;
+
+	private Long utlConsumoTexto;
+
+	private String utlTexto;
+
+	private LinkedList<String> bufferinfo = new LinkedList<String>();
 
 	public void adicionarTextoPrio(String txt) {
 		if (bufferinfo.contains(txt)) {
@@ -35,8 +41,13 @@ public class BufferTexto implements Serializable {
 		if (bufferinfo.isEmpty()) {
 			return "";
 		}
-
-		return (String) bufferinfo.removeFirst();
+		if (utlConsumoTexto != null
+				&& (System.currentTimeMillis() - utlConsumoTexto) < 5000) {
+			return utlTexto;
+		}
+		utlConsumoTexto = System.currentTimeMillis();
+		utlTexto = (String) bufferinfo.removeFirst();
+		return utlTexto;
 	}
 
 }

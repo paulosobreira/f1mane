@@ -52,9 +52,9 @@ function ctl_desenhaQualificacao(){
 	maneContext.font = '24px sans-serif';
 	var ranking = lang_text('ranking');
 	var laruraTxt = maneContext.measureText(ranking).width + 30;
-	maneContext.fillRect(centroX-80, y, laruraTxt, 40);
+	maneContext.fillRect(centroX-(laruraTxt/2), y, laruraTxt, 40);
 	maneContext.fillStyle = "black"
-	maneContext.fillText(ranking, centroX-65, y + 28);
+	maneContext.fillText(ranking, centroX-(laruraTxt/2)+15, y + 28);
 
 	y += 60;
 		
@@ -116,7 +116,7 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	maneContext.fillStyle = corFundo
 	var iniciaEm = lang_text('iniciaEm')+' : ';
 	maneContext.font = '24px sans-serif';
-	var laruraTxt = maneContext.measureText(iniciaEm).width + 50;
+	var laruraTxt = maneContext.measureText(iniciaEm+' XX ').width + 10;
 	maneContext.fillRect(x-10, y, laruraTxt, 40);
 	maneContext.fillStyle = "black"
 	maneContext.fillText(iniciaEm, x + 5, y + 28);
@@ -1251,7 +1251,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 160,
-		evalX : '(maneCanvas.width/2 + 40);',
+		evalX : '(maneCanvas.width/2 + 45);',
 		x : 0
 	});
 	controles.push({

@@ -793,11 +793,10 @@ public class ControleJogosServer {
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();
 		}
-		if (Util.isNullOrEmpty(dadosParciais.texto)
-				&& "13".equals(jogoServidor.getEstado())) {
-			dadosParciais.texto = Html.verde(Lang.msg("001"));
-		}
-
+//		if (Util.isNullOrEmpty(dadosParciais.texto)
+//				&& "13".equals(jogoServidor.getEstado())) {
+//			dadosParciais.texto = Html.verde(Lang.msg("001"));
+//		}
 		return dadosParciais;
 
 	}
