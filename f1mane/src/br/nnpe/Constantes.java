@@ -21,7 +21,7 @@ public class Constantes {
 	public static final int LATENCIA_MIN = 50;
 	public static final int LIMITE_DRS = 300;
 	public static final Integer SEGUNDOS_PARA_INICIAR_CORRRIDA = Logger.ativo
-			? 10
+			? 20
 			: 90;
 	public static int TAMANHO_RETA_DRS = 1500;
 

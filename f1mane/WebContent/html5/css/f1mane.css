@@ -107,6 +107,11 @@
 	margin-right: 20px;  color: darkgray;  font-size: 22px;
 }
 
+.voltarIndex{
+    float: left;
+    margin-top: 20px;
+}
+
 .transbox {
   text-align:center;
   background-color: #ffffff;

@@ -1,7 +1,7 @@
 /**
  * Controle do menu inicial
  */
-
+$('#voltar').hide();
 if (localStorage.getItem("versao") != $("#versao").val()) {
 	console.log('Limpando localStorage versao: '+$("#versao").val());
 	localStorage.clear();
@@ -35,6 +35,13 @@ if(localStorage.getItem('idioma')=='pt'){
 $('#btnSobre').bind("click", function() {
 	$('#botoes').hide();
 	sobre();
+	$('#voltar').show();
+});
+
+$('#voltar').bind("click", function() {
+	$('.creditos').remove();
+	$('#botoes').show();
+	$('#voltar').hide();
 });
 
 $('#btnIdioma').bind("click", function() {
@@ -58,6 +65,7 @@ function sobre() {
 			dv.bind("click", function() {
 				dv.remove();
 				$('#botoes').show();
+				$('#voltar').hide();
 			});
 		},
 		error : function(xhRequest, ErrorText, thrownError) {

@@ -116,7 +116,7 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	maneContext.fillStyle = corFundo
 	var iniciaEm = lang_text('iniciaEm')+' : ';
 	maneContext.font = '24px sans-serif';
-	var laruraTxt = maneContext.measureText(iniciaEm+' XX ').width+10;
+	var laruraTxt = maneContext.measureText(iniciaEm+' XX ').width+15;
 	maneContext.fillRect(x-10, y, laruraTxt, 40);
 	maneContext.fillStyle = "black"
 	maneContext.fillText(iniciaEm, x + 5, y + 28);
@@ -790,10 +790,9 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillStyle = corFundo
 		maneContext.fillRect(x, y, 90, 20);
 		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('voltas'), x + 5, y + 15);
-		maneContext.fillText(dadosParciais.voltaAtual + '/'
-				+ dadosJogo.numeroVotas, x + 45, y + 15);
+	    var voltas = lang_text('voltas') + ' '+dadosParciais.voltaAtual + '/' + dadosJogo.numeroVotas;
+	    maneContext.fillStyle = "black"
+		maneContext.fillText(voltas, x + 5, y + 15);
 
 		y += 30;
 
