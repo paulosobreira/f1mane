@@ -34,7 +34,7 @@ public class DadosJogo implements Serializable {
 	private Integer idPilotoSelecionado;
 	private String nomeJogo;
 	private String estado;
-	private Integer segundosParaIniciar;
+	private String segundosParaIniciar;
 	public List<Piloto> getPilotos() {
 		return pilotos;
 	}
@@ -137,10 +137,10 @@ public class DadosJogo implements Serializable {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public Integer getSegundosParaIniciar() {
+	public String getSegundosParaIniciar() {
 		return segundosParaIniciar;
 	}
-	public void setSegundosParaIniciar(Integer segundosParaIniciar) {
+	public void setSegundosParaIniciar(String segundosParaIniciar) {
 		this.segundosParaIniciar = segundosParaIniciar;
 	}
 

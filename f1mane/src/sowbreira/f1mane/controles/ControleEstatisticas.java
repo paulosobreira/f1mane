@@ -36,7 +36,7 @@ public class ControleEstatisticas {
 	private Volta voltaMaisRapida;
 	private DecimalFormat milesismos = new DecimalFormat(".000");
 	private static DecimalFormat mil = new DecimalFormat("000");
-	private static DecimalFormat dez = new DecimalFormat("00");
+	public static DecimalFormat dez = new DecimalFormat("00");
 	private LinkedList bufferInfo = new LinkedList();
 	private LinkedList<String> allInfo = new LinkedList<String>();
 	private boolean consumidorAtivo = true;

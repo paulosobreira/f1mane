@@ -349,7 +349,8 @@ public class ControleJogosServer {
 		if (segundosParaIniciar < 0) {
 			segundosParaIniciar = 0;
 		}
-		dadosJogo.setSegundosParaIniciar(segundosParaIniciar);
+		dadosJogo.setSegundosParaIniciar(
+				ControleEstatisticas.dez.format(segundosParaIniciar));
 		Piloto pilotoSessao = obterPilotoPorSessaoCliente(sessaoCliente);
 		if (pilotoSessao != null) {
 			dadosJogo.setIdPilotoSelecionado(pilotoSessao.getId());
@@ -646,8 +647,8 @@ public class ControleJogosServer {
 	 * @return
 	 */
 	public Object obterDadosParciaisPilotos(String[] args) {
-		DadosParciais dadosParciais = obterDadosParciaisPilotos(
-				args[0], args[1], args[2]);
+		DadosParciais dadosParciais = obterDadosParciaisPilotos(args[0],
+				args[1], args[2]);
 		return dadosParciais.encode();
 	}
 
@@ -793,10 +794,10 @@ public class ControleJogosServer {
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();
 		}
-//		if (Util.isNullOrEmpty(dadosParciais.texto)
-//				&& "13".equals(jogoServidor.getEstado())) {
-//			dadosParciais.texto = Html.verde(Lang.msg("001"));
-//		}
+		// if (Util.isNullOrEmpty(dadosParciais.texto)
+		// && "13".equals(jogoServidor.getEstado())) {
+		// dadosParciais.texto = Html.verde(Lang.msg("001"));
+		// }
 		return dadosParciais;
 
 	}

@@ -580,10 +580,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void encerraCorrida() {
+		if(!isCorridaTerminada()){
+			infoPrioritaria(
+					Html.vinho(Lang.msg("024", new Object[]{getNumVoltaAtual()})));
+			controleCorrida.terminarCorrida();
+		}
 		setCorridaTerminada(true);
-		controleCorrida.terminarCorrida();
-		infoPrioritaria(
-				Html.vinho(Lang.msg("024", new Object[]{getNumVoltaAtual()})));
 	}
 
 }

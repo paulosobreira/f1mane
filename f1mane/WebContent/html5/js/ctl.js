@@ -116,7 +116,7 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	maneContext.fillStyle = corFundo
 	var iniciaEm = lang_text('iniciaEm')+' : ';
 	maneContext.font = '24px sans-serif';
-	var laruraTxt = maneContext.measureText(iniciaEm+' XX ').width + 10;
+	var laruraTxt = maneContext.measureText(iniciaEm+' XX ').width+10;
 	maneContext.fillRect(x-10, y, laruraTxt, 40);
 	maneContext.fillStyle = "black"
 	maneContext.fillText(iniciaEm, x + 5, y + 28);
@@ -1235,7 +1235,7 @@ function ctl_gerarControles() {
 		tipo : 'CombustivelValor',
 		centralizaTexto : false,
 		larguraTexto : false,
-		width : 60,
+		width : 65,
 		height : 40,
 		y : 160,
 		evalX : '(maneCanvas.width/2 - 30);',
@@ -1297,21 +1297,21 @@ function ctl_gerarControles() {
 maneCanvas.addEventListener('click',ctl_click, false);
 
 function ctl_click(event) {
-//	if(!telaCheia){
-//		try {
-//			document.getElementById('body').webkitRequestFullScreen(); // Chrome
-//		} catch (e) {
-//			try {
-//				document.getElementById('body').mozRequestFullScreen(); // Firefox
-//			} catch (e) {
-//				try {
-//					document.getElementById('body').requestFullscreen();// Edge
-//				} catch (e) {
-//				}
-//			}
-//		}
-//		telaCheia = true;
-//	}
+// if(!telaCheia){
+// try {
+// document.getElementById('body').webkitRequestFullScreen(); // Chrome
+// } catch (e) {
+// try {
+// document.getElementById('body').mozRequestFullScreen(); // Firefox
+// } catch (e) {
+// try {
+// document.getElementById('body').requestFullscreen();// Edge
+// } catch (e) {
+// }
+// }
+// }
+// telaCheia = true;
+// }
 	var x = event.pageX;
 	var y = event.pageY;
 
