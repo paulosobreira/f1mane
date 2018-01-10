@@ -23,6 +23,7 @@ import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
+import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
@@ -160,8 +161,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		this.tempoCriacao = tempoCriacao;
 	}
 
-	public Object adicionarJogador(String nomeJogador,
+	public Object adicionarJogador(SessaoCliente sessaoCliente,
 			DadosCriarJogo dadosParticiparJogo) {
+		String nomeJogador = sessaoCliente.getNomeJogador();
 		if (mapJogadoresOnline.containsKey(nomeJogador)) {
 			return new MsgSrv(Lang.msg("259"));
 		}
@@ -173,8 +175,13 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				for (Iterator iter2 = pilotos.iterator(); iter2.hasNext();) {
 					Piloto piloto = (Piloto) iter2.next();
 					if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
-						return new MsgSrv(Lang.msg("257",
-								new String[]{piloto.getNome(), key}));
+						if (sessaoCliente.isGuest()) {
+							return new MsgSrv(Lang.msg("escolhidoPorOutroJogador",
+									new String[]{piloto.getNome()}));
+						} else {
+							return new MsgSrv(Lang.msg("257",
+									new String[]{piloto.getNome(), key}));
+						}
 					}
 				}
 			}
@@ -447,7 +454,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void info(String info) {
-		if(isModoQualify()){
+		if (isModoQualify()) {
 			return;
 		}
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
@@ -463,7 +470,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void infoPrioritaria(String info) {
-		if(isModoQualify()){
+		if (isModoQualify()) {
 			return;
 		}
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
@@ -580,9 +587,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void encerraCorrida() {
-		if(!isCorridaTerminada()){
-			infoPrioritaria(
-					Html.vinho(Lang.msg("024", new Object[]{getNumVoltaAtual()})));
+		if (!isCorridaTerminada()) {
+			infoPrioritaria(Html
+					.vinho(Lang.msg("024", new Object[]{getNumVoltaAtual()})));
 			controleCorrida.terminarCorrida();
 		}
 		setCorridaTerminada(true);

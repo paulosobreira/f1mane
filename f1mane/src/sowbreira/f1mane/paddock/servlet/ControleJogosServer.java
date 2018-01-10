@@ -177,7 +177,7 @@ public class ControleJogosServer {
 
 	public Object entrarJogo(ClientPaddockPack clientPaddockPack) {
 		if (clientPaddockPack.getSessaoCliente() == null) {
-			return (new MsgSrv(Lang.msg("210")));
+			return new MsgSrv(Lang.msg("210"));
 		}
 		if (verificaJaEmAlgumJogo(clientPaddockPack.getSessaoCliente())) {
 			return new MsgSrv(Lang.msg("203"));
@@ -220,7 +220,7 @@ public class ControleJogosServer {
 		}
 		jogoServidor.setControleClassificacao(controleClassificacao);
 		Object retorno = jogoServidor.adicionarJogador(
-				clientPaddockPack.getSessaoCliente().getNomeJogador(),
+				clientPaddockPack.getSessaoCliente(),
 				clientPaddockPack.getDadosJogoCriado());
 		if (retorno != null) {
 			return retorno;
