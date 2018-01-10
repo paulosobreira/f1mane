@@ -54,7 +54,7 @@ public class Circuito implements Serializable {
 	private boolean noite;
 	private boolean usaBkg;
 	private transient List<ObjetoPistaJSon> objetosNoTransparencia;
-	
+
 	@JsonIgnore
 	private transient List<No> pistaKey = new ArrayList<No>();
 	@JsonIgnore
@@ -151,7 +151,7 @@ public class Circuito implements Serializable {
 		vetorizarPista(multiplicadorPista, multiplicadorLarguraPista);
 	}
 
-	public void vetorizarPista(double multi, double larg) {
+	public synchronized void vetorizarPista(double multi, double larg) {
 		multiplicadorLarguraPista = larg;
 		multiplicadorPista = multi;
 		if (usaBkg) {
@@ -291,7 +291,6 @@ public class Circuito implements Serializable {
 		gerarTracado1e2Pista();
 		gerarEscapeList();
 		gerarEscapeMap();
-
 	}
 
 	private void gerarTracado1e2Pista() {
