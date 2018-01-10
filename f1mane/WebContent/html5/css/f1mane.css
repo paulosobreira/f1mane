@@ -139,14 +139,18 @@
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
-    visibility: hidden; /* Hidden by default. Visible on click */
-    margin-left: 10px;
-	margin-right: 10px;
-    text-align: center; /* Centered text */
-    border-radius: 2px; /* Rounded borders */
-    position: fixed; /* Sit on top of the screen */
-    z-index: 1; /* Add a z-index if needed */
-    bottom: 30px; /* 30px from the bottom */
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    transform : translateX(-50%);
+    bottom: 30px;
+    font-size: 17px;
 }
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */

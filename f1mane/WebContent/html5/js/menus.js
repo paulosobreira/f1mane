@@ -121,7 +121,7 @@ function dadosJogo() {
 				td2.append(carroLado);
 				if (pilotos[i].id == idPilotoSelecionado) {
 					tr.addClass('success');
-				} else if (pilotos[i].nomeJogador) {
+				} else if (pilotos[i].jogadorHumano) {
 					tr.addClass('warning');
 				}
 				tr.append(td2);
@@ -138,12 +138,10 @@ function dadosJogo() {
 				});
 			});
 			$('#detalheTemporada').removeClass('hidden');
-			mostrarEntrarJogo();
 			$('#temporadaAnterior').remove();
 			$('#temporadaProxima').remove();
 			$('#circuitoAnterior').remove();
 			$('#circuitoProximo').remove();
-
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);

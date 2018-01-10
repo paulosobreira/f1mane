@@ -191,16 +191,28 @@ public class LetsRace {
 			/**
 			 * Criar Jogo
 			 */
-			boolean criarJogo = false;
 			if (statusJogo == null) {
 				statusJogo = controlePaddock.criarJogo(clientPaddockPack);
 				Response erro = processsaMensagem(statusJogo, idioma);
 				if (erro != null) {
 					return erro;
 				}
-				criarJogo = true;
 			}
+
 			srvPaddockPack = (SrvPaddockPack) statusJogo;
+
+			if (srvPaddockPack != null
+					&& srvPaddockPack.getDadosCriarJogo() != null
+					&& (!srvPaddockPack.getDadosCriarJogo().getTemporada()
+							.equals(dadosCriarJogo.getTemporada())
+							|| !dadosCriarJogo.getCircuitoSelecionado()
+									.equals(srvPaddockPack.getDadosCriarJogo()
+											.getCircuitoSelecionado()))) {
+				return Response.status(500)
+						.entity(new MsgSrv(
+								Lang.msgKey("existeJogoEmAndamando", idioma)))
+						.type(MediaType.APPLICATION_JSON).build();
+			}
 
 			/**
 			 * Preenchento todos possiveis campos para nome do jogo Bagunça...
@@ -215,7 +227,7 @@ public class LetsRace {
 			 */
 			if (statusJogo != null) {
 				statusJogo = controlePaddock.entrarJogo(clientPaddockPack);
-				Response erro = processsaMensagem(statusJogo,idioma);
+				Response erro = processsaMensagem(statusJogo, idioma);
 				if (erro != null) {
 					return erro;
 				}
@@ -234,7 +246,7 @@ public class LetsRace {
 
 	private Response processsaMensagem(Object objeto, String idioma) {
 		if (objeto == null) {
-			return Response.status(400).entity(new MsgSrv("Objeto Nulo."))
+			return Response.status(500).entity(new MsgSrv("Server error."))
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		if (objeto instanceof MsgSrv) {

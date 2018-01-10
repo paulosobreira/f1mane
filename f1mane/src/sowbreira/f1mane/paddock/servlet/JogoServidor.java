@@ -328,7 +328,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		return InterfaceJogo.MEDIO_NV;
 	}
 
-	private void atualizarJogadoresOnline() {
+	public void atualizarJogadoresOnline() {
 		for (Iterator<String> iter = mapJogadoresOnline.keySet()
 				.iterator(); iter.hasNext();) {
 			String key = iter.next();

@@ -66,15 +66,9 @@ function tratamentoErro(xhRequest) {
 }
 
 function toaster(msg, tempo, classe) {
-	if (classe == null) {
-		classe = 'alert alert-info';
-	}
 	$('#snackbar').remove();
-	var toast = $('<div id="snackbar" class="show ' + classe + '" role="alert">' + msg + '</div>');
+	var toast = $('<div id="snackbar" class="show" role="alert">' + msg + '</div>');
 	$('#head').append(toast);
-	if (toast.width() > 0) {
-		toast.css('left', ((window.innerWidth / 2) - (toast.width() / 2) - 20) + 'px');
-	}
 	setTimeout(function() {
 		$('#snackbar').remove();
 	}, tempo);

@@ -229,6 +229,7 @@ public class ControleJogosServer {
 		srvPaddockPack.setSessaoCliente(clientPaddockPack.getSessaoCliente());
 		srvPaddockPack.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
 		srvPaddockPack.setDadosPaddock(dadosPaddock);
+		jogoServidor.atualizarJogadoresOnline();
 		return srvPaddockPack;
 	}
 
