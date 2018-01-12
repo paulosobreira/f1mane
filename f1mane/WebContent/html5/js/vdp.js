@@ -217,19 +217,20 @@ function vdp_atualizaSuave() {
 		if (tracadoSuave == null) {
 			tracadoSuave = piloto.tracado;
 		}
-		//TODO
-//		if (vdp_colisaoTracadoSuave(piloto, tracadoSuave)) {
-//			var indexTracadoSuave = mapaIndexTracadoSuave.get(piloto.idPiloto);
-//			indexTracadoSuave++;
-//			mapaIndexTracadoSuave.set(piloto.idPiloto, Math.round(indexTracadoSuave));
-//		} 
+		// TODO
+		// if (vdp_colisaoTracadoSuave(piloto, tracadoSuave)) {
+		// var indexTracadoSuave = mapaIndexTracadoSuave.get(piloto.idPiloto);
+		// indexTracadoSuave++;
+		// mapaIndexTracadoSuave.set(piloto.idPiloto,
+		// Math.round(indexTracadoSuave));
+		// }
 		mapaPontoSuave.set(piloto.idPiloto, vdp_pontoTracadoSuave(piloto,
 				noSuave, noReal));
 	}
 }
 
 function vdp_colisaoTracadoSuave(pilotoParam, tracadoSuaveParam) {
-	if(pilotoParam.tracado == tracadoSuaveParam){
+	if (pilotoParam.tracado == tracadoSuaveParam) {
 		return false;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
@@ -396,7 +397,11 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	}
 	var indexTracadoSuave = mapaIndexTracadoSuave.get(piloto.idPiloto);
 	if (indexTracadoSuave == null || indexTracadoSuave == 0) {
-		indexTracadoSuave = 1000;
+		if (tracadoSuave == 4 || tracadoSuave == 5) {
+			indexTracadoSuave = circuito.indiceTracadoForaPista;
+		} else {
+			indexTracadoSuave = circuito.indiceTracado;
+		}
 		mapaIndexTracadoSuave.set(piloto.idPiloto, indexTracadoSuave);
 	}
 	if (indexTracadoSuave == 0) {
@@ -605,23 +610,7 @@ function vdp_desenhaCarrosCima() {
 				pitLane = false;
 			}
 		}
-		/**
-		 * Suavização de angulo
-		 */
-		// var anguloPilotoSuave = pilotosMap.get(piloto.idPiloto).angulo;
-		// if(anguloPilotoSuave==null){
-		// anguloPilotoSuave = angulo;
-		// }
-		// if(angulo>anguloPilotoSuave){
-		// anguloPilotoSuave+=0,0174533;
-		// angulo = anguloPilotoSuave;
-		// }else if(angulo<anguloPilotoSuave){
-		// anguloPilotoSuave-=0,0174533;
-		// angulo = anguloPilotoSuave;
-		// }else{
-		// anguloPilotoSuave = angulo;
-		// }
-		// pilotosMap.get(piloto.idPiloto).angulo = anguloPilotoSuave;
+
 		var x = ponto.x - ptBg.x - (imgCarro.width / 2);
 		var y = ponto.y - ptBg.y - (imgCarro.height / 2);
 		pilotosEfeitosMap.set(piloto.idPiloto, true);
@@ -792,7 +781,6 @@ function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro, no, idPiloto) {
 			pilotosEfeitosMap.set(idPiloto, false);
 		}
 	}
-
 	return cvBlend;
 }
 
