@@ -57,7 +57,6 @@ function tratamentoErro(xhRequest) {
 		}, 3000);
 	} else {
 		var erroMsg = xhRequest.status + '  ' + xhRequest.responseText;
-		;
 		if (xhRequest.responseJSON != null && xhRequest.responseJSON.messageString != null) {
 			erroMsg = xhRequest.responseJSON.messageString;
 		}

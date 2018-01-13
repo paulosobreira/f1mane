@@ -9,6 +9,7 @@ var motor, capacete;
 var safetycar;
 var travadaRoda0, travadaRoda1, travadaRoda2;
 var girdLargadaMarca;
+var pow;
 var carroCimaFreiosD1, carroCimaFreiosD2, carroCimaFreiosD3, carroCimaFreiosD4, carroCimaFreiosD5;
 var carroCimaFreiosE1, carroCimaFreiosE2, carroCimaFreiosE3, carroCimaFreiosE4, carroCimaFreiosE5;
 var carregouMidia = false;
@@ -47,7 +48,9 @@ function mid_caregaMidia() {
 	imgBg = new Image();
 	//imgBg.src = {urlBg} + circuito.backGround;
 	imgBg.src = "http://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" + circuito.backGround;
-	
+
+	pow = new Image();
+	pow.src = "img/pow.png"
 	imgFarois = new Image();
 	imgFarois.src = "img/farois.png"
 	imgPneuM = new Image();

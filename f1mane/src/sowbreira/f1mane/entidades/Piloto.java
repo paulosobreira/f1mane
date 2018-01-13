@@ -912,7 +912,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				return;
 			}
 		}
-		verificaIrBox(controleJogo);
+		verificaIaIrBox(controleJogo);
 		this.setNoAtual((No) pista.get(index));
 	}
 
@@ -968,7 +968,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.setAsfaltoAbrasivo(testeAbrasivo);
 	}
 
-	private void verificaIrBox(InterfaceJogo controleJogo) {
+	private void verificaIaIrBox(InterfaceJogo controleJogo) {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
