@@ -31,7 +31,7 @@ var rectBg = {
 	right : ptBg.x + maneCanvas.width,
 	bottom : ptBg.y + maneCanvas.height
 };
-var pontoColisao;
+var pontoColisaoArray = new Array();
 var blendOp = 'destination-out'
 var alphaCorCeu = 0.0;
 var corCeu = "rgba(255, 255, 255, " + alphaCorCeu + ")";
@@ -74,18 +74,25 @@ function vdp_desenha(fps) {
 }
 
 function vdp_pow() {
-	if (pontoColisao == null) {
-		return;
+	for (var i = 0; i < pontoColisaoArray.length; i++) {
+		var ponto = pontoColisaoArray[i];
+		var x = ponto.x - ptBg.x;
+		var y = ponto.y - ptBg.y;
+		var rectObj = {
+			left : ponto.x,
+			top : ponto.y,
+			right : ponto.x + pow.width,
+			bottom : ponto.y + pow.height
+		};
+		if (!vdp_intersectRect(rectBg, rectObj)) {
+			continue;
+		}
+		maneContext.beginPath();
+		maneContext.drawImage(pow, x - 20, y - 17);
+		maneContext.closePath();
+		maneContext.stroke();
 	}
-	var x = pontoColisao.x - ptBg.x;
-	var y = pontoColisao.y - ptBg.y;
-	maneContext.beginPath();
-	maneContext.drawImage(pow, x - 15, y - 15);
-	// maneContext.fillStyle = 'pink';
-	// maneContext.fillRect(x - 10, y - 10, 20, 20);
-	maneContext.closePath();
-	maneContext.stroke();
-	pontoColisao = null;
+	pontoColisaoArray = [];
 }
 function vdp_desenhaMarcasLargadaGrid() {
 	if (desenhouMarcasLargadaGrid || circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null || dadosJogo == null
@@ -231,18 +238,22 @@ function vdp_colisaoTracadoSuave(pilotoParam, tracadoSuaveParam) {
 	if (pilotoParam.tracado == tracadoSuaveParam) {
 		return false;
 	}
+	var noSuaveParam = mapaIdNosSuave.get(pilotoParam.idPiloto);
+	if (noSuaveParam.box) {
+		return false;
+	}
+	var tracadoParam = tracadoSuaveParam;
+	if (tracadoParam == 4) {
+		tracadoParam = 2;
+	}
+	if (tracadoParam == 5) {
+		tracadoParam = 1;
+	}
 	var posicaoPilotos = dadosParciais.posisPack;
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
 		if (pilotoParam.idPiloto == piloto.idPiloto) {
 			continue;
-		}
-		var tracadoParam = tracadoSuaveParam;
-		if (tracadoParam == 4) {
-			tracadoParam = 2;
-		}
-		if (tracadoParam == 5) {
-			tracadoParam = 1;
 		}
 		var tracadoSuave = mapaTracadoSuave.get(piloto.idPiloto);
 		if (tracadoSuave == null) {
@@ -261,21 +272,15 @@ function vdp_colisaoTracadoSuave(pilotoParam, tracadoSuaveParam) {
 		if (tracado == 2 && tracadoParam == 1) {
 			continue;
 		}
-
 		var noSuave = mapaIdNosSuave.get(piloto.idPiloto);
 		if (noSuave.box) {
 			continue;
 		}
-		var noSuaveParam = mapaIdNosSuave.get(pilotoParam.idPiloto);
-		if (noSuaveParam.box) {
-			continue;
-		}
-		var indexSuaveParam = noSuaveParam.index;
+		var nEixo = (eixoCarro * 2);
+		var indexAtras = (noSuave.index - nEixo) > 0 ? (noSuave.index - nEixo) : 0;
+		var indexFrente = (noSuave.index + nEixo) < circuito.pistaFull.length ? (noSuave.index + nEixo) : circuito.pistaFull.length - 1;
 
-		var indexAtras = (noSuave.index - eixoCarro) > 0 ? (noSuave.index - eixoCarro) : 0;
-		var indexFrente = (noSuave.index + eixoCarro) < circuito.pistaFull.length ? (noSuave.index + eixoCarro) : circuito.pistaFull.length - 1;
-
-		if (indexSuaveParam > indexAtras && indexSuaveParam < indexFrente) {
+		if (noSuaveParam.index > indexAtras && noSuaveParam.index < indexFrente) {
 			return true;
 		}
 	}
@@ -449,11 +454,10 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	if (vdp_colisaoTracadoSuave(piloto, tracadoSuave)) {
 		var ponto = vdp_obterPonto(piloto, false);
 		if (ponto != null && ponto.x != null && ponto.y != null) {
-			pontoColisao = ponto;
+			pontoColisaoArray.push(ponto);
 		}
-	} else {
-		indexTracadoSuave--;
 	}
+	indexTracadoSuave--;
 
 	if (indexTracadoSuave <= 0) {
 		indexTracadoSuave = 0;
@@ -907,7 +911,7 @@ function vdp_desenhaTravadaRodaFumaca(piloto, x, y, angulo, no) {
 	}
 
 	eval('rotacionar = vdp_rotacionar(carroCimaFreios' + lado + sw + ', angulo)');
-	maneContext.drawImage(rotacionar, x, y);
+	maneContext.drawImage(rotacionar, x+4, y+4);
 	pilotosTravadaFumacaMap.set(piloto.idPiloto, pilotosTravadaFumacaMap.get(piloto.idPiloto) - 1);
 }
 
