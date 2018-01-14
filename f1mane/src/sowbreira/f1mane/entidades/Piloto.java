@@ -2931,6 +2931,9 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void incStress(int val) {
+		if(val<1){
+			return;
+		}
 		if (stress > 90) {
 			val = 1;
 		}
