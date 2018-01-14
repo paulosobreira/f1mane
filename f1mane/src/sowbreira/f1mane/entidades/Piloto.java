@@ -1109,6 +1109,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaTurbulencia(controleJogo);
 		processaFaiscas(controleJogo);
 		processaGanhoDanificado();
+		processaPneusIncomaptiveis(controleJogo);
 		processaFreioNaReta(controleJogo);
 		processaEvitaBaterCarroFrente(controleJogo);
 		processaMudarTracado(controleJogo);
@@ -1142,6 +1143,24 @@ public class Piloto implements Serializable, PilotoSuave {
 		index += Math.round(ganho);
 		setVelocidade(calculoVelocidade(ganho));
 		return index;
+	}
+
+	private void processaPneusIncomaptiveis(InterfaceJogo interfaceJogo) {
+		if (!carro.verificaPneusIncompativeisClima(interfaceJogo)) {
+			return;
+		}
+		if (getNoAtual().verificaCurvaBaixa()) {
+			if (ganho > 15) {
+				ganho = 15;
+			}
+			incStress(Util.intervalo(5, 10));
+		}
+		if (getNoAtual().verificaCurvaAlta()) {
+			if (ganho > 20) {
+				ganho = 20;
+			}
+			incStress(Util.intervalo(1, 5));
+		}
 	}
 
 	public void processaUltimas5Voltas() {
@@ -1437,26 +1456,29 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private void processaGanhoDanificado() {
-		if (danificado()) {
-			if (getNoAtual().verificaCurvaBaixa()
-					&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
-							|| (Carro.PERDEU_AEREOFOLIO
-									.equals(getCarro().getDanificado())))) {
-				if (ganho > 10)
-					ganho = 10;
+		if (!danificado()) {
+			return;
+		}
+		if (getNoAtual().verificaCurvaBaixa()
+				&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
+						|| (Carro.PERDEU_AEREOFOLIO
+								.equals(getCarro().getDanificado())))) {
+			if (ganho > 10) {
+				ganho = 10;
 			}
-			if (getNoAtual().verificaCurvaAlta()
-					&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
-							|| (Carro.PERDEU_AEREOFOLIO
-									.equals(getCarro().getDanificado())))) {
-				if (ganho > 15)
-					ganho = 15;
-
+		}
+		if (getNoAtual().verificaCurvaAlta()
+				&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
+						|| (Carro.PERDEU_AEREOFOLIO
+								.equals(getCarro().getDanificado())))) {
+			if (ganho > 15) {
+				ganho = 15;
 			}
-			if (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
-					&& getNoAtual().verificaRetaOuLargada()) {
-				if (ganho > 20)
-					ganho = 20;
+		}
+		if (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
+				&& getNoAtual().verificaRetaOuLargada()) {
+			if (ganho > 20) {
+				ganho = 20;
 			}
 		}
 	}
@@ -1513,7 +1535,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private void processaFreioNaReta(InterfaceJogo controleJogo) {
-		boolean testPilotoPneus = getCarro().testeFreios();
+		boolean testPilotoPneus = getCarro().testeFreios(controleJogo);
 		/**
 		 * efeito freiar na reta
 		 */
@@ -2725,7 +2747,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isChovendo()
 				&& !getNoAtual().verificaRetaOuLargada()) {
 			bonusMotor -= testeHabilidadePilotoAerodinamica(controleJogo)
-					? 0.1
+					? 0.2
 					: 0.3;
 		}
 		if (getNoAtual().verificaRetaOuLargada()
@@ -3017,7 +3039,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getCarro().testeAerodinamica()) {
 			multi -= 2;
 		}
-		if (getCarro().testeFreios()) {
+		if (getCarro().testeFreios(interfaceJogo)) {
 			multi -= 2;
 		}
 		if (!forcaMudar && getTracado() != 4 && getTracado() != 5
@@ -3254,7 +3276,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (danificado()) {
 			return false;
 		}
-		return carro.testeFreios() && testeHabilidadePiloto();
+		return carro.testeFreios(controleJogo) && testeHabilidadePiloto();
 	}
 
 	public boolean testeHabilidadePilotoAerodinamicaFreios(
@@ -3262,7 +3284,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (danificado()) {
 			return false;
 		}
-		return carro.testeFreios() && carro.testeAerodinamica()
+		return carro.testeFreios(controleJogo) && carro.testeAerodinamica()
 				&& testeHabilidadePiloto();
 	}
 

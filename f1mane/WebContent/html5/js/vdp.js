@@ -255,6 +255,9 @@ function vdp_colisaoTracadoSuave(pilotoParam, tracadoSuaveParam) {
 		if (pilotoParam.idPiloto == piloto.idPiloto) {
 			continue;
 		}
+		if (pilotosDnfMap.get(piloto.idPiloto)) {
+			continue;
+		}
 		var tracadoSuave = mapaTracadoSuave.get(piloto.idPiloto);
 		if (tracadoSuave == null) {
 			continue;
@@ -272,11 +275,14 @@ function vdp_colisaoTracadoSuave(pilotoParam, tracadoSuaveParam) {
 		if (tracado == 2 && tracadoParam == 1) {
 			continue;
 		}
+		if (tracado == tracadoParam) {
+			continue;
+		}
 		var noSuave = mapaIdNosSuave.get(piloto.idPiloto);
 		if (noSuave.box) {
 			continue;
 		}
-		var nEixo = (eixoCarro * 2);
+		var nEixo = (eixoCarro * 1.5);
 		var indexAtras = (noSuave.index - nEixo) > 0 ? (noSuave.index - nEixo) : 0;
 		var indexFrente = (noSuave.index + nEixo) < circuito.pistaFull.length ? (noSuave.index + nEixo) : circuito.pistaFull.length - 1;
 
@@ -451,13 +457,17 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 		indexTracadoSuave = 0;
 	}
 	var pontoTracadoSuave = linha[indexTracadoSuave];
+	var colisao = false;
 	if (vdp_colisaoTracadoSuave(piloto, tracadoSuave)) {
 		var ponto = vdp_obterPonto(piloto, false);
 		if (ponto != null && ponto.x != null && ponto.y != null) {
 			pontoColisaoArray.push(ponto);
+			colisao = true;
 		}
 	}
-	indexTracadoSuave--;
+	if(!colisao){
+		indexTracadoSuave--;
+	}
 
 	if (indexTracadoSuave <= 0) {
 		indexTracadoSuave = 0;

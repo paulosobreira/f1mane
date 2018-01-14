@@ -78,7 +78,7 @@ public class ControleQualificacao {
 						&& !piloto.getNoAtual().verificaRetaOuLargada()
 						&& piloto.getCarro().testeAerodinamica()
 						&& piloto.testeHabilidadePilotoCarro()
-						&& piloto.getCarro().testeFreios()) {
+						&& piloto.getCarro().testeFreios(controleJogo)) {
 					contCiclosQualificacao -= Math.random() > incCurva ? 1 : 0;
 				}
 				if (Math.random() > (piloto.getCarro()
@@ -104,7 +104,7 @@ public class ControleQualificacao {
 				} else {
 					piloto.incStress(10);
 				}
-				if (piloto.getCarro().testeFreios()) {
+				if (piloto.getCarro().testeFreios(controleJogo)) {
 					modMili -= 1;
 				} else {
 					piloto.incStress(10);

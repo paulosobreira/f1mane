@@ -21,6 +21,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import br.nnpe.BeanUtil;
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Html;
@@ -1943,7 +1945,8 @@ public class PainelCircuito {
 		infoCompCont--;
 	}
 
-	private void desenhaDebugIinfo(Graphics2D g2d) {
+	private void desenhaDebugIinfo(Graphics2D g2d)
+			throws IllegalAccessException, InvocationTargetException {
 		if (!Logger.ativo) {
 			return;
 		}
@@ -1957,7 +1960,14 @@ public class PainelCircuito {
 				ObjetoPista objetoPista = (ObjetoPista) iterator.next();
 				if (objetoPista instanceof ObjetoEscapada) {
 					ObjetoEscapada objetoEscapada = (ObjetoEscapada) objetoPista;
-					objetoEscapada.desenha(g2d, zoom);
+					ObjetoEscapada objetoEscapadaDesenha = new ObjetoEscapada();
+					Point delocado = new Point(
+							objetoEscapada.getPosicaoQuina().x
+									- descontoCentraliza.x,
+							objetoEscapada.getPosicaoQuina().y
+									- descontoCentraliza.y);
+					objetoEscapadaDesenha.setPosicaoQuina(delocado);
+					objetoEscapadaDesenha.desenha(g2d, zoom);
 				}
 			}
 		}
@@ -4920,8 +4930,8 @@ public class PainelCircuito {
 		}
 	}
 
-	private void desenhaPilotoQualificacaoLargada(Graphics2D g2d, Piloto piloto, int x,
-			int y) {
+	private void desenhaPilotoQualificacaoLargada(Graphics2D g2d, Piloto piloto,
+			int x, int y) {
 		BufferedImage carroimg;
 		int newY;
 		carroimg = controleJogo.obterCarroLado(piloto);
