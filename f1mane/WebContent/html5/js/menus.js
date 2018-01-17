@@ -82,7 +82,11 @@ function dadosJogo() {
 			circuitoSelecionado = dadosJogo.arquivoCircuito;
 			idPilotoSelecionado = dadosJogo.idPilotoSelecionado;
 			temporadaSelecionada = dadosJogo.temporada;
-			$('#circuitosLabel').html(dadosJogo.nomeCircuito);
+			var circuitosLabel = dadosJogo.nomeCircuito;
+			if(dadosJogo.voltaAtual!=null && dadosJogo.numeroVotas!=null){
+				circuitosLabel += ' '+dadosJogo.voltaAtual+'/'+dadosJogo.numeroVotas;
+			}
+			$('#circuitosLabel').html(circuitosLabel);
 			$('#temporadasLabel').html(dadosJogo.temporada);
 			if (dadosJogo.trocaPneu) {
 				$('#trocaPneuCheck').removeClass('text-muted');

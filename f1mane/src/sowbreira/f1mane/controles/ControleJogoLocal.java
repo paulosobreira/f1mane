@@ -269,7 +269,7 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#info(java.lang.String)
 	 */
 	public void info(String info) {
-		if(isModoQualify()){
+		if (isModoQualify()) {
 			return;
 		}
 		controleEstatisticas.info(info);
@@ -279,7 +279,7 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#infoPrioritaria(java.lang.String)
 	 */
 	public void infoPrioritaria(String info) {
-		if(isModoQualify()){
+		if (isModoQualify()) {
 			return;
 		}
 		controleEstatisticas.info(info, true);
@@ -992,7 +992,7 @@ public class ControleJogoLocal extends ControleRecursos
 	public void mudarAutoPos(boolean autoPos) {
 		if (pilotoJogador == null)
 			return;
-		
+
 	}
 
 	@Override
@@ -1008,6 +1008,9 @@ public class ControleJogoLocal extends ControleRecursos
 	@Override
 	public void travouRodas(Piloto piloto) {
 		if (isChovendo()) {
+			return;
+		}
+		if (!asfaltoAbrasivo() && Math.random() > 0.5) {
 			return;
 		}
 		TravadaRoda travadaRoda = new TravadaRoda();
