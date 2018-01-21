@@ -285,6 +285,7 @@ public class ControleCorrida {
 			if (!controleSafetyCar.safetyCarUltimas3voltas()
 					&& !piloto.isDesqualificado()
 					&& !piloto.testeHabilidadePilotoCarro()
+					&& controleJogo.isSafetyCar()
 					&& !controleJogo.verificaEntradaBox(piloto)
 					&& !controleJogo.verificaSaidaBox(piloto)
 					&& piloto.getStress() > limiteStress) {

@@ -34,7 +34,6 @@ public class ControleEstatisticas {
 	private JScrollPane scrollPaneTextual;
 	private InterfaceJogo controleJogo;
 	private Volta voltaMaisRapida;
-	private DecimalFormat milesismos = new DecimalFormat(".000");
 	private static DecimalFormat mil = new DecimalFormat("000");
 	public static DecimalFormat dez = new DecimalFormat("00");
 	private LinkedList bufferInfo = new LinkedList();
@@ -80,8 +79,7 @@ public class ControleEstatisticas {
 			long tempo) {
 		Piloto lider = (Piloto) controleJogo.getPilotosCopia().get(0);
 		long diff = calculaDiferencaDiv3(lider, pilotoSelecionado);
-		String ret = milesismos.format(
-				(diff / Double.parseDouble(String.valueOf(tempo)))) + "s";
+		String ret = formatarTempo(new Long(diff));
 		pilotoSelecionado.setSegundosParaLider(ret);
 		return ret;
 	}
@@ -89,8 +87,7 @@ public class ControleEstatisticas {
 	public String calculaSegundosParaRival(Piloto pilotoSelecionado,
 			Piloto rival, long tempo) {
 		long diff = calculaDiferencaDiv3(rival, pilotoSelecionado);
-		String ret = milesismos.format(
-				(diff / Double.parseDouble(String.valueOf(tempo)))) + "s";
+		String ret = formatarTempo(new Long(diff));
 		return ret;
 	}
 
@@ -264,7 +261,7 @@ public class ControleEstatisticas {
 		// for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
 		// }
 		// }
-		System.out.println(formatarTempo(90001l));
+		System.out.println(formatarTempo(1342l));
 	}
 
 	public void info(String info, boolean prioritaria) {
@@ -510,8 +507,7 @@ public class ControleEstatisticas {
 
 	public String calculaSegundosParaProximo(Piloto psel, long tempo,
 			int diferenca) {
-		String ret = milesismos.format(
-				(diferenca / Double.parseDouble(String.valueOf(tempo)))) + "s";
+		String ret = formatarTempo(new Long(diferenca));
 		return ret;
 	}
 

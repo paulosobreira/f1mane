@@ -349,6 +349,7 @@ public class LetsRace {
 			}
 		}
 		//pista = "Interlagos";
+		//dadosCriarJogo.setSafetyCar(false);
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);

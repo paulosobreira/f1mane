@@ -1827,7 +1827,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-		if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCar()) {
+		if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCarNaPista()) {
 			mudouTracadoReta = 0;
 		}
 		Piloto pilotoBateu = controleJogo.getPilotoBateu();
@@ -2179,6 +2179,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			return null;
 		}
 		Point p = noAtual.getPoint();
+		if(p==null){
+			return null;
+		}
 		int carx = p.x;
 		int cary = p.y;
 		int traz = cont - METADE_CARRO;
@@ -2237,49 +2240,20 @@ public class Piloto implements Serializable, PilotoSuave {
 							? controleJogo.getCircuito().getPista4Full()
 									.get(noAtual.getIndex()).getPoint()
 							: p1;
-			if (p4 == null) {
-				p4 = p2;
-			}
-			if (p5 == null) {
-				p5 = p1;
-			}
+		}
+		if (p4 == null) {
+			p4 = p2;
+		}
+		if (p5 == null) {
+			p5 = p1;
 		}
 		if (getTracado() == 0) {
 			carx = p.x;
 			cary = p.y;
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 0) {
-				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 1 & p1 != null && p != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
-							p.x, p.y);
-				}
-				if (getTracadoAntigo() == 2 && p2 != null && p != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
-							p.x, p.y);
-				}
-				if (getTracadoAntigo() == 5 && p5 != null && p != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
-							p.x, p.y);
-				}
-				if (getTracadoAntigo() == 4 && p4 != null && p != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
-							p.x, p.y);
-				}
-				if (drawBresenhamLine == null) {
-					Logger.logar(
-							"Piloto.centralizaCarroColisao drawBresenhamLine=null 1");
-					return null;
-				}
-				int indice = drawBresenhamLine.size() - indTracado;
-				if (indice <= 0) {
-					indice = 0;
-				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
-				Point pReta = (Point) drawBresenhamLine.get(indice);
+				Point pReta = linhaColisaoTracado0(p, p1, p2, p4, p5,
+						indTracado);
 				carx = pReta.x;
 				cary = pReta.y;
 			}
@@ -2289,37 +2263,8 @@ public class Piloto implements Serializable, PilotoSuave {
 			cary = Util.inteiro((p1.y));
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 1) {
-				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 0 && p != null && p1 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
-							p1.x, p1.y);
-				}
-				if (getTracadoAntigo() == 2 && p1 != null && p2 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
-							p1.x, p1.y);
-				}
-				if (getTracadoAntigo() == 4 && p4 != null && p1 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
-							p1.x, p1.y);
-				}
-				if (getTracadoAntigo() == 5 && p5 != null && p1 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
-							p1.x, p1.y);
-				}
-				if (drawBresenhamLine == null) {
-					Logger.logar(
-							"Piloto.centralizaCarroColisao drawBresenhamLine=null 2");
-					return null;
-				}
-				int indice = drawBresenhamLine.size() - indTracado;
-				if (indice <= 0) {
-					indice = 0;
-				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
-				Point pReta = (Point) drawBresenhamLine.get(indice);
+				Point pReta = linhaColisaoTracado1(p, p1, p2, p4, p5,
+						indTracado);
 				carx = pReta.x;
 				cary = pReta.y;
 			}
@@ -2330,33 +2275,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			cary = Util.inteiro((p5.y));
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 5) {
-				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 0 && p != null && p5 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
-							p5.x, p5.y);
-				}
-				if (getTracadoAntigo() == 1 && p1 != null && p5 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
-							p5.x, p5.y);
-				}
-				if (getTracadoAntigo() == 2 && p2 != null && p5 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
-							p5.x, p5.y);
-				}
-				if (drawBresenhamLine == null) {
-					Logger.logar(
-							"Piloto.centralizaCarroColisao drawBresenhamLine=null 3");
-					return null;
-				}
-				int indice = drawBresenhamLine.size() - indTracado;
-				if (indice <= 0) {
-					indice = 0;
-				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
-				Point pReta = (Point) drawBresenhamLine.get(indice);
+				Point pReta = linhaColisaoTracado5(p, p1, p2, p5, indTracado);
 				carx = pReta.x;
 				cary = pReta.y;
 			}
@@ -2367,38 +2286,8 @@ public class Piloto implements Serializable, PilotoSuave {
 			cary = Util.inteiro((p2.y));
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 2) {
-				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 0 && p != null && p2 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
-							p2.x, p2.y);
-				}
-				if (getTracadoAntigo() == 1 && p1 != null && p2 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
-							p2.x, p2.y);
-				}
-
-				if (getTracadoAntigo() == 4 && p4 != null && p2 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
-							p2.x, p2.y);
-				}
-				if (getTracadoAntigo() == 5 && p5 != null && p2 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
-							p2.x, p2.y);
-				}
-				if (drawBresenhamLine == null) {
-					Logger.logar(
-							"Piloto.centralizaCarroColisao drawBresenhamLine=null 4");
-					return null;
-				}
-				int indice = drawBresenhamLine.size() - indTracado;
-				if (indice <= 0) {
-					indice = 0;
-				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
-				Point pReta = (Point) drawBresenhamLine.get(indice);
+				Point pReta = linhaColisaoTracado2(p, p1, p2, p4, p5,
+						indTracado);
 				carx = pReta.x;
 				cary = pReta.y;
 			}
@@ -2409,33 +2298,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			cary = Util.inteiro((p4.y));
 			int indTracado = getIndiceTracado();
 			if (indTracado > 0 && getTracadoAntigo() != 4) {
-				List drawBresenhamLine = null;
-				if (getTracadoAntigo() == 0 && p != null && p4 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
-							p4.x, p4.y);
-				}
-				if (getTracadoAntigo() == 1 && p1 != null && p4 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
-							p4.x, p4.y);
-				}
-				if (getTracadoAntigo() == 2 && p2 != null && p4 != null) {
-					drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
-							p4.x, p4.y);
-				}
-				if (drawBresenhamLine == null) {
-					Logger.logar(
-							"Piloto.centralizaCarroColisao drawBresenhamLine=null 5");
-					return null;
-				}
-				int indice = drawBresenhamLine.size() - indTracado;
-				if (indice <= 0) {
-					indice = 0;
-				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
-				Point pReta = (Point) drawBresenhamLine.get(indice);
+				Point pReta = linhaColisaoTracado4(p, p1, p2, p4, indTracado);
 				carx = pReta.x;
 				cary = pReta.y;
 			}
@@ -2470,6 +2333,160 @@ public class Piloto implements Serializable, PilotoSuave {
 		diateiraColisao = frenteRec.getBounds();
 
 		return rectangle;
+	}
+
+	private Point linhaColisaoTracado4(Point p, Point p1, Point p2, Point p4,
+			int indTracado) {
+		List drawBresenhamLine = null;
+		if (getTracadoAntigo() == 0) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+					p4.x, p4.y);
+		}
+		if (getTracadoAntigo() == 1) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+					p4.x, p4.y);
+		}
+		if (getTracadoAntigo() == 2) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+					p4.x, p4.y);
+		}
+		if (drawBresenhamLine == null) {
+			Logger.logar(
+					"Piloto.centralizaCarroColisao drawBresenhamLine=null 5");
+			return null;
+		}
+		int indice = linhaIndiceColisaoTracado(indTracado, drawBresenhamLine);
+
+		Point pReta = (Point) drawBresenhamLine.get(indice);
+		return pReta;
+	}
+
+	private Point linhaColisaoTracado2(Point p, Point p1, Point p2, Point p4,
+			Point p5, int indTracado) {
+		List drawBresenhamLine = null;
+		if (getTracadoAntigo() == 0) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+					p2.x, p2.y);
+		}
+		if (getTracadoAntigo() == 1) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+					p2.x, p2.y);
+		}
+		if (getTracadoAntigo() == 4) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
+					p2.x, p2.y);
+		}
+		if (getTracadoAntigo() == 5) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
+					p2.x, p2.y);
+		}
+		if (drawBresenhamLine == null) {
+			Logger.logar(
+					"Piloto.centralizaCarroColisao drawBresenhamLine=null 4");
+			return null;
+		}
+		int indice = linhaIndiceColisaoTracado(indTracado, drawBresenhamLine);
+
+		Point pReta = (Point) drawBresenhamLine.get(indice);
+		return pReta;
+	}
+
+	private Point linhaColisaoTracado5(Point p, Point p1, Point p2, Point p5,
+			int indTracado) {
+		List drawBresenhamLine = null;
+		if (getTracadoAntigo() == 0) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+					p5.x, p5.y);
+		}
+		if (getTracadoAntigo() == 1) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+					p5.x, p5.y);
+		}
+		if (getTracadoAntigo() == 2) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+					p5.x, p5.y);
+		}
+		if (drawBresenhamLine == null) {
+			Logger.logar(
+					"Piloto.centralizaCarroColisao drawBresenhamLine=null 3");
+			return null;
+		}
+		int indice = linhaIndiceColisaoTracado(indTracado, drawBresenhamLine);
+
+		Point pReta = (Point) drawBresenhamLine.get(indice);
+		return pReta;
+	}
+
+	private int linhaIndiceColisaoTracado(int indTracado,
+			List drawBresenhamLine) {
+		int indice = drawBresenhamLine.size() - indTracado;
+		if (indice <= 0) {
+			indice = 0;
+		}
+		if (indice >= drawBresenhamLine.size()) {
+			indice = drawBresenhamLine.size() - 1;
+		}
+		return indice;
+	}
+
+	private Point linhaColisaoTracado1(Point p, Point p1, Point p2, Point p4,
+			Point p5, int indTracado) {
+		List drawBresenhamLine = null;
+		if (getTracadoAntigo() == 0) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
+					p1.x, p1.y);
+		}
+		if (getTracadoAntigo() == 2) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+					p1.x, p1.y);
+		}
+		if (getTracadoAntigo() == 4) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
+					p1.x, p1.y);
+		}
+		if (getTracadoAntigo() == 5) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
+					p1.x, p1.y);
+		}
+		if (drawBresenhamLine == null) {
+			Logger.logar(
+					"Piloto.centralizaCarroColisao drawBresenhamLine=null 2");
+			return null;
+		}
+		int indice = linhaIndiceColisaoTracado(indTracado, drawBresenhamLine);
+
+		Point pReta = (Point) drawBresenhamLine.get(indice);
+		return pReta;
+	}
+
+	private Point linhaColisaoTracado0(Point p, Point p1, Point p2, Point p4,
+			Point p5, int indTracado) {
+		List drawBresenhamLine = null;
+		if (getTracadoAntigo() == 1 ) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
+					p.x, p.y);
+		}
+		if (getTracadoAntigo() == 2) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
+					p.x, p.y);
+		}
+		if (getTracadoAntigo() == 5) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
+					p.x, p.y);
+		}
+		if (getTracadoAntigo() == 4) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
+					p.x, p.y);
+		}
+		if (drawBresenhamLine == null) {
+			Logger.logar(
+					"Piloto.centralizaCarroColisao drawBresenhamLine=null 1");
+			return null;
+		}
+		int indice = linhaIndiceColisaoTracado(indTracado, drawBresenhamLine);
+
+		Point pReta = (Point) drawBresenhamLine.get(indice);
+		return pReta;
 	}
 
 	public List obterPista(InterfaceJogo controleJogo) {
