@@ -1010,7 +1010,11 @@ public class ControleJogoLocal extends ControleRecursos
 		if (isChovendo()) {
 			return;
 		}
-		if (!asfaltoAbrasivo() && Math.random() > 0.5) {
+		double lim = 0.3;
+		if (asfaltoAbrasivo()) {
+			lim = 0.5;
+		}
+		if (Math.random() > lim) {
 			return;
 		}
 		TravadaRoda travadaRoda = new TravadaRoda();
@@ -1679,8 +1683,7 @@ public class ControleJogoLocal extends ControleRecursos
 		if (!piloto.isRecebeuBanderada()) {
 			piloto.setRecebeuBanderada(true);
 			if (piloto.getCarroPilotoAtras() != null) {
-				piloto.setVantagem(calculaSegundosParaProximo(
-						piloto.getCarroPilotoAtras().getPiloto()));
+				piloto.setVantagem(piloto.getCalculaSegundosParaAnterior());
 			}
 			Logger.logar(piloto.toString() + " Pts " + piloto.getPtosPista());
 			int exp = (50 - piloto.getPosicao());

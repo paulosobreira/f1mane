@@ -1153,13 +1153,13 @@ public class Piloto implements Serializable, PilotoSuave {
 			if (ganho > 15) {
 				ganho = 15;
 			}
-			incStress(Util.intervalo(5, 10));
+			incStress(testeHabilidadePiloto() ? 3 : 7);
 		}
 		if (getNoAtual().verificaCurvaAlta()) {
 			if (ganho > 20) {
 				ganho = 20;
 			}
-			incStress(Util.intervalo(1, 5));
+			incStress(testeHabilidadePiloto() ? 1 : 3);
 		}
 	}
 
@@ -1827,7 +1827,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-		if (!noAtual.verificaRetaOuLargada() && !controleJogo.isSafetyCarNaPista()) {
+		if (!noAtual.verificaRetaOuLargada()
+				&& !controleJogo.isSafetyCarNaPista()) {
 			mudouTracadoReta = 0;
 		}
 		Piloto pilotoBateu = controleJogo.getPilotoBateu();
@@ -1978,6 +1979,13 @@ public class Piloto implements Serializable, PilotoSuave {
 	private boolean tentarEscaparPilotoAtras(InterfaceJogo controleJogo,
 			boolean tentaPassarFrete) {
 		if (tentaPassarFrete) {
+			return false;
+		}
+		if (carroPilotoAtras == null) {
+			return false;
+		}
+		Piloto pilotoAtras = carroPilotoAtras.getPiloto();
+		if (pilotoAtras.getPtosBox() != 0) {
 			return false;
 		}
 		if (Math.random() > (controleJogo.getNiveljogo() + 0.3)) {
@@ -2179,7 +2187,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			return null;
 		}
 		Point p = noAtual.getPoint();
-		if(p==null){
+		if (p == null) {
 			return null;
 		}
 		int carx = p.x;
@@ -2339,16 +2347,15 @@ public class Piloto implements Serializable, PilotoSuave {
 			int indTracado) {
 		List drawBresenhamLine = null;
 		if (getTracadoAntigo() == 0) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
-					p4.x, p4.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y, p4.x, p4.y);
 		}
 		if (getTracadoAntigo() == 1) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
-					p4.x, p4.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y, p4.x,
+					p4.y);
 		}
 		if (getTracadoAntigo() == 2) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
-					p4.x, p4.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y, p4.x,
+					p4.y);
 		}
 		if (drawBresenhamLine == null) {
 			Logger.logar(
@@ -2365,20 +2372,19 @@ public class Piloto implements Serializable, PilotoSuave {
 			Point p5, int indTracado) {
 		List drawBresenhamLine = null;
 		if (getTracadoAntigo() == 0) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
-					p2.x, p2.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y, p2.x, p2.y);
 		}
 		if (getTracadoAntigo() == 1) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
-					p2.x, p2.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y, p2.x,
+					p2.y);
 		}
 		if (getTracadoAntigo() == 4) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
-					p2.x, p2.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y, p2.x,
+					p2.y);
 		}
 		if (getTracadoAntigo() == 5) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
-					p2.x, p2.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y, p2.x,
+					p2.y);
 		}
 		if (drawBresenhamLine == null) {
 			Logger.logar(
@@ -2395,16 +2401,15 @@ public class Piloto implements Serializable, PilotoSuave {
 			int indTracado) {
 		List drawBresenhamLine = null;
 		if (getTracadoAntigo() == 0) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
-					p5.x, p5.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y, p5.x, p5.y);
 		}
 		if (getTracadoAntigo() == 1) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
-					p5.x, p5.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y, p5.x,
+					p5.y);
 		}
 		if (getTracadoAntigo() == 2) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
-					p5.x, p5.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y, p5.x,
+					p5.y);
 		}
 		if (drawBresenhamLine == null) {
 			Logger.logar(
@@ -2433,20 +2438,19 @@ public class Piloto implements Serializable, PilotoSuave {
 			Point p5, int indTracado) {
 		List drawBresenhamLine = null;
 		if (getTracadoAntigo() == 0) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y,
-					p1.x, p1.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p.x, p.y, p1.x, p1.y);
 		}
 		if (getTracadoAntigo() == 2) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
-					p1.x, p1.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y, p1.x,
+					p1.y);
 		}
 		if (getTracadoAntigo() == 4) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
-					p1.x, p1.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y, p1.x,
+					p1.y);
 		}
 		if (getTracadoAntigo() == 5) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
-					p1.x, p1.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y, p1.x,
+					p1.y);
 		}
 		if (drawBresenhamLine == null) {
 			Logger.logar(
@@ -2462,21 +2466,17 @@ public class Piloto implements Serializable, PilotoSuave {
 	private Point linhaColisaoTracado0(Point p, Point p1, Point p2, Point p4,
 			Point p5, int indTracado) {
 		List drawBresenhamLine = null;
-		if (getTracadoAntigo() == 1 ) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y,
-					p.x, p.y);
+		if (getTracadoAntigo() == 1) {
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p1.x, p1.y, p.x, p.y);
 		}
 		if (getTracadoAntigo() == 2) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y,
-					p.x, p.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p2.x, p2.y, p.x, p.y);
 		}
 		if (getTracadoAntigo() == 5) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y,
-					p.x, p.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p5.x, p5.y, p.x, p.y);
 		}
 		if (getTracadoAntigo() == 4) {
-			drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y,
-					p.x, p.y);
+			drawBresenhamLine = GeoUtil.drawBresenhamLine(p4.x, p4.y, p.x, p.y);
 		}
 		if (drawBresenhamLine == null) {
 			Logger.logar(
@@ -2948,7 +2948,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void incStress(int val) {
-		if(val<1){
+		if (val < 1) {
 			return;
 		}
 		if (stress > 90) {

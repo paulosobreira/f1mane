@@ -297,14 +297,16 @@ public class ControleBox {
 
 		int porcentCombust = (100 * qtdeCombust)
 				/ controleCorrida.getTanqueCheio();
-		long penalidade = 30;
+		long penalidade = piloto.testeHabilidadePilotoAerodinamicaFreios(
+				controleJogo) && piloto.getCarro().testePotencia()
+						? Util.intervalo(30, 35)
+						: Util.intervalo(35, 40);
 		Carro carro = (Carro) boxEquipesOcupado.get(piloto.getCarro());
 		if (carro != null && !carro.getPiloto().equals(piloto)) {
 			if (controleJogo.verificaInfoRelevante(piloto)) {
 				controleJogo.info(Html.laranja(
 						Lang.msg("298", new String[]{carro.getNome()})));
 			}
-			penalidade = 30;
 			penalidade = Util
 					.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
 		}
