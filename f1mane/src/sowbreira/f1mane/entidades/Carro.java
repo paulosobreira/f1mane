@@ -734,7 +734,7 @@ public class Carro implements Serializable {
 						mod = Util.intervalo(5, 15);
 					}
 				}
-				int intervaloMin = Util.intervalo(5 + mod, 10 + mod);
+				int intervaloMin = Util.intervalo(mod, 10 + mod);
 				if ((porcentagemDesgastePneus > intervaloMin) && pneuAquecido
 						&& (controleJogo.verificaPistaEmborrachada())) {
 					novoModificador += 1;
@@ -749,7 +749,7 @@ public class Carro implements Serializable {
 				if (!controleJogo.asfaltoAbrasivo()) {
 					mod = Util.intervalo(5, 10);
 				}
-				int intervaloMin = Util.intervalo(10 + mod, 15 + mod);
+				int intervaloMin = Util.intervalo(5 + mod, 15 + mod);
 				if ((porcentagemDesgastePneus > intervaloMin) && pneuAquecido
 						&& (controleJogo.verificaPistaEmborrachada())) {
 					if (porcentagemDesgastePneus > (intervaloMin + 10))

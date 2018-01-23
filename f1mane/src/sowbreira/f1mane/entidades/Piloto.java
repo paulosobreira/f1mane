@@ -1152,14 +1152,14 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getNoAtual().verificaCurvaBaixa()) {
 			if (ganho > 15) {
 				ganho = 15;
+				incStress(testeHabilidadePiloto() ? 5 : 10);
 			}
-			incStress(testeHabilidadePiloto() ? 3 : 7);
 		}
 		if (getNoAtual().verificaCurvaAlta()) {
 			if (ganho > 20) {
 				ganho = 20;
+				incStress(testeHabilidadePiloto() ? 1 :  5);
 			}
-			incStress(testeHabilidadePiloto() ? 1 : 3);
 		}
 	}
 
