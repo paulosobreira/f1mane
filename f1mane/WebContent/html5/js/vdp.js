@@ -307,7 +307,7 @@ function vdp_colisaoTracadoSuave(pilotoParam) {
 		if (noSuave.box) {
 			continue;
 		}
-		var nEixo = (eixoCarro * 2);
+		var nEixo = (eixoCarro);
 		var indexAtras = (noSuave.index - nEixo) > 0 ? (noSuave.index - nEixo)
 				: 0;
 		var indexFrente = (noSuave.index + nEixo) < circuito.pistaFull.length ? (noSuave.index + nEixo)
@@ -452,8 +452,7 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	}
 
 	var tracadoSuaveVaiPara = mapaTracadoSuaveVaiPara.get(piloto.idPiloto);
-	if (tracadoSuaveVaiPara != piloto.tracado && !colisao
-			&& (indexTracadoSuave == null || indexTracadoSuave == 0)) {
+	if (tracadoSuaveVaiPara == null || (tracadoSuaveVaiPara != piloto.tracado && !colisao)) {
 		tracadoSuaveVaiPara = piloto.tracado;
 		mapaTracadoSuaveVaiPara.set(piloto.idPiloto, tracadoSuaveVaiPara);
 		if (tracadoSuave == 4 || tracadoSuave == 5) {
@@ -463,9 +462,7 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 		}
 		mapaIndexTracadoSuave.set(piloto.idPiloto, indexTracadoSuave);
 	}
-
 	var ponto = vdp_pontoTracado(tracadoSuaveVaiPara, no);
-
 	var linha = gu_bline(ponto, pontoSuave);
 	if (indexTracadoSuave > linha.length - 1) {
 		indexTracadoSuave = linha.length - 1;
@@ -477,10 +474,9 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	if (!colisao) {
 		indexTracadoSuave--;
 	}
-	indexTracadoSuave--;
 	if (indexTracadoSuave <= 0) {
 		indexTracadoSuave = 0;
-		mapaTracadoSuave.set(piloto.idPiloto, piloto.tracado);
+		mapaTracadoSuave.set(piloto.idPiloto, tracadoSuaveVaiPara);
 	}
 	mapaIndexTracadoSuave.set(piloto.idPiloto, Math.round(indexTracadoSuave));
 	return pontoTracadoSuave;
