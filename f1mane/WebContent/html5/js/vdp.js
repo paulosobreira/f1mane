@@ -452,7 +452,7 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	}
 
 	var tracadoSuaveVaiPara = mapaTracadoSuaveVaiPara.get(piloto.idPiloto);
-	if (tracadoSuaveVaiPara == null || (tracadoSuaveVaiPara != piloto.tracado && !colisao)) {
+	if (tracadoSuaveVaiPara == null || (tracadoSuaveVaiPara != piloto.tracado && !colisao && indexTracadoSuave == 0)) {
 		tracadoSuaveVaiPara = piloto.tracado;
 		mapaTracadoSuaveVaiPara.set(piloto.idPiloto, tracadoSuaveVaiPara);
 		if (tracadoSuave == 4 || tracadoSuave == 5) {
