@@ -1158,7 +1158,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getNoAtual().verificaCurvaAlta()) {
 			if (ganho > 20) {
 				ganho = 20;
-				incStress(testeHabilidadePiloto() ? 1 :  5);
+				incStress(testeHabilidadePiloto() ? 1 : 5);
 			}
 		}
 	}
@@ -2721,10 +2721,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (ciclosDesconcentrado <= 0) {
 			ciclosDesconcentrado = 0;
 			if (isProblemaLargada()) {
-				if (interfaceJogo.verificaInfoRelevante(this)) {
-					interfaceJogo.info(Html.vermelho(
-							getNome() + " " + Lang.msg("problemaLargada")));
-				}
+				interfaceJogo.info(Html.vermelho(
+						getNome() + " " + Lang.msg("problemaLargada")));
 				setProblemaLargada(false);
 			}
 			return false;
