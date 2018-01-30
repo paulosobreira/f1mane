@@ -1229,7 +1229,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		if (getCarro().getGiro() == Carro.GIRO_MAX_VAL && getNoAtual() != null
 				&& getNoAtual().verificaRetaOuLargada()
-				&& Clima.SOL.equals(controleJogo.getClima())
+				&& !Clima.CHUVA.equals(controleJogo.getClima())
 				&& getVelocidade() != 0 && Math.random() > mod) {
 			setFaiscas(true);
 		}

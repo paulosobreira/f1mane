@@ -429,10 +429,10 @@ public class ControleJogosServer {
 			} else if (Carro.PERDEU_AEREOFOLIO
 					.equals(piloto.getCarro().getDanificado())) {
 				statusPilotos = "A" + String.valueOf(piloto.getPtosPista());
-			} else if (piloto.isFaiscas()) {
-				statusPilotos = "F" + String.valueOf(piloto.getPtosPista());
 			} else if (piloto.isTravouRodas()) {
 				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
+			} else if (piloto.isFaiscas()) {
+				statusPilotos = "F" + String.valueOf(piloto.getPtosPista());
 			}
 			posis.setStatus(statusPilotos);
 			posis.setIdPiloto(piloto.getId());
@@ -787,7 +787,27 @@ public class ControleJogosServer {
 			}
 			dadosParciais.modoPilotar = piloto.getModoPilotagem();
 			dadosParciais.giro = piloto.getCarro().getGiro();
-			dadosParciais.vantagem = piloto.getVantagem();
+			if (piloto.getPosicao() == 1) {
+				dadosParciais.vantagem = piloto
+						.getCalculaSegundosParaAnterior();
+			} else if (piloto.getPosicao() == pilotos.size() - 1) {
+				dadosParciais.vantagem = piloto.getCalculaSegundosParaProximo();
+			} else {
+				Long anterior = Util.extrairNumerosLong(
+						piloto.getCalculaSegundosParaAnterior());
+				Long proximo = Util.extrairNumerosLong(
+						piloto.getCalculaSegundosParaProximo());
+				if (anterior != null && proximo != null) {
+					if (anterior < proximo) {
+						dadosParciais.vantagem = piloto
+								.getCalculaSegundosParaAnterior();
+					} else {
+						dadosParciais.vantagem = piloto
+								.getCalculaSegundosParaProximo();
+					}
+				}
+			}
+
 		}
 		Map<String, BufferTexto> mapJogo = jogoServidor
 				.getMapJogadoresOnlineTexto();

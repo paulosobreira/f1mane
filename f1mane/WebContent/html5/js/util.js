@@ -20,6 +20,10 @@ function intervalo(val1, val2) {
 	return (val1 + (Math.random() * (0.1 + val2 - val1)));
 }
 
+function intervaloInt(val1, val2) {
+	return Math.round(intervalo(val1, val2));
+}
+
 function getParameter(val) {
 	var result = null, tmp = [];
 	var items = location.search.substr(1).split("&");

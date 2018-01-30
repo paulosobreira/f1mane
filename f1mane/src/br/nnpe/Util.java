@@ -511,6 +511,14 @@ public class Util {
 		return string.replaceAll("\\D+", "");
 	}
 
+	public static Long extrairNumerosLong(String string) {
+		try {
+			return new Long(extrairNumeros(string));
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
 	public static Map<String, String> bundle2Map(
 			PropertyResourceBundle bundle) {
 		Map<String, String> map = new HashMap<String, String>();

@@ -186,5 +186,6 @@ var fps = new FpsCtrl(30, function(e) {
 	vdp_desenha(fps);
 })
 
+vdp_setup();
 // start the loop
 fps.start();

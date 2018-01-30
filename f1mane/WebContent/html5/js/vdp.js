@@ -11,8 +11,10 @@ var cvRotate = document.createElement('canvas');
 var ctxRotate = cvRotate.getContext('2d');
 var cvBlend = document.createElement('canvas');
 var ctxBlend = cvBlend.getContext('2d');
-var cvFx = document.createElement('canvas');
-var ctxFx = cvFx.getContext('2d');
+var fxArray = [];
+var fxChuvaRetaArray = [];
+var fxChuvaAltaArray = [];
+var fxChuvaBaixaArray = [];
 var cvBg;
 var ctxBg;
 var maneCanvas = document.getElementById('maneCanvas')
@@ -45,6 +47,7 @@ maneCanvas.width = 0;
 maneCanvas.height = 0;
 var alertaAerefolioPow = null;
 var mapaPow = new Map();
+var loopPilotos = false;
 
 function vdp_desenha(fps) {
 	if (imgBg && imgBg.complete) {
@@ -74,6 +77,21 @@ function vdp_desenha(fps) {
 	// maneContext.fillText("FPS: " + fps.frameRate(), 4, 30);
 	// }
 
+}
+
+function vdp_setup() {
+	for (var i = 0; i < 5; i++) {
+		vdp_gerarImgFaiscaFx();
+	}
+	for (var i = 0; i < 5; i++) {
+		vdp_gerarRastroChuvaFx(180, fxChuvaRetaArray);
+	}
+	for (var i = 0; i < 5; i++) {
+		vdp_gerarRastroChuvaFx(150, fxChuvaAltaArray);
+	}
+	for (var i = 0; i < 5; i++) {
+		vdp_gerarRastroChuvaFx(100, fxChuvaBaixaArray);
+	}
 }
 
 function vdp_pow() {
@@ -250,18 +268,33 @@ function vdp_atualizaSuave() {
 			// console.log(piloto.idPiloto + ' diff >= 1000 ' + novoIndex);
 			mapaIdNosSuave.set(piloto.idPiloto, noReal);
 		}
-	}
-	var posicaoPilotos = dadosParciais.posisPack;
-	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
-		var piloto = posicaoPilotos.posis[i];
-		var noSuave = mapaIdNosSuave.get(piloto.idPiloto);
-		var noReal = mapaIdNos.get(piloto.idNo);
-		var tracadoSuave = mapaTracadoSuave.get(piloto.idPiloto);
-		if (tracadoSuave == null) {
-			tracadoSuave = piloto.tracado;
+		if (loopPilotos) {
+			var piloto = posicaoPilotos.posis[i];
+			var noSuave = mapaIdNosSuave.get(piloto.idPiloto);
+			var noReal = mapaIdNos.get(piloto.idNo);
+			var tracadoSuave = mapaTracadoSuave.get(piloto.idPiloto);
+			if (tracadoSuave == null) {
+				tracadoSuave = piloto.tracado;
+			}
+			mapaPontoSuave.set(piloto.idPiloto, vdp_pontoTracadoSuave(piloto,
+					noSuave, noReal));
 		}
-		mapaPontoSuave.set(piloto.idPiloto, vdp_pontoTracadoSuave(piloto,
-				noSuave, noReal));
+
+	}
+	if (!loopPilotos) {
+		var posicaoPilotos = dadosParciais.posisPack;
+		for (var i = 0; i < posicaoPilotos.posis.length; i++) {
+			var piloto = posicaoPilotos.posis[i];
+			var noSuave = mapaIdNosSuave.get(piloto.idPiloto);
+			var noReal = mapaIdNos.get(piloto.idNo);
+			var tracadoSuave = mapaTracadoSuave.get(piloto.idPiloto);
+			if (tracadoSuave == null) {
+				tracadoSuave = piloto.tracado;
+			}
+			mapaPontoSuave.set(piloto.idPiloto, vdp_pontoTracadoSuave(piloto,
+					noSuave, noReal));
+		}
+		loopPilotos = true;
 	}
 }
 
@@ -299,7 +332,10 @@ function vdp_colisaoTracadoSuave(pilotoParam) {
 		if (tracadoSuave == 5) {
 			tracadoSuave = 1;
 		}
-		var condicaoColisao = tracadoSuave == tracadoSuaveVaiPara;// || mapaTracadoSuaveVaiPara.get(piloto.idPiloto) == tracadoSuaveVaiPara; 
+		var condicaoColisao = tracadoSuave == tracadoSuaveVaiPara;// ||
+		// mapaTracadoSuaveVaiPara.get(piloto.idPiloto)
+		// ==
+		// tracadoSuaveVaiPara;
 		if (!condicaoColisao) {
 			continue;
 		}
@@ -446,13 +482,14 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	if (vdp_colisaoTracadoSuave(piloto)) {
 		var ponto = vdp_obterPonto(piloto, false);
 		if (ponto != null && ponto.x != null && ponto.y != null) {
-//			pontoColisaoArray.push(ponto);
+			// pontoColisaoArray.push(ponto);
 			colisao = true;
 		}
 	}
 
 	var tracadoSuaveVaiPara = mapaTracadoSuaveVaiPara.get(piloto.idPiloto);
-	if (tracadoSuaveVaiPara == null || (tracadoSuaveVaiPara != piloto.tracado && !colisao && indexTracadoSuave == 0)) {
+	if (tracadoSuaveVaiPara == null
+			|| (tracadoSuaveVaiPara != piloto.tracado && !colisao && indexTracadoSuave == 0)) {
 		tracadoSuaveVaiPara = piloto.tracado;
 		mapaTracadoSuaveVaiPara.set(piloto.idPiloto, tracadoSuaveVaiPara);
 		if (tracadoSuave == 4 || tracadoSuave == 5) {
@@ -678,21 +715,20 @@ function vdp_desenhaCarrosCima() {
 				maneContext.fillStyle = vdp_verde;
 			}
 			maneContext.fillRect(x - 5, y - 5, 10, 10);
-			
-//			ponto = frenteCar;
-//			maneContext.fillStyle = 'pink';
-//			x = ponto.x - ptBg.x;
-//			y = ponto.y - ptBg.y;
-//			maneContext.fillRect(x - 5, y - 5, 10, 10);
-//
-//			
-//			ponto = atrasCar;
-//			maneContext.fillStyle = 'pink';
-//			x = ponto.x - ptBg.x;
-//			y = ponto.y - ptBg.y;
-//			maneContext.fillRect(x - 5, y - 5, 10, 10);
 
-			
+			// ponto = frenteCar;
+			// maneContext.fillStyle = 'pink';
+			// x = ponto.x - ptBg.x;
+			// y = ponto.y - ptBg.y;
+			// maneContext.fillRect(x - 5, y - 5, 10, 10);
+			//
+			//			
+			// ponto = atrasCar;
+			// maneContext.fillStyle = 'pink';
+			// x = ponto.x - ptBg.x;
+			// y = ponto.y - ptBg.y;
+			// maneContext.fillRect(x - 5, y - 5, 10, 10);
+
 			maneContext.closePath();
 			maneContext.stroke();
 
@@ -855,6 +891,16 @@ function vdp_desenhaRastroFaiscaFx(piloto, x, y, angulo) {
 	if (dadosParciais.clima == "chuva.png") {
 		return;
 	}
+	var rotacionar = vdp_rotacionar(
+			fxArray[intervaloInt(0, fxArray.length - 1)], angulo);
+	maneContext.drawImage(rotacionar, x - 40, y - 40);
+	pilotosFaiscaMap.set(piloto.idPiloto,
+			pilotosFaiscaMap.get(piloto.idPiloto) - 1);
+}
+
+function vdp_gerarImgFaiscaFx() {
+	var cvFx = document.createElement('canvas');
+	var ctxFx = cvFx.getContext('2d');
 	var frenteCar, atrasCar;
 	cvFx.width = 172;
 	cvFx.height = 172;
@@ -890,16 +936,29 @@ function vdp_desenhaRastroFaiscaFx(piloto, x, y, angulo) {
 		ctxFx.closePath();
 		ctxFx.stroke();
 	}
-	var rotacionar = vdp_rotacionar(cvFx, angulo);
-	maneContext.drawImage(rotacionar, x - 40, y - 40);
-	pilotosFaiscaMap.set(piloto.idPiloto,
-			pilotosFaiscaMap.get(piloto.idPiloto) - 1);
+	fxArray.push(cvFx);
 }
 
 function vdp_desenhaRastroChuvaFx(piloto, x, y, angulo, no) {
 	if (dadosParciais.clima != "chuva.png") {
 		return;
 	}
+	var lista;
+	if (no.tipoJson == 'R') {
+		lista = fxChuvaRetaArray;
+	} else if (no.tipoJson == 'A') {
+		lista = fxChuvaAltaArray;
+	} else if (no.tipoJson == 'B') {
+		lista = fxChuvaBaixaArray;
+	}
+	var rotacionar = vdp_rotacionar(lista[intervaloInt(0, lista.length - 1)],
+			angulo);
+	maneContext.drawImage(rotacionar, x - 126, y - 126);
+}
+
+function vdp_gerarRastroChuvaFx(tam, lista) {
+	var cvFx = document.createElement('canvas');
+	var ctxFx = cvFx.getContext('2d');
 	var frenteCar, atrasCar;
 	cvFx.width = 344;
 	cvFx.height = 344;
@@ -927,15 +986,6 @@ function vdp_desenhaRastroChuvaFx(piloto, x, y, angulo, no) {
 					(atrasCar.y + intervalo(10, 50)))
 		};
 		var anguloFx = gu_calculaAngulo(p1, p2, 180);
-		var tam;
-		if (no.tipoJson == 'R') {
-			tam = 180;
-		} else if (no.tipoJson == 'A') {
-			tam = 150;
-		} else if (no.tipoJson == 'B') {
-			tam = 100;
-		}
-
 		var ptDest = gu_calculaPonto(anguloFx, intervalo(20, tam), p1);
 		ctxFx.beginPath();
 		ctxFx.strokeStyle = corChuva;
@@ -944,8 +994,7 @@ function vdp_desenhaRastroChuvaFx(piloto, x, y, angulo, no) {
 		ctxFx.closePath();
 		ctxFx.stroke();
 	}
-	var rotacionar = vdp_rotacionar(cvFx, angulo);
-	maneContext.drawImage(rotacionar, x - 126, y - 126);
+	lista.push(cvFx);
 }
 
 function vdp_desenhaTravadaRodaFumaca(piloto, x, y, angulo, no) {
