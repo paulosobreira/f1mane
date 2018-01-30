@@ -80,7 +80,7 @@ function vdp_desenha(fps) {
 }
 
 function vdp_setup() {
-	for (var i = 0; i < 15; i++) {
+	for (var i = 0; i < 3; i++) {
 		vdp_gerarImgFaiscaFx();
 		vdp_gerarRastroChuvaFx(180, fxChuvaRetaArray);
 		vdp_gerarRastroChuvaFx(150, fxChuvaAltaArray);
