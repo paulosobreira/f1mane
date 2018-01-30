@@ -315,7 +315,7 @@ public interface InterfaceJogo {
 
 	public void proximaCorridaCampeonato();
 
-	public void climaEnsolarado();
+	public void climaLimpo();
 
 	public void climaChuvoso();
 

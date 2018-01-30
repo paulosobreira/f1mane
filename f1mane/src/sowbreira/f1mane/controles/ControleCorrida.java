@@ -637,8 +637,8 @@ public class ControleCorrida {
 
 	}
 
-	public void climaEnsolarado() {
-		controleClima.climaEnsolarado();
+	public void climaLimpo() {
+		controleClima.climaLimpo();
 	}
 
 	public boolean safetyCarUltimas3voltas() {

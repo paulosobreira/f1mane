@@ -82,14 +82,8 @@ function vdp_desenha(fps) {
 function vdp_setup() {
 	for (var i = 0; i < 5; i++) {
 		vdp_gerarImgFaiscaFx();
-	}
-	for (var i = 0; i < 5; i++) {
 		vdp_gerarRastroChuvaFx(180, fxChuvaRetaArray);
-	}
-	for (var i = 0; i < 5; i++) {
 		vdp_gerarRastroChuvaFx(150, fxChuvaAltaArray);
-	}
-	for (var i = 0; i < 5; i++) {
 		vdp_gerarRastroChuvaFx(100, fxChuvaBaixaArray);
 	}
 }
@@ -915,22 +909,22 @@ function vdp_gerarImgFaiscaFx() {
 
 	for (var i = 0; i < 10; i++) {
 		var p1 = {
-			x : intervalo((frenteCar.x - intervalo(2.5, 6)),
+			x : intervaloInt((frenteCar.x - intervalo(2.5, 6)),
 					(frenteCar.x + intervalo(2.5, 6))),
-			y : intervalo((frenteCar.y - intervalo(2.5, 6)),
+			y : intervaloInt((frenteCar.y - intervalo(2.5, 6)),
 					(frenteCar.y + intervalo(2.5, 6)))
 		};
 		var p2 = {
-			x : intervalo((atrasCar.x - intervalo(2.5, 15)),
+			x : intervaloInt((atrasCar.x - intervalo(2.5, 15)),
 					(atrasCar.x + intervalo(2.5, 15))),
-			y : intervalo((atrasCar.y - intervalo(2.5, 15)),
+			y : intervaloInt((atrasCar.y - intervalo(2.5, 15)),
 					(atrasCar.y + intervalo(2.5, 15)))
 		};
 		var anguloFaisca = gu_calculaAngulo(p1, p2, 180);
-		var ptDest = gu_calculaPonto(anguloFaisca, intervalo(43, 86), p1);
+		var ptDest = gu_calculaPonto(anguloFaisca, intervaloInt(43, 86), p1);
 		ctxFx.beginPath();
 		ctxFx.strokeStyle = corFaisca;
-		ctxFx.setLineDash([ intervalo(5, 10), intervalo(10, 15) ]);
+		ctxFx.setLineDash([ intervaloInt(5, 10), intervaloInt(10, 15) ]);
 		ctxFx.moveTo(p1.x, p1.y);
 		ctxFx.lineTo(ptDest.x, ptDest.y);
 		ctxFx.closePath();
@@ -973,20 +967,20 @@ function vdp_gerarRastroChuvaFx(tam, lista) {
 
 	for (var i = 0; i < 10; i++) {
 		var p1 = {
-			x : intervalo((frenteCar.x - intervalo(1, 10)),
+			x : intervaloInt((frenteCar.x - intervaloInt(1, 10)),
 					(frenteCar.x + intervalo(1, 10))),
-			y : intervalo((frenteCar.y - intervalo(1, 10)),
-					(frenteCar.y + intervalo(1, 10)))
+			y : intervaloInt((frenteCar.y - intervaloInt(1, 10)),
+					(frenteCar.y + intervaloInt(1, 10)))
 		};
 
 		var p2 = {
-			x : intervalo((atrasCar.x - intervalo(10, 50)),
-					(atrasCar.x + intervalo(10, 50))),
-			y : intervalo((atrasCar.y - intervalo(10, 50)),
-					(atrasCar.y + intervalo(10, 50)))
+			x : intervaloInt((atrasCar.x - intervaloInt(10, 50)),
+					(atrasCar.x + intervaloInt(10, 50))),
+			y : intervaloInt((atrasCar.y - intervaloInt(10, 50)),
+					(atrasCar.y + intervaloInt(10, 50)))
 		};
 		var anguloFx = gu_calculaAngulo(p1, p2, 180);
-		var ptDest = gu_calculaPonto(anguloFx, intervalo(20, tam), p1);
+		var ptDest = gu_calculaPonto(anguloFx, intervaloInt(20, tam), p1);
 		ctxFx.beginPath();
 		ctxFx.strokeStyle = corChuva;
 		ctxFx.moveTo(p1.x, p1.y);

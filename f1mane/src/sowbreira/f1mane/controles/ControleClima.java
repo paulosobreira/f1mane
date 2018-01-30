@@ -175,7 +175,7 @@ public class ControleClima {
 		return Math.random() < (val);
 	}
 
-	public void climaEnsolarado() {
+	public void climaLimpo() {
 		if (Clima.NUBLADO.equals(getClima())) {
 			setClima(Clima.SOL);
 		}

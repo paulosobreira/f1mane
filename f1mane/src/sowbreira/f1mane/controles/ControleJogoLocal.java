@@ -1323,8 +1323,8 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public void climaEnsolarado() {
-		controleCorrida.climaEnsolarado();
+	public void climaLimpo() {
+		controleCorrida.climaLimpo();
 
 	}
 

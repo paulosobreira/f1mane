@@ -489,7 +489,7 @@ public class GerenciadorVisual {
 						pilotoSelecionado.escapaTracado(controleJogo);
 					}
 					if (keyCoode == KeyEvent.VK_8) {
-						controleJogo.climaEnsolarado();
+						controleJogo.climaLimpo();
 					}
 					if (keyCoode == KeyEvent.VK_7) {
 						controleJogo.climaChuvoso();
