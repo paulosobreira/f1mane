@@ -64,6 +64,14 @@ function lang_mapTexto() {
 			mapTextoCahce.set('TIPO_PNEU_MOLE','Soft tire');
 			mapTextoCahce.set('TIPO_PNEU_DURO','Hard tire');
 			mapTextoCahce.set('TIPO_PNEU_CHUVA','Wet tire');
+			mapTextoCahce.set('voltas','Laps');
+			mapTextoCahce.set('corrida','Race');
+			mapTextoCahce.set('278','Best');
+			mapTextoCahce.set('215','Gas');
+			mapTextoCahce.set('216','Tires');
+			mapTextoCahce.set('217','Engine');
+			mapTextoCahce.set('095','Quit Confirm');
+			mapTextoCahce.set('ranking','Classification');
 		}
 	}
 	return mapTextoCahce;
