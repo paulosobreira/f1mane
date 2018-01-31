@@ -82,9 +82,9 @@ function vdp_desenha(fps) {
 function vdp_setup() {
 	for (var i = 0; i < 3; i++) {
 		vdp_gerarImgFaiscaFx();
-		vdp_gerarRastroChuvaFx(180, fxChuvaRetaArray);
-		vdp_gerarRastroChuvaFx(150, fxChuvaAltaArray);
-		vdp_gerarRastroChuvaFx(100, fxChuvaBaixaArray);
+//		vdp_gerarRastroChuvaFx(180, fxChuvaRetaArray);
+//		vdp_gerarRastroChuvaFx(150, fxChuvaAltaArray);
+//		vdp_gerarRastroChuvaFx(100, fxChuvaBaixaArray);
 	}
 }
 
@@ -691,7 +691,7 @@ function vdp_desenhaCarrosCima() {
 		if (emMovimento && pilotosEfeitosMap.get(piloto.idPiloto)) {
 			vdp_desenhaTravadaRoda(piloto, x, y, angulo);
 			vdp_desenhaTravadaRodaFumaca(piloto, x, y, angulo, no);
-			vdp_desenhaRastroChuvaFx(piloto, x, y, angulo, no);
+			//vdp_desenhaRastroChuvaFx(piloto, x, y, angulo, no);
 		}
 		if (piloto.idPiloto == idPilotoSelecionado) {
 			ponto = vdp_obterPonto(piloto, true);
