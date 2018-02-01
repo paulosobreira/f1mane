@@ -74,7 +74,15 @@ public class ControleJogosServer {
 
 	public Object criarJogo(ClientPaddockPack clientPaddockPack) {
 		if (verificaJaEmAlgumJogo(clientPaddockPack.getSessaoCliente())) {
-			return new MsgSrv(Lang.msg("203"));
+			String nomeJogo = clientPaddockPack.getDadosJogoCriado()
+					.getNomeJogo();
+			JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
+			SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+			srvPaddockPack
+					.setSessaoCliente(clientPaddockPack.getSessaoCliente());
+			srvPaddockPack.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
+			srvPaddockPack.setDadosPaddock(dadosPaddock);
+			return srvPaddockPack;
 
 		}
 		Session session = controlePersistencia.getSession();
@@ -482,7 +490,7 @@ public class ControleJogosServer {
 
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
 			String giro) {
-		//obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+		// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
 		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
 			return null;
@@ -490,13 +498,13 @@ public class ControleJogosServer {
 		piloto.setAtivarDRS(true);
 		int giroAntes = piloto.getCarro().getGiro();
 		piloto.getCarro().mudarGiroMotor(giro);
-		
+
 		return giroAntes != piloto.getCarro().getGiro();
 	}
 
 	public Boolean mudarAgressividadePiloto(SessaoCliente sessaoCliente,
 			String idPiloto, String agressividade) {
-		//obterJogoPorSessaoCliente(sessaoCliente).climaLimpo();
+		// obterJogoPorSessaoCliente(sessaoCliente).climaLimpo();
 		if (!Piloto.LENTO.equals(agressividade)
 				&& !Piloto.AGRESSIVO.equals(agressividade)
 				&& !Piloto.NORMAL.equals(agressividade)) {

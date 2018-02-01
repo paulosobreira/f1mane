@@ -72,6 +72,7 @@ function lang_mapTexto() {
 			mapTextoCahce.set('217','Engine');
 			mapTextoCahce.set('095','Quit Confirm');
 			mapTextoCahce.set('ranking','Classification');
+			mapTextoCahce.set('sairJogo','Exit Game');
 		}
 	}
 	return mapTextoCahce;
