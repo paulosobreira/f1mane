@@ -131,7 +131,17 @@ function cpu_dadosParciais() {
 		} else if (status.startsWith("T")) {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("T", "")));
 			pilotosTravadaMap.set(piloto.idPiloto, true);
-			pilotosTravadaFumacaMap.set(piloto.idPiloto, 10);
+			var no = mapaIdNosSuave.get(piloto.idPiloto);
+			if (no==null) {
+				no = mapaIdNos.get(piloto.idNo);
+			}
+			if (no.tipoJson == 'R') {
+				pilotosTravadaFumacaMap.set(piloto.idPiloto, 10);
+			} else if (no.tipoJson == 'A') {
+				pilotosTravadaFumacaMap.set(piloto.idPiloto, 7);
+			} else if (no.tipoJson == 'B') {
+				pilotosTravadaFumacaMap.set(piloto.idPiloto, 3);
+			}
 		} else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		}

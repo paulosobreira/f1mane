@@ -1950,8 +1950,10 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void mensagemRetardatario(Piloto piloto, Piloto pilotoNaFrente,
 			InterfaceJogo controleJogo) {
-		if (controleJogo.verificaInfoRelevante(piloto) && Math.random() > 0.9
-				&& !controleJogo.isSafetyCarNaPista()) {
+		boolean lento = Piloto.LENTO.equals(piloto.getModoPilotagem())
+				|| Carro.GIRO_MIN_VAL == piloto.getCarro().getGiro();
+		if (!lento && controleJogo.verificaInfoRelevante(piloto)
+				&& Math.random() > 0.9 && !controleJogo.isSafetyCarNaPista()) {
 			if (pilotoNaFrente.getTracado() == piloto.getTracado()) {
 				String msg = Lang.msg("020", new String[]{
 						pilotoNaFrente.getNome(), piloto.getNome()});
