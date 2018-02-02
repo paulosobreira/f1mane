@@ -238,7 +238,7 @@ function listaCircuitos() {
 				dv.append(h3);
 				dv.append(img);
 				var dvChuva = $('<div class="well"></div>');
-				dvChuva.append('Probabilidade de chuva : ' + this.probalidadeChuva + '%');
+				dvChuva.append(lang_text('probChuva')+' : ' + this.probalidadeChuva + '%');
 				dv.append(dvChuva);
 				$('#circuitoCarousel-inner').append(dv);
 			});

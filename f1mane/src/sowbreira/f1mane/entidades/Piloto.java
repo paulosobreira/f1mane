@@ -1928,7 +1928,9 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void desviaPilotoNaFrente(Piloto piloto, Piloto pilotoNaFrente,
 			InterfaceJogo controleJogo) {
-		if (verificaPassarRetardatario(piloto, pilotoNaFrente, controleJogo)) {
+		boolean lento = Piloto.LENTO.equals(piloto.getModoPilotagem())
+				|| Carro.GIRO_MIN_VAL == piloto.getCarro().getGiro();
+		if (!lento && verificaPassarRetardatario(piloto, pilotoNaFrente, controleJogo)) {
 			pilotoNaFrente.getCarro().setGiro(Carro.GIRO_MIN_VAL);
 			pilotoNaFrente.setModoPilotagem(Piloto.LENTO);
 			pilotoNaFrente.setCiclosDesconcentrado(10);
@@ -1950,9 +1952,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void mensagemRetardatario(Piloto piloto, Piloto pilotoNaFrente,
 			InterfaceJogo controleJogo) {
-		boolean lento = Piloto.LENTO.equals(piloto.getModoPilotagem())
-				|| Carro.GIRO_MIN_VAL == piloto.getCarro().getGiro();
-		if (!lento && controleJogo.verificaInfoRelevante(piloto)
+		if (controleJogo.verificaInfoRelevante(piloto)
 				&& Math.random() > 0.9 && !controleJogo.isSafetyCarNaPista()) {
 			if (pilotoNaFrente.getTracado() == piloto.getTracado()) {
 				String msg = Lang.msg("020", new String[]{
