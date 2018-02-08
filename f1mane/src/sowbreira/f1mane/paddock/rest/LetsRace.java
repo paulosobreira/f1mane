@@ -50,6 +50,7 @@ import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
+import sowbreira.f1mane.visao.PainelCircuito;
 
 @Path("/letsRace")
 public class LetsRace {
@@ -285,6 +286,33 @@ public class LetsRace {
 
 	}
 
+	
+	@GET
+	@Path("/circuitoBg/{nmCircuito}")
+	@Produces("image/jpg")
+	public Response circuitoBg(@PathParam("nmCircuito") String nmCircuito) {
+		try {
+			Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
+			Circuito circuito = (Circuito) rec;
+			circuito.vetorizarPista();
+			PainelCircuito painelCircuito = new PainelCircuito(circuito);
+			BufferedImage bg = painelCircuito.desenhaCircuito();
+			if (bg == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(bg, "jpg", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.status(200).entity(imageData).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+	}
+	
+	
 	@GET
 	@Path("/circuitoMini/{nmCircuito}")
 	@Produces("image/png")
@@ -292,12 +320,12 @@ public class LetsRace {
 		try {
 			Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
 			Circuito circuito = (Circuito) rec;
-			BufferedImage carroCima = circuito.desenhaMiniCircuito();
-			if (carroCima == null) {
+			BufferedImage mini = circuito.desenhaMiniCircuito();
+			if (mini == null) {
 				return Response.status(200).entity("null").build();
 			}
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(carroCima, "png", baos);
+			ImageIO.write(mini, "png", baos);
 			byte[] imageData = baos.toByteArray();
 			return Response.status(200).entity(imageData).build();
 		} catch (Exception e) {
