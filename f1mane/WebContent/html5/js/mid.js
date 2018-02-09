@@ -47,9 +47,8 @@ function mid_caregaMidia() {
 
 	imgBg = new Image();
 	//imgBg.src = {urlBg} + circuito.backGround;
-	//imgBg.src = "http://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" + circuito.backGround;
-	imgBg.src = "http://games-sobreira.193b.starter-ca-central-1.openshiftapps.com/f1manepistas/pistas/" + circuito.backGround;
-
+	imgBg.src = "http://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" + circuito.backGround;
+	//imgBg.src = "http://games-sobreira.193b.starter-ca-central-1.openshiftapps.com/f1manepistas/pistas/" + circuito.backGround;
 
 	pow = new Image();
 	pow.src = "img/pow.png"

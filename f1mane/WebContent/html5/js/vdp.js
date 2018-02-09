@@ -51,6 +51,11 @@ var loopPilotos = false;
 
 function vdp_desenha(fps) {
 	if (imgBg && imgBg.complete) {
+		if(imgBg.width == 0 || imgBg.height==0){
+			imgBg.src = "/f1mane/rest/letsRace/circuitoBg/" + circuito.backGround;		
+		}
+	}
+	if (imgBg && imgBg.complete) {
 		cvBg = document.createElement('canvas');
 		cvBg.width = imgBg.width;
 		cvBg.height = imgBg.height;

@@ -31,6 +31,7 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
+import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.CircuitosDefauts;
@@ -286,16 +287,23 @@ public class LetsRace {
 
 	}
 
-	
 	@GET
 	@Path("/circuitoBg/{nmCircuito}")
 	@Produces("image/jpg")
 	public Response circuitoBg(@PathParam("nmCircuito") String nmCircuito) {
 		try {
+			nmCircuito = nmCircuito.replace("jpg", "f1mane");
 			Object rec = carregadorRecursos.carregarRecurso(nmCircuito);
 			Circuito circuito = (Circuito) rec;
 			circuito.vetorizarPista();
-			PainelCircuito painelCircuito = new PainelCircuito(circuito);
+			InterfaceJogo jogo = null;
+			if (controlePaddock.obterJogos() != null
+					&& !controlePaddock.obterJogos().isEmpty()) {
+				jogo = controlePaddock
+						.obterJogoPeloNome(controlePaddock.obterJogos().get(0));
+			}
+
+			PainelCircuito painelCircuito = new PainelCircuito(circuito, jogo);
 			BufferedImage bg = painelCircuito.desenhaCircuito();
 			if (bg == null) {
 				return Response.status(200).entity("null").build();
@@ -311,8 +319,7 @@ public class LetsRace {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 	}
-	
-	
+
 	@GET
 	@Path("/circuitoMini/{nmCircuito}")
 	@Produces("image/png")
@@ -376,8 +383,8 @@ public class LetsRace {
 				pista = nmCircuito;
 			}
 		}
-		//pista = "Interlagos";
-		//dadosCriarJogo.setSafetyCar(false);
+		// pista = "Interlagos";
+		// dadosCriarJogo.setSafetyCar(false);
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);

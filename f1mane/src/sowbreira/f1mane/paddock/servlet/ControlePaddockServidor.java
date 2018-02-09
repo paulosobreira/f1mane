@@ -19,6 +19,7 @@ import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.entidades.Comandos;
@@ -712,6 +713,12 @@ public class ControlePaddockServidor {
 		}
 		return controleJogosServer.preparaSrvPaddockPack(clientPaddockPack,
 				jogoServidor);
+	}
+
+	public InterfaceJogo obterJogoPeloNome(String nomeJogo) {
+		JogoServidor jogoServidor = controleJogosServer
+				.obterJogoPeloNome(nomeJogo);
+		return jogoServidor;
 	}
 
 	public BufferedImage obterCarroCima(String nomeJogo, String idPiloto) {

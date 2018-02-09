@@ -394,8 +394,9 @@ public class PainelCircuito {
 		saidaBoxIndex = circuito.getSaidaBoxIndex();
 	}
 
-	public PainelCircuito(Circuito circuito) {
+	public PainelCircuito(Circuito circuito, InterfaceJogo jogo) {
 		this.circuito = circuito;
+		this.controleJogo = jogo;
 		gridCarro = CarregadorRecursos
 				.carregaBufferedImageTransparecia("GridCarro.png");
 		gerarGrid();
@@ -2857,10 +2858,16 @@ public class PainelCircuito {
 				maxY = p.y;
 			}
 		}
+		maxX+=300;
+		maxY+=300;
 		BufferedImage image = new BufferedImage(maxX, maxY,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
-		g2d.setColor(Color.white);
+		if(circuito.getCorFundo()!=null){
+			g2d.setColor(circuito.getCorFundo());
+		}else{
+			g2d.setColor(Color.white);	
+		}
 		g2d.fillRect(0, 0, maxX, maxY);
 		int larguraPistaPixeisLoc = Util
 				.inteiro(100 * circuito.getMultiplicadorLarguraPista() * zoom);
@@ -6189,7 +6196,10 @@ public class PainelCircuito {
 	}
 
 	private void desenhaBoxes(Graphics2D g2d) {
-		if (translateBoxes == null){
+		if (controleJogo == null) {
+			return;
+		}
+		if (translateBoxes == null) {
 			translateBoxes = new AffineTransform();
 		}
 		translateBoxes.setToTranslation(-descontoCentraliza.x * zoom,
