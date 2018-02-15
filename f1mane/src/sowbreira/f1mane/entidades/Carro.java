@@ -1019,7 +1019,13 @@ public class Carro implements Serializable {
 		if (porcentPneus < (controleJogo.asfaltoAbrasivo() ? 15 : 10)) {
 			valDesgaste *= 0.5;
 		}
-
+		if (porcentPneus < -5) {
+			getPiloto().setDesqualificado(true);
+			setRecolhido(true);
+			controleJogo.infoPrioritaria(Html
+					.txtRedBold(Lang.msg("abandoNouDevidoDanosRodas",
+					new String[]{piloto.getNome()})));
+		}
 		if (verificaDano()
 				|| Piloto.LENTO.equals(getPiloto().getModoPilotagem())) {
 			valDesgaste /= 3;
