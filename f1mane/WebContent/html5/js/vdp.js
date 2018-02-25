@@ -982,7 +982,7 @@ function vdp_desenhaTravadaRodaFumaca(piloto, x, y, angulo, no) {
 	}
 
 	eval('rotacionar = vdp_rotacionar(carroCimaFreios' + lado + sw + ', angulo)');
-	maneContext.drawImage(rotacionar, x + 4, y + 4);
+	maneContext.drawImage(rotacionar, x, y);
 	pilotosTravadaFumacaMap.set(piloto.idPiloto, pilotosTravadaFumacaMap.get(piloto.idPiloto) - 1);
 }
 

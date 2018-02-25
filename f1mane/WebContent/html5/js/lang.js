@@ -1,5 +1,23 @@
 var mapTextoCahce;
 
+$('#btnPt').bind("click", function() {
+	lang_idioma('pt',true);
+	location.reload();
+});
+$('#btnEn').bind("click", function() {
+	lang_idioma('en',true);
+	location.reload();
+});
+$('#btnIt').bind("click", function() {
+	lang_idioma('it',true);
+	location.reload();
+});
+
+$('#btnPt').html(lang_text('pt'));
+$('#btnEn').html(lang_text('en'));
+$('#btnIt').html(lang_text('it'));
+
+
 function lang_text(texto, params) {
 	var mapTexto = lang_mapTexto();
 	if (mapTexto == null) {
