@@ -6,10 +6,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.Encoded;
@@ -750,7 +753,18 @@ public class LetsRace {
 	public Response lang(@PathParam("lang") String lang) {
 		try {
 			PropertyResourceBundle bundle = Lang.carregraBundleMensagens(lang);
-			return Response.status(200).entity(Util.bundle2Map(bundle)).build();
+			Set<String> keySet = bundle.keySet();
+			LinkedList<String> values = new LinkedList<String>();
+			LinkedList<String> keys = new LinkedList<String>();
+			for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
+				String key = (String) iterator.next();
+				values.add(bundle.getString(key));
+				keys.add(key);
+			}
+			Map<String,LinkedList> retorno = new HashMap<String,LinkedList>();
+			retorno.put("keys", keys);
+			retorno.put("values", values);
+			return Response.status(200).entity(retorno).build();
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 			return Response.status(500)

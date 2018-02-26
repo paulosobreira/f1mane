@@ -1,7 +1,9 @@
 package sowbreira.f1mane.recursos;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
@@ -57,6 +59,8 @@ public class CarregadorRecursos {
 	private static Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCarrosLadoSemAreofolio = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
+	private static AlphaComposite composite = AlphaComposite
+			.getInstance(AlphaComposite.DST_OUT, 1);
 
 	private static CarregadorRecursos carregadorRecursos;
 
@@ -650,12 +654,21 @@ public class CarregadorRecursos {
 	}
 
 	public static BufferedImage carregaImagem(String file) {
-		BufferedImage bufferedImage = (BufferedImage) bufferImages.get(file);
+		return carregaImagem(file, true);
+	}
+
+	public static BufferedImage carregaImagem(String file, boolean cache) {
+		BufferedImage bufferedImage = null;
+		if (cache) {
+			bufferedImage = (BufferedImage) bufferImages.get(file);
+		}
 		if (bufferedImage == null) {
 			try {
 				bufferedImage = ImageUtil.toCompatibleImage(ImageIO
 						.read(CarregadorRecursos.class.getResource(file)));
-				bufferImages.put(file, bufferedImage);
+				if (cache) {
+					bufferImages.put(file, bufferedImage);
+				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
@@ -809,6 +822,19 @@ public class CarregadorRecursos {
 		Carro carro = piloto.getCarro();
 		BufferedImage carroCima = bufferCarrosCimaSemAreofolio
 				.get(carro.getNome());
+		if (carro.getImg() != null) {
+			carroCima = CarregadorRecursos.carregaImagem(
+					carro.getImg().replaceAll(".png", "_cima.png"),false);
+			String[] split = carro.getImg().split("/");
+			String nmimg = split[split.length - 1];
+			BufferedImage noWing = CarregadorRecursos.carregaImagem(
+					carro.getImg().replaceAll(nmimg, "nowing_cima.png"));
+			Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
+			graphics.setComposite(composite);
+			graphics.drawImage(noWing, 0, 0, null);
+			graphics.dispose();
+			bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
+		}
 		if (carroCima == null) {
 			BufferedImage base = CarregadorRecursos
 					.carregaImagem(modelo + "CarroCima.png");

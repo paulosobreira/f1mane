@@ -881,7 +881,7 @@ function ctl_desenhaInfoEsquerda() {
 		if (dadosParciais.pPneus < 15) {
 			maneContext.beginPath();
 			maneContext.strokeStyle = '#FF0000';
-			maneContext.rect(x, y, 80, 20);
+			maneContext.rect(x, y, 90, 20);
 			maneContext.closePath();
 			maneContext.stroke();			
 		}
