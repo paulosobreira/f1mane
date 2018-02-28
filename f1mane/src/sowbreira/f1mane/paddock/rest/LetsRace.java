@@ -398,8 +398,9 @@ public class LetsRace {
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setAsa(asa);
 		dadosCriarJogo.setTpPnueu(tipoPneu);
-		if (numVoltas != null) {
-			dadosCriarJogo.setQtdeVoltas(new Integer(numVoltas));
+		if (!Util.isNullOrEmpty(numVoltas)) {
+			dadosCriarJogo
+					.setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
 		}
 		Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);
 		if (Math.random() < (circuitoObj.getProbalidadeChuva() / 100.0)) {
@@ -409,9 +410,11 @@ public class LetsRace {
 		}
 		TemporadasDefauts temporadasDefauts = carregadorRecursos
 				.carregarTemporadasPilotosDefauts().get("t" + temporada);
-		if (combustivel != null) {
-			dadosCriarJogo.setCombustivel(new Integer(combustivel));
-		}else{
+
+		if (!Util.isNullOrEmpty(combustivel)) {
+			dadosCriarJogo.setCombustivel(
+					new Integer(Util.extrairNumeros(combustivel)));
+		} else {
 			if (temporadasDefauts.getReabastecimento()) {
 				dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
 			} else {

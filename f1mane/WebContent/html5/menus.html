@@ -111,23 +111,17 @@
 		</div>
 	</section>
 	<section id="criaJogo" class="container hide">
-		<div class="transbox">
-			<p id="numVoltasLabel">Número de voltas</p>
-		</div>
-		<div class="input-group number-spinner">
-			<span class="input-group-btn">
-				<button class="btn btn-default" data-dir="dwn">
-					<span class="glyphicon glyphicon-minus"></span>
-				</button>
-			</span> <input id="numVoltas" type="text" class="form-control text-center" value="14"> <span class="input-group-btn">
-				<button class="btn btn-default" data-dir="up">
-					<span class="glyphicon glyphicon-plus"></span>
-				</button>
-			</span>
+		<div id="idNumeroVoltas">
+			<div class="transbox">
+				<p id="numVoltasLabel"></p>
+			</div>
+			<div>
+				<input id="numVoltas" type="number" class="form-control text-center" value="14"> 
+			</div>
 		</div>
 		<br>
 		<div class="transbox">
-			<p id="tipoPnelLabel">Tipo de Pneu</p>
+			<p id="tipoPnelLabel"></p>
 		</div>	
 		<table id="selecionaTpPneu" class="table table-hover table-responsive">
 			<tbody>
@@ -142,25 +136,15 @@
 			</tbody>
 		</table>
 		<div class="transbox">
-			<p id="procentCombustivelLabel">Porcentagem de combustivel</p>
+			<p id="procentCombustivelLabel"></p>
 		</div>		
-		<div class="input-group number-spinner">
-			<span class="input-group-btn">
-				<button class="btn btn-default" data-dir="dwn">
-					<span class="glyphicon glyphicon-minus"></span>
-				</button>
-			</span> 
-			<input id="procentCombustivel" type="text" class="form-control text-center" value="75"> 
-			<span class="input-group-btn">
-				<button class="btn btn-default" data-dir="up">
-					<span class="glyphicon glyphicon-plus"></span>
-				</button>
-			</span>
+		<div>
+			<input id="procentCombustivel" type="number" class="form-control text-center" value="75"> 
 		</div>
 		<br>
 		<div id="ajusteDeAsa">
 			<div class="transbox">
-				<p id="tipoAsaLabel">Ajuste de asa</p>
+				<p id="tipoAsaLabel"></p>
 			</div>	
 			<table id="selecionaTpAsa" class="table table-hover table-responsive">
 				<tbody>

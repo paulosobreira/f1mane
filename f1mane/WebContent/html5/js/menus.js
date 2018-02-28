@@ -21,6 +21,11 @@ $('#MENOS_ASA').html(lang_text('menosAjuste'));
 $('#MAIS_ASA').html(lang_text('maisAjuste'));
 $('#ASA_NORMAL').html(lang_text('ajusteMediano'));
 
+$('#tipoPnelLabel').html(lang_text('264') + ' : ');
+$('#numVoltasLabel').html(lang_text('195'));
+$('#procentCombustivelLabel').html(lang_text('083') + ' : ');
+$('#tipoAsaLabel').html(lang_text('084') + ' : ');
+
 if (localStorage.getItem("token")) {
 	token = localStorage.getItem("token");
 	idPilotoSelecionado = localStorage.getItem("idPilotoSelecionado");
@@ -54,7 +59,7 @@ $('#selecionaTpAsa').find('tr').bind("click", function() {
 });
 
 $('#btnJogar').bind("click", function() {
-	if (dadosJogo.estado == 'NENHUM' && !jogoPreparado) {
+	if ((dadosJogo.estado == 'NENHUM' || dadosJogo.estado == '07') && !jogoPreparado) {
 		preparaJogo();
 	} else {
 		jogar();
@@ -140,6 +145,7 @@ function carregarDadosJogo() {
 				$('#ersCheck').addClass('text-muted');
 			}
 			if (dadosJogo.drs) {
+				drsTeporada = true;
 				$('#drsCheck').removeClass('text-muted');
 			} else {
 				$('#drsCheck').addClass('text-muted');
@@ -203,6 +209,9 @@ function preparaJogo() {
 		$('#ajusteDeAsa').addClass('hide');
 	}
 	$('#btnJogar').css('z-index', '100000');
+	if (dadosJogo.estado == '07') {
+		$('#idNumeroVoltas').addClass('hide');
+	}
 	jogoPreparado = true;
 }
 
@@ -214,9 +223,20 @@ function jogar() {
 	var voltas = $('#numVoltas').val();
 	var combustivel = $('#procentCombustivel').val();
 	var tpAsa = $('#selecionaTpAsa').find('tr.success').find('div.transbox').attr('id');
+	if (voltas > 100) {
+		voltas = 100;
+	}
+	if (voltas < 0) {
+		voltas = 0;
+	}
+	if (combustivel > 100) {
+		combustivel = 100;
+	}
+	if (combustivel < 0 ) {
+		combustivel = 0;
+	}
 	var urlServico = "/f1mane/rest/letsRace/jogar/" + temporadaSelecionada + "/" + idPilotoSelecionado + "/" + circuitoSelecionado + "/" + voltas
 			+ "/" + tpPneu + "/" + combustivel + "/" + tpAsa;
-	console.log(urlServico);
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -235,7 +255,10 @@ function jogar() {
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
 			if (xhRequest.status != 401) {
-				dadosJogo();
+				setTimeout(function() {
+					window.location.href = "menus.html";
+				}, 3000);
+
 			}
 			console.log('jogar() ' + xhRequest.status + '  ' + xhRequest.responseText);
 		}

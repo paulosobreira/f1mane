@@ -824,16 +824,18 @@ public class CarregadorRecursos {
 				.get(carro.getNome());
 		if (carro.getImg() != null) {
 			carroCima = CarregadorRecursos.carregaImagem(
-					carro.getImg().replaceAll(".png", "_cima.png"),false);
-			String[] split = carro.getImg().split("/");
-			String nmimg = split[split.length - 1];
-			BufferedImage noWing = CarregadorRecursos.carregaImagem(
-					carro.getImg().replaceAll(nmimg, "nowing_cima.png"));
-			Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
-			graphics.setComposite(composite);
-			graphics.drawImage(noWing, 0, 0, null);
-			graphics.dispose();
-			bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
+					carro.getImg().replaceAll(".png", "_cima.png"), false);
+			if (carroCima != null) {
+				String[] split = carro.getImg().split("/");
+				String nmimg = split[split.length - 1];
+				BufferedImage noWing = CarregadorRecursos.carregaImagem(
+						carro.getImg().replaceAll(nmimg, "nowing_cima.png"));
+				Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
+				graphics.setComposite(composite);
+				graphics.drawImage(noWing, 0, 0, null);
+				graphics.dispose();
+				bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
+			}
 		}
 		if (carroCima == null) {
 			BufferedImage base = CarregadorRecursos
