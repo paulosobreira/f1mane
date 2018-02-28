@@ -412,8 +412,14 @@ public class LetsRace {
 				.carregarTemporadasPilotosDefauts().get("t" + temporada);
 
 		if (!Util.isNullOrEmpty(combustivel)) {
-			dadosCriarJogo.setCombustivel(
-					new Integer(Util.extrairNumeros(combustivel)));
+			Integer fuel = new Integer(Util.extrairNumeros(combustivel));
+			if(fuel>100){
+				fuel = 100;
+			}
+			if(fuel<0){
+				fuel = 0;
+			}
+			dadosCriarJogo.setCombustivel(fuel);
 		} else {
 			if (temporadasDefauts.getReabastecimento()) {
 				dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
