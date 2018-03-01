@@ -2,7 +2,7 @@
  * Arquivo de midia
  */
 var imgBg;
-var imgFarois;
+var imgFarois, imgFaroisApagados;
 var imgPneuM, imgPneuD, imgPneuC;
 var menosAsa, maisAsa, normalAsa;
 var motor, capacete;
@@ -46,21 +46,25 @@ function mid_caregaMidia() {
 	}
 
 	imgBg = new Image();
-	//imgBg.src = {urlBg} + circuito.backGround;
+	// imgBg.src = {urlBg} + circuito.backGround;
 	imgBg.src = "http://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" + circuito.backGround;
-	//imgBg.src = "http://games-sobreira.193b.starter-ca-central-1.openshiftapps.com/f1manepistas/pistas/" + circuito.backGround;
+	// imgBg.src =
+	// "http://games-sobreira.193b.starter-ca-central-1.openshiftapps.com/f1manepistas/pistas/"
+	// + circuito.backGround;
 
 	pow = new Image();
 	pow.src = "img/pow.png"
 	imgFarois = new Image();
 	imgFarois.src = "img/farois.png"
+	imgFaroisApagados = new Image();
+	imgFaroisApagados.src = "img/farois-apagados.png"
 	imgPneuM = new Image();
 	imgPneuM.src = "img/pneuMole.png"
 	imgPneuD = new Image();
 	imgPneuD.src = "img/pneuDuro.png"
 	imgPneuC = new Image();
 	imgPneuC.src = "img/pneuChuva.png"
-    girdLargadaMarca = new Image();		
+	girdLargadaMarca = new Image();
 	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro/180";
 	motor = new Image();
 	motor.src = "img/motor.png"

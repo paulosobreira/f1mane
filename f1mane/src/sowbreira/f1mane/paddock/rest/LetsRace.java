@@ -392,7 +392,7 @@ public class LetsRace {
 				pista = nmCircuito;
 			}
 		}
-		// pista = "Interlagos";
+		// pista = "Monte Carlo";
 		// dadosCriarJogo.setSafetyCar(false);
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
@@ -413,11 +413,11 @@ public class LetsRace {
 
 		if (!Util.isNullOrEmpty(combustivel)) {
 			Integer fuel = new Integer(Util.extrairNumeros(combustivel));
-			if(fuel>100){
+			if (fuel > 100) {
 				fuel = 100;
 			}
-			if(fuel<0){
-				fuel = 0;
+			if (fuel < 10) {
+				fuel = 10;
 			}
 			dadosCriarJogo.setCombustivel(fuel);
 		} else {
@@ -433,6 +433,9 @@ public class LetsRace {
 		dadosCriarJogo.setErs(temporadasDefauts.getErs());
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
+
+//		 dadosCriarJogo.setClima(Clima.CHUVA);
+//		 dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
 		return dadosCriarJogo;
 	}
 

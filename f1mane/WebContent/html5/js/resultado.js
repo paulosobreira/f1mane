@@ -78,16 +78,16 @@ function montaLinhaGridResultado(i, piloto) {
 	}
 	td1.append(piloto.nome);
 	td1.append('<br>');
-	td1.append('<b>Box : </b>');
+	td1.append('Box : ');
 	td1.append(piloto.qtdeParadasBox);
 	td1.append('<br>');
-	td1.append('<b>Pneu : </b>');
+	td1.append(lang_text('216')+' : ');
 	td1.append(piloto.carro.porcentagemDesgastePneus + '%');
 	td1.append('<br>');
-	td1.append('<b>Comb. : </b>');
+	td1.append(lang_text('215')+' : ');
 	td1.append(piloto.carro.porcentagemCombustivel + '%');
 	td1.append('<br>');
-	td1.append('<b>Motor : </b>');
+	td1.append(lang_text('217')+' : ');
 	td1.append(piloto.carro.porcentagemDesgasteMotor + '%');
 	td1.append('<br>');
 	var capacete = $('<img class="img-responsive img-responsive-line img-left"/>');
@@ -108,20 +108,20 @@ function montaLinhaGridResultado(i, piloto) {
 	var td2 = $('<td/>');
 	td2.append(piloto.nomeCarro);
 	td2.append('<br>');
-	td2.append('<b>Melhor : </b>');
+	td2.append(lang_text('079'));
 	if(piloto.melhorVolta){
 		td2.append(piloto.melhorVolta.tempoVoltaFormatado);
 	}else{
 		td2.append('-');
 	}
 	td2.append('<br>');
-	td2.append('<b>Vantagem : </b>');
+	td2.append(lang_text('vantagem')+' : ');
 	td2.append(piloto.vantagem);
 	td2.append('<br>');
-	td2.append('<b>Diferença : </b>');
+	td2.append(lang_text('ranking')+' : ');
 	td2.append(piloto.diferencaPosiscoesCorrida);
 	td2.append('<br>');
-	td2.append('<b>Pontos : </b>');
+	td2.append(lang_text('161')+' : ');
 	td2.append(piloto.pontosCorrida);
 	td2.append('<br>');
 	var carroLado = $('<img class="img-responsive img-center"/>');
