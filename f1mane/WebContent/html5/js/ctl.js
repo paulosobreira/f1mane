@@ -11,6 +11,7 @@ var corVermelho = "rgba(255, 0, 0, 0.6)";
 var contCargaErs;
 var confirmaSair = false;
 var imgFaroisApagadosCont = 0;
+var showFps = false;
 
 function ctl_desenha() {
 	largura = maneCanvas.width;
@@ -786,9 +787,13 @@ function ctl_desenhaInfoEsquerda() {
 
 		maneContext.fillStyle = corFundo
 		maneContext.font = '14px sans-serif';
-		maneContext.fillRect(x, y, maneContext.measureText(dadosJogo.nomeCircuito).width+10, 20);
+		var circText = dadosJogo.nomeCircuito;
+		if(showFps){
+			circText += ' '+fps.frameRate()+' Fps';
+		}
+		maneContext.fillRect(x, y, maneContext.measureText(circText).width+10, 20);
 		maneContext.fillStyle = "black"
-		maneContext.fillText(dadosJogo.nomeCircuito, x + 5, y + 15);
+		maneContext.fillText(circText, x + 5, y + 15);
 
 		y += 30;
 
@@ -1305,23 +1310,14 @@ function ctl_gerarControles() {
 maneCanvas.addEventListener('click',ctl_click, false);
 
 function ctl_click(event) {
-// if(!telaCheia){
-// try {
-// document.getElementById('body').webkitRequestFullScreen(); // Chrome
-// } catch (e) {
-// try {
-// document.getElementById('body').mozRequestFullScreen(); // Firefox
-// } catch (e) {
-// try {
-// document.getElementById('body').requestFullscreen();// Edge
-// } catch (e) {
-// }
-// }
-// }
-// telaCheia = true;
-// }
 	var x = event.pageX;
 	var y = event.pageY;
+	if (y > 10 && y < 20
+			&& x > 10
+			&& x < 50){
+		showFps = true;
+		return;
+	}
 
 	var clickControle = false;
 	for (var i = 0; i < controles.length; i++) {

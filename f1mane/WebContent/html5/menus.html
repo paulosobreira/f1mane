@@ -115,8 +115,18 @@
 			<div class="transbox">
 				<p id="numVoltasLabel"></p>
 			</div>
-			<div>
+			<div class="input-group number-spinner">
+				<span class="input-group-btn">
+					<button class="btn btn-default" data-dir="dwn">
+						<span class="glyphicon glyphicon-minus"></span>
+					</button>
+				</span>			
 				<input id="numVoltas" type="number" class="form-control text-center" value="14" min="14" max="72"> 
+				<span class="input-group-btn">
+					<button class="btn btn-default" data-dir="up">
+						<span class="glyphicon glyphicon-plus"></span>
+					</button>
+				</span>				
 			</div>
 		</div>
 		<br>
@@ -138,8 +148,18 @@
 		<div class="transbox">
 			<p id="procentCombustivelLabel"></p>
 		</div>		
-		<div>
-			<input id="procentCombustivel" type="number" class="form-control text-center" value="75" min="10" max="100"> 
+		<div class="input-group number-spinner">
+			<span class="input-group-btn">
+				<button class="btn btn-default" data-dir="dwn">
+					<span class="glyphicon glyphicon-minus"></span>
+				</button>
+			</span>			
+			<input id="procentCombustivel" type="number" class="form-control text-center" value="70" min="10" max="100"> 
+			<span class="input-group-btn">
+				<button class="btn btn-default" data-dir="up">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+			</span>			
 		</div>
 		<br>
 		<div id="ajusteDeAsa">

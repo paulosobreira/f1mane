@@ -11,6 +11,10 @@ var cvRotate = document.createElement('canvas');
 var ctxRotate = cvRotate.getContext('2d');
 var cvBlend = document.createElement('canvas');
 var ctxBlend = cvBlend.getContext('2d');
+var cvCarro = document.createElement('canvas');
+var ctxCarro = cvCarro.getContext('2d');
+cvCarro.width = 172;
+cvCarro.height = 172;
 var fxArray = [];
 var fxChuvaRetaArray = [];
 var fxChuvaAltaArray = [];
@@ -674,10 +678,7 @@ function vdp_desenhaCarrosCima() {
 		var emMovimento = vdp_emMovimento(piloto.idPiloto);
 
 		if (desenhaImagens) {
-			var cvCarro = document.createElement('canvas');
-			var ctxCarro = cvCarro.getContext('2d');
-			cvCarro.width = 172;
-			cvCarro.height = 172;
+			ctxCarro.clearRect(0, 0, cvCarro.width, cvCarro.height);
 			if (emMovimento) {
 				var desenhaRastroFaiscaFx = vdp_desenhaRastroFaiscaFx(piloto, x, y);
 				if (desenhaRastroFaiscaFx != null) {
