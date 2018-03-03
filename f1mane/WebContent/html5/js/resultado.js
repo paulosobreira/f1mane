@@ -119,7 +119,11 @@ function montaLinhaGridResultado(i, piloto) {
 	td2.append(piloto.vantagem);
 	td2.append('<br>');
 	td2.append(lang_text('ranking')+' : ');
+	if(piloto.diferencaPosiscoesCorrida>0){
+		td2.append('+');
+	}
 	td2.append(piloto.diferencaPosiscoesCorrida);
+	td2.append('P');
 	td2.append('<br>');
 	td2.append(lang_text('161')+' : ');
 	td2.append(piloto.pontosCorrida);

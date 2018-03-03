@@ -13,8 +13,6 @@ var cvBlend = document.createElement('canvas');
 var ctxBlend = cvBlend.getContext('2d');
 var cvCarro = document.createElement('canvas');
 var ctxCarro = cvCarro.getContext('2d');
-cvCarro.width = 172;
-cvCarro.height = 172;
 var fxArray = [];
 var fxChuvaRetaArray = [];
 var fxChuvaAltaArray = [];
@@ -675,11 +673,23 @@ function vdp_desenhaCarrosCima() {
 			ctxCarro.clearRect(0, 0, cvCarro.width, cvCarro.height);
 			if (emMovimento) {
 				var desenhaRastroFaiscaFx = vdp_desenhaRastroFaiscaFx(piloto, x, y);
+				var desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, x, y, no);
+				if (desenhaRastroFaiscaFx != null || desenhaRastroChuvaFx != null) {
+					cvCarro.width = 172;
+					cvCarro.height = 172;
+					ajsCarroX = 40;
+					ajsCarroY = 40;
+				} else {
+					cvCarro.width = 50;
+					cvCarro.height = 50;
+					ajsCarroX = -20;
+					ajsCarroY = -20;
+				}
+
 				if (desenhaRastroFaiscaFx != null) {
 					ctxCarro.drawImage(desenhaRastroFaiscaFx, 0, 0);
 				}
 				ctxCarro.drawImage(imgCarro, ajsCarroX, ajsCarroY);
-				var desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, x, y, no);
 				if (desenhaRastroChuvaFx != null) {
 					ctxCarro.drawImage(desenhaRastroChuvaFx, 0, 0);
 				}

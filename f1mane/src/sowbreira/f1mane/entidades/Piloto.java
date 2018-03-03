@@ -2534,7 +2534,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (carroPilotoDaFrente == null) {
 			return false;
 		}
-		if (getStress() > 90) {
+		if (getStress() > getValorLimiteStressePararErrarCurva(controleJogo)) {
 			return false;
 		}
 		if (calculaDiferencaParaProximo < 500 && testeHabilidadePilotoCarro()) {
