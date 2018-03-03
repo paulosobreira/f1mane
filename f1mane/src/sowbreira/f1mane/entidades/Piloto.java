@@ -2534,21 +2534,15 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (carroPilotoDaFrente == null) {
 			return false;
 		}
-		Piloto pilotoFrente = carroPilotoDaFrente.getPiloto();
-		if (pilotoFrente.getPtosBox() != 0) {
+		if (getStress() > 90) {
 			return false;
 		}
-		if (Math.random() > (controleJogo.getNiveljogo() + 0.3)) {
-			return false;
-		}
-		int size = controleJogo.getCircuito().getPistaFull().size();
-		int distBrigaMax = (int) (size * (controleJogo.getNiveljogo() + 0.2));
-		if (calculaDiferencaParaProximo < distBrigaMax
-				&& testeHabilidadePilotoCarro()) {
+		if (calculaDiferencaParaProximo < 500 && testeHabilidadePilotoCarro()) {
 			modoIADefesaAtaque(controleJogo);
-			return true;
+		} else {
+			modoIADefesaAtaque(controleJogo);
 		}
-		return false;
+		return true;
 	}
 
 	private void modoIADefesaAtaque(InterfaceJogo controleJogo) {

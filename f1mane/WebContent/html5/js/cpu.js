@@ -22,6 +22,7 @@ var pilotosTravadaFumacaMap = new Map();
 var pilotosAereofolioMap = new Map();
 var ptsPistaMap = new Map();
 var ptsPistaMapAnterior = new Map();
+var showFps = false;
 
 var loader = $('<div class="loader"></div>');
 $('body').prepend(loader);

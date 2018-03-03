@@ -11,7 +11,6 @@ var corVermelho = "rgba(255, 0, 0, 0.6)";
 var contCargaErs;
 var confirmaSair = false;
 var imgFaroisApagadosCont = 0;
-var showFps = false;
 
 function ctl_desenha() {
 	largura = maneCanvas.width;
@@ -788,9 +787,6 @@ function ctl_desenhaInfoEsquerda() {
 		maneContext.fillStyle = corFundo
 		maneContext.font = '14px sans-serif';
 		var circText = dadosJogo.nomeCircuito;
-		if(showFps){
-			circText += ' '+fps.frameRate()+' Fps';
-		}
 		maneContext.fillRect(x, y, maneContext.measureText(circText).width+10, 20);
 		maneContext.fillStyle = "black"
 		maneContext.fillText(circText, x + 5, y + 15);
@@ -958,6 +954,17 @@ function ctl_desenhaInfoEsquerda() {
 			var tErs = maneContext.measureText(dadosParciais.cargaErs + '%').width;
 			maneContext.fillText(dadosParciais.cargaErs + '%', x + (90-tErs), y + 15);
 		}
+	}
+	
+	if(showFps){
+		if(altura > largura || alternador){
+			y += 30;	
+		}
+		maneContext.fillStyle = corFundo
+		maneContext.fillRect(x, y, 94, 20);
+		maneContext.font = '14px sans-serif';
+		maneContext.fillStyle = "black"
+		maneContext.fillText(fps.frameRate()+' Fps', x + 5, y + 15);
 	}
 	maneContext.closePath();
 	maneContext.stroke();
@@ -1314,7 +1321,7 @@ function ctl_click(event) {
 	var y = event.pageY;
 	if (y > 10 && y < 20
 			&& x > 10
-			&& x < 50){
+			&& x < 100){
 		showFps = true;
 		return;
 	}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="../jquery/jquery-3.2.1.min.js"></script>
+<script src="../../jquery/jquery-3.2.1.min.js"></script>
 </head>
 <body style="width: 100%; height: 100%; margin: 0px; overflow: hidden">
 	<canvas id="myCanvas"></canvas>
@@ -70,7 +70,7 @@
 				success : function(response) {
 					debugger;
 					circuito = response;
-					imgBg.src = "../sowbreira/f1mane/recursos/"+response.backGround;
+					imgBg.src = "https://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/"+response.backGround;
 					iniciarJogo();
 				},
 				error : function(xhRequest, ErrorText, thrownError) {

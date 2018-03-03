@@ -81,12 +81,6 @@ function vdp_desenha(fps) {
 	vdp_desenhaClima();
 	vdp_pow();
 	ctl_desenha();
-	// vdp_desenhaObjs();
-	// if (fps != null) {
-	// maneContext.fillStyle = 'black';
-	// maneContext.fillText("FPS: " + fps.frameRate(), 4, 30);
-	// }
-
 }
 
 function vdp_setup() {
@@ -703,7 +697,7 @@ function vdp_desenhaCarrosCima() {
 		if (emMovimento && pilotosEfeitosMap.get(piloto.idPiloto)) {
 			vdp_desenhaTravadaRoda(piloto, x, y, angulo);
 		}
-		if (piloto.idPiloto == idPilotoSelecionado) {
+		if (showFps && piloto.idPiloto == idPilotoSelecionado) {
 			ponto = vdp_obterPonto(piloto, true);
 			if (ponto == null || ponto.x == null || ponto.y == null) {
 				continue;
