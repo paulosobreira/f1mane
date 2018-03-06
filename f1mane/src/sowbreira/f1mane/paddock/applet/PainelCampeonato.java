@@ -646,7 +646,7 @@ public class PainelCampeonato extends JPanel {
 				return Lang.msg("302");
 			}
 		});
-		p1.add(new JLabel(!campeonato.isSemReabasteciemnto()
+		p1.add(new JLabel(!campeonato.isSemReabastecimento()
 				? Lang.msg("SIM")
 				: Lang.msg("NAO")));
 

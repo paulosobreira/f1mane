@@ -186,7 +186,7 @@ public class PainelMenuLocal {
 	private RoundRectangle2D trocaPneusRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 0, 0);
 
-	private RoundRectangle2D reabasteciemtoRect = new RoundRectangle2D.Double(0,
+	private RoundRectangle2D reabastecimentoRect = new RoundRectangle2D.Double(0,
 			0, 1, 1, 0, 0);
 
 	private RoundRectangle2D detalhesCampeonatoRct = new RoundRectangle2D.Double(
@@ -226,7 +226,7 @@ public class PainelMenuLocal {
 
 	private boolean trocaPneus = true;
 
-	private boolean reabasteciemto = false;
+	private boolean reabastecimento = false;
 
 	private boolean desenhaCarregando = false;
 
@@ -577,8 +577,8 @@ public class PainelMenuLocal {
 			return;
 		}
 
-		if (reabasteciemtoRect.contains(e.getPoint())) {
-			reabasteciemto = !reabasteciemto;
+		if (reabastecimentoRect.contains(e.getPoint())) {
+			reabastecimento = !reabastecimento;
 			return;
 		}
 		if (proxTemporadaRect.contains(e.getPoint())) {
@@ -981,7 +981,7 @@ public class PainelMenuLocal {
 		circuitoSelecionado = campeonato.getCircuitoVez();
 		numVoltasSelecionado = campeonato.getQtdeVoltas();
 		nivelSelecionado = campeonato.getNivel();
-		reabasteciemto = campeonato.isReabasteciemnto();
+		reabastecimento = campeonato.isReabastecimento();
 		kers = campeonato.isDrs();
 		drs = campeonato.isDrs();
 		trocaPneus = campeonato.isTrocaPneus();
@@ -1103,16 +1103,16 @@ public class PainelMenuLocal {
 
 		x += (tamDrs + 30);
 
-		String reabasteciemtoTxt = Lang.msg("reabasteciemto").toUpperCase();
-		int tamReabasteciemto = Util.calculaLarguraText(reabasteciemtoTxt, g2d);
+		String reabastecimentoTxt = Lang.msg("reabastecimento").toUpperCase();
+		int tamReabastecimento = Util.calculaLarguraText(reabastecimentoTxt, g2d);
 		g2d.setColor(lightWhite);
-		g2d.fillRoundRect(x - 15, y - 12, tamReabasteciemto + 10, 32, 0, 0);
-		if (reabasteciemto) {
+		g2d.fillRoundRect(x - 15, y - 12, tamReabastecimento + 10, 32, 0, 0);
+		if (reabastecimento) {
 			g2d.setColor(yel);
-			g2d.drawRoundRect(x - 15, y - 12, tamReabasteciemto + 10, 32, 0, 0);
+			g2d.drawRoundRect(x - 15, y - 12, tamReabastecimento + 10, 32, 0, 0);
 		}
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(reabasteciemtoTxt, x - 10, y + 15);
+		g2d.drawString(reabastecimentoTxt, x - 10, y + 15);
 
 		x = xOri + 15;
 
@@ -1835,7 +1835,7 @@ public class PainelMenuLocal {
 										turbulenciaSelecionado,
 										climaSelecionado, nivelSelecionado,
 										pilotoSelecionado, kers, drs,
-										trocaPneus, reabasteciemto,
+										trocaPneus, reabastecimento,
 										combustivelSelecionado, asaSelecionado,
 										pneuSelecionado);
 								renderThreadAlive = false;
@@ -1890,7 +1890,7 @@ public class PainelMenuLocal {
 						cirucitosCampeonato, temporadaSelecionada,
 						numVoltasSelecionado, turbulenciaSelecionado,
 						climaSelecionado, nivelSelecionado, pilotoSelecionado,
-						kers, drs, trocaPneus, reabasteciemto);
+						kers, drs, trocaPneus, reabastecimento);
 				MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
 			} catch (Exception e1) {
 				Logger.logarExept(e1);
@@ -2287,17 +2287,17 @@ public class PainelMenuLocal {
 
 		x += (tamDrs + 30);
 
-		String reabasteciemtoTxt = Lang.msg("reabasteciemto").toUpperCase();
-		int tamReabasteciemto = Util.calculaLarguraText(reabasteciemtoTxt, g2d);
-		reabasteciemtoRect.setFrame(x - 15, y - 12, tamReabasteciemto + 10, 32);
+		String reabastecimentoTxt = Lang.msg("reabastecimento").toUpperCase();
+		int tamReabastecimento = Util.calculaLarguraText(reabastecimentoTxt, g2d);
+		reabastecimentoRect.setFrame(x - 15, y - 12, tamReabastecimento + 10, 32);
 		g2d.setColor(lightWhite);
-		g2d.fill(reabasteciemtoRect);
-		if (reabasteciemto) {
+		g2d.fill(reabastecimentoRect);
+		if (reabastecimento) {
 			g2d.setColor(yel);
-			g2d.draw(reabasteciemtoRect);
+			g2d.draw(reabastecimentoRect);
 		}
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(reabasteciemtoTxt, x - 10, y + 15);
+		g2d.drawString(reabastecimentoTxt, x - 10, y + 15);
 
 		x = xOri;
 
@@ -3029,12 +3029,12 @@ public class PainelMenuLocal {
 		this.trocaPneusRect = trocaPneusRect;
 	}
 
-	public RoundRectangle2D getReabasteciemtoRect() {
-		return reabasteciemtoRect;
+	public RoundRectangle2D getReabastecimentoRect() {
+		return reabastecimentoRect;
 	}
 
-	public void setReabasteciemtoRect(RoundRectangle2D reabasteciemtoRect) {
-		this.reabasteciemtoRect = reabasteciemtoRect;
+	public void setReabastecimentoRect(RoundRectangle2D reabastecimentoRect) {
+		this.reabastecimentoRect = reabastecimentoRect;
 	}
 
 	public RoundRectangle2D getProximoMenuRect() {

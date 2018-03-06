@@ -325,7 +325,7 @@ public interface InterfaceJogo {
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabasteciemto,
+			boolean drs, boolean trocaPneus, boolean reabastecimento,
 			int combustivelSelecionado, String asaSelecionado,
 			String pneuSelecionado) throws Exception;
 
@@ -335,7 +335,7 @@ public interface InterfaceJogo {
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabasteciemto);
+			boolean drs, boolean trocaPneus, boolean reabastecimento);
 
 	public void voltaMenuPrincipal();
 

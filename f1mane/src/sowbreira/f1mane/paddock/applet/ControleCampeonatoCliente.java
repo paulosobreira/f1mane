@@ -379,7 +379,7 @@ public class ControleCampeonatoCliente {
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
 				.getSelectedItem()));
-		campeonato.setSemReabasteciemnto(!this.reabastacimento.isSelected());
+		campeonato.setSemReabastecimento(!this.reabastacimento.isSelected());
 		campeonato.setSemTrocaPneus(!this.trocaPneu.isSelected());
 		campeonato.setKers(this.kers.isSelected());
 		campeonato.setDrs(this.drs.isSelected());
