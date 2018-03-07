@@ -7,6 +7,7 @@ var cargaErs;
 var telaCheia = false;
 var corFundo = "rgba(255, 255, 255, 0.6)";
 var corAmarelo = "rgba(255, 255, 0, 0.6)";
+var corBabaca = "rgba(186, 186, 202, 0.6)";
 var corVermelho = "rgba(255, 0, 0, 0.6)";
 var contCargaErs;
 var confirmaSair = false;
@@ -88,10 +89,10 @@ function ctl_desenhaQualificacao(){
 		maneContext.fillText(nmPiloto, x, y + 15);
 		
 		if (idPilotoSelecionado == piloto.id) {
-			maneContext.fillStyle = '#00FF00';
+			maneContext.fillStyle = '#00ff00';
 			maneContext.fillRect(x - 10, y+20, 130, 5);
 		} else if (piloto.jogadorHumano) {
-			maneContext.fillStyle = '#FFFF00';
+			maneContext.fillStyle = '#ffff00';
 			maneContext.fillRect(x - 10, y+20, 130, 5);
 		}
 		
@@ -119,13 +120,12 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	var x = centroX - 70;
 	var y = centroY - 50;
 	maneContext.fillStyle = corFundo
-	var iniciaEm = lang_text('iniciaEm')+' : ';
+	var iniciaEm = lang_text('iniciaEm')+' : '+dadosJogo.segundosParaIniciar;
 	maneContext.font = '24px sans-serif';
-	var laruraTxt = maneContext.measureText(iniciaEm+' XX ').width+15;
-	maneContext.fillRect(x-10, y, laruraTxt, 40);
+	var laruraTxt = maneContext.measureText(iniciaEm).width+30;
+	maneContext.fillRect(centroX-(laruraTxt/2), y, laruraTxt, 40);
 	maneContext.fillStyle = "black"
-	maneContext.fillText(iniciaEm, x + 5, y + 28);
-	maneContext.fillText(dadosJogo.segundosParaIniciar, x + 120, y + 28);
+	maneContext.fillText(iniciaEm, centroX-(laruraTxt/2)+15, y + 28);
 	
 }
 
@@ -133,112 +133,129 @@ function ctl_desenhaControles() {
 	if (!dadosParciais) {
 		return;
 	}
-	controles.forEach(function(controle) {
-				if (ctl_removeControle(controle)) {
-					return;
-				}
-				maneContext.beginPath();
-				maneContext.setLineDash([]);
-				if (controle.evalY) {
-					controle.y = eval(controle.evalY);
-				}
-				if (controle.evalX) {
-					controle.x = eval(controle.evalX);
-				}
+	for (var i = 0; i < controles.length; i++) {
+		var controle = controles[i];
+		if (ctl_removeControle(controle)) {
+			continue;
+		}
+		maneContext.beginPath();
+		if (controle.evalY) {
+			controle.y = eval(controle.evalY);
+		}
+		if (controle.evalX) {
+			controle.x = eval(controle.evalX);
+		}
 
-				maneContext.strokeStyle = controle.cor;
+		var cor = controle.cor;
 
-				if (controle.tipo == 'controleMotor') {
-					if (dadosParciais.giro == 1 && controle.valor == 'GIRO_MIN') {
-						maneContext.strokeStyle = '#00FF00';
-					} else if (dadosParciais.giro == 5
-							&& controle.valor == 'GIRO_NOR') {
-						maneContext.strokeStyle = '#FFFF00';
-					} else if (dadosParciais.giro == 9
-							&& controle.valor == 'GIRO_MAX') {
-						maneContext.strokeStyle = '#FF0000';
-					}
-				}
-				if (controle.tipo == 'controlePiloto') {
-					if (dadosParciais.modoPilotar == 'LENTO'
-							&& controle.valor == 'LENTO') {
-						maneContext.strokeStyle = '#00FF00';
-					} else if (dadosParciais.modoPilotar == 'NORMAL'
-							&& controle.valor == 'NORMAL') {
-						maneContext.strokeStyle = '#FFFF00';
-					} else if (dadosParciais.modoPilotar == 'AGRESSIVO'
-							&& controle.valor == 'AGRESSIVO') {
-						maneContext.strokeStyle = '#FF0000';
-					}
-				}
+		if (controle.tipo == 'controleMotor') {
+			if (dadosParciais.giro == 1 && controle.valor == 'GIRO_MIN') {
+				cor = '#00ff00';
+			} else if (dadosParciais.giro == 5
+					&& controle.valor == 'GIRO_NOR') {
+				cor = '#ffff00';
+			} else if (dadosParciais.giro == 9
+					&& controle.valor == 'GIRO_MAX') {
+				cor = '#ff0000';
+			}
+		}
+		if (controle.tipo == 'controlePiloto') {
+			if (dadosParciais.modoPilotar == 'LENTO'
+					&& controle.valor == 'LENTO') {
+				cor = '#00ff00';
+			} else if (dadosParciais.modoPilotar == 'NORMAL'
+					&& controle.valor == 'NORMAL') {
+				cor = '#ffff00';
+			} else if (dadosParciais.modoPilotar == 'AGRESSIVO'
+					&& controle.valor == 'AGRESSIVO') {
+				cor = '#ff0000';
+			}
+		}
 
-				if (controle.tipo == 'Ers' && dadosJogo.ers) {
-					if (!cargaErs) {
-						cargaErs = dadosParciais.cargaErs;
-					}
-					if (dadosParciais.cargaErs != cargaErs) {
-						cargaErs = dadosParciais.cargaErs;
-						contCargaErs = 25;
-					}
-					if(contCargaErs>0){
-						contCargaErs--;
-						maneContext.strokeStyle = '#00FF00';
-					}
-				}
+		if (controle.tipo == 'Ers' && dadosJogo.ers) {
+			if (!cargaErs) {
+				cargaErs = dadosParciais.cargaErs;
+			}
+			if (dadosParciais.cargaErs != cargaErs) {
+				cargaErs = dadosParciais.cargaErs;
+				contCargaErs = 25;
+			}
+			if(contCargaErs>0){
+				contCargaErs--;
+				cor = '#00ff00';
+			}
+		}
 
-				if (controle.tipo == 'Drs' && dadosJogo.drs
-						&& dadosParciais.asa == 'MENOS_ASA') {
-					maneContext.strokeStyle = '#00FF00';
-				}
+		if (controle.tipo == 'Drs' && dadosJogo.drs
+				&& dadosParciais.asa == 'MENOS_ASA') {
+			cor = '#00ff00';
+		}
 
-				if (controle.tipo == 'Pneu'
-						&& dadosParciais.tpPneusBox == controle.valor) {
-					maneContext.strokeStyle = '#FFFF00';
-				}
+		if (controle.tipo == 'Pneu'
+				&& dadosParciais.tpPneusBox == controle.valor) {
+			cor = '#ffff00';
+		}
 
-				if (controle.tipo == 'Asa'
-						&& dadosParciais.asaBox == controle.valor) {
-					maneContext.strokeStyle = '#FFFF00';
-				}
-				
-				if (controle.tipo == 'Box' && dadosParciais.box) {
-					maneContext.strokeStyle = '#FFFF00';
-				}
+		if (controle.tipo == 'Asa'
+				&& dadosParciais.asaBox == controle.valor) {
+			cor = '#ffff00';
+		}
+		
+		if (controle.tipo == 'Box' && dadosParciais.box) {
+			cor = '#ffff00';
+		}
 
-				if (controle.tipo == 'CombustivelValor') {
-					controle.valor = dadosParciais.combustBox;
-					controle.exibir = dadosParciais.combustBox;
-				}
+		if (controle.tipo == 'CombustivelValor') {
+			controle.valor = dadosParciais.combustBox;
+			controle.exibir = dadosParciais.combustBox;
+		}
 
-				maneContext.font = '30px sans-serif';
-				maneContext.fillStyle = "black"
-			    var verImg = maneContext.strokeStyle != controle.cor || (controle.tipo != 'controlePiloto' && controle.tipo != 'controleMotor');				
-				if (controle.img && verImg) {
-					maneContext.rect(controle.x, controle.y,
-							controle.width + 5, controle.height + 5);
-					maneContext.drawImage(controle.img, controle.x, controle.y);
-				} else {
-					if(controle.larguraTexto){
-						var laruraTxt = maneContext.measureText(controle.exibir).width + 10;
-						maneContext.rect(controle.x, controle.y, laruraTxt,
-								controle.height);
-					}else{
-						maneContext.rect(controle.x, controle.y, controle.width,
-								controle.height);
-					}
-					if (controle.centralizaTexto) {
-						maneContext.fillText(controle.exibir, controle.x
-								+ (controle.width / 2) - 10, controle.y
-								+ (controle.height / 2) + 10);
-					} else {
-						maneContext.fillText(controle.exibir, controle.x + 5,
-								controle.y + (controle.height / 2) + 10);
-
-					}
+		maneContext.font = '30px sans-serif';
+		maneContext.fillStyle = "black"
+	    var verImg = cor != controle.cor || (controle.tipo != 'controlePiloto' && controle.tipo != 'controleMotor');				
+		if (controle.img && verImg) {
+			maneContext.beginPath();
+			maneContext.strokeStyle = cor;
+			maneContext.rect(controle.x, controle.y,
+					controle.width + 5, controle.height + 5);
+			maneContext.closePath();
+			maneContext.stroke();
+			maneContext.drawImage(controle.img, controle.x, controle.y);
+		} else {
+			maneContext.fillStyle = controle.cor;
+			if(controle.larguraTexto){
+				var laruraTxt = maneContext.measureText(controle.exibir).width + 10;
+				maneContext.fillRect(controle.x, controle.y, laruraTxt,	controle.height);
+				if(cor!=controle.cor){
+					maneContext.beginPath();
+					maneContext.strokeStyle = cor;
+					maneContext.rect(controle.x, controle.y, laruraTxt,	controle.height);
+					maneContext.closePath();
+					maneContext.stroke();
 				}
-				maneContext.closePath();
-				maneContext.stroke();
-			});
+			}else{
+				maneContext.fillRect(controle.x, controle.y, controle.width, controle.height);
+				if(cor!=controle.cor){
+					maneContext.beginPath();
+					maneContext.strokeStyle = cor;
+					maneContext.rect(controle.x, controle.y, controle.width,	controle.height);	
+					maneContext.closePath();
+					maneContext.stroke();
+				}
+			}
+			maneContext.fillStyle = "black"
+			if (controle.centralizaTexto) {
+				maneContext.fillText(controle.exibir, controle.x
+						+ (controle.width / 2) - 10, controle.y
+						+ (controle.height / 2) + 10);
+			} else {
+				maneContext.fillText(controle.exibir, controle.x + 5,
+						controle.y + (controle.height / 2) + 10);
+			}
+		}
+		maneContext.closePath();
+		maneContext.stroke();
+	}
 }
 
 function ctl_mudaTracadoPiloto(event) {
@@ -370,7 +387,7 @@ function ctl_desenhaInfoAsa() {
 	}else if(dadosParciais.asa == 'MENOS_ASA'){
 		img = menosAsa;
 	}
-	maneContext.strokeStyle = '#babaca';
+	maneContext.strokeStyle = corBabaca;
 	maneContext.rect(x, y, img.width + 5, img.height + 5);
 	maneContext.drawImage(img, x, y);
 }
@@ -719,10 +736,10 @@ function ctl_desenhaInfoDireita() {
 		maneContext.fillStyle = "black"
 		maneContext.fillText('1 ' + nomePiloto, x + 10, y + 15);
 		if (idPilotoSelecionado == piloto.idPiloto) {
-			maneContext.strokeStyle = '#00FF00';
+			maneContext.strokeStyle = '#00ff00';
 			maneContext.rect(x + 5, y, larg, 20);
 		} else if (piloto.humano) {
-			maneContext.strokeStyle = '#FFFF00';
+			maneContext.strokeStyle = '#ffff00';
 			maneContext.rect(x + 5, y, larg, 20);
 		}
 		maneContext.closePath();
@@ -756,10 +773,10 @@ function ctl_desenhaInfoDireita() {
 			maneContext.fillStyle = "black"
 			maneContext.fillText((i + 1) + ' ' + nomePiloto, x + 10, y + 15);
 			if (idPilotoSelecionado == piloto.idPiloto) {
-				maneContext.strokeStyle = '#00FF00';
+				maneContext.strokeStyle = '#00ff00';
 				maneContext.rect(x + 5, y, larg, 20);
 			} else if (piloto.humano) {
-				maneContext.strokeStyle = '#FFFF00';
+				maneContext.strokeStyle = '#ffff00';
 				maneContext.rect(x + 5, y, larg, 20);
 			}
 			y += 30;
@@ -847,7 +864,7 @@ function ctl_desenhaInfoEsquerda() {
 		}
 		if (pitLane || dadosParciais.posisPack.safetyNoId != 0) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = '#FFFF00';
+			maneContext.strokeStyle = '#ffff00';
 			maneContext.rect(x, y, 94, 20);
 			maneContext.closePath();
 			maneContext.stroke();			
@@ -867,13 +884,23 @@ function ctl_desenhaInfoEsquerda() {
 		var tCombust = maneContext.measureText(' '+dadosParciais.pCombust + '%').width;
 		maneContext.fillText(' '+dadosParciais.pCombust + '%', x + (90-tCombust), y + 15);
 
-		if (dadosParciais.pCombust < 15) {
+		if (dadosParciais.pCombust > 10 && dadosParciais.pCombust < 20)  {
 			maneContext.beginPath();
-			maneContext.strokeStyle = '#FF0000';
+			maneContext.strokeStyle = '#ffff00';
 			maneContext.rect(x, y, 94, 20);
 			maneContext.closePath();
 			maneContext.stroke();			
 		}
+		
+		if (dadosParciais.pCombust < 10) {
+			maneContext.beginPath();
+			maneContext.strokeStyle = '#ff0000';
+			maneContext.rect(x, y, 94, 20);
+			maneContext.closePath();
+			maneContext.stroke();			
+		}
+		
+		
 
 		y += 30;
 
@@ -885,9 +912,17 @@ function ctl_desenhaInfoEsquerda() {
 		var tPneus = maneContext.measureText(' '+dadosParciais.pPneus + '%').width;
 		maneContext.fillText(' '+dadosParciais.pPneus + '%', x + (90-tPneus), y + 15);
 		
-		if (dadosParciais.pPneus < 15) {
+		if (dadosParciais.pPneus > 10 && dadosParciais.pPneus < 20 ) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = '#FF0000';
+			maneContext.strokeStyle = '#ffff00';
+			maneContext.rect(x, y, 94, 20);
+			maneContext.closePath();
+			maneContext.stroke();			
+		}
+
+		if (dadosParciais.pPneus < 10) {
+			maneContext.beginPath();
+			maneContext.strokeStyle = '#ff0000';
 			maneContext.rect(x, y, 94, 20);
 			maneContext.closePath();
 			maneContext.stroke();			
@@ -903,21 +938,29 @@ function ctl_desenhaInfoEsquerda() {
 		var tMotor = maneContext.measureText(' '+dadosParciais.pMotor + '%').width;
 		maneContext.fillText(' '+dadosParciais.pMotor + '%', x + (90-tMotor), y + 15);
 
-		if (dadosParciais.pMotor < 15) {
+		if (dadosParciais.pMotor > 10 && dadosParciais.pMotor <20) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = '#FF0000';
+			maneContext.strokeStyle = '#ffff00';
 			maneContext.rect(x, y, 94, 20);
 			maneContext.closePath();
 			maneContext.stroke();
-		}else if (dadosParciais.alertaMotor) {
+		}		
+		
+		if (dadosParciais.pMotor < 10) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = '#FFFF00';
+			maneContext.strokeStyle = '#ff0000';
 			maneContext.rect(x, y, 94, 20);
 			maneContext.closePath();
 			maneContext.stroke();
 		}
 		
-
+		if (dadosParciais.alertaMotor) {
+			maneContext.beginPath();
+			maneContext.strokeStyle = '#ffff00';
+			maneContext.rect(x+2, y+2, 92,18);
+			maneContext.closePath();
+			maneContext.stroke();
+		}
 
 		y += 30;
 
@@ -932,13 +975,13 @@ function ctl_desenhaInfoEsquerda() {
 		
 		if (dadosParciais.stress > 90) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = '#FF0000';
+			maneContext.strokeStyle = '#ff0000';
 			maneContext.rect(x, y, 94, 20);
 			maneContext.closePath();
 			maneContext.stroke();
 		}else if (dadosParciais.stress > 70) {
 			maneContext.beginPath();
-			maneContext.strokeStyle = '#FFFF00';
+			maneContext.strokeStyle = '#ffff00';
 			maneContext.rect(x, y, 94, 20);
 			maneContext.closePath();
 			maneContext.stroke();
@@ -1019,7 +1062,7 @@ function ctl_removeControle(controle) {
 
 function ctl_gerarControles() {
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'GIRO_MIN',
 		exibir : '1',
 		centralizaTexto : true,
@@ -1033,7 +1076,7 @@ function ctl_gerarControles() {
 		img : motor
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'GIRO_NOR',
 		exibir : '2',
 		tipo : 'controleMotor',
@@ -1047,7 +1090,7 @@ function ctl_gerarControles() {
 		img : motor
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'GIRO_MAX',
 		exibir : '3',
 		tipo : 'controleMotor',
@@ -1062,7 +1105,7 @@ function ctl_gerarControles() {
 	});
 
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'AGRESSIVO',
 		exibir : '3',
 		tipo : 'controlePiloto',
@@ -1077,7 +1120,7 @@ function ctl_gerarControles() {
 		img : capacete
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'NORMAL',
 		exibir : '2',
 		centralizaTexto : true,
@@ -1092,7 +1135,7 @@ function ctl_gerarControles() {
 		img : capacete
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'LENTO',
 		exibir : '1',
 		centralizaTexto : true,
@@ -1107,7 +1150,7 @@ function ctl_gerarControles() {
 		img : capacete
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'E',
 		exibir : 'Ers',
 		tipo : 'Ers',
@@ -1120,7 +1163,7 @@ function ctl_gerarControles() {
 		x : 10
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'D',
 		exibir : 'Drs',
 		tipo : 'Drs',
@@ -1136,13 +1179,13 @@ function ctl_gerarControles() {
 
 	// Box
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'BOX',
 		exibir : 'BOX',
 		tipo : 'Box',
 		centralizaTexto : false,
 		larguraTexto : false,
-		width : 80,
+		width : 75,
 		height : 40,
 		y : 10,
 		evalX : '(maneCanvas.width/2 - 40);',
@@ -1150,7 +1193,7 @@ function ctl_gerarControles() {
 	});
 
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'TIPO_PNEU_MOLE',
 		exibir : 'M',
 		tipo : 'Pneu',
@@ -1164,7 +1207,7 @@ function ctl_gerarControles() {
 		img : imgPneuM
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'TIPO_PNEU_DURO',
 		exibir : 'D',
 		tipo : 'Pneu',
@@ -1178,7 +1221,7 @@ function ctl_gerarControles() {
 		img : imgPneuD
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'TIPO_PNEU_CHUVA',
 		exibir : 'C',
 		tipo : 'Pneu',
@@ -1193,7 +1236,7 @@ function ctl_gerarControles() {
 	});
 
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'MENOS_ASA',
 		exibir : '1',
 		tipo : 'Asa',
@@ -1207,7 +1250,7 @@ function ctl_gerarControles() {
 		img : menosAsa
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'ASA_NORMAL',
 		exibir : '2',
 		tipo : 'Asa',
@@ -1221,7 +1264,7 @@ function ctl_gerarControles() {
 		img : normalAsa
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : 'MAIS_ASA',
 		exibir : '3',
 		tipo : 'Asa',
@@ -1236,7 +1279,7 @@ function ctl_gerarControles() {
 	});
 
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : '-',
 		exibir : '-',
 		tipo : 'Combustivel',
@@ -1249,7 +1292,7 @@ function ctl_gerarControles() {
 		x : 0
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : '',
 		exibir : '100',
 		tipo : 'CombustivelValor',
@@ -1262,7 +1305,7 @@ function ctl_gerarControles() {
 		x : 0
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : '+',
 		exibir : '+',
 		tipo : 'Combustivel',
@@ -1275,7 +1318,7 @@ function ctl_gerarControles() {
 		x : 0
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : '',
 		exibir : lang_text('sairJogo'),
 		tipo : 'perguntaSair',
@@ -1288,7 +1331,7 @@ function ctl_gerarControles() {
 		x : 0
 	});	
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : '',
 		exibir : lang_text('cancela'),
 		tipo : 'cancelaSair',
@@ -1297,11 +1340,11 @@ function ctl_gerarControles() {
 		width : 120,
 		height : 40,
 		y : 210,
-		evalX : '(maneCanvas.width/2 - 160);',
+		evalX : '(centroX-((maneContext.measureText(controle.exibir).width + 80)/2))',
 		x : 0
 	});
 	controles.push({
-		cor : '#babaca',
+		cor : corBabaca,
 		valor : '',
 		exibir : lang_text('095'),
 		tipo : 'confirmaSair',
@@ -1309,8 +1352,8 @@ function ctl_gerarControles() {
 		larguraTexto : true,
 		width : 190,
 		height : 40,
-		y : 210,
-		evalX : '(maneCanvas.width/2 - 30);',
+		evalY : '(maneCanvas.height-50)',
+		evalX : '(centroX-((maneContext.measureText(controle.exibir).width + 30)/2))',
 		x : 0
 	});	
 }
@@ -1321,7 +1364,7 @@ function ctl_click(event) {
 	var y = event.pageY;
 	if (y > 10 && y < 20
 			&& x > 10
-			&& x < 100){
+			&& x < 200){
 		showFps = true;
 		return;
 	}

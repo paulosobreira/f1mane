@@ -62,8 +62,8 @@ public class ControleSafetyCar {
 		if (ganho > 40) {
 			ganho = 40;
 		}
-		if (ganho < 10 && piloto.getDiferencaParaProximo() > 100) {
-			ganho = 10;
+		if (ganho < 15 && piloto.getDiferencaParaProximo() > 100) {
+			ganho = 15;
 		}
 		if (piloto.getTracado() == 4) {
 			piloto.mudarTracado(2, controleJogo);

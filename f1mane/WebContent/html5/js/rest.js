@@ -131,6 +131,40 @@ function rest_dadosParciais() {
 	});
 }
 
+
+function rest_sairJogo() {
+	if (dadosJogo == null || dadosJogo.nomeJogo == null) {
+		console.log('dadosJogo ==null || dadosJogo.nomeJogo == null');
+		return;
+	}
+	$.ajax({
+		type : "GET",
+		url : "/f1mane/rest/letsRace/sairJogo/" + dadosJogo.nomeJogo,
+		headers : {
+			'token' : token
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(response) {
+		},
+		timeout : limite,
+		error : function(xhRequest, errorText, thrownError) {
+			carregando = false;
+			if (errorText == 'timeout') {
+				return;
+			}
+			if (xhRequest.status == 401) {
+				window.location.href = "index.html";
+			}
+			try {
+				console.log('rest_sairJogo '+xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	});
+}
+
 function rest_potenciaMotor(valor) {
 	$.ajax({
 		type : "GET",

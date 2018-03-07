@@ -1083,7 +1083,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		/**
 		 * Devagarinho qdo a corrida termina
 		 */
-		if ((controleJogo.isCorridaTerminada() && isRecebeuBanderada())) {
+		if (!getNoAtual().verificaRetaOuLargada()
+				&& controleJogo.isCorridaTerminada() && isRecebeuBanderada()) {
 			double novoModificador = (controleJogo.getCircuito()
 					.getMultiplciador()) * 2;
 			index += novoModificador;
@@ -1204,8 +1205,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
-		if (getCarro().getPorcentagemDesgasteMotor() <= 25
-				|| getCarro().verificaMotorSuperAquecido()) {
+		if (getCarro().verificaMotorSuperAquecido()) {
 			setAlertaMotor(true);
 		}
 

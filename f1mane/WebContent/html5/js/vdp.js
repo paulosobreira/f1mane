@@ -551,10 +551,10 @@ function vdp_desenhaNomesCima() {
 		}
 		var laruraTxt = maneContext.measureText(nmPiloto).width + 10;
 		if (idPilotoSelecionado == piloto.idPiloto) {
-			maneContext.strokeStyle = '#00FF00';
+			maneContext.strokeStyle = '#00ff00';
 			maneContext.rect(x - 5, y, laruraTxt, 20);
 		} else if (piloto.humano) {
-			maneContext.strokeStyle = '#FFFF00';
+			maneContext.strokeStyle = '#ffff00';
 			maneContext.rect(x - 5, y, laruraTxt, 20);
 		}
 		maneContext.fillStyle = corFundo
@@ -700,6 +700,12 @@ function vdp_desenhaCarrosCima() {
 			} else {
 				ctxCarro.drawImage(imgCarro, ajsCarroX, ajsCarroY);
 			}
+//			ctxCarro.beginPath();
+//			ctxCarro.strokeStyle = "black"
+//			ctxCarro.rect(1, 1, cvCarro.width - 1, cvCarro.height - 1);
+//			ctxCarro.closePath();
+//			ctxCarro.stroke();
+
 			var rotacionarCarro = vdp_rotacionar(cvCarro, angulo);
 			var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x - ajsCarroX, y - ajsCarroY, no, piloto.idPiloto);
 			maneContext.drawImage(blendCarro, x - ajsCarroX, y - ajsCarroY);

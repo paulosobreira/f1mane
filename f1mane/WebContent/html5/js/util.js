@@ -36,6 +36,9 @@ function getParameter(val) {
 }
 
 function formatarTempo(value) {
+	if(value == null){
+		return '';
+	}
 	var minu = Math.floor(value / 60000);
 	var seg = Math.floor((value - (minu * 60000)) / 1000);
 	var mili = value - ((minu * 60000) + (seg * 1000));

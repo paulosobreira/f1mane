@@ -166,6 +166,7 @@ function cpu_carregaDadosPilotos() {
 }
 
 function cpu_sair() {
+	rest_sairJogo();
 	ativo = false;
 	clearInterval(main);
 	window.location.href = "index.html";

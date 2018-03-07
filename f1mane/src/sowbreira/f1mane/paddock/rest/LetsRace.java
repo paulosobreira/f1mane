@@ -88,6 +88,20 @@ public class LetsRace {
 	}
 
 	@GET
+	@Path("/sairJogo/{nomeJogo}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response sairJogo(@HeaderParam("token") String token,
+			@PathParam("nomeJogo") String nomeJogo) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		controlePaddock.sairJogoToken(nomeJogo,token);
+		return Response.status(200).build();
+	}
+
+	@GET
 	@Compress
 	@Path("/dadosParciais/{nomeJogo}/{idPiloto}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -434,8 +448,8 @@ public class LetsRace {
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
 
-//		 dadosCriarJogo.setClima(Clima.CHUVA);
-//		 dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
+		// dadosCriarJogo.setClima(Clima.CHUVA);
+		// dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
 		return dadosCriarJogo;
 	}
 
