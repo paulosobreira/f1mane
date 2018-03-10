@@ -1682,6 +1682,7 @@ public class ControleJogoLocal extends ControleRecursos
 	public void setRecebeuBanderada(Piloto piloto) {
 		if (!piloto.isRecebeuBanderada()) {
 			piloto.setRecebeuBanderada(true);
+			piloto.setPosicaoBandeirada(piloto.getPosicao());
 			if (piloto.getCarroPilotoAtras() != null) {
 				piloto.setVantagem(piloto.getCalculaSegundosParaAnterior());
 			}

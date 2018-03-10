@@ -16,12 +16,13 @@ var alternadorValor = 0;
 
 var pilotosMap = new Map();
 var pilotosDnfMap = new Map();
+var pilotosBandeirada = new Map();
 var pilotosFaiscaMap = new Map();
 var pilotosTravadaMap = new Map();
 var pilotosTravadaFumacaMap = new Map();
 var pilotosAereofolioMap = new Map();
 var ptsPistaMap = new Map();
-var ptsPistaMapAnterior = new Map();
+var idNoAnterior = new Map();
 var showFps = false;
 
 var loader = $('<div class="loader"></div>');
@@ -54,8 +55,7 @@ function cpu_main() {
 		ctl_gerarControles();
 		contCarregouMidia = 10;
 	}
-	if (dadosJogo != null && circuito != null && ativo
-			&& contCarregouMidia == 0) {
+	if (dadosJogo != null && circuito != null && ativo && contCarregouMidia == 0) {
 		$loading.hide();
 		if ('07' == dadosJogo.estado || '10' == dadosJogo.estado) {
 			rest_dadosJogo(nomeJogo);
@@ -80,20 +80,7 @@ function cpu_dadosParciaisAnterior() {
 	var posicaoPilotosAnt = dadosParciais.posisPack;
 	for (var i = 0; i < posicaoPilotosAnt.posis.length; i++) {
 		var piloto = posicaoPilotosAnt.posis[i];
-		var status = new String(piloto.status);
-		if (status.startsWith("P")) {
-			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace(
-					"P", "")));
-		} else if (status.startsWith("T")) {
-			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace(
-					"T", "")));
-		} else if (status.startsWith("F")) {
-			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace(
-					"F", "")));
-		} else if (status.startsWith("A")) {
-			ptsPistaMapAnterior.set(piloto.idPiloto, parseInt(status.replace(
-					"A", "")));
-		}
+		idNoAnterior.set(piloto.idPiloto, piloto.idNo);
 	}
 }
 
@@ -115,7 +102,8 @@ function cpu_dadosParciais() {
 
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
-		//console.log(dadosParciais.estado+' '+piloto.idPiloto+'  '+piloto.tracado+'  '+piloto.idNo);
+		// console.log(dadosParciais.estado+' '+piloto.idPiloto+'
+		// '+piloto.tracado+' '+piloto.idNo);
 		if (piloto.idPiloto == idPilotoSelecionado) {
 			posicaoCentraliza = i;
 		}
@@ -133,7 +121,7 @@ function cpu_dadosParciais() {
 			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("T", "")));
 			pilotosTravadaMap.set(piloto.idPiloto, true);
 			var no = mapaIdNosSuave.get(piloto.idPiloto);
-			if (no==null) {
+			if (no == null) {
 				no = mapaIdNos.get(piloto.idNo);
 			}
 			if (no.tipoJson == 'R') {
@@ -145,6 +133,9 @@ function cpu_dadosParciais() {
 			}
 		} else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
+		} else if (status.startsWith("B")) {
+			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("B", "")));
+			pilotosBandeirada.set(piloto.idPiloto, true);
 		}
 	}
 	if (dadosParciais.texto) {
@@ -154,8 +145,7 @@ function cpu_dadosParciais() {
 	if ('24' == dadosParciais.estado) {
 		ativo = false;
 		clearInterval(main);
-		window.location.href = "resultado.html?token=" + token + "&nomeJogo="
-				+ nomeJogo;
+		window.location.href = "resultado.html?token=" + token + "&nomeJogo=" + nomeJogo;
 	}
 }
 
@@ -186,7 +176,7 @@ function cpu_altenador() {
 	}
 }
 
-function cpu_viradaAlterador(){
+function cpu_viradaAlterador() {
 	alternador = !alternador;
 	vdp_precessaCorCeu();
 }

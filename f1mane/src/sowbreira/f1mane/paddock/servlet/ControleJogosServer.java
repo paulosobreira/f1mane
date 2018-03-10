@@ -434,6 +434,8 @@ public class ControleJogosServer {
 			String statusPilotos = "P" + String.valueOf(piloto.getPtosPista());
 			if (piloto.verificaNaoPrecisaDesenhar()) {
 				statusPilotos = "R";
+			} else if (piloto.isRecebeuBanderada()) {
+				statusPilotos = "B" + String.valueOf(piloto.getPtosPista());
 			} else if (Carro.PERDEU_AEREOFOLIO
 					.equals(piloto.getCarro().getDanificado())) {
 				statusPilotos = "A" + String.valueOf(piloto.getPtosPista());
@@ -826,10 +828,6 @@ public class ControleJogosServer {
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();
 		}
-		// if (Util.isNullOrEmpty(dadosParciais.texto)
-		// && "13".equals(jogoServidor.getEstado())) {
-		// dadosParciais.texto = Html.verde(Lang.msg("001"));
-		// }
 		return dadosParciais;
 
 	}

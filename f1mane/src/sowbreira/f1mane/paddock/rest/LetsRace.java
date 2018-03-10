@@ -448,8 +448,8 @@ public class LetsRace {
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
 
-		// dadosCriarJogo.setClima(Clima.CHUVA);
-		// dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
+//		 dadosCriarJogo.setClima(Clima.CHUVA);
+//		 dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
 		return dadosCriarJogo;
 	}
 

@@ -10,6 +10,7 @@ var safetycar;
 var travadaRoda0, travadaRoda1, travadaRoda2;
 var girdLargadaMarca;
 var pow;
+var bandeirada;
 var carroCimaFreiosD1, carroCimaFreiosD2, carroCimaFreiosD3, carroCimaFreiosD4, carroCimaFreiosD5;
 var carroCimaFreiosE1, carroCimaFreiosE2, carroCimaFreiosE3, carroCimaFreiosE4, carroCimaFreiosE5;
 var carregouMidia = false;
@@ -106,7 +107,10 @@ function mid_caregaMidia() {
 	carroCimaFreiosE4.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE4"
 	carroCimaFreiosE5 = new Image();
 	carroCimaFreiosE5.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE5"
-
+		
+	bandeirada= new Image();
+	bandeirada.src = "/f1mane/rest/letsRace/png/flags"
+	
 	for (var i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var img = new Image();
 		img.src = "/f1mane/rest/letsRace/objetoPista/" + dadosJogo.arquivoCircuito + "/" + i;

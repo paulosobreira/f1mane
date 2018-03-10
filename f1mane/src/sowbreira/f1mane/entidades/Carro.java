@@ -602,6 +602,9 @@ public class Carro implements Serializable {
 
 	private void calculaDesgasteMotor(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
+		if(getPiloto().isRecebeuBanderada()){
+			return;
+		}
 		int valDesgaste = 0;
 		int novoModDano = novoModificador;
 		boolean testePotencia = testePotencia();
@@ -653,6 +656,9 @@ public class Carro implements Serializable {
 
 	private void calculaConsumoCombustivel(InterfaceJogo controleJogo,
 			int percent, boolean testePotencia) {
+		if(getPiloto().isRecebeuBanderada()){
+			return;
+		}
 		int valConsumo = 0;
 
 		if (giro == GIRO_MIN_VAL) {
@@ -867,6 +873,9 @@ public class Carro implements Serializable {
 
 	private double calculaDesgastePneus(boolean agressivo, No no,
 			InterfaceJogo controleJogo, int porcentPneus) {
+		if(getPiloto().isRecebeuBanderada()){
+			return 0;
+		}
 		getPiloto().setTravouRodas(false);
 		int desgPneus = 1;
 		if (agressivo && no.verificaCurvaBaixa()) {

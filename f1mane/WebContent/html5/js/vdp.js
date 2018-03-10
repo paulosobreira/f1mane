@@ -561,6 +561,9 @@ function vdp_desenhaNomesCima() {
 		maneContext.fillRect(x - 5, y, laruraTxt, 20);
 		maneContext.fillStyle = "black"
 		maneContext.fillText(nmPiloto, x, y + 15);
+		if (pilotosBandeirada.get(piloto.idPiloto)) {
+			maneContext.drawImage(bandeirada, x + 40, y-5);
+		}
 		maneContext.closePath();
 		maneContext.stroke();
 	}
@@ -667,7 +670,7 @@ function vdp_desenhaCarrosCima() {
 		var x = ponto.x - ptBg.x - 45;
 		var y = ponto.y - ptBg.y - 45;
 		pilotosEfeitosMap.set(piloto.idPiloto, true);
-		var emMovimento = vdp_emMovimento(piloto.idPiloto);
+		var emMovimento = vdp_emMovimento(piloto.idPiloto,piloto.idNo);
 
 		if (desenhaImagens) {
 			ctxCarro.clearRect(0, 0, cvCarro.width, cvCarro.height);
@@ -700,11 +703,11 @@ function vdp_desenhaCarrosCima() {
 			} else {
 				ctxCarro.drawImage(imgCarro, ajsCarroX, ajsCarroY);
 			}
-//			ctxCarro.beginPath();
-//			ctxCarro.strokeStyle = "black"
-//			ctxCarro.rect(1, 1, cvCarro.width - 1, cvCarro.height - 1);
-//			ctxCarro.closePath();
-//			ctxCarro.stroke();
+			// ctxCarro.beginPath();
+			// ctxCarro.strokeStyle = "black"
+			// ctxCarro.rect(1, 1, cvCarro.width - 1, cvCarro.height - 1);
+			// ctxCarro.closePath();
+			// ctxCarro.stroke();
 
 			var rotacionarCarro = vdp_rotacionar(cvCarro, angulo);
 			var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x - ajsCarroX, y - ajsCarroY, no, piloto.idPiloto);
@@ -751,11 +754,11 @@ function vdp_desenhaCarrosCima() {
 	}
 }
 
-function vdp_emMovimento(id) {
+function vdp_emMovimento(idPiloto,idNo) {
 	if (!dadosParciais) {
 		return false;
 	}
-	return ptsPistaMapAnterior.get(id) != ptsPistaMap.get(id)
+	return idNoAnterior.get(idPiloto) != idNo;
 }
 
 function vdp_intersectRect(r1, r2) {
