@@ -31,16 +31,16 @@
 	<target name="targetHtml" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddockHTML,atualizarVersaoHtml,criarWar,limpaJars">
 	</target>
 	
-	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarLocalJnlp,atualizarVersaoHtml,criarZipOnline,criarWar,limpaJars">
+	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarLocalJnlp,atualizarVersaoHtml,criarWar,limpaJars">
 	</target>
 
 	<target name="targetPadraoNoLibs" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,atualizarVersaoHtml,criarWarNoLibs,limpaJars">
 	</target>
 
-	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,atualizarVersaoHtml,criarZipOnline,criarWar,limpaJars">
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,atualizarVersaoHtml,criarWar,limpaJars">
 	</target>
 
-	<target name="targetGerarZip" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,sign_jar,criarZip,limpaJars">
+	<target name="targetGerarZip" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,criarZip,limpaJars">
 	</target>
 
 	<target name="atualizaVersao">
@@ -214,6 +214,13 @@
 	</target>
 
 	<target name="criarZip">
+		<copy todir=".">
+			<fileset dir="WebContent/WEB-INF/lib">
+				<include name="commons-beanutils-1.8.2.jar" />
+				<include name="commons-logging-1.1.1.jar" />
+				<include name="jnlp.jar" />
+			</fileset>
+		</copy>
 		<zip destfile="f1mane.zip" compress="true">
 			<fileset dir=".">
 				<include name="*.jar" />
@@ -234,33 +241,6 @@
 				<include name="*.jar" />
 			</fileset>
 		</delete>
-	</target>
-
-
-	<target name="criarZipOnline">
-		<!--
-		<zip destfile="WebContent/f1mane.zip" compress="true">
-			<fileset dir="buildAnt">
-				<include name="F1-Mane-Online-en-us.bat" />
-				<include name="F1-Mane-Online-pt-br.bat" />
-				<include name="f1maneonline.jnlp" />
-				<include name="f1maneonline_en.jnlp" />
-			</fileset>
-
-			<fileset dir="WebContent/WEB-INF/lib">
-				<include name="jnlp.jar" />
-			</fileset>
-			<fileset dir="WebContent">
-				<include name="f1mane.jar" />
-				<include name="f1maneRecursos.jar" />
-			</fileset>
-		</zip>
-		<delete>
-			<fileset dir=".">
-				<include name="*.jar" />
-			</fileset>
-		</delete>
-	-->
 	</target>
 
 
