@@ -1007,7 +1007,13 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public void travouRodas(Piloto piloto) {
+		if(piloto.isRecebeuBanderada()){
+			return;
+		}
 		if (isChovendo()) {
+			return;
+		}
+		if(piloto.getPtosBox() != 0){
 			return;
 		}
 		double lim = 0.3;
