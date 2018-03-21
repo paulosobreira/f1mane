@@ -707,7 +707,7 @@ public class PainelCampeonato extends JPanel {
 		p1.add(new JLabel() {
 			@Override
 			public String getText() {
-				return campeonato.isReabasteciemnto() ? Lang.msg("SIM")
+				return campeonato.isReabastecimento() ? Lang.msg("SIM")
 						: Lang.msg("NAO");
 			}
 		});

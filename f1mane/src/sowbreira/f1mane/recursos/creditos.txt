@@ -13,6 +13,7 @@ sowbreira@gmail.com
 -Licença / License
 Codigo aberto
 Open Source
+Italian Language by Fabio Giretto
 -Status
 Fl-Mane é um protótipo e seus gráficos 
     e jogabilidade podem mudar com novas versões

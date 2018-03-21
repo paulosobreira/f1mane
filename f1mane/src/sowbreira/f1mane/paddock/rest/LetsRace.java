@@ -6,10 +6,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.Encoded;
@@ -82,6 +85,20 @@ public class LetsRace {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(200).entity(circuito).build();
+	}
+
+	@GET
+	@Path("/sairJogo/{nomeJogo}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response sairJogo(@HeaderParam("token") String token,
+			@PathParam("nomeJogo") String nomeJogo) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		controlePaddock.sairJogoToken(nomeJogo,token);
+		return Response.status(200).build();
 	}
 
 	@GET
@@ -165,13 +182,17 @@ public class LetsRace {
 
 	@GET
 	@Compress
-	@Path("/jogar/{temporada}/{idPiloto}/{circuito}")
+	@Path("/jogar/{temporada}/{idPiloto}/{circuito}/{numVoltas}/{tipoPneu}/{combustivel}/{asa}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response jogar(@HeaderParam("token") String token,
 			@HeaderParam("idioma") String idioma,
 			@PathParam("temporada") String temporada,
 			@PathParam("idPiloto") String idPiloto,
-			@PathParam("circuito") String circuito) {
+			@PathParam("circuito") String circuito,
+			@PathParam("numVoltas") String numVoltas,
+			@PathParam("tipoPneu") String tipoPneu,
+			@PathParam("combustivel") String combustivel,
+			@PathParam("asa") String asa) {
 		try {
 			SessaoCliente sessaoCliente = controlePaddock
 					.obterSessaoPorToken(token);
@@ -181,7 +202,7 @@ public class LetsRace {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
 			DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada,
-					circuito, idPiloto);
+					circuito, idPiloto, numVoltas, tipoPneu, combustivel, asa);
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			List<String> obterJogos = controlePaddock.obterJogos();
 			if (!obterJogos.isEmpty()) {
@@ -368,7 +389,9 @@ public class LetsRace {
 	}
 
 	private DadosCriarJogo gerarJogoLetsRace(String temporada, String circuito,
-			String idPiloto) throws ClassNotFoundException, IOException {
+			String idPiloto, String numVoltas, String tipoPneu,
+			String combustivel, String asa)
+			throws ClassNotFoundException, IOException {
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t" + temporada);
 		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
@@ -383,10 +406,16 @@ public class LetsRace {
 				pista = nmCircuito;
 			}
 		}
-		// pista = "Interlagos";
+		// pista = "Monte Carlo";
 		// dadosCriarJogo.setSafetyCar(false);
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
+		dadosCriarJogo.setAsa(asa);
+		dadosCriarJogo.setTpPnueu(tipoPneu);
+		if (!Util.isNullOrEmpty(numVoltas)) {
+			dadosCriarJogo
+					.setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
+		}
 		Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);
 		if (Math.random() < (circuitoObj.getProbalidadeChuva() / 100.0)) {
 			dadosCriarJogo.setClima(Clima.NUBLADO);
@@ -395,18 +424,32 @@ public class LetsRace {
 		}
 		TemporadasDefauts temporadasDefauts = carregadorRecursos
 				.carregarTemporadasPilotosDefauts().get("t" + temporada);
+
+		if (!Util.isNullOrEmpty(combustivel)) {
+			Integer fuel = new Integer(Util.extrairNumeros(combustivel));
+			if (fuel > 100) {
+				fuel = 100;
+			}
+			if (fuel < 10) {
+				fuel = 10;
+			}
+			dadosCriarJogo.setCombustivel(fuel);
+		} else {
+			if (temporadasDefauts.getReabastecimento()) {
+				dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
+			} else {
+				dadosCriarJogo.setCombustivel(Util.intervalo(70, 90));
+			}
+		}
 		dadosCriarJogo
 				.setReabastecimento(temporadasDefauts.getReabastecimento());
 		dadosCriarJogo.setTrocaPneu(temporadasDefauts.getTrocaPneu());
 		dadosCriarJogo.setErs(temporadasDefauts.getErs());
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
-		if (temporadasDefauts.getReabastecimento()) {
-			dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
-		} else {
-			dadosCriarJogo.setCombustivel(Util.intervalo(70, 90));
-		}
-		dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_MOLE);
+
+//		 dadosCriarJogo.setClima(Clima.CHUVA);
+//		 dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
 		return dadosCriarJogo;
 	}
 
@@ -750,7 +793,18 @@ public class LetsRace {
 	public Response lang(@PathParam("lang") String lang) {
 		try {
 			PropertyResourceBundle bundle = Lang.carregraBundleMensagens(lang);
-			return Response.status(200).entity(Util.bundle2Map(bundle)).build();
+			Set<String> keySet = bundle.keySet();
+			LinkedList<String> values = new LinkedList<String>();
+			LinkedList<String> keys = new LinkedList<String>();
+			for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
+				String key = (String) iterator.next();
+				values.add(bundle.getString(key));
+				keys.add(key);
+			}
+			Map<String, LinkedList> retorno = new HashMap<String, LinkedList>();
+			retorno.put("keys", keys);
+			retorno.put("values", values);
+			return Response.status(200).entity(retorno).build();
 		} catch (Exception e) {
 			Logger.topExecpts(e);
 			return Response.status(500)

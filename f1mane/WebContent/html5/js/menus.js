@@ -6,7 +6,8 @@ var idPilotoSelecionado;
 var temporadaSelecionada;
 var circuitoSelecionado;
 var token;
-var circuitos, temporadas;
+var circuitos, temporadas, dadosJogo, drsTeporada;
+var jogoPreparado = false;
 
 $('#trocaPneuCheck').append(lang_text('trocaPneus'));
 $('#reabastecimentoCheck').append(lang_text('reabastecimento'));
@@ -14,16 +15,55 @@ $('#selecionePiloto').append(lang_text('selecionePiloto'));
 $('#153').html(lang_text('153'));
 $('#154').html(lang_text('154'));
 
+$('#TIPO_PNEU_MOLE').html(lang_text('TIPO_PNEU_MOLE'));
+$('#TIPO_PNEU_DURO').html(lang_text('TIPO_PNEU_DURO'));
+$('#MENOS_ASA').html(lang_text('menosAjuste'));
+$('#MAIS_ASA').html(lang_text('maisAjuste'));
+$('#ASA_NORMAL').html(lang_text('ajusteMediano'));
+
+$('#tipoPnelLabel').html(lang_text('264') + ' : ');
+$('#numVoltasLabel').html(lang_text('195'));
+$('#procentCombustivelLabel').html(lang_text('083') + ' : ');
+$('#tipoAsaLabel').html(lang_text('084') + ' : ');
+
 if (localStorage.getItem("token")) {
 	token = localStorage.getItem("token");
 	idPilotoSelecionado = localStorage.getItem("idPilotoSelecionado");
-	dadosJogo();
+	carregarDadosJogo();
 } else {
 	criarSessao();
 }
 
+$(document).on('click', '.number-spinner button', function() {
+	var btn = $(this), oldValue = btn.closest('.number-spinner').find('input').val().trim(), newVal = 0;
+	if (btn.attr('data-dir') == 'up') {
+		newVal = parseInt(oldValue) + 10;
+	} else {
+		if (oldValue > 10) {
+			newVal = parseInt(oldValue) - 10;
+		} else {
+			newVal = 10;
+		}
+	}
+	btn.closest('.number-spinner').find('input').val(newVal);
+});
+
+$('#selecionaTpPneu').find('tr').bind("click", function() {
+	$('#selecionaTpPneu').find('tr').removeClass('success');
+	$(this).addClass('success');
+});
+
+$('#selecionaTpAsa').find('tr').bind("click", function() {
+	$('#selecionaTpAsa').find('tr').removeClass('success');
+	$(this).addClass('success');
+});
+
 $('#btnJogar').bind("click", function() {
-	jogar();
+	if ((dadosJogo.estado == 'NENHUM' || dadosJogo.estado == '07') && !jogoPreparado) {
+		preparaJogo();
+	} else {
+		jogar();
+	}
 });
 
 $('#temporadaCarousel').on('slide.bs.carousel', function(event) {
@@ -62,7 +102,7 @@ function esconderEntrarJogo() {
 	$('#btnJogar').hide();
 }
 
-function dadosJogo() {
+function carregarDadosJogo() {
 	$.ajax({
 		type : "GET",
 		headers : {
@@ -71,7 +111,8 @@ function dadosJogo() {
 		url : "/f1mane/rest/letsRace/dadosJogo",
 		contentType : "application/json",
 		dataType : "json",
-		success : function(dadosJogo) {
+		success : function(dadosJogoParam) {
+			dadosJogo = dadosJogoParam;
 			console.log(dadosJogo);
 			if ('NENHUM' == dadosJogo.estado) {
 				listaTemporadas();
@@ -83,8 +124,8 @@ function dadosJogo() {
 			idPilotoSelecionado = dadosJogo.idPilotoSelecionado;
 			temporadaSelecionada = dadosJogo.temporada;
 			var circuitosLabel = dadosJogo.nomeCircuito;
-			if(dadosJogo.voltaAtual!=null && dadosJogo.numeroVotas!=null){
-				circuitosLabel += ' '+dadosJogo.voltaAtual+'/'+dadosJogo.numeroVotas;
+			if (dadosJogo.voltaAtual != null && dadosJogo.numeroVotas != null) {
+				circuitosLabel += ' ' + dadosJogo.voltaAtual + '/' + dadosJogo.numeroVotas;
 			}
 			$('#circuitosLabel').html(circuitosLabel);
 			$('#temporadasLabel').html(dadosJogo.temporada);
@@ -104,6 +145,7 @@ function dadosJogo() {
 				$('#ersCheck').addClass('text-muted');
 			}
 			if (dadosJogo.drs) {
+				drsTeporada = true;
 				$('#drsCheck').removeClass('text-muted');
 			} else {
 				$('#drsCheck').addClass('text-muted');
@@ -150,16 +192,51 @@ function dadosJogo() {
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
 			console.log(xhRequest.status + '  ' + xhRequest.responseText + ' ' + ErrorText);
-			dadosJogo();
+			carregarDadosJogo();
 		}
 	});
+}
+
+function preparaJogo() {
+	$('#criaJogo').removeClass('hide');
+	$('#selecionarPiloto').addClass('hide');
+	$('#temporadaAnterior').remove();
+	$('#temporadaProxima').remove();
+	$('#circuitoAnterior').remove();
+	$('#circuitoProximo').remove();
+	$('#voltar').attr('href', 'menus.html');
+	if (drsTeporada) {
+		$('#ajusteDeAsa').addClass('hide');
+	}
+	$('#btnJogar').css('z-index', '100000');
+	if (dadosJogo.estado == '07') {
+		$('#idNumeroVoltas').addClass('hide');
+	}
+	jogoPreparado = true;
 }
 
 function jogar() {
 	if (temporadaSelecionada == null || idPilotoSelecionado == null || circuitoSelecionado == null) {
 		return;
 	}
-	var urlServico = "/f1mane/rest/letsRace/jogar/" + temporadaSelecionada + "/" + idPilotoSelecionado + "/" + circuitoSelecionado;
+	var tpPneu = $('#selecionaTpPneu').find('tr.success').find('div.transbox').attr('id');
+	var voltas = $('#numVoltas').val();
+	var combustivel = $('#procentCombustivel').val();
+	var tpAsa = $('#selecionaTpAsa').find('tr.success').find('div.transbox').attr('id');
+	if (voltas > 100) {
+		voltas = 100;
+	}
+	if (voltas < 0) {
+		voltas = 0;
+	}
+	if (combustivel > 100) {
+		combustivel = 100;
+	}
+	if (combustivel < 0 ) {
+		combustivel = 0;
+	}
+	var urlServico = "/f1mane/rest/letsRace/jogar/" + temporadaSelecionada + "/" + idPilotoSelecionado + "/" + circuitoSelecionado + "/" + voltas
+			+ "/" + tpPneu + "/" + combustivel + "/" + tpAsa;
 	$.ajax({
 		type : "GET",
 		url : urlServico,
@@ -178,7 +255,10 @@ function jogar() {
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
 			if (xhRequest.status != 401) {
-				dadosJogo();
+				setTimeout(function() {
+					window.location.href = "menus.html";
+				}, 3000);
+
 			}
 			console.log('jogar() ' + xhRequest.status + '  ' + xhRequest.responseText);
 		}
@@ -195,7 +275,7 @@ function criarSessao() {
 		success : function(sessaoVisitante) {
 			token = sessaoVisitante.sessaoCliente.token;
 			localStorage.setItem("token", token);
-			dadosJogo();
+			carregarDadosJogo();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
@@ -238,7 +318,7 @@ function listaCircuitos() {
 				dv.append(h3);
 				dv.append(img);
 				var dvChuva = $('<div class="well"></div>');
-				dvChuva.append(lang_text('probChuva')+' : ' + this.probalidadeChuva + '%');
+				dvChuva.append(lang_text('probChuva') + ' : ' + this.probalidadeChuva + '%');
 				dv.append(dvChuva);
 				$('#circuitoCarousel-inner').append(dv);
 			});
@@ -285,6 +365,7 @@ function selecionaTemporada(temporada) {
 			} else {
 				$('#ersCheck').addClass('text-muted');
 			}
+			drsTeporada = response.drs;
 			if (response.drs) {
 				$('#drsCheck').removeClass('text-muted');
 			} else {

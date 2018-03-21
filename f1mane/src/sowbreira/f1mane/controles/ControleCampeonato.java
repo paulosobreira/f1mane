@@ -1173,7 +1173,7 @@ public class ControleCampeonato {
 		campeonato.setPilotosHabilidadeCampeonato(pilotosHabilidadeCampeonato);
 		campeonato.setDrs(drs.isSelected());
 		campeonato.setKers(kers.isSelected());
-		campeonato.setReabasteciemnto(reabastacimento.isSelected());
+		campeonato.setReabastecimento(reabastacimento.isSelected());
 		campeonato.setTrocaPneus(trocaPneu.isSelected());
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
@@ -1252,7 +1252,7 @@ public class ControleCampeonato {
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabasteciemto) {
+			boolean drs, boolean trocaPneus, boolean reabastecimento) {
 
 		final List tempList = new LinkedList();
 		String temporarada = (String) ControleCampeonato.this.carregadorRecursos
@@ -1282,7 +1282,7 @@ public class ControleCampeonato {
 		campeonato.setPilotosHabilidadeCampeonato(pilotosHabilidadeCampeonato);
 		campeonato.setDrs(drs);
 		campeonato.setKers(kers);
-		campeonato.setReabasteciemnto(reabasteciemto);
+		campeonato.setReabastecimento(reabastecimento);
 		campeonato.setTrocaPneus(trocaPneus);
 		campeonato.setTemporada(temporadaSelecionada);
 		campeonato.setNivel(nivelSelecionado);

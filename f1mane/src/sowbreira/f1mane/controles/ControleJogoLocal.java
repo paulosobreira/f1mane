@@ -669,7 +669,7 @@ public class ControleJogoLocal extends ControleRecursos
 				campeonato.getTemporada(), campeonato.getQtdeVoltas(),
 				Util.intervalo(130, 370), clima, campeonato.getNivel(),
 				pilotoSel, campeonato.isKers(), campeonato.isDrs(),
-				campeonato.isTrocaPneus(), campeonato.isReabasteciemnto(),
+				campeonato.isTrocaPneus(), campeonato.isReabastecimento(),
 				combustivelSelecionado, asaSelecionado, pneuSelecionado);
 		this.controleCampeonato = new ControleCampeonato(campeonato, mainFrame);
 		controleCampeonato.iniciaCorrida(campeonato.getCircuitoVez());
@@ -680,12 +680,12 @@ public class ControleJogoLocal extends ControleRecursos
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean ers,
-			boolean drs, boolean trocaPneus, boolean reabasteciemto,
+			boolean drs, boolean trocaPneus, boolean reabastecimento,
 			int combustivelSelecionado, String asaSelecionado,
 			String pneuSelecionado) throws Exception {
 		this.qtdeVoltas = new Integer(numVoltasSelecionado);
 		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
-		this.reabastacimento = reabasteciemto;
+		this.reabastacimento = reabastecimento;
 		this.trocaPneu = trocaPneus;
 		this.circuitoSelecionado = circuitoSelecionado;
 		this.ers = ers;
@@ -1352,12 +1352,12 @@ public class ControleJogoLocal extends ControleRecursos
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabasteciemto) {
+			boolean drs, boolean trocaPneus, boolean reabastecimento) {
 		controleCampeonato = new ControleCampeonato(mainFrame);
 		return controleCampeonato.criarCampeonatoPiloto(cirucitosCampeonato,
 				temporadaSelecionada, numVoltasSelecionado,
 				turbulenciaSelecionado, climaSelecionado, nivelSelecionado,
-				pilotoSelecionado, kers, drs, trocaPneus, reabasteciemto);
+				pilotoSelecionado, kers, drs, trocaPneus, reabastecimento);
 	}
 
 	@Override
@@ -1682,6 +1682,7 @@ public class ControleJogoLocal extends ControleRecursos
 	public void setRecebeuBanderada(Piloto piloto) {
 		if (!piloto.isRecebeuBanderada()) {
 			piloto.setRecebeuBanderada(true);
+			piloto.setPosicaoBandeirada(piloto.getPosicao());
 			if (piloto.getCarroPilotoAtras() != null) {
 				piloto.setVantagem(piloto.getCalculaSegundosParaAnterior());
 			}

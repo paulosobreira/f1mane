@@ -742,4 +742,11 @@ public class ControlePaddockServidor {
 				nomeJogador, idPiloto);
 	}
 
+	public void sairJogoToken(String nomeJogo, String token) {
+		SessaoCliente sessaoCliente = obterSessaoPorToken(token);
+		JogoServidor jogoServidor = getControleJogosServer()
+				.getMapaJogosCriados().get(sessaoCliente);
+		jogoServidor.removerJogador(sessaoCliente.getNomeJogador());
+	}
+
 }

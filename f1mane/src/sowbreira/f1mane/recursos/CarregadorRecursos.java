@@ -1,7 +1,9 @@
 package sowbreira.f1mane.recursos;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
@@ -57,6 +59,8 @@ public class CarregadorRecursos {
 	private static Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCarrosLadoSemAreofolio = new HashMap<String, BufferedImage>();
 	private static Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
+	private static AlphaComposite composite = AlphaComposite
+			.getInstance(AlphaComposite.DST_OUT, 1);
 
 	private static CarregadorRecursos carregadorRecursos;
 
@@ -650,13 +654,22 @@ public class CarregadorRecursos {
 	}
 
 	public static BufferedImage carregaImagem(String file) {
-		BufferedImage bufferedImage = (BufferedImage) bufferImages.get(file);
+		return carregaImagem(file, true);
+	}
+
+	public static BufferedImage carregaImagem(String file, boolean cache) {
+		BufferedImage bufferedImage = null;
+		if (cache) {
+			bufferedImage = (BufferedImage) bufferImages.get(file);
+		}
 		if (bufferedImage == null) {
 			try {
 				bufferedImage = ImageUtil.toCompatibleImage(ImageIO
 						.read(CarregadorRecursos.class.getResource(file)));
-				bufferImages.put(file, bufferedImage);
-			} catch (IOException e) {
+				if (cache) {
+					bufferImages.put(file, bufferedImage);
+				}
+			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
 		}
@@ -729,15 +742,6 @@ public class CarregadorRecursos {
 		}
 		BufferedImage carroLado = bufferCarrosLado.get(carro.getNome());
 		if (carroLado == null) {
-			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
-			BufferedImage cor1 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
-			BufferedImage cor2 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor2(), "CarroLadoC2.png");
-			Graphics graphics = carroLado.getGraphics();
-			graphics.drawImage(cor1, 0, 0, null);
-			graphics.drawImage(cor2, 0, 0, null);
-			graphics.dispose();
 			if (carro.getImg() != null) {
 				try {
 					BufferedImage carroLadoPng = null;
@@ -757,10 +761,18 @@ public class CarregadorRecursos {
 					}
 				} catch (Exception e) {
 					carro.setImg(null);
-					bufferCarrosLado.put(carro.getNome(), ImageUtil
-							.geraTransparencia(carroLado, Color.WHITE));
+					Logger.logarExept(e);
 				}
 			} else {
+				carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
+				BufferedImage cor1 = CarregadorRecursos
+						.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
+				BufferedImage cor2 = CarregadorRecursos
+						.gerarCoresCarros(carro.getCor2(), "CarroLadoC2.png");
+				Graphics graphics = carroLado.getGraphics();
+				graphics.drawImage(cor1, 0, 0, null);
+				graphics.drawImage(cor2, 0, 0, null);
+				graphics.dispose();
 				bufferCarrosLado.put(carro.getNome(),
 						ImageUtil.geraTransparencia(carroLado, Color.WHITE));
 			}
@@ -775,15 +787,6 @@ public class CarregadorRecursos {
 		BufferedImage carroLado = bufferCarrosLadoSemAreofolio
 				.get(carro.getNome());
 		if (carroLado == null) {
-			carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
-			BufferedImage cor1 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
-			BufferedImage cor2 = CarregadorRecursos
-					.gerarCoresCarros(carro.getCor2(), "CarroLadoC3.png");
-			Graphics graphics = carroLado.getGraphics();
-			graphics.drawImage(cor1, 0, 0, null);
-			graphics.drawImage(cor2, 0, 0, null);
-			graphics.dispose();
 			if (carro.getImg() != null) {
 				try {
 					BufferedImage carroLadoPng = null;
@@ -795,10 +798,18 @@ public class CarregadorRecursos {
 
 				} catch (Exception e) {
 					carro.setImg(null);
-					bufferCarrosLadoSemAreofolio.put(carro.getNome(),
-							carroLado);
+					Logger.logarExept(e);
 				}
 			} else {
+				carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
+				BufferedImage cor1 = CarregadorRecursos
+						.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
+				BufferedImage cor2 = CarregadorRecursos
+						.gerarCoresCarros(carro.getCor2(), "CarroLadoC3.png");
+				Graphics graphics = carroLado.getGraphics();
+				graphics.drawImage(cor1, 0, 0, null);
+				graphics.drawImage(cor2, 0, 0, null);
+				graphics.dispose();
 				bufferCarrosLadoSemAreofolio.put(carro.getNome(), carroLado);
 			}
 		}
@@ -811,6 +822,21 @@ public class CarregadorRecursos {
 		Carro carro = piloto.getCarro();
 		BufferedImage carroCima = bufferCarrosCimaSemAreofolio
 				.get(carro.getNome());
+		if (carro.getImg() != null) {
+			carroCima = CarregadorRecursos.carregaImagem(
+					carro.getImg().replaceAll(".png", "_cima.png"), false);
+			if (carroCima != null) {
+				String[] split = carro.getImg().split("/");
+				String nmimg = split[split.length - 1];
+				BufferedImage noWing = CarregadorRecursos.carregaImagem(
+						carro.getImg().replaceAll(nmimg, "nowing_cima.png"));
+				Graphics2D graphics = (Graphics2D) carroCima.getGraphics();
+				graphics.setComposite(composite);
+				graphics.drawImage(noWing, 0, 0, null);
+				graphics.dispose();
+				bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
+			}
+		}
 		if (carroCima == null) {
 			BufferedImage base = CarregadorRecursos
 					.carregaImagem(modelo + "CarroCima.png");
@@ -848,6 +874,11 @@ public class CarregadorRecursos {
 			return obterCarroCimaSemAreofolio(piloto, temporada);
 		}
 		BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
+		if (carro.getImg() != null) {
+			carroCima = CarregadorRecursos.carregaImagem(
+					carro.getImg().replaceAll(".png", "_cima.png"));
+			bufferCarrosCima.put(carro.getNome(), carroCima);
+		}
 		if (carroCima == null) {
 			BufferedImage base = CarregadorRecursos
 					.carregaImagem(modelo + "CarroCima.png");

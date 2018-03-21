@@ -2,7 +2,7 @@
  * Arquivo de midia
  */
 var imgBg;
-var imgFarois;
+var imgFarois, imgFaroisApagados;
 var imgPneuM, imgPneuD, imgPneuC;
 var menosAsa, maisAsa, normalAsa;
 var motor, capacete;
@@ -10,6 +10,7 @@ var safetycar;
 var travadaRoda0, travadaRoda1, travadaRoda2;
 var girdLargadaMarca;
 var pow;
+var bandeirada;
 var carroCimaFreiosD1, carroCimaFreiosD2, carroCimaFreiosD3, carroCimaFreiosD4, carroCimaFreiosD5;
 var carroCimaFreiosE1, carroCimaFreiosE2, carroCimaFreiosE3, carroCimaFreiosE4, carroCimaFreiosE5;
 var carregouMidia = false;
@@ -46,21 +47,25 @@ function mid_caregaMidia() {
 	}
 
 	imgBg = new Image();
-	//imgBg.src = {urlBg} + circuito.backGround;
+	// imgBg.src = {urlBg} + circuito.backGround;
 	imgBg.src = "http://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" + circuito.backGround;
-	//imgBg.src = "http://games-sobreira.193b.starter-ca-central-1.openshiftapps.com/f1manepistas/pistas/" + circuito.backGround;
+	// imgBg.src =
+	// "http://games-sobreira.193b.starter-ca-central-1.openshiftapps.com/f1manepistas/pistas/"
+	// + circuito.backGround;
 
 	pow = new Image();
 	pow.src = "img/pow.png"
 	imgFarois = new Image();
 	imgFarois.src = "img/farois.png"
+	imgFaroisApagados = new Image();
+	imgFaroisApagados.src = "img/farois-apagados.png"
 	imgPneuM = new Image();
 	imgPneuM.src = "img/pneuMole.png"
 	imgPneuD = new Image();
 	imgPneuD.src = "img/pneuDuro.png"
 	imgPneuC = new Image();
 	imgPneuC.src = "img/pneuChuva.png"
-    girdLargadaMarca = new Image();		
+	girdLargadaMarca = new Image();
 	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro/180";
 	motor = new Image();
 	motor.src = "img/motor.png"
@@ -102,7 +107,10 @@ function mid_caregaMidia() {
 	carroCimaFreiosE4.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE4"
 	carroCimaFreiosE5 = new Image();
 	carroCimaFreiosE5.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE5"
-
+		
+	bandeirada= new Image();
+	bandeirada.src = "/f1mane/rest/letsRace/png/flags"
+	
 	for (var i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var img = new Image();
 		img.src = "/f1mane/rest/letsRace/objetoPista/" + dadosJogo.arquivoCircuito + "/" + i;

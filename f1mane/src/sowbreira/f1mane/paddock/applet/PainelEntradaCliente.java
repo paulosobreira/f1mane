@@ -307,7 +307,7 @@ public class PainelEntradaCliente {
 			comboBoxNivelCorrida
 					.setSelectedItem(Lang.msg(campeonato.getNivel()));
 			comboBoxNivelCorrida.setEnabled(false);
-			reabastacimento.setSelected(!campeonato.isSemReabasteciemnto());
+			reabastacimento.setSelected(!campeonato.isSemReabastecimento());
 			reabastacimento.setEnabled(false);
 			trocaPneu.setSelected(!campeonato.isSemTrocaPneus());
 			trocaPneu.setEnabled(false);

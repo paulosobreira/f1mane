@@ -26,7 +26,7 @@ public class MonitorAtividade implements Runnable {
 	public void run() {
 		while (alive) {
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(5000);
 				long timeNow = System.currentTimeMillis();
 				removeClientesIniativos(timeNow);
 				Map<SessaoCliente, JogoServidor> jogos = controlePaddock

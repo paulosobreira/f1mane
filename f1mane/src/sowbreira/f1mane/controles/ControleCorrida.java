@@ -203,7 +203,7 @@ public class ControleCorrida {
 	}
 
 	public void verificaAcidente(Piloto piloto) {
-		if (controleJogo.isModoQualify()) {
+		if (controleJogo.isModoQualify() || piloto.isRecebeuBanderada()) {
 			return;
 		}
 		Piloto pilotoNaFrente = piloto.getColisao();
@@ -440,11 +440,33 @@ public class ControleCorrida {
 
 			if (todosReceberamBaderada) {
 				controleCiclo.setProcessadoCilcos(false);
-				atualizaClassificacao();
+				atualizaClassificacaoFinal();
 				controleJogo.exibirResultadoFinal();
 				Logger.logar("========final corrida============");
 			}
 		}
+	}
+
+	private void atualizaClassificacaoFinal() {
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		Collections.sort(pilotos, new Comparator<Piloto>() {
+			@Override
+			public int compare(Piloto piloto0, Piloto piloto1) {
+				return ControleCorrida.compareBandeirada(piloto0, piloto1);
+			}
+		});
+
+		for (int i = 0; i < pilotos.size(); i++) {
+			Piloto piloto = (Piloto) pilotos.get(i);
+			piloto.setPosicao(i + 1);
+		}
+		
+	}
+
+	protected static int compareBandeirada(Piloto piloto0, Piloto piloto1) {
+		long ptosPista0 = piloto0.getPosicaoBandeirada();
+		long ptosPista1 = piloto1.getPosicaoBandeirada();
+		return new Long(ptosPista0).compareTo(new Long(ptosPista1));
 	}
 
 	public boolean verificaBoxOcupado(Carro carro) {

@@ -422,6 +422,9 @@ public class ControleBox {
 			piloto.getVoltaAtual().setVoltaSafetyCar(true);
 		}
 		piloto.efetuarSaidaBox(interfaceJogo);
+		if (controleJogo.isCorridaTerminada()) {
+			controleJogo.setRecebeuBanderada(piloto);
+		}
 	}
 
 	public int setupParadaUnica(Piloto piloto) {

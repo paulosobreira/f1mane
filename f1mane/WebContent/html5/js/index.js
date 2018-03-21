@@ -15,10 +15,11 @@ var userLang = navigator.language || navigator.userLanguage;
 if(userLang!=null && localStorage.getItem('idioma')==null){
 	if(userLang.split('-')[0]=='pt'){
 		lang_idioma('pt',true);	
-	}else{
+	}else if(userLang.split('-')[0]=='it'){
+		lang_idioma('it',true);	
+	} else{
 		lang_idioma('en',true);
 	}
-	
 }else{
 	lang_idioma(localStorage.getItem('idioma'),true);	
 }
@@ -26,11 +27,7 @@ if(userLang!=null && localStorage.getItem('idioma')==null){
 $('#btnJogar').html(lang_text('jogar'));
 $('#btnSobre').html(lang_text('sobre'));
 $('#btnControles').html(lang_text('verControles'));
-if(localStorage.getItem('idioma')=='pt'){
-	$('#btnIdioma').html(lang_text('en'));	
-}else{
-	$('#btnIdioma').html(lang_text('pt'));
-}
+$('#btnIdioma').html(lang_text('linguagem'));	
 
 $('#btnSobre').bind("click", function() {
 	$('#botoes').hide();
@@ -44,14 +41,6 @@ $('#voltar').bind("click", function() {
 	$('#voltar').hide();
 });
 
-$('#btnIdioma').bind("click", function() {
-	if(localStorage.getItem('idioma')=='pt'){
-		lang_idioma('en');	
-	}else{
-		lang_idioma('pt');
-	}
-	location.reload();
-});
 
 function sobre() {
 	var urlServico = "/f1mane/rest/letsRace/sobre/";

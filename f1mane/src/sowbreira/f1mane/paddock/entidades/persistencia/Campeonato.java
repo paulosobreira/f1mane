@@ -19,7 +19,7 @@ public class Campeonato extends F1ManeDados {
 	private String nome;
 	private String nivel;
 	private Integer qtdeVoltas;
-	private boolean semReabasteciemnto;
+	private boolean semReabastecimento;
 	private boolean semTrocaPneus;
 	private boolean kers;
 	private boolean drs;
@@ -74,12 +74,12 @@ public class Campeonato extends F1ManeDados {
 		this.jogadorDadosSrv = jogadorDadosSrv;
 	}
 
-	public boolean isSemReabasteciemnto() {
-		return semReabasteciemnto;
+	public boolean isSemReabastecimento() {
+		return semReabastecimento;
 	}
 
-	public void setSemReabasteciemnto(boolean semReabasteciemnto) {
-		this.semReabasteciemnto = semReabasteciemnto;
+	public void setSemReabastecimento(boolean semReabastecimento) {
+		this.semReabastecimento = semReabastecimento;
 	}
 
 	public boolean isSemTrocaPneus() {

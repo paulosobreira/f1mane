@@ -1220,7 +1220,7 @@ public class GerenciadorVisual {
 		spinnerQtdeVoltas.setValue(new Integer(12));
 		if (campeonato != null) {
 
-			reabastacimento.setSelected(campeonato.isReabasteciemnto());
+			reabastacimento.setSelected(campeonato.isReabastecimento());
 			reabastacimento.setEnabled(false);
 
 			trocaPneu.setSelected(campeonato.isTrocaPneus());

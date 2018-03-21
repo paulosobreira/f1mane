@@ -37,7 +37,8 @@ public class Lang {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new Lang();
+		sufix = "it";
+		System.out.println(Lang.msg("TIPO_PNEU_MOLE"));
 		// Logger.logar(msg("TesteFormat", new Object[] { 123, 312 }));
 		// String[] array = "asd¢111¢qweqw¢22¢werwer ¢3¢¢4¢".split("¢");
 		// for (int i = 0; i < array.length; i++) {
@@ -270,8 +271,6 @@ public class Lang {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(null, e.getMessage(),
-					"Message Properties Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

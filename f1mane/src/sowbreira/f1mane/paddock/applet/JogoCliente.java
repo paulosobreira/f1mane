@@ -1121,7 +1121,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabasteciemto,
+			boolean drs, boolean trocaPneus, boolean reabastecimento,
 			int combustivelSelecionado, String asaSelecionado,
 			String pneuSelecionado) {
 		// TODO Auto-generated method stub
@@ -1139,7 +1139,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado,
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
-			boolean drs, boolean trocaPneus, boolean reabasteciemto) {
+			boolean drs, boolean trocaPneus, boolean reabastecimento) {
 		return null;
 	}
 
