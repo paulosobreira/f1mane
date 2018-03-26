@@ -892,7 +892,7 @@ function ctl_desenhaInfoEsquerda() {
 			maneContext.stroke();			
 		}
 		
-		if (dadosParciais.pCombust < 10) {
+		if (dadosParciais.pCombust <= 10) {
 			maneContext.beginPath();
 			maneContext.strokeStyle = '#ff0000';
 			maneContext.rect(x, y, 94, 20);
@@ -920,7 +920,7 @@ function ctl_desenhaInfoEsquerda() {
 			maneContext.stroke();			
 		}
 
-		if (dadosParciais.pPneus < 10) {
+		if (dadosParciais.pPneus <= 10) {
 			maneContext.beginPath();
 			maneContext.strokeStyle = '#ff0000';
 			maneContext.rect(x, y, 94, 20);

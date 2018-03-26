@@ -1011,6 +1011,13 @@ function vdp_desenhaTravadaRodaFumaca(piloto, x, y, no) {
 	if (dadosParciais.clima == "chuva.png") {
 		return null;
 	}
+	var no = mapaIdNosSuave.get(piloto.idPiloto);
+	if (!no) {
+		no = mapaIdNos.get(piloto.idNo);
+	}
+	if(no.box){
+		return null;
+	}
 	var rotacionar;
 	var sw = Math.round(intervalo(1, 5));
 	var lado = (Math.random() > 0.5 ? 'D' : 'E');

@@ -1095,6 +1095,10 @@ public class Piloto implements Serializable, PilotoSuave {
 		 * Devagarinho qdo a corrida termina
 		 */
 		if (controleJogo.isCorridaTerminada() && isRecebeuBanderada()
+				&& !getNoAtual().verificaRetaOuLargada()) {
+			setDevagarAposBanderada(true);
+		}
+		if (controleJogo.isCorridaTerminada() && isRecebeuBanderada()
 				&& (!getNoAtual().verificaRetaOuLargada()
 						|| isDevagarAposBanderada())) {
 			double novoModificador = (controleJogo.getCircuito()
@@ -1104,9 +1108,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			setVelocidade(Util.intervalo(50, 65));
 			return index;
 		}
-		if (isRecebeuBanderada() && !getNoAtual().verificaRetaOuLargada()) {
-			setDevagarAposBanderada(true);
-		}
+
 		if (desqualificado) {
 			return getNoAtual().getIndex();
 		}
@@ -1379,6 +1381,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				&& !testeHabilidadePilotoCarro()) {
 			if (escapaTracado(controleJogo)) {
 				setCiclosDesconcentrado(100);
+				controleJogo.travouRodas(this);
 				if (controleJogo.verificaInfoRelevante(this)) {
 					controleJogo.info(Lang.msg("saiDaPista",
 							new String[]{Html.vermelho(getNome())}));
@@ -1389,8 +1392,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				/**
 				 * Escapa para os tracados 1 ou 2
 				 */
-				if (getStress() > 60)
-					controleJogo.travouRodas(this);
+				controleJogo.travouRodas(this);
 				if (getTracadoAntigo() != 0) {
 					if (getTracadoAntigo() == 1) {
 						mudarTracado(2, controleJogo);
