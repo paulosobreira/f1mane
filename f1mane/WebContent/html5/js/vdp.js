@@ -1084,6 +1084,13 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo) {
 	if (dadosParciais.clima == "chuva.png") {
 		return;
 	}
+	var no = mapaIdNosSuave.get(piloto.idPiloto);
+	if (!no) {
+		no = mapaIdNos.get(piloto.idNo);
+	}
+	if(no.box){
+		return;
+	}
 	var rotacionar;
 	var sw = Math.round(intervalo(0, 2));
 	if (sw == 0) {

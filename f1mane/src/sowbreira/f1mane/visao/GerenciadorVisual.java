@@ -483,6 +483,11 @@ public class GerenciadorVisual {
 					if (keyCoode == KeyEvent.VK_0) {
 						controleJogo.forcaSafatyCar();
 					}
+					if (keyCoode == KeyEvent.VK_5) {
+						Piloto pilotoSelecionado = controleJogo
+								.getPilotoSelecionado();
+						pilotoSelecionado.setDesqualificado(true);
+					}
 					if (keyCoode == KeyEvent.VK_9) {
 						Piloto pilotoSelecionado = controleJogo
 								.getPilotoSelecionado();

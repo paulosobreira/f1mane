@@ -35,19 +35,25 @@ function getParameter(val) {
 	return result;
 }
 
-function formatarTempo(value) {
+function formatarDiferenca(value) {
 	if(value == null){
 		return '';
 	}
 	value = new String(value);
 	return value.substr(0,value.length-3) +'.'+ value.substr(value.length-3,value.length);
-//	var minu = Math.floor(value / 60000);
-//	var seg = Math.floor((value - (minu * 60000)) / 1000);
-//	var mili = value - ((minu * 60000) + (seg * 1000));
-//	if (minu > 0)
-//		return minu + ":" + pad(seg, 2) + "." + pad(mili, 3);
-//	else
-//		return seg + "." + pad(mili, 3);
+}
+
+function formatarTempo(value) {
+	if(value == null){
+		return '';
+	}
+	var minu = Math.floor(value / 60000);
+	var seg = Math.floor((value - (minu * 60000)) / 1000);
+	var mili = value - ((minu * 60000) + (seg * 1000));
+	if (minu > 0)
+		return minu + ":" + pad(seg, 2) + "." + pad(mili, 3);
+	else
+		return seg + "." + pad(mili, 3);
 }
 
 function pad(n, width, z) {

@@ -1007,13 +1007,13 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public void travouRodas(Piloto piloto) {
-		if(piloto.isRecebeuBanderada()){
+		if (piloto.isRecebeuBanderada()) {
 			return;
 		}
 		if (isChovendo()) {
 			return;
 		}
-		if(piloto.getPtosBox() != 0){
+		if (piloto.getPtosBox() != 0) {
 			return;
 		}
 		double lim = 0.3;
@@ -1688,7 +1688,9 @@ public class ControleJogoLocal extends ControleRecursos
 	public void setRecebeuBanderada(Piloto piloto) {
 		if (!piloto.isRecebeuBanderada()) {
 			piloto.setRecebeuBanderada(true);
-			piloto.setPosicaoBandeirada(piloto.getPosicao());
+			if (!piloto.isDesqualificado()) {
+				piloto.setPosicaoBandeirada(piloto.getPosicao());
+			}
 			if (piloto.getCarroPilotoAtras() != null) {
 				piloto.setVantagem(piloto.getCalculaSegundosParaAnterior());
 			}

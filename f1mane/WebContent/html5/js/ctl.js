@@ -412,7 +412,7 @@ function ctl_desenhaInfoCarros() {
 		imgCap2 = capaceteImgMap.get(posicaoPilotos.posis[1].idPiloto);
 		var ptsFrente = ptsPistaMap.get(posicaoPilotos.posis[0].idPiloto);
 		var ptsAtras = ptsPistaMap.get(posicaoPilotos.posis[1].idPiloto);
-		diff = formatarTempo(ptsFrente - ptsAtras);
+		diff = formatarDiferenca(ptsFrente - ptsAtras);
 		if (dadosParciais.tpPneus == "TIPO_PNEU_MOLE") {
 			imgPneu1 = imgPneuM;
 		} else if (dadosParciais.tpPneus == "TIPO_PNEU_DURO") {
@@ -443,7 +443,7 @@ function ctl_desenhaInfoCarros() {
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
 		var ptsAtras = ptsPistaMap
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
-		diff = formatarTempo(ptsFrente - ptsAtras);
+		diff = formatarDiferenca(ptsFrente - ptsAtras);
 		if (dadosParciais.tpPneusFrente == "TIPO_PNEU_MOLE") {
 			imgPneu1 = imgPneuM;
 		} else if (dadosParciais.tpPneusFrente == "TIPO_PNEU_DURO") {
@@ -517,7 +517,7 @@ function ctl_desenhaInfoCarros() {
 				imgPneu2 = imgPneuC;
 			}
 		}
-		diff = formatarTempo(ptsFrente - ptsAtras);
+		diff = formatarDiferenca(ptsFrente - ptsAtras);
 	}
 	if (diff) {
 		maneContext.beginPath();
