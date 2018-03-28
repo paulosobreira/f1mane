@@ -1163,8 +1163,9 @@ public class Piloto implements Serializable, PilotoSuave {
 		processaGanhoSafetyCar(controleJogo);
 		processaUltimas5Voltas();
 		decrementaPilotoDesconcentrado(controleJogo);
-		setPtosPista(Util.inteiro(getPtosPista() + ganho));
-		index += Math.round(ganho);
+		long roundGanho = Math.round(ganho);
+		setPtosPista(Util.inteiro(getPtosPista() + roundGanho));
+		index += roundGanho;
 		setVelocidade(calculoVelocidade(ganho));
 		return index;
 	}
