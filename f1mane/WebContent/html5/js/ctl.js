@@ -410,8 +410,13 @@ function ctl_desenhaInfoCarros() {
 		idPiloto2 = posicaoPilotos.posis[1].idPiloto;
 		imgCap1 = capaceteImgMap.get(posicaoPilotos.posis[0].idPiloto);
 		imgCap2 = capaceteImgMap.get(posicaoPilotos.posis[1].idPiloto);
-		var ptsFrente = ptsPistaMap.get(posicaoPilotos.posis[0].idPiloto);
-		var ptsAtras = ptsPistaMap.get(posicaoPilotos.posis[1].idPiloto);
+		var noFrente = mapaIdNos.get(posicaoPilotos.posis[0].idNo);
+		var noAtras = mapaIdNos.get(posicaoPilotos.posis[1].idNo);
+		var ptsFrente = noFrente.index;  
+		var ptsAtras = noAtras.index;
+		if(ptsFrente<ptsAtras){
+			ptsFrente += circuito.pistaFull.length;
+		}
 		diff = formatarDiferenca(ptsFrente - ptsAtras);
 		if (dadosParciais.tpPneus == "TIPO_PNEU_MOLE") {
 			imgPneu1 = imgPneuM;
@@ -439,10 +444,14 @@ function ctl_desenhaInfoCarros() {
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
 		imgCap2 = capaceteImgMap
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
-		var ptsFrente = ptsPistaMap
-				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
-		var ptsAtras = ptsPistaMap
-				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
+		
+		var noFrente = mapaIdNos.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idNo);
+		var noAtras = mapaIdNos.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idNo);
+		var ptsFrente = noFrente.index;  
+		var ptsAtras = noAtras.index;
+		if(ptsFrente<ptsAtras){
+			ptsFrente += circuito.pistaFull.length;
+		}
 		diff = formatarDiferenca(ptsFrente - ptsAtras);
 		if (dadosParciais.tpPneusFrente == "TIPO_PNEU_MOLE") {
 			imgPneu1 = imgPneuM;
@@ -462,10 +471,18 @@ function ctl_desenhaInfoCarros() {
 	} else {
 		var pilotoFrete = posicaoPilotos.posis[posicaoCentraliza - 1];
 		var pilotoAtras = posicaoPilotos.posis[posicaoCentraliza + 1];
-		var ptsFrente = ptsPistaMap.get(pilotoFrete.idPiloto);
-		var ptsAtras = ptsPistaMap.get(pilotoAtras.idPiloto);
-		var pSelPts = ptsPistaMap
-				.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+		var noFrente = mapaIdNos.get(pilotoFrete.idNo);
+		var noAtras = mapaIdNos.get(pilotoAtras.idNo);
+		var noPsel = mapaIdNos.get(posicaoPilotos.posis[posicaoCentraliza].idNo);
+		var ptsFrente = noFrente.index;  
+		var ptsAtras = noAtras.index;
+		var pSelPts = noPsel.index;
+		if(ptsFrente<ptsAtras || ptsFrente<pSelPts){
+			ptsFrente += circuito.pistaFull.length;
+		}
+		if(pSelPts<ptsAtras){
+			pSelPts += circuito.pistaFull.length;
+		}
 		var diffFrente = ptsFrente - pSelPts;
 		var diffAtras = pSelPts - ptsAtras;
 		if (diffFrente < diffAtras) {
