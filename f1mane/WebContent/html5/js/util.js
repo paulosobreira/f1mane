@@ -40,6 +40,12 @@ function formatarDiferenca(value) {
 		return '';
 	}
 	value = new String(value);
+	if(value.length<2){
+		value = '00'+value;
+	}
+	if(value.length<3){
+		value = '0'+value;
+	}
 	return value.substr(0,value.length-3) +'.'+ value.substr(value.length-3,value.length);
 }
 

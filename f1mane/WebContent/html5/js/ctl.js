@@ -486,6 +486,7 @@ function ctl_desenhaInfoCarros() {
 		var diffFrente = ptsFrente - pSelPts;
 		var diffAtras = pSelPts - ptsAtras;
 		if (diffFrente < diffAtras) {
+			diff = formatarDiferenca(diffFrente);
 			img1 = carrosLadoImgMap.get(pilotoFrete.idPiloto);
 			img2 = carrosLadoImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
@@ -510,6 +511,7 @@ function ctl_desenhaInfoCarros() {
 				imgPneu1 = imgPneuC;
 			}
 		} else {
+			diff = formatarDiferenca(diffAtras);
 			img1 = carrosLadoImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			img2 = carrosLadoImgMap.get(pilotoAtras.idPiloto);
@@ -534,7 +536,7 @@ function ctl_desenhaInfoCarros() {
 				imgPneu2 = imgPneuC;
 			}
 		}
-		diff = formatarDiferenca(ptsFrente - ptsAtras);
+		
 	}
 	if (diff) {
 		maneContext.beginPath();
