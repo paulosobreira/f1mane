@@ -19,6 +19,8 @@ public class SessaoCliente implements Serializable {
 
 	private String nomeJogador;
 
+	private String imagemJogador;
+
 	private String token;
 
 	private String jogoAtual;
@@ -92,6 +94,14 @@ public class SessaoCliente implements Serializable {
 
 	public void setIdPilotoAtual(int idPilotoAtual) {
 		this.idPilotoAtual = idPilotoAtual;
+	}
+
+	public String getImagemJogador() {
+		return imagemJogador;
+	}
+
+	public void setImagemJogador(String imagemJogador) {
+		this.imagemJogador = imagemJogador;
 	}
 
 }

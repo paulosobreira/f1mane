@@ -97,7 +97,7 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
-		controlePaddock.sairJogoToken(nomeJogo,token);
+		controlePaddock.sairJogoToken(nomeJogo, token);
 		return Response.status(200).build();
 	}
 
@@ -178,6 +178,17 @@ public class LetsRace {
 	public Response criarSessaoVisitante() {
 		return Response.status(200)
 				.entity(controlePaddock.criarSessaoVisitante()).build();
+	}
+
+	@GET
+	@Path("/criarSessaoGoogle")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response criarSessaoGoogle(@HeaderParam("idGoogle") String idGoogle,
+			@HeaderParam("nome") String nome,
+			@HeaderParam("urlFoto") String urlFoto,
+			@HeaderParam("email") String email) {
+		return Response.status(200).entity(controlePaddock
+				.criarSessaoGoogle(idGoogle, nome, urlFoto, email)).build();
 	}
 
 	@GET
@@ -448,8 +459,8 @@ public class LetsRace {
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
 
-//		 dadosCriarJogo.setClima(Clima.CHUVA);
-//		 dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
+		// dadosCriarJogo.setClima(Clima.CHUVA);
+		// dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
 		return dadosCriarJogo;
 	}
 
