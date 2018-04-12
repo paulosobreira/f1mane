@@ -441,6 +441,8 @@ public class ControleJogosServer {
 				statusPilotos = "A";
 			} else if (piloto.isTravouRodas()) {
 				statusPilotos = "T";
+			} else if (piloto.isMarcaPneu()) {
+				statusPilotos = "M";
 			} else if (piloto.isFaiscas()) {
 				statusPilotos = "F";
 			}

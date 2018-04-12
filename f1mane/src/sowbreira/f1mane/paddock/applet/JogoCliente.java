@@ -1394,4 +1394,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		return null;
 	}
 
+	@Override
+	public void travouRodas(Piloto piloto, boolean semFumaca) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

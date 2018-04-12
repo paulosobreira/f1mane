@@ -232,7 +232,7 @@ public interface InterfaceJogo {
 	public List<No> obterNosPista();
 
 	public boolean verificaNoPitLane(Piloto piloto);
-	
+
 	public boolean verificaSaidaBox(Piloto piloto);
 
 	public BufferedImage carregaBackGround(String backGround);
@@ -393,13 +393,13 @@ public interface InterfaceJogo {
 	public void forcaQuerbraAereofolio();
 
 	public boolean isAtualizacaoSuave();
-	
+
 	public boolean isSafetyCar();
 
 	public void setAtualizacaoSuave(boolean atualizacaoSuave);
 
 	public void setRecebeuBanderada(Piloto piloto);
-	
+
 	public Piloto obterPilotoPorId(String id);
 
 	public Piloto getPilotoBateu();
@@ -407,5 +407,7 @@ public interface InterfaceJogo {
 	public boolean verificaEntradaBox(Piloto piloto);
 
 	public Double getFatorBoxTemporada();
+
+	void travouRodas(Piloto piloto, boolean semFumaca);
 
 }

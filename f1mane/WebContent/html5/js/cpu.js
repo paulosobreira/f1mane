@@ -126,7 +126,10 @@ function cpu_dadosParciais() {
 			} else if (no.tipoJson == 'B') {
 				pilotosTravadaFumacaMap.set(piloto.idPiloto, 3);
 			}
-		} else if (status.startsWith("R")) {
+		} else if(status.startsWith("M")){
+			pilotosTravadaMap.set(piloto.idPiloto, true);
+		}
+		else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		} else if (status.startsWith("B")) {
 			pilotosBandeirada.set(piloto.idPiloto, true);
