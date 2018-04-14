@@ -21,7 +21,6 @@ var pilotosFaiscaMap = new Map();
 var pilotosTravadaMap = new Map();
 var pilotosTravadaFumacaMap = new Map();
 var pilotosAereofolioMap = new Map();
-var ptsPistaMap = new Map();
 var idNoAnterior = new Map();
 var showFps = false;
 
@@ -110,15 +109,11 @@ function cpu_dadosParciais() {
 		var status = new String(piloto.status);
 		pilotosAereofolioMap.set(piloto.idPiloto, false);
 		if (status.startsWith("P")) {
-			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("P", "")));
 		} else if (status.startsWith("A")) {
-			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("A", "")));
 			pilotosAereofolioMap.set(piloto.idPiloto, true);
 		} else if (status.startsWith("F")) {
-			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("F", "")));
 			pilotosFaiscaMap.set(piloto.idPiloto, 15);
 		} else if (status.startsWith("T")) {
-			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("T", "")));
 			pilotosTravadaMap.set(piloto.idPiloto, true);
 			var no = mapaIdNosSuave.get(piloto.idPiloto);
 			if (no == null) {
@@ -131,10 +126,12 @@ function cpu_dadosParciais() {
 			} else if (no.tipoJson == 'B') {
 				pilotosTravadaFumacaMap.set(piloto.idPiloto, 3);
 			}
-		} else if (status.startsWith("R")) {
+		} else if(status.startsWith("M")){
+			pilotosTravadaMap.set(piloto.idPiloto, true);
+		}
+		else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		} else if (status.startsWith("B")) {
-			ptsPistaMap.set(piloto.idPiloto, parseInt(status.replace("B", "")));
 			pilotosBandeirada.set(piloto.idPiloto, true);
 		}
 	}

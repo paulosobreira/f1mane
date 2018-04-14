@@ -602,7 +602,7 @@ public class Carro implements Serializable {
 
 	private void calculaDesgasteMotor(int novoModificador, boolean agressivo,
 			No no, InterfaceJogo controleJogo) {
-		if(getPiloto().isRecebeuBanderada()){
+		if (getPiloto().isRecebeuBanderada()) {
 			return;
 		}
 		int valDesgaste = 0;
@@ -656,7 +656,7 @@ public class Carro implements Serializable {
 
 	private void calculaConsumoCombustivel(InterfaceJogo controleJogo,
 			int percent, boolean testePotencia) {
-		if(getPiloto().isRecebeuBanderada()){
+		if (getPiloto().isRecebeuBanderada()) {
 			return;
 		}
 		int valConsumo = 0;
@@ -873,7 +873,7 @@ public class Carro implements Serializable {
 
 	private double calculaDesgastePneus(boolean agressivo, No no,
 			InterfaceJogo controleJogo, int porcentPneus) {
-		if(getPiloto().isRecebeuBanderada()){
+		if (getPiloto().isRecebeuBanderada()) {
 			return 0;
 		}
 		getPiloto().setTravouRodas(false);
@@ -894,7 +894,8 @@ public class Carro implements Serializable {
 				if (getPiloto().getStress() > 80
 						&& Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {
 					teste = false;
-					if (!no.verificaRetaOuLargada()) {
+					if (getPiloto().getStress() > 70
+							&& !no.verificaRetaOuLargada()) {
 						controleJogo.travouRodas(getPiloto());
 					}
 					piloto.decStress(getPiloto().testeHabilidadePiloto()
@@ -1031,9 +1032,9 @@ public class Carro implements Serializable {
 		if (porcentPneus < -5) {
 			getPiloto().setDesqualificado(true);
 			setRecolhido(true);
-			controleJogo.infoPrioritaria(Html
-					.txtRedBold(Lang.msg("abandoNouDevidoDanosRodas",
-					new String[]{piloto.getNome()})));
+			controleJogo.infoPrioritaria(
+					Html.txtRedBold(Lang.msg("abandoNouDevidoDanosRodas",
+							new String[]{piloto.getNome()})));
 		}
 		if (verificaDano()
 				|| Piloto.LENTO.equals(getPiloto().getModoPilotagem())) {

@@ -1007,7 +1007,18 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public void travouRodas(Piloto piloto) {
+		travouRodas(piloto, false);
+	}
+
+	@Override
+	public void travouRodas(Piloto piloto,boolean semFumaca) {
+		if (piloto.isRecebeuBanderada()) {
+			return;
+		}
 		if (isChovendo()) {
+			return;
+		}
+		if (piloto.getPtosBox() != 0) {
 			return;
 		}
 		double lim = 0.3;
@@ -1028,7 +1039,11 @@ public class ControleJogoLocal extends ControleRecursos
 		} else if (piloto.getNoAtual().verificaCurvaBaixa()) {
 			qtdeFumaca = Util.intervalo(10, 20);
 		}
-		piloto.setTravouRodas(qtdeFumaca);
+		if(semFumaca){
+			piloto.setMarcaPneu(qtdeFumaca);
+		}else{
+			piloto.setTravouRodas(qtdeFumaca);
+		}
 		if (gerenciadorVisual != null)
 			gerenciadorVisual.adicinaTravadaRoda(travadaRoda);
 
@@ -1682,7 +1697,9 @@ public class ControleJogoLocal extends ControleRecursos
 	public void setRecebeuBanderada(Piloto piloto) {
 		if (!piloto.isRecebeuBanderada()) {
 			piloto.setRecebeuBanderada(true);
-			piloto.setPosicaoBandeirada(piloto.getPosicao());
+			if (!piloto.isDesqualificado()) {
+				piloto.setPosicaoBandeirada(piloto.getPosicao());
+			}
 			if (piloto.getCarroPilotoAtras() != null) {
 				piloto.setVantagem(piloto.getCalculaSegundosParaAnterior());
 			}

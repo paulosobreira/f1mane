@@ -670,6 +670,8 @@ public class CarregadorRecursos {
 					bufferImages.put(file, bufferedImage);
 				}
 			} catch (Exception e) {
+				Logger.logarExept(new Exception(
+						" carregaImagem : " + file + " cahce " + cache));
 				Logger.logarExept(e);
 			}
 		}

@@ -35,6 +35,20 @@ function getParameter(val) {
 	return result;
 }
 
+function formatarDiferenca(value) {
+	if(value == null){
+		return '';
+	}
+	value = new String(value);
+	if(value.length<2){
+		value = '00'+value;
+	}
+	if(value.length<3){
+		value = '0'+value;
+	}
+	return value.substr(0,value.length-3) +'.'+ value.substr(value.length-3,value.length);
+}
+
 function formatarTempo(value) {
 	if(value == null){
 		return '';

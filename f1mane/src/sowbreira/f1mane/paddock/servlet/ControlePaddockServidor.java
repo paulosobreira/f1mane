@@ -665,6 +665,21 @@ public class ControlePaddockServidor {
 		srvPaddockPack.setSessaoCliente(sessaoCliente);
 		return srvPaddockPack;
 	}
+	
+	public Object criarSessaoGoogle(String idGoogle, String nome,
+			String urlFoto, String email) {
+		SessaoCliente sessaoCliente = new SessaoCliente();
+		TokenGenerator tokenGenerator = new TokenGenerator();
+		sessaoCliente.setToken(tokenGenerator.nextSessionId());
+		sessaoCliente.setNomeJogador(nome);
+		sessaoCliente.setImagemJogador(urlFoto);
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		sessaoCliente.setGuest(false);
+		dadosPaddock.add(sessaoCliente);
+		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+		srvPaddockPack.setSessaoCliente(sessaoCliente);
+		return srvPaddockPack;
+	}
 
 	public static void main(String[] args) {
 		// String test = "#brual#llllp#";
@@ -748,5 +763,6 @@ public class ControlePaddockServidor {
 				.getMapaJogosCriados().get(sessaoCliente);
 		jogoServidor.removerJogador(sessaoCliente.getNomeJogador());
 	}
+
 
 }

@@ -431,18 +431,20 @@ public class ControleJogosServer {
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = iter.next();
 			Posis posis = new Posis();
-			String statusPilotos = "P" + String.valueOf(piloto.getPtosPista());
+			String statusPilotos = "P";
 			if (piloto.verificaNaoPrecisaDesenhar()) {
 				statusPilotos = "R";
 			} else if (piloto.isRecebeuBanderada()) {
-				statusPilotos = "B" + String.valueOf(piloto.getPtosPista());
+				statusPilotos = "B";
 			} else if (Carro.PERDEU_AEREOFOLIO
 					.equals(piloto.getCarro().getDanificado())) {
-				statusPilotos = "A" + String.valueOf(piloto.getPtosPista());
+				statusPilotos = "A";
 			} else if (piloto.isTravouRodas()) {
-				statusPilotos = "T" + String.valueOf(piloto.getPtosPista());
+				statusPilotos = "T";
+			} else if (piloto.isMarcaPneu()) {
+				statusPilotos = "M";
 			} else if (piloto.isFaiscas()) {
-				statusPilotos = "F" + String.valueOf(piloto.getPtosPista());
+				statusPilotos = "F";
 			}
 			posis.setStatus(statusPilotos);
 			posis.setIdPiloto(piloto.getId());

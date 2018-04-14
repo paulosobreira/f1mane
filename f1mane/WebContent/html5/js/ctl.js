@@ -410,9 +410,14 @@ function ctl_desenhaInfoCarros() {
 		idPiloto2 = posicaoPilotos.posis[1].idPiloto;
 		imgCap1 = capaceteImgMap.get(posicaoPilotos.posis[0].idPiloto);
 		imgCap2 = capaceteImgMap.get(posicaoPilotos.posis[1].idPiloto);
-		var ptsFrente = ptsPistaMap.get(posicaoPilotos.posis[0].idPiloto);
-		var ptsAtras = ptsPistaMap.get(posicaoPilotos.posis[1].idPiloto);
-		diff = formatarTempo(ptsFrente - ptsAtras);
+		var noFrente = mapaIdNos.get(posicaoPilotos.posis[0].idNo);
+		var noAtras = mapaIdNos.get(posicaoPilotos.posis[1].idNo);
+		var ptsFrente = noFrente.index;  
+		var ptsAtras = noAtras.index;
+		if(ptsFrente<ptsAtras){
+			ptsFrente += circuito.pistaFull.length;
+		}
+		diff = formatarDiferenca(ptsFrente - ptsAtras);
 		if (dadosParciais.tpPneus == "TIPO_PNEU_MOLE") {
 			imgPneu1 = imgPneuM;
 		} else if (dadosParciais.tpPneus == "TIPO_PNEU_DURO") {
@@ -439,11 +444,15 @@ function ctl_desenhaInfoCarros() {
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
 		imgCap2 = capaceteImgMap
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
-		var ptsFrente = ptsPistaMap
-				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
-		var ptsAtras = ptsPistaMap
-				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
-		diff = formatarTempo(ptsFrente - ptsAtras);
+		
+		var noFrente = mapaIdNos.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idNo);
+		var noAtras = mapaIdNos.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idNo);
+		var ptsFrente = noFrente.index;  
+		var ptsAtras = noAtras.index;
+		if(ptsFrente<ptsAtras){
+			ptsFrente += circuito.pistaFull.length;
+		}
+		diff = formatarDiferenca(ptsFrente - ptsAtras);
 		if (dadosParciais.tpPneusFrente == "TIPO_PNEU_MOLE") {
 			imgPneu1 = imgPneuM;
 		} else if (dadosParciais.tpPneusFrente == "TIPO_PNEU_DURO") {
@@ -462,13 +471,22 @@ function ctl_desenhaInfoCarros() {
 	} else {
 		var pilotoFrete = posicaoPilotos.posis[posicaoCentraliza - 1];
 		var pilotoAtras = posicaoPilotos.posis[posicaoCentraliza + 1];
-		var ptsFrente = ptsPistaMap.get(pilotoFrete.idPiloto);
-		var ptsAtras = ptsPistaMap.get(pilotoAtras.idPiloto);
-		var pSelPts = ptsPistaMap
-				.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+		var noFrente = mapaIdNos.get(pilotoFrete.idNo);
+		var noAtras = mapaIdNos.get(pilotoAtras.idNo);
+		var noPsel = mapaIdNos.get(posicaoPilotos.posis[posicaoCentraliza].idNo);
+		var ptsFrente = noFrente.index;  
+		var ptsAtras = noAtras.index;
+		var pSelPts = noPsel.index;
+		if(ptsFrente<ptsAtras || ptsFrente<pSelPts){
+			ptsFrente += circuito.pistaFull.length;
+		}
+		if(pSelPts<ptsAtras){
+			pSelPts += circuito.pistaFull.length;
+		}
 		var diffFrente = ptsFrente - pSelPts;
 		var diffAtras = pSelPts - ptsAtras;
 		if (diffFrente < diffAtras) {
+			diff = formatarDiferenca(diffFrente);
 			img1 = carrosLadoImgMap.get(pilotoFrete.idPiloto);
 			img2 = carrosLadoImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
@@ -493,6 +511,7 @@ function ctl_desenhaInfoCarros() {
 				imgPneu1 = imgPneuC;
 			}
 		} else {
+			diff = formatarDiferenca(diffAtras);
 			img1 = carrosLadoImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			img2 = carrosLadoImgMap.get(pilotoAtras.idPiloto);
@@ -517,7 +536,7 @@ function ctl_desenhaInfoCarros() {
 				imgPneu2 = imgPneuC;
 			}
 		}
-		diff = formatarTempo(ptsFrente - ptsAtras);
+		
 	}
 	if (diff) {
 		maneContext.beginPath();
@@ -892,7 +911,7 @@ function ctl_desenhaInfoEsquerda() {
 			maneContext.stroke();			
 		}
 		
-		if (dadosParciais.pCombust < 10) {
+		if (dadosParciais.pCombust <= 10) {
 			maneContext.beginPath();
 			maneContext.strokeStyle = '#ff0000';
 			maneContext.rect(x, y, 94, 20);
@@ -920,7 +939,7 @@ function ctl_desenhaInfoEsquerda() {
 			maneContext.stroke();			
 		}
 
-		if (dadosParciais.pPneus < 10) {
+		if (dadosParciais.pPneus <= 10) {
 			maneContext.beginPath();
 			maneContext.strokeStyle = '#ff0000';
 			maneContext.rect(x, y, 94, 20);
