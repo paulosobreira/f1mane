@@ -209,6 +209,7 @@ function preparaJogo() {
 		$('#ajusteDeAsa').addClass('hide');
 	}
 	$('#btnJogar').css('z-index', '100000');
+	$('#idNumeroVoltas').addClass('hide');
 	if (dadosJogo.estado == '07') {
 		$('#idNumeroVoltas').addClass('hide');
 	}

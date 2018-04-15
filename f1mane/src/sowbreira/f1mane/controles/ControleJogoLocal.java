@@ -1040,7 +1040,8 @@ public class ControleJogoLocal extends ControleRecursos
 			qtdeFumaca = Util.intervalo(10, 20);
 		}
 		if(semFumaca){
-			piloto.setMarcaPneu(qtdeFumaca);
+			piloto.setMarcaPneu(true);
+			piloto.setTravouRodas(0);
 		}else{
 			piloto.setTravouRodas(qtdeFumaca);
 		}

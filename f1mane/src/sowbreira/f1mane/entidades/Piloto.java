@@ -212,8 +212,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private int contTravouRodas;
 	@JsonIgnore
-	private int contMarcaPneu;
-	@JsonIgnore
 	private boolean travouRodas;
 	@JsonIgnore
 	private boolean marcaPneu;
@@ -359,18 +357,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		return false;
 	}
 
-	public boolean decContMarcaPneu() {
-		if (contMarcaPneu > 0) {
-			contMarcaPneu--;
-			if (contMarcaPneu > 0 && noAtual != null
-					&& noAtual.verificaRetaOuLargada()) {
-				contMarcaPneu--;
-			}
-			return true;
-		}
-		return false;
-	}
-	
 	public void setTravouRodas(int contTravouRodas) {
 		if (contTravouRodas <= 0) {
 			setTravouRodas(false);
@@ -3662,16 +3648,6 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setPosicaoBandeirada(int posicaoBandeirada) {
 		this.posicaoBandeirada = posicaoBandeirada;
-	}
-
-	public void setMarcaPneu(int contMarcaPneu) {
-		if (contMarcaPneu <= 0) {
-			setMarcaPneu(false);
-		} else {
-			setMarcaPneu(true);
-		}
-		this.contMarcaPneu = contMarcaPneu;
-		
 	}
 
 	public boolean isMarcaPneu() {
