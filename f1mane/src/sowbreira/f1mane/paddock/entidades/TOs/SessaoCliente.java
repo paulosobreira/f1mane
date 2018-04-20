@@ -22,6 +22,8 @@ public class SessaoCliente implements Serializable {
 	private String imagemJogador;
 
 	private String token;
+	
+	private String email;
 
 	private String jogoAtual;
 
@@ -103,5 +105,15 @@ public class SessaoCliente implements Serializable {
 	public void setImagemJogador(String imagemJogador) {
 		this.imagemJogador = imagemJogador;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
 
 }
