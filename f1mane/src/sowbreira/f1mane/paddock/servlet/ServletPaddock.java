@@ -130,10 +130,7 @@ public class ServletPaddock extends HttpServlet {
 		try {
 			printWriter.println("<html><body>");
 			String tipo = req.getParameter("tipo");
-			AnnotationConfiguration cfg = new AnnotationConfiguration();
-			cfg.configure("hibernate.cfg.xml");
 
-			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 			if (tipo == null) {
 				return;
 			} else if ("x".equals(tipo)) {
@@ -141,9 +138,9 @@ public class ServletPaddock extends HttpServlet {
 			} else if ("C".equals(tipo)) {
 				topConstrutors(res);
 			} else if ("create_schema".equals(tipo)) {
-				createSchema(cfg, sessionFactory, printWriter);
+				createSchema(printWriter);
 			} else if ("update_schema".equals(tipo)) {
-				updateSchema(cfg, sessionFactory, printWriter);
+				updateSchema(printWriter);
 			}
 			printWriter.println("<br/> " + tipo + " done");
 		} catch (Exception e) {
@@ -154,9 +151,10 @@ public class ServletPaddock extends HttpServlet {
 		res.flushBuffer();
 	}
 
-	private void updateSchema(AnnotationConfiguration cfg,
-			SessionFactory sessionFactory, PrintWriter printWriter)
-			throws SQLException {
+	private void updateSchema(PrintWriter printWriter) throws SQLException {
+		AnnotationConfiguration cfg = new AnnotationConfiguration();
+		cfg.configure("hibernate.cfg.xml");
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Dialect dialect = Dialect.getDialect(cfg.getProperties());
 		Session session = sessionFactory.openSession();
 		DatabaseMetadata meta = new DatabaseMetadata(session.connection(),
@@ -184,9 +182,11 @@ public class ServletPaddock extends HttpServlet {
 
 	}
 
-	private void createSchema(AnnotationConfiguration cfg,
-			SessionFactory sessionFactory, PrintWriter printWriter)
+	private void createSchema(PrintWriter printWriter)
 			throws HibernateException, SQLException {
+		AnnotationConfiguration cfg = new AnnotationConfiguration();
+		cfg.configure("hibernate.cfg.xml");
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Dialect dialect = Dialect.getDialect(cfg.getProperties());
 		String[] strings = cfg.generateSchemaCreationScript(dialect);
 		executeStatement(sessionFactory, strings, printWriter);
@@ -286,7 +286,7 @@ public class ServletPaddock extends HttpServlet {
 
 	public static void main(String[] args) {
 		String teste = "hasjdhasjkd {asd} dsajdhauid";
-		//System.out.println(teste.replace("{asd}", "paulo"));
+		// System.out.println(teste.replace("{asd}", "paulo"));
 		// Enumeration e = System.getProperties().propertyNames();
 		// while (e.hasMoreElements()) {
 		// String element = (String) e.nextElement();
