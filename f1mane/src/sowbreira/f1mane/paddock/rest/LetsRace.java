@@ -672,7 +672,7 @@ public class LetsRace {
 	@GET
 	@Compress
 	@Path("/sobre")
-	@Produces(MediaType.TEXT_HTML)
+	@Produces(MediaType.TEXT_HTML+ ";charset=UTF-8")
 	public Response sobre() {
 		List<String> carregarCreditosJogo = CarregadorRecursos
 				.carregarCreditosJogo();
@@ -681,7 +681,7 @@ public class LetsRace {
 				.iterator(); iterator.hasNext();) {
 			String string = iterator.next();
 			buffer.append("<br>");
-			buffer.append(StringEscapeUtils.escapeHtml4(string));
+			buffer.append(string);
 		}
 		return Response.status(200).entity(buffer.toString()).build();
 	}
