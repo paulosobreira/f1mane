@@ -774,4 +774,17 @@ public class ControlePaddockServidor {
 		jogoServidor.removerJogador(sessaoCliente.getNomeJogador());
 	}
 
+	public Object dadosToken(String token) {
+		List<SessaoCliente> clientes = dadosPaddock.getClientes();
+		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+			if (sessaoCliente.getToken().equals(token)) {
+				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+				srvPaddockPack.setSessaoCliente(sessaoCliente);
+				return srvPaddockPack;
+			}
+		}
+		return null;
+	}
+
 }

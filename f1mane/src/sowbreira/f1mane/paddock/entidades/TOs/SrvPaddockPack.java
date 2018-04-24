@@ -118,5 +118,4 @@ public class SrvPaddockPack implements Serializable {
 		this.senhaCriada = senhaCriada;
 	}
 
-
 }

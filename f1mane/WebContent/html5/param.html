@@ -2,9 +2,14 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Teste Param</title>
+<script src="../jquery/jquery-3.2.1.min.js"></script>
+<script src="js/util.js"></script>
 </head>
 <body>
-
+Teste Param Token : <input type="text" id="token"/>
 </body>
+<script>
+	document.getElementById('token').value = getParameter('token');
+</script>
 </html>

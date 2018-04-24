@@ -172,15 +172,13 @@ public class LetsRace {
 				.entity(controlePaddock.atualizarDadosVisao()).build();
 	}
 
-	
 	@GET
 	@Path("/verificaServico")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response verificaServico() {
-		return Response.status(200)
-				.entity("ok").build();
+		return Response.status(200).entity("ok").build();
 	}
-	
+
 	@GET
 	@Path("/criarSessaoVisitante")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -190,16 +188,20 @@ public class LetsRace {
 	}
 
 	@GET
+	@Path("/dadosToken")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response dadosToken(@HeaderParam("token") String token) {
+		return Response.status(200).entity(controlePaddock.dadosToken(token))
+				.build();
+	}
+
+	@GET
 	@Path("/criarSessaoGoogle")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response criarSessaoGoogle(@HeaderParam("idGoogle") String idGoogle,
 			@HeaderParam("nome") String nome,
 			@HeaderParam("urlFoto") String urlFoto,
 			@HeaderParam("email") String email) {
-		System.out.println("idGoogle "+idGoogle);
-		System.out.println("nome "+nome);
-		System.out.println("urlFoto "+urlFoto);
-		System.out.println("email "+email);
 		return Response.status(200).entity(controlePaddock
 				.criarSessaoGoogle(idGoogle, nome, urlFoto, email)).build();
 	}
@@ -672,7 +674,7 @@ public class LetsRace {
 	@GET
 	@Compress
 	@Path("/sobre")
-	@Produces(MediaType.TEXT_HTML+ ";charset=UTF-8")
+	@Produces(MediaType.TEXT_HTML + ";charset=UTF-8")
 	public Response sobre() {
 		List<String> carregarCreditosJogo = CarregadorRecursos
 				.carregarCreditosJogo();
