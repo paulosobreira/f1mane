@@ -24,6 +24,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DetalhesJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
+import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.TravadaRoda;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
@@ -37,7 +38,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private String nomeJogoServidor;
 	private String nomeCriador;
 	private long tempoCriacao, tempoInicio, tempoFim;
-	/* mapJogadoresOnline.put(apelido, dadosParticiparJogo) */
+	/* mapJogadoresOnline.put(token, dadosParticiparJogo) */
 	private Map<String, DadosCriarJogo> mapJogadoresOnline = new HashMap<String, DadosCriarJogo>();
 	private Map<String, BufferTexto> mapJogadoresOnlineTexto = new HashMap<String, BufferTexto>();
 	/* Chave numVolta , valor lista de VoltaJogadorOnline */
@@ -73,7 +74,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.isJogadorHumano()) {
 				VoltaJogadorOnline voltaJogadorOnline = new VoltaJogadorOnline();
-				voltaJogadorOnline.setJogador(piloto.getNomeJogador());
+				voltaJogadorOnline.setJogador(piloto.getTokenJogador());
 				voltaJogadorOnline.setPiloto(piloto.getNome());
 				voltasJogadoresOnline.add(voltaJogadorOnline);
 			}
@@ -163,10 +164,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public Object adicionarJogador(SessaoCliente sessaoCliente,
 			DadosCriarJogo dadosParticiparJogo) {
-		String nomeJogador = sessaoCliente.getNomeJogador();
-		if (mapJogadoresOnline.containsKey(nomeJogador)) {
-			return new MsgSrv(Lang.msg("259"));
-		}
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
 				.hasNext();) {
 			String key = (String) iter.next();
@@ -176,8 +173,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					Piloto piloto = (Piloto) iter2.next();
 					if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 						if (sessaoCliente.isGuest()) {
-							return new MsgSrv(Lang.msg("escolhidoPorOutroJogador",
-									new String[]{piloto.getNome()}));
+							return new MsgSrv(
+									Lang.msg("escolhidoPorOutroJogador",
+											new String[]{piloto.getNome()}));
 						} else {
 							return new MsgSrv(Lang.msg("257",
 									new String[]{piloto.getNome(), key}));
@@ -201,8 +199,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 		}
 		if (pilotoDisponivel) {
-			mapJogadoresOnline.put(nomeJogador, dadosParticiparJogo);
-			mapJogadoresOnlineTexto.put(nomeJogador, new BufferTexto());
+			mapJogadoresOnline.put(sessaoCliente.getToken(),
+					dadosParticiparJogo);
+			mapJogadoresOnlineTexto.put(sessaoCliente.getToken(),
+					new BufferTexto());
 		} else {
 			return new MsgSrv(Lang.msg("260",
 					new String[]{dadosParticiparJogo.getPiloto()}));
@@ -218,6 +218,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				.hasNext();) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
+			// TODO Token
 			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 					.obterCarreiraSrv(key);
 			String piloto = "";
@@ -293,7 +294,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 			if (piloto.isJogadorHumano()) {
 				CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-						.obterCarreiraSrv(piloto.getNomeJogador());
+						.obterCarreiraSrv(piloto.getTokenJogador());
 				if (carreiraDadosSrv != null
 						&& carreiraDadosSrv.isModoCarreira()) {
 					piloto.getCarro().setImg(null);
@@ -339,6 +340,8 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		for (Iterator<String> iter = mapJogadoresOnline.keySet()
 				.iterator(); iter.hasNext();) {
 			String key = iter.next();
+			SrvPaddockPack srvPaddockPack = controleJogosServer
+					.obterDadosToken(key);
 			DadosCriarJogo dadosParticiparJogo = mapJogadoresOnline.get(key);
 			for (Iterator<Piloto> iterator = pilotos.iterator(); iterator
 					.hasNext();) {
@@ -346,12 +349,18 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
 						|| piloto.getId() == dadosParticiparJogo
 								.getIdPiloto()) {
-					piloto.setNomeJogador(key);
+					piloto.setNomeJogador(
+							srvPaddockPack.getSessaoCliente().getNomeJogador());
+					piloto.setImgJogador(srvPaddockPack.getSessaoCliente()
+							.getImagemJogador());
+					piloto.setTokenJogador(
+							srvPaddockPack.getSessaoCliente().getToken());
 					piloto.setJogadorHumano(true);
 				}
 				if (piloto.isJogadorHumano() && mapJogadoresOnline
-						.get(piloto.getNomeJogador()) == null) {
+						.get(piloto.getTokenJogador()) == null) {
 					piloto.setNomeJogador("IA");
+					piloto.setImgJogador(null);
 					piloto.setJogadorHumano(false);
 				}
 			}
@@ -393,9 +402,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public String getTipoPneuBox(Piloto piloto) {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-				.get(piloto.getNomeJogador());
+				.get(piloto.getTokenJogador());
 		if (dadosParticiparJogo == null) {
 			piloto.setNomeJogador("IA");
+			piloto.setTokenJogador(null);
 			piloto.setJogadorHumano(false);
 			return Carro.TIPO_PNEU_DURO;
 		}
@@ -404,7 +414,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public String getAsaBox(Piloto piloto) {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-				.get(piloto.getNomeJogador());
+				.get(piloto.getTokenJogador());
 		if (dadosParticiparJogo == null) {
 			piloto.setNomeJogador("IA");
 			piloto.setJogadorHumano(false);
@@ -415,9 +425,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public Integer getCombustBox(Piloto piloto) {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-				.get(piloto.getNomeJogador());
+				.get(piloto.getTokenJogador());
 		if (dadosParticiparJogo == null) {
 			piloto.setNomeJogador("IA");
+			piloto.setTokenJogador(null);
 			piloto.setJogadorHumano(false);
 			return new Integer(100);
 		}
@@ -532,17 +543,18 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void atulizaTabelaPosicoes() {
 	}
 
-	public void removerJogador(String apelido) {
-		if (apelido == null) {
+	public void removerJogador(String token) {
+		if (token == null) {
 			return;
 		}
 		List pilots = getPilotos();
 		for (Iterator iter = pilots.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (apelido.equals(piloto.getNomeJogador())) {
+			if (token.equals(piloto.getTokenJogador())) {
 				piloto.setNomeJogador(null);
+				piloto.setTokenJogador(null);
 				piloto.setJogadorHumano(false);
-				mapJogadoresOnline.remove(apelido);
+				mapJogadoresOnline.remove(token);
 			}
 		}
 
@@ -559,13 +571,13 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	@Override
 	public void travouRodas(Piloto piloto) {
-		if(piloto.isRecebeuBanderada()){
+		if (piloto.isRecebeuBanderada()) {
 			return;
 		}
 		if (isChovendo()) {
 			return;
 		}
-		if(piloto.getPtosBox() != 0){
+		if (piloto.getPtosBox() != 0) {
 			return;
 		}
 		this.travadaRoda = new TravadaRoda();

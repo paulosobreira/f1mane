@@ -385,9 +385,10 @@ public class MonitorJogo implements Runnable {
 								jogoCliente.obterIdPorNo(piloto.getNoAtual()));
 						jogoCliente.travouRodas(travadaRoda);
 					} else if ("A".equals(statusPilotos)) {
-						piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);;
+						piloto.getCarro()
+								.setDanificado(Carro.PERDEU_AEREOFOLIO);;
 						piloto.getCarro().setDurabilidadeAereofolio(0);
-					}	else if ("R".equals(statusPilotos)) {
+					} else if ("R".equals(statusPilotos)) {
 						piloto.getCarro().setRecolhido(true);
 					}
 				}
@@ -572,7 +573,7 @@ public class MonitorJogo implements Runnable {
 				piloto.processaUltimas5Voltas();
 				piloto.setNomeJogador(dadosParciais.nomeJogador);
 				piloto.setQtdeParadasBox(dadosParciais.paradas);
-				if (piloto.getNomeJogador() != null) {
+				if (piloto.getTokenJogador() != null) {
 					piloto.setJogadorHumano(true);
 				} else {
 					piloto.setJogadorHumano(false);
@@ -879,8 +880,8 @@ public class MonitorJogo implements Runnable {
 
 	public void driveThru(final Piloto pilotoSelecionado) {
 		if (pilotoSelecionado == null || !pilotoSelecionado.isJogadorHumano()
-				|| sessaoCliente.getNomeJogador()
-						.equals(pilotoSelecionado.getNomeJogador())) {
+				|| sessaoCliente.getToken()
+						.equals(pilotoSelecionado.getTokenJogador())) {
 			jogoCliente
 					.adicionarInfoDireto(Lang.msg("selecionePilotoDriveThru"));
 			return;
@@ -894,7 +895,7 @@ public class MonitorJogo implements Runnable {
 					clientPaddockPack
 							.setNomeJogo(jogoCliente.getNomeJogoCriado());
 					clientPaddockPack
-							.setDataObject(pilotoSelecionado.getNomeJogador());
+							.setDataObject(pilotoSelecionado.getTokenJogador());
 					Object ret = controlePaddockCliente
 							.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {

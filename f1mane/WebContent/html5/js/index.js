@@ -58,6 +58,7 @@ function dadosJogador() {
 		},
 		success : function(srvPaddockPack) {
 			$('#nomeJogador').append(srvPaddockPack.sessaoCliente.nomeJogador);
+			$('#imgJogador').attr('src', srvPaddockPack.sessaoCliente.imagemJogador);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			$('#botoes').show();

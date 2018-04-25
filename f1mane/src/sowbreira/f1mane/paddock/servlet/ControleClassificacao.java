@@ -116,9 +116,9 @@ public class ControleClassificacao {
 			for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
 				if (piloto.isJogadorHumano()
-						&& !Util.isNullOrEmpty(piloto.getNomeJogador())) {
+						&& !Util.isNullOrEmpty(piloto.getTokenJogador())) {
 					JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-							.carregaDadosJogador(piloto.getNomeJogador(),
+							.carregaDadosJogador(piloto.getTokenJogador(),
 									session);
 					if (jogadorDadosSrv == null) {
 						continue;
@@ -145,7 +145,7 @@ public class ControleClassificacao {
 					corridasDadosSrv.setJogadorDadosSrv(idJog);
 					jogadorDadosSrv.getCorridas().add(corridasDadosSrv);
 					CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-							.carregaCarreiraJogador(piloto.getNomeJogador(),
+							.carregaCarreiraJogador(piloto.getTokenJogador(),
 									false, session);
 					if (carreiraDadosSrv.isModoCarreira()) {
 						int ptsCorrida = corridasDadosSrv.getPontos();
@@ -184,7 +184,7 @@ public class ControleClassificacao {
 				VoltaJogadorOnline jogadorOnline = (VoltaJogadorOnline) iter
 						.next();
 				if (jogadorOnline.getJogador()
-						.equals(piloto.getNomeJogador())) {
+						.equals(piloto.getTokenJogador())) {
 					voltasConcluidas++;
 					if (!jogadorOnline.getPiloto().equals(piloto.getNome())) {
 						corridasDadosSrv.setMudouCarro(true);
@@ -473,7 +473,7 @@ public class ControleClassificacao {
 			}
 		}
 	}
-
+	// TODO Token
 	public CarreiraDadosSrv obterCarreiraSrv(String nomeJogador) {
 		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 				.carregaCarreiraJogador(nomeJogador, false,

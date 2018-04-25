@@ -402,10 +402,8 @@ public class ControleJogoLocal extends ControleRecursos
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
 			Object combust, String nomeJogador, Object asa) {
 		pilotoJogador = (Piloto) selec;
-
 		pilotoJogador.setJogadorHumano(true);
 		pilotoJogador.setNomeJogador(nomeJogador);
-
 		pilotoJogador.setTipoPneuJogador((String) tpneu);
 		pilotoJogador.setCombustJogador((Integer) combust);
 		pilotoJogador.setAsaJogador((String) asa);

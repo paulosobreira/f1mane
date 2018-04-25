@@ -580,11 +580,11 @@ public class ControlePaddockServidor {
 		return null;
 	}
 
-	public SessaoCliente verificaUsuarioSessao(String apelido) {
+	public SessaoCliente verificaUsuarioSessao(String token) {
 		for (Iterator<SessaoCliente> iter = dadosPaddock.getClientes()
 				.iterator(); iter.hasNext();) {
 			SessaoCliente element = iter.next();
-			if (element.getNomeJogador().equals(apelido)) {
+			if (element.getToken().equals(token)) {
 				return element;
 			}
 		}
@@ -771,20 +771,11 @@ public class ControlePaddockServidor {
 		SessaoCliente sessaoCliente = obterSessaoPorToken(token);
 		JogoServidor jogoServidor = getControleJogosServer()
 				.getMapaJogosCriados().get(sessaoCliente);
-		jogoServidor.removerJogador(sessaoCliente.getNomeJogador());
+		jogoServidor.removerJogador(sessaoCliente.getToken());
 	}
 
-	public Object dadosToken(String token) {
-		List<SessaoCliente> clientes = dadosPaddock.getClientes();
-		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
-			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
-			if (sessaoCliente.getToken().equals(token)) {
-				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
-				srvPaddockPack.setSessaoCliente(sessaoCliente);
-				return srvPaddockPack;
-			}
-		}
-		return null;
+	public SrvPaddockPack obterDadosToken(String token) {
+		return controleJogosServer.obterDadosToken(token);
 	}
 
 }

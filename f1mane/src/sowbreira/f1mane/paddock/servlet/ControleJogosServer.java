@@ -634,7 +634,7 @@ public class ControleJogosServer {
 				.remove(clientPaddockPack.getSessaoCliente().getNomeJogador());
 
 		jogoServidor.removerJogador(
-				clientPaddockPack.getSessaoCliente().getNomeJogador());
+				clientPaddockPack.getSessaoCliente().getToken());
 
 		return null;
 	}
@@ -843,7 +843,7 @@ public class ControleJogosServer {
 			SessaoCliente element = iter.next();
 			JogoServidor jogoServidor = (JogoServidor) mapaJogosCriados
 					.get(element);
-			jogoServidor.removerJogador(sessaoCliente.getNomeJogador());
+			jogoServidor.removerJogador(sessaoCliente.getToken());
 		}
 
 	}
@@ -931,8 +931,8 @@ public class ControleJogosServer {
 			Piloto acharPiloto = null;
 			for (Iterator iter = piList.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
-				if (clientPaddockPack.getSessaoCliente().getNomeJogador()
-						.equals(piloto.getNomeJogador())) {
+				if (clientPaddockPack.getSessaoCliente().getToken()
+						.equals(piloto.getTokenJogador())) {
 					acharPiloto = piloto;
 					break;
 				}
@@ -1173,6 +1173,19 @@ public class ControleJogosServer {
 		dadosParticiparJogo.setTpPnueu(pneu);
 		dadosParticiparJogo.setAsa(asa);
 		return piloto.isBox();
+	}
+
+	public SrvPaddockPack obterDadosToken(String token) {
+		List<SessaoCliente> clientes = dadosPaddock.getClientes();
+		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+			if (sessaoCliente.getToken().equals(token)) {
+				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+				srvPaddockPack.setSessaoCliente(sessaoCliente);
+				return srvPaddockPack;
+			}
+		}
+		return null;
 	}
 
 }

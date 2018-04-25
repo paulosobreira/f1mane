@@ -48,6 +48,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private String nome;
 	private String nomeCarro;
 	private String nomeJogador;
+	private String imgJogador;
 	private int posicao;
 	private int posicaoBandeirada;
 	private boolean desqualificado;
@@ -58,7 +59,9 @@ public class Piloto implements Serializable, PilotoSuave {
 	private String vantagem;
 	private int qtdeParadasBox;
 	private String tempoVoltaQualificacao;
-
+	
+	@JsonIgnore
+	private String tokenJogador;
 	@JsonIgnore
 	private boolean boxSaiuNestaVolta = false;
 	@JsonIgnore
@@ -626,6 +629,14 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setNomeJogador(String nomeJogador) {
 		this.nomeJogador = nomeJogador;
+	}
+
+	public String getImgJogador() {
+		return imgJogador;
+	}
+
+	public void setImgJogador(String imgJogador) {
+		this.imgJogador = imgJogador;
 	}
 
 	public void setVoltas(List<Volta> voltas) {
@@ -3656,6 +3667,14 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setMarcaPneu(boolean marcaPneu) {
 		this.marcaPneu = marcaPneu;
+	}
+
+	public String getTokenJogador() {
+		return tokenJogador;
+	}
+
+	public void setTokenJogador(String tokenJogador) {
+		this.tokenJogador = tokenJogador;
 	}
 
 }

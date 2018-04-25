@@ -64,6 +64,34 @@ public class LetsRace {
 	private ControlePaddockServidor controlePaddock = PaddockServer
 			.getControlePaddock();
 
+	
+	@GET
+	@Path("/criarSessaoVisitante")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response criarSessaoVisitante() {
+		return Response.status(200)
+				.entity(controlePaddock.criarSessaoVisitante()).build();
+	}
+
+	@GET
+	@Path("/dadosToken")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response dadosToken(@HeaderParam("token") String token) {
+		return Response.status(200).entity(controlePaddock.obterDadosToken(token))
+				.build();
+	}
+
+	@GET
+	@Path("/criarSessaoGoogle")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response criarSessaoGoogle(@HeaderParam("idGoogle") String idGoogle,
+			@HeaderParam("nome") String nome,
+			@HeaderParam("urlFoto") String urlFoto,
+			@HeaderParam("email") String email) {
+		return Response.status(200).entity(controlePaddock
+				.criarSessaoGoogle(idGoogle, nome, urlFoto, email)).build();
+	}
+	
 	@GET
 	@Compress
 	@Path("/circuito")
@@ -177,33 +205,6 @@ public class LetsRace {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response verificaServico() {
 		return Response.status(200).entity("ok").build();
-	}
-
-	@GET
-	@Path("/criarSessaoVisitante")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response criarSessaoVisitante() {
-		return Response.status(200)
-				.entity(controlePaddock.criarSessaoVisitante()).build();
-	}
-
-	@GET
-	@Path("/dadosToken")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response dadosToken(@HeaderParam("token") String token) {
-		return Response.status(200).entity(controlePaddock.dadosToken(token))
-				.build();
-	}
-
-	@GET
-	@Path("/criarSessaoGoogle")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response criarSessaoGoogle(@HeaderParam("idGoogle") String idGoogle,
-			@HeaderParam("nome") String nome,
-			@HeaderParam("urlFoto") String urlFoto,
-			@HeaderParam("email") String email) {
-		return Response.status(200).entity(controlePaddock
-				.criarSessaoGoogle(idGoogle, nome, urlFoto, email)).build();
 	}
 
 	@GET

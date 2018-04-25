@@ -69,9 +69,9 @@ public class MonitorAtividade implements Runnable {
 			for (Iterator<String> iterator = jogoServidor
 					.getMapJogadoresOnline().keySet().iterator(); iterator
 							.hasNext();) {
-				String nomeJogador = iterator.next();
+				String tokenJogador = iterator.next();
 				SessaoCliente sessaoCliente = controlePaddock
-						.verificaUsuarioSessao(nomeJogador);
+						.verificaUsuarioSessao(tokenJogador);
 				if (sessaoCliente == null) {
 					iterator.remove();
 				}

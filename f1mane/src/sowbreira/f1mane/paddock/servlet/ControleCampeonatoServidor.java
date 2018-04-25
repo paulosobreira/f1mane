@@ -182,7 +182,7 @@ public class ControleCampeonatoServidor {
 				dadosCorridaCampeonato
 						.setCorridaCampeonato(corridaCampeonatoCorrente);
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-						.carregaDadosJogador(piloto.getNomeJogador(), session);
+						.carregaDadosJogador(piloto.getTokenJogador(), session);
 				if (jogadorDadosSrv != null) {
 					dadosCorridaCampeonato
 							.setJogador(jogadorDadosSrv.getNome());
