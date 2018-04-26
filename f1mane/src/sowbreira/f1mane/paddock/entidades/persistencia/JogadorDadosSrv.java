@@ -18,8 +18,10 @@ import javax.persistence.Table;
 @Table(name = "usuario")
 public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 
-	@Column(name = "login", nullable = false, unique = true)
+	@Column(name = "idGoogle", nullable = false, unique = true)
+	private String idGoogle;
 	private String nome;
+	private String token;
 	@Column(nullable = false, unique = true)
 	private String email;
 	private String senha;
@@ -74,6 +76,22 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 
 	public void setUltimaRecuperacao(long ultimaRecuperacao) {
 		this.ultimaRecuperacao = ultimaRecuperacao;
+	}
+
+	public String getIdGoogle() {
+		return idGoogle;
+	}
+
+	public void setIdGoogle(String idGoogle) {
+		this.idGoogle = idGoogle;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }

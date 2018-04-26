@@ -538,7 +538,7 @@ public class MonitorJogo implements Runnable {
 			Piloto pilotoSelecionado, boolean atualizaPosicoes) {
 		try {
 			String dataSend = jogoCliente.getNomeJogoCriado() + "#"
-					+ sessaoCliente.getNomeJogador();
+					+ sessaoCliente.getToken();
 			if (pilotoSelecionado != null) {
 				dataSend += "#" + pilotoSelecionado.getId();
 			}

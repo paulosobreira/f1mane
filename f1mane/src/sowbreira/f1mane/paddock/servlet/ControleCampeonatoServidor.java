@@ -39,8 +39,9 @@ public class ControleCampeonatoServidor {
 		try {
 
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDadosJogador(clientPaddockPack.getSessaoCliente()
-							.getNomeJogador(), session);
+					.carregaDadosJogador(
+							clientPaddockPack.getSessaoCliente().getToken(),
+							session);
 			if (jogadorDadosSrv == null) {
 				return (new MsgSrv(Lang.msg("238")));
 			}

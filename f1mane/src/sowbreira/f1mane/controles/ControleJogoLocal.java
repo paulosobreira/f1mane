@@ -853,8 +853,14 @@ public class ControleJogoLocal extends ControleRecursos
 		} else {
 			String strAsa = (String) asa;
 			if (!strAsa.equals(pilotoJogador.getCarro().getAsa())) {
+				String nomeJogador = "(" + pilotoJogador.getNomeJogador() + ")";
+				if (nomeJogador == null) {
+					nomeJogador = "";
+				} else {
+					nomeJogador += " ";
+				}
 				infoPrioritaria(Html.laranja(Lang.msg("028",
-						new String[]{pilotoJogador.getNome()})));
+						new String[]{nomeJogador, pilotoJogador.getNome()})));
 			}
 			pilotoJogador.getCarro().setAsa(strAsa);
 		}
@@ -1009,7 +1015,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public void travouRodas(Piloto piloto,boolean semFumaca) {
+	public void travouRodas(Piloto piloto, boolean semFumaca) {
 		if (piloto.isRecebeuBanderada()) {
 			return;
 		}
@@ -1037,10 +1043,10 @@ public class ControleJogoLocal extends ControleRecursos
 		} else if (piloto.getNoAtual().verificaCurvaBaixa()) {
 			qtdeFumaca = Util.intervalo(10, 20);
 		}
-		if(semFumaca){
+		if (semFumaca) {
 			piloto.setMarcaPneu(true);
 			piloto.setTravouRodas(0);
-		}else{
+		} else {
 			piloto.setTravouRodas(qtdeFumaca);
 		}
 		if (gerenciadorVisual != null)
@@ -1707,11 +1713,18 @@ public class ControleJogoLocal extends ControleRecursos
 			piloto.setPtosPista(piloto.getPtosPista() + (100 * exp));
 			Logger.logar(
 					piloto.toString() + " Pts Depois " + piloto.getPtosPista());
-			if (piloto.getPosicao() == 1) {
-				infoPrioritaria(Html.preto(piloto.getNome()) + Html.verde(
-						Lang.msg("044", new Object[]{piloto.getPosicao()})));
+			String nomeJogador = "(" + piloto.getNomeJogador() + ")";
+			if (nomeJogador == null) {
+				nomeJogador = "";
 			} else {
-				info(Html.preto(piloto.getNome()) + Html.verde(
+				nomeJogador += " ";
+			}
+			if (piloto.getPosicao() == 1) {
+				infoPrioritaria(nomeJogador + Html.preto(piloto.getNome())
+						+ Html.verde(Lang.msg("044",
+								new Object[]{piloto.getPosicao()})));
+			} else {
+				info(nomeJogador + Html.preto(piloto.getNome()) + Html.verde(
 						Lang.msg("044", new Object[]{piloto.getPosicao()})));
 			}
 			double somaBaixa = 0;

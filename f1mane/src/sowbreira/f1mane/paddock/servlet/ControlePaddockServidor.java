@@ -529,7 +529,7 @@ public class ControlePaddockServidor {
 				Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
 						.getMapJogadoresOnline();
 				DadosCriarJogo participarJogo = mapJogadoresOnline
-						.get(sessaoCliente.getNomeJogador());
+						.get(sessaoCliente.getToken());
 				if (participarJogo != null) {
 					sessaoCliente
 							.setJogoAtual(jogoServidor.getNomeJogoServidor());
@@ -553,7 +553,7 @@ public class ControlePaddockServidor {
 				return null;
 			}
 			return verificaUsuarioSessao(
-					clientPaddockPack.getSessaoCliente().getNomeJogador());
+					clientPaddockPack.getSessaoCliente().getToken());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -630,8 +630,7 @@ public class ControlePaddockServidor {
 			for (Iterator<SessaoCliente> iter = dadosPaddock.getClientes()
 					.iterator(); iter.hasNext();) {
 				SessaoCliente element = iter.next();
-				if (element.getNomeJogador()
-						.equals(jogadorDadosSrv.getNome())) {
+				if (element.getToken().equals(jogadorDadosSrv.getToken())) {
 					sessaoCliente = element;
 					break;
 				}
@@ -671,7 +670,7 @@ public class ControlePaddockServidor {
 		List<SessaoCliente> clientes = dadosPaddock.getClientes();
 		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
 			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
-			if (email.equals(sessaoCliente.getEmail())) {
+			if (idGoogle.equals(sessaoCliente.getId())) {
 				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 				srvPaddockPack.setSessaoCliente(sessaoCliente);
 				return srvPaddockPack;
@@ -681,6 +680,7 @@ public class ControlePaddockServidor {
 		TokenGenerator tokenGenerator = new TokenGenerator();
 		sessaoCliente.setToken(tokenGenerator.nextSessionId());
 		sessaoCliente.setNomeJogador(nome);
+		sessaoCliente.setId(idGoogle);
 		sessaoCliente.setImagemJogador(urlFoto);
 		sessaoCliente.setEmail(email);
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
@@ -762,9 +762,9 @@ public class ControlePaddockServidor {
 	}
 
 	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
-			String nomeJogador, String idPiloto) {
+			String tokenJogador, String idPiloto) {
 		return controleJogosServer.obterDadosParciaisPilotos(nomeJogo,
-				nomeJogador, idPiloto);
+				tokenJogador, idPiloto);
 	}
 
 	public void sairJogoToken(String nomeJogo, String token) {

@@ -188,8 +188,14 @@ public class ControleBox {
 					|| (cont > (circuito.getEntradaBoxIndex() - 75)
 							&& cont < (circuito.getEntradaBoxIndex() + 75)))) {
 				if (controleJogo.verificaInfoRelevante(piloto)) {
+					String nomeJogador = "(" + piloto.getNomeJogador() + ")";
+					if (nomeJogador == null) {
+						nomeJogador = "";
+					} else {
+						nomeJogador += " ";
+					}
 					controleJogo.info(Html.laranja(Lang.msg("entraBox",
-							new String[]{piloto.getNome()})));
+							new String[]{nomeJogador, piloto.getNome()})));
 				}
 				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "
 						+ piloto.getNumeroVolta() + " Pneus : "
@@ -349,11 +355,17 @@ public class ControleBox {
 		piloto.setSaiuDoBoxMilis(0);
 		if (controleJogo.verificaInfoRelevante(piloto)) {
 			if (piloto.isJogadorHumano()) {
-				controleJogo.infoPrioritaria(Html.laranja(
-						Lang.msg("002", new String[]{piloto.getNome(), String
+				String nomeJogador = "(" + piloto.getNomeJogador() + ")";
+				if (nomeJogador == null) {
+					nomeJogador = "";
+				} else {
+					nomeJogador += " ";
+				}
+				controleJogo.infoPrioritaria(Html.laranja(Lang.msg("002",
+						new String[]{nomeJogador, piloto.getNome(), String
 								.valueOf(controleJogo.getNumVoltaAtual())})));
 			} else if (piloto.getPosicao() < 9) {
-				controleJogo.info(Html.laranja(Lang.msg("002", new String[]{
+				controleJogo.info(Html.laranja(Lang.msg("002", new String[]{"",
 						piloto.getNome(),
 						String.valueOf(controleJogo.getNumVoltaAtual())})));
 			}
@@ -399,7 +411,13 @@ public class ControleBox {
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		piloto.setNumeroVolta(piloto.getNumeroVolta() + 1);
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
-		String[] strings = new String[]{piloto.getNome(),
+		String nomeJogador = "(" + piloto.getNomeJogador() + ")";
+		if (nomeJogador == null) {
+			nomeJogador = "";
+		} else {
+			nomeJogador += " ";
+		}
+		String[] strings = new String[]{nomeJogador, piloto.getNome(),
 				ControleEstatisticas.formatarTempo(diff),
 				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox()),
 				Lang.msgRest(piloto.getCarro().getTipoPneu())};

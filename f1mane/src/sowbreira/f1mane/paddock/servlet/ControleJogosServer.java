@@ -96,7 +96,7 @@ public class ControleJogosServer {
 								.getNomeCampeonato(),
 						false);
 				if (campeonato != null && !clientPaddockPack.getSessaoCliente()
-						.getNomeJogador().equalsIgnoreCase(
+						.getToken().equalsIgnoreCase(
 								campeonato.getJogadorDadosSrv().getNome())) {
 					return new MsgSrv(Lang.msg("somenteDonoPodeCriar"));
 				}
@@ -121,6 +121,8 @@ public class ControleJogosServer {
 						clientPaddockPack.getDadosJogoCriado());
 				jogoServidor.setNomeCriador(
 						clientPaddockPack.getSessaoCliente().getNomeJogador());
+				jogoServidor.setTokenCriador(
+						clientPaddockPack.getSessaoCliente().getToken());
 				jogoServidor.setTempoCriacao(System.currentTimeMillis());
 			} catch (Exception e) {
 				Logger.logarExept(e);
@@ -199,7 +201,7 @@ public class ControleJogosServer {
 
 		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 				.obterCarreiraSrv(
-						clientPaddockPack.getSessaoCliente().getNomeJogador());
+						clientPaddockPack.getSessaoCliente().getToken());
 		if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
@@ -248,7 +250,7 @@ public class ControleJogosServer {
 			JogoServidor jogoServidor = (JogoServidor) mapaJogosCriados
 					.get(key);
 			if (jogoServidor.getMapJogadoresOnline()
-					.get(sessaoCliente.getNomeJogador()) != null) {
+					.get(sessaoCliente.getToken()) != null) {
 				return true;
 			}
 		}
@@ -268,13 +270,16 @@ public class ControleJogosServer {
 		return null;
 	}
 
-	private JogoServidor obterJogoPeloNomeDono(String nomeDono) {
+	private JogoServidor obterJogoPeloTokenDono(String tokenDono) {
+		if(tokenDono==null){
+			return null;
+		}
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
 				.iterator(); iter.hasNext();) {
 			SessaoCliente key = iter.next();
 			JogoServidor jogoServidorTemp = (JogoServidor) mapaJogosCriados
 					.get(key);
-			if (nomeDono.equals(key.getNomeJogador())) {
+			if (tokenDono.equals(key.getToken())) {
 				return jogoServidorTemp;
 			}
 		}
@@ -312,8 +317,8 @@ public class ControleJogosServer {
 		if (clientPaddockPack.getSessaoCliente() == null) {
 			return (new MsgSrv(Lang.msg("210")));
 		}
-		JogoServidor jogoServidor = obterJogoPeloNomeDono(
-				clientPaddockPack.getSessaoCliente().getNomeJogador());
+		JogoServidor jogoServidor = obterJogoPeloTokenDono(
+				clientPaddockPack.getSessaoCliente().getToken());
 		if (jogoServidor == null) {
 			return new MsgSrv(Lang.msg("208"));
 		}
@@ -532,10 +537,8 @@ public class ControleJogosServer {
 			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
 			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
 					.getMapJogadoresOnline();
-			if (!String
-					.valueOf(mapJogadoresOnline
-							.get(sessaoCliente.getNomeJogador()).getIdPiloto())
-					.equals(idPiloto)) {
+			if (!String.valueOf(mapJogadoresOnline.get(sessaoCliente.getToken())
+					.getIdPiloto()).equals(idPiloto)) {
 				return null;
 			}
 			List piList = jogoServidor.getPilotos();
@@ -560,7 +563,7 @@ public class ControleJogosServer {
 					.getMapJogadoresOnline();
 			if (!String
 					.valueOf(mapJogadoresOnline
-							.get(sessaoCliente.getNomeJogador()).getIdPiloto())
+							.get(sessaoCliente.getToken()).getIdPiloto())
 					.equals(idPiloto)) {
 				return null;
 			}
@@ -583,7 +586,7 @@ public class ControleJogosServer {
 			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
 					.getMapJogadoresOnline();
 			if (mapJogadoresOnline
-					.containsKey(sessaoCliente.getNomeJogador())) {
+					.containsKey(sessaoCliente.getToken())) {
 				return jogoServidor;
 			}
 		}
@@ -608,7 +611,7 @@ public class ControleJogosServer {
 		}
 		Map mapJogo = jogoServidor.getMapJogadoresOnline();
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
-				.get(clientPaddockPack.getSessaoCliente().getNomeJogador());
+				.get(clientPaddockPack.getSessaoCliente().getToken());
 		dadosParticiparJogo
 				.setCombustivel(new Integer(clientPaddockPack.getCombustBox()));
 		dadosParticiparJogo.setTpPnueu(clientPaddockPack.getTpPneuBox());
@@ -629,9 +632,9 @@ public class ControleJogosServer {
 			return null;
 		}
 		Map mapJogo = jogoServidor.getMapJogadoresOnline();
-		mapJogo.remove(clientPaddockPack.getSessaoCliente().getNomeJogador());
+		mapJogo.remove(clientPaddockPack.getSessaoCliente().getToken());
 		jogoServidor.getMapJogadoresOnlineTexto()
-				.remove(clientPaddockPack.getSessaoCliente().getNomeJogador());
+				.remove(clientPaddockPack.getSessaoCliente().getToken());
 
 		jogoServidor.removerJogador(
 				clientPaddockPack.getSessaoCliente().getToken());
@@ -671,13 +674,13 @@ public class ControleJogosServer {
 	/**
 	 * 
 	 * @param idPiloto
-	 * @param nomeJogador
+	 * @param tokenJogador
 	 * @param args
 	 *            args[0] jogo args[1] apelido args[2] pilto Sel
 	 * @return
 	 */
 	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
-			String nomeJogador, String idPiloto) {
+			String tokenJogador, String idPiloto) {
 
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 		if (jogoServidor == null) {
@@ -826,7 +829,7 @@ public class ControleJogosServer {
 		}
 		Map<String, BufferTexto> mapJogo = jogoServidor
 				.getMapJogadoresOnlineTexto();
-		BufferTexto bufferTexto = (BufferTexto) mapJogo.get(nomeJogador);
+		BufferTexto bufferTexto = (BufferTexto) mapJogo.get(tokenJogador);
 		if (bufferTexto != null) {
 			dadosParciais.texto = bufferTexto.consumirTexto();
 		}
@@ -885,10 +888,6 @@ public class ControleJogosServer {
 			return null;
 		}
 		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
-		Logger.logar(
-				"mudarTracado clientPaddockPack.getSessaoCliente().getNomeJogador()"
-						+ clientPaddockPack.getSessaoCliente()
-								.getNomeJogador());
 		if (piloto == null) {
 			return null;
 		}
@@ -1000,6 +999,7 @@ public class ControleJogosServer {
 	}
 
 	public Object driveThru(ClientPaddockPack clientPaddockPack) {
+		/*
 		JogoServidor jogoServidor = obterJogoPeloNome(
 				clientPaddockPack.getNomeJogo());
 		if (jogoServidor == null) {
@@ -1035,6 +1035,7 @@ public class ControleJogosServer {
 										"" + (metadeJogadores + 1)})));
 			}
 		}
+		*/
 		return null;
 	}
 
@@ -1110,7 +1111,7 @@ public class ControleJogosServer {
 		}
 		Map mapJogo = jogoServidor.getMapJogadoresOnline();
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
-				.get(clientPaddockPack.getSessaoCliente().getNomeJogador());
+				.get(clientPaddockPack.getSessaoCliente().getToken());
 		dadosParticiparJogo
 				.setCombustivel(new Integer(clientPaddockPack.getCombustBox()));
 		dadosParticiparJogo.setTpPnueu(clientPaddockPack.getTpPneuBox());
@@ -1168,7 +1169,7 @@ public class ControleJogosServer {
 				idPiloto);
 		Map mapJogo = jogoServidor.getMapJogadoresOnline();
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
-				.get(sessaoCliente.getNomeJogador());
+				.get(sessaoCliente.getToken());
 		dadosParticiparJogo.setCombustivel(combustivel);
 		dadosParticiparJogo.setTpPnueu(pneu);
 		dadosParticiparJogo.setAsa(asa);

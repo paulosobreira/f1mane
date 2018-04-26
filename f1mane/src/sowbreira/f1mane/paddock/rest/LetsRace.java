@@ -143,7 +143,7 @@ public class LetsRace {
 			return Response.status(401).build();
 		}
 		DadosParciais dadosParciais = controlePaddock.obterDadosParciaisPilotos(
-				nomeJogo, sessaoCliente.getNomeJogador(), idPiloto);
+				nomeJogo, sessaoCliente.getToken(), idPiloto);
 		dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto, idioma);
 		return Response.status(200).entity(dadosParciais).build();
 	}

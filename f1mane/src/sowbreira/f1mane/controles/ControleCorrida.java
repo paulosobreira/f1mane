@@ -340,8 +340,14 @@ public class ControleCorrida {
 				danificaAreofolio(piloto);
 				if (controleJogo.verificaInfoRelevante(piloto)
 						|| controleJogo.verificaInfoRelevante(pilotoNaFrente)) {
-					controleJogo.infoPrioritaria(Html.vermelho(
-							Lang.msg("109", new String[]{piloto.getNome(),
+					String nomeJogador = "(" + piloto.getNomeJogador() + ")";
+					if (nomeJogador == null) {
+						nomeJogador = "";
+					} else {
+						nomeJogador += " ";
+					}
+					controleJogo.infoPrioritaria(Html.vermelho(Lang.msg("109",
+							new String[]{nomeJogador, piloto.getNome(),
 									pilotoNaFrente.getNome()})));
 				}
 			}
@@ -460,7 +466,7 @@ public class ControleCorrida {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			piloto.setPosicao(i + 1);
 		}
-		
+
 	}
 
 	protected static int compareBandeirada(Piloto piloto0, Piloto piloto1) {

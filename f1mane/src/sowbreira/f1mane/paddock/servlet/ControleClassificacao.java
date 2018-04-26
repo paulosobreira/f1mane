@@ -337,8 +337,8 @@ public class ControleClassificacao {
 			Session session) {
 		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 				.carregaCarreiraJogador(
-						clientPaddockPack.getSessaoCliente().getNomeJogador(),
-						true, session);
+						clientPaddockPack.getSessaoCliente().getToken(), true,
+						session);
 		if (carreiraDadosSrv.getPtsCarro() == 0) {
 			carreiraDadosSrv.setPtsCarro(500);
 		}
@@ -358,8 +358,9 @@ public class ControleClassificacao {
 		Session session = controlePersistencia.getSession();
 		try {
 			CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-					.carregaCarreiraJogador(clientPaddockPack.getSessaoCliente()
-							.getNomeJogador(), false, session);
+					.carregaCarreiraJogador(
+							clientPaddockPack.getSessaoCliente().getToken(),
+							false, session);
 			carreiraDadosSrv.setNomePiloto(
 					clientPaddockPack.getJogadorDadosSrv().getNomePiloto());
 			carreiraDadosSrv.setNomeCarro(

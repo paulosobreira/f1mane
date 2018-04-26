@@ -37,6 +37,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	private String nomeJogoServidor;
 	private String nomeCriador;
+	private String tokenCriador;
 	private long tempoCriacao, tempoInicio, tempoFim;
 	/* mapJogadoresOnline.put(token, dadosParticiparJogo) */
 	private Map<String, DadosCriarJogo> mapJogadoresOnline = new HashMap<String, DadosCriarJogo>();
@@ -614,6 +615,14 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			controleCorrida.terminarCorrida();
 		}
 		setCorridaTerminada(true);
+	}
+
+	public String getTokenCriador() {
+		return tokenCriador;
+	}
+
+	public void setTokenCriador(String tokenCriador) {
+		this.tokenCriador = tokenCriador;
 	}
 
 }

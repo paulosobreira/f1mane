@@ -22,8 +22,10 @@ public class SessaoCliente implements Serializable {
 	private String imagemJogador;
 
 	private String token;
-	
+
 	private String email;
+
+	private String id;
 
 	private String jogoAtual;
 
@@ -65,9 +67,30 @@ public class SessaoCliente implements Serializable {
 		this.nomeJogador = apelido;
 	}
 
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((token == null) ? 0 : token.hashCode());
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
-		SessaoCliente sessaoCliente = (SessaoCliente) obj;
-		return nomeJogador.equals(sessaoCliente.getNomeJogador());
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SessaoCliente other = (SessaoCliente) obj;
+		if (token == null) {
+			if (other.token != null)
+				return false;
+		} else if (!token.equals(other.token))
+			return false;
+		return true;
 	}
 
 	public String toString() {
@@ -113,7 +136,13 @@ public class SessaoCliente implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 }

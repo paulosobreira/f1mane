@@ -59,7 +59,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private String vantagem;
 	private int qtdeParadasBox;
 	private String tempoVoltaQualificacao;
-	
+
 	@JsonIgnore
 	private String tokenJogador;
 	@JsonIgnore
@@ -1657,9 +1657,16 @@ public class Piloto implements Serializable, PilotoSuave {
 				incStress(Util.intervalo(5, 10));
 				agressivo = false;
 				if (controleJogo.verificaInfoRelevante(this)
-						&& Math.random() > 0.7)
-					controleJogo.info(Lang.msg("014",
-							new String[]{Html.negrito(getNome())}));
+						&& Math.random() > 0.7) {
+					String nomeJogador = "(" + getNomeJogador() + ")";
+					if (nomeJogador == null) {
+						nomeJogador = "";
+					} else {
+						nomeJogador += " ";
+					}
+					controleJogo.info(Lang.msg("014", new String[]{nomeJogador,
+							Html.negrito(getNome())}));
+				}
 			}
 			retardaFreiandoReta = false;
 		}
