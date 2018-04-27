@@ -410,6 +410,8 @@ function ctl_desenhaInfoCarros() {
 		idPiloto2 = posicaoPilotos.posis[1].idPiloto;
 		imgCap1 = capaceteImgMap.get(posicaoPilotos.posis[0].idPiloto);
 		imgCap2 = capaceteImgMap.get(posicaoPilotos.posis[1].idPiloto);
+		imgJog1 = jogadorImgMap.get(posicaoPilotos.posis[0].idPiloto);
+		imgJog2 = jogadorImgMap.get(posicaoPilotos.posis[1].idPiloto);
 		var noFrente = mapaIdNos.get(posicaoPilotos.posis[0].idNo);
 		var noAtras = mapaIdNos.get(posicaoPilotos.posis[1].idNo);
 		var ptsFrente = noFrente.index;  
@@ -440,10 +442,15 @@ function ctl_desenhaInfoCarros() {
 		idPiloto1 = posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto;
 		idPiloto2 = posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto;
 
+		imgJog1 = jogadorImgMap
+				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
+		imgJog2 = jogadorImgMap
+				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
+		
 		imgCap1 = capaceteImgMap
 				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idPiloto);
 		imgCap2 = capaceteImgMap
-				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);
+				.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idPiloto);		
 		
 		var noFrente = mapaIdNos.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 2].idNo);
 		var noAtras = mapaIdNos.get(posicaoPilotos.posis[posicaoPilotos.posis.length - 1].idNo);
@@ -496,6 +503,11 @@ function ctl_desenhaInfoCarros() {
 			imgCap1 = capaceteImgMap.get(pilotoFrete.idPiloto);
 			imgCap2 = capaceteImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+			
+			imgJog1 = jogadorImgMap.get(pilotoFrete.idPiloto);
+			imgJog2 = jogadorImgMap
+					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+			
 			if (dadosParciais.tpPneus == "TIPO_PNEU_MOLE") {
 				imgPneu2 = imgPneuM;
 			} else if (dadosParciais.tpPneus == "TIPO_PNEU_DURO") {
@@ -521,6 +533,11 @@ function ctl_desenhaInfoCarros() {
 			imgCap1 = capaceteImgMap
 					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
 			imgCap2 = capaceteImgMap.get(pilotoAtras.idPiloto);
+			
+			imgJog1 = jogadorImgMap
+					.get(posicaoPilotos.posis[posicaoCentraliza].idPiloto);
+			imgJog2 = jogadorImgMap.get(pilotoAtras.idPiloto);			
+			
 			if (dadosParciais.tpPneus == "TIPO_PNEU_MOLE") {
 				imgPneu1 = imgPneuM;
 			} else if (dadosParciais.tpPneus == "TIPO_PNEU_DURO") {
@@ -575,6 +592,16 @@ function ctl_desenhaInfoCarros() {
 				}
 				maneContext.drawImage(imgCap1, x, y);
 			}
+			if (imgJog1) {
+				if(largura<450){
+					x = centroX - imgJog1.width	- 65 - (imgPneu1.width);
+					y = altura - (imgJog1.height*2) - 10;
+				}else{
+					x = centroX - imgJog1.width	- img1.width - 65 - (imgPneu1.width / 2);
+					y = altura - imgJog1.height - 10;
+				}
+				maneContext.drawImage(imgJog1, x, y);
+			}
 		}
 	}
 	if (img2) {
@@ -596,12 +623,23 @@ function ctl_desenhaInfoCarros() {
 			if (imgCap2) {
 				if(largura<450){
 					x = centroX + 45 + (imgPneu2.width);
-					y = altura - (imgCap1.height*2) - 10;
+					y = altura - (imgCap2.height*2) - 10;
 				}else{
 					x = centroX + 45 + img2.width + (imgPneu2.width / 2);
 					y = altura - imgCap2.height - 10;
 				}
 				maneContext.drawImage(imgCap2, x , y);
+			}
+			
+			if (imgJog2) {
+				if(largura<450){
+					x = centroX + 65 + (imgPneu2.width);
+					y = altura - (imgJog2.height*2) - 10;
+				}else{
+					x = centroX + 65 + img2.width + (imgPneu2.width / 2);
+					y = altura - imgJog2.height - 10;
+				}
+				maneContext.drawImage(imgJog2, x , y);
 			}
 		}
 	}

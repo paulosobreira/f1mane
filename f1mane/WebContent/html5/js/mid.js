@@ -19,6 +19,7 @@ var carrosLadoImgMap;
 var carrosImgMap;
 var carrosImgSemAereofolioMap;
 var capaceteImgMap;
+var jogadorImgMap;
 var objImgPistaMap = new Map();
 
 function mid_caregaMidia() {
@@ -26,24 +27,32 @@ function mid_caregaMidia() {
 	carrosImgMap = new Map();
 	carrosImgSemAereofolioMap = new Map();
 	carrosLadoImgMap = new Map();
+	jogadorImgMap = new Map();
 	capaceteImgMap = new Map();
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
-		var pilotos = dadosJogo.pilotos[i];
+		var piloto = dadosJogo.pilotos[i];
 		var imgCarro = new Image();
-		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
-		carrosImgMap.set(pilotos.id, imgCarro);
+		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + piloto.id;
+		carrosImgMap.set(piloto.id, imgCarro);
 
 		var imgSemAereofolio = new Image();
-		imgSemAereofolio.src = "/f1mane/rest/letsRace/carroCimaSemAreofolio?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + pilotos.id;
-		carrosImgSemAereofolioMap.set(pilotos.id, imgSemAereofolio);
+		imgSemAereofolio.src = "/f1mane/rest/letsRace/carroCimaSemAreofolio?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + piloto.id;
+		carrosImgSemAereofolioMap.set(piloto.id, imgSemAereofolio);
 
 		var imgCarroLado = new Image();
-		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada;
-		carrosLadoImgMap.set(pilotos.id, imgCarroLado);
+		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id=" + piloto.id + "&temporada=" + dadosJogo.temporada;
+		carrosLadoImgMap.set(piloto.id, imgCarroLado);
 
 		var imgCapacete = new Image();
-		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + pilotos.id + "&temporada=" + dadosJogo.temporada
-		capaceteImgMap.set(pilotos.id, imgCapacete);
+		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + piloto.id + "&temporada=" + dadosJogo.temporada
+		capaceteImgMap.set(piloto.id, imgCapacete);
+		
+		if(piloto.imgJogador!=null){
+			var jogadorImg = new Image();
+			jogadorImg.src = piloto.imgJogador;
+			jogadorImgMap.set(piloto.id, jogadorImg);			
+		}
+		
 	}
 
 	imgBg = new Image();
