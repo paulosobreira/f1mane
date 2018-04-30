@@ -10,7 +10,7 @@ public class Logger {
 
 	public static Map topExceptions = new HashMap();
 
-	public static boolean ativo = true;
+	public static boolean ativo = false;
 
 	public static boolean novaSession = false;
 
@@ -24,7 +24,7 @@ public class Logger {
 		}
 		if (topExceptions.size() < 100) {
 			StackTraceElement[] trace = e.getStackTrace();
-			StringBuffer retorno = new StringBuffer();
+			StringBuilder retorno = new StringBuilder();
 			int size = ((trace.length > 15) ? 15 : trace.length);
 			retorno.append(
 					e.getClass() + " - " + e.getLocalizedMessage() + "<br>");

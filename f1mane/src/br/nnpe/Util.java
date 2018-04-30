@@ -213,7 +213,7 @@ public class Util {
 	}
 
 	public static String hex(byte[] array) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < array.length; ++i) {
 			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100)
@@ -238,7 +238,7 @@ public class Util {
 	 * @return
 	 */
 	public static String substituirPonto(String string, String replacement) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		for (int i = 0; i < string.length(); i++) {
 			char value = string.charAt(i);
@@ -379,7 +379,7 @@ public class Util {
 	}
 
 	public static String substVogais(String name) {
-		StringBuffer retorno = new StringBuffer();
+		StringBuilder retorno = new StringBuilder();
 		boolean subst = false;
 		for (int i = 0; i < name.length(); i++) {
 			if (i == (name.length() - 1)) {

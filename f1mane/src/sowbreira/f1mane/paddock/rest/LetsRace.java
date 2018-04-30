@@ -679,7 +679,7 @@ public class LetsRace {
 	public Response sobre() {
 		List<String> carregarCreditosJogo = CarregadorRecursos
 				.carregarCreditosJogo();
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for (Iterator<String> iterator = carregarCreditosJogo
 				.iterator(); iterator.hasNext();) {
 			String string = iterator.next();

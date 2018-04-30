@@ -1612,7 +1612,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public void atualizaInfoDebug(StringBuffer buffer) {
+	public void atualizaInfoDebug(StringBuilder buffer) {
 		Field[] declaredFields = this.getClass().getDeclaredFields();
 		List<String> campos = new ArrayList<String>();
 		buffer.append("-=ControleJogo=- <br>");

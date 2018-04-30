@@ -86,7 +86,7 @@ public class AppletPaddock {
 			thread.start();
 		} catch (Exception e) {
 			StackTraceElement[] trace = e.getStackTrace();
-			StringBuffer retorno = new StringBuffer();
+			StringBuilder retorno = new StringBuilder();
 			int size = ((trace.length > 10) ? 10 : trace.length);
 
 			for (int i = 0; i < size; i++)

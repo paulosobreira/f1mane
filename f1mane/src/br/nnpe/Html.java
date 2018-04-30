@@ -15,7 +15,7 @@ public class Html {
 	static int superSize = 4;
 
 	public static String negrito(String str) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("<font  size=\"").append(superSize).append("\">")
 				.append("<b>").append(str).append("</b>").append("</font>");
@@ -24,7 +24,7 @@ public class Html {
 	}
 
 	public static String mailto(String email, String nome) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("<a href=\"").append(email).append("\"")
 				.append(" target=\"_blank\">").append(nome).append("</a>");
@@ -42,7 +42,7 @@ public class Html {
 	 * @return
 	 */
 	public static String fontColor(String cor, String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("<font  color='").append(cor).append("'>").append(texto)
 				.append("</font>");
@@ -64,7 +64,7 @@ public class Html {
 	 * @return
 	 */
 	public static String fontSize(int tamanho, String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("<font  size=\"").append(tamanho).append("\">")
 				.append(texto).append("</font>");
@@ -77,7 +77,7 @@ public class Html {
 	}
 
 	public static String vermelho(String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("<font face='sans-serif' size='").append(superSize)
 				.append("' color='#FE0000'>").append(texto).append("</font>");
@@ -86,7 +86,7 @@ public class Html {
 	}
 
 	public static String laranja(String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("<font face='sans-serif'  size='").append(superSize)
 				.append("' color='#C87800'>").append(texto).append("</font>");
 		return buffer.toString();
@@ -94,42 +94,42 @@ public class Html {
 	}
 
 	public static String preto(String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("<font face='sans-serif'  size='").append(superSize)
 				.append("' color='black'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
 	public static String verde(String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("<font face='sans-serif' size='").append(superSize)
 				.append("' color='#008D25'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
 	public static String vinho(String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("<font face='sans-serif'  size='").append(superSize)
 				.append("' color='#8B0000'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
 	public static String msgClima(String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("<font face='sans-serif' size='").append(superSize)
 				.append("' color='#4682B4'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
 	public static String azul(String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("<font face='sans-serif'  size='").append(superSize)
 				.append("' color='#2D62A8'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
 	public static String saftyCar(String texto) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("<font face='sans-serif' size='").append(superSize)
 				.append("' color='C87800'>").append(texto).append("</font>");
@@ -137,7 +137,7 @@ public class Html {
 	}
 
 	public static String driveThru(String msg) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("<font face='sans-serif' bgcolor='black' size='")
 				.append(superSize).append("' color='white'>").append(msg)
 				.append("</font>");
@@ -145,7 +145,7 @@ public class Html {
 	}
 
 	public static String tagsJava2d(String info) {
-		StringBuffer ret = new StringBuffer();
+		StringBuilder ret = new StringBuilder();
 		info = info.replaceAll("&nbsp;", " ");
 		boolean ingnora = false;
 		boolean achouDigito = false;

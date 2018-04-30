@@ -88,7 +88,7 @@ public class Dia implements Cloneable, Serializable {
 		if ((valor.indexOf('/') != -1) && (valor.length() < 10)) {
 			DecimalFormat format = new DecimalFormat("00");
 			String[] parts = valor.split("/");
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 
 			for (int i = 0; i < parts.length; i++) {
 				buffer.append(format.format(Long.parseLong(parts[i])));

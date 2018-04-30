@@ -157,7 +157,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				throw (InterruptedException) e;
 			}
 			StackTraceElement[] trace = e.getStackTrace();
-			StringBuffer retorno = new StringBuffer();
+			StringBuilder retorno = new StringBuilder();
 			int size = ((trace.length > 10) ? 10 : trace.length);
 
 			for (int i = 0; i < size; i++)
@@ -1320,7 +1320,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public void atualizaInfoDebug(StringBuffer buffer) {
+	public void atualizaInfoDebug(StringBuilder buffer) {
 		Field[] declaredFields = JogoCliente.class.getDeclaredFields();
 		buffer.append("-=JogoCliente=- <br>");
 		for (Field field : declaredFields) {

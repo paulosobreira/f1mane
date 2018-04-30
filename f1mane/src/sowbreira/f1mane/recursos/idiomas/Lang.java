@@ -101,7 +101,7 @@ public class Lang {
 
 	public static String msg(String key, Object[] strings) {
 		if (srvgame) {
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			buffer.append("¢" + key);
 			for (int i = 0; i < strings.length; i++) {
 				buffer.append("¬");
@@ -144,7 +144,7 @@ public class Lang {
 
 	public static String decodeTexto(String string) {
 		String[] array = string.split("¢");
-		StringBuffer retorno = new StringBuffer();
+		StringBuilder retorno = new StringBuilder();
 		for (int i = 0; i < array.length; i++) {
 			if (i % 2 == 1)
 				retorno.append(microDecode(array[i]));
@@ -159,7 +159,7 @@ public class Lang {
 			return null;
 		}
 		String[] array = string.split("¢");
-		StringBuffer retorno = new StringBuffer();
+		StringBuilder retorno = new StringBuilder();
 		for (int i = 0; i < array.length; i++) {
 			if (i % 2 == 1)
 				retorno.append(microDecodeKey(array[i], idioma));

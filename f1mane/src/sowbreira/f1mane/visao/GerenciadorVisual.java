@@ -1482,7 +1482,7 @@ public class GerenciadorVisual {
 				return;
 			}
 			bufferTextual.add(string);
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			for (int i = bufferTextual.size() - 1; i >= 0; i--) {
 				String texto = Html.preto(bufferTextual.get(i).toString());
 				buffer.append(texto);

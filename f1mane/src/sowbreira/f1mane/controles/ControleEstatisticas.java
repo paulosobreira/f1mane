@@ -444,7 +444,7 @@ public class ControleEstatisticas {
 					CarregadorRecursos.recursoComoStream("tabela.html"));
 			BufferedReader bufferedReader = new BufferedReader(
 					inputStreamReader);
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			String line;
 			line = bufferedReader.readLine();
 			while (line != null) {
@@ -546,7 +546,7 @@ public class ControleEstatisticas {
 	}
 
 	public void atualizaInfoDebug() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		Runtime runtime = Runtime.getRuntime();
 		long maxMemory = runtime.maxMemory() / 1048576;
 		long allocatedMemory = runtime.totalMemory() / 1048576;

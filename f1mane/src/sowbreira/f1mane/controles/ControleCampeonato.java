@@ -445,7 +445,7 @@ public class ControleCampeonato {
 			return campeonato;
 		} catch (Exception e) {
 			StackTraceElement[] trace = e.getStackTrace();
-			StringBuffer retorno = new StringBuffer();
+			StringBuilder retorno = new StringBuilder();
 			int size = ((trace.length > 10) ? 10 : trace.length);
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");

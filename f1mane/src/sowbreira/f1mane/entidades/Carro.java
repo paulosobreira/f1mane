@@ -1208,7 +1208,7 @@ public class Carro implements Serializable {
 		this.freios = freios;
 	}
 
-	public void atualizaInfoDebug(StringBuffer buffer) {
+	public void atualizaInfoDebug(StringBuilder buffer) {
 		Field[] declaredFields = Carro.class.getDeclaredFields();
 		buffer.append("-=Carro=- <br>");
 		List<String> campos = new ArrayList<String>();

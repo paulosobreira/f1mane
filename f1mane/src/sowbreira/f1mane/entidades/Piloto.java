@@ -3480,7 +3480,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.problemaLargada = problemaLargada;
 	}
 
-	public void atualizaInfoDebug(StringBuffer buffer) {
+	public void atualizaInfoDebug(StringBuilder buffer) {
 		Field[] declaredFields = Piloto.class.getDeclaredFields();
 		buffer.append("---====Piloto====--- <br>");
 		List<String> campos = new ArrayList<String>();

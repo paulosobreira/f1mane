@@ -388,7 +388,7 @@ public interface InterfaceJogo {
 
 	public void atualizaInfoDebug();
 
-	public void atualizaInfoDebug(StringBuffer buffer);
+	public void atualizaInfoDebug(StringBuilder buffer);
 
 	public void forcaQuerbraAereofolio();
 
