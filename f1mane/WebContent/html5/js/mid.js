@@ -50,6 +50,8 @@ function mid_caregaMidia() {
 		if(piloto.imgJogador!=null){
 			var jogadorImg = new Image();
 			jogadorImg.src = piloto.imgJogador;
+			jogadorImg.setAttribute('height','44px');
+			jogadorImg.setAttribute('border-radius','50%');
 			jogadorImgMap.set(piloto.id, jogadorImg);			
 		}
 		

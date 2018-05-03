@@ -162,7 +162,7 @@ function carregarDadosJogo() {
 				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id=' + pilotos[i].id + '&temporada=' + temporadaSelecionada);
 				td1.append(capacete);
 				if(pilotos[i].imgJogador!=null){
-					var imgJogador = $('<img class="img-responsive img-center" style="height: 44px" />');	
+					var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
 					imgJogador.attr('src', pilotos[i].imgJogador);
 					td1.append(imgJogador);
 				}

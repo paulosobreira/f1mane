@@ -64,7 +64,6 @@ public class LetsRace {
 	private ControlePaddockServidor controlePaddock = PaddockServer
 			.getControlePaddock();
 
-	
 	@GET
 	@Path("/criarSessaoVisitante")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -77,8 +76,16 @@ public class LetsRace {
 	@Path("/dadosToken")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosToken(@HeaderParam("token") String token) {
-		return Response.status(200).entity(controlePaddock.obterDadosToken(token))
-				.build();
+		return Response.status(200)
+				.entity(controlePaddock.obterDadosToken(token)).build();
+	}
+
+	@GET
+	@Path("/criarSessaoGoogleTeste")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response criarSessaoGoogle() {
+		return Response.status(200).entity(controlePaddock
+				.criarSessaoGoogle("123", "Paulo Sobreira", "https://lh4.googleusercontent.com/-edNcQ95Ak5w/AAAAAAAAAAI/AAAAAAAABVE/4C3Yv5L5UDo/s96-c/photo.jpg", "sowbreira@gmail.com")).build();
 	}
 
 	@GET
@@ -91,7 +98,7 @@ public class LetsRace {
 		return Response.status(200).entity(controlePaddock
 				.criarSessaoGoogle(idGoogle, nome, urlFoto, email)).build();
 	}
-	
+
 	@GET
 	@Compress
 	@Path("/circuito")
