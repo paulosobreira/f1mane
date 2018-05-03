@@ -357,6 +357,8 @@ function ctl_desenhaInfoBaixo() {
 		$('#info').hide();
 		return;
 	}
+	$('#imgJog1').hide();
+	$('#imgJog2').hide();
 	if(dadosParciais.posisPack.safetyNoId != 0 ||  dadosParciais.estado != '12' ||  dadosParciais.recebeuBanderada || (alternador && $('#info').html()!='')){
 		ctl_desenhaInfo();
 		$('#info').show();
@@ -400,7 +402,8 @@ function ctl_desenhaInfoCarros() {
 	var imgCap1, imgCap2;
 	var imgPneu1, imgPneu2;
 	var idPiloto1, idPiloto2;
-
+	var imgJog1 , imgJog2
+	
 	var diff;
 
 	if (posicaoCentraliza == 0) {
@@ -593,14 +596,11 @@ function ctl_desenhaInfoCarros() {
 				maneContext.drawImage(imgCap1, x, y);
 			}
 			if (imgJog1) {
-				if(largura<450){
-					x = centroX - imgJog1.width	- 65 - (imgPneu1.width);
-					y = altura - (imgJog1.height*2) - 10;
-				}else{
-					x = centroX - imgJog1.width	- img1.width - 65 - (imgPneu1.width / 2);
-					y = altura - imgJog1.height - 10;
-				}
-				maneContext.drawImage(imgJog1, x, y);
+				$('#imgJog1').show();
+				$('#imgJog1').css('position', 'absolute');
+				$('#imgJog1').attr('src',imgJog1);
+				$('#imgJog1').css('top',   y+'px');
+			    $('#imgJog1').css('left',  (x-30)+'px');
 			}
 		}
 	}
@@ -632,14 +632,11 @@ function ctl_desenhaInfoCarros() {
 			}
 			
 			if (imgJog2) {
-				if(largura<450){
-					x = centroX + 65 + (imgPneu2.width);
-					y = altura - (imgJog2.height*2) - 10;
-				}else{
-					x = centroX + 65 + img2.width + (imgPneu2.width / 2);
-					y = altura - imgJog2.height - 10;
-				}
-				maneContext.drawImage(imgJog2, x , y);
+				$('#imgJog2').show();
+				$('#imgJog2').css('position', 'absolute');
+				$('#imgJog2').attr('src',imgJog2);
+				$('#imgJog2').css('top',   y+'px');
+			    $('#imgJog2').css('left',  (x+30)+'px');
 			}
 		}
 	}

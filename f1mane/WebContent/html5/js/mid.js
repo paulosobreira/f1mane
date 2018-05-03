@@ -48,11 +48,7 @@ function mid_caregaMidia() {
 		capaceteImgMap.set(piloto.id, imgCapacete);
 		
 		if(piloto.imgJogador!=null){
-			var jogadorImg = new Image();
-			jogadorImg.src = piloto.imgJogador;
-			jogadorImg.setAttribute('height','44px');
-			jogadorImg.setAttribute('border-radius','50%');
-			jogadorImgMap.set(piloto.id, jogadorImg);			
+			jogadorImgMap.set(piloto.id, piloto.imgJogador);			
 		}
 		
 	}
