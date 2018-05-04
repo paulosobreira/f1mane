@@ -1183,6 +1183,7 @@ public class ControleJogosServer {
 			if (sessaoCliente.getToken().equals(token)) {
 				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 				srvPaddockPack.setSessaoCliente(sessaoCliente);
+				sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 				return srvPaddockPack;
 			}
 		}

@@ -196,6 +196,10 @@ function carregarDadosJogo() {
 			$('#temporadaProxima').remove();
 			$('#circuitoAnterior').remove();
 			$('#circuitoProximo').remove();
+			if(localStorage.getItem("nomeJogo")){
+				localStorage.setItem("idPilotoSelecionado", idPilotoSelecionado);
+				window.location.href = "corrida.html";
+			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);

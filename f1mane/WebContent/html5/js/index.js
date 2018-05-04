@@ -57,8 +57,13 @@ function dadosJogador() {
 			'token' : localStorage.getItem("token")
 		},
 		success : function(srvPaddockPack) {
-			$('#nomeJogador').append(srvPaddockPack.sessaoCliente.nomeJogador);
-			$('#imgJogador').attr('src', srvPaddockPack.sessaoCliente.imagemJogador);
+			if(srvPaddockPack){
+				$('#nomeJogador').append(srvPaddockPack.sessaoCliente.nomeJogador);
+				$('#imgJogador').attr('src', srvPaddockPack.sessaoCliente.imagemJogador);
+				if(srvPaddockPack.sessaoCliente.jogoAtual){
+					localStorage.setItem("nomeJogo", srvPaddockPack.sessaoCliente.jogoAtual);
+				}
+			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			$('#botoes').show();
