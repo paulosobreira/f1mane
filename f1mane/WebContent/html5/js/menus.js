@@ -153,26 +153,29 @@ function carregarDadosJogo() {
 			var pilotos = dadosJogo.pilotos;
 			$('#pilotos').find('tr').remove();
 			$.each(pilotos, function(i, val) {
-				var td1 = $('<td scope="row"/>');
+				var td1 = $('<td scope="row" style="display: grid;"/>');
 				td1.append(pilotos[i].nome);
 				var td2 = $('<td/>');
 				td2.append(pilotos[i].nomeCarro);
 				var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+				var capacetes = $('<div style="display:  inline-flex;"  />');
+				td1.append(capacetes);
 				var capacete = $('<img class="img-responsive img-center"/>');
 				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id=' + pilotos[i].id + '&temporada=' + temporadaSelecionada);
-				td1.append(capacete);
+				capacetes.append(capacete);
 				if(pilotos[i].imgJogador!=null){
 					var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
 					imgJogador.attr('src', pilotos[i].imgJogador);
-					td1.append(imgJogador);
+					capacetes.append(imgJogador);
+				}
+				if(pilotos[i].nomeJogador!=null && pilotos[i].imgJogador!=null){
+					td1.append(pilotos[i].nomeJogador);
 				}
 				tr.append(td1);
 				var carroLado = $('<img class="img-responsive img-center"/>');
 				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id=' + pilotos[i].id + '&temporada=' + temporadaSelecionada);
 				td2.append(carroLado);
-				if(pilotos[i].nomeJogador!=null && pilotos[i].imgJogador!=null){
-					td2.append(pilotos[i].nomeJogador);
-				}
+
 				if (pilotos[i].id == idPilotoSelecionado) {
 					tr.addClass('success');
 				} else if (pilotos[i].jogadorHumano) {
