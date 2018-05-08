@@ -426,6 +426,7 @@ public class LetsRace {
 			String idPiloto, String numVoltas, String tipoPneu,
 			String combustivel, String asa)
 			throws ClassNotFoundException, IOException {
+		numVoltas = "1";
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t" + temporada);
 		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);

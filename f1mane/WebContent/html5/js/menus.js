@@ -168,18 +168,17 @@ function carregarDadosJogo() {
 					imgJogador.attr('src', pilotos[i].imgJogador);
 					capacetes.append(imgJogador);
 				}
-				if(pilotos[i].nomeJogador!=null && pilotos[i].imgJogador!=null){
-					td1.append(pilotos[i].nomeJogador);
-				}
 				tr.append(td1);
 				var carroLado = $('<img class="img-responsive img-center"/>');
 				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id=' + pilotos[i].id + '&temporada=' + temporadaSelecionada);
 				td2.append(carroLado);
-
 				if (pilotos[i].id == idPilotoSelecionado) {
 					tr.addClass('success');
 				} else if (pilotos[i].jogadorHumano) {
 					tr.addClass('warning');
+				}
+				if(pilotos[i].nomeJogador!=null){
+					td2.append(pilotos[i].nomeJogador);
 				}
 				tr.append(td2);
 				$('#pilotos').append(tr);

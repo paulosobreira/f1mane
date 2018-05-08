@@ -78,6 +78,10 @@ function montaLinhaGridResultado(i, piloto) {
 	}
 	td1.append(piloto.nome);
 	td1.append('<br>');
+	if(piloto.nomeJogador!=null){
+		td1.append(piloto.nomeJogador);
+		td1.append('<br>');
+	}
 	td1.append('Box : ');
 	td1.append(piloto.qtdeParadasBox);
 	td1.append('<br>');
@@ -92,8 +96,13 @@ function montaLinhaGridResultado(i, piloto) {
 	td1.append('<br>');
 	var capacete = $('<img class="img-responsive img-responsive-line img-left"/>');
 	capacete.attr('src', '/f1mane/rest/letsRace/capacete?id=' + piloto.id + '&temporada=' + temporadaSelecionada);
-	td1.append(capacete);
-
+	var capacetes = $('<div style="display:  inline-flex;"  />');
+	capacetes.append(capacete);
+	if(piloto.imgJogador!=null){
+		var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
+		imgJogador.attr('src', piloto.imgJogador);
+		capacetes.append(imgJogador);
+	}
 	var pneu = $('<img class="img-responsive img-responsive-line img-right"/>');
 	if (piloto.carro.tipoPneu == 'TIPO_PNEU_MOLE') {
 		pneu.attr('src', 'img/pneuMole.png');
@@ -102,7 +111,8 @@ function montaLinhaGridResultado(i, piloto) {
 	} else if (piloto.carro.tipoPneu == 'TIPO_PNEU_CHUVA') {
 		pneu.attr('src', 'img/pneuChuva.png');
 	}
-	td1.append(pneu);
+	capacetes.append(pneu);
+	td1.append(capacetes);
 	tr.append(td1);
 
 	var td2 = $('<td/>');
