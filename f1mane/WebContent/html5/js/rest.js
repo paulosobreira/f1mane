@@ -41,6 +41,39 @@ function rest_dadosJogo(nomeJogo) {
 	});
 }
 
+function rest_dadosJogo_jogadores(nomeJogo) {
+	if (nomeJogo == null) {
+		console.log('rest_dadosJogo nomeJogo==null');
+		return;
+	}
+	$.ajax({
+		type : "GET",
+		headers : {
+			'token' : token,
+			'idioma' : localStorage.getItem('idioma')
+		},
+		url : "/f1mane/rest/letsRace/dadosJogo?nomeJogo=" + nomeJogo,
+		contentType : "application/json",
+		dataType : "json",
+		success : function(response) {
+			dadosJogo = response;
+			mid_atualizaJogadores();
+		},
+		error : function(xhRequest, errorText, thrownError) {
+			if (errorText == 'timeout') {
+				return;
+			}
+			try {
+				console.log('rest_dadosJogo '+xhRequest.status + '  ' + xhRequest.responseText);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	});
+}
+
+
+
 function rest_ciruito() {
 	if (carregando) {
 		return;

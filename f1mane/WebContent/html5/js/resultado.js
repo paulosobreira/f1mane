@@ -78,10 +78,6 @@ function montaLinhaGridResultado(i, piloto) {
 	}
 	td1.append(piloto.nome);
 	td1.append('<br>');
-	if(piloto.nomeJogador!=null){
-		td1.append(piloto.nomeJogador);
-		td1.append('<br>');
-	}
 	td1.append('Box : ');
 	td1.append(piloto.qtdeParadasBox);
 	td1.append('<br>');
@@ -118,6 +114,10 @@ function montaLinhaGridResultado(i, piloto) {
 	var td2 = $('<td/>');
 	td2.append(piloto.nomeCarro);
 	td2.append('<br>');
+	if(piloto.nomeJogador!=null){
+		td2.append(piloto.nomeJogador);
+		td2.append('<br>');
+	}
 	td2.append(lang_text('079'));
 	if(piloto.melhorVolta){
 		td2.append(piloto.melhorVolta.tempoVoltaFormatado);

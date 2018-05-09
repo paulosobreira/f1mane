@@ -14,6 +14,8 @@ var posicaoCentraliza = 0;
 var alternador = true;
 var alternadorValor = 0;
 
+var contadorJogadores = 0;
+
 var pilotosMap = new Map();
 var pilotosDnfMap = new Map();
 var pilotosBandeirada = new Map();
@@ -98,9 +100,13 @@ function cpu_dadosParciais() {
 	}
 
 	var posicaoPilotos = dadosParciais.posisPack;
+	var contadorJogadoresLocal = 0;
 
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
+		if(piloto.humano){
+			contadorJogadoresLocal++;
+		}
 		// console.log(dadosParciais.estado+' '+piloto.idPiloto+'
 		// '+piloto.tracado+' '+piloto.idNo);
 		if (piloto.idPiloto == idPilotoSelecionado) {
@@ -135,6 +141,12 @@ function cpu_dadosParciais() {
 			pilotosBandeirada.set(piloto.idPiloto, true);
 		}
 	}
+	if(contadorJogadores != contadorJogadoresLocal){
+		console.log(' contadorJogadores ' + contadorJogadores);
+		console.log(' contadorJogadoresLocal ' + contadorJogadoresLocal);
+		cpu_atualizaJogadores();
+	}
+	contadorJogadores = contadorJogadoresLocal;
 	if (dadosParciais.texto) {
 		$('#info').html(dadosParciais.texto);
 	}
@@ -144,6 +156,10 @@ function cpu_dadosParciais() {
 		clearInterval(main);
 		window.location.href = "resultado.html?token=" + token + "&nomeJogo=" + nomeJogo;
 	}
+}
+
+function cpu_atualizaJogadores(){
+	rest_dadosJogo_jogadores(nomeJogo);
 }
 
 function cpu_carregaDadosPilotos() {
@@ -156,6 +172,7 @@ function cpu_sair() {
 	rest_sairJogo();
 	ativo = false;
 	clearInterval(main);
+	localStorage.clear();
 	window.location.href = "index.html";
 }
 

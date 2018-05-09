@@ -167,6 +167,7 @@ function carregarDadosJogo() {
 					var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
 					imgJogador.attr('src', pilotos[i].imgJogador);
 					capacetes.append(imgJogador);
+					td1.append('<br>');
 				}
 				tr.append(td1);
 				var carroLado = $('<img class="img-responsive img-center"/>');

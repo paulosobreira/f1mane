@@ -595,7 +595,7 @@ function ctl_desenhaInfoCarros() {
 				}
 				maneContext.drawImage(imgCap1, x, y);
 			}
-			if (imgJog1) {
+			if (imgJog1!=null) {
 				$('#imgJog1').show();
 				$('#imgJog1').css('position', 'absolute');
 				$('#imgJog1').attr('src',imgJog1);
@@ -631,7 +631,7 @@ function ctl_desenhaInfoCarros() {
 				maneContext.drawImage(imgCap2, x , y);
 			}
 			
-			if (imgJog2) {
+			if (imgJog2!=null) {
 				$('#imgJog2').show();
 				$('#imgJog2').css('position', 'absolute');
 				$('#imgJog2').attr('src',imgJog2);
