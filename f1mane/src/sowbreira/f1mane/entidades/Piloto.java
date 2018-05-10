@@ -1401,8 +1401,8 @@ public class Piloto implements Serializable, PilotoSuave {
 				setCiclosDesconcentrado(100);
 				controleJogo.travouRodas(this);
 				if (controleJogo.verificaInfoRelevante(this)) {
-					controleJogo.info(Lang.msg("saiDaPista",
-							new String[]{Html.vermelho(getNome())}));
+					controleJogo.info(Lang.msg("saiDaPista", new String[]{
+							nomeJogadorFormatado(), Html.vermelho(getNome())}));
 				}
 			} else if (No.CURVA_BAIXA.equals(getNoAtual().getTipo())
 					&& (getTracado() == 0)
@@ -1856,14 +1856,15 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		if (getNumeroVolta() > 0 && controleJogo.verificaInfoRelevante(this)) {
 			if (tentaPassarFrete && calculaDiferencaParaProximo < 100) {
-				String txt = Lang.msg("tentaPassarFrete",
-						new String[]{Html.negrito(getNome()), Html.negrito(
+				String txt = Lang.msg("tentaPassarFrete", new String[]{
+						nomeJogadorFormatado(), Html.negrito(getNome()),
+						Html.negrito(
 								carroPilotoDaFrente.getPiloto().getNome())});
 				controleJogo.info(Html.preto(txt));
 			} else if (tentarEscaparAtras
 					&& calculaDiferencaParaAnterior < 100) {
 				String txt = Lang.msg("tentarEscaparAtras", new String[]{
-						Html.negrito(getNome()),
+						nomeJogadorFormatado(), Html.negrito(getNome()),
 						Html.negrito(carroPilotoAtras.getPiloto().getNome())});
 				controleJogo.info(Html.preto(txt));
 			}
@@ -2734,7 +2735,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		} else {
 			return;
 		}
-		controleJogo.info(Html.vermelho(getNome() + Lang.msg("057")));
+		controleJogo.info(nomeJogadorFormatado() + " "
+				+ Html.vermelho(getNome() + Lang.msg("057")));
 	}
 
 	private void mensangesModoAgressivo(InterfaceJogo controleJogo) {
@@ -2752,25 +2754,30 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		if (AGRESSIVO.equals(getModoPilotagem())) {
 			if (controleJogo.isChovendo()) {
-				controleJogo.info(Html.negrito(getNome())
-						+ Html.negrito(Lang.msg("052")));
+				controleJogo.info(
+						nomeJogadorFormatado() + " " + Html.negrito(getNome())
+								+ Html.negrito(Lang.msg("052")));
 			} else if (getNoAtual().verificaCurvaBaixa()) {
 
 				if (Math.random() > 0.5) {
-					controleJogo.info(Html.txtRedBold(getNome())
+					controleJogo.info(nomeJogadorFormatado() + " "
+							+ Html.txtRedBold(getNome())
 							+ Html.negrito(Lang.msg("053")));
 				} else {
-					controleJogo.info(Html.txtRedBold(getNome())
+					controleJogo.info(nomeJogadorFormatado() + " "
+							+ Html.txtRedBold(getNome())
 							+ Html.negrito(Lang.msg("054")));
 				}
 			}
 		} else {
 			if (controleJogo.isChovendo()) {
-				controleJogo.info(Html.negrito(getNome())
-						+ Html.vermelho(Lang.msg("055")));
+				controleJogo.info(
+						nomeJogadorFormatado() + " " + Html.negrito(getNome())
+								+ Html.vermelho(Lang.msg("055")));
 			} else {
-				controleJogo.info(Html.negrito(getNome())
-						+ Html.vermelho(Lang.msg("056")));
+				controleJogo.info(
+						nomeJogadorFormatado() + " " + Html.negrito(getNome())
+								+ Html.vermelho(Lang.msg("056")));
 			}
 		}
 	}
@@ -3682,6 +3689,16 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setTokenJogador(String tokenJogador) {
 		this.tokenJogador = tokenJogador;
+	}
+
+	public String nomeJogadorFormatado() {
+		String nomeJogador = "(" + getNomeJogador() + ")";
+		if (nomeJogador == null) {
+			nomeJogador = "";
+		} else {
+			nomeJogador += " ";
+		}
+		return nomeJogador;
 	}
 
 }

@@ -644,7 +644,7 @@ public class ControlePaddockServidor {
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 			dadosPaddock.add(sessaoCliente);
 		}
-		controleJogosServer.removerClienteInativo(sessaoCliente);
+		controleJogosServer.removerCliente(sessaoCliente);
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setSessaoCliente(sessaoCliente);
 		srvPaddockPack.setSenhaCriada(senha);
@@ -698,8 +698,8 @@ public class ControlePaddockServidor {
 		String chave = String.valueOf(System.currentTimeMillis());
 	}
 
-	public void removerClienteInativo(SessaoCliente sessaoCliente) {
-		controleJogosServer.removerClienteInativo(sessaoCliente);
+	public void removerCliente(SessaoCliente sessaoCliente) {
+		controleJogosServer.removerCliente(sessaoCliente);
 		dadosPaddock.remove(sessaoCliente);
 	}
 
@@ -769,9 +769,7 @@ public class ControlePaddockServidor {
 
 	public void sairJogoToken(String nomeJogo, String token) {
 		SessaoCliente sessaoCliente = obterSessaoPorToken(token);
-		JogoServidor jogoServidor = getControleJogosServer()
-				.getMapaJogosCriados().get(sessaoCliente);
-		jogoServidor.removerJogador(sessaoCliente.getToken());
+		removerCliente(sessaoCliente);
 	}
 
 	public SrvPaddockPack obterDadosToken(String token) {

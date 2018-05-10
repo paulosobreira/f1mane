@@ -837,7 +837,7 @@ public class ControleJogosServer {
 
 	}
 
-	public void removerClienteInativo(SessaoCliente sessaoCliente) {
+	public void removerCliente(SessaoCliente sessaoCliente) {
 		if (sessaoCliente == null) {
 			return;
 		}

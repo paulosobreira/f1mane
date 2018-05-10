@@ -470,8 +470,8 @@ public class ControleJogoLocal extends ControleRecursos
 		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
 				&& (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
 
-			infoPrioritaria(
-					Html.preto(piloto.getNome()) + Html.verde(Lang.msg("045")));
+			infoPrioritaria(Html.preto(piloto.getNome()) + Html.verde(Lang
+					.msg("045", new Object[]{piloto.nomeJogadorFormatado()})));
 		}
 
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
@@ -1722,10 +1722,13 @@ public class ControleJogoLocal extends ControleRecursos
 			if (piloto.getPosicao() == 1) {
 				infoPrioritaria(nomeJogador + Html.preto(piloto.getNome())
 						+ Html.verde(Lang.msg("044",
-								new Object[]{piloto.getPosicao()})));
+								new Object[]{piloto.getPosicao(),
+										piloto.nomeJogadorFormatado()})));
 			} else {
-				info(nomeJogador + Html.preto(piloto.getNome()) + Html.verde(
-						Lang.msg("044", new Object[]{piloto.getPosicao()})));
+				info(nomeJogador + Html.preto(piloto.getNome())
+						+ Html.verde(Lang.msg("044",
+								new Object[]{piloto.getPosicao(),
+										piloto.nomeJogadorFormatado()})));
 			}
 			double somaBaixa = 0;
 			for (Iterator iterator = piloto.getGanhosBaixa()

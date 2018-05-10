@@ -474,7 +474,7 @@ public class Carro implements Serializable {
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6
 							&& temperaturaMotor <= tempMax - 5)) {
-				String nomeJogador = "("+getPiloto().getNomeJogador()+")";
+				String nomeJogador = "(" + getPiloto().getNomeJogador() + ")";
 				if (nomeJogador == null) {
 					nomeJogador = "";
 				} else {
@@ -655,8 +655,9 @@ public class Carro implements Serializable {
 		if (porcentagemDesgasteMotor < 0) {
 			piloto.setDesqualificado(true);
 			setDanificado(Carro.EXPLODIU_MOTOR);
-			controleJogo.infoPrioritaria(Html
-					.vermelho(Lang.msg("042", new String[]{piloto.getNome()})));
+			controleJogo
+					.infoPrioritaria(Html.vermelho(Lang.msg("042", new String[]{
+							piloto.nomeJogadorFormatado(), piloto.getNome()})));
 
 		}
 	}
@@ -814,8 +815,14 @@ public class Carro implements Serializable {
 		if ((pneus < 0) && !verificaDano()) {
 			setDanificado(PNEU_FURADO);
 			pneus = -1;
-			controleJogo.infoPrioritaria(Html.vermelho(
-					Lang.msg("043", new String[]{getPiloto().getNome()})));
+			controleJogo
+					.infoPrioritaria(
+							Html.vermelho(
+									Lang.msg("043",
+											new String[]{
+													getPiloto()
+															.nomeJogadorFormatado(),
+													getPiloto().getNome()})));
 
 		}
 		return novoModificador + modificador;
@@ -1040,9 +1047,13 @@ public class Carro implements Serializable {
 		if (porcentPneus < -5) {
 			getPiloto().setDesqualificado(true);
 			setRecolhido(true);
-			controleJogo.infoPrioritaria(
-					Html.txtRedBold(Lang.msg("abandoNouDevidoDanosRodas",
-							new String[]{piloto.getNome()})));
+			controleJogo
+					.infoPrioritaria(
+							Html.txtRedBold(
+									Lang.msg("abandoNouDevidoDanosRodas",
+											new String[]{
+													piloto.nomeJogadorFormatado(),
+													piloto.getNome()})));
 		}
 		if (verificaDano()
 				|| Piloto.LENTO.equals(getPiloto().getModoPilotagem())) {
@@ -1064,7 +1075,7 @@ public class Carro implements Serializable {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isChovendo() && pneuAquecido && !msgPneu) {
 			msgPneu = true;
-			String nomeJogador = "("+getPiloto().getNomeJogador()+")";
+			String nomeJogador = "(" + getPiloto().getNomeJogador() + ")";
 			if (nomeJogador == null) {
 				nomeJogador = "";
 			} else {

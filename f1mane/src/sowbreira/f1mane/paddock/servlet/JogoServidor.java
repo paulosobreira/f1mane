@@ -554,6 +554,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			if (token.equals(piloto.getTokenJogador())) {
 				piloto.setNomeJogador(null);
 				piloto.setTokenJogador(null);
+				piloto.setImgJogador(null);
 				piloto.setJogadorHumano(false);
 				mapJogadoresOnline.remove(token);
 			}

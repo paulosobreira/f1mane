@@ -324,8 +324,14 @@ public class ControleCorrida {
 	private void perdeuAereofolio(Piloto piloto, Piloto pilotoNaFrente) {
 		piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 		Logger.logar(piloto.getNome() + " PERDEU_AEREOFOLIO");
+		String nomeJogador = "(" + piloto.getNomeJogador() + ")";
+		if (nomeJogador == null) {
+			nomeJogador = "";
+		} else {
+			nomeJogador += " ";
+		}
 		controleJogo.infoPrioritaria(Html.negrito(Html.vermelho(Lang.msg("017",
-				new String[]{piloto.getNome(), pilotoNaFrente.getNome()}))));
+				new String[]{nomeJogador, piloto.getNome(), pilotoNaFrente.getNome()}))));
 	}
 
 	private void verificaAcidenteJogadorHumano(Piloto piloto,
@@ -334,18 +340,18 @@ public class ControleCorrida {
 		if (!Piloto.AGRESSIVO.equals(piloto.getModoPilotagem())) {
 			return;
 		}
+		String nomeJogador = "(" + piloto.getNomeJogador() + ")";
+		if (nomeJogador == null) {
+			nomeJogador = "";
+		} else {
+			nomeJogador += " ";
+		}
 		No noAtual = piloto.getNoAtual();
 		if (piloto.getCarro().getDurabilidadeAereofolio() > 0) {
 			if (piloto.getStress() > stress) {
 				danificaAreofolio(piloto);
 				if (controleJogo.verificaInfoRelevante(piloto)
 						|| controleJogo.verificaInfoRelevante(pilotoNaFrente)) {
-					String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-					if (nomeJogador == null) {
-						nomeJogador = "";
-					} else {
-						nomeJogador += " ";
-					}
 					controleJogo.infoPrioritaria(Html.vermelho(Lang.msg("109",
 							new String[]{nomeJogador, piloto.getNome(),
 									pilotoNaFrente.getNome()})));
@@ -357,7 +363,7 @@ public class ControleCorrida {
 			controleJogo
 					.infoPrioritaria(
 							Lang.msg("015",
-									new String[]{
+									new String[]{nomeJogador,
 											Html.vermelho(piloto.getNome()),
 											pilotoNaFrente.getNome()}));
 		} else if ((noAtual.verificaCurvaBaixa())
@@ -366,7 +372,7 @@ public class ControleCorrida {
 			controleJogo
 					.infoPrioritaria(
 							Lang.msg("015",
-									new String[]{
+									new String[]{nomeJogador,
 											Html.vermelho(piloto.getNome()),
 											pilotoNaFrente.getNome()}));
 		}
