@@ -7,11 +7,14 @@ if (localStorage.getItem("versao") != $("#versao").val()) {
 	localStorage.clear();
 	localStorage.setItem("versao", $("#versao").val());
 } else {
-	localStorage.removeItem("token");
 	localStorage.removeItem("idPilotoSelecionado");
 }
 
 var token = getParameter('token');
+
+if (token == null) {
+	token = localStorage.getItem("token");
+}
 
 if (token != null) {
 	localStorage.setItem("token", token);
@@ -57,11 +60,19 @@ function dadosJogador() {
 			'token' : localStorage.getItem("token")
 		},
 		success : function(srvPaddockPack) {
-			if(srvPaddockPack){
-				$('#nomeJogador').append('<b>'+srvPaddockPack.sessaoCliente.nomeJogador+'</b>');
-				$('#imgJogador').attr('src', srvPaddockPack.sessaoCliente.imagemJogador);
-				if(srvPaddockPack.sessaoCliente.jogoAtual){
-					localStorage.setItem("nomeJogo", srvPaddockPack.sessaoCliente.jogoAtual);
+			if (srvPaddockPack) {
+				if(srvPaddockPack.sessaoCliente.guest){
+					localStorage.removeItem("token");
+					return;
+				}
+				$('#nomeJogador').append(
+						'<b>' + srvPaddockPack.sessaoCliente.nomeJogador
+								+ '</b>');
+				$('#imgJogador').attr('src',
+						srvPaddockPack.sessaoCliente.imagemJogador);
+				if (srvPaddockPack.sessaoCliente.jogoAtual) {
+					localStorage.setItem("nomeJogo",
+							srvPaddockPack.sessaoCliente.jogoAtual);
 				}
 			}
 		},
