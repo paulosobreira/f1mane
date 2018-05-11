@@ -115,7 +115,7 @@ function montaLinhaGridResultado(i, piloto) {
 	td2.append(piloto.nomeCarro);
 	td2.append('<br>');
 	if(piloto.nomeJogador!=null){
-		td2.append(piloto.nomeJogador);
+		td2.append('<b>'+piloto.nomeJogador+'</b>');
 		td2.append('<br>');
 	}
 	td2.append(lang_text('079'));

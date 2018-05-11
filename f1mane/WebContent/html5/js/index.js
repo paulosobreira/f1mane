@@ -58,7 +58,7 @@ function dadosJogador() {
 		},
 		success : function(srvPaddockPack) {
 			if(srvPaddockPack){
-				$('#nomeJogador').append(srvPaddockPack.sessaoCliente.nomeJogador);
+				$('#nomeJogador').append('<b>'+srvPaddockPack.sessaoCliente.nomeJogador+'</b>');
 				$('#imgJogador').attr('src', srvPaddockPack.sessaoCliente.imagemJogador);
 				if(srvPaddockPack.sessaoCliente.jogoAtual){
 					localStorage.setItem("nomeJogo", srvPaddockPack.sessaoCliente.jogoAtual);

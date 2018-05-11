@@ -179,7 +179,7 @@ function carregarDadosJogo() {
 					tr.addClass('warning');
 				}
 				if(pilotos[i].nomeJogador!=null){
-					td2.append(pilotos[i].nomeJogador);
+					td2.append('<b>'+pilotos[i].nomeJogador+'</b>');
 				}
 				tr.append(td2);
 				$('#pilotos').append(tr);
