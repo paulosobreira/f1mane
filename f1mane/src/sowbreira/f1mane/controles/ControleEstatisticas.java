@@ -125,14 +125,9 @@ public class ControleEstatisticas {
 
 		if (!teveMelhor && !controleJogo.isSafetyCarNaPista()) {
 			if (controleJogo.verificaInfoRelevante(piloto)) {
-				String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-				if (nomeJogador == null) {
-					nomeJogador = "";
-				} else {
-					nomeJogador += " ";
-				}
+
 				controleJogo.info(Html.verde(Lang.msg("022",
-						new String[]{nomeJogador,
+						new String[]{piloto.nomeJogadorFormatado(),
 								Html.negrito(piloto.getNome()),
 								voltaAtual.getTempoVoltaFormatado()})));
 			}
@@ -151,15 +146,10 @@ public class ControleEstatisticas {
 		if (voltaMaisRapida.obterTempoVolta() > piloto.getVoltaAtual()
 				.obterTempoVolta()) {
 			voltaMaisRapida = piloto.getVoltaAtual();
-			String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-			if (nomeJogador == null) {
-				nomeJogador = "";
-			} else {
-				nomeJogador += " ";
-			}
 			controleJogo.infoPrioritaria(Html.verde(Lang.msg("023",
-					new String[]{nomeJogador, Html.negrito(piloto.getNome()),
-							voltaMaisRapida.getTempoVoltaFormatado()})));
+					new String[]{piloto.nomeJogadorFormatado(),
+							Html.negrito(piloto.getNome()), voltaMaisRapida
+									.getTempoVoltaFormatado()})));
 		}
 	}
 

@@ -188,14 +188,8 @@ public class ControleBox {
 					|| (cont > (circuito.getEntradaBoxIndex() - 75)
 							&& cont < (circuito.getEntradaBoxIndex() + 75)))) {
 				if (controleJogo.verificaInfoRelevante(piloto)) {
-					String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-					if (nomeJogador == null) {
-						nomeJogador = "";
-					} else {
-						nomeJogador += " ";
-					}
 					controleJogo.info(Html.laranja(Lang.msg("entraBox",
-							new String[]{nomeJogador, piloto.getNome()})));
+							new String[]{piloto.nomeJogadorFormatado(), piloto.getNome()})));
 				}
 				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "
 						+ piloto.getNumeroVolta() + " Pneus : "
@@ -355,14 +349,8 @@ public class ControleBox {
 		piloto.setSaiuDoBoxMilis(0);
 		if (controleJogo.verificaInfoRelevante(piloto)) {
 			if (piloto.isJogadorHumano()) {
-				String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-				if (nomeJogador == null) {
-					nomeJogador = "";
-				} else {
-					nomeJogador += " ";
-				}
 				controleJogo.infoPrioritaria(Html.laranja(Lang.msg("002",
-						new String[]{nomeJogador, piloto.getNome(), String
+						new String[]{piloto.nomeJogadorFormatado(), piloto.getNome(), String
 								.valueOf(controleJogo.getNumVoltaAtual())})));
 			} else if (piloto.getPosicao() < 9) {
 				controleJogo.info(Html.laranja(Lang.msg("002", new String[]{"",

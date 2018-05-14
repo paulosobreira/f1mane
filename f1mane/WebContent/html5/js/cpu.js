@@ -173,7 +173,7 @@ function cpu_sair() {
 	ativo = false;
 	clearInterval(main);
 	localStorage.clear();
-	window.location.href = "index.html";
+	window.location.href = "index.html?token="+token;
 }
 
 function cpu_altenador() {

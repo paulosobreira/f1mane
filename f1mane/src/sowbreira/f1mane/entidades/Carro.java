@@ -474,14 +474,8 @@ public class Carro implements Serializable {
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6
 							&& temperaturaMotor <= tempMax - 5)) {
-				String nomeJogador = "(" + getPiloto().getNomeJogador() + ")";
-				if (nomeJogador == null) {
-					nomeJogador = "";
-				} else {
-					nomeJogador += " ";
-				}
 				controleJogo.infoPrioritaria(Html.laranja(
-						Lang.msg("temperatura", new String[]{nomeJogador,
+						Lang.msg("temperatura", new String[]{getPiloto().nomeJogadorFormatado(),
 								Html.txtRedBold(getPiloto().getNome())})));
 			}
 		}
@@ -1075,14 +1069,8 @@ public class Carro implements Serializable {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isChovendo() && pneuAquecido && !msgPneu) {
 			msgPneu = true;
-			String nomeJogador = "(" + getPiloto().getNomeJogador() + ")";
-			if (nomeJogador == null) {
-				nomeJogador = "";
-			} else {
-				nomeJogador += " ";
-			}
 			controleJogo.info(Html.laranja(Lang.msg("msgpneus",
-					new String[]{nomeJogador, getPiloto().getNome()})));
+					new String[]{getPiloto().nomeJogadorFormatado(), getPiloto().getNome()})));
 		}
 	}
 

@@ -853,14 +853,8 @@ public class ControleJogoLocal extends ControleRecursos
 		} else {
 			String strAsa = (String) asa;
 			if (!strAsa.equals(pilotoJogador.getCarro().getAsa())) {
-				String nomeJogador = "(" + pilotoJogador.getNomeJogador() + ")";
-				if (nomeJogador == null) {
-					nomeJogador = "";
-				} else {
-					nomeJogador += " ";
-				}
 				infoPrioritaria(Html.laranja(Lang.msg("028",
-						new String[]{nomeJogador, pilotoJogador.getNome()})));
+						new String[]{pilotoJogador.nomeJogadorFormatado(), pilotoJogador.getNome()})));
 			}
 			pilotoJogador.getCarro().setAsa(strAsa);
 		}
@@ -1713,19 +1707,13 @@ public class ControleJogoLocal extends ControleRecursos
 			piloto.setPtosPista(piloto.getPtosPista() + (100 * exp));
 			Logger.logar(
 					piloto.toString() + " Pts Depois " + piloto.getPtosPista());
-			String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-			if (nomeJogador == null) {
-				nomeJogador = "";
-			} else {
-				nomeJogador += " ";
-			}
 			if (piloto.getPosicao() == 1) {
-				infoPrioritaria(nomeJogador + Html.preto(piloto.getNome())
+				infoPrioritaria(piloto.nomeJogadorFormatado() + Html.preto(piloto.getNome())
 						+ Html.verde(Lang.msg("044",
 								new Object[]{piloto.getPosicao(),
 										piloto.nomeJogadorFormatado()})));
 			} else {
-				info(nomeJogador + Html.preto(piloto.getNome())
+				info(piloto.nomeJogadorFormatado() + Html.preto(piloto.getNome())
 						+ Html.verde(Lang.msg("044",
 								new Object[]{piloto.getPosicao(),
 										piloto.nomeJogadorFormatado()})));

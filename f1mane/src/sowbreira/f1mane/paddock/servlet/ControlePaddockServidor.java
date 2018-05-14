@@ -569,7 +569,6 @@ public class ControlePaddockServidor {
 					.hasNext();) {
 				SessaoCliente element = (SessaoCliente) iter.next();
 				if (token.equals(element.getToken())) {
-					element.setUlimaAtividade(System.currentTimeMillis());
 					return element;
 				}
 			}

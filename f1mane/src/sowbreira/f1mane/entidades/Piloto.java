@@ -1658,13 +1658,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				agressivo = false;
 				if (controleJogo.verificaInfoRelevante(this)
 						&& Math.random() > 0.7) {
-					String nomeJogador = "(" + getNomeJogador() + ")";
-					if (nomeJogador == null) {
-						nomeJogador = "";
-					} else {
-						nomeJogador += " ";
-					}
-					controleJogo.info(Lang.msg("014", new String[]{nomeJogador,
+					controleJogo.info(Lang.msg("014", new String[]{nomeJogadorFormatado(),
 							Html.negrito(getNome())}));
 				}
 			}
@@ -3692,6 +3686,9 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public String nomeJogadorFormatado() {
+		if(getNomeJogador()==null){
+			return "";
+		}
 		String nomeJogador = "(" + getNomeJogador() + ")";
 		if (nomeJogador == null) {
 			nomeJogador = "";
