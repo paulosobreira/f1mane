@@ -559,11 +559,14 @@ function ctl_desenhaInfoCarros() {
 		
 	}
 	if (diff) {
+		if(diff<0){
+			diff = 'BOX';
+		}
 		maneContext.beginPath();
 		maneContext.fillStyle = corFundo
 		maneContext.font = '14px sans-serif';
 		maneContext.fillRect(centroX - 25, altura - 40,  maneContext.measureText(diff).width+10, 20);
-		maneContext.fillStyle = "black"
+		maneContext.fillStyle = "black";
 		maneContext.fillText(diff, centroX - 20, altura - 25);
 		maneContext.closePath();
 		maneContext.stroke();
