@@ -12,6 +12,14 @@ if (localStorage.getItem("versao") != $("#versao").val()) {
 
 var token = getParameter('token');
 
+var limpar = getParameter('limpar');
+
+var plataforma =  getParameter('plataforma');
+
+if(limpar == 'S'){
+	localStorage.clear();
+}
+
 if (token == null) {
 	token = localStorage.getItem("token");
 }
@@ -19,6 +27,20 @@ if (token == null) {
 if (token != null) {
 	localStorage.setItem("token", token);
 	dadosJogador();
+}
+
+if(plataforma!=null){
+	localStorage.setItem("plataforma", plataforma);
+}
+
+plataforma =  localStorage.getItem('plataforma');
+
+$('#btnSair').hide();
+if(plataforma == "android"){
+	$('#btnSair').show();
+	$('#btnSair').bind("click", function() {
+		Android.exitApp();
+	});
 }
 
 var userLang = navigator.language || navigator.userLanguage;
@@ -38,6 +60,7 @@ $('#btnJogar').html(lang_text('jogar'));
 $('#btnSobre').html(lang_text('sobre'));
 $('#btnControles').html(lang_text('verControles'));
 $('#btnIdioma').html(lang_text('linguagem'));
+$('#btnSair').html(lang_text('sair'));
 
 $('#btnSobre').bind("click", function() {
 	$('#botoes').hide();

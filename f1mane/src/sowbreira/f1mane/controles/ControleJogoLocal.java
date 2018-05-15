@@ -1708,14 +1708,14 @@ public class ControleJogoLocal extends ControleRecursos
 			Logger.logar(
 					piloto.toString() + " Pts Depois " + piloto.getPtosPista());
 			if (piloto.getPosicao() == 1) {
-				infoPrioritaria(piloto.nomeJogadorFormatado() + Html.preto(piloto.getNome())
+				infoPrioritaria(Html.preto(piloto.getNome())
 						+ Html.verde(Lang.msg("044",
-								new Object[]{piloto.getPosicao(),
+								new String[]{String.valueOf(piloto.getPosicao()),
 										piloto.nomeJogadorFormatado()})));
 			} else {
-				info(piloto.nomeJogadorFormatado() + Html.preto(piloto.getNome())
+				info(Html.preto(piloto.getNome())
 						+ Html.verde(Lang.msg("044",
-								new Object[]{piloto.getPosicao(),
+								new String[]{String.valueOf(piloto.getPosicao()),
 										piloto.nomeJogadorFormatado()})));
 			}
 			double somaBaixa = 0;
