@@ -79,17 +79,18 @@ public class LetsRace {
 		return Response.status(200)
 				.entity(controlePaddock.obterDadosToken(token)).build();
 	}
-	/*
-	 * @GET
-	 * 
-	 * @Path("/criarSessaoGoogleTeste")
-	 * 
-	 * @Produces(MediaType.APPLICATION_JSON) public Response criarSessaoGoogle()
-	 * { return Response.status(200).entity(controlePaddock
-	 * .criarSessaoGoogle("123", "Paulo Sobreira",
-	 * "https://lh4.googleusercontent.com/-edNcQ95Ak5w/AAAAAAAAAAI/AAAAAAAABVE/4C3Yv5L5UDo/s96-c/photo.jpg",
-	 * "sowbreira@gmail.com")).build(); }
-	 */
+
+	@GET
+	@Path("/criarSessaoGoogleTeste")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response criarSessaoGoogle() {
+		return Response.status(200)
+				.entity(controlePaddock.criarSessaoGoogle("123",
+						"Paulo Sobreira",
+						"https://lh4.googleusercontent.com/-edNcQ95Ak5w/AAAAAAAAAAI/AAAAAAAABVE/4C3Yv5L5UDo/s96-c/photo.jpg",
+						"sowbreira@gmail.com"))
+				.build();
+	}
 
 	@GET
 	@Path("/criarSessaoGoogle")

@@ -6,18 +6,19 @@ if (localStorage.getItem("versao") != $("#versao").val()) {
 	console.log('Limpando localStorage versao: ' + $("#versao").val());
 	localStorage.clear();
 	localStorage.setItem("versao", $("#versao").val());
-} else {
-	localStorage.removeItem("idPilotoSelecionado");
 }
+
+localStorage.removeItem("idPilotoSelecionado");
+localStorage.removeItem("nomeJogo");
 
 var token = getParameter('token');
 
-var limpar = getParameter('limpar');
-
 var plataforma =  getParameter('plataforma');
 
+var limpar =  getParameter('limpar');
+
 if(limpar == 'S'){
-	localStorage.clear();
+	localStorage.removeItem("token");
 }
 
 if (token == null) {
