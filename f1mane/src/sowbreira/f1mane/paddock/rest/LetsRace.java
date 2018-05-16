@@ -80,9 +80,9 @@ public class LetsRace {
 				.entity(controlePaddock.obterDadosToken(token)).build();
 	}
 
-	@GET
-	@Path("/criarSessaoGoogleTeste")
-	@Produces(MediaType.APPLICATION_JSON)
+//	@GET
+//	@Path("/criarSessaoGoogleTeste")
+//	@Produces(MediaType.APPLICATION_JSON)
 	public Response criarSessaoGoogle() {
 		return Response.status(200)
 				.entity(controlePaddock.criarSessaoGoogle("123",

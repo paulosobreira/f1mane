@@ -172,7 +172,6 @@ function cpu_sair() {
 	rest_sairJogo();
 	ativo = false;
 	clearInterval(main);
-	localStorage.clear();
 	window.location.href = "index.html?token="+token;
 }
 
