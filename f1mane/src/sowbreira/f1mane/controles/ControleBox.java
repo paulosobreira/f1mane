@@ -72,7 +72,6 @@ public class ControleBox {
 		if (Math.random() < .5) {
 			boxRapido = true;
 		}
-		boxRapido = true;
 		geraBoxesEquipes(carrosBox);
 	}
 
