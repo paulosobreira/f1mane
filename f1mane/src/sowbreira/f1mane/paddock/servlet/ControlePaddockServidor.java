@@ -699,6 +699,10 @@ public class ControlePaddockServidor {
 
 	public void removerCliente(SessaoCliente sessaoCliente) {
 		controleJogosServer.removerCliente(sessaoCliente);
+	}
+
+	public void removerSessao(SessaoCliente sessaoCliente) {
+		removerCliente(sessaoCliente);
 		dadosPaddock.remove(sessaoCliente);
 	}
 
@@ -766,9 +770,11 @@ public class ControlePaddockServidor {
 				tokenJogador, idPiloto);
 	}
 
-	public void sairJogoToken(String nomeJogo, String token) {
-		SessaoCliente sessaoCliente = obterSessaoPorToken(token);
-		removerCliente(sessaoCliente);
+	public void sairJogoToken(String nomeJogo, String token, SessaoCliente sessaoCliente) {
+		controleJogosServer.sairJogoToken(nomeJogo, token);
+		sessaoCliente.setJogoAtual(null);
+		sessaoCliente.setPilotoAtual(null);
+		sessaoCliente.setIdPilotoAtual(0);
 	}
 
 	public SrvPaddockPack obterDadosToken(String token) {

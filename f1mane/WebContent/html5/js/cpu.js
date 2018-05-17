@@ -134,10 +134,12 @@ function cpu_dadosParciais() {
 			}
 		} else if(status.startsWith("M")){
 			pilotosTravadaMap.set(piloto.idPiloto, true);
-		}
-		else if (status.startsWith("R")) {
+		} else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
 		} else if (status.startsWith("B")) {
+			pilotosBandeirada.set(piloto.idPiloto, true);
+		} else if (status.startsWith("BA")) {
+			pilotosAereofolioMap.set(piloto.idPiloto, true);
 			pilotosBandeirada.set(piloto.idPiloto, true);
 		}
 	}

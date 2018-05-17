@@ -271,7 +271,7 @@ public class ControleJogosServer {
 	}
 
 	private JogoServidor obterJogoPeloTokenDono(String tokenDono) {
-		if(tokenDono==null){
+		if (tokenDono == null) {
 			return null;
 		}
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
@@ -439,6 +439,9 @@ public class ControleJogosServer {
 			String statusPilotos = "P";
 			if (piloto.verificaNaoPrecisaDesenhar()) {
 				statusPilotos = "R";
+			} else if (piloto.isRecebeuBanderada() && Carro.PERDEU_AEREOFOLIO
+					.equals(piloto.getCarro().getDanificado())) {
+				statusPilotos = "BA";
 			} else if (piloto.isRecebeuBanderada()) {
 				statusPilotos = "B";
 			} else if (Carro.PERDEU_AEREOFOLIO
@@ -561,10 +564,8 @@ public class ControleJogosServer {
 			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
 			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
 					.getMapJogadoresOnline();
-			if (!String
-					.valueOf(mapJogadoresOnline
-							.get(sessaoCliente.getToken()).getIdPiloto())
-					.equals(idPiloto)) {
+			if (!String.valueOf(mapJogadoresOnline.get(sessaoCliente.getToken())
+					.getIdPiloto()).equals(idPiloto)) {
 				return null;
 			}
 			List piList = jogoServidor.getPilotos();
@@ -585,8 +586,7 @@ public class ControleJogosServer {
 			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
 			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
 					.getMapJogadoresOnline();
-			if (mapJogadoresOnline
-					.containsKey(sessaoCliente.getToken())) {
+			if (mapJogadoresOnline.containsKey(sessaoCliente.getToken())) {
 				return jogoServidor;
 			}
 		}
@@ -640,6 +640,20 @@ public class ControleJogosServer {
 				clientPaddockPack.getSessaoCliente().getToken());
 
 		return null;
+	}
+
+	public void sairJogoToken(String nomeJogo, String token) {
+		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
+		if (jogoServidor == null) {
+			return;
+		}
+		if (token == null) {
+			return;
+		}
+		Map mapJogo = jogoServidor.getMapJogadoresOnline();
+		mapJogo.remove(token);
+		jogoServidor.getMapJogadoresOnlineTexto().remove(token);
+		jogoServidor.removerJogador(token);
 	}
 
 	public void removerJogo(JogoServidor servidor) {
@@ -1000,42 +1014,28 @@ public class ControleJogosServer {
 
 	public Object driveThru(ClientPaddockPack clientPaddockPack) {
 		/*
-		JogoServidor jogoServidor = obterJogoPeloNome(
-				clientPaddockPack.getNomeJogo());
-		if (jogoServidor == null) {
-			return null;
-		}
-		String requisitorDriveThru = clientPaddockPack.getSessaoCliente()
-				.getNomeJogador();
-		String jogadorDriveTru = (String) clientPaddockPack.getDataObject();
-		if (Util.isNullOrEmpty(jogadorDriveTru)) {
-			Logger.logar("jogadorDriveTru null");
-			return null;
-		}
-		Piloto piloto = obterPiloto(clientPaddockPack, jogoServidor);
-		if (piloto == null) {
-			return null;
-		}
-		int metadeJogadores = jogoServidor.getNumJogadores() / 2;
-		if (piloto.adicionaVotoDriveThru(requisitorDriveThru)) {
-			if (piloto.getVotosDriveThru() > (metadeJogadores)) {
-				piloto.setDriveThrough(true);
-				jogoServidor.infoPrioritaria(
-						Html.driveThru(Lang.msg("penalidadePilotoDriveThru",
-								new String[]{Html.vermelho(jogadorDriveTru),
-										Html.negrito(requisitorDriveThru),
-										"" + piloto.getVotosDriveThru(),
-										"" + (metadeJogadores + 1)})));
-			} else {
-				jogoServidor.infoPrioritaria(
-						Html.driveThru(Lang.msg("votoPilotoDriveThru",
-								new String[]{Html.vermelho(jogadorDriveTru),
-										Html.negrito(requisitorDriveThru),
-										"" + piloto.getVotosDriveThru(),
-										"" + (metadeJogadores + 1)})));
-			}
-		}
-		*/
+		 * JogoServidor jogoServidor = obterJogoPeloNome(
+		 * clientPaddockPack.getNomeJogo()); if (jogoServidor == null) { return
+		 * null; } String requisitorDriveThru =
+		 * clientPaddockPack.getSessaoCliente() .getNomeJogador(); String
+		 * jogadorDriveTru = (String) clientPaddockPack.getDataObject(); if
+		 * (Util.isNullOrEmpty(jogadorDriveTru)) { Logger.logar(
+		 * "jogadorDriveTru null"); return null; } Piloto piloto =
+		 * obterPiloto(clientPaddockPack, jogoServidor); if (piloto == null) {
+		 * return null; } int metadeJogadores = jogoServidor.getNumJogadores() /
+		 * 2; if (piloto.adicionaVotoDriveThru(requisitorDriveThru)) { if
+		 * (piloto.getVotosDriveThru() > (metadeJogadores)) {
+		 * piloto.setDriveThrough(true); jogoServidor.infoPrioritaria(
+		 * Html.driveThru(Lang.msg("penalidadePilotoDriveThru", new
+		 * String[]{Html.vermelho(jogadorDriveTru),
+		 * Html.negrito(requisitorDriveThru), "" + piloto.getVotosDriveThru(),
+		 * "" + (metadeJogadores + 1)}))); } else {
+		 * jogoServidor.infoPrioritaria(
+		 * Html.driveThru(Lang.msg("votoPilotoDriveThru", new
+		 * String[]{Html.vermelho(jogadorDriveTru),
+		 * Html.negrito(requisitorDriveThru), "" + piloto.getVotosDriveThru(),
+		 * "" + (metadeJogadores + 1)}))); } }
+		 */
 		return null;
 	}
 

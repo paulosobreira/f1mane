@@ -72,6 +72,7 @@ public class ControleBox {
 		if (Math.random() < .5) {
 			boxRapido = true;
 		}
+		boxRapido = true;
 		geraBoxesEquipes(carrosBox);
 	}
 
@@ -213,11 +214,11 @@ public class ControleBox {
 					/**
 					 * gera limite velocidade no box
 					 */
-					ptosBox += ((boxRapido) ? 2 : Util.intervalo(1, 2));
+					ptosBox += ((boxRapido) ? Util.intervalo(2, 3) : Util.intervalo(1, 2));
 				} else if (box.verificaRetaOuLargada()) {
 					ptosBox += ((boxRapido) ? 3 : Util.intervalo(2, 3));
 				} else if (box.verificaCurvaAlta()) {
-					ptosBox += ((boxRapido) ? 2 : Util.intervalo(1, 2));
+					ptosBox += ((boxRapido) ? Util.intervalo(2, 3) : Util.intervalo(1, 2));
 				} else {
 					ptosBox += 1;
 				}
@@ -399,8 +400,8 @@ public class ControleBox {
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		piloto.setNumeroVolta(piloto.getNumeroVolta() + 1);
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
-		String[] strings = new String[]{piloto.nomeJogadorFormatado(), piloto.getNome(),
-				ControleEstatisticas.formatarTempo(diff),
+		String[] strings = new String[]{piloto.nomeJogadorFormatado(),
+				piloto.getNome(), ControleEstatisticas.formatarTempo(diff),
 				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox()),
 				Lang.msgRest(piloto.getCarro().getTipoPneu())};
 		String info = Lang.msg("003", strings);

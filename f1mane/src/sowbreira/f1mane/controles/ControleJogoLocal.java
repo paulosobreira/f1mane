@@ -853,8 +853,13 @@ public class ControleJogoLocal extends ControleRecursos
 		} else {
 			String strAsa = (String) asa;
 			if (!strAsa.equals(pilotoJogador.getCarro().getAsa())) {
-				infoPrioritaria(Html.laranja(Lang.msg("028",
-						new String[]{pilotoJogador.nomeJogadorFormatado(), pilotoJogador.getNome()})));
+				infoPrioritaria(
+						Html.laranja(
+								Lang.msg("028",
+										new String[]{
+												pilotoJogador
+														.nomeJogadorFormatado(),
+												pilotoJogador.getNome()})));
 			}
 			pilotoJogador.getCarro().setAsa(strAsa);
 		}
@@ -1703,20 +1708,31 @@ public class ControleJogoLocal extends ControleRecursos
 				piloto.setVantagem(piloto.getCalculaSegundosParaAnterior());
 			}
 			Logger.logar(piloto.toString() + " Pts " + piloto.getPtosPista());
-			int exp = (50 - piloto.getPosicao());
-			piloto.setPtosPista(piloto.getPtosPista() + (100 * exp));
+			// int exp = (50 - piloto.getPosicao());
+			// piloto.setPtosPista(piloto.getPtosPista() + (100 * exp));
 			Logger.logar(
 					piloto.toString() + " Pts Depois " + piloto.getPtosPista());
+
+			String nomeJogadorFormatado = piloto.nomeJogadorFormatado();
+			if (Util.isNullOrEmpty(nomeJogadorFormatado)) {
+				nomeJogadorFormatado = " ";
+			}
 			if (piloto.getPosicao() == 1) {
-				infoPrioritaria(Html.preto(piloto.getNome())
-						+ Html.verde(Lang.msg("044",
-								new String[]{String.valueOf(piloto.getPosicao()),
-										piloto.nomeJogadorFormatado()})));
+				infoPrioritaria(
+						Html.preto(piloto.getNome())
+								+ Html.verde(Lang.msg("044",
+										new String[]{
+												String.valueOf(
+														piloto.getPosicao()),
+												nomeJogadorFormatado})));
 			} else {
 				info(Html.preto(piloto.getNome())
-						+ Html.verde(Lang.msg("044",
-								new String[]{String.valueOf(piloto.getPosicao()),
-										piloto.nomeJogadorFormatado()})));
+						+ Html.verde(
+								Lang.msg("044",
+										new String[]{
+												String.valueOf(
+														piloto.getPosicao()),
+												nomeJogadorFormatado})));
 			}
 			double somaBaixa = 0;
 			for (Iterator iterator = piloto.getGanhosBaixa()

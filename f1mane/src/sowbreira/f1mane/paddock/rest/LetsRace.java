@@ -137,7 +137,7 @@ public class LetsRace {
 			return Response.status(401).build();
 		}
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-		controlePaddock.sairJogoToken(nomeJogo, token);
+		controlePaddock.sairJogoToken(nomeJogo, token,sessaoCliente);
 		return Response.status(200).build();
 	}
 
