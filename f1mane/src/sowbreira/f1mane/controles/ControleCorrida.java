@@ -289,7 +289,7 @@ public class ControleCorrida {
 					&& !controleJogo.verificaEntradaBox(piloto)
 					&& !controleJogo.verificaSaidaBox(piloto)
 					&& piloto.getStress() > limiteStress) {
-				piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
+				piloto.getCarro().setDanificado(Carro.BATEU_FORTE,controleJogo);
 				Logger.logar(piloto.getNome() + " BATEU_FORTE");
 				Runnable runnable = new Runnable() {
 					@Override
@@ -322,7 +322,7 @@ public class ControleCorrida {
 	}
 
 	private void perdeuAereofolio(Piloto piloto, Piloto pilotoNaFrente) {
-		piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
+		piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,controleJogo);
 		Logger.logar(piloto.getNome() + " PERDEU_AEREOFOLIO");
 		controleJogo.infoPrioritaria(Html.negrito(Html.vermelho(Lang.msg("017",
 				new String[]{piloto.nomeJogadorFormatado(), piloto.getNome(), pilotoNaFrente.getNome()}))));
@@ -347,7 +347,7 @@ public class ControleCorrida {
 			}
 		} else if ((noAtual.verificaCurvaAlta())
 				&& (piloto.getStress() > stress) && piloto.isAgressivo()) {
-			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
+			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,controleJogo);
 			controleJogo
 					.infoPrioritaria(
 							Lang.msg("015",
@@ -356,7 +356,7 @@ public class ControleCorrida {
 											pilotoNaFrente.getNome()}));
 		} else if ((noAtual.verificaCurvaBaixa())
 				&& (piloto.getStress() > stress)) {
-			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
+			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,controleJogo);
 			controleJogo
 					.infoPrioritaria(
 							Lang.msg("015",

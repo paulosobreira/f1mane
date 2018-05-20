@@ -510,7 +510,7 @@ public class ControleJogosServer {
 		piloto.setAtivarDRS(true);
 		int giroAntes = piloto.getCarro().getGiro();
 		piloto.getCarro().mudarGiroMotor(giro);
-
+		piloto.getCarro().setDanificado(Carro.EXPLODIU_MOTOR,obterJogoPorSessaoCliente(sessaoCliente));
 		return giroAntes != piloto.getCarro().getGiro();
 	}
 
@@ -700,6 +700,9 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
+		if(!jogoServidor.getMapJogadoresOnline().containsKey(tokenJogador)){
+			return null;
+		}
 		DadosParciais dadosParciais = new DadosParciais();
 		Volta obterMelhorVolta = jogoServidor.obterMelhorVolta();
 		if (obterMelhorVolta != null) {
@@ -851,17 +854,24 @@ public class ControleJogosServer {
 
 	}
 
-	public void removerCliente(SessaoCliente sessaoCliente) {
+	public boolean removerCliente(SessaoCliente sessaoCliente) {
 		if (sessaoCliente == null) {
-			return;
+			return false;
 		}
+		boolean removeu = false;
 		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
 				.iterator(); iter.hasNext();) {
 			SessaoCliente element = iter.next();
 			JogoServidor jogoServidor = (JogoServidor) mapaJogosCriados
 					.get(element);
-			jogoServidor.removerJogador(sessaoCliente.getToken());
+			if(jogoServidor.removerJogador(sessaoCliente.getToken())){
+				sessaoCliente.setIdPilotoAtual(0);
+				sessaoCliente.setJogoAtual(null);
+				sessaoCliente.setPilotoAtual(null);
+				removeu = true;
+			}
 		}
+		return removeu;
 
 	}
 

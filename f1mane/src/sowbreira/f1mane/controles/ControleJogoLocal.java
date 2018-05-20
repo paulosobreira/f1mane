@@ -467,11 +467,15 @@ public class ControleJogoLocal extends ControleRecursos
 	public void processaNovaVolta() {
 		int qtdeDesqualificados = 0;
 		Piloto piloto = pilotos.get(0);
+
 		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
 				&& (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
-
-			infoPrioritaria(Html.preto(piloto.getNome()) + Html.verde(Lang
-					.msg("045", new Object[]{piloto.nomeJogadorFormatado()})));
+			String nomeJogadorFormatado = piloto.nomeJogadorFormatado();
+			if (Util.isNullOrEmpty(nomeJogadorFormatado)) {
+				nomeJogadorFormatado = " ";
+			}
+			infoPrioritaria(Html.preto(piloto.getNome()) + Html.verde(
+					Lang.msg("045", new String[]{nomeJogadorFormatado})));
 		}
 
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
@@ -1247,7 +1251,7 @@ public class ControleJogoLocal extends ControleRecursos
 		while (Carro.BATEU_FORTE.equals(piloto.getCarro().getDanificado())) {
 			piloto = pilotos.get(pilotos.size() - (++i));
 		}
-		piloto.getCarro().setDanificado(Carro.BATEU_FORTE);
+		piloto.getCarro().setDanificado(Carro.BATEU_FORTE, this);
 		piloto.setDesqualificado(true);
 		controleCorrida.safetyCarNaPista(piloto);
 	}
@@ -1685,7 +1689,8 @@ public class ControleJogoLocal extends ControleRecursos
 		if (pilotoSelecionado == null) {
 			return;
 		}
-		pilotoSelecionado.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
+		pilotoSelecionado.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
+				this);
 		pilotoSelecionado.getCarro().setDurabilidadeAereofolio(0);
 	}
 
@@ -1798,6 +1803,22 @@ public class ControleJogoLocal extends ControleRecursos
 		TemporadasDefauts temporadasDefauts = carregadorRecursos
 				.carregarTemporadasPilotosDefauts().get(getTemporada());
 		return temporadasDefauts.getFatorBox();
+	}
+
+	@Override
+	public void desqualificaPiloto(Piloto piloto) {
+		int desqualificados = 0;
+		List<Piloto> pilotos = getPilotos();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto pilotoLista = (Piloto) iterator.next();
+			if (pilotoLista.isDesqualificado()) {
+				desqualificados++;
+			}
+
+		}
+		piloto.setDesqualificado(true);
+		piloto.setPtosPista(desqualificados);
+		piloto.setPosicaoBandeirada(pilotos.size() + desqualificados);
 	}
 
 }

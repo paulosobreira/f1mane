@@ -410,4 +410,6 @@ public interface InterfaceJogo {
 
 	void travouRodas(Piloto piloto, boolean semFumaca);
 
+	public void desqualificaPiloto(Piloto piloto);
+
 }

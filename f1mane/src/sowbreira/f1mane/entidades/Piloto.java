@@ -676,7 +676,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setDesqualificado(boolean desqualificado) {
-		setPosicaoBandeirada(100);
 		this.desqualificado = desqualificado;
 	}
 

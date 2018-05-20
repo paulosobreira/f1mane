@@ -80,10 +80,14 @@ public class LetsRace {
 				.entity(controlePaddock.obterDadosToken(token)).build();
 	}
 
-//	@GET
-//	@Path("/criarSessaoGoogleTeste")
-//	@Produces(MediaType.APPLICATION_JSON)
+	@GET
+	@Path("/criarSessaoGoogleTeste")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response criarSessaoGoogle() {
+		if (!Logger.ativo) {
+			return Response.status(400).entity("Nope")
+					.type(MediaType.APPLICATION_JSON).build();
+		}
 		return Response.status(200)
 				.entity(controlePaddock.criarSessaoGoogle("123",
 						"Paulo Sobreira",
@@ -137,7 +141,7 @@ public class LetsRace {
 			return Response.status(401).build();
 		}
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-		controlePaddock.sairJogoToken(nomeJogo, token,sessaoCliente);
+		controlePaddock.sairJogoToken(nomeJogo, token, sessaoCliente);
 		return Response.status(200).build();
 	}
 
@@ -156,6 +160,9 @@ public class LetsRace {
 		}
 		DadosParciais dadosParciais = controlePaddock.obterDadosParciaisPilotos(
 				nomeJogo, sessaoCliente.getToken(), idPiloto);
+		if (dadosParciais == null) {
+			return Response.status(401).build();
+		}
 		dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto, idioma);
 		return Response.status(200).entity(dadosParciais).build();
 	}
