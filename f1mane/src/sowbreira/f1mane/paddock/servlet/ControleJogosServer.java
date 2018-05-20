@@ -510,7 +510,6 @@ public class ControleJogosServer {
 		piloto.setAtivarDRS(true);
 		int giroAntes = piloto.getCarro().getGiro();
 		piloto.getCarro().mudarGiroMotor(giro);
-		piloto.getCarro().setDanificado(Carro.EXPLODIU_MOTOR,obterJogoPorSessaoCliente(sessaoCliente));
 		return giroAntes != piloto.getCarro().getGiro();
 	}
 
