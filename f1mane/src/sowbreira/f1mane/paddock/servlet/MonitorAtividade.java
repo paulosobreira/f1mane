@@ -100,7 +100,7 @@ public class MonitorAtividade implements Runnable {
 		for (Iterator<SessaoCliente> iter = clientes.iterator(); iter
 				.hasNext();) {
 			SessaoCliente sessaoCliente = iter.next();
-			int intervaloAtividade = 100000;
+			int intervaloAtividade = 500000;
 			if ((timeNow
 					- sessaoCliente.getUlimaAtividade()) > intervaloAtividade) {
 				sessaoClienteRemover = sessaoCliente;
@@ -109,7 +109,28 @@ public class MonitorAtividade implements Runnable {
 		}
 		if (sessaoClienteRemover != null) {
 			Logger.logar("Remover " + sessaoClienteRemover.getNomeJogador());
-			controlePaddock.removerClienteInativo(sessaoClienteRemover);
+			controlePaddock.removerCliente(sessaoClienteRemover);
+		}
+	}
+	
+	public void removeSessoesIniativas(long timeNow) {
+		List<SessaoCliente> clientes = controlePaddock.getDadosPaddock()
+				.getClientes();
+		SessaoCliente sessaoClienteRemover = null;
+		for (Iterator<SessaoCliente> iter = clientes.iterator(); iter
+				.hasNext();) {
+			SessaoCliente sessaoCliente = iter.next();
+			//12 hs
+			int intervaloAtividade = 43200000;
+			if ((timeNow
+					- sessaoCliente.getUlimaAtividade()) > intervaloAtividade) {
+				sessaoClienteRemover = sessaoCliente;
+				break;
+			}
+		}
+		if (sessaoClienteRemover != null) {
+			Logger.logar("Remover " + sessaoClienteRemover.getNomeJogador());
+			controlePaddock.removerSessao(sessaoClienteRemover);
 		}
 	}
 

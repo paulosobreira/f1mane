@@ -325,7 +325,7 @@ public class ControleCorrida {
 		piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO);
 		Logger.logar(piloto.getNome() + " PERDEU_AEREOFOLIO");
 		controleJogo.infoPrioritaria(Html.negrito(Html.vermelho(Lang.msg("017",
-				new String[]{piloto.getNome(), pilotoNaFrente.getNome()}))));
+				new String[]{piloto.nomeJogadorFormatado(), piloto.getNome(), pilotoNaFrente.getNome()}))));
 	}
 
 	private void verificaAcidenteJogadorHumano(Piloto piloto,
@@ -340,14 +340,8 @@ public class ControleCorrida {
 				danificaAreofolio(piloto);
 				if (controleJogo.verificaInfoRelevante(piloto)
 						|| controleJogo.verificaInfoRelevante(pilotoNaFrente)) {
-					String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-					if (nomeJogador == null) {
-						nomeJogador = "";
-					} else {
-						nomeJogador += " ";
-					}
 					controleJogo.infoPrioritaria(Html.vermelho(Lang.msg("109",
-							new String[]{nomeJogador, piloto.getNome(),
+							new String[]{piloto.nomeJogadorFormatado(), piloto.getNome(),
 									pilotoNaFrente.getNome()})));
 				}
 			}
@@ -357,7 +351,7 @@ public class ControleCorrida {
 			controleJogo
 					.infoPrioritaria(
 							Lang.msg("015",
-									new String[]{
+									new String[]{piloto.nomeJogadorFormatado(),
 											Html.vermelho(piloto.getNome()),
 											pilotoNaFrente.getNome()}));
 		} else if ((noAtual.verificaCurvaBaixa())
@@ -366,7 +360,7 @@ public class ControleCorrida {
 			controleJogo
 					.infoPrioritaria(
 							Lang.msg("015",
-									new String[]{
+									new String[]{piloto.nomeJogadorFormatado(),
 											Html.vermelho(piloto.getNome()),
 											pilotoNaFrente.getNome()}));
 		}

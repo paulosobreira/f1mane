@@ -23,7 +23,7 @@ public class PosisPack implements Serializable {
 		if (posis.length == 0) {
 			return null;
 		}
-		StringBuffer stringBuffer = new StringBuffer();
+		StringBuilder stringBuffer = new StringBuilder();
 		for (int i = 0; i < posis.length; i++) {
 			stringBuffer.append(posis[i].encode());
 			stringBuffer.append("§");

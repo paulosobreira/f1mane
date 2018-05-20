@@ -47,13 +47,13 @@ public class ControleSafetyCar {
 				return ganho;
 			}
 			long diffIndex = piloto.getDiferencaParaProximo();
-			ganho = limitaGanho(ganho, diffIndex, 200);
+			ganho = limitaGanho(ganho, diffIndex, 150);
 
 		} else {
 			long indexNafrente = safetyCar.getPtosPista();
 			long index = piloto.getPtosPista();
 			long diffIndex = (indexNafrente - index);
-			long max = 300;
+			long max = 150;
 			if (safetyCar.isVaiProBox()) {
 				max = 400;
 			}
@@ -62,7 +62,7 @@ public class ControleSafetyCar {
 		if (ganho > 40) {
 			ganho = 40;
 		}
-		if (ganho < 15 && piloto.getDiferencaParaProximo() > 100) {
+		if (ganho < 15 && piloto.getDiferencaParaProximo() > 50) {
 			ganho = 15;
 		}
 		if (piloto.getTracado() == 4) {

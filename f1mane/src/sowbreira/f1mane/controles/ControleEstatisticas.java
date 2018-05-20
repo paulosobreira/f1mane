@@ -125,14 +125,9 @@ public class ControleEstatisticas {
 
 		if (!teveMelhor && !controleJogo.isSafetyCarNaPista()) {
 			if (controleJogo.verificaInfoRelevante(piloto)) {
-				String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-				if (nomeJogador == null) {
-					nomeJogador = "";
-				} else {
-					nomeJogador += " ";
-				}
+
 				controleJogo.info(Html.verde(Lang.msg("022",
-						new String[]{nomeJogador,
+						new String[]{piloto.nomeJogadorFormatado(),
 								Html.negrito(piloto.getNome()),
 								voltaAtual.getTempoVoltaFormatado()})));
 			}
@@ -151,15 +146,10 @@ public class ControleEstatisticas {
 		if (voltaMaisRapida.obterTempoVolta() > piloto.getVoltaAtual()
 				.obterTempoVolta()) {
 			voltaMaisRapida = piloto.getVoltaAtual();
-			String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-			if (nomeJogador == null) {
-				nomeJogador = "";
-			} else {
-				nomeJogador += " ";
-			}
 			controleJogo.infoPrioritaria(Html.verde(Lang.msg("023",
-					new String[]{nomeJogador, Html.negrito(piloto.getNome()),
-							voltaMaisRapida.getTempoVoltaFormatado()})));
+					new String[]{piloto.nomeJogadorFormatado(),
+							Html.negrito(piloto.getNome()), voltaMaisRapida
+									.getTempoVoltaFormatado()})));
 		}
 	}
 
@@ -444,7 +434,7 @@ public class ControleEstatisticas {
 					CarregadorRecursos.recursoComoStream("tabela.html"));
 			BufferedReader bufferedReader = new BufferedReader(
 					inputStreamReader);
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			String line;
 			line = bufferedReader.readLine();
 			while (line != null) {
@@ -546,7 +536,7 @@ public class ControleEstatisticas {
 	}
 
 	public void atualizaInfoDebug() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		Runtime runtime = Runtime.getRuntime();
 		long maxMemory = runtime.maxMemory() / 1048576;
 		long allocatedMemory = runtime.totalMemory() / 1048576;

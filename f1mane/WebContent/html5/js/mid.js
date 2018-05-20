@@ -22,6 +22,14 @@ var capaceteImgMap;
 var jogadorImgMap;
 var objImgPistaMap = new Map();
 
+
+function mid_atualizaJogadores() {
+	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
+		var piloto = dadosJogo.pilotos[i];
+		jogadorImgMap.set(piloto.id, piloto.imgJogador);			
+	}
+}
+
 function mid_caregaMidia() {
 
 	carrosImgMap = new Map();
@@ -47,12 +55,7 @@ function mid_caregaMidia() {
 		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + piloto.id + "&temporada=" + dadosJogo.temporada
 		capaceteImgMap.set(piloto.id, imgCapacete);
 		
-		if(piloto.imgJogador!=null){
-			var jogadorImg = new Image();
-			jogadorImg.src = piloto.imgJogador;
-			jogadorImgMap.set(piloto.id, jogadorImg);			
-		}
-		
+		jogadorImgMap.set(piloto.id, piloto.imgJogador);			
 	}
 
 	imgBg = new Image();

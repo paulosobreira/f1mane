@@ -64,7 +64,6 @@ public class LetsRace {
 	private ControlePaddockServidor controlePaddock = PaddockServer
 			.getControlePaddock();
 
-	
 	@GET
 	@Path("/criarSessaoVisitante")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -77,7 +76,19 @@ public class LetsRace {
 	@Path("/dadosToken")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosToken(@HeaderParam("token") String token) {
-		return Response.status(200).entity(controlePaddock.obterDadosToken(token))
+		return Response.status(200)
+				.entity(controlePaddock.obterDadosToken(token)).build();
+	}
+
+//	@GET
+//	@Path("/criarSessaoGoogleTeste")
+//	@Produces(MediaType.APPLICATION_JSON)
+	public Response criarSessaoGoogle() {
+		return Response.status(200)
+				.entity(controlePaddock.criarSessaoGoogle("123",
+						"Paulo Sobreira",
+						"https://lh4.googleusercontent.com/-edNcQ95Ak5w/AAAAAAAAAAI/AAAAAAAABVE/4C3Yv5L5UDo/s96-c/photo.jpg",
+						"sowbreira@gmail.com"))
 				.build();
 	}
 
@@ -91,7 +102,7 @@ public class LetsRace {
 		return Response.status(200).entity(controlePaddock
 				.criarSessaoGoogle(idGoogle, nome, urlFoto, email)).build();
 	}
-	
+
 	@GET
 	@Compress
 	@Path("/circuito")
@@ -125,7 +136,8 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
-		controlePaddock.sairJogoToken(nomeJogo, token);
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		controlePaddock.sairJogoToken(nomeJogo, token,sessaoCliente);
 		return Response.status(200).build();
 	}
 
@@ -226,6 +238,7 @@ public class LetsRace {
 			if (sessaoCliente == null) {
 				return Response.status(401).build();
 			}
+			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
 			DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada,
@@ -419,6 +432,7 @@ public class LetsRace {
 			String idPiloto, String numVoltas, String tipoPneu,
 			String combustivel, String asa)
 			throws ClassNotFoundException, IOException {
+		numVoltas = "1";
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t" + temporada);
 		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
@@ -679,7 +693,7 @@ public class LetsRace {
 	public Response sobre() {
 		List<String> carregarCreditosJogo = CarregadorRecursos
 				.carregarCreditosJogo();
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for (Iterator<String> iterator = carregarCreditosJogo
 				.iterator(); iterator.hasNext();) {
 			String string = iterator.next();
@@ -704,6 +718,7 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();
 		return Response
@@ -727,6 +742,7 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();;
 		return Response.status(200)
@@ -747,8 +763,9 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		ControleJogosServer controleJogosServer = controlePaddock
-				.getControleJogosServer();;
+				.getControleJogosServer();
 		return Response
 				.status(200).entity(controleJogosServer
 						.mudarTracadoPiloto(sessaoCliente, idPiloto, tracado))
@@ -766,6 +783,7 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();
 		return Response.status(200)
@@ -784,6 +802,7 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();
 		return Response.status(200)
@@ -805,6 +824,7 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();;
 		return Response.status(200)

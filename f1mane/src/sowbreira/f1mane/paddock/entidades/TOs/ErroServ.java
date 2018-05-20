@@ -12,7 +12,7 @@ public class ErroServ implements Serializable {
 
 	private String formataErro(Throwable exception) {
 		StackTraceElement[] trace = exception.getStackTrace();
-		StringBuffer retorno = new StringBuffer();
+		StringBuilder retorno = new StringBuilder();
 		retorno.append("ERRO :" + exception.getMessage() + "\n");
 		retorno.append("ERRO :" + exception.getClass() + "\n");
 		int size = ((trace.length > 10) ? 10 : trace.length);

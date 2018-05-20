@@ -201,7 +201,7 @@ public class ControlePaddockCliente {
 			if ((System.currentTimeMillis() - ultRetornoSucedido) > 120000) {
 				setComunicacaoServer(false);
 				StackTraceElement[] trace = e.getStackTrace();
-				StringBuffer retorno = new StringBuffer();
+				StringBuilder retorno = new StringBuilder();
 				int size = ((trace.length > 10) ? 10 : trace.length);
 
 				for (int i = 0; i < size; i++)

@@ -569,7 +569,6 @@ public class ControlePaddockServidor {
 					.hasNext();) {
 				SessaoCliente element = (SessaoCliente) iter.next();
 				if (token.equals(element.getToken())) {
-					element.setUlimaAtividade(System.currentTimeMillis());
 					return element;
 				}
 			}
@@ -644,7 +643,7 @@ public class ControlePaddockServidor {
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 			dadosPaddock.add(sessaoCliente);
 		}
-		controleJogosServer.removerClienteInativo(sessaoCliente);
+		controleJogosServer.removerCliente(sessaoCliente);
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setSessaoCliente(sessaoCliente);
 		srvPaddockPack.setSenhaCriada(senha);
@@ -656,7 +655,7 @@ public class ControlePaddockServidor {
 		SessaoCliente sessaoCliente = new SessaoCliente();
 		TokenGenerator tokenGenerator = new TokenGenerator();
 		sessaoCliente.setToken(tokenGenerator.nextSessionId());
-		sessaoCliente.setNomeJogador("Mane-" + (contadorVistantes++));
+		sessaoCliente.setNomeJogador("Engineer-" + (contadorVistantes++));
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		sessaoCliente.setGuest(true);
 		dadosPaddock.add(sessaoCliente);
@@ -698,8 +697,12 @@ public class ControlePaddockServidor {
 		String chave = String.valueOf(System.currentTimeMillis());
 	}
 
-	public void removerClienteInativo(SessaoCliente sessaoCliente) {
-		controleJogosServer.removerClienteInativo(sessaoCliente);
+	public void removerCliente(SessaoCliente sessaoCliente) {
+		controleJogosServer.removerCliente(sessaoCliente);
+	}
+
+	public void removerSessao(SessaoCliente sessaoCliente) {
+		removerCliente(sessaoCliente);
 		dadosPaddock.remove(sessaoCliente);
 	}
 
@@ -767,11 +770,11 @@ public class ControlePaddockServidor {
 				tokenJogador, idPiloto);
 	}
 
-	public void sairJogoToken(String nomeJogo, String token) {
-		SessaoCliente sessaoCliente = obterSessaoPorToken(token);
-		JogoServidor jogoServidor = getControleJogosServer()
-				.getMapaJogosCriados().get(sessaoCliente);
-		jogoServidor.removerJogador(sessaoCliente.getToken());
+	public void sairJogoToken(String nomeJogo, String token, SessaoCliente sessaoCliente) {
+		controleJogosServer.sairJogoToken(nomeJogo, token);
+		sessaoCliente.setJogoAtual(null);
+		sessaoCliente.setPilotoAtual(null);
+		sessaoCliente.setIdPilotoAtual(0);
 	}
 
 	public SrvPaddockPack obterDadosToken(String token) {

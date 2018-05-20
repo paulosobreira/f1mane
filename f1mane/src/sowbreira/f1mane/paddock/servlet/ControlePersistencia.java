@@ -124,7 +124,7 @@ public class ControlePersistencia {
 
 	public void gravarDados() throws IOException {
 		synchronized (paddockDadosSrv) {
-			processarLimpesa(paddockDadosSrv);
+			processarLimpeza(paddockDadosSrv);
 			paddockDadosSrv.setLastSave(System.currentTimeMillis());
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 			XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
@@ -147,7 +147,7 @@ public class ControlePersistencia {
 		}
 	}
 
-	private void processarLimpesa(PaddockDadosSrv pds) {
+	private void processarLimpeza(PaddockDadosSrv pds) {
 		Map map = pds.getJogadoresMap();
 		for (Iterator iter = map.keySet().iterator(); iter.hasNext();) {
 			String key = (String) iter.next();

@@ -233,8 +233,13 @@ public class ControleQualificacao {
 
 	public void posicionarCarrosLargada() {
 		Circuito circuito = controleJogo.getCircuito();
-		for (int i = 0; i < controleJogo.getPilotos().size(); i++) {
-			Piloto piloto = (Piloto) controleJogo.getPilotos().get(i);
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		int iFim = 50
+				+ Util.inteiro((Carro.LARGURA * .8) * (pilotos.size() - 1));
+		No noFim = (No) circuito.getPistaFull()
+				.get(circuito.getPistaFull().size() - iFim);
+		for (int i = 0; i < pilotos.size(); i++) {
+			Piloto piloto = (Piloto) pilotos.get(i);
 			int iP = 50 + Util.inteiro((Carro.LARGURA * .8) * i);
 			No n1 = (No) circuito.getPistaFull().get(
 					circuito.getPistaFull().size() - iP - Carro.MEIA_LARGURA);
@@ -280,7 +285,8 @@ public class ControleQualificacao {
 			piloto.setPosicao(i + 1);
 			piloto.setPosicaoInicial(piloto.getPosicao());
 			piloto.zerarGanhoEVariaveisUlt();
-			piloto.setPtosPista(nM.getIndex());
+			//piloto.setPtosPista(nM.getIndex());
+			piloto.setPtosPista(nM.getIndex()-noFim.getIndex());
 			if (!piloto.isJogadorHumano() && !controleJogo.verificaNivelJogo()
 					&& !piloto.testeHabilidadePilotoCarro()
 					&& Math.random() > 0.95) {

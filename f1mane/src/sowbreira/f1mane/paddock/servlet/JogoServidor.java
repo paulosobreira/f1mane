@@ -548,12 +548,13 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		if (token == null) {
 			return;
 		}
-		List pilots = getPilotos();
-		for (Iterator iter = pilots.iterator(); iter.hasNext();) {
+		List pilotos = getPilotos();
+		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			if (token.equals(piloto.getTokenJogador())) {
 				piloto.setNomeJogador(null);
 				piloto.setTokenJogador(null);
+				piloto.setImgJogador(null);
 				piloto.setJogadorHumano(false);
 				mapJogadoresOnline.remove(token);
 			}

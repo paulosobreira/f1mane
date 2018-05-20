@@ -470,8 +470,8 @@ public class ControleJogoLocal extends ControleRecursos
 		if (piloto.getNumeroVolta() == (totalVoltasCorrida() - 1)
 				&& (piloto.getPosicao() == 1) && !isCorridaTerminada()) {
 
-			infoPrioritaria(
-					Html.preto(piloto.getNome()) + Html.verde(Lang.msg("045")));
+			infoPrioritaria(Html.preto(piloto.getNome()) + Html.verde(Lang
+					.msg("045", new Object[]{piloto.nomeJogadorFormatado()})));
 		}
 
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
@@ -853,14 +853,13 @@ public class ControleJogoLocal extends ControleRecursos
 		} else {
 			String strAsa = (String) asa;
 			if (!strAsa.equals(pilotoJogador.getCarro().getAsa())) {
-				String nomeJogador = "(" + pilotoJogador.getNomeJogador() + ")";
-				if (nomeJogador == null) {
-					nomeJogador = "";
-				} else {
-					nomeJogador += " ";
-				}
-				infoPrioritaria(Html.laranja(Lang.msg("028",
-						new String[]{nomeJogador, pilotoJogador.getNome()})));
+				infoPrioritaria(
+						Html.laranja(
+								Lang.msg("028",
+										new String[]{
+												pilotoJogador
+														.nomeJogadorFormatado(),
+												pilotoJogador.getNome()})));
 			}
 			pilotoJogador.getCarro().setAsa(strAsa);
 		}
@@ -1612,7 +1611,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public void atualizaInfoDebug(StringBuffer buffer) {
+	public void atualizaInfoDebug(StringBuilder buffer) {
 		Field[] declaredFields = this.getClass().getDeclaredFields();
 		List<String> campos = new ArrayList<String>();
 		buffer.append("-=ControleJogo=- <br>");
@@ -1709,23 +1708,31 @@ public class ControleJogoLocal extends ControleRecursos
 				piloto.setVantagem(piloto.getCalculaSegundosParaAnterior());
 			}
 			Logger.logar(piloto.toString() + " Pts " + piloto.getPtosPista());
-			int exp = (50 - piloto.getPosicao());
-			piloto.setPtosPista(piloto.getPtosPista() + (100 * exp));
+			// int exp = (50 - piloto.getPosicao());
+			// piloto.setPtosPista(piloto.getPtosPista() + (100 * exp));
 			Logger.logar(
 					piloto.toString() + " Pts Depois " + piloto.getPtosPista());
-			String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-			if (nomeJogador == null) {
-				nomeJogador = "";
-			} else {
-				nomeJogador += " ";
+
+			String nomeJogadorFormatado = piloto.nomeJogadorFormatado();
+			if (Util.isNullOrEmpty(nomeJogadorFormatado)) {
+				nomeJogadorFormatado = " ";
 			}
 			if (piloto.getPosicao() == 1) {
-				infoPrioritaria(nomeJogador + Html.preto(piloto.getNome())
-						+ Html.verde(Lang.msg("044",
-								new Object[]{piloto.getPosicao()})));
+				infoPrioritaria(
+						Html.preto(piloto.getNome())
+								+ Html.verde(Lang.msg("044",
+										new String[]{
+												String.valueOf(
+														piloto.getPosicao()),
+												nomeJogadorFormatado})));
 			} else {
-				info(nomeJogador + Html.preto(piloto.getNome()) + Html.verde(
-						Lang.msg("044", new Object[]{piloto.getPosicao()})));
+				info(Html.preto(piloto.getNome())
+						+ Html.verde(
+								Lang.msg("044",
+										new String[]{
+												String.valueOf(
+														piloto.getPosicao()),
+												nomeJogadorFormatado})));
 			}
 			double somaBaixa = 0;
 			for (Iterator iterator = piloto.getGanhosBaixa()

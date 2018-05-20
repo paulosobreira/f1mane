@@ -6,16 +6,42 @@ if (localStorage.getItem("versao") != $("#versao").val()) {
 	console.log('Limpando localStorage versao: ' + $("#versao").val());
 	localStorage.clear();
 	localStorage.setItem("versao", $("#versao").val());
-} else {
-	localStorage.removeItem("token");
-	localStorage.removeItem("idPilotoSelecionado");
 }
 
+localStorage.removeItem("idPilotoSelecionado");
+localStorage.removeItem("nomeJogo");
+
 var token = getParameter('token');
+
+var plataforma =  getParameter('plataforma');
+
+var limpar =  getParameter('limpar');
+
+if(limpar == 'S'){
+	localStorage.removeItem("token");
+}
+
+if (token == null) {
+	token = localStorage.getItem("token");
+}
 
 if (token != null) {
 	localStorage.setItem("token", token);
 	dadosJogador();
+}
+
+if(plataforma!=null){
+	localStorage.setItem("plataforma", plataforma);
+}
+
+plataforma =  localStorage.getItem('plataforma');
+
+$('#btnSair').hide();
+if(plataforma == "android"){
+	$('#btnSair').show();
+	$('#btnSair').bind("click", function() {
+		Android.exitApp();
+	});
 }
 
 var userLang = navigator.language || navigator.userLanguage;
@@ -35,6 +61,7 @@ $('#btnJogar').html(lang_text('jogar'));
 $('#btnSobre').html(lang_text('sobre'));
 $('#btnControles').html(lang_text('verControles'));
 $('#btnIdioma').html(lang_text('linguagem'));
+$('#btnSair').html(lang_text('sair'));
 
 $('#btnSobre').bind("click", function() {
 	$('#botoes').hide();
@@ -57,8 +84,21 @@ function dadosJogador() {
 			'token' : localStorage.getItem("token")
 		},
 		success : function(srvPaddockPack) {
-			$('#nomeJogador').append(srvPaddockPack.sessaoCliente.nomeJogador);
-			$('#imgJogador').attr('src', srvPaddockPack.sessaoCliente.imagemJogador);
+			if (srvPaddockPack) {
+				if(srvPaddockPack.sessaoCliente.guest){
+					localStorage.removeItem("token");
+					return;
+				}
+				$('#nomeJogador').append(
+						'<b>' + srvPaddockPack.sessaoCliente.nomeJogador
+								+ '</b>');
+				$('#imgJogador').attr('src',
+						srvPaddockPack.sessaoCliente.imagemJogador);
+				if (srvPaddockPack.sessaoCliente.jogoAtual) {
+					localStorage.setItem("nomeJogo",
+							srvPaddockPack.sessaoCliente.jogoAtual);
+				}
+			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			$('#botoes').show();

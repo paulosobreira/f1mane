@@ -188,14 +188,8 @@ public class ControleBox {
 					|| (cont > (circuito.getEntradaBoxIndex() - 75)
 							&& cont < (circuito.getEntradaBoxIndex() + 75)))) {
 				if (controleJogo.verificaInfoRelevante(piloto)) {
-					String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-					if (nomeJogador == null) {
-						nomeJogador = "";
-					} else {
-						nomeJogador += " ";
-					}
 					controleJogo.info(Html.laranja(Lang.msg("entraBox",
-							new String[]{nomeJogador, piloto.getNome()})));
+							new String[]{piloto.nomeJogadorFormatado(), piloto.getNome()})));
 				}
 				Logger.logar(piloto.getNome() + " Entrou no Box na Volta : "
 						+ piloto.getNumeroVolta() + " Pneus : "
@@ -219,11 +213,11 @@ public class ControleBox {
 					/**
 					 * gera limite velocidade no box
 					 */
-					ptosBox += ((boxRapido) ? 2 : Util.intervalo(1, 2));
+					ptosBox += ((boxRapido) ? Util.intervalo(2, 3) : Util.intervalo(1, 2));
 				} else if (box.verificaRetaOuLargada()) {
 					ptosBox += ((boxRapido) ? 3 : Util.intervalo(2, 3));
 				} else if (box.verificaCurvaAlta()) {
-					ptosBox += ((boxRapido) ? 2 : Util.intervalo(1, 2));
+					ptosBox += ((boxRapido) ? Util.intervalo(2, 3) : Util.intervalo(1, 2));
 				} else {
 					ptosBox += 1;
 				}
@@ -355,14 +349,8 @@ public class ControleBox {
 		piloto.setSaiuDoBoxMilis(0);
 		if (controleJogo.verificaInfoRelevante(piloto)) {
 			if (piloto.isJogadorHumano()) {
-				String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-				if (nomeJogador == null) {
-					nomeJogador = "";
-				} else {
-					nomeJogador += " ";
-				}
 				controleJogo.infoPrioritaria(Html.laranja(Lang.msg("002",
-						new String[]{nomeJogador, piloto.getNome(), String
+						new String[]{piloto.nomeJogadorFormatado(), piloto.getNome(), String
 								.valueOf(controleJogo.getNumVoltaAtual())})));
 			} else if (piloto.getPosicao() < 9) {
 				controleJogo.info(Html.laranja(Lang.msg("002", new String[]{"",
@@ -411,14 +399,8 @@ public class ControleBox {
 		piloto.setPtosPista(piloto.getPtosPista() + qtdeNosPistaRefBox);
 		piloto.setNumeroVolta(piloto.getNumeroVolta() + 1);
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
-		String nomeJogador = "(" + piloto.getNomeJogador() + ")";
-		if (nomeJogador == null) {
-			nomeJogador = "";
-		} else {
-			nomeJogador += " ";
-		}
-		String[] strings = new String[]{nomeJogador, piloto.getNome(),
-				ControleEstatisticas.formatarTempo(diff),
+		String[] strings = new String[]{piloto.nomeJogadorFormatado(),
+				piloto.getNome(), ControleEstatisticas.formatarTempo(diff),
 				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox()),
 				Lang.msgRest(piloto.getCarro().getTipoPneu())};
 		String info = Lang.msg("003", strings);
