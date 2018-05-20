@@ -104,13 +104,10 @@ public class MonitorAtividade implements Runnable {
 			if ((timeNow
 					- sessaoCliente.getUlimaAtividade()) > intervaloAtividade) {
 				sessaoClienteRemover = sessaoCliente;
-				break;
-			}
-		}
-		if (sessaoClienteRemover != null) {
-			if (controlePaddock.removerCliente(sessaoClienteRemover)) {
-				Logger.logar(
-						"Remover " + sessaoClienteRemover.getNomeJogador());
+				if (controlePaddock.removerCliente(sessaoClienteRemover)) {
+					Logger.logar(
+							"Remover " + sessaoClienteRemover.getNomeJogador());
+				}
 			}
 		}
 	}

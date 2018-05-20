@@ -2980,12 +2980,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		return (Volta) ordenaVoltas.get(0);
 	}
 
-	public void abandonar() {
-		setDesqualificado(true);
-		carro.abandonar();
-
-	}
-
 	public Volta getMelhorVolta() {
 		return melhorVolta;
 	}

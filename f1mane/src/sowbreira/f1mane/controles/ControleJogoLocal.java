@@ -788,7 +788,7 @@ public class ControleJogoLocal extends ControleRecursos
 	 */
 	public void abandonar() {
 		if (pilotoJogador != null) {
-			pilotoJogador.abandonar();
+			pilotoJogador.getCarro().setDanificado(Carro.ABANDONOU, this);
 		}
 	}
 
@@ -1252,7 +1252,6 @@ public class ControleJogoLocal extends ControleRecursos
 			piloto = pilotos.get(pilotos.size() - (++i));
 		}
 		piloto.getCarro().setDanificado(Carro.BATEU_FORTE, this);
-		piloto.setDesqualificado(true);
 		controleCorrida.safetyCarNaPista(piloto);
 	}
 

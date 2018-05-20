@@ -305,7 +305,6 @@ public class ControleCorrida {
 				};
 				Thread thread = new Thread(runnable);
 				thread.start();
-				piloto.setDesqualificado(true);
 				controleSafetyCar.safetyCarNaPista(piloto);
 				if (fatorAcidente < 0.9) {
 					fatorAcidente += 0.1;
