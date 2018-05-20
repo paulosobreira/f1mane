@@ -278,7 +278,7 @@ public class CarregadorRecursos {
 				"src/sowbreira/f1mane/recursos/carlist.txt");
 		for (Iterator iterator = carList.iterator(); iterator.hasNext();) {
 			String carro = (String) iterator.next();
-			StringBuffer nCarro = new StringBuffer();
+			StringBuilder nCarro = new StringBuilder();
 			for (int i = 0; i < carro.length(); i++) {
 				if (carro.charAt(i) == '\\') {
 					nCarro.append('/');
