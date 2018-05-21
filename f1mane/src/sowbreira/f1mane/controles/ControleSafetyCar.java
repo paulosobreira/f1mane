@@ -55,14 +55,14 @@ public class ControleSafetyCar {
 			long diffIndex = (indexNafrente - index);
 			long max = 150;
 			if (safetyCar.isVaiProBox()) {
-				max = 400;
+				max = 300;
 			}
 			ganho = limitaGanho(ganho, diffIndex, max);
 		}
 		if (ganho > 40) {
 			ganho = 40;
 		}
-		if (ganho < 15 && piloto.getDiferencaParaProximo() > 50) {
+		if (ganho < 15 && piloto.getDiferencaParaProximo() > 200) {
 			ganho = 15;
 		}
 		if (piloto.getTracado() == 4) {

@@ -122,7 +122,7 @@ public class CarregadorRecursos {
 		return temporadas;
 	}
 
-	public static URL carregarImagem(String imagem) {
+	public static URL carregarImagemResource(String imagem) {
 		return CarregadorRecursos.class.getResource(imagem);
 	}
 
@@ -670,9 +670,11 @@ public class CarregadorRecursos {
 					bufferImages.put(file, bufferedImage);
 				}
 			} catch (Exception e) {
-				Logger.logarExept(new Exception(
-						" carregaImagem : " + file + " cahce " + cache));
-				Logger.logarExept(e);
+				if (Logger.ativo) {
+					Logger.logarExept(new Exception(
+							" carregaImagem : " + file + " cahce " + cache));
+					Logger.logarExept(e);
+				}
 			}
 		}
 		return bufferedImage;

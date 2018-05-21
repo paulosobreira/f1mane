@@ -1346,7 +1346,7 @@ public class GerenciadorVisual {
 			});
 			Clima clima = (Clima) comboBoxClimaInicial.getSelectedItem();
 			ImageIcon icon = new ImageIcon(CarregadorRecursos
-					.carregarImagem("clima/" + clima.getClima()));
+					.carregarImagemResource("clima/" + clima.getClima()));
 			painelJogSel.add(new JLabel(icon));
 
 			JTextField nomeJogador = new JTextField();
