@@ -474,8 +474,9 @@ public class Carro implements Serializable {
 			if (getPiloto().isJogadorHumano()
 					&& (temperaturaMotor >= tempMax - 6
 							&& temperaturaMotor <= tempMax - 5)) {
-				controleJogo.infoPrioritaria(Html.laranja(
-						Lang.msg("temperatura", new String[]{getPiloto().nomeJogadorFormatado(),
+				controleJogo.infoPrioritaria(Html.laranja(Lang.msg(
+						"temperatura",
+						new String[]{getPiloto().nomeJogadorFormatado(),
 								Html.txtRedBold(getPiloto().getNome())})));
 			}
 		}
@@ -647,8 +648,7 @@ public class Carro implements Serializable {
 		motor -= desg;
 
 		if (porcentagemDesgasteMotor < 0) {
-			piloto.setDesqualificado(true);
-			setDanificado(Carro.EXPLODIU_MOTOR);
+			setDanificado(Carro.EXPLODIU_MOTOR, controleJogo);
 			controleJogo
 					.infoPrioritaria(Html.vermelho(Lang.msg("042", new String[]{
 							piloto.nomeJogadorFormatado(), piloto.getNome()})));
@@ -686,8 +686,7 @@ public class Carro implements Serializable {
 
 		if (percent < 0) {
 			combustivel = 0;
-			setDanificado(PANE_SECA);
-			getPiloto().setDesqualificado(true);
+			setDanificado(PANE_SECA, controleJogo);
 			paneSeca = true;
 			controleJogo.infoPrioritaria(Html
 					.txtRedBold(getPiloto().getNome() + " " + Lang.msg("118")));
@@ -807,7 +806,7 @@ public class Carro implements Serializable {
 
 		pneus -= valDesgaste;
 		if ((pneus < 0) && !verificaDano()) {
-			setDanificado(PNEU_FURADO);
+			setDanificado(PNEU_FURADO, controleJogo);
 			pneus = -1;
 			controleJogo
 					.infoPrioritaria(
@@ -1039,7 +1038,7 @@ public class Carro implements Serializable {
 			valDesgaste *= 0.5;
 		}
 		if (porcentPneus < -5) {
-			getPiloto().setDesqualificado(true);
+			setDanificado(Carro.ABANDONOU, controleJogo);
 			setRecolhido(true);
 			controleJogo
 					.infoPrioritaria(
@@ -1069,8 +1068,14 @@ public class Carro implements Serializable {
 		if (getPiloto().isJogadorHumano() && !controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isChovendo() && pneuAquecido && !msgPneu) {
 			msgPneu = true;
-			controleJogo.info(Html.laranja(Lang.msg("msgpneus",
-					new String[]{getPiloto().nomeJogadorFormatado(), getPiloto().getNome()})));
+			controleJogo
+					.info(Html
+							.laranja(
+									Lang.msg("msgpneus",
+											new String[]{
+													getPiloto()
+															.nomeJogadorFormatado(),
+													getPiloto().getNome()})));
 		}
 	}
 
@@ -1099,7 +1104,7 @@ public class Carro implements Serializable {
 		return danificado;
 	}
 
-	public void setDanificado(String danificado) {
+	public void setDanificado(String danificado, InterfaceJogo interfaceJogo) {
 		if (piloto.isBox()) {
 			piloto.setBox(true);
 		}
@@ -1113,19 +1118,20 @@ public class Carro implements Serializable {
 		if (ABANDONOU.equals(danificado) || BATEU_FORTE.equals(danificado)
 				|| PANE_SECA.equals(danificado)
 				|| EXPLODIU_MOTOR.equals(danificado)) {
-			getPiloto().setDesqualificado(true);
-			getPiloto().setPtosPista(getPiloto().getPtosPista() / 2);
+			if (interfaceJogo != null) {
+				interfaceJogo.desqualificaPiloto(getPiloto());
+			}
+			if (ABANDONOU.equals(danificado)
+					|| EXPLODIU_MOTOR.equals(danificado)
+					|| PANE_SECA.equals(danificado)) {
+				setRecolhido(true);
+			}
 		}
 
 	}
 
 	public boolean verificaDano() {
 		return ((danificado == null) ? false : true);
-	}
-
-	public void abandonar() {
-		danificado = ABANDONOU;
-
 	}
 
 	public void setTipoPneu(String tipoPneu) {

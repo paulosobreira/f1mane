@@ -42,7 +42,6 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.CircuitosDefauts;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
-import sun.nio.cs.StreamDecoder;
 
 public class CarregadorRecursos {
 	private static HashMap<String, String> temporadas;

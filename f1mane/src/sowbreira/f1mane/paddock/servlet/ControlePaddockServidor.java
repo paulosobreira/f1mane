@@ -697,8 +697,8 @@ public class ControlePaddockServidor {
 		String chave = String.valueOf(System.currentTimeMillis());
 	}
 
-	public void removerCliente(SessaoCliente sessaoCliente) {
-		controleJogosServer.removerCliente(sessaoCliente);
+	public boolean removerCliente(SessaoCliente sessaoCliente) {
+		return controleJogosServer.removerCliente(sessaoCliente);
 	}
 
 	public void removerSessao(SessaoCliente sessaoCliente) {

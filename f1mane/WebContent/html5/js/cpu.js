@@ -121,7 +121,7 @@ function cpu_dadosParciais() {
 			pilotosFaiscaMap.set(piloto.idPiloto, 15);
 		} else if (status.startsWith("T")) {
 			pilotosTravadaMap.set(piloto.idPiloto, true);
-			var no = mapaIdNosSuave.get(piloto.idPiloto);
+			var no = mapaIdPilotosNosSuave.get(piloto.idPiloto);
 			if (no == null) {
 				no = mapaIdNos.get(piloto.idNo);
 			}

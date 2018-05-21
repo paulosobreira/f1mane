@@ -1400,4 +1400,10 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		
 	}
 
+	@Override
+	public void desqualificaPiloto(Piloto piloto) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

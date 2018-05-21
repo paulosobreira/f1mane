@@ -676,7 +676,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setDesqualificado(boolean desqualificado) {
-		setPosicaoBandeirada(100);
 		this.desqualificado = desqualificado;
 	}
 
@@ -2979,12 +2978,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		});
 
 		return (Volta) ordenaVoltas.get(0);
-	}
-
-	public void abandonar() {
-		setDesqualificado(true);
-		carro.abandonar();
-
 	}
 
 	public Volta getMelhorVolta() {

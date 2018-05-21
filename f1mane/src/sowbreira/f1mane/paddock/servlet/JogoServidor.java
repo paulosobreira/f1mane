@@ -544,9 +544,12 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void atulizaTabelaPosicoes() {
 	}
 
-	public void removerJogador(String token) {
+	public boolean removerJogador(String token) {
 		if (token == null) {
-			return;
+			return false;
+		}
+		if (!mapJogadoresOnline.containsKey(token)) {
+			return false;
 		}
 		List pilotos = getPilotos();
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
@@ -557,8 +560,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				piloto.setImgJogador(null);
 				piloto.setJogadorHumano(false);
 				mapJogadoresOnline.remove(token);
+				return true;
 			}
 		}
+		return false;
 
 	}
 

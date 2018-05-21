@@ -358,7 +358,7 @@ public class ControleBox {
 						String.valueOf(controleJogo.getNumVoltaAtual())})));
 			}
 		}
-		carro.setDanificado(null);
+		carro.setDanificado(null,controleJogo);
 		if (carro.getDurabilidadeAereofolio() <= 0
 				|| InterfaceJogo.DIFICIL_NV != controleJogo.getNiveljogo()) {
 			carro.setDurabilidadeAereofolio(

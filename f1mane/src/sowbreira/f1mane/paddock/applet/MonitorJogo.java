@@ -386,7 +386,7 @@ public class MonitorJogo implements Runnable {
 						jogoCliente.travouRodas(travadaRoda);
 					} else if ("A".equals(statusPilotos)) {
 						piloto.getCarro()
-								.setDanificado(Carro.PERDEU_AEREOFOLIO);;
+								.setDanificado(Carro.PERDEU_AEREOFOLIO,null);
 						piloto.getCarro().setDurabilidadeAereofolio(0);
 					} else if ("R".equals(statusPilotos)) {
 						piloto.getCarro().setRecolhido(true);
@@ -578,7 +578,7 @@ public class MonitorJogo implements Runnable {
 				} else {
 					piloto.setJogadorHumano(false);
 				}
-				piloto.getCarro().setDanificado(dadosParciais.dano);
+				piloto.getCarro().setDanificado(dadosParciais.dano,null);
 				if (!jogoCliente.isSafetyCarNaPista()
 						&& piloto.isDesqualificado()) {
 					piloto.getCarro().setRecolhido(true);
