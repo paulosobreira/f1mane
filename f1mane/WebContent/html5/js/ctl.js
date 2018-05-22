@@ -189,6 +189,8 @@ function ctl_desenhaControles() {
 		if (controle.tipo == 'Drs' && dadosJogo.drs
 				&& dadosParciais.asa == 'MENOS_ASA') {
 			cor = '#00ff00';
+		}else if (controle.tipo == 'Drs' && dadosParciais.podeUsarDRS && pisca) {
+			cor = '#00ff00';
 		}
 
 		if (controle.tipo == 'Pneu'
