@@ -391,6 +391,9 @@ public class ControleJogosServer {
 		if (sessaoCliente == null) {
 			return null;
 		}
+		if (sessaoCliente.getIdPilotoAtual() == null) {
+			return null;
+		}
 		Piloto acharPiloto = null;
 		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
 				.iterator(); iterator.hasNext();) {
@@ -398,7 +401,8 @@ public class ControleJogosServer {
 			List piList = jogoServidor.getPilotos();
 			for (Iterator iter = piList.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
-				if (sessaoCliente.getIdPilotoAtual() == piloto.getId()) {
+				if (sessaoCliente.getIdPilotoAtual().intValue() == piloto
+						.getId()) {
 					acharPiloto = piloto;
 					break;
 				}
@@ -699,7 +703,7 @@ public class ControleJogosServer {
 		if (jogoServidor == null) {
 			return null;
 		}
-		if(!jogoServidor.getMapJogadoresOnline().containsKey(tokenJogador)){
+		if (!jogoServidor.getMapJogadoresOnline().containsKey(tokenJogador)) {
 			return null;
 		}
 		DadosParciais dadosParciais = new DadosParciais();
@@ -863,10 +867,8 @@ public class ControleJogosServer {
 			SessaoCliente element = iter.next();
 			JogoServidor jogoServidor = (JogoServidor) mapaJogosCriados
 					.get(element);
-			if(jogoServidor.removerJogador(sessaoCliente.getToken())){
-				sessaoCliente.setIdPilotoAtual(0);
-				sessaoCliente.setJogoAtual(null);
-				sessaoCliente.setPilotoAtual(null);
+			if (jogoServidor.removerJogador(sessaoCliente.getToken())) {
+				sessaoCliente.limpaSelecao();
 				removeu = true;
 			}
 		}

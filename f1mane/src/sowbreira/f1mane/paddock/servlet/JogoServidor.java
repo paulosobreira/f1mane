@@ -500,12 +500,21 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void exibirResultadoFinal() {
 		controleCorrida.pararThreads();
 		Thread timer = new Thread(new Runnable() {
-
 			public void run() {
 				try {
 					setEstado(Comandos.MOSTRA_RESULTADO_FINAL);
 					tempoFim = System.currentTimeMillis();
 					try {
+						for (Iterator iter = mapJogadoresOnline.keySet()
+								.iterator(); iter.hasNext();) {
+							String key = (String) iter.next();
+							SrvPaddockPack obterDadosToken = controleJogosServer
+									.obterDadosToken(key);
+							if (obterDadosToken != null) {
+								obterDadosToken.getSessaoCliente()
+										.limpaSelecao();
+							}
+						}
 						controleClassificacao.processaCorrida(tempoInicio,
 								tempoFim, mapVoltasJogadoresOnline, pilotos,
 								dadosCriarJogo);

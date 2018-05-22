@@ -493,11 +493,11 @@ function ctl_desenhaInfoCarros() {
 		var ptsFrente = noFrente.index;  
 		var ptsAtras = noAtras.index;
 		var pSelPts = noPsel.index;
-		if(ptsFrente<ptsAtras || ptsFrente<pSelPts){
-			ptsFrente += circuito.pistaFull.length;
-		}
 		if(pSelPts<ptsAtras){
 			pSelPts += circuito.pistaFull.length;
+		}
+		if(ptsFrente<ptsAtras || ptsFrente<pSelPts){
+			ptsFrente += circuito.pistaFull.length;
 		}
 		var diffFrente = ptsFrente - pSelPts;
 		var diffAtras = pSelPts - ptsAtras;

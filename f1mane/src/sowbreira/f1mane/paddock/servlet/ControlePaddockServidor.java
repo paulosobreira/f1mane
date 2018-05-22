@@ -562,7 +562,7 @@ public class ControlePaddockServidor {
 
 	public SessaoCliente obterSessaoPorToken(String token) {
 		try {
-			if (token == null) {
+			if (Util.isNullOrEmpty(token)) {
 				return null;
 			}
 			for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
@@ -772,9 +772,7 @@ public class ControlePaddockServidor {
 
 	public void sairJogoToken(String nomeJogo, String token, SessaoCliente sessaoCliente) {
 		controleJogosServer.sairJogoToken(nomeJogo, token);
-		sessaoCliente.setJogoAtual(null);
-		sessaoCliente.setPilotoAtual(null);
-		sessaoCliente.setIdPilotoAtual(0);
+		sessaoCliente.limpaSelecao();
 	}
 
 	public SrvPaddockPack obterDadosToken(String token) {

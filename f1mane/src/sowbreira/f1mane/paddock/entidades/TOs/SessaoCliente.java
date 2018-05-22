@@ -31,7 +31,7 @@ public class SessaoCliente implements Serializable {
 
 	private String pilotoAtual;
 
-	private int idPilotoAtual;
+	private Integer idPilotoAtual;
 
 	private boolean guest;
 
@@ -113,11 +113,11 @@ public class SessaoCliente implements Serializable {
 		this.guest = guest;
 	}
 
-	public int getIdPilotoAtual() {
+	public Integer getIdPilotoAtual() {
 		return idPilotoAtual;
 	}
 
-	public void setIdPilotoAtual(int idPilotoAtual) {
+	public void setIdPilotoAtual(Integer idPilotoAtual) {
 		this.idPilotoAtual = idPilotoAtual;
 	}
 
@@ -143,6 +143,12 @@ public class SessaoCliente implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public void limpaSelecao() {
+		setIdPilotoAtual(null);
+		setJogoAtual(null);
+		setPilotoAtual(null);
 	}
 
 }
