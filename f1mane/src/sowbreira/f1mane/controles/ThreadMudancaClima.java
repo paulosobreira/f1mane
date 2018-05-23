@@ -35,9 +35,6 @@ public class ThreadMudancaClima extends Thread {
 					|| Clima.CHUVA.equals(controleClima.getClima())) {
 
 				controleClima.intervaloNublado();
-				if(Clima.CHUVA.equals(controleClima.getClima())){
-					controleClima.mudarTipoPneuBox(Carro.TIPO_PNEU_MOLE);	
-				}
 
 			} else if (Clima.NUBLADO.equals(controleClima.getClima())) {
 				if (Math.random() > controleClima.getControleJogo()
@@ -47,7 +44,6 @@ public class ThreadMudancaClima extends Thread {
 
 					if (controleClima.verificaPossibilidadeChoverNaPista()) {
 						controleClima.intervaloChuva();
-						controleClima.mudarTipoPneuBox(Carro.TIPO_PNEU_CHUVA);
 					} else {
 						controleClima.intervaloSol();
 					}
