@@ -360,7 +360,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				}
 				if (piloto.isJogadorHumano() && mapJogadoresOnline
 						.get(piloto.getTokenJogador()) == null) {
-					piloto.setNomeJogador("IA");
+					piloto.setNomeJogador(null);
 					piloto.setImgJogador(null);
 					piloto.setJogadorHumano(false);
 				}
@@ -405,7 +405,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
 				.get(piloto.getTokenJogador());
 		if (dadosParticiparJogo == null) {
-			piloto.setNomeJogador("IA");
+			piloto.setNomeJogador(null);
 			piloto.setTokenJogador(null);
 			piloto.setJogadorHumano(false);
 			return Carro.TIPO_PNEU_DURO;
@@ -417,7 +417,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
 				.get(piloto.getTokenJogador());
 		if (dadosParticiparJogo == null) {
-			piloto.setNomeJogador("IA");
+			piloto.setNomeJogador(null);
 			piloto.setJogadorHumano(false);
 			return Carro.ASA_NORMAL;
 		}
@@ -428,7 +428,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
 				.get(piloto.getTokenJogador());
 		if (dadosParticiparJogo == null) {
-			piloto.setNomeJogador("IA");
+			piloto.setNomeJogador(null);
 			piloto.setTokenJogador(null);
 			piloto.setJogadorHumano(false);
 			return new Integer(100);
