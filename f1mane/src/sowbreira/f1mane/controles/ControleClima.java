@@ -124,11 +124,14 @@ public class ControleClima {
 		if (Clima.SOL.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("004")));
 			Logger.logar("SOL");
+			mudarTipoPneuBox(Carro.TIPO_PNEU_MOLE);
 		} else if (Clima.NUBLADO.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("005")));
 			Logger.logar("NUBLADO");
+			mudarTipoPneuBox(Carro.TIPO_PNEU_MOLE);
 		} else if (Clima.CHUVA.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("006")));
+			mudarTipoPneuBox(Carro.TIPO_PNEU_CHUVA);
 			Logger.logar("CHUVA");
 		}
 		if (controleJogo.getNiveljogo() != InterfaceJogo.DIFICIL_NV)
