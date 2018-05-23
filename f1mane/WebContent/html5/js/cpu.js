@@ -75,6 +75,7 @@ function cpu_main() {
 	}
 }
 
+
 function cpu_dadosParciaisAnterior() {
 	if (!dadosParciais) {
 		return;

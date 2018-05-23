@@ -506,7 +506,9 @@ public class ControleJogosServer {
 
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
 			String giro) {
-		// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+		if(Logger.ativo){
+			//obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+		}
 		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
 			return null;
@@ -519,7 +521,9 @@ public class ControleJogosServer {
 
 	public Boolean mudarAgressividadePiloto(SessaoCliente sessaoCliente,
 			String idPiloto, String agressividade) {
-		// obterJogoPorSessaoCliente(sessaoCliente).climaLimpo();
+		if(Logger.ativo){
+			//obterJogoPorSessaoCliente(sessaoCliente).climaLimpo();
+		}
 		if (!Piloto.LENTO.equals(agressividade)
 				&& !Piloto.AGRESSIVO.equals(agressividade)
 				&& !Piloto.NORMAL.equals(agressividade)) {

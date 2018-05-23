@@ -190,7 +190,7 @@ function ctl_desenhaControles() {
 				&& dadosParciais.asa == 'MENOS_ASA') {
 			cor = '#00ff00';
 		}else if (controle.tipo == 'Drs' && dadosParciais.podeUsarDRS && pisca) {
-			cor = '#00ff00';
+			cor = '#ffff00';
 		}
 
 		if (controle.tipo == 'Pneu'
@@ -213,6 +213,12 @@ function ctl_desenhaControles() {
 		}
 
 		maneContext.font = '30px sans-serif';
+		var ajusteAluraText = 10;
+		if (controle.tipo == 'perguntaSair') {
+			maneContext.font = '14px sans-serif';
+			cor = '#ff0000';
+			ajusteAluraText = 5;
+		}
 		maneContext.fillStyle = "black"
 	    var verImg = cor != controle.cor || (controle.tipo != 'controlePiloto' && controle.tipo != 'controleMotor');				
 		if (controle.img && verImg) {
@@ -249,10 +255,10 @@ function ctl_desenhaControles() {
 			if (controle.centralizaTexto) {
 				maneContext.fillText(controle.exibir, controle.x
 						+ (controle.width / 2) - 10, controle.y
-						+ (controle.height / 2) + 10);
+						+ (controle.height / 2) + ajusteAluraText);
 			} else {
 				maneContext.fillText(controle.exibir, controle.x + 5,
-						controle.y + (controle.height / 2) + 10);
+						controle.y + (controle.height / 2) + ajusteAluraText);
 			}
 		}
 		maneContext.closePath();
@@ -730,6 +736,10 @@ function ctl_desenhaInfoDireita() {
 
 	var x = maneCanvas.width - 120;
 	var y = 10;
+	
+	if(dadosParciais.box){
+		y = 30;
+	}
 
 	if (dadosParciais.melhorVolta && (altura > largura || !alternador)) {
 		maneContext.fillStyle = corFundo
@@ -1393,12 +1403,12 @@ function ctl_gerarControles() {
 		exibir : lang_text('sairJogo'),
 		tipo : 'perguntaSair',
 		centralizaTexto : false,
-		larguraTexto : true,
-		width : 150,
-		height : 40,
-		y : 210,
-		evalX : '(maneCanvas.width/2 - 80);',
-		x : 0
+		larguraTexto : false,
+		width : 100,
+		height : 20,
+		y : 5,
+		evalX : '(maneCanvas.width - 110);',
+		x : 0		
 	});	
 	controles.push({
 		cor : corBabaca,

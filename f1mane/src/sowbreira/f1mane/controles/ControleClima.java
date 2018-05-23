@@ -1,8 +1,13 @@
 package sowbreira.f1mane.controles;
 
+import java.util.Iterator;
+import java.util.List;
+
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -181,6 +186,7 @@ public class ControleClima {
 		}
 		if (Clima.CHUVA.equals(getClima())) {
 			setClima(Clima.NUBLADO);
+			mudarTipoPneuBox(Carro.TIPO_PNEU_MOLE);
 		}
 
 	}
@@ -188,10 +194,20 @@ public class ControleClima {
 	public void climaChuvoso() {
 		if (Clima.NUBLADO.equals(getClima())) {
 			setClima(Clima.CHUVA);
+			mudarTipoPneuBox(Carro.TIPO_PNEU_CHUVA);
 		}
 		if (Clima.SOL.equals(getClima())) {
 			setClima(Clima.NUBLADO);
 		}
 	}
+
+	public void mudarTipoPneuBox(String tipo) {
+		List<Piloto> pilotos = controleJogo.getPilotos();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			piloto.setTipoPneuBox(tipo);
+		}
+	}
+
 
 }
