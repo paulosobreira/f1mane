@@ -23,6 +23,7 @@ public class Constantes {
 	public static final Integer SEGUNDOS_PARA_INICIAR_CORRRIDA = Logger.ativo
 			? 20
 			: 90;
+	public static final double VELOCIDADE_JOGO = 1.5;
 	public static int TAMANHO_RETA_DRS = 1500;
 
 	private Constantes() {

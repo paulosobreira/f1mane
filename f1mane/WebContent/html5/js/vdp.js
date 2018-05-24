@@ -561,7 +561,7 @@ function vdp_desenhaNomesCima() {
 		maneContext.fillRect(x - 5, y, laruraTxt, 20);
 		maneContext.fillStyle = "black"
 		maneContext.fillText(nmPiloto, x, y + 15);
-		if (pilotosBandeirada.get(piloto.idPiloto)) {
+		if (pilotosBandeirada.get(piloto.idPiloto)!=null) {
 			maneContext.drawImage(bandeirada, x + 40, y-5);
 		}
 		maneContext.closePath();

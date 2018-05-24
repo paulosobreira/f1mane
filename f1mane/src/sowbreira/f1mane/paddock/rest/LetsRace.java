@@ -439,11 +439,14 @@ public class LetsRace {
 			String idPiloto, String numVoltas, String tipoPneu,
 			String combustivel, String asa)
 			throws ClassNotFoundException, IOException {
-		numVoltas = "1";
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t" + temporada);
+		if (!Util.isNullOrEmpty(numVoltas)) {
+			dadosCriarJogo
+					.setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
+		}
 		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
-		dadosCriarJogo.setDiffultrapassagem(250);
+		dadosCriarJogo.setDiffultrapassagem(Util.intervalo(200, 500));
 		Map<String, String> carregarCircuitos = ControleRecursos
 				.carregarCircuitos();
 		String pista = "";
@@ -460,10 +463,6 @@ public class LetsRace {
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setAsa(asa);
 		dadosCriarJogo.setTpPnueu(tipoPneu);
-		if (!Util.isNullOrEmpty(numVoltas)) {
-			dadosCriarJogo
-					.setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
-		}
 		Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);
 		if (Math.random() < (circuitoObj.getProbalidadeChuva() / 100.0)) {
 			dadosCriarJogo.setClima(Clima.NUBLADO);

@@ -506,8 +506,8 @@ public class ControleJogosServer {
 
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
 			String giro) {
-		if(Logger.ativo){
-			//obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+		if (Logger.ativo) {
+			// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
 		}
 		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
@@ -521,8 +521,8 @@ public class ControleJogosServer {
 
 	public Boolean mudarAgressividadePiloto(SessaoCliente sessaoCliente,
 			String idPiloto, String agressividade) {
-		if(Logger.ativo){
-			//obterJogoPorSessaoCliente(sessaoCliente).climaLimpo();
+		if (Logger.ativo) {
+			// obterJogoPorSessaoCliente(sessaoCliente).climaLimpo();
 		}
 		if (!Piloto.LENTO.equals(agressividade)
 				&& !Piloto.AGRESSIVO.equals(agressividade)
@@ -871,6 +871,9 @@ public class ControleJogosServer {
 			SessaoCliente element = iter.next();
 			JogoServidor jogoServidor = (JogoServidor) mapaJogosCriados
 					.get(element);
+			if (jogoServidor == null || jogoServidor.isCorridaTerminada()) {
+				continue;
+			}
 			if (jogoServidor.removerJogador(sessaoCliente.getToken())) {
 				sessaoCliente.limpaSelecao();
 				removeu = true;

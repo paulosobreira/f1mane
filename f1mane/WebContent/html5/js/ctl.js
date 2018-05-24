@@ -814,7 +814,11 @@ function ctl_desenhaInfoDireita() {
 		maneContext.fillRect(x + 5, y, larg, 20);
 		maneContext.font = '14px sans-serif';
 		maneContext.fillStyle = "black"
-		maneContext.fillText('1 ' + nomePiloto, x + 10, y + 15);
+		var posicao = pilotosBandeirada.get(piloto.idPiloto);
+		if(posicao==null){
+			posicao = '1';
+		}
+		maneContext.fillText(posicao+' ' + nomePiloto, x + 10, y + 15);
 		if (idPilotoSelecionado == piloto.idPiloto) {
 			maneContext.strokeStyle = '#00ff00';
 			maneContext.rect(x + 5, y, larg, 20);
@@ -851,7 +855,11 @@ function ctl_desenhaInfoDireita() {
 			maneContext.fillRect(x + 5, y, larg, 20);
 			maneContext.font = '14px sans-serif';
 			maneContext.fillStyle = "black"
-			maneContext.fillText((i + 1) + ' ' + nomePiloto, x + 10, y + 15);
+			var posicao = pilotosBandeirada.get(piloto.idPiloto);
+			if(posicao==null){
+				posicao = (i + 1);
+			}
+			maneContext.fillText(posicao + ' ' + nomePiloto, x + 10, y + 15);
 			if (idPilotoSelecionado == piloto.idPiloto) {
 				maneContext.strokeStyle = '#00ff00';
 				maneContext.rect(x + 5, y, larg, 20);

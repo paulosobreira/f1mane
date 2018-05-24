@@ -138,11 +138,13 @@ function cpu_dadosParciais() {
 			pilotosTravadaMap.set(piloto.idPiloto, true);
 		} else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
-		} else if (status.startsWith("B")) {
-			pilotosBandeirada.set(piloto.idPiloto, true);
+		} else if (status.startsWith("B") && pilotosBandeirada.get(piloto.idPiloto)==null) {
+			pilotosBandeirada.set(piloto.idPiloto, (i+1));
 		} else if (status.startsWith("BA")) {
 			pilotosAereofolioMap.set(piloto.idPiloto, true);
-			pilotosBandeirada.set(piloto.idPiloto, true);
+			if(pilotosBandeirada.get(piloto.idPiloto)==null){
+				pilotosBandeirada.set(piloto.idPiloto, (i+1));
+			}
 		}
 	}
 	if(contadorJogadores != contadorJogadoresLocal){

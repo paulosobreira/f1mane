@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -33,7 +34,7 @@ public class ControleCorrida {
 	private ControleClima controleClima;
 	private ControleQualificacao controleQualificacao;
 	private double fatorUtrapassagem;
-	private double velocidadeJogo;
+	private double velocidadeJogo = Constantes.VELOCIDADE_JOGO;
 	private boolean corridaIniciada;
 	private double fatorAcidente = Util.intervalo(0.3, 0.9);
 	private long pontosPilotoLargada;
@@ -56,14 +57,12 @@ public class ControleCorrida {
 	public ControleCorrida(ControleJogoLocal jogo, int qtdeVoltas,
 			double fatorUtr) throws Exception {
 		controleJogo = jogo;
-		// qtdeVoltas = 1;
 		this.fatorUtrapassagem = fatorUtr / 1000;
 		if (this.fatorUtrapassagem > 0.5) {
 			this.fatorUtrapassagem = 0.5;
 		}
 		this.fatorUtrapassagem = 1.0 - this.fatorUtrapassagem;
-		this.velocidadeJogo = 1.5;
-		int valCalc = (qtdeVoltas < 12 ? 12 : qtdeVoltas);
+		int valCalc = (qtdeVoltas < 14 ? 14 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
 		definirDurabilidadeMotores();
 		qtdeTotalVoltas = qtdeVoltas;
@@ -289,7 +288,8 @@ public class ControleCorrida {
 					&& !controleJogo.verificaEntradaBox(piloto)
 					&& !controleJogo.verificaSaidaBox(piloto)
 					&& piloto.getStress() > limiteStress) {
-				piloto.getCarro().setDanificado(Carro.BATEU_FORTE,controleJogo);
+				piloto.getCarro().setDanificado(Carro.BATEU_FORTE,
+						controleJogo);
 				Logger.logar(piloto.getNome() + " BATEU_FORTE");
 				Runnable runnable = new Runnable() {
 					@Override
@@ -321,10 +321,14 @@ public class ControleCorrida {
 	}
 
 	private void perdeuAereofolio(Piloto piloto, Piloto pilotoNaFrente) {
-		piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,controleJogo);
+		piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO, controleJogo);
 		Logger.logar(piloto.getNome() + " PERDEU_AEREOFOLIO");
-		controleJogo.infoPrioritaria(Html.negrito(Html.vermelho(Lang.msg("017",
-				new String[]{piloto.nomeJogadorFormatado(), piloto.getNome(), pilotoNaFrente.getNome()}))));
+		controleJogo
+				.infoPrioritaria(
+						Html.negrito(Html.vermelho(Lang.msg("017",
+								new String[]{piloto.nomeJogadorFormatado(),
+										piloto.getNome(),
+										pilotoNaFrente.getNome()}))));
 	}
 
 	private void verificaAcidenteJogadorHumano(Piloto piloto,
@@ -340,28 +344,27 @@ public class ControleCorrida {
 				if (controleJogo.verificaInfoRelevante(piloto)
 						|| controleJogo.verificaInfoRelevante(pilotoNaFrente)) {
 					controleJogo.infoPrioritaria(Html.vermelho(Lang.msg("109",
-							new String[]{piloto.nomeJogadorFormatado(), piloto.getNome(),
+							new String[]{piloto.nomeJogadorFormatado(),
+									piloto.getNome(),
 									pilotoNaFrente.getNome()})));
 				}
 			}
 		} else if ((noAtual.verificaCurvaAlta())
 				&& (piloto.getStress() > stress) && piloto.isAgressivo()) {
-			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,controleJogo);
-			controleJogo
-					.infoPrioritaria(
-							Lang.msg("015",
-									new String[]{piloto.nomeJogadorFormatado(),
-											Html.vermelho(piloto.getNome()),
-											pilotoNaFrente.getNome()}));
+			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
+					controleJogo);
+			controleJogo.infoPrioritaria(Lang.msg("015",
+					new String[]{piloto.nomeJogadorFormatado(),
+							Html.vermelho(piloto.getNome()),
+							pilotoNaFrente.getNome()}));
 		} else if ((noAtual.verificaCurvaBaixa())
 				&& (piloto.getStress() > stress)) {
-			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,controleJogo);
-			controleJogo
-					.infoPrioritaria(
-							Lang.msg("015",
-									new String[]{piloto.nomeJogadorFormatado(),
-											Html.vermelho(piloto.getNome()),
-											pilotoNaFrente.getNome()}));
+			piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
+					controleJogo);
+			controleJogo.infoPrioritaria(Lang.msg("015",
+					new String[]{piloto.nomeJogadorFormatado(),
+							Html.vermelho(piloto.getNome()),
+							pilotoNaFrente.getNome()}));
 		}
 	}
 
