@@ -14,6 +14,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
+import br.nnpe.Constantes;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Numero;
@@ -107,7 +108,7 @@ public class ControleClassificacao {
 	public void processaCorrida(long tempoInicio, long tempoFim,
 			Map mapVoltasJogadoresOnline, List pilotos,
 			DadosCriarJogo dadosCriarJogo) {
-		if (!controlePersistencia.isDatabase()) {
+		if (!Constantes.DATABASE) {
 			return;
 		}
 		Session session = controlePersistencia.getSession();

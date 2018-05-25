@@ -15,6 +15,7 @@ import javax.mail.internet.AddressException;
 
 import org.hibernate.Session;
 
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
@@ -138,6 +139,7 @@ public class ControlePaddockServidor {
 		return new MsgSrv(Lang.msg("209"));
 	}
 
+	@Deprecated
 	private Object resetaSenha(ClientPaddockPack clientPaddockPack) {
 		JogadorDadosSrv jogadorDadosSrv = null;
 		Session session = controlePersistencia.getSession();
@@ -191,6 +193,7 @@ public class ControlePaddockServidor {
 				Lang.msg("239", new String[]{jogadorDadosSrv.getEmail()}));
 	}
 
+	@Deprecated
 	private Object criarLogin(ClientPaddockPack clientPaddockPack) {
 		JogadorDadosSrv jogadorDadosSrv = null;
 		Session session = controlePersistencia.getSession();
@@ -596,10 +599,12 @@ public class ControlePaddockServidor {
 		return null;
 	}
 
+	@Deprecated
 	private Object criarSessao(ClientPaddockPack clientPaddockPack) {
 		return criarSessao(clientPaddockPack, null);
 	}
 
+	@Deprecated
 	private Object criarSessao(ClientPaddockPack clientPaddockPack,
 			String senha) {
 		Session session = controlePersistencia.getSession();
@@ -629,7 +634,7 @@ public class ControlePaddockServidor {
 			for (Iterator<SessaoCliente> iter = dadosPaddock.getClientes()
 					.iterator(); iter.hasNext();) {
 				SessaoCliente element = iter.next();
-				if (element.getToken().equals(jogadorDadosSrv.getToken())) {
+				if (element.getId().equals(jogadorDadosSrv.getIdGoogle())) {
 					sessaoCliente = element;
 					break;
 				}
@@ -687,7 +692,36 @@ public class ControlePaddockServidor {
 		dadosPaddock.add(sessaoCliente);
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setSessaoCliente(sessaoCliente);
+		salvarAcessoSessaoGoogle(sessaoCliente);
 		return srvPaddockPack;
+	}
+
+	private void salvarAcessoSessaoGoogle(SessaoCliente sessaoCliente) {
+		if (!Constantes.DATABASE) {
+			return;
+		}
+		JogadorDadosSrv jogadorDadosSrv = null;
+		Session session = controlePersistencia.getSession();
+		try {
+			jogadorDadosSrv = controlePersistencia.carregaDadosJogadorIdGoogle(
+					sessaoCliente.getId(), session);
+			if (jogadorDadosSrv == null) {
+				jogadorDadosSrv = new JogadorDadosSrv();
+				jogadorDadosSrv.setIdGoogle(sessaoCliente.getId());
+			}
+			jogadorDadosSrv.setNome(sessaoCliente.getNomeJogador());
+			jogadorDadosSrv.setEmail(sessaoCliente.getEmail());
+			jogadorDadosSrv.setImagemJogador(sessaoCliente.getImagemJogador());
+			jogadorDadosSrv.setUltimoLogon(sessaoCliente.getUlimaAtividade());
+			controlePersistencia.adicionarJogador(null, jogadorDadosSrv,
+					session);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		} finally {
+			if (session.isOpen())
+				session.close();
+		}
+
 	}
 
 	public static void main(String[] args) {
@@ -770,7 +804,8 @@ public class ControlePaddockServidor {
 				tokenJogador, idPiloto);
 	}
 
-	public void sairJogoToken(String nomeJogo, String token, SessaoCliente sessaoCliente) {
+	public void sairJogoToken(String nomeJogo, String token,
+			SessaoCliente sessaoCliente) {
 		controleJogosServer.sairJogoToken(nomeJogo, token);
 		sessaoCliente.limpaSelecao();
 	}

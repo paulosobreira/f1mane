@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.hibernate.Session;
 
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Piloto;
@@ -149,7 +150,7 @@ public class ControleCampeonatoServidor {
 			Map mapVoltasJogadoresOnline, List pilotos,
 			DadosCriarJogo dadosCriarJogo,
 			ControleClassificacao controleClassificacao) {
-		if (!controlePersistencia.isDatabase()) {
+		if (!Constantes.DATABASE) {
 			return;
 		}
 		String campString = dadosCriarJogo.getNomeCampeonato();

@@ -12,6 +12,9 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.datasource">java:comp/env/jdbc/MySQLDS</property>        
 	 -->
+	<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.datasource">java:comp/env/jdbc/MySQLDS</property>
+	
 	
 		<mapping
 			class="sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv" />

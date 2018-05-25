@@ -29,6 +29,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import br.nnpe.Constantes;
 import br.nnpe.Dia;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
@@ -56,10 +57,8 @@ public class ControlePersistencia {
 
 	private String webDir;
 
-	private boolean database;
-
 	public Session getSession() {
-		if(!isDatabase()){
+		if (!Constantes.DATABASE) {
 			return null;
 		}
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -82,7 +81,6 @@ public class ControlePersistencia {
 			Properties properties = new Properties();
 			properties.load(PaddockConstants.class
 					.getResourceAsStream("server.properties"));
-			database = "S".equals(properties.getProperty("database"));
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -294,6 +292,16 @@ public class ControlePersistencia {
 		return jogadorDadosSrv;
 	}
 
+	public JogadorDadosSrv carregaDadosJogadorIdGoogle(String idGoogle,
+			Session session) {
+		List jogador = session.createCriteria(JogadorDadosSrv.class)
+				.add(Restrictions.eq("idGoogle", idGoogle)).list();
+		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty()
+				? null
+				: jogador.get(0));
+		return jogadorDadosSrv;
+	}
+
 	public Set obterListaJogadores(Session session) {
 		Set nomes = new HashSet();
 		List jogador = session.createCriteria(JogadorDadosSrv.class).list();
@@ -317,6 +325,11 @@ public class ControlePersistencia {
 			nomes.add(corridasDadosSrv.getJogadorDadosSrv().getNome());
 		}
 		return nomes;
+	}
+
+	public void adicionarJogador(JogadorDadosSrv jogadorDadosSrv,
+			Session session) throws Exception {
+		adicionarJogador(null, jogadorDadosSrv, session);
 	}
 
 	public void adicionarJogador(String nome, JogadorDadosSrv jogadorDadosSrv,
@@ -476,7 +489,7 @@ public class ControlePersistencia {
 
 	public CarreiraDadosSrv carregaCarreiraJogador(String nomeJogador,
 			boolean vaiCliente, Session session) {
-		if(!isDatabase()){
+		if (!Constantes.DATABASE) {
 			return null;
 		}
 		List list = session.createCriteria(CarreiraDadosSrv.class)
@@ -560,14 +573,6 @@ public class ControlePersistencia {
 				.add(Restrictions.eq("jogadorDadosSrv", jogadorDadosSrv))
 				.list();
 		return campeonatos;
-	}
-
-	public boolean isDatabase() {
-		return database;
-	}
-
-	public void setDatabase(boolean database) {
-		this.database = database;
 	}
 
 }

@@ -21,8 +21,7 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 	@Column(name = "idGoogle", nullable = false, unique = true)
 	private String idGoogle;
 	private String nome;
-	private String token;
-	@Column(nullable = false, unique = true)
+	private String imagemJogador;
 	private String email;
 	private String senha;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "jogadorDadosSrv")
@@ -86,12 +85,12 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 		this.idGoogle = idGoogle;
 	}
 
-	public String getToken() {
-		return token;
+	public String getImagemJogador() {
+		return imagemJogador;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setImagemJogador(String imagemJogador) {
+		this.imagemJogador = imagemJogador;
 	}
 
 }

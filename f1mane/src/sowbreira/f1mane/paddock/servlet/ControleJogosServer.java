@@ -88,9 +88,8 @@ public class ControleJogosServer {
 		Session session = controlePersistencia.getSession();
 		try {
 
-			if (controlePersistencia.isDatabase()
-					&& !Util.isNullOrEmpty(clientPaddockPack
-							.getDadosJogoCriado().getNomeCampeonato())) {
+			if (Constantes.DATABASE && !Util.isNullOrEmpty(clientPaddockPack
+					.getDadosJogoCriado().getNomeCampeonato())) {
 				Campeonato campeonato = controlePersistencia.pesquisaCampeonato(
 						session, clientPaddockPack.getDadosJogoCriado()
 								.getNomeCampeonato(),
