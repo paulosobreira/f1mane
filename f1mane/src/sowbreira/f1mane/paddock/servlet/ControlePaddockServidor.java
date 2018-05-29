@@ -676,6 +676,7 @@ public class ControlePaddockServidor {
 			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
 			if (idGoogle.equals(sessaoCliente.getId())) {
 				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+				sessaoCliente.setNomeJogador(nome);
 				srvPaddockPack.setSessaoCliente(sessaoCliente);
 				return srvPaddockPack;
 			}
@@ -711,6 +712,7 @@ public class ControlePaddockServidor {
 			}
 			jogadorDadosSrv.setNome(sessaoCliente.getNomeJogador());
 			jogadorDadosSrv.setEmail(sessaoCliente.getEmail());
+			jogadorDadosSrv.setToken(sessaoCliente.getToken());
 			jogadorDadosSrv.setImagemJogador(sessaoCliente.getImagemJogador());
 			jogadorDadosSrv.setUltimoLogon(sessaoCliente.getUlimaAtividade());
 			controlePersistencia.adicionarJogador(null, jogadorDadosSrv,

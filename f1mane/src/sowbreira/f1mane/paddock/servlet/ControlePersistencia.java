@@ -282,10 +282,10 @@ public class ControlePersistencia {
 		return null;
 	}
 
-	public JogadorDadosSrv carregaDadosJogador(String nomeJogador,
+	public JogadorDadosSrv carregaDadosJogador(String tokenJogador,
 			Session session) {
 		List jogador = session.createCriteria(JogadorDadosSrv.class)
-				.add(Restrictions.eq("nome", nomeJogador)).list();
+				.add(Restrictions.eq("token", tokenJogador)).list();
 		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty()
 				? null
 				: jogador.get(0));

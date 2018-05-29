@@ -20,6 +20,7 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 
 	@Column(name = "idGoogle", nullable = false, unique = true)
 	private String idGoogle;
+	private String token;
 	private String nome;
 	private String imagemJogador;
 	private String email;
@@ -28,6 +29,14 @@ public class JogadorDadosSrv extends F1ManeDados implements Serializable {
 	private List<CorridasDadosSrv> corridas = new LinkedList<CorridasDadosSrv>();
 	private long ultimoLogon = 0;
 	private long ultimaRecuperacao = 0;
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	public String getEmail() {
 		return email;
