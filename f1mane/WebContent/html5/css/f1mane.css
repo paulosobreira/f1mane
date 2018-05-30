@@ -111,6 +111,14 @@
 	color: black;
 }
 
+.fontLarge{
+	font-size: large;
+}
+
+.textCenter{
+	text-align: center;
+}
+
 .voltarIndex{
     float: left;
     margin-top: 20px;

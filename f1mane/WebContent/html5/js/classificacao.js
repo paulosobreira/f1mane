@@ -1,17 +1,14 @@
 /**
- * Controle de menus
+ * Controle de classificacao
  */
-
-
 $('#162').html(lang_text('162'));
 $('#161').html(lang_text('161'));
 $('#165').html(lang_text('165'));
 
 listaCircuitos();
 
-
 $('#circuitoCarousel').on('slide.bs.carousel', function(event) {
-	circuitoSelecionado = $(event.relatedTarget).prop('circuito');
+	var circuitoSelecionado = $(event.relatedTarget).prop('circuito');
 	circuitoClassificacao(circuitoSelecionado);
 	$('#temporadaCarousel').carousel('pause');
 	$('#circuitoCarousel').carousel('pause');
@@ -34,10 +31,10 @@ function circuitoClassificacao(circuitoSelecionado) {
 			var pilotos = response;
 			$('#pilotos').find('tr').remove();
 			$.each(pilotos, function(i, val) {
-				var td1 = $('<td scope="row"/>');
-				var td2 = $('<td style="font-size: large;"/>');
+				var td1 = $('<td class="textCenter" scope="row"/>');
+				var td2 = $('<td class="fontLarge textCenter" />');
 				td2.append(pilotos[i].corridas);
-				var td3 = $('<td style="font-size: large;"/>');
+				var td3 = $('<td class="fontLarge textCenter" />');
 				td3.append(pilotos[i].pontos);
 				var tr = $('<tr/>');
 				var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
@@ -91,6 +88,7 @@ function listaCircuitos() {
 			});
 			$('#temporadaCarousel').carousel('pause');
 			$('#circuitoCarousel').carousel('pause');
+			circuitoClassificacao(circuito.arquivo);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);

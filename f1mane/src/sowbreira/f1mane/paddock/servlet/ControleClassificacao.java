@@ -204,14 +204,14 @@ public class ControleClassificacao {
 		} else {
 			double porcent = voltasConcluidas / numVoltas;
 			corridasDadosSrv.setPorcentConcluida((int) (porcent * 100));
-			int pontos = (int) (porcent * corridasDadosSrv.getPontos());
+			double pontos = Math.ceil(porcent * corridasDadosSrv.getPontos());
 			if (InterfaceJogo.FACIL.equals(corridasDadosSrv.getNivel())) {
 				pontos /= 2;
 			}
 			if (InterfaceJogo.DIFICIL.equals(corridasDadosSrv.getNivel())) {
 				pontos *= 2;
 			}
-			corridasDadosSrv.setPontos(pontos);
+			corridasDadosSrv.setPontos((int) pontos);
 
 		}
 	}
@@ -516,7 +516,7 @@ public class ControleClassificacao {
 					@Override
 					public int compare(DadosClassificacaoCircuito o1,
 							DadosClassificacaoCircuito o2) {
-						return o1.getPontos().compareTo(o2.getPontos());
+						return o2.getPontos().compareTo(o1.getPontos());
 					}
 				});
 		return classificacao;
