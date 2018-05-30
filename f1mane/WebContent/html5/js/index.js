@@ -40,10 +40,9 @@ if(plataforma!=null){
 
 plataforma =  localStorage.getItem('plataforma');
 
-$('#btnSair').hide();
 if(plataforma == "android"){
-	$('#btnSair').show();
-	$('#btnSair').bind("click", function() {
+	$('#voltar').show();
+	$('#voltar').unbind().bind("click", function() {
 		Android.exitApp();
 	});
 }
@@ -65,19 +64,27 @@ $('#btnJogar').html(lang_text('jogar'));
 $('#btnSobre').html(lang_text('sobre'));
 $('#btnControles').html(lang_text('verControles'));
 $('#btnIdioma').html(lang_text('linguagem'));
-$('#btnSair').html(lang_text('sair'));
+$('#btnClassificacao').html(lang_text('ranking'));
+
 
 $('#btnSobre').bind("click", function() {
 	$('#botoes').hide();
 	sobre();
 	$('#voltar').show();
+	$('#voltar').unbind().bind("click", function() {
+		$('.creditos').remove();
+		$('#botoes').show();
+		if(plataforma == "android"){
+			$('#voltar').unbind().bind("click", function() {
+				Android.exitApp();
+			});
+		}else{
+			$('#voltar').hide();
+		}
+	});
 });
 
-$('#voltar').bind("click", function() {
-	$('.creditos').remove();
-	$('#botoes').show();
-	$('#voltar').hide();
-});
+
 
 function dadosJogador() {
 	var urlServico = "/f1mane/rest/letsRace/dadosToken/";

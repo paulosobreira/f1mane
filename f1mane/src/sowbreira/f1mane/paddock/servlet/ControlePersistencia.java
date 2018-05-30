@@ -487,6 +487,23 @@ public class ControlePersistencia {
 		return corridas;
 	}
 
+	public List<CorridasDadosSrv> obterClassificacaoCircuito(String circuito,
+			Session session) {
+		if (!Constantes.DATABASE) {
+			return null;
+		}
+		Criteria criteria = session.createCriteria(CorridasDadosSrv.class)
+				.add(Restrictions.eq("circuito", circuito));
+		Dia hj = new Dia();
+		Dia ini = new Dia(1, hj.getMonth(), hj.getYear());
+		Dia fim = new Dia(1, hj.getMonth(), hj.getYear());
+		fim.advancedMonth();
+		criteria.add(Restrictions.ge("tempoFim", ini.toTimestamp().getTime()));
+		criteria.add(Restrictions.le("tempoFim", fim.toTimestamp().getTime()));
+		List corridas = criteria.list();
+		return corridas;
+	}
+
 	public CarreiraDadosSrv carregaCarreiraJogador(String nomeJogador,
 			boolean vaiCliente, Session session) {
 		if (!Constantes.DATABASE) {

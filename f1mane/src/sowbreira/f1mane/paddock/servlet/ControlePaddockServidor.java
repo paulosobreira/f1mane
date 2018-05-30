@@ -816,4 +816,8 @@ public class ControlePaddockServidor {
 		return controleJogosServer.obterDadosToken(token);
 	}
 
+	public List obterClassificacaoCircuito(String nomeCircuito) {
+		return controleClassificacao.obterClassificacaoCircuito(nomeCircuito);
+	}
+
 }

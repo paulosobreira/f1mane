@@ -104,7 +104,11 @@
 }
 
 .voltar{
-	margin-right: 20px;  color: darkgray;  font-size: 22px;
+	margin-right: 20px; font-size: 22px;
+}
+
+.black{
+	color: black;
 }
 
 .voltarIndex{

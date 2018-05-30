@@ -22,6 +22,7 @@ import br.nnpe.Util;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoCircuito;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
@@ -481,5 +482,43 @@ public class ControleClassificacao {
 				.carregaCarreiraJogador(nomeJogador, false,
 						controlePersistencia.getSession());
 		return carreiraDadosSrv;
+	}
+
+	public List obterClassificacaoCircuito(String nomeCircuito) {
+		Map<Long, DadosClassificacaoCircuito> mapa = new HashMap<>();
+		List<CorridasDadosSrv> corridas = controlePersistencia
+				.obterClassificacaoCircuito(nomeCircuito,
+						controlePersistencia.getSession());
+		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+			CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
+					.next();
+			DadosClassificacaoCircuito dadosClassificacaoCircuito = mapa
+					.get(corridasDadosSrv.getJogadorDadosSrv().getId());
+			if (dadosClassificacaoCircuito == null) {
+				dadosClassificacaoCircuito = new DadosClassificacaoCircuito();
+				dadosClassificacaoCircuito.setNome(
+						corridasDadosSrv.getJogadorDadosSrv().getNome());
+				dadosClassificacaoCircuito.setImagemJogador(corridasDadosSrv
+						.getJogadorDadosSrv().getImagemJogador());
+				mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(),
+						dadosClassificacaoCircuito);
+			}
+			dadosClassificacaoCircuito
+					.setCorridas(dadosClassificacaoCircuito.getCorridas() + 1);
+			dadosClassificacaoCircuito
+					.setPontos(dadosClassificacaoCircuito.getPontos()
+							+ corridasDadosSrv.getPontos());
+		}
+		List<DadosClassificacaoCircuito> classificacao = new ArrayList<DadosClassificacaoCircuito>(
+				mapa.values());
+		Collections.sort(classificacao,
+				new Comparator<DadosClassificacaoCircuito>() {
+					@Override
+					public int compare(DadosClassificacaoCircuito o1,
+							DadosClassificacaoCircuito o2) {
+						return o1.getPontos().compareTo(o2.getPontos());
+					}
+				});
+		return classificacao;
 	}
 }

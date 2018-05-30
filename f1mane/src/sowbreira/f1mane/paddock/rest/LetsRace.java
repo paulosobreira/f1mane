@@ -81,16 +81,16 @@ public class LetsRace {
 	}
 
 	@GET
-	@Path("/criarSessaoGoogleTeste")
+	@Path("/criarSessaoGoogleTeste/{idGoogle}/{nome}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response criarSessaoGoogle() {
+	public Response criarSessaoGoogle(@PathParam("idGoogle") String idGoogle,
+			@PathParam("nome") String nome) {
 		if (!Logger.ativo) {
 			return Response.status(400).entity("Nope")
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(200)
-				.entity(controlePaddock.criarSessaoGoogle("123",
-						"Paulo Sobreira",
+				.entity(controlePaddock.criarSessaoGoogle(idGoogle, nome,
 						"https://lh4.googleusercontent.com/-edNcQ95Ak5w/AAAAAAAAAAI/AAAAAAAABVE/4C3Yv5L5UDo/s96-c/photo.jpg",
 						"sowbreira@gmail.com"))
 				.build();
@@ -128,6 +128,18 @@ public class LetsRace {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		return Response.status(200).entity(circuito).build();
+	}
+
+	@GET
+	@Compress
+	@Path("/circuitoClassificacao/{arquivoCircuito}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response circuitoClassificacao(
+			@PathParam("arquivoCircuito") String arquivoCircuito) {
+		return Response.status(200)
+				.entity(controlePaddock.obterClassificacaoCircuito(
+						nomeArquivoCircuitoParaPista(arquivoCircuito)))
+				.build();
 	}
 
 	@GET
@@ -435,9 +447,9 @@ public class LetsRace {
 		}
 	}
 
-	private DadosCriarJogo gerarJogoLetsRace(String temporada, String circuito,
-			String idPiloto, String numVoltas, String tipoPneu,
-			String combustivel, String asa)
+	private DadosCriarJogo gerarJogoLetsRace(String temporada,
+			String arquivoCircuito, String idPiloto, String numVoltas,
+			String tipoPneu, String combustivel, String asa)
 			throws ClassNotFoundException, IOException {
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t" + temporada);
@@ -447,23 +459,17 @@ public class LetsRace {
 		}
 		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
 		dadosCriarJogo.setDiffultrapassagem(Util.intervalo(200, 500));
-		Map<String, String> carregarCircuitos = ControleRecursos
-				.carregarCircuitos();
-		String pista = "";
-		for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
-				.hasNext();) {
-			String nmCircuito = (String) iterator.next();
-			if (carregarCircuitos.get(nmCircuito).equals(circuito)) {
-				pista = nmCircuito;
-			}
-		}
+
+		String pista = nomeArquivoCircuitoParaPista(arquivoCircuito);
+
 		// pista = "Monte Carlo";
 		// dadosCriarJogo.setSafetyCar(false);
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setAsa(asa);
 		dadosCriarJogo.setTpPnueu(tipoPneu);
-		Circuito circuitoObj = CarregadorRecursos.carregarCircuito(circuito);
+		Circuito circuitoObj = CarregadorRecursos
+				.carregarCircuito(arquivoCircuito);
 		if (Math.random() < (circuitoObj.getProbalidadeChuva() / 100.0)) {
 			dadosCriarJogo.setClima(Clima.NUBLADO);
 		} else {
@@ -498,6 +504,19 @@ public class LetsRace {
 		// dadosCriarJogo.setClima(Clima.CHUVA);
 		// dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
 		return dadosCriarJogo;
+	}
+
+	private String nomeArquivoCircuitoParaPista(String arquivoCircuito) {
+		Map<String, String> carregarCircuitos = ControleRecursos
+				.carregarCircuitos();
+		for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
+				.hasNext();) {
+			String nmCircuito = (String) iterator.next();
+			if (carregarCircuitos.get(nmCircuito).equals(arquivoCircuito)) {
+				return nmCircuito;
+			}
+		}
+		return null;
 	}
 
 	@GET
