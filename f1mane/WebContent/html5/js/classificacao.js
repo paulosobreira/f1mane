@@ -35,15 +35,15 @@ function circuitoClassificacao(circuitoSelecionado) {
 			$('#pilotos').find('tr').remove();
 			$.each(pilotos, function(i, val) {
 				var td1 = $('<td scope="row"/>');
-				td1.append(pilotos[i].nome);
-				var td2 = $('<td/>');
+				var td2 = $('<td style="font-size: large;"/>');
 				td2.append(pilotos[i].corridas);
-				var td3 = $('<td/>');
+				var td3 = $('<td style="font-size: large;"/>');
 				td3.append(pilotos[i].pontos);
 				var tr = $('<tr/>');
 				var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
 				imgJogador.attr('src', pilotos[i].imagemJogador);
 				td1.append(imgJogador);
+				td1.append(pilotos[i].nome);
 				tr.append(td1);
 				tr.append(td2);
 				tr.append(td3);
