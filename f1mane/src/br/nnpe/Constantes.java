@@ -12,7 +12,7 @@ public class Constantes {
 	public static final String DATA_FORMATO_DDMMYYYY = "ddMMyyyy";
 
 	public static final int MAX_VOLTAS = 72;
-	public static final int MIN_VOLTAS = 2;
+	public static final int MIN_VOLTAS = 14;
 	public static final boolean DATABASE = true;
 	public static final int CICLO = 180;
 	public static final int CICLO_SOM = 100;

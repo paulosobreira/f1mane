@@ -43,6 +43,9 @@ public class ServletPaddock extends HttpServlet {
 	private ControlePaddockServidor controlePaddock;
 	private ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
+	String host = "";
+	String senha;
+	int port = 80;
 
 	public void init() throws ServletException {
 		super.init();
@@ -50,24 +53,20 @@ public class ServletPaddock extends HttpServlet {
 		controlePersistencia = PaddockServer.getControlePersistencia();
 		controlePaddock = PaddockServer.getControlePaddock();
 		monitorAtividade = PaddockServer.getMonitorAtividade();
-	}
-
-	private String obterHost() throws UnknownHostException {
-		String host = "";
-		int port = 80;
 		try {
 			Properties properties = new Properties();
 			properties.load(PaddockConstants.class
 					.getResourceAsStream("server.properties"));
 			host = properties.getProperty("host");
+			senha = properties.getProperty("senha");
 			port = Integer.parseInt(properties.getProperty("port"));
-			if (!Util.isNullOrEmpty(host)) {
-				return host;
-			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
 
+	}
+
+	private String obterHost() throws UnknownHostException {
 		String ip = Inet4Address.getLocalHost().getHostAddress();
 		host = ip + ":" + port;
 		return host;
@@ -130,6 +129,18 @@ public class ServletPaddock extends HttpServlet {
 		try {
 			printWriter.println("<html><body>");
 			String tipo = req.getParameter("tipo");
+
+			String senhaP = req.getParameter("senha");
+
+			boolean precisaSenha = "create_schema".equals(tipo)
+					|| "update_schema".equals(tipo);
+
+			if (precisaSenha
+					&& (senhaP == null || !senha.equals(Util.md5(senhaP)))) {
+				printWriter.println("<br/><a href='conf.jsp'>Voltar</a>");
+				printWriter.println("</body></html>");
+				return;
+			}
 
 			if (tipo == null) {
 				return;

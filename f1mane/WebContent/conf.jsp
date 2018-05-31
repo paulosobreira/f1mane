@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="java.util.*,java.io.*"%>
 <%@ page import="java.text.DecimalFormat"%>
 <%@ page import="java.net.*"%>
@@ -143,10 +143,11 @@ A:hover {text-decoration: underline overline; color: black;}
 			</td>
 		</tr>
 		<tr>
-			<td class="c1"><a href="ServletPaddock?tipo=create_schema"> Create
-			Schema </a></td>
-			<td class="c2"><a href="ServletPaddock?tipo=update_schema"> Update
-			Schema </a></td>
+			<td colspan="2" class="c2"><input type="password" id="senha"></td>
+		</tr>		
+		<tr>
+			<td class="c1"><a href="#" onclick="criar();"> Criar Schema </a></td>
+			<td class="c2"><a href="#" onclick="atualizar()"> Atualizar Schema  </a></td>
 		</tr>
 		<tr>
 			<td class="c1"><a href="ServletPaddock?tipo=x"> Exceptions
@@ -157,5 +158,13 @@ A:hover {text-decoration: underline overline; color: black;}
 	</tbody>
 </table>
 </body>
+<script>
+	function criar(){
+		window.location = "ServletPaddock?tipo=create_schema&senha=" + document.getElementById('senha').value;
+	}
+	function atualizar(){
+		window.location = "ServletPaddock?tipo=update_schema&senha=" + document.getElementById('senha').value;
+	}
+</script>
 </html>
 

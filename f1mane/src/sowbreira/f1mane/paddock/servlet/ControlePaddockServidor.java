@@ -678,6 +678,7 @@ public class ControlePaddockServidor {
 				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 				sessaoCliente.setNomeJogador(nome);
 				srvPaddockPack.setSessaoCliente(sessaoCliente);
+				salvarAcessoSessaoGoogle(sessaoCliente);
 				return srvPaddockPack;
 			}
 		}
