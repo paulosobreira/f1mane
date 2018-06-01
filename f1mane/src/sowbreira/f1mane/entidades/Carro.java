@@ -1046,9 +1046,9 @@ public class Carro implements Serializable {
 		}
 		if (controleJogo.isChovendo()) {
 			if (controleJogo.asfaltoAbrasivo()) {
-				valDesgaste *= 0.6;
-			} else {
 				valDesgaste *= 0.4;
+			} else {
+				valDesgaste *= 0.3;
 			}
 		}
 		if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)
