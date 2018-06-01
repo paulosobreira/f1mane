@@ -609,7 +609,7 @@ function ctl_desenhaInfoCarros() {
 			maneContext.drawImage(imgPneu1,x, y);
 			if (imgCap1) {
 				if(largura<450){
-					x = centroX - imgCap1.width	- 45 - (imgPneu1.width);
+					x = centroX - imgCap1.width	- 30 - (imgPneu1.width);
 					y = altura - (imgCap1.height*2) - 10;
 				}else{
 					x = centroX - imgCap1.width	- img1.width - 45 - (imgPneu1.width / 2);
@@ -621,7 +621,7 @@ function ctl_desenhaInfoCarros() {
 				$('#imgJog1').show();
 				$('#imgJog1').css('position', 'absolute');
 				$('#imgJog1').attr('src',imgJog1);
-				$('#imgJog1').css('top',   y+'px');
+				$('#imgJog1').css('top',   (y+2)+'px');
 			    $('#imgJog1').css('left',  (x-30)+'px');
 			}
 		}
@@ -644,7 +644,7 @@ function ctl_desenhaInfoCarros() {
 			maneContext.drawImage(imgPneu2, x , y);
 			if (imgCap2) {
 				if(largura<450){
-					x = centroX + 45 + (imgPneu2.width);
+					x = centroX + 30 + (imgPneu2.width);
 					y = altura - (imgCap2.height*2) - 10;
 				}else{
 					x = centroX + 45 + img2.width + (imgPneu2.width / 2);
@@ -657,7 +657,7 @@ function ctl_desenhaInfoCarros() {
 				$('#imgJog2').show();
 				$('#imgJog2').css('position', 'absolute');
 				$('#imgJog2').attr('src',imgJog2);
-				$('#imgJog2').css('top',   y+'px');
+				$('#imgJog2').css('top',   (y+2)+'px');
 			    $('#imgJog2').css('left',  (x+30)+'px');
 			}
 		}

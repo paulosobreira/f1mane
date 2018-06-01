@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -256,10 +257,9 @@ public class ControlePersistencia {
 	}
 
 	public static void main(String[] args) throws Exception {
-		ControlePersistencia controlePersistencia = new ControlePersistencia(
-				null);
-		controlePersistencia.migrar();
-
+		Dia dia = new Dia();
+		System.out.println(dia.getMonth());
+		System.out.println(new Date(dia.toTimestamp().getTime()));
 	}
 
 	public byte[] obterBytesBase(String tipo) {
@@ -492,14 +492,9 @@ public class ControlePersistencia {
 		if (!Constantes.DATABASE) {
 			return null;
 		}
-		Criteria criteria = session.createCriteria(CorridasDadosSrv.class)
-				.add(Restrictions.eq("circuito", circuito));
-		Dia hj = new Dia();
-		Dia ini = new Dia(1, hj.getMonth(), hj.getYear());
-		Dia fim = new Dia(1, hj.getMonth(), hj.getYear());
-		fim.advancedMonth();
-		criteria.add(Restrictions.ge("tempoFim", ini.toTimestamp().getTime()));
-		criteria.add(Restrictions.le("tempoFim", fim.toTimestamp().getTime()));
+		Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
+		criteria.add(Restrictions.eq("circuito", circuito));
+		criteria.add(Restrictions.ge("pontos", 0));
 		List corridas = criteria.list();
 		return corridas;
 	}

@@ -1,9 +1,6 @@
 package br.nnpe;
 
-import java.awt.Color;
 import java.util.Date;
-
-import javax.swing.JFrame;
 
 public class Constantes {
 
