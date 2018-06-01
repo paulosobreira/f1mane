@@ -620,7 +620,7 @@ public class ControleJogosServer {
 				.get(clientPaddockPack.getSessaoCliente().getToken());
 		dadosParticiparJogo
 				.setCombustivel(new Integer(clientPaddockPack.getCombustBox()));
-		dadosParticiparJogo.setTpPnueu(clientPaddockPack.getTpPneuBox());
+		dadosParticiparJogo.setTpPneu(clientPaddockPack.getTpPneuBox());
 		dadosParticiparJogo.setAsa(clientPaddockPack.getAsaBox());
 		if (piloto.isBox()) {
 			return "BOX";
@@ -1131,7 +1131,7 @@ public class ControleJogosServer {
 				.get(clientPaddockPack.getSessaoCliente().getToken());
 		dadosParticiparJogo
 				.setCombustivel(new Integer(clientPaddockPack.getCombustBox()));
-		dadosParticiparJogo.setTpPnueu(clientPaddockPack.getTpPneuBox());
+		dadosParticiparJogo.setTpPneu(clientPaddockPack.getTpPneuBox());
 		dadosParticiparJogo.setAsa(clientPaddockPack.getAsaBox());
 		return null;
 	}
@@ -1160,9 +1160,6 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return false;
 		}
-		if (piloto.entrouNoBox()) {
-			return false;
-		}
 		if (!Carro.MAIS_ASA.equals(asa) && !Carro.MENOS_ASA.equals(asa)
 				&& !Carro.ASA_NORMAL.equals(asa)) {
 			return false;
@@ -1188,7 +1185,7 @@ public class ControleJogosServer {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
 				.get(sessaoCliente.getToken());
 		dadosParticiparJogo.setCombustivel(combustivel);
-		dadosParticiparJogo.setTpPnueu(pneu);
+		dadosParticiparJogo.setTpPneu(pneu);
 		dadosParticiparJogo.setAsa(asa);
 		return piloto.isBox();
 	}

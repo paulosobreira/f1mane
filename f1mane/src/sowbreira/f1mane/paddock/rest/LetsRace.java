@@ -467,7 +467,7 @@ public class LetsRace {
 		dadosCriarJogo.setCircuitoSelecionado(pista);
 		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
 		dadosCriarJogo.setAsa(asa);
-		dadosCriarJogo.setTpPnueu(tipoPneu);
+		dadosCriarJogo.setTpPneu(tipoPneu);
 		Circuito circuitoObj = CarregadorRecursos
 				.carregarCircuito(arquivoCircuito);
 		if (Math.random() < (circuitoObj.getProbalidadeChuva() / 100.0)) {
@@ -500,9 +500,6 @@ public class LetsRace {
 		dadosCriarJogo.setErs(temporadasDefauts.getErs());
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
-
-		// dadosCriarJogo.setClima(Clima.CHUVA);
-		// dadosCriarJogo.setTpPnueu(Carro.TIPO_PNEU_CHUVA);
 		return dadosCriarJogo;
 	}
 

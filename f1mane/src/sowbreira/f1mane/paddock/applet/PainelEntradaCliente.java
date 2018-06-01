@@ -514,7 +514,7 @@ public class PainelEntradaCliente {
 	}
 
 	private void preecherDadosEntrarJogo(DadosCriarJogo dadosParticiparJogo) {
-		String tpPnueu = Lang
+		String tpPneu = Lang
 				.key(comboBoxPneuInicial.getSelectedItem().toString());
 		Piloto piloto = (Piloto) comboBoxPilotoSelecionado.getSelectedItem();
 		String asa = Lang.key((String) comboBoxAsa.getSelectedItem());
@@ -525,7 +525,7 @@ public class PainelEntradaCliente {
 		if (combustivel.intValue() < 10) {
 			combustivel = new Integer(10);
 		}
-		dadosParticiparJogo.setTpPnueu(tpPnueu);
+		dadosParticiparJogo.setTpPneu(tpPneu);
 		dadosParticiparJogo.setAsa(asa);
 		dadosParticiparJogo.setCombustivel(combustivel);
 		dadosParticiparJogo.setPiloto(piloto.getNome());

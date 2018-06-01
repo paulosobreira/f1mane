@@ -1022,14 +1022,6 @@ public class Carro implements Serializable {
 		} else {
 			valDesgaste *= 1.0;
 		}
-		if (controleJogo.isChovendo()) {
-			if (controleJogo.asfaltoAbrasivo()) {
-				valDesgaste *= 0.7;
-			} else {
-				valDesgaste *= 0.5;
-			}
-		}
-
 		if (porcentPneus < (controleJogo.asfaltoAbrasivo() ? 25 : 20)) {
 			valDesgaste *= 0.7;
 		}
@@ -1051,6 +1043,13 @@ public class Carro implements Serializable {
 		if (verificaDano()
 				|| Piloto.LENTO.equals(getPiloto().getModoPilotagem())) {
 			valDesgaste /= 3;
+		}
+		if (controleJogo.isChovendo()) {
+			if (controleJogo.asfaltoAbrasivo()) {
+				valDesgaste *= 0.6;
+			} else {
+				valDesgaste *= 0.4;
+			}
 		}
 		if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(tipoPneu)
 				&& !no.verificaRetaOuLargada()) {

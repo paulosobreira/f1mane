@@ -209,6 +209,7 @@ public class ControleClima {
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			piloto.setTipoPneuBox(tipo);
+			controleJogo.setTipoPneuBox(piloto);
 		}
 	}
 

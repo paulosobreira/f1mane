@@ -499,7 +499,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	public void setBoxJogadorHumano(Object tpneu, Object combust, Object asa) {
 		dadosParticiparJogo.setCombustivel((Integer) combust);
-		dadosParticiparJogo.setTpPnueu((String) tpneu);
+		dadosParticiparJogo.setTpPneu((String) tpneu);
 		dadosParticiparJogo.setAsa((String) asa);
 		if (monitorJogo != null) {
 			monitorJogo.alterarOpcoesBox(tpneu, combust, asa);
@@ -1397,13 +1397,19 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	@Override
 	public void travouRodas(Piloto piloto, boolean semFumaca) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void desqualificaPiloto(Piloto piloto) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void setTipoPneuBox(Piloto piloto) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

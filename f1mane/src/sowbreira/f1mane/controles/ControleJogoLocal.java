@@ -1712,8 +1712,6 @@ public class ControleJogoLocal extends ControleRecursos
 				piloto.setVantagem(piloto.getCalculaSegundosParaAnterior());
 			}
 			Logger.logar(piloto.toString() + " Pts " + piloto.getPtosPista());
-			// int exp = (50 - piloto.getPosicao());
-			// piloto.setPtosPista(piloto.getPtosPista() + (100 * exp));
 			Logger.logar(
 					piloto.toString() + " Pts Depois " + piloto.getPtosPista());
 
@@ -1818,6 +1816,11 @@ public class ControleJogoLocal extends ControleRecursos
 		piloto.setDesqualificado(true);
 		piloto.setPtosPista(desqualificados);
 		piloto.setPosicaoBandeirada(pilotos.size() + desqualificados);
+	}
+
+	@Override
+	public void setTipoPneuBox(Piloto piloto) {
+		// TODO Auto-generated method stub
 	}
 
 }

@@ -20,7 +20,7 @@ public class DadosCriarJogo implements Serializable {
 	private Integer tempoQualificacao = null;
 	private String asa;
 	private String temporada;
-	private String tpPnueu;
+	private String tpPneu;
 	private String piloto = "";
 	private int idPiloto = 0;
 	private Integer combustivel;
@@ -170,12 +170,12 @@ public class DadosCriarJogo implements Serializable {
 		this.tempoQualificacao = tempoQualificacao;
 	}
 
-	public String getTpPnueu() {
-		return tpPnueu;
+	public String getTpPneu() {
+		return tpPneu;
 	}
 
-	public void setTpPnueu(String tpPnueu) {
-		this.tpPnueu = tpPnueu;
+	public void setTpPneu(String tpPneu) {
+		this.tpPneu = tpPneu;
 	}
 
 	public String getAsa() {

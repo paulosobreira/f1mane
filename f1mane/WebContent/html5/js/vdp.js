@@ -547,7 +547,11 @@ function vdp_desenhaNomesCima() {
 			nmPiloto = 'Safety Car';
 		} else {
 			nmPiloto = pilotosMap.get(piloto.idPiloto).nomeAbreviado;
-			nmPiloto = (i + 1) + ' ' + nmPiloto;
+			var posicao = pilotosBandeirada.get(piloto.idPiloto);
+			if(posicao==null){
+				posicao = (i + 1); 
+			}
+			nmPiloto = posicao + ' ' + nmPiloto;
 		}
 		var laruraTxt = maneContext.measureText(nmPiloto).width + 10;
 		if (idPilotoSelecionado == piloto.idPiloto) {

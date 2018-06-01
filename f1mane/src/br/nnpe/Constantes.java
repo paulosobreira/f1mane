@@ -1,6 +1,7 @@
 package br.nnpe;
 
 import java.awt.Color;
+import java.util.Date;
 
 import javax.swing.JFrame;
 
@@ -12,7 +13,7 @@ public class Constantes {
 	public static final String DATA_FORMATO_DDMMYYYY = "ddMMyyyy";
 
 	public static final int MAX_VOLTAS = 72;
-	public static final int MIN_VOLTAS = 14;
+	public static final int MIN_VOLTAS = Logger.ativo ? 2 : 14;
 	public static final boolean DATABASE = true;
 	public static final int CICLO = 180;
 	public static final int CICLO_SOM = 100;
@@ -31,10 +32,6 @@ public class Constantes {
 	}
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.setSize(200, 200);
-		frame.getContentPane()
-				.setBackground(new Color(200, 200, 200, 500 / 100));
-		frame.setVisible(true);
+		System.out.println(new Date(1527814707699l));
 	}
 }

@@ -1510,27 +1510,18 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (isRecebeuBanderada()) {
 			return;
 		}
-		if (getNoAtual().verificaCurvaBaixa()
-				&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
-						|| (Carro.PERDEU_AEREOFOLIO
-								.equals(getCarro().getDanificado())))) {
-			if (ganho > 10) {
-				ganho = 10;
-			}
+		boolean danificado = (Carro.PNEU_FURADO
+				.equals(getCarro().getDanificado())
+				|| (Carro.PERDEU_AEREOFOLIO
+						.equals(getCarro().getDanificado())));
+		if (getNoAtual().verificaCurvaBaixa() && danificado && ganho > 10) {
+			ganho = 10;
 		}
-		if (getNoAtual().verificaCurvaAlta()
-				&& (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
-						|| (Carro.PERDEU_AEREOFOLIO
-								.equals(getCarro().getDanificado())))) {
-			if (ganho > 15) {
-				ganho = 15;
-			}
+		if (getNoAtual().verificaCurvaAlta() && danificado && ganho > 15) {
+			ganho = 15;
 		}
-		if (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
-				&& getNoAtual().verificaRetaOuLargada()) {
-			if (ganho > 20) {
-				ganho = 20;
-			}
+		if (danificado && getNoAtual().verificaRetaOuLargada() && ganho > 20) {
+			ganho = 20;
 		}
 	}
 
@@ -1657,8 +1648,8 @@ public class Piloto implements Serializable, PilotoSuave {
 				agressivo = false;
 				if (controleJogo.verificaInfoRelevante(this)
 						&& Math.random() > 0.7) {
-					controleJogo.info(Lang.msg("014", new String[]{nomeJogadorFormatado(),
-							Html.negrito(getNome())}));
+					controleJogo.info(Lang.msg("014", new String[]{
+							nomeJogadorFormatado(), Html.negrito(getNome())}));
 				}
 			}
 			retardaFreiandoReta = false;
@@ -1781,6 +1772,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isDrs() && getPtosBox() == 0 && getNumeroVolta() > 1
 				&& !controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isChovendo()
+				&& !controleJogo.isCorridaTerminada()
 				&& getNoAtual().verificaRetaOuLargada()
 				&& carroPilotoDaFrenteRetardatario != null
 				&& calculaDiffParaProximoRetardatario < Constantes.LIMITE_DRS) {
@@ -2932,7 +2924,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (ptosBox == 0) {
 			return false;
 		}
-
 		return true;
 	}
 
@@ -3679,7 +3670,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public String nomeJogadorFormatado() {
-		if(getNomeJogador()==null){
+		if (getNomeJogador() == null) {
 			return "";
 		}
 		String nomeJogador = "(" + getNomeJogador() + ")";

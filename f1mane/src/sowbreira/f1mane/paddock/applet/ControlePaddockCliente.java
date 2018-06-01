@@ -401,11 +401,11 @@ public class ControlePaddockCliente {
 							.getClima())) {
 				return;
 			}
-			if ((Carro.TIPO_PNEU_CHUVA.equals(dadosParticiparJogo.getTpPnueu())
+			if ((Carro.TIPO_PNEU_CHUVA.equals(dadosParticiparJogo.getTpPneu())
 					&& !Clima.CHUVA.equals(srvPaddockPack.getDetalhesJogo()
 							.getDadosCriarJogo().getClima()))
 					|| (!Carro.TIPO_PNEU_CHUVA
-							.equals(dadosParticiparJogo.getTpPnueu())
+							.equals(dadosParticiparJogo.getTpPneu())
 							&& Clima.CHUVA
 									.equals(srvPaddockPack.getDetalhesJogo()
 											.getDadosCriarJogo().getClima()))) {
@@ -428,7 +428,7 @@ public class ControlePaddockCliente {
 			DadosCriarJogo dadosCriarJogo = srvPaddockPack.getDadosCriarJogo();
 			dadosCriarJogo.setAsa(dadosParticiparJogo.getAsa());
 			dadosCriarJogo.setCombustivel(dadosParticiparJogo.getCombustivel());
-			dadosCriarJogo.setTpPnueu(dadosParticiparJogo.getTpPnueu());
+			dadosCriarJogo.setTpPneu(dadosParticiparJogo.getTpPneu());
 			jogoCliente.iniciarJogoOnline(srvPaddockPack.getDadosCriarJogo(),
 					dadosParticiparJogo.getNomeJogo(), this, sessaoCliente,
 					dadosParticiparJogo.getPiloto());

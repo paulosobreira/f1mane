@@ -39,6 +39,8 @@ public interface InterfaceJogo {
 	public Integer getCombustBox(Piloto piloto);
 
 	public String getTipoPneuBox(Piloto piloto);
+	
+	public void setTipoPneuBox(Piloto piloto);
 
 	public String getAsaBox(Piloto piloto);
 
