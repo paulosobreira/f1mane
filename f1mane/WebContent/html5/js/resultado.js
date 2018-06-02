@@ -137,6 +137,9 @@ function montaLinhaGridResultado(i, piloto) {
 	td2.append('<br>');
 	td2.append(lang_text('161')+' : ');
 	td2.append(piloto.pontosCorrida);
+	if(piloto.porcentagemPontosCorrida!=null && piloto.porcentagemPontosCorrida>0){
+		td2.append(' ('+piloto.porcentagemPontosCorrida+"%)");
+	}
 	td2.append('<br>');
 	var carroLado = $('<img class="img-responsive img-center"/>');
 	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id=' + piloto.id + '&temporada=' + temporadaSelecionada);

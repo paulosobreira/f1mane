@@ -40,8 +40,6 @@ public interface InterfaceJogo {
 
 	public String getTipoPneuBox(Piloto piloto);
 	
-	public void setTipoPneuBox(Piloto piloto);
-
 	public String getAsaBox(Piloto piloto);
 
 	public void setNiveljogo(double niveljogo);

@@ -201,6 +201,8 @@ public class ControleClassificacao {
 
 		if (corridasDadosSrv.isMudouCarro()) {
 			corridasDadosSrv.setPontos(0);
+			piloto.setPontosCorrida(0);
+			piloto.setPorcentagemPontosCorrida(0);
 		} else {
 			double porcent = voltasConcluidas / numVoltas;
 			corridasDadosSrv.setPorcentConcluida((int) (porcent * 100));
@@ -211,7 +213,10 @@ public class ControleClassificacao {
 			if (InterfaceJogo.DIFICIL.equals(corridasDadosSrv.getNivel())) {
 				pontos *= 2;
 			}
-			corridasDadosSrv.setPontos((int) pontos);
+			int pontosInt = (int) pontos;
+			corridasDadosSrv.setPontos(pontosInt);
+			piloto.setPontosCorrida(pontosInt);
+			piloto.setPorcentagemPontosCorrida(Math.round(porcent * 100));
 
 		}
 	}

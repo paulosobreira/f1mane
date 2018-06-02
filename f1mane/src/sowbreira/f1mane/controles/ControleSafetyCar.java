@@ -41,6 +41,10 @@ public class ControleSafetyCar {
 			Piloto pilotoFrente = piloto.getCarroPilotoDaFrente().getPiloto();
 			if (pilotoFrente.getPtosBox() != 0
 					|| pilotoFrente.getCarro().verificaParado()
+					|| Carro.PNEU_FURADO
+							.equals(pilotoFrente.getCarro().getDanificado())
+					|| Carro.PERDEU_AEREOFOLIO
+							.equals(pilotoFrente.getCarro().getDanificado())
 					|| piloto.verificaNaoPrecisaDesviar(pilotoFrente)
 					|| piloto.getNumeroVolta() != pilotoFrente
 							.getNumeroVolta()) {

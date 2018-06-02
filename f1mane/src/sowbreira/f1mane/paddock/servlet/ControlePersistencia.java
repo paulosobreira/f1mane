@@ -494,7 +494,7 @@ public class ControlePersistencia {
 		}
 		Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
 		criteria.add(Restrictions.eq("circuito", circuito));
-		criteria.add(Restrictions.gt("pontos", 0));
+		//criteria.add(Restrictions.gt("pontos", 0));
 		List corridas = criteria.list();
 		return corridas;
 	}

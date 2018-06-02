@@ -1,13 +1,8 @@
 package sowbreira.f1mane.controles;
 
-import java.util.Iterator;
-import java.util.List;
-
 import br.nnpe.Html;
 import br.nnpe.Logger;
-import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -74,23 +69,23 @@ public class ControleClima {
 		int val = 1 + (int) (Math.random() * 3);
 
 		switch (val) {
-		case 1:
-			clima = Clima.SOL;
+			case 1 :
+				clima = Clima.SOL;
 
-			break;
+				break;
 
-		case 2:
-			clima = Clima.NUBLADO;
+			case 2 :
+				clima = Clima.NUBLADO;
 
-			break;
+				break;
 
-		case 3:
-			clima = Clima.CHUVA;
+			case 3 :
+				clima = Clima.CHUVA;
 
-			break;
+				break;
 
-		default:
-			break;
+			default :
+				break;
 		}
 	}
 
@@ -124,14 +119,11 @@ public class ControleClima {
 		if (Clima.SOL.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("004")));
 			Logger.logar("SOL");
-			mudarTipoPneuBox(Carro.TIPO_PNEU_MOLE);
 		} else if (Clima.NUBLADO.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("005")));
 			Logger.logar("NUBLADO");
-			mudarTipoPneuBox(Carro.TIPO_PNEU_MOLE);
 		} else if (Clima.CHUVA.equals(clima)) {
 			controleJogo.infoPrioritaria(Html.msgClima(Lang.msg("006")));
-			mudarTipoPneuBox(Carro.TIPO_PNEU_CHUVA);
 			Logger.logar("CHUVA");
 		}
 		if (controleJogo.getNiveljogo() != InterfaceJogo.DIFICIL_NV)
@@ -146,10 +138,10 @@ public class ControleClima {
 		setClima(Clima.NUBLADO);
 		intervaloMudancaClima = (quartoVoltas / 2)
 				+ ((int) (Math.random() * quartoVoltas));
-		if (controleJogo.totalVoltasCorrida() > (controleJogo
-				.getNumVoltaAtual() + intervaloMudancaClima))
-			controleJogo.infoPrioritaria(Html.msgClima(Html.msgClima(Lang.msg(
-					"007", new Object[] { intervaloMudancaClima }))));
+		if (controleJogo.totalVoltasCorrida() > (controleJogo.getNumVoltaAtual()
+				+ intervaloMudancaClima))
+			controleJogo.infoPrioritaria(Html.msgClima(Html.msgClima(
+					Lang.msg("007", new Object[]{intervaloMudancaClima}))));
 
 	}
 
@@ -166,8 +158,8 @@ public class ControleClima {
 		if (Math.random() > 0.5) {
 			intervaloMudancaClima = intervaloMudancaClima / 2;
 		}
-		intervaloMudancaClima = (int) (intervaloMudancaClima * (1 - controleJogo
-				.getNiveljogo()));
+		intervaloMudancaClima = (int) (intervaloMudancaClima
+				* (1 - controleJogo.getNiveljogo()));
 	}
 
 	public void matarThreads() {
@@ -189,7 +181,6 @@ public class ControleClima {
 		}
 		if (Clima.CHUVA.equals(getClima())) {
 			setClima(Clima.NUBLADO);
-			mudarTipoPneuBox(Carro.TIPO_PNEU_MOLE);
 		}
 
 	}
@@ -197,21 +188,10 @@ public class ControleClima {
 	public void climaChuvoso() {
 		if (Clima.NUBLADO.equals(getClima())) {
 			setClima(Clima.CHUVA);
-			mudarTipoPneuBox(Carro.TIPO_PNEU_CHUVA);
 		}
 		if (Clima.SOL.equals(getClima())) {
 			setClima(Clima.NUBLADO);
 		}
 	}
-
-	public void mudarTipoPneuBox(String tipo) {
-		List<Piloto> pilotos = controleJogo.getPilotos();
-		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			piloto.setTipoPneuBox(tipo);
-			controleJogo.setTipoPneuBox(piloto);
-		}
-	}
-
 
 }

@@ -461,6 +461,7 @@ public class ControleCorrida {
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			piloto.setPosicao(i + 1);
+			piloto.setPontosCorrida(calculaPontos25(piloto));
 		}
 
 	}
@@ -630,7 +631,7 @@ public class ControleCorrida {
 		}
 	}
 
-	public static Integer calculaPontos25(Piloto p) {
+	private Integer calculaPontos25(Piloto p) {
 		if (p.getPosicao() == 1) {
 			return new Integer(25);
 		} else if (p.getPosicao() == 2) {

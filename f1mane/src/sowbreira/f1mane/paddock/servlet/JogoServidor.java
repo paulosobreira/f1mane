@@ -413,15 +413,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		return dadosParticiparJogo.getTpPneu();
 	}
 
-	@Override
-	public void setTipoPneuBox(Piloto piloto) {
-		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-				.get(piloto.getTokenJogador());
-		if (dadosParticiparJogo != null) {
-			dadosParticiparJogo.setTpPneu(piloto.getTipoPneuBox());
-		}
-	}
-
 	public String getAsaBox(Piloto piloto) {
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
 				.get(piloto.getTokenJogador());

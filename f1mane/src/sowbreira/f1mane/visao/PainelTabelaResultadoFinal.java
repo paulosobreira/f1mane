@@ -96,8 +96,7 @@ public class PainelTabelaResultadoFinal extends JPanel {
 			case 10:
 				return p.getNomeJogador();
 			case 11:
-				return ControleCorrida.calculaPontos25(p);
-
+				return p.getPontosCorrida();
 			default:
 				return "";
 			}

@@ -1406,10 +1406,4 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
-	@Override
-	public void setTipoPneuBox(Piloto piloto) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

@@ -59,6 +59,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	private String vantagem;
 	private int qtdeParadasBox;
 	private String tempoVoltaQualificacao;
+	private int pontosCorrida;
+	private long porcentagemPontosCorrida;
 
 	@JsonIgnore
 	private String tokenJogador;
@@ -1520,8 +1522,13 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getNoAtual().verificaCurvaAlta() && danificado && ganho > 15) {
 			ganho = 15;
 		}
-		if (danificado && getNoAtual().verificaRetaOuLargada() && ganho > 20) {
+		if (Carro.PNEU_FURADO.equals(getCarro().getDanificado())
+				&& getNoAtual().verificaRetaOuLargada() && ganho > 20) {
 			ganho = 20;
+		}
+		if (Carro.PERDEU_AEREOFOLIO.equals(getCarro().getDanificado())
+				&& getNoAtual().verificaRetaOuLargada() && ganho > 30) {
+			ganho = 30;
 		}
 	}
 
@@ -3615,13 +3622,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		return indexRefEscape;
 	}
 
-	public int getPontosCorrida() {
-		return ControleCorrida.calculaPontos25(this);
-	}
-
-	public void setPontosCorrida(int pontosCorrida) {
-	}
-
 	public int getDiferencaPosiscoesCorrida() {
 		return (getPosicaoInicial() - getPosicao());
 	}
@@ -3680,6 +3680,22 @@ public class Piloto implements Serializable, PilotoSuave {
 			nomeJogador += " ";
 		}
 		return nomeJogador;
+	}
+
+	public int getPontosCorrida() {
+		return pontosCorrida;
+	}
+
+	public void setPontosCorrida(int pontosCorrida) {
+		this.pontosCorrida = pontosCorrida;
+	}
+
+	public long getPorcentagemPontosCorrida() {
+		return porcentagemPontosCorrida;
+	}
+
+	public void setPorcentagemPontosCorrida(long porcentagemPontosCorrida) {
+		this.porcentagemPontosCorrida = porcentagemPontosCorrida;
 	}
 
 }
