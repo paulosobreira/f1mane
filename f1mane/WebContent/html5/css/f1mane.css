@@ -103,6 +103,11 @@
 	margin-top:22px;
 }
 
+.classificacao-jogador{
+    word-wrap: break-word;
+    max-width: 90px;
+}
+
 .voltar{
 	margin-right: 20px; font-size: 22px;
 }

@@ -1,6 +1,8 @@
 package sowbreira.f1mane.controles;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -131,7 +133,7 @@ public abstract class ControleRecursos {
 		idsNoBox.clear();
 		mapaNoProxCurva.clear();
 		mapaNoCurvaAnterior.clear();
-		circuito = CarregadorRecursos.carregarCircuito(circuitoStr); 
+		circuito = CarregadorRecursos.carregarCircuito(circuitoStr);
 		circuito.vetorizarPista();
 		String nome = "";
 		for (Iterator<String> iterator = circuitos.keySet().iterator(); iterator
@@ -284,7 +286,7 @@ public abstract class ControleRecursos {
 			if (string == null) {
 				return 0;
 			}
-			Circuito circuitoObj =  CarregadorRecursos.carregarCircuito(string); 
+			Circuito circuitoObj = CarregadorRecursos.carregarCircuito(string);
 			return circuitoObj.getProbalidadeChuva();
 		} catch (Exception e) {
 			Logger.logarExept(e);

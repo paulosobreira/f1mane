@@ -34,7 +34,7 @@ function circuitoClassificacao(circuitoSelecionado) {
 			$.each(pilotos, function(i, val) {
 				var td0 = $('<td class="fontLarge textCenter" scope="row"/>');
 				td0.append(i+1);
-				var td1 = $('<td class="textCenter" scope="row"/>');
+				var td1 = $('<td class="textCenter classificacao-jogador" scope="row"/>');
 				var td2 = $('<td class="fontLarge textCenter" />');
 				td2.append(pilotos[i].corridas);
 				var td3 = $('<td class="fontLarge textCenter" />');
