@@ -102,6 +102,61 @@ function esconderEntrarJogo() {
 	$('#btnJogar').hide();
 }
 
+function gerarTr1Pilotos(piloto){
+	var td1 = $('<td scope="row" style="display: grid;"/>');
+	td1.append(piloto.nome);
+	var td2 = $('<td/>');
+	td2.append(piloto.nomeCarro);
+	var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+	var capacetes = $('<div style="display:  inline-flex;"  />');
+	td1.append(capacetes);
+	var capacete = $('<img class="img-responsive img-center"/>');
+	capacete.attr('src', '/f1mane/rest/letsRace/capacete?id=' + piloto.id + '&temporada=' + temporadaSelecionada);
+	capacetes.append(capacete);
+	if(piloto.imgJogador!=null){
+		var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
+		imgJogador.attr('src', piloto.imgJogador);
+		capacetes.append(imgJogador);
+	}
+	tr.append(td1);
+	var carroLado = $('<img class="img-responsive img-center"/>');
+	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id=' + piloto.id + '&temporada=' + temporadaSelecionada);
+	td2.append(carroLado);
+	if (piloto.id == idPilotoSelecionado) {
+		tr.addClass('success');
+	} else if (piloto.jogadorHumano) {
+		tr.addClass('warning');
+	}
+	if(piloto.nomeJogador!=null){
+		td1.append('<br>');
+		td2.append('<b>'+piloto.nomeJogador+'</b>');
+	}
+	tr.append(td2);
+	return tr;
+}
+
+function gerarTr2Pilotos(piloto){
+	var tr = $('<tr class="statusPilotoCarro hidden"/>');
+	var td = $('<td colspan="2"/>');
+	var div = $('<div/>');
+	
+	div.append(lang_text('255'));
+	var habilidade = $('<div class="progress"/>').append($('<div style="width: '+(piloto.habilidade/10)+'%;" class="progress-bar fundoCinza" role="progressbar" aria-valuenow="'+piloto.habilidade+'" aria-valuemin="0" aria-valuemax="1000"/>'));
+	div.append(habilidade);
+	div.append(lang_text('256'));
+	var potencia = $('<div class="progress"/>').append($('<div style="width: '+(piloto.carro.potencia/10)+'%;" class="progress-bar fundoCinza" role="progressbar" aria-valuenow="'+piloto.carro.potencia+'" aria-valuemin="0" aria-valuemax="1000"/>'));
+	div.append(potencia);
+	div.append(lang_text('aerodinamicaCarro'));
+	var aerodinamica = $('<div class="progress"/>').append($('<div style="width: '+(piloto.carro.aerodinamica/10)+'%;" class="progress-bar fundoCinza" role="progressbar" aria-valuenow="'+piloto.carro.aerodinamica+'" aria-valuemin="0" aria-valuemax="1000"/>'));
+	div.append(aerodinamica);
+	div.append(lang_text('freioCarro'));
+	var freios = $('<div class="progress"/>').append($('<div style="width: '+(piloto.carro.freios/10)+'%;" class="progress-bar fundoCinza" role="progressbar" aria-valuenow="'+piloto.carro.freios+'" aria-valuemin="0" aria-valuemax="1000"/>'));
+	div.append(freios);
+	td.append(div);
+	tr.append(td);
+	return tr;
+}
+
 function carregarDadosJogo() {
 	$.ajax({
 		type : "GET",
@@ -153,41 +208,17 @@ function carregarDadosJogo() {
 			var pilotos = dadosJogo.pilotos;
 			$('#pilotos').find('tr').remove();
 			$.each(pilotos, function(i, val) {
-				var td1 = $('<td scope="row" style="display: grid;"/>');
-				td1.append(pilotos[i].nome);
-				var td2 = $('<td/>');
-				td2.append(pilotos[i].nomeCarro);
-				var tr = $('<tr style="cursor: pointer; cursor: hand" />');
-				var capacetes = $('<div style="display:  inline-flex;"  />');
-				td1.append(capacetes);
-				var capacete = $('<img class="img-responsive img-center"/>');
-				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id=' + pilotos[i].id + '&temporada=' + temporadaSelecionada);
-				capacetes.append(capacete);
-				if(pilotos[i].imgJogador!=null){
-					var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
-					imgJogador.attr('src', pilotos[i].imgJogador);
-					capacetes.append(imgJogador);
-				}
-				tr.append(td1);
-				var carroLado = $('<img class="img-responsive img-center"/>');
-				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id=' + pilotos[i].id + '&temporada=' + temporadaSelecionada);
-				td2.append(carroLado);
-				if (pilotos[i].id == idPilotoSelecionado) {
-					tr.addClass('success');
-				} else if (pilotos[i].jogadorHumano) {
-					tr.addClass('warning');
-				}
-				if(pilotos[i].nomeJogador!=null){
-					td1.append('<br>');
-					td2.append('<b>'+pilotos[i].nomeJogador+'</b>');
-				}
-				tr.append(td2);
+				var tr = gerarTr1Pilotos(pilotos[i]);
 				$('#pilotos').append(tr);
+				var statusPilotoCarro = gerarTr2Pilotos(pilotos[i]);
+				$('#pilotos').append(statusPilotoCarro);
 				tr.unbind();
 				tr.bind("click", function() {
 					if (tr.hasClass('warning') || tr.hasClass('success')) {
 						return;
 					}
+					$('#pilotos').find('tr.statusPilotoCarro').removeClass('hidden').addClass('hidden');
+					statusPilotoCarro.removeClass('hidden');
 					$('#pilotos').find('tr').removeClass('success');
 					tr.addClass('success');
 					idPilotoSelecionado = pilotos[i].id;
@@ -391,25 +422,17 @@ function selecionaTemporada(temporada) {
 			var pilotos = response.pilotos;
 			$('#pilotos').find('tr').remove();
 			$.each(pilotos, function(i, val) {
-				var td1 = $('<td scope="row"/>');
-				td1.append(pilotos[i].nome);
-				var td2 = $('<td/>');
-				td2.append(pilotos[i].nomeCarro);
-				var tr = $('<tr style="cursor: pointer; cursor: hand" />');
-				var capacete = $('<img class="img-responsive img-center"/>');
-				capacete.attr('src', '/f1mane/rest/letsRace/capacete?id=' + pilotos[i].id + '&temporada=' + temporada);
-				td1.append(capacete);
-				tr.append(td1);
-				var carroLado = $('<img class="img-responsive img-center"/>');
-				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id=' + pilotos[i].id + '&temporada=' + temporada);
-				td2.append(carroLado);
-				tr.append(td2);
+				var tr = gerarTr1Pilotos(pilotos[i]);
 				$('#pilotos').append(tr);
+				var statusPilotoCarro = gerarTr2Pilotos(pilotos[i]);
+				$('#pilotos').append(statusPilotoCarro);
 				tr.unbind();
 				tr.bind("click", function() {
 					if (tr.hasClass('warning') || tr.hasClass('success')) {
 						return;
 					}
+					$('#pilotos').find('tr.statusPilotoCarro').removeClass('hidden').addClass('hidden');
+					statusPilotoCarro.removeClass('hidden');
 					$('#pilotos').find('tr').removeClass('success');
 					tr.addClass('success');
 					idPilotoSelecionado = pilotos[i].id;

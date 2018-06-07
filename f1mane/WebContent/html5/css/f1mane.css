@@ -141,6 +141,9 @@
   padding: 10px;
 }
 
+.fundoCinza {
+	background-color: lightGray;
+}
 
 .font-weight-bold {
     font-weight: bold;

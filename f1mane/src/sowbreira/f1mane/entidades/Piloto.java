@@ -61,7 +61,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	private String tempoVoltaQualificacao;
 	private int pontosCorrida;
 	private long porcentagemPontosCorrida;
-
+	private int habilidade;
+	
 	@JsonIgnore
 	private String tokenJogador;
 	@JsonIgnore
@@ -178,8 +179,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	private String nomeOriginal;
 	@JsonIgnore
 	private transient int habilidadeAntesQualify;
-	@JsonIgnore
-	private transient int habilidade;
 	@JsonIgnore
 	private int ultimoIndice;
 	@JsonIgnore

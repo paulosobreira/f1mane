@@ -203,9 +203,19 @@ function vdp_atualizaSuave() {
 		}
 		var diff = (indexReal - indexSuave);
 		var multi = diff / 100;
-		arr = [ 3.25 * multi, 2.25 * multi, 2 * multi ];
+		var contReta = pilotosMapReta.get(piloto.idPiloto);
+		var indexReta = 3.25;
+		if(contReta!=null){
+			if(contReta>=3){
+				indexReta = 3.5;	
+			}
+			if(contReta>=4){
+				indexReta = 4;	
+			}
+		}
+		arr = [ indexReta * multi, 2.25 * multi, 2 * multi ];
 		if (noSuave.box) {
-			arr = [ 3 * multi, 2 * multi, 2 * multi ];
+			arr = [ indexReta * multi, 2 * multi, 2 * multi ];
 		}
 		var novoIndex;
 		if (noSuave.tipoJson == 'R') {
