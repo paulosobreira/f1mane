@@ -147,6 +147,7 @@ function cpu_dadosParciais() {
 				pilotosBandeirada.set(piloto.idPiloto, (i+1));
 			}
 		}
+		no = mapaIdNos.get(piloto.idNo);
 		if (no.tipoJson == 'R'){
 			var cont = pilotosMapReta.get(piloto.idPiloto);
 			if(cont == null){
