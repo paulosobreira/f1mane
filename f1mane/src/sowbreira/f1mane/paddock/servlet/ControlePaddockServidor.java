@@ -821,4 +821,8 @@ public class ControlePaddockServidor {
 		return controleClassificacao.obterClassificacaoCircuito(nomeCircuito);
 	}
 
+	public void modoCarreira(String token, boolean modo) {
+		controlePersistencia.modoCarreira(token,modo);
+	}
+
 }

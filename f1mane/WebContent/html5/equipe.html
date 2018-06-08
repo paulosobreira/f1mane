@@ -24,55 +24,59 @@
 		<section class="container">
 			<form>
 				<div class="form-group">
-					<label>Nome Equipe</label> <input type="text" class="form-control"
-						id="nomeEquipe" required="required">
+					<label id="nomeEquipe">Nome Equipe</label> <input type="text"
+						class="form-control" id="nomeEquipe" required="required">
 				</div>
 				<div class="form-group">
-					<label>Cor Equipe 1</label> <input type="color"
+					<label id="corEquipe1">Cor Equipe 1</label> <input type="color"
 						class="form-control" id="corEquipe1" required="required">
 				</div>
 				<div class="form-group">
-					<label>Cor Equipe 2</label> <input type="color"
+					<label id="corEquipe2">Cor Equipe 2</label> <input type="color"
 						class="form-control" id="corEquipe2" required="required">
 				</div>
 				<div class="form-group">
-					<label>Nome Piloto</label> <input type="text" class="form-control"
-						id="nomePiloto" required="required">
+					<label id="nomePiloto">Nome Piloto</label> <input type="text"
+						class="form-control" id="nomePiloto" required="required">
 				</div>
 				<div class="form-group">
-					<label>Nome Piloto Abreviado</label> <input type="text"
-						class="form-control" id="nomePilotoAbreviado" required="required">
+					<label id="nomePilotoAbreviado">Nome Piloto Abreviado</label> <input
+						type="text" class="form-control" id="nomePilotoAbreviado"
+						required="required">
 				</div>
 				<div class="row">
 					<div class="form-group col-md-6">
-						<label>Capacete</label> <img id="idImgCapacete" />
+						<img id="idImgCapacete" />
 					</div>
 					<div class="form-group col-md-6">
-						<label>Carro</label> <img id="idImgCarro" />
+						<img id="idImgCarro" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label>Pontos ganhos</label>
-					<spam id="pontosGanhos">123</spam>
+					<label id="pontosGanhos">Pontos ganhos</label>
+					<spam id="pontosGanhosValor">123</spam>
 				</div>
 				<div class="form-group">
-					<label>Pontos dispníveis</label>
-					<spam id="pontosDisponiveis">123</spam>
+					<label id="pontosDisponiveis">Pontos dispníveis</label>
+					<spam id="pontosDisponiveisValor">123</spam>
 				</div>
 				<div class="form-group">
-					<label>Piloto</label> <input id="piloto" type="number"
+					<label id="habilidadePiloto">Piloto</label> <input
+						id="habilidadePilotoValor" type="number"
 						class="form-control text-center" value="70" min="10" max="100">
 				</div>
 				<div class="form-group">
-					<label>Carro</label> <input id="carro" type="number"
+					<label id="potenciaCarro">Carro</label> <input
+						id="potenciaCarroValor" type="number"
 						class="form-control text-center" value="70" min="10" max="100">
 				</div>
 				<div class="form-group">
-					<label>Aerodinamica</label> <input id="aerodinmica" type="number"
+					<label id="aerodinamicaCarro">Aerodinamica</label> <input
+						id="aerodinamicaCarroValor" type="number"
 						class="form-control text-center" value="70" min="10" max="100">
 				</div>
 				<div class="form-group">
-					<label>Freios</label> <input id="freios" type="number"
+					<label id="freioCarro">Freios</label> <input id="freioCarroValor" type="number"
 						class="form-control text-center" value="70" min="10" max="100">
 				</div>
 			</form>
@@ -88,20 +92,16 @@
 <script src="js/loader.js?v={versao}"></script>
 <script src="js/lang.js?v={versao}"></script>
 <script>
-	$('#TIPO_PNEU_MOLE').html(lang_text('TIPO_PNEU_MOLE'));
-	$('#TIPO_PNEU_DURO').html(lang_text('TIPO_PNEU_DURO'));
-	$('#TIPO_PNEU_CHUVA').html(lang_text('TIPO_PNEU_CHUVA'));
-	$('#giroPotencia').html(lang_text('giroPotencia'));
-	$('#agressividadeDeterminacao')
-			.html(lang_text('agressividadeDeterminacao'));
-	$('#menosAjuste').html(lang_text('menosAjuste'));
-	$('#maisAjuste').html(lang_text('maisAjuste'));
-	$('#ajusteMediano').html(lang_text('ajusteMediano'));
-	$('#ativaEntradaBox').html(lang_text('ativaEntradaBox'));
-	$('#bateriaPerformance').html(lang_text('bateriaPerformance'));
-	$('#reducaoArrasto').html(lang_text('reducaoArrasto'));
-	$('#reguladorCombustivel').html(lang_text('reguladorCombustivel'));
-	$('#icone').html(lang_text('icone'));
-	$('#comando').html(lang_text('comando'));
+	$('#nomeEquipe').html(lang_text('254'));
+	$('#corEquipe1').html(lang_text('corEquipeCarro'));
+	$('#corEquipe2').html(lang_text('corEquipeCarro'));
+	$('#nomePiloto').html(lang_text('253'));
+	$('#nomePilotoAbreviado').html(lang_text('nomePilotoAbreviado'));
+	$('#pontosGanhos').html(lang_text('pontosGanhos'));
+	$('#pontosDisponiveis').html(lang_text('pontosDisponiveis'));
+	$('#habilidadePiloto').html(lang_text('255'));
+	$('#potenciaCarro').html(lang_text('256'));
+	$('#freioCarro').html(lang_text('freioCarro'));
+	$('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
 </script>
 </html>

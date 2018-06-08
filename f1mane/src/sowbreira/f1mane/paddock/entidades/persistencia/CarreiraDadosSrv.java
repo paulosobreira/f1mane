@@ -7,13 +7,21 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * @author Paulo Sobreira Criado em 27/06/2009 as 23:01:35
  */
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity(name = "f1_carreiradadossrv")
 public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 
 	private int ptsConstrutores;
+	private int ptsConstrutoresGanhos;
 	private int ptsPiloto;
 	private int ptsCarro;
 	private int ptsAerodinamica;
@@ -31,11 +39,13 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 	@JoinColumn(nullable = false)
 	private JogadorDadosSrv jogadorDadosSrv;
 
+	@JsonIgnore
 	public Color geraCor1() {
 		return new Color(c1R, c1G, c1B);
 
 	}
-
+	
+	@JsonIgnore
 	public Color geraCor2() {
 		return new Color(c2R, c2G, c2B);
 
@@ -159,6 +169,14 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 
 	public void setPtsFreio(int ptsFreio) {
 		this.ptsFreio = ptsFreio;
+	}
+
+	public int getPtsConstrutoresGanhos() {
+		return ptsConstrutoresGanhos;
+	}
+
+	public void setPtsConstrutoresGanhos(int ptsConstrutoresGanhos) {
+		this.ptsConstrutoresGanhos = ptsConstrutoresGanhos;
 	}
 
 }

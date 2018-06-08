@@ -36,6 +36,7 @@ import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.paddock.PaddockConstants;
+import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
@@ -494,25 +495,25 @@ public class ControlePersistencia {
 		}
 		Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
 		criteria.add(Restrictions.eq("circuito", circuito));
-		//criteria.add(Restrictions.gt("pontos", 0));
+		// criteria.add(Restrictions.gt("pontos", 0));
 		List corridas = criteria.list();
 		return corridas;
 	}
 
-	public CarreiraDadosSrv carregaCarreiraJogador(String nomeJogador,
+	public CarreiraDadosSrv carregaCarreiraJogador(String token,
 			boolean vaiCliente, Session session) {
 		if (!Constantes.DATABASE) {
 			return null;
 		}
 		List list = session.createCriteria(CarreiraDadosSrv.class)
 				.createAlias("jogadorDadosSrv", "j")
-				.add(Restrictions.eq("j.nome", nomeJogador)).list();
+				.add(Restrictions.eq("j.token", token)).list();
 		CarreiraDadosSrv carreiraDadosSrv = null;
 		if (!list.isEmpty()) {
 			carreiraDadosSrv = (CarreiraDadosSrv) list.get(0);
 		}
 		if (carreiraDadosSrv == null) {
-			JogadorDadosSrv jogadorDadosSrv = carregaDadosJogador(nomeJogador,
+			JogadorDadosSrv jogadorDadosSrv = carregaDadosJogador(token,
 					session);
 			if (jogadorDadosSrv == null) {
 				return null;
@@ -585,6 +586,22 @@ public class ControlePersistencia {
 				.add(Restrictions.eq("jogadorDadosSrv", jogadorDadosSrv))
 				.list();
 		return campeonatos;
+	}
+
+	public void modoCarreira(String token, boolean modo) {
+		Session session = getSession();
+		try {
+			CarreiraDadosSrv carreiraDadosSrv = carregaCarreiraJogador(token,
+					false, session);
+			carreiraDadosSrv.setModoCarreira(modo);
+			gravarDados(session, carreiraDadosSrv);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
 	}
 
 }
