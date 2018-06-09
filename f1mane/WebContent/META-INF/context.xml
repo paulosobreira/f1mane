@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
 	<!-- <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" 
-		maxActive="8" maxIdle="2" maxWait="10" name="jdbc/MySQLDS" password="PI3RhXIcBkOGdwhw" 
-		type="javax.sql.DataSource" url="jdbc:mysql://mysql:3306/f1mane" username="userDGK" 
+		maxActive="30" maxIdle="2" maxWait="10" name="jdbc/MySQLDS" password="guyvWn16L1NS57cD" 
+		type="javax.sql.DataSource" url="jdbc:mysql://mysql:3306/f1mane" username="userRPC" 
 		/> -->
 	<!-- <Resource auth="Container" driverClassName="org.hsqldb.jdbcDriver" 
 		maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/MySQLDS" password="" 
 		type="javax.sql.DataSource" url="jdbc:hsqldb:hsql://localhost/xdb" username="SA" 
 		/> -->
+	<!-- <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" 
+		type="javax.sql.DataSource" maxActive="20" maxIdle="10" maxWait="-1" name="jdbc/MySQLDS" 
+		username="root" password="mysql" url="jdbc:mysql://localhost:3306/f1mane" 
+		/> -->
 	<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver"
-		maxActive="8" maxIdle="2" maxWait="10" name="jdbc/MySQLDS" password="PI3RhXIcBkOGdwhw"
+		maxActive="30" maxIdle="2" maxWait="10" name="jdbc/MySQLDS" password="guyvWn16L1NS57cD"
 		type="javax.sql.DataSource" url="jdbc:mysql://mysql:3306/f1mane"
-		username="userDGK" />
+		username="userRPC" />
 </Context>
