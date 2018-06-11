@@ -27,6 +27,7 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 	private int ptsAerodinamica;
 	private int ptsFreio;
 	private String nomePiloto;
+	private String nomePilotoAbreviado;
 	private String nomeCarro;
 	private boolean modoCarreira;
 	private int c1R;
@@ -44,7 +45,7 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 		return new Color(c1R, c1G, c1B);
 
 	}
-	
+
 	@JsonIgnore
 	public Color geraCor2() {
 		return new Color(c2R, c2G, c2B);
@@ -177,6 +178,14 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 
 	public void setPtsConstrutoresGanhos(int ptsConstrutoresGanhos) {
 		this.ptsConstrutoresGanhos = ptsConstrutoresGanhos;
+	}
+
+	public String getNomePilotoAbreviado() {
+		return nomePilotoAbreviado;
+	}
+
+	public void setNomePilotoAbreviado(String nomePilotoAbreviado) {
+		this.nomePilotoAbreviado = nomePilotoAbreviado;
 	}
 
 }

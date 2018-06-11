@@ -21,11 +21,17 @@
 			<h3 style="display: inline;">Fl-Mane</h3>
 			<h5>Formula league-Manager & Engineer</h5>
 		</section>
+		<div id="btnSalvar"  class="floatSalvar">
+		    <i class="fa fa-plus floatBtnContent glyphicon glyphicon-floppy-disk"></i>
+		</div>
+		<div id="btnJogar"  class="floatBtn">
+		    <i class="fa fa-plus floatBtnContent glyphicon glyphicon-road"></i>
+		</div>	
 		<section class="container">
 			<form>
 				<div class="form-group">
 					<label id="nomeEquipe">Nome Equipe</label> <input type="text"
-						class="form-control" id="nomeEquipe" required="required">
+						class="form-control" id="nomeEquipeValor" required="required">
 				</div>
 				<div class="form-group">
 					<label id="corEquipe1">Cor Equipe 1</label> <input type="color"
@@ -37,11 +43,11 @@
 				</div>
 				<div class="form-group">
 					<label id="nomePiloto">Nome Piloto</label> <input type="text"
-						class="form-control" id="nomePiloto" required="required">
+						class="form-control" id="nomePilotoValor" required="required">
 				</div>
 				<div class="form-group">
 					<label id="nomePilotoAbreviado">Nome Piloto Abreviado</label> <input
-						type="text" class="form-control" id="nomePilotoAbreviado"
+						type="text" class="form-control" id="nomePilotoAbreviadoValor"
 						required="required">
 				</div>
 				<div class="row">
@@ -58,7 +64,7 @@
 				</div>
 				<div class="form-group">
 					<label id="pontosDisponiveis">Pontos dispníveis</label>
-					<spam id="pontosDisponiveisValor">123</spam>
+					<spam id="pontosConstrutoresValor">123</spam>
 				</div>
 				<div class="form-group">
 					<label id="habilidadePiloto">Piloto</label> <input
@@ -91,17 +97,5 @@
 <script src="js/util.js?v={versao}"></script>
 <script src="js/loader.js?v={versao}"></script>
 <script src="js/lang.js?v={versao}"></script>
-<script>
-	$('#nomeEquipe').html(lang_text('254'));
-	$('#corEquipe1').html(lang_text('corEquipeCarro'));
-	$('#corEquipe2').html(lang_text('corEquipeCarro'));
-	$('#nomePiloto').html(lang_text('253'));
-	$('#nomePilotoAbreviado').html(lang_text('nomePilotoAbreviado'));
-	$('#pontosGanhos').html(lang_text('pontosGanhos'));
-	$('#pontosDisponiveis').html(lang_text('pontosDisponiveis'));
-	$('#habilidadePiloto').html(lang_text('255'));
-	$('#potenciaCarro').html(lang_text('256'));
-	$('#freioCarro').html(lang_text('freioCarro'));
-	$('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
-</script>
+<script src="js/equipe.js?v={versao}"></script>
 </html>

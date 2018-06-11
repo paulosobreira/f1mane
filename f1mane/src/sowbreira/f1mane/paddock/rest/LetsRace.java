@@ -15,9 +15,9 @@ import java.util.PropertyResourceBundle;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.ws.rs.Encoded;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -28,14 +28,12 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import br.nnpe.Constantes;
-import br.nnpe.Html;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.CircuitosDefauts;
 import sowbreira.f1mane.entidades.Clima;
@@ -50,6 +48,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
@@ -86,8 +85,8 @@ public class LetsRace {
 	public Response criarSessaoGoogle(@PathParam("idGoogle") String idGoogle,
 			@PathParam("nome") String nome) {
 		if (!Logger.ativo) {
-			return Response.status(400).entity("Nope")
-					.type(MediaType.APPLICATION_JSON).build();
+			return Response.status(400).type(MediaType.APPLICATION_JSON)
+					.build();
 		}
 		return Response.status(200)
 				.entity(controlePaddock.criarSessaoGoogle(idGoogle, nome,
@@ -258,7 +257,7 @@ public class LetsRace {
 				return Response.status(401).build();
 			}
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-			//controlePaddock.modoCarreira(token,false);
+			// controlePaddock.modoCarreira(token,false);
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
 			DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada,
@@ -881,6 +880,45 @@ public class LetsRace {
 					.entity(new ErroServ(e).obterErroFormatado())
 					.type(MediaType.APPLICATION_JSON).build();
 		}
+	}
+
+	@GET
+	@Compress
+	@Path("/equipe")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response equipe(@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		ControleJogosServer controleJogosServer = controlePaddock
+				.getControleJogosServer();
+		Object equipe = controleJogosServer.equipe(sessaoCliente);
+		processsaMensagem(equipe, idioma);
+		return Response.status(200).entity(equipe).build();
+	}
+
+	@POST
+	@Compress
+	@Path("/equipe")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response gravarEquipe(@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma, CarreiraDadosSrv equipe) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		ControleJogosServer controleJogosServer = controlePaddock
+				.getControleJogosServer();
+		Object ret = controleJogosServer.gravarEquipe(sessaoCliente, idioma,
+				equipe);
+		processsaMensagem(ret, idioma);
+		return Response.status(200).entity(ret).build();
 	}
 
 }

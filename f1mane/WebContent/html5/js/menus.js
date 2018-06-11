@@ -112,6 +112,7 @@ function gerarTr1Pilotos(piloto){
 	td1.append(capacetes);
 	var capacete = $('<img class="img-responsive img-center"/>');
 	capacete.attr('src', '/f1mane/rest/letsRace/capacete?id=' + piloto.id + '&temporada=' + temporadaSelecionada);
+	capacetes.append($('<br>'));
 	capacetes.append(capacete);
 	if(piloto.imgJogador!=null){
 		var imgJogador = $('<img class="img-responsive img-center userPic"/>');	

@@ -36,7 +36,6 @@ import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.paddock.PaddockConstants;
-import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
@@ -383,7 +382,7 @@ public class ControlePersistencia {
 
 			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(
-					new FileInputStream(webInfDir + "algolbkp.zip"));
+					new FileInputStream(webInfDir + "f1mane.zip"));
 			byt = bufferedInputStream.read();
 
 			while (-1 != byt) {
@@ -426,7 +425,7 @@ public class ControlePersistencia {
 				FileInputStream fis = new FileInputStream(f);
 				// create a new zip entry
 				ZipEntry anEntry = new ZipEntry(f.getAbsolutePath().split(
-						"algol-rpg" + File.separator + File.separator)[1]);
+						"f1mane" + File.separator + File.separator)[1]);
 				// place the zip entry in the ZipOutputStream object
 				zos.putNextEntry(anEntry);
 				// now write the content of the file to the ZipOutputStream

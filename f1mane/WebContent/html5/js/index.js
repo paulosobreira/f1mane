@@ -65,6 +65,8 @@ $('#btnSobre').html(lang_text('sobre'));
 $('#btnControles').html(lang_text('verControles'));
 $('#btnIdioma').html(lang_text('linguagem'));
 $('#btnClassificacao').html(lang_text('ranking'));
+$('#btnEquipe').html(lang_text('221'));
+
 
 
 $('#btnSobre').bind("click", function() {

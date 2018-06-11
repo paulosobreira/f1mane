@@ -1203,4 +1203,24 @@ public class ControleJogosServer {
 		return null;
 	}
 
+	public Object equipe(SessaoCliente sessaoCliente) {
+		Session session = controlePersistencia.getSession();
+		try {
+			return controlePersistencia.carregaCarreiraJogador(
+					sessaoCliente.getToken(), true, session);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			return new ErroServ(e);
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+	}
+
+	public Object gravarEquipe(SessaoCliente sessaoCliente,
+			String idioma, CarreiraDadosSrv equipe) {
+		return controleClassificacao.atualizaCarreira(sessaoCliente.getToken(), equipe);
+	}
+
 }
