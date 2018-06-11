@@ -213,7 +213,7 @@ function vdp_atualizaSuave() {
 				indexReta = 4;	
 			}
 		}
-		arr = [ indexReta * multi, 2.25 * multi, 2 * multi ];
+		arr = [ indexReta * multi, 2.5 * multi, 2.25 * multi ];
 		if (noSuave.box) {
 			arr = [ indexReta * multi, 2 * multi, 2 * multi ];
 		}

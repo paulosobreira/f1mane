@@ -258,7 +258,7 @@ public class LetsRace {
 				return Response.status(401).build();
 			}
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-			controlePaddock.modoCarreira(token,false);
+			//controlePaddock.modoCarreira(token,false);
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
 			DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada,
