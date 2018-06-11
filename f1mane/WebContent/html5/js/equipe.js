@@ -17,6 +17,29 @@ $('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
 carregaEquipe();
 
 
+$('#btnSalvar').bind("click", function() {
+	salvarEquipe();
+});
+
+$('#btnJogar').bind("click", function() {
+	localStorage.setItem("modoCarreira", true);
+	window.location = "menus.html";
+});
+
+
+$(document).on('click', '.number-spinner button', function() {
+	var btn = $(this), oldValue = btn.closest('.number-spinner').find('input').val().trim(), newVal = 0;
+	if (btn.attr('data-dir') == 'up') {
+		newVal = parseInt(oldValue) + 10;
+	} else {
+		if (oldValue > 10) {
+			newVal = parseInt(oldValue) - 10;
+		} else {
+			newVal = 10;
+		}
+	}
+	btn.closest('.number-spinner').find('input').val(newVal);
+});
 
 function carregaEquipe() {
 	var urlServico = "/f1mane/rest/letsRace/equipe";
@@ -58,6 +81,8 @@ function carregaEquipe() {
 }	
 	
 function salvarEquipe() {
+		var c1 = hexToRgb($('#corEquipe1').val())
+		var c2 = hexToRgb($('#corEquipe2').val())
 		var dataObj = {
 			nomeCarro : $('#nomeEquipeValor').val(),
 			nomePiloto : $('#nomePilotoValor').val(),
@@ -66,7 +91,13 @@ function salvarEquipe() {
 			ptsPiloto : $('#habilidadePilotoValor').val(),
 			ptsCarro : $('#potenciaCarroValor').val(),
 			ptsAerodinamica : $('#aerodinamicaCarroValor').val(),
-			ptsFreio : $('#freioCarroValor').val()
+			ptsFreio : $('#freioCarroValor').val(),
+			c1R : c1.r,
+			c1G : c1.g,
+			c1B : c1.b,
+			c2R : c2.r,
+			c2G : c2.g,
+			c2B : c2.b
 		};
 		var urlServico = "/f1mane/rest/letsRace/equipe";
 		$.ajax({

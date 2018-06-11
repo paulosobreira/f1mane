@@ -175,6 +175,10 @@ function carregarDadosJogo() {
 				listaCircuitos();
 				return;
 			}
+			//ESPERANDO_JOGO_COMECAR 07
+			if (localStorage.getItem("modoCarreira") && '07' != dadosJogo.estado) {
+				toaster(lang_text('247'), 3000, 'alert alert-danger');
+			}
 			$('#imgCircuito').attr('src', '/f1mane/rest/letsRace/circuitoMini/' + dadosJogo.arquivoCircuito);
 			circuitoSelecionado = dadosJogo.arquivoCircuito;
 			idPilotoSelecionado = dadosJogo.idPilotoSelecionado;
@@ -284,7 +288,7 @@ function jogar() {
 		combustivel = 0;
 	}
 	var urlServico = "/f1mane/rest/letsRace/jogar/" + temporadaSelecionada + "/" + idPilotoSelecionado + "/" + circuitoSelecionado + "/" + voltas
-			+ "/" + tpPneu + "/" + combustivel + "/" + tpAsa;
+			+ "/" + tpPneu + "/" + combustivel + "/" + tpAsa+"/"+localStorage.getItem("modoCarreira");
 	$.ajax({
 		type : "GET",
 		url : urlServico,

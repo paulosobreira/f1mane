@@ -239,7 +239,7 @@ public class LetsRace {
 
 	@GET
 	@Compress
-	@Path("/jogar/{temporada}/{idPiloto}/{circuito}/{numVoltas}/{tipoPneu}/{combustivel}/{asa}")
+	@Path("/jogar/{temporada}/{idPiloto}/{circuito}/{numVoltas}/{tipoPneu}/{combustivel}/{asa}/{modoCarreira}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response jogar(@HeaderParam("token") String token,
 			@HeaderParam("idioma") String idioma,
@@ -249,7 +249,8 @@ public class LetsRace {
 			@PathParam("numVoltas") String numVoltas,
 			@PathParam("tipoPneu") String tipoPneu,
 			@PathParam("combustivel") String combustivel,
-			@PathParam("asa") String asa) {
+			@PathParam("asa") String asa,
+			@PathParam("modoCarreira") String modoCarreira) {
 		try {
 			SessaoCliente sessaoCliente = controlePaddock
 					.obterSessaoPorToken(token);
@@ -257,7 +258,9 @@ public class LetsRace {
 				return Response.status(401).build();
 			}
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-			// controlePaddock.modoCarreira(token,false);
+		
+			controlePaddock.modoCarreira(token, "true".equals(modoCarreira));
+
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
 			DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada,

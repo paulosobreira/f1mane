@@ -14,6 +14,7 @@ if (localStorage.getItem("versao") != $("#versao").val()) {
 
 localStorage.removeItem("idPilotoSelecionado");
 localStorage.removeItem("nomeJogo");
+localStorage.setItem("modoCarreira", false);
 
 var token = getParameter('token');
 
