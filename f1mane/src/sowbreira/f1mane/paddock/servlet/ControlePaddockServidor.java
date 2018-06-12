@@ -731,7 +731,11 @@ public class ControlePaddockServidor {
 		// String test = "#brual#llllp#";
 		// Logger.logar(test.replaceAll("#", ""));
 
-		String chave = String.valueOf(System.currentTimeMillis());
+		//String chave = String.valueOf(System.currentTimeMillis());
+		PassGenerator generator = new PassGenerator();
+		for (int i = 0; i < 1000; i++) {
+			System.out.println(generator.generateIt());
+		}
 	}
 
 	public boolean removerCliente(SessaoCliente sessaoCliente) {

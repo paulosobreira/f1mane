@@ -28,16 +28,41 @@ $('#btnJogar').bind("click", function() {
 
 
 $(document).on('click', '.number-spinner button', function() {
+	var ptsConstrutores = parseInt($('#pontosConstrutoresValor').html());
 	var btn = $(this), oldValue = btn.closest('.number-spinner').find('input').val().trim(), newVal = 0;
+	oldValue =parseInt(oldValue);
 	if (btn.attr('data-dir') == 'up') {
-		newVal = parseInt(oldValue) + 10;
+		if (oldValue < 600){
+			ptsConstrutores-=1;
+		}else if (oldValue >= 600 && oldValue < 700) {
+			ptsConstrutores-=2;
+		}else if (oldValue >= 700 && oldValue < 800) {
+			ptsConstrutores-=10;
+		}else if (oldValue >= 800 && oldValue < 900) {
+			ptsConstrutores-=100;
+		}else if (oldValue >= 800 && oldValue < 999) {
+			ptsConstrutores-=200;
+		}
+		newVal = oldValue + 1;
 	} else {
-		if (oldValue > 10) {
-			newVal = parseInt(oldValue) - 10;
+		if (oldValue < 600){
+			ptsConstrutores+=1;
+		}else if (oldValue >= 600 && oldValue < 700) {
+			ptsConstrutores+=2;
+		}else if (oldValue >= 700 && oldValue < 800) {
+			ptsConstrutores+=10;
+		}else if (oldValue >= 800 && oldValue < 900) {
+			ptsConstrutores+=100;
+		}else if (oldValue >= 800 && oldValue < 999) {
+			ptsConstrutores+=200;
+		}		
+		if (oldValue > 1) {
+			newVal = oldValue - 1;
 		} else {
-			newVal = 10;
+			newVal = 0;
 		}
 	}
+	$('#pontosConstrutoresValor').html(ptsConstrutores);
 	btn.closest('.number-spinner').find('input').val(newVal);
 });
 
@@ -72,6 +97,8 @@ function carregaEquipe() {
 			$('#potenciaCarroValor').val(response.ptsCarro);
 			$('#aerodinamicaCarroValor').val(response.ptsAerodinamica);
 			$('#freioCarroValor').val(response.ptsFreio);
+			$('#corEquipeValue1').val(rgbToHex(response.c1R,response.c1G,response.c1B));
+			$('#corEquipeValue2').val(rgbToHex(response.c2R,response.c2G,response.c2B));
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
@@ -81,17 +108,17 @@ function carregaEquipe() {
 }	
 	
 function salvarEquipe() {
-		var c1 = hexToRgb($('#corEquipe1').val())
-		var c2 = hexToRgb($('#corEquipe2').val())
+		var c1 = hexToRgb($('#corEquipeValue1').val())
+		var c2 = hexToRgb($('#corEquipeValue2').val())
 		var dataObj = {
 			nomeCarro : $('#nomeEquipeValor').val(),
 			nomePiloto : $('#nomePilotoValor').val(),
-			nomePilotoAbreviadoValor : $('#nomePilotoAbreviadoValor').val(),
-			pontosConstrutoresValor : $('#pontosConstrutoresValor').val(),
+			nomePilotoAbreviado : $('#nomePilotoAbreviadoValor').val(),
 			ptsPiloto : $('#habilidadePilotoValor').val(),
 			ptsCarro : $('#potenciaCarroValor').val(),
 			ptsAerodinamica : $('#aerodinamicaCarroValor').val(),
 			ptsFreio : $('#freioCarroValor').val(),
+			ptsConstrutores: $('#pontosConstrutoresValor').html(),
 			c1R : c1.r,
 			c1G : c1.g,
 			c1B : c1.b,
@@ -112,6 +139,7 @@ function salvarEquipe() {
 			data : JSON.stringify(dataObj),
 			success : function(response) {
 				toaster(lang_text('250'), 3000, 'alert alert-success');
+				carregaEquipe();
 			},
 			error : function(xhRequest, ErrorText, thrownError) {
 				tratamentoErro(xhRequest);

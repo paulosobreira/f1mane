@@ -46,6 +46,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	private int id;
 	private String nome;
+	private String nomeAbreviado;
 	private String nomeCarro;
 	private String nomeJogador;
 	private String imgJogador;
@@ -62,7 +63,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private int pontosCorrida;
 	private long porcentagemPontosCorrida;
 	private int habilidade;
-	
+
 	@JsonIgnore
 	private String tokenJogador;
 	@JsonIgnore
@@ -854,12 +855,20 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public String getNomeAbreviado() {
-		if (nome != null && nome.contains(".")) {
+		if (nome != null && nome.contains(".")
+				&& Util.isNullOrEmpty(nomeAbreviado)) {
 			String nmPiloto = nome.split("\\.")[1];
 			nmPiloto = nmPiloto.substring(0, 3);
 			return nmPiloto;
 		}
-		return null;
+		return nomeAbreviado;
+	}
+
+	public void setNomeAbreviado(String nomeAbreviado) {
+		if (!Util.isNullOrEmpty(nomeAbreviado) && nomeAbreviado.length() > 3) {
+			nomeAbreviado = nomeAbreviado.substring(0, 3);
+		}
+		this.nomeAbreviado = nomeAbreviado.toUpperCase();
 	}
 
 	public String getNome() {
@@ -871,8 +880,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setNome(String nome) {
-		if (nome == null || "".equals(nome))
-			nome = "H";
 		this.nome = nome;
 	}
 
@@ -1260,7 +1267,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (getPtosBox() != 0) {
 			return;
 		}
-
 		double mod = .995;
 
 		if (isFreiandoReta() && getCarro().getPorcentagemCombustivel() > Util
@@ -1329,7 +1335,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void processaColisao(InterfaceJogo controleJogo) {
-		if (controleJogo.isModoQualify() || isRecebeuBanderada()) {
+		if (controleJogo.isModoQualify()) {
 			setColisao(null);
 			return;
 		}
@@ -2120,9 +2126,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	private void processaEvitaBaterCarroFrente(InterfaceJogo controleJogo) {
 		evitaBaterCarroFrente = false;
 		if (controleJogo.isModoQualify()) {
-			return;
-		}
-		if (isRecebeuBanderada()) {
 			return;
 		}
 		if (carroPilotoDaFrenteRetardatario == null) {
@@ -3013,6 +3016,9 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void incStress(int val) {
+		if (isRecebeuBanderada()) {
+			return;
+		}
 		if (val < 1) {
 			return;
 		}

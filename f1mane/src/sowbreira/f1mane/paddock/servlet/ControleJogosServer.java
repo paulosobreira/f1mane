@@ -1206,8 +1206,7 @@ public class ControleJogosServer {
 	public Object equipe(SessaoCliente sessaoCliente) {
 		Session session = controlePersistencia.getSession();
 		try {
-			return controlePersistencia.carregaCarreiraJogador(
-					sessaoCliente.getToken(), true, session);
+			return controleClassificacao.verCarreira(sessaoCliente.getToken(),null);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			return new ErroServ(e);

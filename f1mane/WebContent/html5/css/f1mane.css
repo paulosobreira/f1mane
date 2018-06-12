@@ -32,7 +32,7 @@
 @media (orientation: portrait) {
 	body {
 	 margin: 0;
-	 background: url(../img/portrait.jpg); 
+	 /*background: url(../img/portrait.jpg);*/ 
 	 background-size: 100%,100%;
 	 background-repeat:no-repeat;
 	 background-attachment: fixed;
@@ -96,6 +96,7 @@
 	border-radius:50px;
 	text-align:center;
 	box-shadow: 2px 2px 3px black;
+	z-index: 1000;
 }
 
 .floatBtn{
@@ -109,6 +110,7 @@
 	border-radius:50px;
 	text-align:center;
 	box-shadow: 2px 2px 3px black;
+	z-index: 1000;
 }
 
 .floatBtnContent{
@@ -185,6 +187,7 @@
     bottom: 30px;
     font-size: 14px;
 }
+
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
 #snackbar.show {

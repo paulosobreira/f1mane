@@ -340,12 +340,23 @@ public class ControleClassificacao {
 		}
 	}
 
-	public CarreiraDadosSrv verCarreira(ClientPaddockPack clientPaddockPack,
+	public Object verCarreira(ClientPaddockPack clientPaddockPack,
 			Session session) {
+		return verCarreira(clientPaddockPack.getSessaoCliente().getToken(),
+				session);
+	}
+
+	public Object verCarreira(String token, Session session) {
+		Session sessionLocal = session;
+		if (sessionLocal == null) {
+			sessionLocal = controlePersistencia.getSession();
+		}
 		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-				.carregaCarreiraJogador(
-						clientPaddockPack.getSessaoCliente().getToken(), true,
-						session);
+				.carregaCarreiraJogador(token, true, sessionLocal);
+
+		if (session == null) {
+			sessionLocal.close();
+		}
 		if (carreiraDadosSrv.getPtsCarro() == 0) {
 			carreiraDadosSrv.setPtsCarro(500);
 		}
@@ -358,6 +369,10 @@ public class ControleClassificacao {
 		if (carreiraDadosSrv.getPtsFreio() == 0) {
 			carreiraDadosSrv.setPtsFreio(400);
 		}
+		if (carreiraDadosSrv.getPtsConstrutores() == 0) {
+			carreiraDadosSrv.setPtsConstrutores(100);
+		}
+		
 		return carreiraDadosSrv;
 	}
 
@@ -403,7 +418,13 @@ public class ControleClassificacao {
 					.carregaCarreiraJogador(token, false, session);
 			carreiraDadosSrv.setNomePiloto(carreiraDados.getNomePiloto());
 			carreiraDadosSrv.setNomeCarro(carreiraDados.getNomeCarro());
-
+			if (!Util.isNullOrEmpty(carreiraDados.getNomePilotoAbreviado())
+					&& carreiraDados.getNomePilotoAbreviado().length() > 3) {
+				carreiraDados.setNomePilotoAbreviado(
+						carreiraDados.getNomePilotoAbreviado().substring(0, 3));
+			}
+			carreiraDadosSrv.setNomePilotoAbreviado(
+					carreiraDados.getNomePilotoAbreviado().toUpperCase());
 			int ptsConstrutores = carreiraDados.getPtsConstrutores();
 			int ptsAerodinamica = carreiraDados.getPtsAerodinamica();
 			int ptsCarro = carreiraDados.getPtsCarro();
@@ -543,4 +564,5 @@ public class ControleClassificacao {
 				});
 		return classificacao;
 	}
+
 }

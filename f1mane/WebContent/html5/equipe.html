@@ -21,12 +21,12 @@
 			<h3 style="display: inline;">Fl-Mane</h3>
 			<h5>Formula league-Manager & Engineer</h5>
 		</section>
-		<div id="btnSalvar"  class="floatSalvar">
-		    <i class="fa fa-plus floatBtnContent glyphicon glyphicon-floppy-disk"></i>
+		<div id="btnSalvar" class="floatSalvar">
+			<i class="fa fa-plus floatBtnContent glyphicon glyphicon-floppy-disk"></i>
 		</div>
-		<div id="btnJogar"  class="floatBtn">
-		    <i class="fa fa-plus floatBtnContent glyphicon glyphicon-road"></i>
-		</div>	
+		<div id="btnJogar" class="floatBtn">
+			<i class="fa fa-plus floatBtnContent glyphicon glyphicon-road"></i>
+		</div>
 		<section class="container">
 			<form>
 				<div class="form-group">
@@ -35,11 +35,11 @@
 				</div>
 				<div class="form-group">
 					<label id="corEquipe1">Cor Equipe 1</label> <input type="color"
-						class="form-control" id="corEquipe1" required="required">
+						class="form-control" id="corEquipeValue1" required="required">
 				</div>
 				<div class="form-group">
 					<label id="corEquipe2">Cor Equipe 2</label> <input type="color"
-						class="form-control" id="corEquipe2" required="required">
+						class="form-control" id="corEquipeValue2" required="required">
 				</div>
 				<div class="form-group">
 					<label id="nomePiloto">Nome Piloto</label> <input type="text"
@@ -59,31 +59,78 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label id="habilidadePiloto">Piloto</label>
+					<div class="input-group number-spinner">
+						<span class="input-group-btn">
+							<button class="btn btn-default" data-dir="dwn">
+								<span class="glyphicon glyphicon-minus"></span>
+							</button>
+						</span> <input id="habilidadePilotoValor" type="number" readonly="readonly"
+							class="form-control text-center" value="800" min="0" max="1000">
+						<span class="input-group-btn">
+							<button class="btn btn-default" data-dir="up">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+						</span>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label id="potenciaCarro">Carro</label>
+					<div class="input-group number-spinner">
+						<span class="input-group-btn">
+							<button class="btn btn-default" data-dir="dwn">
+								<span class="glyphicon glyphicon-minus"></span>
+							</button>
+						</span> <input id="potenciaCarroValor" type="number" readonly="readonly"
+							class="form-control text-center" value="700" min="0" max="1000">
+						<span class="input-group-btn">
+							<button class="btn btn-default" data-dir="up">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label id="aerodinamicaCarro">Aerodinamica</label>
+					<div class="input-group number-spinner">
+						<span class="input-group-btn">
+							<button class="btn btn-default" data-dir="dwn">
+								<span class="glyphicon glyphicon-minus"></span>
+							</button>
+						</span> <input id="aerodinamicaCarroValor" type="number" readonly="readonly"
+							class="form-control text-center" value="600" min="0" max="1000">
+						<span class="input-group-btn">
+							<button class="btn btn-default" data-dir="up">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label id="freioCarro">Freios</label>
+					<div class="input-group number-spinner">
+						<span class="input-group-btn">
+							<button class="btn btn-default" data-dir="dwn">
+								<span class="glyphicon glyphicon-minus"></span>
+							</button>
+						</span> <input id="freioCarroValor" type="number" readonly="readonly"
+							class="form-control text-center" value="500" min="0" max="1000">
+						<span class="input-group-btn">
+							<button class="btn btn-default" data-dir="up">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+						</span>
+					</div>
+				</div>
+				<br><hr><br>
+				<div class="form-group">
 					<label id="pontosGanhos">Pontos ganhos</label>
-					<spam id="pontosGanhosValor">123</spam>
+					<spam id="pontosGanhosValor">400</spam>
 				</div>
 				<div class="form-group">
 					<label id="pontosDisponiveis">Pontos dispníveis</label>
-					<spam id="pontosConstrutoresValor">123</spam>
-				</div>
-				<div class="form-group">
-					<label id="habilidadePiloto">Piloto</label> <input
-						id="habilidadePilotoValor" type="number"
-						class="form-control text-center" value="70" min="10" max="100">
-				</div>
-				<div class="form-group">
-					<label id="potenciaCarro">Carro</label> <input
-						id="potenciaCarroValor" type="number"
-						class="form-control text-center" value="70" min="10" max="100">
-				</div>
-				<div class="form-group">
-					<label id="aerodinamicaCarro">Aerodinamica</label> <input
-						id="aerodinamicaCarroValor" type="number"
-						class="form-control text-center" value="70" min="10" max="100">
-				</div>
-				<div class="form-group">
-					<label id="freioCarro">Freios</label> <input id="freioCarroValor" type="number"
-						class="form-control text-center" value="70" min="10" max="100">
+					<spam id="pontosConstrutoresValor">400</spam>
 				</div>
 			</form>
 		</section>
