@@ -12,7 +12,7 @@ $('#habilidadePiloto').html(lang_text('255'));
 $('#potenciaCarro').html(lang_text('256'));
 $('#freioCarro').html(lang_text('freioCarro'));
 $('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
-
+var temporadaSelecionada;
 
 carregaEquipe();
 
@@ -24,6 +24,11 @@ $('#btnSalvar').bind("click", function() {
 $('#btnJogar').bind("click", function() {
 	localStorage.setItem("modoCarreira", true);
 	window.location = "menus.html";
+});
+
+$('#temporadaCarousel').on('slide.bs.carousel', function(event) {
+	selecionaTemporada($(event.relatedTarget).prop('temporada'));
+	$('#temporadaCarousel').carousel('pause');
 });
 
 
@@ -147,4 +152,50 @@ function salvarEquipe() {
 			}
 		});
 }
+
+function selecionaTemporada(temporada) {
+	var urlServico = "/f1mane/rest/letsRace/temporadas/" + temporada;
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		contentType : "application/json",
+		dataType : "json",
+		success : function(response) {
+			if (!response) {
+				console.log('selecionaTemporada() null');
+				return;
+			}
+			temporadaSelecionada = temporada;
+			$('#temporadasLabel').html(temporada);
+			var pilotos = response.pilotos;
+			$.each(pilotos, function(i, val) {
+				var piloto = pilotos[i];
+				var div = $('<div class="row"/>');
+				var capacete = $('<img class="img-responsive img-center"/>');
+				capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.nome);
+				div.append(capacete);
+				div.append(piloto.nome);
+				$('#escolher').append(div);
+				
+				div = $('<div class="row"/>');
+				var carroCima = $('<img class="img-responsive img-center"/>');
+				carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.nome);
+				div.append(carroCima);
+				
+				var carroLado = $('<img class="img-responsive img-center"/>');
+				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.nome);
+				div.append(carroLado);
+				
+				div.append(piloto.carro.nome);
+				$('#escolher').append(div);
+				
+			});
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
+			console.log('selecionaTemporada() ' + xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
 

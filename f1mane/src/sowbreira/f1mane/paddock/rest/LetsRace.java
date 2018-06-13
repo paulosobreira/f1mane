@@ -258,7 +258,7 @@ public class LetsRace {
 				return Response.status(401).build();
 			}
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-		
+
 			controlePaddock.modoCarreira(token, "true".equals(modoCarreira));
 
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
@@ -543,6 +543,30 @@ public class LetsRace {
 	}
 
 	@GET
+	@Path("/carroCima/{temporada}/{carro}")
+	@Produces("image/png")
+	public Response carroCimaTemporadaCarro(
+			@PathParam("temporada") String temporada,
+			@PathParam("carro") String carro) {
+		try {
+			BufferedImage carroCima = controlePaddock
+					.carroCimaTemporadaCarro(temporada, carro);
+			if (carroCima == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(carroCima, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+	}
+	
+	@GET
 	@Path("/carroCimaSemAreofolio")
 	@Produces("image/png")
 	public Response carroCimaSemAreofolio(
@@ -551,6 +575,30 @@ public class LetsRace {
 		try {
 			BufferedImage carroCima = controlePaddock
 					.obterCarroCimaSemAreofolio(nomeJogo, idPiloto);
+			if (carroCima == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(carroCima, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+	}
+	
+	@GET
+	@Path("/carroCimaSemAreofolio/{temporada}/{carro}")
+	@Produces("image/png")
+	public Response carroCimaSemAreofolioTemporadaCarro(
+			@PathParam("temporada") String temporada,
+			@PathParam("carro") String carro) {
+		try {
+			BufferedImage carroCima = controlePaddock
+					.carroCimaSemAreofolioTemporadaCarro(temporada, carro);
 			if (carroCima == null) {
 				return Response.status(200).entity("null").build();
 			}
@@ -598,6 +646,30 @@ public class LetsRace {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 	}
+	
+	@GET
+	@Path("/capacete/{temporada}/{piloto:.+}")
+	@Produces("image/png")
+	public Response capaceteTemporadaPiloto(
+			@PathParam("temporada") String temporada,
+			@PathParam("piloto") String piloto) {
+		try {
+			BufferedImage capacete = controlePaddock
+					.capaceteTemporadaPiloto(temporada, piloto);
+			if (capacete == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(capacete, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+	}
 
 	@GET
 	@Path("/carroLado")
@@ -632,6 +704,31 @@ public class LetsRace {
 		}
 	}
 
+	
+	@GET
+	@Path("/carroLado/{temporada}/{carro}")
+	@Produces("image/png")
+	public Response carroLadoTemporadaCarro(
+			@PathParam("temporada") String temporada,
+			@PathParam("carro") String carro) {
+		try {
+			BufferedImage carroCima = controlePaddock
+					.carroLadoTemporadaCarro(temporada, carro);
+			if (carroCima == null) {
+				return Response.status(200).entity("null").build();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(carroCima, "png", baos);
+			byte[] imageData = baos.toByteArray();
+			return Response.ok(new ByteArrayInputStream(imageData)).build();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+	}
+	
 	@GET
 	@Path("/png/{recurso}")
 	@Produces("image/png")

@@ -22,6 +22,7 @@ import br.nnpe.TokenGenerator;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
@@ -33,6 +34,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -47,6 +49,8 @@ public class ControlePaddockServidor {
 	private ControleCampeonatoServidor controleCampeonatoServidor;
 	private int versao;
 	private int contadorVistantes = 1;
+	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
+			.getCarregadorRecursos();
 
 	public DadosPaddock getDadosPaddock() {
 		return dadosPaddock;
@@ -731,7 +735,7 @@ public class ControlePaddockServidor {
 		// String test = "#brual#llllp#";
 		// Logger.logar(test.replaceAll("#", ""));
 
-		//String chave = String.valueOf(System.currentTimeMillis());
+		// String chave = String.valueOf(System.currentTimeMillis());
 		PassGenerator generator = new PassGenerator();
 		for (int i = 0; i < 1000; i++) {
 			System.out.println(generator.generateIt());
@@ -826,7 +830,63 @@ public class ControlePaddockServidor {
 	}
 
 	public void modoCarreira(String token, boolean modo) {
-		controlePersistencia.modoCarreira(token,modo);
+		controlePersistencia.modoCarreira(token, modo);
+	}
+
+	public BufferedImage carroCimaTemporadaCarro(String temporada,
+			String carro) {
+		temporada = "t" + temporada;
+		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+				.get(temporada);
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (piloto.getCarro().getNome().equals(carro)) {
+				return carregadorRecursos.obterCarroCima(piloto, temporada);
+			}
+		}
+		return null;
+	}
+
+	public BufferedImage carroCimaSemAreofolioTemporadaCarro(String temporada,
+			String carro) {
+		temporada = "t" + temporada;
+		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+				.get(temporada);
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (piloto.getCarro().getNome().equals(carro)) {
+				return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, temporada);
+			}
+		}
+		return null;
+	}
+
+	public BufferedImage capaceteTemporadaPiloto(String temporada,
+			String pilotoNome) {
+		temporada = "t" + temporada;
+		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+				.get(temporada);
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (piloto.getNomeOriginal().equals(pilotoNome)) {
+				return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, temporada);
+			}
+		}
+		return null;
+	}
+
+	public BufferedImage carroLadoTemporadaCarro(String temporada,
+			String carro) {
+		temporada = "t" + temporada;
+		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+				.get(temporada);
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (piloto.getCarro().getNome().equals(carro)) {
+				return carregadorRecursos.obterCarroLado(piloto, temporada);
+			}
+		}
+		return null;
 	}
 
 }
