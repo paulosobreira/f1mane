@@ -2,7 +2,7 @@
 @media (orientation: landscape) {
 	body {
 	 margin: 0;
-     background: url(../img/landscape.jpg);
+     /*background: url(../img/landscape.jpg);*/
 	 background-size: 100%,100%;
 	 background-repeat:no-repeat;
      background-attachment: fixed;	 	 

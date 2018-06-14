@@ -6,7 +6,7 @@ var idPilotoSelecionado;
 var temporadaSelecionada;
 var circuitoSelecionado;
 var token;
-var circuitos, temporadas, dadosJogo, drsTeporada;
+var circuitos, dadosJogo, drsTeporada;
 var jogoPreparado = false;
 
 $('#trocaPneuCheck').append(lang_text('trocaPneus'));
@@ -111,7 +111,7 @@ function gerarTr1Pilotos(piloto){
 	var capacetes = $('<div style="display:  inline-flex;"  />');
 	td1.append(capacetes);
 	var capacete = $('<img class="img-responsive img-center"/>');
-	capacete.attr('src', '/f1mane/rest/letsRace/capacete?id=' + piloto.id + '&temporada=' + temporadaSelecionada);
+	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' +piloto.id);
 	capacetes.append($('<br>'));
 	capacetes.append(capacete);
 	if(piloto.imgJogador!=null){
@@ -121,7 +121,7 @@ function gerarTr1Pilotos(piloto){
 	}
 	tr.append(td1);
 	var carroLado = $('<img class="img-responsive img-center"/>');
-	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado?id=' + piloto.id + '&temporada=' + temporadaSelecionada);
+	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
 	td2.append(carroLado);
 	if (piloto.id == idPilotoSelecionado) {
 		tr.addClass('success');
@@ -465,7 +465,6 @@ function listaTemporadas() {
 				console.log('listaTemporadas() response.length==0');
 				return;
 			}
-			temporadas = temporadasRes;
 			selecionaTemporada(temporadasRes[0]);
 			temporadaSelecionada = temporadasRes[0];
 			$('#temporadaActive').prop('temporada', temporadasRes[0]);

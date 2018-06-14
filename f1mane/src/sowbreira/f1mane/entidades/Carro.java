@@ -61,10 +61,10 @@ public class Carro implements Serializable {
 	private String tipoPneu;
 	private int potencia;
 	private int aerodinamica;
-	private int freios;	
-	
-	@JsonIgnore
+	private int freios;
+	private int id;
 	private String nome;
+	
 	@JsonIgnore
 	private String img;
 	@JsonIgnore
@@ -1262,6 +1262,14 @@ public class Carro implements Serializable {
 
 	public void setPorcentagemDesgasteMotor(int porcentagemDesgasteMotor) {
 		this.porcentagemDesgasteMotor = porcentagemDesgasteMotor;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

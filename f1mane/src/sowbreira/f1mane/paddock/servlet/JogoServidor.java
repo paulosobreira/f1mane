@@ -377,7 +377,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					.get(key);
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
-				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())) {
+				if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 					CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 							.obterCarreiraSrv(key);
 					if (carreiraDadosSrv.isModoCarreira()) {
@@ -393,6 +393,14 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 								.setPotencia(carreiraDadosSrv.getPtsCarro());
 						piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
 						piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
+						piloto.setTemporadaCapaceteLivery(
+								carreiraDadosSrv.getTemporadaCapaceteLivery());
+						piloto.setTemporadaCarroLivery(
+								carreiraDadosSrv.getTemporadaCarroLivery());
+						piloto.setIdCarroLivery(
+								carreiraDadosSrv.getIdCarroLivery());
+						piloto.setIdCapaceteLivery(
+								carreiraDadosSrv.getIdCapaceteLivery());
 					}
 				}
 			}

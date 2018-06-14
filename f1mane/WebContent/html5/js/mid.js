@@ -40,19 +40,20 @@ function mid_caregaMidia() {
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		var piloto = dadosJogo.pilotos[i];
 		var imgCarro = new Image();
-		imgCarro.src = "/f1mane/rest/letsRace/carroCima?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + piloto.id;
+		
+		imgCarro.src = '/f1mane/rest/letsRace/carroCima/' + dadosJogo.temporada + '/' + piloto.carro.id;
 		carrosImgMap.set(piloto.id, imgCarro);
 
 		var imgSemAereofolio = new Image();
-		imgSemAereofolio.src = "/f1mane/rest/letsRace/carroCimaSemAreofolio?nomeJogo=" + dadosJogo.nomeJogo + "&idPiloto=" + piloto.id;
+		imgSemAereofolio.src = "/f1mane/rest/letsRace/carroCimaSemAreofolio/" + dadosJogo.temporada + "/" + piloto.carro.id;
 		carrosImgSemAereofolioMap.set(piloto.id, imgSemAereofolio);
 
 		var imgCarroLado = new Image();
-		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado?id=" + piloto.id + "&temporada=" + dadosJogo.temporada;
+		imgCarroLado.src = "/f1mane/rest/letsRace/carroLado/" + dadosJogo.temporada + "/" + piloto.carro.id ;
 		carrosLadoImgMap.set(piloto.id, imgCarroLado);
 
 		var imgCapacete = new Image();
-		imgCapacete.src = "/f1mane/rest/letsRace/capacete?id=" + piloto.id + "&temporada=" + dadosJogo.temporada
+		imgCapacete.src = "/f1mane/rest/letsRace/capacete/" + dadosJogo.temporada + "/" + piloto.id ;
 		capaceteImgMap.set(piloto.id, imgCapacete);
 		
 		jogadorImgMap.set(piloto.id, piloto.imgJogador);			

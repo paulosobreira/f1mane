@@ -142,7 +142,7 @@ public class CarregadorRecursos {
 				}
 
 			} catch (Exception e) {
-				Logger.logar("Erro gerando transparencia para :" + file);
+				Logger.logar(" carregaBufferedImageTranspareciaBranca Erro gerando transparencia para :" + file);
 				Logger.logarExept(e);
 			}
 
@@ -468,8 +468,10 @@ public class CarregadorRecursos {
 		properties.load(recursoComoStream(
 				"properties/" + temporada + "/carros.properties"));
 		Enumeration propNames = properties.propertyNames();
+		int id = 1;
 		while (propNames.hasMoreElements()) {
 			Carro carro = new Carro();
+			carro.setId(id++);
 			String name = (String) propNames.nextElement();
 			String prop = properties.getProperty(name);
 			carro.setNome(Util.substVogais(name));
@@ -520,6 +522,7 @@ public class CarregadorRecursos {
 
 	public static Carro criarCopiaCarro(Carro carro, Piloto piloto) {
 		Carro carroNovo = new Carro();
+		carroNovo.setId(carro.getId());
 		carroNovo.setNome(carro.getNome());
 		carroNovo.setCor1(carro.getCor1());
 		carroNovo.setCor2(carro.getCor2());

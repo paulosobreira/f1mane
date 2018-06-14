@@ -121,10 +121,7 @@ public class LetsRace {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		if (circuito == null) {
-			return Response.status(400)
-					.entity(StringEscapeUtils
-							.escapeHtml4("Circuito não encontrado."))
-					.type(MediaType.APPLICATION_JSON).build();
+			return Response.status(404).build();
 		}
 		return Response.status(200).entity(circuito).build();
 	}
@@ -520,29 +517,6 @@ public class LetsRace {
 	}
 
 	@GET
-	@Path("/carroCima")
-	@Produces("image/png")
-	public Response carroCima(@QueryParam("nomeJogo") String nomeJogo,
-			@QueryParam("idPiloto") String idPiloto) {
-		try {
-			BufferedImage carroCima = controlePaddock.obterCarroCima(nomeJogo,
-					idPiloto);
-			if (carroCima == null) {
-				return Response.status(200).entity("null").build();
-			}
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(carroCima, "png", baos);
-			byte[] imageData = baos.toByteArray();
-			return Response.ok(new ByteArrayInputStream(imageData)).build();
-		} catch (Exception e) {
-			Logger.topExecpts(e);
-			return Response.status(500)
-					.entity(new ErroServ(e).obterErroFormatado())
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-	}
-
-	@GET
 	@Path("/carroCima/{temporada}/{carro}")
 	@Produces("image/png")
 	public Response carroCimaTemporadaCarro(
@@ -565,31 +539,7 @@ public class LetsRace {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 	}
-	
-	@GET
-	@Path("/carroCimaSemAreofolio")
-	@Produces("image/png")
-	public Response carroCimaSemAreofolio(
-			@QueryParam("nomeJogo") String nomeJogo,
-			@QueryParam("idPiloto") String idPiloto) {
-		try {
-			BufferedImage carroCima = controlePaddock
-					.obterCarroCimaSemAreofolio(nomeJogo, idPiloto);
-			if (carroCima == null) {
-				return Response.status(200).entity("null").build();
-			}
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(carroCima, "png", baos);
-			byte[] imageData = baos.toByteArray();
-			return Response.ok(new ByteArrayInputStream(imageData)).build();
-		} catch (Exception e) {
-			Logger.topExecpts(e);
-			return Response.status(500)
-					.entity(new ErroServ(e).obterErroFormatado())
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-	}
-	
+
 	@GET
 	@Path("/carroCimaSemAreofolio/{temporada}/{carro}")
 	@Produces("image/png")
@@ -615,40 +565,7 @@ public class LetsRace {
 	}
 
 	@GET
-	@Path("/capacete")
-	@Produces("image/png")
-	public Response capacete(@QueryParam("id") String id,
-			@QueryParam("temporada") String temporada) {
-		try {
-			temporada = "t" + temporada;
-			BufferedImage capacetes = null;
-			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-					.get(temporada);
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				if (Integer.parseInt(id) == piloto.getId()) {
-					capacetes = carregadorRecursos.obterCapacete(piloto,
-							temporada);
-					break;
-				}
-			}
-			if (capacetes == null) {
-				return Response.status(200).entity("null").build();
-			}
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(capacetes, "png", baos);
-			byte[] imageData = baos.toByteArray();
-			return Response.ok(new ByteArrayInputStream(imageData)).build();
-		} catch (Exception e) {
-			Logger.topExecpts(e);
-			return Response.status(500)
-					.entity(new ErroServ(e).obterErroFormatado())
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-	}
-	
-	@GET
-	@Path("/capacete/{temporada}/{piloto:.+}")
+	@Path("/capacete/{temporada}/{piloto}")
 	@Produces("image/png")
 	public Response capaceteTemporadaPiloto(
 			@PathParam("temporada") String temporada,
@@ -674,6 +591,7 @@ public class LetsRace {
 	@GET
 	@Path("/carroLado")
 	@Produces("image/png")
+	@Deprecated
 	public Response carroLado(@QueryParam("id") String id,
 			@QueryParam("temporada") String temporada) {
 		try {
@@ -704,7 +622,6 @@ public class LetsRace {
 		}
 	}
 
-	
 	@GET
 	@Path("/carroLado/{temporada}/{carro}")
 	@Produces("image/png")
@@ -728,7 +645,7 @@ public class LetsRace {
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 	}
-	
+
 	@GET
 	@Path("/png/{recurso}")
 	@Produces("image/png")

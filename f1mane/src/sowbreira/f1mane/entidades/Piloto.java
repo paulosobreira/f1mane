@@ -45,6 +45,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public static final int METADE_CARRO = 20;
 
 	private int id;
+	private Carro carro = new Carro();
 	private String nome;
 	private String nomeAbreviado;
 	private String nomeCarro;
@@ -56,13 +57,17 @@ public class Piloto implements Serializable, PilotoSuave {
 	private boolean jogadorHumano;
 	private int numeroVolta;
 	private Volta melhorVolta;
-	private Carro carro = new Carro();
 	private String vantagem;
 	private int qtdeParadasBox;
 	private String tempoVoltaQualificacao;
 	private int pontosCorrida;
 	private long porcentagemPontosCorrida;
 	private int habilidade;
+	
+	private Integer temporadaCapaceteLivery;
+	private Integer temporadaCarroLivery;
+	private Integer idCapaceteLivery;
+	private Integer idCarroLivery;
 
 	@JsonIgnore
 	private String tokenJogador;
@@ -3701,6 +3706,38 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setPorcentagemPontosCorrida(long porcentagemPontosCorrida) {
 		this.porcentagemPontosCorrida = porcentagemPontosCorrida;
+	}
+
+	public Integer getTemporadaCapaceteLivery() {
+		return temporadaCapaceteLivery;
+	}
+
+	public void setTemporadaCapaceteLivery(Integer temporadaCapaceteLivery) {
+		this.temporadaCapaceteLivery = temporadaCapaceteLivery;
+	}
+
+	public Integer getTemporadaCarroLivery() {
+		return temporadaCarroLivery;
+	}
+
+	public void setTemporadaCarroLivery(Integer temporadaCarroLivery) {
+		this.temporadaCarroLivery = temporadaCarroLivery;
+	}
+
+	public Integer getIdCapaceteLivery() {
+		return idCapaceteLivery;
+	}
+
+	public void setIdCapaceteLivery(Integer idCapaceteLivery) {
+		this.idCapaceteLivery = idCapaceteLivery;
+	}
+
+	public Integer getIdCarroLivery() {
+		return idCarroLivery;
+	}
+
+	public void setIdCarroLivery(Integer idCarroLivery) {
+		this.idCarroLivery = idCarroLivery;
 	}
 
 }

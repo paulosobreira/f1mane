@@ -840,7 +840,7 @@ public class ControlePaddockServidor {
 				.get(temporada);
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.getCarro().getNome().equals(carro)) {
+			if (piloto.getCarro().getId() == Integer.parseInt(carro)) {
 				return carregadorRecursos.obterCarroCima(piloto, temporada);
 			}
 		}
@@ -854,22 +854,23 @@ public class ControlePaddockServidor {
 				.get(temporada);
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.getCarro().getNome().equals(carro)) {
-				return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, temporada);
+			if (piloto.getCarro().getId() == Integer.parseInt(carro)) {
+				return carregadorRecursos.obterCarroCimaSemAreofolio(piloto,
+						temporada);
 			}
 		}
 		return null;
 	}
 
 	public BufferedImage capaceteTemporadaPiloto(String temporada,
-			String pilotoNome) {
+			String pilotoId) {
 		temporada = "t" + temporada;
 		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
 				.get(temporada);
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.getNomeOriginal().equals(pilotoNome)) {
-				return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, temporada);
+			if (piloto.getId() == Integer.parseInt(pilotoId)) {
+				return carregadorRecursos.obterCapacete(piloto, temporada);
 			}
 		}
 		return null;
@@ -882,7 +883,7 @@ public class ControlePaddockServidor {
 				.get(temporada);
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.getCarro().getNome().equals(carro)) {
+			if (piloto.getCarro().getId() == Integer.parseInt(carro)) {
 				return carregadorRecursos.obterCarroLado(piloto, temporada);
 			}
 		}

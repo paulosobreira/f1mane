@@ -13,9 +13,9 @@ $('#potenciaCarro').html(lang_text('256'));
 $('#freioCarro').html(lang_text('freioCarro'));
 $('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
 var temporadaSelecionada;
-
+//listaTemporadas();
 carregaEquipe();
-
+$('#temporadaCarousel').carousel('pause');
 
 $('#btnSalvar').bind("click", function() {
 	salvarEquipe();
@@ -167,33 +167,69 @@ function selecionaTemporada(temporada) {
 			}
 			temporadaSelecionada = temporada;
 			$('#temporadasLabel').html(temporada);
+			$('#escolher').html('');
 			var pilotos = response.pilotos;
 			$.each(pilotos, function(i, val) {
 				var piloto = pilotos[i];
 				var div = $('<div class="row"/>');
 				var capacete = $('<img class="img-responsive img-center"/>');
-				capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.nome);
+				capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id);
 				div.append(capacete);
 				div.append(piloto.nome);
 				$('#escolher').append(div);
 				
 				div = $('<div class="row"/>');
 				var carroCima = $('<img class="img-responsive img-center"/>');
-				carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.nome);
+				carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id);
 				div.append(carroCima);
 				
 				var carroLado = $('<img class="img-responsive img-center"/>');
-				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.nome);
+				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
 				div.append(carroLado);
-				
+				div.append($('<br>'));
 				div.append(piloto.carro.nome);
 				$('#escolher').append(div);
-				
 			});
+			$('#temporadaCarousel').carousel('pause');
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
 			console.log('selecionaTemporada() ' + xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
+function listaTemporadas() {
+	var urlServico = "/f1mane/rest/letsRace/temporadas";
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		contentType : "application/json",
+		dataType : "json",
+		success : function(temporadasRes) {
+			if (temporadasRes.length == 0) {
+				console.log('listaTemporadas() response.length==0');
+				return;
+			}
+			selecionaTemporada(temporadasRes[0]);
+			temporadaSelecionada = temporadasRes[0];
+			$('#temporadaActive').prop('temporada', temporadasRes[0]);
+			$.each(temporadasRes, function(i, val) {
+				if (i == 0) {
+					return;
+				}
+				var dv = $('<div class="item"></div>');
+				var h1 = $('<h1 class="text-center"></h1>');
+				dv.prop('temporada', this);
+				h1.append(this);
+				dv.append(h1);
+				$('#temporadaCarousel-inner').append(dv);
+			});
+			$('#temporadaCarousel').carousel('pause');
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
+			console.log('listaTemporadas() ' + xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
