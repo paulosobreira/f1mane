@@ -589,40 +589,6 @@ public class LetsRace {
 	}
 
 	@GET
-	@Path("/carroLado")
-	@Produces("image/png")
-	@Deprecated
-	public Response carroLado(@QueryParam("id") String id,
-			@QueryParam("temporada") String temporada) {
-		try {
-			temporada = "t" + temporada;
-			BufferedImage capacetes = null;
-			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-					.get(temporada);
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				if (Integer.parseInt(id) == piloto.getId()) {
-					capacetes = carregadorRecursos.obterCarroLado(piloto,
-							temporada);
-					break;
-				}
-			}
-			if (capacetes == null) {
-				return Response.status(200).entity("null").build();
-			}
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(capacetes, "png", baos);
-			byte[] imageData = baos.toByteArray();
-			return Response.ok(new ByteArrayInputStream(imageData)).build();
-		} catch (Exception e) {
-			Logger.topExecpts(e);
-			return Response.status(500)
-					.entity(new ErroServ(e).obterErroFormatado())
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-	}
-
-	@GET
 	@Path("/carroLado/{temporada}/{carro}")
 	@Produces("image/png")
 	public Response carroLadoTemporadaCarro(
@@ -913,9 +879,12 @@ public class LetsRace {
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();
-		Object equipe = controleJogosServer.equipe(sessaoCliente);
-		processsaMensagem(equipe, idioma);
-		return Response.status(200).entity(equipe).build();
+		Object ret = controleJogosServer.equipe(sessaoCliente);
+		Response erro = processsaMensagem(ret, idioma);
+		if (erro != null) {
+			return erro;
+		}
+		return Response.status(200).entity(ret).build();
 	}
 
 	@POST
@@ -934,7 +903,10 @@ public class LetsRace {
 				.getControleJogosServer();
 		Object ret = controleJogosServer.gravarEquipe(sessaoCliente, idioma,
 				equipe);
-		processsaMensagem(ret, idioma);
+		Response erro = processsaMensagem(ret, idioma);
+		if (erro != null) {
+			return erro;
+		}
 		return Response.status(200).entity(ret).build();
 	}
 

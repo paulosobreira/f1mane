@@ -13,7 +13,7 @@ $('#potenciaCarro').html(lang_text('256'));
 $('#freioCarro').html(lang_text('freioCarro'));
 $('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
 var temporadaSelecionada;
-//listaTemporadas();
+listaTemporadas();
 carregaEquipe();
 $('#temporadaCarousel').carousel('pause');
 
@@ -104,6 +104,17 @@ function carregaEquipe() {
 			$('#freioCarroValor').val(response.ptsFreio);
 			$('#corEquipeValue1').val(rgbToHex(response.c1R,response.c1G,response.c1B));
 			$('#corEquipeValue2').val(rgbToHex(response.c2R,response.c2G,response.c2B));
+			$('#temporadaCapaceteLivery').val(response.temporadaCapaceteLivery);
+			$('#temporadaCarroLivery').val(response.temporadaCarroLivery);
+			$('#idCapaceteLivery').val(response.idCapaceteLivery);
+			$('#idCarroLivery').val(response.idCarroLivery);
+			$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + response.temporadaCapaceteLivery + '/' + response.idCapaceteLivery);
+			$('#idImgCarroLado').attr('src', '/f1mane/rest/letsRace/carroLado/' + response.temporadaCarroLivery + '/' + response.idCarroLivery);
+			$('#idImgCarroCima').attr('src', '/f1mane/rest/letsRace/carroCima/' + response.temporadaCarroLivery + '/' + response.idCarroLivery);
+			$('#imagens').bind("click", function() {
+				$('#equipe').addClass('hidden');
+				$('#escolha').removeClass('hidden');
+			});
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
@@ -167,8 +178,10 @@ function selecionaTemporada(temporada) {
 			}
 			temporadaSelecionada = temporada;
 			$('#temporadasLabel').html(temporada);
-			$('#escolher').html('');
+			$('#capacetes').html('');
+			$('#carros').html('');
 			var pilotos = response.pilotos;
+			var mapCarros = new Map();
 			$.each(pilotos, function(i, val) {
 				var piloto = pilotos[i];
 				var div = $('<div class="row"/>');
@@ -176,19 +189,36 @@ function selecionaTemporada(temporada) {
 				capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id);
 				div.append(capacete);
 				div.append(piloto.nome);
-				$('#escolher').append(div);
-				
-				div = $('<div class="row"/>');
-				var carroCima = $('<img class="img-responsive img-center"/>');
-				carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id);
-				div.append(carroCima);
-				
-				var carroLado = $('<img class="img-responsive img-center"/>');
-				carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
-				div.append(carroLado);
-				div.append($('<br>'));
-				div.append(piloto.carro.nome);
-				$('#escolher').append(div);
+				div.bind("click", function() {
+					$('#temporadaCapaceteLivery').val(temporadaSelecionada);
+					$('#idCapaceteLivery').val(piloto.id);
+					$('#escolha').addClass('hidden');
+					$('#equipe').removeClass('hidden');
+				});
+				$('#capacetes').append(div);
+				if(mapCarros.get(piloto.carro.id)==null){
+					mapCarros.set(piloto.carro.id,piloto.carro.id);
+					div = $('<div class="row"/>');
+					var carroCima = $('<img class="img-responsive img-center"/>');
+					carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id);
+					div.append(carroCima);
+					
+					var carroLado = $('<img class="img-responsive img-center"/>');
+					carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
+					div.append(carroLado);
+					div.append($('<br>'));
+					div.append(piloto.carro.nome);
+					div.bind("click", function() {
+						$('#temporadaCapaceteLivery').val(response.temporadaCapaceteLivery);
+						$('#temporadaCarroLivery').val(response.temporadaCarroLivery);
+						$('#idCapaceteLivery').val(response.idCapaceteLivery);
+						$('#idCarroLivery').val(response.idCarroLivery);
+						$('#escolha').addClass('hidden');
+						$('#equipe').removeClass('hidden');
+					});
+					$('#carros').append(div);					
+				}
+
 			});
 			$('#temporadaCarousel').carousel('pause');
 		},
