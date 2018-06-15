@@ -108,9 +108,9 @@ function carregaEquipe() {
 			$('#temporadaCarroLivery').val(response.temporadaCarroLivery);
 			$('#idCapaceteLivery').val(response.idCapaceteLivery);
 			$('#idCarroLivery').val(response.idCarroLivery);
-			$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + response.temporadaCapaceteLivery + '/' + response.idCapaceteLivery);
-			$('#idImgCarroLado').attr('src', '/f1mane/rest/letsRace/carroLado/' + response.temporadaCarroLivery + '/' + response.idCarroLivery);
-			$('#idImgCarroCima').attr('src', '/f1mane/rest/letsRace/carroCima/' + response.temporadaCarroLivery + '/' + response.idCarroLivery);
+			$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + response.temporadaCapaceteLivery + '/' + response.idCapaceteLivery+'/'+localStorage.getItem("token"));
+			$('#idImgCarroLado').attr('src', '/f1mane/rest/letsRace/carroLado/' + response.temporadaCarroLivery + '/' + response.idCarroLivery+'/'+localStorage.getItem("token"));
+			$('#idImgCarroCima').attr('src', '/f1mane/rest/letsRace/carroCima/' + response.temporadaCarroLivery + '/' + response.idCarroLivery+'/'+localStorage.getItem("token"));
 			$('#imagens').bind("click", function() {
 				$('#equipe').addClass('hidden');
 				$('#escolha').removeClass('hidden');
@@ -186,7 +186,7 @@ function selecionaTemporada(temporada) {
 				var piloto = pilotos[i];
 				var div = $('<div class="row"/>');
 				var capacete = $('<img class="img-responsive img-center"/>');
-				capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id);
+				capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id + '/' +  localStorage.getItem("token"));
 				div.append(capacete);
 				div.append(piloto.nome);
 				div.bind("click", function() {
@@ -200,11 +200,11 @@ function selecionaTemporada(temporada) {
 					mapCarros.set(piloto.carro.id,piloto.carro.id);
 					div = $('<div class="row"/>');
 					var carroCima = $('<img class="img-responsive img-center"/>');
-					carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id);
+					carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id+ '/' +  localStorage.getItem("token"));
 					div.append(carroCima);
 					
 					var carroLado = $('<img class="img-responsive img-center"/>');
-					carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
+					carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id+ '/' +  localStorage.getItem("token"));
 					div.append(carroLado);
 					div.append($('<br>'));
 					div.append(piloto.carro.nome);

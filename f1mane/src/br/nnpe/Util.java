@@ -283,10 +283,6 @@ public class Util {
 		return double2Decimal(num.doubleValue());
 	}
 
-	/**
-	 * @param qtEntrada
-	 * @return
-	 */
 	public static int intOr0(Integer i) {
 		if (i == null) {
 			return 0;
@@ -295,10 +291,17 @@ public class Util {
 		}
 	}
 
-	public static boolean isNumero(String planoConta) {
+	public static int intOr0(String i) {
 		try {
-			Integer.parseInt(planoConta);
+			return Integer.parseInt(i);
+		} catch (Exception e) {
+		}
+		return 0;
+	}
 
+	public static boolean isNumero(String num) {
+		try {
+			Integer.parseInt(num);
 			return true;
 		} catch (Exception e) {
 			return false;

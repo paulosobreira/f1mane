@@ -517,14 +517,24 @@ public class LetsRace {
 	}
 
 	@GET
+	@Path("/carroCima/{temporada}/{carro}/{token}")
+	@Produces("image/png")
+	public Response carroCimaTemporadaCarroToken(
+			@PathParam("temporada") String temporada,
+			@PathParam("carro") String carro,
+			@PathParam("token") String token) {
+		return carroCimaTemporadaCarro(token, temporada, carro);
+	}
+
+	@GET
 	@Path("/carroCima/{temporada}/{carro}")
 	@Produces("image/png")
-	public Response carroCimaTemporadaCarro(
+	public Response carroCimaTemporadaCarro(@HeaderParam("token") String token,
 			@PathParam("temporada") String temporada,
 			@PathParam("carro") String carro) {
 		try {
 			BufferedImage carroCima = controlePaddock
-					.carroCimaTemporadaCarro(temporada, carro);
+					.carroCimaTemporadaCarro(temporada, carro, token);
 			if (carroCima == null) {
 				return Response.status(200).entity("null").build();
 			}
@@ -565,14 +575,24 @@ public class LetsRace {
 	}
 
 	@GET
+	@Path("/capacete/{temporada}/{piloto}/{token}")
+	@Produces("image/png")
+	public Response capaceteTemporadaPilotoToken(
+			@PathParam("temporada") String temporada,
+			@PathParam("piloto") String piloto,
+			@PathParam("token") String token) {
+		return capaceteTemporadaPiloto(token, temporada, piloto);
+	}
+
+	@GET
 	@Path("/capacete/{temporada}/{piloto}")
 	@Produces("image/png")
-	public Response capaceteTemporadaPiloto(
+	public Response capaceteTemporadaPiloto(@HeaderParam("token") String token,
 			@PathParam("temporada") String temporada,
 			@PathParam("piloto") String piloto) {
 		try {
 			BufferedImage capacete = controlePaddock
-					.capaceteTemporadaPiloto(temporada, piloto);
+					.capaceteTemporadaPiloto(temporada, piloto, token);
 			if (capacete == null) {
 				return Response.status(200).entity("null").build();
 			}
@@ -589,14 +609,24 @@ public class LetsRace {
 	}
 
 	@GET
+	@Path("/carroLado/{temporada}/{carro}/{token}")
+	@Produces("image/png")
+	public Response carroLadoTemporadaCarroToken(
+			@PathParam("temporada") String temporada,
+			@PathParam("carro") String carro,
+			@PathParam("token") String token) {
+		return carroLadoTemporadaCarro(token, temporada, carro);
+	}
+
+	@GET
 	@Path("/carroLado/{temporada}/{carro}")
 	@Produces("image/png")
-	public Response carroLadoTemporadaCarro(
+	public Response carroLadoTemporadaCarro(@HeaderParam("token") String token,
 			@PathParam("temporada") String temporada,
 			@PathParam("carro") String carro) {
 		try {
 			BufferedImage carroCima = controlePaddock
-					.carroLadoTemporadaCarro(temporada, carro);
+					.carroLadoTemporadaCarro(temporada, carro, token);
 			if (carroCima == null) {
 				return Response.status(200).entity("null").build();
 			}

@@ -372,40 +372,18 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private void atualizarJogadoresOnlineCarreira() {
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
 				.hasNext();) {
-			String key = (String) iter.next();
+			String token = (String) iter.next();
 			DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-					.get(key);
+					.get(token);
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
-					CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-							.obterCarreiraSrv(key);
-					if (carreiraDadosSrv.isModoCarreira()) {
-						piloto.setNome(carreiraDadosSrv.getNomePiloto());
-						dadosParticiparJogo
-								.setPiloto(carreiraDadosSrv.getNomePiloto());
-						piloto.setHabilidade(
-								(int) (carreiraDadosSrv.getPtsPiloto()));
-						piloto.getCarro()
-								.setNome(carreiraDadosSrv.getNomeCarro());
-						piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
-						piloto.getCarro()
-								.setPotencia(carreiraDadosSrv.getPtsCarro());
-						piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
-						piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
-						piloto.setTemporadaCapaceteLivery(
-								carreiraDadosSrv.getTemporadaCapaceteLivery());
-						piloto.setTemporadaCarroLivery(
-								carreiraDadosSrv.getTemporadaCarroLivery());
-						piloto.setIdCarroLivery(
-								carreiraDadosSrv.getIdCarroLivery());
-						piloto.setIdCapaceteLivery(
-								carreiraDadosSrv.getIdCapaceteLivery());
-					}
+					controleClassificacao
+							.atualizarJogadoresOnlineCarreira(piloto, token);
+					dadosParticiparJogo.setPiloto(piloto.getNome());
 				}
 			}
 			dadosParticiparJogo.setPilotosCarreira(pilotos);
-
 		}
 	}
 

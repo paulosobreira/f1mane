@@ -833,18 +833,23 @@ public class ControlePaddockServidor {
 		controlePersistencia.modoCarreira(token, modo);
 	}
 
-	public BufferedImage carroCimaTemporadaCarro(String temporada,
-			String carro) {
-		temporada = "t" + temporada;
-		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-				.get(temporada);
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.getCarro().getId() == Integer.parseInt(carro)) {
-				return carregadorRecursos.obterCarroCima(piloto, temporada);
+	public BufferedImage carroCimaTemporadaCarro(String temporada, String carro,
+			String token) {
+		int idCarro = Util.intOr0(carro);
+		if (idCarro == 0) {
+			return atualizarJogadoresOnlineCarreira(token);
+		} else {
+			temporada = "t" + temporada;
+			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+					.get(temporada);
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (piloto.getCarro().getId() == idCarro) {
+					return carregadorRecursos.obterCarroCima(piloto, temporada);
+				}
 			}
+			return null;
 		}
-		return null;
 	}
 
 	public BufferedImage carroCimaSemAreofolioTemporadaCarro(String temporada,
@@ -854,7 +859,7 @@ public class ControlePaddockServidor {
 				.get(temporada);
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.getCarro().getId() == Integer.parseInt(carro)) {
+			if (piloto.getCarro().getId() == Util.intOr0(carro)) {
 				return carregadorRecursos.obterCarroCimaSemAreofolio(piloto,
 						temporada);
 			}
@@ -863,31 +868,51 @@ public class ControlePaddockServidor {
 	}
 
 	public BufferedImage capaceteTemporadaPiloto(String temporada,
-			String pilotoId) {
-		temporada = "t" + temporada;
-		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-				.get(temporada);
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.getId() == Integer.parseInt(pilotoId)) {
-				return carregadorRecursos.obterCapacete(piloto, temporada);
+			String pilotoId, String token) {
+		int idPiloto = Util.intOr0(pilotoId);
+		if (idPiloto == 0) {
+			return atualizarJogadoresOnlineCarreira(token);
+		} else {
+			temporada = "t" + temporada;
+			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+					.get(temporada);
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (piloto.getId() == idPiloto) {
+					return carregadorRecursos.obterCapacete(piloto, temporada);
+				}
 			}
+			return null;
 		}
-		return null;
 	}
 
-	public BufferedImage carroLadoTemporadaCarro(String temporada,
-			String carro) {
-		temporada = "t" + temporada;
-		List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-				.get(temporada);
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			Piloto piloto = (Piloto) iterator.next();
-			if (piloto.getCarro().getId() == Integer.parseInt(carro)) {
-				return carregadorRecursos.obterCarroLado(piloto, temporada);
+	public BufferedImage carroLadoTemporadaCarro(String temporada, String carro,
+			String token) {
+		int idCarro = Util.intOr0(carro);
+		if (idCarro == 0) {
+			return atualizarJogadoresOnlineCarreira(token);
+		} else {
+			temporada = "t" + temporada;
+			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
+					.get(temporada);
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (piloto.getCarro().getId() == idCarro) {
+					return carregadorRecursos.obterCarroLado(piloto, temporada);
+				}
 			}
+			return null;
 		}
-		return null;
+	}
+
+	public BufferedImage atualizarJogadoresOnlineCarreira(String token) {
+		Piloto piloto = new Piloto();
+		if (controleClassificacao.atualizarJogadoresOnlineCarreira(piloto,
+				token)) {
+			return carregadorRecursos.obterCarroLado(piloto, null);
+		} else {
+			return null;
+		}
 	}
 
 }

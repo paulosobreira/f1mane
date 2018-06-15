@@ -372,7 +372,7 @@ public class ControleClassificacao {
 		if (carreiraDadosSrv.getPtsConstrutores() == 0) {
 			carreiraDadosSrv.setPtsConstrutores(100);
 		}
-		
+
 		return carreiraDadosSrv;
 	}
 
@@ -563,6 +563,27 @@ public class ControleClassificacao {
 					}
 				});
 		return classificacao;
+	}
+
+	public boolean atualizarJogadoresOnlineCarreira(Piloto piloto, String token) {
+		CarreiraDadosSrv carreiraDadosSrv = obterCarreiraSrv(token);
+		if (!carreiraDadosSrv.isModoCarreira()) {
+			return false;
+		}
+		piloto.setNome(carreiraDadosSrv.getNomePiloto());
+		piloto.setHabilidade((int) (carreiraDadosSrv.getPtsPiloto()));
+		piloto.getCarro().setNome(carreiraDadosSrv.getNomeCarro());
+		piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
+		piloto.getCarro().setPotencia(carreiraDadosSrv.getPtsCarro());
+		piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
+		piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
+		piloto.setTemporadaCapaceteLivery(
+				carreiraDadosSrv.getTemporadaCapaceteLivery());
+		piloto.setTemporadaCarroLivery(
+				carreiraDadosSrv.getTemporadaCarroLivery());
+		piloto.setIdCarroLivery(carreiraDadosSrv.getIdCarroLivery());
+		piloto.setIdCapaceteLivery(carreiraDadosSrv.getIdCapaceteLivery());
+		return true;
 	}
 
 }
