@@ -837,7 +837,7 @@ public class ControlePaddockServidor {
 			String token) {
 		int idCarro = Util.intOr0(carro);
 		if (idCarro == 0) {
-			return atualizarJogadoresOnlineCarreira(token);
+			return atualizarJogadoresOnlineCarreiraCarroCima(token);
 		} else {
 			temporada = "t" + temporada;
 			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
@@ -871,7 +871,7 @@ public class ControlePaddockServidor {
 			String pilotoId, String token) {
 		int idPiloto = Util.intOr0(pilotoId);
 		if (idPiloto == 0) {
-			return atualizarJogadoresOnlineCarreira(token);
+			return atualizarJogadoresOnlineCarreiraCapacete(token);
 		} else {
 			temporada = "t" + temporada;
 			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
@@ -890,7 +890,7 @@ public class ControlePaddockServidor {
 			String token) {
 		int idCarro = Util.intOr0(carro);
 		if (idCarro == 0) {
-			return atualizarJogadoresOnlineCarreira(token);
+			return atualizarJogadoresOnlineCarreiraCarroLado(token);
 		} else {
 			temporada = "t" + temporada;
 			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
@@ -905,11 +905,34 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	public BufferedImage atualizarJogadoresOnlineCarreira(String token) {
+	public BufferedImage atualizarJogadoresOnlineCarreiraCarroLado(
+			String token) {
 		Piloto piloto = new Piloto();
 		if (controleClassificacao.atualizarJogadoresOnlineCarreira(piloto,
-				token)) {
+				token, false)) {
 			return carregadorRecursos.obterCarroLado(piloto, null);
+		} else {
+			return null;
+		}
+	}
+
+	private BufferedImage atualizarJogadoresOnlineCarreiraCarroCima(
+			String token) {
+		Piloto piloto = new Piloto();
+		if (controleClassificacao.atualizarJogadoresOnlineCarreira(piloto,
+				token, false)) {
+			return carregadorRecursos.obterCarroCima(piloto, null);
+		} else {
+			return null;
+		}
+	}
+
+	private BufferedImage atualizarJogadoresOnlineCarreiraCapacete(
+			String token) {
+		Piloto piloto = new Piloto();
+		if (controleClassificacao.atualizarJogadoresOnlineCarreira(piloto,
+				token, false)) {
+			return carregadorRecursos.obterCapacete(piloto, null);
 		} else {
 			return null;
 		}

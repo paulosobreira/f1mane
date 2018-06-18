@@ -270,6 +270,9 @@ public class ControleBox {
 		if (piloto.isDriveThrough()) {
 			return;
 		}
+		if(piloto.getParadoBox()>0){
+			return;
+		}
 		piloto.setVelocidade(0);
 		int qtdeCombust = 0;
 		piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1);
@@ -374,13 +377,6 @@ public class ControleBox {
 		carro.processaPorcentagemDesgastePneus();
 		carro.processaPorcentagemDesgasteMotor();
 		carro.processaPorcentagemCombustivel();
-		/**
-		 * calback de nova volta para corrida Toda
-		 */
-		if (piloto.getPosicao() == 1) {
-			controleJogo.processaNovaVolta();
-		}
-		controleJogo.processaVoltaRapida(piloto);
 		if (controleJogo.isCorridaTerminada()) {
 			controleJogo.setRecebeuBanderada(piloto);
 		}
@@ -422,6 +418,13 @@ public class ControleBox {
 			piloto.getVoltaAtual().setVoltaSafetyCar(true);
 		}
 		piloto.efetuarSaidaBox(interfaceJogo);
+		/**
+		 * calback de nova volta para corrida Toda
+		 */
+		if (piloto.getPosicao() == 1) {
+			controleJogo.processaNovaVolta();
+		}
+		controleJogo.processaVoltaRapida(piloto);
 		if (controleJogo.isCorridaTerminada()) {
 			controleJogo.setRecebeuBanderada(piloto);
 		}

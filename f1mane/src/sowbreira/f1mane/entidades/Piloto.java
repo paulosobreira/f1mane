@@ -2910,6 +2910,10 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.paradoBox = paradoBox;
 	}
 
+	public int getParadoBox() {
+		return paradoBox;
+	}
+
 	public void setPorcentagemCombustUltimaParadaBox(
 			int porcentagemCombustUltimaParadaBox) {
 		this.porcentagemCombustUltimaParadaBox = porcentagemCombustUltimaParadaBox;

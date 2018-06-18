@@ -431,10 +431,10 @@ public class ControleClassificacao {
 			int ptsFreio = carreiraDados.getPtsFreio();
 			int ptsPiloto = carreiraDados.getPtsPiloto();
 
-			if (!validadeDistribucaoPontos(carreiraDadosSrv, ptsAerodinamica,
-					ptsCarro, ptsFreio, ptsPiloto, ptsConstrutores)) {
-				return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
-			}
+//			if (!validadeDistribucaoPontos(carreiraDadosSrv, ptsAerodinamica,
+//					ptsCarro, ptsFreio, ptsPiloto, ptsConstrutores)) {
+//				return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
+//			}
 
 			carreiraDadosSrv.setPtsCarro(carreiraDados.getPtsCarro());
 			carreiraDadosSrv.setPtsPiloto(carreiraDados.getPtsPiloto());
@@ -565,9 +565,15 @@ public class ControleClassificacao {
 		return classificacao;
 	}
 
-	public boolean atualizarJogadoresOnlineCarreira(Piloto piloto, String token) {
+	public boolean atualizarJogadoresOnlineCarreira(Piloto piloto,
+			String token) {
+		return atualizarJogadoresOnlineCarreira(piloto, token, true);
+	}
+
+	public boolean atualizarJogadoresOnlineCarreira(Piloto piloto, String token,
+			boolean verificaModoCarrira) {
 		CarreiraDadosSrv carreiraDadosSrv = obterCarreiraSrv(token);
-		if (!carreiraDadosSrv.isModoCarreira()) {
+		if (verificaModoCarrira && !carreiraDadosSrv.isModoCarreira()) {
 			return false;
 		}
 		piloto.setNome(carreiraDadosSrv.getNomePiloto());

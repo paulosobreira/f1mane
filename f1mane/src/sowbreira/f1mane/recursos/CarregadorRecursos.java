@@ -142,7 +142,9 @@ public class CarregadorRecursos {
 				}
 
 			} catch (Exception e) {
-				Logger.logar(" carregaBufferedImageTranspareciaBranca Erro gerando transparencia para :" + file);
+				Logger.logar(
+						" carregaBufferedImageTranspareciaBranca Erro gerando transparencia para :"
+								+ file);
 				Logger.logarExept(e);
 			}
 
@@ -675,11 +677,6 @@ public class CarregadorRecursos {
 					bufferImages.put(file, bufferedImage);
 				}
 			} catch (Exception e) {
-				if (Logger.ativo) {
-					Logger.logarExept(new Exception(
-							" carregaImagem : " + file + " cahce " + cache));
-					Logger.logarExept(e);
-				}
 			}
 		}
 		return bufferedImage;
@@ -710,7 +707,7 @@ public class CarregadorRecursos {
 
 	public BufferedImage obterCapacete(Piloto piloto, String temporada) {
 		if (temporada == null) {
-			return null;
+			return desenhaCapacete(piloto);
 		}
 		try {
 			String nomeOriginal = piloto.getNomeOriginal();
@@ -724,22 +721,7 @@ public class CarregadorRecursos {
 				} catch (Exception e) {
 				}
 				if (ret == null) {
-					Carro carro = piloto.getCarro();
-					BufferedImage base = CarregadorRecursos
-							.carregaImagem("Capacete.png");
-					BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-							carro.getCor1(), "CapaceteC1.png", base.getType());
-					BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-							carro.getCor2(), "CapaceteC2.png", base.getType());
-					BufferedImage capacete = new BufferedImage(base.getWidth(),
-							base.getHeight(), base.getType());
-					Graphics graphics = capacete.getGraphics();
-					setarHints((Graphics2D) graphics);
-					graphics.drawImage(base, 0, 0, null);
-					graphics.drawImage(cor2, 0, 0, null);
-					graphics.drawImage(cor1, 0, 0, null);
-					graphics.dispose();
-					ret = capacete;
+					return desenhaCapacete(piloto);
 				}
 				if (ret != null) {
 					bufferCapacete.put(chave, ret);
@@ -749,6 +731,26 @@ public class CarregadorRecursos {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public BufferedImage desenhaCapacete(Piloto piloto) {
+		BufferedImage ret;
+		Carro carro = piloto.getCarro();
+		BufferedImage base = CarregadorRecursos.carregaImagem("Capacete.png");
+		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
+				carro.getCor1(), "CapaceteC1.png", base.getType());
+		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
+				carro.getCor2(), "CapaceteC2.png", base.getType());
+		BufferedImage capacete = new BufferedImage(base.getWidth(),
+				base.getHeight(), base.getType());
+		Graphics graphics = capacete.getGraphics();
+		setarHints((Graphics2D) graphics);
+		graphics.drawImage(base, 0, 0, null);
+		graphics.drawImage(cor2, 0, 0, null);
+		graphics.drawImage(cor1, 0, 0, null);
+		graphics.dispose();
+		ret = capacete;
+		return ret;
 	}
 
 	public static void setarHints(Graphics2D g2d) {
@@ -802,7 +804,6 @@ public class CarregadorRecursos {
 					}
 				} catch (Exception e) {
 					carro.setImg(null);
-					Logger.logarExept(e);
 				}
 			} else {
 				carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
@@ -815,10 +816,8 @@ public class CarregadorRecursos {
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.drawImage(cor2, 0, 0, null);
 				graphics.dispose();
-				bufferCarrosLado.put(carro.getNome(),
-						ImageUtil.geraTransparencia(carroLado, Color.WHITE));
+				return carroLado;
 			}
-
 		}
 		return carroLado;
 	}
@@ -840,7 +839,6 @@ public class CarregadorRecursos {
 
 				} catch (Exception e) {
 					carro.setImg(null);
-					Logger.logarExept(e);
 				}
 			} else {
 				carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
@@ -853,7 +851,7 @@ public class CarregadorRecursos {
 				graphics.drawImage(cor1, 0, 0, null);
 				graphics.drawImage(cor2, 0, 0, null);
 				graphics.dispose();
-				bufferCarrosLadoSemAreofolio.put(carro.getNome(), carroLado);
+				return carroLado;
 			}
 		}
 		return carroLado;
@@ -898,15 +896,12 @@ public class CarregadorRecursos {
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.dispose();
-			bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
+			return carroCima;
 		}
 		return carroCima;
 	}
 
 	public BufferedImage obterCarroCima(Piloto piloto, String temporada) {
-		if (temporada == null) {
-			return null;
-		}
 		if (piloto == null) {
 			return null;
 		}
@@ -925,34 +920,39 @@ public class CarregadorRecursos {
 			bufferCarrosCima.put(carro.getNome(), carroCima);
 		}
 		if (carroCima == null) {
-			BufferedImage base = CarregadorRecursos
-					.carregaImagem(modelo + "CarroCima.png");
-			carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
-					base.getType());
-			BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor1(), modelo + "CarroCimaC1.png",
-					base.getType());
-			BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-					carro.getCor2(), modelo + "CarroCimaC2.png",
-					base.getType());
-			Graphics graphics = carroCima.getGraphics();
-			setarHints((Graphics2D) graphics);
-			graphics.drawImage(base, 0, 0, null);
-			graphics.drawImage(cor2, 0, 0, null);
-			graphics.drawImage(cor1, 0, 0, null);
-			graphics.dispose();
-			bufferCarrosCima.put(carro.getNome(), carroCima);
+			carroCima = desenhaCarroCima(modelo, carro);
 		}
+		return carroCima;
+	}
+
+	public BufferedImage desenhaCarroCima(String modelo, Carro carro) {
+		BufferedImage carroCima;
+		BufferedImage base = CarregadorRecursos
+				.carregaImagem(modelo + "CarroCima.png");
+		carroCima = new BufferedImage(base.getWidth(), base.getHeight(),
+				base.getType());
+		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
+				carro.getCor1(), modelo + "CarroCimaC1.png", base.getType());
+		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
+				carro.getCor2(), modelo + "CarroCimaC2.png", base.getType());
+		Graphics graphics = carroCima.getGraphics();
+		setarHints((Graphics2D) graphics);
+		graphics.drawImage(base, 0, 0, null);
+		graphics.drawImage(cor2, 0, 0, null);
+		graphics.drawImage(cor1, 0, 0, null);
+		graphics.dispose();
 		return carroCima;
 	}
 
 	private String obterModeloCarroCima(String temporada) {
 		String modelo = "cima2017/";
+		if (temporada == null) {
+			return modelo;
+		}
 		Integer anoTemporada = new Integer(temporada.replace("t", ""));
 		if (anoTemporada < 2017) {
 			modelo = "cima20092016/";
 		}
-
 		if (anoTemporada < 2009) {
 			modelo = "cima19982008/";
 		}

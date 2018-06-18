@@ -13,9 +13,9 @@ $('#potenciaCarro').html(lang_text('256'));
 $('#freioCarro').html(lang_text('freioCarro'));
 $('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
 var temporadaSelecionada;
-listaTemporadas();
+//listaTemporadas();
 carregaEquipe();
-$('#temporadaCarousel').carousel('pause');
+//$('#temporadaCarousel').carousel('pause');
 
 $('#btnSalvar').bind("click", function() {
 	salvarEquipe();
@@ -26,11 +26,12 @@ $('#btnJogar').bind("click", function() {
 	window.location = "menus.html";
 });
 
+/*
 $('#temporadaCarousel').on('slide.bs.carousel', function(event) {
 	selecionaTemporada($(event.relatedTarget).prop('temporada'));
 	$('#temporadaCarousel').carousel('pause');
 });
-
+*/
 
 $(document).on('click', '.number-spinner button', function() {
 	var ptsConstrutores = parseInt($('#pontosConstrutoresValor').html());
@@ -96,12 +97,12 @@ function carregaEquipe() {
 			if(response.nomePilotoAbreviado!=null){
 				$('#nomePilotoAbreviadoValor').val(response.nomePilotoAbreviado);
 			}
+			$('#habilidadePilotoValor').val(response.ptsPiloto);
 			$('#pontosConstrutoresValor').html(response.ptsConstrutores);
 			$('#pontosGanhosValor').html(response.ptsConstrutoresGanhos);
-			$('#habilidadePilotoValor').val(response.ptsPiloto);
-			$('#potenciaCarroValor').val(response.ptsCarro);
-			$('#aerodinamicaCarroValor').val(response.ptsAerodinamica);
-			$('#freioCarroValor').val(response.ptsFreio);
+//			$('#potenciaCarroValor').val(response.ptsCarro);
+//			$('#aerodinamicaCarroValor').val(response.ptsAerodinamica);
+//			$('#freioCarroValor').val(response.ptsFreio);
 			$('#corEquipeValue1').val(rgbToHex(response.c1R,response.c1G,response.c1B));
 			$('#corEquipeValue2').val(rgbToHex(response.c2R,response.c2G,response.c2B));
 			$('#temporadaCapaceteLivery').val(response.temporadaCapaceteLivery);
