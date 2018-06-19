@@ -27,33 +27,33 @@
 		<div id="btnJogar" class="floatBtn">
 			<i class="fa fa-plus floatBtnContent glyphicon glyphicon-road"></i>
 		</div>
-		<!-- 
-		<section id="escolha" class="container containerPadless hidden">
-			<div id="temporadaCarousel" class="carousel slide"  data-ride="carousel">
-				<div id="temporadaCarousel-inner" class="carousel-inner" role="listbox">
+		<section id="escolha" class="container hidden">
+			<div id="temporadaCarousel" class="carousel slide"
+				data-ride="carousel">
+				<div id="temporadaCarousel-inner" class="carousel-inner"
+					role="listbox">
 					<div id="temporadaActive" class="item active">
 						<h1 class="text-center" id="temporadasLabel"></h1>
 					</div>
 				</div>
-				<a class="left carousel-control" id="temporadaAnterior" href="#temporadaCarousel"
-					role="button" data-slide="prev"> <span
+				<a class="left carousel-control" id="temporadaAnterior"
+					href="#temporadaCarousel" role="button" data-slide="prev"> <span
 					class="glyphicon glyphicon-chevron-left black" aria-hidden="true"></span>
 					<span class="sr-only">Previous</span>
-				</a> <a class="right carousel-control" id="temporadaProxima" href="#temporadaCarousel"
-					role="button" data-slide="next"> <span
+				</a> <a class="right carousel-control" id="temporadaProxima"
+					href="#temporadaCarousel" role="button" data-slide="next"> <span
 					class="glyphicon glyphicon-chevron-right black" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
 				</a>
 			</div>
-			<div id="capacetes" ></div>
-			<div id="carros" ></div>		
+			<div id="capacetes"></div>
+			<div id="carros"></div>
 		</section>
-		 -->
 		<section id="equipe" class="container">
-			<input id="temporadaCapaceteLivery" type="hidden"/>
-			<input id="temporadaCarroLivery" type="hidden"/>
-			<input id="idCapaceteLivery" type="hidden"/>
-			<input id="idCarroLivery" type="hidden"/>
+			<input id="temporadaCapaceteLivery" type="hidden" /> 
+			<input id="temporadaCarroLivery" type="hidden" /> 
+			<input id="idCapaceteLivery" type="hidden" /> 
+			<input id="idCarroLivery"	type="hidden" />
 			<form>
 				<div class="form-group">
 					<label id="nomeEquipe">Nome Equipe</label> <input type="text"
@@ -76,94 +76,94 @@
 						type="text" class="form-control" id="nomePilotoAbreviadoValor"
 						required="required">
 				</div>
-				<div id="imagens" class="row">
-					<div class="form-group col-md-6">
-						<img id="idImgCapacete" />
-					</div>
-					<div class="form-group col-md-3">
-						<img id="idImgCarroCima" />
-					</div>
-					<div class="form-group col-md-3">
-						<img id="idImgCarroLado" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label id="habilidadePiloto">Piloto</label>
-					<div class="input-group number-spinner">
-						<span class="input-group-btn">
-							<button class="btn btn-default" data-dir="dwn">
-								<span class="glyphicon glyphicon-minus"></span>
-							</button>
-						</span> <input id="habilidadePilotoValor" type="number" 
-							class="form-control text-center" value="800" min="0" max="1000">
-						<span class="input-group-btn">
-							<button class="btn btn-default" data-dir="up">
-								<span class="glyphicon glyphicon-plus"></span>
-							</button>
-						</span>
-					</div>
-
-				</div>
-				<!-- 
-				<div class="form-group">
-					<label id="potenciaCarro">Carro</label>
-					<div class="input-group number-spinner">
-						<span class="input-group-btn">
-							<button class="btn btn-default" data-dir="dwn">
-								<span class="glyphicon glyphicon-minus"></span>
-							</button>
-						</span> <input id="potenciaCarroValor" type="number" readonly="readonly"
-							class="form-control text-center" value="700" min="0" max="1000">
-						<span class="input-group-btn">
-							<button class="btn btn-default" data-dir="up">
-								<span class="glyphicon glyphicon-plus"></span>
-							</button>
-						</span>
-					</div>
-				</div>
-				<div class="form-group">
-					<label id="aerodinamicaCarro">Aerodinamica</label>
-					<div class="input-group number-spinner">
-						<span class="input-group-btn">
-							<button class="btn btn-default" data-dir="dwn">
-								<span class="glyphicon glyphicon-minus"></span>
-							</button>
-						</span> <input id="aerodinamicaCarroValor" type="number" readonly="readonly"
-							class="form-control text-center" value="600" min="0" max="1000">
-						<span class="input-group-btn">
-							<button class="btn btn-default" data-dir="up">
-								<span class="glyphicon glyphicon-plus"></span>
-							</button>
-						</span>
-					</div>
-				</div>
-				<div class="form-group">
-					<label id="freioCarro">Freios</label>
-					<div class="input-group number-spinner">
-						<span class="input-group-btn">
-							<button class="btn btn-default" data-dir="dwn">
-								<span class="glyphicon glyphicon-minus"></span>
-							</button>
-						</span> <input id="freioCarroValor" type="number" readonly="readonly"
-							class="form-control text-center" value="500" min="0" max="1000">
-						<span class="input-group-btn">
-							<button class="btn btn-default" data-dir="up">
-								<span class="glyphicon glyphicon-plus"></span>
-							</button>
-						</span>
-					</div>
-				</div>
-				 -->
-				<br><hr><br>
-				<div class="form-group">
-					<label id="pontosGanhos">Pontos ganhos</label>
-					<spam id="pontosGanhosValor">400</spam>
-				</div>
-				<div class="form-group">
-					<label id="pontosDisponiveis">Pontos dispníveis</label>
-					<spam id="pontosConstrutoresValor">400</spam>
-				</div>
 			</form>
+			<div id="imagens" class="row">
+				<div class="form-group col-sm-4">
+					<img class="img-responsive img-center" id="idImgCapacete" />
+				</div>
+				<div class="form-group col-sm-4">
+					<img class="img-responsive img-center" id="idImgCarroCima" />
+				</div>
+				<div class="form-group col-sm-4">
+					<img class="img-responsive img-center" id="idImgCarroLado" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label id="habilidadePiloto">Piloto</label>
+				<div class="input-group number-spinner">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="dwn">
+							<span class="glyphicon glyphicon-minus"></span>
+						</button>
+					</span> <input id="habilidadePilotoValor" type="number"
+						class="form-control text-center" value="800" min="0" max="1000">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="up">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</span>
+				</div>
+
+			</div>
+			<div class="form-group">
+				<label id="potenciaCarro">Carro</label>
+				<div class="input-group number-spinner">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="dwn">
+							<span class="glyphicon glyphicon-minus"></span>
+						</button>
+					</span> <input id="potenciaCarroValor" type="number" readonly="readonly"
+						class="form-control text-center" value="700" min="0" max="1000">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="up">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label id="aerodinamicaCarro">Aerodinamica</label>
+				<div class="input-group number-spinner">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="dwn">
+							<span class="glyphicon glyphicon-minus"></span>
+						</button>
+					</span> <input id="aerodinamicaCarroValor" type="number"
+						readonly="readonly" class="form-control text-center" value="600"
+						min="0" max="1000"> <span class="input-group-btn">
+						<button class="btn btn-default" data-dir="up">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label id="freioCarro">Freios</label>
+				<div class="input-group number-spinner">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="dwn">
+							<span class="glyphicon glyphicon-minus"></span>
+						</button>
+					</span> <input id="freioCarroValor" type="number" readonly="readonly"
+						class="form-control text-center" value="500" min="0" max="1000">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="up">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</span>
+				</div>
+			</div>
+			<br>
+			<hr>
+			<br>
+			<div class="form-group">
+				<label id="pontosGanhos">Pontos ganhos</label> <span
+					id="pontosGanhosValor">400</span>
+			</div>
+			<div class="form-group">
+				<label id="pontosDisponiveis">Pontos dispníveis</label> <span
+					id="pontosConstrutoresValor">400</span>
+			</div>
 		</section>
 		<footer class="footer">
 			<div class="container">

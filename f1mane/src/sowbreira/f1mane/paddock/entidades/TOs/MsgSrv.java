@@ -24,4 +24,30 @@ public class MsgSrv implements Serializable {
 		this.messageString = messageString;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((messageString == null) ? 0 : messageString.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MsgSrv other = (MsgSrv) obj;
+		if (messageString == null) {
+			if (other.messageString != null)
+				return false;
+		} else if (!messageString.equals(other.messageString))
+			return false;
+		return true;
+	}
+
 }

@@ -13,9 +13,9 @@ $('#potenciaCarro').html(lang_text('256'));
 $('#freioCarro').html(lang_text('freioCarro'));
 $('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
 var temporadaSelecionada;
-//listaTemporadas();
+listaTemporadas();
 carregaEquipe();
-//$('#temporadaCarousel').carousel('pause');
+$('#temporadaCarousel').carousel('pause');
 
 $('#btnSalvar').bind("click", function() {
 	salvarEquipe();
@@ -26,12 +26,10 @@ $('#btnJogar').bind("click", function() {
 	window.location = "menus.html";
 });
 
-/*
 $('#temporadaCarousel').on('slide.bs.carousel', function(event) {
 	selecionaTemporada($(event.relatedTarget).prop('temporada'));
 	$('#temporadaCarousel').carousel('pause');
 });
-*/
 
 $(document).on('click', '.number-spinner button', function() {
 	var ptsConstrutores = parseInt($('#pontosConstrutoresValor').html());
@@ -100,9 +98,9 @@ function carregaEquipe() {
 			$('#habilidadePilotoValor').val(response.ptsPiloto);
 			$('#pontosConstrutoresValor').html(response.ptsConstrutores);
 			$('#pontosGanhosValor').html(response.ptsConstrutoresGanhos);
-//			$('#potenciaCarroValor').val(response.ptsCarro);
-//			$('#aerodinamicaCarroValor').val(response.ptsAerodinamica);
-//			$('#freioCarroValor').val(response.ptsFreio);
+			$('#potenciaCarroValor').val(response.ptsCarro);
+			$('#aerodinamicaCarroValor').val(response.ptsAerodinamica);
+			$('#freioCarroValor').val(response.ptsFreio);
 			$('#corEquipeValue1').val(rgbToHex(response.c1R,response.c1G,response.c1B));
 			$('#corEquipeValue2').val(rgbToHex(response.c2R,response.c2G,response.c2B));
 			$('#temporadaCapaceteLivery').val(response.temporadaCapaceteLivery);
@@ -136,6 +134,10 @@ function salvarEquipe() {
 			ptsAerodinamica : $('#aerodinamicaCarroValor').val(),
 			ptsFreio : $('#freioCarroValor').val(),
 			ptsConstrutores: $('#pontosConstrutoresValor').html(),
+			temporadaCapaceteLivery : $('#temporadaCapaceteLivery').val(),
+			temporadaCarroLivery : $('#temporadaCarroLivery').val(),
+			idCapaceteLivery : $('#idCapaceteLivery').val(),
+			idCarroLivery : $('#idCarroLivery').val(),
 			c1R : c1.r,
 			c1G : c1.g,
 			c1B : c1.b,
@@ -193,6 +195,7 @@ function selecionaTemporada(temporada) {
 				div.bind("click", function() {
 					$('#temporadaCapaceteLivery').val(temporadaSelecionada);
 					$('#idCapaceteLivery').val(piloto.id);
+					$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id+'/'+localStorage.getItem("token"));
 					$('#escolha').addClass('hidden');
 					$('#equipe').removeClass('hidden');
 				});
@@ -210,10 +213,10 @@ function selecionaTemporada(temporada) {
 					div.append($('<br>'));
 					div.append(piloto.carro.nome);
 					div.bind("click", function() {
-						$('#temporadaCapaceteLivery').val(response.temporadaCapaceteLivery);
-						$('#temporadaCarroLivery').val(response.temporadaCarroLivery);
-						$('#idCapaceteLivery').val(response.idCapaceteLivery);
-						$('#idCarroLivery').val(response.idCarroLivery);
+						$('#temporadaCarroLivery').val(temporadaSelecionada);
+						$('#idCarroLivery').val(piloto.carro.id);
+						$('#idImgCarroLado').attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id +'/'+localStorage.getItem("token"));
+						$('#idImgCarroCima').attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id +'/'+localStorage.getItem("token"));
 						$('#escolha').addClass('hidden');
 						$('#equipe').removeClass('hidden');
 					});

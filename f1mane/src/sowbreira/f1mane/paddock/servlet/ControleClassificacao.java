@@ -431,10 +431,10 @@ public class ControleClassificacao {
 			int ptsFreio = carreiraDados.getPtsFreio();
 			int ptsPiloto = carreiraDados.getPtsPiloto();
 
-//			if (!validadeDistribucaoPontos(carreiraDadosSrv, ptsAerodinamica,
-//					ptsCarro, ptsFreio, ptsPiloto, ptsConstrutores)) {
-//				return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
-//			}
+			// if (!validadeDistribucaoPontos(carreiraDadosSrv, ptsAerodinamica,
+			// ptsCarro, ptsFreio, ptsPiloto, ptsConstrutores)) {
+			// return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
+			// }
 
 			carreiraDadosSrv.setPtsCarro(carreiraDados.getPtsCarro());
 			carreiraDadosSrv.setPtsPiloto(carreiraDados.getPtsPiloto());
@@ -450,6 +450,15 @@ public class ControleClassificacao {
 			carreiraDadosSrv.setC2R(carreiraDados.getC2R());
 			carreiraDadosSrv.setC2G(carreiraDados.getC2G());
 			carreiraDadosSrv.setC2B(carreiraDados.getC2B());
+			carreiraDadosSrv.setIdCarroLivery(carreiraDados.getIdCarroLivery());
+			carreiraDadosSrv
+					.setIdCapaceteLivery(carreiraDados.getIdCapaceteLivery());
+			carreiraDadosSrv
+					.setIdCarroLivery(carreiraDados.getIdCarroLivery());
+			carreiraDadosSrv.setTemporadaCapaceteLivery(
+					carreiraDados.getTemporadaCapaceteLivery());
+			carreiraDadosSrv.setTemporadaCarroLivery(
+					carreiraDados.getTemporadaCarroLivery());
 
 			controlePersistencia.gravarDados(session, carreiraDadosSrv);
 		} catch (Exception e) {

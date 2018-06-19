@@ -933,11 +933,10 @@ public class LetsRace {
 				.getControleJogosServer();
 		Object ret = controleJogosServer.gravarEquipe(sessaoCliente, idioma,
 				equipe);
-		Response erro = processsaMensagem(ret, idioma);
-		if (erro != null) {
-			return erro;
+		if (ret.equals(new MsgSrv(Lang.msg("250")))) {
+			return Response.status(200).entity(ret).build();
 		}
-		return Response.status(200).entity(ret).build();
+		return processsaMensagem(ret, idioma);
 	}
 
 }
