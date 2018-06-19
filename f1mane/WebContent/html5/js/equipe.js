@@ -15,7 +15,10 @@ $('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
 var temporadaSelecionada;
 listaTemporadas();
 carregaEquipe();
-$('#temporadaCarousel').carousel('pause');
+$('.carousel').carousel({
+	pause: true,
+	interval: false
+	});
 
 $('#btnSalvar').bind("click", function() {
 	salvarEquipe();
@@ -28,7 +31,7 @@ $('#btnJogar').bind("click", function() {
 
 $('#temporadaCarousel').on('slide.bs.carousel', function(event) {
 	selecionaTemporada($(event.relatedTarget).prop('temporada'));
-	$('#temporadaCarousel').carousel('pause');
+	
 });
 
 $(document).on('click', '.number-spinner button', function() {
@@ -224,7 +227,7 @@ function selecionaTemporada(temporada) {
 				}
 
 			});
-			$('#temporadaCarousel').carousel('pause');
+			
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
@@ -259,7 +262,7 @@ function listaTemporadas() {
 				dv.append(h1);
 				$('#temporadaCarousel-inner').append(dv);
 			});
-			$('#temporadaCarousel').carousel('pause');
+			
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
