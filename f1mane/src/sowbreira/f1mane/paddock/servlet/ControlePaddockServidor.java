@@ -3,6 +3,7 @@
  */
 package sowbreira.f1mane.paddock.servlet;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Iterator;
@@ -21,6 +22,7 @@ import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.PaddockConstants;
@@ -732,14 +734,7 @@ public class ControlePaddockServidor {
 	}
 
 	public static void main(String[] args) {
-		// String test = "#brual#llllp#";
-		// Logger.logar(test.replaceAll("#", ""));
-
-		// String chave = String.valueOf(System.currentTimeMillis());
-		PassGenerator generator = new PassGenerator();
-		for (int i = 0; i < 1000; i++) {
-			System.out.println(generator.generateIt());
-		}
+		System.out.println("#babaca".startsWith("#"));
 	}
 
 	public boolean removerCliente(SessaoCliente sessaoCliente) {
@@ -833,11 +828,12 @@ public class ControlePaddockServidor {
 		controlePersistencia.modoCarreira(token, modo);
 	}
 
-	public BufferedImage carroCimaTemporadaCarro(String temporada, String carro,
-			String token) {
+	public BufferedImage carroCimaTemporadaCarro(String temporada,
+			String carro) {
 		int idCarro = Util.intOr0(carro);
-		if (idCarro == 0) {
-			return atualizarJogadoresOnlineCarreiraCarroCima(token);
+		if (temporada != null && temporada.length() == 6 && carro != null
+				&& carro.length() == 6) {
+			return carroCimaCor(temporada, carro);
 		} else {
 			temporada = "t" + temporada;
 			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
@@ -868,10 +864,12 @@ public class ControlePaddockServidor {
 	}
 
 	public BufferedImage capaceteTemporadaPiloto(String temporada,
-			String pilotoId, String token) {
+			String pilotoId) {
 		int idPiloto = Util.intOr0(pilotoId);
-		if (idPiloto == 0) {
-			return atualizarJogadoresOnlineCarreiraCapacete(token);
+
+		if (temporada != null && temporada.length() == 6 && pilotoId != null
+				&& pilotoId.length() == 6) {
+			return carreiraCapaceteCor(temporada, pilotoId);
 		} else {
 			temporada = "t" + temporada;
 			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
@@ -886,11 +884,12 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	public BufferedImage carroLadoTemporadaCarro(String temporada, String carro,
-			String token) {
+	public BufferedImage carroLadoTemporadaCarro(String temporada,
+			String carro) {
 		int idCarro = Util.intOr0(carro);
-		if (idCarro == 0) {
-			return atualizarJogadoresOnlineCarreiraCarroLado(token);
+		if (temporada != null && temporada.length() == 6 && carro != null
+				&& carro.length() == 6) {
+			return carroLadoCor(temporada, carro);
 		} else {
 			temporada = "t" + temporada;
 			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
@@ -916,26 +915,27 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	private BufferedImage atualizarJogadoresOnlineCarreiraCarroCima(
-			String token) {
-		Piloto piloto = new Piloto();
-		if (controleClassificacao.atualizarJogadoresOnlineCarreira(piloto,
-				token, false)) {
-			return carregadorRecursos.obterCarroCima(piloto, null);
-		} else {
-			return null;
-		}
+	private BufferedImage carroCimaCor(String temporada, String carro) {
+		Piloto piloto = gerarPilotoCarroCor(temporada, carro);
+		return carregadorRecursos.obterCarroCima(piloto, null);
+	}
+	private BufferedImage carroLadoCor(String temporada, String carro) {
+		Piloto piloto = gerarPilotoCarroCor(temporada, carro);
+		return carregadorRecursos.obterCarroLado(piloto, null);
+	}
+	private BufferedImage carreiraCapaceteCor(String temporada,
+			String idPiloto) {
+		Piloto piloto = gerarPilotoCarroCor(temporada, idPiloto);
+		return carregadorRecursos.obterCapacete(piloto, null);
 	}
 
-	private BufferedImage atualizarJogadoresOnlineCarreiraCapacete(
-			String token) {
+	public Piloto gerarPilotoCarroCor(String cor1, String cor2) {
 		Piloto piloto = new Piloto();
-		if (controleClassificacao.atualizarJogadoresOnlineCarreira(piloto,
-				token, false)) {
-			return carregadorRecursos.obterCapacete(piloto, null);
-		} else {
-			return null;
-		}
+		Carro carro = new Carro();
+		carro.setCor1(Util.hex2Rgb("#" + cor1));
+		carro.setCor2(Util.hex2Rgb("#" + cor2));
+		piloto.setCarro(carro);
+		return piloto;
 	}
 
 }

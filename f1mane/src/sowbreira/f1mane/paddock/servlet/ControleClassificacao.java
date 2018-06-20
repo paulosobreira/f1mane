@@ -453,8 +453,7 @@ public class ControleClassificacao {
 			carreiraDadosSrv.setIdCarroLivery(carreiraDados.getIdCarroLivery());
 			carreiraDadosSrv
 					.setIdCapaceteLivery(carreiraDados.getIdCapaceteLivery());
-			carreiraDadosSrv
-					.setIdCarroLivery(carreiraDados.getIdCarroLivery());
+			carreiraDadosSrv.setIdCarroLivery(carreiraDados.getIdCarroLivery());
 			carreiraDadosSrv.setTemporadaCapaceteLivery(
 					carreiraDados.getTemporadaCapaceteLivery());
 			carreiraDadosSrv.setTemporadaCarroLivery(
@@ -581,6 +580,9 @@ public class ControleClassificacao {
 
 	public boolean atualizarJogadoresOnlineCarreira(Piloto piloto, String token,
 			boolean verificaModoCarrira) {
+		if (token == null) {
+			return false;
+		}
 		CarreiraDadosSrv carreiraDadosSrv = obterCarreiraSrv(token);
 		if (verificaModoCarrira && !carreiraDadosSrv.isModoCarreira()) {
 			return false;
