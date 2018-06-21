@@ -90,7 +90,7 @@ function toaster(msg, tempo, classe) {
 	$('#head').append(toast);
 	setTimeout(function() {
 		$('#snackbar').remove();
-	}, tempo);
+	}, 3000);
 }
 
 function hexToRgb(hex) {

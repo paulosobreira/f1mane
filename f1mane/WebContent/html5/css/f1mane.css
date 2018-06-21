@@ -180,8 +180,8 @@
     text-align: center;
     border-radius: 2px;
     padding: 16px;
-    position: absolute;
-    z-index: 1;
+    position: fixed;
+    z-index: 10000;
     left: 50%;
     transform : translateX(-50%);
     bottom: 30px;
