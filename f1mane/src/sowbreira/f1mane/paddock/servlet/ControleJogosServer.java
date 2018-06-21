@@ -205,23 +205,23 @@ public class ControleJogosServer {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
 			}
-			if (verificaPotenciaLimite(jogoServidor.getMediaPontecia(),
-					carreiraDadosSrv.getPtsCarro()
-							+ carreiraDadosSrv.getPtsAerodinamica()
-							+ carreiraDadosSrv.getPtsFreio(),
-					jogoServidor.getNiveljogo())) {
-				int permitidoAcimaMedia = 0;
-				if (InterfaceJogo.FACIL_NV == jogoServidor.getNiveljogo()) {
-					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_FACIL;
-				}
-				if (InterfaceJogo.MEDIO_NV == jogoServidor.getNiveljogo()) {
-					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_NORMAL;
-				}
-				String media = (jogoServidor.getMediaPontecia()
-						+ permitidoAcimaMedia) + "";
-				return new MsgSrv(Lang.msg("261", new String[]{media}));
-
-			}
+//			if (verificaPotenciaLimite(jogoServidor.getMediaPontecia(),
+//					carreiraDadosSrv.getPtsCarro()
+//							+ carreiraDadosSrv.getPtsAerodinamica()
+//							+ carreiraDadosSrv.getPtsFreio(),
+//					jogoServidor.getNiveljogo())) {
+//				int permitidoAcimaMedia = 0;
+//				if (InterfaceJogo.FACIL_NV == jogoServidor.getNiveljogo()) {
+//					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_FACIL;
+//				}
+//				if (InterfaceJogo.MEDIO_NV == jogoServidor.getNiveljogo()) {
+//					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_NORMAL;
+//				}
+//				String media = (jogoServidor.getMediaPontecia()
+//						+ permitidoAcimaMedia) + "";
+//				return new MsgSrv(Lang.msg("261", new String[]{media}));
+//
+//			}
 		}
 
 		if (jogoServidor.isCorridaTerminada()) {
@@ -239,6 +239,9 @@ public class ControleJogosServer {
 		srvPaddockPack.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
 		srvPaddockPack.setDadosPaddock(dadosPaddock);
 		jogoServidor.atualizarJogadoresOnline();
+		if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
+			jogoServidor.atualizarJogadoresOnlineCarreira();			
+		}
 		return srvPaddockPack;
 	}
 

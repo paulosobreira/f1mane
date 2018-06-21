@@ -588,18 +588,41 @@ public class ControleClassificacao {
 			return false;
 		}
 		piloto.setNome(carreiraDadosSrv.getNomePiloto());
+		piloto.setNomeAbreviado(carreiraDadosSrv.getNomePilotoAbreviado());
 		piloto.setHabilidade((int) (carreiraDadosSrv.getPtsPiloto()));
 		piloto.getCarro().setNome(carreiraDadosSrv.getNomeCarro());
 		piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
 		piloto.getCarro().setPotencia(carreiraDadosSrv.getPtsCarro());
 		piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());
 		piloto.getCarro().setCor2(carreiraDadosSrv.geraCor2());
-		piloto.setTemporadaCapaceteLivery(
-				carreiraDadosSrv.getTemporadaCapaceteLivery());
-		piloto.setTemporadaCarroLivery(
-				carreiraDadosSrv.getTemporadaCarroLivery());
-		piloto.setIdCarroLivery(carreiraDadosSrv.getIdCarroLivery());
-		piloto.setIdCapaceteLivery(carreiraDadosSrv.getIdCapaceteLivery());
+		if (carreiraDadosSrv.getTemporadaCapaceteLivery() != null) {
+			piloto.setTemporadaCapaceteLivery(
+					carreiraDadosSrv.getTemporadaCapaceteLivery().toString());
+		} else {
+			piloto.setTemporadaCapaceteLivery(
+					Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+
+		}
+		if (carreiraDadosSrv.getTemporadaCarroLivery() != null) {
+			piloto.setTemporadaCarroLivery(
+					carreiraDadosSrv.getTemporadaCarroLivery().toString());
+		} else {
+			piloto.setTemporadaCarroLivery(
+					Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+		}
+		if (carreiraDadosSrv.getIdCarroLivery() != null) {
+			piloto.setIdCarroLivery(
+					carreiraDadosSrv.getIdCarroLivery().toString());
+		} else {
+			piloto.setIdCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
+		}
+		if (carreiraDadosSrv.getIdCapaceteLivery() != null) {
+			piloto.setIdCapaceteLivery(
+					carreiraDadosSrv.getIdCapaceteLivery().toString());
+		} else {
+			piloto.setIdCapaceteLivery(
+					Util.rgb2hex(carreiraDadosSrv.geraCor2()));
+		}
 		return true;
 	}
 

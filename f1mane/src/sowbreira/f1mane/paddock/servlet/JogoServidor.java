@@ -293,14 +293,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			if (!carrobox.contains(piloto.getCarro())) {
 				carrobox.add(piloto.getCarro());
 			}
-			if (piloto.isJogadorHumano()) {
-				CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-						.obterCarreiraSrv(piloto.getTokenJogador());
-				if (carreiraDadosSrv != null
-						&& carreiraDadosSrv.isModoCarreira()) {
-					piloto.getCarro().setImg(null);
-				}
-			}
 		}
 		controleCorrida.getControleBox().geraBoxesEquipes(carrobox);
 		Thread timer = new Thread(new Runnable() {
@@ -369,7 +361,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	}
 
-	private void atualizarJogadoresOnlineCarreira() {
+	public void atualizarJogadoresOnlineCarreira() {
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
 				.hasNext();) {
 			String token = (String) iter.next();
@@ -377,7 +369,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					.get(token);
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
-				if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
+				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
+						|| piloto.getId() == dadosParticiparJogo
+								.getIdPiloto()) {
 					controleClassificacao
 							.atualizarJogadoresOnlineCarreira(piloto, token);
 					dadosParticiparJogo.setPiloto(piloto.getNome());

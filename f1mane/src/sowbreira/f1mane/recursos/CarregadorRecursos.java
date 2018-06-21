@@ -80,7 +80,7 @@ public class CarregadorRecursos {
 		return vectorTemps;
 	}
 
-	public static Vector<String> carregarTemporadas() {
+	public synchronized static Vector<String> carregarTemporadas() {
 		if (temporadas != null) {
 			return vectorTemps;
 		}
@@ -538,7 +538,7 @@ public class CarregadorRecursos {
 		return carroNovo;
 	}
 
-	public Map<String, List<Piloto>> carregarTemporadasPilotos() {
+	public synchronized Map<String, List<Piloto>> carregarTemporadasPilotos() {
 		if (temporadasPilotos != null) {
 			return temporadasPilotos;
 		}
@@ -561,7 +561,7 @@ public class CarregadorRecursos {
 		return temporadasPilotos;
 	}
 
-	public Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts() {
+	public synchronized Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts() {
 		if (temporadasPilotosDefauts != null) {
 			return temporadasPilotosDefauts;
 		}
@@ -962,7 +962,7 @@ public class CarregadorRecursos {
 		return modelo;
 	}
 
-	public List<CircuitosDefauts> carregarCircuitosDefaults()
+	public synchronized List<CircuitosDefauts> carregarCircuitosDefaults()
 			throws IOException, ClassNotFoundException {
 		if (circuitosDefauts != null) {
 			return circuitosDefauts;

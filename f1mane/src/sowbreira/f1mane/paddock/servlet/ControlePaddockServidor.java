@@ -866,7 +866,6 @@ public class ControlePaddockServidor {
 	public BufferedImage capaceteTemporadaPiloto(String temporada,
 			String pilotoId) {
 		int idPiloto = Util.intOr0(pilotoId);
-
 		if (temporada != null && temporada.length() == 6 && pilotoId != null
 				&& pilotoId.length() == 6) {
 			return carreiraCapaceteCor(temporada, pilotoId);

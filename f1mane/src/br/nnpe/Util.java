@@ -539,4 +539,9 @@ public class Util {
 				Integer.valueOf(colorStr.substring(3, 5), 16),
 				Integer.valueOf(colorStr.substring(5, 7), 16));
 	}
+
+	public static String rgb2hex(Color c) {
+		return String.format("%02x%02x%02x", c.getRed(), c.getBlue(),
+				c.getGreen());
+	}
 }
