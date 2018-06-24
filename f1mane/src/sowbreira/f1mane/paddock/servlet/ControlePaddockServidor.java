@@ -666,7 +666,7 @@ public class ControlePaddockServidor {
 		SessaoCliente sessaoCliente = new SessaoCliente();
 		TokenGenerator tokenGenerator = new TokenGenerator();
 		sessaoCliente.setToken(tokenGenerator.nextSessionId());
-		sessaoCliente.setNomeJogador("Engineer-" + (contadorVistantes++));
+		sessaoCliente.setNomeJogador("ManE-" + (contadorVistantes++));
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		sessaoCliente.setGuest(true);
 		dadosPaddock.add(sessaoCliente);

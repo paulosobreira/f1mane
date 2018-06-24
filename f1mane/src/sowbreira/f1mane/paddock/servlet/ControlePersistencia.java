@@ -576,8 +576,10 @@ public class ControlePersistencia {
 		try {
 			CarreiraDadosSrv carreiraDadosSrv = carregaCarreiraJogador(token,
 					false, session);
-			carreiraDadosSrv.setModoCarreira(modo);
-			gravarDados(session, carreiraDadosSrv);
+			if(carreiraDadosSrv!=null){
+				carreiraDadosSrv.setModoCarreira(modo);
+				gravarDados(session, carreiraDadosSrv);
+			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		} finally {

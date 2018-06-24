@@ -90,8 +90,25 @@ function montaLinhaGridResultado(i, piloto) {
 	td1.append(lang_text('217')+' : ');
 	td1.append(piloto.carro.porcentagemDesgasteMotor + '%');
 	td1.append('<br>');
+	
+	var temporadaCarro = temporadaSelecionada;
+	var temporadaCapacete = temporadaSelecionada;
+	var carroId = piloto.carro.id;
+	var pilotoId = piloto.id;
+	
+	if(piloto.idCapaceteLivery!=null && piloto.temporadaCapaceteLivery!=null){
+		temporadaCapacete = piloto.temporadaCapaceteLivery;
+		pilotoId = piloto.idCapaceteLivery;
+	}
+	
+	if(piloto.idCarroLivery!=null && piloto.temporadaCarroLivery!=null){
+		temporadaCarro = piloto.temporadaCarroLivery;
+		carroId = piloto.idCarroLivery;
+	}
+	
+	
 	var capacete = $('<img class="img-responsive img-responsive-line img-left"/>');
-	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' +temporadaSelecionada + '/' + piloto.id );
+	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' +temporadaCapacete + '/' + pilotoId );
 	var capacetes = $('<div style="display:  inline-flex;"  />');
 	capacetes.append(capacete);
 	if(piloto.imgJogador!=null){
@@ -142,7 +159,7 @@ function montaLinhaGridResultado(i, piloto) {
 	}
 	td2.append('<br>');
 	var carroLado = $('<img class="img-responsive img-center"/>');
-	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
+	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
 	td2.append(carroLado);
 	tr.append(td2);
 	if (piloto.id == idPilotoSelecionado) {

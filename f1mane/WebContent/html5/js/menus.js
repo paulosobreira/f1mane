@@ -11,7 +11,11 @@ var jogoPreparado = false;
 
 $('#trocaPneuCheck').append(lang_text('trocaPneus'));
 $('#reabastecimentoCheck').append(lang_text('reabastecimento'));
-$('#selecionePiloto').append(lang_text('selecionePiloto'));
+if("true" == localStorage.getItem("modoCarreira")){
+	$('#selecionePiloto').append(lang_text('substituirPiloto'));
+}else{
+	$('#selecionePiloto').append(lang_text('selecionePiloto'));	
+}
 $('#153').html(lang_text('153'));
 $('#154').html(lang_text('154'));
 

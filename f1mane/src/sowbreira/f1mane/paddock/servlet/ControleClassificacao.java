@@ -138,6 +138,21 @@ public class ControleClassificacao {
 							dadosCriarJogo.getQtdeVoltas().intValue());
 					corridasDadosSrv.setNivel(dadosCriarJogo.getNivelCorrida());
 					int pts = gerarPontos(piloto);
+					CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+							.carregaCarreiraJogador(piloto.getTokenJogador(),
+									false, session);
+					if (carreiraDadosSrv != null
+							&& carreiraDadosSrv.isModoCarreira()) {
+						if (pts == 0) {
+							pts = 1;
+						}
+						carreiraDadosSrv.setPtsConstrutores(
+								carreiraDadosSrv.getPtsConstrutores()
+										+ pts);
+						carreiraDadosSrv.setPtsConstrutoresGanhos(
+								carreiraDadosSrv.getPtsConstrutoresGanhos()
+										+ pts);
+					}
 					corridasDadosSrv.setPontos(pts);
 					corridasDadosSrv.setPosicao(piloto.getPosicao());
 					processarPontos(mapVoltasJogadoresOnline, piloto,
@@ -146,21 +161,6 @@ public class ControleClassificacao {
 					idJog.setId(jogadorDadosSrv.getId());
 					corridasDadosSrv.setJogadorDadosSrv(idJog);
 					jogadorDadosSrv.getCorridas().add(corridasDadosSrv);
-					CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-							.carregaCarreiraJogador(piloto.getTokenJogador(),
-									false, session);
-					if (carreiraDadosSrv.isModoCarreira()) {
-						int ptsCorrida = corridasDadosSrv.getPontos();
-						if (ptsCorrida == 0) {
-							ptsCorrida = 1;
-						}
-						carreiraDadosSrv.setPtsConstrutores(
-								carreiraDadosSrv.getPtsConstrutores()
-										+ ptsCorrida);
-						carreiraDadosSrv.setPtsConstrutoresGanhos(
-								carreiraDadosSrv.getPtsConstrutoresGanhos()
-										+ ptsCorrida);
-					}
 					session.saveOrUpdate(corridasDadosSrv);
 					session.saveOrUpdate(carreiraDadosSrv);
 					session.saveOrUpdate(jogadorDadosSrv);
@@ -594,6 +594,9 @@ public class ControleClassificacao {
 			return false;
 		}
 		CarreiraDadosSrv carreiraDadosSrv = obterCarreiraSrv(token);
+		if (carreiraDadosSrv == null) {
+			return false;
+		}
 		if (verificaModoCarrira && !carreiraDadosSrv.isModoCarreira()) {
 			return false;
 		}
