@@ -940,10 +940,10 @@ public class ControleJogoLocal extends ControleRecursos
 		int somaPontecias = 0;
 		for (int i = 0; i < getCarros().size(); i++) {
 			Carro carro = (Carro) getCarros().get(i);
-			somaPontecias += carro.getPotencia() + carro.getFreios()
-					+ carro.getAerodinamica();
+			somaPontecias += (carro.getPotencia() + carro.getFreios()
+					+ carro.getAerodinamica());
 		}
-		int mediaPontecia = somaPontecias / (getCarros().size() * 3);
+		int mediaPontecia = somaPontecias / (getCarros().size());
 		return mediaPontecia;
 	}
 

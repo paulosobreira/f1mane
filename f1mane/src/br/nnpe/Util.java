@@ -541,7 +541,7 @@ public class Util {
 	}
 
 	public static String rgb2hex(Color c) {
-		return String.format("%02x%02x%02x", c.getRed(), c.getBlue(),
-				c.getGreen());
+		return String.format("%02x%02x%02x", c.getRed(), c.getGreen(),
+				c.getBlue());
 	}
 }

@@ -844,10 +844,8 @@ function ctl_desenhaInfoDireita() {
 		for (var i = min; i < max; i++) {
 			maneContext.beginPath();
 			var piloto = posicaoPilotos.posis[i];
-			var nomePiloto = pilotosMap.get(piloto.idPiloto).nome;
-			nomePiloto = nomePiloto.split(".")[1];
-			nomePiloto = nomePiloto.substr(0, 3);
-			
+			var nomePiloto = pilotosMap.get(piloto.idPiloto).nomeAbreviado;
+		
 			maneContext.fillStyle = pilotosMap.get(piloto.idPiloto).carro.cor1Hex;
 			maneContext.fillRect(x, y, 5, 20);
 			

@@ -74,13 +74,13 @@ function tratamentoErro(xhRequest) {
 		setTimeout(function() {
 			localStorage.clear();
 			window.location = "index.html";
-		}, 3000);
+		}, 3500);
 	} else {
 		var erroMsg = xhRequest.status + '  ' + xhRequest.responseText;
 		if (xhRequest.responseJSON != null && xhRequest.responseJSON.messageString != null) {
 			erroMsg = xhRequest.responseJSON.messageString;
 		}
-		toaster(erroMsg, 3000, 'alert alert-danger');
+		toaster(erroMsg, 3500, 'alert alert-danger');
 	}
 }
 
@@ -90,7 +90,7 @@ function toaster(msg, tempo, classe) {
 	$('#head').append(toast);
 	setTimeout(function() {
 		$('#snackbar').remove();
-	}, 3000);
+	}, 4000);
 }
 
 function hexToRgb(hex) {

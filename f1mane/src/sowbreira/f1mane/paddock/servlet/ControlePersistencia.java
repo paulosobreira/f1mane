@@ -327,11 +327,6 @@ public class ControlePersistencia {
 		return nomes;
 	}
 
-	public void adicionarJogador(JogadorDadosSrv jogadorDadosSrv,
-			Session session) throws Exception {
-		adicionarJogador(null, jogadorDadosSrv, session);
-	}
-
 	public void adicionarJogador(String nome, JogadorDadosSrv jogadorDadosSrv,
 			Session session) throws Exception {
 		Transaction transaction = session.beginTransaction();
@@ -339,6 +334,10 @@ public class ControlePersistencia {
 			jogadorDadosSrv.setLoginCriador(jogadorDadosSrv.getNome());
 			session.saveOrUpdate(jogadorDadosSrv);
 			CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
+			carreiraDadosSrv.setPtsAerodinamica(500);
+			carreiraDadosSrv.setPtsCarro(500);
+			carreiraDadosSrv.setPtsFreio(500);
+			carreiraDadosSrv.setPtsPiloto(500);
 			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
 			session.saveOrUpdate(carreiraDadosSrv);
 			transaction.commit();
@@ -424,8 +423,8 @@ public class ControlePersistencia {
 				// create a FileInputStream on top of f
 				FileInputStream fis = new FileInputStream(f);
 				// create a new zip entry
-				ZipEntry anEntry = new ZipEntry(f.getAbsolutePath().split(
-						"f1mane" + File.separator + File.separator)[1]);
+				ZipEntry anEntry = new ZipEntry(f.getAbsolutePath()
+						.split("f1mane" + File.separator + File.separator)[1]);
 				// place the zip entry in the ZipOutputStream object
 				zos.putNextEntry(anEntry);
 				// now write the content of the file to the ZipOutputStream
@@ -510,21 +509,6 @@ public class ControlePersistencia {
 		CarreiraDadosSrv carreiraDadosSrv = null;
 		if (!list.isEmpty()) {
 			carreiraDadosSrv = (CarreiraDadosSrv) list.get(0);
-		}
-		if (carreiraDadosSrv == null) {
-			JogadorDadosSrv jogadorDadosSrv = carregaDadosJogador(token,
-					session);
-			if (jogadorDadosSrv == null) {
-				return null;
-			}
-			carreiraDadosSrv = new CarreiraDadosSrv();
-			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-			try {
-				session.saveOrUpdate(carreiraDadosSrv);
-			} catch (Exception e) {
-				Logger.logarExept(e);
-				return null;
-			}
 		}
 		if (vaiCliente) {
 			session.flush();

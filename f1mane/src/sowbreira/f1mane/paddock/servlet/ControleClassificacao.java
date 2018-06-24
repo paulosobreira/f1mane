@@ -157,6 +157,9 @@ public class ControleClassificacao {
 						carreiraDadosSrv.setPtsConstrutores(
 								carreiraDadosSrv.getPtsConstrutores()
 										+ ptsCorrida);
+						carreiraDadosSrv.setPtsConstrutoresGanhos(
+								carreiraDadosSrv.getPtsConstrutoresGanhos()
+										+ ptsCorrida);
 					}
 					session.saveOrUpdate(corridasDadosSrv);
 					session.saveOrUpdate(carreiraDadosSrv);
@@ -357,22 +360,6 @@ public class ControleClassificacao {
 		if (session == null) {
 			sessionLocal.close();
 		}
-		if (carreiraDadosSrv.getPtsCarro() == 0) {
-			carreiraDadosSrv.setPtsCarro(500);
-		}
-		if (carreiraDadosSrv.getPtsPiloto() == 0) {
-			carreiraDadosSrv.setPtsPiloto(500);
-		}
-		if (carreiraDadosSrv.getPtsAerodinamica() == 0) {
-			carreiraDadosSrv.setPtsAerodinamica(400);
-		}
-		if (carreiraDadosSrv.getPtsFreio() == 0) {
-			carreiraDadosSrv.setPtsFreio(400);
-		}
-		if (carreiraDadosSrv.getPtsConstrutores() == 0) {
-			carreiraDadosSrv.setPtsConstrutores(100);
-		}
-
 		return carreiraDadosSrv;
 	}
 
@@ -527,10 +514,9 @@ public class ControleClassificacao {
 			}
 		}
 	}
-	// TODO Token
-	public CarreiraDadosSrv obterCarreiraSrv(String nomeJogador) {
+	public CarreiraDadosSrv obterCarreiraSrv(String token) {
 		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-				.carregaCarreiraJogador(nomeJogador, false,
+				.carregaCarreiraJogador(token, false,
 						controlePersistencia.getSession());
 		return carreiraDadosSrv;
 	}

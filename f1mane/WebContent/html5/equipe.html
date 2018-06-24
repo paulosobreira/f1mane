@@ -48,28 +48,26 @@
 					</a>
 				</div>
 			</div>
-			<section class="container">
-				<div id="capacetes" class="hidden"></div>
+			<section class="container containerPadless">
+				<div id="capacetes" class="hidden">
+					<table class="table table-hover table-responsive">
+						<tbody id="tableCapacetes">
+						</tbody>
+					</table>
+				</div>
 				<div id="carros" class="hidden">
 					<table class="table table-hover table-responsive">
-						<thead>
-							<tr>
-								<th id="153"></th>
-								<th id="154"></th>
-							</tr>
-						</thead>
 						<tbody id="tableCarro">
 						</tbody>
-					</table>				
-				
+					</table>
 				</div>
 			</section>
 		</section>
 		<section id="equipe" class="container">
-			<input id="temporadaCapaceteLivery" type="hidden" /> 
-			<input id="temporadaCarroLivery" type="hidden" /> 
-			<input id="idCapaceteLivery" type="hidden" /> 
-			<input id="idCarroLivery"	type="hidden" />
+			<input id="temporadaCapaceteLivery" type="hidden" /> <input
+				id="temporadaCarroLivery" type="hidden" /> <input
+				id="idCapaceteLivery" type="hidden" /> <input id="idCarroLivery"
+				type="hidden" />
 			<form>
 				<div class="form-group">
 					<label id="nomeEquipe">Nome Equipe</label> <input type="text"
@@ -105,7 +103,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label id="habilidadePiloto">Piloto</label>
+				<label id="habilidadePiloto"></label>
 				<div class="input-group number-spinner">
 					<span class="input-group-btn">
 						<button class="btn btn-default" data-dir="dwn">
@@ -122,13 +120,13 @@
 
 			</div>
 			<div class="form-group">
-				<label id="potenciaCarro">Carro</label>
+				<label id="potenciaCarro"></label>
 				<div class="input-group number-spinner">
 					<span class="input-group-btn">
 						<button class="btn btn-default" data-dir="dwn">
 							<span class="glyphicon glyphicon-minus"></span>
 						</button>
-					</span> <input id="potenciaCarroValor" type="number" readonly="readonly"
+					</span> <input id="potenciaCarroValor" type="number" 
 						class="form-control text-center" value="700" min="0" max="1000">
 					<span class="input-group-btn">
 						<button class="btn btn-default" data-dir="up">
@@ -138,15 +136,15 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label id="aerodinamicaCarro">Aerodinamica</label>
+				<label id="aerodinamicaCarro"></label>
 				<div class="input-group number-spinner">
 					<span class="input-group-btn">
 						<button class="btn btn-default" data-dir="dwn">
 							<span class="glyphicon glyphicon-minus"></span>
 						</button>
 					</span> <input id="aerodinamicaCarroValor" type="number"
-						readonly="readonly" class="form-control text-center" value="600"
-						min="0" max="1000"> <span class="input-group-btn">
+						class="form-control text-center" min="0" max="1000"> <span
+						class="input-group-btn">
 						<button class="btn btn-default" data-dir="up">
 							<span class="glyphicon glyphicon-plus"></span>
 						</button>
@@ -154,15 +152,15 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label id="freioCarro">Freios</label>
+				<label id="freioCarro"></label>
 				<div class="input-group number-spinner">
 					<span class="input-group-btn">
 						<button class="btn btn-default" data-dir="dwn">
 							<span class="glyphicon glyphicon-minus"></span>
 						</button>
-					</span> <input id="freioCarroValor" type="number" readonly="readonly"
-						class="form-control text-center" value="500" min="0" max="1000">
-					<span class="input-group-btn">
+					</span> <input id="freioCarroValor" type="number"
+						class="form-control text-center" min="0" max="1000"> <span
+						class="input-group-btn">
 						<button class="btn btn-default" data-dir="up">
 							<span class="glyphicon glyphicon-plus"></span>
 						</button>
@@ -173,12 +171,11 @@
 			<hr>
 			<br>
 			<div class="form-group">
-				<label id="pontosGanhos">Pontos ganhos</label> <span
-					id="pontosGanhosValor">400</span>
+				<label id="pontosGanhos"></label> <span id="pontosGanhosValor"></span>
 			</div>
 			<div class="form-group">
-				<label id="pontosDisponiveis">Pontos dispníveis</label> <span
-					id="pontosConstrutoresValor">400</span>
+				<label id="pontosDisponiveis"></label> <span
+					id="pontosConstrutoresValor"></span>
 			</div>
 		</section>
 		<footer class="footer">

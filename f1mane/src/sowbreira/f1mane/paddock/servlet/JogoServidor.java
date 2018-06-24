@@ -369,9 +369,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 					.get(token);
 			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
-				if (piloto.getNome().equals(dadosParticiparJogo.getPiloto())
-						|| piloto.getId() == dadosParticiparJogo
-								.getIdPiloto()) {
+				if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 					controleClassificacao
 							.atualizarJogadoresOnlineCarreira(piloto, token);
 					dadosParticiparJogo.setPiloto(piloto.getNome());
