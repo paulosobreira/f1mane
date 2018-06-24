@@ -870,10 +870,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setNomeAbreviado(String nomeAbreviado) {
-		if (!Util.isNullOrEmpty(nomeAbreviado) && nomeAbreviado.length() > 3) {
-			nomeAbreviado = nomeAbreviado.substring(0, 3);
-		}
-		this.nomeAbreviado = nomeAbreviado.toUpperCase();
+		this.nomeAbreviado = nomeAbreviado;
 	}
 
 	public String getNome() {

@@ -461,9 +461,10 @@ public class Util {
 			inc = 200;
 		}
 		if ((proximoValor - valorAutal) > 0) {
+			numeroVal -= inc;
+			numero.setNumero(numeroVal);
 			if ((numeroVal - inc) >= 0) {
-				numeroVal -= inc;
-				numero.setNumero(numeroVal);
+				return true;
 			} else {
 				return false;
 			}

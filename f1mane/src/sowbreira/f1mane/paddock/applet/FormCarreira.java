@@ -195,13 +195,17 @@ public class FormCarreira extends JPanel {
 		ptsCarro.setModel(new CarreiraSpinnerModel());
 		ptsAeroDinamica.setModel(new CarreiraSpinnerModel());
 		ptsFreio.setModel(new CarreiraSpinnerModel());
-		JFormattedTextField tfptsAeroDinamica = ((JSpinner.DefaultEditor) ptsAeroDinamica.getEditor()).getTextField();
+		JFormattedTextField tfptsAeroDinamica = ((JSpinner.DefaultEditor) ptsAeroDinamica
+				.getEditor()).getTextField();
 		tfptsAeroDinamica.setEditable(false);
-		JFormattedTextField tfptsFreio = ((JSpinner.DefaultEditor) ptsFreio.getEditor()).getTextField();
+		JFormattedTextField tfptsFreio = ((JSpinner.DefaultEditor) ptsFreio
+				.getEditor()).getTextField();
 		tfptsFreio.setEditable(false);
-		JFormattedTextField tfptsCarro = ((JSpinner.DefaultEditor) ptsCarro.getEditor()).getTextField();
+		JFormattedTextField tfptsCarro = ((JSpinner.DefaultEditor) ptsCarro
+				.getEditor()).getTextField();
 		tfptsCarro.setEditable(false);
-		JFormattedTextField tfptsPiloto = ((JSpinner.DefaultEditor) ptsPiloto.getEditor()).getTextField();
+		JFormattedTextField tfptsPiloto = ((JSpinner.DefaultEditor) ptsPiloto
+				.getEditor()).getTextField();
 		tfptsPiloto.setEditable(false);
 		JPanel panelCentro = new JPanel(new BorderLayout());
 		panelCentro.setBorder(new TitledBorder("") {
@@ -220,9 +224,12 @@ public class FormCarreira extends JPanel {
 	}
 
 	protected void gerarCarroCima() {
-		BufferedImage carroLado = CarregadorRecursos.carregaImagem("cima20092016/CarroCima.png");
-		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(labelCor1.getBackground(), "cima20092016/CarroCimaC1.png");
-		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(labelCor2.getBackground(), "cima20092016/CarroCimaC2.png");
+		BufferedImage carroLado = CarregadorRecursos
+				.carregaImagem("cima20092016/CarroCima.png");
+		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
+				labelCor1.getBackground(), "cima20092016/CarroCimaC1.png");
+		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
+				labelCor2.getBackground(), "cima20092016/CarroCimaC2.png");
 		Graphics graphics = carroLado.getGraphics();
 		graphics.drawImage(cor1, 0, 0, null);
 		graphics.drawImage(cor2, 0, 0, null);
@@ -232,9 +239,12 @@ public class FormCarreira extends JPanel {
 	}
 
 	protected void gerarCarroLado() {
-		BufferedImage carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
-		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(labelCor1.getBackground(), "CarroLadoC1.png");
-		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(labelCor2.getBackground(), "CarroLadoC2.png");
+		BufferedImage carroLado = CarregadorRecursos
+				.carregaImagem("CarroLado.png");
+		BufferedImage cor1 = CarregadorRecursos
+				.gerarCoresCarros(labelCor1.getBackground(), "CarroLadoC1.png");
+		BufferedImage cor2 = CarregadorRecursos
+				.gerarCoresCarros(labelCor2.getBackground(), "CarroLadoC2.png");
 		Graphics graphics = carroLado.getGraphics();
 		graphics.drawImage(cor1, 0, 0, null);
 		graphics.drawImage(cor2, 0, 0, null);
@@ -244,7 +254,7 @@ public class FormCarreira extends JPanel {
 
 	public static void main(String[] args) {
 		FormCarreira formCarreira = new FormCarreira();
-		int ptsCarreira = 3;//Util.intervalo(1000, 5000);
+		int ptsCarreira = 3;// Util.intervalo(1000, 5000);
 		formCarreira.ptsCarreira = ptsCarreira;
 		formCarreira.ptsAeroDinamica.setValue(600);
 		formCarreira.ptsCarro.setValue(850);
@@ -258,10 +268,12 @@ public class FormCarreira extends JPanel {
 		carreiraDadosSrv.setPtsPiloto(850);
 		carreiraDadosSrv.setPtsConstrutores(ptsCarreira);
 
-		System.out.println(ControleClassificacao.validadeDistribucaoPontos(carreiraDadosSrv,
-				(Integer) formCarreira.getPtsAeroDinamica().getValue(), (Integer) formCarreira.getPtsCarro().getValue(),
-				(Integer) formCarreira.getPtsFreio().getValue(), (Integer) formCarreira.getPtsPiloto().getValue(),
-				formCarreira.getPtsCarreira()));
+		System.out.println(ControleClassificacao.validadeDistribucaoPontos(
+				carreiraDadosSrv,
+				(Integer) formCarreira.getPtsAeroDinamica().getValue(),
+				(Integer) formCarreira.getPtsCarro().getValue(),
+				(Integer) formCarreira.getPtsFreio().getValue(),
+				(Integer) formCarreira.getPtsPiloto().getValue()));
 	}
 
 	public int getPtsCarreira() {
@@ -387,14 +399,16 @@ public class FormCarreira extends JPanel {
 	}
 
 	private void setaCor1Carro() {
-		Color color = JColorChooser.showDialog(FormCarreira.this, "Escolha uma cor", Color.WHITE);
+		Color color = JColorChooser.showDialog(FormCarreira.this,
+				"Escolha uma cor", Color.WHITE);
 		setCor1(color);
 		gerarCarroLado();
 		gerarCarroCima();
 	}
 
 	private void setaCor2Carro() {
-		Color color = JColorChooser.showDialog(FormCarreira.this, "Escolha uma cor", Color.WHITE);
+		Color color = JColorChooser.showDialog(FormCarreira.this,
+				"Escolha uma cor", Color.WHITE);
 		setCor2(color);
 		gerarCarroLado();
 		gerarCarroCima();

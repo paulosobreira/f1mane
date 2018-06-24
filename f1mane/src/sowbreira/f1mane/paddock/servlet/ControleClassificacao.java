@@ -401,35 +401,57 @@ public class ControleClassificacao {
 			CarreiraDadosSrv carreiraDados) {
 		Session session = controlePersistencia.getSession();
 		try {
+			if (Util.isNullOrEmpty(carreiraDados.getNomeCarro())
+					|| Util.isNullOrEmpty(carreiraDados.getNomePiloto())
+					|| Util.isNullOrEmpty(
+							carreiraDados.getNomePilotoAbreviado())) {
+				return new MsgSrv(Lang.msg("128"));
+			}
+
+			if (carreiraDados.getNomeCarro().length() > 20
+					|| carreiraDados.getNomePiloto().length() > 20) {
+				return new MsgSrv(Lang.msg("249"));
+			}
+			StringBuilder nmAbrv = new StringBuilder();
+			for (int i = 0; i < carreiraDados.getNomePilotoAbreviado()
+					.length(); i++) {
+				if (i > 2) {
+					break;
+				}
+				Character character = new Character(
+						carreiraDados.getNomePilotoAbreviado().charAt(i));
+				if (i == 0) {
+					nmAbrv.append(character.toString().toUpperCase());
+				} else {
+					nmAbrv.append(character.toString().toLowerCase());
+				}
+
+			}
+			carreiraDados.setNomePilotoAbreviado(nmAbrv.toString());
+
 			CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 					.carregaCarreiraJogador(token, false, session);
 			carreiraDadosSrv.setNomePiloto(carreiraDados.getNomePiloto());
 			carreiraDadosSrv.setNomeCarro(carreiraDados.getNomeCarro());
-			if (!Util.isNullOrEmpty(carreiraDados.getNomePilotoAbreviado())
-					&& carreiraDados.getNomePilotoAbreviado().length() > 3) {
-				carreiraDados.setNomePilotoAbreviado(
-						carreiraDados.getNomePilotoAbreviado().substring(0, 3));
-			}
 			carreiraDadosSrv.setNomePilotoAbreviado(
-					carreiraDados.getNomePilotoAbreviado().toUpperCase());
-			int ptsConstrutores = carreiraDados.getPtsConstrutores();
+					carreiraDados.getNomePilotoAbreviado());
 			int ptsAerodinamica = carreiraDados.getPtsAerodinamica();
 			int ptsCarro = carreiraDados.getPtsCarro();
 			int ptsFreio = carreiraDados.getPtsFreio();
 			int ptsPiloto = carreiraDados.getPtsPiloto();
 
-			// if (!validadeDistribucaoPontos(carreiraDadosSrv, ptsAerodinamica,
-			// ptsCarro, ptsFreio, ptsPiloto, ptsConstrutores)) {
-			// return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
-			// }
-
+			int validadeDistribucaoPontos = validadeDistribucaoPontos(
+					carreiraDadosSrv, ptsAerodinamica, ptsCarro, ptsFreio,
+					ptsPiloto);
+			if (validadeDistribucaoPontos < 0) {
+				return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
+			}
+			carreiraDadosSrv.setPtsConstrutores(validadeDistribucaoPontos);
 			carreiraDadosSrv.setPtsCarro(carreiraDados.getPtsCarro());
 			carreiraDadosSrv.setPtsPiloto(carreiraDados.getPtsPiloto());
 			carreiraDadosSrv
 					.setPtsAerodinamica(carreiraDados.getPtsAerodinamica());
 			carreiraDadosSrv.setPtsFreio(carreiraDados.getPtsFreio());
-			carreiraDadosSrv
-					.setPtsConstrutores(carreiraDados.getPtsConstrutores());
 			carreiraDadosSrv.setModoCarreira(carreiraDados.isModoCarreira());
 			carreiraDadosSrv.setC1R(carreiraDados.getC1R());
 			carreiraDadosSrv.setC1G(carreiraDados.getC1G());
@@ -458,9 +480,9 @@ public class ControleClassificacao {
 		return new MsgSrv(Lang.msg("250"));
 	}
 
-	public static boolean validadeDistribucaoPontos(
+	public static int validadeDistribucaoPontos(
 			CarreiraDadosSrv carreiraDadosSrv, int ptsAerodinamica,
-			int ptsCarro, int ptsFreio, int ptsPiloto, int ptsConstrutores) {
+			int ptsCarro, int ptsFreio, int ptsPiloto) {
 		int ptsConstrutoresBase = carreiraDadosSrv.getPtsConstrutores();
 		int ptsAerodinamicaBase = carreiraDadosSrv.getPtsAerodinamica();
 		int ptsCarroBase = carreiraDadosSrv.getPtsCarro();
@@ -468,6 +490,9 @@ public class ControleClassificacao {
 		int ptsPilotoBase = carreiraDadosSrv.getPtsPiloto();
 
 		Numero numero = new Numero(ptsConstrutoresBase);
+		Logger.logar(
+				"ptsConstrutoresBase antes " + numero.getNumero().intValue());
+
 		if (ptsAerodinamica < ptsAerodinamicaBase) {
 			redistribuiPontos(ptsAerodinamicaBase, ptsAerodinamica, numero);
 		}
@@ -494,11 +519,10 @@ public class ControleClassificacao {
 			redistribuiPontos(ptsPilotoBase, ptsPiloto, numero);
 		}
 
-		Logger.logar("ptsConstrutores " + ptsConstrutores);
-		Logger.logar("numero.getNumero().intValue() "
-				+ numero.getNumero().intValue());
+		Logger.logar(
+				"ptsConstrutoresBase depois " + numero.getNumero().intValue());
 
-		return ptsConstrutores == numero.getNumero().intValue();
+		return numero.getNumero().intValue();
 
 	}
 
