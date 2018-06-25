@@ -904,7 +904,7 @@ public class LetsRace {
 				.getControleJogosServer();
 		Object ret = controleJogosServer.equipe(sessaoCliente);
 		if (ret == null) {
-			return Response.status(200).build();
+			return Response.status(204).build();
 		}
 		Response erro = processsaMensagem(ret, idioma);
 		if (erro != null) {

@@ -14,7 +14,13 @@ $('#freioCarro').html(lang_text('freioCarro'));
 $('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
 var temporadaSelecionada;
 listaTemporadas();
-carregaEquipe();
+
+if(localStorage.getItem("token")!=null){
+	carregaEquipe();
+}else{
+	criarSessao();
+}
+
 $('.carousel').carousel({
 	pause: true,
 	interval: false
@@ -87,6 +93,25 @@ $(document).on('click', '.number-spinner button', function() {
 	$('#pontosConstrutoresValor').html(ptsConstrutores);
 	btn.closest('.number-spinner').find('input').val(newVal);
 });
+
+function criarSessao() {
+	var urlServico = "/f1mane/rest/letsRace/criarSessaoVisitante";
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		contentType : "application/json",
+		dataType : "json",
+		success : function(sessaoVisitante) {
+			localStorage.setItem("token", sessaoVisitante.sessaoCliente.token);
+			carregaEquipe();
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
+			console.log('criarSessao() ' + xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
 
 function carregaEquipe() {
 	var urlServico = "/f1mane/rest/letsRace/equipe";
@@ -166,7 +191,11 @@ function carregaEquipe() {
 			$('#idImgCarroLado').bind("click",clickCarro);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			tratamentoErro(xhRequest);
+			if (xhRequest.status == 204) {
+				toaster(lang_text('precisaEstaLogado'), 4000, 'alert alert-danger');	
+			}else{
+				tratamentoErro(xhRequest);
+			}
 			console.log('carregaEquipe() ' + xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
