@@ -70,7 +70,7 @@ function pad(n, width, z) {
 
 function tratamentoErro(xhRequest) {
 	if (xhRequest.status == 401) {
-		toaster('Need to log in, back to index...', 2000, 'alert alert-danger');
+		toaster(lang_text('tratamentoErro'), 4000, 'alert alert-danger');
 		setTimeout(function() {
 			localStorage.clear();
 			window.location = "index.html";

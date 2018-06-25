@@ -34,6 +34,7 @@ import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
+import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.CircuitosDefauts;
 import sowbreira.f1mane.entidades.Clima;
@@ -62,6 +63,28 @@ public class LetsRace {
 			.getCarregadorRecursos();
 	private ControlePaddockServidor controlePaddock = PaddockServer
 			.getControlePaddock();
+
+	public static void main(String[] args) {
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos
+				.getCarregadorRecursos();
+		Map<String, List<Piloto>> carregarTemporadasPilotos = carregadorRecursos
+				.carregarTemporadasPilotos();
+		for (Iterator iterator = carregarTemporadasPilotos.keySet()
+				.iterator(); iterator.hasNext();) {
+			String temporada = (String) iterator.next();
+
+			List<Piloto> list = carregarTemporadasPilotos.get(temporada);
+			int somaPontecias = 0;
+			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
+				Piloto piloto = (Piloto) iterator2.next();
+				Carro carro = piloto.getCarro();
+				somaPontecias += (carro.getPotencia() + carro.getFreios()
+						+ carro.getAerodinamica());
+			}
+			int mediaPontecia = somaPontecias / (list.size());
+			System.out.println(temporada + " " + mediaPontecia);
+		}
+	}
 
 	@GET
 	@Path("/criarSessaoVisitante")
@@ -880,6 +903,9 @@ public class LetsRace {
 		ControleJogosServer controleJogosServer = controlePaddock
 				.getControleJogosServer();
 		Object ret = controleJogosServer.equipe(sessaoCliente);
+		if (ret == null) {
+			return Response.status(200).entity(ret).build();
+		}
 		Response erro = processsaMensagem(ret, idioma);
 		if (erro != null) {
 			return erro;

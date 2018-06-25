@@ -510,7 +510,7 @@ public class ControlePersistencia {
 		if (!list.isEmpty()) {
 			carreiraDadosSrv = (CarreiraDadosSrv) list.get(0);
 		}
-		if (vaiCliente) {
+		if (vaiCliente && carreiraDadosSrv != null) {
 			session.flush();
 			session.evict(carreiraDadosSrv);
 			carreiraDadosSrv.setJogadorDadosSrv(null);
@@ -576,7 +576,7 @@ public class ControlePersistencia {
 		try {
 			CarreiraDadosSrv carreiraDadosSrv = carregaCarreiraJogador(token,
 					false, session);
-			if(carreiraDadosSrv!=null){
+			if (carreiraDadosSrv != null) {
 				carreiraDadosSrv.setModoCarreira(modo);
 				gravarDados(session, carreiraDadosSrv);
 			}

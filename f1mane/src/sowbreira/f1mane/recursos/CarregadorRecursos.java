@@ -914,7 +914,7 @@ public class CarregadorRecursos {
 			return obterCarroCimaSemAreofolio(piloto, temporada);
 		}
 		BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
-		if (carro.getImg() != null) {
+		if (carro.getImg() != null && carro.getImg().endsWith("png")) {
 			carroCima = CarregadorRecursos.carregaImagem(
 					carro.getImg().replaceAll(".png", "_cima.png"));
 			bufferCarrosCima.put(carro.getNome(), carroCima);
@@ -956,8 +956,11 @@ public class CarregadorRecursos {
 		if (anoTemporada < 2009) {
 			modelo = "cima19982008/";
 		}
-		if (anoTemporada <= 1997) {
+		if (anoTemporada < 1997) {
 			modelo = "cima19801997/";
+		}
+		if (anoTemporada <= 1980) {
+			modelo = "cima19701979/";
 		}
 		return modelo;
 	}

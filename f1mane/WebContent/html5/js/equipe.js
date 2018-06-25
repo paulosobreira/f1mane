@@ -100,10 +100,13 @@ function carregaEquipe() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
-			if (!response) {
+			if (response==null) {
 				console.log('carregaEquipe() null');
+				toaster(lang_text('precisaEstaLogado'), 4000, 'alert alert-danger');
 				return;
 			}
+			$('#btnSalvar').removeClass('hidden');
+			$('#btnJogar').removeClass('hidden');
 			if(response.nomeCarro!=null){
 				$('#nomeEquipeValor').val(response.nomeCarro);
 			}
@@ -246,7 +249,7 @@ function gerarTrCapaceteCores(){
 function gerarTrCarro(){
 	var response = objetoEquipe();
 	var trCarro1 = $('<tr/>');
-	var trCarro2 = $('<tr/>');
+	var trCarro2 = $('<tr class="transbox textCenter"/>');
 	$('#tableCarro').append(trCarro1);
 	$('#tableCarro').append(trCarro2);
 	var tdCarro1 = $('<td/>');
@@ -261,7 +264,7 @@ function gerarTrCarro(){
 	var carroCima = $('<img class="img-responsive img-center" />');
 	carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 	div1.append(carroCima);
-	var div3 = $('<div class="row transbox textCenter" />');
+	var div3 = $('<div class="row" />');
 	div3.append(response.nomeCarro+'<br>');
 	div3.append(lang_text('256')+' '+response.ptsCarro);
 	tdCarro1.append(div1);
@@ -271,7 +274,7 @@ function gerarTrCarro(){
 	var carroLado = $('<img class="img-responsive img-center" style="margin-top: 20px;" />');
 	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 	div2.append(carroLado);
-	var div4 = $('<div class="row transbox textCenter" />');
+	var div4 = $('<div class="row" />');
 	div4.append(lang_text('freioCarro')+' '+response.ptsFreio+'<br>');
 	div4.append(lang_text('aerodinamicaCarro')+' '+response.ptsAerodinamica+'<br>');
 	tdCarro2.append(div2);
