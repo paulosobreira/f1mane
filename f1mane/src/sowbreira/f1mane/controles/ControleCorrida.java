@@ -82,7 +82,7 @@ public class ControleCorrida {
 		if (Math.random() > 0.5) {
 			asfaltoAbrasivo = true;
 		}
-		if(!jogo.isTrocaPneu()){
+		if (controleJogo.isSemTrocaPneu()) {
 			asfaltoAbrasivo = false;
 		}
 	}

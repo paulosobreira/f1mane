@@ -335,9 +335,9 @@ public class ControlePersistencia {
 			session.saveOrUpdate(jogadorDadosSrv);
 			CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
 			carreiraDadosSrv.setPtsAerodinamica(500);
-			carreiraDadosSrv.setPtsCarro(500);
+			carreiraDadosSrv.setPtsCarro(600);
 			carreiraDadosSrv.setPtsFreio(500);
-			carreiraDadosSrv.setPtsPiloto(500);
+			carreiraDadosSrv.setPtsPiloto(600);
 			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
 			session.saveOrUpdate(carreiraDadosSrv);
 			transaction.commit();
