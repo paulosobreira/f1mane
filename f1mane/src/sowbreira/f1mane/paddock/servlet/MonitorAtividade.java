@@ -101,6 +101,9 @@ public class MonitorAtividade implements Runnable {
 				.hasNext();) {
 			SessaoCliente sessaoCliente = iter.next();
 			int intervaloAtividade = 250000;
+			if(!sessaoCliente.isGuest()){
+				intervaloAtividade = 550000;
+			}
 			if ((timeNow
 					- sessaoCliente.getUlimaAtividade()) > intervaloAtividade) {
 				sessaoClienteRemover = sessaoCliente;
