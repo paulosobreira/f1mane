@@ -334,9 +334,9 @@ public class ControlePersistencia {
 			jogadorDadosSrv.setLoginCriador(jogadorDadosSrv.getNome());
 			session.saveOrUpdate(jogadorDadosSrv);
 			CarreiraDadosSrv carreiraDadosSrv = new CarreiraDadosSrv();
-			carreiraDadosSrv.setPtsAerodinamica(500);
+			carreiraDadosSrv.setPtsAerodinamica(600);
 			carreiraDadosSrv.setPtsCarro(600);
-			carreiraDadosSrv.setPtsFreio(500);
+			carreiraDadosSrv.setPtsFreio(600);
 			carreiraDadosSrv.setPtsPiloto(600);
 			carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
 			session.saveOrUpdate(carreiraDadosSrv);
