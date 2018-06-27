@@ -934,7 +934,7 @@ public class ControlePaddockServidor {
 
 	private BufferedImage carroCimaCor(String temporada, String carro) {
 		Piloto piloto = gerarPilotoCarroCor(temporada, carro);
-		return carregadorRecursos.obterCarroCima(piloto, null);
+		return carregadorRecursos.obterCarroCima(piloto, null, false);
 	}
 	private BufferedImage carroLadoCor(String temporada, String carro) {
 		Piloto piloto = gerarPilotoCarroCor(temporada, carro);

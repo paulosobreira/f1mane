@@ -859,6 +859,11 @@ public class CarregadorRecursos {
 
 	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
 			String temporada) {
+		return obterCarroCimaSemAreofolio(piloto, temporada, true);
+	}
+
+	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
+			String temporada, boolean desenhaBuffer) {
 		String modelo = obterModeloCarroCima(temporada);
 		Carro carro = piloto.getCarro();
 		BufferedImage carroCima = bufferCarrosCimaSemAreofolio
@@ -896,12 +901,20 @@ public class CarregadorRecursos {
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.dispose();
+			if (desenhaBuffer) {
+				bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
+			}
 			return carroCima;
 		}
 		return carroCima;
 	}
 
 	public BufferedImage obterCarroCima(Piloto piloto, String temporada) {
+		return obterCarroCima(piloto, temporada, true);
+	}
+
+	public BufferedImage obterCarroCima(Piloto piloto, String temporada,
+			boolean desenhaBuffer) {
 		if (piloto == null) {
 			return null;
 		}
@@ -921,6 +934,9 @@ public class CarregadorRecursos {
 		}
 		if (carroCima == null) {
 			carroCima = desenhaCarroCima(modelo, carro);
+			if (desenhaBuffer) {
+				bufferCarrosCima.put(carro.getNome(), carroCima);
+			}
 		}
 		return carroCima;
 	}

@@ -437,7 +437,7 @@ public class Util {
 			int proximoValor, Numero numero) {
 		Double numeroVal = numero.getNumero();
 		int inc = 0;
-		if (proximoValor >= 400 && proximoValor < 600) {
+		if (proximoValor < 600) {
 			inc = 1;
 			if (valorAutal == 600) {
 				inc = 2;

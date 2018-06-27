@@ -60,7 +60,7 @@ $(document).on('click', '.number-spinner button', function() {
 	}
 
 	var inc = 0;
-	if (newVal >= 400 && newVal < 600) {
+	if (newVal < 600) {
 		inc = 1;
 		if (oldValue == 600) {
 			inc = 2;

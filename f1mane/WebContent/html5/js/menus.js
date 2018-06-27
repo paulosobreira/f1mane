@@ -62,7 +62,7 @@ $('#selecionaTpAsa').find('tr').bind("click", function() {
 	$(this).addClass('success');
 });
 
-$('#btnJogar').bind("click", function() {
+$('#btnJogar').unbind().bind("click", function() {
 	if ((dadosJogo.estado == 'NENHUM' || dadosJogo.estado == '07') && !jogoPreparado) {
 		preparaJogo();
 	} else {
@@ -180,7 +180,7 @@ function carregarDadosJogo() {
 				return;
 			}
 			//ESPERANDO_JOGO_COMECAR 07
-			if (localStorage.getItem("modoCarreira") && '07' != dadosJogo.estado) {
+			if (localStorage.getItem("modoCarreira")=="true" && '07' != dadosJogo.estado) {
 				toaster(lang_text('247'), 3000, 'alert alert-danger');
 			}
 			$('#imgCircuito').attr('src', '/f1mane/rest/letsRace/circuitoMini/' + dadosJogo.arquivoCircuito);

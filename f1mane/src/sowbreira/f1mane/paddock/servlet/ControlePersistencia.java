@@ -503,6 +503,7 @@ public class ControlePersistencia {
 		if (!Constantes.DATABASE) {
 			return null;
 		}
+		Logger.logar("Buacar Carreira token " + token);
 		List list = session.createCriteria(CarreiraDadosSrv.class)
 				.createAlias("jogadorDadosSrv", "j")
 				.add(Restrictions.eq("j.token", token)).list();
@@ -514,6 +515,9 @@ public class ControlePersistencia {
 			session.flush();
 			session.evict(carreiraDadosSrv);
 			carreiraDadosSrv.setJogadorDadosSrv(null);
+		}
+		if (carreiraDadosSrv != null && carreiraDadosSrv.getId() == null) {
+			return null;
 		}
 		return carreiraDadosSrv;
 
