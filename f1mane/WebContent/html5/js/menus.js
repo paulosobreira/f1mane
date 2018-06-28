@@ -107,6 +107,21 @@ function esconderEntrarJogo() {
 }
 
 function gerarTr1Pilotos(piloto){
+	var temporadaCapacete = temporadaSelecionada;
+	var temporadaCarro = temporadaSelecionada;
+	var pilotoId = piloto.id;
+	var carroId = piloto.carro.id;
+	if(piloto.idCapaceteLivery!=null && piloto.temporadaCapaceteLivery!=null){
+		temporadaCapacete = piloto.temporadaCapaceteLivery;
+		pilotoId = piloto.idCapaceteLivery;
+	}
+	
+	if(piloto.idCarroLivery!=null && piloto.temporadaCarroLivery!=null){
+		temporadaCarro = piloto.temporadaCarroLivery;
+		carroId = piloto.idCarroLivery;
+	}
+	
+	
 	var td1 = $('<td scope="row" style="display: grid;"/>');
 	td1.append(piloto.nome);
 	var td2 = $('<td/>');
@@ -115,7 +130,7 @@ function gerarTr1Pilotos(piloto){
 	var capacetes = $('<div style="display:  inline-flex;"  />');
 	td1.append(capacetes);
 	var capacete = $('<img class="img-responsive img-center"/>');
-	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' +piloto.id);
+	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaCapacete + '/' +pilotoId);
 	capacetes.append($('<br>'));
 	capacetes.append(capacete);
 	if(piloto.imgJogador!=null){
@@ -125,7 +140,7 @@ function gerarTr1Pilotos(piloto){
 	}
 	tr.append(td1);
 	var carroLado = $('<img class="img-responsive img-center"/>');
-	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
+	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
 	td2.append(carroLado);
 	if (piloto.id == idPilotoSelecionado) {
 		tr.addClass('success');
