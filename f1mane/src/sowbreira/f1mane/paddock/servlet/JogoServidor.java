@@ -339,11 +339,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			for (Iterator<Piloto> iterator = pilotos.iterator(); iterator
 					.hasNext();) {
 				Piloto piloto = iterator.next();
-				String nome = piloto.getNome();
-				if ((nome != null
-						&& nome.equals(dadosParticiparJogo.getPiloto()))
-						|| piloto.getId() == dadosParticiparJogo
-								.getIdPiloto()) {
+				if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 					piloto.setNomeJogador(
 							srvPaddockPack.getSessaoCliente().getNomeJogador());
 					piloto.setImgJogador(srvPaddockPack.getSessaoCliente()

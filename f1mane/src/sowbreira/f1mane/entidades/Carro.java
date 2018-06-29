@@ -155,7 +155,9 @@ public class Carro implements Serializable {
 
 	public boolean equals(Object arg0) {
 		Carro carro = (Carro) arg0;
-
+		if(carro==null){
+			return false;
+		}
 		return nome.equals(carro.getNome());
 	}
 

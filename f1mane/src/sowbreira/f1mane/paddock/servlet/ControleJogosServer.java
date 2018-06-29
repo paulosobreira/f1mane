@@ -140,13 +140,19 @@ public class ControleJogosServer {
 					.setControleCampeonatoServidor(controleCampeonatoServidor);
 			SrvPaddockPack srvPaddockPack = preparaSrvPaddockPack(
 					clientPaddockPack, jogoServidor);
-			
+
 			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 					.obterCarreiraSrv(
 							clientPaddockPack.getSessaoCliente().getToken());
 			if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 				if (jogoServidor.isCorridaIniciada()) {
 					return new MsgSrv(Lang.msg("247"));
+				}
+				if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
+						|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())
+						|| Util.isNullOrEmpty(
+								carreiraDadosSrv.getNomePilotoAbreviado())) {
+					return new MsgSrv(Lang.msg("128"));
 				}
 				if (verificaPotenciaLimite(jogoServidor.getMediaPontecia(),
 						carreiraDadosSrv.getPtsCarro()
@@ -231,6 +237,12 @@ public class ControleJogosServer {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
 			}
+			if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
+					|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())
+					|| Util.isNullOrEmpty(
+							carreiraDadosSrv.getNomePilotoAbreviado())) {
+				return new MsgSrv(Lang.msg("128"));
+			}
 			if (verificaPotenciaLimite(jogoServidor.getMediaPontecia(),
 					carreiraDadosSrv.getPtsCarro()
 							+ carreiraDadosSrv.getPtsAerodinamica()
@@ -266,7 +278,7 @@ public class ControleJogosServer {
 		srvPaddockPack.setDadosPaddock(dadosPaddock);
 		jogoServidor.atualizarJogadoresOnline();
 		if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
-			jogoServidor.atualizarJogadoresOnlineCarreira();			
+			jogoServidor.atualizarJogadoresOnlineCarreira();
 		}
 		return srvPaddockPack;
 	}
@@ -1235,7 +1247,8 @@ public class ControleJogosServer {
 	public Object equipe(SessaoCliente sessaoCliente) {
 		Session session = controlePersistencia.getSession();
 		try {
-			return controleClassificacao.verCarreira(sessaoCliente.getToken(),null);
+			return controleClassificacao.verCarreira(sessaoCliente.getToken(),
+					null);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			return new ErroServ(e);
@@ -1246,9 +1259,10 @@ public class ControleJogosServer {
 		}
 	}
 
-	public Object gravarEquipe(SessaoCliente sessaoCliente,
-			String idioma, CarreiraDadosSrv equipe) {
-		return controleClassificacao.atualizaCarreira(sessaoCliente.getToken(), equipe);
+	public Object gravarEquipe(SessaoCliente sessaoCliente, String idioma,
+			CarreiraDadosSrv equipe) {
+		return controleClassificacao.atualizaCarreira(sessaoCliente.getToken(),
+				equipe);
 	}
 
 }
