@@ -36,6 +36,7 @@ import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.paddock.PaddockConstants;
+import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
@@ -44,6 +45,7 @@ import sowbreira.f1mane.paddock.entidades.persistencia.F1ManeDados;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
+import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 14:19:54
@@ -575,12 +577,18 @@ public class ControlePersistencia {
 		return campeonatos;
 	}
 
-	public void modoCarreira(String token, boolean modo) {
+	public MsgSrv modoCarreira(String token, boolean modo) {
 		Session session = getSession();
 		try {
 			CarreiraDadosSrv carreiraDadosSrv = carregaCarreiraJogador(token,
 					false, session);
 			if (carreiraDadosSrv != null) {
+				if (modo && (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
+						|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())
+						|| Util.isNullOrEmpty(
+								carreiraDadosSrv.getNomePilotoAbreviado()))) {
+					return new MsgSrv(Lang.msg("128"));
+				}
 				carreiraDadosSrv.setModoCarreira(modo);
 				gravarDados(session, carreiraDadosSrv);
 			}
@@ -591,6 +599,7 @@ public class ControlePersistencia {
 				session.close();
 			}
 		}
+		return null;
 	}
 
 }

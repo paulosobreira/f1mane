@@ -279,7 +279,14 @@ public class LetsRace {
 			}
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 
-			controlePaddock.modoCarreira(token, "true".equals(modoCarreira));
+			MsgSrv modoCarreiraRet = controlePaddock.modoCarreira(token,
+					"true".equals(modoCarreira));
+			if (modoCarreiraRet != null) {
+				Response erro = processsaMensagem(modoCarreiraRet, idioma);
+				if (erro != null) {
+					return erro;
+				}
+			}
 
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);

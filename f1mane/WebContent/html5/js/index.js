@@ -5,8 +5,10 @@ $('#voltar').hide();
 if (localStorage.getItem("versao") != $("#versao").val()) {
 	console.log('Limpando localStorage versao: ' + $("#versao").val());
 	var token = localStorage.getItem("token");
+	var plataforma =  localStorage.getItem('plataforma');
 	localStorage.clear();
 	localStorage.setItem("versao", $("#versao").val());
+	localStorage.setItem('plataforma',plataforma);
 	if(token!=null){
 		localStorage.setItem("token", token);
 	}

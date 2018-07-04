@@ -171,7 +171,7 @@ function carregaEquipe() {
 				$('#idImgCarroCima').attr('src', '/f1mane/rest/letsRace/carroCima/' + rgbToHexUrlSafe(response.c1R,response.c1G,response.c1B) + '/' + rgbToHexUrlSafe(response.c2R,response.c2G,response.c2B));
 			}
 
-			/*
+			
 			$('#idImgCapacete').bind("click", function() {
 				$('#equipe').addClass('hidden');
 				$('#escolha').removeClass('hidden');
@@ -186,10 +186,10 @@ function carregaEquipe() {
 				$('#voltar').attr('href', 'equipe.html');
 			};
 			
-			$('#idImgCarroCima').bind("click",clickCarro );
+			$('#idImgCarroCima').unbind().bind("click",clickCarro );
 			
-			$('#idImgCarroLado').bind("click",clickCarro);
-			*/
+			$('#idImgCarroLado').unbind().bind("click",clickCarro);
+			
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			if (xhRequest.status == 204) {

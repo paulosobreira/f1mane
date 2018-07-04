@@ -836,8 +836,8 @@ public class ControlePaddockServidor {
 		return controleClassificacao.obterClassificacaoCircuito(nomeCircuito);
 	}
 
-	public void modoCarreira(String token, boolean modo) {
-		controlePersistencia.modoCarreira(token, modo);
+	public MsgSrv modoCarreira(String token, boolean modo) {
+		return controlePersistencia.modoCarreira(token, modo);
 	}
 
 	public BufferedImage carroCimaTemporadaCarro(String temporada,

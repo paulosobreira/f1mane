@@ -34,6 +34,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 /**
@@ -41,6 +42,8 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class ControleClassificacao {
 	private ControlePersistencia controlePersistencia;
+	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
+			.getCarregadorRecursos();
 
 	/**
 	 * @param controlePersistencia
@@ -147,8 +150,7 @@ public class ControleClassificacao {
 							pts = 1;
 						}
 						carreiraDadosSrv.setPtsConstrutores(
-								carreiraDadosSrv.getPtsConstrutores()
-										+ pts);
+								carreiraDadosSrv.getPtsConstrutores() + pts);
 						carreiraDadosSrv.setPtsConstrutoresGanhos(
 								carreiraDadosSrv.getPtsConstrutoresGanhos()
 										+ pts);
@@ -446,6 +448,55 @@ public class ControleClassificacao {
 			if (validadeDistribucaoPontos < 0) {
 				return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
 			}
+
+			if (carreiraDados.getTemporadaCapaceteLivery() != null
+					&& carreiraDados.getIdCapaceteLivery() != null) {
+				List<Piloto> list = carregadorRecursos
+						.carregarTemporadasPilotos()
+						.get("t" + carreiraDados.getTemporadaCapaceteLivery());
+				for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+					Piloto piloto = (Piloto) iterator.next();
+					Logger.logar(piloto.getNome() + " " + piloto.getHabilidade()
+							+ " " + carreiraDados.getPtsPiloto());
+					if (piloto.getId() == carreiraDados.getIdCapaceteLivery()
+							&& piloto.getHabilidade() > carreiraDados
+									.getPtsPiloto()) {
+						return new MsgSrv(
+								Lang.msg("pinturaCapacete", new String[]{String
+										.valueOf(piloto.getHabilidade())}));
+					}
+				}
+			}
+
+			if (carreiraDados.getTemporadaCarroLivery() != null
+					&& carreiraDados.getIdCarroLivery() != null) {
+				List<Piloto> list = carregadorRecursos
+						.carregarTemporadasPilotos()
+						.get("t" + carreiraDados.getTemporadaCarroLivery());
+				for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+					Piloto piloto = (Piloto) iterator.next();
+					if (piloto.getCarro().getId() == carreiraDados
+							.getIdCarroLivery()
+							&& (piloto.getCarro()
+									.getPotenciaReal() > carreiraDados
+											.getPtsCarro()
+									|| piloto.getCarro()
+											.getAerodinamica() > carreiraDados
+													.getPtsAerodinamica()
+									|| piloto.getCarro()
+											.getFreios() > carreiraDados
+													.getPtsFreio())) {
+						return new MsgSrv(Lang.msg("pinturaCarro", new String[]{
+								String.valueOf(
+										piloto.getCarro().getPotenciaReal()),
+								String.valueOf(
+										piloto.getCarro().getAerodinamica()),
+								String.valueOf(
+										piloto.getCarro().getFreios())}));
+					}
+				}
+			}
+
 			carreiraDadosSrv.setPtsConstrutores(validadeDistribucaoPontos);
 			carreiraDadosSrv.setPtsCarro(carreiraDados.getPtsCarro());
 			carreiraDadosSrv.setPtsPiloto(carreiraDados.getPtsPiloto());
