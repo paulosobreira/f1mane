@@ -330,33 +330,40 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void atualizarJogadoresOnline() {
-		for (Iterator<String> iter = mapJogadoresOnline.keySet()
-				.iterator(); iter.hasNext();) {
-			String key = iter.next();
-			SrvPaddockPack srvPaddockPack = controleJogosServer
-					.obterDadosToken(key);
-			DadosCriarJogo dadosParticiparJogo = mapJogadoresOnline.get(key);
-			for (Iterator<Piloto> iterator = pilotos.iterator(); iterator
-					.hasNext();) {
-				Piloto piloto = iterator.next();
-				if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
-					piloto.setNomeJogador(
-							srvPaddockPack.getSessaoCliente().getNomeJogador());
-					piloto.setImgJogador(srvPaddockPack.getSessaoCliente()
-							.getImagemJogador());
-					piloto.setTokenJogador(
-							srvPaddockPack.getSessaoCliente().getToken());
-					piloto.setJogadorHumano(true);
-				}
-				if (piloto.isJogadorHumano() && mapJogadoresOnline
-						.get(piloto.getTokenJogador()) == null) {
-					piloto.setNomeJogador(null);
-					piloto.setImgJogador(null);
-					piloto.setJogadorHumano(false);
+		try {
+			synchronized (mapJogadoresOnline) {
+				for (Iterator<String> iter = mapJogadoresOnline.keySet()
+						.iterator(); iter.hasNext();) {
+					String key = iter.next();
+					SrvPaddockPack srvPaddockPack = controleJogosServer
+							.obterDadosToken(key);
+					DadosCriarJogo dadosParticiparJogo = mapJogadoresOnline
+							.get(key);
+					for (Iterator<Piloto> iterator = pilotos
+							.iterator(); iterator.hasNext();) {
+						Piloto piloto = iterator.next();
+						if (piloto.getId() == dadosParticiparJogo
+								.getIdPiloto()) {
+							piloto.setNomeJogador(srvPaddockPack
+									.getSessaoCliente().getNomeJogador());
+							piloto.setImgJogador(srvPaddockPack
+									.getSessaoCliente().getImagemJogador());
+							piloto.setTokenJogador(srvPaddockPack
+									.getSessaoCliente().getToken());
+							piloto.setJogadorHumano(true);
+						}
+						if (piloto.isJogadorHumano() && mapJogadoresOnline
+								.get(piloto.getTokenJogador()) == null) {
+							piloto.setNomeJogador(null);
+							piloto.setImgJogador(null);
+							piloto.setJogadorHumano(false);
+						}
+					}
 				}
 			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
-
 	}
 
 	public void atualizarJogadoresOnlineCarreira() {

@@ -95,7 +95,6 @@ public class ControleCiclo extends Thread {
 					Thread.sleep(Constantes.CICLO);
 					contadorCiclos++;
 				} catch (Exception e) {
-					interrupt = true;
 					Logger.logarExept(e);
 				}
 			}
