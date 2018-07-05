@@ -273,13 +273,14 @@ function gerarTrCapaceteCores(){
 		$('#escolha').addClass('hidden');
 		$('#capacetes').addClass('hidden');
 		$('#equipe').removeClass('hidden');
+		$('#voltar').attr('href', 'index.html');
 	});
 	tdCapacete.append(div);
 }
 function gerarTrCarro(){
 	var response = objetoEquipe();
 	var trCarro1 = $('<tr/>');
-	var trCarro2 = $('<tr class="transbox textCenter"/>');
+	var trCarro2 = $('<tr class="transbox"/>');
 	$('#tableCarro').append(trCarro1);
 	$('#tableCarro').append(trCarro2);
 	var tdCarro1 = $('<td/>');
@@ -318,6 +319,7 @@ function gerarTrCarro(){
 		$('#escolha').addClass('hidden');
 		$('#carros').addClass('hidden');
 		$('#equipe').removeClass('hidden');
+		$('#voltar').attr('href', 'index.html');
 	};
 	div1.bind("click", click);
 	div2.bind("click", click);
@@ -368,12 +370,13 @@ function selecionaTemporada(temporada) {
 					$('#escolha').addClass('hidden');
 					$('#capacetes').addClass('hidden');
 					$('#equipe').removeClass('hidden');
+					$('#voltar').attr('href', 'index.html');
 				});
 				tdCapacete.append(div);
 				if(mapCarros.get(piloto.carro.id)==null){
 					mapCarros.set(piloto.carro.id,piloto.carro.id);
 					var trCarro1 = $('<tr/>');
-					var trCarro2 = $('<tr/>');
+					var trCarro2 = $('<tr class="transbox"/>');
 					$('#tableCarro').append(trCarro1);
 					$('#tableCarro').append(trCarro2);
 					var tdCarro1 = $('<td/>');
@@ -389,7 +392,7 @@ function selecionaTemporada(temporada) {
 					var carroCima = $('<img class="img-responsive img-center" />');
 					carroCima.attr('src', '/f1mane/rest/letsRace/carroCima/' + temporadaSelecionada + '/' + piloto.carro.id);
 					div1.append(carroCima);
-					var div3 = $('<div class="row transbox textCenter" />');
+					var div3 = $('<div class="row"/>');
 					div3.append(piloto.carro.nome+'<br>');
 					div3.append(lang_text('256')+' '+piloto.carro.potencia);
 					tdCarro1.append(div1);
@@ -399,7 +402,7 @@ function selecionaTemporada(temporada) {
 					var carroLado = $('<img class="img-responsive img-center" style="margin-top: 20px;" />');
 					carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);
 					div2.append(carroLado);
-					var div4 = $('<div class="row transbox textCenter" />');
+					var div4 = $('<div class="row"/>');
 					div4.append(lang_text('freioCarro')+' '+piloto.carro.freios+'<br>');
 					div4.append(lang_text('aerodinamicaCarro')+' '+piloto.carro.aerodinamica+'<br>');
 					tdCarro2.append(div2);
@@ -413,6 +416,7 @@ function selecionaTemporada(temporada) {
 						$('#escolha').addClass('hidden');
 						$('#carros').addClass('hidden');
 						$('#equipe').removeClass('hidden');
+						$('#voltar').attr('href', 'index.html');
 					};
 					div1.bind("click", click);
 					div2.bind("click", click);
