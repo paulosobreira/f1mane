@@ -597,32 +597,32 @@ function ctl_desenhaInfoCarros() {
 			ctl_problemasCarrro(img1 , centroX, idPiloto1 , 1);
 		}
 		if (imgPneu1) {
-			var x;
-			var y;
+			var xCarro,yCarro,xCapacete,yCapacete;
+
 			if(largura<450){
-				x = centroX - imgPneu1.width - 40;
-				y =  altura - (imgPneu1.height*2) - 10
+				xCarro = centroX - imgPneu1.width - 40;
+				yCarro =  altura - (imgPneu1.height*2) - 10
 			}else{
-				x = centroX - imgPneu1.width - img1.width - 40;
-				y =  altura - imgPneu1.height - 10;
+				xCarro = centroX - imgPneu1.width - img1.width - 40;
+				yCarro =  altura - imgPneu1.height - 10;
 			}
-			maneContext.drawImage(imgPneu1,x, y);
+			maneContext.drawImage(imgPneu1,xCarro, yCarro);
 			if (imgCap1) {
 				if(largura<450){
-					x = centroX - imgCap1.width	- 30 - (imgPneu1.width);
-					y = altura - (imgCap1.height*2) - 10;
+					xCapacete = centroX - imgCap1.width	- 30 - (imgPneu1.width);
+					yCapacete = yCarro;
 				}else{
-					x = centroX - imgCap1.width	- img1.width - 45 - (imgPneu1.width / 2);
-					y = altura - imgCap1.height - 10;
+					xCapacete = centroX - imgCap1.width	- img1.width - 45 - (imgPneu1.width / 2);
+					yCapacete = yCarro;
 				}
-				maneContext.drawImage(imgCap1, x, y);
+				maneContext.drawImage(imgCap1, xCapacete, yCapacete);
 			}
 			if (imgJog1!=null) {
 				$('#imgJog1').show();
 				$('#imgJog1').css('position', 'absolute');
 				$('#imgJog1').attr('src',imgJog1);
-				$('#imgJog1').css('top',   (y+2)+'px');
-			    $('#imgJog1').css('left',  (x-30)+'px');
+				$('#imgJog1').css('top',   (yCarro)+'px');
+			    $('#imgJog1').css('left',  (xCapacete-30)+'px');
 			}
 		}
 	}
@@ -632,33 +632,32 @@ function ctl_desenhaInfoCarros() {
 			ctl_problemasCarrro(img2 , centroX, idPiloto2 , 2);
 		}
 		if (imgPneu2) {
-			var x;
-			var y;
+			var xCarro,yCarro,xCapacete,yCapacete;
 			if(largura<450){
-				x = centroX + 40;
-				y =  altura - (imgPneu2.height*2) - 10
+				xCarro = centroX + 40;
+				yCarro =  altura - (imgPneu2.height*2) - 10
 			}else{
-				x = centroX + 40 + img2.width;
-				y =  altura - imgPneu2.height - 10;
+				xCarro = centroX + 40 + img2.width;
+				yCarro =  altura - imgPneu2.height - 10;
 			}
-			maneContext.drawImage(imgPneu2, x , y);
+			maneContext.drawImage(imgPneu2, xCarro , yCarro);
 			if (imgCap2) {
 				if(largura<450){
-					x = centroX + 30 + (imgPneu2.width);
-					y = altura - (imgCap2.height*2) - 10;
+					xCapacete = centroX + 30 + (imgPneu2.width);
+					yCapacete = yCarro;
 				}else{
-					x = centroX + 45 + img2.width + (imgPneu2.width / 2);
-					y = altura - imgCap2.height - 10;
+					xCapacete = centroX + 45 + img2.width + (imgPneu2.width / 2);
+					yCapacete = yCarro;
 				}
-				maneContext.drawImage(imgCap2, x , y);
+				maneContext.drawImage(imgCap2, xCapacete , yCapacete);
 			}
 			
 			if (imgJog2!=null) {
 				$('#imgJog2').show();
 				$('#imgJog2').css('position', 'absolute');
 				$('#imgJog2').attr('src',imgJog2);
-				$('#imgJog2').css('top',   (y+2)+'px');
-			    $('#imgJog2').css('left',  (x+30)+'px');
+				$('#imgJog2').css('top',   (yCarro)+'px');
+			    $('#imgJog2').css('left',  (xCapacete+30)+'px');
 			}
 		}
 	}
