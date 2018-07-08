@@ -364,6 +364,12 @@ function selecionaTemporada(temporada) {
 				divNome.append(lang_text('255')+' '+piloto.habilidade+'<br>');
 				div.append(divNome);
 				div.bind("click", function() {
+					if (piloto.habilidadeFixa > $('#habilidadePilotoValor').val()) {
+						var lst = new Array();
+						lst.push(piloto.habilidadeReal);
+						toaster(lang_text('pinturaCapacete',lst));
+						return;
+					}
 					$('#temporadaCapaceteLivery').val(temporadaSelecionada);
 					$('#idCapaceteLivery').val(piloto.id);
 					$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaSelecionada + '/' + piloto.id);
@@ -394,7 +400,7 @@ function selecionaTemporada(temporada) {
 					div1.append(carroCima);
 					var div3 = $('<div class="row"/>');
 					div3.append(piloto.carro.nome+'<br>');
-					div3.append(lang_text('256')+' '+piloto.carro.potencia);
+					div3.append(lang_text('256')+' '+piloto.carro.potenciaReal);
 					tdCarro1.append(div1);
 					tdCarro3.append(div3);
 					
@@ -409,6 +415,16 @@ function selecionaTemporada(temporada) {
 					tdCarro4.append(div4);
 					
 					var click = function() {
+						if (piloto.carro.potenciaReal > $('#potenciaCarroValor').val()
+								||piloto.carro.aerodinamica > $('#aerodinamicaCarroValor').val()
+								||piloto.carro.freios > $('#freioCarroValor').val()) {
+							var lst = new Array();
+							lst.push(piloto.carro.potenciaReal);
+							lst.push(piloto.carro.aerodinamica);
+							lst.push(piloto.carro.freios);
+							toaster(lang_text('pinturaCarro',lst));
+							return;
+						}
 						$('#temporadaCarroLivery').val(temporadaSelecionada);
 						$('#idCarroLivery').val(piloto.carro.id);
 						$('#idImgCarroLado').attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaSelecionada + '/' + piloto.carro.id);

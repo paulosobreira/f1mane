@@ -149,6 +149,9 @@ public class ControleClassificacao {
 						if (pts == 0) {
 							pts = 1;
 						}
+						if(carreiraDadosSrv.getPtsConstrutoresGanhos()<1000){
+							pts += 10;
+						}
 						carreiraDadosSrv.setPtsConstrutores(
 								carreiraDadosSrv.getPtsConstrutores() + pts);
 						carreiraDadosSrv.setPtsConstrutoresGanhos(

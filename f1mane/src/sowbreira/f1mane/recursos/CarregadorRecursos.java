@@ -425,6 +425,8 @@ public class CarregadorRecursos {
 				habilidade = 999;
 			}
 			piloto.setHabilidade(habilidade);
+			piloto.setHabilidadeReal(
+					Integer.parseInt(String.valueOf(duasCasas) + "0"));
 			retorno.add(piloto);
 		}
 		Collections.sort(retorno, new Comparator<Piloto>() {

@@ -1031,7 +1031,7 @@ function ctl_desenhaInfoEsquerda() {
 			maneContext.stroke();
 		}		
 		
-		if (dadosParciais.pMotor < 10) {
+		if (dadosParciais.pMotor <= 10) {
 			maneContext.beginPath();
 			maneContext.strokeStyle = '#ff0000';
 			maneContext.rect(x, y, 94, 20);
