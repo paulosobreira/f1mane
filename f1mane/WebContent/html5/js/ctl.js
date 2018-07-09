@@ -610,10 +610,10 @@ function ctl_desenhaInfoCarros() {
 			if (imgCap1) {
 				if(largura<450){
 					xCapacete = centroX - imgCap1.width	- 30 - (imgPneu1.width);
-					yCapacete = altura - (imgCap1.height*2) - 10;
+					yCapacete = yCarro;
 				}else{
 					xCapacete = centroX - imgCap1.width	- img1.width - 45 - (imgPneu1.width / 2);
-					yCapacete = altura - imgCap1.height - 10;
+					yCapacete = yCarro;
 				}
 				maneContext.drawImage(imgCap1, xCapacete, yCapacete);
 			}
@@ -644,10 +644,10 @@ function ctl_desenhaInfoCarros() {
 			if (imgCap2) {
 				if(largura<450){
 					xCapacete = centroX + 30 + (imgPneu2.width);
-					yCapacete = altura - (imgCap2.height*2) - 10;
+					yCapacete = yCarro;
 				}else{
 					xCapacete = centroX + 45 + img2.width + (imgPneu2.width / 2);
-					yCapacete = altura - imgCap2.height - 10;
+					yCapacete = yCarro;
 				}
 				maneContext.drawImage(imgCap2, xCapacete , yCapacete);
 			}
@@ -1031,7 +1031,7 @@ function ctl_desenhaInfoEsquerda() {
 			maneContext.stroke();
 		}		
 		
-		if (dadosParciais.pMotor < 10) {
+		if (dadosParciais.pMotor <= 10) {
 			maneContext.beginPath();
 			maneContext.strokeStyle = '#ff0000';
 			maneContext.rect(x, y, 94, 20);

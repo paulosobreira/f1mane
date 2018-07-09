@@ -116,7 +116,7 @@ function montaLinhaGridResultado(i, piloto) {
 		imgJogador.attr('src', piloto.imgJogador);
 		capacetes.append(imgJogador);
 	}
-	var pneu = $('<img class="img-responsive img-responsive-line img-right"/>');
+	var pneu = $('<img class="img-right"/>');
 	if (piloto.carro.tipoPneu == 'TIPO_PNEU_MOLE') {
 		pneu.attr('src', 'img/pneuMole.png');
 	} else if (piloto.carro.tipoPneu == 'TIPO_PNEU_DURO') {

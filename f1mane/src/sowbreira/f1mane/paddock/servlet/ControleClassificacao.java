@@ -149,6 +149,9 @@ public class ControleClassificacao {
 						if (pts == 0) {
 							pts = 1;
 						}
+						if(carreiraDadosSrv.getPtsConstrutoresGanhos()<1000){
+							pts += 10;
+						}
 						carreiraDadosSrv.setPtsConstrutores(
 								carreiraDadosSrv.getPtsConstrutores() + pts);
 						carreiraDadosSrv.setPtsConstrutoresGanhos(
@@ -224,13 +227,6 @@ public class ControleClassificacao {
 			piloto.setPorcentagemPontosCorrida(Math.round(porcent * 100));
 
 		}
-	}
-
-	public static void main(String[] args) {
-		int var = 15;
-		var /= 4;
-		Logger.logar(var);
-		// Logger.logar(Math.ceil(4.0 / 6.0));
 	}
 
 	public int gerarPontos(Piloto p) {
@@ -628,10 +624,20 @@ public class ControleClassificacao {
 					@Override
 					public int compare(DadosClassificacaoCircuito o1,
 							DadosClassificacaoCircuito o2) {
-						return o2.getPontos().compareTo(o1.getPontos());
+						int compareTo = o2.getPontos()
+								.compareTo(o1.getPontos());
+						if (compareTo == 0) {
+							return o2.getCorridas().compareTo(o1.getCorridas());
+						} else {
+							return compareTo;
+						}
 					}
 				});
 		return classificacao;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(new Long(10).compareTo(new Long(10)));
 	}
 
 	public boolean atualizarJogadoresOnlineCarreira(Piloto piloto,

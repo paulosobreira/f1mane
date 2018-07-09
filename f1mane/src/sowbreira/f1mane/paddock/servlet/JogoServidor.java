@@ -354,9 +354,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 						}
 						if (piloto.isJogadorHumano() && mapJogadoresOnline
 								.get(piloto.getTokenJogador()) == null) {
-							piloto.setNomeJogador(null);
-							piloto.setImgJogador(null);
-							piloto.setJogadorHumano(false);
+							removeJogadroPiloto(piloto);
 						}
 					}
 				}
@@ -547,16 +545,20 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			if (token.equals(piloto.getTokenJogador())) {
-				piloto.setNomeJogador(null);
-				piloto.setTokenJogador(null);
-				piloto.setImgJogador(null);
-				piloto.setJogadorHumano(false);
+				removeJogadroPiloto(piloto);
 				mapJogadoresOnline.remove(token);
 				return true;
 			}
 		}
 		return false;
 
+	}
+
+	private void removeJogadroPiloto(Piloto piloto) {
+		piloto.setNomeJogador(null);
+		piloto.setTokenJogador(null);
+		piloto.setImgJogador(null);
+		piloto.setJogadorHumano(false);
 	}
 
 	public Map getMapVoltasJogadoresOnline() {

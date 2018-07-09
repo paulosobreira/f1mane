@@ -60,6 +60,7 @@ public class Carro implements Serializable {
 	private int porcentagemDesgasteMotor;
 	private String tipoPneu;
 	private int potencia;
+	private int potenciaReal;
 	private int aerodinamica;
 	private int freios;
 	private int id;
@@ -89,8 +90,6 @@ public class Carro implements Serializable {
 	private int motor;
 	@JsonIgnore
 	private int potenciaAntesQualify;
-	@JsonIgnore
-	private int potenciaReal;
 	@JsonIgnore
 	private int tanqueCheio;
 	@JsonIgnore

@@ -63,6 +63,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	private int pontosCorrida;
 	private long porcentagemPontosCorrida;
 	private int habilidade;
+	private int habilidadeReal;
 
 	private String temporadaCapaceteLivery;
 	private String temporadaCarroLivery;
@@ -3738,6 +3739,14 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setIdCapaceteLivery(String idCapaceteLivery) {
 		this.idCapaceteLivery = idCapaceteLivery;
+	}
+
+	public int getHabilidadeReal() {
+		return habilidadeReal;
+	}
+
+	public void setHabilidadeReal(int habilidadeReal) {
+		this.habilidadeReal = habilidadeReal;
 	}
 
 }
