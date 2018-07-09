@@ -364,7 +364,7 @@ function selecionaTemporada(temporada) {
 				divNome.append(lang_text('255')+' '+piloto.habilidade+'<br>');
 				div.append(divNome);
 				div.bind("click", function() {
-					if (piloto.habilidadeFixa > $('#habilidadePilotoValor').val()) {
+					if (piloto.habilidadeReal > $('#habilidadePilotoValor').val()) {
 						var lst = new Array();
 						lst.push(piloto.habilidadeReal);
 						toaster(lang_text('pinturaCapacete',lst));

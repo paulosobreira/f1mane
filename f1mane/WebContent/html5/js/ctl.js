@@ -233,7 +233,8 @@ function ctl_desenhaControles() {
 			maneContext.fillStyle = controle.cor;
 			if(controle.larguraTexto){
 				var laruraTxt = maneContext.measureText(controle.exibir).width + 10;
-				maneContext.fillRect(controle.x, controle.y, laruraTxt,	controle.height);
+				maneContext.strokeStyle =  controle.cor;
+				maneContext.rect(controle.x, controle.y, laruraTxt,	controle.height);
 				if(cor!=controle.cor){
 					maneContext.beginPath();
 					maneContext.strokeStyle = cor;
@@ -242,7 +243,8 @@ function ctl_desenhaControles() {
 					maneContext.stroke();
 				}
 			}else{
-				maneContext.fillRect(controle.x, controle.y, controle.width, controle.height);
+				maneContext.strokeStyle =  controle.cor;
+				maneContext.rect(controle.x, controle.y, controle.width, controle.height);
 				if(cor!=controle.cor){
 					maneContext.beginPath();
 					maneContext.strokeStyle = cor;
