@@ -361,7 +361,7 @@ function selecionaTemporada(temporada) {
 				div.append(capacete);
 				var divNome = $('<div class="row transbox textCenter"/>');
 				divNome.append(piloto.nome+'<br>');
-				divNome.append(lang_text('255')+' '+piloto.habilidade+'<br>');
+				divNome.append(lang_text('255')+' '+piloto.habilidadeReal+'<br>');
 				div.append(divNome);
 				div.bind("click", function() {
 					if (piloto.habilidadeReal > $('#habilidadePilotoValor').val()) {

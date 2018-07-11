@@ -209,25 +209,25 @@ function carregarDadosJogo() {
 			$('#circuitosLabel').html(circuitosLabel);
 			$('#temporadasLabel').html(dadosJogo.temporada);
 			if (dadosJogo.trocaPneu) {
-				$('#trocaPneuCheck').removeClass('text-muted');
+				$('#trocaPneuCheck').removeClass('line-through');
 			} else {
-				$('#trocaPneuCheck').addClass('text-muted');
+				$('#trocaPneuCheck').addClass('line-through');
 			}
 			if (dadosJogo.reabastecimento) {
-				$('#reabastecimentoCheck').removeClass('text-muted');
+				$('#reabastecimentoCheck').removeClass('line-through');
 			} else {
-				$('#reabastecimentoCheck').addClass('text-muted');
+				$('#reabastecimentoCheck').addClass('line-through');
 			}
 			if (dadosJogo.ers) {
-				$('#ersCheck').removeClass('text-muted');
+				$('#ersCheck').removeClass('line-through');
 			} else {
-				$('#ersCheck').addClass('text-muted');
+				$('#ersCheck').addClass('line-through');
 			}
 			if (dadosJogo.drs) {
 				drsTeporada = true;
-				$('#drsCheck').removeClass('text-muted');
+				$('#drsCheck').removeClass('line-through');
 			} else {
-				$('#drsCheck').addClass('text-muted');
+				$('#drsCheck').addClass('line-through');
 			}
 			var pilotos = dadosJogo.pilotos;
 			$('#pilotos').find('tr').remove();
@@ -422,25 +422,25 @@ function selecionaTemporada(temporada) {
 			}
 			$('#temporadasLabel').html(temporada);
 			if (response.trocaPneu) {
-				$('#trocaPneuCheck').removeClass('text-muted');
+				$('#trocaPneuCheck').removeClass('line-through');
 			} else {
-				$('#trocaPneuCheck').addClass('text-muted');
+				$('#trocaPneuCheck').addClass('line-through');
 			}
 			if (response.reabastecimento) {
-				$('#reabastecimentoCheck').removeClass('text-muted');
+				$('#reabastecimentoCheck').removeClass('line-through');
 			} else {
-				$('#reabastecimentoCheck').addClass('text-muted');
+				$('#reabastecimentoCheck').addClass('line-through');
 			}
 			if (response.ers) {
-				$('#ersCheck').removeClass('text-muted');
+				$('#ersCheck').removeClass('line-through');
 			} else {
-				$('#ersCheck').addClass('text-muted');
+				$('#ersCheck').addClass('line-through');
 			}
 			drsTeporada = response.drs;
 			if (response.drs) {
-				$('#drsCheck').removeClass('text-muted');
+				$('#drsCheck').removeClass('line-through');
 			} else {
-				$('#drsCheck').addClass('text-muted');
+				$('#drsCheck').addClass('line-through');
 			}
 			temporadaSelecionada = temporada;
 			var pilotos = response.pilotos;
