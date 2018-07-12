@@ -2862,6 +2862,7 @@ public class PainelCircuito {
 		BufferedImage image = new BufferedImage(maxX, maxY,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		setarHints(g2d);
 		if (circuito.getCorFundo() != null) {
 			g2d.setColor(circuito.getCorFundo());
 		} else {
