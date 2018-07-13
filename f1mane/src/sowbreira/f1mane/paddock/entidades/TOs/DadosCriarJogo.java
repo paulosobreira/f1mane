@@ -1,11 +1,21 @@
 package sowbreira.f1mane.paddock.entidades.TOs;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.nnpe.Constantes;
+import br.nnpe.Util;
+import sowbreira.f1mane.controles.ControleJogoLocal;
+import sowbreira.f1mane.controles.ControleRecursos;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 /**
  * @author Paulo Sobreira Criado em 12/08/2007 as 17:04:24
@@ -37,6 +47,63 @@ public class DadosCriarJogo implements Serializable {
 	private boolean ers;
 	private boolean drs;
 	private boolean safetyCar = true;
+
+	public static DadosCriarJogo gerarJogoLetsRace(String temporada,
+			String arquivoCircuito, String idPiloto, String numVoltas,
+			String tipoPneu, String combustivel, String asa)
+			throws ClassNotFoundException, IOException {
+		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
+		dadosCriarJogo.setTemporada("t" + temporada);
+		if (!Util.isNullOrEmpty(numVoltas)) {
+			dadosCriarJogo
+					.setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
+		}
+		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
+		dadosCriarJogo.setDiffultrapassagem(Util.intervalo(200, 500));
+
+		String pista = ControleRecursos.nomeArquivoCircuitoParaPista(arquivoCircuito);
+
+		// pista = "Monte Carlo";
+		// dadosCriarJogo.setSafetyCar(false);
+		dadosCriarJogo.setCircuitoSelecionado(pista);
+		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
+		dadosCriarJogo.setAsa(asa);
+		dadosCriarJogo.setTpPneu(tipoPneu);
+		Circuito circuitoObj = CarregadorRecursos
+				.carregarCircuito(arquivoCircuito);
+		if (Math.random() < (circuitoObj.getProbalidadeChuva() / 100.0)) {
+			dadosCriarJogo.setClima(Clima.NUBLADO);
+		} else {
+			dadosCriarJogo.setClima(Clima.SOL);
+		}
+		TemporadasDefauts temporadasDefauts = CarregadorRecursos
+				.getCarregadorRecursos().carregarTemporadasPilotosDefauts()
+				.get("t" + temporada);
+
+		if (!Util.isNullOrEmpty(combustivel)) {
+			Integer fuel = new Integer(Util.extrairNumeros(combustivel));
+			if (fuel > 100) {
+				fuel = 100;
+			}
+			if (fuel < 10) {
+				fuel = 10;
+			}
+			dadosCriarJogo.setCombustivel(fuel);
+		} else {
+			if (temporadasDefauts.getReabastecimento()) {
+				dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
+			} else {
+				dadosCriarJogo.setCombustivel(Util.intervalo(70, 90));
+			}
+		}
+		dadosCriarJogo
+				.setReabastecimento(temporadasDefauts.getReabastecimento());
+		dadosCriarJogo.setTrocaPneu(temporadasDefauts.getTrocaPneu());
+		dadosCriarJogo.setErs(temporadasDefauts.getErs());
+		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
+		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
+		return dadosCriarJogo;
+	}
 
 	public String getNomeCampeonato() {
 		return nomeCampeonato;

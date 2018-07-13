@@ -219,7 +219,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				.hasNext();) {
 			String key = (String) iter.next();
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
-			// TODO Token
 			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 					.obterCarreiraSrv(key);
 			String piloto = "";
@@ -499,6 +498,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 						controleClassificacao.processaCorrida(tempoInicio,
 								tempoFim, mapVoltasJogadoresOnline, pilotos,
 								dadosCriarJogo);
+						//TODO Id Campeonato
 						if (!Util.isNullOrEmpty(
 								dadosCriarJogo.getNomeCampeonato())) {
 							controleCampeonatoServidor.processaCorrida(

@@ -36,18 +36,23 @@ public class ControleCampeonatoServidor {
 		if (clientPaddockPack.getSessaoCliente() == null) {
 			return (new MsgSrv(Lang.msg("210")));
 		}
+		Campeonato campeonato = (Campeonato) clientPaddockPack.getDataObject();
+		return criarCampeonato(campeonato,
+				clientPaddockPack.getSessaoCliente().getToken());
+	}
+
+	public Object criarCampeonato(Campeonato campeonato, String token) {
+		if (token == null) {
+			return (new MsgSrv(Lang.msg("210")));
+		}
 		Session session = controlePersistencia.getSession();
 		try {
 
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-					.carregaDadosJogador(
-							clientPaddockPack.getSessaoCliente().getToken(),
-							session);
+					.carregaDadosJogador(token, session);
 			if (jogadorDadosSrv == null) {
 				return (new MsgSrv(Lang.msg("238")));
 			}
-			Campeonato campeonato = (Campeonato) clientPaddockPack
-					.getDataObject();
 			if (verifircaNomeCampeonato(campeonato, session)) {
 				return (new MsgSrv(Lang.msg("nomeCampeonatoNaoDisponivel")));
 			}
@@ -132,18 +137,21 @@ public class ControleCampeonatoServidor {
 	}
 
 	public Object obterCampeonato(ClientPaddockPack clientPaddockPack) {
-		String campString = (String) clientPaddockPack.getDataObject();
+		String idCampeonato = (String) clientPaddockPack.getDataObject();
+		return obterCampeonato(idCampeonato);
+	}
+
+	public Object obterCampeonato(String idCampeonato) {
 		Session session = controlePersistencia.getSession();
 		try {
 			Campeonato campeonato = controlePersistencia
-					.pesquisaCampeonato(session, campString, true);
+					.pesquisaCampeonato(session, idCampeonato, true);
 			return campeonato;
 		} finally {
 			if (session.isOpen()) {
 				session.close();
 			}
 		}
-
 	}
 
 	public void processaCorrida(long tempoInicio, long tempoFim,
@@ -222,5 +230,31 @@ public class ControleCampeonatoServidor {
 				session.close();
 			}
 		}
+	}
+
+	public Object obterCampeonatoEmAberto(String token) {
+		List pesquisaCampeonatos = null;
+		Session session = controlePersistencia.getSession();
+		try {
+			pesquisaCampeonatos = controlePersistencia
+					.pesquisaCampeonatos(token, session, true);
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+		if (pesquisaCampeonatos == null) {
+			return null;
+		}
+		for (Iterator iterator = pesquisaCampeonatos.iterator(); iterator
+				.hasNext();) {
+			Campeonato campeonato = (Campeonato) iterator.next();
+			if (verificaCampeonatoConcluido(campeonato)) {
+				continue;
+			} else {
+				return campeonato;
+			}
+		}
+		return null;
 	}
 }

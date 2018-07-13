@@ -35,6 +35,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -391,6 +392,10 @@ public class ControlePaddockServidor {
 	private Object obterCampeonato(ClientPaddockPack clientPaddockPack) {
 		return controleCampeonatoServidor.obterCampeonato(clientPaddockPack);
 	}
+	
+	public Object obterCampeonato(String idCampeonato) {
+		return controleCampeonatoServidor.obterCampeonato(idCampeonato);
+	}
 
 	private Object listarCampeonatos(ClientPaddockPack clientPaddockPack) {
 		return controleCampeonatoServidor.listarCampeonatos();
@@ -398,6 +403,10 @@ public class ControlePaddockServidor {
 
 	private Object criarCampeonato(ClientPaddockPack clientPaddockPack) {
 		return controleCampeonatoServidor.criarCampeonato(clientPaddockPack);
+	}
+
+	public Object criarCampeonato(Campeonato campeonato, String token) {
+		return controleCampeonatoServidor.criarCampeonato(campeonato, token);
 	}
 
 	private Object dadosPilotosJogo(ClientPaddockPack clientPaddockPack) {
@@ -959,6 +968,10 @@ public class ControlePaddockServidor {
 		carro.setCor2(Util.hex2Rgb("#" + cor2));
 		piloto.setCarro(carro);
 		return piloto;
+	}
+
+	public Object obterCampeonatoEmAberto(String token) {
+		return controleCampeonatoServidor.obterCampeonatoEmAberto(token);
 	}
 
 }

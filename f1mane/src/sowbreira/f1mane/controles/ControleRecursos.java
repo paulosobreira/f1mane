@@ -325,4 +325,17 @@ public abstract class ControleRecursos {
 		return null;
 	}
 
+	public static String nomeArquivoCircuitoParaPista(String arquivoCircuito) {
+		Map<String, String> carregarCircuitos = ControleRecursos
+				.carregarCircuitos();
+		for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
+				.hasNext();) {
+			String nmCircuito = (String) iterator.next();
+			if (carregarCircuitos.get(nmCircuito).equals(arquivoCircuito)) {
+				return nmCircuito;
+			}
+		}
+		return null;
+	}
+
 }

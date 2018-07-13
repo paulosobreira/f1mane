@@ -87,7 +87,10 @@ public class ControleJogosServer {
 		}
 		Session session = controlePersistencia.getSession();
 		try {
-
+			//TODO
+			/**
+			 * Id campeonato
+			 */
 			if (Constantes.DATABASE && !Util.isNullOrEmpty(clientPaddockPack
 					.getDadosJogoCriado().getNomeCampeonato())) {
 				Campeonato campeonato = controlePersistencia.pesquisaCampeonato(
@@ -96,7 +99,7 @@ public class ControleJogosServer {
 						false);
 				if (campeonato != null && !clientPaddockPack.getSessaoCliente()
 						.getToken().equalsIgnoreCase(
-								campeonato.getJogadorDadosSrv().getNome())) {
+								campeonato.getJogadorDadosSrv().getToken())) {
 					return new MsgSrv(Lang.msg("somenteDonoPodeCriar"));
 				}
 

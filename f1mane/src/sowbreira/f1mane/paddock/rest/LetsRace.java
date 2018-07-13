@@ -25,19 +25,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
-import br.nnpe.Constantes;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
-import br.nnpe.Util;
-import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.CircuitosDefauts;
-import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.paddock.PaddockServer;
@@ -49,6 +43,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
+import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
@@ -156,8 +151,9 @@ public class LetsRace {
 	public Response circuitoClassificacao(
 			@PathParam("arquivoCircuito") String arquivoCircuito) {
 		return Response.status(200)
-				.entity(controlePaddock.obterClassificacaoCircuito(
-						nomeArquivoCircuitoParaPista(arquivoCircuito)))
+				.entity(controlePaddock
+						.obterClassificacaoCircuito(ControleRecursos
+								.nomeArquivoCircuitoParaPista(arquivoCircuito)))
 				.build();
 	}
 
@@ -290,7 +286,7 @@ public class LetsRace {
 
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
-			DadosCriarJogo dadosCriarJogo = gerarJogoLetsRace(temporada,
+			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(temporada,
 					circuito, idPiloto, numVoltas, tipoPneu, combustivel, asa);
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			List<String> obterJogos = controlePaddock.obterJogos();
@@ -475,75 +471,6 @@ public class LetsRace {
 					.entity(new ErroServ(e).obterErroFormatado())
 					.type(MediaType.APPLICATION_JSON).build();
 		}
-	}
-
-	private DadosCriarJogo gerarJogoLetsRace(String temporada,
-			String arquivoCircuito, String idPiloto, String numVoltas,
-			String tipoPneu, String combustivel, String asa)
-			throws ClassNotFoundException, IOException {
-		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
-		dadosCriarJogo.setTemporada("t" + temporada);
-		if (!Util.isNullOrEmpty(numVoltas)) {
-			dadosCriarJogo
-					.setQtdeVoltas(new Integer(Util.extrairNumeros(numVoltas)));
-		}
-		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
-		dadosCriarJogo.setDiffultrapassagem(Util.intervalo(200, 500));
-
-		String pista = nomeArquivoCircuitoParaPista(arquivoCircuito);
-
-		// pista = "Monte Carlo";
-		// dadosCriarJogo.setSafetyCar(false);
-		dadosCriarJogo.setCircuitoSelecionado(pista);
-		dadosCriarJogo.setNivelCorrida(ControleJogoLocal.NORMAL);
-		dadosCriarJogo.setAsa(asa);
-		dadosCriarJogo.setTpPneu(tipoPneu);
-		Circuito circuitoObj = CarregadorRecursos
-				.carregarCircuito(arquivoCircuito);
-		if (Math.random() < (circuitoObj.getProbalidadeChuva() / 100.0)) {
-			dadosCriarJogo.setClima(Clima.NUBLADO);
-		} else {
-			dadosCriarJogo.setClima(Clima.SOL);
-		}
-		TemporadasDefauts temporadasDefauts = carregadorRecursos
-				.carregarTemporadasPilotosDefauts().get("t" + temporada);
-
-		if (!Util.isNullOrEmpty(combustivel)) {
-			Integer fuel = new Integer(Util.extrairNumeros(combustivel));
-			if (fuel > 100) {
-				fuel = 100;
-			}
-			if (fuel < 10) {
-				fuel = 10;
-			}
-			dadosCriarJogo.setCombustivel(fuel);
-		} else {
-			if (temporadasDefauts.getReabastecimento()) {
-				dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
-			} else {
-				dadosCriarJogo.setCombustivel(Util.intervalo(70, 90));
-			}
-		}
-		dadosCriarJogo
-				.setReabastecimento(temporadasDefauts.getReabastecimento());
-		dadosCriarJogo.setTrocaPneu(temporadasDefauts.getTrocaPneu());
-		dadosCriarJogo.setErs(temporadasDefauts.getErs());
-		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
-		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
-		return dadosCriarJogo;
-	}
-
-	private String nomeArquivoCircuitoParaPista(String arquivoCircuito) {
-		Map<String, String> carregarCircuitos = ControleRecursos
-				.carregarCircuitos();
-		for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
-				.hasNext();) {
-			String nmCircuito = (String) iterator.next();
-			if (carregarCircuitos.get(nmCircuito).equals(arquivoCircuito)) {
-				return nmCircuito;
-			}
-		}
-		return null;
 	}
 
 	@GET
@@ -940,6 +867,50 @@ public class LetsRace {
 			return Response.status(200).entity(ret).build();
 		}
 		return processsaMensagem(ret, idioma);
+	}
+
+	@POST
+	@Compress
+	@Path("/campeonato")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response gravarCampeonato(@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma, Campeonato campeonato) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		Object ret = controlePaddock.criarCampeonato(campeonato, token);
+		if (ret.equals(new MsgSrv(Lang.msg("250")))) {
+			return Response.status(200).entity(ret).build();
+		}
+		return processsaMensagem(ret, idioma);
+	}
+	
+	
+	@GET
+	@Compress
+	@Path("/campeonato")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response campeonato(@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		
+		Object ret = controlePaddock.obterCampeonatoEmAberto(token);
+		if (ret == null) {
+			return Response.status(204).build();
+		}
+		Response erro = processsaMensagem(ret, idioma);
+		if (erro != null) {
+			return erro;
+		}
+		return Response.status(200).entity(ret).build();
 	}
 
 }

@@ -541,10 +541,10 @@ public class ControlePersistencia {
 
 	}
 
-	public Campeonato pesquisaCampeonato(Session session, String nomeCampeonato,
+	public Campeonato pesquisaCampeonato(Session session, String id,
 			boolean cliente) {
 		List campeonatos = session.createCriteria(Campeonato.class)
-				.add(Restrictions.eq("nome", nomeCampeonato)).list();
+				.add(Restrictions.eq("id", new Long(id))).list();
 		Campeonato campeonato = (Campeonato) (campeonatos.isEmpty()
 				? null
 				: campeonatos.get(0));
@@ -552,21 +552,39 @@ public class ControlePersistencia {
 			return null;
 		}
 		if (cliente) {
-			for (CorridaCampeonato corridaCampeonato : campeonato
-					.getCorridaCampeonatos()) {
-				corridaCampeonato
-						.setDadosCorridaCampeonatos(Util.removePersistBag(
-								corridaCampeonato.getDadosCorridaCampeonatos(),
-								session));
-			}
-			campeonato.setCorridaCampeonatos(Util.removePersistBag(
-					campeonato.getCorridaCampeonatos(), session));
-			campeonato.getJogadorDadosSrv().setCorridas(Util.removePersistBag(
-					campeonato.getJogadorDadosSrv().getCorridas(), session));
-			session.evict(campeonato);
+			campeonatoCliente(session, campeonato);
 		}
 		return campeonato;
 
+	}
+
+	public List pesquisaCampeonatos(String token, Session session,
+			boolean cliente) {
+		List campeonatos = session.createCriteria(Campeonato.class)
+				.createAlias("jogadorDadosSrv", "j")
+				.add(Restrictions.eq("j.token", token)).list();
+		if (cliente) {
+			for (Iterator iterator = campeonatos.iterator(); iterator
+					.hasNext();) {
+				Campeonato campeonato = (Campeonato) iterator.next();
+				campeonatoCliente(session, campeonato);
+			}
+		}
+		return campeonatos;
+
+	}
+
+	public void campeonatoCliente(Session session, Campeonato campeonato) {
+		for (CorridaCampeonato corridaCampeonato : campeonato
+				.getCorridaCampeonatos()) {
+			corridaCampeonato.setDadosCorridaCampeonatos(Util.removePersistBag(
+					corridaCampeonato.getDadosCorridaCampeonatos(), session));
+		}
+		campeonato.setCorridaCampeonatos(Util
+				.removePersistBag(campeonato.getCorridaCampeonatos(), session));
+		campeonato.getJogadorDadosSrv().setCorridas(Util.removePersistBag(
+				campeonato.getJogadorDadosSrv().getCorridas(), session));
+		session.evict(campeonato);
 	}
 
 	public List pesquisaCampeonatos(JogadorDadosSrv jogadorDadosSrv,
