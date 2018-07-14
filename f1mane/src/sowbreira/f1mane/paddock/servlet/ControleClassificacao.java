@@ -202,7 +202,7 @@ public class ControleClassificacao {
 					if (!jogadorOnline.getPiloto().equals(piloto.getNome())) {
 						corridasDadosSrv.setMudouCarro(true);
 					}
-					continue;
+					break;
 				}
 			}
 		}

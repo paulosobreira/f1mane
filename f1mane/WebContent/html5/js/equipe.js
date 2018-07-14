@@ -18,7 +18,7 @@ listaTemporadas();
 if(localStorage.getItem("token")!=null){
 	carregaEquipe();
 }else{
-	criarSessao();
+	toaster(lang_text('precisaEstaLogado'), 4000, 'alert alert-danger');
 }
 
 $('.carousel').carousel({
@@ -93,24 +93,6 @@ $(document).on('click', '.number-spinner button', function() {
 	$('#pontosConstrutoresValor').html(ptsConstrutores);
 	btn.closest('.number-spinner').find('input').val(newVal);
 });
-
-function criarSessao() {
-	var urlServico = "/f1mane/rest/letsRace/criarSessaoVisitante";
-	$.ajax({
-		type : "GET",
-		url : urlServico,
-		contentType : "application/json",
-		dataType : "json",
-		success : function(sessaoVisitante) {
-			localStorage.setItem("token", sessaoVisitante.sessaoCliente.token);
-			carregaEquipe();
-		},
-		error : function(xhRequest, ErrorText, thrownError) {
-			tratamentoErro(xhRequest);
-			console.log('criarSessao() ' + xhRequest.status + '  ' + xhRequest.responseText);
-		}
-	});
-}
 
 
 function carregaEquipe() {
