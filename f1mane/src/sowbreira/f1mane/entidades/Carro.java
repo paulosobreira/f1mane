@@ -994,7 +994,7 @@ public class Carro implements Serializable {
 		double fator = (2 - ((piloto.getCarro().getAerodinamica()
 				+ piloto.getCarro().getFreios()) / 2000.0));
 		if (controleJogo.isSemTrocaPneu()) {
-			fator /= 3;
+			fator /= 2;
 		} else if (piloto.getQtdeParadasBox() == 0
 				&& controleJogo.porcentagemCorridaConcluida() > 50) {
 			fator *= 2;
