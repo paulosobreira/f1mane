@@ -1,5 +1,5 @@
 /**
- * Controle de menus
+ * Controle de criação de jogo
  */
 esconderEntrarJogo();
 var idPilotoSelecionado;
@@ -85,6 +85,11 @@ $('#circuitoCarousel').on('slide.bs.carousel', function(event) {
 });
 
 $('#circuitoCarousel').carousel('pause');
+
+$('.carousel').carousel({
+	pause: true,
+	interval: false
+	});
 
 function mostrarEntrarJogo() {
 	if (temporadaSelecionada == null) {
@@ -274,7 +279,7 @@ function preparaJogo() {
 	$('#temporadaProxima').remove();
 	$('#circuitoAnterior').remove();
 	$('#circuitoProximo').remove();
-	$('#voltar').attr('href', 'menus.html');
+	$('#voltar').attr('href', 'jogar.html');
 	if (drsTeporada) {
 		$('#ajusteDeAsa').addClass('hide');
 	}
@@ -327,7 +332,7 @@ function jogar() {
 			tratamentoErro(xhRequest);
 			if (xhRequest.status != 401) {
 				setTimeout(function() {
-					window.location.href = "menus.html";
+					window.location.href = "jogar.html";
 				}, 3000);
 
 			}

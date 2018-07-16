@@ -571,8 +571,25 @@ public class ControlePersistencia {
 			}
 		}
 		return campeonatos;
-
 	}
+	
+	public List pesquisaCampeonatosEmAberto(String token, Session session,
+			boolean cliente) {
+		List campeonatos = session.createCriteria(Campeonato.class)
+				.createAlias("jogadorDadosSrv", "j")
+				.add(Restrictions.eq("j.token", token))
+				.createAlias("corridaCampeonatos", "c")
+				.add(Restrictions.isNull("c.tempoFim")).list();
+		if (cliente) {
+			for (Iterator iterator = campeonatos.iterator(); iterator
+					.hasNext();) {
+				Campeonato campeonato = (Campeonato) iterator.next();
+				campeonatoCliente(session, campeonato);
+			}
+		}
+		return campeonatos;
+	}
+	
 
 	public void campeonatoCliente(Session session, Campeonato campeonato) {
 		for (CorridaCampeonato corridaCampeonato : campeonato

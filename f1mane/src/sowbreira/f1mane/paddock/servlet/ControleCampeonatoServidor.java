@@ -231,7 +231,7 @@ public class ControleCampeonatoServidor {
 			}
 		}
 	}
-
+/*
 	public Object obterCampeonatoEmAberto(String token) {
 		List pesquisaCampeonatos = null;
 		Session session = controlePersistencia.getSession();
@@ -256,5 +256,22 @@ public class ControleCampeonatoServidor {
 			}
 		}
 		return null;
+	}
+*/
+	public Object obterCampeonatoEmAberto(String token) {
+		List pesquisaCampeonatos = null;
+		Session session = controlePersistencia.getSession();
+		try {
+			pesquisaCampeonatos = controlePersistencia
+					.pesquisaCampeonatosEmAberto(token, session, true);
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+		if (pesquisaCampeonatos == null || pesquisaCampeonatos.isEmpty()) {
+			return null;
+		}
+		return pesquisaCampeonatos.get(0);
 	}
 }
