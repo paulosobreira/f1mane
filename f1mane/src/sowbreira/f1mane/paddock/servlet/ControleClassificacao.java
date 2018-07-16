@@ -149,8 +149,11 @@ public class ControleClassificacao {
 						if (pts == 0) {
 							pts = 1;
 						}
+						if(carreiraDadosSrv.getPtsConstrutoresGanhos()<1000){
+							pts += 5;
+						}
 						if(carreiraDadosSrv.getPtsConstrutoresGanhos()<500){
-							pts += 10;
+							pts += 5;
 						}
 						if(carreiraDadosSrv.getPtsConstrutoresGanhos()<250){
 							pts += 10;
