@@ -69,7 +69,7 @@ $('#btnControles').html(lang_text('verControles'));
 $('#btnIdioma').html(lang_text('linguagem'));
 $('#btnClassificacao').html(lang_text('ranking'));
 $('#btnEquipe').html(lang_text('221'));
-
+$('#btnCampeonato').html(lang_text('268'));
 
 
 $('#btnSobre').bind("click", function() {

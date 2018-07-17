@@ -8,6 +8,16 @@ if(localStorage.getItem("token")!=null){
 }
 
 var temporadaSelecionada;
+listaTemporadas();
+
+$('#temporadaCarousel').on('slide.bs.carousel', function(event) {
+	selecionaTemporada($(event.relatedTarget).prop('temporada'));
+});
+
+$('.carousel').carousel({
+	pause: true,
+	interval: false
+	});
 
 
 function carregaCampeonato() {
@@ -24,7 +34,7 @@ function carregaCampeonato() {
 		success : function(response) {
 			if (response==null) {
 				console.log('carregaCampeonato() null');
-				listaTemporadas();
+				listaCircuitos();
 				return;
 			}
 			
@@ -54,7 +64,7 @@ function listaTemporadas() {
 				console.log('listaTemporadas() response.length==0');
 				return;
 			}
-			temporadaSelecionada = temporadasRes[0];
+			selecionaTemporada(temporadasRes[0]);
 			$('#temporadaActive').prop('temporada', temporadasRes[0]);
 			$.each(temporadasRes, function(i, val) {
 				if (i == 0) {
@@ -67,6 +77,7 @@ function listaTemporadas() {
 				dv.append(h1);
 				$('#temporadaCarousel-inner').append(dv);
 			});
+			$('#temporadaCarousel').carousel('pause');
 			
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -90,13 +101,7 @@ function listaCircuitos() {
 			}
 			circuitos = circuitosRes;
 			var circuito = circuitosRes[0];
-			$('#circuitosLabel').html(circuito.nome);
-			$('#imgCircuito').attr('src', '/f1mane/rest/letsRace/circuitoMini/' + circuito.arquivo);
-			circuitoSelecionado = circuito.arquivo;
-			$('#circuitoActive').prop('circuito', circuito.arquivo);
-			var dvChuva = $('<div class="well"></div>');
-			dvChuva.append(lang_text('probChuva') + ' : ' + circuito.probalidadeChuva + '%');
-			$('#circuitoActive').append(dvChuva);
+			$('#listaCircuitos').find('li').remove();
 			$.each(circuitosRes, function(i, val) {
 				if (i == 0) {
 					return;
@@ -104,16 +109,14 @@ function listaCircuitos() {
 				var dv = $('<div class="item"></div>');
 				var img = $('<img class="img-responsive center-block"/>');
 				img.attr('src', '/f1mane/rest/letsRace/circuitoMini/' + this.arquivo);
-				var h3 = $('<h3 class="text-center"></h3>');
+				var h3 = $('<h3 class="text-center transbox"></h3>');
 				dv.prop('circuito', this.arquivo);
 				h3.append(this.nome);
 				dv.append(h3);
 				dv.append(img);
-				var dvChuva = $('<div class="well"></div>');
-				dvChuva.append(lang_text('probChuva') + ' : ' + this.probalidadeChuva + '%');
-				dv.append(dvChuva);
-				//$('#circuitoCarousel-inner').append(dv);
-				//Adicionar Tabela
+				var li = $('<li/>');
+				li.append(dv);
+				$('#listaCircuitos').append(li);
 			});
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -122,4 +125,10 @@ function listaCircuitos() {
 		}
 	});
 }
+
+function selecionaTemporada(temporada) {
+	temporadaSelecionada = temporada;
+	$('#temporadasLabel').html(temporada);
+}
+
 
