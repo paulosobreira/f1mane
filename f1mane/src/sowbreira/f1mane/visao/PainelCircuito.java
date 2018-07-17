@@ -2062,7 +2062,7 @@ public class PainelCircuito {
 
 		int altura = 100;
 
-		if (!controleJogo.isSemReabastacimento()) {
+		if (!controleJogo.isSemReabastecimento()) {
 			desenhaControlesReabastecimentoBox(g2d, altura);
 			altura += 50;
 		}

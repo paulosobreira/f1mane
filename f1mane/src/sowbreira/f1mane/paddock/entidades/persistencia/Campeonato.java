@@ -19,8 +19,8 @@ public class Campeonato extends F1ManeDados {
 	private String nome;
 	private String nivel;
 	private Integer qtdeVoltas;
-	private boolean semReabastecimento;
-	private boolean semTrocaPneus;
+	private boolean reabastecimento;
+	private boolean trocaPneus;
 	private boolean kers;
 	private boolean drs;
 
@@ -74,20 +74,20 @@ public class Campeonato extends F1ManeDados {
 		this.jogadorDadosSrv = jogadorDadosSrv;
 	}
 
-	public boolean isSemReabastecimento() {
-		return semReabastecimento;
+	public boolean isReabastecimento() {
+		return reabastecimento;
 	}
 
-	public void setSemReabastecimento(boolean semReabastecimento) {
-		this.semReabastecimento = semReabastecimento;
+	public void setReabastecimento(boolean reabastecimento) {
+		this.reabastecimento = reabastecimento;
 	}
 
-	public boolean isSemTrocaPneus() {
-		return semTrocaPneus;
+	public boolean isTrocaPneus() {
+		return trocaPneus;
 	}
 
-	public void setSemTrocaPneus(boolean semTrocaPneus) {
-		this.semTrocaPneus = semTrocaPneus;
+	public void setTrocaPneus(boolean trocaPneus) {
+		this.trocaPneus = trocaPneus;
 	}
 
 	public void setTemporada(String temporada) {
@@ -114,7 +114,8 @@ public class Campeonato extends F1ManeDados {
 		return corridaCampeonatos;
 	}
 
-	public void setCorridaCampeonatos(List<CorridaCampeonato> corridaCampeonatos) {
+	public void setCorridaCampeonatos(
+			List<CorridaCampeonato> corridaCampeonatos) {
 		this.corridaCampeonatos = corridaCampeonatos;
 	}
 

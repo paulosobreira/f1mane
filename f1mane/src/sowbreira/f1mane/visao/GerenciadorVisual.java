@@ -105,7 +105,7 @@ public class GerenciadorVisual {
 	private List listaPilotosCombo;
 	private List listaCarrosCombo;
 	protected JCheckBox trocaPneu;
-	protected JCheckBox reabastacimento;
+	protected JCheckBox reabastecimento;
 	protected JCheckBox ers;
 	protected JCheckBox drs;
 	private Thread thAtualizaPainelSuave;
@@ -975,8 +975,8 @@ public class GerenciadorVisual {
 				return Lang.msg("302");
 			}
 		});
-		reabastacimento = new JCheckBox();
-		p1.add(reabastacimento);
+		reabastecimento = new JCheckBox();
+		p1.add(reabastecimento);
 		grid.add(p1);
 
 		JPanel p2 = new JPanel(new GridLayout(1, 2));
@@ -1171,8 +1171,8 @@ public class GerenciadorVisual {
 		return trocaPneu;
 	}
 
-	public JCheckBox getReabastacimento() {
-		return reabastacimento;
+	public JCheckBox getReabastecimento() {
+		return reabastecimento;
 	}
 
 	public JCheckBox getErs() {
@@ -1199,7 +1199,7 @@ public class GerenciadorVisual {
 		}
 		Integer combustivelInicial = (Integer) spinnerCombustivel.getValue();
 		if (combustivelInicial <= 0) {
-			if (reabastacimento.isSelected()) {
+			if (reabastecimento.isSelected()) {
 				spinnerCombustivel.setValue(new Integer(1));
 			} else {
 				spinnerCombustivel.setValue(new Integer(20));
@@ -1225,8 +1225,8 @@ public class GerenciadorVisual {
 		spinnerQtdeVoltas.setValue(new Integer(12));
 		if (campeonato != null) {
 
-			reabastacimento.setSelected(campeonato.isReabastecimento());
-			reabastacimento.setEnabled(false);
+			reabastecimento.setSelected(campeonato.isReabastecimento());
+			reabastecimento.setEnabled(false);
 
 			trocaPneu.setSelected(campeonato.isTrocaPneus());
 			trocaPneu.setEnabled(false);
@@ -1441,7 +1441,7 @@ public class GerenciadorVisual {
 		}
 		Integer combustivelInicial = (Integer) spinnerCombustivel.getValue();
 		if (combustivelInicial <= 0) {
-			if (reabastacimento.isSelected()) {
+			if (reabastecimento.isSelected()) {
 				spinnerCombustivel.setValue(new Integer(1));
 			} else {
 				spinnerCombustivel.setValue(new Integer(20));

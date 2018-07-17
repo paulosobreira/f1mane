@@ -248,7 +248,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 			diffultrapassagem = dadosCriarJogo.getDiffultrapassagem();
 			circuitoSelecionado = dadosCriarJogo.getCircuitoSelecionado();
-			reabastacimento = dadosCriarJogo.isReabastecimento();
+			reabastecimento = dadosCriarJogo.isReabastecimento();
 			trocaPneu = dadosCriarJogo.isTrocaPneu();
 			ers = dadosCriarJogo.isErs();
 			drs = dadosCriarJogo.isDrs();
@@ -260,10 +260,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	@Override
-	public boolean isSemReabastacimento() {
+	public boolean isSemReabastecimento() {
 		if (dadosCriarJogo != null)
 			return !dadosCriarJogo.isReabastecimento();
-		return super.isSemReabastacimento();
+		return super.isSemReabastecimento();
 	}
 
 	@Override

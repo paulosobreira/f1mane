@@ -1018,7 +1018,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		int pneus = getCarro().getPorcentagemDesgastePneus();
 		int combust = getCarro().getPorcentagemCombustivel();
 		int corrida = controleJogo.porcentagemCorridaConcluida();
-		if (controleJogo.isSemReabastacimento()) {
+		if (controleJogo.isSemReabastecimento()) {
 			combust = 100;
 		}
 
@@ -1076,7 +1076,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			box = true;
 		}
 
-		if (controleJogo.isSemReabastacimento()
+		if (controleJogo.isSemReabastecimento()
 				&& !carro.verificaPneusIncompativeisClima(controleJogo)
 				&& controleJogo.isSemTrocaPneu() && !carro.verificaDano()) {
 			box = false;
@@ -2633,7 +2633,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				? Math.random() < porcentagemMotor / 100.0
 				: porcentagemMotor > porcentagemCorridaRestante;
 		boolean temCombustivel = porcentagemCombustivel > 10;
-		if (controleJogo.isSemReabastacimento()) {
+		if (controleJogo.isSemReabastecimento()) {
 			temCombustivel = porcentagemCombustivel > limiteDesgaste
 					? Math.random() < porcentagemCombustivel / 100.0
 					: porcentagemCombustivel > porcentagemCorridaRestante;

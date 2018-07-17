@@ -1113,7 +1113,7 @@ function ctl_removeControle(controle) {
 	if (!dadosJogo.ers && controle.tipo == 'Ers') {
 		return true;
 	}
-	if (!dadosJogo.reabastacimento
+	if (!dadosJogo.reabastecimento
 			&& (controle.tipo == 'CombustivelValor' || controle.tipo == 'Combustivel')) {
 		return true;
 	}

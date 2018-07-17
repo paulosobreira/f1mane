@@ -103,7 +103,7 @@ public class ControleCampeonatoCliente {
 
 	private JSpinner spinnerQtdeVoltas;
 
-	private JCheckBox reabastacimento;
+	private JCheckBox reabastecimento;
 
 	private JCheckBox trocaPneu;
 
@@ -309,8 +309,8 @@ public class ControleCampeonatoCliente {
 				return Lang.msg("302");
 			}
 		});
-		reabastacimento = new JCheckBox();
-		grid.add(reabastacimento);
+		reabastecimento = new JCheckBox();
+		grid.add(reabastecimento);
 		grid.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -379,8 +379,8 @@ public class ControleCampeonatoCliente {
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
 		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
 				.getSelectedItem()));
-		campeonato.setSemReabastecimento(!this.reabastacimento.isSelected());
-		campeonato.setSemTrocaPneus(!this.trocaPneu.isSelected());
+		campeonato.setReabastecimento(this.reabastecimento.isSelected());
+		campeonato.setTrocaPneus(this.trocaPneu.isSelected());
 		campeonato.setKers(this.kers.isSelected());
 		campeonato.setDrs(this.drs.isSelected());
 

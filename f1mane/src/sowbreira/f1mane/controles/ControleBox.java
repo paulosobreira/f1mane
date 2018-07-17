@@ -286,7 +286,7 @@ public class ControleBox {
 		piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1);
 		if (piloto.isJogadorHumano()) {
 			Integer combust = controleJogo.getCombustBox(piloto);
-			if (controleJogo.isSemReabastacimento()) {
+			if (controleJogo.isSemReabastecimento()) {
 				combust = new Integer(0);
 			}
 			qtdeCombust = controleJogo.setUpJogadorHumano(piloto,
@@ -410,7 +410,7 @@ public class ControleBox {
 				Lang.msgRest(piloto.getCarro().getTipoPneu())};
 		String info = Lang.msg("003", strings);
 
-		if (controleJogo.isSemReabastacimento()) {
+		if (controleJogo.isSemReabastecimento()) {
 			info = Lang.msg("saiBoxSemRebastecimento", strings);
 		}
 		if (controleJogo.verificaInfoRelevante(piloto)) {
@@ -489,7 +489,7 @@ public class ControleBox {
 
 		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem)
 				/ 100;
-		if (controleJogo.isSemReabastacimento()) {
+		if (controleJogo.isSemReabastecimento()) {
 			qtddeCombust = 0;
 		}
 		int diffCombust = qtddeCombust - piloto.getCarro().getCombustivel();
@@ -523,7 +523,7 @@ public class ControleBox {
 			piloto.setSetUpIncial(UMA_OU_MAIS_PARADAS);
 			setupDuasOuMaisParadas(piloto);
 		}
-		if (controleJogo.isSemReabastacimento()) {
+		if (controleJogo.isSemReabastecimento()) {
 			double mod = 0.9;
 			if (piloto.getCarro().testeAerodinamica()) {
 				mod = 0.85;
@@ -605,7 +605,7 @@ public class ControleBox {
 
 		int consumoMedioCombustivel = (int) piloto.calculaConsumoMedioCombust();
 
-		if (!controleJogo.isSemReabastacimento())
+		if (!controleJogo.isSemReabastecimento())
 			piloto.limparConsumoMedioCombust();
 		if (!controleJogo.isSemTrocaPneu())
 			piloto.limparConsumoMedioPneus();
@@ -633,7 +633,7 @@ public class ControleBox {
 
 		int qtddeCombust = (controleCorrida.getTanqueCheio() * percentagem)
 				/ 100;
-		if (controleJogo.isSemReabastacimento()) {
+		if (controleJogo.isSemReabastecimento()) {
 			qtddeCombust = 0;
 		}
 		int diffCombust = qtddeCombust - piloto.getCarro().getCombustivel();

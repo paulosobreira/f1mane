@@ -710,7 +710,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	@Override
-	public boolean isSemReabastacimento() {
+	public boolean isSemReabastecimento() {
 		return !dadosParticiparJogo.isReabastecimento();
 	}
 

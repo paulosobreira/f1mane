@@ -57,7 +57,7 @@ public class ControleJogoLocal extends ControleRecursos
 	protected String nivelCorrida;
 	protected boolean corridaTerminada;
 	protected boolean trocaPneu;
-	protected boolean reabastacimento;
+	protected boolean reabastecimento;
 	protected boolean ers;
 	protected boolean drs;
 	protected boolean safetyCar = true;
@@ -687,7 +687,7 @@ public class ControleJogoLocal extends ControleRecursos
 			String pneuSelecionado) throws Exception {
 		this.qtdeVoltas = new Integer(numVoltasSelecionado);
 		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
-		this.reabastacimento = reabastecimento;
+		this.reabastecimento = reabastecimento;
 		this.trocaPneu = trocaPneus;
 		this.circuitoSelecionado = circuitoSelecionado;
 		this.ers = ers;
@@ -738,8 +738,8 @@ public class ControleJogoLocal extends ControleRecursos
 			circuitoSelecionado = (String) gerenciadorVisual
 					.getComboBoxCircuito().getSelectedItem();
 
-			if (gerenciadorVisual.getReabastacimento().isSelected()) {
-				reabastacimento = true;
+			if (gerenciadorVisual.getReabastecimento().isSelected()) {
+				reabastecimento = true;
 			}
 			if (gerenciadorVisual.getTrocaPneu().isSelected()) {
 				trocaPneu = true;
@@ -839,14 +839,14 @@ public class ControleJogoLocal extends ControleRecursos
 
 		String tipoPneu = (String) tpPneu;
 		Integer qtdeCombustPorcent = (Integer) combust;
-		if (isSemReabastacimento() && qtdeCombustPorcent.intValue() < 75) {
+		if (isSemReabastecimento() && qtdeCombustPorcent.intValue() < 75) {
 			qtdeCombustPorcent = new Integer(75);
 		}
 		pilotoJogador.getCarro().trocarPneus(this, tipoPneu,
 				controleCorrida.getDistaciaCorrida());
 		int undsComnustAbastecer = (controleCorrida.getTanqueCheio()
 				* qtdeCombustPorcent.intValue()) / 100;
-		if (isSemReabastacimento() && isCorridaIniciada() && !isModoQualify()
+		if (isSemReabastecimento() && isCorridaIniciada() && !isModoQualify()
 				&& pilotoJogador.getNumeroVolta() >= 0) {
 			undsComnustAbastecer = 0;
 		}
@@ -968,8 +968,8 @@ public class ControleJogoLocal extends ControleRecursos
 		return !trocaPneu;
 	}
 
-	public boolean isSemReabastacimento() {
-		return !reabastacimento;
+	public boolean isSemReabastecimento() {
+		return !reabastecimento;
 	}
 
 	@Override
@@ -1772,8 +1772,8 @@ public class ControleJogoLocal extends ControleRecursos
 		return trocaPneu;
 	}
 
-	public boolean isReabastacimento() {
-		return reabastacimento;
+	public boolean isReabastecimento() {
+		return reabastecimento;
 	}
 
 	public boolean isSafetyCar() {

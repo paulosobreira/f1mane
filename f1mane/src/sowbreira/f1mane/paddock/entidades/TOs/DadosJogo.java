@@ -26,7 +26,7 @@ public class DadosJogo implements Serializable {
 	private Boolean drs;
 	private Boolean ers;
 	private Boolean trocaPneu;
-	private Boolean reabastacimento;
+	private Boolean reabastecimento;
 	private String clima;
 	private String nomeCircuito;
 	private String arquivoCircuito;
@@ -89,11 +89,11 @@ public class DadosJogo implements Serializable {
 	public void setTrocaPneu(Boolean trocaPneu) {
 		this.trocaPneu = trocaPneu;
 	}
-	public Boolean getReabastacimento() {
-		return reabastacimento;
+	public Boolean getReabastecimento() {
+		return reabastecimento;
 	}
-	public void setReabastacimento(Boolean reabastacimento) {
-		this.reabastacimento = reabastacimento;
+	public void setReabastecimento(Boolean reabastecimento) {
+		this.reabastecimento = reabastecimento;
 	}
 	public String getClima() {
 		return clima;

@@ -61,7 +61,7 @@ public class ControleQualificacao {
 		List<Piloto> pilotos = controleJogo.getPilotos();
 		double incCurva = 0.6;
 		double increta = 0.8;
-		if (controleJogo.isSemReabastacimento()) {
+		if (controleJogo.isSemReabastecimento()) {
 			incCurva = 0.8;
 			increta = 0.9;
 		}

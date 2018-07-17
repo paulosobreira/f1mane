@@ -646,7 +646,7 @@ public class PainelCampeonato extends JPanel {
 				return Lang.msg("302");
 			}
 		});
-		p1.add(new JLabel(!campeonato.isSemReabastecimento()
+		p1.add(new JLabel(campeonato.isReabastecimento()
 				? Lang.msg("SIM")
 				: Lang.msg("NAO")));
 
@@ -656,7 +656,7 @@ public class PainelCampeonato extends JPanel {
 				return Lang.msg("303");
 			}
 		});
-		p1.add(new JLabel(!campeonato.isSemTrocaPneus()
+		p1.add(new JLabel(campeonato.isTrocaPneus()
 				? Lang.msg("SIM")
 				: Lang.msg("NAO")));
 
