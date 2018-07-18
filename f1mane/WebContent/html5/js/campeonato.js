@@ -112,10 +112,24 @@ function listaCircuitos() {
 				var h3 = $('<h3 class="text-center transbox"></h3>');
 				dv.prop('circuito', this.arquivo);
 				h3.append(this.nome);
+				var remover = $('<i class="fa fa-plus floatBtnContent glyphicon glyphicon-trash"/>');
+				var removerDv = $('<div class="relativeBtn"></div>');
+				var adicionar = $('<i class="fa fa-plus floatBtnContent glyphicon glyphicon-plus"/>');
+				var adicionarDv = $('<div class="relativeBtn"></div>');
+				removerDv.append(remover);
+				adicionarDv.append(adicionar);
+				var dvBtns = $('<div class="relativeContainerBtn"></div>'); 
+				dvBtns.append(adicionarDv);
+				dvBtns.append(removerDv);
+				dv.append(dvBtns);
 				dv.append(h3);
 				dv.append(img);
 				var li = $('<li/>');
 				li.append(dv);
+				removerDv.bind("click", function() {
+					$('#listaCircuitos').find(li).remove();
+				});
+				
 				$('#listaCircuitos').append(li);
 			});
 		},
