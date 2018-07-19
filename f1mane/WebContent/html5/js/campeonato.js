@@ -19,6 +19,9 @@ $('.carousel').carousel({
 	interval: false
 	});
 
+var adicionarLiCircuito;
+var cickRem;
+var clickAdd;
 
 function carregaCampeonato() {
 	var urlServico = "/f1mane/rest/letsRace/campeonato";
@@ -102,6 +105,7 @@ function listaCircuitos() {
 			circuitos = circuitosRes;
 			var circuito = circuitosRes[0];
 			$('#listaCircuitos').find('li').remove();
+			$('#listaCircuitosSelecionados').find('li').remove();
 			$.each(circuitosRes, function(i, val) {
 				if (i == 0) {
 					return;
@@ -113,7 +117,7 @@ function listaCircuitos() {
 				dv.prop('circuito', this.arquivo);
 				h3.append(this.nome);
 				var remover = $('<i class="fa fa-plus floatBtnContent glyphicon glyphicon-trash"/>');
-				var removerDv = $('<div class="relativeBtn"></div>');
+				var removerDv = $('<div class="relativeBtn removerBtn"></div>');
 				var adicionar = $('<i class="fa fa-plus floatBtnContent glyphicon glyphicon-plus"/>');
 				var adicionarDv = $('<div class="relativeBtn"></div>');
 				removerDv.append(remover);
@@ -126,11 +130,31 @@ function listaCircuitos() {
 				dv.append(img);
 				var li = $('<li/>');
 				li.append(dv);
-				removerDv.bind("click", function() {
-					$('#listaCircuitos').find(li).remove();
-				});
-				
-				$('#listaCircuitos').append(li);
+				clickAdd = function() {
+					if($('#criarCampeonato').hasClass('hide')){
+						$('#criarCampeonato').removeClass('hide');
+						$('#circuitos').addClass('hide');
+						li.insertAfter(adicionarLiCircuito);
+						li.find('.removerBtn').removeClass('hide');
+						$('#listaCircuitos').find(li).remove();
+						adicionarLiCircuito.find(adicionarDv).bind("click", clickAdd);
+						adicionarLiCircuito.find(removerDv).bind("click", cickRem);
+					}else{
+						$('#criarCampeonato').addClass('hide');
+						$('#circuitos').removeClass('hide');
+						$('#circuitos').find('.removerBtn').addClass('hide'); 
+						adicionarLiCircuito = li;						
+					}
+				};
+				cickRem = function() {
+					$('#listaCircuitosSelecionados').find(li).remove();
+					$('#listaCircuitos').append(li);
+					li.find(adicionarDv).bind("click", clickAdd);
+					li.find(removerDv).bind("click", cickRem);
+				};
+				removerDv.bind("click",cickRem);
+				adicionarDv.bind("click", clickAdd);
+				$('#listaCircuitosSelecionados').append(li);
 			});
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
