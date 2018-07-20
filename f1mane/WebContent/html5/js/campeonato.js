@@ -22,6 +22,7 @@ $('.carousel').carousel({
 var adicionarLiCircuito;
 var cickRem;
 var clickAdd;
+var circuitos;
 
 function carregaCampeonato() {
 	var urlServico = "/f1mane/rest/letsRace/campeonato";
@@ -90,6 +91,89 @@ function listaTemporadas() {
 	});
 }
 
+function prencherLiCircuitos(circuito){
+	var dv = $('<div class="item"></div>');
+	var img = $('<img class="img-responsive center-block"/>');
+	img.attr('src', '/f1mane/rest/letsRace/circuitoMini/' + circuito.arquivo);
+	var h3 = $('<h3 class="text-center transbox"></h3>');
+	dv.prop('circuito', circuito.arquivo);
+	h3.append(circuito.nome);
+	var remover = $('<i class="fa fa-plus floatBtnContent glyphicon glyphicon-trash"/>');
+	var removerDv = $('<div class="relativeBtn remover"></div>');
+	var adicionar = $('<i class="fa fa-plus floatBtnContent glyphicon glyphicon-plus"/>');
+	var adicionarDv = $('<div class="relativeBtn adicionar"></div>');
+	removerDv.append(remover);
+	adicionarDv.append(adicionar);
+	var dvBtns = $('<div class="relativeContainerBtn"></div>'); 
+	dvBtns.append(adicionarDv);
+	dvBtns.append(removerDv);
+	dv.append(dvBtns);
+	dv.append(h3);
+	dv.append(img);
+	var li = $('<li/>');
+	li.append(dv);
+	li.prop("circuito", circuito)
+	return li;
+}
+
+function prencherListaCircuitosSelecionados(){
+	$('#listaCircuitosSelecionados').find('li').remove();
+	$.each(circuitos, function(i, val) {
+		var li = prencherLiCircuitos(this);
+		var nomeCircuito = this.nome;
+		clickAdd = function() {
+			$('#criarCampeonato').addClass('hide');
+			$('#circuitos').removeClass('hide');
+			adicionarLiCircuito = nomeCircuito;	
+			prencherListaCircuitos();
+		};
+		cickRem = function() {
+			$('#listaCircuitosSelecionados').find(li).remove();
+		};
+		li.find('.adicionar').bind("click",clickAdd);
+		li.find('.remover').bind("click",cickRem);
+		$('#listaCircuitosSelecionados').append(li);
+	});
+}
+
+function prencherListaCircuitos(){
+	$('#listaCircuitos').find('li').remove();
+	$.each(circuitos, function(i, val) {
+		var li = prencherLiCircuitos(this);
+		var lisSel = $('#listaCircuitosSelecionados').find('li');
+		var selecionado = false;
+		
+		for (var j = 0; j < lisSel.length; j++) {
+			var liS = lisSel[j];
+			if(liS.circuito.nome  == li.prop("circuito").nome){
+				selecionado = true;
+				break;
+			}
+		}
+		if(!selecionado){
+			var clickAddCirc = function() {
+				$('#criarCampeonato').removeClass('hide');
+				$('#circuitos').addClass('hide');
+				var liClone = li.clone();
+				liClone.prop("circuito", li.prop("circuito"));
+				liClone.find('.remover').removeClass('hide');
+				liClone.find('.adicionar').bind("click",clickAdd);
+				liClone.find('.remover').bind("click",cickRem);
+				for (var j = 0; j < lisSel.length; j++) {
+					var liS = lisSel[j];
+					if(liS.circuito.nome  == adicionarLiCircuito){
+						liS.after(liClone);
+						break;
+					}
+				}
+			};
+			li.find('.adicionar').bind("click",clickAddCirc);
+			li.find('.remover').addClass('hide');
+			$('#listaCircuitos').append(li);			
+		}
+	});
+}
+
 function listaCircuitos() {
 	var urlServico = "/f1mane/rest/letsRace/circuitos";
 	$.ajax({
@@ -103,59 +187,8 @@ function listaCircuitos() {
 				return;
 			}
 			circuitos = circuitosRes;
-			var circuito = circuitosRes[0];
-			$('#listaCircuitos').find('li').remove();
-			$('#listaCircuitosSelecionados').find('li').remove();
-			$.each(circuitosRes, function(i, val) {
-				if (i == 0) {
-					return;
-				}
-				var dv = $('<div class="item"></div>');
-				var img = $('<img class="img-responsive center-block"/>');
-				img.attr('src', '/f1mane/rest/letsRace/circuitoMini/' + this.arquivo);
-				var h3 = $('<h3 class="text-center transbox"></h3>');
-				dv.prop('circuito', this.arquivo);
-				h3.append(this.nome);
-				var remover = $('<i class="fa fa-plus floatBtnContent glyphicon glyphicon-trash"/>');
-				var removerDv = $('<div class="relativeBtn removerBtn"></div>');
-				var adicionar = $('<i class="fa fa-plus floatBtnContent glyphicon glyphicon-plus"/>');
-				var adicionarDv = $('<div class="relativeBtn"></div>');
-				removerDv.append(remover);
-				adicionarDv.append(adicionar);
-				var dvBtns = $('<div class="relativeContainerBtn"></div>'); 
-				dvBtns.append(adicionarDv);
-				dvBtns.append(removerDv);
-				dv.append(dvBtns);
-				dv.append(h3);
-				dv.append(img);
-				var li = $('<li/>');
-				li.append(dv);
-				clickAdd = function() {
-					if($('#criarCampeonato').hasClass('hide')){
-						$('#criarCampeonato').removeClass('hide');
-						$('#circuitos').addClass('hide');
-						li.insertAfter(adicionarLiCircuito);
-						li.find('.removerBtn').removeClass('hide');
-						$('#listaCircuitos').find(li).remove();
-						adicionarLiCircuito.find(adicionarDv).bind("click", clickAdd);
-						adicionarLiCircuito.find(removerDv).bind("click", cickRem);
-					}else{
-						$('#criarCampeonato').addClass('hide');
-						$('#circuitos').removeClass('hide');
-						$('#circuitos').find('.removerBtn').addClass('hide'); 
-						adicionarLiCircuito = li;						
-					}
-				};
-				cickRem = function() {
-					$('#listaCircuitosSelecionados').find(li).remove();
-					$('#listaCircuitos').append(li);
-					li.find(adicionarDv).bind("click", clickAdd);
-					li.find(removerDv).bind("click", cickRem);
-				};
-				removerDv.bind("click",cickRem);
-				adicionarDv.bind("click", clickAdd);
-				$('#listaCircuitosSelecionados').append(li);
-			});
+			prencherListaCircuitosSelecionados();
+			
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
