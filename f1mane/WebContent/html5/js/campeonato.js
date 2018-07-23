@@ -7,6 +7,8 @@ if(localStorage.getItem("token") != null) {
 	toaster(lang_text('precisaEstaLogado'), 4000, 'alert alert-danger');
 }
 
+$('#nomeCampeonato').html(lang_text('nomeCampeonato'));
+
 var temporadaSelecionada;
 listaTemporadas();
 
@@ -128,6 +130,18 @@ function prencherListaCircuitosSelecionados() {
 		};
 		var cickRem = function() {
 			$('#listaCircuitosSelecionados').find(li).remove();
+			var divSemCircuitos = $('#circuitos').find('#divSemCircuitos');
+			if(divSemCircuitos){
+				divSemCircuitos.remove();
+			}
+			if($('#listaCircuitosSelecionados').find('li')!=null 
+					&& $('#listaCircuitosSelecionados').find('li').length == 0 ){
+				var divSemCircuitosSelecinados = $('<div id="divSemCircuitosSelecinados"></div>');
+				var txt = $('<h4></h4>');
+				txt.append(lang_text('nenhumCircuitosSelecionado'));
+				divSemCircuitosSelecinados.append(txt);
+				$('#criarCampeonato').append(divSemCircuitosSelecinados);
+			}
 		};
 		li.find('.adicionar').bind("click", clickAdd);
 		li.find('.remover').bind("click", cickRem);
@@ -152,6 +166,10 @@ function prencherListaCircuitos() {
 		if (!selecionado) {
 			var clickAddCirc = function() {
 				$('#criarCampeonato').removeClass('hide');
+				var divSemCircuitosSelecinados = $('#criarCampeonato').find('#divSemCircuitosSelecinados');
+				if(divSemCircuitosSelecinados){
+					divSemCircuitosSelecinados.remove();
+				}
 				$('#circuitos').addClass('hide');
 				var liClone = li.clone();
 				liClone.prop("circuito", li.prop("circuito"));
@@ -180,6 +198,14 @@ function prencherListaCircuitos() {
 			$('#listaCircuitos').append(li);
 		}
 	});
+	if($('#listaCircuitos').find('li') != null 
+			&& $('#listaCircuitos').find('li').length == 0 ){
+		var divSemCircuitos = $('<div id="divSemCircuitos"></div>');
+		var txt = $('<h4></h4>');
+		txt.append(lang_text('todosCircuitosSelecionados'));
+		divSemCircuitos.append(txt);
+		$('#circuitos').append(divSemCircuitos);
+	}
 }
 
 function listaCircuitos() {
