@@ -1,9 +1,9 @@
 /**
  * Controle de Campeonato
  */
-if(localStorage.getItem("token")!=null){
+if(localStorage.getItem("token") != null) {
 	carregaCampeonato();
-}else{
+} else {
 	toaster(lang_text('precisaEstaLogado'), 4000, 'alert alert-danger');
 }
 
@@ -15,13 +15,11 @@ $('#temporadaCarousel').on('slide.bs.carousel', function(event) {
 });
 
 $('.carousel').carousel({
-	pause: true,
-	interval: false
-	});
+	pause : true,
+	interval : false
+});
 
 var adicionarLiCircuito;
-var cickRem;
-var clickAdd;
 var circuitos;
 
 function carregaCampeonato() {
@@ -36,25 +34,25 @@ function carregaCampeonato() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
-			if (response==null) {
+			if (response == null) {
 				console.log('carregaCampeonato() null');
 				listaCircuitos();
 				return;
 			}
-			
+
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			if (xhRequest.status == 204) {
-				toaster(lang_text('precisaEstaLogado'), 4000, 'alert alert-danger');	
-			}else{
+				toaster(lang_text('precisaEstaLogado'), 4000,
+						'alert alert-danger');
+			} else {
 				tratamentoErro(xhRequest);
 			}
-			console.log('carregaCampeonato() ' + xhRequest.status + '  ' + xhRequest.responseText);
+			console.log('carregaCampeonato() ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
 		}
 	});
-}	
-
-
+}
 
 function listaTemporadas() {
 	var urlServico = "/f1mane/rest/letsRace/temporadas";
@@ -82,16 +80,17 @@ function listaTemporadas() {
 				$('#temporadaCarousel-inner').append(dv);
 			});
 			$('#temporadaCarousel').carousel('pause');
-			
+
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
-			console.log('listaTemporadas() ' + xhRequest.status + '  ' + xhRequest.responseText);
+			console.log('listaTemporadas() ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
 		}
 	});
 }
 
-function prencherLiCircuitos(circuito){
+function prencherLiCircuitos(circuito) {
 	var dv = $('<div class="item"></div>');
 	var img = $('<img class="img-responsive center-block"/>');
 	img.attr('src', '/f1mane/rest/letsRace/circuitoMini/' + circuito.arquivo);
@@ -104,7 +103,7 @@ function prencherLiCircuitos(circuito){
 	var adicionarDv = $('<div class="relativeBtn adicionar"></div>');
 	removerDv.append(remover);
 	adicionarDv.append(adicionar);
-	var dvBtns = $('<div class="relativeContainerBtn"></div>'); 
+	var dvBtns = $('<div class="relativeContainerBtn"></div>');
 	dvBtns.append(adicionarDv);
 	dvBtns.append(removerDv);
 	dv.append(dvBtns);
@@ -116,60 +115,69 @@ function prencherLiCircuitos(circuito){
 	return li;
 }
 
-function prencherListaCircuitosSelecionados(){
+function prencherListaCircuitosSelecionados() {
 	$('#listaCircuitosSelecionados').find('li').remove();
 	$.each(circuitos, function(i, val) {
 		var li = prencherLiCircuitos(this);
 		var nomeCircuito = this.nome;
-		clickAdd = function() {
+		var clickAdd = function() {
 			$('#criarCampeonato').addClass('hide');
 			$('#circuitos').removeClass('hide');
-			adicionarLiCircuito = nomeCircuito;	
+			adicionarLiCircuito = nomeCircuito;
 			prencherListaCircuitos();
 		};
-		cickRem = function() {
+		var cickRem = function() {
 			$('#listaCircuitosSelecionados').find(li).remove();
 		};
-		li.find('.adicionar').bind("click",clickAdd);
-		li.find('.remover').bind("click",cickRem);
+		li.find('.adicionar').bind("click", clickAdd);
+		li.find('.remover').bind("click", cickRem);
 		$('#listaCircuitosSelecionados').append(li);
 	});
 }
 
-function prencherListaCircuitos(){
+function prencherListaCircuitos() {
 	$('#listaCircuitos').find('li').remove();
 	$.each(circuitos, function(i, val) {
 		var li = prencherLiCircuitos(this);
 		var lisSel = $('#listaCircuitosSelecionados').find('li');
 		var selecionado = false;
-		
+
 		for (var j = 0; j < lisSel.length; j++) {
 			var liS = lisSel[j];
-			if(liS.circuito.nome  == li.prop("circuito").nome){
+			if (liS.circuito.nome == li.prop("circuito").nome) {
 				selecionado = true;
 				break;
 			}
 		}
-		if(!selecionado){
+		if (!selecionado) {
 			var clickAddCirc = function() {
 				$('#criarCampeonato').removeClass('hide');
 				$('#circuitos').addClass('hide');
 				var liClone = li.clone();
 				liClone.prop("circuito", li.prop("circuito"));
 				liClone.find('.remover').removeClass('hide');
-				liClone.find('.adicionar').bind("click",clickAdd);
-				liClone.find('.remover').bind("click",cickRem);
+				var clickAdd = function() {
+					$('#criarCampeonato').addClass('hide');
+					$('#circuitos').removeClass('hide');
+					adicionarLiCircuito = li.prop("circuito").nome;
+					prencherListaCircuitos();
+				};
+				var cickRem = function() {
+					$('#listaCircuitosSelecionados').find(liClone).remove();
+				};
+				liClone.find('.adicionar').bind("click", clickAdd);
+				liClone.find('.remover').bind("click", cickRem);
 				for (var j = 0; j < lisSel.length; j++) {
 					var liS = lisSel[j];
-					if(liS.circuito.nome  == adicionarLiCircuito){
-						liS.after(liClone);
+					if (liS.circuito.nome == adicionarLiCircuito) {
+						$(liS).after($(liClone));
 						break;
 					}
 				}
 			};
-			li.find('.adicionar').bind("click",clickAddCirc);
+			li.find('.adicionar').bind("click", clickAddCirc);
 			li.find('.remover').addClass('hide');
-			$('#listaCircuitos').append(li);			
+			$('#listaCircuitos').append(li);
 		}
 	});
 }
@@ -188,11 +196,12 @@ function listaCircuitos() {
 			}
 			circuitos = circuitosRes;
 			prencherListaCircuitosSelecionados();
-			
+
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
-			console.log('listaCircuitos() ' + xhRequest.status + '  ' + xhRequest.responseText);
+			console.log('listaCircuitos() ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
 		}
 	});
 }
@@ -201,5 +210,3 @@ function selecionaTemporada(temporada) {
 	temporadaSelecionada = temporada;
 	$('#temporadasLabel').html(temporada);
 }
-
-

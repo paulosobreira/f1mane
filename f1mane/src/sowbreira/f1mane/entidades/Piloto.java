@@ -1563,7 +1563,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		double diff = calculaDiferencaParaProximo;
 		double multiplicadoGanhoTurbulencia = (controleJogo
 				.getFatorUtrapassagem());
-		if(controleJogo.getNumVoltaAtual()<=0){
+		if(controleJogo.getNumVoltaAtual()<=0 || controleJogo.isSafetyCarNaPista()){
 			multiplicadoGanhoTurbulencia = 1;
 		}
 		double distLimiteTurbulencia = 50.0 / multiplicadoGanhoTurbulencia;

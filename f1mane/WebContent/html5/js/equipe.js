@@ -32,7 +32,7 @@ $('#btnSalvar').bind("click", function() {
 
 $('#btnJogar').bind("click", function() {
 	localStorage.setItem("modoCarreira", true);
-	window.location = "menus.html";
+	window.location = "jogar.html";
 });
 
 $('#temporadaCarousel').on('slide.bs.carousel', function(event) {

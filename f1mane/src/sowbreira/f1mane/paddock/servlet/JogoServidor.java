@@ -364,20 +364,24 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void atualizarJogadoresOnlineCarreira() {
-		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
-				.hasNext();) {
-			String token = (String) iter.next();
-			DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
-					.get(token);
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
-					controleClassificacao
-							.atualizarJogadoresOnlineCarreira(piloto, token);
-					dadosParticiparJogo.setPiloto(piloto.getNome());
+		try {
+			for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
+					.hasNext();) {
+				String token = (String) iter.next();
+				DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
+						.get(token);
+				for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+					Piloto piloto = (Piloto) iterator.next();
+					if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
+						controleClassificacao
+								.atualizarJogadoresOnlineCarreira(piloto, token);
+						dadosParticiparJogo.setPiloto(piloto.getNome());
+					}
 				}
-			}
-			dadosParticiparJogo.setPilotosCarreira(pilotos);
+				dadosParticiparJogo.setPilotosCarreira(pilotos);
+			}			
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
 	}
 
