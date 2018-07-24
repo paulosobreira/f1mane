@@ -8,6 +8,7 @@ if(localStorage.getItem("token") != null) {
 }
 
 $('#nomeCampeonato').html(lang_text('nomeCampeonato'));
+$('#criarCampeonatoBtn').html(lang_text('criarCampeonato'));
 
 var temporadaSelecionada;
 listaTemporadas();
