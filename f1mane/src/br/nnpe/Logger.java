@@ -22,14 +22,15 @@ public class Logger {
 		if (topExceptions == null) {
 			topExceptions = new HashMap();
 		}
-		if (topExceptions.size() < 100) {
+		if (topExceptions.size() < 10000) {
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuilder retorno = new StringBuilder();
 			int size = ((trace.length > 15) ? 15 : trace.length);
 			retorno.append(
 					e.getClass() + " - " + e.getLocalizedMessage() + "<br>");
-			for (int i = 0; i < size; i++)
+			for (int i = 0; i < size; i++){
 				retorno.append(trace[i] + "<br>");
+			}
 			String val = retorno.toString();
 			Integer numExceps = (Integer) topExceptions.get(val);
 			if (numExceps == null) {

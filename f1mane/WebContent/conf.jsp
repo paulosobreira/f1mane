@@ -150,10 +150,9 @@ A:hover {text-decoration: underline overline; color: black;}
 			<td class="c2"><a href="#" onclick="atualizar()"> Atualizar Schema  </a></td>
 		</tr>
 		<tr>
-			<td class="c1"><a href="ServletPaddock?tipo=x"> Exceptions
+			<td class="c1"><a href="ServletPaddock?tipo=X"> Exceptions
 			</a></td>
-			<td class="c2"><a href="ServletPaddock?tipo=C">
-			Construtores </a></td>
+			<td class="c2"><a href="ServletPaddock?tipo=S">	Sess&otilde;es </a></td>
 		</tr>
 	</tbody>
 </table>

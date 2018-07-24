@@ -78,6 +78,11 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				voltaJogadorOnline.setJogador(piloto.getTokenJogador());
 				voltaJogadorOnline.setPiloto(piloto.getNome());
 				voltasJogadoresOnline.add(voltaJogadorOnline);
+				Logger.logarExept(
+						new Exception("Jogo : " + getNomeJogoServidor()
+								+ " Volta : " + getNumVoltaAtual()
+								+ " contadorVolta : " + contadorVolta
+								+ " Jogador : " + piloto.getNomeJogador()));
 			}
 		}
 		mapVoltasJogadoresOnline.put(new Integer(contadorVolta++),
@@ -370,16 +375,17 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				String token = (String) iter.next();
 				DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogadoresOnline
 						.get(token);
-				for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				for (Iterator iterator = pilotos.iterator(); iterator
+						.hasNext();) {
 					Piloto piloto = (Piloto) iterator.next();
 					if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
-						controleClassificacao
-								.atualizarJogadoresOnlineCarreira(piloto, token);
+						controleClassificacao.atualizarJogadoresOnlineCarreira(
+								piloto, token);
 						dadosParticiparJogo.setPiloto(piloto.getNome());
 					}
 				}
 				dadosParticiparJogo.setPilotosCarreira(pilotos);
-			}			
+			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -502,7 +508,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 						controleClassificacao.processaCorrida(tempoInicio,
 								tempoFim, mapVoltasJogadoresOnline, pilotos,
 								dadosCriarJogo);
-						//TODO Id Campeonato
+						// TODO Id Campeonato
 						if (!Util.isNullOrEmpty(
 								dadosCriarJogo.getNomeCampeonato())) {
 							controleCampeonatoServidor.processaCorrida(
