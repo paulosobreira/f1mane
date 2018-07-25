@@ -46,6 +46,7 @@ public class ControleJogosServer {
 	private Map<SessaoCliente, JogoServidor> mapaJogosCriados = new HashMap<SessaoCliente, JogoServidor>();
 	private ControleCampeonatoServidor controleCampeonatoServidor;
 	private ControlePersistencia controlePersistencia;
+	private ControlePaddockServidor controlePaddockServidor;
 	public static int MaxJogo = 1;
 	public static int qtdeJogos = 0;
 
@@ -55,12 +56,14 @@ public class ControleJogosServer {
 	public ControleJogosServer(DadosPaddock dadosPaddock,
 			ControleClassificacao controleClassificacao,
 			ControleCampeonatoServidor controleCampeonatoServidor,
-			ControlePersistencia controlePersistencia) {
+			ControlePersistencia controlePersistencia,
+			ControlePaddockServidor controlePaddockServidor) {
 		super();
 		this.dadosPaddock = dadosPaddock;
 		this.controleClassificacao = controleClassificacao;
 		this.controleCampeonatoServidor = controleCampeonatoServidor;
 		this.controlePersistencia = controlePersistencia;
+		this.controlePaddockServidor = controlePaddockServidor;
 	}
 
 	public Map<SessaoCliente, JogoServidor> getMapaJogosCriados() {
@@ -87,7 +90,7 @@ public class ControleJogosServer {
 		}
 		Session session = controlePersistencia.getSession();
 		try {
-			//TODO
+			// TODO
 			/**
 			 * Id campeonato
 			 */
@@ -1239,6 +1242,7 @@ public class ControleJogosServer {
 		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
 			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
 			if (sessaoCliente.getToken().equals(token)) {
+				sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 				srvPaddockPack.setSessaoCliente(sessaoCliente);
 				return srvPaddockPack;
@@ -1266,6 +1270,22 @@ public class ControleJogosServer {
 			CarreiraDadosSrv equipe) {
 		return controleClassificacao.atualizaCarreira(sessaoCliente.getToken(),
 				equipe);
+	}
+
+	public ControleClassificacao getControleClassificacao() {
+		return controleClassificacao;
+	}
+
+	public ControleCampeonatoServidor getControleCampeonatoServidor() {
+		return controleCampeonatoServidor;
+	}
+
+	public ControlePersistencia getControlePersistencia() {
+		return controlePersistencia;
+	}
+
+	public ControlePaddockServidor getControlePaddockServidor() {
+		return controlePaddockServidor;
 	}
 
 }

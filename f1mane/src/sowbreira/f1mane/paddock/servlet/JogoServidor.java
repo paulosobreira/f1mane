@@ -71,18 +71,30 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	public void processaNovaVolta() {
 		super.processaNovaVolta();
 		List voltasJogadoresOnline = new ArrayList();
+
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
-			if (piloto.isJogadorHumano()) {
+
+			if (piloto.isJogadorHumano()
+					&& !Util.isNullOrEmpty(piloto.getTokenJogador())) {
+
+				SessaoCliente sessao = controleJogosServer
+						.getControlePaddockServidor()
+						.obterSessaoPorToken(piloto.getTokenJogador());
+				if (sessao == null || sessao.isGuest()) {
+					continue;
+				}
 				VoltaJogadorOnline voltaJogadorOnline = new VoltaJogadorOnline();
 				voltaJogadorOnline.setJogador(piloto.getTokenJogador());
 				voltaJogadorOnline.setPiloto(piloto.getNome());
 				voltasJogadoresOnline.add(voltaJogadorOnline);
-				Logger.logarExept(
-						new Exception("Jogo : " + getNomeJogoServidor()
-								+ " Volta : " + getNumVoltaAtual()
-								+ " contadorVolta : " + contadorVolta
-								+ " Jogador : " + piloto.getNomeJogador()));
+				if (!sessao.isGuest()) {
+					Logger.logarExept(
+							new Exception("Jogo : " + getNomeJogoServidor()
+									+ " Jogador : " + piloto.getNomeJogador()
+									+ " Volta : " + getNumVoltaAtual()
+									+ " contadorVolta : " + contadorVolta));
+				}
 			}
 		}
 		mapVoltasJogadoresOnline.put(new Integer(contadorVolta++),
