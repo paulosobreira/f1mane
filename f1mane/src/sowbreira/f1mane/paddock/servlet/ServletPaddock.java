@@ -231,7 +231,7 @@ public class ServletPaddock extends HttpServlet {
 		res.setContentType("text/html");
 		PrintWriter printWriter = res.getWriter();
 		printWriter.write("<html><body>");
-		printWriter.write("<h2>F1-Mane Sess&otilde;</h2><br><hr>");
+		printWriter.write("<h2>F1-Mane Sess&otilde;es</h2><br><hr>");
 		List<SessaoCliente> clientes = controlePaddock.getDadosPaddock().getClientes();
 		int cont = 0;
 		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {

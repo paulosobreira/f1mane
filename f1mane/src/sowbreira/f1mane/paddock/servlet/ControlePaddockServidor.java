@@ -551,7 +551,14 @@ public class ControlePaddockServidor {
 				if (participarJogo != null) {
 					sessaoCliente
 							.setJogoAtual(jogoServidor.getNomeJogoServidor());
-					sessaoCliente.setPilotoAtual(participarJogo.getPiloto());
+					List<Piloto> pilotosCopia = jogoServidor.getPilotosCopia();
+					for (Iterator iterator3 = pilotosCopia.iterator(); iterator3
+							.hasNext();) {
+						Piloto piloto = (Piloto) iterator3.next();
+						if(piloto.getId()==participarJogo.getIdPiloto()){
+							sessaoCliente.setPilotoAtual(piloto.getNome());		
+						}
+					}
 					sessaoCliente
 							.setIdPilotoAtual(participarJogo.getIdPiloto());
 					achouJogo = true;
