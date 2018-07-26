@@ -29,6 +29,7 @@ public class MonitorAtividade implements Runnable {
 				Thread.sleep(5000);
 				long timeNow = System.currentTimeMillis();
 				removeClientesIniativos(timeNow);
+				removeSessoesIniativas(timeNow);
 				Map<SessaoCliente, JogoServidor> jogos = controlePaddock
 						.getControleJogosServer().getMapaJogosCriados();
 				iniciaJogos(timeNow, jogos);

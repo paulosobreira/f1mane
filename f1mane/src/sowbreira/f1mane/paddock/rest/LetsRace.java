@@ -71,8 +71,13 @@ public class LetsRace {
 	@Path("/dadosToken")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosToken(@HeaderParam("token") String token) {
-		return Response.status(200)
-				.entity(controlePaddock.obterDadosToken(token)).build();
+		SrvPaddockPack obterDadosToken = controlePaddock.obterDadosToken(token);
+		if(obterDadosToken!=null && obterDadosToken.getSessaoCliente()!=null){
+			obterDadosToken.getSessaoCliente().setUlimaAtividade(System.currentTimeMillis());
+			return Response.status(200)
+					.entity(obterDadosToken).build();
+		}
+		return Response.status(404).build();
 	}
 
 	@GET

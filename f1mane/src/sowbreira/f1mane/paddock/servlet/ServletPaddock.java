@@ -46,7 +46,6 @@ import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 public class ServletPaddock extends HttpServlet {
 
 	private ControlePaddockServidor controlePaddock;
-	private ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
 	String host = "";
 	String senha;
@@ -55,7 +54,6 @@ public class ServletPaddock extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
 		PaddockServer.init(getServletContext().getRealPath(""));
-		controlePersistencia = PaddockServer.getControlePersistencia();
 		controlePaddock = PaddockServer.getControlePaddock();
 		monitorAtividade = PaddockServer.getMonitorAtividade();
 		try {
@@ -132,7 +130,8 @@ public class ServletPaddock extends HttpServlet {
 		PrintWriter printWriter = res.getWriter();
 		res.setContentType("text/html");
 		try {
-			printWriter.println("<html><body>");
+			html5(printWriter);
+			printWriter.println("<body>");
 			String tipo = req.getParameter("tipo");
 
 			String senhaP = req.getParameter("senha");
@@ -158,7 +157,7 @@ public class ServletPaddock extends HttpServlet {
 			} else if ("update_schema".equals(tipo)) {
 				updateSchema(printWriter);
 			}
-			printWriter.println("<br/> " + tipo + " OK");
+			printWriter.println("<br/> ");
 		} catch (Exception e) {
 			printWriter.println(e.getMessage());
 		}
@@ -211,7 +210,8 @@ public class ServletPaddock extends HttpServlet {
 	private void topExceptions(HttpServletResponse res) throws IOException {
 		res.setContentType("text/html");
 		PrintWriter printWriter = res.getWriter();
-		printWriter.write("<html><body>");
+		html5(printWriter);
+		printWriter.write("<body>");
 		printWriter.write("<h2>F1-Mane Erros</h2><br><hr>");
 		synchronized (Logger.topExceptions) {
 			Set top = Logger.topExceptions.keySet();
@@ -230,7 +230,8 @@ public class ServletPaddock extends HttpServlet {
 	private void sessoesAtivas(HttpServletResponse res) throws IOException {
 		res.setContentType("text/html");
 		PrintWriter printWriter = res.getWriter();
-		printWriter.write("<html><body>");
+		html5(printWriter);
+		printWriter.write("<body>");
 		printWriter.write("<h2>F1-Mane Sess&otilde;es</h2><br><hr>");
 		List<SessaoCliente> clientes = controlePaddock.getDadosPaddock().getClientes();
 		int cont = 0;
@@ -252,6 +253,14 @@ public class ServletPaddock extends HttpServlet {
 		printWriter.write("Total : " + cont);
 		printWriter.write("<br>");
 		res.flushBuffer();
+	}
+
+	public void html5(PrintWriter printWriter) {
+		printWriter.write("<!doctype html>");
+		printWriter.write("<html><head>");
+		printWriter.write("<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>");
+		printWriter.write("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>");
+		printWriter.write("</head>");
 	}
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)

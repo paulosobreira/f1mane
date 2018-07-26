@@ -88,10 +88,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				voltaJogadorOnline.setJogador(piloto.getTokenJogador());
 				voltaJogadorOnline.setPiloto(piloto.getNome());
 				voltasJogadoresOnline.add(voltaJogadorOnline);
-				if (!sessao.isGuest()) {
+				if ("Pastor Maldonado".equals(piloto.getNomeJogador())) {
 					Logger.logarExept(
 							new Exception("Jogo : " + getNomeJogoServidor()
-									+ " Jogador : " + piloto.getNomeJogador()
+									+ " Token : " + sessao.getToken()
 									+ " Volta : " + getNumVoltaAtual()
 									+ " contadorVolta : " + contadorVolta));
 				}

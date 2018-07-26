@@ -1242,7 +1242,6 @@ public class ControleJogosServer {
 		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
 			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
 			if (sessaoCliente.getToken().equals(token)) {
-				sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 				srvPaddockPack.setSessaoCliente(sessaoCliente);
 				return srvPaddockPack;
