@@ -217,6 +217,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private boolean driveThrough;
 	@JsonIgnore
+	private boolean processouVoltaBox;
+	@JsonIgnore
 	private Double maxGanhoBaixa = new Double(0);
 	@JsonIgnore
 	private Double maxGanhoAlta = new Double(0);
@@ -2956,6 +2958,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		qtdeParadasBox++;
 		ptosBox = 0;
 		box = false;
+		setProcessouVoltaBox(false);
 		setBoxSaiuNestaVolta(true);
 	}
 
@@ -3758,4 +3761,11 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.habilidadeReal = habilidadeReal;
 	}
 
+	public boolean isProcessouVoltaBox() {
+		return processouVoltaBox;
+	}
+
+	public void setProcessouVoltaBox(boolean processouVoltaBox) {
+		this.processouVoltaBox = processouVoltaBox;
+	}
 }

@@ -212,7 +212,7 @@ public class ServletPaddock extends HttpServlet {
 		PrintWriter printWriter = res.getWriter();
 		html5(printWriter);
 		printWriter.write("<body>");
-		printWriter.write("<h2>F1-Mane Erros</h2><br><hr>");
+		printWriter.write("<h2>F1-Mane Exceptions</h2><br><hr>");
 		synchronized (Logger.topExceptions) {
 			Set top = Logger.topExceptions.keySet();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {

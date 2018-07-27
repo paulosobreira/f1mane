@@ -20,16 +20,16 @@ body{
     font-family: sans-serif;
 }
 A:link {text-decoration: none; 
-		color: #0084B4;}
+		color: black;}
 A:visited {text-decoration: none;
-		color: #0084B4;} 
+		color: black;} 
 A:active {text-decoration: none;
-		color: #0084B4;}
+		color: black;}
 A:hover {text-decoration: underline overline; color: black;}
 
 h4 {
     border: solid;
-    border-color: deepskyblue;
+    border-color: black;
     margin: 0px;
     text-align: center;
 }
