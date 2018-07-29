@@ -29,6 +29,7 @@ public class MonitorAtividade implements Runnable {
 				Thread.sleep(5000);
 				long timeNow = System.currentTimeMillis();
 				removeClientesIniativos(timeNow);
+				removeSessoesIniativas(timeNow);
 				Map<SessaoCliente, JogoServidor> jogos = controlePaddock
 						.getControleJogosServer().getMapaJogosCriados();
 				iniciaJogos(timeNow, jogos);
@@ -100,9 +101,9 @@ public class MonitorAtividade implements Runnable {
 		for (Iterator<SessaoCliente> iter = clientes.iterator(); iter
 				.hasNext();) {
 			SessaoCliente sessaoCliente = iter.next();
-			int intervaloAtividade = 500000;
-			if(!sessaoCliente.isGuest()){
-				intervaloAtividade = 1000000;
+			int intervaloAtividade = 600000;
+			if(sessaoCliente.isGuest()){
+				intervaloAtividade = 300000;
 			}
 			if ((timeNow
 					- sessaoCliente.getUlimaAtividade()) > intervaloAtividade) {
@@ -122,8 +123,11 @@ public class MonitorAtividade implements Runnable {
 		for (Iterator<SessaoCliente> iter = clientes.iterator(); iter
 				.hasNext();) {
 			SessaoCliente sessaoCliente = iter.next();
-			// 6 hs
-			int intervaloAtividade = 21600000;
+			// 1 hs
+			int intervaloAtividade = 3600000;
+			if(sessaoCliente.isGuest()){
+				intervaloAtividade = 1800000;
+			}
 			if ((timeNow
 					- sessaoCliente.getUlimaAtividade()) > intervaloAtividade) {
 				sessaoClienteRemover = sessaoCliente;

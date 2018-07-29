@@ -217,6 +217,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private boolean driveThrough;
 	@JsonIgnore
+	private boolean processouVoltaBox;
+	@JsonIgnore
 	private Double maxGanhoBaixa = new Double(0);
 	@JsonIgnore
 	private Double maxGanhoAlta = new Double(0);
@@ -1133,6 +1135,11 @@ public class Piloto implements Serializable, PilotoSuave {
 			index += novoModificador;
 			setPtosPista(Util.inteiro(novoModificador + getPtosPista()));
 			setVelocidade(Util.intervalo(50, 65));
+			if (carroPilotoDaFrenteRetardatario != null
+					&& getTracado() == carroPilotoDaFrenteRetardatario
+							.getPiloto().getTracado()) {
+				mudarTracado(Util.intervalo(0, 2), controleJogo, true);
+			}
 			return index;
 		}
 
@@ -1291,6 +1298,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	public void calculaCarrosAdjacentes(InterfaceJogo controleJogo) {
 		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
 		carroPilotoAtras = controleJogo.obterCarroAtras(this);
+		carroPilotoDaFrenteRetardatario = controleJogo
+				.obterCarroNaFrenteRetardatario(this, false);
 		if (isRecebeuBanderada()) {
 			return;
 		}
@@ -1300,8 +1309,6 @@ public class Piloto implements Serializable, PilotoSuave {
 				.calculaDiffParaProximoRetardatario(this, true);
 		calculaDiferencaParaAnterior = controleJogo
 				.calculaDiferencaParaAnterior(this);
-		carroPilotoDaFrenteRetardatario = controleJogo
-				.obterCarroNaFrenteRetardatario(this, false);
 		calculaDiferencaParaProximo = controleJogo
 				.calculaDiferencaParaProximo(this);
 		if (getPosicao() > 1) {
@@ -1563,7 +1570,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		double diff = calculaDiferencaParaProximo;
 		double multiplicadoGanhoTurbulencia = (controleJogo
 				.getFatorUtrapassagem());
-		if(controleJogo.getNumVoltaAtual()<=0 || controleJogo.isSafetyCarNaPista()){
+		if (controleJogo.getNumVoltaAtual() <= 0
+				|| controleJogo.isSafetyCarNaPista()) {
 			multiplicadoGanhoTurbulencia = 1;
 		}
 		double distLimiteTurbulencia = 50.0 / multiplicadoGanhoTurbulencia;
@@ -2950,6 +2958,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		qtdeParadasBox++;
 		ptosBox = 0;
 		box = false;
+		setProcessouVoltaBox(false);
 		setBoxSaiuNestaVolta(true);
 	}
 
@@ -3093,7 +3102,7 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo,
 			boolean forcaMudar) {
-		if (isRecebeuBanderada()) {
+		if (!forcaMudar && isRecebeuBanderada()) {
 			return false;
 		}
 		if (!forcaMudar && verificaDesconcentrado()
@@ -3752,4 +3761,11 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.habilidadeReal = habilidadeReal;
 	}
 
+	public boolean isProcessouVoltaBox() {
+		return processouVoltaBox;
+	}
+
+	public void setProcessouVoltaBox(boolean processouVoltaBox) {
+		this.processouVoltaBox = processouVoltaBox;
+	}
 }

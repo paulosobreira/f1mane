@@ -264,6 +264,10 @@ public class ControleBox {
 
 		No box = (No) boxEquipes.get(piloto.getCarro());
 		int contBox = piloto.getNoAtual().getIndex();
+		if ((contBox > (paradaBox.getIndex() - 20) && contBox < (paradaBox.getIndex() + 20))
+				&& !piloto.isProcessouVoltaBox() && piloto.isBox()) {
+			novaVoltaBox(piloto);
+		}
 		if ((contBox > (box.getIndex() - 16) && contBox < (box.getIndex() + 16))
 				&& !piloto.decrementaParadoBox() && piloto.isBox()) {
 			processarPilotoPararBox(piloto);
@@ -427,6 +431,9 @@ public class ControleBox {
 			piloto.getVoltaAtual().setVoltaSafetyCar(true);
 		}
 		piloto.efetuarSaidaBox(interfaceJogo);
+	}
+
+	public void novaVoltaBox(Piloto piloto) {
 		/**
 		 * calback de nova volta para corrida Toda
 		 */
@@ -437,6 +444,7 @@ public class ControleBox {
 		if (controleJogo.isCorridaTerminada()) {
 			controleJogo.setRecebeuBanderada(piloto);
 		}
+		piloto.setProcessouVoltaBox(true);
 	}
 
 	public int setupParadaUnica(Piloto piloto) {

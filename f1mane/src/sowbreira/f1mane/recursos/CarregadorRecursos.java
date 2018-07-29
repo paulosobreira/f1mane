@@ -256,6 +256,24 @@ public class CarregadorRecursos {
 		// 50);
 		// JOptionPane.showConfirmDialog(null, new JLabel(new ImageIcon(
 		// travadaRodaImg)));
+		
+		Map<String, List<Piloto>> carregarTemporadasPilotos = carregadorRecursos
+				.carregarTemporadasPilotos();
+		for (Iterator iterator = carregarTemporadasPilotos.keySet()
+				.iterator(); iterator.hasNext();) {
+			String temporada = (String) iterator.next();
+
+			List<Piloto> list = carregarTemporadasPilotos.get(temporada);
+			int somaPontecias = 0;
+			for (Iterator iterator2 = list.iterator(); iterator2.hasNext();) {
+				Piloto piloto = (Piloto) iterator2.next();
+				Carro carro = piloto.getCarro();
+				somaPontecias += (carro.getPotencia() + carro.getFreios()
+						+ carro.getAerodinamica());
+			}
+			int mediaPontecia = somaPontecias / (list.size());
+			System.out.println(temporada + " " + mediaPontecia);
+		}
 	}
 
 	private static void gerarListaCarrosLado() throws IOException {

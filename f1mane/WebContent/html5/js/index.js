@@ -118,6 +118,11 @@ function dadosJogador() {
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			$('#botoes').show();
+			if (xhRequest.status == 404) {
+				localStorage.removeItem("token");
+				token = null;
+				return;
+			}
 			tratamentoErro(xhRequest);
 			console.log('sobre() ' + xhRequest.status + '  '
 					+ xhRequest.responseText);

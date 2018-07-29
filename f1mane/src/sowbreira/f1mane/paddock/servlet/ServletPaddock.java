@@ -9,8 +9,11 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -26,12 +29,14 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
+import br.nnpe.FormatDate;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.ZipUtil;
+import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 
 /**
@@ -41,7 +46,6 @@ import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 public class ServletPaddock extends HttpServlet {
 
 	private ControlePaddockServidor controlePaddock;
-	private ControlePersistencia controlePersistencia;
 	private static MonitorAtividade monitorAtividade;
 	String host = "";
 	String senha;
@@ -50,7 +54,6 @@ public class ServletPaddock extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
 		PaddockServer.init(getServletContext().getRealPath(""));
-		controlePersistencia = PaddockServer.getControlePersistencia();
 		controlePaddock = PaddockServer.getControlePaddock();
 		monitorAtividade = PaddockServer.getMonitorAtividade();
 		try {
@@ -127,7 +130,8 @@ public class ServletPaddock extends HttpServlet {
 		PrintWriter printWriter = res.getWriter();
 		res.setContentType("text/html");
 		try {
-			printWriter.println("<html><body>");
+			html5(printWriter);
+			printWriter.println("<body>");
 			String tipo = req.getParameter("tipo");
 
 			String senhaP = req.getParameter("senha");
@@ -144,16 +148,16 @@ public class ServletPaddock extends HttpServlet {
 
 			if (tipo == null) {
 				return;
-			} else if ("x".equals(tipo)) {
+			} else if ("X".equals(tipo)) {
 				topExceptions(res);
-			} else if ("C".equals(tipo)) {
-				topConstrutors(res);
+			} else if ("S".equals(tipo)) {
+				sessoesAtivas(res);
 			} else if ("create_schema".equals(tipo)) {
 				createSchema(printWriter);
 			} else if ("update_schema".equals(tipo)) {
 				updateSchema(printWriter);
 			}
-			printWriter.println("<br/> " + tipo + " done");
+			printWriter.println("<br/> ");
 		} catch (Exception e) {
 			printWriter.println(e.getMessage());
 		}
@@ -206,8 +210,9 @@ public class ServletPaddock extends HttpServlet {
 	private void topExceptions(HttpServletResponse res) throws IOException {
 		res.setContentType("text/html");
 		PrintWriter printWriter = res.getWriter();
-		printWriter.write("<html><body>");
-		printWriter.write("<h2>F1-Mane Erros</h2><br><hr>");
+		html5(printWriter);
+		printWriter.write("<body>");
+		printWriter.write("<h2>F1-Mane Exceptions</h2><br><hr>");
 		synchronized (Logger.topExceptions) {
 			Set top = Logger.topExceptions.keySet();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
@@ -219,48 +224,43 @@ public class ServletPaddock extends HttpServlet {
 				printWriter.write("<br><hr>");
 			}
 		}
-		printWriter.write("</body></html>");
 		res.flushBuffer();
 	}
 
-	private void topConstrutors(HttpServletResponse res) throws IOException {
+	private void sessoesAtivas(HttpServletResponse res) throws IOException {
 		res.setContentType("text/html");
 		PrintWriter printWriter = res.getWriter();
-		printWriter.write("<html><body>");
-		printWriter.write("<h2>F1-Mane Construtores</h2><br><hr>");
-		Session session = controlePersistencia.getSession();
-		try {
-			Set top = controlePersistencia.obterListaJogadores(session);
-			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
-				String nomeJogador = (String) iterator.next();
-				CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-						.carregaCarreiraJogador(nomeJogador, false,
-								controlePersistencia.getSession());
-				if (carreiraDadosSrv == null) {
-					continue;
-				}
-				if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro()) || Util
-						.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())) {
-					continue;
-				}
-				printWriter.write("Jogador : " + nomeJogador);
-				printWriter.write(
-						"<br> Pts Piloto: " + carreiraDadosSrv.getPtsPiloto());
-				printWriter.write(
-						"<br> Pts Carro: " + carreiraDadosSrv.getPtsCarro());
-				printWriter.write("<br> Pts Const: "
-						+ carreiraDadosSrv.getPtsConstrutores());
-				printWriter.write("<br><hr>");
-			}
-
-		} finally {
-			if (session.isOpen()) {
-				session.close();
-			}
+		html5(printWriter);
+		printWriter.write("<body>");
+		printWriter.write("<h2>F1-Mane Sess&otilde;es</h2><br><hr>");
+		List<SessaoCliente> clientes = controlePaddock.getDadosPaddock().getClientes();
+		int cont = 0;
+		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+			printWriter.write("<br>");
+			printWriter.write("Jogador : " + sessaoCliente.getNomeJogador());
+			printWriter.write("<br>");
+			printWriter.write("Visitante : " + sessaoCliente.isGuest());
+			printWriter.write("<br>");
+			Timestamp timestamp = new Timestamp(sessaoCliente.getUlimaAtividade()); 
+			printWriter.write("&Uacute;ltima Atividade : " + FormatDate.format(timestamp));
+			printWriter.write("<br>");
+			printWriter.write("Piloto Atual : " + sessaoCliente.getPilotoAtual());
+			printWriter.write("<hr>");
+			cont++;
 		}
-		printWriter.write("</body></html>");
+		printWriter.write("<br>");
+		printWriter.write("Total : " + cont);
+		printWriter.write("<br>");
 		res.flushBuffer();
+	}
 
+	public void html5(PrintWriter printWriter) {
+		printWriter.write("<!doctype html>");
+		printWriter.write("<html><head>");
+		printWriter.write("<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>");
+		printWriter.write("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>");
+		printWriter.write("</head>");
 	}
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)

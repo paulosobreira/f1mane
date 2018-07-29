@@ -3,7 +3,6 @@
  */
 package sowbreira.f1mane.paddock.servlet;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Iterator;
@@ -70,7 +69,7 @@ public class ControlePaddockServidor {
 				controlePersistencia);
 		controleJogosServer = new ControleJogosServer(dadosPaddock,
 				controleClassificacao, controleCampeonatoServidor,
-				controlePersistencia);
+				controlePersistencia,this);
 		try {
 			initProperties();
 		} catch (IOException e) {
@@ -551,7 +550,14 @@ public class ControlePaddockServidor {
 				if (participarJogo != null) {
 					sessaoCliente
 							.setJogoAtual(jogoServidor.getNomeJogoServidor());
-					sessaoCliente.setPilotoAtual(participarJogo.getPiloto());
+					List<Piloto> pilotosCopia = jogoServidor.getPilotosCopia();
+					for (Iterator iterator3 = pilotosCopia.iterator(); iterator3
+							.hasNext();) {
+						Piloto piloto = (Piloto) iterator3.next();
+						if(piloto.getId()==participarJogo.getIdPiloto()){
+							sessaoCliente.setPilotoAtual(piloto.getNome());		
+						}
+					}
 					sessaoCliente
 							.setIdPilotoAtual(participarJogo.getIdPiloto());
 					achouJogo = true;
@@ -692,6 +698,7 @@ public class ControlePaddockServidor {
 			if (idGoogle.equals(sessaoCliente.getId())) {
 				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 				sessaoCliente.setNomeJogador(nome);
+				sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 				srvPaddockPack.setSessaoCliente(sessaoCliente);
 				salvarAcessoSessaoGoogle(sessaoCliente);
 				return srvPaddockPack;
