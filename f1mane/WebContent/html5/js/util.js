@@ -72,7 +72,6 @@ function tratamentoErro(xhRequest) {
 	if (xhRequest.status == 401) {
 		toaster(lang_text('tratamentoErro'), 4000, 'alert alert-danger');
 		setTimeout(function() {
-			localStorage.clear();
 			window.location = "index.html";
 		}, 3500);
 	} else {

@@ -264,7 +264,8 @@ public class ControleBox {
 
 		No box = (No) boxEquipes.get(piloto.getCarro());
 		int contBox = piloto.getNoAtual().getIndex();
-		if ((contBox > (paradaBox.getIndex() - 20) && contBox < (paradaBox.getIndex() + 20))
+		if ((contBox > (paradaBox.getIndex() - 20)
+				&& contBox < (paradaBox.getIndex() + 20))
 				&& !piloto.isProcessouVoltaBox() && piloto.isBox()) {
 			novaVoltaBox(piloto);
 		}
@@ -285,6 +286,8 @@ public class ControleBox {
 		if (piloto.getParadoBox() > 0) {
 			return;
 		}
+		Logger.logar(piloto.getNome() + " Parou no Box : "
+				+ piloto.getNumeroVolta());
 		piloto.setVelocidade(0);
 		int qtdeCombust = 0;
 		piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1);
@@ -431,6 +434,8 @@ public class ControleBox {
 			piloto.getVoltaAtual().setVoltaSafetyCar(true);
 		}
 		piloto.efetuarSaidaBox(interfaceJogo);
+		Logger.logar(piloto.getNome() + " Saiu do Box : "
+				+ piloto.getNumeroVolta());
 	}
 
 	public void novaVoltaBox(Piloto piloto) {
@@ -445,6 +450,9 @@ public class ControleBox {
 			controleJogo.setRecebeuBanderada(piloto);
 		}
 		piloto.setProcessouVoltaBox(true);
+
+		Logger.logar(piloto.getNome() + " Nova Volta Box : "
+				+ piloto.getNumeroVolta());
 	}
 
 	public int setupParadaUnica(Piloto piloto) {

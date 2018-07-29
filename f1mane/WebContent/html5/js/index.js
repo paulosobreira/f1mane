@@ -119,8 +119,16 @@ function dadosJogador() {
 		error : function(xhRequest, ErrorText, thrownError) {
 			$('#botoes').show();
 			if (xhRequest.status == 404) {
+				toaster(lang_text('210'), 4000, 'alert alert-danger');
 				localStorage.removeItem("token");
 				token = null;
+				plataforma =  localStorage.getItem('plataforma');
+				if(plataforma == "android"){
+					setTimeout(function() {
+						localStorage.clear();
+						Android.exitApp();
+					}, 3500);
+				}
 				return;
 			}
 			tratamentoErro(xhRequest);

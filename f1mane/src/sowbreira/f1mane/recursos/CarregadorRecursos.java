@@ -256,7 +256,7 @@ public class CarregadorRecursos {
 		// 50);
 		// JOptionPane.showConfirmDialog(null, new JLabel(new ImageIcon(
 		// travadaRodaImg)));
-		
+
 		Map<String, List<Piloto>> carregarTemporadasPilotos = carregadorRecursos
 				.carregarTemporadasPilotos();
 		for (Iterator iterator = carregarTemporadasPilotos.keySet()
@@ -823,22 +823,27 @@ public class CarregadorRecursos {
 						}
 					}
 				} catch (Exception e) {
-					carro.setImg(null);
+					carroLado = desenhaCarroLado(carro);
 				}
 			} else {
-				carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
-				BufferedImage cor1 = CarregadorRecursos
-						.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
-				BufferedImage cor2 = CarregadorRecursos
-						.gerarCoresCarros(carro.getCor2(), "CarroLadoC2.png");
-				Graphics graphics = carroLado.getGraphics();
-				setarHints((Graphics2D) graphics);
-				graphics.drawImage(cor1, 0, 0, null);
-				graphics.drawImage(cor2, 0, 0, null);
-				graphics.dispose();
-				return carroLado;
+				carroLado = desenhaCarroLado(carro);
 			}
 		}
+		return carroLado;
+	}
+
+	private BufferedImage desenhaCarroLado(Carro carro) {
+		BufferedImage carroLado = CarregadorRecursos
+				.carregaImagem("CarroLado.png");
+		BufferedImage cor1 = CarregadorRecursos
+				.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
+		BufferedImage cor2 = CarregadorRecursos
+				.gerarCoresCarros(carro.getCor2(), "CarroLadoC2.png");
+		Graphics graphics = carroLado.getGraphics();
+		setarHints((Graphics2D) graphics);
+		graphics.drawImage(cor1, 0, 0, null);
+		graphics.drawImage(cor2, 0, 0, null);
+		graphics.dispose();
 		return carroLado;
 	}
 
@@ -858,22 +863,27 @@ public class CarregadorRecursos {
 							carroLadoPng);
 
 				} catch (Exception e) {
-					carro.setImg(null);
+					carroLado = desenhaCArroladoSemAereofolio(carro);
 				}
 			} else {
-				carroLado = CarregadorRecursos.carregaImagem("CarroLado.png");
-				BufferedImage cor1 = CarregadorRecursos
-						.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
-				BufferedImage cor2 = CarregadorRecursos
-						.gerarCoresCarros(carro.getCor2(), "CarroLadoC3.png");
-				Graphics graphics = carroLado.getGraphics();
-				setarHints((Graphics2D) graphics);
-				graphics.drawImage(cor1, 0, 0, null);
-				graphics.drawImage(cor2, 0, 0, null);
-				graphics.dispose();
-				return carroLado;
+				carroLado = desenhaCArroladoSemAereofolio(carro);
 			}
 		}
+		return carroLado;
+	}
+
+	private BufferedImage desenhaCArroladoSemAereofolio(Carro carro) {
+		BufferedImage carroLado = CarregadorRecursos
+				.carregaImagem("CarroLado.png");
+		BufferedImage cor1 = CarregadorRecursos
+				.gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
+		BufferedImage cor2 = CarregadorRecursos
+				.gerarCoresCarros(carro.getCor2(), "CarroLadoC3.png");
+		Graphics graphics = carroLado.getGraphics();
+		setarHints((Graphics2D) graphics);
+		graphics.drawImage(cor1, 0, 0, null);
+		graphics.drawImage(cor2, 0, 0, null);
+		graphics.dispose();
 		return carroLado;
 	}
 

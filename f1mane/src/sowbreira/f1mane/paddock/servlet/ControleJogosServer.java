@@ -136,10 +136,6 @@ public class ControleJogosServer {
 			}
 			jogoServidor.setNomeJogoServidor(
 					(qtdeJogos++) + "-" + temporada.replaceAll("t", ""));
-			mapaJogosCriados.put(clientPaddockPack.getSessaoCliente(),
-					jogoServidor);
-			gerarListaJogosCriados();
-
 			jogoServidor.setControleClassificacao(controleClassificacao);
 			jogoServidor.setControleJogosServer(this);
 			jogoServidor
@@ -178,6 +174,9 @@ public class ControleJogosServer {
 
 				}
 			}
+			mapaJogosCriados.put(clientPaddockPack.getSessaoCliente(),
+					jogoServidor);
+			gerarListaJogosCriados();
 			return srvPaddockPack;
 		} finally {
 			if (session != null && session.isOpen()) {
