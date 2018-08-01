@@ -52,7 +52,7 @@ var mapaPow = new Map();
 var loopPilotos = false;
 var ajsCarroX = 40;
 var ajsCarroY = 40;
-var zoom = 1;
+var zoom = 2;
 
 function vdp_desenha(fps) {
 	if (imgBg && imgBg.complete) {
@@ -360,7 +360,11 @@ function vdp_colisaoTracadoSuave(pilotoParam) {
 function vdp_centralizaPilotoSelecionado() {
 	if (dadosParciais == null || dadosParciais.posisPack == null) {
 		if (circuito != null) {
-			vdp_centralizaPonto(circuito.creditosPonto);
+			var pontoZoom = {
+					x : circuito.creditosPonto.x/zoom,
+					y : circuito.creditosPonto.y/zoom
+				};
+			vdp_centralizaPonto(pontoZoom);
 		}
 		return;
 	}
@@ -374,6 +378,7 @@ function vdp_centralizaPilotoSelecionado() {
 
 function vdp_obterPonto(piloto, real) {
 	var no;
+	var ponto;
 	if (real) {
 		no = mapaIdNos.get(piloto.idNo);
 	} else {
@@ -381,9 +386,13 @@ function vdp_obterPonto(piloto, real) {
 		if (no == null) {
 			no = mapaIdNos.get(piloto.idNo);
 		}
-		var ponto = mapaPontoSuave.get(piloto.idPiloto);
+		ponto = mapaPontoSuave.get(piloto.idPiloto);
 		if (ponto != null) {
-			return ponto;
+			var pontoZoom = {
+					x : ponto.x/zoom,
+					y : ponto.y/zoom
+				};
+			return pontoZoom;
 		}
 	}
 	if (no.box) {
@@ -550,9 +559,9 @@ function vdp_desenhaNomesCima() {
 			right : ponto.x + imgCarro.width,
 			bottom : ponto.y + imgCarro.height
 		};
-		if (!vdp_intersectRect(rectBg, rectObj)) {
-			continue;
-		}
+//		if (!vdp_intersectRect(rectBg, rectObj)) {
+//			continue;
+//		}
 
 		var x = ponto.x - ptBg.x - 30;
 		var y = ponto.y - ptBg.y - 45;
@@ -606,7 +615,10 @@ function vdp_desenhaPontosCarrosCima() {
 		}
 		
 		var pl = pilotosMap.get(piloto.idPiloto);
-		
+		if(pl==null || pl.carro == null){
+			continue;
+		}
+	
 		maneContext.beginPath();
 		maneContext.arc(ponto.x - ptBg.x, ponto.y - ptBg.y, 5, 0, 2 * Math.PI, false);
 		maneContext.fillStyle = pl.carro.cor1Hex;
@@ -826,8 +838,8 @@ function vdp_centralizaPonto(ponto) {
 	var x = ponto.x;
 	var y = ponto.y;
 
-	x -= (maneCanvas.width / 2 * zoom);
-	y -= (maneCanvas.height / 2 * zoom);
+	x -= (maneCanvas.width / 2 );
+	y -= (maneCanvas.height / 2 );
 
 	if (cvBg != null) {
 		if (x < 0) {
@@ -837,13 +849,13 @@ function vdp_centralizaPonto(ponto) {
 			y = 0;
 		}
 
-		var sW = maneCanvas.width;
-		if ((x + sW) > cvBg.width) {
-			x -= ((x + sW) - cvBg.width);
+		var sW = maneCanvas.width ;
+		if ((x + sW) > (cvBg.width )) {
+			x -= ((x + sW) - (cvBg.width ));
 		}
-		var sH = maneCanvas.height;
-		if ((y + sH) > cvBg.height) {
-			y -= ((y + sH) - cvBg.height);
+		var sH = maneCanvas.height ;
+		if ((y + sH) > (cvBg.height )) {
+			y -= ((y + sH) - (cvBg.height));
 		}
 	}
 	ptBg.x = x;
@@ -920,7 +932,7 @@ function vdp_desenhaBackGround() {
 	var sH = zoom*(maneCanvas.height);
 	if (desenhaImagens) {
 		try {
-			maneContext.drawImage(cvBg, ptBg.x, ptBg.y, sW, sH, 0, 0, maneCanvas.width, maneCanvas.height);
+			maneContext.drawImage(cvBg, ptBg.x*zoom, ptBg.y*zoom, sW, sH, 0, 0, maneCanvas.width, maneCanvas.height);
 		} catch (e) {
 			console.log('vdp_desenhaBackGround');
 			console.log(e);
