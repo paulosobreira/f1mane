@@ -43,7 +43,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 public class ControleClassificacao {
 	private ControlePersistencia controlePersistencia;
 	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
-			.getCarregadorRecursos();
+			.getCarregadorRecursos(false);
 
 	/**
 	 * @param controlePersistencia

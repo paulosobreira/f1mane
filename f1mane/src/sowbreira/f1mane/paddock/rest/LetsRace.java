@@ -55,7 +55,7 @@ import sowbreira.f1mane.visao.PainelCircuito;
 public class LetsRace {
 
 	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
-			.getCarregadorRecursos();
+			.getCarregadorRecursos(false);
 	private ControlePaddockServidor controlePaddock = PaddockServer
 			.getControlePaddock();
 

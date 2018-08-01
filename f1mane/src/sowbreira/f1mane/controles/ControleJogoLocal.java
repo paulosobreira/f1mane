@@ -73,8 +73,9 @@ public class ControleJogoLocal extends ControleRecursos
 
 	public ControleJogoLocal(String temporada) throws Exception {
 		super(temporada);
-		if (!(this instanceof JogoServidor))
+		if (!(this instanceof JogoServidor)){
 			gerenciadorVisual = new GerenciadorVisual(this);
+		}
 		controleEstatisticas = new ControleEstatisticas(this);
 	}
 

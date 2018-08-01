@@ -180,7 +180,7 @@ public class PaddockWindow {
 	public PaddockWindow(ControlePaddockCliente controlePaddockApplet) {
 		img = ImageUtil.gerarFade(
 				CarregadorRecursos.carregaBufferedImage("bg-monaco.png"), 40);
-		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
 		carregadorRecursos.carregarTemporadasPilotos();
 		mainPanel = new JPanel(new BorderLayout()) {
 			@Override

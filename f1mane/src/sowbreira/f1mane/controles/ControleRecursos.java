@@ -21,6 +21,7 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PontoEscape;
+import sowbreira.f1mane.paddock.servlet.JogoServidor;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 
 /**
@@ -96,7 +97,7 @@ public abstract class ControleRecursos {
 	}
 
 	public ControleRecursos() throws Exception {
-		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
+		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
 		circuitos = carregarCircuitos();
 	}
 
@@ -109,7 +110,11 @@ public abstract class ControleRecursos {
 	}
 
 	public void carregarPilotosCarros() throws IOException {
-		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
+		if (this instanceof JogoServidor){
+			carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);	
+		}else{
+			carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(true);
+		}
 		carros = carregadorRecursos.carregarListaCarros(temporada);
 		pilotos = carregadorRecursos.carregarListaPilotos(temporada);
 		carregadorRecursos.ligarPilotosCarros(pilotos, carros);

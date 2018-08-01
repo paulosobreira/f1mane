@@ -279,7 +279,7 @@ public class Lang {
 		PropertyResourceBundle propertyResourceBundle = mapaBundle.get(sufix);
 		if (propertyResourceBundle == null) {
 			String load = "idiomas/mensagens_" + sufix + ".properties";
-			InputStream inputStream = CarregadorRecursos.getCarregadorRecursos()
+			InputStream inputStream = CarregadorRecursos.getCarregadorRecursos(false)
 					.recursoComoStream(load);
 			if (inputStream == null) {
 				Logger.logar("inputStream == null para " + load);

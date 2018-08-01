@@ -77,7 +77,7 @@ public class DadosCriarJogo implements Serializable {
 			dadosCriarJogo.setClima(Clima.SOL);
 		}
 		TemporadasDefauts temporadasDefauts = CarregadorRecursos
-				.getCarregadorRecursos().carregarTemporadasPilotosDefauts()
+				.getCarregadorRecursos(false).carregarTemporadasPilotosDefauts()
 				.get("t" + temporada);
 
 		if (!Util.isNullOrEmpty(combustivel)) {

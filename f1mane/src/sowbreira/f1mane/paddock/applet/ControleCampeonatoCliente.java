@@ -69,7 +69,7 @@ public class ControleCampeonatoCliente {
 		carregarCircuitos();
 		this.compPai = c;
 		this.controlePaddockCliente = controlePaddockCliente;
-		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
+		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
 		circuitosPilotos = carregadorRecursos.carregarTemporadasPilotos();
 	}
 

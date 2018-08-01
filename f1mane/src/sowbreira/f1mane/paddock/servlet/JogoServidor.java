@@ -54,6 +54,20 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private boolean disparouInicio;
 	private TravadaRoda travadaRoda;
 
+	public JogoServidor(String temporada, DadosCriarJogo dadosCriarJogo)
+			throws Exception {
+		super(temporada);
+		this.dadosCriarJogo = dadosCriarJogo;
+		controleEstatisticas = new ControleEstatisticas(JogoServidor.this);
+		processarEntradaDados();
+		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
+		setarNivelCorrida();
+		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
+				diffultrapassagem.intValue());
+		controleCorrida.getControleClima()
+				.gerarClimaInicial(new Clima(dadosCriarJogo.getClima()));
+	}
+
 	@Override
 	public int hashCode() {
 		return nomeJogoServidor.hashCode();
@@ -115,20 +129,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		} else if (ControleJogoLocal.DIFICIL.equals(getNivelCorrida())) {
 			niveljogo = DIFICIL_NV;
 		}
-	}
-
-	public JogoServidor(String temporada, DadosCriarJogo dadosCriarJogo)
-			throws Exception {
-		super(temporada);
-		this.dadosCriarJogo = dadosCriarJogo;
-		controleEstatisticas = new ControleEstatisticas(JogoServidor.this);
-		processarEntradaDados();
-		carregaRecursos((String) getCircuitos().get(circuitoSelecionado));
-		setarNivelCorrida();
-		controleCorrida = new ControleCorrida(this, qtdeVoltas.intValue(),
-				diffultrapassagem.intValue());
-		controleCorrida.getControleClima()
-				.gerarClimaInicial(new Clima(dadosCriarJogo.getClima()));
 	}
 
 	public String getEstado() {

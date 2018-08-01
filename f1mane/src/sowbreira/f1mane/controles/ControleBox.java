@@ -83,7 +83,7 @@ public class ControleBox {
 		boxEquipes = new HashMap<Carro, No>();
 		boxEquipesOcupado = new Hashtable<Carro, Carro>();
 		CarregadorRecursos carregadorRecursos = CarregadorRecursos
-				.getCarregadorRecursos();
+				.getCarregadorRecursos(false);
 		try {
 			if (carrosBox == null)
 				carrosBox = carregadorRecursos.carregarListaCarrosArquivo(

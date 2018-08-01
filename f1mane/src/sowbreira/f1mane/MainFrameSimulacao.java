@@ -79,7 +79,7 @@ public class MainFrameSimulacao extends MainFrame {
 			listCircuitos.addAll(controleJogo.getCircuitos().keySet());
 			Collections.shuffle(listCircuitos);
 
-			CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos();
+			CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
 			carregadorRecursos.carregarTemporadasPilotos();
 			List<String> listTemporadas = new ArrayList<String>();
 			listTemporadas.addAll(carregadorRecursos.getVectorTemps());

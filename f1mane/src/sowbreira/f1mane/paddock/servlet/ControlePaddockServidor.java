@@ -52,7 +52,7 @@ public class ControlePaddockServidor {
 	private int versao;
 	private int contadorVistantes = 1;
 	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
-			.getCarregadorRecursos();
+			.getCarregadorRecursos(false);
 
 	public DadosPaddock getDadosPaddock() {
 		return dadosPaddock;
@@ -950,7 +950,7 @@ public class ControlePaddockServidor {
 
 	private BufferedImage carroCimaCor(String temporada, String carro) {
 		Piloto piloto = gerarPilotoCarroCor(temporada, carro);
-		return carregadorRecursos.obterCarroCima(piloto, null, false);
+		return carregadorRecursos.obterCarroCima(piloto, null);
 	}
 	private BufferedImage carroLadoCor(String temporada, String carro) {
 		Piloto piloto = gerarPilotoCarroCor(temporada, carro);

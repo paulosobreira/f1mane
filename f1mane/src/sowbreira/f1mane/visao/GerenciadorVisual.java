@@ -826,7 +826,7 @@ public class GerenciadorVisual {
 
 	private void gerarPainelJogoMulti(JPanel incialPanel) {
 		final CarregadorRecursos carregadorRecursos = CarregadorRecursos
-				.getCarregadorRecursos();
+				.getCarregadorRecursos(false);
 		final Map circuitosPilotos = carregadorRecursos
 				.carregarTemporadasPilotos();
 		comboBoxTemporadas = new JComboBox(carregadorRecursos.getVectorTemps());
@@ -1074,7 +1074,7 @@ public class GerenciadorVisual {
 		String circuitoStr = (String) controleJogo.getCircuitos()
 				.get(comboBoxCircuito.getSelectedItem());
 		CarregadorRecursos carregadorRecursos = CarregadorRecursos
-				.getCarregadorRecursos();
+				.getCarregadorRecursos(false);
 		ObjectInputStream ois;
 		Circuito circuito = null;
 		try {
