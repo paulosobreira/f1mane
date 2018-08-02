@@ -1264,7 +1264,6 @@ function ctl_gerarControles() {
 		x : 0
 	});
 
-	// Box
 	controles.push({
 		cor : corBabaca,
 		valor : 'BOX',
@@ -1276,6 +1275,21 @@ function ctl_gerarControles() {
 		height : 40,
 		y : 10,
 		evalX : '(maneCanvas.width/2 - 40);',
+		x : 0
+	});
+	
+	controles.push({
+		cor : corBabaca,
+		valor : 'ZOOM',
+		exibir : 'ZOOM',
+		tipo : 'Zoom',
+		centralizaTexto : false,
+		larguraTexto : false,
+		width : 100,
+		height : 40,
+		y : 10,
+		evalX : '(maneCanvas.width/2 - 50);',
+		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 100);',
 		x : 0
 	});
 
@@ -1490,6 +1504,14 @@ function ctl_click(event) {
 					dadosParciais.tpPneusBox,
 					dadosParciais.combustBox,
 					dadosParciais.asaBox);
+			return;
+		}
+		if (controle.tipo == 'Zoom') {
+			if(zoom == 1){
+				zoom = 2;
+			}else{
+				zoom = 1;
+			}
 			return;
 		}
 		if (controle.tipo == 'Pneu') {

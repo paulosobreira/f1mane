@@ -489,8 +489,6 @@ function listaTemporadas() {
 				console.log('listaTemporadas() response.length==0');
 				return;
 			}
-			selecionaTemporada(temporadasRes[0]);
-			temporadaSelecionada = temporadasRes[0];
 			$('#temporadaActive').prop('temporada', temporadasRes[0]);
 			$.each(temporadasRes, function(i, val) {
 				if (i == 0) {
@@ -503,6 +501,10 @@ function listaTemporadas() {
 				dv.append(h1);
 				$('#temporadaCarousel-inner').append(dv);
 			});
+			selecionaTemporada(temporadasRes[temporadasRes.length-1]);
+			temporadaSelecionada = temporadasRes[temporadasRes.length-1];
+
+			
 			$('#temporadaCarousel').carousel('pause');
 			$('#circuitoCarousel').carousel('pause');
 		},

@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 @media (orientation: landscape) {
-	body {
+	.body {
 	 margin: 0;
      background: url(../img/landscape.jpg); 
 	 background-size: 100%,100%;
@@ -30,7 +30,7 @@
 }
 
 @media (orientation: portrait) {
-	body {
+	.body {
 	 margin: 0;
 	 background: url(../img/portrait.jpg);  
 	 background-size: 100%,100%;

@@ -60,6 +60,7 @@ function cpu_main() {
 	}
 	if (dadosJogo != null && circuito != null && ativo && contCarregouMidia == 0) {
 		$loading.hide();
+		$('body').removeClass('body');
 		//MOSTRANDO_QUALIFY 10
 		//ESPERANDO_JOGO_COMECAR 07
 		if ('07' == dadosJogo.estado || '10' == dadosJogo.estado) {

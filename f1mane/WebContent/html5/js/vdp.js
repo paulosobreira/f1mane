@@ -52,7 +52,7 @@ var mapaPow = new Map();
 var loopPilotos = false;
 var ajsCarroX = 40;
 var ajsCarroY = 40;
-var zoom = 2;
+var zoom = 1;
 
 function vdp_desenha(fps) {
 	if (imgBg && imgBg.complete) {
@@ -559,9 +559,10 @@ function vdp_desenhaNomesCima() {
 			right : ponto.x + imgCarro.width,
 			bottom : ponto.y + imgCarro.height
 		};
-//		if (!vdp_intersectRect(rectBg, rectObj)) {
-//			continue;
-//		}
+		
+		if (!vdp_intersectRect(rectBg, rectObj)) {
+			continue;
+		}
 
 		var x = ponto.x - ptBg.x - 30;
 		var y = ponto.y - ptBg.y - 45;
@@ -600,7 +601,7 @@ function vdp_desenhaNomesCima() {
 
 function vdp_desenhaPontosCarrosCima() {
 	if (circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null || dadosJogo == null || carrosImgMap == null
-			|| cvBg == null || carrosImgMap == null) {
+			|| cvBg == null || carrosImgMap == null || zoom !=2) {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
@@ -613,6 +614,16 @@ function vdp_desenhaPontosCarrosCima() {
 		if (ponto == null || ponto.x == null || ponto.y == null) {
 			continue;
 		}
+		
+		var rectObj = {
+				left : ponto.x,
+				top : ponto.y,
+				right : ponto.x + 5,
+				bottom : ponto.y + 5
+			};
+		if (!vdp_intersectRect(rectBg, rectObj)) {
+			continue;
+		}		
 		
 		var pl = pilotosMap.get(piloto.idPiloto);
 		if(pl==null || pl.carro == null){
@@ -848,23 +859,28 @@ function vdp_centralizaPonto(ponto) {
 		if (y < 0) {
 			y = 0;
 		}
-
-		var sW = maneCanvas.width ;
+//		x=x*zoom;
+//		y=y*zoom;
+		
+		var sW = maneCanvas.width;
 		if ((x + sW) > (cvBg.width )) {
-			x -= ((x + sW) - (cvBg.width ));
+			x -= ((x + sW) - (cvBg.width));
 		}
-		var sH = maneCanvas.height ;
+		var sH = maneCanvas.height;
 		if ((y + sH) > (cvBg.height )) {
 			y -= ((y + sH) - (cvBg.height));
 		}
+		
+//		x=x/zoom;
+//		y=y/zoom;
 	}
 	ptBg.x = x;
 	ptBg.y = y;
 	rectBg = {
 		left : ptBg.x,
 		top : ptBg.y,
-		right :  ptBg.x + (zoom*maneCanvas.width),
-		bottom : ptBg.y + (zoom*maneCanvas.height)
+		right :  ptBg.x + (maneCanvas.width),
+		bottom : ptBg.y + (maneCanvas.height)
 	};
 }
 

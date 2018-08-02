@@ -52,7 +52,6 @@ public class CarregadorRecursos {
 	private Map<String, TemporadasDefauts> temporadasPilotosDefauts;
 	private List<CircuitosDefauts> circuitosDefauts;
 	private static Map bufferImages = new HashMap();
-	private static Map bufferImagesTransp = new HashMap();
 	private static Map bufferCarros = new HashMap();
 	private static Map<String, Circuito> bufferCircuitos = new HashMap<String, Circuito>();
 	private static Map<String, BufferedImage> bufferCarrosCima = new HashMap<String, BufferedImage>();
@@ -69,6 +68,9 @@ public class CarregadorRecursos {
 
 	private CarregadorRecursos() {
 	}
+	
+	
+	
 
 	public static synchronized CarregadorRecursos getCarregadorRecursos(
 			boolean cache) {
@@ -114,7 +116,7 @@ public class CarregadorRecursos {
 			Collections.sort(vectorTemps, new Comparator<String>() {
 				@Override
 				public int compare(String o1, String o2) {
-					return o2.compareTo(o1);
+					return o1.compareTo(o2);
 				}
 			});
 		} catch (IOException e) {

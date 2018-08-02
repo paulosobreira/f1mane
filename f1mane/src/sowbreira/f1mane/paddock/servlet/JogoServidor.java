@@ -102,13 +102,13 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				voltaJogadorOnline.setJogador(piloto.getTokenJogador());
 				voltaJogadorOnline.setPiloto(piloto.getNome());
 				voltasJogadoresOnline.add(voltaJogadorOnline);
-				if ("Pastor Maldonado".equals(piloto.getNomeJogador())) {
-					Logger.logarExept(
-							new Exception("Jogo : " + getNomeJogoServidor()
-									+ " Token : " + sessao.getToken()
-									+ " Volta : " + getNumVoltaAtual()
-									+ " contadorVolta : " + contadorVolta));
-				}
+//				if ("Pastor Maldonado".equals(piloto.getNomeJogador())) {
+//					Logger.logarExept(
+//							new Exception("Jogo : " + getNomeJogoServidor()
+//									+ " Token : " + sessao.getToken()
+//									+ " Volta : " + getNumVoltaAtual()
+//									+ " contadorVolta : " + contadorVolta));
+//				}
 			}
 		}
 		mapVoltasJogadoresOnline.put(new Integer(contadorVolta++),
