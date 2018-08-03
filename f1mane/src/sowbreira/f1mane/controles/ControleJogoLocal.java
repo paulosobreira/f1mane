@@ -1616,6 +1616,15 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public void atualizaInfoDebug(StringBuilder buffer) {
+		Runtime runtime = Runtime.getRuntime();
+		long maxMemory = runtime.maxMemory() / 1048576;
+		long allocatedMemory = runtime.totalMemory() / 1048576;
+		long freeMemory = runtime.freeMemory() / 1048576;
+
+		buffer.append("MAXMEMORY :" + maxMemory + "<br>");
+		buffer.append("ALLOCATEDMEMORY :" + allocatedMemory + "<br>");
+		buffer.append("FREEMEMORY :" + freeMemory + "<br>");
+		
 		Field[] declaredFields = this.getClass().getDeclaredFields();
 		List<String> campos = new ArrayList<String>();
 		buffer.append("-=ControleJogo=- <br>");

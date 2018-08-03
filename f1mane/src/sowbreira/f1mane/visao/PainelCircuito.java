@@ -37,7 +37,6 @@ import br.nnpe.Logger;
 import br.nnpe.OcilaCor;
 import br.nnpe.Util;
 import sowbreira.f1mane.MainFrame;
-import sowbreira.f1mane.controles.ControleCorrida;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;

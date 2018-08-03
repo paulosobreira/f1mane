@@ -1280,15 +1280,31 @@ function ctl_gerarControles() {
 	
 	controles.push({
 		cor : corBabaca,
-		valor : 'ZOOM',
-		exibir : 'ZOOM',
-		tipo : 'Zoom',
+		valor : '+ZO',
+		exibir : '+ZO',
+		tipo : '+Zo',
 		centralizaTexto : false,
 		larguraTexto : false,
-		width : 100,
+		width : 65,
 		height : 40,
 		y : 10,
-		evalX : '(maneCanvas.width/2 - 50);',
+		evalX : '(maneCanvas.width/2 - 65);',
+		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 100);',
+		x : 0
+	});
+	
+	
+	controles.push({
+		cor : corBabaca,
+		valor : 'OM-',
+		exibir : 'OM-',
+		tipo : 'om-',
+		centralizaTexto : false,
+		larguraTexto : false,
+		width : 65,
+		height : 40,
+		y : 10,
+		evalX : '(maneCanvas.width/2 - 5);',
 		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 100);',
 		x : 0
 	});
@@ -1506,14 +1522,23 @@ function ctl_click(event) {
 					dadosParciais.asaBox);
 			return;
 		}
-		if (controle.tipo == 'Zoom') {
-			if(zoom == 1){
+		if (controle.tipo == '+Zo') {
+			if(zoom == 4){
 				zoom = 2;
-			}else{
+			}else if(zoom == 2){
 				zoom = 1;
 			}
 			return;
 		}
+		if (controle.tipo == 'om-') {
+			if(zoom == 1){
+				zoom = 2;
+			}else if(zoom == 2){
+				zoom = 4;
+			}
+			return;
+		}
+		
 		if (controle.tipo == 'Pneu') {
 			rest_boxPiloto(true, controle.valor,
 					dadosParciais.combustBox,

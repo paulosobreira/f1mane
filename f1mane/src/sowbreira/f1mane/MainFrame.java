@@ -266,8 +266,8 @@ public class MainFrame extends JFrame {
 		String msg = Lang.msg("184") + " Paulo Sobreira        ".trim() + "\n" + "- " + Lang.msg("pistas") + " "
 				+ " www.miniracingonline.com                   ".trim() + "\n" + "- " + Lang.msg("capacetesCarros")
 				+ " " + " spotterguidecentral.com                    ".trim() + "\n"
-				+ "- http://sowbreira.appspot.com              ".trim() + "\n"
-				+ "- sowbreira@gmail.com                       ".trim() + "\n" + "- 2007-2014";
+				+ "- https://sowbreira-26fe1.firebaseapp.com/             ".trim() + "\n"
+				+ "- sowbreira@gmail.com                       ".trim() + "\n" + "- 2007-2018";
 		JOptionPane.showMessageDialog(MainFrame.this, msg, Lang.msg("093"), JOptionPane.INFORMATION_MESSAGE);
 	}
 

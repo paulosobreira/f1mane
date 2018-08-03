@@ -537,14 +537,6 @@ public class ControleEstatisticas {
 
 	public void atualizaInfoDebug() {
 		StringBuilder buffer = new StringBuilder();
-		Runtime runtime = Runtime.getRuntime();
-		long maxMemory = runtime.maxMemory() / 1048576;
-		long allocatedMemory = runtime.totalMemory() / 1048576;
-		long freeMemory = runtime.freeMemory() / 1048576;
-
-		buffer.append("MAXMEMORY :" + maxMemory + "<br>");
-		buffer.append("ALLOCATEDMEMORY :" + allocatedMemory + "<br>");
-		buffer.append("FREEMEMORY :" + freeMemory + "<br>");
 
 		if (controleJogo != null) {
 			controleJogo.atualizaInfoDebug(buffer);
@@ -572,5 +564,6 @@ public class ControleEstatisticas {
 			}
 		};
 		SwingUtilities.invokeLater(doInfo);
+		
 	}
 }
