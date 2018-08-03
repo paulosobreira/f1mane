@@ -68,9 +68,6 @@ public class CarregadorRecursos {
 
 	private CarregadorRecursos() {
 	}
-	
-	
-	
 
 	public static synchronized CarregadorRecursos getCarregadorRecursos(
 			boolean cache) {
@@ -819,7 +816,6 @@ public class CarregadorRecursos {
 					if (carro.getImg().endsWith(".png")) {
 						carroLadoPng = CarregadorRecursos
 								.carregaImagem(carro.getImg());
-						bufferCarrosLado.put(carro.getNome(), carroLadoPng);
 						carroLado = carroLadoPng;
 					} else {
 						carroLadoPng = CarregadorRecursos
@@ -899,11 +895,6 @@ public class CarregadorRecursos {
 
 	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
 			String temporada) {
-		return obterCarroCimaSemAreofolio(piloto, temporada, true);
-	}
-
-	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
-			String temporada, boolean desenhaBuffer) {
 		String modelo = obterModeloCarroCima(temporada);
 		Carro carro = piloto.getCarro();
 		BufferedImage carroCima = bufferCarrosCimaSemAreofolio
@@ -940,9 +931,6 @@ public class CarregadorRecursos {
 			graphics.drawImage(cor2, 0, 0, null);
 			graphics.drawImage(cor1, 0, 0, null);
 			graphics.dispose();
-			if (desenhaBuffer) {
-				bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
-			}
 		}
 		if (cache) {
 			bufferCarrosCimaSemAreofolio.put(carro.getNome(), carroCima);
@@ -1047,6 +1035,8 @@ public class CarregadorRecursos {
 			ObjectInputStream ois = new ObjectInputStream(
 					CarregadorRecursos.class.getResourceAsStream(nmCircuito));
 			circuito = (Circuito) ois.readObject();
+		}
+		if (cache) {
 			bufferCircuitos.put(nmCircuito, circuito);
 		}
 		return circuito;
