@@ -20,5 +20,4 @@
 		testOnBorrow="false" testOnReturn="false" testWhileIdle="true"
 		validationQuery="Select 
 		1" timeBetweenEvictionRunsMillis="1800000" />
-
 </Context>
