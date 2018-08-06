@@ -413,9 +413,16 @@ public class ControleBox {
 		long diff = piloto.getSaiuDoBoxMilis() - piloto.getParouNoBoxMilis();
 		String[] strings = new String[]{piloto.nomeJogadorFormatado(),
 				piloto.getNome(), ControleEstatisticas.formatarTempo(diff),
-				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox()),
-				Lang.msgRest(piloto.getCarro().getTipoPneu())};
-		String info = Lang.msg("003", strings);
+				String.valueOf(piloto.getPorcentagemCombustUltimaParadaBox())};
+		String info = "";
+
+		if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro().getTipoPneu())) {
+			info = Lang.msg("saiBoxPneuMole", strings);
+		}else if (Carro.TIPO_PNEU_DURO.equals(piloto.getCarro().getTipoPneu())) {
+			info = Lang.msg("saiBoxPneuDuro", strings);
+		}else if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro().getTipoPneu())) {
+			info = Lang.msg("saiBoxPneuChuva", strings);
+		}
 
 		if (controleJogo.isSemReabastecimento()) {
 			info = Lang.msg("saiBoxSemRebastecimento", strings);
@@ -434,8 +441,8 @@ public class ControleBox {
 			piloto.getVoltaAtual().setVoltaSafetyCar(true);
 		}
 		piloto.efetuarSaidaBox(interfaceJogo);
-		Logger.logar(piloto.getNome() + " Saiu do Box : "
-				+ piloto.getNumeroVolta());
+		Logger.logar(
+				piloto.getNome() + " Saiu do Box : " + piloto.getNumeroVolta());
 	}
 
 	public void novaVoltaBox(Piloto piloto) {

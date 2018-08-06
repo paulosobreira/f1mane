@@ -130,12 +130,12 @@ public class ControleSafetyCar {
 		List pista = controleJogo.getNosDaPista();
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
-		int bonus = Math.random() < 0.3 ? 3 : 2;
+		int bonus = Math.random() < 0.2 ? 3 : 2;
 		if (noAtual.verificaCurvaAlta()) {
-			bonus = Math.random() < 0.9 ? 2 : 1;
+			bonus = 2;
 		}
 		if (noAtual.verificaCurvaBaixa()) {
-			bonus = Math.random() < 0.7 ? 2 : 1;
+			bonus = Math.random() < 0.9 ? 2 : 1;
 		}
 		Piloto pole = (Piloto) controleJogo.getPilotosCopia().get(0);
 
