@@ -188,7 +188,7 @@ function carregarDadosJogo() {
 		headers : {
 			'token' : localStorage.getItem("token")
 		},
-		url : "/f1mane/rest/letsRace/dadosJogo",
+		url : "/f1mane/rest/letsRace/dadosJogo?modoCarreira="+localStorage.getItem("modoCarreira"),
 		contentType : "application/json",
 		dataType : "json",
 		success : function(dadosJogoParam) {

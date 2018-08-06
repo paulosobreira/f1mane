@@ -75,7 +75,9 @@ public class CarregadorRecursos {
 			carregadorRecursos = new CarregadorRecursos();
 			carregarTemporadas();
 		}
-		CarregadorRecursos.cache = cache;
+		if (!CarregadorRecursos.cache) {
+			CarregadorRecursos.cache = cache;
+		}
 		return carregadorRecursos;
 	}
 
@@ -698,11 +700,11 @@ public class CarregadorRecursos {
 			try {
 				bufferedImage = ImageUtil.toCompatibleImage(ImageIO
 						.read(CarregadorRecursos.class.getResource(file)));
-				if (cache) {
-					bufferImages.put(file, bufferedImage);
-				}
 			} catch (Exception e) {
 			}
+		}
+		if (cache && bufferedImage != null) {
+			bufferImages.put(file, bufferedImage);
 		}
 		return bufferedImage;
 	}
@@ -951,7 +953,8 @@ public class CarregadorRecursos {
 			return obterCarroCimaSemAreofolio(piloto, temporada);
 		}
 		BufferedImage carroCima = bufferCarrosCima.get(carro.getNome());
-		if (carro.getImg() != null && carro.getImg().endsWith("png")) {
+		if (carroCima == null && carro.getImg() != null
+				&& carro.getImg().endsWith("png")) {
 			carroCima = CarregadorRecursos.carregaImagem(
 					carro.getImg().replaceAll(".png", "_cima.png"));
 		}
