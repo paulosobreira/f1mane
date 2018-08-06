@@ -245,7 +245,7 @@ public class ServletPaddock extends HttpServlet {
 			Timestamp timestamp = new Timestamp(sessaoCliente.getUlimaAtividade()); 
 			printWriter.write("&Uacute;ltima Atividade : " + FormatDate.format(timestamp));
 			printWriter.write("<br>");
-			printWriter.write("Piloto Atual : " + sessaoCliente.getPilotoAtual());
+			printWriter.write("Jogo Atual : " + sessaoCliente.getJogoAtual());
 			printWriter.write("<hr>");
 			cont++;
 		}

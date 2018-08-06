@@ -12,6 +12,7 @@ var corVermelho = "rgba(255, 0, 0, 0.6)";
 var contCargaErs;
 var confirmaSair = false;
 var imgFaroisApagadosCont = 0;
+var dirZoom = '-';
 
 function ctl_desenha() {
 	largura = maneCanvas.width;
@@ -1280,31 +1281,15 @@ function ctl_gerarControles() {
 	
 	controles.push({
 		cor : corBabaca,
-		valor : '+ZO',
-		exibir : '+ZO',
-		tipo : '+Zo',
+		valor : 'ZOOM',
+		exibir : 'ZOOM',
+		tipo : 'Zoom',
 		centralizaTexto : false,
 		larguraTexto : false,
-		width : 65,
+		width : 100,
 		height : 40,
 		y : 10,
-		evalX : '(maneCanvas.width/2 - 65);',
-		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 100);',
-		x : 0
-	});
-	
-	
-	controles.push({
-		cor : corBabaca,
-		valor : 'OM-',
-		exibir : 'OM-',
-		tipo : 'om-',
-		centralizaTexto : false,
-		larguraTexto : false,
-		width : 65,
-		height : 40,
-		y : 10,
-		evalX : '(maneCanvas.width/2 - 5);',
+		evalX : '(maneCanvas.width/2 - 50);',
 		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 100);',
 		x : 0
 	});
@@ -1522,21 +1507,33 @@ function ctl_click(event) {
 					dadosParciais.asaBox);
 			return;
 		}
-		if (controle.tipo == '+Zo') {
-			if(zoom == 4){
-				zoom = 2;
-			}else if(zoom == 2){
-				zoom = 1;
+		if (controle.tipo == 'Zoom') {
+			if(dirZoom == '-'){
+				if(zoom == 4){
+					dirZoom = '+';
+					zoom = 2;
+					return;
+				}else if(zoom == 2){
+					zoom = 4;
+					return;
+				}else if(zoom == 1){
+					zoom = 2;
+					return;
+				}	
 			}
-			return;
-		}
-		if (controle.tipo == 'om-') {
-			if(zoom == 1){
-				zoom = 2;
-			}else if(zoom == 2){
-				zoom = 4;
+			if(dirZoom == '+'){
+				if(zoom == 4){
+					zoom = 2;
+					return;
+				}else if(zoom == 2){
+					zoom = 1;
+					return;
+				}else if(zoom == 1){
+					dirZoom = '-';
+					zoom = 2;
+					return;
+				}	
 			}
-			return;
 		}
 		
 		if (controle.tipo == 'Pneu') {

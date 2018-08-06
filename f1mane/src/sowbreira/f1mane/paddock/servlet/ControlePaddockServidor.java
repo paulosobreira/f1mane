@@ -35,6 +35,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -807,6 +808,14 @@ public class ControlePaddockServidor {
 		if (jogoServidor == null) {
 			return null;
 		}
+		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
+				.obterCarreiraSrv(
+						clientPaddockPack.getSessaoCliente().getToken());
+		if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
+			if (jogoServidor.isCorridaIniciada()) {
+				return null;
+			}
+		}
 		return controleJogosServer.preparaSrvPaddockPack(clientPaddockPack,
 				jogoServidor);
 	}
@@ -979,6 +988,10 @@ public class ControlePaddockServidor {
 
 	public Object obterCampeonatoEmAberto(String token) {
 		return controleCampeonatoServidor.obterCampeonatoEmAberto(token);
+	}
+
+	public CarreiraDadosSrv obterCarreiraSrv(String token) {
+		return controleClassificacao.obterCarreiraSrv(token);
 	}
 
 }

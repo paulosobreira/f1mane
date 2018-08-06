@@ -29,10 +29,8 @@ import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
-import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.CircuitosDefauts;
-import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
@@ -72,10 +70,11 @@ public class LetsRace {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosToken(@HeaderParam("token") String token) {
 		SrvPaddockPack obterDadosToken = controlePaddock.obterDadosToken(token);
-		if(obterDadosToken!=null && obterDadosToken.getSessaoCliente()!=null){
-			obterDadosToken.getSessaoCliente().setUlimaAtividade(System.currentTimeMillis());
-			return Response.status(200)
-					.entity(obterDadosToken).build();
+		if (obterDadosToken != null
+				&& obterDadosToken.getSessaoCliente() != null) {
+			obterDadosToken.getSessaoCliente()
+					.setUlimaAtividade(System.currentTimeMillis());
+			return Response.status(200).entity(obterDadosToken).build();
 		}
 		return Response.status(404).build();
 	}
@@ -116,6 +115,10 @@ public class LetsRace {
 		Circuito circuito = null;
 		try {
 			circuito = CarregadorRecursos.carregarCircuito(nomeCircuito);
+			if (circuito != null) {
+				circuito.vetorizarPista();
+				circuito.gerarObjetosNoTransparencia();
+			}
 		} catch (ClassNotFoundException | IOException e) {
 			Logger.logarExept(e);
 			return Response.status(500).entity(e)
@@ -183,7 +186,8 @@ public class LetsRace {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dadosJogo(@HeaderParam("token") String token,
 			@HeaderParam("idioma") String idioma,
-			@QueryParam("nomeJogo") String nomeJogo) {
+			@QueryParam("nomeJogo") String nomeJogo,
+			@QueryParam("modoCarreira") String modoCarreira) {
 		SessaoCliente sessaoCliente = controlePaddock
 				.obterSessaoPorToken(token);
 		if (sessaoCliente == null) {
@@ -202,6 +206,10 @@ public class LetsRace {
 				clientPaddockPack.setSessaoCliente(sessaoCliente);
 				dadosJogoObj = controlePaddock
 						.obterDadosJogo(clientPaddockPack);
+				if ("true".equals(modoCarreira) && controlePaddock
+						.obterJogoPeloNome(jogo).isCorridaIniciada()) {
+					dadosJogoObj = null;
+				}
 			}
 			if (dadosJogoObj == null) {
 				DadosJogo nenhum = new DadosJogo();
@@ -269,8 +277,9 @@ public class LetsRace {
 
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
-			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(temporada,
-					circuito, idPiloto, numVoltas, tipoPneu, combustivel, asa);
+			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(
+					temporada, circuito, idPiloto, numVoltas, tipoPneu,
+					combustivel, asa);
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			List<String> obterJogos = controlePaddock.obterJogos();
 			if (!obterJogos.isEmpty()) {
@@ -870,8 +879,7 @@ public class LetsRace {
 		}
 		return processsaMensagem(ret, idioma);
 	}
-	
-	
+
 	@GET
 	@Compress
 	@Path("/campeonato")
@@ -884,7 +892,7 @@ public class LetsRace {
 			return Response.status(401).build();
 		}
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-		
+
 		Object ret = controlePaddock.obterCampeonatoEmAberto(token);
 		if (ret == null) {
 			return Response.status(204).build();

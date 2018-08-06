@@ -47,7 +47,7 @@ public class ControleJogosServer {
 	private ControleCampeonatoServidor controleCampeonatoServidor;
 	private ControlePersistencia controlePersistencia;
 	private ControlePaddockServidor controlePaddockServidor;
-	public static int MaxJogo = 1;
+	public static int MaxJogo = 5;
 	public static int qtdeJogos = 0;
 
 	/**
@@ -590,6 +590,10 @@ public class ControleJogosServer {
 		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
 				.iterator(); iterator.hasNext();) {
 			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
+			if (!jogoServidor.getNomeJogoServidor()
+					.equals(sessaoCliente.getJogoAtual())) {
+				continue;
+			}
 			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
 					.getMapJogadoresOnline();
 			if (!String.valueOf(mapJogadoresOnline.get(sessaoCliente.getToken())
