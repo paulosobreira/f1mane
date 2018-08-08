@@ -139,19 +139,35 @@ function prencherListaCircuitosSelecionados() {
 			if(divSemCircuitos){
 				divSemCircuitos.remove();
 			}
-			if($('#listaCircuitosSelecionados').find('li')!=null 
-					&& $('#listaCircuitosSelecionados').find('li').length == 0 ){
-				var divSemCircuitosSelecinados = $('<div id="divSemCircuitosSelecinados"></div>');
-				var txt = $('<h4></h4>');
-				txt.append(lang_text('nenhumCircuitosSelecionado'));
-				divSemCircuitosSelecinados.append(txt);
-				$('#criarCampeonato').append(divSemCircuitosSelecinados);
-			}
+			adicionaNenhumCircutoSelecionado();
 		};
 		li.find('.adicionar').bind("click", clickAdd);
 		li.find('.remover').bind("click", cickRem);
 		$('#listaCircuitosSelecionados').append(li);
 	});
+}
+
+function adicionaNenhumCircutoSelecionado() {
+	if($('#listaCircuitosSelecionados').find('li')==null 
+			|| $('#listaCircuitosSelecionados').find('li').length != 0 ){
+		return;
+	}
+	var divSemCircuitosSelecinados = $('<div id="divSemCircuitosSelecinados" class="form-group"></div>');
+	var adicionar = $('<i class="fa fa-plus floatBtnContent glyphicon glyphicon-plus" />');
+	var adicionarDv = $('<div class="relativeBtn adicionar"></div>');
+	adicionarDv.append(adicionar);
+	var h3 = $('<h3 class="text-center transbox"></h3>');
+	h3.append(lang_text('296'));
+	divSemCircuitosSelecinados.append(h3);
+	var clickAddNovo = function() {
+		$('#criarCampeonato').addClass('hide');
+		$('#circuitos').removeClass('hide');
+		adicionarLiCircuito = "";
+		prencherListaCircuitos();
+	};
+	adicionarDv.bind("click", clickAddNovo);
+	divSemCircuitosSelecinados.append(adicionarDv);
+	$('#criarCampeonato').find('#temporadaCarousel').after(divSemCircuitosSelecinados);
 }
 
 function prencherListaCircuitos() {
@@ -187,15 +203,20 @@ function prencherListaCircuitos() {
 				};
 				var cickRem = function() {
 					$('#listaCircuitosSelecionados').find(liClone).remove();
+					adicionaNenhumCircutoSelecionado();
 				};
 				liClone.find('.adicionar').bind("click", clickAdd);
 				liClone.find('.remover').bind("click", cickRem);
-				for (var j = 0; j < lisSel.length; j++) {
-					var liS = lisSel[j];
-					if (liS.circuito.nome == adicionarLiCircuito) {
-						$(liS).after($(liClone));
-						break;
-					}
+				if(adicionarLiCircuito==""){
+					$('#listaCircuitosSelecionados').append($(liClone));
+				}else{
+					for (var j = 0; j < lisSel.length; j++) {
+						var liS = lisSel[j];
+						if (liS.circuito.nome == adicionarLiCircuito) {
+							$(liS).after($(liClone));
+							break;
+						}
+					}	
 				}
 			};
 			li.find('.adicionar').bind("click", clickAddCirc);
@@ -205,8 +226,8 @@ function prencherListaCircuitos() {
 	});
 	if($('#listaCircuitos').find('li') != null 
 			&& $('#listaCircuitos').find('li').length == 0 ){
-		var divSemCircuitos = $('<div id="divSemCircuitos"></div>');
-		var txt = $('<h4></h4>');
+		var divSemCircuitos = $('<div id="divSemCircuitos" ></div>');
+		var txt = $('<h3 class="text-center transbox"></h3>');
 		txt.append(lang_text('todosCircuitosSelecionados'));
 		divSemCircuitos.append(txt);
 		$('#circuitos').append(divSemCircuitos);
