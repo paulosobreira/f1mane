@@ -838,6 +838,31 @@ public class LetsRace {
 		}
 		return Response.status(200).entity(ret).build();
 	}
+	
+	@GET
+	@Compress
+	@Path("/equipePilotoCarro")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response equipePilotoCarro(@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		ControleJogosServer controleJogosServer = controlePaddock
+				.getControleJogosServer();
+		Object ret = controleJogosServer.equipePilotoCarro(sessaoCliente);
+		if (ret == null) {
+			return Response.status(204).build();
+		}
+		Response erro = processsaMensagem(ret, idioma);
+		if (erro != null) {
+			return erro;
+		}
+		return Response.status(200).entity(ret).build();
+	}
 
 	@POST
 	@Compress

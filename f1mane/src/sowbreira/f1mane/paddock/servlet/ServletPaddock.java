@@ -233,6 +233,9 @@ public class ServletPaddock extends HttpServlet {
 		html5(printWriter);
 		printWriter.write("<body>");
 		printWriter.write("<h2>F1-Mane Sess&otilde;es</h2><br><hr>");
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		printWriter.write("<br>");
+		printWriter.write("Hora Servidor : " + FormatDate.format(timestamp));
 		List<SessaoCliente> clientes = controlePaddock.getDadosPaddock().getClientes();
 		int cont = 0;
 		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
@@ -240,9 +243,7 @@ public class ServletPaddock extends HttpServlet {
 			printWriter.write("<br>");
 			printWriter.write("Jogador : " + sessaoCliente.getNomeJogador());
 			printWriter.write("<br>");
-			printWriter.write("Visitante : " + sessaoCliente.isGuest());
-			printWriter.write("<br>");
-			Timestamp timestamp = new Timestamp(sessaoCliente.getUlimaAtividade()); 
+			timestamp = new Timestamp(sessaoCliente.getUlimaAtividade()); 
 			printWriter.write("&Uacute;ltima Atividade : " + FormatDate.format(timestamp));
 			printWriter.write("<br>");
 			printWriter.write("Jogo Atual : " + sessaoCliente.getJogoAtual());

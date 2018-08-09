@@ -7,9 +7,13 @@ if(localStorage.getItem("token") != null) {
 	toaster(lang_text('precisaEstaLogado'), 4000, 'alert alert-danger');
 }
 
+$('#153').html(lang_text('153'));
+$('#154').html(lang_text('154'));
+
 $('#nomeCampeonato').html(lang_text('nomeCampeonato'));
 $('#criarCampeonatoBtn').html(lang_text('criarCampeonato'));
 
+var idPilotoSelecionado;
 var temporadaSelecionada;
 listaTemporadas();
 
@@ -263,7 +267,6 @@ function selecionaTemporada(temporada) {
 	$('#temporadasLabel').html(temporada);
 }
 
-
 function criarCampeonato() {
 	var dataObj = objetoCampeonato();
 	var urlServico = "/f1mane/rest/letsRace/campeonato";
@@ -289,14 +292,11 @@ function criarCampeonato() {
 }
 
 function objetoCampeonato(){
-	
 	var lisSel = $('#listaCircuitosSelecionados').find('li');
-
 	var lst = new Array();
 	for (var j = 0; j < lisSel.length; j++) {
 		lst.push(lisSel[j].circuito.arquivo);
 	}
-	
 	var dataObj = {
 		nome : $('#nomeEquipeValor').val(),
 		temporada : $('#nomePilotoValor').val(),
@@ -304,3 +304,141 @@ function objetoCampeonato(){
 		};
 	return dataObj;
 }
+
+
+function selecionaPilotosTemporada(temporada) {
+	var urlServico = "/f1mane/rest/letsRace/temporadas/" + temporada;
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		contentType : "application/json",
+		dataType : "json",
+		success : function(response) {
+			if (!response) {
+				console.log('selecionaPilotosTemporada() null');
+				return;
+			}
+			$('#criarCampeonato').addClass('hide');
+			$('#selecionarPiloto').removeClass('hide');
+			var pilotos = response.pilotos;
+			var mapCarros = new Map();
+			$('#pilotos').find('tr').remove();
+			$.each(pilotos, function(i, val) {
+				var tr = gerarTr1Pilotos(pilotos[i]);
+				$('#pilotos').append(tr);
+				var statusPilotoCarro = gerarTr2Pilotos(pilotos[i]);
+				$('#pilotos').append(statusPilotoCarro);
+				tr.unbind();
+				tr.bind("click", function() {
+					console.log(pilotos[i].nome + ' Selecionado');
+				});
+			});
+			pilotoCarreiraTemporada();
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
+			console.log('selecionaPilotosTemporada() ' + xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
+function pilotoCarreiraTemporada(){
+	var urlServico = "/f1mane/rest/letsRace/equipePilotoCarro";
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		contentType : "application/json",
+		headers : {
+			'token' : localStorage.getItem("token"),
+			'idioma' : localStorage.getItem('idioma')
+		},
+		dataType : "json",
+		success : function(response) {
+			if (!response) {
+				console.log('pilotoCarreiraTemporada() null');
+				return;
+			}
+			var piloto = response;
+			var tr = gerarTr1Pilotos(piloto);
+			$('#pilotos').append(tr);
+			var statusPilotoCarro = gerarTr2Pilotos(piloto);
+			$('#pilotos').append(statusPilotoCarro);
+			tr.unbind();
+			tr.bind("click", function() {
+				console.log(piloto.nome + ' Selecionado');
+			});
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
+			console.log('pilotoCarreiraTemporada() ' + xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
+function gerarTr1Pilotos(piloto){
+	var temporadaCapacete = temporadaSelecionada;
+	var temporadaCarro = temporadaSelecionada;
+	var pilotoId = piloto.id;
+	var carroId = piloto.carro.id;
+	if(piloto.idCapaceteLivery!=null && piloto.temporadaCapaceteLivery!=null){
+		temporadaCapacete = piloto.temporadaCapaceteLivery;
+		pilotoId = piloto.idCapaceteLivery;
+	}
+	if(piloto.idCarroLivery!=null && piloto.temporadaCarroLivery!=null){
+		temporadaCarro = piloto.temporadaCarroLivery;
+		carroId = piloto.idCarroLivery;
+	}
+	var td1 = $('<td scope="row" style="display: grid;"/>');
+	td1.append(piloto.nome);
+	var td2 = $('<td/>');
+	td2.append(piloto.nomeCarro);
+	var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+	var capacetes = $('<div style="display:  inline-flex;"  />');
+	td1.append(capacetes);
+	var capacete = $('<img class="img-responsive img-center"/>');
+	capacete.attr('src', '/f1mane/rest/letsRace/capacete/' + temporadaCapacete + '/' +pilotoId);
+	capacetes.append($('<br>'));
+	capacetes.append(capacete);
+	if(piloto.imgJogador!=null){
+		var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
+		imgJogador.attr('src', piloto.imgJogador);
+		capacetes.append(imgJogador);
+	}
+	tr.append(td1);
+	var carroLado = $('<img class="img-responsive img-center"/>');
+	carroLado.attr('src', '/f1mane/rest/letsRace/carroLado/' + temporadaCarro + '/' + carroId);
+	td2.append(carroLado);
+	if (piloto.id == idPilotoSelecionado) {
+		tr.addClass('success');
+	}
+	if(piloto.nomeJogador!=null){
+		td1.append('<br>');
+		td2.append('<b>'+piloto.nomeJogador+'</b>');
+	}
+	tr.append(td2);
+	return tr;
+}
+
+function gerarTr2Pilotos(piloto){
+	var tr = $('<tr class="statusPilotoCarro hidden"/>');
+	var td = $('<td colspan="2"/>');
+	var div = $('<div/>');
+	
+	div.append(lang_text('255'));
+	var habilidade = $('<div class="progress"/>').append($('<div style="width: '+(piloto.habilidade/10)+'%;" class="progress-bar fundoCinza" role="progressbar" aria-valuenow="'+piloto.habilidade+'" aria-valuemin="0" aria-valuemax="1000"/>'));
+	div.append(habilidade);
+	div.append(lang_text('256'));
+	var potencia = $('<div class="progress"/>').append($('<div style="width: '+(piloto.carro.potencia/10)+'%;" class="progress-bar fundoCinza" role="progressbar" aria-valuenow="'+piloto.carro.potencia+'" aria-valuemin="0" aria-valuemax="1000"/>'));
+	div.append(potencia);
+	div.append(lang_text('aerodinamicaCarro'));
+	var aerodinamica = $('<div class="progress"/>').append($('<div style="width: '+(piloto.carro.aerodinamica/10)+'%;" class="progress-bar fundoCinza" role="progressbar" aria-valuenow="'+piloto.carro.aerodinamica+'" aria-valuemin="0" aria-valuemax="1000"/>'));
+	div.append(aerodinamica);
+	div.append(lang_text('freioCarro'));
+	var freios = $('<div class="progress"/>').append($('<div style="width: '+(piloto.carro.freios/10)+'%;" class="progress-bar fundoCinza" role="progressbar" aria-valuenow="'+piloto.carro.freios+'" aria-valuemin="0" aria-valuemax="1000"/>'));
+	div.append(freios);
+	td.append(div);
+	tr.append(td);
+	return tr;
+}
+
+

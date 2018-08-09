@@ -1268,6 +1268,55 @@ public class ControleJogosServer {
 		}
 	}
 
+	public Object equipePilotoCarro(SessaoCliente sessaoCliente) {
+		Session session = controlePersistencia.getSession();
+		try {
+			Piloto piloto = new Piloto();
+			CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) controleClassificacao
+					.verCarreira(sessaoCliente.getToken(), null);
+			if (carreiraDadosSrv == null
+					|| Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
+					|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())) {
+				return null;
+			}
+			piloto.setNome(carreiraDadosSrv.getNomePiloto());
+			piloto.setIdCapaceteLivery(
+					carreiraDadosSrv.getIdCapaceteLivery() != null
+							? carreiraDadosSrv.getIdCapaceteLivery().toString()
+							: null);
+			piloto.setIdCarroLivery(carreiraDadosSrv.getIdCarroLivery() != null
+					? carreiraDadosSrv.getIdCarroLivery().toString()
+					: null);
+
+			piloto.setTemporadaCapaceteLivery(
+					carreiraDadosSrv.getTemporadaCapaceteLivery() != null
+							? carreiraDadosSrv.getTemporadaCapaceteLivery()
+									.toString()
+							: null);
+
+			piloto.setTemporadaCarroLivery(
+					carreiraDadosSrv.getTemporadaCarroLivery() != null
+							? carreiraDadosSrv.getTemporadaCarroLivery()
+									.toString()
+							: null);
+			piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
+			piloto.setHabilidade(carreiraDadosSrv.getPtsPiloto());
+			Carro carro = new Carro();
+			piloto.setCarro(carro);
+			carro.setAerodinamica(carreiraDadosSrv.getPtsAerodinamica());
+			carro.setPotencia(carreiraDadosSrv.getPtsCarro());
+			carro.setFreios(carreiraDadosSrv.getPtsFreio());
+			return piloto;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			return new ErroServ(e);
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+	}
+
 	public Object gravarEquipe(SessaoCliente sessaoCliente, String idioma,
 			CarreiraDadosSrv equipe) {
 		return controleClassificacao.atualizaCarreira(sessaoCliente.getToken(),
