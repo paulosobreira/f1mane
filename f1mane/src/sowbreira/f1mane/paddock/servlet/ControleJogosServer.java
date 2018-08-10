@@ -1306,6 +1306,8 @@ public class ControleJogosServer {
 			carro.setAerodinamica(carreiraDadosSrv.getPtsAerodinamica());
 			carro.setPotencia(carreiraDadosSrv.getPtsCarro());
 			carro.setFreios(carreiraDadosSrv.getPtsFreio());
+			carro.setCor1(carreiraDadosSrv.geraCor1());
+			carro.setCor2(carreiraDadosSrv.geraCor2());
 			return piloto;
 		} catch (Exception e) {
 			Logger.logarExept(e);

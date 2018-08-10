@@ -9,6 +9,7 @@ if(localStorage.getItem("token") != null) {
 
 $('#153').html(lang_text('153'));
 $('#154').html(lang_text('154'));
+$('#selecionarPilotoTxt').html(lang_text('120'));
 
 $('#nomeCampeonato').html(lang_text('nomeCampeonato'));
 $('#criarCampeonatoBtn').html(lang_text('criarCampeonato'));
@@ -48,6 +49,9 @@ function carregaCampeonato() {
 			if (response == null) {
 				console.log('carregaCampeonato() null');
 				listaCircuitos();
+				$('#selecionarPilotoBtn').unbind().bind("click", function() {
+					selecionaPilotosTemporada();
+				});
 				return;
 			}
 
@@ -306,8 +310,8 @@ function objetoCampeonato(){
 }
 
 
-function selecionaPilotosTemporada(temporada) {
-	var urlServico = "/f1mane/rest/letsRace/temporadas/" + temporada;
+function selecionaPilotosTemporada() {
+	var urlServico = "/f1mane/rest/letsRace/temporadas/" + temporadaSelecionada;
 	$.ajax({
 		type : "GET",
 		url : urlServico,

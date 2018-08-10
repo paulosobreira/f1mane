@@ -28,7 +28,7 @@ public class Logger {
 			int size = ((trace.length > 15) ? 15 : trace.length);
 			retorno.append(
 					e.getClass() + " - " + e.getLocalizedMessage() + "<br>");
-			for (int i = 0; i < size; i++){
+			for (int i = 0; i < size; i++) {
 				retorno.append(trace[i] + "<br>");
 			}
 			String val = retorno.toString();
@@ -72,11 +72,9 @@ public class Logger {
 	public static void logarExept(Throwable e) {
 		if (ativo) {
 			e.printStackTrace();
-			novaSession = true;
-		} else if (e instanceof Exception) {
+		}
+		if (e instanceof Exception) {
 			topExecpts((Exception) e);
-		} else {
-			e.printStackTrace();
 		}
 	}
 }
