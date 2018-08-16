@@ -138,7 +138,6 @@ function carregaEquipe() {
 			$('#temporadaCarroLivery').val(response.temporadaCarroLivery);
 			$('#idCapaceteLivery').val(response.idCapaceteLivery);
 			$('#idCarroLivery').val(response.idCarroLivery);
-			debugger;
 			$('#somaPontosCarroValor').html((response.ptsCarro)+(response.ptsAerodinamica)+(response.ptsFreio));
 			if(response.temporadaCapaceteLivery !=null && response.idCapaceteLivery != null && response.idCapaceteLivery != 0){
 				$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + response.temporadaCapaceteLivery + '/' + response.idCapaceteLivery);

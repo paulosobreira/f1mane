@@ -41,24 +41,45 @@
 						<span class="sr-only">Next</span>
 					</a>
 				</div>
-				<ul id="listaCircuitosSelecionados">
-				</ul>
 				<form>
- 
 					<div id="divPilotoSelecionado" class="form-group">
 						<h3 id="selecionarPilotoTxt" class="text-center transbox"></h3>
 						<div id="selecionarPilotoBtn" class="relativeBtn adicionar">
 							<i class="fa fa-plus floatBtnContent glyphicon glyphicon-plus"></i>
 						</div>
 					</div>
-
+					<input id="idPilotoSelecionado"	type="hidden" />
+					<section id="pilotoSelecionado" class="container containerPadless hide">
+						<table class="table table-hover table-responsive">
+							<thead>
+								<tr>
+									<th id="153"></th>
+									<th id="154"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<b id=nomePilotoSelecionado></b>
+										<img id="imgCapacetePilotoSelecionado" class="img-responsive img-center"/>
+									</td>
+									<td>
+										<b id=nomeCarroSelecionado></b>
+										<img id="imgCarroPilotoSelecionado" class="img-responsive img-center"/>
+									</td>									
+								</tr>
+							</tbody>
+						</table>		
+					</section>	
 					<div class="form-group">
 						<label id="nomeCampeonato">Nome Campeonato</label> <input type="text"
 							class="form-control" id="nomeCampeonatoValor" required="required">
-					</div>
-					<div class="form-group">
-					   <button type="button" id="criarCampeonatoBtn" class="btn btn-default btn-block btn-raised bgTransparent" value="Criar Campeonato"></button>
-					</div>					
+					</div>									
+					<div id="criarCampeonatoBtn" class="floatSalvar">
+						<i class="fa fa-plus floatBtnContent glyphicon glyphicon-floppy-disk"></i>
+					</div>		
+					<ul id="listaCircuitosSelecionados">
+					</ul>								
 				</form>				
 			</div>
 		</section>

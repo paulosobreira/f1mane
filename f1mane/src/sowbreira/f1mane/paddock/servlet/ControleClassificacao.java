@@ -149,13 +149,14 @@ public class ControleClassificacao {
 						if (pts == 0) {
 							pts = 1;
 						}
-						if(carreiraDadosSrv.getPtsConstrutoresGanhos()<1000){
+						if (carreiraDadosSrv
+								.getPtsConstrutoresGanhos() < 1000) {
 							pts += 5;
 						}
-						if(carreiraDadosSrv.getPtsConstrutoresGanhos()<500){
+						if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 500) {
 							pts += 5;
 						}
-						if(carreiraDadosSrv.getPtsConstrutoresGanhos()<250){
+						if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 250) {
 							pts += 10;
 						}
 						carreiraDadosSrv.setPtsConstrutores(
@@ -458,14 +459,14 @@ public class ControleClassificacao {
 						.get("t" + carreiraDados.getTemporadaCapaceteLivery());
 				for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 					Piloto piloto = (Piloto) iterator.next();
-					Logger.logar(piloto.getNome() + " " + piloto.getHabilidade()
+					Logger.logar(piloto.getNome() + " " + piloto.getHabilidadeReal()
 							+ " " + carreiraDados.getPtsPiloto());
 					if (piloto.getId() == carreiraDados.getIdCapaceteLivery()
-							&& piloto.getHabilidade() > carreiraDados
+							&& piloto.getHabilidadeReal() > carreiraDados
 									.getPtsPiloto()) {
 						return new MsgSrv(
 								Lang.msg("pinturaCapacete", new String[]{String
-										.valueOf(piloto.getHabilidade())}));
+										.valueOf(piloto.getHabilidadeReal())}));
 					}
 				}
 			}

@@ -1280,25 +1280,43 @@ public class ControleJogosServer {
 				return null;
 			}
 			piloto.setNome(carreiraDadosSrv.getNomePiloto());
-			piloto.setIdCapaceteLivery(
-					carreiraDadosSrv.getIdCapaceteLivery() != null
-							? carreiraDadosSrv.getIdCapaceteLivery().toString()
-							: null);
-			piloto.setIdCarroLivery(carreiraDadosSrv.getIdCarroLivery() != null
-					? carreiraDadosSrv.getIdCarroLivery().toString()
-					: null);
 
-			piloto.setTemporadaCapaceteLivery(
-					carreiraDadosSrv.getTemporadaCapaceteLivery() != null
-							? carreiraDadosSrv.getTemporadaCapaceteLivery()
-									.toString()
-							: null);
+			if (carreiraDadosSrv.getTemporadaCapaceteLivery() != null) {
+				piloto.setTemporadaCapaceteLivery(carreiraDadosSrv
+						.getTemporadaCapaceteLivery().toString());
+			} else {
+				piloto.setTemporadaCapaceteLivery(
+						Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+			}
 
-			piloto.setTemporadaCarroLivery(
-					carreiraDadosSrv.getTemporadaCarroLivery() != null
-							? carreiraDadosSrv.getTemporadaCarroLivery()
-									.toString()
-							: null);
+			if (carreiraDadosSrv.getTemporadaCarroLivery() != null) {
+				piloto.setTemporadaCarroLivery(
+						carreiraDadosSrv.getTemporadaCarroLivery().toString());
+			} else {
+				piloto.setTemporadaCarroLivery(
+						Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+			}
+
+			if (carreiraDadosSrv.getTemporadaCapaceteLivery() != null
+					&& carreiraDadosSrv.getIdCapaceteLivery() != null
+					&& carreiraDadosSrv.getIdCapaceteLivery() != 0) {
+				piloto.setIdCapaceteLivery(
+						carreiraDadosSrv.getIdCapaceteLivery().toString());
+			} else {
+				piloto.setIdCapaceteLivery(
+						Util.rgb2hex(carreiraDadosSrv.geraCor2()));
+
+			}
+			if (carreiraDadosSrv.getTemporadaCarroLivery() != null
+					&& carreiraDadosSrv.getIdCarroLivery() != null
+					&& carreiraDadosSrv.getIdCarroLivery() != 0) {
+				piloto.setIdCarroLivery(
+						carreiraDadosSrv.getIdCarroLivery().toString());
+			} else {
+				piloto.setIdCarroLivery(
+						Util.rgb2hex(carreiraDadosSrv.geraCor2()));
+
+			}
 			piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
 			piloto.setHabilidade(carreiraDadosSrv.getPtsPiloto());
 			Carro carro = new Carro();

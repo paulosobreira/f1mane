@@ -130,12 +130,12 @@ public class ControleSafetyCar {
 		List pista = controleJogo.getNosDaPista();
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
-		int bonus = Math.random() < 0.7 ? 2 : 1;
+		int bonus = Math.random() < 0.3 ? 3 : 2;
 		if (noAtual.verificaCurvaAlta()) {
-			bonus = Math.random() < 0.5 ? 2 : 1;;
+			bonus = Math.random() < 0.9 ? 2 : 1;
 		}
 		if (noAtual.verificaCurvaBaixa()) {
-			bonus = 1;
+			bonus = Math.random() < 0.7 ? 2 : 1;
 		}
 		Piloto pole = (Piloto) controleJogo.getPilotosCopia().get(0);
 
@@ -143,7 +143,7 @@ public class ControleSafetyCar {
 		long polePts = pole.getPtosPista();
 		long diffPts = ptsSc - polePts;
 		bonus *= (controleJogo.getCircuito().getMultiplciador()
-				* controleJogo.getIndexVelcidadeDaPista());
+				* controleJogo.getIndexVelcidadeDaPista())/2;
 		if (diffPts >= 100) {
 			double multi = (diffPts - 100 / 100.0);
 			if (multi > 0.9) {
