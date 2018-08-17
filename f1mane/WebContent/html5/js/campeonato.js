@@ -10,16 +10,20 @@ if(localStorage.getItem("token") != null) {
 $('#153').html(lang_text('153'));
 $('#154').html(lang_text('154'));
 $('#selecionarPilotoTxt').html(lang_text('120'));
+$('#trocaPneuCheck').append(lang_text('trocaPneus'));
+$('#reabastecimentoCheck').append(lang_text('reabastecimento'));
+
 
 $('#nomeCampeonato').html(lang_text('nomeCampeonato'));
 
 var idPilotoSelecionado;
 var temporadaSelecionada;
-listaTemporadas();
+var pilotos;
 
 $('#temporadaCarousel').on('slide.bs.carousel', function(event) {
 	selecionaTemporada($(event.relatedTarget).prop('temporada'));
 });
+$('#temporadaCarousel').carousel('pause');
 
 $('.carousel').carousel({
 	pause : true,
@@ -53,7 +57,7 @@ function carregaCampeonato() {
 				};
 				$('#pilotoSelecionado').unbind().bind("click", selecionar);
 				$('#selecionarPilotoBtn').unbind().bind("click", selecionar);
-				return;
+				listaTemporadas();
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -81,8 +85,6 @@ function listaTemporadas() {
 				console.log('listaTemporadas() response.length==0');
 				return;
 			}
-			selecionaTemporada(temporadasRes[0]);
-			$('#temporadaActive').prop('temporada', temporadasRes[0]);
 			$.each(temporadasRes, function(i, val) {
 				if (i == 0) {
 					return;
@@ -94,8 +96,8 @@ function listaTemporadas() {
 				dv.append(h1);
 				$('#temporadaCarousel-inner').append(dv);
 			});
-			$('#temporadaCarousel').carousel('pause');
-
+			$('#temporadaActive').prop('temporada', temporadasRes[temporadasRes.length-1]);
+			selecionaTemporada(temporadasRes[temporadasRes.length-1]);
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
@@ -268,7 +270,19 @@ function listaCircuitos() {
 
 function selecionaTemporada(temporada) {
 	temporadaSelecionada = temporada;
+	carregaTemporada();
 	$('#temporadasLabel').html(temporada);
+	
+	$('#nomePilotoSelecionado').html('');
+	$('#nomeCarroSelecionado').html('');
+	$('#imgCarroPilotoSelecionado').attr('src', '');
+	$('#imgCapacetePilotoSelecionado').attr('src', '');
+	$('#idPilotoSelecionado').val('');
+	
+	$('#pilotoSelecionado').addClass('hide');
+	$('#divPilotoSelecionado').removeClass('hide');
+	
+	$('#temporadaCarousel').carousel('pause');
 }
 
 function criarCampeonato() {
@@ -309,8 +323,7 @@ function objetoCampeonato(){
 	return dataObj;
 }
 
-
-function selecionaPilotosTemporada() {
+function carregaTemporada() {
 	var urlServico = "/f1mane/rest/letsRace/temporadas/" + temporadaSelecionada;
 	$.ajax({
 		type : "GET",
@@ -319,32 +332,58 @@ function selecionaPilotosTemporada() {
 		dataType : "json",
 		success : function(response) {
 			if (!response) {
-				console.log('selecionaPilotosTemporada() null');
+				console.log('carregaTemporada() null');
 				return;
 			}
-			$('#criarCampeonato').addClass('hide');
-			$('#selecionarPiloto').removeClass('hide');
-			var pilotos = response.pilotos;
-			var mapCarros = new Map();
-			$('#pilotos').find('tr').remove();
-			$.each(pilotos, function(i, val) {
-				var tr = gerarTr1Pilotos(pilotos[i]);
-				$('#pilotos').append(tr);
-				var statusPilotoCarro = gerarTr2Pilotos(pilotos[i]);
-				$('#pilotos').append(statusPilotoCarro);
-				tr.unbind();
-				tr.bind("click", function() {
-					selecionarPilotoTemporada(pilotos[i]);
-					$('#idPilotoSelecionado').val(pilotos[i].id);
-				});
-			});
-			pilotoCarreiraTemporada();
+			pilotos = response.pilotos;
+			if (response.trocaPneu) {
+				$('#trocaPneuCheck').removeClass('line-through');
+			} else {
+				$('#trocaPneuCheck').addClass('line-through');
+			}
+			if (response.reabastecimento) {
+				$('#reabastecimentoCheck').removeClass('line-through');
+			} else {
+				$('#reabastecimentoCheck').addClass('line-through');
+			}
+			if (response.ers) {
+				$('#ersCheck').removeClass('line-through');
+			} else {
+				$('#ersCheck').addClass('line-through');
+			}
+			if (response.drs) {
+				$('#drsCheck').removeClass('line-through');
+			} else {
+				$('#drsCheck').addClass('line-through');
+			}
+			$('#temporadaCarousel').carousel('pause');
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);
-			console.log('selecionaPilotosTemporada() ' + xhRequest.status + '  ' + xhRequest.responseText);
+			console.log('carregaTemporada() ' + xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
+}
+
+
+
+function selecionaPilotosTemporada() {
+	$('#criarCampeonato').addClass('hide');
+	$('#selecionarPiloto').removeClass('hide');
+	var mapCarros = new Map();
+	$('#pilotos').find('tr').remove();
+	$.each(pilotos, function(i, val) {
+		var tr = gerarTr1Pilotos(pilotos[i]);
+		$('#pilotos').append(tr);
+		var statusPilotoCarro = gerarTr2Pilotos(pilotos[i]);
+		$('#pilotos').append(statusPilotoCarro);
+		tr.unbind();
+		tr.bind("click", function() {
+			selecionarPilotoTemporada(pilotos[i]);
+			$('#idPilotoSelecionado').val(pilotos[i].id);
+		});
+	});
+	pilotoCarreiraTemporada();
 }
 
 function selecionarPilotoTemporada(piloto){
