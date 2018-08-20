@@ -593,7 +593,7 @@ function ctl_desenhaInfoCarros() {
 		maneContext.closePath();
 		maneContext.stroke();
 	}
-	if (img1) {
+	if (img1 && desenhaImagens) {
 		maneContext.drawImage(img1, centroX - img1.width - 40, altura
 				- img1.height - 10);
 		if(idPiloto1==idPilotoSelecionado){
@@ -629,7 +629,7 @@ function ctl_desenhaInfoCarros() {
 			}
 		}
 	}
-	if (img2) {
+	if (img2 && desenhaImagens) {
 		maneContext.drawImage(img2, centroX + 40, altura - img2.height - 10);
 		if(idPiloto2==idPilotoSelecionado){
 			ctl_problemasCarrro(img2 , centroX, idPiloto2 , 2);

@@ -18,6 +18,7 @@ public class Campeonato extends F1ManeDados {
 	@Column(unique = true, nullable = false)
 	private String nome;
 	private String nivel;
+	private String idPiloto;
 	private Integer qtdeVoltas;
 	private boolean reabastecimento;
 	private boolean trocaPneus;
@@ -117,6 +118,14 @@ public class Campeonato extends F1ManeDados {
 	public void setCorridaCampeonatos(
 			List<CorridaCampeonato> corridaCampeonatos) {
 		this.corridaCampeonatos = corridaCampeonatos;
+	}
+
+	public String getIdPiloto() {
+		return idPiloto;
+	}
+
+	public void setIdPiloto(String idPiloto) {
+		this.idPiloto = idPiloto;
 	}
 
 }

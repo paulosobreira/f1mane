@@ -285,44 +285,6 @@ function selecionaTemporada(temporada) {
 	$('#temporadaCarousel').carousel('pause');
 }
 
-function criarCampeonato() {
-	var dataObj = objetoCampeonato();
-	var urlServico = "/f1mane/rest/letsRace/campeonato";
-	$.ajax({
-		type : "POST",
-		url : urlServico,
-		headers : {
-			'token' : localStorage.getItem("token"),
-			'idioma' : localStorage.getItem('idioma')
-		},
-		contentType : "application/json",
-		dataType : "json",
-		data : JSON.stringify(dataObj),
-		success : function(response) {
-			toaster(lang_text('250'), 3000, 'alert alert-success');
-			//carregaCampeonato();
-		},
-		error : function(xhRequest, ErrorText, thrownError) {
-			tratamentoErro(xhRequest);
-			console.log('criarCampeonato() ' + xhRequest.status + '  ' + xhRequest.responseText);
-		}
-	});
-}
-
-function objetoCampeonato(){
-	var lisSel = $('#listaCircuitosSelecionados').find('li');
-	var lst = new Array();
-	for (var j = 0; j < lisSel.length; j++) {
-		lst.push(lisSel[j].circuito.arquivo);
-	}
-	var dataObj = {
-		nome : $('#nomeEquipeValor').val(),
-		temporada : $('#nomePilotoValor').val(),
-		corridaCampeonatos : lst
-		};
-	return dataObj;
-}
-
 function carregaTemporada() {
 	var urlServico = "/f1mane/rest/letsRace/temporadas/" + temporadaSelecionada;
 	$.ajax({
@@ -509,4 +471,43 @@ function gerarTr2Pilotos(piloto){
 	return tr;
 }
 
+
+function criarCampeonato() {
+	var dataObj = objetoCampeonato();
+	var urlServico = "/f1mane/rest/letsRace/campeonato";
+	$.ajax({
+		type : "POST",
+		url : urlServico,
+		headers : {
+			'token' : localStorage.getItem("token"),
+			'idioma' : localStorage.getItem('idioma')
+		},
+		contentType : "application/json",
+		dataType : "json",
+		data : JSON.stringify(dataObj),
+		success : function(response) {
+			toaster(lang_text('250'), 3000, 'alert alert-success');
+			//carregaCampeonato();
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
+			console.log('criarCampeonato() ' + xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
+function objetoCampeonato(){
+	var lisSel = $('#listaCircuitosSelecionados').find('li');
+	var lst = new Array();
+	for (var j = 0; j < lisSel.length; j++) {
+		lst.push(lisSel[j].circuito.arquivo);
+	}
+	var dataObj = {
+		nome : $('#nomeEquipeValor').val(),
+		temporada : $('#nomePilotoValor').val(),
+		idPiloto : $('#idPilotoSelecionado').val(),
+		corridaCampeonatos : lst
+		};
+	return dataObj;
+}
 
