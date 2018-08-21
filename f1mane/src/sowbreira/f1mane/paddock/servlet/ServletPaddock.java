@@ -232,10 +232,10 @@ public class ServletPaddock extends HttpServlet {
 		PrintWriter printWriter = res.getWriter();
 		html5(printWriter);
 		printWriter.write("<body>");
-		printWriter.write("<h2>F1-Mane Sess&otilde;es</h2><br><hr>");
+		printWriter.write("<h2>F1-Mane Sess&otilde;es</h2><br>");
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		printWriter.write("<br>");
 		printWriter.write("Hora Servidor : " + FormatDate.format(timestamp));
+		printWriter.write("<br><hr>");
 		List<SessaoCliente> clientes = controlePaddock.getDadosPaddock().getClientes();
 		int cont = 0;
 		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {

@@ -474,6 +474,18 @@ function gerarTr2Pilotos(piloto){
 
 function criarCampeonato() {
 	var dataObj = objetoCampeonato();
+	if(dataObj.nome == ''){
+		toaster(lang_text('nomeCampeonatoObrigatorio'), 4000, 'alert alert-danger');
+		return;
+	}
+	if(dataObj.idPiloto == null){
+		toaster(lang_text('selecionePiloto'), 4000, 'alert alert-danger');
+		return;
+	}
+	if(dataObj.corridaCampeonatos.length < 5){
+		toaster(lang_text('min5CorridasCampeonato'), 4000, 'alert alert-danger');
+		return;
+	}	
 	var urlServico = "/f1mane/rest/letsRace/campeonato";
 	$.ajax({
 		type : "POST",

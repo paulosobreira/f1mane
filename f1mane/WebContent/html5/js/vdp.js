@@ -502,7 +502,7 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	var pontoSuave = vdp_pontoTracado(tracadoSuave, no);
 
 	var colisao = false;
-	if (vdp_colisaoTracadoSuave(piloto)) {
+	if (vdp_containsRect(rectBg, pontoSuave) && vdp_colisaoTracadoSuave(piloto)) {
 		var ponto = vdp_obterPonto(piloto, false);
 		if (ponto != null && ponto.x != null && ponto.y != null) {
 			// pontoColisaoArray.push(ponto);
@@ -601,8 +601,8 @@ function vdp_desenhaNomesCima() {
 }
 
 function vdp_desenhaPontosCarrosCima() {
-	if (circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null || dadosJogo == null || carrosImgMap == null
-			|| cvBg == null || carrosImgMap == null || zoom ==1) {
+	if (zoom == 1 || circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null || dadosJogo == null || carrosImgMap == null
+			|| cvBg == null || carrosImgMap == null) {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
@@ -615,14 +615,7 @@ function vdp_desenhaPontosCarrosCima() {
 		if (ponto == null || ponto.x == null || ponto.y == null) {
 			continue;
 		}
-		
-		var rectObj = {
-				left : ponto.x,
-				top : ponto.y,
-				right : ponto.x + 5,
-				bottom : ponto.y + 5
-			};
-		if (!vdp_intersectRect(rectBg, rectObj)) {
+		if (!vdp_containsRect(rectBg, ponto)) {
 			continue;
 		}		
 		var cor1 = '#a9a9a9';
@@ -646,8 +639,8 @@ function vdp_desenhaPontosCarrosCima() {
 
 
 function vdp_desenhaCarrosCima() {
-	if (circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null || dadosJogo == null || carrosImgMap == null
-			|| cvBg == null || carrosImgMap == null || zoom != 1) {
+	if (zoom != 1 || circuito == null || circuito.objetosNoTransparencia == null || dadosParciais == null || dadosJogo == null || carrosImgMap == null
+			|| cvBg == null || carrosImgMap == null) {
 		return;
 	}
 	var posicaoPilotos = dadosParciais.posisPack;
@@ -887,10 +880,10 @@ function vdp_centralizaPonto(ponto) {
 	ptBg.x = x;
 	ptBg.y = y;
 	rectBg = {
-		left : ptBg.x + 20,
-		top : ptBg.y + 20,
-		right :  ptBg.x + maneCanvas.width - 20,
-		bottom : ptBg.y + maneCanvas.height - 20
+		left : ptBg.x + 10,
+		top : ptBg.y + 10,
+		right :  ptBg.x + maneCanvas.width - 10,
+		bottom : ptBg.y + maneCanvas.height - 10
 	};
 }
 

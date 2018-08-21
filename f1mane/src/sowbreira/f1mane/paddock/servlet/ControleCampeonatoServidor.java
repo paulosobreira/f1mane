@@ -45,6 +45,15 @@ public class ControleCampeonatoServidor {
 		if (token == null) {
 			return (new MsgSrv(Lang.msg("210")));
 		}
+		if(Util.isNullOrEmpty(campeonato.getNome())){
+			return (new MsgSrv(Lang.msg("nomeCampeonatoObrigatorio")));
+		}
+		if(campeonato.getIdPiloto()==null){
+			return (new MsgSrv(Lang.msg("selecionePiloto")));
+		}
+		if(campeonato.getCorridaCampeonatos().size()<5){
+			return (new MsgSrv(Lang.msg("min5CorridasCampeonato")));
+		}	
 		Session session = controlePersistencia.getSession();
 		try {
 
