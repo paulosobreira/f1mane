@@ -474,12 +474,12 @@ function gerarTr2Pilotos(piloto){
 
 function criarCampeonato() {
 	var dataObj = objetoCampeonato();
-	if(dataObj.nome == ''){
-		toaster(lang_text('nomeCampeonatoObrigatorio'), 4000, 'alert alert-danger');
+	if(dataObj.idPiloto == ''){
+		toaster(lang_text('selecionePiloto'), 4000, 'alert alert-danger');
 		return;
 	}
-	if(dataObj.idPiloto == null){
-		toaster(lang_text('selecionePiloto'), 4000, 'alert alert-danger');
+	if(dataObj.nome == ''){
+		toaster(lang_text('nomeCampeonatoObrigatorio'), 4000, 'alert alert-danger');
 		return;
 	}
 	if(dataObj.corridaCampeonatos.length < 5){
@@ -512,11 +512,14 @@ function objetoCampeonato(){
 	var lisSel = $('#listaCircuitosSelecionados').find('li');
 	var lst = new Array();
 	for (var j = 0; j < lisSel.length; j++) {
-		lst.push(lisSel[j].circuito.arquivo);
+		var  corridaCampeonato = {
+				nomeCircuito : lisSel[j].circuito.arquivo 
+			};
+		lst.push(corridaCampeonato);
 	}
 	var dataObj = {
-		nome : $('#nomeEquipeValor').val(),
-		temporada : $('#nomePilotoValor').val(),
+		nome : $('#nomeCampeonatoValor').val(),
+		temporada : temporadaSelecionada,
 		idPiloto : $('#idPilotoSelecionado').val(),
 		corridaCampeonatos : lst
 		};

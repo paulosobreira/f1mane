@@ -45,36 +45,31 @@ public class ControleCampeonatoServidor {
 		if (token == null) {
 			return (new MsgSrv(Lang.msg("210")));
 		}
-		if(Util.isNullOrEmpty(campeonato.getNome())){
+		if (Util.isNullOrEmpty(campeonato.getNome())) {
 			return (new MsgSrv(Lang.msg("nomeCampeonatoObrigatorio")));
 		}
-		if(campeonato.getIdPiloto()==null){
+		if (campeonato.getIdPiloto() == null) {
 			return (new MsgSrv(Lang.msg("selecionePiloto")));
 		}
-		if(campeonato.getCorridaCampeonatos().size()<5){
+		if (campeonato.getCorridaCampeonatos().size() < 5) {
 			return (new MsgSrv(Lang.msg("min5CorridasCampeonato")));
-		}	
+		}
 		Session session = controlePersistencia.getSession();
 		try {
-
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 					.carregaDadosJogador(token, session);
 			if (jogadorDadosSrv == null) {
 				return (new MsgSrv(Lang.msg("238")));
 			}
-			if (verifircaNomeCampeonato(campeonato, session)) {
-				return (new MsgSrv(Lang.msg("nomeCampeonatoNaoDisponivel")));
-			}
 			if (verificaCampeonatoEmAberto(jogadorDadosSrv, session)) {
 				return (new MsgSrv(Lang.msg("jogadorTemCampeonatoEmAberto")));
 			}
 			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
-			try {
-				controlePersistencia.gravarDados(session, campeonato);
-			} catch (Exception e) {
-				return new ErroServ(e);
-			}
+			controlePersistencia.gravarDados(session, campeonato);
 			return (new MsgSrv(Lang.msg("campeonatoCriado")));
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			return new ErroServ(e);
 		} finally {
 			if (session.isOpen())
 				session.close();
@@ -97,17 +92,6 @@ public class ControleCampeonatoServidor {
 			}
 		}
 		return false;
-	}
-
-	private boolean verifircaNomeCampeonato(Campeonato campeonato,
-			Session session) {
-		String nome = campeonato.getNome();
-		if (Util.isNullOrEmpty(nome)) {
-			return true;
-		}
-		Campeonato campeonatoBanco = controlePersistencia
-				.pesquisaCampeonato(session, nome, false);
-		return campeonatoBanco != null;
 	}
 
 	public Object listarCampeonatos() {
@@ -240,33 +224,18 @@ public class ControleCampeonatoServidor {
 			}
 		}
 	}
-/*
-	public Object obterCampeonatoEmAberto(String token) {
-		List pesquisaCampeonatos = null;
-		Session session = controlePersistencia.getSession();
-		try {
-			pesquisaCampeonatos = controlePersistencia
-					.pesquisaCampeonatos(token, session, true);
-		} finally {
-			if (session.isOpen()) {
-				session.close();
-			}
-		}
-		if (pesquisaCampeonatos == null) {
-			return null;
-		}
-		for (Iterator iterator = pesquisaCampeonatos.iterator(); iterator
-				.hasNext();) {
-			Campeonato campeonato = (Campeonato) iterator.next();
-			if (verificaCampeonatoConcluido(campeonato)) {
-				continue;
-			} else {
-				return campeonato;
-			}
-		}
-		return null;
-	}
-*/
+	/*
+	 * public Object obterCampeonatoEmAberto(String token) { List
+	 * pesquisaCampeonatos = null; Session session =
+	 * controlePersistencia.getSession(); try { pesquisaCampeonatos =
+	 * controlePersistencia .pesquisaCampeonatos(token, session, true); }
+	 * finally { if (session.isOpen()) { session.close(); } } if
+	 * (pesquisaCampeonatos == null) { return null; } for (Iterator iterator =
+	 * pesquisaCampeonatos.iterator(); iterator .hasNext();) { Campeonato
+	 * campeonato = (Campeonato) iterator.next(); if
+	 * (verificaCampeonatoConcluido(campeonato)) { continue; } else { return
+	 * campeonato; } } return null; }
+	 */
 	public Object obterCampeonatoEmAberto(String token) {
 		List pesquisaCampeonatos = null;
 		Session session = controlePersistencia.getSession();

@@ -7,6 +7,8 @@ var mapaTracadoSuave = new Map();
 var mapaTracadoSuaveVaiPara = new Map();
 var mapaIndexTracadoSuave = new Map();
 var mapaPontoSuave = new Map();
+var mapaAnguloRotacionar = new Map();
+var mapaRotacionar = new Map();
 var cvRotate = document.createElement('canvas');
 var ctxRotate = cvRotate.getContext('2d');
 var cvBlend = document.createElement('canvas');
@@ -81,17 +83,23 @@ function vdp_desenha(fps) {
 	vdp_desenhaClima();
 	vdp_pow();
 	ctl_desenha();
-	if(!desenhaImagens){
-		maneContext.beginPath();
-		maneContext.strokeStyle = "black"
-		maneContext.rect( rectBg.left - ptBg.x ,
-				           rectBg.top - ptBg.y ,
-				          (rectBg.right - rectBg.left),
-				          (rectBg.bottom - rectBg.top));
-		maneContext.closePath();
-		maneContext.stroke();		
-	}
+	vdp_debugRectBg();
 }
+
+function vdp_debugRectBg(){
+	if(desenhaImagens){
+		return;
+	}
+	maneContext.beginPath();
+	maneContext.strokeStyle = "black"
+	maneContext.rect( rectBg.left - ptBg.x ,
+			           rectBg.top - ptBg.y ,
+			          (rectBg.right - rectBg.left),
+			          (rectBg.bottom - rectBg.top));
+	maneContext.closePath();
+	maneContext.stroke();		
+}
+
 
 function vdp_setup() {
 	fxArray = [];
@@ -502,7 +510,7 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	var pontoSuave = vdp_pontoTracado(tracadoSuave, no);
 
 	var colisao = false;
-	if (vdp_containsRect(rectBg, pontoSuave) && vdp_colisaoTracadoSuave(piloto)) {
+	if (zoom == 1 && vdp_containsRect(rectBg, pontoSuave) && vdp_colisaoTracadoSuave(piloto)) {
 		var ponto = vdp_obterPonto(piloto, false);
 		if (ponto != null && ponto.x != null && ponto.y != null) {
 			// pontoColisaoArray.push(ponto);
@@ -771,8 +779,20 @@ function vdp_desenhaCarrosCima() {
 			// ctxCarro.rect(1, 1, cvCarro.width - 1, cvCarro.height - 1);
 			// ctxCarro.closePath();
 			// ctxCarro.stroke();
-
-			var rotacionarCarro = vdp_rotacionar(cvCarro, angulo);
+			var anguloAnterior = mapaAnguloRotacionar.get(piloto.idPiloto);
+			var rotacionarCarro = null;
+			if(anguloAnterior == angulo){
+				rotacionarCarro = mapaRotacionar.get(piloto.idPiloto);
+			}else{
+				rotacionarCarro = vdp_rotacionar(cvCarro, angulo);
+				var cvNovo = document.createElement('canvas');
+				var ctxNovo = cvNovo.getContext('2d');
+				cvNovo.width = rotacionarCarro.width;
+				cvNovo.height = rotacionarCarro.height;
+				ctxNovo.drawImage(rotacionarCarro, 0, 0);
+				mapaRotacionar.set(piloto.idPiloto,cvNovo);
+				mapaAnguloRotacionar.set(piloto.idPiloto,angulo);
+			}
 			var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x - ajsCarroX, y - ajsCarroY, no, piloto.idPiloto);
 			maneContext.drawImage(blendCarro, x - ajsCarroX, y - ajsCarroY);
 		}else{
