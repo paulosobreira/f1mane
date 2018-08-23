@@ -14,15 +14,32 @@ import javax.persistence.OneToOne;
 @Entity(name = "f1_campeonato")
 public class Campeonato extends F1ManeDados {
 	private transient String circuitoAtual;
+	
+	@Column(nullable = false)
 	private String temporada;
-	@Column(unique = true, nullable = false)
+	
+	@Column(nullable = false)
 	private String nome;
+	
+	@Column(nullable = false)
 	private String nivel;
+	
+	@Column(nullable = false)
 	private String idPiloto;
+	
+	@Column(nullable = false)
 	private Integer qtdeVoltas;
+	
+	@Column(nullable = false)
 	private boolean reabastecimento;
+	
+	@Column(nullable = false)
 	private boolean trocaPneus;
-	private boolean kers;
+	
+	@Column(nullable = false)
+	private boolean ers;
+	
+	@Column(nullable = false)
 	private boolean drs;
 
 	@OneToOne
@@ -45,14 +62,6 @@ public class Campeonato extends F1ManeDados {
 
 	public String getNome() {
 		return nome;
-	}
-
-	public boolean isKers() {
-		return kers;
-	}
-
-	public void setKers(boolean kers) {
-		this.kers = kers;
 	}
 
 	public boolean isDrs() {
@@ -126,6 +135,14 @@ public class Campeonato extends F1ManeDados {
 
 	public void setIdPiloto(String idPiloto) {
 		this.idPiloto = idPiloto;
+	}
+
+	public boolean isErs() {
+		return ers;
+	}
+
+	public void setErs(boolean ers) {
+		this.ers = ers;
 	}
 
 }

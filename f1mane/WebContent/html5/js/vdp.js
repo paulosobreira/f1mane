@@ -774,14 +774,9 @@ function vdp_desenhaCarrosCima() {
 			} else {
 				ctxCarro.drawImage(imgCarro, ajsCarroX, ajsCarroY);
 			}
-			// ctxCarro.beginPath();
-			// ctxCarro.strokeStyle = "black"
-			// ctxCarro.rect(1, 1, cvCarro.width - 1, cvCarro.height - 1);
-			// ctxCarro.closePath();
-			// ctxCarro.stroke();
 			var anguloAnterior = mapaAnguloRotacionar.get(piloto.idPiloto);
 			var rotacionarCarro = null;
-			if(anguloAnterior == angulo){
+			if(anguloAnterior == angulo && mapaRotacionar.get(piloto.idPiloto)!=null){
 				rotacionarCarro = mapaRotacionar.get(piloto.idPiloto);
 			}else{
 				rotacionarCarro = vdp_rotacionar(cvCarro, angulo);

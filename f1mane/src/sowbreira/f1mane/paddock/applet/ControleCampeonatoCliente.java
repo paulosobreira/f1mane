@@ -381,7 +381,7 @@ public class ControleCampeonatoCliente {
 				.getSelectedItem()));
 		campeonato.setReabastecimento(this.reabastecimento.isSelected());
 		campeonato.setTrocaPneus(this.trocaPneu.isSelected());
-		campeonato.setKers(this.kers.isSelected());
+		campeonato.setErs(this.kers.isSelected());
 		campeonato.setDrs(this.drs.isSelected());
 
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());

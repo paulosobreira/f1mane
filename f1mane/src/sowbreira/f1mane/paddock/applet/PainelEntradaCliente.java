@@ -314,7 +314,7 @@ public class PainelEntradaCliente {
 			nomeCampeonato.setText(campeonato.getNome());
 			comboBoxCircuito.setSelectedItem(campeonato.getCircuitoAtual());
 			comboBoxCircuito.setEnabled(false);
-			kers.setSelected(campeonato.isKers());
+			kers.setSelected(campeonato.isErs());
 			kers.setEnabled(false);
 			drs.setSelected(campeonato.isDrs());
 			drs.setEnabled(false);

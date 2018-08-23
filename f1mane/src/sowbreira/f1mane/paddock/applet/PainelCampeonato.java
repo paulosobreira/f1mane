@@ -667,7 +667,7 @@ public class PainelCampeonato extends JPanel {
 			}
 		});
 		p1.add(new JLabel(
-				campeonato.isKers() ? Lang.msg("SIM") : Lang.msg("NAO")));
+				campeonato.isErs() ? Lang.msg("SIM") : Lang.msg("NAO")));
 
 		p1.add(new JLabel() {
 

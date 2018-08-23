@@ -10,7 +10,9 @@ import org.hibernate.Session;
 import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
@@ -20,11 +22,14 @@ import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
+import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 public class ControleCampeonatoServidor {
 
 	private ControlePersistencia controlePersistencia;
+	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
+			.getCarregadorRecursos(false);
 
 	public ControleCampeonatoServidor(
 			ControlePersistencia controlePersistencia) {
@@ -64,6 +69,16 @@ public class ControleCampeonatoServidor {
 			if (verificaCampeonatoEmAberto(jogadorDadosSrv, session)) {
 				return (new MsgSrv(Lang.msg("jogadorTemCampeonatoEmAberto")));
 			}
+			Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
+					.carregarTemporadasPilotosDefauts();
+			Logger.logar("campeonato.getTemporada() "+campeonato.getTemporada());
+			TemporadasDefauts temporadasDefauts = carregarTemporadasPilotosDefauts.get("t"+campeonato.getTemporada());
+			campeonato.setTrocaPneus(temporadasDefauts.getTrocaPneu());
+			campeonato.setDrs(temporadasDefauts.getDrs());
+			campeonato.setErs(temporadasDefauts.getErs());
+			campeonato.setReabastecimento(temporadasDefauts.getReabastecimento());
+			campeonato.setQtdeVoltas(Constantes.MIN_VOLTAS);
+			campeonato.setNivel(ControleJogoLocal.NORMAL);
 			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
 			controlePersistencia.gravarDados(session, campeonato);
 			return (new MsgSrv(Lang.msg("campeonatoCriado")));
