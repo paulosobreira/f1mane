@@ -107,7 +107,7 @@ function vdp_setup() {
 	fxChuvaRetaArray = [];
 	fxChuvaAltaArray = [];
 	fxChuvaBaixaArray = [];
-	for (var i = 0; i < 5; i++) {
+	for (var i = 0; i < 3; i++) {
 		vdp_gerarImgFaiscaFx();
 		vdp_gerarRastroChuvaFx(120, 'R');
 		vdp_gerarRastroChuvaFx(80, 'A');
@@ -906,17 +906,17 @@ function vdp_rotacionar(img, angulo) {
 	return cvRotate;
 }
 
-function vdp_blend(imgCarro, ptCarro, xCarro, yCarro, no, idPiloto) {
+function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto) {
 	var maiorLado = 0;
-	if (imgCarro.width > imgCarro.height) {
-		maiorLado = imgCarro.width;
+	if (img.width > img.height) {
+		maiorLado = img.width;
 	} else {
-		maiorLado = imgCarro.height;
+		maiorLado = img.height;
 	}
 	cvBlend.width = maiorLado;
 	cvBlend.height = maiorLado;
 	ctxBlend.clearRect(0, 0, cvBlend.width, cvBlend.height);
-	ctxBlend.drawImage(imgCarro, 0, 0);
+	ctxBlend.drawImage(img, 0, 0);
 	var rectCarro = {
 		left : ptCarro.x - 10,
 		top : ptCarro.y - 10,
