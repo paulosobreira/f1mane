@@ -746,7 +746,7 @@ function vdp_desenhaCarrosCima() {
 		var desenhaRastroFaiscaFx = null;
 		var desenhaRastroChuvaFx = null;
 		if (desenhaImagens) {
-			if (emMovimento) {
+			if (emMovimento && !no.box) {
 				desenhaRastroFaiscaFx = vdp_desenhaRastroFaiscaFx(piloto, angulo);
 				if (desenhaRastroFaiscaFx != null) {
 					var xj = x - ajsFxX;
