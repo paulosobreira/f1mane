@@ -251,18 +251,7 @@ public class ControleCampeonatoServidor {
 			}
 		}
 	}
-	/*
-	 * public Object obterCampeonatoEmAberto(String token) { List
-	 * pesquisaCampeonatos = null; Session session =
-	 * controlePersistencia.getSession(); try { pesquisaCampeonatos =
-	 * controlePersistencia .pesquisaCampeonatos(token, session, true); }
-	 * finally { if (session.isOpen()) { session.close(); } } if
-	 * (pesquisaCampeonatos == null) { return null; } for (Iterator iterator =
-	 * pesquisaCampeonatos.iterator(); iterator .hasNext();) { Campeonato
-	 * campeonato = (Campeonato) iterator.next(); if
-	 * (verificaCampeonatoConcluido(campeonato)) { continue; } else { return
-	 * campeonato; } } return null; }
-	 */
+
 	public Object obterCampeonatoEmAberto(String token) {
 		List pesquisaCampeonatos = null;
 		Session session = controlePersistencia.getSession();

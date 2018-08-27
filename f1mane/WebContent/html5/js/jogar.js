@@ -72,16 +72,12 @@ $('#btnJogar').unbind().bind("click", function() {
 
 $('#temporadaCarousel').on('slide.bs.carousel', function(event) {
 	selecionaTemporada($(event.relatedTarget).prop('temporada'));
-	$('#temporadaCarousel').carousel('pause');
-	$('#circuitoCarousel').carousel('pause');
 });
 
 $('#temporadaCarousel').carousel('pause');
 
 $('#circuitoCarousel').on('slide.bs.carousel', function(event) {
 	circuitoSelecionado = $(event.relatedTarget).prop('circuito');
-	$('#temporadaCarousel').carousel('pause');
-	$('#circuitoCarousel').carousel('pause');
 });
 
 $('#circuitoCarousel').carousel('pause');

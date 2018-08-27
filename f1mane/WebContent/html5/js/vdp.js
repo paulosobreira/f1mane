@@ -741,13 +741,14 @@ function vdp_desenhaCarrosCima() {
 
 		var x = ponto.x - ptBg.x - 45;
 		var y = ponto.y - ptBg.y - 45;
+		var anguloGraus = Math.round(Math.degrees(angulo));
 		pilotosEfeitosMap.set(piloto.idPiloto, true);
 		var emMovimento = vdp_emMovimento(piloto.idPiloto,piloto.idNo);
 		var desenhaRastroFaiscaFx = null;
 		var desenhaRastroChuvaFx = null;
 		if (desenhaImagens) {
 			if (emMovimento && !no.box) {
-				desenhaRastroFaiscaFx = vdp_desenhaRastroFaiscaFx(piloto, angulo);
+				desenhaRastroFaiscaFx = vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus);
 				if (desenhaRastroFaiscaFx != null) {
 					var xj = x - ajsFxX;
 					var yj = y - ajsFxY;
@@ -755,21 +756,22 @@ function vdp_desenhaCarrosCima() {
 					maneContext.drawImage(blendFaisca, xj , yj );
 				}
 			} 
-			var chave = piloto.idPiloto+"-"+angulo;
+			var chave = piloto.idPiloto+"-"+anguloGraus;
 			var rotacionarCarro =  mapaRotacionar.get(chave);
 			if(rotacionarCarro==null){
 				rotacionarCarro = vdp_rotacionar(imgCarro, angulo);
 				mapaRotacionar.set(chave,rotacionarCarro);
 			}
+			
 			var blendCarro = vdp_blend(rotacionarCarro, ponto, x, y, no, piloto.idPiloto);
 			maneContext.drawImage(blendCarro, x , y);
 			if(emMovimento){
-				var desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto, no, angulo);
+				var desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus);
 				if (desenhaTravadaRodaFumaca != null) {
 					var blendFumaca = vdp_blend(desenhaTravadaRodaFumaca, ponto, x, y, no, piloto.idPiloto);
 					maneContext.drawImage(blendFumaca, x, y);
 				}
-				desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, no, angulo);
+				desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus);
 				if (desenhaRastroChuvaFx != null) {
 					var xj = x - ajsChuvaX;
 					var yj = y - ajsChuvaY;					
@@ -964,7 +966,7 @@ function vdp_desenhaBackGround() {
 	}
 }
 
-function vdp_desenhaRastroFaiscaFx(piloto, angulo) {
+function vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus) {
 	if (!pilotosFaiscaMap.get(piloto.idPiloto) || pilotosFaiscaMap.get(piloto.idPiloto) <= 0) {
 		return null;
 	}
@@ -973,7 +975,7 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo) {
 	}
 	pilotosFaiscaMap.set(piloto.idPiloto, pilotosFaiscaMap.get(piloto.idPiloto) - 1);
 	var intervalo = intervaloInt(0, fxArray.length - 1);
-	var chave = intervalo+"-"+angulo;
+	var chave = intervalo+"-"+anguloGraus;
 	var faisca = mapaRastroFaisca.get(chave); 
 	if(faisca!=null){
 		return faisca;
@@ -1020,7 +1022,7 @@ function vdp_gerarImgFaiscaFx() {
 	}
 	fxArray.push(cvFx);
 }
-function vdp_desenhaRastroChuvaFx(piloto, no, angulo) {
+function vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus) {
 	if (dadosParciais.clima != "chuva.png") {
 		return null;
 	}
@@ -1035,7 +1037,7 @@ function vdp_desenhaRastroChuvaFx(piloto, no, angulo) {
 		lista = fxChuvaBaixaArray;
 	}
 	var intervalo = intervaloInt(0, lista.length - 1);
-	var chave = no.tipoJson+"-"+intervalo+"-"+angulo;
+	var chave = no.tipoJson+"-"+intervalo+"-"+anguloGraus;
 	var chuva = mapaRastroChuva.get(chave); 
 	if(chuva!=null){
 		return chuva;
@@ -1091,7 +1093,7 @@ function vdp_gerarRastroChuvaFx(tam, lista) {
 	}
 }
 
-function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo) {
+function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 	if (!pilotosTravadaFumacaMap.get(piloto.idPiloto) || pilotosTravadaFumacaMap.get(piloto.idPiloto) <= 0) {
 		return null;
 	}
@@ -1115,7 +1117,7 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo) {
 	}
 	pilotosTravadaFumacaMap.set(piloto.idPiloto, pilotosTravadaFumacaMap.get(piloto.idPiloto) - 1);
 	
-	var chave = lado+"-"+sw+"-"+angulo;
+	var chave = lado+"-"+sw+"-"+anguloGraus;
 	
 	var fumaca = mapaTravadaRodaFumaca.get(chave); 
 	if(fumaca!=null){

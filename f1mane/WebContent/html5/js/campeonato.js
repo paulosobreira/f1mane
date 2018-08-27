@@ -58,6 +58,10 @@ function carregaCampeonato() {
 				$('#pilotoSelecionado').unbind().bind("click", selecionar);
 				$('#selecionarPilotoBtn').unbind().bind("click", selecionar);
 				listaTemporadas();
+			}else{
+				$('#criarCampeonato').addClass('hide');
+				$('#listarCampeonato').removeClass('hide');
+				console.log(response);
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -499,7 +503,7 @@ function criarCampeonato() {
 		data : JSON.stringify(dataObj),
 		success : function(response) {
 			toaster(lang_text('250'), 3000, 'alert alert-success');
-			//carregaCampeonato();
+			carregaCampeonato();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);

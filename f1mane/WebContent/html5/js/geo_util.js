@@ -64,8 +64,8 @@ function gu_calculaAngulo(startCoordinates, endCoordinates, inc) {
 	var dx = endCoordinates.x - startCoordinates.x;
 	var dy = endCoordinates.y - startCoordinates.y;
 	var tan = Math.atan2(dy, dx) + Math.radians(inc);
-	var degrees = tan + Math.PI;
-	return degrees;
+	var rads = tan + Math.PI;
+	return rads;
 }
 
 
