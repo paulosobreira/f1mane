@@ -6,6 +6,7 @@ import java.util.Map;
 
 import br.nnpe.Constantes;
 import br.nnpe.Logger;
+import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 
 /**
@@ -101,8 +102,13 @@ public class MonitorAtividade implements Runnable {
 		for (Iterator<SessaoCliente> iter = clientes.iterator(); iter
 				.hasNext();) {
 			SessaoCliente sessaoCliente = iter.next();
+			InterfaceJogo jogo = controlePaddock
+					.obterJogoPeloNome(sessaoCliente.getJogoAtual());
+			if (jogo != null && jogo.isSafetyCarNaPista()) {
+				continue;
+			}
 			int intervaloAtividade = 600000;
-			if(sessaoCliente.isGuest()){
+			if (sessaoCliente.isGuest()) {
 				intervaloAtividade = 300000;
 			}
 			if ((timeNow
@@ -125,7 +131,7 @@ public class MonitorAtividade implements Runnable {
 			SessaoCliente sessaoCliente = iter.next();
 			// 1 hs
 			int intervaloAtividade = 3600000;
-			if(sessaoCliente.isGuest()){
+			if (sessaoCliente.isGuest()) {
 				intervaloAtividade = 1800000;
 			}
 			if ((timeNow
