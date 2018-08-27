@@ -11,16 +11,8 @@ var mapaRotacionar = new Map();
 var mapaRastroFaisca = new Map();
 var mapaRastroChuva = new Map();
 var mapaTravadaRodaFumaca = new Map();
-var cvRotate = document.createElement('canvas');
-var ctxRotate = cvRotate.getContext('2d');
 var cvBlend = document.createElement('canvas');
 var ctxBlend = cvBlend.getContext('2d');
-var cvCarro = document.createElement('canvas');
-var ctxCarro = cvCarro.getContext('2d');
-var cvTravada = document.createElement('canvas');
-var ctxTravada = cvCarro.getContext('2d');
-var cvFx = document.createElement('canvas');
-var ctxFx = cvCarro.getContext('2d');
 var fxArray = [];
 var fxChuvaRetaArray = [];
 var fxChuvaAltaArray = [];
@@ -58,22 +50,10 @@ maneCanvas.height = 0;
 var alertaAerefolioPow = null;
 var mapaPow = new Map();
 var loopPilotos = false;
-
-var ajsCarroX = -20;
-var ajsCarroY = -20;
-cvCarro.width = 50;
-cvCarro.height = 50;
-
-cvTravada.width = 50;
-cvTravada.height = 50;
-
+var ajsChuvaX = 54;
+var ajsChuvaY = 54;
 var ajsFxX = 40;
 var ajsFxY = 40;
-cvFx.width = 172;
-cvFx.height = 172;
-
-
-
 
 var zoom = 1;
 
@@ -127,7 +107,7 @@ function vdp_setup() {
 	fxChuvaRetaArray = [];
 	fxChuvaAltaArray = [];
 	fxChuvaBaixaArray = [];
-	for (var i = 0; i < 5; i++) {
+	for (var i = 0; i < 3; i++) {
 		vdp_gerarImgFaiscaFx();
 		vdp_gerarRastroChuvaFx(120, 'R');
 		vdp_gerarRastroChuvaFx(80, 'A');
@@ -766,34 +746,36 @@ function vdp_desenhaCarrosCima() {
 		var desenhaRastroFaiscaFx = null;
 		var desenhaRastroChuvaFx = null;
 		if (desenhaImagens) {
-			ctxCarro.clearRect(0, 0, cvCarro.width, cvCarro.height);
-			if (emMovimento) {
+			if (emMovimento && !no.box) {
 				desenhaRastroFaiscaFx = vdp_desenhaRastroFaiscaFx(piloto, angulo);
-				desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, angulo);
 				if (desenhaRastroFaiscaFx != null) {
-					maneContext.drawImage(desenhaRastroFaiscaFx, x - ajsFxX, y - ajsFxY);
-				}
-				var desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto, angulo);
-				if (desenhaTravadaRodaFumaca != null) {
-					maneContext.drawImage(desenhaTravadaRodaFumaca, x - ajsCarroX, y - ajsCarroY);
+					var xj = x - ajsFxX;
+					var yj = y - ajsFxY;
+					var blendFaisca = vdp_blend(desenhaRastroFaiscaFx, ponto, xj , yj , no, piloto.idPiloto);
+					maneContext.drawImage(blendFaisca, xj , yj );
 				}
 			} 
 			var chave = piloto.idPiloto+"-"+angulo;
 			var rotacionarCarro =  mapaRotacionar.get(chave);
 			if(rotacionarCarro==null){
-				ctxCarro.drawImage(imgCarro, ajsCarroX, ajsCarroY);
-				rotacionarCarro = vdp_rotacionar(cvCarro, angulo);
-				var cvNovo = document.createElement('canvas');
-				var ctxNovo = cvNovo.getContext('2d');
-				cvNovo.width = rotacionarCarro.width;
-				cvNovo.height = rotacionarCarro.height;
-				ctxNovo.drawImage(rotacionarCarro, 0, 0);
-				mapaRotacionar.set(chave,cvNovo);
+				rotacionarCarro = vdp_rotacionar(imgCarro, angulo);
+				mapaRotacionar.set(chave,rotacionarCarro);
 			}
-			var blendCarro = vdp_blendCarro(rotacionarCarro, ponto, x - ajsCarroX, y - ajsCarroY, no, piloto.idPiloto);
-			maneContext.drawImage(blendCarro, x - ajsCarroX, y - ajsCarroY);
-			if (desenhaRastroChuvaFx != null) {
-				maneContext.drawImage(desenhaRastroChuvaFx,x - ajsFxX, y - ajsFxY);
+			var blendCarro = vdp_blend(rotacionarCarro, ponto, x, y, no, piloto.idPiloto);
+			maneContext.drawImage(blendCarro, x , y);
+			if(emMovimento){
+				var desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto, no, angulo);
+				if (desenhaTravadaRodaFumaca != null) {
+					var blendFumaca = vdp_blend(desenhaTravadaRodaFumaca, ponto, x, y, no, piloto.idPiloto);
+					maneContext.drawImage(blendFumaca, x, y);
+				}
+				desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, no, angulo);
+				if (desenhaRastroChuvaFx != null) {
+					var xj = x - ajsChuvaX;
+					var yj = y - ajsChuvaY;					
+					var blendChuva = vdp_blend(desenhaRastroChuvaFx, ponto, xj, yj, no, piloto.idPiloto);
+					maneContext.drawImage(blendChuva, xj, yj);
+				}
 			}
 		}else{
 			maneContext.beginPath();
@@ -900,14 +882,16 @@ function vdp_centralizaPonto(ponto) {
 	ptBg.x = x;
 	ptBg.y = y;
 	rectBg = {
-		left : ptBg.x + 10,
-		top : ptBg.y + 10,
-		right :  ptBg.x + maneCanvas.width - 10,
-		bottom : ptBg.y + maneCanvas.height - 10
+		left : ptBg.x,
+		top : ptBg.y,
+		right :  ptBg.x + maneCanvas.width,
+		bottom : ptBg.y + maneCanvas.height
 	};
 }
 
 function vdp_rotacionar(img, angulo) {
+	var cvRotate = document.createElement('canvas');
+	var ctxRotate = cvRotate.getContext('2d');
 	var maiorLado = 0;
 	if (img.width > img.height) {
 		maiorLado = img.width;
@@ -922,16 +906,17 @@ function vdp_rotacionar(img, angulo) {
 	return cvRotate;
 }
 
-function vdp_blendCarro(imgCarro, ptCarro, xCarro, yCarro, no, idPiloto) {
+function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto) {
 	var maiorLado = 0;
-	if (imgCarro.width > imgCarro.height) {
-		maiorLado = imgCarro.width;
+	if (img.width > img.height) {
+		maiorLado = img.width;
 	} else {
-		maiorLado = imgCarro.height;
+		maiorLado = img.height;
 	}
 	cvBlend.width = maiorLado;
 	cvBlend.height = maiorLado;
-	ctxBlend.drawImage(imgCarro, 0, 0);
+	ctxBlend.clearRect(0, 0, cvBlend.width, cvBlend.height);
+	ctxBlend.drawImage(img, 0, 0);
 	var rectCarro = {
 		left : ptCarro.x - 10,
 		top : ptCarro.y - 10,
@@ -994,18 +979,9 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo) {
 		return faisca;
 	}
 	var fx =  fxArray[intervalo];
-	ctxFx.drawImage(fx,0, 0);
-	faisca = vdp_rotacionar(cvFx, angulo);
-	
-	var cvNovo = document.createElement('canvas');
-	var ctxNovo = cvNovo.getContext('2d');
-	cvNovo.width = cvFx.width;
-	cvNovo.height = cvFx.height;
-	ctxNovo.drawImage(faisca, 0, 0);
-	
-	mapaRastroFaisca.set(chave,ctxNovo);
+	var faisca = vdp_rotacionar(fx, angulo);
+	mapaRastroFaisca.set(chave,faisca);
 	return faisca; 
-	
 }
 
 function vdp_gerarImgFaiscaFx() {
@@ -1044,7 +1020,7 @@ function vdp_gerarImgFaiscaFx() {
 	}
 	fxArray.push(cvFx);
 }
-function vdp_desenhaRastroChuvaFx(piloto, angulo) {
+function vdp_desenhaRastroChuvaFx(piloto, no, angulo) {
 	if (dadosParciais.clima != "chuva.png") {
 		return null;
 	}
@@ -1065,31 +1041,20 @@ function vdp_desenhaRastroChuvaFx(piloto, angulo) {
 		return chuva;
 	}
 	var fx =  lista[intervalo];
-	ctxFx.drawImage(fx,0, 0);
-	chuva = vdp_rotacionar(cvFx, angulo);
-	
-	var cvNovo = document.createElement('canvas');
-	var ctxNovo = cvNovo.getContext('2d');
-	cvNovo.width = cvFx.width;
-	cvNovo.height = cvFx.height;
-	ctxNovo.drawImage(chuva, 0, 0);
-	
-	mapaRastroChuva.set(chave,cvNovo);
+	var chuva = vdp_rotacionar(fx, angulo);
+	mapaRastroChuva.set(chave,chuva);
 	return chuva;
 }
-
-var modXChuva = 0.4;
-var modYChuva = 0.5;
 
 function vdp_gerarRastroChuvaFx(tam, lista) {
 	var cvFx = document.createElement('canvas');
 	var ctxFx = cvFx.getContext('2d');
 	var frenteCar, atrasCar;
-	cvFx.width = 172;
-	cvFx.height = 172;
+	cvFx.width = 200;
+	cvFx.height = 200;
 	frenteCar = {
-		x : Math.round(cvFx.width * 0.42),
-		y : Math.round(cvFx.height * 0.49)
+		x : Math.round(cvFx.width * 0.44),
+		y : Math.round(cvFx.height * 0.50)
 	};
 	atrasCar = {
 		x : Math.round(cvFx.width * 0.7),
@@ -1126,7 +1091,7 @@ function vdp_gerarRastroChuvaFx(tam, lista) {
 	}
 }
 
-function vdp_desenhaTravadaRodaFumaca(piloto, angulo) {
+function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo) {
 	if (!pilotosTravadaFumacaMap.get(piloto.idPiloto) || pilotosTravadaFumacaMap.get(piloto.idPiloto) <= 0) {
 		return null;
 	}
@@ -1140,7 +1105,6 @@ function vdp_desenhaTravadaRodaFumaca(piloto, angulo) {
 	if(no.box){
 		return null;
 	}
-	var rotacionar;
 	var sw = Math.round(intervalo(1, 5));
 	var lado = (Math.random() > 0.5 ? 'D' : 'E');
 	var noReal = mapaIdNos.get(piloto.idNo);
@@ -1157,21 +1121,9 @@ function vdp_desenhaTravadaRodaFumaca(piloto, angulo) {
 	if(fumaca!=null){
 		return fumaca;
 	}
-	
 	var fx = eval('carroCimaFreios' + lado + sw);
-	ctxTravada.clearRect(0, 0, cvTravada.width, cvTravada.height);
-	ctxTravada.drawImage(fx,0, 0);
-	fumaca =  vdp_rotacionar(cvTravada, angulo);
-	
-	var cvNovo = document.createElement('canvas');
-	var ctxNovo = cvNovo.getContext('2d');
-	cvNovo.width = cvTravada.width;
-	cvNovo.height = cvTravada.height;
-	ctxNovo.drawImage(fumaca, 0, 0);
-	
-	
-	mapaTravadaRodaFumaca.set(chave,cvNovo);
-	
+	var fumaca =  vdp_rotacionar(fx, angulo);
+	mapaTravadaRodaFumaca.set(chave,fumaca);
 	return fumaca;
 }
 

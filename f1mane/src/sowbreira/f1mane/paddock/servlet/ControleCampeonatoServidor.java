@@ -71,15 +71,27 @@ public class ControleCampeonatoServidor {
 			}
 			Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
 					.carregarTemporadasPilotosDefauts();
-			Logger.logar("campeonato.getTemporada() "+campeonato.getTemporada());
-			TemporadasDefauts temporadasDefauts = carregarTemporadasPilotosDefauts.get("t"+campeonato.getTemporada());
+			Logger.logar(
+					"campeonato.getTemporada() " + campeonato.getTemporada());
+			TemporadasDefauts temporadasDefauts = carregarTemporadasPilotosDefauts
+					.get("t" + campeonato.getTemporada());
 			campeonato.setTrocaPneus(temporadasDefauts.getTrocaPneu());
 			campeonato.setDrs(temporadasDefauts.getDrs());
 			campeonato.setErs(temporadasDefauts.getErs());
-			campeonato.setReabastecimento(temporadasDefauts.getReabastecimento());
+			campeonato
+					.setReabastecimento(temporadasDefauts.getReabastecimento());
 			campeonato.setQtdeVoltas(Constantes.MIN_VOLTAS);
 			campeonato.setNivel(ControleJogoLocal.NORMAL);
 			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
+			List<CorridaCampeonato> corridaCampeonatos = campeonato
+					.getCorridaCampeonatos();
+			for (Iterator iterator = corridaCampeonatos.iterator(); iterator
+					.hasNext();) {
+				CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+						.next();
+				corridaCampeonato.setCampeonato(campeonato);
+
+			}
 			controlePersistencia.gravarDados(session, campeonato);
 			return (new MsgSrv(Lang.msg("campeonatoCriado")));
 		} catch (Exception e) {
