@@ -459,8 +459,9 @@ public class ControleClassificacao {
 						.get("t" + carreiraDados.getTemporadaCapaceteLivery());
 				for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 					Piloto piloto = (Piloto) iterator.next();
-					Logger.logar(piloto.getNome() + " " + piloto.getHabilidadeReal()
-							+ " " + carreiraDados.getPtsPiloto());
+					Logger.logar(
+							piloto.getNome() + " " + piloto.getHabilidadeReal()
+									+ " " + carreiraDados.getPtsPiloto());
 					if (piloto.getId() == carreiraDados.getIdCapaceteLivery()
 							&& piloto.getHabilidadeReal() > carreiraDados
 									.getPtsPiloto()) {
@@ -668,6 +669,7 @@ public class ControleClassificacao {
 		piloto.setNomeAbreviado(carreiraDadosSrv.getNomePilotoAbreviado());
 		piloto.setHabilidade((int) (carreiraDadosSrv.getPtsPiloto()));
 		piloto.getCarro().setNome(carreiraDadosSrv.getNomeCarro());
+		piloto.getCarro().setId(carreiraDadosSrv.getId().intValue() + 100);
 		piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
 		piloto.getCarro().setPotencia(carreiraDadosSrv.getPtsCarro());
 		piloto.getCarro().setCor1(carreiraDadosSrv.geraCor1());

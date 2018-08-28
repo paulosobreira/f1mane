@@ -756,7 +756,8 @@ function vdp_desenhaCarrosCima() {
 					maneContext.drawImage(blendFaisca, xj , yj );
 				}
 			} 
-			var chave = piloto.idPiloto+"-"+anguloGraus;
+			var pl = pilotosMap.get(piloto.idPiloto);
+			var chave = pl.carro.id+"-"+anguloGraus;
 			var rotacionarCarro =  mapaRotacionar.get(chave);
 			if(rotacionarCarro==null){
 				rotacionarCarro = vdp_rotacionar(imgCarro, angulo);

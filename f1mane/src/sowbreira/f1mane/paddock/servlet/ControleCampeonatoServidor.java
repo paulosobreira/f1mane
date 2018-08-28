@@ -266,6 +266,15 @@ public class ControleCampeonatoServidor {
 		if (pesquisaCampeonatos == null || pesquisaCampeonatos.isEmpty()) {
 			return null;
 		}
-		return pesquisaCampeonatos.get(0);
+		Campeonato campeonato = (Campeonato) pesquisaCampeonatos.get(0);
+		List<CorridaCampeonato> corridaCampeonatos = campeonato
+				.getCorridaCampeonatos();
+		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
+				.hasNext();) {
+			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+					.next();
+			corridaCampeonato.setCampeonato(null);
+		}
+		return campeonato;
 	}
 }

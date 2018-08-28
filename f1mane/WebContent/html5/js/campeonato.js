@@ -62,6 +62,7 @@ function carregaCampeonato() {
 				$('#criarCampeonato').addClass('hide');
 				$('#listarCampeonato').removeClass('hide');
 				console.log(response);
+				debugger;
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
