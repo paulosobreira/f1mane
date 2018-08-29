@@ -13,32 +13,41 @@ import javax.persistence.OneToOne;
 
 @Entity(name = "f1_campeonato")
 public class Campeonato extends F1ManeDados {
+
 	private transient String circuitoAtual;
-	
+
+	private transient String nomePiloto;
+
+	private transient String carroPiloto;
+
+	private transient String temporadaPiloto;
+
+	private transient String idCarro;
+
 	@Column(nullable = false)
 	private String temporada;
-	
+
 	@Column(nullable = false)
 	private String nome;
-	
+
 	@Column(nullable = false)
 	private String nivel;
-	
+
 	@Column(nullable = false)
 	private String idPiloto;
-	
+
 	@Column(nullable = false)
 	private Integer qtdeVoltas;
-	
+
 	@Column(nullable = false)
 	private boolean reabastecimento;
-	
+
 	@Column(nullable = false)
 	private boolean trocaPneus;
-	
+
 	@Column(nullable = false)
 	private boolean ers;
-	
+
 	@Column(nullable = false)
 	private boolean drs;
 
@@ -143,6 +152,38 @@ public class Campeonato extends F1ManeDados {
 
 	public void setErs(boolean ers) {
 		this.ers = ers;
+	}
+
+	public String getNomePiloto() {
+		return nomePiloto;
+	}
+
+	public void setNomePiloto(String nomePiloto) {
+		this.nomePiloto = nomePiloto;
+	}
+
+	public String getCarroPiloto() {
+		return carroPiloto;
+	}
+
+	public void setCarroPiloto(String carroPiloto) {
+		this.carroPiloto = carroPiloto;
+	}
+
+	public String getTemporadaPiloto() {
+		return temporadaPiloto;
+	}
+
+	public void setTemporadaPiloto(String temporadaPiloto) {
+		this.temporadaPiloto = temporadaPiloto;
+	}
+
+	public String getIdCarro() {
+		return idCarro;
+	}
+
+	public void setIdCarro(String idCarro) {
+		this.idCarro = idCarro;
 	}
 
 }

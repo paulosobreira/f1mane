@@ -61,8 +61,38 @@ function carregaCampeonato() {
 			}else{
 				$('#criarCampeonato').addClass('hide');
 				$('#listarCampeonato').removeClass('hide');
-				console.log(response);
-				debugger;
+				var campeonato = response;
+				$('#temporadasLabel').append(campeonato.temporada);
+				var detalheTemporada = $('#detalheTemporada').clone();
+				if (campeonato.trocaPneu) {
+					detalheTemporada.find('#trocaPneuCheck').removeClass('line-through');
+				} else {
+					detalheTemporada.find('#trocaPneuCheck').addClass('line-through');
+				}
+				if (campeonato.reabastecimento) {
+					detalheTemporada.find('#reabastecimentoCheck').removeClass('line-through');
+				} else {
+					detalheTemporada.find('#reabastecimentoCheck').addClass('line-through');
+				}
+				if (campeonato.ers) {
+					detalheTemporada.find('#ersCheck').removeClass('line-through');
+				} else {
+					detalheTemporada.find('#ersCheck').addClass('line-through');
+				}
+				if (campeonato.drs) {
+					detalheTemporada.find('#ersCheck').removeClass('line-through');
+				} else {
+					detalheTemporada.find('#ersCheck').addClass('line-through');
+				}
+				
+				var divPilotoSelecionado = $('#divPilotoSelecionado').clone();
+				
+				//divPilotoSelecionado.find('#nomePilotoSelecionado').html(piloto.nome);
+				//divPilotoSelecionado.find('#nomeCarroSelecionado').html(piloto.nomeCarro);
+				
+				$('#temporadasLabel').after(detalheTemporada);
+				
+				$('#temporadasLabel').after(divPilotoSelecionado);
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
