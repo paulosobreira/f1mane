@@ -70,7 +70,7 @@ public class ControlePaddockServidor {
 				controlePersistencia);
 		controleJogosServer = new ControleJogosServer(dadosPaddock,
 				controleClassificacao, controleCampeonatoServidor,
-				controlePersistencia,this);
+				controlePersistencia, this);
 		try {
 			initProperties();
 		} catch (IOException e) {
@@ -392,7 +392,7 @@ public class ControlePaddockServidor {
 	private Object obterCampeonato(ClientPaddockPack clientPaddockPack) {
 		return controleCampeonatoServidor.obterCampeonato(clientPaddockPack);
 	}
-	
+
 	public Object obterCampeonato(String idCampeonato) {
 		return controleCampeonatoServidor.obterCampeonato(idCampeonato);
 	}
@@ -555,8 +555,8 @@ public class ControlePaddockServidor {
 					for (Iterator iterator3 = pilotosCopia.iterator(); iterator3
 							.hasNext();) {
 						Piloto piloto = (Piloto) iterator3.next();
-						if(piloto.getId()==participarJogo.getIdPiloto()){
-							sessaoCliente.setPilotoAtual(piloto.getNome());		
+						if (piloto.getId() == participarJogo.getIdPiloto()) {
+							sessaoCliente.setPilotoAtual(piloto.getNome());
 						}
 					}
 					sessaoCliente
@@ -986,8 +986,25 @@ public class ControlePaddockServidor {
 		return piloto;
 	}
 
-	public Object obterCampeonatoEmAberto(String token) {
-		return controleCampeonatoServidor.obterCampeonatoEmAberto(token);
+	public Campeonato obterCampeonatoEmAberto(String token) {
+		Campeonato campeonato = controleCampeonatoServidor
+				.obterCampeonatoEmAberto(token);
+		if (campeonato == null) {
+			return null;
+		}
+		if ("0".equals(campeonato.getIdPiloto())) {
+			CarreiraDadosSrv carreiraDados = obterCarreiraSrv(token);
+			if (carreiraDados == null) {
+				return null;
+			}
+			campeonato.setNomePiloto(carreiraDados.getNomePiloto());
+			campeonato.setCarroPiloto(carreiraDados.getNomeCarro());
+			campeonato
+					.setTemporadaPiloto(Util.rgb2hex(carreiraDados.geraCor1()));
+			campeonato.setIdCarro(Util.rgb2hex(carreiraDados.geraCor2()));
+		}
+
+		return campeonato;
 	}
 
 	public CarreiraDadosSrv obterCarreiraSrv(String token) {

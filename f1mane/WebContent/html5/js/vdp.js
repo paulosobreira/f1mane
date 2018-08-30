@@ -742,6 +742,9 @@ function vdp_desenhaCarrosCima() {
 		var x = ponto.x - ptBg.x - 45;
 		var y = ponto.y - ptBg.y - 45;
 		var anguloGraus = Math.round(Math.degrees(angulo));
+		if(anguloGraus%2==0){
+			anguloGraus++;
+		}
 		pilotosEfeitosMap.set(piloto.idPiloto, true);
 		var emMovimento = vdp_emMovimento(piloto.idPiloto,piloto.idNo);
 		var desenhaRastroFaiscaFx = null;
@@ -757,6 +760,9 @@ function vdp_desenhaCarrosCima() {
 				}
 			} 
 			var pl = pilotosMap.get(piloto.idPiloto);
+			if(pl==null || pl.carro.id==null){
+				continue;
+			}
 			var chave = pl.carro.id+"-"+anguloGraus;
 			var rotacionarCarro =  mapaRotacionar.get(chave);
 			if(rotacionarCarro==null){

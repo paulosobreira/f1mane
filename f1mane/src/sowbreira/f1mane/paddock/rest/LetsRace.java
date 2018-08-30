@@ -899,7 +899,7 @@ public class LetsRace {
 		}
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 		Object ret = controlePaddock.criarCampeonato(campeonato, token);
-		if (ret.equals(new MsgSrv(Lang.msg("250")))) {
+		if (ret.equals(new MsgSrv(Lang.msg("campeonatoCriado")))) {
 			return Response.status(200).entity(ret).build();
 		}
 		return processsaMensagem(ret, idioma);
@@ -918,15 +918,12 @@ public class LetsRace {
 		}
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 
-		Object ret = controlePaddock.obterCampeonatoEmAberto(token);
-		if (ret == null) {
+		Campeonato campeonato = controlePaddock.obterCampeonatoEmAberto(token);
+		if (campeonato == null) {
 			return Response.status(204).build();
 		}
-		Response erro = processsaMensagem(ret, idioma);
-		if (erro != null) {
-			return erro;
-		}
-		return Response.status(200).entity(ret).build();
+
+		return Response.status(200).entity(campeonato).build();
 	}
 
 }

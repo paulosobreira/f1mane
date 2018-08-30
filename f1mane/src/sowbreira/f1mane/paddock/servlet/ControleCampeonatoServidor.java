@@ -252,7 +252,7 @@ public class ControleCampeonatoServidor {
 		}
 	}
 
-	public Object obterCampeonatoEmAberto(String token) {
+	public Campeonato obterCampeonatoEmAberto(String token) {
 		List pesquisaCampeonatos = null;
 		Session session = controlePersistencia.getSession();
 		try {

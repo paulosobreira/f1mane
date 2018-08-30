@@ -59,6 +59,7 @@ function carregaCampeonato() {
 				$('#selecionarPilotoBtn').unbind().bind("click", selecionar);
 				listaTemporadas();
 			}else{
+				debugger;
 				$('#criarCampeonato').addClass('hide');
 				$('#listarCampeonato').removeClass('hide');
 				var campeonato = response;
