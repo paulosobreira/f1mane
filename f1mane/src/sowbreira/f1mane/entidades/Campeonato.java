@@ -194,10 +194,6 @@ public class Campeonato implements Serializable {
 		return dadosCorridas;
 	}
 
-	public void setDadosCorridas(Map<String, List> dadosCorridas) {
-		this.dadosCorridas = dadosCorridas;
-	}
-
 	public String getCircuitoVez() {
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
 			String circuito = (String) iterator.next();

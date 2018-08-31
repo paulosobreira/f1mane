@@ -26,7 +26,9 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.entidades.Comandos;
+import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
+import sowbreira.f1mane.paddock.entidades.TOs.CorridaCampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosParciais;
@@ -36,6 +38,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -986,25 +989,66 @@ public class ControlePaddockServidor {
 		return piloto;
 	}
 
-	public Campeonato obterCampeonatoEmAberto(String token) {
+	public CampeonatoTO obterCampeonatoEmAberto(String token) {
 		Campeonato campeonato = controleCampeonatoServidor
 				.obterCampeonatoEmAberto(token);
 		if (campeonato == null) {
 			return null;
 		}
+		CampeonatoTO campeonatoTO = new CampeonatoTO();
+		campeonatoTO.setCampeonato(campeonato);
+
+		List<CorridaCampeonato> corridaCampeonatos = campeonato
+				.getCorridaCampeonatos();
+
+		int rodada = 1;
+		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
+				.hasNext();) {
+			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+					.next();
+			CorridaCampeonatoTO corridaCampeonatoTO = new CorridaCampeonatoTO();
+			corridaCampeonatoTO.setRodada(rodada);
+			corridaCampeonatoTO
+					.setArquivoCircuito(corridaCampeonato.getNomeCircuito());
+			campeonatoTO.getCorridas().add(corridaCampeonatoTO);
+		}
+
 		if ("0".equals(campeonato.getIdPiloto())) {
 			CarreiraDadosSrv carreiraDados = obterCarreiraSrv(token);
 			if (carreiraDados == null) {
 				return null;
 			}
-			campeonato.setNomePiloto(carreiraDados.getNomePiloto());
-			campeonato.setCarroPiloto(carreiraDados.getNomeCarro());
-			campeonato
-					.setTemporadaPiloto(Util.rgb2hex(carreiraDados.geraCor1()));
-			campeonato.setIdCarro(Util.rgb2hex(carreiraDados.geraCor2()));
+			campeonatoTO.setNomePiloto(carreiraDados.getNomePiloto());
+			campeonatoTO
+					.setTemporadaCarro(Util.rgb2hex(carreiraDados.geraCor1()));
+			campeonatoTO.setIdCarro(Util.rgb2hex(carreiraDados.geraCor2()));
+
+			campeonatoTO.setTemporadaCapacete(
+					Util.rgb2hex(carreiraDados.geraCor1()));
+
+			campeonatoTO.setIdPiloto(Util.rgb2hex(carreiraDados.geraCor2()));
+
+			if (carreiraDados.getIdCapaceteLivery() != null
+					&& carreiraDados.getTemporadaCapaceteLivery() != null) {
+				campeonatoTO.setTemporadaCapacete(
+						carreiraDados.getTemporadaCapaceteLivery().toString());
+				campeonatoTO.setIdPiloto(
+						carreiraDados.getIdCapaceteLivery().toString());
+			}
+
+			if (carreiraDados.getIdCarroLivery() != null
+					&& carreiraDados.getTemporadaCarroLivery() != null) {
+				campeonatoTO.setTemporadaCarro(
+						carreiraDados.getTemporadaCarroLivery().toString());
+				campeonatoTO.setIdCarro(
+						carreiraDados.getIdCarroLivery().toString());
+			}
+
+			campeonatoTO.setCarroPiloto(carreiraDados.getNomeCarro());
+
 		}
 
-		return campeonato;
+		return campeonatoTO;
 	}
 
 	public CarreiraDadosSrv obterCarreiraSrv(String token) {

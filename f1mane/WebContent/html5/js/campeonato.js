@@ -86,14 +86,20 @@ function carregaCampeonato() {
 					detalheTemporada.find('#ersCheck').addClass('line-through');
 				}
 				
-				var divPilotoSelecionado = $('#divPilotoSelecionado').clone();
+				var pilotoSelecionado = $('#pilotoSelecionado').clone();
 				
-				//divPilotoSelecionado.find('#nomePilotoSelecionado').html(piloto.nome);
-				//divPilotoSelecionado.find('#nomeCarroSelecionado').html(piloto.nomeCarro);
+				pilotoSelecionado.removeClass('hide');
+
+				pilotoSelecionado.find('#imgCarroPilotoSelecionado').attr('src', '/f1mane/rest/letsRace/carroLado/' + campeonato.temporadaCarro + '/' + campeonato.idCarro);
+				pilotoSelecionado.find('#imgCapacetePilotoSelecionado').attr('src', '/f1mane/rest/letsRace/capacete/' + campeonato.temporadaCapacete + '/' +campeonato.idPiloto);
+
+				
+				pilotoSelecionado.find('#nomePilotoSelecionado').html(campeonato.nomePiloto);
+				pilotoSelecionado.find('#nomeCarroSelecionado').html(campeonato.carroPiloto);
 				
 				$('#temporadasLabel').after(detalheTemporada);
 				
-				$('#temporadasLabel').after(divPilotoSelecionado);
+				detalheTemporada.after(pilotoSelecionado);
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {

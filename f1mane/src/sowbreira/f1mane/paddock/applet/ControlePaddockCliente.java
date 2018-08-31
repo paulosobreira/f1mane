@@ -975,7 +975,7 @@ public class ControlePaddockCliente {
 			PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
 					jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
 					mainFrame, sessaoCliente.getNomeJogador(), jogoCliente);
-			campeonato.setCircuitoAtual(nomeCircuito);
+			//campeonato.setCircuitoAtual(nomeCircuito);
 			painelEntradaCliente.setCampeonato(campeonato);
 			DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 			dadosCriarJogo.setNomeCampeonato(campeonato.getNome());

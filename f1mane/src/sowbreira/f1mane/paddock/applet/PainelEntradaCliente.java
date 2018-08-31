@@ -312,7 +312,7 @@ public class PainelEntradaCliente {
 			trocaPneu.setSelected(campeonato.isTrocaPneus());
 			trocaPneu.setEnabled(false);
 			nomeCampeonato.setText(campeonato.getNome());
-			comboBoxCircuito.setSelectedItem(campeonato.getCircuitoAtual());
+			//comboBoxCircuito.setSelectedItem(campeonato.getCircuitoAtual());
 			comboBoxCircuito.setEnabled(false);
 			kers.setSelected(campeonato.isErs());
 			kers.setEnabled(false);

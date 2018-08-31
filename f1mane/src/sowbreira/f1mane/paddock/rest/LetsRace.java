@@ -33,6 +33,7 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.CircuitosDefauts;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.paddock.PaddockServer;
+import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
@@ -918,7 +919,7 @@ public class LetsRace {
 		}
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 
-		Campeonato campeonato = controlePaddock.obterCampeonatoEmAberto(token);
+		CampeonatoTO campeonato = controlePaddock.obterCampeonatoEmAberto(token);
 		if (campeonato == null) {
 			return Response.status(204).build();
 		}
