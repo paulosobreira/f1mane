@@ -12,7 +12,8 @@ $('#154').html(lang_text('154'));
 $('#selecionarPilotoTxt').html(lang_text('120'));
 $('#trocaPneuCheck').append(lang_text('trocaPneus'));
 $('#reabastecimentoCheck').append(lang_text('reabastecimento'));
-
+$('#rodada').append(lang_text('rodada'));
+$('#nomeCircuito').append(lang_text('nomeCircuito'));
 
 $('#nomeCampeonato').html(lang_text('nomeCampeonato'));
 
@@ -59,11 +60,11 @@ function carregaCampeonato() {
 				$('#selecionarPilotoBtn').unbind().bind("click", selecionar);
 				listaTemporadas();
 			}else{
-				debugger;
 				$('#criarCampeonato').addClass('hide');
 				$('#listarCampeonato').removeClass('hide');
 				var campeonato = response;
-				$('#temporadasLabel').append(campeonato.temporada);
+				$('#temporadasLabelCarrgeda').html('');
+				$('#temporadasLabelCarrgeda').append(campeonato.temporada);
 				var detalheTemporada = $('#detalheTemporada').clone();
 				if (campeonato.trocaPneu) {
 					detalheTemporada.find('#trocaPneuCheck').removeClass('line-through');
@@ -94,12 +95,30 @@ function carregaCampeonato() {
 				pilotoSelecionado.find('#imgCapacetePilotoSelecionado').attr('src', '/f1mane/rest/letsRace/capacete/' + campeonato.temporadaCapacete + '/' +campeonato.idPiloto);
 
 				
-				pilotoSelecionado.find('#nomePilotoSelecionado').html(campeonato.nomePiloto);
-				pilotoSelecionado.find('#nomeCarroSelecionado').html(campeonato.carroPiloto);
+				pilotoSelecionado.find('#nomePilotoSelecionado').html('');
+				pilotoSelecionado.find('#nomePilotoSelecionado').append(campeonato.nomePiloto);
+				pilotoSelecionado.find('#nomeCarroSelecionado').html('');
+				pilotoSelecionado.find('#nomeCarroSelecionado').append(campeonato.carroPiloto);
 				
-				$('#temporadasLabel').after(detalheTemporada);
+				$('#temporadasLabelCarrgeda').after(detalheTemporada);
 				
 				detalheTemporada.after(pilotoSelecionado);
+				
+				var corridas = campeonato.corridas;
+				
+				$('#corridasTO').find('tr').remove();
+				$.each(corridas, function(i, val) {
+					var corrida = corridas[i];
+					var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+					var td1 = $('<td/>');
+					var td2 = $('<td/>');
+					td1.append(i);
+					td2.append(corrida.nomeCircuito);
+					tr.append(td1);
+					tr.append(td2);
+					$('#corridasTO').append(tr);
+				});
+				
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -127,17 +146,15 @@ function listaTemporadas() {
 				console.log('listaTemporadas() response.length==0');
 				return;
 			}
-			$.each(temporadasRes, function(i, val) {
-				if (i == 0) {
-					return;
-				}
+			for (var i = 0; i < temporadasRes.length-1; i++) {
+				var temp = temporadasRes[i];
 				var dv = $('<div class="item"></div>');
 				var h1 = $('<h1 class="text-center"></h1>');
-				dv.prop('temporada', this);
-				h1.append(this);
+				dv.prop('temporada', temp);
+				h1.append(temp);
 				dv.append(h1);
 				$('#temporadaCarousel-inner').append(dv);
-			});
+			}
 			$('#temporadaActive').prop('temporada', temporadasRes[temporadasRes.length-1]);
 			selecionaTemporada(temporadasRes[temporadasRes.length-1]);
 		},
@@ -324,7 +341,6 @@ function selecionaTemporada(temporada) {
 	$('#pilotoSelecionado').addClass('hide');
 	$('#divPilotoSelecionado').removeClass('hide');
 	
-	$('#temporadaCarousel').carousel('pause');
 }
 
 function carregaTemporada() {
@@ -540,7 +556,7 @@ function criarCampeonato() {
 		dataType : "json",
 		data : JSON.stringify(dataObj),
 		success : function(response) {
-			toaster(lang_text('250'), 3000, 'alert alert-success');
+			toaster(lang_text('campeonatoCriado'), 3000, 'alert alert-success');
 			carregaCampeonato();
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -555,7 +571,7 @@ function objetoCampeonato(){
 	var lst = new Array();
 	for (var j = 0; j < lisSel.length; j++) {
 		var  corridaCampeonato = {
-				nomeCircuito : lisSel[j].circuito.arquivo 
+				nomeCircuito : lisSel[j].circuito.nome 
 			};
 		lst.push(corridaCampeonato);
 	}

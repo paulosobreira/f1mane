@@ -24,6 +24,7 @@ import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
@@ -846,8 +847,13 @@ public class ControlePaddockServidor {
 
 	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
 			String tokenJogador, String idPiloto) {
-		return controleJogosServer.obterDadosParciaisPilotos(nomeJogo,
-				tokenJogador, idPiloto);
+		try {
+			return controleJogosServer.obterDadosParciaisPilotos(nomeJogo,
+					tokenJogador, idPiloto);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return null;
 	}
 
 	public void sairJogoToken(String nomeJogo, String token,
@@ -1009,7 +1015,7 @@ public class ControlePaddockServidor {
 			CorridaCampeonatoTO corridaCampeonatoTO = new CorridaCampeonatoTO();
 			corridaCampeonatoTO.setRodada(rodada);
 			corridaCampeonatoTO
-					.setArquivoCircuito(corridaCampeonato.getNomeCircuito());
+					.setNomeCircuito(corridaCampeonato.getNomeCircuito());
 			campeonatoTO.getCorridas().add(corridaCampeonatoTO);
 		}
 
@@ -1046,6 +1052,26 @@ public class ControlePaddockServidor {
 
 			campeonatoTO.setCarroPiloto(carreiraDados.getNomeCarro());
 
+		} else {
+			Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
+					.carregarTemporadasPilotosDefauts();
+			TemporadasDefauts temporadasDefauts = tempDefsMap
+					.get("t" + campeonato.getTemporada());
+			List<Piloto> pilotos = temporadasDefauts.getPilotos();
+			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+				Piloto piloto = (Piloto) iterator.next();
+				if (String.valueOf(piloto.getId())
+						.equals(campeonato.getIdPiloto())) {
+					campeonatoTO.setIdPiloto(campeonato.getIdPiloto());
+					campeonatoTO.setIdCarro(
+							String.valueOf(piloto.getCarro().getId()));
+					campeonatoTO.setCarroPiloto(piloto.getNomeCarro());
+					campeonatoTO.setNomePiloto(piloto.getNome());
+				}
+
+			}
+			campeonatoTO.setTemporadaCarro(campeonato.getTemporada());
+			campeonatoTO.setTemporadaCapacete(campeonato.getTemporada());
 		}
 
 		return campeonatoTO;

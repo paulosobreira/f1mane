@@ -485,20 +485,18 @@ function listaTemporadas() {
 				console.log('listaTemporadas() response.length==0');
 				return;
 			}
-			$('#temporadaActive').prop('temporada', temporadasRes[0]);
-			$.each(temporadasRes, function(i, val) {
-				if (i == 0) {
-					return;
-				}
+			for (var i = 0; i < temporadasRes.length-1; i++) {
+				var temp = temporadasRes[i];
 				var dv = $('<div class="item"></div>');
 				var h1 = $('<h1 class="text-center"></h1>');
-				dv.prop('temporada', this);
-				h1.append(this);
+				dv.prop('temporada', temp);
+				h1.append(temp);
 				dv.append(h1);
 				$('#temporadaCarousel-inner').append(dv);
-			});
+			}
 			selecionaTemporada(temporadasRes[temporadasRes.length-1]);
 			temporadaSelecionada = temporadasRes[temporadasRes.length-1];
+			$('#temporadaActive').prop('temporada', temporadaSelecionada);
 
 			
 			$('#temporadaCarousel').carousel('pause');
