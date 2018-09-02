@@ -16,6 +16,7 @@ if("true" == localStorage.getItem("modoCarreira")){
 }else{
 	$('#selecionePiloto').append(lang_text('selecionePiloto'));	
 }
+
 $('#153').html(lang_text('153'));
 $('#154').html(lang_text('154'));
 
@@ -179,6 +180,84 @@ function gerarTr2Pilotos(piloto){
 }
 
 function carregarDadosJogo() {
+	if("true" == localStorage.getItem("modoCampeonato")){
+		carregarDadosJogoCampeonato();
+	}else{
+		carregarDadosJogoPadrao();
+	}
+}
+
+function carregarDadosJogoCampeonato(){
+	var urlServico = "/f1mane/rest/letsRace/campeonato";
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		headers : {
+			'token' : localStorage.getItem("token"),
+			'idioma' : localStorage.getItem('idioma')
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(response) {
+			if (response == null) {
+				window.location = "jogar.html";
+			}else{
+				var campeonato = response;
+				$('#criaJogo').removeClass('hide');
+				$('#selecionarPiloto').addClass('hide');
+				$('#detalheTemporada').removeClass('hidden');
+				$('#temporadaAnterior').remove();
+				$('#temporadaProxima').remove();
+				$('#circuitoAnterior').remove();
+				$('#circuitoProximo').remove();				
+				$('#imgCircuito').attr('src', '/f1mane/rest/letsRace/circuitoMini/' + campeonato.arquivoCircuitoAtual);
+				circuitoSelecionado = campeonato.arquivoCircuitoAtual;
+				temporadaSelecionada = campeonato.temporada;
+				var circuitosLabel = campeonato.nomeCircuitoAtual;
+				$('#circuitosLabel').html(circuitosLabel);
+				$('#temporadasLabel').html(temporadaSelecionada);
+				if (campeonato.trocaPneu) {
+					$('#trocaPneuCheck').removeClass('line-through');
+				} else {
+					$('#trocaPneuCheck').addClass('line-through');
+				}
+				if (campeonato.reabastecimento) {
+					$('#reabastecimentoCheck').removeClass('line-through');
+				} else {
+					$('#reabastecimentoCheck').addClass('line-through');
+				}
+				if (campeonato.ers) {
+					$('#ersCheck').removeClass('line-through');
+				} else {
+					$('#ersCheck').addClass('line-through');
+				}
+				if (campeonato.drs) {
+					drsTeporada = true;
+					$('#drsCheck').removeClass('line-through');
+				} else {
+					$('#drsCheck').addClass('line-through');
+				}
+				if (drsTeporada) {
+					$('#ajusteDeAsa').addClass('hide');
+				}
+				$('#btnJogar').css('z-index', '100000');
+				$('#idNumeroVoltas').addClass('hide');
+			}
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			if (xhRequest.status == 204) {
+				toaster(lang_text('precisaEstaLogado'), 4000,
+						'alert alert-danger');
+			} else {
+				tratamentoErro(xhRequest);
+			}
+			console.log('carregarDadosJogoCampeonato() ' + xhRequest.status + '  '
+					+ xhRequest.responseText);
+		}
+	});	
+}
+
+function carregarDadosJogoPadrao() {
 	$.ajax({
 		type : "GET",
 		headers : {
@@ -465,6 +544,7 @@ function selecionaTemporada(temporada) {
 				});
 			});
 			$('#detalheTemporada').removeClass('hidden');
+			$('#temporadaCarousel').carousel('pause');
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);

@@ -22,6 +22,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -43,6 +44,7 @@ public class Circuito implements Serializable {
 	private int ladoBox = 0;
 	private int ladoBoxSaidaBox = 0;
 	private int probalidadeChuva = 0;
+	private double velocidadePista = 0;
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;
 	private int paradaBoxIndex;
@@ -956,4 +958,16 @@ public class Circuito implements Serializable {
 		g2d.fill(generalPath.createTransformedShape(affineTransform));
 		return image;
 	}
+
+	public double getVelocidadePista() {
+		if (velocidadePista == 0) {
+			return Constantes.VELOCIDADE_PISTA;
+		}
+		return velocidadePista;
+	}
+
+	public void setVelocidadePista(double velocidadePista) {
+		this.velocidadePista = velocidadePista;
+	}
+
 }

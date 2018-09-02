@@ -10,7 +10,9 @@ public class CampeonatoTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private transient String circuitoAtual;
+	private String nomeCircuitoAtual;
+
+	private String arquivoCircuitoAtual;
 
 	private transient String nomePiloto;
 
@@ -27,14 +29,6 @@ public class CampeonatoTO implements Serializable {
 	private Campeonato campeonato;
 
 	private List<CorridaCampeonatoTO> corridas = new ArrayList<CorridaCampeonatoTO>();
-
-	public String getCircuitoAtual() {
-		return circuitoAtual;
-	}
-
-	public void setCircuitoAtual(String circuitoAtual) {
-		this.circuitoAtual = circuitoAtual;
-	}
 
 	public String getNomePiloto() {
 		return nomePiloto;
@@ -118,6 +112,22 @@ public class CampeonatoTO implements Serializable {
 
 	public List<CorridaCampeonatoTO> getCorridas() {
 		return corridas;
+	}
+
+	public String getNomeCircuitoAtual() {
+		return nomeCircuitoAtual;
+	}
+
+	public void setNomeCircuitoAtual(String nomeCircuitoAtual) {
+		this.nomeCircuitoAtual = nomeCircuitoAtual;
+	}
+
+	public String getArquivoCircuitoAtual() {
+		return arquivoCircuitoAtual;
+	}
+
+	public void setArquivoCircuitoAtual(String arquivoCircuitoAtual) {
+		this.arquivoCircuitoAtual = arquivoCircuitoAtual;
 	}
 
 }

@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -69,26 +70,6 @@ public class ControleEstatisticas {
 	private long calculaDiferenca(Piloto frente, Piloto piloto) {
 		long diff = frente.getPtosPista() - piloto.getPtosPista();
 		return diff;
-	}
-
-	private long calculaDiferencaDiv3(Piloto frente, Piloto piloto) {
-		return calculaDiferenca(frente, piloto) / 3;
-	}
-
-	public String calculaSegundosParaLider(Piloto pilotoSelecionado,
-			long tempo) {
-		Piloto lider = (Piloto) controleJogo.getPilotosCopia().get(0);
-		long diff = calculaDiferencaDiv3(lider, pilotoSelecionado);
-		String ret = formatarTempo(new Long(diff));
-		pilotoSelecionado.setSegundosParaLider(ret);
-		return ret;
-	}
-
-	public String calculaSegundosParaRival(Piloto pilotoSelecionado,
-			Piloto rival, long tempo) {
-		long diff = calculaDiferencaDiv3(rival, pilotoSelecionado);
-		String ret = formatarTempo(new Long(diff));
-		return ret;
 	}
 
 	public void processaVoltaRapida(Piloto piloto) {
@@ -171,9 +152,8 @@ public class ControleEstatisticas {
 			return seg + "." + mil.format(Math.abs(mili));
 	}
 
-	public double calculaSegundosParaProximoDouble(Piloto psel, long tempo) {
-		int diff = calculaDiferencaParaProximo(psel);
-		return (diff / Double.parseDouble(String.valueOf(tempo)));
+	public double calculaDiferencaParaProximoDouble(Piloto psel) {
+		return new Double(calculaDiferencaParaProximo(psel));
 
 	}
 
@@ -508,17 +488,6 @@ public class ControleEstatisticas {
 
 	}
 
-	public String calculaSegundosParaProximo(Piloto psel, long tempo,
-			int diferenca) {
-		String ret = formatarTempo(new Long(diferenca));
-		return ret;
-	}
-
-	public String calculaSegundosParaProximo(Piloto psel, long tempo) {
-		int diff = calculaDiferencaParaProximo(psel);
-		return calculaSegundosParaProximo(psel, tempo, diff);
-	}
-
 	public JPanel getPainelDebug() {
 		if (painelDebug == null) {
 			gerarPainelDebug();
@@ -564,6 +533,34 @@ public class ControleEstatisticas {
 			}
 		};
 		SwingUtilities.invokeLater(doInfo);
-		
+
+	}
+
+	public String calculaSegundosParaProximo(Piloto psel, int diferenca) {
+		return formatarTempo(diferecaParaSegundos(diferenca));
+	}
+
+	public String calculaSegundosParaProximo(Piloto psel) {
+		int diff = calculaDiferencaParaProximo(psel);
+		return calculaSegundosParaProximo(psel, diff);
+	}
+
+	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {
+		Piloto lider = (Piloto) controleJogo.getPilotosCopia().get(0);
+		long diff = calculaDiferenca(lider, pilotoSelecionado);
+		String ret = formatarTempo(diferecaParaSegundos(diff));
+		pilotoSelecionado.setSegundosParaLider(ret);
+		return ret;
+	}
+
+	public String calculaSegundosParaRival(Piloto pilotoSelecionado,
+			Piloto rival, long tempo) {
+		long diff = calculaDiferenca(rival, pilotoSelecionado);
+		String ret = formatarTempo(diferecaParaSegundos(diff));
+		return ret;
+	}
+
+	private Long diferecaParaSegundos(long diff) {
+		return (diff / Util.intervalo(30, 40)) * Constantes.CICLO;
 	}
 }

@@ -127,6 +127,7 @@ public class MainPanelEditor extends JPanel {
 	private JSpinner larguraPistaSpinner;
 	private JTextField nomePistaText;
 	private JTextField probalidadeChuvaText;
+	private JTextField velocidadePistaText;
 	private BasicStroke trilho = new BasicStroke(1);
 	private BasicStroke pista;
 	private BasicStroke pistaTinta;
@@ -260,8 +261,12 @@ public class MainPanelEditor extends JPanel {
 				this.multiplicadorLarguraPista);
 		circuito.setProbalidadeChuva(
 				Integer.parseInt(probalidadeChuvaText.getText()));
+		circuito.setVelocidadePista(
+				Double.parseDouble(velocidadePistaText.getText()));
 		probalidadeChuvaText
 				.setText(String.valueOf(circuito.getProbalidadeChuva()));
+		velocidadePistaText
+				.setText(String.valueOf(circuito.getVelocidadePista()));
 		circuito.setNome(nomePistaText.getText());
 		larguraPistaSpinner.getModel().setValue(multiplicadorLarguraPista);
 		List l = circuito.getPistaFull();
@@ -2130,6 +2135,27 @@ public class MainPanelEditor extends JPanel {
 			}
 		});
 		p2.add(probalidadeChuvaText);
+		buttonsPanel2.add(p2);
+		
+		p2 = new JPanel();
+
+		velocidadePistaText = new JTextField() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(30, super.getPreferredSize().height);
+			}
+		};
+		if (circuito != null) {
+			velocidadePistaText.setText("" + circuito.getVelocidadePista());
+		}
+		
+		p2.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("velocidadePista");
+			}
+		});
+		p2.add(velocidadePistaText);
 		buttonsPanel2.add(p2);
 		if (multiplicadorLarguraPista < 1.0) {
 			multiplicadorLarguraPista = 1.0;

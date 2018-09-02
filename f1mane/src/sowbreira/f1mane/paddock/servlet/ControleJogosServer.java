@@ -552,7 +552,7 @@ public class ControleJogosServer {
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
 			String giro) {
 		if (Logger.ativo) {
-			//obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+			// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
 		}
 		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
@@ -566,9 +566,7 @@ public class ControleJogosServer {
 
 	public Boolean mudarAgressividadePiloto(SessaoCliente sessaoCliente,
 			String idPiloto, String agressividade) {
-		if (Logger.ativo) {
-			// obterJogoPorSessaoCliente(sessaoCliente).climaLimpo();
-		}
+
 		if (!Piloto.LENTO.equals(agressividade)
 				&& !Piloto.AGRESSIVO.equals(agressividade)
 				&& !Piloto.NORMAL.equals(agressividade)) {
@@ -578,6 +576,11 @@ public class ControleJogosServer {
 		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
 			return false;
+		}
+		if (Logger.ativo) {
+			// obterJogoPorSessaoCliente(sessaoCliente).climaLimpo();
+			// obterJogoPorSessaoCliente(sessaoCliente)
+			// .forcaQuerbraAereofolio(piloto);
 		}
 		piloto.setAtivarDRS(true);
 		piloto.setModoPilotagem(agressividade);

@@ -34,7 +34,7 @@ public class ControleCorrida {
 	private ControleClima controleClima;
 	private ControleQualificacao controleQualificacao;
 	private double fatorUtrapassagem;
-	private double velocidadeJogo = Constantes.VELOCIDADE_JOGO;
+	private double velocidadePista = Constantes.VELOCIDADE_PISTA;
 	private boolean corridaIniciada;
 	private double fatorAcidente = Util.intervalo(0.3, 0.9);
 	private long pontosPilotoLargada;
@@ -61,6 +61,7 @@ public class ControleCorrida {
 		if (this.fatorUtrapassagem > 0.5) {
 			this.fatorUtrapassagem = 0.5;
 		}
+		this.velocidadePista = controleJogo.getCircuito().getVelocidadePista();
 		this.fatorUtrapassagem = 1.0 - this.fatorUtrapassagem;
 		int valCalc = (qtdeVoltas < 14 ? 14 : qtdeVoltas);
 		distaciaCorrida = jogo.getNosDaPista().size() * valCalc;
@@ -586,7 +587,7 @@ public class ControleCorrida {
 	}
 
 	public double getIndexVelcidadeDaPista() {
-		return velocidadeJogo;
+		return velocidadePista;
 	}
 
 	public void iniciarCiclos() {

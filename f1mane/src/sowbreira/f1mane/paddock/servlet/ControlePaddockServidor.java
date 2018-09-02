@@ -20,6 +20,7 @@ import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
 import br.nnpe.Util;
+import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
@@ -1016,9 +1017,19 @@ public class ControlePaddockServidor {
 			corridaCampeonatoTO.setRodada(rodada);
 			corridaCampeonatoTO
 					.setNomeCircuito(corridaCampeonato.getNomeCircuito());
+			corridaCampeonatoTO.setArquivoCircuito(
+					ControleRecursos.nomeCircuitoParaArquivoCircuito(
+							corridaCampeonato.getNomeCircuito(), true));
 			campeonatoTO.getCorridas().add(corridaCampeonatoTO);
-		}
+			if (rodada == 1) {
+				campeonatoTO.setNomeCircuitoAtual(
+						corridaCampeonato.getNomeCircuito());
+				campeonatoTO.setArquivoCircuitoAtual(
+						corridaCampeonatoTO.getArquivoCircuito());
 
+			}
+			rodada++;
+		}
 		if ("0".equals(campeonato.getIdPiloto())) {
 			CarreiraDadosSrv carreiraDados = obterCarreiraSrv(token);
 			if (carreiraDados == null) {

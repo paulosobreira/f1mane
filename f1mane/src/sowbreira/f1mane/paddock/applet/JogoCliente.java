@@ -228,20 +228,15 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {
-		long tempo = dadosParticiparJogo.getTempoCiclo().intValue();
-		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado,
-				tempo);
+		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado);
 	}
 
 	public String calculaSegundosParaProximo(Piloto psel) {
-		long tempo = dadosParticiparJogo.getTempoCiclo().intValue();
-		return controleEstatisticas.calculaSegundosParaProximo(psel, tempo);
+		return controleEstatisticas.calculaSegundosParaProximo(psel);
 	}
 
-	public double calculaSegundosParaProximoDouble(Piloto psel) {
-		long tempo = dadosParticiparJogo.getTempoCiclo().intValue();
-		return controleEstatisticas.calculaSegundosParaProximoDouble(psel,
-				tempo);
+	public double calculaDiferencaParaProximoDouble(Piloto psel) {
+		return controleEstatisticas.calculaDiferencaParaProximoDouble(psel);
 	}
 
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
@@ -1012,7 +1007,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 				&& (obterCarroNaFrente(pilotoSelecionado) != null
 						&& obterCarroNaFrente(pilotoSelecionado).getPiloto()
 								.getPtosBox() == 0)
-				&& calculaSegundosParaProximoDouble(pilotoSelecionado) < 1) {
+				&& calculaDiferencaParaProximoDouble(pilotoSelecionado) < 1) {
 			monitorJogo.mudarModoDRS(true);
 		}
 	}
@@ -1269,9 +1264,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public String calculaSegundosParaProximo(Piloto psel, int diferenca) {
-		long tempo = dadosParticiparJogo.getTempoCiclo().intValue();
-		return controleEstatisticas.calculaSegundosParaProximo(psel, tempo,
-				diferenca);
+		return controleEstatisticas.calculaSegundosParaProximo(psel, diferenca);
 	}
 
 	@Override
@@ -1341,12 +1334,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	}
 
-	@Override
-	public void forcaQuerbraAereofolio() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public boolean isAtualizacaoSuave() {
 		return atualizacaoSuave;
 	}
@@ -1402,6 +1389,12 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 
 	@Override
 	public void desqualificaPiloto(Piloto piloto) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void forcaQuerbraAereofolio(Piloto piloto) {
 		// TODO Auto-generated method stub
 
 	}

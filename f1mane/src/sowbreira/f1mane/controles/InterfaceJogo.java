@@ -182,7 +182,7 @@ public interface InterfaceJogo {
 
 	public int calculaDiferencaParaProximo(Piloto piloto);
 
-	public double calculaSegundosParaProximoDouble(Piloto psel);
+	public double calculaDiferencaParaProximoDouble(Piloto psel);
 
 	public void mudarModoPilotagem(String modo);
 
@@ -390,7 +390,7 @@ public interface InterfaceJogo {
 
 	public void atualizaInfoDebug(StringBuilder buffer);
 
-	public void forcaQuerbraAereofolio();
+	public void forcaQuerbraAereofolio(Piloto piloto);
 
 	public boolean isAtualizacaoSuave();
 

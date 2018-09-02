@@ -500,7 +500,8 @@ public class GerenciadorVisual {
 						controleJogo.climaChuvoso();
 					}
 					if (keyCoode == KeyEvent.VK_6) {
-						controleJogo.forcaQuerbraAereofolio();
+						controleJogo.forcaQuerbraAereofolio(
+								controleJogo.getPilotoSelecionado());
 					}
 
 				}

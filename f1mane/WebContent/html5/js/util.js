@@ -36,6 +36,9 @@ function getParameter(val) {
 }
 
 function formatarDiferenca(value) {
+	if(dadosParciais.vantagem!=null){
+		return dadosParciais.vantagem;
+	}
 	if(value == null){
 		return '';
 	}

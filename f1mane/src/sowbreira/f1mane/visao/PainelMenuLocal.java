@@ -186,8 +186,8 @@ public class PainelMenuLocal {
 	private RoundRectangle2D trocaPneusRect = new RoundRectangle2D.Double(0, 0,
 			1, 1, 0, 0);
 
-	private RoundRectangle2D reabastecimentoRect = new RoundRectangle2D.Double(0,
-			0, 1, 1, 0, 0);
+	private RoundRectangle2D reabastecimentoRect = new RoundRectangle2D.Double(
+			0, 0, 1, 1, 0, 0);
 
 	private RoundRectangle2D detalhesCampeonatoRct = new RoundRectangle2D.Double(
 			0, 0, 1, 1, 0, 0);
@@ -1104,12 +1104,14 @@ public class PainelMenuLocal {
 		x += (tamDrs + 30);
 
 		String reabastecimentoTxt = Lang.msg("reabastecimento").toUpperCase();
-		int tamReabastecimento = Util.calculaLarguraText(reabastecimentoTxt, g2d);
+		int tamReabastecimento = Util.calculaLarguraText(reabastecimentoTxt,
+				g2d);
 		g2d.setColor(lightWhite);
 		g2d.fillRoundRect(x - 15, y - 12, tamReabastecimento + 10, 32, 0, 0);
 		if (reabastecimento) {
 			g2d.setColor(yel);
-			g2d.drawRoundRect(x - 15, y - 12, tamReabastecimento + 10, 32, 0, 0);
+			g2d.drawRoundRect(x - 15, y - 12, tamReabastecimento + 10, 32, 0,
+					0);
 		}
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(reabastecimentoTxt, x - 10, y + 15);
@@ -1626,8 +1628,7 @@ public class PainelMenuLocal {
 
 		int aerodinamica = piloto.getCarro().getAerodinamica() / 10;
 
-		desenhaBarraPilotoCarro(g2d, y, xbarra, aerodinamica,
-				Lang.msg("aero"));
+		desenhaBarraPilotoCarro(g2d, y, xbarra, aerodinamica, Lang.msg("aero"));
 
 		int freios = piloto.getCarro().getFreios() / 10;
 
@@ -1945,7 +1946,7 @@ public class PainelMenuLocal {
 		}
 	}
 
-	private void selecionaAnteTemporada() {
+	private void selecionaProximaTemporada() {
 		resetPilotosRect();
 		pilotoSelecionado = null;
 		Object objectAnt = null;
@@ -1961,7 +1962,7 @@ public class PainelMenuLocal {
 		}
 	}
 
-	private void selecionaProximaTemporada() {
+	private void selecionaAnteTemporada() {
 		resetPilotosRect();
 		pilotoSelecionado = null;
 		Object objectAnt = null;
@@ -2097,11 +2098,11 @@ public class PainelMenuLocal {
 			boolean campeonato) throws IOException {
 
 		if (temporadaSelecionada == null) {
-			temporadaSelecionada = (String) temporadas
-					.get(temporadas.size() - 1);
+			temporadaSelecionada = (String) temporadas.get(0);
 		}
 
-		if (temporadaSelecionada != (String) temporadas.get(0)) {
+		if (temporadaSelecionada != (String) temporadas
+				.get(temporadas.size() - 1)) {
 			g2d.setColor(lightWhite);
 			anteTemporadaRect.setFrame(x, y - 25, 30, 30);
 			g2d.fill(anteTemporadaRect);
@@ -2121,8 +2122,7 @@ public class PainelMenuLocal {
 
 		x += larguraTexto + 30;
 
-		if (temporadaSelecionada != (String) temporadas
-				.get(temporadas.size() - 1)) {
+		if (temporadaSelecionada != (String) temporadas.get(0)) {
 			g2d.setColor(lightWhite);
 			proxTemporadaRect.setFrame(x, y - 25, 30, 30);
 			g2d.fill(proxTemporadaRect);
@@ -2288,8 +2288,10 @@ public class PainelMenuLocal {
 		x += (tamDrs + 30);
 
 		String reabastecimentoTxt = Lang.msg("reabastecimento").toUpperCase();
-		int tamReabastecimento = Util.calculaLarguraText(reabastecimentoTxt, g2d);
-		reabastecimentoRect.setFrame(x - 15, y - 12, tamReabastecimento + 10, 32);
+		int tamReabastecimento = Util.calculaLarguraText(reabastecimentoTxt,
+				g2d);
+		reabastecimentoRect.setFrame(x - 15, y - 12, tamReabastecimento + 10,
+				32);
 		g2d.setColor(lightWhite);
 		g2d.fill(reabastecimentoRect);
 		if (reabastecimento) {

@@ -16,6 +16,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
@@ -110,9 +111,10 @@ public abstract class ControleRecursos {
 	}
 
 	public void carregarPilotosCarros() throws IOException {
-		if (this instanceof JogoServidor){
-			carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);	
-		}else{
+		if (this instanceof JogoServidor) {
+			carregadorRecursos = CarregadorRecursos
+					.getCarregadorRecursos(false);
+		} else {
 			carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(true);
 		}
 		carros = carregadorRecursos.carregarListaCarros(temporada);
@@ -338,6 +340,24 @@ public abstract class ControleRecursos {
 			String nmCircuito = (String) iterator.next();
 			if (carregarCircuitos.get(nmCircuito).equals(arquivoCircuito)) {
 				return nmCircuito;
+			}
+		}
+		return null;
+	}
+
+	public static String nomeCircuitoParaArquivoCircuito(String nomeCircuito,
+			boolean substVogais) {
+		Map<String, String> carregarCircuitos = ControleRecursos
+				.carregarCircuitos();
+		for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
+				.hasNext();) {
+			String nmCircuito = (String) iterator.next();
+			String compare = nmCircuito; 
+			if (substVogais) {
+				compare = Util.substVogais(nmCircuito);
+			}
+			if (compare.equals(nomeCircuito)) {
+				return carregarCircuitos.get(nmCircuito);
 			}
 		}
 		return null;

@@ -35,6 +35,11 @@ $('#criarCampeonatoBtn').bind("click", function() {
 	criarCampeonato();
 });
 
+$('#btnJogar').bind("click", function() {
+	localStorage.setItem("modoCampeonato", true);
+	window.location = "jogar.html";
+});
+
 var adicionarLiCircuito;
 var circuitos;
 
@@ -112,7 +117,7 @@ function carregaCampeonato() {
 					var tr = $('<tr style="cursor: pointer; cursor: hand" />');
 					var td1 = $('<td/>');
 					var td2 = $('<td/>');
-					td1.append(i);
+					td1.append(corrida.rodada);
 					td2.append(corrida.nomeCircuito);
 					tr.append(td1);
 					tr.append(td2);
@@ -340,6 +345,7 @@ function selecionaTemporada(temporada) {
 	
 	$('#pilotoSelecionado').addClass('hide');
 	$('#divPilotoSelecionado').removeClass('hide');
+	$('#temporadaCarousel').carousel('pause');
 	
 }
 

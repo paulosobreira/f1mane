@@ -73,7 +73,7 @@ public class ControleJogoLocal extends ControleRecursos
 
 	public ControleJogoLocal(String temporada) throws Exception {
 		super(temporada);
-		if (!(this instanceof JogoServidor)){
+		if (!(this instanceof JogoServidor)) {
 			gerenciadorVisual = new GerenciadorVisual(this);
 		}
 		controleEstatisticas = new ControleEstatisticas(this);
@@ -330,9 +330,7 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#calculaSegundosParaLider(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {
-		long tempo = Constantes.CICLO;
-		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado,
-				tempo);
+		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado);
 	}
 
 	/**
@@ -589,14 +587,11 @@ public class ControleJogoLocal extends ControleRecursos
 	 * @see sowbreira.f1mane.controles.InterfaceJogo#calculaSegundosParaProximo(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String calculaSegundosParaProximo(Piloto psel) {
-		long tempo = Constantes.CICLO;
-		return controleEstatisticas.calculaSegundosParaProximo(psel, tempo);
+		return controleEstatisticas.calculaSegundosParaProximo(psel);
 	}
 
-	public double calculaSegundosParaProximoDouble(Piloto psel) {
-		long tempo = Constantes.CICLO;
-		return controleEstatisticas.calculaSegundosParaProximoDouble(psel,
-				tempo);
+	public double calculaDiferencaParaProximoDouble(Piloto psel) {
+		return controleEstatisticas.calculaDiferencaParaProximoDouble(psel);
 	}
 
 	/**
@@ -1550,9 +1545,7 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public String calculaSegundosParaProximo(Piloto psel, int diferenca) {
-		long tempo = Constantes.CICLO;
-		return controleEstatisticas.calculaSegundosParaProximo(psel, tempo,
-				diferenca);
+		return controleEstatisticas.calculaSegundosParaProximo(psel, diferenca);
 	}
 
 	@Override
@@ -1624,7 +1617,7 @@ public class ControleJogoLocal extends ControleRecursos
 		buffer.append("MAXMEMORY :" + maxMemory + "<br>");
 		buffer.append("ALLOCATEDMEMORY :" + allocatedMemory + "<br>");
 		buffer.append("FREEMEMORY :" + freeMemory + "<br>");
-		
+
 		Field[] declaredFields = this.getClass().getDeclaredFields();
 		List<String> campos = new ArrayList<String>();
 		buffer.append("-=ControleJogo=- <br>");
@@ -1694,13 +1687,13 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	@Override
-	public void forcaQuerbraAereofolio() {
-		if (pilotoSelecionado == null) {
+	public void forcaQuerbraAereofolio(Piloto piloto) {
+		if (piloto == null) {
 			return;
 		}
-		pilotoSelecionado.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
+		piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
 				this);
-		pilotoSelecionado.getCarro().setDurabilidadeAereofolio(0);
+		piloto.getCarro().setDurabilidadeAereofolio(0);
 	}
 
 	public boolean isAtualizacaoSuave() {
