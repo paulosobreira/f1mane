@@ -1035,6 +1035,7 @@ public class ControlePaddockServidor {
 			if (carreiraDados == null) {
 				return null;
 			}
+			campeonatoTO.setModoCarreira(true);
 			campeonatoTO.setNomePiloto(carreiraDados.getNomePiloto());
 			campeonatoTO
 					.setTemporadaCarro(Util.rgb2hex(carreiraDados.geraCor1()));
@@ -1064,6 +1065,7 @@ public class ControlePaddockServidor {
 			campeonatoTO.setCarroPiloto(carreiraDados.getNomeCarro());
 
 		} else {
+			campeonatoTO.setModoCarreira(false);
 			Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
 					.carregarTemporadasPilotosDefauts();
 			TemporadasDefauts temporadasDefauts = tempDefsMap

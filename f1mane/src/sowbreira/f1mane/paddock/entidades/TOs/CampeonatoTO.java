@@ -26,6 +26,8 @@ public class CampeonatoTO implements Serializable {
 
 	private transient String idPiloto;
 
+	private boolean modoCarreira;
+
 	private Campeonato campeonato;
 
 	private List<CorridaCampeonatoTO> corridas = new ArrayList<CorridaCampeonatoTO>();
@@ -128,6 +130,18 @@ public class CampeonatoTO implements Serializable {
 
 	public void setArquivoCircuitoAtual(String arquivoCircuitoAtual) {
 		this.arquivoCircuitoAtual = arquivoCircuitoAtual;
+	}
+
+	public boolean isModoCarreira() {
+		return modoCarreira;
+	}
+
+	public void setModoCarreira(boolean modoCarreira) {
+		this.modoCarreira = modoCarreira;
+	}
+
+	public Long getId() {
+		return campeonato.getId();
 	}
 
 }

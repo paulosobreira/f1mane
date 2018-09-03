@@ -181,12 +181,12 @@ public class ControleCampeonatoServidor {
 		if (!Constantes.DATABASE) {
 			return;
 		}
-		String campString = dadosCriarJogo.getNomeCampeonato();
+		String idCampeonato = dadosCriarJogo.getIdCampeonato().toString();
 		Session session = controlePersistencia.getSession();
 		try {
 
 			Campeonato campeonato = controlePersistencia
-					.pesquisaCampeonato(session, campString, false);
+					.pesquisaCampeonato(session, idCampeonato, false);
 			if (campeonato == null) {
 				Logger.logar("campeonato nulo");
 				return;

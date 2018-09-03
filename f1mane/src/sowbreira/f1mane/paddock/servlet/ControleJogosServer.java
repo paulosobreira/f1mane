@@ -90,23 +90,6 @@ public class ControleJogosServer {
 		}
 		Session session = controlePersistencia.getSession();
 		try {
-			// TODO
-			/**
-			 * Id campeonato
-			 */
-			if (Constantes.DATABASE && !Util.isNullOrEmpty(clientPaddockPack
-					.getDadosJogoCriado().getNomeCampeonato())) {
-				Campeonato campeonato = controlePersistencia.pesquisaCampeonato(
-						session, clientPaddockPack.getDadosJogoCriado()
-								.getNomeCampeonato(),
-						false);
-				if (campeonato != null && !clientPaddockPack.getSessaoCliente()
-						.getToken().equalsIgnoreCase(
-								campeonato.getJogadorDadosSrv().getToken())) {
-					return new MsgSrv(Lang.msg("somenteDonoPodeCriar"));
-				}
-
-			}
 			if ((mapaJogosCriados.size() + 1) > MaxJogo) {
 				return new MsgSrv(Lang.msg("204", new Object[]{MaxJogo}));
 			}

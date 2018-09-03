@@ -27,6 +27,7 @@ public class DadosCriarJogo implements Serializable {
 
 	private Integer diffultrapassagem = null;
 	private String nomeCampeonato;
+	private Long idCampeonato;
 	private Integer tempoQualificacao = null;
 	private String asa;
 	private String temporada;
@@ -275,6 +276,14 @@ public class DadosCriarJogo implements Serializable {
 
 	public void setSafetyCar(boolean safetyCar) {
 		this.safetyCar = safetyCar;
+	}
+
+	public Long getIdCampeonato() {
+		return idCampeonato;
+	}
+
+	public void setIdCampeonato(Long idCampeonato) {
+		this.idCampeonato = idCampeonato;
 	}
 
 }

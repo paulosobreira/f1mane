@@ -520,9 +520,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 						controleClassificacao.processaCorrida(tempoInicio,
 								tempoFim, mapVoltasJogadoresOnline, pilotos,
 								dadosCriarJogo);
-						// TODO Id Campeonato
-						if (!Util.isNullOrEmpty(
-								dadosCriarJogo.getNomeCampeonato())) {
+						if (dadosCriarJogo.getIdCampeonato()!=null) {
 							controleCampeonatoServidor.processaCorrida(
 									tempoInicio, tempoFim,
 									mapVoltasJogadoresOnline, pilotos,

@@ -31,6 +31,7 @@ import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.CircuitosDefauts;
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
@@ -361,29 +362,46 @@ public class LetsRace {
 			if (sessaoCliente == null) {
 				return Response.status(401).build();
 			}
-			
-			if(true){
-				DadosJogo dadosJogo = new DadosJogo();
-				return Response.status(200).entity(dadosJogo).build();
-			}
+
 			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
-			String arquivoCircuito = null;
-			String idPiloto = null;
-			String numVoltas = null;
+
+			CampeonatoTO campeonato = controlePaddock
+					.obterCampeonatoEmAberto(token);
+
+			String arquivoCircuito = campeonato.getArquivoCircuitoAtual();
+			String idPiloto = campeonato.getIdPiloto();
+			String numVoltas = campeonato.getQtdeVoltas().toString();
+			
+			
+			MsgSrv modoCarreiraRet = controlePaddock.modoCarreira(token,
+					campeonato.isModoCarreira());
+			
+			if (modoCarreiraRet != null) {
+				Response erro = processsaMensagem(modoCarreiraRet, idioma);
+				if (erro != null) {
+					return erro;
+				}else{
+					Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
+							.carregarTemporadasPilotosDefauts();
+					TemporadasDefauts temporadasDefauts = tempDefsMap
+							.get("t" + campeonato.getTemporada());
+					List<Piloto> pilotos = temporadasDefauts.getPilotos();
+					idPiloto = String.valueOf(pilotos.get(pilotos.size()-1).getId());
+				}
+			}
+
 
 			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(
 					temporada, arquivoCircuito, idPiloto, numVoltas, tipoPneu,
 					combustivel, asa);
+			
+			dadosCriarJogo.setNomeCampeonato(campeonato.getNome());
+			dadosCriarJogo.setIdCampeonato(campeonato.getId());
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-			List<String> obterJogos = controlePaddock.obterJogos();
-			if (!obterJogos.isEmpty()) {
-				clientPaddockPack.setNomeJogo(obterJogos.get(0));
-			}
 			SrvPaddockPack srvPaddockPack = null;
 			Object statusJogo = null;
-			statusJogo = controlePaddock.obterJogoPeloNome(clientPaddockPack);
 			/**
 			 * Criar Jogo
 			 */
@@ -405,6 +423,17 @@ public class LetsRace {
 					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
 			clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
 
+			/**
+			 * Entrar Jogo
+			 */
+			if (statusJogo != null) {
+				statusJogo = controlePaddock.entrarJogo(clientPaddockPack);
+				Response erro = processsaMensagem(statusJogo, idioma);
+				if (erro != null) {
+					return erro;
+				}
+				controlePaddock.atualizarDadosVisao();
+			}
 			DadosJogo dadosJogo = (DadosJogo) controlePaddock
 					.obterDadosJogo(clientPaddockPack);
 			return Response.status(200).entity(dadosJogo).build();
@@ -998,5 +1027,4 @@ public class LetsRace {
 
 		return Response.status(200).entity(campeonato).build();
 	}
-
 }
