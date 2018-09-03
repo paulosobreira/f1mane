@@ -64,7 +64,9 @@ $('#selecionaTpAsa').find('tr').bind("click", function() {
 });
 
 $('#btnJogar').unbind().bind("click", function() {
-	if ((dadosJogo.estado == 'NENHUM' || dadosJogo.estado == '07') && !jogoPreparado) {
+	if("true" == localStorage.getItem("modoCampeonato")){
+		jogarCampeonato();
+	}else if ((dadosJogo.estado == 'NENHUM' || dadosJogo.estado == '07') && !jogoPreparado) {
 		preparaJogo();
 	} else {
 		jogar();
@@ -242,6 +244,7 @@ function carregarDadosJogoCampeonato(){
 				}
 				$('#btnJogar').css('z-index', '100000');
 				$('#idNumeroVoltas').addClass('hide');
+				$('#btnJogar').show();
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
@@ -365,6 +368,48 @@ function preparaJogo() {
 	}
 	jogoPreparado = true;
 }
+
+function jogarCampeonato() {
+	var tpPneu = $('#selecionaTpPneu').find('tr.success').find('div.transbox').attr('id');
+	var combustivel = $('#procentCombustivel').val();
+	var tpAsa = $('#selecionaTpAsa').find('tr.success').find('div.transbox').attr('id');
+	if (combustivel > 100) {
+		combustivel = 100;
+	}
+	if (combustivel < 0 ) {
+		combustivel = 0;
+	}
+	var urlServico = "/f1mane/rest/letsRace/jogarCampeonato/" + tpPneu + "/" + combustivel + "/" + tpAsa;
+	$.ajax({
+		type : "GET",
+		url : urlServico,
+		headers : {
+			'token' : token,
+			'idioma' : localStorage.getItem('idioma')
+		},
+		contentType : "application/json",
+		dataType : "json",
+		success : function(dadosJogo) {
+			alert('Jogo Criado');
+//			localStorage.setItem("nomeJogo", dadosJogo.nomeJogo);
+//			localStorage.setItem("token", token);
+//			localStorage.setItem("idPilotoSelecionado", dadosJogo.idPilotoSelecionado);
+//			window.location.href = "corrida.html";
+		},
+		error : function(xhRequest, ErrorText, thrownError) {
+			tratamentoErro(xhRequest);
+			if (xhRequest.status != 401) {
+				setTimeout(function() {
+					window.location.href = "jogar.html";
+				}, 3000);
+
+			}
+			console.log('jogar() ' + xhRequest.status + '  ' + xhRequest.responseText);
+		}
+	});
+}
+
+
 
 function jogar() {
 	if (temporadaSelecionada == null || idPilotoSelecionado == null || circuitoSelecionado == null) {

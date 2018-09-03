@@ -3,7 +3,6 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -35,6 +34,7 @@ public class DadosJogo implements Serializable {
 	private String nomeJogo;
 	private String estado;
 	private String segundosParaIniciar;
+	
 	public List<Piloto> getPilotos() {
 		return pilotos;
 	}
