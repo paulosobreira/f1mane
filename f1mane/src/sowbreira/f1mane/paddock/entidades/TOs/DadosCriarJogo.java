@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.nnpe.Constantes;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
 import sowbreira.f1mane.controles.ControleRecursos;
@@ -53,6 +54,14 @@ public class DadosCriarJogo implements Serializable {
 			String arquivoCircuito, String idPiloto, String numVoltas,
 			String tipoPneu, String combustivel, String asa)
 			throws ClassNotFoundException, IOException {
+		Logger.logar("gerarJogoLetsRace temporada " + temporada);
+		Logger.logar("gerarJogoLetsRace arquivoCircuito " + arquivoCircuito);
+		Logger.logar("gerarJogoLetsRace idPiloto " + idPiloto);
+		Logger.logar("gerarJogoLetsRace numVoltas " + numVoltas);
+		Logger.logar("gerarJogoLetsRace tipoPneu " + tipoPneu);
+		Logger.logar("gerarJogoLetsRace combustivel " + combustivel);
+		Logger.logar("gerarJogoLetsRace asa " + asa);
+
 		DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 		dadosCriarJogo.setTemporada("t" + temporada);
 		if (!Util.isNullOrEmpty(numVoltas)) {
@@ -62,7 +71,8 @@ public class DadosCriarJogo implements Serializable {
 		dadosCriarJogo.setQtdeVoltas(Constantes.MIN_VOLTAS);
 		dadosCriarJogo.setDiffultrapassagem(Util.intervalo(200, 500));
 
-		String pista = ControleRecursos.nomeArquivoCircuitoParaPista(arquivoCircuito);
+		String pista = ControleRecursos
+				.nomeArquivoCircuitoParaPista(arquivoCircuito);
 
 		// pista = "Monte Carlo";
 		// dadosCriarJogo.setSafetyCar(false);

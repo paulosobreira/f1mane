@@ -16,6 +16,7 @@ import javax.mail.internet.AddressException;
 import org.hibernate.Session;
 
 import br.nnpe.Constantes;
+import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
@@ -1021,12 +1022,17 @@ public class ControlePaddockServidor {
 					ControleRecursos.nomeCircuitoParaArquivoCircuito(
 							corridaCampeonato.getNomeCircuito(), true));
 			campeonatoTO.getCorridas().add(corridaCampeonatoTO);
-			if (rodada == 1) {
+			if (corridaCampeonato.getTempoFim() == null
+					&& campeonatoTO.getArquivoCircuitoAtual() == null) {
 				campeonatoTO.setNomeCircuitoAtual(
 						corridaCampeonato.getNomeCircuito());
 				campeonatoTO.setArquivoCircuitoAtual(
 						corridaCampeonatoTO.getArquivoCircuito());
 
+			}
+			if (corridaCampeonato.getTempoFim() != null) {
+				Dia dia = new Dia(corridaCampeonato.getTempoFim());
+				corridaCampeonatoTO.setData(dia.toString());
 			}
 			rodada++;
 		}
@@ -1092,6 +1098,17 @@ public class ControlePaddockServidor {
 
 	public CarreiraDadosSrv obterCarreiraSrv(String token) {
 		return controleClassificacao.obterCarreiraSrv(token);
+	}
+
+	public Campeonato pesquisaCampeonato(String string) {
+		Session session = controlePersistencia.getSession();
+		try {
+			return controlePersistencia.pesquisaCampeonato(session, string, true);
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
 	}
 
 }

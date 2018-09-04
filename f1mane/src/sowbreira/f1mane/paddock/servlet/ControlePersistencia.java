@@ -545,6 +545,7 @@ public class ControlePersistencia {
 			boolean cliente) {
 		List campeonatos = session.createCriteria(Campeonato.class)
 				.add(Restrictions.eq("id", new Long(id))).list();
+		System.out.println(campeonatos.isEmpty());
 		Campeonato campeonato = (Campeonato) (campeonatos.isEmpty()
 				? null
 				: campeonatos.get(0));

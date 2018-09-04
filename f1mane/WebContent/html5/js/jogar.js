@@ -390,11 +390,10 @@ function jogarCampeonato() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(dadosJogo) {
-			alert('Jogo Criado');
-//			localStorage.setItem("nomeJogo", dadosJogo.nomeJogo);
-//			localStorage.setItem("token", token);
-//			localStorage.setItem("idPilotoSelecionado", dadosJogo.idPilotoSelecionado);
-//			window.location.href = "corrida.html";
+			localStorage.setItem("nomeJogo", dadosJogo.nomeJogo);
+			localStorage.setItem("token", token);
+			localStorage.setItem("idPilotoSelecionado", dadosJogo.idPilotoSelecionado);
+			window.location.href = "corrida.html";
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
 			tratamentoErro(xhRequest);

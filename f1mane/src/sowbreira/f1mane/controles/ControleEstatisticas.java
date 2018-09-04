@@ -561,6 +561,8 @@ public class ControleEstatisticas {
 	}
 
 	private Long diferecaParaSegundos(long diff) {
-		return (diff / Util.intervalo(30, 40)) * Constantes.CICLO;
+		return Math
+				.round((diff / new Double(Util.intervalo(30, 40)).doubleValue())
+						* Constantes.CICLO);
 	}
 }
