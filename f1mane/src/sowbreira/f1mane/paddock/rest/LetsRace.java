@@ -1027,17 +1027,4 @@ public class LetsRace {
 		return Response.status(200).entity(campeonato).build();
 	}
 
-//	@GET
-//	@Compress
-//	@Path("/campeonatoTeste")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response campeonatoTeste() {
-//
-//		Campeonato campeonato = controlePaddock.pesquisaCampeonato("1");
-//		if (campeonato == null) {
-//			return Response.status(204).build();
-//		}
-//
-//		return Response.status(200).entity(campeonato).build();
-//	}
 }

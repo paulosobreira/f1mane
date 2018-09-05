@@ -64,16 +64,7 @@ public class ControlePersistencia {
 		if (!Constantes.DATABASE) {
 			return null;
 		}
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
-			List jogador = session.createCriteria(JogadorDadosSrv.class)
-					.add(Restrictions.eq("id", new Long(0))).list();
-		} catch (Exception e) {
-			Logger.logarExept(e);
-			Logger.novaSession = true;
-			return HibernateUtil.getSessionFactory().openSession();
-		}
-		return session;
+		return HibernateUtil.getSessionFactory().openSession();
 	}
 
 	public ControlePersistencia(String webDir, String webInfDir) {
@@ -545,7 +536,6 @@ public class ControlePersistencia {
 			boolean cliente) {
 		List campeonatos = session.createCriteria(Campeonato.class)
 				.add(Restrictions.eq("id", new Long(id))).list();
-		System.out.println(campeonatos.isEmpty());
 		Campeonato campeonato = (Campeonato) (campeonatos.isEmpty()
 				? null
 				: campeonatos.get(0));
@@ -573,7 +563,7 @@ public class ControlePersistencia {
 		}
 		return campeonatos;
 	}
-	
+
 	public List pesquisaCampeonatosEmAberto(String token, Session session,
 			boolean cliente) {
 		List campeonatos = session.createCriteria(Campeonato.class)
@@ -590,7 +580,6 @@ public class ControlePersistencia {
 		}
 		return campeonatos;
 	}
-	
 
 	public void campeonatoCliente(Session session, Campeonato campeonato) {
 		for (CorridaCampeonato corridaCampeonato : campeonato

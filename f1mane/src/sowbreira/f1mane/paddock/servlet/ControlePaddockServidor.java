@@ -5,6 +5,8 @@ package sowbreira.f1mane.paddock.servlet;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1009,13 +1011,12 @@ public class ControlePaddockServidor {
 		List<CorridaCampeonato> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
 
-		int rodada = 1;
 		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
 				.hasNext();) {
 			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
 					.next();
 			CorridaCampeonatoTO corridaCampeonatoTO = new CorridaCampeonatoTO();
-			corridaCampeonatoTO.setRodada(rodada);
+			corridaCampeonatoTO.setRodada(corridaCampeonato.getRodada());
 			corridaCampeonatoTO
 					.setNomeCircuito(corridaCampeonato.getNomeCircuito());
 			corridaCampeonatoTO.setArquivoCircuito(
@@ -1034,7 +1035,6 @@ public class ControlePaddockServidor {
 				Dia dia = new Dia(corridaCampeonato.getTempoFim());
 				corridaCampeonatoTO.setData(dia.toString());
 			}
-			rodada++;
 		}
 		if ("0".equals(campeonato.getIdPiloto())) {
 			CarreiraDadosSrv carreiraDados = obterCarreiraSrv(token);
@@ -1092,7 +1092,13 @@ public class ControlePaddockServidor {
 			campeonatoTO.setTemporadaCarro(campeonato.getTemporada());
 			campeonatoTO.setTemporadaCapacete(campeonato.getTemporada());
 		}
-
+		Collections.sort(campeonatoTO.getCorridas(),
+				new Comparator<CorridaCampeonatoTO>() {
+					public int compare(CorridaCampeonatoTO arg0,
+							CorridaCampeonatoTO arg1) {
+						return arg0.getRodada().compareTo(arg1.getRodada());
+					}
+				});
 		return campeonatoTO;
 	}
 
@@ -1103,7 +1109,8 @@ public class ControlePaddockServidor {
 	public Campeonato pesquisaCampeonato(String string) {
 		Session session = controlePersistencia.getSession();
 		try {
-			return controlePersistencia.pesquisaCampeonato(session, string, true);
+			return controlePersistencia.pesquisaCampeonato(session, string,
+					true);
 		} finally {
 			if (session.isOpen()) {
 				session.close();

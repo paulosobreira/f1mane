@@ -122,11 +122,15 @@ function carregaCampeonato() {
 					tr.append(td1);
 					tr.append(td2);
 					$('#corridasTO').append(tr);
+					console.log('corrida.data '+corrida.data);
 					if(corrida.data!=null){
-						tr = $('<tr />');
+						tr = $('<tr/>');
 						td1 = $('<td/>');
-						td1.append(corrida.data);
+						td1.append(corrida.rodada);
+						td2 = $('<td/>');
+						td2.append(corrida.data);
 						tr.append(td1);
+						tr.append(td2);
 						$('#corridasTO').append(tr);
 					}
 				});

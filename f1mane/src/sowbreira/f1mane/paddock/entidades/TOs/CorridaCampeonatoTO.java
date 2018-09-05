@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class CorridaCampeonatoTO implements Serializable {
 
-	private int rodada;
+	private Long rodada;
 
 	private String nomeCircuito;
 
@@ -38,20 +38,20 @@ public class CorridaCampeonatoTO implements Serializable {
 		this.vencedor = vencedor;
 	}
 
-	public int getRodada() {
-		return rodada;
-	}
-
-	public void setRodada(int rodada) {
-		this.rodada = rodada;
-	}
-
 	public String getArquivoCircuito() {
 		return arquivoCircuito;
 	}
 
 	public void setArquivoCircuito(String arquivoCircuito) {
 		this.arquivoCircuito = arquivoCircuito;
+	}
+
+	public Long getRodada() {
+		return rodada;
+	}
+
+	public void setRodada(Long rodada) {
+		this.rodada = rodada;
 	}
 
 }

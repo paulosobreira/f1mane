@@ -85,11 +85,14 @@ public class ControleCampeonatoServidor {
 			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
 			List<CorridaCampeonato> corridaCampeonatos = campeonato
 					.getCorridaCampeonatos();
+			long rodada = 1;
 			for (Iterator iterator = corridaCampeonatos.iterator(); iterator
 					.hasNext();) {
 				CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
 						.next();
+				corridaCampeonato.setRodada(rodada);
 				corridaCampeonato.setCampeonato(campeonato);
+				rodada++;
 
 			}
 			controlePersistencia.gravarDados(session, campeonato);
@@ -182,19 +185,19 @@ public class ControleCampeonatoServidor {
 			return;
 		}
 		String idCampeonato = dadosCriarJogo.getIdCampeonato().toString();
-		Logger.logar("idCampeonato " + idCampeonato);
 		Session session = controlePersistencia.getSession();
 		try {
 			Campeonato campeonato = controlePersistencia
 					.pesquisaCampeonato(session, idCampeonato, false);
 			if (campeonato == null) {
-				Logger.logar("campeonato nulo");
 				return;
 			}
 			CorridaCampeonato corridaCampeonatoCorrente = null;
+			String circuitoSelecionado = Util
+					.substVogais(dadosCriarJogo.getCircuitoSelecionado());
 			for (CorridaCampeonato corridaCampeonato : campeonato
 					.getCorridaCampeonatos()) {
-				if (dadosCriarJogo.getCircuitoSelecionado()
+				if (circuitoSelecionado
 						.equals(corridaCampeonato.getNomeCircuito())) {
 					corridaCampeonatoCorrente = corridaCampeonato;
 					break;

@@ -14,7 +14,8 @@ import javax.persistence.OneToMany;
 public class CorridaCampeonato extends F1ManeDados {
 
 	private String nomeCircuito;
-	private Long tempoInicio, tempoFim;
+	private String arquivoCircuito;
+	private Long rodada, tempoInicio, tempoFim;
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Campeonato campeonato;
@@ -60,6 +61,22 @@ public class CorridaCampeonato extends F1ManeDados {
 	public void setDadosCorridaCampeonatos(
 			List<DadosCorridaCampeonato> dadosCorridaCampeonatos) {
 		this.dadosCorridaCampeonatos = dadosCorridaCampeonatos;
+	}
+
+	public String getArquivoCircuito() {
+		return arquivoCircuito;
+	}
+
+	public void setArquivoCircuito(String arquivoCircuito) {
+		this.arquivoCircuito = arquivoCircuito;
+	}
+
+	public Long getRodada() {
+		return rodada;
+	}
+
+	public void setRodada(Long rodada) {
+		this.rodada = rodada;
 	}
 
 }
