@@ -12,6 +12,7 @@ public class DadosCorridaCampeonato extends F1ManeDados {
 
 	private int posicao;
 	private String piloto;
+	private String corPiloto;
 	private String jogador;
 	private String carro;
 	private String tpPneu;
@@ -128,6 +129,14 @@ public class DadosCorridaCampeonato extends F1ManeDados {
 
 	public void setPosicao(int posicao) {
 		this.posicao = posicao;
+	}
+
+	public String getCorPiloto() {
+		return corPiloto;
+	}
+
+	public void setCorPiloto(String corPiloto) {
+		this.corPiloto = corPiloto;
 	}
 
 }

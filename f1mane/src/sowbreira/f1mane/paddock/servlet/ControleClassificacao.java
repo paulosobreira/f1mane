@@ -594,10 +594,14 @@ public class ControleClassificacao {
 		}
 	}
 	public CarreiraDadosSrv obterCarreiraSrv(String token) {
-		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
-				.carregaCarreiraJogador(token, false,
-						controlePersistencia.getSession());
-		return carreiraDadosSrv;
+		Session session = controlePersistencia.getSession();
+		try {
+			CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
+					.carregaCarreiraJogador(token, false, session);
+			return carreiraDadosSrv;
+		} finally {
+			session.close();
+		}
 	}
 
 	public List obterClassificacaoCircuito(String nomeCircuito) {

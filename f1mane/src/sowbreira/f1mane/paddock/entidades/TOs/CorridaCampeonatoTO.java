@@ -14,6 +14,8 @@ public class CorridaCampeonatoTO implements Serializable {
 
 	private String vencedor;
 
+	private String corVencedor;
+
 	public String getNomeCircuito() {
 		return nomeCircuito;
 	}
@@ -52,6 +54,14 @@ public class CorridaCampeonatoTO implements Serializable {
 
 	public void setRodada(Long rodada) {
 		this.rodada = rodada;
+	}
+
+	public String getCorVencedor() {
+		return corVencedor;
+	}
+
+	public void setCorVencedor(String corVencedor) {
+		this.corVencedor = corVencedor;
 	}
 
 }

@@ -125,16 +125,18 @@ function carregaCampeonato() {
 					console.log('corrida.data '+corrida.data);
 					if(corrida.data!=null){
 						tr = $('<tr/>');
-						td1 = $('<td/>');
-						td1.append(corrida.rodada);
-						td2 = $('<td/>');
-						td2.append(corrida.data);
-						tr.append(td1);
-						tr.append(td2);
+						td = $('<td/>');
+						td.append(corrida.data);
+						td.append(' ');
+						var div = $('<div style="display: inline; background-color: '+corrida.corVencedor+'; margin: 5px;" />');
+						div.append('&nbsp;');
+						td.append(div);
+						td.append(corrida.vencedor);
+						tr.append($('<td/>'));
+						tr.append(td);
 						$('#corridasTO').append(tr);
 					}
 				});
-				
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {

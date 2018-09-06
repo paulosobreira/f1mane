@@ -44,6 +44,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -75,7 +76,7 @@ public class ControlePaddockServidor {
 		this.controlePersistencia = controlePersistencia;
 		controleClassificacao = new ControleClassificacao(controlePersistencia);
 		controleCampeonatoServidor = new ControleCampeonatoServidor(
-				controlePersistencia);
+				controlePersistencia, this);
 		controleJogosServer = new ControleJogosServer(dadosPaddock,
 				controleClassificacao, controleCampeonatoServidor,
 				controlePersistencia, this);
@@ -1000,106 +1001,7 @@ public class ControlePaddockServidor {
 	}
 
 	public CampeonatoTO obterCampeonatoEmAberto(String token) {
-		Campeonato campeonato = controleCampeonatoServidor
-				.obterCampeonatoEmAberto(token);
-		if (campeonato == null) {
-			return null;
-		}
-		CampeonatoTO campeonatoTO = new CampeonatoTO();
-		campeonatoTO.setCampeonato(campeonato);
-
-		List<CorridaCampeonato> corridaCampeonatos = campeonato
-				.getCorridaCampeonatos();
-
-		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
-				.hasNext();) {
-			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
-					.next();
-			CorridaCampeonatoTO corridaCampeonatoTO = new CorridaCampeonatoTO();
-			corridaCampeonatoTO.setRodada(corridaCampeonato.getRodada());
-			corridaCampeonatoTO
-					.setNomeCircuito(corridaCampeonato.getNomeCircuito());
-			corridaCampeonatoTO.setArquivoCircuito(
-					ControleRecursos.nomeCircuitoParaArquivoCircuito(
-							corridaCampeonato.getNomeCircuito(), true));
-			campeonatoTO.getCorridas().add(corridaCampeonatoTO);
-			if (corridaCampeonato.getTempoFim() == null
-					&& campeonatoTO.getArquivoCircuitoAtual() == null) {
-				campeonatoTO.setNomeCircuitoAtual(
-						corridaCampeonato.getNomeCircuito());
-				campeonatoTO.setArquivoCircuitoAtual(
-						corridaCampeonatoTO.getArquivoCircuito());
-
-			}
-			if (corridaCampeonato.getTempoFim() != null) {
-				Dia dia = new Dia(corridaCampeonato.getTempoFim());
-				corridaCampeonatoTO.setData(dia.toString());
-			}
-		}
-		if ("0".equals(campeonato.getIdPiloto())) {
-			CarreiraDadosSrv carreiraDados = obterCarreiraSrv(token);
-			if (carreiraDados == null) {
-				return null;
-			}
-			campeonatoTO.setModoCarreira(true);
-			campeonatoTO.setNomePiloto(carreiraDados.getNomePiloto());
-			campeonatoTO
-					.setTemporadaCarro(Util.rgb2hex(carreiraDados.geraCor1()));
-			campeonatoTO.setIdCarro(Util.rgb2hex(carreiraDados.geraCor2()));
-
-			campeonatoTO.setTemporadaCapacete(
-					Util.rgb2hex(carreiraDados.geraCor1()));
-
-			campeonatoTO.setIdPiloto(Util.rgb2hex(carreiraDados.geraCor2()));
-
-			if (carreiraDados.getIdCapaceteLivery() != null
-					&& carreiraDados.getTemporadaCapaceteLivery() != null) {
-				campeonatoTO.setTemporadaCapacete(
-						carreiraDados.getTemporadaCapaceteLivery().toString());
-				campeonatoTO.setIdPiloto(
-						carreiraDados.getIdCapaceteLivery().toString());
-			}
-
-			if (carreiraDados.getIdCarroLivery() != null
-					&& carreiraDados.getTemporadaCarroLivery() != null) {
-				campeonatoTO.setTemporadaCarro(
-						carreiraDados.getTemporadaCarroLivery().toString());
-				campeonatoTO.setIdCarro(
-						carreiraDados.getIdCarroLivery().toString());
-			}
-
-			campeonatoTO.setCarroPiloto(carreiraDados.getNomeCarro());
-
-		} else {
-			campeonatoTO.setModoCarreira(false);
-			Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
-					.carregarTemporadasPilotosDefauts();
-			TemporadasDefauts temporadasDefauts = tempDefsMap
-					.get("t" + campeonato.getTemporada());
-			List<Piloto> pilotos = temporadasDefauts.getPilotos();
-			for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
-				Piloto piloto = (Piloto) iterator.next();
-				if (String.valueOf(piloto.getId())
-						.equals(campeonato.getIdPiloto())) {
-					campeonatoTO.setIdPiloto(campeonato.getIdPiloto());
-					campeonatoTO.setIdCarro(
-							String.valueOf(piloto.getCarro().getId()));
-					campeonatoTO.setCarroPiloto(piloto.getNomeCarro());
-					campeonatoTO.setNomePiloto(piloto.getNome());
-				}
-
-			}
-			campeonatoTO.setTemporadaCarro(campeonato.getTemporada());
-			campeonatoTO.setTemporadaCapacete(campeonato.getTemporada());
-		}
-		Collections.sort(campeonatoTO.getCorridas(),
-				new Comparator<CorridaCampeonatoTO>() {
-					public int compare(CorridaCampeonatoTO arg0,
-							CorridaCampeonatoTO arg1) {
-						return arg0.getRodada().compareTo(arg1.getRodada());
-					}
-				});
-		return campeonatoTO;
+		return controleCampeonatoServidor.obterCampeonatoEmAbertoTO(token);
 	}
 
 	public CarreiraDadosSrv obterCarreiraSrv(String token) {

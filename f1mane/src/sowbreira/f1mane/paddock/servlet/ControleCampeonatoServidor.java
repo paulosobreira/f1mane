@@ -1,6 +1,8 @@
 package sowbreira.f1mane.paddock.servlet;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -8,17 +10,22 @@ import java.util.Map;
 import org.hibernate.Session;
 
 import br.nnpe.Constantes;
+import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleJogoLocal;
+import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.entidades.Volta;
+import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
+import sowbreira.f1mane.paddock.entidades.TOs.CorridaCampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonato;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
@@ -28,11 +35,12 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 public class ControleCampeonatoServidor {
 
 	private ControlePersistencia controlePersistencia;
+	private ControlePaddockServidor controlePaddockServidor;
 	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
 			.getCarregadorRecursos(false);
 
-	public ControleCampeonatoServidor(
-			ControlePersistencia controlePersistencia) {
+	public ControleCampeonatoServidor(ControlePersistencia controlePersistencia,
+			ControlePaddockServidor controlePaddockServidor) {
 		super();
 		this.controlePersistencia = controlePersistencia;
 	}
@@ -221,6 +229,8 @@ public class ControleCampeonatoServidor {
 							.setJogador(jogadorDadosSrv.getNome());
 				}
 				dadosCorridaCampeonato.setPiloto(piloto.getNome());
+				dadosCorridaCampeonato
+						.setCorPiloto(piloto.getCarro().getCor1Hex());
 				dadosCorridaCampeonato.setCarro(piloto.getNomeCarro());
 				int pts = controleClassificacao.gerarPontos(piloto);
 				dadosCorridaCampeonato.setPontos(pts);
@@ -280,4 +290,135 @@ public class ControleCampeonatoServidor {
 		}
 		return campeonato;
 	}
+
+	public CampeonatoTO obterCampeonatoEmAbertoTO(String token) {
+		Campeonato campeonato = obterCampeonatoEmAberto(token);
+		if (campeonato == null) {
+			return null;
+		}
+		CampeonatoTO campeonatoTO = new CampeonatoTO();
+		campeonatoTO.setCampeonato(campeonato);
+
+		processsaCorridaCampeonatoTO(campeonato, campeonatoTO);
+		if ("0".equals(campeonato.getIdPiloto())) {
+			CarreiraDadosSrv carreiraDados = controlePaddockServidor
+					.obterCarreiraSrv(token);
+			if (carreiraDados == null) {
+				return null;
+			}
+			campeonatoTO.setModoCarreira(true);
+			processaCampeonatoTOCarreira(campeonatoTO, carreiraDados);
+
+		} else {
+			campeonatoTO.setModoCarreira(false);
+			processaCampeonatoTOPilotoSelecionado(campeonato, campeonatoTO);
+		}
+		Collections.sort(campeonatoTO.getCorridas(),
+				new Comparator<CorridaCampeonatoTO>() {
+					public int compare(CorridaCampeonatoTO arg0,
+							CorridaCampeonatoTO arg1) {
+						return arg0.getRodada().compareTo(arg1.getRodada());
+					}
+				});
+		return campeonatoTO;
+	}
+
+	public void processaCampeonatoTOPilotoSelecionado(Campeonato campeonato,
+			CampeonatoTO campeonatoTO) {
+		Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
+				.carregarTemporadasPilotosDefauts();
+		TemporadasDefauts temporadasDefauts = tempDefsMap
+				.get("t" + campeonato.getTemporada());
+		List<Piloto> pilotos = temporadasDefauts.getPilotos();
+		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
+			Piloto piloto = (Piloto) iterator.next();
+			if (String.valueOf(piloto.getId())
+					.equals(campeonato.getIdPiloto())) {
+				campeonatoTO.setIdPiloto(campeonato.getIdPiloto());
+				campeonatoTO
+						.setIdCarro(String.valueOf(piloto.getCarro().getId()));
+				campeonatoTO.setCarroPiloto(piloto.getNomeCarro());
+				campeonatoTO.setNomePiloto(piloto.getNome());
+			}
+
+		}
+		campeonatoTO.setTemporadaCarro(campeonato.getTemporada());
+		campeonatoTO.setTemporadaCapacete(campeonato.getTemporada());
+	}
+
+	public void processsaCorridaCampeonatoTO(Campeonato campeonato,
+			CampeonatoTO campeonatoTO) {
+		List<CorridaCampeonato> corridaCampeonatos = campeonato
+				.getCorridaCampeonatos();
+
+		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
+				.hasNext();) {
+			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+					.next();
+			CorridaCampeonatoTO corridaCampeonatoTO = new CorridaCampeonatoTO();
+			corridaCampeonatoTO.setRodada(corridaCampeonato.getRodada());
+			corridaCampeonatoTO
+					.setNomeCircuito(corridaCampeonato.getNomeCircuito());
+			corridaCampeonatoTO.setArquivoCircuito(
+					ControleRecursos.nomeCircuitoParaArquivoCircuito(
+							corridaCampeonato.getNomeCircuito(), true));
+			campeonatoTO.getCorridas().add(corridaCampeonatoTO);
+			if (corridaCampeonato.getTempoFim() == null
+					&& campeonatoTO.getArquivoCircuitoAtual() == null) {
+				campeonatoTO.setNomeCircuitoAtual(
+						corridaCampeonato.getNomeCircuito());
+				campeonatoTO.setArquivoCircuitoAtual(
+						corridaCampeonatoTO.getArquivoCircuito());
+
+			}
+			if (corridaCampeonato.getTempoFim() != null) {
+				Dia dia = new Dia(corridaCampeonato.getTempoFim());
+				corridaCampeonatoTO.setData(dia.toString());
+				List<DadosCorridaCampeonato> dadosCorridaCampeonatos = corridaCampeonato
+						.getDadosCorridaCampeonatos();
+				for (Iterator iterator2 = dadosCorridaCampeonatos
+						.iterator(); iterator2.hasNext();) {
+					DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+							.next();
+					if (dadosCorridaCampeonato.getPosicao() == 1) {
+						corridaCampeonatoTO.setVencedor(
+								dadosCorridaCampeonato.getPiloto());
+						corridaCampeonatoTO.setCorVencedor(
+								dadosCorridaCampeonato.getCorPiloto());
+					}
+				}
+			}
+		}
+	}
+
+	public void processaCampeonatoTOCarreira(CampeonatoTO campeonatoTO,
+			CarreiraDadosSrv carreiraDados) {
+		campeonatoTO.setNomePiloto(carreiraDados.getNomePiloto());
+		campeonatoTO.setTemporadaCarro(Util.rgb2hex(carreiraDados.geraCor1()));
+		campeonatoTO.setIdCarro(Util.rgb2hex(carreiraDados.geraCor2()));
+
+		campeonatoTO
+				.setTemporadaCapacete(Util.rgb2hex(carreiraDados.geraCor1()));
+
+		campeonatoTO.setIdPiloto(Util.rgb2hex(carreiraDados.geraCor2()));
+
+		if (carreiraDados.getIdCapaceteLivery() != null
+				&& carreiraDados.getTemporadaCapaceteLivery() != null) {
+			campeonatoTO.setTemporadaCapacete(
+					carreiraDados.getTemporadaCapaceteLivery().toString());
+			campeonatoTO.setIdPiloto(
+					carreiraDados.getIdCapaceteLivery().toString());
+		}
+
+		if (carreiraDados.getIdCarroLivery() != null
+				&& carreiraDados.getTemporadaCarroLivery() != null) {
+			campeonatoTO.setTemporadaCarro(
+					carreiraDados.getTemporadaCarroLivery().toString());
+			campeonatoTO
+					.setIdCarro(carreiraDados.getIdCarroLivery().toString());
+		}
+
+		campeonatoTO.setCarroPiloto(carreiraDados.getNomeCarro());
+	}
+
 }

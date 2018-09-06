@@ -1243,7 +1243,7 @@ public class ControleJogosServer {
 		Session session = controlePersistencia.getSession();
 		try {
 			return controleClassificacao.verCarreira(sessaoCliente.getToken(),
-					null);
+					session);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			return new ErroServ(e);
@@ -1259,7 +1259,7 @@ public class ControleJogosServer {
 		try {
 			Piloto piloto = new Piloto();
 			CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) controleClassificacao
-					.verCarreira(sessaoCliente.getToken(), null);
+					.verCarreira(sessaoCliente.getToken(), session);
 			if (carreiraDadosSrv == null
 					|| Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
 					|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())) {

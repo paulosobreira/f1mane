@@ -213,40 +213,45 @@ public class ControlePersistencia {
 				.readObject();
 		// PaddockDadosSrv paddockDadosSrv = lerDados();
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction beginTransaction = session.beginTransaction();
-		Map jogadores = paddockDadosSrv.getJogadoresMap();
-		Set emails = new HashSet();
-		for (Iterator iterator = jogadores.keySet().iterator(); iterator
-				.hasNext();) {
-			String nome = (String) iterator.next();
-			JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) jogadores
-					.get(nome);
-			CarreiraDadosSrv carreiraDadosSrv = null;
-			List corridas = jogadorDadosSrv.getCorridas();
-			for (Iterator iterator2 = corridas.iterator(); iterator2
+		try {
+
+			Transaction beginTransaction = session.beginTransaction();
+			Map jogadores = paddockDadosSrv.getJogadoresMap();
+			Set emails = new HashSet();
+			for (Iterator iterator = jogadores.keySet().iterator(); iterator
 					.hasNext();) {
-				CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator2
-						.next();
-				corridasDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-			}
-			if (emails.contains(jogadorDadosSrv.getEmail()))
-				continue;
-			emails.add(jogadorDadosSrv.getEmail());
-
-			try {
-				session.saveOrUpdate(jogadorDadosSrv);
-				if (carreiraDadosSrv == null) {
-					carreiraDadosSrv = new CarreiraDadosSrv();
+				String nome = (String) iterator.next();
+				JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) jogadores
+						.get(nome);
+				CarreiraDadosSrv carreiraDadosSrv = null;
+				List corridas = jogadorDadosSrv.getCorridas();
+				for (Iterator iterator2 = corridas.iterator(); iterator2
+						.hasNext();) {
+					CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator2
+							.next();
+					corridasDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
 				}
-				carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
-				session.saveOrUpdate(carreiraDadosSrv);
-				session.saveOrUpdate(jogadorDadosSrv);
-			} catch (Exception e) {
-				Logger.logarExept(e);
-			}
+				if (emails.contains(jogadorDadosSrv.getEmail()))
+					continue;
+				emails.add(jogadorDadosSrv.getEmail());
 
+				try {
+					session.saveOrUpdate(jogadorDadosSrv);
+					if (carreiraDadosSrv == null) {
+						carreiraDadosSrv = new CarreiraDadosSrv();
+					}
+					carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+					session.saveOrUpdate(carreiraDadosSrv);
+					session.saveOrUpdate(jogadorDadosSrv);
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+
+			}
+			beginTransaction.commit();
+		} finally {
+			session.close();
 		}
-		beginTransaction.commit();
 	}
 
 	public static void main(String[] args) throws Exception {
