@@ -43,7 +43,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
-import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.servlet.ControleJogosServer;
 import sowbreira.f1mane.paddock.servlet.ControlePaddockServidor;
@@ -991,7 +991,7 @@ public class LetsRace {
 	@Path("/campeonato")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response gravarCampeonato(@HeaderParam("token") String token,
-			@HeaderParam("idioma") String idioma, Campeonato campeonato) {
+			@HeaderParam("idioma") String idioma, CampeonatoSrv campeonato) {
 		SessaoCliente sessaoCliente = controlePaddock
 				.obterSessaoPorToken(token);
 		if (sessaoCliente == null) {

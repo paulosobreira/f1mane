@@ -43,7 +43,7 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
-import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
@@ -74,10 +74,10 @@ public class PainelEntradaCliente {
 	private MainFrame mainFrame;
 	private DadosCriarJogo dadosCriarJogo;
 	private String nomeCriador;
-	private Campeonato campeonato;
+	private CampeonatoSrv campeonato;
 	private JogoCliente controleJogo;
 
-	public void setCampeonato(Campeonato campeonato) {
+	public void setCampeonato(CampeonatoSrv campeonato) {
 		this.campeonato = campeonato;
 	}
 

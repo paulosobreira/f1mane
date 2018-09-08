@@ -1,10 +1,10 @@
 package sowbreira.f1mane.paddock.entidades.TOs;
 
-public class DadosClassificacaoCircuito {
+public class DadosClassificacaoJogador {
 	private String nome;
 	private String imagemJogador;
-	private Long pontos = new Long(0);
-	private Long corridas = new Long(0);
+	private Integer pontos = new Integer(0);
+	private Integer corridas = new Integer(0);
 	public String getNome() {
 		return nome;
 	}
@@ -17,16 +17,16 @@ public class DadosClassificacaoCircuito {
 	public void setImagemJogador(String imagemJogador) {
 		this.imagemJogador = imagemJogador;
 	}
-	public Long getPontos() {
+	public Integer getPontos() {
 		return pontos;
 	}
-	public void setPontos(Long pontos) {
+	public void setPontos(Integer pontos) {
 		this.pontos = pontos;
 	}
-	public Long getCorridas() {
+	public Integer getCorridas() {
 		return corridas;
 	}
-	public void setCorridas(Long corridas) {
+	public void setCorridas(Integer corridas) {
 		this.corridas = corridas;
 	}
 

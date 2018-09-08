@@ -44,9 +44,9 @@ import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
-import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
-import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
-import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonatoSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonatoSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
@@ -54,7 +54,7 @@ public class ControleCampeonatoCliente {
 
 	private Component compPai;
 
-	private Campeonato campeonato;
+	private CampeonatoSrv campeonato;
 
 	private CarregadorRecursos carregadorRecursos;
 
@@ -77,7 +77,7 @@ public class ControleCampeonatoCliente {
 		return compPai;
 	}
 
-	public Campeonato getCampeonato() {
+	public CampeonatoSrv getCampeonato() {
 		return campeonato;
 	}
 
@@ -175,9 +175,8 @@ public class ControleCampeonatoCliente {
 			public void actionPerformed(ActionEvent arg0) {
 				int size = defaultListModelCircuitosSelecionados.size();
 				for (int i = 0; i < size; i++) {
-					defaultListModelCircuitos
-							.addElement(defaultListModelCircuitosSelecionados
-									.remove(0));
+					defaultListModelCircuitos.addElement(
+							defaultListModelCircuitosSelecionados.remove(0));
 				}
 			}
 
@@ -231,7 +230,8 @@ public class ControleCampeonatoCliente {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int sel = listCircuitos.getSelectedIndex();
-				if (!(sel == -1 || sel >= defaultListModelCircuitos.getSize() - 1)) {
+				if (!(sel == -1
+						|| sel >= defaultListModelCircuitos.getSize() - 1)) {
 					Object object = (Object) defaultListModelCircuitos
 							.remove(sel);
 					defaultListModelCircuitos.add(sel + 1, object);
@@ -285,9 +285,11 @@ public class ControleCampeonatoCliente {
 
 		grid.add(new JLabel() {
 			public String getText() {
-				return Lang.msg("110",
-						new String[] { String.valueOf(Constantes.MIN_VOLTAS),
-								String.valueOf(Constantes.MAX_VOLTAS) });
+				return Lang
+						.msg("110",
+								new String[]{
+										String.valueOf(Constantes.MIN_VOLTAS),
+										String.valueOf(Constantes.MAX_VOLTAS)});
 			}
 		});
 		spinnerQtdeVoltas = new JSpinner();
@@ -349,7 +351,8 @@ public class ControleCampeonatoCliente {
 				JOptionPane.INFORMATION_MESSAGE);
 
 		List corridas = new ArrayList();
-		for (int i = 0; i < defaultListModelCircuitosSelecionados.getSize(); i++) {
+		for (int i = 0; i < defaultListModelCircuitosSelecionados
+				.getSize(); i++) {
 			corridas.add(defaultListModelCircuitosSelecionados.get(i));
 		}
 
@@ -360,25 +363,20 @@ public class ControleCampeonatoCliente {
 		}
 		Integer qtdeVolta = (Integer) spinnerQtdeVoltas.getValue();
 		if (qtdeVolta == null || qtdeVolta.intValue() < Constantes.MIN_VOLTAS) {
-			JOptionPane.showMessageDialog(
-					compPai,
-					Lang.msg(
-							"110",
-							new String[] {
-									String.valueOf(Constantes.MIN_VOLTAS),
-									String.valueOf(Constantes.MAX_VOLTAS) }),
-					Lang.msg(
-							"110",
-							new String[] {
-									String.valueOf(Constantes.MIN_VOLTAS),
-									String.valueOf(Constantes.MAX_VOLTAS) }),
+			JOptionPane.showMessageDialog(compPai,
+					Lang.msg("110",
+							new String[]{String.valueOf(Constantes.MIN_VOLTAS),
+									String.valueOf(Constantes.MAX_VOLTAS)}),
+					Lang.msg("110",
+							new String[]{String.valueOf(Constantes.MIN_VOLTAS),
+									String.valueOf(Constantes.MAX_VOLTAS)}),
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		campeonato = new Campeonato();
+		campeonato = new CampeonatoSrv();
 		campeonato.setTemporada((String) temporadas.getSelectedItem());
-		campeonato.setNivel(Lang.key((String) comboBoxNivelCorrida
-				.getSelectedItem()));
+		campeonato.setNivel(
+				Lang.key((String) comboBoxNivelCorrida.getSelectedItem()));
 		campeonato.setReabastecimento(this.reabastecimento.isSelected());
 		campeonato.setTrocaPneus(this.trocaPneu.isSelected());
 		campeonato.setErs(this.kers.isSelected());
@@ -387,18 +385,18 @@ public class ControleCampeonatoCliente {
 		campeonato.setQtdeVoltas((Integer) spinnerQtdeVoltas.getValue());
 		campeonato.setNome(nomeCampeonato.getText());
 		for (int i = 0; i < corridas.size(); i++) {
-			CorridaCampeonato corridaCampeonato = new CorridaCampeonato();
+			CorridaCampeonatoSrv corridaCampeonato = new CorridaCampeonatoSrv();
 			corridaCampeonato.setCampeonato(campeonato);
 			corridaCampeonato.setNomeCircuito((String) corridas.get(i));
 			if (controlePaddockCliente != null) {
-				corridaCampeonato.setLoginCriador(controlePaddockCliente
-						.getSessaoCliente().getToken());
+				corridaCampeonato.setLoginCriador(
+						controlePaddockCliente.getSessaoCliente().getToken());
 			}
 			campeonato.getCorridaCampeonatos().add(corridaCampeonato);
 		}
 		if (controlePaddockCliente != null) {
-			campeonato.setLoginCriador(controlePaddockCliente
-					.getSessaoCliente().getToken());
+			campeonato.setLoginCriador(
+					controlePaddockCliente.getSessaoCliente().getToken());
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack(
 					Comandos.CRIAR_CAMPEONATO,
 					controlePaddockCliente.getSessaoCliente());
@@ -422,7 +420,7 @@ public class ControleCampeonatoCliente {
 				Logger.logar("OBTER_CAMPEONATO ret == null");
 				return;
 			}
-			this.campeonato = (Campeonato) ret;
+			this.campeonato = (CampeonatoSrv) ret;
 			new PainelCampeonato(this);
 		}
 	}
@@ -474,17 +472,18 @@ public class ControleCampeonatoCliente {
 				Object[] value = (Object[]) campeonatos.get(rowIndex);
 
 				switch (columnIndex) {
-				case 0:
-					return value[0];
-				case 1:
-					return value[1];
-				case 2:
-					boolean val = (Boolean) value[2];
-					return val ? Lang.msg("sim") : Lang.msg("nao");
-				case 3:
-					return new SimpleDateFormat("dd/MM/yyyy").format(value[3]);
-				default:
-					return "";
+					case 0 :
+						return value[0];
+					case 1 :
+						return value[1];
+					case 2 :
+						boolean val = (Boolean) value[2];
+						return val ? Lang.msg("sim") : Lang.msg("nao");
+					case 3 :
+						return new SimpleDateFormat("dd/MM/yyyy")
+								.format(value[3]);
+					default :
+						return "";
 				}
 			}
 
@@ -505,17 +504,17 @@ public class ControleCampeonatoCliente {
 			public String getColumnName(int columnIndex) {
 
 				switch (columnIndex) {
-				case 0:
-					return Lang.msg("nomeCampeonato");
-				case 1:
-					return Lang.msg("donoCampeonato");
-				case 2:
-					return Lang.msg("campeonatoConcluido");
-				case 3:
-					return Lang.msg("criadoEm");
+					case 0 :
+						return Lang.msg("nomeCampeonato");
+					case 1 :
+						return Lang.msg("donoCampeonato");
+					case 2 :
+						return Lang.msg("campeonatoConcluido");
+					case 3 :
+						return Lang.msg("criadoEm");
 
-				default:
-					return "";
+					default :
+						return "";
 				}
 
 			}
@@ -524,8 +523,8 @@ public class ControleCampeonatoCliente {
 
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				campeonatoSelecionado = (String) corridasTableModel.getValueAt(
-						corridasTable.getSelectedRow(), 0);
+				campeonatoSelecionado = (String) corridasTableModel
+						.getValueAt(corridasTable.getSelectedRow(), 0);
 				if (e.getClickCount() == 2) {
 					carregaCampeonatoSelecionado(corridasTable);
 				}
@@ -555,8 +554,9 @@ public class ControleCampeonatoCliente {
 		if (Util.isNullOrEmpty(campeonatoSelecionado)) {
 			return;
 		}
-		int ret = JOptionPane.showConfirmDialog(comp, Lang.msg(
-				"carregarCampeonato", new String[] { campeonatoSelecionado }),
+		int ret = JOptionPane.showConfirmDialog(comp,
+				Lang.msg("carregarCampeonato",
+						new String[]{campeonatoSelecionado}),
 				Lang.msg("detelhesCampeonato"), JOptionPane.YES_NO_OPTION);
 		if (ret == JOptionPane.YES_OPTION) {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
@@ -571,15 +571,15 @@ public class ControleCampeonatoCliente {
 				Logger.logar("OBTER_CAMPEONATO retorno == null");
 				return;
 			}
-			ControleCampeonatoCliente.this.campeonato = (Campeonato) retorno;
+			ControleCampeonatoCliente.this.campeonato = (CampeonatoSrv) retorno;
 			new PainelCampeonato(ControleCampeonatoCliente.this);
 
 		}
 	}
 
 	public void proximaCorrida() {
-		CorridaCampeonato corridaCampeonatoProx = null;
-		for (CorridaCampeonato corridaCampeonato : campeonato
+		CorridaCampeonatoSrv corridaCampeonatoProx = null;
+		for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 				.getCorridaCampeonatos()) {
 			if (corridaCampeonato.getTempoInicio() == null) {
 				corridaCampeonatoProx = corridaCampeonato;
@@ -599,7 +599,7 @@ public class ControleCampeonatoCliente {
 		if (campeonato.getCorridaCampeonatos().isEmpty()) {
 			return;
 		}
-		for (CorridaCampeonato corridaCampeonato : campeonato
+		for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 				.getCorridaCampeonatos()) {
 
 			List dadosCorridas = (List) corridaCampeonato
@@ -609,11 +609,11 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator = dadosCorridas.iterator(); iterator
 					.hasNext();) {
-				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator
 						.next();
 				PilotosPontosCampeonato pilotosPontosCampeonato = new PilotosPontosCampeonato();
-				pilotosPontosCampeonato.setNome(dadosCorridaCampeonato
-						.getPiloto());
+				pilotosPontosCampeonato
+						.setNome(dadosCorridaCampeonato.getPiloto());
 				if (pilotosPontos.contains(pilotosPontosCampeonato)) {
 					continue;
 				}
@@ -623,12 +623,10 @@ public class ControleCampeonatoCliente {
 					.hasNext();) {
 				PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) iterator
 						.next();
-				pilotosPontosCampeonato
-						.setPontos(calculaPontosPiloto(pilotosPontosCampeonato
-								.getNome()));
-				pilotosPontosCampeonato
-						.setVitorias(computaVitorias(pilotosPontosCampeonato
-								.getNome()));
+				pilotosPontosCampeonato.setPontos(
+						calculaPontosPiloto(pilotosPontosCampeonato.getNome()));
+				pilotosPontosCampeonato.setVitorias(
+						computaVitorias(pilotosPontosCampeonato.getNome()));
 			}
 			Collections.sort(pilotosPontos, new Comparator() {
 				public int compare(Object o1, Object o2) {
@@ -650,7 +648,7 @@ public class ControleCampeonatoCliente {
 		int pontos = 0;
 		List corridas = campeonato.getCorridaCampeonatos();
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
-			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
 					.next();
 			List dadosCorridas = (List) corridaCampeonato
 					.getDadosCorridaCampeonatos();
@@ -659,7 +657,7 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
 					.hasNext();) {
-				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator2
 						.next();
 				if (nome.equals(dadosCorridaCampeonato.getCarro())) {
 					pontos += dadosCorridaCampeonato.getPontos();
@@ -673,7 +671,7 @@ public class ControleCampeonatoCliente {
 		int vitorias = 0;
 		List corridas = campeonato.getCorridaCampeonatos();
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
-			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
 					.next();
 			List dadosCorridas = (List) corridaCampeonato
 					.getDadosCorridaCampeonatos();
@@ -682,7 +680,7 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
 					.hasNext();) {
-				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator2
 						.next();
 				if (nome.equals(dadosCorridaCampeonato.getPiloto())
 						&& dadosCorridaCampeonato.getPosicao() == 1) {
@@ -697,7 +695,7 @@ public class ControleCampeonatoCliente {
 		int vitorias = 0;
 		List corridas = campeonato.getCorridaCampeonatos();
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
-			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
 					.next();
 			List dadosCorridas = (List) corridaCampeonato
 					.getDadosCorridaCampeonatos();
@@ -706,7 +704,7 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
 					.hasNext();) {
-				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator2
 						.next();
 				if (nome.equals(dadosCorridaCampeonato.getJogador())
 						&& dadosCorridaCampeonato.getPosicao() == 1) {
@@ -722,7 +720,7 @@ public class ControleCampeonatoCliente {
 		if (campeonato.getCorridaCampeonatos().isEmpty()) {
 			return;
 		}
-		for (CorridaCampeonato corridaCampeonato : campeonato
+		for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 				.getCorridaCampeonatos()) {
 
 			List dadosCorridas = (List) corridaCampeonato
@@ -732,7 +730,7 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator = dadosCorridas.iterator(); iterator
 					.hasNext();) {
-				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator
 						.next();
 				ConstrutoresPontosCampeonato construtoresPontosCampeonato = new ConstrutoresPontosCampeonato();
 
@@ -747,16 +745,16 @@ public class ControleCampeonatoCliente {
 				ConstrutoresPontosCampeonato construtoresPontosCampeonato = (ConstrutoresPontosCampeonato) iterator
 						.next();
 				construtoresPontosCampeonato
-						.setPontos(calculaPontosConstrutores(construtoresPontosCampeonato
-								.getNomeEquipe()));
+						.setPontos(calculaPontosConstrutores(
+								construtoresPontosCampeonato.getNomeEquipe()));
 
 			}
 			Collections.sort(contrutoresPontos, new Comparator() {
 				public int compare(Object o1, Object o2) {
 					ConstrutoresPontosCampeonato c1 = (ConstrutoresPontosCampeonato) o1;
 					ConstrutoresPontosCampeonato c2 = (ConstrutoresPontosCampeonato) o2;
-					return new Integer(c2.getPontos()).compareTo(new Integer(c1
-							.getPontos()));
+					return new Integer(c2.getPontos())
+							.compareTo(new Integer(c1.getPontos()));
 				}
 			});
 		}
@@ -766,7 +764,7 @@ public class ControleCampeonatoCliente {
 		int pontos = 0;
 		List corridas = campeonato.getCorridaCampeonatos();
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
-			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
 					.next();
 			List dadosCorridas = (List) corridaCampeonato
 					.getDadosCorridaCampeonatos();
@@ -775,7 +773,7 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
 					.hasNext();) {
-				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator2
 						.next();
 				if (nome.equals(dadosCorridaCampeonato.getPiloto())) {
 					pontos += dadosCorridaCampeonato.getPontos();
@@ -789,7 +787,7 @@ public class ControleCampeonatoCliente {
 		int pontos = 0;
 		List corridas = campeonato.getCorridaCampeonatos();
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
-			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
 					.next();
 			List dadosCorridas = (List) corridaCampeonato
 					.getDadosCorridaCampeonatos();
@@ -798,7 +796,7 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2
 					.hasNext();) {
-				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator2
 						.next();
 				if (nome.equals(dadosCorridaCampeonato.getJogador())) {
 					pontos += dadosCorridaCampeonato.getPontos();
@@ -813,7 +811,7 @@ public class ControleCampeonatoCliente {
 		if (campeonato.getCorridaCampeonatos().isEmpty()) {
 			return;
 		}
-		for (CorridaCampeonato corridaCampeonato : campeonato
+		for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 				.getCorridaCampeonatos()) {
 
 			List dadosCorridas = (List) corridaCampeonato
@@ -823,14 +821,18 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator = dadosCorridas.iterator(); iterator
 					.hasNext();) {
-				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator
 						.next();
-				if (Util.isNullOrEmpty(dadosCorridaCampeonato.getJogador())) {
+				if (dadosCorridaCampeonato.getJogador() == null) {
 					continue;
 				}
 				PilotosPontosCampeonato pilotosPontosCampeonato = new PilotosPontosCampeonato();
-				pilotosPontosCampeonato.setNome(dadosCorridaCampeonato
-						.getJogador());
+				// TODO Buacar na base
+				/*
+				 * pilotosPontosCampeonato
+				 * .setNome(dadosCorridaCampeonato.getJogador());
+				 * 
+				 */
 				if (jogadoresPontos.contains(pilotosPontosCampeonato)) {
 					continue;
 				}
@@ -840,12 +842,10 @@ public class ControleCampeonatoCliente {
 					.hasNext();) {
 				PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) iterator
 						.next();
-				pilotosPontosCampeonato
-						.setPontos(calculaPontosJogador(pilotosPontosCampeonato
-								.getNome()));
-				pilotosPontosCampeonato
-						.setVitorias(computaVitoriasJogador(pilotosPontosCampeonato
-								.getNome()));
+				pilotosPontosCampeonato.setPontos(calculaPontosJogador(
+						pilotosPontosCampeonato.getNome()));
+				pilotosPontosCampeonato.setVitorias(computaVitoriasJogador(
+						pilotosPontosCampeonato.getNome()));
 			}
 			Collections.sort(jogadoresPontos, new Comparator() {
 				public int compare(Object o1, Object o2) {
@@ -869,9 +869,9 @@ public class ControleCampeonatoCliente {
 	}
 
 	public boolean verificaCampeonatoConcluido() {
-		List<CorridaCampeonato> corridaCampeonatos = campeonato
+		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
-		for (CorridaCampeonato corridaCampeonato : corridaCampeonatos) {
+		for (CorridaCampeonatoSrv corridaCampeonato : corridaCampeonatos) {
 			if (corridaCampeonato.getTempoFim() == null) {
 				return false;
 			}

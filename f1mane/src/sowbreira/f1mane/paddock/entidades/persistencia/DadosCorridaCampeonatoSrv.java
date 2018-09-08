@@ -7,13 +7,13 @@ import javax.persistence.ManyToOne;
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15
  */
-@Entity(name = "f1_dadoscorridacampeonato")
-public class DadosCorridaCampeonato extends F1ManeDados {
+@Entity(name = "f1_dadoscorridacampeonatosrv")
+public class DadosCorridaCampeonatoSrv extends F1ManeDados {
 
 	private int posicao;
 	private String piloto;
 	private String corPiloto;
-	private String jogador;
+	private Long jogador;
 	private String carro;
 	private String tpPneu;
 	private String voltaMaisRapida;
@@ -25,21 +25,21 @@ public class DadosCorridaCampeonato extends F1ManeDados {
 	private int pontos;
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private CorridaCampeonato corridaCampeonato;
+	private CorridaCampeonatoSrv corridaCampeonato;
 
-	public CorridaCampeonato getCorridaCampeonato() {
+	public CorridaCampeonatoSrv getCorridaCampeonato() {
 		return corridaCampeonato;
 	}
 
-	public String getJogador() {
+	public Long getJogador() {
 		return jogador;
 	}
 
-	public void setJogador(String jogador) {
+	public void setJogador(Long jogador) {
 		this.jogador = jogador;
 	}
 
-	public void setCorridaCampeonato(CorridaCampeonato corridaCampeonato) {
+	public void setCorridaCampeonato(CorridaCampeonatoSrv corridaCampeonato) {
 		this.corridaCampeonato = corridaCampeonato;
 	}
 

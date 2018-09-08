@@ -200,6 +200,14 @@ ul {
   padding: 0;
 }
 
+.divPiloto{
+	display: inline;
+    border-left-color: #dce6e6;
+    border-left-width: 5px;
+    border-left-style: solid;
+    padding-left: 4px;
+}
+
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
     visibility: hidden;
