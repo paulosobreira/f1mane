@@ -128,11 +128,10 @@ function carregaCampeonato() {
 					}else{
 						tr = $('<tr style="border-bottom-style: solid; border-bottom-color: darkgray;" />');
 						td = $('<td/>');
-						td.append(corrida.data);
-						td.append(' ');
 						var div = $('<div style="border-left-color: '+corrida.corVencedor+';" class="divPiloto" />');
 						div.append(corrida.vencedor);
 						td.append(div);
+						td.append(corrida.data);
 						tr.append($('<td/>'));
 						tr.append(td);
 						$('#corridasTO').append(tr);

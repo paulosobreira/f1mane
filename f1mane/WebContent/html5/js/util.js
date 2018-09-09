@@ -82,6 +82,10 @@ function tratamentoErro(xhRequest) {
 		if (xhRequest.responseJSON != null && xhRequest.responseJSON.messageString != null) {
 			erroMsg = xhRequest.responseJSON.messageString;
 		}
+		console.log(erroMsg)
+		if(erroMsg.length>200){
+			erroMsg = erroMsg.substring(0, 200);
+		}
 		toaster(erroMsg, 3500, 'alert alert-danger');
 	}
 }

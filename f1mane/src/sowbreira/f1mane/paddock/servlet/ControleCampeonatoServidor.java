@@ -520,6 +520,9 @@ public class ControleCampeonatoServidor {
 				DadosClassificacaoJogador dadosClassificacaoJogador = new DadosClassificacaoJogador();
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 						.carregaDadosJogadorId(key, session);
+				if (jogadorDadosSrv == null) {
+					continue;
+				}
 				dadosClassificacaoJogador.setNome(jogadorDadosSrv.getNome());
 				dadosClassificacaoJogador
 						.setImagemJogador(jogadorDadosSrv.getImagemJogador());
@@ -537,6 +540,33 @@ public class ControleCampeonatoServidor {
 		campeonatoTO.setCarros(listaCarros);
 		campeonatoTO.setPilotos(listaPilotos);
 		campeonatoTO.setJogadores(listaJogadores);
+
+		Collections.sort(listaCarros,
+				new Comparator<DadosClassificacaoCarros>() {
+					public int compare(DadosClassificacaoCarros arg0,
+							DadosClassificacaoCarros arg1) {
+						return new Integer(arg1.getPontos())
+								.compareTo(arg0.getPontos());
+					}
+				});
+
+		Collections.sort(listaPilotos,
+				new Comparator<DadosClassificacaoPilotos>() {
+					public int compare(DadosClassificacaoPilotos arg0,
+							DadosClassificacaoPilotos arg1) {
+						return new Integer(arg1.getPontos())
+								.compareTo(arg0.getPontos());
+					}
+				});
+
+		Collections.sort(listaJogadores,
+				new Comparator<DadosClassificacaoJogador>() {
+					public int compare(DadosClassificacaoJogador arg0,
+							DadosClassificacaoJogador arg1) {
+						return new Integer(arg1.getPontos())
+								.compareTo(arg0.getPontos());
+					}
+				});
 	}
 
 }

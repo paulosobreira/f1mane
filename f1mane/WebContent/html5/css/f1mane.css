@@ -206,6 +206,7 @@ ul {
     border-left-width: 5px;
     border-left-style: solid;
     padding-left: 4px;
+    padding-right: 10px;
 }
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
