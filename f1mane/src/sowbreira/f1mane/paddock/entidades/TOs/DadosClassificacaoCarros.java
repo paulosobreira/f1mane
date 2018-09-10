@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class DadosClassificacaoCarros implements Serializable {
 	private String nome;
+	private String cor;
 	private int pontos;
 
 	public String getNome() {
@@ -23,6 +24,14 @@ public class DadosClassificacaoCarros implements Serializable {
 
 	public void setPontos(int pontos) {
 		this.pontos = pontos;
+	}
+
+	public String getCor() {
+		return cor;
+	}
+
+	public void setCor(String cor) {
+		this.cor = cor;
 	}
 
 }

@@ -14,8 +14,18 @@ $('#trocaPneuCheck').append(lang_text('trocaPneus'));
 $('#reabastecimentoCheck').append(lang_text('reabastecimento'));
 $('#rodada').append(lang_text('rodada'));
 $('#nomeCircuito').append(lang_text('nomeCircuito'));
-
 $('#nomeCampeonato').html(lang_text('nomeCampeonato'));
+$('#piloto').append(lang_text('153'));
+$('[id=pontos]').append(lang_text('161'));
+$('#equipe').append(lang_text('277'));
+$('#jogador').append(lang_text('162'));
+$('#corridas').append(lang_text('165'));
+
+$('#listaCorridas').append(lang_text('165'));
+$('#classificacaoPilotos').append(lang_text('294'));
+$('#classificacaoEquipes').append(lang_text('222'));
+$('#classificacaoJogadores').append(lang_text('117'));
+
 
 var idPilotoSelecionado;
 var temporadaSelecionada;
@@ -127,16 +137,78 @@ function carregaCampeonato() {
 						tr.css("color","darkGray");
 					}else{
 						tr = $('<tr style="border-bottom-style: solid; border-bottom-color: darkgray;" />');
-						td = $('<td/>');
+						td = $('<td style="border-top-style: none;"/>');
 						var div = $('<div style="border-left-color: '+corrida.corVencedor+';" class="divPiloto" />');
 						div.append(corrida.vencedor);
 						td.append(div);
 						td.append(corrida.data);
-						tr.append($('<td/>'));
+						tr.append($('<td style="border-top-style: none;"/>'));
 						tr.append(td);
 						$('#corridasTO').append(tr);
 					}
 				});
+				
+
+				var pilotos = campeonato.pilotos;
+				
+				$('#dadosClassificacaoPilotos').find('tr').remove();
+				$.each(pilotos, function(i, val) {
+					var piloto = pilotos[i];
+					var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+					var td1 = $('<td style="width: 20%;" />');
+					var td2 = $('<td/>');
+					td1.append(piloto.pontos);
+					var div = $('<div style="border-left-color: '+piloto.cor+';" class="divPiloto" />');
+					div.append(piloto.nome);
+					td2.append(div);
+					tr.append(td1);
+					tr.append(td2);
+					$('#dadosClassificacaoPilotos').append(tr);
+				});
+				
+				var carros = campeonato.carros;
+				
+				$('#dadosClassificacaoCarros').find('tr').remove();
+				$.each(carros, function(i, val) {
+					var carro = carros[i];
+					var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+					var td1 = $('<td style="width: 20%;" />');
+					var td2 = $('<td/>');
+					td1.append(carro.pontos);
+					var div = $('<div style="border-left-color: '+carro.cor+';" class="divPiloto" />');
+					div.append(carro.nome);
+					td2.append(div);
+					tr.append(td1);
+					tr.append(td2);
+					$('#dadosClassificacaoCarros').append(tr);
+				});
+				
+				
+				var jogadores = campeonato.jogadores;
+				
+				$('#dadosClassificacaoJogador').find('tr').remove();
+				$.each(jogadores, function(i, val) {
+					var jogador = jogadores[i];
+					var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+					var td1 = $('<td style="width: 15%;" />');
+					var td2 = $('<td style="width: 15%;" />');
+					var td3 = $('<td/>');
+					td1.append(jogador.pontos);
+					td2.append(jogador.corridas);
+					var jogadorImagem = $('<div style="display:  inline-flex;"  />');
+					if(jogador.imagemJogador!=null){
+						var imgJogador = $('<img style="margin-right: 10px;" class="img-responsive img-center userPic"/>');	
+						imgJogador.attr('src', jogador.imagemJogador);
+						jogadorImagem.append(imgJogador);
+					}
+					jogadorImagem.append(jogador.nome);
+					td3.append(jogadorImagem);
+					tr.append(td1);
+					tr.append(td2);
+					tr.append(td3);
+					$('#dadosClassificacaoJogador').append(tr);
+				});
+				
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {

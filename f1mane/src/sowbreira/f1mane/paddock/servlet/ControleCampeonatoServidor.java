@@ -431,8 +431,11 @@ public class ControleCampeonatoServidor {
 	public void preencherContrutores(CampeonatoSrv campeonatoSrv,
 			CampeonatoTO campeonatoTO) {
 		Map mapaCarros = new HashMap();
+		Map mapaCarrosCor = new HashMap();
 		Map mapaPilotos = new HashMap();
+		Map mapaPilotosCor = new HashMap();
 		Map mapaJogadores = new HashMap();
+		Map mapaJogadoresCorridas = new HashMap();
 
 		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonatoSrv
 				.getCorridaCampeonatos();
@@ -459,6 +462,8 @@ public class ControleCampeonatoServidor {
 											.getPontos()
 											+ ptsCarro.intValue()));
 				}
+				mapaCarrosCor.put(dadosCorridaCampeonatoSrv.getCarro(),
+						dadosCorridaCampeonatoSrv.getCorPiloto());
 
 				Integer ptsPiloto = (Integer) mapaPilotos
 						.get(dadosCorridaCampeonatoSrv.getPiloto());
@@ -472,18 +477,35 @@ public class ControleCampeonatoServidor {
 											.getPontos()
 											+ ptsPiloto.intValue()));
 				}
+				mapaPilotosCor.put(dadosCorridaCampeonatoSrv.getPiloto(),
+						dadosCorridaCampeonatoSrv.getCorPiloto());
 
-				Integer ptsJogador = (Integer) mapaJogadores
-						.get(dadosCorridaCampeonatoSrv.getJogador());
-				if (ptsJogador == null) {
-					mapaJogadores.put(dadosCorridaCampeonatoSrv.getJogador(),
-							new Integer(dadosCorridaCampeonatoSrv.getPontos()));
-				} else {
-					mapaJogadores
-							.put(dadosCorridaCampeonatoSrv.getJogador(),
-									new Integer(dadosCorridaCampeonatoSrv
-											.getPontos()
-											+ ptsJogador.intValue()));
+				if (dadosCorridaCampeonatoSrv.getJogador() != null) {
+					Integer ptsJogador = (Integer) mapaJogadores
+							.get(dadosCorridaCampeonatoSrv.getJogador());
+					if (ptsJogador == null) {
+						mapaJogadores.put(
+								dadosCorridaCampeonatoSrv.getJogador(),
+								new Integer(
+										dadosCorridaCampeonatoSrv.getPontos()));
+					} else {
+						mapaJogadores
+								.put(dadosCorridaCampeonatoSrv.getJogador(),
+										new Integer(dadosCorridaCampeonatoSrv
+												.getPontos()
+												+ ptsJogador.intValue()));
+					}
+					Integer corrida = (Integer) mapaJogadoresCorridas
+							.get(dadosCorridaCampeonatoSrv.getJogador());
+					if (corrida == null) {
+						mapaJogadoresCorridas.put(
+								dadosCorridaCampeonatoSrv.getJogador(),
+								new Integer(1));
+					} else {
+						mapaJogadoresCorridas.put(
+								dadosCorridaCampeonatoSrv.getJogador(),
+								new Integer(corrida + 1));
+					}
 				}
 
 			}
@@ -498,6 +520,7 @@ public class ControleCampeonatoServidor {
 			DadosClassificacaoCarros dadosConstrutoresCarros = new DadosClassificacaoCarros();
 			dadosConstrutoresCarros.setNome(key);
 			dadosConstrutoresCarros.setPontos((Integer) mapaCarros.get(key));
+			dadosConstrutoresCarros.setCor((String) mapaCarrosCor.get(key));
 			if (dadosConstrutoresCarros.getPontos() > 0)
 				listaCarros.add(dadosConstrutoresCarros);
 
@@ -508,6 +531,7 @@ public class ControleCampeonatoServidor {
 			DadosClassificacaoPilotos dadosConstrutoresPilotos = new DadosClassificacaoPilotos();
 			dadosConstrutoresPilotos.setNome(key);
 			dadosConstrutoresPilotos.setPontos((Integer) mapaPilotos.get(key));
+			dadosConstrutoresPilotos.setCor((String) mapaPilotosCor.get(key));
 			if (dadosConstrutoresPilotos.getPontos() > 0)
 				listaPilotos.add(dadosConstrutoresPilotos);
 		}
@@ -528,6 +552,8 @@ public class ControleCampeonatoServidor {
 						.setImagemJogador(jogadorDadosSrv.getImagemJogador());
 				dadosClassificacaoJogador
 						.setPontos((Integer) mapaJogadores.get(key));
+				dadosClassificacaoJogador
+						.setCorridas((Integer) mapaJogadoresCorridas.get(key));
 				if (dadosClassificacaoJogador.getPontos() > 0) {
 					listaJogadores.add(dadosClassificacaoJogador);
 				}
