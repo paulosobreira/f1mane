@@ -41,10 +41,10 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
-import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
-import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonatoSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -414,7 +414,7 @@ public class ControlePaddockServidor {
 		return controleCampeonatoServidor.criarCampeonato(clientPaddockPack);
 	}
 
-	public Object criarCampeonato(Campeonato campeonato, String token) {
+	public Object criarCampeonato(CampeonatoSrv campeonato, String token) {
 		return controleCampeonatoServidor.criarCampeonato(campeonato, token);
 	}
 
@@ -1008,7 +1008,7 @@ public class ControlePaddockServidor {
 		return controleClassificacao.obterCarreiraSrv(token);
 	}
 
-	public Campeonato pesquisaCampeonato(String string) {
+	public CampeonatoSrv pesquisaCampeonato(String string) {
 		Session session = controlePersistencia.getSession();
 		try {
 			return controlePersistencia.pesquisaCampeonato(session, string,

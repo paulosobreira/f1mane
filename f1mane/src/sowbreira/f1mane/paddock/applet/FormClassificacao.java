@@ -22,8 +22,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
 import br.nnpe.Logger;
-import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
-import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoCarros;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoPilotos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -114,8 +114,8 @@ public class FormClassificacao extends JPanel {
 		Collections.sort(listaCarros, new Comparator() {
 
 			public int compare(Object arg0, Object arg1) {
-				DadosConstrutoresCarros d0 = (DadosConstrutoresCarros) arg0;
-				DadosConstrutoresCarros d1 = (DadosConstrutoresCarros) arg1;
+				DadosClassificacaoCarros d0 = (DadosClassificacaoCarros) arg0;
+				DadosClassificacaoCarros d1 = (DadosClassificacaoCarros) arg1;
 				return new Long(d1.getPontos()).compareTo(new Long(d0
 						.getPontos()));
 			}
@@ -124,8 +124,8 @@ public class FormClassificacao extends JPanel {
 		Collections.sort(listaPilotos, new Comparator() {
 
 			public int compare(Object arg0, Object arg1) {
-				DadosConstrutoresPilotos d0 = (DadosConstrutoresPilotos) arg0;
-				DadosConstrutoresPilotos d1 = (DadosConstrutoresPilotos) arg1;
+				DadosClassificacaoPilotos d0 = (DadosClassificacaoPilotos) arg0;
+				DadosClassificacaoPilotos d1 = (DadosClassificacaoPilotos) arg1;
 				return new Long(d1.getPontos()).compareTo(new Long(d0
 						.getPontos()));
 			}
@@ -329,7 +329,7 @@ public class FormClassificacao extends JPanel {
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			DadosConstrutoresCarros dadosConstrutoresCarros = (DadosConstrutoresCarros) listaCarros
+			DadosClassificacaoCarros dadosConstrutoresCarros = (DadosClassificacaoCarros) listaCarros
 					.get(rowIndex);
 
 			switch (columnIndex) {
@@ -365,7 +365,7 @@ public class FormClassificacao extends JPanel {
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			DadosConstrutoresPilotos dadosConstrutoresPilotos = (DadosConstrutoresPilotos) listaPilotos
+			DadosClassificacaoPilotos dadosConstrutoresPilotos = (DadosClassificacaoPilotos) listaPilotos
 					.get(rowIndex);
 
 			switch (columnIndex) {

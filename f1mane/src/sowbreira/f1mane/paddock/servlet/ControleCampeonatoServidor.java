@@ -3,7 +3,9 @@ package sowbreira.f1mane.paddock.servlet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,13 +23,17 @@ import sowbreira.f1mane.entidades.Volta;
 import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.CorridaCampeonatoTO;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoCarros;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoJogador;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoPilotos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
-import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonatoSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -49,12 +55,13 @@ public class ControleCampeonatoServidor {
 		if (clientPaddockPack.getSessaoCliente() == null) {
 			return (new MsgSrv(Lang.msg("210")));
 		}
-		Campeonato campeonato = (Campeonato) clientPaddockPack.getDataObject();
+		CampeonatoSrv campeonato = (CampeonatoSrv) clientPaddockPack
+				.getDataObject();
 		return criarCampeonato(campeonato,
 				clientPaddockPack.getSessaoCliente().getToken());
 	}
 
-	public Object criarCampeonato(Campeonato campeonato, String token) {
+	public Object criarCampeonato(CampeonatoSrv campeonato, String token) {
 		if (token == null) {
 			return (new MsgSrv(Lang.msg("210")));
 		}
@@ -91,12 +98,12 @@ public class ControleCampeonatoServidor {
 			campeonato.setQtdeVoltas(Constantes.MIN_VOLTAS);
 			campeonato.setNivel(ControleJogoLocal.NORMAL);
 			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
-			List<CorridaCampeonato> corridaCampeonatos = campeonato
+			List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 					.getCorridaCampeonatos();
 			long rodada = 1;
 			for (Iterator iterator = corridaCampeonatos.iterator(); iterator
 					.hasNext();) {
-				CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+				CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
 						.next();
 				corridaCampeonato.setRodada(rodada);
 				corridaCampeonato.setCampeonato(campeonato);
@@ -119,10 +126,10 @@ public class ControleCampeonatoServidor {
 		List campeonatos = controlePersistencia
 				.pesquisaCampeonatos(jogadorDadosSrv, session);
 		for (Iterator iterator = campeonatos.iterator(); iterator.hasNext();) {
-			Campeonato campeonato = (Campeonato) iterator.next();
-			List<CorridaCampeonato> corridaCampeonatos = campeonato
+			CampeonatoSrv campeonato = (CampeonatoSrv) iterator.next();
+			List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 					.getCorridaCampeonatos();
-			for (CorridaCampeonato corridaCampeonato : corridaCampeonatos) {
+			for (CorridaCampeonatoSrv corridaCampeonato : corridaCampeonatos) {
 				if (corridaCampeonato.getTempoFim() == null
 						|| corridaCampeonato.getTempoFim() == 0) {
 					return true;
@@ -135,12 +142,12 @@ public class ControleCampeonatoServidor {
 	public Object listarCampeonatos() {
 		Session session = controlePersistencia.getSession();
 		try {
-			List<Campeonato> campeonatos = controlePersistencia
+			List<CampeonatoSrv> campeonatos = controlePersistencia
 					.obterListaCampeonatos(session);
 			List retorno = new ArrayList();
 			for (Iterator iterator = campeonatos.iterator(); iterator
 					.hasNext();) {
-				Campeonato campeonato = (Campeonato) iterator.next();
+				CampeonatoSrv campeonato = (CampeonatoSrv) iterator.next();
 				Object[] row = new Object[4];
 				row[0] = campeonato.getNome();
 				row[1] = campeonato.getJogadorDadosSrv().getNome();
@@ -156,10 +163,10 @@ public class ControleCampeonatoServidor {
 		}
 	}
 
-	public boolean verificaCampeonatoConcluido(Campeonato campeonato) {
-		List<CorridaCampeonato> corridaCampeonatos = campeonato
+	public boolean verificaCampeonatoConcluido(CampeonatoSrv campeonato) {
+		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
-		for (CorridaCampeonato corridaCampeonato : corridaCampeonatos) {
+		for (CorridaCampeonatoSrv corridaCampeonato : corridaCampeonatos) {
 			if (corridaCampeonato.getTempoFim() == null) {
 				return false;
 			}
@@ -175,7 +182,7 @@ public class ControleCampeonatoServidor {
 	public Object obterCampeonato(String idCampeonato) {
 		Session session = controlePersistencia.getSession();
 		try {
-			Campeonato campeonato = controlePersistencia
+			CampeonatoSrv campeonato = controlePersistencia
 					.pesquisaCampeonato(session, idCampeonato, true);
 			return campeonato;
 		} finally {
@@ -195,15 +202,15 @@ public class ControleCampeonatoServidor {
 		String idCampeonato = dadosCriarJogo.getIdCampeonato().toString();
 		Session session = controlePersistencia.getSession();
 		try {
-			Campeonato campeonato = controlePersistencia
+			CampeonatoSrv campeonato = controlePersistencia
 					.pesquisaCampeonato(session, idCampeonato, false);
 			if (campeonato == null) {
 				return;
 			}
-			CorridaCampeonato corridaCampeonatoCorrente = null;
+			CorridaCampeonatoSrv corridaCampeonatoCorrente = null;
 			String circuitoSelecionado = Util
 					.substVogais(dadosCriarJogo.getCircuitoSelecionado());
-			for (CorridaCampeonato corridaCampeonato : campeonato
+			for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 					.getCorridaCampeonatos()) {
 				if (circuitoSelecionado
 						.equals(corridaCampeonato.getNomeCircuito())) {
@@ -219,14 +226,13 @@ public class ControleCampeonatoServidor {
 			corridaCampeonatoCorrente.setTempoFim(tempoFim);
 			for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 				Piloto piloto = (Piloto) iter.next();
-				DadosCorridaCampeonato dadosCorridaCampeonato = new DadosCorridaCampeonato();
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = new DadosCorridaCampeonatoSrv();
 				dadosCorridaCampeonato
 						.setCorridaCampeonato(corridaCampeonatoCorrente);
 				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 						.carregaDadosJogador(piloto.getTokenJogador(), session);
 				if (jogadorDadosSrv != null) {
-					dadosCorridaCampeonato
-							.setJogador(jogadorDadosSrv.getNome());
+					dadosCorridaCampeonato.setJogador(jogadorDadosSrv.getId());
 				}
 				dadosCorridaCampeonato.setPiloto(piloto.getNome());
 				dadosCorridaCampeonato
@@ -265,7 +271,7 @@ public class ControleCampeonatoServidor {
 		}
 	}
 
-	public Campeonato obterCampeonatoEmAberto(String token) {
+	public CampeonatoSrv obterCampeonatoEmAberto(String token) {
 		List pesquisaCampeonatos = null;
 		Session session = controlePersistencia.getSession();
 		try {
@@ -279,12 +285,12 @@ public class ControleCampeonatoServidor {
 		if (pesquisaCampeonatos == null || pesquisaCampeonatos.isEmpty()) {
 			return null;
 		}
-		Campeonato campeonato = (Campeonato) pesquisaCampeonatos.get(0);
-		List<CorridaCampeonato> corridaCampeonatos = campeonato
+		CampeonatoSrv campeonato = (CampeonatoSrv) pesquisaCampeonatos.get(0);
+		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
 		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
 				.hasNext();) {
-			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
 					.next();
 			corridaCampeonato.setCampeonato(null);
 		}
@@ -292,7 +298,7 @@ public class ControleCampeonatoServidor {
 	}
 
 	public CampeonatoTO obterCampeonatoEmAbertoTO(String token) {
-		Campeonato campeonato = obterCampeonatoEmAberto(token);
+		CampeonatoSrv campeonato = obterCampeonatoEmAberto(token);
 		if (campeonato == null) {
 			return null;
 		}
@@ -320,10 +326,11 @@ public class ControleCampeonatoServidor {
 						return arg0.getRodada().compareTo(arg1.getRodada());
 					}
 				});
+		preencherContrutores(campeonato, campeonatoTO);
 		return campeonatoTO;
 	}
 
-	public void processaCampeonatoTOPilotoSelecionado(Campeonato campeonato,
+	public void processaCampeonatoTOPilotoSelecionado(CampeonatoSrv campeonato,
 			CampeonatoTO campeonatoTO) {
 		Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
 				.carregarTemporadasPilotosDefauts();
@@ -346,14 +353,14 @@ public class ControleCampeonatoServidor {
 		campeonatoTO.setTemporadaCapacete(campeonato.getTemporada());
 	}
 
-	public void processsaCorridaCampeonatoTO(Campeonato campeonato,
+	public void processsaCorridaCampeonatoTO(CampeonatoSrv campeonato,
 			CampeonatoTO campeonatoTO) {
-		List<CorridaCampeonato> corridaCampeonatos = campeonato
+		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
 
 		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
 				.hasNext();) {
-			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator
+			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
 					.next();
 			CorridaCampeonatoTO corridaCampeonatoTO = new CorridaCampeonatoTO();
 			corridaCampeonatoTO.setRodada(corridaCampeonato.getRodada());
@@ -374,11 +381,11 @@ public class ControleCampeonatoServidor {
 			if (corridaCampeonato.getTempoFim() != null) {
 				Dia dia = new Dia(corridaCampeonato.getTempoFim());
 				corridaCampeonatoTO.setData(dia.toString());
-				List<DadosCorridaCampeonato> dadosCorridaCampeonatos = corridaCampeonato
+				List<DadosCorridaCampeonatoSrv> dadosCorridaCampeonatos = corridaCampeonato
 						.getDadosCorridaCampeonatos();
 				for (Iterator iterator2 = dadosCorridaCampeonatos
 						.iterator(); iterator2.hasNext();) {
-					DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) iterator2
+					DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator2
 							.next();
 					if (dadosCorridaCampeonato.getPosicao() == 1) {
 						corridaCampeonatoTO.setVencedor(
@@ -419,6 +426,147 @@ public class ControleCampeonatoServidor {
 		}
 
 		campeonatoTO.setCarroPiloto(carreiraDados.getNomeCarro());
+	}
+
+	public void preencherContrutores(CampeonatoSrv campeonatoSrv,
+			CampeonatoTO campeonatoTO) {
+		Map mapaCarros = new HashMap();
+		Map mapaPilotos = new HashMap();
+		Map mapaJogadores = new HashMap();
+
+		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonatoSrv
+				.getCorridaCampeonatos();
+		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
+				.hasNext();) {
+			CorridaCampeonatoSrv corridaCampeonatoSrv = (CorridaCampeonatoSrv) iterator
+					.next();
+			List<DadosCorridaCampeonatoSrv> dadosCorridaCampeonatos = corridaCampeonatoSrv
+					.getDadosCorridaCampeonatos();
+			for (Iterator iterator2 = dadosCorridaCampeonatos
+					.iterator(); iterator2.hasNext();) {
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonatoSrv = (DadosCorridaCampeonatoSrv) iterator2
+						.next();
+
+				Integer ptsCarro = (Integer) mapaCarros
+						.get(dadosCorridaCampeonatoSrv.getCarro());
+				if (ptsCarro == null) {
+					mapaCarros.put(dadosCorridaCampeonatoSrv.getCarro(),
+							new Integer(dadosCorridaCampeonatoSrv.getPontos()));
+				} else {
+					mapaCarros
+							.put(dadosCorridaCampeonatoSrv.getCarro(),
+									new Integer(dadosCorridaCampeonatoSrv
+											.getPontos()
+											+ ptsCarro.intValue()));
+				}
+
+				Integer ptsPiloto = (Integer) mapaPilotos
+						.get(dadosCorridaCampeonatoSrv.getPiloto());
+				if (ptsPiloto == null) {
+					mapaPilotos.put(dadosCorridaCampeonatoSrv.getPiloto(),
+							new Integer(dadosCorridaCampeonatoSrv.getPontos()));
+				} else {
+					mapaPilotos
+							.put(dadosCorridaCampeonatoSrv.getPiloto(),
+									new Integer(dadosCorridaCampeonatoSrv
+											.getPontos()
+											+ ptsPiloto.intValue()));
+				}
+
+				Integer ptsJogador = (Integer) mapaJogadores
+						.get(dadosCorridaCampeonatoSrv.getJogador());
+				if (ptsJogador == null) {
+					mapaJogadores.put(dadosCorridaCampeonatoSrv.getJogador(),
+							new Integer(dadosCorridaCampeonatoSrv.getPontos()));
+				} else {
+					mapaJogadores
+							.put(dadosCorridaCampeonatoSrv.getJogador(),
+									new Integer(dadosCorridaCampeonatoSrv
+											.getPontos()
+											+ ptsJogador.intValue()));
+				}
+
+			}
+		}
+
+		List<DadosClassificacaoCarros> listaCarros = new LinkedList<DadosClassificacaoCarros>();
+		List<DadosClassificacaoPilotos> listaPilotos = new LinkedList<DadosClassificacaoPilotos>();
+		List<DadosClassificacaoJogador> listaJogadores = new LinkedList<DadosClassificacaoJogador>();
+		for (Iterator iterator = mapaCarros.keySet().iterator(); iterator
+				.hasNext();) {
+			String key = (String) iterator.next();
+			DadosClassificacaoCarros dadosConstrutoresCarros = new DadosClassificacaoCarros();
+			dadosConstrutoresCarros.setNome(key);
+			dadosConstrutoresCarros.setPontos((Integer) mapaCarros.get(key));
+			if (dadosConstrutoresCarros.getPontos() > 0)
+				listaCarros.add(dadosConstrutoresCarros);
+
+		}
+		for (Iterator iterator = mapaPilotos.keySet().iterator(); iterator
+				.hasNext();) {
+			String key = (String) iterator.next();
+			DadosClassificacaoPilotos dadosConstrutoresPilotos = new DadosClassificacaoPilotos();
+			dadosConstrutoresPilotos.setNome(key);
+			dadosConstrutoresPilotos.setPontos((Integer) mapaPilotos.get(key));
+			if (dadosConstrutoresPilotos.getPontos() > 0)
+				listaPilotos.add(dadosConstrutoresPilotos);
+		}
+
+		Session session = controlePersistencia.getSession();
+		try {
+			for (Iterator iterator = mapaJogadores.keySet().iterator(); iterator
+					.hasNext();) {
+				Long key = (Long) iterator.next();
+				DadosClassificacaoJogador dadosClassificacaoJogador = new DadosClassificacaoJogador();
+				JogadorDadosSrv jogadorDadosSrv = controlePersistencia
+						.carregaDadosJogadorId(key, session);
+				if (jogadorDadosSrv == null) {
+					continue;
+				}
+				dadosClassificacaoJogador.setNome(jogadorDadosSrv.getNome());
+				dadosClassificacaoJogador
+						.setImagemJogador(jogadorDadosSrv.getImagemJogador());
+				dadosClassificacaoJogador
+						.setPontos((Integer) mapaJogadores.get(key));
+				if (dadosClassificacaoJogador.getPontos() > 0) {
+					listaJogadores.add(dadosClassificacaoJogador);
+				}
+			}
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+		campeonatoTO.setCarros(listaCarros);
+		campeonatoTO.setPilotos(listaPilotos);
+		campeonatoTO.setJogadores(listaJogadores);
+
+		Collections.sort(listaCarros,
+				new Comparator<DadosClassificacaoCarros>() {
+					public int compare(DadosClassificacaoCarros arg0,
+							DadosClassificacaoCarros arg1) {
+						return new Integer(arg1.getPontos())
+								.compareTo(arg0.getPontos());
+					}
+				});
+
+		Collections.sort(listaPilotos,
+				new Comparator<DadosClassificacaoPilotos>() {
+					public int compare(DadosClassificacaoPilotos arg0,
+							DadosClassificacaoPilotos arg1) {
+						return new Integer(arg1.getPontos())
+								.compareTo(arg0.getPontos());
+					}
+				});
+
+		Collections.sort(listaJogadores,
+				new Comparator<DadosClassificacaoJogador>() {
+					public int compare(DadosClassificacaoJogador arg0,
+							DadosClassificacaoJogador arg1) {
+						return new Integer(arg1.getPontos())
+								.compareTo(arg0.getPontos());
+					}
+				});
 	}
 
 }

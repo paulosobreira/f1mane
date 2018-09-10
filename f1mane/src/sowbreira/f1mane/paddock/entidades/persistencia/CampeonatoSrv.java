@@ -11,8 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-@Entity(name = "f1_campeonato")
-public class Campeonato extends F1ManeDados {
+@Entity(name = "f1_campeonatosrv")
+public class CampeonatoSrv extends F1ManeDados {
 
 	@Column(nullable = false)
 	private String idPiloto;
@@ -45,7 +45,7 @@ public class Campeonato extends F1ManeDados {
 	@JoinColumn(nullable = false)
 	private JogadorDadosSrv jogadorDadosSrv;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonato")
-	private List<CorridaCampeonato> corridaCampeonatos = new LinkedList<CorridaCampeonato>();
+	private List<CorridaCampeonatoSrv> corridaCampeonatos = new LinkedList<CorridaCampeonatoSrv>();
 
 	public String getTemporada() {
 		return temporada;
@@ -111,12 +111,12 @@ public class Campeonato extends F1ManeDados {
 		this.qtdeVoltas = qtdeVoltas;
 	}
 
-	public List<CorridaCampeonato> getCorridaCampeonatos() {
+	public List<CorridaCampeonatoSrv> getCorridaCampeonatos() {
 		return corridaCampeonatos;
 	}
 
 	public void setCorridaCampeonatos(
-			List<CorridaCampeonato> corridaCampeonatos) {
+			List<CorridaCampeonatoSrv> corridaCampeonatos) {
 		this.corridaCampeonatos = corridaCampeonatos;
 	}
 

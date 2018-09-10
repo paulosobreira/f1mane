@@ -10,17 +10,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-@Entity(name = "f1_corridacampeonato")
-public class CorridaCampeonato extends F1ManeDados {
+@Entity(name = "f1_corridacampeonatosrv")
+public class CorridaCampeonatoSrv extends F1ManeDados {
 
 	private String nomeCircuito;
 	private String arquivoCircuito;
 	private Long rodada, tempoInicio, tempoFim;
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Campeonato campeonato;
+	private CampeonatoSrv campeonato;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "corridaCampeonato")
-	private List<DadosCorridaCampeonato> dadosCorridaCampeonatos = new LinkedList<DadosCorridaCampeonato>();
+	private List<DadosCorridaCampeonatoSrv> dadosCorridaCampeonatos = new LinkedList<DadosCorridaCampeonatoSrv>();
 
 	public String getNomeCircuito() {
 		return nomeCircuito;
@@ -46,20 +46,20 @@ public class CorridaCampeonato extends F1ManeDados {
 		this.tempoFim = tempoFim;
 	}
 
-	public Campeonato getCampeonato() {
+	public CampeonatoSrv getCampeonato() {
 		return campeonato;
 	}
 
-	public void setCampeonato(Campeonato campeonato) {
+	public void setCampeonato(CampeonatoSrv campeonato) {
 		this.campeonato = campeonato;
 	}
 
-	public List<DadosCorridaCampeonato> getDadosCorridaCampeonatos() {
+	public List<DadosCorridaCampeonatoSrv> getDadosCorridaCampeonatos() {
 		return dadosCorridaCampeonatos;
 	}
 
 	public void setDadosCorridaCampeonatos(
-			List<DadosCorridaCampeonato> dadosCorridaCampeonatos) {
+			List<DadosCorridaCampeonatoSrv> dadosCorridaCampeonatos) {
 		this.dadosCorridaCampeonatos = dadosCorridaCampeonatos;
 	}
 

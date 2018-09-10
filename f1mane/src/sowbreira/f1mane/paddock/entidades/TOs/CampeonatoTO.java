@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 
 public class CampeonatoTO implements Serializable {
 
@@ -28,9 +28,15 @@ public class CampeonatoTO implements Serializable {
 
 	private boolean modoCarreira;
 
-	private Campeonato campeonato;
+	private CampeonatoSrv campeonato;
 
 	private List<CorridaCampeonatoTO> corridas = new ArrayList<CorridaCampeonatoTO>();
+
+	private List<DadosClassificacaoCarros> carros = new ArrayList<DadosClassificacaoCarros>();
+
+	private List<DadosClassificacaoJogador> jogadores = new ArrayList<DadosClassificacaoJogador>();
+
+	private List<DadosClassificacaoPilotos> pilotos = new ArrayList<DadosClassificacaoPilotos>();
 
 	public String getNomePiloto() {
 		return nomePiloto;
@@ -72,7 +78,7 @@ public class CampeonatoTO implements Serializable {
 		this.idCarro = idCarro;
 	}
 
-	public void setCampeonato(Campeonato campeonato) {
+	public void setCampeonato(CampeonatoSrv campeonato) {
 		this.campeonato = campeonato;
 	}
 
@@ -142,6 +148,30 @@ public class CampeonatoTO implements Serializable {
 
 	public Long getId() {
 		return campeonato.getId();
+	}
+
+	public List<DadosClassificacaoCarros> getCarros() {
+		return carros;
+	}
+
+	public void setCarros(List<DadosClassificacaoCarros> carros) {
+		this.carros = carros;
+	}
+
+	public List<DadosClassificacaoJogador> getJogadores() {
+		return jogadores;
+	}
+
+	public void setJogadores(List<DadosClassificacaoJogador> jogadores) {
+		this.jogadores = jogadores;
+	}
+
+	public List<DadosClassificacaoPilotos> getPilotos() {
+		return pilotos;
+	}
+
+	public void setPilotos(List<DadosClassificacaoPilotos> pilotos) {
+		this.pilotos = pilotos;
 	}
 
 }

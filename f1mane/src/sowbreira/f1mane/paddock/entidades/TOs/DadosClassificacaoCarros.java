@@ -3,9 +3,9 @@ package sowbreira.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 
 /**
- * @author Paulo Sobreira Criado em 21/06/2009 as 19:15:34
+ * @author Paulo Sobreira Criado em 21/06/2009 as 19:14:52
  */
-public class DadosConstrutoresPilotos implements Serializable {
+public class DadosClassificacaoCarros implements Serializable {
 	private String nome;
 	private int pontos;
 

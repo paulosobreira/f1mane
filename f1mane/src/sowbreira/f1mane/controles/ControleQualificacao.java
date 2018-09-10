@@ -135,29 +135,19 @@ public class ControleQualificacao {
 						new Long(piloto1.getCiclosVoltaQualificacao()));
 			}
 		});
-	}
 
-	private void evitaMesmoCiclo(Piloto p) {
-		List pilotos = controleJogo.getPilotos();
-		boolean diffTodos = false;
-		while (!diffTodos) {
-			boolean diffTodosIn = true;
-			for (int i = 0; i < pilotos.size(); i++) {
-				Piloto piloto = (Piloto) pilotos.get(i);
-				if (p.getCiclosVoltaQualificacao() != piloto
-						.getCiclosVoltaQualificacao() || p.equals(piloto)) {
-					continue;
-				} else {
-					diffTodosIn = false;
-					p.setCiclosVoltaQualificacao(
-							p.getCiclosVoltaQualificacao() - 1);
-				}
+		for (int i = 0; i < pilotos.size(); i++) {
+			if (i == 0) {
+				continue;
 			}
-			if (diffTodosIn) {
-				diffTodos = true;
-			}
+			Piloto pilotoAnt = pilotos.get(i - 1);
+			Piloto piloto = pilotos.get(i);
+			piloto.setCiclosVoltaQualificacao(
+					pilotoAnt.getCiclosVoltaQualificacao()
+							+ (piloto.testeHabilidadePiloto()
+									? Util.intervalo(1, 200)
+									: Util.intervalo(100, 500)));
 		}
-
 	}
 
 	private void nivelaHabilidade(List<Piloto> pilotos) {
@@ -285,8 +275,8 @@ public class ControleQualificacao {
 			piloto.setPosicao(i + 1);
 			piloto.setPosicaoInicial(piloto.getPosicao());
 			piloto.zerarGanhoEVariaveisUlt();
-			//piloto.setPtosPista(nM.getIndex());
-			piloto.setPtosPista(nM.getIndex()-noFim.getIndex());
+			// piloto.setPtosPista(nM.getIndex());
+			piloto.setPtosPista(nM.getIndex() - noFim.getIndex());
 			if (!piloto.isJogadorHumano() && !controleJogo.verificaNivelJogo()
 					&& !piloto.testeHabilidadePilotoCarro()
 					&& Math.random() > 0.95) {

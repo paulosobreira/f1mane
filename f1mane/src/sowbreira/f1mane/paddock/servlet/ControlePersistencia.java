@@ -37,9 +37,9 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.F1ManeDados;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
@@ -290,6 +290,15 @@ public class ControlePersistencia {
 		return jogadorDadosSrv;
 	}
 
+	public JogadorDadosSrv carregaDadosJogadorId(Long id, Session session) {
+		List jogador = session.createCriteria(JogadorDadosSrv.class)
+				.add(Restrictions.eq("id", id)).list();
+		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty()
+				? null
+				: jogador.get(0));
+		return jogadorDadosSrv;
+	}
+
 	public JogadorDadosSrv carregaDadosJogadorIdGoogle(String idGoogle,
 			Session session) {
 		List jogador = session.createCriteria(JogadorDadosSrv.class)
@@ -531,17 +540,17 @@ public class ControlePersistencia {
 		return jogadorDadosSrv;
 	}
 
-	public List<Campeonato> obterListaCampeonatos(Session session) {
-		return session.createCriteria(Campeonato.class)
+	public List<CampeonatoSrv> obterListaCampeonatos(Session session) {
+		return session.createCriteria(CampeonatoSrv.class)
 				.addOrder(Order.desc("dataCriacao")).list();
 
 	}
 
-	public Campeonato pesquisaCampeonato(Session session, String id,
+	public CampeonatoSrv pesquisaCampeonato(Session session, String id,
 			boolean cliente) {
-		List campeonatos = session.createCriteria(Campeonato.class)
+		List campeonatos = session.createCriteria(CampeonatoSrv.class)
 				.add(Restrictions.eq("id", new Long(id))).list();
-		Campeonato campeonato = (Campeonato) (campeonatos.isEmpty()
+		CampeonatoSrv campeonato = (CampeonatoSrv) (campeonatos.isEmpty()
 				? null
 				: campeonatos.get(0));
 		if (campeonato == null) {
@@ -556,13 +565,13 @@ public class ControlePersistencia {
 
 	public List pesquisaCampeonatos(String token, Session session,
 			boolean cliente) {
-		List campeonatos = session.createCriteria(Campeonato.class)
+		List campeonatos = session.createCriteria(CampeonatoSrv.class)
 				.createAlias("jogadorDadosSrv", "j")
 				.add(Restrictions.eq("j.token", token)).list();
 		if (cliente) {
 			for (Iterator iterator = campeonatos.iterator(); iterator
 					.hasNext();) {
-				Campeonato campeonato = (Campeonato) iterator.next();
+				CampeonatoSrv campeonato = (CampeonatoSrv) iterator.next();
 				campeonatoCliente(session, campeonato);
 			}
 		}
@@ -571,7 +580,7 @@ public class ControlePersistencia {
 
 	public List pesquisaCampeonatosEmAberto(String token, Session session,
 			boolean cliente) {
-		List campeonatos = session.createCriteria(Campeonato.class)
+		List campeonatos = session.createCriteria(CampeonatoSrv.class)
 				.createAlias("jogadorDadosSrv", "j")
 				.add(Restrictions.eq("j.token", token))
 				.createAlias("corridaCampeonatos", "c")
@@ -579,15 +588,15 @@ public class ControlePersistencia {
 		if (cliente) {
 			for (Iterator iterator = campeonatos.iterator(); iterator
 					.hasNext();) {
-				Campeonato campeonato = (Campeonato) iterator.next();
+				CampeonatoSrv campeonato = (CampeonatoSrv) iterator.next();
 				campeonatoCliente(session, campeonato);
 			}
 		}
 		return campeonatos;
 	}
 
-	public void campeonatoCliente(Session session, Campeonato campeonato) {
-		for (CorridaCampeonato corridaCampeonato : campeonato
+	public void campeonatoCliente(Session session, CampeonatoSrv campeonato) {
+		for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 				.getCorridaCampeonatos()) {
 			corridaCampeonato.setDadosCorridaCampeonatos(Util.removePersistBag(
 					corridaCampeonato.getDadosCorridaCampeonatos(), session));
@@ -601,7 +610,7 @@ public class ControlePersistencia {
 
 	public List pesquisaCampeonatos(JogadorDadosSrv jogadorDadosSrv,
 			Session session) {
-		List campeonatos = session.createCriteria(Campeonato.class)
+		List campeonatos = session.createCriteria(CampeonatoSrv.class)
 				.add(Restrictions.eq("jogadorDadosSrv", jogadorDadosSrv))
 				.list();
 		return campeonatos;

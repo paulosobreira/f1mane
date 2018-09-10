@@ -25,14 +25,14 @@ import javax.swing.table.TableModel;
 import br.nnpe.Logger;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
-import sowbreira.f1mane.paddock.entidades.persistencia.Campeonato;
-import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonato;
-import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonato;
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonatoSrv;
+import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonatoSrv;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
 public class PainelCampeonato extends JPanel {
 
-	private Campeonato campeonato;
+	private CampeonatoSrv campeonato;
 	private SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"EEE, d MMM yyyy HH:mm:ss");
 	private Component compPai;
@@ -358,7 +358,7 @@ public class PainelCampeonato extends JPanel {
 
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
-				CorridaCampeonato corridaCampeonato = campeonato
+				CorridaCampeonatoSrv corridaCampeonato = campeonato
 						.getCorridaCampeonatos().get(rowIndex);
 
 				switch (columnIndex) {
@@ -384,7 +384,7 @@ public class PainelCampeonato extends JPanel {
 					case 3 :
 						if (corridaCampeonato == null)
 							return "";
-						for (DadosCorridaCampeonato dadosCorridaCampeonato : corridaCampeonato
+						for (DadosCorridaCampeonatoSrv dadosCorridaCampeonato : corridaCampeonato
 								.getDadosCorridaCampeonatos()) {
 							if (dadosCorridaCampeonato.getPosicao() == 1) {
 								return dadosCorridaCampeonato.getPiloto();
@@ -454,7 +454,7 @@ public class PainelCampeonato extends JPanel {
 			JTable table) {
 		JTable detCorridaTable = new JTable();
 		List dets = new ArrayList();
-		for (CorridaCampeonato corridaCampeonato : campeonato
+		for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 				.getCorridaCampeonatos()) {
 			if (corrida.equals(corridaCampeonato.getNomeCircuito())) {
 				dets = corridaCampeonato.getDadosCorridaCampeonatos();
@@ -463,8 +463,8 @@ public class PainelCampeonato extends JPanel {
 		Collections.sort(dets, new Comparator() {
 			@Override
 			public int compare(Object o1, Object o2) {
-				DadosCorridaCampeonato c1 = (DadosCorridaCampeonato) o1;
-				DadosCorridaCampeonato c2 = (DadosCorridaCampeonato) o2;
+				DadosCorridaCampeonatoSrv c1 = (DadosCorridaCampeonatoSrv) o1;
+				DadosCorridaCampeonatoSrv c2 = (DadosCorridaCampeonatoSrv) o2;
 				return new Integer(c1.getPosicao())
 						.compareTo(new Integer(c2.getPosicao()));
 			}
@@ -474,8 +474,8 @@ public class PainelCampeonato extends JPanel {
 
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
-				List<DadosCorridaCampeonato> dets = null;
-				for (CorridaCampeonato corridaCampeonato : campeonato
+				List<DadosCorridaCampeonatoSrv> dets = null;
+				for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 						.getCorridaCampeonatos()) {
 					if (corrida.equals(corridaCampeonato.getNomeCircuito())) {
 						dets = corridaCampeonato.getDadosCorridaCampeonatos();
@@ -485,7 +485,7 @@ public class PainelCampeonato extends JPanel {
 				if (dets == null) {
 					return "";
 				}
-				DadosCorridaCampeonato dadosCorridaCampeonato = (DadosCorridaCampeonato) dets
+				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) dets
 						.get(rowIndex);
 
 				switch (columnIndex) {
@@ -520,8 +520,8 @@ public class PainelCampeonato extends JPanel {
 
 			@Override
 			public int getRowCount() {
-				List<DadosCorridaCampeonato> dets = null;
-				for (CorridaCampeonato corridaCampeonato : campeonato
+				List<DadosCorridaCampeonatoSrv> dets = null;
+				for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 						.getCorridaCampeonatos()) {
 					if (corrida.equals(corridaCampeonato.getNomeCircuito())) {
 						dets = corridaCampeonato.getDadosCorridaCampeonatos();

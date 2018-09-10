@@ -115,7 +115,7 @@ function carregaCampeonato() {
 				$.each(corridas, function(i, val) {
 					var corrida = corridas[i];
 					var tr = $('<tr style="cursor: pointer; cursor: hand" />');
-					var td1 = $('<td/>');
+					var td1 = $('<td style="width: 20%;" />');
 					var td2 = $('<td/>');
 					td1.append(corrida.rodada);
 					td2.append(corrida.nomeCircuito);
@@ -123,15 +123,15 @@ function carregaCampeonato() {
 					tr.append(td2);
 					$('#corridasTO').append(tr);
 					console.log('corrida.data '+corrida.data);
-					if(corrida.data!=null){
-						tr = $('<tr/>');
+					if(corrida.data==null){
+						tr.css("color","darkGray");
+					}else{
+						tr = $('<tr style="border-bottom-style: solid; border-bottom-color: darkgray;" />');
 						td = $('<td/>');
-						td.append(corrida.data);
-						td.append(' ');
-						var div = $('<div style="display: inline; background-color: '+corrida.corVencedor+'; margin: 5px;" />');
-						div.append('&nbsp;');
+						var div = $('<div style="border-left-color: '+corrida.corVencedor+';" class="divPiloto" />');
+						div.append(corrida.vencedor);
 						td.append(div);
-						td.append(corrida.vencedor);
+						td.append(corrida.data);
 						tr.append($('<td/>'));
 						tr.append(td);
 						$('#corridasTO').append(tr);

@@ -22,9 +22,9 @@ import br.nnpe.Util;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
-import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoCircuito;
-import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresCarros;
-import sowbreira.f1mane.paddock.entidades.TOs.DadosConstrutoresPilotos;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoJogador;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoCarros;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoPilotos;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogador;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
@@ -321,7 +321,7 @@ public class ControleClassificacao {
 			for (Iterator iterator = mapaCarros.keySet().iterator(); iterator
 					.hasNext();) {
 				String key = (String) iterator.next();
-				DadosConstrutoresCarros dadosConstrutoresCarros = new DadosConstrutoresCarros();
+				DadosClassificacaoCarros dadosConstrutoresCarros = new DadosClassificacaoCarros();
 				dadosConstrutoresCarros.setNome(key);
 				dadosConstrutoresCarros
 						.setPontos((Integer) mapaCarros.get(key));
@@ -332,7 +332,7 @@ public class ControleClassificacao {
 			for (Iterator iterator = mapaPilotos.keySet().iterator(); iterator
 					.hasNext();) {
 				String key = (String) iterator.next();
-				DadosConstrutoresPilotos dadosConstrutoresPilotos = new DadosConstrutoresPilotos();
+				DadosClassificacaoPilotos dadosConstrutoresPilotos = new DadosClassificacaoPilotos();
 				dadosConstrutoresPilotos.setNome(key);
 				dadosConstrutoresPilotos
 						.setPontos((Integer) mapaPilotos.get(key));
@@ -605,17 +605,17 @@ public class ControleClassificacao {
 	}
 
 	public List obterClassificacaoCircuito(String nomeCircuito) {
-		Map<Long, DadosClassificacaoCircuito> mapa = new HashMap<>();
+		Map<Long, DadosClassificacaoJogador> mapa = new HashMap<>();
 		List<CorridasDadosSrv> corridas = controlePersistencia
 				.obterClassificacaoCircuito(nomeCircuito,
 						controlePersistencia.getSession());
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
 			CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
 					.next();
-			DadosClassificacaoCircuito dadosClassificacaoCircuito = mapa
+			DadosClassificacaoJogador dadosClassificacaoCircuito = mapa
 					.get(corridasDadosSrv.getJogadorDadosSrv().getId());
 			if (dadosClassificacaoCircuito == null) {
-				dadosClassificacaoCircuito = new DadosClassificacaoCircuito();
+				dadosClassificacaoCircuito = new DadosClassificacaoJogador();
 				dadosClassificacaoCircuito.setNome(
 						corridasDadosSrv.getJogadorDadosSrv().getNome());
 				dadosClassificacaoCircuito.setImagemJogador(corridasDadosSrv
@@ -629,13 +629,13 @@ public class ControleClassificacao {
 					.setPontos(dadosClassificacaoCircuito.getPontos()
 							+ corridasDadosSrv.getPontos());
 		}
-		List<DadosClassificacaoCircuito> classificacao = new ArrayList<DadosClassificacaoCircuito>(
+		List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(
 				mapa.values());
 		Collections.sort(classificacao,
-				new Comparator<DadosClassificacaoCircuito>() {
+				new Comparator<DadosClassificacaoJogador>() {
 					@Override
-					public int compare(DadosClassificacaoCircuito o1,
-							DadosClassificacaoCircuito o2) {
+					public int compare(DadosClassificacaoJogador o1,
+							DadosClassificacaoJogador o2) {
 						int compareTo = o2.getPontos()
 								.compareTo(o1.getPontos());
 						if (compareTo == 0) {
