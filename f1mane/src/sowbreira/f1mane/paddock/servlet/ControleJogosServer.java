@@ -410,6 +410,10 @@ public class ControleJogosServer {
 		}
 		dadosJogo.setCorridaTerminada(jogoServidor.isCorridaTerminada());
 		dadosJogo.setPilotos(pilotos);
+		
+		
+		dadosJogo.setCampeonato(jogoServidor.getDadosCriarJogo().getNomeCampeonato());
+		dadosJogo.setRodadaCampeonato(jogoServidor.getDadosCriarJogo().getRodadaCampeonato());
 
 		Map mapJogo = jogoServidor.getMapJogadoresOnlineTexto();
 		return dadosJogo;

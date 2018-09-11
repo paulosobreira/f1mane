@@ -34,7 +34,9 @@ public class DadosJogo implements Serializable {
 	private String nomeJogo;
 	private String estado;
 	private String segundosParaIniciar;
-	
+	private String campeonato;
+	private String rodadaCampeonato;
+
 	public List<Piloto> getPilotos() {
 		return pilotos;
 	}
@@ -142,6 +144,18 @@ public class DadosJogo implements Serializable {
 	}
 	public void setSegundosParaIniciar(String segundosParaIniciar) {
 		this.segundosParaIniciar = segundosParaIniciar;
+	}
+	public String getCampeonato() {
+		return campeonato;
+	}
+	public void setCampeonato(String campeonato) {
+		this.campeonato = campeonato;
+	}
+	public String getRodadaCampeonato() {
+		return rodadaCampeonato;
+	}
+	public void setRodadaCampeonato(String rodadaCampeonato) {
+		this.rodadaCampeonato = rodadaCampeonato;
 	}
 
 }

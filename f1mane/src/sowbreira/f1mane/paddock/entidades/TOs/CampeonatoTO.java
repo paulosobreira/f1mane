@@ -30,6 +30,8 @@ public class CampeonatoTO implements Serializable {
 
 	private CampeonatoSrv campeonato;
 
+	private String rodadaCampeonato;
+
 	private List<CorridaCampeonatoTO> corridas = new ArrayList<CorridaCampeonatoTO>();
 
 	private List<DadosClassificacaoCarros> carros = new ArrayList<DadosClassificacaoCarros>();
@@ -172,6 +174,14 @@ public class CampeonatoTO implements Serializable {
 
 	public void setPilotos(List<DadosClassificacaoPilotos> pilotos) {
 		this.pilotos = pilotos;
+	}
+
+	public String getRodadaCampeonato() {
+		return rodadaCampeonato;
+	}
+
+	public void setRodadaCampeonato(String rodadaCampeonato) {
+		this.rodadaCampeonato = rodadaCampeonato;
 	}
 
 }

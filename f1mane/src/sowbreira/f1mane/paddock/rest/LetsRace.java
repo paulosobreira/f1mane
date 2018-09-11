@@ -397,6 +397,7 @@ public class LetsRace {
 					combustivel, asa);
 
 			dadosCriarJogo.setNomeCampeonato(campeonato.getNome());
+			dadosCriarJogo.setRodadaCampeonato(campeonato.getRodadaCampeonato());
 			dadosCriarJogo.setIdCampeonato(campeonato.getId());
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			SrvPaddockPack srvPaddockPack = null;

@@ -78,6 +78,8 @@ function carregaCampeonato() {
 				$('#criarCampeonato').addClass('hide');
 				$('#listarCampeonato').removeClass('hide');
 				var campeonato = response;
+				$('#nomeCampeonatoRodada').append(campeonato.nome);
+				$('#rodadaCampeonato').append(lang_text('rodada')+' '+campeonato.rodadaCampeonato);
 				$('#temporadasLabelCarrgeda').html('');
 				$('#temporadasLabelCarrgeda').append(campeonato.temporada);
 				var detalheTemporada = $('#detalheTemporada').clone();

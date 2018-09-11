@@ -304,7 +304,6 @@ public class ControleCampeonatoServidor {
 		}
 		CampeonatoTO campeonatoTO = new CampeonatoTO();
 		campeonatoTO.setCampeonato(campeonato);
-
 		processsaCorridaCampeonatoTO(campeonato, campeonatoTO);
 		if ("0".equals(campeonato.getIdPiloto())) {
 			CarreiraDadosSrv carreiraDados = controlePaddockServidor
@@ -314,7 +313,6 @@ public class ControleCampeonatoServidor {
 			}
 			campeonatoTO.setModoCarreira(true);
 			processaCampeonatoTOCarreira(campeonatoTO, carreiraDados);
-
 		} else {
 			campeonatoTO.setModoCarreira(false);
 			processaCampeonatoTOPilotoSelecionado(campeonato, campeonatoTO);
@@ -357,7 +355,7 @@ public class ControleCampeonatoServidor {
 			CampeonatoTO campeonatoTO) {
 		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
-
+		int rodada = 1;
 		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
 				.hasNext();) {
 			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
@@ -376,6 +374,7 @@ public class ControleCampeonatoServidor {
 						corridaCampeonato.getNomeCircuito());
 				campeonatoTO.setArquivoCircuitoAtual(
 						corridaCampeonatoTO.getArquivoCircuito());
+				rodada++;
 
 			}
 			if (corridaCampeonato.getTempoFim() != null) {
@@ -396,6 +395,8 @@ public class ControleCampeonatoServidor {
 				}
 			}
 		}
+		campeonatoTO
+				.setRodadaCampeonato(rodada + "/" + corridaCampeonatos.size());
 	}
 
 	public void processaCampeonatoTOCarreira(CampeonatoTO campeonatoTO,

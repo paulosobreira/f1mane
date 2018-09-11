@@ -332,6 +332,13 @@ function carregarDadosJogoPadrao() {
 					mostrarEntrarJogo();
 				});
 			});
+			if(dadosJogo.campeonato!=null){
+				$('#divCampeonato').removeClass('hide');
+				$('#nomeCampeonatoRodada').append(dadosJogo.campeonato);
+				$('#rodadaCampeonato').append(lang_text('rodada')+' '+dadosJogo.rodadaCampeonato);
+			}
+
+			
 			$('#detalheTemporada').removeClass('hidden');
 			$('#temporadaAnterior').remove();
 			$('#temporadaProxima').remove();
