@@ -413,6 +413,13 @@ public class ControleClassificacao {
 				return new MsgSrv(Lang.msg("128"));
 			}
 
+			if(controlePersistencia.existeNomeCarro(session,carreiraDados.getNomeCarro())){
+				return new MsgSrv(Lang.msg("existeNomeCarro"));
+			}
+			if(controlePersistencia.existeNomePiloto(session,carreiraDados.getNomePiloto())){
+				return new MsgSrv(Lang.msg("existeNomePiloto"));
+			}
+			
 			if (carreiraDados.getNomeCarro().length() > 20
 					|| carreiraDados.getNomePiloto().length() > 20) {
 				return new MsgSrv(Lang.msg("249"));

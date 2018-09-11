@@ -76,6 +76,14 @@ public class ControleCampeonatoServidor {
 		}
 		Session session = controlePersistencia.getSession();
 		try {
+			List pesquisaCampeonatosEmAberto = controlePersistencia.pesquisaCampeonatosEmAberto(token, session, false);
+			if(!pesquisaCampeonatosEmAberto.isEmpty()){
+				return (new MsgSrv(Lang.msg("campeonatoEmAberto")));
+			}
+			if(controlePersistencia.existeNomeCampeonato(session,campeonato.getNome())){
+				return new MsgSrv(Lang.msg("nomeCampeonatoNaoDisponivel"));
+			}
+			
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 					.carregaDadosJogador(token, session);
 			if (jogadorDadosSrv == null) {

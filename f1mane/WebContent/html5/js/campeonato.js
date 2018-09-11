@@ -50,6 +50,10 @@ $('#btnJogar').bind("click", function() {
 	window.location = "jogar.html";
 });
 
+$('#voltar').bind("click", function() {
+	window.location = "index.html";
+});
+
 var adicionarLiCircuito;
 var circuitos;
 
@@ -393,6 +397,13 @@ function prencherListaCircuitos() {
 		divSemCircuitos.append(txt);
 		$('#circuitos').append(divSemCircuitos);
 	}
+	$('#voltar').unbind().bind("click", function() {
+		$('#criarCampeonato').removeClass('hide');
+		$('#circuitos').addClass('hide');
+		$('#voltar').unbind().bind("click", function() {
+			window.location = "index.html";
+		});
+	});	
 }
 
 function listaCircuitos() {
@@ -496,6 +507,20 @@ function selecionaPilotosTemporada() {
 			$('#idPilotoSelecionado').val(pilotos[i].id);
 		});
 	});
+	
+	$('#voltar').unbind().bind("click", function() {
+		$('#criarCampeonato').removeClass('hide');
+		$('#selecionarPiloto').addClass('hide');
+		if($('#idPilotoSelecionado').val()==null){
+			$('#divPilotoSelecionado').removeClass('hide');	
+		}else{
+			$('#pilotoSelecionado').removeClass('hide');	
+		}
+		$('#voltar').unbind().bind("click", function() {
+			window.location = "index.html";
+		});
+	});
+	
 	pilotoCarreiraTemporada();
 }
 
