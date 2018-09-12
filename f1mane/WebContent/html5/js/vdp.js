@@ -6,6 +6,7 @@ var mapaIdPilotosNosSuave;
 var mapaTracadoSuave = new Map();
 var mapaTracadoSuaveVaiPara = new Map();
 var mapaIndexTracadoSuave = new Map();
+var mapaGanhoSuave = new Map();
 var mapaPontoSuave = new Map();
 var mapaRotacionar = new Map();
 var mapaRastroFaisca = new Map();
@@ -25,6 +26,9 @@ var desenhaImagens = true;
 var pitLane = false;
 var desenhouMarcasLargadaGrid = false;
 var eixoCarro = 30;
+var fatorReta = 2;
+var fatorAlta = 2.75;
+var fatorBaixa = 2.25;
 var ptBg = {
 	x : 0,
 	y : 0
@@ -220,36 +224,48 @@ function vdp_atualizaSuave() {
 		}
 		var diff = (indexReal - indexSuave);
 		var multi = diff / 100;
-		var contReta = pilotosMapReta.get(piloto.idPiloto);
-		var indexReta = 3.0;
-		if (contReta != null) {
-			if (contReta >= 3) {
-				indexReta = 3.25;
-			}
-			if (contReta >= 4) {
-				indexReta = 4;
-			}
-		}
-		arr = [ indexReta * multi, 2.5 * multi, 2.25 * multi ];
-		if (noSuave.box) {
-			arr = [ indexReta * multi, 2 * multi, 2 * multi ];
-		}
-		var novoIndex;
+		var ganhoSuave = 0;
 		if (noSuave.tipoJson == 'R') {
-			novoIndex = noSuave.index + Math.round(arr[0]);
+			ganhoSuave = fatorReta * multi;
 		} else if (noSuave.tipoJson == 'A') {
-			novoIndex = noSuave.index + Math.round(arr[1]);
+			ganhoSuave = fatorAlta * multi;
 		} else if (noSuave.tipoJson == 'B') {
-			novoIndex = noSuave.index + Math.round(arr[2]);
-		} else {
-			novoIndex = noSuave.index + Math.round(arr[2]);
+			ganhoSuave = fatorBaixa * multi;
 		}
-		if (novoIndex > indexReal) {
+		
+		var ganhoSuaveAnt = mapaGanhoSuave.get(piloto.idPiloto)
+		if(ganhoSuaveAnt==null){
+			ganhoSuaveAnt=0;
+		}
+		if (ganhoSuave > ganhoSuaveAnt) {
+			ganhoSuave = ganhoSuaveAnt + 1;
+		}
+		if (ganhoSuave <= ganhoSuaveAnt) {
+			ganhoSuave = ganhoSuaveAnt - 1;
+		}
+		if (noSuave.tipoJson == 'R'
+				&& noReal.tipoJson == 'R' && ganhoSuaveAnt > ganhoSuave
+				&& diff > 150) {
+			ganhoSuave = ganhoSuaveAnt;
+		}
+		if (noSuave.tipoJson == 'R'
+				&& noReal.tipoJson == 'R' && ganhoSuaveAnt > ganhoSuave
+				&& diff < 50) {
+			ganhoSuave = ganhoSuaveAnt - 1;
+		}
+		mapaGanhoSuave.set(piloto.idPiloto, ganhoSuave);
+		var novoIndex = noSuave.index + Math.round(ganhoSuave);
+		
+		
+		if (novoIndex > indexReal && noSuave.tipoJson != 'R') {
 			// if (piloto.idPiloto == idPilotoSelecionado) {
 			// console.log(piloto.idPiloto + ' novoIndex > indexReal ' +
 			// novoIndex);
 			// }
 			novoIndex = indexReal - 1;
+		}
+		if (piloto.idPiloto == idPilotoSelecionado) {
+			console.log('Diferenca : '+(novoIndex - noSuave.index));
 		}
 		if (noSuave.box) {
 			if (novoIndex > (circuito.boxFull.length - 1)) {

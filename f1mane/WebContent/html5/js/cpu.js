@@ -17,7 +17,6 @@ var alternadorValor = 0;
 var contadorJogadores = 0;
 
 var pilotosMap = new Map();
-var pilotosMapReta = new Map();
 var pilotosDnfMap = new Map();
 var pilotosBandeirada = new Map();
 var pilotosFaiscaMap = new Map();
@@ -150,18 +149,6 @@ function cpu_dadosParciais() {
 				pilotosBandeirada.set(piloto.idPiloto, (i+1));
 			}
 		}
-		no = mapaIdNos.get(piloto.idNo);
-		if (no.tipoJson == 'R'){
-			var cont = pilotosMapReta.get(piloto.idPiloto);
-			if(cont == null){
-				cont = 0;
-			}
-			cont++;
-			pilotosMapReta.set(piloto.idPiloto, cont);
-		}else{
-			pilotosMapReta.set(piloto.idPiloto, null);
-		}
-		
 	}
 	if(contadorJogadores != contadorJogadoresLocal){
 		console.log(' contadorJogadores ' + contadorJogadores);

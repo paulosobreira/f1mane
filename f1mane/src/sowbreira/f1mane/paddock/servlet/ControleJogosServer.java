@@ -125,10 +125,11 @@ public class ControleJogosServer {
 					.setControleCampeonatoServidor(controleCampeonatoServidor);
 			SrvPaddockPack srvPaddockPack = preparaSrvPaddockPack(
 					clientPaddockPack, jogoServidor);
-
-			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-					.obterCarreiraSrv(
-							clientPaddockPack.getSessaoCliente().getToken());
+			CarreiraDadosSrv carreiraDadosSrv = null;
+			if (!clientPaddockPack.getSessaoCliente().isGuest()) {
+				carreiraDadosSrv = controleClassificacao.obterCarreiraSrv(
+						clientPaddockPack.getSessaoCliente().getToken());
+			}
 			if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 				if (jogoServidor.isCorridaIniciada()) {
 					return new MsgSrv(Lang.msg("247"));
@@ -218,9 +219,11 @@ public class ControleJogosServer {
 			return new MsgSrv(Lang.msg("207", new String[]{nomeJogo}));
 		}
 
-		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-				.obterCarreiraSrv(
-						clientPaddockPack.getSessaoCliente().getToken());
+		CarreiraDadosSrv carreiraDadosSrv = null;
+		if (!clientPaddockPack.getSessaoCliente().isGuest()) {
+			carreiraDadosSrv = controleClassificacao.obterCarreiraSrv(
+					clientPaddockPack.getSessaoCliente().getToken());
+		}
 		if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 			if (jogoServidor.isCorridaIniciada()) {
 				return new MsgSrv(Lang.msg("247"));
@@ -410,10 +413,11 @@ public class ControleJogosServer {
 		}
 		dadosJogo.setCorridaTerminada(jogoServidor.isCorridaTerminada());
 		dadosJogo.setPilotos(pilotos);
-		
-		
-		dadosJogo.setCampeonato(jogoServidor.getDadosCriarJogo().getNomeCampeonato());
-		dadosJogo.setRodadaCampeonato(jogoServidor.getDadosCriarJogo().getRodadaCampeonato());
+
+		dadosJogo.setCampeonato(
+				jogoServidor.getDadosCriarJogo().getNomeCampeonato());
+		dadosJogo.setRodadaCampeonato(
+				jogoServidor.getDadosCriarJogo().getRodadaCampeonato());
 
 		Map mapJogo = jogoServidor.getMapJogadoresOnlineTexto();
 		return dadosJogo;
