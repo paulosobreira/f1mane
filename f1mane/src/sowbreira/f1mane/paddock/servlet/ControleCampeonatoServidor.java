@@ -49,6 +49,7 @@ public class ControleCampeonatoServidor {
 			ControlePaddockServidor controlePaddockServidor) {
 		super();
 		this.controlePersistencia = controlePersistencia;
+		this.controlePaddockServidor = controlePaddockServidor;
 	}
 
 	public Object criarCampeonato(ClientPaddockPack clientPaddockPack) {
@@ -382,10 +383,9 @@ public class ControleCampeonatoServidor {
 						corridaCampeonato.getNomeCircuito());
 				campeonatoTO.setArquivoCircuitoAtual(
 						corridaCampeonatoTO.getArquivoCircuito());
-				rodada++;
-
 			}
 			if (corridaCampeonato.getTempoFim() != null) {
+				rodada++;
 				Dia dia = new Dia(corridaCampeonato.getTempoFim());
 				corridaCampeonatoTO.setData(dia.toString());
 				List<DadosCorridaCampeonatoSrv> dadosCorridaCampeonatos = corridaCampeonato

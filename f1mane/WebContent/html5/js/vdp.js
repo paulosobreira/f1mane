@@ -221,16 +221,16 @@ function vdp_atualizaSuave() {
 		var diff = (indexReal - indexSuave);
 		var multi = diff / 100;
 		var contReta = pilotosMapReta.get(piloto.idPiloto);
-		var indexReta = 3.25;
+		var indexReta = 3.0;
 		if (contReta != null) {
 			if (contReta >= 3) {
-				indexReta = 3.5;
+				indexReta = 3.25;
 			}
 			if (contReta >= 4) {
 				indexReta = 4;
 			}
 		}
-		arr = [ indexReta * multi, 2.75 * multi, 2.5 * multi ];
+		arr = [ indexReta * multi, 2.5 * multi, 2.25 * multi ];
 		if (noSuave.box) {
 			arr = [ indexReta * multi, 2 * multi, 2 * multi ];
 		}

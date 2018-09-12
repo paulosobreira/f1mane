@@ -641,14 +641,20 @@ public class ControlePersistencia {
 		return null;
 	}
 
-	public boolean existeNomeCarro(Session session, String nomeCarro) {
+	public boolean existeNomeCarro(Session session, String nomeCarro,
+			Long idJogador) {
 		List list = session.createCriteria(CarreiraDadosSrv.class)
+				.createAlias("jogadorDadosSrv", "j")
+				.add(Restrictions.ne("j.id", idJogador))
 				.add(Restrictions.eq("nomeCarro", nomeCarro)).list();
 		return !list.isEmpty();
 	}
 
-	public boolean existeNomePiloto(Session session, String nomePiloto) {
+	public boolean existeNomePiloto(Session session, String nomePiloto,
+			Long idJogador) {
 		List list = session.createCriteria(CarreiraDadosSrv.class)
+				.createAlias("jogadorDadosSrv", "j")
+				.add(Restrictions.ne("j.id", idJogador))
 				.add(Restrictions.eq("nomePiloto", nomePiloto)).list();
 		return !list.isEmpty();
 	}

@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response;
 
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Circuito;
@@ -374,13 +375,14 @@ public class LetsRace {
 			String numVoltas = campeonato.getQtdeVoltas().toString();
 			String temporada = campeonato.getTemporada();
 
-			MsgSrv modoCarreiraRet = controlePaddock.modoCarreira(token,
-					campeonato.isModoCarreira());
-
-			if (modoCarreiraRet != null) {
-				Response erro = processsaMensagem(modoCarreiraRet, idioma);
-				if (erro != null) {
-					return erro;
+			if (campeonato.isModoCarreira()) {
+				MsgSrv modoCarreiraRet = controlePaddock.modoCarreira(token,
+						campeonato.isModoCarreira());
+				if (modoCarreiraRet != null) {
+					Response erro = processsaMensagem(modoCarreiraRet, idioma);
+					if (erro != null) {
+						return erro;
+					}
 				} else {
 					Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
 							.carregarTemporadasPilotosDefauts();
@@ -397,7 +399,8 @@ public class LetsRace {
 					combustivel, asa);
 
 			dadosCriarJogo.setNomeCampeonato(campeonato.getNome());
-			dadosCriarJogo.setRodadaCampeonato(campeonato.getRodadaCampeonato());
+			dadosCriarJogo
+					.setRodadaCampeonato(campeonato.getRodadaCampeonato());
 			dadosCriarJogo.setIdCampeonato(campeonato.getId());
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			SrvPaddockPack srvPaddockPack = null;
@@ -1019,8 +1022,12 @@ public class LetsRace {
 		}
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 
-		CampeonatoTO campeonato = controlePaddock
-				.obterCampeonatoEmAberto(token);
+		CampeonatoTO campeonato = null;
+		try {
+			campeonato = controlePaddock.obterCampeonatoEmAberto(token);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 		if (campeonato == null) {
 			return Response.status(204).build();
 		}
