@@ -9,8 +9,8 @@ var mapaIndexTracadoSuave = new Map();
 var mapaGanhoSuave = new Map();
 var mapaPontoSuave = new Map();
 var mapaRotacionar = new Map();
-var mapaRastroFaisca = new Map();
 var mapaRastroChuva = new Map();
+var mapaRastroFaisca = new Map();
 var mapaTravadaRodaFumaca = new Map();
 var cvBlend = document.createElement('canvas');
 var ctxBlend = cvBlend.getContext('2d');
@@ -1041,8 +1041,11 @@ function vdp_gerarImgFaiscaFx() {
 }
 function vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus) {
 	if (dadosParciais.clima != "chuva.png") {
+		mapaRastroChuva.clear();
 		return null;
 	}
+	mapaRastroFaisca.clear();
+	mapaTravadaRodaFumaca.clear();
 	var lista;
 	if (no.tipoJson == 'R') {
 		lista = fxChuvaRetaArray;
