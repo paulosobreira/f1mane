@@ -468,7 +468,7 @@ public class ControleJogosServer {
 
 	private PosisPack gerarPosicaoPilotos(JogoServidor jogoServidor) {
 		List<Posis> posisList = new ArrayList<Posis>();
-		List<Piloto> pilotos = jogoServidor.getPilotos();
+		List<Piloto> pilotos = jogoServidor.getPilotosCopia();
 		if (pilotos == null) {
 			Logger.logar("gerarPosicaoPilotos pilotos == null");
 			return null;

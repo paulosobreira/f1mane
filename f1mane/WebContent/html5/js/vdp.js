@@ -26,7 +26,7 @@ var desenhaImagens = true;
 var pitLane = false;
 var desenhouMarcasLargadaGrid = false;
 var eixoCarro = 30;
-var fatorReta = 2;
+var fatorReta = 2.25;
 var fatorAlta = 2.75;
 var fatorBaixa = 2.25;
 var ptBg = {
@@ -231,8 +231,9 @@ function vdp_atualizaSuave() {
 			ganhoSuave = fatorAlta * multi;
 		} else if (noSuave.tipoJson == 'B') {
 			ganhoSuave = fatorBaixa * multi;
+		}else{
+			ganhoSuave = fatorBaixa * multi;
 		}
-		
 		var ganhoSuaveAnt = mapaGanhoSuave.get(piloto.idPiloto)
 		if(ganhoSuaveAnt==null){
 			ganhoSuaveAnt=0;
@@ -255,17 +256,12 @@ function vdp_atualizaSuave() {
 		}
 		mapaGanhoSuave.set(piloto.idPiloto, ganhoSuave);
 		var novoIndex = noSuave.index + Math.round(ganhoSuave);
-		
-		
 		if (novoIndex > indexReal && noSuave.tipoJson != 'R') {
 			// if (piloto.idPiloto == idPilotoSelecionado) {
 			// console.log(piloto.idPiloto + ' novoIndex > indexReal ' +
 			// novoIndex);
 			// }
 			novoIndex = indexReal - 1;
-		}
-		if (piloto.idPiloto == idPilotoSelecionado) {
-			console.log('Diferenca : '+(novoIndex - noSuave.index));
 		}
 		if (noSuave.box) {
 			if (novoIndex > (circuito.boxFull.length - 1)) {
