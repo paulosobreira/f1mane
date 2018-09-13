@@ -28,7 +28,7 @@ var desenhouMarcasLargadaGrid = false;
 var eixoCarro = 30;
 var fatorReta = 2.25;
 var fatorAlta = 2.75;
-var fatorBaixa = 2.25;
+var fatorBaixa = 2.5;
 var ptBg = {
 	x : 0,
 	y : 0
