@@ -12,6 +12,7 @@ var mapaRotacionar = new Map();
 var mapaRastroChuva = new Map();
 var mapaRastroFaisca = new Map();
 var mapaTravadaRodaFumaca = new Map();
+var pilotosEfeitosMap = new Map();
 var cvBlend = document.createElement('canvas');
 var ctxBlend = cvBlend.getContext('2d');
 var fxArray = [];
@@ -48,7 +49,6 @@ var corFaisca = "rgba(255, 255, 0 ,0.5)";
 var vdp_amarelo = "rgba(255, 255, 0, 0.6)";
 var vdp_vermelho = "rgba(255, 0, 0, 0.6)";
 var vdp_verde = "rgba(0, 255, 0, 0.6)";
-var pilotosEfeitosMap = new Map();
 maneCanvas.width = 0;
 maneCanvas.height = 0;
 var alertaAerefolioPow = null;
@@ -748,10 +748,7 @@ function vdp_desenhaCarrosCima() {
 
 		var x = ponto.x - ptBg.x - 45;
 		var y = ponto.y - ptBg.y - 45;
-		var anguloGraus = Math.round(Math.degrees(angulo));
-		if (anguloGraus % 2 == 0) {
-			anguloGraus++;
-		}
+		var anguloGraus = Math.round(Math.degrees(angulo/6));
 		pilotosEfeitosMap.set(piloto.idPiloto, true);
 		var emMovimento = vdp_emMovimento(piloto.idPiloto, piloto.idNo);
 		var desenhaRastroFaiscaFx = null;
