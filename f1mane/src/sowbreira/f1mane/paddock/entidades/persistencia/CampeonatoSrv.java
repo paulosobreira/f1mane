@@ -41,6 +41,9 @@ public class CampeonatoSrv extends F1ManeDados {
 	@Column(nullable = false)
 	private boolean drs;
 
+	@Column(nullable = false)
+	private boolean finalizado;
+
 	@OneToOne
 	@JoinColumn(nullable = false)
 	private JogadorDadosSrv jogadorDadosSrv;
@@ -134,6 +137,14 @@ public class CampeonatoSrv extends F1ManeDados {
 
 	public void setErs(boolean ers) {
 		this.ers = ers;
+	}
+
+	public boolean isFinalizado() {
+		return finalizado;
+	}
+
+	public void setFinalizado(boolean finalizado) {
+		this.finalizado = finalizado;
 	}
 
 }

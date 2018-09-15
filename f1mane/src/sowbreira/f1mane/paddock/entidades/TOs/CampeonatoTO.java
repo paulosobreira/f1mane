@@ -28,7 +28,7 @@ public class CampeonatoTO implements Serializable {
 
 	private boolean modoCarreira;
 
-	private CampeonatoSrv campeonato;
+	private CampeonatoSrv campeonato = new CampeonatoSrv();
 
 	private String rodadaCampeonato;
 
@@ -182,6 +182,10 @@ public class CampeonatoTO implements Serializable {
 
 	public void setRodadaCampeonato(String rodadaCampeonato) {
 		this.rodadaCampeonato = rodadaCampeonato;
+	}
+
+	public void setId(int id) {
+		campeonato.setId(id);
 	}
 
 }

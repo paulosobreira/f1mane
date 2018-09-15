@@ -14,11 +14,8 @@
 		username="root" password="mysql" url="jdbc:mysql://localhost:3306/f1mane" 
 		testOnBorrow="false" testOnReturn="false" testWhileIdle="true" validationQuery="Select 
 		1" timeBetweenEvictionRunsMillis="1800000" /> -->
-	<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver"
-		type="javax.sql.DataSource" maxActive="30" maxIdle="10" maxWait="-1"
-		name="jdbc/MySQLDS" username="root" password="mysql"
-		url="jdbc:mysql://localhost:3306/f1mane" testOnBorrow="false"
-		testOnReturn="false" testWhileIdle="true" validationQuery="Select 
-		1"
-		timeBetweenEvictionRunsMillis="1800000" />
+	<Resource auth="Container" driverClassName="org.hsqldb.jdbcDriver"
+		maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/MySQLDS"
+		password="" type="javax.sql.DataSource" url="jdbc:hsqldb:hsql://localhost/xdb"
+		username="SA" />
 </Context>

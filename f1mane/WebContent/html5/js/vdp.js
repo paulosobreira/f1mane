@@ -27,9 +27,9 @@ var desenhaImagens = true;
 var pitLane = false;
 var desenhouMarcasLargadaGrid = false;
 var eixoCarro = 30;
-var fatorReta = 2.25;
-var fatorAlta = 2.75;
-var fatorBaixa = 2.5;
+var fatorReta = 2.20;
+var fatorAlta = 2.80;
+var fatorBaixa = 2.60;
 var ptBg = {
 	x : 0,
 	y : 0

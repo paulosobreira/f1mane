@@ -1002,11 +1002,37 @@ public class LetsRace {
 			return Response.status(401).build();
 		}
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-		Object ret = controlePaddock.criarCampeonato(campeonato, token);
+		Object ret = null;
+		try {
+			ret = controlePaddock.criarCampeonato(campeonato, token);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 		if (ret.equals(new MsgSrv(Lang.msg("campeonatoCriado")))) {
 			return Response.status(200).entity(ret).build();
 		}
 		return processsaMensagem(ret, idioma);
+	}
+
+	@POST
+	@Compress
+	@Path("/finalizaCampeonato")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response finalizaCampeonato(@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma, CampeonatoTO campeonato) {
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
+		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		Object ret = null;
+		try {
+			ret = controlePaddock.finalizaCampeonato(campeonato, token);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return Response.status(200).entity(campeonato).build();
 	}
 
 	@GET

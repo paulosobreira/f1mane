@@ -458,8 +458,9 @@ public class ControlePersistencia {
 			transaction.rollback();
 			throw e;
 		} finally {
-			if (session.isOpen())
+			if (session.isOpen()) {
 				session.close();
+			}
 		}
 
 	}
@@ -583,8 +584,7 @@ public class ControlePersistencia {
 		List campeonatos = session.createCriteria(CampeonatoSrv.class)
 				.createAlias("jogadorDadosSrv", "j")
 				.add(Restrictions.eq("j.token", token))
-				.createAlias("corridaCampeonatos", "c")
-				.add(Restrictions.isNull("c.tempoFim")).list();
+				.add(Restrictions.eq("finalizado", false)).list();
 		if (cliente) {
 			for (Iterator iterator = campeonatos.iterator(); iterator
 					.hasNext();) {
@@ -663,6 +663,11 @@ public class ControlePersistencia {
 		List list = session.createCriteria(CampeonatoSrv.class)
 				.add(Restrictions.eq("nome", nome)).list();
 		return !list.isEmpty();
+	}
+
+	public void finalizaCampeonato(Long id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
