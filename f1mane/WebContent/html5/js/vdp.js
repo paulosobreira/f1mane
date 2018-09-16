@@ -8,10 +8,7 @@ var mapaTracadoSuaveVaiPara = new Map();
 var mapaIndexTracadoSuave = new Map();
 var mapaGanhoSuave = new Map();
 var mapaPontoSuave = new Map();
-var mapaRotacionar = new Map();
 var mapaRastroChuva = new Map();
-var mapaRastroFaisca = new Map();
-var mapaTravadaRodaFumaca = new Map();
 var pilotosEfeitosMap = new Map();
 var rotateCache = true;
 var cvBlend = document.createElement('canvas');
@@ -27,7 +24,6 @@ var maneContext = maneCanvas.getContext('2d');
 var desenhaImagens = true;
 var pitLane = false;
 var desenhouMarcasLargadaGrid = false;
-var eixoCarro = 30;
 var ptBg = {
 	x : 0,
 	y : 0
@@ -198,9 +194,9 @@ function vdp_atualizaSuave() {
 	var posicaoPilotos = dadosParciais.posisPack;
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
-		if (piloto.idPiloto == idPilotoSelecionado) {
-			console.log(piloto.idPiloto);
-		}
+		// if (piloto.idPiloto == idPilotoSelecionado) {
+		// console.log(piloto.idPiloto);
+		// }
 		if (pilotosDnfMap.get(piloto.idPiloto)) {
 			continue;
 		}
@@ -300,9 +296,9 @@ function vdp_atualizaSuave() {
 			// }
 			noSuaveNovo = circuito.pistaFull[novoIndex - (circuito.boxFull.length - 1) + circuito.saidaBoxIndex];
 		}
-		if (noSuaveNovo == null) {
-			console.log(piloto.idPiloto + ' noSuaveNovo ' + noS);
-		}
+		// if (noSuaveNovo == null) {
+		// console.log(piloto.idPiloto + ' noSuaveNovo ' + noS);
+		// }
 		mapaIdPilotosNosSuave.set(piloto.idPiloto, noSuaveNovo);
 		if (diff >= 1000) {
 			// console.log(piloto.idPiloto + ' diff >= 1000 ' + novoIndex);
@@ -526,7 +522,7 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	var pontoSuave = vdp_pontoTracado(tracadoSuave, no);
 
 	var colisao = false;
-	if (zoom == 1 && vdp_containsRect(rectBg, pontoSuave) && vdp_colisaoTracadoSuave(piloto)) {
+	if (zoom == 1 && vdp_intersectRect(rectBg, pontoSuave) && vdp_colisaoTracadoSuave(piloto)) {
 		var ponto = vdp_obterPonto(piloto, false);
 		if (ponto != null && ponto.x != null && ponto.y != null) {
 			// pontoColisaoArray.push(ponto);
@@ -580,10 +576,6 @@ function vdp_desenhaNomesCima() {
 		var no = mapaIdPilotosNosSuave.get(piloto.idPiloto);
 		if (!no) {
 			no = mapaIdNos.get(piloto.idNo);
-		}
-		var imgCarro = carrosImgMap.get(piloto.idPiloto);
-		if (piloto.idPiloto == 'SC') {
-			imgCarro = safetycar;
 		}
 		if (!vdp_containsRect(rectBg, ponto)) {
 			continue;
@@ -771,21 +763,20 @@ function vdp_desenhaCarrosCima() {
 					maneContext.drawImage(blendFaisca, xj, yj);
 				}
 			}
-			var pl = pilotosMap.get(piloto.idPiloto);
-			if (pl == null || pl.carro.id == null) {
-				continue;
-			}
 
 			var rotacionarCarro = null;
 			if (rotateCache) {
-				if (pilotosAereofolioMap.get(piloto.idPiloto)) {
+				if (pilotosAereofolioMap.get(piloto.idPiloto) || 'SC' == piloto.idPiloto) {
 					rotacionarCarro = vdp_rotacionar(imgCarro, angulo);
 				} else {
-					var chave = pl.carro.id + "-" + anguloGraus;
-					rotacionarCarro = mapaRotacionar.get(chave);
-					if (rotacionarCarro == null) {
-						rotacionarCarro = vdp_rotacionar(imgCarro, angulo);
-						mapaRotacionar.set(chave, rotacionarCarro);
+					var pl = pilotosMap.get(piloto.idPiloto);
+					if (pl != null && pl.carro.id != null) {
+						var chave = pl.carro.id + "-" + anguloGraus;
+						rotacionarCarro = mapaRotacionar.get(chave);
+						if (rotacionarCarro == null) {
+							rotacionarCarro = vdp_rotacionar(imgCarro, angulo);
+							mapaRotacionar.set(chave, rotacionarCarro);
+						}
 					}
 				}
 			} else {
@@ -1010,7 +1001,7 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus) {
 		return faisca;
 	}
 	var fx = fxArray[intervalo];
-	var faisca = vdp_rotacionar(fx, angulo);
+	faisca = vdp_rotacionar(fx, angulo);
 	if (rotateCache) {
 		mapaRastroFaisca.set(chave, faisca);
 	}
@@ -1055,14 +1046,7 @@ function vdp_gerarImgFaiscaFx() {
 }
 function vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus) {
 	if (dadosParciais.clima != "chuva.png") {
-		if (rotateCache) {
-			mapaRastroChuva.clear();
-		}
 		return null;
-	}
-	if (rotateCache) {
-		mapaRastroFaisca.clear();
-		mapaTravadaRodaFumaca.clear();
 	}
 	var lista;
 	if (no.tipoJson == 'R') {

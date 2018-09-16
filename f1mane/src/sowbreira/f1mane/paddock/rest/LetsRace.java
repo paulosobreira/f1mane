@@ -442,6 +442,8 @@ public class LetsRace {
 			return Response.status(200).entity(dadosJogo).build();
 		} catch (Exception e) {
 			Logger.topExecpts(e);
+			Logger.topExecpts(
+					new Exception("jogarCampeonato - Token " + token + " " + e.getMessage()));
 			return Response.status(500)
 					.entity(new ErroServ(e).obterErroFormatado())
 					.type(MediaType.APPLICATION_JSON).build();
