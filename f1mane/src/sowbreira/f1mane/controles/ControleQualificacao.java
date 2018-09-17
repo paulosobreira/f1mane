@@ -144,9 +144,9 @@ public class ControleQualificacao {
 			Piloto piloto = pilotos.get(i);
 			piloto.setCiclosVoltaQualificacao(
 					pilotoAnt.getCiclosVoltaQualificacao()
-							+ (piloto.testeHabilidadePiloto()
-									? Util.intervalo(1, 200)
-									: Util.intervalo(100, 500)));
+							+ ( i < (pilotos.size()/2)
+									? Util.intervalo(0, 150)
+									: Util.intervalo(0, 750)));
 		}
 	}
 

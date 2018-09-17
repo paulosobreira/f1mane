@@ -245,11 +245,8 @@ function vdp_atualizaSuave() {
 		if (ganhoSuave <= ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt - 1;
 		}
-		if (noSuave.tipoJson == 'R' && noReal.tipoJson == 'R' && ganhoSuaveAnt > ganhoSuave && diff > 150) {
+		if (noSuave.tipoJson == 'R' && noReal.tipoJson == 'R' && ganhoSuaveAnt > ganhoSuave && diff > 200) {
 			ganhoSuave = ganhoSuaveAnt;
-		}
-		if (noSuave.tipoJson == 'R' && noReal.tipoJson == 'R' && ganhoSuaveAnt > ganhoSuave && diff < 50) {
-			ganhoSuave = ganhoSuaveAnt - 1;
 		}
 		if (diff == 0) {
 			ganhoSuave = 0;
@@ -259,12 +256,12 @@ function vdp_atualizaSuave() {
 		}
 		mapaGanhoSuave.set(piloto.idPiloto, ganhoSuave);
 		var novoIndex = noSuave.index + Math.round(ganhoSuave);
-		if (novoIndex > indexReal && noSuave.tipoJson != 'R') {
+		if (novoIndex > indexReal) {
 			// if (piloto.idPiloto == idPilotoSelecionado) {
 			// console.log(piloto.idPiloto + ' novoIndex > indexReal ' +
 			// novoIndex);
 			// }
-			novoIndex = indexReal - 1;
+			novoIndex = indexReal;
 		}
 		if (noSuave.box) {
 			if (novoIndex > (circuito.boxFull.length - 1)) {

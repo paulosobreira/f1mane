@@ -543,7 +543,7 @@ public class ControleJogosServer {
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
 			String giro) {
 		if (Logger.ativo) {
-			obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+			//obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
 		}
 		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
