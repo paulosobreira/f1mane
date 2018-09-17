@@ -21,12 +21,15 @@ var carrosImgSemAereofolioMap;
 var capaceteImgMap;
 var jogadorImgMap;
 var objImgPistaMap = new Map();
-
+var mapaRotacionar = new Map();
+var mapaRastroFaisca = new Map();
+var mapaTravadaRodaFumaca = new Map();
+var eixoCarro = 30;
 
 function mid_atualizaJogadores() {
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
 		var piloto = dadosJogo.pilotos[i];
-		jogadorImgMap.set(piloto.id, piloto.imgJogador);			
+		jogadorImgMap.set(piloto.id, piloto.imgJogador);
 	}
 }
 
@@ -44,17 +47,17 @@ function mid_caregaMidia() {
 		var temporadaCapacete = dadosJogo.temporada;
 		var carroId = piloto.carro.id;
 		var pilotoId = piloto.id;
-		
-		if(piloto.idCapaceteLivery!=null && piloto.temporadaCapaceteLivery!=null){
+
+		if (piloto.idCapaceteLivery != null && piloto.temporadaCapaceteLivery != null) {
 			temporadaCapacete = piloto.temporadaCapaceteLivery;
 			pilotoId = piloto.idCapaceteLivery;
 		}
-		
-		if(piloto.idCarroLivery!=null && piloto.temporadaCarroLivery!=null){
+
+		if (piloto.idCarroLivery != null && piloto.temporadaCarroLivery != null) {
 			temporadaCarro = piloto.temporadaCarroLivery;
 			carroId = piloto.idCarroLivery;
 		}
-		
+
 		imgCarro.src = '/f1mane/rest/letsRace/carroCima/' + temporadaCarro + '/' + carroId;
 		carrosImgMap.set(piloto.id, imgCarro);
 
@@ -69,10 +72,56 @@ function mid_caregaMidia() {
 		var imgCapacete = new Image();
 		imgCapacete.src = "/f1mane/rest/letsRace/capacete/" + temporadaCapacete + "/" + pilotoId;
 		capaceteImgMap.set(piloto.id, imgCapacete);
-		
-		jogadorImgMap.set(piloto.id, piloto.imgJogador);			
+
+		jogadorImgMap.set(piloto.id, piloto.imgJogador);
+
 	}
 
+	setTimeout(function fnRotacionarCarro() {
+		for (var ip = 0; ip < dadosJogo.pilotos.length; ip++) {
+			var piloto = dadosJogo.pilotos[ip];
+			for (var i = 0; i < circuito.pistaFull.length; i++) {
+				var frenteCar = safeArray(circuito.pistaFull, i + eixoCarro);
+				var atrasCar = safeArray(circuito.pistaFull, i - eixoCarro);
+				var angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
+				var anguloGraus = Math.round(Math.degrees(angulo / 6));
+				var chave = piloto.carro.id + "-" + anguloGraus;
+				var rotacionarCarro = mapaRotacionar.get(chave);
+				if (rotacionarCarro == null) {
+					var imgCarro = carrosImgMap.get(piloto.id);
+					rotacionarCarro = vdp_rotacionar(imgCarro, angulo);
+					mapaRotacionar.set(chave, rotacionarCarro);
+				}
+				var intervaloVar = intervaloInt(0, fxArray.length - 1);
+				chave = intervaloVar + "-" + anguloGraus;
+				var faisca = mapaRastroFaisca.get(chave);
+				if(faisca==null){
+					var fx = fxArray[intervaloVar];
+					faisca = vdp_rotacionar(fx, angulo);
+					mapaRastroFaisca.set(chave, faisca);
+				}
+				
+				var sw = Math.round(intervalo(1, 5));
+				var lado = 'D';
+				chave = lado + "-" + sw + "-" + anguloGraus;
+				var	fumaca = mapaTravadaRodaFumaca.get(chave);
+				if(fumaca==null){
+					var fx = eval('carroCimaFreios' + lado + sw);
+					var fumaca = vdp_rotacionar(fx, angulo);
+					mapaTravadaRodaFumaca.set(chave, fumaca);
+				}
+				
+				lado = 'E';
+				chave = lado + "-" + sw + "-" + anguloGraus;
+				fumaca = mapaTravadaRodaFumaca.get(chave);
+				if(fumaca==null){
+					var fx = eval('carroCimaFreios' + lado + sw);
+					var fumaca = vdp_rotacionar(fx, angulo);
+					mapaTravadaRodaFumaca.set(chave, fumaca);
+				}
+			}
+		}
+	}, 5000);
 	imgBg = new Image();
 	// imgBg.src = {urlBg} + circuito.backGround;
 	imgBg.src = "http://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" + circuito.backGround;
@@ -134,10 +183,10 @@ function mid_caregaMidia() {
 	carroCimaFreiosE4.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE4"
 	carroCimaFreiosE5 = new Image();
 	carroCimaFreiosE5.src = "/f1mane/rest/letsRace/png/CarroCimaFreiosE5"
-		
-	bandeirada= new Image();
+
+	bandeirada = new Image();
 	bandeirada.src = "/f1mane/rest/letsRace/png/flags"
-	
+
 	for (var i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var img = new Image();
 		img.src = "/f1mane/rest/letsRace/objetoPista/" + dadosJogo.arquivoCircuito + "/" + i;

@@ -1020,4 +1020,8 @@ public class ControlePaddockServidor {
 		}
 	}
 
+	public Object finalizaCampeonato(CampeonatoTO campeonato, String token) {
+		return controleCampeonatoServidor.finalizaCampeonato(campeonato,token);
+	}
+
 }

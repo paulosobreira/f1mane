@@ -77,14 +77,16 @@ public class ControleCampeonatoServidor {
 		}
 		Session session = controlePersistencia.getSession();
 		try {
-			List pesquisaCampeonatosEmAberto = controlePersistencia.pesquisaCampeonatosEmAberto(token, session, false);
-			if(!pesquisaCampeonatosEmAberto.isEmpty()){
+			List pesquisaCampeonatosEmAberto = controlePersistencia
+					.pesquisaCampeonatosEmAberto(token, session, false);
+			if (!pesquisaCampeonatosEmAberto.isEmpty()) {
 				return (new MsgSrv(Lang.msg("campeonatoEmAberto")));
 			}
-			if(controlePersistencia.existeNomeCampeonato(session,campeonato.getNome())){
+			if (controlePersistencia.existeNomeCampeonato(session,
+					campeonato.getNome())) {
 				return new MsgSrv(Lang.msg("nomeCampeonatoNaoDisponivel"));
 			}
-			
+
 			JogadorDadosSrv jogadorDadosSrv = controlePersistencia
 					.carregaDadosJogador(token, session);
 			if (jogadorDadosSrv == null) {
@@ -125,8 +127,9 @@ public class ControleCampeonatoServidor {
 			Logger.logarExept(e);
 			return new ErroServ(e);
 		} finally {
-			if (session.isOpen())
+			if (session.isOpen()) {
 				session.close();
+			}
 		}
 	}
 
@@ -403,6 +406,9 @@ public class ControleCampeonatoServidor {
 				}
 			}
 		}
+		if (rodada > corridaCampeonatos.size()) {
+			rodada = corridaCampeonatos.size();
+		}
 		campeonatoTO
 				.setRodadaCampeonato(rodada + "/" + corridaCampeonatos.size());
 	}
@@ -602,6 +608,32 @@ public class ControleCampeonatoServidor {
 								.compareTo(arg0.getPontos());
 					}
 				});
+	}
+
+	public Object finalizaCampeonato(CampeonatoTO campeonato, String token) {
+		Session session = controlePersistencia.getSession();
+		try {
+			List pesquisaCampeonatosEmAberto = controlePersistencia
+					.pesquisaCampeonatosEmAberto(token, session, false);
+			if (pesquisaCampeonatosEmAberto.isEmpty()) {
+				return null;
+			}
+			CampeonatoSrv campeonatoSrv = (CampeonatoSrv) pesquisaCampeonatosEmAberto
+					.get(0);
+			if (!campeonatoSrv.getId().equals(campeonato.getId())) {
+				return null;
+			}
+			campeonatoSrv.setFinalizado(true);
+			controlePersistencia.gravarDados(session, campeonatoSrv);
+			return campeonato;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			return new ErroServ(e);
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
 	}
 
 }
