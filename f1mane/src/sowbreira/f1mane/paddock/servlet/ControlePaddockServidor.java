@@ -511,11 +511,23 @@ public class ControlePaddockServidor {
 	}
 
 	public Object entrarJogo(ClientPaddockPack clientPaddockPack) {
-		return controleJogosServer.entrarJogo(clientPaddockPack);
+		try {
+			return controleJogosServer.entrarJogo(clientPaddockPack);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			ErroServ erroServ = new ErroServ(e);
+			return erroServ;
+		}
 	}
 
 	public Object criarJogo(ClientPaddockPack clientPaddockPack) {
-		return controleJogosServer.criarJogo(clientPaddockPack);
+		try {
+			return controleJogosServer.criarJogo(clientPaddockPack);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			ErroServ erroServ = new ErroServ(e);
+			return erroServ;
+		}
 	}
 
 	private Object receberTexto(ClientPaddockPack clientPaddockPack,
@@ -1021,7 +1033,7 @@ public class ControlePaddockServidor {
 	}
 
 	public Object finalizaCampeonato(CampeonatoTO campeonato, String token) {
-		return controleCampeonatoServidor.finalizaCampeonato(campeonato,token);
+		return controleCampeonatoServidor.finalizaCampeonato(campeonato, token);
 	}
 
 }

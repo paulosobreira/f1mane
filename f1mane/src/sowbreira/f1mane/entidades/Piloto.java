@@ -3102,6 +3102,9 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public boolean mudarTracado(int mudarTracado, InterfaceJogo interfaceJogo,
 			boolean forcaMudar) {
+		if (interfaceJogo == null) {
+			return false;
+		}
 		if (!forcaMudar && isRecebeuBanderada()) {
 			return false;
 		}

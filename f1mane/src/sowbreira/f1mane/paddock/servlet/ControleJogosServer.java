@@ -75,7 +75,8 @@ public class ControleJogosServer {
 		this.mapaJogosCriados = mapaJogosCriados;
 	}
 
-	public Object criarJogo(ClientPaddockPack clientPaddockPack) {
+	public Object criarJogo(ClientPaddockPack clientPaddockPack)
+			throws Exception {
 		if (verificaJaEmAlgumJogo(clientPaddockPack.getSessaoCliente())) {
 			String nomeJogo = clientPaddockPack.getDadosJogoCriado()
 					.getNomeJogo();
@@ -88,85 +89,74 @@ public class ControleJogosServer {
 			return srvPaddockPack;
 
 		}
-		Session session = controlePersistencia.getSession();
-		try {
-			if ((mapaJogosCriados.size() + 1) > MaxJogo) {
-				return new MsgSrv(Lang.msg("204", new Object[]{MaxJogo}));
-			}
-			for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
-					.iterator(); iter.hasNext();) {
-				SessaoCliente element = iter.next();
-				if (element.equals(clientPaddockPack.getSessaoCliente())) {
-					return new MsgSrv(Lang.msg("205"));
-				}
-			}
-			JogoServidor jogoServidor = null;
-			String temporada = clientPaddockPack.getDadosJogoCriado()
-					.getTemporada();
-			try {
-				Logger.logar("Temporada Serviddor " + temporada);
-				jogoServidor = new JogoServidor(temporada,
-						clientPaddockPack.getDadosJogoCriado());
-				jogoServidor.setNomeCriador(
-						clientPaddockPack.getSessaoCliente().getNomeJogador());
-				jogoServidor.setTokenCriador(
-						clientPaddockPack.getSessaoCliente().getToken());
-				jogoServidor.setTempoCriacao(System.currentTimeMillis());
-			} catch (Exception e) {
-				Logger.logarExept(e);
-				ErroServ erroServ = new ErroServ(e);
-				return erroServ;
-			}
-			jogoServidor.setNomeJogoServidor(
-					(qtdeJogos++) + "-" + temporada.replaceAll("t", ""));
-			jogoServidor.setControleClassificacao(controleClassificacao);
-			jogoServidor.setControleJogosServer(this);
-			jogoServidor
-					.setControleCampeonatoServidor(controleCampeonatoServidor);
-			SrvPaddockPack srvPaddockPack = preparaSrvPaddockPack(
-					clientPaddockPack, jogoServidor);
-			CarreiraDadosSrv carreiraDadosSrv = null;
-			if (!clientPaddockPack.getSessaoCliente().isGuest()) {
-				carreiraDadosSrv = controleClassificacao.obterCarreiraSrv(
-						clientPaddockPack.getSessaoCliente().getToken());
-			}
-			if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
-				if (jogoServidor.isCorridaIniciada()) {
-					return new MsgSrv(Lang.msg("247"));
-				}
-				if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
-						|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())
-						|| Util.isNullOrEmpty(
-								carreiraDadosSrv.getNomePilotoAbreviado())) {
-					return new MsgSrv(Lang.msg("128"));
-				}
-				if (verificaPotenciaLimite(jogoServidor.getMediaPontecia(),
-						carreiraDadosSrv.getPtsCarro()
-								+ carreiraDadosSrv.getPtsAerodinamica()
-								+ carreiraDadosSrv.getPtsFreio(),
-						jogoServidor.getNiveljogo())) {
-					int permitidoAcimaMedia = 0;
-					if (InterfaceJogo.FACIL_NV == jogoServidor.getNiveljogo()) {
-						permitidoAcimaMedia = Constantes.ACIMA_MEDIA_FACIL;
-					}
-					if (InterfaceJogo.MEDIO_NV == jogoServidor.getNiveljogo()) {
-						permitidoAcimaMedia = Constantes.ACIMA_MEDIA_NORMAL;
-					}
-					String media = (jogoServidor.getMediaPontecia()
-							+ permitidoAcimaMedia) + "";
-					return new MsgSrv(Lang.msg("261", new String[]{media}));
 
-				}
-			}
-			mapaJogosCriados.put(clientPaddockPack.getSessaoCliente(),
-					jogoServidor);
-			gerarListaJogosCriados();
-			return srvPaddockPack;
-		} finally {
-			if (session != null && session.isOpen()) {
-				session.close();
+		if ((mapaJogosCriados.size() + 1) > MaxJogo) {
+			return new MsgSrv(Lang.msg("204", new Object[]{MaxJogo}));
+		}
+		for (Iterator<SessaoCliente> iter = mapaJogosCriados.keySet()
+				.iterator(); iter.hasNext();) {
+			SessaoCliente element = iter.next();
+			if (element.equals(clientPaddockPack.getSessaoCliente())) {
+				return new MsgSrv(Lang.msg("205"));
 			}
 		}
+		JogoServidor jogoServidor = null;
+		String temporada = clientPaddockPack.getDadosJogoCriado()
+				.getTemporada();
+
+		Logger.logar("Temporada Serviddor " + temporada);
+		jogoServidor = new JogoServidor(temporada,
+				clientPaddockPack.getDadosJogoCriado());
+		jogoServidor.setNomeCriador(
+				clientPaddockPack.getSessaoCliente().getNomeJogador());
+		jogoServidor.setTokenCriador(
+				clientPaddockPack.getSessaoCliente().getToken());
+		jogoServidor.setTempoCriacao(System.currentTimeMillis());
+
+		jogoServidor.setNomeJogoServidor(
+				(qtdeJogos++) + "-" + temporada.replaceAll("t", ""));
+		jogoServidor.setControleClassificacao(controleClassificacao);
+		jogoServidor.setControleJogosServer(this);
+		jogoServidor.setControleCampeonatoServidor(controleCampeonatoServidor);
+		SrvPaddockPack srvPaddockPack = preparaSrvPaddockPack(clientPaddockPack,
+				jogoServidor);
+		CarreiraDadosSrv carreiraDadosSrv = null;
+		if (!clientPaddockPack.getSessaoCliente().isGuest()) {
+			carreiraDadosSrv = controleClassificacao.obterCarreiraSrv(
+					clientPaddockPack.getSessaoCliente().getToken());
+		}
+		if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
+			if (jogoServidor.isCorridaIniciada()) {
+				return new MsgSrv(Lang.msg("247"));
+			}
+			if (Util.isNullOrEmpty(carreiraDadosSrv.getNomeCarro())
+					|| Util.isNullOrEmpty(carreiraDadosSrv.getNomePiloto())
+					|| Util.isNullOrEmpty(
+							carreiraDadosSrv.getNomePilotoAbreviado())) {
+				return new MsgSrv(Lang.msg("128"));
+			}
+			if (verificaPotenciaLimite(jogoServidor.getMediaPontecia(),
+					carreiraDadosSrv.getPtsCarro()
+							+ carreiraDadosSrv.getPtsAerodinamica()
+							+ carreiraDadosSrv.getPtsFreio(),
+					jogoServidor.getNiveljogo())) {
+				int permitidoAcimaMedia = 0;
+				if (InterfaceJogo.FACIL_NV == jogoServidor.getNiveljogo()) {
+					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_FACIL;
+				}
+				if (InterfaceJogo.MEDIO_NV == jogoServidor.getNiveljogo()) {
+					permitidoAcimaMedia = Constantes.ACIMA_MEDIA_NORMAL;
+				}
+				String media = (jogoServidor.getMediaPontecia()
+						+ permitidoAcimaMedia) + "";
+				return new MsgSrv(Lang.msg("261", new String[]{media}));
+
+			}
+		}
+		mapaJogosCriados.put(clientPaddockPack.getSessaoCliente(),
+				jogoServidor);
+		gerarListaJogosCriados();
+		return srvPaddockPack;
 	}
 
 	public SrvPaddockPack preparaSrvPaddockPack(
@@ -543,7 +533,7 @@ public class ControleJogosServer {
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
 			String giro) {
 		if (Logger.ativo) {
-			//obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+			// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
 		}
 		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
@@ -604,30 +594,6 @@ public class ControleJogosServer {
 			}
 		}
 		return acharPiloto;
-	}
-
-	public JogoServidor obterJogoPorIdPiloto(SessaoCliente sessaoCliente,
-			String idPiloto) {
-		JogoServidor acharJogo = null;
-		for (Iterator<SessaoCliente> iterator = mapaJogosCriados.keySet()
-				.iterator(); iterator.hasNext();) {
-			JogoServidor jogoServidor = mapaJogosCriados.get(iterator.next());
-			Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
-					.getMapJogadoresOnline();
-			if (!String.valueOf(mapJogadoresOnline.get(sessaoCliente.getToken())
-					.getIdPiloto()).equals(idPiloto)) {
-				return null;
-			}
-			List piList = jogoServidor.getPilotos();
-			for (Iterator iter = piList.iterator(); iter.hasNext();) {
-				Piloto piloto = (Piloto) iter.next();
-				if (String.valueOf(piloto.getId()).equals(idPiloto)) {
-					acharJogo = jogoServidor;
-					break;
-				}
-			}
-		}
-		return acharJogo;
 	}
 
 	public JogoServidor obterJogoPorSessaoCliente(SessaoCliente sessaoCliente) {
@@ -984,7 +950,7 @@ public class ControleJogosServer {
 		}
 		piloto.setAtivarDRS(true);
 		return piloto.mudarTracado(Integer.parseInt(tracado),
-				obterJogoPorIdPiloto(sessaoCliente, idPiloto));
+				obterJogoPeloNome(sessaoCliente.getJogoAtual()));
 	}
 
 	private Piloto obterPiloto(ClientPaddockPack clientPaddockPack,
@@ -1223,8 +1189,8 @@ public class ControleJogosServer {
 		piloto.setTipoPneuBox(pneu);
 		piloto.setQtdeCombustBox(combustivel);
 		piloto.setAsaBox(asa);
-		JogoServidor jogoServidor = obterJogoPorIdPiloto(sessaoCliente,
-				idPiloto);
+		JogoServidor jogoServidor = obterJogoPeloNome(
+				sessaoCliente.getJogoAtual());
 		Map mapJogo = jogoServidor.getMapJogadoresOnline();
 		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
 				.get(sessaoCliente.getToken());
