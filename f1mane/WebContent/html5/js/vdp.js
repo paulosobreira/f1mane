@@ -239,11 +239,15 @@ function vdp_atualizaSuave() {
 		if (ganhoSuaveAnt == null) {
 			ganhoSuaveAnt = 0;
 		}
+		var incGanhoSuaveAnt = 1;
+		if(noSuave.tipoJson == 'R'){
+			incGanhoSuaveAnt = 0.25;
+		}
 		if (ganhoSuave > ganhoSuaveAnt) {
-			ganhoSuave = ganhoSuaveAnt + 1;
+			ganhoSuave = ganhoSuaveAnt + incGanhoSuaveAnt;
 		}
 		if (ganhoSuave <= ganhoSuaveAnt) {
-			ganhoSuave = ganhoSuaveAnt - 1;
+			ganhoSuave = ganhoSuaveAnt - incGanhoSuaveAnt;
 		}
 		if (noSuave.tipoJson == 'R' && noReal.tipoJson == 'R' && ganhoSuaveAnt > ganhoSuave && diff > 200) {
 			ganhoSuave = ganhoSuaveAnt;

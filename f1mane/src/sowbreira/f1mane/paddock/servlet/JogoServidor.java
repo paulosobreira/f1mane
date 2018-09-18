@@ -102,13 +102,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				voltaJogadorOnline.setJogador(piloto.getTokenJogador());
 				voltaJogadorOnline.setPiloto(piloto.getNome());
 				voltasJogadoresOnline.add(voltaJogadorOnline);
-//				if ("Pastor Maldonado".equals(piloto.getNomeJogador())) {
-//					Logger.logarExept(
-//							new Exception("Jogo : " + getNomeJogoServidor()
-//									+ " Token : " + sessao.getToken()
-//									+ " Volta : " + getNumVoltaAtual()
-//									+ " contadorVolta : " + contadorVolta));
-//				}
 			}
 		}
 		mapVoltasJogadoresOnline.put(new Integer(contadorVolta++),
@@ -517,14 +510,16 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 										.limpaSelecao();
 							}
 						}
-						controleClassificacao.processaCorrida(tempoInicio,
-								tempoFim, mapVoltasJogadoresOnline, pilotos,
-								dadosCriarJogo);
-						if (dadosCriarJogo.getIdCampeonato()!=null) {
-							controleCampeonatoServidor.processaCorrida(
-									tempoInicio, tempoFim,
-									mapVoltasJogadoresOnline, pilotos,
-									dadosCriarJogo, controleClassificacao);
+						if (getNumVoltaAtual() >= Constantes.MIN_VOLTAS) {
+							controleClassificacao.processaCorrida(tempoInicio,
+									tempoFim, mapVoltasJogadoresOnline, pilotos,
+									dadosCriarJogo);
+							if (dadosCriarJogo.getIdCampeonato() != null) {
+								controleCampeonatoServidor.processaCorrida(
+										tempoInicio, tempoFim,
+										mapVoltasJogadoresOnline, pilotos,
+										dadosCriarJogo, controleClassificacao);
+							}
 						}
 					} catch (Exception e) {
 						Logger.topExecpts(e);
