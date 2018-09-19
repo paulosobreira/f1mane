@@ -683,8 +683,9 @@ public class ControleJogosServer {
 				remover = element;
 			}
 		}
-		if (remover != null)
+		if (remover != null){
 			mapaJogosCriados.remove(remover);
+		}
 		gerarListaJogosCriados();
 
 	}

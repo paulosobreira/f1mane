@@ -228,9 +228,6 @@ function vdp_atualizaSuave() {
 			indexReal = indexReal + circuito.entradaBoxIndex;
 		}
 		if (!noReal.box && noSuave.box) {
-			// if (piloto.idPiloto == idPilotoSelecionado) {
-			// console.log(piloto.idPiloto + ' !noReal.box && noSuave.box ');
-			// }
 			indexReal = (indexReal - circuito.saidaBoxIndex) + (circuito.boxFull.length - 1);
 		}
 		var diff = (indexReal - indexSuave);
@@ -240,8 +237,8 @@ function vdp_atualizaSuave() {
 			ganhoSuaveAnt = 0;
 		}
 		var incGanhoSuaveAnt = 1;
-		if(noSuave.tipoJson == 'R'){
-			incGanhoSuaveAnt = 0.25;
+		if (noSuave.tipoJson == 'R') {
+			incGanhoSuaveAnt = 1 / ganhoSuave;
 		}
 		if (ganhoSuave > ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt + incGanhoSuaveAnt;
@@ -258,6 +255,9 @@ function vdp_atualizaSuave() {
 		if (ganhoSuave <= 0) {
 			ganhoSuave = 0;
 		}
+//		if (piloto.idPiloto == idPilotoSelecionado) {
+//			console.log('ganhoSuave ' + ganhoSuave);
+//		}
 		mapaGanhoSuave.set(piloto.idPiloto, ganhoSuave);
 		var novoIndex = noSuave.index + Math.round(ganhoSuave);
 		if (novoIndex > indexReal) {
