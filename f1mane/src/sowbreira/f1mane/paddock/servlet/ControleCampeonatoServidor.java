@@ -121,6 +121,7 @@ public class ControleCampeonatoServidor {
 				rodada++;
 
 			}
+			campeonato.setFinalizado(false);
 			controlePersistencia.gravarDados(session, campeonato);
 			return (new MsgSrv(Lang.msg("campeonatoCriado")));
 		} catch (Exception e) {

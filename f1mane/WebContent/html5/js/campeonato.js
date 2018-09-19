@@ -170,12 +170,15 @@ function carregaCampeonato() {
 				$.each(pilotos, function(i, val) {
 					var piloto = pilotos[i];
 					var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+					var td0 = $('<td style="width: 10%;" />');
 					var td1 = $('<td style="width: 20%;" />');
 					var td2 = $('<td/>');
+					td0.append(i+1);
 					td1.append(piloto.pontos);
 					var div = $('<div style="border-left-color: '+piloto.cor+';" class="divPiloto" />');
 					div.append(piloto.nome);
 					td2.append(div);
+					tr.append(td0);
 					tr.append(td1);
 					tr.append(td2);
 					$('#dadosClassificacaoPilotos').append(tr);
@@ -187,12 +190,15 @@ function carregaCampeonato() {
 				$.each(carros, function(i, val) {
 					var carro = carros[i];
 					var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+					var td0 = $('<td style="width: 10%;" />');
 					var td1 = $('<td style="width: 20%;" />');
 					var td2 = $('<td/>');
+					td0.append(i+1);
 					td1.append(carro.pontos);
 					var div = $('<div style="border-left-color: '+carro.cor+';" class="divPiloto" />');
 					div.append(carro.nome);
 					td2.append(div);
+					tr.append(td0);
 					tr.append(td1);
 					tr.append(td2);
 					$('#dadosClassificacaoCarros').append(tr);
@@ -205,9 +211,11 @@ function carregaCampeonato() {
 				$.each(jogadores, function(i, val) {
 					var jogador = jogadores[i];
 					var tr = $('<tr style="cursor: pointer; cursor: hand" />');
+					var td0 = $('<td style="width: 10%;" />');
 					var td1 = $('<td style="width: 15%;" />');
 					var td2 = $('<td style="width: 15%;" />');
 					var td3 = $('<td/>');
+					td0.append(i+1);
 					td1.append(jogador.pontos);
 					td2.append(jogador.corridas);
 					var jogadorImagem = $('<div style="display:  inline-flex;"  />');
@@ -218,6 +226,7 @@ function carregaCampeonato() {
 					}
 					jogadorImagem.append(jogador.nome);
 					td3.append(jogadorImagem);
+					tr.append(td0);
 					tr.append(td1);
 					tr.append(td2);
 					tr.append(td3);
@@ -320,6 +329,7 @@ function preencherListaCircuitosSelecionados() {
 		};
 		li.find('.adicionar').bind("click", clickAdd);
 		li.find('.remover').bind("click", cickRem);
+		li.find('h3').html(($('#listaCircuitosSelecionados').find('h3').length+1)+' '+li.find('h3').html());
 		$('#listaCircuitosSelecionados').append(li);
 	});
 }
@@ -382,6 +392,7 @@ function preencherListaCircuitos() {
 				var cickRem = function() {
 					$('#listaCircuitosSelecionados').find(liClone).remove();
 					adicionaNenhumCircutoSelecionado();
+					sequnciaPistasSelecionadas();
 				};
 				liClone.find('.adicionar').bind("click", clickAdd);
 				liClone.find('.remover').bind("click", cickRem);
@@ -396,6 +407,7 @@ function preencherListaCircuitos() {
 						}
 					}	
 				}
+				sequnciaPistasSelecionadas();
 			};
 			li.find('.adicionar').bind("click", clickAddCirc);
 			li.find('.remover').addClass('hide');
@@ -417,6 +429,16 @@ function preencherListaCircuitos() {
 			window.location = "index.html";
 		});
 	});	
+}
+
+function sequnciaPistasSelecionadas(){
+	var lis = $('#listaCircuitosSelecionados').find('li');
+	for (var j = 0; j < lis.length; j++) {
+		var lij = $(lis[j]);
+		var nmPista = lij.prop("circuito").nome;
+		var h3 = lij.find('h3')
+		h3.html((j+1)+' '+nmPista);
+	}
 }
 
 function listaCircuitos() {
