@@ -25,6 +25,7 @@ var mapaRotacionar = new Map();
 var mapaRastroFaisca = new Map();
 var mapaTravadaRodaFumaca = new Map();
 var eixoCarro = 30;
+var preCarrega = false;
 
 function mid_atualizaJogadores() {
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
@@ -77,51 +78,55 @@ function mid_caregaMidia() {
 
 	}
 
-	setTimeout(function fnRotacionarCarro() {
-		for (var ip = 0; ip < dadosJogo.pilotos.length; ip++) {
-			var piloto = dadosJogo.pilotos[ip];
-			for (var i = 0; i < circuito.pistaFull.length; i++) {
-				var frenteCar = safeArray(circuito.pistaFull, i + eixoCarro);
-				var atrasCar = safeArray(circuito.pistaFull, i - eixoCarro);
-				var angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
-				var anguloGraus = Math.round(Math.degrees(angulo / 6));
-				var chave = piloto.carro.id + "-" + anguloGraus;
-				var rotacionarCarro = mapaRotacionar.get(chave);
-				if (rotacionarCarro == null) {
-					var imgCarro = carrosImgMap.get(piloto.id);
-					rotacionarCarro = vdp_rotacionar(imgCarro, angulo);
-					mapaRotacionar.set(chave, rotacionarCarro);
-				}
-				var intervaloVar = intervaloInt(0, fxArray.length - 1);
-				chave = intervaloVar + "-" + anguloGraus;
-				var faisca = mapaRastroFaisca.get(chave);
-				if(faisca==null){
-					var fx = fxArray[intervaloVar];
-					faisca = vdp_rotacionar(fx, angulo);
-					mapaRastroFaisca.set(chave, faisca);
-				}
-				
-				var sw = Math.round(intervalo(1, 5));
-				var lado = 'D';
-				chave = lado + "-" + sw + "-" + anguloGraus;
-				var	fumaca = mapaTravadaRodaFumaca.get(chave);
-				if(fumaca==null){
-					var fx = eval('carroCimaFreios' + lado + sw);
-					var fumaca = vdp_rotacionar(fx, angulo);
-					mapaTravadaRodaFumaca.set(chave, fumaca);
-				}
-				
-				lado = 'E';
-				chave = lado + "-" + sw + "-" + anguloGraus;
-				fumaca = mapaTravadaRodaFumaca.get(chave);
-				if(fumaca==null){
-					var fx = eval('carroCimaFreios' + lado + sw);
-					var fumaca = vdp_rotacionar(fx, angulo);
-					mapaTravadaRodaFumaca.set(chave, fumaca);
+	if(preCarrega){
+		setTimeout(function fnRotacionarCarro() {
+			for (var ip = 0; ip < dadosJogo.pilotos.length; ip++) {
+				var piloto = dadosJogo.pilotos[ip];
+				for (var i = 0; i < circuito.pistaFull.length; i++) {
+					var frenteCar = safeArray(circuito.pistaFull, i + eixoCarro);
+					var atrasCar = safeArray(circuito.pistaFull, i - eixoCarro);
+					var angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
+					var anguloGraus = Math.round(Math.degrees(angulo / 6));
+					var chave = piloto.carro.id + "-" + anguloGraus;
+					var rotacionarCarro = mapaRotacionar.get(chave);
+					if (rotacionarCarro == null) {
+						var imgCarro = carrosImgMap.get(piloto.id);
+						rotacionarCarro = vdp_rotacionar(imgCarro, angulo);
+						mapaRotacionar.set(chave, rotacionarCarro);
+					}
+					var intervaloVar = intervaloInt(0, fxArray.length - 1);
+					chave = intervaloVar + "-" + anguloGraus;
+					var faisca = mapaRastroFaisca.get(chave);
+					if(faisca==null){
+						var fx = fxArray[intervaloVar];
+						faisca = vdp_rotacionar(fx, angulo);
+						mapaRastroFaisca.set(chave, faisca);
+					}
+					
+					var sw = Math.round(intervalo(1, 5));
+					var lado = 'D';
+					chave = lado + "-" + sw + "-" + anguloGraus;
+					var	fumaca = mapaTravadaRodaFumaca.get(chave);
+					if(fumaca==null){
+						var fx = eval('carroCimaFreios' + lado + sw);
+						var fumaca = vdp_rotacionar(fx, angulo);
+						mapaTravadaRodaFumaca.set(chave, fumaca);
+					}
+					
+					lado = 'E';
+					chave = lado + "-" + sw + "-" + anguloGraus;
+					fumaca = mapaTravadaRodaFumaca.get(chave);
+					if(fumaca==null){
+						var fx = eval('carroCimaFreios' + lado + sw);
+						var fumaca = vdp_rotacionar(fx, angulo);
+						mapaTravadaRodaFumaca.set(chave, fumaca);
+					}
 				}
 			}
-		}
-	}, 5000);
+		}, 5000);
+	}
+	
+	
 	imgBg = new Image();
 	// imgBg.src = {urlBg} + circuito.backGround;
 	imgBg.src = "http://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" + circuito.backGround;
