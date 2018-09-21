@@ -558,11 +558,6 @@ public class ControleJogosServer {
 		if (piloto == null) {
 			return false;
 		}
-		if (Logger.ativo) {
-			// obterJogoPorSessaoCliente(sessaoCliente).climaLimpo();
-			// obterJogoPorSessaoCliente(sessaoCliente)
-			// .forcaQuerbraAereofolio(piloto);
-		}
 		piloto.setAtivarDRS(true);
 		piloto.setModoPilotagem(agressividade);
 		return agressividade.equals(piloto.getModoPilotagem());
@@ -683,7 +678,7 @@ public class ControleJogosServer {
 				remover = element;
 			}
 		}
-		if (remover != null){
+		if (remover != null) {
 			mapaJogosCriados.remove(remover);
 		}
 		gerarListaJogosCriados();
@@ -1160,6 +1155,11 @@ public class ControleJogosServer {
 		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 		if (piloto == null) {
 			return false;
+		}
+		if (Logger.ativo) {
+			//obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+			// obterJogoPorSessaoCliente(sessaoCliente)
+			// .forcaQuerbraAereofolio(piloto);
 		}
 		piloto.setAtivarErs(!piloto.isAtivarErs());
 		return piloto.isAtivarErs();

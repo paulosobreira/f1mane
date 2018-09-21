@@ -238,7 +238,7 @@ function vdp_atualizaSuave() {
 		}
 		var incGanhoSuaveAnt = 1;
 		if (noSuave.tipoJson == 'R') {
-			incGanhoSuaveAnt = 1 / ganhoSuave;
+			incGanhoSuaveAnt = 1 / (ganhoSuave<2?ganhoSuave:(ganhoSuave/2));
 		}
 		if (ganhoSuave > ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt + incGanhoSuaveAnt;

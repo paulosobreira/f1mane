@@ -2,7 +2,7 @@
  * Arquivo de midia
  */
 var imgBg;
-var imgFarois, imgFaroisApagados;
+var imgFarois,imgFarois1,imgFarois2,imgFarois3,imgFarois4,imgFaroisApagados;
 var imgPneuM, imgPneuD, imgPneuC;
 var menosAsa, maisAsa, normalAsa;
 var motor, capacete;
@@ -138,6 +138,14 @@ function mid_caregaMidia() {
 	pow.src = "img/pow.png"
 	imgFarois = new Image();
 	imgFarois.src = "img/farois.png"
+	imgFarois1 = new Image();
+	imgFarois1.src = "img/farois1.png"
+	imgFarois2 = new Image();
+	imgFarois2.src = "img/farois2.png"		
+	imgFarois3 = new Image();
+	imgFarois3.src = "img/farois3.png"
+	imgFarois4 = new Image();
+	imgFarois4.src = "img/farois4.png"		
 	imgFaroisApagados = new Image();
 	imgFaroisApagados.src = "img/farois-apagados.png"
 	imgPneuM = new Image();

@@ -12,6 +12,7 @@ var corVermelho = "rgba(255, 0, 0, 0.6)";
 var contCargaErs;
 var confirmaSair = false;
 var imgFaroisApagadosCont = 0;
+var imgFaroisAcesosCont = 0;
 var dirZoom = '-';
 
 function ctl_desenha() {
@@ -34,13 +35,28 @@ function ctl_desenhaFarois(){
 		return;
 	}
 	if (dadosParciais.estado != "13") {
-		if(imgFaroisApagadosCont < 10){
+		if(imgFaroisApagadosCont < 30){
 			maneContext.drawImage(imgFaroisApagados, centroX - (imgFarois.width/2) , 100);
 			imgFaroisApagadosCont++;
 		}
 		return;
 	}
-	maneContext.drawImage(imgFarois, centroX - (imgFarois.width/2) , 100);
+	imgFaroisAcesosCont++;
+	if(imgFaroisAcesosCont>=140){
+		maneContext.drawImage(imgFarois1, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<140){
+		maneContext.drawImage(imgFarois2, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<120){
+		maneContext.drawImage(imgFarois3, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<80){
+		maneContext.drawImage(imgFarois4, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<40){
+		maneContext.drawImage(imgFarois, centroX - (imgFarois.width/2) , 100);	
+	}
 }
 
 

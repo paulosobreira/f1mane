@@ -1317,10 +1317,15 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		if (carroPilotoAtras != null && carroPilotoAtras.getPiloto() != null
 				&& getPosicao() < controleJogo.getPilotos().size()) {
-			calculaSegundosParaAnterior = controleJogo
-					.calculaSegundosParaProximo(carroPilotoAtras.getPiloto(),
-							carroPilotoAtras.getPiloto()
-									.getDiferencaParaProximo());
+			if (carroPilotoAtras.getPiloto().isDesqualificado()) {
+				calculaSegundosParaAnterior = "";
+			} else {
+				calculaSegundosParaAnterior = controleJogo
+						.calculaSegundosParaProximo(
+								carroPilotoAtras.getPiloto(), carroPilotoAtras
+										.getPiloto().getDiferencaParaProximo());
+			}
+
 		}
 	}
 
