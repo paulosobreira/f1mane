@@ -118,7 +118,7 @@ public class CarregadorRecursos {
 					return o1.compareTo(o2);
 				}
 			});
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
 		return vectorTemps;
