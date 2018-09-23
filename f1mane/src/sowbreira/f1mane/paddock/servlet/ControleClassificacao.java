@@ -436,7 +436,7 @@ public class ControleClassificacao {
 
 			CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 					.carregaCarreiraJogador(token, false, session);
-			
+
 			if (controlePersistencia.existeNomeCarro(session,
 					carreiraDados.getNomeCarro(),
 					carreiraDadosSrv.getJogadorDadosSrv().getId())) {
@@ -447,7 +447,7 @@ public class ControleClassificacao {
 					carreiraDadosSrv.getJogadorDadosSrv().getId())) {
 				return new MsgSrv(Lang.msg("existeNomePiloto"));
 			}
-			
+
 			carreiraDadosSrv.setNomePiloto(carreiraDados.getNomePiloto());
 			carreiraDadosSrv.setNomeCarro(carreiraDados.getNomeCarro());
 			carreiraDadosSrv.setNomePilotoAbreviado(
@@ -617,47 +617,53 @@ public class ControleClassificacao {
 	}
 
 	public List obterClassificacaoCircuito(String nomeCircuito) {
-		Map<Long, DadosClassificacaoJogador> mapa = new HashMap<>();
-		List<CorridasDadosSrv> corridas = controlePersistencia
-				.obterClassificacaoCircuito(nomeCircuito,
-						controlePersistencia.getSession());
-		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
-			CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
-					.next();
-			DadosClassificacaoJogador dadosClassificacaoCircuito = mapa
-					.get(corridasDadosSrv.getJogadorDadosSrv().getId());
-			if (dadosClassificacaoCircuito == null) {
-				dadosClassificacaoCircuito = new DadosClassificacaoJogador();
-				dadosClassificacaoCircuito.setNome(
-						corridasDadosSrv.getJogadorDadosSrv().getNome());
-				dadosClassificacaoCircuito.setImagemJogador(corridasDadosSrv
-						.getJogadorDadosSrv().getImagemJogador());
-				mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(),
-						dadosClassificacaoCircuito);
+		try {
+			Map<Long, DadosClassificacaoJogador> mapa = new HashMap<>();
+			List<CorridasDadosSrv> corridas = controlePersistencia
+					.obterClassificacaoCircuito(nomeCircuito,
+							controlePersistencia.getSession());
+			for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+				CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
+						.next();
+				DadosClassificacaoJogador dadosClassificacaoCircuito = mapa
+						.get(corridasDadosSrv.getJogadorDadosSrv().getId());
+				if (dadosClassificacaoCircuito == null) {
+					dadosClassificacaoCircuito = new DadosClassificacaoJogador();
+					dadosClassificacaoCircuito.setNome(
+							corridasDadosSrv.getJogadorDadosSrv().getNome());
+					dadosClassificacaoCircuito.setImagemJogador(corridasDadosSrv
+							.getJogadorDadosSrv().getImagemJogador());
+					mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(),
+							dadosClassificacaoCircuito);
+				}
+				dadosClassificacaoCircuito.setCorridas(
+						dadosClassificacaoCircuito.getCorridas() + 1);
+				dadosClassificacaoCircuito
+						.setPontos(dadosClassificacaoCircuito.getPontos()
+								+ corridasDadosSrv.getPontos());
 			}
-			dadosClassificacaoCircuito
-					.setCorridas(dadosClassificacaoCircuito.getCorridas() + 1);
-			dadosClassificacaoCircuito
-					.setPontos(dadosClassificacaoCircuito.getPontos()
-							+ corridasDadosSrv.getPontos());
-		}
-		List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(
-				mapa.values());
-		Collections.sort(classificacao,
-				new Comparator<DadosClassificacaoJogador>() {
-					@Override
-					public int compare(DadosClassificacaoJogador o1,
-							DadosClassificacaoJogador o2) {
-						int compareTo = o2.getPontos()
-								.compareTo(o1.getPontos());
-						if (compareTo == 0) {
-							return o2.getCorridas().compareTo(o1.getCorridas());
-						} else {
-							return compareTo;
+			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(
+					mapa.values());
+			Collections.sort(classificacao,
+					new Comparator<DadosClassificacaoJogador>() {
+						@Override
+						public int compare(DadosClassificacaoJogador o1,
+								DadosClassificacaoJogador o2) {
+							int compareTo = o2.getPontos()
+									.compareTo(o1.getPontos());
+							if (compareTo == 0) {
+								return o2.getCorridas()
+										.compareTo(o1.getCorridas());
+							} else {
+								return compareTo;
+							}
 						}
-					}
-				});
-		return classificacao;
+					});
+			return classificacao;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return null;
 	}
 
 	public static void main(String[] args) {

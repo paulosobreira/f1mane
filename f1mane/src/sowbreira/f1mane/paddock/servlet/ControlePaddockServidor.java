@@ -14,6 +14,8 @@ import java.util.Properties;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.hibernate.Session;
 
@@ -35,6 +37,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.CorridaCampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
+import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosParciais;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
@@ -700,46 +703,58 @@ public class ControlePaddockServidor {
 	}
 
 	public Object criarSessaoVisitante() {
-		SessaoCliente sessaoCliente = new SessaoCliente();
-		TokenGenerator tokenGenerator = new TokenGenerator();
-		sessaoCliente.setToken(tokenGenerator.nextSessionId());
-		sessaoCliente.setNomeJogador("ManE-" + (contadorVistantes++));
-		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-		sessaoCliente.setGuest(true);
-		dadosPaddock.add(sessaoCliente);
-		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
-		srvPaddockPack.setSessaoCliente(sessaoCliente);
-		return srvPaddockPack;
+		try {
+			SessaoCliente sessaoCliente = new SessaoCliente();
+			TokenGenerator tokenGenerator = new TokenGenerator();
+			sessaoCliente.setToken(tokenGenerator.nextSessionId());
+			sessaoCliente.setNomeJogador("ManE-" + (contadorVistantes++));
+			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+			sessaoCliente.setGuest(true);
+			dadosPaddock.add(sessaoCliente);
+			SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+			srvPaddockPack.setSessaoCliente(sessaoCliente);
+			return srvPaddockPack;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			ErroServ erroServ = new ErroServ(e);
+			return erroServ;
+		}
 	}
 
 	public Object criarSessaoGoogle(String idGoogle, String nome,
 			String urlFoto, String email) {
-		List<SessaoCliente> clientes = dadosPaddock.getClientes();
-		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
-			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
-			if (idGoogle.equals(sessaoCliente.getId())) {
-				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
-				sessaoCliente.setNomeJogador(nome);
-				sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-				srvPaddockPack.setSessaoCliente(sessaoCliente);
-				salvarAcessoSessaoGoogle(sessaoCliente);
-				return srvPaddockPack;
+		try {
+			List<SessaoCliente> clientes = dadosPaddock.getClientes();
+			for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+				SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+				if (idGoogle.equals(sessaoCliente.getId())) {
+					SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+					sessaoCliente.setNomeJogador(nome);
+					sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+					srvPaddockPack.setSessaoCliente(sessaoCliente);
+					salvarAcessoSessaoGoogle(sessaoCliente);
+					return srvPaddockPack;
+				}
 			}
+			SessaoCliente sessaoCliente = new SessaoCliente();
+			TokenGenerator tokenGenerator = new TokenGenerator();
+			sessaoCliente.setToken(tokenGenerator.nextSessionId());
+			sessaoCliente.setNomeJogador(nome);
+			sessaoCliente.setId(idGoogle);
+			sessaoCliente.setImagemJogador(urlFoto);
+			sessaoCliente.setEmail(email);
+			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+			sessaoCliente.setGuest(false);
+			dadosPaddock.add(sessaoCliente);
+			SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+			srvPaddockPack.setSessaoCliente(sessaoCliente);
+			salvarAcessoSessaoGoogle(sessaoCliente);
+			return srvPaddockPack;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			ErroServ erroServ = new ErroServ(e);
+			return erroServ;
 		}
-		SessaoCliente sessaoCliente = new SessaoCliente();
-		TokenGenerator tokenGenerator = new TokenGenerator();
-		sessaoCliente.setToken(tokenGenerator.nextSessionId());
-		sessaoCliente.setNomeJogador(nome);
-		sessaoCliente.setId(idGoogle);
-		sessaoCliente.setImagemJogador(urlFoto);
-		sessaoCliente.setEmail(email);
-		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-		sessaoCliente.setGuest(false);
-		dadosPaddock.add(sessaoCliente);
-		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
-		srvPaddockPack.setSessaoCliente(sessaoCliente);
-		salvarAcessoSessaoGoogle(sessaoCliente);
-		return srvPaddockPack;
 	}
 
 	private void salvarAcessoSessaoGoogle(SessaoCliente sessaoCliente) {
@@ -807,8 +822,12 @@ public class ControlePaddockServidor {
 	}
 
 	public List<String> obterJogos() {
-		if (dadosPaddock != null) {
-			return dadosPaddock.getJogosCriados();
+		try {
+			if (dadosPaddock != null) {
+				return dadosPaddock.getJogosCriados();
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
 		return null;
 
@@ -875,8 +894,12 @@ public class ControlePaddockServidor {
 
 	public void sairJogoToken(String nomeJogo, String token,
 			SessaoCliente sessaoCliente) {
-		controleJogosServer.sairJogoToken(nomeJogo, token);
-		sessaoCliente.limpaSelecao();
+		try {
+			controleJogosServer.sairJogoToken(nomeJogo, token);
+			sessaoCliente.limpaSelecao();
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 	}
 
 	public SrvPaddockPack obterDadosToken(String token) {
@@ -1036,4 +1059,161 @@ public class ControlePaddockServidor {
 		return controleCampeonatoServidor.finalizaCampeonato(campeonato, token);
 	}
 
+	public Object jogar(String temporada, String circuito, String idPiloto,
+			String numVoltas, String tipoPneu, String combustivel, String asa,
+			SessaoCliente sessaoCliente, String modoCarreira) {
+		try {
+			MsgSrv modoCarreiraRet = modoCarreira(sessaoCliente.getToken(),
+					"true".equals(modoCarreira));
+			if (modoCarreiraRet != null) {
+				return modoCarreiraRet;
+			}
+
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+			clientPaddockPack.setSessaoCliente(sessaoCliente);
+			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(
+					temporada, circuito, idPiloto, numVoltas, tipoPneu,
+					combustivel, asa);
+			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
+			List<String> obterJogos = obterJogos();
+			if (!obterJogos.isEmpty()) {
+				clientPaddockPack.setNomeJogo(obterJogos.get(0));
+			}
+			SrvPaddockPack srvPaddockPack = null;
+			Object statusJogo = null;
+			statusJogo = obterJogoPeloNome(clientPaddockPack);
+			/**
+			 * Criar Jogo
+			 */
+			if (statusJogo == null) {
+				statusJogo = criarJogo(clientPaddockPack);
+				if (statusJogo instanceof MsgSrv
+						|| statusJogo instanceof ErroServ) {
+					return statusJogo;
+				}
+			}
+
+			srvPaddockPack = (SrvPaddockPack) statusJogo;
+
+			if (srvPaddockPack != null
+					&& srvPaddockPack.getDadosCriarJogo() != null
+					&& (!srvPaddockPack.getDadosCriarJogo().getTemporada()
+							.equals(dadosCriarJogo.getTemporada())
+							|| !dadosCriarJogo.getCircuitoSelecionado()
+									.equals(srvPaddockPack.getDadosCriarJogo()
+											.getCircuitoSelecionado()))) {
+				return new MsgSrv(Lang.msg("existeJogoEmAndamando"));
+			}
+
+			/**
+			 * Preenchento todos possiveis campos para nome do jogo Bagunça...
+			 */
+			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
+			clientPaddockPack.getDadosJogoCriado()
+					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+			clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+
+			/**
+			 * Entrar Jogo
+			 */
+			if (statusJogo != null) {
+				statusJogo = entrarJogo(clientPaddockPack);
+				if (statusJogo instanceof MsgSrv
+						|| statusJogo instanceof ErroServ) {
+					return statusJogo;
+				}
+				atualizarDadosVisao();
+			}
+			DadosJogo dadosJogo = (DadosJogo) obterDadosJogo(clientPaddockPack);
+			return dadosJogo;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			ErroServ erroServ = new ErroServ(e);
+			return erroServ;
+		}
+	}
+
+	public Object jogarCampeonato(String tipoPneu, String combustivel,
+			String asa, SessaoCliente sessaoCliente) {
+
+		try {
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+			clientPaddockPack.setSessaoCliente(sessaoCliente);
+
+			CampeonatoTO campeonato = obterCampeonatoEmAberto(
+					sessaoCliente.getToken());
+
+			String arquivoCircuito = campeonato.getArquivoCircuitoAtual();
+			String idPiloto = campeonato.getIdPiloto();
+			String numVoltas = campeonato.getQtdeVoltas().toString();
+			String temporada = campeonato.getTemporada();
+
+			if (campeonato.isModoCarreira()) {
+				MsgSrv modoCarreiraRet = modoCarreira(sessaoCliente.getToken(),
+						campeonato.isModoCarreira());
+				if (modoCarreiraRet != null) {
+					return modoCarreiraRet;
+				} else {
+					Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
+							.carregarTemporadasPilotosDefauts();
+					TemporadasDefauts temporadasDefauts = tempDefsMap
+							.get("t" + campeonato.getTemporada());
+					List<Piloto> pilotos = temporadasDefauts.getPilotos();
+					idPiloto = String
+							.valueOf(pilotos.get(pilotos.size() - 1).getId());
+				}
+			}
+
+			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(
+					temporada, arquivoCircuito, idPiloto, numVoltas, tipoPneu,
+					combustivel, asa);
+
+			dadosCriarJogo.setNomeCampeonato(campeonato.getNome());
+			dadosCriarJogo
+					.setRodadaCampeonato(campeonato.getRodadaCampeonato());
+			dadosCriarJogo.setIdCampeonato(campeonato.getId());
+			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
+			SrvPaddockPack srvPaddockPack = null;
+			Object statusJogo = null;
+			/**
+			 * Criar Jogo
+			 */
+			if (statusJogo == null) {
+				statusJogo = criarJogo(clientPaddockPack);
+				if (statusJogo instanceof MsgSrv
+						|| statusJogo instanceof ErroServ) {
+					return statusJogo;
+				}
+			}
+
+			srvPaddockPack = (SrvPaddockPack) statusJogo;
+
+			/**
+			 * Preenchento todos possiveis campos para nome do jogo Bagunça...
+			 */
+			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
+			clientPaddockPack.getDadosJogoCriado()
+					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+			clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+
+			/**
+			 * Entrar Jogo
+			 */
+			if (statusJogo != null) {
+				statusJogo = entrarJogo(clientPaddockPack);
+				if (statusJogo instanceof MsgSrv
+						|| statusJogo instanceof ErroServ) {
+					return statusJogo;
+				}
+				atualizarDadosVisao();
+			}
+			DadosJogo dadosJogo = (DadosJogo) obterDadosJogo(clientPaddockPack);
+			return dadosJogo;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			ErroServ erroServ = new ErroServ(e);
+			return erroServ;
+		}
+
+	}
 }

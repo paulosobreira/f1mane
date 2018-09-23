@@ -81,13 +81,15 @@ public class ControleJogosServer {
 			String nomeJogo = clientPaddockPack.getDadosJogoCriado()
 					.getNomeJogo();
 			JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
-			SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
-			srvPaddockPack
-					.setSessaoCliente(clientPaddockPack.getSessaoCliente());
-			srvPaddockPack.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
-			srvPaddockPack.setDadosPaddock(dadosPaddock);
-			return srvPaddockPack;
-
+			if (jogoServidor != null) {
+				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+				srvPaddockPack
+						.setSessaoCliente(clientPaddockPack.getSessaoCliente());
+				srvPaddockPack
+						.setDadosCriarJogo(jogoServidor.getDadosCriarJogo());
+				srvPaddockPack.setDadosPaddock(dadosPaddock);
+				return srvPaddockPack;
+			}
 		}
 
 		if ((mapaJogosCriados.size() + 1) > MaxJogo) {
@@ -532,35 +534,45 @@ public class ControleJogosServer {
 
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
 			String giro) {
-		if (Logger.ativo) {
-			// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+		try {
+			if (Logger.ativo) {
+				// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+			}
+			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
+			if (piloto == null) {
+				return null;
+			}
+			piloto.setAtivarDRS(true);
+			int giroAntes = piloto.getCarro().getGiro();
+			piloto.getCarro().mudarGiroMotor(giro);
+			return giroAntes != piloto.getCarro().getGiro();
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
-		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
-		if (piloto == null) {
-			return null;
-		}
-		piloto.setAtivarDRS(true);
-		int giroAntes = piloto.getCarro().getGiro();
-		piloto.getCarro().mudarGiroMotor(giro);
-		return giroAntes != piloto.getCarro().getGiro();
+		return false;
 	}
 
 	public Boolean mudarAgressividadePiloto(SessaoCliente sessaoCliente,
 			String idPiloto, String agressividade) {
+		try {
+			if (!Piloto.LENTO.equals(agressividade)
+					&& !Piloto.AGRESSIVO.equals(agressividade)
+					&& !Piloto.NORMAL.equals(agressividade)) {
+				return false;
+			}
 
-		if (!Piloto.LENTO.equals(agressividade)
-				&& !Piloto.AGRESSIVO.equals(agressividade)
-				&& !Piloto.NORMAL.equals(agressividade)) {
-			return false;
-		}
+			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
+			if (piloto == null) {
+				return false;
+			}
+			piloto.setAtivarDRS(true);
+			piloto.setModoPilotagem(agressividade);
+			return agressividade.equals(piloto.getModoPilotagem());
+		} catch (Exception e) {
+			Logger.logarExept(e);
 
-		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
-		if (piloto == null) {
-			return false;
 		}
-		piloto.setAtivarDRS(true);
-		piloto.setModoPilotagem(agressividade);
-		return agressividade.equals(piloto.getModoPilotagem());
+		return false;
 	}
 
 	public Piloto obterPilotoPorId(SessaoCliente sessaoCliente,
@@ -935,18 +947,23 @@ public class ControleJogosServer {
 
 	public Object mudarTracadoPiloto(SessaoCliente sessaoCliente,
 			String idPiloto, String tracado) {
-		if (!"0".equals(tracado) && !"1".equals(tracado)
-				&& !"2".equals(tracado)) {
-			return false;
-		}
+		try {
+			if (!"0".equals(tracado) && !"1".equals(tracado)
+					&& !"2".equals(tracado)) {
+				return false;
+			}
 
-		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
-		if (piloto == null) {
-			return false;
+			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
+			if (piloto == null) {
+				return false;
+			}
+			piloto.setAtivarDRS(true);
+			return piloto.mudarTracado(Integer.parseInt(tracado),
+					obterJogoPeloNome(sessaoCliente.getJogoAtual()));
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
-		piloto.setAtivarDRS(true);
-		return piloto.mudarTracado(Integer.parseInt(tracado),
-				obterJogoPeloNome(sessaoCliente.getJogoAtual()));
+		return false;
 	}
 
 	private Piloto obterPiloto(ClientPaddockPack clientPaddockPack,
@@ -1143,75 +1160,94 @@ public class ControleJogosServer {
 	}
 
 	public Object mudarDrs(SessaoCliente sessaoCliente, String idPiloto) {
-		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
-		if (piloto == null) {
-			return false;
+		try {
+			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
+			if (piloto == null) {
+				return false;
+			}
+			piloto.setAtivarDRS(true);
+			return Carro.MENOS_ASA.equals(piloto.getCarro().getAsa());
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
-		piloto.setAtivarDRS(true);
-		return Carro.MENOS_ASA.equals(piloto.getCarro().getAsa());
+		return false;
 	}
 
 	public Object mudarErs(SessaoCliente sessaoCliente, String idPiloto) {
-		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
-		if (piloto == null) {
-			return false;
+		try {
+			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
+			if (piloto == null) {
+				return false;
+			}
+			if (Logger.ativo) {
+				obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+				obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+			}
+			piloto.setAtivarErs(!piloto.isAtivarErs());
+			return piloto.isAtivarErs();
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
-		if (Logger.ativo) {
-			//obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
-			// obterJogoPorSessaoCliente(sessaoCliente)
-			// .forcaQuerbraAereofolio(piloto);
-		}
-		piloto.setAtivarErs(!piloto.isAtivarErs());
-		return piloto.isAtivarErs();
+		return false;
 	}
 
 	public Object boxPiloto(SessaoCliente sessaoCliente, String idPiloto,
 			Boolean ativa, String pneu, Integer combustivel, String asa) {
-		Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
-		if (piloto == null) {
-			return false;
+		try {
+			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
+			if (piloto == null) {
+				return false;
+			}
+			if (!Carro.MAIS_ASA.equals(asa) && !Carro.MENOS_ASA.equals(asa)
+					&& !Carro.ASA_NORMAL.equals(asa)) {
+				return false;
+			}
+			if (!Carro.TIPO_PNEU_CHUVA.equals(pneu)
+					&& !Carro.TIPO_PNEU_MOLE.equals(pneu)
+					&& !Carro.TIPO_PNEU_DURO.equals(pneu)) {
+				return false;
+			}
+			if (combustivel > 100) {
+				combustivel = 100;
+			}
+			if (combustivel < 0) {
+				combustivel = 0;
+			}
+			piloto.setBox(ativa);
+			piloto.setTipoPneuBox(pneu);
+			piloto.setQtdeCombustBox(combustivel);
+			piloto.setAsaBox(asa);
+			JogoServidor jogoServidor = obterJogoPeloNome(
+					sessaoCliente.getJogoAtual());
+			Map mapJogo = jogoServidor.getMapJogadoresOnline();
+			DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
+					.get(sessaoCliente.getToken());
+			dadosParticiparJogo.setCombustivel(combustivel);
+			dadosParticiparJogo.setTpPneu(pneu);
+			dadosParticiparJogo.setAsa(asa);
+			return piloto.isBox();
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
-		if (!Carro.MAIS_ASA.equals(asa) && !Carro.MENOS_ASA.equals(asa)
-				&& !Carro.ASA_NORMAL.equals(asa)) {
-			return false;
-		}
-		if (!Carro.TIPO_PNEU_CHUVA.equals(pneu)
-				&& !Carro.TIPO_PNEU_MOLE.equals(pneu)
-				&& !Carro.TIPO_PNEU_DURO.equals(pneu)) {
-			return false;
-		}
-		if (combustivel > 100) {
-			combustivel = 100;
-		}
-		if (combustivel < 0) {
-			combustivel = 0;
-		}
-		piloto.setBox(ativa);
-		piloto.setTipoPneuBox(pneu);
-		piloto.setQtdeCombustBox(combustivel);
-		piloto.setAsaBox(asa);
-		JogoServidor jogoServidor = obterJogoPeloNome(
-				sessaoCliente.getJogoAtual());
-		Map mapJogo = jogoServidor.getMapJogadoresOnline();
-		DadosCriarJogo dadosParticiparJogo = (DadosCriarJogo) mapJogo
-				.get(sessaoCliente.getToken());
-		dadosParticiparJogo.setCombustivel(combustivel);
-		dadosParticiparJogo.setTpPneu(pneu);
-		dadosParticiparJogo.setAsa(asa);
-		return piloto.isBox();
+		return false;
 	}
 
 	public SrvPaddockPack obterDadosToken(String token) {
-		List<SessaoCliente> clientes = dadosPaddock.getClientes();
-		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
-			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
-			if (sessaoCliente.getToken().equals(token)) {
-				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
-				srvPaddockPack.setSessaoCliente(sessaoCliente);
-				return srvPaddockPack;
+		try {
+			List<SessaoCliente> clientes = dadosPaddock.getClientes();
+			for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+				SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+				if (sessaoCliente.getToken().equals(token)) {
+					SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+					srvPaddockPack.setSessaoCliente(sessaoCliente);
+					return srvPaddockPack;
+				}
 			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
 		return null;
+
 	}
 
 	public Object equipe(SessaoCliente sessaoCliente) {

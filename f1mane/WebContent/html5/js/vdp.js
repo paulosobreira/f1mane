@@ -174,16 +174,16 @@ function vdp_desenhaMarcasLargadaGrid() {
 }
 
 function vdp_loopCalculaGanhoSuave(diff) {
-	var ganhoSuave = 0;
+	var ganho = 0;
 	var maxLoop = 1000;
-	var inc = 40;
+	var inc = 50;
 	for (var i = 0; i < maxLoop; i += inc) {
+		ganho += 1;
 		if (diff >= i && diff < i + inc) {
 			break;
 		}
-		ganhoSuave += 1;
 	}
-	return ganhoSuave;
+	return ganho;
 }
 
 function vdp_atualizaSuave() {

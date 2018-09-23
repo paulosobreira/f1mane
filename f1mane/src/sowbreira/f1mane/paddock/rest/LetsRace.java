@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.GET;
@@ -60,6 +61,27 @@ public class LetsRace {
 	private ControlePaddockServidor controlePaddock = PaddockServer
 			.getControlePaddock();
 
+	private Response processsaMensagem(Object objeto, String idioma) {
+		if (objeto == null) {
+			return Response.status(500).entity(new MsgSrv("Server error."))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (objeto instanceof MsgSrv) {
+			MsgSrv msgSrv = (MsgSrv) objeto;
+			return Response.status(400)
+					.entity(new MsgSrv(Lang
+							.decodeTextoKey(msgSrv.getMessageString(), idioma)))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		if (objeto instanceof ErroServ) {
+			ErroServ erroServ = (ErroServ) objeto;
+			return Response.status(500)
+					.entity(new MsgSrv(erroServ.obterErroFormatado()))
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		return null;
+	}
+
 	@GET
 	@Path("/criarSessaoVisitante")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -105,8 +127,13 @@ public class LetsRace {
 			@HeaderParam("nome") String nome,
 			@HeaderParam("urlFoto") String urlFoto,
 			@HeaderParam("email") String email) {
-		return Response.status(200).entity(controlePaddock
-				.criarSessaoGoogle(idGoogle, nome, urlFoto, email)).build();
+		Object criarSessaoGoogle = controlePaddock.criarSessaoGoogle(idGoogle,
+				nome, urlFoto, email);
+		if (criarSessaoGoogle instanceof ErroServ) {
+			return Response.status(500).entity(criarSessaoGoogle).build();
+		} else {
+			return Response.status(200).entity(criarSessaoGoogle).build();
+		}
 	}
 
 	@GET
@@ -122,9 +149,10 @@ public class LetsRace {
 				circuito.vetorizarPista();
 				circuito.gerarObjetosNoTransparencia();
 			}
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (Exception e) {
 			Logger.logarExept(e);
-			return Response.status(500).entity(e)
+			ErroServ erroServ = new ErroServ(e);
+			return Response.status(500).entity(erroServ)
 					.type(MediaType.APPLICATION_JSON).build();
 		}
 		if (circuito == null) {
@@ -179,7 +207,12 @@ public class LetsRace {
 		if (dadosParciais == null) {
 			return Response.status(401).build();
 		}
-		dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto, idioma);
+		try {
+			dadosParciais.texto = Lang.decodeTextoKey(dadosParciais.texto,
+					idioma);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 		return Response.status(200).entity(dadosParciais).build();
 	}
 
@@ -196,30 +229,36 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
-		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-		clientPaddockPack.setNomeJogo(nomeJogo);
-		clientPaddockPack.setSessaoCliente(sessaoCliente);
-		Object dadosJogoObj = controlePaddock.obterDadosJogo(clientPaddockPack);
-		DadosJogo dadosJogo = (DadosJogo) dadosJogoObj;
-		if (dadosJogoObj == null || !(dadosJogoObj instanceof DadosJogo)) {
-			if (!controlePaddock.obterJogos().isEmpty()) {
-				String jogo = controlePaddock.obterJogos().get(0);
-				clientPaddockPack = new ClientPaddockPack();
-				clientPaddockPack.setNomeJogo(jogo);
-				clientPaddockPack.setSessaoCliente(sessaoCliente);
-				dadosJogoObj = controlePaddock
-						.obterDadosJogo(clientPaddockPack);
-				if ("true".equals(modoCarreira) && controlePaddock
-						.obterJogoPeloNome(jogo).isCorridaIniciada()) {
-					dadosJogoObj = null;
-				}
-			}
-			if (dadosJogoObj == null) {
-				DadosJogo nenhum = new DadosJogo();
-				nenhum.setEstado("NENHUM");
-				dadosJogoObj = nenhum;
-			}
+		DadosJogo dadosJogo = null;
+		try {
+			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+			clientPaddockPack.setNomeJogo(nomeJogo);
+			clientPaddockPack.setSessaoCliente(sessaoCliente);
+			Object dadosJogoObj = controlePaddock
+					.obterDadosJogo(clientPaddockPack);
 			dadosJogo = (DadosJogo) dadosJogoObj;
+			if (dadosJogoObj == null || !(dadosJogoObj instanceof DadosJogo)) {
+				if (!controlePaddock.obterJogos().isEmpty()) {
+					String jogo = controlePaddock.obterJogos().get(0);
+					clientPaddockPack = new ClientPaddockPack();
+					clientPaddockPack.setNomeJogo(jogo);
+					clientPaddockPack.setSessaoCliente(sessaoCliente);
+					dadosJogoObj = controlePaddock
+							.obterDadosJogo(clientPaddockPack);
+					if ("true".equals(modoCarreira) && controlePaddock
+							.obterJogoPeloNome(jogo).isCorridaIniciada()) {
+						dadosJogoObj = null;
+					}
+				}
+				if (dadosJogoObj == null) {
+					DadosJogo nenhum = new DadosJogo();
+					nenhum.setEstado("NENHUM");
+					dadosJogoObj = nenhum;
+				}
+				dadosJogo = (DadosJogo) dadosJogoObj;
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
 		}
 		return Response.status(200).entity(dadosJogo).build();
 	}
@@ -261,90 +300,22 @@ public class LetsRace {
 			@PathParam("combustivel") String combustivel,
 			@PathParam("asa") String asa,
 			@PathParam("modoCarreira") String modoCarreira) {
-		try {
-			SessaoCliente sessaoCliente = controlePaddock
-					.obterSessaoPorToken(token);
-			if (sessaoCliente == null) {
-				return Response.status(401).build();
-			}
-			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-
-			MsgSrv modoCarreiraRet = controlePaddock.modoCarreira(token,
-					"true".equals(modoCarreira));
-			if (modoCarreiraRet != null) {
-				Response erro = processsaMensagem(modoCarreiraRet, idioma);
-				if (erro != null) {
-					return erro;
-				}
-			}
-
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-			clientPaddockPack.setSessaoCliente(sessaoCliente);
-			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(
-					temporada, circuito, idPiloto, numVoltas, tipoPneu,
-					combustivel, asa);
-			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-			List<String> obterJogos = controlePaddock.obterJogos();
-			if (!obterJogos.isEmpty()) {
-				clientPaddockPack.setNomeJogo(obterJogos.get(0));
-			}
-			SrvPaddockPack srvPaddockPack = null;
-			Object statusJogo = null;
-			statusJogo = controlePaddock.obterJogoPeloNome(clientPaddockPack);
-			/**
-			 * Criar Jogo
-			 */
-			if (statusJogo == null) {
-				statusJogo = controlePaddock.criarJogo(clientPaddockPack);
-				Response erro = processsaMensagem(statusJogo, idioma);
-				if (erro != null) {
-					return erro;
-				}
-			}
-
-			srvPaddockPack = (SrvPaddockPack) statusJogo;
-
-			if (srvPaddockPack != null
-					&& srvPaddockPack.getDadosCriarJogo() != null
-					&& (!srvPaddockPack.getDadosCriarJogo().getTemporada()
-							.equals(dadosCriarJogo.getTemporada())
-							|| !dadosCriarJogo.getCircuitoSelecionado()
-									.equals(srvPaddockPack.getDadosCriarJogo()
-											.getCircuitoSelecionado()))) {
-				return Response.status(500)
-						.entity(new MsgSrv(
-								Lang.msgKey("existeJogoEmAndamando", idioma)))
-						.type(MediaType.APPLICATION_JSON).build();
-			}
-
-			/**
-			 * Preenchento todos possiveis campos para nome do jogo Bagunça...
-			 */
-			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-			clientPaddockPack.getDadosJogoCriado()
-					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
-			clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
-
-			/**
-			 * Entrar Jogo
-			 */
-			if (statusJogo != null) {
-				statusJogo = controlePaddock.entrarJogo(clientPaddockPack);
-				Response erro = processsaMensagem(statusJogo, idioma);
-				if (erro != null) {
-					return erro;
-				}
-				controlePaddock.atualizarDadosVisao();
-			}
-			DadosJogo dadosJogo = (DadosJogo) controlePaddock
-					.obterDadosJogo(clientPaddockPack);
-			return Response.status(200).entity(dadosJogo).build();
-		} catch (Exception e) {
-			Logger.topExecpts(e);
-			return Response.status(500)
-					.entity(new ErroServ(e).obterErroFormatado())
-					.type(MediaType.APPLICATION_JSON).build();
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
 		}
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		Object jogar = controlePaddock.jogar(temporada, circuito, idPiloto,
+				numVoltas, tipoPneu, combustivel, asa, sessaoCliente,
+				modoCarreira);
+		Response processsaMensagem = processsaMensagem(jogar, idioma);
+		if (processsaMensagem != null) {
+			return processsaMensagem;
+		} else {
+			return Response.status(200).entity(jogar).build();
+		}
+
 	}
 
 	@GET
@@ -356,119 +327,20 @@ public class LetsRace {
 			@PathParam("tipoPneu") String tipoPneu,
 			@PathParam("combustivel") String combustivel,
 			@PathParam("asa") String asa) {
-		try {
-			SessaoCliente sessaoCliente = controlePaddock
-					.obterSessaoPorToken(token);
-			if (sessaoCliente == null) {
-				return Response.status(401).build();
-			}
-
-			sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
-			clientPaddockPack.setSessaoCliente(sessaoCliente);
-
-			CampeonatoTO campeonato = controlePaddock
-					.obterCampeonatoEmAberto(token);
-
-			String arquivoCircuito = campeonato.getArquivoCircuitoAtual();
-			String idPiloto = campeonato.getIdPiloto();
-			String numVoltas = campeonato.getQtdeVoltas().toString();
-			String temporada = campeonato.getTemporada();
-
-			if (campeonato.isModoCarreira()) {
-				MsgSrv modoCarreiraRet = controlePaddock.modoCarreira(token,
-						campeonato.isModoCarreira());
-				if (modoCarreiraRet != null) {
-					Response erro = processsaMensagem(modoCarreiraRet, idioma);
-					if (erro != null) {
-						return erro;
-					}
-				} else {
-					Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
-							.carregarTemporadasPilotosDefauts();
-					TemporadasDefauts temporadasDefauts = tempDefsMap
-							.get("t" + campeonato.getTemporada());
-					List<Piloto> pilotos = temporadasDefauts.getPilotos();
-					idPiloto = String
-							.valueOf(pilotos.get(pilotos.size() - 1).getId());
-				}
-			}
-
-			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(
-					temporada, arquivoCircuito, idPiloto, numVoltas, tipoPneu,
-					combustivel, asa);
-
-			dadosCriarJogo.setNomeCampeonato(campeonato.getNome());
-			dadosCriarJogo
-					.setRodadaCampeonato(campeonato.getRodadaCampeonato());
-			dadosCriarJogo.setIdCampeonato(campeonato.getId());
-			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-			SrvPaddockPack srvPaddockPack = null;
-			Object statusJogo = null;
-			/**
-			 * Criar Jogo
-			 */
-			if (statusJogo == null) {
-				statusJogo = controlePaddock.criarJogo(clientPaddockPack);
-				Response erro = processsaMensagem(statusJogo, idioma);
-				if (erro != null) {
-					return erro;
-				}
-			}
-
-			srvPaddockPack = (SrvPaddockPack) statusJogo;
-
-			/**
-			 * Preenchento todos possiveis campos para nome do jogo Bagunça...
-			 */
-			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-			clientPaddockPack.getDadosJogoCriado()
-					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
-			clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
-
-			/**
-			 * Entrar Jogo
-			 */
-			if (statusJogo != null) {
-				statusJogo = controlePaddock.entrarJogo(clientPaddockPack);
-				Response erro = processsaMensagem(statusJogo, idioma);
-				if (erro != null) {
-					return erro;
-				}
-				controlePaddock.atualizarDadosVisao();
-			}
-			DadosJogo dadosJogo = (DadosJogo) controlePaddock
-					.obterDadosJogo(clientPaddockPack);
-			return Response.status(200).entity(dadosJogo).build();
-		} catch (Exception e) {
-			Logger.topExecpts(e);
-			Logger.topExecpts(
-					new Exception("jogarCampeonato - Token " + token + " " + e.getMessage()));
-			return Response.status(500)
-					.entity(new ErroServ(e).obterErroFormatado())
-					.type(MediaType.APPLICATION_JSON).build();
+		SessaoCliente sessaoCliente = controlePaddock
+				.obterSessaoPorToken(token);
+		if (sessaoCliente == null) {
+			return Response.status(401).build();
 		}
-	}
-
-	private Response processsaMensagem(Object objeto, String idioma) {
-		if (objeto == null) {
-			return Response.status(500).entity(new MsgSrv("Server error."))
-					.type(MediaType.APPLICATION_JSON).build();
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+		Object jogar = controlePaddock.jogarCampeonato(tipoPneu, combustivel,
+				asa, sessaoCliente);
+		Response processsaMensagem = processsaMensagem(jogar, idioma);
+		if (processsaMensagem != null) {
+			return processsaMensagem;
+		} else {
+			return Response.status(200).entity(jogar).build();
 		}
-		if (objeto instanceof MsgSrv) {
-			MsgSrv msgSrv = (MsgSrv) objeto;
-			return Response.status(400)
-					.entity(new MsgSrv(Lang
-							.decodeTextoKey(msgSrv.getMessageString(), idioma)))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		if (objeto instanceof ErroServ) {
-			ErroServ erroServ = (ErroServ) objeto;
-			return Response.status(500)
-					.entity(new MsgSrv(erroServ.obterErroFormatado()))
-					.type(MediaType.APPLICATION_JSON).build();
-		}
-		return null;
 	}
 
 	@GET
@@ -728,12 +600,19 @@ public class LetsRace {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response temporadasDefaults(
 			@PathParam("temporada") String temporada) {
-		temporada = "t" + temporada;
-		Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
-				.carregarTemporadasPilotosDefauts();
-		return Response.status(200)
-				.entity(carregarTemporadasPilotosDefauts.get(temporada))
-				.build();
+		TemporadasDefauts temporadasDefauts = null;
+		try {
+			temporada = "t" + temporada;
+			Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
+					.carregarTemporadasPilotosDefauts();
+			temporadasDefauts = carregarTemporadasPilotosDefauts.get(temporada);
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(200).entity(temporadasDefauts).build();
 	}
 
 	@SuppressWarnings("static-access")
@@ -742,8 +621,16 @@ public class LetsRace {
 	@Path("/temporadas")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response temporadas() {
-		return Response.status(200)
-				.entity(carregadorRecursos.carregarTemporadas()).build();
+		Vector<String> carregarTemporadas = null;
+		try {
+			carregarTemporadas = carregadorRecursos.carregarTemporadas();
+		} catch (Exception e) {
+			Logger.topExecpts(e);
+			return Response.status(500)
+					.entity(new ErroServ(e).obterErroFormatado())
+					.type(MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(200).entity(carregarTemporadas).build();
 	}
 
 	@GET
