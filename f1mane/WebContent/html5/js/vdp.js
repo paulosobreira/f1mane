@@ -301,7 +301,7 @@ function vdp_atualizaSuave() {
 		// console.log(piloto.idPiloto + ' noSuaveNovo ' + noS);
 		// }
 		mapaIdPilotosNosSuave.set(piloto.idPiloto, noSuaveNovo);
-		if (diff >= 1000) {
+		if (diff >= 700) {
 			// console.log(piloto.idPiloto + ' diff >= 1000 ' + novoIndex);
 			mapaIdPilotosNosSuave.set(piloto.idPiloto, noReal);
 		}

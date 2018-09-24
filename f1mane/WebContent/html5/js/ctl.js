@@ -42,20 +42,23 @@ function ctl_desenhaFarois(){
 		return;
 	}
 	imgFaroisAcesosCont++;
-	if(imgFaroisAcesosCont>=140){
-		maneContext.drawImage(imgFarois1, centroX - (imgFarois.width/2) , 100);
+	if(imgFaroisAcesosCont>=160){
+		maneContext.drawImage(imgFarois, centroX - (imgFarois.width/2) , 100);
 	}
-	if(imgFaroisAcesosCont<140){
-		maneContext.drawImage(imgFarois2, centroX - (imgFarois.width/2) , 100);
-	}
-	if(imgFaroisAcesosCont<120){
-		maneContext.drawImage(imgFarois3, centroX - (imgFarois.width/2) , 100);
-	}
-	if(imgFaroisAcesosCont<80){
+	if(imgFaroisAcesosCont<160){
 		maneContext.drawImage(imgFarois4, centroX - (imgFarois.width/2) , 100);
 	}
+	if(imgFaroisAcesosCont<140){
+		maneContext.drawImage(imgFarois3, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<120){
+		maneContext.drawImage(imgFarois2, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<80){
+		maneContext.drawImage(imgFarois1, centroX - (imgFarois.width/2) , 100);
+	}
 	if(imgFaroisAcesosCont<40){
-		maneContext.drawImage(imgFarois, centroX - (imgFarois.width/2) , 100);	
+		maneContext.drawImage(imgFaroisApagados, centroX - (imgFarois.width/2) , 100);	
 	}
 }
 

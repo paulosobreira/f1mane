@@ -35,7 +35,10 @@ if (token == null) {
 
 if (token != null) {
 	localStorage.setItem("token", token);
-	dadosJogador();
+	mostraLoad();
+	setTimeout(function() {
+		dadosJogador();
+	}, 500);
 }
 
 if(plataforma!=null){

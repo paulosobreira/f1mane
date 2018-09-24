@@ -77,7 +77,12 @@ function tratamentoErro(xhRequest) {
 		setTimeout(function() {
 			window.location = "index.html";
 		}, 3500);
-	} else {
+	} else if (xhRequest.status == 503) {
+		toaster('Server overload', 4000, 'alert alert-danger');
+		setTimeout(function() {
+			window.location = "index.html";
+		}, 3500);
+	}else {
 		var erroMsg = xhRequest.status + '  ' + xhRequest.responseText;
 		if (xhRequest.responseJSON != null && xhRequest.responseJSON.messageString != null) {
 			erroMsg = xhRequest.responseJSON.messageString;
