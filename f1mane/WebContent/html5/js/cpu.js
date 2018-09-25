@@ -48,7 +48,6 @@ function cpu_main() {
 	}
 	if (dadosJogo != null && circuito == null) {
 		cpu_carregaDadosPilotos();
-		console.log('cpu_main rest_ciruito()');
 		rest_ciruito();
 	}
 	if (dadosJogo != null && circuito != null && !carregouMidia) {
@@ -203,7 +202,7 @@ function cpu_viradaAlterador() {
 	vdp_precessaCorCeu();
 }
 
-var main = setInterval(cpu_main, 750);
+var main = setInterval(cpu_main, 700);
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {

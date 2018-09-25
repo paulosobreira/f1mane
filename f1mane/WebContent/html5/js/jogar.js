@@ -271,7 +271,6 @@ function carregarDadosJogoPadrao() {
 		dataType : "json",
 		success : function(dadosJogoParam) {
 			dadosJogo = dadosJogoParam;
-			console.log(dadosJogo);
 			if ('NENHUM' == dadosJogo.estado) {
 				listaTemporadas();
 				listaCircuitos();
