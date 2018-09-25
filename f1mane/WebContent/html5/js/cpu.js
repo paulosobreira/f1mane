@@ -202,7 +202,7 @@ function cpu_viradaAlterador() {
 	vdp_precessaCorCeu();
 }
 
-var main = setInterval(cpu_main, 700);
+var main = setInterval(cpu_main, 750);
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {

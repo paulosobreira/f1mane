@@ -858,11 +858,24 @@ public class ControleJogosServer {
 						piloto.getCalculaSegundosParaProximo());
 				if (anterior != null && proximo != null) {
 					if (anterior < proximo) {
-						dadosParciais.vantagem = piloto
-								.getCalculaSegundosParaAnterior();
+						if (piloto.getCarroPilotoAtras() != null
+								&& jogoServidor.verificaNoPitLane(piloto
+										.getCarroPilotoAtras().getPiloto())) {
+							dadosParciais.vantagem = "BOX";
+						} else {
+							dadosParciais.vantagem = piloto
+									.getCalculaSegundosParaAnterior();
+						}
 					} else {
-						dadosParciais.vantagem = piloto
-								.getCalculaSegundosParaProximo();
+						if (piloto.getCarroPilotoAtras() != null
+								&& jogoServidor.verificaNoPitLane(
+										piloto.getCarroPilotoDaFrente()
+												.getPiloto())) {
+							dadosParciais.vantagem = "BOX";
+						} else {
+							dadosParciais.vantagem = piloto
+									.getCalculaSegundosParaProximo();
+						}
 					}
 				}
 			}
@@ -1180,8 +1193,8 @@ public class ControleJogosServer {
 				return false;
 			}
 			if (Logger.ativo) {
-//				obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
-//				obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+				// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+				// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
 			}
 			piloto.setAtivarErs(!piloto.isAtivarErs());
 			return piloto.isAtivarErs();
