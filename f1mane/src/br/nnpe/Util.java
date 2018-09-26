@@ -127,14 +127,13 @@ public class Util {
 	}
 
 	public static boolean isNullOrEmpty(String campo) {
-		return ((campo == null) || "".equals(campo));
+		return ((campo == null) || "".equals(campo.trim()));
 	}
 
 	public static Date alteraData(Date date, int qtdDias) {
 		java.util.Calendar calendar = java.util.Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.add(Calendar.DATE, qtdDias);
-
 		return new Date(calendar.getTimeInMillis());
 	}
 

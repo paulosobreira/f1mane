@@ -35,6 +35,8 @@ import br.nnpe.Dia;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
@@ -673,6 +675,67 @@ public class ControlePersistencia {
 		criteria.add(Restrictions.gt("pontos", 0));
 		List corridas = criteria.list();
 		return corridas;
+	}
+
+	public List obterClassificacaoEquipes(Session session) {
+		Criteria criteria = session.createCriteria(CarreiraDadosSrv.class);
+		criteria.add(Restrictions.isNotEmpty("nomeCarro"));
+		criteria.add(Restrictions.isNotEmpty("nomePiloto"));
+		criteria.add(Restrictions.gt("ptsConstrutoresGanhos", 0));
+		criteria.addOrder(Order.desc("ptsConstrutoresGanhos"));
+		List carreiras = criteria.list();
+		return carreiras;
+	}
+	
+	public void carreiraDadosParaPiloto(CarreiraDadosSrv carreiraDadosSrv,
+			Piloto piloto) {
+		piloto.setNome(carreiraDadosSrv.getNomePiloto());
+
+		if (carreiraDadosSrv.getTemporadaCapaceteLivery() != null) {
+			piloto.setTemporadaCapaceteLivery(
+					carreiraDadosSrv.getTemporadaCapaceteLivery().toString());
+		} else {
+			piloto.setTemporadaCapaceteLivery(
+					Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+		}
+
+		if (carreiraDadosSrv.getTemporadaCarroLivery() != null) {
+			piloto.setTemporadaCarroLivery(
+					carreiraDadosSrv.getTemporadaCarroLivery().toString());
+		} else {
+			piloto.setTemporadaCarroLivery(
+					Util.rgb2hex(carreiraDadosSrv.geraCor1()));
+		}
+
+		if (carreiraDadosSrv.getTemporadaCapaceteLivery() != null
+				&& carreiraDadosSrv.getIdCapaceteLivery() != null
+				&& carreiraDadosSrv.getIdCapaceteLivery() != 0) {
+			piloto.setIdCapaceteLivery(
+					carreiraDadosSrv.getIdCapaceteLivery().toString());
+		} else {
+			piloto.setIdCapaceteLivery(
+					Util.rgb2hex(carreiraDadosSrv.geraCor2()));
+
+		}
+		if (carreiraDadosSrv.getTemporadaCarroLivery() != null
+				&& carreiraDadosSrv.getIdCarroLivery() != null
+				&& carreiraDadosSrv.getIdCarroLivery() != 0) {
+			piloto.setIdCarroLivery(
+					carreiraDadosSrv.getIdCarroLivery().toString());
+		} else {
+			piloto.setIdCarroLivery(Util.rgb2hex(carreiraDadosSrv.geraCor2()));
+
+		}
+		piloto.setNomeCarro(carreiraDadosSrv.getNomeCarro());
+		piloto.setHabilidade(carreiraDadosSrv.getPtsPiloto());
+		Carro carro = new Carro();
+		piloto.setCarro(carro);
+		carro.setAerodinamica(carreiraDadosSrv.getPtsAerodinamica());
+		carro.setPotencia(carreiraDadosSrv.getPtsCarro());
+		carro.setFreios(carreiraDadosSrv.getPtsFreio());
+		carro.setCor1(carreiraDadosSrv.geraCor1());
+		carro.setCor2(carreiraDadosSrv.geraCor2());
+		piloto.setPontosCorrida(carreiraDadosSrv.getPtsConstrutoresGanhos());
 	}
 
 }

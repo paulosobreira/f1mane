@@ -732,6 +732,9 @@ public class ControlePaddockServidor {
 					sessaoCliente.setNomeJogador(nome);
 					sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 					srvPaddockPack.setSessaoCliente(sessaoCliente);
+					if(Util.isNullOrEmpty(sessaoCliente.getNomeJogador())){
+						return new MsgSrv(Lang.msg("064"));
+					}
 					salvarAcessoSessaoGoogle(sessaoCliente);
 					return srvPaddockPack;
 				}
@@ -748,6 +751,9 @@ public class ControlePaddockServidor {
 			dadosPaddock.add(sessaoCliente);
 			SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 			srvPaddockPack.setSessaoCliente(sessaoCliente);
+			if(Util.isNullOrEmpty(sessaoCliente.getNomeJogador())){
+				return new MsgSrv(Lang.msg("064"));
+			}
 			salvarAcessoSessaoGoogle(sessaoCliente);
 			return srvPaddockPack;
 		} catch (Exception e) {
@@ -912,6 +918,10 @@ public class ControlePaddockServidor {
 	
 	public Object obterClassificacaoGeral() {
 		return controleClassificacao.obterClassificacaoGeral();
+	}
+	
+	public Object obterClassificacaoEquipes() {
+		return controleClassificacao.obterClassificacaoEquipes();
 	}
 
 	public MsgSrv modoCarreira(String token, boolean modo) {
@@ -1220,6 +1230,8 @@ public class ControlePaddockServidor {
 		}
 
 	}
+
+
 
 
 }

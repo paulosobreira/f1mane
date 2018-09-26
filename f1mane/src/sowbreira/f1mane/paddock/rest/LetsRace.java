@@ -182,6 +182,15 @@ public class LetsRace {
 		return Response.status(200)
 				.entity(controlePaddock.obterClassificacaoGeral()).build();
 	}
+	
+	@GET
+	@Compress
+	@Path("/classificacaoEquipes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response classificacaoEquipes() {
+		return Response.status(200)
+				.entity(controlePaddock.obterClassificacaoEquipes()).build();
+	}
 
 	@GET
 	@Path("/sairJogo/{nomeJogo}")

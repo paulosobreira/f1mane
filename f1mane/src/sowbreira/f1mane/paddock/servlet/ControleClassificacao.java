@@ -781,4 +781,28 @@ public class ControleClassificacao {
 		return null;
 	}
 
+	public List<Piloto> obterClassificacaoEquipes() {
+		Session session = controlePersistencia.getSession();
+		try {
+			List obterClassificacaoEquipes = controlePersistencia
+					.obterClassificacaoEquipes(session);
+			List<Piloto> ret = new ArrayList<Piloto>();
+			for (Iterator iterator = obterClassificacaoEquipes
+					.iterator(); iterator.hasNext();) {
+				CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) iterator
+						.next();
+				Piloto piloto = new Piloto();
+				controlePersistencia.carreiraDadosParaPiloto(carreiraDadosSrv,
+						piloto);
+				ret.add(piloto);
+			}
+			return ret;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+
 }
