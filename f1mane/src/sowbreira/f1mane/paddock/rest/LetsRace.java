@@ -175,6 +175,15 @@ public class LetsRace {
 	}
 
 	@GET
+	@Compress
+	@Path("/classificacaoGeral")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response classificacaoGeral() {
+		return Response.status(200)
+				.entity(controlePaddock.obterClassificacaoGeral()).build();
+	}
+
+	@GET
 	@Path("/sairJogo/{nomeJogo}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response sairJogo(@HeaderParam("token") String token,

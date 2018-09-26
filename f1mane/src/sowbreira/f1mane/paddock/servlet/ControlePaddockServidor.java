@@ -909,6 +909,10 @@ public class ControlePaddockServidor {
 	public List obterClassificacaoCircuito(String nomeCircuito) {
 		return controleClassificacao.obterClassificacaoCircuito(nomeCircuito);
 	}
+	
+	public Object obterClassificacaoGeral() {
+		return controleClassificacao.obterClassificacaoGeral();
+	}
 
 	public MsgSrv modoCarreira(String token, boolean modo) {
 		return controlePersistencia.modoCarreira(token, modo);
@@ -1216,4 +1220,6 @@ public class ControlePaddockServidor {
 		}
 
 	}
+
+
 }

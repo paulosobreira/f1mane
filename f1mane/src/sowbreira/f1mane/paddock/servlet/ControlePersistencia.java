@@ -501,7 +501,7 @@ public class ControlePersistencia {
 		}
 		Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
 		criteria.add(Restrictions.eq("circuito", circuito));
-		// criteria.add(Restrictions.gt("pontos", 0));
+		criteria.add(Restrictions.gt("pontos", 0));
 		List corridas = criteria.list();
 		return corridas;
 	}
@@ -665,9 +665,14 @@ public class ControlePersistencia {
 		return !list.isEmpty();
 	}
 
-	public void finalizaCampeonato(Long id) {
-		// TODO Auto-generated method stub
-		
+	public List<CorridasDadosSrv> obterClassificacaoGeral(Session session) {
+		if (!Constantes.DATABASE) {
+			return null;
+		}
+		Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
+		criteria.add(Restrictions.gt("pontos", 0));
+		List corridas = criteria.list();
+		return corridas;
 	}
 
 }
