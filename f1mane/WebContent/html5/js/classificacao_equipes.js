@@ -48,7 +48,7 @@ function classificacaoEquipes() {
 				table.append(trIn2);
 				td1.append(table);
 
-				var imgCapacete = $('<img class="img-responsive img-center"/>');	
+				var imgCapacete = $('<img class="img-responsive img-center" style="width: 40px;"/>');	
 				imgCapacete.attr('src', '/f1mane/rest/letsRace/capacete/' + pilotos[i].temporadaCapaceteLivery + '/' + pilotos[i].idCapaceteLivery);
 				
 				var imgCarro = $('<img class="img-responsive img-center"/>');	

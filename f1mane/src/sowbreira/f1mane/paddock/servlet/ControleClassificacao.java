@@ -757,6 +757,18 @@ public class ControleClassificacao {
 			}
 			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(
 					mapa.values());
+			
+			List<DadosClassificacaoJogador> classificacaoremover = new ArrayList<DadosClassificacaoJogador>();
+			for (Iterator iterator = classificacao.iterator(); iterator
+					.hasNext();) {
+				DadosClassificacaoJogador dadosClassificacaoJogador = (DadosClassificacaoJogador) iterator
+						.next();
+				if(dadosClassificacaoJogador.getPontos()<25){
+					classificacaoremover.add(dadosClassificacaoJogador);
+				}
+			}
+			
+			classificacao.removeAll(classificacaoremover);
 			Collections.sort(classificacao,
 					new Comparator<DadosClassificacaoJogador>() {
 						@Override
