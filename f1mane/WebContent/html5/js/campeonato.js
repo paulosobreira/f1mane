@@ -123,8 +123,6 @@ function carregaCampeonato() {
 
 				pilotoSelecionado.find('#imgCarroPilotoSelecionado').attr('src', '/f1mane/rest/letsRace/carroLado/' + campeonato.temporadaCarro + '/' + campeonato.idCarro);
 				pilotoSelecionado.find('#imgCapacetePilotoSelecionado').attr('src', '/f1mane/rest/letsRace/capacete/' + campeonato.temporadaCapacete + '/' +campeonato.idPiloto);
-
-				
 				pilotoSelecionado.find('#nomePilotoSelecionado').html('');
 				pilotoSelecionado.find('#nomePilotoSelecionado').append(campeonato.nomePiloto);
 				pilotoSelecionado.find('#nomeCarroSelecionado').html('');

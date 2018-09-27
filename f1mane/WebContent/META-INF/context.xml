@@ -10,13 +10,18 @@
 		type="javax.sql.DataSource" url="jdbc:hsqldb:hsql://localhost/xdb" username="SA" 
 		/> -->
 	<!-- <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" 
+		maxActive="30" maxIdle="2" maxWait="10" name="jdbc/MySQLDS" type="javax.sql.DataSource" 
+		url="jdbc:mysql://mysql:3306/f1mane" username="user13K" password="oqkGqyaTESlXbr2n" 
+		testOnBorrow="false" testOnReturn="false" testWhileIdle="true" validationQuery="Select 
+		1" timeBetweenEvictionRunsMillis="1800000" /> -->
+	<!-- <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" 
 		type="javax.sql.DataSource" maxActive="30" maxIdle="10" maxWait="-1" name="jdbc/MySQLDS" 
 		username="root" password="mysql" url="jdbc:mysql://localhost:3306/f1mane" 
 		testOnBorrow="false" testOnReturn="false" testWhileIdle="true" validationQuery="Select 
 		1" timeBetweenEvictionRunsMillis="1800000" /> -->
 	<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver"
 		maxActive="30" maxIdle="2" maxWait="10" name="jdbc/MySQLDS" type="javax.sql.DataSource"
-		url="jdbc:mysql://mysql:3306/f1mane" username="userR37" password="IqBGKeT7DBsnU1Y5"
+		url="jdbc:mysql://mysql:3306/f1mane" username="user13K" password="oqkGqyaTESlXbr2n"
 		testOnBorrow="false" testOnReturn="false" testWhileIdle="true"
 		validationQuery="Select 
 		1" timeBetweenEvictionRunsMillis="1800000" />

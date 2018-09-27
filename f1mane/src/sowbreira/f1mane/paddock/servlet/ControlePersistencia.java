@@ -679,8 +679,8 @@ public class ControlePersistencia {
 
 	public List obterClassificacaoEquipes(Session session) {
 		Criteria criteria = session.createCriteria(CarreiraDadosSrv.class);
-		criteria.add(Restrictions.isNotEmpty("nomeCarro"));
-		criteria.add(Restrictions.isNotEmpty("nomePiloto"));
+		criteria.add(Restrictions.isNotNull("nomeCarro"));
+		criteria.add(Restrictions.isNotNull("nomePiloto"));
 		criteria.add(Restrictions.gt("ptsConstrutoresGanhos", 0));
 		criteria.addOrder(Order.desc("ptsConstrutoresGanhos"));
 		List carreiras = criteria.list();

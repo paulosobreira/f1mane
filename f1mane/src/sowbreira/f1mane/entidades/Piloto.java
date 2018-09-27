@@ -865,9 +865,18 @@ public class Piloto implements Serializable, PilotoSuave {
 	public String getNomeAbreviado() {
 		if (nome != null && nome.contains(".")
 				&& Util.isNullOrEmpty(nomeAbreviado)) {
-			String nmPiloto = nome.split("\\.")[1];
-			nmPiloto = nmPiloto.substring(0, 3);
-			return nmPiloto;
+			try {
+				String nmPiloto = nome.split("\\.")[1];
+				nmPiloto = nmPiloto.substring(0, 3);
+				return nmPiloto;
+			} catch (Exception e) {
+				Logger.logarExept(e);
+			}
+			if (nome.length() > 3) {
+				return nome.substring(0, 3);
+			} else {
+				return nome;
+			}
 		}
 		return nomeAbreviado;
 	}
