@@ -36,10 +36,10 @@ function classificacaoEquipes() {
 				var table =  $('<table class="table table-hover table-responsive tableInTable"/>');
 				var trIn1 = $('<tr/>');
 				var trIn2 = $('<tr/>');
-				var tdIn1 = $('<td/>');
-				var tdIn2 = $('<td/>');
-				var tdIn3 = $('<td/>');
-				var tdIn4 = $('<td/>');
+				var tdIn1 = $('<td style="width: 50%;"/>');
+				var tdIn2 = $('<td style="width: 50%;"/>');
+				var tdIn3 = $('<td style="width: 50%;"/>');
+				var tdIn4 = $('<td style="width: 50%;"/>');
 				trIn1.append(tdIn1);
 				trIn1.append(tdIn2);
 				trIn2.append(tdIn3);
@@ -48,7 +48,7 @@ function classificacaoEquipes() {
 				table.append(trIn2);
 				td1.append(table);
 
-				var imgCapacete = $('<img class="img-responsive img-center" style="width: 40px;"/>');	
+				var imgCapacete = $('<img class="img-responsive img-center" />');	
 				imgCapacete.attr('src', '/f1mane/rest/letsRace/capacete/' + pilotos[i].temporadaCapaceteLivery + '/' + pilotos[i].idCapaceteLivery);
 				
 				var imgCarro = $('<img class="img-responsive img-center"/>');	

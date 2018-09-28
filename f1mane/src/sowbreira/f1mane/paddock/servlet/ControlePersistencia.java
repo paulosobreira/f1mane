@@ -686,7 +686,7 @@ public class ControlePersistencia {
 		List carreiras = criteria.list();
 		return carreiras;
 	}
-	
+
 	public void carreiraDadosParaPiloto(CarreiraDadosSrv carreiraDadosSrv,
 			Piloto piloto) {
 		piloto.setNome(carreiraDadosSrv.getNomePiloto());
@@ -736,6 +736,17 @@ public class ControlePersistencia {
 		carro.setCor1(carreiraDadosSrv.geraCor1());
 		carro.setCor2(carreiraDadosSrv.geraCor2());
 		piloto.setPontosCorrida(carreiraDadosSrv.getPtsConstrutoresGanhos());
+	}
+
+	public List<CampeonatoSrv> obterClassificacaoCampeonato(Session session) {
+		Dia umMesAtras = new Dia();
+		umMesAtras.backMonth();
+		List<CampeonatoSrv> campeonatos = session
+				.createCriteria(CampeonatoSrv.class)
+				.createAlias("corridaCampeonatos", "cc").add(Restrictions
+						.ge("cc.tempoFim", umMesAtras.toTimestamp().getTime()))
+				.list();
+		return campeonatos;
 	}
 
 }

@@ -247,6 +247,15 @@ public class Dia implements Cloneable, Serializable {
 			mesAtual = getMonth();
 		}
 	}
+	
+	public void backMonth() {
+		int mesAtual = getMonth();
+		int mes = getMonth();
+		while (mes == mesAtual) {
+			advance(-1);
+			mesAtual = getMonth();
+		}
+	}
 
 	public Boolean isDayOfWeek() {
 		int dia = getDayOfWeek();

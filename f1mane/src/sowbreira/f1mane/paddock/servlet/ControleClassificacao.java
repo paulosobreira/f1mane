@@ -21,6 +21,7 @@ import br.nnpe.Numero;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoJogador;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosClassificacaoCarros;
@@ -31,6 +32,7 @@ import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
 import sowbreira.f1mane.paddock.entidades.TOs.MsgSrv;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.TOs.VoltaJogadorOnline;
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
@@ -42,15 +44,18 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class ControleClassificacao {
 	private ControlePersistencia controlePersistencia;
+	private ControleCampeonatoServidor controleCampeonatoServidor;
 	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
 			.getCarregadorRecursos(false);
 
 	/**
 	 * @param controlePersistencia
 	 */
-	public ControleClassificacao(ControlePersistencia controlePersistencia) {
+	public ControleClassificacao(ControlePersistencia controlePersistencia,
+			ControleCampeonatoServidor controleCampeonatoServidor) {
 		super();
 		this.controlePersistencia = controlePersistencia;
+		this.controleCampeonatoServidor = controleCampeonatoServidor;
 	}
 
 	public List obterListaClassificacao(Integer ano) {
@@ -757,17 +762,17 @@ public class ControleClassificacao {
 			}
 			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(
 					mapa.values());
-			
+
 			List<DadosClassificacaoJogador> classificacaoremover = new ArrayList<DadosClassificacaoJogador>();
 			for (Iterator iterator = classificacao.iterator(); iterator
 					.hasNext();) {
 				DadosClassificacaoJogador dadosClassificacaoJogador = (DadosClassificacaoJogador) iterator
 						.next();
-				if(dadosClassificacaoJogador.getPontos()<25){
+				if (dadosClassificacaoJogador.getPontos() < 25) {
 					classificacaoremover.add(dadosClassificacaoJogador);
 				}
 			}
-			
+
 			classificacao.removeAll(classificacaoremover);
 			Collections.sort(classificacao,
 					new Comparator<DadosClassificacaoJogador>() {
@@ -808,6 +813,31 @@ public class ControleClassificacao {
 						piloto);
 				ret.add(piloto);
 			}
+			return ret;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+
+	public Object obterClassificacaoCampeonato() {
+		Session session = controlePersistencia.getSession();
+		try {
+
+			List<CampeonatoSrv> pesquisaCampeonatosEmAberto = controlePersistencia
+					.obterClassificacaoCampeonato(session);
+			List<CampeonatoTO> ret = new ArrayList<CampeonatoTO>();
+			for (Iterator iterator = pesquisaCampeonatosEmAberto
+					.iterator(); iterator.hasNext();) {
+				CampeonatoSrv campeonatoSrv = (CampeonatoSrv) iterator.next();
+				CampeonatoTO campeonatoTO = new CampeonatoTO();
+				controleCampeonatoServidor.processsaCorridaCampeonatoTO(campeonatoSrv, campeonatoTO);
+				campeonatoTO.limpaListas();
+				ret.add(campeonatoTO);
+			}
+			
 			return ret;
 		} catch (Exception e) {
 			Logger.logarExept(e);

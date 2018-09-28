@@ -188,4 +188,11 @@ public class CampeonatoTO implements Serializable {
 		campeonato.setId(id);
 	}
 
+	public void limpaListas() {
+		corridas.clear();
+		pilotos.clear();
+		carros.clear();
+		jogadores.clear();
+	}
+
 }

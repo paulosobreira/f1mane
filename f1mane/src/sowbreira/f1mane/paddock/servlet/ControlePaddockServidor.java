@@ -77,9 +77,10 @@ public class ControlePaddockServidor {
 
 	public ControlePaddockServidor(ControlePersistencia controlePersistencia) {
 		this.controlePersistencia = controlePersistencia;
-		controleClassificacao = new ControleClassificacao(controlePersistencia);
 		controleCampeonatoServidor = new ControleCampeonatoServidor(
 				controlePersistencia, this);
+		controleClassificacao = new ControleClassificacao(controlePersistencia,
+				controleCampeonatoServidor);
 		controleJogosServer = new ControleJogosServer(dadosPaddock,
 				controleClassificacao, controleCampeonatoServidor,
 				controlePersistencia, this);
@@ -732,7 +733,7 @@ public class ControlePaddockServidor {
 					sessaoCliente.setNomeJogador(nome);
 					sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 					srvPaddockPack.setSessaoCliente(sessaoCliente);
-					if(Util.isNullOrEmpty(sessaoCliente.getNomeJogador())){
+					if (Util.isNullOrEmpty(sessaoCliente.getNomeJogador())) {
 						return new MsgSrv(Lang.msg("064"));
 					}
 					salvarAcessoSessaoGoogle(sessaoCliente);
@@ -751,7 +752,7 @@ public class ControlePaddockServidor {
 			dadosPaddock.add(sessaoCliente);
 			SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 			srvPaddockPack.setSessaoCliente(sessaoCliente);
-			if(Util.isNullOrEmpty(sessaoCliente.getNomeJogador())){
+			if (Util.isNullOrEmpty(sessaoCliente.getNomeJogador())) {
 				return new MsgSrv(Lang.msg("064"));
 			}
 			salvarAcessoSessaoGoogle(sessaoCliente);
@@ -915,11 +916,15 @@ public class ControlePaddockServidor {
 	public List obterClassificacaoCircuito(String nomeCircuito) {
 		return controleClassificacao.obterClassificacaoCircuito(nomeCircuito);
 	}
-	
+
 	public Object obterClassificacaoGeral() {
 		return controleClassificacao.obterClassificacaoGeral();
 	}
-	
+
+	public Object obterClassificacaoCampeonato() {
+		return controleClassificacao.obterClassificacaoCampeonato();
+	}
+
 	public Object obterClassificacaoEquipes() {
 		return controleClassificacao.obterClassificacaoEquipes();
 	}
@@ -1230,8 +1235,5 @@ public class ControlePaddockServidor {
 		}
 
 	}
-
-
-
 
 }
