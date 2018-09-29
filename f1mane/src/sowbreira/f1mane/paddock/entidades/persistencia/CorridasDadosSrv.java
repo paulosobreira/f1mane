@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -12,7 +13,8 @@ import sowbreira.f1mane.controles.InterfaceJogo;
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15
  */
-@Entity(name = "f1_corridasdadossrv")
+@Entity
+@Table(name = "f1_corridasdadossrv")
 public class CorridasDadosSrv extends F1ManeDados implements Serializable {
 
 	@ManyToOne

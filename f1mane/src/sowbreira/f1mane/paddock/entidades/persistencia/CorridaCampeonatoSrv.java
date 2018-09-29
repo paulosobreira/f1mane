@@ -9,8 +9,10 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-@Entity(name = "f1_corridacampeonatosrv")
+@Entity
+@Table(name = "f1_corridacampeonatosrv")
 public class CorridaCampeonatoSrv extends F1ManeDados {
 
 	private String nomeCircuito;

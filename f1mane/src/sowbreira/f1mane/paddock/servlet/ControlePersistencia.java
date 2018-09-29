@@ -25,6 +25,7 @@ import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
@@ -738,15 +739,14 @@ public class ControlePersistencia {
 		piloto.setPontosCorrida(carreiraDadosSrv.getPtsConstrutoresGanhos());
 	}
 
-	public List<CampeonatoSrv> obterClassificacaoCampeonato(Session session) {
+	public List obterClassificacaoCampeonato(Session session) {
 		Dia umMesAtras = new Dia();
 		umMesAtras.backMonth();
-		List<CampeonatoSrv> campeonatos = session
-				.createCriteria(CampeonatoSrv.class)
-				.createAlias("corridaCampeonatos", "cc").add(Restrictions
-						.ge("cc.tempoFim", umMesAtras.toTimestamp().getTime()))
-				.list();
-		return campeonatos;
+		String hql = "from CampeonatoSrv obj where obj.id in (select distinct obj2.id from  CampeonatoSrv obj2 inner join  obj2.corridaCampeonatos cc where cc.tempoFim >= :tempoFim)";
+		Query qry = session.createQuery(hql);
+		qry.setParameter("tempoFim", umMesAtras.toTimestamp().getTime());
+		List list = qry.list();
+		return list;
 	}
 
 }

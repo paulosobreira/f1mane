@@ -826,18 +826,19 @@ public class ControleClassificacao {
 		Session session = controlePersistencia.getSession();
 		try {
 
-			List<CampeonatoSrv> pesquisaCampeonatosEmAberto = controlePersistencia
+			List pesquisaCampeonatosEmAberto = controlePersistencia
 					.obterClassificacaoCampeonato(session);
 			List<CampeonatoTO> ret = new ArrayList<CampeonatoTO>();
 			for (Iterator iterator = pesquisaCampeonatosEmAberto
 					.iterator(); iterator.hasNext();) {
 				CampeonatoSrv campeonatoSrv = (CampeonatoSrv) iterator.next();
 				CampeonatoTO campeonatoTO = new CampeonatoTO();
-				controleCampeonatoServidor.processsaCorridaCampeonatoTO(campeonatoSrv, campeonatoTO);
+				controleCampeonatoServidor.processsaCorridaCampeonatoTO(
+						campeonatoSrv, campeonatoTO);
 				campeonatoTO.limpaListas();
 				ret.add(campeonatoTO);
 			}
-			
+
 			return ret;
 		} catch (Exception e) {
 			Logger.logarExept(e);

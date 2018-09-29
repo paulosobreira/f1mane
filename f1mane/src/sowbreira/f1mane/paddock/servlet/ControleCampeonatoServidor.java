@@ -316,7 +316,6 @@ public class ControleCampeonatoServidor {
 			return null;
 		}
 		CampeonatoTO campeonatoTO = new CampeonatoTO();
-		campeonatoTO.setCampeonato(campeonato);
 		processsaCorridaCampeonatoTO(campeonato, campeonatoTO);
 		if ("0".equals(campeonato.getIdPiloto())) {
 			CarreiraDadosSrv carreiraDados = controlePaddockServidor
@@ -366,6 +365,7 @@ public class ControleCampeonatoServidor {
 
 	public void processsaCorridaCampeonatoTO(CampeonatoSrv campeonato,
 			CampeonatoTO campeonatoTO) {
+		campeonatoTO.setCampeonato(campeonato);
 		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
 		int rodada = 1;
