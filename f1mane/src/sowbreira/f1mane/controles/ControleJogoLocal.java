@@ -1055,9 +1055,10 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public boolean verificaNoPitLane(Piloto piloto) {
+		if(piloto==null){
+			return false;
+		}
 		return piloto.getPtosBox() > 0;
-		// return piloto.getPtosBox() > controleCorrida.getControleBox()
-		// .getParadaBox().getIndex();
 	}
 
 	public BufferedImage carregaBackGround(String backGround) {

@@ -1,8 +1,9 @@
 function desenha(ctx,img,x,y){
 	if(img==null || img.height<=0 || img.width<=0){
-		return;
+		ctx.fillText("Not load", x, y);
+	}else{
+		ctx.drawImage(img, x, y);
 	}
-	ctx.drawImage(img, x, y);
 }
 
 function safeArray(arr, i) {

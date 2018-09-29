@@ -868,6 +868,7 @@ public class ControleJogosServer {
 						}
 					} else {
 						if (piloto.getCarroPilotoAtras() != null
+								&& piloto.getCarroPilotoDaFrente() != null
 								&& jogoServidor.verificaNoPitLane(
 										piloto.getCarroPilotoDaFrente()
 												.getPiloto())) {
