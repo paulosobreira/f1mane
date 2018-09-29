@@ -1,3 +1,10 @@
+function desenha(ctx,img,x,y){
+	if(img==null || img.height<=0 || img.width<=0){
+		return;
+	}
+	ctx.drawImage(img, x, y);
+}
+
 function safeArray(arr, i) {
 	if (arr.length == 0) {
 		return null;

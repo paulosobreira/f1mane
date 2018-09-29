@@ -36,29 +36,29 @@ function ctl_desenhaFarois(){
 	}
 	if (dadosParciais.estado != "13") {
 		if(imgFaroisApagadosCont < 30){
-			maneContext.drawImage(imgFaroisApagados, centroX - (imgFarois.width/2) , 100);
+			desenha(maneContext,imgFaroisApagados, centroX - (imgFarois.width/2) , 100);
 			imgFaroisApagadosCont++;
 		}
 		return;
 	}
 	imgFaroisAcesosCont++;
 	if(imgFaroisAcesosCont>=160){
-		maneContext.drawImage(imgFarois, centroX - (imgFarois.width/2) , 100);
+		desenha(maneContext,imgFarois, centroX - (imgFarois.width/2) , 100);
 	}
 	if(imgFaroisAcesosCont<160){
-		maneContext.drawImage(imgFarois4, centroX - (imgFarois.width/2) , 100);
+		desenha(maneContext,imgFarois4, centroX - (imgFarois.width/2) , 100);
 	}
 	if(imgFaroisAcesosCont<140){
-		maneContext.drawImage(imgFarois3, centroX - (imgFarois.width/2) , 100);
+		desenha(maneContext,imgFarois3, centroX - (imgFarois.width/2) , 100);
 	}
 	if(imgFaroisAcesosCont<120){
-		maneContext.drawImage(imgFarois2, centroX - (imgFarois.width/2) , 100);
+		desenha(maneContext,imgFarois2, centroX - (imgFarois.width/2) , 100);
 	}
 	if(imgFaroisAcesosCont<80){
-		maneContext.drawImage(imgFarois1, centroX - (imgFarois.width/2) , 100);
+		desenha(maneContext,imgFarois1, centroX - (imgFarois.width/2) , 100);
 	}
 	if(imgFaroisAcesosCont<40){
-		maneContext.drawImage(imgFaroisApagados, centroX - (imgFarois.width/2) , 100);	
+		desenha(maneContext,imgFaroisApagados, centroX - (imgFarois.width/2) , 100);	
 	}
 }
 
@@ -248,7 +248,7 @@ function ctl_desenhaControles() {
 					controle.width + 5, controle.height + 5);
 			maneContext.closePath();
 			maneContext.stroke();
-			maneContext.drawImage(controle.img, controle.x, controle.y);
+			desenha(maneContext,controle.img, controle.x, controle.y);
 		} else {
 			maneContext.fillStyle = controle.cor;
 			if(controle.larguraTexto){
@@ -421,7 +421,7 @@ function ctl_desenhaInfoAsa() {
 	}
 	maneContext.strokeStyle = corBabaca;
 	maneContext.rect(x, y, img.width + 5, img.height + 5);
-	maneContext.drawImage(img, x, y);
+	desenha(maneContext,img, x, y);
 }
 
 
@@ -613,7 +613,7 @@ function ctl_desenhaInfoCarros() {
 		maneContext.stroke();
 	}
 	if (img1 && desenhaImagens) {
-		maneContext.drawImage(img1, centroX - img1.width - 40, altura
+		desenha(maneContext,img1, centroX - img1.width - 40, altura
 				- img1.height - 10);
 		if(idPiloto1==idPilotoSelecionado){
 			ctl_problemasCarrro(img1 , centroX, idPiloto1 , 1);
@@ -628,7 +628,7 @@ function ctl_desenhaInfoCarros() {
 				xCarro = centroX - imgPneu1.width - img1.width - 40;
 				yCarro =  altura - imgPneu1.height - 10;
 			}
-			maneContext.drawImage(imgPneu1,xCarro, yCarro);
+			desenha(maneContext,imgPneu1,xCarro, yCarro);
 			if (imgCap1) {
 				if(largura<450){
 					xCapacete = centroX - imgCap1.width	- 30 - (imgPneu1.width);
@@ -637,7 +637,7 @@ function ctl_desenhaInfoCarros() {
 					xCapacete = centroX - imgCap1.width	- img1.width - 45 - (imgPneu1.width / 2);
 					yCapacete = yCarro;
 				}
-				maneContext.drawImage(imgCap1, xCapacete, yCapacete);
+				desenha(maneContext,imgCap1, xCapacete, yCapacete);
 			}
 			if (imgJog1!=null) {
 				$('#imgJog1').show();
@@ -649,7 +649,7 @@ function ctl_desenhaInfoCarros() {
 		}
 	}
 	if (img2 && desenhaImagens) {
-		maneContext.drawImage(img2, centroX + 40, altura - img2.height - 10);
+		desenha(maneContext,img2, centroX + 40, altura - img2.height - 10);
 		if(idPiloto2==idPilotoSelecionado){
 			ctl_problemasCarrro(img2 , centroX, idPiloto2 , 2);
 		}
@@ -662,7 +662,7 @@ function ctl_desenhaInfoCarros() {
 				xCarro = centroX + 40 + img2.width;
 				yCarro =  altura - imgPneu2.height - 10;
 			}
-			maneContext.drawImage(imgPneu2, xCarro , yCarro);
+			desenha(maneContext,imgPneu2, xCarro , yCarro);
 			if (imgCap2) {
 				if(largura<450){
 					xCapacete = centroX + 30 + (imgPneu2.width);
@@ -671,7 +671,7 @@ function ctl_desenhaInfoCarros() {
 					xCapacete = centroX + 45 + img2.width + (imgPneu2.width / 2);
 					yCapacete = yCarro;
 				}
-				maneContext.drawImage(imgCap2, xCapacete , yCapacete);
+				desenha(maneContext,imgCap2, xCapacete , yCapacete);
 			}
 			
 			if (imgJog2!=null) {

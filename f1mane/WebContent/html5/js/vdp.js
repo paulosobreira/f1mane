@@ -67,7 +67,7 @@ function vdp_desenha(fps) {
 		cvBg.width = imgBg.width;
 		cvBg.height = imgBg.height;
 		ctxBg = cvBg.getContext('2d');
-		ctxBg.drawImage(imgBg, 0, 0);
+		desenha(ctxBg,imgBg, 0, 0);
 		imgBg = null;
 	}
 	if (dadosJogo == null || circuito == null || !ativo || !cvBg || contCarregouMidia != 0) {
@@ -146,7 +146,7 @@ function vdp_pow() {
 			continue;
 		}
 		maneContext.beginPath();
-		maneContext.drawImage(pow, x - 20, y - 17);
+		desenha(maneContext,pow, x - 20, y - 17);
 		maneContext.closePath();
 		maneContext.stroke();
 	}
@@ -168,7 +168,7 @@ function vdp_desenhaMarcasLargadaGrid() {
 		var x = ponto.x - ptBg.x - 60;
 		var y = ponto.y - ptBg.y - 60;
 		var rotacionar = vdp_rotacionar(girdLargadaMarca, angulo);
-		ctxBg.drawImage(rotacionar, x + ptBg.x, y + ptBg.y);
+		desenha(ctxBg,rotacionar, x + ptBg.x, y + ptBg.y);
 	}
 	desenhouMarcasLargadaGrid = true;
 }
@@ -610,7 +610,7 @@ function vdp_desenhaNomesCima() {
 		maneContext.fillStyle = "black"
 		maneContext.fillText(nmPiloto, x, y + 15);
 		if (pilotosBandeirada.get(piloto.idPiloto) != null) {
-			maneContext.drawImage(bandeirada, x + 40, y - 5);
+			desenha(maneContext,bandeirada, x + 40, y - 5);
 		}
 		maneContext.closePath();
 		maneContext.stroke();
@@ -761,7 +761,7 @@ function vdp_desenhaCarrosCima() {
 					var xj = x - ajsFxX;
 					var yj = y - ajsFxY;
 					var blendFaisca = vdp_blend(desenhaRastroFaiscaFx, ponto, xj, yj, no, piloto.idPiloto);
-					maneContext.drawImage(blendFaisca, xj, yj);
+					desenha(maneContext,blendFaisca, xj, yj);
 				}
 			}
 
@@ -785,19 +785,19 @@ function vdp_desenhaCarrosCima() {
 			}
 
 			var blendCarro = vdp_blend(rotacionarCarro, ponto, x, y, no, piloto.idPiloto);
-			maneContext.drawImage(blendCarro, x, y);
+			desenha(maneContext,blendCarro, x, y);
 			if (emMovimento) {
 				desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus);
 				if (desenhaTravadaRodaFumaca != null) {
 					var blendFumaca = vdp_blend(desenhaTravadaRodaFumaca, ponto, x, y, no, piloto.idPiloto);
-					maneContext.drawImage(blendFumaca, x, y);
+					desenha(maneContext,blendFumaca, x, y);
 				}
 				desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus);
 				if (desenhaRastroChuvaFx != null) {
 					var xj = x - ajsChuvaX;
 					var yj = y - ajsChuvaY;
 					var blendChuva = vdp_blend(desenhaRastroChuvaFx, ponto, xj, yj, no, piloto.idPiloto);
-					maneContext.drawImage(blendChuva, xj, yj);
+					desenha(maneContext,blendChuva, xj, yj);
 				}
 			}
 		} else {
@@ -868,8 +868,8 @@ function vdp_desenhaObjs() {
 			right : pontosTp.x + img.width,
 			bottom : pontosTp.y + img.height
 		};
-		if (img && img.width > 0 && img.height > 0 && vdp_intersectRect(rectBg, rectObj)) {
-			maneContext.drawImage(img, pontosTp.x - ptBg.x, pontosTp.y - ptBg.y);
+		if (vdp_intersectRect(rectBg, rectObj)) {
+			desenha(maneContext,img, pontosTp.x - ptBg.x, pontosTp.y - ptBg.y);
 		}
 	}
 }
@@ -922,7 +922,7 @@ function vdp_rotacionar(img, angulo) {
 	cvRotate.height = maiorLado;
 	ctxRotate.translate(maiorLado / 2, maiorLado / 2);
 	ctxRotate.rotate(angulo);
-	ctxRotate.drawImage(img, -maiorLado / 2, -maiorLado / 2);
+	desenha(ctxRotate,img, -maiorLado / 2, -maiorLado / 2);
 	return cvRotate;
 }
 
@@ -936,7 +936,7 @@ function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto) {
 	cvBlend.width = maiorLado;
 	cvBlend.height = maiorLado;
 	ctxBlend.clearRect(0, 0, cvBlend.width, cvBlend.height);
-	ctxBlend.drawImage(img, 0, 0);
+	desenha(ctxBlend,img, 0, 0);
 	var rectCarro = {
 		left : ptCarro.x - 10,
 		top : ptCarro.y - 10,
@@ -963,7 +963,7 @@ function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto) {
 			var x = pontosTp.x - ptBg.x - xCarro;
 			var y = pontosTp.y - ptBg.y - yCarro;
 			ctxBlend.globalCompositeOperation = blendOp;
-			ctxBlend.drawImage(img, x, y);
+			desenha(ctxBlend,img, x, y);
 			pilotosEfeitosMap.set(idPiloto, false);
 		}
 	}
@@ -1230,6 +1230,6 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo) {
 	} else if (sw == 2) {
 		rotacionar = vdp_rotacionar(travadaRoda2, angulo);
 	}
-	ctxBg.drawImage(rotacionar, x + ptBg.x, y + ptBg.y);
+	desenha(ctxBg,rotacionar, x + ptBg.x, y + ptBg.y);
 	pilotosTravadaMap.set(piloto.idPiloto, false);
 }
