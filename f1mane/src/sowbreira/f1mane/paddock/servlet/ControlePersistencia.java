@@ -610,6 +610,14 @@ public class ControlePersistencia {
 		return campeonatos;
 	}
 
+	public CampeonatoSrv pesquisaCampeonatoId(String id, Session session) {
+		CampeonatoSrv campeonatoSrv = (CampeonatoSrv) session
+				.createCriteria(CampeonatoSrv.class)
+				.add(Restrictions.eq("id", new Long(id))).uniqueResult();
+		campeonatoCliente(session, campeonatoSrv);
+		return campeonatoSrv;
+	}
+
 	public void campeonatoCliente(Session session, CampeonatoSrv campeonato) {
 		for (CorridaCampeonatoSrv corridaCampeonato : campeonato
 				.getCorridaCampeonatos()) {

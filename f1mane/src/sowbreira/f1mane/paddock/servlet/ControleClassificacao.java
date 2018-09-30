@@ -678,7 +678,8 @@ public class ControleClassificacao {
 		try {
 			Map<Long, DadosClassificacaoJogador> mapa = new HashMap<>();
 			List<CorridasDadosSrv> corridas = controlePersistencia
-					.obterClassificacaoTemporada("t"+temporadaSelecionada, session);
+					.obterClassificacaoTemporada("t" + temporadaSelecionada,
+							session);
 			for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
 				CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
 						.next();
@@ -890,6 +891,14 @@ public class ControleClassificacao {
 				campeonatoTO.limpaListas();
 				ret.add(campeonatoTO);
 			}
+			Collections.sort(ret, new Comparator<CampeonatoTO>() {
+
+				@Override
+				public int compare(CampeonatoTO o1, CampeonatoTO o2) {
+					return o2.getUltimaCorrida()
+							.compareTo(o1.getUltimaCorrida());
+				}
+			});
 
 			return ret;
 		} catch (Exception e) {

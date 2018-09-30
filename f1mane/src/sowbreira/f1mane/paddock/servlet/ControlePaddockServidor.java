@@ -1061,6 +1061,10 @@ public class ControlePaddockServidor {
 	public CampeonatoTO obterCampeonatoEmAberto(String token) {
 		return controleCampeonatoServidor.obterCampeonatoEmAbertoTO(token);
 	}
+	
+	public CampeonatoTO obterCampeonatoId(String id) {
+		return controleCampeonatoServidor.obterCampeonatoIdTO(id);
+	}
 
 	public CarreiraDadosSrv obterCarreiraSrv(String token) {
 		return controleClassificacao.obterCarreiraSrv(token);

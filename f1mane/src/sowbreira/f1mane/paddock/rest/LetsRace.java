@@ -3,7 +3,6 @@ package sowbreira.f1mane.paddock.rest;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,17 +27,14 @@ import javax.ws.rs.core.Response;
 
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.CircuitosDefauts;
-import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.paddock.PaddockServer;
 import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
-import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosParciais;
 import sowbreira.f1mane.paddock.entidades.TOs.ErroServ;
@@ -173,7 +169,7 @@ public class LetsRace {
 								.nomeArquivoCircuitoParaPista(arquivoCircuito)))
 				.build();
 	}
-	
+
 	@GET
 	@Compress
 	@Path("/temporadaClassificacao/{temporadaSelecionada}")
@@ -194,7 +190,7 @@ public class LetsRace {
 		return Response.status(200)
 				.entity(controlePaddock.obterClassificacaoGeral()).build();
 	}
-	
+
 	@GET
 	@Compress
 	@Path("/classificacaoEquipes")
@@ -203,7 +199,7 @@ public class LetsRace {
 		return Response.status(200)
 				.entity(controlePaddock.obterClassificacaoEquipes()).build();
 	}
-	
+
 	@GET
 	@Compress
 	@Path("/classificacaoCampeonato")
@@ -986,6 +982,25 @@ public class LetsRace {
 			return Response.status(204).build();
 		}
 
+		return Response.status(200).entity(campeonato).build();
+	}
+
+	@GET
+	@Compress
+	@Path("/campeonato/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response campeonatoPorId(@PathParam("id") String id,
+			@HeaderParam("token") String token,
+			@HeaderParam("idioma") String idioma) {
+		CampeonatoTO campeonato = null;
+		try {
+			campeonato = controlePaddock.obterCampeonatoId(id);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		if (campeonato == null) {
+			return Response.status(204).build();
+		}
 		return Response.status(200).entity(campeonato).build();
 	}
 
