@@ -509,6 +509,18 @@ public class ControlePersistencia {
 		return corridas;
 	}
 
+	public List<CorridasDadosSrv> obterClassificacaoTemporada(
+			String temporadaSelecionada, Session session) {
+		if (!Constantes.DATABASE) {
+			return null;
+		}
+		Criteria criteria = session.createCriteria(CorridasDadosSrv.class);
+		criteria.add(Restrictions.eq("temporada", temporadaSelecionada));
+		criteria.add(Restrictions.gt("pontos", 0));
+		List corridas = criteria.list();
+		return corridas;
+	}
+
 	public CarreiraDadosSrv carregaCarreiraJogador(String token,
 			boolean vaiCliente, Session session) {
 		if (!Constantes.DATABASE) {

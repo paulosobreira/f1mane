@@ -11,7 +11,6 @@ listaCircuitos();
 $('#circuitoCarousel').on('slide.bs.carousel', function(event) {
 	var circuitoSelecionado = $(event.relatedTarget).prop('circuito');
 	circuitoClassificacao(circuitoSelecionado);
-	$('#temporadaCarousel').carousel('pause');
 	$('#circuitoCarousel').carousel('pause');
 });
 

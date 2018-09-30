@@ -173,6 +173,18 @@ public class LetsRace {
 								.nomeArquivoCircuitoParaPista(arquivoCircuito)))
 				.build();
 	}
+	
+	@GET
+	@Compress
+	@Path("/temporadaClassificacao/{temporadaSelecionada}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response temporadaClassificacao(
+			@PathParam("temporadaSelecionada") String temporadaSelecionada) {
+		return Response.status(200)
+				.entity(controlePaddock
+						.obterClassificacaoTemporada(temporadaSelecionada))
+				.build();
+	}
 
 	@GET
 	@Compress
