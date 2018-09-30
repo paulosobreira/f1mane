@@ -86,7 +86,7 @@ function tratamentoErro(xhRequest) {
 			window.location = "index.html";
 		}, 3500);
 	} else if (xhRequest.status == 503) {
-		toaster('Server instable or overload', 4000, 'alert alert-danger');
+		toaster('Server is unstable or overloaded.', 4000, 'alert alert-danger');
 		setTimeout(function() {
 			window.location.reload();
 		}, 3500);
