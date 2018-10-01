@@ -856,27 +856,29 @@ public class ControleJogosServer {
 						piloto.getCalculaSegundosParaAnterior());
 				Long proximo = Util.extrairNumerosLong(
 						piloto.getCalculaSegundosParaProximo());
+				boolean atrasBox = false;
+				boolean frenteBox = false;
+				if (piloto.getCarroPilotoAtras() != null
+						&& jogoServidor.verificaNoPitLane(
+								piloto.getCarroPilotoAtras().getPiloto())) {
+					atrasBox = true;
+				}
+				if (piloto.getCarroPilotoAtras() != null
+						&& piloto.getCarroPilotoDaFrente() != null
+						&& jogoServidor.verificaNoPitLane(
+								piloto.getCarroPilotoDaFrente().getPiloto())) {
+					frenteBox = true;
+				}
+
 				if (anterior != null && proximo != null) {
-					if (anterior < proximo) {
-						if (piloto.getCarroPilotoAtras() != null
-								&& jogoServidor.verificaNoPitLane(piloto
-										.getCarroPilotoAtras().getPiloto())) {
-							dadosParciais.vantagem = "BOX";
-						} else {
-							dadosParciais.vantagem = piloto
-									.getCalculaSegundosParaAnterior();
-						}
+					if (anterior < proximo && !atrasBox) {
+						dadosParciais.vantagem = piloto
+								.getCalculaSegundosParaAnterior();
+					} else if (anterior > proximo && !frenteBox) {
+						dadosParciais.vantagem = piloto
+								.getCalculaSegundosParaProximo();
 					} else {
-						if (piloto.getCarroPilotoAtras() != null
-								&& piloto.getCarroPilotoDaFrente() != null
-								&& jogoServidor.verificaNoPitLane(
-										piloto.getCarroPilotoDaFrente()
-												.getPiloto())) {
-							dadosParciais.vantagem = "BOX";
-						} else {
-							dadosParciais.vantagem = piloto
-									.getCalculaSegundosParaProximo();
-						}
+						dadosParciais.vantagem = "BOX";
 					}
 				}
 			}

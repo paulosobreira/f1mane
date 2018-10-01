@@ -1,7 +1,7 @@
 /**
  * Controle de classificacao geral
  */
-$('#rodada').html(lang_text('rodada'));
+$('[id=rodada]').html(lang_text('rodada'));
 $('#268').html(lang_text('268'));
 $('#251').html(lang_text('251'));
 $('#trocaPneuCheck').append(lang_text('trocaPneus'));
@@ -19,7 +19,7 @@ $('#classificacaoEquipes').append(lang_text('222'));
 $('#classificacaoJogadores').append(lang_text('117'));
 
 $('#voltar').bind("click", function() {
-	window.location = "index.html";
+	window.location = "classificacao.html";
 });
 
 classificacaoCampeonato();
@@ -82,7 +82,7 @@ function classificacaoCampeonato() {
 					$('#listarCampeonato').removeClass('hide');
 					$('#detalheCampeonato').addClass('hide');
 					$('#voltar').unbind().bind("click", function() {
-						window.location = "index.html";
+						window.location = "classificacao.html";
 					});
 				});	
 				var campeonato = response;
