@@ -673,6 +673,59 @@ public class ControleClassificacao {
 		return null;
 	}
 
+	public Object obterClassificacaoTemporada(String temporadaSelecionada) {
+		Session session = controlePersistencia.getSession();
+		try {
+			Map<Long, DadosClassificacaoJogador> mapa = new HashMap<>();
+			List<CorridasDadosSrv> corridas = controlePersistencia
+					.obterClassificacaoTemporada("t" + temporadaSelecionada,
+							session);
+			for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
+				CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
+						.next();
+				DadosClassificacaoJogador dadosClassificacaoCircuito = mapa
+						.get(corridasDadosSrv.getJogadorDadosSrv().getId());
+				if (dadosClassificacaoCircuito == null) {
+					dadosClassificacaoCircuito = new DadosClassificacaoJogador();
+					dadosClassificacaoCircuito.setNome(
+							corridasDadosSrv.getJogadorDadosSrv().getNome());
+					dadosClassificacaoCircuito.setImagemJogador(corridasDadosSrv
+							.getJogadorDadosSrv().getImagemJogador());
+					mapa.put(corridasDadosSrv.getJogadorDadosSrv().getId(),
+							dadosClassificacaoCircuito);
+				}
+				dadosClassificacaoCircuito.setCorridas(
+						dadosClassificacaoCircuito.getCorridas() + 1);
+				dadosClassificacaoCircuito
+						.setPontos(dadosClassificacaoCircuito.getPontos()
+								+ corridasDadosSrv.getPontos());
+			}
+			List<DadosClassificacaoJogador> classificacao = new ArrayList<DadosClassificacaoJogador>(
+					mapa.values());
+			Collections.sort(classificacao,
+					new Comparator<DadosClassificacaoJogador>() {
+						@Override
+						public int compare(DadosClassificacaoJogador o1,
+								DadosClassificacaoJogador o2) {
+							int compareTo = o2.getPontos()
+									.compareTo(o1.getPontos());
+							if (compareTo == 0) {
+								return o2.getCorridas()
+										.compareTo(o1.getCorridas());
+							} else {
+								return compareTo;
+							}
+						}
+					});
+			return classificacao;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+
 	public static void main(String[] args) {
 		System.out.println(new Long(10).compareTo(new Long(10)));
 	}
@@ -826,18 +879,27 @@ public class ControleClassificacao {
 		Session session = controlePersistencia.getSession();
 		try {
 
-			List<CampeonatoSrv> pesquisaCampeonatosEmAberto = controlePersistencia
+			List pesquisaCampeonatosEmAberto = controlePersistencia
 					.obterClassificacaoCampeonato(session);
 			List<CampeonatoTO> ret = new ArrayList<CampeonatoTO>();
 			for (Iterator iterator = pesquisaCampeonatosEmAberto
 					.iterator(); iterator.hasNext();) {
 				CampeonatoSrv campeonatoSrv = (CampeonatoSrv) iterator.next();
 				CampeonatoTO campeonatoTO = new CampeonatoTO();
-				controleCampeonatoServidor.processsaCorridaCampeonatoTO(campeonatoSrv, campeonatoTO);
+				controleCampeonatoServidor.processsaCorridaCampeonatoTO(
+						campeonatoSrv, campeonatoTO);
 				campeonatoTO.limpaListas();
 				ret.add(campeonatoTO);
 			}
-			
+			Collections.sort(ret, new Comparator<CampeonatoTO>() {
+
+				@Override
+				public int compare(CampeonatoTO o1, CampeonatoTO o2) {
+					return o2.getUltimaCorrida()
+							.compareTo(o1.getUltimaCorrida());
+				}
+			});
+
 			return ret;
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -846,5 +908,4 @@ public class ControleClassificacao {
 		}
 		return null;
 	}
-
 }

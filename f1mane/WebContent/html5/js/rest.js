@@ -32,6 +32,10 @@ function rest_dadosJogo(nomeJogo) {
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
+			if (xhRequest.status == 503) {
+				console.log('rest_dadosJogo 503');
+				return;
+			}
 			try {
 				console.log('rest_dadosJogo '+xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
@@ -63,8 +67,12 @@ function rest_dadosJogo_jogadores(nomeJogo) {
 			if (errorText == 'timeout') {
 				return;
 			}
+			if (xhRequest.status == 503) {
+				console.log('rest_dadosJogo_jogadores 503');
+				return;
+			}			
 			try {
-				console.log('rest_dadosJogo '+xhRequest.status + '  ' + xhRequest.responseText);
+				console.log('rest_dadosJogo_jogadores '+xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
 				console.log(e);
 			}
@@ -100,6 +108,10 @@ function rest_ciruito() {
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
+			if (xhRequest.status == 503) {
+				console.log('rest_ciruito 503');
+				return;
+			}	
 			try {
 				console.log('rest_ciruito '+xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
@@ -155,6 +167,10 @@ function rest_dadosParciais() {
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
+			if (xhRequest.status == 503) {
+				console.log('rest_dadosParciais 503');
+				return;
+			}
 			try {
 				console.log('rest_dadosParciais '+xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
@@ -189,6 +205,10 @@ function rest_sairJogo() {
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
+			if (xhRequest.status == 503) {
+				console.log('rest_sairJogo 503');
+				return;
+			}
 			try {
 				console.log('rest_sairJogo '+xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
@@ -218,6 +238,10 @@ function rest_potenciaMotor(valor) {
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
+			if (xhRequest.status == 503) {
+				console.log('rest_potenciaMotor 503');
+				return;
+			}
 			try {
 				console.log('rest_potenciaMotor ' + xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
@@ -245,6 +269,10 @@ function rest_agressividadePiloto(valor) {
 			}
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
+			}
+			if (xhRequest.status == 503) {
+				console.log('rest_agressividadePiloto 503');
+				return;
 			}
 			try {
 				console.log('rest_agressividadePiloto ' + xhRequest.status + '  ' + xhRequest.responseText);
@@ -274,6 +302,10 @@ function rest_tracadoPiloto(valor) {
 			}
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
+			}
+			if (xhRequest.status == 503) {
+				console.log('rest_tracadoPiloto 503');
+				return;
 			}
 			try {
 				console.log('rest_tracadoPiloto ' + xhRequest.status + '  ' + xhRequest.responseText);
@@ -305,6 +337,10 @@ function rest_ers() {
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
 			}
+			if (xhRequest.status == 503) {
+				console.log('rest_ers 503');
+				return;
+			}
 			try {
 				console.log('rest_ers ' + xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
@@ -332,6 +368,10 @@ function rest_drs() {
 			}
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
+			}
+			if (xhRequest.status == 503) {
+				console.log('rest_drs 503');
+				return;
 			}
 			try {
 				console.log('rest_drs ' + xhRequest.status + '  ' + xhRequest.responseText);
@@ -361,6 +401,10 @@ function rest_boxPiloto(ativa, pneu, combustivel, asa) {
 			}
 			if (xhRequest.status == 401) {
 				window.location.href = "index.html";
+			}
+			if (xhRequest.status == 503) {
+				console.log('rest_boxPiloto 503');
+				return;
 			}
 			try {
 				console.log('rest_boxPiloto ' + xhRequest.status + '  ' + xhRequest.responseText);

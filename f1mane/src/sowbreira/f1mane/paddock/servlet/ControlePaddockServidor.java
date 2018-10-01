@@ -916,6 +916,10 @@ public class ControlePaddockServidor {
 	public List obterClassificacaoCircuito(String nomeCircuito) {
 		return controleClassificacao.obterClassificacaoCircuito(nomeCircuito);
 	}
+	
+	public Object obterClassificacaoTemporada(String temporadaSelecionada) {
+		return controleClassificacao.obterClassificacaoTemporada(temporadaSelecionada);
+	}
 
 	public Object obterClassificacaoGeral() {
 		return controleClassificacao.obterClassificacaoGeral();
@@ -1056,6 +1060,10 @@ public class ControlePaddockServidor {
 
 	public CampeonatoTO obterCampeonatoEmAberto(String token) {
 		return controleCampeonatoServidor.obterCampeonatoEmAbertoTO(token);
+	}
+	
+	public CampeonatoTO obterCampeonatoId(String id) {
+		return controleCampeonatoServidor.obterCampeonatoIdTO(id);
 	}
 
 	public CarreiraDadosSrv obterCarreiraSrv(String token) {
@@ -1235,5 +1243,4 @@ public class ControlePaddockServidor {
 		}
 
 	}
-
 }

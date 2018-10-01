@@ -4,6 +4,8 @@
 $('#277').html(lang_text('277'));
 $('#161').html(lang_text('161'));
 $('#165').html(lang_text('165'));
+$('#153').html(lang_text('153'));
+
 
 
 classificacaoEquipes();
@@ -24,45 +26,30 @@ function classificacaoEquipes() {
 			$('#pilotos').find('tr').remove();
 			$.each(pilotos, function(i, val) {
 				var td0 = $('<td class="fontLarge textCenter" scope="row"/>');
-				td0.append(i+1);
 				var td1 = $('<td class="textCenter classificacao-jogador" scope="row"/>');
 				var td2 = $('<td class="fontLarge textCenter" />');
-				td2.append(pilotos[i].pontosCorrida);
+				var td3 = $('<td class="fontLarge textCenter" />');
+				
 				var tr = $('<tr/>');
-				
 				tr.append(td0);
-				
-				
-				var table =  $('<table class="table table-hover table-responsive tableInTable"/>');
-				var trIn1 = $('<tr/>');
-				var trIn2 = $('<tr/>');
-				var tdIn1 = $('<td style="width: 50%;"/>');
-				var tdIn2 = $('<td style="width: 50%;"/>');
-				var tdIn3 = $('<td style="width: 50%;"/>');
-				var tdIn4 = $('<td style="width: 50%;"/>');
-				trIn1.append(tdIn1);
-				trIn1.append(tdIn2);
-				trIn2.append(tdIn3);
-				trIn2.append(tdIn4);
-				table.append(trIn1);
-				table.append(trIn2);
-				td1.append(table);
-
-				var imgCapacete = $('<img class="img-responsive img-center" />');	
-				imgCapacete.attr('src', '/f1mane/rest/letsRace/capacete/' + pilotos[i].temporadaCapaceteLivery + '/' + pilotos[i].idCapaceteLivery);
-				
-				var imgCarro = $('<img class="img-responsive img-center"/>');	
-				imgCarro.attr('src', '/f1mane/rest/letsRace/carroLado/' + pilotos[i].temporadaCarroLivery + '/' + pilotos[i].idCarroLivery);
-				
-				
-				tdIn1.append(imgCapacete);
-				tdIn2.append(imgCarro);
-				
-				tdIn3.append(pilotos[i].nome);
-				tdIn4.append(pilotos[i].nomeCarro);
-				
 				tr.append(td1);
 				tr.append(td2);
+				tr.append(td3);
+				
+				//style="height: 25px;"
+				var imgCapacete = $('<img class="img-responsive img-center"  />');	
+				imgCapacete.attr('src', '/f1mane/rest/letsRace/capacete/' + pilotos[i].temporadaCapaceteLivery + '/' + pilotos[i].idCapaceteLivery);
+				//style="height: 25px;"
+				var imgCarro = $('<img class="img-responsive img-center"  />');	
+				imgCarro.attr('src', '/f1mane/rest/letsRace/carroLado/' + pilotos[i].temporadaCarroLivery + '/' + pilotos[i].idCarroLivery);
+
+				td0.append(i+1);
+				td1.append(imgCapacete);
+				td1.append(pilotos[i].nome);
+				td2.append(imgCarro);
+				td2.append(pilotos[i].nomeCarro);
+				td3.append(pilotos[i].pontosCorrida);
+
 				$('#pilotos').append(tr);
 			});
 		},

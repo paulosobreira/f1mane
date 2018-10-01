@@ -1,3 +1,11 @@
+function desenha(ctx,img,x,y){
+	if(img==null || img.height<=0 || img.width<=0){
+		ctx.fillText("Not load", x, y);
+	}else{
+		ctx.drawImage(img, x, y);
+	}
+}
+
 function safeArray(arr, i) {
 	if (arr.length == 0) {
 		return null;
@@ -78,9 +86,9 @@ function tratamentoErro(xhRequest) {
 			window.location = "index.html";
 		}, 3500);
 	} else if (xhRequest.status == 503) {
-		toaster('Server overload', 4000, 'alert alert-danger');
+		toaster('Server is unstable or overloaded.', 4000, 'alert alert-danger');
 		setTimeout(function() {
-			window.location = "index.html";
+			window.location.reload();
 		}, 3500);
 	}else {
 		var erroMsg = xhRequest.status + '  ' + xhRequest.responseText;

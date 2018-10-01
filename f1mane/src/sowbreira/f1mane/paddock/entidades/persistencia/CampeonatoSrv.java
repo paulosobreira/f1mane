@@ -10,8 +10,10 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-@Entity(name = "f1_campeonatosrv")
+@Entity
+@Table(name = "f1_campeonatosrv")
 public class CampeonatoSrv extends F1ManeDados {
 
 	@Column(nullable = false)

@@ -4,8 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CampeonatoTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -25,6 +30,8 @@ public class CampeonatoTO implements Serializable {
 	private transient String idCarro;
 
 	private transient String idPiloto;
+	
+	private transient Long ultimaCorrida;
 
 	private boolean modoCarreira;
 
@@ -193,6 +200,14 @@ public class CampeonatoTO implements Serializable {
 		pilotos.clear();
 		carros.clear();
 		jogadores.clear();
+	}
+
+	public Long getUltimaCorrida() {
+		return ultimaCorrida;
+	}
+
+	public void setUltimaCorrida(Long ultimaCorrida) {
+		this.ultimaCorrida = ultimaCorrida;
 	}
 
 }
