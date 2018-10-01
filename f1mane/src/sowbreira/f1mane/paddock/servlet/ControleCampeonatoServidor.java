@@ -310,13 +310,55 @@ public class ControleCampeonatoServidor {
 		return campeonato;
 	}
 
+	public CampeonatoSrv obterCampeonatoId(String id) {
+		CampeonatoSrv campeonato = null;
+		Session session = controlePersistencia.getSession();
+		try {
+			campeonato = controlePersistencia.pesquisaCampeonatoId(id, session);
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+		if (campeonato == null) {
+			return null;
+		}
+		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
+				.getCorridaCampeonatos();
+		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
+				.hasNext();) {
+			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
+					.next();
+			corridaCampeonato.setCampeonato(null);
+		}
+		return campeonato;
+	}
+
+	public CampeonatoTO obterCampeonatoIdTO(String id) {
+		CampeonatoSrv campeonato = obterCampeonatoId(id);
+		if (campeonato == null) {
+			return null;
+		}
+		CampeonatoTO campeonatoTO = new CampeonatoTO();
+		processsaCorridaCampeonatoTO(campeonato, campeonatoTO);
+		Collections.sort(campeonatoTO.getCorridas(),
+				new Comparator<CorridaCampeonatoTO>() {
+					public int compare(CorridaCampeonatoTO arg0,
+							CorridaCampeonatoTO arg1) {
+						return arg0.getRodada().compareTo(arg1.getRodada());
+					}
+				});
+		preencherContrutores(campeonato, campeonatoTO);
+		return campeonatoTO;
+
+	}
+
 	public CampeonatoTO obterCampeonatoEmAbertoTO(String token) {
 		CampeonatoSrv campeonato = obterCampeonatoEmAberto(token);
 		if (campeonato == null) {
 			return null;
 		}
 		CampeonatoTO campeonatoTO = new CampeonatoTO();
-		campeonatoTO.setCampeonato(campeonato);
 		processsaCorridaCampeonatoTO(campeonato, campeonatoTO);
 		if ("0".equals(campeonato.getIdPiloto())) {
 			CarreiraDadosSrv carreiraDados = controlePaddockServidor
@@ -366,6 +408,8 @@ public class ControleCampeonatoServidor {
 
 	public void processsaCorridaCampeonatoTO(CampeonatoSrv campeonato,
 			CampeonatoTO campeonatoTO) {
+		campeonatoTO.setCampeonato(campeonato);
+		campeonatoTO.setUltimaCorrida(campeonato.getDataCriacao().getTime());
 		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
 		int rodada = 1;
@@ -390,6 +434,8 @@ public class ControleCampeonatoServidor {
 			}
 			if (corridaCampeonato.getTempoFim() != null) {
 				rodada++;
+				campeonatoTO
+						.setUltimaCorrida(corridaCampeonato.getTempoInicio());
 				Dia dia = new Dia(corridaCampeonato.getTempoFim());
 				corridaCampeonatoTO.setData(dia.toString());
 				List<DadosCorridaCampeonatoSrv> dadosCorridaCampeonatos = corridaCampeonato
@@ -636,5 +682,4 @@ public class ControleCampeonatoServidor {
 			}
 		}
 	}
-
 }
