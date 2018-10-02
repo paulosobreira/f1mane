@@ -96,7 +96,7 @@ function carregaCampeonato() {
 				$('#temporadasLabelCarrgeda').html('');
 				$('#temporadasLabelCarrgeda').append(campeonato.temporada);
 				var detalheTemporada = $('#detalheTemporada').clone();
-				if (campeonato.trocaPneu) {
+				if (campeonato.trocaPneus) {
 					detalheTemporada.find('#trocaPneuCheck').removeClass('line-through');
 				} else {
 					detalheTemporada.find('#trocaPneuCheck').addClass('line-through');
@@ -112,9 +112,9 @@ function carregaCampeonato() {
 					detalheTemporada.find('#ersCheck').addClass('line-through');
 				}
 				if (campeonato.drs) {
-					detalheTemporada.find('#ersCheck').removeClass('line-through');
+					detalheTemporada.find('#drsCheck').removeClass('line-through');
 				} else {
-					detalheTemporada.find('#ersCheck').addClass('line-through');
+					detalheTemporada.find('#drsCheck').addClass('line-through');
 				}
 				
 				var pilotoSelecionado = $('#pilotoSelecionado').clone();

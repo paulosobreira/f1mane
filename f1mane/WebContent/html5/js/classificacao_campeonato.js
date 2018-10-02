@@ -91,30 +91,7 @@ function classificacaoCampeonato() {
 				$('#nomeCampeonatoRodada').html(campeonato.nome);
 				$('#rodadaCampeonato').html(lang_text('rodada') + ' ' + campeonato.rodadaCampeonato);
 				$('#temporadasLabelCarregeda').html(campeonato.temporada);
-				var detalheTemporada = $('#detalheTemporada');
-				if (campeonato.trocaPneu) {
-					detalheTemporada.find('#trocaPneuCheck').removeClass('line-through');
-				} else {
-					detalheTemporada.find('#trocaPneuCheck').addClass('line-through');
-				}
-				if (campeonato.reabastecimento) {
-					detalheTemporada.find('#reabastecimentoCheck').removeClass('line-through');
-				} else {
-					detalheTemporada.find('#reabastecimentoCheck').addClass('line-through');
-				}
-				if (campeonato.ers) {
-					detalheTemporada.find('#ersCheck').removeClass('line-through');
-				} else {
-					detalheTemporada.find('#ersCheck').addClass('line-through');
-				}
-				if (campeonato.drs) {
-					detalheTemporada.find('#ersCheck').removeClass('line-through');
-				} else {
-					detalheTemporada.find('#ersCheck').addClass('line-through');
-				}
-
 				var corridas = campeonato.corridas;
-
 				$('#corridasTO').find('tr').remove();
 				$.each(corridas, function(i, val) {
 					var corrida = corridas[i];

@@ -107,15 +107,15 @@ public class CampeonatoTO implements Serializable {
 		return campeonato.getNome();
 	}
 
-	public boolean isDrs() {
+	public boolean getDrs() {
 		return campeonato.isDrs();
 	}
 
-	public boolean isReabastecimento() {
+	public boolean getReabastecimento() {
 		return campeonato.isReabastecimento();
 	}
 
-	public boolean isTrocaPneus() {
+	public boolean getTrocaPneus() {
 		return campeonato.isTrocaPneus();
 	}
 
@@ -123,7 +123,7 @@ public class CampeonatoTO implements Serializable {
 		return campeonato.getQtdeVoltas();
 	}
 
-	public boolean isErs() {
+	public boolean getErs() {
 		return campeonato.isErs();
 	}
 
