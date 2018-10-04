@@ -176,7 +176,7 @@ function vdp_desenhaMarcasLargadaGrid() {
 function vdp_loopCalculaGanhoSuave(diff) {
 	var ganho = 0;
 	var maxLoop = 1000;
-	var inc = 50;
+	var inc = 45;
 	for (var i = 0; i < maxLoop; i += inc) {
 		ganho += 1;
 		if (diff >= i && diff < i + inc) {
@@ -301,7 +301,7 @@ function vdp_atualizaSuave() {
 		// console.log(piloto.idPiloto + ' noSuaveNovo ' + noS);
 		// }
 		mapaIdPilotosNosSuave.set(piloto.idPiloto, noSuaveNovo);
-		if (diff >= 600) {
+		if (diff >= 650) {
 			// console.log(piloto.idPiloto + ' diff >= 1000 ' + novoIndex);
 			mapaIdPilotosNosSuave.set(piloto.idPiloto, noReal);
 		}
