@@ -183,7 +183,7 @@ function vdp_loopCalculaGanhoSuave(diff,piloto) {
 	if (no.tipoJson == 'B') {
 		maxLoop = 250;
 	}
-	var inc = 50;
+	var inc = 45;
 	for (var i = 0; i < maxLoop; i += inc) {
 //		if (piloto.idPiloto == idPilotoSelecionado) {
 //			console.log(' vdp_loopCalculaGanhoSuave '+i);
@@ -311,7 +311,7 @@ function vdp_atualizaSuave() {
 		// console.log(piloto.idPiloto + ' noSuaveNovo ' + noS);
 		// }
 		mapaIdPilotosNosSuave.set(piloto.idPiloto, noSuaveNovo);
-		if (diff >= 1000) {
+		if (diff >= 1200) {
 			// console.log(piloto.idPiloto + ' diff >= 1000 ' + novoIndex);
 			// mapaIdPilotosNosSuave.set(piloto.idPiloto, noReal);
 			mapaIdPilotosNosSuave.clear();
