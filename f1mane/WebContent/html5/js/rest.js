@@ -1,6 +1,6 @@
 var carregando = false;
 
-var limite = 700;
+var limite = 1000;
 
 function rest_dadosJogo(nomeJogo) {
 	if (carregando) {
@@ -162,6 +162,7 @@ function rest_dadosParciais() {
 		error : function(xhRequest, errorText, thrownError) {
 			carregando = false;
 			if (errorText == 'timeout') {
+				//console.log('rest_dadosParciais timeout');
 				return;
 			}
 			if (xhRequest.status == 401) {
