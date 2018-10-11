@@ -67,7 +67,7 @@ function vdp_desenha(fps) {
 		cvBg.width = imgBg.width;
 		cvBg.height = imgBg.height;
 		ctxBg = cvBg.getContext('2d');
-		desenha(ctxBg,imgBg, 0, 0);
+		desenha(ctxBg, imgBg, 0, 0);
 		imgBg = null;
 	}
 	if (dadosJogo == null || circuito == null || !ativo || !cvBg || contCarregouMidia != 0) {
@@ -146,7 +146,7 @@ function vdp_pow() {
 			continue;
 		}
 		maneContext.beginPath();
-		desenha(maneContext,pow, x - 20, y - 17);
+		desenha(maneContext, pow, x - 20, y - 17);
 		maneContext.closePath();
 		maneContext.stroke();
 	}
@@ -168,16 +168,26 @@ function vdp_desenhaMarcasLargadaGrid() {
 		var x = ponto.x - ptBg.x - 60;
 		var y = ponto.y - ptBg.y - 60;
 		var rotacionar = vdp_rotacionar(girdLargadaMarca, angulo);
-		desenha(ctxBg,rotacionar, x + ptBg.x, y + ptBg.y);
+		desenha(ctxBg, rotacionar, x + ptBg.x, y + ptBg.y);
 	}
 	desenhouMarcasLargadaGrid = true;
 }
 
-function vdp_loopCalculaGanhoSuave(diff) {
+function vdp_loopCalculaGanhoSuave(diff,piloto) {
 	var ganho = 0;
 	var maxLoop = 1000;
-	var inc = 40;
+	var no = vdp_no_suave(piloto);
+	if (no.tipoJson == 'A') {
+		maxLoop = 500;
+	}
+	if (no.tipoJson == 'B') {
+		maxLoop = 250;
+	}
+	var inc = 45;
 	for (var i = 0; i < maxLoop; i += inc) {
+//		if (piloto.idPiloto == idPilotoSelecionado) {
+//			console.log(' vdp_loopCalculaGanhoSuave '+i);
+//		}
 		ganho += 1;
 		if (diff >= i && diff < i + inc) {
 			break;
@@ -231,14 +241,14 @@ function vdp_atualizaSuave() {
 			indexReal = (indexReal - circuito.saidaBoxIndex) + (circuito.boxFull.length - 1);
 		}
 		var diff = (indexReal - indexSuave);
-		var ganhoSuave = vdp_loopCalculaGanhoSuave(diff);
+		var ganhoSuave = vdp_loopCalculaGanhoSuave(diff,piloto);
 		var ganhoSuaveAnt = mapaGanhoSuave.get(piloto.idPiloto)
 		if (ganhoSuaveAnt == null) {
 			ganhoSuaveAnt = 0;
 		}
 		var incGanhoSuaveAnt = 1;
 		if (noSuave.tipoJson == 'R') {
-			incGanhoSuaveAnt = 1 / (ganhoSuave<2?ganhoSuave:(ganhoSuave/2));
+			incGanhoSuaveAnt = 1 / (ganhoSuave < 2 ? ganhoSuave : (ganhoSuave / 2));
 		}
 		if (ganhoSuave > ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt + incGanhoSuaveAnt;
@@ -255,9 +265,9 @@ function vdp_atualizaSuave() {
 		if (ganhoSuave <= 0) {
 			ganhoSuave = 0;
 		}
-//		if (piloto.idPiloto == idPilotoSelecionado) {
-//			console.log('ganhoSuave ' + ganhoSuave);
-//		}
+		// if (piloto.idPiloto == idPilotoSelecionado) {
+		// console.log('ganhoSuave ' + ganhoSuave);
+		// }
 		mapaGanhoSuave.set(piloto.idPiloto, ganhoSuave);
 		var novoIndex = noSuave.index + Math.round(ganhoSuave);
 		if (novoIndex > indexReal) {
@@ -301,9 +311,10 @@ function vdp_atualizaSuave() {
 		// console.log(piloto.idPiloto + ' noSuaveNovo ' + noS);
 		// }
 		mapaIdPilotosNosSuave.set(piloto.idPiloto, noSuaveNovo);
-		if (diff >= 700) {
+		if (diff >= 1200) {
 			// console.log(piloto.idPiloto + ' diff >= 1000 ' + novoIndex);
-			mapaIdPilotosNosSuave.set(piloto.idPiloto, noReal);
+			// mapaIdPilotosNosSuave.set(piloto.idPiloto, noReal);
+			mapaIdPilotosNosSuave.clear();
 		}
 		if (loopPilotos) {
 			var piloto = posicaoPilotos.posis[i];
@@ -338,7 +349,7 @@ function vdp_colisaoTracadoSuave(pilotoParam) {
 	if (tracadoSuaveVaiPara == null) {
 		return false;
 	}
-	var noSuaveParam = mapaIdPilotosNosSuave.get(pilotoParam.idPiloto);
+	var noSuaveParam = vdp_no_suave(pilotoParam);
 	if (noSuaveParam.box) {
 		return false;
 	}
@@ -372,7 +383,7 @@ function vdp_colisaoTracadoSuave(pilotoParam) {
 		if (!condicaoColisao) {
 			continue;
 		}
-		var noSuave = mapaIdPilotosNosSuave.get(piloto.idPiloto);
+		var noSuave = vdp_no_suave(piloto);
 		if (noSuave.box) {
 			continue;
 		}
@@ -405,16 +416,21 @@ function vdp_centralizaPilotoSelecionado() {
 	vdp_centralizaPonto(ponto);
 }
 
+function vdp_no_suave(piloto){
+	var no = mapaIdPilotosNosSuave.get(piloto.idPiloto);
+	if (no == null) {
+		no = mapaIdNos.get(piloto.idNo);
+	}
+	return no;
+}
+
 function vdp_obterPonto(piloto, real) {
 	var no;
 	var ponto;
 	if (real) {
 		no = mapaIdNos.get(piloto.idNo);
 	} else {
-		no = mapaIdPilotosNosSuave.get(piloto.idPiloto);
-		if (no == null) {
-			no = mapaIdNos.get(piloto.idNo);
-		}
+		no = vdp_no_suave(piloto);
 		ponto = mapaPontoSuave.get(piloto.idPiloto);
 		if (ponto != null) {
 			var pontoZoom = {
@@ -574,10 +590,8 @@ function vdp_desenhaNomesCima() {
 		if (ponto == null || ponto.x == null || ponto.y == null) {
 			continue;
 		}
-		var no = mapaIdPilotosNosSuave.get(piloto.idPiloto);
-		if (!no) {
-			no = mapaIdNos.get(piloto.idNo);
-		}
+		var no = vdp_no_suave(piloto);
+		
 		if (!vdp_containsRect(rectBg, ponto)) {
 			continue;
 		}
@@ -610,7 +624,7 @@ function vdp_desenhaNomesCima() {
 		maneContext.fillStyle = "black"
 		maneContext.fillText(nmPiloto, x, y + 15);
 		if (pilotosBandeirada.get(piloto.idPiloto) != null) {
-			desenha(maneContext,bandeirada, x + 40, y - 5);
+			desenha(maneContext, bandeirada, x + 40, y - 5);
 		}
 		maneContext.closePath();
 		maneContext.stroke();
@@ -682,10 +696,8 @@ function vdp_desenhaCarrosCima() {
 		var angulo = 0;
 		var frenteCar;
 		var atrasCar;
-		var no = mapaIdPilotosNosSuave.get(piloto.idPiloto);
-		if (!no) {
-			no = mapaIdNos.get(piloto.idNo);
-		}
+		var no = vdp_no_suave(piloto);
+		
 		if (no.box) {
 			var indexAtras = (no.index - eixoCarro) > 0 ? (no.index - eixoCarro) : 0;
 			var indexFrente = (no.index + eixoCarro) < circuito.boxFull.length ? (no.index + eixoCarro) : circuito.boxFull.length - 1;
@@ -761,7 +773,7 @@ function vdp_desenhaCarrosCima() {
 					var xj = x - ajsFxX;
 					var yj = y - ajsFxY;
 					var blendFaisca = vdp_blend(desenhaRastroFaiscaFx, ponto, xj, yj, no, piloto.idPiloto);
-					desenha(maneContext,blendFaisca, xj, yj);
+					desenha(maneContext, blendFaisca, xj, yj);
 				}
 			}
 
@@ -785,19 +797,19 @@ function vdp_desenhaCarrosCima() {
 			}
 
 			var blendCarro = vdp_blend(rotacionarCarro, ponto, x, y, no, piloto.idPiloto);
-			desenha(maneContext,blendCarro, x, y);
+			desenha(maneContext, blendCarro, x, y);
 			if (emMovimento) {
 				desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus);
 				if (desenhaTravadaRodaFumaca != null) {
 					var blendFumaca = vdp_blend(desenhaTravadaRodaFumaca, ponto, x, y, no, piloto.idPiloto);
-					desenha(maneContext,blendFumaca, x, y);
+					desenha(maneContext, blendFumaca, x, y);
 				}
 				desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus);
 				if (desenhaRastroChuvaFx != null) {
 					var xj = x - ajsChuvaX;
 					var yj = y - ajsChuvaY;
 					var blendChuva = vdp_blend(desenhaRastroChuvaFx, ponto, xj, yj, no, piloto.idPiloto);
-					desenha(maneContext,blendChuva, xj, yj);
+					desenha(maneContext, blendChuva, xj, yj);
 				}
 			}
 		} else {
@@ -869,7 +881,7 @@ function vdp_desenhaObjs() {
 			bottom : pontosTp.y + img.height
 		};
 		if (vdp_intersectRect(rectBg, rectObj)) {
-			desenha(maneContext,img, pontosTp.x - ptBg.x, pontosTp.y - ptBg.y);
+			desenha(maneContext, img, pontosTp.x - ptBg.x, pontosTp.y - ptBg.y);
 		}
 	}
 }
@@ -922,7 +934,7 @@ function vdp_rotacionar(img, angulo) {
 	cvRotate.height = maiorLado;
 	ctxRotate.translate(maiorLado / 2, maiorLado / 2);
 	ctxRotate.rotate(angulo);
-	desenha(ctxRotate,img, -maiorLado / 2, -maiorLado / 2);
+	desenha(ctxRotate, img, -maiorLado / 2, -maiorLado / 2);
 	return cvRotate;
 }
 
@@ -936,7 +948,7 @@ function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto) {
 	cvBlend.width = maiorLado;
 	cvBlend.height = maiorLado;
 	ctxBlend.clearRect(0, 0, cvBlend.width, cvBlend.height);
-	desenha(ctxBlend,img, 0, 0);
+	desenha(ctxBlend, img, 0, 0);
 	var rectCarro = {
 		left : ptCarro.x - 10,
 		top : ptCarro.y - 10,
@@ -963,7 +975,7 @@ function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto) {
 			var x = pontosTp.x - ptBg.x - xCarro;
 			var y = pontosTp.y - ptBg.y - yCarro;
 			ctxBlend.globalCompositeOperation = blendOp;
-			desenha(ctxBlend,img, x, y);
+			desenha(ctxBlend, img, x, y);
 			pilotosEfeitosMap.set(idPiloto, false);
 		}
 	}
@@ -1128,10 +1140,8 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 	if (dadosParciais.clima == "chuva.png") {
 		return null;
 	}
-	var no = mapaIdPilotosNosSuave.get(piloto.idPiloto);
-	if (!no) {
-		no = mapaIdNos.get(piloto.idNo);
-	}
+	var no = vdp_no_suave(piloto);
+	
 	if (no.box) {
 		return null;
 	}
@@ -1214,10 +1224,7 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo) {
 	if (dadosParciais.clima == "chuva.png") {
 		return;
 	}
-	var no = mapaIdPilotosNosSuave.get(piloto.idPiloto);
-	if (!no) {
-		no = mapaIdNos.get(piloto.idNo);
-	}
+	var no = vdp_no_suave(piloto);
 	if (no.box) {
 		return;
 	}
@@ -1230,6 +1237,6 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo) {
 	} else if (sw == 2) {
 		rotacionar = vdp_rotacionar(travadaRoda2, angulo);
 	}
-	desenha(ctxBg,rotacionar, x + ptBg.x, y + ptBg.y);
+	desenha(ctxBg, rotacionar, x + ptBg.x, y + ptBg.y);
 	pilotosTravadaMap.set(piloto.idPiloto, false);
 }

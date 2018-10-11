@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response;
 
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Circuito;
@@ -237,6 +238,14 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
+//		try {
+//			if(Logger.ativo){
+//				Thread.sleep(Util.intervalo(0, 800));
+//			}
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		DadosParciais dadosParciais = controlePaddock.obterDadosParciaisPilotos(
 				nomeJogo, sessaoCliente.getToken(), idPiloto);
 		if (dadosParciais == null) {
@@ -350,7 +359,6 @@ public class LetsRace {
 		} else {
 			return Response.status(200).entity(jogar).build();
 		}
-
 	}
 
 	@GET

@@ -5,27 +5,29 @@ $('#voltar').hide();
 if (localStorage.getItem("versao") != $("#versao").val()) {
 	console.log('Limpando localStorage versao: ' + $("#versao").val());
 	var token = localStorage.getItem("token");
-	var plataforma =  localStorage.getItem('plataforma');
+	var plataforma = localStorage.getItem('plataforma');
 	localStorage.clear();
 	localStorage.setItem("versao", $("#versao").val());
-	localStorage.setItem('plataforma',plataforma);
-	if(token!=null){
+	localStorage.setItem('plataforma', plataforma);
+	if (token != null) {
 		localStorage.setItem("token", token);
 	}
 }
 
 localStorage.removeItem("idPilotoSelecionado");
 localStorage.removeItem("nomeJogo");
+localStorage.removeItem("nomeJogador");
+localStorage.removeItem("imagemJogador");
 localStorage.setItem("modoCarreira", false);
 localStorage.setItem("modoCampeonato", false);
 
 var token = getParameter('token');
 
-var plataforma =  getParameter('plataforma');
+var plataforma = getParameter('plataforma');
 
-var limpar =  getParameter('limpar');
+var limpar = getParameter('limpar');
 
-if(limpar == 'S'){
+if (limpar == 'S') {
 	localStorage.removeItem("token");
 }
 
@@ -38,13 +40,13 @@ if (token != null) {
 	dadosJogador();
 }
 
-if(plataforma!=null){
+if (plataforma != null) {
 	localStorage.setItem("plataforma", plataforma);
 }
 
-plataforma =  localStorage.getItem('plataforma');
+plataforma = localStorage.getItem('plataforma');
 
-if(plataforma == "android"){
+if (plataforma == "android") {
 	$('#voltar').show();
 	$('#voltar').unbind().bind("click", function() {
 		Android.exitApp();
@@ -72,7 +74,6 @@ $('#btnClassificacao').html(lang_text('ranking'));
 $('#btnEquipe').html(lang_text('221'));
 $('#btnCampeonato').html(lang_text('268'));
 
-
 $('#btnSobre').bind("click", function() {
 	$('#botoes').hide();
 	sobre();
@@ -80,17 +81,15 @@ $('#btnSobre').bind("click", function() {
 	$('#voltar').unbind().bind("click", function() {
 		$('.creditos').remove();
 		$('#botoes').show();
-		if(plataforma == "android"){
+		if (plataforma == "android") {
 			$('#voltar').unbind().bind("click", function() {
 				Android.exitApp();
 			});
-		}else{
+		} else {
 			$('#voltar').hide();
 		}
 	});
 });
-
-
 
 function dadosJogador() {
 	var urlServico = "/f1mane/rest/letsRace/dadosToken/";
@@ -102,18 +101,16 @@ function dadosJogador() {
 		},
 		success : function(srvPaddockPack) {
 			if (srvPaddockPack) {
-				if(srvPaddockPack.sessaoCliente.guest){
+				if (srvPaddockPack.sessaoCliente.guest) {
 					localStorage.removeItem("token");
 					return;
 				}
-				$('#nomeJogador').append(
-						'<b>' + srvPaddockPack.sessaoCliente.nomeJogador
-								+ '</b>');
-				$('#imgJogador').attr('src',
-						srvPaddockPack.sessaoCliente.imagemJogador);
+				localStorage.setItem("nomeJogador", srvPaddockPack.sessaoCliente.nomeJogador);
+				localStorage.setItem("imagemJogador", srvPaddockPack.sessaoCliente.imagemJogador);
+				$('#nomeJogador').append('<b>' + localStorage.getItem("nomeJogador") + '</b>');
+				$('#imgJogador').attr('src', localStorage.getItem("imagemJogador"));
 				if (srvPaddockPack.sessaoCliente.jogoAtual) {
-					localStorage.setItem("nomeJogo",
-							srvPaddockPack.sessaoCliente.jogoAtual);
+					localStorage.setItem("nomeJogo", srvPaddockPack.sessaoCliente.jogoAtual);
 				}
 			}
 		},
@@ -123,8 +120,8 @@ function dadosJogador() {
 				toaster(lang_text('210'), 4000, 'alert alert-danger');
 				localStorage.removeItem("token");
 				token = null;
-				plataforma =  localStorage.getItem('plataforma');
-				if(plataforma == "android"){
+				plataforma = localStorage.getItem('plataforma');
+				if (plataforma == "android") {
 					setTimeout(function() {
 						localStorage.clear();
 						Android.exitApp();
@@ -133,8 +130,7 @@ function dadosJogador() {
 				return;
 			}
 			tratamentoErro(xhRequest);
-			console.log('sobre() ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
+			console.log('sobre() ' + xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
@@ -157,8 +153,7 @@ function sobre() {
 		error : function(xhRequest, ErrorText, thrownError) {
 			$('#botoes').show();
 			tratamentoErro(xhRequest);
-			console.log('sobre() ' + xhRequest.status + '  '
-					+ xhRequest.responseText);
+			console.log('sobre() ' + xhRequest.status + '  ' + xhRequest.responseText);
 		}
 	});
 }
