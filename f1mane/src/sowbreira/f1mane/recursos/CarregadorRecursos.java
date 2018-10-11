@@ -108,6 +108,7 @@ public class CarregadorRecursos {
 				defauts.setErs("true".equals(split[3]));
 				defauts.setDrs("true".equals(split[4]));
 				defauts.setFatorBox(new Double(split[5]));
+				defauts.setSafetyCar("true".equals(split[6]));
 				temporadasDefauts.put(name, defauts);
 				temporadas.put(split[0], name);
 				vectorTemps.add(split[0]);

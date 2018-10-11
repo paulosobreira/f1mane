@@ -13,6 +13,7 @@ public class TemporadasDefauts implements Serializable {
 	private Boolean reabastecimento = false;
 	private Boolean ers = false;
 	private Boolean drs = false;
+	private Boolean safetyCar = true;
 	private Double fatorBox;
 	private List<Piloto> pilotos;
 
@@ -51,6 +52,12 @@ public class TemporadasDefauts implements Serializable {
 	}
 	public void setFatorBox(Double fatorBox) {
 		this.fatorBox = fatorBox;
+	}
+	public Boolean getSafetyCar() {
+		return safetyCar;
+	}
+	public void setSafetyCar(Boolean safetyCar) {
+		this.safetyCar = safetyCar;
 	}
 
 }

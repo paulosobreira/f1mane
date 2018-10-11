@@ -536,7 +536,7 @@ public class ControleJogosServer {
 			String giro) {
 		try {
 			if (Logger.ativo) {
-				// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+				//obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
 			}
 			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
@@ -1196,7 +1196,7 @@ public class ControleJogosServer {
 				return false;
 			}
 			if (Logger.ativo) {
-				//obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+				// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
 				// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
 			}
 			piloto.setAtivarErs(!piloto.isAtivarErs());

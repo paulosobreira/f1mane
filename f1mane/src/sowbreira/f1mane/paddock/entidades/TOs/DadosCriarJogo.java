@@ -114,6 +114,7 @@ public class DadosCriarJogo implements Serializable {
 		dadosCriarJogo.setErs(temporadasDefauts.getErs());
 		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
+		dadosCriarJogo.setSafetyCar(temporadasDefauts.getSafetyCar());
 		return dadosCriarJogo;
 	}
 
