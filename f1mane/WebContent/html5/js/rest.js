@@ -136,6 +136,7 @@ function rest_processaCircuito(response){
 
 function rest_dadosParciais() {
 	if (carregando) {
+		sleepMain = 10;
 		return;
 	}
 	if (dadosJogo == null || dadosJogo.nomeJogo == null) {
