@@ -1,6 +1,7 @@
 var carregando = false;
 
 var limite = 1000;
+var contRelaod = 0;
 
 function rest_dadosJogo(nomeJogo) {
 	if (carregando) {
@@ -37,7 +38,7 @@ function rest_dadosJogo(nomeJogo) {
 				return;
 			}
 			try {
-				console.log('rest_dadosJogo '+xhRequest.status + '  ' + xhRequest.responseText);
+				console.log('rest_dadosJogo ' + xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
 				console.log(e);
 			}
@@ -70,17 +71,15 @@ function rest_dadosJogo_jogadores(nomeJogo) {
 			if (xhRequest.status == 503) {
 				console.log('rest_dadosJogo_jogadores 503');
 				return;
-			}			
+			}
 			try {
-				console.log('rest_dadosJogo_jogadores '+xhRequest.status + '  ' + xhRequest.responseText);
+				console.log('rest_dadosJogo_jogadores ' + xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
 				console.log(e);
 			}
 		}
 	});
 }
-
-
 
 function rest_ciruito() {
 	if (carregando) {
@@ -111,9 +110,9 @@ function rest_ciruito() {
 			if (xhRequest.status == 503) {
 				console.log('rest_ciruito 503');
 				return;
-			}	
+			}
 			try {
-				console.log('rest_ciruito '+xhRequest.status + '  ' + xhRequest.responseText);
+				console.log('rest_ciruito ' + xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
 				console.log(e);
 			}
@@ -121,7 +120,7 @@ function rest_ciruito() {
 	});
 }
 
-function rest_processaCircuito(response){
+function rest_processaCircuito(response) {
 	circuito = response;
 	mapaIdNos = new Map();
 	mapaIdPilotosNosSuave = new Map();
@@ -137,6 +136,14 @@ function rest_processaCircuito(response){
 function rest_dadosParciais() {
 	if (carregando) {
 		sleepMain = 10;
+		contRelaod++;
+		//console.log('contRelaod ' + contRelaod);
+		if (contRelaod > 10) {
+			clearInterval(main);
+			setTimeout(function() {
+				window.location.reload();
+			}, 1000);
+		}
 		return;
 	}
 	if (dadosJogo == null || dadosJogo.nomeJogo == null) {
@@ -154,6 +161,7 @@ function rest_dadosParciais() {
 		contentType : "application/json",
 		dataType : "json",
 		success : function(response) {
+			contRelaod = 0;
 			cpu_dadosParciaisAnterior();
 			dadosParciais = response;
 			cpu_dadosParciais();
@@ -163,7 +171,7 @@ function rest_dadosParciais() {
 		error : function(xhRequest, errorText, thrownError) {
 			carregando = false;
 			if (errorText == 'timeout') {
-				//console.log('rest_dadosParciais timeout');
+				// console.log('rest_dadosParciais timeout');
 				return;
 			}
 			if (xhRequest.status == 401) {
@@ -174,14 +182,13 @@ function rest_dadosParciais() {
 				return;
 			}
 			try {
-				console.log('rest_dadosParciais '+xhRequest.status + '  ' + xhRequest.responseText);
+				console.log('rest_dadosParciais ' + xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
 				console.log(e);
 			}
 		}
 	});
 }
-
 
 function rest_sairJogo() {
 	if (dadosJogo == null || dadosJogo.nomeJogo == null) {
@@ -212,7 +219,7 @@ function rest_sairJogo() {
 				return;
 			}
 			try {
-				console.log('rest_sairJogo '+xhRequest.status + '  ' + xhRequest.responseText);
+				console.log('rest_sairJogo ' + xhRequest.status + '  ' + xhRequest.responseText);
 			} catch (e) {
 				console.log(e);
 			}
