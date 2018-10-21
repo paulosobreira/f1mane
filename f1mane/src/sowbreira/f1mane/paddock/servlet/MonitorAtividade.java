@@ -104,7 +104,9 @@ public class MonitorAtividade implements Runnable {
 			SessaoCliente sessaoCliente = iter.next();
 			InterfaceJogo jogo = controlePaddock
 					.obterJogoPeloNome(sessaoCliente.getJogoAtual());
-			if (jogo != null && jogo.isSafetyCarNaPista()) {
+			if (jogo != null
+					&& (jogo.isSafetyCarNaPista() || jogo.isCorridaTerminada()
+							|| !jogo.isCorridaIniciada())) {
 				continue;
 			}
 			int intervaloAtividade = 600000;
