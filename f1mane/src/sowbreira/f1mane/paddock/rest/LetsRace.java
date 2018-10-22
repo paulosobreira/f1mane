@@ -238,14 +238,6 @@ public class LetsRace {
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
 		}
-//		try {
-//			if(Logger.ativo){
-//				Thread.sleep(Util.intervalo(0, 800));
-//			}
-//		} catch (InterruptedException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
 		DadosParciais dadosParciais = controlePaddock.obterDadosParciaisPilotos(
 				nomeJogo, sessaoCliente.getToken(), idPiloto);
 		if (dadosParciais == null) {

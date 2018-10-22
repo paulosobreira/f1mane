@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
+import br.nnpe.Numero;
 import br.nnpe.Util;
 import sowbreira.f1mane.controles.ControleEstatisticas;
 import sowbreira.f1mane.controles.InterfaceJogo;
@@ -536,7 +537,7 @@ public class ControleJogosServer {
 			String giro) {
 		try {
 			if (Logger.ativo) {
-				//obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+				// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
 			}
 			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
@@ -711,14 +712,14 @@ public class ControleJogosServer {
 
 	/**
 	 * 
-	 * @param idPiloto
+	 * @param idPilotoStr
 	 * @param tokenJogador
 	 * @param args
 	 *            args[0] jogo args[1] apelido args[2] pilto Sel
 	 * @return
 	 */
 	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
-			String tokenJogador, String idPiloto) {
+			String tokenJogador, String idPilotoStr) {
 
 		JogoServidor jogoServidor = obterJogoPeloNome(nomeJogo);
 		if (jogoServidor == null) {
@@ -740,10 +741,15 @@ public class ControleJogosServer {
 		List<Piloto> pilotos = jogoServidor.getPilotosCopia();
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = iter.next();
-			if (Util.isNullOrEmpty(idPiloto)) {
+			if (Util.isNullOrEmpty(idPilotoStr)) {
 				break;
 			}
-			if (piloto.getId() != Integer.parseInt(idPiloto)) {
+			int idPiloto = 0;
+			try {
+				idPiloto = Integer.valueOf(idPilotoStr);
+			} catch (Exception e) {
+			}
+			if (piloto.getId() != idPiloto) {
 				continue;
 			}
 			Volta obterVoltaMaisRapida = piloto.obterVoltaMaisRapida();
