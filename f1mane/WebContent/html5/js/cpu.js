@@ -25,7 +25,8 @@ var pilotosTravadaFumacaMap = new Map();
 var pilotosAereofolioMap = new Map();
 var idNoAnterior = new Map();
 var showFps = false;
-var sleepMain = 700;
+var sleepDefault = 700;
+var sleepMain = sleepDefault;
 
 var loader = $('<div class="loader"></div>');
 $('body').prepend(loader);
@@ -33,7 +34,7 @@ var $loading = loader.hide();
 var pisca = false;
 
 function cpu_main() {
-	sleepMain = 700;
+	sleepMain = sleepDefault;
 	if (nomeJogo == null) {
 		$loading.show();
 		nomeJogo = localStorage.getItem("nomeJogo");

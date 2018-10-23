@@ -256,7 +256,10 @@ function vdp_atualizaSuave() {
 		if (ganhoSuave <= ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt - incGanhoSuaveAnt;
 		}
-		if (noSuave.tipoJson == 'R' && noReal.tipoJson == 'R' && ganhoSuaveAnt > ganhoSuave && diff > 200) {
+		if (noSuave.tipoJson == 'R' && noReal.tipoJson == 'R' 
+			      && sleepDefault == sleepMain
+			      && ganhoSuaveAnt > ganhoSuave 
+			      && diff > 200) {
 			ganhoSuave = ganhoSuaveAnt;
 		}
 		if (diff == 0) {
