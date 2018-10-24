@@ -1,6 +1,6 @@
 var carregando = false;
 
-var limite = 1000;
+var limite = 1500;
 var contRelaod = 0;
 
 function rest_dadosJogo(nomeJogo) {
