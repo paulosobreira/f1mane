@@ -25,7 +25,7 @@ var pilotosTravadaFumacaMap = new Map();
 var pilotosAereofolioMap = new Map();
 var idNoAnterior = new Map();
 var showFps = false;
-var sleepDefault = 600;
+var sleepDefault = 650;
 var sleepMain = sleepDefault;
 
 var loader = $('<div class="loader"></div>');
