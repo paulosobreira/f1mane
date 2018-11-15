@@ -640,6 +640,9 @@ public class ControlePersistencia {
 	}
 
 	public MsgSrv modoCarreira(String token, boolean modo) {
+		if (!Constantes.DATABASE) {
+			return null;
+		}
 		Session session = getSession();
 		try {
 			CarreiraDadosSrv carreiraDadosSrv = carregaCarreiraJogador(token,

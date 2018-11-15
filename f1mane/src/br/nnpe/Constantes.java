@@ -11,7 +11,7 @@ public class Constantes {
 
 	public static final int MAX_VOLTAS = 72;
 	public static final int MIN_VOLTAS = Logger.ativo ? 1 : 14;
-	public static final boolean DATABASE = true;
+	public static final boolean DATABASE = false;
 	public static final int CICLO = 180;
 	public static final int CICLO_SOM = 100;
 	public static final int ACIMA_MEDIA_NORMAL = 500;

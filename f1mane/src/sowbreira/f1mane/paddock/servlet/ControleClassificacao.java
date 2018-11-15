@@ -611,6 +611,9 @@ public class ControleClassificacao {
 		}
 	}
 	public CarreiraDadosSrv obterCarreiraSrv(String token) {
+		if (!Constantes.DATABASE) {
+			return null;
+		}
 		Session session = controlePersistencia.getSession();
 		try {
 			CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
