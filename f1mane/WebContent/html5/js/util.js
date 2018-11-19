@@ -1,3 +1,6 @@
+if(typeof console === "undefined"){
+      console = {};
+}
 function desenha(ctx,img,x,y){
 	if(img==null || img.height<=0 || img.width<=0){
 		ctx.fillText("Not load", x, y);
