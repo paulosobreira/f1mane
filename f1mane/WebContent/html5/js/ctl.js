@@ -11,13 +11,15 @@ var corBabaca = "rgba(186, 186, 202, 0.6)";
 var corVermelho = "rgba(255, 0, 0, 0.6)";
 var contCargaErs;
 var confirmaSair = false;
-var imgFaroisApagadosCont = 0;
-var imgFaroisAcesosCont = 0;
 var dirZoom = '-';
+
 
 function ctl_desenha() {
 	largura = maneCanvas.width;
 	altura = maneCanvas.height;
+	ctlCanvas.width = largura;
+	ctlCanvas.height = altura;
+	ctlContext.clearRect(0, 0, ctlCanvas.width, ctlCanvas.height);
 	centroX = largura / 2;
 	centroY = altura / 2;
 	ctl_desenhaInfoSegundosParaIniciar();
@@ -27,40 +29,8 @@ function ctl_desenha() {
 	ctl_desenhaInfoBaixo();
 	ctl_desenhaInfoAsa();
 	ctl_desenhaControles();
-	ctl_desenhaFarois();
 }
 
-function ctl_desenhaFarois(){
-	if (!dadosParciais) {
-		return;
-	}
-	if (dadosParciais.estado != "13") {
-		if(imgFaroisApagadosCont < 30){
-			desenha(maneContext,imgFaroisApagados, centroX - (imgFarois.width/2) , 100);
-			imgFaroisApagadosCont++;
-		}
-		return;
-	}
-	imgFaroisAcesosCont++;
-	if(imgFaroisAcesosCont>=160){
-		desenha(maneContext,imgFarois, centroX - (imgFarois.width/2) , 100);
-	}
-	if(imgFaroisAcesosCont<160){
-		desenha(maneContext,imgFarois4, centroX - (imgFarois.width/2) , 100);
-	}
-	if(imgFaroisAcesosCont<140){
-		desenha(maneContext,imgFarois3, centroX - (imgFarois.width/2) , 100);
-	}
-	if(imgFaroisAcesosCont<120){
-		desenha(maneContext,imgFarois2, centroX - (imgFarois.width/2) , 100);
-	}
-	if(imgFaroisAcesosCont<80){
-		desenha(maneContext,imgFarois1, centroX - (imgFarois.width/2) , 100);
-	}
-	if(imgFaroisAcesosCont<40){
-		desenha(maneContext,imgFaroisApagados, centroX - (imgFarois.width/2) , 100);	
-	}
-}
 
 
 function ctl_desenhaQualificacao(){
@@ -74,13 +44,13 @@ function ctl_desenhaQualificacao(){
 	var x = centroX-140;
 	var y = 20;
 	
-	maneContext.fillStyle = corFundo
-	maneContext.font = '24px sans-serif';
+	ctlContext.fillStyle = corFundo
+	ctlContext.font = '24px sans-serif';
 	var ranking = lang_text('ranking');
-	var laruraTxt = maneContext.measureText(ranking).width + 30;
-	maneContext.fillRect(centroX-(laruraTxt/2), y, laruraTxt, 40);
-	maneContext.fillStyle = "black"
-	maneContext.fillText(ranking, centroX-(laruraTxt/2)+15, y + 28);
+	var laruraTxt = ctlContext.measureText(ranking).width + 30;
+	ctlContext.fillRect(centroX-(laruraTxt/2), y, laruraTxt, 40);
+	ctlContext.fillStyle = "black"
+	ctlContext.fillText(ranking, centroX-(laruraTxt/2)+15, y + 28);
 
 	y += 60;
 		
@@ -91,38 +61,38 @@ function ctl_desenhaQualificacao(){
 			x = centroX+30;
 		}
 		var piloto = dadosJogo.pilotos[i];
-		maneContext.beginPath();
-		maneContext.font = '14px sans-serif';
+		ctlContext.beginPath();
+		ctlContext.font = '14px sans-serif';
 		
 		var nmPiloto = piloto.nomeAbreviado;
 		nmPiloto = (i + 1) + ' ' + nmPiloto;
 		var tempo = piloto.tempoVoltaQualificacao;
 
-		maneContext.fillStyle = piloto.carro.cor1Hex;
-		maneContext.fillRect(x - 10, y, 5, 20);
-// maneContext.fillStyle = piloto.carro.cor2Hex;
-// maneContext.fillRect(x - 7, y, 3, 20);
+		ctlContext.fillStyle = piloto.carro.cor1Hex;
+		ctlContext.fillRect(x - 10, y, 5, 20);
+// ctlContext.fillStyle = piloto.carro.cor2Hex;
+// ctlContext.fillRect(x - 7, y, 3, 20);
 		
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x - 5, y, 50, 20);
-		maneContext.fillStyle = "black"
-		maneContext.fillText(nmPiloto, x, y + 15);
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x - 5, y, 50, 20);
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(nmPiloto, x, y + 15);
 		
 		if (idPilotoSelecionado == piloto.id) {
-			maneContext.fillStyle = '#00ff00';
-			maneContext.fillRect(x - 10, y+20, 130, 5);
+			ctlContext.fillStyle = '#00ff00';
+			ctlContext.fillRect(x - 10, y+20, 130, 5);
 		} else if (piloto.jogadorHumano) {
-			maneContext.fillStyle = '#ffff00';
-			maneContext.fillRect(x - 10, y+20, 130, 5);
+			ctlContext.fillStyle = '#ffff00';
+			ctlContext.fillRect(x - 10, y+20, 130, 5);
 		}
 		
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x + 50, y, 70, 20);
-		maneContext.fillStyle = "black"
-		maneContext.fillText(tempo, x + 60, y + 15);
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x + 50, y, 70, 20);
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(tempo, x + 60, y + 15);
 		
-		maneContext.closePath();
-		maneContext.stroke();
+		ctlContext.closePath();
+		ctlContext.stroke();
 		
 		y+=15;
 
@@ -139,13 +109,13 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	}
 	var x = centroX - 70;
 	var y = centroY - 50;
-	maneContext.fillStyle = corFundo
+	ctlContext.fillStyle = corFundo
 	var iniciaEm = lang_text('iniciaEm')+' : '+dadosJogo.segundosParaIniciar;
-	maneContext.font = '24px sans-serif';
-	var laruraTxt = maneContext.measureText(iniciaEm).width+30;
-	maneContext.fillRect(centroX-(laruraTxt/2), y, laruraTxt, 40);
-	maneContext.fillStyle = "black"
-	maneContext.fillText(iniciaEm, centroX-(laruraTxt/2)+15, y + 28);
+	ctlContext.font = '24px sans-serif';
+	var laruraTxt = ctlContext.measureText(iniciaEm).width+30;
+	ctlContext.fillRect(centroX-(laruraTxt/2), y, laruraTxt, 40);
+	ctlContext.fillStyle = "black"
+	ctlContext.fillText(iniciaEm, centroX-(laruraTxt/2)+15, y + 28);
 	
 }
 
@@ -158,7 +128,7 @@ function ctl_desenhaControles() {
 		if (ctl_removeControle(controle)) {
 			continue;
 		}
-		maneContext.beginPath();
+		ctlContext.beginPath();
 		if (controle.evalY) {
 			controle.y = eval(controle.evalY);
 		}
@@ -232,59 +202,59 @@ function ctl_desenhaControles() {
 			controle.exibir = dadosParciais.combustBox;
 		}
 
-		maneContext.font = '30px sans-serif';
+		ctlContext.font = '30px sans-serif';
 		var ajusteAluraText = 10;
 		if (controle.tipo == 'perguntaSair') {
-			maneContext.font = '14px sans-serif';
+			ctlContext.font = '14px sans-serif';
 			cor = '#ff0000';
 			ajusteAluraText = 5;
 		}
-		maneContext.fillStyle = "black"
+		ctlContext.fillStyle = "black"
 	    var verImg = cor != controle.cor || (controle.tipo != 'controlePiloto' && controle.tipo != 'controleMotor');				
 		if (controle.img && verImg) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = cor;
-			maneContext.rect(controle.x, controle.y,
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = cor;
+			ctlContext.rect(controle.x, controle.y,
 					controle.width + 5, controle.height + 5);
-			maneContext.closePath();
-			maneContext.stroke();
-			desenha(maneContext,controle.img, controle.x, controle.y);
+			ctlContext.closePath();
+			ctlContext.stroke();
+			desenha(ctlContext,controle.img, controle.x, controle.y);
 		} else {
-			maneContext.fillStyle = controle.cor;
+			ctlContext.fillStyle = controle.cor;
 			if(controle.larguraTexto){
-				var laruraTxt = maneContext.measureText(controle.exibir).width + 10;
-				maneContext.strokeStyle =  controle.cor;
-				maneContext.rect(controle.x, controle.y, laruraTxt,	controle.height);
+				var laruraTxt = ctlContext.measureText(controle.exibir).width + 10;
+				ctlContext.strokeStyle =  controle.cor;
+				ctlContext.rect(controle.x, controle.y, laruraTxt,	controle.height);
 				if(cor!=controle.cor){
-					maneContext.beginPath();
-					maneContext.strokeStyle = cor;
-					maneContext.rect(controle.x, controle.y, laruraTxt,	controle.height);
-					maneContext.closePath();
-					maneContext.stroke();
+					ctlContext.beginPath();
+					ctlContext.strokeStyle = cor;
+					ctlContext.rect(controle.x, controle.y, laruraTxt,	controle.height);
+					ctlContext.closePath();
+					ctlContext.stroke();
 				}
 			}else{
-				maneContext.strokeStyle =  controle.cor;
-				maneContext.rect(controle.x, controle.y, controle.width, controle.height);
+				ctlContext.strokeStyle =  controle.cor;
+				ctlContext.rect(controle.x, controle.y, controle.width, controle.height);
 				if(cor!=controle.cor){
-					maneContext.beginPath();
-					maneContext.strokeStyle = cor;
-					maneContext.rect(controle.x, controle.y, controle.width,	controle.height);	
-					maneContext.closePath();
-					maneContext.stroke();
+					ctlContext.beginPath();
+					ctlContext.strokeStyle = cor;
+					ctlContext.rect(controle.x, controle.y, controle.width,	controle.height);	
+					ctlContext.closePath();
+					ctlContext.stroke();
 				}
 			}
-			maneContext.fillStyle = "black"
+			ctlContext.fillStyle = "black"
 			if (controle.centralizaTexto) {
-				maneContext.fillText(controle.exibir, controle.x
+				ctlContext.fillText(controle.exibir, controle.x
 						+ (controle.width / 2) - 10, controle.y
 						+ (controle.height / 2) + ajusteAluraText);
 			} else {
-				maneContext.fillText(controle.exibir, controle.x + 5,
+				ctlContext.fillText(controle.exibir, controle.x + 5,
 						controle.y + (controle.height / 2) + ajusteAluraText);
 			}
 		}
-		maneContext.closePath();
-		maneContext.stroke();
+		ctlContext.closePath();
+		ctlContext.stroke();
 	}
 }
 
@@ -419,9 +389,9 @@ function ctl_desenhaInfoAsa() {
 	}else if(dadosParciais.asa == 'MENOS_ASA'){
 		img = menosAsa;
 	}
-	maneContext.strokeStyle = corBabaca;
-	maneContext.rect(x, y, img.width + 5, img.height + 5);
-	desenha(maneContext,img, x, y);
+	ctlContext.strokeStyle = corBabaca;
+	ctlContext.rect(x, y, img.width + 5, img.height + 5);
+	desenha(ctlContext,img, x, y);
 }
 
 
@@ -603,17 +573,17 @@ function ctl_desenhaInfoCarros() {
 				diff = 'BOX';
 			}
 		}
-		maneContext.beginPath();
-		maneContext.fillStyle = corFundo
-		maneContext.font = '14px sans-serif';
-		maneContext.fillRect(centroX - 25, altura - 40,  maneContext.measureText(diff).width+10, 20);
-		maneContext.fillStyle = "black";
-		maneContext.fillText(diff, centroX - 20, altura - 25);
-		maneContext.closePath();
-		maneContext.stroke();
+		ctlContext.beginPath();
+		ctlContext.fillStyle = corFundo
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillRect(centroX - 25, altura - 40,  ctlContext.measureText(diff).width+10, 20);
+		ctlContext.fillStyle = "black";
+		ctlContext.fillText(diff, centroX - 20, altura - 25);
+		ctlContext.closePath();
+		ctlContext.stroke();
 	}
 	if (img1 && desenhaImagens) {
-		desenha(maneContext,img1, centroX - img1.width - 40, altura
+		desenha(ctlContext,img1, centroX - img1.width - 40, altura
 				- img1.height - 10);
 		if(idPiloto1==idPilotoSelecionado){
 			ctl_problemasCarrro(img1 , centroX, idPiloto1 , 1);
@@ -628,7 +598,7 @@ function ctl_desenhaInfoCarros() {
 				xCarro = centroX - imgPneu1.width - img1.width - 40;
 				yCarro =  altura - imgPneu1.height - 10;
 			}
-			desenha(maneContext,imgPneu1,xCarro, yCarro);
+			desenha(ctlContext,imgPneu1,xCarro, yCarro);
 			if (imgCap1) {
 				if(largura<450){
 					xCapacete = centroX - imgCap1.width	- 30 - (imgPneu1.width);
@@ -637,7 +607,7 @@ function ctl_desenhaInfoCarros() {
 					xCapacete = centroX - imgCap1.width	- img1.width - 45 - (imgPneu1.width / 2);
 					yCapacete = yCarro;
 				}
-				desenha(maneContext,imgCap1, xCapacete, yCapacete);
+				desenha(ctlContext,imgCap1, xCapacete, yCapacete);
 			}
 			if (imgJog1!=null) {
 				$('#imgJog1').show();
@@ -649,7 +619,7 @@ function ctl_desenhaInfoCarros() {
 		}
 	}
 	if (img2 && desenhaImagens) {
-		desenha(maneContext,img2, centroX + 40, altura - img2.height - 10);
+		desenha(ctlContext,img2, centroX + 40, altura - img2.height - 10);
 		if(idPiloto2==idPilotoSelecionado){
 			ctl_problemasCarrro(img2 , centroX, idPiloto2 , 2);
 		}
@@ -662,7 +632,7 @@ function ctl_desenhaInfoCarros() {
 				xCarro = centroX + 40 + img2.width;
 				yCarro =  altura - imgPneu2.height - 10;
 			}
-			desenha(maneContext,imgPneu2, xCarro , yCarro);
+			desenha(ctlContext,imgPneu2, xCarro , yCarro);
 			if (imgCap2) {
 				if(largura<450){
 					xCapacete = centroX + 30 + (imgPneu2.width);
@@ -671,7 +641,7 @@ function ctl_desenhaInfoCarros() {
 					xCapacete = centroX + 45 + img2.width + (imgPneu2.width / 2);
 					yCapacete = yCarro;
 				}
-				desenha(maneContext,imgCap2, xCapacete , yCapacete);
+				desenha(ctlContext,imgCap2, xCapacete , yCapacete);
 			}
 			
 			if (imgJog2!=null) {
@@ -697,52 +667,52 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 	var dnf = pilotosDnfMap.get(idPiloto);
 	
 	if(posicao == 1){
-		maneContext.beginPath();
+		ctlContext.beginPath();
 		if(perdeuAerefolio){
-			maneContext.fillStyle = corVermelho;
-			maneContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
+			ctlContext.fillStyle = corVermelho;
+			ctlContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
 		}else if(alertaAerefolio){
-			maneContext.fillStyle = corAmarelo;
-			maneContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
+			ctlContext.fillStyle = corAmarelo;
+			ctlContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
 		}
 		
 		if(alertaMotorDnf){
-			maneContext.fillStyle = corVermelho;
-			maneContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 50, 30);
+			ctlContext.fillStyle = corVermelho;
+			ctlContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 50, 30);
 		}else if(dadosParciais.alertaMotor){
-			maneContext.fillStyle = corAmarelo;
-			maneContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 50, 30);
+			ctlContext.fillStyle = corAmarelo;
+			ctlContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 50, 30);
 		}
 		if(dnf){
-			maneContext.fillStyle = corVermelho;
-			maneContext.fillRect(x - img.width - 40, altura	- img.height - 10, img.width, img.height);
+			ctlContext.fillStyle = corVermelho;
+			ctlContext.fillRect(x - img.width - 40, altura	- img.height - 10, img.width, img.height);
 		}
-		maneContext.closePath();
-		maneContext.stroke();
+		ctlContext.closePath();
+		ctlContext.stroke();
 	}else{
-		maneContext.beginPath();
+		ctlContext.beginPath();
 		if(perdeuAerefolio){
-			maneContext.fillStyle = corVermelho;
-			maneContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
+			ctlContext.fillStyle = corVermelho;
+			ctlContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
 		}else if(alertaAerefolio){
-			maneContext.fillStyle = corAmarelo;
-			maneContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
+			ctlContext.fillStyle = corAmarelo;
+			ctlContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
 		}
 		
 		if(alertaMotorDnf){
-			maneContext.fillStyle = corVermelho;
-			maneContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 50, 30);
+			ctlContext.fillStyle = corVermelho;
+			ctlContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 50, 30);
 		}else if(dadosParciais.alertaMotor){
-			maneContext.fillStyle = corAmarelo;
-			maneContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 50, 30);
+			ctlContext.fillStyle = corAmarelo;
+			ctlContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 50, 30);
 		}
 		
 		if(dnf){
-			maneContext.fillStyle = corVermelho;
-			maneContext.fillRect(x + 40, altura - img.height - 10, img.width, img.height);
+			ctlContext.fillStyle = corVermelho;
+			ctlContext.fillRect(x + 40, altura - img.height - 10, img.width, img.height);
 		}
-		maneContext.closePath();
-		maneContext.stroke();
+		ctlContext.closePath();
+		ctlContext.stroke();
 	}
 		
 }
@@ -753,7 +723,7 @@ function ctl_desenhaInfoDireita() {
 	if(confirmaSair){
 		return;
 	}
-	maneContext.beginPath();
+	ctlContext.beginPath();
 
 	var x = maneCanvas.width - 120;
 	var y = 10;
@@ -763,55 +733,55 @@ function ctl_desenhaInfoDireita() {
 	}
 
 	if (dadosParciais.melhorVolta && (altura > largura || !alternador)) {
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 110, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('278'), x + 5, y + 15);
-		maneContext.fillText(formatarTempo(dadosParciais.melhorVolta), x + 53,
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 110, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(lang_text('278'), x + 5, y + 15);
+		ctlContext.fillText(formatarTempo(dadosParciais.melhorVolta), x + 53,
 				y + 15);
 		y += 30;
 	}
 
 	if (dadosParciais.ultima1 && (altura > largura || !alternador)) {
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 110, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('vol') + ' '
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 110, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(lang_text('vol') + ' '
 				+ (dadosParciais.voltaAtual - 1) + ' '
 				+ formatarTempo(dadosParciais.ultima1), x + 5, y + 15);
 
 		y += 30;
 
 		if (dadosParciais.ultima2) {
-			maneContext.fillStyle = corFundo
-			maneContext.fillRect(x, y, 110, 20);
-			maneContext.font = '14px sans-serif';
-			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('vol') + ' '
+			ctlContext.fillStyle = corFundo
+			ctlContext.fillRect(x, y, 110, 20);
+			ctlContext.font = '14px sans-serif';
+			ctlContext.fillStyle = "black"
+			ctlContext.fillText(lang_text('vol') + ' '
 					+ (dadosParciais.voltaAtual - 2) + ' '
 					+ formatarTempo(dadosParciais.ultima2), x + 5, y + 15);
 			y += 30;
 		}
 
 		if (dadosParciais.ultima3) {
-			maneContext.fillStyle = corFundo
-			maneContext.fillRect(x, y, 110, 20);
-			maneContext.font = '14px sans-serif';
-			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('vol') + ' '
+			ctlContext.fillStyle = corFundo
+			ctlContext.fillRect(x, y, 110, 20);
+			ctlContext.font = '14px sans-serif';
+			ctlContext.fillStyle = "black"
+			ctlContext.fillText(lang_text('vol') + ' '
 					+ (dadosParciais.voltaAtual - 3) + ' '
 					+ formatarTempo(dadosParciais.ultima3), x + 5, y + 15);
 			y += 30;
 		}
 
 		if (dadosParciais.ultima4) {
-			maneContext.fillStyle = corFundo
-			maneContext.fillRect(x, y, 110, 20);
-			maneContext.font = '14px sans-serif';
-			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('vol') + ' '
+			ctlContext.fillStyle = corFundo
+			ctlContext.fillRect(x, y, 110, 20);
+			ctlContext.font = '14px sans-serif';
+			ctlContext.fillStyle = "black"
+			ctlContext.fillText(lang_text('vol') + ' '
 					+ (dadosParciais.voltaAtual - 4) + ' '
 					+ formatarTempo(dadosParciais.ultima4), x + 5, y + 15);
 			y += 30;
@@ -826,29 +796,29 @@ function ctl_desenhaInfoDireita() {
 			&& (altura > largura || (alternador || !dadosParciais.melhorVolta))) {
 		var piloto = posicaoPilotos.posis[0];
 		var nomePiloto = pilotosMap.get(piloto.idPiloto).nomeAbreviado;
-		maneContext.beginPath();
+		ctlContext.beginPath();
 		
-		maneContext.fillStyle = pilotosMap.get(piloto.idPiloto).carro.cor1Hex;
-		maneContext.fillRect(x, y, 5, 20);
+		ctlContext.fillStyle = pilotosMap.get(piloto.idPiloto).carro.cor1Hex;
+		ctlContext.fillRect(x, y, 5, 20);
 		
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x + 5, y, larg, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x + 5, y, larg, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
 		var posicao = pilotosBandeirada.get(piloto.idPiloto);
 		if(posicao==null){
 			posicao = '1';
 		}
-		maneContext.fillText(posicao+' ' + nomePiloto, x + 10, y + 15);
+		ctlContext.fillText(posicao+' ' + nomePiloto, x + 10, y + 15);
 		if (idPilotoSelecionado == piloto.idPiloto) {
-			maneContext.strokeStyle = '#00ff00';
-			maneContext.rect(x + 5, y, larg, 20);
+			ctlContext.strokeStyle = '#00ff00';
+			ctlContext.rect(x + 5, y, larg, 20);
 		} else if (piloto.humano) {
-			maneContext.strokeStyle = '#ffff00';
-			maneContext.rect(x + 5, y, larg, 20);
+			ctlContext.strokeStyle = '#ffff00';
+			ctlContext.rect(x + 5, y, larg, 20);
 		}
-		maneContext.closePath();
-		maneContext.stroke();
+		ctlContext.closePath();
+		ctlContext.stroke();
 
 		y += 30;
 		var min = posicaoCentraliza - 2;
@@ -863,36 +833,36 @@ function ctl_desenhaInfoDireita() {
 			max -= diff;
 		}
 		for (var i = min; i < max; i++) {
-			maneContext.beginPath();
+			ctlContext.beginPath();
 			var piloto = posicaoPilotos.posis[i];
 			var nomePiloto = pilotosMap.get(piloto.idPiloto).nomeAbreviado;
 		
-			maneContext.fillStyle = pilotosMap.get(piloto.idPiloto).carro.cor1Hex;
-			maneContext.fillRect(x, y, 5, 20);
+			ctlContext.fillStyle = pilotosMap.get(piloto.idPiloto).carro.cor1Hex;
+			ctlContext.fillRect(x, y, 5, 20);
 			
-			maneContext.fillStyle = corFundo
-			maneContext.fillRect(x + 5, y, larg, 20);
-			maneContext.font = '14px sans-serif';
-			maneContext.fillStyle = "black"
+			ctlContext.fillStyle = corFundo
+			ctlContext.fillRect(x + 5, y, larg, 20);
+			ctlContext.font = '14px sans-serif';
+			ctlContext.fillStyle = "black"
 			var posicao = pilotosBandeirada.get(piloto.idPiloto);
 			if(posicao==null){
 				posicao = (i + 1);
 			}
-			maneContext.fillText(posicao + ' ' + nomePiloto, x + 10, y + 15);
+			ctlContext.fillText(posicao + ' ' + nomePiloto, x + 10, y + 15);
 			if (idPilotoSelecionado == piloto.idPiloto) {
-				maneContext.strokeStyle = '#00ff00';
-				maneContext.rect(x + 5, y, larg, 20);
+				ctlContext.strokeStyle = '#00ff00';
+				ctlContext.rect(x + 5, y, larg, 20);
 			} else if (piloto.humano) {
-				maneContext.strokeStyle = '#ffff00';
-				maneContext.rect(x + 5, y, larg, 20);
+				ctlContext.strokeStyle = '#ffff00';
+				ctlContext.rect(x + 5, y, larg, 20);
 			}
 			y += 30;
-			maneContext.closePath();
-			maneContext.stroke();
+			ctlContext.closePath();
+			ctlContext.stroke();
 		}
 	}
-	maneContext.closePath();
-	maneContext.stroke();
+	ctlContext.closePath();
+	ctlContext.stroke();
 }
 
 function ctl_desenhaInfoEsquerda() {
@@ -901,48 +871,48 @@ function ctl_desenhaInfoEsquerda() {
 	if(confirmaSair){
 		return;
 	}
-	maneContext.beginPath();
+	ctlContext.beginPath();
 
 	var x = 10;
 	var y = 10;
 
 	if (altura > largura || !alternador) {
 
-		maneContext.fillStyle = corFundo
-		maneContext.font = '14px sans-serif';
+		ctlContext.fillStyle = corFundo
+		ctlContext.font = '14px sans-serif';
 		var circText = dadosJogo.nomeCircuito;
-		maneContext.fillRect(x, y, maneContext.measureText(circText).width+10, 20);
-		maneContext.fillStyle = "black"
-		maneContext.fillText(circText, x + 5, y + 15);
+		ctlContext.fillRect(x, y, ctlContext.measureText(circText).width+10, 20);
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(circText, x + 5, y + 15);
 
 		y += 30;
 
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 94, 20);
-		maneContext.font = '14px sans-serif';
-	    maneContext.fillStyle = "black"
-    	maneContext.fillText(lang_text('voltas') , x + 5, y + 15);
-		var tVoltas = maneContext.measureText(' '+dadosParciais.voltaAtual + '/' + dadosJogo.numeroVotas).width;
-		maneContext.fillText(' '+dadosParciais.voltaAtual + '/' + dadosJogo.numeroVotas, x + (90-tVoltas), y + 15);   	
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 94, 20);
+		ctlContext.font = '14px sans-serif';
+	    ctlContext.fillStyle = "black"
+    	ctlContext.fillText(lang_text('voltas') , x + 5, y + 15);
+		var tVoltas = ctlContext.measureText(' '+dadosParciais.voltaAtual + '/' + dadosJogo.numeroVotas).width;
+		ctlContext.fillText(' '+dadosParciais.voltaAtual + '/' + dadosJogo.numeroVotas, x + (90-tVoltas), y + 15);   	
 
 		y += 30;
 
 		if (dadosParciais.melhorVoltaCorrida) {
-			maneContext.fillStyle = corFundo
-			maneContext.fillRect(x, y, 110, 20);
-			maneContext.font = '14px sans-serif';
-			maneContext.fillStyle = "black"
-			maneContext.fillText(lang_text('corrida'), x + 5, y + 15);
-			maneContext.fillText(
+			ctlContext.fillStyle = corFundo
+			ctlContext.fillRect(x, y, 110, 20);
+			ctlContext.font = '14px sans-serif';
+			ctlContext.fillStyle = "black"
+			ctlContext.fillText(lang_text('corrida'), x + 5, y + 15);
+			ctlContext.fillText(
 					formatarTempo(dadosParciais.melhorVoltaCorrida), x + 53,
 					y + 15);
 			y += 30;
 		}
 
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 94, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 94, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
 		var climaDesc = '';
 		if (dadosParciais.clima == "sol.png") {
 			climaDesc = "Ensolarado"
@@ -953,28 +923,28 @@ function ctl_desenhaInfoEsquerda() {
 		if (dadosParciais.clima == "chuva.png") {
 			climaDesc = "Chovendo"
 		}
-		maneContext.fillText(lang_text(climaDesc), x + 5, y + 15);
+		ctlContext.fillText(lang_text(climaDesc), x + 5, y + 15);
 
 		y += 30;
 
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 94, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 94, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
 		if (pitLane) {
-			maneContext.fillText('PitLane', x + 5, y + 15);
+			ctlContext.fillText('PitLane', x + 5, y + 15);
 		}else if(dadosParciais.posisPack.safetyNoId != 0){
-			maneContext.fillText('SafetyCar', x + 5, y + 15);
+			ctlContext.fillText('SafetyCar', x + 5, y + 15);
 		}	else {
-			maneContext.fillText('~' + dadosParciais.velocidade + ' Km/h',
+			ctlContext.fillText('~' + dadosParciais.velocidade + ' Km/h',
 					x + 5, y + 15);
 		}
 		if (pitLane || dadosParciais.posisPack.safetyNoId != 0) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ffff00';
-			maneContext.rect(x, y, 94, 20);
-			maneContext.closePath();
-			maneContext.stroke();			
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ffff00';
+			ctlContext.rect(x, y, 94, 20);
+			ctlContext.closePath();
+			ctlContext.stroke();			
 		}
 
 		y += 30;
@@ -983,126 +953,126 @@ function ctl_desenhaInfoEsquerda() {
 
 	if (altura > largura || alternador) {
 
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 94, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('215'), x + 5, y + 15);
-		var tCombust = maneContext.measureText(' '+dadosParciais.pCombust + '%').width;
-		maneContext.fillText(' '+dadosParciais.pCombust + '%', x + (90-tCombust), y + 15);
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 94, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(lang_text('215'), x + 5, y + 15);
+		var tCombust = ctlContext.measureText(' '+dadosParciais.pCombust + '%').width;
+		ctlContext.fillText(' '+dadosParciais.pCombust + '%', x + (90-tCombust), y + 15);
 
 		if (dadosParciais.pCombust > 10 && dadosParciais.pCombust < 20)  {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ffff00';
-			maneContext.rect(x, y, 94, 20);
-			maneContext.closePath();
-			maneContext.stroke();			
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ffff00';
+			ctlContext.rect(x, y, 94, 20);
+			ctlContext.closePath();
+			ctlContext.stroke();			
 		}
 		
 		if (dadosParciais.pCombust <= 10) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ff0000';
-			maneContext.rect(x, y, 94, 20);
-			maneContext.closePath();
-			maneContext.stroke();			
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ff0000';
+			ctlContext.rect(x, y, 94, 20);
+			ctlContext.closePath();
+			ctlContext.stroke();			
 		}
 		
 		
 
 		y += 30;
 
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 94, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('216'), x + 5, y + 15);
-		var tPneus = maneContext.measureText(' '+dadosParciais.pPneus + '%').width;
-		maneContext.fillText(' '+dadosParciais.pPneus + '%', x + (90-tPneus), y + 15);
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 94, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(lang_text('216'), x + 5, y + 15);
+		var tPneus = ctlContext.measureText(' '+dadosParciais.pPneus + '%').width;
+		ctlContext.fillText(' '+dadosParciais.pPneus + '%', x + (90-tPneus), y + 15);
 		
 		if (dadosParciais.pPneus > 10 && dadosParciais.pPneus < 20 ) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ffff00';
-			maneContext.rect(x, y, 94, 20);
-			maneContext.closePath();
-			maneContext.stroke();			
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ffff00';
+			ctlContext.rect(x, y, 94, 20);
+			ctlContext.closePath();
+			ctlContext.stroke();			
 		}
 
 		if (dadosParciais.pPneus <= 10) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ff0000';
-			maneContext.rect(x, y, 94, 20);
-			maneContext.closePath();
-			maneContext.stroke();			
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ff0000';
+			ctlContext.rect(x, y, 94, 20);
+			ctlContext.closePath();
+			ctlContext.stroke();			
 		}
 
 		y += 30;
 
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 94, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('217'), x + 5, y + 15);
-		var tMotor = maneContext.measureText(' '+dadosParciais.pMotor + '%').width;
-		maneContext.fillText(' '+dadosParciais.pMotor + '%', x + (90-tMotor), y + 15);
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 94, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(lang_text('217'), x + 5, y + 15);
+		var tMotor = ctlContext.measureText(' '+dadosParciais.pMotor + '%').width;
+		ctlContext.fillText(' '+dadosParciais.pMotor + '%', x + (90-tMotor), y + 15);
 
 		if (dadosParciais.pMotor > 10 && dadosParciais.pMotor <20) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ffff00';
-			maneContext.rect(x, y, 94, 20);
-			maneContext.closePath();
-			maneContext.stroke();
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ffff00';
+			ctlContext.rect(x, y, 94, 20);
+			ctlContext.closePath();
+			ctlContext.stroke();
 		}		
 		
 		if (dadosParciais.pMotor <= 10) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ff0000';
-			maneContext.rect(x, y, 94, 20);
-			maneContext.closePath();
-			maneContext.stroke();
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ff0000';
+			ctlContext.rect(x, y, 94, 20);
+			ctlContext.closePath();
+			ctlContext.stroke();
 		}
 		
 		if (dadosParciais.alertaMotor) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ffff00';
-			maneContext.rect(x+2, y+2, 90,16);
-			maneContext.closePath();
-			maneContext.stroke();
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ffff00';
+			ctlContext.rect(x+2, y+2, 90,16);
+			ctlContext.closePath();
+			ctlContext.stroke();
 		}
 
 		y += 30;
 
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 94, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
-		maneContext.fillText(lang_text('153') , x + 5, y + 15);
-		var tStress = maneContext.measureText(' '+dadosParciais.stress + '%').width;
-		maneContext.fillText(' '+dadosParciais.stress + '%', x + (90-tStress), y + 15);
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 94, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(lang_text('153') , x + 5, y + 15);
+		var tStress = ctlContext.measureText(' '+dadosParciais.stress + '%').width;
+		ctlContext.fillText(' '+dadosParciais.stress + '%', x + (90-tStress), y + 15);
 
 		
 		if (dadosParciais.stress > 90) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ff0000';
-			maneContext.rect(x, y, 94, 20);
-			maneContext.closePath();
-			maneContext.stroke();
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ff0000';
+			ctlContext.rect(x, y, 94, 20);
+			ctlContext.closePath();
+			ctlContext.stroke();
 		}else if (dadosParciais.stress > 70) {
-			maneContext.beginPath();
-			maneContext.strokeStyle = '#ffff00';
-			maneContext.rect(x, y, 94, 20);
-			maneContext.closePath();
-			maneContext.stroke();
+			ctlContext.beginPath();
+			ctlContext.strokeStyle = '#ffff00';
+			ctlContext.rect(x, y, 94, 20);
+			ctlContext.closePath();
+			ctlContext.stroke();
 		}
 
 		y += 30;
 		if(dadosJogo.ers){
-			maneContext.fillStyle = corFundo
-			maneContext.fillRect(x, y, 94, 20);
-			maneContext.font = '14px sans-serif';
-			maneContext.fillStyle = "black"
-			maneContext.fillText('Ers ', x + 5, y + 15);
-			var tErs = maneContext.measureText(dadosParciais.cargaErs + '%').width;
-			maneContext.fillText(dadosParciais.cargaErs + '%', x + (90-tErs), y + 15);
+			ctlContext.fillStyle = corFundo
+			ctlContext.fillRect(x, y, 94, 20);
+			ctlContext.font = '14px sans-serif';
+			ctlContext.fillStyle = "black"
+			ctlContext.fillText('Ers ', x + 5, y + 15);
+			var tErs = ctlContext.measureText(dadosParciais.cargaErs + '%').width;
+			ctlContext.fillText(dadosParciais.cargaErs + '%', x + (90-tErs), y + 15);
 		}
 	}
 	
@@ -1110,14 +1080,14 @@ function ctl_desenhaInfoEsquerda() {
 		if(altura > largura || alternador){
 			y += 30;	
 		}
-		maneContext.fillStyle = corFundo
-		maneContext.fillRect(x, y, 94, 20);
-		maneContext.font = '14px sans-serif';
-		maneContext.fillStyle = "black"
-		maneContext.fillText(fps.frameRate()+' Fps', x + 5, y + 15);
+		ctlContext.fillStyle = corFundo
+		ctlContext.fillRect(x, y, 94, 20);
+		ctlContext.font = '14px sans-serif';
+		ctlContext.fillStyle = "black"
+		ctlContext.fillText(fps.frameRate()+' Fps', x + 5, y + 15);
 	}
-	maneContext.closePath();
-	maneContext.stroke();
+	ctlContext.closePath();
+	ctlContext.stroke();
 }
 
 function ctl_removeControle(controle) {
@@ -1461,7 +1431,7 @@ function ctl_gerarControles() {
 		width : 120,
 		height : 40,
 		y : 210,
-		evalX : '(centroX-((maneContext.measureText(controle.exibir).width + 80)/2))',
+		evalX : '(centroX-((ctlContext.measureText(controle.exibir).width + 80)/2))',
 		x : 0
 	});
 	controles.push({
@@ -1474,7 +1444,7 @@ function ctl_gerarControles() {
 		width : 190,
 		height : 40,
 		evalY : '(maneCanvas.height-50)',
-		evalX : '(centroX-((maneContext.measureText(controle.exibir).width + 30)/2))',
+		evalX : '(centroX-((ctlContext.measureText(controle.exibir).width + 30)/2))',
 		x : 0
 	});	
 }
