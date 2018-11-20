@@ -93,10 +93,10 @@ function vdp_desenha(fps) {
 	vdp_debugRectBg();
 }
 
-function vdp_ctl(){
-	if(ctlCanvas.width >0 && ctlCanvas.height > 0){
-		maneContext.drawImage(ctlCanvas, 0, 0);	
-	}	
+function vdp_ctl() {
+	if (ctlCanvas.width > 0 && ctlCanvas.height > 0) {
+		maneContext.drawImage(ctlCanvas, 0, 0);
+	}
 }
 
 function vdp_debugRectBg() {
@@ -186,7 +186,7 @@ function vdp_desenhaMarcasLargadaGrid() {
 	desenhouMarcasLargadaGrid = true;
 }
 
-function vdp_loopCalculaGanhoSuave(diff,piloto) {
+function vdp_loopCalculaGanhoSuave(diff, piloto) {
 	var ganho = 0;
 	var maxLoop = 1000;
 	var no = vdp_no_suave(piloto);
@@ -198,9 +198,9 @@ function vdp_loopCalculaGanhoSuave(diff,piloto) {
 	}
 	var inc = 45;
 	for (var i = 0; i < maxLoop; i += inc) {
-//		if (piloto.idPiloto == idPilotoSelecionado) {
-//			console.log(' vdp_loopCalculaGanhoSuave '+i);
-//		}
+		// if (piloto.idPiloto == idPilotoSelecionado) {
+		// console.log(' vdp_loopCalculaGanhoSuave '+i);
+		// }
 		ganho += 1;
 		if (diff >= i && diff < i + inc) {
 			break;
@@ -254,7 +254,7 @@ function vdp_atualizaSuave() {
 			indexReal = (indexReal - circuito.saidaBoxIndex) + (circuito.boxFull.length - 1);
 		}
 		var diff = (indexReal - indexSuave);
-		var ganhoSuave = vdp_loopCalculaGanhoSuave(diff,piloto);
+		var ganhoSuave = vdp_loopCalculaGanhoSuave(diff, piloto);
 		var ganhoSuaveAnt = mapaGanhoSuave.get(piloto.idPiloto)
 		if (ganhoSuaveAnt == null) {
 			ganhoSuaveAnt = 0;
@@ -269,10 +269,7 @@ function vdp_atualizaSuave() {
 		if (ganhoSuave <= ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt - incGanhoSuaveAnt;
 		}
-		if (noSuave.tipoJson == 'R' && noReal.tipoJson == 'R' 
-			      && sleepDefault == sleepMain
-			      && ganhoSuaveAnt > ganhoSuave 
-			      && diff > 200) {
+		if (noSuave.tipoJson == 'R' && noReal.tipoJson == 'R' && sleepDefault == sleepMain && ganhoSuaveAnt > ganhoSuave && diff > 200) {
 			ganhoSuave = ganhoSuaveAnt;
 		}
 		if (diff == 0) {
@@ -432,7 +429,7 @@ function vdp_centralizaPilotoSelecionado() {
 	vdp_centralizaPonto(ponto);
 }
 
-function vdp_no_suave(piloto){
+function vdp_no_suave(piloto) {
 	var no = mapaIdPilotosNosSuave.get(piloto.idPiloto);
 	if (no == null) {
 		no = mapaIdNos.get(piloto.idNo);
@@ -607,7 +604,7 @@ function vdp_desenhaNomesCima() {
 			continue;
 		}
 		var no = vdp_no_suave(piloto);
-		
+
 		if (!vdp_containsRect(rectBg, ponto)) {
 			continue;
 		}
@@ -713,7 +710,7 @@ function vdp_desenhaCarrosCima() {
 		var frenteCar;
 		var atrasCar;
 		var no = vdp_no_suave(piloto);
-		
+
 		if (no.box) {
 			var indexAtras = (no.index - eixoCarro) > 0 ? (no.index - eixoCarro) : 0;
 			var indexFrente = (no.index + eixoCarro) < circuito.boxFull.length ? (no.index + eixoCarro) : circuito.boxFull.length - 1;
@@ -1029,11 +1026,16 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus) {
 	if (faisca != null) {
 		return faisca;
 	}
-	var fx = fxArray[intervalo];
-	faisca = vdp_rotacionar(fx, angulo);
-	if (rotateCache) {
-		mapaRastroFaisca.set(chave, faisca);
-	}
+	setTimeout(function() {
+		if(mapaRastroFaisca.get(chave)!=null){
+			return;
+		}
+		var fx = fxArray[intervalo];
+		faisca = vdp_rotacionar(fx, angulo);
+		if (rotateCache) {
+			mapaRastroFaisca.set(chave, faisca);
+		}
+	}, intervaloInt(100, 1000));
 	return faisca;
 }
 
@@ -1096,11 +1098,16 @@ function vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus) {
 	if (chuva != null) {
 		return chuva;
 	}
-	var fx = lista[intervalo];
-	var chuva = vdp_rotacionar(fx, angulo);
-	if (rotateCache) {
-		mapaRastroChuva.set(chave, chuva);
-	}
+	setTimeout(function(){
+		if(mapaRastroChuva.get(chave)!=null){
+			return;
+		}
+		var fx = lista[intervalo];
+		var chuva = vdp_rotacionar(fx, angulo);
+		if (rotateCache) {
+			mapaRastroChuva.set(chave, chuva);
+		}	
+	}, intervaloInt(100, 1000));
 	return chuva;
 }
 
@@ -1157,7 +1164,7 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 		return null;
 	}
 	var no = vdp_no_suave(piloto);
-	
+
 	if (no.box) {
 		return null;
 	}
@@ -1179,11 +1186,16 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 	if (fumaca != null) {
 		return fumaca;
 	}
-	var fx = eval('carroCimaFreios' + lado + sw);
-	var fumaca = vdp_rotacionar(fx, angulo);
-	if (rotateCache) {
-		mapaTravadaRodaFumaca.set(chave, fumaca);
-	}
+	setTimeout(function() {
+		if(mapaTravadaRodaFumaca.get(chave)!=null){
+			return;
+		}
+		var fx = eval('carroCimaFreios' + lado + sw);
+		var fumaca = vdp_rotacionar(fx, angulo);
+		if (rotateCache) {
+			mapaTravadaRodaFumaca.set(chave, fumaca);
+		}
+	}, intervaloInt(100, 1000));
 	return fumaca;
 }
 
@@ -1233,35 +1245,35 @@ function vdp_desenhaClima() {
 	}
 }
 
-function vdp_desenhaFarois(){
+function vdp_desenhaFarois() {
 	if (!dadosParciais) {
 		return;
 	}
 	if (dadosParciais.estado != "13") {
-		if(imgFaroisApagadosCont < 30){
-			desenha(maneContext,imgFaroisApagados, centroX - (imgFarois.width/2) , 100);
+		if (imgFaroisApagadosCont < 30) {
+			desenha(maneContext, imgFaroisApagados, centroX - (imgFarois.width / 2), 100);
 			imgFaroisApagadosCont++;
 		}
 		return;
 	}
 	imgFaroisAcesosCont++;
-	if(imgFaroisAcesosCont>=160){
-		desenha(maneContext,imgFarois, centroX - (imgFarois.width/2) , 100);
+	if (imgFaroisAcesosCont >= 160) {
+		desenha(maneContext, imgFarois, centroX - (imgFarois.width / 2), 100);
 	}
-	if(imgFaroisAcesosCont<160){
-		desenha(maneContext,imgFarois4, centroX - (imgFarois.width/2) , 100);
+	if (imgFaroisAcesosCont < 160) {
+		desenha(maneContext, imgFarois4, centroX - (imgFarois.width / 2), 100);
 	}
-	if(imgFaroisAcesosCont<140){
-		desenha(maneContext,imgFarois3, centroX - (imgFarois.width/2) , 100);
+	if (imgFaroisAcesosCont < 140) {
+		desenha(maneContext, imgFarois3, centroX - (imgFarois.width / 2), 100);
 	}
-	if(imgFaroisAcesosCont<120){
-		desenha(maneContext,imgFarois2, centroX - (imgFarois.width/2) , 100);
+	if (imgFaroisAcesosCont < 120) {
+		desenha(maneContext, imgFarois2, centroX - (imgFarois.width / 2), 100);
 	}
-	if(imgFaroisAcesosCont<80){
-		desenha(maneContext,imgFarois1, centroX - (imgFarois.width/2) , 100);
+	if (imgFaroisAcesosCont < 80) {
+		desenha(maneContext, imgFarois1, centroX - (imgFarois.width / 2), 100);
 	}
-	if(imgFaroisAcesosCont<40){
-		desenha(maneContext,imgFaroisApagados, centroX - (imgFarois.width/2) , 100);	
+	if (imgFaroisAcesosCont < 40) {
+		desenha(maneContext, imgFaroisApagados, centroX - (imgFarois.width / 2), 100);
 	}
 }
 

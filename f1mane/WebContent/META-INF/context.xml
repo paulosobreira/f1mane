@@ -14,10 +14,10 @@
 		username="root" password="mysql" url="jdbc:mysql://localhost:3306/f1mane" 
 		testOnBorrow="false" testOnReturn="false" testWhileIdle="true" validationQuery="Select 
 		1" timeBetweenEvictionRunsMillis="1800000" /> -->
+		
 	<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver"
-		maxActive="8" maxIdle="2" maxWait="-1" name="jdbc/MySQLDS" type="javax.sql.DataSource"
+		name="jdbc/MySQLDS" type="javax.sql.DataSource"
 		url="jdbc:mysql://db:3306/f1mane" username="root" password=""
 		testOnBorrow="false" testOnReturn="false" testWhileIdle="true"
-		validationQuery="Select 
-		1" timeBetweenEvictionRunsMillis="1800000" />
+		validationQuery="Select	1" timeBetweenEvictionRunsMillis="1800000" />
 </Context>
