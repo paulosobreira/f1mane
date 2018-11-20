@@ -79,6 +79,9 @@ function cpu_main() {
 		}
 	}
 	ctl_desenha();
+	if (funqueue.length > 0) {
+	    (funqueue.shift())();   
+	}
 }
 
 

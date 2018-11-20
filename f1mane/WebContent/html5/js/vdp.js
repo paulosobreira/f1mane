@@ -61,6 +61,8 @@ var ctlContext = ctlCanvas.getContext('2d');
 var imgFaroisAcesosCont = 0;
 var imgFaroisApagadosCont = 0;
 
+var funqueue = [];
+
 function vdp_desenha(fps) {
 	if (imgBg && imgBg.complete) {
 		if (imgBg.width == 0 || imgBg.height == 0) {
@@ -773,7 +775,7 @@ function vdp_desenhaCarrosCima() {
 
 		var x = ponto.x - ptBg.x - 45;
 		var y = ponto.y - ptBg.y - 45;
-		var anguloGraus = Math.round(Math.degrees(angulo / 6));
+		var anguloGraus = Math.round(Math.degrees(angulo / 8));
 		pilotosEfeitosMap.set(piloto.idPiloto, true);
 		var emMovimento = vdp_emMovimento(piloto.idPiloto, piloto.idNo);
 		var desenhaRastroFaiscaFx = null;
@@ -1026,7 +1028,7 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus) {
 	if (faisca != null) {
 		return faisca;
 	}
-	setTimeout(function() {
+	var fn = function() {
 		if(mapaRastroFaisca.get(chave)!=null){
 			return;
 		}
@@ -1035,7 +1037,8 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus) {
 		if (rotateCache) {
 			mapaRastroFaisca.set(chave, faisca);
 		}
-	}, intervaloInt(100, 1000));
+	};
+	funqueue.push(fn);
 	return faisca;
 }
 
@@ -1098,7 +1101,7 @@ function vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus) {
 	if (chuva != null) {
 		return chuva;
 	}
-	setTimeout(function(){
+	var fn = function(){
 		if(mapaRastroChuva.get(chave)!=null){
 			return;
 		}
@@ -1107,7 +1110,8 @@ function vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus) {
 		if (rotateCache) {
 			mapaRastroChuva.set(chave, chuva);
 		}	
-	}, intervaloInt(100, 1000));
+	};
+	funqueue.push(fn);
 	return chuva;
 }
 
@@ -1186,7 +1190,7 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 	if (fumaca != null) {
 		return fumaca;
 	}
-	setTimeout(function() {
+	var fn  = function() {
 		if(mapaTravadaRodaFumaca.get(chave)!=null){
 			return;
 		}
@@ -1195,7 +1199,8 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 		if (rotateCache) {
 			mapaTravadaRodaFumaca.set(chave, fumaca);
 		}
-	}, intervaloInt(100, 1000));
+	};
+	funqueue.push(fn);
 	return fumaca;
 }
 

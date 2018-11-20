@@ -25,7 +25,7 @@ var mapaRotacionar = new Map();
 var mapaRastroFaisca = new Map();
 var mapaTravadaRodaFumaca = new Map();
 var eixoCarro = 30;
-var preCarrega = false;
+var preCarrega = true;
 
 function mid_atualizaJogadores() {
 	for (var i = 0; i < dadosJogo.pilotos.length; i++) {
@@ -86,7 +86,7 @@ function mid_caregaMidia() {
 					var frenteCar = safeArray(circuito.pistaFull, i + eixoCarro);
 					var atrasCar = safeArray(circuito.pistaFull, i - eixoCarro);
 					var angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
-					var anguloGraus = Math.round(Math.degrees(angulo / 6));
+					var anguloGraus = Math.round(Math.degrees(angulo / 8));
 					var chave = piloto.carro.id + "-" + anguloGraus;
 					var rotacionarCarro = mapaRotacionar.get(chave);
 					if (rotacionarCarro == null) {
