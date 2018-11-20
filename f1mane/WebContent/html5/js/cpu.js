@@ -78,6 +78,7 @@ function cpu_main() {
 			contCarregouMidia--;
 		}
 	}
+	ctl_desenha();
 }
 
 

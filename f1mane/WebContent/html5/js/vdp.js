@@ -55,6 +55,12 @@ var ajsFxY = 40;
 
 var zoom = 1;
 
+var ctlCanvas = document.createElement('canvas');
+var ctlContext = ctlCanvas.getContext('2d');
+
+var imgFaroisAcesosCont = 0;
+var imgFaroisApagadosCont = 0;
+
 function vdp_desenha(fps) {
 	if (imgBg && imgBg.complete) {
 		if (imgBg.width == 0 || imgBg.height == 0) {
@@ -82,8 +88,15 @@ function vdp_desenha(fps) {
 	vdp_desenhaNomesCima();
 	vdp_desenhaClima();
 	vdp_pow();
-	ctl_desenha();
+	vdp_desenhaFarois();
+	vdp_ctl();
 	vdp_debugRectBg();
+}
+
+function vdp_ctl(){
+	if(ctlCanvas.width >0 && ctlCanvas.height > 0){
+		maneContext.drawImage(ctlCanvas, 0, 0);	
+	}	
 }
 
 function vdp_debugRectBg() {
@@ -1217,6 +1230,38 @@ function vdp_desenhaClima() {
 				}
 			}
 		}
+	}
+}
+
+function vdp_desenhaFarois(){
+	if (!dadosParciais) {
+		return;
+	}
+	if (dadosParciais.estado != "13") {
+		if(imgFaroisApagadosCont < 30){
+			desenha(maneContext,imgFaroisApagados, centroX - (imgFarois.width/2) , 100);
+			imgFaroisApagadosCont++;
+		}
+		return;
+	}
+	imgFaroisAcesosCont++;
+	if(imgFaroisAcesosCont>=160){
+		desenha(maneContext,imgFarois, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<160){
+		desenha(maneContext,imgFarois4, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<140){
+		desenha(maneContext,imgFarois3, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<120){
+		desenha(maneContext,imgFarois2, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<80){
+		desenha(maneContext,imgFarois1, centroX - (imgFarois.width/2) , 100);
+	}
+	if(imgFaroisAcesosCont<40){
+		desenha(maneContext,imgFaroisApagados, centroX - (imgFarois.width/2) , 100);	
 	}
 }
 
