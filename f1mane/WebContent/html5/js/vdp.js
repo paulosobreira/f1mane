@@ -63,7 +63,10 @@ var imgFaroisApagadosCont = 0;
 
 var funqueue = [];
 
-function vdp_desenha(fps) {
+var fps;
+
+function vdp_desenha(fps_p) {
+	fps = fps_p;
 	if (imgBg && imgBg.complete) {
 		if (imgBg.width == 0 || imgBg.height == 0) {
 			imgBg.src = "/f1mane/rest/letsRace/circuitoBg/" + circuito.backGround;
@@ -775,7 +778,7 @@ function vdp_desenhaCarrosCima() {
 
 		var x = ponto.x - ptBg.x - 45;
 		var y = ponto.y - ptBg.y - 45;
-		var anguloGraus = Math.round(Math.degrees(angulo / 8));
+		var anguloGraus = Math.round(Math.degrees(angulo / 6));
 		pilotosEfeitosMap.set(piloto.idPiloto, true);
 		var emMovimento = vdp_emMovimento(piloto.idPiloto, piloto.idNo);
 		var desenhaRastroFaiscaFx = null;
@@ -928,11 +931,21 @@ function vdp_centralizaPonto(ponto) {
 	}
 	ptBg.x = x;
 	ptBg.y = y;
+	var desconto = 0;
+	if (fps < 30) {
+		desconto = 100
+	}
+	if (fps < 20) {
+		desconto = 200
+	}
+	if (fps < 10) {
+		desconto = 250
+	}
 	rectBg = {
-		left : ptBg.x,
-		top : ptBg.y,
-		right : ptBg.x + maneCanvas.width,
-		bottom : ptBg.y + maneCanvas.height
+		left : ptBg.x + desconto,
+		top : ptBg.y + desconto,
+		right : ptBg.x + maneCanvas.width - desconto,
+		bottom : ptBg.y + maneCanvas.height - desconto
 	};
 }
 
@@ -1029,7 +1042,7 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus) {
 		return faisca;
 	}
 	var fn = function() {
-		if(mapaRastroFaisca.get(chave)!=null){
+		if (mapaRastroFaisca.get(chave) != null) {
 			return;
 		}
 		var fx = fxArray[intervalo];
@@ -1101,17 +1114,11 @@ function vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus) {
 	if (chuva != null) {
 		return chuva;
 	}
-	var fn = function(){
-		if(mapaRastroChuva.get(chave)!=null){
-			return;
-		}
-		var fx = lista[intervalo];
-		var chuva = vdp_rotacionar(fx, angulo);
-		if (rotateCache) {
-			mapaRastroChuva.set(chave, chuva);
-		}	
-	};
-	funqueue.push(fn);
+	var fx = lista[intervalo];
+	var chuva = vdp_rotacionar(fx, angulo);
+	if (rotateCache) {
+		mapaRastroChuva.set(chave, chuva);
+	}
 	return chuva;
 }
 
@@ -1190,8 +1197,8 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 	if (fumaca != null) {
 		return fumaca;
 	}
-	var fn  = function() {
-		if(mapaTravadaRodaFumaca.get(chave)!=null){
+	var fn = function() {
+		if (mapaTravadaRodaFumaca.get(chave) != null) {
 			return;
 		}
 		var fx = eval('carroCimaFreios' + lado + sw);

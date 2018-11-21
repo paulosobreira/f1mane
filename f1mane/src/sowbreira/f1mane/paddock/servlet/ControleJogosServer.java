@@ -1203,7 +1203,7 @@ public class ControleJogosServer {
 			}
 			if (Logger.ativo) {
 				// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
-				// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+				obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
 			}
 			piloto.setAtivarErs(!piloto.isAtivarErs());
 			return piloto.isAtivarErs();

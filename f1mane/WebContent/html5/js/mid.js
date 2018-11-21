@@ -86,7 +86,7 @@ function mid_caregaMidia() {
 					var frenteCar = safeArray(circuito.pistaFull, i + eixoCarro);
 					var atrasCar = safeArray(circuito.pistaFull, i - eixoCarro);
 					var angulo = gu_calculaAngulo(frenteCar, atrasCar, 180);
-					var anguloGraus = Math.round(Math.degrees(angulo / 8));
+					var anguloGraus = Math.round(Math.degrees(angulo / 6));
 					var chave = piloto.carro.id + "-" + anguloGraus;
 					var rotacionarCarro = mapaRotacionar.get(chave);
 					if (rotacionarCarro == null) {

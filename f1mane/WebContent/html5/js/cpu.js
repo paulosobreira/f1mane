@@ -62,8 +62,8 @@ function cpu_main() {
 	if (dadosJogo != null && circuito != null && ativo && contCarregouMidia == 0) {
 		$loading.hide();
 		$('body').removeClass('body');
-		//MOSTRANDO_QUALIFY 10
-		//ESPERANDO_JOGO_COMECAR 07
+		// MOSTRANDO_QUALIFY 10
+		// ESPERANDO_JOGO_COMECAR 07
 		if ('07' == dadosJogo.estado || '10' == dadosJogo.estado) {
 			rest_dadosJogo(nomeJogo);
 		} else {
@@ -79,11 +79,7 @@ function cpu_main() {
 		}
 	}
 	ctl_desenha();
-	if (funqueue.length > 0) {
-	    (funqueue.shift())();   
-	}
 }
-
 
 function cpu_dadosParciaisAnterior() {
 	if (!dadosParciais) {
@@ -115,7 +111,7 @@ function cpu_dadosParciais() {
 
 	for (var i = 0; i < posicaoPilotos.posis.length; i++) {
 		var piloto = posicaoPilotos.posis[i];
-		if(piloto.humano){
+		if (piloto.humano) {
 			contadorJogadoresLocal++;
 		}
 		// console.log(dadosParciais.estado+' '+piloto.idPiloto+'
@@ -143,20 +139,20 @@ function cpu_dadosParciais() {
 			} else if (no.tipoJson == 'B') {
 				pilotosTravadaFumacaMap.set(piloto.idPiloto, 3);
 			}
-		} else if(status.startsWith("M")){
+		} else if (status.startsWith("M")) {
 			pilotosTravadaMap.set(piloto.idPiloto, true);
 		} else if (status.startsWith("R")) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
-		} else if (status.startsWith("B") && pilotosBandeirada.get(piloto.idPiloto)==null) {
-			pilotosBandeirada.set(piloto.idPiloto, (i+1));
+		} else if (status.startsWith("B") && pilotosBandeirada.get(piloto.idPiloto) == null) {
+			pilotosBandeirada.set(piloto.idPiloto, (i + 1));
 		} else if (status.startsWith("BA")) {
 			pilotosAereofolioMap.set(piloto.idPiloto, true);
-			if(pilotosBandeirada.get(piloto.idPiloto)==null){
-				pilotosBandeirada.set(piloto.idPiloto, (i+1));
+			if (pilotosBandeirada.get(piloto.idPiloto) == null) {
+				pilotosBandeirada.set(piloto.idPiloto, (i + 1));
 			}
 		}
 	}
-	if(contadorJogadores != contadorJogadoresLocal){
+	if (contadorJogadores != contadorJogadoresLocal) {
 		console.log(' contadorJogadores ' + contadorJogadores);
 		console.log(' contadorJogadoresLocal ' + contadorJogadoresLocal);
 		cpu_atualizaJogadores();
@@ -173,7 +169,7 @@ function cpu_dadosParciais() {
 	}
 }
 
-function cpu_atualizaJogadores(){
+function cpu_atualizaJogadores() {
 	rest_dadosJogo_jogadores(nomeJogo);
 }
 
@@ -187,7 +183,7 @@ function cpu_sair() {
 	rest_sairJogo();
 	ativo = false;
 	clearInterval(main);
-	window.location.href = "index.html?token="+token;
+	window.location.href = "index.html?token=" + token;
 }
 
 function cpu_altenador() {
@@ -210,6 +206,12 @@ function cpu_viradaAlterador() {
 }
 
 var main = setInterval(cpu_main, sleepMain);
+
+var fila = setInterval(function() {
+	if (funqueue.length > 0) {
+		(funqueue.shift())();
+	}
+}, 30);
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {
