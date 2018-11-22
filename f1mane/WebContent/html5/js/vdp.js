@@ -29,7 +29,7 @@ var ptBg = {
 	y : 0
 };
 var largura, altura;
-var descontoCanvas = 100;
+var descontoCanvas = 150;
 var rectBg = {
 	left : ptBg.x,
 	top : ptBg.y + descontoCanvas,
@@ -69,6 +69,8 @@ var fps;
 
 function vdp_desenha(fps_p) {
 	fps = fps_p;
+	altura = maneCanvas.height - (2*descontoCanvas);
+	largura = maneCanvas.width;
 	if (imgBg && imgBg.complete) {
 		if (imgBg.width == 0 || imgBg.height == 0) {
 			imgBg.src = "/f1mane/rest/letsRace/circuitoBg/"
@@ -966,13 +968,12 @@ function vdp_desenhaObjs() {
 function vdp_centralizaPonto(ponto) {
 	maneCanvas.width = window.innerWidth;
 	maneCanvas.height = window.innerHeight;
-	altura = maneCanvas.height - descontoCanvas;
-	largura = maneCanvas.width;
+
 	var x = ponto.x;
 	var y = ponto.y;
 
-	x -= (maneCanvas.height / 2);
-	y -= (altura / 2);
+	x -= (maneCanvas.width / 2);
+	y -= (maneCanvas.height / 2);
 
 	if (cvBg != null) {
 		if (x < 0) {
@@ -1066,13 +1067,14 @@ function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto) {
 	return cvBlend;
 }
 
+
 function vdp_desenhaBackGround() {
 	maneContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
 	var sW = zoom * (window.innerWidth);
-	var sH = zoom * (window.innerHeight);
+	var sH = zoom * (altura);
 	if (desenhaImagens) {
 		try {
-			maneContext.drawImage(cvBg, ptBg.x * zoom, ptBg.y * zoom, sW, sH,
+			maneContext.drawImage(cvBg, (ptBg.x) * zoom, (ptBg.y+descontoCanvas) * zoom, sW, sH,
 					0, descontoCanvas, largura, altura);
 		} catch (e) {
 			console.log('vdp_desenhaBackGround');
@@ -1301,14 +1303,14 @@ function vdp_desenhaClima() {
 		return;
 	}
 	maneContext.fillStyle = corCeu;
-	maneContext.fillRect(0, 0, largura, altura);
+	maneContext.fillRect(0, descontoCanvas, largura, altura);
 
 	if (dadosParciais && dadosParciais.clima
 			&& dadosParciais.clima == "chuva.png") {
 		var p1;
 		var p2;
 		for (var i = 0; i < largura; i += 20) {
-			for (var j = 0; j < altura; j += 20) {
+			for (var j = descontoCanvas; j < altura; j += 20) {
 				if (Math.random() > .8) {
 					p1 = {
 						x : i + 10,

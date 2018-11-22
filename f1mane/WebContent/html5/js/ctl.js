@@ -15,13 +15,11 @@ var dirZoom = '-';
 
 
 function ctl_desenha() {
-	largura = window.innerWidth;
-	altura = window.innerHeight;
-	ctlCanvas.width = largura;
-	ctlCanvas.height = altura;
+	ctlCanvas.width = window.innerWidth;
+	ctlCanvas.height = window.innerHeight;
 	ctlContext.clearRect(0, 0, ctlCanvas.width, ctlCanvas.height);
-	centroX = largura / 2;
-	centroY = altura / 2;
+	centroX = window.innerWidth / 2;
+	centroY = window.innerHeight / 2;
 	ctl_desenhaInfoSegundosParaIniciar();
 	ctl_desenhaQualificacao();
 	ctl_desenhaInfoEsquerda();
@@ -324,12 +322,12 @@ function ctl_mudaTracadoPiloto(event) {
 
 function ctl_desenhaInfo() {
 	$('#info').css('position', 'absolute');
-	if(altura>largura){
-		$('#info').css('top', (altura-100)+'px');
+	if(window.innerHeight>window.innerWidth){
+		$('#info').css('top', (window.innerHeight-100)+'px');
 	}else{
-		$('#info').css('top', (altura-40)+'px');
+		$('#info').css('top', (window.innerHeight-40)+'px');
 	}
-	if(altura<largura){
+	if(window.innerHeight<window.innerWidth){
 		$('#info').css('left',  centroX - ($('#info').width()/2)+'px');
 	}else{
 		$('#info').css('left', '10px');
@@ -339,8 +337,8 @@ function ctl_desenhaInfo() {
 	if($('#info').html().indexOf('table')>0){
 		$('#info').css('background-color', corFundo);
 		$('#info').css('font-size', '11px');
-		if(altura<largura){
-			$('#info').css('top', (altura-90)+'px');
+		if(window.innerHeight<window.innerWidth){
+			$('#info').css('top', (window.innerHeight-90)+'px');
 			$('#info').css('left', centroX - ($('#info').width()/2) +'px');
 		}
 	}else{
@@ -379,8 +377,8 @@ function ctl_desenhaInfoAsa() {
 		return
 	}
 	
-	var y =(altura > largura)?(altura - 200):(altura - 150);
-	var x = largura - 70;
+	var y =(window.innerHeight > window.innerWidth)?(window.innerHeight - 200):(window.innerHeight - 150);
+	var x = window.innerWidth - 70;
 	var img;
 	if(dadosParciais.asa == 'MAIS_ASA'){
 		img = maisAsa;
@@ -576,14 +574,14 @@ function ctl_desenhaInfoCarros() {
 		ctlContext.beginPath();
 		ctlContext.fillStyle = corFundo
 		ctlContext.font = '14px sans-serif';
-		ctlContext.fillRect(centroX - 25, altura - 40,  ctlContext.measureText(diff).width+10, 20);
+		ctlContext.fillRect(centroX - 25, window.innerHeight - 40,  ctlContext.measureText(diff).width+10, 20);
 		ctlContext.fillStyle = "black";
-		ctlContext.fillText(diff, centroX - 20, altura - 25);
+		ctlContext.fillText(diff, centroX - 20, window.innerHeight - 25);
 		ctlContext.closePath();
 		ctlContext.stroke();
 	}
 	if (img1 && desenhaImagens) {
-		desenha(ctlContext,img1, centroX - img1.width - 40, altura
+		desenha(ctlContext,img1, centroX - img1.width - 40, window.innerHeight
 				- img1.height - 10);
 		if(idPiloto1==idPilotoSelecionado){
 			ctl_problemasCarrro(img1 , centroX, idPiloto1 , 1);
@@ -591,16 +589,16 @@ function ctl_desenhaInfoCarros() {
 		if (imgPneu1) {
 			var xCarro,yCarro,xCapacete,yCapacete;
 
-			if(largura<450){
+			if(window.innerWidth<450){
 				xCarro = centroX - imgPneu1.width - 40;
-				yCarro =  altura - (imgPneu1.height*2) - 10
+				yCarro =  window.innerHeight - (imgPneu1.height*2) - 10
 			}else{
 				xCarro = centroX - imgPneu1.width - img1.width - 40;
-				yCarro =  altura - imgPneu1.height - 10;
+				yCarro =  window.innerHeight - imgPneu1.height - 10;
 			}
 			desenha(ctlContext,imgPneu1,xCarro, yCarro);
 			if (imgCap1) {
-				if(largura<450){
+				if(window.innerWidth<450){
 					xCapacete = centroX - imgCap1.width	- 30 - (imgPneu1.width);
 					yCapacete = yCarro;
 				}else{
@@ -619,22 +617,22 @@ function ctl_desenhaInfoCarros() {
 		}
 	}
 	if (img2 && desenhaImagens) {
-		desenha(ctlContext,img2, centroX + 40, altura - img2.height - 10);
+		desenha(ctlContext,img2, centroX + 40, window.innerHeight - img2.height - 10);
 		if(idPiloto2==idPilotoSelecionado){
 			ctl_problemasCarrro(img2 , centroX, idPiloto2 , 2);
 		}
 		if (imgPneu2) {
 			var xCarro,yCarro,xCapacete,yCapacete;
-			if(largura<450){
+			if(window.innerWidth<450){
 				xCarro = centroX + 40;
-				yCarro =  altura - (imgPneu2.height*2) - 10
+				yCarro =  window.innerHeight - (imgPneu2.height*2) - 10
 			}else{
 				xCarro = centroX + 40 + img2.width;
-				yCarro =  altura - imgPneu2.height - 10;
+				yCarro =  window.innerHeight - imgPneu2.height - 10;
 			}
 			desenha(ctlContext,imgPneu2, xCarro , yCarro);
 			if (imgCap2) {
-				if(largura<450){
+				if(window.innerWidth<450){
 					xCapacete = centroX + 30 + (imgPneu2.width);
 					yCapacete = yCarro;
 				}else{
@@ -670,22 +668,22 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 		ctlContext.beginPath();
 		if(perdeuAerefolio){
 			ctlContext.fillStyle = corVermelho;
-			ctlContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
+			ctlContext.fillRect(x - img.width - 35, window.innerHeight - img.height + 10 , 20, 20);
 		}else if(alertaAerefolio){
 			ctlContext.fillStyle = corAmarelo;
-			ctlContext.fillRect(x - img.width - 35, altura - img.height + 10 , 20, 20);
+			ctlContext.fillRect(x - img.width - 35, window.innerHeight - img.height + 10 , 20, 20);
 		}
 		
 		if(alertaMotorDnf){
 			ctlContext.fillStyle = corVermelho;
-			ctlContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 50, 30);
+			ctlContext.fillRect(x - (img.width/2) - 35, window.innerHeight - img.height - 10 , 50, 30);
 		}else if(dadosParciais.alertaMotor){
 			ctlContext.fillStyle = corAmarelo;
-			ctlContext.fillRect(x - (img.width/2) - 35, altura - img.height - 10 , 50, 30);
+			ctlContext.fillRect(x - (img.width/2) - 35, window.innerHeight - img.height - 10 , 50, 30);
 		}
 		if(dnf){
 			ctlContext.fillStyle = corVermelho;
-			ctlContext.fillRect(x - img.width - 40, altura	- img.height - 10, img.width, img.height);
+			ctlContext.fillRect(x - img.width - 40, window.innerHeight	- img.height - 10, img.width, img.height);
 		}
 		ctlContext.closePath();
 		ctlContext.stroke();
@@ -693,23 +691,23 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 		ctlContext.beginPath();
 		if(perdeuAerefolio){
 			ctlContext.fillStyle = corVermelho;
-			ctlContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
+			ctlContext.fillRect(x + 45, window.innerHeight - img.height + 10 , 20, 20);
 		}else if(alertaAerefolio){
 			ctlContext.fillStyle = corAmarelo;
-			ctlContext.fillRect(x + 45, altura - img.height + 10 , 20, 20);
+			ctlContext.fillRect(x + 45, window.innerHeight - img.height + 10 , 20, 20);
 		}
 		
 		if(alertaMotorDnf){
 			ctlContext.fillStyle = corVermelho;
-			ctlContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 50, 30);
+			ctlContext.fillRect(x  + (img.width/2) + 45, window.innerHeight - img.height - 10 , 50, 30);
 		}else if(dadosParciais.alertaMotor){
 			ctlContext.fillStyle = corAmarelo;
-			ctlContext.fillRect(x  + (img.width/2) + 45, altura - img.height - 10 , 50, 30);
+			ctlContext.fillRect(x  + (img.width/2) + 45, window.innerHeight - img.height - 10 , 50, 30);
 		}
 		
 		if(dnf){
 			ctlContext.fillStyle = corVermelho;
-			ctlContext.fillRect(x + 40, altura - img.height - 10, img.width, img.height);
+			ctlContext.fillRect(x + 40, window.innerHeight - img.height - 10, img.width, img.height);
 		}
 		ctlContext.closePath();
 		ctlContext.stroke();
@@ -725,14 +723,14 @@ function ctl_desenhaInfoDireita() {
 	}
 	ctlContext.beginPath();
 
-	var x = largura - 120;
+	var x = window.innerWidth - 120;
 	var y = 10;
 	
 	if(dadosParciais.box){
 		y = 30;
 	}
 
-	if (dadosParciais.melhorVolta && (altura > largura || !alternador)) {
+	if (dadosParciais.melhorVolta && (window.innerHeight > window.innerWidth || !alternador)) {
 		ctlContext.fillStyle = corFundo
 		ctlContext.fillRect(x, y, 110, 20);
 		ctlContext.font = '14px sans-serif';
@@ -743,7 +741,7 @@ function ctl_desenhaInfoDireita() {
 		y += 30;
 	}
 
-	if (dadosParciais.ultima1 && (altura > largura || !alternador)) {
+	if (dadosParciais.ultima1 && (window.innerHeight > window.innerWidth || !alternador)) {
 		ctlContext.fillStyle = corFundo
 		ctlContext.fillRect(x, y, 110, 20);
 		ctlContext.font = '14px sans-serif';
@@ -793,7 +791,7 @@ function ctl_desenhaInfoDireita() {
 	x+=50;
 	var larg = 55;
 	if (posicaoPilotos
-			&& (altura > largura || (alternador || !dadosParciais.melhorVolta))) {
+			&& (window.innerHeight > window.innerWidth || (alternador || !dadosParciais.melhorVolta))) {
 		var piloto = posicaoPilotos.posis[0];
 		var nomePiloto = pilotosMap.get(piloto.idPiloto).nomeAbreviado;
 		ctlContext.beginPath();
@@ -876,7 +874,7 @@ function ctl_desenhaInfoEsquerda() {
 	var x = 10;
 	var y = 10;
 
-	if (altura > largura || !alternador) {
+	if (window.innerHeight > window.innerWidth || !alternador) {
 
 		ctlContext.fillStyle = corFundo
 		ctlContext.font = '14px sans-serif';
@@ -951,7 +949,7 @@ function ctl_desenhaInfoEsquerda() {
 
 	}
 
-	if (altura > largura || alternador) {
+	if (window.innerHeight > window.innerWidth || alternador) {
 
 		ctlContext.fillStyle = corFundo
 		ctlContext.fillRect(x, y, 94, 20);
@@ -1077,7 +1075,7 @@ function ctl_desenhaInfoEsquerda() {
 	}
 	
 	if(showFps){
-		if(altura > largura || alternador){
+		if(window.innerHeight > window.innerWidth || alternador){
 			y += 30;	
 		}
 		ctlContext.fillStyle = corFundo
@@ -1147,7 +1145,7 @@ function ctl_gerarControles() {
 		tipo : 'controleMotor',
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : 0,
 		x : 10,
 		img : motor
@@ -1161,7 +1159,7 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : 0,
 		x : 60,
 		img : motor
@@ -1175,7 +1173,7 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : 0,
 		x : 110,
 		img : motor
@@ -1190,9 +1188,9 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : 0,
-		evalX : 'largura - 150;',
+		evalX : 'window.innerWidth - 150;',
 		x : 0,
 		img : capacete
 	});
@@ -1205,9 +1203,9 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : 0,
-		evalX : 'largura - 100;',
+		evalX : 'window.innerWidth - 100;',
 		x : 0,
 		img : capacete
 	});
@@ -1220,9 +1218,9 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 150):(window.innerHeight - 100);',
 		y : 0,
-		evalX : 'largura - 50;',
+		evalX : 'window.innerWidth - 50;',
 		x : 0,
 		img : capacete
 	});
@@ -1235,7 +1233,7 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 60,
 		height : 40,
-		evalY : '(altura > largura)?(altura - 200):(altura - 150);',
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 200):(window.innerHeight - 150);',
 		y : 0,
 		x : 10
 	});
@@ -1248,9 +1246,9 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 60,
 		height : 40,
-		evalY : '(altura > largura)?(altura - 200):(altura - 150);',
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 200):(window.innerHeight - 150);',
 		y : 0,
-		evalX : 'largura - 70;',
+		evalX : 'window.innerWidth - 70;',
 		x : 0
 	});
 
@@ -1264,7 +1262,7 @@ function ctl_gerarControles() {
 		width : 75,
 		height : 40,
 		y : 10,
-		evalX : '(largura/2 - 40);',
+		evalX : '(window.innerWidth/2 - 40);',
 		x : 0
 	});
 	
@@ -1278,8 +1276,8 @@ function ctl_gerarControles() {
 		width : 100,
 		height : 40,
 		y : 10,
-		evalX : '(largura/2 - 50);',
-		evalY : '(altura > largura)?(altura - 200):(altura - 100);',
+		evalX : '(window.innerWidth/2 - 50);',
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 200):(window.innerHeight - 100);',
 		x : 0
 	});
 
@@ -1293,7 +1291,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 60,
-		evalX : '(largura/2 - 80);',
+		evalX : '(window.innerWidth/2 - 80);',
 		x : 0,
 		img : imgPneuM
 	});
@@ -1307,7 +1305,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 60,
-		evalX : '(largura/2 - 20);',
+		evalX : '(window.innerWidth/2 - 20);',
 		x : 0,
 		img : imgPneuD
 	});
@@ -1321,7 +1319,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 60,
-		evalX : '(largura/2 + 40);',
+		evalX : '(window.innerWidth/2 + 40);',
 		x : 0,
 		img : imgPneuC
 	});
@@ -1336,7 +1334,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 110,
-		evalX : '(largura/2 - 80);',
+		evalX : '(window.innerWidth/2 - 80);',
 		x : 0,
 		img : menosAsa
 	});
@@ -1350,7 +1348,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 110,
-		evalX : '(largura/2 - 20);',
+		evalX : '(window.innerWidth/2 - 20);',
 		x : 0,
 		img : normalAsa
 	});
@@ -1364,7 +1362,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 110,
-		evalX : '(largura/2 + 40);',
+		evalX : '(window.innerWidth/2 + 40);',
 		x : 0,
 		img : maisAsa
 	});
@@ -1379,7 +1377,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 160,
-		evalX : '(largura/2 - 80);',
+		evalX : '(window.innerWidth/2 - 80);',
 		x : 0
 	});
 	controles.push({
@@ -1392,7 +1390,7 @@ function ctl_gerarControles() {
 		width : 65,
 		height : 40,
 		y : 160,
-		evalX : '(largura/2 - 30);',
+		evalX : '(window.innerWidth/2 - 30);',
 		x : 0
 	});
 	controles.push({
@@ -1405,7 +1403,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 160,
-		evalX : '(largura/2 + 45);',
+		evalX : '(window.innerWidth/2 + 45);',
 		x : 0
 	});
 	controles.push({
@@ -1418,7 +1416,7 @@ function ctl_gerarControles() {
 		width : 100,
 		height : 20,
 		y : 5,
-		evalX : '(largura - 110);',
+		evalX : '(window.innerWidth - 110);',
 		x : 0		
 	});	
 	controles.push({
@@ -1443,7 +1441,7 @@ function ctl_gerarControles() {
 		larguraTexto : true,
 		width : 190,
 		height : 40,
-		evalY : '(altura-50)',
+		evalY : '(window.innerHeight-50)',
 		evalX : '(centroX-((ctlContext.measureText(controle.exibir).width + 30)/2))',
 		x : 0
 	});	
