@@ -259,7 +259,22 @@ function vdp_atualizaSuave() {
 			indexReal = (indexReal - circuito.saidaBoxIndex) + (circuito.boxFull.length - 1);
 		}
 		var diff = (indexReal - indexSuave);
-		var ganhoSuave = vdp_loopCalculaGanhoSuave(diff, piloto);
+		// var ganhoSuave = vdp_loopCalculaGanhoSuave(diff, piloto);
+		var multi = diff / 100;
+
+		var ganhoSuave = 3.5 * multi;
+
+		if (noSuave.tipoJson == 'A') {
+			ganhoSuave = 2.5 * multi;
+		}
+		if (noSuave.tipoJson == 'B') {
+			ganhoSuave = 2 * multi
+		}
+
+//		if (piloto.idPiloto == idPilotoSelecionado) {
+//			console.log('ganhoSuave ' + ganhoSuave + ' noSuave.tipoJson ' + noSuave.tipoJson);
+//		}
+
 		var ganhoSuaveAnt = mapaGanhoSuave.get(piloto.idPiloto)
 		if (ganhoSuaveAnt == null) {
 			ganhoSuaveAnt = 0;
