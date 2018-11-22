@@ -2,7 +2,7 @@
  * Controle comandos no jogo
  */
 var controles = [];
-var largura, altura, centroX;
+var centroX;
 var cargaErs;
 var telaCheia = false;
 var corFundo = "rgba(255, 255, 255, 0.6)";
@@ -15,8 +15,8 @@ var dirZoom = '-';
 
 
 function ctl_desenha() {
-	largura = maneCanvas.width;
-	altura = maneCanvas.height;
+	largura = window.innerWidth;
+	altura = window.innerHeight;
 	ctlCanvas.width = largura;
 	ctlCanvas.height = altura;
 	ctlContext.clearRect(0, 0, ctlCanvas.width, ctlCanvas.height);
@@ -379,8 +379,8 @@ function ctl_desenhaInfoAsa() {
 		return
 	}
 	
-	var y =(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 150);
-	var x = maneCanvas.width - 70;
+	var y =(altura > largura)?(altura - 200):(altura - 150);
+	var x = largura - 70;
 	var img;
 	if(dadosParciais.asa == 'MAIS_ASA'){
 		img = maisAsa;
@@ -725,7 +725,7 @@ function ctl_desenhaInfoDireita() {
 	}
 	ctlContext.beginPath();
 
-	var x = maneCanvas.width - 120;
+	var x = largura - 120;
 	var y = 10;
 	
 	if(dadosParciais.box){
@@ -1147,7 +1147,7 @@ function ctl_gerarControles() {
 		tipo : 'controleMotor',
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
 		y : 0,
 		x : 10,
 		img : motor
@@ -1161,7 +1161,7 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
 		y : 0,
 		x : 60,
 		img : motor
@@ -1175,7 +1175,7 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
 		y : 0,
 		x : 110,
 		img : motor
@@ -1190,9 +1190,9 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
 		y : 0,
-		evalX : 'maneCanvas.width - 150;',
+		evalX : 'largura - 150;',
 		x : 0,
 		img : capacete
 	});
@@ -1205,9 +1205,9 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
 		y : 0,
-		evalX : 'maneCanvas.width - 100;',
+		evalX : 'largura - 100;',
 		x : 0,
 		img : capacete
 	});
@@ -1220,9 +1220,9 @@ function ctl_gerarControles() {
 		tipo : 'controlePiloto',
 		width : 40,
 		height : 40,
-		evalY : '(altura > largura)?(maneCanvas.height - 150):(maneCanvas.height - 100);',
+		evalY : '(altura > largura)?(altura - 150):(altura - 100);',
 		y : 0,
-		evalX : 'maneCanvas.width - 50;',
+		evalX : 'largura - 50;',
 		x : 0,
 		img : capacete
 	});
@@ -1235,7 +1235,7 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 60,
 		height : 40,
-		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
+		evalY : '(altura > largura)?(altura - 200):(altura - 150);',
 		y : 0,
 		x : 10
 	});
@@ -1248,9 +1248,9 @@ function ctl_gerarControles() {
 		larguraTexto : false,
 		width : 60,
 		height : 40,
-		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 150);',
+		evalY : '(altura > largura)?(altura - 200):(altura - 150);',
 		y : 0,
-		evalX : 'maneCanvas.width - 70;',
+		evalX : 'largura - 70;',
 		x : 0
 	});
 
@@ -1264,7 +1264,7 @@ function ctl_gerarControles() {
 		width : 75,
 		height : 40,
 		y : 10,
-		evalX : '(maneCanvas.width/2 - 40);',
+		evalX : '(largura/2 - 40);',
 		x : 0
 	});
 	
@@ -1278,8 +1278,8 @@ function ctl_gerarControles() {
 		width : 100,
 		height : 40,
 		y : 10,
-		evalX : '(maneCanvas.width/2 - 50);',
-		evalY : '(altura > largura)?(maneCanvas.height - 200):(maneCanvas.height - 100);',
+		evalX : '(largura/2 - 50);',
+		evalY : '(altura > largura)?(altura - 200):(altura - 100);',
 		x : 0
 	});
 
@@ -1293,7 +1293,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 60,
-		evalX : '(maneCanvas.width/2 - 80);',
+		evalX : '(largura/2 - 80);',
 		x : 0,
 		img : imgPneuM
 	});
@@ -1307,7 +1307,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 60,
-		evalX : '(maneCanvas.width/2 - 20);',
+		evalX : '(largura/2 - 20);',
 		x : 0,
 		img : imgPneuD
 	});
@@ -1321,7 +1321,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 60,
-		evalX : '(maneCanvas.width/2 + 40);',
+		evalX : '(largura/2 + 40);',
 		x : 0,
 		img : imgPneuC
 	});
@@ -1336,7 +1336,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 110,
-		evalX : '(maneCanvas.width/2 - 80);',
+		evalX : '(largura/2 - 80);',
 		x : 0,
 		img : menosAsa
 	});
@@ -1350,7 +1350,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 110,
-		evalX : '(maneCanvas.width/2 - 20);',
+		evalX : '(largura/2 - 20);',
 		x : 0,
 		img : normalAsa
 	});
@@ -1364,7 +1364,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 110,
-		evalX : '(maneCanvas.width/2 + 40);',
+		evalX : '(largura/2 + 40);',
 		x : 0,
 		img : maisAsa
 	});
@@ -1379,7 +1379,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 160,
-		evalX : '(maneCanvas.width/2 - 80);',
+		evalX : '(largura/2 - 80);',
 		x : 0
 	});
 	controles.push({
@@ -1392,7 +1392,7 @@ function ctl_gerarControles() {
 		width : 65,
 		height : 40,
 		y : 160,
-		evalX : '(maneCanvas.width/2 - 30);',
+		evalX : '(largura/2 - 30);',
 		x : 0
 	});
 	controles.push({
@@ -1405,7 +1405,7 @@ function ctl_gerarControles() {
 		width : 40,
 		height : 40,
 		y : 160,
-		evalX : '(maneCanvas.width/2 + 45);',
+		evalX : '(largura/2 + 45);',
 		x : 0
 	});
 	controles.push({
@@ -1418,7 +1418,7 @@ function ctl_gerarControles() {
 		width : 100,
 		height : 20,
 		y : 5,
-		evalX : '(maneCanvas.width - 110);',
+		evalX : '(largura - 110);',
 		x : 0		
 	});	
 	controles.push({
@@ -1443,7 +1443,7 @@ function ctl_gerarControles() {
 		larguraTexto : true,
 		width : 190,
 		height : 40,
-		evalY : '(maneCanvas.height-50)',
+		evalY : '(altura-50)',
 		evalX : '(centroX-((ctlContext.measureText(controle.exibir).width + 30)/2))',
 		x : 0
 	});	
