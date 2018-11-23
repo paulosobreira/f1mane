@@ -6,9 +6,11 @@ if (localStorage.getItem("versao") != $("#versao").val()) {
 	console.log('Limpando localStorage versao: ' + $("#versao").val());
 	var token = localStorage.getItem("token");
 	var plataforma = localStorage.getItem('plataforma');
+	var tela = localStorage.getItem('tela');
 	localStorage.clear();
 	localStorage.setItem("versao", $("#versao").val());
 	localStorage.setItem('plataforma', plataforma);
+	localStorage.setItem('tela', tela);
 	if (token != null) {
 		localStorage.setItem("token", token);
 	}
@@ -69,7 +71,7 @@ if (userLang != null && localStorage.getItem('idioma') == null) {
 $('#btnJogar').html(lang_text('jogar'));
 $('#btnSobre').html(lang_text('sobre'));
 $('#btnControles').html(lang_text('verControles'));
-$('#btnIdioma').html(lang_text('linguagem'));
+$('#btnConfiguracao').html(lang_text('configuracao'));
 $('#btnClassificacao').html(lang_text('ranking'));
 $('#btnEquipe').html(lang_text('221'));
 $('#btnCampeonato').html(lang_text('268'));

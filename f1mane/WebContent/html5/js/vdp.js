@@ -28,11 +28,13 @@ var ptBg = {
 	x : 0,
 	y : 0
 };
-var largura, altura;
-var descontoCanvas = 150;
+var largura = 0
+var altura = 0;
+var descontoCanvasY = 0;
+var descontoCanvasX = 0;
 var rectBg = {
 	left : ptBg.x,
-	top : ptBg.y + descontoCanvas,
+	top : ptBg.y,
 	right : ptBg.x + largura,
 	bottom : ptBg.y + altura
 };
@@ -69,23 +71,8 @@ var fps;
 
 function vdp_desenha(fps_p) {
 	fps = fps_p;
-	altura = maneCanvas.height - (2*descontoCanvas);
-	largura = maneCanvas.width;
-	if (imgBg && imgBg.complete) {
-		if (imgBg.width == 0 || imgBg.height == 0) {
-			imgBg.src = "/f1mane/rest/letsRace/circuitoBg/"
-					+ circuito.backGround;
-		}
-	}
-	if (imgBg && imgBg.complete) {
-		console.log('imgBg && imgBg.complete');
-		cvBg = document.createElement('canvas');
-		cvBg.width = imgBg.width;
-		cvBg.height = imgBg.height;
-		ctxBg = cvBg.getContext('2d');
-		desenha(ctxBg, imgBg, 0, 0);
-		imgBg = null;
-	}
+	vdp_processaAlturaLargura();
+	vdp_processaBackGround();
 	if (dadosJogo == null || circuito == null || !ativo || !cvBg
 			|| contCarregouMidia != 0) {
 		return;
@@ -102,6 +89,40 @@ function vdp_desenha(fps_p) {
 	vdp_desenhaFarois();
 	vdp_ctl();
 	vdp_debugRectBg();
+}
+
+function vdp_processaAlturaLargura() {
+	maneCanvas.width = window.innerWidth;
+	maneCanvas.height = window.innerHeight;
+	if (localStorage.getItem('tela') == 'menor') {
+		if (maneCanvas.width > maneCanvas.height) {
+			descontoCanvasX = ((maneCanvas.width * 20) / 100);
+			descontoCanvasY = 0;
+		} else {
+			descontoCanvasY = ((maneCanvas.height * 20) / 100);
+			descontoCanvasX = 0;
+		}
+	}
+	altura = maneCanvas.height - (2 * descontoCanvasY);
+	largura = maneCanvas.width - (2 * descontoCanvasX);
+}
+
+function vdp_processaBackGround() {
+	if (imgBg && imgBg.complete) {
+		if (imgBg.width == 0 || imgBg.height == 0) {
+			imgBg.src = "/f1mane/rest/letsRace/circuitoBg/"
+					+ circuito.backGround;
+		}
+	}
+	if (imgBg && imgBg.complete) {
+		console.log('imgBg && imgBg.complete');
+		cvBg = document.createElement('canvas');
+		cvBg.width = imgBg.width;
+		cvBg.height = imgBg.height;
+		ctxBg = cvBg.getContext('2d');
+		desenha(ctxBg, imgBg, 0, 0);
+		imgBg = null;
+	}
 }
 
 function vdp_ctl() {
@@ -273,7 +294,7 @@ function vdp_atualizaSuave() {
 		// var ganhoSuave = vdp_loopCalculaGanhoSuave(diff, piloto);
 		var multi = diff / 100;
 
-		var ganhoSuave = 3.5 * multi;
+		var ganhoSuave = 2.5 * multi;
 
 		if (noSuave.tipoJson == 'A') {
 			ganhoSuave = 2.5 * multi;
@@ -282,29 +303,25 @@ function vdp_atualizaSuave() {
 			ganhoSuave = 2 * multi
 		}
 
-		// if (piloto.idPiloto == idPilotoSelecionado) {
-		// console.log('ganhoSuave ' + ganhoSuave + ' noSuave.tipoJson ' +
-		// noSuave.tipoJson);
-		// }
-
 		var ganhoSuaveAnt = mapaGanhoSuave.get(piloto.idPiloto)
 		if (ganhoSuaveAnt == null) {
 			ganhoSuaveAnt = 0;
 		}
 		var incGanhoSuaveAnt = 1;
-		if (noSuave.tipoJson == 'R') {
-			incGanhoSuaveAnt = 1 / (ganhoSuave < 2 ? ganhoSuave
-					: (ganhoSuave / 2));
-		}
+
 		if (ganhoSuave > ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt + incGanhoSuaveAnt;
 		}
 		if (ganhoSuave <= ganhoSuaveAnt) {
+			if (noSuave.tipoJson == 'R') {
+				incGanhoSuaveAnt = 1 / (ganhoSuave < 2 ? ganhoSuave
+						: (ganhoSuave / 2));
+			}
 			ganhoSuave = ganhoSuaveAnt - incGanhoSuaveAnt;
 		}
 		if (noSuave.tipoJson == 'R' && noReal.tipoJson == 'R'
 				&& sleepDefault == sleepMain && ganhoSuaveAnt > ganhoSuave
-				&& diff > 200) {
+				&& diff > intervaloInt(200,300)) {
 			ganhoSuave = ganhoSuaveAnt;
 		}
 		if (diff == 0) {
@@ -313,9 +330,12 @@ function vdp_atualizaSuave() {
 		if (ganhoSuave <= 0) {
 			ganhoSuave = 0;
 		}
+
 		// if (piloto.idPiloto == idPilotoSelecionado) {
-		// console.log('ganhoSuave ' + ganhoSuave);
+		// console.log('ganhoSuave ' + ganhoSuave + ' noSuave.tipoJson ' +
+		// noSuave.tipoJson);
 		// }
+
 		mapaGanhoSuave.set(piloto.idPiloto, ganhoSuave);
 		var novoIndex = noSuave.index + Math.round(ganhoSuave);
 		if (novoIndex > indexReal) {
@@ -966,9 +986,6 @@ function vdp_desenhaObjs() {
 }
 
 function vdp_centralizaPonto(ponto) {
-	maneCanvas.width = window.innerWidth;
-	maneCanvas.height = window.innerHeight;
-
 	var x = ponto.x;
 	var y = ponto.y;
 
@@ -995,10 +1012,10 @@ function vdp_centralizaPonto(ponto) {
 	ptBg.y = y;
 
 	rectBg = {
-		left : ptBg.x,
-		top : ptBg.y + descontoCanvas,
-		right : ptBg.x + largura,
-		bottom : ptBg.y + altura
+		left : ptBg.x + descontoCanvasX,
+		top : ptBg.y + descontoCanvasY,
+		right : ptBg.x + largura + descontoCanvasX,
+		bottom : ptBg.y + altura + descontoCanvasY
 	};
 }
 
@@ -1067,15 +1084,15 @@ function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto) {
 	return cvBlend;
 }
 
-
 function vdp_desenhaBackGround() {
 	maneContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
-	var sW = zoom * (window.innerWidth);
+	var sW = zoom * (largura);
 	var sH = zoom * (altura);
 	if (desenhaImagens) {
 		try {
-			maneContext.drawImage(cvBg, (ptBg.x) * zoom, (ptBg.y+descontoCanvas) * zoom, sW, sH,
-					0, descontoCanvas, largura, altura);
+			maneContext.drawImage(cvBg, (ptBg.x + descontoCanvasX) * zoom,
+					(ptBg.y + descontoCanvasY) * zoom, sW, sH, descontoCanvasX,
+					descontoCanvasY, largura, altura);
 		} catch (e) {
 			console.log('vdp_desenhaBackGround');
 			console.log(e);
@@ -1303,14 +1320,16 @@ function vdp_desenhaClima() {
 		return;
 	}
 	maneContext.fillStyle = corCeu;
-	maneContext.fillRect(0, descontoCanvas, largura, altura);
+	var maxX = largura + descontoCanvasX;
+	var maxY = altura + descontoCanvasY;
+	maneContext.fillRect(descontoCanvasX, descontoCanvasY, maxX, maxY);
 
 	if (dadosParciais && dadosParciais.clima
 			&& dadosParciais.clima == "chuva.png") {
 		var p1;
 		var p2;
-		for (var i = 0; i < largura; i += 20) {
-			for (var j = descontoCanvas; j < altura; j += 20) {
+		for (var i = descontoCanvasX; i < maxX; i += 20) {
+			for (var j = descontoCanvasY; j < maxY; j += 20) {
 				if (Math.random() > .8) {
 					p1 = {
 						x : i + 10,
