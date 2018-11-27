@@ -1243,4 +1243,22 @@ public class ControlePaddockServidor {
 		}
 
 	}
+
+	public Object renovarSessaoVisitante(String token) {
+		List<SessaoCliente> clientes = dadosPaddock.getClientes();
+		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+			if (token.equals(sessaoCliente.getToken())) {
+				SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
+				sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+				srvPaddockPack.setSessaoCliente(sessaoCliente);
+				if (Util.isNullOrEmpty(sessaoCliente.getNomeJogador())) {
+					return new MsgSrv(Lang.msg("064"));
+				}
+				salvarAcessoSessaoGoogle(sessaoCliente);
+				return srvPaddockPack;
+			}
+		}
+		return criarSessaoVisitante();
+	}
 }

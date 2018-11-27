@@ -86,6 +86,15 @@ public class LetsRace {
 		return Response.status(200)
 				.entity(controlePaddock.criarSessaoVisitante()).build();
 	}
+	
+	
+	@GET
+	@Path("/renovarSessaoVisitante/{token}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response renovarSessaoVisitante(@PathParam("token") String token) {
+		return Response.status(200)
+				.entity(controlePaddock.renovarSessaoVisitante(token)).build();
+	}
 
 	@GET
 	@Path("/dadosToken")
