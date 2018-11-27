@@ -96,10 +96,10 @@ function vdp_processaAlturaLargura() {
 	maneCanvas.height = window.innerHeight;
 	if (localStorage.getItem('tela') == 'menor') {
 		if (maneCanvas.width > maneCanvas.height) {
-			descontoCanvasX = ((maneCanvas.width * 25) / 100);
+			descontoCanvasX = ((maneCanvas.width * 20) / 100);
 			descontoCanvasY = 0;
 		} else {
-			descontoCanvasY = ((maneCanvas.height * 25) / 100);
+			descontoCanvasY = ((maneCanvas.height * 20) / 100);
 			descontoCanvasX = 0;
 		}
 	}
