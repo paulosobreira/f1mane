@@ -54,7 +54,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
 public class ControlePaddockCliente {
 	private URL url;
 	private AppletPaddock applet;
-	private String urlSufix;
+	private String urlSufix = "/f1mane/ServletPaddock";
 	private SessaoCliente sessaoCliente;
 	private PaddockWindow paddockWindow;
 	private Thread threadAtualizadora;
@@ -113,7 +113,7 @@ public class ControlePaddockCliente {
 		Properties properties = new Properties();
 		properties.load(PaddockConstants.class
 				.getResourceAsStream("client.properties"));
-		this.urlSufix = properties.getProperty("servidor");
+		//this.urlSufix = properties.getProperty("servidor");
 	}
 
 	public Object enviarObjeto(Object enviar) {

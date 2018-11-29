@@ -39,7 +39,6 @@ public class AppletPaddock {
 		}
 		return " " + decimalFormat.format(new Integer(versao));
 	}
-	
 
 	public String getVersao() {
 		if (versao == null) {
@@ -51,7 +50,7 @@ public class AppletPaddock {
 		}
 		return versao;
 	}
-	
+
 	public static void main(String[] args) throws MalformedURLException {
 		AppletPaddock appletPaddock = new AppletPaddock();
 		if (args != null && args.length > 0) {
@@ -62,26 +61,31 @@ public class AppletPaddock {
 			Logger.logar("lang "+args[1]);
 			Lang.mudarIdioma(args[1]);
 		}
+		if(appletPaddock.getCodeBase()==null){
+			//appletPaddock.codeBase = new URL(JOptionPane.showInputDialog("Host do servidor"));
+			appletPaddock.codeBase = new URL("http://localhost");
+			
+		}
 		appletPaddock.init();
 	}
-	
+
 	public void init() {
 		try {
 			frame = new JFrame();
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			initProperties();
-			controlePaddockCliente = new ControlePaddockCliente(this
-					.getCodeBase(), this);
-			
+			controlePaddockCliente = new ControlePaddockCliente(
+					this.getCodeBase(), this);
+
 			controlePaddockCliente.verificaVersao();
-			
+
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
 					controlePaddockCliente.logar();
 				}
 			};
-			
+
 			Thread thread = new Thread(runnable);
 			thread.start();
 		} catch (Exception e) {
@@ -91,18 +95,17 @@ public class AppletPaddock {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(null, retorno.toString(), Lang
-					.msg("059"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, retorno.toString(),
+					Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 
 	}
 
-
 	public URL getCodeBase() {
 		return codeBase;
 	}
-	
+
 	public JFrame getFrame() {
 		return frame;
 	}
