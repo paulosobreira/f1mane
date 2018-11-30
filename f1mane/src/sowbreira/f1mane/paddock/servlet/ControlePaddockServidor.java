@@ -221,7 +221,7 @@ public class ControlePaddockServidor {
 		try {
 
 			if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
-				jogadorDadosSrv = controlePersistencia.carregaDadosJogador(
+				jogadorDadosSrv = controlePersistencia.carregaDadosJogadorNome(
 						clientPaddockPack.getNomeJogador(), session);
 			}
 			if (jogadorDadosSrv == null && !Util
@@ -246,6 +246,8 @@ public class ControlePaddockServidor {
 					jogadorDadosSrv.setSenha(Util.md5(senha));
 					clientPaddockPack
 							.setSenhaJogador(jogadorDadosSrv.getSenha());
+					jogadorDadosSrv.setIdGoogle(
+							"local - " + System.currentTimeMillis());
 					controlePersistencia.adicionarJogador(
 							jogadorDadosSrv.getNome(), jogadorDadosSrv,
 							session);
@@ -256,8 +258,9 @@ public class ControlePaddockServidor {
 				return new MsgSrv(Lang.msg("loginIndisponivel"));
 			}
 		} finally {
-			if (session.isOpen())
+			if (session != null && session.isOpen()) {
 				session.close();
+			}
 		}
 
 		return criarSessao(clientPaddockPack, senha);
@@ -656,7 +659,7 @@ public class ControlePaddockServidor {
 			String senha) {
 		Session session = controlePersistencia.getSession();
 		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-				.carregaDadosJogador(clientPaddockPack.getNomeJogador(),
+				.carregaDadosJogadorNome(clientPaddockPack.getNomeJogador(),
 						session);
 		if (jogadorDadosSrv == null) {
 			jogadorDadosSrv = controlePersistencia.carregaDadosJogadorEmail(
@@ -916,9 +919,10 @@ public class ControlePaddockServidor {
 	public List obterClassificacaoCircuito(String nomeCircuito) {
 		return controleClassificacao.obterClassificacaoCircuito(nomeCircuito);
 	}
-	
+
 	public Object obterClassificacaoTemporada(String temporadaSelecionada) {
-		return controleClassificacao.obterClassificacaoTemporada(temporadaSelecionada);
+		return controleClassificacao
+				.obterClassificacaoTemporada(temporadaSelecionada);
 	}
 
 	public Object obterClassificacaoGeral() {
@@ -1061,7 +1065,7 @@ public class ControlePaddockServidor {
 	public CampeonatoTO obterCampeonatoEmAberto(String token) {
 		return controleCampeonatoServidor.obterCampeonatoEmAbertoTO(token);
 	}
-	
+
 	public CampeonatoTO obterCampeonatoId(String id) {
 		return controleCampeonatoServidor.obterCampeonatoIdTO(id);
 	}
