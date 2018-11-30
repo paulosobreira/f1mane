@@ -125,35 +125,10 @@ public class ControlePaddockServidor {
 					return new MsgSrv(Lang.msg("novaVersao"));
 				}
 				return "OK";
-			} else if (Comandos.REGISTRAR_LOGIN
+			} else if (Comandos.GUEST_LOGIN_APPLET
 					.equals(clientPaddockPack.getComando())) {
-				if ("IA".equals(
-						clientPaddockPack.getNomeJogador().toUpperCase())
-						|| clientPaddockPack.getNomeJogador().toUpperCase()
-								.startsWith("MANE")
-						|| clientPaddockPack.getNomeJogador().contains("£")
-						|| clientPaddockPack.getNomeJogador().contains("§")) {
-					return new MsgSrv(Lang.msg("242"));
-				}
-
-				if (clientPaddockPack.isRecuperar()) {
-					return resetaSenha(clientPaddockPack);
-
-				}
-				if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())
-						&& !Util.isNullOrEmpty(
-								clientPaddockPack.getEmailJogador())) {
-					return criarLogin(clientPaddockPack);
-				}
-
-				if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())
-						&& !Util.isNullOrEmpty(
-								clientPaddockPack.getSenhaJogador())) {
-					return criarSessao(clientPaddockPack);
-				}
-
-				return new MsgSrv(Lang.msg("242"));
-			}
+				return criarSessaoVisitante();
+			} 
 			return processarComando(clientPaddockPack);
 		}
 		return new MsgSrv(Lang.msg("209"));

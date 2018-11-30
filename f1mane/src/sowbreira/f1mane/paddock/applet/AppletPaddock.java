@@ -82,7 +82,8 @@ public class AppletPaddock {
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
-					controlePaddockCliente.logar();
+					//controlePaddockCliente.logar();
+					controlePaddockCliente.logarGuest();
 				}
 			};
 

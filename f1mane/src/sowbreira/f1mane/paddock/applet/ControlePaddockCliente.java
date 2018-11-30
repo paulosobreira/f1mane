@@ -113,7 +113,7 @@ public class ControlePaddockCliente {
 		Properties properties = new Properties();
 		properties.load(PaddockConstants.class
 				.getResourceAsStream("client.properties"));
-		//this.urlSufix = properties.getProperty("servidor");
+		// this.urlSufix = properties.getProperty("servidor");
 	}
 
 	public Object enviarObjeto(Object enviar) {
@@ -511,6 +511,20 @@ public class ControlePaddockCliente {
 
 	}
 
+
+	public void logarGuest() {
+		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
+		clientPaddockPack.setComando(Comandos.GUEST_LOGIN_APPLET);
+		Object ret = enviarObjeto(clientPaddockPack);
+		if (ret == null) {
+			Logger.logar("GUEST_LOGIN_APPLET ret == null");
+			return;
+		}
+		SrvPaddockPack srvPaddockPack = (SrvPaddockPack) ret;
+		sessaoCliente = srvPaddockPack.getSessaoCliente();
+		atualizaVisao(paddockWindow);
+	}
+	
 	public boolean registrarUsuario(FormEntrada formEntrada) {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setRecuperar(false);
@@ -975,7 +989,7 @@ public class ControlePaddockCliente {
 			PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
 					jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
 					mainFrame, sessaoCliente.getNomeJogador(), jogoCliente);
-			//campeonato.setCircuitoAtual(nomeCircuito);
+			// campeonato.setCircuitoAtual(nomeCircuito);
 			painelEntradaCliente.setCampeonato(campeonato);
 			DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();
 			dadosCriarJogo.setNomeCampeonato(campeonato.getNome());
