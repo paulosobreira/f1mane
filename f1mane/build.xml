@@ -12,6 +12,7 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetHtml">
+	<property name="DOCKER" value="C:\Google Drive\docker\windows" /> 
 	<property name="TOMCAT_HOME" value="E:\apache-tomcat-7.0.35" /> 
 	<!--<property name="TOMCAT_HOME" value="C:\Java\apache-tomcat-7.0.73" />-->
 	<property name="HOST" value="games-sowbreira.rhcloud.com" />
@@ -28,6 +29,9 @@
 		</fileset>
 		<pathelement location="buildAnt" />
 	</path>
+	
+	<target name="targetDocker" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddockHTML,atualizarVersaoHtml,criarWarDocker,limpaJars">
+	</target>
 
 	<target name="targetHtml" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddockHTML,atualizarVersaoHtml,criarWar,limpaJars">
 	</target>
@@ -160,6 +164,21 @@
 		<delete file="WebContent/f1mane.zip" />
 	</target>
 
+	<target name="criarWarDocker">
+		<war compress="on" destfile="${DOCKER}/f1mane.war">
+			<fileset dir="WebContent">
+				<exclude name="**/*.jnlp" />
+				<exclude name="**/*.html" />
+			</fileset>
+			<fileset dir="buildAnt">
+				<include name="**/*.jnlp" />
+				<include name="**/*.html" />
+			</fileset>
+		</war>
+		<delete dir="WebContent/sowbreira" />
+		<delete file="WebContent/f1mane.zip" />
+	</target>
+	
 
 	<target name="criarWarNoLibs">
 		<delete dir="${TOMCAT_HOME}/webapps/f1mane" />
