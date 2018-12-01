@@ -103,14 +103,12 @@ function dadosJogador() {
 		},
 		success : function(srvPaddockPack) {
 			if (srvPaddockPack) {
-				if (srvPaddockPack.sessaoCliente.guest) {
-					localStorage.removeItem("token");
-					return;
-				}
 				localStorage.setItem("nomeJogador", srvPaddockPack.sessaoCliente.nomeJogador);
-				localStorage.setItem("imagemJogador", srvPaddockPack.sessaoCliente.imagemJogador);
 				$('#nomeJogador').append('<b>' + localStorage.getItem("nomeJogador") + '</b>');
-				$('#imgJogador').attr('src', localStorage.getItem("imagemJogador"));
+				if (!srvPaddockPack.sessaoCliente.guest) {
+					localStorage.setItem("imagemJogador", srvPaddockPack.sessaoCliente.imagemJogador);
+					$('#imgJogador').attr('src', localStorage.getItem("imagemJogador"));
+				}
 				if (srvPaddockPack.sessaoCliente.jogoAtual) {
 					localStorage.setItem("nomeJogo", srvPaddockPack.sessaoCliente.jogoAtual);
 				}

@@ -355,6 +355,9 @@ public class ControleClassificacao {
 
 	public Object verCarreira(ClientPaddockPack clientPaddockPack,
 			Session session) {
+		if (!Constantes.DATABASE) {
+			return null;
+		}
 		return verCarreira(clientPaddockPack.getSessaoCliente().getToken(),
 				session);
 	}

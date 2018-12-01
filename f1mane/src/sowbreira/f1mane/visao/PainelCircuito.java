@@ -90,7 +90,6 @@ public class PainelCircuito {
 	public final static Color luzDistProx2 = new Color(255, 255, 0, 100);
 	public final static Color luzLargadaApagada = new Color(255, 255, 255, 170);
 	public final static Color luzLargadaAcesa = new Color(255, 10, 10, 255);
-	public final static Color farolLargada = new Color(0, 0, 0);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public final static Color lightRed = new Color(250, 0, 0, 100);
 	public final static Color gre = new Color(0, 255, 0, 150);
@@ -250,6 +249,12 @@ public class PainelCircuito {
 	private BufferedImage carroCimaFreiosE3;
 	private BufferedImage carroCimaFreiosE4;
 	private BufferedImage carroCimaFreiosE5;
+	private BufferedImage imgFarois;
+	private BufferedImage imgFarois1;
+	private BufferedImage imgFarois2;
+	private BufferedImage imgFarois3;
+	private BufferedImage imgFarois4;
+	private BufferedImage imgFaroisApagados;
 
 	private BufferedImage iconLua;
 	private BufferedImage iconSol;
@@ -590,6 +595,13 @@ public class PainelCircuito {
 		iconSol = CarregadorRecursos.carregaBufferedImage("sol.png");
 		iconNublado = CarregadorRecursos.carregaBufferedImage("nublado.png");
 		iconChuva = CarregadorRecursos.carregaBufferedImage("chuva.png");
+		imgFarois = CarregadorRecursos.carregaBufferedImage("farois.png");
+		imgFarois1 = CarregadorRecursos.carregaBufferedImage("farois1.png");
+		imgFarois2 = CarregadorRecursos.carregaBufferedImage("farois2.png");
+		imgFarois3 = CarregadorRecursos.carregaBufferedImage("farois3.png");
+		imgFarois4 = CarregadorRecursos.carregaBufferedImage("farois4.png");
+		imgFaroisApagados = CarregadorRecursos
+				.carregaBufferedImage("farois-apagados.png");
 
 	}
 
@@ -5518,68 +5530,32 @@ public class PainelCircuito {
 		/**
 		 * 1ª luz
 		 */
-		g2d.setColor(farolLargada);
-		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
-				20, 50, 0, 0);
-		g2d.setColor(luzLargadaApagada);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
-				14, 14);
-		if (qtdeLuzesApagadas <= 5) {
-			g2d.setColor(OcilaCor.geraOcila("farol0", luzLargadaAcesa));
-		}
-		g2d.fillOval(limitesViewPort.x + xIni + 3,
-				limitesViewPort.y + yIni + 30, 14, 14);
-		xIni += 25;
-		g2d.setColor(farolLargada);
-		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
-				20, 50, 0, 0);
-		g2d.setColor(luzLargadaApagada);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
-				14, 14);
-		if (qtdeLuzesApagadas <= 4) {
-			g2d.setColor(OcilaCor.geraOcila("farol1", luzLargadaAcesa));
-		}
-		g2d.fillOval(limitesViewPort.x + xIni + 3,
-				limitesViewPort.y + yIni + 30, 14, 14);
-		xIni += 25;
-		g2d.setColor(farolLargada);
-		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
-				20, 50, 0, 0);
-		g2d.setColor(luzLargadaApagada);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
-				14, 14);
 
-		if (qtdeLuzesApagadas <= 3) {
-			g2d.setColor(OcilaCor.geraOcila("farol2", luzLargadaAcesa));
+		if (qtdeLuzesApagadas == 5) {
+			g2d.drawImage(imgFarois, limitesViewPort.x + xIni,
+					limitesViewPort.y + yIni, null);
 		}
-		g2d.fillOval(limitesViewPort.x + xIni + 3,
-				limitesViewPort.y + yIni + 30, 14, 14);
-		xIni += 25;
-		g2d.setColor(farolLargada);
-		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
-				20, 50, 0, 0);
-		g2d.setColor(luzLargadaApagada);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
-				14, 14);
+		if (qtdeLuzesApagadas < 5) {
+			g2d.drawImage(imgFarois4, limitesViewPort.x + xIni,
+					limitesViewPort.y + yIni, null);
+		}
 
-		if (qtdeLuzesApagadas <= 2) {
-			g2d.setColor(OcilaCor.geraOcila("farol3", luzLargadaAcesa));
+		if (qtdeLuzesApagadas < 4) {
+			g2d.drawImage(imgFarois3, limitesViewPort.x + xIni,
+					limitesViewPort.y + yIni, null);
 		}
-		g2d.fillOval(limitesViewPort.x + xIni + 3,
-				limitesViewPort.y + yIni + 30, 14, 14);
-		xIni += 25;
-		g2d.setColor(farolLargada);
-		g2d.fillRoundRect(limitesViewPort.x + xIni, limitesViewPort.y + yIni,
-				20, 50, 0, 0);
-		g2d.setColor(luzLargadaApagada);
-		g2d.fillOval(limitesViewPort.x + xIni + 3, limitesViewPort.y + yIni + 5,
-				14, 14);
-
-		if (qtdeLuzesApagadas <= 1) {
-			g2d.setColor(OcilaCor.geraOcila("farol4", luzLargadaAcesa));
+		if (qtdeLuzesApagadas < 3) {
+			g2d.drawImage(imgFarois2, limitesViewPort.x + xIni,
+					limitesViewPort.y + yIni, null);
 		}
-		g2d.fillOval(limitesViewPort.x + xIni + 3,
-				limitesViewPort.y + yIni + 30, 14, 14);
+		if (qtdeLuzesApagadas < 2) {
+			g2d.drawImage(imgFarois1, limitesViewPort.x + xIni,
+					limitesViewPort.y + yIni, null);
+		}
+		if (qtdeLuzesApagadas < 1) {
+			g2d.drawImage(imgFaroisApagados, limitesViewPort.x + xIni,
+					limitesViewPort.y + yIni, null);
+		}
 	}
 
 	private void desenhaNomePilotoSelecionado(Piloto ps, Graphics2D g2d) {

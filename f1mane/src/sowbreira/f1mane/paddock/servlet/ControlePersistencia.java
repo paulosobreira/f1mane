@@ -293,6 +293,16 @@ public class ControlePersistencia {
 		return jogadorDadosSrv;
 	}
 
+	public JogadorDadosSrv carregaDadosJogadorNome(String nomeJogador,
+			Session session) {
+		List jogador = session.createCriteria(JogadorDadosSrv.class)
+				.add(Restrictions.eq("nome", nomeJogador)).list();
+		JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) (jogador.isEmpty()
+				? null
+				: jogador.get(0));
+		return jogadorDadosSrv;
+	}
+
 	public JogadorDadosSrv carregaDadosJogadorId(Long id, Session session) {
 		List jogador = session.createCriteria(JogadorDadosSrv.class)
 				.add(Restrictions.eq("id", id)).list();
