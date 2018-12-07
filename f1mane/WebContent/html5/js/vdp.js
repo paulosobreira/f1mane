@@ -10,6 +10,7 @@ var mapaGanhoSuave = new Map();
 var mapaPontoSuave = new Map();
 var mapaRastroChuva = new Map();
 var pilotosEfeitosMap = new Map();
+var measureText = new Map();
 var rotateCache = true;
 var cvBlend = document.createElement('canvas');
 var ctxBlend = cvBlend.getContext('2d');
@@ -688,7 +689,11 @@ function vdp_desenhaNomesCima() {
 			}
 			nmPiloto = posicao + ' ' + nmPiloto;
 		}
-		var laruraTxt = maneContext.measureText(nmPiloto).width + 10;
+		var laruraTxt = measureText.get(nmPiloto);
+		if(laruraTxt == null){
+			laruraTxt = maneContext.measureText(nmPiloto).width + 10;
+			measureText.set(nmPiloto,laruraTxt);
+		}
 		if (idPilotoSelecionado == piloto.idPiloto) {
 			maneContext.strokeStyle = '#00ff00';
 			maneContext.rect(x - 5, y, laruraTxt, 20);
@@ -1097,6 +1102,9 @@ function vdp_desenhaBackGround() {
 	var sH = zoom * (altura);
 	if (desenhaImagens) {
 		try {
+			if (localStorage.getItem('tela') == 'menor') {
+				maneContext.imageSmoothingEnabled = false;
+			}
 			maneContext.drawImage(cvBg, (ptBg.x + descontoCanvasX) * zoom,
 					(ptBg.y + descontoCanvasY) * zoom, sW, sH, descontoCanvasX,
 					descontoCanvasY, largura, altura);

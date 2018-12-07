@@ -63,7 +63,7 @@ public class AppletPaddock {
 		}
 		if(appletPaddock.getCodeBase()==null){
 			//appletPaddock.codeBase = new URL(JOptionPane.showInputDialog("Host do servidor"));
-			appletPaddock.codeBase = new URL("http://db:8080");
+			appletPaddock.codeBase = new URL("http://localhost");
 			
 		}
 		appletPaddock.init();

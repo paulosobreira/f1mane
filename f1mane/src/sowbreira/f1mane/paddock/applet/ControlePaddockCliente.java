@@ -1049,7 +1049,6 @@ public class ControlePaddockCliente {
 	}
 
 	public void verificaVersao() {
-
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setComando(Comandos.VERIFICA_VERSAO);
 		clientPaddockPack.setVersao(Integer.parseInt(getVersao()));
@@ -1058,12 +1057,7 @@ public class ControlePaddockCliente {
 		if (!retornoNaoValido(ret) && ret == null) {
 			JOptionPane.showMessageDialog(applet.getFrame(),
 					Lang.msg("erroAcessando", new String[]{url.toString()}),
-					Lang.msg("060"), JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
+					Lang.msg("060"), JOptionPane.INFORMATION_MESSAGE);
 		}
-		if (!"OK".equals(ret)) {
-			System.exit(0);
-		}
-
 	}
 }

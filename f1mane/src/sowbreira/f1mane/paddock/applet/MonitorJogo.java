@@ -369,16 +369,9 @@ public class MonitorJogo implements Runnable {
 				String statusPilotos = posis.getStatus();
 				if (statusPilotos != null) {
 					if (statusPilotos.startsWith("P")) {
-						piloto.setPtosPista(
-								new Long(statusPilotos.split("P")[1]));
-						calculaNumeroVoltaPorPontosPontosPista(piloto);
 					} else if (statusPilotos.startsWith("F")) {
-						piloto.setPtosPista(
-								new Long(statusPilotos.split("F")[1]));
 						piloto.setFaiscas(true);
 					} else if (statusPilotos.startsWith("T")) {
-						piloto.setPtosPista(
-								new Long(statusPilotos.split("T")[1]));
 						jogoCliente.travouRodas(piloto);
 						TravadaRoda travadaRoda = new TravadaRoda();
 						travadaRoda.setIdNo(

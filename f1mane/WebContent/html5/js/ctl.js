@@ -790,6 +790,7 @@ function ctl_desenhaInfoDireita() {
 	var posicaoPilotos = dadosParciais.posisPack;
 	x+=50;
 	var larg = 55;
+	var posicaoDesenhada = new Map();
 	if (posicaoPilotos
 			&& (window.innerHeight > window.innerWidth || (alternador || !dadosParciais.melhorVolta))) {
 		var piloto = posicaoPilotos.posis[0];
@@ -807,6 +808,7 @@ function ctl_desenhaInfoDireita() {
 		if(posicao==null){
 			posicao = '1';
 		}
+		posicaoDesenhada.set(posicao,posicao);
 		ctlContext.fillText(posicao+' ' + nomePiloto, x + 10, y + 15);
 		if (idPilotoSelecionado == piloto.idPiloto) {
 			ctlContext.strokeStyle = '#00ff00';
@@ -845,6 +847,14 @@ function ctl_desenhaInfoDireita() {
 			var posicao = pilotosBandeirada.get(piloto.idPiloto);
 			if(posicao==null){
 				posicao = (i + 1);
+			}
+			if(posicaoDesenhada.get(posicao)==null){
+				posicaoDesenhada.set(posicao,posicao);
+			}else{
+				posicao=null;
+			}
+			if(posicao==null){
+				posicao = '?';
 			}
 			ctlContext.fillText(posicao + ' ' + nomePiloto, x + 10, y + 15);
 			if (idPilotoSelecionado == piloto.idPiloto) {

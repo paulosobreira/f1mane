@@ -5,6 +5,9 @@ function desenha(ctx,img,x,y){
 	if(img==null || img.height<=0 || img.width<=0){
 		ctx.fillText("Not load", x, y);
 	}else{
+		if (localStorage.getItem('tela') == 'menor') {
+			ctx.imageSmoothingEnabled = false;
+		}
 		ctx.drawImage(img, x, y);
 	}
 }
