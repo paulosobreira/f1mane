@@ -9,7 +9,6 @@ var corFundo = "rgba(255, 255, 255, 0.6)";
 var corAmarelo = "rgba(255, 255, 0, 0.6)";
 var corBabaca = "rgba(186, 186, 202, 0.6)";
 var corVermelho = "rgba(255, 0, 0, 0.6)";
-var contCargaErs;
 var confirmaSair = false;
 var dirZoom = '-';
 
@@ -166,10 +165,6 @@ function ctl_desenhaControles() {
 			}
 			if (dadosParciais.cargaErs != cargaErs) {
 				cargaErs = dadosParciais.cargaErs;
-				contCargaErs = 25;
-			}
-			if(contCargaErs>0){
-				contCargaErs--;
 				cor = '#00ff00';
 			}
 		}

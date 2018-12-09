@@ -12,7 +12,7 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetDocker">
-	<property name="DOCKER" value="/Users/paulosobreira/Google Drive/docker/mac" /> 
+	<property name="DOCKER" value="/Users/paulosobreira/Google Drive/docker/mac/war" /> 
 	<property name="HOST" value="games-sowbreira.rhcloud.com" />
 	<path id="classpath.compilacao">
 		<fileset dir="WebContent/WEB-INF/lib">

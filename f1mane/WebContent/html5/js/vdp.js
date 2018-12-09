@@ -1045,17 +1045,16 @@ function vdp_rotacionar(img, angulo) {
 	return cvRotate;
 }
 
-function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto , naoDesenha) {
+function vdp_blend(imgSrc, ptCarro, xCarro, yCarro, no, idPiloto , naoDesenha) {
 	var maiorLado = 0;
-	if (img.width > img.height) {
-		maiorLado = img.width;
+	if (imgSrc.width > imgSrc.height) {
+		maiorLado = imgSrc.width;
 	} else {
-		maiorLado = img.height;
+		maiorLado = imgSrc.height;
 	}
 	cvBlend.width = maiorLado;
 	cvBlend.height = maiorLado;
-	ctxBlend.clearRect(0, 0, cvBlend.width, cvBlend.height);
-	desenha(ctxBlend, img, 0, 0);
+	var desenhouBlend = false;
 	var rectCarro = {
 		left : ptCarro.x - 10,
 		top : ptCarro.y - 10,
@@ -1063,7 +1062,7 @@ function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto , naoDesenha) {
 		bottom : ptCarro.y + 10
 	};
 	for (var j = 0; j < circuito.objetosNoTransparencia.length; j++) {
-		var img = objImgPistaMap.get(j);
+		var imgObj = objImgPistaMap.get(j);
 		var pontosTp = circuito.objetosNoTransparencia[j];
 		if (pontosTp.transparenciaBox != no.box) {
 			continue;
@@ -1078,21 +1077,30 @@ function vdp_blend(img, ptCarro, xCarro, yCarro, no, idPiloto , naoDesenha) {
 		var rectObj = {
 			left : pontosTp.x,
 			top : pontosTp.y,
-			right : pontosTp.x + img.width,
-			bottom : pontosTp.y + img.height
+			right : pontosTp.x + imgObj.width,
+			bottom : pontosTp.y + imgObj.height
 		};
-		if (img && img.width > 0 && img.height > 0
+		if (imgObj && imgObj.width > 0 && imgObj.height > 0
 				&& vdp_intersectRect(rectCarro, rectObj)) {
 			if(naoDesenha){
 				return null;
 			}
+			if(!desenhouBlend){
+				ctxBlend.clearRect(0, 0, cvBlend.width, cvBlend.height);
+				desenha(ctxBlend, imgSrc, 0, 0);
+				desenhouBlend = true;
+			}
 			var x = pontosTp.x - ptBg.x - xCarro;
 			var y = pontosTp.y - ptBg.y - yCarro;
 			ctxBlend.globalCompositeOperation = blendOp;
-			desenha(ctxBlend, img, x, y);
+			desenha(ctxBlend, imgObj, x, y);
 			pilotosEfeitosMap.set(idPiloto, false);
 		}
 	}
+	if(!desenhouBlend){
+		return imgSrc;
+	}
+
 	return cvBlend;
 }
 
