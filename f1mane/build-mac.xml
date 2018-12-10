@@ -71,8 +71,7 @@
 				<include name="**/*.html" />
 			</fileset>
 			<fileset dir=".">
-				<include name="F1-Mane-Online-en-us.bat" />
-				<include name="F1-Mane-Online-pt-br.bat" />
+				<include name="*.bat" />
 			</fileset>
 		</copy>
 	</target>
@@ -226,10 +225,7 @@
 				<include name="*.jar" />
 				<include name="f1maneLocal.jnlp" />
 				<include name="f1maneEditor.jnlp" />
-				<include name="Descompatar.bat" />
-				<include name="Editor.bat" />
-				<include name="F1mane.bat" />
-				<include name="F1mane-Descompatado.bat" />
+				<include name="*.bat" />
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="f1maneLocal.jnlp" />

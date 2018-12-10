@@ -3,7 +3,9 @@
  */
 package sowbreira.f1mane.paddock.applet;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -51,7 +53,7 @@ public class AppletPaddock {
 		return versao;
 	}
 
-	public static void main(String[] args) throws MalformedURLException {
+	public static void main(String[] args) throws IOException {
 		AppletPaddock appletPaddock = new AppletPaddock();
 		if (args != null && args.length > 0) {
 			Logger.logar("codeBase "+args[0]);
@@ -62,8 +64,10 @@ public class AppletPaddock {
 			Lang.mudarIdioma(args[1]);
 		}
 		if(appletPaddock.getCodeBase()==null){
-			//appletPaddock.codeBase = new URL(JOptionPane.showInputDialog("Host do servidor"));
-			appletPaddock.codeBase = new URL("http://35.198.37.30");
+			URL url = new URL("https://sowbreira-26fe1.firebaseapp.com/f1mane/host");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+			String urlDeploy = reader.readLine();
+			appletPaddock.codeBase = new URL(urlDeploy.trim());
 			
 		}
 		appletPaddock.init();

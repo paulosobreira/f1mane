@@ -10,7 +10,7 @@ import java.util.Map;
 public class DetalhesJogo implements Serializable {
 
 	private static final long serialVersionUID = -3091559660158990260L;
-	private Map jogadoresPilotos = new HashMap();
+	private Map<String,String> jogadoresPilotos = new HashMap<String,String>();
 	private DadosCriarJogo dadosCriarJogo;
 	private long tempoCriacao;
 	private long voltaAtual;
@@ -41,7 +41,7 @@ public class DetalhesJogo implements Serializable {
 		this.tempoCriacao = criacao;
 	}
 
-	public Map getJogadoresPilotos() {
+	public Map<String,String> getJogadoresPilotos() {
 		return jogadoresPilotos;
 	}
 
@@ -53,7 +53,7 @@ public class DetalhesJogo implements Serializable {
 		this.dadosCriarJogo = dadosCriarJogo;
 	}
 
-	public void setJogadoresPilotos(Map jogadoresPilotos) {
+	public void setJogadoresPilotos(Map<String,String> jogadoresPilotos) {
 		this.jogadoresPilotos = jogadoresPilotos;
 	}
 

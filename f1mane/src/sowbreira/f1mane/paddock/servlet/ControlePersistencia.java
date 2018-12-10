@@ -342,7 +342,7 @@ public class ControlePersistencia {
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
 			CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator
 					.next();
-			nomes.add(corridasDadosSrv.getJogadorDadosSrv().getNome());
+			nomes.add(corridasDadosSrv.getJogadorDadosSrv().getToken());
 		}
 		return nomes;
 	}

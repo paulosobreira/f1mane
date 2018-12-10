@@ -221,7 +221,7 @@ function vdp_desenhaMarcasLargadaGrid() {
 	}
 	desenhouMarcasLargadaGrid = true;
 }
-
+//@Deprecated
 function vdp_loopCalculaGanhoSuave(diff, piloto) {
 	var ganho = 0;
 	var maxLoop = 1000;

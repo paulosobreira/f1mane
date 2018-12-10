@@ -393,7 +393,7 @@ public class ControlePaddockCliente {
 			jogoCliente.setMainFrame(mainFrame);
 			PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
 					jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
-					mainFrame, sessaoCliente.getNomeJogador(), jogoCliente);
+					mainFrame, sessaoCliente.getNomeJogador());
 
 			if (!painelEntradaCliente.gerarDadosEntrarJogo(dadosParticiparJogo,
 					panelJogoCriado, circuito, temporada,
@@ -467,7 +467,7 @@ public class ControlePaddockCliente {
 		jogoCliente.setMainFrame(mainFrame);
 		PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
 				jogoCliente.getPilotos(), jogoCliente.getCircuitos(), mainFrame,
-				sessaoCliente.getNomeJogador(), jogoCliente);
+				sessaoCliente.getNomeJogador());
 		paddockWindow.mostrarDetalhes(srvPaddockPack.getDetalhesJogo(),
 				painelEntradaCliente);
 	}
@@ -511,7 +511,6 @@ public class ControlePaddockCliente {
 
 	}
 
-
 	public void logarGuest() {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setComando(Comandos.GUEST_LOGIN_APPLET);
@@ -524,7 +523,7 @@ public class ControlePaddockCliente {
 		sessaoCliente = srvPaddockPack.getSessaoCliente();
 		atualizaVisao(paddockWindow);
 	}
-	
+
 	public boolean registrarUsuario(FormEntrada formEntrada) {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 		clientPaddockPack.setRecuperar(false);
@@ -988,7 +987,7 @@ public class ControlePaddockCliente {
 			jogoCliente.setMainFrame(mainFrame);
 			PainelEntradaCliente painelEntradaCliente = new PainelEntradaCliente(
 					jogoCliente.getPilotos(), jogoCliente.getCircuitos(),
-					mainFrame, sessaoCliente.getNomeJogador(), jogoCliente);
+					mainFrame, sessaoCliente.getNomeJogador());
 			// campeonato.setCircuitoAtual(nomeCircuito);
 			painelEntradaCliente.setCampeonato(campeonato);
 			DadosCriarJogo dadosCriarJogo = new DadosCriarJogo();

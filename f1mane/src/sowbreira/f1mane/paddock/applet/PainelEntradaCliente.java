@@ -75,7 +75,6 @@ public class PainelEntradaCliente {
 	private DadosCriarJogo dadosCriarJogo;
 	private String nomeCriador;
 	private CampeonatoSrv campeonato;
-	private JogoCliente controleJogo;
 
 	public void setCampeonato(CampeonatoSrv campeonato) {
 		this.campeonato = campeonato;
@@ -89,17 +88,17 @@ public class PainelEntradaCliente {
 	}
 
 	public PainelEntradaCliente(List pilotos, Map circuitos,
-			MainFrame mainFrame, String nomeCriador, JogoCliente jogoCliente) {
+			MainFrame mainFrame, String nomeCriador) {
 		this.pilotos = pilotos;
 		this.circuitos = circuitos;
 		this.mainFrame = mainFrame;
 		this.nomeCriador = nomeCriador;
-		this.controleJogo = jogoCliente;
 		carregaComboTemporadas();
 	}
 
 	private void carregaComboTemporadas() {
-		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos
+				.getCarregadorRecursos(false);
 		carregadorRecursos.carregarTemporadasPilotos();
 		comboTemporada = new JComboBox(
 				carregadorRecursos.getVectorTemps().toArray());
@@ -312,7 +311,7 @@ public class PainelEntradaCliente {
 			trocaPneu.setSelected(campeonato.isTrocaPneus());
 			trocaPneu.setEnabled(false);
 			nomeCampeonato.setText(campeonato.getNome());
-			//comboBoxCircuito.setSelectedItem(campeonato.getCircuitoAtual());
+			// comboBoxCircuito.setSelectedItem(campeonato.getCircuitoAtual());
 			comboBoxCircuito.setEnabled(false);
 			kers.setSelected(campeonato.isErs());
 			kers.setEnabled(false);
@@ -386,7 +385,8 @@ public class PainelEntradaCliente {
 		g2d.setColor(Color.BLACK);
 		String circuitoStr = (String) circuitos
 				.get(comboBoxCircuito.getSelectedItem());
-		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
+		CarregadorRecursos carregadorRecursos = CarregadorRecursos
+				.getCarregadorRecursos(false);
 		ObjectInputStream ois;
 		Circuito circuito = null;
 		try {

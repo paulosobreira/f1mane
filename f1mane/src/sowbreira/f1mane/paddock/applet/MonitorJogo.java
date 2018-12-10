@@ -165,7 +165,6 @@ public class MonitorJogo implements Runnable {
 	private void processaCiclosCorrida(long tempoCiclo)
 			throws InterruptedException {
 		boolean interrupt = false;
-		tempoCiclo = 600;
 		boolean atualizaPosicoes = true;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
@@ -203,7 +202,7 @@ public class MonitorJogo implements Runnable {
 
 	private void atualizaZoom() {
 		if (!setZoom && jogoCliente.getFPS() >= 30) {
-			jogoCliente.setMouseZoom(0.7);
+			//jogoCliente.setMouseZoom(0.7);
 			setZoom = true;
 		}
 	}

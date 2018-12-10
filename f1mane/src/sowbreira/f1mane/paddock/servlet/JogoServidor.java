@@ -224,7 +224,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	}
 
 	public void preencherDetalhes(DetalhesJogo detalhesJogo) {
-		Map detMap = detalhesJogo.getJogadoresPilotos();
+		Map<String, String> detMap = detalhesJogo.getJogadoresPilotos();
 		for (Iterator iter = mapJogadoresOnline.keySet().iterator(); iter
 				.hasNext();) {
 			String key = (String) iter.next();
@@ -237,7 +237,15 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			} else {
 				piloto = valor.getPiloto();
 			}
-			detMap.put(key, piloto);
+			SrvPaddockPack obterDadosToken = controleJogosServer
+					.obterDadosToken(key);
+			if (obterDadosToken != null
+					&& obterDadosToken.getSessaoCliente() != null
+					&& obterDadosToken.getSessaoCliente()
+							.getNomeJogador() != null) {
+				detMap.put(obterDadosToken.getSessaoCliente().getNomeJogador(),
+						piloto);
+			}
 		}
 		detalhesJogo.setDadosCriarJogo(getDadosCriarJogo());
 		detalhesJogo.setTempoCriacao(getTempoCriacao());

@@ -61,7 +61,7 @@ import sowbreira.f1mane.recursos.idiomas.Lang;
  */
 public class PainelCircuito {
 
-	public static boolean desenhaBkg = true;
+	public static boolean desenhaBkg = false;
 	public static boolean desenhaPista = true;
 	public static boolean desenhaImagens = true;
 
@@ -824,12 +824,24 @@ public class PainelCircuito {
 					- noAtualSuave.getIndex();
 		}
 		int ganhoSuave = 0;
-		if (controleJogo instanceof JogoCliente) {
-			ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 20);
-		} else {
-			ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 0);
-		}
+//		if (controleJogo instanceof JogoCliente) {
+//			ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 20);
+//		} else {
+//			ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 0);
+//		}
 
+		
+		double multi = diferencaSualReal / 100.0;
+
+		ganhoSuave = Util.inteiro(2.5 * multi);
+
+		if ("A".equals(noAtualSuave.getTipoJson())){
+			ganhoSuave = Util.inteiro(2.5 * multi);
+		}
+		if ("B".equals(noAtualSuave.getTipoJson())){
+			ganhoSuave = Util.inteiro(2 * multi);
+		}
+		
 		int ganhoSuaveAnt = piloto.getGanhoSuave();
 		if (ganhoSuave > ganhoSuaveAnt) {
 			ganhoSuave = ganhoSuaveAnt + 1;
@@ -906,7 +918,7 @@ public class PainelCircuito {
 
 		piloto.setNoAtualSuave(noAtualSuave);
 	}
-
+	@Deprecated
 	private int loopCalculaGanhoSuave(int diff, int incExtra) {
 		int ganhoSuave = 0;
 		int maxLoop = 1000;
