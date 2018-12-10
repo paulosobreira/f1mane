@@ -1339,7 +1339,6 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void setAtualizacaoSuave(boolean atualizacaoSuave) {
-		Logger.logar("jogoCliente atualizacaoSuave " + atualizacaoSuave);
 		this.atualizacaoSuave = atualizacaoSuave;
 	}
 

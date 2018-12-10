@@ -69,7 +69,7 @@ public class MonitorJogo implements Runnable {
 		while (!interrupt && controlePaddockCliente.isComunicacaoServer()
 				&& jogoAtivo) {
 			try {
-				long tempoCiclo = 500;
+				long tempoCiclo = 600;
 				Logger.logar("MonitorJogo");
 				Logger.logar("MonitorJogo verificaEstadoJogo()");
 				verificaEstadoJogo();
@@ -120,7 +120,7 @@ public class MonitorJogo implements Runnable {
 					Thread.sleep(6500);
 				} else {
 					Logger.logar("apagaLuzesLargada 500");
-					Thread.sleep(500);
+					Thread.sleep(600);
 				}
 				verificaEstadoJogo();
 				Logger.logar("apagaLuzesLargada verificaEstadoJogo");
@@ -165,7 +165,7 @@ public class MonitorJogo implements Runnable {
 	private void processaCiclosCorrida(long tempoCiclo)
 			throws InterruptedException {
 		boolean interrupt = false;
-		tempoCiclo = 500;
+		tempoCiclo = 600;
 		boolean atualizaPosicoes = true;
 		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
 				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
@@ -269,7 +269,7 @@ public class MonitorJogo implements Runnable {
 			verificaEstadoJogo();
 			try {
 				atualizouDados = false;
-				Thread.sleep(500);
+				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				interupt = true;
 				Logger.logarExept(e);
