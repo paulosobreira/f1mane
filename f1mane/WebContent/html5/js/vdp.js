@@ -858,7 +858,7 @@ function vdp_desenhaCarrosCima() {
 		var desenhaRastroChuvaFx = null;
 		var desenhaTravadaRodaFumaca = null;
 		if (desenhaImagens) {
-			if (emMovimento && !no.box) {
+			if (emMovimento && !no.box && localStorage.getItem('tela') != 'menor') {
 				desenhaRastroFaiscaFx = vdp_desenhaRastroFaiscaFx(piloto,
 						angulo, anguloGraus);
 				if (desenhaRastroFaiscaFx != null) {
@@ -896,14 +896,16 @@ function vdp_desenhaCarrosCima() {
 					piloto.idPiloto);
 			desenha(maneContext, blendCarro, x, y);
 			if (emMovimento) {
-				desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto,
-						no, angulo, anguloGraus);
-				if (desenhaTravadaRodaFumaca != null) {
-					var blendFumaca = vdp_blend(desenhaTravadaRodaFumaca,
-							ponto, x, y, no, piloto.idPiloto,true);
-					if(blendFumaca){
-						desenha(maneContext, blendFumaca, x, y);
-					}
+				if(localStorage.getItem('tela') != 'menor'){
+					desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto,
+							no, angulo, anguloGraus);
+					if (desenhaTravadaRodaFumaca != null) {
+						var blendFumaca = vdp_blend(desenhaTravadaRodaFumaca,
+								ponto, x, y, no, piloto.idPiloto,true);
+						if(blendFumaca){
+							desenha(maneContext, blendFumaca, x, y);
+						}
+					}					
 				}
 				desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, no,
 						angulo, anguloGraus);
@@ -1095,6 +1097,7 @@ function vdp_blend(imgSrc, ptCarro, xCarro, yCarro, no, idPiloto , naoDesenha) {
 			ctxBlend.globalCompositeOperation = blendOp;
 			desenha(ctxBlend, imgObj, x, y);
 			pilotosEfeitosMap.set(idPiloto, false);
+			return cvBlend;
 		}
 	}
 	if(!desenhouBlend){
