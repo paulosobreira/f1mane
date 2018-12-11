@@ -573,6 +573,7 @@ public class ControleCampeonatoCliente {
 				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator.next();
 				PilotosPontosCampeonato pilotosPontosCampeonato = new PilotosPontosCampeonato();
 				pilotosPontosCampeonato.setNome(dadosCorridaCampeonato.getPiloto());
+				
 				if (pilotosPontos.contains(pilotosPontosCampeonato)) {
 					continue;
 				}
@@ -635,7 +636,7 @@ public class ControleCampeonatoCliente {
 		return vitorias;
 	}
 
-	public Integer computaVitoriasJogador(String nome) {
+	public Integer computaVitoriasJogador(Long id) {
 		int vitorias = 0;
 		List corridas = campeonato.getCorridaCampeonatos();
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
@@ -646,7 +647,7 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2.hasNext();) {
 				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator2.next();
-				if (nome.equals(dadosCorridaCampeonato.getJogador()) && dadosCorridaCampeonato.getPosicao() == 1) {
+				if (id.equals(dadosCorridaCampeonato.getJogador()) && dadosCorridaCampeonato.getPosicao() == 1) {
 					vitorias += 1;
 				}
 			}
@@ -710,7 +711,7 @@ public class ControleCampeonatoCliente {
 		return pontos;
 	}
 
-	private int calculaPontosJogador(String nome) {
+	private int calculaPontosJogador(Long id) {
 		int pontos = 0;
 		List corridas = campeonato.getCorridaCampeonatos();
 		for (Iterator iterator = corridas.iterator(); iterator.hasNext();) {
@@ -721,7 +722,7 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator2 = dadosCorridas.iterator(); iterator2.hasNext();) {
 				DadosCorridaCampeonatoSrv dadosCorridaCampeonato = (DadosCorridaCampeonatoSrv) iterator2.next();
-				if (nome.equals(dadosCorridaCampeonato.getJogador())) {
+				if (id.equals(dadosCorridaCampeonato.getJogador())) {
 					pontos += dadosCorridaCampeonato.getPontos();
 				}
 			}
@@ -756,8 +757,8 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator = jogadoresPontos.iterator(); iterator.hasNext();) {
 				PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) iterator.next();
-				pilotosPontosCampeonato.setPontos(calculaPontosJogador(pilotosPontosCampeonato.getId()));
-				pilotosPontosCampeonato.setVitorias(computaVitoriasJogador(pilotosPontosCampeonato.getId()));
+				pilotosPontosCampeonato.setPontos(calculaPontosJogador(Long.valueOf(pilotosPontosCampeonato.getId())));
+				pilotosPontosCampeonato.setVitorias(computaVitoriasJogador(Long.valueOf(pilotosPontosCampeonato.getId())));
 			}
 			Collections.sort(jogadoresPontos, new Comparator() {
 				public int compare(Object o1, Object o2) {

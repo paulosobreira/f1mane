@@ -27,7 +27,7 @@ public class MonitorAtividade implements Runnable {
 	public void run() {
 		while (alive) {
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(150000);
 				long timeNow = System.currentTimeMillis();
 				removeClientesIniativos(timeNow);
 				removeSessoesIniativas(timeNow);
