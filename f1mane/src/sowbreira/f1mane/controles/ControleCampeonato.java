@@ -648,10 +648,10 @@ public class ControleCampeonato {
 					.next();
 			pilotosPontosCampeonato
 					.setPontos(calculaPontosPiloto(pilotosPontosCampeonato
-							.getNome()));
+							.getId()));
 			pilotosPontosCampeonato
 					.setVitorias(computaVitorias(pilotosPontosCampeonato
-							.getNome()));
+							.getId()));
 		}
 		Collections.sort(pilotosPontos, new Comparator() {
 			public int compare(Object o1, Object o2) {

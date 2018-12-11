@@ -3,6 +3,9 @@ package sowbreira.f1mane.entidades;
 public class PilotosPontosCampeonato {
 
 	private String nome;
+
+
+	private String id;
 	private int pontos;
 	private int vitorias;
 
@@ -17,6 +20,13 @@ public class PilotosPontosCampeonato {
 		this.vitorias = vitorias;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}	
 	public int getVitorias() {
 		return vitorias;
 	}

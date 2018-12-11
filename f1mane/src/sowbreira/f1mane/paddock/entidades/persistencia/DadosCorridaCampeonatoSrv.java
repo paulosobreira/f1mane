@@ -3,6 +3,7 @@ package sowbreira.f1mane.paddock.entidades.persistencia;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:47:15
@@ -14,6 +15,8 @@ public class DadosCorridaCampeonatoSrv extends F1ManeDados {
 	private String piloto;
 	private String corPiloto;
 	private Long jogador;
+	@Transient
+	private String nomeJogador;
 	private String carro;
 	private String tpPneu;
 	private String voltaMaisRapida;
@@ -33,6 +36,14 @@ public class DadosCorridaCampeonatoSrv extends F1ManeDados {
 
 	public Long getJogador() {
 		return jogador;
+	}
+
+	public String getNomeJogador() {
+		return nomeJogador;
+	}
+
+	public void setNomeJogador(String nomeJogador) {
+		this.nomeJogador = nomeJogador;
 	}
 
 	public void setJogador(Long jogador) {

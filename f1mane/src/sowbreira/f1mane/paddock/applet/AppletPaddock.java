@@ -1,3 +1,4 @@
+
 /**
  * 
  */
@@ -80,9 +81,8 @@ public class AppletPaddock {
 			initProperties();
 			controlePaddockCliente = new ControlePaddockCliente(
 					this.getCodeBase(), this);
-
 			controlePaddockCliente.verificaVersao();
-
+			controlePaddockCliente.init();
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {

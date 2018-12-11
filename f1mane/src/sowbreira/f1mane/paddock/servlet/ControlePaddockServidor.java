@@ -118,13 +118,7 @@ public class ControlePaddockServidor {
 			ClientPaddockPack clientPaddockPack = (ClientPaddockPack) object;
 			if (Comandos.VERIFICA_VERSAO
 					.equals(clientPaddockPack.getComando())) {
-				if (versao != clientPaddockPack.getVersao()) {
-					Logger.logar(
-							"Versao Cleinte : " + clientPaddockPack.getVersao()
-									+ " Versao servidor " + versao);
-					return new MsgSrv(Lang.msg("novaVersao"));
-				}
-				return "OK";
+				return versao;
 			} else if (Comandos.GUEST_LOGIN_APPLET
 					.equals(clientPaddockPack.getComando())) {
 				return criarSessaoVisitante();

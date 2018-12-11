@@ -161,11 +161,12 @@ public class ControleCampeonatoServidor {
 			for (Iterator iterator = campeonatos.iterator(); iterator
 					.hasNext();) {
 				CampeonatoSrv campeonato = (CampeonatoSrv) iterator.next();
-				Object[] row = new Object[4];
+				Object[] row = new Object[5];
 				row[0] = campeonato.getNome();
 				row[1] = campeonato.getJogadorDadosSrv().getNome();
 				row[2] = verificaCampeonatoConcluido(campeonato);
 				row[3] = campeonato.getDataCriacao();
+				row[4] = campeonato.getId();
 				retorno.add(row);
 			}
 			return retorno;
@@ -188,8 +189,8 @@ public class ControleCampeonatoServidor {
 	}
 
 	public Object obterCampeonato(ClientPaddockPack clientPaddockPack) {
-		String idCampeonato = (String) clientPaddockPack.getDataObject();
-		return obterCampeonato(idCampeonato);
+		Long idCampeonato = (Long) clientPaddockPack.getDataObject();
+		return obterCampeonato(idCampeonato.toString());
 	}
 
 	public Object obterCampeonato(String idCampeonato) {

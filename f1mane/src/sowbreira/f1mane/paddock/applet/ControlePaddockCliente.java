@@ -65,11 +65,11 @@ public class ControlePaddockCliente {
 	private int latenciaMinima = Constantes.LATENCIA_MIN;
 	private int latenciaReal;
 	private long ultRetornoSucedido;
+	private String versaoServidor = "";
 
 	public ControlePaddockCliente(URL url, AppletPaddock panel) {
 		this.url = url;
 		this.applet = panel;
-		init();
 	}
 
 	public void init() {
@@ -1039,7 +1039,7 @@ public class ControlePaddockCliente {
 
 	public String getVersaoFormatado() {
 		AppletPaddock appletPaddock = (AppletPaddock) applet;
-		return appletPaddock.getVersaoFormatado();
+		return appletPaddock.getVersaoFormatado()+ versaoServidor;
 	}
 
 	public String getVersao() {
@@ -1053,10 +1053,8 @@ public class ControlePaddockCliente {
 		clientPaddockPack.setVersao(Integer.parseInt(getVersao()));
 		Logger.logar("Versao : " + clientPaddockPack.getVersao());
 		Object ret = enviarObjeto(clientPaddockPack);
-		if (!retornoNaoValido(ret) && ret == null) {
-			JOptionPane.showMessageDialog(applet.getFrame(),
-					Lang.msg("erroAcessando", new String[]{url.toString()}),
-					Lang.msg("060"), JOptionPane.INFORMATION_MESSAGE);
+		if (!retornoNaoValido(ret) && ret != null) {
+			versaoServidor  = " : "+ret;
 		}
 	}
 }

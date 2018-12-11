@@ -394,10 +394,11 @@ public class PaddockWindow {
 		compTransp(mainPanel);
 		JPanel chatPanel = new JPanel();
 		compTransp(chatPanel);
-		if (controlePaddockCliente != null)
+		if (controlePaddockCliente != null) {
 			chatPanel.setBorder(
 					new TitledBorder("F1-MANager Engineer Chat Room Ver "
 							+ controlePaddockCliente.getVersaoFormatado()));
+		}
 		JPanel usersPanel = new JPanel();
 		compTransp(usersPanel);
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {

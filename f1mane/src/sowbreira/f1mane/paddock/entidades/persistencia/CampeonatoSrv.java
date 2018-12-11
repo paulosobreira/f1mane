@@ -49,6 +49,7 @@ public class CampeonatoSrv extends F1ManeDados {
 	@OneToOne
 	@JoinColumn(nullable = false)
 	private JogadorDadosSrv jogadorDadosSrv;
+	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonato")
 	private List<CorridaCampeonatoSrv> corridaCampeonatos = new LinkedList<CorridaCampeonatoSrv>();
 
