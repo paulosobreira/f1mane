@@ -71,7 +71,7 @@
 				<include name="**/*.html" />
 			</fileset>
 			<fileset dir=".">
-				<include name="*.bat" />
+				<include name="*.sh" />
 			</fileset>
 		</copy>
 	</target>
@@ -84,7 +84,7 @@
 				<exclude name="**/*.html" />
 				<exclude name="**/*.js" />
 				<exclude name="**/*.css" />
-				<exclude name="**/*.bat" />
+				<exclude name="**/*.sh" />
 				<exclude name="**/*.jnlp" />
 				<exclude name="build.xml" />
 				<exclude name="log4j.properties" />
@@ -225,7 +225,7 @@
 				<include name="*.jar" />
 				<include name="f1maneLocal.jnlp" />
 				<include name="f1maneEditor.jnlp" />
-				<include name="*.bat" />
+				<include name="*.sh" />
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="f1maneLocal.jnlp" />
@@ -254,7 +254,7 @@
 	<target name="atualizarJnlp" description="Atualizar JNPL">
 		<replace dir="buildAnt" value="${HOST}" token="{host}">
 			<include name="*.jnlp" />
-			<include name="*.bat" />
+			<include name="*.sh" />
 		</replace>
 	</target>
 
@@ -270,7 +270,7 @@
 	<target name="atualizarLocalJnlp" description="Atualizar JNPL">
 		<replace dir="buildAnt" value="localhost:8080" token="{host}">
 			<include name="*.jnlp" />
-			<include name="*.bat" />
+			<include name="*.sh" />
 		</replace>
 	</target>
 
