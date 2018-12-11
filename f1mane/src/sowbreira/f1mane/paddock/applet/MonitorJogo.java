@@ -202,7 +202,7 @@ public class MonitorJogo implements Runnable {
 
 	private void atualizaZoom() {
 		if (!setZoom && jogoCliente.getFPS() >= 30) {
-			//jogoCliente.setMouseZoom(0.7);
+			// jogoCliente.setMouseZoom(0.7);
 			setZoom = true;
 		}
 	}
@@ -367,10 +367,10 @@ public class MonitorJogo implements Runnable {
 				}
 				String statusPilotos = posis.getStatus();
 				if (statusPilotos != null) {
-					if (statusPilotos.startsWith("P")) {
-					} else if (statusPilotos.startsWith("F")) {
+					if ("F".equals(statusPilotos)) {
 						piloto.setFaiscas(true);
-					} else if (statusPilotos.startsWith("T")) {
+					} else if ("T".equals(statusPilotos)
+							|| "M".equals(statusPilotos)) {
 						jogoCliente.travouRodas(piloto);
 						TravadaRoda travadaRoda = new TravadaRoda();
 						travadaRoda.setIdNo(
@@ -382,6 +382,13 @@ public class MonitorJogo implements Runnable {
 						piloto.getCarro().setDurabilidadeAereofolio(0);
 					} else if ("R".equals(statusPilotos)) {
 						piloto.getCarro().setRecolhido(true);
+					} else if ("B".equals(statusPilotos)) {
+						piloto.setRecebeuBanderada(true);
+					} else if ("BA".equals(statusPilotos)) {
+						piloto.getCarro().setDanificado(Carro.PERDEU_AEREOFOLIO,
+								null);
+						piloto.getCarro().setDurabilidadeAereofolio(0);
+						piloto.setRecebeuBanderada(true);
 					}
 				}
 				piloto.setJogadorHumano(posis.isHumano());

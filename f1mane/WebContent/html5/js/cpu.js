@@ -125,12 +125,11 @@ function cpu_dadosParciais() {
 		}
 		var status = new String(piloto.status);
 		pilotosAereofolioMap.set(piloto.idPiloto, false);
-		if (status.startsWith("P")) {
-		} else if (status.startsWith("A")) {
+		if (status == "A") {
 			pilotosAereofolioMap.set(piloto.idPiloto, true);
-		} else if (status.startsWith("F")) {
+		} else if (status == "F") {
 			pilotosFaiscaMap.set(piloto.idPiloto, 15);
-		} else if (status.startsWith("T")) {
+		} else if (status == "T" ) {
 			pilotosTravadaMap.set(piloto.idPiloto, true);
 			if (no.tipoJson == 'R') {
 				pilotosTravadaFumacaMap.set(piloto.idPiloto, 10);
@@ -139,13 +138,13 @@ function cpu_dadosParciais() {
 			} else if (no.tipoJson == 'B') {
 				pilotosTravadaFumacaMap.set(piloto.idPiloto, 3);
 			}
-		} else if (status.startsWith("M")) {
+		} else if (status == "M") {
 			pilotosTravadaMap.set(piloto.idPiloto, true);
-		} else if (status.startsWith("R")) {
+		} else if (status == "R" ) {
 			pilotosDnfMap.set(piloto.idPiloto, true);
-		} else if (status.startsWith("B") && pilotosBandeirada.get(piloto.idPiloto) == null) {
+		} else if (status == "B"  && pilotosBandeirada.get(piloto.idPiloto) == null) {
 			pilotosBandeirada.set(piloto.idPiloto, (i + 1));
-		} else if (status.startsWith("BA")) {
+		} else if (status == "BA" ) {
 			pilotosAereofolioMap.set(piloto.idPiloto, true);
 			if (pilotosBandeirada.get(piloto.idPiloto) == null) {
 				pilotosBandeirada.set(piloto.idPiloto, (i + 1));

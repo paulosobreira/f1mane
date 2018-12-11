@@ -756,8 +756,8 @@ public class ControleCampeonatoCliente {
 			}
 			for (Iterator iterator = jogadoresPontos.iterator(); iterator.hasNext();) {
 				PilotosPontosCampeonato pilotosPontosCampeonato = (PilotosPontosCampeonato) iterator.next();
-				pilotosPontosCampeonato.setPontos(calculaPontosJogador(pilotosPontosCampeonato.getNome()));
-				pilotosPontosCampeonato.setVitorias(computaVitoriasJogador(pilotosPontosCampeonato.getNome()));
+				pilotosPontosCampeonato.setPontos(calculaPontosJogador(pilotosPontosCampeonato.getId()));
+				pilotosPontosCampeonato.setVitorias(computaVitoriasJogador(pilotosPontosCampeonato.getId()));
 			}
 			Collections.sort(jogadoresPontos, new Comparator() {
 				public int compare(Object o1, Object o2) {

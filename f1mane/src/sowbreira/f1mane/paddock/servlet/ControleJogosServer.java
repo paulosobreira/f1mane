@@ -469,7 +469,7 @@ public class ControleJogosServer {
 		for (Iterator<Piloto> iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = iter.next();
 			Posis posis = new Posis();
-			String statusPilotos = "P";
+			String statusPilotos = null;
 			if (piloto.verificaNaoPrecisaDesenhar()) {
 				statusPilotos = "R";
 			} else if (piloto.isRecebeuBanderada() && Carro.PERDEU_AEREOFOLIO
