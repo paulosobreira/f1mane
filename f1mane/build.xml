@@ -36,13 +36,13 @@
 	<target name="targetHtml" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddockHTML,atualizarVersaoHtml,criarWar,limpaJars">
 	</target>
 	
-	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarLocalJnlp,atualizarVersaoHtml,criarWar,limpaJars">
+	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarVersaoHtml,criarWar,limpaJars">
 	</target>
 
-	<target name="targetPadraoNoLibs" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,atualizarVersaoHtml,criarWarNoLibs,limpaJars">
+	<target name="targetPadraoNoLibs" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarVersaoHtml,criarWarNoLibs,limpaJars">
 	</target>
 
-	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarJnlp,atualizarVersaoHtml,criarWar,limpaJars">
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarVersaoHtml,criarWar,limpaJars">
 	</target>
 
 	<target name="targetGerarZip" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,criarZip,limpaJars">
@@ -72,7 +72,6 @@
 				<exclude name="**/*.db" />
 			</fileset>
 			<fileset dir="WebContent">
-				<include name="**/*.jnlp" />
 				<include name="**/*.html" />
 			</fileset>
 			<fileset dir=".">
@@ -92,7 +91,6 @@
 				<exclude name="**/*.css" />
 				<exclude name="**/*.bat" />
 				<exclude name="**/*.sh" />
-				<exclude name="**/*.jnlp" />
 				<exclude name="build.xml" />
 				<exclude name="log4j.properties" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.gif" />
@@ -153,11 +151,9 @@
 		<delete dir="${TOMCAT_HOME}/webapps/f1mane" />
 		<war compress="on" destfile="${TOMCAT_HOME}/webapps/f1mane.war">
 			<fileset dir="WebContent">
-				<exclude name="**/*.jnlp" />
 				<exclude name="**/*.html" />
 			</fileset>
 			<fileset dir="buildAnt">
-				<include name="**/*.jnlp" />
 				<include name="**/*.html" />
 			</fileset>
 		</war>
@@ -168,11 +164,9 @@
 	<target name="criarWarDocker">
 		<war compress="on" destfile="${DOCKER}/f1mane.war">
 			<fileset dir="WebContent">
-				<exclude name="**/*.jnlp" />
 				<exclude name="**/*.html" />
 			</fileset>
 			<fileset dir="buildAnt">
-				<include name="**/*.jnlp" />
 				<include name="**/*.html" />
 			</fileset>
 		</war>
@@ -185,14 +179,12 @@
 		<delete dir="${TOMCAT_HOME}/webapps/f1mane" />
 		<war compress="on" destfile="${TOMCAT_HOME}/webapps/f1mane.war">
 			<fileset dir="WebContent">
-				<exclude name="**/*.jnlp" />
 				<exclude name="WEB-INF/lib/*.jar" />
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="WEB-INF/lib/f1mane.jar" />
 			</fileset>
 			<fileset dir="buildAnt">
-				<include name="**/*.jnlp" />
 				<include name="**/*.html" />
 			</fileset>
 		</war>
@@ -205,7 +197,6 @@
 			<fileset dir="WebContent/WEB-INF/lib">
 				<include name="commons-beanutils-1.8.2.jar" />
 				<include name="commons-logging-1.1.1.jar" />
-				<include name="jnlp.jar" />
 			</fileset>
 		</copy>
 		<delete file="a-f1mane.jar" />
@@ -223,15 +214,11 @@
 		</signjar>
 		<signjar jar="commons-logging-1.1.1.jar" signedjar="a-commons-logging-1.1.1.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
 		</signjar>
-		<signjar jar="jnlp.jar" signedjar="a-jnlp.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
-		</signjar>
 		<delete file="f1mane.jar" />
 		<delete file="f1maneRecursos.jar" />
 		<delete file="f1manePistas.jar" />
 		<delete file="commons-beanutils-1.8.2.jar" />
 		<delete file="commons-logging-1.1.1.jar" />
-		<delete file="jnlp.jar" />
-
 	</target>
 
 	<target name="criarZip">
@@ -239,20 +226,13 @@
 			<fileset dir="WebContent/WEB-INF/lib">
 				<include name="commons-beanutils-1.8.2.jar" />
 				<include name="commons-logging-1.1.1.jar" />
-				<include name="jnlp.jar" />
 			</fileset>
 		</copy>
 		<zip destfile="f1mane.zip" compress="true">
 			<fileset dir=".">
 				<include name="*.jar" />
-				<include name="f1maneLocal.jnlp" />
-				<include name="f1maneEditor.jnlp" />
 				<include name="*.bat" />
 				<include name="*.sh" />
-			</fileset>
-			<fileset dir="WebContent">
-				<include name="f1maneLocal.jnlp" />
-				<include name="f1maneEditor.jnlp" />
 			</fileset>
 		</zip>
 		<delete>
@@ -274,32 +254,10 @@
 		<delete dir="buildAnt" />
 	</target>
 
-	<target name="atualizarJnlp" description="Atualizar JNPL">
-		<replace dir="buildAnt" value="${HOST}" token="{host}">
-			<include name="*.jnlp" />
-			<include name="*.bat" />
-			<include name="*.sh" />
-		</replace>
-	</target>
-
 	<target name="atualizarVersaoHtml" description="Atualizar Versao HTML">
 		<property file="src/sowbreira/f1mane/paddock/client.properties" prefix="client"/>
 		<replace dir="buildAnt" value="${client.versao}" token="{versao}">
 			<include name="**/*.html" />
 		</replace>
 	</target>
-
-
-	
-	<target name="atualizarLocalJnlp" description="Atualizar JNPL">
-		<replace dir="buildAnt" value="localhost:8080" token="{host}">
-			<include name="*.jnlp" />
-			<include name="*.bat" />
-			<include name="*.sh" />
-		</replace>
-	</target>
-
-
-
-
 </project>
