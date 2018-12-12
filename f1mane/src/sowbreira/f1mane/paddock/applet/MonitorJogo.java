@@ -365,6 +365,7 @@ public class MonitorJogo implements Runnable {
 				if (piloto.getId() != posis.getIdPiloto()) {
 					continue;
 				}
+				piloto.setPtosPista(posisArray.length-i);
 				String statusPilotos = posis.getStatus();
 				if (statusPilotos != null) {
 					if ("F".equals(statusPilotos)) {

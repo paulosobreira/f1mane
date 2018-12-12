@@ -40,7 +40,7 @@ public class AppletPaddock {
 				Logger.logarExept(e);
 			}
 		}
-		return " " + decimalFormat.format(new Integer(versao));
+		return " Cli:" + decimalFormat.format(new Integer(versao));
 	}
 
 	public String getVersao() {

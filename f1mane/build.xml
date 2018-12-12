@@ -77,6 +77,7 @@
 			</fileset>
 			<fileset dir=".">
 				<include name="*.bat" />
+				<include name="*.sh" />
 			</fileset>
 		</copy>
 	</target>
@@ -90,6 +91,7 @@
 				<exclude name="**/*.js" />
 				<exclude name="**/*.css" />
 				<exclude name="**/*.bat" />
+				<exclude name="**/*.sh" />
 				<exclude name="**/*.jnlp" />
 				<exclude name="build.xml" />
 				<exclude name="log4j.properties" />
@@ -246,6 +248,7 @@
 				<include name="f1maneLocal.jnlp" />
 				<include name="f1maneEditor.jnlp" />
 				<include name="*.bat" />
+				<include name="*.sh" />
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="f1maneLocal.jnlp" />
@@ -275,6 +278,7 @@
 		<replace dir="buildAnt" value="${HOST}" token="{host}">
 			<include name="*.jnlp" />
 			<include name="*.bat" />
+			<include name="*.sh" />
 		</replace>
 	</target>
 
@@ -291,6 +295,7 @@
 		<replace dir="buildAnt" value="localhost:8080" token="{host}">
 			<include name="*.jnlp" />
 			<include name="*.bat" />
+			<include name="*.sh" />
 		</replace>
 	</target>
 

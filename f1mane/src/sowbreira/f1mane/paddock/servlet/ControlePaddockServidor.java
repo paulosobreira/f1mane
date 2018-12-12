@@ -5,8 +5,6 @@ package sowbreira.f1mane.paddock.servlet;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,18 +12,14 @@ import java.util.Properties;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.hibernate.Session;
 
 import br.nnpe.Constantes;
-import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.TokenGenerator;
 import br.nnpe.Util;
-import sowbreira.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
@@ -35,7 +29,6 @@ import sowbreira.f1mane.paddock.PaddockConstants;
 import sowbreira.f1mane.paddock.entidades.Comandos;
 import sowbreira.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.ClientPaddockPack;
-import sowbreira.f1mane.paddock.entidades.TOs.CorridaCampeonatoTO;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosJogo;
 import sowbreira.f1mane.paddock.entidades.TOs.DadosPaddock;
@@ -46,8 +39,6 @@ import sowbreira.f1mane.paddock.entidades.TOs.SessaoCliente;
 import sowbreira.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import sowbreira.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.CorridaCampeonatoSrv;
-import sowbreira.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonatoSrv;
 import sowbreira.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -64,8 +55,7 @@ public class ControlePaddockServidor {
 	private ControleCampeonatoServidor controleCampeonatoServidor;
 	private int versao;
 	private int contadorVistantes = 1;
-	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
-			.getCarregadorRecursos(false);
+	private CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
 
 	public DadosPaddock getDadosPaddock() {
 		return dadosPaddock;
@@ -77,12 +67,9 @@ public class ControlePaddockServidor {
 
 	public ControlePaddockServidor(ControlePersistencia controlePersistencia) {
 		this.controlePersistencia = controlePersistencia;
-		controleCampeonatoServidor = new ControleCampeonatoServidor(
-				controlePersistencia, this);
-		controleClassificacao = new ControleClassificacao(controlePersistencia,
-				controleCampeonatoServidor);
-		controleJogosServer = new ControleJogosServer(dadosPaddock,
-				controleClassificacao, controleCampeonatoServidor,
+		controleCampeonatoServidor = new ControleCampeonatoServidor(controlePersistencia, this);
+		controleClassificacao = new ControleClassificacao(controlePersistencia, controleCampeonatoServidor);
+		controleJogosServer = new ControleJogosServer(dadosPaddock, controleClassificacao, controleCampeonatoServidor,
 				controlePersistencia, this);
 		try {
 			initProperties();
@@ -95,8 +82,7 @@ public class ControlePaddockServidor {
 		return controleJogosServer;
 	}
 
-	public void setControleJogosServer(
-			ControleJogosServer controleJogosServer) {
+	public void setControleJogosServer(ControleJogosServer controleJogosServer) {
 		this.controleJogosServer = controleJogosServer;
 	}
 
@@ -116,13 +102,11 @@ public class ControlePaddockServidor {
 		}
 		if (object instanceof ClientPaddockPack) {
 			ClientPaddockPack clientPaddockPack = (ClientPaddockPack) object;
-			if (Comandos.VERIFICA_VERSAO
-					.equals(clientPaddockPack.getComando())) {
+			if (Comandos.VERIFICA_VERSAO.equals(clientPaddockPack.getComando())) {
 				return versao;
-			} else if (Comandos.GUEST_LOGIN_APPLET
-					.equals(clientPaddockPack.getComando())) {
+			} else if (Comandos.GUEST_LOGIN_APPLET.equals(clientPaddockPack.getComando())) {
 				return criarSessaoVisitante();
-			} 
+			}
 			return processarComando(clientPaddockPack);
 		}
 		return new MsgSrv(Lang.msg("209"));
@@ -136,50 +120,43 @@ public class ControlePaddockServidor {
 		String senha = null;
 		try {
 			if (!Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
-				jogadorDadosSrv = controlePersistencia.carregaDadosJogadorEmail(
-						clientPaddockPack.getEmailJogador(), session);
+				jogadorDadosSrv = controlePersistencia.carregaDadosJogadorEmail(clientPaddockPack.getEmailJogador(),
+						session);
 			}
-			if (jogadorDadosSrv == null && !Util
-					.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
-				jogadorDadosSrv = controlePersistencia.carregaDadosJogador(
-						clientPaddockPack.getNomeJogador(), session);
+			if (jogadorDadosSrv == null && !Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
+				jogadorDadosSrv = controlePersistencia.carregaDadosJogador(clientPaddockPack.getNomeJogador(), session);
 			}
 
 			if (jogadorDadosSrv == null) {
 				return new MsgSrv(Lang.msg("238"));
 			}
-			if ((System.currentTimeMillis()
-					- jogadorDadosSrv.getUltimaRecuperacao()) < 300000) {
+			if ((System.currentTimeMillis() - jogadorDadosSrv.getUltimaRecuperacao()) < 300000) {
 				return new MsgSrv(Lang.msg("243"));
 			}
 			try {
 				PassGenerator generator = new PassGenerator();
 				senha = generator.generateIt();
 				try {
-					mandaMailSenha(jogadorDadosSrv.getNome(),
-							jogadorDadosSrv.getEmail(), senha);
+					mandaMailSenha(jogadorDadosSrv.getNome(), jogadorDadosSrv.getEmail(), senha);
 				} catch (Exception e) {
 					Logger.logarExept(e);
 					erroMail = true;
 				}
 				jogadorDadosSrv.setSenha(Util.md5(senha));
-				jogadorDadosSrv
-						.setUltimaRecuperacao(System.currentTimeMillis());
+				jogadorDadosSrv.setUltimaRecuperacao(System.currentTimeMillis());
 				controlePersistencia.gravarDados(session, jogadorDadosSrv);
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
 		if (erroMail) {
-			return new MsgSrv(Lang.msg("senhaGerada",
-					new String[]{jogadorDadosSrv.getNome(), senha}));
+			return new MsgSrv(Lang.msg("senhaGerada", new String[] { jogadorDadosSrv.getNome(), senha }));
 		}
-		return new MsgSrv(
-				Lang.msg("239", new String[]{jogadorDadosSrv.getEmail()}));
+		return new MsgSrv(Lang.msg("239", new String[] { jogadorDadosSrv.getEmail() }));
 	}
 
 	@Deprecated
@@ -190,13 +167,12 @@ public class ControlePaddockServidor {
 		try {
 
 			if (!Util.isNullOrEmpty(clientPaddockPack.getNomeJogador())) {
-				jogadorDadosSrv = controlePersistencia.carregaDadosJogadorNome(
-						clientPaddockPack.getNomeJogador(), session);
+				jogadorDadosSrv = controlePersistencia.carregaDadosJogadorNome(clientPaddockPack.getNomeJogador(),
+						session);
 			}
-			if (jogadorDadosSrv == null && !Util
-					.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
-				jogadorDadosSrv = controlePersistencia.carregaDadosJogadorEmail(
-						clientPaddockPack.getEmailJogador(), session);
+			if (jogadorDadosSrv == null && !Util.isNullOrEmpty(clientPaddockPack.getEmailJogador())) {
+				jogadorDadosSrv = controlePersistencia.carregaDadosJogadorEmail(clientPaddockPack.getEmailJogador(),
+						session);
 			}
 			if (jogadorDadosSrv == null) {
 				jogadorDadosSrv = new JogadorDadosSrv();
@@ -206,20 +182,15 @@ public class ControlePaddockServidor {
 				PassGenerator generator = new PassGenerator();
 				senha = generator.generateIt();
 				try {
-					mandaMailSenha(clientPaddockPack.getNomeJogador(),
-							clientPaddockPack.getEmailJogador(), senha);
+					mandaMailSenha(clientPaddockPack.getNomeJogador(), clientPaddockPack.getEmailJogador(), senha);
 				} catch (Exception e1) {
 					Logger.logarExept(e1);
 				}
 				try {
 					jogadorDadosSrv.setSenha(Util.md5(senha));
-					clientPaddockPack
-							.setSenhaJogador(jogadorDadosSrv.getSenha());
-					jogadorDadosSrv.setIdGoogle(
-							"local - " + System.currentTimeMillis());
-					controlePersistencia.adicionarJogador(
-							jogadorDadosSrv.getNome(), jogadorDadosSrv,
-							session);
+					clientPaddockPack.setSenhaJogador(jogadorDadosSrv.getSenha());
+					jogadorDadosSrv.setIdGoogle("local - " + System.currentTimeMillis());
+					controlePersistencia.adicionarJogador(jogadorDadosSrv.getNome(), jogadorDadosSrv, session);
 				} catch (Exception e) {
 					return new ErroServ(e);
 				}
@@ -235,8 +206,7 @@ public class ControlePaddockServidor {
 		return criarSessao(clientPaddockPack, senha);
 	}
 
-	private void mandaMailSenha(String nome, String email, String senha)
-			throws AddressException, MessagingException {
+	private void mandaMailSenha(String nome, String email, String senha) throws AddressException, MessagingException {
 		Logger.logar("Senha :" + senha);
 	}
 
@@ -249,12 +219,11 @@ public class ControlePaddockServidor {
 	}
 
 	public Object obterCircuito(Object object) {
-		JogoServidor jogo = controleJogosServer
-				.obterJogoPeloNome((String) object);
+		JogoServidor jogo = controleJogosServer.obterJogoPeloNome((String) object);
 		try {
 			if (jogo.getCircuito() == null) {
-				jogo.carregaRecursos((String) jogo.getCircuitos().get(
-						jogo.getDadosCriarJogo().getCircuitoSelecionado()));
+				jogo.carregaRecursos(
+						(String) jogo.getCircuitos().get(jogo.getDadosCriarJogo().getCircuitoSelecionado()));
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -402,14 +371,12 @@ public class ControlePaddockServidor {
 		return controleJogosServer.mudarTracado(clientPaddockPack);
 	}
 
-	private Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack,
-			boolean autoPos) {
+	private Object mudarModoAutoPos(ClientPaddockPack clientPaddockPack, boolean autoPos) {
 		return controleJogosServer.mudarModoAutoPos(clientPaddockPack, autoPos);
 	}
 
 	private Object atualizaCarreira(ClientPaddockPack clientPaddockPack) {
-		if (controleJogosServer
-				.verificaJaEmAlgumJogo(clientPaddockPack.getSessaoCliente())) {
+		if (controleJogosServer.verificaJaEmAlgumJogo(clientPaddockPack.getSessaoCliente())) {
 			return new MsgSrv(Lang.msg("248"));
 		}
 		return controleClassificacao.atualizaCarreira(clientPaddockPack);
@@ -418,10 +385,9 @@ public class ControlePaddockServidor {
 	private Object verCarreira(ClientPaddockPack clientPaddockPack) {
 		Session session = controlePersistencia.getSession();
 		try {
-			return controleClassificacao.verCarreira(clientPaddockPack,
-					session);
+			return controleClassificacao.verCarreira(clientPaddockPack, session);
 		} finally {
-			if (session.isOpen()) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -434,23 +400,20 @@ public class ControlePaddockServidor {
 	private Object verCorridas(ClientPaddockPack clientPaddockPack) {
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setListaCorridasJogador(controleClassificacao
-				.obterListaCorridas(clientPaddockPack.getNomeJogador(),
-						(Integer) clientPaddockPack.getDataObject()));
+				.obterListaCorridas(clientPaddockPack.getNomeJogador(), (Integer) clientPaddockPack.getDataObject()));
 		return srvPaddockPack;
 	}
 
 	private Object verClassificacao(ClientPaddockPack clientPaddockPack) {
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setListaDadosJogador(
-				controleClassificacao.obterListaClassificacao(
-						(Integer) clientPaddockPack.getDataObject()));
+				controleClassificacao.obterListaClassificacao((Integer) clientPaddockPack.getDataObject()));
 		return srvPaddockPack;
 	}
 
 	private Object verConstrutores(ClientPaddockPack clientPaddockPack) {
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
-		controleClassificacao.preencherListaContrutores(srvPaddockPack,
-				(Integer) clientPaddockPack.getDataObject());
+		controleClassificacao.preencherListaContrutores(srvPaddockPack, (Integer) clientPaddockPack.getDataObject());
 		return srvPaddockPack;
 	}
 
@@ -506,13 +469,11 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	private Object receberTexto(ClientPaddockPack clientPaddockPack,
-			SessaoCliente cliente) {
+	private Object receberTexto(ClientPaddockPack clientPaddockPack, SessaoCliente cliente) {
 		if (cliente == null) {
 			return (new MsgSrv(Lang.msg("210")));
 		}
-		dadosPaddock.setLinhaChat(cliente.getNomeJogador() + " : "
-				+ clientPaddockPack.getTexto());
+		dadosPaddock.setLinhaChat(cliente.getNomeJogador() + " : " + clientPaddockPack.getTexto());
 		SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 		srvPaddockPack.setDadosPaddock(dadosPaddock);
 		dadosPaddock.setDataTime(new Long(System.currentTimeMillis()));
@@ -536,28 +497,21 @@ public class ControlePaddockServidor {
 			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
 			Map mapaJogosCriados = controleJogosServer.getMapaJogosCriados();
 			boolean achouJogo = false;
-			for (Iterator iterator2 = mapaJogosCriados.keySet()
-					.iterator(); iterator2.hasNext();) {
+			for (Iterator iterator2 = mapaJogosCriados.keySet().iterator(); iterator2.hasNext();) {
 				Object key = (Object) iterator2.next();
-				JogoServidor jogoServidor = (JogoServidor) controleJogosServer
-						.getMapaJogosCriados().get(key);
-				Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor
-						.getMapJogadoresOnline();
-				DadosCriarJogo participarJogo = mapJogadoresOnline
-						.get(sessaoCliente.getToken());
+				JogoServidor jogoServidor = (JogoServidor) controleJogosServer.getMapaJogosCriados().get(key);
+				Map<String, DadosCriarJogo> mapJogadoresOnline = jogoServidor.getMapJogadoresOnline();
+				DadosCriarJogo participarJogo = mapJogadoresOnline.get(sessaoCliente.getToken());
 				if (participarJogo != null) {
-					sessaoCliente
-							.setJogoAtual(jogoServidor.getNomeJogoServidor());
+					sessaoCliente.setJogoAtual(jogoServidor.getNomeJogoServidor());
 					List<Piloto> pilotosCopia = jogoServidor.getPilotosCopia();
-					for (Iterator iterator3 = pilotosCopia.iterator(); iterator3
-							.hasNext();) {
+					for (Iterator iterator3 = pilotosCopia.iterator(); iterator3.hasNext();) {
 						Piloto piloto = (Piloto) iterator3.next();
 						if (piloto.getId() == participarJogo.getIdPiloto()) {
 							sessaoCliente.setPilotoAtual(piloto.getNome());
 						}
 					}
-					sessaoCliente
-							.setIdPilotoAtual(participarJogo.getIdPiloto());
+					sessaoCliente.setIdPilotoAtual(participarJogo.getIdPiloto());
 					achouJogo = true;
 				}
 			}
@@ -570,12 +524,10 @@ public class ControlePaddockServidor {
 
 	private SessaoCliente resgatarSessao(ClientPaddockPack clientPaddockPack) {
 		try {
-			if (clientPaddockPack == null
-					|| clientPaddockPack.getSessaoCliente() == null) {
+			if (clientPaddockPack == null || clientPaddockPack.getSessaoCliente() == null) {
 				return null;
 			}
-			return verificaUsuarioSessao(
-					clientPaddockPack.getSessaoCliente().getToken());
+			return verificaUsuarioSessao(clientPaddockPack.getSessaoCliente().getToken());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -587,8 +539,7 @@ public class ControlePaddockServidor {
 			if (Util.isNullOrEmpty(token)) {
 				return null;
 			}
-			for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
-					.hasNext();) {
+			for (Iterator iter = dadosPaddock.getClientes().iterator(); iter.hasNext();) {
 				SessaoCliente element = (SessaoCliente) iter.next();
 				if (token.equals(element.getToken())) {
 					return element;
@@ -602,8 +553,7 @@ public class ControlePaddockServidor {
 	}
 
 	public SessaoCliente verificaUsuarioSessao(String token) {
-		for (Iterator<SessaoCliente> iter = dadosPaddock.getClientes()
-				.iterator(); iter.hasNext();) {
+		for (Iterator<SessaoCliente> iter = dadosPaddock.getClientes().iterator(); iter.hasNext();) {
 			SessaoCliente element = iter.next();
 			if (element.getToken().equals(token)) {
 				return element;
@@ -612,8 +562,7 @@ public class ControlePaddockServidor {
 		return null;
 	}
 
-	private Object sairPaddock(ClientPaddockPack clientPaddockPack,
-			SessaoCliente cliente) {
+	private Object sairPaddock(ClientPaddockPack clientPaddockPack, SessaoCliente cliente) {
 		dadosPaddock.remove(cliente);
 		return null;
 	}
@@ -624,20 +573,18 @@ public class ControlePaddockServidor {
 	}
 
 	@Deprecated
-	private Object criarSessao(ClientPaddockPack clientPaddockPack,
-			String senha) {
+	private Object criarSessao(ClientPaddockPack clientPaddockPack, String senha) {
 		Session session = controlePersistencia.getSession();
 		JogadorDadosSrv jogadorDadosSrv = controlePersistencia
-				.carregaDadosJogadorNome(clientPaddockPack.getNomeJogador(),
-						session);
+				.carregaDadosJogadorNome(clientPaddockPack.getNomeJogador(), session);
 		if (jogadorDadosSrv == null) {
-			jogadorDadosSrv = controlePersistencia.carregaDadosJogadorEmail(
-					clientPaddockPack.getNomeJogador(), session);
+			jogadorDadosSrv = controlePersistencia.carregaDadosJogadorEmail(clientPaddockPack.getNomeJogador(),
+					session);
 		}
 		if (jogadorDadosSrv == null) {
 			return new MsgSrv(Lang.msg("238"));
-		} else if (jogadorDadosSrv.getSenha() == null || !jogadorDadosSrv
-				.getSenha().equals(clientPaddockPack.getSenhaJogador())) {
+		} else if (jogadorDadosSrv.getSenha() == null
+				|| !jogadorDadosSrv.getSenha().equals(clientPaddockPack.getSenhaJogador())) {
 			return new MsgSrv(Lang.msg("236"));
 		}
 		jogadorDadosSrv.setUltimoLogon(System.currentTimeMillis());
@@ -650,8 +597,7 @@ public class ControlePaddockServidor {
 
 		SessaoCliente sessaoCliente = null;
 		synchronized (dadosPaddock.getClientes()) {
-			for (Iterator<SessaoCliente> iter = dadosPaddock.getClientes()
-					.iterator(); iter.hasNext();) {
+			for (Iterator<SessaoCliente> iter = dadosPaddock.getClientes().iterator(); iter.hasNext();) {
 				SessaoCliente element = iter.next();
 				if (element.getId().equals(jogadorDadosSrv.getIdGoogle())) {
 					sessaoCliente = element;
@@ -694,8 +640,7 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	public Object criarSessaoGoogle(String idGoogle, String nome,
-			String urlFoto, String email) {
+	public Object criarSessaoGoogle(String idGoogle, String nome, String urlFoto, String email) {
 		try {
 			List<SessaoCliente> clientes = dadosPaddock.getClientes();
 			for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
@@ -743,16 +688,14 @@ public class ControlePaddockServidor {
 		JogadorDadosSrv jogadorDadosSrv = null;
 		Session session = controlePersistencia.getSession();
 		try {
-			jogadorDadosSrv = controlePersistencia.carregaDadosJogadorIdGoogle(
-					sessaoCliente.getId(), session);
+			jogadorDadosSrv = controlePersistencia.carregaDadosJogadorIdGoogle(sessaoCliente.getId(), session);
 			boolean novo = false;
 			if (jogadorDadosSrv == null) {
 				jogadorDadosSrv = new JogadorDadosSrv();
 				jogadorDadosSrv.setIdGoogle(sessaoCliente.getId());
 				novo = true;
 			} else {
-				if (controleClassificacao
-						.obterCarreiraSrv(jogadorDadosSrv.getToken()) == null) {
+				if (controleClassificacao.obterCarreiraSrv(jogadorDadosSrv.getToken()) == null) {
 					novo = true;
 				}
 			}
@@ -762,8 +705,7 @@ public class ControlePaddockServidor {
 			jogadorDadosSrv.setImagemJogador(sessaoCliente.getImagemJogador());
 			jogadorDadosSrv.setUltimoLogon(sessaoCliente.getUlimaAtividade());
 			if (novo) {
-				controlePersistencia.adicionarJogador(null, jogadorDadosSrv,
-						session);
+				controlePersistencia.adicionarJogador(null, jogadorDadosSrv, session);
 			} else {
 				controlePersistencia.gravarDados(session, jogadorDadosSrv);
 			}
@@ -771,7 +713,7 @@ public class ControlePaddockServidor {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		} finally {
-			if (session.isOpen())
+			if (session != null && session.isOpen())
 				session.close();
 		}
 
@@ -792,8 +734,7 @@ public class ControlePaddockServidor {
 
 	public void initProperties() throws IOException {
 		Properties properties = new Properties();
-		properties.load(PaddockConstants.class
-				.getResourceAsStream("client.properties"));
+		properties.load(PaddockConstants.class.getResourceAsStream("client.properties"));
 		String versao = properties.getProperty("versao");
 		if (versao.contains(".")) {
 			this.versao = Integer.parseInt(versao.replaceAll("\\.", ""));
@@ -812,67 +753,53 @@ public class ControlePaddockServidor {
 
 	}
 
-	public SrvPaddockPack obterJogoPeloNome(
-			ClientPaddockPack clientPaddockPack) {
-		if (clientPaddockPack == null
-				|| clientPaddockPack.getDadosJogoCriado() == null) {
+	public SrvPaddockPack obterJogoPeloNome(ClientPaddockPack clientPaddockPack) {
+		if (clientPaddockPack == null || clientPaddockPack.getDadosJogoCriado() == null) {
 			return null;
 		}
 		String nomeJogo = clientPaddockPack.getDadosJogoCriado().getNomeJogo();
 		if (nomeJogo == null) {
 			nomeJogo = clientPaddockPack.getNomeJogo();
 		}
-		JogoServidor jogoServidor = controleJogosServer
-				.obterJogoPeloNome(nomeJogo);
+		JogoServidor jogoServidor = controleJogosServer.obterJogoPeloNome(nomeJogo);
 		if (jogoServidor == null) {
 			return null;
 		}
 		CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
-				.obterCarreiraSrv(
-						clientPaddockPack.getSessaoCliente().getToken());
+				.obterCarreiraSrv(clientPaddockPack.getSessaoCliente().getToken());
 		if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 			if (jogoServidor.isCorridaIniciada()) {
 				return null;
 			}
 		}
-		return controleJogosServer.preparaSrvPaddockPack(clientPaddockPack,
-				jogoServidor);
+		return controleJogosServer.preparaSrvPaddockPack(clientPaddockPack, jogoServidor);
 	}
 
 	public InterfaceJogo obterJogoPeloNome(String nomeJogo) {
-		JogoServidor jogoServidor = controleJogosServer
-				.obterJogoPeloNome(nomeJogo);
+		JogoServidor jogoServidor = controleJogosServer.obterJogoPeloNome(nomeJogo);
 		return jogoServidor;
 	}
 
 	public BufferedImage obterCarroCima(String nomeJogo, String idPiloto) {
-		JogoServidor jogoServidor = controleJogosServer
-				.obterJogoPeloNome(nomeJogo);
-		return jogoServidor
-				.obterCarroCima(jogoServidor.obterPilotoPorId(idPiloto));
+		JogoServidor jogoServidor = controleJogosServer.obterJogoPeloNome(nomeJogo);
+		return jogoServidor.obterCarroCima(jogoServidor.obterPilotoPorId(idPiloto));
 	}
 
-	public BufferedImage obterCarroCimaSemAreofolio(String nomeJogo,
-			String idPiloto) {
-		JogoServidor jogoServidor = controleJogosServer
-				.obterJogoPeloNome(nomeJogo);
-		return jogoServidor.obterCarroCimaSemAreofolio(
-				jogoServidor.obterPilotoPorId(idPiloto));
+	public BufferedImage obterCarroCimaSemAreofolio(String nomeJogo, String idPiloto) {
+		JogoServidor jogoServidor = controleJogosServer.obterJogoPeloNome(nomeJogo);
+		return jogoServidor.obterCarroCimaSemAreofolio(jogoServidor.obterPilotoPorId(idPiloto));
 	}
 
-	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
-			String tokenJogador, String idPiloto) {
+	public DadosParciais obterDadosParciaisPilotos(String nomeJogo, String tokenJogador, String idPiloto) {
 		try {
-			return controleJogosServer.obterDadosParciaisPilotos(nomeJogo,
-					tokenJogador, idPiloto);
+			return controleJogosServer.obterDadosParciaisPilotos(nomeJogo, tokenJogador, idPiloto);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
 		return null;
 	}
 
-	public void sairJogoToken(String nomeJogo, String token,
-			SessaoCliente sessaoCliente) {
+	public void sairJogoToken(String nomeJogo, String token, SessaoCliente sessaoCliente) {
 		try {
 			controleJogosServer.sairJogoToken(nomeJogo, token);
 			sessaoCliente.limpaSelecao();
@@ -890,8 +817,7 @@ public class ControlePaddockServidor {
 	}
 
 	public Object obterClassificacaoTemporada(String temporadaSelecionada) {
-		return controleClassificacao
-				.obterClassificacaoTemporada(temporadaSelecionada);
+		return controleClassificacao.obterClassificacaoTemporada(temporadaSelecionada);
 	}
 
 	public Object obterClassificacaoGeral() {
@@ -910,16 +836,13 @@ public class ControlePaddockServidor {
 		return controlePersistencia.modoCarreira(token, modo);
 	}
 
-	public BufferedImage carroCimaTemporadaCarro(String temporada,
-			String carro) {
+	public BufferedImage carroCimaTemporadaCarro(String temporada, String carro) {
 		int idCarro = Util.intOr0(carro);
-		if (temporada != null && temporada.length() == 6 && carro != null
-				&& carro.length() == 6) {
+		if (temporada != null && temporada.length() == 6 && carro != null && carro.length() == 6) {
 			return carroCimaCor(temporada, carro);
 		} else {
 			temporada = "t" + temporada;
-			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-					.get(temporada);
+			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos().get(temporada);
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getCarro().getId() == idCarro) {
@@ -930,37 +853,30 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	public BufferedImage carroCimaSemAreofolioTemporadaCarro(String temporada,
-			String carro) {
+	public BufferedImage carroCimaSemAreofolioTemporadaCarro(String temporada, String carro) {
 		int idCarro = Util.intOr0(carro);
-		if (temporada != null && temporada.length() == 6 && carro != null
-				&& carro.length() == 6) {
+		if (temporada != null && temporada.length() == 6 && carro != null && carro.length() == 6) {
 			return carroCimaSemAreofolioCor(temporada, carro);
 		} else {
 			temporada = "t" + temporada;
-			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-					.get(temporada);
+			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos().get(temporada);
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getCarro().getId() == Util.intOr0(carro)) {
-					return carregadorRecursos.obterCarroCimaSemAreofolio(piloto,
-							temporada);
+					return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, temporada);
 				}
 			}
 			return null;
 		}
 	}
 
-	public BufferedImage capaceteTemporadaPiloto(String temporada,
-			String pilotoId) {
+	public BufferedImage capaceteTemporadaPiloto(String temporada, String pilotoId) {
 		int idPiloto = Util.intOr0(pilotoId);
-		if (temporada != null && temporada.length() == 6 && pilotoId != null
-				&& pilotoId.length() == 6) {
+		if (temporada != null && temporada.length() == 6 && pilotoId != null && pilotoId.length() == 6) {
 			return carreiraCapaceteCor(temporada, pilotoId);
 		} else {
 			temporada = "t" + temporada;
-			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-					.get(temporada);
+			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos().get(temporada);
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getId() == idPiloto) {
@@ -971,16 +887,13 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	public BufferedImage carroLadoTemporadaCarro(String temporada,
-			String carro) {
+	public BufferedImage carroLadoTemporadaCarro(String temporada, String carro) {
 		int idCarro = Util.intOr0(carro);
-		if (temporada != null && temporada.length() == 6 && carro != null
-				&& carro.length() == 6) {
+		if (temporada != null && temporada.length() == 6 && carro != null && carro.length() == 6) {
 			return carroLadoCor(temporada, carro);
 		} else {
 			temporada = "t" + temporada;
-			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos()
-					.get(temporada);
+			List<Piloto> list = carregadorRecursos.carregarTemporadasPilotos().get(temporada);
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Piloto piloto = (Piloto) iterator.next();
 				if (piloto.getCarro().getId() == idCarro) {
@@ -991,11 +904,9 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	public BufferedImage atualizarJogadoresOnlineCarreiraCarroLado(
-			String token) {
+	public BufferedImage atualizarJogadoresOnlineCarreiraCarroLado(String token) {
 		Piloto piloto = new Piloto();
-		if (controleClassificacao.atualizarJogadoresOnlineCarreira(piloto,
-				token, false)) {
+		if (controleClassificacao.atualizarJogadoresOnlineCarreira(piloto, token, false)) {
 			return carregadorRecursos.obterCarroLado(piloto, null);
 		} else {
 			return null;
@@ -1006,18 +917,18 @@ public class ControlePaddockServidor {
 		Piloto piloto = gerarPilotoCarroCor(temporada, carro);
 		return carregadorRecursos.obterCarroCima(piloto, null);
 	}
+
 	private BufferedImage carroLadoCor(String temporada, String carro) {
 		Piloto piloto = gerarPilotoCarroCor(temporada, carro);
 		return carregadorRecursos.obterCarroLado(piloto, null);
 	}
-	private BufferedImage carreiraCapaceteCor(String temporada,
-			String idPiloto) {
+
+	private BufferedImage carreiraCapaceteCor(String temporada, String idPiloto) {
 		Piloto piloto = gerarPilotoCarroCor(temporada, idPiloto);
 		return carregadorRecursos.obterCapacete(piloto, null);
 	}
 
-	private BufferedImage carroCimaSemAreofolioCor(String temporada,
-			String carro) {
+	private BufferedImage carroCimaSemAreofolioCor(String temporada, String carro) {
 		Piloto piloto = gerarPilotoCarroCor(temporada, carro);
 		return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, null);
 	}
@@ -1046,10 +957,9 @@ public class ControlePaddockServidor {
 	public CampeonatoSrv pesquisaCampeonato(String string) {
 		Session session = controlePersistencia.getSession();
 		try {
-			return controlePersistencia.pesquisaCampeonato(session, string,
-					true);
+			return controlePersistencia.pesquisaCampeonato(session, string, true);
 		} finally {
-			if (session.isOpen()) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1059,21 +969,18 @@ public class ControlePaddockServidor {
 		return controleCampeonatoServidor.finalizaCampeonato(campeonato, token);
 	}
 
-	public Object jogar(String temporada, String circuito, String idPiloto,
-			String numVoltas, String tipoPneu, String combustivel, String asa,
-			SessaoCliente sessaoCliente, String modoCarreira) {
+	public Object jogar(String temporada, String circuito, String idPiloto, String numVoltas, String tipoPneu,
+			String combustivel, String asa, SessaoCliente sessaoCliente, String modoCarreira) {
 		try {
-			MsgSrv modoCarreiraRet = modoCarreira(sessaoCliente.getToken(),
-					"true".equals(modoCarreira));
+			MsgSrv modoCarreiraRet = modoCarreira(sessaoCliente.getToken(), "true".equals(modoCarreira));
 			if (modoCarreiraRet != null) {
 				return modoCarreiraRet;
 			}
 
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
-			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(
-					temporada, circuito, idPiloto, numVoltas, tipoPneu,
-					combustivel, asa);
+			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(temporada, circuito, idPiloto, numVoltas,
+					tipoPneu, combustivel, asa);
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			List<String> obterJogos = obterJogos();
 			if (!obterJogos.isEmpty()) {
@@ -1087,21 +994,17 @@ public class ControlePaddockServidor {
 			 */
 			if (statusJogo == null) {
 				statusJogo = criarJogo(clientPaddockPack);
-				if (statusJogo instanceof MsgSrv
-						|| statusJogo instanceof ErroServ) {
+				if (statusJogo instanceof MsgSrv || statusJogo instanceof ErroServ) {
 					return statusJogo;
 				}
 			}
 
 			srvPaddockPack = (SrvPaddockPack) statusJogo;
 
-			if (srvPaddockPack != null
-					&& srvPaddockPack.getDadosCriarJogo() != null
-					&& (!srvPaddockPack.getDadosCriarJogo().getTemporada()
-							.equals(dadosCriarJogo.getTemporada())
+			if (srvPaddockPack != null && srvPaddockPack.getDadosCriarJogo() != null
+					&& (!srvPaddockPack.getDadosCriarJogo().getTemporada().equals(dadosCriarJogo.getTemporada())
 							|| !dadosCriarJogo.getCircuitoSelecionado()
-									.equals(srvPaddockPack.getDadosCriarJogo()
-											.getCircuitoSelecionado()))) {
+									.equals(srvPaddockPack.getDadosCriarJogo().getCircuitoSelecionado()))) {
 				return new MsgSrv(Lang.msg("existeJogoEmAndamando"));
 			}
 
@@ -1109,8 +1012,7 @@ public class ControlePaddockServidor {
 			 * Preenchento todos possiveis campos para nome do jogo Bagunça...
 			 */
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-			clientPaddockPack.getDadosJogoCriado()
-					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+			clientPaddockPack.getDadosJogoCriado().setNomeJogo(srvPaddockPack.getNomeJogoCriado());
 			clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
 
 			/**
@@ -1118,8 +1020,7 @@ public class ControlePaddockServidor {
 			 */
 			if (statusJogo != null) {
 				statusJogo = entrarJogo(clientPaddockPack);
-				if (statusJogo instanceof MsgSrv
-						|| statusJogo instanceof ErroServ) {
+				if (statusJogo instanceof MsgSrv || statusJogo instanceof ErroServ) {
 					return statusJogo;
 				}
 				atualizarDadosVisao();
@@ -1133,15 +1034,13 @@ public class ControlePaddockServidor {
 		}
 	}
 
-	public Object jogarCampeonato(String tipoPneu, String combustivel,
-			String asa, SessaoCliente sessaoCliente) {
+	public Object jogarCampeonato(String tipoPneu, String combustivel, String asa, SessaoCliente sessaoCliente) {
 
 		try {
 			ClientPaddockPack clientPaddockPack = new ClientPaddockPack();
 			clientPaddockPack.setSessaoCliente(sessaoCliente);
 
-			CampeonatoTO campeonato = obterCampeonatoEmAberto(
-					sessaoCliente.getToken());
+			CampeonatoTO campeonato = obterCampeonatoEmAberto(sessaoCliente.getToken());
 
 			String arquivoCircuito = campeonato.getArquivoCircuitoAtual();
 			String idPiloto = campeonato.getIdPiloto();
@@ -1149,28 +1048,22 @@ public class ControlePaddockServidor {
 			String temporada = campeonato.getTemporada();
 
 			if (campeonato.isModoCarreira()) {
-				MsgSrv modoCarreiraRet = modoCarreira(sessaoCliente.getToken(),
-						campeonato.isModoCarreira());
+				MsgSrv modoCarreiraRet = modoCarreira(sessaoCliente.getToken(), campeonato.isModoCarreira());
 				if (modoCarreiraRet != null) {
 					return modoCarreiraRet;
 				} else {
-					Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
-							.carregarTemporadasPilotosDefauts();
-					TemporadasDefauts temporadasDefauts = tempDefsMap
-							.get("t" + campeonato.getTemporada());
+					Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos.carregarTemporadasPilotosDefauts();
+					TemporadasDefauts temporadasDefauts = tempDefsMap.get("t" + campeonato.getTemporada());
 					List<Piloto> pilotos = temporadasDefauts.getPilotos();
-					idPiloto = String
-							.valueOf(pilotos.get(pilotos.size() - 1).getId());
+					idPiloto = String.valueOf(pilotos.get(pilotos.size() - 1).getId());
 				}
 			}
 
-			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(
-					temporada, arquivoCircuito, idPiloto, numVoltas, tipoPneu,
-					combustivel, asa);
+			DadosCriarJogo dadosCriarJogo = DadosCriarJogo.gerarJogoLetsRace(temporada, arquivoCircuito, idPiloto,
+					numVoltas, tipoPneu, combustivel, asa);
 
 			dadosCriarJogo.setNomeCampeonato(campeonato.getNome());
-			dadosCriarJogo
-					.setRodadaCampeonato(campeonato.getRodadaCampeonato());
+			dadosCriarJogo.setRodadaCampeonato(campeonato.getRodadaCampeonato());
 			dadosCriarJogo.setIdCampeonato(campeonato.getId());
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
 			SrvPaddockPack srvPaddockPack = null;
@@ -1180,8 +1073,7 @@ public class ControlePaddockServidor {
 			 */
 			if (statusJogo == null) {
 				statusJogo = criarJogo(clientPaddockPack);
-				if (statusJogo instanceof MsgSrv
-						|| statusJogo instanceof ErroServ) {
+				if (statusJogo instanceof MsgSrv || statusJogo instanceof ErroServ) {
 					return statusJogo;
 				}
 			}
@@ -1192,8 +1084,7 @@ public class ControlePaddockServidor {
 			 * Preenchento todos possiveis campos para nome do jogo Bagunça...
 			 */
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-			clientPaddockPack.getDadosJogoCriado()
-					.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
+			clientPaddockPack.getDadosJogoCriado().setNomeJogo(srvPaddockPack.getNomeJogoCriado());
 			clientPaddockPack.setNomeJogo(srvPaddockPack.getNomeJogoCriado());
 
 			/**
@@ -1201,8 +1092,7 @@ public class ControlePaddockServidor {
 			 */
 			if (statusJogo != null) {
 				statusJogo = entrarJogo(clientPaddockPack);
-				if (statusJogo instanceof MsgSrv
-						|| statusJogo instanceof ErroServ) {
+				if (statusJogo instanceof MsgSrv || statusJogo instanceof ErroServ) {
 					return statusJogo;
 				}
 				atualizarDadosVisao();
