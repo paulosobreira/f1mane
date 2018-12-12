@@ -701,12 +701,18 @@ public class ControleJogosServer {
 	/**
 	 * 
 	 * @param args
-	 *            args[0] jogo args[1] apelido args[2] pilto Sel
+	 *            args[0] jogo args[1] tokenJogador args[2] pilto Sel
 	 * @return
 	 */
 	public Object obterDadosParciaisPilotos(String[] args) {
+		if (args == null || args.length < 3) {
+			return null;
+		}
 		DadosParciais dadosParciais = obterDadosParciaisPilotos(args[0],
 				args[1], args[2]);
+		if (dadosParciais == null) {
+			return null;
+		}
 		return dadosParciais.encode();
 	}
 
@@ -715,7 +721,7 @@ public class ControleJogosServer {
 	 * @param idPilotoStr
 	 * @param tokenJogador
 	 * @param args
-	 *            args[0] jogo args[1] apelido args[2] pilto Sel
+	 *            args[0] jogo args[1] tokenJogador args[2] pilto Sel
 	 * @return
 	 */
 	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
@@ -1203,7 +1209,7 @@ public class ControleJogosServer {
 			}
 			if (Logger.ativo) {
 				// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
-				//obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+				// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
 			}
 			piloto.setAtivarErs(!piloto.isAtivarErs());
 			return piloto.isAtivarErs();
