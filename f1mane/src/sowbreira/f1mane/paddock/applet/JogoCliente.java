@@ -330,8 +330,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public void info(String info) {
-		// TODO Auto-generated method stub
-
+		controleEstatisticas.info(info);
 	}
 
 	public void infoPrioritaria(String info) {

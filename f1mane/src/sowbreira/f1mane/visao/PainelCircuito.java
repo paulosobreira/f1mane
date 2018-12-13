@@ -748,15 +748,15 @@ public class PainelCircuito {
 			diferencaSualReal = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
 		}
 		int ganhoSuave = 0;
-		// if (controleJogo instanceof JogoCliente) {
-		// ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 20);
-		// } else {
-		// ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 0);
-		// }
+//		 if (controleJogo instanceof JogoCliente) {
+//		 ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 20);
+//		 } else {
+//		 ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 0);
+//		 }
 
 		double multi = diferencaSualReal / 100.0;
 
-		ganhoSuave = Util.inteiro(2.5 * multi);
+		ganhoSuave = Util.inteiro(2 * multi);
 
 		if ("A".equals(noAtualSuave.getTipoJson())) {
 			ganhoSuave = Util.inteiro(2.5 * multi);
@@ -773,13 +773,13 @@ public class PainelCircuito {
 		int incGanhoSuaveAnt = 1;
 
 		if (ganhoSuave <= ganhoSuaveAnt) {
-			if (noAtualSuave.verificaRetaOuLargada()) {
-				double div = (ganhoSuave < 2.0 ? ganhoSuave : (ganhoSuave / 2.0));
-				if (div == 0) {
-					div = 1;
-				}
-				incGanhoSuaveAnt = (int) (1 / div);
-			}
+//			if (noAtualSuave.verificaRetaOuLargada()) {
+//				double div = (ganhoSuave < 2.0 ? ganhoSuave : (ganhoSuave / 2.0));
+//				if (div == 0) {
+//					div = 1;
+//				}
+//				incGanhoSuaveAnt = (int) (1 / div);
+//			}
 			ganhoSuave = ganhoSuaveAnt - incGanhoSuaveAnt;
 		}
 		if (noAtualSuave.verificaRetaOuLargada() && noAtual.verificaRetaOuLargada() && ganhoSuaveAnt > ganhoSuave

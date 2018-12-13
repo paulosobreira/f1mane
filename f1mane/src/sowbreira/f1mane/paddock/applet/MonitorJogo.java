@@ -556,6 +556,7 @@ public class MonitorJogo implements Runnable {
 			dadosParciais.decode(enc);
 			estado = dadosParciais.estado;
 			jogoCliente.verificaMudancaClima(dadosParciais.clima);
+			jogoCliente.info(dadosParciais.texto);
 			dadosJogo.setClima(dadosParciais.clima);
 			dadosJogo
 					.setMelhoVolta(new Volta(dadosParciais.melhorVoltaCorrida));

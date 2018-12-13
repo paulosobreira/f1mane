@@ -248,22 +248,23 @@ public class ControleEstatisticas {
 	}
 
 	public void info(String info, boolean prioritaria) {
+		if(info==null) {
+			return;
+		}
 		if (controleJogo.isModoQualify()) {
 			return;
 		}
 		if (bufferInfo.contains(info)) {
 			return;
 		}
+		int limMin = -1;
 		if (allInfo.size() > 5) {
-			for (int i = allInfo.size() - 1; i > allInfo.size() - 6; i--) {
-				if (allInfo.get(i).equals(info)) {
-					return;
-				}
-			}
+			limMin = allInfo.size() - 6; 
 		}
-		if (allInfo.size() > 0
-				&& allInfo.get(allInfo.size() - 1).equals(info)) {
-			return;
+		for (int i = allInfo.size() - 1; i > limMin; i--) {
+			if (info.equals(allInfo.get(i))) {
+				return;
+			}
 		}
 		timeStampUltinfo = System.currentTimeMillis();
 		if (prioritaria) {

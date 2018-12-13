@@ -1,1 +1,1 @@
-java -Xms64m -Xmx512m -cp .;f1mane.jar;f1maneRecursos.jar;jnlp.jar  sowbreira.f1mane.paddock.applet.AppletPaddock
+java -Xms64m -Xmx512m -cp .;f1mane.jar;f1maneRecursos.jar sowbreira.f1mane.paddock.applet.AppletPaddock
