@@ -27,7 +27,7 @@ public class MonitorAtividade implements Runnable {
 	public void run() {
 		while (alive) {
 			try {
-				Thread.sleep(150000);
+				Thread.sleep(5000);
 				long timeNow = System.currentTimeMillis();
 				removeClientesIniativos(timeNow);
 				removeSessoesIniativas(timeNow);
@@ -35,7 +35,7 @@ public class MonitorAtividade implements Runnable {
 						.getControleJogosServer().getMapaJogosCriados();
 				iniciaJogos(timeNow, jogos);
 				removeJogadoresSemSessao(jogos);
-				removeJogosSemJogadores(jogos);
+				removeJogosSemJogadores(jogos, timeNow);
 			} catch (InterruptedException e) {
 				Logger.logarExept(e);
 			} catch (Exception e) {
@@ -45,12 +45,15 @@ public class MonitorAtividade implements Runnable {
 
 	}
 
-	private void removeJogosSemJogadores(
-			Map<SessaoCliente, JogoServidor> jogos) {
+	private void removeJogosSemJogadores(Map<SessaoCliente, JogoServidor> jogos,
+			long timeNow) {
 		for (Iterator<SessaoCliente> iter = jogos.keySet().iterator(); iter
 				.hasNext();) {
 			SessaoCliente key = iter.next();
 			JogoServidor jogoServidor = jogos.get(key);
+			if ((timeNow - jogoServidor.getTempoCriacao()) < 300000) {
+				continue;
+			}
 			if (jogoServidor.getMapJogadoresOnline().isEmpty()) {
 				if (!jogoServidor.isCorridaTerminada()) {
 					Logger.logar("removeJogosSemJogadores "

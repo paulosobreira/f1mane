@@ -114,8 +114,6 @@ public class ControleJogosServer {
 				clientPaddockPack.getSessaoCliente().getNomeJogador());
 		jogoServidor.setTokenCriador(
 				clientPaddockPack.getSessaoCliente().getToken());
-		jogoServidor.setTempoCriacao(System.currentTimeMillis());
-
 		jogoServidor.setNomeJogoServidor(
 				(qtdeJogos++) + "-" + temporada.replaceAll("t", ""));
 		jogoServidor.setControleClassificacao(controleClassificacao);

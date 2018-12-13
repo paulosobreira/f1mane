@@ -66,6 +66,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 				diffultrapassagem.intValue());
 		controleCorrida.getControleClima()
 				.gerarClimaInicial(new Clima(dadosCriarJogo.getClima()));
+		this.tempoCriacao = System.currentTimeMillis();
 	}
 
 	@Override
@@ -167,10 +168,6 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public long getTempoCriacao() {
 		return tempoCriacao;
-	}
-
-	public void setTempoCriacao(long tempoCriacao) {
-		this.tempoCriacao = tempoCriacao;
 	}
 
 	public Object adicionarJogador(SessaoCliente sessaoCliente,
