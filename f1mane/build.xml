@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- ======================================================================
      28/07/2007
+     13/12/2018
 
      project    F1-Mane
      
@@ -12,14 +13,11 @@
 
      ====================================================================== -->
 <project name="F1-Mane" default="targetHtml">
-	<property name="DOCKER" value="C:\Google Drive\docker\windows" /> 
-	<!--<property name="TOMCAT_HOME" value="E:\apache-tomcat-7.0.35" /> -->
-	<property name="TOMCAT_HOME" value="C:\Java\apache-tomcat-7.0.73" />
-	<property name="HOST" value="games-sowbreira.rhcloud.com" />
+	<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73" />
+	<!--<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />--> 
+	<!--<property name="DESTINO" value="E:\apache-tomcat-7.0.35" /> -->
+	<!--<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73" />-->
 	<path id="classpath.compilacao">
-		<fileset dir="${TOMCAT_HOME}/lib">
-			<include name="*.jar" />
-		</fileset>
 		<fileset dir="WebContent/WEB-INF/lib">
 			<include name="*.jar" />
 		</fileset>
@@ -30,9 +28,6 @@
 		<pathelement location="buildAnt" />
 	</path>
 	
-	<target name="targetDocker" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddockHTML,atualizarVersaoHtml,criarWarDocker,limpaJars">
-	</target>
-
 	<target name="targetHtml" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddockHTML,atualizarVersaoHtml,criarWar,limpaJars">
 	</target>
 	
@@ -75,8 +70,8 @@
 				<include name="**/*.html" />
 			</fileset>
 			<fileset dir=".">
-				<include name="*.bat" />
 				<include name="*.sh" />
+				<include name="*.bat" />
 			</fileset>
 		</copy>
 	</target>
@@ -89,8 +84,8 @@
 				<exclude name="**/*.html" />
 				<exclude name="**/*.js" />
 				<exclude name="**/*.css" />
-				<exclude name="**/*.bat" />
 				<exclude name="**/*.sh" />
+				<exclude name="**/*.bat" />
 				<exclude name="build.xml" />
 				<exclude name="log4j.properties" />
 				<exclude name="sowbreira/f1mane/recursos/**/*.gif" />
@@ -147,22 +142,10 @@
 		<copy file="f1maneRecursos.jar" todir="WebContent/WEB-INF/lib" />
 	</target>	
 
-	<target name="criarWar">
-		<delete dir="${TOMCAT_HOME}/webapps/f1mane" />
-		<war compress="on" destfile="${TOMCAT_HOME}/webapps/f1mane.war">
-			<fileset dir="WebContent">
-				<exclude name="**/*.html" />
-			</fileset>
-			<fileset dir="buildAnt">
-				<include name="**/*.html" />
-			</fileset>
-		</war>
-		<delete dir="WebContent/sowbreira" />
-		<delete file="WebContent/f1mane.zip" />
-	</target>
 
-	<target name="criarWarDocker">
-		<war compress="on" destfile="${DOCKER}/f1mane.war">
+
+	<target name="criarWar">
+		<war compress="on" destfile="${DESTINO}/f1mane.war">
 			<fileset dir="WebContent">
 				<exclude name="**/*.html" />
 			</fileset>
@@ -176,9 +159,8 @@
 	
 
 	<target name="criarWarNoLibs">
-		<delete dir="${TOMCAT_HOME}/webapps/f1mane" />
-		<war compress="on" destfile="${TOMCAT_HOME}/webapps/f1mane.war">
-			<fileset dir="WebContent">
+		<war compress="on" destfile="${DESTINO}/f1mane.war">
+			F<fileset dir="WebContent">
 				<exclude name="WEB-INF/lib/*.jar" />
 			</fileset>
 			<fileset dir="WebContent">
@@ -231,8 +213,8 @@
 		<zip destfile="f1mane.zip" compress="true">
 			<fileset dir=".">
 				<include name="*.jar" />
-				<include name="*.bat" />
 				<include name="*.sh" />
+				<include name="*.bat" />
 			</fileset>
 		</zip>
 		<delete>
@@ -260,4 +242,5 @@
 			<include name="**/*.html" />
 		</replace>
 	</target>
+
 </project>

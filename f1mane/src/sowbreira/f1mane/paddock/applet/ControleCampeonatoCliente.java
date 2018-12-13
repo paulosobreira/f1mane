@@ -433,8 +433,8 @@ public class ControleCampeonatoCliente {
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	private JPanel gerarPanelCampeonatos(List campeonatos) {
-		this.campeonatos = campeonatos;
+	private JPanel gerarPanelCampeonatos(List campeonatosP) {
+		this.campeonatos = campeonatosP;
 		final JTable corridasTable = new JTable();
 
 		final TableModel corridasTableModel = new AbstractTableModel() {
