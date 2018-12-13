@@ -4667,7 +4667,7 @@ public class PainelCircuito {
 		Color bkg = transpMenus;
 		Color fonte = Color.black;
 		if (controleJogo instanceof JogoCliente) {
-			x += 40;
+			x += 30;
 		}
 		if (controleJogo.getPilotoJogador() != null
 				&& controleJogo.getPilotoJogador().equals(piloto)) {
@@ -4707,15 +4707,15 @@ public class PainelCircuito {
 		g2d.fill(pilotosRect[i]);
 		g2d.setColor(fonte);
 		g2d.drawString(nmPiloto, x + 35, y + 16);
-
-		if (rectangleVol == null) {
-			rectangleVol = new RoundRectangle2D.Double(
-					x + 35 + pilotosRect[i].getWidth(), y, 25, 20, 0, 0);
-		} else {
-			rectangleVol.setFrame(x + 35 + pilotosRect[i].getWidth(), y, 25,
-					20);
-		}
 		if (controleJogo instanceof ControleJogoLocal) {
+			if (rectangleVol == null) {
+				rectangleVol = new RoundRectangle2D.Double(
+						x + 35 + pilotosRect[i].getWidth(), y, 25, 20, 0, 0);
+			} else {
+				rectangleVol.setFrame(x + 35 + pilotosRect[i].getWidth(), y, 25,
+						20);
+			}
+
 			g2d.setColor(bkg);
 			g2d.fill(rectangleVol);
 			g2d.setColor(fonte);
@@ -4732,7 +4732,9 @@ public class PainelCircuito {
 			g2d.setStroke(trilhoMiniPista);
 			g2d.draw(rectanglePos);
 			g2d.draw(pilotosRect[i]);
-			g2d.draw(rectangleVol);
+			if (controleJogo instanceof ControleJogoLocal) {
+				g2d.draw(rectangleVol);
+			}
 			g2d.setStroke(stroke);
 		}
 	}

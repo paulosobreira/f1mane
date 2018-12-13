@@ -1467,11 +1467,9 @@ public class GerenciadorVisual {
 			return;
 		}
 		try {
-			if (string != null && !string.startsWith("<table>"))
-				string = Html
-						.preto(Lang.msg("082") + " "
-								+ controleJogo.getNumVoltaAtual() + " ")
-						+ string + "<br>";
+			if (string != null && !string.startsWith("<table>")) {
+				string += "<br>";
+			}
 			boolean contains = false;
 			for (int i = bufferTextual.size() - 1; i < bufferTextual.size()
 					- 5; i--) {
