@@ -63,6 +63,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	private MainFrame mainFrame;
 	private ControleBox controleBox;
 	private boolean atualizacaoSuave = true;
+	private String vantagem;
 
 	public JogoCliente(String temporada) throws Exception {
 		super(temporada);
@@ -1369,5 +1370,17 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		// TODO Auto-generated method stub
 
 	}
+	
+	
+	@Override
+	public String getVantagem() {
+		return vantagem;
+	}
+
+	@Override
+	public void setVantagem(String vantagem) {
+		this.vantagem = vantagem;
+	}
+	
 
 }

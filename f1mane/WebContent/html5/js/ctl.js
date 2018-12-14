@@ -390,7 +390,6 @@ function ctl_desenhaInfoAsa() {
 
 function ctl_desenhaInfoCarros() {
 	var posicaoPilotos = dadosParciais.posisPack;
-	var pilotoSelecionado = posicaoPilotos.posis[posicaoCentraliza];
 	var img1, img2;
 	var imgCap1, imgCap2;
 	var imgPneu1, imgPneu2;

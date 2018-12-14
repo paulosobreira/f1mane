@@ -1822,4 +1822,16 @@ public class ControleJogoLocal extends ControleRecursos
 		piloto.setPosicaoBandeirada(pilotos.size() + desqualificados);
 	}
 
+	@Override
+	public String getVantagem() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setVantagem(String vantagem) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

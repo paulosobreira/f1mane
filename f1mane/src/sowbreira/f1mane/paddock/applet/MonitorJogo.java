@@ -557,6 +557,7 @@ public class MonitorJogo implements Runnable {
 			estado = dadosParciais.estado;
 			jogoCliente.verificaMudancaClima(dadosParciais.clima);
 			jogoCliente.info(dadosParciais.texto);
+			jogoCliente.setVantagem(dadosParciais.vantagem);
 			dadosJogo.setClima(dadosParciais.clima);
 			dadosJogo
 					.setMelhoVolta(new Volta(dadosParciais.melhorVoltaCorrida));
@@ -572,6 +573,7 @@ public class MonitorJogo implements Runnable {
 				piloto.getVoltas().add(new Volta(dadosParciais.ultima2));
 				piloto.getVoltas().add(new Volta(dadosParciais.ultima1));
 				piloto.processaUltimas5Voltas();
+				piloto.setNumeroVolta(dadosParciais.voltaAtual);
 				piloto.setNomeJogador(dadosParciais.nomeJogador);
 				piloto.setQtdeParadasBox(dadosParciais.paradas);
 				if (piloto.getTokenJogador() != null) {

@@ -412,4 +412,9 @@ public interface InterfaceJogo {
 
 	public void desqualificaPiloto(Piloto piloto);
 
+	public String getVantagem();
+
+	public void setVantagem(String vantagem);
+
+
 }

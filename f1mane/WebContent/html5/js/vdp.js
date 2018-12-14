@@ -1097,7 +1097,6 @@ function vdp_blend(imgSrc, ptCarro, xCarro, yCarro, no, idPiloto , naoDesenha) {
 			ctxBlend.globalCompositeOperation = blendOp;
 			desenha(ctxBlend, imgObj, x, y);
 			pilotosEfeitosMap.set(idPiloto, false);
-			return cvBlend;
 		}
 	}
 	if(!desenhouBlend){
