@@ -648,6 +648,8 @@ public class ControlePaddockServidor {
 				if (idGoogle.equals(sessaoCliente.getId())) {
 					SrvPaddockPack srvPaddockPack = new SrvPaddockPack();
 					sessaoCliente.setNomeJogador(nome);
+					sessaoCliente.setImagemJogador(urlFoto);
+					sessaoCliente.setEmail(email);
 					sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 					srvPaddockPack.setSessaoCliente(sessaoCliente);
 					if (Util.isNullOrEmpty(sessaoCliente.getNomeJogador())) {
