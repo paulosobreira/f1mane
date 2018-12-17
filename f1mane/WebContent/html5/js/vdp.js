@@ -896,17 +896,15 @@ function vdp_desenhaCarrosCima() {
 					piloto.idPiloto);
 			desenha(maneContext, blendCarro, x, y);
 			if (emMovimento) {
-				if(localStorage.getItem('tela') != 'menor'){
-					desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto,
-							no, angulo, anguloGraus);
-					if (desenhaTravadaRodaFumaca != null) {
-						var blendFumaca = vdp_blend(desenhaTravadaRodaFumaca,
-								ponto, x, y, no, piloto.idPiloto,true);
-						if(blendFumaca){
-							desenha(maneContext, blendFumaca, x, y);
-						}
-					}					
-				}
+				desenhaTravadaRodaFumaca = vdp_desenhaTravadaRodaFumaca(piloto,
+						no, angulo, anguloGraus);
+				if (desenhaTravadaRodaFumaca != null) {
+					var blendFumaca = vdp_blend(desenhaTravadaRodaFumaca,
+							ponto, x, y, no, piloto.idPiloto,true);
+					if(blendFumaca){
+						desenha(maneContext, blendFumaca, x, y);
+					}
+				}					
 				desenhaRastroChuvaFx = vdp_desenhaRastroChuvaFx(piloto, no,
 						angulo, anguloGraus);
 				if (desenhaRastroChuvaFx != null) {
@@ -1417,15 +1415,18 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo,no) {
 	if (no.box) {
 		return;
 	}
-	var rotacionar;
-	var sw = Math.round(intervalo(0, 2));
-	if (sw == 0) {
-		rotacionar = vdp_rotacionar(travadaRoda0, angulo);
-	} else if (sw == 1) {
-		rotacionar = vdp_rotacionar(travadaRoda1, angulo);
-	} else if (sw == 2) {
-		rotacionar = vdp_rotacionar(travadaRoda2, angulo);
-	}
-	desenha(ctxBg, rotacionar, x + ptBg.x, y + ptBg.y);
+	var fn = function() {
+		var rotacionar;
+		var sw = Math.round(intervalo(0, 2));
+		if (sw == 0) {
+			rotacionar = vdp_rotacionar(travadaRoda0, angulo);
+		} else if (sw == 1) {
+			rotacionar = vdp_rotacionar(travadaRoda1, angulo);
+		} else if (sw == 2) {
+			rotacionar = vdp_rotacionar(travadaRoda2, angulo);
+		}
+		desenha(ctxBg, rotacionar, x + ptBg.x, y + ptBg.y);
+	};
+	funqueue.push(fn);
 	pilotosTravadaMap.set(piloto.idPiloto, false);
 }
