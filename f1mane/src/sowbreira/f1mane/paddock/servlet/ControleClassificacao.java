@@ -827,7 +827,7 @@ public class ControleClassificacao {
 					.hasNext();) {
 				DadosClassificacaoJogador dadosClassificacaoJogador = (DadosClassificacaoJogador) iterator
 						.next();
-				if (dadosClassificacaoJogador.getPontos() < 25) {
+				if (dadosClassificacaoJogador.getPontos() < 50) {
 					classificacaoremover.add(dadosClassificacaoJogador);
 				}
 			}
