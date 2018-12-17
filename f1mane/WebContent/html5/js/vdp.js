@@ -934,7 +934,7 @@ function vdp_desenhaCarrosCima() {
 			maneContext.closePath();
 		}
 		if (emMovimento && pilotosEfeitosMap.get(piloto.idPiloto)) {
-			vdp_desenhaTravadaRoda(piloto, x, y, angulo);
+			vdp_desenhaTravadaRoda(piloto, x, y, angulo,no);
 		}
 
 		if (showFps && piloto.idPiloto == idPilotoSelecionado) {
@@ -1286,8 +1286,6 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 	if (dadosParciais.clima == "chuva.png") {
 		return null;
 	}
-	var no = vdp_no_suave(piloto);
-
 	if (no.box) {
 		return null;
 	}
@@ -1409,14 +1407,13 @@ function vdp_desenhaFarois() {
 	}
 }
 
-function vdp_desenhaTravadaRoda(piloto, x, y, angulo) {
+function vdp_desenhaTravadaRoda(piloto, x, y, angulo,no) {
 	if (!pilotosTravadaMap.get(piloto.idPiloto)) {
 		return;
 	}
 	if (dadosParciais.clima == "chuva.png") {
 		return;
 	}
-	var no = vdp_no_suave(piloto);
 	if (no.box) {
 		return;
 	}
