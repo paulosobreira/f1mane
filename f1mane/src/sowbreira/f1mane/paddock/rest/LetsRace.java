@@ -86,8 +86,7 @@ public class LetsRace {
 		return Response.status(200)
 				.entity(controlePaddock.criarSessaoVisitante()).build();
 	}
-	
-	
+
 	@GET
 	@Path("/renovarSessaoVisitante/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -978,6 +977,9 @@ public class LetsRace {
 				.obterSessaoPorToken(token);
 		if (sessaoCliente == null) {
 			return Response.status(401).build();
+		}
+		if (sessaoCliente.isGuest()) {
+			return Response.status(403).build();
 		}
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 

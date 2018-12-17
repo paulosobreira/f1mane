@@ -1120,7 +1120,6 @@ public class ControlePaddockServidor {
 				if (Util.isNullOrEmpty(sessaoCliente.getNomeJogador())) {
 					return new MsgSrv(Lang.msg("064"));
 				}
-				salvarAcessoSessaoGoogle(sessaoCliente);
 				return srvPaddockPack;
 			}
 		}

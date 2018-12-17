@@ -5,6 +5,7 @@ if(localStorage.getItem("token") != null) {
 	carregaCampeonato();
 } else {
 	toaster(lang_text('precisaEstaLogado'), 4000, 'alert alert-danger');
+	$('#criarCampeonatoBtn').hide();
 }
 
 $('#153').html(lang_text('153'));
@@ -234,9 +235,10 @@ function carregaCampeonato() {
 			}
 		},
 		error : function(xhRequest, ErrorText, thrownError) {
-			if (xhRequest.status == 204) {
+			if (xhRequest.status == 403) {
 				toaster(lang_text('precisaEstaLogado'), 4000,
 						'alert alert-danger');
+				$('#criarCampeonatoBtn').hide();
 			} else {
 				tratamentoErro(xhRequest);
 			}
