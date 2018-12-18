@@ -901,9 +901,6 @@ function ctl_desenhaInfoEsquerda() {
 					y + 15);
 			y += 30;
 		}
-		
-		
-		y += 30;
 
 		ctlContext.fillStyle = corFundo
 		ctlContext.fillRect(x, y, 94, 20);
@@ -913,6 +910,8 @@ function ctl_desenhaInfoEsquerda() {
 		var tVoltas = ctlContext.measureText(' '+dadosParciais.voltaAtual + '/' + dadosJogo.numeroVotas).width;
 		ctlContext.fillText(' '+dadosParciais.voltaAtual + '/' + dadosJogo.numeroVotas, x + (90-tVoltas), y + 15);   	
 
+        y += 30;
+        
 		ctlContext.fillStyle = corFundo
 		ctlContext.fillRect(x, y, 94, 20);
 		ctlContext.font = '14px sans-serif';

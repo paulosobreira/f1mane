@@ -10,7 +10,7 @@ public class Constantes {
 	public static final String DATA_FORMATO_DDMMYYYY = "ddMMyyyy";
 
 	public static final int MAX_VOLTAS = 72;
-	public static final int MIN_VOLTAS = Logger.ativo ? 1 : 12;
+	public static final int MIN_VOLTAS = Logger.ativo ? 5 : 12;
 	public static final boolean DATABASE = !Logger.ativo;
 	public static final int CICLO = 180;
 	public static final int CICLO_SOM = 100;

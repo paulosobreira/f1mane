@@ -35,10 +35,16 @@ var altura = 0;
 var descontoCanvasY = 0;
 var descontoCanvasX = 0;
 var rectBg = {
-	left : ptBg.x,
-	top : ptBg.y,
-	right : ptBg.x + largura,
-	bottom : ptBg.y + altura
+    left : 0,
+    top : 0,
+    right : 0,
+    bottom : 0
+};
+var rectObj = {
+    left : 0,
+    top : 0,
+    right : 0,
+    bottom : 0
 };
 var pontoColisaoArray = new Array();
 var blendOp = 'destination-out'
@@ -101,17 +107,22 @@ function vdp_desenhaBorrachaNaPista(){
 	if (dadosParciais.clima == "chuva.png") {
 		borrachaNaPista = [];
 		return;
-	}
+    }
 	for (var i = 0; i < borrachaNaPista.length; i++) {
-		var borracha = borrachaNaPista[i];
-		if (!vdp_containsRect(rectBg, borracha)) {
+        var borracha = borrachaNaPista[i];
+
+        rectObj.left = borracha.x;
+        rectObj.top = borracha.y;
+        rectObj.right = borracha.x + borracha.img.width;
+        rectObj.bottom = borracha.y + borracha.img.height;
+        
+		if (!vdp_intersectRect(rectBg, rectObj)) {
 			continue;
 		}
 		var x = borracha.x - ptBg.x;
 		var y = borracha.y - ptBg.y;
-		desenha(maneContext, borracha, x, y);
-	}
-
+        desenha(maneContext, borracha.img, x, y);
+    }
 }
 
 function vdp_processaAlturaLargura() {
@@ -201,16 +212,16 @@ function vdp_pow() {
 		alertaAerefolioPow = null;
 	}
 
-	for (var i = 0; i < pontoColisaoArray.length; i++) {
+    for (var i = 0; i < pontoColisaoArray.length; i++) {
 		var ponto = pontoColisaoArray[i];
 		var x = ponto.x - ptBg.x;
-		var y = ponto.y - ptBg.y;
-		var rectObj = {
-			left : ponto.x,
-			top : ponto.y,
-			right : ponto.x + pow.width,
-			bottom : ponto.y + pow.height
-		};
+        var y = ponto.y - ptBg.y;
+        
+        rectObj.left = ponto.x;
+        rectObj.top = ponto.y;
+        rectObj.right = ponto.x + pow.width;
+        rectObj.bottom = ponto.y + pow.height;
+
 		if (!vdp_intersectRect(rectBg, rectObj)) {
 			continue;
 		}
@@ -636,7 +647,7 @@ function vdp_pontoTracadoSuave(piloto, noSuave, noReal) {
 	var pontoSuave = vdp_pontoTracado(tracadoSuave, no);
 
 	var colisao = false;
-	if (zoom == 1 && vdp_intersectRect(rectBg, pontoSuave)
+	if (zoom == 1 && vdp_containsRect(rectBg, pontoSuave)
 			&& vdp_colisaoTracadoSuave(piloto)) {
 		var ponto = vdp_obterPonto(piloto, false);
 		if (ponto != null && ponto.x != null && ponto.y != null) {
@@ -1003,13 +1014,13 @@ function vdp_desenhaObjs() {
 	}
 	for (i = 0; i < circuito.objetosNoTransparencia.length; i++) {
 		var pontosTp = circuito.objetosNoTransparencia[i];
-		var img = objImgPistaMap.get(i);
-		var rectObj = {
-			left : pontosTp.x,
-			top : pontosTp.y,
-			right : pontosTp.x + img.width,
-			bottom : pontosTp.y + img.height
-		};
+        var img = objImgPistaMap.get(i);
+        
+        rectObj.left = pontosTp.x;
+        rectObj.top = pontosTp.y;
+        rectObj.right = pontosTp.x + img.width;
+        rectObj.bottom = pontosTp.y + img.height;
+
 		if (vdp_intersectRect(rectBg, rectObj)) {
 			desenha(maneContext, img, pontosTp.x - ptBg.x, pontosTp.y - ptBg.y);
 		}
@@ -1096,12 +1107,12 @@ function vdp_blend(imgSrc, ptCarro, xCarro, yCarro, no, idPiloto , naoDesenha) {
 				&& (no.index < pontosTp.indexInicio || no.index > pontosTp.indexFim)) {
 			continue;
 		}
-		var rectObj = {
-			left : pontosTp.x,
-			top : pontosTp.y,
-			right : pontosTp.x + imgObj.width,
-			bottom : pontosTp.y + imgObj.height
-		};
+        
+        rectObj.left = pontosTp.x;
+        rectObj.top = pontosTp.y;
+        rectObj.right = pontosTp.x + imgObj.width;
+        rectObj.bottom = pontosTp.y + imgObj.height;
+
 		if (imgObj && imgObj.width > 0 && imgObj.height > 0
 				&& vdp_intersectRect(rectCarro, rectObj)) {
 			if(naoDesenha){
@@ -1428,9 +1439,6 @@ function vdp_desenhaFarois() {
 }
 
 function vdp_desenhaTravadaRoda(piloto, x, y, angulo,no) {
-    if(true){
-        return;
-    }
 	if (!pilotosTravadaMap.get(piloto.idPiloto)) {
 		return;
 	}
