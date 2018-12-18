@@ -1142,7 +1142,7 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus) {
 	if (faisca != null) {
 		return faisca;
 	}
-	// var fn = function() {
+	var fn = function() {
 		if (mapaRastroFaisca.get(chave) != null) {
 			return;
 		}
@@ -1151,8 +1151,8 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus) {
 		if (rotateCache) {
 			mapaRastroFaisca.set(chave, faisca);
 		}
-	// };
-	// funqueue.push(fn);
+	};
+	funqueue.push(fn);
 	return faisca;
 }
 
@@ -1308,7 +1308,7 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 	if (fumaca != null) {
 		return fumaca;
 	}
-	// var fn = function() {
+	var fn = function() {
 		if (mapaTravadaRodaFumaca.get(chave) != null) {
 			return;
 		}
@@ -1317,8 +1317,8 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
 		if (rotateCache) {
 			mapaTravadaRodaFumaca.set(chave, fumaca);
 		}
-	// };
-	// funqueue.push(fn);
+	};
+	funqueue.push(fn);
 	return fumaca;
 }
 
@@ -1406,6 +1406,9 @@ function vdp_desenhaFarois() {
 }
 
 function vdp_desenhaTravadaRoda(piloto, x, y, angulo,no) {
+    if(true){
+        return;
+    }
 	if (!pilotosTravadaMap.get(piloto.idPiloto)) {
 		return;
 	}
@@ -1413,9 +1416,6 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo,no) {
 		return;
 	}
 	if (no.box) {
-		return;
-    }
-    if (localStorage.getItem('tela') == 'menor') {
 		return;
     }
 	var fn = function() {
