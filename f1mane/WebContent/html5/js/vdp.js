@@ -18,6 +18,7 @@ var fxArray = [];
 var fxChuvaRetaArray = [];
 var fxChuvaAltaArray = [];
 var fxChuvaBaixaArray = [];
+var borrachaNaPista = [];
 var cvBg;
 var ctxBg;
 var maneCanvas = document.getElementById('maneCanvas')
@@ -88,8 +89,29 @@ function vdp_desenha(fps_p) {
 	vdp_desenhaClima();
 	vdp_pow();
 	vdp_desenhaFarois();
+	vdp_desenhaBorrachaNaPista();
 	vdp_ctl();
 	vdp_debugRectBg();
+}
+
+function vdp_desenhaBorrachaNaPista(){
+	if(dadosParciais==null){
+		return;
+	}
+	if (dadosParciais.clima == "chuva.png") {
+		borrachaNaPista = [];
+		return;
+	}
+	for (var i = 0; i < borrachaNaPista.length; i++) {
+		var borracha = borrachaNaPista[i];
+		if (!vdp_containsRect(rectBg, borracha)) {
+			continue;
+		}
+		var x = borracha.x - ptBg.x;
+		var y = borracha.y - ptBg.y;
+		desenha(maneContext, borracha, x, y);
+	}
+
 }
 
 function vdp_processaAlturaLargura() {
@@ -1428,7 +1450,13 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo,no) {
 		} else if (sw == 2) {
 			rotacionar = vdp_rotacionar(travadaRoda2, angulo);
 		}
-		desenha(ctxBg, rotacionar, x + ptBg.x, y + ptBg.y);
+		//desenha(ctxBg, rotacionar, x + ptBg.x, y + ptBg.y);
+		var borracha = {
+				x : x + ptBg.x,
+				y : y + ptBg.y,
+				img : rotacionar
+			};
+		borrachaNaPista.push(borracha);
 	};
 	funqueue.push(fn);
 	pilotosTravadaMap.set(piloto.idPiloto, false);

@@ -887,6 +887,22 @@ function ctl_desenhaInfoEsquerda() {
 		ctlContext.fillStyle = "black"
 		ctlContext.fillText(circText, x + 5, y + 15);
 
+		
+		y += 30;
+
+		if (dadosParciais.melhorVoltaCorrida) {
+			ctlContext.fillStyle = corFundo
+			ctlContext.fillRect(x, y, 120, 20);
+			ctlContext.font = '14px sans-serif';
+			ctlContext.fillStyle = "black"
+			ctlContext.fillText(lang_text('corrida'), x + 5, y + 15);
+			ctlContext.fillText(
+					formatarTempo(dadosParciais.melhorVoltaCorrida), x + 60,
+					y + 15);
+			y += 30;
+		}
+		
+		
 		y += 30;
 
 		ctlContext.fillStyle = corFundo
@@ -896,20 +912,6 @@ function ctl_desenhaInfoEsquerda() {
     	ctlContext.fillText(lang_text('voltas') , x + 5, y + 15);
 		var tVoltas = ctlContext.measureText(' '+dadosParciais.voltaAtual + '/' + dadosJogo.numeroVotas).width;
 		ctlContext.fillText(' '+dadosParciais.voltaAtual + '/' + dadosJogo.numeroVotas, x + (90-tVoltas), y + 15);   	
-
-		y += 30;
-
-		if (dadosParciais.melhorVoltaCorrida) {
-			ctlContext.fillStyle = corFundo
-			ctlContext.fillRect(x, y, 110, 20);
-			ctlContext.font = '14px sans-serif';
-			ctlContext.fillStyle = "black"
-			ctlContext.fillText(lang_text('corrida'), x + 5, y + 15);
-			ctlContext.fillText(
-					formatarTempo(dadosParciais.melhorVoltaCorrida), x + 53,
-					y + 15);
-			y += 30;
-		}
 
 		ctlContext.fillStyle = corFundo
 		ctlContext.fillRect(x, y, 94, 20);
