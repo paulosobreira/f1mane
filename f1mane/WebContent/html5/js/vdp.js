@@ -1414,7 +1414,10 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo,no) {
 	}
 	if (no.box) {
 		return;
-	}
+    }
+    if (localStorage.getItem('tela') == 'menor') {
+		return;
+    }
 	var fn = function() {
 		var rotacionar;
 		var sw = Math.round(intervalo(0, 2));

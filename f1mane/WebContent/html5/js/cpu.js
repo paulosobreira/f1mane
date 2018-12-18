@@ -210,7 +210,7 @@ var fila = setInterval(function() {
 	if (funqueue.length > 0) {
 		(funqueue.shift())();
 	}
-}, 30);
+}, 50);
 
 // update canvas with some information and animation
 var fps = new FpsCtrl(30, function(e) {
