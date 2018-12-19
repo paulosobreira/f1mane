@@ -89,13 +89,13 @@ function vdp_desenha(fps_p) {
     vdp_centralizaPilotoSelecionado();
     vdp_desenhaBackGround();
     vdp_desenhaMarcasLargadaGrid();
+    vdp_desenhaBorrachaNaPista();
     vdp_desenhaCarrosCima();
     vdp_desenhaPontosCarrosCima();
     vdp_desenhaNomesCima();
     vdp_desenhaClima();
     vdp_pow();
     vdp_desenhaFarois();
-    vdp_desenhaBorrachaNaPista();
     vdp_ctl();
     vdp_debugRectBg();
 }
