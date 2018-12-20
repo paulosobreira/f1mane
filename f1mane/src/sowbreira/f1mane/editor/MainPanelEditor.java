@@ -824,7 +824,10 @@ public class MainPanelEditor extends JPanel {
 					if (circuito.getObjetos() == null) {
 						circuito.setObjetos(new ArrayList<ObjetoPista>());
 					}
-					objetoPista.setPosicaoQuina(ultimoClicado);
+					Point quina = new Point(ultimoClicado);
+					quina.x -= objetoPista.getLargura()/2;
+					quina.y -= objetoPista.getAltura()/2;
+					objetoPista.setPosicaoQuina(quina);
 					circuito.getObjetos().add(objetoPista);
 					formularioListaObjetos.listarObjetos();
 					objetoPista
