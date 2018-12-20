@@ -56,7 +56,7 @@ public class MainFrameEditor extends JFrame {
 	private JMenu menuInfo;
 
 	private AppletPaddock ver = new AppletPaddock();
-	protected boolean controlApertado;
+	protected boolean altApertado;
 	protected boolean shiftApertado;
 
 	public InterfaceJogo getControleJogo() {
@@ -263,8 +263,8 @@ public class MainFrameEditor extends JFrame {
 				if (editor == null) {
 					return;
 				}
-				if (e.isControlDown()) {
-					controlApertado = true;
+				if (e.isAltDown()) {
+					altApertado = true;
 					if (keyCoode == KeyEvent.VK_LEFT) {
 						editor.esquerdaObj();
 					} else if (keyCoode == KeyEvent.VK_RIGHT) {
@@ -278,7 +278,7 @@ public class MainFrameEditor extends JFrame {
 					}
 					return;
 				} else {
-					controlApertado = false;
+					altApertado = false;
 				}
 				if (e.isShiftDown()) {
 					shiftApertado = true;
@@ -303,17 +303,17 @@ public class MainFrameEditor extends JFrame {
 					editor.cima();
 				} else if (keyCoode == KeyEvent.VK_DOWN) {
 					editor.baixo();
-				} else if (keyCoode == KeyEvent.VK_PAGE_UP) {
+				} else if (keyCoode == KeyEvent.VK_Z) {
 					editor.menosAngulo();
-				} else if (keyCoode == KeyEvent.VK_PAGE_DOWN) {
+				} else if (keyCoode == KeyEvent.VK_X) {
 					editor.maisAngulo();
 				}
 			}
 		});
 	}
 
-	public boolean isControlApertado() {
-		return controlApertado;
+	public boolean isAltApertado() {
+		return altApertado;
 	}
 
 	public boolean isShiftApertado() {

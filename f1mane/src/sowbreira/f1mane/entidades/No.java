@@ -23,6 +23,7 @@ public class No implements Serializable {
 	public static Color CURVA_BAIXA = Color.RED;
 	public static Color BOX = Color.CYAN;
 	public static Color PARADA_BOX = Color.ORANGE;
+	public static Color FIM_BOX = Color.PINK;
 	private boolean box;
 	private int index;
 	
@@ -74,6 +75,8 @@ public class No implements Serializable {
 			return "BOX";
 		} else if (PARADA_BOX.equals(tipo)) {
 			return "PARADA_BOX";
+		} else if (FIM_BOX.equals(tipo)) {
+			return "FIM_BOX";
 		}
 
 		return super.toString();
