@@ -1128,9 +1128,20 @@ public class MainPanelEditor extends JPanel {
 		if (circuito.getBoxFull() == null || circuito.getBoxFull().isEmpty()) {
 			return;
 		}
+		double multi = 1.5;
+		double maxBox = Util.inteiro(Carro.LARGURA * multi * 12) + Carro.LARGURA;
+		if(circuito.getFimParadaBoxIndex()!=0) {
+			No ini = (No) circuito.getBoxFull().get(circuito.getParadaBoxIndex());
+			No fim = (No) circuito.getBoxFull().get(circuito.getFimParadaBoxIndex());
+			int distaciaInicioFim = GeoUtil.distaciaEntrePontos(ini.getPoint(), fim.getPoint());
+			if(distaciaInicioFim<maxBox) {
+				multi = (multi*distaciaInicioFim)/maxBox;
+			}
+		}
+		
 		int paradas = circuito.getParadaBoxIndex();
 		for (int i = 0; i < 12; i++) {
-			int iP = paradas + Util.inteiro(Carro.LARGURA * 1.5 * i) + Carro.LARGURA;
+			int iP = paradas + Util.inteiro(Carro.LARGURA * multi * i) + Carro.LARGURA;
 			int n1Idx = iP - Carro.MEIA_LARGURA;
 			int n2Idx = iP + Carro.MEIA_LARGURA;
 			if (n1Idx > circuito.getBoxFull().size()) {

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import br.nnpe.Constantes;
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Circuito implements Serializable {
 	private static final long serialVersionUID = -1488529358105580761L;
@@ -48,6 +49,7 @@ public class Circuito implements Serializable {
 	private int entradaBoxIndex;
 	private int saidaBoxIndex;
 	private int paradaBoxIndex;
+	private int fimParadaBoxIndex;
 	private String nome;
 	private boolean noite;
 	private boolean usaBkg;
@@ -110,17 +112,14 @@ public class Circuito implements Serializable {
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
-				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
-						noAnt.getPoint(), no.getPoint()), noAnt));
+				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()), noAnt));
 				noAnt = no;
 			}
 		}
 
 		if (!pista.isEmpty()) {
 			No no = (No) pista.get(0);
-			arrayList.addAll(converterPointNo(
-					GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()),
-					noAnt));
+			arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()), noAnt));
 		}
 		for (int i = 0; i < arrayList.size(); i++) {
 			No no = (No) arrayList.get(i);
@@ -152,6 +151,8 @@ public class Circuito implements Serializable {
 	public synchronized void vetorizarPista(double multi, double larg) {
 		multiplicadorLarguraPista = larg;
 		multiplicadorPista = multi;
+		paradaBoxIndex = 0;
+		fimParadaBoxIndex = 0;
 		if (usaBkg) {
 			multi = 1;
 		}
@@ -183,8 +184,7 @@ public class Circuito implements Serializable {
 				p2.x *= multi;
 				p2.y *= multi;
 				pistaKey.add(noAnt);
-				pistaFull.addAll(converterPointNo(
-						GeoUtil.drawBresenhamLine(p1, p2), noAnt));
+				pistaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 				no.setPoint(p3);
 				noAnt = no;
 			}
@@ -197,8 +197,7 @@ public class Circuito implements Serializable {
 			p1.x *= multi;
 			p1.y *= multi;
 			pistaKey.add(noAnt);
-			pistaFull.addAll(
-					converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
+			pistaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
 		}
 		for (int i = 0; i < pistaFull.size(); i++) {
@@ -235,8 +234,7 @@ public class Circuito implements Serializable {
 				p2.x *= multi;
 				p2.y *= multi;
 				boxKey.add(noAnt);
-				boxFull.addAll(converterPointNo(
-						GeoUtil.drawBresenhamLine(p1, p2), noAnt));
+				boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 				no.setPoint(p3);
 				noAnt = no;
 			}
@@ -248,8 +246,7 @@ public class Circuito implements Serializable {
 			p1.x *= multi;
 			p1.y *= multi;
 			boxKey.add(noAnt);
-			boxFull.addAll(
-					converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
+			boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
 
 		}
 		for (int i = 0; i < boxFull.size(); i++) {
@@ -264,14 +261,12 @@ public class Circuito implements Serializable {
 			int saidaBoxSize = Integer.MAX_VALUE;
 			for (int i = 0; i < pistaFull.size(); i += 50) {
 				No pistaNo = (No) pistaFull.get(i);
-				List<Point> entrada = GeoUtil.drawBresenhamLine(
-						boxEntrada.getPoint(), pistaNo.getPoint());
+				List<Point> entrada = GeoUtil.drawBresenhamLine(boxEntrada.getPoint(), pistaNo.getPoint());
 				if (entrada.size() < entradaBoxSize) {
 					entradaBoxSize = entrada.size();
 					entradaBoxIndex = i;
 				}
-				List<Point> saida = GeoUtil.drawBresenhamLine(
-						boxSaida.getPoint(), pistaNo.getPoint());
+				List<Point> saida = GeoUtil.drawBresenhamLine(boxSaida.getPoint(), pistaNo.getPoint());
 				if (saida.size() < saidaBoxSize) {
 					saidaBoxSize = saida.size();
 					saidaBoxIndex = i;
@@ -279,10 +274,13 @@ public class Circuito implements Serializable {
 			}
 			for (int i = 0; i < boxFull.size(); i++) {
 				No boxNo = (No) boxFull.get(i);
-				if (No.PARADA_BOX.equals(boxNo.getTipo())) {
+				if (paradaBoxIndex == 0 && No.PARADA_BOX.equals(boxNo.getTipo())) {
 					paradaBoxIndex = i;
-					break;
 				}
+				if (fimParadaBoxIndex == 0 && No.FIM_BOX.equals(boxNo.getTipo())) {
+					fimParadaBoxIndex = i;
+				}
+
 			}
 		}
 		gerarTracado1e2Box();
@@ -311,18 +309,13 @@ public class Circuito implements Serializable {
 			trazCar = pistaFull.get(traz).getPoint();
 			frenteCar = pistaFull.get(frente).getPoint();
 			calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-			Rectangle2D rectangle = new Rectangle2D.Double(
-					(p.x - Carro.MEIA_LARGURA_CIMA),
-					(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA,
-					Carro.ALTURA_CIMA);
-			Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
-					new Point(Util.inteiro(rectangle.getCenterX()),
-							Util.inteiro(rectangle.getCenterY())));
+			Rectangle2D rectangle = new Rectangle2D.Double((p.x - Carro.MEIA_LARGURA_CIMA),
+					(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
+			Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
+					new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
 			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
 					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
-					new Point(Util.inteiro(rectangle.getCenterX()),
-							Util.inteiro(rectangle.getCenterY())));
+					new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
 			No newNo1 = new No();
 			newNo1.setPoint(p1);
 			newNo1.setTipo(no.getTipo());
@@ -359,18 +352,13 @@ public class Circuito implements Serializable {
 			}
 			frenteCar = boxFull.get(frente).getPoint();
 			calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-			Rectangle2D rectangle = new Rectangle2D.Double(
-					(p.x - Carro.MEIA_LARGURA_CIMA),
-					(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA,
-					Carro.ALTURA_CIMA);
-			Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
-					new Point(Util.inteiro(rectangle.getCenterX()),
-							Util.inteiro(rectangle.getCenterY())));
+			Rectangle2D rectangle = new Rectangle2D.Double((p.x - Carro.MEIA_LARGURA_CIMA),
+					(p.y - Carro.MEIA_ALTURA_CIMA), Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
+			Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
+					new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
 			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
 					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
-					new Point(Util.inteiro(rectangle.getCenterX()),
-							Util.inteiro(rectangle.getCenterY())));
+					new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
 			No newNo1 = new No();
 			newNo1.setPoint(p1);
 			newNo1.setTipo(no.getTipo());
@@ -393,17 +381,14 @@ public class Circuito implements Serializable {
 		pista5Full = new ArrayList<No>();
 		pista5Full.addAll(pista1Full);
 		List<No> nosDaPista = getPistaFull();
-		for (Iterator<Point> iterator = escapeList.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<Point> iterator = escapeList.iterator(); iterator.hasNext();) {
 			Point pointDerrapagem = iterator.next();
 			No noPerto = null;
 			double menorDistancia = Double.MAX_VALUE;
-			for (Iterator iterator2 = nosDaPista.iterator(); iterator2
-					.hasNext();) {
+			for (Iterator iterator2 = nosDaPista.iterator(); iterator2.hasNext();) {
 				No no = (No) iterator2.next();
 				Point pointPista = (Point) no.getPoint();
-				double distaciaEntrePontos = GeoUtil
-						.distaciaEntrePontos(pointPista, pointDerrapagem);
+				double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(pointPista, pointDerrapagem);
 				if (distaciaEntrePontos < menorDistancia) {
 					menorDistancia = distaciaEntrePontos;
 					noPerto = no;
@@ -413,10 +398,8 @@ public class Circuito implements Serializable {
 				continue;
 			}
 			Point p = noPerto.getPoint();
-			Rectangle2D rectangle = new Rectangle2D.Double(
-					(p.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
-					(p.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
-					Carro.ALTURA * Carro.FATOR_AREA_CARRO,
+			Rectangle2D rectangle = new Rectangle2D.Double((p.x - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO),
+					(p.y - Carro.MEIA_ALTURA * Carro.FATOR_AREA_CARRO), Carro.ALTURA * Carro.FATOR_AREA_CARRO,
 					Carro.ALTURA * Carro.FATOR_AREA_CARRO);
 			int cont = noPerto.getIndex();
 			int traz = cont - 44;
@@ -424,21 +407,15 @@ public class Circuito implements Serializable {
 			Point trazCar = ((No) nosDaPista.get(traz)).getPoint();
 			Point frenteCar = ((No) nosDaPista.get(frente)).getPoint();
 			double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
-			Point p1 = GeoUtil.calculaPonto(calculaAngulo,
-					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
-					new Point(Util.inteiro(rectangle.getCenterX()),
-							Util.inteiro(rectangle.getCenterY())));
+			Point p1 = GeoUtil.calculaPonto(calculaAngulo, Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
+					new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
 			Point p2 = GeoUtil.calculaPonto(calculaAngulo + 180,
 					Util.inteiro(Carro.ALTURA * getMultiplicadorLarguraPista()),
-					new Point(Util.inteiro(rectangle.getCenterX()),
-							Util.inteiro(rectangle.getCenterY())));
-			double distaciaEntrePontos1 = GeoUtil.distaciaEntrePontos(p1,
-					pointDerrapagem);
-			double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2,
-					pointDerrapagem);
+					new Point(Util.inteiro(rectangle.getCenterX()), Util.inteiro(rectangle.getCenterY())));
+			double distaciaEntrePontos1 = GeoUtil.distaciaEntrePontos(p1, pointDerrapagem);
+			double distaciaEntrePontos2 = GeoUtil.distaciaEntrePontos(p2, pointDerrapagem);
 			int contSaida = 0;
-			int max = Util.inteiro(
-					Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista());
+			int max = Util.inteiro(Carro.ALTURA * 3.5 * getMultiplicadorLarguraPista());
 			int contVolta = max;
 			int index = noPerto.getIndex();
 			int contMax = (int) (index + (max * 15));
@@ -459,8 +436,7 @@ public class Circuito implements Serializable {
 					} else if (contVolta > 0) {
 						boolean sair = false;
 						for (int j = (index + 10); j < pista1Full.size(); j++) {
-							if (GeoUtil.distaciaEntrePontos(
-									pista1Full.get(j).getPoint(), p5) < 1) {
+							if (GeoUtil.distaciaEntrePontos(pista1Full.get(j).getPoint(), p5) < 1) {
 								sair = true;
 							}
 						}
@@ -472,8 +448,7 @@ public class Circuito implements Serializable {
 						}
 						contPonto = contVolta;
 					}
-					p5 = GeoUtil.calculaPonto(calculaAngulo,
-							Util.inteiro(contPonto), noIndex.getPoint());
+					p5 = GeoUtil.calculaPonto(calculaAngulo, Util.inteiro(contPonto), noIndex.getPoint());
 					No newNo = new No();
 					newNo.setPoint(p5);
 					newNo.setTracado(5);
@@ -498,8 +473,7 @@ public class Circuito implements Serializable {
 					} else if (contVolta > 0) {
 						boolean sair = false;
 						for (int j = (index + 10); j < pista2Full.size(); j++) {
-							if (GeoUtil.distaciaEntrePontos(
-									pista2Full.get(j).getPoint(), p4) < 1) {
+							if (GeoUtil.distaciaEntrePontos(pista2Full.get(j).getPoint(), p4) < 1) {
 								sair = true;
 							}
 						}
@@ -514,8 +488,7 @@ public class Circuito implements Serializable {
 						}
 						contPonto = contVolta;
 					}
-					p4 = GeoUtil.calculaPonto(calculaAngulo + 180,
-							Util.inteiro(contPonto), noIndex.getPoint());
+					p4 = GeoUtil.calculaPonto(calculaAngulo + 180, Util.inteiro(contPonto), noIndex.getPoint());
 					No newNo = new No();
 					newNo.setPoint(p4);
 					newNo.setTipo(noIndex.getTipo());
@@ -548,6 +521,7 @@ public class Circuito implements Serializable {
 			System.out.println(teste.get(i));
 		}
 	}
+
 	private void gerarEscapeList() {
 		escapeList = new ArrayList<Point>();
 		List<ObjetoPista> objetos = getObjetos();
@@ -565,6 +539,10 @@ public class Circuito implements Serializable {
 		return paradaBoxIndex;
 	}
 
+	public int getFimParadaBoxIndex() {
+		return fimParadaBoxIndex;
+	}
+
 	public List<No> getPistaFull() {
 		return pistaFull;
 	}
@@ -578,8 +556,7 @@ public class Circuito implements Serializable {
 			if (noAnt == null) {
 				noAnt = no;
 			} else {
-				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(
-						noAnt.getPoint(), no.getPoint()), noAnt));
+				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()), noAnt));
 				noAnt = no;
 			}
 		}
@@ -712,8 +689,7 @@ public class Circuito implements Serializable {
 		if (objetospista == null) {
 			return;
 		}
-		for (Iterator<ObjetoPista> iterator = objetospista.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<ObjetoPista> iterator = objetospista.iterator(); iterator.hasNext();) {
 			ObjetoPista objetoPista = iterator.next();
 			if (!(objetoPista instanceof ObjetoTransparencia))
 				continue;
@@ -726,12 +702,9 @@ public class Circuito implements Serializable {
 			ObjetoPistaJSon objetoPistaJSon = new ObjetoPistaJSon();
 			objetoPistaJSon.setX(objetoTransparencia.getPosicaoQuina().x);
 			objetoPistaJSon.setY(objetoTransparencia.getPosicaoQuina().y);
-			objetoPistaJSon.setIndexInicio(
-					objetoTransparencia.getInicioTransparencia());
-			objetoPistaJSon
-					.setIndexFim(objetoTransparencia.getFimTransparencia());
-			objetoPistaJSon.setTransparenciaBox(
-					objetoTransparencia.isTransparenciaBox());
+			objetoPistaJSon.setIndexInicio(objetoTransparencia.getInicioTransparencia());
+			objetoPistaJSon.setIndexFim(objetoTransparencia.getFimTransparencia());
+			objetoPistaJSon.setTransparenciaBox(objetoTransparencia.isTransparenciaBox());
 			objetosNoTransparencia.add(objetoPistaJSon);
 		}
 
@@ -805,8 +778,8 @@ public class Circuito implements Serializable {
 				maxY = p.y;
 			}
 		}
-		BufferedImage image = new BufferedImage(maxX + (int) (maxX * 0.1),
-				maxY + (int) (maxY * 0.1), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage image = new BufferedImage(maxX + (int) (maxX * 0.1), maxY + (int) (maxY * 0.1),
+				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		setarHints(g2d);
 		desenhaMiniCircuito(g2d, 0, 0);
@@ -814,20 +787,13 @@ public class Circuito implements Serializable {
 	}
 
 	private void setarHints(Graphics2D g2d) {
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
-				RenderingHints.VALUE_DITHER_ENABLE);
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-				RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-				RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
 	}
 
@@ -871,8 +837,7 @@ public class Circuito implements Serializable {
 		Point o = new Point(0, 0);
 		Point oldP = null;
 		No ultNo = null;
-		for (Iterator iterator = pistaMinimizada.iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = pistaMinimizada.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
 				No no = (No) map.get(oldP);
@@ -883,8 +848,7 @@ public class Circuito implements Serializable {
 				} else if (no.verificaRetaOuLargada()) {
 					g2d.setColor(new Color(0, 200, 0));
 				}
-				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
-						o.x + p.x + incX + x, o.y + p.y + y);
+				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x + p.x + incX + x, o.y + p.y + y);
 			}
 			oldP = p;
 			ultNo = (No) map.get(oldP);
@@ -897,18 +861,15 @@ public class Circuito implements Serializable {
 		} else if (ultNo.verificaRetaOuLargada()) {
 			g2d.setColor(new Color(0, 200, 0));
 		}
-		g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
-				o.x + p0.x + incX + x, o.y + p0.y + y);
+		g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x + p0.x + incX + x, o.y + p0.y + y);
 
 		g2d.setStroke(new BasicStroke(2.0f));
 		oldP = null;
 		g2d.setColor(Color.lightGray);
-		for (Iterator iterator = boxMinimizado.iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = boxMinimizado.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
 			if (oldP != null) {
-				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y,
-						o.x + p.x + incX + x, o.y + p.y + y);
+				g2d.drawLine(o.x + oldP.x + incX + x, o.y + oldP.y + y, o.x + p.x + incX + x, o.y + p.y + y);
 			}
 			oldP = p;
 		}
@@ -931,28 +892,25 @@ public class Circuito implements Serializable {
 			}
 		}
 
-		ObjetoTransparencia transparencia = objsTransp.get(i);;
+		ObjetoTransparencia transparencia = objsTransp.get(i);
+		;
 		List<Point> pontos = transparencia.getPontos();
 		Polygon polygon = new Polygon();
 		Point posicaoQuina = transparencia.getPosicaoQuina();
 		for (Point ponto : pontos) {
 			if (posicaoQuina != null) {
-				polygon.addPoint(Util.inteiro(ponto.x - posicaoQuina.x),
-						Util.inteiro(ponto.y - posicaoQuina.y));
+				polygon.addPoint(Util.inteiro(ponto.x - posicaoQuina.x), Util.inteiro(ponto.y - posicaoQuina.y));
 			} else {
 				polygon.addPoint((int) (ponto.x), (int) (ponto.y));
 			}
 		}
 		Rectangle area = transparencia.obterArea();
-		BufferedImage image = new BufferedImage(area.width, area.height,
-				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage image = new BufferedImage(area.width, area.height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		g2d.setColor(Color.BLACK);
-		AffineTransform affineTransform = AffineTransform.getScaleInstance(1,
-				1);
+		AffineTransform affineTransform = AffineTransform.getScaleInstance(1, 1);
 		double rad = Math.toRadians((double) transparencia.getAngulo());
-		affineTransform.setToRotation(rad, polygon.getBounds().getCenterX(),
-				polygon.getBounds().getCenterY());
+		affineTransform.setToRotation(rad, polygon.getBounds().getCenterX(), polygon.getBounds().getCenterY());
 		GeneralPath generalPath = new GeneralPath(polygon);
 		generalPath.transform(affineTransform);
 		g2d.fill(generalPath.createTransformedShape(affineTransform));
