@@ -64,7 +64,7 @@ public abstract class ControleRecursos {
 		return mapaNosIds.get(no);
 	}
 
-	private BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
+	public BufferedImage obterCarroCimaSemAreofolio(Piloto piloto,
 			String modelo) {
 		return carregadorRecursos.obterCarroCimaSemAreofolio(piloto, modelo);
 	}

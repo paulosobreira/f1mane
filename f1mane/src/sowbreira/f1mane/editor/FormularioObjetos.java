@@ -224,8 +224,8 @@ public class FormularioObjetos {
 	}
 
 	public void formularioObjetoPista(ObjetoPista objetoPista) {
-		objetoPista.setCorPimaria(getLabelCor1().getBackground());
-		objetoPista.setCorSecundaria(getLabelCor2().getBackground());
+//		objetoPista.setCorPimaria(getLabelCor1().getBackground());
+//		objetoPista.setCorSecundaria(getLabelCor2().getBackground());
 		objetoPista.setAngulo((Integer) angulo.getValue());
 		objetoPista.setInicioTransparencia(
 				(Integer) getInicioTranparencia().getValue());

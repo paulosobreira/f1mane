@@ -709,6 +709,15 @@ public class CarregadorRecursos {
 		}
 		return bufferedImage;
 	}
+	
+	public static BufferedImage carregaImagemSemCache(String file) {
+		try {
+			return ImageUtil.toCompatibleImage(ImageIO
+					.read(CarregadorRecursos.class.getResource(file)));
+		} catch (Exception e) {
+		}
+		return null;
+	}
 
 	public static BufferedImage carregaBufferedImageTransparecia(
 			String string) {
@@ -903,7 +912,7 @@ public class CarregadorRecursos {
 		BufferedImage carroCima = bufferCarrosCimaSemAreofolio
 				.get(carro.getNome());
 		if (carro.getImg() != null) {
-			carroCima = CarregadorRecursos.carregaImagem(
+			carroCima = CarregadorRecursos.carregaImagemSemCache(
 					carro.getImg().replaceAll(".png", "_cima.png"));
 			if (carroCima != null) {
 				String[] split = carro.getImg().split("/");
@@ -940,6 +949,7 @@ public class CarregadorRecursos {
 		}
 		return carroCima;
 	}
+
 
 	public BufferedImage obterCarroCima(Piloto piloto, String temporada) {
 		if (piloto == null) {
