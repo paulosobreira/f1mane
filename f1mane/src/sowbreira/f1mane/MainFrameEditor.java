@@ -172,7 +172,8 @@ public class MainFrameEditor extends JFrame {
 						linha = reader.readLine();
 					}
 				} catch (IOException e1) {
-					Logger.logarExept(e1);
+					e1.printStackTrace();
+					dialogDeErro(e1);
 				}
 				area.setCaretPosition(0);
 				JOptionPane.showMessageDialog(MainFrameEditor.this,
@@ -205,7 +206,8 @@ public class MainFrameEditor extends JFrame {
 							new JScrollPane(area), Lang.msg("listaDeErros"),
 							JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception ex) {
-					Logger.logarExept(ex);
+					ex.printStackTrace();
+					dialogDeErro(ex);
 				}
 			}
 		});
@@ -224,6 +226,18 @@ public class MainFrameEditor extends JFrame {
 		});
 		menuInfo2.add(ligarLogs);
 
+	}
+
+	public void dialogDeErro(Exception e) {
+		StackTraceElement[] trace = e.getStackTrace();
+		StringBuilder retorno = new StringBuilder();
+		int size = ((trace.length > 10) ? 10 : trace.length);
+
+		for (int i = 0; i < size; i++)
+			retorno.append(trace[i] + "\n");
+		JOptionPane.showMessageDialog(null, retorno.toString(),
+				Lang.msg("059"), JOptionPane.ERROR_MESSAGE);
+		
 	}
 
 	private void gerarMenusSobre(JMenu menu2) {
@@ -343,7 +357,8 @@ public class MainFrameEditor extends JFrame {
 					editor = new MainPanelEditor(MainFrameEditor.this);
 					ativarKeysEditor();
 				} catch (Exception e1) {
-					Logger.logarExept(e1);
+					e1.printStackTrace();
+					dialogDeErro(e1);
 				}
 			}
 		});
@@ -378,7 +393,8 @@ public class MainFrameEditor extends JFrame {
 							MainFrameEditor.this);
 					ativarKeysEditor();
 				} catch (Exception e1) {
-					Logger.logarExept(e1);
+					e1.printStackTrace();
+					dialogDeErro(e1);
 				}
 			}
 		});
@@ -395,7 +411,7 @@ public class MainFrameEditor extends JFrame {
 				try {
 					editor.salvarPista();
 				} catch (Exception e1) {
-					Logger.logarExept(e1);
+					e1.printStackTrace();
 				}
 			}
 		});
@@ -416,7 +432,8 @@ public class MainFrameEditor extends JFrame {
 					}
 					ativarKeysEditor();
 				} catch (Exception e1) {
-					Logger.logarExept(e1);
+					e1.printStackTrace();
+					dialogDeErro(e1);
 				}
 
 			}

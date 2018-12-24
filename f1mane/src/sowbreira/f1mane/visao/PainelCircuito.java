@@ -5626,8 +5626,18 @@ public class PainelCircuito {
 
 	private void gerarBoxes() {
 		int paradas = circuito.getParadaBoxIndex();
+		double multi = 1.5;
+		double maxBox = Util.inteiro(Carro.LARGURA * multi * 12) + Carro.LARGURA;
+		if(circuito.getFimParadaBoxIndex()!=0) {
+			No ini = (No) circuito.getBoxFull().get(circuito.getParadaBoxIndex());
+			No fim = (No) circuito.getBoxFull().get(circuito.getFimParadaBoxIndex());
+			int distaciaInicioFim = GeoUtil.distaciaEntrePontos(ini.getPoint(), fim.getPoint());
+			if(distaciaInicioFim<maxBox) {
+				multi = (multi*distaciaInicioFim)/maxBox;
+			}
+		}
 		for (int i = 0; i < 12; i++) {
-			int iP = paradas + Util.inteiro(Carro.LARGURA * 2 * i) + Carro.LARGURA;
+			int iP = paradas + Util.inteiro(Carro.LARGURA * multi * i) + Carro.LARGURA;
 			int ip1 = iP - Carro.MEIA_LARGURA;
 			if (ip1 >= circuito.getBoxFull().size()) {
 				continue;

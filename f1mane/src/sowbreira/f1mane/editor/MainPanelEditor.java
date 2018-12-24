@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -432,7 +433,8 @@ public class MainPanelEditor extends JPanel {
 				try {
 					apagarUltimoNo();
 				} catch (Exception e1) {
-					Logger.logarExept(e1);
+					e1.printStackTrace();
+					srcFrame.dialogDeErro(e1);
 				}
 			}
 		});
@@ -462,7 +464,8 @@ public class MainPanelEditor extends JPanel {
 					}
 					repaint();
 				} catch (Exception e1) {
-					Logger.logarExept(e1);
+					e1.printStackTrace();
+					srcFrame.dialogDeErro(e1);
 				}
 			}
 		});
@@ -487,7 +490,8 @@ public class MainPanelEditor extends JPanel {
 					}
 					formularioObjetos.formularioObjetoPista(objetoPista);
 				} catch (Exception e2) {
-					Logger.logarExept(e2);
+					e2.printStackTrace();
+					srcFrame.dialogDeErro(e2);
 				}
 
 			}
@@ -505,7 +509,8 @@ public class MainPanelEditor extends JPanel {
 							JOptionPane.INFORMATION_MESSAGE);
 					creditos();
 				} catch (Exception e1) {
-					Logger.logarExept(e1);
+					e1.printStackTrace();
+					srcFrame.dialogDeErro(e1);
 				}
 			}
 		});
@@ -1830,7 +1835,8 @@ public class MainPanelEditor extends JPanel {
 					}
 
 				} catch (Exception e1) {
-					Logger.logarExept(e1);
+					e1.printStackTrace();
+					srcFrame.dialogDeErro(e1);
 				}
 			}
 		});
@@ -1903,7 +1909,8 @@ public class MainPanelEditor extends JPanel {
 					desSelecionaNosPista();
 					repaint();
 				} catch (Exception e2) {
-					Logger.logarExept(e2);
+					e2.printStackTrace();
+					srcFrame.dialogDeErro(e2);
 				}
 
 			}
@@ -1911,9 +1918,14 @@ public class MainPanelEditor extends JPanel {
 		buttonsPanel1.add(reprocessar);
 
 		JPanel buttonsPanel2 = new JPanel();
-		buttonsPanel2.setLayout(new GridLayout(1, 8));
+		buttonsPanel2.setLayout(new FlowLayout());
 
-		nomePistaText = new JTextField();
+		nomePistaText = new JTextField(){
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(150, 40);
+			}
+		};
 		if (circuito != null) {
 			nomePistaText.setText(circuito.getNome());
 		}
@@ -1990,7 +2002,7 @@ public class MainPanelEditor extends JPanel {
 		larguraPistaSpinner = new JSpinner(model1) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(40, super.getPreferredSize().height);
+				return new Dimension(60, super.getPreferredSize().height);
 			}
 		};
 		p2 = new JPanel();
@@ -2187,7 +2199,8 @@ public class MainPanelEditor extends JPanel {
 				objetoPistaNovo.setNome("Objeto " + circuito.getObjetos().size());
 
 			} catch (Exception e) {
-				Logger.logarExept(e);
+				e.printStackTrace();
+				srcFrame.dialogDeErro(e);
 			}
 			repaint();
 			return;

@@ -7,7 +7,6 @@ package sowbreira.f1mane.paddock.applet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Properties;

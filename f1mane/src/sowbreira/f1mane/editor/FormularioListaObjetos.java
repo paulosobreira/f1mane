@@ -3,6 +3,7 @@ package sowbreira.f1mane.editor;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.Transient;
@@ -59,8 +60,11 @@ public class FormularioListaObjetos {
 						&& selectedIndex < defaultListModelOP.size()) {
 					ObjetoPista objetoPista = (ObjetoPista) defaultListModelOP
 							.get(selectedIndex);
+					Point centro = new Point(objetoPista.getPosicaoQuina());
+					centro.x += objetoPista.getLargura()/2;
+					centro.y += objetoPista.getAltura()/2;
 					FormularioListaObjetos.this.editor
-							.centralizarPonto(objetoPista.getPosicaoQuina());
+							.centralizarPonto(centro);
 				}
 
 			}

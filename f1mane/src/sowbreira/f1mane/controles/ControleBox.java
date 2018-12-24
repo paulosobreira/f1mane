@@ -106,12 +106,24 @@ public class ControleBox {
 		int paradas = circuito.getParadaBoxIndex();
 
 		int cont = 0;
+		double multi = 1.5;
+		double maxBox = Util.inteiro(Carro.LARGURA * multi * 12) + Carro.LARGURA;
+		if(circuito.getFimParadaBoxIndex()!=0) {
+			No ini = (No) circuito.getBoxFull().get(circuito.getParadaBoxIndex());
+			No fim = (No) circuito.getBoxFull().get(circuito.getFimParadaBoxIndex());
+			int distaciaInicioFim = GeoUtil.distaciaEntrePontos(ini.getPoint(), fim.getPoint());
+			if(distaciaInicioFim<maxBox) {
+				multi = (multi*distaciaInicioFim)/maxBox;
+			}
+		}
+		
 		for (Iterator iter = carrosBox.iterator(); iter.hasNext();) {
 			Carro carro = (Carro) iter.next();
-			int indexParada = paradas + Util.inteiro(Carro.LARGURA * 1.5 * cont)
+			int indexParada = paradas + Util.inteiro(Carro.LARGURA * multi * cont)
 					+ Carro.LARGURA;
-			if (cont < 12)
+			if (cont < 12) {
 				cont++;
+			}
 			boxEquipes.put(carro, ptosBox.get(indexParada));
 			if (indexParada > ultIndiceParada) {
 				ultIndiceParada = indexParada;
