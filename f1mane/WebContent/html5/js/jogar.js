@@ -218,7 +218,7 @@ function carregarDadosJogoCampeonato(){
 				var circuitosLabel = campeonato.nomeCircuitoAtual;
 				$('#circuitosLabel').html(circuitosLabel);
 				$('#temporadasLabel').html(temporadaSelecionada);
-				if (campeonato.trocaPneu) {
+				if (campeonato.trocaPneus) {
 					$('#trocaPneuCheck').removeClass('line-through');
 				} else {
 					$('#trocaPneuCheck').addClass('line-through');
