@@ -202,6 +202,9 @@ public class ControleCorrida {
 		for (int i = 0; i < pilotos.size(); i++) {
 			Piloto piloto = (Piloto) pilotos.get(i);
 			piloto.setPosicao(i + 1);
+			if(piloto.getPosicaoBandeirada()!=0){
+				piloto.setPosicao(piloto.getPosicaoBandeirada());
+			}
 		}
 	}
 

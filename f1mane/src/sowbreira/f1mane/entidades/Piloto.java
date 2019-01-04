@@ -1289,12 +1289,12 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void calculaCarrosAdjacentes(InterfaceJogo controleJogo) {
-		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
-		carroPilotoAtras = controleJogo.obterCarroAtras(this);
-		carroPilotoDaFrenteRetardatario = controleJogo.obterCarroNaFrenteRetardatario(this, false);
 		if (isRecebeuBanderada()) {
 			return;
 		}
+		carroPilotoDaFrente = controleJogo.obterCarroNaFrente(this);
+		carroPilotoAtras = controleJogo.obterCarroAtras(this);
+		carroPilotoDaFrenteRetardatario = controleJogo.obterCarroNaFrenteRetardatario(this, false);
 		calculaDiffParaProximoRetardatario = controleJogo.calculaDiffParaProximoRetardatario(this, false);
 		calculaDiffParaProximoRetardatarioMesmoTracado = controleJogo.calculaDiffParaProximoRetardatario(this, true);
 		calculaDiferencaParaAnterior = controleJogo.calculaDiferencaParaAnterior(this);
@@ -1823,18 +1823,22 @@ public class Piloto implements Serializable, PilotoSuave {
 				controleJogo.info(Html.preto(txt));
 			}
 		}
+		if(!getCarro().verificaMotorSuperAquecido()){
+			getCarro().setGiro(Carro.GIRO_MAX_VAL);
+		}
 		if (!tentaPassarFrete && !tentarEscaparAtras) {
 			getCarro().setGiro(Carro.GIRO_NOR_VAL);
 			setModoPilotagem(NORMAL);
 		}
-
 		if (limiteGanho && controleJogo.verificaNivelJogo() && testeHabilidadePilotoCarro()) {
 			getCarro().setGiro(Carro.GIRO_NOR_VAL);
 			setModoPilotagem(NORMAL);
 		}
-		if (ativarDRS && podeUsarDRS && !getCarro().verificaMotorSuperAquecido()) {
+		if (ativarDRS && podeUsarDRS) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
+
+			
 		if (getCarro().verificaCondicoesCautelaGiro(controleJogo) || entrouNoBox()) {
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 		}
@@ -2585,7 +2589,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		} else {
 			return;
 		}
-		controleJogo.info(nomeJogadorFormatado() + " " + Html.vermelho(getNome() + Lang.msg("057")));
+		controleJogo.info(Html.vermelho(nomeJogadorFormatado() + " " + getNome() + Lang.msg("057")));
 	}
 
 	private void mensangesModoAgressivo(InterfaceJogo controleJogo) {
