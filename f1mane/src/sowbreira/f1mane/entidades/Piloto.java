@@ -316,6 +316,9 @@ public class Piloto implements Serializable, PilotoSuave {
 	private Carro carroPilotoDaFrenteRetardatario;
 	@JsonIgnore
 	private Piloto colisao;
+	private boolean temMotor;
+	private boolean temCombustivel;
+	private boolean superAquecido;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -1823,9 +1826,11 @@ public class Piloto implements Serializable, PilotoSuave {
 				controleJogo.info(Html.preto(txt));
 			}
 		}
-		if(!getCarro().verificaMotorSuperAquecido()){
+		
+		if (!superAquecido && temMotor && temCombustivel && testeHabilidadePilotoCarro()) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
+		
 		if (!tentaPassarFrete && !tentarEscaparAtras) {
 			getCarro().setGiro(Carro.GIRO_NOR_VAL);
 			setModoPilotagem(NORMAL);
@@ -1837,8 +1842,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (ativarDRS && podeUsarDRS) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
-
-			
+		
 		if (getCarro().verificaCondicoesCautelaGiro(controleJogo) || entrouNoBox()) {
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 		}
@@ -2486,34 +2490,22 @@ public class Piloto implements Serializable, PilotoSuave {
 	private void modoIADefesaAtaque(InterfaceJogo controleJogo) {
 		double porcentagemCombustivel = getCarro().getPorcentagemCombustivel();
 		double porcentagemDesgastePneus = getCarro().getPorcentagemDesgastePneus();
-		boolean superAquecido = getCarro().verificaMotorSuperAquecido();
-		boolean drsAtivado = Carro.MENOS_ASA.equals(getCarro().getAsa()) && controleJogo.isDrs()
-				&& !controleJogo.isChovendo();
+		superAquecido = getCarro().verificaMotorSuperAquecido();
 		int porcentagemMotor = getCarro().getPorcentagemDesgasteMotor();
 		int porcentagemCorridaRestante = 100 - controleJogo.porcentagemCorridaConcluida();
-		int limiteDesgaste = 10;
-		boolean temMotor = porcentagemMotor > limiteDesgaste ? Math.random() < porcentagemMotor / 100.0
-				: porcentagemMotor > porcentagemCorridaRestante;
-		boolean temCombustivel = porcentagemCombustivel > 10;
+		temMotor = porcentagemMotor > 50 || porcentagemMotor > porcentagemCorridaRestante;
+		temCombustivel = porcentagemCombustivel > 10;
 		if (controleJogo.isSemReabastecimento()) {
-			temCombustivel = porcentagemCombustivel > limiteDesgaste ? Math.random() < porcentagemCombustivel / 100.0
-					: porcentagemCombustivel > porcentagemCorridaRestante;
+			temCombustivel = porcentagemCombustivel > 50 || porcentagemCombustivel > porcentagemCorridaRestante;
 		}
 		boolean temPneu = porcentagemDesgastePneus > 10;
 		if (controleJogo.isSemTrocaPneu()) {
-			temPneu = porcentagemDesgastePneus > limiteDesgaste ? Math.random() < porcentagemDesgastePneus / 100.0
-					: porcentagemDesgastePneus > porcentagemCorridaRestante;
+			temPneu = porcentagemDesgastePneus > 50 ||  porcentagemDesgastePneus > porcentagemCorridaRestante;
 		}
 		double valorLimiteStressePararErrarCurva = 100;
 		boolean derrapa = getNoAtual() != null && indexRefEscape > getNoAtual().getIndex();
 		if (derrapa && testeHabilidadePiloto()) {
 			valorLimiteStressePararErrarCurva = getValorLimiteStressePararErrarCurva(controleJogo);
-		}
-		boolean maxGiro = false;
-		if (!superAquecido && temMotor && temCombustivel
-				&& (calculaDiferencaParaAnterior < (controleJogo.isDrs() ? 800 : 400)
-						|| calculaDiffParaProximoRetardatario < 400 || drsAtivado)) {
-			maxGiro = true;
 		}
 		boolean maxPilotagem = false;
 		if (getNoAtual().verificaRetaOuLargada()) {
@@ -2522,11 +2514,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		} else {
 			maxPilotagem = temPneu && stress < valorLimiteStressePararErrarCurva;
 		}
-
-		if (maxGiro) {
-			getCarro().setGiro(Carro.GIRO_MAX_VAL);
-		}
-
 		No no = getNoAtual();
 		if (no.verificaRetaOuLargada()) {
 			setAtivarErs(true);
@@ -2535,7 +2522,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (pontoEscape != null && distanciaEscape > Carro.RAIO_DERRAPAGEM) {
 			valorLimiteStressePararErrarCurva = 100;
 		}
-		if (maxPilotagem) {
+		if (maxPilotagem && testeHabilidadePiloto()) {
 			setModoPilotagem(AGRESSIVO);
 		}
 	}
