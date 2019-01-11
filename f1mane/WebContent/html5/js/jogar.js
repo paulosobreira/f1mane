@@ -511,7 +511,9 @@ function listaCircuitos() {
 				}
 				var dv = $('<div class="item"></div>');
 				var img = $('<img class="img-responsive center-block"/>');
-				img.attr('src', '/f1mane/rest/letsRace/circuitoMini/' + this.arquivo);
+				setTimeout(function(){ 
+							img.attr('src', '/f1mane/rest/letsRace/circuitoMini/' + this.arquivo); 
+							}, 200*i);
 				var h3 = $('<h3 class="text-center"></h3>');
 				dv.prop('circuito', this.arquivo);
 				h3.append(this.nome);

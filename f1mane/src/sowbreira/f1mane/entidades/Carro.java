@@ -666,7 +666,7 @@ public class Carro implements Serializable {
 		} else if (giro == GIRO_NOR_VAL) {
 			valConsumo += (testePotencia ? 3 : 6);
 		} else if (giro == GIRO_MAX_VAL) {
-			valConsumo += (testePotencia ? 7 : 9);
+			valConsumo += (testePotencia && testeAerodinamica() ? 5 : 9);
 		}
 
 		if (giro == GIRO_MAX_VAL) {
