@@ -125,7 +125,6 @@ function gerarTr1Pilotos(piloto){
 		carroId = piloto.idCarroLivery;
 	}
 	
-	
 	var td1 = $('<td scope="row" style="display: grid;"/>');
 	td1.append(piloto.nome);
 	var td2 = $('<td/>');
