@@ -319,6 +319,11 @@ public class Piloto implements Serializable, PilotoSuave {
 	private boolean temMotor;
 	private boolean temCombustivel;
 	private boolean superAquecido;
+	private int porcentagemDesgastePneus;
+	private int porcentagemCombustivel;
+	private int porcentagemMotor;
+	private int porcentagemCorridaRestante;
+	private boolean temPneu;
 
 	public int getGanhoSuave() {
 		return ganhoSuave;
@@ -1795,6 +1800,21 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (isRecebeuBanderada()) {
 			return;
 		}
+	    porcentagemDesgastePneus = getCarro().getPorcentagemDesgastePneus();
+		porcentagemCombustivel = getCarro().getPorcentagemCombustivel();
+		superAquecido = getCarro().verificaMotorSuperAquecido();
+		porcentagemMotor = getCarro().getPorcentagemDesgasteMotor();
+		porcentagemCorridaRestante = 100 - controleJogo.porcentagemCorridaConcluida();
+		temMotor = porcentagemMotor > 30 || porcentagemMotor > porcentagemCorridaRestante;
+		temCombustivel = porcentagemCombustivel > 10;
+		if (controleJogo.isSemReabastecimento()) {
+			temCombustivel = porcentagemCombustivel > 30 || porcentagemCombustivel > porcentagemCorridaRestante;
+		}
+	    temPneu = porcentagemDesgastePneus > 10;
+		if (controleJogo.isSemTrocaPneu()) {
+			temPneu = porcentagemDesgastePneus > 30 ||  porcentagemDesgastePneus > porcentagemCorridaRestante;
+		}
+
 		if (colisao != null) {
 			agressivo = false;
 			return;
@@ -2488,20 +2508,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private void modoIADefesaAtaque(InterfaceJogo controleJogo) {
-		double porcentagemCombustivel = getCarro().getPorcentagemCombustivel();
-		double porcentagemDesgastePneus = getCarro().getPorcentagemDesgastePneus();
-		superAquecido = getCarro().verificaMotorSuperAquecido();
-		int porcentagemMotor = getCarro().getPorcentagemDesgasteMotor();
-		int porcentagemCorridaRestante = 100 - controleJogo.porcentagemCorridaConcluida();
-		temMotor = porcentagemMotor > 50 || porcentagemMotor > porcentagemCorridaRestante;
-		temCombustivel = porcentagemCombustivel > 10;
-		if (controleJogo.isSemReabastecimento()) {
-			temCombustivel = porcentagemCombustivel > 50 || porcentagemCombustivel > porcentagemCorridaRestante;
-		}
-		boolean temPneu = porcentagemDesgastePneus > 10;
-		if (controleJogo.isSemTrocaPneu()) {
-			temPneu = porcentagemDesgastePneus > 50 ||  porcentagemDesgastePneus > porcentagemCorridaRestante;
-		}
 		double valorLimiteStressePararErrarCurva = 100;
 		boolean derrapa = getNoAtual() != null && indexRefEscape > getNoAtual().getIndex();
 		if (derrapa && testeHabilidadePiloto()) {
