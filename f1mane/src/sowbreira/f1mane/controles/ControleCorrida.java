@@ -291,11 +291,12 @@ public class ControleCorrida {
 								Lang.msg("016", new String[] { piloto.getNome(), pilotoNaFrente.getNome() }))));
 					}
 				};
-
 				Thread thread = new Thread(runnable);
 				thread.start();
 				if (controleJogo.isSafetyCar()) {
 					controleSafetyCar.safetyCarNaPista(piloto);
+				}else {
+					piloto.getCarro().setRecolhido(true);
 				}
 				if (fatorAcidente < 0.9) {
 					fatorAcidente += 0.1;
