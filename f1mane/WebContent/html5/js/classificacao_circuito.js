@@ -39,7 +39,7 @@ function circuitoClassificacao(circuitoSelecionado) {
 				var td3 = $('<td class="fontLarge textCenter" />');
 				td3.append(pilotos[i].pontos);
 				var tr = $('<tr/>');
-				var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
+				var imgJogador = $('<img onerror="imgError(this);" class="img-responsive img-center userPic"/>');	
 				imgJogador.attr('src', pilotos[i].imagemJogador);
 				td1.append(imgJogador);
 				td1.append(pilotos[i].nome);

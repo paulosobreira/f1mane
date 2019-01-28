@@ -145,3 +145,9 @@ function rgbToHex(r, g, b) {
 function rgbToHexUrlSafe(r, g, b) {
     return componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
+
+function imgError(image) {
+    image.onerror = "";
+    image.src = "https://sowbreira-26fe1.firebaseapp.com/f1mane/profile/profile-0.png";
+    return true;
+}

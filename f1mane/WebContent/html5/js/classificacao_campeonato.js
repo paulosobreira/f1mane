@@ -174,7 +174,7 @@ function classificacaoCampeonato() {
 					td2.append(jogador.corridas);
 					var jogadorImagem = $('<div style="display:  inline-flex;"  />');
 					if (jogador.imagemJogador != null) {
-						var imgJogador = $('<img style="margin-right: 10px;" class="img-responsive img-center userPic"/>');
+						var imgJogador = $('<img onerror="imgError(this);" style="margin-right: 10px;" class="img-responsive img-center userPic"/>');
 						imgJogador.attr('src', jogador.imagemJogador);
 						jogadorImagem.append(imgJogador);
 					}

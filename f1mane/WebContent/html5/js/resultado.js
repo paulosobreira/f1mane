@@ -117,7 +117,7 @@ function montaLinhaGridResultado(i, piloto) {
 	var capacetes = $('<div style="display:  inline-flex;"  />');
 	capacetes.append(capacete);
 	if(piloto.imgJogador!=null){
-		var imgJogador = $('<img class="img-responsive img-center userPic"/>');	
+		var imgJogador = $('<img onerror="imgError(this);" class="img-responsive img-center userPic"/>');	
 		imgJogador.attr('src', piloto.imgJogador);
 		capacetes.append(imgJogador);
 	}
