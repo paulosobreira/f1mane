@@ -14,11 +14,9 @@
      ====================================================================== -->
 <project name="F1-Mane" default="targetHtml">
 	
-	<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />
-	<!--<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73" /> -->
-	<!--<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />--> 
+	<!--<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />-->
+	<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73" /> 
 	<!--<property name="DESTINO" value="E:\apache-tomcat-7.0.35" /> -->
-	<!--<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73" />-->
 	<path id="classpath.compilacao">
 		<fileset dir="WebContent/WEB-INF/lib">
 			<include name="*.jar" />
@@ -210,7 +208,6 @@
 			<fileset dir="WebContent/WEB-INF/lib">
 				<include name="commons-beanutils-1.8.2.jar" />
 				<include name="commons-logging-1.1.1.jar" />
-				<include name="jnlp.jar" />
 			</fileset>
 		</copy>
 		<zip destfile="f1mane.zip" compress="true">

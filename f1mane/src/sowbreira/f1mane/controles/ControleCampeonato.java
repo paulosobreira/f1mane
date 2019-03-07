@@ -343,11 +343,6 @@ public class ControleCampeonato {
 	}
 
 	private void persistirEmCache() {
-		if (campeonato.getCorridas().size() < 5) {
-			JOptionPane.showMessageDialog(mainFrame, Lang.msg("min5CorridasCampeonato"), Lang.msg("283"),
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
 		try {
 			salvarXmlEmDisco();
 		} catch (Exception e) {

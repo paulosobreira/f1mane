@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -40,6 +42,7 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
 
@@ -1892,7 +1895,13 @@ public class PainelMenuLocal {
 						numVoltasSelecionado, turbulenciaSelecionado,
 						climaSelecionado, nivelSelecionado, pilotoSelecionado,
 						kers, drs, trocaPneus, reabastecimento);
-				MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+				if (cirucitosCampeonato.size() >= 5) {
+					MENU = MENU_CORRIDA_CAMPEONATO_PILOTOS;
+				} else {
+					JOptionPane.showMessageDialog(mainFrame,
+							Lang.msg("min5CorridasCampeonato"), Lang.msg("campeonato"),
+							JOptionPane.ERROR_MESSAGE);
+				}
 			} catch (Exception e1) {
 				Logger.logarExept(e1);
 			}
@@ -2268,6 +2277,16 @@ public class PainelMenuLocal {
 
 	private void desenhaDrsKersPneusReabastecimento(Graphics2D g2d, int x,
 			int y) {
+		if (temporadaSelecionada != null) {
+			Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
+					.carregarTemporadasPilotosDefauts();
+			TemporadasDefauts temporadasDefauts = carregarTemporadasPilotosDefauts
+					.get("t" + temporadaSelecionada);
+			this.drs = temporadasDefauts.getDrs();
+			this.kers = temporadasDefauts.getErs();
+			this.reabastecimento = temporadasDefauts.getReabastecimento();
+			this.trocaPneus = temporadasDefauts.getTrocaPneu();
+		}
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 
