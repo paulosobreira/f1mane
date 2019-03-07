@@ -225,6 +225,7 @@ public class PainelCircuito {
 	private BufferedImage imgFarois3;
 	private BufferedImage imgFarois4;
 	private BufferedImage imgFaroisApagados;
+	private BufferedImage flags;
 
 	private BufferedImage iconLua;
 	private BufferedImage iconSol;
@@ -540,6 +541,7 @@ public class PainelCircuito {
 		imgFarois3 = CarregadorRecursos.carregaBufferedImage("farois3.png");
 		imgFarois4 = CarregadorRecursos.carregaBufferedImage("farois4.png");
 		imgFaroisApagados = CarregadorRecursos.carregaBufferedImage("farois-apagados.png");
+		flags = CarregadorRecursos.carregaBufferedImage("flags.png");
 
 	}
 
@@ -2996,10 +2998,13 @@ public class PainelCircuito {
 		}
 		for (int i = pilotosList.size() - 1; i > -1; i--) {
 			Piloto piloto = pilotosList.get(i);
+
 			No noAtual = piloto.getNoAtualSuave();
 			if (noAtual == null) {
 				noAtual = piloto.getNoAtual();
 			}
+			int xCarro = (int) ((noAtual.getX() - descontoCentraliza.x) * zoom);
+			int yCarro = (int) ((noAtual.getY() - descontoCentraliza.y) * zoom);
 			atualizacaoSuave(piloto);
 			if (!limitesViewPort.contains(((noAtual.getX() - descontoCentraliza.x) * zoom),
 					((noAtual.getY() - descontoCentraliza.y) * zoom))) {
@@ -3008,14 +3013,19 @@ public class PainelCircuito {
 			if (Logger.ativo && piloto.isJogadorHumano() && piloto.getNoAtualSuave() != null) {
 				noAtual = piloto.getNoAtual();
 				g2d.setColor(OcilaCor.geraOcila("CompReal", Color.ORANGE));
-				g2d.fillOval((int) ((noAtual.getX() - descontoCentraliza.x) * zoom),
-						(int) ((noAtual.getY() - descontoCentraliza.y) * zoom), 10, 10);
+				g2d.fillOval(xCarro, yCarro, 10, 10);
 			}
 			centralizaCarroDesenhar(controleJogo, piloto);
 			desenhaCarroCima(g2d, piloto);
+
+			if (piloto.isRecebeuBanderada()) {
+				int x = Util.inteiro(((piloto.getCarX() -15) - descontoCentraliza.x) * zoom);
+				int y = Util.inteiro(((piloto.getCarY() -40) - descontoCentraliza.y) * zoom);
+				g2d.drawImage(flags, x, y, null);
+			}
+			
 			if (piloto.equals(pilotoSelecionado) || piloto.getCarro().isPaneSeca() || piloto.getCarro().isRecolhido()
-					|| !limitesViewPort.contains(((noAtual.getX() - descontoCentraliza.x) * zoom),
-							((noAtual.getY() - descontoCentraliza.y) * zoom))) {
+					|| !limitesViewPort.contains(xCarro,yCarro)) {
 				continue;
 			}
 			desenhaNomePilotoNaoSelecionado(piloto, g2d);
@@ -3404,6 +3414,7 @@ public class PainelCircuito {
 		Double calculaAngulo = piloto.getAngulo();
 		int carX = (piloto.getCarX() - Carro.MEIA_LARGURA_CIMA);
 		int carY = (piloto.getCarY() - Carro.MEIA_LARGURA_CIMA);
+
 		calculaAngulo = processaOcilacaoAngulo(piloto, calculaAngulo, noAtual);
 
 		int width = Carro.LARGURA_CIMA;
@@ -3493,6 +3504,7 @@ public class PainelCircuito {
 		desenhaChuvaFaiscasCarroCima(g2d, piloto, width);
 		desenhaDebugCarroCima(g2d, piloto, rad);
 		g2d.setStroke(stroke);
+
 	}
 
 	private void desenhaSetasCarroCima(Graphics2D g2d, Piloto piloto, int width, int height, int imagemCarroX,
@@ -4294,14 +4306,14 @@ public class PainelCircuito {
 		if (controleJogo instanceof ControleJogoLocal) {
 			alt = 35;
 		}
-		
+
 		g2d.fillRoundRect(ptoOri - 5, yBase, 105, alt, 0, 0);
 
 		g2d.setColor(Color.BLACK);
 
 		yBase += 15;
 		g2d.drawString(Lang.msg("068") + pilotoSelecionado.getQtdeParadasBox(), ptoOri, yBase);
-		
+
 		if (controleJogo instanceof ControleJogoLocal) {
 			yBase += 15;
 			g2d.drawString((controleJogo.verificaCampeonatoComRival() ? Lang.msg("rival") : Lang.msg("070")) + plider,
@@ -5628,12 +5640,12 @@ public class PainelCircuito {
 		int paradas = circuito.getParadaBoxIndex();
 		double multi = 1.5;
 		double maxBox = Util.inteiro(Carro.LARGURA * multi * 12) + Carro.LARGURA;
-		if(circuito.getFimParadaBoxIndex()!=0) {
+		if (circuito.getFimParadaBoxIndex() != 0) {
 			No ini = (No) circuito.getBoxFull().get(circuito.getParadaBoxIndex());
 			No fim = (No) circuito.getBoxFull().get(circuito.getFimParadaBoxIndex());
 			int distaciaInicioFim = GeoUtil.distaciaEntrePontos(ini.getPoint(), fim.getPoint());
-			if(distaciaInicioFim<maxBox) {
-				multi = (multi*distaciaInicioFim)/maxBox;
+			if (distaciaInicioFim < maxBox) {
+				multi = (multi * distaciaInicioFim) / maxBox;
 			}
 		}
 		for (int i = 0; i < 12; i++) {
