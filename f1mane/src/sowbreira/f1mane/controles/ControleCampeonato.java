@@ -16,9 +16,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.jnlp.FileContents;
-import javax.jnlp.ServiceManager;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -562,6 +557,7 @@ public class ControleCampeonato {
 			CorridaCampeonato corridaCampeonato = (CorridaCampeonato) iterator.next();
 			PilotosPontosCampeonato pilotosPontosCampeonato = new PilotosPontosCampeonato();
 			pilotosPontosCampeonato.setNome(corridaCampeonato.getPiloto());
+			pilotosPontosCampeonato.setId(corridaCampeonato.getPiloto());
 			pilotosPontos.add(pilotosPontosCampeonato);
 		}
 		for (Iterator iterator = pilotosPontos.iterator(); iterator.hasNext();) {

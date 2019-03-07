@@ -91,8 +91,7 @@ public class Campeonato implements Serializable {
 		return pilotosHabilidadeCampeonato;
 	}
 
-	public void setPilotosHabilidadeCampeonato(
-			Map<String, Integer> pilotosHabilidadeCampeonato) {
+	public void setPilotosHabilidadeCampeonato(Map<String, Integer> pilotosHabilidadeCampeonato) {
 		this.pilotosHabilidadeCampeonato = pilotosHabilidadeCampeonato;
 	}
 
@@ -100,8 +99,7 @@ public class Campeonato implements Serializable {
 		return pilotosEquipesCampeonato;
 	}
 
-	public void setPilotosEquipesCampeonato(
-			Map<String, String> pilotosEquipesCampeonato) {
+	public void setPilotosEquipesCampeonato(Map<String, String> pilotosEquipesCampeonato) {
 		this.pilotosEquipesCampeonato = pilotosEquipesCampeonato;
 	}
 
@@ -117,8 +115,7 @@ public class Campeonato implements Serializable {
 		return equipesPotenciaCampeonato;
 	}
 
-	public void setEquipesPotenciaCampeonato(
-			Map<String, Integer> equipesPotenciaCampeonato) {
+	public void setEquipesPotenciaCampeonato(Map<String, Integer> equipesPotenciaCampeonato) {
 		this.equipesPotenciaCampeonato = equipesPotenciaCampeonato;
 	}
 
@@ -246,6 +243,9 @@ public class Campeonato implements Serializable {
 	public void setFoiDesafiado(boolean foiDesafiado) {
 		this.foiDesafiado = foiDesafiado;
 	}
-	
-	
+
+	public void setDadosCorridas(Map<String, List> dadosCorridas) {
+		this.dadosCorridas = dadosCorridas;
+	}
+
 }
