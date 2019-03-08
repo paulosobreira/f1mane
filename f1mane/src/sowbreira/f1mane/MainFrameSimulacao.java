@@ -95,7 +95,7 @@ public class MainFrameSimulacao extends MainFrame {
 			turbulencia = Util.intervalo(130, 370);
 			controleJogo.iniciarJogoMenuLocal(circuito, temporada, voltas,
 					turbulencia, clima, nivel, null, kers, drs, trocaPneus,
-					reabastecimento, 0, null, null);
+					reabastecimento, 0, null, null,false);
 			abrasivo = controleJogo.asfaltoAbrasivo();
 			boxRapido = controleJogo.isBoxRapido();
 			fatorAcidente = 100 - (controleJogo.getFatorAcidente() * 100);

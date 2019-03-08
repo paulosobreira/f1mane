@@ -440,10 +440,10 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setAtivarDRS(boolean ativarDRS) {
-		if(podeUsarDRS) {
+		if (podeUsarDRS) {
 			this.ativarDRS = ativarDRS;
-		}else {
-			this.ativarDRS = false;	
+		} else {
+			this.ativarDRS = false;
 		}
 	}
 
@@ -1409,7 +1409,7 @@ public class Piloto implements Serializable, PilotoSuave {
 				controleJogo.travouRodas(this);
 				if (controleJogo.verificaInfoRelevante(this)) {
 					controleJogo.info(
-							Lang.msg("saiDaPista", new String[] { nomeJogadorFormatado(), Html.vermelho(getNome()) }));
+							Lang.msg("saiDaPista", new String[] { Html.vermelho(nomeJogadorFormatado()), Html.vermelho(getNome()) }));
 				}
 			} else if (No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && (getTracado() == 0)
 					&& (carro.getPorcentagemDesgastePneus() < 30)) {
@@ -1800,7 +1800,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (isRecebeuBanderada()) {
 			return;
 		}
-	    porcentagemDesgastePneus = getCarro().getPorcentagemDesgastePneus();
+		porcentagemDesgastePneus = getCarro().getPorcentagemDesgastePneus();
 		porcentagemCombustivel = getCarro().getPorcentagemCombustivel();
 		superAquecido = getCarro().verificaMotorSuperAquecido();
 		porcentagemMotor = getCarro().getPorcentagemDesgasteMotor();
@@ -1810,9 +1810,9 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.isSemReabastecimento()) {
 			temCombustivel = porcentagemCombustivel > 30 || porcentagemCombustivel > porcentagemCorridaRestante;
 		}
-	    temPneu = porcentagemDesgastePneus > 10;
+		temPneu = porcentagemDesgastePneus > 10;
 		if (controleJogo.isSemTrocaPneu()) {
-			temPneu = porcentagemDesgastePneus > 30 ||  porcentagemDesgastePneus > porcentagemCorridaRestante;
+			temPneu = porcentagemDesgastePneus > 30 || porcentagemDesgastePneus > porcentagemCorridaRestante;
 		}
 
 		if (colisao != null) {
@@ -1846,11 +1846,11 @@ public class Piloto implements Serializable, PilotoSuave {
 				controleJogo.info(Html.preto(txt));
 			}
 		}
-		
+
 		if (!superAquecido && temMotor && temCombustivel && testeHabilidadePilotoCarro()) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
-		
+
 		if (!tentaPassarFrete && !tentarEscaparAtras) {
 			getCarro().setGiro(Carro.GIRO_NOR_VAL);
 			setModoPilotagem(NORMAL);
@@ -1862,7 +1862,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (ativarDRS && podeUsarDRS) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
-		
+
 		if (getCarro().verificaCondicoesCautelaGiro(controleJogo) || entrouNoBox()) {
 			getCarro().setGiro(Carro.GIRO_MIN_VAL);
 		}
@@ -2601,24 +2601,24 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (AGRESSIVO.equals(getModoPilotagem())) {
 			if (controleJogo.isChovendo()) {
 				controleJogo
-						.info(nomeJogadorFormatado() + " " + Html.negrito(getNome()) + Html.negrito(Lang.msg("052")));
+						.info(Html.negrito(nomeJogadorFormatado() + " " + getNome()) + Html.negrito(Lang.msg("052")));
 			} else if (getNoAtual().verificaCurvaBaixa()) {
 
 				if (Math.random() > 0.5) {
 					controleJogo.info(
-							nomeJogadorFormatado() + " " + Html.txtRedBold(getNome()) + Html.negrito(Lang.msg("053")));
+							Html.txtRedBold(nomeJogadorFormatado() + " " + getNome()) + Html.negrito(Lang.msg("053")));
 				} else {
 					controleJogo.info(
-							nomeJogadorFormatado() + " " + Html.txtRedBold(getNome()) + Html.negrito(Lang.msg("054")));
+							Html.txtRedBold(nomeJogadorFormatado() + " " + getNome()) + Html.negrito(Lang.msg("054")));
 				}
 			}
 		} else {
 			if (controleJogo.isChovendo()) {
 				controleJogo
-						.info(nomeJogadorFormatado() + " " + Html.negrito(getNome()) + Html.vermelho(Lang.msg("055")));
+						.info(Html.negrito(nomeJogadorFormatado() + " " + getNome()) + Html.vermelho(Lang.msg("055")));
 			} else {
 				controleJogo
-						.info(nomeJogadorFormatado() + " " + Html.negrito(getNome()) + Html.vermelho(Lang.msg("056")));
+						.info(Html.negrito(nomeJogadorFormatado() + " " + getNome()) + Html.vermelho(Lang.msg("056")));
 			}
 		}
 	}

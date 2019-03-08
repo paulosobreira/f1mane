@@ -327,7 +327,7 @@ public interface InterfaceJogo {
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean kers,
 			boolean drs, boolean trocaPneus, boolean reabastecimento,
 			int combustivelSelecionado, String asaSelecionado,
-			String pneuSelecionado) throws Exception;
+			String pneuSelecionado,boolean safetycar) throws Exception;
 
 	public boolean verificaPistaEmborrachada();
 

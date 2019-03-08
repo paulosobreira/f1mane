@@ -668,7 +668,7 @@ public class ControleJogoLocal extends ControleRecursos
 				Util.intervalo(130, 370), clima, campeonato.getNivel(),
 				pilotoSel, campeonato.isKers(), campeonato.isDrs(),
 				campeonato.isTrocaPneus(), campeonato.isReabastecimento(),
-				combustivelSelecionado, asaSelecionado, pneuSelecionado);
+				combustivelSelecionado, asaSelecionado, pneuSelecionado,campeonato.isSafetycar());
 		this.controleCampeonato = new ControleCampeonato(campeonato, mainFrame);
 		controleCampeonato.iniciaCorrida(campeonato.getCircuitoVez());
 	}
@@ -680,7 +680,7 @@ public class ControleJogoLocal extends ControleRecursos
 			String nivelSelecionado, Piloto pilotoSelecionado, boolean ers,
 			boolean drs, boolean trocaPneus, boolean reabastecimento,
 			int combustivelSelecionado, String asaSelecionado,
-			String pneuSelecionado) throws Exception {
+			String pneuSelecionado,boolean safetycar) throws Exception {
 		this.qtdeVoltas = new Integer(numVoltasSelecionado);
 		this.diffultrapassagem = new Integer(turbulenciaSelecionado);
 		this.reabastecimento = reabastecimento;
@@ -688,6 +688,7 @@ public class ControleJogoLocal extends ControleRecursos
 		this.circuitoSelecionado = circuitoSelecionado;
 		this.ers = ers;
 		this.drs = drs;
+		this.safetyCar = safetycar;
 		this.nivelCorrida = nivelSelecionado;
 		setTemporada("t" + temporadaSelecionada);
 		carregarPilotosCarros();

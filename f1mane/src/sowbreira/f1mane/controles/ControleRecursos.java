@@ -269,12 +269,10 @@ public abstract class ControleRecursos {
 		try {
 			properties.load(CarregadorRecursos
 					.recursoComoStream("properties/pistas.properties"));
-
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String name = (String) propName.nextElement();
 				circuitos.put(properties.getProperty(name), name);
-
 			}
 
 		} catch (IOException e) {

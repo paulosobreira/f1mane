@@ -756,7 +756,7 @@ public class PainelCircuito {
 		// ganhoSuave = loopCalculaGanhoSuave(diferencaSualReal, 0);
 		// }
 
-		double multi = diferencaSualReal / 100.0;
+		double multi = diferencaSualReal / 40.0;
 
 		ganhoSuave = Util.inteiro(2 * multi);
 

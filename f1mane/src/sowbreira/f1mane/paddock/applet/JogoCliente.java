@@ -1094,7 +1094,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	public void iniciarJogoMenuLocal(String circuitoSelecionado, String temporadaSelecionada, int numVoltasSelecionado,
 			int turbulenciaSelecionado, String climaSelecionado, String nivelSelecionado, Piloto pilotoSelecionado,
 			boolean kers, boolean drs, boolean trocaPneus, boolean reabastecimento, int combustivelSelecionado,
-			String asaSelecionado, String pneuSelecionado) {
+			String asaSelecionado, String pneuSelecionado,boolean safetyCar) {
 		// TODO Auto-generated method stub
 
 	}

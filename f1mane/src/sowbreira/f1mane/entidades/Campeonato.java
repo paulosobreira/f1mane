@@ -30,6 +30,7 @@ public class Campeonato implements Serializable {
 	private boolean trocaPneus;
 	private boolean kers;
 	private boolean drs;
+	private boolean safetycar;
 	private boolean ultimaCorridaSemDesafiar;
 	private List pilotos = new LinkedList();
 	private List corridas = new LinkedList();
@@ -38,6 +39,17 @@ public class Campeonato implements Serializable {
 	public String getNomePiloto() {
 		return nomePiloto;
 	}
+
+	
+	public boolean isSafetycar() {
+		return safetycar;
+	}
+
+
+	public void setSafetycar(boolean safetycar) {
+		this.safetycar = safetycar;
+	}
+
 
 	public int getPtsGanho() {
 		return ptsGanho;
