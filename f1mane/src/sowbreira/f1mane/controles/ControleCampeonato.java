@@ -528,6 +528,7 @@ public class ControleCampeonato {
 	public void processaMudancaEquipe() {
 		campeonato.setNomePiloto(campeonato.getRival());
 		reiniciarDesafio();
+		persistirEmCache();
 	}
 
 	private void reiniciarDesafio() {

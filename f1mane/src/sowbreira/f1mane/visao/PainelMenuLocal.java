@@ -2580,12 +2580,11 @@ public class PainelMenuLocal {
 
 		boolean desenhaEsquerda = true;
 		boolean desenhaDireita = true;
-		if (controleJogo.getCircuitos() != null && !controleJogo.getCircuitos().isEmpty()) {
-			ArrayList<String> arrayList = new ArrayList<String>(controleJogo.getCircuitos().keySet());
-			if (arrayList.get(0).equals(circuitoSelecionado)) {
+		if (pistasAleatorias != null && !pistasAleatorias.isEmpty()) {
+			if (pistasAleatorias.get(0).equals(circuitoSelecionado)) {
 				desenhaEsquerda = false;
 			}
-			if (arrayList.get(arrayList.size() - 1).equals(circuitoSelecionado)) {
+			if (pistasAleatorias.get(pistasAleatorias.size() - 1).equals(circuitoSelecionado)) {
 				desenhaDireita = false;
 			}
 		}

@@ -3723,12 +3723,12 @@ public class PainelCircuito {
 						(int) Util.intervalo(eixoDianteras.y - eixoDiatero, eixoDianteras.y + eixoDiatero));
 
 				Point dest = new Point(
-						(int) Util.intervalo(piloto.getTrazeira().getX() - Util.intervalo(2.5, 6),
+						(int) Util.intervalo(piloto.getTrazeira().getX() - Util.intervalo(2, 4),
 								(int) piloto.getTrazeira().getX() + piloto.getTrazeira().getWidth()
-										+ Util.intervalo(2.5, 6)),
-						(int) Util.intervalo(piloto.getTrazeira().getY() - Util.intervalo(2.5, 6),
+										+ Util.intervalo(2, 4)),
+						(int) Util.intervalo(piloto.getTrazeira().getY() - Util.intervalo(2, 4),
 								piloto.getTrazeira().getY() + piloto.getTrazeira().getHeight()
-										+ Util.intervalo(2.5, 6)));
+										+ Util.intervalo(2, 4)));
 				double max = 6.0 * (piloto.getVelocidade() / 320.0);
 
 				Point destN = GeoUtil.calculaPonto(GeoUtil.calculaAngulo(origem, dest, 90),
