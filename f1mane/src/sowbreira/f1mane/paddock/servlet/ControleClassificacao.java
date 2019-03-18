@@ -154,16 +154,9 @@ public class ControleClassificacao {
 						if (pts == 0) {
 							pts = 1;
 						}
-						if (carreiraDadosSrv
-								.getPtsConstrutoresGanhos() < 1000) {
-							pts += 5;
-						}
-						if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 500) {
-							pts += 5;
-						}
-						if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 250) {
-							pts += 10;
-						}
+						pts += calculaBonusCarreira(carreiraDadosSrv);
+						
+
 						carreiraDadosSrv.setPtsConstrutores(
 								carreiraDadosSrv.getPtsConstrutores() + pts);
 						carreiraDadosSrv.setPtsConstrutoresGanhos(
@@ -192,6 +185,21 @@ public class ControleClassificacao {
 				session.close();
 			}
 		}
+	}
+
+	private int calculaBonusCarreira(CarreiraDadosSrv carreiraDadosSrv) {
+		int pts = 0;
+		if (carreiraDadosSrv
+				.getPtsConstrutoresGanhos() < 1000) {
+			pts += 5;
+		}
+		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 500) {
+			pts += 5;
+		}
+		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 250) {
+			pts += 10;
+		}
+		return pts;
 	}
 
 	public void processarPontos(Map mapVoltasJogadoresOnline, Piloto piloto,
@@ -369,6 +377,7 @@ public class ControleClassificacao {
 		}
 		CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 				.carregaCarreiraJogador(token, true, sessionLocal);
+		carreiraDadosSrv.setBonus(calculaBonusCarreira(carreiraDadosSrv));
 
 		if (session == null) {
 			sessionLocal.close();

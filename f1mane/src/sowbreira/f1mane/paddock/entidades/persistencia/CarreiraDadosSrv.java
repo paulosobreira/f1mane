@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,6 +44,9 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 	private Integer temporadaCarroLivery;
 	private Integer idCapaceteLivery;
 	private Integer idCarroLivery;
+	
+	@Transient
+	private Integer bonus;
 
 	@OneToOne
 	@JoinColumn(nullable = false)
@@ -59,6 +63,8 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 		return new Color(c2R, c2G, c2B);
 
 	}
+	
+	
 
 	public int getPtsConstrutores() {
 		return ptsConstrutores;
@@ -227,5 +233,14 @@ public class CarreiraDadosSrv extends F1ManeDados implements Serializable {
 	public void setIdCarroLivery(Integer idCarroLivery) {
 		this.idCarroLivery = idCarroLivery;
 	}
+
+	public Integer getBonus() {
+		return bonus;
+	}
+
+	public void setBonus(Integer bonus) {
+		this.bonus = bonus;
+	}
+	
 
 }

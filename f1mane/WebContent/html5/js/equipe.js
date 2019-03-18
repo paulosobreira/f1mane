@@ -15,6 +15,7 @@ $('#aerodinamicaCarro').html(lang_text('aerodinamicaCarro'));
 $('#pinturaCapaceteEscolha').html(lang_text('pinturaCapaceteEscolha'));
 $('#pinturaCarroEscolha').html(lang_text('pinturaCarroEscolha'));
 $('#somaPontosCarro').html(lang_text('somaPontosCarro'));
+$('#bonus').html(lang_text('bonus'));
 var temporadaSelecionada;
 listaTemporadas();
 
@@ -138,6 +139,7 @@ function carregaEquipe() {
 			$('#temporadaCarroLivery').val(response.temporadaCarroLivery);
 			$('#idCapaceteLivery').val(response.idCapaceteLivery);
 			$('#idCarroLivery').val(response.idCarroLivery);
+			$('#bonusValor').html(response.bonus);
 			$('#somaPontosCarroValor').html((response.ptsCarro)+(response.ptsAerodinamica)+(response.ptsFreio));
 			if(response.temporadaCapaceteLivery !=null && response.idCapaceteLivery != null && response.idCapaceteLivery != 0){
 				$('#idImgCapacete').attr('src', '/f1mane/rest/letsRace/capacete/' + response.temporadaCapaceteLivery + '/' + response.idCapaceteLivery);
