@@ -72,7 +72,6 @@ import sowbreira.f1mane.entidades.ObjetoEscapada;
 import sowbreira.f1mane.entidades.ObjetoLivre;
 import sowbreira.f1mane.entidades.ObjetoPista;
 import sowbreira.f1mane.entidades.ObjetoTransparencia;
-import sowbreira.f1mane.entidades.Ponto;
 import sowbreira.f1mane.entidades.PontoEscape;
 import sowbreira.f1mane.recursos.CarregadorRecursos;
 import sowbreira.f1mane.recursos.idiomas.Lang;
@@ -819,12 +818,7 @@ public class MainPanelEditor extends JPanel {
 					repaint();
 					pontosEscape = false;
 					return;
-				} else {
-					int selectedIndex = formularioListaObjetos.getList().getSelectedIndex();
-					if (selectedIndex >= 0 && selectedIndex < formularioListaObjetos.getDefaultListModelOP().size()) {
-						objetoPista = (ObjetoPista) formularioListaObjetos.getDefaultListModelOP().get(selectedIndex);
-					}
-				}
+				} 
 
 				Logger.logar("Pontos Editor :" + e.getX() + " - " + e.getY());
 				if ((getTipoNo() == null) || (e.getButton() == 3)) {
@@ -1028,9 +1022,9 @@ public class MainPanelEditor extends JPanel {
 		g2d.setColor(Color.black);
 		g2d.drawString("Zoom : " + zoom, x, y);
 		y += 20;
-		g2d.drawString("Multiplicador Pista : " + multiplicadorPista, x, y);
+		g2d.drawString("Multi Pista : " + multiplicadorPista, x, y);
 		y += 20;
-		g2d.drawString("Multiplicador Largura Pista : " + multiplicadorLarguraPista, x, y);
+		g2d.drawString("Multi Largura Pista : " + PainelCircuito.df4.format(multiplicadorLarguraPista), x, y);
 		y += 20;
 		g2d.drawString("Box : " + testePista.isIrProBox(), x, y);
 		if (circuito.getObjetos() != null) {
@@ -1655,7 +1649,7 @@ public class MainPanelEditor extends JPanel {
 		if (index > 0) {
 			No ultNo = (No) circuito.getBox().get(index);
 			index = circuito.getBox().size() - 2;
-			if (index > 0) {
+			if (index > 0 && circuito.getSaidaBoxIndex() !=0) {
 				if (circuito.getLadoBoxSaidaBox() == 2) {
 					g2d.setColor(Color.ORANGE);
 					No no = circuito.getPista2Full().get(circuito.getSaidaBoxIndex());
@@ -1760,6 +1754,8 @@ public class MainPanelEditor extends JPanel {
 	}
 
 	public void creditos() {
+		semSelecaoButton.setSelected(true);
+		objetoPista = null;
 		if (circuito.getCreditos() != null) {
 			centralizarPonto(circuito.getCreditos());
 		}
