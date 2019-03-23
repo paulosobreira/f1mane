@@ -19,8 +19,11 @@ Fl-Mane é um protótipo e seus gráficos
     e jogabilidade podem mudar com novas versões
 Fl-Mane is a prototype and its graphics 
     and gameplay game can change in new versions
--Sobreira 2007-2018
+-Sobreira 2007-2019
  Obrigado por jogar
  Thanks for playing
+ 
+ Se gostou do jogo por favor avalie na Loja da Google
+ If you like the game please rate it at GooglePlay Store
  
  Sem você não seria possível Gizele.
