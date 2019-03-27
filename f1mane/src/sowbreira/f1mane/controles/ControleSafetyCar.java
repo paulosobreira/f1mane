@@ -37,7 +37,7 @@ public class ControleSafetyCar {
 
 	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
 			Piloto piloto) {
-		if (piloto.getPosicao() != 1) {
+		if (piloto.getPosicao() != 1 && piloto.getCarroPilotoDaFrente()!=null) {
 			Piloto pilotoFrente = piloto.getCarroPilotoDaFrente().getPiloto();
 			if (pilotoFrente.getPtosBox() != 0
 					|| pilotoFrente.getCarro().verificaParado()

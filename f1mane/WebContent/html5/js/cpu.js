@@ -24,7 +24,6 @@ var pilotosTravadaMap = new Map();
 var pilotosTravadaFumacaMap = new Map();
 var pilotosAereofolioMap = new Map();
 var idNoAnterior = new Map();
-var showFps = false;
 var sleepDefault = 600;
 var sleepMain = sleepDefault;
 
@@ -152,8 +151,8 @@ function cpu_dadosParciais() {
 		}
 	}
 	if (contadorJogadores != contadorJogadoresLocal) {
-		console.log(' contadorJogadores ' + contadorJogadores);
-		console.log(' contadorJogadoresLocal ' + contadorJogadoresLocal);
+//		console.log(' contadorJogadores ' + contadorJogadores);
+//		console.log(' contadorJogadoresLocal ' + contadorJogadoresLocal);
 		cpu_atualizaJogadores();
 	}
 	contadorJogadores = contadorJogadoresLocal;

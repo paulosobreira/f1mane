@@ -11,6 +11,7 @@ var corBabaca = "rgba(186, 186, 202, 0.6)";
 var corVermelho = "rgba(255, 0, 0, 0.6)";
 var confirmaSair = false;
 var dirZoom = '-';
+var ctl_showFps = false;
 
 
 function ctl_desenha() {
@@ -168,6 +169,11 @@ function ctl_desenhaControles() {
 				cor = '#00ff00';
 			}
 		}
+		
+		if (controle.tipo == 'fps') {
+			controle.exibir = fps.frameRate() +' FPS';
+		}
+		
 
 		if (controle.tipo == 'Drs' && dadosJogo.drs
 				&& dadosParciais.asa == 'MENOS_ASA') {
@@ -309,7 +315,7 @@ function ctl_mudaTracadoPiloto(event) {
 		menor = 100000;
 	}
 
-	console.log('rest_tracadoPiloto(mudar); ' + mudar)
+//	console.log('rest_tracadoPiloto(mudar); ' + mudar)
 	if (menor != 100000) {
 		rest_tracadoPiloto(mudar);
 	}
@@ -1079,16 +1085,6 @@ function ctl_desenhaInfoEsquerda() {
 		}
 	}
 	
-	if(showFps){
-		if(window.innerHeight > window.innerWidth || alternador){
-			y += 30;	
-		}
-		ctlContext.fillStyle = corFundo
-		ctlContext.fillRect(x, y, 94, 20);
-		ctlContext.font = '14px sans-serif';
-		ctlContext.fillStyle = "black"
-		ctlContext.fillText(fps.frameRate()+' Fps', x + 5, y + 15);
-	}
 	ctlContext.closePath();
 	ctlContext.stroke();
 }
@@ -1096,6 +1092,10 @@ function ctl_desenhaInfoEsquerda() {
 function ctl_removeControle(controle) {
 	
 	if (!dadosJogo.drs && controle.tipo == 'Drs') {
+		return true;
+	}
+	
+	if (!ctl_showFps && controle.tipo == 'fps') {
 		return true;
 	}
 	
@@ -1229,6 +1229,20 @@ function ctl_gerarControles() {
 		x : 0,
 		img : capacete
 	});
+	controles.push({
+		cor : corBabaca,
+		valor : '',
+		exibir : '',
+		tipo : 'fps',
+		centralizaTexto : false,
+		larguraTexto : false,
+		width : 110,
+		height : 40,
+		evalY : '(window.innerHeight > window.innerWidth)?(window.innerHeight - 300):(window.innerHeight - 200);',
+		y : 0,
+		x : 10
+	});
+	
 	controles.push({
 		cor : corBabaca,
 		valor : 'E',
@@ -1456,22 +1470,34 @@ maneCanvas.addEventListener('click',ctl_click, false);
 function ctl_click(event) {
 	var x = event.pageX;
 	var y = event.pageY;
-	if (y > 10 && y < 20
-			&& x > 10
-			&& x < 200){
-		showFps = true;
-		return;
-	}
+
 
 	var clickControle = false;
 	for (var i = 0; i < controles.length; i++) {
 		var controle = controles[i];
+		if (controle.evalY) {
+			controle.y = eval(controle.evalY);
+		}
+		if (controle.evalX) {
+			controle.x = eval(controle.evalX);
+		}
+		
 		var contains = (y > controle.y && y < controle.y + controle.height
 		&& x > controle.x
 		&& x < controle.x + controle.width);
 		if (!contains){
 			continue;
 		}
+		if (controle.tipo == 'fps') {
+			if(ctl_showFps){
+				ctl_showFps = false;	
+			}else{
+				ctl_showFps = true;
+			}
+			clickControle = true;	
+			return;
+		}
+		
 		if (ctl_removeControle(controle)) {
 			continue;
 		}

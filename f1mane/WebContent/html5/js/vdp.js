@@ -152,7 +152,7 @@ function vdp_processaBackGround() {
         }
     }
     if (imgBg && imgBg.complete) {
-        console.log('imgBg && imgBg.complete');
+//        console.log('imgBg && imgBg.complete');
         cvBg = document.createElement('canvas');
         cvBg.width = imgBg.width;
         cvBg.height = imgBg.height;
@@ -972,7 +972,7 @@ function vdp_desenhaCarrosCima() {
             vdp_desenhaTravadaRoda(piloto, x, y, angulo, no);
         }
 
-        if (showFps && piloto.idPiloto == idPilotoSelecionado) {
+        if (ctl_showFps && piloto.idPiloto == idPilotoSelecionado) {
             ponto = vdp_obterPonto(piloto, true);
             if (ponto == null || ponto.x == null || ponto.y == null) {
                 continue;
