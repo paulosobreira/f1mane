@@ -133,13 +133,14 @@ public class ControleClassificacao {
 					CarreiraDadosSrv carreiraDadosSrv = controlePersistencia
 							.carregaCarreiraJogador(piloto.getTokenJogador(), false, session);
 					if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
-						if (pts == 0) {
-							pts = 1;
+						int ptsCarreira = pts; 
+						if (ptsCarreira == 0) {
+							ptsCarreira = 1;
 						}
-						pts += calculaBonusCarreira(carreiraDadosSrv);
+						ptsCarreira += calculaBonusCarreira(carreiraDadosSrv);
 
-						carreiraDadosSrv.setPtsConstrutores(carreiraDadosSrv.getPtsConstrutores() + pts);
-						carreiraDadosSrv.setPtsConstrutoresGanhos(carreiraDadosSrv.getPtsConstrutoresGanhos() + pts);
+						carreiraDadosSrv.setPtsConstrutores(carreiraDadosSrv.getPtsConstrutores() + ptsCarreira);
+						carreiraDadosSrv.setPtsConstrutoresGanhos(carreiraDadosSrv.getPtsConstrutoresGanhos() +ptsCarreira);
 					}
 					corridasDadosSrv.setPontos(pts);
 					corridasDadosSrv.setPosicao(piloto.getPosicao());
@@ -169,13 +170,13 @@ public class ControleClassificacao {
 		if (carreiraDadosSrv == null) {
 			return 0;
 		}
+		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 2000) {
+			pts += 5;
+		}
 		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 1000) {
 			pts += 5;
 		}
 		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 500) {
-			pts += 5;
-		}
-		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 250) {
 			pts += 10;
 		}
 		return pts;
