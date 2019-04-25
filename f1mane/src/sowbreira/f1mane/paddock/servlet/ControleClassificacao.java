@@ -407,7 +407,7 @@ public class ControleClassificacao {
 			int ptsFreio = carreiraDados.getPtsFreio();
 			int ptsPiloto = carreiraDados.getPtsPiloto();
 
-			int validadeDistribucaoPontos = validadeDistribucaoPontos(carreiraDadosSrv, ptsAerodinamica, ptsCarro,
+			int validadeDistribucaoPontos = validadeDistribuicaoPontos(carreiraDadosSrv, ptsAerodinamica, ptsCarro,
 					ptsFreio, ptsPiloto);
 			if (validadeDistribucaoPontos < 0) {
 				return new MsgSrv(Lang.msg("erroAtualizarCarreira"));
@@ -475,7 +475,7 @@ public class ControleClassificacao {
 		return new MsgSrv(Lang.msg("250"));
 	}
 
-	public static int validadeDistribucaoPontos(CarreiraDadosSrv carreiraDadosSrv, int ptsAerodinamica, int ptsCarro,
+	public static int validadeDistribuicaoPontos(CarreiraDadosSrv carreiraDadosSrv, int ptsAerodinamica, int ptsCarro,
 			int ptsFreio, int ptsPiloto) {
 		int ptsConstrutoresBase = carreiraDadosSrv.getPtsConstrutores();
 		int ptsAerodinamicaBase = carreiraDadosSrv.getPtsAerodinamica();

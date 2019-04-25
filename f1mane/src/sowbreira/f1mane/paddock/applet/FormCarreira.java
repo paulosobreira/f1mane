@@ -268,7 +268,7 @@ public class FormCarreira extends JPanel {
 		carreiraDadosSrv.setPtsPiloto(850);
 		carreiraDadosSrv.setPtsConstrutores(ptsCarreira);
 
-		System.out.println(ControleClassificacao.validadeDistribucaoPontos(
+		System.out.println(ControleClassificacao.validadeDistribuicaoPontos(
 				carreiraDadosSrv,
 				(Integer) formCarreira.getPtsAeroDinamica().getValue(),
 				(Integer) formCarreira.getPtsCarro().getValue(),

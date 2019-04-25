@@ -77,15 +77,15 @@ $(document).on('click', '.number-spinner button', function() {
 	} else if (newVal >= 700 && newVal < 800) {
 		inc = 10;
 		if (oldValue == 800) {
-			inc = 100;
+			inc = 20;
 		}
 	} else if (newVal >= 800 && newVal < 900) {
-		inc = 100;
+		inc = 20;
 		if (oldValue == 900) {
-			inc = 200;
+			inc = 50;
 		}
 	} else if (newVal >= 900 && newVal < 999) {
-		inc = 200;
+		inc = 50;
 	}
 	if(tp==1){
 		ptsConstrutores-=inc;
