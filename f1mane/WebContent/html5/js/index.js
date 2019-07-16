@@ -75,6 +75,7 @@ $('#btnConfiguracao').html(lang_text('configuracao'));
 $('#btnClassificacao').html(lang_text('ranking'));
 $('#btnEquipe').html(lang_text('221'));
 $('#btnCampeonato').html(lang_text('268'));
+$('#btnDoar').html(lang_text('doar'));
 
 $('#btnSobre').bind("click", function() {
 	$('#botoes').hide();
