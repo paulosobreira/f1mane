@@ -739,7 +739,9 @@ public class ControleClassificacao {
 				CarreiraDadosSrv carreiraDadosSrv = (CarreiraDadosSrv) iterator.next();
 				Piloto piloto = new Piloto();
 				controlePersistencia.carreiraDadosParaPiloto(carreiraDadosSrv, piloto);
-				ret.add(piloto);
+				if(piloto.getPontosCorrida()>50) {
+					ret.add(piloto);
+				}
 			}
 			return ret;
 		} catch (Exception e) {

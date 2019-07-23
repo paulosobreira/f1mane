@@ -691,7 +691,7 @@ public class ControlePersistencia {
 
 	public List obterClassificacaoCampeonato(Session session) {
 		Dia umMesAtras = new Dia();
-		umMesAtras.advance(-30);
+		umMesAtras.advance(-15);
 		String hql = "from CampeonatoSrv obj where obj.id in (select distinct obj2.id from  CampeonatoSrv obj2 inner join  obj2.corridaCampeonatos cc where cc.tempoFim >= :tempoFim)";
 		Query qry = session.createQuery(hql);
 		qry.setParameter("tempoFim", umMesAtras.toTimestamp().getTime());
