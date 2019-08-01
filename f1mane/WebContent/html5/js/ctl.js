@@ -114,6 +114,16 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	ctlContext.fillRect(centroX-(laruraTxt/2), y, laruraTxt, 40);
 	ctlContext.fillStyle = "black"
 	ctlContext.fillText(iniciaEm, centroX-(laruraTxt/2)+15, y + 28);
+
+	
+	y+=50;
+	
+	var doarCarregando = lang_text('doarCarregando');
+	ctlContext.font = '12px sans-serif';
+	laruraTxt = ctlContext.measureText(doarCarregando).width+15;
+	ctlContext.fillRect(centroX-(laruraTxt/2), y, laruraTxt, 20);
+	ctlContext.fillStyle = "black"
+	ctlContext.fillText(doarCarregando, centroX-(laruraTxt/2)+15, y + 28);
 	
 }
 
