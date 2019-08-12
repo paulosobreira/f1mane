@@ -724,7 +724,19 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public List<Volta> getVoltas() {
-		return voltas;
+		List<Volta> copy = new ArrayList<Volta>();
+		while (copy.isEmpty()) {
+			try {
+				if (voltas == null || voltas.isEmpty()) {
+					return copy;
+				}
+				copy.addAll(voltas);
+			} catch (Exception e) {
+				copy.clear();
+				Logger.logarExept(e);
+			}
+		}
+		return copy;
 	}
 
 	public int getQtdeParadasBox() {
@@ -2798,11 +2810,11 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (voltas == null) {
 			return null;
 		}
-
+		List ordenaVoltas = new ArrayList();
+		List<Volta> voltas = getVoltas();
 		if (voltas.isEmpty()) {
 			return null;
 		}
-		List ordenaVoltas = new ArrayList();
 		for (Iterator iterator = voltas.iterator(); iterator.hasNext();) {
 			Volta volta = (Volta) iterator.next();
 			ordenaVoltas.add(volta);
