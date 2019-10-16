@@ -2811,14 +2811,11 @@ public class Piloto implements Serializable, PilotoSuave {
 			return null;
 		}
 		List ordenaVoltas = new ArrayList();
-		List<Volta> voltas = getVoltas();
-		if (voltas.isEmpty()) {
+		List<Volta> voltasCp = getVoltas();
+		if (voltasCp.isEmpty()) {
 			return null;
 		}
-		for (Iterator iterator = voltas.iterator(); iterator.hasNext();) {
-			Volta volta = (Volta) iterator.next();
-			ordenaVoltas.add(volta);
-		}
+		ordenaVoltas.addAll(voltasCp);
 		Collections.sort(ordenaVoltas, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				Volta v0 = (Volta) arg0;
