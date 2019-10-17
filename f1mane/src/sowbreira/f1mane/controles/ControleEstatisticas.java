@@ -96,7 +96,7 @@ public class ControleEstatisticas {
 		Volta voltaAtual = piloto.getVoltaAtual();
 		boolean teveMelhor = false;
 
-		for (Iterator iter = piloto.getVoltas().iterator(); iter.hasNext();) {
+		for (Iterator iter = piloto.getVoltasCopy().iterator(); iter.hasNext();) {
 			Volta volta = (Volta) iter.next();
 
 			if (voltaAtual.obterTempoVolta() > volta.obterTempoVolta()) {
@@ -327,7 +327,7 @@ public class ControleEstatisticas {
 		} else {
 			pilotoComp = controleJogo.obterCarroNaFrente(pilotoSel).getPiloto();
 		}
-		if (pilotoComp.getVoltas().size() < 3
+		if (pilotoComp.getVoltasCopy().size() < 3
 				|| pilotoSel.getVoltas().size() < 3) {
 			return;
 		}
@@ -355,21 +355,23 @@ public class ControleEstatisticas {
 				Lang.msg("081") + (piloto2.getNumeroVolta() - 3));
 		for (int i = 1; i < 4; i++) {
 			int gap = piloto1.getNumeroVolta() - piloto2.getNumeroVolta();
-			int index = piloto1.getVoltas().size() - i - gap;
+			List<Volta> voltasP1 = piloto1.getVoltasCopy();
+			List<Volta> voltasP2 = piloto2.getVoltasCopy();
+			int index = voltasP1.size() - i - gap;
 			if (index < 0) {
 				index = 0;
 			}
-			if (index > (piloto1.getVoltas().size() - 1)) {
+			if (index > (voltasP1.size() - 1)) {
 				return null;
 			}
-			Volta vp1 = (Volta) piloto1.getVoltas().get(index);
+			Volta vp1 = (Volta) voltasP1.get(index);
 			if (vp1.isVoltaBox() || vp1.isVoltaSafetyCar()) {
 				return null;
 			}
 			tabela = tabela.replaceAll("p1_v" + i,
 					(vp1.getTempoVoltaFormatado()));
-			Volta vp2 = (Volta) piloto2.getVoltas()
-					.get(piloto2.getVoltas().size() - i);
+			Volta vp2 = (Volta) voltasP2
+					.get(voltasP2.size() - i);
 			if (vp2.isVoltaBox() || vp2.isVoltaSafetyCar()) {
 				return null;
 			}

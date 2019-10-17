@@ -762,7 +762,7 @@ public class ControleJogosServer {
 						.getTempoNumero();
 			}
 			int contVolta = 1;
-			List<Volta> voltas = piloto.getVoltas();
+			List<Volta> voltas = piloto.getVoltasCopy();
 			for (int i = voltas.size() - 1; i > -1; i--) {
 				Volta volta = (Volta) voltas.get(i);
 				if (contVolta == 1) {

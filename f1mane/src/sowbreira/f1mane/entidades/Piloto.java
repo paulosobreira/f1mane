@@ -724,6 +724,11 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public List<Volta> getVoltas() {
+		return voltas;
+	}
+	
+	
+	public List<Volta> getVoltasCopy() {
 		List<Volta> copy = new ArrayList<Volta>();
 		while (copy.isEmpty()) {
 			try {
@@ -2811,7 +2816,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			return null;
 		}
 		List ordenaVoltas = new ArrayList();
-		List<Volta> voltasCp = getVoltas();
+		List<Volta> voltasCp = getVoltasCopy();
 		if (voltasCp.isEmpty()) {
 			return null;
 		}
