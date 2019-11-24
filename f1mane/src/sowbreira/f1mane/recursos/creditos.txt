@@ -14,6 +14,7 @@ sowbreira@gmail.com
 Codigo aberto
 Open Source
 Italian Language by Fabio Giretto
+Spanish Language by Facundo Baru
 -Status
 Fl-Mane é um protótipo e seus gráficos 
     e jogabilidade podem mudar com novas versões

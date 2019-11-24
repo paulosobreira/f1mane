@@ -10,10 +10,16 @@ $('#btnIt').bind("click", function() {
 	lang_idioma('it', true);
 	location.reload();
 });
+$('#btnEs').bind("click", function() {
+	lang_idioma('es', true);
+	location.reload();
+});
+
 
 $('#btnPt').html(lang_text('pt'));
 $('#btnEn').html(lang_text('en'));
 $('#btnIt').html(lang_text('it'));
+$('#btnEs').html(lang_text('es'));
 
 function lang_text(texto, params) {
 	var msg = localStorage.getItem('mapTexto_' +texto);
