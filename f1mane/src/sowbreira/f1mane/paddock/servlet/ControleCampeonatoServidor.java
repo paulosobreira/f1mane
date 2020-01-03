@@ -413,7 +413,7 @@ public class ControleCampeonatoServidor {
 		campeonatoTO.setUltimaCorrida(campeonato.getDataCriacao().getTime());
 		List<CorridaCampeonatoSrv> corridaCampeonatos = campeonato
 				.getCorridaCampeonatos();
-		int rodada = 1;
+		int rodada = 0;
 		for (Iterator iterator = corridaCampeonatos.iterator(); iterator
 				.hasNext();) {
 			CorridaCampeonatoSrv corridaCampeonato = (CorridaCampeonatoSrv) iterator
