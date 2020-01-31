@@ -170,13 +170,13 @@ public class ControleClassificacao {
 		if (carreiraDadosSrv == null) {
 			return 0;
 		}
-		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 2000) {
+		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 9999) {
+			pts += 5;
+		}
+		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 5000) {
 			pts += 5;
 		}
 		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 1000) {
-			pts += 5;
-		}
-		if (carreiraDadosSrv.getPtsConstrutoresGanhos() < 500) {
 			pts += 10;
 		}
 		return pts;
