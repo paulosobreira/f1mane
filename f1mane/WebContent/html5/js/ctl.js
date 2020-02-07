@@ -752,7 +752,7 @@ function ctl_desenhaInfoDireita() {
 		y += 30;
 	}
 
-	if (dadosParciais.ultima1 && (window.innerHeight > window.innerWidth || !alternador)) {
+	if (dadosParciais.ultima1 && dadosParciais.voltaAtual>0 && (window.innerHeight > window.innerWidth || !alternador)) {
 		ctlContext.fillStyle = corFundo
 		ctlContext.fillRect(x, y, 110, 20);
 		ctlContext.font = '14px sans-serif';
@@ -763,7 +763,7 @@ function ctl_desenhaInfoDireita() {
 
 		y += 30;
 
-		if (dadosParciais.ultima2) {
+		if (dadosParciais.ultima2 && dadosParciais.voltaAtual>1) {
 			ctlContext.fillStyle = corFundo
 			ctlContext.fillRect(x, y, 110, 20);
 			ctlContext.font = '14px sans-serif';
@@ -774,7 +774,7 @@ function ctl_desenhaInfoDireita() {
 			y += 30;
 		}
 
-		if (dadosParciais.ultima3) {
+		if (dadosParciais.ultima3 && dadosParciais.voltaAtual>2) {
 			ctlContext.fillStyle = corFundo
 			ctlContext.fillRect(x, y, 110, 20);
 			ctlContext.font = '14px sans-serif';
@@ -785,7 +785,7 @@ function ctl_desenhaInfoDireita() {
 			y += 30;
 		}
 
-		if (dadosParciais.ultima4) {
+		if (dadosParciais.ultima4 && dadosParciais.voltaAtual>3) {
 			ctlContext.fillStyle = corFundo
 			ctlContext.fillRect(x, y, 110, 20);
 			ctlContext.font = '14px sans-serif';

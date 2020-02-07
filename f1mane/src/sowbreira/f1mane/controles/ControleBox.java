@@ -482,12 +482,11 @@ public class ControleBox {
 		} else {
 			int voltaAtual = piloto.getNumeroVolta();
 			int metade = controleJogo.totalVoltasCorrida() / 2;
-			if (controleJogo.isSemTrocaPneu() && controleJogo.isModoQualify()) {
+			if (controleJogo.isSemTrocaPneu()) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
 						controleCorrida.getDistaciaCorrida());
-			} else if (voltaAtual > metade && piloto.isAsfaltoAbrasivo()
-					|| controleJogo.isModoQualify()) {
+			} else if (piloto.isAsfaltoAbrasivo() && controleCorrida.porcentagemCorridaConcluida() > 65 ) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_MOLE,
 						controleCorrida.getDistaciaCorrida());
@@ -551,12 +550,12 @@ public class ControleBox {
 			return;
 		}
 		if (piloto.testeHabilidadePilotoCarro()
-				&& !controleJogo.isBoxRapido()) {
-			piloto.setSetUpIncial(UMA_PARADA);
-			setupParadaUnica(piloto);
-		} else {
+				&& (controleJogo.isBoxRapido() || piloto.isAsfaltoAbrasivo())) {
 			piloto.setSetUpIncial(UMA_OU_MAIS_PARADAS);
 			setupDuasOuMaisParadas(piloto);
+		} else {
+			piloto.setSetUpIncial(UMA_PARADA);
+			setupParadaUnica(piloto);
 		}
 		if (controleJogo.isSemReabastecimento()) {
 			double mod = 0.9;
@@ -617,12 +616,11 @@ public class ControleBox {
 			piloto.getCarro().trocarPneus(controleJogo, Carro.TIPO_PNEU_CHUVA,
 					controleCorrida.getDistaciaCorrida());
 		} else {
-			if (controleJogo.isModoQualify() && controleJogo.isSemTrocaPneu()) {
+			if (controleJogo.isSemTrocaPneu()) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,
 						controleCorrida.getDistaciaCorrida());
-			} else if (!controleJogo.isModoQualify()
-					&& piloto.isAsfaltoAbrasivo()
+			} else if (piloto.isAsfaltoAbrasivo()
 					&& controleCorrida.porcentagemCorridaConcluida() < 65) {
 				piloto.getCarro().trocarPneus(controleJogo,
 						Carro.TIPO_PNEU_DURO,

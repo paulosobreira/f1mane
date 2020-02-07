@@ -57,7 +57,8 @@ function resultado() {
 			if(dadosJogo.campeonato!=null){
 				$('#divCampeonato').removeClass('hide');
 				$('#nomeCampeonatoRodada').append(dadosJogo.campeonato);
-				$('#rodadaCampeonato').append(lang_text('rodada')+' '+dadosJogo.rodadaCampeonato);
+				var rodadaSplit = dadosJogo.rodadaCampeonato.splait("/");
+				$('#rodadaCampeonato').append(lang_text('rodada')+' '+(rodadaSplit[0]+1)+'/'+rodadaSplit[1]);
 			}
 			var pilotos = dadosJogo.pilotos;
 			$('#pilotos').find('tr').remove();
