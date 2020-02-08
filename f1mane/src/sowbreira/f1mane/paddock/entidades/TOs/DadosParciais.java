@@ -29,6 +29,7 @@ public class DadosParciais implements Serializable {
 	public int pCombust;
 	public int pPneus;
 	public int pMotor;
+	public int pVolta;
 	public int paradas;
 	public int giro;
 	public int stress;
@@ -68,6 +69,7 @@ public class DadosParciais implements Serializable {
 		velocidade = parseInt(sp[spcont++]);
 		pPneus = parseInt(sp[spcont++]);
 		pMotor = parseInt(sp[spcont++]);
+		pVolta = parseInt(sp[spcont++]);
 		paradas = parseInt(sp[spcont++]);
 		giro = parseInt(sp[spcont++]);
 		stress = parseInt(sp[spcont++]);
@@ -290,7 +292,7 @@ public class DadosParciais implements Serializable {
 
 		String enc = voltaAtual + "@" + pCombust + "@" + codPneu + "@"
 				+ combustBox + "@" + codPneuBox + "@" + velocidade + "@"
-				+ pPneus + "@" + pMotor + "@" + paradas + "@" + giro + "@"
+				+ pPneus + "@" + pMotor + "@"+pVolta+ "@" + paradas + "@" + giro + "@"
 				+ stress + "@" + cargaErs + "@" + (alertaMotor ? "S" : "N")
 				+ "@" + (alertaAerefolio ? "S" : "N") + "@" + codpselModoPilotar
 				+ "@" + (box ? "S" : "N") + "@" + (podeUsarDRS ? "S" : "N")

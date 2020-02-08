@@ -605,6 +605,7 @@ public class MonitorJogo implements Runnable {
 						.setPorcentagemDesgastePneus(dadosParciais.pPneus);
 				piloto.getCarro()
 						.setPorcentagemCombustivel(dadosParciais.pCombust);
+				piloto.setNumeroVolta(dadosParciais.pVolta);
 				piloto.getCarro().setAsa(dadosParciais.asaBox);
 				piloto.getCarro().setTipoPneu(dadosParciais.tpPneus);
 				if (piloto.getCarroPilotoDaFrente() != null) {

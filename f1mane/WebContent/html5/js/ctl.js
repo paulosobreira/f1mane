@@ -752,46 +752,46 @@ function ctl_desenhaInfoDireita() {
 		y += 30;
 	}
 
-	if (dadosParciais.ultima1 && dadosParciais.voltaAtual>0 && (window.innerHeight > window.innerWidth || !alternador)) {
+	if (dadosParciais.ultima1 && dadosParciais.pVolta>0 && (window.innerHeight > window.innerWidth || !alternador)) {
 		ctlContext.fillStyle = corFundo
 		ctlContext.fillRect(x, y, 110, 20);
 		ctlContext.font = '14px sans-serif';
 		ctlContext.fillStyle = "black"
 		ctlContext.fillText(lang_text('vol') + ' '
-				+ (dadosParciais.voltaAtual - 1) + ' '
+				+ (dadosParciais.pVolta) + ' '
 				+ formatarTempo(dadosParciais.ultima1), x + 5, y + 15);
 
 		y += 30;
 
-		if (dadosParciais.ultima2 && dadosParciais.voltaAtual>1) {
+		if (dadosParciais.ultima2 && dadosParciais.pVolta>1) {
 			ctlContext.fillStyle = corFundo
 			ctlContext.fillRect(x, y, 110, 20);
 			ctlContext.font = '14px sans-serif';
 			ctlContext.fillStyle = "black"
 			ctlContext.fillText(lang_text('vol') + ' '
-					+ (dadosParciais.voltaAtual - 2) + ' '
+					+ (dadosParciais.pVolta - 1) + ' '
 					+ formatarTempo(dadosParciais.ultima2), x + 5, y + 15);
 			y += 30;
 		}
 
-		if (dadosParciais.ultima3 && dadosParciais.voltaAtual>2) {
+		if (dadosParciais.ultima3 && dadosParciais.pVolta>2) {
 			ctlContext.fillStyle = corFundo
 			ctlContext.fillRect(x, y, 110, 20);
 			ctlContext.font = '14px sans-serif';
 			ctlContext.fillStyle = "black"
 			ctlContext.fillText(lang_text('vol') + ' '
-					+ (dadosParciais.voltaAtual - 3) + ' '
+					+ (dadosParciais.pVolta - 2) + ' '
 					+ formatarTempo(dadosParciais.ultima3), x + 5, y + 15);
 			y += 30;
 		}
 
-		if (dadosParciais.ultima4 && dadosParciais.voltaAtual>3) {
+		if (dadosParciais.ultima4 && dadosParciais.pVolta>3) {
 			ctlContext.fillStyle = corFundo
 			ctlContext.fillRect(x, y, 110, 20);
 			ctlContext.font = '14px sans-serif';
 			ctlContext.fillStyle = "black"
 			ctlContext.fillText(lang_text('vol') + ' '
-					+ (dadosParciais.voltaAtual - 4) + ' '
+					+ (dadosParciais.pVolta - 3) + ' '
 					+ formatarTempo(dadosParciais.ultima4), x + 5, y + 15);
 			y += 30;
 		}

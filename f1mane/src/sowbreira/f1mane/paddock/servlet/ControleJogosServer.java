@@ -809,6 +809,7 @@ public class ControleJogosServer {
 			dadosParciais.alertaAerefolio = piloto.isAlertaAerefolio();
 			dadosParciais.pCombust = piloto.getCarro()
 					.getPorcentagemCombustivel();
+			dadosParciais.pVolta = piloto.getNumeroVolta();
 			if (dadosParciais.pCombust > 100) {
 				dadosParciais.pCombust = 100;
 			}
