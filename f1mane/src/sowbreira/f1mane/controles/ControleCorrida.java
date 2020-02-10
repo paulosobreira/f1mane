@@ -77,9 +77,7 @@ public class ControleCorrida {
 			tanqueCheio = (distaciaCorrida + (distaciaCorrida / 2));
 		}
 		definirTanqueCheio();
-		if (Math.random() > 0.5) {
-			asfaltoAbrasivo = true;
-		}
+		asfaltoAbrasivo = Math.random() > 0.5;
 		if (controleJogo.isSemTrocaPneu()) {
 			asfaltoAbrasivo = false;
 		}
