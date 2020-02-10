@@ -169,8 +169,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private boolean acelerando;
 	@JsonIgnore
-	private boolean asfaltoAbrasivo;
-	@JsonIgnore
 	private double ultGanhoReta = 0;
 	@JsonIgnore
 	private Integer ultimoConsumoCombust;
@@ -965,7 +963,6 @@ public class Piloto implements Serializable, PilotoSuave {
 			processaAjustesPosQualificacao(Constantes.MAX_VOLTAS
 					/ (controleJogo.totalVoltasCorrida() == 0 ? 1 : controleJogo.totalVoltasCorrida()));
 			processaUltimosDesgastesPneuECombustivel();
-			processaAsfaltoAbrasivoIA(controleJogo);
 			index = diff;
 			if (getNumeroVolta() > 0) {
 				getCarro().setCargaErs(InterfaceJogo.CARGA_ERS);
@@ -1031,17 +1028,6 @@ public class Piloto implements Serializable, PilotoSuave {
 				ultimoConsumoPneu = new Integer(pPneu);
 			}
 		}
-	}
-
-	private void processaAsfaltoAbrasivoIA(InterfaceJogo controleJogo) {
-		if (isJogadorHumano() || isAsfaltoAbrasivo()) {
-			return;
-		}
-		boolean testeAbrasivo = testeHabilidadePiloto() && controleJogo.asfaltoAbrasivo();
-		if (testeAbrasivo && !isAsfaltoAbrasivo() && getPosicao() == 1) {
-			controleJogo.infoPrioritaria(Html.laranja(Lang.msg("asfaltoAbrasivo")));
-		}
-		this.setAsfaltoAbrasivo(testeAbrasivo);
 	}
 
 	private void verificaIaIrBox(InterfaceJogo controleJogo) {
@@ -3360,14 +3346,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		for (Iterator<String> iterator = campos.iterator(); iterator.hasNext();) {
 			buffer.append(iterator.next());
 		}
-	}
-
-	public boolean isAsfaltoAbrasivo() {
-		return asfaltoAbrasivo;
-	}
-
-	public void setAsfaltoAbrasivo(boolean asfaltoAbrasivo) {
-		this.asfaltoAbrasivo = asfaltoAbrasivo;
 	}
 
 	public boolean isTravouRodas() {

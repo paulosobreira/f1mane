@@ -78,6 +78,9 @@ public class ControleCorrida {
 		}
 		definirTanqueCheio();
 		asfaltoAbrasivo = Math.random() > 0.5;
+		if (asfaltoAbrasivo) {
+			controleJogo.info(Html.laranja(Lang.msg("asfaltoAbrasivo")));
+		}
 		if (controleJogo.isSemTrocaPneu()) {
 			asfaltoAbrasivo = false;
 		}
@@ -293,7 +296,7 @@ public class ControleCorrida {
 				thread.start();
 				if (controleJogo.isSafetyCar()) {
 					controleSafetyCar.safetyCarNaPista(piloto);
-				}else {
+				} else {
 					piloto.getCarro().setRecolhido(true);
 				}
 				if (fatorAcidente < 0.9) {
@@ -568,8 +571,9 @@ public class ControleCorrida {
 	}
 
 	public boolean asfaltoAbrasivo() {
-		return asfaltoAbrasivo && (Math
-				.random() < ((double) controleJogo.getNumVoltaAtual() / (double) controleJogo.totalVoltasCorrida()));
+		double voltaAtual = controleJogo.getNumVoltaAtual();
+		double totalVoltas = controleJogo.totalVoltasCorrida();
+		return asfaltoAbrasivo && (Math.random() > (voltaAtual / totalVoltas));
 	}
 
 	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo, Piloto p) {
