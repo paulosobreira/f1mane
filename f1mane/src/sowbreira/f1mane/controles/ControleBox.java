@@ -626,26 +626,14 @@ public class ControleBox {
 	}
 
 	public long calculaQtdePtsPistaPoleParaSaidaBox(Piloto pole) {
-		List ptsPista = controleJogo.getNosDaPista();
-		long diferenca = 0;
-		int indexPole = 0;
-		int indexSaidaBox = 0;
-		for (int i = 0; i < ptsPista.size(); i++) {
-			No no = (No) ptsPista.get(i);
-			if (no.equals(pole.getNoAtual())) {
-				indexPole = i;
-			}
-			if (no.equals(saidaBox)) {
-				indexSaidaBox = i;
-			}
+		int indexPole = pole.getNoAtual().getIndex();
+		int indexSaidaBox = controleJogo.getCircuito().getSaidaBoxIndex();
+		if(indexPole>indexSaidaBox) {
+			return pole.getPtosPista() + circuito.getPistaFull().size() - (indexPole-indexSaidaBox);
+		}else {
+			return pole.getPtosPista() + (indexSaidaBox -indexPole);
 		}
-		diferenca = pole.getPtosPista() + (indexSaidaBox - indexPole);
-		if (indexSaidaBox > indexPole) {
-			diferenca = pole.getPtosPista() + (indexSaidaBox - indexPole);
-		} else {
-			diferenca = pole.getPtosPista() + ((ptsPista.size() - indexPole) + indexSaidaBox);
-		}
-		return diferenca;
+
 	}
 
 	public boolean verificaSaidaBox(Piloto piloto) {

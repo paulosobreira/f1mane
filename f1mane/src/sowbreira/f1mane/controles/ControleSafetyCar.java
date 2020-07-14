@@ -27,27 +27,21 @@ public class ControleSafetyCar {
 	 * @param controleCorrida
 	 * @param controleJogo
 	 */
-	public ControleSafetyCar(ControleJogoLocal controleJogo,
-			ControleCorrida controleCorrida) {
+	public ControleSafetyCar(ControleJogoLocal controleJogo, ControleCorrida controleCorrida) {
 		super();
 		this.controleCorrida = controleCorrida;
 		this.controleJogo = controleJogo;
 		safetyCar = new SafetyCar();
 	}
 
-	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo,
-			Piloto piloto) {
-		if (piloto.getPosicao() != 1 && piloto.getCarroPilotoDaFrente()!=null) {
+	public double ganhoComSafetyCar(double ganho, InterfaceJogo controleJogo, Piloto piloto) {
+		if (piloto.getPosicao() != 1 && piloto.getCarroPilotoDaFrente() != null) {
 			Piloto pilotoFrente = piloto.getCarroPilotoDaFrente().getPiloto();
-			if (pilotoFrente.getPtosBox() != 0
-					|| pilotoFrente.getCarro().verificaParado()
-					|| Carro.PNEU_FURADO
-							.equals(pilotoFrente.getCarro().getDanificado())
-					|| Carro.PERDEU_AEREOFOLIO
-							.equals(pilotoFrente.getCarro().getDanificado())
+			if (pilotoFrente.getPtosBox() != 0 || pilotoFrente.getCarro().verificaParado()
+					|| Carro.PNEU_FURADO.equals(pilotoFrente.getCarro().getDanificado())
+					|| Carro.PERDEU_AEREOFOLIO.equals(pilotoFrente.getCarro().getDanificado())
 					|| piloto.verificaNaoPrecisaDesviar(pilotoFrente)
-					|| piloto.getNumeroVolta() != pilotoFrente
-							.getNumeroVolta()) {
+					|| piloto.getNumeroVolta() != pilotoFrente.getNumeroVolta()) {
 				return ganho;
 			}
 			long diffIndex = piloto.getDiferencaParaProximo();
@@ -118,8 +112,7 @@ public class ControleSafetyCar {
 		Logger.logar("SAFETY CAR");
 		safetyCar.setVaiProBox(false);
 		controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("029")));
-		recolihimentoCarro = new ThreadRecolihimentoCarro(controleJogo, piloto,
-				safetyCar);
+		recolihimentoCarro = new ThreadRecolihimentoCarro(controleJogo, piloto, safetyCar);
 		recolihimentoCarro.start();
 
 	}
@@ -130,8 +123,7 @@ public class ControleSafetyCar {
 		}
 		int cont = safetyCar.getNoAtual().getIndex();
 		Circuito circuito = controleJogo.getCircuito();
-		if ((cont > (circuito.getEntradaBoxIndex() - 50)
-				&& cont < (circuito.getEntradaBoxIndex() + 50))
+		if ((cont > (circuito.getEntradaBoxIndex() - 50) && cont < (circuito.getEntradaBoxIndex() + 50))
 				&& safetyCar.isVaiProBox()) {
 			controleJogo.infoPrioritaria(Html.saftyCar(Lang.msg("030")));
 			safetyCar.setNaPista(false);
@@ -141,35 +133,22 @@ public class ControleSafetyCar {
 		List pista = controleJogo.getNosDaPista();
 		int index = safetyCar.getNoAtual().getIndex();
 		No noAtual = safetyCar.getNoAtual();
-		int bonus = Math.random() < 0.3 ? 3 : 2;
-		if (noAtual.verificaCurvaAlta()) {
-			bonus = Math.random() < 0.9 ? 2 : 1;
-		}
-		if (noAtual.verificaCurvaBaixa()) {
-			bonus = Math.random() < 0.7 ? 2 : 1;
-		}
+		int bonus = 0;
 		Piloto pole = (Piloto) controleJogo.getPilotosCopia().get(0);
-
 		long ptsSc = safetyCar.getPtosPista();
 		long polePts = pole.getPtosPista();
-		long diffPts = ptsSc - polePts;
-		bonus *= (controleJogo.getCircuito().getMultiplciador()
-				* controleJogo.getIndexVelcidadeDaPista()) * .8;
-		if (diffPts >= 100) {
-			double multi = (diffPts - 100 / 100.0);
-			if (multi > 0.9) {
-				multi = 0.9;
+		if (ptsSc < (polePts+500)) {
+			bonus = Math.random() < 0.3 ? 3 : 2;
+			if (noAtual.verificaCurvaAlta()) {
+				bonus = Math.random() < 0.9 ? 2 : 1;
 			}
-			if (diffPts >= 1000) {
-				multi = 0.1;
+			if (noAtual.verificaCurvaBaixa()) {
+				bonus = Math.random() < 0.7 ? 2 : 1;
 			}
-			bonus *= multi;
-			if (bonus == 0) {
-				safetyCar.setEsperando(true);
-			}
-			safetyCar.setTracado(0);
+			bonus *= (controleJogo.getCircuito().getMultiplciador() * controleJogo.getIndexVelcidadeDaPista()) * .8;
+			bonus = calculaMediaSC(bonus);
 		}
-		bonus = calculaMediaSC(bonus);
+
 		index += bonus;
 		int diff = index - pista.size();
 		/**
@@ -190,6 +169,10 @@ public class ControleSafetyCar {
 
 		safetyCar.setNoAtual((No) pista.get(index));
 	}
+	
+	public boolean verificaPoleFrenteSafety(Piloto piloto) {
+		return piloto.getPtosPista() >= safetyCar.getPtosPista();
+	}	
 
 	public static void main(String[] args) {
 		double multi = 0.1;
@@ -201,8 +184,7 @@ public class ControleSafetyCar {
 		List pilotos = controleJogo.getPilotosCopia();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			if (safetyCar.equals(piloto) || piloto.getPosicao() == 1
-					|| piloto.getTracado() != safetyCar.getTracado()
+			if (safetyCar.equals(piloto) || piloto.getPosicao() == 1 || piloto.getTracado() != safetyCar.getTracado()
 					|| piloto.getCarro().isRecolhido()) {
 				continue;
 			}
@@ -244,10 +226,6 @@ public class ControleSafetyCar {
 
 	public SafetyCar getSafetyCar() {
 		return safetyCar;
-	}
-
-	public boolean verificaPoleFrenteSafety(Piloto piloto) {
-		return piloto.getPtosPista() >= safetyCar.getPtosPista();
 	}
 
 	public boolean isSafetyCarVaiBox() {

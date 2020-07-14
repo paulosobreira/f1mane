@@ -4842,9 +4842,6 @@ public class PainelCircuito {
 		if (safetyCar == null) {
 			return;
 		}
-		if (safetyCar.isEsperando()) {
-			return;
-		}
 		atualizacaoSuave(safetyCar);
 		No noAtual = safetyCar.getNoAtualSuave();
 		if (noAtual == null) {
