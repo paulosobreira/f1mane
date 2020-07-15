@@ -14,8 +14,8 @@
      ====================================================================== -->
 <project name="F1-Mane" default="targetHtml">
 	
-	<!--<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />-->
-	<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73\webapps" /> 
+	<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />
+	<!--<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73\webapps" /> --> 
 	<!--<property name="DESTINO" value="E:\apache-tomcat-7.0.35" /> -->
 	<path id="classpath.compilacao">
 		<fileset dir="WebContent/WEB-INF/lib">

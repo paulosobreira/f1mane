@@ -117,8 +117,6 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private boolean alertaAerefolio;
 	@JsonIgnore
-	private boolean podeUsarDRS;
-	@JsonIgnore
 	private String calculaSegundosParaProximo;
 	@JsonIgnore
 	private int cargaErsVisual;
@@ -314,6 +312,12 @@ public class Piloto implements Serializable, PilotoSuave {
 	private Carro carroPilotoDaFrenteRetardatario;
 	@JsonIgnore
 	private Piloto colisao;
+	@JsonIgnore
+	private int contadorPodeAcionarDRS;
+	@JsonIgnore
+	private int contadorIndiceUltimoAcionamentoDRS;
+	protected static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+	private static final int CONTADOR_LIBERAR_DRS = 20;
 	private boolean temMotor;
 	private boolean temCombustivel;
 	private boolean superAquecido;
@@ -438,11 +442,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setAtivarDRS(boolean ativarDRS) {
-		if (podeUsarDRS) {
-			this.ativarDRS = ativarDRS;
-		} else {
-			this.ativarDRS = false;
-		}
+		this.ativarDRS = ativarDRS;
 	}
 
 	public void setDiateira(Rectangle diateira) {
@@ -724,8 +724,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	public List<Volta> getVoltas() {
 		return voltas;
 	}
-	
-	
+
 	public List<Volta> getVoltasCopy() {
 		List<Volta> copy = new ArrayList<Volta>();
 		while (copy.isEmpty()) {
@@ -1122,8 +1121,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		this.posicao = posicao;
 	}
 
-	protected static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-
 	public int getNovoModificador() {
 		return novoModificador;
 	}
@@ -1411,8 +1408,8 @@ public class Piloto implements Serializable, PilotoSuave {
 				setCiclosDesconcentrado(100);
 				controleJogo.travouRodas(this);
 				if (controleJogo.verificaInfoRelevante(this)) {
-					controleJogo.info(
-							Lang.msg("saiDaPista", new String[] { Html.vermelho(nomeJogadorFormatado()), Html.vermelho(getNome()) }));
+					controleJogo.info(Lang.msg("saiDaPista",
+							new String[] { Html.vermelho(nomeJogadorFormatado()), Html.vermelho(getNome()) }));
 				}
 			} else if (No.CURVA_BAIXA.equals(getNoAtual().getTipo()) && (getTracado() == 0)
 					&& (carro.getPorcentagemDesgastePneus() < 30)) {
@@ -1740,32 +1737,24 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private void processaUsoDRS(InterfaceJogo controleJogo) {
-		if (!podeUsarDRS && verificaPodeUsarDRS(controleJogo)) {
-			podeUsarDRS = true;
+		if (!controleJogo.isDrs()) {
+			return;
 		}
-		if (getPtosBox() != 0 || controleJogo.isChovendo() || controleJogo.isSafetyCarNaPista()
-				|| controleJogo.isCorridaTerminada()) {
-			podeUsarDRS = false;
-		}
-		if (ativarDRS && podeUsarDRS) {
+		if (verificaPodeUsarDRS(controleJogo) && ativarDRS && contadorPodeAcionarDRS > 0) {
 			getCarro().setAsa(Carro.MENOS_ASA);
-			if (!getNoAtual().verificaRetaOuLargada() && testeHabilidadePiloto()) {
-				ativarDRS = false;
-				podeUsarDRS = false;
-			}
-		} else if (controleJogo.isDrs()) {
-			getCarro().setAsa(Carro.MAIS_ASA);
 		}
-	}
-
-	public void setPodeUsarDRS(boolean podeUsarDRS) {
-		this.podeUsarDRS = podeUsarDRS;
+		if (!getNoAtual().verificaRetaOuLargada()) {
+			getCarro().setAsa(Carro.MAIS_ASA);
+			ativarDRS = false;
+			contadorPodeAcionarDRS = 0;
+		}
+		contadorPodeAcionarDRS--;
 	}
 
 	private boolean verificaPodeUsarDRS(InterfaceJogo controleJogo) {
 		if (controleJogo.isDrs() && getPtosBox() == 0 && getNumeroVolta() > 1 && !controleJogo.isSafetyCarNaPista()
 				&& !controleJogo.isChovendo() && !controleJogo.isCorridaTerminada()
-				&& getNoAtual().verificaRetaOuLargada() && carroPilotoDaFrenteRetardatario != null
+				&& carroPilotoDaFrenteRetardatario != null && getNoAtual().verificaRetaOuLargada()
 				&& calculaDiffParaProximoRetardatario < Constantes.LIMITE_DRS) {
 			No obterCurvaAnterior = controleJogo.obterCurvaAnterior(getNoAtual());
 			No obterProxCurva = controleJogo.obterProxCurva(getNoAtual());
@@ -1778,6 +1767,11 @@ public class Piloto implements Serializable, PilotoSuave {
 				indexProxCurva += controleJogo.getNosDaPista().size();
 			}
 			if ((indexProxCurva - indexCurvaAnterior) >= Constantes.TAMANHO_RETA_DRS) {
+				if (contadorPodeAcionarDRS <= 0 && (contadorIndiceUltimoAcionamentoDRS < obterCurvaAnterior.getIndex()
+						|| contadorIndiceUltimoAcionamentoDRS > obterProxCurva.getIndex())) {
+					contadorIndiceUltimoAcionamentoDRS = getNoAtual().getIndex();
+					contadorPodeAcionarDRS = CONTADOR_LIBERAR_DRS;
+				}
 				return true;
 			}
 		}
@@ -1828,10 +1822,10 @@ public class Piloto implements Serializable, PilotoSuave {
 			return;
 		}
 		if (controleJogo.isErs()) {
-			tentaUsarErs(controleJogo);
+			iaTentaUsarErs(controleJogo);
 		}
 		if (controleJogo.isDrs()) {
-			tentaUsarDRS(controleJogo);
+			iaTentaUsarDRS(controleJogo);
 		}
 		boolean tentaPassarFrete = tentarPassaPilotoDaFrente(controleJogo);
 		boolean tentarEscaparAtras = false;
@@ -1862,7 +1856,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			getCarro().setGiro(Carro.GIRO_NOR_VAL);
 			setModoPilotagem(NORMAL);
 		}
-		if (ativarDRS && podeUsarDRS) {
+		if (ativarDRS && controleJogo.isDrs() && Carro.MENOS_ASA.equals(getCarro().getAsa())) {
 			getCarro().setGiro(Carro.GIRO_MAX_VAL);
 		}
 
@@ -2023,7 +2017,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		return false;
 	}
 
-	private void tentaUsarDRS(InterfaceJogo controleJogo) {
+	private void iaTentaUsarDRS(InterfaceJogo controleJogo) {
 		if (verificaDesconcentrado()) {
 			return;
 		}
@@ -2044,7 +2038,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 	}
 
-	private void tentaUsarErs(InterfaceJogo controleJogo) {
+	private void iaTentaUsarErs(InterfaceJogo controleJogo) {
 		if (verificaDesconcentrado()) {
 			return;
 		}
@@ -3285,7 +3279,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public boolean isPodeUsarDRS() {
-		return podeUsarDRS;
+		return contadorPodeAcionarDRS > 0;
 	}
 
 	public Carro getCarroPilotoDaFrente() {
@@ -3560,5 +3554,12 @@ public class Piloto implements Serializable, PilotoSuave {
 
 	public void setProcessouVoltaBox(boolean processouVoltaBox) {
 		this.processouVoltaBox = processouVoltaBox;
+	}
+
+	public void setPodeUsarDRS(boolean podeUsarDRS) {
+		if (podeUsarDRS && contadorPodeAcionarDRS <= 0) {
+			contadorPodeAcionarDRS = CONTADOR_LIBERAR_DRS;
+		}
+
 	}
 }
