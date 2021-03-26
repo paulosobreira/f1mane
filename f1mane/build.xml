@@ -12,9 +12,10 @@
      keytool -genkey -keystore jar-keystore -alias f1mane-key
 
      ====================================================================== -->
-<project name="F1-Mane" default="targetHtml">
+<project name="F1-Mane">
 	
-	<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />
+	<property name="DESTINO" value="targer/war/" />
+	<!--<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />--> 
 	<!--<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73\webapps" /> --> 
 	<!--<property name="DESTINO" value="E:\apache-tomcat-7.0.35" /> -->
 	<path id="classpath.compilacao">
@@ -210,7 +211,7 @@
 				<include name="commons-logging-1.1.1.jar" />
 			</fileset>
 		</copy>
-		<zip destfile="f1mane.zip" compress="true">
+		<zip destfile="target/f1mane.zip" compress="true">
 			<fileset dir=".">
 				<include name="*.jar" />
 				<include name="*.sh" />

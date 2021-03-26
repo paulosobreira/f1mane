@@ -60,7 +60,6 @@ public class MainFrame extends JFrame {
 	private JCheckBoxMenuItem atualizacaoSuave;
 	private JMenuItem iniciar;
 	private JMenuItem pausa;
-	private JMenuItem narracao;
 	private JMenuItem verControles;
 	private JFrame menuFrame;
 	protected Campeonato campeonato;
