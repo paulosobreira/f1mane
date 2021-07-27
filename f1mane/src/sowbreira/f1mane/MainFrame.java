@@ -105,7 +105,7 @@ public class MainFrame extends JFrame {
 		gerarMenusSobre(menuInfo);
 		gerarMenusidiomas(menuIdiomas);
 		setSize(1030, 720);
-		String title = "F1-MANE " + getVersao() + " MANager & Engineer";
+		String title = "Fl-MANE " + getVersao() + " MANager & Engineer";
 		setTitle(title);
 		if (modoApplet == null) {
 			iniciar();
@@ -409,7 +409,6 @@ public class MainFrame extends JFrame {
 	}
 
 	public static void main(String[] args) throws IOException {
-		// Logger.ativo = true;
 		String codeBase = File.separator + "WebContent" + File.separator;
 		if (args != null && args.length > 0) {
 			codeBase = args[0];
@@ -556,7 +555,7 @@ public class MainFrame extends JFrame {
 	private void posicionaJanelaDebug() {
 		menuFrame.pack();
 		menuFrame.setSize(300, MainFrame.this.getHeight());
-		menuFrame.setTitle("F1-Mane Debug");
+		menuFrame.setTitle("Fl-Mane Debug");
 	}
 
 	private void adicionaPainelNarracaoDebug() {

@@ -699,7 +699,7 @@ public class ControleJogoLocal extends ControleRecursos
 			Piloto piloto = (Piloto) iterator.next();
 			if (piloto.equals(pilotoSelecionado)) {
 				efetuarSelecaoPilotoJogador(piloto, pneuSelecionado,
-						new Integer(combustivelSelecionado), "F1-Mane",
+						new Integer(combustivelSelecionado), "Fl-Mane",
 						asaSelecionado);
 				break;
 			}

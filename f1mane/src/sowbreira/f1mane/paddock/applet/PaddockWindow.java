@@ -178,22 +178,9 @@ public class PaddockWindow {
 	}
 
 	public PaddockWindow(ControlePaddockCliente controlePaddockApplet) {
-		img = ImageUtil.gerarFade(
-				CarregadorRecursos.carregaBufferedImage("bg-monaco.png"), 40);
 		CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
 		carregadorRecursos.carregarTemporadasPilotos();
-		mainPanel = new JPanel(new BorderLayout()) {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D graphics2d = (Graphics2D) g;
-				if (img != null && PainelCircuito.desenhaBkg) {
-					graphics2d.setColor(Color.WHITE);
-					graphics2d.fillRect(0, 0, getWidth(), getHeight());
-					graphics2d.drawImage(img, null, -50, 0);
-				}
-			}
-		};
+		mainPanel = new JPanel(new BorderLayout());
 		if (controlePaddockApplet != null) {
 			this.controlePaddockCliente = controlePaddockApplet;
 			controlePaddockApplet.setPaddockWindow(this);
@@ -386,21 +373,16 @@ public class PaddockWindow {
 
 	private void gerarLayout() {
 		JPanel cPanel = new JPanel(new BorderLayout());
-		compTransp(cPanel);
 		JPanel sPanel = new JPanel(new BorderLayout());
-		compTransp(sPanel);
 		mainPanel.add(cPanel, BorderLayout.CENTER);
 		mainPanel.add(sPanel, BorderLayout.SOUTH);
-		compTransp(mainPanel);
 		JPanel chatPanel = new JPanel();
-		compTransp(chatPanel);
 		if (controlePaddockCliente != null) {
 			chatPanel.setBorder(
-					new TitledBorder("F1-MANager Engineer Chat Room Ver "
+					new TitledBorder("Fl-MANager Engineer Chat Room Ver "
 							+ controlePaddockCliente.getVersaoFormatado()));
 		}
 		JPanel usersPanel = new JPanel();
-		compTransp(usersPanel);
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
 			public String getTitle() {
 				return Lang.msg("186");
@@ -409,7 +391,6 @@ public class PaddockWindow {
 		cPanel.add(chatPanel, BorderLayout.CENTER);
 		cPanel.add(usersPanel, BorderLayout.EAST);
 		JPanel jogsPanel = new JPanel();
-		compTransp(jogsPanel);
 		jogsPanel.setBorder((new TitledBorder("Lista de Jogos") {
 			public String getTitle() {
 				return Lang.msg("187");
@@ -422,17 +403,12 @@ public class PaddockWindow {
 		 * adicionar componentes.
 		 */
 		JScrollPane jogsPane = new JScrollPane(listaClientes);
-		compTransp(jogsPane);
-		compTransp(listaClientes);
 		jogsPane.setPreferredSize(new Dimension(150, 235));
 		usersPanel.add(jogsPane);
 		JScrollPane jogsCriados = new JScrollPane(listaJogosCriados);
-		compTransp(listaJogosCriados);
-		compTransp(jogsCriados);
 		jogsCriados.setPreferredSize(new Dimension(150, 100));
 		jogsPanel.add(jogsCriados);
 		JPanel buttonsPanel = new JPanel();
-		compTransp(buttonsPanel);
 		buttonsPanel.setLayout(new GridLayout(3, 4));
 		buttonsPanel.add(entrarJogo);
 		buttonsPanel.add(sairJogo);
@@ -466,7 +442,6 @@ public class PaddockWindow {
 		buttonsPanel.add(logs);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
-		compTransp(panelTextoEnviar);
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
 			public String getTitle() {
 				return Lang.msg("188");
@@ -481,8 +456,6 @@ public class PaddockWindow {
 		chatPanel.setLayout(new BorderLayout());
 		JScrollPane jScrollPane = new JScrollPane(textAreaChat);
 		chatPanel.add(jScrollPane, BorderLayout.CENTER);
-		compTransp(textAreaChat);
-		compTransp(jScrollPane);
 	}
 
 	public JPanel getMainPanel() {
@@ -507,23 +480,21 @@ public class PaddockWindow {
 				JPanel jPanel = new JPanel(new GridLayout(1, 1));
 				if (Util.isNullOrEmpty(element.getPilotoAtual())) {
 					jPanel.add(
-							compTransp(new JLabel(element.getNomeJogador())));
+							new JLabel(element.getNomeJogador()));
 				} else {
 					jPanel.setLayout(new GridLayout(2, 1));
 					jPanel.add(
-							compTransp(new JLabel(element.getNomeJogador())));
-					jPanel.add(compTransp(new JLabel(" "
+							new JLabel(element.getNomeJogador()));
+					jPanel.add(new JLabel(" "
 							+ element.getPilotoAtual() + " "
-							+ Lang.decodeTexto(element.getJogoAtual()))));
+							+ Lang.decodeTexto(element.getJogoAtual())));
 				}
 				if (isSelected) {
 					jPanel.setBorder(new LineBorder(new Color(184, 207, 229)));
 				}
 				for (int i = 0; i < jPanel.getComponentCount(); i++) {
 					Component component = jPanel.getComponent(i);
-					compTransp(component);
 				}
-				compTransp(jPanel);
 				mainPanel.repaint();
 				return jPanel;
 			}
@@ -587,9 +558,7 @@ public class PaddockWindow {
 				}
 				for (int i = 0; i < jPanel.getComponentCount(); i++) {
 					Component component = jPanel.getComponent(i);
-					compTransp(component);
 				}
-				compTransp(jPanel);
 				mainPanel.repaint();
 				return jPanel;
 			}
@@ -887,8 +856,4 @@ public class PaddockWindow {
 
 	}
 
-	private Component compTransp(Component c) {
-		c.setBackground(new Color(255, 255, 255, 0));
-		return c;
-	}
 }

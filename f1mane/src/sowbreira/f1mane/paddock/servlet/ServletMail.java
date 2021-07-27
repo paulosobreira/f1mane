@@ -63,7 +63,7 @@ public class ServletMail extends HttpServlet {
 			res.setContentType("text/html");
 			PrintWriter printWriter = res.getWriter();
 			printWriter.write("<html><body>");
-			printWriter.write("<h2>F1-Mane Recuperar</h2><br><hr>");
+			printWriter.write("<h2>Fl-Mane Recuperar</h2><br><hr>");
 			Session session = controlePersistencia.getSession();
 			String senha, nome;
 			try {

@@ -14,7 +14,7 @@
      ====================================================================== -->
 <project name="F1-Mane">
 	
-	<property name="DESTINO" value="targer/war/" />
+	<property name="DESTINO" value="target/war/" />
 	<!--<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />--> 
 	<!--<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73\webapps" /> --> 
 	<!--<property name="DESTINO" value="E:\apache-tomcat-7.0.35" /> -->

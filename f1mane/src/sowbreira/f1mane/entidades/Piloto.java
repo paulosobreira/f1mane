@@ -1551,15 +1551,15 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (controleJogo.getNumVoltaAtual() <= 0 || controleJogo.isSafetyCarNaPista()) {
 			multiplicadoGanhoTurbulencia = 1;
 		}
-		double distLimiteTurbulencia = 50.0 / multiplicadoGanhoTurbulencia;
+		double distLimiteTurbulencia = 100.0 / multiplicadoGanhoTurbulencia;
 		if (diff < distLimiteTurbulencia && !verificaForaPista(carroPilotoDaFrenteRetardatario.getPiloto())) {
 			if (getTracado() != carroPilotoDaFrenteRetardatario.getPiloto().getTracado()) {
 				if (getNoAtual().verificaRetaOuLargada()) {
-					multiplicadoGanhoTurbulencia += (getCarro().testePotencia() && getCarro().testeAerodinamica()) ? 0.1
-							: -0.1;
+					multiplicadoGanhoTurbulencia += (getCarro().testePotencia() && getCarro().testeAerodinamica()) ? 0.0
+							: -0.05;
 				} else {
-					multiplicadoGanhoTurbulencia += (testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? 0.1
-							: -0.1);
+					multiplicadoGanhoTurbulencia += (testeHabilidadePilotoAerodinamicaFreios(controleJogo) ? 0.0
+							: -0.05);
 				}
 			}
 			if (multiplicadoGanhoTurbulencia > 1) {

@@ -36,7 +36,7 @@ public class MainFrameSimulacao extends MainFrame {
 
 	public MainFrameSimulacao() {
 		setSize(1030, 720);
-		String title = "F1-MANE " + getVersao() + " MANager & Engineer";
+		String title = "Fl-Mane " + getVersao() + " MANager & Engineer";
 		setTitle(title);
 		try {
 			controleJogo = new ControleJogoLocal();

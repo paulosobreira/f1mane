@@ -252,9 +252,11 @@ public class PainelMenuLocal {
 
 	private boolean safetyCar = true;
 
+	private String linguagem;
+
 	public PainelMenuLocal(MainFrame mf) {
 		this.mainFrame = mf;
-
+		linguagem = Lang.msg(Lang.getSufix()).toUpperCase();
 		retangulos = new ArrayList<java.awt.geom.RoundRectangle2D>();
 		Field[] declaredFields = PainelMenuLocal.class.getDeclaredFields();
 		for (Field field : declaredFields) {
@@ -430,8 +432,16 @@ public class PainelMenuLocal {
 			try {
 				if ("pt".equals(Lang.getSufix())) {
 					Lang.mudarIdioma("en");
-				} else {
+					linguagem = Lang.msg(Lang.getSufix()).toUpperCase();
+				} else if ("en".equals(Lang.getSufix())) {
+					Lang.mudarIdioma("es");
+					linguagem = Lang.msg(Lang.getSufix()).toUpperCase();
+				} else if ("es".equals(Lang.getSufix())) {
+					Lang.mudarIdioma("it");
+					linguagem = Lang.msg(Lang.getSufix()).toUpperCase();
+				} else if ("it".equals(Lang.getSufix())) {
 					Lang.mudarIdioma("pt");
+					linguagem = Lang.msg(Lang.getSufix()).toUpperCase();
 				}
 			} catch (Exception e1) {
 				Logger.logarExept(e1);
@@ -2696,16 +2706,12 @@ public class PainelMenuLocal {
 		centerY += 40;
 
 		g2d.setColor(lightWhite);
-		if ("pt".equals(Lang.getSufix())) {
-			txt = Lang.msg("en").toUpperCase();
-		} else {
-			txt = Lang.msg("pt").toUpperCase();
-		}
-		larguraTexto = Util.larguraTexto(txt, g2d);
+
+		larguraTexto = Util.larguraTexto(linguagem, g2d);
 		langRect.setFrame(centerX, centerY - 25, larguraTexto + 10, 30);
 		g2d.fill(langRect);
 		g2d.setColor(Color.BLACK);
-		g2d.drawString(txt, centerX + 5, centerY);
+		g2d.drawString(linguagem, centerX + 5, centerY);
 
 		centerY += 40;
 

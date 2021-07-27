@@ -94,7 +94,7 @@ public class MainFrameEditor extends JFrame {
 		gerarMenusInfo(menuInfo);
 		gerarMenusSobre(menuInfo);
 		gerarMenusidiomas(menuIdiomas);
-		String title = "F1-MANE " + getVersao() + " MANager & Engineer Editor";
+		String title = "Fl-MANE " + getVersao() + " MANager & Engineer Editor";
 		setTitle(title);
 		removerListeners();
 		removerKeyListeners();

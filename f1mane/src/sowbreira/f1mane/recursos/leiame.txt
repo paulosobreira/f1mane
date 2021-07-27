@@ -1,5 +1,5 @@
-			 F1-MANE por Paulo Sobreira 
- - F1-MANE (MANager & Engineer) É um jogo de gerenciamento e engenharia de corrida. 
+			 Fl-MANE por Paulo Sobreira 
+ - Fl-MANE (MANager & Engineer) É um jogo de gerenciamento e engenharia de corrida. 
  - O jogador envia comandos sobre como guiar e faz ajustes telem�tricos do carro. 
  - É possível escolher estratégia de box e muda-lá a qualquer momento na corrida.
  - Configuração da corrida com varias opções de como numero de voltas e tipo de clima e etc.
@@ -57,3 +57,8 @@ Versão online, Montar um Servidor (f1mane.war):
 deve-se colocar o arquivo f1mane.war dentro da pasta:
 (unidade):\(dir do tomcat)\webapps então acessar o jogo pelo caminho:
 http://(seu ip):8080/f1mane/		
+
+Rodar Cliente Online Linux :
+java -Xms64m -Xmx512m -cp .:f1mane.jar:f1maneRecursos.jar sowbreira.f1mane.paddock.applet.AppletPaddock
+Rodar Cliente Online Windows :
+java -Xms64m -Xmx512m -cp .;f1mane.jar;f1maneRecursos.jar sowbreira.f1mane.paddock.applet.AppletPaddock

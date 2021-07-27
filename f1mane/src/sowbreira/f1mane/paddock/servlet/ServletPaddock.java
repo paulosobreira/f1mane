@@ -212,7 +212,7 @@ public class ServletPaddock extends HttpServlet {
 		PrintWriter printWriter = res.getWriter();
 		html5(printWriter);
 		printWriter.write("<body>");
-		printWriter.write("<h2>F1-Mane Exceptions</h2><br><hr>");
+		printWriter.write("<h2>Fl-Mane Exceptions</h2><br><hr>");
 		synchronized (Logger.topExceptions) {
 			Set top = Logger.topExceptions.keySet();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
@@ -232,7 +232,7 @@ public class ServletPaddock extends HttpServlet {
 		PrintWriter printWriter = res.getWriter();
 		html5(printWriter);
 		printWriter.write("<body>");
-		printWriter.write("<h2>F1-Mane Sess&otilde;es</h2><br>");
+		printWriter.write("<h2>Fl-Mane Sess&otilde;es</h2><br>");
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		printWriter.write("Hora Servidor : " + FormatDate.format(timestamp));
 		printWriter.write("<br><hr>");
