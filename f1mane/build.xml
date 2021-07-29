@@ -3,7 +3,7 @@
      28/07/2007
      13/12/2018
 
-     project    F1-Mane
+     project    Fl-Mane
      
      Paulo Sobreira
      
@@ -211,7 +211,7 @@
 				<include name="commons-logging-1.1.1.jar" />
 			</fileset>
 		</copy>
-		<zip destfile="target/f1mane.zip" compress="true">
+		<zip destfile="target/Fl-Mane.zip" compress="true">
 			<fileset dir=".">
 				<include name="*.jar" />
 				<include name="*.sh" />

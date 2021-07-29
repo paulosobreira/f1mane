@@ -70,7 +70,7 @@ public class Logger {
 	}
 
 	public static void logarExept(Throwable e) {
-		if (ativo) {
+		if (ativo || e instanceof NullPointerException) {
 			e.printStackTrace();
 		}
 		if (e instanceof Exception) {

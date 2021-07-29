@@ -224,10 +224,12 @@ public class PainelMenuLocal {
 
 	private Campeonato campeonato;
 
-	private BufferedImage bgmonaco;
+	private BufferedImage bg1;
+	
+	private BufferedImage bg2;
 
-	private BufferedImage bgf1;
-
+	private BufferedImage bg3;
+	
 	protected boolean renderThreadAlive = true;
 
 	private Circuito circuitoMini;
@@ -655,8 +657,9 @@ public class PainelMenuLocal {
 		temporadas = new ArrayList<String>();
 		temporadas.addAll(carregadorRecursos.getVectorTemps());
 		Collections.reverse(temporadas);
-		bgmonaco = ImageUtil.gerarFade(CarregadorRecursos.carregaBufferedImage("bg-monaco.png"), 25);
-		bgf1 = CarregadorRecursos.carregaBufferedImage("f1bg.png");
+		bg1 = ImageUtil.gerarFade(CarregadorRecursos.carregaBufferedImage("bg/bg1.jpg"), 40);
+		bg2 = ImageUtil.gerarFade(CarregadorRecursos.carregaBufferedImage("bg/bg2.jpg"), 40);
+		bg3 = ImageUtil.gerarFade(CarregadorRecursos.carregaBufferedImage("bg/bg3.jpg"), 40);
 		pilotosRect = new ArrayList<RoundRectangle2D>();
 		for (int i = 0; i < 24; i++) {
 			pilotosRect.add(new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0));
@@ -684,11 +687,11 @@ public class PainelMenuLocal {
 			g2d.fillRect(0, 0, getWidth(), getHeight());
 			if (PainelCircuito.desenhaBkg) {
 				if (MENU.equals(MENU_PRINCIPAL))
-					bg = bgf1;
+					bg = bg1;
 				if (MENU.equals(MENU_CORRIDA) || MENU.equals(MENU_CORRIDA_CAMPEONATO_PILOTOS))
-					bg = bgmonaco;
+					bg = bg2;
 				if (MENU.equals(MENU_SOBRE)) {
-					bg = bgmonaco;
+					bg = bg3;
 				}
 			}
 			if (bg != null && PainelCircuito.desenhaImagens) {

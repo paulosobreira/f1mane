@@ -481,9 +481,9 @@ public class GerenciadorVisual {
 						List<Piloto> pilotos = controleJogo.getPilotos();
 						for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 							Piloto piloto = (Piloto) iterator.next();
-							controleJogo.forcaQuerbraAereofolio(piloto);	
+							controleJogo.forcaQuerbraAereofolio(piloto);
 						}
-						
+
 					}
 					if (keyCoode == KeyEvent.VK_6) {
 						controleJogo.forcaQuerbraAereofolio(controleJogo.getPilotoSelecionado());

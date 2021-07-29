@@ -2,14 +2,10 @@
 Formula league - Manager & Engineer
 -Desenvolvido / Developed
 Paulo Sobreira
--Imagens das pistas / Track images
-www.miniracingonline.com
--Imagens dos carros e capacetes / Car and helmet Images
-spotterguidecentral.com
--Web Site
-sowbreira-26fe1.firebaseapp.com
--E-mail 
-sowbreira@gmail.com
+-Fonte de Imagens /Images Sources
+www.miniracingonline.com & spotterguidecentral.com
+-Web Site/E-mail 
+sowbreira-26fe1.firebaseapp.com sowbreira@gmail.com
 -Licença / License
 Codigo aberto
 Open Source
@@ -21,10 +17,6 @@ Fl-Mane é um protótipo e seus gráficos
 Fl-Mane is a prototype and its graphics 
     and gameplay game can change in new versions
 -Sobreira 2007-2019
- Obrigado por jogar
- Thanks for playing
- 
- Se gostou do jogo por favor avalie na Loja da Google
- If you like the game please rate it at GooglePlay Store
- 
+ Obrigado por jogar  Thanks for playing
+
  Sem você não seria possível Gizele.
