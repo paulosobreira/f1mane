@@ -51,7 +51,7 @@
 	</target>
 
 	<target name="compilarClasses">
-		<javac destdir="buildAnt" srcdir="src" nowarn="true" debug="true" includes="**/*.java">
+		<javac destdir="buildAnt" source="1.8" target="1.8" srcdir="src" nowarn="true" debug="true" includes="**/*.java">
 			<classpath refid="classpath.compilacao" />
 		</javac>
 	</target>
