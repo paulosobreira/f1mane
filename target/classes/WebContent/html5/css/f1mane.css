@@ -1,0 +1,272 @@
+@CHARSET "UTF-8";
+@media (orientation: landscape) {
+	.body {
+	 margin: 0;
+     background: url(../img/landscape.jpg);  
+	 background-size: 100%,100%;
+	 background-repeat:no-repeat;
+     background-attachment: fixed;	 	 
+	 width: 100%;
+	 height: 100%;
+	 font-family: sans-serif;
+	}
+	.loader {
+	  position: absolute;
+	  background-color : transparent;
+	  left: 50%;
+	  top: 50%;
+	  z-index: 1;
+	  width: 200px;
+	  height: 200px;
+	  margin: -75px 0 0 -75px;
+	  border: 5px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 5px solid grey;
+	  width: 120px;
+	  height: 120px;
+	  -webkit-animation: spin 2s linear infinite;
+	  animation: spin 2s linear infinite;
+	}	
+}
+
+@media (orientation: portrait) {
+	.body {
+	 margin: 0;
+     background: url(../img/portrait.jpg);
+     background-size: 100%,100%;
+     background-color: gray;  
+	 background-repeat:no-repeat;
+     background-attachment: fixed;
+	 width: 100%;
+	 height: 100%;
+	 font-family: sans-serif;
+	}
+	.loader {
+	  position: absolute;
+	  background-color : transparent;
+	  left: 55%;
+	  top: 50%;
+	  z-index: 1;
+	  width: 200px;
+	  height: 200px;
+	  margin: -75px 0 0 -75px;
+	  border: 5px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 5px solid grey;
+	  width: 120px;
+	  height: 120px;
+	  -webkit-animation: spin 2s linear infinite;
+	  animation: spin 2s linear infinite;
+	}	
+}
+
+.img-center {
+    margin: 0 auto;
+}
+.containerPadless {
+    padding-right: 0px; 
+    padding-left: 0px; 
+}
+
+.img-responsive-line{
+    display: inline;
+}
+
+.transparent {
+    background-color: transparent!important;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.floatSalvar{
+	position:fixed;
+	width:50px;
+	height:50px;
+	bottom: 110px;
+	right:40px;
+	background-color: gray;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px black;
+	z-index: 1000;
+}
+.relativeContainerBtn{
+    display: inline-flex;
+    position: absolute;
+    margin-top: 28px;
+}
+
+
+.relativeBtn{
+	position:relative;
+	width:50px;
+	height:50px;
+	background-color: gray;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px black;
+	z-index: 1000;
+	margin: 2px;
+}
+
+.floatBtn{
+	position:fixed;
+	width:50px;
+	height:50px;
+	bottom:40px;
+	right:40px;
+	background-color: gray;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px black;
+	z-index: 1000;
+}
+
+.floatBtnContent{
+	margin-top:16px;
+}
+
+.classificacao-jogador{
+    word-wrap: break-word;
+    max-width: 90px;
+}
+
+.voltar{
+	margin-right: 20px; font-size: 22px;
+}
+
+.black{
+	color: black;
+}
+
+.fontLarge{
+	font-size: large;
+}
+
+.textCenter{
+	text-align: center;
+}
+
+.voltarIndex{
+    float: left;
+    margin-top: 20px;
+}
+
+.transbox {
+  text-align:center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  opacity: 0.8;
+  filter: alpha(opacity=60); /* For IE8 and earlier */
+}	
+
+.creditos{
+  padding: 10px;
+}
+
+.fundoCinza {
+	background-color: lightGray;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+}
+
+.bgTransparent{
+    background-color: rgba(255,255,255,0.75);
+}
+
+.userPic{
+	height: 44px;
+    border-radius: 50%;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.divPiloto{
+	display: inline;
+    border-left-color: #dce6e6;
+    border-left-width: 5px;
+    border-left-style: solid;
+    padding-left: 4px;
+    padding-right: 10px;
+}
+
+.tableInTable{
+	background: transparent!important;
+    border: none;
+}
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 10000;
+    left: 50%;
+    transform : translateX(-50%);
+    bottom: 30px;
+    font-size: 14px;
+}
+
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+    visibility: visible; /* Show the snackbar */
+
+/* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 3.5s;
+    animation: fadein 0.5s, fadeout 0.5s 3.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+.list-group-item {
+    border: none;
+}
+
+.table-responsive {
+    border: none;
+}

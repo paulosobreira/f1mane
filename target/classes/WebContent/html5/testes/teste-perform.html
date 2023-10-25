@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="width: 100%; height: 100%; margin: 0px;">
+	<canvas id="myCanvas" />
+	<canvas id="cvRotate" />
+	<script language="JavaScript">
+		var canvas = document.getElementById('myCanvas'), context = canvas
+				.getContext('2d');
+
+		var imgBg = new Image();
+		imgBg.src = "https://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/montecarlo_mro.jpg";
+
+		var ptBg = {
+			x : 0,
+			y : 0
+		};
+		
+		var elements = [];
+
+		var cvRotate = document.getElementById('cvRotate');
+		var ctxRotate = cvRotate.getContext('2d');
+
+		var movBg = true;
+
+		canvas.addEventListener('click', function(event) {
+			elements.forEach(function(element) {
+				var ponto = element.ponto;
+				var desenha = element.desenha;
+				var img = element.imagem;
+			
+				if (desenha.x == null) {
+					desenha.x = event.pageX - (img.width / 2);
+					desenha.y = event.pageY - (img.height / 2);
+				} else {
+					ponto.x = event.pageX - (img.width / 2), ponto.y = event.pageY
+							- (img.height / 2);
+				}
+				if (ponto.x != null && desenha.x != null) {
+					element.linhaB = bline(desenha, ponto);
+				}
+				if (element.linhaB != null) {
+					element.linhaB.reverse();
+				}
+			});
+			
+			movBg = !movBg;
+			
+			var img = new Image();
+			img.src = "CarroCima.png";
+			
+			elements.push({
+				imagem : img,
+				degrees : 0,
+				ponto : {
+						x : null,
+						y : null
+					   },
+			    desenha : {
+						x : null,
+						y : null
+						},
+			    linhaB : null
+			});
+
+		}, false);
+
+		function desenhaBG(){
+			/*
+			context.drawImage(
+
+			   sourceImage,  // the source image to clip from
+
+			    sX,           // the left X position to start clipping 
+			    sY,           // the top Y position to start clipping
+			    sW,           // clip this width of pixels from the source
+			    wH,           // clip this height of pixels from the source
+			    dX,           // the left X canvas position to start drawing the clipped sub-image
+			    dY,           // the top Y canvas position to start drawing the clipped sub-image
+			    dW,           // scale sW to dW and draw a dW wide sub-image on the canvas
+			    dH            // scale sH to dH and draw a dH high sub-image on the canvas
+			}
+			 */
+			 
+			var cutX =  ptBg.x;
+			var cutY =  ptBg.y;
+			if(cutX<0){
+				cutX = 0;
+			}
+			if(cutY<0){
+				cutY = 0;
+			}
+			var cutW = context.canvas.width;
+			var cutH = context.canvas.height;
+			if((cutX + cutW) > imgBg.width){
+				cutX =  imgBg.width - cutW; 
+			}
+			if((cutY + cutH) > imgBg.height){
+				cutY =  imgBg.height - cutH;
+			}			
+
+			context.drawImage(imgBg, cutX, cutY, cutW, cutH, 0, 0,context.canvas.width, context.canvas.height);
+
+			if (movBg) {
+				ptBg.x -= 3;
+			} else {
+				ptBg.x += 3;
+			}
+			if (movBg) {
+				ptBg.y -= 3;
+			} else {
+				ptBg.y += 3;
+			}
+		}
+		
+		
+		
+		function render() {
+			context.canvas.width = window.innerWidth * 0.99;
+			context.canvas.height = window.innerHeight * 0.97;
+			
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			
+			desenhaBG();
+			if (fps != null) {
+				context.fillText("FPS: " + fps.frameRate(), 4, 30);
+			}
+			elements.forEach(function(element) {
+
+				var img = element.imagem;
+				var linhaB = element.linhaB;
+				var ponto = element.ponto;
+				var desenha = element.desenha;
+				
+				var maiorLado = 0;
+				if (img.width > img.height) {
+					maiorLado = img.width;
+				} else {
+					maiorLado = img.height;
+				}
+				cvRotate.width = maiorLado;
+				cvRotate.height = maiorLado;
+				ctxRotate.translate(maiorLado / 2, maiorLado / 2);
+				ctxRotate.rotate(element.degrees * Math.PI / 180);
+				ctxRotate.drawImage(img, -maiorLado / 2, -maiorLado / 2);
+				element.degrees++;
+				if (element.degrees > 360) {
+					element.degrees = 0;
+				}
+
+				if (linhaB != null) {
+					var novo = linhaB.pop();
+					if (dist(novo, ponto) > 300) {
+						novo = linhaB.pop();
+					}
+					if (dist(novo, ponto) > 200) {
+						novo = linhaB.pop();
+					}
+					if (dist(novo, ponto) > 100) {
+						novo = linhaB.pop();
+					}
+					if (dist(novo, ponto) > 50) {
+						novo = linhaB.pop();
+					}
+					if (novo != null) {
+						desenha.x = novo.x;
+						desenha.y = novo.y;
+					}
+				}
+				if (desenha.x != null) {
+					context.drawImage(cvRotate, desenha.x, desenha.y);
+				}
+
+			});
+		}
+
+		// update canvas with some information and animation
+		var fps = new FpsCtrl(60, function(e) {
+			render();
+		})
+
+		// start the loop
+		fps.start();
+
+		function bline(startCoordinates, endCoordinates) {
+			if (startCoordinates == null || endCoordinates == null) {
+				return;
+			}
+			var x0 = startCoordinates.x;
+			var y0 = startCoordinates.y;
+			var x1 = endCoordinates.x;
+			var y1 = endCoordinates.y;
+			if (x0 == null || y0 == null || x1 == null || y1 == null) {
+				return;
+			}
+			var coordinatesArray = new Array();
+			var dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+			var dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+			var err = (dx > dy ? dx : -dy) / 2;
+			while (true) {
+				coordinatesArray.push({
+					x : x0,
+					y : y0
+				});
+				if (x0 === x1 && y0 === y1)
+					break;
+				var e2 = err;
+				if (e2 > -dx) {
+					err -= dy;
+					x0 += sx;
+				}
+				if (e2 < dy) {
+					err += dx;
+					y0 += sy;
+				}
+			}
+			return coordinatesArray;
+		}
+
+		function dist(startCoordinates, endCoordinates) {
+			if (startCoordinates == null || endCoordinates == null) {
+				return;
+			}
+			var x0 = startCoordinates.x;
+			var y0 = startCoordinates.y;
+			var x1 = endCoordinates.x;
+			var y1 = endCoordinates.y;
+			if (x0 == null || y0 == null || x1 == null || y1 == null) {
+				return;
+			}
+			return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
+		}
+
+		function FpsCtrl(fps, callback) {
+
+			var delay = 1000 / fps, time = null, frame = -1, tref , fpscont = 0 , frames = 0 , lastTime = 0;
+
+			function loop(timestamp) {
+				if (time === null)
+					time = timestamp;
+				var diff = (timestamp - time);
+				var seg = Math.floor( diff / delay);
+				if (seg > frame) {
+					frame = seg;
+					callback({
+						time : timestamp,
+						frame : frame
+					})
+				frames++;
+				}
+				tref = requestAnimationFrame(loop)
+				if((timestamp -lastTime) >1000){
+					lastTime = timestamp;
+					fpscont = frames+' timestamp '+timestamp + ' lastTime  :'+lastTime;
+					frames = 0;
+				}
+			}
+
+			this.isPlaying = false;
+
+			this.frameRate = function(newfps) {
+				if (!arguments.length)
+					return fpscont;
+				fps = newfps;
+				delay = 1000 / fps;
+				frame = -1;
+				time = null;
+			};
+
+			this.start = function() {
+				if (!this.isPlaying) {
+					this.isPlaying = true;
+					tref = requestAnimationFrame(loop);
+				}
+			};
+
+			this.pause = function() {
+				if (this.isPlaying) {
+					cancelAnimationFrame(tref);
+					this.isPlaying = false;
+					time = null;
+					frame = -1;
+				}
+			};
+		}
+	</script>
+
+</body>
+</html>

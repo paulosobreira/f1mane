@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/f1mane.css?v={versao}">
+<link rel="stylesheet" href="css/mdb-btns.css?v={versao}">
+<script src="../jquery/jquery-3.2.1.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+
+<title>Fl-Mane</title>
+</head>
+<body class="body">
+	<div id="f1body">
+		<section id="head" class="container" style="margin: 10px;">
+			<a id="voltar" class="voltar black"> <span
+				class="glyphicon glyphicon glyphicon-chevron-left"
+				aria-hidden="true"></span>
+			</a>
+			<h3 style="display: inline;">Fl-Mane</h3>
+			<h5>Formula league-Manager & Engineer</h5>
+		</section>
+		<section id="listarCampeonato" class="container containerPadless">
+			<table class="table table-hover table-responsive">
+				<thead>
+					<tr>
+						<th id="rodada" class="textCenter"></th>
+						<th id="268" class="textCenter"></th>
+						<th id="251" class="textCenter"></th>
+					</tr>
+				</thead>
+				<tbody id="campeonatos">
+				</tbody>
+			</table>
+		</section>
+		<section id="detalheCampeonato" class="container containerPadless hide">
+			<div class="form-group">
+				<h2 class="text-center" id="nomeCampeonatoRodada"></h2>
+			</div>
+			<div class="form-group">
+				<h3 class="text-center" id="rodadaCampeonato"></h3>
+			</div>
+			<h1 class="text-center" id="temporadasLabelCarregeda"></h1>
+			<div class="form-group">
+				<div class="transbox">
+					<h3 id="listaCorridas"></h3>
+				</div>
+			</div>
+			<section class="container containerPadless">
+				<table class="table table-hover table-responsive">
+					<thead>
+						<tr>
+							<th id="rodada"></th>
+							<th id="nomeCircuito"></th>
+						</tr>
+					</thead>
+					<tbody id="corridasTO">
+					</tbody>
+				</table>
+			</section>
+			<div class="form-group">
+				<div class="transbox">
+					<h3 id="classificacaoPilotos"></h3>
+				</div>
+			</div>
+			<section class="container containerPadless">
+				<table class="table table-hover table-responsive">
+					<thead>
+						<tr>
+							<th>P.</th>
+							<th id="pontos"></th>
+							<th id="piloto"></th>
+						</tr>
+					</thead>
+					<tbody id="dadosClassificacaoPilotos">
+					</tbody>
+				</table>
+			</section>
+			<div class="form-group">
+				<div class="transbox">
+					<h3 id="classificacaoEquipes"></h3>
+				</div>
+			</div>
+			<section class="container containerPadless">
+				<table class="table table-hover table-responsive">
+					<thead>
+						<tr>
+							<th>P.</th>
+							<th id="pontos"></th>
+							<th id="equipe"></th>
+						</tr>
+					</thead>
+					<tbody id="dadosClassificacaoCarros">
+					</tbody>
+				</table>
+			</section>
+			<div class="form-group">
+				<div class="transbox">
+					<h3 id="classificacaoJogadores"></h3>
+				</div>
+			</div>
+			<section class="container containerPadless">
+				<table class="table table-hover table-responsive">
+					<thead>
+						<tr>
+							<th>P.</th>
+							<th id="pontos"></th>
+							<th id="corridas"></th>
+							<th id="jogador"></th>
+						</tr>
+					</thead>
+					<tbody id="dadosClassificacaoJogador">
+					</tbody>
+				</table>
+			</section>
+		</section>
+		<footer class="footer">
+			<div class="container">
+				<p>Build: {versao}</p>
+			</div>
+		</footer>
+	</div>
+</body>
+<script src="js/util.js?v={versao}"></script>
+<script src="js/loader.js?v={versao}"></script>
+<script src="js/lang.js?v={versao}"></script>
+<script src="js/classificacao_campeonato.js?v={versao}"></script>
+</html>

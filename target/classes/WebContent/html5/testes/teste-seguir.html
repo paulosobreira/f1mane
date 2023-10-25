@@ -1,0 +1,337 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../jquery/jquery-3.2.1.min.js"></script>
+</head>
+<body style="width: 100%; height: 100%; margin: 0px; overflow: hidden">
+	<canvas id="myCanvas"></canvas>
+	<canvas id="cvRotate"></canvas>
+	<script>
+		var canvas = document.getElementById('myCanvas'), context = canvas
+				.getContext('2d');
+		context.canvas.width = window.innerWidth * 0.95;
+		context.canvas.height = window.innerHeight * 0.90;
+
+		var imgBg = new Image();
+
+		
+		var ptBg = {
+			x : 0,
+			y : 0
+		};
+
+		var cvRotate = document.getElementById('cvRotate');
+		var ctxRotate = cvRotate.getContext('2d');
+
+		canvas.addEventListener('click', function(event) {
+
+		}, false);
+		
+		var   circuito;
+		
+		function carregarCiruito() {
+			$.ajax({
+				type : "GET",
+				url : "/f1mane/rest/letsRace/circuito",
+				contentType : "application/json",
+				dataType : "json",
+				success : function(response) {
+					debugger;
+					circuito = response;
+					imgBg.src = "https://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/"+response.backGround;
+					iniciarJogo();
+				},
+				error : function(xhRequest, ErrorText, thrownError) {
+					alert(xhRequest.status + '  ' + xhRequest.responseText);
+				}
+			});
+		}
+		
+		function iniciarJogo() {
+			$.ajax({
+				type : "GET",
+				url : "/f1mane/rest/letsRace/iniciarJogo",
+				success : function(response) {
+					debugger;
+					carregarPosicaoPilotos();
+				},
+				error : function(xhRequest, ErrorText, thrownError) {
+					debugger;
+					alert(xhRequest.status + '  ' + xhRequest.responseText);
+					carregarPosicaoPilotos();
+				}
+			});
+		}		
+		
+		
+		var posicaoPilotos;
+
+		function carregarPosicaoPilotos() {
+			$.ajax({
+				type : "GET",
+				url : "/f1mane/rest/letsRace/posicaoPilotos",
+				contentType : "application/json",
+				dataType : "json",
+				success : function(response) {
+					posicaoPilotos = response;
+					setInterval( carregarPosicaoPilotos(), 1000);
+				},
+				error : function(xhRequest, ErrorText, thrownError) {
+					alert(xhRequest.status + '  ' + xhRequest.responseText);
+				}
+			});
+		}		
+		
+
+		function criar() {
+			$.ajax({
+				type : "GET",
+				url : "/f1mane/rest/letsRace/criarJogo",
+				contentType : "application/json",
+				dataType : "json",
+				success : function(response) {
+					carregarCiruito();
+				},
+				error : function(xhRequest, ErrorText, thrownError) {
+					alert(xhRequest.status + '  ' + xhRequest.responseText);
+				}
+			});
+		}
+		
+		
+		function desenhaObjs(){
+			if(circuito==null || circuito.objetosNoTransparencia==null){
+				return;
+			}
+			
+			context.fillStyle = '#babaca';
+			context.beginPath();			
+			for (i = 0; i < circuito.pista.length; i++) { 
+				var  pt = circuito.pista[i];
+				if(i==0){
+					context.moveTo(pt.x - ptBg.x, pt.y - ptBg.y);	
+				}else{
+					context.lineTo(pt.x - ptBg.x, pt.y - ptBg.y);	
+				}			
+			}	
+			context.closePath();			
+			context.stroke();
+			
+			for (i = 0; i < circuito.objetosNoTransparencia.length; i++) { 
+				var  pontosTp = circuito.objetosNoTransparencia[i];
+				context.fillStyle = '#f00';
+				context.beginPath();
+				for (j = 0; j < pontosTp.pontos.length; j++) { 
+					var  pt = pontosTp.pontos[j];
+					if(j==0){
+						context.moveTo(pt.x - ptBg.x, pt.y - ptBg.y);	
+					}else{
+						context.lineTo(pt.x - ptBg.x, pt.y - ptBg.y);	
+					}
+					
+				}						
+				context.closePath();
+				context.fill();
+			}
+
+			if(posicaoPilotos!=null){
+				for (i = 0; i < posicaoPilotos.posis.length; i++) { 
+					var  pos = posicaoPilotos.posis[i];
+					var ponto = circuito.pistaFull[pos.idNo];
+					if(i==0){
+						var x = ponto.x;
+						var y = ponto.y;
+						
+						x-= canvas.width/2;
+						y-= canvas.height/2;
+						
+						if(imgBg!=null){
+							 if(x<0){
+								 x = 0 ;
+							 }
+							 if(y<0){
+								 y = 0 ;
+							 }
+							 var sW = context.canvas.width;
+							 if( (x+sW) > imgBg.width ){
+								 x -= ((x+sW) - imgBg.width);
+							 }
+							 var sH = context.canvas.height;
+							 if( (y+sH) > imgBg.height){
+								 y -= ((y+sH) - imgBg.height);
+							 }							
+						}
+						ptBg.x = x;
+						ptBg.y = y;
+						
+					}
+					if(ponto !=null && ponto.x !=null && ponto.y!=null ){
+						context.fillText("Piloto: " + pos.idPiloto, ponto.x- ptBg.x, ponto.y- ptBg.y);								
+					}
+				}			
+			}
+		}
+		criar();
+		
+		window.addEventListener('keydown',this.check,false);
+
+		function check(e) {
+			if(e.keyCode == 65){
+				ptBg.x -= 15;
+			}else if (e.keyCode == 68){
+				ptBg.x += 15;
+			}else if (e.keyCode == 87) {
+				ptBg.y -= 15;
+			}else if (e.keyCode == 83) {
+				ptBg.y += 15;
+			}
+		}		
+
+		function render() {
+			context.clearRect(0, 0, canvas.width, canvas.height);
+
+			context.canvas.width = window.innerWidth;
+			context.canvas.height = window.innerHeight;
+
+			/*
+			context.drawImage(
+
+			   sourceImage,  // the source image to clip from
+
+			    sX,           // the left X position to start clipping 
+			    sY,           // the top Y position to start clipping
+			    sW,           // clip this width of pixels from the source
+			    sH,           // clip this height of pixels from the source
+			    dX,           // the left X canvas position to start drawing the clipped sub-image
+			    dY,           // the top Y canvas position to start drawing the clipped sub-image
+			    dW,           // scale sW to dW and draw a dW wide sub-image on the canvas
+			    dH            // scale sH to dH and draw a dH high sub-image on the canvas
+			}
+			 */
+			var sW = context.canvas.width;
+			var sH = context.canvas.height;
+			context.drawImage(imgBg, ptBg.x, ptBg.y, sW, sH, 
+					0, 0,context.canvas.width, context.canvas.height);
+				
+			desenhaObjs();
+
+		
+			if (fps != null) {
+				context.fillText("FPS: " + fps.frameRate(), 4, 30);
+			}
+
+			if (circuito!=null && circuito.backGround != null) {
+				context.fillText("Circuito: " + circuito.backGround, 4, 60);
+			}			
+			
+			
+		}
+
+		// update canvas with some information and animation
+		var fps = new FpsCtrl(60, function(e) {
+			render();
+		})
+
+		// start the loop
+		fps.start();
+
+		function bline(startCoordinates, endCoordinates) {
+			if (startCoordinates == null || endCoordinates == null) {
+				return;
+			}
+			var x0 = startCoordinates.x;
+			var y0 = startCoordinates.y;
+			var x1 = endCoordinates.x;
+			var y1 = endCoordinates.y;
+			if (x0 == null || y0 == null || x1 == null || y1 == null) {
+				return;
+			}
+			var coordinatesArray = new Array();
+			var dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+			var dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+			var err = (dx > dy ? dx : -dy) / 2;
+			while (true) {
+				coordinatesArray.push({
+					x : x0,
+					y : y0
+				});
+				if (x0 === x1 && y0 === y1)
+					break;
+				var e2 = err;
+				if (e2 > -dx) {
+					err -= dy;
+					x0 += sx;
+				}
+				if (e2 < dy) {
+					err += dx;
+					y0 += sy;
+				}
+			}
+			return coordinatesArray;
+		}
+
+		function dist(startCoordinates, endCoordinates) {
+			if (startCoordinates == null || endCoordinates == null) {
+				return;
+			}
+			var x0 = startCoordinates.x;
+			var y0 = startCoordinates.y;
+			var x1 = endCoordinates.x;
+			var y1 = endCoordinates.y;
+			if (x0 == null || y0 == null || x1 == null || y1 == null) {
+				return;
+			}
+			return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
+		}
+
+		function FpsCtrl(fps, callback) {
+
+			var delay = 1000 / fps, time = null, frame = -1, tref;
+
+			function loop(timestamp) {
+				if (time === null)
+					time = timestamp;
+				var seg = Math.floor((timestamp - time) / delay);
+				if (seg > frame) {
+					frame = seg;
+					callback({
+						time : timestamp,
+						frame : frame
+					})
+				}
+				tref = requestAnimationFrame(loop)
+			}
+
+			this.isPlaying = false;
+
+			this.frameRate = function(newfps) {
+				if (!arguments.length)
+					return fps;
+				fps = newfps;
+				delay = 1000 / fps;
+				frame = -1;
+				time = null;
+			};
+
+			this.start = function() {
+				if (!this.isPlaying) {
+					this.isPlaying = true;
+					tref = requestAnimationFrame(loop);
+				}
+			};
+
+			this.pause = function() {
+				if (this.isPlaying) {
+					cancelAnimationFrame(tref);
+					this.isPlaying = false;
+					time = null;
+					frame = -1;
+				}
+			};
+		}
+	</script>
+
+</body>
+</html>

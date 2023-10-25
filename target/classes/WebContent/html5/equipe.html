@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/f1mane.css?v={versao}">
+<script src="../jquery/jquery-3.2.1.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+
+<title>Fl-Mane</title>
+</head>
+<body class="body">
+	<div id="f1body">
+		<section id="head" class="container" style="margin: 10px;">
+			<a href="index.html?v={versao}" id="voltar" class="voltar black"> <span
+				class="glyphicon glyphicon glyphicon-chevron-left"
+				aria-hidden="true"></span>
+			</a>
+			<h3 style="display: inline;">Fl-Mane</h3>
+			<h5>Formula league-Manager & Engineer</h5>
+		</section>
+		<section id="escolha" class="container containerPadless hidden">
+			<div>
+				<div id="temporadaCarousel" class="carousel slide"
+					data-ride="carousel">
+					<div id="temporadaCarousel-inner" class="carousel-inner"
+						role="listbox">
+						<div id="temporadaActive" class="item active">
+							<h1 class="text-center" id="temporadasLabel"></h1>
+						</div>
+					</div>
+					<a class="left carousel-control" id="temporadaAnterior"
+						href="#temporadaCarousel" role="button" data-slide="prev"> <span
+						class="glyphicon glyphicon-chevron-left black" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a> <a class="right carousel-control" id="temporadaProxima"
+						href="#temporadaCarousel" role="button" data-slide="next"> <span
+						class="glyphicon glyphicon-chevron-right black" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+			</div>
+			<section class="container containerPadless">
+				<div id="capacetes" class="hidden">
+					<table class="table table-hover table-responsive">
+						<tbody id="tableCapacetes">
+						</tbody>
+					</table>
+				</div>
+				<div id="carros" class="hidden">
+					<table class="table table-hover table-responsive">
+						<tbody id="tableCarro">
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</section>
+		<section id="equipe" class="container">
+			<input id="temporadaCapaceteLivery" type="hidden" /> 
+			<input id="temporadaCarroLivery" type="hidden" /> 
+			<input id="idCapaceteLivery" type="hidden" /> 
+			<input id="idCarroLivery"	type="hidden" />
+			<form>
+				<div id="btnSalvar" class="floatSalvar hidden">
+					<i class="fa fa-plus floatBtnContent glyphicon glyphicon-floppy-disk"></i>
+				</div>
+				<div id="btnJogar" class="floatBtn hidden">
+					<i class="fa fa-plus floatBtnContent glyphicon glyphicon-flag"></i>
+				</div>			
+				<div class="form-group">
+					<label id="nomeEquipe">Nome Equipe</label> <input type="text"
+						class="form-control" id="nomeEquipeValor" required="required">
+				</div>
+				<div class="form-group">
+					<label id="corEquipe1">Cor Equipe 1</label> <input type="color"
+						class="form-control" id="corEquipeValue1" required="required">
+				</div>
+				<div class="form-group">
+					<label id="corEquipe2">Cor Equipe 2</label> <input type="color"
+						class="form-control" id="corEquipeValue2" required="required">
+				</div>
+				<div class="form-group">
+					<label id="nomePiloto">Nome Piloto</label> <input type="text"
+						class="form-control" id="nomePilotoValor" required="required">
+				</div>
+				<div class="form-group">
+					<label id="nomePilotoAbreviado">Nome Piloto Abreviado</label> <input
+						type="text" class="form-control" id="nomePilotoAbreviadoValor"
+						required="required">
+				</div>
+			</form>
+			<div class="form-group">
+				<label id="pinturaCapaceteEscolha"></label>
+				<div class="form-group col-sm-4">
+					<img class="img-responsive img-center" id="idImgCapacete" />
+				</div>
+				<label id="pinturaCarroEscolha"></label>
+				<div class="form-group col-sm-4">
+					<img class="img-responsive img-center" id="idImgCarroCima" />
+				</div>
+				<div class="form-group col-sm-4">
+					<img class="img-responsive img-center" id="idImgCarroLado" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label id="habilidadePiloto"></label>
+				<div class="input-group number-spinner">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="dwn">
+							<span class="glyphicon glyphicon-minus"></span>
+						</button>
+					</span> <input id="habilidadePilotoValor" type="number"
+						class="form-control text-center" value="800" min="0" max="1000">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="up">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</span>
+				</div>
+
+			</div>
+			<div class="form-group">
+				<label id="potenciaCarro"></label>
+				<div class="input-group number-spinner">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="dwn">
+							<span class="glyphicon glyphicon-minus"></span>
+						</button>
+					</span> <input id="potenciaCarroValor" type="number" 
+						class="form-control text-center" value="700" min="0" max="1000">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="up">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label id="aerodinamicaCarro"></label>
+				<div class="input-group number-spinner">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="dwn">
+							<span class="glyphicon glyphicon-minus"></span>
+						</button>
+					</span> <input id="aerodinamicaCarroValor" type="number"
+						class="form-control text-center" min="0" max="1000"> <span
+						class="input-group-btn">
+						<button class="btn btn-default" data-dir="up">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label id="freioCarro"></label>
+				<div class="input-group number-spinner">
+					<span class="input-group-btn">
+						<button class="btn btn-default" data-dir="dwn">
+							<span class="glyphicon glyphicon-minus"></span>
+						</button>
+					</span> <input id="freioCarroValor" type="number"
+						class="form-control text-center" min="0" max="1000"> <span
+						class="input-group-btn">
+						<button class="btn btn-default" data-dir="up">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</span>
+				</div>
+			</div>
+			<br>
+			<hr>
+			<br>
+			<div class="form-group">
+				<label id="bonus"></label> <span id="bonusValor"></span>
+			</div>			
+			<div class="form-group">
+				<label id="somaPontosCarro"></label> <span id="somaPontosCarroValor"></span>
+			</div>
+			
+			<div class="form-group">
+				<label id="pontosGanhos"></label> <span id="pontosGanhosValor"></span>
+			</div>
+			<div class="form-group">
+				<label id="pontosDisponiveis"></label> <span
+					id="pontosConstrutoresValor"></span>
+			</div>
+		</section>
+		<footer class="footer">
+			<div class="container">
+				<p>Build: {versao}</p>
+			</div>
+		</footer>
+	</div>
+</body>
+<script src="js/util.js?v={versao}"></script>
+<script src="js/loader.js?v={versao}"></script>
+<script src="js/lang.js?v={versao}"></script>
+<script src="js/equipe.js?v={versao}"></script>
+</html>

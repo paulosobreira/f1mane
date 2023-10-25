@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="width: 100%; height: 100%; margin: 0px;">
+	<canvas id="myCanvas" />
+	<script language="JavaScript">
+		var canvas = document.getElementById('myCanvas'), context = canvas
+				.getContext('2d');
+		context.canvas.width = window.innerWidth;
+		context.canvas.height = window.innerHeight;
+		var ponto = {
+			x : null,
+			y : null
+		};
+		var desenha = {
+			x : null,
+			y : null
+		};
+		var img = new Image();
+		img.src = "CarroCima.png";
+		var linhaB;
+
+		canvas.addEventListener('click', function(event) {
+			if (desenha.x == null) {
+				desenha.x = event.pageX - (img.width / 2);
+				desenha.y = event.pageY - (img.height / 2);
+			} else {
+				ponto.x = event.pageX - (img.width / 2), ponto.y = event.pageY
+						- (img.height / 2);
+			}
+			if (ponto.x != null && desenha.x != null) {
+				linhaB = bline(desenha, ponto);
+			}
+			if(linhaB!=null){
+				linhaB.reverse();	
+			}
+			
+
+			/*
+			console.log('desenha x'+desenha.x+' y '+desenha.y);			
+			console.log('ponto x'+ponto.x+' y '+ponto.y);
+			var linhaB = bline(desenha, ponto);
+			console.log('linhaB.length '+linhaB.length);
+			if(linhaB.length>0){
+				console.log('inicio linhab x'+linhaB[0].x+' y '+linhaB[0].y);
+				console.log('fim linhab x'+linhaB[linhaB.length-1].x+' y '+linhaB[linhaB.length-1].y);
+			}
+			 */
+		}, false);
+
+		function render() {
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			if (linhaB != null) {
+				var novo = linhaB.pop();
+				if (dist(novo, ponto) > 300) {
+					novo = linhaB.pop();
+				}
+				if (dist(novo, ponto) > 200) {
+					novo = linhaB.pop();
+				}
+				if (dist(novo, ponto) > 100) {
+					novo = linhaB.pop();
+				}
+				if (dist(novo, ponto) > 50) {
+					novo = linhaB.pop();
+				}
+				if (novo != null) {
+					desenha = novo;
+				}
+			}
+			if (desenha.x != null) {
+				context.drawImage(img, desenha.x, desenha.y);
+			}
+			if (fps != null) {
+				context.fillText("FPS: " + fps.frameRate(), 4, 30);
+			}
+		}
+
+		// update canvas with some information and animation
+		var fps = new FpsCtrl(60, function(e) {
+			render();
+		})
+
+		// start the loop
+		fps.start();
+
+		function bline(startCoordinates, endCoordinates) {
+			if(startCoordinates == null || endCoordinates == null){return;}
+			var x0 = startCoordinates.x;
+			var y0 = startCoordinates.y;
+			var x1 = endCoordinates.x;
+			var y1 = endCoordinates.y;
+			if(x0 == null || y0==null || x1==null || y1==null){return;}
+			var coordinatesArray = new Array();
+			var dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+			var dy = Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+			var err = (dx > dy ? dx : -dy) / 2;
+			while (true) {
+				coordinatesArray.push({
+					x : x0,
+					y : y0
+				});
+				if (x0 === x1 && y0 === y1)
+					break;
+				var e2 = err;
+				if (e2 > -dx) {
+					err -= dy;
+					x0 += sx;
+				}
+				if (e2 < dy) {
+					err += dx;
+					y0 += sy;
+				}
+			}
+			return coordinatesArray;
+		}
+
+		function dist(startCoordinates, endCoordinates) {
+			if(startCoordinates == null || endCoordinates == null){return;}
+			var x0 = startCoordinates.x;
+			var y0 = startCoordinates.y;
+			var x1 = endCoordinates.x;
+			var y1 = endCoordinates.y;
+			if(x0 == null || y0==null || x1==null || y1==null){return;}
+			return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
+		}
+
+		function FpsCtrl(fps, callback) {
+
+			var delay = 1000 / fps, time = null, frame = -1, tref;
+
+			function loop(timestamp) {
+				if (time === null)
+					time = timestamp;
+				var seg = Math.floor((timestamp - time) / delay);
+				if (seg > frame) {
+					frame = seg;
+					callback({
+						time : timestamp,
+						frame : frame
+					})
+				}
+				tref = requestAnimationFrame(loop)
+			}
+
+			this.isPlaying = false;
+
+			this.frameRate = function(newfps) {
+				if (!arguments.length)
+					return fps;
+				fps = newfps;
+				delay = 1000 / fps;
+				frame = -1;
+				time = null;
+			};
+
+			this.start = function() {
+				if (!this.isPlaying) {
+					this.isPlaying = true;
+					tref = requestAnimationFrame(loop);
+				}
+			};
+
+			this.pause = function() {
+				if (this.isPlaying) {
+					cancelAnimationFrame(tref);
+					this.isPlaying = false;
+					time = null;
+					frame = -1;
+				}
+			};
+		}
+	</script>
+
+</body>
+</html>

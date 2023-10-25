@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>F1-Mane AdMail</title>
+<style type="text/css">
+div {
+	cursor: pointer;
+	font-family: sans-serif;
+}
+
+A:link {
+	text-decoration: none;
+	color: #0084B4;
+}
+
+A:visited {
+	text-decoration: none;
+	color: #0084B4;
+}
+
+A:active {
+	text-decoration: none;
+	color: #0084B4;
+}
+
+A:hover {
+	text-decoration: underline overline;
+	color: black;
+}
+
+#link {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8CFE5;
+	text-align: left;
+	padding: 3px;
+	padding-left: 10px;
+	padding-right: 10px;
+	cursor: pointer;
+	font-family: sans-serif;
+	color: #0084B4;
+	text-decoration: none;
+	position: relative;
+	float: right;
+}
+
+input, textarea {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8CFE5;
+	text-align: left;
+}
+
+img {
+	border-style: none;
+	border-width: 0px;
+	border-color: #5C5E5D;
+	padding: 10px;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+#title {
+	border-style: none;
+	text-align: left;
+	font-family: Arial, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	line-height: 24px;
+	height: 100px;
+}
+
+#adds {
+	font-family: Arial, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	position: relative;
+	float: left;
+}
+
+#main {
+	padding: 3px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-style: none;
+	position: relative;
+	float: right;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8CFE5;
+}
+
+#description {
+	color: #666666;
+	font-size: 13px;
+	font-style: italic;
+}
+</style>
+<script type="text/javascript" src="highslide/highslide-full.js"></script>
+<link rel="stylesheet" type="text/css" href="highslide/highslide.css" />
+</head>
+<body>
+	<table>
+		<tr>
+			<td>
+				<div id="main">
+					<span>F1-Mane AdMail
+						<h1 id="description">MANager & Engineer</h1>
+					</span> <br>
+					<div style="text-align: left;">
+						<form action="ServletMail" method="post">
+							<input type="hidden" name="tipo" value="admail" /> Assunto : <input
+								type="text" size="55" name="assunto" />
+							<p>Texto:</p>
+							<textarea name="texto" rows="15" cols="50"></textarea>
+							<br> <br> Passe : <input type="password" size="15"
+								name="passe" />
+							<div id="link" style="text-align: right;"
+								onclick="javascript:document.forms[0].submit()">Enviar</div>
+						</form>
+					</div>
+					<br>
+				</div>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/f1mane.css?v={versao}">
+<link rel="stylesheet" href="css/mdb-btns.css?v={versao}">
+<script src="../jquery/jquery-3.2.1.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+
+<title>Fl-Mane</title>
+</head>
+<body class="body">
+<div id="f1body">
+	<section id="head" class="container" style="margin: 10px;">
+        <a href="classificacao.html?v={versao}" id="voltar" class="voltar black"> 
+          <span class="glyphicon glyphicon glyphicon-chevron-left" aria-hidden="true"></span> 
+        </a>
+		<h3 style="display: inline;">Fl-Mane</h3>
+		<h5>Formula league-Manager & Engineer</h5>
+	</section>
+	<section class="container containerPadless">
+		<div class="form-group">
+			<div id="circuitoCarousel" class="carousel slide">
+				<div id="circuitoCarousel-inner" class="carousel-inner" role="listbox">
+					<div id="circuitoActive" class="item active">
+						<h3 class="text-center" id="circuitosLabel"></h3>
+						<img class="img-responsive center-block" id="imgCircuito" />
+					</div>
+				</div>
+				<a class="left carousel-control black" id="circuitoAnterior" href="#circuitoCarousel"
+					role="button" data-slide="prev"> <span
+					class="glyphicon glyphicon-chevron-left black" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a> <a class="right carousel-control black" id="circuitoProximo" href="#circuitoCarousel"
+					role="button" data-slide="next"> <span
+					class="glyphicon glyphicon-chevron-right black" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+		</div>
+		<section class="container containerPadless">
+			<table class="table table-hover table-responsive">
+				<thead>
+					<tr>
+						<th class="textCenter">P.</th>
+						<th id="162" class="textCenter"></th>
+						<th id="165" class="textCenter"></th>
+						<th id="161" class="textCenter"></th>
+					</tr>
+				</thead>
+				<tbody id="pilotos">
+				</tbody>
+			</table>		
+		</section>
+	</section>
+	<footer class="footer">
+		<div class="container">
+			<p>Build: {versao}</p>
+		</div>
+	</footer>
+</div>	
+</body>
+<script src="js/util.js?v={versao}"></script>
+<script src="js/loader.js?v={versao}"></script>
+<script src="js/lang.js?v={versao}"></script>
+<script src="js/classificacao_circuito.js?v={versao}"></script>
+</html>

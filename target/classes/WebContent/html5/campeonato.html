@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/f1mane.css?v={versao}">
+<script src="../jquery/jquery-3.2.1.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
+
+<title>Fl-Mane</title>
+</head>
+<body class="body">
+	<div id="f1body">
+		<section id="head" class="container" style="margin: 10px;">
+			<a id="voltar" class="voltar black"> <span
+				class="glyphicon glyphicon glyphicon-chevron-left"
+				aria-hidden="true"></span>
+			</a>
+			<h3 style="display: inline;">Fl-Mane</h3>
+			<h5>Formula league-Manager & Engineer</h5>
+		</section>
+		<section id="listarCampeonato" class="container containerPadless hide">
+			<div  class="form-group">
+				<h2 class="text-center" id="nomeCampeonatoRodada"></h2>
+			</div>	
+			<div  class="form-group">
+				<h3 class="text-center" id="rodadaCampeonato"></h3>
+			</div>	
+			<h1 class="text-center" id="temporadasLabelCarrgeda"></h1>
+			<div  class="form-group">
+			 	<div class="transbox">
+					<h3 id="listaCorridas"></h3>
+				</div>	
+			</div>			
+			<section class="container containerPadless">
+				<table class="table table-hover table-responsive">
+					<thead>
+						<tr>
+							<th id="rodada"></th>
+							<th id="nomeCircuito"></th>
+						</tr>
+					</thead>
+					<tbody id="corridasTO">
+					</tbody>
+				</table>		
+			</section>
+			<div  class="form-group">
+			 	<div class="transbox">
+					<h3 id="classificacaoPilotos"></h3>
+				</div>	
+			</div>			
+			<section class="container containerPadless">
+				<table class="table table-hover table-responsive">
+					<thead>
+						<tr>
+							<th>P.</th>
+							<th id="pontos"></th>
+							<th id="piloto"></th>
+						</tr>
+					</thead>
+					<tbody id="dadosClassificacaoPilotos">
+					</tbody>
+				</table>		
+			</section>
+			<div  class="form-group">
+			 	<div class="transbox">
+					<h3 id="classificacaoEquipes"></h3>
+				</div>	
+			</div>			
+			<section class="container containerPadless">
+				<table class="table table-hover table-responsive">
+					<thead>
+						<tr>
+							<th>P.</th>						
+							<th id="pontos"></th>
+							<th id="equipe"></th>
+						</tr>
+					</thead>
+					<tbody id="dadosClassificacaoCarros">
+					</tbody>
+				</table>		
+			</section>
+			<div  class="form-group">
+			 	<div class="transbox">
+					<h3 id="classificacaoJogadores"></h3>
+				</div>	
+			</div>				
+			<section class="container containerPadless">
+				<table class="table table-hover table-responsive">
+					<thead>
+						<tr>
+							<th>P.</th>
+							<th id="pontos"></th>
+							<th id="corridas"></th>
+							<th id="jogador"></th>
+						</tr>
+					</thead>
+					<tbody id="dadosClassificacaoJogador">
+					</tbody>
+				</table>		
+			</section>											
+			<div id="btnJogar"  class="floatBtn">
+			    <i class="fa fa-plus floatBtnContent glyphicon glyphicon-flag"></i>
+			</div>	
+			<div id="btnNovo"  class="floatBtn">
+			    <i class="fa fa-plus floatBtnContent glyphicon glyphicon-plus"></i>
+			</div>									
+		</section>
+		<section id="criarCampeonato" class="container containerPadless">
+			<div>
+				<div id="temporadaCarousel" class="carousel slide"
+					data-ride="carousel">
+					<div id="temporadaCarousel-inner" class="carousel-inner"
+						role="listbox">
+						<div id="temporadaActive" class="item active">
+							<h1 class="text-center" id="temporadasLabel"></h1>
+						</div>
+					</div>
+					<a class="left carousel-control" id="temporadaAnterior"
+						href="#temporadaCarousel" role="button" data-slide="prev"> <span
+						class="glyphicon glyphicon-chevron-left black" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a> <a class="right carousel-control" id="temporadaProxima"
+						href="#temporadaCarousel" role="button" data-slide="next"> <span
+						class="glyphicon glyphicon-chevron-right black" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+				<section class="container containerPadless" id="detalheTemporada">
+					<div class="form-group">
+						<div class="col-sm-6">
+							<div  class="checkbox">
+								<p id="trocaPneuCheck" class="font-weight-bold"> 
+								</p>
+							</div>
+							<div class="checkbox">
+								<p id="reabastecimentoCheck" class="font-weight-bold"> 
+								</p>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="checkbox">
+								<p id="ersCheck" class="font-weight-bold"> 
+									ERS
+								</p>
+							</div>
+							<div class="checkbox">
+								<p id="drsCheck" class="font-weight-bold"> 
+									DRS
+								</p>
+							</div>
+						</div>
+					</div>
+				</section>				
+				<form>
+					<div id="divPilotoSelecionado" class="form-group">
+						<h3 id="selecionarPilotoTxt" class="text-center transbox"></h3>
+						<div id="selecionarPilotoBtn" class="relativeBtn adicionar">
+							<i class="fa fa-plus floatBtnContent glyphicon glyphicon-plus"></i>
+						</div>
+					</div>
+					<input id="idPilotoSelecionado"	type="hidden" />
+					<section id="pilotoSelecionado" class="container containerPadless hide">
+						<table class="table table-hover table-responsive">
+							<tbody>
+								<tr>
+									<td>
+										<b id=nomePilotoSelecionado></b>
+										<img id="imgCapacetePilotoSelecionado" class="img-responsive img-center"/>
+									</td>
+									<td>
+										<b id=nomeCarroSelecionado></b>
+										<img id="imgCarroPilotoSelecionado" class="img-responsive img-center"/>
+									</td>									
+								</tr>
+							</tbody>
+						</table>		
+					</section>	
+					<div class="form-group">
+						<label id="nomeCampeonato">Nome Campeonato</label> <input type="text"
+							class="form-control" id="nomeCampeonatoValor" required="required">
+					</div>									
+					<div id="criarCampeonatoBtn" class="floatBtn">
+						<i class="fa fa-plus floatBtnContent glyphicon glyphicon-floppy-disk"></i>
+					</div>		
+					<ul id="listaCircuitosSelecionados">
+					</ul>								
+				</form>				
+			</div>
+		</section>
+		<section id="circuitos" class="container containerPadless hide">
+			<ul id="listaCircuitos">
+			</ul>
+		</section>
+		<div id="selecionarPiloto" class="hide">
+			<div class="form-group">
+				<img id="imgCircuito" class="img-responsive img-center" />
+			</div>
+			<div  class="form-group">
+			 	<div class="transbox">
+					<p id="selecionePiloto"></p>
+				</div>	
+			</div>
+			<section class="container containerPadless">
+				<table class="table table-hover table-responsive">
+					<thead>
+						<tr>
+							<th id="153"></th>
+							<th id="154"></th>
+						</tr>
+					</thead>
+					<tbody id="pilotos">
+					</tbody>
+				</table>		
+			</section>
+		</div>				
+		<footer class="footer">
+			<div class="container">
+				<p>Build: {versao}</p>
+			</div>
+		</footer>
+	</div>
+</body>
+<script src="js/util.js?v={versao}"></script>
+<script src="js/loader.js?v={versao}"></script>
+<script src="js/lang.js?v={versao}"></script>
+<script src="js/campeonato.js?v={versao}"></script>
+</html>

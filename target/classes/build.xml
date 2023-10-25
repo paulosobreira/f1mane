@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ======================================================================
+     28/07/2007
+     13/12/2018
+
+     project    Fl-Mane
+     
+     Paulo Sobreira
+     
+     java -Xmx512M -Xms512M  -cp .f1maneRecursos.jar; -jar f1mane.jar
+     
+     keytool -genkey -keystore jar-keystore -alias f1mane-key
+
+     ====================================================================== -->
+<project name="F1-Mane">
+	
+	<property name="DESTINO" value="target/war/" />
+	<!--<property name="DESTINO" value="/Users/paulosobreira/Google Drive/docker/mac/war" />--> 
+	<!--<property name="DESTINO" value="C:\Java\apache-tomcat-7.0.73\webapps" /> --> 
+	<!--<property name="DESTINO" value="E:\apache-tomcat-7.0.35" /> -->
+	<path id="classpath.compilacao">
+		<fileset dir="WebContent/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="buildAnt">
+			<include name="**/*.java" />
+			<include name="**/*.class" />
+		</fileset>
+		<pathelement location="buildAnt" />
+	</path>
+	
+	<target name="targetHtml" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddockHTML,atualizarVersaoHtml,criarWar,limpaJars">
+	</target>
+	
+	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarVersaoHtml,criarWar,limpaJars">
+	</target>
+
+	<target name="targetPadraoNoLibs" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarVersaoHtml,criarWarNoLibs,limpaJars">
+	</target>
+
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaPaddock,atualizarVersaoHtml,criarWar,limpaJars">
+	</target>
+
+	<target name="targetGerarZip" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJarPistas,criarJar,criarZip,limpaJars">
+	</target>
+
+	<target name="atualizaVersao">
+		<propertyfile file="src/sowbreira/f1mane/paddock/client.properties">
+			<entry operation="+" key="versao" type="int" value="1" />
+		</propertyfile>
+	</target>
+
+	<target name="compilarClasses">
+		<javac destdir="buildAnt" source="1.8" target="1.8" srcdir="src" nowarn="true" debug="true" includes="**/*.java">
+			<classpath refid="classpath.compilacao" />
+		</javac>
+	</target>
+
+	<target name="copiaRecursos">
+		<delete dir="buildAnt" />
+		<mkdir dir="buildAnt" />
+		<copy todir="buildAnt" verbose="true">
+			<fileset dir="src">
+				<exclude name=".*" />
+				<exclude name=".*/" />
+				<!-- <exclude name="**/*.java" /> -->
+				<exclude name="**/*.jpg" />
+				<exclude name="**/*.db" />
+			</fileset>
+			<fileset dir="WebContent">
+				<include name="**/*.html" />
+			</fileset>
+			<fileset dir=".">
+				<include name="*.sh" />
+				<include name="*.bat" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="criarJar">
+		<jar jarfile="f1mane.jar" compress="true" manifest="MANIFEST.MF">
+			<fileset dir="buildAnt">
+				<exclude name=".*" />
+				<exclude name=".*/" />
+				<exclude name="**/*.java" />
+				<exclude name="**/*.html" />
+				<exclude name="**/*.js" />
+				<exclude name="**/*.css" />
+				<exclude name="**/*.sh" />
+				<exclude name="**/*.bat" />
+				<exclude name="build.xml" />
+				<exclude name="log4j.properties" />
+				<exclude name="sowbreira/f1mane/recursos/**/*.gif" />
+				<exclude name="sowbreira/f1mane/recursos/**/*.png" />
+				<exclude name="sowbreira/f1mane/recursos/**/*.wav" />
+			</fileset>
+			<fileset dir="buildAnt">
+				<include name="sowbreira/f1mane/recursos/tabela.html"/>
+			</fileset>
+			<fileset dir="src" includes="**/*.java"/>
+		</jar>
+	</target>
+	<target name="criarJarRecursos">
+		<jar jarfile="f1maneRecursos.jar" compress="true" manifest="MANIFEST.MF">
+			<fileset dir="src">
+				<include name="sowbreira/f1mane/recursos/**/*.jpg" />
+				<include name="sowbreira/f1mane/recursos/carros/**/*.gif" />
+				<include name="sowbreira/f1mane/recursos/**/*.gif" />
+				<include name="sowbreira/f1mane/recursos/**/*.png" />
+				<include name="sowbreira/f1mane/recursos/**/*.wav" />
+				<exclude name="sowbreira/f1mane/recursos/**/*_mro.jpg" />
+			</fileset>
+		</jar>
+
+	</target>
+
+	<target name="criarJarPistas">
+		<jar jarfile="f1manePistas.jar" compress="true" manifest="MANIFEST.MF">
+			<fileset dir="src">
+				<include name="sowbreira/f1mane/recursos/**/*_mro.jpg" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="atualizaPaddock">
+		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
+		<delete file="WebContent/f1mane.jar" />
+		<copy file="f1mane.jar" todir="WebContent/WEB-INF/lib" />
+		<copy file="f1maneRecursos.jar" todir="WebContent/WEB-INF/lib" />
+		<copy file="f1maneRecursos.jar" todir="WebContent" />
+		<copy file="f1mane.jar" todir="WebContent" />
+		<copy todir="WebContent">
+			<fileset dir="src">
+				<include name="**/*_mro.jpg" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="atualizaPaddockHTML">
+		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
+		<delete file="WebContent/f1mane.jar" />
+		<delete file="WebContent/f1maneRecursos.jar" />
+		<copy file="f1mane.jar" todir="WebContent/WEB-INF/lib" />
+		<copy file="f1maneRecursos.jar" todir="WebContent/WEB-INF/lib" />
+	</target>	
+
+
+
+	<target name="criarWar">
+		<war compress="on" destfile="${DESTINO}/f1mane.war">
+			<fileset dir="WebContent">
+				<exclude name="**/*.html" />
+			</fileset>
+			<fileset dir="buildAnt">
+				<include name="**/*.html" />
+			</fileset>
+		</war>
+		<delete dir="WebContent/sowbreira" />
+		<delete file="WebContent/f1mane.zip" />
+	</target>
+	
+
+	<target name="criarWarNoLibs">
+		<war compress="on" destfile="${DESTINO}/f1mane.war">
+			F<fileset dir="WebContent">
+				<exclude name="WEB-INF/lib/*.jar" />
+			</fileset>
+			<fileset dir="WebContent">
+				<include name="WEB-INF/lib/f1mane.jar" />
+			</fileset>
+			<fileset dir="buildAnt">
+				<include name="**/*.html" />
+			</fileset>
+		</war>
+		<delete dir="WebContent/sowbreira" />
+	</target>
+
+
+	<target name="sign_jar">
+		<copy todir=".">
+			<fileset dir="WebContent/WEB-INF/lib">
+				<include name="commons-beanutils-1.8.2.jar" />
+				<include name="commons-logging-1.1.1.jar" />
+			</fileset>
+		</copy>
+		<delete file="a-f1mane.jar" />
+		<delete file="a-f1maneRecursos.jar" />
+		<delete file="a-f1manePistas.jar" />
+		<delete file="a-commons-beanutils-1.8.2.jar" />
+		<delete file="a-commons-logging-1.1.1.jar" />
+		<signjar jar="f1mane.jar" signedjar="a-f1mane.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<signjar jar="f1maneRecursos.jar" signedjar="a-f1maneRecursos.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<signjar jar="f1manePistas.jar" signedjar="a-f1manePistas.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<signjar jar="commons-beanutils-1.8.2.jar" signedjar="a-commons-beanutils-1.8.2.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<signjar jar="commons-logging-1.1.1.jar" signedjar="a-commons-logging-1.1.1.jar" alias="f1mane-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<delete file="f1mane.jar" />
+		<delete file="f1maneRecursos.jar" />
+		<delete file="f1manePistas.jar" />
+		<delete file="commons-beanutils-1.8.2.jar" />
+		<delete file="commons-logging-1.1.1.jar" />
+	</target>
+
+	<target name="criarZip">
+		<copy todir=".">
+			<fileset dir="WebContent/WEB-INF/lib">
+				<include name="commons-beanutils-1.8.2.jar" />
+				<include name="commons-logging-1.1.1.jar" />
+			</fileset>
+		</copy>
+		<zip destfile="target/Fl-Mane.zip" compress="true">
+			<fileset dir=".">
+				<include name="*.jar" />
+				<include name="*.sh" />
+				<include name="*.bat" />
+			</fileset>
+		</zip>
+		<delete>
+			<fileset dir=".">
+				<include name="*.jar" />
+			</fileset>
+		</delete>
+	</target>
+
+
+	<target name="limpaJars">
+		<delete file="WebContent/WEB-INF/lib/f1mane.jar" />
+		<delete file="WebContent/WEB-INF/lib/f1maneRecursos.jar" />
+		<delete>
+			<fileset dir=".">
+				<include name="*.jar" />
+			</fileset>
+		</delete>
+		<delete dir="buildAnt" />
+	</target>
+
+	<target name="atualizarVersaoHtml" description="Atualizar Versao HTML">
+		<property file="src/sowbreira/f1mane/paddock/client.properties" prefix="client"/>
+		<replace dir="buildAnt" value="${client.versao}" token="{versao}">
+			<include name="**/*.html" />
+		</replace>
+	</target>
+
+</project>
