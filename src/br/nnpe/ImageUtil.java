@@ -17,7 +17,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import sowbreira.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.recursos.CarregadorRecursos;
 
 /**
  * @author Paulo Sobreira Criado Em 21/08/2005
