@@ -2,9 +2,7 @@ package br.f1mane.paddock.entidades.TOs;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,9 +11,9 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.ControleRecursos;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.Clima;
-import br.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
 import br.f1mane.recursos.CarregadorRecursos;
 
 /**

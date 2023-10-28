@@ -22,9 +22,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import br.nnpe.Logger;
-import br.f1mane.entidades.ConstrutoresPontosCampeonato;
-import br.f1mane.entidades.PilotosPontosCampeonato;
+import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
+import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import br.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 import br.f1mane.paddock.entidades.persistencia.CorridaCampeonatoSrv;
 import br.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonatoSrv;

@@ -2,7 +2,7 @@ package br.f1mane.controles;
 
 import br.nnpe.Html;
 import br.nnpe.Logger;
-import br.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.Clima;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**

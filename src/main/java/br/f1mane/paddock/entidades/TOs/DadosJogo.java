@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.Volta;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.Volta;
 
 /**
  * @author Paulo Sobreira Criado em 15/08/2007 as 16:33:52

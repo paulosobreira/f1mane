@@ -34,14 +34,14 @@ import br.nnpe.OcilaCor;
 import br.nnpe.Util;
 import br.f1mane.MainFrame;
 import br.f1mane.controles.InterfaceJogo;
-import br.f1mane.entidades.Campeonato;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.Clima;
-import br.f1mane.entidades.ConstrutoresPontosCampeonato;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.PilotosPontosCampeonato;
-import br.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.Campeonato;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
+import sowbreira.f1mane.entidades.TemporadasDefauts;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 
@@ -1312,7 +1312,7 @@ public class PainelMenuLocal {
 		ObjectInputStream ois;
 		try {
 			if (circuitoMini == null || !nmCircuitoMRO.equals(circuitoMiniCarregado)) {
-				ois = new ObjectInputStream(carregadorRecursos.getClass().getResourceAsStream(nmCircuitoMRO));
+				ois = new ObjectInputStream(CarregadorRecursos.recursoComoStream(nmCircuitoMRO));
 				circuitoMini = (Circuito) ois.readObject();
 				circuitoMiniCarregado = nmCircuitoMRO;
 			}

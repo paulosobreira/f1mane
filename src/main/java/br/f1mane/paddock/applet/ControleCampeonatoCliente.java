@@ -38,10 +38,9 @@ import javax.swing.table.TableModel;
 
 import br.nnpe.Constantes;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 import br.f1mane.controles.ControleJogoLocal;
-import br.f1mane.entidades.ConstrutoresPontosCampeonato;
-import br.f1mane.entidades.PilotosPontosCampeonato;
+import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
+import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import br.f1mane.paddock.entidades.Comandos;
 import br.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import br.f1mane.paddock.entidades.persistencia.CampeonatoSrv;

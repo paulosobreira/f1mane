@@ -8,15 +8,15 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import br.f1mane.MainFrame;
-import br.f1mane.entidades.Campeonato;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.ConstrutoresPontosCampeonato;
-import br.f1mane.entidades.No;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.PilotosPontosCampeonato;
-import br.f1mane.entidades.SafetyCar;
-import br.f1mane.entidades.Volta;
+import sowbreira.f1mane.entidades.Campeonato;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
+import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
+import sowbreira.f1mane.entidades.SafetyCar;
+import sowbreira.f1mane.entidades.Volta;
 import br.f1mane.visao.PainelTabelaResultadoFinal;
 
 public interface InterfaceJogo {

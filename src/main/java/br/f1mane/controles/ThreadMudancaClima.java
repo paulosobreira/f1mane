@@ -2,8 +2,7 @@ package br.f1mane.controles;
 
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.Clima;
 
 /**
  * @author Paulo Sobreira

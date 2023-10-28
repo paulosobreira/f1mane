@@ -1,8 +1,6 @@
 package br.f1mane.controles;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,11 +15,11 @@ import java.util.Set;
 
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.No;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.PontoEscape;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.PontoEscape;
 import br.f1mane.paddock.servlet.JogoServidor;
 import br.f1mane.recursos.CarregadorRecursos;
 

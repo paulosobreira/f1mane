@@ -10,12 +10,12 @@ import br.nnpe.Constantes;
 import br.nnpe.Html;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.No;
-import br.f1mane.entidades.Pausa;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.SafetyCar;
-import br.f1mane.entidades.Volta;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.Pausa;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.SafetyCar;
+import sowbreira.f1mane.entidades.Volta;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**

@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.util.List;
 
 import br.nnpe.Logger;
-import br.f1mane.entidades.Circuito;
-import br.f1mane.entidades.No;
+import sowbreira.f1mane.entidades.Circuito;
+import sowbreira.f1mane.entidades.No;
 
 public class TestePista {
 	protected static final long SEEP_TIME = 100;

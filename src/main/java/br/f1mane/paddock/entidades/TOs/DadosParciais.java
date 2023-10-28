@@ -3,14 +3,12 @@ package br.f1mane.paddock.entidades.TOs;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Clima;
-import br.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.Piloto;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**

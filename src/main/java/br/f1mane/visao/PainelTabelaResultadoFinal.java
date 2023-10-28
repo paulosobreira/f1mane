@@ -8,9 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import br.f1mane.controles.ControleCorrida;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.Volta;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.Volta;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**

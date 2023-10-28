@@ -14,6 +14,7 @@ import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import br.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Logger;
 import br.f1mane.paddock.PaddockConstants;
 import br.f1mane.recursos.idiomas.Lang;
@@ -115,8 +116,7 @@ public class AppletPaddock {
 
 	public void initProperties() throws IOException {
 		Properties properties = new Properties();
-		properties.load(PaddockConstants.class
-				.getResourceAsStream("client.properties"));
+		properties.load(CarregadorRecursos.recursoComoStream("client.properties"));
 		this.versao = properties.getProperty("versao");
 		if (versao.contains(".")) {
 			this.versao = versao.replaceAll("\\.", "");

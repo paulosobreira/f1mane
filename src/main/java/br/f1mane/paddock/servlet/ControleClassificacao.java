@@ -20,7 +20,7 @@ import br.nnpe.Logger;
 import br.nnpe.Numero;
 import br.nnpe.Util;
 import br.f1mane.controles.InterfaceJogo;
-import br.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.Piloto;
 import br.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import br.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import br.f1mane.paddock.entidades.TOs.DadosClassificacaoJogador;

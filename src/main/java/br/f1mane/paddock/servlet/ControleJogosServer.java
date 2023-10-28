@@ -10,17 +10,14 @@ import java.util.Map;
 import org.hibernate.Session;
 
 import br.nnpe.Constantes;
-import br.nnpe.Html;
 import br.nnpe.Logger;
-import br.nnpe.Numero;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleEstatisticas;
 import br.f1mane.controles.InterfaceJogo;
-import br.f1mane.entidades.Carro;
-import br.f1mane.entidades.Piloto;
-import br.f1mane.entidades.Volta;
+import sowbreira.f1mane.entidades.Carro;
+import sowbreira.f1mane.entidades.Piloto;
+import sowbreira.f1mane.entidades.Volta;
 import br.f1mane.paddock.entidades.BufferTexto;
-import br.f1mane.paddock.entidades.Comandos;
 import br.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import br.f1mane.paddock.entidades.TOs.DadosCriarJogo;
 import br.f1mane.paddock.entidades.TOs.DadosJogo;
@@ -34,7 +31,6 @@ import br.f1mane.paddock.entidades.TOs.PosisPack;
 import br.f1mane.paddock.entidades.TOs.SessaoCliente;
 import br.f1mane.paddock.entidades.TOs.SrvJogoPack;
 import br.f1mane.paddock.entidades.TOs.SrvPaddockPack;
-import br.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
 import br.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 import br.f1mane.recursos.idiomas.Lang;
 

@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,10 +33,9 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.f1mane.entidades.Clima;
+import sowbreira.f1mane.entidades.Clima;
 import br.f1mane.paddock.entidades.Comandos;
 import br.f1mane.paddock.entidades.TOs.ClientPaddockPack;
 import br.f1mane.paddock.entidades.TOs.DadosPaddock;
@@ -48,7 +45,6 @@ import br.f1mane.paddock.entidades.TOs.SrvPaddockPack;
 import br.f1mane.paddock.servlet.ControleJogosServer;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
-import br.f1mane.visao.PainelCircuito;
 
 /**
  * @author paulo.sobreira
