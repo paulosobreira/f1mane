@@ -10,7 +10,7 @@
 
 	<servlet>
 		<servlet-name>ServletPaddock</servlet-name>
-		<servlet-class>sowbreira.f1mane.paddock.servlet.ServletPaddock</servlet-class>
+		<servlet-class>br.f1mane.paddock.servlet.ServletPaddock</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
@@ -27,7 +27,7 @@
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>jersey.config.server.provider.packages</param-name>
-			<param-value>sowbreira.f1mane.paddock.rest</param-value>
+			<param-value>br.f1mane.paddock.rest</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

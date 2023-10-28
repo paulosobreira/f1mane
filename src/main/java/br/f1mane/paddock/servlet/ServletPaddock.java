@@ -9,7 +9,6 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Iterator;
@@ -22,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.f1mane.recursos.CarregadorRecursos;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -37,7 +37,6 @@ import br.f1mane.paddock.PaddockConstants;
 import br.f1mane.paddock.PaddockServer;
 import br.f1mane.paddock.ZipUtil;
 import br.f1mane.paddock.entidades.TOs.SessaoCliente;
-import br.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
 
 /**
  * @author paulo.sobreira
@@ -58,8 +57,7 @@ public class ServletPaddock extends HttpServlet {
 		monitorAtividade = PaddockServer.getMonitorAtividade();
 		try {
 			Properties properties = new Properties();
-			properties.load(PaddockConstants.class
-					.getResourceAsStream("server.properties"));
+			properties.load(CarregadorRecursos.recursoComoStream("server.properties"));
 			host = properties.getProperty("host");
 			senha = properties.getProperty("senha");
 			port = Integer.parseInt(properties.getProperty("port"));

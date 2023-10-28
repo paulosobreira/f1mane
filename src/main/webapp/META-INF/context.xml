@@ -14,8 +14,8 @@
 		name="jdbc/MySQLDS" password="" type="javax.sql.DataSource" url="jdbc:hsqldb:hsql://localhost/f1mane" 
 		username="SA" /> -->
 	<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver"
-		name="jdbc/MySQLDS" type="javax.sql.DataSource" url="jdbc:mysql://db:3306/f1mane"
-		username="root" password="" testOnBorrow="false" testOnReturn="false"
+		name="jdbc/MySQLDS" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/f1mane"
+		username="root" password="f1mane" testOnBorrow="false" testOnReturn="false"
 		testWhileIdle="true" validationQuery="Select 1"
 		timeBetweenEvictionRunsMillis="1800000" />
 </Context>

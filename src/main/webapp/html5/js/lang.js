@@ -53,7 +53,7 @@ function lang_idioma(idioma, sincrono) {
 		},
 		error : function(xhRequest, errorText, thrownError) {
 			tratamentoErro(xhRequest);
-			console.log(xhRequest.status + '  ' + xhRequest.responseText + ' ' + ErrorText);
+			console.log(xhRequest.status + '  ' + xhRequest.responseText + ' ' + errorText);
 		}
 	});
 }

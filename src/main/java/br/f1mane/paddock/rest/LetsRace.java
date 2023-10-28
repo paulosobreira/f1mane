@@ -611,7 +611,7 @@ public class LetsRace {
 		try {
 			BufferedImage buffer = ImageUtil.geraTransparenciaAlpha(
 					CarregadorRecursos.carregaBufferedImage(recurso + ".png"),
-					new Integer(trasnparencia));
+					Integer.parseInt(trasnparencia));
 			if (buffer == null) {
 				return Response.status(200).entity("null").build();
 			}

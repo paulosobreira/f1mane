@@ -736,7 +736,7 @@ public class ControlePaddockServidor {
 
 	public void initProperties() throws IOException {
 		Properties properties = new Properties();
-		properties.load(PaddockConstants.class.getResourceAsStream("client.properties"));
+		properties.load(CarregadorRecursos.recursoComoStream("client.properties"));
 		String versao = properties.getProperty("versao");
 		if (versao.contains(".")) {
 			this.versao = Integer.parseInt(versao.replaceAll("\\.", ""));

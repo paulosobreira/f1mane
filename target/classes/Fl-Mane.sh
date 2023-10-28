@@ -1,1 +1,0 @@
-java -Xms64m -Xmx512m -cp .:commons-beanutils-1.8.2.jar:commons-logging-1.1.1.jar:f1mane.jar:f1manePistas.jar:f1maneRecursos.jar br.f1mane.MainFrame
