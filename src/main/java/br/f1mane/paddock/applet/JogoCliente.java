@@ -781,10 +781,9 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 		}
 		URL url = null;
 		try {
-//			String caminho = mainFrame.getCodeBase()
-//					+ "/sowbreira/f1mane/recursos/" + backGround;
+			String caminho = mainFrame.getCodeBase()
+					+ "/sowbreira/f1mane/recursos/" + backGround;
 
-			String caminho = "https://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/" + backGround;
 
 			Logger.logar("Caminho Carregar Bkg " + caminho);
 			url = new URL(caminho);

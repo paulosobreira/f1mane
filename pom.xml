@@ -135,7 +135,7 @@
                 <version>1.0-alpha-2</version>
                 <executions>
                     <execution>
-                        <phase>validate</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>read-project-properties</goal>
                         </goals>
@@ -155,31 +155,47 @@
                         <id>ver_prop</id>
                         <phase>compile</phase>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <propertyfile file="src/main/resources/application.properties">
                                     <entry operation="+" key="versao" type="int" value="1"/>
                                 </propertyfile>
-                            </tasks>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
                         </goals>
                     </execution>
-<!--                    <execution>-->
-<!--                        <id>ver_html</id>-->
-<!--                        <phase>install</phase>-->
-<!--                        <configuration>-->
-<!--                            <tasks>-->
-<!--                                <property name="client.versao" value="${versao}"/>-->
-<!--                                <replace dir="target" value="${client.versao}" token="{versao}">-->
-<!--                                    <include name="**/*.html"/>-->
-<!--                                </replace>-->
-<!--                            </tasks>-->
-<!--                        </configuration>-->
-<!--                        <goals>-->
-<!--                            <goal>run</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
+                    <execution>
+                        <id>src_html</id>
+                        <phase>compile</phase>
+                        <configuration>
+                            <target>
+                                <copy overwrite="true" todir="src/main/webapp/html5">
+                                    <fileset dir="src/main/webapp/htm5lsrc">
+                                        <include name="**/*.html" />
+                                    </fileset>
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>ver_html</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <property name="ant.versao" value="${versao}"/>
+                                <replace dir="src/main/webapp/html5" value="${ant.versao}" token="{versao}">
+                                    <include name="**/*.html"/>
+                                </replace>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>

@@ -1,54 +1,28 @@
 package br.f1mane.paddock.servlet;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.sql.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
-
-import javax.swing.JFileChooser;
-
+import br.f1mane.paddock.entidades.TOs.MsgSrv;
+import br.f1mane.paddock.entidades.persistencia.*;
+import br.f1mane.recursos.CarregadorRecursos;
+import br.f1mane.recursos.idiomas.Lang;
+import br.nnpe.*;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-
-import br.nnpe.Constantes;
-import br.nnpe.Dia;
-import br.nnpe.HibernateUtil;
-import br.nnpe.Logger;
-import br.nnpe.Util;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Piloto;
-import br.f1mane.paddock.PaddockConstants;
-import br.f1mane.paddock.entidades.TOs.MsgSrv;
-import br.f1mane.paddock.entidades.persistencia.CampeonatoSrv;
-import br.f1mane.paddock.entidades.persistencia.CarreiraDadosSrv;
-import br.f1mane.paddock.entidades.persistencia.CorridaCampeonatoSrv;
-import br.f1mane.paddock.entidades.persistencia.CorridasDadosSrv;
-import br.f1mane.paddock.entidades.persistencia.DadosCorridaCampeonatoSrv;
-import br.f1mane.paddock.entidades.persistencia.F1ManeDados;
-import br.f1mane.paddock.entidades.persistencia.JogadorDadosSrv;
-import br.f1mane.paddock.entidades.persistencia.PaddockDadosSrv;
-import br.f1mane.recursos.CarregadorRecursos;
-import br.f1mane.recursos.idiomas.Lang;
+
+import javax.swing.*;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
+import java.sql.Date;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @author Paulo Sobreira Criado em 20/10/2007 as 14:19:54
@@ -56,7 +30,7 @@ import br.f1mane.recursos.idiomas.Lang;
 public class ControlePersistencia {
 
 	private String basePath;
-	private String nomeArquivo = "paddockDadosSrv.zip";
+	private final String nomeArquivo = "paddockDadosSrv.zip";
 	private static PaddockDadosSrv paddockDadosSrv;
 
 	private String webInfDir;

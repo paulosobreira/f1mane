@@ -189,7 +189,7 @@ public class CarregadorRecursos {
         BufferedImage backGround = null;
         try {
             backGround = ImageIO
-                    .read(CarregadorRecursos.recursoURL(backGroundStr));
+                    .read(CarregadorRecursos.recursoURL("circuitos/"+backGroundStr));
         } catch (Exception e) {
             Logger.logarExept(e);
         }
@@ -1042,7 +1042,7 @@ public class CarregadorRecursos {
             cd.setNome(Util.substVogais(nmCircuitoOri));
             cd.setArquivo(carregarCircuitos.get(nmCircuitoOri));
             ObjectInputStream ois = new ObjectInputStream(CarregadorRecursos
-                    .recursoComoStream(cd.getArquivo()));
+                    .recursoComoStream("circuitos/"+cd.getArquivo()));
             Circuito circuito = (Circuito) ois.readObject();
             cd.setProbalidadeChuva(circuito.getProbalidadeChuva());
             circuitosDefauts.add(cd);
@@ -1056,7 +1056,7 @@ public class CarregadorRecursos {
         Circuito circuito = bufferCircuitos.get(nmCircuito);
         if (circuito == null) {
             ObjectInputStream ois = new ObjectInputStream(
-                    CarregadorRecursos.recursoComoStream(nmCircuito));
+                    CarregadorRecursos.recursoComoStream("circuitos/"+nmCircuito));
             circuito = (Circuito) ois.readObject();
         }
         if (cache) {
