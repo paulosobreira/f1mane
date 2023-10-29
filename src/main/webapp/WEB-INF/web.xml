@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 	<display-name>f1mane</display-name>
-
-	<!-- Standard Action Servlet Configuration -->
-
 	<servlet>
 		<servlet-name>ServletPaddock</servlet-name>
 		<servlet-class>br.f1mane.paddock.servlet.ServletPaddock</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>ServletPaddock</servlet-name>
 		<url-pattern>/ServletPaddock</url-pattern>
 	</servlet-mapping>
-	<!-- <servlet> <servlet-name>ServletMail</servlet-name> <servlet-class>sowbreira.f1mane.paddock.servlet.ServletMail</servlet-class> 
-		<load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> <servlet-name>ServletMail</servlet-name> 
-		<url-pattern>/ServletMail</url-pattern> </servlet-mapping> -->
-
 	<servlet>
 		<servlet-name>Jersey REST Service</servlet-name>
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
@@ -37,13 +28,11 @@
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
-
 	<!-- Standard Action Servlet Mapping -->
 
 	<!-- The Usual Welcome File List -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
-		<!-- <welcome-file>esquema.jsp</welcome-file> -->
 	</welcome-file-list>
 
 	<resource-env-ref>

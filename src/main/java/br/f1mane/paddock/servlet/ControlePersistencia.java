@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -77,7 +76,7 @@ public class ControlePersistencia {
 		this.webDir = webDir;
 		try {
 			Properties properties = new Properties();
-			properties.load(PaddockConstants.class.getResourceAsStream("server.properties"));
+			properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -331,53 +330,6 @@ public class ControlePersistencia {
 		}
 	}
 
-	public byte[] obterBytesBase() {
-		try {
-			File file = new File(webInfDir + "hipersonic.tar.gz");
-			if (file != null) {
-				file.delete();
-			}
-			Connection connection = getSession().connection();
-			String sql = "BACKUP DATABASE TO '" + webInfDir + "hipersonic.tar.gz' BLOCKING";
-
-			connection.createStatement().executeUpdate(sql);
-			ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(webInfDir + "algolbkp.zip"));
-
-			ByteArrayOutputStream hsByteArrayOutputStream = new ByteArrayOutputStream();
-			FileInputStream fileInputStream = new FileInputStream(webInfDir + "hipersonic.tar.gz");
-			int byt = fileInputStream.read();
-
-			while (-1 != byt) {
-				hsByteArrayOutputStream.write(byt);
-				byt = fileInputStream.read();
-			}
-
-			ZipEntry entry = new ZipEntry("hipersonic.tar.gz");
-			zipOutputStream.putNextEntry(entry);
-			zipOutputStream.write(hsByteArrayOutputStream.toByteArray());
-
-			zipDir(webDir + "midia", zipOutputStream);
-
-			zipOutputStream.close();
-
-			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-			BufferedInputStream bufferedInputStream = new BufferedInputStream(
-					new FileInputStream(webInfDir + "f1mane.zip"));
-			byt = bufferedInputStream.read();
-
-			while (-1 != byt) {
-				arrayOutputStream.write(byt);
-				byt = bufferedInputStream.read();
-			}
-
-			arrayOutputStream.flush();
-
-			return arrayOutputStream.toByteArray();
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
-		return null;
-	}
 
 	public void zipDir(String dir2zip, ZipOutputStream zos) {
 		try {
@@ -518,7 +470,7 @@ public class ControlePersistencia {
 	}
 
 	public CampeonatoSrv pesquisaCampeonato(Session session, String id, boolean cliente) {
-		List campeonatos = session.createCriteria(CampeonatoSrv.class).add(Restrictions.eq("id", new Long(id))).list();
+		List campeonatos = session.createCriteria(CampeonatoSrv.class).add(Restrictions.eq("id", Long.parseLong(id))).list();
 		CampeonatoSrv campeonato = (CampeonatoSrv) (campeonatos.isEmpty() ? null : campeonatos.get(0));
 		if (campeonato == null) {
 			return null;
@@ -556,7 +508,7 @@ public class ControlePersistencia {
 
 	public CampeonatoSrv pesquisaCampeonatoId(String id, Session session) {
 		CampeonatoSrv campeonatoSrv = (CampeonatoSrv) session.createCriteria(CampeonatoSrv.class)
-				.add(Restrictions.eq("id", new Long(id))).uniqueResult();
+				.add(Restrictions.eq("id", Long.parseLong(id))).uniqueResult();
 		campeonatoCliente(session, campeonatoSrv);
 		return campeonatoSrv;
 	}

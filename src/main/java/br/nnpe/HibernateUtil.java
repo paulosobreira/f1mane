@@ -42,4 +42,8 @@ public class HibernateUtil {
 		return sessionFactory;
 	}
 
+	public static void main(String[] args) {
+		System.out.println("teste");
+	}
+
 }

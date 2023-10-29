@@ -71,3 +71,7 @@ java -Xms64m -Xmx512m -cp .;f1mane.jar;f1maneRecursos.jar br.f1mane.paddock.appl
 ## Como testar
 
 #TODO
+mvn clear package
+mvn war:war
+docker build -f f1mane.dockerfile . -t sowbreira/f1mane
+docker push sowbreira/f1mane

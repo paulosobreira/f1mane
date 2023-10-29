@@ -311,8 +311,9 @@ public class CarregadorRecursos {
                 }
             }
         }
+
         FileWriter fileWriter = new FileWriter(
-                "src/sowbreira/f1mane/recursos/carlist.txt");
+                "src/main/resources/carros/carlist.txt");
         for (Iterator iterator = carList.iterator(); iterator.hasNext(); ) {
             String carro = (String) iterator.next();
             StringBuilder nCarro = new StringBuilder();
@@ -331,7 +332,7 @@ public class CarregadorRecursos {
     }
 
     private static void gerarCarrosCima() throws IOException {
-        File fileT = new File("src/sowbreira/f1mane/recursos/properties");
+        File fileT = new File("src/main/resources/properties");
         File[] dirT = fileT.listFiles();
         for (int i = 0; i < dirT.length; i++) {
             String temporarada = dirT[i].getName();

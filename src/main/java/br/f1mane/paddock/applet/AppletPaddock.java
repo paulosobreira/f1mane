@@ -116,7 +116,7 @@ public class AppletPaddock {
 
 	public void initProperties() throws IOException {
 		Properties properties = new Properties();
-		properties.load(CarregadorRecursos.recursoComoStream("client.properties"));
+		properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
 		this.versao = properties.getProperty("versao");
 		if (versao.contains(".")) {
 			this.versao = versao.replaceAll("\\.", "");

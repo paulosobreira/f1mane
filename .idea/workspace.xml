@@ -5,45 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3430018-9fd3-4efa-9bf0-edcdaf03c6d3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f1mane.dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/rest/LetsRace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/rest/LetsRace.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/server.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/AppletPaddock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/AppletPaddock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/ControlePaddockCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/ControlePaddockCliente.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ControlePaddockServidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ControlePaddockServidor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ControlePersistencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ControlePersistencia.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ServletPaddock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ServletPaddock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/Constantes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/Constantes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/HibernateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/HibernateUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/Logger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/log4j.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/carlist.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/carros/carlist.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/client.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/META-INF/context.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/META-INF/context.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_circuito.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_circuito.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_equipes.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_equipes.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_geral.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_geral.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_temporada.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_temporada.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/configuracao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/configuracao.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/controles.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/controles.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/corrida.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/corrida.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/equipe.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/jogar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/jogar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/js/lang.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/js/lang.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/resultado.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/resultado.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Fl-Mane.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Fl-Mane.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/build.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pom.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +43,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -74,26 +57,69 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/sobreira/git/f1mane",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.keymap"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/sobreira/git/f1mane&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/carros" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.HibernateUtil">
+    <configuration name="HibernateUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="br.nnpe.HibernateUtil" />
+      <module name="f1mane" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.nnpe.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServletPaddock" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="br.f1mane.paddock.servlet.ServletPaddock" />
+      <module name="f1mane" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.f1mane.paddock.servlet.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Util" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="br.nnpe.Util" />
+      <module name="f1mane" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.nnpe.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="FlMane Web" type="com.poratu.idea.plugins.tomcat">
       <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
       <predefined_log_file enabled="true" id="Tomcat Access Log" />
@@ -103,9 +129,6 @@
       <option name="catalinaBase" value="$USER_HOME$/.SmartTomcat/f1mane/f1mane" />
       <option name="contextPath" value="/f1mane" />
       <option name="docBase" value="$PROJECT_DIR$/src/main/webapp" />
-      <option name="envOptions">
-        <map />
-      </option>
       <option name="extraClassPath" value="" />
       <option name="port" value="5000" />
       <option name="tomcatInfo">
@@ -121,6 +144,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.HibernateUtil" />
+        <item itemvalue="Application.Util" />
+        <item itemvalue="Application.ServletPaddock" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

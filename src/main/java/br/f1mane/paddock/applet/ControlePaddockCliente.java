@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import br.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Constantes;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
@@ -107,7 +108,7 @@ public class ControlePaddockCliente {
 
 	private void loadSufx() throws IOException {
 		Properties properties = new Properties();
-		properties.load(PaddockConstants.class.getResourceAsStream("client.properties"));
+		properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
 		// this.urlSufix = properties.getProperty("servidor");
 	}
 
