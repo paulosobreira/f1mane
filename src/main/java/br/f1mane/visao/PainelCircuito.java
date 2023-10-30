@@ -363,7 +363,7 @@ public class PainelCircuito {
 	public PainelCircuito(Circuito circuito, InterfaceJogo jogo) {
 		this.circuito = circuito;
 		this.controleJogo = jogo;
-		gridCarro = CarregadorRecursos.carregaBufferedImageTransparecia("GridCarro.png");
+		gridCarro = CarregadorRecursos.carregaBufferedImageTransparecia("png/GridCarro.png");
 		gerarGrid();
 		pistaFull = circuito.getPistaFull();
 		boxFull = circuito.getBoxFull();
@@ -486,62 +486,62 @@ public class PainelCircuito {
 	}
 
 	private void carregaRecursos() {
-		carroimgDano = CarregadorRecursos.carregaImagem("CarroLadoDef.png");
-		setaCarroCima = CarregadorRecursos.carregaBufferedImage("SetaCarroCima.png");
-		setaCarroBaixo = CarregadorRecursos.carregaBufferedImage("SetaCarroBaixo.png");
+		carroimgDano = CarregadorRecursos.carregaImagem("png/CarroLadoDef.png");
+		setaCarroCima = CarregadorRecursos.carregaBufferedImage("png/SetaCarroCima.png");
+		setaCarroBaixo = CarregadorRecursos.carregaBufferedImage("png/SetaCarroBaixo.png");
 
-		maisAsaIco = CarregadorRecursos.carregaBufferedImageTransparecia("maisAsa.png", null);
+		maisAsaIco = CarregadorRecursos.carregaBufferedImageTransparecia("png/maisAsa.png", null);
 		;
-		menosAsaIco = CarregadorRecursos.carregaBufferedImageTransparecia("menosAsa.png", null);
+		menosAsaIco = CarregadorRecursos.carregaBufferedImageTransparecia("png/menosAsa.png", null);
 		;
-		normalAsaIco = CarregadorRecursos.carregaBufferedImageTransparecia("normalAsa.png", null);
+		normalAsaIco = CarregadorRecursos.carregaBufferedImageTransparecia("png/normalAsa.png", null);
 		;
 
-		gridCarro = CarregadorRecursos.carregaBufferedImageTransparecia("GridCarro.png");
-		scima = CarregadorRecursos.carregaBufferedImage("sfcima.png");
-		travadaRodaImg0 = ImageUtil.geraTransparenciaAlpha(CarregadorRecursos.carregaBufferedImage("travadaRoda0.png"),
+		gridCarro = CarregadorRecursos.carregaBufferedImageTransparecia("png/GridCarro.png");
+		scima = CarregadorRecursos.carregaBufferedImage("png/sfcima.png");
+		travadaRodaImg0 = ImageUtil.geraTransparenciaAlpha(CarregadorRecursos.carregaBufferedImage("png/travadaRoda0.png"),
 				Integer.valueOf(40));
-		travadaRodaImg1 = ImageUtil.geraTransparenciaAlpha(CarregadorRecursos.carregaBufferedImage("travadaRoda1.png"),
+		travadaRodaImg1 = ImageUtil.geraTransparenciaAlpha(CarregadorRecursos.carregaBufferedImage("png/travadaRoda1.png"),
 				Integer.valueOf(40));
-		travadaRodaImg2 = ImageUtil.geraTransparenciaAlpha(CarregadorRecursos.carregaBufferedImage("travadaRoda2.png"),
+		travadaRodaImg2 = ImageUtil.geraTransparenciaAlpha(CarregadorRecursos.carregaBufferedImage("png/travadaRoda2.png"),
 				Integer.valueOf(40));
-		carroCimaFreiosD1 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosD1.png", null);
-		carroCimaFreiosD2 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosD2.png", null);
-		carroCimaFreiosD3 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosD3.png", null);
-		carroCimaFreiosD4 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosD4.png", null);
-		carroCimaFreiosD5 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosD5.png", null);
-		carroCimaFreiosE1 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosE1.png", null);
-		carroCimaFreiosE2 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosE2.png", null);
-		carroCimaFreiosE3 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosE3.png", null);
-		carroCimaFreiosE4 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosE4.png", null);
-		carroCimaFreiosE5 = CarregadorRecursos.carregaBufferedImageTransparecia("CarroCimaFreiosE5.png", null);
-		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("pneuMole.png", null),
+		carroCimaFreiosD1 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosD1.png", null);
+		carroCimaFreiosD2 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosD2.png", null);
+		carroCimaFreiosD3 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosD3.png", null);
+		carroCimaFreiosD4 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosD4.png", null);
+		carroCimaFreiosD5 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosD5.png", null);
+		carroCimaFreiosE1 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosE1.png", null);
+		carroCimaFreiosE2 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosE2.png", null);
+		carroCimaFreiosE3 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosE3.png", null);
+		carroCimaFreiosE4 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosE4.png", null);
+		carroCimaFreiosE5 = CarregadorRecursos.carregaBufferedImageTransparecia("png/CarroCimaFreiosE5.png", null);
+		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("png/pneuMole.png", null),
 				0.3);
-		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("pneuDuro.png", null),
+		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("png/pneuDuro.png", null),
 				0.3);
-		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("pneuChuva.png", null),
+		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("png/pneuChuva.png", null),
 				0.3);
 
 		pneuMoleImgMini = ImageUtil
-				.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("pneuMole.png", null), 0.15);
+				.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("png/pneuMole.png", null), 0.15);
 		pneuDuroImgMini = ImageUtil
-				.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("pneuDuro.png", null), 0.15);
+				.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("png/pneuDuro.png", null), 0.15);
 		pneuChuvaImgMini = ImageUtil
-				.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("pneuChuva.png", null), 0.15);
+				.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("png/pneuChuva.png", null), 0.15);
 
-		fuel = CarregadorRecursos.carregaBufferedImage("fuel.png");
+		fuel = CarregadorRecursos.carregaBufferedImage("png/fuel.png");
 
-		iconLua = CarregadorRecursos.carregaBufferedImage("lua.png");
-		iconSol = CarregadorRecursos.carregaBufferedImage("sol.png");
-		iconNublado = CarregadorRecursos.carregaBufferedImage("nublado.png");
-		iconChuva = CarregadorRecursos.carregaBufferedImage("chuva.png");
-		imgFarois = CarregadorRecursos.carregaBufferedImage("farois.png");
-		imgFarois1 = CarregadorRecursos.carregaBufferedImage("farois1.png");
-		imgFarois2 = CarregadorRecursos.carregaBufferedImage("farois2.png");
-		imgFarois3 = CarregadorRecursos.carregaBufferedImage("farois3.png");
-		imgFarois4 = CarregadorRecursos.carregaBufferedImage("farois4.png");
-		imgFaroisApagados = CarregadorRecursos.carregaBufferedImage("farois-apagados.png");
-		flags = CarregadorRecursos.carregaBufferedImage("flags.png");
+		iconLua = CarregadorRecursos.carregaBufferedImage("png/lua.png");
+		iconSol = CarregadorRecursos.carregaBufferedImage("png/sol.png");
+		iconNublado = CarregadorRecursos.carregaBufferedImage("png/nublado.png");
+		iconChuva = CarregadorRecursos.carregaBufferedImage("png/chuva.png");
+		imgFarois = CarregadorRecursos.carregaBufferedImage("png/farois.png");
+		imgFarois1 = CarregadorRecursos.carregaBufferedImage("png/farois1.png");
+		imgFarois2 = CarregadorRecursos.carregaBufferedImage("png/farois2.png");
+		imgFarois3 = CarregadorRecursos.carregaBufferedImage("png/farois3.png");
+		imgFarois4 = CarregadorRecursos.carregaBufferedImage("png/farois4.png");
+		imgFaroisApagados = CarregadorRecursos.carregaBufferedImage("png/farois-apagados.png");
+		flags = CarregadorRecursos.carregaBufferedImage("png/flags.png");
 
 	}
 

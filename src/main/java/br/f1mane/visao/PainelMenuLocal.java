@@ -610,7 +610,7 @@ public class PainelMenuLocal {
 	}
 
 	private void iniciaRecursos() {
-		setaCarroCima = CarregadorRecursos.carregaBufferedImage("SetaCarroCima.png");
+		setaCarroCima = CarregadorRecursos.carregaBufferedImage("png/SetaCarroCima.png");
 		/**
 		 * Esquerda
 		 */
@@ -634,22 +634,22 @@ public class PainelMenuLocal {
 
 		setaCarroDireita = rotateBufferSetaCima;
 
-		sol = CarregadorRecursos.carregaBufferedImage("sol.png");
-		nublado = CarregadorRecursos.carregaBufferedImage("nublado.png");
-		chuva = CarregadorRecursos.carregaBufferedImage("chuva.png");
+		sol = CarregadorRecursos.carregaBufferedImage("png/sol.png");
+		nublado = CarregadorRecursos.carregaBufferedImage("png/nublado.png");
+		chuva = CarregadorRecursos.carregaBufferedImage("png/chuva.png");
 
-		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("pneuMole.png", null),
+		pneuMoleImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("png/pneuMole.png", null),
 				0.3);
-		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("pneuDuro.png", null),
+		pneuDuroImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("png/pneuDuro.png", null),
 				0.3);
-		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("pneuChuva.png", null),
+		pneuChuvaImg = ImageUtil.geraResize(CarregadorRecursos.carregaBufferedImageTransparecia("png/pneuChuva.png", null),
 				0.3);
 
-		maisAsaImg = CarregadorRecursos.carregaBufferedImageTransparecia("maisAsa.png", null);
+		maisAsaImg = CarregadorRecursos.carregaBufferedImageTransparecia("png/maisAsa.png", null);
 		;
-		menosAsaImg = CarregadorRecursos.carregaBufferedImageTransparecia("menosAsa.png", null);
+		menosAsaImg = CarregadorRecursos.carregaBufferedImageTransparecia("png/menosAsa.png", null);
 		;
-		normalAsaImg = CarregadorRecursos.carregaBufferedImageTransparecia("normalAsa.png", null);
+		normalAsaImg = CarregadorRecursos.carregaBufferedImageTransparecia("png/normalAsa.png", null);
 		;
 
 		carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(true);

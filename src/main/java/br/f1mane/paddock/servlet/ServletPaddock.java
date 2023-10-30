@@ -38,7 +38,7 @@ public class ServletPaddock extends HttpServlet {
 
     private ControlePaddockServidor controlePaddock;
     private static MonitorAtividade monitorAtividade;
-    String host = "";
+    String host = "localhot";
     String senha;
     int port = 80;
 
@@ -60,9 +60,7 @@ public class ServletPaddock extends HttpServlet {
     }
 
     private String obterHost() throws UnknownHostException {
-        String ip = Inet4Address.getLocalHost().getHostAddress();
-        host = ip + ":" + port;
-        return host;
+        return host + ":" + port;
     }
 
     public void destroy() {
@@ -201,7 +199,7 @@ public class ServletPaddock extends HttpServlet {
         Connection connection = ds.getConnection();
         for (int i = 0; i < strings.length; i++) {
             String string = strings[i];
-            java.sql.Statement statement =connection
+            java.sql.Statement statement = connection
                     .createStatement();
             statement.execute(string);
             printWriter.println("<br/> " + string);

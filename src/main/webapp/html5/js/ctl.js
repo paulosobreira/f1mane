@@ -119,12 +119,12 @@ function ctl_desenhaInfoSegundosParaIniciar(){
 	
 	y+=70;
 	ctlContext.fillStyle = corFundo
-	var doarCarregando = lang_text('doarCarregando');
+	var msgCarregando = lang_text('msgCarregando');
 	ctlContext.font = '14px sans-serif';
-	laruraTxt = ctlContext.measureText(doarCarregando).width+30;
+	laruraTxt = ctlContext.measureText(msgCarregando).width+30;
 	ctlContext.fillRect(centroX-(laruraTxt/2), y, laruraTxt, 20);
 	ctlContext.fillStyle = "black"
-	ctlContext.fillText(doarCarregando, centroX-(laruraTxt/2)+15, y + 14);
+	ctlContext.fillText(msgCarregando, centroX-(laruraTxt/2)+15, y + 14);
 	
 }
 
@@ -728,7 +728,8 @@ function ctl_problemasCarrro(img , x, idPiloto , posicao){
 
 function ctl_desenhaInfoDireita() {
 	if (!dadosParciais) {
-		return;	}
+		return;
+	}
 	if(confirmaSair){
 		return;
 	}
@@ -886,7 +887,8 @@ function ctl_desenhaInfoDireita() {
 
 function ctl_desenhaInfoEsquerda() {
 	if (!dadosParciais) {
-		return;	}
+		return;
+	}
 	if(confirmaSair){
 		return;
 	}

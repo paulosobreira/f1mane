@@ -148,6 +148,6 @@ function rgbToHexUrlSafe(r, g, b) {
 
 function imgError(image) {
     image.onerror = "";
-    image.src = "https://sowbreira-26fe1.firebaseapp.com/f1mane/profile/profile-0.png";
+    image.src = "/f1mane/rest/letsRace/png/profile-0.png";
     return true;
 }

@@ -286,7 +286,7 @@ public class MainPanelEditor extends JPanel {
 
 	private void iniciaEditor(JFrame frame) {
 
-		carroCima = CarregadorRecursos.carregaBufferedImage("CarroCima.png");
+		carroCima = CarregadorRecursos.carregaBufferedImage("png/CarroCima.png");
 
 		JPanel controlPanel = gerarListsNosPistaBox();
 

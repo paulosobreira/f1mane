@@ -10,10 +10,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -100,7 +98,7 @@ public class MainFrameEditor extends JFrame {
 		removerKeyListeners();
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		final BufferedImage bg = ImageUtil.gerarFade(
-				CarregadorRecursos.carregaBufferedImage("bg-monaco.png"), 25);
+				CarregadorRecursos.carregaBufferedImage("png/bg-monaco.png"), 25);
 		setSize(bg.getWidth(), bg.getHeight());
 		JPanel jPanel = new JPanel() {
 			@Override

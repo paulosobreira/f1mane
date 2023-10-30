@@ -1,8 +1,8 @@
 # F1Mane
-
+ 
 F1-MANE (MANager & Engineer) é um jogo de gerenciamento de corrida. O jogo consiste em comandar o piloto e fazer ajustes telemétricos do carro. O jogador poderá configurar sua corrida escolhendo número de voltas, tipo de clima e configuração do carro. Em um campeonato o jogador poderá escolher um piloto/equipe iniciante e desafiar rivais mais promissores  e caso vença poderá assumir o controle da novo piloto/equipe.
 
-Fl-MANE por Paulo Sobreira
+## F1-MANE por Paulo Sobreira
 - Fl-MANE (MANager & Engineer) É um jogo de gerenciamento e engenharia de corrida.
 - O jogador envia comandos sobre como guiar e faz ajustes telemétricos do carro.
 - É possível escolher estratégia de box e muda-lá a qualquer momento na corrida.
@@ -12,7 +12,7 @@ Fl-MANE por Paulo Sobreira
 
 -Contato Paulo Sobreira : sowbreira@gmail.com.
 
-Controles:
+## Controles:
 
 F1 ou A - Giro Baixo Modo Economia de Motor e Combustível
 F2 ou S - Giro Normal Modo Normal de Motor e Combustível
@@ -28,13 +28,9 @@ W - Ativa o Ers.
 E - Ativa o DRS (Usado somente em retas ou pertes do ciruito consideradas retas) .
 Setas e mouse - Escolhe umm traçado para o piloto seguir.
 
-Informação Adicional
+# Informação Adicional
 
-Editor de objetos de Pista:
-
-baixe o arquivo f1mane.zip
-
-Execute o Descompatar.bat depois o Editor.bat
+## Editor de objetos de Pista:
 
 Pra criar uma pista precisa-se ter uma imagem(jpg) de um circuito na
 pasta bin\sowbreira\f1mane\recursos então deve-se ir no menu "Criar Arquivo
@@ -49,29 +45,14 @@ Ctrl + Page up e down : altera a  altura do objeto.
 Page up e down : Gira objeto.
 Ctrl + C :  cria uma copia do objeto.
 
--Atualizar o bin\br\f1mane\recursos\pistas.properties
+-Atualizar pistas.properties
 
--Iniciar o jogo(F1mane-Descompatado.bat) a pista nova deve esta em circuitos.
-
-Versão online, Montar um Servidor (f1mane.war):
-- Para servir o jogo em rede é preciso ter ip valido (também funciona com ip interno,
-  mas só em LAN/Redes privadas)
-- O servidor de aplicação Tomcat:
-  http://tomcat.apache.org que depois de baixado e instalado
-  deve-se colocar o arquivo f1mane.war dentro da pasta:
-  (unidade):\(dir do tomcat)\webapps então acessar o jogo pelo caminho:
-  http://(seu ip):8080/f1mane/
-
-Rodar Cliente Online Linux :
-java -Xms64m -Xmx512m -cp .:f1mane.jar:f1maneRecursos.jar br.f1mane.paddock.applet.AppletPaddock
-Rodar Cliente Online Windows :
-java -Xms64m -Xmx512m -cp .;f1mane.jar;f1maneRecursos.jar br.f1mane.paddock.applet.AppletPaddock
+-Iniciar o jogo a pista nova deve esta em circuitos.
 
 
-## Como testar
+## Construção
 
-#TODO
-mvn clean package
-mvn war:war
-docker build -f f1mane.dockerfile . -t sowbreira/f1mane
-docker push sowbreira/f1mane
+- mvn clean package
+- mvn war:war
+- docker build -f f1mane.dockerfile . -t sowbreira/f1mane
+- docker push sowbreira/f1mane

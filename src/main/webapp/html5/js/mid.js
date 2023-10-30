@@ -128,10 +128,10 @@ function mid_caregaMidia() {
 	
 	
 	imgBg = new Image();
-	imgBg.src = "/f1mane/rest/letsRace/circuitoJpg/" + circuito.backGround;
+	imgBg.src = "/f1mane/rest/letsRace/circuitoJpg/" + circuito.backGround
 
 	pow = new Image();
-	pow.src = "img/pow.png"
+	pow.src = "/f1mane/rest/letsRace/png/pow"
 	imgFarois = new Image();
 	imgFarois.src = "/f1mane/rest/letsRace/png/farois"
 	imgFarois1 = new Image();
@@ -145,21 +145,21 @@ function mid_caregaMidia() {
 	imgFaroisApagados = new Image();
 	imgFaroisApagados.src = "/f1mane/rest/letsRace/png/farois-apagados"
 	imgPneuM = new Image();
-	imgPneuM.src = "img/pneuMole.png"
+	imgPneuM.src = "/f1mane/rest/letsRace/png/pneuMoleMenor"
 	imgPneuD = new Image();
-	imgPneuD.src = "img/pneuDuro.png"
+	imgPneuD.src = "/f1mane/rest/letsRace/png/pneuDuroMenor"
 	imgPneuC = new Image();
-	imgPneuC.src = "img/pneuChuva.png"
+	imgPneuC.src = "/f1mane/rest/letsRace/png/pneuChuvaMenor"
 	girdLargadaMarca = new Image();
-	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro/180";
+	girdLargadaMarca.src = "/f1mane/rest/letsRace/png/GridCarro/180"
 	motor = new Image();
-	motor.src = "img/motor.png"
+	motor.src = "/f1mane/rest/letsRace/png/motor"
 	capacete = new Image();
-	capacete.src = "img/capacete.png"
+	capacete.src = "/f1mane/rest/letsRace/png/capaceteMonster"
 	menosAsa = new Image();
-	menosAsa.src = "/f1mane/rest/letsRace/png/menosAsa";
+	menosAsa.src = "/f1mane/rest/letsRace/png/menosAsa"
 	maisAsa = new Image();
-	maisAsa.src = "/f1mane/rest/letsRace/png/maisAsa";
+	maisAsa.src = "/f1mane/rest/letsRace/png/maisAsa"
 	normalAsa = new Image();
 	normalAsa.src = "/f1mane/rest/letsRace/png/normalAsa"
 	safetycar = new Image();

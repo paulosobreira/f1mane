@@ -312,19 +312,7 @@ public class Util {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		// Logger.logar(gerarChavePessoa(
-		// "Paulo Sobreira Cavalcante de Resende", "19/12/1977", "M"));
-		// Logger.logar(gerarChavePessoa("Ze Sobreira", "19/12/1977",
-		// "M"));
-		// Logger.logar(gerarChavePessoa("le lu tu", "19/12/1977", "M"));
-		// Logger.logar(gerarChavePessoa("j jameson j ", "19/12/1977",
-		// "M"));
-		// Logger.logar(md5("raquel"));
-		// System.out.println(md5("whiplash"));
-		// for (int i = 0; i < 100; i++) {
-		// System.out.println(intervalo(0, 2));
-		// }
-		System.out.println(md5("f1maneback"));
+		System.out.println(md5("f1mane"));
 	}
 
 	public static int intervalo(int val1, int val2) {

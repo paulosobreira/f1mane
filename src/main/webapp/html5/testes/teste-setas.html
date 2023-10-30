@@ -70,7 +70,7 @@
 				success : function(response) {
 					debugger;
 					circuito = response;
-					imgBg.src = "https://sowbreira-26fe1.firebaseapp.com/f1mane/sowbreira/f1mane/recursos/"+response.backGround;
+					imgBg.src = "/f1mane/rest/letsRace/circuitoJpg/"+response.backGround;
 					iniciarJogo();
 				},
 				error : function(xhRequest, ErrorText, thrownError) {
@@ -78,7 +78,26 @@
 				}
 			});
 		}
-		
+
+		function criarSessao() {
+			var urlServico = "/f1mane/rest/letsRace/criarSessaoVisitante";
+			$.ajax({
+				type : "GET",
+				url : urlServico,
+				contentType : "application/json",
+				dataType : "json",
+				success : function(sessaoVisitante) {
+					token = sessaoVisitante.sessaoCliente.token;
+					localStorage.setItem("token", token);
+				},
+				error : function(xhRequest, ErrorText, thrownError) {
+					tratamentoErro(xhRequest);
+					console.log('criarSessao() ' + xhRequest.status + '  ' + xhRequest.responseText);
+				}
+			});
+		}
+
+
 		function iniciarJogo() {
 			$.ajax({
 				type : "GET",
@@ -175,6 +194,7 @@
 				}			
 			}
 		}
+		criarSessao();
 		criar();
 		
 		window.addEventListener('keydown',this.check,false);

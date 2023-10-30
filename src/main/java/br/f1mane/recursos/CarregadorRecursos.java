@@ -189,7 +189,7 @@ public class CarregadorRecursos {
         BufferedImage backGround = null;
         try {
             backGround = ImageIO
-                    .read(CarregadorRecursos.recursoURL("circuitos/"+backGroundStr));
+                    .read(CarregadorRecursos.recursoURL("circuitos/" + backGroundStr));
         } catch (Exception e) {
             Logger.logarExept(e);
         }
@@ -366,7 +366,7 @@ public class CarregadorRecursos {
                     carro.setCor2(new Color(Integer.parseInt(red),
                             Integer.parseInt(green), Integer.parseInt(blue)));
                     BufferedImage carroCima = CarregadorRecursos
-                            .carregaImg("CarroCima.png");
+                            .carregaImg("png/CarroCima.png");
 
                     BufferedImage cor1 = gerarCoresCarros(carro.getCor1(),
                             "CarroCimaC1.png");
@@ -782,11 +782,11 @@ public class CarregadorRecursos {
     public BufferedImage desenhaCapacete(Piloto piloto) {
         BufferedImage ret;
         Carro carro = piloto.getCarro();
-        BufferedImage base = CarregadorRecursos.carregaImagem("Capacete.png");
+        BufferedImage base = CarregadorRecursos.carregaImagem("png/Capacete.png");
         BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-                carro.getCor1(), "CapaceteC1.png", base.getType());
+                carro.getCor1(), "png/CapaceteC1.png", base.getType());
         BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-                carro.getCor2(), "CapaceteC2.png", base.getType());
+                carro.getCor2(), "png/CapaceteC2.png", base.getType());
         BufferedImage capacete = new BufferedImage(base.getWidth(),
                 base.getHeight(), base.getType());
         Graphics graphics = capacete.getGraphics();
@@ -861,11 +861,11 @@ public class CarregadorRecursos {
 
     private BufferedImage desenhaCarroLado(Carro carro) {
         BufferedImage carroLado = CarregadorRecursos
-                .carregaImagem("CarroLado.png");
+                .carregaImagem("png/CarroLado.png");
         BufferedImage cor1 = CarregadorRecursos
-                .gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
+                .gerarCoresCarros(carro.getCor1(), "png/CarroLadoC1.png");
         BufferedImage cor2 = CarregadorRecursos
-                .gerarCoresCarros(carro.getCor2(), "CarroLadoC2.png");
+                .gerarCoresCarros(carro.getCor2(), "png/CarroLadoC2.png");
         Graphics graphics = carroLado.getGraphics();
         setarHints((Graphics2D) graphics);
         graphics.drawImage(cor1, 0, 0, null);
@@ -901,11 +901,11 @@ public class CarregadorRecursos {
 
     private BufferedImage desenhaCArroladoSemAereofolio(Carro carro) {
         BufferedImage carroLado = CarregadorRecursos
-                .carregaImagem("CarroLado.png");
+                .carregaImagem("png/CarroLado.png");
         BufferedImage cor1 = CarregadorRecursos
-                .gerarCoresCarros(carro.getCor1(), "CarroLadoC1.png");
+                .gerarCoresCarros(carro.getCor1(), "png/CarroLadoC1.png");
         BufferedImage cor2 = CarregadorRecursos
-                .gerarCoresCarros(carro.getCor2(), "CarroLadoC3.png");
+                .gerarCoresCarros(carro.getCor2(), "png/CarroLadoC3.png");
         Graphics graphics = carroLado.getGraphics();
         setarHints((Graphics2D) graphics);
         graphics.drawImage(cor1, 0, 0, null);
@@ -1007,22 +1007,22 @@ public class CarregadorRecursos {
     }
 
     private String obterModeloCarroCima(String temporada) {
-        String modelo = "cima2017/";
+        String modelo = "png/cima2017/";
         if (temporada == null) {
             return modelo;
         }
         Integer anoTemporada = Integer.valueOf(temporada.replace("t", ""));
         if (anoTemporada < 2017) {
-            modelo = "cima20092016/";
+            modelo = "png/cima20092016/";
         }
         if (anoTemporada < 2009) {
-            modelo = "cima19982008/";
+            modelo = "png/cima19982008/";
         }
         if (anoTemporada < 1997) {
-            modelo = "cima19801997/";
+            modelo = "png/cima19801997/";
         }
         if (anoTemporada <= 1980) {
-            modelo = "cima19701979/";
+            modelo = "png/cima19701979/";
         }
         return modelo;
     }
@@ -1042,7 +1042,7 @@ public class CarregadorRecursos {
             cd.setNome(Util.substVogais(nmCircuitoOri));
             cd.setArquivo(carregarCircuitos.get(nmCircuitoOri));
             ObjectInputStream ois = new ObjectInputStream(CarregadorRecursos
-                    .recursoComoStream("circuitos/"+cd.getArquivo()));
+                    .recursoComoStream("circuitos/" + cd.getArquivo()));
             Circuito circuito = (Circuito) ois.readObject();
             cd.setProbalidadeChuva(circuito.getProbalidadeChuva());
             circuitosDefauts.add(cd);
@@ -1056,7 +1056,7 @@ public class CarregadorRecursos {
         Circuito circuito = bufferCircuitos.get(nmCircuito);
         if (circuito == null) {
             ObjectInputStream ois = new ObjectInputStream(
-                    CarregadorRecursos.recursoComoStream("circuitos/"+nmCircuito));
+                    CarregadorRecursos.recursoComoStream("circuitos/" + nmCircuito));
             circuito = (Circuito) ois.readObject();
         }
         if (cache) {

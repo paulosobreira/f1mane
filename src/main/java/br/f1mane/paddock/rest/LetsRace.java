@@ -609,7 +609,7 @@ public class LetsRace {
     public Response png(@PathParam("recurso") String recurso) {
         try {
             BufferedImage buffer = CarregadorRecursos
-                    .carregaBufferedImage(recurso + ".png");
+                    .carregaBufferedImage("png/" + recurso + ".png");
             if (buffer == null) {
                 return Response.status(200).entity("null").build();
             }
@@ -632,7 +632,7 @@ public class LetsRace {
                         @PathParam("trasnparencia") String trasnparencia) {
         try {
             BufferedImage buffer = ImageUtil.geraTransparenciaAlpha(
-                    CarregadorRecursos.carregaBufferedImage(recurso + ".png"),
+                    CarregadorRecursos.carregaBufferedImage("png/" + recurso + ".png"),
                     Integer.parseInt(trasnparencia));
             if (buffer == null) {
                 return Response.status(200).entity("null").build();

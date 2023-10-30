@@ -35,11 +35,11 @@ public class RestTeste {
 	public Response carroCima() throws IOException {
 
 		BufferedImage carroLado = CarregadorRecursos
-				.carregaBufferedImage("cima20092016/CarroCima.png");
+				.carregaBufferedImage("png/cima20092016/CarroCima.png");
 		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-				Util.criarCorAleatoria(), "cima20092016/CarroCimaC1.png");
+				Util.criarCorAleatoria(), "png/cima20092016/CarroCimaC1.png");
 		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-				Util.criarCorAleatoria(), "cima20092016/CarroCimaC2.png");
+				Util.criarCorAleatoria(), "png/cima20092016/CarroCimaC2.png");
 		Graphics graphics = carroLado.getGraphics();
 		graphics.drawImage(cor1, 0, 0, null);
 		graphics.drawImage(cor2, 0, 0, null);

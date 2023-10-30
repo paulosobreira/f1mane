@@ -225,11 +225,11 @@ public class FormCarreira extends JPanel {
 
 	protected void gerarCarroCima() {
 		BufferedImage carroLado = CarregadorRecursos
-				.carregaImagem("cima20092016/CarroCima.png");
+				.carregaImagem("png/cima20092016/CarroCima.png");
 		BufferedImage cor1 = CarregadorRecursos.gerarCoresCarros(
-				labelCor1.getBackground(), "cima20092016/CarroCimaC1.png");
+				labelCor1.getBackground(), "png/cima20092016/CarroCimaC1.png");
 		BufferedImage cor2 = CarregadorRecursos.gerarCoresCarros(
-				labelCor2.getBackground(), "cima20092016/CarroCimaC2.png");
+				labelCor2.getBackground(), "png/cima20092016/CarroCimaC2.png");
 		Graphics graphics = carroLado.getGraphics();
 		graphics.drawImage(cor1, 0, 0, null);
 		graphics.drawImage(cor2, 0, 0, null);
@@ -240,11 +240,11 @@ public class FormCarreira extends JPanel {
 
 	protected void gerarCarroLado() {
 		BufferedImage carroLado = CarregadorRecursos
-				.carregaImagem("CarroLado.png");
+				.carregaImagem("png/CarroLado.png");
 		BufferedImage cor1 = CarregadorRecursos
-				.gerarCoresCarros(labelCor1.getBackground(), "CarroLadoC1.png");
+				.gerarCoresCarros(labelCor1.getBackground(), "png/CarroLadoC1.png");
 		BufferedImage cor2 = CarregadorRecursos
-				.gerarCoresCarros(labelCor2.getBackground(), "CarroLadoC2.png");
+				.gerarCoresCarros(labelCor2.getBackground(), "png/CarroLadoC2.png");
 		Graphics graphics = carroLado.getGraphics();
 		graphics.drawImage(cor1, 0, 0, null);
 		graphics.drawImage(cor2, 0, 0, null);

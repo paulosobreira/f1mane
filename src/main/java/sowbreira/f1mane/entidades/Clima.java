@@ -10,9 +10,9 @@ import br.f1mane.recursos.idiomas.Lang;
 public class Clima implements Serializable {
 
 	private static final long serialVersionUID = -8243527950668384429L;
-	public final static String SOL = "sol.png";
-	public final static String CHUVA = "chuva.png";
-	public final static String NUBLADO = "nublado.png";
+	public final static String SOL = "png/sol.png";
+	public final static String CHUVA = "png/chuva.png";
+	public final static String NUBLADO = "png/nublado.png";
 	public final static String ALEATORIO = "ALEATORIO";
 	private String clima;
 
