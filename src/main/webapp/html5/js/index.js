@@ -105,7 +105,8 @@ function dadosJogador() {
 		success : function(srvPaddockPack) {
 			if (srvPaddockPack) {
 				localStorage.setItem("nomeJogador", srvPaddockPack.sessaoCliente.nomeJogador);
-				$('#nomeJogador').append('<b>' + localStorage.getItem("nomeJogador") + '</b>');
+				$('#nomeJogador').empty();
+                $('#nomeJogador').append('<b>' + localStorage.getItem("nomeJogador") + '</b>');
 				if (!srvPaddockPack.sessaoCliente.guest) {
 					localStorage.setItem("imagemJogador", srvPaddockPack.sessaoCliente.imagemJogador);
 					$('#imgJogador').attr('src', localStorage.getItem("imagemJogador"));
@@ -120,14 +121,6 @@ function dadosJogador() {
 			if (xhRequest.status == 404) {
 				toaster(lang_text('210'), 4000, 'alert alert-danger');
 				localStorage.removeItem("token");
-				token = null;
-				plataforma = localStorage.getItem('plataforma');
-				if (plataforma == "android") {
-					setTimeout(function() {
-						localStorage.clear();
-						Android.exitApp();
-					}, 3500);
-				}
 				return;
 			}
 			tratamentoErro(xhRequest);
@@ -158,3 +151,94 @@ function sobre() {
 		}
 	});
 }
+	//Ripple-effect animation
+    (function($) {
+        $(".ripple-effect").click(function(e){
+            var rippler = $(this);
+
+            // create .ink element if it doesn't exist
+            if(rippler.find(".ink").length == 0) {
+                rippler.append("<span class='ink'></span>");
+            }
+
+            var ink = rippler.find(".ink");
+
+            // prevent quick double clicks
+            ink.removeClass("animate");
+
+            // set .ink diametr
+            if(!ink.height() && !ink.width())
+            {
+                var d = Math.max(rippler.outerWidth(), rippler.outerHeight());
+                ink.css({height: d, width: d});
+            }
+
+            // get click coordinates
+            var x = e.pageX - rippler.offset().left - ink.width()/2;
+            var y = e.pageY - rippler.offset().top - ink.height()/2;
+
+            // set .ink position and add class .animate
+            ink.css({
+              top: y+'px',
+              left:x+'px'
+            }).addClass("animate");
+        })
+    })(jQuery);
+
+    function handleCredentialResponse(response) {
+        const data = jwt_decode(response.credential)
+        var urlServico = "/f1mane/rest/letsRace/criarSessaoGoogle";
+        $.ajax({
+            type : "GET",
+            url : urlServico,
+            headers : {
+                'idGoogle' : data.sub,
+                'nome' : data.name,
+                'urlFoto' : data.picture,
+                'email' : data.email
+            },
+            success : function(srvPaddockPack) {
+                if (srvPaddockPack) {
+                    localStorage.setItem("nomeJogador", srvPaddockPack.sessaoCliente.nomeJogador);
+                    localStorage.setItem("token", srvPaddockPack.sessaoCliente.token);
+                    $('#nomeJogador').empty();
+                    $('#nomeJogador').append('<b>' + localStorage.getItem("nomeJogador") + '</b>');
+                    if (!srvPaddockPack.sessaoCliente.guest) {
+                        localStorage.setItem("imagemJogador", srvPaddockPack.sessaoCliente.imagemJogador);
+                        $('#imgJogador').attr('src', localStorage.getItem("imagemJogador"));
+                    }
+                    if (srvPaddockPack.sessaoCliente.jogoAtual) {
+                        localStorage.setItem("nomeJogo", srvPaddockPack.sessaoCliente.jogoAtual);
+                    }
+                    $('#buttonDiv').remove();
+                }
+            },
+            error : function(xhRequest, ErrorText, thrownError) {
+                $('#botoes').show();
+                if (xhRequest.status == 404) {
+                    toaster(lang_text('210'), 4000, 'alert alert-danger');
+                    localStorage.removeItem("token");
+                    token = null;
+                }
+                tratamentoErro(xhRequest);
+                console.log('sobre() ' + xhRequest.status + '  ' + xhRequest.responseText);
+            }
+        });
+        console.log("JWT ID token: " + data);
+    }
+    if (localStorage.getItem("token") == null){
+        window.onload = function () {
+          google.accounts.id.initialize({
+            client_id: "143142801251-n0a6bc0rs03h41bt7ganklmlrokqn6te.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+          });
+          google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"),
+            { type:"standard",
+              theme: "outline",
+              size: "large" ,
+              logo_alignment:"center" }  // customization attributes
+          );
+          google.accounts.id.prompt(); // also display the One Tap dialog
+        }
+    }

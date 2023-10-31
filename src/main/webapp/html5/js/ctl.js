@@ -936,13 +936,13 @@ function ctl_desenhaInfoEsquerda() {
 		ctlContext.font = '14px sans-serif';
 		ctlContext.fillStyle = "black"
 		var climaDesc = '';
-		if (dadosParciais.clima == "sol.png") {
+		if (dadosParciais.clima == "png/sol.png") {
 			climaDesc = "Ensolarado"
 		}
-		if (dadosParciais.clima == "nublado.png") {
+		if (dadosParciais.clima == "png/nublado.png") {
 			climaDesc = "Nublado"
 		}
-		if (dadosParciais.clima == "chuva.png") {
+		if (dadosParciais.clima == "png/chuva.png") {
 			climaDesc = "Chovendo"
 		}
 		ctlContext.fillText(lang_text(climaDesc), x + 5, y + 15);

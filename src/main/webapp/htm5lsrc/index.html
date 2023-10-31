@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="css/f1mane.css?v={versao}">
 	<link rel="stylesheet" href="css/mdb-btns.css?v={versao}">
 	<script src="../jquery/jquery-3.2.1.min.js"></script>
-	<script src="https://unpkg.com/jwt-decode@3.1.2/build/jwt-decode.js"></script>
+	<script src="../jwtdecode/jwt-decode.js"></script>
 	<script src="https://accounts.google.com/gsi/client" async defer></script>
 	<title>Fl-Mane</title>
 </head>
@@ -23,13 +23,13 @@
 			<img id="imgJogador" class="img-responsive img-center userPic"/>
 			<h4 id="nomeJogador" style="margin-left: 50px"></h4>
 		</div>
+		<div id="buttonDiv"></div>
 	</section>
 	<section id="mainContainer" class="container">
 		<div id="botoes" class="list-group">
 			<a href="jogar.html?v={versao}" class="list-group-item transparent">
 				<button type="button" id="btnJogar" class="btn btn-default btn-block btn-raised bgTransparent"></button>
 			</a>
-			<div id="buttonDiv"></div>
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JD9VNY3HUFRV4&source=url"
 			   class="list-group-item transparent">
 				<button type="button" id="btnCafe" class="btn btn-default btn-block btn-raised bgTransparent"></button>
@@ -71,61 +71,4 @@
 <script src="js/loader.js?v={versao}"></script>
 <script src="js/lang.js?v={versao}"></script>
 <script src="js/index.js?v={versao}"></script>
-<script>
-	//Ripple-effect animation
-    (function($) {
-        $(".ripple-effect").click(function(e){
-            var rippler = $(this);
-
-            // create .ink element if it doesn't exist
-            if(rippler.find(".ink").length == 0) {
-                rippler.append("<span class='ink'></span>");
-            }
-
-            var ink = rippler.find(".ink");
-
-            // prevent quick double clicks
-            ink.removeClass("animate");
-
-            // set .ink diametr
-            if(!ink.height() && !ink.width())
-            {
-                var d = Math.max(rippler.outerWidth(), rippler.outerHeight());
-                ink.css({height: d, width: d});
-            }
-
-            // get click coordinates
-            var x = e.pageX - rippler.offset().left - ink.width()/2;
-            var y = e.pageY - rippler.offset().top - ink.height()/2;
-
-            // set .ink position and add class .animate
-            ink.css({
-              top: y+'px',
-              left:x+'px'
-            }).addClass("animate");
-        })
-    })(jQuery);
-
-    function handleCredentialResponse(response) {
-      const data = jwt_decode(response.credential)
-<!--	  fullName.textContent = data.name-->
-<!--	  sub.textContent = data.sub-->
-<!--	  given_name.textContent = data.given_name-->
-<!--	  family_name.textContent = data.family_name-->
-<!--	  email.textContent = data.email-->
-<!--	  verifiedEmail.textContent = data.email_verified	-->
-      console.log("JWT ID token: " + data);
-    }
-    window.onload = function () {
-      google.accounts.id.initialize({
-        client_id: "143142801251-n0a6bc0rs03h41bt7ganklmlrokqn6te.apps.googleusercontent.com",
-        callback: handleCredentialResponse
-      });
-      google.accounts.id.renderButton(
-        document.getElementById("buttonDiv"),
-        { theme: "outline", size: "large" }  // customization attributes
-      );
-      google.accounts.id.prompt(); // also display the One Tap dialog
-    }
-</script>
 </html>

@@ -124,11 +124,11 @@ function montaLinhaGridResultado(i, piloto) {
 	}
 	var pneu = $('<img class="img-right"/>');
 	if (piloto.carro.tipoPneu == 'TIPO_PNEU_MOLE') {
-		pneu.attr('src', 'img/pneuMole.png');
+		pneu.attr('src', '/f1mane/rest/letsRace/png/pneuMoleMenor.png');
 	} else if (piloto.carro.tipoPneu == 'TIPO_PNEU_DURO') {
-		pneu.attr('src', 'img/pneuDuro.png');
+		pneu.attr('src', '/f1mane/rest/letsRace/png/pneuDuroMenor.png');
 	} else if (piloto.carro.tipoPneu == 'TIPO_PNEU_CHUVA') {
-		pneu.attr('src', 'img/pneuChuva.png');
+		pneu.attr('src', '/f1mane/rest/letsRace/png/pneuChuvaMenor.png');
 	}
 	capacetes.append(pneu);
 	td1.append(capacetes);

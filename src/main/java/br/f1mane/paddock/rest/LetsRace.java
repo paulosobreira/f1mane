@@ -109,22 +109,6 @@ public class LetsRace {
     }
 
     @GET
-    @Path("/criarSessaoGoogleTeste/{idGoogle}/{nome}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response criarSessaoGoogle(@PathParam("idGoogle") String idGoogle,
-                                      @PathParam("nome") String nome) {
-        if (!Logger.ativo) {
-            return Response.status(400).type(MediaType.APPLICATION_JSON)
-                    .build();
-        }
-        return Response.status(200)
-                .entity(controlePaddock.criarSessaoGoogle(idGoogle, nome,
-                        "https://lh4.googleusercontent.com/-edNcQ95Ak5w/AAAAAAAAAAI/AAAAAAAABVE/4C3Yv5L5UDo/s96-c/photo.jpg",
-                        "sowbreira@gmail.com"))
-                .build();
-    }
-
-    @GET
     @Path("/criarSessaoGoogle")
     @Produces(MediaType.APPLICATION_JSON)
     public Response criarSessaoGoogle(@HeaderParam("idGoogle") String idGoogle,
