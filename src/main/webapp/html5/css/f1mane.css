@@ -146,6 +146,9 @@
 	margin-right: 20px; font-size: 22px;
 }
 
+.sair{
+	margin-right: 20px; font-size: 22px;
+}
 .black{
 	color: black;
 }
@@ -160,6 +163,11 @@
 
 .voltarIndex{
     float: left;
+    margin-top: 20px;
+}
+
+.sair{
+    float: right;
     margin-top: 20px;
 }
 

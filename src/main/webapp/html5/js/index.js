@@ -2,6 +2,8 @@
  * Controle do menu inicial
  */
 $('#voltar').hide();
+$('#sair').hide();
+$('#painelLogado').hide();
 if (localStorage.getItem("versao") != $("#versao").val()) {
 	console.log('Limpando localStorage versao: ' + $("#versao").val());
 	var token = localStorage.getItem("token");
@@ -38,8 +40,10 @@ if (token == null) {
 }
 
 if (token != null) {
-	localStorage.setItem("token", token);
 	dadosJogador();
+    $('#buttonDiv').remove();
+    $('#sair').show();
+    $('#painelLogado').show();
 }
 
 if (plataforma != null) {
@@ -92,6 +96,11 @@ $('#btnSobre').bind("click", function() {
 			$('#voltar').hide();
 		}
 	});
+});
+
+$('#sair').bind("click", function() {
+    localStorage.removeItem("token");
+    location.reload();
 });
 
 function dadosJogador() {
@@ -211,6 +220,8 @@ function sobre() {
                         localStorage.setItem("nomeJogo", srvPaddockPack.sessaoCliente.jogoAtual);
                     }
                     $('#buttonDiv').remove();
+                    $('#sair').show();
+                    $('#painelLogado').show();
                 }
             },
             error : function(xhRequest, ErrorText, thrownError) {
