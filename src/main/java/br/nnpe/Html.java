@@ -158,8 +158,7 @@ public class Html {
 				achouDigito = true;
 			}
 
-			if (pulaDigito && achouDigito
-					&& Character.isDigit(info.charAt(i))) {
+			if (pulaDigito && Character.isDigit(info.charAt(i))) {
 				continue;
 			} else {
 				pulaDigito = false;

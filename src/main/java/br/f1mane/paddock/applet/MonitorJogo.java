@@ -164,10 +164,7 @@ public class MonitorJogo implements Runnable {
 
 	private void processaCiclosCorrida(long tempoCiclo)
 			throws InterruptedException {
-		boolean interrupt = false;
-		boolean atualizaPosicoes = true;
-		while (!interrupt && Comandos.CORRIDA_INICIADA.equals(estado)
-				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
+		while (Comandos.CORRIDA_INICIADA.equals(estado) && controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
 				if (getLatenciaReal() > 1000) {
 					jogoCliente.setAtualizacaoSuave(false);
@@ -181,19 +178,15 @@ public class MonitorJogo implements Runnable {
 				atualizarDados();
 				iniciaJalena();
 				atualizaZoom();
-				if (atualizaPosicoes) {
-					apagarLuz();
-				}
-				jogoCliente.desenhaQualificacao();
+                apagarLuz();
+                jogoCliente.desenhaQualificacao();
 				jogoCliente.desenhouQualificacao();
 				jogoCliente.selecionaPilotoJogador();
 				disparaAtualizadorPainel(tempoCiclo);
 				atualizarDadosParciais(jogoCliente.getDadosJogo(),
-						jogoCliente.getPilotoSelecionado(), atualizaPosicoes);
-				atualizaPosicoes = true;
+						jogoCliente.getPilotoSelecionado(), true);
 				Thread.sleep(tempoCiclo);
 			} catch (InterruptedException e) {
-				interrupt = true;
 				Logger.logarExept(e);
 				throw e;
 			}
@@ -244,7 +237,7 @@ public class MonitorJogo implements Runnable {
 			while (!atualizouDadosQualify && !atualizouDados && cont < 15) {
 				atualizarDados();
 				if (atualizouDados) {
-					atualizouDadosQualify = atualizouDados;
+					atualizouDadosQualify = true;
 				} else {
 					cont++;
 					Thread.sleep(100);
@@ -261,16 +254,13 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private void esperaJogoComecar() throws InterruptedException {
-		boolean interupt = false;
-		while (!interupt && Comandos.ESPERANDO_JOGO_COMECAR.equals(estado)
-				&& controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
+		while (Comandos.ESPERANDO_JOGO_COMECAR.equals(estado) && controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			jogoCliente.carregaBackGroundCliente();
 			verificaEstadoJogo();
 			try {
 				atualizouDados = false;
 				Thread.sleep(600);
 			} catch (InterruptedException e) {
-				interupt = true;
 				Logger.logarExept(e);
 				throw e;
 			}

@@ -13,18 +13,14 @@ public class HibernateUtil {
 
 	static {
 
-		if (sessionFactory == null) {
+        try {
+            sessionFactory = new AnnotationConfiguration().configure()
+                    .buildSessionFactory();
+        } catch (Throwable e) {
+            throw new ExceptionInInitializerError(e);
+        }
 
-			try {
-				sessionFactory = new AnnotationConfiguration().configure()
-						.buildSessionFactory();
-			} catch (Throwable e) {
-				throw new ExceptionInInitializerError(e);
-			}
-
-		}
-
-	}
+    }
 
 	public static SessionFactory getSessionFactory() {
 		if (sessionFactory != null && Logger.novaSession) {

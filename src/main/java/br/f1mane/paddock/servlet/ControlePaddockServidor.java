@@ -721,9 +721,6 @@ public class ControlePaddockServidor {
 
 	}
 
-	public static void main(String[] args) {
-		System.out.println("#babaca".startsWith("#"));
-	}
 
 	public boolean removerCliente(SessaoCliente sessaoCliente) {
 		return controleJogosServer.removerCliente(sessaoCliente);

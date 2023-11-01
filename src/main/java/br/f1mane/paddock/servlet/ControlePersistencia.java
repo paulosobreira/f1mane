@@ -35,6 +35,8 @@ public class ControlePersistencia {
 	private final String nomeArquivo = "paddockDadosSrv.zip";
 	private static PaddockDadosSrv paddockDadosSrv;
 
+	private final static String lock = "lock";
+
 	private String webInfDir;
 
 	private String webDir;
@@ -87,7 +89,7 @@ public class ControlePersistencia {
 	}
 
 	public void gravarDados() throws IOException {
-		synchronized (paddockDadosSrv) {
+		synchronized (lock) {
 			processarLimpeza(paddockDadosSrv);
 			paddockDadosSrv.setLastSave(System.currentTimeMillis());
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -198,10 +200,8 @@ public class ControlePersistencia {
 
 				try {
 					session.saveOrUpdate(jogadorDadosSrv);
-					if (carreiraDadosSrv == null) {
-						carreiraDadosSrv = new CarreiraDadosSrv();
-					}
-					carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
+                    carreiraDadosSrv = new CarreiraDadosSrv();
+                    carreiraDadosSrv.setJogadorDadosSrv(jogadorDadosSrv);
 					session.saveOrUpdate(carreiraDadosSrv);
 					session.saveOrUpdate(jogadorDadosSrv);
 				} catch (Exception e) {
@@ -223,7 +223,7 @@ public class ControlePersistencia {
 
 	public byte[] obterBytesBase(String tipo) {
 		try {
-			synchronized (paddockDadosSrv) {
+			synchronized (lock) {
 
 				ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 				BufferedInputStream bufferedInputStream = new BufferedInputStream(

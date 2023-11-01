@@ -1829,7 +1829,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		boolean tentaPassarFrete = tentarPassaPilotoDaFrente(controleJogo);
 		boolean tentarEscaparAtras = false;
 		if (!tentaPassarFrete) {
-			tentarEscaparAtras = tentarEscaparPilotoAtras(controleJogo, tentaPassarFrete);
+			tentarEscaparAtras = tentarEscaparPilotoAtras(controleJogo, false);
 		}
 		if (getNumeroVolta() > 0 && controleJogo.verificaInfoRelevante(this)) {
 			if (tentaPassarFrete && calculaDiferencaParaProximo < 100) {
@@ -2646,14 +2646,7 @@ public class Piloto implements Serializable, PilotoSuave {
 			return false;
 		}
 		double val = (Constantes.CICLO / 80);
-		if (val < 1.0) {
-			if (Math.random() > val) {
-				val = 1;
-			} else {
-				val = 0;
-			}
-		}
-		int dec = (int) val;
+        int dec = (int) val;
 		if (AGRESSIVO.equals(modoPilotagem) && getStress() < 70) {
 			incStress(1);
 			dec++;

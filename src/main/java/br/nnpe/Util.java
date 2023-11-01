@@ -429,22 +429,22 @@ public class Util {
 			if (valorAutal == 600) {
 				inc = 2;
 			}
-		} else if (proximoValor >= 600 && proximoValor < 700) {
+		} else if (proximoValor < 700) {
 			inc = 2;
 			if (valorAutal == 700) {
 				inc = 10;
 			}
-		} else if (proximoValor >= 700 && proximoValor < 800) {
+		} else if (proximoValor < 800) {
 			inc = 10;
 			if (valorAutal == 800) {
 				inc = 20;
 			}
-		} else if (proximoValor >= 800 && proximoValor < 900) {
+		} else if (proximoValor < 900) {
 			inc = 20;
 			if (valorAutal == 900) {
 				inc = 50;
 			}
-		} else if (proximoValor >= 900 && proximoValor < 999) {
+		} else if (proximoValor < 999) {
 			inc = 50;
 		}
 		if ((proximoValor - valorAutal) > 0) {

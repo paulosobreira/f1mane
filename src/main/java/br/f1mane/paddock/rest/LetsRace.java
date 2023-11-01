@@ -264,7 +264,7 @@ public class LetsRace {
             Object dadosJogoObj = controlePaddock
                     .obterDadosJogo(clientPaddockPack);
             dadosJogo = (DadosJogo) dadosJogoObj;
-            if (dadosJogoObj == null || !(dadosJogoObj instanceof DadosJogo)) {
+            if (dadosJogoObj == null) {
                 if (!controlePaddock.obterJogos().isEmpty()) {
                     String jogo = controlePaddock.obterJogos().get(0);
                     clientPaddockPack = new ClientPaddockPack();
@@ -617,9 +617,6 @@ public class LetsRace {
             BufferedImage buffer = ImageUtil.geraTransparenciaAlpha(
                     CarregadorRecursos.carregaBufferedImage("png/" + recurso + ".png"),
                     Integer.parseInt(trasnparencia));
-            if (buffer == null) {
-                return Response.status(200).entity("null").build();
-            }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(buffer, "png", baos);
             byte[] imageData = baos.toByteArray();

@@ -89,11 +89,9 @@ public class CarregadorRecursos {
         if (temporadas != null) {
             return vectorTemps;
         }
-        if (temporadas == null) {
-            temporadas = new HashMap<String, String>();
-            temporadasDefauts = new HashMap<String, TemporadasDefauts>();
-            vectorTemps = new Vector<String>();
-        }
+        temporadas = new HashMap<String, String>();
+        temporadasDefauts = new HashMap<String, TemporadasDefauts>();
+        vectorTemps = new Vector<String>();
         final Properties properties = new Properties();
         try {
             properties.load(
@@ -144,7 +142,7 @@ public class CarregadorRecursos {
             try {
                 buffer = ImageUtil.toBufferedImage(file);
                 if (buffer == null) {
-                    Logger.logar("img=" + buffer);
+                    Logger.logar( "carregaBufferedImageTranspareciaBranca buffer nulo");
                 }
 
             } catch (Exception e) {
@@ -197,7 +195,7 @@ public class CarregadorRecursos {
             panel.setSize(backGround.getWidth(), backGround.getHeight());
 
         if (backGround == null) {
-            Logger.logar("backGround=" + backGround);
+            Logger.logar("carregaBackGround backGround nulo");
             return null;
         }
 
@@ -640,7 +638,7 @@ public class CarregadorRecursos {
         try {
             buffer = ImageUtil.toBufferedImage(file);
             if (buffer == null) {
-                Logger.logar("img=" + buffer);
+                Logger.logar("carregaBufferedImageMeiaTransparenciaBraca buffer nulo");
                 return null;
             }
 

@@ -34,7 +34,7 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:28:27
  */
 public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
-
+	private final static String lock = "lock";
 	private String nomeJogoServidor;
 	private String nomeCriador;
 	private String tokenCriador;
@@ -345,7 +345,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 
 	public void atualizarJogadoresOnline() {
 		try {
-			synchronized (mapJogadoresOnline) {
+			synchronized (lock) {
 				for (Iterator<String> iter = mapJogadoresOnline.keySet()
 						.iterator(); iter.hasNext();) {
 					String key = iter.next();

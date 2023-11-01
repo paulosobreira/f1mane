@@ -140,12 +140,12 @@ public class ControleBox {
 				}
 
 				entrada = true;
-				noPista.setNoEntradaBox(entrada);
+				noPista.setNoEntradaBox(true);
 			}
 
 			if (GeoUtil.drawBresenhamLine(noPista.getPoint(), boxSaida.getPoint()).size() < 3) {
 				saida = true;
-				noPista.setNoSaidaBox(saida);
+				noPista.setNoSaidaBox(true);
 				saidaBox = noPista;
 			}
 		}

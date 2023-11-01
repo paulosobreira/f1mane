@@ -147,10 +147,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			gerenciadorVisual.iniciarInterfaceGraficaJogo();
 			controleEstatisticas.inicializarThreadConsumidoraInfo();
 		} catch (Exception e) {
-			if (monitor && e instanceof InterruptedException) {
-				throw (InterruptedException) e;
-			}
-			StackTraceElement[] trace = e.getStackTrace();
+            StackTraceElement[] trace = e.getStackTrace();
 			StringBuilder retorno = new StringBuilder();
 			int size = ((trace.length > 10) ? 10 : trace.length);
 

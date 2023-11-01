@@ -436,7 +436,7 @@ public class FormatNumber extends Object {
 
 	public static String fillMode(String TEXT, int LENGTH, String CODE) {
 		StringBuilder code = new StringBuilder(TEXT);
-		if (code != null && code.length() > 0) {
+		if (code.length() > 0) {
 			if (code.length() > LENGTH) {
 				code = new StringBuilder(code.substring(0, LENGTH));
 			} else if (code.length() < LENGTH) {

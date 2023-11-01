@@ -35,7 +35,7 @@ import java.util.Set;
  * @author paulo.sobreira
  */
 public class ServletPaddock extends HttpServlet {
-
+    private final static String lock = "lock";
     private ControlePaddockServidor controlePaddock;
     private static MonitorAtividade monitorAtividade;
     String host = "localhot";
@@ -160,9 +160,6 @@ public class ServletPaddock extends HttpServlet {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Dialect dialect = Dialect.getDialect(cfg.getProperties());
         InitialContext cxt = new InitialContext();
-        if (cxt == null) {
-            throw new Exception("Uh oh -- no context!");
-        }
 
         DataSource ds = (DataSource) cxt.lookup("java:/comp/env/jdbc/MySQLDS");
 
@@ -184,9 +181,6 @@ public class ServletPaddock extends HttpServlet {
         Dialect dialect = Dialect.getDialect(cfg.getProperties());
 
         InitialContext cxt = new InitialContext();
-        if (cxt == null) {
-            throw new Exception("Uh oh -- no context!");
-        }
 
         DataSource ds = (DataSource) cxt.lookup("java:/comp/env/jdbc/MySQLDS");
 
@@ -223,7 +217,7 @@ public class ServletPaddock extends HttpServlet {
         html5(printWriter);
         printWriter.write("<body>");
         printWriter.write("<h2>Fl-Mane Exceptions</h2><br><hr>");
-        synchronized (Logger.topExceptions) {
+        synchronized (lock) {
             Set top = Logger.topExceptions.keySet();
             for (Iterator iterator = top.iterator(); iterator.hasNext(); ) {
                 String exept = (String) iterator.next();

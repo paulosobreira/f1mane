@@ -272,13 +272,8 @@ public class PaddockWindow {
 						Logger.logarExept(ex);
 					}
 				} else {
-					if (object != null) {
-						controlePaddockCliente.verDetalhesJogador(object);
-					} else {
-						JOptionPane.showMessageDialog(getMainPanel(),
-								Lang.msg("183"));
-					}
-				}
+                    controlePaddockCliente.verDetalhesJogador(object);
+                }
 
 			}
 
@@ -678,17 +673,15 @@ public class PaddockWindow {
 				return Lang.msg("196");
 			}
 		});
-		int ht = 0;// detalhesJogo.getDadosCriarJogo().getHabilidade().intValue();
 		panelJogo.add(
-				new JLabel((ht == 0 ? Lang.msg("197") : String.valueOf(ht))));
+				new JLabel(Lang.msg("197")));
 		panelJogo.add(new JLabel("Potencia Todos: ") {
 			public String getText() {
 				return Lang.msg("198");
 			}
 		});
-		int pt = 0;// detalhesJogo.getDadosCriarJogo().getPotencia().intValue();
 		panelJogo.add(
-				new JLabel((pt == 0 ? Lang.msg("197") : String.valueOf(pt))));
+				new JLabel(Lang.msg("197")));
 		panelJogo.add(new JLabel("Clima: ") {
 			public String getText() {
 				return Lang.msg("199");

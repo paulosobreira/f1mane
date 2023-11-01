@@ -1419,7 +1419,7 @@ public class GerenciadorVisual {
 			return;
 		}
 		try {
-			if (string != null && !string.startsWith("<table>")) {
+			if (!string.startsWith("<table>")) {
 				string += "<br>";
 			}
 			boolean contains = false;
@@ -1502,20 +1502,6 @@ public class GerenciadorVisual {
 			painelCircuito.carregaBackGround();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		int diff = 1000;
-		int ganhoSuave = 0;
-		int maxLoop = 1000;
-		int inc = 30;
-		for (int i = 0; i < maxLoop; i += inc) {
-			if (diff >= i && diff < i + inc) {
-				break;
-			}
-			ganhoSuave += 1;
-		}
-		// System.out.println(ganhoSuave);
 	}
 
 	public void setMouseZoom(double d) {

@@ -185,7 +185,7 @@ public class Dia implements Cloneable, Serializable {
 	}
 
 	public static boolean isNullOrEmpty(String campo) {
-		return ((campo == null) || "".equals(campo));
+		return ((campo == null) || campo.isEmpty());
 	}
 
 	public Dia(int day, int month, int year) {
@@ -228,8 +228,8 @@ public class Dia implements Cloneable, Serializable {
 			if (obj instanceof String) {
 				String string = (String) obj;
 
-				return (((string == null) || "".equals(string)) ? 0 : Integer
-						.parseInt(string));
+				return string.isEmpty() ? 0 : Integer
+						.parseInt(string);
 			}
 
 			return (((obj == null)) ? 0 : Integer.parseInt((String) obj));
