@@ -5,29 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3430018-9fd3-4efa-9bf0-edcdaf03c6d3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/Teste.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/controles/ControleBox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/JogoCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/JogoCliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/MonitorJogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/MonitorJogo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/PaddockWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/PaddockWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/rest/LetsRace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/rest/LetsRace.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ControlePaddockServidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ControlePaddockServidor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ControlePersistencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ControlePersistencia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/JogoServidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/JogoServidor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ServletPaddock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/servlet/ServletPaddock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/AppletPaddock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/applet/AppletPaddock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/entidades/BufferTexto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/entidades/BufferTexto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/entidades/TOs/CampeonatoTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/paddock/entidades/TOs/CampeonatoTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/recursos/CarregadorRecursos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/GerenciadorVisual.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/f1mane/visao/GerenciadorVisual.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/Dia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/Dia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/FormatNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/FormatNumber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/HibernateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/HibernateUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/Html.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/Html.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Piloto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sowbreira/f1mane/entidades/Piloto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/nnpe/Constantes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/nnpe/Constantes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/campeonato.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_campeonato.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_circuito.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_circuito.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_equipes.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_equipes.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_geral.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_geral.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_temporada.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/classificacao_temporada.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/configuracao.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/configuracao.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/controles.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/controles.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/corrida.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/corrida.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/equipe.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/equipe.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/jogar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/jogar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/html5/resultado.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/html5/resultado.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -87,7 +99,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainFrame">
+  <component name="RunManager" selected="Application.Teste">
     <configuration name="AppletPaddock" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="br.f1mane.paddock.applet.AppletPaddock" />
       <module name="f1mane" />
@@ -127,12 +139,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServletPaddock" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="br.f1mane.paddock.servlet.ServletPaddock" />
+    <configuration name="Teste" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="br.Teste" />
       <module name="f1mane" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="br.f1mane.paddock.servlet.*" />
+          <option name="PATTERN" value="br.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -177,20 +189,20 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.Teste" />
       <item itemvalue="Application.AppletPaddock" />
       <item itemvalue="Application.HibernateUtil" />
       <item itemvalue="Application.MainFrame" />
-      <item itemvalue="Application.ServletPaddock" />
       <item itemvalue="Application.Util" />
       <item itemvalue="Smart Tomcat.FlMane Web" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Teste" />
         <item itemvalue="Application.MainFrame" />
         <item itemvalue="Application.Util" />
         <item itemvalue="Application.AppletPaddock" />
         <item itemvalue="Application.HibernateUtil" />
-        <item itemvalue="Application.ServletPaddock" />
       </list>
     </recent_temporary>
   </component>

@@ -52,9 +52,9 @@ import br.f1mane.visao.PainelCircuito;
 @Path("/letsRace")
 public class LetsRace {
 
-    private CarregadorRecursos carregadorRecursos = CarregadorRecursos
+    private final CarregadorRecursos carregadorRecursos = CarregadorRecursos
             .getCarregadorRecursos(false);
-    private ControlePaddockServidor controlePaddock = PaddockServer
+    private final ControlePaddockServidor controlePaddock = PaddockServer
             .getControlePaddock();
 
     private Response processsaMensagem(Object objeto, String idioma) {

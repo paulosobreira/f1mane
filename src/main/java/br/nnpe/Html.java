@@ -9,7 +9,7 @@ package br.nnpe;
  */
 public class Html {
 
-	static int superSize = 4;
+	static final int superSize = 4;
 
 	public static String negrito(String str) {
 		StringBuilder buffer = new StringBuilder();

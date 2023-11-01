@@ -17,9 +17,9 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira
  */
 public class ControleSafetyCar {
-	private ControleCorrida controleCorrida;
-	private ControleJogoLocal controleJogo;
-	private SafetyCar safetyCar;
+	private final ControleCorrida controleCorrida;
+	private final ControleJogoLocal controleJogo;
+	private final SafetyCar safetyCar;
 	private ThreadRecolihimentoCarro recolihimentoCarro;
 	private Piloto pilotoBateu;
 

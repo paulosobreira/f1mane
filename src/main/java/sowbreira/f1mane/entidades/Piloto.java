@@ -122,7 +122,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private int cargaKersOnline;
 	@JsonIgnore
-	private List<String> ultimas5Voltas = new ArrayList<String>();
+	private final List<String> ultimas5Voltas = new ArrayList<String>();
 	@JsonIgnore
 	private String calculaSegundosParaAnterior;
 	@JsonIgnore
@@ -234,7 +234,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private int naoDesenhaEfeitos;
 	@JsonIgnore
-	private int tamanhoBufferGanho = 10;
+	private final int tamanhoBufferGanho = 10;
 	@JsonIgnore
 	private boolean colisaoDiantera;
 	@JsonIgnore
@@ -270,17 +270,17 @@ public class Piloto implements Serializable, PilotoSuave {
 	@JsonIgnore
 	private List<Volta> voltas = new ArrayList<Volta>();
 	@JsonIgnore
-	private Set<String> votosDriveThru = new HashSet<String>();
+	private final Set<String> votosDriveThru = new HashSet<String>();
 	@JsonIgnore
-	private List<Integer> ultsConsumosCombustivel = new LinkedList<Integer>();
+	private final List<Integer> ultsConsumosCombustivel = new LinkedList<Integer>();
 	@JsonIgnore
-	private List<Integer> ultsConsumosPneu = new LinkedList<Integer>();
+	private final List<Integer> ultsConsumosPneu = new LinkedList<Integer>();
 	@JsonIgnore
-	private List<Double> ganhosBaixa = new ArrayList<Double>();
+	private final List<Double> ganhosBaixa = new ArrayList<Double>();
 	@JsonIgnore
-	private List<Double> ganhosAlta = new ArrayList<Double>();
+	private final List<Double> ganhosAlta = new ArrayList<Double>();
 	@JsonIgnore
-	private List<Double> ganhosReta = new ArrayList<Double>();
+	private final List<Double> ganhosReta = new ArrayList<Double>();
 	@JsonIgnore
 	private ArrayList<Double> listGanho;
 	@JsonIgnore

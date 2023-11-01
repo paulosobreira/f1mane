@@ -22,11 +22,11 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira Criado em 21/06/2009 as 18:39:46
  */
 public class FormConstrutores extends JPanel {
-	private JTable carrosTable;
-	private JTable piltosTable;
-	private List listaCarros;
-	private List listaPilotos;
-	private DecimalFormat decimalFormatGeral = new DecimalFormat("00000");
+	private final JTable carrosTable;
+	private final JTable piltosTable;
+	private final List listaCarros;
+	private final List listaPilotos;
+	private final DecimalFormat decimalFormatGeral = new DecimalFormat("00000");
 
 	public static void main(String[] args) {
 		FormConstrutores formContrutores = new FormConstrutores(

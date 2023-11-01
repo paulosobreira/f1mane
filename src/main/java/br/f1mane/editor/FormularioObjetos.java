@@ -18,17 +18,17 @@ import br.f1mane.recursos.idiomas.Lang;
 
 public class FormularioObjetos {
 
-	private JSpinner largura = new JSpinner();
+	private final JSpinner largura = new JSpinner();
 	private JSpinner inicioTranparencia = new JSpinner();
 	private JSpinner fimTransparencia = new JSpinner();
-	private JSpinner angulo = new JSpinner();
+	private final JSpinner angulo = new JSpinner();
 	private JCheckBox frente = new JCheckBox();
-	private JCheckBox transparenciaBox = new JCheckBox();
-	private JComboBox tipoComboBox = new JComboBox();
+	private final JCheckBox transparenciaBox = new JCheckBox();
+	private final JComboBox tipoComboBox = new JComboBox();
 	private JLabel labelCor1 = new JLabel("Clique");
 	private JLabel labelCor2 = new JLabel("Clique");
-	private JPanel panel = new JPanel(new GridLayout(5, 2));
-	private MainPanelEditor mainPanelEditor;
+	private final JPanel panel = new JPanel(new GridLayout(5, 2));
+	private final MainPanelEditor mainPanelEditor;
 	private ObjetoPista objetoPista;
 	protected static final String OBJETO_TRANSPARENCIA = "Objeto Transparencia";
 	protected static final String OBJETO_ESCAPADA = "Objeto Escapada";

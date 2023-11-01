@@ -34,10 +34,10 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira Criado em 05/08/2007 as 11:43:33
  */
 public class MonitorJogo implements Runnable {
-	private JogoCliente jogoCliente;
-	private ControlePaddockCliente controlePaddockCliente;
+	private final JogoCliente jogoCliente;
+	private final ControlePaddockCliente controlePaddockCliente;
 	private String estado = null;
-	private SessaoCliente sessaoCliente;
+	private final SessaoCliente sessaoCliente;
 	private Thread atualizadorPainel;
 	private Thread threadCmd;
 	private boolean jogoAtivo = true;

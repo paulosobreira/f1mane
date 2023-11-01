@@ -52,7 +52,7 @@ public class ControleJogoLocal extends ControleRecursos
 	protected ControleEstatisticas controleEstatisticas;
 	protected ControleCampeonato controleCampeonato;
 
-	protected List pilotosJogadores = new ArrayList();
+	protected final List pilotosJogadores = new ArrayList();
 	protected double niveljogo = InterfaceJogo.MEDIO_NV;
 	protected String nivelCorrida;
 	protected boolean corridaTerminada;

@@ -13,7 +13,7 @@ import java.util.Map;
 public class DadosPaddock implements Serializable {
 	private static final long serialVersionUID = 2200481566401284586L;
 	private Long dataTime;
-	private Map<String, SessaoCliente> clientes = new HashMap<String, SessaoCliente>();
+	private final Map<String, SessaoCliente> clientes = new HashMap<String, SessaoCliente>();
 	private List<String> jogosCriados = new ArrayList<String>();
 	private String linhaChat = "";
 

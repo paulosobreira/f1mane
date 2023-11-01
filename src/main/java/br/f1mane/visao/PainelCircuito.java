@@ -80,9 +80,9 @@ public class PainelCircuito {
 	private Point pontoCentralizado;
 	private Point pontoCentralizadoOld;
 
-	private InterfaceJogo controleJogo;
+	private final InterfaceJogo controleJogo;
 	private GerenciadorVisual gerenciadorVisual;
-	private Point pointDesenhaVelo = new Point(5, 60);
+	private final Point pointDesenhaVelo = new Point(5, 60);
 	private Point pontoClicado = null;
 	private No posisRec;
 	private Point posisAtual;
@@ -113,17 +113,17 @@ public class PainelCircuito {
 			new float[] { 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 10, 5, 10, 5, 10, 5, 10, 5, 10 }, 0);
 	public final static BasicStroke chuva2 = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
 			new float[] { 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10, 5, 10 }, 0);
-	private BasicStroke trilho = new BasicStroke(1.0f);
-	private BasicStroke strikeMarcacao = new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-	private BasicStroke trilhoMiniPista = new BasicStroke(2.5f);
-	private BasicStroke borda = new BasicStroke(5.5f);
+	private final BasicStroke trilho = new BasicStroke(1.0f);
+	private final BasicStroke strikeMarcacao = new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+	private final BasicStroke trilhoMiniPista = new BasicStroke(2.5f);
+	private final BasicStroke borda = new BasicStroke(5.5f);
 	private BasicStroke pista;
 	private BasicStroke pistaTinta;
 	private BasicStroke box;
 	private BasicStroke zebra;
 
-	private static DecimalFormat mil = new DecimalFormat("000");
-	public static DecimalFormat df4 = new DecimalFormat("00.0000");
+	private static final DecimalFormat mil = new DecimalFormat("000");
+	public static final DecimalFormat df4 = new DecimalFormat("00.0000");
 	private int larguraPistaPixeis;
 
 	private int qtdeLuzesApagadas = 5;
@@ -131,17 +131,17 @@ public class PainelCircuito {
 	private int my;
 	private double zoom = 1;
 	private double mouseZoom = 1;
-	private Circuito circuito;
-	private Shape[] grid = new Shape[24];
-	private List gridImg = new ArrayList();
-	private Shape[] asfaltoGrid = new Shape[24];
-	private Shape[] boxParada = new Shape[12];
-	private Shape[] boxCor1 = new Shape[12];
-	private Shape[] boxCor2 = new Shape[12];
+	private final Circuito circuito;
+	private final Shape[] grid = new Shape[24];
+	private final List gridImg = new ArrayList();
+	private final Shape[] asfaltoGrid = new Shape[24];
+	private final Shape[] boxParada = new Shape[12];
+	private final Shape[] boxCor1 = new Shape[12];
+	private final Shape[] boxCor2 = new Shape[12];
 	private Rectangle limitesViewPort;
 	private Rectangle limitesViewPortFull;
-	private Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
-	private Map<Piloto, BufferedImage> capacetesResultadoFinal = new HashMap<Piloto, BufferedImage>();
+	private final Map<Piloto, Piloto> mapaFaiscas = new HashMap<Piloto, Piloto>();
+	private final Map<Piloto, BufferedImage> capacetesResultadoFinal = new HashMap<Piloto, BufferedImage>();
 	private Piloto pilotoSelecionado;
 	private List<Piloto> pilotosList;
 	private BufferedImage backGround;
@@ -149,43 +149,43 @@ public class PainelCircuito {
 
 	private List pistaMinimizada;
 	private ArrayList boxMinimizado;
-	private List ptosPilotosDesQualy = new ArrayList();
+	private final List ptosPilotosDesQualy = new ArrayList();
 
 	private boolean exibeResultadoFinal;
 
-	private RoundRectangle2D f1_A = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D f2_S = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D f3_D = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D f5_Z = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D f6_X = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D f7_C = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D kers = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D drs = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D f1_A = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D f2_S = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D f3_D = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D f5_Z = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D f6_X = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D f7_C = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D kers = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D drs = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
 	private RoundRectangle2D[] pilotosRect;
 
-	private RoundRectangle2D porcentCombustivelTela = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D menosCombust = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D maisCombust = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D menosAsa = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D porcentCombustivelTela = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D menosCombust = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D maisCombust = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D menosAsa = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D maisAsa = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D normalAsa = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D maisAsa = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D normalAsa = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D pneuMole = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D pneuMole = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D pneuDuro = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
-	private RoundRectangle2D pneuChuva = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D pneuDuro = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D pneuChuva = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D vaiBox = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D vaiBox = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D voltaMenuPrincipalRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D voltaMenuPrincipalRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D fps = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D fps = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D ajuda = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D ajuda = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D som = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D som = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
 	private double multiminiPista;
 	private Point maiorP;
@@ -261,13 +261,13 @@ public class PainelCircuito {
 	private Font fontAjudaControles;
 	private Font desenhaAjudaComandoPiloto;
 	private Font fontVelocidade;
-	private List<No> pistaFull;
-	private List<No> boxFull;
-	private int entradaBoxIndex;
-	private int saidaBoxIndex;
+	private final List<No> pistaFull;
+	private final List<No> boxFull;
+	private final int entradaBoxIndex;
+	private final int saidaBoxIndex;
 	private java.awt.geom.RoundRectangle2D.Double rectanglePos;
 	private java.awt.geom.RoundRectangle2D.Double rectangleVol;
-	private int interpolacao = AffineTransformOp.TYPE_BILINEAR;
+	private final int interpolacao = AffineTransformOp.TYPE_BILINEAR;
 	private java.awt.geom.Rectangle2D.Double rectangleMarcasPneuPista;
 	private java.awt.geom.Rectangle2D.Double rectangleGerarGrid;
 	private java.awt.geom.Rectangle2D.Double rectangleSafetyCarCima;

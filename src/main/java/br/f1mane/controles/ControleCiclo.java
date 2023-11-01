@@ -12,8 +12,8 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira
  */
 public class ControleCiclo extends Thread {
-	private InterfaceJogo controleJogo;
-	private ControleCorrida controleCorrida;
+	private final InterfaceJogo controleJogo;
+	private final ControleCorrida controleCorrida;
 	private int contadorCiclos;
 	private boolean processadoCilcos = true;
 

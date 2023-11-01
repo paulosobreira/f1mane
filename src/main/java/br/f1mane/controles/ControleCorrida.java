@@ -22,12 +22,12 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira
  */
 public class ControleCorrida {
-	private int distaciaCorrida;
+	private final int distaciaCorrida;
 	private int durabilidadeMaxMotor;
 	private int tanqueCheio;
 	private int voltaAtual;
 	private int qtdeTotalVoltas;
-	private ControleJogoLocal controleJogo;
+	private final ControleJogoLocal controleJogo;
 	private ControleCiclo controleCiclo;
 	private ControleBox controleBox;
 	private ControleSafetyCar controleSafetyCar;
@@ -40,7 +40,7 @@ public class ControleCorrida {
 	private long pontosPilotoLargada;
 	private boolean asfaltoAbrasivo;
 	private Pausa pausaAtual;
-	private List<Pausa> tempoPausado = new ArrayList<Pausa>();
+	private final List<Pausa> tempoPausado = new ArrayList<Pausa>();
 
 	public long getPontosPilotoLargada() {
 		return pontosPilotoLargada;

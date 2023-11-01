@@ -9,13 +9,13 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira Criado em 16/06/2007 as 20:14:25
  */
 public class ControleClima {
-	private InterfaceJogo controleJogo;
+	private final InterfaceJogo controleJogo;
 	private String clima;
 	private int voltaMudancaClima;
 	private int intervaloMudancaClima;
-	private int numVoltas;
-	private int metadeVoltas;
-	private int quartoVoltas;
+	private final int numVoltas;
+	private final int metadeVoltas;
+	private final int quartoVoltas;
 	private ThreadMudancaClima threadMudancaClima;
 	private boolean climaAleatorio;
 

@@ -17,7 +17,7 @@ public class Constantes {
 			? 10
 			: 30;
 	public static final double VELOCIDADE_PISTA = 1.5;
-	public static int TAMANHO_RETA_DRS = 1500;
+	public static final int TAMANHO_RETA_DRS = 1500;
 
 	private Constantes() {
 	}

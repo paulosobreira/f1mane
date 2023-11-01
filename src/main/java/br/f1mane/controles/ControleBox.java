@@ -25,8 +25,8 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira Criado em 09/06/2007 as 17:17:28
  */
 public class ControleBox {
-	public static String UMA_OU_MAIS_PARADAS = "UMA_OU_MAIS_PARADAS";
-	public static String UMA_PARADA = "UMA_UMA_PARADA";
+	public static final String UMA_OU_MAIS_PARADAS = "UMA_OU_MAIS_PARADAS";
+	public static final String UMA_PARADA = "UMA_UMA_PARADA";
 	private No entradaBox;
 	private No saidaBox;
 	private No paradaBox;

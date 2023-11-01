@@ -64,7 +64,7 @@ public class MainFrame extends JFrame {
 	boolean adicionouPainelNarracao = false;
 	boolean adicionouPainelDebug = false;
 
-	private AppletPaddock ver = new AppletPaddock();
+	private final AppletPaddock ver = new AppletPaddock();
 
 	public InterfaceJogo getControleJogo() {
 		return controleJogo;

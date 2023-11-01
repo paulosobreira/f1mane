@@ -50,12 +50,12 @@ import br.f1mane.recursos.idiomas.Lang;
 public class ControlePaddockServidor {
 	private DadosPaddock dadosPaddock = new DadosPaddock();
 	private ControleJogosServer controleJogosServer;
-	private ControlePersistencia controlePersistencia;
-	private ControleClassificacao controleClassificacao;
-	private ControleCampeonatoServidor controleCampeonatoServidor;
+	private final ControlePersistencia controlePersistencia;
+	private final ControleClassificacao controleClassificacao;
+	private final ControleCampeonatoServidor controleCampeonatoServidor;
 	private int versao;
 	private int contadorVistantes = 1;
-	private CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
+	private final CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
 
 	public DadosPaddock getDadosPaddock() {
 		return dadosPaddock;

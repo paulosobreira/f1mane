@@ -23,10 +23,10 @@ import sowbreira.f1mane.entidades.ObjetoPista;
 
 public class FormularioListaObjetos {
 
-	private MainPanelEditor editor;
+	private final MainPanelEditor editor;
 	private DefaultListModel defaultListModelOP;
 	private JList list;
-	private JFrame frame = new JFrame();
+	private final JFrame frame = new JFrame();
 	private JPanel objetos;
 
 	public DefaultListModel getDefaultListModelOP() {

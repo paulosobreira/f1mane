@@ -16,7 +16,7 @@ import br.f1mane.recursos.CarregadorRecursos;
 
 public class PainelTeste {
 
-	static BufferedImage bg = CarregadorRecursos
+	static final BufferedImage bg = CarregadorRecursos
 			.carregaBufferedImageTransparecia("circuitos/istambul_mro.jpg", null);
 	static double zoom = 1;
 	static int x, y;

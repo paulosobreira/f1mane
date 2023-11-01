@@ -22,8 +22,8 @@ import sowbreira.f1mane.entidades.Piloto;
  */
 public class ControleQualificacao {
 
-	private InterfaceJogo controleJogo;
-	private ControleBox controleBox;
+	private final InterfaceJogo controleJogo;
+	private final ControleBox controleBox;
 	private boolean modoQualify = false;
 
 	/**

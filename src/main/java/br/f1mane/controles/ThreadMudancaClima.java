@@ -8,7 +8,7 @@ import sowbreira.f1mane.entidades.Clima;
  * @author Paulo Sobreira
  */
 public class ThreadMudancaClima extends Thread {
-	private ControleClima controleClima;
+	private final ControleClima controleClima;
 	private boolean processada;
 
 	public boolean isProcessada() {

@@ -49,13 +49,13 @@ import br.f1mane.recursos.idiomas.Lang;
  * 
  */
 public class ControlePaddockCliente {
-	private URL url;
-	private AppletPaddock applet;
-	private String urlSufix = "/f1mane/ServletPaddock";
+	private final URL url;
+	private final AppletPaddock applet;
+	private final String urlSufix = "/f1mane/ServletPaddock";
 	private SessaoCliente sessaoCliente;
 	private PaddockWindow paddockWindow;
 	private Thread threadAtualizadora;
-	private List pacotes = new LinkedList();
+	private final List pacotes = new LinkedList();
 	private JogoCliente jogoCliente;
 	private MainFrame mainFrame;
 	private boolean comunicacaoServer = true;
@@ -63,7 +63,7 @@ public class ControlePaddockCliente {
 	private int latenciaReal;
 	private long ultRetornoSucedido;
 	private String versaoServidor = "";
-	DecimalFormat decimalFormat = new DecimalFormat("#,###");
+	final DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
 	public ControlePaddockCliente(URL url, AppletPaddock panel) {
 		this.url = url;

@@ -35,75 +35,75 @@ import br.f1mane.recursos.idiomas.Lang;
  */
 public class FormCarreira extends JPanel {
 
-	private JLabel labelPtsCarreira = new JLabel("Pontos Carreira:") {
+	private final JLabel labelPtsCarreira = new JLabel("Pontos Carreira:") {
 		@Override
 		public String getText() {
 			return Lang.msg("266");
 		}
 	};
-	JLabel ptsCarreiraVal = new JLabel("0") {
+	final JLabel ptsCarreiraVal = new JLabel("0") {
 		public String getText() {
 			return String.valueOf(ptsCarreira);
 		}
 	};
-	private JLabel labelModoCarreira = new JLabel("Modo Carreira:") {
+	private final JLabel labelModoCarreira = new JLabel("Modo Carreira:") {
 		@Override
 		public String getText() {
 			return Lang.msg("252");
 		}
 	};
-	private JCheckBox modoCarreira = new JCheckBox();
-	private JLabel labelNomePiloto = new JLabel("Nome Piloto:") {
+	private final JCheckBox modoCarreira = new JCheckBox();
+	private final JLabel labelNomePiloto = new JLabel("Nome Piloto:") {
 		@Override
 		public String getText() {
 			return Lang.msg("253");
 		}
 	};
-	private JTextField nomePiloto = new JTextField(10);
-	private JLabel labelNomeCarro = new JLabel("Nome Equipe:") {
+	private final JTextField nomePiloto = new JTextField(10);
+	private final JLabel labelNomeCarro = new JLabel("Nome Equipe:") {
 		@Override
 		public String getText() {
 			return Lang.msg("254");
 		}
 	};
-	private JTextField nomeCarro = new JTextField(10);
-	private JLabel labelPtsPiloto = new JLabel("Habilidade Piloto:") {
+	private final JTextField nomeCarro = new JTextField(10);
+	private final JLabel labelPtsPiloto = new JLabel("Habilidade Piloto:") {
 		@Override
 		public String getText() {
 			return Lang.msg("255");
 		}
 	};
-	private JSpinner ptsPiloto = new JSpinner();
-	private JLabel labelPtsCarro = new JLabel("Pontencia Carro:") {
+	private final JSpinner ptsPiloto = new JSpinner();
+	private final JLabel labelPtsCarro = new JLabel("Pontencia Carro:") {
 		@Override
 		public String getText() {
 			return Lang.msg("256");
 		}
 	};
-	private JSpinner ptsCarro = new JSpinner();
+	private final JSpinner ptsCarro = new JSpinner();
 
-	private JLabel labelPtsAeroDimanica = new JLabel("Aero dinâmica Carro:") {
+	private final JLabel labelPtsAeroDimanica = new JLabel("Aero dinâmica Carro:") {
 		@Override
 		public String getText() {
 			return Lang.msg("aerodinamicaCarro");
 		}
 	};
-	private JSpinner ptsAeroDinamica = new JSpinner();
+	private final JSpinner ptsAeroDinamica = new JSpinner();
 
-	private JLabel labelPtsFreio = new JLabel("Freio Carro:") {
+	private final JLabel labelPtsFreio = new JLabel("Freio Carro:") {
 		@Override
 		public String getText() {
 			return Lang.msg("freioCarro");
 		}
 	};
-	private JSpinner ptsFreio = new JSpinner();
+	private final JSpinner ptsFreio = new JSpinner();
 
-	private JLabel labelCor1 = new JLabel("Click 1:");
-	private JLabel labelCor2 = new JLabel("Click 2:");
+	private final JLabel labelCor1 = new JLabel("Click 1:");
+	private final JLabel labelCor2 = new JLabel("Click 2:");
 
 	private List listaCarro = new ArrayList();
-	private JLabel imgCarroLado = new JLabel();
-	private JLabel imgCarroCima = new JLabel();
+	private final JLabel imgCarroLado = new JLabel();
+	private final JLabel imgCarroCima = new JLabel();
 	private String imgCarroStr = "";
 	private Integer ptsCarreira = 1;
 

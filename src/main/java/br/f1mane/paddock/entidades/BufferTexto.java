@@ -14,7 +14,7 @@ public class BufferTexto implements Serializable {
 
 	private String utlTexto;
 
-	private LinkedList<String> bufferinfo = new LinkedList<String>();
+	private final LinkedList<String> bufferinfo = new LinkedList<String>();
 
 	public void adicionarTextoPrio(String txt) {
 		if (bufferinfo.contains(txt)) {

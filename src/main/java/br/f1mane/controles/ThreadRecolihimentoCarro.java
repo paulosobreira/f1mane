@@ -10,10 +10,10 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira
  */
 public class ThreadRecolihimentoCarro extends Thread {
-	private ControleJogoLocal controleJogo;
-	private Piloto piloto;
-	private SafetyCar safetyCar;
-	private int delayRecolhimento;
+	private final ControleJogoLocal controleJogo;
+	private final Piloto piloto;
+	private final SafetyCar safetyCar;
+	private final int delayRecolhimento;
 
 	/**
 	 * @param controleJogo

@@ -14,7 +14,7 @@ import br.f1mane.paddock.entidades.TOs.SessaoCliente;
  */
 public class MonitorAtividade implements Runnable {
 
-	private ControlePaddockServidor controlePaddock;
+	private final ControlePaddockServidor controlePaddock;
 	private boolean alive = true;
 
 	public MonitorAtividade(ControlePaddockServidor controlePaddock) {

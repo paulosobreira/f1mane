@@ -17,7 +17,7 @@ public class PassGenerator {
 			"k", "l", "m", "n", "p", "q", "r", "s", "t", "u", "v", "w", "x",
 			"y", "z" };
 	final String[] DIGIT = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-	private Random genNum = new Random();
+	private final Random genNum = new Random();
 	private int arrTam = 0;
 	private int contL = 0;
 	private int contU = 0;

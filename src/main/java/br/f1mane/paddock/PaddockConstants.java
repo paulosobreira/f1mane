@@ -1,6 +1,6 @@
 package br.f1mane.paddock;
 
 public class PaddockConstants {
-	public static boolean dumparDados = false;
-	public static boolean modoZip = false;
+	public static final boolean dumparDados = false;
+	public static final boolean modoZip = false;
 }

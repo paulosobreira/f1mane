@@ -38,13 +38,13 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira Criado em 29/07/2007 as 18:21:11
  */
 public class ControleJogosServer {
-	private DadosPaddock dadosPaddock;
-	private ControleClassificacao controleClassificacao;
+	private final DadosPaddock dadosPaddock;
+	private final ControleClassificacao controleClassificacao;
 	private Map<SessaoCliente, JogoServidor> mapaJogosCriados = new HashMap<SessaoCliente, JogoServidor>();
-	private ControleCampeonatoServidor controleCampeonatoServidor;
-	private ControlePersistencia controlePersistencia;
-	private ControlePaddockServidor controlePaddockServidor;
-	public static int MaxJogo = 5;
+	private final ControleCampeonatoServidor controleCampeonatoServidor;
+	private final ControlePersistencia controlePersistencia;
+	private final ControlePaddockServidor controlePaddockServidor;
+	public static final int MaxJogo = 5;
 	public static int qtdeJogos = 0;
 
 	/**

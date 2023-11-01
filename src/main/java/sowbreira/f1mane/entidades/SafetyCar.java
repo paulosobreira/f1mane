@@ -16,7 +16,7 @@ public class SafetyCar implements Serializable, PilotoSuave {
 	private long ultMudancaTracado = 0;
 	private boolean vaiProBox;
 	private boolean naPista;
-	private List mediaSc = new ArrayList();
+	private final List mediaSc = new ArrayList();
 
 	public int getTracado() {
 		return tracado;

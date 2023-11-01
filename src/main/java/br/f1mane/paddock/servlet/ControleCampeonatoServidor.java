@@ -39,9 +39,9 @@ import br.f1mane.recursos.idiomas.Lang;
 
 public class ControleCampeonatoServidor {
 
-	private ControlePersistencia controlePersistencia;
-	private ControlePaddockServidor controlePaddockServidor;
-	private CarregadorRecursos carregadorRecursos = CarregadorRecursos
+	private final ControlePersistencia controlePersistencia;
+	private final ControlePaddockServidor controlePaddockServidor;
+	private final CarregadorRecursos carregadorRecursos = CarregadorRecursos
 			.getCarregadorRecursos(false);
 
 	public ControleCampeonatoServidor(ControlePersistencia controlePersistencia,

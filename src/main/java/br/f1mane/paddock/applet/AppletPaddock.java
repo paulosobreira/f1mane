@@ -30,7 +30,7 @@ public class AppletPaddock {
 	private String versao;
 	private JFrame frame;
 	private URL codeBase;
-	DecimalFormat decimalFormat = new DecimalFormat("#,###");
+	final DecimalFormat decimalFormat = new DecimalFormat("#,###");
 
 	public String getVersaoFormatado() {
 		if (versao == null) {

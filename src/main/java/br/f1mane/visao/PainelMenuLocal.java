@@ -49,17 +49,17 @@ public class PainelMenuLocal {
 
 	public BufferedImage bg;
 
-	public static String MENU_SOBRE = "MENU_SOBRE";
+	public static final String MENU_SOBRE = "MENU_SOBRE";
 
-	public static String MENU_PRINCIPAL = "MENU_PRINCIPAL";
+	public static final String MENU_PRINCIPAL = "MENU_PRINCIPAL";
 
-	public static String MENU_CORRIDA = "MENU_CORRIDA";
+	public static final String MENU_CORRIDA = "MENU_CORRIDA";
 
-	public static String MENU_NOVO_CAMPEONATO_PILOTOS = "MENU_NOVO_CAMPEONATO_PILOTOS";
+	public static final String MENU_NOVO_CAMPEONATO_PILOTOS = "MENU_NOVO_CAMPEONATO_PILOTOS";
 
-	public static String MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS = "MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS";
+	public static final String MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS = "MENU_QUALIFICACAO_CORRIDA_CAMPEONATO_PILOTOS";
 
-	public static String MENU_QUALIFICACAO = "MENU_QUALIFICACAO";
+	public static final String MENU_QUALIFICACAO = "MENU_QUALIFICACAO";
 
 	private static final String MENU_SUBSCREVER_CAMPEONATO = "MENU_SUBSCREVER_CAMPEONATO";
 
@@ -71,7 +71,7 @@ public class PainelMenuLocal {
 
 	private String MENU = MENU_PRINCIPAL;
 
-	private MainFrame mainFrame;
+	private final MainFrame mainFrame;
 
 	public final static Color lightWhite = new Color(200, 200, 200, 100);
 
@@ -84,7 +84,7 @@ public class PainelMenuLocal {
 	public final static Color blu = new Color(105, 105, 105, 40);
 	public final static Color bluQualy = new Color(105, 105, 205);
 
-	private RoundRectangle2D langRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D langRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
 	private RoundRectangle2D corridaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
@@ -98,11 +98,11 @@ public class PainelMenuLocal {
 
 	private RoundRectangle2D antePistaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D addPistaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D addPistaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D remPistaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D remPistaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D desafiarRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D desafiarRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
 	private RoundRectangle2D proxTemporadaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
@@ -116,11 +116,11 @@ public class PainelMenuLocal {
 
 	private RoundRectangle2D menosTurbulenciaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D menosCombustivelRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D menosCombustivelRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
 	private RoundRectangle2D maisTurbulenciaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D maisCombustivelRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D maisCombustivelRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
 	private RoundRectangle2D numVoltasRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
@@ -136,17 +136,17 @@ public class PainelMenuLocal {
 
 	private RoundRectangle2D dificilRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D pneuMoleRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D pneuMoleRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D pneuDuroRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D pneuDuroRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D pneuChuvaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D pneuChuvaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D maisAsaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D maisAsaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D normalAsaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D normalAsaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D menosAsaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D menosAsaRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
 	private RoundRectangle2D drsRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
@@ -156,7 +156,7 @@ public class PainelMenuLocal {
 
 	private RoundRectangle2D reabastecimentoRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
-	private RoundRectangle2D detalhesCampeonatoRct = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
+	private final RoundRectangle2D detalhesCampeonatoRct = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
 	private RoundRectangle2D proximoMenuRect = new RoundRectangle2D.Double(0, 0, 1, 1, 0, 0);
 
@@ -213,7 +213,7 @@ public class PainelMenuLocal {
 	private BufferedImage normalAsaImg;
 
 	private List<String> temporadas;
-	private List cirucitosCampeonato = new ArrayList();
+	private final List cirucitosCampeonato = new ArrayList();
 	private Map circuitosPilotos;
 
 	private List<RoundRectangle2D> pilotosRect;
@@ -245,10 +245,10 @@ public class PainelMenuLocal {
 
 	private int etapaAtual;
 
-	private List<java.awt.geom.RoundRectangle2D> retangulos;
+	private final List<java.awt.geom.RoundRectangle2D> retangulos;
 
-	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
-	private Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+	private final Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+	private final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
 
 	private boolean desenhouTemporadasDefaults;
 

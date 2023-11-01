@@ -24,20 +24,20 @@ import br.nnpe.Util;
 import br.f1mane.recursos.idiomas.Lang;
 
 public class FormEntrada extends JPanel {
-	private JComboBox comboIdiomas = new JComboBox(new String[] { Lang.msg("pt"), Lang.msg("en") });
+	private final JComboBox comboIdiomas = new JComboBox(new String[] { Lang.msg("pt"), Lang.msg("en") });
 	private JTextField nomeLogar = new JTextField(20);
-	private JTextField nomeRegistrar = new JTextField(20);
-	private JTextField nomeRecuperar = new JTextField(20);
-	private JTextField emailRegistrar = new JTextField(20);
-	private JTextField emailRecuperar = new JTextField(20);
-	private JPasswordField senha = new JPasswordField(20);
+	private final JTextField nomeRegistrar = new JTextField(20);
+	private final JTextField nomeRecuperar = new JTextField(20);
+	private final JTextField emailRegistrar = new JTextField(20);
+	private final JTextField emailRecuperar = new JTextField(20);
+	private final JPasswordField senha = new JPasswordField(20);
 	private int conta1;
 	private int conta2;
-	private JTextField resultadorConta = new JTextField(20);
+	private final JTextField resultadorConta = new JTextField(20);
 
-	private ControlePaddockCliente controlePaddockCliente;
+	private final ControlePaddockCliente controlePaddockCliente;
 
-	private JLabel senhaLabel = new JLabel("Senha") {
+	private final JLabel senhaLabel = new JLabel("Senha") {
 		public String getText() {
 			return Lang.msg("senha");
 		}

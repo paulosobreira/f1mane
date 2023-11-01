@@ -22,7 +22,7 @@ import br.f1mane.recursos.CarregadorRecursos;
 public class Lang {
 
 	private static PropertyResourceBundle bundle;
-	private static Map<String, PropertyResourceBundle> mapaBundle = new HashMap<String, PropertyResourceBundle>();
+	private static final Map<String, PropertyResourceBundle> mapaBundle = new HashMap<String, PropertyResourceBundle>();
 	private static String sufix;
 	private static boolean srvgame;
 

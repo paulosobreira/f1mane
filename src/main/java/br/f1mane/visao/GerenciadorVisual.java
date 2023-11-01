@@ -92,11 +92,11 @@ public class GerenciadorVisual {
 	private JSlider spinnerDificuldadeUltrapassagem;
 	private JList listPilotosSelecionados;
 	private PainelCircuito painelCircuito;
-	private InterfaceJogo controleJogo;
-	private JPanel centerPanel = new JPanel();
+	private final InterfaceJogo controleJogo;
+	private final JPanel centerPanel = new JPanel();
 	private JLabel infoCorrida;
 	private JLabel infoPiloto;
-	private JPanel infoText = new JPanel();
+	private final JPanel infoText = new JPanel();
 	private JTextField nomeJogador;
 	private PainelTabelaResultadoFinal resultadoFinal;
 	private long lastPress;

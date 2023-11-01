@@ -52,52 +52,52 @@ import br.f1mane.recursos.idiomas.Lang;
  */
 public class PaddockWindow {
 
-	private JPanel mainPanel;
+	private final JPanel mainPanel;
 	private ControlePaddockCliente controlePaddockCliente;
-	private JList listaClientes = new JList();
-	private JList listaJogosCriados = new JList();
-	private JTextArea textAreaChat = new JTextArea();
-	private JTextField textoEnviar = new JTextField();
-	private HashMap mapaJogosCriados = new HashMap();
-	private HashMap mapaJogosVoltas = new HashMap();
+	private final JList listaClientes = new JList();
+	private final JList listaJogosCriados = new JList();
+	private final JTextArea textAreaChat = new JTextArea();
+	private final JTextField textoEnviar = new JTextField();
+	private final HashMap mapaJogosCriados = new HashMap();
+	private final HashMap mapaJogosVoltas = new HashMap();
 	protected BufferedImage img;
 
-	private JButton sairJogo = new JButton("Enviar Texto") {
+	private final JButton sairJogo = new JButton("Enviar Texto") {
 
 		public String getText() {
 
 			return Lang.msg("sairJogo");
 		}
 	};
-	private JButton entrarJogo = new JButton("Entrar Jogo") {
+	private final JButton entrarJogo = new JButton("Entrar Jogo") {
 
 		public String getText() {
 
 			return Lang.msg("175");
 		}
 	};
-	private JButton criarJogo = new JButton("Criar Jogo") {
+	private final JButton criarJogo = new JButton("Criar Jogo") {
 
 		public String getText() {
 
 			return Lang.msg("176");
 		}
 	};
-	private JButton iniciarJogo = new JButton("Iniciar Jogo") {
+	private final JButton iniciarJogo = new JButton("Iniciar Jogo") {
 
 		public String getText() {
 
 			return Lang.msg("094");
 		}
 	};
-	private JButton verDetalhes = new JButton("Ver Detalhes") {
+	private final JButton verDetalhes = new JButton("Ver Detalhes") {
 
 		public String getText() {
 
 			return Lang.msg("178");
 		}
 	};
-	private JButton classificacao = new JButton("Classificação") {
+	private final JButton classificacao = new JButton("Classificação") {
 
 		public String getText() {
 
@@ -105,21 +105,21 @@ public class PaddockWindow {
 		}
 	};
 
-	private JButton carreira = new JButton("Modo Carreira") {
+	private final JButton carreira = new JButton("Modo Carreira") {
 
 		public String getText() {
 
 			return Lang.msg("221");
 		}
 	};
-	private JButton construtores = new JButton("Construtores") {
+	private final JButton construtores = new JButton("Construtores") {
 
 		public String getText() {
 
 			return Lang.msg("222");
 		}
 	};
-	private JButton conta = new JButton("Conta") {
+	private final JButton conta = new JButton("Conta") {
 
 		public String getText() {
 
@@ -127,7 +127,7 @@ public class PaddockWindow {
 		}
 	};
 
-	private JButton campeonato = new JButton("campeonato") {
+	private final JButton campeonato = new JButton("campeonato") {
 
 		public String getText() {
 
@@ -135,7 +135,7 @@ public class PaddockWindow {
 		}
 	};
 
-	private JButton verCampeonato = new JButton("verCampeonato") {
+	private final JButton verCampeonato = new JButton("verCampeonato") {
 
 		public String getText() {
 
@@ -143,21 +143,21 @@ public class PaddockWindow {
 		}
 	};
 
-	private JComboBox comboIdiomas = new JComboBox(
+	private final JComboBox comboIdiomas = new JComboBox(
 			new String[]{Lang.msg("pt"), Lang.msg("en")});
-	private JButton sobre = new JButton("Sobre") {
+	private final JButton sobre = new JButton("Sobre") {
 		public String getText() {
 			return Lang.msg("sobre");
 		}
 	};
-	private JButton logs = new JButton("logs") {
+	private final JButton logs = new JButton("logs") {
 		public String getText() {
 			return Lang.msg("267");
 		}
 	};
-	private JLabel infoLabel1 = new JLabel("  ");
-	private Set chatTimes = new HashSet();
-	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	private final JLabel infoLabel1 = new JLabel("  ");
+	private final Set chatTimes = new HashSet();
+	private final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 	public static void main(String[] args) {
 		PaddockWindow paddockWindow = new PaddockWindow(null);

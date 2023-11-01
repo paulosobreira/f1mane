@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ErroServ implements Serializable {
 
-	private String erroInfo;
+	private final String erroInfo;
 
 	public ErroServ(String desc) {
 		erroInfo = desc;

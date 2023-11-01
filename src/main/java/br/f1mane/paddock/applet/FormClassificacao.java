@@ -32,21 +32,21 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira Criado em 21/10/2007 as 18:09:46
  */
 public class FormClassificacao extends JPanel {
-	private JTable posicoesTable;
-	private List listaDadosJogador;
-	private SimpleDateFormat dateFormat = new SimpleDateFormat(
+	private final JTable posicoesTable;
+	private final List listaDadosJogador;
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"EEE, d MMM yyyy HH:mm:ss");
-	private DecimalFormat decimalFormat = new DecimalFormat("00");
-	private DecimalFormat decimalFormatGeral = new DecimalFormat("0000");
-	private DecimalFormat decimalFormatGeralBig = new DecimalFormat(
+	private final DecimalFormat decimalFormat = new DecimalFormat("00");
+	private final DecimalFormat decimalFormatGeral = new DecimalFormat("0000");
+	private final DecimalFormat decimalFormatGeralBig = new DecimalFormat(
 			"0000000000");
 	private String nomeJogador;
 	private Integer anoClassificacao;
-	private JTable carrosTable;
-	private JTable piltosTable;
-	private List listaCarros;
-	private List listaPilotos;
-	private TableRowSorter sorter;
+	private final JTable carrosTable;
+	private final JTable piltosTable;
+	private final List listaCarros;
+	private final List listaPilotos;
+	private final TableRowSorter sorter;
 
 	public FormClassificacao(List listaDadosJogador,
 			final ControlePaddockCliente controlePaddockCliente,
@@ -169,7 +169,7 @@ public class FormClassificacao extends JPanel {
 	}
 
 	private class TableModelCorridas extends AbstractTableModel {
-		List corridas;
+		final List corridas;
 
 		/**
 		 * @param corridas

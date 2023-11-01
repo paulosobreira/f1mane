@@ -9,7 +9,7 @@ import sowbreira.f1mane.entidades.No;
 
 public class TestePista {
 	protected static final long SEEP_TIME = 100;
-	private Circuito circuito;
+	private final Circuito circuito;
 	private Point testCar;
 	public Point trazCar;
 	public Point frenteCar;
@@ -17,7 +17,7 @@ public class TestePista {
 	private boolean irProBox;
 	private List pontosPista;
 	private List pontosBox;
-	private MainPanelEditor editor;
+	private final MainPanelEditor editor;
 	private Thread testTh;
 
 	public boolean isAlive() {

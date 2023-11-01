@@ -51,13 +51,13 @@ import br.f1mane.recursos.idiomas.Lang;
 
 public class ControleCampeonatoCliente {
 
-	private Component compPai;
+	private final Component compPai;
 
 	private CampeonatoSrv campeonato;
 
-	private CarregadorRecursos carregadorRecursos;
+	private final CarregadorRecursos carregadorRecursos;
 
-	private ControlePaddockCliente controlePaddockCliente;
+	private final ControlePaddockCliente controlePaddockCliente;
 
 	public ControleCampeonatoCliente(Component c, ControlePaddockCliente controlePaddockCliente) {
 		carregarCircuitos();
@@ -75,7 +75,7 @@ public class ControleCampeonatoCliente {
 		return campeonato;
 	}
 
-	protected Map circuitos = new HashMap();
+	protected final Map circuitos = new HashMap();
 
 	protected Map circuitosPilotos = new HashMap();
 

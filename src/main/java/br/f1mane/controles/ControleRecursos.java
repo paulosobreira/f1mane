@@ -34,13 +34,13 @@ public abstract class ControleRecursos {
 	protected List<Carro> carros;
 	protected CarregadorRecursos carregadorRecursos;
 	protected Map<String, String> circuitos = new HashMap<String, String>();
-	protected Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
-	protected Map<No, No> mapaNoCurvaAnterior = new HashMap<No, No>();
+	protected final Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
+	protected final Map<No, No> mapaNoCurvaAnterior = new HashMap<No, No>();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();
 	protected Map<No, Integer> mapaNosIds = new HashMap<No, Integer>();
 	private String temporada;
-	private Set<Integer> idsNoPista = new HashSet<Integer>();
-	private Set<Integer> idsNoBox = new HashSet<Integer>();
+	private final Set<Integer> idsNoPista = new HashSet<Integer>();
+	private final Set<Integer> idsNoBox = new HashSet<Integer>();
 
 	public BufferedImage obterCapacete(Piloto piloto) {
 		return carregadorRecursos.obterCapacete(piloto, this.getTemporada());

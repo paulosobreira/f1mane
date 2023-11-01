@@ -100,16 +100,16 @@ public class MainPanelEditor extends JPanel {
 	int ultimoItemBoxSelecionado = -1;
 	int ultimoItemPistaSelecionado = -1;
 
-	private JRadioButton largadaButton = new JRadioButton();
-	private JRadioButton retaButton = new JRadioButton();
-	private JRadioButton curvaAltaButton = new JRadioButton();
-	private JRadioButton curvaBaixaButton = new JRadioButton();
-	private JRadioButton boxButton = new JRadioButton();
-	private JRadioButton boxRetaButton = new JRadioButton();
-	private JRadioButton boxCurvaAltaButton = new JRadioButton();
-	private JRadioButton paraBoxButton = new JRadioButton();
-	private JRadioButton fimBoxButton = new JRadioButton();
-	private JRadioButton semSelecaoButton = new JRadioButton();
+	private final JRadioButton largadaButton = new JRadioButton();
+	private final JRadioButton retaButton = new JRadioButton();
+	private final JRadioButton curvaAltaButton = new JRadioButton();
+	private final JRadioButton curvaBaixaButton = new JRadioButton();
+	private final JRadioButton boxButton = new JRadioButton();
+	private final JRadioButton boxRetaButton = new JRadioButton();
+	private final JRadioButton boxCurvaAltaButton = new JRadioButton();
+	private final JRadioButton paraBoxButton = new JRadioButton();
+	private final JRadioButton fimBoxButton = new JRadioButton();
+	private final JRadioButton semSelecaoButton = new JRadioButton();
 
 	private JScrollPane scrollPane;
 
@@ -118,7 +118,7 @@ public class MainPanelEditor extends JPanel {
 	private static final String SAIDA_LADO_COMBO_1 = "SAIDA BOX LADO 1";
 	private static final String SAIDA_LADO_COMBO_2 = "SAIDA BOX LADO 2";
 	private static final Color COR_PISTA = new Color(192, 192, 192);
-	public double zoom = 1;
+	public final double zoom = 1;
 	private BufferedImage carroCima;
 	private int mx;
 	private int my;
@@ -129,7 +129,7 @@ public class MainPanelEditor extends JPanel {
 	private JTextField nomePistaText;
 	private JTextField probalidadeChuvaText;
 	private JTextField velocidadePistaText;
-	private BasicStroke trilho = new BasicStroke(1);
+	private final BasicStroke trilho = new BasicStroke(1);
 	private BasicStroke pista;
 	private BasicStroke pistaTinta;
 	private BasicStroke box;
@@ -142,7 +142,7 @@ public class MainPanelEditor extends JPanel {
 	private boolean posicionaObjetoPista;
 	private Point ultimoClicado;
 	private FormularioListaObjetos formularioListaObjetos;
-	protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+	protected final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
 	public MainPanelEditor() {
 	}

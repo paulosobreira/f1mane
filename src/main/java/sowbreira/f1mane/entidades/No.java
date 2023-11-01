@@ -17,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class No implements Serializable {
 	private static final long serialVersionUID = 493643626269961468L;
-	public static Color LARGADA = Color.BLUE;
-	public static Color RETA = Color.GREEN;
-	public static Color CURVA_ALTA = Color.YELLOW;
-	public static Color CURVA_BAIXA = Color.RED;
-	public static Color BOX = Color.CYAN;
-	public static Color PARADA_BOX = Color.ORANGE;
-	public static Color FIM_BOX = Color.PINK;
+	public static final Color LARGADA = Color.BLUE;
+	public static final Color RETA = Color.GREEN;
+	public static final Color CURVA_ALTA = Color.YELLOW;
+	public static final Color CURVA_BAIXA = Color.RED;
+	public static final Color BOX = Color.CYAN;
+	public static final Color PARADA_BOX = Color.ORANGE;
+	public static final Color FIM_BOX = Color.PINK;
 	private boolean box;
 	private int index;
 	

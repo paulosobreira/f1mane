@@ -43,9 +43,9 @@ import br.f1mane.recursos.idiomas.Lang;
  * @author Paulo Sobreira Criado em 27/10/2007 as 18:50:08
  */
 public class ControleClassificacao {
-	private ControlePersistencia controlePersistencia;
-	private ControleCampeonatoServidor controleCampeonatoServidor;
-	private CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
+	private final ControlePersistencia controlePersistencia;
+	private final ControleCampeonatoServidor controleCampeonatoServidor;
+	private final CarregadorRecursos carregadorRecursos = CarregadorRecursos.getCarregadorRecursos(false);
 
 	/**
 	 * @param controlePersistencia

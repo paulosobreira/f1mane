@@ -10,8 +10,10 @@ public class OcilaCor {
 	private int max;
 	private int alpha;
 	private boolean sobe;
-	private int r, g, b;
-	public static Map<String, OcilaCor> ocilacoes = new HashMap<String, OcilaCor>();
+	private final int r;
+    private final int g;
+    private final int b;
+	public static final Map<String, OcilaCor> ocilacoes = new HashMap<String, OcilaCor>();
 
 	public static Color geraOcila(String chave) {
 		return geraOcila(chave, Color.WHITE);

@@ -72,10 +72,10 @@ public class PainelEntradaCliente {
 	protected JCheckBox kers;
 	protected JCheckBox drs;
 	private List pilotos;
-	private Map circuitos;
-	private MainFrame mainFrame;
+	private final Map circuitos;
+	private final MainFrame mainFrame;
 	private DadosCriarJogo dadosCriarJogo;
-	private String nomeCriador;
+	private final String nomeCriador;
 	private CampeonatoSrv campeonato;
 
 	public void setCampeonato(CampeonatoSrv campeonato) {

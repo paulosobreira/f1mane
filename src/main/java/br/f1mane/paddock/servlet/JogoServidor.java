@@ -41,9 +41,9 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 	private long tempoCriacao, tempoInicio, tempoFim;
 	/* mapJogadoresOnline.put(token, dadosParticiparJogo) */
 	private Map<String, DadosCriarJogo> mapJogadoresOnline = new HashMap<String, DadosCriarJogo>();
-	private Map<String, BufferTexto> mapJogadoresOnlineTexto = new HashMap<String, BufferTexto>();
+	private final Map<String, BufferTexto> mapJogadoresOnlineTexto = new HashMap<String, BufferTexto>();
 	/* Chave numVolta , valor lista de VoltaJogadorOnline */
-	private Map mapVoltasJogadoresOnline = new HashMap();
+	private final Map mapVoltasJogadoresOnline = new HashMap();
 	private int contadorVolta = 0;
 	private DadosCriarJogo dadosCriarJogo;
 	private String estado = Comandos.ESPERANDO_JOGO_COMECAR;

@@ -51,15 +51,15 @@ public class CarregadorRecursos {
     private Map<String, List<Piloto>> temporadasPilotos;
     private Map<String, TemporadasDefauts> temporadasPilotosDefauts;
     private List<CircuitosDefauts> circuitosDefauts;
-    private static Map bufferImages = new HashMap();
-    private static Map bufferCarros = new HashMap();
-    private static Map<String, Circuito> bufferCircuitos = new HashMap<String, Circuito>();
-    private static Map<String, BufferedImage> bufferCarrosCima = new HashMap<String, BufferedImage>();
-    private static Map<String, BufferedImage> bufferCarrosCimaSemAreofolio = new HashMap<String, BufferedImage>();
-    private static Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
-    private static Map<String, BufferedImage> bufferCarrosLadoSemAreofolio = new HashMap<String, BufferedImage>();
-    private static Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
-    private static AlphaComposite composite = AlphaComposite
+    private static final Map bufferImages = new HashMap();
+    private static final Map bufferCarros = new HashMap();
+    private static final Map<String, Circuito> bufferCircuitos = new HashMap<String, Circuito>();
+    private static final Map<String, BufferedImage> bufferCarrosCima = new HashMap<String, BufferedImage>();
+    private static final Map<String, BufferedImage> bufferCarrosCimaSemAreofolio = new HashMap<String, BufferedImage>();
+    private static final Map<String, BufferedImage> bufferCarrosLado = new HashMap<String, BufferedImage>();
+    private static final Map<String, BufferedImage> bufferCarrosLadoSemAreofolio = new HashMap<String, BufferedImage>();
+    private static final Map<String, BufferedImage> bufferCapacete = new HashMap<String, BufferedImage>();
+    private static final AlphaComposite composite = AlphaComposite
             .getInstance(AlphaComposite.DST_OUT, 1);
 
     private static CarregadorRecursos carregadorRecursos;

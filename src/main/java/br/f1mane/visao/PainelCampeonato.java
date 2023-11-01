@@ -36,12 +36,12 @@ import br.f1mane.recursos.idiomas.Lang;
 
 public class PainelCampeonato extends JPanel {
 
-	private Campeonato campeonato;
-	private SimpleDateFormat dateFormat = new SimpleDateFormat(
+	private final Campeonato campeonato;
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"EEE, d MMM yyyy HH:mm:ss");
-	private MainFrame mainFrame;
+	private final MainFrame mainFrame;
 
-	private ControleCampeonato controleCampeonato;
+	private final ControleCampeonato controleCampeonato;
 
 	private JTable corridasTable;
 

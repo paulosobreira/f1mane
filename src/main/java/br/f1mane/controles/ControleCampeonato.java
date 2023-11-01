@@ -61,7 +61,7 @@ import br.f1mane.visao.PainelCampeonato;
 
 public class ControleCampeonato {
 
-	private MainFrame mainFrame;
+	private final MainFrame mainFrame;
 
 	private Campeonato campeonato;
 
@@ -93,7 +93,7 @@ public class ControleCampeonato {
 		return campeonato;
 	}
 
-	protected Map circuitos = new HashMap();
+	protected final Map circuitos = new HashMap();
 
 	protected Map circuitosPilotos = new HashMap();
 

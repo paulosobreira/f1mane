@@ -48,12 +48,12 @@ public class MainFrameEditor extends JFrame {
 	private static final long serialVersionUID = -284357233387917389L;
 	private MainPanelEditor editor;
 	private InterfaceJogo controleJogo;
-	private JMenuBar bar;
-	private JMenu menuEditor;
-	private JMenu menuIdiomas;
-	private JMenu menuInfo;
+	private final JMenuBar bar;
+	private final JMenu menuEditor;
+	private final JMenu menuIdiomas;
+	private final JMenu menuInfo;
 
-	private AppletPaddock ver = new AppletPaddock();
+	private final AppletPaddock ver = new AppletPaddock();
 	protected boolean altApertado;
 	protected boolean shiftApertado;
 

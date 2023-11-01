@@ -15,9 +15,9 @@ import java.util.Stack;
  */
 public class GeoUtil {
 
-	public static int GRAVITY = 10;
-	public static int LEFT_TO_RIGHT = 0;
-	public static int RIGHT_TO_LEFT = 1;
+	public static final int GRAVITY = 10;
+	public static final int LEFT_TO_RIGHT = 0;
+	public static final int RIGHT_TO_LEFT = 1;
 
 	public static double calculaAnguloRad(Point a, Point b) {
 		int dx = b.x - a.x;

@@ -33,12 +33,12 @@ public class ControleEstatisticas {
 	private JPanel painelDebug;
 	private JEditorPane infoTextual;
 	private JScrollPane scrollPaneTextual;
-	private InterfaceJogo controleJogo;
+	private final InterfaceJogo controleJogo;
 	private Volta voltaMaisRapida;
-	private static DecimalFormat mil = new DecimalFormat("000");
-	public static DecimalFormat dez = new DecimalFormat("00");
-	private LinkedList bufferInfo = new LinkedList();
-	private LinkedList<String> allInfo = new LinkedList<String>();
+	private static final DecimalFormat mil = new DecimalFormat("000");
+	public static final DecimalFormat dez = new DecimalFormat("00");
+	private final LinkedList bufferInfo = new LinkedList();
+	private final LinkedList<String> allInfo = new LinkedList<String>();
 	private boolean consumidorAtivo = true;
 	private Thread infoConsumer;
 	private long timeStampUltinfo;

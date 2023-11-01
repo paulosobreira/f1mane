@@ -39,7 +39,7 @@ public class CampeonatoTO implements Serializable {
 
 	private String rodadaCampeonato;
 
-	private List<CorridaCampeonatoTO> corridas = new ArrayList<CorridaCampeonatoTO>();
+	private final List<CorridaCampeonatoTO> corridas = new ArrayList<CorridaCampeonatoTO>();
 
 	private List<DadosClassificacaoCarros> carros = new ArrayList<DadosClassificacaoCarros>();
 

@@ -32,7 +32,7 @@ public class ControleSom {
 	private static Clip clipBox;
 	private static Clip clipSafetyCar;
 	private static Clip clipPararBox;
-	private static float volume = -15f;
+	private static final float volume = -15f;
 	private static Piloto psAnt;
 	private static No noAnterior;
 
