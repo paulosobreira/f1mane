@@ -2549,12 +2549,13 @@ public class PainelCircuito {
 			if (zoom == 1 || backGroundZoomPronto) {
 				drawBuffer = subimage;
 			} else {
-				if (drawBuffer == null || drawBuffer.getWidth() != limitesViewPortFull.getWidth()
-						|| drawBuffer.getHeight() != limitesViewPortFull.getHeight()) {
-					drawBuffer = new BufferedImage((int) (limitesViewPortFull.getWidth()),
-							(int) (limitesViewPortFull.getHeight()), backGround.getType());
-				}
-				if (subimage != null) {
+                if (drawBuffer != null && drawBuffer.getWidth() == limitesViewPortFull.getWidth()) {
+                    drawBuffer.getHeight();
+                    limitesViewPortFull.getHeight();
+                }
+                drawBuffer = new BufferedImage((int) (limitesViewPortFull.getWidth()),
+                        (int) (limitesViewPortFull.getHeight()), backGround.getType());
+                if (subimage != null) {
 					if (affineTransformBG == null || affineTransformBG.getScaleX() != zoom) {
 						affineTransformBG = AffineTransform.getScaleInstance(zoom, zoom);
 						affineTransformOpBG = new AffineTransformOp(affineTransformBG, interpolacao);
@@ -3984,7 +3985,7 @@ public class PainelCircuito {
 				grid[i] = null;
 			} else
 				grid[i] = generalPath.createTransformedShape(affineTransformRect);
-			if (circuito != null && circuito.isUsaBkg()) {
+			if (circuito.isUsaBkg()) {
 				AffineTransform afZoom = new AffineTransform();
 				AffineTransform afRotate = new AffineTransform();
 				afZoom.setToScale(zoom, zoom);
@@ -4370,10 +4371,8 @@ public class PainelCircuito {
 		int pneus = pilotoSelecionado.getCarro().getPorcentagemDesgastePneus();
 		int porcentComb = pilotoSelecionado.getCarro().getPorcentagemCombustivel();
 		String dano = null;
-		if (pilotoSelecionado != null) {
-			dano = pilotoSelecionado.getCarro().getDanificado();
-		}
-		if ((dano == null || dano.isEmpty()) && pneus > 25 && porcentComb > 25
+        dano = pilotoSelecionado.getCarro().getDanificado();
+        if ((dano == null || dano.isEmpty()) && pneus > 25 && porcentComb > 25
 				&& !pilotoSelecionado.isAlertaAerefolio() && !pilotoSelecionado.isAlertaMotor()) {
 			return;
 		}
@@ -4747,9 +4746,9 @@ public class PainelCircuito {
 			g2d.fillRoundRect(carSelX - 5, carSelY - 5, carroimg.getWidth() + 5, carroimg.getHeight() + 5, 0, 0);
 			if (diferencaParaProximo >= 3.0) {
 				g2d.setColor(gre);
-			} else if (diferencaParaProximo < 3.0 && diferencaParaProximo > 1.0) {
+			} else if (diferencaParaProximo > 1.0) {
 				g2d.setColor(yel);
-			} else if (diferencaParaProximo <= 1.0) {
+			} else {
 				g2d.setColor(red);
 			}
 			if (Math.random() > 0.5) {
@@ -4772,9 +4771,9 @@ public class PainelCircuito {
 
 			if (diferencaParaProximo >= 3) {
 				g2d.setColor(Color.BLACK);
-			} else if (diferencaParaProximo < 3 && diferencaParaProximo > 1) {
+			} else if (diferencaParaProximo > 1) {
 				g2d.setColor(Color.BLACK);
-			} else if (diferencaParaProximo <= 1) {
+			} else {
 				g2d.setColor(Color.WHITE);
 			}
 			String val = psel.getCalculaSegundosParaAnterior();

@@ -168,7 +168,6 @@ public class Circuito implements Serializable {
 			newNo.setTipo(no.getTipo());
 			newNo.setTracado(0);
 			pistaTemp.add(newNo);
-			newNo = new No();
 		}
 
 		for (Iterator<No> iter = pistaTemp.iterator(); iter.hasNext();) {
@@ -296,8 +295,8 @@ public class Circuito implements Serializable {
 		for (int i = 0; i < pistaFull.size(); i++) {
 			No no = pistaFull.get(i);
 			Point p = no.getPoint();
-			Point frenteCar = null;
-			Point trazCar = null;
+			Point frenteCar;
+			Point trazCar;
 			int traz = i - Piloto.METADE_CARRO;
 			int frente = i + Piloto.METADE_CARRO;
 			if (traz < 0) {
@@ -338,8 +337,8 @@ public class Circuito implements Serializable {
 		for (int i = 0; i < boxFull.size(); i++) {
 			No no = boxFull.get(i);
 			Point p = no.getPoint();
-			Point frenteCar = null;
-			Point trazCar = null;
+			Point frenteCar;
+			Point trazCar;
 			int traz = i - Piloto.METADE_CARRO;
 			int frente = i + Piloto.METADE_CARRO;
 			if (frente > (boxFull.size() - 1)) {
@@ -480,10 +479,7 @@ public class Circuito implements Serializable {
 						if (sair) {
 							break;
 						}
-						if (sair) {
-							break;
-						}
-						if (i % 3 == 0) {
+                        if (i % 3 == 0) {
 							contVolta--;
 						}
 						contPonto = contVolta;

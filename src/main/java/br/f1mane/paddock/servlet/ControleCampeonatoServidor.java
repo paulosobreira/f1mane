@@ -285,7 +285,7 @@ public class ControleCampeonatoServidor {
 	}
 
 	public CampeonatoSrv obterCampeonatoEmAberto(String token) {
-		List pesquisaCampeonatos = null;
+		List pesquisaCampeonatos;
 		Session session = controlePersistencia.getSession();
 		try {
 			pesquisaCampeonatos = controlePersistencia
@@ -311,7 +311,7 @@ public class ControleCampeonatoServidor {
 	}
 
 	public CampeonatoSrv obterCampeonatoId(String id) {
-		CampeonatoSrv campeonato = null;
+		CampeonatoSrv campeonato;
 		Session session = controlePersistencia.getSession();
 		try {
 			campeonato = controlePersistencia.pesquisaCampeonatoId(id, session);

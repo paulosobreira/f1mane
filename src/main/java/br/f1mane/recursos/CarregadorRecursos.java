@@ -407,7 +407,7 @@ public class CarregadorRecursos {
                 argb);
         Raster srcRaster = srcBufferedImage.getData();
         WritableRaster destRaster = bufferedImageRetorno.getRaster();
-        int[] argbArray = new int[4];
+        int[] argbArray;
         for (int i = 0; i < srcBufferedImage.getWidth(); i++) {
             for (int j = 0; j < srcBufferedImage.getHeight(); j++) {
                 argbArray = new int[4];
@@ -652,7 +652,7 @@ public class CarregadorRecursos {
                 BufferedImage.TYPE_INT_ARGB);
         Raster srcRaster = buffer.getData();
         WritableRaster destRaster = bufferedImageRetorno.getRaster();
-        int[] argbArray = new int[4];
+        int[] argbArray;
 
         for (int i = 0; i < buffer.getWidth(); i++) {
             for (int j = 0; j < buffer.getHeight(); j++) {
@@ -682,7 +682,7 @@ public class CarregadorRecursos {
                 BufferedImage.TYPE_INT_ARGB);
         Raster srcRaster = srcBufferedImage.getData();
         WritableRaster destRaster = bufferedImageRetorno.getRaster();
-        int[] argbArray = new int[4];
+        int[] argbArray;
 
         for (int i = 0; i < srcBufferedImage.getWidth(); i++) {
             for (int j = 0; j < srcBufferedImage.getHeight(); j++) {
@@ -702,7 +702,7 @@ public class CarregadorRecursos {
     }
 
     public static BufferedImage carregaImagem(String file) {
-        BufferedImage bufferedImage = null;
+        BufferedImage bufferedImage;
         bufferedImage = (BufferedImage) bufferImages.get(file);
         if (bufferedImage == null) {
             try {
@@ -831,7 +831,7 @@ public class CarregadorRecursos {
         if (carroLado == null) {
             if (carro.getImg() != null) {
                 try {
-                    BufferedImage carroLadoPng = null;
+                    BufferedImage carroLadoPng;
                     if (carro.getImg().endsWith(".png")) {
                         carroLadoPng = CarregadorRecursos
                                 .carregaImagem(carro.getImg());
@@ -880,7 +880,7 @@ public class CarregadorRecursos {
         if (carroLado == null) {
             if (carro.getImg() != null) {
                 try {
-                    BufferedImage carroLadoPng = null;
+                    BufferedImage carroLadoPng;
                     carroLadoPng = CarregadorRecursos
                             .carregaImagem(carro.getImg());
                     carroLado = carroLadoPng;

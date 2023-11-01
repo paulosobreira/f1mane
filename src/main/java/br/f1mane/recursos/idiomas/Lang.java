@@ -13,10 +13,7 @@ import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-
 import br.nnpe.Logger;
-import br.f1mane.paddock.servlet.JogoServidor;
 import br.f1mane.recursos.CarregadorRecursos;
 
 public class Lang {

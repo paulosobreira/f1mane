@@ -321,7 +321,7 @@ public class ControleEstatisticas {
 		}
 		Collections.shuffle(pilotos);
 		Piloto pilotoSel = (Piloto) pilotos.get(0);
-		Piloto pilotoComp = null;
+		Piloto pilotoComp;
 		if (pilotoSel.getPosicao() == 1) {
 			pilotoComp = controleJogo.obterCarroAtras(pilotoSel).getPiloto();
 		} else {

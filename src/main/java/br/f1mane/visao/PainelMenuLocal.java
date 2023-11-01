@@ -2006,7 +2006,7 @@ public class PainelMenuLocal {
 			temporadaSelecionada = (String) temporadas.get(0);
 		}
 
-		if (temporadaSelecionada != (String) temporadas.get(temporadas.size() - 1)) {
+		if (!temporadaSelecionada.equals((String) temporadas.get(temporadas.size() - 1))) {
 			g2d.setColor(lightWhite);
 			anteTemporadaRect.setFrame(x, y - 25, 30, 30);
 			g2d.fill(anteTemporadaRect);
@@ -2025,7 +2025,7 @@ public class PainelMenuLocal {
 
 		x += larguraTexto + 30;
 
-		if (temporadaSelecionada != (String) temporadas.get(0)) {
+		if (!temporadaSelecionada.equals((String) temporadas.get(0))) {
 			g2d.setColor(lightWhite);
 			proxTemporadaRect.setFrame(x, y - 25, 30, 30);
 			g2d.fill(proxTemporadaRect);

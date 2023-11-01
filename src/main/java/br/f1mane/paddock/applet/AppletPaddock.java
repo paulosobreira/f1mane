@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 
 import br.f1mane.recursos.CarregadorRecursos;
 import br.nnpe.Logger;
-import br.f1mane.paddock.PaddockConstants;
 import br.f1mane.recursos.idiomas.Lang;
 
 /**

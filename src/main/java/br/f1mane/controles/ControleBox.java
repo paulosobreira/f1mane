@@ -267,7 +267,7 @@ public class ControleBox {
 		}
 		Logger.logar(piloto.getNome() + " Parou no Box : " + piloto.getNumeroVolta());
 		piloto.setVelocidade(0);
-		int qtdeCombust = 0;
+		int qtdeCombust;
 		piloto.setTracado(controleJogo.getCircuito().getLadoBox() == 1 ? 2 : 1);
 		if (piloto.isJogadorHumano()) {
 			Integer combust = controleJogo.getCombustBox(piloto);
@@ -433,7 +433,7 @@ public class ControleBox {
 			}
 		}
 		processarTipoAsaAutomatico(piloto);
-		int percentagem = 0;
+		int percentagem;
 		int consumoMedio = (int) piloto.calculaConsumoMedioCombust();
 		piloto.limparConsumoMedioCombust();
 		if (consumoMedio == 0) {
@@ -554,7 +554,7 @@ public class ControleBox {
 		if (!(InterfaceJogo.FACIL_NV == controleJogo.getNiveljogo()))
 			processarTipoAsaAutomatico(piloto);
 
-		int percentagem = 0;
+		int percentagem;
 
 		int consumoMedioCombustivel = (int) piloto.calculaConsumoMedioCombust();
 

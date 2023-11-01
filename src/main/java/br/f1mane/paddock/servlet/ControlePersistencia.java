@@ -52,12 +52,6 @@ public class ControlePersistencia {
 		super();
 		this.webInfDir = webInfDir;
 		this.webDir = webDir;
-		try {
-			Properties properties = new Properties();
-			properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
 	}
 
 	/**

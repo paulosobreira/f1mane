@@ -254,14 +254,10 @@ public class PaddockWindow {
 		verDetalhes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Object object = null;
-				if (listaClientes != null) {
-					object = listaClientes.getSelectedValue();
-				}
-				if (object == null) {
-					if (listaJogosCriados != null) {
-						object = listaJogosCriados.getSelectedValue();
-					}
-					if (object == null
+                object = listaClientes.getSelectedValue();
+                if (object == null) {
+                    object = listaJogosCriados.getSelectedValue();
+                    if (object == null
 							&& listaJogosCriados.getModel().getSize() == 1) {
 						object = listaJogosCriados.getModel().getElementAt(0);
 					}

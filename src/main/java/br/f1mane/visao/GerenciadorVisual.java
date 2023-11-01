@@ -148,8 +148,7 @@ public class GerenciadorVisual {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				double val = painelCircuito.getMouseZoom();
 				val += e.getWheelRotation() / 60.0;
-				if (controleJogo != null && painelCircuito.getBackGround() != null && controleJogo.getCircuito() != null
-						&& controleJogo.getCircuito().isUsaBkg()) {
+				if (painelCircuito.getBackGround() != null && controleJogo.getCircuito() != null && controleJogo.getCircuito().isUsaBkg()) {
 					Rectangle limitesViewPort = (Rectangle) painelCircuito.limitesViewPort();
 					if ((painelCircuito.getBackGround().getWidth() * val) < limitesViewPort.getWidth()) {
 						return;
@@ -283,10 +282,7 @@ public class GerenciadorVisual {
 		}
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if (controleJogo == null) {
-					return;
-				}
-				int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(), Lang.msg("095"), Lang.msg("094"),
+                int ret = JOptionPane.showConfirmDialog(controleJogo.getMainFrame(), Lang.msg("095"), Lang.msg("094"),
 						JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.NO_OPTION) {
 					return;
@@ -1423,7 +1419,7 @@ public class GerenciadorVisual {
 				string += "<br>";
 			}
 			boolean contains = false;
-			for (int i = bufferTextual.size() - 1; i < bufferTextual.size() - 5; i--) {
+			for (int i = bufferTextual.size() - 1; i > bufferTextual.size() - 5; i--) {
                 if (i >= 0 && string.equals(bufferTextual.get(i))) {
                     contains = true;
                     break;

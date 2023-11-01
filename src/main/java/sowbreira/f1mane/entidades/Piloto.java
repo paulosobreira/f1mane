@@ -3373,7 +3373,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		List<String> copy = new ArrayList<String>();
 		while (copy.isEmpty()) {
 			try {
-				if (ultimas5Voltas == null || ultimas5Voltas.isEmpty()) {
+				if (ultimas5Voltas.isEmpty()) {
 					return copy;
 				}
 				copy.addAll(ultimas5Voltas);

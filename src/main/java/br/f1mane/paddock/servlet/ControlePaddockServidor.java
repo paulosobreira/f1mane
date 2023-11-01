@@ -25,7 +25,6 @@ import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.TemporadasDefauts;
-import br.f1mane.paddock.PaddockConstants;
 import br.f1mane.paddock.entidades.Comandos;
 import br.f1mane.paddock.entidades.TOs.CampeonatoTO;
 import br.f1mane.paddock.entidades.TOs.ClientPaddockPack;
@@ -1070,14 +1069,12 @@ public class ControlePaddockServidor {
 			/**
 			 * Criar Jogo
 			 */
-			if (statusJogo == null) {
-				statusJogo = criarJogo(clientPaddockPack);
-				if (statusJogo instanceof MsgSrv || statusJogo instanceof ErroServ) {
-					return statusJogo;
-				}
-			}
+            statusJogo = criarJogo(clientPaddockPack);
+            if (statusJogo instanceof MsgSrv || statusJogo instanceof ErroServ) {
+                return statusJogo;
+            }
 
-			srvPaddockPack = (SrvPaddockPack) statusJogo;
+            srvPaddockPack = (SrvPaddockPack) statusJogo;
 
 			/**
 			 * Preenchento todos possiveis campos para nome do jogo Bagunça...
@@ -1089,14 +1086,12 @@ public class ControlePaddockServidor {
 			/**
 			 * Entrar Jogo
 			 */
-			if (statusJogo != null) {
-				statusJogo = entrarJogo(clientPaddockPack);
-				if (statusJogo instanceof MsgSrv || statusJogo instanceof ErroServ) {
-					return statusJogo;
-				}
-				atualizarDadosVisao();
-			}
-			DadosJogo dadosJogo = (DadosJogo) obterDadosJogo(clientPaddockPack);
+            statusJogo = entrarJogo(clientPaddockPack);
+            if (statusJogo instanceof MsgSrv || statusJogo instanceof ErroServ) {
+                return statusJogo;
+            }
+            atualizarDadosVisao();
+            DadosJogo dadosJogo = (DadosJogo) obterDadosJogo(clientPaddockPack);
 			return dadosJogo;
 		} catch (Exception e) {
 			Logger.logarExept(e);

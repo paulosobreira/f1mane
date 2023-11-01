@@ -75,12 +75,11 @@ public class ControlePaddockCliente {
 			mainFrame = new MainFrame(applet, applet.getCodeBase().toString());
 			mainFrame.setVisible(false);
 			mainFrame.desbilitarMenusModoOnline();
-			loadSufx();
 			threadAtualizadora = new Thread(new Runnable() {
 				public void run() {
 					boolean interrupt = false;
 					try {
-						while (!interrupt && isComunicacaoServer()) {
+						while (isComunicacaoServer()) {
 							Thread.sleep(Util.intervalo(4000, 6000));
 							atualizaVisao(paddockWindow);
 						}
@@ -106,31 +105,13 @@ public class ControlePaddockCliente {
 		}
 	}
 
-	private void loadSufx() throws IOException {
-		Properties properties = new Properties();
-		properties.load(CarregadorRecursos.recursoComoStream("application.properties"));
-		// this.urlSufix = properties.getProperty("servidor");
-	}
-
 	public Object enviarObjeto(Object enviar) {
 		return enviarObjeto(enviar, false);
 	}
 
-	public static void main(String[] args) throws Exception {
-		// SimpleDateFormat dateFormat = new SimpleDateFormat(
-		// "EEE, d MMM yyyy HH:mm:ss");
-		// Date parse = dateFormat.parse("Sex, 18 Mar 2011 14:52:33");
-		// System.out.println(parse);
-		System.out.println((5000 + ((int) Math.random() * 1000)));
-
-	}
-
 	public Object enviarObjeto(Object enviar, boolean timeout) {
 		try {
-			if (urlSufix == null) {
-				loadSufx();
-			}
-			String protocol = url.getProtocol();
+            String protocol = url.getProtocol();
 			String host = url.getHost();
 			int port = url.getPort();
 			URL dataUrl;

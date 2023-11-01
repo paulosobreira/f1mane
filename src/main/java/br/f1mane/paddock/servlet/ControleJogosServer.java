@@ -530,10 +530,8 @@ public class ControleJogosServer {
 	public Boolean mudarGiroMotor(SessaoCliente sessaoCliente, String idPiloto,
 			String giro) {
 		try {
-			if (Logger.ativo) {
-				// obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
-			}
-			Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
+            // obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+            Piloto piloto = obterPilotoPorId(sessaoCliente, idPiloto);
 			if (piloto == null) {
 				return null;
 			}
@@ -1194,12 +1192,10 @@ public class ControleJogosServer {
 			if (piloto == null) {
 				return false;
 			}
-			if (Logger.ativo) {
-				//obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
-				// obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
-				//obterJogoPorSessaoCliente(sessaoCliente).forcaQuerbraAereofolio(piloto);
-			}
-			piloto.setAtivarErs(!piloto.isAtivarErs());
+            //obterJogoPorSessaoCliente(sessaoCliente).forcaSafatyCar();
+            // obterJogoPorSessaoCliente(sessaoCliente).climaChuvoso();
+            //obterJogoPorSessaoCliente(sessaoCliente).forcaQuerbraAereofolio(piloto);
+            piloto.setAtivarErs(!piloto.isAtivarErs());
 			return piloto.isAtivarErs();
 		} catch (Exception e) {
 			Logger.logarExept(e);

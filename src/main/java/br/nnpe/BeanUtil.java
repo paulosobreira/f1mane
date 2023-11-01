@@ -83,7 +83,7 @@ public class BeanUtil {
 	private static void setarPropriedadeTipoString(Object beanVo,
 			String propriedade, Object object, Class tipo)
 			throws IllegalAccessException, InvocationTargetException {
-		String valor = null;
+		String valor;
 		String datatype = tipo.getName();
 
 		if (object == null) {
