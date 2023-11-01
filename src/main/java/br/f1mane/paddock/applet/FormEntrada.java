@@ -108,7 +108,7 @@ public class FormEntrada extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				Logger.logar(Lang.key(comboIdiomas.getSelectedItem().toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
-				if (i != null && !"".equals(i)) {
+				if (i != null && !i.isEmpty()) {
 					Lang.mudarIdioma(i);
 					comboIdiomas.removeAllItems();
 					comboIdiomas.addItem(Lang.msg("pt"));

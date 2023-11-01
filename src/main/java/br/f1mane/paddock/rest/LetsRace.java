@@ -376,8 +376,7 @@ public class LetsRace {
         List<CircuitosDefauts> circuitosDefauts;
         try {
             circuitosDefauts = carregadorRecursos.carregarCircuitosDefaults();
-            List<CircuitosDefauts> shuffle = new ArrayList<>();
-            shuffle.addAll(circuitosDefauts);
+            List<CircuitosDefauts> shuffle = new ArrayList<>(circuitosDefauts);
             Collections.shuffle(shuffle);
             return Response.status(200).entity(shuffle).build();
         } catch (Exception e) {

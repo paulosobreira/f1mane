@@ -240,7 +240,7 @@ function sobre() {
     if (localStorage.getItem("token") == null){
         window.onload = function () {
           google.accounts.id.initialize({
-            client_id: "143142801251-n0a6bc0rs03h41bt7ganklmlrokqn6te.apps.googleusercontent.com",
+            client_id: $("#idGoogle").val(),
             callback: handleCredentialResponse
           });
           google.accounts.id.renderButton(

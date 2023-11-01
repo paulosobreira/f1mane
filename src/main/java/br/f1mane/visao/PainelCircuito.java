@@ -1668,13 +1668,15 @@ public class PainelCircuito {
 	}
 
 	private static String geraLabelVoltaTabelaComparativa(String parte, String volta) {
-		for (int i = 0; i < parte.length(); i++) {
+        StringBuilder voltaBuilder = new StringBuilder(volta);
+        for (int i = 0; i < parte.length(); i++) {
 			if (parte.charAt(i) == '<') {
 				break;
 			}
-			volta += parte.charAt(i);
+			voltaBuilder.append(parte.charAt(i));
 		}
-		if (volta.contains(">")) {
+        volta = voltaBuilder.toString();
+        if (volta.contains(">")) {
 			return volta.split(">")[1];
 		}
 		return volta;
@@ -3869,9 +3871,9 @@ public class PainelCircuito {
 	}
 
 	public List getGridImgCopia() {
-		List copy = new ArrayList();
+		List copy;
 		try {
-			copy.addAll(gridImg);
+			copy = new ArrayList(gridImg);
 		} catch (Exception e) {
 			return new ArrayList();
 		}
@@ -4371,7 +4373,7 @@ public class PainelCircuito {
 		if (pilotoSelecionado != null) {
 			dano = pilotoSelecionado.getCarro().getDanificado();
 		}
-		if ((dano == null || "".equals(dano)) && pneus > 25 && porcentComb > 25
+		if ((dano == null || dano.isEmpty()) && pneus > 25 && porcentComb > 25
 				&& !pilotoSelecionado.isAlertaAerefolio() && !pilotoSelecionado.isAlertaMotor()) {
 			return;
 		}

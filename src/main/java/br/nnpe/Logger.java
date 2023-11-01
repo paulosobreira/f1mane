@@ -26,10 +26,9 @@ public class Logger {
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuilder retorno = new StringBuilder();
 			int size = ((trace.length > 15) ? 15 : trace.length);
-			retorno.append(
-					e.getClass() + " - " + e.getLocalizedMessage() + "<br>");
+			retorno.append(e.getClass()).append(" - ").append(e.getLocalizedMessage()).append("<br>");
 			for (int i = 0; i < size; i++) {
-				retorno.append(trace[i] + "<br>");
+				retorno.append(trace[i]).append("<br>");
 			}
 			String val = retorno.toString();
 			Integer numExceps = (Integer) topExceptions.get(val);

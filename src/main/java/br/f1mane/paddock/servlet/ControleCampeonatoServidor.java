@@ -651,7 +651,7 @@ public class ControleCampeonatoServidor {
 				new Comparator<DadosClassificacaoJogador>() {
 					public int compare(DadosClassificacaoJogador arg0,
 							DadosClassificacaoJogador arg1) {
-						return new Integer(arg1.getPontos())
+						return arg1.getPontos()
 								.compareTo(arg0.getPontos());
 					}
 				});

@@ -2794,12 +2794,11 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (voltas == null) {
 			return null;
 		}
-		List ordenaVoltas = new ArrayList();
-		List<Volta> voltasCp = getVoltasCopy();
+        List<Volta> voltasCp = getVoltasCopy();
 		if (voltasCp.isEmpty()) {
 			return null;
 		}
-		ordenaVoltas.addAll(voltasCp);
+        List ordenaVoltas = new ArrayList(voltasCp);
 		Collections.sort(ordenaVoltas, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				Volta v0 = (Volta) arg0;

@@ -48,7 +48,7 @@ public class PassGenerator {
 
 	int genNum() {
 		iGeRaNu = genNum.nextInt() % arrTam;
-		sTam = new Integer(iGeRaNu).toString();
+		sTam = Integer.toString(iGeRaNu);
 		sChar = new String(String.valueOf(sTam.charAt(0)));
 
 		// Converting the possible negative number to positive

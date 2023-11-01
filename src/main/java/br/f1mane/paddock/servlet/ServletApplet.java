@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 
 import javax.servlet.ServletException;
@@ -30,8 +32,8 @@ public class ServletApplet extends HttpServlet {
 					+ "WEB-INF" + File.separator;
 			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(
-					new FileInputStream(basePath + File.separator + "lib"
-							+ File.separator + "f1mane.jar"));
+                    Files.newInputStream(Paths.get(basePath + File.separator + "lib"
+                            + File.separator + "f1mane.jar")));
 			int byt = bufferedInputStream.read();
 
 			while (-1 != byt) {
@@ -61,8 +63,8 @@ public class ServletApplet extends HttpServlet {
 			throws ServletException, IOException {
 		ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(
-				new FileInputStream(basePath + File.separator + "lib"
-						+ File.separator + "f1mane.jar"));
+                Files.newInputStream(Paths.get(basePath + File.separator + "lib"
+                        + File.separator + "f1mane.jar")));
 		int byt = bufferedInputStream.read();
 
 		while (-1 != byt) {

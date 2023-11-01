@@ -91,7 +91,7 @@ public class DadosCriarJogo implements Serializable {
 				.get("t" + temporada);
 
 		if (!Util.isNullOrEmpty(combustivel)) {
-			Integer fuel = new Integer(Util.extrairNumeros(combustivel));
+			int fuel = new Integer(Util.extrairNumeros(combustivel));
 			if (fuel > 100) {
 				fuel = 100;
 			}

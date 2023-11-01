@@ -19,10 +19,6 @@ public class ControleClima {
 	private ThreadMudancaClima threadMudancaClima;
 	private boolean climaAleatorio;
 
-	/**
-	 * @param controleJogo
-	 * @param clima
-	 */
 	public ControleClima(InterfaceJogo controleJogo, int totalVoltas) {
 		super();
 		this.controleJogo = controleJogo;

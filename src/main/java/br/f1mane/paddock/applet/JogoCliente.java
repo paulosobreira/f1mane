@@ -155,7 +155,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			int size = ((trace.length > 10) ? 10 : trace.length);
 
 			for (int i = 0; i < size; i++)
-				retorno.append(trace[i] + "\n");
+				retorno.append(trace[i]).append("\n");
 			JOptionPane.showMessageDialog(getMainFrame(), retorno.toString(), Lang.msg("059"),
 					JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
@@ -1298,7 +1298,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 					}
 					valor = object.toString();
 				}
-				buffer.append(field.getName() + " = " + valor + "<br>");
+				buffer.append(field.getName()).append(" = ").append(valor).append("<br>");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

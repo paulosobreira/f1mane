@@ -127,7 +127,7 @@ public class Util {
 	}
 
 	public static boolean isNullOrEmpty(String campo) {
-		return ((campo == null) || "".equals(campo.trim()));
+		return ((campo == null) || campo.trim().isEmpty());
 	}
 
 	public static Date alteraData(Date date, int qtdDias) {
@@ -179,19 +179,19 @@ public class Util {
 	}
 
 	public static String removeQuotes(String text) {
-		String ret = "";
+		StringBuilder ret = new StringBuilder();
 
 		if (text != null) {
 			for (int i = 0; i < text.length(); i++) {
 				if (text.substring(i, i + 1).equals("\"")) {
-					ret += "'";
+					ret.append("'");
 				} else {
-					ret += text.substring(i, i + 1);
+					ret.append(text.substring(i, i + 1));
 				}
 			}
 		}
 
-		return ret;
+		return ret.toString();
 	}
 
 	public static String formatNumber(String patern, double number) {

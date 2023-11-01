@@ -48,10 +48,6 @@ public class FormClassificacao extends JPanel {
 	private List listaPilotos;
 	private TableRowSorter sorter;
 
-	/**
-	 * @param listaDadosJogador
-	 * @param cliente
-	 */
 	public FormClassificacao(List listaDadosJogador,
 			final ControlePaddockCliente controlePaddockCliente,
 			List listaCarros, List listaPilotos) {

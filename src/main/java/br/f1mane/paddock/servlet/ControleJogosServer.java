@@ -710,14 +710,6 @@ public class ControleJogosServer {
 		return dadosParciais.encode();
 	}
 
-	/**
-	 * 
-	 * @param idPilotoStr
-	 * @param tokenJogador
-	 * @param args
-	 *            args[0] jogo args[1] tokenJogador args[2] pilto Sel
-	 * @return
-	 */
 	public DadosParciais obterDadosParciaisPilotos(String nomeJogo,
 			String tokenJogador, String idPilotoStr) {
 

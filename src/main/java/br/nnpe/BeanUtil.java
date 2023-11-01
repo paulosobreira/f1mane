@@ -187,7 +187,7 @@ public class BeanUtil {
 			}
 		}
 
-		propriedades.keySet().removeAll(remover);
+		remover.forEach(propriedades.keySet()::remove);
 	}
 
 	public static void copiarCollections(List listOrigem, List listaDestino)

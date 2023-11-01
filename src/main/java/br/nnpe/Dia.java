@@ -10,7 +10,6 @@ import java.util.GregorianCalendar;
 
 /**
  * Stores dates and perform date arithmetic.
- * 
  * This is another date class, but more convenient that <tt>java.util.Date</tt>
  * or <tt>java.util.Calendar</tt>
  * 
@@ -579,12 +578,9 @@ public class Dia implements Cloneable, Serializable {
 	 * @return The Julian day number that begins at noon of this day Positive
 	 *         year signifies A.D., negative year B.C. Remember that the year
 	 *         after 1 B.C. was 1 A.D.
-	 * 
 	 * A convenient reference point is that May 23, 1968 noon is Julian day
 	 * 2440000.
-	 * 
 	 * Julian day 0 is a Monday.
-	 * 
 	 * This algorithm is from Press et al., Numerical Recipes in C, 2nd ed.,
 	 * Cambridge University Press 1992
 	 */
@@ -623,7 +619,6 @@ public class Dia implements Cloneable, Serializable {
 
 	/**
 	 * Converts a Julian day to a calendar date
-	 * 
 	 * This algorithm is from Press et al., Numerical Recipes in C, 2nd ed.,
 	 * Cambridge University Press 1992
 	 * 

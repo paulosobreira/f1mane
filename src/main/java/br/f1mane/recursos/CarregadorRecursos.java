@@ -1011,7 +1011,7 @@ public class CarregadorRecursos {
         if (temporada == null) {
             return modelo;
         }
-        Integer anoTemporada = Integer.valueOf(temporada.replace("t", ""));
+        int anoTemporada = Integer.parseInt(temporada.replace("t", ""));
         if (anoTemporada < 2017) {
             modelo = "png/cima20092016/";
         }

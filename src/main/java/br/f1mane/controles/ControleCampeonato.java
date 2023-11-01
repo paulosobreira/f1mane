@@ -394,7 +394,7 @@ public class ControleCampeonato {
 			StringBuilder retorno = new StringBuilder();
 			int size = ((trace.length > 10) ? 10 : trace.length);
 			for (int i = 0; i < size; i++)
-				retorno.append(trace[i] + "\n");
+				retorno.append(trace[i]).append("\n");
 			JOptionPane.showMessageDialog(mainFrame, retorno.toString(), Lang.msg("283"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
@@ -910,10 +910,9 @@ public class ControleCampeonato {
 		panel3rd.add(panel1st);
 		panel3rd.add(panel2nd);
 
-		final List tempList = new LinkedList();
-		String temporarada = (String) ControleCampeonato.this.carregadorRecursos.getTemporadas()
+        String temporarada = (String) ControleCampeonato.this.carregadorRecursos.getTemporadas()
 				.get(temporadas.getSelectedItem());
-		tempList.addAll((Collection) circuitosPilotos.get(temporarada));
+        final List tempList = new LinkedList((Collection) circuitosPilotos.get(temporarada));
 		Map<String, String> pilotosEquipesCampeonato = new HashMap<String, String>();
 		Map<String, Integer> equipesPotenciaCampeonato = new HashMap<String, Integer>();
 		Map<String, Integer> pilotosHabilidadeCampeonato = new HashMap<String, Integer>();
@@ -1101,10 +1100,9 @@ public class ControleCampeonato {
 			int numVoltasSelecionado, int turbulenciaSelecionado, String climaSelecionado, String nivelSelecionado,
 			Piloto pilotoSelecionado, boolean kers, boolean drs, boolean trocaPneus, boolean reabastecimento) {
 
-		final List tempList = new LinkedList();
-		String temporarada = (String) ControleCampeonato.this.carregadorRecursos.getTemporadas()
+        String temporarada = (String) ControleCampeonato.this.carregadorRecursos.getTemporadas()
 				.get(temporadaSelecionada);
-		tempList.addAll((Collection) circuitosPilotos.get(temporarada));
+        final List tempList = new LinkedList((Collection) circuitosPilotos.get(temporarada));
 		Map<String, String> pilotosEquipesCampeonato = new HashMap<String, String>();
 		Map<String, Integer> equipesPotenciaCampeonato = new HashMap<String, Integer>();
 		Map<String, Integer> pilotosHabilidadeCampeonato = new HashMap<String, Integer>();

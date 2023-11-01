@@ -17,10 +17,6 @@ public class ControleCiclo extends Thread {
 	private int contadorCiclos;
 	private boolean processadoCilcos = true;
 
-	/**
-	 * @param controleJogo
-	 * @param circuito
-	 */
 	public ControleCiclo(InterfaceJogo controleJogo,
 			ControleCorrida controleCorrida) {
 		super();

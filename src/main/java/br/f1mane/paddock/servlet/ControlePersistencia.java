@@ -18,6 +18,8 @@ import javax.swing.*;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.*;
 import java.util.zip.ZipEntry;
@@ -92,14 +94,14 @@ public class ControlePersistencia {
 			XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
 			encoder.writeObject(paddockDadosSrv);
 			encoder.flush();
-			ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(basePath + nomeArquivo));
+			ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(Paths.get(basePath + nomeArquivo)));
 			ZipEntry entry = new ZipEntry("paddockDadosSrv.xml");
 			zipOutputStream.putNextEntry(entry);
 			zipOutputStream.write(byteArrayOutputStream.toByteArray());
 			zipOutputStream.closeEntry();
 			zipOutputStream.close();
 			ZipOutputStream zipOutputStreamBak = new ZipOutputStream(
-					new FileOutputStream(basePath + "BAK_" + nomeArquivo));
+                    Files.newOutputStream(Paths.get(basePath + "BAK_" + nomeArquivo)));
 			ZipEntry entryBak = new ZipEntry("paddockDadosSrv.xml");
 			zipOutputStreamBak.putNextEntry(entryBak);
 			zipOutputStreamBak.write(byteArrayOutputStream.toByteArray());
@@ -131,7 +133,7 @@ public class ControlePersistencia {
 	}
 
 	private PaddockDadosSrv lerDados() throws Exception {
-		ZipInputStream zin = new ZipInputStream(new FileInputStream(basePath + nomeArquivo));
+		ZipInputStream zin = new ZipInputStream(Files.newInputStream(Paths.get(basePath + nomeArquivo)));
 		zin.getNextEntry();
 		ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
 		int byt = zin.read();
@@ -159,7 +161,7 @@ public class ControlePersistencia {
 			return;
 		}
 
-		ZipInputStream zin = new ZipInputStream(new FileInputStream(fileChooser.getSelectedFile()));
+		ZipInputStream zin = new ZipInputStream(Files.newInputStream(fileChooser.getSelectedFile().toPath()));
 		zin.getNextEntry();
 		ByteArrayOutputStream arrayDinamico = new ByteArrayOutputStream();
 		int byt = zin.read();
@@ -225,7 +227,7 @@ public class ControlePersistencia {
 
 				ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 				BufferedInputStream bufferedInputStream = new BufferedInputStream(
-						new FileInputStream(basePath + tipo + nomeArquivo));
+                        Files.newInputStream(Paths.get(basePath + tipo + nomeArquivo)));
 				int byt = bufferedInputStream.read();
 
 				while (-1 != byt) {

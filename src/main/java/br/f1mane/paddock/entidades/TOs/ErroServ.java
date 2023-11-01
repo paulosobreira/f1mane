@@ -13,12 +13,12 @@ public class ErroServ implements Serializable {
 	private String formataErro(Throwable exception) {
 		StackTraceElement[] trace = exception.getStackTrace();
 		StringBuilder retorno = new StringBuilder();
-		retorno.append("ERRO :" + exception.getMessage() + "\n");
-		retorno.append("ERRO :" + exception.getClass() + "\n");
+		retorno.append("ERRO :").append(exception.getMessage()).append("\n");
+		retorno.append("ERRO :").append(exception.getClass()).append("\n");
 		int size = ((trace.length > 10) ? 10 : trace.length);
 
 		for (int i = 0; i < size; i++)
-			retorno.append(trace[i] + "\n");
+			retorno.append(trace[i]).append("\n");
 		return retorno.toString();
 
 	}

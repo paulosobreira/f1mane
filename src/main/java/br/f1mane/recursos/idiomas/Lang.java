@@ -54,7 +54,7 @@ public class Lang {
 		}
 
 		iniciaBundle();
-		if (key == null || "".equals(key)) {
+		if (key == null || key.isEmpty()) {
 			return "";
 		}
 		try {
@@ -66,7 +66,7 @@ public class Lang {
 
 	public static String msgRest(String key) {
 		iniciaBundle();
-		if (key == null || "".equals(key)) {
+		if (key == null || key.isEmpty()) {
 			return "";
 		}
 		try {
@@ -79,7 +79,7 @@ public class Lang {
 	public static String msg(String key, Object[] strings) {
 		if (srvgame) {
 			StringBuilder buffer = new StringBuilder();
-			buffer.append("¢" + key);
+			buffer.append("¢").append(key);
 			for (int i = 0; i < strings.length; i++) {
 				buffer.append("¬");
 				String stringIn = strings[i].toString();
@@ -93,7 +93,7 @@ public class Lang {
 			return buffer.toString();
 		}
 		iniciaBundle();
-		if (key == null || "".equals(key)) {
+		if (key == null || key.isEmpty()) {
 			return "";
 		}
 		try {
@@ -107,7 +107,7 @@ public class Lang {
 
 	public static String msgRest(String key, Object[] strings) {
 		iniciaBundle();
-		if (key == null || "".equals(key)) {
+		if (key == null || key.isEmpty()) {
 			return "";
 		}
 		try {
@@ -172,7 +172,7 @@ public class Lang {
 		} else {
 			bundle = mapaBundle.get(idioma);
 		}
-		if (key == null || "".equals(key)) {
+		if (key == null || key.isEmpty()) {
 			return "";
 		}
 		try {
@@ -192,7 +192,7 @@ public class Lang {
 		} else {
 			bundle = mapaBundle.get(idioma);
 		}
-		if (key == null || "".equals(key)) {
+		if (key == null || key.isEmpty()) {
 			return "";
 		}
 		try {

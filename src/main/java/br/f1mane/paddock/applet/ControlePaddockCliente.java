@@ -192,7 +192,7 @@ public class ControlePaddockCliente {
 				int size = ((trace.length > 10) ? 10 : trace.length);
 
 				for (int i = 0; i < size; i++)
-					retorno.append(trace[i] + "\n");
+					retorno.append(trace[i]).append("\n");
 				JOptionPane.showMessageDialog(applet.getFrame(), retorno.toString(), Lang.msg("059"),
 						JOptionPane.ERROR_MESSAGE);
 				if (jogoCliente != null) {

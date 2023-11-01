@@ -2056,9 +2056,9 @@ public class PainelMenuLocal {
 		if (limite < 0) {
 			limite = 0;
 		}
-		for (int i = 0; i < limite; i++) {
-			pilotos.remove(0);
-		}
+        if (limite > 0) {
+            pilotos.subList(0, limite).clear();
+        }
 		if (pilotoSelecionado == null) {
 			pilotoSelecionado = (Piloto) pilotos.get(0);
 		}

@@ -98,7 +98,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCombustBox(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#getCombustBox(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public Integer getCombustBox(Piloto piloto) {
 		return piloto.getCombustJogador();
@@ -121,7 +121,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getTipoPneuBox(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#getTipoPneuBox(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String getTipoPneuBox(Piloto piloto) {
 		return piloto.getTipoPneuJogador();
@@ -136,84 +136,84 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#setNiveljogo(double)
+	 * @see br.f1mane.controles.InterfaceJogo#setNiveljogo(double)
 	 */
 	public void setNiveljogo(double niveljogo) {
 		this.niveljogo = niveljogo;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#isCorridaTerminada()
+	 * @see br.f1mane.controles.InterfaceJogo#isCorridaTerminada()
 	 */
 	public boolean isCorridaTerminada() {
 		return corridaTerminada;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#setCorridaTerminada(boolean)
+	 * @see br.f1mane.controles.InterfaceJogo#setCorridaTerminada(boolean)
 	 */
 	public void setCorridaTerminada(boolean corridaTerminada) {
 		this.corridaTerminada = corridaTerminada;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getNosDoBox()
+	 * @see br.f1mane.controles.InterfaceJogo#getNosDoBox()
 	 */
 	public List<No> getNosDoBox() {
 		return nosDoBox;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getMainFrame()
+	 * @see br.f1mane.controles.InterfaceJogo#getMainFrame()
 	 */
 	public MainFrame getMainFrame() {
 		return mainFrame;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getNivelCorrida()
+	 * @see br.f1mane.controles.InterfaceJogo#getNivelCorrida()
 	 */
 	public String getNivelCorrida() {
 		return nivelCorrida;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#setNivelCorrida(java.lang.String)
+	 * @see br.f1mane.controles.InterfaceJogo#setNivelCorrida(java.lang.String)
 	 */
 	public void setNivelCorrida(String nivelCorrida) {
 		this.nivelCorrida = nivelCorrida;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCircuito()
+	 * @see br.f1mane.controles.InterfaceJogo#getCircuito()
 	 */
 	public Circuito getCircuito() {
 		return circuito;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getNosDaPista()
+	 * @see br.f1mane.controles.InterfaceJogo#getNosDaPista()
 	 */
 	public List getNosDaPista() {
 		return nosDaPista;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCarros()
+	 * @see br.f1mane.controles.InterfaceJogo#getCarros()
 	 */
 	public List getCarros() {
 		return carros;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getPilotos()
+	 * @see br.f1mane.controles.InterfaceJogo#getPilotos()
 	 */
 	public List<Piloto> getPilotos() {
 		return pilotos;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#matarTodasThreads()
+	 * @see br.f1mane.controles.InterfaceJogo#matarTodasThreads()
 	 */
 	public void matarTodasThreads() {
 		try {
@@ -234,14 +234,14 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaNivelJogo()
+	 * @see br.f1mane.controles.InterfaceJogo#verificaNivelJogo()
 	 */
 	public boolean verificaNivelJogo() {
 		return Math.random() < getNiveljogo();
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getClima()
+	 * @see br.f1mane.controles.InterfaceJogo#getClima()
 	 */
 	public String getClima() {
 		if (controleCorrida != null)
@@ -250,7 +250,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#atualizaIndexTracadoPilotos()
+	 * @see br.f1mane.controles.InterfaceJogo#atualizaIndexTracadoPilotos()
 	 */
 	public void atualizaIndexTracadoPilotos() {
 		decrementaTracado();
@@ -267,7 +267,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#info(java.lang.String)
+	 * @see br.f1mane.controles.InterfaceJogo#info(java.lang.String)
 	 */
 	public void info(String info) {
 		if (isModoQualify()) {
@@ -277,7 +277,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#infoPrioritaria(java.lang.String)
+	 * @see br.f1mane.controles.InterfaceJogo#infoPrioritaria(java.lang.String)
 	 */
 	public void infoPrioritaria(String info) {
 		if (isModoQualify()) {
@@ -287,7 +287,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#porcentagemCorridaConcluida()
+	 * @see br.f1mane.controles.InterfaceJogo#porcentagemCorridaConcluida()
 	 */
 	public int porcentagemCorridaConcluida() {
 		if (controleCorrida == null) {
@@ -297,7 +297,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getNumVoltaAtual()
+	 * @see br.f1mane.controles.InterfaceJogo#getNumVoltaAtual()
 	 */
 	public int getNumVoltaAtual() {
 		if (controleCorrida == null) {
@@ -307,7 +307,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#totalVoltasCorrida()
+	 * @see br.f1mane.controles.InterfaceJogo#totalVoltasCorrida()
 	 */
 	public int totalVoltasCorrida() {
 		if (controleCorrida == null) {
@@ -317,7 +317,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaBoxOcupado(sowbreira.f1mane.entidades.Carro)
+	 * @see br.f1mane.controles.InterfaceJogo#verificaBoxOcupado(sowbreira.f1mane.entidades.Carro)
 	 */
 	public boolean verificaBoxOcupado(Carro carro) {
 		if (isModoQualify()) {
@@ -327,14 +327,14 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#calculaSegundosParaLider(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#calculaSegundosParaLider(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String calculaSegundosParaLider(Piloto pilotoSelecionado) {
 		return controleEstatisticas.calculaSegundosParaLider(pilotoSelecionado);
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltimaVolta()
+	 * @see br.f1mane.controles.InterfaceJogo#verificaUltimaVolta()
 	 */
 	public boolean verificaUltimaVolta() {
 		if (isModoQualify() || controleCorrida == null) {
@@ -345,59 +345,53 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#processaVoltaRapida(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#processaVoltaRapida(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public void processaVoltaRapida(Piloto piloto) {
 		controleEstatisticas.processaVoltaRapida(piloto);
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCicloAtual()
+	 * @see br.f1mane.controles.InterfaceJogo#getCicloAtual()
 	 */
 	public int getCicloAtual() {
 		return controleCorrida.getCicloAtual();
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaVoltaMaisRapidaCorrida(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#verificaVoltaMaisRapidaCorrida(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public void verificaVoltaMaisRapidaCorrida(Piloto piloto) {
 		controleEstatisticas.verificaVoltaMaisRapida(piloto);
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#obterIndicativoCorridaCompleta()
+	 * @see br.f1mane.controles.InterfaceJogo#obterIndicativoCorridaCompleta()
 	 */
 	public double obterIndicativoCorridaCompleta() {
 		return (porcentagemCorridaConcluida() / 100.0) + 1;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#obterMelhorVolta()
+	 * @see br.f1mane.controles.InterfaceJogo#obterMelhorVolta()
 	 */
 	public Volta obterMelhorVolta() {
 		return controleEstatisticas.getVoltaMaisRapida();
 	}
 
-	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#verificaUltraPassagem(sowbreira.f1mane.entidades.Piloto,
-	 *      int)
-	 */
 	public void verificaAcidente(Piloto piloto) {
 		controleCorrida.verificaAcidente(piloto);
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getNiveljogo()
+	 * @see br.f1mane.controles.InterfaceJogo#getNiveljogo()
 	 */
 	public double getNiveljogo() {
 		return niveljogo;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#efetuarSelecaoPilotoJogador(java.lang.Object,
-	 *      java.lang.Object, java.lang.Object, java.lang.String)
-	 */
+     */
 	public void efetuarSelecaoPilotoJogador(Object selec, Object tpneu,
 			Object combust, String nomeJogador, Object asa) {
 		pilotoJogador = (Piloto) selec;
@@ -410,7 +404,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#mudarModoBox()
+	 * @see br.f1mane.controles.InterfaceJogo#mudarModoBox()
 	 */
 	public boolean mudarModoBox() {
 		if (pilotoJogador.getPtosBox() != 0) {
@@ -428,9 +422,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#setBoxJogadorHumano(java.lang.Object,
-	 *      java.lang.Object)
-	 */
+     */
 	public void setBoxJogadorHumano(Object tpneu, Object combust, Object asa) {
 		String tipoPneuJogador = (String) tpneu;
 		Integer combustJogador = (Integer) combust;
@@ -447,21 +439,21 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#selecionaPilotoJogador()
+	 * @see br.f1mane.controles.InterfaceJogo#selecionaPilotoJogador()
 	 */
 	public void selecionaPilotoJogador() {
 		pilotoSelecionado = pilotoJogador;
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#apagarLuz()
+	 * @see br.f1mane.controles.InterfaceJogo#apagarLuz()
 	 */
 	public void apagarLuz() {
 		gerenciadorVisual.apagarLuz();
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#processaNovaVolta()
+	 * @see br.f1mane.controles.InterfaceJogo#processaNovaVolta()
 	 */
 	public void processaNovaVolta() {
 		int qtdeDesqualificados = 0;
@@ -510,14 +502,14 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#isChovendo()
+	 * @see br.f1mane.controles.InterfaceJogo#isChovendo()
 	 */
 	public boolean isChovendo() {
 		return Clima.CHUVA.equals(getClima());
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#informaMudancaClima()
+	 * @see br.f1mane.controles.InterfaceJogo#informaMudancaClima()
 	 */
 	public void informaMudancaClima() {
 		gerenciadorVisual.informaMudancaClima();
@@ -525,7 +517,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#pausarJogo()
+	 * @see br.f1mane.controles.InterfaceJogo#pausarJogo()
 	 */
 	public void pausarJogo() {
 		info(Html.preto(controleCorrida.isCorridaPausada()
@@ -536,7 +528,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#obterResultadoFinal()
+	 * @see br.f1mane.controles.InterfaceJogo#obterResultadoFinal()
 	 */
 	public PainelTabelaResultadoFinal obterResultadoFinal() {
 
@@ -544,7 +536,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#isSafetyCarNaPista()
+	 * @see br.f1mane.controles.InterfaceJogo#isSafetyCarNaPista()
 	 */
 	public boolean isSafetyCarNaPista() {
 		if (controleCorrida == null)
@@ -553,14 +545,14 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getSafetyCar()
+	 * @see br.f1mane.controles.InterfaceJogo#getSafetyCar()
 	 */
 	public SafetyCar getSafetyCar() {
 		return controleCorrida.getSafetyCar();
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#isSafetyCarVaiBox()
+	 * @see br.f1mane.controles.InterfaceJogo#isSafetyCarVaiBox()
 	 */
 	public boolean isSafetyCarVaiBox() {
 		if (controleCorrida != null) {
@@ -570,21 +562,21 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#obterCarroNaFrente(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#obterCarroNaFrente(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public Carro obterCarroNaFrente(Piloto piloto) {
 		return controleCorrida.obterCarroNaFrente(piloto);
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#obterCarroAtras(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#obterCarroAtras(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public Carro obterCarroAtras(Piloto piloto) {
 		return controleCorrida.obterCarroAtras(piloto);
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#calculaSegundosParaProximo(sowbreira.f1mane.entidades.Piloto)
+	 * @see br.f1mane.controles.InterfaceJogo#calculaSegundosParaProximo(sowbreira.f1mane.entidades.Piloto)
 	 */
 	public String calculaSegundosParaProximo(Piloto psel) {
 		return controleEstatisticas.calculaSegundosParaProximo(psel);
@@ -595,7 +587,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getIndexVelcidadeDaPista()
+	 * @see br.f1mane.controles.InterfaceJogo#getIndexVelcidadeDaPista()
 	 */
 	public double getIndexVelcidadeDaPista() {
 		if (controleCorrida != null) {
@@ -610,9 +602,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @param campeonato
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#iniciarJogoSingle()
-	 */
+     */
 	public void iniciarJogo(ControleCampeonato controleCampeonato)
 			throws Exception {
 		this.controleCampeonato = controleCampeonato;
@@ -715,7 +705,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#getCircuitos()
+	 * @see br.f1mane.controles.InterfaceJogo#getCircuitos()
 	 */
 	public Map<String, String> getCircuitos() {
 		return circuitos;
@@ -756,7 +746,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#exibirResultadoFinal()
+	 * @see br.f1mane.controles.InterfaceJogo#exibirResultadoFinal()
 	 */
 	public void exibirResultadoFinal() {
 		gerenciadorVisual.exibirResultadoFinal();
@@ -781,7 +771,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#abandonar()
+	 * @see br.f1mane.controles.InterfaceJogo#abandonar()
 	 */
 	public void abandonar() {
 		if (pilotoJogador != null) {
@@ -790,7 +780,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#zerarMelhorVolta()
+	 * @see br.f1mane.controles.InterfaceJogo#zerarMelhorVolta()
 	 */
 	public void zerarMelhorVolta() {
 		controleEstatisticas.zerarMelhorVolta();
@@ -798,7 +788,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#adicionarInfoDireto(java.lang.String)
+	 * @see br.f1mane.controles.InterfaceJogo#adicionarInfoDireto(java.lang.String)
 	 */
 	public void adicionarInfoDireto(String string) {
 		if (gerenciadorVisual == null) {
@@ -809,7 +799,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#atulizaTabelaPosicoes()
+	 * @see br.f1mane.controles.InterfaceJogo#atulizaTabelaPosicoes()
 	 */
 	public void atulizaTabelaPosicoes() {
 
@@ -1450,7 +1440,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	/**
-	 * @see sowbreira.f1mane.controles.InterfaceJogo#desenhaQualificacao()
+	 * @see br.f1mane.controles.InterfaceJogo#desenhaQualificacao()
 	 */
 	public void desenhaQualificacao() {
 		try {
@@ -1616,9 +1606,9 @@ public class ControleJogoLocal extends ControleRecursos
 		long allocatedMemory = runtime.totalMemory() / 1048576;
 		long freeMemory = runtime.freeMemory() / 1048576;
 
-		buffer.append("MAXMEMORY :" + maxMemory + "<br>");
-		buffer.append("ALLOCATEDMEMORY :" + allocatedMemory + "<br>");
-		buffer.append("FREEMEMORY :" + freeMemory + "<br>");
+		buffer.append("MAXMEMORY :").append(maxMemory).append("<br>");
+		buffer.append("ALLOCATEDMEMORY :").append(allocatedMemory).append("<br>");
+		buffer.append("FREEMEMORY :").append(freeMemory).append("<br>");
 
 		Field[] declaredFields = this.getClass().getDeclaredFields();
 		List<String> campos = new ArrayList<String>();

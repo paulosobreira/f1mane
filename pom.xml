@@ -190,6 +190,10 @@
                                 <replace dir="src/main/webapp/html5" value="${ant.versao}" token="{versao}">
                                     <include name="**/*.html"/>
                                 </replace>
+                                <property name="ant.idGoogle" value="${idGoogle}"/>
+                                <replace dir="src/main/webapp/html5" value="${ant.idGoogle}" token="{idGoogle}">
+                                    <include name="**/*.html"/>
+                                </replace>
                             </target>
                         </configuration>
                         <goals>

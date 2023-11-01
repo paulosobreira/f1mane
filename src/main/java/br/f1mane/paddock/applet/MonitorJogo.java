@@ -842,7 +842,7 @@ public class MonitorJogo implements Runnable {
 							Comandos.MUDAR_DRS, sessaoCliente);
 					clientPaddockPack
 							.setNomeJogo(jogoCliente.getNomeJogoCriado());
-					clientPaddockPack.setDataObject(new Boolean(modo));
+					clientPaddockPack.setDataObject(Boolean.valueOf(modo));
 					Object ret = controlePaddockCliente
 							.enviarObjeto(clientPaddockPack, true);
 				} catch (Exception e) {

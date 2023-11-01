@@ -317,15 +317,15 @@ public class PaddockWindow {
 				List<String> carregarCreditosJogo = CarregadorRecursos
 						.carregarCreditosJogo();
 
-				String msg = "";
+				StringBuilder msg = new StringBuilder();
 
 				for (Iterator iterator = carregarCreditosJogo
 						.iterator(); iterator.hasNext();) {
 					String string = (String) iterator.next();
-					msg += string;
+					msg.append(string);
 				}
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg,
+				JOptionPane.showMessageDialog(getMainPanel(), msg.toString(),
 						Lang.msg("sobre"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -420,7 +420,7 @@ public class PaddockWindow {
 						Lang.key(comboIdiomas.getSelectedItem().toString()));
 				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
 				int selectedIndex = comboIdiomas.getSelectedIndex();
-				if (i != null && !"".equals(i)) {
+				if (i != null && !i.isEmpty()) {
 					Lang.mudarIdioma(i);
 					comboIdiomas.removeAllItems();
 					comboIdiomas.addItem(Lang.msg("pt"));

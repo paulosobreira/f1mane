@@ -88,11 +88,11 @@ public class DadosParciais implements Serializable {
 		melhorVoltaCorrida = parseLong(sp[spcont++]);
 		melhorVolta = parseLong(sp[spcont++]);
 		int contJogador = spcont++;
-		nomeJogador = (sp[contJogador] == null || "".equals(sp[contJogador])
+		nomeJogador = (sp[contJogador] == null || sp[contJogador].isEmpty()
 				? null
 				: sp[contJogador]);
 		int contTexto = spcont++;
-		if (sp[contTexto] != null && !"".equals(sp[contTexto])) {
+		if (sp[contTexto] != null && !sp[contTexto].isEmpty()) {
 			texto = Lang.decodeTexto(sp[contTexto]);
 		}
 		vantagem = sp[spcont++];
@@ -283,7 +283,7 @@ public class DadosParciais implements Serializable {
 			codpselModoPilotar = "A";
 		}
 
-		if (texto != null && !"".equals(texto)) {
+		if (texto != null && !texto.isEmpty()) {
 			texto = texto.replaceAll("@", "");
 			texto = texto.replaceAll("µ", "");
 		}

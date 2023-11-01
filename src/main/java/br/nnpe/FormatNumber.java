@@ -435,18 +435,18 @@ public class FormatNumber extends Object {
 	}
 
 	public static String fillMode(String TEXT, int LENGTH, String CODE) {
-		String code = TEXT;
+		StringBuilder code = new StringBuilder(TEXT);
 		if (code != null && code.length() > 0) {
 			if (code.length() > LENGTH) {
-				code = code.substring(0, LENGTH);
+				code = new StringBuilder(code.substring(0, LENGTH));
 			} else if (code.length() < LENGTH) {
 				int c = LENGTH - code.length();
 				for (int i = 0; i < c; i++) {
-					code += CODE;
+					code.append(CODE);
 				}
 			}
 		}
-		return code;
+		return code.toString();
 	}
 
 	public static Integer toInteger(String NUMBER) {
@@ -506,20 +506,20 @@ public class FormatNumber extends Object {
 		if (NUMBER != null && NUMBER.length() > 0) {
 			if (NUMBER.indexOf(",") != -1 || NUMBER.indexOf(".") != -1) {
 				int limit = NUMBER.length() - 4;
-				String new_number = "";
+				StringBuilder new_number = new StringBuilder();
 				for (int i = 0; i < NUMBER.length(); i++) {
 					if (NUMBER.charAt(i) == '.' || NUMBER.charAt(i) == ',') {
 						if (i > limit) {
-							new_number += ".";
+							new_number.append(".");
 						} else if (NUMBER.substring(i + 1).indexOf(".") == -1
 								&& NUMBER.substring(i + 1).indexOf(",") == -1) {
-							new_number += ".";
+							new_number.append(".");
 						}
 					} else {
-						new_number += NUMBER.charAt(i);
+						new_number.append(NUMBER.charAt(i));
 					}
 				}
-				NUMBER = new_number;
+				NUMBER = new_number.toString();
 			}
 		}
 		return NUMBER;
@@ -532,13 +532,13 @@ public class FormatNumber extends Object {
 		if (NUMBER != null && NUMBER.length() > 0) {
 			if (NUMBER.indexOf(",") != -1 || NUMBER.indexOf(".") != -1) {
 				int limit = NUMBER.length() - 4;
-				String new_number = "";
+				StringBuilder new_number = new StringBuilder();
 				for (int i = 0; i < NUMBER.length(); i++) {
 					if (!(NUMBER.charAt(i) == '.' || NUMBER.charAt(i) == ',')) {
-						new_number += NUMBER.charAt(i);
+						new_number.append(NUMBER.charAt(i));
 					}
 				}
-				NUMBER = new_number;
+				NUMBER = new_number.toString();
 			}
 		}
 		return NUMBER;

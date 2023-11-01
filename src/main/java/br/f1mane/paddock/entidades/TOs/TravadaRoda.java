@@ -61,7 +61,7 @@ public class TravadaRoda implements Serializable {
 	}
 
 	public void decode(String val) {
-		if (val == null || "".equals(val)) {
+		if (val == null || val.isEmpty()) {
 			return;
 		}
 		String[] sp = val.split("µ");

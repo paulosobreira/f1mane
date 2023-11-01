@@ -292,7 +292,7 @@ public class Circuito implements Serializable {
 	private void gerarTracado1e2Pista() {
 		pista1Full = new ArrayList<No>();
 		pista2Full = new ArrayList<No>();
-		Double calculaAngulo;
+		double calculaAngulo;
 		for (int i = 0; i < pistaFull.size(); i++) {
 			No no = pistaFull.get(i);
 			Point p = no.getPoint();
@@ -334,7 +334,7 @@ public class Circuito implements Serializable {
 	private void gerarTracado1e2Box() {
 		box1Full = new ArrayList<No>();
 		box2Full = new ArrayList<No>();
-		Double calculaAngulo;
+		double calculaAngulo;
 		for (int i = 0; i < boxFull.size(); i++) {
 			No no = boxFull.get(i);
 			Point p = no.getPoint();
