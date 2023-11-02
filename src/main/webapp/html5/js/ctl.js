@@ -385,7 +385,7 @@ function ctl_desenhaInfoAsa() {
 	if(confirmaSair){
 		return;
 	}
-	if(dadosJogo.drs && dadosParciais.clima != "chuva.png"){
+	if(dadosJogo.drs && dadosParciais.clima != "png/chuva.png"){
 		return
 	}
 	
@@ -1112,7 +1112,7 @@ function ctl_removeControle(controle) {
 		return true;
 	}
 	
-	if (dadosParciais!=null && 'chuva.png' == dadosParciais.clima && controle.tipo == 'Drs'){
+	if (dadosParciais!=null && 'png/chuva.png' == dadosParciais.clima && controle.tipo == 'Drs'){
 		return true;
 	}
 	
@@ -1130,7 +1130,7 @@ function ctl_removeControle(controle) {
 		return true;
 	}
 	if (dadosJogo.drs && controle.tipo == 'Asa'
-			&& 'chuva.png' != dadosParciais.clima) {
+			&& 'png/chuva.png' != dadosParciais.clima) {
 		return true;
 	}
 

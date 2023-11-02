@@ -107,7 +107,7 @@ function vdp_desenhaBorrachaNaPista() {
     if (dadosParciais == null) {
         return;
     }
-    if (dadosParciais.clima == "chuva.png") {
+    if (dadosParciais.clima == "png/chuva.png") {
         borrachaNaPista = [];
         return;
     }
@@ -1165,7 +1165,7 @@ function vdp_desenhaRastroFaiscaFx(piloto, angulo, anguloGraus) {
         pilotosFaiscaMap.get(piloto.idPiloto) <= 0) {
         return null;
     }
-    if (dadosParciais.clima == "chuva.png") {
+    if (dadosParciais.clima == "png/chuva.png") {
         return null;
     }
     pilotosFaiscaMap.set(piloto.idPiloto,
@@ -1235,7 +1235,7 @@ function vdp_gerarImgFaiscaFx() {
 }
 
 function vdp_desenhaRastroChuvaFx(piloto, no, angulo, anguloGraus) {
-    if (dadosParciais.clima != "chuva.png") {
+    if (dadosParciais.clima != "png/chuva.png") {
         return null;
     }
     var lista;
@@ -1319,7 +1319,7 @@ function vdp_desenhaTravadaRodaFumaca(piloto, no, angulo, anguloGraus) {
         pilotosTravadaFumacaMap.get(piloto.idPiloto) <= 0) {
         return null;
     }
-    if (dadosParciais.clima == "chuva.png") {
+    if (dadosParciais.clima == "png/chuva.png") {
         return null;
     }
     if (no.box) {
@@ -1364,11 +1364,11 @@ function vdp_precessaCorCeu() {
     if (!dadosParciais) {
         return;
     }
-    if (dadosParciais.clima == "sol.png" && alphaCorCeu > 0) {
+    if (dadosParciais.clima == "png/sol.png" && alphaCorCeu > 0) {
         alphaCorCeu -= 0.01;
         corCeu = "rgba(255, 255, 255, " + alphaCorCeu + ")";
     }
-    if (dadosParciais.clima != "sol.png" && alphaCorCeu < 0.4) {
+    if (dadosParciais.clima != "png/sol.png" && alphaCorCeu < 0.4) {
         alphaCorCeu += 0.01;
         corCeu = "rgba(255, 255, 255, " + alphaCorCeu + ")";
     }
@@ -1384,7 +1384,7 @@ function vdp_desenhaClima() {
     maneContext.fillRect(descontoCanvasX, descontoCanvasY, maxX, maxY);
 
     if (dadosParciais && dadosParciais.clima &&
-        dadosParciais.clima == "chuva.png") {
+        dadosParciais.clima == "png/chuva.png") {
         var p1;
         var p2;
         for (var i = descontoCanvasX; i < maxX; i += 20) {
@@ -1447,7 +1447,7 @@ function vdp_desenhaTravadaRoda(piloto, x, y, angulo, no) {
     if (!pilotosTravadaMap.get(piloto.idPiloto)) {
         return;
     }
-    if (dadosParciais.clima == "chuva.png") {
+    if (dadosParciais.clima == "png/chuva.png") {
         return;
     }
     if (no.box) {
