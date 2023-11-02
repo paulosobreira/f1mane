@@ -397,15 +397,14 @@ public class PainelMenuLocal {
 				}
 				if (campeonato != null) {
 					MENU = MENU_SUBSCREVER_CAMPEONATO;
-					return;
-				} else {
+                } else {
 					MENU = MENU_NOVO_CAMPEONATO_PILOTOS;
 					circuitoSelecionado = null;
 					pilotoSelecionado = null;
 					cirucitosCampeonato.clear();
-					return;
-				}
-			} catch (Exception e1) {
+                }
+                return;
+            } catch (Exception e1) {
 				Logger.logarExept(e1);
 			}
 		}
@@ -1261,7 +1260,7 @@ public class PainelMenuLocal {
 				g2d.setColor(lightWhite);
 				g2d.fillRoundRect(x, yTitulo, 80, 20, 0, 0);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString("" + Lang.msg("289").toUpperCase(), x + 2, yTitulo + 16);
+				g2d.drawString("" + Lang.msg("vitorias").toUpperCase(), x + 2, yTitulo + 16);
 			}
 			if (!Util.isNullOrEmpty(piloto.getNome())) {
 				g2d.setFont(fontMaior);

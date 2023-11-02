@@ -273,7 +273,7 @@ public class FormatDate extends Object {
 	 * 
 	 */
 	public static java.sql.Date parseDate(String DATE) throws Exception {
-		java.sql.Date date = null;
+		java.sql.Date date;
 		date = parseDate(DATE, "dd/MM/yyyy");
 
 		return date;
@@ -325,7 +325,7 @@ public class FormatDate extends Object {
 	 */
 	public static java.sql.Timestamp parseTimestamp(String DATE)
 			throws Exception {
-		java.sql.Timestamp date = null;
+		java.sql.Timestamp date;
 		date = parseTimestamp(DATE, "dd/MM/yyyy HH:mm:ss");
 
 		return date;
@@ -364,7 +364,7 @@ public class FormatDate extends Object {
 	 * 
 	 */
 	public static java.sql.Timestamp parseTimestamp(Date DATE) throws Exception {
-		java.sql.Timestamp date = null;
+		java.sql.Timestamp date;
 		date = parseTimestamp(DATE, Constantes.DATA_FORMATO);
 
 		return date;
@@ -402,7 +402,7 @@ public class FormatDate extends Object {
 	 * 
 	 */
 	public static java.sql.Time parseTime(String DATE) throws Exception {
-		java.sql.Time date = null;
+		java.sql.Time date;
 		date = parseTime(DATE, "HH:mm:ss");
 
 		return date;
@@ -464,7 +464,7 @@ public class FormatDate extends Object {
 	}
 
 	public static java.util.Date anoAnterior(java.util.Date DATA) {
-		java.util.Date resultado = null;
+		java.util.Date resultado;
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(DATA);
 		int year = calendar.get(Calendar.YEAR);
@@ -478,7 +478,7 @@ public class FormatDate extends Object {
 	 * Method for getting the last month.
 	 */
 	public static java.util.Date mesAnterior(java.util.Date DATA) {
-		java.util.Date resultado = null;
+		java.util.Date resultado;
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(DATA);
 		int month = calendar.get(Calendar.MONTH);
@@ -492,7 +492,7 @@ public class FormatDate extends Object {
 	 * Method for getting the first day of month.
 	 */
 	public static java.util.Date getFirstDayOfMonth(java.util.Date DATA) {
-		java.util.Date resultado = null;
+		java.util.Date resultado;
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(DATA);
 		int month = calendar.get(Calendar.MONTH);
@@ -507,7 +507,7 @@ public class FormatDate extends Object {
 	 * Method for getting the last day of month.
 	 */
 	public static java.util.Date getLastDayOfMonth(java.util.Date DATA) {
-		java.util.Date resultado = null;
+		java.util.Date resultado;
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(DATA);
 		int month = calendar.get(Calendar.MONTH);
@@ -548,7 +548,7 @@ public class FormatDate extends Object {
 	 * @throws Exception
 	 */
 	public static String getTimestamp() throws Exception {
-		String str = "";
+		String str;
 		try {
 			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			str = df.format(new java.util.Date(System.currentTimeMillis()));
@@ -565,7 +565,7 @@ public class FormatDate extends Object {
 	 * @throws Exception
 	 */
 	public static String getTime() throws Exception {
-		String str = "";
+		String str;
 		try {
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 			str = df.format(new java.util.Date(System.currentTimeMillis()));

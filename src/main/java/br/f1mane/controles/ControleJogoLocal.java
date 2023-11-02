@@ -79,11 +79,6 @@ public class ControleJogoLocal extends ControleRecursos
 		controleEstatisticas = new ControleEstatisticas(this);
 	}
 
-	public static void main(String[] args) {
-		long var = (long) Math.pow(2, 149);
-		System.out.println(var);
-	}
-
 	public ControleJogoLocal() throws Exception {
 		super();
 		gerenciadorVisual = new GerenciadorVisual(this);
@@ -936,19 +931,6 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public void mudaPilotoSelecionado() {
-		Piloto outro = null;
-		for (int i = 0; i < pilotosJogadores.size(); i++) {
-			Piloto pl = (Piloto) pilotosJogadores.get(i);
-			if (pl.equals(pilotoSelecionado)) {
-				if ((i + 1) < pilotosJogadores.size()) {
-					outro = (Piloto) pilotosJogadores.get(i + 1);
-				} else {
-					outro = (Piloto) pilotosJogadores.get(0);
-				}
-				break;
-			}
-		}
-
 	}
 
 	public boolean isSemTrocaPneu() {
@@ -1053,7 +1035,7 @@ public class ControleJogoLocal extends ControleRecursos
 	}
 
 	public BufferedImage carregaBackGround(String backGround) {
-		URL url = null;
+		URL url;
 		try {
 			String caminho = mainFrame.getCodeBase()
 					+ "sowbreira/f1mane/recursos/" + backGround;
@@ -1115,9 +1097,7 @@ public class ControleJogoLocal extends ControleRecursos
 		if (controleCampeonato != null) {
 			Campeonato campeonato = controleCampeonato.getCampeonato();
 			if (campeonato != null) {
-				if (piloto.getNome().equals(campeonato.getRival())) {
-					return true;
-				}
+                return piloto.getNome().equals(campeonato.getRival());
 			}
 		}
 		return false;

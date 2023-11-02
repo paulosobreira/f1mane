@@ -137,8 +137,8 @@ public class GeoUtil {
 	}
 
 	public static Point calculaPonto(double angulo, int comprimento, Point p1) {
-		int x = 0;
-		int y = 0;
+		int x;
+		int y;
 		double ang = Math.toRadians(angulo);
 		x = (int) (comprimento * Math.sin(ang));
 		y = (int) (comprimento * Math.cos(ang));

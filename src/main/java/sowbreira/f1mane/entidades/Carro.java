@@ -323,34 +323,23 @@ public class Carro implements Serializable {
             return true;
         }
         if (Carro.TIPO_PNEU_MOLE.equals(getTipoPneu())) {
-            if (pneus < 10) {
-                return true;
-            }
+            return pneus < 10;
         } else {
-            if (pneus < 5) {
-                return true;
-            }
+            return pneus < 5;
         }
-        return false;
     }
 
     public boolean verificaCondicoesCautelaGiro(InterfaceJogo controleJogo) {
         int combust = porcentagemCombustivel;
         int motor = porcentagemDesgasteMotor;
-        if ((motor <= 5) || (combust <= 5)) {
-            return true;
-        }
-        return false;
+        return (motor <= 5) || (combust <= 5);
     }
 
     public boolean verificaPneusIncompativeisClima(InterfaceJogo controleJogo) {
         if (controleJogo.isChovendo() && !TIPO_PNEU_CHUVA.equals(getTipoPneu())) {
             return true;
         }
-        if (!controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(getTipoPneu())) {
-            return true;
-        }
-        return false;
+        return !controleJogo.isChovendo() && TIPO_PNEU_CHUVA.equals(getTipoPneu());
     }
 
     public boolean testePotencia() {
@@ -1010,7 +999,7 @@ public class Carro implements Serializable {
     }
 
     public boolean verificaDano() {
-        return ((danificado == null) ? false : true);
+        return (danificado != null);
     }
 
     public void setTipoPneu(String tipoPneu) {

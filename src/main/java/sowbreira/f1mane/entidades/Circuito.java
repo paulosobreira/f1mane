@@ -109,13 +109,11 @@ public class Circuito implements Serializable {
 		for (Iterator<No> iter = pista.iterator(); iter.hasNext();) {
 			No no = iter.next();
 
-			if (noAnt == null) {
-				noAnt = no;
-			} else {
-				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()), noAnt));
-				noAnt = no;
-			}
-		}
+            if (noAnt != null) {
+                arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()), noAnt));
+            }
+            noAnt = no;
+        }
 
 		if (!pista.isEmpty()) {
 			No no = (No) pista.get(0);
@@ -172,22 +170,20 @@ public class Circuito implements Serializable {
 
 		for (Iterator<No> iter = pistaTemp.iterator(); iter.hasNext();) {
 			No no = iter.next();
-			if (noAnt == null) {
-				noAnt = no;
-			} else {
-				Point p1 = noAnt.getPoint();
-				Point p2 = no.getPoint();
-				Point p3 = new Point(p2.x, p2.y);
-				p1.x *= multi;
-				p1.y *= multi;
-				p2.x *= multi;
-				p2.y *= multi;
-				pistaKey.add(noAnt);
-				pistaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
-				no.setPoint(p3);
-				noAnt = no;
-			}
-		}
+            if (noAnt != null) {
+                Point p1 = noAnt.getPoint();
+                Point p2 = no.getPoint();
+                Point p3 = new Point(p2.x, p2.y);
+                p1.x *= multi;
+                p1.y *= multi;
+                p2.x *= multi;
+                p2.y *= multi;
+                pistaKey.add(noAnt);
+                pistaFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
+                no.setPoint(p3);
+            }
+            noAnt = no;
+        }
 
 		if (!pistaTemp.isEmpty()) {
 			No no = (No) pistaTemp.get(0);
@@ -222,22 +218,20 @@ public class Circuito implements Serializable {
 
 		for (Iterator<No> iter = boxTemp.iterator(); iter.hasNext();) {
 			No no = iter.next();
-			if (noAnt == null) {
-				noAnt = no;
-			} else {
-				Point p1 = noAnt.getPoint();
-				Point p2 = no.getPoint();
-				Point p3 = new Point(p2.x, p2.y);
-				p1.x *= multi;
-				p1.y *= multi;
-				p2.x *= multi;
-				p2.y *= multi;
-				boxKey.add(noAnt);
-				boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
-				no.setPoint(p3);
-				noAnt = no;
-			}
-		}
+            if (noAnt != null) {
+                Point p1 = noAnt.getPoint();
+                Point p2 = no.getPoint();
+                Point p3 = new Point(p2.x, p2.y);
+                p1.x *= multi;
+                p1.y *= multi;
+                p2.x *= multi;
+                p2.y *= multi;
+                boxKey.add(noAnt);
+                boxFull.addAll(converterPointNo(GeoUtil.drawBresenhamLine(p1, p2), noAnt));
+                no.setPoint(p3);
+            }
+            noAnt = no;
+        }
 		if (!boxTemp.isEmpty()) {
 			No no = (No) boxTemp.get(boxTemp.size() - 1);
 			Point p1 = noAnt.getPoint();
@@ -549,13 +543,11 @@ public class Circuito implements Serializable {
 
 		for (Iterator<No> iter = box.iterator(); iter.hasNext();) {
 			No no = iter.next();
-			if (noAnt == null) {
-				noAnt = no;
-			} else {
-				arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()), noAnt));
-				noAnt = no;
-			}
-		}
+            if (noAnt != null) {
+                arrayList.addAll(converterPointNo(GeoUtil.drawBresenhamLine(noAnt.getPoint(), no.getPoint()), noAnt));
+            }
+            noAnt = no;
+        }
 		boolean paradaBox = false;
 		for (int i = 0; i < arrayList.size(); i++) {
 			No no = (No) arrayList.get(i);

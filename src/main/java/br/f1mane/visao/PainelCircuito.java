@@ -317,7 +317,6 @@ public class PainelCircuito {
 							pos = 1;
 						}
 						if (p2p < menor) {
-							menor = p2p;
 							pos = 2;
 						}
 						if ((pos == 2 && pilotoJogador.getTracado() == 1)
@@ -749,7 +748,7 @@ public class PainelCircuito {
 		if (diferencaSualReal < 0) {
 			diferencaSualReal = (noAtual.getIndex() + nos.size()) - noAtualSuave.getIndex();
 		}
-		int ganhoSuave = 0;
+		int ganhoSuave;
 
 		double multi = diferencaSualReal;
 
@@ -822,9 +821,7 @@ public class PainelCircuito {
 		if (index >= nos.size()) {
 			index = index - nos.size();
 		}
-		if (index >= nos.size()) {
-			index = -1;
-		} else {
+		if (index < nos.size()) {
 			noAtualSuave = nos.get(index);
 		}
 
@@ -996,11 +993,11 @@ public class PainelCircuito {
 
 			x -= 25;
 
-			int lagura = desenhaAjudaComandoPiloto(g2d, x, y, "Q : " + Lang.msg("GIRO_MIN").toUpperCase());
+			int lagura = desenhaAjudaComandoPiloto(g2d, x, y, "Q : " + Lang.msg("Min").toUpperCase());
 			x += lagura + 10;
-			lagura = desenhaAjudaComandoPiloto(g2d, x, y, "W : " + Lang.msg("GIRO_NOR").toUpperCase());
+			lagura = desenhaAjudaComandoPiloto(g2d, x, y, "W : " + Lang.msg("Nor").toUpperCase());
 			x += lagura + 10;
-			desenhaAjudaComandoPiloto(g2d, x, y, "E : " + Lang.msg("GIRO_MAX").toUpperCase());
+			desenhaAjudaComandoPiloto(g2d, x, y, "E : " + Lang.msg("Max").toUpperCase());
 		}
 		x = xOri;
 		y = yOri;
@@ -2470,8 +2467,8 @@ public class PainelCircuito {
 			}
 			g2d.fillRect(0, 0, (int) limitesViewPortFull.getWidth(), (int) limitesViewPortFull.getHeight());
 			BufferedImage subimage = null;
-			BufferedImage drawBuffer = null;
-			Rectangle rectangle = null;
+			BufferedImage drawBuffer;
+			Rectangle rectangle;
 			int diffX = 0;
 			int diffY = 0;
 			try {
@@ -2549,10 +2546,6 @@ public class PainelCircuito {
 			if (zoom == 1 || backGroundZoomPronto) {
 				drawBuffer = subimage;
 			} else {
-                if (drawBuffer != null && drawBuffer.getWidth() == limitesViewPortFull.getWidth()) {
-                    drawBuffer.getHeight();
-                    limitesViewPortFull.getHeight();
-                }
                 drawBuffer = new BufferedImage((int) (limitesViewPortFull.getWidth()),
                         (int) (limitesViewPortFull.getHeight()), backGround.getType());
                 if (subimage != null) {
@@ -2630,11 +2623,8 @@ public class PainelCircuito {
 	}
 
 	private boolean carreganadoBackGroundZoom() {
-		if (threadCarregarBkgZoom != null && threadCarregarBkgZoom.isAlive()) {
-			return true;
-		}
-		return false;
-	}
+        return threadCarregarBkgZoom != null && threadCarregarBkgZoom.isAlive();
+    }
 
 	private void desenhaBackGroundComStrokes(Graphics2D g2d) {
 		g2d.setColor(Color.white);
@@ -2952,7 +2942,7 @@ public class PainelCircuito {
 			break;
 		}
 		BufferedImage travada = rotateBuffer;
-		Graphics graphics = null;
+		Graphics graphics;
 		if (backGround != null) {
 			graphics = backGround.getGraphics();
 		} else {
@@ -3005,7 +2995,6 @@ public class PainelCircuito {
 				continue;
 			}
 			if (Logger.ativo && piloto.isJogadorHumano() && piloto.getNoAtualSuave() != null) {
-				noAtual = piloto.getNoAtual();
 				g2d.setColor(OcilaCor.geraOcila("CompReal", Color.ORANGE));
 				g2d.fillOval(xCarro, yCarro, 10, 10);
 			}
@@ -3087,8 +3076,8 @@ public class PainelCircuito {
 		piloto.setAngulo(calculaAngulo);
 		Rectangle2D rectangle = new Rectangle2D.Double((p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
 				Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
-		Point p1 = null;
-		Point p2 = null;
+		Point p1;
+		Point p2;
 		Point p4 = null;
 		Point p5 = null;
 		if (noAtual.isBox()) {
@@ -3138,10 +3127,6 @@ public class PainelCircuito {
 				if (indice <= 0) {
 					indice = 0;
 				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
 				Point pReta = (Point) drawBresenhamLine.get(indice);
 				carx = pReta.x;
 				cary = pReta.y;
@@ -3170,10 +3155,6 @@ public class PainelCircuito {
 				if (indice <= 0) {
 					indice = 0;
 				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
 				Point pReta = (Point) drawBresenhamLine.get(indice);
 				carx = pReta.x;
 				cary = pReta.y;
@@ -3199,10 +3180,6 @@ public class PainelCircuito {
 				if (indice <= 0) {
 					indice = 0;
 				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
 				Point pReta = (Point) drawBresenhamLine.get(indice);
 				carx = pReta.x;
 				cary = pReta.y;
@@ -3232,10 +3209,6 @@ public class PainelCircuito {
 				if (indice <= 0) {
 					indice = 0;
 				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
 				Point pReta = (Point) drawBresenhamLine.get(indice);
 				carx = pReta.x;
 				cary = pReta.y;
@@ -3261,10 +3234,6 @@ public class PainelCircuito {
 				if (indice <= 0) {
 					indice = 0;
 				}
-				if (indice >= drawBresenhamLine.size()) {
-					indice = drawBresenhamLine.size() - 1;
-				}
-
 				Point pReta = (Point) drawBresenhamLine.get(indice);
 				carx = pReta.x;
 				cary = pReta.y;
@@ -3366,11 +3335,8 @@ public class PainelCircuito {
 			return;
 		}
 		if (gerenciadorVisual.getFps() < 20) {
-			boolean desenha = false;
-			if (pilotoSelecionado.equals(piloto)) {
-				desenha = true;
-			}
-			if (pilotoSelecionado.getCarroPilotoDaFrente() != null
+			boolean desenha = pilotoSelecionado.equals(piloto);
+            if (pilotoSelecionado.getCarroPilotoDaFrente() != null
 					&& piloto.equals(pilotoSelecionado.getCarroPilotoDaFrente().getPiloto())) {
 				desenha = true;
 			}
@@ -4270,7 +4236,7 @@ public class PainelCircuito {
 			return;
 		}
 
-		String plider = "";
+		String plider;
 		if (pilotoSelecionado.getPosicao() == 1) {
 			plider = Lang.msg("Lider");
 			g2d.setColor(new Color(0, 0, 121));
@@ -4370,7 +4336,7 @@ public class PainelCircuito {
 		}
 		int pneus = pilotoSelecionado.getCarro().getPorcentagemDesgastePneus();
 		int porcentComb = pilotoSelecionado.getCarro().getPorcentagemCombustivel();
-		String dano = null;
+		String dano;
         dano = pilotoSelecionado.getCarro().getDanificado();
         if ((dano == null || dano.isEmpty()) && pneus > 25 && porcentComb > 25
 				&& !pilotoSelecionado.isAlertaAerefolio() && !pilotoSelecionado.isAlertaMotor()) {
@@ -4470,7 +4436,7 @@ public class PainelCircuito {
 		if (ptosPilotosDesQualy.isEmpty()) {
 			int iniY1 = 50;
 			int iniY2 = 60;
-			int midPainel = 0;
+			int midPainel;
 			if (limitesViewPort != null)
 				midPainel = Util.inteiro(limitesViewPort.width / 3);
 			else {
@@ -4525,7 +4491,7 @@ public class PainelCircuito {
 			c2 = c2.brighter();
 			g2d.setColor(new Color(c2.getRed(), c2.getGreen(), c2.getBlue(), 170));
 		}
-		Point pt = null;
+		Point pt;
 		if (piloto.getPosicao() % 2 == 0) {
 			pt = new Point(x + 190, y + 20);
 
@@ -4625,11 +4591,11 @@ public class PainelCircuito {
 
 		}
 
-		BufferedImage carroimg = null;
+		BufferedImage carroimg;
 		int carSelX = limitesViewPort.x;
 		int carSelY = limitesViewPort.y + limitesViewPort.height - 75;
-		int bounce = 0;
-		int newY = 0;
+		int bounce;
+		int newY;
 		Carro carroFrente = psel.getCarroPilotoDaFrente();
 		if (carroFrente != null) {
 			carroimg = controleJogo.obterCarroLado(carroFrente.getPiloto());
@@ -4810,11 +4776,11 @@ public class PainelCircuito {
 		}
 		if (qtdeLuzesApagadas > 0 || carro.getPiloto().isBox()) {
 			return 0;
-		} else if (carro.getPiloto().isAgressivo() == false) {
+		} else if (!carro.getPiloto().isAgressivo()) {
 			return Math.random() > .5 ? 1 : 0;
-		} else if (carro.getPiloto().isAgressivo() == true && carro.getGiro() != Carro.GIRO_MAX_VAL) {
+		} else if (carro.getPiloto().isAgressivo() && carro.getGiro() != Carro.GIRO_MAX_VAL) {
 			return 1;
-		} else if (carro.getPiloto().isAgressivo() == true && carro.getGiro() == Carro.GIRO_MAX_VAL) {
+		} else if (carro.getPiloto().isAgressivo() && carro.getGiro() == Carro.GIRO_MAX_VAL) {
 			return Math.random() > .5 ? 2 : 1;
 		}
 		return 0;
@@ -4897,8 +4863,6 @@ public class PainelCircuito {
 			cary = Util.inteiro((p2.y - h2));
 		}
 
-		scx = carx + w2;
-		scy = cary + h2;
 		if (zoom > 0.3) {
 			double rad = Math.toRadians((double) calculaAngulo);
 			AffineTransform afZoom = new AffineTransform();
@@ -5070,18 +5034,13 @@ public class PainelCircuito {
 			c2 = c2.brighter();
 			g2d.setColor(new Color(c2.getRed(), c2.getGreen(), c2.getBlue(), 200));
 		}
-		int largura = 0;
 		if (!Util.isNullOrEmpty(piloto)) {
 			int larguraTxtPiloto = Util.calculaLarguraText(piloto, g2d) + 15;
 			g2d.fillRoundRect(pt.x, pt.y, larguraTxtPiloto, 14, 0, 0);
-			largura = larguraTxtPiloto;
 		}
 		if (!Util.isNullOrEmpty(carro)) {
 			int larguraTxtCarro = Util.calculaLarguraText(carro, g2d) + 15;
 			g2d.fillRoundRect(pt.x, pt.y + 16, larguraTxtCarro, 14, 0, 0);
-			if (largura < larguraTxtCarro) {
-				largura = larguraTxtCarro;
-			}
 		}
 		int valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
 		if (valor > 250) {
@@ -5389,7 +5348,6 @@ public class PainelCircuito {
 			case 1:
 				g2d.fillRoundRect(limitesViewPort.x + inico + 15, limitesViewPort.y + y - incremetAlt, 4, incremetAlt,
 						0, 0);
-				incremetAlt += 3;
 				break;
 			case 2:
 				g2d.fillRoundRect(limitesViewPort.x + inico + 15, limitesViewPort.y + y - incremetAlt, 4, incremetAlt,
@@ -5397,7 +5355,6 @@ public class PainelCircuito {
 				incremetAlt += 3;
 				g2d.fillRoundRect(limitesViewPort.x + inico + 20, limitesViewPort.y + y - incremetAlt, 4, incremetAlt,
 						0, 0);
-				incremetAlt += 3;
 				break;
 			case 3:
 				g2d.fillRoundRect(limitesViewPort.x + inico + 15, limitesViewPort.y + y - incremetAlt, 4, incremetAlt,
@@ -5408,7 +5365,6 @@ public class PainelCircuito {
 				incremetAlt += 3;
 				g2d.fillRoundRect(limitesViewPort.x + inico + 25, limitesViewPort.y + y - incremetAlt, 4, incremetAlt,
 						0, 0);
-				incremetAlt += 3;
 				break;
 			default:
 				break;
@@ -5422,7 +5378,6 @@ public class PainelCircuito {
 			incremetAlt += 3;
 			g2d.fillRoundRect(limitesViewPort.x + inico + 25, limitesViewPort.y + y - incremetAlt, 4, incremetAlt, 15,
 					15);
-			incremetAlt += 3;
 		}
 
 	}
@@ -5505,17 +5460,15 @@ public class PainelCircuito {
 		g2d.setStroke(pista);
 		for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
-			if (oldNo == null) {
-				oldNo = no;
-			} else {
-				g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-						Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-						Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
-						Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
+            if (oldNo != null) {
+                g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
+                        Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
+                        Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
+                        Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
 
-				oldNo = no;
-			}
-		}
+            }
+            oldNo = no;
+        }
 
 		No noFinal = (No) circuito.getPistaKey().get(0);
 		g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
@@ -5532,17 +5485,15 @@ public class PainelCircuito {
 		No oldNo = null;
 		for (Iterator iter = circuito.getBoxKey().iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
-			if (oldNo == null) {
-				oldNo = no;
-			} else {
-				g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-						Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-						Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
-						Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
+            if (oldNo != null) {
+                g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
+                        Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
+                        Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
+                        Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
 
-				oldNo = no;
-			}
-		}
+            }
+            oldNo = no;
+        }
 		No noFinal = (No) circuito.getBoxKey().get(circuito.getBoxKey().size() - 1);
 
 		g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
@@ -5561,26 +5512,24 @@ public class PainelCircuito {
 		int cont = 0;
 		for (Iterator iter = circuito.getPistaKey().iterator(); iter.hasNext();) {
 			No no = (No) iter.next();
-			if (oldNo == null) {
-				oldNo = no;
-			} else {
-				g2d.setColor(Color.WHITE);
-				g2d.setStroke(pistaTinta);
-				g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-						Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-						Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
-						Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
-				if (No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo())) {
-					g2d.setColor(Color.RED);
-					g2d.setStroke(zebra);
-					g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
-							Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
-							Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
-							Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
-				}
-				oldNo = no;
-			}
-		}
+            if (oldNo != null) {
+                g2d.setColor(Color.WHITE);
+                g2d.setStroke(pistaTinta);
+                g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
+                        Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
+                        Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
+                        Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
+                if (No.CURVA_ALTA.equals(oldNo.getTipo()) || No.CURVA_BAIXA.equals(oldNo.getTipo())) {
+                    g2d.setColor(Color.RED);
+                    g2d.setStroke(zebra);
+                    g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
+                            Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),
+                            Util.inteiro((no.getX() - descontoCentraliza.x) * zoom),
+                            Util.inteiro((no.getY() - descontoCentraliza.y) * zoom));
+                }
+            }
+            oldNo = no;
+        }
 		No noFinal = (No) circuito.getPistaKey().get(0);
 		g2d.drawLine(Util.inteiro((oldNo.getX() - descontoCentraliza.x) * zoom),
 				Util.inteiro((oldNo.getY() - descontoCentraliza.y) * zoom),

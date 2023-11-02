@@ -351,11 +351,8 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 	}
 
 	public boolean isChovendo() {
-		if (Clima.CHUVA.equals(clima)) {
-			return true;
-		}
-		return false;
-	}
+        return Clima.CHUVA.equals(clima);
+    }
 
 	public boolean isCorridaTerminada() {
 		if (dadosJogo != null) {
@@ -776,7 +773,7 @@ public class JogoCliente extends ControleRecursos implements InterfaceJogo {
 			} catch (InterruptedException e) {
 			}
 		}
-		URL url = null;
+		URL url;
 		try {
 			String caminho = mainFrame.getCodeBase()
 					+ "/sowbreira/f1mane/recursos/" + backGround;

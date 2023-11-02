@@ -480,14 +480,6 @@ public class PainelEntradaCliente {
 		dadosCriarJogo.setTemporada("t" + temporada);
 		dadosCriarJogo.setQtdeVoltas(qtdeVoltas);
 		dadosCriarJogo.setDiffultrapassagem((Integer) sliderDificuldadeUltrapassagem.getValue());
-		Integer habilidade = (Integer) spinnerSkillPadraoPilotos.getValue();
-		if (habilidade.intValue() > 99) {
-			habilidade = new Integer(99);
-		}
-		Integer potencia = (Integer) spinnerPotenciaPadraoCarros.getValue();
-		if (potencia.intValue() > 999) {
-			potencia = new Integer(999);
-		}
 		String circuitoSelecionado = (String) comboBoxCircuito.getSelectedItem();
 		dadosCriarJogo.setCircuitoSelecionado(circuitoSelecionado);
 		dadosCriarJogo.setNivelCorrida(Lang.key(comboBoxNivelCorrida.getSelectedItem().toString()));

@@ -155,7 +155,6 @@ public class MonitorJogo implements Runnable {
 				jogoAtivo = false;
 				Thread.sleep(tempoCiclo);
 			} catch (InterruptedException e) {
-				interrupt = true;
 				Logger.logarExept(e);
 				throw e;
 			}
@@ -166,11 +165,7 @@ public class MonitorJogo implements Runnable {
 			throws InterruptedException {
 		while (Comandos.CORRIDA_INICIADA.equals(estado) && controlePaddockCliente.isComunicacaoServer() && jogoAtivo) {
 			try {
-				if (getLatenciaReal() > 1000) {
-					jogoCliente.setAtualizacaoSuave(false);
-				} else {
-					jogoCliente.setAtualizacaoSuave(true);
-				}
+                jogoCliente.setAtualizacaoSuave(getLatenciaReal() <= 1000);
 				if (controlePaddockCliente
 						.getLatenciaReal() > Constantes.LATENCIA_MAX) {
 					jogoCliente.autoDrs();
@@ -336,11 +331,8 @@ public class MonitorJogo implements Runnable {
 	}
 
 	private boolean retornoNaoValido(Object ret) {
-		if (ret instanceof ErroServ || ret instanceof MsgSrv) {
-			return true;
-		}
-		return false;
-	}
+        return ret instanceof ErroServ || ret instanceof MsgSrv;
+    }
 
 	public void atualizarListaPilotos(Object[] posisArray) {
 		List<Piloto> pilotos = jogoCliente.getPilotos();
@@ -566,11 +558,7 @@ public class MonitorJogo implements Runnable {
 				piloto.setNumeroVolta(dadosParciais.voltaAtual);
 				piloto.setNomeJogador(dadosParciais.nomeJogador);
 				piloto.setQtdeParadasBox(dadosParciais.paradas);
-				if (piloto.getTokenJogador() != null) {
-					piloto.setJogadorHumano(true);
-				} else {
-					piloto.setJogadorHumano(false);
-				}
+                piloto.setJogadorHumano(piloto.getTokenJogador() != null);
 				piloto.getCarro().setDanificado(dadosParciais.dano, null);
 				if (!jogoCliente.isSafetyCarNaPista()
 						&& piloto.isDesqualificado()) {

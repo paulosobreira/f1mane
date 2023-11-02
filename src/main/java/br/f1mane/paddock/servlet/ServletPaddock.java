@@ -81,7 +81,7 @@ public class ServletPaddock extends HttpServlet {
                 Logger.logar("inputStream null - > doGetHtml");
             }
             if (inputStream != null) {
-                Object object = null;
+                Object object;
 
                 object = inputStream.readObject();
 
@@ -101,11 +101,10 @@ public class ServletPaddock extends HttpServlet {
                     res.getOutputStream().write(bos.toByteArray());
                 }
 
-                return;
             } else {
                 doGetHtml(req, res);
-                return;
             }
+            return;
         } catch (Exception e) {
             Logger.topExecpts(e);
         }

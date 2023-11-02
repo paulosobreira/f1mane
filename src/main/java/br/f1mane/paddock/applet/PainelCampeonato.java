@@ -222,7 +222,7 @@ public class PainelCampeonato extends JPanel {
 					return Lang.msg("161");
 				case 2:
 					/* "Vitorias" */
-					return Lang.msg("289");
+					return Lang.msg("vitorias");
 				default:
 					return "";
 				}
@@ -301,7 +301,7 @@ public class PainelCampeonato extends JPanel {
 					return Lang.msg("161");
 				case 2:
 					/* "Vitorias" */
-					return Lang.msg("289");
+					return Lang.msg("vitorias");
 				default:
 					return "";
 				}

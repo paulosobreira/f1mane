@@ -86,12 +86,9 @@ public class SessaoCliente implements Serializable {
 			return false;
 		SessaoCliente other = (SessaoCliente) obj;
 		if (token == null) {
-			if (other.token != null)
-				return false;
-		} else if (!token.equals(other.token))
-			return false;
-		return true;
-	}
+            return other.token == null;
+		} else return token.equals(other.token);
+    }
 
 	public String toString() {
 		return nomeJogador;

@@ -33,7 +33,7 @@ public abstract class ControleRecursos {
 	protected List<No> nosDoBox = new ArrayList<No>();
 	protected List<Carro> carros;
 	protected CarregadorRecursos carregadorRecursos;
-	protected Map<String, String> circuitos = new HashMap<String, String>();
+	protected Map<String, String> circuitos;
 	protected final Map<No, No> mapaNoProxCurva = new HashMap<No, No>();
 	protected final Map<No, No> mapaNoCurvaAnterior = new HashMap<No, No>();
 	protected Map<Integer, No> mapaIdsNos = new HashMap<Integer, No>();

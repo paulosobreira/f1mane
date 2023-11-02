@@ -182,7 +182,7 @@ public class ControlePersistencia {
 			for (Iterator iterator = jogadores.keySet().iterator(); iterator.hasNext();) {
 				String nome = (String) iterator.next();
 				JogadorDadosSrv jogadorDadosSrv = (JogadorDadosSrv) jogadores.get(nome);
-				CarreiraDadosSrv carreiraDadosSrv = null;
+				CarreiraDadosSrv carreiraDadosSrv;
 				List corridas = jogadorDadosSrv.getCorridas();
 				for (Iterator iterator2 = corridas.iterator(); iterator2.hasNext();) {
 					CorridasDadosSrv corridasDadosSrv = (CorridasDadosSrv) iterator2.next();
@@ -309,7 +309,7 @@ public class ControlePersistencia {
 			// get a listing of the directory content
 			String[] dirList = zipDir.list();
 			byte[] readBuffer = new byte[2156];
-			int bytesIn = 0;
+			int bytesIn;
 			// loop through dirList, and zip the files
 			for (int i = 0; i < dirList.length; i++) {
 				File f = new File(zipDir, dirList[i]);

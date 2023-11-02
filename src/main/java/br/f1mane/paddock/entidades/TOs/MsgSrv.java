@@ -43,11 +43,8 @@ public class MsgSrv implements Serializable {
 			return false;
 		MsgSrv other = (MsgSrv) obj;
 		if (messageString == null) {
-			if (other.messageString != null)
-				return false;
-		} else if (!messageString.equals(other.messageString))
-			return false;
-		return true;
-	}
+            return other.messageString == null;
+		} else return messageString.equals(other.messageString);
+    }
 
 }

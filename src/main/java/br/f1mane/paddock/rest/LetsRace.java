@@ -130,7 +130,7 @@ public class LetsRace {
     @Produces(MediaType.APPLICATION_JSON)
     public Response circuito(@QueryParam("nomeCircuito") String nomeCircuito) {
         Logger.logar("String nomeCircuito " + nomeCircuito);
-        Circuito circuito = null;
+        Circuito circuito;
         try {
             circuito = CarregadorRecursos.carregarCircuito(nomeCircuito);
             if (circuito != null) {
@@ -644,7 +644,7 @@ public class LetsRace {
     @Produces(MediaType.APPLICATION_JSON)
     public Response temporadasDefaults(
             @PathParam("temporada") String temporada) {
-        TemporadasDefauts temporadasDefauts = null;
+        TemporadasDefauts temporadasDefauts;
         try {
             temporada = "t" + temporada;
             Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
@@ -665,7 +665,7 @@ public class LetsRace {
     @Path("/temporadas")
     @Produces(MediaType.APPLICATION_JSON)
     public Response temporadas() {
-        Vector<String> carregarTemporadas = null;
+        Vector<String> carregarTemporadas;
         try {
             carregarTemporadas = carregadorRecursos.carregarTemporadas();
         } catch (Exception e) {

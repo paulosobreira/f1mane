@@ -403,13 +403,9 @@ public class ControleEstatisticas {
 		if (piloto.getPosicao() == 1) {
 			return true;
 		}
-		if (controleJogo.verificaCampeonatoComRival()
-				&& piloto.equals(controleJogo.obterRivalCampeonato())) {
-			return true;
-		}
-
-		return false;
-	}
+        return controleJogo.verificaCampeonatoComRival()
+                && piloto.equals(controleJogo.obterRivalCampeonato());
+    }
 
 	private String carrgaTabelaComparativa() {
 		try {

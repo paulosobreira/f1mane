@@ -138,20 +138,12 @@ public class Util {
 	}
 
 	public static boolean validaIntervaloData(Dia dataInicial, Dia dataFinal) {
-		if (dataInicial.maiorQue(dataFinal)) {
-			return false;
-		} else {
-			return true;
-		}
+        return !dataInicial.maiorQue(dataFinal);
 	}
 
 	public static boolean validaIntervaloData(java.sql.Date dataInicial,
 			java.sql.Date dataFinal) {
-		if (dataInicial.compareTo(dataFinal) > 0) {
-			return false;
-		} else {
-			return true;
-		}
+        return dataInicial.compareTo(dataFinal) <= 0;
 	}
 
 	public static void validaIntervaloData(String dataInicial, String dataFinal)
@@ -450,20 +442,12 @@ public class Util {
 		if ((proximoValor - valorAutal) > 0) {
 			numeroVal -= inc;
 			numero.setNumero(numeroVal);
-			if ((numeroVal - inc) >= 0) {
-				return true;
-			} else {
-				return false;
-			}
+            return (numeroVal - inc) >= 0;
 		} else {
 			numeroVal += inc;
 			numero.setNumero(numeroVal);
 		}
-		if (numeroVal > 0) {
-			return true;
-		} else {
-			return false;
-		}
+        return numeroVal > 0;
 	}
 	public static Color criarCorAleatoria() {
 

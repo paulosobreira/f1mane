@@ -101,7 +101,7 @@ public class MonitorAtividade implements Runnable {
 	public void removeClientesIniativos(long timeNow) {
 		List<SessaoCliente> clientes = controlePaddock.getDadosPaddock()
 				.getClientes();
-		SessaoCliente sessaoClienteRemover = null;
+		SessaoCliente sessaoClienteRemover;
 		for (Iterator<SessaoCliente> iter = clientes.iterator(); iter
 				.hasNext();) {
 			SessaoCliente sessaoCliente = iter.next();

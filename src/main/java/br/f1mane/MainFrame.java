@@ -298,11 +298,7 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (som.isSelected()) {
-					ControleSom.somLigado = true;
-				} else {
-					ControleSom.somLigado = false;
-				}
+                ControleSom.somLigado = som.isSelected();
 			}
 		});
 		menu1.add(som);
@@ -318,11 +314,7 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (efeitos.isSelected()) {
-					PainelCircuito.efeitosLigados = false;
-				} else {
-					PainelCircuito.efeitosLigados = true;
-				}
+                PainelCircuito.efeitosLigados = !efeitos.isSelected();
 			}
 		});
 		menu1.add(efeitos);
@@ -337,11 +329,7 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (atualizacaoSuave.isSelected()) {
-					controleJogo.setAtualizacaoSuave(true);
-				} else {
-					controleJogo.setAtualizacaoSuave(false);
-				}
+                controleJogo.setAtualizacaoSuave(atualizacaoSuave.isSelected());
 			}
 		});
 		menu1.add(atualizacaoSuave);

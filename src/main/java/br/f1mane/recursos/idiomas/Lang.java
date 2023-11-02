@@ -162,7 +162,7 @@ public class Lang {
 	}
 
 	public static String msgKey(String key, Object[] strings, String idioma) {
-		PropertyResourceBundle bundle = null;
+		PropertyResourceBundle bundle;
 		if (idioma == null) {
 			iniciaBundle();
 			bundle = Lang.bundle;
@@ -182,7 +182,7 @@ public class Lang {
 	}
 
 	public static String msgKey(String key, String idioma) {
-		PropertyResourceBundle bundle = null;
+		PropertyResourceBundle bundle;
 		if (idioma == null) {
 			iniciaBundle();
 			bundle = Lang.bundle;

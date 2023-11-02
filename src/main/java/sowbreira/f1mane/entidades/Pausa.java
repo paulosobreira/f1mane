@@ -42,9 +42,7 @@ public class Pausa {
 		Pausa other = (Pausa) obj;
 		if (pausaFimMilis != other.pausaFimMilis)
 			return false;
-		if (pausaIniMilis != other.pausaIniMilis)
-			return false;
-		return true;
-	}
+        return pausaIniMilis == other.pausaIniMilis;
+    }
 
 }

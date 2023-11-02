@@ -433,11 +433,7 @@ public class GerenciadorVisual {
 					controleJogo.selecionaPilotoBaixo();
 				}
 
-				if (keyCoode == KeyEvent.VK_F9) {
-					mudaPilotoSelecionado();
-				}
-
-				if (keyCoode == KeyEvent.VK_F10) {
+                if (keyCoode == KeyEvent.VK_F10) {
 					ligaDesligaSom();
 				}
 				if (keyCoode == KeyEvent.VK_UP) {

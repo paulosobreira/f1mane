@@ -106,7 +106,7 @@ public class Dia implements Cloneable, Serializable {
 	}
 
 	public static java.sql.Date parseDate(String DATE) throws Exception {
-		java.sql.Date date = null;
+		java.sql.Date date;
 		date = parseDate(DATE, "dd/MM/yyyy");
 
 		return date;
@@ -158,7 +158,7 @@ public class Dia implements Cloneable, Serializable {
 
 	public static java.sql.Timestamp parseTimestamp(String DATE)
 			throws Exception {
-		java.sql.Timestamp date = null;
+		java.sql.Timestamp date;
 		date = parseTimestamp(DATE, "dd/MM/yyyy HH:mm:ss");
 
 		return date;
@@ -258,11 +258,7 @@ public class Dia implements Cloneable, Serializable {
 
 	public Boolean isDayOfWeek() {
 		int dia = getDayOfWeek();
-		if (dia > 1 && dia < 7) {
-			return true;
-		} else {
-			return false;
-		}
+        return dia > 1 && dia < 7;
 	}
 
 	public int getDayOfWeek() {
@@ -340,41 +336,25 @@ public class Dia implements Cloneable, Serializable {
 	public boolean maiorQue(Dia dia) {
 		int value = daysBetween(dia);
 
-		if (value <= 0) {
-			return false;
-		} else {
-			return true;
-		}
+        return value > 0;
 	}
 
 	public boolean menorQue(Dia dia) {
 		int value = daysBetween(dia);
 
-		if (value >= 0) {
-			return false;
-		} else {
-			return true;
-		}
+        return value < 0;
 	}
 
 	public boolean maiorIgualA(Dia dia) {
 		int value = daysBetween(dia);
 
-		if (value < 0) {
-			return false;
-		} else {
-			return true;
-		}
+        return value >= 0;
 	}
 
 	public boolean menorIgualA(Dia dia) {
 		int value = daysBetween(dia);
 
-		if (value > 0) {
-			return false;
-		} else {
-			return true;
-		}
+        return value <= 0;
 	}
 
 	public String getMesDescricao(int mes) {

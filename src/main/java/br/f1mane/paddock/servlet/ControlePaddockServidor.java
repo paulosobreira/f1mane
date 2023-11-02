@@ -686,7 +686,7 @@ public class ControlePaddockServidor {
 		if (!Constantes.DATABASE) {
 			return;
 		}
-		JogadorDadosSrv jogadorDadosSrv = null;
+		JogadorDadosSrv jogadorDadosSrv;
 		Session session = controlePersistencia.getSession();
 		try {
 			jogadorDadosSrv = controlePersistencia.carregaDadosJogadorIdGoogle(sessaoCliente.getId(), session);
@@ -984,8 +984,8 @@ public class ControlePaddockServidor {
 			if (!obterJogos.isEmpty()) {
 				clientPaddockPack.setNomeJogo(obterJogos.get(0));
 			}
-			SrvPaddockPack srvPaddockPack = null;
-			Object statusJogo = null;
+			SrvPaddockPack srvPaddockPack;
+			Object statusJogo;
 			statusJogo = obterJogoPeloNome(clientPaddockPack);
 			/**
 			 * Criar Jogo
@@ -1064,8 +1064,8 @@ public class ControlePaddockServidor {
 			dadosCriarJogo.setRodadaCampeonato(campeonato.getRodadaCampeonato());
 			dadosCriarJogo.setIdCampeonato(campeonato.getId());
 			clientPaddockPack.setDadosCriarJogo(dadosCriarJogo);
-			SrvPaddockPack srvPaddockPack = null;
-			Object statusJogo = null;
+			SrvPaddockPack srvPaddockPack;
+			Object statusJogo;
 			/**
 			 * Criar Jogo
 			 */

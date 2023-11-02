@@ -99,7 +99,7 @@ public class ControleJogosServer {
 				return new MsgSrv(Lang.msg("205"));
 			}
 		}
-		JogoServidor jogoServidor = null;
+		JogoServidor jogoServidor;
 		String temporada = clientPaddockPack.getDadosJogoCriado()
 				.getTemporada();
 
@@ -350,7 +350,7 @@ public class ControleJogosServer {
 
 	public Object obterDadosJogo(ClientPaddockPack clientPaddockPack) {
 		String nomeJogo = clientPaddockPack.getNomeJogo();
-		JogoServidor jogoServidor = null;
+		JogoServidor jogoServidor;
 		SessaoCliente sessaoCliente = clientPaddockPack.getSessaoCliente();
 		if (nomeJogo != null) {
 			jogoServidor = obterJogoPeloNome(nomeJogo);

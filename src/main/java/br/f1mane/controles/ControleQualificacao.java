@@ -161,7 +161,7 @@ public class ControleQualificacao {
 
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			int diff = 0;
+			int diff;
 			if (piloto.getHabilidade() > valor) {
 				diff = piloto.getHabilidade() - valor;
 				piloto.setHabilidade(piloto.getHabilidade()
@@ -195,7 +195,7 @@ public class ControleQualificacao {
 
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
-			int diff = 0;
+			int diff;
 			if (piloto.getCarro().getPotencia() > valor) {
 				diff = piloto.getCarro().getPotencia() - valor;
 				piloto.getCarro().setPotencia(piloto.getCarro().getPotencia()

@@ -66,7 +66,7 @@ public class ImageUtil {
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = buffer.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
-		int[] argbArray = new int[4];
+		int[] argbArray;
 
 		for (int i = 0; i < buffer.getWidth(); i++) {
 			for (int j = 0; j < buffer.getHeight(); j++) {
@@ -91,7 +91,7 @@ public class ImageUtil {
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
-		int[] argbArray = new int[4];
+		int[] argbArray;
 
 		for (int i = 0; i < img.getIconWidth(); i++) {
 			for (int j = 0; j < img.getIconHeight(); j++) {
@@ -135,7 +135,7 @@ public class ImageUtil {
 				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = src.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
-		int[] argbArray = new int[4];
+		int[] argbArray;
 
 		for (int i = 0; i < src.getWidth(); i++) {
 			for (int j = 0; j < src.getHeight(); j++) {
@@ -163,7 +163,7 @@ public class ImageUtil {
 				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = src.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
-		int[] argbArray = new int[4];
+		int[] argbArray;
 
 		for (int i = 0; i < src.getWidth(); i++) {
 			for (int j = 0; j < src.getHeight(); j++) {
@@ -241,7 +241,7 @@ public class ImageUtil {
 				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = src.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
-		int[] argbArray = new int[4];
+		int[] argbArray;
 
 		for (int i = 0; i < src.getWidth(); i++) {
 			for (int j = 0; j < src.getHeight(); j++) {
@@ -271,7 +271,7 @@ public class ImageUtil {
 				src.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = src.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
-		int[] argbArray = new int[4];
+		int[] argbArray;
 
 		for (int i = 0; i < src.getWidth(); i++) {
 			for (int j = 0; j < src.getHeight(); j++) {

@@ -253,7 +253,7 @@ public class PaddockWindow {
 		});
 		verDetalhes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object object = null;
+				Object object;
                 object = listaClientes.getSelectedValue();
                 if (object == null) {
                     object = listaJogosCriados.getSelectedValue();

@@ -34,7 +34,7 @@ public class ControleCorrida {
 	private ControleClima controleClima;
 	private ControleQualificacao controleQualificacao;
 	private double fatorUtrapassagem;
-	private double velocidadePista = Constantes.VELOCIDADE_PISTA;
+	private double velocidadePista;
 	private boolean corridaIniciada;
 	private double fatorAcidente = Util.intervalo(0.3, 0.9);
 	private long pontosPilotoLargada;

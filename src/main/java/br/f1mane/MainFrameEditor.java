@@ -411,11 +411,6 @@ public class MainFrameEditor extends JFrame {
 	}
 
 	public static void main(String[] args) throws IOException {
-		// Logger.ativo = true;
-		String codeBase = File.separator + "WebContent" + File.separator;
-		if (args != null && args.length > 0) {
-			codeBase = args[0];
-		}
 		if (args != null && args.length > 1) {
 			Lang.mudarIdioma(args[1]);
 		}

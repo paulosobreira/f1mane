@@ -343,7 +343,6 @@ public class ControleBox {
 		carro.setDanificado(null, controleJogo);
 		if (carro.getDurabilidadeAereofolio() <= 0 || InterfaceJogo.DIFICIL_NV != controleJogo.getNiveljogo()) {
 			carro.setDurabilidadeAereofolio(InterfaceJogo.DURABILIDADE_AREOFOLIO);
-			penalidade = Util.inteiro(penalidade * (2 - (carro.getPotencia() / 1000)));
 		}
 		if (controleJogo.isErs()) {
 			piloto.getCarro().setCargaErs(InterfaceJogo.CARGA_ERS);
@@ -379,7 +378,7 @@ public class ControleBox {
 			info = Lang.msg("saiBoxPneuMole", strings);
 		} else if (Carro.TIPO_PNEU_DURO.equals(piloto.getCarro().getTipoPneu())) {
 			info = Lang.msg("saiBoxPneuDuro", strings);
-		} else if (Carro.TIPO_PNEU_MOLE.equals(piloto.getCarro().getTipoPneu())) {
+		} else if (Carro.TIPO_PNEU_CHUVA.equals(piloto.getCarro().getTipoPneu())) {
 			info = Lang.msg("saiBoxPneuChuva", strings);
 		}
 
@@ -607,19 +606,8 @@ public class ControleBox {
 	}
 
 	public boolean verificaBoxOcupado(Carro carro) {
-		if ((boxEquipesOcupado.get(carro)) != null) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public static void main(String[] args) {
-		// int val = 1 + ((int) (Math.random() * 3));
-		// Logger.logar(val);
-		// Hashtable hashtable = new Hashtable();
-		// hashtable.put("someval", null);
-	}
+        return (boxEquipesOcupado.get(carro)) != null;
+    }
 
 	public No getSaidaBox() {
 		return saidaBox;

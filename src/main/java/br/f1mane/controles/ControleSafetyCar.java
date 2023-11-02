@@ -174,12 +174,6 @@ public class ControleSafetyCar {
 		return piloto.getPtosPista() >= safetyCar.getPtosPista();
 	}	
 
-	public static void main(String[] args) {
-		double multi = 0.1;
-		int bonus = 1;
-		bonus *= multi;
-	}
-
 	private int desviarTracado(int indice) {
 		List pilotos = controleJogo.getPilotosCopia();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {

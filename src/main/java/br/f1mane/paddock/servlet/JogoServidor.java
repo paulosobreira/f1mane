@@ -193,12 +193,10 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			}
 		}
 		boolean pilotoDisponivel = false;
-		Piloto pilotoSelecionado = null;
 		for (Iterator iter = pilotos.iterator(); iter.hasNext();) {
 			Piloto piloto = (Piloto) iter.next();
 			if (piloto.getId() == dadosParticiparJogo.getIdPiloto()) {
 				pilotoDisponivel = true;
-				pilotoSelecionado = piloto;
 			}
 			if (piloto.getId() == dadosParticiparJogo.getIdPiloto()
 					&& piloto.isDesqualificado()) {
@@ -228,7 +226,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 			DadosCriarJogo valor = (DadosCriarJogo) mapJogadoresOnline.get(key);
 			CarreiraDadosSrv carreiraDadosSrv = controleClassificacao
 					.obterCarreiraSrv(key);
-			String piloto = "";
+			String piloto;
 			if (carreiraDadosSrv != null && carreiraDadosSrv.isModoCarreira()) {
 				piloto = carreiraDadosSrv.getNomePiloto();
 			} else {
@@ -337,10 +335,7 @@ public class JogoServidor extends ControleJogoLocal implements InterfaceJogo {
 		if (InterfaceJogo.FACIL.equals(dadosCriarJogo.getNivelCorrida())) {
 			return InterfaceJogo.FACIL_NV;
 		}
-		if (InterfaceJogo.NORMAL.equals(dadosCriarJogo.getNivelCorrida())) {
-			return InterfaceJogo.MEDIO_NV;
-		}
-		return InterfaceJogo.MEDIO_NV;
+        return InterfaceJogo.MEDIO_NV;
 	}
 
 	public void atualizarJogadoresOnline() {

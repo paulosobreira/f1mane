@@ -380,11 +380,7 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public void setTravouRodas(int contTravouRodas) {
-		if (contTravouRodas <= 0) {
-			setTravouRodas(false);
-		} else {
-			setTravouRodas(true);
-		}
+        setTravouRodas(contTravouRodas > 0);
 		this.contTravouRodas = contTravouRodas;
 	}
 
@@ -575,12 +571,9 @@ public class Piloto implements Serializable, PilotoSuave {
 			return false;
 		Piloto other = (Piloto) obj;
 		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
-		return true;
-	}
+            return other.nome == null;
+		} else return nome.equals(other.nome);
+    }
 
 	public String getTipoPneuJogador() {
 		return tipoPneuJogador;
@@ -1571,11 +1564,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	private boolean verificaForaPista(Piloto piloto) {
-		boolean voltando = false;
-		if (getIndiceTracado() > 0 && (piloto.getTracadoAntigo() == 4 || piloto.getTracadoAntigo() == 5)) {
-			voltando = true;
-		}
-		return piloto.getTracado() == 4 || piloto.getTracado() == 5 || voltando;
+		boolean voltando = getIndiceTracado() > 0 && (piloto.getTracadoAntigo() == 4 || piloto.getTracadoAntigo() == 5);
+        return piloto.getTracado() == 4 || piloto.getTracado() == 5 || voltando;
 	}
 
 	private void processaFreioNaReta(InterfaceJogo controleJogo) {
@@ -2029,12 +2019,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (ativarDRS) {
 			return;
 		}
-		if (getNoAtual().verificaRetaOuLargada() && Math.random() < (controleJogo.getNiveljogo())
-				&& testeHabilidadePiloto()) {
-			setAtivarDRS(true);
-		} else {
-			setAtivarDRS(false);
-		}
+        setAtivarDRS(getNoAtual().verificaRetaOuLargada() && Math.random() < (controleJogo.getNiveljogo())
+                && testeHabilidadePiloto());
 	}
 
 	private void iaTentaUsarErs(InterfaceJogo controleJogo) {
@@ -2227,8 +2213,8 @@ public class Piloto implements Serializable, PilotoSuave {
 		double calculaAngulo = GeoUtil.calculaAngulo(frenteCar, trazCar, 0);
 		Rectangle2D rectangle = new Rectangle2D.Double((p.x - Carro.MEIA_LARGURA_CIMA), (p.y - Carro.MEIA_ALTURA_CIMA),
 				Carro.LARGURA_CIMA, Carro.ALTURA_CIMA);
-		Point p1 = null;
-		Point p2 = null;
+		Point p1;
+		Point p2;
 		Point p4 = null;
 		Point p5 = null;
 		if (noAtual.isBox()) {
@@ -2509,7 +2495,7 @@ public class Piloto implements Serializable, PilotoSuave {
 		if (derrapa && testeHabilidadePiloto()) {
 			valorLimiteStressePararErrarCurva = getValorLimiteStressePararErrarCurva(controleJogo);
 		}
-		boolean maxPilotagem = false;
+		boolean maxPilotagem;
 		if (getNoAtual().verificaRetaOuLargada()) {
 			maxPilotagem = temCombustivel && temPneu && stress < valorLimiteStressePararErrarCurva
 					&& !getCarro().isPneuAquecido();
@@ -2519,10 +2505,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		No no = getNoAtual();
 		if (no.verificaRetaOuLargada()) {
 			setAtivarErs(true);
-		}
-
-		if (pontoEscape != null && distanciaEscape > Carro.RAIO_DERRAPAGEM) {
-			valorLimiteStressePararErrarCurva = 100;
 		}
 		if (maxPilotagem && testeHabilidadePiloto()) {
 			setModoPilotagem(AGRESSIVO);
@@ -2758,11 +2740,8 @@ public class Piloto implements Serializable, PilotoSuave {
 	}
 
 	public boolean entrouNoBox() {
-		if (ptosBox == 0) {
-			return false;
-		}
-		return true;
-	}
+        return ptosBox != 0;
+    }
 
 	public void efetuarSaidaBox(InterfaceJogo interfaceJogo) {
 		qtdeParadasBox++;
@@ -3036,11 +3015,6 @@ public class Piloto implements Serializable, PilotoSuave {
 		}
 		if (getVelocidadeExibir() > 200) {
 			incFreiada++;
-		}
-
-		No no = getNoAtualSuave();
-		if (no == null) {
-			no = getNoAtual();
 		}
 
 		if (getVelocidade() >= getVelocidadeExibir()) {

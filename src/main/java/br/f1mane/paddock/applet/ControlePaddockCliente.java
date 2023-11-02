@@ -77,14 +77,12 @@ public class ControlePaddockCliente {
 			mainFrame.desbilitarMenusModoOnline();
 			threadAtualizadora = new Thread(new Runnable() {
 				public void run() {
-					boolean interrupt = false;
 					try {
 						while (isComunicacaoServer()) {
 							Thread.sleep(Util.intervalo(4000, 6000));
 							atualizaVisao(paddockWindow);
 						}
 					} catch (Exception e) {
-						interrupt = true;
 						Logger.logarExept(e);
 					}
 				}
@@ -118,7 +116,7 @@ public class ControlePaddockCliente {
 			long envioT = System.currentTimeMillis();
 			// Gerar Lag
 			// Thread.sleep(Util.intervalo(1500, 2000));
-			Object retorno = null;
+			Object retorno;
 			dataUrl = new URL(protocol, host, port, urlSufix);
 
 			URLConnection connection = dataUrl.openConnection();
@@ -491,7 +489,7 @@ public class ControlePaddockCliente {
 		}
 		if (!Util.isNullOrEmpty(formEntrada.getNomeRegistrar().getText())
 				|| !Util.isNullOrEmpty(formEntrada.getEmailRegistrar().getText())) {
-			int resultado = 0;
+			int resultado;
 			try {
 				resultado = Integer.parseInt(formEntrada.getResultadorConta().getText());
 			} catch (Exception e) {
@@ -759,11 +757,8 @@ public class ControlePaddockCliente {
 	}
 
 	public boolean retornoNaoValido(Object ret) {
-		if (ret instanceof ErroServ || ret instanceof MsgSrv) {
-			return true;
-		}
-		return false;
-	}
+        return ret instanceof ErroServ || ret instanceof MsgSrv;
+    }
 
 	private void atualizaCarreira(FormCarreira formCarreira) {
 		ClientPaddockPack clientPaddockPack = new ClientPaddockPack(Comandos.ATUALIZA_CARREIRA, sessaoCliente);

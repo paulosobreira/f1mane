@@ -52,7 +52,7 @@ public class TestePista {
 			public void run() {
 				while (alive) {
 					int cont = 0;
-					No no = null;
+					No no;
 					try {
 						while (cont < pontosPista.size() && alive) {
 							editor.setUltimoClicado(null);
