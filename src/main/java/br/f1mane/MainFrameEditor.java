@@ -33,7 +33,7 @@ import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.f1mane.controles.InterfaceJogo;
 import br.f1mane.editor.MainPanelEditor;
-import br.f1mane.paddock.applet.AppletPaddock;
+import br.f1mane.servidor.applet.AppletPaddock;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.visao.PainelTabelaResultadoFinal;

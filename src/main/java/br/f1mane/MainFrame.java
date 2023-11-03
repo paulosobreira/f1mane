@@ -33,7 +33,7 @@ import br.nnpe.Logger;
 import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Campeonato;
-import br.f1mane.paddock.applet.AppletPaddock;
+import br.f1mane.servidor.applet.AppletPaddock;
 import br.f1mane.recursos.idiomas.Lang;
 import br.f1mane.visao.ControleSom;
 import br.f1mane.visao.PainelCircuito;

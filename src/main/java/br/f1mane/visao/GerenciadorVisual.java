@@ -67,8 +67,8 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
-import br.f1mane.paddock.applet.JogoCliente;
-import br.f1mane.paddock.entidades.TOs.TravadaRoda;
+import br.f1mane.servidor.applet.JogoCliente;
+import br.f1mane.servidor.entidades.TOs.TravadaRoda;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 
@@ -215,7 +215,7 @@ public class GerenciadorVisual {
 		thAtualizaSom = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				if (controleJogo instanceof br.f1mane.paddock.applet.JogoCliente) {
+				if (controleJogo instanceof br.f1mane.servidor.applet.JogoCliente) {
 					while (!controleJogo.getMainFrame().isVisible()) {
 						try {
 							Thread.sleep(1000);

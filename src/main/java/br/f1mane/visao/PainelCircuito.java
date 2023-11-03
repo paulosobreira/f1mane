@@ -52,8 +52,8 @@ import sowbreira.f1mane.entidades.PilotoSuave;
 import sowbreira.f1mane.entidades.PontoEscape;
 import sowbreira.f1mane.entidades.SafetyCar;
 import sowbreira.f1mane.entidades.Volta;
-import br.f1mane.paddock.applet.JogoCliente;
-import br.f1mane.paddock.entidades.TOs.TravadaRoda;
+import br.f1mane.servidor.applet.JogoCliente;
+import br.f1mane.servidor.entidades.TOs.TravadaRoda;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 

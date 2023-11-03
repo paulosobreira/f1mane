@@ -6,7 +6,7 @@
 	<display-name>f1mane</display-name>
 	<servlet>
 		<servlet-name>ServletPaddock</servlet-name>
-		<servlet-class>br.f1mane.paddock.servlet.ServletPaddock</servlet-class>
+		<servlet-class>br.f1mane.servidor.servlet.ServletPaddock</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
@@ -18,7 +18,7 @@
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>jersey.config.server.provider.packages</param-name>
-			<param-value>br.f1mane.paddock.rest</param-value>
+			<param-value>br.f1mane.servidor.rest</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -34,9 +34,4 @@
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
-
-	<resource-env-ref>
-		<resource-env-ref-name>jdbc/MySQLDS</resource-env-ref-name>
-		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
-	</resource-env-ref>
 </web-app>

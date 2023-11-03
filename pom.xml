@@ -20,12 +20,12 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>4.2.21.Final</version>
+            <version>5.6.15.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-commons-annotations</artifactId>
-            <version>3.2.0.Final</version>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.6.15.Final</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -83,11 +83,6 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -186,11 +181,15 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
+                                <!--suppress UnresolvedMavenProperty -->
                                 <property name="ant.versao" value="${versao}"/>
+                                <!--suppress UnresolvedMavenProperty -->
                                 <replace dir="src/main/webapp/html5" value="${ant.versao}" token="{versao}">
                                     <include name="**/*.html"/>
                                 </replace>
+                                <!--suppress UnresolvedMavenProperty -->
                                 <property name="ant.idGoogle" value="${idGoogle}"/>
+                                <!--suppress UnresolvedMavenProperty -->
                                 <replace dir="src/main/webapp/html5" value="${ant.idGoogle}" token="{idGoogle}">
                                     <include name="**/*.html"/>
                                 </replace>

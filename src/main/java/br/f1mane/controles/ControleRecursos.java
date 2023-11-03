@@ -20,7 +20,7 @@ import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PontoEscape;
-import br.f1mane.paddock.servlet.JogoServidor;
+import br.f1mane.servidor.JogoServidor;
 import br.f1mane.recursos.CarregadorRecursos;
 
 /**
