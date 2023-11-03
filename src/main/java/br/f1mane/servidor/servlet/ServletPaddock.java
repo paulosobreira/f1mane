@@ -17,11 +17,18 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.UnknownHostException;
 import java.sql.Connection;
@@ -156,11 +163,32 @@ public class ServletPaddock extends HttpServlet {
         export.create(EnumSet.of(TargetType.DATABASE), getMetaData().buildMetadata());
     }
 
-    private MetadataSources getMetaData() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        //TODO ler do src/main/resources/META-INF/persistence.xml
+    private MetadataSources getMetaData() throws Exception {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(CarregadorRecursos.recursoComoStream("META-INF/persistence.xml"));
+        NodeList list = doc.getElementsByTagName("property");
+        String url = null, pass = null, user = null,driver = null;
+        for (int temp = 0; temp < list.getLength(); temp++) {
+            Node node = list.item(temp);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) node;
+                String attr = element.getAttribute("name");
+                if ("jakarta.persistence.jdbc.url".equals(attr)) {
+                    url = element.getAttribute("value");
+                } else if ("jakarta.persistence.jdbc.user".equals(attr)) {
+                    user = element.getAttribute("value");
+                } else if ("jakarta.persistence.jdbc.password".equals(attr)) {
+                    pass = element.getAttribute("value");
+                }else if ("jakarta.persistence.jdbc.driver".equals(attr)) {
+                    driver = element.getAttribute("value");
+                }
+            }
+        }
+        Class.forName(driver);
         Connection connection =
-                DriverManager.getConnection("jdbc:mysql://db:3306/f1mane?characterEncoding=utf8", "root", "f1mane");
+                DriverManager.getConnection(url, user, pass);
         MetadataSources metadata = new MetadataSources(
                 new StandardServiceRegistryBuilder()
                         .applySetting("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect")

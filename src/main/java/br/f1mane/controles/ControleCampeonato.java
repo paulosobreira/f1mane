@@ -53,7 +53,7 @@ import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.CorridaCampeonato;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
-import sowbreira.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.TemporadasDefault;
 import sowbreira.f1mane.entidades.Volta;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
@@ -1130,10 +1130,10 @@ public class ControleCampeonato {
 		campeonato.setNivel(nivelSelecionado);
 		campeonato.setQtdeVoltas(new Integer(numVoltasSelecionado));
 		campeonato.setMenuLocal(true);
-		Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
+		Map<String, TemporadasDefault> carregarTemporadasPilotosDefauts = carregadorRecursos
 				.carregarTemporadasPilotosDefauts();
-		TemporadasDefauts temporadasDefauts = carregarTemporadasPilotosDefauts.get("t" + temporadaSelecionada);
-		campeonato.setSafetycar(temporadasDefauts.getSafetyCar());
+		TemporadasDefault temporadasDefault = carregarTemporadasPilotosDefauts.get("t" + temporadaSelecionada);
+		campeonato.setSafetycar(temporadasDefault.getSafetyCar());
 		return campeonato;
 	}
 

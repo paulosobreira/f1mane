@@ -33,8 +33,8 @@ import br.nnpe.Logger;
 import br.f1mane.controles.ControleRecursos;
 import br.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.CircuitosDefauts;
-import sowbreira.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.CircuitosDefault;
+import sowbreira.f1mane.entidades.TemporadasDefault;
 import br.f1mane.servidor.PaddockServer;
 import br.f1mane.servidor.entidades.TOs.CampeonatoTO;
 import br.f1mane.servidor.entidades.TOs.ClientPaddockPack;
@@ -374,10 +374,10 @@ public class LetsRace {
     @Path("/circuitos")
     @Produces(MediaType.APPLICATION_JSON)
     public Response circuitos() {
-        List<CircuitosDefauts> circuitosDefauts;
+        List<CircuitosDefault> circuitosDefauts;
         try {
             circuitosDefauts = carregadorRecursos.carregarCircuitosDefaults();
-            List<CircuitosDefauts> shuffle = new ArrayList<>(circuitosDefauts);
+            List<CircuitosDefault> shuffle = new ArrayList<>(circuitosDefauts);
             Collections.shuffle(shuffle);
             return Response.status(200).entity(shuffle).build();
         } catch (Exception e) {
@@ -645,19 +645,19 @@ public class LetsRace {
     @Produces(MediaType.APPLICATION_JSON)
     public Response temporadasDefaults(
             @PathParam("temporada") String temporada) {
-        TemporadasDefauts temporadasDefauts;
+        TemporadasDefault temporadasDefault;
         try {
             temporada = "t" + temporada;
-            Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
+            Map<String, TemporadasDefault> carregarTemporadasPilotosDefauts = carregadorRecursos
                     .carregarTemporadasPilotosDefauts();
-            temporadasDefauts = carregarTemporadasPilotosDefauts.get(temporada);
+            temporadasDefault = carregarTemporadasPilotosDefauts.get(temporada);
         } catch (Exception e) {
             Logger.topExecpts(e);
             return Response.status(500)
                     .entity(new ErroServ(e).obterErroFormatado())
                     .type(MediaType.APPLICATION_JSON).build();
         }
-        return Response.status(200).entity(temporadasDefauts).build();
+        return Response.status(200).entity(temporadasDefault).build();
     }
 
     @SuppressWarnings("static-access")

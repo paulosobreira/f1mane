@@ -27,17 +27,15 @@ import br.f1mane.controles.InterfaceJogo;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.TemporadasDefault;
 import br.f1mane.servidor.entidades.Comandos;
 import br.f1mane.servidor.entidades.TOs.CampeonatoTO;
 import br.f1mane.servidor.entidades.TOs.ClientPaddockPack;
 import br.f1mane.servidor.entidades.TOs.DadosCriarJogo;
 import br.f1mane.servidor.entidades.TOs.DadosJogo;
-import br.f1mane.servidor.entidades.TOs.DadosPaddock;
 import br.f1mane.servidor.entidades.TOs.DadosParciais;
 import br.f1mane.servidor.entidades.TOs.ErroServ;
 import br.f1mane.servidor.entidades.TOs.MsgSrv;
-import br.f1mane.servidor.entidades.TOs.SessaoCliente;
 import br.f1mane.servidor.entidades.TOs.SrvPaddockPack;
 import br.f1mane.servidor.entidades.persistencia.CampeonatoSrv;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
@@ -1053,9 +1051,9 @@ public class ControlePaddockServidor {
 				if (modoCarreiraRet != null) {
 					return modoCarreiraRet;
 				} else {
-					Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos.carregarTemporadasPilotosDefauts();
-					TemporadasDefauts temporadasDefauts = tempDefsMap.get("t" + campeonato.getTemporada());
-					List<Piloto> pilotos = temporadasDefauts.getPilotos();
+					Map<String, TemporadasDefault> tempDefsMap = carregadorRecursos.carregarTemporadasPilotosDefauts();
+					TemporadasDefault temporadasDefault = tempDefsMap.get("t" + campeonato.getTemporada());
+					List<Piloto> pilotos = temporadasDefault.getPilotos();
 					idPiloto = String.valueOf(pilotos.get(pilotos.size() - 1).getId());
 				}
 			}

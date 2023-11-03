@@ -12,7 +12,7 @@ import br.nnpe.Dia;
 import br.nnpe.Util;
 import br.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.TemporadasDefault;
 import br.f1mane.servidor.entidades.persistencia.CampeonatoSrv;
 import br.f1mane.servidor.entidades.persistencia.CarreiraDadosSrv;
 import br.f1mane.servidor.entidades.persistencia.CorridaCampeonatoSrv;
@@ -79,17 +79,17 @@ public class ControleCampeonatoServidor {
 			if (verificaCampeonatoEmAberto(jogadorDadosSrv, session)) {
 				return (new MsgSrv(Lang.msg("jogadorTemCampeonatoEmAberto")));
 			}
-			Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
+			Map<String, TemporadasDefault> carregarTemporadasPilotosDefauts = carregadorRecursos
 					.carregarTemporadasPilotosDefauts();
 			Logger.logar(
 					"campeonato.getTemporada() " + campeonato.getTemporada());
-			TemporadasDefauts temporadasDefauts = carregarTemporadasPilotosDefauts
+			TemporadasDefault temporadasDefault = carregarTemporadasPilotosDefauts
 					.get("t" + campeonato.getTemporada());
-			campeonato.setTrocaPneus(temporadasDefauts.getTrocaPneu());
-			campeonato.setDrs(temporadasDefauts.getDrs());
-			campeonato.setErs(temporadasDefauts.getErs());
+			campeonato.setTrocaPneus(temporadasDefault.getTrocaPneu());
+			campeonato.setDrs(temporadasDefault.getDrs());
+			campeonato.setErs(temporadasDefault.getErs());
 			campeonato
-					.setReabastecimento(temporadasDefauts.getReabastecimento());
+					.setReabastecimento(temporadasDefault.getReabastecimento());
 			campeonato.setQtdeVoltas(Constantes.MIN_VOLTAS);
 			campeonato.setNivel(ControleJogoLocal.NORMAL);
 			campeonato.setJogadorDadosSrv(jogadorDadosSrv);
@@ -367,11 +367,11 @@ public class ControleCampeonatoServidor {
 
 	public void processaCampeonatoTOPilotoSelecionado(CampeonatoSrv campeonato,
 			CampeonatoTO campeonatoTO) {
-		Map<String, TemporadasDefauts> tempDefsMap = carregadorRecursos
+		Map<String, TemporadasDefault> tempDefsMap = carregadorRecursos
 				.carregarTemporadasPilotosDefauts();
-		TemporadasDefauts temporadasDefauts = tempDefsMap
+		TemporadasDefault temporadasDefault = tempDefsMap
 				.get("t" + campeonato.getTemporada());
-		List<Piloto> pilotos = temporadasDefauts.getPilotos();
+		List<Piloto> pilotos = temporadasDefault.getPilotos();
 		for (Iterator iterator = pilotos.iterator(); iterator.hasNext();) {
 			Piloto piloto = (Piloto) iterator.next();
 			if (String.valueOf(piloto.getId())

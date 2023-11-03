@@ -41,7 +41,7 @@ import sowbreira.f1mane.entidades.Clima;
 import sowbreira.f1mane.entidades.ConstrutoresPontosCampeonato;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
-import sowbreira.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.TemporadasDefault;
 import br.f1mane.recursos.CarregadorRecursos;
 import br.f1mane.recursos.idiomas.Lang;
 
@@ -2164,15 +2164,15 @@ public class PainelMenuLocal {
 
 	private void desenhaDrsKersPneusReabastecimento(Graphics2D g2d, int x, int y) {
 		if (temporadaSelecionada != null && !desenhouTemporadasDefaults) {
-			Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts = carregadorRecursos
+			Map<String, TemporadasDefault> carregarTemporadasPilotosDefauts = carregadorRecursos
 					.carregarTemporadasPilotosDefauts();
-			TemporadasDefauts temporadasDefauts = carregarTemporadasPilotosDefauts.get("t" + temporadaSelecionada);
-			this.drs = temporadasDefauts.getDrs();
-			this.kers = temporadasDefauts.getErs();
-			this.reabastecimento = temporadasDefauts.getReabastecimento();
-			this.trocaPneus = temporadasDefauts.getTrocaPneu();
+			TemporadasDefault temporadasDefault = carregarTemporadasPilotosDefauts.get("t" + temporadaSelecionada);
+			this.drs = temporadasDefault.getDrs();
+			this.kers = temporadasDefault.getErs();
+			this.reabastecimento = temporadasDefault.getReabastecimento();
+			this.trocaPneus = temporadasDefault.getTrocaPneu();
 			this.desenhouTemporadasDefaults = true;
-			this.safetyCar = temporadasDefauts.getSafetyCar();
+			this.safetyCar = temporadasDefault.getSafetyCar();
 		}
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));

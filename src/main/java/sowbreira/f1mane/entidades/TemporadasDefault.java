@@ -6,7 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TemporadasDefauts implements Serializable {
+public class TemporadasDefault implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Boolean trocaPneu = false;

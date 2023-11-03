@@ -13,7 +13,7 @@ import br.f1mane.controles.ControleJogoLocal;
 import br.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Circuito;
 import sowbreira.f1mane.entidades.Clima;
-import sowbreira.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.TemporadasDefault;
 import br.f1mane.recursos.CarregadorRecursos;
 
 /**
@@ -86,7 +86,7 @@ public class DadosCriarJogo implements Serializable {
 		} else {
 			dadosCriarJogo.setClima(Clima.SOL);
 		}
-		TemporadasDefauts temporadasDefauts = CarregadorRecursos
+		TemporadasDefault temporadasDefault = CarregadorRecursos
 				.getCarregadorRecursos(false).carregarTemporadasPilotosDefauts()
 				.get("t" + temporada);
 
@@ -100,19 +100,19 @@ public class DadosCriarJogo implements Serializable {
 			}
 			dadosCriarJogo.setCombustivel(fuel);
 		} else {
-			if (temporadasDefauts.getReabastecimento()) {
+			if (temporadasDefault.getReabastecimento()) {
 				dadosCriarJogo.setCombustivel(Util.intervalo(25, 50));
 			} else {
 				dadosCriarJogo.setCombustivel(Util.intervalo(70, 90));
 			}
 		}
 		dadosCriarJogo
-				.setReabastecimento(temporadasDefauts.getReabastecimento());
-		dadosCriarJogo.setTrocaPneu(temporadasDefauts.getTrocaPneu());
-		dadosCriarJogo.setErs(temporadasDefauts.getErs());
-		dadosCriarJogo.setDrs(temporadasDefauts.getDrs());
+				.setReabastecimento(temporadasDefault.getReabastecimento());
+		dadosCriarJogo.setTrocaPneu(temporadasDefault.getTrocaPneu());
+		dadosCriarJogo.setErs(temporadasDefault.getErs());
+		dadosCriarJogo.setDrs(temporadasDefault.getDrs());
 		dadosCriarJogo.setIdPiloto(new Integer(idPiloto));
-		dadosCriarJogo.setSafetyCar(temporadasDefauts.getSafetyCar());
+		dadosCriarJogo.setSafetyCar(temporadasDefault.getSafetyCar());
 		return dadosCriarJogo;
 	}
 

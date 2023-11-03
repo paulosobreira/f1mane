@@ -40,17 +40,17 @@ import br.nnpe.Util;
 import br.f1mane.controles.ControleRecursos;
 import sowbreira.f1mane.entidades.Carro;
 import sowbreira.f1mane.entidades.Circuito;
-import sowbreira.f1mane.entidades.CircuitosDefauts;
+import sowbreira.f1mane.entidades.CircuitosDefault;
 import sowbreira.f1mane.entidades.Piloto;
-import sowbreira.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.TemporadasDefault;
 
 public class CarregadorRecursos {
     private static HashMap<String, String> temporadas;
-    private static HashMap<String, TemporadasDefauts> temporadasDefauts;
+    private static HashMap<String, TemporadasDefault> temporadasDefauts;
     private static Vector<String> vectorTemps;
     private Map<String, List<Piloto>> temporadasPilotos;
-    private Map<String, TemporadasDefauts> temporadasPilotosDefauts;
-    private List<CircuitosDefauts> circuitosDefauts;
+    private Map<String, TemporadasDefault> temporadasPilotosDefauts;
+    private List<CircuitosDefault> circuitosDefauts;
     private static final Map bufferImages = new HashMap();
     private static final Map bufferCarros = new HashMap();
     private static final Map<String, Circuito> bufferCircuitos = new HashMap<String, Circuito>();
@@ -90,7 +90,7 @@ public class CarregadorRecursos {
             return vectorTemps;
         }
         temporadas = new HashMap<String, String>();
-        temporadasDefauts = new HashMap<String, TemporadasDefauts>();
+        temporadasDefauts = new HashMap<String, TemporadasDefault>();
         vectorTemps = new Vector<String>();
         final Properties properties = new Properties();
         try {
@@ -100,7 +100,7 @@ public class CarregadorRecursos {
             while (propName.hasMoreElements()) {
                 final String name = (String) propName.nextElement();
                 String[] split = properties.getProperty(name).split(",");
-                TemporadasDefauts defauts = new TemporadasDefauts();
+                TemporadasDefault defauts = new TemporadasDefault();
                 defauts.setTrocaPneu("true".equals(split[1]));
                 defauts.setReabastecimento("true".equals(split[2]));
                 defauts.setErs("true".equals(split[3]));
@@ -600,16 +600,16 @@ public class CarregadorRecursos {
         return temporadasPilotos;
     }
 
-    public synchronized Map<String, TemporadasDefauts> carregarTemporadasPilotosDefauts() {
+    public synchronized Map<String, TemporadasDefault> carregarTemporadasPilotosDefauts() {
         if (temporadasPilotosDefauts != null) {
             return temporadasPilotosDefauts;
         }
-        temporadasPilotosDefauts = new HashMap<String, TemporadasDefauts>();
+        temporadasPilotosDefauts = new HashMap<String, TemporadasDefault>();
         Map<String, List<Piloto>> carregarTemporadasPilotos = carregarTemporadasPilotos();
         for (Iterator iterator = carregarTemporadasPilotos.keySet()
                 .iterator(); iterator.hasNext(); ) {
             String temporada = (String) iterator.next();
-            TemporadasDefauts def = temporadasDefauts.get(temporada);
+            TemporadasDefault def = temporadasDefauts.get(temporada);
             def.setPilotos(carregarTemporadasPilotos.get(temporada));
             temporadasPilotosDefauts.put(temporada, def);
         }
@@ -1025,17 +1025,17 @@ public class CarregadorRecursos {
         return modelo;
     }
 
-    public synchronized List<CircuitosDefauts> carregarCircuitosDefaults()
+    public synchronized List<CircuitosDefault> carregarCircuitosDefaults()
             throws IOException, ClassNotFoundException {
         if (circuitosDefauts != null) {
             return circuitosDefauts;
         }
-        circuitosDefauts = new ArrayList<CircuitosDefauts>();
+        circuitosDefauts = new ArrayList<CircuitosDefault>();
         Map<String, String> carregarCircuitos = ControleRecursos
                 .carregarCircuitos();
         for (Iterator iterator = carregarCircuitos.keySet().iterator(); iterator
                 .hasNext(); ) {
-            CircuitosDefauts cd = new CircuitosDefauts();
+            CircuitosDefault cd = new CircuitosDefault();
             String nmCircuitoOri = (String) iterator.next();
             cd.setNome(Util.substVogais(nmCircuitoOri));
             cd.setArquivo(carregarCircuitos.get(nmCircuitoOri));

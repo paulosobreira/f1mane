@@ -30,7 +30,7 @@ import sowbreira.f1mane.entidades.No;
 import sowbreira.f1mane.entidades.Piloto;
 import sowbreira.f1mane.entidades.PilotosPontosCampeonato;
 import sowbreira.f1mane.entidades.SafetyCar;
-import sowbreira.f1mane.entidades.TemporadasDefauts;
+import sowbreira.f1mane.entidades.TemporadasDefault;
 import sowbreira.f1mane.entidades.Volta;
 import br.f1mane.servidor.entidades.TOs.TravadaRoda;
 import br.f1mane.servidor.JogoServidor;
@@ -1772,9 +1772,9 @@ public class ControleJogoLocal extends ControleRecursos
 
 	@Override
 	public Double getFatorBoxTemporada() {
-		TemporadasDefauts temporadasDefauts = carregadorRecursos
+		TemporadasDefault temporadasDefault = carregadorRecursos
 				.carregarTemporadasPilotosDefauts().get(getTemporada());
-		return temporadasDefauts.getFatorBox();
+		return temporadasDefault.getFatorBox();
 	}
 
 	@Override
