@@ -1,4 +1,4 @@
-FROM tomcat:8.5.95-jdk8
+FROM tomcat:9.0.82-jdk11
 MAINTAINER Paulo Sobreira
 WORKDIR /usr/local/tomcat/webapps
 RUN  rm -rf *

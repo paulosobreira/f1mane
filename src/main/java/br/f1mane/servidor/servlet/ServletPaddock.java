@@ -23,6 +23,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +41,7 @@ import java.util.*;
 /**
  * @author paulo.sobreira
  */
+@WebServlet("/ServletPaddock")
 public class ServletPaddock extends HttpServlet {
     private final static String lock = "lock";
     private ControlePaddockServidor controlePaddock;
@@ -65,10 +67,6 @@ public class ServletPaddock extends HttpServlet {
 
     }
 
-    private String obterHost() throws UnknownHostException {
-        return host + ":" + port;
-    }
-
     public void destroy() {
         monitorAtividade.setAlive(false);
         super.destroy();
@@ -82,36 +80,7 @@ public class ServletPaddock extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         try {
-            ObjectInputStream inputStream = null;
-            try {
-                inputStream = new ObjectInputStream(req.getInputStream());
-            } catch (Exception e) {
-                Logger.logar("inputStream null - > doGetHtml");
-            }
-            if (inputStream != null) {
-                Object object;
-
-                object = inputStream.readObject();
-
-                Object escrever = controlePaddock
-                        .processarObjetoRecebido(object);
-
-                if (PaddockConstants.modoZip) {
-                    dumaparDadosZip(ZipUtil.compactarObjeto(
-                            PaddockConstants.dumparDados, escrever,
-                            res.getOutputStream()));
-                } else {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    ObjectOutputStream oos = new ObjectOutputStream(bos);
-                    oos.writeObject(escrever);
-                    oos.flush();
-                    dumaparDados(escrever);
-                    res.getOutputStream().write(bos.toByteArray());
-                }
-
-            } else {
-                doGetHtml(req, res);
-            }
+            doGetHtml(req, res);
             return;
         } catch (Exception e) {
             Logger.topExecpts(e);
@@ -169,19 +138,19 @@ public class ServletPaddock extends HttpServlet {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(CarregadorRecursos.recursoComoStream("META-INF/persistence.xml"));
         NodeList list = doc.getElementsByTagName("property");
-        String url = null, pass = null, user = null,driver = null;
+        String url = null, pass = null, user = null, driver = null;
         for (int temp = 0; temp < list.getLength(); temp++) {
             Node node = list.item(temp);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) node;
                 String attr = element.getAttribute("name");
-                if ("jakarta.persistence.jdbc.url".equals(attr)) {
+                if ("javax.persistence.jdbc.url".equals(attr)) {
                     url = element.getAttribute("value");
-                } else if ("jakarta.persistence.jdbc.user".equals(attr)) {
+                } else if ("javax.persistence.jdbc.user".equals(attr)) {
                     user = element.getAttribute("value");
-                } else if ("jakarta.persistence.jdbc.password".equals(attr)) {
+                } else if ("javax.persistence.jdbc.password".equals(attr)) {
                     pass = element.getAttribute("value");
-                }else if ("jakarta.persistence.jdbc.driver".equals(attr)) {
+                } else if ("javax.persistence.jdbc.driver".equals(attr)) {
                     driver = element.getAttribute("value");
                 }
             }
@@ -286,35 +255,5 @@ public class ServletPaddock extends HttpServlet {
         printWriter.write("</head>");
     }
 
-    private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
-            throws IOException {
-        if (PaddockConstants.dumparDados) {
-            String basePath = getServletContext().getRealPath("")
-                    + File.separator + "WEB-INF" + File.separator;
-            FileOutputStream fileOutputStream = new FileOutputStream(
-                    basePath + "Pack-" + System.currentTimeMillis() + ".zip");
-            fileOutputStream.write(byteArrayOutputStream.toByteArray());
-            fileOutputStream.close();
 
-        }
-
-    }
-
-    private void dumaparDados(Object escrever) throws IOException {
-        if (PaddockConstants.dumparDados && (escrever != null)) {
-            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-                    arrayOutputStream);
-            objectOutputStream.writeObject(escrever);
-            String basePath = getServletContext().getRealPath("")
-                    + File.separator + "WEB-INF" + File.separator;
-            FileOutputStream fileOutputStream = new FileOutputStream(
-                    basePath + escrever.getClass().getSimpleName() + "-"
-                            + System.currentTimeMillis() + ".txt");
-            fileOutputStream.write(arrayOutputStream.toByteArray());
-            fileOutputStream.close();
-
-        }
-
-    }
 }
